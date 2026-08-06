@@ -1,118 +1,318 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AE048B374
-	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 17:06:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8E536DA04;
+	Thu,  6 Aug 2026 17:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786035969; cv=none; b=umpm7/44qq3LS/hog6iIy24NKCYtHNqHB8ABdTwBIyzaebrTlrHzYG862nKELGvP6+aFV+365IQ8mMTXD7WGeFQAyT67dskABbVc/0mcPJqGisk6TyHOHwMnDIa4R8Iyt9pVx0zOBkWrijHnFXSUwllNtMq7gFIbal13rBpoFiY=
+	t=1786036042; cv=none; b=W799TdizL87UmtbUKHuFfYDnDV4IprbpKDXminZPrzFKJNkNhqkAyztTSMSYerXDEdMk419ry57WkN0h/RnMcIUSvmLylmMCRf3cp+jaCQ43/V3jBRF8dljDdXeAqnk3DsClfx3JelZmdS56tGQUcV66vsq1jIFc76otELC5kf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786035969; c=relaxed/simple;
-	bh=8QsSGiEAaqCQy0cZvG0XEQmjL6NBrQ5rQlcU3Mw2rGw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=eag3gyNJ1uJL9eCbLX7HSR8SKuFpsUlZBkJPaKcbfQViwP2zI9/OCP3C5WeiuQ3mqfOifUAyuTfulXV26D0ZkDsCD0ayoiWaVYzHQYRnNI4cQcwfyewnvWejEjy2EBeCh7IXwqMQ3HMYdbS87+i75D1lLcMdLl34lvAITH1q8/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fP2iZSTF; arc=none smtp.client-ip=209.85.215.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786036042; c=relaxed/simple;
+	bh=sGw/4+Se6//bBk39ScVJ//Pyli6DxqVRzoJdSG5NQ50=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sh7of14o6ZVYxXKjI2cKeqQmBzwobUZSCIbeDCUyfp+K7BeU65ZekWsxKCPoFJzOqyQubFnUZixnEls2/qTJ9F7Q2c+6gEWTI2VsEQceaaL8Ftvufy4JYs2bXZNMLAqkyx6Xq3eiUIxlN0hmqdV0XJo4MAgDPk2B8Dqmi8z6gSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=FrgXaUd+; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fP2iZSTF"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c89704da8c7so3498895a12.0
-        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 10:06:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786035967; x=1786640767; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=aIw+FKSYh9yZePv09d+Ay5MUcxdlIRKZjplIOJy/wbw=;
-        b=fP2iZSTFxkuWhjT+jkV2Rf/pnBgK4ScRDqtybDhg8DKOLjLQmBja6qzROtKTvG8J3v
-         6OM3D2kgZA8puRH1QgmGsWT4+H1tM+iiZpEiMD1PjfXefUrYH1hu6Kt1O+K2z93UBgFC
-         X4dcdlufB9CXLu995WsO9QFKIE+kqyvt6D5D/RR/JTUFqWyoXyAOEuCMa7qc0n18AEEI
-         3baIz55hTn3e79wjTJBtUFuqEcV/6RWAbCFWdNwd23EBYc8Tkhr6LwiVfYJjGpdedSIo
-         8Zm6i6OmMyAPlAEV/X6UxRFnlA7K7C7Mm5DAs9d40KTrFAm1wVx5uaCSvkIi466c5I3W
-         opIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786035967; x=1786640767;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=aIw+FKSYh9yZePv09d+Ay5MUcxdlIRKZjplIOJy/wbw=;
-        b=ZKTY/QOdBu4wJ2cj+rPiOp3eMvTij7S00SAsu7H/+c8ZPbNOtFpO9DTMTZiv+PS2rU
-         fUkApEmc/kU/WmFc6NrXXj0OoO8LXXwcgEcttP9Ufc7Q5XYCKqSA3UWVeKYWdGbRTjSi
-         RiGn9q+4sDmxgfIXfuUBlhndKt3be5mXbflBMgrkF6HKj5aFhh02p4gGEdM5WPS9uQSO
-         OTbLSjeHD3uu2C7RJ+UheplEWB9WuhAuYY9/XhpMGHiuCxVKGofEe0r24booPkl/uImG
-         vJVk7QTYX/r898TrWOLzBPEPnJXd3dEla4LUM/PgtBW6JyPb9ENbSFHDliUOtRiL8zFr
-         gdAw==
-X-Gm-Message-State: AOJu0YyWKiwAjNj11OdHuFG722HtRBIZfhntpM+XUPawz5HoRJi4wkD9
-	7EQH0ilTtV5NDTLTxukjftE9ttFzgbzLlum8WENII9McQCwwUUDmxPpSRw9q5nAFbe/X1qOkygD
-	1MZcKIQ==
-X-Received: from pghu18.prod.google.com ([2002:a63:ef12:0:b0:c98:2639:852c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:164a:b0:3c3:a08d:5b44
- with SMTP id adf61e73a8af0-3cb85ef9234mr20536509637.23.1786035967107; Thu, 06
- Aug 2026 10:06:07 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  6 Aug 2026 10:06:02 -0700
-In-Reply-To: <20260806170602.4112602-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FrgXaUd+"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 676Eo06U2966159;
+	Thu, 6 Aug 2026 17:07:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=XF0yfXZadJRhpb/eQ
+	/yc//gnd8Qnt7yOLj2Rb/LJK5Q=; b=FrgXaUd+HVvOdXXBLbHgcio4NjdExVp67
+	iRpyllY0MNctZ5cl/q+oo17GJr/mu/Jw0TWLtGWBLNjNHRLh06tV9/5nNclDihXY
+	ldk8jBbTl41bbG8551aPdJ/xFyjKRArzdDXHNpYRCO+Lr4V6ovqIPkkYtXmSvo1D
+	fB3EeVJtuSY+ckf5A+KLkKDVRNvLb+F6rNSjpOg6/3rZGqE/w3xtOo7qBa1KVJCL
+	uRc0VM3JukD+QGJ6EotpxIblWTFE+s48s+9e50PupzII5KHWh/7LgpFYJOibwY9z
+	z9TK35Hk3YeOXHY0wS/BqX1z+NXUaehEJCvJ+D6Tcd1HZTB9pRwHA==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8h59gpw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 17:07:06 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 676GuNIK004041;
+	Thu, 6 Aug 2026 17:07:05 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswtyuw55-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 17:07:05 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 676H716Q32047494
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Aug 2026 17:07:01 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B721520043;
+	Thu,  6 Aug 2026 17:07:01 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E5FED20040;
+	Thu,  6 Aug 2026 17:06:57 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.39.29.233])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  6 Aug 2026 17:06:57 +0000 (GMT)
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Ritesh Harjani <ritesh.list@gmail.com>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        Gautam Menghani <gautam@linux.ibm.com>
+Subject: [PATCH v7 1/4] KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and wire up ioctl
+Date: Thu,  6 Aug 2026 22:36:42 +0530
+Message-ID: <20260806170645.11892-2-amachhiw@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260806170645.11892-1-amachhiw@linux.ibm.com>
+References: <20260806170645.11892-1-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260806170602.4112602-1-seanjc@google.com>
-X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260806170602.4112602-3-seanjc@google.com>
-Subject: [PATCH v2 2/2] KVM: TDX: Fix a benign off-by-one bug on the end GPA
- for INIT_MEM_REGION
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sashiko Bot <sashiko-bot@kernel.org>, Yan Zhao <yan.y.zhao@intel.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Haotian Jiang <jianghaotian.sunday@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDEzMSBTYWx0ZWRfX1i8d98aaaXYk
+ lOnqE+CT7NWzJWlYS9ulEc3fE+N1uEhjAmz8DwJDX+lWwrdtV+kwo9y1VCRBybc5VvHg/hYEAR0
+ V/Vy3SC9e8jf9NbjHfqla+rnHkbsCrg=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDEzMSBTYWx0ZWRfXw5CDzGHTj1Kk
+ OVIubkRZ9h72hyFgoGyPxXZx/ubTPcrl40ga32AKxmcmzFi1MlBFH7ybuQnIXzzp+p7fkjOzYiV
+ k02/kv6BDJkqryExZLKxRVMzke6hkuz64QJZkGOKrFRbaDBCQhkSbZn3wU1p777YDw9P90jbdlw
+ moZgHmsDLkHWrH0ex8vdXotT1T2mFVwJyzpn6+cgGe0j+SKjnExr1EoyCQKEIePAoInMCpHjkIP
+ FnwHJCAQa8JEHnx8tQjk2V7kdokw5dX43CYnPSE/TWHLNhO25PIlkkdUw9JG3weyE65SyowCCoW
+ 9n4rd+RTIYAIK77sQNq6QRm1oetXZO/kB4POmH7pBLzn2B/xZckjHmuD3t8Msrx0J5omopuGSTs
+ jvxKQQ5c0qRsDXL5CL4pdIn4SNHyJh1fXWkd0jAB6pcipLpdOfv3VPMqcavQh4Bfvj4O812dCZq
+ ouOsVxDl1kIN8iNUrrg==
+X-Authority-Analysis: v=2.4 cv=SI1ykuvH c=1 sm=1 tr=0 ts=6a74bf3b cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8 a=rQyBRTFaFC3FL7QHXY8A:9
+X-Proofpoint-ORIG-GUID: xw4h6RMYoy5kFufRhgRZvgjVBJV1WePw
+X-Proofpoint-GUID: ysCEd5QDaFYDo4jTNYcOiNiQ16EPj3ac
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-06_01,2026-08-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0
+ phishscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608060131
 
-When verifying that the incoming GPA rage for INIT_MEM_REGION doesn't wrap,
-check the inclusive last GPA, not the exclusive last GPA.  Super duper
-technically, it's ok if the very last GPA is -1ull.  In practice, the flaw
-is benign as KVM x86 disallows memslots with GPAs that exceed MAXPHYADDR,
-i.e. INIT_MEM_REGION would fail with -EINVAL anyways due to the memslot
-check in kvm_gmem_populate().
+Introduce a new capability and ioctl to expose CPU compatibility modes
+supported by the host processor for nested guests.
 
-Opportunistically use check_add_overflow() instead of manually checking for
-wrap, mostly so that the inclusive math doesn't need to be copy+pasted in
-the "is private" check.
+On IBM POWER systems, newer processor generations (N) can operate in
+compatibility modes corresponding to earlier generations, like (N-1) and
+(N-2). This is particularly relevant for nested virtualization, where
+nested KVM guests may need to run with a specific processor compatibility
+level.
 
-Fixes: c846b451d3c5 ("KVM: TDX: Add an ioctl to create initial guest memory")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Introduce KVM_CAP_PPC_COMPAT_CAPS capability and the corresponding
+KVM_PPC_GET_COMPAT_CAPS vm ioctl. The ioctl returns a bitmap describing
+the compatibility modes supported by the host in respective bit numbers,
+allowing userspace (e.g., QEMU) to select an appropriate compatibility
+level when configuring nested KVM guests.
+
+The ioctl handling is added in kvm_arch_vm_ioctl() and retrieves host
+CPU compatibility capabilities via a PowerPC-specific backend
+implementation when available.
+
+The struct kvm_ppc_compat_caps places the 'size' field first so it can
+be read alone via get_user() before copy_struct_from_user() is called,
+avoiding pointer arithmetic to locate the size field.
+
+The ioctl is defined using _IO so the ioctl number remains stable even if
+the struct grows in future versions. It uses copy_struct_from_user() and
+copy_struct_to_user() to provide forward- and backward-compatible
+extensibility: older userspace passing a smaller struct to a newer kernel
+gets zero-padded trailing fields, while newer userspace passing a larger
+struct to an older kernel (usize > ksize) gets sizeof(struct
+kvm_ppc_compat_caps) written back to host_caps.size so it can retry with the
+older kernel-supported size, after which the kernel returns -E2BIG.
+
+KVM_PPC_COMPAT_CAPS_SIZE_VER0 is defined as a frozen integer constant
+(24) marking the size of the initial struct version, used as the
+minimum floor for size field validation, similar to other versioned
+struct interfaces in the kernel.
+
+The 'flags' field is reserved for future use. The kernel rejects any
+call where flags is non-zero with -EINVAL, preventing garbage values
+from being baked into ABI permanently.
+
+The ioctl returns appropriate error codes: EINVAL for an invalid size
+or non-zero reserved fields, E2BIG if new userspace provides a larger
+struct than the kernel knows about (with ksize written back into
+host_caps.size for the retry), EFAULT for failed copy operations, and
+ENOTTY if the backend doesn't implement get_compat_caps.
+
+Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Tested-by: Gautam Menghani <gautam@linux.ibm.com>
+Reviewed-by: Gautam Menghani <gautam@linux.ibm.com>
+Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
+Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
 ---
- arch/x86/kvm/vmx/tdx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Changes in this version:
+  - KVM_CAP_PPC_COMPAT_CAPS: add hv_enabled guard to align the capability
+    check with ioctl availability; a PR KVM VM on pseries now correctly
+    returns 0 for the capability [Sashiko]
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 929115aeb9ec..85699ea021fe 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -3219,7 +3219,7 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
- 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
- 	struct kvm_tdx_init_mem_region region;
- 	struct tdx_gmem_post_populate_arg arg;
--	gpa_t nr_bytes;
-+	gpa_t nr_bytes, end_gpa;
- 	long gmem_ret;
- 	int ret;
+ arch/powerpc/include/asm/kvm_ppc.h  |  1 +
+ arch/powerpc/include/uapi/asm/kvm.h |  8 ++++
+ arch/powerpc/kvm/powerpc.c          | 71 +++++++++++++++++++++++++++++
+ include/uapi/linux/kvm.h            |  3 ++
+ 4 files changed, 83 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
+index 0953f2daa466..169ea6a7fbad 100644
+--- a/arch/powerpc/include/asm/kvm_ppc.h
++++ b/arch/powerpc/include/asm/kvm_ppc.h
+@@ -319,6 +319,7 @@ struct kvmppc_ops {
+ 	bool (*hash_v3_possible)(void);
+ 	int (*create_vm_debugfs)(struct kvm *kvm);
+ 	int (*create_vcpu_debugfs)(struct kvm_vcpu *vcpu, struct dentry *debugfs_dentry);
++	int (*get_compat_caps)(struct kvm_ppc_compat_caps *host_caps);
+ };
  
-@@ -3241,9 +3241,9 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
- 		return -EINVAL;
+ extern struct kvmppc_ops *kvmppc_hv_ops;
+diff --git a/arch/powerpc/include/uapi/asm/kvm.h b/arch/powerpc/include/uapi/asm/kvm.h
+index 077c5437f521..19e53d5ae540 100644
+--- a/arch/powerpc/include/uapi/asm/kvm.h
++++ b/arch/powerpc/include/uapi/asm/kvm.h
+@@ -437,6 +437,14 @@ struct kvm_ppc_cpu_char {
+ 	__u64	behaviour_mask;		/* valid bits in behaviour */
+ };
  
- 	if (check_shl_overflow(region.nr_pages, PAGE_SHIFT, &nr_bytes) ||
--	    region.gpa + nr_bytes <= region.gpa ||
-+	    check_add_overflow(region.gpa, nr_bytes - 1, &end_gpa) ||
- 	    !vt_is_tdx_private_gpa(kvm, region.gpa) ||
--	    !vt_is_tdx_private_gpa(kvm, region.gpa + nr_bytes - 1))
-+	    !vt_is_tdx_private_gpa(kvm, end_gpa))
- 		return -EINVAL;
++/* For KVM_PPC_GET_COMPAT_CAPS */
++struct kvm_ppc_compat_caps {
++	__u64	size;			/* Size of this structure */
++	__u64	flags;			/* Reserved for future use */
++	__u64	compat_capabilities;	/* Capabilities supported by the host */
++};
++#define KVM_PPC_COMPAT_CAPS_SIZE_VER0	24 /* sizeof first published struct */
++
+ /*
+  * Values for character and character_mask.
+  * These are identical to the values used by H_GET_CPU_CHARACTERISTICS.
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index b6b83fe3233f..e64b3cfadd3a 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -703,6 +703,13 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 			}
+ 		}
+ 		break;
++#if defined(CONFIG_KVM_BOOK3S_HV_POSSIBLE)
++	case KVM_CAP_PPC_COMPAT_CAPS:
++		r = 0;
++		if (hv_enabled && kvmhv_on_pseries())
++			r = 1;
++		break;
++#endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
+ 	default:
+ 		r = 0;
+ 		break;
+@@ -2469,6 +2476,70 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
+ 		r = kvm->arch.kvm_ops->svm_off(kvm);
+ 		break;
+ 	}
++	case KVM_PPC_GET_COMPAT_CAPS: {
++		struct kvm_ppc_compat_caps host_caps = {};
++		u64 usize;
++
++		/*
++		 * Read the size field first to drive copy_struct_from_user.
++		 * size must be the first field of the struct.
++		 */
++		r = -EFAULT;
++		if (get_user(usize, (__u64 __user *)argp))
++			goto out;
++
++		/*
++		 * Enforce a minimum: reject buffers smaller than the initial
++		 * struct version (VER0). This allows old userspace compiled
++		 * against the original struct to still work on a newer kernel
++		 * that has grown the struct with appended fields.
++		 */
++		r = -EINVAL;
++		if (usize < KVM_PPC_COMPAT_CAPS_SIZE_VER0)
++			goto out;
++
++		/*
++		 * New userspace with a larger struct called an older kernel.
++		 * Write back ksize in host_caps.size so userspace knows which
++		 * older struct to retry with, then fail with -E2BIG.
++		 */
++		if (usize > sizeof(host_caps)) {
++			host_caps.size = sizeof(host_caps);
++			r = -EFAULT;
++			if (put_user(host_caps.size, (__u64 __user *)argp))
++				goto out;
++			r = -E2BIG;
++			goto out;
++		}
++
++		/*
++		 * copy_struct_from_user() handles forward/backward compat:
++		 *   usize == ksize: verbatim copy
++		 *   usize <  ksize: zero-pad trailing (old userspace, new kernel)
++		 */
++		r = copy_struct_from_user(&host_caps, sizeof(host_caps),
++					  argp, usize);
++		if (r)
++			goto out;
++
++		/* Reserved fields must be zero */
++		r = -EINVAL;
++		if (host_caps.flags)
++			goto out;
++
++		r = -ENOTTY;
++		if (!kvm->arch.kvm_ops->get_compat_caps)
++			goto out;
++
++		r = kvm->arch.kvm_ops->get_compat_caps(&host_caps);
++		if (r)
++			goto out;
++
++		host_caps.size = sizeof(host_caps);
++		r = copy_struct_to_user(argp, usize, &host_caps,
++					sizeof(host_caps), NULL);
++		break;
++	}
+ 	default: {
+ 		struct kvm *kvm = filp->private_data;
+ 		r = kvm->arch.kvm_ops->arch_vm_ioctl(filp, ioctl, arg);
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 419011097fa8..70e36e6a0ad4 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -997,6 +997,7 @@ struct kvm_enable_cap {
+ #define KVM_CAP_S390_KEYOP 247
+ #define KVM_CAP_S390_VSIE_ESAMODE 248
+ #define KVM_CAP_S390_HPAGE_2G 249
++#define KVM_CAP_PPC_COMPAT_CAPS 250
  
- 	ret = 0;
+ struct kvm_irq_routing_irqchip {
+ 	__u32 irqchip;
+@@ -1341,6 +1342,8 @@ struct kvm_s390_keyop {
+ /* Available with KVM_CAP_COUNTER_OFFSET */
+ #define KVM_ARM_SET_COUNTER_OFFSET _IOW(KVMIO,  0xb5, struct kvm_arm_counter_offset)
+ #define KVM_ARM_GET_REG_WRITABLE_MASKS _IOR(KVMIO,  0xb6, struct reg_mask_range)
++/* Available with KVM_CAP_PPC_COMPAT_CAPS */
++#define KVM_PPC_GET_COMPAT_CAPS	_IO(KVMIO,  0xb8)
+ 
+ /* ioctl for vm fd */
+ #define KVM_CREATE_DEVICE	  _IOWR(KVMIO,  0xe0, struct kvm_create_device)
 -- 
-2.55.0.679.g6767b8d81c-goog
+2.50.1 (Apple Git-155)
 
