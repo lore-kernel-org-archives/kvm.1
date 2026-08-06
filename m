@@ -1,78 +1,39 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA3A3C6A5C;
-	Thu,  6 Aug 2026 02:09:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C5343B5843;
+	Thu,  6 Aug 2026 02:14:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785982153; cv=none; b=tIB8mVNonCMY2pdg10rl63Lk/WCupsVBTUxe55tZG7JN0NPYZw8wj34T8q3rDlgWglW79MQ/UKkbLLyQI0cKwiJX/KOE0/+yCB/GcstG8BlWYvWh7qMByMX1sP8iUqcqND+vFClvQ4JVJsC2WC1wyMZE1JpsIfdOj/VKWJbDa8s=
+	t=1785982499; cv=none; b=abAHTmo9j1Ci6Gb+3NFsrLrha0wuoAzShssSwumje94nrJR1dL65lBBxv9QvqSILj/KiFNsI2G667HKD8vH08CFdjdjRK/EGQwK5D+8fMnPlBh1MzGX/sPbjn5j3e0iJL4NqeIVAGGld4XZxmrrr1Kzl0FKGM1/kkklToiUaANg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785982153; c=relaxed/simple;
-	bh=GDjJDtPFw1gzL4FEMikUOtBAoPhxMjF7n8+ZP4xhlEQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VcGDtDLxuCi60V7U/jRrCntxCI7/jK/Kcmtai2qh8fyC//QogHXN1zbU7HTxt4k5UqLnZRIWbfPWt9QuIiM2HieKA+Inic/aVMCQsLtDaYjGy1eM+FDMwbn5XjVD5VCr9xGSsyyofmfV/NT5FhQL1Vu1iT/4kjAPvKFL/Y3QZeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QuUeNlfR; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QuUeNlfR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785982151; x=1817518151;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=GDjJDtPFw1gzL4FEMikUOtBAoPhxMjF7n8+ZP4xhlEQ=;
-  b=QuUeNlfRyQIV+x7b1ZmqYfmdyVaVLjIWGh4KrxVYKQS4wAaAxI7qdYsn
-   Ok427sCBAacgnnjydXK9Dbf+zBiIZLtLt8nwiaga9ezmx3oR7ZLCsups4
-   Rj4RV6w836iW1AP6j54E8ue2QfSH8Scfejgvd6Ifmdt5SF5OLebuKkeFB
-   Akit0WhkZJ2dXPmZRpphjM87dSN0IOy2u+hpheO1V5pfi7o/Ryyq6OKVH
-   LvYC2d1X9B4UGzdwFaNdAPm2qABx0zBA9e6lvFwz8JuuZFmQ9srVTgn1u
-   PCyQ7RM3mM3rTg3/v5jmG96PAfPvJ6i4AJU8qFy4XGQY80Gszl1sp4+xx
-   A==;
-X-CSE-ConnectionGUID: UApixG8oT2aPnpSNs5a1jw==
-X-CSE-MsgGUID: Py5ZufHhTJG32qCuiKqKxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="86422919"
-X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="86422919"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:09:05 -0700
-X-CSE-ConnectionGUID: 0ETs9Kv3TlWrpu3Frd9xzw==
-X-CSE-MsgGUID: rsIzM4krTr6yIGQW2/7IHA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="258639895"
-Received: from rpedgeco-desk.jf.intel.com ([10.88.27.135])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:09:05 -0700
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
-To: bp@alien8.de,
-	dave.hansen@intel.com,
-	hpa@zytor.com,
-	kas@kernel.org,
+	s=arc-20240116; t=1785982499; c=relaxed/simple;
+	bh=odb8gyvTrWJ1VPtBH6EFBmPze/YZHWTjZGsZosBDE70=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=HUSa4J/He7vLypW6NrLk6P7QRnDoXAebQnZhEpZl+HUjuhYlHQO1iUqNrTno0eM1fZmgGoE+KvhRWJosYDRLE4UnzDpVPCXKo+gZzbMtjUP9WAWFJrz5Kxl1RvZZ58qTUgNBUQW/O4YgsiedXrHazjNVKYSceswT3c7VAf/ujmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8BxyvAf7nNqItsKAA--.35006S3;
+	Thu, 06 Aug 2026 10:14:55 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowJBx3wce7nNqB1QlAA--.7102S3;
+	Thu, 06 Aug 2026 10:14:54 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Xi Ruoyao <xry111@xry111.site>,
 	kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	mingo@redhat.com,
-	nik.borisov@suse.com,
-	pbonzini@redhat.com,
-	seanjc@google.com,
-	tglx@kernel.org,
-	vannapurve@google.com,
-	x86@kernel.org,
-	chao.gao@intel.com,
-	yan.y.zhao@intel.com,
-	kai.huang@intel.com,
-	tony.lindgren@linux.intel.com,
-	binbin.wu@intel.com,
-	sohil.mehta@intel.com
-Cc: rick.p.edgecombe@intel.com,
-	Hongyu Ning <hongyu.ning@linux.intel.com>
-Subject: [PATCH v9 11/11] x86/virt/tdx: Optimize tdx_pamt_get/put()
-Date: Wed,  5 Aug 2026 19:08:50 -0700
-Message-ID: <20260806020850.1221381-12-rick.p.edgecombe@intel.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
-References: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/5] LoongArch: KVM: Add vmid support for stage2 MMU
+Date: Thu,  6 Aug 2026 10:07:35 +0800
+Message-Id: <20260806020739.2149268-2-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20260806020739.2149268-1-maobibo@loongson.cn>
+References: <20260806020739.2149268-1-maobibo@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -80,160 +41,103 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJBx3wce7nNqB1QlAA--.7102S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+LoongArch KVM hypervisor supports two-level MMU, vpid index is used
+for stage1 MMU and vmid index is used for stage2 MMU.
 
-The Dynamic PAMT get/put helpers use a global spinlock to serialize all
-refcount updates and SEAMCALL invocations. This gives correct behavior for
-concurrent callers, but leads to contention. It is especially bad from the
-KVM side, which is designed to allow faulting in EPT under a shared lock.
-With the global spinlock, not only is the lock an exclusive one, but it is
-for all TDs instead of just a single one.
+On 3A5000, vmid must be the same with vpid. On 3A6000 platform vmid
+may separate from vpid. If vCPU migrate to different physical CPUs,
+vpid need change however vmid can keep unchanged, so that TLB entries
+for stage2 MMU is valid still. Also vmid index of the whole VM machine
+is the same on one physical CPU, all vCPUs on the VM can share the
+same vmid index on one physical CPU.
 
-But taking the global lock each time is actually unnecessary. Only the 0->1
-and 1->0 refcount transitions actually need the lock (to pair with
-SEAMCALLs that actually add and remove with the Dynamic PAMT pages). The
-common case of incrementing or decrementing a non-zero refcount can be
-done locklessly.
+Here hw vmid index is added and it keeps the same with hw vpid still.
 
-So create a fast and slow path. Check the refcount outside the lock and
-only take it for the slow path (0->1 and 1->0 transitions).
-
-On the put side make the refcount adjustment and lock taking atomic so if
-a 'get' happens between them, it doesn't cause the Dynamic PAMT to be
-freed incorrectly. On the get side there is no technique for doing the
-refcount adjustment and lock atomically, so check the refcount again
-inside the lock.
-
-AI was used under supervision to collect/apply feedback, review code and
-workshop logs. It assisted in identifying/evaluating the stale
-conditionals for the races resolved from the atomic_dec_and_lock() change.
-Separate from atomic_dec_and_lock() fallout, it suggested to change
-atomic_inc() to atomic_set(pamt_refcount, 1) in the put error path for the
-sake of being more precise, which Kiryl had also suggested in the past.
-The model also suggested updated comments following the
-atomic_dec_and_lock() change based on some directed prompting. The
-comments were subsequently edited or further prompted for fine tuning.
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Tested-by: Hongyu Ning <hongyu.ning@linux.intel.com>
-Reviewed-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Acked-by: Sohil Mehta <sohil.mehta@intel.com>
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
-v7:
- - Drop Assisted-by tag and cover AI use in log (Dave)
- - Move to end of the series
- - Use atomic_inc_not_zero() in this patch inside the spin_lock(), as
-   suggested on non-optimized patch by. (Dave)
+ arch/loongarch/include/asm/kvm_host.h | 3 +++
+ arch/loongarch/kernel/asm-offsets.c   | 1 +
+ arch/loongarch/kvm/main.c             | 1 +
+ arch/loongarch/kvm/switch.S           | 5 ++---
+ arch/loongarch/kvm/tlb.c              | 5 ++++-
+ 5 files changed, 11 insertions(+), 4 deletions(-)
 
-v6:
- - Fix "tdx_pamt_add()" typo to "tdx_pamt_get()" in lost-race comment
- - Fix error path bug: set ret = -EIO and use WARN_ON_ONCE() instead of
-   pr_err() for unexpected PAMT.ADD failures (Sean)
- - Use "set the refcount 0->1" wording to match atomic_set() usage
- - Wrap comments to 80 columns
- - Switch to atomic_dec_and_lock() and remove handling of races that are
-   no longer needed as a result. Adjust comments as appropriate. (Dave)
- - Adjustments from dropping error helper patches
----
- arch/x86/virt/vmx/tdx/tdx.c | 44 ++++++++++++++++++++++++-------------
- 1 file changed, 29 insertions(+), 15 deletions(-)
-
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index f2ea034773bb2..dec45709e454a 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -2166,28 +2166,41 @@ int tdx_pamt_get(kvm_pfn_t pfn, struct tdx_pamt_cache *cache)
- 	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
- 		return 0;
+diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
+index 23cfbecebbd7..78f97dea124d 100644
+--- a/arch/loongarch/include/asm/kvm_host.h
++++ b/arch/loongarch/include/asm/kvm_host.h
+@@ -232,6 +232,9 @@ struct kvm_vcpu_arch {
+ 	/* Cache for pages needed inside spinlock regions */
+ 	struct kvm_mmu_memory_cache mmu_page_cache;
  
--	ret = alloc_pamt_array(pamt_pages, cache);
--	if (ret)
--		return ret;
--
- 	pamt_refcount = tdx_find_pamt_refcount(pfn);
- 
--	spin_lock(&pamt_lock);
--
- 	/*
- 	 * If the pamt page is already added (i.e. refcount >= 1),
- 	 * then just increment the refcount.
- 	 */
-+	if (atomic_inc_not_zero(pamt_refcount))
-+		return 0;
++	/* hw vmid info for guest VM */
++	unsigned long hw_vmid;
 +
-+	ret = alloc_pamt_array(pamt_pages, cache);
-+	if (ret)
-+		return ret;
+ 	/* vcpu's vpid */
+ 	u64 vpid;
+ 	gpa_t flush_gpa;
+diff --git a/arch/loongarch/kernel/asm-offsets.c b/arch/loongarch/kernel/asm-offsets.c
+index 1b861cbc5e10..065ced1f3c1f 100644
+--- a/arch/loongarch/kernel/asm-offsets.c
++++ b/arch/loongarch/kernel/asm-offsets.c
+@@ -300,6 +300,7 @@ static void __used output_kvm_defines(void)
+ 	OFFSET(KVM_ARCH_HSP, kvm_vcpu_arch, host_sp);
+ 	OFFSET(KVM_ARCH_HTP, kvm_vcpu_arch, host_tp);
+ 	OFFSET(KVM_ARCH_HPGD, kvm_vcpu_arch, host_pgd);
++	OFFSET(KVM_ARCH_VMID, kvm_vcpu_arch, hw_vmid);
+ 	OFFSET(KVM_ARCH_KVMPGD, kvm_vcpu_arch, kvm_pgd);
+ 	OFFSET(KVM_ARCH_HANDLE_EXIT, kvm_vcpu_arch, handle_exit);
+ 	OFFSET(KVM_ARCH_HEENTRY, kvm_vcpu_arch, host_eentry);
+diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+index 3e1005526f4b..401c84f38e8c 100644
+--- a/arch/loongarch/kvm/main.c
++++ b/arch/loongarch/kvm/main.c
+@@ -223,6 +223,7 @@ static void kvm_update_vpid(struct kvm_vcpu *vcpu, int cpu)
+ 
+ 	context->vpid_cache = vpid;
+ 	vcpu->arch.vpid = vpid;
++	vcpu->arch.hw_vmid = vcpu->arch.vpid & vpid_mask;
+ }
+ 
+ void kvm_check_vpid(struct kvm_vcpu *vcpu)
+diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
+index 936e4ae3e408..af972394fd55 100644
+--- a/arch/loongarch/kvm/switch.S
++++ b/arch/loongarch/kvm/switch.S
+@@ -66,9 +66,8 @@
+ 	ld.d	t0, a2, KVM_ARCH_KVMPGD
+ 	csrwr	t0, LOONGARCH_CSR_PGDL
+ 
+-	/* Mix GID and RID */
+-	csrrd		t1, LOONGARCH_CSR_GSTAT
+-	bstrpick.w	t1, t1, CSR_GSTAT_GID_SHIFT_END, CSR_GSTAT_GID_SHIFT
++	/* Set VMID for gpa --> hpa mapping */
++	ld.d		t1, a2, KVM_ARCH_VMID
+ 	csrrd		t0, LOONGARCH_CSR_GTLBC
+ 	bstrins.w	t0, t1, CSR_GTLBC_TGID_SHIFT_END, CSR_GTLBC_TGID_SHIFT
+ 	csrwr		t0, LOONGARCH_CSR_GTLBC
+diff --git a/arch/loongarch/kvm/tlb.c b/arch/loongarch/kvm/tlb.c
+index ebdbe9264e9c..b25847aab968 100644
+--- a/arch/loongarch/kvm/tlb.c
++++ b/arch/loongarch/kvm/tlb.c
+@@ -23,7 +23,10 @@ void kvm_flush_tlb_all(void)
+ 
+ void kvm_flush_tlb_gpa(struct kvm_vcpu *vcpu, unsigned long gpa)
+ {
++	unsigned int vmid;
 +
-+	spin_lock(&pamt_lock);
-+
-+	/*
-+	 * Unlike tdx_pamt_put() which uses atomic_dec_and_lock() to
-+	 * atomically handle the 1->0 transition, the get side has no
-+	 * equivalent combined primitive for 0->1. Recheck under the
-+	 * lock since another get may have already done the 0->1
-+	 * transition after both saw atomic_inc_not_zero() fail.
-+	 */
- 	if (atomic_inc_not_zero(pamt_refcount))
- 		goto out_free;
- 
--	/* Try to add the PAMT page and take the refcount 0->1. */
- 	tdx_status = tdh_phymem_pamt_add(pfn, pamt_pages);
- 	if (WARN_ON_ONCE(tdx_status != TDX_SUCCESS)) {
- 		ret = -EIO;
- 		goto out_free;
- 	}
- 
-+	/*
-+	 * The refcount is zero, and this locked path is the
-+	 * only way to increase it from 0->1.
-+	 */
- 	atomic_set(pamt_refcount, 1);
- 	spin_unlock(&pamt_lock);
- 	return 0;
-@@ -2212,17 +2225,13 @@ void tdx_pamt_put(kvm_pfn_t pfn)
- 
- 	pamt_refcount = tdx_find_pamt_refcount(pfn);
- 
--	spin_lock(&pamt_lock);
- 	/*
- 	 * If there is more than 1 reference on the pamt page, don't
- 	 * remove it yet. Just decrement the refcount.
- 	 */
--	if (atomic_read(pamt_refcount) > 1) {
--		atomic_dec(pamt_refcount);
--		goto out_unlock;
--	}
-+	if (!atomic_dec_and_lock(pamt_refcount, &pamt_lock))
-+		return;
- 
--	/* Try to remove the pamt page and take the refcount 1->0. */
- 	tdx_status = tdh_phymem_pamt_remove(pfn, pamt_pages);
- 
- 	/*
-@@ -2232,10 +2241,15 @@ void tdx_pamt_put(kvm_pfn_t pfn)
- 	 * failure indicates a kernel bug, memory is being leaked, and
- 	 * the dangling PAMT entry may cause future operations to fail.
- 	 */
--	if (WARN_ON_ONCE(tdx_status != TDX_SUCCESS))
-+	if (WARN_ON_ONCE(tdx_status != TDX_SUCCESS)) {
-+		/*
-+		 * atomic_dec_and_lock() already decremented it to 0,
-+		 * but the PAMT entry still exists since REMOVE failed.
-+		 */
-+		atomic_set(pamt_refcount, 1);
- 		goto out_unlock;
-+	}
- 
--	atomic_set(pamt_refcount, 0);
- 	spin_unlock(&pamt_lock);
- 	free_pamt_array(pamt_pages);
- 	return;
+ 	lockdep_assert_irqs_disabled();
+ 	gpa &= (PAGE_MASK << 1);
+-	invtlb(INVTLB_GID_ADDR, read_csr_gstat() & CSR_GSTAT_GID, gpa);
++	vmid = (vcpu->arch.hw_vmid << CSR_GSTAT_GID_SHIFT) & CSR_GSTAT_GID;
++	invtlb(INVTLB_GID_ADDR, vmid, gpa);
+ }
 -- 
-2.54.0
+2.39.3
 
