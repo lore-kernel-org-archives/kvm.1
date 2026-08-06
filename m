@@ -1,160 +1,126 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B5F244692;
-	Thu,  6 Aug 2026 12:41:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0D22BE056;
+	Thu,  6 Aug 2026 12:52:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786020093; cv=none; b=rliNvQYF1U2T2NABuDXvrofn2U0N3xlZIOeo+DPAlhZxryi8zWr9nkm4Twwvnl6pQRpKgGTlC9h5EPX13FeGt5KJhUAb9239WlwfW8QYVCSGugXGHULC1K3CRI7YRVq5oanLRA7DqU5eMC8FmOo3RCtzC1caDrdrzD51n3ImC6Y=
+	t=1786020770; cv=none; b=i02ZWviIsCpBhgVL2Nnr1afjcSY8dTuuHmFWtWXf/1yg6I+OdkRl2nqlGfa7O9SM2NIu87Fvwg86va72YVPfU7ocBWSJ4mj6nYfFRKrjuqSXizY4DBQsfFUWAcZz1yC69Zng7slZr/Qnjdm/J8OmtMjAZBmNWTi+QqW+zDCK4ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786020093; c=relaxed/simple;
-	bh=7/79YcPWnsZaTFlF+zGJP4vx3dPwpCHlA3yoxEeiqb0=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=TbEeLUxZnNke5DSjUXSieyk+eo3jegYsLt/tGwG+PyiLFXOYsJ0pVR3RQDlWa/BJb5j1qMHu34ZLqEIO/DUAKpyagbqyQCS+gNgBnX0fOxCsqjSI/Pn7rZU3m/b5u+j1w4hBVAB6AYjZaAVuG3UNsGCKj2YgXqd5v9WHYNIZvJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Cxg+jwgHRq1vwKAA--.12310S3;
-	Thu, 06 Aug 2026 20:41:20 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJDxu8TvgHRqoMolAA--.21814S2;
-	Thu, 06 Aug 2026 20:41:19 +0800 (CST)
-Subject: Re: [PATCH v2 3/5] LoongArch: KVM: Add separate vmid feature support
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, WANG Xuerui <kernel@xen0n.name>,
- Arnd Bergmann <arnd@arndb.de>, Xi Ruoyao <xry111@xry111.site>,
- kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260806020739.2149268-1-maobibo@loongson.cn>
- <20260806020739.2149268-4-maobibo@loongson.cn>
- <CAAhV-H5vPyKNR63hzxWkyZzyEJ09DtuudqTaiQHCfxai6S23DQ@mail.gmail.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <348e08a8-0e3b-5879-fe6f-155f02b69c41@loongson.cn>
-Date: Thu, 6 Aug 2026 20:41:03 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1786020770; c=relaxed/simple;
+	bh=CtjnuCeIYXta82XIwCO4KGqoUEdk5e6L+MFxoe/grbk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JJKDtnnbt4WDXfiNgdP1r10xsmL2jGwPsTq68/z2ewaVFOaYUlKBZTqJiEwpp5Afqiu1ayHnXPuQP5cNCqCNVBEHMVoRlVWALRy2R9lAhi3pM824s8ZmX/OCf7ST5X0CYH54rbL6/7/CSxtvceLvM4//oqM8tPQcbrHkuLQB1SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qyze0idw; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qyze0idw"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675Nle7A1066093;
+	Thu, 6 Aug 2026 12:52:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=8dF2H4Qq9CUzZEaxWgnE5XrpOGOuUcwqzmTNCeF8d
+	ls=; b=qyze0idw87UXUayzvDKRI+WrAA6Pyq+l8zMwlKKpk4vak8EYCIysxLnVq
+	Y+vkhy+xdanFZOAYX41u2qxjDTuE4BiReI0NZ7VvzSn3GVyBqjVo5POk07hNMAyb
+	H59neDeXT/aYLwE0Vl3r1IC4Fuo2q3AXKOBvz7uQuV9/rzrpW+3gq4QPZxlP2WlA
+	CpKbzKUpvUAMNH2wJKtC3fUzju8H5QhK9fdYHolrz/VsvDsUJ97q8wlAs3Jz/6Gh
+	OKxzB2iufo4dLuCe+P/b28qtFisx0m5yiMgnKJgOvlEKDOBX4xh4cZ92RpBZN64K
+	aY2B7DKTr4hAnMrRJ2Gfj0TM9zMqw==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8a487es-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 12:52:47 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 676CpBN9028811;
+	Thu, 6 Aug 2026 12:52:46 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswbgk04h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 12:52:46 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 676CqiI732244384
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Aug 2026 12:52:44 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5202D58057;
+	Thu,  6 Aug 2026 12:52:44 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9E96858059;
+	Thu,  6 Aug 2026 12:52:42 +0000 (GMT)
+Received: from b35lp69.lnxne.boe (unknown [9.87.84.240])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  6 Aug 2026 12:52:42 +0000 (GMT)
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+To: Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: KVM <kvm@vger.kernel.org>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>
+Subject: [PATCH 0/1] address one of sashiko pre-existing issues
+Date: Thu,  6 Aug 2026 14:52:40 +0200
+Message-ID: <20260806125241.210170-1-borntraeger@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H5vPyKNR63hzxWkyZzyEJ09DtuudqTaiQHCfxai6S23DQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxu8TvgHRqoMolAA--.21814S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxZrW8AFy3tw13Zry5uw4xXwc_yoW5CFy7pr
-	97C3ZYqr4FkrnrXa4Iqwn0qr4jv3yDKr1IvFy2vFy0kr1qqrnYka1kCrZ8ZF15J34rCF4I
-	vF1rtFnIvF1DC3cCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	tVWrXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
-	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
-	Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
-	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8V
-	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
-	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4AhLUUUUU
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=E6P9Y6dl c=1 sm=1 tr=0 ts=6a74839f cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=J3Qewhdv2Gq3w6V-qCwA:9
+X-Proofpoint-ORIG-GUID: rWFsUBk4jlbImeu58p3_dIWzxCxzCfEP
+X-Proofpoint-GUID: rWFsUBk4jlbImeu58p3_dIWzxCxzCfEP
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDEwMSBTYWx0ZWRfX+jZ+OjGX2vgO
+ xk1lZSPsUOsPGKvPCUu8K1fe1uCdSp7PRB7kjIyJezKkMlWIvf5E5brDZoNxmZcN3OF0nZH4eGs
+ 1QTvn2YzSyaPHFVC2h6oqj1sBSPDxwY=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDEwMSBTYWx0ZWRfX1lIIp3tp8SWy
+ 0KmO5woEN/9WBP3K0itIX6iQZ3YNiZIvd5qPPi1S58XO5S6iq2NzH80I1uUZMr1qdJK9kijVfu5
+ uyUt9e52ivAP9BxelOQ2GvCfhWT6+1T+kf6qFkI97Sr0bx18g/goSGrtIOlnXAody6A5kBKOqwE
+ LlUYSBYNtjjoLxpqCABUNbyaubfmWZbM3pHwoWjqdfikARiRYJO8xVruFuNBnNaGIP9pax9g17T
+ ZUPOyWMOCqfi4OyvF++s4+cZQQ4r3EP0yqGHOq+ET8QBtAVUm36NcySvu4IqV2Gx8CU+ZhUKxhu
+ iduVYJ3Z+Oh5lhjQCLDCfDIOqQ5NUvqXcKpcEzR9FBcKR0DWLIC8Ufb5kZvJrkGwgu649pITLvF
+ a/s1s7t2+W+VCD31th0TVzoYBtJfA8M5S9ZovBGDLF4fUv4puKuv+rBJbj93poPLtrWC0+c0F6P
+ i2O5yn6z3zUfC9lgdCg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-05_06,2026-08-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608060101
+
+
+Heiko, Vasily, Alexander,
+
+this touches s390 nmi code. Please review the change.
+Shall we move  MCCK_CODE_NO_GUEST into nmi.h and use
+that for masking in s390_backup_mcck_info as well? 
+
+
+If you are ok with this, 
+shall we take this via the kvm tree?
 
 
 
-On 2026/8/6 下午8:23, Huacai Chen wrote:
-> Hi, Bibo,
-> 
-> On Thu, Aug 6, 2026 at 10:15 AM Bibo Mao <maobibo@loongson.cn> wrote:
->>
->> Feature cpu_has_guestid is used to check whether separate vmid/vpid
->> is supported or not. It is disabled by default, add this feature
->> checking, there is no function change.
->>
->> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->> ---
->>   arch/loongarch/kvm/main.c | 14 +++++++++-----
->>   arch/loongarch/kvm/mmu.c  |  6 ++++--
->>   arch/loongarch/kvm/vcpu.c |  3 ++-
->>   3 files changed, 15 insertions(+), 8 deletions(-)
->>
->> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
->> index ac804e77e844..c36e62ab0d91 100644
->> --- a/arch/loongarch/kvm/main.c
->> +++ b/arch/loongarch/kvm/main.c
->> @@ -218,7 +218,8 @@ static void kvm_update_vpid(struct kvm_vcpu *vcpu, int cpu)
->>                  ++vpid; /* vpid 0 reserved for root */
->>
->>                  /* start new vpid cycle */
->> -               kvm_flush_tlb_all();
->> +               if (!cpu_has_guestid)
->> +                       kvm_flush_tlb_all();
->>          }
->>
->>          context->vpid_cache = vpid;
->> @@ -282,10 +283,13 @@ static void __kvm_check_vmid(struct kvm_vcpu *vcpu)
->>   {
->>          unsigned long vmid;
->>
->> -       vmid = vcpu->arch.vpid & vpid_mask;
->> -       if (vcpu->arch.hw_vmid != vmid) {
->> -               vcpu->arch.hw_vmid = vcpu->arch.vpid & vpid_mask;
->> -               kvm_clear_request(KVM_REQ_TLB_FLUSH_GPA, vcpu);
->> +       /* On some machines like 3A5000, vmid needs the same with vpid */
->> +       if (!cpu_has_guestid) {
->> +               vmid = vcpu->arch.vpid & vpid_mask;
->> +               if (vcpu->arch.hw_vmid != vmid) {
->> +                       vcpu->arch.hw_vmid = vcpu->arch.vpid & vpid_mask;
->> +                       kvm_clear_request(KVM_REQ_TLB_FLUSH_GPA, vcpu);
->> +               }
-> Merge Patch#3 and Patch#4, then __kvm_check_vmid() can handle both
-> cpu_has_guestid and !cpu_has_guestid cases together.
-will merge Patch#3 and Patch#4 together in next version.
+Christian Borntraeger (1):
+  KVM: s390: Fix memory corruption by not reinjecting CK machine checks
 
-Regards
-Bibo Mao
+ arch/s390/include/asm/nmi.h |  1 +
+ arch/s390/kernel/nmi.c      |  4 ++--
+ arch/s390/kvm/interrupt.c   | 24 ++++++++----------------
+ 3 files changed, 11 insertions(+), 18 deletions(-)
 
-> 
-> 
-> Huacai
-> 
->>          }
->>   }
->>
->> diff --git a/arch/loongarch/kvm/mmu.c b/arch/loongarch/kvm/mmu.c
->> index e104897aa532..714640a2e614 100644
->> --- a/arch/loongarch/kvm/mmu.c
->> +++ b/arch/loongarch/kvm/mmu.c
->> @@ -929,8 +929,10 @@ int kvm_handle_mm_fault(struct kvm_vcpu *vcpu, unsigned long gpa, bool write, in
->>                   *
->>                   * With SW PTW, invalid TLB is added in TLB refill exception.
->>                   */
->> -               vcpu->arch.flush_gpa = gpa;
->> -               kvm_make_request(KVM_REQ_TLB_FLUSH_GPA, vcpu);
->> +               if (!cpu_has_guestid) {
->> +                       vcpu->arch.flush_gpa = gpa;
->> +                       kvm_make_request(KVM_REQ_TLB_FLUSH_GPA, vcpu);
->> +               }
->>          }
->>
->>          return 0;
->> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
->> index 20c207d80e31..0b2355aec932 100644
->> --- a/arch/loongarch/kvm/vcpu.c
->> +++ b/arch/loongarch/kvm/vcpu.c
->> @@ -210,7 +210,8 @@ static int kvm_check_requests(struct kvm_vcpu *vcpu)
->>                  return RESUME_GUEST;
->>
->>          if (kvm_check_request(KVM_REQ_TLB_FLUSH, vcpu))
->> -               vcpu->arch.vpid = 0;  /* Drop vpid for this vCPU */
->> +               if (!cpu_has_guestid)
->> +                       vcpu->arch.vpid = 0;  /* Drop vpid for this vCPU */
->>
->>          if (kvm_dirty_ring_check_request(vcpu))
->>                  return RESUME_HOST;
->> --
->> 2.39.3
->>
+-- 
+2.53.0
 
