@@ -1,22 +1,23 @@
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C63D3B5846;
-	Thu,  6 Aug 2026 02:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1DC3B6C12;
+	Thu,  6 Aug 2026 02:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785982499; cv=none; b=AJe6GZ+WJVwoXfQ48sDrpzYs/kolPrOH3r+cgPaLWjzshDtxYdHGalREL4cE0ieqoEVAJLw0hO5uS/s5qcLMjaZ785MqnJmBNxgiVsjYzgBTwsAUSsa1AA6H6GfG6oCJIpe2qRsJkdC69dXVnPWBMHlsMsnAUoiW+5q8j0iv9ZI=
+	t=1785982500; cv=none; b=UzGvfpBQw+Gm2kTbS4Gql/mjqbP/l8KRJ5oD5T9CiwC4X0QXOHzGJ+0bfcPTWAgKCfsjnyXqgTvpXRigD36InaH7khLOAqxp1JZTUkPXHuP4jdxvs8KuEWNENpZkgL7SPG9a2CcbSctjo+DNJPzA+gZmeyIpbg40WZExHCnqqEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785982499; c=relaxed/simple;
-	bh=2y6DKdnpk46DwcJ/wOTrAwxMUmzapUufbLW6cc2v8VU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XymghRPda+GN+KTcHMvLpN21lf04JP4DY5LaNO5NKKxkZK4W1NrxQ8Rc+G0N2TCCL9sXdCBZgyJRSLgyyM8VXe4/+Lr1wS+gLN1TrhIsFSAx/nX7QgMGZOABXRF4+nFIHeprv7Qa4Agl9AtoreC5tPF1DM90EoBoWtNHjNyZTOk=
+	s=arc-20240116; t=1785982500; c=relaxed/simple;
+	bh=9K7em9CH/pE8OuUB+llqO/Oynnahu2JvHPf10AVk95A=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=nONSZynl/Xms13aDmjH/+aVZv4aBnhN2SKjuKJCEUCY9Dp2aviP8DEJioT2u2rZNsDqJJ7Xnvub1kYEmIeWnDvmptEjOZVn/fzhjLnVOMChauL4yH1y5cdoscxVNUJkz2nnUl+cjQVf5c3jTxeNI0Y6bEz/5ahYtYDjrHrCUQy0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8Cxg+gf7nNqHtsKAA--.12003S3;
+	by gateway (Coremail) with SMTP id _____8DxWqEf7nNqLtsKAA--.11960S3;
 	Thu, 06 Aug 2026 10:14:55 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJBx3wce7nNqB1QlAA--.7102S2;
-	Thu, 06 Aug 2026 10:14:54 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowJBx3wce7nNqB1QlAA--.7102S4;
+	Thu, 06 Aug 2026 10:14:55 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Huacai Chen <chenhuacai@kernel.org>
 Cc: Sean Christopherson <seanjc@google.com>,
@@ -27,10 +28,12 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	kvm@vger.kernel.org,
 	loongarch@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/5] LoongArch: KVM: Add separate vmid support
-Date: Thu,  6 Aug 2026 10:07:34 +0800
-Message-Id: <20260806020739.2149268-1-maobibo@loongson.cn>
+Subject: [PATCH v2 2/5] LoongArch: KVM: Add separate vCPU and VM id update function
+Date: Thu,  6 Aug 2026 10:07:36 +0800
+Message-Id: <20260806020739.2149268-3-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20260806020739.2149268-1-maobibo@loongson.cn>
+References: <20260806020739.2149268-1-maobibo@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -38,59 +41,72 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBx3wce7nNqB1QlAA--.7102S2
+X-CM-TRANSID:qMiowJBx3wce7nNqB1QlAA--.7102S4
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
 	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
 	nUUI43ZEXa7xR_UUUUUUUUU==
 
-LoongArch KVM hypervisor supports two-level MMU, vpid index is used
-for stage1 MMU and vmid index is used for stage2 MMU.
+There are two-level MMU on LoongArch KVM system, the first level (stage1)
+MMU is mapping for GVA --> GPA, the second level (stage2) is mapping
+for GPA --> HPA. Similar with ASID, there is different ID management
+to support multiple VMs and vCPUs. The stage1 MMU is called VPID, and
+the second MMU is called VMID, the corresponding ID management function
+is __kvm_check_vpid() and __kvm_check_vmid().
 
-On 3A5000, vmid must be the same with vpid. On 3A6000 platform vmid
-may separate from vpid. There are such advantages if separated vmid
-is supported.
-  1. One VM uses one vmid, vCPUs on the same VM can share the same vmid.
-  2. If one vCPU switch between different physical CPUs, old vmid can be
-     still useful if it is not expired.
-  3. For remote tlb flush, it is to flush TLBs which are mapping
-     GPA --> HPA, only vmid need update and vpid need not.
-
-Here add separate vmid feature support, vmid feature detecting method
-comes from CPUCFG8 capability when LVZ is enabled.
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
-v1 ... v2:
-  1. Move vmid together with vpid in patch1, rename it with hw_vmid.
-  2. Rename kvm_check_vcpuid() with __kvm_check_vpid(), and function
-     kvm_check_vmid() with __kvm_check_vmid().
-  3. Merge part of patch 2, patch 3/4 together.
-  4. Use bit8 of CPUCFG8 as guestid capability rather than LVZ version,
-     since it is hard to decide whether this feature exists with high LVZ
-     version in future.
-  5. Set cpu bit with vcpu->kvm->arch.tlb_flush_pending rather than
-     using add request KVM_REQ_TLB_FLUSH_GPA, it needs flush TLB on CPU
-     where page fault happens and vCPU maybe migrates to other CPUs.
----
-Bibo Mao (5):
-  LoongArch: KVM: Add vmid support for stage2 MMU
-  LoongArch: KVM: Add separate vCPU and VM id update function
-  LoongArch: KVM: Add separate vmid feature support
-  LoongArch: KVM: Implement vmid updating logic
-  LoongArch: KVM: Enable separate vmid feature
+ arch/loongarch/kvm/main.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
- arch/loongarch/include/asm/kvm_host.h  | 10 ++++
- arch/loongarch/include/asm/loongarch.h |  5 ++
- arch/loongarch/kernel/asm-offsets.c    |  1 +
- arch/loongarch/kernel/cpu-probe.c      |  6 +++
- arch/loongarch/kvm/main.c              | 70 ++++++++++++++++++++++++--
- arch/loongarch/kvm/mmu.c               | 23 ++++++++-
- arch/loongarch/kvm/switch.S            |  5 +-
- arch/loongarch/kvm/tlb.c               | 19 ++++++-
- arch/loongarch/kvm/vcpu.c              |  3 +-
- 9 files changed, 131 insertions(+), 11 deletions(-)
-
-
-base-commit: c21bb4193868a8de71fc4693fa741e195fdf5d86
+diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+index 401c84f38e8c..ac804e77e844 100644
+--- a/arch/loongarch/kvm/main.c
++++ b/arch/loongarch/kvm/main.c
+@@ -223,10 +223,9 @@ static void kvm_update_vpid(struct kvm_vcpu *vcpu, int cpu)
+ 
+ 	context->vpid_cache = vpid;
+ 	vcpu->arch.vpid = vpid;
+-	vcpu->arch.hw_vmid = vcpu->arch.vpid & vpid_mask;
+ }
+ 
+-void kvm_check_vpid(struct kvm_vcpu *vcpu)
++static void __kvm_check_vpid(struct kvm_vcpu *vcpu)
+ {
+ 	int cpu;
+ 	bool migrated;
+@@ -254,7 +253,6 @@ void kvm_check_vpid(struct kvm_vcpu *vcpu)
+ 		kvm_update_vpid(vcpu, cpu);
+ 		trace_kvm_vpid_change(vcpu, vcpu->arch.vpid);
+ 		vcpu->cpu = cpu;
+-		kvm_clear_request(KVM_REQ_TLB_FLUSH_GPA, vcpu);
+ 
+ 		/*
+ 		 * LLBCTL is a separated guest CSR register from host, a general
+@@ -280,6 +278,23 @@ void kvm_check_vpid(struct kvm_vcpu *vcpu)
+ 	}
+ }
+ 
++static void __kvm_check_vmid(struct kvm_vcpu *vcpu)
++{
++	unsigned long vmid;
++
++	vmid = vcpu->arch.vpid & vpid_mask;
++	if (vcpu->arch.hw_vmid != vmid) {
++		vcpu->arch.hw_vmid = vcpu->arch.vpid & vpid_mask;
++		kvm_clear_request(KVM_REQ_TLB_FLUSH_GPA, vcpu);
++	}
++}
++
++void kvm_check_vpid(struct kvm_vcpu *vcpu)
++{
++	__kvm_check_vpid(vcpu);
++	__kvm_check_vmid(vcpu);
++}
++
+ void kvm_init_vmcs(struct kvm *kvm)
+ {
+ 	kvm->arch.vmcs = vmcs;
 -- 
 2.39.3
 
