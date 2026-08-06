@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DB63B101D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EFF3AE189;
 	Thu,  6 Aug 2026 01:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785979130; cv=none; b=kUlluO1gCIJ+asOu3/L3DERtQ/ylSGpIIQI9aDq0lb4BiQFVb+Y2riPaFj08kL4cQzPhC54U/zKhjLpidAIoPSzdt2AkGDpJGMs22FPRn6K3RTQuN6/0EejX8ychT4dgzUN+KkoIbgk7Id9Kmz0R6WNzFunK1esrkkNCHjB5uUE=
+	t=1785979131; cv=none; b=Kg/DsnqbhUTVnHJ0SgwxpzR7lNKgYHGxtdOajP3joTDXs9ULYo1Gp2dnpNa999hdCFAINEOWrfOtFj5rGZmgxH/yIZs+oCtQFXUVBS41M1sprOow9ZUE5gSCO5VeLyb7JgD81Wt/u2fyZcgcKS0EGgJFug5GnMTvIgOXzBBt3MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785979130; c=relaxed/simple;
-	bh=+RfBcLbFUN/D147MllSCMMdSCWzEhZhyPSzs2MYGYSk=;
+	s=arc-20240116; t=1785979131; c=relaxed/simple;
+	bh=BxOfS5hgTAajTtSDCNTFao/0xEiji6AJ9kG7+J2yQ08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNmMjd61wzXKGZKjahBC4ReMYpnGmhkxdw5xT+WNwXNU9QUILgEIRxHGaBJ/zNtRyFkYYLQiaCIOyLx8VrsWHxTm9rFNUN6vWejmg8SqrRBlY9fzUr3Tecb9+aIKUL9rySuBk0IItftvHN4nr/xvXsyn+TP4wTCndXmbdEf6e6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BwUzRKKC; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=dpQgUcfCjN/EVB9ntHxGsAn+hChaf8bjyypZpPIgpd/Ej59VwawNw7tfhVgpKH6hj3BJwq++242BMlJOJrlHywZqgzBZZKKZwDfBzU/Q/ebMTl/CejSLxW0NNFW+1GllqYi8bHiRzQaBdU2siuUp2Tu0xK5w5kqKv7Dgc/qjg6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bosx+33v; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BwUzRKKC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bosx+33v"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1785979128; x=1817515128;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+RfBcLbFUN/D147MllSCMMdSCWzEhZhyPSzs2MYGYSk=;
-  b=BwUzRKKCu41AH884yTuqFjitLZ47QK8HzNW3Y2CUTCn0NbflPLGhA1sa
-   Ep2bpFx5TkK1Vgy7ihZ7USbpLl2hkyaPEX0/J+qQQ1iZiIMiRjvfjC8M3
-   o9lJS+rU/CCcpoh3/1KACmaTElxfN+Gk+/pw+jbbsWwPBSGc23/DPdxYT
-   FyoAJag0v+N+xWnZXUvOnbJN3rKg+KP26iscH5E5czZ/jXOukvbOadJJ0
-   OKyvkAb7aqPtrR5vbM34jUr1U57iroLrmKYIHhF8aW7IzLaqA/Pa+6R6v
-   OXF3OmlXO1lys6q5f7jSKfhgiX7YBErX30NrfTwRf0App5rrEealytQvM
+  bh=BxOfS5hgTAajTtSDCNTFao/0xEiji6AJ9kG7+J2yQ08=;
+  b=Bosx+33vhBHJYj4t+1d3UWSp1uO4KjaKTt6QPHi0azNRjjgZOmzI1jen
+   eKEEGtLrbOJTYLmT2s5vXUv+4OGpzFV3OtYWR03KFmQLr4mzzZNjy/h+x
+   s+TPTAghia2pzOb4ZWkfzAFBzKo69gEn9LoUE07LkY7JSgc9ar8T4OrNh
+   l60EEe4nwC0DwKZx1yNvDjoyz334pM1aK6w+VVAKfcS2wHoHn6HwvABwc
+   orzYUT7bzBKjscSRa4XYUd3NRddNyXQlCKbSu81hBTsCNzNaEtlpv75lb
+   JVx9yoEBf4ezHeTcrniBtXijfZI19+cux9eJh2vlPBMuWKEx+SxHhvaJV
    Q==;
-X-CSE-ConnectionGUID: 9QBGUUy/SMGOQX+xbh4JXA==
-X-CSE-MsgGUID: AAO/zvUlQ2CXyml/o2vgbA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="86594011"
+X-CSE-ConnectionGUID: JQJaupxkQ7u7mEV78OFlOg==
+X-CSE-MsgGUID: vZ1+xjy3R4iCkvWVUoUZBQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="86594021"
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="86594011"
+   d="scan'208";a="86594021"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 18:18:45 -0700
-X-CSE-ConnectionGUID: vKvQF3FESPq+xNZNHLGJpg==
-X-CSE-MsgGUID: if5boMr+Re+jXBBz1kRseA==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 18:18:46 -0700
+X-CSE-ConnectionGUID: sf82Y9u0Ss+9BJmr2eJvyg==
+X-CSE-MsgGUID: eDfMpPsyTKmzAQeKgq3NYA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="265804622"
+   d="scan'208";a="265804625"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by orviesa004.jf.intel.com with ESMTP; 05 Aug 2026 18:18:45 -0700
+  by orviesa004.jf.intel.com with ESMTP; 05 Aug 2026 18:18:46 -0700
 From: Sohil Mehta <sohil.mehta@intel.com>
 To: kvm@vger.kernel.org,
 	x86@kernel.org
@@ -69,9 +69,9 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	Sohil Mehta <sohil.mehta@intel.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v4 5/7] KVM: x86: Virtualize LASS and advertise support to userspace
-Date: Wed,  5 Aug 2026 18:15:34 -0700
-Message-ID: <20260806011536.4172258-6-sohil.mehta@intel.com>
+Subject: [PATCH v4 6/7] KVM: selftests: Add coverage for LASS CPUID and CR4 handling
+Date: Wed,  5 Aug 2026 18:15:35 -0700
+Message-ID: <20260806011536.4172258-7-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260806011536.4172258-1-sohil.mehta@intel.com>
 References: <20260806011536.4172258-1-sohil.mehta@intel.com>
@@ -83,83 +83,153 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Zeng Guang <guang.zeng@intel.com>
+Add a LASS selftest for KVM's handling of CPUID advertisement and
+CR4.LASS. Verify that a guest write to CR4.LASS generates #GP, and
+leaves CR4 unchanged, when LASS isn't enumerated in the guest's CPUID.
 
-Virtualize Linear Address Space Separation (LASS) by letting the guest
-enable CR4.LASS[bit 27]. Allow the guest to set CR4.LASS only if LASS is
-enumerated in the guest's CPUID. Set CR4.LASS in the emulated
-IA32_VMX_CR4_FIXED1 MSR so that LASS can be enabled in nested VMX
-operation as well.
+Extend set_sregs_test to cover CR4.LASS and verify that KVM_SET_SREGS
+accepts CR4.LASS when LASS is supported, and rejects it, without
+modifying sregs, when it isn't.
 
-Keep CR4.LASS KVM-owned instead of making it guest-owned. LASS is
-expected to be enabled once per vCPU at boot and rarely toggled at
-runtime.
+Don't try running with CR4.LASS enabled in the guest or attempt to
+trigger LASS violations. Selftests run guest code in the lower half of
+the address space at CPL0, so enabling CR4.LASS would make the next
+instruction fetch a violation and triple-fault the guest.
 
-LASS is enumerated by CPUID.(EAX=07H,ECX=1):EAX.LASS[bit 6] and only
-works in IA-32e mode. Advertise LASS to userspace on 64-bit kernels and
-only when it is supported by the host. Notably, it will not be exposed
-to userspace if the deprecated vsyscall=emulate mode is set on the
-kernel command line.
-
-Signed-off-by: Zeng Guang <guang.zeng@intel.com>
-Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
+Assisted-by: Claude:claude-opus-5
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
 v4:
- - Split patch diffs and reworded the commit message
- - Use X86_64_F() instead of F()
----
- arch/x86/kvm/cpuid.c   | 1 +
- arch/x86/kvm/regs.h    | 4 +++-
- arch/x86/kvm/vmx/vmx.c | 1 +
- 3 files changed, 5 insertions(+), 1 deletion(-)
+ - New patch
 
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 9e9cf6538a96..c4dbd00f5e4e 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1029,6 +1029,7 @@ void kvm_initialize_cpu_caps(void)
- 		F(SM4),
- 		F(AVX_VNNI),
- 		F(AVX512_BF16),
-+		X86_64_F(LASS),
- 		F(CMPCCXADD),
- 		F(FZRM),
- 		F(FSRS),
-diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
-index 447f0ec3e63e..be8621695c41 100644
---- a/arch/x86/kvm/regs.h
-+++ b/arch/x86/kvm/regs.h
-@@ -28,7 +28,7 @@ static_assert(!(KVM_POSSIBLE_CR0_GUEST_BITS & X86_CR0_PDPTR_BITS));
- 			  | X86_CR4_OSXSAVE | X86_CR4_SMEP | X86_CR4_FSGSBASE \
- 			  | X86_CR4_OSXMMEXCPT | X86_CR4_LA57 | X86_CR4_VMXE \
- 			  | X86_CR4_SMAP | X86_CR4_PKE | X86_CR4_UMIP \
--			  | X86_CR4_LAM_SUP | X86_CR4_CET))
-+			  | X86_CR4_LAM_SUP | X86_CR4_CET | X86_CR4_LASS))
+lass_test.c doesn't really test LASS enforcement or any other LASS
+functionality. It just tests that a guest write to CR4.LASS generates
+a #GP when LASS isn't enumerated. There could be a generic test which
+covers such CPUID/CR4 interactions. For now, I added something for LASS
+because I couldn't find one.
+---
+ tools/testing/selftests/kvm/Makefile.kvm      |  1 +
+ .../selftests/kvm/include/x86/processor.h     |  2 +
+ tools/testing/selftests/kvm/x86/lass_test.c   | 56 +++++++++++++++++++
+ .../selftests/kvm/x86/set_sregs_test.c        |  3 +
+ 4 files changed, 62 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/x86/lass_test.c
+
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 00123169a190..86fa93e0f6c0 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -91,6 +91,7 @@ TEST_GEN_PROGS_x86 += x86/hyperv_tlb_flush
+ TEST_GEN_PROGS_x86 += x86/kvm_clock_test
+ TEST_GEN_PROGS_x86 += x86/kvm_pv_test
+ TEST_GEN_PROGS_x86 += x86/kvm_buslock_test
++TEST_GEN_PROGS_x86 += x86/lass_test
+ TEST_GEN_PROGS_x86 += x86/monitor_mwait_test
+ TEST_GEN_PROGS_x86 += x86/msrs_test
+ TEST_GEN_PROGS_x86 += x86/nested_close_kvm_test
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index 6e6f70035508..f425166174f9 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -79,6 +79,7 @@ const char *ex_str(int vector);
+ #define X86_CR4_SMEP		(1ul << 20)
+ #define X86_CR4_SMAP		(1ul << 21)
+ #define X86_CR4_PKE		(1ul << 22)
++#define X86_CR4_LASS		(1ul << 27)
  
- #define CR8_RESERVED_BITS (~(unsigned long)X86_CR8_TPR)
+ struct xstate_header {
+ 	u64				xstate_bv;
+@@ -195,6 +196,7 @@ struct kvm_x86_cpu_feature {
+ #define	X86_FEATURE_SPEC_CTRL		KVM_X86_CPU_FEATURE(0x7, 0, EDX, 26)
+ #define	X86_FEATURE_ARCH_CAPABILITIES	KVM_X86_CPU_FEATURE(0x7, 0, EDX, 29)
+ #define	X86_FEATURE_PKS			KVM_X86_CPU_FEATURE(0x7, 0, ECX, 31)
++#define	X86_FEATURE_LASS		KVM_X86_CPU_FEATURE(0x7, 1, EAX, 6)
+ #define	X86_FEATURE_XTILECFG		KVM_X86_CPU_FEATURE(0xD, 0, EAX, 17)
+ #define	X86_FEATURE_XTILEDATA		KVM_X86_CPU_FEATURE(0xD, 0, EAX, 18)
+ #define	X86_FEATURE_XSAVES		KVM_X86_CPU_FEATURE(0xD, 1, EAX, 3)
+diff --git a/tools/testing/selftests/kvm/x86/lass_test.c b/tools/testing/selftests/kvm/x86/lass_test.c
+new file mode 100644
+index 000000000000..7c5cfa24c2bd
+--- /dev/null
++++ b/tools/testing/selftests/kvm/x86/lass_test.c
+@@ -0,0 +1,56 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Linear Address Space Separation (LASS) test
++ *
++ * Copyright (C) 2026, Intel Corporation.
++ *
++ * Only test that the guest can't set CR4.LASS when LASS isn't
++ * enumerated in the guest's CPUID.  KVM's handling of CR4.LASS via
++ * KVM_SET_SREGS is covered by set_sregs_test.
++ *
++ * Testing LASS enforcement requires running supervisor code in the
++ * upper half of the address space, which the KVM selftests framework
++ * doesn't support. Enabling CR4.LASS in the current framework would
++ * make the next instruction fetch a violation and triple-fault the
++ * guest.
++ */
++#include "test_util.h"
++#include "kvm_util.h"
++#include "processor.h"
++
++/*
++ * Without LASS in CPUID, a guest write must generate #GP without
++ * changing CR4. Reserved bits are owned by KVM so the write is
++ * guaranteed to exit to KVM.
++ */
++static void guest_code(void)
++{
++	u8 vector;
++
++	GUEST_ASSERT(!this_cpu_has(X86_FEATURE_LASS));
++
++	vector = kvm_asm_safe("mov %[cr4], %%cr4",
++			      [cr4] "r"(get_cr4() | X86_CR4_LASS));
++	__GUEST_ASSERT(vector == GP_VECTOR,
++		       "Wanted #GP on CR4.LASS, got %s", ex_str(vector));
++	GUEST_ASSERT(!(get_cr4() & X86_CR4_LASS));
++
++	GUEST_DONE();
++}
++
++int main(int argc, char *argv[])
++{
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++
++	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_LASS));
++
++	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
++	vcpu_clear_cpuid_feature(vcpu, X86_FEATURE_LASS);
++
++	vcpu_run(vcpu);
++	TEST_ASSERT_EQ(get_ucall(vcpu, NULL), UCALL_DONE);
++
++	kvm_vm_free(vm);
++	return 0;
++}
+diff --git a/tools/testing/selftests/kvm/x86/set_sregs_test.c b/tools/testing/selftests/kvm/x86/set_sregs_test.c
+index 603226ffe437..8b375fea84d0 100644
+--- a/tools/testing/selftests/kvm/x86/set_sregs_test.c
++++ b/tools/testing/selftests/kvm/x86/set_sregs_test.c
+@@ -72,6 +72,8 @@ static u64 calc_supported_cr4_feature_bits(void)
+ 		cr4 |= X86_CR4_SMAP;
+ 	if (kvm_cpu_has(X86_FEATURE_PKU))
+ 		cr4 |= X86_CR4_PKE;
++	if (kvm_cpu_has(X86_FEATURE_LASS))
++		cr4 |= X86_CR4_LASS;
  
-@@ -405,6 +405,8 @@ static inline bool __kvm_is_valid_cr4(struct kvm_vcpu *vcpu, unsigned long cr4)
- 		__reserved_bits |= X86_CR4_PCIDE;       \
- 	if (!__cpu_has(__c, X86_FEATURE_LAM))           \
- 		__reserved_bits |= X86_CR4_LAM_SUP;     \
-+	if (!__cpu_has(__c, X86_FEATURE_LASS))          \
-+		__reserved_bits |= X86_CR4_LASS;        \
- 	if (!__cpu_has(__c, X86_FEATURE_SHSTK) &&       \
- 	    !__cpu_has(__c, X86_FEATURE_IBT))           \
- 		__reserved_bits |= X86_CR4_CET;         \
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index ecd105f35c78..3082195906da 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7885,6 +7885,7 @@ static void nested_vmx_cr_fixed1_bits_update(struct kvm_vcpu *vcpu)
- 
- 	entry = kvm_find_cpuid_entry_index(vcpu, 0x7, 1);
- 	cr4_fixed1_update(X86_CR4_LAM_SUP,    eax, feature_bit(LAM));
-+	cr4_fixed1_update(X86_CR4_LASS,       eax, feature_bit(LASS));
- 
- #undef cr4_fixed1_update
+ 	return cr4;
  }
+@@ -128,6 +130,7 @@ static void test_cr_bits(struct kvm_vcpu *vcpu, u64 cr4)
+ 	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_SMEP);
+ 	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_SMAP);
+ 	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_PKE);
++	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_LASS);
+ 
+ 	for (i = 32; i < 64; i++)
+ 		TEST_INVALID_SREG_BIT(vcpu, cr0, sregs, BIT(i));
 -- 
 2.43.0
 
