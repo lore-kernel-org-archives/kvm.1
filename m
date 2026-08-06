@@ -1,214 +1,292 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C884B3B585F
-	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 23:32:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351DB448390
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 23:36:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786059176; cv=none; b=ns/dD2CGBYB1WlDAsjBWyEMc0L/o2GVYM1oKw2OtCOAOPHomUHq72ysCPgILbSMhuPfCYpP2FHEwFgrwkmekb852RXJhRZYr1yCJpOlhI/fDNyWsUuXnaA0plShbdUA4+QcSQxSsch29K39/QemMsFY8Bga8q5Fml7WyhWlR/tQ=
+	t=1786059388; cv=none; b=UC2ti9mocRmJOHulYoFCm4tSledx7JjSEiiCDuF9SHabtkffXiq18XBNZZ9bZ7BQce9yeXEc1iOJdkNuKvDIt0/GwdzfCQzbBhWC6d2OBwFLwCpyjiCqnC+pzh0loZspYtT8MTXW39vu08TQakm0XdR4LlZmgc6BPQPQu8nqJ7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786059176; c=relaxed/simple;
-	bh=1EEc9DXazDAkqWyOTVLtE2IybOrjkcWooeu2y5oJv+Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h4FbG2evU4BSf04LZUVubvqrY6MlEFKatfzR4w1VMD+VOjl/CMxkKGr888y1bbM3ybrH7hRZkfY+2k8j3A9JQyOa4GRGiERM1Bf59kiJsua9InAEhm8yQK7WIfg/41zDX6apzhBa4ZftRmjpDWoqYMt+t0oBxjiesbP7g2A40/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZohMDO55; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=WYXHfURV; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786059388; c=relaxed/simple;
+	bh=lR9IkcHoGrXHsdwXoIduNalQpdmQkvbQdYBkWmYqX3U=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=H0/uCMPfQ8CCvgutu1dHxvTGKwkQX0mjNAzXb6kTvg/qDp7rCXd8b+Up+PGAGIjtdD6JVJ/BVo4ksbImMBCfzPPFdML+JBi0qmOqDYarhowH3YHNu+2z14CY6qQpe6Tw2/53OKITYxxxtvN7m326QwZ2Tw+PMVh/lnoshhQy5os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CF/nmvG5; arc=none smtp.client-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZohMDO55";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="WYXHfURV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786059173;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x1PY9KJIb1qTfXyzcPT+pdmLvTO8tSJ3NAtvLbML8yo=;
-	b=ZohMDO556nJEAq0g9dd0b/UZKoOpp49uDa0ouh8F0K8mwWaWjJ6qJKXbRVHfZmJfrJlj//
-	CfCtADudnQh5WK4yUqxRLH07tyB8oxyFUy1A+vYABLtfYdtHbzxVQYHU7lIZ76kMRhkdBY
-	pdxYHjNE0fKOgclboeAnKg1qQmXeEQ0=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-676-4m7N8y6LNr20F9pmDPTQmQ-1; Thu, 06 Aug 2026 19:32:37 -0400
-X-MC-Unique: 4m7N8y6LNr20F9pmDPTQmQ-1
-X-Mimecast-MFC-AGG-ID: 4m7N8y6LNr20F9pmDPTQmQ_1786059157
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-5283fa0656dso18841111cf.1
-        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 16:32:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CF/nmvG5"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38e7b87ce77so3015113a91.0
+        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 16:36:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786059157; x=1786663957; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=x1PY9KJIb1qTfXyzcPT+pdmLvTO8tSJ3NAtvLbML8yo=;
-        b=WYXHfURVAoykH1tH+TgahTEScVCiVPTZ1eFiubpXWxWiQPHVGFvAv1gU8YBlXRHiPZ
-         r+l5u6DDdb8axzseYxH0B00FpIaYqcj7v2hOwkg/je3w75+mlbYNmhcJoYUHYRfXdwOK
-         HtXOZoe0HDhLqIHGjqTS1q0ycOpcP8jmtIisp1LG6BkGh6GN7LYsyV7PkM7j+jNYdIlW
-         TTrmn82Fg5A89o2IO4JjGQ1GFRbwOL01I+dD/lZCldonX4pFZOlIFdPsvC46vtqSne6w
-         CFLsxq6/wFI7bLcyJrL42pAXtOrlhc1tLA3yKrIakz/R7AtwrkT8xSxHFZgpYGVlw/18
-         z9bA==
+        d=google.com; s=20251104; t=1786059384; x=1786664184; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=keDa3uiMUyNdngDUOX3bQBFQQi+1yM63Rcdpk9ukwB4=;
+        b=CF/nmvG5PIme9Hbulos3rQvzNVbZhrDAXZH2JJ4IHIfTgMOWKt/Xk2TnYI8nU0MmuL
+         Yg3s6NPsApRRw6Bkx0ztcOSPhBVutZQTZ4Iz2JcihO/0xVFjJPD0iMwu3MQZj4USZF2s
+         NimSQ2Uib3LL+NVLLwM0zJSZoCKDwVuhUVhnQ5HiHCsMlawjTi0CrElHmsZn+wbJ2DPK
+         mYy9/8POEM2ULtPiwhvm0U80TJzgafmlYBKWprlYm3WWp//kDVu4bvM6jAl8RbpSLGJ0
+         WdiV51jFpxuo5CM5YJVvExE3uk1awZqn/mHqY33AUso8KRGyn7N72nB2F9pEnj9W01D2
+         E2Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786059157; x=1786663957;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=x1PY9KJIb1qTfXyzcPT+pdmLvTO8tSJ3NAtvLbML8yo=;
-        b=UYBZDWLD/Cky539PhLG5gDCg9fX6uZ258k5fEFjzIRhLWe804eIfzrcOfq1/kC/goT
-         J1Ki9HhVJUbFkevYqXeUTQWJCZwXommeS4tBJNu+d+83kvzbnnt+6IC8KN4U6BkBqX6M
-         +7dLziyB7Yyq6UXMFIbT3JZS/f2oV6l0MfTIG9W4LJSxFSc97EaNZjHaKpshFA84H28w
-         P5lJFZVVHkJGY78ACjWAJBIhQXJLNsn/fozyJYQ80rymnHsToYakPahlczsPWQ5fjSk2
-         EKqgujLvU8wJzO9Aexn+gW1AI8EKZ/cRx0YJexCLgpgIKYclixpO7JK3RvK/iz7rUeAM
-         FH3g==
-X-Forwarded-Encrypted: i=1; AHgh+Rr5V4L2vkSJReQsKUCOsAn8zDEa0ui1hOuxbIvWy2sWwyIty1GNUHLr00GeQnO/l/6/XS4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwL6I2GjKd3sS23H8IYBzZzowWlcaXEc+toQoc2xEo+bZ7xO2HQ
-	FHxSicqZ3kn+zLdwqJZsPAf+W73mbGKouzIBQXSTh0FQxbDKb5bgR6kfYjkaoE84QjSVTRmdoe8
-	ZyqKECSVJwFoEScUmQU/IqbWg3jJozyMF+8sOo+yVKW/KFmgieabVDg==
-X-Gm-Gg: AR+sD128iyYpinfAhZMJUWgt5vFo7C4dq7EETc6etP4YUqPAgGfhp2GdBACZziKFRI2
-	tq/EMdIR2L8UuwL6spptIf4iYXG2fNQmzuNgMsEQ88lyRJydCJEacARsA86op0K10r1gLlzW+Om
-	28Yd7jNlwW6mp0nZly6FAdSdKKhgXX1CeDq3ulFvJXXvNcLgmUqKrHfL7MvB57GEpBrjchIkT/o
-	tPNc6TR7rfPipjCgVMHTIC6VKhRGsnJQwKh74GWqI9Mi4ThrbIUTBL9do5kCVtxtP8Cyso6ozg6
-	ZspzWhbDRL5FZtdBR7eNmow5C2EQeY1A3UYqbjNb3jgN5MUCLoaLJ4stprVewJYobl89
-X-Received: by 2002:ac8:6f19:0:b0:50e:635b:5562 with SMTP id d75a77b69052e-52d00498b36mr95353241cf.22.1786059156647;
-        Thu, 06 Aug 2026 16:32:36 -0700 (PDT)
-X-Received: by 2002:ac8:6f19:0:b0:50e:635b:5562 with SMTP id d75a77b69052e-52d00498b36mr95352631cf.22.1786059156155;
-        Thu, 06 Aug 2026 16:32:36 -0700 (PDT)
-Received: from x1.local ([174.91.117.74])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52d16335bb4sm273151cf.2.2026.08.06.16.32.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 16:32:35 -0700 (PDT)
-Date: Thu, 6 Aug 2026 19:32:22 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Alex Williamson <alex@shazbot.org>,
-	bcm-kernel-feedback-list@broadcom.com,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	David Hildenbrand <david@kernel.org>,
-	dri-devel@lists.freedesktop.org, Fei Li <fei1.li@intel.com>,
-	Huang Rui <ray.huang@amd.com>, linux-mm@kvack.org,
-	linux-s390@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
-	Sergio Lopez <slp@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 3/6] drm/ttm, drm/vmwgfx: directly create writable
- PTEs when mkwrite is in use
-Message-ID: <anUZhiwas8pN_No8@x1.local>
-References: <20260804120529.1730187-1-pbonzini@redhat.com>
- <20260804120529.1730187-4-pbonzini@redhat.com>
+        d=1e100.net; s=20251104; t=1786059384; x=1786664184;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=keDa3uiMUyNdngDUOX3bQBFQQi+1yM63Rcdpk9ukwB4=;
+        b=PxlYmpAtkBYiEFB93BG9SHSkQ4ZEGSCR42Q2AHZLxbUP8fCJRrFwq+duEVrsoEncBw
+         BKoF5mDKaOFHDulHbfyuEhAk2ZtC4WY9n+Zz4enXU3E9ZQT1xT8ggtLHltYkrS8ENvSl
+         affWUFnO+/wnvJJL07iNVupmQxra5v2+z6s8RIeh8/8N+12wEnvMgFp1mMrT8A2ghIWA
+         JIDhiYIPjgAfvCpuHdryjcBauYDf3iecRXmgG4/9AnS6NweMnlIL/ap22VF3DZ9f/UyF
+         4qrFp/o3N2YNGK6/aeu6xi+47hwPkI5XQadMiXo4R3Om4zDNlO8hbYmhweQaDArpqMD3
+         7+dA==
+X-Forwarded-Encrypted: i=1; AHgh+RoTDxCGQKHZkiJptvGJEpQuR+llfF5KJrn1aiPzjihyYNwiu+Iy3GywaRqblq+99N+02qI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzz1wHjn3+QoJWXFdfT8eq6usQ2N88SUWJU15NkX/LKosv7C0XZ
+	Qhzi5uGfn6jXj77adrMOrs2EgdNrBPPoZtUU1nRirMDMUZAXk5g7UDPDLe/ICXe4Nlf1WUuYIYm
+	2tTKvLg==
+X-Received: from pjnu1.prod.google.com ([2002:a17:90a:8901:b0:383:c59b:fc00])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:278c:b0:381:792d:f993
+ with SMTP id 98e67ed59e1d1-3903c5bf6fbmr20025179a91.17.1786059383863; Thu, 06
+ Aug 2026 16:36:23 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Thu,  6 Aug 2026 16:35:17 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260804120529.1730187-4-pbonzini@redhat.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
+Message-ID: <20260806233609.212337-1-seanjc@google.com>
+Subject: [PATCH v6 00/51] x86: Try to wrangle PV clocks vs. TSC
+From: Sean Christopherson <seanjc@google.com>
+To: Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
+	Jan Kiszka <jan.kiszka@siemens.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	John Stultz <jstultz@google.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Miroslav Lichvar <mlichvar@redhat.com>, x86@kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, Michael Kelley <mhklinux@outlook.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, 
+	David Woodhouse <dwmw@amazon.co.uk>, David Woodhouse <dwmw2@infradead.org>, 
+	Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Aug 04, 2026 at 02:05:25PM +0200, Paolo Bonzini wrote:
-> This ensures that fixup_user_fault() users see a writable PTE when
-> they request one.  The flip side is that vmw_bo_vm_fault() now has
-> to record by hand the write fault, because .pfn_mkwrite() is
-> not invoked.
-> 
-> Prefaulting works as before because only the first entry comes
-> out writable, while the following ones still end up executing
-> the .pfn_mkwrite() callback.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+The primary goal of this series to fix flaws with SNP and TDX guests where a
+PV clock provided by the untrusted hypervisor is used instead of the secure
+TSC that is controlled by trusted firmware.
 
-Only some quick thoughts while reading through this, as below.. even if
-some of it may make sense, I think that may be more suitable as follow up.
+The secondary goal is modernize running under KVM.  Currently, KVM guests will
+use TSC for clocksource, but not sched_clock.  And Linux-as-a-KVM-guest doesn't
+support paravirt enumeration of the TSC/APIC frequencies, even though QEMU
+provides that information by default.
 
-This looks like a good fix for a regression already to me.
+The tertiary goal is to clean up the PV clock code to deduplicate logic across
+hypervisors, and to hopefully make it all easier to maintain going forward.
 
-> ---
->  drivers/gpu/drm/ttm/ttm_bo_vm.c            |  7 ++--
->  drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c | 42 ++++++++++++----------
->  2 files changed, 29 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/ttm/ttm_bo_vm.c b/drivers/gpu/drm/ttm/ttm_bo_vm.c
-> index a80510489c45..3ebde936ce60 100644
-> --- a/drivers/gpu/drm/ttm/ttm_bo_vm.c
-> +++ b/drivers/gpu/drm/ttm/ttm_bo_vm.c
-> @@ -191,6 +191,7 @@ vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault *vmf,
->  	unsigned long pfn;
->  	struct ttm_tt *ttm = NULL;
->  	struct page *page;
-> +	bool mkwrite;
->  	int err;
->  	pgoff_t i;
->  	vm_fault_t ret = VM_FAULT_NOPAGE;
-> @@ -242,6 +243,7 @@ vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault *vmf,
->  	 * Speculatively prefault a number of pages. Only error on
->  	 * first page.
->  	 */
-> +	mkwrite = !!(vmf->flags & FAULT_FLAG_WRITE);
->  	for (i = 0; i < num_prefault; ++i) {
->  		if (bo->resource->bus.is_iomem) {
->  			pfn = ttm_bo_io_mem_pfn(bo, page_offset);
-> @@ -263,9 +265,10 @@ vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault *vmf,
->  		 * at arbitrary times while the data is mmap'ed.
->  		 * See vmf_insert_pfn_prot() for a discussion.
->  		 */
-> -		ret = vmf_insert_pfn_prot(vma, address, pfn, prot);
-> +		ret = vmf_insert_pfn_prot_mkwrite(vma, address, pfn, prot, mkwrite);
->  
-> -		/* Never error on prefaulted PTEs */
-> +		/* Never error on prefaulted PTEs and never map them writable */
+The quaternary goal is to clean up the TSC calibration code, which was made
+stupidly hard to follow by hypervisor code mixing in with the native
+calibration routines, instead of being implemented as a pure alternative.
 
-I got confused when reading 1st time, but I got it then noticing the mark
-dirty was done by the caller.
+Note, the VMware and Xen changes still probably should get acks from those
+maintainers, as my understanding of what they're trying to do may be flawed.
 
-Two small things I thought about here:
+Lots more background on the SNP/TDX motiviation:
+https://lore.kernel.org/all/20250106124633.1418972-13-nikunj@amd.com
 
-- Comparing to the time before introducing pfn_mkwrite(), this will cause
-  previously one fault (with prefaults marking all follow up ptes writable)
-  to be 1 writable plus N-1 read-only. May not be the most ideal if we
-  consider the 2nd WP faults on the rest N-1 later as slight overheads,
+As before, I deliberately omitted jailhouse-dev@googlegroups.com from the To/Cc,
+as those emails bounced on v1, AFAICT nothing has changed.
 
-- Split the "mark WRITABLE" and "mark DIRTY" in code might be slightly
-  error prone, especially if this is a common function used by multiple
-  drivers, while there's only one driver that does the "mark DIRTY".
+v5:
+ - Use cpu_feature_enabled() instead of boot_cpu_has(). [Boris]
+ - WARN if recalibrate_cpu_khz() runs on a system with TSC_KNOWN_FREQ. [Thomas]
+ - Opportunistically drop a line break in native_calibrate_tsc(). [Thomas]
+ - Rely on callers of cpuid_get_tsc_info() to check the result instead of
+   unnecessarily zeroing the structure. [Boris]
+ - Ignore tsc_early_khz if the TSC frequency is provided by trusted firmware
+   or by the hypervisor. [Thomas, Sashiko]
+ - Cache CPUID output in acrn_init_platform() to avoid introducing a transient
+   bug where TSC_KNOWN_FREQ could be set even if the ACRN hypervisor didn't
+   actually provide the frequency. [Sashiko]
+ - Drop kvmclock's useless/dead check_tsc_unstable() call (it occurs before the
+   command line parameter is parsed). [Sashiko]
+ - Add helpers to set lapic_timer_period, to fix not-so-theoretical overflow
+   in the various "khz * 1000 / HZ" patterns. [Sashiko]
+ - Drop the "x86/xen: Obtain TSC frequency from CPUID if present" patch as it
+   doesn't have any dependencies/conflicts on/with this series, and Sashiko had
+   concerns about the assumptions it was making. [Sashiko]
+ - Collect reviews. [David] (Kirill's got dropped because the patch he reviewed
+   got completely rewritten).
 
-IIUC the other idea can be, do not reset @mkwrite here but instead move the
-set dirty here, invoking whatever the vma's .pfn_mkwrite() is. So that we
-stick two things together; maybe slightly less error prone and less dup
-code when other drivers opt-in for pfn_mkwrite().
 
-Not sure if it's a good idea, but just to raise it in case useful.  Again,
-I still think this is a solid fix to the problem already.
+v4:
+ - Use x86_init_noop() to skip save/restore on VMware and Xen instead of
+   nullifying x86_platform.{save,restore}_sched_clock_state. [Sashiko]
+ - Use '0' to indicate "failure" when getting the CPU frequency from CPUID, to
+   avoid using an out-param and thus make it all but impossible to
+   unintentionally clobber the global cpu_khz (which v3 did). [Sashiko]
+ - Rename cpuid_get_cpu_freq() => __cpu_khz_from_cpuid() to capture its
+   relationship with cpu_khz_from_cpuid().
+ - Compute lapic_timer_period in units of ticks, not Khz. [Sashiko]
+ - Kill off x86_platform_ops.calibrate_{cpu,tsc}(), and instead use dedicated
+   hooks for hypervisor code, and direct calls for TDX and SNP. [David, loosely]
+ - Drop SNP's secure TSC override of _CPU_ calibration, as there's zero
+   evidence it's justified or a net positive.
+ - Collect reviews/acks. [David, Wei]
+ - Decouple getting TSC/APIC frequencies from KVM PV CPUID from kvmclock. [David]
+ - Fix an amusing number of Opportunistically misspellings. [David]
+ - Set kvm_sched_clock_offset _before_ registering kvmclock as sched_clock,
+   and add a comment to guard against future goofs. [Sashiko]
+ - Keep "setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE)" in Hyper-V's handling
+   of HV_ACCESS_TSC_INVARIANT, as it's technically possible to have a VM
+   with HV_ACCESS_TSC_INVARIANT but not HV_ACCESS_FREQUENCY_MSRS.  Though as
+   a _very_ nice side effect of using dedicated sequencing for selecting the
+   TSC frequency source, this would have naturally happened anyways. [Sashiko]
 
-Other than that, FWIW the whole approach looks reasonable at least to me.
-I agree in the fault processing we should best resolve the fault in one
-shot if possible.  In this context, FAULT_FLAG_WRITE is the flag showing
-that a 2nd fault is required, then IMHO it's indeed better to resolve the
-fault in one go, as proposed in this series.
+v3:
+ - https://lore.kernel.org/all/20260515191942.1892718-1-seanjc@google.com
+ - Collect reviews. [Michael, Thomas]
+ - Use Hyper-V reference counter / refcounter instead of Hyper-V timer. [Michael]
+ - Use the paravirt CPUID interface first proposed by VMware for KVM's
+   "official" mechanism for communicating frequency to KVM-aware guests,
+   instead of abusing Intel's CPUID leafs. [David]
+ - Deal with paravirt code being moved into asm/timers.h and
+   arch/x86/kernel/tsc.c.
 
-Another thing I came to mind that may not really be relevant to this
-regression alone, but maybe matters for the future to at least keep in
-mnind: I wonder if there can be races happen while fixup_user_fault() is
-resolving faults, causing the 2nd pfnmap follow code to fail once more,
-say, some other thread modified the pgtable again (e.g. wr-protect with
-write bit removed right after set).
+v2:
+ - https://lore.kernel.org/all/Z8YWttWDtvkyCtdJ@google.com
+ - Add struct to hold the TSC CPUID output. [Boris]
+ - Don't pointlessly inline the TSC CPUID helpers. [Boris]
+ - Fix a variable goof in a helper, hopefully for real this time. [Dan]
+ - Collect reviews. [Nikunj]
+ - Override the sched_clock save/restore hooks if and only if a PV clock
+   is successfully registered.
+ - During resome, restore clocksources before reading persistent time.
+ - Clean up more warts created by kvmclock.
+ - Fix more bugs in kvmclock's suspend/resume handling.
+ - Try to harden kvmclock against future bugs.
 
-So maybe pfnmap lookup and fixup_user_fault() should be done in a loop
-until any of them hit real errors.. if any of such race may become a real
-problem some day.
+v1: https://lore.kernel.org/all/20250201021718.699411-1-seanjc@google.com
 
-Looks like low possibility that threads will mess up with PFN maps.. but
-just to raise this idea.
+David Woodhouse (2):
+  KVM: x86: Officially define CPUID 0x40000010 as PV Timing Info (TSC
+    and Bus)
+  x86/kvm: Obtain TSC frequency from PV CPUID if present
 
-I believe currently our mm fault handler should be working like that with
-handle_mm_fault(), hence neutral with such races (it'll loop a few more
-rounds until race disappear).  I recall there used to have thoughts adding
-some n_retry_max counts to the fault handler, but we didn't really do that,
-and it runs all fine over the years.
+Sean Christopherson (49):
+  x86/apic: Provide helpers to set local APIC timer frequency in hz and
+    khz
+  x86/apic: Add CONFIG_X86_LOCAL_APIC=n stubs for APIC timer frequency
+    APIs
+  x86/tsc: Ensure that TSC recalibration doesn't run if TSC frequency is
+    known
+  x86/tsc: Restrict recalibrate_cpu_khz() export to p4-clockmod and
+    powernow-k7
+  x86/sev: Mark TSC as reliable when configuring Secure TSC
+  x86/sev: Don't override CPU frequency calibration for SNP's Secure TSC
+  x86/sev: Move check for SNP Secure TSC support to tsc_early_init()
+  x86/sev: Shove SNP's secure/trusted TSC frequency directly into
+    "calibration"
+  x86/tsc: Add a standalone helper for getting TSC info from CPUID.0x15
+  x86/tdx: Force TSC frequency with CPUID-based info provided by the
+    TDX-Module
+  x86/tsc: Add dedicated hypervisor hooks for getting known TSC/CPU
+    frequencies
+  x86/acrn: Register TSC/CPU frequency callbacks iff frequency is
+    actually in CPUID
+  x86/acrn: Mark TSC frequency as known when using ACRN for calibration
+  x86/tsc: Consolidate forcing of X86_FEATURE_TSC_KNOWN_FREQ for PV code
+  x86/tsc: Kill off x86_platform_ops.calibrate_{cpu,tsc}() hooks
+  x86/tsc: Rename pit_hpet_ptimer_calibrate_cpu() =>
+    native_calibrate_cpu_late()
+  x86/tsc: Fold native_calibrate_cpu() into recalibrate_cpu_khz()
+  x86/kvmclock: Rename kvm_get_tsc_khz() to kvmclock_get_tsc_khz()
+  x86/kvmclock: Drop dead check on TSC being unstable during
+    kvmclock_init()
+  x86/kvm: Mark TSC as reliable when it's constant and nonstop
+  x86/tsc: Add standalone helper for getting CPU frequency from CPUID
+  x86/kvm: Get CPU base frequency from CPUID when it's available
+  clocksource: hyper-v: Register sched_clock save/restore iff it's
+    necessary
+  clocksource: hyper-v: Drop wrappers to sched_clock save/restore
+    helpers
+  clocksource: hyper-v: Don't save/restore TSC offset when using HV
+    sched_clock
+  x86/kvmclock: Setup kvmclock for secondary CPUs iff CONFIG_SMP=y
+  x86/kvm: Don't disable kvmclock on BSP in syscore_suspend()
+  x86/paravirt: Remove unnecessary PARAVIRT=n stub for
+    paravirt_set_sched_clock()
+  x86/paravirt: Move handling of unstable PV clocks into
+    paravirt_set_sched_clock()
+  x86/kvmclock: Move sched_clock save/restore helpers up in kvmclock.c
+  x86/xen/time: NOP-ify x86_platform's sched_clock save/restore hooks
+  x86/vmware: NOP-ify save/restore hooks when using VMware's sched_clock
+  x86/tsc: WARN if TSC sched_clock save/restore used with PV sched_clock
+  x86/paravirt: Pass sched_clock save/restore helpers during
+    registration
+  x86/kvmclock: Move kvm_sched_clock_init() down in kvmclock.c
+  x86/xen/time: Mark xen_setup_vsyscall_time_info() as __init
+  x86/pvclock: Mark setup helpers and related various as
+    __init/__ro_after_init
+  x86/pvclock: WARN if pvclock's valid_flags are overwritten
+  x86/kvmclock: Refactor handling of PVCLOCK_TSC_STABLE_BIT during
+    kvmclock_init()
+  timekeeping: Resume clocksources before reading persistent clock
+  x86/kvmclock: Hook clocksource.suspend/resume when kvmclock isn't
+    sched_clock
+  x86/kvmclock: WARN if wall clock is read while kvmclock is suspended
+  x86/paravirt: Mark __paravirt_set_sched_clock() as __init
+  x86/paravirt: Plumb a return code into __paravirt_set_sched_clock()
+  x86/paravirt: Don't use a PV sched_clock in CoCo guests with trusted
+    TSC
+  x86/kvmclock: Use TSC for sched_clock if it's constant and non-stop
+  x86/kvmclock: Plumb in AP-online and BSP-resume to kvmlock, for
+    documentation
+  x86/paravirt: Move using_native_sched_clock() stub into timer.h
+  x86/kvm: Get local APIC bus frequency from PV CPUID Timing Info
 
-Thanks,
+ .../admin-guide/kernel-parameters.txt         |   5 +
+ Documentation/virt/kvm/x86/cpuid.rst          |  12 +
+ arch/x86/coco/sev/core.c                      |  21 +-
+ arch/x86/coco/tdx/tdx.c                       |  19 +-
+ arch/x86/include/asm/acrn.h                   |   5 -
+ arch/x86/include/asm/apic.h                   |   5 +-
+ arch/x86/include/asm/kvm_para.h               |  12 +-
+ arch/x86/include/asm/sev.h                    |   4 +-
+ arch/x86/include/asm/tdx.h                    |   2 +
+ arch/x86/include/asm/timer.h                  |  15 +-
+ arch/x86/include/asm/tsc.h                    |  10 +-
+ arch/x86/include/asm/x86_init.h               |   8 +-
+ arch/x86/include/uapi/asm/kvm_para.h          |  11 +
+ arch/x86/kernel/apic/apic.c                   |  19 +-
+ arch/x86/kernel/cpu/acrn.c                    |  14 +-
+ arch/x86/kernel/cpu/mshyperv.c                |  70 +-----
+ arch/x86/kernel/cpu/vmware.c                  |  19 +-
+ arch/x86/kernel/jailhouse.c                   |   9 +-
+ arch/x86/kernel/kvm.c                         | 101 ++++++--
+ arch/x86/kernel/kvmclock.c                    | 208 +++++++++++------
+ arch/x86/kernel/pvclock.c                     |   9 +-
+ arch/x86/kernel/tsc.c                         | 218 +++++++++++-------
+ arch/x86/kernel/tsc_msr.c                     |   4 +-
+ arch/x86/kernel/x86_init.c                    |   2 -
+ arch/x86/mm/mem_encrypt_amd.c                 |   3 -
+ arch/x86/xen/time.c                           |  14 +-
+ drivers/clocksource/hyperv_timer.c            |  38 ++-
+ include/clocksource/hyperv_timer.h            |   2 -
+ kernel/time/timekeeping.c                     |   9 +-
+ 29 files changed, 547 insertions(+), 321 deletions(-)
 
+
+base-commit: 6949feed6e32823a6628873000602988a4cafe06
 -- 
-Peter Xu
+2.55.0.679.g6767b8d81c-goog
 
