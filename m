@@ -1,115 +1,204 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06A1239E60
-	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 18:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306FD48A2D1;
+	Thu,  6 Aug 2026 18:13:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786039864; cv=none; b=swdkGJ2kBtHA2GkxZzPuSBAxziQNFQdoDABAiEL64aAKmYi82KsakRggLtvcon6T3etoV6Rz60xqDYAXS2ly2M8+5M/FTJsQI615rSQNkYN8QOBTFtnCip0e8yeqg3GecowWxi0NhuUvgQefnX6nfM9MAeBC5j0EhB+JdaIf3eY=
+	t=1786039999; cv=none; b=kidCh7rta/ZRvValePFVrm+R46jp54nwh9SSPliNEPUOU6pUap3Wk3GaJ3hAQS32NS7JljngGFHWqY7C5+LYdi1gpmGtQWy3fb+RNjFyN3rW8W2sD/AWdIBxyExDnbhEBJhXPC6jN9mJFHitK0FGUEZ6MmCOcEOZ91UDyUEf3bU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786039864; c=relaxed/simple;
-	bh=5LtdVhcoevxaYMFWpuGUrwt2xnJVWoRAhm65donaF0k=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=X+jeyB/VBh43o0Y4t6Qvam3shxxxhR6NdypudNMZGyJa8qAt6GmYMrtzxcUkxXw8dhY95DdNWLXl+K9JVZnvAT/yYNIkSxPym4UuMJodtjXkszVM1Jep6rNgYTl3QRhtGxPIcNTYMUg66EfhMKw9QWQas0Uul/vPEnqX2zpsNgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HfQCoKiA; arc=none smtp.client-ip=209.85.210.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786039999; c=relaxed/simple;
+	bh=9rflwFr12ji5NL/eJWL41DKynWRoCK70js2s0jo+6fQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aaFtZxsAwmvUOTrzum8WAY1+pV2l4D9zHz/wxn+iN+44EAYuZqrzr0cE86NuHo0tlvKJ3pclEI6pY+fJr7TVlhUYzMVEJzIPBnk1WUEOIBIxe+gYBwW/OACYyprN9wAGYr3r7Kn0Su9wdyzpVH8w76RcCocHDo5PJyv206bufDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WUpXU2e6; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HfQCoKiA"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8488ac68185so6041472b3a.2
-        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 11:11:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786039863; x=1786644663; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=8NDXlvuU5iaMcvHK7I7xV9onstvlMkGv+ggfJ4d2KnM=;
-        b=HfQCoKiABxxbL6CWh7rVNMlY4aDi2brkpskxbONZp6xKckPfXDIAbTOMRdsJ4+Saxe
-         DBU96XbfxnQ6IJmUwGXn9XjxovH3/JBqDoo8JHzLMb3aqPKoasDpEyvV21L+IPbefeQJ
-         bUM/mIHOY4+zO3qCTWnMA2i+dotvDTOcKTzKCJ5KECmnruByvJSg3sPurvPOAoZM5uVD
-         yFvCLdLkJADPpA+IarILtWQIkvgOXhwLKXaHtwODKYQui11lSU6dZHCuYPhOMTCXmVGr
-         CQB56u54x9cSkPGek3VGfsFq91leV8h6m13j5UULZ722Wj8JSC70Tm++P6Cl4fHKdsPO
-         +Ysw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786039863; x=1786644663;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8NDXlvuU5iaMcvHK7I7xV9onstvlMkGv+ggfJ4d2KnM=;
-        b=JQmvHO2LFUodMpbUwqRzJHabXMv1yXODIfn0Yo12w4zUhXr86jxkgvmkq2dcvL7ROi
-         nQuxv0XfFMGFa6B7XYtFib6q0LKvsXXjRNEwBi097gv2LyI8seT/dajz56TSdKV/qGb9
-         BkpoFRVmzGxCXbtssFytJMK65/KVe7JfVyZpxpzG1u+VOJiahMxHH1PgK7tLdQD2s0MI
-         6RA5z95D//YCaQdvsoqnj382FFENoRPcubD9rb6XTW3ah4R4UjA0bkDjNFK7oRc9uC1s
-         LN0oCq10jdT/zOasiYBE2j45APDorNr8JsNdfYyg9reGbuRud6D5i7LXX2TIxt9uX3gu
-         fbJA==
-X-Forwarded-Encrypted: i=1; AHgh+Roa1yodKcGHwOur9HYyEirysYUYXacUoTlHGPWtZ1Np+JvTEEd6OIlWKoKYol5rkPL2pdQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHYVMrmYhjs69+2RAr/BNO+6b4ptWALFvYjRQG0ZIPRJnrjMWt
-	tFvAxJ01i8pVsU+L56SGHVwsJgRbq6L8xQLK5NgwrX8NmIJpsFqseM4vO9Wx2WwXfk8VM2Sce0L
-	Gk/QSOg==
-X-Received: from pgv15.prod.google.com ([2002:a63:154f:0:b0:c8f:f76a:4b22])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2295:b0:848:62ab:7b7
- with SMTP id d2e1a72fcca58-84f2e0402b9mr18010383b3a.16.1786039862668; Thu, 06
- Aug 2026 11:11:02 -0700 (PDT)
-Date: Thu, 6 Aug 2026 11:11:02 -0700
-In-Reply-To: <bbb2ad42d2ee3b2c20cfc31c3d58a9fecebb77e4.camel@amazon.co.uk>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WUpXU2e6"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 676Hm07c3256392;
+	Thu, 6 Aug 2026 18:13:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=e65Hji
+	c0nlapQAN/iXgJdb2VfsQ6Qv+GkLki5TthQFs=; b=WUpXU2e6ADOCGXimQB1zVV
+	Gw2pPIphiWueTxorY1MTdulXoJGvCp5ldtFOpFMiiwDRLexzdN6RgzSIuxMaxdMi
+	ko06ARxrhqCyHAv9K7rxZa6clhX7L18/eArCp6rVPLJO3vU8hM2j2BmAnN5FTkZs
+	ggTTtgxNlzlxPE3PT17BgNS+Nt9SO8W4W+KrYzfTvQnPjUBYcjn/L4ws8bYaLj8/
+	LQ1we6zWwWki0cnAFk0AQF17mMnesrqjg+3rr42y78D5CqFT7EpUbsRk5uGLCi2Y
+	Quw7wb/3lX9zktM4KCWKUUsqallCwPjKTa8lBZPtDwKqF0N1BGcSOT/qh8/Sw7yQ
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fvy0283ut-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 18:13:16 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 676HuUrx027655;
+	Thu, 6 Aug 2026 18:13:16 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmhma1p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 18:13:16 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 676IDEZX31720002
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Aug 2026 18:13:14 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 718515805A;
+	Thu,  6 Aug 2026 18:13:14 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E6BE258051;
+	Thu,  6 Aug 2026 18:13:13 +0000 (GMT)
+Received: from [9.61.80.66] (unknown [9.61.80.66])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  6 Aug 2026 18:13:13 +0000 (GMT)
+Message-ID: <705034db-69a7-4e61-ab43-978f2dcb66f1@linux.ibm.com>
+Date: Thu, 6 Aug 2026 14:13:13 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260805195528.3853473-1-dwmw@amazon.co.uk> <20260805195528.3853473-4-dwmw@amazon.co.uk>
- <20260805203608.D3CA61F000E9@smtp.kernel.org> <anS8C4Cxqy6ehCo3@google.com> <bbb2ad42d2ee3b2c20cfc31c3d58a9fecebb77e4.camel@amazon.co.uk>
-Message-ID: <anTONuMjSSD0CepY@google.com>
-Subject: Re: [PATCH v3 3/7] KVM: pfncache: Use RCU for readers instead of a rwlock
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw@amazon.co.uk>
-Cc: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] s390/vfio-ap: fix stale pqap_hook pointer on error in
+ vfio_ap_mdev_set_kvm()
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>, kvm@vger.kernel.org,
+        Heiko Carstens <hca@linux.ibm.com>
+References: <20260806140342.611294-1-akrowiak@linux.ibm.com>
+ <20260806141848.4F3061F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20260806141848.4F3061F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=G6ws1dk5 c=1 sm=1 tr=0 ts=6a74cebc cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=DXWA_wIhCYkHbeNkIZAA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDEzOSBTYWx0ZWRfXy413zPoWnMme
+ Q3dyEvPSkfY6sehxnTGih3ETr/9+OHoNZQYeXk9c29npKlowW24qnFlIqnNFld2Pf8Ok/EGnas3
+ NBvgsgwTDF/u0V9OJqt+u99LC8V9tukBI312JS0XsigzlzjJuCcmxck6oLikbDzRpzHnpXFCdnP
+ 9kcjAYOqKiVhpWRrveFI6RAPi37Zk+yUSng1Yd9bPAy5yJEsCLSwVdTcSPfK7iFPdY7L1cNenBq
+ JiK+DCQOYOV7b8ZhKVHVKcTFB0D82NJAk25rLh4n/x+Fdbl4TdJ6OTUtnSuNesDJiG4Dp424TDL
+ qPpdGCssKuZ40kioQOL7oF2WXQYoNv9vwl7LhxwWjkhb8kSmJ8TK+yzyKUZjeLWpd+aHta/gXo1
+ 4Ra9rUGTUpi9pfx23vyC37r6xlLTAoOCYzmD3GIqJd4ivqhyRoJm102y3kbL1nAR/bpapaOsuPV
+ K9v8P9o78uVuhoUJ/JQ==
+X-Proofpoint-ORIG-GUID: Z3q0P1RiZDPYxLNWCutT1-eKKOphI_43
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDEzOSBTYWx0ZWRfX8CrrEeof46jv
+ 75y9B6/vlRBFV3+BYWv/W024IB1qVEC4+NUomfRdkj3MFqJGVGcqWQ/BickKuD8/LMEeM5EFzCx
+ VqviGMA+99XDkTb2mv1uecLTx13BsLc=
+X-Proofpoint-GUID: Z3q0P1RiZDPYxLNWCutT1-eKKOphI_43
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-06_01,2026-08-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ phishscore=0 priorityscore=1501 adultscore=0 bulkscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608060139
 
-On Thu, Aug 06, 2026, David Woodhouse wrote:
-> On Thu, 2026-08-06 at 09:53 -0700, Sean Christopherson wrote:
-> > On Wed, Aug 05, 2026, sashiko-bot@kernel.org=C2=A0wrote:
-> > > Replace the per-cache rwlock with RCU for the read side.
-> >=20
-> > I don't hate the idea, but I am very against using RCU.=C2=A0 Unless it=
-'s "impossible",
-> > e.g. because synchronize_srcu() allocates memory and breaks OOM kill, I=
- would
-> > strongly prefer to use SRCU, probably with a dedicated kvm->gpc_srcu, s=
-o that
-> > synchronization doesn't need to wait on all CPUs in the system.=C2=A0 T=
-he tail latencies
-> > for synchronize_rcu() are horrendous, especially for many-CPU systems.=
-=C2=A0 If it
-> > were only mmu_notifiers that got hit, it miiiight be acceptable, but si=
-nce this
-> > will affect vCPU tasks in the refresh() path as well, normal RCU is pre=
-tty much
-> > a non-starter.
->=20
-> Yeah, the refresh() path got pretty slow in my first attempt, before
-> optimising that *not* to have a grace period if the memslot generation
-> changed but the actual GPA=E2=86=92uHVA (and memslot) don't *change*.
->=20
-> > Even SRCU could be problematic: if synchronize_srcu_expedited() is forc=
-ed to wait,
-> > the wait time can easily get to 20+ milliseconds, which again is a non-=
-starter for
-> > things like steal-time updates and nVMX pages.
->=20
-> But we don't have to synchronize from the read side. The code path
-> which will do so most often is gfn_to_pfn_cache_invalidate_start(). And
-> the refresh() path which is already the fallback slow path which can slee=
-p.
 
-It's probably a slow path for all current users, but it definitely won't be=
- a slow
-path for nested virtualization, because a refresh() will be required any ti=
-me the
-GPA changes, i.e. any time the vCPU runs a different vmc{b,c}12.  That's wh=
-y I
-think we should treat GPCs that are strictly bound to a vCPU differently.
+
+On 8/6/26 10:18 AM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+>
+> Pre-existing issues:
+> - [High] Host AP configuration changes trigger a NULL pointer dereference when accessing unassigned matrix mediated devices.
+> --
+>
+> --- Patch [1]: [PATCH v4] s390/vfio-ap: fix stale pqap_hook pointer on error in vfio_ap_mdev_set_kvm() ---
+> commit aef5cc63216cb49a3fd8ebd1da1a8d39b4fabb7b
+> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+>
+>      s390/vfio-ap: fix stale pqap_hook pointer on error in vfio_ap_mdev_set_kvm()
+>
+> In vfio_ap_mdev_set_kvm(), kvm->arch.crypto.pqap_hook is set to
+> &matrix_mdev->pqap_hook before the update locks are acquired and the
+> mdev list is checked for a conflicting assignment. If another mdev is
+> already attached to the same KVM instance, the function returns -EPERM
+> without restoring the hook pointer. This patch rearranges lock acquisition
+> to prevent this stale pointer issue and potential deadlocks.
+>
+>> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+>> index 44b3a1dcc1b36..99a0efd999ef9 100644
+>> --- a/drivers/s390/crypto/vfio_ap_ops.c
+>> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+> [ ... ]
+>
+>> @@ -1883,18 +1881,15 @@ static void vfio_ap_mdev_unset_kvm(struct ap_matrix_mdev *matrix_mdev)
+>>   	struct kvm *kvm = matrix_mdev->kvm;
+>>   
+>>   	if (kvm && kvm->arch.crypto.crycbd) {
+>> -		down_write(&kvm->arch.crypto.pqap_hook_rwsem);
+>> -		kvm->arch.crypto.pqap_hook = NULL;
+>> -		up_write(&kvm->arch.crypto.pqap_hook_rwsem);
+>> -
+>>   		get_update_locks_for_kvm(kvm);
+>> +		kvm->arch.crypto.pqap_hook = NULL;
+>>   
+>>   		kvm_arch_crypto_clear_masks(kvm);
+>>   		vfio_ap_mdev_reset_queues(matrix_mdev);
+>> -		kvm_put_kvm(kvm);
+>>   		matrix_mdev->kvm = NULL;
+>>   
+>>   		release_update_locks_for_kvm(kvm);
+>> +		kvm_put_kvm(kvm);
+>>   	}
+>>   }
+> While reviewing this file, I noticed a couple of related issues.
+>
+> drivers/s390/crypto/vfio_ap_ops.c:vfio_ap_mdev_cfg_remove() {
+> 	...
+> 	list_for_each_entry(matrix_mdev, &matrix_dev->mdev_list, node) {
+> 		mutex_lock(&matrix_mdev->kvm->lock);
+> 		mutex_lock(&matrix_dev->mdevs_lock);
+> 	...
+> }
+>
+> [Severity: High]
+> This is a pre-existing issue, but if a mediated device is unassigned
+> (matrix_mdev->kvm is NULL) when the host AP configuration is modified,
+> will this unconditional lock of matrix_mdev->kvm->lock trigger a NULL pointer
+> dereference?
+>
+>
+> drivers/s390/crypto/vfio_ap_ops.c:vfio_ap_mdev_hot_plug_cfg() {
+> 	...
+> 	DECLARE_BITMAP(apm_filtered, AP_DEVICES);
+> 	bool filter_domains, filter_adapters, filter_cdoms, do_hotplug = false;
+>
+> 	mutex_lock(&matrix_mdev->kvm->lock);
+> 	mutex_lock(&matrix_dev->mdevs_lock);
+> 	...
+> }
+>
+> [Severity: High]
+> This isn't a bug introduced by this patch, but similar to the above, does this
+> function also dereference matrix_mdev->kvm without checking if it's NULL,
+> potentially leading to a crash when unassigned matrix mediated devices are
+> accessed during host AP configuration changes?
+
+Both of the above the concerns above are legitimate for the case whereby
+the matrix_mdev->kvm was never set via the vfio_ap_mdev_set_kvm()
+function which is called only when a guest is started with the mdev attached
+and the mdev fd is opened. If the mdev is not attached to a guest, then
+matrix_mdev->kvm will be NULL.
+
+The matrix_mdev->kvm pointer is set to NULL
+in the vfio_ap_mdev_unset_kvm; however, all three functions (the unset_kvm
+and the two above) all take the matrix_dev->guests_lock before proceeding,
+so the matrix_dev->kvm pointer is guaranteed to not be NULL due to a
+race condition.
+
+Having said that, it is clear that a check must be introduced to verify that
+matrix_mdev->kvm is not NULL before taking the matrix_mdev->kvm->lock
+in the two functions above.
+
+>
+
