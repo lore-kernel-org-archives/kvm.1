@@ -1,57 +1,57 @@
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660D04AAC85
-	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 23:37:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638894AB809
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 23:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786059436; cv=none; b=XOGucYimSriSCTHEaeQ0L7bGwjkB6Gz/JN9qtJ9fhGyTjEmUJ2wj/UwZebzsd7gDR/ViHDKqXWRC4Ire4C/vsLXHHEDtwgGn/OMpKp54XGP+LUon+HyAs9UlpGXqmEECyPEp34a3YRM+8EGBor016YigBPcc6RwYTwptp4sHuj0=
+	t=1786059438; cv=none; b=o8EC5q0JUi5zMfrOMu3YKTfHT4ukrMQNgOJBLqxBDLNrula/LXgmbs79fceuN35PN2JSq+u9OmiXq+NfdgYHPsgUKX3qnX4hRF5Ag3FQWWstxwmPI1Lc0UJXkHOyP6P6XU5bVVJ77zfFX8+kyKYRr4IB01XSH5msmTNzsgD0uys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786059436; c=relaxed/simple;
-	bh=QnNlfXQgGwJN0/JkuWp/4XAMGB0Vt5ulI8HR+vmeXt8=;
+	s=arc-20240116; t=1786059438; c=relaxed/simple;
+	bh=EetB+RnX28VKy0jN0zLsMSRc1BZr5Co2JodEFYoMux8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=cCqO8EdGu76LFMufr4/8DnTgC+Y6gfXcAEMR0FwKS2HCHVUln8d5fvR3DeeuWkPTtAC7mLTLXWwGfct9NxcJSiP2ERg4vJYlN3gb5i+pZKgEx67A5ZZFoibygiWQKaWbnw9uBConHU8UmJwOMfKCC1RDXj1dp/3aWy6igQ5r9Zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Tpv7ciKH; arc=none smtp.client-ip=209.85.216.70
+	 To:Cc:Content-Type; b=kw7wJFjyNpnJq2WdkTO5sH37+hZ+WD4ICDilgDDAtJiRjruDC9sr8F9oVSVzcenLBFPMQYy0TdMycYJUlHoWeq/5nyiHwcDqr9QkD1hMyY6qRI5aLUwXbEevrADCKs5N6te0PFOHDFIfAioPkfYg77DzT3IdcTwZnMfpsv5L0yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BqqbRfW6; arc=none smtp.client-ip=209.85.210.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Tpv7ciKH"
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38e667368f0so4358729a91.2
-        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 16:37:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BqqbRfW6"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84870e7f498so2971199b3a.3
+        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 16:37:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786059433; x=1786664233; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786059436; x=1786664236; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=rt852L9wHdv0bDRlKJAMITX85TrVIH1oxytQu/w6xUg=;
-        b=Tpv7ciKHeHDugIIwHzhfcocSLtVkDCTQdSye52PdWt5ziikon6hhKy9cAJ/E9mtCWr
-         s5ALopwClQobqOcIoVSkGgEhx9ciY5ZQ2a24pfp7InkcROrW5UiWmwvjOUiCAxTvaHTr
-         zHzS0OvcsRVS56x2h3uMIurqQ0nZ9/rF713VpZkL8MNz9GjbiNwa1arQAK6RXjfIWFPS
-         WDW2ciJRaeTx1286dm0dTiI/27q20wvpxMPJvq5tIm0icRPd4Ku/YyiWzRka+4r3obyA
-         E/6wGFEbBWNJTNtgaq1qJOGaFnko1zOgdcdctgsE/9LSkBLg/+JXV4zSkil8hE7vF2Qp
-         ar6Q==
+        bh=DfVsK4/eNAzlqgTkif/k+3bkJqkVsqeG8riFv7GGWx4=;
+        b=BqqbRfW6nxSQG3cymW7yNa0PeYowBginEK9NyhpXgnO8/hBtGpearvWMlln3PHtTHw
+         8ZybP9jwoy9y5dLzZq7+/7ZwVV6nshgJsuEasoADRnQlH6CRDbs0Mhhq5LeFDH1IRMsj
+         uFSLMnTRtwZ/XVf+0TnojBpg369/7KehsGkbQOJHKFYSvROuvCx6mnihIiOjqTUHrmyV
+         qLOf+ajHjnFBiPrQZRZGIlbKK89KF7y+XFkjeu8oURSzLtb+P4jDznCNNrdcqPQnll6k
+         C4OGzyRP5hAPCPJxvXjqodarzWpYON5QEsOLWATF1zzwHHgrdXKEQNWHHVB+7KJZdjOL
+         FLyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786059433; x=1786664233;
+        d=1e100.net; s=20251104; t=1786059436; x=1786664236;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=rt852L9wHdv0bDRlKJAMITX85TrVIH1oxytQu/w6xUg=;
-        b=sgWplssjBpaj2R/ycjtwgJFGwilponpBH5eW4hFLYU91m7YbOk47ooP+iY4FGMP0nk
-         Xx3+lE0KEXrruohMjXeJWGH1f7zOhROc3wgJLk64XJ7eWI4ujeNbjfwshkxgmV5BKQgX
-         fp5KWXtq0xy4XYOwXFcTehmMnh6Ujrp7o+LXXRXuFaEUM+n0p4Mq77FCUWraZn8DWbW0
-         iFaR4l8mEIXQiaBARCHDKSH1LMhZmCaiHJhGgM2BRnSJB7jRgRvqTM31IRH7FD9878me
-         xzIwYnhjIdP6/QP2vYrqrPfd2moQtlXqN3DMoEidh6xBUSmAXa7eL4gOdg2QguNC4h8X
-         hIPg==
-X-Forwarded-Encrypted: i=1; AHgh+Roy16nhXkIPuziTbZ5n5sJhLks9wuBBidv9RF3si+tB4MQgWMI8HfoBTYalK3jXYEpdS7M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz87ppxlg1GHckfrh2iaQVD0NH3GQXSe+956Phd49jWBXHSrnqu
-	z3EHUK153j4K3az3y9R6LnrE52oTAfteMNLpUXoPgVf4DhPwgsnokFdI1qThBNfH/LLUote7Q0S
-	XiUVnhQ==
-X-Received: from pgkd23.prod.google.com ([2002:a63:f257:0:b0:cbe:7907:901])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d52c:b0:3c3:812a:2198
- with SMTP id adf61e73a8af0-3cb85df190amr24070365637.4.1786059433092; Thu, 06
- Aug 2026 16:37:13 -0700 (PDT)
+        bh=DfVsK4/eNAzlqgTkif/k+3bkJqkVsqeG8riFv7GGWx4=;
+        b=ToT+/zHQl1ql+vRpC6H/zLJY0Mirp4esfQoZdWaIoUglJlM8AEAt1gEPWLG4B5jWtw
+         1hJtE4zFkJB0UMI3r2dUTUkJlqobK7QcQVpbMgwnn3ZIiwaX4RXec3kKwVBRVIQoOnJ9
+         FEDwcAtuEpZn31jaogh+2GB/FQ1iuvidynLuRniOyBdwHx5lbkACItS+kSAGKOqv+zP8
+         H3w7m64xABzpfrwkpJkRJClmk0uGieuuDuxw3kiXKGMNZAFYItqUkTWo/2gWzM2fXH9H
+         Xs+2XiZuq9mhCx4eXwEz+yw6CsQNl9Oae5MtgqD/1KEfDmGWHykQVd8gawpnJtq1em06
+         R2fA==
+X-Forwarded-Encrypted: i=1; AHgh+Rqkgaw0FRupC03l/SZN6cdWY0Q4pQT6JszYKi9NqF8b4sM3brroTq8aaeyjocqJS7j44+Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLK/j2AeTpchDZjdptm6Prq+ZiqUrtuZ6/M9HubFk1LxJU2rds
+	PQ0tMF979SHAYZQDyyeL3AqQbkcC7kS1P4CUs+4c1SwzydDpHVoWmAEEe7i1txIaI0wkHtQWZvN
+	HsR7jBA==
+X-Received: from pfbko19.prod.google.com ([2002:a05:6a00:4613:b0:847:926b:dc17])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1886:b0:847:99a7:c751
+ with SMTP id d2e1a72fcca58-84f2e05d02dmr18083285b3a.25.1786059435385; Thu, 06
+ Aug 2026 16:37:15 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  6 Aug 2026 16:35:56 -0700
+Date: Thu,  6 Aug 2026 16:35:58 -0700
 In-Reply-To: <20260806233609.212337-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -61,9 +61,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260806233609.212337-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260806233609.212337-40-seanjc@google.com>
-Subject: [PATCH v6 39/51] x86/pvclock: Mark setup helpers and related various
- as __init/__ro_after_init
+Message-ID: <20260806233609.212337-42-seanjc@google.com>
+Subject: [PATCH v6 41/51] x86/kvmclock: Refactor handling of
+ PVCLOCK_TSC_STABLE_BIT during kvmclock_init()
 From: Sean Christopherson <seanjc@google.com>
 To: Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
 	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -86,43 +86,57 @@ Cc: Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Thomas Gleixner <tglx@linutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 
-Now that Xen PV clock and kvmclock explicitly do setup only during init,
-tag the common PV clock flags/vsyscall variables and their mutators with
-__init.
+Clean up the setting of PVCLOCK_TSC_STABLE_BIT during kvmclock init to
+make it somewhat obvious that pvclock_read_flags() must be called *after*
+pvclock_set_flags().
+
+Note, in theory, a different PV clock could have set PVCLOCK_TSC_STABLE_BIT
+in the supported flags, i.e. reading flags only if
+KVM_FEATURE_CLOCKSOURCE_STABLE_BIT is set could very, very theoretically
+result in a change in behavior.  In practice, the kernel only supports a
+single PV clock.
 
 Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kernel/pvclock.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kernel/kvmclock.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/pvclock.c b/arch/x86/kernel/pvclock.c
-index b3f81379c2fc..a51adce67f92 100644
---- a/arch/x86/kernel/pvclock.c
-+++ b/arch/x86/kernel/pvclock.c
-@@ -16,10 +16,10 @@
- #include <asm/pvclock.h>
- #include <asm/vgtod.h>
+diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
+index 5220d205abc7..61d4d943fe74 100644
+--- a/arch/x86/kernel/kvmclock.c
++++ b/arch/x86/kernel/kvmclock.c
+@@ -327,7 +327,7 @@ static __init void kvm_sched_clock_init(bool stable)
  
--static u8 valid_flags __read_mostly = 0;
--static struct pvclock_vsyscall_time_info *pvti_cpu0_va __read_mostly;
-+static u8 valid_flags __ro_after_init = 0;
-+static struct pvclock_vsyscall_time_info *pvti_cpu0_va __ro_after_init;
- 
--void pvclock_set_flags(u8 flags)
-+void __init pvclock_set_flags(u8 flags)
+ void __init kvmclock_init(bool prefer_tsc)
  {
- 	valid_flags = flags;
- }
-@@ -153,7 +153,7 @@ void pvclock_read_wallclock(struct pvclock_wall_clock *wall_clock,
- 	set_normalized_timespec64(ts, now.tv_sec, now.tv_nsec);
- }
+-	u8 flags;
++	bool stable = false;
  
--void pvclock_set_pvti_cpu0_va(struct pvclock_vsyscall_time_info *pvti)
-+void __init pvclock_set_pvti_cpu0_va(struct pvclock_vsyscall_time_info *pvti)
- {
- 	WARN_ON(vclock_was_used(VDSO_CLOCKMODE_PVCLOCK));
- 	pvti_cpu0_va = pvti;
+ 	if (!kvm_para_available() || !kvmclock)
+ 		return;
+@@ -354,11 +354,18 @@ void __init kvmclock_init(bool prefer_tsc)
+ 	kvm_register_clock("primary cpu clock");
+ 	pvclock_set_pvti_cpu0_va(hv_clock_boot);
+ 
+-	if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE_STABLE_BIT))
++	if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE_STABLE_BIT)) {
+ 		pvclock_set_flags(PVCLOCK_TSC_STABLE_BIT);
+ 
+-	flags = pvclock_read_flags(&hv_clock_boot[0].pvti);
+-	kvm_sched_clock_init(flags & PVCLOCK_TSC_STABLE_BIT);
++		/*
++		 * Check if the clock is stable *after* marking TSC_STABLE as a
++		 * valid flag.
++		 */
++		stable = pvclock_read_flags(&hv_clock_boot[0].pvti) &
++			 PVCLOCK_TSC_STABLE_BIT;
++	}
++
++	kvm_sched_clock_init(stable);
+ 
+ 	if (!x86_init.hyper.get_tsc_khz)
+ 		x86_init.hyper.get_tsc_khz = kvmclock_get_tsc_khz;
 -- 
 2.55.0.679.g6767b8d81c-goog
 
