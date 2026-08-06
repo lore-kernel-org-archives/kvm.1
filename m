@@ -1,240 +1,259 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5ED3BB69F
-	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 14:51:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2439533AD8C;
+	Thu,  6 Aug 2026 14:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786027883; cv=none; b=jfOqS2CuixDpOdyiw2QS3yDLVVmbouj1ZvrV5RIN3bVQbqzC0s4B9U6WfmKLOMiMkwFja3IoekVXfoSlKsqNd0/FRu2m60SEGf0mqbubulxE8l6sC3VF+p4aO46az8bWLQPyj1xm66uWwxGs4pMQqFcDCEp5ed9EfBOx7Q2iHts=
+	t=1786028274; cv=none; b=ZGmMA+sjdEhMu+EwQ5sUUwcqeXP4uzplVt7x5wF3A85/j7k6Wsp4ulLhifjPg4dBQK0Dv8CekoVuYEYYQK5+/z7yfmJ/8M/k928AvG5YLwIWR4BJuI+P32V9EwSM9rNDYobn6kb69UeoiuE+6o5snYtmOMcMJW7YWqQnI0pdMNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786027883; c=relaxed/simple;
-	bh=JTn9s6gM2szvKxoPm3/ZyZ77FIqrcsDh6La/UymsTEY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jpZYsjpmE2XdwnePGrHlVfqOqp2DwYj1yHBizEC6eQ2IGNDgqSQ4xCY1DUlfZ2lYa0YZ770moqR0Vgxe3ExtJsxM/WxhU7g8mz1dG6cVuXRF/6/qNJiK8rcObRG7V9pzZOa+pag6156GyBKHjELYDpYnu/vcITiSlu4D3cgv/2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=i9jVNOxj; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qoAviZB6; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786028274; c=relaxed/simple;
+	bh=nlYYNOtgm4XbL5atya/GGVjdnpJ8VTOr0r+iSIDsMqc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tGrXBUj71yrMW3gOQ8CbkZffFJxxLooVmyaTuXZfF56DErxInmM+TJY1tPZaZMYvTLXrNzFFf/9oFIrrvYt2s8dPi9ugmVEqavd4rqFC6f2Jf5a2Oex2qWeYs6iKGk9B9PkzrEWnDT+eu5wrT2yFYsPVZmBQcfdkukK+758Nshw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=dLPxqC82; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="i9jVNOxj";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qoAviZB6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786027880;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=9UBsUkDYuwCc8pkolF5HK4/LrXTfhHoQ32/qQ5yuXRI=;
-	b=i9jVNOxjJDZQ+UuRoAtOHo3WZESVVVmupSDrIKwKmcYe4qLcvjN8wO4ColH7XHiBL+0BGL
-	cFhoXNknEa699a3JxExb6SnyrvHGw2a3jS8H6jIwsM0vvAYAVFhgjYqWsodBLnBJ1HYorz
-	rsFs0bmjLEH19nkia7rN4HyilmZG4E8=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-637-Gx2QD76hNA6W1qWVj2x4kg-1; Thu, 06 Aug 2026 10:51:19 -0400
-X-MC-Unique: Gx2QD76hNA6W1qWVj2x4kg-1
-X-Mimecast-MFC-AGG-ID: Gx2QD76hNA6W1qWVj2x4kg_1786027878
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-473ac08a6a4so1600711f8f.0
-        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 07:51:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786027878; x=1786632678; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9UBsUkDYuwCc8pkolF5HK4/LrXTfhHoQ32/qQ5yuXRI=;
-        b=qoAviZB63SiKNh32AsTrBK30RProA97/S5XuhvPGgWwsvADzdadOQBPln79l7tBCKt
-         Uk8CThE3iRWIxsGVYuoL3m8j5WOtwjspgTfITb4oUM8Z0IqCjvW1NOcFvo/QU1/tVWrG
-         vjik7pEB7nvvqJw6BchaxLRxCwd41trWGXPRhXoIe7XsVXG35lB+f68JU6JRAx4I8tuj
-         559MhpasJvpa/AbKLgtZjEXY8gbezHh/x1jkHKiBSOG2BXx3yJv4HrqiKaLKn8w2/14F
-         6qwOelGv8gwwztEX2L9gPNSxQh3ftj0QOokOg4SMuZd71k+2G/GEKeLTV+lOn9vfaHiV
-         vgWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786027878; x=1786632678;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9UBsUkDYuwCc8pkolF5HK4/LrXTfhHoQ32/qQ5yuXRI=;
-        b=TDFaHwq7MenUDXwi9yQYgs8qbS/VmYFYqFiQVKEpy7EJP2i8W77kmSZzLHG7kf1Wlp
-         sy0uH2GKjU6oUtjO1i00AL16ByJoDkVk+2EiOKFGaOVB+pYkmpIUn1o1XbE6NOxEgqeU
-         LeOFisMUuju5gS38b9o1GRnbKQZazslnPfQy0/0jUBsliccunZWBal0g/6SRMZTml5zV
-         X+Q7CYoOGT5XFUrlTNd7ycpXKNSFan6FbkisoaLVCKpzKZut98ikkfvoXlMUg3fam5Ad
-         DPBcfePYB8WF9ZKDmEalrZQi3qGlrDlgHmiwPJlETd3e4hnhR6CO75lhie6pp/+tyLPo
-         R6SQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rrj/figc7JhVcLAw+2UZlCro2qGoou+wP7N3xL8FAQggxXEkXvEdC762SSfVLUO1tQggTU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuorN/G787Q/rhWrhsUT9quvu5O7VfP4T+gEh961ayGO/Zx4Op
-	mElMlLhK4r+pQ5KkWwwH7n6ueIJh8O+/1kwd2CjXlHaDJiBi6nGHBK2XOEl43vsHOADEpO5MKMg
-	7TP5aufW7k93D6A3QdbZdSmSPGz4zUTF435CgIfYIuWKs/+9+maHu0sEC2beqcQ==
-X-Gm-Gg: AR+sD10iACK4ZGa0ULRAG5bWp+gQBV7kY/35NGpQFBXoPuJGTuh305KqZXOnmb7s/gP
-	PUWr9iTKzo64sWJry2YKlRUrLTvxs4dXDn/eB4pNG/wTDK0mVHfPq0kd33l7jUK1S+J+9Fnzuho
-	11HKzb6LUNyLrJ9kBgAz4s3eLoJZ6nU9y6PsmCRtKWYmo1OZdLgusQ1WuGnYa/k4dOXYa3fI08l
-	BD1XPKy/MIjSn2aXR3PoUG/k3xZZWt6XqUHfaVUSrOzuQBIc4ZwJXyROhN+AEqV/3TCtcMsTJ5V
-	0ADOTrIkEczxksnlazd+2JhrAVi1FEw772sae090pv+SglUj+bKAfwOMFi1EY7jOlmwfZ7Ao51S
-	XVI5xi2Aj7YAbJAfyRQyOy5iVGhctU0A7ZWwMLX0hgo+6k33YcbLV3Kad+YRS7ydUGtaT/xq58M
-	q1+G4=
-X-Received: by 2002:a05:6000:60f:b0:47f:80d1:be0a with SMTP id ffacd0b85a97d-47fec634bbcmr24302548f8f.14.1786027878092;
-        Thu, 06 Aug 2026 07:51:18 -0700 (PDT)
-X-Received: by 2002:a05:6000:60f:b0:47f:80d1:be0a with SMTP id ffacd0b85a97d-47fec634bbcmr24302435f8f.14.1786027877611;
-        Thu, 06 Aug 2026 07:51:17 -0700 (PDT)
-Received: from [192.168.10.48] ([151.95.34.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47ff7b28729sm7648431f8f.32.2026.08.06.07.51.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 07:51:17 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: seanjc@google.com,
-	pgonda@google.com,
-	thomas.lendacky@amd.com,
-	stable@vger.kernel.org,
-	Shen Yongchao <grayhat@foxmail.com>
-Subject: [PATCH] KVM: SVM: Serialize accesses to the owner and mirror list with separate lock
-Date: Thu,  6 Aug 2026 16:51:15 +0200
-Message-ID: <20260806145115.2441519-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="dLPxqC82"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 676EnKXm2964507;
+	Thu, 6 Aug 2026 14:57:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=X9ZCWo
+	FyjqoTs1Wdrr0tb85vfPjmxaw5shuuiJIRD9c=; b=dLPxqC82CNPm8yAXvvjdHV
+	EXeLsk1Q70u12l5ZtG7B++FsNwYiiMA5hcweezFYsvXzPTnSYUDBcx0CjFz0BJV4
+	6JGVCNfxV0OZmEGYbm4YmIP0DCiZE70PjTmDFVYkVvSp4jXCf/7FdU1KOtBe71aR
+	F+EsPufZZaqTBC35Qo06cmdV5CU5VAO5CWfHkLnp8f/bMK7ajxD0FuJmFvz9njnp
+	r4SfWk7mrm0sLfIwpIXeotDbd1V/uzWqbvTze6FaIKJXP0Pcv2UgntNjMecT/kmp
+	RJi5/52BlBqrt9E0Acyo5zrhNS7iHYq8/2VVKaDpEA00keJyNnRhf5Dm9jm/P7Ng
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8h58v8b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 14:57:30 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 676EugwZ003358;
+	Thu, 6 Aug 2026 14:57:29 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmhkj0q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 14:57:29 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 676EvPfR52035930
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Aug 2026 14:57:25 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3E25C2004B;
+	Thu,  6 Aug 2026 14:57:25 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6D90220043;
+	Thu,  6 Aug 2026 14:57:22 +0000 (GMT)
+Received: from fedora (unknown [9.5.7.39])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  6 Aug 2026 14:57:22 +0000 (GMT)
+Date: Thu, 6 Aug 2026 20:28:11 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Ritesh Harjani <ritesh.list@gmail.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v6 0/4] KVM: PPC: Expose CPU compatibility modes for
+ nested guests
+Message-ID: <20260806195943.1fa6cacd-be-amachhiw@linux.ibm.com>
+Mail-Followup-To: Ritesh Harjani <ritesh.list@gmail.com>, 
+	linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Vaibhav Jain <vaibhav@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20260804180705.59160-1-amachhiw@linux.ibm.com>
+ <tsp8l8cw.ritesh.list@gmail.com>
+ <20260806104222.7e435b28-8d-amachhiw@linux.ibm.com>
+ <mruzl7qc.ritesh.list@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <mruzl7qc.ritesh.list@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDExNSBTYWx0ZWRfXyb8VSYwFs6jy
+ CvdE88yiGqnbT0NJ3ZS/jf+dZQZ4bFs00IiqXhiMERgghrSpP1xwpOrGC/44dSwKC+H3Bie75DM
+ CpFcnXKh2DaIbUMV82pbfuTVjuMhdfc=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDExNSBTYWx0ZWRfX7AasYGKtMULE
+ wNZ03bxfJgQaD6K13xy9P5TuotuqHOK6Fnpv2NfK7/9osndLEa/TIL/0ftJHqaMZqpHp0qq6gKd
+ QUxAtVoL2KRrVUNUyBDuI/uwEwVK9ZTh2+Blviq9ePhASgW/kZmxtDoCTDRB2/dJAYoa3T9lGIK
+ QLPkd46QwZ9liv57u05YL4bw3DVewT3A1UugWdA7Oigggcm3FqRc7S5EDQg+kLAzLITLkFjHKDU
+ kCBf0eVgytcwDP3OJq4zXb2Lm7VwWYl4DUyUmwPX7VpjxYl2NeFhkq7NZ1LdPpmh7ZWH5EYG+g/
+ 5Df5jZYBHsa1IVSQS3iEPVIfmAYfmrL0oekeE0xF3gYGDngd0W8q0pn5hjcw/rkMwUjXb8yh4fg
+ 4W6r3afwBczoH3eOKd2XTBJiQVNfdfH/RQTvrR0hJRTuNC4oycimtmUR5kiTfeiJXdxT2U/wXh7
+ jQOtRc/+AIUDcv7I7Pw==
+X-Authority-Analysis: v=2.4 cv=SI1ykuvH c=1 sm=1 tr=0 ts=6a74a0db cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=a07hoUeaLZJ5nhunpkIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: ACYYhBt_gOpV2mwcDM734kjCwx89R1Zm
+X-Proofpoint-GUID: YeR6JNO4hYzHddb9dOpKTjsRYLFqsOp9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-06_01,2026-08-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0
+ phishscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608060115
 
-Interaction between KVM_CAP_VM_MOVE_ENC_CONTEXT_FROM and
-KVM_CAP_VM_COPY_ENC_CONTEXT_FROM can cause two separate issues:
+On 2026/08/06 06:35 PM, Ritesh Harjani wrote:
+> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
+> 
+> > Hi Ritesh,
+> >
+> > Thanks for taking a look. Please find my response inline.
+> >
+> > On 2026/08/06 12:09 AM, Ritesh Harjani wrote:
+> >> 
+> >> Hi Amit,
+> >> 
+> >> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
+> >> 
+> >> > On POWER systems, newer processor generations can operate in compatibility
+> >> > modes corresponding to earlier generations (e.g., a Power11 system running
+> >> > in Power10 compatibility mode). In such cases, the effective CPU level
+> >> > exposed to guests differs from the physical processor generation.
+> >> >
+> >> > This creates a problem for nested virtualization. When booting a nested KVM
+> >> > guest (L2) inside a host KVM guest (L1) running in a compatibility mode,
+> >> > userspace (e.g., QEMU) may derive the CPU model from the raw hardware PVR
+> >> > and attempt to configure the nested guest accordingly. However, the L1
+> >> > partition is constrained by the compatibility level negotiated with the
+> >> > hypervisor (L0), and requests exceeding that level are rejected, leading to
+> >> > guest boot failures such as:
+> >> >
+> >> >   KVM-NESTEDv2: couldn't set guest wide elements
+> >> >
+> >> > This series provides a mechanism for userspace to query the effective CPU
+> >> > compatibility modes supported by the host, so it can select an appropriate
+> >> > CPU model for nested guests.
+> >> >
+> >> > To achieve this, the series introduces a new KVM capability and ioctl
+> >> > (KVM_CAP_PPC_COMPAT_CAPS / KVM_PPC_GET_COMPAT_CAPS) that expose the
+> >> > compatibility modes supported by the host.
+> >> >
+> >> 
+> >> Sorry, but I am somehow not convinced on whether we need all of this
+> >> machinary just to get these 3 bits of information, which we are
+> >> returning today.
+> >> 
+> >> Since KVM_CHECK_EXTENSION can already return an int, so why can't we use
+> >> KVM_CAP_PPC_COMPAT_CAPS itself and return the bitmap of supported compat
+> >> modes to the user?
+> >> Say if the cap is not supported, we can return 0, otherwise we can
+> >> return the bitmap of supported compat modes. This will easily allow us
+> >> to use 31-bits which as I see would be hardly a problem in the near
+> >> future. In the future if it grows - we can always use KVM_CAP_PPC_COMPAT_CAPS2.
+> >> 
+> >> This should reduce the code complexity both in the kernel and
+> >> userspace and we don't even need a new ioctl then.
+> >
+> > Thanks for the suggestion. I considered this approach
+> 
+> Then we should have brought that up early on during the design
+> discussion. But for the sake of discussion let's call this as
+> approach-2.
+> 
+> > but would like to
+> > go with a dedicated ioctl for the following reasons:
+> >
+> 
+> > 1. Intended semantics: The KVM API documentation states:
+> >
+> >    ..kvm defines extension identifiers and a facility to query
+> >    whether a particular extension identifier is available.  If it is, a
+> >    set of ioctls is available for application use.
+> >
+> >    [...]
+> >
+> >    KVM defines many constants of the form KVM_CAP_*, each corresponding
+> >    to a set of functionality provided by one or more ioctls. Availability
+> >    of these capabilities can be checked with KVM_CHECK_EXTENSION.
+> >
+> >    The intended role of KVM_CAP_* is to signal ioctl availability, not
+> >    to serve as a data retrieval mechanism itself.
+> 
+> That's not entirely true. We do return data as part of check extension
+> for e.g. for getting the SMT modes check KVM_CAP_PPC_SMT_POSSIBLE.
+> 
+> >
+> >    You may take a look at KVM_CAP_PPC_GET_CPU_CHAR for instance.
+> >
+> > 2. Return type constraint: KVM_CHECK_EXTENSION returns a signed 32-bit int. The
+> >    capability bits are defined as (1ULL << 62), (1ULL << 61), and (1ULL << 60) —
+> >    64-bit values that cannot fit in a 32-bit return. Renumbering them to small
+> >    integers would be a UAPI change and would lose alignment with the
+> 
+> There is no _change_ in the UAPI so far. This is the patch which is
+> defining that in the first place.
+> 
+> >    H_GUEST_CAP_* values from the hypervisor ABI.
+> 
+> No please. Those are 2 different ABIs and there is no need to set a hard
+> dependency among the two.
+> 
+> >
+> > 3. Extensibility: The struct-based approach with the size field provides clean
+> >    forward and backward ABI versioning via copy_struct_from/to_user(), without
+> >    needing a KVM_CAP_PPC_COMPAT_CAPS2 in the future.
+> >
+> 
+> This only make sense if we really have a usecase already in mind which
+> you are planning to extend it for. Otherwise, IMO, this is a lot of
+> machinary and I think we should consider the simpler approach.
+> 
+> IMO - I think approach-2 is a much simpler for this usecase. I don't see
+> any valid reason on why we should not do that instead. We don't need an
+> extra ioctl and all the struct machinary along with that just for
+> returning a bitmask. The existing check extension ioctl can be
+> easily used for this purpose.
+> 
+> Would it be possible for you to give, approach-2 a try? Do you see any
+> geniunine roadblock or limitation with that?
 
-- in sev_migrate_from(), when the destination KVM is a mirror, the mirror
-  entry is moved from the source's list to the owner's mirror_vms list,
-  without holding the owner's lock unlike other writers of the owner's
-  mirror list (sev_vm_copy_enc_context_from(), sev_vm_destroy()).
-  A concurrent COPY or destroy can race with sev_migrate_from() and
-  corrupt the list.
+As discussed, one additional and deeper technical reason is that the
+Power Hypervisor (PHYP) returns a 64-bit capabilities mask as part of
+the H_GUEST_GET_CAPABILITIES hcall (defined in the PAPR specification).
+Our KVM_PPC_COMPAT_CAP_* bits are deliberately aligned to this 64-bit
+mask so that the cached nested_capabilities value can be used directly
+without any translation.
 
-- In sev_vm_destroy(), the *owner* is still active and could receive
-  concurrently a KVM_CAP_VM_MOVE_ENC_CONTEXT_FROM that causes
-  sev->enc_context_owner to change.  In this case the incorrect VM
-  receives kvm_put_kvm().
+The PAPR spec reserves bits beyond the current processor modes and
+capability flags for future capabilities. As new processor generations
+arrive, some of those reserved bits may become relevant for them — at
+which point a 32-bit return from KVM_CHECK_EXTENSION would be
+insufficient, forcing a KVM_CAP_PPC_COMPAT_CAPS2.
 
-The second issue needs particular care because the owner could disappear
-altogether (even though the race window is impossibly small) between
-reading it and locking it.  There is thus no way to perform the checks
-under the owner lock without putting struct kvm under SLAB_TYPESAFE_BY_RCU
-(which would allow kvm_get_kvm_safe() under RCU critical section).
+The struct-based ioctl avoids this problem cleanly.
 
-It is much simpler to just use a global lock, since the critical
-sections are so small and the new lock is always a leaf lock.
+Thanks,
+Amit
 
-Fixes: b2125513dfc0 ("KVM: SEV: Allow SEV intra-host migration of VM with mirrors")
-Cc: stable@vger.kernel.org
-Reported-by: Shen Yongchao <grayhat@foxmail.com>
-Link: https://lore.kernel.org/kvm/tencent_625C0F42824E542C72B34733392AF2C49709@qq.com/
-Link: https://lore.kernel.org/kvm/tencent_DDC4E4352EC91CAC05A9A8F4E55E8C96730A@qq.com/
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/svm/sev.c | 34 +++++++++++++++++++++++++---------
- arch/x86/kvm/svm/svm.h |  1 +
- 2 files changed, 26 insertions(+), 9 deletions(-)
-
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 944aaea6501f..0f0ea7896af5 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -97,6 +97,8 @@ static u64 sev_supported_vmsa_features __ro_after_init;
- static u8 sev_enc_bit;
- static DECLARE_RWSEM(sev_deactivate_lock);
- static DEFINE_MUTEX(sev_bitmap_lock);
-+/* Protects kvm_sev_info's enc_context_owner, mirror_vms and mirror_entry.  */
-+static DEFINE_MUTEX(sev_mirror_lock);
- unsigned int max_sev_asid;
- static unsigned int min_sev_asid;
- static unsigned int max_sev_es_asid;
-@@ -2018,7 +2020,6 @@ static void sev_migrate_from(struct kvm *dst_kvm, struct kvm *src_kvm)
- 	dst->asid = src->asid;
- 	dst->handle = src->handle;
- 	dst->pages_locked = src->pages_locked;
--	dst->enc_context_owner = src->enc_context_owner;
- 	dst->es_active = src->es_active;
- 	dst->vmsa_features = src->vmsa_features;
- 
-@@ -2026,11 +2027,12 @@ static void sev_migrate_from(struct kvm *dst_kvm, struct kvm *src_kvm)
- 	src->active = false;
- 	src->handle = 0;
- 	src->pages_locked = 0;
--	src->enc_context_owner = NULL;
- 	src->es_active = false;
- 
- 	list_cut_before(&dst->regions_list, &src->regions_list, &src->regions_list);
- 
-+	mutex_lock(&sev_mirror_lock);
-+
- 	/*
- 	 * If this VM has mirrors, "transfer" each mirror's refcount of the
- 	 * source to the destination (this KVM).  The caller holds a reference
-@@ -2047,12 +2049,15 @@ static void sev_migrate_from(struct kvm *dst_kvm, struct kvm *src_kvm)
- 	 * If this VM is a mirror, remove the old mirror from the owners list
- 	 * and add the new mirror to the list.
- 	 */
--	if (is_mirroring_enc_context(dst_kvm)) {
--		struct kvm_sev_info *owner_sev_info = to_kvm_sev_info(dst->enc_context_owner);
-+	if (is_mirroring_enc_context(src_kvm)) {
-+		struct kvm_sev_info *owner_sev_info = to_kvm_sev_info(src->enc_context_owner);
- 
-+		dst->enc_context_owner = src->enc_context_owner;
-+		src->enc_context_owner = NULL;
- 		list_del(&src->mirror_entry);
- 		list_add_tail(&dst->mirror_entry, &owner_sev_info->mirror_vms);
- 	}
-+	mutex_unlock(&sev_mirror_lock);
- 
- 	kvm_for_each_vcpu(i, dst_vcpu, dst_kvm) {
- 		dst_svm = to_svm(dst_vcpu);
-@@ -2871,11 +2876,14 @@ int sev_vm_copy_enc_context_from(struct kvm *kvm, unsigned int source_fd)
- 	 * disappear until we're done with it
- 	 */
- 	source_sev = to_kvm_sev_info(source_kvm);
--	kvm_get_kvm(source_kvm);
--	list_add_tail(&mirror_sev->mirror_entry, &source_sev->mirror_vms);
- 
- 	/* Set enc_context_owner and copy its encryption context over */
-+	mutex_lock(&sev_mirror_lock);
-+	kvm_get_kvm(source_kvm);
-+	list_add_tail(&mirror_sev->mirror_entry, &source_sev->mirror_vms);
- 	mirror_sev->enc_context_owner = source_kvm;
-+	mutex_unlock(&sev_mirror_lock);
-+
- 	mirror_sev->active = true;
- 	mirror_sev->asid = source_sev->asid;
- 	mirror_sev->fd = source_sev->fd;
-@@ -2963,11 +2971,19 @@ void sev_vm_destroy(struct kvm *kvm)
- 	 * Note, mirror VMs don't support registering encrypted regions.
- 	 */
- 	if (is_mirroring_enc_context(kvm)) {
--		struct kvm *owner_kvm = sev->enc_context_owner;
-+		struct kvm *owner_kvm;
- 
--		mutex_lock(&owner_kvm->lock);
-+		mutex_lock(&sev_mirror_lock);
-+		owner_kvm = sev->enc_context_owner;
- 		list_del(&sev->mirror_entry);
--		mutex_unlock(&owner_kvm->lock);
-+		sev->enc_context_owner = NULL;
-+
-+		/*
-+		 * The reference to owner_kvm cannot move after sev_mirror_lock is
-+		 * released.  Release it before kvm_put_kvm() so that owner_kvm is
-+		 * never destroyed inside sev_mirror_lock.
-+		 */
-+		mutex_unlock(&sev_mirror_lock);
- 		kvm_put_kvm(owner_kvm);
- 		return;
- 	}
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 716be21fba33..d63e5878988a 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -109,6 +109,7 @@ struct kvm_sev_info {
- 	u64 ap_jump_table;	/* SEV-ES AP Jump Table address */
- 	u64 vmsa_features;
- 	u16 ghcb_version;	/* Highest guest GHCB protocol version allowed */
-+	/* The three fields below are protected by sev_mirror_lock */
- 	struct kvm *enc_context_owner; /* Owner of copied encryption context */
- 	struct list_head mirror_vms; /* List of VMs mirroring */
- 	struct list_head mirror_entry; /* Use as a list entry of mirrors */
--- 
-2.55.0
-
+> 
+> -ritesh
+> 
