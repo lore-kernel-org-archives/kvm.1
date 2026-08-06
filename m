@@ -1,70 +1,75 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1333A83B1;
-	Thu,  6 Aug 2026 14:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5F7456DFB
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 15:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786028325; cv=none; b=UaV0dExHvnK7uq4JhhNGWDbhm4Zj3YBxvA2tZHqQY2KPmANYF9KYxETe1ILFWDmFV6Xe6xs643HJJ2y5FesBMqCLP65LHD8Lx/UryGhHSs2fbFj6KiBb4FHrwIHS/r3v1yuOvRKLkUgkw9//EJmgjZTSi+g1+Upku73erzUe9fo=
+	t=1786028635; cv=none; b=WNiqbrB25S5NDVr0ipQqmsR3zz1PNMOO0BlxScr7F3hoyLh03oCS3qEDVhXVMtqIxnFKlCLDBrQz6xHaCvje6CE4SZiuSZb3dCGo11YrOH/HJ2mBVtyrxK0PFDRqQ8OAz2rMn2La2dLQbHyeUEsbD2doxHmclZ19v+lYdwGRRno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786028325; c=relaxed/simple;
-	bh=gSthjE0XukK7pCeJp3D3pZ4bI5+3ufEHoKqgemeESPE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TClShRSvcC5aEP/rCmBQC/Whw+YKdL7woVJ7PBO+SJA/ag4syNaQtH6R4o9WhlplBWBjLZ1fLzWjtG/GDHRq4cAcURRW9E9C0hd8lddhFD6sSyaZWXXQxMvKXEP+2aHcffFdDxqQTpMDKwr1jE8agGEsphPG0Jk1RbLcBOvbUt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=T7WQXojL; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786028635; c=relaxed/simple;
+	bh=cYbc1CQoQc5pfYhgLv/MYSip5jRcSrSImN64FkQfEWk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kifswnt18XzTgPnk+4qkHMz3xzVdB/zAQSfAFFwbaJTaJckC/pu0pRLkJkn7P5JsBKXol2Z1+w9cWRICCIYUhLDWpmZeIMK/f4X5lWY+63Wdxv+LsyBl2slIMS0hW87b/9NfHNPsotFj0nIQI6FnHUJLFpuayRBQmLG63wrcedY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iD59FJdt; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="T7WQXojL"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 676EnvlK2867500;
-	Thu, 6 Aug 2026 14:58:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=1YzAvVFsl8fwxzuBr6WYYJDA/zCx1s6oYeY28kgGU
-	UU=; b=T7WQXojL8ddx8EdHpGp1hqSucuuIV5HswlqJYe4G2rOAvfv1zggMna5Uv
-	tZWPiy/vjBz3WUOHHvF6TPkPgLX8mjYhqGFpZxxDK5TFHqo1Y7+mjwCm9uLjXznk
-	D2sOAB8yZC8ewruTPixOp/nbPKRyS2KtMyE2jtLiTt80j9mDBGaQMdRY5wgQE6BS
-	VXWvOx9KB2cnba4R60ajWHiLBqPpb7IctZNMuXXhvAD/AU0mRP7lX9oB3iv3Xiir
-	93JiuR32SD0ySqsb+4SrjjArBYoOiFVA/H4VM30lNIV2UEhvpw23BP/ZRJejfrml
-	umeVKVyGV7Obiw0A1I4QfxIKiphSg==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs77ggbks-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 14:58:40 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 676Eugwp003358;
-	Thu, 6 Aug 2026 14:58:40 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmhkj5v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 14:58:40 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 676EwcUn15205090
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Aug 2026 14:58:39 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B590958067;
-	Thu,  6 Aug 2026 14:58:38 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C929258059;
-	Thu,  6 Aug 2026 14:58:36 +0000 (GMT)
-Received: from b35lp69.lnxne.boe (unknown [9.87.84.240])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  6 Aug 2026 14:58:36 +0000 (GMT)
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-To: Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: KVM <kvm@vger.kernel.org>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>
-Subject: [PATCH v2] KVM: s390: Fix memory corruption by not reinjecting CK machine checks
-Date: Thu,  6 Aug 2026 16:58:35 +0200
-Message-ID: <20260806145835.31818-1-borntraeger@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iD59FJdt"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8453427d3f4so2713732b3a.3
+        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 08:03:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786028634; x=1786633434; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uJS+V1CTVjT7mHslf1lQhCi1CZlnPDrIe8kNgbgFr+I=;
+        b=iD59FJdtqQPsbHxMZmzV4/4lrhB8zzIiu89v9R7PF4eug1Z9Ksth50eFrXX5CfoA4I
+         lRDJ3r8A8fxAlTycxueiLAx1CQrpJXUmjWYeyIFuv64BOXKksN5hqDYgG5qfNEcyNMay
+         pHpHTojeoRUOo1bmhxbSq6aQfiD/NdaInvcLNnhKo7fwQklBCqzTZhJfroSusClRfH1T
+         dC8ZkGxHxdaVuSO0od2xaPpgzZMwhMl4UjXfCntWY1QOatPlsvVCio8EVaYFVb5fVNFS
+         zoJ9PY12sO9HWx9f2rWe1wQgTJRUiSbXi93t+Z7evs+gUPCq/AYoIJQ6Zpei64Ou5+lQ
+         3avQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786028634; x=1786633434;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uJS+V1CTVjT7mHslf1lQhCi1CZlnPDrIe8kNgbgFr+I=;
+        b=JKWfR+iKGW5cieb9Ac/3ypXOhaxZysKyFGFDbf8I/954VXtvTkxBBMhmNszK7JsYSV
+         OCIURluHhvory3e5Dl9ml8BVex0QeUH4EjXBsbpQEjgH4WUPnBBLevJb4kDOxByHcm3l
+         MPCIBaVKHKFrZLGPwDy076cCpVKJNchAkCEogVfannnl6CsNcKIx5s683mvWQ88Q5iT0
+         D0VIDcOP6oCy11aJpPWKtVxSbZjc2jhjFcgF90LjKFzKjwlAwHJ0ManKvkpbY/wNHob0
+         Chj6A3U4eQ5bhlmd/omEhqaurhs4nrN+++NqdrCGB9n5cAYy7oJDAs0Tjghf9uyUrl/q
+         EaCQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpsuE18LyUIskYHg61ybFTgP7PJ/4QFnpA+TiGuNrD/Z2zNqzmBxfCvKv4HYx33J1WRH08=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyExMCm1L6YJJOGoqKxFwFp+4D8RLo/93m7XOcBvigLylSrT3q9
+	HIt3nlESOosgZ4wYonrQv5jFXSe63Jrjzq6ct3Q4Jq1MrlBW1dUqPwGx
+X-Gm-Gg: AR+sD13Avo5bUbCXY9PogG6ZXQR3QWLM8RPogJQQU4tkLtSTKL3T2muquwp0iD/tWha
+	sFEHC0Bmqkb6KfbMySwJrZRfsBEQdSBCQ9f5NPVO4l2oKH14q2w1gxINGbVQNfsDuFHLXFE1UO5
+	A+giePcZo0GcbyXt/hZAYK31j1toNi7A7UEJiEMKnrDvRhcFjSqL3OmOpOeJrf1Wa6pFaTnuz7e
+	HE330zwF9sjDd7SJ4M8DLsS7lwlC1fcwJAmSpFoTrKEe1yvb7eBSW/1el2dYLg3hgeb7Dk3ywor
+	c9LEDRPcF5XJ8+iDqQX/celCipcOiaHkOHaqTzIcc0jKKr1CdyItQJoVUjf1+8XAx9UpycmAQFg
+	qzVj2+x/d+VtlYCzu58DkoxrP0J4OCoVjiUpuSd6aAzcbL1jQrfubjjQiCKcUb5yNsFDJjFYhhr
+	p4iwm4Ri2araXHdzDiR+vYnXLBAEAGoF3Mt/I930ZNGcp5RPkvBHQntgJ88bxbTgrp5u3Tj5LTO
+	swugiJFECCPip6wFUfRTozc/3rRdJTRRCjPUOO0Wzo7hFCk3/Lu59jt04k6e46aow==
+X-Received: by 2002:a05:6a00:2383:b0:848:44d2:72a2 with SMTP id d2e1a72fcca58-84f2e009b49mr13219705b3a.27.1786028633604;
+        Thu, 06 Aug 2026 08:03:53 -0700 (PDT)
+Received: from EAIT-H54D9Q2FJQ.eait.uq.edu.au ([130.102.10.60])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f456ba8b7sm1573356b3a.29.2026.08.06.08.03.49
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 06 Aug 2026 08:03:53 -0700 (PDT)
+From: Yu Zhang <yuz08559@gmail.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
+Cc: virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yu Zhang <yuz08559@gmail.com>
+Subject: [PATCH] vhost-vdpa: drop the parent's vq callback before the call fd is released
+Date: Fri,  7 Aug 2026 01:03:23 +1000
+Message-ID: <20260806150323.2154-1-yuz08559@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -72,144 +77,105 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDExNSBTYWx0ZWRfXxReh3cA5b6DI
- gOei49iQH32hw60dnf1Afk40dX2ApmnNlFCZUlEMdqqsy8ucd41ugeBIu5v9mpfu2u8PaNpKygn
- QdYpabskSFxieKO1WkI/r5wweAr3KhBQzpn60InH1dBJ+E8b6Xr6/SVvSoQKfY7ByQ17gQ3Kbm/
- g+bcQaZ4qY1p4493YPA0SVhSfhpoIHNsKIcLj0AWfX7KqI+49/grB/wDjzMFgzxjwWxUBpCkISJ
- 6+JeYrVCrEnd5b6VrBGnAJFjYEJ18GxPgMtL9uxgeqEuM1vnxRfbpsGlSdED+Ob6SHkojFZjQnG
- 4HA+O1t+g6k9b5phLNR+VeFPe3ueisBQKRUJtkJ72XAoXLFDhCZRFSki3B9PiC4Oys2STvTVNrc
- foKqo8yCOM+P76MHXwze1SeJlrQCRr2aMYobW/A0uAkr7Bd5iwI2meJpP2H8+oDPBrh6ujDREPt
- Lq3VNfsmIS/F0WZq7Rw==
-X-Authority-Analysis: v=2.4 cv=WIFPmHsR c=1 sm=1 tr=0 ts=6a74a120 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=wvZ6b-M3Fnr1N7NqwM0A:9
-X-Proofpoint-GUID: Snev5Wq0SsnMBPwF-PQiXmivY2XajRhm
-X-Proofpoint-ORIG-GUID: Snev5Wq0SsnMBPwF-PQiXmivY2XajRhm
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDExNSBTYWx0ZWRfXy1tHV252i4aJ
- 3mMBvqmw1Ue+YkAbnF/5pUVUFOeZV6M8M+McosjMjIh4XDyMDD5EFm/r5Cdrw5VcyK688lyLzUh
- usy5Bc59zAukChmq/MWaxF75JFyfw3Y=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-06_01,2026-08-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0 malwarescore=0
- suspectscore=0 clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608060115
 
-Channel-subsystem damage machine checks are for the host channel
-subsystem. The guest channel subsystem is emulated in the userspace VMM.
-There is no point in forwarding such machine checks into the guest.
+VHOST_SET_VRING_CALL releases the previous call eventfd inside
+vhost_vring_ioctl() -- it swaps the new context into vq->call_ctx.ctx
+and then eventfd_ctx_put()s the old one, which is a synchronous
+kfree(). The parent vdpa device is only told about the change
+afterwards, when vhost_vdpa_vring_ioctl() reaches ops->set_vq_cb().
 
-This also simplifies the machine check reinjection and avoids kfree of a
-stack variable as reported by sashiko.  There might be still machine
-checks that have the ck bit set with another bit (like instruction
-damage), mask out the CK bit in s390_backup_mcck_info(), like the CP and
-ED bits already are.
+Parent drivers cache the pointer handed to them in
+vdpa_callback::trigger and do not take a reference on it, so
+throughout that window the parent holds a dangling eventfd_ctx and may
+signal it. The documentation added with the field describes what
+signalling it means but says nothing about how long it stays valid.
 
-Fixes: 4d62fcc0b692 ("KVM: s390: Inject machine check into the guest")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
+This is the same hazard that "vhost_vdpa: assign irq bypass producer
+token correctly" addressed for the irq bypass producer token, by
+moving vhost_vdpa_unsetup_vq_irq() ahead of the vhost_vring_ioctl()
+call. The producer token was only one of the two consumers of that
+pointer; the one the parent keeps via ->set_vq_cb() was left behind
+the free.
+
+With VDUSE the window is directly reachable from userspace, because
+the device emulation daemon can inject an interrupt at any time from a
+different fd, and neither side shares a lock with the other: VDUSE
+takes vq->irq_lock, vhost takes vhost_dev.mutex + vq->mutex.
+
+  BUG: KASAN: slab-use-after-free in _raw_spin_lock_irqsave+0x76/0xe0
+  Write of size 4 at addr ffff8881084e8788 by task vduse_uaf/2987
+
+  _raw_spin_lock_irqsave+0x76/0xe0
+  eventfd_signal_mask+0x69/0x120
+  vduse_dev_ioctl+0x337/0x1a60     <- vduse_vq_signal_irqfd(), inlined
+  __x64_sys_ioctl+0x120/0x170      <- VDUSE_VQ_INJECT_IRQ
+
+  Allocated by task 2986:
+   do_eventfd+0x50/0x200
+   __x64_sys_eventfd2+0x2e/0x40
+
+  kmalloc-64, freed 64-byte region [ffff8881084e8780, ffff8881084e87c0)
+
+One thread loops VHOST_SET_VRING_CALL on /dev/vhost-vdpa-N with a
+fresh eventfd and then unbinds it, while another loops
+VDUSE_VQ_INJECT_IRQ on /dev/vduse/<name>. This reproduces in 5 out of
+5 ten-second runs on v7.1.6 and 3 out of 3 on v7.2-rc6. With the patch
+there are no reports in 3 out of 3 runs on either, while the same
+workload still gets ~30000 interrupts per run delivered into live
+eventfds, so the path is still being exercised.
+
+Tell the parent to drop the callback before vhost_vring_ioctl() can
+free the eventfd, mirroring what is already done for the bypass
+producer, and restore it if the ioctl fails -- on failure the swap
+never happened, the old context is still installed, and leaving the
+parent without a callback would silently drop that vq's interrupts.
+
+Fixes: 5e68470f4e80 ("vdpa: Add eventfd for the vdpa callback")
+Signed-off-by: Yu Zhang <yuz08559@gmail.com>
 ---
-v1->v2: move MCCK_CODE_NO_GUEST into nmi.h and reuse that
+ drivers/vhost/vdpa.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
- arch/s390/include/asm/nmi.h |  3 +++
- arch/s390/kernel/nmi.c      |  5 +----
- arch/s390/kvm/interrupt.c   | 26 +++++++++-----------------
- 3 files changed, 13 insertions(+), 21 deletions(-)
-
-diff --git a/arch/s390/include/asm/nmi.h b/arch/s390/include/asm/nmi.h
-index 6454c1531854..7919b2b9ac9c 100644
---- a/arch/s390/include/asm/nmi.h
-+++ b/arch/s390/include/asm/nmi.h
-@@ -22,6 +22,7 @@
- #define MCCK_CODE_SYSTEM_DAMAGE		BIT(63)
- #define MCCK_CODE_EXT_DAMAGE		BIT(63 - 5)
- #define MCCK_CODE_CP			BIT(63 - 9)
-+#define MCCK_CODE_CK			BIT(63 - 11)
- #define MCCK_CODE_STG_ERROR		BIT(63 - 16)
- #define MCCK_CODE_STG_KEY_ERROR		BIT(63 - 18)
- #define MCCK_CODE_STG_DEGRAD		BIT(63 - 19)
-@@ -33,6 +34,8 @@
- #define MCCK_CODE_FC_VALID		BIT(63 - 43)
- #define MCCK_CODE_CPU_TIMER_VALID	BIT(63 - 46)
+diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+index ac55275..b7833bd 100644
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -714,13 +714,34 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
+ 			if (ops->get_status(vdpa) &
+ 			    VIRTIO_CONFIG_S_DRIVER_OK)
+ 				vhost_vdpa_unsetup_vq_irq(v, idx);
++			/*
++			 * The parent caches call_ctx.ctx in cb.trigger without
++			 * holding a reference, so it has to stop using it
++			 * before vhost_vring_ioctl() drops the last one.
++			 */
++			cb.callback = NULL;
++			cb.private = NULL;
++			cb.trigger = NULL;
++			ops->set_vq_cb(vdpa, idx, &cb);
+ 		}
+ 		break;
+ 	}
  
-+#define MCCK_CODE_NO_GUEST	(MCCK_CODE_CP | MCCK_CODE_EXT_DAMAGE | MCCK_CODE_CK)
-+
- #ifndef __ASSEMBLER__
+ 	r = vhost_vring_ioctl(&v->vdev, cmd, argp);
+-	if (r)
++	if (r) {
++		/*
++		 * A failure here means the swap never happened and the old
++		 * context is still installed, so give the parent back the
++		 * callback that was torn down above.
++		 */
++		if (cmd == VHOST_SET_VRING_CALL && vq->call_ctx.ctx) {
++			cb.callback = vhost_vdpa_virtqueue_cb;
++			cb.private = vq;
++			cb.trigger = vq->call_ctx.ctx;
++			ops->set_vq_cb(vdpa, idx, &cb);
++		}
+ 		return r;
++	}
  
- union mci {
-diff --git a/arch/s390/kernel/nmi.c b/arch/s390/kernel/nmi.c
-index e17a59d4d5a4..17297a8b63d9 100644
---- a/arch/s390/kernel/nmi.c
-+++ b/arch/s390/kernel/nmi.c
-@@ -344,8 +344,7 @@ static void notrace s390_backup_mcck_info(struct pt_regs *regs)
- 
- 	sie_page = container_of(sie_block, struct sie_page, sie_block);
- 	mcck_backup = &sie_page->mcck_info;
--	mcck_backup->mcic = get_lowcore()->mcck_interruption_code &
--				~(MCCK_CODE_CP | MCCK_CODE_EXT_DAMAGE);
-+	mcck_backup->mcic = get_lowcore()->mcck_interruption_code & ~MCCK_CODE_NO_GUEST;
- 	mcck_backup->ext_damage_code = get_lowcore()->external_damage_code;
- 	mcck_backup->failing_storage_address = get_lowcore()->failing_storage_address;
- }
-@@ -357,8 +356,6 @@ NOKPROBE_SYMBOL(s390_backup_mcck_info);
- #define ED_STP_ISLAND	6	/* External damage STP island check */
- #define ED_STP_SYNC	7	/* External damage STP sync check */
- 
--#define MCCK_CODE_NO_GUEST	(MCCK_CODE_CP | MCCK_CODE_EXT_DAMAGE)
--
- /*
-  * machine check handler.
-  */
-diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-index 7514d9e2403c..3375a956637b 100644
---- a/arch/s390/kvm/interrupt.c
-+++ b/arch/s390/kvm/interrupt.c
-@@ -3099,9 +3099,7 @@ static int set_adapter_int(struct kvm_kernel_irq_routing_entry *e,
- void kvm_s390_reinject_machine_check(struct kvm_vcpu *vcpu,
- 				     struct mcck_volatile_info *mcck_info)
- {
--	struct kvm_s390_interrupt_info inti;
--	struct kvm_s390_irq irq;
--	struct kvm_s390_mchk_info *mchk;
-+	struct kvm_s390_irq irq = {};
- 	union mci mci;
- 	__u64 cr14 = 0;         /* upper bits are not used */
- 	int rc;
-@@ -3120,20 +3118,14 @@ void kvm_s390_reinject_machine_check(struct kvm_vcpu *vcpu,
- 	if (mci.w)
- 		cr14 |= CR14_WARNING_SUBMASK;
- 
--	mchk = mci.ck ? &inti.mchk : &irq.u.mchk;
--	mchk->cr14 = cr14;
--	mchk->mcic = mcck_info->mcic;
--	mchk->ext_damage_code = mcck_info->ext_damage_code;
--	mchk->failing_storage_address = mcck_info->failing_storage_address;
--	if (mci.ck) {
--		/* Inject the floating machine check */
--		inti.type = KVM_S390_MCHK;
--		rc = __inject_vm(vcpu->kvm, &inti);
--	} else {
--		/* Inject the machine check to specified vcpu */
--		irq.type = KVM_S390_MCHK;
--		rc = kvm_s390_inject_vcpu(vcpu, &irq);
--	}
-+	irq.u.mchk.cr14 = cr14;
-+	irq.u.mchk.mcic = mcck_info->mcic;
-+	irq.u.mchk.ext_damage_code = mcck_info->ext_damage_code;
-+	irq.u.mchk.failing_storage_address = mcck_info->failing_storage_address;
-+
-+	/* Inject the machine check to specified vcpu */
-+	irq.type = KVM_S390_MCHK;
-+	rc = kvm_s390_inject_vcpu(vcpu, &irq);
- 	WARN_ON_ONCE(rc);
- }
- 
+ 	switch (cmd) {
+ 	case VHOST_SET_VRING_ADDR:
 -- 
-2.53.0
+2.43.0
 
