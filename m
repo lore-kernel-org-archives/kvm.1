@@ -1,176 +1,109 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66431DC985
-	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 03:00:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FE2329E5D;
+	Thu,  6 Aug 2026 03:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785985234; cv=none; b=Ebl3nlwEAwJXYYPFDrzeiXyC8J/UuR9+eHeHp1/6bmlyTLPs4LHWihTGJKZNPyAX0cj57LO+uD9kekPmpn1hJ4j5vWQVYgZmAI/Kf39YdtMOAZIidqTBDw/qGghovpBiiU7tErqC+zhWqy0kvvNYNN4hfAMPjo0z4lkZuJlk1+Q=
+	t=1785987021; cv=none; b=pVojs5U8/7zkadd3EUsvf1ELndj7iSsfCd6/tARrabbPqXwu8WB2ah9plU4Tm9m5gOHiKwqNX90CyRtO/N+OmPIU9AsI8mDRy8DWaW29sflpKcaWkaiOc4W4PZByYLR520pqLuB4nZyETISeuLAQfdAeXXSxj2C0Spo258afYw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785985234; c=relaxed/simple;
-	bh=mBMqnuqIgym0XsMK+vXWaxKHTKQcf3JZcYF1Zl43iUY=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=MdIa5WwiWztQ4M4Qn6pQMLZb2/ANXIfHCTgkWrURKD/VK/cba/qJrt0vDRKFm0ukTphM4Y3H5jbTXRG+9PNfF5DrUL5SBf355e4tHcUXOMhYA4Cg5uxFiFd+h/E36Lse4+Cs91U2LqKbdsqLaWsv9JTa1+0mtqNvt9g+e55cM3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Dx8+nG+HNqt98KAA--.25637S3;
-	Thu, 06 Aug 2026 11:00:23 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJCxbQfF+HNqslglAA--.1566S2;
-	Thu, 06 Aug 2026 11:00:21 +0800 (CST)
-Subject: Re: [PATCH v2 4/5] LoongArch: KVM: Implement vmid updating logic
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-References: <20260806020739.2149268-1-maobibo@loongson.cn>
- <20260806020739.2149268-5-maobibo@loongson.cn>
- <20260806023024.7ACCE1F000E9@smtp.kernel.org>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <4f1446f5-1972-897d-d116-cc9638d2b6e0@loongson.cn>
-Date: Thu, 6 Aug 2026 11:00:04 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1785987021; c=relaxed/simple;
+	bh=5wus9n0+Mpv7rQWIuIFpoGHkgxM6w2e5wGqel/1cJaU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ky2L2dbAUfgHUcHtbUiToTlod9U4B2JjNeaoUCO1MH3c+LyLCHX6J2NNK5bViz2Oy3Flv99IrX2KyicdmgV3Epna5mGsEBK62GXJkPFRK2DK5GiBnVMc4lPPWPTh36N/TZ273I0opiAUY2CLYChmOPWhOpY5GUuyAqgOzNlvv4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=xvnedJmH; arc=none smtp.client-ip=113.46.200.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="xvnedJmH"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=5wus9n0+Mpv7rQWIuIFpoGHkgxM6w2e5wGqel/1cJaU=;
+	b=xvnedJmHWhePXoOFObXkvLZJh87bx4MqXErY79eOEcbrJjXMeD32rgcW+e1+Mzp80DMGfqr0p
+	H5FXDNNf1FtCAkZtvN0zOyEW3ZqTIIFL63xHsatM7LYQOmJbAX0l/KDbPYMgxr2Fhy00WgHcfHo
+	1HBeTwRYcVunCQ6fWo8o/vc=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4hFsx51ybgzLlTg;
+	Thu,  6 Aug 2026 11:20:41 +0800 (CST)
+Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id 14F5F4058A;
+	Thu,  6 Aug 2026 11:30:13 +0800 (CST)
+Received: from [10.174.176.101] (10.174.176.101) by
+ kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 6 Aug 2026 11:30:09 +0800
+Message-ID: <6840c720-8cb7-46bb-a652-040c130a4427@huawei.com>
+Date: Thu, 6 Aug 2026 11:30:08 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260806023024.7ACCE1F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxbQfF+HNqslglAA--.1566S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxurWUAr1UAryfZryUJF4rCrX_yoWrAFWrpF
-	W8C3Z0qa18CrnrX340qw4kXr1jg34xGr1xZFyaya4avrn0vr1kGF4vk3ykuFy5JryS9a1I
-	vF15Kr9F9F1DCacCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
-	8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AK
-	xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
-	AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
-	14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF1lIx
-	kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
-	wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
-	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1wL05UU
-	UUU==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 25/36] mm/memory_hotplug: support N_MEMORY_PRIVATE node
+ hotplug
+To: Gregory Price <gourry@gourry.net>, <linux-mm@kvack.org>
+CC: <Zhigang.Luo@amd.com>, <arun.george@samsung.com>, <balbirs@nvidia.com>,
+	<brendan.jackman@linux.dev>, <yuzenghui@huawei.com>, <apopple@nvidia.com>,
+	<alucerop@amd.com>, <matthew.brost@intel.com>, <akpm@linux-foundation.org>,
+	<david@kernel.org>, <ljs@kernel.org>, <liam@infradead.org>,
+	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+	<gregkh@linuxfoundation.org>, <rafael@kernel.org>, <dakr@kernel.org>,
+	<djbw@kernel.org>, <vishal.l.verma@intel.com>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <osandov@osandov.com>, <jannh@google.com>,
+	<pfalcato@suse.de>, <jackmanb@google.com>, <hannes@cmpxchg.org>,
+	<ziy@nvidia.com>, <pbonzini@redhat.com>, <osalvador@suse.de>,
+	<joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>, <byungchul@sk.com>,
+	<ying.huang@linux.alibaba.com>, <kasong@tencent.com>, <qi.zheng@linux.dev>,
+	<shakeel.butt@linux.dev>, <baohua@kernel.org>, <axelrasmussen@google.com>,
+	<yuanchu@google.com>, <weixugc@google.com>, <yury.norov@gmail.com>,
+	<linux@rasmusvillemoes.dk>, <longman@redhat.com>, <ridong.chen@linux.dev>,
+	<tj@kernel.org>, <mkoutny@suse.com>, <sj@kernel.org>, <jgg@ziepe.ca>,
+	<jhubbard@nvidia.com>, <peterx@redhat.com>, <baolin.wang@linux.alibaba.com>,
+	<npache@redhat.com>, <ryan.roberts@arm.com>, <dev.jain@arm.com>,
+	<lance.yang@linux.dev>, <usama.arif@linux.dev>, <xu.xin16@zte.com.cn>,
+	<chengming.zhou@linux.dev>, <roman.gushchin@linux.dev>,
+	<muchun.song@linux.dev>, <linux-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <driver-core@lists.linux.dev>,
+	<nvdimm@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
+	<linux-debuggers@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<kvm@vger.kernel.org>, <cgroups@vger.kernel.org>, <damon@lists.linux.dev>,
+	<linux-kselftest@vger.kernel.org>, <kernel-team@meta.com>
+References: <20260720193431.3841992-1-gourry@gourry.net>
+ <20260720193431.3841992-26-gourry@gourry.net>
+From: Qiqi Li <liqiqi23@huawei.com>
+In-Reply-To: <20260720193431.3841992-26-gourry@gourry.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemo500018.china.huawei.com (7.202.195.199)
 
+Hi Gregory,
 
+On 7/21/2026 3:34 AM, Gregory Price wrote:
 
-On 2026/8/6 上午10:30, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
-> - [High] Missing early return in `__kvm_check_vmid` for machines without guest ID support breaks VMID/VPID synchronization.
-> - [Medium] Data race between non-atomic `cpumask_setall()` and atomic bitwise operations on `tlb_flush_pending`.
-> - [Low] Dead code: `kvm_arch_flush_remote_tlbs_memslot` is a fictitious arch hook not called by KVM core.
-> --
-> 
-> --- Patch [4]: [PATCH v2 4/5] LoongArch: KVM: Implement vmid updating logic ---
-> commit 1626f2256d93ca3c5c607a6a950ca7531c03169a
-> Author: Bibo Mao <maobibo@loongson.cn>
-> Date:   Thu Aug 6 02:07:38 2026 +0000
-> 
->      LoongArch: KVM: Implement vmid updating logic
->      
->      VMID calculation method is the same with ASID on LoongArch, it is
->      percpu vmid calculation method. For every physical CPU, VMID of
->      different VM is different, and it is the same for different vCPUs
->      of the same VM.
-> 
->> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
->> index c36e62ab0d917..72c1d23156e50 100644
->> --- a/arch/loongarch/kvm/main.c
->> +++ b/arch/loongarch/kvm/main.c
-> [ ... ]
->> @@ -291,6 +316,20 @@ static void __kvm_check_vmid(struct kvm_vcpu *vcpu)
->>   			kvm_clear_request(KVM_REQ_TLB_FLUSH_GPA, vcpu);
->>   		}
->>   	}
->> +
->> +	cpu = smp_processor_id();
->> +	if (cpumask_test_and_clear_cpu(cpu, &vcpu->kvm->arch.tlb_flush_pending))
->> +		vcpu->kvm->arch.vmid[cpu] = 0;
->> +
->> +	/*
->> +	 * Check if our vmid is of an older version
->> +	 */
->> +	ver = vcpu->kvm->arch.vmid[cpu] & ~vpid_mask;
->> +	old = this_cpu_ptr(vcpu->kvm->arch.vmcs)->vmid_cache & ~vpid_mask;
->> +	if (ver != old)
->> +		kvm_update_vmid(vcpu, cpu);
->> +
->> +	vcpu->arch.hw_vmid = vcpu->kvm->arch.vmid[cpu] & vpid_mask;
-> 
-> [Severity: High]
-> Does this unconditionally overwrite vcpu->arch.hw_vmid for machines without
-> guest ID support? On machines like 3A5000, hw_vmid is set to match vpid
-> above, but without an early return or else block, it falls through and gets
-> overwritten here with a dynamically allocated vmid.
-yes, early return is missing in if (!cpu_has_guestid) sentence.
---- a/arch/loongarch/kvm/main.c
-+++ b/arch/loongarch/kvm/main.c
-@@ -315,6 +315,7 @@ static void __kvm_check_vmid(struct kvm_vcpu *vcpu)
-                         vcpu->arch.hw_vmid = vcpu->arch.vpid & vpid_mask;
-                         kvm_clear_request(KVM_REQ_TLB_FLUSH_GPA, vcpu);
-                 }
-+               return;
-         }
-> 
->>   }
->>   
->>   void kvm_check_vpid(struct kvm_vcpu *vcpu)
->> diff --git a/arch/loongarch/kvm/mmu.c b/arch/loongarch/kvm/mmu.c
->> index 714640a2e6142..80e7a8bdc344a 100644
->> --- a/arch/loongarch/kvm/mmu.c
->> +++ b/arch/loongarch/kvm/mmu.c
-> [ ... ]
->> @@ -942,6 +943,22 @@ void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
->>   {
->>   }
->>   
->> +int kvm_arch_flush_remote_tlbs(struct kvm *kvm)
->> +{
->> +	/*
->> +	 * Queue a TLB invalidation for each CPU to perform on next
->> +	 * vcpu loading
->> +	 */
->> +	if (cpu_has_guestid) {
->> +		cpumask_setall(&kvm->arch.tlb_flush_pending);
-> 
-> [Severity: Medium]
-> Could calling cpumask_setall() cause a data race with concurrent atomic
-> bit operations?
-> 
-> cpumask_setall() uses a non-atomic memset() internally, while
-> __kvm_check_vmid() and kvm_handle_mm_fault() use atomic read-modify-write
-> operations like cpumask_test_and_clear_cpu() and cpumask_set_cpu() on the
-> same cpumask.
-This is under investigation, if data of memset() is not lost or 
-invalidated, it will send IPI to destination vCPU and check the flag again.
+> Add add_private_memory_driver_managed() to let modules hotplug
+> memory onto an N_MEMORY_PRIVATE node they control.
 
-Regards
-Bibo Mao
-> 
->> +		/* Be sure that other CPUS can watch the changes */
->> +		smp_wmb();
->> +	}
->> +
->> +	/* Return 1 continue to send ipi to running vCPUs */
->> +	return 1;
->> +}
->> +
->> +void kvm_arch_flush_remote_tlbs_memslot(struct kvm *kvm,
->> +					const struct kvm_memory_slot *memslot)
->> +{
->> +	kvm_flush_remote_tlbs(kvm);
->> +}
-> 
-> [Severity: Low]
-> Is kvm_arch_flush_remote_tlbs_memslot() dead code? There does not appear to be
-> a KVM core hook by this name, so this architecture-specific function won't be
-> called by the KVM core during memslot updates.
-> 
+I am trying to understand how the nid passed to
+add_private_memory_driver_managed() is expected to be provisioned.
 
+From what I can see, both node_private_register() and
+__add_memory_resource() require the nid to already be present in
+node_possible_map. My understanding is therefore that this patch
+supports hotplugging private memory onto an existing possible node,
+rather than creating a new possible node ID at runtime.
+
+For example, in the use case I am looking at, the device's private
+node is not described by firmware. Would its nid need to be reserved
+during early NUMA initialization, or is there another mechanism that
+I may have missed?
+
+Also, could you please Cc me on future revisions of this series?
+I would appreciate it and would be happy to follow the work:)
+
+Thanks,
+Qiqi
