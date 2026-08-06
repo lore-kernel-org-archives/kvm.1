@@ -1,195 +1,174 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846AE4772BE
-	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 11:57:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C1747A89D
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 12:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786017459; cv=none; b=BjgIiY7W1p3pI+zAc4ocHrOZ17C1tYSy7QwI4QqLTkNBFqoM5E7zZgCzmORspgNhS0fpmTZLxI4GVwBAYrOX4wU0PRo1pjqFU2VRPgyTUxoHE7IHIw7YZYw2TYAWJd/vKHojRFVvYP+dyVC6+eZLdEZPbK2NnRCUXyLakKQGPIo=
+	t=1786018802; cv=none; b=OZ4vAjHxbXO8a5wLEGHQa7J0JNGBc1pTT6uznjt1LJgjrMynmzHllD4HLLAYw36R2CvgMty6OiGtS2Rf4y2wtvCfV0pGfzyEf9hi6Xl7h8UHoFxNP0JhJ23fSiD6xggTdd9KL/I1RCa41dROcCWnpYN7MZ97pxYXLZqFhbtk7iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786017459; c=relaxed/simple;
-	bh=26ZfCEEB41AkZZavPx8xwm6TNkfKfpHiByKlvYp3wQk=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=PhshQngTD2xuqHLK7zqGkoSo5y9A5WeoDM8YpSiWiEyqV50+AclhYX4tQKcnXmG6UnUQVa568CBM/q+G0iNBiyibG28HvdmL/mIELhnwsyv/BLolspws3Iuz6YUFGLekSDaxi7HZ/50tb/jaBAoT5i5B5XnWJdT1V1dtM9CJVgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8BxvKGtdnRqV_oKAA--.11984S3;
-	Thu, 06 Aug 2026 19:57:33 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJDxDcetdnRqOMAlAA--.6871S2;
-	Thu, 06 Aug 2026 19:57:33 +0800 (CST)
-Subject: Re: [PATCH v2] LoongArch: KVM: Advertise already-supported
- capabilities
-To: Tao Cui <cui.tao@linux.dev>, sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-References: <20260805054549.287648-1-cui.tao@linux.dev>
- <20260805060636.A0FB11F000E9@smtp.kernel.org>
- <b4343223-a221-4cc3-aee2-cb79c556bcb0@linux.dev>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <65365095-7758-96ae-5c7c-32200bd91867@loongson.cn>
-Date: Thu, 6 Aug 2026 19:57:16 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1786018802; c=relaxed/simple;
+	bh=ZDUdqg0GT6z/Ew2H+PbtNLlYMwA/2zC8ZELf7UqhWLw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OVdbfuV4ItpllKVmcb7e2KEs/xFKTRYtt7o0pIthbwL6EKS/2gY82jy0yatovXCtgulNf5IfJZh9Pgc+/pzjYQvGEAtQ07pxSo5nhwIHt0ZQMi7/M6T8h35tcvWvBTsjBteFK/C4wMsXtG+7H27CLUxqc8jRI5tEbr1Up34ITiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iRHLi2U3; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iRHLi2U3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA531F00ACA
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 12:20:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786018801;
+	bh=Xc+U+TDw+WwC711T0oP5kgNp4GKrrHajAHm5+7UYGkg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=iRHLi2U3Icn0tvTRyWoSRg433TdjGHk4pq6u8S2H8Wq9N0xiHKeol+1bT23bNTt19
+	 w7Vp18dHwqMREzHrnn26zXgWSwYUDeWDyPeF2+pH5IU/AOG1JdjyHkSoU62LV+ZQoe
+	 AJlSOQBcstdvWuXHlL7FxHRbXIIG12LCRgE022X1kwskdU9NRcZir5GNmydazJZOot
+	 7cHqdQO1SE4F9cU/b0rPGczG6nF+TXBXz/xE3cJUzL4YxISOpVK2pKDeducMNHQbIG
+	 GMlkjNQ7Ef89TaW/Z+8wpCUsFKurmULVG2yH20rez5J8iEaHAP3bPmfY3HRBo78YLY
+	 wDt3j54upgVGg==
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6a063d211ebso2798074a12.3
+        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 05:20:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rp7HC0JwJ61vtI6VQE8577xHrxCybQKakUtpmIbtMohYZakzbfBsJDos4g/u+oAdZgVUZE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUVdFr7VWt1Qt5GB2WcVoizJtcD28NZi0W6tRHV4P6GuZsqccs
+	OqqBdmHknp/SqtcReZqEo7WZVwGN81ViHT3hTKUiyu0+sUWKoaUi+1TPqr6OIkHM74j+d2mrpi9
+	2W6T8PF3GZ/crifW/4a0pZyHhwtBhT/c=
+X-Received: by 2002:a05:6402:551b:b0:6a0:7a06:3031 with SMTP id
+ 4fb4d7f45d1cf-6a14f0a151cmr7823036a12.3.1786018799598; Thu, 06 Aug 2026
+ 05:19:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <b4343223-a221-4cc3-aee2-cb79c556bcb0@linux.dev>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxDcetdnRqOMAlAA--.6871S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3GF47Wry7urWfuF4rGF4xZrc_yoW7WF47pF
-	W7CasxCw48KrnFyan2qa4DuFW09r47Gry8Gas0y342v3Z09ryayFW0yrZrZF4DXwn3uw10
-	ga9Yq34FvF15AagCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9Sb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
-	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv
-	67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
-	AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C2
-	67AKxVWUAVWUtwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI
-	8E67AF67kF1VAFwI0_Jrv_JF1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8
-	JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r
-	1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBI
-	daVFxhVjvjDU0xZFpf9x07j1q2_UUUUU=
+References: <20260806020739.2149268-1-maobibo@loongson.cn> <20260806020739.2149268-2-maobibo@loongson.cn>
+In-Reply-To: <20260806020739.2149268-2-maobibo@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Thu, 6 Aug 2026 20:20:23 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H6TLMaD9iv4eksPB+=VjjyR_YXVyzdx8ou9LF0mSYz_4g@mail.gmail.com>
+X-Gm-Features: AUfX_myrIoDmH_xGqvAw0UpS82Ox6-HCNIghtK9T2ar-By_lxQPEXnHbz4nf5bE
+Message-ID: <CAAhV-H6TLMaD9iv4eksPB+=VjjyR_YXVyzdx8ou9LF0mSYz_4g@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] LoongArch: KVM: Add vmid support for stage2 MMU
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	WANG Xuerui <kernel@xen0n.name>, Arnd Bergmann <arnd@arndb.de>, Xi Ruoyao <xry111@xry111.site>, 
+	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi, Bibo,
+
+On Thu, Aug 6, 2026 at 10:14=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wrot=
+e:
+>
+> LoongArch KVM hypervisor supports two-level MMU, vpid index is used
+> for stage1 MMU and vmid index is used for stage2 MMU.
+>
+> On 3A5000, vmid must be the same with vpid. On 3A6000 platform vmid
+> may separate from vpid. If vCPU migrate to different physical CPUs,
+> vpid need change however vmid can keep unchanged, so that TLB entries
+> for stage2 MMU is valid still. Also vmid index of the whole VM machine
+> is the same on one physical CPU, all vCPUs on the VM can share the
+> same vmid index on one physical CPU.
+>
+> Here hw vmid index is added and it keeps the same with hw vpid still.
+HW VPID means GSTAT.GID, HW VMID means GTLBC.TGID, right? It is useful
+to describe it in the commit message.
 
 
+>
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> ---
+>  arch/loongarch/include/asm/kvm_host.h | 3 +++
+>  arch/loongarch/kernel/asm-offsets.c   | 1 +
+>  arch/loongarch/kvm/main.c             | 1 +
+>  arch/loongarch/kvm/switch.S           | 5 ++---
+>  arch/loongarch/kvm/tlb.c              | 5 ++++-
+>  5 files changed, 11 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/inclu=
+de/asm/kvm_host.h
+> index 23cfbecebbd7..78f97dea124d 100644
+> --- a/arch/loongarch/include/asm/kvm_host.h
+> +++ b/arch/loongarch/include/asm/kvm_host.h
+> @@ -232,6 +232,9 @@ struct kvm_vcpu_arch {
+>         /* Cache for pages needed inside spinlock regions */
+>         struct kvm_mmu_memory_cache mmu_page_cache;
+>
+> +       /* hw vmid info for guest VM */
+> +       unsigned long hw_vmid;
+Since this is only used to write GCNTC.TGID, simply rename it to tgid
+can eliminate confusion.
 
-On 2026/8/5 下午4:28, Tao Cui wrote:
-> 
-> Hi Bibo,
-> 
-> The Sashiko automated review of this patch flagged two pre-existing items
-> — neither is from this patch. Wanted to get your thoughts,
-> 
-> 在 2026/8/5 14:06, sashiko-bot@kernel.org 写道:
->> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
->>
->> Pre-existing issues:
->> - [High] The unsafe user-access macros (`unsafe_put_user()` and `unsafe_get_user()`) are used without the required `user_access_begin()` and `user_access_end()` guards, violating the kernel API contract.
-> The steal-time code uses unsafe_put_user()/unsafe_get_user() without
->     the usual user_access_begin()/end() around them. On LoongArch it
->     doesn't actually cause any trouble — there's no hardware user-access
->     protection (user_access_begin() just resolves to access_ok()),
->     __put_user is a plain store, and the ghc->hva address is already
->     validated by kvm_gfn_to_hva_cache_init(), so the access_ok() is
->     redundant anyway. So I see it more as a convention inconsistency /
->     style nit than a real bug. I'd be happy to put together a small
->     cleanup wrapping those in user_access_begin()/end() (or switching to
->     kvm_write_guest_cached()). Does that sound like just cleanup to you,
->     and would you want it?
->> - [High] A lockless read-modify-write on the shared VM state `kvm->arch.pv_features` allows userspace to bypass the validation check that requires all vCPUs to share identical PV features.
-> The check-then-set on kvm->arch.pv_features in cpucfg_set_attr() is a
->     genuine TOCTOU — again pre-existing, unrelated to this patch. It's not
->     really reachable in practice: 0/3000 with two vCPUs hammering it
->     concurrently, though a debug widening of the window does reproduce it
->     every time (3000/3000). It'd basically need a userspace firing
->     KVM_SET_DEVICE_ATTR with different values on two vCPUs at once. The
->     odds are low, but I do think edge cases like this are still worth
->     fixing — happy to send a separate patch using a mutex or cmpxchg.
-Happy to see the patch.
+> +
+>         /* vcpu's vpid */
+>         u64 vpid;
+>         gpa_t flush_gpa;
+> diff --git a/arch/loongarch/kernel/asm-offsets.c b/arch/loongarch/kernel/=
+asm-offsets.c
+> index 1b861cbc5e10..065ced1f3c1f 100644
+> --- a/arch/loongarch/kernel/asm-offsets.c
+> +++ b/arch/loongarch/kernel/asm-offsets.c
+> @@ -300,6 +300,7 @@ static void __used output_kvm_defines(void)
+>         OFFSET(KVM_ARCH_HSP, kvm_vcpu_arch, host_sp);
+>         OFFSET(KVM_ARCH_HTP, kvm_vcpu_arch, host_tp);
+>         OFFSET(KVM_ARCH_HPGD, kvm_vcpu_arch, host_pgd);
+> +       OFFSET(KVM_ARCH_VMID, kvm_vcpu_arch, hw_vmid);
+>         OFFSET(KVM_ARCH_KVMPGD, kvm_vcpu_arch, kvm_pgd);
+>         OFFSET(KVM_ARCH_HANDLE_EXIT, kvm_vcpu_arch, handle_exit);
+>         OFFSET(KVM_ARCH_HEENTRY, kvm_vcpu_arch, host_eentry);
+> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+> index 3e1005526f4b..401c84f38e8c 100644
+> --- a/arch/loongarch/kvm/main.c
+> +++ b/arch/loongarch/kvm/main.c
+> @@ -223,6 +223,7 @@ static void kvm_update_vpid(struct kvm_vcpu *vcpu, in=
+t cpu)
+>
+>         context->vpid_cache =3D vpid;
+>         vcpu->arch.vpid =3D vpid;
+> +       vcpu->arch.hw_vmid =3D vcpu->arch.vpid & vpid_mask;
+Merge Patch#1 and Patch#2, then we can avoid adding this line and then
+remove it immediately.
 
-It is design problem to set pv_features per-VM, there is concurrent 
-access issue and it can only be set for one time.
 
-Regards
-Bibo Mao
-> 
-> Neither of these affects v2 itself, so I'd leave it as-is.
-> 
-> Thanks,
-> Tao
->> --
->>
->> --- Patch [1]: [PATCH v2] LoongArch: KVM: Advertise already-supported capabilities ---
->> commit 91e3758510b96f271c2589373d1340c246fab45a
->> Author: Tao Cui <cui.tao@linux.dev>
->>
->> LoongArch: KVM: Advertise already-supported capabilities
->>      
->> This commit advertises KVM_CAP_STEAL_TIME and KVM_CAP_VCPU_ATTRIBUTES on
->> LoongArch, making existing features discoverable to userspace.
->>
->>> diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
->>> index 1317c718f896a..0a51931d6f6e0 100644
->>> --- a/arch/loongarch/kvm/vm.c
->>> +++ b/arch/loongarch/kvm/vm.c
->>> @@ -122,6 +122,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->>>   	case KVM_CAP_IOEVENTFD:
->>>   	case KVM_CAP_MP_STATE:
->>>   	case KVM_CAP_SET_GUEST_DEBUG:
->>> +	case KVM_CAP_VCPU_ATTRIBUTES:
->>
->> [Severity: High]
->> This is a pre-existing issue, but does advertising KVM_CAP_VCPU_ATTRIBUTES
->> expose a data race in kvm_loongarch_cpucfg_set_attr()?
->>
->> Looking at arch/loongarch/kvm/vcpu.c, there is a lockless read-modify-write
->> sequence on the shared VM state:
->>
->> arch/loongarch/kvm/vcpu.c:kvm_loongarch_cpucfg_set_attr() {
->> ...
->> 	/* All vCPUs need set the same PV features */
->> 	if ((kvm->arch.pv_features & LOONGARCH_PV_FEAT_UPDATED)
->> 			&& ((kvm->arch.pv_features & valid) != val))
->> 		return -EINVAL;
->> 	kvm->arch.pv_features = val | LOONGARCH_PV_FEAT_UPDATED;
->> ...
->> }
->>
->> If multiple threads concurrently call KVM_SET_DEVICE_ATTR on different vCPUs,
->> can they bypass this validation check by both reading before either writes,
->> resulting in divergent configurations being silently applied globally instead
->> of returning -EINVAL?
->>
->>>   		r = 1;
->>>   		break;
->>>   	case KVM_CAP_NR_VCPUS:
->>
->> [ ... ]
->>
->>> @@ -136,6 +137,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->>>   	case KVM_CAP_NR_MEMSLOTS:
->>>   		r = KVM_USER_MEM_SLOTS;
->>>   		break;
->>> +	case KVM_CAP_STEAL_TIME:
->>
->> [Severity: High]
->> This isn't a bug introduced by this patch, but does advertising
->> KVM_CAP_STEAL_TIME expose an issue with unsafe memory accesses?
->>
->> In arch/loongarch/kvm/vcpu.c, unsafe_put_user() is used without the required
->> user_access_begin() and user_access_end() guards:
->>
->> arch/loongarch/kvm/vcpu.c:kvm_update_stolen_time() {
->> ...
->> 	unsafe_put_user(0, &st->preempted, out);
->> ...
->> }
->>
->> And similarly in kvm_vcpu_set_pv_preempted():
->>
->> arch/loongarch/kvm/vcpu.c:kvm_vcpu_set_pv_preempted() {
->> ...
->> 	unsafe_put_user(KVM_VCPU_PREEMPTED, &st->preempted, out);
->> ...
->> }
->>
->> Since omitting user_access_begin() skips the access_ok() check at the access
->> site, could this cause a kernel fault if hardware-enforced user access
->> protections are introduced?
->>
->>> +		r = kvm_pvtime_supported();
->>> +		break;
->>>   	default:
->>>   		r = 0;
->>>   		break;
->>
-
+>  }
+>
+>  void kvm_check_vpid(struct kvm_vcpu *vcpu)
+> diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
+> index 936e4ae3e408..af972394fd55 100644
+> --- a/arch/loongarch/kvm/switch.S
+> +++ b/arch/loongarch/kvm/switch.S
+> @@ -66,9 +66,8 @@
+>         ld.d    t0, a2, KVM_ARCH_KVMPGD
+>         csrwr   t0, LOONGARCH_CSR_PGDL
+>
+> -       /* Mix GID and RID */
+> -       csrrd           t1, LOONGARCH_CSR_GSTAT
+> -       bstrpick.w      t1, t1, CSR_GSTAT_GID_SHIFT_END, CSR_GSTAT_GID_SH=
+IFT
+> +       /* Set VMID for gpa --> hpa mapping */
+> +       ld.d            t1, a2, KVM_ARCH_VMID
+>         csrrd           t0, LOONGARCH_CSR_GTLBC
+>         bstrins.w       t0, t1, CSR_GTLBC_TGID_SHIFT_END, CSR_GTLBC_TGID_=
+SHIFT
+>         csrwr           t0, LOONGARCH_CSR_GTLBC
+> diff --git a/arch/loongarch/kvm/tlb.c b/arch/loongarch/kvm/tlb.c
+> index ebdbe9264e9c..b25847aab968 100644
+> --- a/arch/loongarch/kvm/tlb.c
+> +++ b/arch/loongarch/kvm/tlb.c
+> @@ -23,7 +23,10 @@ void kvm_flush_tlb_all(void)
+>
+>  void kvm_flush_tlb_gpa(struct kvm_vcpu *vcpu, unsigned long gpa)
+>  {
+> +       unsigned int vmid;
+> +
+>         lockdep_assert_irqs_disabled();
+>         gpa &=3D (PAGE_MASK << 1);
+> -       invtlb(INVTLB_GID_ADDR, read_csr_gstat() & CSR_GSTAT_GID, gpa);
+> +       vmid =3D (vcpu->arch.hw_vmid << CSR_GSTAT_GID_SHIFT) & CSR_GSTAT_=
+GID;
+> +       invtlb(INVTLB_GID_ADDR, vmid, gpa);
+>  }
+> --
+> 2.39.3
+>
