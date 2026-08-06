@@ -1,259 +1,215 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2439533AD8C;
-	Thu,  6 Aug 2026 14:57:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1333A83B1;
+	Thu,  6 Aug 2026 14:58:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786028274; cv=none; b=ZGmMA+sjdEhMu+EwQ5sUUwcqeXP4uzplVt7x5wF3A85/j7k6Wsp4ulLhifjPg4dBQK0Dv8CekoVuYEYYQK5+/z7yfmJ/8M/k928AvG5YLwIWR4BJuI+P32V9EwSM9rNDYobn6kb69UeoiuE+6o5snYtmOMcMJW7YWqQnI0pdMNQ=
+	t=1786028325; cv=none; b=UaV0dExHvnK7uq4JhhNGWDbhm4Zj3YBxvA2tZHqQY2KPmANYF9KYxETe1ILFWDmFV6Xe6xs643HJJ2y5FesBMqCLP65LHD8Lx/UryGhHSs2fbFj6KiBb4FHrwIHS/r3v1yuOvRKLkUgkw9//EJmgjZTSi+g1+Upku73erzUe9fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786028274; c=relaxed/simple;
-	bh=nlYYNOtgm4XbL5atya/GGVjdnpJ8VTOr0r+iSIDsMqc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tGrXBUj71yrMW3gOQ8CbkZffFJxxLooVmyaTuXZfF56DErxInmM+TJY1tPZaZMYvTLXrNzFFf/9oFIrrvYt2s8dPi9ugmVEqavd4rqFC6f2Jf5a2Oex2qWeYs6iKGk9B9PkzrEWnDT+eu5wrT2yFYsPVZmBQcfdkukK+758Nshw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=dLPxqC82; arc=none smtp.client-ip=148.163.156.1
+	s=arc-20240116; t=1786028325; c=relaxed/simple;
+	bh=gSthjE0XukK7pCeJp3D3pZ4bI5+3ufEHoKqgemeESPE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TClShRSvcC5aEP/rCmBQC/Whw+YKdL7woVJ7PBO+SJA/ag4syNaQtH6R4o9WhlplBWBjLZ1fLzWjtG/GDHRq4cAcURRW9E9C0hd8lddhFD6sSyaZWXXQxMvKXEP+2aHcffFdDxqQTpMDKwr1jE8agGEsphPG0Jk1RbLcBOvbUt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=T7WQXojL; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="dLPxqC82"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 676EnKXm2964507;
-	Thu, 6 Aug 2026 14:57:31 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="T7WQXojL"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 676EnvlK2867500;
+	Thu, 6 Aug 2026 14:58:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=X9ZCWo
-	FyjqoTs1Wdrr0tb85vfPjmxaw5shuuiJIRD9c=; b=dLPxqC82CNPm8yAXvvjdHV
-	EXeLsk1Q70u12l5ZtG7B++FsNwYiiMA5hcweezFYsvXzPTnSYUDBcx0CjFz0BJV4
-	6JGVCNfxV0OZmEGYbm4YmIP0DCiZE70PjTmDFVYkVvSp4jXCf/7FdU1KOtBe71aR
-	F+EsPufZZaqTBC35Qo06cmdV5CU5VAO5CWfHkLnp8f/bMK7ajxD0FuJmFvz9njnp
-	r4SfWk7mrm0sLfIwpIXeotDbd1V/uzWqbvTze6FaIKJXP0Pcv2UgntNjMecT/kmp
-	RJi5/52BlBqrt9E0Acyo5zrhNS7iHYq8/2VVKaDpEA00keJyNnRhf5Dm9jm/P7Ng
-	==
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=1YzAvVFsl8fwxzuBr6WYYJDA/zCx1s6oYeY28kgGU
+	UU=; b=T7WQXojL8ddx8EdHpGp1hqSucuuIV5HswlqJYe4G2rOAvfv1zggMna5Uv
+	tZWPiy/vjBz3WUOHHvF6TPkPgLX8mjYhqGFpZxxDK5TFHqo1Y7+mjwCm9uLjXznk
+	D2sOAB8yZC8ewruTPixOp/nbPKRyS2KtMyE2jtLiTt80j9mDBGaQMdRY5wgQE6BS
+	VXWvOx9KB2cnba4R60ajWHiLBqPpb7IctZNMuXXhvAD/AU0mRP7lX9oB3iv3Xiir
+	93JiuR32SD0ySqsb+4SrjjArBYoOiFVA/H4VM30lNIV2UEhvpw23BP/ZRJejfrml
+	umeVKVyGV7Obiw0A1I4QfxIKiphSg==
 Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8h58v8b-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs77ggbks-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 14:57:30 +0000 (GMT)
+	Thu, 06 Aug 2026 14:58:40 +0000 (GMT)
 Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 676EugwZ003358;
-	Thu, 6 Aug 2026 14:57:29 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmhkj0q-1
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 676Eugwp003358;
+	Thu, 6 Aug 2026 14:58:40 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmhkj5v-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 14:57:29 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 676EvPfR52035930
+	Thu, 06 Aug 2026 14:58:40 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 676EwcUn15205090
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Aug 2026 14:57:25 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3E25C2004B;
-	Thu,  6 Aug 2026 14:57:25 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6D90220043;
-	Thu,  6 Aug 2026 14:57:22 +0000 (GMT)
-Received: from fedora (unknown [9.5.7.39])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  6 Aug 2026 14:57:22 +0000 (GMT)
-Date: Thu, 6 Aug 2026 20:28:11 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Ritesh Harjani <ritesh.list@gmail.com>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v6 0/4] KVM: PPC: Expose CPU compatibility modes for
- nested guests
-Message-ID: <20260806195943.1fa6cacd-be-amachhiw@linux.ibm.com>
-Mail-Followup-To: Ritesh Harjani <ritesh.list@gmail.com>, 
-	linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Vaibhav Jain <vaibhav@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20260804180705.59160-1-amachhiw@linux.ibm.com>
- <tsp8l8cw.ritesh.list@gmail.com>
- <20260806104222.7e435b28-8d-amachhiw@linux.ibm.com>
- <mruzl7qc.ritesh.list@gmail.com>
+	Thu, 6 Aug 2026 14:58:39 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B590958067;
+	Thu,  6 Aug 2026 14:58:38 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C929258059;
+	Thu,  6 Aug 2026 14:58:36 +0000 (GMT)
+Received: from b35lp69.lnxne.boe (unknown [9.87.84.240])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  6 Aug 2026 14:58:36 +0000 (GMT)
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+To: Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: KVM <kvm@vger.kernel.org>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>
+Subject: [PATCH v2] KVM: s390: Fix memory corruption by not reinjecting CK machine checks
+Date: Thu,  6 Aug 2026 16:58:35 +0200
+Message-ID: <20260806145835.31818-1-borntraeger@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <mruzl7qc.ritesh.list@gmail.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDExNSBTYWx0ZWRfXyb8VSYwFs6jy
- CvdE88yiGqnbT0NJ3ZS/jf+dZQZ4bFs00IiqXhiMERgghrSpP1xwpOrGC/44dSwKC+H3Bie75DM
- CpFcnXKh2DaIbUMV82pbfuTVjuMhdfc=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDExNSBTYWx0ZWRfX7AasYGKtMULE
- wNZ03bxfJgQaD6K13xy9P5TuotuqHOK6Fnpv2NfK7/9osndLEa/TIL/0ftJHqaMZqpHp0qq6gKd
- QUxAtVoL2KRrVUNUyBDuI/uwEwVK9ZTh2+Blviq9ePhASgW/kZmxtDoCTDRB2/dJAYoa3T9lGIK
- QLPkd46QwZ9liv57u05YL4bw3DVewT3A1UugWdA7Oigggcm3FqRc7S5EDQg+kLAzLITLkFjHKDU
- kCBf0eVgytcwDP3OJq4zXb2Lm7VwWYl4DUyUmwPX7VpjxYl2NeFhkq7NZ1LdPpmh7ZWH5EYG+g/
- 5Df5jZYBHsa1IVSQS3iEPVIfmAYfmrL0oekeE0xF3gYGDngd0W8q0pn5hjcw/rkMwUjXb8yh4fg
- 4W6r3afwBczoH3eOKd2XTBJiQVNfdfH/RQTvrR0hJRTuNC4oycimtmUR5kiTfeiJXdxT2U/wXh7
- jQOtRc/+AIUDcv7I7Pw==
-X-Authority-Analysis: v=2.4 cv=SI1ykuvH c=1 sm=1 tr=0 ts=6a74a0db cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDExNSBTYWx0ZWRfXxReh3cA5b6DI
+ gOei49iQH32hw60dnf1Afk40dX2ApmnNlFCZUlEMdqqsy8ucd41ugeBIu5v9mpfu2u8PaNpKygn
+ QdYpabskSFxieKO1WkI/r5wweAr3KhBQzpn60InH1dBJ+E8b6Xr6/SVvSoQKfY7ByQ17gQ3Kbm/
+ g+bcQaZ4qY1p4493YPA0SVhSfhpoIHNsKIcLj0AWfX7KqI+49/grB/wDjzMFgzxjwWxUBpCkISJ
+ 6+JeYrVCrEnd5b6VrBGnAJFjYEJ18GxPgMtL9uxgeqEuM1vnxRfbpsGlSdED+Ob6SHkojFZjQnG
+ 4HA+O1t+g6k9b5phLNR+VeFPe3ueisBQKRUJtkJ72XAoXLFDhCZRFSki3B9PiC4Oys2STvTVNrc
+ foKqo8yCOM+P76MHXwze1SeJlrQCRr2aMYobW/A0uAkr7Bd5iwI2meJpP2H8+oDPBrh6ujDREPt
+ Lq3VNfsmIS/F0WZq7Rw==
+X-Authority-Analysis: v=2.4 cv=WIFPmHsR c=1 sm=1 tr=0 ts=6a74a120 cx=c_pps
  a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=a07hoUeaLZJ5nhunpkIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: ACYYhBt_gOpV2mwcDM734kjCwx89R1Zm
-X-Proofpoint-GUID: YeR6JNO4hYzHddb9dOpKTjsRYLFqsOp9
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=wvZ6b-M3Fnr1N7NqwM0A:9
+X-Proofpoint-GUID: Snev5Wq0SsnMBPwF-PQiXmivY2XajRhm
+X-Proofpoint-ORIG-GUID: Snev5Wq0SsnMBPwF-PQiXmivY2XajRhm
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDExNSBTYWx0ZWRfXy1tHV252i4aJ
+ 3mMBvqmw1Ue+YkAbnF/5pUVUFOeZV6M8M+McosjMjIh4XDyMDD5EFm/r5Cdrw5VcyK688lyLzUh
+ usy5Bc59zAukChmq/MWaxF75JFyfw3Y=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-06_01,2026-08-05_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0
- phishscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608060115
+ spamscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0 malwarescore=0
+ suspectscore=0 clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608060115
 
-On 2026/08/06 06:35 PM, Ritesh Harjani wrote:
-> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
-> 
-> > Hi Ritesh,
-> >
-> > Thanks for taking a look. Please find my response inline.
-> >
-> > On 2026/08/06 12:09 AM, Ritesh Harjani wrote:
-> >> 
-> >> Hi Amit,
-> >> 
-> >> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
-> >> 
-> >> > On POWER systems, newer processor generations can operate in compatibility
-> >> > modes corresponding to earlier generations (e.g., a Power11 system running
-> >> > in Power10 compatibility mode). In such cases, the effective CPU level
-> >> > exposed to guests differs from the physical processor generation.
-> >> >
-> >> > This creates a problem for nested virtualization. When booting a nested KVM
-> >> > guest (L2) inside a host KVM guest (L1) running in a compatibility mode,
-> >> > userspace (e.g., QEMU) may derive the CPU model from the raw hardware PVR
-> >> > and attempt to configure the nested guest accordingly. However, the L1
-> >> > partition is constrained by the compatibility level negotiated with the
-> >> > hypervisor (L0), and requests exceeding that level are rejected, leading to
-> >> > guest boot failures such as:
-> >> >
-> >> >   KVM-NESTEDv2: couldn't set guest wide elements
-> >> >
-> >> > This series provides a mechanism for userspace to query the effective CPU
-> >> > compatibility modes supported by the host, so it can select an appropriate
-> >> > CPU model for nested guests.
-> >> >
-> >> > To achieve this, the series introduces a new KVM capability and ioctl
-> >> > (KVM_CAP_PPC_COMPAT_CAPS / KVM_PPC_GET_COMPAT_CAPS) that expose the
-> >> > compatibility modes supported by the host.
-> >> >
-> >> 
-> >> Sorry, but I am somehow not convinced on whether we need all of this
-> >> machinary just to get these 3 bits of information, which we are
-> >> returning today.
-> >> 
-> >> Since KVM_CHECK_EXTENSION can already return an int, so why can't we use
-> >> KVM_CAP_PPC_COMPAT_CAPS itself and return the bitmap of supported compat
-> >> modes to the user?
-> >> Say if the cap is not supported, we can return 0, otherwise we can
-> >> return the bitmap of supported compat modes. This will easily allow us
-> >> to use 31-bits which as I see would be hardly a problem in the near
-> >> future. In the future if it grows - we can always use KVM_CAP_PPC_COMPAT_CAPS2.
-> >> 
-> >> This should reduce the code complexity both in the kernel and
-> >> userspace and we don't even need a new ioctl then.
-> >
-> > Thanks for the suggestion. I considered this approach
-> 
-> Then we should have brought that up early on during the design
-> discussion. But for the sake of discussion let's call this as
-> approach-2.
-> 
-> > but would like to
-> > go with a dedicated ioctl for the following reasons:
-> >
-> 
-> > 1. Intended semantics: The KVM API documentation states:
-> >
-> >    ..kvm defines extension identifiers and a facility to query
-> >    whether a particular extension identifier is available.  If it is, a
-> >    set of ioctls is available for application use.
-> >
-> >    [...]
-> >
-> >    KVM defines many constants of the form KVM_CAP_*, each corresponding
-> >    to a set of functionality provided by one or more ioctls. Availability
-> >    of these capabilities can be checked with KVM_CHECK_EXTENSION.
-> >
-> >    The intended role of KVM_CAP_* is to signal ioctl availability, not
-> >    to serve as a data retrieval mechanism itself.
-> 
-> That's not entirely true. We do return data as part of check extension
-> for e.g. for getting the SMT modes check KVM_CAP_PPC_SMT_POSSIBLE.
-> 
-> >
-> >    You may take a look at KVM_CAP_PPC_GET_CPU_CHAR for instance.
-> >
-> > 2. Return type constraint: KVM_CHECK_EXTENSION returns a signed 32-bit int. The
-> >    capability bits are defined as (1ULL << 62), (1ULL << 61), and (1ULL << 60) —
-> >    64-bit values that cannot fit in a 32-bit return. Renumbering them to small
-> >    integers would be a UAPI change and would lose alignment with the
-> 
-> There is no _change_ in the UAPI so far. This is the patch which is
-> defining that in the first place.
-> 
-> >    H_GUEST_CAP_* values from the hypervisor ABI.
-> 
-> No please. Those are 2 different ABIs and there is no need to set a hard
-> dependency among the two.
-> 
-> >
-> > 3. Extensibility: The struct-based approach with the size field provides clean
-> >    forward and backward ABI versioning via copy_struct_from/to_user(), without
-> >    needing a KVM_CAP_PPC_COMPAT_CAPS2 in the future.
-> >
-> 
-> This only make sense if we really have a usecase already in mind which
-> you are planning to extend it for. Otherwise, IMO, this is a lot of
-> machinary and I think we should consider the simpler approach.
-> 
-> IMO - I think approach-2 is a much simpler for this usecase. I don't see
-> any valid reason on why we should not do that instead. We don't need an
-> extra ioctl and all the struct machinary along with that just for
-> returning a bitmask. The existing check extension ioctl can be
-> easily used for this purpose.
-> 
-> Would it be possible for you to give, approach-2 a try? Do you see any
-> geniunine roadblock or limitation with that?
+Channel-subsystem damage machine checks are for the host channel
+subsystem. The guest channel subsystem is emulated in the userspace VMM.
+There is no point in forwarding such machine checks into the guest.
 
-As discussed, one additional and deeper technical reason is that the
-Power Hypervisor (PHYP) returns a 64-bit capabilities mask as part of
-the H_GUEST_GET_CAPABILITIES hcall (defined in the PAPR specification).
-Our KVM_PPC_COMPAT_CAP_* bits are deliberately aligned to this 64-bit
-mask so that the cached nested_capabilities value can be used directly
-without any translation.
+This also simplifies the machine check reinjection and avoids kfree of a
+stack variable as reported by sashiko.  There might be still machine
+checks that have the ck bit set with another bit (like instruction
+damage), mask out the CK bit in s390_backup_mcck_info(), like the CP and
+ED bits already are.
 
-The PAPR spec reserves bits beyond the current processor modes and
-capability flags for future capabilities. As new processor generations
-arrive, some of those reserved bits may become relevant for them — at
-which point a 32-bit return from KVM_CHECK_EXTENSION would be
-insufficient, forcing a KVM_CAP_PPC_COMPAT_CAPS2.
+Fixes: 4d62fcc0b692 ("KVM: s390: Inject machine check into the guest")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+---
+v1->v2: move MCCK_CODE_NO_GUEST into nmi.h and reuse that
 
-The struct-based ioctl avoids this problem cleanly.
+ arch/s390/include/asm/nmi.h |  3 +++
+ arch/s390/kernel/nmi.c      |  5 +----
+ arch/s390/kvm/interrupt.c   | 26 +++++++++-----------------
+ 3 files changed, 13 insertions(+), 21 deletions(-)
 
-Thanks,
-Amit
+diff --git a/arch/s390/include/asm/nmi.h b/arch/s390/include/asm/nmi.h
+index 6454c1531854..7919b2b9ac9c 100644
+--- a/arch/s390/include/asm/nmi.h
++++ b/arch/s390/include/asm/nmi.h
+@@ -22,6 +22,7 @@
+ #define MCCK_CODE_SYSTEM_DAMAGE		BIT(63)
+ #define MCCK_CODE_EXT_DAMAGE		BIT(63 - 5)
+ #define MCCK_CODE_CP			BIT(63 - 9)
++#define MCCK_CODE_CK			BIT(63 - 11)
+ #define MCCK_CODE_STG_ERROR		BIT(63 - 16)
+ #define MCCK_CODE_STG_KEY_ERROR		BIT(63 - 18)
+ #define MCCK_CODE_STG_DEGRAD		BIT(63 - 19)
+@@ -33,6 +34,8 @@
+ #define MCCK_CODE_FC_VALID		BIT(63 - 43)
+ #define MCCK_CODE_CPU_TIMER_VALID	BIT(63 - 46)
+ 
++#define MCCK_CODE_NO_GUEST	(MCCK_CODE_CP | MCCK_CODE_EXT_DAMAGE | MCCK_CODE_CK)
++
+ #ifndef __ASSEMBLER__
+ 
+ union mci {
+diff --git a/arch/s390/kernel/nmi.c b/arch/s390/kernel/nmi.c
+index e17a59d4d5a4..17297a8b63d9 100644
+--- a/arch/s390/kernel/nmi.c
++++ b/arch/s390/kernel/nmi.c
+@@ -344,8 +344,7 @@ static void notrace s390_backup_mcck_info(struct pt_regs *regs)
+ 
+ 	sie_page = container_of(sie_block, struct sie_page, sie_block);
+ 	mcck_backup = &sie_page->mcck_info;
+-	mcck_backup->mcic = get_lowcore()->mcck_interruption_code &
+-				~(MCCK_CODE_CP | MCCK_CODE_EXT_DAMAGE);
++	mcck_backup->mcic = get_lowcore()->mcck_interruption_code & ~MCCK_CODE_NO_GUEST;
+ 	mcck_backup->ext_damage_code = get_lowcore()->external_damage_code;
+ 	mcck_backup->failing_storage_address = get_lowcore()->failing_storage_address;
+ }
+@@ -357,8 +356,6 @@ NOKPROBE_SYMBOL(s390_backup_mcck_info);
+ #define ED_STP_ISLAND	6	/* External damage STP island check */
+ #define ED_STP_SYNC	7	/* External damage STP sync check */
+ 
+-#define MCCK_CODE_NO_GUEST	(MCCK_CODE_CP | MCCK_CODE_EXT_DAMAGE)
+-
+ /*
+  * machine check handler.
+  */
+diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
+index 7514d9e2403c..3375a956637b 100644
+--- a/arch/s390/kvm/interrupt.c
++++ b/arch/s390/kvm/interrupt.c
+@@ -3099,9 +3099,7 @@ static int set_adapter_int(struct kvm_kernel_irq_routing_entry *e,
+ void kvm_s390_reinject_machine_check(struct kvm_vcpu *vcpu,
+ 				     struct mcck_volatile_info *mcck_info)
+ {
+-	struct kvm_s390_interrupt_info inti;
+-	struct kvm_s390_irq irq;
+-	struct kvm_s390_mchk_info *mchk;
++	struct kvm_s390_irq irq = {};
+ 	union mci mci;
+ 	__u64 cr14 = 0;         /* upper bits are not used */
+ 	int rc;
+@@ -3120,20 +3118,14 @@ void kvm_s390_reinject_machine_check(struct kvm_vcpu *vcpu,
+ 	if (mci.w)
+ 		cr14 |= CR14_WARNING_SUBMASK;
+ 
+-	mchk = mci.ck ? &inti.mchk : &irq.u.mchk;
+-	mchk->cr14 = cr14;
+-	mchk->mcic = mcck_info->mcic;
+-	mchk->ext_damage_code = mcck_info->ext_damage_code;
+-	mchk->failing_storage_address = mcck_info->failing_storage_address;
+-	if (mci.ck) {
+-		/* Inject the floating machine check */
+-		inti.type = KVM_S390_MCHK;
+-		rc = __inject_vm(vcpu->kvm, &inti);
+-	} else {
+-		/* Inject the machine check to specified vcpu */
+-		irq.type = KVM_S390_MCHK;
+-		rc = kvm_s390_inject_vcpu(vcpu, &irq);
+-	}
++	irq.u.mchk.cr14 = cr14;
++	irq.u.mchk.mcic = mcck_info->mcic;
++	irq.u.mchk.ext_damage_code = mcck_info->ext_damage_code;
++	irq.u.mchk.failing_storage_address = mcck_info->failing_storage_address;
++
++	/* Inject the machine check to specified vcpu */
++	irq.type = KVM_S390_MCHK;
++	rc = kvm_s390_inject_vcpu(vcpu, &irq);
+ 	WARN_ON_ONCE(rc);
+ }
+ 
+-- 
+2.53.0
 
-> 
-> -ritesh
-> 
