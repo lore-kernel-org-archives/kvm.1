@@ -1,67 +1,71 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC313A1681;
-	Thu,  6 Aug 2026 14:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEAB38F950
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 14:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786025033; cv=none; b=DyTiCQ3MO/BN22RRvBOuR9MlrOJ3Kz9Hc4H30nC0ZYFPcAoifnm2ixkjINQYujJSUiTqTaqvGQLC2WGY0VaHnng78nIMLhNpA5/LJxSVUE6r3+vfwc3gUJr4Hl/VDvRoWnLCDGfCzlwpwSPnpqc8UAyM9vJlsD7a/RSzWUa6XG8=
+	t=1786025461; cv=none; b=oPbPxfs0ZNLL9kBra6TD4Ky4TvZPvWI/bUPrr/5QWI+M9AtYeuG7tn/+dvJFNInf2P9gWkMx95JHCPpCxwjXnSeAJZcjeFurX1al4wSH+ooJNRb9zEOLXq8Nxn6zu2CP+7ZkTdCN+U4umIcy0z6oCJKKXGe+XDFEymlhQzZW4BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786025033; c=relaxed/simple;
-	bh=AEsNW+NBYPMBEfy8fUmKwiFCnf52pOVGTH7UhHvKcK8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fDuQwZaP7YfwVmg/HbnkdszlaP0ssA8Tu2PABbRY6tXRTS/lnXrty/kDHZbeigiS1BQIl2pY8ctdVjo+qG8xn35eyVvJTiMT+ebDZ7w1FaIgwnKhTrfB+EwHzqXyv08bN+ubyUNZUVeSNqU0F6gczgvFf+/RITTWSs6yQf9L2Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=VxpbSYIf; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786025461; c=relaxed/simple;
+	bh=NwBIt/uJ4VdZ7/SW+rBwQSYexGMFFGSBY0Idlnk8YHU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=t6XPVpRpIY42jYZySCGrLg4scPVmHNk+uXaoAhCAcUIGE1BPwAaGlKolnXbiPf4zVvgrU2LDU5QF/iuwMmvWwYH3Tk+6n3Y26exK5SLHg2rFGpebrA0LA0Jvlh2GQBAJnZpx2ylCi6CcdxaKdck6pjVko7/Ta1DfNN0VHAQQcj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bpPVt83l; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="VxpbSYIf"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675NmB5E3404367;
-	Thu, 6 Aug 2026 14:03:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=a5unDbdIng8tDwr7ncJJHzm+/8KeIBDABaZxAuNRN
-	XI=; b=VxpbSYIfvYjurJexHioYyGRywxp6rC8POmNxkMETwbWFnMbbnEaJFRYfG
-	fQcvB1bvcHk6YLpN4YTQGgnf1b+VxtAOqsJdTAVvBDcytvyrXfD+OwtHW+gK2ak6
-	nrg3p4OblKb5tyzsLmYErKbXGH8WErhUjmdTUpdl/vkk68pdMSh4vDDMGSwx3b4/
-	ABu9X6c7DzmXUnRFDW+haZI2Uvs5kHxCEJP/WawuoD9wghOcear4iaAbTTfKCH60
-	qJH+L42UqRljI7zNDkMj3vE8vNDi5Q7hBUROJlP0F7IAMmd22q/jvW8CaABMMSa9
-	qntC8hTIwlAietz9dG16TytLG6e2Q==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8fr0gc8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 14:03:47 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 676DuG8G028447;
-	Thu, 6 Aug 2026 14:03:46 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmhkc25-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 14:03:46 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 676E3ifg28574286
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Aug 2026 14:03:44 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 56EB058064;
-	Thu,  6 Aug 2026 14:03:44 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EF0315805F;
-	Thu,  6 Aug 2026 14:03:42 +0000 (GMT)
-Received: from li-4c4c4544-004d-4810-8043-b7c04f423534.ibm.com.com (unknown [9.61.92.156])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  6 Aug 2026 14:03:42 +0000 (GMT)
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
-        pasic@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        stable@vger.kernel.org
-Subject: [PATCH v4] s390/vfio-ap: fix stale pqap_hook pointer on error in vfio_ap_mdev_set_kvm()
-Date: Thu,  6 Aug 2026 10:03:42 -0400
-Message-ID: <20260806140342.611294-1-akrowiak@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bpPVt83l"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ceb096e675so28740985ad.0
+        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 07:10:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786025459; x=1786630259; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ePY+/1fTaXFojTIYlblnOIxB+i9LU95CuQeSgwNz2HQ=;
+        b=bpPVt83lWPTlv7j/PE26z4W0Uff7bbnqcOZ8zErPuW035AeE/iQUxNyP4D8xNzo3nJ
+         wYTgEvyU037T+SAdX9j1Zv+aie/HX8lDBxw4UfEs1WVWuSI2+CjSREen7ia4Ts3Jc8E/
+         YZIdfVgAFVR/5rMSn83nPgqqP/AJs9DLhMZoDnPdpVWyNsSRtjAeu2EKmvBAoNhflYjj
+         HPNOJcynynyqjTyPh97Fe7PzG+TWVz864tr2xpxrxZjs1jYtAs+t8gfTkdKZCKhOr/FR
+         V6Rh/xGablA9G+HfZb2CgsMQdW9ZK9OuPTw12F8JYn55omzbeiPN2Eapex94qMCri5FX
+         RV7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786025459; x=1786630259;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ePY+/1fTaXFojTIYlblnOIxB+i9LU95CuQeSgwNz2HQ=;
+        b=XhCG4v5qxCgk2IFylyfp8d8AZNhpkNgh92mAkl7SkDrmn3PlYvk4ege9K7OQZIIt6o
+         xuRsLE336cZEpiqc+BbMq8iNsUVApYxzIUSfKlPwMWXfO4HnsTmWdFqye8Ox5sZbsF3R
+         oGNHYJqNan/HzrCMYdAH5dnazNhtY0tm23anFEN4X2zRg+2DbrdZ3cNBOlQT45oiTgLd
+         ttgsyDYiXGaGaAG7j/nuisJ0T08y9qfJd5rHks+ysoYakwSCJKvAHEVS57WX0YZYN0tV
+         gvVswaGd0OJDsjScOkCp221UKt3ICst008X6wbK/nbotsnZ50iz3kdYqCgZJP+/XAfki
+         vFsA==
+X-Gm-Message-State: AOJu0YxVdmrJPCrmSa9+Xud3A0ZXSaHyLH3Fg1KY2Ph6IBu+052zqost
+	2ly1TbUAoMRAdUaJquPWN5bM3+qdPvg/jBHW3hJ0kkWnp3jTlMPr3LWA
+X-Gm-Gg: AR+sD10W1NlahOHuxaHz0SXoHSYJy6qlq4R0fm7lpaDBtOGl4Gro5a5uxUGAFZslwQ4
+	BSZOPTlrKNGoGj1hDhLaqJkzeLZhOIO+cIW/5LNK7oZYKyRZ1Q9D6cx2as+vh5jVcyxGJxRT66I
+	GAKUBPriqU1lOVPiLr9iKtayGl8kXVuOR9TBZHD+k7olS6Gz4DXvuR1Aw9h3Q3/xnvPHKro1CRD
+	dMkc9Hwpgrw5ILNDYSEoAXjmJT2NIkejuMJgmlKJNBvL1E9BjKrixqm89iD7+jD1nz7F9vQ9gVE
+	rlTUCqpfJIW5lo9Q4UoZwyVFVUuxVi3d2z559wEnqzzWWhT5PC3EtsrKpTyXwUA6zFIONezMg0p
+	dmWbYJbup1Bw3X2CdlUFmcr6SjSJdC7mHN1R2VGfycT6ROEkB/TD5tR/X6X9bdmc+e2EVORvdjn
+	yGJkfiHL558pzneDXjLc3i9uNIYdeZAfmwRxEUOz4qyRBjspg0eTsdJ5oH4IpgDN1LkA17wTzfG
+	8+8aB++xCU=
+X-Received: by 2002:a17:902:d98b:b0:2ca:20b1:3e0a with SMTP id d9443c01a7336-2d0ca7af30fmr195609985ad.3.1786025458423;
+        Thu, 06 Aug 2026 07:10:58 -0700 (PDT)
+Received: from gmail.com ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0aa4bbc5csm32060905ad.62.2026.08.06.07.10.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 07:10:58 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: mst@redhat.com,
+	jasowangio@gmail.com,
+	eperezma@redhat.com
+Cc: kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org
+Subject: [RFC PATCH] vhost: coalesce and retry IOTLB miss messages
+Date: Thu,  6 Aug 2026 22:06:16 +0800
+Message-Id: <20260806140616.59025-1-physicalmtea@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -69,184 +73,419 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: IH0OnD3wdfP14lTx9xKdrG0e-WYs8uVK
-X-Proofpoint-ORIG-GUID: IH0OnD3wdfP14lTx9xKdrG0e-WYs8uVK
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDEwOCBTYWx0ZWRfXx/bordy/sASm
- uQuKOTIa+oCdivOpnquKCvBmrH+v7ry5gKIexk+L1QShesv45QUtz87BjT2BTKDbogY3jFGAv3g
- EFP3XL7xWDTYRbJjkev2ZVG4KS+pIo8=
-X-Authority-Analysis: v=2.4 cv=K8cS2SWI c=1 sm=1 tr=0 ts=6a749443 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=fnNIMH4mEDlqOEiJ55YA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDEwOCBTYWx0ZWRfXzTXiYUkLhxCo
- A/+R3w7E0li4fututo8wE4CMyZJzq7mn/XQMeP9Ox5+zjohlWVaOr9TUUSj+3Qm38YuPcPM+hMp
- 6ex9IHVfvBeTtOIw7WDgg6EMeX/ARwRpA72bY9zT23gYb2lhmxxv42pN8Wgff+/xn2106qTk7P4
- z6BYypkDq81Z3EFzpS9ukvCvtkmY15fPCyQwJqL7xN7eeVPt1+/b0w1qEqAeH7UhXZXGvU17Rn2
- fr0bQxYp9eXKEaQWucAQSuXG2iR9SVIGULhHw1pKT3pU2W9NffvhXF6B9ZBSpuoVvEgeeAuKmLb
- Hh0DYXHq4QAAzatKNcq4mlJW0Lmd5VKDsvYk0Wf7LpZMVY1q54rahevS/7RsehsvZSeyuz5UiKD
- JhO5SqoI8blZY8c99p2j+GVNc8ktz3QDK3GLNU8okblUnd0wudWMJGyDNHtjFiav5odBXNNdcoe
- jgLILwOi4xus1i7H8gw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-05_06,2026-08-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 phishscore=0 suspectscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608060108
 
-In vfio_ap_mdev_set_kvm(), kvm->arch.crypto.pqap_hook is set to
-&matrix_mdev->pqap_hook before the update locks are acquired and the
-mdev list is checked for a conflicting assignment. If another mdev is
-already attached to the same KVM instance, the function returns -EPERM
-without restoring the hook pointer, leaving kvm->arch.crypto.pqap_hook
-pointing at the failing matrix_mdev instead of the mdev that legitimately
-owns the KVM.
+vhost_iotlb_miss() allocates a vhost_msg_node for each descriptor
+translation miss. The node is linked on dev->read_list. After userspace
+reads it, vhost_chr_read_iter() moves it to dev->pending_list. It stays
+there until an IOTLB UPDATE covers the missed IOVA.
 
-Since matrix_mdev->kvm is never set on this error path,
-vfio_ap_mdev_unset_kvm() will not clean up the hook when matrix_mdev
-is later closed. If matrix_mdev is subsequently freed, any PQAP
-instruction executed by the guest will dereference the stale pointer
-through pqap_hook_rwsem, resulting in a use-after-free.
+The failure was reproduced on a server with no swap device. Start
+vhost-net with VIRTIO_F_ACCESS_PLATFORM, post a descriptor for an
+unmapped IOVA, and keep kicking the same virtqueue. Leave the vhost fd
+unread, or read the MISS messages without installing a covering mapping.
 
-Since kvm->arch.crypto.pqap_hook is only set in the vfio_ap_mdev_set_kvm()
-function and is cleared in the vfio_ap_mdev_unset_kvm() function, a check
-for 'kvm->arch.crypto.pqap_hook != NULL' is all that is needed to determine
-whether it belongs to another mdev. This will alleviate the need to iterate
-the matrix_dev->mdev_list list to see if the kvm object is assigned to
-another mdev.This was introduced in v3 to alleviate the need to take the
-mdevs_lock while iterating the list; however, this did not prevent a
-potential race condition.
+The virtqueue does not advance past the descriptor that missed. Each kick
+hits the same missing translation and allocates another message. The
+read_list grows when userspace does not read the fd. The pending_list
+grows when userspace reads the MISS messages but does not install the
+mapping. On the test server the accumulated nodes consumed available
+memory and the OOM killer ran.
 
-The pqap_hook_rwsem(write) is now performed inside
-get_update_locks_for_kvm(), which is updated to acquire
-pqap_hook_rwsem(write) between kvm->lock and mdevs_lock. This ordering
-is consistent with the PQAP intercept path, which acquires pqap_hook_rwsem
-in read mode while srcu is held under vcpu->mutex, establishing the
-dependency: kvm->lock -> vcpu->mutex -> srcu -> pqap_hook_rwsem(read).
+A device-wide hard limit was considered as a smaller change. One
+virtqueue can fill the limit with repeated reports for the same IOVA.
+When another virtqueue misses, vhost_new_msg() returns NULL and no MISS is
+placed on read_list. translate_desc() still returns -EAGAIN and does not
+record that the second virtqueue needs another attempt. Freeing entries
+from the limit does not retry that virtqueue. It remains stopped unless
+the guest happens to kick it again.
 
-The pqap_hook_rwsem is now released inside the
-release_update_locks_for_kvm(), which is updated to release
-pqap_hook_rwsem(write) between mdevs_lock and kvm->lock.
+I did not find a smaller fix which also retries a virtqueue after a full
+limit.
 
-Additionally, kvm_put_kvm() in vfio_ap_mdev_unset_kvm() is moved
-after release_update_locks_for_kvm(). Previously it was called while
-kvm->lock was held; if it were ever the last reference, kvm_destroy_vm()
-would run under kvm->lock, which would deadlock.
+Record the current miss on each virtqueue by IOVA and permission.
+Repeated misses for that IOVA and permission return without allocating a
+new message.
 
-Fixes: 86956e70761b3 ("s390/vfio-ap: replace open coded locks for VFIO_GROUP_NOTIFY_SET_KVM notification")
-Cc: stable@vger.kernel.org
-Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
-Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
+For N reports of the same unresolved miss, the old code performs N
+allocations, N read-list insertions and N wakeups. This change performs
+one allocation, one insertion and one wakeup. It removes N-1 allocations,
+insertions and wakeups. The first report takes two iotlb_lock passes.
+Later reports take one pass and stop at the per-virtqueue check. Compared
+with the old code, N repeated reports add one iotlb_lock pass in total and
+remove N-1 allocations, insertions and wakeups.
+
+Keep a device-wide count for message nodes that are already in their
+read/copy/pending lifetime. When the count reaches the limit, put the
+virtqueue on a FIFO wait list. Freeing a MISS message wakes one waiter so
+it can retry the translation and report its current miss.
+
+IOTLB UPDATE checks the current miss recorded on each virtqueue. A
+covering update clears the current miss and wakes the virtqueue. Old
+message nodes keep their normal lifetime; freeing an old node clears the
+virtqueue pointer only when it still points to that node.
+
+
+Signed-off-by: Jia Jia <physicalmtea@gmail.com>
 ---
- drivers/s390/crypto/vfio_ap_ops.c | 45 ++++++++++++++-----------------
- 1 file changed, 20 insertions(+), 25 deletions(-)
+ drivers/vhost/vhost.c | 212 ++++++++++++++++++++++++++++++++++++++----
+ drivers/vhost/vhost.h |  15 +++
+ 2 files changed, 209 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
-index 44b3a1dcc1b3..99a0efd999ef 100644
---- a/drivers/s390/crypto/vfio_ap_ops.c
-+++ b/drivers/s390/crypto/vfio_ap_ops.c
-@@ -48,15 +48,19 @@ static void vfio_ap_mdev_reset_queue(struct vfio_ap_queue *q);
-  * 1. matrix_dev->guests_lock: required to use the KVM pointer to update a KVM
-  *			       guest's APCB.
-  * 2. kvm->lock:	       required to update a guest's APCB
-- * 3. matrix_dev->mdevs_lock:  required to access data stored in a matrix_mdev
-+ * 3. kvm->arch.crypto.pqap_hook_rwsem: required to update pqap_hook and
-+ *					serialize against PQAP intercepts
-+ * 4. matrix_dev->mdevs_lock:  required to access data stored in a matrix_mdev
-  *
-- * Note: If @kvm is NULL, the KVM lock will not be taken.
-+ * Note: If @kvm is NULL, the KVM lock and pqap_hook_rwsem will not be taken.
-  */
- static inline void get_update_locks_for_kvm(struct kvm *kvm)
- {
- 	mutex_lock(&matrix_dev->guests_lock);
--	if (kvm)
-+	if (kvm) {
- 		mutex_lock(&kvm->lock);
-+		down_write(&kvm->arch.crypto.pqap_hook_rwsem);
-+	}
- 	mutex_lock(&matrix_dev->mdevs_lock);
- }
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 4c525b3e16ea..cfbff17761d8 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -34,6 +34,8 @@
  
-@@ -68,16 +72,19 @@ static inline void get_update_locks_for_kvm(struct kvm *kvm)
-  *
-  * The proper unlocking order is:
-  * 1. matrix_dev->mdevs_lock
-- * 2. kvm->lock
-- * 3. matrix_dev->guests_lock
-+ * 2. kvm->arch.crypto.pqap_hook_rwsem
-+ * 3. kvm->lock
-+ * 4. matrix_dev->guests_lock
-  *
-- * Note: If @kvm is NULL, the KVM lock will not be released.
-+ * Note: If @kvm is NULL, the KVM lock and pqap_hook_rwsem will not be released.
-  */
- static inline void release_update_locks_for_kvm(struct kvm *kvm)
- {
- 	mutex_unlock(&matrix_dev->mdevs_lock);
--	if (kvm)
-+	if (kvm) {
-+		up_write(&kvm->arch.crypto.pqap_hook_rwsem);
- 		mutex_unlock(&kvm->lock);
-+	}
- 	mutex_unlock(&matrix_dev->guests_lock);
- }
+ #include "vhost.h"
  
-@@ -1821,26 +1828,17 @@ static const struct attribute_group *vfio_ap_mdev_attr_groups[] = {
- static int vfio_ap_mdev_set_kvm(struct ap_matrix_mdev *matrix_mdev,
- 				struct kvm *kvm)
++#define VHOST_MAX_IOTLB_MSGS 2048
++
+ static ushort max_mem_regions = 64;
+ module_param(max_mem_regions, ushort, 0444);
+ MODULE_PARM_DESC(max_mem_regions,
+@@ -603,6 +605,8 @@ void vhost_dev_init(struct vhost_dev *dev,
+ 	init_waitqueue_head(&dev->wait);
+ 	INIT_LIST_HEAD(&dev->read_list);
+ 	INIT_LIST_HEAD(&dev->pending_list);
++	INIT_LIST_HEAD(&dev->iotlb_wait_list);
++	dev->iotlb_msg_count = 0;
+ 	spin_lock_init(&dev->iotlb_lock);
+ 	xa_init_flags(&dev->worker_xa, XA_FLAGS_ALLOC);
+ 
+@@ -615,6 +619,9 @@ void vhost_dev_init(struct vhost_dev *dev,
+ 		vq->dev = dev;
+ 		mutex_init(&vq->mutex);
+ 		vhost_vq_reset(dev, vq);
++		vq->iotlb_miss_node = NULL;
++		vq->iotlb_miss_waiting = false;
++		INIT_LIST_HEAD(&vq->iotlb_miss_wait_node);
+ 		if (vq->handle_kick)
+ 			vhost_poll_init(&vq->poll, vq->handle_kick,
+ 					EPOLLIN, dev, vq);
+@@ -1177,20 +1184,104 @@ void vhost_dev_stop(struct vhost_dev *dev)
+ }
+ EXPORT_SYMBOL_GPL(vhost_dev_stop);
+ 
++static void vhost_wait_iotlb_miss(struct vhost_dev *dev,
++				  struct vhost_virtqueue *vq)
++{
++	lockdep_assert_held(&dev->iotlb_lock);
++
++	if (vq->iotlb_miss_waiting)
++		return;
++
++	vq->iotlb_miss_waiting = true;
++	list_add_tail(&vq->iotlb_miss_wait_node, &dev->iotlb_wait_list);
++}
++
++static void vhost_unwait_iotlb_miss(struct vhost_dev *dev,
++				    struct vhost_virtqueue *vq)
++{
++	lockdep_assert_held(&dev->iotlb_lock);
++
++	if (!vq->iotlb_miss_waiting)
++		return;
++
++	vq->iotlb_miss_waiting = false;
++	list_del_init(&vq->iotlb_miss_wait_node);
++}
++
++static void vhost_wake_iotlb_waiter(struct vhost_dev *dev)
++{
++	struct vhost_virtqueue *vq;
++
++	lockdep_assert_held(&dev->iotlb_lock);
++
++	if (!dev->iotlb || dev->iotlb_msg_count >= VHOST_MAX_IOTLB_MSGS ||
++	    list_empty(&dev->iotlb_wait_list))
++		return;
++
++	vq = list_first_entry(&dev->iotlb_wait_list,
++			      struct vhost_virtqueue, iotlb_miss_wait_node);
++	vhost_unwait_iotlb_miss(dev, vq);
++	vhost_poll_queue(&vq->poll);
++}
++
++static void __vhost_free_msg(struct vhost_dev *dev,
++			     struct vhost_msg_node *node)
++{
++	bool iotlb_miss = node->iotlb_miss;
++
++	lockdep_assert_held(&dev->iotlb_lock);
++
++	if (iotlb_miss) {
++		if (node->vq->iotlb_miss_node == node)
++			node->vq->iotlb_miss_node = NULL;
++		dev->iotlb_msg_count--;
++	}
++
++	kfree(node);
++
++	if (iotlb_miss)
++		vhost_wake_iotlb_waiter(dev);
++}
++
++static void vhost_free_msg(struct vhost_msg_node *node)
++{
++	struct vhost_dev *dev = node->vq->dev;
++
++	spin_lock(&dev->iotlb_lock);
++	if (node->iotlb_miss)
++		__vhost_free_msg(dev, node);
++	else
++		kfree(node);
++	spin_unlock(&dev->iotlb_lock);
++}
++
+ void vhost_clear_msg(struct vhost_dev *dev)
  {
--	struct ap_matrix_mdev *m;
--
- 	if (kvm->arch.crypto.crycbd) {
--		down_write(&kvm->arch.crypto.pqap_hook_rwsem);
--		kvm->arch.crypto.pqap_hook = &matrix_mdev->pqap_hook;
--		up_write(&kvm->arch.crypto.pqap_hook_rwsem);
--
- 		get_update_locks_for_kvm(kvm);
--
--		list_for_each_entry(m, &matrix_dev->mdev_list, node) {
--			if (m != matrix_mdev && m->kvm == kvm) {
--				release_update_locks_for_kvm(kvm);
--				return -EPERM;
--			}
-+		if (kvm->arch.crypto.pqap_hook) {
-+			release_update_locks_for_kvm(kvm);
-+			return -EPERM;
+ 	struct vhost_msg_node *node, *n;
++	struct vhost_virtqueue *vq, *vq_n;
++	int i;
+ 
+ 	spin_lock(&dev->iotlb_lock);
+ 
+ 	list_for_each_entry_safe(node, n, &dev->read_list, node) {
+-		list_del(&node->node);
+-		kfree(node);
++		list_del_init(&node->node);
++		__vhost_free_msg(dev, node);
+ 	}
+ 
+ 	list_for_each_entry_safe(node, n, &dev->pending_list, node) {
+-		list_del(&node->node);
+-		kfree(node);
++		list_del_init(&node->node);
++		__vhost_free_msg(dev, node);
++	}
++
++	if (!dev->iotlb) {
++		list_for_each_entry_safe(vq, vq_n, &dev->iotlb_wait_list,
++					 iotlb_miss_wait_node) {
++			list_del_init(&vq->iotlb_miss_wait_node);
++			vq->iotlb_miss_waiting = false;
++		}
++
++		for (i = 0; i < dev->nvqs; ++i)
++			dev->vqs[i]->iotlb_miss_node = NULL;
+ 	}
+ 
+ 	spin_unlock(&dev->iotlb_lock);
+@@ -1588,18 +1679,25 @@ static inline int vhost_get_desc(struct vhost_virtqueue *vq,
+ static void vhost_iotlb_notify_vq(struct vhost_dev *d,
+ 				  struct vhost_iotlb_msg *msg)
+ {
+-	struct vhost_msg_node *node, *n;
++	int i;
+ 
+ 	spin_lock(&d->iotlb_lock);
+ 
+-	list_for_each_entry_safe(node, n, &d->pending_list, node) {
+-		struct vhost_iotlb_msg *vq_msg = &node->msg.iotlb;
+-		if (msg->iova <= vq_msg->iova &&
+-		    msg->iova + msg->size - 1 >= vq_msg->iova &&
+-		    vq_msg->type == VHOST_IOTLB_MISS) {
+-			vhost_poll_queue(&node->vq->poll);
+-			list_del(&node->node);
+-			kfree(node);
++	for (i = 0; i < d->nvqs; ++i) {
++		struct vhost_virtqueue *vq = d->vqs[i];
++		struct vhost_msg_node *node = vq->iotlb_miss_node;
++
++		if (!node || msg->iova > node->iotlb_miss_iova ||
++		    msg->iova + msg->size - 1 < node->iotlb_miss_iova)
++			continue;
++
++		vq->iotlb_miss_node = NULL;
++		node->iotlb_miss_resolved = true;
++		vhost_poll_queue(&vq->poll);
++		if (node->iotlb_miss_pending) {
++			node->iotlb_miss_pending = false;
++			list_del_init(&node->node);
++			__vhost_free_msg(d, node);
  		}
-+		kvm->arch.crypto.pqap_hook = &matrix_mdev->pqap_hook;
- 
- 		kvm_get_kvm(kvm);
- 		matrix_mdev->kvm = kvm;
- 		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
--
- 		release_update_locks_for_kvm(kvm);
  	}
  
-@@ -1883,18 +1881,15 @@ static void vfio_ap_mdev_unset_kvm(struct ap_matrix_mdev *matrix_mdev)
- 	struct kvm *kvm = matrix_mdev->kvm;
+@@ -1809,7 +1907,7 @@ ssize_t vhost_chr_read_iter(struct vhost_dev *dev, struct iov_iter *to,
  
- 	if (kvm && kvm->arch.crypto.crycbd) {
--		down_write(&kvm->arch.crypto.pqap_hook_rwsem);
--		kvm->arch.crypto.pqap_hook = NULL;
--		up_write(&kvm->arch.crypto.pqap_hook_rwsem);
--
- 		get_update_locks_for_kvm(kvm);
-+		kvm->arch.crypto.pqap_hook = NULL;
- 
- 		kvm_arch_crypto_clear_masks(kvm);
- 		vfio_ap_mdev_reset_queues(matrix_mdev);
--		kvm_put_kvm(kvm);
- 		matrix_mdev->kvm = NULL;
- 
- 		release_update_locks_for_kvm(kvm);
-+		kvm_put_kvm(kvm);
- 	}
+ 		ret = copy_to_iter(start, size, to);
+ 		if (ret != size || msg->type != VHOST_IOTLB_MISS) {
+-			kfree(node);
++			vhost_free_msg(node);
+ 			return ret;
+ 		}
+ 		vhost_enqueue_msg(dev, &dev->pending_list, node);
+@@ -1819,12 +1917,42 @@ ssize_t vhost_chr_read_iter(struct vhost_dev *dev, struct iov_iter *to,
  }
+ EXPORT_SYMBOL_GPL(vhost_chr_read_iter);
  
--- 
-2.53.0
-
++static bool vhost_iotlb_miss_exists(struct vhost_virtqueue *vq, u64 iova,
++				    int access)
++{
++	struct vhost_msg_node *node = vq->iotlb_miss_node;
++
++	lockdep_assert_held(&vq->dev->iotlb_lock);
++
++	return node && !node->iotlb_miss_resolved &&
++	       node->iotlb_miss_iova == iova &&
++	       node->iotlb_miss_perm == access;
++}
++
+ static int vhost_iotlb_miss(struct vhost_virtqueue *vq, u64 iova, int access)
+ {
+ 	struct vhost_dev *dev = vq->dev;
+ 	struct vhost_msg_node *node;
+ 	struct vhost_iotlb_msg *msg;
+ 	bool v2 = vhost_backend_has_feature(vq, VHOST_BACKEND_F_IOTLB_MSG_V2);
++	bool queued = false;
++	int ret = 0;
++
++	/* A failed translation stops this VQ before another miss can occur. */
++	lockdep_assert_held(&vq->mutex);
++
++	spin_lock(&dev->iotlb_lock);
++	if (vhost_iotlb_miss_exists(vq, iova, access)) {
++		vhost_unwait_iotlb_miss(dev, vq);
++		spin_unlock(&dev->iotlb_lock);
++		return 0;
++	}
++	if (dev->iotlb_msg_count >= VHOST_MAX_IOTLB_MSGS) {
++		vhost_wait_iotlb_miss(dev, vq);
++		spin_unlock(&dev->iotlb_lock);
++		return -ENOSPC;
++	}
++	spin_unlock(&dev->iotlb_lock);
+ 
+ 	node = vhost_new_msg(vq, v2 ? VHOST_IOTLB_MSG_V2 : VHOST_IOTLB_MSG);
+ 	if (!node)
+@@ -1840,8 +1968,40 @@ static int vhost_iotlb_miss(struct vhost_virtqueue *vq, u64 iova, int access)
+ 	msg->type = VHOST_IOTLB_MISS;
+ 	msg->iova = iova;
+ 	msg->perm = access;
++	node->iotlb_miss = true;
++	node->iotlb_miss_iova = iova;
++	node->iotlb_miss_perm = access;
+ 
+-	vhost_enqueue_msg(dev, &dev->read_list, node);
++	spin_lock(&dev->iotlb_lock);
++	if (vhost_iotlb_miss_exists(vq, iova, access)) {
++		vhost_unwait_iotlb_miss(dev, vq);
++		goto unlock;
++	}
++	if (WARN_ON_ONCE(vq->iotlb_miss_node)) {
++		ret = -EAGAIN;
++		goto unlock;
++	}
++	if (dev->iotlb_msg_count >= VHOST_MAX_IOTLB_MSGS) {
++		vhost_wait_iotlb_miss(dev, vq);
++		ret = -ENOSPC;
++		goto unlock;
++	}
++
++	dev->iotlb_msg_count++;
++	vq->iotlb_miss_node = node;
++	list_add_tail(&node->node, &dev->read_list);
++	vhost_unwait_iotlb_miss(dev, vq);
++	queued = true;
++
++unlock:
++	spin_unlock(&dev->iotlb_lock);
++
++	if (!queued) {
++		kfree(node);
++		return ret;
++	}
++
++	wake_up_interruptible_poll(&dev->wait, EPOLLIN | EPOLLRDNORM);
+ 
+ 	return 0;
+ }
+@@ -3283,11 +3443,25 @@ EXPORT_SYMBOL_GPL(vhost_new_msg);
+ void vhost_enqueue_msg(struct vhost_dev *dev, struct list_head *head,
+ 		       struct vhost_msg_node *node)
+ {
++	bool free = false;
++
+ 	spin_lock(&dev->iotlb_lock);
+-	list_add_tail(&node->node, head);
++	if (node->iotlb_miss) {
++		node->iotlb_miss_pending = head == &dev->pending_list;
++		if (node->iotlb_miss_pending && node->iotlb_miss_resolved) {
++			__vhost_free_msg(dev, node);
++			free = true;
++		} else {
++			list_add_tail(&node->node, head);
++		}
++	} else {
++		list_add_tail(&node->node, head);
++	}
+ 	spin_unlock(&dev->iotlb_lock);
+ 
+-	wake_up_interruptible_poll(&dev->wait, EPOLLIN | EPOLLRDNORM);
++	if (!free)
++		wake_up_interruptible_poll(&dev->wait,
++					   EPOLLIN | EPOLLRDNORM);
+ }
+ EXPORT_SYMBOL_GPL(vhost_enqueue_msg);
+ 
+@@ -3300,7 +3474,9 @@ struct vhost_msg_node *vhost_dequeue_msg(struct vhost_dev *dev,
+ 	if (!list_empty(head)) {
+ 		node = list_first_entry(head, struct vhost_msg_node,
+ 					node);
+-		list_del(&node->node);
++		list_del_init(&node->node);
++		if (node->iotlb_miss)
++			node->iotlb_miss_pending = false;
+ 	}
+ 	spin_unlock(&dev->iotlb_lock);
+ 
+diff --git a/drivers/vhost/vhost.h b/drivers/vhost/vhost.h
+index 0192ade6e749..b676bdcc629d 100644
+--- a/drivers/vhost/vhost.h
++++ b/drivers/vhost/vhost.h
+@@ -29,6 +29,7 @@ struct vhost_work {
+ 
+ struct vhost_worker;
+ struct vhost_dev;
++struct vhost_msg_node;
+ 
+ struct vhost_worker_ops {
+ 	int (*create)(struct vhost_worker *worker, struct vhost_dev *dev,
+@@ -164,6 +165,11 @@ struct vhost_virtqueue {
+ 	bool user_be;
+ #endif
+ 	u32 busyloop_timeout;
++
++	/* Protected by dev->iotlb_lock. */
++	struct vhost_msg_node *iotlb_miss_node;
++	struct list_head iotlb_miss_wait_node;
++	bool iotlb_miss_waiting;
+ };
+ 
+ struct vhost_msg_node {
+@@ -173,6 +179,12 @@ struct vhost_msg_node {
+   };
+   struct vhost_virtqueue *vq;
+   struct list_head node;
++	/* Protected by vq->dev->iotlb_lock. */
++	u64 iotlb_miss_iova;
++	u8 iotlb_miss_perm;
++	bool iotlb_miss;
++	bool iotlb_miss_resolved;
++	bool iotlb_miss_pending;
+ };
+ 
+ struct vhost_dev {
+@@ -202,8 +214,11 @@ struct vhost_dev {
+ 	 * The default value is set by fork_from_owner_default
+ 	 */
+ 	bool fork_owner;
++	/* Includes messages being copied to userspace. Protected by iotlb_lock. */
++	u16 iotlb_msg_count;
+ 	int (*msg_handler)(struct vhost_dev *dev, u32 asid,
+ 			   struct vhost_iotlb_msg *msg);
++	struct list_head iotlb_wait_list;
+ };
+ 
+ bool vhost_exceeds_weight(struct vhost_virtqueue *vq, int pkts, int total_len);
