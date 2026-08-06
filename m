@@ -1,200 +1,165 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FE9274FD1
-	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 13:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F8F3812E4
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 13:35:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786023209; cv=none; b=juTVQW6KDjmfv0z7zLwakHLJvdXflmZq6tXkSVUtb4lhMJDpb0RmBZFv0qTWax9ieZHsB/VLTsPENWvTaxUv8BVTNeL1l//mtOBAhfeft9bqyl0tIDUXc7DK6+KlP7ysEbuafFuuSO5p5Ocnr0drRIFMeLoi/juk+8Fosd1cIm4=
+	t=1786023352; cv=none; b=g9kgYitotz6D9PPzwYf4U5fIe6wXJxvSjl1FSR/upbldYHxOBmIgb383aBVmZ+/tWluDvUorv49M7Qj9jYNkHan61q7j2o3QOif8scrd5lI+itu39Ul3ifWMdi7vn6l1htPsSaMQ9v8BTMb4HgTvyvF4bPuOCQ605wMn/NMjHTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786023209; c=relaxed/simple;
-	bh=eqJ7V9HEqhuX1egyQNA0z+ZN2aVQaW7md1oiro/iJs0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NmbBm2+zk2sD0k/kKLEg/h7sXKgjAU+romc2Db9QXxyewccV/mA/Nf6w6EouLAtniG5KL7zjhpidadRAf6tql1UgtZWKIGDDc0na+uWXvOBxqiZ7VJqBBdJtKdbZgFL62H7aFNn/hfqtuhFbHfzURfysZxidH5MLP1Kf419o4Ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=aEX6w46G; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1786023352; c=relaxed/simple;
+	bh=ObD7bPWSxhbklQOHrMfvrjgdmbGQvAlacZ3UlKZDW7w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HSa66gX910DMfUz1jV0cXsiwqeltJ2QNBr92zObvZTbVgumTwon4SkmDBhCQGcz+mwmIjjYYELF+/TKt7N0haUMYay2AUcKcbKwlZ6hrC1vQ1VDZpph0GvQKJdUqy763XlZ2ki3Ml4L7KfZmw2mdTnOKXSHOm0JHBVpvXkWHHK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZDYb50vW; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=VBW2twy3; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="aEX6w46G"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4954afac04bso24616425e9.0
-        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 06:33:25 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZDYb50vW";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="VBW2twy3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786023338;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rILtqoeBHE7LGqRbLxT9biwUTl88ABJkJnpfbIm4pB0=;
+	b=ZDYb50vWu4hGH63pBR4ioUf7l/utb1YDqsIGk6KTKvWQp75JxZwcBuzR5g1DV6xXz5vnRk
+	RLitIP+2HOMjFg1M/Mtsjv4BhlkhQiJKMnKgGYt+AB2+jGkOSdnssjSy1ofOxQct5JXf0I
+	xKvsHDKYZ8nuaa1sCLVb2HX6E/hm280=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-82-NzzVCsMNPOS3n6dAaM6QNg-1; Thu, 06 Aug 2026 09:35:37 -0400
+X-MC-Unique: NzzVCsMNPOS3n6dAaM6QNg-1
+X-Mimecast-MFC-AGG-ID: NzzVCsMNPOS3n6dAaM6QNg_1786023336
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-474170b59dfso1265989f8f.3
+        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 06:35:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1786023203; x=1786628003; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=aAbzrtK1BVcaf7lpt2UNBYq7bb5HfmvZs4b+FrQTjPU=;
-        b=aEX6w46G2I+x44GRtAya4qIYXRqqNz0G0v2NIqfOG/Ln0wJvyT7olZXMqnPCIWdyGt
-         I3Fg+j6hM7POquXRKGGrej1/M0Gcx3jFDjBs+UO1DHjAkbGpK8m83wjKWWZYKL2NOIc2
-         NPKbTihKTGtoMSyHOB80+KtyOk9SgFV2SQ40UdvYE5BIHt9oKQJThe58h7wl+lE9T5PQ
-         Oq8QvRzLRBxsp4XJ9EpRp+EyV+jh3cyJxCR1m/+0dH9ilE7I/AKkEECdZfOieESwF84o
-         Iq3OpUsySdJvajkFqLxhAcweFiqoPZbfH9XU/72jDLvX8O0Y+tT8giqd+2n+es20l+Ne
-         QRMg==
+        d=redhat.com; s=google; t=1786023336; x=1786628136; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rILtqoeBHE7LGqRbLxT9biwUTl88ABJkJnpfbIm4pB0=;
+        b=VBW2twy3z5dXVYruSZh4BbeqeNLSBAiXJuC2aBrZQVbuHUAYn7T2RGG+RVhjNf0Brx
+         UoFiXNpGoXbAxw+37uaBMv7SHD/RchK0VRAG5QuFgaXcCBlwonb/mzwizHqSCMRAMb0w
+         pDzK/07n+oaizJvClFilz2SfjNgYetiteux2LuGg4hIMT71uARvLVFbJORk+qXKpX8rK
+         tWJKhvE1l+Ixyu6xrDJ8tAKoLHNBknIMIEL9soFUBkYLXgewmEbm5SXomNDyzGQv0yUK
+         W7LD9ZBPr6UzFgj0G3lA1ggsOn6sbDMVmmNOVQZllh6dQYj+CB4LkeVUp7nLmkoFvY+c
+         bnVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786023203; x=1786628003;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=aAbzrtK1BVcaf7lpt2UNBYq7bb5HfmvZs4b+FrQTjPU=;
-        b=ry5afePJVhiAbdEEskp1RBgFlKhG7VfYTvF51Lp0LX9naSbwxO10LBtfQ813NndDpG
-         oCQoi/iE2sHMQEntE6JTHandtrH1vy5bA2pEAk9crNB9cPtTJlOBGdgNT4hjc0RpGTH+
-         Ds6vkipyPufMoKeOx4w3LQ3Ap9njz37DGEBXNzRIUCI3xyUJFVmLrlpZRiQ3KuPO1U44
-         G4OIh8YwboXlZSZnjftQDnmi8q5YmI3Vu1wCojZqqOm/NIsCZw5jDnXxpHMCAGJhREcq
-         lC2ixxEtfLLJjKcSD0zpozpFxAJQ4U9pbriIxlYN58eV4b4cMqV5QfafGmJBhUMMRy1V
-         DlbA==
-X-Forwarded-Encrypted: i=1; AHgh+RokXBKku2GCrk3wg3jL31kTc05Oq9M2NDxl/otijj56FTE5VtpNFDwVml6koNTzUkGJnQc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7riGNuZ4XC+a4Q4mm4ZCLGpCk0B6qyKoBue543vbH4jidbOKW
-	XWgzVYHNX4dY3zBJcrDN3oDXyCyEq9BVZZAUlC5JHT826lJzEuRpLb6jqh/Rs9ONPqU=
-X-Gm-Gg: AR+sD1355E+72hNT75HKp0LNcEgMNN6Hcmpc5QgZ7sj+sj20isukVPbKp1H4iQhesTL
-	oQwyJ/ZlK8uYpyNfbekN0k9n0H2fqiS4VSIwk4nIt/qZIAjJenX/NwhmsR4kL7GlU8khhhgVcJX
-	lwLEsuhpJ1EXOF25KCgpUqEz1Kmuue6588/tc8tML01OS7VLVCL0UFH7CKSP4lsbpUGBCzTadgE
-	WkcBzLrd6ZhvVtoLLy6o86Hy6ThhH7skInL7PuHYxbOoLDjripPK7FUQtke/b/VeAfwIXVNvDDS
-	pL88V+YCUZENu+yxDFvwinfOifZ8jIpeoHVVoSv14GeSltbpWvx8+inKOBf+8qLTFhlHT5J23xk
-	AsiaiA2ax9hyzv5QLHTQsJEXPk0862HGGjS+5BWKvkPIE4yNEmxRyCwx5OVrtN1zgJQB3y9l0cA
-	tm3Co2Gr9gD14BhvFv382H8KKClRwc906obWQtUZTfX7rTUss7YT38T5gZiq2PTg==
-X-Received: by 2002:a05:600c:a21b:b0:495:4e89:3f30 with SMTP id 5b1f17b1804b1-4994e7c5e49mr154753255e9.15.1786023203426;
-        Thu, 06 Aug 2026 06:33:23 -0700 (PDT)
-Received: from [10.20.4.146] ([149.62.206.68])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49954246f9dsm74934255e9.15.2026.08.06.06.33.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Aug 2026 06:33:23 -0700 (PDT)
-Message-ID: <82482276-0140-4d90-a983-fdfc5bc2e4a5@suse.com>
-Date: Thu, 6 Aug 2026 16:33:20 +0300
+        d=1e100.net; s=20251104; t=1786023336; x=1786628136;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rILtqoeBHE7LGqRbLxT9biwUTl88ABJkJnpfbIm4pB0=;
+        b=A+0C2G6kceHNUqtAo0HmgUR3Srq1C8j6UaW3hi0ys4+tykzSAp9+2+GGGDAe9q3BBx
+         gmNEd7YYuK3340bqI+gIVkN7tBNdecdr/Bch24xSVuKHysxzCv90TAv7R/mBF2O1lCcj
+         t3g2BSQ3aok7dN34Fm4aGHbBkNPdXOl7NYYY+FdAIxUfsQGimQkXaaUC04EhPSYSpK4l
+         DMAZB/IztgEsaG2iQfhUR6lkJaS7SfWy7WIJxV3c2LBBGc3zwO1RvzbEStyVxa3PKt8A
+         MwYvsXn+MzTMSzqWKVH9/89dc+Mha7bAAdaoAJFXHf/exCpS4n2fYlgrN5vK4bZRK2Hh
+         mE9A==
+X-Forwarded-Encrypted: i=1; AHgh+RoZbY+9bGhc2k4RAI3fhhkXqaNXqeMzUeB0tUo7fN1JzpLqTP9oTpfQ474xUkqwiaprpdE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywt2SBK0uV2v+ppARwPpqgrLWc+qTF5OYF9YGAVvTR3gtxk01bU
+	1oK8RZmRYFpGh/U2Qo/j1aUKVOm7mmiiiksXz8lukCj/Odb0xsof734YBABKpA6HB9fpIXMp92J
+	moqp9C6ReQPnZnGvkRPA9LF/0zDpDb9ifSoajbDVqeGxv3jaWkTPCrA==
+X-Gm-Gg: AR+sD12JH0nQbcXbLR+iw6KX4XxB4kygr3KkZJS9aTC6S/g+Ij7X8870c6G+Ss1bqv1
+	+Pr7VqZIgsX/F6elRxIeYidx3REbbgmy3m4fKuLKfNJybxIlRn5xXX/1Z2iWBiDXNJ44bir8cr6
+	xC+biRjRAWgsl/P/ZzHaNVJDsPxDdNtnzy/y6Q+7wiBdizdNsTiNFGoOS15hcXSVuKuER45BkcR
+	Cfgf2gdEKaepO8KKwKr1RJLvYBH8QK+O/esqwfcwMmHrBU+OIbq0Gm4YFWsg5otgImacBv0Gi2K
+	P10PwxnnrAonHQTx+DAKllwbIq0wVu5jr5dZgvZuwKYLVCZDA2fTRCSwkJdpw4FyiI8j/nswDk6
+	2qAw=
+X-Received: by 2002:a05:600c:8485:b0:493:e974:41ac with SMTP id 5b1f17b1804b1-4994e7d646cmr224933985e9.16.1786023335695;
+        Thu, 06 Aug 2026 06:35:35 -0700 (PDT)
+X-Received: by 2002:a05:600c:8485:b0:493:e974:41ac with SMTP id 5b1f17b1804b1-4994e7d646cmr224932915e9.16.1786023335225;
+        Thu, 06 Aug 2026 06:35:35 -0700 (PDT)
+Received: from sgarzare-redhat ([5.77.117.129])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49954228a47sm95181535e9.12.2026.08.06.06.35.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 06:35:34 -0700 (PDT)
+Date: Thu, 6 Aug 2026 15:35:27 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
+	jasowangio@gmail.com, eperezma@redhat.com
+Subject: Re: [PATCH] vhost: clear vq->worker under vq->mutex when freeing
+ workers
+Message-ID: <anSMBpQJ8x-vXYy2@sgarzare-redhat>
+References: <20260723153310.745855-1-andrey.drobyshev@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] KVM: TDX: Enable Notify VM exit
-To: Xiaoyao Li <xiaoyao.li@intel.com>, Sean Christopherson
- <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260805031257.1844914-1-xiaoyao.li@intel.com>
- <20260805031257.1844914-2-xiaoyao.li@intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20260805031257.1844914-2-xiaoyao.li@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260723153310.745855-1-andrey.drobyshev@virtuozzo.com>
 
+On Thu, Jul 23, 2026 at 06:33:10PM +0300, Andrey Drobyshev wrote:
+>Every other update of vq->worker is done under vq->mutex - the worker
+>attach/swap ioctls and vhost_worker_killed().  vhost_workers_free() is
+>the sole exception: it clears vq->worker without holding the lock.
 
+mmm, vhost_dev_cleanup() updates vq->worker without the mutex too IIUC.
 
-On 8/5/26 06:12, Xiaoyao Li wrote:
-> Enable Notify VM exit functionality for TDX guests.
-> 
-> Notify VM exit is an existing feature supported by KVM. Userspace can
-> enable Notify VM exit through KVM_CAP_X86_NOTIFY_VMEXIT when it's
-> reported as supported. However, KVM reports the support of this CAP just
-> based on the hardware capability but doesn't differentiate between VMX
-> and TDX. This leads to the issue that userspace can enable this cap for
-> TDX guests without getting an error, but the feature is not actually
-> enabled because KVM doesn't call the TDX module API to program the
-> relevant TD VMCS fields.
-> 
-> Enable Notify VM exit for TDX guests by:
-> 
->    - Invoking TDX module API calls to set NOTIFY_VM_EXITING and Notify
->      Window in TD VMCS. It's done in tdx_vcpu_init() where other TD VMCS
->      bits are set. Since TDX vCPU cannot be reset, it only needs to be
->      configured once when initializing the TDX vCPU.
-> 
->    - Adding corresponding exit handler for TDX Notify VM Exit.
+>
+>The effect is harmless in practice, as this only happens while the
+>owning process (and thus the whole device) is dying, but the lockless
+>write is inconsistent with the rest of the code.  Clear vq->worker under
+>vq->mutex, like everyone else, so that all writers of vq->worker follow
+>the same locking rule.
+>
+>This issue was found by Sashiko AI review.
 
+Can you share a link to the review?
 
-nit: That feature is completely misnamed in the kernel. It should be 
-instruction timeout (as is in the SDM). Please reword the changelog to 
-refer to the name of the features as they are in the SDM. I.e if you 
-search for NOTIFY_VMEXIT or NOTIFY_WINDOW absolutely nothing can be 
-found in the SDM. The changelog should ideally mention both - SDM's 
-nomenclature and linux's nomenclature.
-> 
-> Note, Notify VM exit can happen when executing the IRET instruction. If
-> the IRET unblocks the NMI blocking state, bit 12 of the exit qualification
-> is set. In this case, the VMM needs to restore the "blocked by NMI" state
-> when it decides to re-enter the guest. For TDX, KVM cannot manage the
-> GUEST_INTERRUPTIBILITY_INFO and it's TDX module's responsibility to
-> handle it.
-> 
-> Fixes: 161d34609f9b ("KVM: TDX: Make TDX VM type supported")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> ---
-> The enabling of Notify VM exit was missed in the initial upstreaming of
-> TDX base support. We suppose the patch needs to be backported to
-> stable kernels. So, the cc stable is added.
-> ---
->   arch/x86/kvm/vmx/tdx.c | 10 ++++++++++
->   arch/x86/kvm/vmx/vmx.c | 23 +++++++++++++++--------
->   arch/x86/kvm/vmx/vmx.h |  1 +
->   3 files changed, 26 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index 545b03d9d10b..cdc0d24657ac 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -2129,6 +2129,9 @@ int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
->   		 * - If it's not an MSMI, no need to do anything here.
->   		 */
->   		return 1;
-> +	case EXIT_REASON_NOTIFY:
-> +		/* NMI blocking state is handled by TDX module */
-> +		return __handle_notify(vcpu, false);
+I don't know if it's common or not, but having the link in the commit or 
+after --- will help the reviewers.
 
-I'd rather there be a private handle_tdx_notify function in tdx.c than 
-exposing __handle_notify and introducing the boolean. This is needed 
-because the TDX module handles the NMI unblocking, so let's keep the 
-implementation specific to tdx.
+>
+>Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>---
+> drivers/vhost/vhost.c | 10 ++++++++--
+> 1 file changed, 8 insertions(+), 2 deletions(-)
+>
+>diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+>index 4c525b3e16ea..dbb6cb5eccea 100644
+>--- a/drivers/vhost/vhost.c
+>+++ b/drivers/vhost/vhost.c
+>@@ -722,13 +722,19 @@ static void vhost_worker_destroy(struct vhost_dev *dev,
+> static void vhost_workers_free(struct vhost_dev *dev)
+> {
+> 	struct vhost_worker *worker;
+>+	struct vhost_virtqueue *vq;
+> 	unsigned long i;
+>
+> 	if (!dev->use_worker)
+> 		return;
+>
+>-	for (i = 0; i < dev->nvqs; i++)
+>-		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
+>+	for (i = 0; i < dev->nvqs; i++) {
+>+		vq = dev->vqs[i];
+>+
+>+		mutex_lock(&vq->mutex);
+>+		rcu_assign_pointer(vq->worker, NULL);
+>+		mutex_unlock(&vq->mutex);
+>+	}
 
-<snip>
+Pre-existing, but IIUC vhost_workers_free() is called only by 
+vhost_dev_cleanup() at the bottom, after a loop calls vhost_vq_reset() 
+on each virtqueue (without the mutex) where we already set `vq->worker` 
+to NULL, so IMO at this point it's already NULL, no?
+
+Thanks,
+Stefano
+
+> 	/*
+> 	 * Free the default worker we created and cleanup workers userspace
+> 	 * created but couldn't clean up (it forgot or crashed).
+>-- 
+>2.47.1
+>
+
