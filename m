@@ -1,109 +1,132 @@
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FE2329E5D;
-	Thu,  6 Aug 2026 03:30:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2455037C936;
+	Thu,  6 Aug 2026 04:16:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785987021; cv=none; b=pVojs5U8/7zkadd3EUsvf1ELndj7iSsfCd6/tARrabbPqXwu8WB2ah9plU4Tm9m5gOHiKwqNX90CyRtO/N+OmPIU9AsI8mDRy8DWaW29sflpKcaWkaiOc4W4PZByYLR520pqLuB4nZyETISeuLAQfdAeXXSxj2C0Spo258afYw0=
+	t=1785989798; cv=none; b=gJEZ+tewEbfa0+zBSbcouAE+ahdzbMABfYgZFgVpIKrU7BkytjJsrkW371aXxygwDgMxmT3ZSp8znzDWmIYAiKqQo4tejaAMou792+qRnJlzLWKOGsAiVnsEitrP2OsLyWMS0y6xh4xNAQpSnkUbK6TvQ8ZgMHgzKnrJvnu3hSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785987021; c=relaxed/simple;
-	bh=5wus9n0+Mpv7rQWIuIFpoGHkgxM6w2e5wGqel/1cJaU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ky2L2dbAUfgHUcHtbUiToTlod9U4B2JjNeaoUCO1MH3c+LyLCHX6J2NNK5bViz2Oy3Flv99IrX2KyicdmgV3Epna5mGsEBK62GXJkPFRK2DK5GiBnVMc4lPPWPTh36N/TZ273I0opiAUY2CLYChmOPWhOpY5GUuyAqgOzNlvv4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=xvnedJmH; arc=none smtp.client-ip=113.46.200.222
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1785989798; c=relaxed/simple;
+	bh=aonavSPPzSKWSWIzgorxjZy6QdfszdKkdWlyMVok1xc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lbygW2Timatko159viQDZf7cD6LfETbUWNQ3nif/ce5isOAcDIPb3+vNNoYpmC7/X+v1BKJ6eS2XQfFPPY0QKjp3qKmys2E/Ptzew3W9eTBhms5NLWfp3eNssOLc7cuknMtRbqBtpaOp9trVZXGMlyG1+0Dks3LJPuE0zH3eR9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JOW7d+ZS; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="xvnedJmH"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=5wus9n0+Mpv7rQWIuIFpoGHkgxM6w2e5wGqel/1cJaU=;
-	b=xvnedJmHWhePXoOFObXkvLZJh87bx4MqXErY79eOEcbrJjXMeD32rgcW+e1+Mzp80DMGfqr0p
-	H5FXDNNf1FtCAkZtvN0zOyEW3ZqTIIFL63xHsatM7LYQOmJbAX0l/KDbPYMgxr2Fhy00WgHcfHo
-	1HBeTwRYcVunCQ6fWo8o/vc=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4hFsx51ybgzLlTg;
-	Thu,  6 Aug 2026 11:20:41 +0800 (CST)
-Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 14F5F4058A;
-	Thu,  6 Aug 2026 11:30:13 +0800 (CST)
-Received: from [10.174.176.101] (10.174.176.101) by
- kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 6 Aug 2026 11:30:09 +0800
-Message-ID: <6840c720-8cb7-46bb-a652-040c130a4427@huawei.com>
-Date: Thu, 6 Aug 2026 11:30:08 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JOW7d+ZS"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675NmgiK3405018;
+	Thu, 6 Aug 2026 04:16:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=gwoisS
+	9f8oHQpET9xwSYiXFQBqMCffMU7etaY/y6jFg=; b=JOW7d+ZSa6aQvlYFZzZciV
+	UHAO7PSt1TvVMp5NNyPTHThZDwMTS+2ChbmCFXJJi5M2Tm9cGnoGteDRdoEROh6n
+	r2vnRF0ZquvrS6k+0XpnAIa2yXXd3kQfXte+WBwC2xU1V+qV7JAU1RmfCw80jdE5
+	fuULCdy4tWJnc84xNaCGBGBwV4+Y2TZBsHMWmDHAHAGubwuHp9Jo/muKnmCglKuY
+	v/Dxb4ebxKih2/yeMUqmisVvZ4Re6fiP4XHOq0l6JkM2O0IIqCsRifT7zhfWZpm4
+	OMFX9w9U2YFeVV6GQG/vc6KiGYHxJ5VNY2aOAJj87qDXcsDSap1x8eFSTHj9Jk7w
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8fqx6wm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 04:16:20 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6764BhEJ014944;
+	Thu, 6 Aug 2026 04:16:20 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswtysc4b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 04:16:19 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6764GGBu50987436
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Aug 2026 04:16:16 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3E13F2004D;
+	Thu,  6 Aug 2026 04:16:16 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 127A020040;
+	Thu,  6 Aug 2026 04:16:13 +0000 (GMT)
+Received: from Linuxdev.j9d-in.ibm.com (unknown [9.123.86.85])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  6 Aug 2026 04:16:12 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, Amit Machhiwal <amachhiw@linux.ibm.com>
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        Ritesh Harjani <ritesh.list@gmail.com>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Gautam Menghani <gautam@linux.ibm.com>,
+        Mukesh Kumar Chaurasiya <mkchauras@gmail.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5] KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
+Date: Thu,  6 Aug 2026 09:46:11 +0530
+Message-ID: <178598971868.942627.13563864143431021257.b4-ty@linux.ibm.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260714175432.86388-1-amachhiw@linux.ibm.com>
+References: <20260714175432.86388-1-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 25/36] mm/memory_hotplug: support N_MEMORY_PRIVATE node
- hotplug
-To: Gregory Price <gourry@gourry.net>, <linux-mm@kvack.org>
-CC: <Zhigang.Luo@amd.com>, <arun.george@samsung.com>, <balbirs@nvidia.com>,
-	<brendan.jackman@linux.dev>, <yuzenghui@huawei.com>, <apopple@nvidia.com>,
-	<alucerop@amd.com>, <matthew.brost@intel.com>, <akpm@linux-foundation.org>,
-	<david@kernel.org>, <ljs@kernel.org>, <liam@infradead.org>,
-	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
-	<mhocko@suse.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
-	<gregkh@linuxfoundation.org>, <rafael@kernel.org>, <dakr@kernel.org>,
-	<djbw@kernel.org>, <vishal.l.verma@intel.com>, <dave.jiang@intel.com>,
-	<alison.schofield@intel.com>, <osandov@osandov.com>, <jannh@google.com>,
-	<pfalcato@suse.de>, <jackmanb@google.com>, <hannes@cmpxchg.org>,
-	<ziy@nvidia.com>, <pbonzini@redhat.com>, <osalvador@suse.de>,
-	<joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>, <byungchul@sk.com>,
-	<ying.huang@linux.alibaba.com>, <kasong@tencent.com>, <qi.zheng@linux.dev>,
-	<shakeel.butt@linux.dev>, <baohua@kernel.org>, <axelrasmussen@google.com>,
-	<yuanchu@google.com>, <weixugc@google.com>, <yury.norov@gmail.com>,
-	<linux@rasmusvillemoes.dk>, <longman@redhat.com>, <ridong.chen@linux.dev>,
-	<tj@kernel.org>, <mkoutny@suse.com>, <sj@kernel.org>, <jgg@ziepe.ca>,
-	<jhubbard@nvidia.com>, <peterx@redhat.com>, <baolin.wang@linux.alibaba.com>,
-	<npache@redhat.com>, <ryan.roberts@arm.com>, <dev.jain@arm.com>,
-	<lance.yang@linux.dev>, <usama.arif@linux.dev>, <xu.xin16@zte.com.cn>,
-	<chengming.zhou@linux.dev>, <roman.gushchin@linux.dev>,
-	<muchun.song@linux.dev>, <linux-kernel@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <driver-core@lists.linux.dev>,
-	<nvdimm@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
-	<linux-debuggers@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <cgroups@vger.kernel.org>, <damon@lists.linux.dev>,
-	<linux-kselftest@vger.kernel.org>, <kernel-team@meta.com>
-References: <20260720193431.3841992-1-gourry@gourry.net>
- <20260720193431.3841992-26-gourry@gourry.net>
-From: Qiqi Li <liqiqi23@huawei.com>
-In-Reply-To: <20260720193431.3841992-26-gourry@gourry.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemo500018.china.huawei.com (7.202.195.199)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: cMzHl71MJqbAP-O5G5d2k1UJdLPCKwJI
+X-Proofpoint-ORIG-GUID: VnOtkgwKa7EXPHTUs3O76igTzNqCEfr8
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDAyNSBTYWx0ZWRfX+CDwA0DtstHu
+ wmOjlQnMrQUBldKYtK4aKI4uQTrzJUqnb5FWvhD3lrK8BZGiSpOM8qEoCsT/rwgyEIsp3J4NPHn
+ od8keoZeKMYNnpLIVdmrNk3K7s09nkA=
+X-Authority-Analysis: v=2.4 cv=K8cS2SWI c=1 sm=1 tr=0 ts=6a740a95 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=6Bqhn9LhGV_-7FDKSYEA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDAyNSBTYWx0ZWRfX/Ri12xQvd29K
+ zRD7da2RYMScQ6JNcfr5utN5lUCIa+eaJhDNVSIw2UdSjxuqbpl1IFJBhrypWFwFRNMclZ6lbOJ
+ m/eY9KB5LyVhkce77mUV9yyZBwOrKlTfUJIdC612u3nwK+wcj3NysVcYqi3pQCQlR39Pnoc0mc4
+ YlL3b0+94DGcwaRk8+Rfwz0jDsnNaKgvBr83rlqJLOzAfDCeQvf5IAFKBNj26uOJTbQxB3y/Z5l
+ nbaY0jU6h45PUSDvy54oP8HU7+MwyzviYiAeQQncQLHRDsVfNZu7siV41y4a0vzXyBgF5wEHRe7
+ /KOdm6tZUb41VF6Kuu1VKD1GAuLWsuAunOtncrnGrBUqvuaqTFP8IutyJxShhLrHkjLY1pbFp5l
+ nlRWLh0O/akLLiQsUjoREfmHajx7eyqmYoSWWdMFmqAvFFkqVCeBMwYKDZ4bWP4mRX4yDRbAifG
+ yBGM4ZvUIJy9DmrJzRw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-05_06,2026-08-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 phishscore=0 suspectscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608060025
 
-Hi Gregory,
+On Tue, 14 Jul 2026 23:24:32 +0530, Amit Machhiwal wrote:
+> On IBM POWER systems, newer processor generations can operate in
+> compatibility modes corresponding to earlier generations. This becomes
+> relevant for nested virtualization, where nested KVM guests may need to
+> run with a specific processor compatibility level.
+> 
+> Currently, when running a nested KVM guest (L2) inside a Power11 pSeries
+> logical partition (L1) booted in Power10 compatibility mode, the guest
+> fails to boot while setting 'arch_compat'. This happens because the CPU
+> class is derived from the hardware PVR (via mfspr()), which reflects the
+> physical processor generation (Power11), rather than the effective
+> compatibility mode (Power10).
+> 
+> [...]
 
-On 7/21/2026 3:34 AM, Gregory Price wrote:
+Applied to powerpc/next.
 
-> Add add_private_memory_driver_managed() to let modules hotplug
-> memory onto an N_MEMORY_PRIVATE node they control.
+[1/1] KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
+      https://git.kernel.org/powerpc/c/884ea0283f4effac97ee8f451464a7d1be480d7c
 
-I am trying to understand how the nid passed to
-add_private_memory_driver_managed() is expected to be provisioned.
-
-From what I can see, both node_private_register() and
-__add_memory_resource() require the nid to already be present in
-node_possible_map. My understanding is therefore that this patch
-supports hotplugging private memory onto an existing possible node,
-rather than creating a new possible node ID at runtime.
-
-For example, in the use case I am looking at, the device's private
-node is not described by firmware. Would its nid need to be reserved
-during early NUMA initialization, or is there another mechanism that
-I may have missed?
-
-Also, could you please Cc me on future revisions of this series?
-I would appreciate it and would be happy to follow the work:)
-
-Thanks,
-Qiqi
+cheers
