@@ -1,45 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3ECA3AC0ED;
-	Thu,  6 Aug 2026 02:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E673B0AE6;
+	Thu,  6 Aug 2026 02:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785982143; cv=none; b=WGLA+Um+mmIczouwvtBaBh2lKmO93iLw6jUXOWwxo2sQ4uwwJ7bAQlStJbz4Vyy2K5q8LtycM1riKjavVKkA1Wo/WE7hUhMIUYIDpNPW18tJ4tqu3OElD0CVrKuixTmUxMUq1qUhw/99yquBvVbXy3CenDWtg3ICeUybJ24+VUA=
+	t=1785982144; cv=none; b=JawQ+A0iEzZEwidS19ZRfr3kVULivPeamlDBHGg9TOWEJ0D4gstZVuVBWQINmqrPqNjxHZW8T+coWLhlu5IzDinUUjHqZOO5w0IpjuKB9Rk6PPrxmqgLiM2pvyJ+0qrS7ewOe3Z/Ew28Vl4FQqQ/fDQMuTHkCHSvqQY95G3CiYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785982143; c=relaxed/simple;
-	bh=R40l2AV+agPIzV7ZpAddOKlHF0RjlJ4wSlb311zR6+M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QzOLT42EgbGUJ+smSTu6kdnTCq7Mu+NdKE9v2y+Yv1SnbA/acERHo8Cb3QrPxj839qt7UA8qF9d7P3zrrZrx4bHE0kVxm/HE1vYaNAUAxjn1HCEKFNhD8onjyWagAxWng70iU3hdGFi01LkNuWaNLz5kPYVQmsFHkFTq1eszYbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i0TR/x8W; arc=none smtp.client-ip=198.175.65.21
+	s=arc-20240116; t=1785982144; c=relaxed/simple;
+	bh=DHfhaHj8e5IJt0HA1Kvg9EgSqxcYXt4M2OlHZoydJno=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EFMwa7KKaVJv4o0CCbq5xdAJoKXKPUul/2/75BO9UQmIzhn+WOH0wQJaF+eRwJmdN5oa+bL9lrgX86CvtGHo0Ojj3OF/qqoz74QswixzPEr8yn68dS8klUCQaLlyr8z5AVmQ2C66dDcFpQb8dpw4KgLetBOy1LNHsFwP4m5sfbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C9EhiS/N; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i0TR/x8W"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C9EhiS/N"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785982141; x=1817518141;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=R40l2AV+agPIzV7ZpAddOKlHF0RjlJ4wSlb311zR6+M=;
-  b=i0TR/x8Wgs19tAbLYfTM2KKUDznEOvspCT+pDVyj1RR+PrZc3UCmSQsD
-   6EhNd0t7yIS1jdU12KuoYGUEJXDESm6eb9YRLGdTnGGmfCbKGDsfoeeg2
-   Cr2sDBBRGGGEqxsuJJTzgbH4RYQFTCExJSx304cnCu7iQU3c1ygr/Dp4F
-   g1OcuYNxO/AAkcDSm95NJEi3rNxTHnEAOwGwL5TbUgVjU/m/qheqMEkeA
-   is4OrRjtb8tSSYRat4LTx8xUM9DQ0wVFM0zq7kGOfTD8oBocq87FY8zYS
-   wN69wD82sXQCe0HqrhS5j3oeM9GROpMnC+LmEMMssgHNCYFe7JmC6mp9f
-   Q==;
-X-CSE-ConnectionGUID: pN9JnFN9TUqoDpLZuHrQ0g==
-X-CSE-MsgGUID: VmSxaPNDT5OLnchtc9A4rQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="86422828"
+  t=1785982142; x=1817518142;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=DHfhaHj8e5IJt0HA1Kvg9EgSqxcYXt4M2OlHZoydJno=;
+  b=C9EhiS/NUEA6M6h3iwKaBDcOYRCbq3chJwAZQA3UFFVNx19yvNvGluRa
+   1PxEhmL+vCKZqBzQqsZkjx+sqqHtuEConFIkZ+E/MUHa/JHcTOGo+gwRy
+   KOK8bUpgSN0EzhY+KmFyzCK8kTudmUH76svkkaC/thoLDtJSAY3A2xdTM
+   Fz/ej0NQcmvjS43V6w9Pt2jl3U8K4MIWHGjCoeR7LIPmXzVuXuoTt/WZz
+   fxD7C2LJiQJnq3hRhJt4n2i2WgDUi9BWUODtV0tSHUyaH9MIL58qnjkhs
+   IBc+aMdeuW82zOpykzcLddPn9ZzD8xjvQf92GMnR5niLA31MH2PS/VXUc
+   A==;
+X-CSE-ConnectionGUID: Bd54UBsVTeKPEgopOvcSpQ==
+X-CSE-MsgGUID: cFrh5Xo4QLeODDdgbz+Xag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="86422834"
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="86422828"
+   d="scan'208";a="86422834"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:09:00 -0700
-X-CSE-ConnectionGUID: 0oHYLuptRX2RCO2ObbwTvQ==
-X-CSE-MsgGUID: w/nA/piFRIy1YSRaMfNnzw==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:09:01 -0700
+X-CSE-ConnectionGUID: fFMGm3yzTTacmhx8N/DNZA==
+X-CSE-MsgGUID: O4X/rijrRVuM5ztRy26lbw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="258639851"
+   d="scan'208";a="258639856"
 Received: from rpedgeco-desk.jf.intel.com ([10.88.27.135])
   by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:09:00 -0700
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
@@ -64,11 +65,15 @@ To: bp@alien8.de,
 	tony.lindgren@linux.intel.com,
 	binbin.wu@intel.com,
 	sohil.mehta@intel.com
-Cc: rick.p.edgecombe@intel.com
-Subject: [PATCH v9 00/11] Dynamic PAMT
-Date: Wed,  5 Aug 2026 19:08:39 -0700
-Message-ID: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
+Cc: rick.p.edgecombe@intel.com,
+	Hongyu Ning <hongyu.ning@linux.intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>
+Subject: [PATCH v9 01/11] x86/virt/tdx: Simplify PAMT layout calculation
+Date: Wed,  5 Aug 2026 19:08:40 -0700
+Message-ID: <20260806020850.1221381-2-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
+References: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -77,91 +82,219 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+For each memory region that the TDX module might use (called TDMR), three
+separate traditional PAMT allocations are needed. There is one for each
+supported page size (1GB, 2MB, 4KB). These store information on each page
+in the TDMR. In Linux, they are allocated out of one physically contiguous
+block, in order to more efficiently use some internal TDX module
+bookkeeping resources. So some simple math is needed to break the single
+large allocation into three smaller allocations for each page size.
 
-This another revision of Dynamic PAMT TDX series. Like v7 and v8, it is 
-hopefully the last. Last time it got two non-functional nits from Sashiko 
-and two false positives. After some offlist discussion with Dave, I've
-applied the nits and rebased on v7.2-rc6. There were no conflicts.
-Everything else is the same.
+There are some commonalities in the math needed to calculate the base and
+size for each smaller allocation, and so an effort was made to share logic
+across the three. Unfortunately doing this turned out unnaturally tortured,
+with a loop iterating over the three page sizes, only to call into a
+function with case statements for each page size. In the future Dynamic
+PAMT will add more logic that is special to the 4KB page size, making the
+benefit of the math sharing even more questionable.
 
-Background
-==========
-Dynamic PAMT is a TDX feature that allows saving memory by allocating some 
-of its page tracking metadata dynamically, instead of statically at boot. 
-These static allocations take roughly 0.4% of system memory. The savings 
-are variable depending on system and TDX usage, but could be up to 100x. 
-For more Dynamic PAMT background, please refer to [1]. For more analysis 
-of the savings in different scenarios, see the v6 coverleter[0].
+Three is not a very high number, so get rid of the loop and just duplicate
+the small calculation three times. In doing so, setup for future Dynamic
+PAMT changes.
 
-It occurred to me that since the Dynamic PAMT effort began, RAM has become
-much more expensive. Consequently, this feature is even more valuable now.
-It would be good to enable it for TDX users.
+Since the loop that iterates over it is gone, further simplify the code by
+dropping the array of intermediate size and base storage. Just store the
+values to their final locations.
 
-Optimization patch
-==================
-The past two revision I mentioned some considerations for whether to 
-include the get/put optimization patch. In v6 Dave had asked whether the 
-"x86/virt/tdx: Optimize tdx_pamt_get/put()" was really needed. Later we 
-discussed offline to keep the patch for the sake of maintaining 
-performance and being kind to KVM's efforts to fault under a shared lock. 
-However, now that the feature requires an opt-in, it could be for limited 
-use and not disturb any kernel upgraders. Then the optimization patch 
-actually does become more optional. So it was moved to the end.
+AI was used under supervision to collect/apply feedback, review code and
+workshop logs.
 
-On v7 that patch picked up a RB from Nikolay. I think it is still optional,
-but I'd lean towards recommending it. But I'm ok either way, if we want to 
-discuss it more without holding up the basic support.
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Tested-by: Hongyu Ning <hongyu.ning@linux.intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Acked-by: Sohil Mehta <sohil.mehta@intel.com>
+---
+v8:
+ - Fix PAMT capitalization in comment (Sohil)
+ - Delete stale info in log, that Chao mentioned last time (Binbin)
 
-Base
-====
-This is based on v7.2-rc6. A branch can be found here: [2].
+v7:
+ - Remove accidentital whitespace changes (Kiryl)
+ - Drop stale sentence in log (Chao)
+ - Better patch subject (Yan)
+ - Drop Assisted-by tag and cover AI use in log (Dave)
+---
+ arch/x86/virt/vmx/tdx/tdx.c | 90 ++++++++++++-------------------------
+ 1 file changed, 28 insertions(+), 62 deletions(-)
 
-Testing
-=======
-This last version was tested in the usual suite, and also with the 
-optimization patch removed. The validation person who has worked on this 
-series added his Tested-by offlist. He has a special dynamic PAMT specific 
-test suite. Since there were not any changes which would be expected to 
-have functional impact I just did some regression testing with our standard 
-automated testing for this one. I left his Tested-by tags per his 
-preference.
-
-
-[0] https://lore.kernel.org/lkml/20260526023515.288829-1-rick.p.edgecombe@intel.com/
-[1] https://lore.kernel.org/lkml/20250918232224.2202592-1-rick.p.edgecombe@intel.com/
-[2] https://github.com/intel-staging/tdx/tree/dpamt_v9
-
-
-Kiryl Shutsemau (9):
-  x86/virt/tdx: Allocate page bitmap for Dynamic PAMT
-  x86/virt/tdx: Add tdx_alloc/free_control_page() helpers
-  x86/virt/tdx: Allocate refcounts for Dynamic PAMT memory
-  x86/virt/tdx: Handle multiple callers in tdx_pamt_get/put()
-  KVM: TDX: Allocate PAMT memory for TD and vCPU control structures
-  KVM: TDX: Get/put PAMT pages when (un)mapping private memory
-  x86/virt/tdx: Enable Dynamic PAMT
-  Documentation/x86: Add documentation for TDX's Dynamic PAMT
-  x86/virt/tdx: Optimize tdx_pamt_get/put()
-
-Rick Edgecombe (2):
-  x86/virt/tdx: Simplify PAMT layout calculation
-  x86/tdx: Add APIs to support Dynamic PAMT ops from KVM's fault path
-
- .../admin-guide/kernel-parameters.txt         |  10 +
- Documentation/arch/x86/tdx.rst                |  28 ++
- arch/x86/include/asm/kvm-x86-ops.h            |   1 +
- arch/x86/include/asm/kvm_host.h               |   1 +
- arch/x86/include/asm/tdx.h                    |  26 +
- arch/x86/include/asm/tdx_global_metadata.h    |   3 +
- arch/x86/kvm/mmu/mmu.c                        |   4 +
- arch/x86/kvm/vmx/tdx.c                        |  99 ++--
- arch/x86/kvm/vmx/tdx.h                        |   2 +
- arch/x86/virt/vmx/tdx/tdx.c                   | 452 +++++++++++++++---
- arch/x86/virt/vmx/tdx/tdx.h                   |   2 +
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c   |  23 +-
- 12 files changed, 559 insertions(+), 92 deletions(-)
-
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 42df8ea464c47..e00a6c8eda1b9 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -514,31 +514,21 @@ static __init int fill_out_tdmrs(struct list_head *tmb_list,
+  * Calculate PAMT size given a TDMR and a page size.  The returned
+  * PAMT size is always aligned up to 4K page boundary.
+  */
+-static __init unsigned long tdmr_get_pamt_sz(struct tdmr_info *tdmr, int pgsz,
+-					     u16 pamt_entry_size)
++static __init unsigned long tdmr_get_pamt_sz(struct tdmr_info *tdmr, int pgsz)
+ {
+ 	unsigned long pamt_sz, nr_pamt_entries;
++	const int tdx_pg_size_shift[TDX_PS_NR] = { PAGE_SHIFT, PMD_SHIFT, PUD_SHIFT };
++	const u16 pamt_entry_size[TDX_PS_NR] = {
++		tdx_sysinfo.tdmr.pamt_4k_entry_size,
++		tdx_sysinfo.tdmr.pamt_2m_entry_size,
++		tdx_sysinfo.tdmr.pamt_1g_entry_size,
++	};
+ 
+-	switch (pgsz) {
+-	case TDX_PS_4K:
+-		nr_pamt_entries = tdmr->size >> PAGE_SHIFT;
+-		break;
+-	case TDX_PS_2M:
+-		nr_pamt_entries = tdmr->size >> PMD_SHIFT;
+-		break;
+-	case TDX_PS_1G:
+-		nr_pamt_entries = tdmr->size >> PUD_SHIFT;
+-		break;
+-	default:
+-		WARN_ON_ONCE(1);
+-		return 0;
+-	}
++	nr_pamt_entries = tdmr->size >> tdx_pg_size_shift[pgsz];
++	pamt_sz = nr_pamt_entries * pamt_entry_size[pgsz];
+ 
+-	pamt_sz = nr_pamt_entries * pamt_entry_size;
+ 	/* TDX requires PAMT size must be 4K aligned */
+-	pamt_sz = ALIGN(pamt_sz, PAGE_SIZE);
+-
+-	return pamt_sz;
++	return PAGE_ALIGN(pamt_sz);
+ }
+ 
+ /*
+@@ -576,15 +566,11 @@ static __init int tdmr_get_nid(struct tdmr_info *tdmr, struct list_head *tmb_lis
+  * within @tdmr, and set up PAMTs for @tdmr.
+  */
+ static __init int tdmr_set_up_pamt(struct tdmr_info *tdmr,
+-				   struct list_head *tmb_list,
+-				   u16 pamt_entry_size[])
++				   struct list_head *tmb_list)
+ {
+-	unsigned long pamt_base[TDX_PS_NR];
+-	unsigned long pamt_size[TDX_PS_NR];
+-	unsigned long tdmr_pamt_base;
+ 	unsigned long tdmr_pamt_size;
+ 	struct page *pamt;
+-	int pgsz, nid;
++	int nid;
+ 
+ 	nid = tdmr_get_nid(tdmr, tmb_list);
+ 
+@@ -592,12 +578,10 @@ static __init int tdmr_set_up_pamt(struct tdmr_info *tdmr,
+ 	 * Calculate the PAMT size for each TDX supported page size
+ 	 * and the total PAMT size.
+ 	 */
+-	tdmr_pamt_size = 0;
+-	for (pgsz = TDX_PS_4K; pgsz < TDX_PS_NR; pgsz++) {
+-		pamt_size[pgsz] = tdmr_get_pamt_sz(tdmr, pgsz,
+-					pamt_entry_size[pgsz]);
+-		tdmr_pamt_size += pamt_size[pgsz];
+-	}
++	tdmr->pamt_4k_size = tdmr_get_pamt_sz(tdmr, TDX_PS_4K);
++	tdmr->pamt_2m_size = tdmr_get_pamt_sz(tdmr, TDX_PS_2M);
++	tdmr->pamt_1g_size = tdmr_get_pamt_sz(tdmr, TDX_PS_1G);
++	tdmr_pamt_size = tdmr->pamt_4k_size + tdmr->pamt_2m_size + tdmr->pamt_1g_size;
+ 
+ 	/*
+ 	 * Allocate one chunk of physically contiguous memory for all
+@@ -606,25 +590,17 @@ static __init int tdmr_set_up_pamt(struct tdmr_info *tdmr,
+ 	 */
+ 	pamt = alloc_contig_pages(tdmr_pamt_size >> PAGE_SHIFT, GFP_KERNEL,
+ 			nid, &node_online_map);
++
++	/*
++	 * tdmr->pamt_4k_base is still zero so the error
++	 * path of the caller will skip freeing the PAMT.
++	 */
+ 	if (!pamt)
+ 		return -ENOMEM;
+ 
+-	/*
+-	 * Break the contiguous allocation back up into the
+-	 * individual PAMTs for each page size.
+-	 */
+-	tdmr_pamt_base = page_to_pfn(pamt) << PAGE_SHIFT;
+-	for (pgsz = TDX_PS_4K; pgsz < TDX_PS_NR; pgsz++) {
+-		pamt_base[pgsz] = tdmr_pamt_base;
+-		tdmr_pamt_base += pamt_size[pgsz];
+-	}
+-
+-	tdmr->pamt_4k_base = pamt_base[TDX_PS_4K];
+-	tdmr->pamt_4k_size = pamt_size[TDX_PS_4K];
+-	tdmr->pamt_2m_base = pamt_base[TDX_PS_2M];
+-	tdmr->pamt_2m_size = pamt_size[TDX_PS_2M];
+-	tdmr->pamt_1g_base = pamt_base[TDX_PS_1G];
+-	tdmr->pamt_1g_size = pamt_size[TDX_PS_1G];
++	tdmr->pamt_4k_base = page_to_phys(pamt);
++	tdmr->pamt_2m_base = tdmr->pamt_4k_base + tdmr->pamt_4k_size;
++	tdmr->pamt_1g_base = tdmr->pamt_2m_base + tdmr->pamt_2m_size;
+ 
+ 	return 0;
+ }
+@@ -655,10 +631,7 @@ static __init void tdmr_do_pamt_func(struct tdmr_info *tdmr,
+ 	tdmr_get_pamt(tdmr, &pamt_base, &pamt_size);
+ 
+ 	/* Do nothing if PAMT hasn't been allocated for this TDMR */
+-	if (!pamt_size)
+-		return;
+-
+-	if (WARN_ON_ONCE(!pamt_base))
++	if (!pamt_base)
+ 		return;
+ 
+ 	pamt_func(pamt_base, pamt_size);
+@@ -684,14 +657,12 @@ static __init void tdmrs_free_pamt_all(struct tdmr_info_list *tdmr_list)
+ 
+ /* Allocate and set up PAMTs for all TDMRs */
+ static __init int tdmrs_set_up_pamt_all(struct tdmr_info_list *tdmr_list,
+-					struct list_head *tmb_list,
+-					u16 pamt_entry_size[])
++				 struct list_head *tmb_list)
+ {
+ 	int i, ret = 0;
+ 
+ 	for (i = 0; i < tdmr_list->nr_consumed_tdmrs; i++) {
+-		ret = tdmr_set_up_pamt(tdmr_entry(tdmr_list, i), tmb_list,
+-				pamt_entry_size);
++		ret = tdmr_set_up_pamt(tdmr_entry(tdmr_list, i), tmb_list);
+ 		if (ret)
+ 			goto err;
+ 	}
+@@ -968,18 +939,13 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
+ 				  struct tdmr_info_list *tdmr_list,
+ 				  struct tdx_sys_info_tdmr *sysinfo_tdmr)
+ {
+-	u16 pamt_entry_size[TDX_PS_NR] = {
+-		sysinfo_tdmr->pamt_4k_entry_size,
+-		sysinfo_tdmr->pamt_2m_entry_size,
+-		sysinfo_tdmr->pamt_1g_entry_size,
+-	};
+ 	int ret;
+ 
+ 	ret = fill_out_tdmrs(tmb_list, tdmr_list);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = tdmrs_set_up_pamt_all(tdmr_list, tmb_list, pamt_entry_size);
++	ret = tdmrs_set_up_pamt_all(tdmr_list, tmb_list);
+ 	if (ret)
+ 		return ret;
+ 
 -- 
 2.54.0
 
