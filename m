@@ -1,136 +1,137 @@
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010000.outbound.protection.outlook.com [52.101.85.0])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD0438AC75
-	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 19:47:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786045667; cv=none; b=JR52CyAuLlWSqm+WIxIPDA7ZcKYq8sZ5RnwOEcCua1dn00iZIOZMujDj9bNSmL7gcr75XyX94wcKlqTyDF6UTz7MmyrIf7MorEh8eOZ7FKbtQQPPNIR5hwPYhGmr4adola52Svl5QTFnmvO2J9L0zDY3hAxZtTZokWI7ubxSk2g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786045667; c=relaxed/simple;
-	bh=a9GePtSgIas837wyg13CpFZrQH6LYH/QdAFKmNODC/s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NMwUWiWwnSDCx8AuBcSD+gU3Ncao1npoOQXM+1QI+x3E4CY8udAlzad9zCXx9hBtw8kqVu6416HNf/ODxg/AasVXc4+4KJyXCh2+lZ4KJEWgNvcex0eJABB/THwzMJZyIcPxxISGv+Vc88FSHX1MvAOymFcGO82Z6A+5YOHxo5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=dc/0PQQx; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A5F3803E1;
+	Thu,  6 Aug 2026 20:12:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786047153; cv=fail; b=soD4G/uu3Rv/R6tNUtzOQS0quaXAEi97GrM5qF7XFEkYbTdosNLVSwXkTGSDI299CRerpd7o9HKSjE4AbOiWgADa4Fo47EbSe4fysNo39tdLhX+1pmrIJPRcDlObAIqpG657qOInp34kkB9RU99YgbYSpkrQxtH2x+U5o3NHEJc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786047153; c=relaxed/simple;
+	bh=o3Yv+0trGrhJqcaaaURDlOUAZZi5l7k8utJN/7nwInk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=N46KO0W+TRpASuEFYoXF0ExLZ6hM4m9WH4nWYNWsQtbpShnkGngaoyIt27ErtL9QCy+XdXCwIuw0X5mS1rv2jgu7Ov5JGvBPxpCiZA2ZRi96og7zKX5WoC9JNv0miJZBBc6QS3mUVDyoXBk1EXkiDMSXn0m6j0yTbn8LqJ+IK/0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=KO0mQ539; arc=fail smtp.client-ip=52.101.85.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="dc/0PQQx"
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-92e53581361so148485485a.1
-        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 12:47:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1786045661; x=1786650461; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=i4zn10CTEB0hgDoZsByJF29MpPwaAKvjrTCMgqoaY6Y=;
-        b=dc/0PQQxJm5jidQF/9G4/cMRNCKdH/Qw5lYByTQju24kLACqVICtk+qqxOiSAswMOz
-         g0NP7REBbpbSyMCAQdMGBbxaPQwP5cUksdNuRawOpVCCU/RGAbrCobfJDdUD7q+GGnID
-         y/4YPrKqfG5K0EyztVZqgIlq8tlg6x4SJTibeOTktQyIIdlQi3ekOD9dZb9I5CTErs19
-         TolAodeGPGvyqJ3hu1M2aOTYWWXT1Z9omDbaW9eYRKvO7Cc3CvF3tKxIYvVE36VXeAha
-         7FBuNLaph5PN3WZXUHprMM/BFm8QEqrsG+vIy3Vl4nzlfH/SFBH+iubKHPH1BOnuyEH1
-         RX8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786045661; x=1786650461;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=i4zn10CTEB0hgDoZsByJF29MpPwaAKvjrTCMgqoaY6Y=;
-        b=mEl5X7w3RdslJU1SF23qvF7L6uqt69Ud1gVfVc+yhNwQYY6w5vErcWTDEHaT31hyG8
-         US3xj1ck+u5Tvw8T4Y2h/iV4zeoBmkm3AfT2rr0wgYpSVWXjENRLNG30SaYy13n3Dbs6
-         YRjoRGVNei9Szk507QqwXP+n5QYGr8hWoxfKOjuGRp9rGViI82Qg4ek5DvHuftBCd9rV
-         sbnFcCZcLSc6FySKU+kyFsxA7qcVa0I3JcTVBERc9F4xBWZ3cb/HmEV496Mo3ltij8MQ
-         F6tKMZWgaHJQm20xasvHXTaZIScfCfYuDgrjjAiqHFT/+6oD7XgSTENmDhJ00PVLie7w
-         fdEw==
-X-Forwarded-Encrypted: i=1; AHgh+Rpc6kuH+oMHB3sxqyGZwnr6xpQg505M3mA8Ipxf1gWhq3O3jBivwVpjJKLiMq6cf1b6GCY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5XV73ax8ECyvzeDjqsQ7ib6Q2xIQu+yhG3l9M+RD90BG9/ECH
-	HhZf15LNXdTSB2W6M61BokZGIzE0bIJEoDp4CV+13HbIX+lr1Is1W1qcWK5I77XR4L4=
-X-Gm-Gg: AR+sD10A2fOR6dEnvYNQ9a3BwLLels1chK3sZabTivemZOnItDQemdI4ZZG17v5fszu
-	Xi4+X5QRDAvGL6JvyABl4ZwCGjakYZ4SKhtbTuudNSTHa4gv25fh4hme1HS8kttD2rbSFTYYZ8q
-	oD1rYZpy3f9tngztrnezp3kSjag+J51VbMZLQc+EAyJvbzsiL7fhXx00wvLEgRouX7/PpMPG5zI
-	/aq3o4rXBES/Oufk3BDX4+VBr3FnyLJTExT0GCVz6/gaQy9xXw6yUdiYI9TW+a0I1YiEaGa6MGB
-	TcCHhjXVjghsK3hP5RdRA3fBphQvD9iBWTeJgonat+5+AeSUB/Q8UvWD6aGPSASz2MD+u8PH3ZL
-	ZE7JNgERky4H5hVqd4JAq6qdUkCTe1flqTxxedphytpNhxRnLygrHtAXsd7qw2cjWr2bmuf0mvZ
-	aubQNgY2a0qFl6893e9IvN4jqGs7E3EbGzKgEbDg==
-X-Received: by 2002:a05:620a:a915:b0:92e:5f90:c0de with SMTP id af79cd13be357-936490c7c2amr1707105185a.22.1786045661363;
-        Thu, 06 Aug 2026 12:47:41 -0700 (PDT)
-Received: from ziepe.ca ([142.166.156.215])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93657e1afefsm333826785a.30.2026.08.06.12.47.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 12:47:40 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1ws443-00000000hmj-3UT1;
-	Thu, 06 Aug 2026 16:47:39 -0300
-Date: Thu, 6 Aug 2026 16:47:39 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alex Williamson <alex@shazbot.org>
-Cc: Samiullah Khawaja <skhawaja@google.com>, bhelgaas@google.com,
-	Kevin Tian <kevin.tian@intel.com>,
-	Leon Romanovsky <leon@kernel.org>, dmatlack@google.com,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 1/1] vfio/pci: Disable sriov on PF device close
-Message-ID: <20260806194739.GH28508@ziepe.ca>
-References: <20260805003355.728299-1-skhawaja@google.com>
- <20260805003355.728299-2-skhawaja@google.com>
- <20260805090323.01b1a36f@shazbot.org>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="KO0mQ539"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IIlVO5Vnrd4wcMHGyNCSt8dyHEVjqOk8xAJ4VR6qIbz8qJSmXXHPD/Xooelp6bsoiT9CJ4zLUNYwbV083ihAZ7WTU36bfo/189DrBIdoLASjajCGwScivRn3DzWfWG/N3TSi3yPxgtCbJ3fjFJrT4SR2eHrD663ONF7oJid2AeK4+X7GKOyOLhKVjrSG1sfRMI7ijsh+7K6p8rqaC4G01vOyl7F0XY0sW4ou5yOtSu/8wyoCEZK/8jrJ4Dou4CLnFs27xAsaCNaLSb9XeifGahSWcE3golB2+5sxu5fWAjwcZfzoy+COEch6ESpYEYmAbcg6cwQ/brCJjmqygAPpvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O/IanVjsoJggUlzFbIk87j1puHqWtSkSDzcBf+lf7Wo=;
+ b=XG6aJEmm0iIVUh9eu+Hq0FX9iqdbqP1O8bI2TvBERXgtEPefSZ7uDeja6F0J7AFay2Sc2KNU6vhk6YoFvImDEZnuu364bGz5kYnIHAbBHGeVzfjrseDHO+qwueCBox8iDOMG982CG5kQ6bfZvpu16LbruxQhQV1/rHCBgXViNcSqDc14eWfjB8+tRn9dvuESc00Qa8js/4GLF4pnBxsN0U94Z+Ou/wzZsr3hxrOyM8S/680MehgOA5W94xjDA4vTRDySGKLEM2CGpB2gHdkG8zCCwhTT9yopMyk8jJGsZpBZDfW22i+eTWg4hI9L4nzEqA0ZZ6amInNEDJcTxnqOGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O/IanVjsoJggUlzFbIk87j1puHqWtSkSDzcBf+lf7Wo=;
+ b=KO0mQ539311PevXHyJZt8bB1NorVx+Wpte8jqkxErhu04vCa7rnekj69j66S/Y1upcOU0Jx8MBZVQ7AsWNcjZeu+QLGcMM2AgTkgZefc2cbame45zWPlk/biBfNWyAvM+r4OFHXaZgQusFPO/oI77244eUl4PwEjxN2EoXeDPiE=
+Received: from DM6PR02CA0116.namprd02.prod.outlook.com (2603:10b6:5:1b4::18)
+ by PH0PR12MB5607.namprd12.prod.outlook.com (2603:10b6:510:142::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.21; Thu, 6 Aug
+ 2026 20:12:20 +0000
+Received: from DS1PEPF0001709D.namprd05.prod.outlook.com
+ (2603:10b6:5:1b4:cafe::1) by DM6PR02CA0116.outlook.office365.com
+ (2603:10b6:5:1b4::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.21 via Frontend Transport; Thu, 6
+ Aug 2026 20:12:20 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ DS1PEPF0001709D.mail.protection.outlook.com (10.167.18.107) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.315.6 via Frontend Transport; Thu, 6 Aug 2026 20:12:19 +0000
+Received: from [10.236.30.85] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 6 Aug
+ 2026 15:12:18 -0500
+Message-ID: <9e5183be-1f31-4f6a-8b91-0f9a92590241@amd.com>
+Date: Thu, 6 Aug 2026 15:12:12 -0500
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260805090323.01b1a36f@shazbot.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 01/10] x86/bugs: Only log missing retpoline when it's
+ actually the missing mitigation
+To: Borislav Petkov <bp@alien8.de>
+CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <x86@kernel.org>, Sean Christopherson
+	<seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, K Prateek Nayak
+	<kprateek.nayak@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, Naveen Rao
+	<naveen.rao@amd.com>, David Kaplan <david.kaplan@amd.com>, Pawan Gupta
+	<pawan.kumar.gupta@linux.intel.com>, Dave Hansen
+	<dave.hansen@linux.intel.com>
+References: <20260804235611.4053375-1-kim.phillips@amd.com>
+ <20260804235611.4053375-2-kim.phillips@amd.com>
+ <20260805004441.GAanKHecgJwfAOzZzp@fat_crate.local>
+ <65d82937-113d-405b-9399-b70973e84c50@amd.com>
+ <20260805224907.GDanO942iYDbai1kFx@fat_crate.local>
+Content-Language: en-US
+From: Kim Phillips <kim.phillips@amd.com>
+In-Reply-To: <20260805224907.GDanO942iYDbai1kFx@fat_crate.local>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF0001709D:EE_|PH0PR12MB5607:EE_
+X-MS-Office365-Filtering-Correlation-Id: 35415ab7-2aba-460d-e508-08def3f704e8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|1800799024|376014|23010399003|22082099003|18002099003|4143699003|11063799006|56012099006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	tOuz27TOJV6BhgWcTYDkfWP7wU4N++cVEZgThw5k+eIE5/9Xs974pUidRKOTXLuzVHhwOUw7m3J0BgrJ++501HhPedYiyxhI+D4XQjjsN8cg4XR5DmNyuW+GBMZytAJkqH1t++HAHwAjnhgWg7kRK/tdKHZrHuhrroQja9rii9fjvO5PkhyNkeCRLDXNMT0A+mfWf118RyZHbc7ltfmJEM9LKCFwbmEUfiSxTlEs3b9l5IipAXC2dyjzcXnCfM2Kej//0Kd2CO0vPqMT5dXrewOgNc1se1guZSw8WUDvYEq4jiUd1UYvXpVzww5d8lujU/3HOy/y/i5nswZG6g8boFOLfmnxz/TPDW6oKmr4XTg99kEq3FmT0VLb5EHMz3KsV85XJRmavbLvBQ13qWRzgCpW74HMoPdEmLFKe7hbtA0grVa7/+vb1vdPFQvtyglyftiC9SDvZXj8yjLCk4l805lFSGWM9IwNVwBzbaCxwx4kZUiohPqPTzW9Zd72UoBGMMotaA/T7mOqidliTrE8EA/KNMupQ3c81osY7iJhwlz1DxOl3dqJXYRKadLijs1RTYcz3e9RK+fD5n3Q0ZA1FOLRE8kpRPRdcbpL8bdJhhrVOYnnQbHVSUN/f4Hen67ONpkkyd7HS4LKJKWjpKzTy27bpY3eKYeHcjqQjrrthUUsjU6ntOvoOHR6plihpmuunqlVwSsf8NYSbr+F8m4aTQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(1800799024)(376014)(23010399003)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	PNsFpoNiut5SAOga6IiU81rveIDF4Jv2WSKQxP7jYOgVdQ+6KnN2SMUdamhcqIti2fRMKgvziJR/pEmc8A2uFNxhmnmqv8l7wtdMeoQcqZCmgDx1NfYDykZfg2VfvKdtg+h2c6XOn8XikKY2dwfMpfynTSGgxzZN7qEoUh1NToR2G+H1+yDxbLUvBE9siXbUGVR94AnXxLdLBL/nTEH4a7U/ZRChLkcTuang23+SUVkz1tpxleF1atR+IqoDGp6uDQG85hxjgk2JKs9ToNkusTsNWWJQSX7COmmhx7tz65X2A0CEnkQkz63kX0M0sJiFWGenhx42xGe1SJreEBdLCKkQRdiSMfCalTB/B9kwt9Tb8aR5vZhM6/uX+swEiLJhWSTZKliBSrc4giaPqi8n1hnmk4XJQm1qod//twgHeXl7RLCdZTSiI+mkaY71cK1H
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 20:12:19.7208
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 35415ab7-2aba-460d-e508-08def3f704e8
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS1PEPF0001709D.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB5607
 
-On Wed, Aug 05, 2026 at 09:03:23AM -0600, Alex Williamson wrote:
-> On Wed,  5 Aug 2026 00:33:55 +0000
-> Samiullah Khawaja <skhawaja@google.com> wrote:
-> 
-> > When userspace closes a VFIO device file descriptor, the vfio driver
-> > performs a hardware reset on the PCIe device to ensure it is returned to
-> > a clean state. However, if the closed device is an SR-IOV Physical
-> > Function (PF), it may have instantiated Virtual Functions (VFs) that are
-> > actively bound to host kernel drivers (or other vfio instances).
-> 
-> Wait, what?  We actively try to prevent VFs from a vfio-pci owned PF
-> from being bound to host drivers other than vfio-pci.  You need to
-> overwrite the imposed driver_override to make this happen and you're in
-> a very precarious security model to have the VF owned by a trusted
-> in-kernel driver while the PF is owned by userspace.
+On 8/5/26 5:49 PM, Borislav Petkov wrote:
+> On Wed, Aug 05, 2026 at 09:51:11AM -0500, Kim Phillips wrote:
+>> This patch corrects code that already cares about RETPOLINE=n kernels, but
+>> it's also useful if you know all the target systems for a RETPOLINE=n config have
+>> alternatives to RETPOLINE, such as {,e,Auto}IBRS.  This will become more and more
+>> true as time goes by.
+> Why would more and more configs become relevant which disable
+> CONFIG_MITIGATION_RETPOLINE?
+>
+> What is the compelling use case which warrants to have this in the upstream
+> kernel?
+If by 'this' you mean this patch, it's because it fixes a bug with 
+RETPOLINE=n kernels that sashiko found when reviewing the rest of the 
+patches in the series.
 
-Maybe, it really depends on the device. I can easially see someone
-using a device where this would be safe. mlx5 for instance is pretty
-OK.
+If by 'this' you mean RETPOLINE=n configurability in general, this patch 
+isn't adding or removing that.
 
-So I don't really mind someone doing this, we should block it and warn
-it and so on, but like noiommu and the other vfio insecure modes, why
-not give an opt in?
+Thanks,
 
-> It's possible there are gaps that closing the PF can interrupt the VFs
-> and we need to defer a reset until the VFs are closed, 
-
-Oh definately, when running in a SRIOV mode it is really problematic
-for the PF to reset while there are any active VFs. The PF controls a
-number of shared items (MMIO, ATS, etc) and when it blips everyone is
-at risk of unexpected fairly catastrophic system crashing errors
-related to the shared items going away.
-
-So resetting the PF device unconditionally when vfio closes is
-definately wrong in principal. I can see it maybe working for simple
-systems, especially ones that don't MCE..
-
-I don't think we can skip the PF reset on close because of dev_set
-reasons and leave a rouge device for the next user, so the thing looks
-somewhat troubled?
-
-Adding the sriov disable here at least makes it defensibly safe, that
-we do still clear the PF on close, and we don't take risks that the
-active VFs will crash the system during the FLR blip.
-
-Though I understand it was not the original intention, I feel we have
-ended up in a strange place with the SRIOV PF feature ..
-
-Jason
+Kim
