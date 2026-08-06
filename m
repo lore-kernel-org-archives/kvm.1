@@ -1,106 +1,111 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8570242CAF5;
-	Wed,  5 Aug 2026 22:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6870734D4CE
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 00:32:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785970180; cv=none; b=lnORpsa2W1gjcsE47PhZfUBNDY+jCn3VA1LX2XNvxKp9VJDc7WfME0poDhzm448N/kgHpQ5GP9Wy8tuAr1GrBR1DxSwEGSwFzs0gZW1W9mYdTm750h5yoXKH1d0Y1AVrUcMYq6D+zk6pQEtEgJwMIxPYPmQmHp5I8s9WT1pCky8=
+	t=1785976370; cv=none; b=brdKHClmaGwTSl79nHvmhPowUocLCQm1l7ro/BPFkHwrNPohlQkRHlklXbei8mCnlIhlYRYvp61N/R3ZF5ZLElLNUH+hA3UkP47d2a6IcHf7VdMCE1prQlG9rB3nk0g0JLt3YhXqOmtnBickChQTOj2CQyalGPLoeZg+A1GfwhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785970180; c=relaxed/simple;
-	bh=jfOV2obLipkD+y3jvt4DBvBwYkaZOEFMfwoNYs3XlQ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HBRXGHLPkIPhd3K8StUPeA2b3AscBRG36o1gCpeV+GxuzdYzoW02IZeSORc3D1EKi2MH0feOVTubJMFPKEqEwNqEDykuViqM8C7fH5tR/1K2a/qrmc2g5h9EcAYVlOY1E1l4WgiprhWFkc9OYtTLiBMHNgsAOlCA4zJc6kCGw0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=WW3mUzgw; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1785976370; c=relaxed/simple;
+	bh=GWnMX23x2XJamjEwXapRQWJTaV9cITtaYuSlJICbUf8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=uw1UleewhxPm+DG7056k9TAOZ/hN1QbKvIy8/k8AzWMVUZmgMJHZYq81nG9IG+EnpzeRphTwb30QOSv95b1zQ19Tka9ann8xuQ3jiKxxWzp+P5AxFZgsG91cyNWw00CPdZUpuFQaZqAPj44x8W/zWYiuecGCtXEDg3hP4GuzSJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jPiq7qaD; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="WW3mUzgw"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 24B6E40E00C3;
-	Wed,  5 Aug 2026 22:49:36 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id XevHoCsztfrX; Wed,  5 Aug 2026 22:49:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1785970166; bh=11a3rOlS1cYOCSqhdbwbQhgoopQLgWS4fQ0LjBkvf34=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WW3mUzgwjw846piHFFCgM5ltUSssCsDK7wmazWbRmFiLyqM4OY4TfWWS+6+KNZ8iM
-	 vt4AThrjXaNorLh6b+b3mE6CUy/Fv2HzLbwosxw8XdlEixwjDATNhKhx0CIwZ+mhVP
-	 ncC/gp1oUwT5CAX4kdORns6B7NQqnKz9bhBEy3nHZulB57TlaLC9/SGe9Hl1WivVlg
-	 5pWE317oGyK74uM8KJjE+Fj/jIgCbb3q4NvMiH6goYE08ymwg6VjP9zVSKvvvPhvXo
-	 BMtcFGPEIX+ceJR1hLHELKhtzpE4pkpkFksxW8mru5X8AgxR0umsAEB7SVG3W17f9e
-	 C9L2MVzJ0k4Pp0VtyufITUgITfYPb+BCxxP6kdRVoXV4i1Ao64dw2/V0wVYoXck9Zk
-	 lmROqgPdWvZS7MehL5UFRQywvCrSXGJT+lXwNSfERY8lmphY2jZEPSwNphRAUKnT8m
-	 wanax6wrJAiafHdaKiqqinYGPpUmYxlV2u5h8PixPktE5dvZK5/A6b8OSgI1fZcH1h
-	 maTjbSDcYJuf797etD7KuURMzIuFgUYi+k/uNna2+FLDlxbmfW1AVKfTCBRODbDG5C
-	 tkcKFthdkIssHFmkuhbCJNfz+KAz5NNFE75DX+MLAulhw/PZAy8egDZZeu2xT/SVE9
-	 N4tMWPs2t7SQt5UKKUnG1s5g=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 862CD40E0031;
-	Wed,  5 Aug 2026 22:49:10 +0000 (UTC)
-Date: Wed, 5 Aug 2026 15:49:07 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Kim Phillips <kim.phillips@amd.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, x86@kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Naveen Rao <naveen.rao@amd.com>,
-	David Kaplan <david.kaplan@amd.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH v4 01/10] x86/bugs: Only log missing retpoline when it's
- actually the missing mitigation
-Message-ID: <20260805224907.GDanO942iYDbai1kFx@fat_crate.local>
-References: <20260804235611.4053375-1-kim.phillips@amd.com>
- <20260804235611.4053375-2-kim.phillips@amd.com>
- <20260805004441.GAanKHecgJwfAOzZzp@fat_crate.local>
- <65d82937-113d-405b-9399-b70973e84c50@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jPiq7qaD"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8487ed7f7beso1805338b3a.0
+        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 17:32:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785976369; x=1786581169; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OCfHIzte5uq5pyTPXcfl2qziYgmEa+5fHjm4eKgk5qg=;
+        b=jPiq7qaDe0a30V2Qg89Gn36iNUPlRi1XEYyRYH1K0Dr4l7Tub+nWn6OeUzloOgXuW5
+         amTxzsEgejFZDh8uM9Udje6ZI2346bufIP2McFHBtmbeodkdqBA9qu+YR3LbtDRBMLxQ
+         dpwf439DoK6gM8gEmdTJQ5FdpH3ffN5vFQYUQPK6wuaOTNls8mkMbt9IYHHSMTIqMGPn
+         IjiQbVIxHH0v8GRLOidFpzAIiJzIft0Emd2WpjRxU3E7kVDk4lphND2gUS7TccWdCZhn
+         2+6GiOWgDaiBmgoZFdBBkppoKIYtjRR0Fqctn7yqP2bzGuisRerJHwwpe/rC6Qp1gCqy
+         CEDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785976369; x=1786581169;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OCfHIzte5uq5pyTPXcfl2qziYgmEa+5fHjm4eKgk5qg=;
+        b=iAKThQytiWEISThZpYJ/CgwA+RpgvGvjdb9eq6UWhd/K1rm81vbMPRB1Gg1hm4ve2g
+         BT8oEUkw5P3FD+sHAeOu72gwy19mmrJk3LwcfuFyJQTCHrc7l1+8Dc+pu3155sOIgHLO
+         2OQsH8JSEZ7ZizLhtLgWoGzkNev/U0WG9UPrh8G6FZm2kNf81cXRDiX9ZhASVm+sJ6Ej
+         HAuR/5N29KAyPm1tRkfw4GQooO+aNlSmlIi0tkN/yxiPqeJK/atAjNzfNx/wvSYIdly9
+         h7pRcvguR83bDA8bOyNhft7wZWPzffd5+TTNwxPnIF7tHi5WjyI23yAnwjHtkyjkcRpt
+         60sA==
+X-Forwarded-Encrypted: i=1; AHgh+RowuAFL4zphjjdPbQMzRrTE72OK1Xzg96zTN0+pTJK4ud6iZ2rHgPQPwkN4SWTxFN918YU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySgfLGsUBQ9VjrCeoUnz5sxY7oBxDMc+3h+b6C2hIKPaj8wCrk
+	54zNtW1yPsoO7UMRTx/DHt6Pv8LukDAFi2ZVLJ4vc5JPfs07wm6bc1/b6BVhLiHpySeLXmJrOAL
+	9Gx7+1Q==
+X-Received: from pfaw13.prod.google.com ([2002:a05:6a00:ab8d:b0:848:4460:aed3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2441:b0:848:7731:d95a
+ with SMTP id d2e1a72fcca58-84f2e1520admr11621536b3a.37.1785976368449; Wed, 05
+ Aug 2026 17:32:48 -0700 (PDT)
+Date: Wed, 5 Aug 2026 17:32:47 -0700
+In-Reply-To: <86cxvxar8w.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <65d82937-113d-405b-9399-b70973e84c50@amd.com>
+Mime-Version: 1.0
+References: <20260717162658.2833515-1-jingzhangos@google.com>
+ <amh6OLH38hsO7ZWj@google.com> <CAAdAUtjrnNe1Kn2_Fqtjy6igEEca-6Zd=SSbncswZtnA5FngPA@mail.gmail.com>
+ <anLz0HJ9CKuRbTPh@google.com> <86cxvxar8w.wl-maz@kernel.org>
+Message-ID: <anPWL-6TBGreqL3j@google.com>
+Subject: Re: [RFC] KVM: Proposed uAPI for querying GSI and irqbypass status
+From: Sean Christopherson <seanjc@google.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: Jing Zhang <jingzhangos@google.com>, Mostafa Saleh <smostafa@google.com>, 
+	KVM <kvm@vger.kernel.org>, KVMARM <kvmarm@lists.linux.dev>, 
+	Oliver Upton <oliver.upton@linux.dev>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mingwei Zhang <mizhang@google.com>, 
+	David Matlack <dmatlack@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Aug 05, 2026 at 09:51:11AM -0500, Kim Phillips wrote:
-> So it's saying there are no additional conditions than
-> !IS_ENABLED(CONFIG_MITIGATION_RETPOLINE), when there should be
-> (which this patch adds).
+On Wed, Aug 05, 2026, Marc Zyngier wrote:
+> On Wed, 05 Aug 2026 09:26:56 +0100,
+> Mostafa Saleh <smostafa@google.com> wrote:
+> > 
+> > Hi Jing,
+> > 
+> > On Fri, Jul 31, 2026 at 10:26:26AM -0700, Jing Zhang wrote:
+> 
+> [drop the LLM generated stuff]
+> 
+> > > While interfaces in debugfs are fantastic for manual, retroactive
+> > > debugging on a developer workstation, they are not Dependable for
+> > > fleet-wide observability. This RFC aims to provide a proactive
+> > > monitoring solution that aligns KVM with production operational
+> > > requirements across architectures (both ARM and x86).
+> > > 
+> > > Would love to hear your thoughts on this perspective.
+> > 
+> > I agree that debugfs is not suitable for that purpose.
+> > 
+> > My main concerns are:
+> > 1- Why is /proc/interrupts not enough, it should show whether the
+> > interrupts are going through the host (not bypassed) and it should
+> > show when the host get a doorbell if the vCPU was not resident.
+> 
+> This.
+> 
+> Also, there is a very long standing ask to represent the output of
+> /proc/interrupts as a structured set, retrieved through a generic
+> kernel interface. I.e. *not* something KVM specific.
 
-Then say that pls.
-
-> This patch corrects code that already cares about RETPOLINE=n kernels, but
-> it's also useful if you know all the target systems for a RETPOLINE=n config have
-> alternatives to RETPOLINE, such as {,e,Auto}IBRS.  This will become more and more
-> true as time goes by.
-
-Why would more and more configs become relevant which disable
-CONFIG_MITIGATION_RETPOLINE?
-
-What is the compelling use case which warrants to have this in the upstream
-kernel?
-
-Give me a concrete example pls.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
++1 to not making this level of detail KVM specific.  Ideally, I'd want more than
+what /proc/interrupts offers, e.g. it'd be nice to capture what "mode" an IRQ is
+configured for (normal/remapped, IRQ bypass, x86's posted MSI, etc.).  But that's
+an argument for extending /proc/irq and/or providing structured output of _that_,
+not for throwing something into KVM.
