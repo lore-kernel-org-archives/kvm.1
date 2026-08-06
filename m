@@ -1,174 +1,179 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1695C477999;
-	Thu,  6 Aug 2026 14:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786027176; cv=none; b=NmQ+hpRiu2nLApLPCw3QmcVPjeuGn3p9p2yBr67wLod3/E9pt6quoYRtFeHKrxhKplTDM5eYWNhkcVd5ea3YPKK7oN1BNfLmsgqqLS2T9CTEjJH2mHoIre3Q2O4vmvKbAiUN/DiRgnVYgY7HI1uCPAQLmCXAjAaAcGyBWx8EXuQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786027176; c=relaxed/simple;
-	bh=9F/Uq/xyvj96/U1grsSBt1mIaNmrxXUYd1WuQpsJoTU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ptWekgSuiGM6G7eAFE31RaYlYUJhsysNn7IZjzDRjs/kzKx5DdLzdHY21POkvi433aiLhoojj4IdP9MUdoCn7xc+5mAmVUPMaBIl9bjJp46pNZ8zstjPSGbR0wQQ+NCuP/b3JGQUpOU3yy89AY2nGN8g3akEKXiI5OlYODddzBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=shmZvp0t; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED52471D12
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 14:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786027222; cv=pass; b=cDLPNUpFycv2iB6gmR7KVrNtBynNuTp2jjS0mpmTpA3pvadTlU7OVgJWHM+bZPjRM+UUC8U4/KHZSrHTMT/us2HO2WakdxXCsPRX5pmzOOSMOQadBd74wEsJaUp+q7LfrbHBxPAKtFbazlmRdfUlN9LKH5A/HtSnIQZthSBfcy4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786027222; c=relaxed/simple;
+	bh=gcjKawjwo26uLkajY4IH3jQHyOn7PT0OmTOcUrswS9E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Pj6d23MjUMdo1KTmHv9gTaUjMH4bg8QNn7BjEE8DmArWdeoYg7u33+uHo2Yh4nvxusHgRKuDfxUUky9BB/qJENhuHEFlI257kUA4bheVbaL1LYarrzcmHB1c6cA7BXSgrsQzqGHZYAbADLySm4A1l76ciaaNFNXE0xzZmDbtmvA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=alCl8suo; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=d2xcF2p2; arc=pass smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="shmZvp0t"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 676DhH0E994756;
-	Thu, 6 Aug 2026 14:39:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=vLbzfK
-	Ycs8AFnqn49rygHRdKSEov+6B+VOA7S1PSy4c=; b=shmZvp0thz48LonFCRhb3x
-	mpcAg78h647KCuW2uXCuRZTis/bUdz8A0asiab6jUF4BXsVloLGCjJ+rT3FsQSFj
-	IZncFXRwyTO59xc41381dRxGMR4pvQNYGZfvCBbgHsZNh2ZpJd15PQ/9kfi3kmSR
-	B/t+ulMkIibCksN0Zn0Bty3TEgD9F3FW6gLz6uZa1RDdsmhSK7prttjmgLGbIBR8
-	sROQRYbi9zHxf/QY569Xa2EK+5KlSB+2FSAWwcGKTFUpWwhxEZHXAU8D52+g4F37
-	7/m+2rwGnOfxFxhggWKHFhJ6yyHn9I5+hi0HZX96H9kA7TSlYoIpzp++YMMECZYA
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs67j0e1x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 14:39:31 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 676EQIi8010671;
-	Thu, 6 Aug 2026 14:39:30 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qups1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 14:39:30 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 676EdRgP28967184
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Aug 2026 14:39:27 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3568A20049;
-	Thu,  6 Aug 2026 14:39:27 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DDCC320040;
-	Thu,  6 Aug 2026 14:39:26 +0000 (GMT)
-Received: from [9.224.77.173] (unknown [9.224.77.173])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  6 Aug 2026 14:39:26 +0000 (GMT)
-Message-ID: <d32c5862-1e64-496c-bf03-5928c2ea1dfd@linux.ibm.com>
-Date: Thu, 6 Aug 2026 16:39:26 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="alCl8suo";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="d2xcF2p2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786027219;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/p4TBvMBVw0EXOJptfY8mrIcbCKeY/alz7cq+D1eCSU=;
+	b=alCl8suoolMoyncx/Loac02th4Vh6cPgJRiDXZ+59kHgehbEBYWy/l0WH54BTV8IXug4Wt
+	ezeMhbArXe/yVJXtPBWjiQtRDIOtEJcKL2TMd8v7h/uOeXBP/71vYyDtNhFA10jT2yoIFv
+	FjwVXDEDFhjZYov8E8umNjr9jSabdP0=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-125-GwuAAdaZMpGl3zEl7Zt97A-1; Thu, 06 Aug 2026 10:40:18 -0400
+X-MC-Unique: GwuAAdaZMpGl3zEl7Zt97A-1
+X-Mimecast-MFC-AGG-ID: GwuAAdaZMpGl3zEl7Zt97A_1786027217
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cc6dd43737so43422515ad.2
+        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 07:40:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786027217; cv=none;
+        d=google.com; s=arc-20260327;
+        b=REq4GFq0KrIEil1dnfSAlh4rSGjWqoLOn7AsiYw+emWLp6+JWS+dXlT7lY2WLjji3O
+         BZ7VWjCMIErdriG45C5CaA+2QFQKqMyoYK6+wXbR8mkA+9rAyj7kdyFNc7tuyqEDUp4s
+         pOBmlm1cPq5Bt3IqgejrC0yeLdlKiDmy7BxbGaZwykhP/LA3oDsWqUALA7s6SiLq7so7
+         AGSavIIxt2D5mVainyQ84ls2ItHopkDZ/ZsN65FHJIDD8jB0kKKG0dkP2859uE5ZuCXX
+         gqj1oYCUfhMOC6ujNEzcCfy/LVdQBeM20XE6LLTW+EQEwlIMsdfXpnY106Ub6yJjdCqs
+         h3Tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=/p4TBvMBVw0EXOJptfY8mrIcbCKeY/alz7cq+D1eCSU=;
+        fh=IQs/z9mUL/NB5BDPJmiIYyfoH6oPz+mBEuN3/5frhOA=;
+        b=HU22iROOns3kCYE+ORRlBXrnEzTOFk+e1IKlm7XZM0Y4r1yT3iX7IfYuSa8eGtuyR3
+         v7df8yA3ROGiOxpHeq25UyeLH1Gn7fnw5uv/NJE6Ee1Dh/XcbIfMbJFUNV0jH7RDSjD+
+         igBefOxy3lGw4zCjviRQW6FcrlcfyLGlzGghegl9O4diueVx6Ssy5KtSbdEtyrsz6HK0
+         m5NZ/QekX0rulWo+pniPt+UZsaptwCIAevm/uuiQJhSkTpov2HDa/+/NdOYiTtzkKXTI
+         S6sd6W6ci10dI8UakZ3/NioKAzdjNt8h3rolZlTVW/f1CEGPCH7Puy7YQe5BdDmvJV0D
+         gy8w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1786027217; x=1786632017; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/p4TBvMBVw0EXOJptfY8mrIcbCKeY/alz7cq+D1eCSU=;
+        b=d2xcF2p2N5zpPp3oHuuB64b4d+7+czSQ4HGu1O/rhsEA1xN4xgQJYow1eOnaDde/ir
+         P8YgW1ahpu+wIBOlRjCtZbpEJY2fT+upAFVX3uTbrPWeDAyMiRIM75Jwhy8p2OW/9a8n
+         q/l7hS73VXOQpB8aRlIEd3wxLPADgVO0hCai72/gQQNfGK870zfc4sGaNmk9H2WgIg/+
+         T5SmaLYjnkg8vYet9oRi52dOaEGkMCV7i+HWJNYTTZU6XajOURJn4Peinv7S4Prsr849
+         MvjM6unh59tw/009tAa2bJqicWiReb5uU8HcaWJDLPjKqgfKoDCouafPxUHPph+LP78V
+         d1Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786027217; x=1786632017;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=/p4TBvMBVw0EXOJptfY8mrIcbCKeY/alz7cq+D1eCSU=;
+        b=my1e8pfcvqH5A3FKlEdtXCDuZIEQ5CwagFWACn0TnF3ztG7Tv19BakYVfZDJqu1T93
+         /yEJws5YGW0Jb/B54xHIL58NXV1LWnm3pBA49UHQc2HCbiHHxVf+H0Xoz4oy9KQaDe6Z
+         VSYbquZg0uKkYqIklpapirVpTcq5yg/U4RQdXjj9D6FBOqotceOMoChcUv6oLDNEGH/F
+         whj+HL/iIfX5PANHWQfLEyVRaMVYC3pHnwiRO8yZSJaTs3KrjSEy7yJQQydmNslEwTe8
+         oWmv3zPpFTaJ1VqPU8cSTq5HmdEFXq/jzB3qeW/haSFS8yS/BYNyNMrS5GRhkNztu8c9
+         +aeQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpVo5vjNKM6njnl8+5Hy1se8e2v7Y6dwG9ji5BfprGSaYSj12KYJNRdq34oDWoLYj9Btis=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjuzLtOfaWNgopSNQpQ/nWU+1f6RCqCY2OiEaeUne6HnbttM2C
+	Kvslvn321vQ4I6snmeAGav4J/Sv3lGN11uKGjCnvKjwGOKgjTRkmHII6aZqnORk4mWFYP0vmW/h
+	NlXNQyJqp9Pg8AvH5gBSoDX8altNnDBJOcIkxvUuNSYg5tr4ToOPNeUmTqBSVSQEf+DTD5E5gCq
+	m+bHLPlEiXLD4pFI1HLGLabSumvsxG
+X-Gm-Gg: AR+sD11s42A3+hB/Lev3Q22X75zDkekWaQ4EHf/6AyW+IGTWYjUXaLmiECO68gE7dZB
+	7RAxZVsAK6FLQolbVcEHco7rIg5G9m87Nmac7FcyB02OkLJcP24W9l7R8Bu43oFUDAO6CSA+/5k
+	UbWdn6qw2KqFRzSuCGTUiga0Gw+o6chB904eE5/nHnoL/tiVbBPHU9r74=
+X-Received: by 2002:a17:90b:580b:b0:38e:9e9d:9209 with SMTP id 98e67ed59e1d1-3903c5c51cdmr15623468a91.17.1786027216717;
+        Thu, 06 Aug 2026 07:40:16 -0700 (PDT)
+X-Received: by 2002:a17:90b:580b:b0:38e:9e9d:9209 with SMTP id
+ 98e67ed59e1d1-3903c5c51cdmr15623360a91.17.1786027216105; Thu, 06 Aug 2026
+ 07:40:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] KVM: s390: Fix memory corruption by not reinjecting
- CK machine checks
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: Janosch Frank <frankja@linux.ibm.com>, KVM <kvm@vger.kernel.org>,
-        David Hildenbrand <david@kernel.org>,
-        linux-s390
- <linux-s390@vger.kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev
- <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>
-References: <20260806125241.210170-1-borntraeger@linux.ibm.com>
- <20260806125241.210170-2-borntraeger@linux.ibm.com>
- <20260806163739.7b1ee8fd@p-imbrenda>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20260806163739.7b1ee8fd@p-imbrenda>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDExMiBTYWx0ZWRfXxpgygjYTDHCY
- C6zRBkWJO9+PrJ8ujaEaXqN5XbJfklJ1lsdCcL3GOmDyHf9wh8yCp54fOorCA+aMXgaEj3A8YYT
- oWgp5WH9y/yf0RX9XyaSESbhaBOR6KA=
-X-Authority-Analysis: v=2.4 cv=I7VVgtgg c=1 sm=1 tr=0 ts=6a749ca3 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=VwQbUJbxAAAA:8 a=GFNrkfC1HkkyiMQxMSkA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDExMiBTYWx0ZWRfX4Q/jBi5FSxnl
- YJHMiFPd0zfWMG1sX9e/P3/OwWvVWfhdkZLMxIjay1NKYrAtByWHW9vIiCfOeAmVBpgHgii10Si
- 54ZqzFSjE2BCKOhN/wS2ePTp0bQUBBrbq1fcRDDJAvAvYpY3HVLidGqyC+hvhZjzgJKrdMilV9j
- Qf2gww6oWmTE0cye62H514yEYCgjNYDyQWgHessIMhaqTuKj/ANwBzuEAM9avy20D7ntoA1S5zM
- Hh1iL403tonwGVy5jMoRAfVp7Fwyo2S02NhBfB+sZgjvuJKgqNQl5ORt7uliEdAJCsvhMkMt+50
- 9oXjw+Y3xiXaII15PXbVjzS1shkvYotbmP1vgIPX2/aRQUmqGN3fEytbnKfD/2H7g2yrRlYn7wz
- nSaSNbXrC6+PsvPklikl1obPo+yUclbXIc68dNNvvwZmUIO8e5UIzZHPQehAmRz6RKITkjLFZz+
- fVRyCC/FqDJ7mRD6nFw==
-X-Proofpoint-ORIG-GUID: 9ejSTsgxTaksRGaUSMCsGJSU3KjSvUTC
-X-Proofpoint-GUID: 9ejSTsgxTaksRGaUSMCsGJSU3KjSvUTC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-05_06,2026-08-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 clxscore=1015 priorityscore=1501 suspectscore=0
- malwarescore=0 adultscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608060112
+References: <20260723153310.745855-1-andrey.drobyshev@virtuozzo.com> <anSMBpQJ8x-vXYy2@sgarzare-redhat>
+In-Reply-To: <anSMBpQJ8x-vXYy2@sgarzare-redhat>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Thu, 6 Aug 2026 16:40:04 +0200
+X-Gm-Features: AUfX_mxXaE00zqmd2DiALac4VL3A9WWcVSqpkYeQGMWjXcfcP0SiHhV-7fpbPQU
+Message-ID: <CAGxU2F4b7oy338gRSJyNko=Bnwyi+MCdzOKAtZSW2q_GJnT6=A@mail.gmail.com>
+Subject: Re: [PATCH] vhost: clear vq->worker under vq->mutex when freeing workers
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, 
+	stefanha@redhat.com, jasowangio@gmail.com, eperezma@redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
+On Thu, 6 Aug 2026 at 15:35, Stefano Garzarella <sgarzare@redhat.com> wrote:
+>
+> On Thu, Jul 23, 2026 at 06:33:10PM +0300, Andrey Drobyshev wrote:
+> >Every other update of vq->worker is done under vq->mutex - the worker
+> >attach/swap ioctls and vhost_worker_killed().  vhost_workers_free() is
+> >the sole exception: it clears vq->worker without holding the lock.
+>
+> mmm, vhost_dev_cleanup() updates vq->worker without the mutex too IIUC.
+>
+> >
+> >The effect is harmless in practice, as this only happens while the
+> >owning process (and thus the whole device) is dying, but the lockless
+> >write is inconsistent with the rest of the code.  Clear vq->worker under
+> >vq->mutex, like everyone else, so that all writers of vq->worker follow
+> >the same locking rule.
+> >
+> >This issue was found by Sashiko AI review.
+>
+> Can you share a link to the review?
+>
+> I don't know if it's common or not, but having the link in the commit or
+> after --- will help the reviewers.
+>
+> >
+> >Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> >---
+> > drivers/vhost/vhost.c | 10 ++++++++--
+> > 1 file changed, 8 insertions(+), 2 deletions(-)
+> >
+> >diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> >index 4c525b3e16ea..dbb6cb5eccea 100644
+> >--- a/drivers/vhost/vhost.c
+> >+++ b/drivers/vhost/vhost.c
+> >@@ -722,13 +722,19 @@ static void vhost_worker_destroy(struct vhost_dev *dev,
+> > static void vhost_workers_free(struct vhost_dev *dev)
+> > {
+> >       struct vhost_worker *worker;
+> >+      struct vhost_virtqueue *vq;
+> >       unsigned long i;
+> >
+> >       if (!dev->use_worker)
+> >               return;
+> >
+> >-      for (i = 0; i < dev->nvqs; i++)
+> >-              rcu_assign_pointer(dev->vqs[i]->worker, NULL);
+> >+      for (i = 0; i < dev->nvqs; i++) {
+> >+              vq = dev->vqs[i];
+> >+
+> >+              mutex_lock(&vq->mutex);
+> >+              rcu_assign_pointer(vq->worker, NULL);
+> >+              mutex_unlock(&vq->mutex);
+> >+      }
+>
+> Pre-existing, but IIUC vhost_workers_free() is called only by
+> vhost_dev_cleanup() at the bottom, after a loop calls vhost_vq_reset()
+> on each virtqueue (without the mutex) where we already set `vq->worker`
+> to NULL, so IMO at this point it's already NULL, no?
 
+Oh, sashiko reported pretty much the same
+https://sashiko.dev/#/patchset/20260723153310.745855-1-andrey.drobyshev@virtuozzo.com?part=1
 
-Am 06.08.26 um 16:37 schrieb Claudio Imbrenda:
-> On Thu,  6 Aug 2026 14:52:41 +0200
-> Christian Borntraeger <borntraeger@linux.ibm.com> wrote:
-> 
->> Channel-subsystem damage machine checks are for the host channel
->> subsystem. The guest channel subsystem is emulated in the userspace VMM.
->> There is no point in forwarding such machine checks into the guest.
->>
->> This also simplifies the machine check reinjection and avoids kfree of a
->> stack variable as reported by sashiko.  There might be still machine
->> checks that have the ck bit set with another bit (like instruction
->> damage), mask out the CK bit in s390_backup_mcck_info(), like the CP and
->> ED bits already are.
->>
->> Fixes: 4d62fcc0b692 ("KVM: s390: Inject machine check into the guest")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
->> ---
->>   arch/s390/include/asm/nmi.h |  1 +
->>   arch/s390/kernel/nmi.c      |  4 ++--
->>   arch/s390/kvm/interrupt.c   | 24 ++++++++----------------
->>   3 files changed, 11 insertions(+), 18 deletions(-)
->>
->> diff --git a/arch/s390/include/asm/nmi.h b/arch/s390/include/asm/nmi.h
->> index 6454c1531854..dd26c20bd231 100644
->> --- a/arch/s390/include/asm/nmi.h
->> +++ b/arch/s390/include/asm/nmi.h
->> @@ -22,6 +22,7 @@
->>   #define MCCK_CODE_SYSTEM_DAMAGE		BIT(63)
->>   #define MCCK_CODE_EXT_DAMAGE		BIT(63 - 5)
->>   #define MCCK_CODE_CP			BIT(63 - 9)
->> +#define MCCK_CODE_CK			BIT(63 - 11)
->>   #define MCCK_CODE_STG_ERROR		BIT(63 - 16)
->>   #define MCCK_CODE_STG_KEY_ERROR		BIT(63 - 18)
->>   #define MCCK_CODE_STG_DEGRAD		BIT(63 - 19)
->> diff --git a/arch/s390/kernel/nmi.c b/arch/s390/kernel/nmi.c
->> index e17a59d4d5a4..652b98795243 100644
->> --- a/arch/s390/kernel/nmi.c
->> +++ b/arch/s390/kernel/nmi.c
->> @@ -345,7 +345,7 @@ static void notrace s390_backup_mcck_info(struct pt_regs *regs)
->>   	sie_page = container_of(sie_block, struct sie_page, sie_block);
->>   	mcck_backup = &sie_page->mcck_info;
->>   	mcck_backup->mcic = get_lowcore()->mcck_interruption_code &
->> -				~(MCCK_CODE_CP | MCCK_CODE_EXT_DAMAGE);
->> +			~(MCCK_CODE_CP | MCCK_CODE_EXT_DAMAGE | MCCK_CODE_CK);
-> 
-> ... here, instead of duplicating it?
-> 
->>   	mcck_backup->ext_damage_code = get_lowcore()->external_damage_code;
->>   	mcck_backup->failing_storage_address = get_lowcore()->failing_storage_address;
->>   }
->> @@ -357,7 +357,7 @@ NOKPROBE_SYMBOL(s390_backup_mcck_info);
->>   #define ED_STP_ISLAND	6	/* External damage STP island check */
->>   #define ED_STP_SYNC	7	/* External damage STP sync check */
->>   
->> -#define MCCK_CODE_NO_GUEST	(MCCK_CODE_CP | MCCK_CODE_EXT_DAMAGE)
->> +#define MCCK_CODE_NO_GUEST	(MCCK_CODE_CP | MCCK_CODE_EXT_DAMAGE | MCCK_CODE_CK)
-> 
-> it looks like this macro here should have been used above... ^
+So, yeah, I think it's a valid report we should fix.
 
-Yes, see my comment in the cover letter. We would need to move this define.
+Thanks,
+Stefano
+
