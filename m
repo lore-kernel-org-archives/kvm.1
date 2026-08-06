@@ -1,125 +1,136 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CB0499F03;
-	Thu,  6 Aug 2026 22:17:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F0242CB03
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 22:18:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786054636; cv=none; b=l+pUQnQ0OnEmFHG9TxWDpb5LuuZuo29TZ6sQj/KcuwwJK6A3o69UI6LhGkc/seMODrwLkVKnTkIafCMM2io4yYRfEB2NqZiI80zNMtRbPWbiYTg8mo6Oq0VV5lPMpGx0gZWOYDJxx5iTLrYYW0oSJcorGgZUbI+1hVRPpFzI6J4=
+	t=1786054692; cv=none; b=fQtLmrkupsQO4ouVpszOkp1j6nB2nCwS0FDL3ZcMW8cUIy+chNOK/CwQSOOVYpIPig/6TmWcLbEeEpWIpyG+W+tjHgi9VSIdpSbPVEFSlp+TkAw5hG43GqkhAJCLsNEDGQpNFpfHlkVCp2IciIR2RaOh0lQC+shG3ojivWRRjiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786054636; c=relaxed/simple;
-	bh=iKweYBKWlVh41U7b/9lsPVhe+MkErxQZ9YPMyd+7WKI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=owsQYEhcjiwcLFV6RyjwnwcFLDYESSXHqkuJ9/nGYaHOPtfVfEzPRh9p7jI9+PLUP9lWBWlrhgCaUBBDLxCvbh88jA0+kI4S7O0r3qYNV0LWQT/JPB2b7a/EgffI07af5Q7WNMatm5DQIunTEydFTPraBUgSZJPS3AdQ3QYs6/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oED6Ikr6; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786054692; c=relaxed/simple;
+	bh=on3mRg2u5XTVO1NtPed6Wnq5su/1HFfJAZ0A5V6XV54=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ljSIarqYqMFswvOi71iQ+a9w+qmPoydCVgFq9a+AQUeuseHyapF3RsxnFLRr4vYQ32jHyMEFSHxBgdlHTSlER0nqiyrkzjxUx/MkVPhaiVCTuQiu6/tjRNhMql19ySRFLSrMtyLKdctTHm3dhbbNVRBjACQzi/hGQcAkoztDUWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c0zyvnWr; arc=none smtp.client-ip=209.85.210.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oED6Ikr6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786054633; x=1817590633;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=iKweYBKWlVh41U7b/9lsPVhe+MkErxQZ9YPMyd+7WKI=;
-  b=oED6Ikr6JD0L1wrm4bxgsvQuu5OLn5VkiCMSieVnc4xe38ki4xiVqY7j
-   5hBgrqOc8JNdkZ7t9GdijKp8JzdxIvUmHfoQ7C5Tf2yfJUXooJbOZ+mcM
-   l3Ozeukjsrzhmc/TbC5+e1aNBWTep0K5b0gPI0AuI0g8lOcKnmNFNt8oU
-   K3J/HupnGFiKKWtxmQW0feVkRBnkm6eJaSSEtdu7o48T/n5IPXCMAtknX
-   tT6/617xpN73dGK9GUX1SYCGKZrBcWSq5ZY8hrNAls+r5FiOak+Z6ASaP
-   nvjnR9qNxFLL6alqJoZPg06S99NEU7ypjgYl0UxmYqJQ4X2vHrg9r6Fp5
-   Q==;
-X-CSE-ConnectionGUID: ZbOGfU6HT8GpCPNxIduq2A==
-X-CSE-MsgGUID: xXEZ5ytiRjWFG2FnU9nYUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="86537101"
-X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
-   d="scan'208";a="86537101"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 15:17:13 -0700
-X-CSE-ConnectionGUID: pgbksiNvQF+0qmnzMV8fkw==
-X-CSE-MsgGUID: 1QZ6d/pCQ6GP1erwZp89QA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
-   d="scan'208";a="259617270"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.109.157]) ([10.125.109.157])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 15:17:12 -0700
-Message-ID: <dda5f0e4-636d-4106-8780-c82d178986de@intel.com>
-Date: Thu, 6 Aug 2026 15:17:11 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c0zyvnWr"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84eccf9d899so3597351b3a.2
+        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 15:18:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786054686; x=1786659486; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/BEVvi4/7i6XDSu/QYDIwcuZoEPs9pbAb29S0DeOBes=;
+        b=c0zyvnWrdAFI8VFr+T7yfPo4tTie0zkMyU5vE9IpFpQ0bnMIrYNe7D0NVU015/CXq7
+         tTbpg+GiP1jxYehCF2k+ss1WmL9zCZkVS/XP0JucnBtnbFrZkun5/zwtPKeVvswIcv0x
+         9OXKkSojC+SITbl2r6dWFilo0SBjtSgUXGY7YnzSHnPU836SD7nqqW9ITYT/jJd2JfJs
+         YEHVrb3r0enPzU2kmPfGXFNmXi/PHHzpE2fxx1rujcOQQ7gqf5oljFESaE7Lq4tlkZTn
+         WgYMlIoEKzbDMturQFbG5GZceqZ9xgZGT0PW3z3gR7B9CbY4okSoPvvfuMih1H9+/ciy
+         UOxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786054686; x=1786659486;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/BEVvi4/7i6XDSu/QYDIwcuZoEPs9pbAb29S0DeOBes=;
+        b=PKpO0X2ygKSawR6Va3OnQVeetgCsb2f+OkXrqR69qywrIMdlSBp9QfxYp8gguLgwuI
+         CUzKJatVogDhC3RWlJAcIvM6aca5K8nzG57dkSRXgMMHtdevkWDqtdiracfdej9FEFjW
+         JfVEGDYyYjUYybsGXzIZOBE7bL4wHqvbEsGFbo5D2XwD9T3dQTg7j+5BJfe6bUFIBXbo
+         gwRnZ/+/lnp+fm9KNuAarH49aOPgeI/0L1k9u1AQVKt2SG1IhXcEX/pG33oFJtjI7/4M
+         ZEtlQft0pvDPDsOSFi0NDXWdXcoYWjGhSMFuvzEmUVCPV0QaW+IV6RskiHPr/4nDnW4b
+         jaeQ==
+X-Forwarded-Encrypted: i=1; AHgh+RondItiFzf8TG1M1SQHj+poR6g7uDuU+9/W6MHTftZSKD8i7WumIWQAh0JPkFIXhHIqvWk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzx4rmkpkKu7riQ5wco4zeUq8MUraffT7lArC3Wb35LeYZRiuOI
+	uodbQ0A481tTiNEVUlvygVdV+ypgHdO88VpsGmIykUCsjjwZFur8hYyNh0fJtdPkstnykF/D2h6
+	4iLqylw==
+X-Received: from pfbln15.prod.google.com ([2002:a05:6a00:3ccf:b0:848:5415:1869])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3a0f:b0:848:3f07:c5a2
+ with SMTP id d2e1a72fcca58-84f2dfd0a06mr18297213b3a.4.1786054685697; Thu, 06
+ Aug 2026 15:18:05 -0700 (PDT)
+Date: Thu, 6 Aug 2026 15:18:05 -0700
+In-Reply-To: <SN6PR02MB4157453D405AB80859B12DF9D4F52@SN6PR02MB4157.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 05/11] x86/virt/tdx: Handle multiple callers in
- tdx_pamt_get/put()
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de, hpa@zytor.com,
- kas@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com,
- nik.borisov@suse.com, pbonzini@redhat.com, seanjc@google.com,
- tglx@kernel.org, vannapurve@google.com, x86@kernel.org, chao.gao@intel.com,
- yan.y.zhao@intel.com, kai.huang@intel.com, tony.lindgren@linux.intel.com,
- binbin.wu@intel.com, sohil.mehta@intel.com
-Cc: Hongyu Ning <hongyu.ning@linux.intel.com>,
- Binbin Wu <binbin.wu@linux.intel.com>
-References: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
- <20260806020850.1221381-6-rick.p.edgecombe@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260806020850.1221381-6-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260701193212.749551-1-seanjc@google.com> <20260701193212.749551-48-seanjc@google.com>
+ <SN6PR02MB4157453D405AB80859B12DF9D4F52@SN6PR02MB4157.namprd02.prod.outlook.com>
+Message-ID: <anUIHY-1_q3oVFPf@google.com>
+Subject: Re: [PATCH v5 47/51] x86/paravirt: Don't use a PV sched_clock in CoCo
+ guests with trusted TSC
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
+	Jan Kiszka <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>, 
+	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>, 
+	"xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Nikunj A Dadhania <nikunj@amd.com>, David Woodhouse <dwmw@amazon.co.uk>, 
+	David Woodhouse <dwmw2@infradead.org>, Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="us-ascii"
 
-On 8/5/26 19:08, Rick Edgecombe wrote:
-> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+On Thu, Jul 02, 2026, Michael Kelley wrote:
+> From: Sean Christopherson <seanjc@google.com> Sent: Wednesday, July 1, 2026 12:32 PM
+> > 
+> > Silently ignore attempts to switch to a paravirt sched_clock when running
+> > as a CoCo guest with trusted TSC.  In hand-wavy theory, a misbehaving
+> > hypervisor could attack the guest by manipulating the PV clock to affect
+> > guest scheduling in some weird and/or predictable way.  More importantly,
+> > reading TSC on such platforms is faster than any PV clock, and sched_clock
+> > is all about speed.
+> > 
+> > Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >  arch/x86/kernel/tsc.c | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> > 
+> > diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+> > index 012321fed5e5..a146fc7b5e74 100644
+> > --- a/arch/x86/kernel/tsc.c
+> > +++ b/arch/x86/kernel/tsc.c
+> > @@ -283,6 +283,15 @@ bool using_native_sched_clock(void)
+> >  int __init __paravirt_set_sched_clock(u64 (*func)(void), bool stable,
+> >  				      void (*save)(void), void (*restore)(void))
+> >  {
+> > +	/*
+> > +	 * Don't replace TSC with a PV clock when running as a CoCo guest and
+> > +	 * the TSC is secure/trusted; PV clocks are emulated by the hypervisor,
+> > +	 * which isn't in the guest's TCB.
+> > +	 */
+> > +	if (cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC) ||
+> > +	    boot_cpu_has(X86_FEATURE_TDX_GUEST))
+> > +		return -EPERM;
 > 
-> tdx_pamt_get()/tdx_pamt_put() unconditionally add or remove Dynamic PAMT
-> backing for the 2MB region covering the passed page. However, multiple
-> callers can add or remove 4KB pages that fall within the same 2MB region
-> and in that scenario only a single PAMT entry is required.
+> Do a pr_warn() in the error case? Your commit message says to do the ignore
+> silently, but I wonder if that's a good idea. At least for Hyper-V, the error
+> case shouldn't happen.
 
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+I agree it's not a great idea, but unfortunately it's pretty much guaranteed to
+fire on KVM-based setups.  The KVM world hasn't been anywhere near as aggressive
+as Hyper-V in terms of killing off PV features when running SNP/TDX guests (which
+is largely how this series came to be in the first place).
+
+So while I'm conceptually not opposed to the idea of printing an error message,
+in practice I'm pretty strong against it because odds are very good I'll end up
+dealing with "bug" reports due to less-than-awesome setups.
