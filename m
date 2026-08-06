@@ -1,202 +1,148 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76CD2419FDC;
-	Thu,  6 Aug 2026 08:42:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49EB413786;
+	Thu,  6 Aug 2026 09:10:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786005763; cv=none; b=q0LaiIDXr/dzazcLDbr2aTZ6yUj5LshHrco1Tk0u7Jur4QMPtIUkELY0P5EjlcHhQImQ1jbVaugAr8yasfkcWtLCI1d+jnWQl+V1ZhYxyaNnCk1GSo+DOstW+T2tgwBBRQqnnsUm5f5Bo2LHZFWmXc5ZOZ7l8/dlE3o5JFuicpI=
+	t=1786007436; cv=none; b=iCuyo6o1oi36h1OPCJi5vWykGtL3Ug5OYHRRl8xGAyEFn4d0LOErM0enfDDLjSXbcnn1C8tCREfwNTqGAfxG0RTe0e8tck3j1dU2IHNdm42kLCSxlbVisLXi+k5kVUfPcM0PoG5/mzzBekUZFnzbNhoZr4FXORkQXRB0qJkyXBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786005763; c=relaxed/simple;
-	bh=83n8BDtca7EQ88qdbSJ2gpj0nr/DMadQjUZ4VfwaO44=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AtbNMl3NTqgEHGL/hyb/BTkdft67aeLkOyp80mNAgvtL54DpczzZcTBmIvL9VN3Ey1z84iHik3gA9/TNm7A48cSYr4bLKJSYUFb6A0HESR/TDDyDlD/i+xFKFi1HHIZdOtgpXHIlzbrm4nBxH86nZrUlzVBXUxW6VPN4BjcBz+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=sjOrRNgU; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1786007436; c=relaxed/simple;
+	bh=8+zqllbEdqgMqzkU1SVo6YBPkX0Z0ssx7JhH/BTKah8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sTH4UqZgvliwwOD/qC5Cv6MMubHNu2EbripV9vwkVwhdPDRts4defLVsLq4m3tMHhYWjx6xnqBIlOu2mdiGn/KnhA4WgJRPhww/odJ2Ukb/Ej2TZfr6n4nsBNdb6BaW0wrvuE1JQnDWfTLDgpQp7aobPzcnARRlko/PUKku8Gkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bjZ38nMP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="sjOrRNgU"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 01D3416F2;
-	Thu,  6 Aug 2026 01:42:37 -0700 (PDT)
-Received: from [10.57.44.180] (unknown [10.57.44.180])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9F4E33F632;
-	Thu,  6 Aug 2026 01:42:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786005761; bh=83n8BDtca7EQ88qdbSJ2gpj0nr/DMadQjUZ4VfwaO44=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sjOrRNgUN88fiAM3TDTEbTO1yg7wwti4XXHueQck1WbKnYrcUhpdIFGu41LIcuwC3
-	 7KmTRbbVN2X3flXHvUe48ckBB1uwP2b41Q5aLZI9x9sF7MTnD2tJ48ggcbX/F5beez
-	 noWb7zNYsZ1fQdtzPJ/9OtOeGn/Mmd1+f1YKPVwo=
-Message-ID: <9dabf79b-92e6-4bd3-9fd6-15c4ff5e9ef6@arm.com>
-Date: Thu, 6 Aug 2026 09:42:36 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bjZ38nMP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439701F00A3A;
+	Thu,  6 Aug 2026 09:10:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786007434;
+	bh=ekP/15RiyRS1mHmgBngaG2DUHSQ1RkRl7k1DMWmUVvw=;
+	h=From:To:Cc:Subject:Date;
+	b=bjZ38nMPTWrRhP6qJYO2Hngk6a4aWbndg06pLlj//9Vspo1l+N1sSW7/y7hE3LRcu
+	 5yMXQjQzrOBznd3tREJQpbzJT7P9pttE9dUiJha6dUX7ewR95Ct2UtKN0boP4JJYe/
+	 il6zgqwFi4Cka4rLo1p/FHHkPSPSLliduSiawurp5nXy0dMKxq9epFET7y6emN6dD8
+	 r+2ffw62KVUr75sR6hh1vdpAMAFzjY0dttZ+hs7Ul2Ibib3otWnddNAmzYCcyP2RQK
+	 hvGpM/IbCkZP73tDmyQjzWc7qEmznlNHqqBaK2uiuAPDGJOPfzURhBknpf9ZNEkgVL
+	 Wy/EtXgINcohw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wru7T-0000000CtHi-2I6S;
+	Thu, 06 Aug 2026 09:10:31 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Steffen Eiden <seiden@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Yao Yuan <yaoyuan@linux.alibaba.com>,
+	ljs@kernel.org
+Subject: [PATCH v2 0/8] KVM: arm64: VNCR TLB invalidation fixes
+Date: Thu,  6 Aug 2026 10:10:18 +0100
+Message-ID: <20260806091026.620700-1-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 22/45] KVM: arm64: CCA: Handle RMI_EXIT_RIPAS_CHANGE
-Content-Language: en-GB
-To: Ackerley Tng <ackerleytng@google.com>, Steven Price
- <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20260803134403.80630-1-steven.price@arm.com>
- <20260803134403.80630-23-steven.price@arm.com>
- <CAEvNRgH+HWHgf26XDHN6aMLYjRh4M8okntBfjDFCBreXRXL=TA@mail.gmail.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <CAEvNRgH+HWHgf26XDHN6aMLYjRh4M8okntBfjDFCBreXRXL=TA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, fuad.tabba@linux.dev, imv4bel@gmail.com, yaoyuan@linux.alibaba.com, ljs@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 05/08/2026 16:59, Ackerley Tng wrote:
-> Steven Price <steven.price@arm.com> writes:
-> 
->> The guest can request that a region of its protected address space is
->> switched between RIPAS_RAM and RIPAS_EMPTY (and back) using
->> RSI_IPA_STATE_SET. This causes a guest exit with the
->> RMI_EXIT_RIPAS_CHANGE code. We treat this as a request to convert a
->> protected region to unprotected (or back), exiting to the VMM to make
->> the necessary changes to the guest_memfd and memslot mappings. On the
->> next entry the RIPAS changes are committed by making RMI_RTT_SET_RIPAS
->> calls.
->>
->> The VMM may wish to reject the RIPAS change requested by the guest. For
->> now it can only do this by no longer scheduling the VCPU as we don't
->> currently have a usecase for returning that rejection to the guest, but
->> by postponing the RMI_RTT_SET_RIPAS changes to entry we leave the door
->> open for adding a new ioctl in the future for this purpose.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> Changes since v15:
->>   * Propagate negative error returns.
->> Changes since v14:
->>   * Use addition rather than bitwise OR for adding the shared_bit in
->>     realm_unmap_shared_range(), this handles the case where the region
->>     includes the last address (which means 'end' already has the bit
->>     set).
->> Changes since v13:
->>   * Switch to the new RMI_RTT_UNPROT_UNMAP range-based API.
->>   * Drop ugly hack for RMM bug which errored when the RIPAS was already
->>     set to the desired value.
->> Changes since v12:
->>   * Switch to the new RMM v2.0 RMI_RTT_DATA_UNMAP which can unmap an
->>     address range.
->> Changes since v11:
->>   * Combine the "Allow VMM to set RIPAS" patch into this one to avoid
->>     adding functions before they are used.
->>   * Drop the CAP for setting RIPAS and adapt to changes from previous
->>     patches.
->> Changes since v10:
->>   * Add comment explaining the assignment of rec->run->exit.ripas_base in
->>     kvm_complete_ripas_change().
->> Changes since v8:
->>   * Make use of ripas_change() from a previous patch to implement
->>     realm_set_ipa_state().
->>   * Update exit.ripas_base after a RIPAS change so that, if instead of
->>     entering the guest we exit to user space, we don't attempt to repeat
->>     the RIPAS change (triggering an error from the RMM).
->> Changes since v7:
->>   * Rework the loop in realm_set_ipa_state() to make it clear when the
->>     'next' output value of rmi_rtt_set_ripas() is used.
->> New patch for v7: The code was previously split awkwardly between two
->> other patches.
->> ---
->>   arch/arm64/include/asm/kvm_rmi.h |   6 +
->>   arch/arm64/kvm/mmu.c             |   8 +-
->>   arch/arm64/kvm/rmi.c             | 473 +++++++++++++++++++++++++++++++
->>   3 files changed, 484 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
->> index 1e5026039458..751659a48be3 100644
->> --- a/arch/arm64/include/asm/kvm_rmi.h
->> +++ b/arch/arm64/include/asm/kvm_rmi.h
->> @@ -107,6 +107,12 @@ int kvm_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
->>   int kvm_rec_handle_request(struct kvm_vcpu *vcpu);
->>   bool kvm_rec_handle_hvc(struct kvm_vcpu *vcpu, int *ret);
->>
->> +void kvm_realm_unmap_range(struct kvm *kvm,
->> +			   unsigned long ipa,
->> +			   unsigned long size,
->> +			   bool unmap_private,
->> +			   bool may_block);
->> +
->>   static inline bool kvm_realm_is_private_address(struct realm *realm,
->>   						unsigned long addr)
->>   {
-> 
-> Coming here from guest_memfd, would like to look more closely at the
-> conversions-related stuff, and learn more about ARM CCA in the process :)
-> 
->> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->> index cd06881c1497..dcc2ab08d0e4 100644
->> --- a/arch/arm64/kvm/mmu.c
->> +++ b/arch/arm64/kvm/mmu.c
->> @@ -319,6 +319,7 @@ static void invalidate_icache_guest_page(void *va, size_t size)
->>    * @start: The intermediate physical base address of the range to unmap
->>    * @size:  The size of the area to unmap
->>    * @may_block: Whether or not we are permitted to block
->> + * @only_shared: If true then protected mappings should not be unmapped
->>    *
->>    * Clear a range of stage-2 mappings, lowering the various ref-counts.  Must
->>    * be called while holding mmu_lock (unless for freeing the stage2 pgd before
->> @@ -326,7 +327,7 @@ static void invalidate_icache_guest_page(void *va, size_t size)
->>    * with things behind our backs.
->>    */
->>   static void __unmap_stage2_range(struct kvm_s2_mmu *mmu, phys_addr_t start, u64 size,
->> -				 bool may_block)
->> +				 bool may_block, bool only_shared)
->>   {
-> 
-> Why convert attr_filter to a boolean, why not pass the filter through? I
-> think that might allow all the 3 states - unmapping private, unmapping
-> shared, and unmapping both. (Assuming unmapping none == not even calling
-> this function).
+Prompted by a patch [0] from Hyunwoo Kim which was addressing a pretty
+annoying corner case, I spent some time looking at what was wrong in
+our VNCR TLBI code. And there was a few things to say about it...
 
-You're absolutely right, we should use the attr_filter as it is if we go
-down this route (like I alluded to in [1]) . I think this was really
-from the original Guest memfd support (without inplace conversion).
+- The TLB tracking to get into the slow path is wrong. It tracks what
+  is mapped, but not the established TLBs. Kind of annoying.
 
-> 
-> Also, perhaps it's better to add this parameter to
-> __unmap_stage2_range() together with the patch that uses the only_shared
-> information :)
+- Handling IPA invalidation when the TLB was established with the S1
+  MMU disabled is failing for a number of reasons. This is the bug
+  that Hyunwoo Kim found, but I decided to address it at its root
+  rather than just fixing the symptoms.
 
-> 
-> I see that in [1] not changing __unmap_stage2_range() was going to be
-> explored, did that work out?
+- Deciding to run with a VNCR TLB doesn't take the state of
+  SCTLR_EL2.M into account. Yes, it is a special sort of sport to run
+  a hypervisor with its MMU disabled...
 
-I haven't got to it yet, I will be taking a look at this.
+- TLB invalidation by VA targeting the last page/block of TTBR1_EL2 is
+  dropped on the floor, because I cannot count. This was amusing. Not.
 
-Cheers
-Suzuki
+Additionally, Sashiko kindly provided some extra horrors to look at:
 
-> 
-> [1] https://lore.kernel.org/all/3b8d49be-f031-4134-bd20-a8c51632f4ad@arm.com/
-> 
->>   	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
->>   	phys_addr_t end = start + size;
->> @@ -343,7 +344,7 @@ void kvm_stage2_unmap_range(struct kvm_s2_mmu *mmu, phys_addr_t start,
->>   	if (kvm_vm_is_protected(kvm_s2_mmu_to_kvm(mmu)))
->>   		return;
->>
->> -	__unmap_stage2_range(mmu, start, size, may_block);
->> +	__unmap_stage2_range(mmu, start, size, may_block, false);
->>   }
->>
->>
->> [...snip...]
->>
+- A missing sign extension for range invalidation results in the wrong
+  VA range being considered.
+
+- TLBI doesn't participate in the general MMU invalidation retry
+  machinery, meaning that VNCR faults and TLBIs race in an
+  uncontrolled way.
+
+- TLBI and vcpu_put() can race badly, leading to a TOCTOU pattern
+  which results in either a BUG_ON() or a call to vncr_fixmap(-1).
+
+I have fixes for each of these issues, all stable candidates.
+
+On top of that, I have a patch reintroducing the tracking that the
+first patch removes, this time in a way that is actually functional.
+Or at least I think it is...
+
+I'd like to thank Hyunwoo Kim for their initial patch and for
+providing a reproducer that helped me finding these issues by running
+it at multiple levels of nesting.
+
+It is now too late for 7.2, so let's try to make this 7.3 material
+(hence the early repost).
+
+* From v1 [1]
+
+  - Added sign extension to range invalidation (Sashiko)
+
+  - Use mmu_invalidate_seq to resolve fault vs TLBI races (Sashiko)
+
+  - Speculatively bump the TLB refcount on fault to make sure the TLBI
+    takes the slow path when we are going for a S1 walk
+
+  - Clarify the check for the TLB matching for the S1 MMU state
+
+  - Extra sanitisation added on the S2 invalidation path
+
+  - Applied RBs from Yao Yuan to the patches that didn't change, with
+    thanks.
+    
+[0] https://lore.kernel.org/r/ameGoxbn2wzBq2kL@v4bel
+[1] https://lore.kernel.org/r/20260801124818.366274-1-maz@kernel.org
+
+Marc Zyngier (8):
+  KVM: arm64: Remove VM-wide VNCR mapping counter
+  KVM: arm64: Handle negative S1 walk levels in VNCR TLB size evaluation
+  KVM: arm64: Consider SCTLR_EL2.M when mapping the L1 VNCR page
+  KVM: arm64: Correctly handle end of VA space TLBI invalidation
+  KVM: arm64: Handle VNCR TLB invalidation race with vcpu_put() VNCR
+    unmapping
+  KVM: arm64: Sign-extend VA for range-based TLBI invalidation
+  KVM: arm64: Make VNCR invalidation participate in MMU invalidation
+    retry
+  KVM: arm64: Add VNCR TLB tracking again
+
+ arch/arm64/include/asm/kvm_host.h   |   4 +-
+ arch/arm64/include/asm/kvm_nested.h |  14 +++
+ arch/arm64/kvm/at.c                 |   2 -
+ arch/arm64/kvm/hyp/vhe/switch.c     |  10 +-
+ arch/arm64/kvm/nested.c             | 173 +++++++++++++++++++---------
+ arch/arm64/kvm/sys_regs.c           |  11 ++
+ 6 files changed, 155 insertions(+), 59 deletions(-)
+
+-- 
+2.47.3
 
