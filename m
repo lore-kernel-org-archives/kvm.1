@@ -1,202 +1,172 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82322777F3;
-	Thu,  6 Aug 2026 05:32:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C29B3B42C1
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 06:10:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785994369; cv=none; b=q5tdVlsUVPse44yDenvDnqFTI83kIXfc17XopmqhKhXJv3/F+zewZw743iQrQtxz9GE8cZNOvg7UWamPmAWcBY5wCitUd97+l5jo+v71ipannPB5nqfBr+nTe2BSUU8EfLmlVIzyz0Vn1Ndga7HmXvJfUQ4l4J9jgRckmZ7Ggcs=
+	t=1785996621; cv=none; b=F7Ep/Sm03G4S5ZlJ51jo4QgD2rn1ftvZW6VvMefbPlKl3KrDqJZzX2dWGX9XetvO/eUamSS32lELkuye/JinpOZuGwp9iFO5mBvehY8iX0peAWv2FSlBdPv964ndU14OpaIa/EjDgr2feJsLdJCG9w50U8ljXGcJKsiEPYqEkoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785994369; c=relaxed/simple;
-	bh=5pcEQWc4PyXiQWvfmflpqkipmnnWRX2FJqVhcC/AJ1c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IkFS3hvI5xWJHMI74PqKiBZk5jApQHlyP3JwM3dnzatfzO4zZewiaA5aWEzQUgPaeOGJ40iFkA1f8Mza+j3/jPuJusn/pq3m3tcXYU1v1rYa7mvZJPfgTDaDb0oveMKR2yYuuEp/febjvTmmZQ1q+gi9+qUNoRyaWGQhKajqBVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=UceCzOuO; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785996621; c=relaxed/simple;
+	bh=1jd9BwJE/dovM/938HwvvLhTLSE35kAoFYbuZ1SZmCE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eoZHKtS6K1fPCD1A9efoRELCZxXxu/+npYS53AbLDo/BMsigcLmEy7h/nP7aagiFReu79mgi7UtK/4CPVV2U4BVCTCdf0YWygEsvZENfBpe1LwuJTbrLxkE+0S69XCJx8FW0QiGh8iPfU9sMoHZAJ/YyYb2/++sZK/LrIgrcSQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ftxOOU2k; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="UceCzOuO"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675NlmYv1066244;
-	Thu, 6 Aug 2026 05:32:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=5N50+m
-	2zoR8QgMtQJOG5cgx3HnsvWgqZ/qJQqqpOCcQ=; b=UceCzOuOikzEia2zKThPuF
-	RIijKjycECVMsK4wz0aTOifpYcQX0y7FP7RLYqJtfVNRlvK+W54qnjecmDuQRG97
-	Td6xrhkIZEp8UtfLJBIswjgqvMP+PSQrWY6SU37sPYvcbWHqFwTGrtSRQl1PEXDG
-	f6EpyzJWDZWMhdz2XBiwYDRHOuYh2SKq9cNvwXQWQxBXwX5eleVf+8UjItlaH94g
-	agqzpyuMHkzurAKcdLZiDu4gyxrYJHn/RS9n5+cmQB0yNp4Ep2HsbKgKx6iVuKeu
-	2mWsozWDpLQ6wJu1/W/14G1XGPszYvmJUjDlfomcKfI42JZpYw8OUDkLTFaqziow
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8a46hfv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 05:32:33 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6765QRCF019794;
-	Thu, 6 Aug 2026 05:32:32 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmhhr1c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 05:32:32 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6765WSDN34669016
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Aug 2026 05:32:28 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4460C20043;
-	Thu,  6 Aug 2026 05:32:28 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 754DE20040;
-	Thu,  6 Aug 2026 05:32:25 +0000 (GMT)
-Received: from fedora (unknown [9.5.7.39])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  6 Aug 2026 05:32:25 +0000 (GMT)
-Date: Thu, 6 Aug 2026 11:03:13 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Ritesh Harjani <ritesh.list@gmail.com>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v6 0/4] KVM: PPC: Expose CPU compatibility modes for
- nested guests
-Message-ID: <20260806104222.7e435b28-8d-amachhiw@linux.ibm.com>
-Mail-Followup-To: Ritesh Harjani <ritesh.list@gmail.com>, 
-	linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Vaibhav Jain <vaibhav@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20260804180705.59160-1-amachhiw@linux.ibm.com>
- <tsp8l8cw.ritesh.list@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ftxOOU2k"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785996621; x=1817532621;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=1jd9BwJE/dovM/938HwvvLhTLSE35kAoFYbuZ1SZmCE=;
+  b=ftxOOU2kydzw8RXA42u8iiD8toTUFYJ58Qo5cijhj0c9kB7lxqStqK1k
+   9WtciT9Tl4cBOMk0OvHW4MG09ld7ZTRrMUuRvsAF0R/2RFZMQu3pRY1Zi
+   AR/7ksNZsbD13e6hf7ZVGwgfqsqwHqzE0ZB/TooSsPAbat+c5vM0ysCbo
+   6BEZSlbHWm0yEqEvLK71LLEr+azqX+ZR/A5YR0MA7nu6g+pbkPs0qCB6l
+   7KCbbrIhkpqhqmkX3CIiM/NWGJTr8/GKZYlJZ+gZUwvJDl7l/M0dA2iTa
+   98oj5Qed0ITtttEPNYQccRFlXRtr0BOOJaSV7jHiIwf50GQ5SZmgoL4tU
+   A==;
+X-CSE-ConnectionGUID: muBJ1a6MRJ+VAEkCVJBp7A==
+X-CSE-MsgGUID: FX1mJmUTS3SUdesJcYO2kg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="86591325"
+X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
+   d="scan'208";a="86591325"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 23:10:21 -0700
+X-CSE-ConnectionGUID: WKumlatwQimPjuyY3IarrA==
+X-CSE-MsgGUID: tuzEaPeFScCVrF3GJGZGPQ==
+X-ExtLoop1: 1
+Received: from fuxiaogu-mobl1.ccr.corp.intel.com (HELO [10.238.208.47]) ([10.238.208.47])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 23:10:18 -0700
+Message-ID: <e606195a-6adf-412f-8b0b-4b3ca7b1ad0a@intel.com>
+Date: Thu, 6 Aug 2026 14:10:16 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <tsp8l8cw.ritesh.list@gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=E6P9Y6dl c=1 sm=1 tr=0 ts=6a741c71 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=OftZMxRC31MPY7VeiR4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: MyyNFwdmT0f70Rm3IuUqkBLKBF-dUUra
-X-Proofpoint-GUID: V9VhITl5Ho-nq0FPK_2YHD01ieiGFWbc
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDAzOCBTYWx0ZWRfX0YQHMt1bIBoh
- 7cr9Mw6GGpFzDfzaF9FWn13Y6OybGzq3MoOHMnQjMnpkCmQ7zExmrjuA+ic4+iOVJFR0PwBHnxi
- 7nr3W2Ndvy/gvk/WeFkf3CpkZXeOh/c=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDAzOCBTYWx0ZWRfX6pQzU9SilWre
- ymh6JSiv75Y5qMSfpS5k4+vjtjJAQ7/M5w47CoU8UvTpusnvjznoIq9OTfHaPoslUquk5CCl78D
- iCNlM820dnxgLpjuBEwdCSIYX0gWCQDM0BdrR+5qHIWHOYMhbgMscaVcvQQUs3vrvwh+lqhvA9C
- EeRV/A7C8lWeZGhlWQpR00AXB5KQgI0Nq7yK2RpZDduR8FCG6Ez3gxpfYwy0pNg32X+wfmymGlc
- EIM6L45pxXFHhuNi4w0GpbKWhKuBkq1tO3r6Sg5XaBs7Ok3VHjHSIkSQE+N99NBUm7FlE/Oe+uY
- 861m//ValZ2qd+9EiTHyA7XoKj5UwH4G5q2aQjAz5S+Q8VSjCgOffj996cxfHrb+TLKWrVK6aHX
- YSSn222wkND45yrVZWiUgVcYXrG6j6aT/WzXG+bS9fkQdyHDOl6IwAJT2/PeKnadQ+uZwNPa4sP
- Q1GYwJdyPJtt4u6sTWw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-05_06,2026-08-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
- suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 impostorscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608060038
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] KVM: TDX: Enable Bus Lock VM exit
+To: Sean Christopherson <seanjc@google.com>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+References: <20260805031257.1844914-1-xiaoyao.li@intel.com>
+ <20260805031257.1844914-3-xiaoyao.li@intel.com>
+ <20260805034602.5B2BB1F000E9@smtp.kernel.org>
+ <4fedcaa6-d710-48f8-84c4-de682350bb2f@intel.com>
+ <anNPAXShf1gjDdeu@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <anNPAXShf1gjDdeu@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Ritesh,
-
-Thanks for taking a look. Please find my response inline.
-
-On 2026/08/06 12:09 AM, Ritesh Harjani wrote:
+On 8/5/2026 10:56 PM, Sean Christopherson wrote:
+> On Wed, Aug 05, 2026, Xiaoyao Li wrote:
+>> On 8/5/2026 11:46 AM, sashiko-bot@kernel.org wrote:
+>>> This also appears to affect tdx_to_vmx_exit_reason(), where comparing the raw
+>>> exit reason directly against 16-bit constants like EXIT_REASON_TDCALL will
+>>> fail to match if the bus lock bit is set, leading to incorrect emulation.
+>>
+>> This is valid. We need to adjust tdx_to_vmx_exit_reason().
+>>
+>> However, there is a more important problem. Since Bus Lock VM exit makes bit
+>> 26 possible in EXIT REASON, the trick of "return -1" in
+>> tdx_to_vmx_exit_reason() will introduce false-positive in the following
+>> check of if(vmx_get_exit_reason(vcpu).bus_lock_detected) added by this
+>> patch.
+>>
+>> how about something like below:
 > 
-> Hi Amit,
+> Way too subtle.  tdx_to_vmx_exit_reason() should return the actual union, not a
+> raw u32, otherwise it's going to be extremely difficult to avoid reintroducing
+> similar bugs.
 > 
-> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
+> And looking at this all again, we should change the handling of actual
+> EXIT_REASON_EPT_MISCONFIG exits.  Stuffing a bogus value into the exit_reason
+> is "fine", but as Sashiko points out, it's extremely brittle.  Rather than
+> stuff the exit reason, we should stuff the status to signal TDX_SW_ERROR.
 > 
-> > On POWER systems, newer processor generations can operate in compatibility
-> > modes corresponding to earlier generations (e.g., a Power11 system running
-> > in Power10 compatibility mode). In such cases, the effective CPU level
-> > exposed to guests differs from the physical processor generation.
-> >
-> > This creates a problem for nested virtualization. When booting a nested KVM
-> > guest (L2) inside a host KVM guest (L1) running in a compatibility mode,
-> > userspace (e.g., QEMU) may derive the CPU model from the raw hardware PVR
-> > and attempt to configure the nested guest accordingly. However, the L1
-> > partition is constrained by the compatibility level negotiated with the
-> > hypervisor (L0), and requests exceeding that level are rejected, leading to
-> > guest boot failures such as:
-> >
-> >   KVM-NESTEDv2: couldn't set guest wide elements
-> >
-> > This series provides a mechanism for userspace to query the effective CPU
-> > compatibility modes supported by the host, so it can select an appropriate
-> > CPU model for nested guests.
-> >
-> > To achieve this, the series introduces a new KVM capability and ioctl
-> > (KVM_CAP_PPC_COMPAT_CAPS / KVM_PPC_GET_COMPAT_CAPS) that expose the
-> > compatibility modes supported by the host.
-> >
+> And to do that without introducing more fragility, we should flag the raw
+> vp_enter_ret as "unsafe", and explicitly track vp_enter_status.  I.e. separate
+> the status from the exit_reason immediately after VP.ENTER, instead of mixing
+> and matching the two concepts.
 > 
-> Sorry, but I am somehow not convinced on whether we need all of this
-> machinary just to get these 3 bits of information, which we are
-> returning today.
+> The fastpath "handler" is also all kinds of messed up.  KVM fails to trace_kvm_exit()
+> EPT misconfigs and software errors; even though the exit reason is undefined, it
+> should still be captured in the trace, otherwise it's a huge blindspot.  And AFAICT,
+> OPERAND_BUSY should be mutually exclusive with actual VM-Entry failures, so manually
+> checking for VM-Entry failure is completely unnecessary, just handle OPERAND_BUSY.
+> If TDX ever gains fastpath handlers, then we can add a true fastpath handler at
+> that time.  But OPERAND_BUSY should be a "never do the fastpath", because AIUI,
+> VM-Enter wasn't attempted, i.e. there's nothing to handle.
 > 
-> Since KVM_CHECK_EXTENSION can already return an int, so why can't we use
-> KVM_CAP_PPC_COMPAT_CAPS itself and return the bitmap of supported compat
-> modes to the user?
-> Say if the cap is not supported, we can return 0, otherwise we can
-> return the bitmap of supported compat modes. This will easily allow us
-> to use 31-bits which as I see would be hardly a problem in the near
-> future. In the future if it grows - we can always use KVM_CAP_PPC_COMPAT_CAPS2.
-> 
-> This should reduce the code complexity both in the kernel and
-> userspace and we don't even need a new ioctl then.
+> Compile tested only, and it should be chunked over several patches, but this?
 
-Thanks for the suggestion. I considered this approach but would like to
-go with a dedicated ioctl for the following reasons:
+Basically, it looks good except some nits.
 
-1. Intended semantics: The KVM API documentation states:
+I'll try to split into a formal sereis. Please let me know if you want 
+to do if yourself.
 
-   ..kvm defines extension identifiers and a facility to query
-   whether a particular extension identifier is available.  If it is, a
-   set of ioctls is available for application use.
+> @@ -1053,8 +1026,8 @@ static void tdx_load_host_xsave_state(struct kvm_vcpu *vcpu)
+>   
+>   fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+>   {
+> -	struct vcpu_tdx *tdx = to_tdx(vcpu);
+>   	struct vcpu_vt *vt = to_vt(vcpu);
+> +	u64 vp_enter_ret;
+>   
+>   	/*
+>   	 * WARN if KVM wants to force an immediate exit, as the TDX module does
+> @@ -1084,7 +1057,7 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+>   			kvm_wait_lapic_expire(vcpu);
+>   	}
+>   
+> -	tdx_vcpu_enter_exit(vcpu);
+> +	vp_enter_ret = tdx_vcpu_enter_exit(vcpu);
 
-   [...]
+We need assign tdx->vp_enter_ret__unsafe somewhere after here. I think 
+we can just drop the local vp_enter_ret and make it
 
-   KVM defines many constants of the form KVM_CAP_*, each corresponding
-   to a set of functionality provided by one or more ioctls. Availability
-   of these capabilities can be checked with KVM_CHECK_EXTENSION.
+	tdx->vp_enter_ret__unsafe = tdx_vcpu_enter_exit(vcpu);
 
-   The intended role of KVM_CAP_* is to signal ioctl availability, not
-   to serve as a data retrieval mechanism itself.
+>   
+>   	if (vcpu->arch.host_debugctl & ~TDX_DEBUGCTL_PRESERVED)
+>   		update_debugctlmsr(vcpu->arch.host_debugctl);
 
-   You may take a look at KVM_CAP_PPC_GET_CPU_CHAR for instance.
+<...>
 
-2. Return type constraint: KVM_CHECK_EXTENSION returns a signed 32-bit int. The
-   capability bits are defined as (1ULL << 62), (1ULL << 61), and (1ULL << 60) —
-   64-bit values that cannot fit in a 32-bit return. Renumbering them to small
-   integers would be a UAPI change and would lose alignment with the
-   H_GUEST_CAP_* values from the hypervisor ABI.
+> -	if (unlikely(vp_enter_ret == EXIT_REASON_EPT_MISCONFIG)) {
+> -		KVM_BUG_ON(1, vcpu->kvm);
+> +	if (KVM_BUG_ON(exit_reason.basic == EXIT_REASON_EPT_MISCONFIG, vcpu->kvm))
 
-3. Extensibility: The struct-based approach with the size field provides clean
-   forward and backward ABI versioning via copy_struct_from/to_user(), without
-   needing a KVM_CAP_PPC_COMPAT_CAPS2 in the future.
+We need to check tdx->vp_enter_ret__unsafe instead of exit_reason becase 
+tdcall_to_vmx_exit_reason() translates 
+TDVMCALL(EXIT_REASON_EPT_VIOLATION) from guest to EXIT_REASON_EPT_MISCONFIG
 
-Thanks,
-Amit
+<...>
+> diff --git a/arch/x86/kvm/vmx/tdx.h b/arch/x86/kvm/vmx/tdx.h
+> index ac8323a68b16..5564617fc12a 100644
+> --- a/arch/x86/kvm/vmx/tdx.h
+> +++ b/arch/x86/kvm/vmx/tdx.h
+> @@ -66,7 +66,12 @@ struct vcpu_tdx {
+>   
+>   	struct list_head cpu_list;
+>   
+> -	u64 vp_enter_ret;
+> +	/*
+> +	 * Discourage direct use of the raw VP.ENTER return value, as there are
+> +	 * several subtleties that need to be accounted for when working with
+> +	 * the raw value.
+> +	 */
+> +	u64 HINT_UNSAFE_IN_KVM(vp_enter_ret);
+
+So the purpose is forcing people to think twice when using it because 
+they see "__unsafe"? Maybe it's more for the reviewers and maintainers.
+
+>   
+>   	enum vcpu_tdx_state state;
+
