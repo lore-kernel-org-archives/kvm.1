@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564903AA9F8;
-	Thu,  6 Aug 2026 01:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DB63B101D;
+	Thu,  6 Aug 2026 01:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785979128; cv=none; b=RcgT/wYtq+01VnSfl6Bk2FjPOdDPYZDQqgmJG0GqrenQ09eFdlFOTYT2qm4hGvcsFvAec4sniP1t0z3deKTKSq7dthjl6peTXT3ZXhJ83s7v0RECrx++g8qy2nhz6AVGmJtEAX9Fh4tDn+lqopu26QksnIZ/h/LGgjkxzz7j6Zg=
+	t=1785979130; cv=none; b=kUlluO1gCIJ+asOu3/L3DERtQ/ylSGpIIQI9aDq0lb4BiQFVb+Y2riPaFj08kL4cQzPhC54U/zKhjLpidAIoPSzdt2AkGDpJGMs22FPRn6K3RTQuN6/0EejX8ychT4dgzUN+KkoIbgk7Id9Kmz0R6WNzFunK1esrkkNCHjB5uUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785979128; c=relaxed/simple;
-	bh=GQYT6sb5UlBNgU+qYqrDwbOdsyfYfWJMXudd9GDVMf4=;
+	s=arc-20240116; t=1785979130; c=relaxed/simple;
+	bh=+RfBcLbFUN/D147MllSCMMdSCWzEhZhyPSzs2MYGYSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JhLDYJ5ux2Gw02JJFEyhTreXyKrZoTUeGuHfgoYlBR6sDWnbMrxNzHtMYEI4S4b6YilAtPpQJWlxrd7i/0xdyEaFPQ3qnlSO/qxLcJ58dicwZt3UMdUgfJ+FytA8ZR8cjy4l7+2RTlmYno/tA/O7+QWtC09F8l02Nj8DKC34dRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L2g3XP1J; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=rNmMjd61wzXKGZKjahBC4ReMYpnGmhkxdw5xT+WNwXNU9QUILgEIRxHGaBJ/zNtRyFkYYLQiaCIOyLx8VrsWHxTm9rFNUN6vWejmg8SqrRBlY9fzUr3Tecb9+aIKUL9rySuBk0IItftvHN4nr/xvXsyn+TP4wTCndXmbdEf6e6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BwUzRKKC; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L2g3XP1J"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BwUzRKKC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785979126; x=1817515126;
+  t=1785979128; x=1817515128;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=GQYT6sb5UlBNgU+qYqrDwbOdsyfYfWJMXudd9GDVMf4=;
-  b=L2g3XP1JaWD58PDOPARPdYt+FrhsNfv4bIh16n43nD516+bnnQRdHJ1H
-   1z0fWuqiwhDKQfAYhwsYLGVLpOxDVC414MuWx/tOfsS8sIuIjCliFCvf4
-   lxYkswxGV+qqnCdhQAdKStmTSAul94KEvtdqjTGLqT1SV5Hawr4xR8E58
-   QyL7ufJc5qs8rTMCQxhn3Sq34aG3hTEbfs4UWfdVygTEaYOcNGqUSHHiJ
-   UKX1mXe44sxS8bIiU73mDDIHUAb4z6qWGWBrHQNLTImLYdTZCkxvaVgmF
-   StqcB48InGKijy/5ExkVfdqiqV75mLlMXsGTYuaaZqPeW+gnuqyfq4A5/
-   w==;
-X-CSE-ConnectionGUID: Tc+iY2MKSju3r1yDCiEnPw==
-X-CSE-MsgGUID: YGTa24pVSreHTZys0IgFbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="86593990"
+  bh=+RfBcLbFUN/D147MllSCMMdSCWzEhZhyPSzs2MYGYSk=;
+  b=BwUzRKKCu41AH884yTuqFjitLZ47QK8HzNW3Y2CUTCn0NbflPLGhA1sa
+   Ep2bpFx5TkK1Vgy7ihZ7USbpLl2hkyaPEX0/J+qQQ1iZiIMiRjvfjC8M3
+   o9lJS+rU/CCcpoh3/1KACmaTElxfN+Gk+/pw+jbbsWwPBSGc23/DPdxYT
+   FyoAJag0v+N+xWnZXUvOnbJN3rKg+KP26iscH5E5czZ/jXOukvbOadJJ0
+   OKyvkAb7aqPtrR5vbM34jUr1U57iroLrmKYIHhF8aW7IzLaqA/Pa+6R6v
+   OXF3OmlXO1lys6q5f7jSKfhgiX7YBErX30NrfTwRf0App5rrEealytQvM
+   Q==;
+X-CSE-ConnectionGUID: 9QBGUUy/SMGOQX+xbh4JXA==
+X-CSE-MsgGUID: AAO/zvUlQ2CXyml/o2vgbA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="86594011"
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="86593990"
+   d="scan'208";a="86594011"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 18:18:44 -0700
-X-CSE-ConnectionGUID: fcE+frd2RJq3S21b9ydyrA==
-X-CSE-MsgGUID: 5X1MAht6TbePGGGdveIxjg==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 18:18:45 -0700
+X-CSE-ConnectionGUID: vKvQF3FESPq+xNZNHLGJpg==
+X-CSE-MsgGUID: if5boMr+Re+jXBBz1kRseA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="265804614"
+   d="scan'208";a="265804622"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by orviesa004.jf.intel.com with ESMTP; 05 Aug 2026 18:18:44 -0700
+  by orviesa004.jf.intel.com with ESMTP; 05 Aug 2026 18:18:45 -0700
 From: Sohil Mehta <sohil.mehta@intel.com>
 To: kvm@vger.kernel.org,
 	x86@kernel.org
@@ -69,9 +69,9 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	Sohil Mehta <sohil.mehta@intel.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v4 3/7] KVM: x86: Add LASS violation checks during instruction emulation
-Date: Wed,  5 Aug 2026 18:15:32 -0700
-Message-ID: <20260806011536.4172258-4-sohil.mehta@intel.com>
+Subject: [PATCH v4 5/7] KVM: x86: Virtualize LASS and advertise support to userspace
+Date: Wed,  5 Aug 2026 18:15:34 -0700
+Message-ID: <20260806011536.4172258-6-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260806011536.4172258-1-sohil.mehta@intel.com>
 References: <20260806011536.4172258-1-sohil.mehta@intel.com>
@@ -85,158 +85,81 @@ Content-Transfer-Encoding: 8bit
 
 From: Zeng Guang <guang.zeng@intel.com>
 
-When Linear Address Space Separation (LASS) is enabled, the processor
-applies a LASS violation check on every access to a linear address. To
-align with hardware behavior, KVM needs to perform the same check during
-instruction emulation before consulting the page tables.
+Virtualize Linear Address Space Separation (LASS) by letting the guest
+enable CR4.LASS[bit 27]. Allow the guest to set CR4.LASS only if LASS is
+enumerated in the guest's CPUID. Set CR4.LASS in the emulated
+IA32_VMX_CR4_FIXED1 MSR so that LASS can be enabled in nested VMX
+operation as well.
 
-Add a new callback to x86_emulate_ops to let the emulator query whether
-an access would trigger a LASS violation. The callback takes the linear
-address and the size that describe the memory access, plus a set of
-flags that convey the type of access.
+Keep CR4.LASS KVM-owned instead of making it guest-owned. LASS is
+expected to be enabled once per vCPU at boot and rarely toggled at
+runtime.
 
-Add the LASS violation check to __linearize() so that every explicit
-guest memory access is validated along with the other linear address
-checks. The SDM (June 2026), Vol3, Chapter 4, specifically states that
-there is no relative ordering between the canonicality check and the
-LASS violation check. Also, there is no prioritization specified between
-the faults generated by alignment checks and LASS violations.
-
-Implicit supervisor accesses bypass __linearize(). So, add LASS checks
-for those in linear_read_system() and linear_write_system() and tag the
-access as implicit.
-
-For now, emulator_is_lass_violation() is a no-op. Later, it will be
-wired up to the VMX implementation.
+LASS is enumerated by CPUID.(EAX=07H,ECX=1):EAX.LASS[bit 6] and only
+works in IA-32e mode. Advertise LASS to userspace on 64-bit kernels and
+only when it is supported by the host. Notably, it will not be exposed
+to userspace if the deprecated vsyscall=emulate mode is set on the
+kernel command line.
 
 Signed-off-by: Zeng Guang <guang.zeng@intel.com>
 Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
 v4:
- - Switched to using gva_t for the address parameter
- - Clarified LASS and canonicality checks and alignment checks ordering
- - Reworded the commit message
- - Use kvm_x86_call() instead of static_call()
-
-Note, internal AI review warns about missing canonicality checks during
-implicit accesses. A valid guest kernel shouldn't trigger canonicality
-faults. But for correctness, such checks could be considered. Though,
-that is beyond the scope of this series.
+ - Split patch diffs and reworded the commit message
+ - Use X86_64_F() instead of F()
 ---
- arch/x86/include/asm/kvm-x86-ops.h |  1 +
- arch/x86/include/asm/kvm_host.h    |  2 ++
- arch/x86/kvm/emulate.c             | 17 +++++++++++++++++
- arch/x86/kvm/kvm_emulate.h         |  3 ++-
- arch/x86/kvm/x86.c                 |  7 +++++++
- 5 files changed, 29 insertions(+), 1 deletion(-)
+ arch/x86/kvm/cpuid.c   | 1 +
+ arch/x86/kvm/regs.h    | 4 +++-
+ arch/x86/kvm/vmx/vmx.c | 1 +
+ 3 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index e213c9ae3e30..a82b20281f31 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -146,6 +146,7 @@ KVM_X86_OP(complete_emulated_msr)
- KVM_X86_OP(vcpu_deliver_sipi_vector)
- KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
- KVM_X86_OP_OPTIONAL(get_untagged_addr)
-+KVM_X86_OP_OPTIONAL_RET0(is_lass_violation)
- KVM_X86_OP_OPTIONAL(alloc_apic_backing_page)
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
- KVM_X86_OP_OPTIONAL_RET0(gmem_make_private)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 283847619ff8..d2181a805ace 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1727,6 +1727,8 @@ struct kvm_x86_ops {
- 	unsigned long (*vcpu_get_apicv_inhibit_reasons)(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index 9e9cf6538a96..c4dbd00f5e4e 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -1029,6 +1029,7 @@ void kvm_initialize_cpu_caps(void)
+ 		F(SM4),
+ 		F(AVX_VNNI),
+ 		F(AVX512_BF16),
++		X86_64_F(LASS),
+ 		F(CMPCCXADD),
+ 		F(FZRM),
+ 		F(FSRS),
+diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
+index 447f0ec3e63e..be8621695c41 100644
+--- a/arch/x86/kvm/regs.h
++++ b/arch/x86/kvm/regs.h
+@@ -28,7 +28,7 @@ static_assert(!(KVM_POSSIBLE_CR0_GUEST_BITS & X86_CR0_PDPTR_BITS));
+ 			  | X86_CR4_OSXSAVE | X86_CR4_SMEP | X86_CR4_FSGSBASE \
+ 			  | X86_CR4_OSXMMEXCPT | X86_CR4_LA57 | X86_CR4_VMXE \
+ 			  | X86_CR4_SMAP | X86_CR4_PKE | X86_CR4_UMIP \
+-			  | X86_CR4_LAM_SUP | X86_CR4_CET))
++			  | X86_CR4_LAM_SUP | X86_CR4_CET | X86_CR4_LASS))
  
- 	gva_t (*get_untagged_addr)(struct kvm_vcpu *vcpu, gva_t gva, unsigned int flags);
-+	bool (*is_lass_violation)(struct kvm_vcpu *vcpu, gva_t gva,
-+				  unsigned int size, unsigned int flags);
- 	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
- 	int (*gmem_make_private)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index 7f04544cfee5..9cbfde649064 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -693,6 +693,16 @@ static __always_inline int __linearize(struct x86_emulate_ctxt *ctxt,
- 		}
- 		break;
- 	}
-+
-+	/*
-+	 * LASS and canonicality checks generate the same fault and
-+	 * their relative order is not architecturally defined. Also,
-+	 * the SDM doesn't prioritize LASS violations against
-+	 * alignment-check faults, so any order is legal.
-+	 */
-+	if (ctxt->ops->is_lass_violation(ctxt, la, size, flags))
-+		goto bad;
-+
- 	if (la & (insn_alignment(ctxt, size) - 1))
- 		return emulate_gp(ctxt, 0);
- 	return X86EMUL_CONTINUE;
-@@ -799,6 +809,9 @@ static inline int jmp_rel(struct x86_emulate_ctxt *ctxt, int rel)
- static int linear_read_system(struct x86_emulate_ctxt *ctxt, ulong linear,
- 			      void *data, unsigned size)
- {
-+	if (ctxt->ops->is_lass_violation(ctxt, linear, size, X86EMUL_F_IMPLICIT))
-+		return emulate_gp(ctxt, 0);
-+
- 	return ctxt->ops->read_std(ctxt, linear, data, size, &ctxt->exception, true);
+ #define CR8_RESERVED_BITS (~(unsigned long)X86_CR8_TPR)
+ 
+@@ -405,6 +405,8 @@ static inline bool __kvm_is_valid_cr4(struct kvm_vcpu *vcpu, unsigned long cr4)
+ 		__reserved_bits |= X86_CR4_PCIDE;       \
+ 	if (!__cpu_has(__c, X86_FEATURE_LAM))           \
+ 		__reserved_bits |= X86_CR4_LAM_SUP;     \
++	if (!__cpu_has(__c, X86_FEATURE_LASS))          \
++		__reserved_bits |= X86_CR4_LASS;        \
+ 	if (!__cpu_has(__c, X86_FEATURE_SHSTK) &&       \
+ 	    !__cpu_has(__c, X86_FEATURE_IBT))           \
+ 		__reserved_bits |= X86_CR4_CET;         \
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index ecd105f35c78..3082195906da 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7885,6 +7885,7 @@ static void nested_vmx_cr_fixed1_bits_update(struct kvm_vcpu *vcpu)
+ 
+ 	entry = kvm_find_cpuid_entry_index(vcpu, 0x7, 1);
+ 	cr4_fixed1_update(X86_CR4_LAM_SUP,    eax, feature_bit(LAM));
++	cr4_fixed1_update(X86_CR4_LASS,       eax, feature_bit(LASS));
+ 
+ #undef cr4_fixed1_update
  }
- 
-@@ -806,6 +819,10 @@ static int linear_write_system(struct x86_emulate_ctxt *ctxt,
- 			       ulong linear, void *data,
- 			       unsigned int size)
- {
-+	if (ctxt->ops->is_lass_violation(ctxt, linear, size,
-+					 X86EMUL_F_IMPLICIT | X86EMUL_F_WRITE))
-+		return emulate_gp(ctxt, 0);
-+
- 	return ctxt->ops->write_std(ctxt, linear, data, size, &ctxt->exception, true);
- }
- 
-diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
-index 97421b8dde13..f136d3d0ba42 100644
---- a/arch/x86/kvm/kvm_emulate.h
-+++ b/arch/x86/kvm/kvm_emulate.h
-@@ -249,7 +249,8 @@ struct x86_emulate_ops {
- 
- 	gva_t (*get_untagged_addr)(struct x86_emulate_ctxt *ctxt, gva_t addr,
- 				   unsigned int flags);
--
-+	bool (*is_lass_violation)(struct x86_emulate_ctxt *ctxt, gva_t addr,
-+				  unsigned int size, unsigned int flags);
- 	bool (*is_canonical_addr)(struct x86_emulate_ctxt *ctxt, gva_t addr,
- 				  unsigned int flags);
- 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index d94b59140c45..70c8439312c3 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -5800,6 +5800,12 @@ static gva_t emulator_get_untagged_addr(struct x86_emulate_ctxt *ctxt,
- 					       addr, flags);
- }
- 
-+static bool emulator_is_lass_violation(struct x86_emulate_ctxt *ctxt, gva_t addr,
-+				       unsigned int size, unsigned int flags)
-+{
-+	return kvm_x86_call(is_lass_violation)(emul_to_vcpu(ctxt), addr, size, flags);
-+}
-+
- static bool emulator_is_canonical_addr(struct x86_emulate_ctxt *ctxt,
- 				       gva_t addr, unsigned int flags)
- {
-@@ -5859,6 +5865,7 @@ static const struct x86_emulate_ops emulate_ops = {
- 	.get_xcr             = emulator_get_xcr,
- 	.set_xcr             = emulator_set_xcr,
- 	.get_untagged_addr   = emulator_get_untagged_addr,
-+	.is_lass_violation   = emulator_is_lass_violation,
- 	.is_canonical_addr   = emulator_is_canonical_addr,
- 	.page_address_valid  = emulator_page_address_valid,
- };
 -- 
 2.43.0
 
