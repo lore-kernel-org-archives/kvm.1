@@ -1,60 +1,49 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28AD44E673;
-	Thu,  6 Aug 2026 14:28:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3911318CC13
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 14:30:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786026495; cv=none; b=WhKoa++9NvYA7Sb3admgZKB01syKT560Ex4rwPsLG7SqNoSWJNEz5FqUhO5OZwx80YLZoMlKfuiQ7lCLz7omKTmouG93lwwZ7NQe2zhl1u8S24cLsBkx4gyDcQGzkKIqZNQGfziK8YsOzq0HABsw+9MBJ5ckyMrLnUyxnwHEJKM=
+	t=1786026650; cv=none; b=ezvaPb+2ZjeiYDpXD07tCC8qIxYk5nEPeSNvVT6kM10IXeEF/zXWPZdDJVVVnF0mUcRoU7fWBs1dbD65L7ngtjgtZt1pVniirvkDbgZRpH2c5RWn1U3xYVhxuN5nj2N1EIp7dcK1+Byx4w63K+iE+p26cd0gGOFZ3EA1QEoRQmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786026495; c=relaxed/simple;
-	bh=xT+5TYkiAumq+s0rgR2EHzJ++Fp87+V/F5njyp43bD8=;
+	s=arc-20240116; t=1786026650; c=relaxed/simple;
+	bh=JHF2V1eIaSL1WSne1A+nFuXjTyywKpp5dtKutEfWSRs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DpED1X0FmF6FAzjulTrpYbuw879Nk4VkUqmUDs8rcW8Fsscq3vV47R78KXcj6vvGtXgb7WOR9472G+5zulOURo/slyLpA8SDpPA3bOAhLWjmiAwmkpyDZ/Kj5mKnVtQx8wzghF45xeAZpvJM9fdUHsarRXFHTJO9MeL1XdYVTkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=PiDE6Gc2; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=m9p8ut90+En7dTugztVjIgH26mFeEO1rwTFvzmgulGHUc+r1SReUHNioIQEOqzT7LP2FuQ0GQU82XLKewz2RFd1XgXHKscv4gYSeu8x6eKxwtE3zEYG4Y3YuAsdroNotB6pqTIgPW2BAFj2/JzCKbkZt/K50n1CT5Z65az+c97U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=csyaGPKQ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="PiDE6Gc2"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 676DGNdI1071337;
-	Thu, 6 Aug 2026 14:28:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=XYD9OR
-	lJcfIhmnnxbWJKu03KGdjyvPU0kIn3Hu/iQIA=; b=PiDE6Gc2uAjio5ckJ/XZGI
-	hJK2RZfOn0iblKbpPBdQKpwSSk+OyfXmBrRhNxc4iMBKjVM8T3NFtzxKU7xDSX2U
-	V1HdoMwqp6kMnrhi1xigAn7+/bzCx9hGfjgNNz0lutgMB+zVj55t7t8glzc62jTq
-	htRsMgxixcKhwEzDU2YHO7wbKeckn2Om0tI7Ly5kvklbW0Xeew5GITFqouA+MR52
-	G/ewo5XPQmSnswj3YHbfmM+/lSomdq4DrUxmHenVXnxgmGT7PeGjy0gpjrmYq25z
-	v9eIce6i+k6CubZtJ9J0R8xcUbJf14zzOuicDgghkAxBzCb2aCkf+X8xePMzSZpw
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8a48pv8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 14:28:08 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 676EQXdb010955;
-	Thu, 6 Aug 2026 14:28:07 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qunqj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 14:28:07 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 676ERRIH59310574
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Aug 2026 14:27:28 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 556755805D;
-	Thu,  6 Aug 2026 14:28:05 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 734B258057;
-	Thu,  6 Aug 2026 14:28:04 +0000 (GMT)
-Received: from [9.61.23.247] (unknown [9.61.23.247])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  6 Aug 2026 14:28:04 +0000 (GMT)
-Message-ID: <2926f8e5-9762-4197-bb67-1ab214d4864b@linux.ibm.com>
-Date: Thu, 6 Aug 2026 10:28:04 -0400
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="csyaGPKQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786026648;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=BZRJJGy3AzjBGmSZrWzib4BdwhxQRH0yxUJr55ajUIc=;
+	b=csyaGPKQ8C+sBd38J2UZWb8n8CmEVcyNIZJ7KRODqkRnHgacySp72nKnV0m+vG2fWdC4Vf
+	hNlnHogLqpQs/alY+b3139xzmBqv2mevVle59j+lhfLloUhdXhZgVmorM5FrYTi/LuLh2Q
+	gejoSPoo+VEhh6z8ZJNbh6TzZAln3Ds=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-340-vTFxZRfGNV6EiIiyWNC28A-1; Thu,
+ 06 Aug 2026 10:30:35 -0400
+X-MC-Unique: vTFxZRfGNV6EiIiyWNC28A-1
+X-Mimecast-MFC-AGG-ID: vTFxZRfGNV6EiIiyWNC28A_1786026634
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 125A418007E7;
+	Thu,  6 Aug 2026 14:30:34 +0000 (UTC)
+Received: from [100.90.56.12] (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C07541956094;
+	Thu,  6 Aug 2026 14:30:32 +0000 (UTC)
+Message-ID: <e2c6f458-564e-44a4-9fb5-df774cd7ce92@redhat.com>
+Date: Thu, 6 Aug 2026 16:30:30 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,60 +51,88 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] s390/vfio-ap: fix stale pqap_hook pointer on error in
- vfio_ap_mdev_set_kvm()
-To: Anthony Krowiak <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, pasic@linux.ibm.com,
-        alex@shazbot.org, kwankhede@nvidia.com, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com, stable@vger.kernel.org
-References: <20260806140342.611294-1-akrowiak@linux.ibm.com>
+Subject: Re: [PATCH 2/2] KVM: SVM: Re-check enc_context_owner under the
+ owner's lock in sev_vm_destroy()
+To: Shen Yongchao <grayhat@foxmail.com>, kvm@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Ashish Kalra <ashish.kalra@amd.com>
+References: <tencent_DDC4E4352EC91CAC05A9A8F4E55E8C96730A@qq.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <20260806140342.611294-1-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <tencent_DDC4E4352EC91CAC05A9A8F4E55E8C96730A@qq.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=E6P9Y6dl c=1 sm=1 tr=0 ts=6a7499f8 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=rFaDrkc5NCzgIuy8vgoA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: AlRSAbgekApLo-oYt3WPMRYAMW8xzShw
-X-Proofpoint-GUID: AlRSAbgekApLo-oYt3WPMRYAMW8xzShw
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDExMiBTYWx0ZWRfX0kws0p4QlvCo
- VCib0d5RjBRRqoix7U4150t1ptt2pHM33Sqy/lW5qB/nu+VoqcuZqzVsMrxnHK3B1GYpIOLPVRk
- 6+n+8e7yBmD50ymJjfN8ZtxZpT5Ogqw=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDExMiBTYWx0ZWRfX87Mj5jrCClAO
- 8A3LRtdnKMyGZZomRtttXRiuE3DeShshgQg1SInv4byyYaEXWFIApwPqUxeSr8AykEHLRIoVw6D
- 66R0P4+1P9TcWz2DVQHf6+9GmxHTGByaJ4mJ2WoxNFVDzxeS3Nfzb6MUQp0Bb3fdT2lb/H9KsjR
- ji+TpLNzrv4jlEUZEL6GT71oyxjWNd4483LKHCrYalnmweWxhJs2kykjdTeq6fcjX5HEsA4rYRh
- Z91aUBscPr0sKWOyv56EWJZpSeIi6B1RBhq+NX6cdjv0em4KKFmRMtPLHReJN4Of8rQd7fOh60F
- OFsgJEXKGY9WuiTjTTElrr1f59fhDNcKQS/7DqXy6yj+so8g+MkhufT232IY8JRvL6PGmQiF7T+
- kOraay31UOUk3dTtADIuykqKlhDJ2yctla0D3QJNAqku1YNrhVaER4p5+egKj845N0iQSm9o1Na
- Uo1pHmrLZcomrJoe/2g==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-05_06,2026-08-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1011 lowpriorityscore=0 priorityscore=1501
- suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 impostorscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608060112
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-
+On 8/4/26 17:00, Shen Yongchao wrote:
+> sev_vm_destroy() reads the mirror KVM's enc_context_owner without any
+> synchronization and then locks the returned KVM.  A concurrent
+> KVM_SEV_MIGRATE_VM (sev_migrate_from()) transfers this mirror's
+> reference to a new owner under the current owner's lock, so the
+> previous owner can be freed between the unlocked read and
+> mutex_lock(): the mirror's final reference can be dropped while
+> sev_vm_destroy() is about to dereference the owner, dropping the
+> owner's reference count below its true value so that kvm_destroy_vm()
+> runs while the owner's fd is still open.
 > 
-> Fixes: 86956e70761b3 ("s390/vfio-ap: replace open coded locks for VFIO_GROUP_NOTIFY_SET_KVM notification")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
-> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
+> All kernels with SEV mirroring and intra-host migration support
+> (KVM_SEV_MIRROR_CREATE / KVM_SEV_MIGRATE_VM) are affected.  The mirror
+> list mechanism was introduced by commit b2125513dfc0 ("KVM: SEV: Allow
+> SEV intra-host migration of VM with mirrors", v5.18, 2022-02-18);
+> upstream mainline is unfixed as of 2026-08-04.  Triggering requires an
+> AMD SEV-capable host with CONFIG_KVM_AMD_SEV and a local user able to
+> create an SEV VM plus an SEV mirror VM, racing close() of the mirror
+> against KVM_SEV_MIGRATE_VM on the owner (function-level window,
+> deterministically reachable with a close(fd) primitive).
+> 
+> Take the owner's lock and re-check enc_context_owner: if it changed,
+> the migration already moved the mirror entry and the reference to the
+> new owner, so retry with the new owner.  The owner cannot be freed
+> while the mirror holds a reference to it, or while a migration that
+> takes the reference over holds the owner's file reference.
 
-I think you need to re-arrange the SoB tags based on :
+The problem is that the *old* owner can be freed between READ_ONCE() and 
+mutex_lock().
 
-https://docs.kernel.org/process/submitting-patches.html#when-to-use-acked-by-cc-and-co-developed-by
+The patch narrows the window, but the cleanest fix for both issues is to 
+stop protecting enc_context_owner/mirror_vms with the owner's kvm->lock, 
+and use a global lock instead.  This also fixes the other issue, so I'll 
+send a patch.
 
-Co-developed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+Paolo
 
