@@ -1,151 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074A8499F04
-	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 22:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CB0499F03;
+	Thu,  6 Aug 2026 22:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786054460; cv=none; b=HuwB8pbNFBHNbNnrAVUlmUfJ5ccPGqJ9ExYYyjomLLm3qOcYxInBBHfpYR0Xt5zwY2g83OMac3LtclO1L9leqnJh9WmLJIjo/o1475Ru3LnTFfBH6kG4OGGTdfK6+9yzM1tjjgrg57b9+OpG7iBQRbNWu5AsXli9nHdkSEci5V0=
+	t=1786054636; cv=none; b=l+pUQnQ0OnEmFHG9TxWDpb5LuuZuo29TZ6sQj/KcuwwJK6A3o69UI6LhGkc/seMODrwLkVKnTkIafCMM2io4yYRfEB2NqZiI80zNMtRbPWbiYTg8mo6Oq0VV5lPMpGx0gZWOYDJxx5iTLrYYW0oSJcorGgZUbI+1hVRPpFzI6J4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786054460; c=relaxed/simple;
-	bh=s25MYkp4+ZBXhKVD8tj5ZinPdGUDBAE6M14U5muWsUU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ILkiFFtFM0aHaVUIS0bwDPkUiGNu/hQg+jRjQF1RHyO2soqYR0qSiMYeG8FlMbqJFozCHQr2/UhiIletPuC0ybTvAVk7OqllkSRkxPUdiAM6UqbIX1MJbYAX4SLm7i/zgqM3KvWC7Yj+I4gPGTIx1yWTCKip2fNA+pUc2P4v/Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NB3nE7fC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786054636; c=relaxed/simple;
+	bh=iKweYBKWlVh41U7b/9lsPVhe+MkErxQZ9YPMyd+7WKI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=owsQYEhcjiwcLFV6RyjwnwcFLDYESSXHqkuJ9/nGYaHOPtfVfEzPRh9p7jI9+PLUP9lWBWlrhgCaUBBDLxCvbh88jA0+kI4S7O0r3qYNV0LWQT/JPB2b7a/EgffI07af5Q7WNMatm5DQIunTEydFTPraBUgSZJPS3AdQ3QYs6/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oED6Ikr6; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NB3nE7fC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08551F000E9;
-	Thu,  6 Aug 2026 22:14:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786054458;
-	bh=fzgrqA+5AAKvu7TQniH4KC8XfDAmAyBp79ky09SBghA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NB3nE7fCZrHTbhZNud7BTMbiD/BPBPHLxOR5Rfy+H6EBYUDNpvIYpvPBI+J4F8JfL
-	 E93lljwlqpmNajjX0FX8FOFsYYKO37A/HtUIadyOh/0jZkSyACas60uTIZN7xwDszQ
-	 1cQ3fkk7CmepIiQFU1Dnq4RHWGMALqWLqjUFFDCSgjbjypx4n/wIbZuxzMPdjtSYk0
-	 FEF/F8OmGUYWt/3SL1P37Z5NK79icY3Bqusx3dJnp0riK6T4fnfL/GBNrQWlx0t4xJ
-	 8fWyM0OtOPAWT2woay4sW/hCEqJ74BSnYSKBWZ+z2iN3nKBzM/N+EhgMFonxam2bcA
-	 qXqa/ByxIkauw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/4] KVM: x86/mmu: Harden "map private PFN" against
- unexpected root invalidation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260806214050.78058-3-seanjc@google.com>
-References: <20260806214050.78058-1-seanjc@google.com>
- <20260806214050.78058-3-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 06 Aug 2026 22:14:18 +0000
-Message-Id: <20260806221418.B08551F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oED6Ikr6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786054633; x=1817590633;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=iKweYBKWlVh41U7b/9lsPVhe+MkErxQZ9YPMyd+7WKI=;
+  b=oED6Ikr6JD0L1wrm4bxgsvQuu5OLn5VkiCMSieVnc4xe38ki4xiVqY7j
+   5hBgrqOc8JNdkZ7t9GdijKp8JzdxIvUmHfoQ7C5Tf2yfJUXooJbOZ+mcM
+   l3Ozeukjsrzhmc/TbC5+e1aNBWTep0K5b0gPI0AuI0g8lOcKnmNFNt8oU
+   K3J/HupnGFiKKWtxmQW0feVkRBnkm6eJaSSEtdu7o48T/n5IPXCMAtknX
+   tT6/617xpN73dGK9GUX1SYCGKZrBcWSq5ZY8hrNAls+r5FiOak+Z6ASaP
+   nvjnR9qNxFLL6alqJoZPg06S99NEU7ypjgYl0UxmYqJQ4X2vHrg9r6Fp5
+   Q==;
+X-CSE-ConnectionGUID: ZbOGfU6HT8GpCPNxIduq2A==
+X-CSE-MsgGUID: xXEZ5ytiRjWFG2FnU9nYUw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="86537101"
+X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
+   d="scan'208";a="86537101"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 15:17:13 -0700
+X-CSE-ConnectionGUID: pgbksiNvQF+0qmnzMV8fkw==
+X-CSE-MsgGUID: 1QZ6d/pCQ6GP1erwZp89QA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
+   d="scan'208";a="259617270"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.109.157]) ([10.125.109.157])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 15:17:12 -0700
+Message-ID: <dda5f0e4-636d-4106-8780-c82d178986de@intel.com>
+Date: Thu, 6 Aug 2026 15:17:11 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 05/11] x86/virt/tdx: Handle multiple callers in
+ tdx_pamt_get/put()
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de, hpa@zytor.com,
+ kas@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com,
+ nik.borisov@suse.com, pbonzini@redhat.com, seanjc@google.com,
+ tglx@kernel.org, vannapurve@google.com, x86@kernel.org, chao.gao@intel.com,
+ yan.y.zhao@intel.com, kai.huang@intel.com, tony.lindgren@linux.intel.com,
+ binbin.wu@intel.com, sohil.mehta@intel.com
+Cc: Hongyu Ning <hongyu.ning@linux.intel.com>,
+ Binbin Wu <binbin.wu@linux.intel.com>
+References: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
+ <20260806020850.1221381-6-rick.p.edgecombe@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260806020850.1221381-6-rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On 8/5/26 19:08, Rick Edgecombe wrote:
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+> 
+> tdx_pamt_get()/tdx_pamt_put() unconditionally add or remove Dynamic PAMT
+> backing for the 2MB region covering the passed page. However, multiple
+> callers can add or remove 4KB pages that fall within the same 2MB region
+> and in that scenario only a single PAMT entry is required.
 
-New issues:
-- [High] Moving `kvm_mmu_reload()` inside the retry loop after `mmu_topup_m=
-emory_caches()` causes deterministic memory cache underflows on the first p=
-age fault if roots are reloaded.
-- [Medium] Failure to re-reload the MMU upon detecting an obsolete root.
-
-Pre-existing issues:
-- [High] Memory cache depletion during the `RET_PF_RETRY` loop due to missi=
-ng `mmu_topup_memory_caches()` inside the loop.
---
-
---- Patch [2]: [PATCH 2/4] KVM: x86/mmu: Harden "map private PFN" against u=
-nexpected root invalidation ---
-commit 22d402057a7ea26b753baa57f8845602fe5a1b81
-Author: Sean Christopherson <seanjc@google.com>
-
-KVM: x86/mmu: Harden "map private PFN" against unexpected root invalidation
-
-This commit moves the MMU reload inside the tight loop in
-kvm_tdp_mmu_map_private_pfn() to better handle unexpected root invalidation=
-s.
-It also adds a warning if the root is invalidated after the initial reload.
-
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index 621b0a42f2a14..c6cac893cbad8 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-
-[ ... ]
-
-> @@ -5184,10 +5184,6 @@ int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *v=
-cpu, gfn_t gfn, kvm_pfn_t pfn)
->  	if (kvm_gfn_is_write_tracked(kvm, fault.slot, fault.gfn))
->  		return -EPERM;
-> =20
-> -	r =3D kvm_mmu_reload(vcpu);
-> -	if (r)
-> -		return r;
-> -
->  	r =3D mmu_topup_memory_caches(vcpu, false);
->  	if (r)
->  		return r;
-
-[Severity: High]
-Since mmu_topup_memory_caches() is outside the loop, but kvm_mmu_reload()
-was moved inside, is it possible for the reload to consume cache items
-when allocating new roots?
-
-If the root is invalid and kvm_mmu_load() allocates new roots, this
-consumes items from mmu_page_header_cache and mmu_shadow_page_cache. When
-execution proceeds to kvm_tdp_mmu_map() expecting fully topped up
-caches, could this lead to a cache underflow and a host warning or panic?
-
-> @@ -5199,10 +5195,21 @@ int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *=
-vcpu, gfn_t gfn, kvm_pfn_t pfn)
->  		if (kvm_test_request(KVM_REQ_VM_DEAD, vcpu))
->  			return -EIO;
-> =20
-> +		r =3D kvm_mmu_reload(vcpu);
-> +		if (r)
-> +			return r;
-> +
->  		cond_resched();
-> =20
->  		guard(read_lock)(&kvm->mmu_lock);
-> =20
-> +		/*
-> +		 * Because slots_lock is held, it should be impossible for roots
-> +		 * to be invalidated after the initial MMU reload.  WARN, but
-> +		 * continue and re-reload the MMU to try and keep the VM alive.
-> +		 */
-> +		WARN_ON_ONCE(kvm_test_request(KVM_REQ_MMU_FREE_OBSOLETE_ROOTS, vcpu));
-> +
-
-[Severity: Medium]
-The comment mentions "continue and re-reload the MMU", but does this actual=
-ly
-fall through directly to kvm_tdp_mmu_map() with an obsolete root?
-
-If the mapping succeeds, it might return RET_PF_FIXED. This would exit the
-loop instead of forcing a retry. Should there be a continue statement after
-the WARN_ON_ONCE to enforce the retry behavior described in the comment?
-
->  		r =3D kvm_tdp_mmu_map(vcpu, &fault);
->  	} while (r =3D=3D RET_PF_RETRY);
-> =20
-
-[Severity: High]
-This isn't a bug introduced by this patch, but retrying on RET_PF_RETRY
-in this loop seems vulnerable to memory cache depletion without the cache t=
-opup.
-
-If kvm_tdp_mmu_map() encounters contention, frees its locally allocated sha=
-dow
-pages, and returns RET_PF_RETRY, the loop repeats without calling
-mmu_topup_memory_caches() again. Could this underflow the cache during
-repeated retries under high contention?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260806214050.7805=
-8-1-seanjc@google.com?part=3D2
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
