@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957D438B157;
-	Thu,  6 Aug 2026 01:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1433C386575;
+	Thu,  6 Aug 2026 01:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785979126; cv=none; b=OpFTM+3ngJsdwkPmb29b6eqmIcA38dmCJshMYveLdfRpnQYRGXT9urwgyUPJTHxZhrIdNYJHudb+6m+tVqOz2SH4mKdMhqPxV7bp3xpt/mpAQc8mZrN6vI9rm0clgzezXK7CnVOfKyYWmWQug/beofnw5qrqelXi6VRyA6/6vww=
+	t=1785979128; cv=none; b=gU3PqFOqSuCSMEyN92eBhIdYVK39TQiSxKuf54GRWTU4RnpFNn2d6+XhfbK4BwlSdvcNuGp023avXdOA9aFCanZIyC61NMnxezt95mEt53MWkAj+SWyv/0PtkznYOSOKUFSFdmi7wdAvot9LNDV5Dt7r25P9bfCFZdrC8x8rRGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785979126; c=relaxed/simple;
-	bh=Knn5l140lFqaaJ/Gr+gnBzcJZqTLYOqtJFCFTuDq9ao=;
+	s=arc-20240116; t=1785979128; c=relaxed/simple;
+	bh=S2TitmZwd4JpU98ZMVHZQlXK31LYwmA7iDIOrBEUlk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1SZuhd7TzRBlyH3nO4mUNzitXlX17iu5gPHA6zqyJaOhOrzPOGVaR+5QX567DvtdwqWudNUefPvYJg8D3Mn6LVfOR8u5nk9gAMutfqPeSk2QAwzL9CiWL6fYrLDYavO1Yi4f224wgbRE59oWHeSKf1c4Ij2GSdkftmZN3HG5WA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mmHf4mZR; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=U/o1z7WYNH3U8SzckgTk5HE3srV6Z0qadj9LJ0qV0Ftew19YsAXEEH3bkf6cE+7NE2bmXU0Gh76RkqCWHz6/EsNEXXclqskExeHkYgnITloLzQDZ7gdO3Ena/JNB5lpvb3y+zTegRJpxYEHV1rx62efagJvkpnVGL2GAqY4ycEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SSsNf+lR; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mmHf4mZR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SSsNf+lR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785979124; x=1817515124;
+  t=1785979126; x=1817515126;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Knn5l140lFqaaJ/Gr+gnBzcJZqTLYOqtJFCFTuDq9ao=;
-  b=mmHf4mZRleuw6OYxCzg9NwF5InecaJnIxjsWAFINZ1pmW3dP7ZKSroC7
-   IsNn8cWsb1KPJgXTg65W5q17+JZalW1B6jb9p0XPrf1ZpzzGT2xEX4ki1
-   vVlG7O2IRUeR+Tl8xzxZqkozD87xWQXQ4cYgHW+1mM7VqTXmsTDk/pm+v
-   5PTxCPmjNSUkgBbQQC+VLti/h3b2eXuNt6hGpfqEVVFWDqNuYfZtK3un4
-   rqjmmnzr536Gt6qZlrTgaY1pIuSI+16TIei6yyQlN8wNVate7tYKvh19X
-   +NkgG6VpMuuFIrMzhcgIjFjWio5YLIPxxU87JWMgMBHX+CQcvM31kReMW
+  bh=S2TitmZwd4JpU98ZMVHZQlXK31LYwmA7iDIOrBEUlk4=;
+  b=SSsNf+lRh5lxSPCyZDHjMEfg37JEfHDM8qb0+7U72tcDBAhhjhm67QPY
+   +YRAeC42WGwHE3ajCw9dJlscAfny0CijA5dc5L7Ya+9o/Octtr7t5GSj4
+   xbqtBOZgES4++y0rhYqnb/FLyawNW1Vzp3QH198idoOzKLBYWRID11cGc
+   +f89srOTYPegh6naYyYZZGGmY0FvtOoxT8JnQktTjQ0/ckSX1Iw0oTiuC
+   g/GA0YBMWL2asxrbQafPDXpflitnElCjK7rFOSuZZerQtCT2776pi2zni
+   34fh0dJVOGkjdxLR4PtnlGv2nYwr4MIPqLyNrOdQ82rShiY2vuYxd8Uvz
    A==;
-X-CSE-ConnectionGUID: Ki4RSQkVQ8a7oDBU/6kY0Q==
-X-CSE-MsgGUID: BHijKYlBTSSpWKd3kmHsSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="86593970"
+X-CSE-ConnectionGUID: lRKrOrnRQuuDDp7Hpzfmig==
+X-CSE-MsgGUID: UoPsNI+BQdSo2U38/tumyw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="86593980"
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="86593970"
+   d="scan'208";a="86593980"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 18:18:43 -0700
-X-CSE-ConnectionGUID: ZJdDaGpwRdKP80VJGSfoyg==
-X-CSE-MsgGUID: L5tTlltwQWeRSQEl3SX43Q==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 18:18:44 -0700
+X-CSE-ConnectionGUID: pE8RSMmuT6+v4lS+kzg6bA==
+X-CSE-MsgGUID: ZtBLhCP8T8mV69Z4tqjtVw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="265804607"
+   d="scan'208";a="265804610"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
   by orviesa004.jf.intel.com with ESMTP; 05 Aug 2026 18:18:43 -0700
 From: Sohil Mehta <sohil.mehta@intel.com>
@@ -69,9 +69,9 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	Sohil Mehta <sohil.mehta@intel.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v4 1/7] KVM: x86: Add an emulator flag to differentiate branch targets from fetches
-Date: Wed,  5 Aug 2026 18:15:30 -0700
-Message-ID: <20260806011536.4172258-2-sohil.mehta@intel.com>
+Subject: [PATCH v4 2/7] KVM: x86: Use linear_read_system() to read the TSS I/O bitmap
+Date: Wed,  5 Aug 2026 18:15:31 -0700
+Message-ID: <20260806011536.4172258-3-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260806011536.4172258-1-sohil.mehta@intel.com>
 References: <20260806011536.4172258-1-sohil.mehta@intel.com>
@@ -83,84 +83,65 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Binbin Wu <binbin.wu@linux.intel.com>
+TSS I/O permission bitmap reads are implicit supervisor accesses which
+are subject to Linear Address Space Separation (LASS) enforcement.
+Though highly unlikely, if a guest configures a TSS base in the
+user half, hardware would raise a #GP on access when LASS is enabled.
 
-Add a new emulator flag, X86EMUL_F_BRANCH, and use it instead of
-X86EMUL_F_FETCH in assign_eip() to distinguish between instruction fetch
-and branch target computation for features that handle them differently.
+Currently, the emulator reads the I/O permission bitmap from the TSS by
+calling read_std() directly which is inconsistent with other implicit
+accesses in the emulator such as IDT reads, GDT/LDT reads and TSS reads
+during task switch.
 
-For example, Linear Address Space Separation (LASS) applies to code
-fetches but not branch target calculations. A LASS violation occurs only
-when the branch target is used to fetch an instruction.
+An upcoming change will add a check to linear_read_system() to catch
+LASS violations. For consistency as well as to keep LASS enforcement
+centralized, switch both I/O bitmap reads to linear_read_system().
 
-X86EMUL_F_BRANCH is still a code access, so add it to the code segment
-readability check in __linearize() along with the Linear Address Masking
-(LAM) untagging exemption in vmx_get_untagged_addr().
+Note, emulator_io_port_access_allowed() doesn't propagate faults, so
+even though linear_read_system() will set the exception details they
+will be ignored.
 
-For now, X86EMUL_F_BRANCH and X86EMUL_F_FETCH are identical as far as
-KVM is concerned. No functional change intended.
+While at it, fix an off-by-one in the I/O bitmap bounds check to account
+for the 2-byte read and ensure both bytes are within the TSS limit. The
+SDM mandates a trailing 0xFF byte after the bitmap so any out-of-bounds
+access would be all 1s (denying access). Make the change primarily to
+ensure hardware fidelity. A correctly configured OS will not run into
+this issue.
 
-Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
 v4:
- - Added LAM untagging exemption
- - Reworded the commit message
+- New patch
+
+There could be a pre-existing issue here. It is unlikely that any OS
+demand-pages the I/O bitmap portion of the TSS. But if it does, the #PF
+details could get lost and the guest would get a #GP instead of a
+restartable #PF. Propagating the #PF to the callers is a larger change
+that is beyond the scope of this series.
 ---
- arch/x86/kvm/emulate.c     | 5 +++--
- arch/x86/kvm/kvm_emulate.h | 1 +
- arch/x86/kvm/vmx/vmx.c     | 3 ++-
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ arch/x86/kvm/emulate.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index 8071b372d233..8ff28643b2e3 100644
+index 8ff28643b2e3..7f04544cfee5 100644
 --- a/arch/x86/kvm/emulate.c
 +++ b/arch/x86/kvm/emulate.c
-@@ -672,7 +672,8 @@ static __always_inline int __linearize(struct x86_emulate_ctxt *ctxt,
- 		    (flags & X86EMUL_F_WRITE))
- 			goto bad;
- 		/* unreadable code segment */
--		if (!(flags & X86EMUL_F_FETCH) && (desc.type & 8) && !(desc.type & 2))
-+		if (!(flags & (X86EMUL_F_FETCH | X86EMUL_F_BRANCH)) &&
-+		    (desc.type & 8) && !(desc.type & 2))
- 			goto bad;
- 		lim = desc_limit_scaled(&desc);
- 		if (!(desc.type & 8) && (desc.type & 4)) {
-@@ -723,7 +724,7 @@ static inline int assign_eip(struct x86_emulate_ctxt *ctxt, ulong dst)
- 	if (ctxt->op_bytes != sizeof(unsigned long))
- 		addr.ea = dst & ((1UL << (ctxt->op_bytes << 3)) - 1);
- 	rc = __linearize(ctxt, addr, &max_size, 1, ctxt->mode, &linear,
--			 X86EMUL_F_FETCH);
-+			 X86EMUL_F_BRANCH);
- 	if (rc == X86EMUL_CONTINUE)
- 		ctxt->_eip = addr.ea;
- 	return rc;
-diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
-index 3e375af15c03..97421b8dde13 100644
---- a/arch/x86/kvm/kvm_emulate.h
-+++ b/arch/x86/kvm/kvm_emulate.h
-@@ -105,6 +105,7 @@ struct x86_instruction_info {
- #define X86EMUL_F_INVLPG		BIT(3)
- #define X86EMUL_F_MSR			BIT(4)
- #define X86EMUL_F_DT_LOAD		BIT(5)
-+#define X86EMUL_F_BRANCH		BIT(6)
- 
- struct x86_emulate_ops {
- 	void (*vm_bugged)(struct x86_emulate_ctxt *ctxt);
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index e3bfe6aca1a0..973f7e95be65 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -8571,7 +8571,8 @@ gva_t vmx_get_untagged_addr(struct kvm_vcpu *vcpu, gva_t gva, unsigned int flags
- 	int lam_bit;
- 	unsigned long cr3_bits;
- 
--	if (flags & (X86EMUL_F_FETCH | X86EMUL_F_IMPLICIT | X86EMUL_F_INVLPG))
-+	if (flags & (X86EMUL_F_FETCH | X86EMUL_F_BRANCH | X86EMUL_F_IMPLICIT |
-+		     X86EMUL_F_INVLPG))
- 		return gva;
- 
- 	if (!is_64_bit_mode(vcpu))
+@@ -2573,12 +2573,12 @@ static bool emulator_io_port_access_allowed(struct x86_emulate_ctxt *ctxt,
+ #ifdef CONFIG_X86_64
+ 	base |= ((u64)base3) << 32;
+ #endif
+-	r = ops->read_std(ctxt, base + 102, &io_bitmap_ptr, 2, NULL, true);
++	r = linear_read_system(ctxt, base + 102, &io_bitmap_ptr, 2);
+ 	if (r != X86EMUL_CONTINUE)
+ 		return false;
+-	if (io_bitmap_ptr + port/8 > desc_limit_scaled(&tr_seg))
++	if (io_bitmap_ptr + port/8 + 1 > desc_limit_scaled(&tr_seg))
+ 		return false;
+-	r = ops->read_std(ctxt, base + io_bitmap_ptr + port/8, &perm, 2, NULL, true);
++	r = linear_read_system(ctxt, base + io_bitmap_ptr + port/8, &perm, 2);
+ 	if (r != X86EMUL_CONTINUE)
+ 		return false;
+ 	if ((perm >> bit_idx) & mask)
 -- 
 2.43.0
 
