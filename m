@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E2A3BB107;
-	Thu,  6 Aug 2026 02:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064EB3BCD28;
+	Thu,  6 Aug 2026 02:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785982149; cv=none; b=oMYv9eZV0PI7kpkCkOUXxpbDgq2LlXvr6lGy5+fIlgOAbOhdc6iByK8YYLHj9DTWyqEBklbxZzzYBMsl8URFtkdYvN20M6Nxpx4kFp+LDdkr4H6K2nwjTavmJ13VZ4741lRYbTTysttLDimGqKq2Rr/LmqvZaQA0V0GEMeo8C9M=
+	t=1785982150; cv=none; b=NjGi0n1I/VJaX3HrIyAz8UlGVuh5J22Q63xt0HjJCeW+mL+lHcaEFGb4GnpSWwFmxV1oDVC6ovfuaclTSRPdQouInjxcHBhgjmlKaRWpwbZ5nouHcRFdCDqh+fj3chgDIANdVBav+9o8rbAE5iwblNJ2bNvyVCUiRCWMVS5XNBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785982149; c=relaxed/simple;
-	bh=0NOePxtZ8NdiR/zvl/vVWPFzsE8oyQ+7OT9lHpAzT48=;
+	s=arc-20240116; t=1785982150; c=relaxed/simple;
+	bh=xSGfiuJXAU13eANRmWfGi1zKHZ7QTWq4xCskIhJQaGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PJzLMldsOnzjj4aGAyEHQUumB8T63nh8WMDAUX+LXEHwrMdQplG32yO0PRAeuGQ4fD/m7bJ/+zVzgxtnFBGxuVDL1PR0VFVmg8Lj2qaSK45H38QSkp0G4CL9+35IMD1ih/iYs2NOVb8BRGoGuncdc26V+XfGcyo/SS0n6oIgWlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NjIHrnpB; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=dUi3I9y+rZhQoR43gfkn5lt5U9/6CYGAjVdFP/J/KVP46UOxV7yScaRySCZmH3bZRIGtzc9CEId8VdfsBUbSuCZp4oh6Yi+EVtAqdpFP1dqmol/SvN3bywVwAJg36K2d6kV6g2x9fzcmEOyVzBeCMVHXMQ6Iro0PghchjI6DCfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=csXNVmvj; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NjIHrnpB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="csXNVmvj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785982147; x=1817518147;
+  t=1785982148; x=1817518148;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=0NOePxtZ8NdiR/zvl/vVWPFzsE8oyQ+7OT9lHpAzT48=;
-  b=NjIHrnpBNhnvWVaCxYgFx+oxpb2nB1TmG+EFHRuyPnrK+h6sFxLoGhf4
-   dqa1hyIy9svfv9ZNPNSf0f52bMI+oTOrHHS0q6PiB9pBXKn/YfKHEdH67
-   r4y0SkWKXMDmZDQF6J3tR2jWogLdJoCosgP26PbPhKkpodBB7kaKYXJwS
-   Uvdwp4DeWSw3xxQeQw54wp9L/29XsFZ1tLtIGzZGByNkxeIIjdZQRRCwC
-   vNmbuEylAy8EILuhnDnPiZHz1D/+qrr3YhgxJoJr4o8jotbXucr+OA9NP
-   RTcKkwPUYFq6rv2Ea6mFc2qewa0m/Pj22W9M6yyJqtezW4YqaN/CYc97v
-   g==;
-X-CSE-ConnectionGUID: +zciHac/Q+mPHl/IRZ0esA==
-X-CSE-MsgGUID: nhX4VoAkRgmJBK2PFPhiBA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="86422883"
+  bh=xSGfiuJXAU13eANRmWfGi1zKHZ7QTWq4xCskIhJQaGo=;
+  b=csXNVmvj8BXaLNrmIs8fL86RLTGqozCvyifs5flfZPf6UHNN129cf6y7
+   e+Lr/kJ6ikETjrCWSaSZ0McN3TB5+ASYjdMSXURPORLCIVtpfwQyiXBV7
+   pm58Gsp2NdW1J8+dNzKndsq+dPC5B4QOLR0WcZRxu7w8ExCi8dARECM1w
+   t8/aFHrR9CUzvRMTe7qYGr8dw1uRbVydQWhKKyiFiIVxV9VB9yaWNYYrS
+   OMSgjrOOI5mcnTxYRX8dGx8Jv9euyK8oYRrRB9S+dJ1I6ZyqZWwqG6i4M
+   HuItaAgNKpoq3V+zGo8JGDOFHZgXskSg67w80L7KPFTXZuqjFVja77510
+   Q==;
+X-CSE-ConnectionGUID: J/M+lkluReeI35+6OPqp+w==
+X-CSE-MsgGUID: ulLGeiRJRm+sPTwKOuWpgQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="86422894"
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="86422883"
+   d="scan'208";a="86422894"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
   by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:09:04 -0700
-X-CSE-ConnectionGUID: Q6Gr86GDQ7SIYFasAnyDNQ==
-X-CSE-MsgGUID: wh+zRsObRjqE6NtinqxVRg==
+X-CSE-ConnectionGUID: VKZpbq4ZTVGMhDVirmFRMg==
+X-CSE-MsgGUID: 7NK8PWuJSP6B959bWuoDTQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="258639882"
+   d="scan'208";a="258639886"
 Received: from rpedgeco-desk.jf.intel.com ([10.88.27.135])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:09:03 -0700
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:09:04 -0700
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 To: bp@alien8.de,
 	dave.hansen@intel.com,
@@ -68,9 +68,9 @@ To: bp@alien8.de,
 Cc: rick.p.edgecombe@intel.com,
 	Hongyu Ning <hongyu.ning@linux.intel.com>,
 	Binbin Wu <binbin.wu@linux.intel.com>
-Subject: [PATCH v9 07/11] x86/tdx: Add APIs to support Dynamic PAMT ops from KVM's fault path
-Date: Wed,  5 Aug 2026 19:08:46 -0700
-Message-ID: <20260806020850.1221381-8-rick.p.edgecombe@intel.com>
+Subject: [PATCH v9 08/11] KVM: TDX: Get/put PAMT pages when (un)mapping private memory
+Date: Wed,  5 Aug 2026 19:08:47 -0700
+Message-ID: <20260806020850.1221381-9-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
 References: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
@@ -82,215 +82,285 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When handling an EPT violation, KVM holds a spinlock while manipulating
-the EPT. Before entering the spinlock it doesn't know how many EPT page
-tables will need to be installed or whether a huge page will be used. For
-this reason it allocates a worst case number of page tables that it might
-need as part of servicing the EPT violation.
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 
-Under Dynamic PAMT these pre-allocated pages will potentially need to have
-Dynamic PAMT backing pages installed for them. KVM already has helpers to
-manage topping up page caches before taking the MMU lock, but they cannot
-be passed from KVM to arch/x86 code.
+Add Dynamic PAMT support to KVM's S-EPT MMU by "getting" a PAMT page when
+adding guest memory (PAGE.ADD or PAGE.AUG), and "putting" the page when
+removing guest memory (PAGE.REMOVE).
 
-The problem of how and when to install the Dynamic PAMT backing pages for
-the pages given to the TDX module during the fault path has had a lot of
-design attempts.
- - Extracting KVM's MMU caches requires too much inlined code added to
-   headers.
- - A few varieties of installing Dynamic PAMT backing when allocating the
-   S-EPT page tables. (see links)
- - Using mempool_t to transfer the pages between KVM and arch/x86 doesn't
-   work because the component is designed more around maintaining a pool
-   of pages, rather than topping up a continually drained cache.
+To access the per-vCPU PAMT caches without plumbing @vcpu throughout the
+TDP MMU, begrudgingly use kvm_get_running_vcpu() to get the vCPU, and bug
+the VM if KVM attempts to set an S-EPT leaf without an active vCPU.  KVM
+only supports creating _new_ mappings in page (pre)fault paths, all of
+which require an active vCPU.
 
-So don't do these as they all had various problems. Instead just create a
-small simple data structure to use for handing a pre-allocated list of
-pages between KVM and arch/x86 code. Model this on KVM's existing MMU
-memory caches.
+The PAMT memory holds metadata for TDX protected memory. With Dynamic
+PAMT, PAMT_4K is allocated on demand. The kernel supplies the TDX module
+with a few pages that cover 2MB of host physical memory.
 
-Add a tdx_pamt_cache arg to tdx_pamt_get() so it can draw pages from a
-cache when needed. Not all Dynamic PAMT page installations will happen
-under spinlock, for example TD and vCPU scoped control pages. So have
-tdx_pamt_get() maintain the existing behavior of allocating from the page
-allocator when NULL is passed for the struct tdx_pamt_cache arg. This
-prevents excess allocations for cases where it can be avoided.
+Releases are balanced via tdx_pamt_put(): every control-page free goes
+through tdx_free_control_page(), and guest data pages are put directly on
+the successful tdh_mem_page_remove() path and in the
+tdx_mem_page_add/aug() error path.
 
-Export the new helpers for KVM.
-
-AI was used under supervision to review code and workshop logs.
-
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Co-developed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
+[rick: enhance log, reviewing, rebase, with help from AI tooling]
+Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Tested-by: Hongyu Ning <hongyu.ning@linux.intel.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-Reviewed-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
 Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
 Acked-by: Sohil Mehta <sohil.mehta@intel.com>
-Link: https://lore.kernel.org/kvm/aXENNKjAKTM9UJNH@google.com/
-Link: https://lore.kernel.org/kvm/20260129011517.3545883-20-seanjc@google.com/
-Link: https://lore.kernel.org/kvm/aYW5CbUvZrLogsWF@yzhao56-desk.sh.intel.com/
+Acked-by: Sean Christopherson <seanjc@google.com>
 ---
+v8:
+ - Remove extra new line around *topup_external_cache() (Sean)
+ - Make +1/-1 logic clearer by just coding the easily optimizable math.
+   (Nikolay, Sean)
+ - Do KVM_BUG_ON() on tdx_pamt_get() return. (Sean)
+
 v7:
- - Log/comment tweaks (Yan)
- - Drop Assisted-by tag and cover AI use in log (Dave)
-
-v6:
- - Filled out log from Sean's series
+ - Don't do to_tdx() before NULL check for readability (Binbin, Sean)
+ - Fixup tags (Sean)
+ - Export tdx_supports_dynamic_pamt() since it's used in KVM here and no
+   longer an static inline.
 ---
- arch/x86/include/asm/tdx.h  | 17 ++++++++++
- arch/x86/virt/vmx/tdx/tdx.c | 65 +++++++++++++++++++++++++++++++++----
- 2 files changed, 76 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/kvm-x86-ops.h |  1 +
+ arch/x86/include/asm/kvm_host.h    |  1 +
+ arch/x86/kvm/mmu/mmu.c             |  4 ++
+ arch/x86/kvm/vmx/tdx.c             | 64 ++++++++++++++++++++++++++----
+ arch/x86/kvm/vmx/tdx.h             |  2 +
+ arch/x86/virt/vmx/tdx/tdx.c        |  1 +
+ 6 files changed, 65 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 86bf37b15c705..9cbd250bbd39b 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -120,6 +120,23 @@ static inline bool tdx_supports_runtime_update(const struct tdx_sys_info *sysinf
+diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+index 83dc5086138b3..588563dfe88d5 100644
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -98,6 +98,7 @@ KVM_X86_OP_OPTIONAL_RET0(tdp_has_smep)
+ KVM_X86_OP(load_mmu_pgd)
+ KVM_X86_OP_OPTIONAL_RET0(set_external_spte)
+ KVM_X86_OP_OPTIONAL(free_external_spt)
++KVM_X86_OP_OPTIONAL_RET0(topup_external_cache)
+ KVM_X86_OP(has_wbinvd_exit)
+ KVM_X86_OP(get_l2_tsc_offset)
+ KVM_X86_OP(get_l2_tsc_multiplier)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 5f6c1ce9673b7..0dbf6564dd0c5 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1922,6 +1922,7 @@ struct kvm_x86_ops {
+ 	/* Update external page tables for page table about to be freed. */
+ 	void (*free_external_spt)(struct kvm *kvm, struct kvm_mmu_page *sp);
  
- bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo);
++	int (*topup_external_cache)(struct kvm_vcpu *vcpu, int min_nr_spts);
  
-+/* Simple structure for pre-allocating Dynamic PAMT pages outside of spinlocks. */
-+struct tdx_pamt_cache {
-+	struct list_head page_list;
-+	int cnt;
-+};
-+
-+static inline void tdx_init_pamt_cache(struct tdx_pamt_cache *cache)
-+{
-+	INIT_LIST_HEAD(&cache->page_list);
-+	cache->cnt = 0;
-+}
-+
-+void tdx_free_pamt_cache(struct tdx_pamt_cache *cache);
-+int tdx_topup_pamt_cache(struct tdx_pamt_cache *cache, unsigned long npages);
-+int tdx_pamt_get(kvm_pfn_t pfn, struct tdx_pamt_cache *cache);
-+void tdx_pamt_put(kvm_pfn_t pfn);
-+
- int tdx_guest_keyid_alloc(void);
- u32 tdx_get_nr_guest_keyids(void);
- void tdx_guest_keyid_free(unsigned int keyid);
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 0e6063c1405bc..4d90d1a555135 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -2045,12 +2045,33 @@ bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
- 	return false;
- }
+ 	bool (*has_wbinvd_exit)(void);
  
--static int alloc_pamt_array(struct page **pamt_pages)
-+static struct page *tdx_alloc_page_pamt_cache(struct tdx_pamt_cache *cache)
-+{
-+	struct page *page;
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 66e69d2a41b3c..2a628b8304409 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -614,6 +614,10 @@ static int mmu_topup_memory_caches(struct kvm_vcpu *vcpu, bool maybe_indirect)
+ 					       PT64_ROOT_MAX_LEVEL);
+ 		if (r)
+ 			return r;
 +
-+	page = list_first_entry_or_null(&cache->page_list, struct page, lru);
-+	if (page) {
-+		list_del(&page->lru);
-+		cache->cnt--;
-+	}
-+
-+	return page;
-+}
-+
-+static struct page *alloc_dpamt_page(struct tdx_pamt_cache *cache)
-+{
-+	if (cache)
-+		return tdx_alloc_page_pamt_cache(cache);
-+
-+	return alloc_page(GFP_KERNEL_ACCOUNT);
-+}
-+
-+static int alloc_pamt_array(struct page **pamt_pages, struct tdx_pamt_cache *cache)
- {
- 	int i, j;
- 
- 	for (i = 0; i < TDX_DPAMT_ENTRY_PAGE_CNT; i++) {
--		pamt_pages[i] = alloc_page(GFP_KERNEL_ACCOUNT);
-+		pamt_pages[i] = alloc_dpamt_page(cache);
- 		if (!pamt_pages[i])
- 			goto err;
++		r = kvm_x86_call(topup_external_cache)(vcpu, PT64_ROOT_MAX_LEVEL);
++		if (r)
++			return r;
  	}
-@@ -2124,7 +2145,7 @@ static u64 tdh_phymem_pamt_remove(kvm_pfn_t pfn, struct page **pamt_pages)
- static DEFINE_SPINLOCK(pamt_lock);
+ 	r = kvm_mmu_topup_memory_cache(&vcpu->arch.mmu_shadow_page_cache,
+ 				       PT64_ROOT_MAX_LEVEL);
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 957078e8656ef..09573112540e9 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -681,6 +681,8 @@ int tdx_vcpu_create(struct kvm_vcpu *vcpu)
+ 	if (!irqchip_split(vcpu->kvm))
+ 		return -EINVAL;
  
- /* Bump PAMT refcount for the given pfn and allocate PAMT backing if needed. */
--static int tdx_pamt_get(kvm_pfn_t pfn)
-+int tdx_pamt_get(kvm_pfn_t pfn, struct tdx_pamt_cache *cache)
- {
- 	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT];
- 	atomic_t *pamt_refcount;
-@@ -2134,7 +2155,7 @@ static int tdx_pamt_get(kvm_pfn_t pfn)
- 	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
- 		return 0;
++	tdx_init_pamt_cache(&tdx->pamt_cache);
++
+ 	fpstate_set_confidential(&vcpu->arch.guest_fpu);
+ 	vcpu->arch.apic->guest_apic_protected = true;
+ 	INIT_LIST_HEAD(&tdx->vt.pi_wakeup_list);
+@@ -866,6 +868,8 @@ void tdx_vcpu_free(struct kvm_vcpu *vcpu)
+ 	struct vcpu_tdx *tdx = to_tdx(vcpu);
+ 	int i;
  
--	ret = alloc_pamt_array(pamt_pages);
-+	ret = alloc_pamt_array(pamt_pages, cache);
- 	if (ret)
- 		return ret;
- 
-@@ -2166,9 +2187,10 @@ static int tdx_pamt_get(kvm_pfn_t pfn)
- 
- 	return ret;
++	tdx_free_pamt_cache(&tdx->pamt_cache);
++
+ 	if (vcpu->cpu != -1) {
+ 		KVM_BUG_ON(tdx->state == VCPU_TD_STATE_INITIALIZED, vcpu->kvm);
+ 		tdx_flush_vp_on_cpu(vcpu);
+@@ -1621,6 +1625,17 @@ void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int pgd_level)
+ 	td_vmcs_write64(to_tdx(vcpu), SHARED_EPT_POINTER, root_hpa);
  }
-+EXPORT_SYMBOL_FOR_KVM(tdx_pamt_get);
  
- /* Drop PAMT refcount for the given pfn and free PAMT backing if needed. */
--static void tdx_pamt_put(kvm_pfn_t pfn)
-+void tdx_pamt_put(kvm_pfn_t pfn)
++static int tdx_topup_external_pamt_cache(struct kvm_vcpu *vcpu, int min_nr_spts)
++{
++	/*
++	 * Minus one page to exclude the root SPT, but plus one page for a
++	 * possible 4KB private mapping.
++	 */
++	min_nr_spts += -1 + 1;
++
++	return tdx_topup_pamt_cache(&to_tdx(vcpu)->pamt_cache, min_nr_spts);
++}
++
+ static int tdx_mem_page_add(struct kvm *kvm, gfn_t gfn, enum pg_level level,
+ 			    kvm_pfn_t pfn)
  {
- 	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT] = {};
- 	atomic_t *pamt_refcount;
-@@ -2209,6 +2231,37 @@ static void tdx_pamt_put(kvm_pfn_t pfn)
- out_unlock:
- 	spin_unlock(&pamt_lock);
+@@ -1679,16 +1694,28 @@ static struct page *tdx_spte_to_sept_pt(struct kvm *kvm, gfn_t gfn,
+ static int tdx_sept_map_nonleaf_spte(struct kvm *kvm, gfn_t gfn,
+ 				     enum pg_level level, u64 new_spte)
+ {
++	struct kvm_vcpu *vcpu = kvm_get_running_vcpu();
+ 	gpa_t gpa = gfn_to_gpa(gfn);
+ 	u64 err, entry, level_state;
+ 	struct page *sept_pt;
++	int ret;
++
++	if (KVM_BUG_ON(!vcpu, kvm))
++		return -EIO;
+ 
+ 	sept_pt = tdx_spte_to_sept_pt(kvm, gfn, new_spte, level);
+ 	if (!sept_pt)
+ 		return -EIO;
+ 
++	ret = tdx_pamt_get(page_to_pfn(sept_pt), &to_tdx(vcpu)->pamt_cache);
++	if (KVM_BUG_ON(ret, kvm))
++		return ret;
++
+ 	err = tdh_mem_sept_add(&to_kvm_tdx(kvm)->td, gpa, level, sept_pt,
+ 			       &entry, &level_state);
++	if (err)
++		tdx_pamt_put(page_to_pfn(sept_pt));
++
+ 	if (unlikely(tdx_operand_busy(err)))
+ 		return -EBUSY;
+ 
+@@ -1701,8 +1728,13 @@ static int tdx_sept_map_nonleaf_spte(struct kvm *kvm, gfn_t gfn,
+ static int tdx_sept_map_leaf_spte(struct kvm *kvm, gfn_t gfn, enum pg_level level,
+ 				  u64 new_spte)
+ {
++	struct kvm_vcpu *vcpu = kvm_get_running_vcpu();
+ 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+ 	kvm_pfn_t pfn = spte_to_pfn(new_spte);
++	int ret;
++
++	if (KVM_BUG_ON(!vcpu, kvm))
++		return -EIO;
+ 
+ 	/* TODO: handle large pages. */
+ 	if (KVM_BUG_ON(level != PG_LEVEL_4K, kvm))
+@@ -1710,6 +1742,10 @@ static int tdx_sept_map_leaf_spte(struct kvm *kvm, gfn_t gfn, enum pg_level leve
+ 
+ 	WARN_ON_ONCE((new_spte & VMX_EPT_RWX_MASK) != VMX_EPT_RWX_MASK);
+ 
++	ret = tdx_pamt_get(pfn, &to_tdx(vcpu)->pamt_cache);
++	if (KVM_BUG_ON(ret, kvm))
++		return ret;
++
+ 	/*
+ 	 * Ensure pre_fault_allowed is read by kvm_arch_vcpu_pre_fault_memory()
+ 	 * before kvm_tdx->state.  Userspace must not be allowed to pre-fault
+@@ -1722,10 +1758,15 @@ static int tdx_sept_map_leaf_spte(struct kvm *kvm, gfn_t gfn, enum pg_level leve
+ 	 * If the TD isn't finalized/runnable, then userspace is initializing
+ 	 * the VM image via KVM_TDX_INIT_MEM_REGION; ADD the page to the TD.
+ 	 */
+-	if (unlikely(kvm_tdx->state != TD_STATE_RUNNABLE))
+-		return tdx_mem_page_add(kvm, gfn, level, pfn);
++	if (likely(kvm_tdx->state == TD_STATE_RUNNABLE))
++		ret = tdx_mem_page_aug(kvm, gfn, level, pfn);
++	else
++		ret = tdx_mem_page_add(kvm, gfn, level, pfn);
+ 
+-	return tdx_mem_page_aug(kvm, gfn, level, pfn);
++	if (ret)
++		tdx_pamt_put(pfn);
++
++	return ret;
  }
-+EXPORT_SYMBOL_FOR_KVM(tdx_pamt_put);
-+
-+void tdx_free_pamt_cache(struct tdx_pamt_cache *cache)
-+{
-+	struct page *page;
-+
-+	while ((page = tdx_alloc_page_pamt_cache(cache)))
-+		__free_page(page);
-+}
-+EXPORT_SYMBOL_FOR_KVM(tdx_free_pamt_cache);
-+
-+int tdx_topup_pamt_cache(struct tdx_pamt_cache *cache, unsigned long npages)
-+{
-+	if (WARN_ON_ONCE(!tdx_supports_dynamic_pamt(&tdx_sysinfo)))
-+		return 0;
-+
-+	npages *= TDX_DPAMT_ENTRY_PAGE_CNT;
-+
-+	while (cache->cnt < npages) {
-+		struct page *page = alloc_page(GFP_KERNEL_ACCOUNT);
-+
-+		if (!page)
-+			return -ENOMEM;
-+
-+		list_add(&page->lru, &cache->page_list);
-+		cache->cnt++;
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_FOR_KVM(tdx_topup_pamt_cache);
  
  /*
-  * Return a page that can be gifted to the TDX-Module for use as a "control"
-@@ -2223,7 +2276,7 @@ struct page *tdx_alloc_control_page(void)
- 	if (!page)
- 		return NULL;
+@@ -1822,6 +1863,7 @@ static int tdx_sept_remove_leaf_spte(struct kvm *kvm, gfn_t gfn,
+ 		return -EIO;
  
--	if (tdx_pamt_get(page_to_pfn(page))) {
-+	if (tdx_pamt_get(page_to_pfn(page), NULL)) {
- 		__free_page(page);
- 		return NULL;
- 	}
+ 	tdx_quirk_reset_paddr(PFN_PHYS(pfn), PAGE_SIZE);
++	tdx_pamt_put(pfn);
+ 	return 0;
+ }
+ 
+@@ -1865,6 +1907,8 @@ static int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn, u64 old_spte,
+  */
+ static void tdx_sept_free_private_spt(struct kvm *kvm, struct kvm_mmu_page *sp)
+ {
++	struct page *sept_pt = virt_to_page(sp->external_spt);
++
+ 	/*
+ 	 * KVM doesn't (yet) zap page table pages in mirror page table while
+ 	 * TD is active, though guest pages mapped in mirror page table could be
+@@ -1878,15 +1922,15 @@ static void tdx_sept_free_private_spt(struct kvm *kvm, struct kvm_mmu_page *sp)
+ 	 * the page to prevent the kernel from accessing the encrypted page.
+ 	 */
+ 	if (KVM_BUG_ON(is_hkid_assigned(to_kvm_tdx(kvm)), kvm) ||
+-	    tdx_reclaim_page(virt_to_page(sp->external_spt)))
++	    tdx_reclaim_page(sept_pt))
+ 		goto out;
+ 
+ 	/*
+-	 * Immediately free the S-EPT page because RCU-time free is unnecessary
+-	 * after TDH.PHYMEM.PAGE.RECLAIM ensures there are no outstanding
+-	 * readers.
++	 * Immediately free the S-EPT page as the TDX subsystem doesn't support
++	 * freeing pages from RCU callbacks, and more importantly because
++	 * TDH.PHYMEM.PAGE.RECLAIM ensures there are no outstanding readers.
+ 	 */
+-	free_page((unsigned long)sp->external_spt);
++	tdx_free_control_page(sept_pt);
+ out:
+ 	sp->external_spt = NULL;
+ }
+@@ -3486,6 +3530,10 @@ int __init tdx_hardware_setup(void)
+ 
+ 	vt_x86_ops.set_external_spte = tdx_sept_set_private_spte;
+ 	vt_x86_ops.free_external_spt = tdx_sept_free_private_spt;
++
++	if (tdx_supports_dynamic_pamt(tdx_sysinfo))
++		vt_x86_ops.topup_external_cache = tdx_topup_external_pamt_cache;
++
+ 	vt_x86_ops.protected_apic_has_interrupt = tdx_protected_apic_has_interrupt;
+ 	return 0;
+ 
+diff --git a/arch/x86/kvm/vmx/tdx.h b/arch/x86/kvm/vmx/tdx.h
+index ac8323a68b163..fd368e3ee060b 100644
+--- a/arch/x86/kvm/vmx/tdx.h
++++ b/arch/x86/kvm/vmx/tdx.h
+@@ -72,6 +72,8 @@ struct vcpu_tdx {
+ 
+ 	u64 map_gpa_next;
+ 	u64 map_gpa_end;
++
++	struct tdx_pamt_cache pamt_cache;
+ };
+ 
+ void tdh_vp_rd_failed(struct vcpu_tdx *tdx, char *uclass, u32 field, u64 err);
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 4d90d1a555135..7fd427174b8b6 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -2044,6 +2044,7 @@ bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
+ 	/* To be enabled when kernel is ready. */
+ 	return false;
+ }
++EXPORT_SYMBOL_FOR_KVM(tdx_supports_dynamic_pamt);
+ 
+ static struct page *tdx_alloc_page_pamt_cache(struct tdx_pamt_cache *cache)
+ {
 -- 
 2.54.0
 
