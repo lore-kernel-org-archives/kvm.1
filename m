@@ -1,177 +1,205 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637002F5313
-	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 13:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3B03033EB;
+	Thu,  6 Aug 2026 13:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786021417; cv=none; b=uf6Acfimc2lbI0PfBd1UaEYC3CK32Qv6A58HHjtjqEbSla+JCos7sB7bA0PIBiATMSbQ+tkmKxrkZGTRWpqgMxFV51UcpZQRt/eHqAp+HNSkHVybOmVaS0EgbudZXGtAgJH+ZhWP0AMo748EslomxYyO9a4xseUUAfU9j8JysYY=
+	t=1786021460; cv=none; b=g3oeWfGNt0kzC6mU8scGMGeBbAJ1NRLGs9oRGMbyytqk4r8aDxQwJUYK+BVsg7nrowE3auYWG7u6tBwmc+3IBLcoBPD7GF2MWbi3Slvvp6+beycXnCiELpS5IeBmMlsgYZ7h92l1RrpigYFZ/FPw/drULVAYsRdqkC2q7+OaQe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786021417; c=relaxed/simple;
-	bh=4A7aKQSDveq6QTmgYRdz90FxxB1u5FcMkc4PBkljdcE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ESAwXSUwCIm+/10tgEsfGf8kxfYtj1TOQLquRxuyPvodn20ufbfrat39uN4ajBYH57jidJaLCPnI/VxW/UD29RZPKHJ1dNtjnd2dUY/stcHUk7iVvn3eYpAE0vrBQ6ThH2GmAvWbrLZ/DhQkHxNKIOy1rhfhWkVcaqbsFwJGq9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hw0Y781V; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786021460; c=relaxed/simple;
+	bh=G9vrilfhC2ujlYlXXCHpnOaJ5QBE0QERAVg7cVYBUZU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dp4bW76keE+nifBVSRTTnV0FZ3ubOSLSlVAAfGa42KEbbFL8QE5gerlbT1ki00CRj8PnIYvemXxZ+jEylM1txi5oo5LKL2QpK93tcnpTZTk6SgyY5fPhC3+Lnn5JdZiL2n6E4R2Q3b2Ft8w4EMayPy3jV3D+ruLKN9k1m83nh8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=FMKrKiI0; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hw0Y781V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A621F00A3A
-	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 13:03:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786021408;
-	bh=pQu1LyILaJ/us2VXdLm2kasN4/J6WTQSR9PhxSs27vE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=hw0Y781V6yJU7hlklAs2D2rZaqvltmb5wXtfgGCx/Wn/BAAOYWBmVTPKG7OzjC0vb
-	 du/SwT4kJa8hSX0gk21ZlsV3iOj1VwdpOEWMi0whanjCPWRFdEL0tBwn9SRjuYBuRM
-	 ILRHpiBARBn0V0UVoeuqnRTg2gLWrVX92pBvTWhGz3l9sffLxidmGA80LEKcfPEDTI
-	 fHgbC/WBQ7ev+JhVlrYvqdZ2gPyBvQIlcOMVwW06p3P1cTg0ZzjY8oYYAeYIiK8ohM
-	 TAOS032l9/FPlrcg9M+rowKQbWg+T7Yp6Yl0xeSTJEC9xZHqsbXP2wtZ9aoS/0bl0q
-	 Z+w2kn7PoyGUw==
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6a17211b9ecso2848296a12.2
-        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 06:03:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrnbWVjJLM2uQtsNevS+dEHBgRNGPt2/zK6Yix+9NuG3CR7W1eu1xe+cH10Av1Fj+gsU08=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8xKSfJigfJlmymRmNBWTbUdv/krtiqXyHVmQ0BDueN8KLw1AJ
-	N2WXgKYKF6cLbMfS5V+WigQr/W9u3JvLgaVWl3ywgyF7WjVNhdPW1wWxebIHwyNXX//bLY5ZyMe
-	IGhJEqXUn2msOIqZS4nyYGyaqmPofQEQ=
-X-Received: by 2002:a05:6402:551b:b0:6a0:7a06:3031 with SMTP id
- 4fb4d7f45d1cf-6a14f0a151cmr7985904a12.3.1786021406986; Thu, 06 Aug 2026
- 06:03:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FMKrKiI0"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675NmcFL995581;
+	Thu, 6 Aug 2026 13:04:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=cGZTLqLtoj7XyJy0X
+	rNYhoChjhfW0ILZ/Cu5+DqvwdM=; b=FMKrKiI03/vvtFvL4pI8/LdOcgXeZDlX5
+	jt1t6MniykhRmkmmq29CokrSnssSxFrmC/MAjhCD6e15leMdnQ4HF4UA8gQ0piGb
+	3UMXbKYQruqm261c9PIhLsd0nOXe93Vxud0czAn0Na6KJzvBMB3se4om8tQHQDMc
+	fKkIe3PCl5umx8beyTrDeSNk2KHd0kQBWAdf3YIYd8WSDtcqINxp38ltchUS1nSS
+	LUzaGDcYmjmHPTYvKKoJcfecE4Z7C8cJkNPJ23rbkZg+51AnOoOeV7TWS9J7CFVA
+	ra7xIO3cVXEJ8InqQmkMynWohh2oyJHsZ7z0MlMm+qboo+Ixqx5aw==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs77gft7x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 13:04:14 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 676CuKBf022034;
+	Thu, 6 Aug 2026 13:04:14 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmhk5cp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 13:04:14 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 676D4Cqu27394768
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Aug 2026 13:04:12 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B5DD15805A;
+	Thu,  6 Aug 2026 13:04:12 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 208D358068;
+	Thu,  6 Aug 2026 13:04:11 +0000 (GMT)
+Received: from b35lp69.lnxne.boe (unknown [9.87.84.240])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  6 Aug 2026 13:04:10 +0000 (GMT)
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+To: Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: KVM <kvm@vger.kernel.org>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>
+Subject: [PATCH on master] KVM: s390: Fix memory corruption by not reinjecting CK machine checks
+Date: Thu,  6 Aug 2026 15:04:10 +0200
+Message-ID: <20260806130410.14254-1-borntraeger@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260806125241.210170-1-borntraeger@linux.ibm.com>
+References: <20260806125241.210170-1-borntraeger@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260806020739.2149268-1-maobibo@loongson.cn> <20260806020739.2149268-6-maobibo@loongson.cn>
- <CAAhV-H6cTtqzCGfr5aZNgpPBpG1YLkmZ9axq45ViAf2_x69fjg@mail.gmail.com> <ae64693c-0c99-9de9-c4d9-ed5ab6e55506@loongson.cn>
-In-Reply-To: <ae64693c-0c99-9de9-c4d9-ed5ab6e55506@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Thu, 6 Aug 2026 21:03:47 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H72fu7_WysWr1XWbFUbnw2cwcCUMgT1AZGnABpAgAd6xg@mail.gmail.com>
-X-Gm-Features: AUfX_myJGGL7r3AsAvPy_KItZXNkXqhtkpNw3bbC-QYt6qiKg-oqZypyk-UApks
-Message-ID: <CAAhV-H72fu7_WysWr1XWbFUbnw2cwcCUMgT1AZGnABpAgAd6xg@mail.gmail.com>
-Subject: Re: [PATCH v2 5/5] LoongArch: KVM: Enable separate vmid feature
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	WANG Xuerui <kernel@xen0n.name>, Arnd Bergmann <arnd@arndb.de>, Xi Ruoyao <xry111@xry111.site>, 
-	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDEwMSBTYWx0ZWRfX4n2T6kyYjeMx
+ UK7kIwkaY2WOSJDWvg32kWJCJKPo8KgIl5rr8+2G06sjNT2+U5DXyqcc3EVodstivHhERen4uAb
+ UmTKXZHkxa04SQ7+ddL7E+KEMm3OgyrAeYxWEBZqrIpU0jHO5tWd6i9DsxMeNso1kgc0XUDQlL1
+ /SMkiVjHHO4CLw1KrLJfzPZrCtVTvTYulRiSvZwZfepZXlFBVJUNr+fuFFmO38Pq2DPqovATK86
+ M6DVzYqvbs8TvBmQnuOsqOfVfuOU3Tte/5NVrZDC5+xwba9cwwkJnV9AnvbJTvl+2GkqjMZU39n
+ 37jybecDnQSdgA09+YzsR6ZknPMmTisDvtfl5pdZRzPX+Mg6mS6adQuAHWPMVHivctLGHy8RhQ0
+ uSdJrXYR+eDvFw8j2Hh+rW8jen008xQvaOpMz0cy8GtSrF32x3egZBEVTM0cFTqK8ia/Sc0S8Gg
+ w12fp8Ulq9YdSDvMVQw==
+X-Authority-Analysis: v=2.4 cv=WIFPmHsR c=1 sm=1 tr=0 ts=6a74864e cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=Ij1Uxg02dGBQ0jy1ERMA:9
+X-Proofpoint-GUID: XVz5xv27CkcS6t0drRVd1gpROOUqoJFr
+X-Proofpoint-ORIG-GUID: XVz5xv27CkcS6t0drRVd1gpROOUqoJFr
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDEwMSBTYWx0ZWRfX10deD56E6LSD
+ 1JP2gJASt/MzyHA+jzHwEs5TrIuj+OkzXnk1CGowL82Xwoo2dC9yjr9p9ERcECbkUjB0G0rQpd2
+ W+KbDiKyiMmqOo2iGk4sPT4WkRuVx3Q=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-05_06,2026-08-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0 malwarescore=0
+ suspectscore=0 clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608060101
 
-On Thu, Aug 6, 2026 at 8:55=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrote=
-:
->
->
->
-> On 2026/8/6 =E4=B8=8B=E5=8D=888:39, Huacai Chen wrote:
-> > Hi, Bibo,
-> >
-> > On Thu, Aug 6, 2026 at 10:15=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> =
-wrote:
-> >>
-> >> With CSR GTLBC shortname for Guest TLB Control Register, separate vmid
-> >> feature will be enabled if bit 14 CSR_GTLBC_USEVMID is set. Enable
-> >> this feature if cpu_has_guestid is true when LVZ is enabled and the LV=
-Z
-> >> version is 2.
-> >>
-> >> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> >> ---
-> >>   arch/loongarch/include/asm/loongarch.h | 5 +++++
-> >>   arch/loongarch/kernel/cpu-probe.c      | 6 ++++++
-> >>   arch/loongarch/kvm/main.c              | 4 +++-
-> >>   3 files changed, 14 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/arch/loongarch/include/asm/loongarch.h b/arch/loongarch/i=
-nclude/asm/loongarch.h
-> >> index 2a6bc99177d8..a20fb68d8ac4 100644
-> >> --- a/arch/loongarch/include/asm/loongarch.h
-> >> +++ b/arch/loongarch/include/asm/loongarch.h
-> >> @@ -138,6 +138,9 @@
-> >>   #define  CPUCFG6_PMBITS_SHIFT          8
-> >>   #define  CPUCFG6_UPM                   BIT(14)
-> >>
-> >> +#define LOONGARCH_CPUCFG8              0x8
-> >> +#define  CPUCFG8_VMID                  BIT(8)
-> >> +
-> >>   #define LOONGARCH_CPUCFG16             0x10
-> >>   #define  CPUCFG16_L1_IUPRE             BIT(0)
-> >>   #define  CPUCFG16_L1_IUUNIFY           BIT(1)
-> >> @@ -350,6 +353,8 @@
-> >>   #define  CSR_GTLBC_TGID_WIDTH          8
-> >>   #define  CSR_GTLBC_TGID_SHIFT_END      (CSR_GTLBC_TGID_SHIFT + CSR_G=
-TLBC_TGID_WIDTH - 1)
-> >>   #define  CSR_GTLBC_TGID                        (_ULCAST_(0xff) << CS=
-R_GTLBC_TGID_SHIFT)
-> >> +#define  CSR_GTLBC_USEVMID_SHIFT       14
-> >> +#define  CSR_GTLBC_USEVMID             (_ULCAST_(0x1) << CSR_GTLBC_US=
-EVMID_SHIFT)
-> >
-> > Other fields in GTLBC is TGID, so it is better to name it
-> > CSR_GTLBC_USETGID, just use vpid/vmid for software purely.
->   - clear_csr_gtlbc(CSR_GTLBC_USETGID | CSR_GTLBC_TOTI);
->   + clear_csr_gtlbc(CSR_GTLBC_USETGID | CSR_GTLBC_TOTI | CSR_GTLBC_USEVMI=
-D);
->
-> There is CSR_GTLBC_USETGID enabled already which it bit 12 :)
-Emmm, what is the difference between bit 12 and bit 14?
+Channel-subsystem damage machine checks are for the host channel
+subsystem. The guest channel subsystem is emulated in the userspace VMM.
+There is no point in forwarding such machine checks into the guest.
 
-Huacai
+This also simplifies the machine check reinjection and avoids kfree of a
+stack variable as reported by sashiko.  There might be still machine
+checks that have the ck bit set with another bit (like instruction
+damage), mask out the CK bit in s390_backup_mcck_info(), like the CP and
+ED bits already are.
 
->
-> >
-> >
-> >
-> > Huacai
-> >
-> >>   #define  CSR_GTLBC_TOTI_SHIFT          13
-> >>   #define  CSR_GTLBC_TOTI                        (_ULCAST_(0x1) << CSR=
-_GTLBC_TOTI_SHIFT)
-> >>   #define  CSR_GTLBC_USETGID_SHIFT       12
-> >> diff --git a/arch/loongarch/kernel/cpu-probe.c b/arch/loongarch/kernel=
-/cpu-probe.c
-> >> index 74d31f260dfd..fc68f695d49c 100644
-> >> --- a/arch/loongarch/kernel/cpu-probe.c
-> >> +++ b/arch/loongarch/kernel/cpu-probe.c
-> >> @@ -241,6 +241,12 @@ static void cpu_probe_common(struct cpuinfo_loong=
-arch *c)
-> >>          if (config & CPUCFG6_PMP)
-> >>                  c->options |=3D LOONGARCH_CPU_PMP;
-> >>
-> >> +       if (c->options & LOONGARCH_CPU_LVZ) {
-> >> +               config =3D read_cpucfg(LOONGARCH_CPUCFG8);
-> >> +               if (config & CPUCFG8_VMID)
-> >> +                       c->options |=3D LOONGARCH_CPU_GUESTID;
-> >> +       }
-> >> +
-> >>          config =3D csr_read32(LOONGARCH_CSR_ASID);
-> >>          config =3D (config & CSR_ASID_BIT) >> CSR_ASID_BIT_SHIFT;
-> >>          asid_mask =3D GENMASK(config - 1, 0);
-> >> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
-> >> index 72c1d23156e5..712b078db0d5 100644
-> >> --- a/arch/loongarch/kvm/main.c
-> >> +++ b/arch/loongarch/kvm/main.c
-> >> @@ -359,7 +359,7 @@ int kvm_arch_enable_virtualization_cpu(void)
-> >>          write_csr_gcfg(0);
-> >>          write_csr_gstat(0);
-> >>          write_csr_gintc(0);
-> >> -       clear_csr_gtlbc(CSR_GTLBC_USETGID | CSR_GTLBC_TOTI);
-> >> +       clear_csr_gtlbc(CSR_GTLBC_USETGID | CSR_GTLBC_TOTI | CSR_GTLBC=
-_USEVMID);
-> >>
-> >>          /*
-> >>           * Enable virtualization features granting guest direct contr=
-ol of
-> >> @@ -382,6 +382,8 @@ int kvm_arch_enable_virtualization_cpu(void)
-> >>
-> >>          /* Enable using TGID  */
-> >>          set_csr_gtlbc(CSR_GTLBC_USETGID);
-> >> +       if (cpu_has_guestid)
-> >> +               set_csr_gtlbc(CSR_GTLBC_USEVMID);
-> >>          kvm_debug("GCFG:%lx GSTAT:%lx GINTC:%lx GTLBC:%lx",
-> >>                    read_csr_gcfg(), read_csr_gstat(), read_csr_gintc()=
-, read_csr_gtlbc());
-> >>
-> >> --
-> >> 2.39.3
-> >>
->
+Fixes: 4d62fcc0b692 ("KVM: s390: Inject machine check into the guest")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+---
+ arch/s390/include/asm/nmi.h |  1 +
+ arch/s390/kernel/nmi.c      |  4 ++--
+ arch/s390/kvm/interrupt.c   | 26 +++++++++-----------------
+ 3 files changed, 12 insertions(+), 19 deletions(-)
+
+diff --git a/arch/s390/include/asm/nmi.h b/arch/s390/include/asm/nmi.h
+index 6454c1531854..dd26c20bd231 100644
+--- a/arch/s390/include/asm/nmi.h
++++ b/arch/s390/include/asm/nmi.h
+@@ -22,6 +22,7 @@
+ #define MCCK_CODE_SYSTEM_DAMAGE		BIT(63)
+ #define MCCK_CODE_EXT_DAMAGE		BIT(63 - 5)
+ #define MCCK_CODE_CP			BIT(63 - 9)
++#define MCCK_CODE_CK			BIT(63 - 11)
+ #define MCCK_CODE_STG_ERROR		BIT(63 - 16)
+ #define MCCK_CODE_STG_KEY_ERROR		BIT(63 - 18)
+ #define MCCK_CODE_STG_DEGRAD		BIT(63 - 19)
+diff --git a/arch/s390/kernel/nmi.c b/arch/s390/kernel/nmi.c
+index e17a59d4d5a4..652b98795243 100644
+--- a/arch/s390/kernel/nmi.c
++++ b/arch/s390/kernel/nmi.c
+@@ -345,7 +345,7 @@ static void notrace s390_backup_mcck_info(struct pt_regs *regs)
+ 	sie_page = container_of(sie_block, struct sie_page, sie_block);
+ 	mcck_backup = &sie_page->mcck_info;
+ 	mcck_backup->mcic = get_lowcore()->mcck_interruption_code &
+-				~(MCCK_CODE_CP | MCCK_CODE_EXT_DAMAGE);
++			~(MCCK_CODE_CP | MCCK_CODE_EXT_DAMAGE | MCCK_CODE_CK);
+ 	mcck_backup->ext_damage_code = get_lowcore()->external_damage_code;
+ 	mcck_backup->failing_storage_address = get_lowcore()->failing_storage_address;
+ }
+@@ -357,7 +357,7 @@ NOKPROBE_SYMBOL(s390_backup_mcck_info);
+ #define ED_STP_ISLAND	6	/* External damage STP island check */
+ #define ED_STP_SYNC	7	/* External damage STP sync check */
+ 
+-#define MCCK_CODE_NO_GUEST	(MCCK_CODE_CP | MCCK_CODE_EXT_DAMAGE)
++#define MCCK_CODE_NO_GUEST	(MCCK_CODE_CP | MCCK_CODE_EXT_DAMAGE | MCCK_CODE_CK)
+ 
+ /*
+  * machine check handler.
+diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
+index 7514d9e2403c..3375a956637b 100644
+--- a/arch/s390/kvm/interrupt.c
++++ b/arch/s390/kvm/interrupt.c
+@@ -3099,9 +3099,7 @@ static int set_adapter_int(struct kvm_kernel_irq_routing_entry *e,
+ void kvm_s390_reinject_machine_check(struct kvm_vcpu *vcpu,
+ 				     struct mcck_volatile_info *mcck_info)
+ {
+-	struct kvm_s390_interrupt_info inti;
+-	struct kvm_s390_irq irq;
+-	struct kvm_s390_mchk_info *mchk;
++	struct kvm_s390_irq irq = {};
+ 	union mci mci;
+ 	__u64 cr14 = 0;         /* upper bits are not used */
+ 	int rc;
+@@ -3120,20 +3118,14 @@ void kvm_s390_reinject_machine_check(struct kvm_vcpu *vcpu,
+ 	if (mci.w)
+ 		cr14 |= CR14_WARNING_SUBMASK;
+ 
+-	mchk = mci.ck ? &inti.mchk : &irq.u.mchk;
+-	mchk->cr14 = cr14;
+-	mchk->mcic = mcck_info->mcic;
+-	mchk->ext_damage_code = mcck_info->ext_damage_code;
+-	mchk->failing_storage_address = mcck_info->failing_storage_address;
+-	if (mci.ck) {
+-		/* Inject the floating machine check */
+-		inti.type = KVM_S390_MCHK;
+-		rc = __inject_vm(vcpu->kvm, &inti);
+-	} else {
+-		/* Inject the machine check to specified vcpu */
+-		irq.type = KVM_S390_MCHK;
+-		rc = kvm_s390_inject_vcpu(vcpu, &irq);
+-	}
++	irq.u.mchk.cr14 = cr14;
++	irq.u.mchk.mcic = mcck_info->mcic;
++	irq.u.mchk.ext_damage_code = mcck_info->ext_damage_code;
++	irq.u.mchk.failing_storage_address = mcck_info->failing_storage_address;
++
++	/* Inject the machine check to specified vcpu */
++	irq.type = KVM_S390_MCHK;
++	rc = kvm_s390_inject_vcpu(vcpu, &irq);
+ 	WARN_ON_ONCE(rc);
+ }
+ 
+-- 
+2.53.0
+
