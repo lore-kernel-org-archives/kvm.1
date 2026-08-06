@@ -1,215 +1,320 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9692FBE1F;
-	Thu,  6 Aug 2026 10:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786010448; cv=none; b=fY04t01D08Vun+qJo7aVzx/8C7P+6XSZWmhoJwwm+78wh+JRyi7MK7WTuqQR7wCCRP5qSGdSkSuPuNPmmi7KbYZQ/SdUhJpnaN07tjKkjfs4asv4/Bg2TiKuCGRU+gA3G+z7lCjfUN1PsMVHCUX2yO/PVS86xhJolEKaWru7CuQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786010448; c=relaxed/simple;
-	bh=yIYmrgtiVsu1F+V/ilM2Ubv0mNMlq+k6EsEK15Tg71U=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ezU0Z6LVG4CjgCOXMiKeeZoMTCrsLRtl5BTvJjvI9dBa/JC6CjemC3KZx2swhWQsqQNSvm3BHN55EXI3bYdwlUpU44zCU+upsnx97q9c8/T/czPh3wuLoFemluTdfQ0SxSk7TxbEGlTK1TwQPU2lFccpxlIbmMrhCTSHXD3gYMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=SQFyf+iq; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09A33E558C
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 11:03:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786014233; cv=pass; b=X6qaYD8ZQ3yxwJVOy/42OwAsA6rHBlngzCv6rVSPLFCNk0MyMLJIAXZMP6PqBx+yRlMPM2ILmvdpwih8V270PfNEWWwbQDv0keSlv9rOeDyBZbslogpnsr31WumdLA4I4uiaJOBbaG9yTuQi/Ci4IoRTEabKFEj1+6XPqlWq0q4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786014233; c=relaxed/simple;
+	bh=oiL+B2h6AuSfY8Rv3bYul6pnOV2F8Xe1GqK5pQzx4so=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=R9CvugywJyhqvTgUcA7qqZyKDouQWxAQKVO3Ae/4bAc6ybpFYRViMdIJn2CUo/SXcbwMvxrcQNrAcWVLxV5wRo/GnFKFypn/1Nr7Dymo4hflMcNU1peKaD9JINKyhwCor7NP+O6aGyd/A8xD1y9QWzmlebprP0O0C2sM6dQFH1U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Y2zRExfB; arc=pass smtp.client-ip=209.85.160.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="SQFyf+iq"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=yIYmrgtiVsu1F+V/ilM2Ubv0mNMlq+k6EsEK15Tg71U=; b=SQFyf+iqE1xeY4o0Jqomuac7GG
-	xpsFXkFwApsft77v4GEsnaBUSjf72rbEX/oUXuJJZ1cQCaU7gffZskpZYierAS/n8Jsh4PjNZFnfR
-	pDyBNX/Wn9FIpE/SaqtXLqs3177gIrXPFtmTR9NafoTuUd2OdUdewZOUPyZ4jUOIoESdxwcftNazS
-	CKD3TpL/Lxx+3xdKHB/7sr/gBVpDto022Y2TkDBh/eVphzZ/ZLJEnfkUCBS3nT2kccbYE5ckUBLOd
-	etRWsynO/IJ3a+BRlRZ9haQqXA75e9xhaaHk1Bn6xQasjb3bgonGtEOHXltU573a347Dmxx5PfCDB
-	bgROKm3w==;
-Received: from [54.239.6.186] (helo=edge-cache-211.e-hkg50.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wruu1-00000008w1s-42f3;
-	Thu, 06 Aug 2026 10:00:42 +0000
-Message-ID: <283252e3ff0dabd2593053b3ec5fad2e7f00bc24.camel@infradead.org>
-Subject: Re: [PATCH v3 4/7] KVM: x86/xen: Extract delivery of event to vCPU
- into a separate helper
-From: David Woodhouse <dwmw2@infradead.org>
-To: sashiko-bot@kernel.org
-Cc: sashiko-reviews@lists.linux.dev, seanjc@google.com, pbonzini@redhat.com,
- 	paul@xen.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 06 Aug 2026 12:00:51 +0200
-In-Reply-To: <e19783f0c897f69afdd7bf623f668714ae728523.camel@infradead.org>
-References: <e19783f0c897f69afdd7bf623f668714ae728523.camel@infradead.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-nnbhmL+dCAhfLBWF5fvv"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="Y2zRExfB"
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-448b89f700fso1931504fac.2
+        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 04:03:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786014227; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kGpsyIm3kb0vLanD0bYvAqqDlPqQdyaimqnwrkGzj5OpAv204MNt21pAcqZk+d/TxM
+         ovX5zUK9r0lxO9wR9RTB3dXg7c01UTPhZBSzKhgviBVLL0JgeBGUbct4BcVW/oJOFV0+
+         9lduYA0/1MP7UypILlHwqw8RyvIDJ5PrL9CydkXbTG8USSuhcUt8/UB70LoXr48Qojbt
+         DuUP1DgXhoNxSp6sRx07ax9P/UOIobQhdqs0V0wTU0HAjBJ4B0aU/0cVAuTBMRy3WHOF
+         B+fZ5rLVcM0eSgLCdiTOo2G3yEIqCS/PMnDDsR1RYUuAIq8E4bofkAHWWpHNX45QxvXP
+         Ol/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kMaEeVh+/U+NbRzoGC8Idgo7QP/ahOzSH8HwXGJHBcU=;
+        fh=sMuvlkk/wvYcJod/7viaAK7UUJVaIQ0DMUS5gofvFzU=;
+        b=jZyVQDbIzypF7QZYObUyyQh/TC4GHVU8Txhw0cUUNWoJA2xk0MaOvtO6A3iwNiu1kc
+         sYgZxu7fHj3Fv2GQ92yfC/CtV89lcC0Rh4np9V1tPn3ZT/6NhcbLAaSLodW4mdC9xvKb
+         dUgvIq0aLth4ogx/rBfT0JE3MYnw0AGIrDnYPM8oB/dH2RAuJJHWtkgOC595nisACDO/
+         8xAVYMKZX2y4NMlRzlchlTYkbbEiGtt2/0t7ilQMHXLcEwaBZWn+DDX3oQr3Xml+8dkE
+         abKLPjzkUSoxlyT5HPt/Te09aylC/BXe4u0Mt9erZn2EZkGIUBfapWXLvcst/sGenQ7J
+         3gnw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1786014227; x=1786619027; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kMaEeVh+/U+NbRzoGC8Idgo7QP/ahOzSH8HwXGJHBcU=;
+        b=Y2zRExfBLQUvPdcurbXQ/CJY0UazuSYyqdDTOQVrNvexWVITFePr1nVcS1wnxQKdUt
+         hkFk3stB19A/OvTnQrXB+cLeYWOJ8Fbye8DSLu8x9sggIB1X9Ex1oKB7vjVgDkvwiBlK
+         Rf9oJIRWAHrpC3mjFm+vOYFtqNCian6zNuAQFRGsjseLz2SRyDTYV/cnC4Kd1IARF/d8
+         JW2jLO9E9q/M0vPP10EgItnb8qJXpJg4tm19XzjU/RoVNyiUdPV7qMWLDnngX1Pry0bR
+         hpOdDdKEfQMB9JNokU/ghUdCcClHeHWDWKB6Z4lFlnAHhM5aKk7ZhLrK0Lv5bz7B95LD
+         p/+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786014227; x=1786619027;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kMaEeVh+/U+NbRzoGC8Idgo7QP/ahOzSH8HwXGJHBcU=;
+        b=MWbaY2VX9HxK4g9xVwBWHFRgSnOfgzLiG52pcNeig2HKXKF99wq6AGHB4Tkyoky3l7
+         HDikcpe+Eao4ewwJssaG+b+Vodg7YBE9cDL/soLQNNAO4jWxiSD0djIojkjdIIRo2k5c
+         Kf0oKU1NtxfPttQr137y/NNNllNDMHoA9OAR8aoido4kq/cU3MEJ3Usfe29TzTaF7291
+         RTWyfiWjVg6g/FzrjNB+3WfimpCBSGW/ZAf/e1IRLrOsWtnTShXnCnkwf17uTnPf31M8
+         DYR0JRd5yB1IWPZ7S6cvYp74pigaKA22j8QVaYD9go0vSB2gv+QO0Y7NpJP++m67w+2h
+         hOQA==
+X-Forwarded-Encrypted: i=1; AHgh+RqCFp3SS59cpHjTXzoBRxizbdBWl4Vt8+Kb6+1l0AY/MlYpBWdkx5CAU54GHOaeUzuSfIw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzxow5WLyQR5uplFPKzFmHXGRwya6jWTfMqcoDPzKB4jhiv9Fce
+	kQ7shxohjtv++8MqVNoNv8ps++7Yd99ZjMkM7TKKC6LgxSX8F4F7H2yehht/z9r3JpQljsgesuQ
+	4OsVOSBh+G6iFev/ATmP0JkLYZMGDb63xoWl7CeXLSw==
+X-Gm-Gg: AR+sD11p+XrgXxH3wge8IGDNW/tPaUtqj4XVbF+ps0bVJbdzKkOupZuGnzBv0oxInb6
+	irm0DEoePed8bqgv80yx5YtuS/NwLzlf34p9omtlr90Uzf5O+ya4Czeoztnve4b25jprbKCeDW8
+	bH9aq/ctoBh2iOUMWwLFaKqwQpLO4nAEjrIDqZ9URkrLDekTvX/LU+cCNx8kQRveiJ8SBGTzPb0
+	XOBI0pg6oAZalFYc/IDL8ip0F/X7Jco8hjdy3G9p+33vrt1lYqen4S9PzX0NEMILN2QrE2tZdcr
+	c6A4TGNN8N4Dk2ZlTaaF7nSwWUTNd8FIqoMteQTmeGvDRtA=
+X-Received: by 2002:a4a:e910:0:b0:6ac:ac32:b5ff with SMTP id
+ 006d021491bc7-6ae96c1b306mr7392747eaf.2.1786014225348; Thu, 06 Aug 2026
+ 04:03:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-
-
---=-nnbhmL+dCAhfLBWF5fvv
+References: <cover.1784201104.git.cuiyunhui@bytedance.com> <138d74aa9863ae8ff445e16a2798d062895b75bc.1784201104.git.cuiyunhui@bytedance.com>
+ <anQ2bW3JxraT6PFY@lucifer>
+In-Reply-To: <anQ2bW3JxraT6PFY@lucifer>
+From: yunhui cui <cuiyunhui@bytedance.com>
+Date: Thu, 6 Aug 2026 19:03:33 +0800
+X-Gm-Features: AUfX_myo8uemIR_J8tcaFPQk5bQ_19S-a0xl3xjkzuEjy5SWJNGo65WwssSv6nw
+Message-ID: <CAEEQ3wk62WBSJb5JcnPJoVSb+JQq3ZcE4CRmqqTvkAO20XFjbg@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v2 10/15] mm/gup: add fast-GUP specific
+ lockless PTE helpers
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: linux-riscv@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, kasan-dev@googlegroups.com, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2026-08-06 at 00:35 +0200, David Woodhouse wrote:
-> > [Severity: Critical]
-> > This is a pre-existing issue, but does test_and_set_bit() here risk a
-> > host denial of service via a hardware split lock?
->=20
-> It does, and likewise for the lockless double read of long_mode
-> reported against v2 patch 7=C2=B9: max_evtchn_port() and the branch below=
- it
-> can disagree, in which case port_word_bit can be up to 127 and the
-> test_and_set_bit() runs off the end of evtchn_pending_sel.
->=20
-> I knew I'd looked at those both before... they're both covered by the
-> series I posted in June:
->=20
-> =C2=A0 https://lore.kernel.org/all/20260605143034.3603-1-dwmw2@infradead.=
-org/
->=20
-> I owe a refresh and repost of that one.
+Hi Lorenzo,
 
-Hm, it probably wants to live before the RCU part. I think the plan
-should be to first send these in parallel as they don't conflict:
+On Thu, Aug 6, 2026 at 3:35=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+g> wrote:
+>
+> +cc literally everybody you failed to contact...!
+>
+> Why on earth are you doing sending a series like this which changes core =
+mm,
+> non-RFC and at v2 to boot, without bothering to Cc relevant people?
+>
+> I am also very confused as to why you are sending an ostensible RISC-V se=
+ries
+> then changing how core mm works to fit it, that's not how that works.
+>
+> And if you're seeking to change core mm send it as an RFC!
+>
+> On Thu, Jul 16, 2026 at 08:41:45PM +0800, Yunhui Cui wrote:
+> > fast-GUP snapshots a PTE without holding the PTL, pins the page, and
+> > then revalidates that the PTE did not change. Keep both reads under the
+> > same lockless PTE semantics by defaulting the fast-GUP revalidation to
+> > ptep_get_lockless().
+>
+> Why?...
 
- =E2=80=A2 Patch 1 from this series (the syzbot races).
- =E2=80=A2 The updated xen series.
+Thanks for the review. Let me first explain the motivation behind patch
+10/15, and then address the RFC/Cc and naming issues.
 
-Separately, we can remove the non_block_start() from the OOM reaper
-path (patch 2 of this series), marking it as fixing the existing KVM
-mn_invalidate_lock splat under RT=C2=B9.
+The goal of this patchset is to let RISC-V Svnapot provide contiguous PTE
+semantics similar to arm64 contpte: generic MM should still see a normal
+per-page PTE view, while RISC-V can fold eligible PTE ranges into the
+Svnapot/NAPOT encoding underneath. Because of that, the RISC-V public
+ptep_get_lockless() may, for a Svnapot PTE, return the sub-PTE for the
+current address expected by generic MM, after checking the whole NAPOT rang=
+e
+for consistency and aggregating block-wide A/D bits.
 
-The actual conversion to RCU (which fixes the GPC RT issues) can be
-rebased on top of all of the above, and wait in the wings for a little
-while longer until they've landed.
+fast-GUP has a narrower requirement. It needs the PTE for the current addre=
+ss
+for permission/PFN/page lookup, then pins the page, and finally checks that
+the page table entry it relied on did not change during the pin. fast-GUP d=
+oes
+not consume the block-wide A/D aggregation. If fast-GUP uses the public
+ptep_get_lockless() for both the initial read and the revalidation, it pays
+the cost of the NAPOT range scan and A/D aggregation in the fast path, even
+though that information is not used.
 
-I'll build a 'xen-rcu' branch with that all in a single linear set, and
-redo all the testing.
+So patch 10/15 is not trying to wrap a simple equality check. The intent is=
+ to
+separate two semantics: the current-address PTE consumed by fast-GUP, and t=
+he
+original PTE snapshot used for post-pin revalidation. On normal architectur=
+es
+these are the same value, and the default implementation preserves the
+existing ptep_get_lockless() behavior. On RISC-V Svnapot, the value consume=
+d
+by fast-GUP is the sub-PTE, while revalidation compares whether the raw
+snapshot has changed.
+
+Patch 11/15 is the RISC-V use of this hook. It avoids the public
+ptep_get_lockless() block-wide A/D aggregation path in fast-GUP, while stil=
+l
+keeping correctness through raw snapshot revalidation. In the 64K THP alway=
+s
+mode, fio 4K random direct read improved from 2.615M IOPS / 9.97GiB/s to
+2.874M IOPS / 11.0GiB/s, and the average clat dropped from 95.54 usec to
+86.97 usec.
+
+Regarding the RFC/Cc issue, you are right, I handled that poorly. Although
+this series is mainly about RISC-V Svnapot, patch 10/15 adds a generic MM/G=
+UP
+helper and patch 12/15 also changes the arm64 contpte fast-GUP path, so the=
+y
+are no longer RISC-V-local changes. I was worried that the large list of
+individual recipients from get_maintainer.pl would create too much noise, s=
+o
+I mostly kept the mailing lists and dropped some individual Cc's. That was =
+a
+bad call; the relevant maintainers/reviewers should have been Cc'ed
+explicitly. Sorry about that.
+
+For the next version, I will split the generic fast-GUP helper out as a
+separate RFC, add the relevant MM/GUP/arm64/RISC-V maintainers and reviewer=
+s
+to Cc, and explain the semantic difference between the PTE consumed by
+fast-GUP and the post-pin revalidation snapshot. If I keep the arm64
+optimization, I will include the arm64 maintainers/reviewers in that RFC;
+otherwise I will drop it from the RISC-V series for now. I will also improv=
+e
+the naming, such as `rawp`/`raw_pte`, and add comments to make the snapshot
+semantics clearer.
+
+>
+> >
+> > Introduce fast-GUP specific PTE snapshot and revalidation helpers. The
+> > default implementation preserves the existing ptep_get_lockless()
+> > semantics, while allowing architectures to override the helpers when th=
+e
+> > public lockless getter provides extra semantics that fast-GUP does not
+> > consume.
+> >
+> > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+> > ---
+> >  include/linux/pgtable.h | 18 ++++++++++++++++++
+> >  mm/gup.c                |  6 ++++--
+> >  2 files changed, 22 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> > index da14328093a86..62943fcbf7046 100644
+> > --- a/include/linux/pgtable.h
+> > +++ b/include/linux/pgtable.h
+> > @@ -813,6 +813,24 @@ static inline pte_t ptep_get_lockless(pte_t *ptep)
+> >  }
+> >  #endif
+> >
+>
+> Of course, no comments, helpful!
+>
+> > +#ifndef gup_ptep_get_lockless
+> > +static inline pte_t gup_ptep_get_lockless(pte_t *ptep, pte_t *rawp)
+>
+> rawp? This is terrible naming.
+>
+> And 'gup_ptep_get_lockless()' is worse. What on earth is this function me=
+ant to
+> do? And why is 'gup lockless' considered different from lockless?
+>
+> And you return the value twice, because of course you do. Why? Who knows.
+>
+> > +{
+> > +     pte_t pte =3D ptep_get_lockless(ptep);
+> > +
+> > +     *rawp =3D pte;
+> > +
+> > +     return pte;
+> > +}
+> > +#endif
+> > +
+> > +#ifndef gup_ptep_revalidate
+> > +static inline bool gup_ptep_revalidate(pte_t *ptep, pte_t raw_pte)
+> > +{
+> > +     return pte_val(raw_pte) =3D=3D pte_val(ptep_get_lockless(ptep));
+> > +}
+>
+> Again this naming is utterly terrible and I'm at a loss as to why on eart=
+h
+> you're doing this?
+>
+> We don't need to abstract equality checks?
+>
+> > +#endif
+> > +
+> >  #ifndef pmdp_get_lockless
+> >  static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
+> >  {
+> > diff --git a/mm/gup.c b/mm/gup.c
+> > index 99902c15703b0..72fb147193e55 100644
+> > --- a/mm/gup.c
+> > +++ b/mm/gup.c
+> > @@ -2842,10 +2842,12 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t =
+*pmdp, unsigned long addr,
+> >       if (!ptep)
+> >               return 0;
+> >       do {
+> > -             pte_t pte =3D ptep_get_lockless(ptep);
+> > +             pte_t raw_pte, pte;
+>
+> What on earth is a 'raw' PTE?
+>
+> >               struct page *page;
+> >               struct folio *folio;
+> >
+> > +             pte =3D gup_ptep_get_lockless(ptep, &raw_pte);
+> > +
+> >               /*
+> >                * Always fallback to ordinary GUP on PROT_NONE-mapped pa=
+ges:
+> >                * pte_access_permitted() better should reject these page=
+s
+> > @@ -2871,7 +2873,7 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *p=
+mdp, unsigned long addr,
+> >                       goto pte_unmap;
+> >
+> >               if (unlikely(pmd_val(pmd) !=3D pmd_val(pmdp_get_lockless(=
+pmdp))) ||
+> > -                 unlikely(pte_val(pte) !=3D pte_val(ptep_get_lockless(=
+ptep)))) {
+> > +                 unlikely(!gup_ptep_revalidate(ptep, raw_pte))) {
+>
+> Why do we need to refadctor a comparison between a local variable and a l=
+ockless
+> get?
+>
+> I'm just so confused by what on earth this patch is meant to be or why it=
+'s here...
+>
+> >                       gup_put_folio(folio, 1, flags);
+> >                       goto pte_unmap;
+> >               }
+> > --
+> > 2.39.5
+> >
+> >
+> > _______________________________________________
+> > linux-riscv mailing list
+> > linux-riscv@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/linux-riscv
+>
+> --
+> Cheers, Lorenzo
 
 
-=C2=B9 https://lore.kernel.org/all/787aa26cf62dfd361eea8ed19f384fc517892501=
-.camel@infradead.org/
-
---=-nnbhmL+dCAhfLBWF5fvv
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-JzkolHHlo4vWkri63N7xfqQAAAAAAAA=
-
-
---=-nnbhmL+dCAhfLBWF5fvv--
+Thanks,
+Yunhui
