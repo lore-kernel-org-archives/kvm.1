@@ -1,183 +1,183 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15F64252D9
-	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 21:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786052786; cv=none; b=pXo+mSzyB6R91qepGw7DwqPOx09A2Yh7f1B6ZkU7E1zowY2y8TFUWpnFWDM40187B+aE9zo7+Orl0dvvzx5c77UwdmdseYNfjwn/QyzF3rgTav7bULyFdroiKqvCuMIuPrN1kqnOgGgCPeTT0Ko06W57+2rB+Z4vItPYx1XR1ew=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786052786; c=relaxed/simple;
-	bh=R5IlNYT9grSWMNRUE5eHnlj/fSWDkT4pmhLM0SsMSl0=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=YmS2wPmI9kiAdyQXFhykyccAttEOhIx4Rg1nxx8TKc2r2DokwgIuy461n3RmnRXUXQwWq0ab2tm9im6HFzK6CEUSQZ88pxnR/LQGbErzurUF2OX4Xch25WJX+5hF53Ham6iuLylqYzMK0nSVat1LpNGFJD11drJxDBVWQWaNFl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lOhacqOh; arc=none smtp.client-ip=209.85.216.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C31415F2D;
+	Thu,  6 Aug 2026 21:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786053081; cv=fail; b=lbV+SvTj86uwv2kE+EDDJcmxdT0babejD1Q41q8CWikD8sBaJzouUbshgggPN/ya0vnnmYbXkKjtKRqWgptb54ZhG1beML+6gX2bpQPFBjlQhj2vOrDsu+nzeLrHuAM7ba43IayYGEfbPiLvjYXkuofYRp9VO/DntXNXXmGI6BE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786053081; c=relaxed/simple;
+	bh=p0VATs/aMdSeUC4l5slhJa+14V0jFNE6P6DyXj9cBk0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=NTATsXfOG5sxe/2m4IA2PvKJ5CWQw9kcvWg19ZQViQqXHKk9xRnPhecZ+2ZLMpi6VD9IgJQMsfTiru7o1npcPx45FB7v359KZJLIMdTkcfHzPcvI91E5iW6+KbJavLUbhw3ZQGdfxAq4+b66toPH/8D93ygl7oYM6k/zd6ALtnA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kIJnWAOz; arc=fail smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lOhacqOh"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e475f83a2so4227584a91.1
-        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 14:46:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786052783; x=1786657583; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=shGHIfLMy0zOulR4PSpJjZWPNrTU67gcyn62KwrDxcg=;
-        b=lOhacqOhmZ8b4o7OX87kpgUQJ/pXAAcY55rTvkj0F+hc6LlPihii4o/4NRosD1AI4l
-         eRKwF4s31gKrj+9AoBOneoKVAcQikIb3OFJAnFrrXu0T0jYZBHO26Gi+sd721hrwzjK2
-         hUWpuIC4ezhiNF3AbVZnSsWYrd9RqowUAV8mohiSLO7/+UQW3HFp0i+phB+/3gF8w4sa
-         niINvCgCW9S3o1e9/oY0ZneCMC86F5rz0tEPeLNoPiU18WgHfOjeZvKXXEPes3Olfzed
-         5f4I0gNNELvaSFkZcrTOddwk7Au3vvmQfp2Rb/ZAL7okynlgeYBTCTw78DsE0fYqxo5w
-         V/Xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786052783; x=1786657583;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=shGHIfLMy0zOulR4PSpJjZWPNrTU67gcyn62KwrDxcg=;
-        b=MB8Ewc4jOvz6Yy4J/he4VXg/fE0DpOCv/ATCDW+ltSBPyssy4rTDl5jykY56q19wIS
-         Jkl4NoHWVx7D5FpmJj+Zs53XtMyCpToNLUI3RPFzg2hjb8WJmOTkn+5Z61jfzL/0c0jZ
-         3iKpEhrV+XIi3hZenPxmdSPRNk/FezJlqgcgXdNyv/uBtGFGveDTo9nEzUMGFpSrC8+E
-         SKH/AVIPn62lhTx5b/QVPdbCvYyY2xwkHxJsMB4t893FGWkvAbJ1MxMPjcmGCQz/wTOt
-         8zrtcmtZTCzDZT2TN/qmEsopYOWiSsIKczSB2xh14hr9pAPz6t6ZPalWRMmJXEkhxAXt
-         PlDg==
-X-Forwarded-Encrypted: i=1; AHgh+RoD2x2DMNfF6dZ3wkeAW9xg1kYL04ZpoO72OSKS6Re3HDfphJt4icHrshIU4WS9N1iB/y0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9vgej3TR1MbHDcinhCgBJpTZGQ3dsGmIv87Rg2EByjGq0Y6fO
-	+qT8ex8jTkp3BToTc5JtrrVR3TofirCeO2D3FsxneFJp+vAT4eGSTXX+csrQDJrZE06zthr10K0
-	xeazztw==
-X-Received: from pjup19.prod.google.com ([2002:a17:90a:d313:b0:38d:efe5:1502])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4fc9:b0:38e:740f:9764
- with SMTP id 98e67ed59e1d1-3903c5f6477mr18528170a91.18.1786052782928; Thu, 06
- Aug 2026 14:46:22 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  6 Aug 2026 14:46:18 -0700
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kIJnWAOz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786053080; x=1817589080;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=p0VATs/aMdSeUC4l5slhJa+14V0jFNE6P6DyXj9cBk0=;
+  b=kIJnWAOzIlejEAEfm+8WpDgLTYh9E6PXEpQyr42kP+4CMtx0MQXLFKfO
+   GUjgCDXPtCOq9r7yxruR4nqXKi43OhaOioue1FWJAj02N/o3jadCtxLyf
+   67AJGLFsMdzKjEItcptc46lT9i3e610+Y19wecHyJ+dpsz03M5NvmhPgZ
+   r4GlK5tqKvOgKb9XPC5cZ0qBPKsZ8zrE0TFN4Bl0gN66T2fni4f9+7wWu
+   jRXaCmoouDkujOX+MgAQzYj+17iUuNLNCJaKQSZIJHPbWq4Q/aBnFpqqD
+   8aI6ImJFEhdjbdWybneKLyw3LKYIYdt9yDBGLelJQj/mIEw5wNHO64WSa
+   w==;
+X-CSE-ConnectionGUID: cmI4Cf1uS0+JQdx77tBloQ==
+X-CSE-MsgGUID: Xj6yKb9QRDChWARVj9wGTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="97012868"
+X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
+   d="scan'208";a="97012868"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 14:51:20 -0700
+X-CSE-ConnectionGUID: 1M6vrKGtSP6ahq0vR2E0UQ==
+X-CSE-MsgGUID: YV5Kz86aR/e+5A6HzSWJyw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
+   d="scan'208";a="292112367"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 14:51:19 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 6 Aug 2026 14:51:18 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Thu, 6 Aug 2026 14:51:18 -0700
+Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.67) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 6 Aug 2026 14:51:18 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dkjF/FPs9899GV68jtlcWLd7JrXQLcem9TKxLHAg4bXvOi+eZ4QipGyVXI1Mhr1XzQ8r2I/QpyDwFNRKkhLxZkkAreNbp5a0YuulAxybbZ5dRVSXaWKtTo2/kHuyUvjvASPiKeN/48qYB3ASj/77gqhKsvaNySl1o9QtODU444bTMssSD3Ans0CdXxr0kKx1Nk16ydUyH6L3RRiO4izaVaDYO9dxbsaa3nQQ8k33/hm7LgvW+j/92Hyn4tx9Tf6Qd4w6Ehr/M/r/SCfJYB0tsDHpXs5h+iYWmlEGwKRspTFPlLtDrc6DumdKb3+ezuxaL49+YFGrOUZVACpi8SdBsg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=p0VATs/aMdSeUC4l5slhJa+14V0jFNE6P6DyXj9cBk0=;
+ b=KdWFuK7TYB3R6SrXKrqE8nI5Js6NM9pP8kkKU0VLHWoPWx7wNok9TiUVPjBCkB7hcD426auEQxRGGRXoDJKHLw4vrdtEJzCqBQVC1MajCqMIeOyMyim+BqqoOS6kgtQYHYPUeCl8/Ot0zFWhmhSoYOy4wb30z3bfHo3S17/GPDC+xRRRN5PcXoJ2fns0o74kGnm/MDnyr2/EwQVVapbNOn13tjOnbr0WAeJw1Dvwl5jfgHIe/+miNtsOTkikU8ZGCdwj3xJNkGPAXZ46rGesNxiDwZ+rDAzlfoF7HoxWoz7FNMqGdk3SIoWhNIhzYvD+fXUMhek1xB4TgATl+hB7YA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM8PR11MB5702.namprd11.prod.outlook.com (2603:10b6:8:21::10) by
+ CH3PR11MB7203.namprd11.prod.outlook.com (2603:10b6:610:148::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.20; Thu, 6 Aug
+ 2026 21:51:16 +0000
+Received: from DM8PR11MB5702.namprd11.prod.outlook.com
+ ([fe80::a973:3a5a:91e8:49b9]) by DM8PR11MB5702.namprd11.prod.outlook.com
+ ([fe80::a973:3a5a:91e8:49b9%7]) with mapi id 15.21.0292.019; Thu, 6 Aug 2026
+ 21:51:15 +0000
+From: "Huang, Kai" <kai.huang@intel.com>
+To: "pbonzini@redhat.com" <pbonzini@redhat.com>, "seanjc@google.com"
+	<seanjc@google.com>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] KVM: x86: Track kvm_vcpu_arch.pending_ioapic_eoi as a
+ u8 to drop dead BUG_ON()
+Thread-Topic: [PATCH v2] KVM: x86: Track kvm_vcpu_arch.pending_ioapic_eoi as a
+ u8 to drop dead BUG_ON()
+Thread-Index: AQHdJceB9NVxIcCodUWXHWY1Ehz1hLaRj9aA
+Date: Thu, 6 Aug 2026 21:51:15 +0000
+Message-ID: <4ea487eaf2db2bc39eecffddc447663a9e1637cd.camel@intel.com>
+References: <20260806171400.4119301-1-seanjc@google.com>
+In-Reply-To: <20260806171400.4119301-1-seanjc@google.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM8PR11MB5702:EE_|CH3PR11MB7203:EE_
+x-ms-office365-filtering-correlation-id: c2521b58-325c-453d-df29-08def404d702
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|56012099006|11063799006|10067099003|22082099003|18002099003|38070700021;
+x-microsoft-antispam-message-info: mlyH1FuEeUYA8Kt2rvIXVSSc38SYbGjP8DuWBvGuhx5jvE7b36HefTzkORfvT+RJn8IDVNVZYE8+x806Q5KnyehGKugD8aZ2MNsD9lqcQSsRAmeXG3UUICW+ucMKyFn/mQq5G4Bhe8DyKiAslh9dQn29+M23Zt5VMJukgFFPtUlRx83j+mWKFZrmkp9gy1yjvDeKItv338LGgqyBRswNhhQP+69koiTElw/4ON1Ni2NfZs+hUNrT6GtS2OajXb9tqHQDAm9RXx7r7fz1laej/a+br2NLRJvLAqiCdbM0mNGdayihRNCOO1m43NPK0bhZUCZPTsJKf2fHBHMglFPAr+koepjEgKWjdXnXG12/MFNivM7oLyLxfBmTJYodoPq0xeEzEF8XuHNPHLEXwYV3HL5gzigU3gTy7LI+QnuOtSuU/xMmA8/oZuDBKUM/Ft1m8lihKz/ZFnEq+gbFei4Y+cIyPjXgF3Xrh0DAbKp0+3K7omFNqkijOMKtJyR8ix3SFx+j2lo4DYp9Ub0+b6TS7kU/89TotMlyyNqjuAaxoKtXE1srjOit0mn1RZjUhf34J65xHRUYqD/D86++cPU1MlLrHMMXXrLgeLJi0XBTQZxgQhZgFcvCYDijs33uWzMnZ+JBA215IbJQLsl8p33gIi8g9AiNtB4RdMuDuEd6khj0feYvF0rrkuu+0na5vndQCX+FbTyudBXsjYGNjmh+zma9X5abvnsVq0JgSxu15j8=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM8PR11MB5702.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(56012099006)(11063799006)(10067099003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dTczMmlGOGYwWTA3TjJHWjBncFJNMitaakdNSkphUFRBQ1hYZE9pbzVpOVpt?=
+ =?utf-8?B?b2NRM2FyTHJ5aWVhVnMrU3didi9ZcVZNNUc5U2prbXEvTzY2UEoyOVZjT2Vj?=
+ =?utf-8?B?YVNveWRHVTJpUlFtMTQ2UzBSWHkrT2RQT0N1L0prWDhucVVQT21iU0pJTm9K?=
+ =?utf-8?B?Ky91L1FCYVFXWmRkR21wZzY2WWJCNXUrWng3RTJtb2xnVXU2SFh1S0dzMXFI?=
+ =?utf-8?B?R3N6YlE5UWhKcjFYbTZqZEloQTBKTUdhZWYxdmc3dHd6MmI1d3daRis3enhp?=
+ =?utf-8?B?bVVPMUluOWRBVzJjcEtHWlI4UkxxVE9WcmNmWGo2ZDVab3ptbSs1RnJndFpN?=
+ =?utf-8?B?RmFzQm9DTXhVNTEzNFFuUjN4aWs0R1JBcWNDcG5YMDBVSlcvZ3Vkd2cvbEU0?=
+ =?utf-8?B?b3dvYlJuWDBOZkZiYmxHbitveTN5bUNRMmU3NDdRR2tJc2l3NkkyWjFqODZ4?=
+ =?utf-8?B?OFFwWVJhZTZVd2NYSHVJM3RZNU5GYncycVZ4OFZqYW5ZQmtQZENHZTNISGNt?=
+ =?utf-8?B?bUhwVG83NW5TQTVyaG0yeXNuT0hweThtR0JMQUNmOUtLV0ttR3pwRnhTSVVw?=
+ =?utf-8?B?Z1psTTF2dzhpMUNGNS9YSS85ZE5qdTJDRGlSYjlCN3hpZFJrZ1lEWDhlbkFw?=
+ =?utf-8?B?V2NGem4zNWd4bmtKVkhtODhONDVzSjNSUnppOSt2cWFmeUJQaVhET0xTYWRJ?=
+ =?utf-8?B?VTIwTnlGSG5tajVUMlBibGpvQnRpQWpkdkJjaFRUZ0hOR1cvKzlGaVUrbDVS?=
+ =?utf-8?B?ZHpybUcrYzJvTHh0andSSDJDdFBpbjM5bld5SmszdmFvR2tnN1IyWFNucFdq?=
+ =?utf-8?B?WGVXTXdQbW52ZXZiUHRCL2tEakErTXF3QTZuZ1Bza0EvWlA4Unp3ME9hRU5z?=
+ =?utf-8?B?dTFKcTd6OHR0M2tWcDhVNWtYOVNZeWVaNTNtZy8xbGoxRFZNUVdFeTFDQ2Vy?=
+ =?utf-8?B?YlF5ZE5IcVZJclc2VXdCYUMvTjliTEVmbjZBaUlwWnNLTHh0TmNCTTJJajhI?=
+ =?utf-8?B?M0hMS0oyaVlVK3VhU05GQ2hBeURWT0RXVWlLRmZrelhxL1Vqa2JkN2J6UWNM?=
+ =?utf-8?B?emZkdU9vZUtyNkFBRkZpaVpHa29ERTlsaWpFUlErc0htLzJQZkkzUnU5ZXZY?=
+ =?utf-8?B?ZUs3YmttaEdMM0hSd1VHVW8za0g5QjlOVkhROERQdGVPaEJvTDBrbU40TFhN?=
+ =?utf-8?B?a1d0T21oYXMyWnBXSGtqdGZoWWp6eTN0K2RBeUdqUDlIOUJOTHRBQUtiRGwz?=
+ =?utf-8?B?bzRhQk10UnNxTERYd0dCcG80VFdpZmhyQU1DUkFCd1FROFErQkp3ekR3RlJi?=
+ =?utf-8?B?U1BvU0FpWkVmQUtmeFIxWWdmcVYrU3lzZXFNWlVoZXBYeGwzeGFoSHJqSmFX?=
+ =?utf-8?B?bzNnQUJTbUxmUmxwMWdxcHdXRTljZ0Faci9UN1A2UXNmcGR4NGE1TEg4dEdl?=
+ =?utf-8?B?V3RXR1hXM1M0NVlaOWZqR3V1S2hUa3Z4eDdHZjlQelNwMGVyL2NiS3VMU0Jr?=
+ =?utf-8?B?bGNmVmxWUG5IbXpQbU9TTlh0MzNOdkFpRnNoYzJQTnNtU0JqYTdrWWJBeU4x?=
+ =?utf-8?B?WGdVaFg1UGJ6RVBmUTBQL0dNcnNHYWpZajlZM1BkTFI5RnBCNmtFLzk4RmNB?=
+ =?utf-8?B?eHZtcmEycUJRajZJQ2lrNkxJV3QrRzdPU1JJWXhYZGVHMHUrdSt2ckNianNl?=
+ =?utf-8?B?YVFtTlRsMnpJZjhTY0Q3MFNaTnZUc3NLQ2Z6cXB3NGJVc2R6dWFDcFE2alBT?=
+ =?utf-8?B?dUZ3T00xVThkVHlDem14cDlST2VUYjh5cis3c3lDWkFuOC9ML0FrWUliSHdh?=
+ =?utf-8?B?bDlpSmE4U1phZnNvUEZJS1ZrYWFJcFRqaDRSMUYwMEtyOWlPSlJuV3pFLy91?=
+ =?utf-8?B?WDY5aDZJdWJoTURwaldWMDU4RWpOQVRHWDhJeVAzN2Q1bFVZekJ3dEw1NFBv?=
+ =?utf-8?B?T3I3eGU1Y0tmbkkwa0FjTDhuSzQrNlBpeGZOWkhTTW8xQzRZWXpoSjhseW5V?=
+ =?utf-8?B?b2tBSU9FR2lhZXdsbk5oaWhjUnhuS1ViaWNyYm1LTlVZTVF6bzdpMDdQNXhT?=
+ =?utf-8?B?REUwT3ovNVozQ1BiaXlnUWNuZlB6NVdkUHdwZ1lDQzIxVDNpYm9tclMrSllF?=
+ =?utf-8?B?aDhudEZWWnVtNmVhdnlnckxPS2NGWmhXYVlPanVBckJMWWFXWHE2dDFIdE9X?=
+ =?utf-8?B?ODNJekF0bGtEaDdyT0ZwUC82TjdoeWJWWkpzeFlkZG1pV1p4VG1CZnlEakNn?=
+ =?utf-8?B?aC9KNE5WT2ovdnRVNFRYNGtZZkZVRExjS01WZDZCNWI0R1Jmb0MxOUNQcWRW?=
+ =?utf-8?B?QW80VWtFUXBKQkxzbzYzRUZGSCtySWhxUGxtR3hpVkJETFZaUE1CQT09?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <2F3B5CEBB1D05C4E924CFF640B4E7CA9@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260806214618.82180-1-seanjc@google.com>
-Subject: [PATCH] KVM: Never clear KVM_REQ_VM_DEAD from a vCPU's requests
-From: Sean Christopherson <seanjc@google.com>
-To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-Exchange-RoutingPolicyChecked: nwEyipzqOCECFG8uLlzoMbXunoCANqh3iNwVKICQwi3qV+Id2ue9ghJVZAOXi15KQegjdJaz6f+c1K/+s+QTjnoiSsid7w+KeLMosxV5JLTf8HuIvNG9p20ThUZ9+LVHOvGziR9cjCX5M7NkuHUjeIG2fmylhW0HaE1yyGzjawF/JMQRQlegTezRxs6SlrY91N2B54+ceve8keraSo7h4iobhOirlluLVSslLvh3ksQwZL1IHeJAtWHb+x+Cf/38CfEULVyubljaKwAm8jnKUfqEl+8WnSivwkfEC2e8k9f7MXbKfX5v9Z6kUWzYbu3aYqZPDn7l4tfscF2zWQxRfw==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5702.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2521b58-325c-453d-df29-08def404d702
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Aug 2026 21:51:15.6453
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 0u6eFtNLa/Bv3Phc0SugBP8jx9yeyEZCIkekNBGVksj6x3KTkjTBaIl1918d1HZysRavgckduhsXI+g6bOBb9w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7203
+X-OriginatorOrg: intel.com
 
-Use kvm_test_request() instead of kvm_check_request() when querying
-KVM_REQ_VM_DEAD, i.e. don't clear KVM_REQ_VM_DEAD, as the entire purpose
-of KVM_REQ_VM_DEAD is to prevent the vCPU from enterring the guest ever
-again, even if userspace insists on redoing KVM_RUN.
-
-Ensuring KVM_REQ_VM_DEAD is never cleared will allow relaxing KVM's rule
-that ioctls can't be invoked on dead VMs, to only disallow ioctls if the
-VM is bugged, i.e. if KVM hit a KVM_BUG_ON().
-
-Opportunistically add compile-time assertions to guard against clearing
-KVM_REQ_VM_DEAD through the standard APIs.
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
-
-This was previously posted as part of a series to add an ioctl to allow
-userspace to terminate a TDX VM.  I'm posting it separately because it fixes
-a very real flaw, although the flaw is probably benign in practice?  I don't
-want to find out though, i.e. I don't want to wait to get this merged.
-
-This came back on my radar when fixing a bug in x86's pre-fault code, and
-looking at that code made it pretty clear that clearing KVM_REQ_VM_DEAD could
-make a bad situation worse.
-
- arch/arm64/kvm/arm.c     | 2 +-
- arch/x86/kvm/mmu/mmu.c   | 2 +-
- arch/x86/kvm/vmx/tdx.c   | 2 +-
- arch/x86/kvm/x86.c       | 2 +-
- include/linux/kvm_host.h | 9 +++++++--
- 5 files changed, 11 insertions(+), 6 deletions(-)
-
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 50adfff75be8..a56ead423897 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -1108,7 +1108,7 @@ static int kvm_vcpu_suspend(struct kvm_vcpu *vcpu)
- static int check_vcpu_requests(struct kvm_vcpu *vcpu)
- {
- 	if (kvm_request_pending(vcpu)) {
--		if (kvm_check_request(KVM_REQ_VM_DEAD, vcpu))
-+		if (kvm_test_request(KVM_REQ_VM_DEAD, vcpu))
- 			return -EIO;
- 
- 		if (kvm_check_request(KVM_REQ_SLEEP, vcpu))
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index c519e8e8d646..ec34caa06b6a 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5033,7 +5033,7 @@ static int kvm_tdp_page_prefault(struct kvm_vcpu *vcpu, gpa_t gpa,
- 		if (signal_pending(current))
- 			return -EINTR;
- 
--		if (kvm_check_request(KVM_REQ_VM_DEAD, vcpu))
-+		if (kvm_test_request(KVM_REQ_VM_DEAD, vcpu))
- 			return -EIO;
- 
- 		cond_resched();
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index b272c20586a7..6c842e9191a5 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1995,7 +1995,7 @@ static int tdx_handle_ept_violation(struct kvm_vcpu *vcpu)
- 		if (kvm_vcpu_has_events(vcpu) || signal_pending(current))
- 			break;
- 
--		if (kvm_check_request(KVM_REQ_VM_DEAD, vcpu)) {
-+		if (kvm_test_request(KVM_REQ_VM_DEAD, vcpu)) {
- 			ret = -EIO;
- 			break;
- 		}
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index d94b59140c45..0af4b4a95c2d 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8060,7 +8060,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 	bool req_immediate_exit = false;
- 
- 	if (kvm_request_pending(vcpu)) {
--		if (kvm_check_request(KVM_REQ_VM_DEAD, vcpu)) {
-+		if (kvm_test_request(KVM_REQ_VM_DEAD, vcpu)) {
- 			r = -EIO;
- 			goto out;
- 		}
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 03bfc92864b6..cf7fe835c4ad 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2324,13 +2324,18 @@ static inline bool kvm_test_request(int req, struct kvm_vcpu *vcpu)
- 	return test_bit(req & KVM_REQUEST_MASK, (void *)&vcpu->requests);
- }
- 
--static inline void kvm_clear_request(int req, struct kvm_vcpu *vcpu)
-+static __always_inline void kvm_clear_request(int req, struct kvm_vcpu *vcpu)
- {
-+	BUILD_BUG_ON(req == KVM_REQ_VM_DEAD);
-+
- 	clear_bit(req & KVM_REQUEST_MASK, (void *)&vcpu->requests);
- }
- 
--static inline bool kvm_check_request(int req, struct kvm_vcpu *vcpu)
-+static __always_inline bool kvm_check_request(int req, struct kvm_vcpu *vcpu)
- {
-+	/* Once a VM is dead, it needs to stay dead. */
-+	BUILD_BUG_ON(req == KVM_REQ_VM_DEAD);
-+
- 	if (kvm_test_request(req, vcpu)) {
- 		kvm_clear_request(req, vcpu);
- 
-
-base-commit: a806d364ef288a6443a1337820ea8410a7ccc6b3
--- 
-2.55.0.679.g6767b8d81c-goog
-
+T24gVGh1LCAyMDI2LTA4LTA2IGF0IDEwOjE0IC0wNzAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
+b3RlOg0KPiBUcmFjayB0aGUgdmVjdG9yIGFzc29jaWF0ZWQgd2l0aCBLVk1fRVhJVF9JT0FQSUNf
+RU9JIGFzIGEgdTgsIGFzIHRoZSB2ZWN0b3INCj4gaXMgemVyby1pbml0aWFsaXplZCBhbmQgaXMg
+b25seSBldmVyIHNldCB0byBhIGxlZ2FsIHZlY3Rvci4gIEkuZS4gdW5saWtlDQo+IG1hbnkgb2Yg
+dGhlIG90aGVyIHZlY3RvciB2YXJpYWJsZXMgaW4gS1ZNLCBpdCBjYW4ndCBiZSAtMSAoYW5kIGNh
+bid0IGJlDQo+IGdyZWF0ZXIgdGhhbiAyNTUsIHRob3VnaCB0aGF0IHNob3VsZCBob2xkIHRydWUg
+Zm9yIGFsbCB2ZWN0b3JzIGluIEtWTSkuDQo+IA0KPiBEcm9wIHRoZSBub3cgZnVsbHkgZGVhZCBC
+VUdfT04oKSwgd2hpY2ggYXNpZGUgZnJvbSBiZWluZyBjb21wbGV0ZWx5DQo+IHVubmVjZXNzYXJ5
+LCB3YXMgYWxzbyB1c2VsZXNzLCBhcyBpdCB3b3VsZG4ndCBndWFyZCBhZ2FpbnN0IGEgbmVnYXRp
+dmUNCj4gdmFsdWUsIGkuZS4gd291bGRuJ3QgZGV0ZWN0IEtWTSdzIG1hZ2ljIC0xIHZhbHVlLg0K
+PiANCj4gRm9yIGFsbCBpbnRlbnRzIGFuZCBwdXJwb3Nlcywgbm8gZnVuY3Rpb25hbCBjaGFuZ2Ug
+aW50ZW5kZWQuDQo+IA0KPiBTdWdnZXN0ZWQtYnk6IFBhb2xvIEJvbnppbmkgPHBib256aW5pQHJl
+ZGhhdC5jb20+DQo+IFNpZ25lZC1vZmYtYnk6IFNlYW4gQ2hyaXN0b3BoZXJzb24gPHNlYW5qY0Bn
+b29nbGUuY29tPg0KPiANCg0KUmV2aWV3ZWQtYnk6IEthaSBIdWFuZyA8a2FpLmh1YW5nQGludGVs
+LmNvbT4NCg==
