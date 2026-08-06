@@ -1,123 +1,90 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D383A7189
-	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 13:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861063B6C15
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 13:53:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786024203; cv=none; b=bOT8QRPnsduCztlpTf69KdHzUoReefVgg2lEWy7OEhsL6mEmiH0yVxIe/TBoM2vXM1AzazZ6EmrLfKwqJdvWyvoXTVXZo7Rm4Eg/BhB5Id/MHIwrnmUuW8uKF9rPMEKs+arLRULXKptwAx0G/PYVp+2IcOTissHbdvFqn/dhQM4=
+	t=1786024396; cv=none; b=ltVKdi9n8AfoLNWXBKnrR5si7okZc16OefyPHSUR2UZj36rAw8l1nDRrigLOpzDcCxChoRypfbkRHc+98tgG9Jbs/Gr0CngXiKaVcs8yOJiRC8RMzTAJUJ8U31psLfXPSeMteUxTNUMUCrFU7rxpedWQQy+yg3r/haQ4ietdxVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786024203; c=relaxed/simple;
-	bh=HcX99Vmru2wvkma2CqrssqCH8aNGuIUa28xbRJ1pWpA=;
+	s=arc-20240116; t=1786024396; c=relaxed/simple;
+	bh=m2qiwyT0gBlgrPaEvfZGXkwH8PZ+oMXWE+y7LnPQMIc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=N2wazsgjfQOEuvR5YpJC0SUxIpaUuUynEgDhx9iOWIcvAoGdsWEpC63fYTox4f3Ifx+uRlsLOIXWnYpmSZg/RksQIQgj+71ESTixdwwkDUnu8/jZJo93qmrWPWHB4q98mjSvVkIphU/ass9xINtUbPaMz0COebwdEfcDnk+lDG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dlN1d+hn; arc=none smtp.client-ip=209.85.216.69
+	 To:Cc:Content-Type; b=l8J7k/Mk5IQhcKp4DaBL+JFVcbhk23brbE+cS67KFQNPMpa5RCtoKDZkPEuYAW/IxLmI4c+jboopCpIFb6mCmdUwMp9A+5cT4+ZYbwRg/aR8pT6L/kygv/g/AIpploGG+2e89RaRXrcsiLKIF32u088nYuJ2qQ4lSXyA/Z5BaDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d11aICYu; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dlN1d+hn"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e25e4b41cso2348114a91.0
-        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 06:50:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d11aICYu"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cacd6d37edso28533085ad.0
+        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 06:53:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786024202; x=1786629002; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786024394; x=1786629194; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=l6H3PlwGy5wcplG+ZQMBL2JSeCsm1wL8Fnu7CjOYnzs=;
-        b=dlN1d+hn8IKORLf+K8o9jAtU30KHZ7Ti3di0OHFn0AjfVxj4eYl32gEa/e6zt7fCyJ
-         sxVrBf/zrPVsiPYu2ZvNkXJs8KrG24Uqf5inJlhl7gr7FdIqGsn0PitQUd4eZbv6EwVz
-         Y6Bk2tW485YY9hQQA9ysEu4Vzi2nYwHAH09frV4VV9/W8DQDTsvBqynxTkMQRwLu3vIr
-         fISBe+7Qq0ZiBCGFUH78V9Y/NbUZovig1kMBqcEO6yR3viOOb9sYluU5NnvbDvo5ZlYO
-         1StN05+p9VnLP3Zzd2nV25w8z5IRvXVxxvUaj30tLM3W3iVJhNnB9ZfQzU7xanvpu1NP
-         XUuw==
+        bh=KurGLp5j0TRPb0GM1o+RkfUsTRyZPXyOf0pcclYokSw=;
+        b=d11aICYu7WC3NMAQesLKIyF3pFUcsgX5lOPiMsGAGsrIIYHz0V1+gOXIwZ/X0waLvA
+         f87YmyDWxFvRnj+f4OQ2OJC3E5GH+YkEOATcXe84KaKw8fGoDsvM48GDYOSPHe5AJod9
+         +MZAI/m1Wjtb8deX3teBA2S1ezrZXZ1p31aH3yDokfNEiXF2jVudJ/3OXwx/bU5q4eBC
+         aEIUZQiiJmft0gXdsblwvIav63zYdcilCdXryd8S4zBn8DrcI4iz7YDQMx/J8IJdrI+y
+         tW6N18k6RsLV9zLS8p0RuLWa7chCxFOrvW8OO5mH5d4H5fkqeAGLcBfS/TYJrDsbAhY/
+         ceAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786024202; x=1786629002;
+        d=1e100.net; s=20251104; t=1786024394; x=1786629194;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=l6H3PlwGy5wcplG+ZQMBL2JSeCsm1wL8Fnu7CjOYnzs=;
-        b=PH//4HHRyBLRgorBjhPp++lWb4Nl0+1WxshUMnUw1bbvibxPnLPz2Ad65ozQO9cjjM
-         s40PPWw2eBk/spoymN27uR/Exvgyet0vai03+1tXiLKXcpwQcKjyZumep8cERj/2ypOr
-         MWthSoqINsDkZEAMbkak8qWTJiexxq+H9ab3xUDw3VXXQSVSe3pUlqbxJWUpndsPVyLH
-         b71lGlNSav6rkE60zEeLBhEdojsMDMKB8va34WxJBwVVBg3M+YxkA5ig02wLc3k/BeUL
-         bD0TAXrAraSlK6PQSGgeAdj6HcN6Om59iOvXfGJPpEXx7P5XOKYgBbsrHp7X3cZ1uniA
-         nr6g==
-X-Forwarded-Encrypted: i=1; AHgh+Rrhq9h6Z08vUYpcqIis3UgF7a0yC0BArZRYkeiMvrgzVQbBPcQm87ErgAm9n4psBJUhBaA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxorxJDQqhru3JIaf1mPGPKd/5BqVsRi/QmL1+qTq5dvwEqmYuZ
-	wsdCPrB/03FqgcAKpH+VgC59/F2apo7jGTE9SkxloKRPpx4W2dJ+nNlTSCVnvzaSPC0+WYEZIKN
-	I333+5A==
-X-Received: from pjbgp15.prod.google.com ([2002:a17:90a:df0f:b0:36b:8abb:86c4])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:52c6:b0:38e:75f3:ad4d
- with SMTP id 98e67ed59e1d1-3903c5381efmr14259219a91.7.1786024201470; Thu, 06
- Aug 2026 06:50:01 -0700 (PDT)
-Date: Thu, 6 Aug 2026 06:50:00 -0700
-In-Reply-To: <82482276-0140-4d90-a983-fdfc5bc2e4a5@suse.com>
+        bh=KurGLp5j0TRPb0GM1o+RkfUsTRyZPXyOf0pcclYokSw=;
+        b=JxLeXi85VvmWtnwoHen10Vj//dfVUxYvO7NNrFfej3sMpSnlTmGFwGW9YinvVE66ib
+         xj24pYzZK/+r/9GYwwCkkRlNeldjPJi3PYyCurU713NAYdfudxL9PuxVxc9c1a2lKYOy
+         4tlUhTnMnOFXw9pPXnvqXxahXCuKRai2UP4SLxNcupE0OBZa8mKmIs4uTEXzHE92A2PO
+         ihIoqPnQknilDDYPI01Nof4NXqWh+TSWy31iN5tt/mXXqe//6LzSNIOqKeum2Au+Z3JO
+         oHdpyvn4S1wcvSarchQ4P82v4p5894Ut7IN0+E0IUS0I/SjNTh6M4mtFQLtXb30BHOOd
+         6fRQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr5BJ7Zct3PIezSELP45rWBrPMk/Gs81xrh5nBwLkvQ03znq1kLDOmuRnMF/wYXAV0XwX0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywe8ioOwk1eKHiv+Zj9YzfZpuKXGUgK+50j/O1jJBMfNZuOc5CS
+	7N9cM6ROlDmocX9Ao46IDoiJQsfWGVuIFCogVf+YO0zQJ65QAexe6AHgdVv26B6LdC5gbyqjNrP
+	nRisKuQ==
+X-Received: from plao6.prod.google.com ([2002:a17:903:3006:b0:2ca:da0a:7296])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ebc5:b0:2cf:906c:7d1
+ with SMTP id d9443c01a7336-2d0ca946776mr183858535ad.20.1786024393599; Thu, 06
+ Aug 2026 06:53:13 -0700 (PDT)
+Date: Thu, 6 Aug 2026 06:53:12 -0700
+In-Reply-To: <anSMBpQJ8x-vXYy2@sgarzare-redhat>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260805031257.1844914-1-xiaoyao.li@intel.com>
- <20260805031257.1844914-2-xiaoyao.li@intel.com> <82482276-0140-4d90-a983-fdfc5bc2e4a5@suse.com>
-Message-ID: <anSRCBhWi2BK9kYB@google.com>
-Subject: Re: [PATCH 1/2] KVM: TDX: Enable Notify VM exit
+References: <20260723153310.745855-1-andrey.drobyshev@virtuozzo.com> <anSMBpQJ8x-vXYy2@sgarzare-redhat>
+Message-ID: <anSRyFTNGC-XcFM1@google.com>
+Subject: Re: [PATCH] vhost: clear vq->worker under vq->mutex when freeing workers
 From: Sean Christopherson <seanjc@google.com>
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, "Chang S. Bae" <chang.seok.bae@intel.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	mst@redhat.com, stefanha@redhat.com, jasowangio@gmail.com, 
+	eperezma@redhat.com
 Content-Type: text/plain; charset="us-ascii"
 
-+Chang
-
-On Thu, Aug 06, 2026, Nikolay Borisov wrote:
-> On 8/5/26 06:12, Xiaoyao Li wrote:
-> > Enable Notify VM exit functionality for TDX guests.
+On Thu, Aug 06, 2026, Stefano Garzarella wrote:
+> On Thu, Jul 23, 2026 at 06:33:10PM +0300, Andrey Drobyshev wrote:
+> > The effect is harmless in practice, as this only happens while the
+> > owning process (and thus the whole device) is dying, but the lockless
+> > write is inconsistent with the rest of the code.  Clear vq->worker under
+> > vq->mutex, like everyone else, so that all writers of vq->worker follow
+> > the same locking rule.
 > > 
-> > Notify VM exit is an existing feature supported by KVM. Userspace can
-> > enable Notify VM exit through KVM_CAP_X86_NOTIFY_VMEXIT when it's
-> > reported as supported. However, KVM reports the support of this CAP just
-> > based on the hardware capability but doesn't differentiate between VMX
-> > and TDX. This leads to the issue that userspace can enable this cap for
-> > TDX guests without getting an error, but the feature is not actually
-> > enabled because KVM doesn't call the TDX module API to program the
-> > relevant TD VMCS fields.
-> > 
-> > Enable Notify VM exit for TDX guests by:
-> > 
-> >    - Invoking TDX module API calls to set NOTIFY_VM_EXITING and Notify
-> >      Window in TD VMCS. It's done in tdx_vcpu_init() where other TD VMCS
-> >      bits are set. Since TDX vCPU cannot be reset, it only needs to be
-> >      configured once when initializing the TDX vCPU.
-> > 
-> >    - Adding corresponding exit handler for TDX Notify VM Exit.
+> > This issue was found by Sashiko AI review.
 > 
+> Can you share a link to the review?
 > 
-> nit: That feature is completely misnamed in the kernel.
+> I don't know if it's common or not, but having the link in the commit or
+> after --- will help the reviewers.
 
-Well that's bloody annoying.  The feature was called "NOTIFY VM EXIT" in the
-December 2022 version of the ISE, but indeed is called Instruction Timeout in
-the March 2023 versio of the SDM.  Intel isn't exactly building a stellar track
-record with ISE publications...
++1.  FWIW, I've been using and encouraging the "standard" Reported-by+Closes, e.g.
 
-Chang, please forward this to the right people as well.  Changing the name of a
-feature isn't the end of the world, but things like this add friction and make
-it quite clear that ISEs are very much "pre-production" drafts.  Which is totally
-fine, and there is most definitely value in publishing early drafts of features,
-but it means I'm going to be very hesitant to merge features in advance of them
-being formally defined in the SDM.
-
-> It should be instruction timeout (as is in the SDM). Please reword the
-> changelog to refer to the name of the features as they are in the SDM. I.e if
-> you search for NOTIFY_VMEXIT or NOTIFY_WINDOW absolutely nothing can be found
-> in the SDM.  The changelog should ideally mention both - SDM's nomenclature
-> and linux's nomenclature.
-
-No, let's change Linux's nomenclature before merging this, "Notify" was always
-vague and confusing.  It's unfortunate that we let that bleed into uAPI headers,
-but we can simply #define aliases (or just force userspace to update as well, if
-they use kernel headers directly).
+    Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
+    Closes: https://lore.kernel.org/all/20260625212001.3B6561F000E9@smtp.kernel.org
