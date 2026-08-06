@@ -1,157 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232E6481FCA;
-	Thu,  6 Aug 2026 17:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8145A37C926;
+	Thu,  6 Aug 2026 17:56:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786038059; cv=none; b=SY15D+Ve2btwkfU7ggsWmYFvQVbTeMkMUK7fyKVqjzliwscMO/taDK7moXQPl3gmfWjC+Dalr19Foj/wSNW1J/X5ZWrB+oa466BuVcew4mzR1d992mUiwX5Fjda/TqxFBhbXRPMnhhjdFeZDyoSuUllufKblNGvbecJFP1Rm1tA=
+	t=1786039013; cv=none; b=pwrhNBPr9Y+hehDyxnvhgk7roD9WkiH6tlyrid+sr/q2VvP8xtPR6Rszkzv5z3cDrQHW7DMOtC1C9RyhVSZ/NTRs+VFIl2O8V83EtDrKWb0SryRfJQk6r8ZCtW+/i95HrnBvGo99XmOLMtLcbaamxX2Db7isWvQ6wZWoR781cbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786038059; c=relaxed/simple;
-	bh=jR6UAf+W3pRyagiBnBIthX9L1RTvVK8tgmNzQD67mJU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GnxA61I61T8q3hiKRA2zTWkPq4jZoCjbelZ06oazTGLVBlSRkHxB7DOC5PTDTSBV4C07/yjbMVAfafT7IVI9tjJC9x1WbOGmFfE/HdV9bz/C7nzmeb70h0UZXyb0uethVduKy1Fq3pnyjBYrx4m9rz9gyvQy9RXBX8d5JH4yV30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lWpTxuxP; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786039013; c=relaxed/simple;
+	bh=Gi9+YZqxzC5U/H3r1duCSln5ETVs0zLEDlnnILVT4NM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=ChcbKbXISpVtOzQ9EDFEeJXMCuCY9b+xDjJg/S3YXZlQ7bhJx1pOA8X5zMxJvDQbXtqTJIyWqyriRpsDOvr1RhyEn5djsFdSY48HLFw/sxcTwZP7+AHrcYjQWhJofmo2Dxp5GOvjvuwLhCxpGGzY8eOBI+pUK19Z7jEutRt2A8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NiZtO5mE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lWpTxuxP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786038058; x=1817574058;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jR6UAf+W3pRyagiBnBIthX9L1RTvVK8tgmNzQD67mJU=;
-  b=lWpTxuxPDWz8JQzO9DOn/GoslLZ7c1UN3NkPUIy08mh9OA2HKcWIcxuy
-   ihbPUl7o8B8tjcSghoWzuPTmAZH4cZfv/ra1ox4CtUy71ep0ZUEyzJbNJ
-   Ed0cFP4tDWbTzm+7pFJfZK0+LWTm0k93ApptxeFJRDmpeNdtLKpwGPZfd
-   BcodF6DnuNYkysOLHvssREQN1nEPz1eUI0zOb3u1IkN/cc/I04ncO8Cjo
-   5nV9l5B1oifh1XR181yst5Hguru/xgQAiBIvIjZOjZYwkHYjJE3bFzPAy
-   uc8RnMtnlJ+CKjQW1u4HLwdyPWb6XgynmYpFQxlsh6OMYTlkpzGZjTWdm
-   g==;
-X-CSE-ConnectionGUID: r5Vd7SBkRP6MLumyYFCKOg==
-X-CSE-MsgGUID: 02BNnFMdQoa8q6shNRLTDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="98151986"
-X-IronPort-AV: E=Sophos;i="6.25,208,1779174000"; 
-   d="scan'208";a="98151986"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 10:40:57 -0700
-X-CSE-ConnectionGUID: 7DB5m3cyQx2LtjOXhuPo6g==
-X-CSE-MsgGUID: 1SUtF5e8QmWqOPxccB+TSA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,208,1779174000"; 
-   d="scan'208";a="300373251"
-Received: from igk-lkp-server01.igk.intel.com (HELO 3cba2a188a06) ([10.211.93.152])
-  by orviesa001.jf.intel.com with ESMTP; 06 Aug 2026 10:40:51 -0700
-Received: from kbuild by 3cba2a188a06 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1ws25I-000000004f4-1D7z;
-	Thu, 06 Aug 2026 17:40:48 +0000
-Date: Thu, 6 Aug 2026 19:40:10 +0200
-From: kernel test robot <lkp@intel.com>
-To: Markus Elfring <Markus.Elfring@web.de>, acpica-devel@lists.linux.dev,
-	bpf@vger.kernel.org, coresight@lists.linaro.org,
-	kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-perf-users@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	mptcp@lists.linux.dev, netdev@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org, virtualization@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alex Mastro <amastro@fb.com>, Alex Williamson <alex@shazbot.org>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andi Kleen <ak@linux.intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Ankur Arora <ankur.a.arora@oracle.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH] tools: Use fputc() calls in some functions
-Message-ID: <202608061909.wj199SHx-lkp@intel.com>
-References: <48f2d61f-d468-49b7-881e-f00777db073f@web.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NiZtO5mE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01F01F000E9;
+	Thu,  6 Aug 2026 17:56:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786039012;
+	bh=CaQlW6cHFmuWddebCtXjR8Mmp9ES/DbEmvhyFyTQg4g=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=NiZtO5mEIgfXc3cnZYUZk/pCgIGTCTbrs3ZmwDe2KIfeQMb1PP+ACfr3LzmXEVg8v
+	 9R6m9sjdkmvGeU01lOGfifqHzCGfICjKvY1VPjqfGEQ3bsjaAoiGIFKJhppM4+Thzx
+	 /AI0ymHFMX0bsFl65QfhEibafxiLEzD9pLfyIMmav0FWpLu53GUGUX6/wVKhf9sBTJ
+	 DdjvxwByGaP6oTL6wmagKzQDMc+o00gqY0u6KZCcqgNHv+XbAO7bBrAfLLGyMNlHHX
+	 43uX3K+Cbol+xnXCv+6NaMgxbRVaLC8Pk943qANLJg06CaiFSumswaT7oTfMN/c8z2
+	 S7Y3KIU8vvoog==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5] s390/vfio-ap: fix stale pqap_hook pointer on error
+ in vfio_ap_mdev_set_kvm()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
+Cc: "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>
+In-Reply-To: <20260806173435.105044-1-akrowiak@linux.ibm.com>
+References: <20260806173435.105044-1-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 06 Aug 2026 17:56:51 +0000
+Message-Id: <20260806175651.C01F01F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <48f2d61f-d468-49b7-881e-f00777db073f@web.de>
 
-Hi Markus,
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on perf-tools-next/perf-tools-next]
-[also build test ERROR on tip/perf/core perf-tools/perf-tools linus/master v7.2-rc6 next-20260806]
-[cannot apply to acme/perf/core]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Markus-Elfring/tools-Use-fputc-calls-in-some-functions/20260806-165154
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git perf-tools-next
-patch link:    https://lore.kernel.org/r/48f2d61f-d468-49b7-881e-f00777db073f%40web.de
-patch subject: [PATCH] tools: Use fputc() calls in some functions
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260806/202608061909.wj199SHx-lkp@intel.com/config)
-compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260806/202608061909.wj199SHx-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608061909.wj199SHx-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> builtin-check.c:300:8: error: incompatible pointer to integer conversion passing 'FILE *' (aka 'struct _IO_FILE *') to parameter of type 'int' [-Wint-conversion]
-     300 |         fputc(stderr, '\n');
-         |               ^~~~~~
-   /usr/include/stdio.h:155:16: note: expanded from macro 'stderr'
-     155 | #define stderr stderr
-         |                ^~~~~~
-   /usr/include/stdio.h:611:23: note: passing argument to parameter '__c' here
-     611 | extern int fputc (int __c, FILE *__stream) __nonnull ((2));
-         |                       ^
->> builtin-check.c:300:16: error: incompatible integer to pointer conversion passing 'int' to parameter of type 'FILE *' (aka 'struct _IO_FILE *') [-Wint-conversion]
-     300 |         fputc(stderr, '\n');
-         |                       ^~~~
-   /usr/include/stdio.h:611:34: note: passing argument to parameter '__stream' here
-     611 | extern int fputc (int __c, FILE *__stream) __nonnull ((2));
-         |                                  ^
-   2 errors generated.
-   make[5]: *** [tools/build/Makefile.build:95: tools/objtool/builtin-check.o] Error 1
->> disas.c:540:9: error: incompatible pointer to integer conversion passing 'FILE *' (aka 'struct _IO_FILE *') to parameter of type 'int' [-Wint-conversion]
-     540 |                 fputc(stream, '\n');
-         |                       ^~~~~~
-   /usr/include/stdio.h:611:23: note: passing argument to parameter '__c' here
-     611 | extern int fputc (int __c, FILE *__stream) __nonnull ((2));
-         |                       ^
->> disas.c:540:17: error: incompatible integer to pointer conversion passing 'int' to parameter of type 'FILE *' (aka 'struct _IO_FILE *') [-Wint-conversion]
-     540 |                 fputc(stream, '\n');
-         |                               ^~~~
-   /usr/include/stdio.h:611:34: note: passing argument to parameter '__stream' here
-     611 | extern int fputc (int __c, FILE *__stream) __nonnull ((2));
-         |                                  ^
-   2 errors generated.
-   make[5]: *** [tools/build/Makefile.build:95: tools/objtool/disas.o] Error 1
-   make[5]: Target '__build' not remade because of errors.
-   make[4]: *** [Makefile:123: tools/objtool/objtool-in.o] Error 2
-   make[4]: Target 'all' not remade because of errors.
-   make[3]: *** [Makefile:74: objtool] Error 2
-   make[2]: *** [Makefile:1587: tools/objtool] Error 2
-   make[2]: Target 'prepare' not remade because of errors.
-   make[1]: *** [Makefile:248: __sub-make] Error 2
-   make[1]: Target 'prepare' not remade because of errors.
-   make: *** [Makefile:248: __sub-make] Error 2
-   make: Target 'prepare' not remade because of errors.
-
+Pre-existing issues:
+- [High] Unconditional dereference of `matrix_mdev->kvm` when handling host=
+ AP configuration changes.
 --
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+--- Patch [1]: [PATCH v5] s390/vfio-ap: fix stale pqap_hook pointer on erro=
+r in vfio_ap_mdev_set_kvm() ---
+commit ea70bf8efc92cb332a90ca640bf9deec142d0044
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+s390/vfio-ap: fix stale pqap_hook pointer on error in vfio_ap_mdev_set_kvm()
+
+This commit fixes a stale pointer use-after-free issue when another mdev is=
+=20
+already attached to a KVM instance. It avoids iterating the mdev_list under=
+=20
+the mdevs_lock by changing the rwsem lock order and checking if=20
+kvm->arch.crypto.pqap_hook is already set.
+
+> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
+_ap_ops.c
+> index 44b3a1dcc1b36..99a0efd999ef9 100644
+> --- a/drivers/s390/crypto/vfio_ap_ops.c
+> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+[ ... ]
+> @@ -1883,18 +1881,15 @@ static void vfio_ap_mdev_unset_kvm(struct ap_matr=
+ix_mdev *matrix_mdev)
+>  	struct kvm *kvm =3D matrix_mdev->kvm;
+> =20
+>  	if (kvm && kvm->arch.crypto.crycbd) {
+> -		down_write(&kvm->arch.crypto.pqap_hook_rwsem);
+> -		kvm->arch.crypto.pqap_hook =3D NULL;
+> -		up_write(&kvm->arch.crypto.pqap_hook_rwsem);
+> -
+>  		get_update_locks_for_kvm(kvm);
+> +		kvm->arch.crypto.pqap_hook =3D NULL;
+> =20
+>  		kvm_arch_crypto_clear_masks(kvm);
+>  		vfio_ap_mdev_reset_queues(matrix_mdev);
+> -		kvm_put_kvm(kvm);
+>  		matrix_mdev->kvm =3D NULL;
+
+[Severity: High]
+This is a pre-existing issue, but can unattached mdevs cause a crash during
+host AP configuration changes?
+
+If an mdev is created but not attached to a guest (meaning matrix_mdev->kvm
+is NULL), and a host AP config change occurs, vfio_ap_on_cfg_changed()
+eventually triggers vfio_ap_mdev_cfg_remove():
+
+drivers/s390/crypto/vfio_ap_ops.c:vfio_ap_mdev_cfg_remove() {
+    ...
+	list_for_each_entry(matrix_mdev, &matrix_dev->mdev_list, node) {
+		mutex_lock(&matrix_mdev->kvm->lock);
+    ...
+}
+
+Will this unconditionally dereference matrix_mdev->kvm and cause a panic
+since it isn't checked for NULL?  A similar path exists in
+vfio_ap_mdev_hot_plug_cfg() as well.
+
+> =20
+>  		release_update_locks_for_kvm(kvm);
+> +		kvm_put_kvm(kvm);
+>  	}
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260806173435.1050=
+44-1-akrowiak@linux.ibm.com?part=3D1
