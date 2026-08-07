@@ -1,179 +1,135 @@
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7800B38E8A9
-	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 16:01:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CE4280331;
+	Fri,  7 Aug 2026 16:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786118509; cv=none; b=UvM73COU3K8tTfow5T8QjcFOJSOi4AjmgAsv+rBf3E29k6H3gfraqH5kXjaZF1sGhH+gET5O55/Gecvhm7raXdUfG60Yt9zymYSqTkxD2IMOWek+sWuq1tntl6Qt3Wbwobnpc79dlIdrYBSRUwtDVqy0OcKPFWhdA5RO/kBBe1s=
+	t=1786119655; cv=none; b=C7OY9NLH4uAJz/1CUlD8iWVztH8W4oGKue7BD2BW9F8dd4/ygN41o26PSUuyvty0OITUHjaRjNHYwj7onxJ/VIt6yP0iAcKbH6d08zeo0OdZV4LoMm2icc3z1oPekPlxYnWE6paKkqG5vQRH56dCPfWZJMbeDRReB0joeZ5mo4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786118509; c=relaxed/simple;
-	bh=oyF0eUov7V5Joayl1WtETNH42ClpKVUpM7pXQZ8D0gs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EwFxhkv6MqR4yGRMIBDSL3NGwsyLhNcp+sicX+q7wfWUyKBA8UwPAmAlgybWzQ/GpCW6i9Q9dLz0efdYn6pGpaesE+/z8ASw3CbYudcyL8OHtMod5IY/1N06AtxyuuYkC3EYu2FJRLbG9yKxediYyvSRkv3ImELmR1QchCfWCNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RcA5NpRE; arc=none smtp.client-ip=209.85.216.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786119655; c=relaxed/simple;
+	bh=5Kq0D1VDgc/aeeEYkKiaKCkpRQ5bwuPl5hs+zY6tL/Q=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=seSxNVYWCbhmuQ/IyNqYEcd3bUxbcDv06kJdjDu4DVSwI12egPv2p8N13vIFRZhg1/LzT9HeVXkirDin5obZae6Mo6nMjsU9iGBwMabqGOJnDKONlJSbArNgj13ZxFrpcAbC7HVUXQu9bFwC8U+GsDNhjwQetmMv5oeBSxrhO6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mtvC5wQZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RcA5NpRE"
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38f5ac7354dso5127747a91.1
-        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 09:01:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786118505; x=1786723305; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LuRvEMyIwcIIc608820BMSIsxJ52vGjz6iWrNb91CbA=;
-        b=RcA5NpREAAYVGbl/ebPwyS/QLeXvi1I+2BszciUrPh1Wjop9kbEXgZ1phNBu435Il3
-         7Lhuyz7LQyPxDrgEWIrq9XRbFY99rxYlliPVeC+UpG1bodsQrpgof8rEw/niLtiFy8h1
-         Txti7cVNezV1EmbDI+J6Dm18vFwMqEPeiOaIsDVSfvrjJ1X2ZPvJPPgPxC0uMAicxrpJ
-         Dw8TTE5tkX/cw8wyK0FpZ3ZzqNSuFRCg3XWBjk9DBGNmLTzWauoTs2/gzgXFpUQeUq1C
-         KDgdiqzsii3cZHuif8JlV8q08gdvyTdGNXxxQ7lrhlLjCA+7UHWBlIBjOQS10IpKoDrK
-         dQVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786118505; x=1786723305;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LuRvEMyIwcIIc608820BMSIsxJ52vGjz6iWrNb91CbA=;
-        b=naAuExoZJquT1HKgvvYmnFZvJkQs7zLdPJ8py4vp6WmhLIhmvvOKsjPVUwLNKflnRa
-         4ivvNsKh+fv18XxZlvjAShRrjsA8HDpSl1q6Ve8/+G97Ee7AuK3mHXFH49xI2PNld7zc
-         N8N+kl+iLfdRpRjqAdrZPYszl20quqaEdd6H+SPDxYKovpm6yraBenafZLoejYJnw7hL
-         VILjKIs8tmchy7xfGmFQWTi0VMISRjUObh7nihHxTE0HZgnx5tsIOGW3o4KfxyJmXJPg
-         WE9c3o+wT0Uo4oi6FgADHRJTKDKQFhurc7tb+ay7O3VK2ZQi2Lems13O8iqZNtMALC0V
-         9Mhw==
-X-Gm-Message-State: AOJu0YxRxxT90ANe2JgKKBCL/HxM0E5E71Q/Xao2P6iFDgJ5gOjWTR1p
-	yAQVExlgvhueSmIetQIrZWjB5EPnIyK015qHJ0pveb8D1xZ1OWlDnxVN2Yz1CftL3p6ufAzTVIp
-	zBFTO6Q==
-X-Received: from pjbse13.prod.google.com ([2002:a17:90b:518d:b0:386:bc47:e8b0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:28cf:b0:381:11eb:d78e
- with SMTP id 98e67ed59e1d1-3903c5d321dmr24032426a91.14.1786118505000; Fri, 07
- Aug 2026 09:01:45 -0700 (PDT)
-Date: Fri, 7 Aug 2026 09:01:38 -0700
-In-Reply-To: <anUmdhx0Dh-yd89z@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mtvC5wQZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AEC71F000E9;
+	Fri,  7 Aug 2026 16:20:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786119653;
+	bh=5pMFsqQTHcQ+Rn9idFvDXGrE+yz2Oj3OwvnHW54vSWY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=mtvC5wQZNmYssl/an8V+StmM3QW+waxkxShkolOw+JL2wRTArb96FxvIMq9Mp52zq
+	 HCIkBTZUtLf/YTdHGl01a4mgUu/XSOx3PTl2Xm0BPygPLM7lkfLbOgeiECbEWp8xcs
+	 KVLsUSCw3JrUDhm/N8EXxda0d/Uuilm4k4s+VxbSGtHEI7NsOJcBDovgLR/YSrXscU
+	 24rGES7Gocr3s8caTRP0OeYhTbiRFEputonf8UQAxQ8vcJ5LFRHQKsXIdurixA42Qh
+	 eUpq/M+unGrppO8lptPCUL9sW2OZVyWP0vbnXG8WAIYPesvaHXAHzjHIbix9usZtaJ
+	 Um/F3IbnoVJLw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 32/49] KVM: arm64: gic-v5: Handle userspace accesses
+ to IRS MMIO region
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
+Cc: kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev
+In-Reply-To: <20260807111159.429128-33-sascha.bischoff@arm.com>
+References: <20260807111159.429128-1-sascha.bischoff@arm.com>
+ <20260807111159.429128-33-sascha.bischoff@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 07 Aug 2026 16:20:52 +0000
+Message-Id: <20260807162053.3AEC71F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260804233923.3504629-1-seanjc@google.com> <20260804233923.3504629-6-seanjc@google.com>
- <20260805000221.B63F61F00A3A@smtp.kernel.org> <anN_J_KZhVJ1zIeI@google.com> <anUmdhx0Dh-yd89z@google.com>
-Message-ID: <anYBYu4rx-jCv8gr@google.com>
-Subject: Re: [PATCH v8 05/17] KVM: x86: Avoid NTP frequency skew for KVM clock
- on 32-bit host
-From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>
-Content-Type: text/plain; charset="us-ascii"
 
-+David (I realized I'm having a conversation between me, myself, and Sashiko)
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Userspace can inject an inconsistent state by setting IRS_IST_BASE=
+R.valid=3D1 without allocating a host IST, leading to a CONSTRAINED UNPREDI=
+CTABLE hardware state if the guest subsequently clears the valid bit.
+--
 
-On Thu, Aug 06, 2026, Sean Christopherson wrote:
-> On Wed, Aug 05, 2026, Sean Christopherson wrote:
-> > On Wed, Aug 05, 2026, sashiko-bot@kernel.org wrote:
-> > > > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> > > > index 3107878a6fe5d..8f469fd9863f9 100644
-> > > > --- a/arch/x86/kvm/x86.c
-> > > > +++ b/arch/x86/kvm/x86.c
-> > > 
-> > > [ ... ]
-> > > 
-> > > > @@ -915,13 +914,6 @@ static s64 get_kvmclock_base_ns(void)
-> > > >  	/* Count up from boot time, but with the frequency of the raw clock.  */
-> > > >  	return ktime_to_ns(ktime_add(ktime_get_raw(), pvclock_gtod_data.offs_boot));
-> > > 
-> > > [Severity: Low]
-> > > Will reading the 64-bit pvclock_gtod_data.offs_boot without seqcount
-> > > protection or data_race() annotations trigger KCSAN data race warnings on
-> > > 32-bit systems?
-> > > 
-> > > By removing the ktime_get_boottime_ns() fallback, this read now executes on
-> > > 32-bit architectures where it compiles to two non-atomic 32-bit accesses.
-> > > If a KVM vCPU thread calls get_kvmclock_base_ns() while a timer interrupt
-> > > runs timekeeping_update(), it overwrites offs_boot.
-> > > 
-> > > Even though the value only actually changes during suspend when the freezer
-> > > subsystem guarantees vCPU threads are frozen (preventing functional tearing),
-> > > overwriting the identical value concurrently with an unprotected read still
-> > > introduces a formal C11 data race.
-> > 
-> > Huh.  And strictly speaking, 64-bit could tear the store/load.  Stealing heavily
-> > from ktime_mono_to_any(), this as a prep patch plus fixup (not yet tested)?
-> 
-> LOL, hilarious.  I was cherry-picking the rest of the series on top to run the
-> tests, and discovered that "Compute kvmclock base without pvclock_gtod_data"
-> does exactly that: uses ktime_mono_to_any() directly.  So at least I went in the
-> right direction?
-> 
-> David, is there any reason that patch needs to be 25/36?  AFAICT, it slots in
-> very nicely before this patch.  Then we don't need to do the below, because
-> ktime_mono_to_any() already takes care of 32-bit.
+--- Patch [32]: [PATCH v5 32/49] KVM: arm64: gic-v5: Handle userspace acces=
+ses to IRS MMIO region ---
+commit 24ee880222eb3e4ff06c9b27b1d655da134efd7a
+Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
+Date:   Fri Aug 7 11:28:54 2026 +0000
 
-Same question for "KVM: x86: Use ktime_get_snapshot_id() for master clock".  I
-don't see any obvious dependencies in here:
+KVM: arm64: gic-v5: Handle userspace accesses to IRS MMIO region
+   =20
+As part of saving and restoring the state of a GICv5-based system,
+userspace must save and restore the IRS MMIO registers. These include
+important information such as the guest IST configuration, and KVM
+must present consistent state to the guest after migration.
 
-  KVM: x86: Re-synchronize TSC after KVM_SET_TSC_KHZ
-  KVM: x86: Remove runtime Xen TSC frequency CPUID update
-  KVM: x86: Avoid redundant masterclock updates from multiple vCPUs
-  KVM: x86/xen: Prevent runstate times from becoming negative
-  KVM: x86: Avoid gratuitous global clock updates
-  KVM: x86: Factor out kvm_use_master_clock()
-  KVM: x86: Allow KVM master clock mode when TSCs are offset from each other
-  KVM: x86: Replace nr_vcpus_matched_tsc count with all_vcpus_matched_tsc bool
-  KVM: x86: Kill last_tsc_{nsec,write,offset} fields
-  KVM: x86: Improve synchronization in kvm_synchronize_tsc()
+> diff --git a/arch/arm64/kvm/vgic/vgic-irs-v5.c b/arch/arm64/kvm/vgic/vgic=
+-irs-v5.c
+> index 095046c7959fa..212066b8d7ed5 100644
+> --- a/arch/arm64/kvm/vgic/vgic-irs-v5.c
+> +++ b/arch/arm64/kvm/vgic/vgic-irs-v5.c
+[ ... ]
+> +static int vgic_v5_mmio_uaccess_write_irs(struct kvm_vcpu *vcpu, gpa_t a=
+ddr,
+> +					  unsigned int len, unsigned long val)
+> +{
+> +	struct vgic_dist *vgic =3D &vcpu->kvm->arch.vgic;
+> +	struct vgic_v5_irs *irs_data =3D vgic->vgic_v5_irs_data;
+> +	size_t offset =3D addr & (SZ_64K - 1);
+> =20
+> -		/* The address cannot be changed while the IST is valid. */
+> -		if (irs->ist_baser.valid && valid)
+> -			return;
+> +	/*
+> +	 * The following registers are ONLY settable via uaccesses. The guest
+> +	 * cannot write them!
+> +	 */
+> =20
+> -		/* Valid -> Invalid */
+> -		if (irs->ist_baser.valid && !valid) {
+> -			/* Make the LPI IST invalid and then ... */
+> -			if (irq_set_vcpu_affinity(vgic_v5_vpe_db(vcpu), &cmd))
+> -				break;
+> +	switch (offset) {
+[ ... ]
+> +	case GICV5_IRS_IST_BASER:
+> +		if (irs_data->ist_baser.valid &&
+> +		    !vgic_v5_ist_baser_matches(irs_data, val))
+> +			return -EINVAL;
+> +
+> +		vgic_v5_update_irs_ist_baser(irs_data, val);
+> +		break;
 
-And if I pull those in earlier, and grab these two (which AFICT also don't have
-dependencies either):
+[Severity: High]
+Does this allow userspace to inject an inconsistent state?
 
-  KVM: x86: Remove runtime Xen TSC frequency CPUID update
-  KVM: x86/xen: Prevent runstate times from becoming negative
+If userspace sets the valid bit of GICV5_IRS_IST_BASER to 1 via
+vgic_v5_mmio_uaccess_write_irs() but does not actually allocate a host LPI =
+IST
+(by omitting the KVM_DEV_ARM_VGIC_GRP_IST ioctl), the VM can still be start=
+ed.
 
-Then what's left fits nicely into two or three buckets:
+When the guest subsequently clears the valid bit, KVM's MMIO handler:
 
-  1: Masterclock overhaul
-  2. New uAPI and tests
+vgic_v5_write_irs_ist_baser() {
+    ...
+    if (irs->ist_baser.valid && !valid) {
+        /* Make the LPI IST invalid and then ... */
+        rc =3D irq_set_vcpu_affinity(vgic_v5_vpe_db(vcpu), &cmd);
 
-> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> > index b6e1dfd6db6a..57679d871581 100644
-> > --- a/arch/x86/kvm/x86.c
-> > +++ b/arch/x86/kvm/x86.c
-> > @@ -921,7 +921,8 @@ static void update_pvclock_gtod(struct timekeeper *tk)
-> >  
-> >         vdata->wall_time_sec            = tk->xtime_sec;
-> >  
-> > -       vdata->offs_boot                = tk->offs_boot;
-> > +       /* Pairs with the READ_ONCE() in get_kvmclock_base_ns(). */
-> > +       WRITE_ONCE(vdata->offs_boot, tk->offs_boot);
-> >  
-> >         write_seqcount_end(&vdata->seq);
-> >  }
-> > @@ -929,7 +930,26 @@ static void update_pvclock_gtod(struct timekeeper *tk)
-> >  static s64 get_kvmclock_base_ns(void)
-> >  {
-> >         /* Count up from boot time, but with the frequency of the raw clock.  */
-> > -       return ktime_to_ns(ktime_add(ktime_get_raw(), pvclock_gtod_data.offs_boot));
-> > +       struct pvclock_gtod_data *gtod = &pvclock_gtod_data;
-> > +       ktime_t raw = ktime_get_raw();
-> > +       ktime_t now;
-> > +
-> > +       /*
-> > +        * Synchronization with clock updates isn't required on 64-bit as only
-> > +        * one field is being consume
-> > +        * */
-> > +#ifdef CONFIG_X86_64
-> > +       now = ktime_add(raw, READ_ONCE(gtod->offs_boot));
-> > +#else
-> > +       unsigned int seq;
-> > +
-> > +       do {
-> > +               seq = read_seqcount_begin(&gtod->seq);
-> > +               now = ktime_add(raw, *offset);
-> > +       } while (read_seqcount_retry(gtod->seq, seq));
-> > +#endif
-> > +
-> > +       return ktime_to_ns(now);
-> >  }
-> >  
-> >  static uint32_t div_frac(uint32_t dividend, uint32_t divisor)
+detects a Valid -> Invalid transition and issues the LPI_VIST_MAKE_INVALID
+command. This sends an unmap command to the hardware for a VIST that was ne=
+ver
+mapped.
+
+Since this results in CONSTRAINED UNPREDICTABLE hardware behavior, should K=
+VM
+reject uaccess writes that set the valid bit without a backing IST, or perh=
+aps
+verify IST presence before issuing the unmap command?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807111159.4291=
+28-1-sascha.bischoff@arm.com?part=3D32
