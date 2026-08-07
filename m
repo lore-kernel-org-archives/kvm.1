@@ -1,220 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD1831354C
-	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 14:11:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069B42DA749
+	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 14:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786111872; cv=none; b=Q1DeQe55fB+MAbPoRFcfAbNjAe8okprtJ0kM97iMlCtnUxTbG0nMB1E3aTIpI1liSAP7C9vfWAN+f6zNvSmzxhz94RjJ9t++U5JqU1JFegUxwA1gmoxjQ9UIOHFA9cGPUxPhd/hc0PkB41gLzEklp8FvXyezkugDkFrwxYgzZKI=
+	t=1786111903; cv=none; b=rYsacjZUiklTQs4bCqbpMxcY1AGZXfGs9yMYPbWlpfX3dbOJP0UJ+82lYiZkT4Lmso63s1QCZuyBpTMjuGilYRYFVJgfSA64zbk5FNlQWi5bdKhqSCN9ab5zJLgLiN9ewDDqyAmb1zY+KjJK61CwVNC5e+jqjW6XOf6723ahT+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786111872; c=relaxed/simple;
-	bh=U9MqL4v+NhVhyTx3Cwek+W3DM0zjnAz1EndTb+NvPYA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=dnbwjHeaTJsyjuTfTmfoIou7TWWfSU3pwgJ/Id6SxF0QSLquJRjcB1vZRqPsogv6X1fRgpWpOg2H0V9dNYJpVU/l8bbxlnPt/IlbtXE3v5bKgsTDsaOSHMKm4Q2m+cnt6TaOvSwq2iXDUuMVcA7OeCMe2P7UaR3djZn4TNx0r0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gkSoYLDE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786111903; c=relaxed/simple;
+	bh=wSxVRXPayQFZL2Or1DKkVoNQv3x5/H2PNAbaoULWcZo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=IsbqILwxfJ95ZUDls8Gjz6YLcT6YqWc5UYPL5F3SO1Bp94I4ygjbFI3P73rWxIl9qAIAj18o/OCH1hD6EvGXuWRu4hcjvTPFAeBx3k5nQyLy2gNUPTI2sSr6R3SQTeBdbV51Zu7cM3LmV0A/kdc+gTUJ4ENRB1XFb8qwRKXfadY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FWFmE14O; arc=none smtp.client-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gkSoYLDE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552891F000E9;
-	Fri,  7 Aug 2026 14:11:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786111869;
-	bh=bb/sJcG+BWo03UvESFZh214LfMDWaFFsB8cb1Um84KY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gkSoYLDE3UmvMNDAlJdwfvO1SJxrfxDJ/3Gox15UcJZPrWM8sEValNnPjIYMXdEXl
-	 cLiNIg0x3Wrq5mk/i4tEXy34POt1U38yVYI9NT4DsM0G/JwxY1r4nHriuGE87wB0Ub
-	 G0FVtk+7KxOMZ/NqIHXXjCJTfo3WMuxq+vWFpWrv1J3OkU1RGG9XRJ5qJABLy++rE5
-	 qpvy0+/Lnw202YXNM8Cn9RNBPRnMGbz+C5PSXxccGVG5GYPsU5SFECTN4G0vSQMgDR
-	 775G8X4Vk421CZRGirRu+M6tdYAoYgdwTXBJ7oGdJq4lKott1kiwtxYstNDjZoo+LB
-	 qyncU1Q8zcejw==
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH] vhost: coalesce and retry IOTLB miss messages
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jia Jia" <physicalmtea@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260806140616.59025-1-physicalmtea@gmail.com>
-References: <20260806140616.59025-1-physicalmtea@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 07 Aug 2026 14:11:08 +0000
-Message-Id: <20260807141109.552891F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FWFmE14O"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cb7d6ba548eso3855600a12.1
+        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 07:11:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786111899; x=1786716699; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cUK/CN4zZCrXo07AjY1uCS28FEvZBeq6g3hx3cmp4/s=;
+        b=FWFmE14Ohz45mULgq6PuY8BGn8Jp3iWlAIhAPkbJ8G5Y8GbpQzCeg9hoEOghN3C7AE
+         Mse++8Vr0vyuGDsneH9/czaB/MLpm9CDUlIR06utX9lK6lbcHhk8Dn9XAc21S+gckogk
+         F0a4OPkYdE7FYxAShEUrNA2Si9jpjyjKthRU1WZY5LbD5aST8CE8RLLcKl6zQgV6Dv3P
+         sak1IG8e5HmPCP7FltN534ICgHNlmNzn/6OedgOaKGMbjU55AnQJF//bccZ6Ne0W1zvm
+         z8z5nniHFYXTScxuRPo30zmarRwYQ/AhzWPuZ+DvS11/oOmXmx1ZtqdSPXSVdFhgkIjS
+         RZXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786111899; x=1786716699;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cUK/CN4zZCrXo07AjY1uCS28FEvZBeq6g3hx3cmp4/s=;
+        b=PtFiwwquH/EXamMtecOuEIgRWUsAKW2F7kQ+6wqIxPiOskxlXDLqZslfLaghnKBJ5u
+         LhzjcU79yCFdBdV4dX4WQHhS36YRW6jrBt/qf72dCjF5eapCDXaNjuCOf/uy1ISONKst
+         n7qFtHSoo653BaxGYVPxK4ZmU/2pykj3GrJ+1zHHjlFUbgmyvnQrWNHnocjcMgWvc/7H
+         V/bUiLTtPLaM9ei5tY+gQ22Rvr4VIdzw9hEaJbO/esnDbE1EF0xutUWhw3bJY53gVqRW
+         ICOnyk7OhFV42m7hlVdEtkwFfbUAckk+hkruGXpNkVyNAYeqWbw80s9nF+AuaY9sc+/t
+         JMBQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqhUa3xx0ecmSCLiqkwNb+qSvw3WtEJXiHCGUCJeKTDTf5AMMaKuRbKZb4OWWvCqdvZaf4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyni7aK3QbiZHdHRRO5wjKOFgg9mnNX6rTPOTXnBee0LuaFa5+J
+	sx1dotkRRmJrUHl2B29qN2+uLImzwhwwQFSYDPk/J79JhG5WHk388+fHHUgKv3GKMma0KpS1Hcv
+	DLKotJQ==
+X-Received: from pgjx8.prod.google.com ([2002:a63:fe48:0:b0:c9a:ddfd:b879])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:9595:b0:3c4:36ef:3dc9
+ with SMTP id adf61e73a8af0-3cb85e45aa3mr29843874637.17.1786111898994; Fri, 07
+ Aug 2026 07:11:38 -0700 (PDT)
+Date: Fri, 7 Aug 2026 07:11:38 -0700
+In-Reply-To: <20260807071934.786879-1-zeng_chi911@163.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260807071934.786879-1-zeng_chi911@163.com>
+Message-ID: <anXnmvp2_Rj62huS@google.com>
+Subject: Re: [PATCH] KVM: Remove the kvm debugfs directory if kvm_init() fails
+From: Sean Christopherson <seanjc@google.com>
+To: Zeng Chi <zeng_chi911@163.com>
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	zengchi@kylinos.cn, stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] Guest can intentionally trigger a `WARN_ON_ONCE` in `vhost_iotlb_m=
-iss`, causing a host kernel panic if `panic_on_warn` is enabled.
-- [High] In-flight IOTLB miss node escapes `vhost_clear_msg` during backend=
- detach, causing a permanent virtqueue stall.
-- [High] Virtqueues on `iotlb_wait_list` are ignored by `IOTLB_UPDATE` noti=
-fications, resulting in permanent deadlocks.
---
+On Fri, Aug 07, 2026, Zeng Chi wrote:
+> From: zengchi <zengchi@kylinos.cn>
+> 
+> kvm_init_debug() creates the "kvm" debugfs directory along with all of
+> the VM/vCPU stat files, but none of kvm_init()'s error paths removes it.
+> If kvm_vfio_ops_init(), kvm_gmem_init(), kvm_init_virtualization() or
+> misc_register() fails, the directory is leaked, and none of kvm_init()'s
+> callers invokes kvm_exit() on failure, i.e. nothing papers over the
+> leak.
+> 
+> The stale /sys/kernel/debug/kvm directory isn't just cosmetic: a
+> subsequent attempt to load KVM makes debugfs_create_dir() fail with
+> -EEXIST, after which kvm_debugfs_dir holds an ERR_PTR and all stat
+> files are silently never created again.  Worse, the leaked stat files
+> reference file_operations and stat data that live in the KVM module; if
+> the module is unloaded after the failed initialization, reading the
+> stale files is a use-after-free.
+> 
+> Remove the debugfs directory in the error path, mirroring kvm_exit().
+> 
+> Fixes: 2b0128127373 ("KVM: Register /dev/kvm as the _very_ last thing during initialization")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: zengchi <zengchi@kylinos.cn>
+> ---
+>  virt/kvm/kvm_main.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 45e784462ec6..8a503ac1adbd 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -6553,6 +6553,7 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
+>  err_gmem:
+>  	kvm_vfio_ops_exit();
+>  err_vfio:
+> +	debugfs_remove_recursive(kvm_debugfs_dir);
+>  	kvm_async_pf_deinit();
+>  err_async_pf:
+>  	kvm_irqfd_exit();
+> -- 
 
---- Patch [1]: [RFC PATCH] vhost: coalesce and retry IOTLB miss messages ---
-commit df21dbd6b3d7b91189f87885be5157a564b6e59e
-Author: Jia Jia <physicalmtea@gmail.com>
+Already posted (twice) and applied:
 
-vhost: coalesce and retry IOTLB miss messages
-
-This commit introduces a mechanism to coalesce and retry IOTLB miss
-messages in the vhost subsystem. It limits the total number of in-flight
-IOTLB messages device-wide and keeps a per-virtqueue record of the current
-miss to prevent duplicate allocations.
-
-> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> index a0c1d54019aac..d5de41fdc3c05 100644
-> --- a/drivers/vhost/vhost.c
-> +++ b/drivers/vhost/vhost.c
-
-[ ... ]
-
-> @@ -1191,20 +1198,104 @@ void vhost_dev_stop(struct vhost_dev *dev)
->  }
->  EXPORT_SYMBOL_GPL(vhost_dev_stop);
-> =20
-
-[ ... ]
-
->  void vhost_clear_msg(struct vhost_dev *dev)
->  {
->  	struct vhost_msg_node *node, *n;
-> +	struct vhost_virtqueue *vq, *vq_n;
-> +	int i;
-> =20
->  	spin_lock(&dev->iotlb_lock);
-> =20
->  	list_for_each_entry_safe(node, n, &dev->read_list, node) {
-> -		list_del(&node->node);
-> -		kfree(node);
-> +		list_del_init(&node->node);
-> +		__vhost_free_msg(dev, node);
->  	}
-> =20
->  	list_for_each_entry_safe(node, n, &dev->pending_list, node) {
-> -		list_del(&node->node);
-> -		kfree(node);
-> +		list_del_init(&node->node);
-> +		__vhost_free_msg(dev, node);
-> +	}
-> +
-> +	if (!dev->iotlb) {
-> +		list_for_each_entry_safe(vq, vq_n, &dev->iotlb_wait_list,
-> +					 iotlb_miss_wait_node) {
-> +			list_del_init(&vq->iotlb_miss_wait_node);
-> +			vq->iotlb_miss_waiting =3D false;
-> +		}
-> +
-> +		for (i =3D 0; i < dev->nvqs; ++i)
-> +			dev->vqs[i]->iotlb_miss_node =3D NULL;
-> +	}
-
-[Severity: High]
-Can an in-flight IOTLB miss node escape being cleared here during backend
-detach, resulting in a permanently stalled virtqueue?
-
-If a userspace orchestrator detaches the backend while a thread is reading =
-an
-IOTLB miss via vhost_chr_read_iter(), the node is temporarily dequeued for
-copy_to_iter(). This function skips the node since it is not on any list.
-
-Because dev->iotlb is still active during backend detach, this fallback
-cleanup is skipped and vq->iotlb_miss_node is not cleared. When the node is
-later enqueued to the pending_list and a new backend is attached, the next
-IOTLB miss will hit the WARN_ON_ONCE(vq->iotlb_miss_node) check and abort
-indefinitely.
-
->  	spin_unlock(&dev->iotlb_lock);
-
-[ ... ]
-
-> @@ -1602,18 +1693,25 @@ static inline int vhost_get_desc(struct vhost_vir=
-tqueue *vq,
->  static void vhost_iotlb_notify_vq(struct vhost_dev *d,
->  				  struct vhost_iotlb_msg *msg)
->  {
-> -	struct vhost_msg_node *node, *n;
-> +	int i;
-> =20
->  	spin_lock(&d->iotlb_lock);
-> =20
-> -	list_for_each_entry_safe(node, n, &d->pending_list, node) {
-> -		struct vhost_iotlb_msg *vq_msg =3D &node->msg.iotlb;
-> -		if (msg->iova <=3D vq_msg->iova &&
-> -		    msg->iova + msg->size - 1 >=3D vq_msg->iova &&
-> -		    vq_msg->type =3D=3D VHOST_IOTLB_MISS) {
-> -			vhost_poll_queue(&node->vq->poll);
-> -			list_del(&node->node);
-> -			kfree(node);
-> +	for (i =3D 0; i < d->nvqs; ++i) {
-> +		struct vhost_virtqueue *vq =3D d->vqs[i];
-> +		struct vhost_msg_node *node =3D vq->iotlb_miss_node;
-> +
-> +		if (!node || msg->iova > node->iotlb_miss_iova ||
-> +		    msg->iova + msg->size - 1 < node->iotlb_miss_iova)
-> +			continue;
-
-[Severity: High]
-Does this loop skip virtqueues that are on the iotlb_wait_list?
-
-When the 2048 message limit is reached, vhost_iotlb_miss() places the
-virtqueue on the wait list and returns -ENOSPC without allocating a node,
-leaving vq->iotlb_miss_node as NULL.
-
-When userspace later sends an IOTLB_UPDATE for the requested mapping, this
-check ignores virtqueues with !node. This means the waiting virtqueues are
-never woken up to use the new mapping and stall permanently.
-
-> +		vq->iotlb_miss_node =3D NULL;
-
-[ ... ]
-
-> @@ -1858,8 +1986,40 @@ static int vhost_iotlb_miss(struct vhost_virtqueue=
- *vq, u64 iova, int access)
-
-[ ... ]
-
->  	msg->type =3D VHOST_IOTLB_MISS;
->  	msg->iova =3D iova;
->  	msg->perm =3D access;
-> +	node->iotlb_miss =3D true;
-> +	node->iotlb_miss_iova =3D iova;
-> +	node->iotlb_miss_perm =3D access;
-> =20
-> -	vhost_enqueue_msg(dev, &dev->read_list, node);
-> +	spin_lock(&dev->iotlb_lock);
-> +	if (vhost_iotlb_miss_exists(vq, iova, access)) {
-> +		vhost_unwait_iotlb_miss(dev, vq);
-> +		goto unlock;
-> +	}
-> +	if (WARN_ON_ONCE(vq->iotlb_miss_node)) {
-> +		ret =3D -EAGAIN;
-> +		goto unlock;
-> +	}
-
-[Severity: High]
-Is it possible for an unprivileged guest to intentionally trigger this
-WARN_ON_ONCE?
-
-If a guest triggers an IOTLB miss, vhost allocates a miss node. Before
-userspace resolves the miss, the guest could overwrite the descriptor's IOV=
-A in
-shared memory and issue another kick.
-
-The vhost worker would attempt translation again, fail for the new IOVA, and
-re-enter vhost_iotlb_miss(). Because the IOVA changed,
-vhost_iotlb_miss_exists() returns false, leading directly to this
-WARN_ON_ONCE. This would cause a host kernel panic if panic_on_warn is
-enabled.
-
-> +	if (dev->iotlb_msg_count >=3D VHOST_MAX_IOTLB_MSGS) {
-> +		vhost_wait_iotlb_miss(dev, vq);
-> +		ret =3D -ENOSPC;
-> +		goto unlock;
-> +	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260806140616.5902=
-5-1-physicalmtea@gmail.com?part=3D1
+https://lore.kernel.org/all/20260706095910.39798-1-leixiang@kylinos.cn
