@@ -1,178 +1,225 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A952F30
-	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 22:47:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A22B282F3A;
+	Fri,  7 Aug 2026 22:54:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786142872; cv=none; b=rQxqGQt7OOpLwpqbqbSs5jjroFV03eetvJhVta8abWEYgLExQ23lzPjhYLVssTXcBIeepWoXYy3gobY4xhI4415Vhc+5Z7kSGevrfOKo9r1qihDi53+buxOkIyYf+gMP61JYH9QzUt5iQ6nrqzn14FHILFfQMgXNSmBwuxnw9+k=
+	t=1786143244; cv=none; b=oA86Z74ozizOJGMtenrmPZXEoRwgzx9Xwj00NMW3N5sf5LBwu58H7DHK9NAQQ5mpncmdHU498K7dmtewnscYTXm9ZK54IjvSDTtFOCmsk4/Et48hA73kUmb+yRenOdowueMMgnj7XuTHnMFqUn9/89eAhU0lR9rBQq2c2I1culg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786142872; c=relaxed/simple;
-	bh=LclLPhGt30t9ZVCFvT/xBl1im3zGIFqwjLIwgoDPi10=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ik6lo9gvOeF0chTiGAwSm5YD9Y2fEmEM0LUmDQZnprHyMIRP7pKqnWBkawIqTYpAjWUykbloBLPYTWySUrtzWXBp+hdurnAFBsuNrjJy8Y8B+xNavPtBJMNf5Nk2ZUvFjLI6f+XeemdJTP4hgiCJE05Drccna3Ly6SJ/2oTJ6DU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rJolN3C2; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1786143244; c=relaxed/simple;
+	bh=+aAYwfCJ23/M+Lwzv1chzuz/y+Szg+ltYkfHotmyx0Q=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=FIvzhU+berH/MUpbEvbtM+OusNjZ41LvahsXKIHKbNhYTzfGsjmTP0THw82qn7LQNqeeAnFHnfMB/IZtLQFEX2e3Wwl5Dn2OUlI5mlPq6ZWRdnaxOwsizwjfW/kLAGKAB5Y9Vyhv58BrHyAaAdlHmaCLOmHr/6C7AeHyysOIyvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7nR5PWV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rJolN3C2"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-381b831d535so95213a91.0
-        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 15:47:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786142870; x=1786747670; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=c5pvQbC5/OCZ694tbRRS1Pawgp+evfJsZVleX3urR/8=;
-        b=rJolN3C2PL6EcHLLCnM1NgaIw49s5jniADdzXCvEcFzaEcdN1sifHsjzbl1oeoZVJx
-         Kt1O+1X8zoBQ4ATds8loki5HzUHM46OAei/jc3qCLjekMLSU2Kx9ZAhrl1OQ8hCzbyHh
-         meje6T56HfL85IyMUhArAje3dfAR3ZAHXH4UaKXb1HKCHqMUHXJVabu3mdoApfPwOdCv
-         u2wqNeo5wL9dkwcEYbuJxgQ6olIpcL8AHh3y0LX69Ik5YqCMHvZDH9hAKQ7YypTQZ9q8
-         m95wui/Q6iwQosRpORJjEsAfjvfOf5MYk6TtzFNj4cb0Cma7yyrcaDLsiBtZSMuqy7QF
-         cT6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786142870; x=1786747670;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c5pvQbC5/OCZ694tbRRS1Pawgp+evfJsZVleX3urR/8=;
-        b=kyqOZiO7i2Hkcob/iYiNvCsCdZ3cSI2Wrbm/HyBFP8AGjonBZrkI5HmK3iU6dFO/ZO
-         9e5EUAI2YLhOjfSJLz0lTutOEJHAphytDqe2LjZVv4XLkYEHnST3+j65agdt/oLP1j+G
-         jZGLjUSJZCD6ABbi82n+RrMStJvD7KIstmTktAInbaM+ESfc5qfrzXpF25mDjLb1MFbu
-         uWMaG+9u8/UGtFXZVa5dw43wO0cu/GOGfvmrmSpg0ywECHUhfpEG94FhHWNTLkJWSZCk
-         fTCHM+62MIW30md+ztVvJw+Tq+edm/UYSx1Wgyrwob2e4E37qtu7Bzl32MNtEtWGyhUb
-         l+9Q==
-X-Forwarded-Encrypted: i=1; AHgh+RrxUlf7fnrLti3Nmn9p4e8jb1HAta/Bc1+6Eqwn4pC5nCENmGLk40una0qohuxHvo+H8no=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwbpWF1mXriRV+1HIa+nWm3S+a3fD/Jv/MxfcIsclutcZEBsmx
-	yFYE62xTggz3hSpCTAU9amlv8OaN8VSJFyLQ5nAGTsKVa5KGkPr2yqVMibBhsEDFWg==
-X-Gm-Gg: AR+sD10P5FJlAEVfV0bV8SLPU/KU2WcleLPYM7pnecBU2+KtMEHvAXm3dbiT+0y54wI
-	GpLDs+SZRX1JcE7i03/Dehr67+DH0WXnSTuEqt/1TH6lbm/09MfdSxRT1napiXh8E77ngq2f6mq
-	atGyLQ9hHxdTdMZVvfs/QAQON061JhiMHuooKM2x1r+EbCZoxU0vp+Eudi8Vb3t1OzFCI9NQ+ke
-	SCCAS/s3qbnDHDGzVJw33rjlK7CQkJdUuMHmIa7DDJEIw0IqXOgYAkL8P2KPXJROQo2pmIjorxD
-	q5JZVEXyaynzhPFYHn8sz2YmVy+jploN3YWKFv3yaA+/DuoUovEEfA+NpN29TfN5moXUEFZdKrV
-	1RvDL6/ma/HxArqw14yAkbrZRrjyBrdXdq62Dz68P5b8447Yfn9MO+Y6nUWepglRzfKk9voRyKt
-	kcmpp+b9MVVV7SazBYYJ7JIu6DXvVWj/pZjYh66g0hU0eXIGIMzvkRyBMyKT43fDbiMKI+65NlF
-	0AqlsJsoS4/Qwe3KOJCycnC5b+Olg==
-X-Received: by 2002:a17:90b:2dc7:b0:380:fead:448d with SMTP id 98e67ed59e1d1-392620e6e25mr8243554a91.13.1786142869650;
-        Fri, 07 Aug 2026 15:47:49 -0700 (PDT)
-Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3908616d21esm6713754a91.17.2026.08.07.15.47.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 15:47:49 -0700 (PDT)
-Date: Fri, 7 Aug 2026 22:47:45 +0000
-From: David Matlack <dmatlack@google.com>
-To: Irene Wang <yiranirenewang@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Jones <andrew.jones@linux.dev>,
-	Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Jim Mattson <jmattson@google.com>
-Subject: Re: [kvm-unit-tests PATCH v2] x86: pci: Support unaligned register
- access in PCI config read/write
-Message-ID: <anZgkSwhjHDG3dWy@google.com>
-References: <20260804232344.2976694-2-yiranirenewang@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7nR5PWV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7DB01F000E9;
+	Fri,  7 Aug 2026 22:54:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786143243;
+	bh=ogNdvd7NQKygo7PXOXpVbpiCQc4HdfgAsjtuvVRf+Mk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=k7nR5PWV43D2OxMks8Z2SxID9TaobNrS06TDHDN2e+cK62hsAT/JvW5SvPH07vOsU
+	 Xcol9pf3b2l9Nj1DFdYXfaMZO/FY86rxg5kaaD6B+lFm7Yuc6m5KR/FAuPL0B8hKZI
+	 k30SuGrDQWwzD5kWcjXt52vOlmz5NjWbrJPIjO9Jt1gK8hzERCUaUzEjbH4aNvcIK/
+	 9oFAw/3RdAgFJIFS4Eor9w8BvbwW7vrFgRknIgQ3FZ2yOBNfhvGkeK3vIcoz3LY7eW
+	 RlDKOWO6PIfuwlXZaoqPFotUa4pG4f1z19UTkfYhBVp18y06Bov5O+I9XDsfZQkTxP
+	 8JowkJQDVaTrQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v7 11/15] s390/vfio-ap: Transition device migration
+ state to STOP
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
+Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Vasily
+ Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org
+In-Reply-To: <20260807221834.562851-12-akrowiak@linux.ibm.com>
+References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
+ <20260807221834.562851-12-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 07 Aug 2026 22:54:01 +0000
+Message-Id: <20260807225402.D7DB01F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260804232344.2976694-2-yiranirenewang@gmail.com>
 
-On 2026-08-04 11:23 PM, Irene Wang wrote:
-> Per the PCI Local Bus Specification (Section 3.2.2.3.2, "Configuration
-> Mechanism #1"), port 0xCF8 (CONFIG_ADDRESS) requires a DWORD-aligned
-> register offset (bits [1:0] = 00b), while byte and word offsets within
-> the DWORD must be selected via data port 0xCFC + (reg & 3).
-> 
-> Previously, PCI_CONF1_ADDRESS did not clear bits [1:0], and 8-bit /
-> 16-bit helpers always accessed base port 0xCFC directly. This worked
-> in QEMU because its PCI host bridge emulation preserves unaligned bits
-> in CONFIG_ADDRESS and uses them during CONFIG_DATA accesses. However,
-> in strictly spec-compliant VMMs (and potentially real hardware), bits
-> [1:0] of 0xCF8 are ignored, causing non-aligned reads/writes at port
-> 0xCFC to erroneously target byte 0 of the DWORD. In practice, this
-> causes pci_find_dev() to read the vendor ID twice instead of reading
-> the vendor ID and device ID.
-> 
-> Fix this by masking `reg` with `~3` in PCI_CONF1_ADDRESS and adding
-> the `(reg & 3)` offset to the CONFIG_DATA port for 8-bit and 16-bit
-> accessors, ensuring compatibility across QEMU and other VMMs. Additionally,
-> assert that 16-bit accesses do not use an offset of 3, as reading/writing a
-> word across DWORD boundaries (port 0xCFC + 3) is invalid per spec.
-> 
-> Assisted-by: Gemini:gemini-3.6-flash
-> Signed-off-by: Irene Wang <yiranirenewang@gmail.com>
-> ---
-> v1 -> v2:
->  - Enclose macro parameter `dev` in parentheses in PCI_CONF1_ADDRESS.
->  - Add assert((reg & 3) != 3) in pci_config_readw() and pci_config_writew()
->    to guard against illegal 16-bit accesses crossing DWORD boundaries.
-> 
-> Link to v1: https://lore.kernel.org/kvm/20260730182053.905335-1-yiranirenewang@gmail.com/
-> 
->  lib/x86/asm/pci.h | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
-> 
-> diff --git a/lib/x86/asm/pci.h b/lib/x86/asm/pci.h
-> index 03e55c27..da0b59a3 100644
-> --- a/lib/x86/asm/pci.h
-> +++ b/lib/x86/asm/pci.h
-> @@ -9,18 +9,19 @@
->  #include "pci.h"
->  #include "x86/asm/io.h"
->  
-> -#define PCI_CONF1_ADDRESS(dev, reg)	((0x1 << 31) | (dev << 8) | reg)
-> +#define PCI_CONF1_ADDRESS(dev, reg)	((0x1 << 31) | ((dev) << 8) | ((reg) & ~3))
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
 
-A comment here would be useful. Spec-compliant host bridges (including
-emulations) should ignore the lower 2 bits so clearing it should
-technically be unnecessary. The reason we have to clear it is because
-QEMU is not spec-compliant and will consume those 2 bits.
+New issues:
+- [High] Memory leak and silent transmission of stale device state due to m=
+issing buffer cleanup on FSM STOP transition.
+- [High] Migration data file descriptors allow out-of-band manipulation of =
+the active AP configuration.
 
->  
->  static inline uint8_t pci_config_readb(pcidevaddr_t dev, uint8_t reg)
->  {
->      outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
-> -    return inb(0xCFC);
-> +    return inb(0xCFC + (reg & 3));
->  }
->  
->  static inline uint16_t pci_config_readw(pcidevaddr_t dev, uint8_t reg)
->  {
-> +    assert((reg & 3) != 3);
->      outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
-> -    return inw(0xCFC);
-> +    return inw(0xCFC + (reg & 3));
->  }
->  
->  static inline uint32_t pci_config_readl(pcidevaddr_t dev, uint8_t reg)
-> @@ -33,14 +34,15 @@ static inline void pci_config_writeb(pcidevaddr_t dev, uint8_t reg,
->                                       uint8_t val)
->  {
->      outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
-> -    outb(val, 0xCFC);
-> +    outb(val, 0xCFC + (reg & 3));
->  }
->  
->  static inline void pci_config_writew(pcidevaddr_t dev, uint8_t reg,
->                                       uint16_t val)
->  {
-> +    assert((reg & 3) != 3);
+Pre-existing issues:
+- [Critical] Unprotected concurrent ioctls cause Use-After-Free, Double Fre=
+e, and Memory Leaks during migration reads/writes.
+- [High] RESUMING state machine is permanently broken by an incomplete rese=
+t.
+--
 
-Should assert((reg & 3) == 0) be added to the readl/writel routines as
-well?
+--- Patch [11]: [PATCH v7 11/15] s390/vfio-ap: Transition device migration =
+state to STOP ---
+commit e7e2429c70da0ea0a7016c096567e78834fcc351
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
 
->      outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
-> -    outw(val, 0xCFC);
-> +    outw(val, 0xCFC + (reg & 3));
->  }
->  
->  static inline void pci_config_writel(pcidevaddr_t dev, uint8_t reg,
-> -- 
-> 2.55.0.571.g244d577d93-goog
-> 
+    s390/vfio-ap: Transition device migration state to STOP
+   =20
+    This commit updates the VFIO AP migration state machine to handle
+    transitions to the STOP state from RESUMING or STOP_COPY. It returns
+    NULL instead of an error, stating that the VFIO migration framework
+    will clean up file streams and associated data when releasing files.
+
+> There  only thing to do at this point is return
+> NULL to the caller since the file streams and associated data will get
+> cleaned up as a result of the VFIO migration framework releasing the file=
+s.
+
+[Severity: High]
+Is this assumption about the file streams and associated data getting clean=
+ed
+up accurate?
+
+Looking at the file release callback:
+
+vfio_ap_release_mig_file() {
+    ...
+    vfio_device_put_registration(&matrix_mdev->vdev);
+    return 0;
+}
+
+The callback only releases the VFIO registration reference and does not free
+the state buffers like stop_copy_mig_file.ap_config or
+resuming_mig_file.ap_config.
+
+Could this lead to a memory leak and the silent transmission of stale device
+state to the destination host on subsequent migration attempts, for instance
+if we skip allocating and fetching a fresh configuration in
+vfio_ap_stop_copy_read() because ap_config was leaked and left populated?
+
+> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
+o/vfio_ap_migration.c
+> index 4dd7373c3d9d9..30160e3dddedd 100644
+> --- a/drivers/s390/crypto/vfio_ap_migration.c
+> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+> @@ -1511,12 +1511,17 @@ vfio_ap_transition_to_state(struct ap_matrix_mdev=
+ *matrix_mdev,
+>  		return filp;
+>  	}
+> =20
+> +	/*
+> +	 * Terminates the data transfer session of the vfio-ap device state
+> +	 * between the source and target hosts. Since the vfio-ap device does
+> +	 * not virtualize a DMA device, there is no internal device state to
+> +	 * incorporate into the vfio-ap device on the target.
+> +	 */
+>  	if ((cur_state =3D=3D VFIO_DEVICE_STATE_RESUMING &&
+>  	     new_state =3D=3D VFIO_DEVICE_STATE_STOP) ||
+>  	    (cur_state =3D=3D VFIO_DEVICE_STATE_STOP_COPY &&
+>  	     new_state =3D=3D VFIO_DEVICE_STATE_STOP)) {
+> -		/* TODO */
+> -		return ERR_PTR(-EOPNOTSUPP);
+> +		return NULL;
+
+[Severity: High]
+Does returning NULL here successfully change the FSM state without clearing
+the active filp pointers in mig_data?
+
+If userspace keeps the migration file descriptor open (or duplicates it)
+during an FSM transition to RUNNING, and then issues a write on the stale
+file descriptor, could this allow out-of-band manipulation of the KVM guest=
+'s
+AP configuration while the guest is actively running?
+
+The file operations like validate_resuming_write_parms() appear to only che=
+ck
+if the incoming filp pointer matches the stored pointer:
+
+validate_resuming_write_parms() {
+    ...
+    if (filp !=3D resuming_mig_file.filp)
+        return -ENXIO;
+    ...
+}
+
+This happens without ensuring the FSM is actually in the RESUMING state,
+potentially permitting writes during RUNNING.
+
+[Severity: High]
+This is a pre-existing issue, but does a reset or an aborted RESUMING phase
+leave the RESUMING state machine permanently broken?
+
+When vfio_ap_release_resuming_file() is called, it frees
+resuming_mig_file.ap_config but fails to clear resuming_config_buf.filled:
+
+vfio_ap_release_resuming_file() {
+    kvfree(mig_data->resuming_mig_file.ap_config);
+    mig_data->resuming_mig_file.ap_config =3D NULL;
+    mig_data->resuming_mig_file.config_sz =3D 0;
+    mig_data->resuming_mig_file.filp =3D NULL;
+}
+
+If userspace initiates a new RESUMING phase, validate_resuming_write_parms()
+will evaluate this condition as true:
+
+    if ((resuming_config_buf.filled && !resuming_mig_file.ap_config) ||
+        (!resuming_config_buf.filled && resuming_mig_file.ap_config))
+        return -EFAULT;
+
+Would this unconditionally reject all subsequent writes with -EFAULT?
+
+[Severity: Critical]
+This is a pre-existing issue, but are the migration reads and writes protec=
+ted
+against concurrent ioctls?
+
+For example, in vfio_ap_resuming_write(), mdevs_lock is dropped before
+copying data from userspace and interacting with set_new_ap_configuration():
+
+vfio_ap_resuming_write() {
+    ...
+    mutex_unlock(&matrix_dev->mdevs_lock);
+
+    if (copy_from_user((char *)ap_config + write_pos, buf, write_len)) {
+    ...
+    ret =3D set_new_ap_configuration(matrix_mdev, ap_config, cfg_sz);
+    ...
+    if (!new_allocation)
+        kvfree(ap_config);
+    ...
+}
+
+If a concurrent VFIO_DEVICE_RESET ioctl occurs while the lock is dropped,
+could set_new_ap_configuration() assign a locally allocated ap_config into
+the now-NULL resuming_mig_file.ap_config?
+
+Would the outer function then call kvfree(ap_config), leaving a dangling
+pointer in the device state that could subsequently be used and double-free=
+d?
+
+Similarly, in vfio_ap_stop_copy_read(), the lock is dropped before
+copy_to_user():
+
+vfio_ap_stop_copy_read() {
+    ...
+    mutex_unlock(&matrix_dev->mdevs_lock);
+
+    if (copy_to_user(buf, (char *)mig_file->ap_config + read_pos, len))
+        return -EFAULT;
+    ...
+}
+
+Could a concurrent reset free mig_file->ap_config before or during the copy,
+leading to an information leak of freed kernel memory to userspace?
+
+>  	}
+> =20
+>  	if ((cur_state =3D=3D VFIO_DEVICE_STATE_STOP &&
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807221834.5628=
+51-1-akrowiak@linux.ibm.com?part=3D11
