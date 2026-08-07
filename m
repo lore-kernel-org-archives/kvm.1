@@ -1,120 +1,140 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D582F2E1EE0
-	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 17:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF0235294E
+	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 17:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786124095; cv=none; b=KPsb6V/9ZbLVuSyl/ZEbTWW1HisRx8/0renDgVIN/8FmlK4RuUuW67I6HMeUrKXfc9TW9cc+pP6ZvhMh4W2zjE+pPTfr4sfxDqRctkRJhoS/kNK79Z1EeH9G1dAjBGwSdQFXntzrP1KQxHMwpiOsUtKtDDfjLky7KUC2yRuJlLU=
+	t=1786124239; cv=none; b=UiVjAQ+BiteZ34MmB/RbIv2M4Ve5qedJfh1o0hjquSyJNoM76geqYEHS6s/TzCxBLBTRTS0/v5Wq7PCHGq4MeKuu1zDRO/rwalv7s2MgzGqNWcrziPLN6MJmeDmUnjk3Itj+kTp8WLx9lW/ImJsgehqTlj8nqwk+7YdItn1005U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786124095; c=relaxed/simple;
-	bh=YUNlULqGxpfkajn3VKPdSRsIF4kh5mp6SjJILiQI10Y=;
+	s=arc-20240116; t=1786124239; c=relaxed/simple;
+	bh=ULQeaLufQgxqkSz7ewcdaZni9MJ4SxCe2ZOSZs1HtxU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ucHmLfBV7+qb/JH6NLffeoCCrpxMv3abEdhvfnCjLXc6SEnfVv9sSjgBuln3vZyVzHFkYBfVlDqTF9RPP/ITn6ZB4saCmBRYrHB+IvASTtNod0otq7Yyn7sVHDCHTCHXycqvGEC6hvd4n8kzrncPoiBFSrZTWmRWw0HkJ/3hCxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E6W/3kD2; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=LZpi08UboARF/+8d9w7saScFmz7H1juoF0x1QPDKZvDsT7hoy/OcGXp9t5EPVbQei+0dfjhXa/ggcAVmCUqUOsOrfhwIIfXYYeLmomCCyzLq4uuj8qGTu+C4jqesGqzMgvnIHboevOIzN3aHr88OFhhQYlwsnVjLvWAb2ozA+Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C8zuExwJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E6W/3kD2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 540441F000E9;
-	Fri,  7 Aug 2026 17:34:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C8zuExwJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 030851F000E9;
+	Fri,  7 Aug 2026 17:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786124093;
-	bh=Ptr+++5EKa2ZHapwy7s355fyFnv9/rgRCdH2uTfYVDg=;
+	s=k20260515; t=1786124236;
+	bh=08ERzwSUH+k0qx11lAumPX8b4Nici6UHgNBxXWkEPt0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=E6W/3kD2nr8o8MHFH2fc0Kc7swTtjwwR7IlL783dBCBTlUaGU/o7DZkxL5EokkMX+
-	 NmOYzHyFqSHf9RIqdSqvKp4f5hqbl/5UQ5R6IGhsZ7qXcTGE7fLi+2+untilddX2nq
-	 ZmD766lS0GgZVa/9k0nxraQy2N5k5aTjCYxHlet1+rJqDQhWjkFjVDl0cucKOwGUsM
-	 IHuzFHYj7ilbcSVGoHOjwv9CJyP61Vyf5rBnlYPmrJu9uyMX1zSRXyuSGAW3xzOHhD
-	 uhqPGNdEla9Fq7BJoFV33rDtbhLptbg5P4qmjAzNrl8m+V5DBt7r/UKxTlRZ1rmwPh
-	 wrL9VJWLgmY8g==
+	b=C8zuExwJaZDcPWuBQtkRJxYpR4xUUkINd0sJHZrMr9F53LAd6t/XyqxnoB7Xhn829
+	 dlqE14PEsawSB3oaGhG/dDp1CngL7I7BDH78U6kyO70lImPZuMY8JKLuHvyMNovWTO
+	 rP+Z2iQBehjHTmrnF9SPjY+NiOiSH/RPY0ciYO1LFP9YqTE6AELnpAhGx3FZb5ZLu3
+	 hJs0WDOKx432m5mgT0BTSjNh2sSxJMcRem97ky0sWwu+mYi5+cAoJ5G6+QE6gxKhs7
+	 Wvb1vuIW0K77zC+/BWPmbqgP9j/p6gXZn/p7zOEB3797ZkLgfZyfsurg+r8+Mp4pqY
+	 TGD6jwYS8/dlA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 1/4] KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and
- wire up ioctl
+Subject: Re: [PATCH v8 4/4] KVM: PPC: Document KVM_PPC_GET_COMPAT_CAPS ioctl
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Amit Machhiwal" <amachhiw@linux.ibm.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260807172433.82045-2-amachhiw@linux.ibm.com>
+In-Reply-To: <20260807172433.82045-5-amachhiw@linux.ibm.com>
 References: <20260807172433.82045-1-amachhiw@linux.ibm.com>
- <20260807172433.82045-2-amachhiw@linux.ibm.com>
+ <20260807172433.82045-5-amachhiw@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 07 Aug 2026 17:34:52 +0000
-Message-Id: <20260807173453.540441F000E9@smtp.kernel.org>
+Date: Fri, 07 Aug 2026 17:37:15 +0000
+Message-Id: <20260807173716.030851F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] KVM_CAP_PPC_COMPAT_CAPS is advertised as supported on pSeries HV K=
-VM, but the KVM_PPC_GET_COMPAT_CAPS ioctl backend implementation is missing=
-, leading to unconditional -ENOTTY failure.
+
+New issues:
+- [Medium] The documentation inaccurately describes how the extensible stru=
+ct versioning handles trailing fields and truncation.
+
+Pre-existing issues:
+- [High] A userspace-reachable WARN_ON_ONCE in kvmppc_get_compat_caps allow=
+s unprivileged users to panic the host if panic_on_warn is set.
 --
 
---- Patch [1]: [PATCH v8 1/4] KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS a=
-nd wire up ioctl ---
-commit 3fd26ec35303a5e885f7551c23267fe626ae5e16
+--- Patch [4]: [PATCH v8 4/4] KVM: PPC: Document KVM_PPC_GET_COMPAT_CAPS io=
+ctl ---
+commit 991bf5faa645caad474f6369b275de7617351fd0
 Author: Amit Machhiwal <amachhiw@linux.ibm.com>
 
-KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and wire up ioctl
+KVM: PPC: Document KVM_PPC_GET_COMPAT_CAPS ioctl
 
-This commit introduces the KVM_CAP_PPC_COMPAT_CAPS capability and the
-KVM_PPC_GET_COMPAT_CAPS ioctl to expose CPU compatibility modes. It routes
-the ioctl to a backend-specific get_compat_caps implementation.
+Add documentation for the KVM_PPC_GET_COMPAT_CAPS ioctl to the KVM API
+documentation. The ioctl exposes host processor compatibility modes support=
+ed
+for nested KVM guests on PowerPC systems. The documentation covers error
+code descriptions including E2BIG for forward compatibility.
 
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 00302399fc37b..2fe4ea0ca4ff1 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -697,6 +697,13 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, lo=
-ng ext)
-[ ... ]
-> +#if defined(CONFIG_KVM_BOOK3S_HV_POSSIBLE)
-> +	case KVM_CAP_PPC_COMPAT_CAPS:
-> +		r =3D 0;
-> +		if (hv_enabled && kvmhv_on_pseries())
-> +			r =3D 1;
-> +		break;
-> +#endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
-
-[Severity: High]
-Since kvm_vm_ioctl_check_extension() advertises this capability as supported
-solely based on platform checks, will userspace expect the ioctl to work?
-
-Looking at the ioctl implementation below, it seems to fail if the backend
-is missing. Should this capability check also verify that
-kvm->arch.kvm_ops->get_compat_caps is implemented so that it doesn't
-advertise a capability the kernel cannot fulfill?
-
-[ ... ]
-> @@ -2463,6 +2470,77 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned =
-int ioctl, unsigned long arg)
-[ ... ]
-> +		/* Reserved fields must be zero */
-> +		r =3D -EINVAL;
-> +		if (host_caps.flags)
-> +			goto out;
-> +
-> +		r =3D -ENOTTY;
-> +		if (!kvm->arch.kvm_ops->get_compat_caps)
-> +			goto out;
-> +
-> +		r =3D kvm->arch.kvm_ops->get_compat_caps(&host_caps);
-> +		if (r)
-> +			goto out;
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.=
+rst
+> index e3003a241d5b0..e656d117cd0b1 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -6566,6 +6566,95 @@ KVM_S390_KEYOP_SSKE
+>    Sets the storage key for the guest address ``guest_addr`` to the key
+>    specified in ``key``, returning the previous value in ``key``.
+> =20
+> +4.145 KVM_PPC_GET_COMPAT_CAPS
+> +-----------------------------
 
 [Severity: High]
-Does this ioctl currently return -ENOTTY on all platforms?
+This is a pre-existing issue, but does this ioctl handler allow unprivileged
+users to panic the host?
 
-I don't see any backend implementing get_compat_caps in this patch. If
-userspace probes KVM_CAP_PPC_COMPAT_CAPS and gets a positive result, won't
-it be unexpectedly broken by receiving -ENOTTY when attempting to use the
-ioctl?
+Looking at kvmppc_get_compat_caps() in arch/powerpc/kvm/book3s_hv.c:
 
-Would it be safer to introduce the capability advertisement in the same
-patch that wires up the actual backend implementation?
+arch/powerpc/kvm/book3s_hv.c:kvmppc_get_compat_caps() {
+	if (kvmhv_on_pseries()) {
+		if (kvmhv_is_nestedv2()) {
+			WARN_ON_ONCE(!nested_capabilities);
+			capabilities =3D nested_capabilities;
+			[ ... ]
+}
+
+An unprivileged user with access to /dev/kvm can open a VM file descriptor
+and call the KVM_PPC_GET_COMPAT_CAPS ioctl. If the system is a nested guest
+(kvmhv_is_nestedv2() is true) but the parent hypervisor advertised no
+capabilities (nested_capabilities is 0), the ioctl handler directly triggers
+a WARN_ON_ONCE(!nested_capabilities).
+
+This can occur naturally if plpar_guest_set_capabilities(0, 0) succeeds
+during kvmhv_nested_init(). This directly violates the KVM subsystem
+guidelines which explicitly forbid userspace-reachable WARN_ON assertions,
+as it can cause a host kernel panic (Denial of Service) if panic_on_warn is
+set.
+
+[ ... ]
+
+> +The ioctl uses ``copy_struct_from_user()`` and ``copy_struct_to_user()``
+> +to support extensible versioning across three cases:
+> +
+> +- If ``size`` is smaller than the kernel's struct size (old userspace,
+> +  new kernel), the kernel zero-pads the unknown trailing fields before
+> +  returning, and writes back ``size`` unchanged so userspace knows how
+> +  many bytes were filled.
+
+[Severity: Medium]
+Does this documentation accurately reflect the UAPI contract for struct pad=
+ding
+and truncation on the return path?
+
+The documentation incorrectly states that if the userspace struct is smalle=
+r,
+the kernel "zero-pads the unknown trailing fields before returning". This
+misleadingly implies it pads the userspace buffer (which would be a buffer
+overflow). In reality, the kernel strictly truncates trailing fields on out=
+put
+to userspace using copy_struct_to_user().
+
+Additionally, it fails to document that when userspace provides a larger
+struct with zeroed trailing bytes, the kernel actively mutates the userspace
+'size' field on success (via host_caps.size =3D min_t(...)) to reflect the
+kernel's smaller struct size.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807172433.8204=
-5-1-amachhiw@linux.ibm.com?part=3D1
+5-1-amachhiw@linux.ibm.com?part=3D4
