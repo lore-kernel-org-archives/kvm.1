@@ -1,99 +1,91 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B9146D57D
-	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 16:25:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88EC938F65C
+	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 16:25:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786119935; cv=none; b=Rm/PSAeflgXjrVyYYtL0DBILAqkDQ3E6i36vCzI94Gwm+zzqv70tVZyQeQHftRhu6rUHWE7o89pVJJkgJCdi0u8sRJk78JYWtykfvTDqWz3nuZnjS9sBhxBbcpa8jzMERX38tc7K0dba2MLuL2usySFYpeb0xvl00BD3PtjUfw0=
+	t=1786119947; cv=none; b=lt+X1l3QFZeZ9VuaG38j/vXZOQYLMtx9XMnAFpCgKogZ+mRYfchjlK+Bxrj8tV+GCjllue6sWflaWwGJ+3PVDTpYf4YGxDuuDqNo7q8ACrUUUe6SSayBJocoNLb1cu2NQjBR4fFv19ayi8lk3WPMD5U+/mhzrvNY/pytPLRx2lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786119935; c=relaxed/simple;
-	bh=0kwxv1/eDZYrSwhKI2vAj5MLljSsCZ7KMdZ9AU6PmZY=;
+	s=arc-20240116; t=1786119947; c=relaxed/simple;
+	bh=wokdtZFwv1O+8K0dT14dhNo6bFiGIoZFgO9rRJxRDhc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sjF1hAQ3oocBoHrAynVY0VrHWfGvfAJ8SlKS6++7WyJPZ43FPqZ61NP+OJMP84be4B7wqczyuUIclcZv+NxobpLuwG1OqoSrFr/HdaTUZkgJlRC6eUAM9Yigjewh5UlSFy24eHuYIouSGGWoCV/tHLeTIYWVT0zZ6dikcSn6vis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KJidNzdA; arc=none smtp.client-ip=209.85.215.200
+	 To:Cc:Content-Type; b=P3+fRQEM+JyEyIvHw363EhhEep+WqEgxE/UHPU/FpUCBnVltZncfMUpKhTLhW/lKkQ45ud2nVPyA4wT6eeN6UyykxMK2WKm76n0kd1EFuomLNjYtC2hEypGKlB2FFBhtdUP9CSk377XNr7VIMe9xJmJ7WckluCSui0930h0frn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z4fgoQqj; arc=none smtp.client-ip=209.85.215.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KJidNzdA"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cb7049fa552so2482601a12.2
-        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 09:25:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z4fgoQqj"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb835525b13so4216810a12.1
+        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 09:25:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786119933; x=1786724733; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786119946; x=1786724746; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=HAxry1jRMnFZ0bYDegpiXJ+P2Rfk5/3SHM4b8b0+eqc=;
-        b=KJidNzdAKzchz3HsomrkzRNj/E74PsGeEqF+q4/m6FXed61q7FjDG9baI2rjQDFBn8
-         KqgxpaeTD7Ka9NuILu5l1xs3R3QBLz9NHfmL5dWvv8aUI/ReR/qUflbHTHBAW8GGglSq
-         tOWPQWANEKCS2xF4Yu7phfzAYYtNCal2jcxHbkGJuLbMt6t1/EO1awUb8ODpLjYz49Hy
-         dSAumPoKl5vC747TRWs2V23ESEP+KBNBbj7xNDakxOAw2anPau5TkihJHEClVtMF6HyD
-         EC7RLVxZjO2rdOqGH65DtTB0tCH56hzTqd0jIk3NJMA5rMNNxhc1llJgxAX3e6gflhEX
-         /H1w==
+        bh=V56oUIIu6VzkwUTKOA+t9IfMjOR0NdHo/09oAqD7TkU=;
+        b=Z4fgoQqj6q9SVICGxvn/sPtRS670OCeZgk0FkhmmtH2ypgN6wIvitYwjqdYvR8pDgd
+         g/dkyxv754ALmeq13y4dJfA/cH26Ka3KdXQgjSXy9bl3+pXvUSamP0IP8TmEi2xTE2ys
+         U3uqd3FDBWhB9lYrTQxVKyBJFINNaTC8+7RhF/EwyK83G4CGqoVD391Byi3hai9iy45v
+         L86sCHQV8PvwDtDVH500slNqqsjQVxn9HgaxyUxx7C/l3iSfrlgLbyoXMM2GIvO+8iUM
+         YSmg1Ey+VZS6gnEzXq1Gi1lJJkKL4XucYDntqbgb9EixpXGjX2woQY1K/HPqueDal+QG
+         PXLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786119933; x=1786724733;
+        d=1e100.net; s=20251104; t=1786119946; x=1786724746;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=HAxry1jRMnFZ0bYDegpiXJ+P2Rfk5/3SHM4b8b0+eqc=;
-        b=EhOvema528HrmAb1o38HkgKzqOuFFReI9b8VE+Q6kzmGaBMsSiKGiPHghlJWitckaA
-         ABAglWBhUajueKKSs+kNt6uHk88NmfbCUIa1Bbjw06SKWABOxTHOX2nN/XfvB0S3tyHk
-         5LCsUhtwZ92AMkP9VYeCunQUIOKKQztZcyHqm/Z9H9RogS1SOW69KVz8aJu+GbsUSH3Z
-         DQCPJgFmjh6PSiXhuZy+4E9bjTB4YvEOmdSWYVy1Wrx3sUc19/JPbvOtTtouFR/iZqhP
-         FqPJoKpxs+Sk3Mmdm8RbHdCX8Ma3Shr4qQcyAsYfdQYndpqt4L0iafEIVyzay5Y9xMvn
-         oCtg==
-X-Forwarded-Encrypted: i=1; AHgh+RqI6tTs2YSV/+nMqLBJDFxFbKXdPIEg+6B9BHdL44lU///vtNRALiwghtfq4URoWK5ZfRY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/zK5WHc/UHF1+tbsSg462yqDJNIdpgsd831KB/SeEuWBJkRnk
-	+52P7xWEiKaJkSkES2rzP7qyYJUrBRw8ybpD/TY8Tto9DkTS6XSMppw51iPDiygSv90CuKbb4cx
-	dWREtVA==
-X-Received: from pjhk3.prod.google.com ([2002:a17:90a:4c83:b0:381:5fcd:c992])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3847:b0:383:f52b:d616
- with SMTP id 98e67ed59e1d1-3909d89bd69mr8108741a91.10.1786119932919; Fri, 07
- Aug 2026 09:25:32 -0700 (PDT)
-Date: Fri,  7 Aug 2026 09:25:21 -0700
-In-Reply-To: <20260731173842.2649391-1-seanjc@google.com>
+        bh=V56oUIIu6VzkwUTKOA+t9IfMjOR0NdHo/09oAqD7TkU=;
+        b=ZBNfs+guGwifZaaGWUNt0ZODgPnPSyX4xY2F/v1ofqQKJkwIf+WBchzpcMNg8/LWal
+         1dJm8k5xQrzO0JDVjl3HPvc9C7LGEdXAd4XjcWBEKGT+XFCD+Rb5qX1UZYZdzJZNiecA
+         Y0qdOIk6SguA2f41+qYi6sJnFVcJrgyy2iQSpEPGUQG2FoRchIa6GXgjq4O+GBm7CRm7
+         iL4z+CPtfXRRIjuczN0wLjKgPelUQB9BvTOHhBGxmpkodD0Ii6RPYSGpP3zfVR/uLPqe
+         /UMsiH71E/YM0eVFT9DzdRO4z/7+UaR+p1/wnaf+lbb6B4oFvsrzwgTtkPwTV4oUoxGs
+         HXdQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rre5Yzinytopp01lE4zlKGXKLdQXnGTdy4AbWI8fQRBTyNRCL43vNNMDhZavtSVyqN37/Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9xew+h7U2je6/6+HNm4Y53c2nrtspbUbHkJsPDXHlfCmVUONv
+	tnq/3uU+wdxm9/TMLcEFT+1Zy3k25xzFaTnNtzih6jcNI1lnpY7dceamPfX8zNL5soyoflwT0Ze
+	AiTtW3A==
+X-Received: from pglr15.prod.google.com ([2002:a63:514f:0:b0:c9a:7d72:c316])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:e212:b0:3c3:875d:c538
+ with SMTP id adf61e73a8af0-3cbce6cb229mr1717985637.8.1786119945574; Fri, 07
+ Aug 2026 09:25:45 -0700 (PDT)
+Date: Fri,  7 Aug 2026 09:25:23 -0700
+In-Reply-To: <20260625090155.6326-1-likexu@tencent.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260731173842.2649391-1-seanjc@google.com>
+References: <20260625090155.6326-1-likexu@tencent.com>
 X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <178611954141.350753.14844441795145580419.b4-ty@google.com>
-Subject: Re: [PATCH v2 0/5] MAINTAINERS: KVM tweaks and additions
+Message-ID: <178611942092.345606.2838239310066339524.b4-ty@google.com>
+Subject: Re: [PATCH] KVM: x86/pmu: Clean up vPMU comments and stray blank lines
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>, Ackerley Tng <ackerleytng@google.com>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
-	Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, 
-	Anup Patel <anup@brainfault.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Like Xu <like.xu.linux@gmail.com>
+Cc: jmattson@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, 31 Jul 2026 10:38:37 -0700, Sean Christopherson wrote:
-> A few tangentially related KVM MAINTAINERS updates, details in each patch
-> (though the shortlog is probably enough info in most cases).
+On Thu, 25 Jun 2026 17:01:55 +0800, Like Xu wrote:
+> Tidy up the x86 vPMU emulation code and its selftests by fixing comments
+> that no longer reflect the code along with assorted spelling and grammar
+> mistakes, and by dropping redundant blank lines reported by checkpatch.
 > 
-> v2: Collect David's acks, drop RFC tag.
+> No functional change intended.
 > 
-> v1 (RFC): https://lore.kernel.org/all/20260428171541.1342335-1-seanjc@google.com
 > 
 > [...]
 
-Applied to kvm-x86 maintainers.
+Applied to kvm-x86 misc, thanks!  Note, to avoid a potential conflict (I think
+git's handling of code movement depends on the exact git config), I squashed
+one of the selftest comment fixes into f6e01d4fa1e8 ("KVM: selftests: Create
+one VM with many vCPUs for each major PMU counters test") that's sitting in the
+selftests2 branch.
 
-[1/5] MAINTAINERS: Add kvm-x86 tree to KVM x86 entries
-      https://github.com/kvm-x86/linux/commit/4c6547282f08
-[2/5] KVM: guest_memfd: Move gmem function declarations to dedicated guest_memfd.h
-      https://github.com/kvm-x86/linux/commit/f8479adb280a
-[3/5] MAINTAINERS: Add an entry for KVM's guest_memfd
-      https://github.com/kvm-x86/linux/commit/fad1da20e62a
-[4/5] MAINTAINERS: Add David H. as a KVM guest_memfd reviewer
-      https://github.com/kvm-x86/linux/commit/fc176fd65582
-[5/5] MAINTAINERS: Add myself (Sean) as a reviewer in the main KVM entry
-      https://github.com/kvm-x86/linux/commit/82bd660be36f
+[1/1] KVM: x86/pmu: Clean up vPMU comments and stray blank lines
+      https://github.com/kvm-x86/linux/commit/66ee8f155657
 
 --
 https://github.com/kvm-x86/linux/tree/next
