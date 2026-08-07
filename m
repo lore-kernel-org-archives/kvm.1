@@ -1,219 +1,130 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE6F476692
-	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 12:13:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C133B44237C
+	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 12:15:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786104816; cv=none; b=J7wf40czaiVn16/cnhCfNEgim+dfqrAAlB5bHrtbz9UtKmacrX1hQpGg4YftD7txSTAJtxT5vcumv0wfNkAcWTUq4qigtMAKpUx0gzWHMP9fJVyTd8s4PXu5AJJDcdqzsR89s4Pyb0+7mOShFb/y5H7MBEkKEe1nu39HWTF1nMs=
+	t=1786104946; cv=none; b=nJY08fLTmiDygLRoWomQjZqR5F7Cnb5TsczWnkATNbUhfnkKM3DhLcRAZuaf4HYmaiXTF15w+qVBgYRdIJCm8L24B/UwLp5T9bM/gYa3GHIdIeLhvSFWXWwJJMzWkqIEvdEkx+HiO1zBpVlV7mYvuLKmHEH+b0UWGAgsugJhS1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786104816; c=relaxed/simple;
-	bh=4r96qpMJsNweRuHbWhrMwI6A+/kGgFiPkndPA4GSebI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TWZFHczVUqDBNJP3+l4u18sxQTXkdGlHncaURKqZStY2Cj0kiBzZ1tgRFVyuSo/COK7tMPG2CbdSeVBgYkOHGluGARlE61qVyhAG2kvCzoHEg0Tnkg8epbCfS+rISAENYl0UZcIfiuXPvzJpPKl3A5HN9k9G5ItubfdF665QY/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A0LdVsBX; arc=none smtp.client-ip=209.85.216.43
+	s=arc-20240116; t=1786104946; c=relaxed/simple;
+	bh=Axb9P7ZeqXIDv/YIhN5h9W5JoZulVHyBXtBYYWbUvvs=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=Qubb2HQADsB+eR2dAmtCvMypuGGsoWiK9SvzMeO2+9uNF3hIiHJwJGsuugsiZAiw/u+0xUtPqCgrZfXhB+NIECOsvcD9OUDerdWwrziFl9OTdDKCETx1k3g6dhXiP8JU2GmT/mQ0CFbZ2anCyIHoxjO1ij3C2UgYcMT0TLuT+0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K2zGDs8j; arc=none smtp.client-ip=209.85.215.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A0LdVsBX"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38e347638adso3700140a91.0
-        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 05:13:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K2zGDs8j"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c9ef3e1337fso2465936a12.2
+        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 05:15:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786104798; x=1786709598; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/pFfoKxUGeYDD+KaCR3NP+7Oo42dFdA9+7ZCaeGWARI=;
-        b=A0LdVsBX2mmkLqPjEzB1/cTCDDU0+DZZ0Rt5Lsz7sIP7O8Otu+x9Ga+FYe1eJihymR
-         lTqQ9WnnyS3LBOgAD7ZfK7UCCueEMN313+uMxBBkVeEvNHeFyd0IV2rgBtQgQAHlTCwI
-         aXLXCK0+cpWNiSzrl1X881kx23QKZmtBINxxrGFVAZu9q0AjCXaAEPVb+w+3sucTccQd
-         nZCZyEiCrCy2MNlewrW+i6YeANQh4rZkocr9LtGTkD0acA62LPLkqLUh0e7juruXB7Gi
-         UQn0AE7fTmAU5W2cMHyqkpNAnbq6sp2U++6BbE91gySlhLUkLhts9OVYOvvoRAUh8w4y
-         GXKw==
+        d=gmail.com; s=20251104; t=1786104903; x=1786709703; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=c0uexmqzAqMMSI/hDk3D+mxEC3THwEZ/LbKJuycr+4g=;
+        b=K2zGDs8jnFRVhM2XseS2Ng0eDrRZDjctENSF8MHj69AttBphoT32wybOOxOwCWJJ59
+         cvE83dKnlhO8p2Sw+vbYRR4R4D28b8doe5siJk33/ymw3ZOMPiyLtyorIRTQK16LHFa9
+         4w5pk1dazr+HAMUU1GpfVa2XP/CfVzKwVJk70/kCV6G78/R90nl6qJifkbqdbNtSGQ6g
+         ZoKypfAmeRTk2l4dNTeVsuLTYZIRTzuWRi1+X5IUY78ztngySgCIZsNT/YA01dU+058o
+         2lVsDd7MhBCXZuRNl1COkYgX/Zd6Bts0+8oAT/Dkxq/mhd7J5Kz/nkZ8rUQ27JofiA8n
+         RU8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786104798; x=1786709598;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/pFfoKxUGeYDD+KaCR3NP+7Oo42dFdA9+7ZCaeGWARI=;
-        b=MXIApm19/vtWGKriCckBHBXZwzk7sd+yLlDsTwd7SW3ixT85DQ/kKEWOnsAqqNRlXN
-         VqArSaXUr2v0q893cWLhV6xDqdAEM3VNdaVp/Lb8j5aVYwSigk8nnu8/zvHQxxxx1CRP
-         8KAMJOGOsX30O14w7BztsBZzoeDgh4RBJ1eRRjlp4gKhiz7tTR9mt2eErYgFE7oTu8sl
-         0dBKBy6M/odgXwVriWr1dkoQfvUvtwZdfnK23eNg6NWVWi4O11RjgOcjeZcSxdnPuWG4
-         dvQGyRuNJ1OFN8fbSTvj/72yqMNqC4udWjasMyLTtTVZEzI4nJfW4LmAWaDu2MpOELCu
-         YN1g==
-X-Gm-Message-State: AOJu0YwMjAOxwPQqtQ51ProRfOxD2QzGqPJzhdW+93GRfcWEF2kbbTwl
-	z1qxdJhJzOHg5CeCYvPbwj7oBBymOcXuemSjWNkKdpNYpSyiNhcG6NKENTy29RF2
-X-Gm-Gg: AR+sD12M7syUP4IPIQjVxY2ZwaTS1yXqUVG8VlzRF7LbNO6sam9kNVWM1aaJcXz/8+2
-	5A16NRCmVaYJYq8zl/NnxNRo8lSQsukS65ahNlEEGkb1VVOZFxcusNDvgyMO3P/cGBNIRZL9EQ3
-	n+4kd5+FKF1TwgI7IEdTBh6tqKpHfU4m4CcY+kL/X7sAekynNiZTwj6+TZ3COEg0+EaSeFrfugU
-	QFkmraNmU0tcE+5+Pi2KGhX5EEutCPktLL9VBrQOd18pXSBKsd5bQYEkJifSY0N6v9YB/TWvKkN
-	5AOF+QyUeCapWgL6tQaGMjZqLChgfiZvpfZWeS5dUV1UoE8uLULbdVhhAyfDnaSgvBK3EqfYL9N
-	8VVVXGz/4aZlUt7ZYtRVVOMXzG9gDyfhg0isdugK2oA4Q09QcqUjT764GEFqc5MTQXy0iGPXB3r
-	pf1Pj/wZce8gV2ynP9V0E1Aa0T1eu9aUKcVul00CJAR5Nzve5Dp/g1hjRILDTcHOUKlnn3ajTIt
-	2cqZCLSknk=
-X-Received: by 2002:a17:90b:3847:b0:38e:b400:a860 with SMTP id 98e67ed59e1d1-3903c5a7285mr20060925a91.13.1786104798131;
-        Fri, 07 Aug 2026 05:13:18 -0700 (PDT)
-Received: from volcano9f8e-host.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315bebde2e6sm6839102eec.21.2026.08.07.05.13.15
+        d=1e100.net; s=20251104; t=1786104903; x=1786709703;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=c0uexmqzAqMMSI/hDk3D+mxEC3THwEZ/LbKJuycr+4g=;
+        b=r8mnHexo5e2/+pHrCLIFiK9lRZrGux6ofQPZBJav4bfF3lb5sji9Ire4/4dUdJLn4t
+         bJYL0GkWkzOyCoIJZl2XW3VgFRp9ZUfpt+ZmWE6zf3X83bNUTUBRDXQtYfEAb/K3smRg
+         XIxCxiGdHpQKhRsngJDVK5M2pXokKI8uSAUKWoldoqZyQDvny5N+FLUuMzqz4d9qblvv
+         oBqYrODIXl1gS7c5VWGONvt1XqUEx6znVsWpSpZ1oKhXW9tjdsSec0isKzkvX0Lz3ahN
+         JGTNLg6eSnY6MeCIENz41lsuoDR/P59nlIUl8snnfdE2VJU3qNMfVZB8i0iezfuAeCr/
+         4x5g==
+X-Forwarded-Encrypted: i=1; AHgh+Ro4PtIJahLuByjmj+FDU1leZL24qtjfYDp30lyTCDuMc7SYu/AS9SkAdjXq8o9+ZdQmTm8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YznpsJxalbhezi31DchC06shtWnH/Gb11cmZ/2NFpfEwuo0KOGz
+	ZqIjIcHCuNd8DJ6I1LUPd6VjrDgX0WdCxsiuOIEAgP48ftQCvMAg65JN
+X-Gm-Gg: AR+sD13+ZOrycXyMVBYZpfpRdnaA/0thVf98+IBvysOTF63GykCku/rB/I2q4PJEdzA
+	Npdo0rwfF2UabXP3oFEJ9PKAW4xO+nMuG6gD2U2H+inh7Ej87aA7E6J7EalPkeiYtjtTGtY7cm0
+	M7AKN8YsumUCLK/4IYg62T9qpe3uSuzXyzHslLQrLnv5H3Q5lPuOIPStW9j9iB/FZg2KgXwmcaM
+	CvvNLBScYjBsoyP+N0NKnZyB6asFYxtZxxqWWa/TGp5f5qQERns7DjsXN7mAu3sN5c3YlMh4PY1
+	2ZdtZmyEiBdbARzgDBjd+I/YoUPfZUcHJzIqnEhitztBA6Db3tjsub+3joFjeZOPg3+lgNgGWse
+	5K2KA0R2p2qjKQXALnQTS5+rzJugvdHhzH8w7WQv/vIjbLkhM9yVgoJOVJYDqryvAXzxqy3MT0Y
+	Jj8IIJhvQIDoA37CCgzTkqtdYE3Ukvpt36um9OU0FA0FuWf6vbHwsc8k2cdhA=
+X-Received: by 2002:a05:6a20:2450:b0:3c3:89cf:f43 with SMTP id adf61e73a8af0-3cb85eb92a7mr21944976637.30.1786104903263;
+        Fri, 07 Aug 2026 05:15:03 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315be86d3fcsm7231096eec.4.2026.08.07.05.14.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 05:13:17 -0700 (PDT)
-From: Hemanth Selam <hemanth.selam@gmail.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Shuah Khan <shuah@kernel.org>
-Cc: kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] KVM: selftests: SEV: Sanity check the launch measurement
-Date: Fri,  7 Aug 2026 17:43:08 +0530
-Message-ID: <20260807121308.1885737-1-hemanth.selam@gmail.com>
-X-Mailer: git-send-email 2.43.7
+        Fri, 07 Aug 2026 05:15:02 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Amit Machhiwal <amachhiw@linux.ibm.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>
+Subject: Re: [PATCH v7 3/4] KVM: PPC: Book3S HV: Add support for compat CPU capabilities for KVM on PowerNV
+In-Reply-To: <20260807170704.3280f54c-e2-amachhiw@linux.ibm.com>
+Date: Fri, 07 Aug 2026 17:43:07 +0530
+Message-ID: <7bm2ku24.ritesh.list@gmail.com>
+References: <20260806170645.11892-1-amachhiw@linux.ibm.com> <20260806170645.11892-4-amachhiw@linux.ibm.com> <bjbeledh.ritesh.list@gmail.com> <20260807170704.3280f54c-e2-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-test_sev() launches the guest but discards the measurement returned by
-KVM_SEV_LAUNCH_MEASURE, with a TODO to validate it.  A full
-attestation-style validation isn't possible from the selftest because
-userspace does not possess the transport keys the PSP uses to derive the
-measurement, so the expected value cannot be recomputed here.
+Amit Machhiwal <amachhiw@linux.ibm.com> writes:
 
-Capture the measurement for SEV and SEV-ES guests and sanity check it:
-assert that the firmware reports the blob length defined by the SEV API
-specification, and that both the measurement and the nonce are non-zero.
-Describe the blob layout with a struct so the buffer and field sizes are
-derived from a single definition instead of open-coded magic numbers.
-SNP does not return a measurement through this path, so it is skipped.
+> On 2026/08/07 10:24 AM, Ritesh Harjani wrote:
+>> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
+>
+> <snip>
+>
+>> >  
+>> >  static int kvmppc_get_compat_caps(struct kvm_ppc_compat_caps *host_caps)
+>> >  {
+>> > +	struct device_node *np;
+>> >  	unsigned long capabilities = 0;
+>> >  	long rc = -EINVAL;
+>> > +	u32 cpu_version = 0;
+>> >  
+>> >  	if (kvmhv_on_pseries()) {
+>> >  		if (kvmhv_is_nestedv2()) {
+>> >  			WARN_ON_ONCE(!nested_capabilities);
+>> >  			capabilities = nested_capabilities;
+>> >  			rc = 0;
+>> > +		} else {
+>> > +			for_each_node_by_type(np, "cpu") {
+>> > +				if (!of_property_read_u32(np, "cpu-version",
+>> > +							  &cpu_version)) {
+>> > +					of_node_put(np);
+>> > +					break;
+>> > +				}
+>> > +			}
+>> 
+>> What happens when we don't have "cpu-version" DT property?
+>> Check this commit
+>> 5a61ef74f269f2 ("powerpc/64s: Support new device tree binding for discovering CPU features")
+>> 
+>> And also why do we need to parse the DT properties again?
+>> Shouldn't we check something like this?
+>> 
+>> 	if (cpu_has_feature(CPU_FTR_P11_PVR))
+>> 		capabilities |= KVM_PPC_COMPAT_CAP_POWER11;
+>> 	if (cpu_has_feature(CPU_FTR_ARCH_31))
+>> 		capabilities |= KVM_PPC_COMPAT_CAP_POWER10;
+>> 	if (cpu_has_feature(CPU_FTR_ARCH_300))
+>> 		capabilities |= KVM_PPC_COMPAT_CAP_POWER9;
+>> 	
+>
+> Thanks for the suggestion, Ritesh! After closer analysis, cpu_has_feature()
+> would give the same result on pseries, but I believe that using 'cpu-version'
+> directly is both more correct and more explicit for this context.
+>
+> Here's why:
+>
+> 1. 'ibm,powerpc-cpu-features' / dt-cpu-ftrs is baremetal (powernv/OPAL) only.
 
-  # ./sev_smoke_test; echo "exit=$?"
-  Random seed: 0x6b8b4567
-  exit=0
+Arghh. That make sense. Thanks for checking.
+The design with "cpu-version" sounds good in that case.
 
-  # ./sev_init2_tests; echo "exit=$?"
-  Random seed: 0x6b8b4567
-  exit=0
-
-  # ./sev_migrate_tests; echo "exit=$?"
-  Random seed: 0x6b8b4567
-  exit=0
-
-Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
----
- tools/testing/selftests/kvm/include/x86/sev.h | 12 +++++++
- tools/testing/selftests/kvm/lib/x86/sev.c     | 11 +++++--
- .../selftests/kvm/x86/sev_smoke_test.c        | 33 +++++++++++++++++--
- 3 files changed, 52 insertions(+), 4 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/include/x86/sev.h b/tools/testing/selftests/kvm/include/x86/sev.h
-index dec383e59a47..b29bf3aa0682 100644
---- a/tools/testing/selftests/kvm/include/x86/sev.h
-+++ b/tools/testing/selftests/kvm/include/x86/sev.h
-@@ -31,6 +31,18 @@ enum sev_guest_state {
- 
- #define GHCB_MSR_TERM_REQ	0x100
- 
-+/*
-+ * Layout of the blob returned by KVM_SEV_LAUNCH_MEASURE, per the SEV API
-+ * specification, section 6.5.2: a measurement (HMAC-SHA256) followed by the
-+ * nonce used to derive it.  Deriving the buffer and field sizes from this
-+ * struct keeps callers layout-agnostic; only this definition needs to change
-+ * if the measurement ABI is ever extended.
-+ */
-+struct sev_launch_measure_blob {
-+	u8 measurement[32];
-+	u8 mnonce[16];
-+};
-+
- static inline bool is_sev_snp_vm(struct kvm_vm *vm)
- {
- 	return vm->type == KVM_X86_SNP_VM;
-diff --git a/tools/testing/selftests/kvm/lib/x86/sev.c b/tools/testing/selftests/kvm/lib/x86/sev.c
-index 93f916903461..4bfb97a0364f 100644
---- a/tools/testing/selftests/kvm/lib/x86/sev.c
-+++ b/tools/testing/selftests/kvm/lib/x86/sev.c
-@@ -108,10 +108,17 @@ void sev_vm_launch_measure(struct kvm_vm *vm, u8 *measurement)
- 	struct kvm_sev_launch_measure launch_measure;
- 	struct kvm_sev_guest_status guest_status;
- 
--	launch_measure.len = 256;
-+	launch_measure.len = sizeof(struct sev_launch_measure_blob);
- 	launch_measure.uaddr = (__u64)measurement;
- 	vm_sev_ioctl(vm, KVM_SEV_LAUNCH_MEASURE, &launch_measure);
- 
-+	/*
-+	 * '.len' is an in/out field; the firmware reports back the actual size
-+	 * of the measurement blob, which must match the layout described by
-+	 * struct sev_launch_measure_blob.
-+	 */
-+	TEST_ASSERT_EQ(launch_measure.len, sizeof(struct sev_launch_measure_blob));
-+
- 	vm_sev_ioctl(vm, KVM_SEV_GUEST_STATUS, &guest_status);
- 	TEST_ASSERT_EQ(guest_status.state, SEV_GUEST_STATE_LAUNCH_SECRET);
- }
-@@ -191,7 +198,7 @@ void vm_sev_launch(struct kvm_vm *vm, u64 policy, u8 *measurement)
- 	sev_vm_launch(vm, policy);
- 
- 	if (!measurement)
--		measurement = alloca(256);
-+		measurement = alloca(sizeof(struct sev_launch_measure_blob));
- 
- 	sev_vm_launch_measure(vm, measurement);
- 
-diff --git a/tools/testing/selftests/kvm/x86/sev_smoke_test.c b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-index bf27b6187afa..51adf7a1e1b6 100644
---- a/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-+++ b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-@@ -150,16 +150,45 @@ static void test_sync_vmsa(u32 type, u64 policy)
- 	kvm_vm_free(vm);
- }
- 
-+static bool is_range_nonzero(const u8 *buf, size_t len)
-+{
-+	size_t i;
-+
-+	for (i = 0; i < len; i++)
-+		if (buf[i])
-+			return true;
-+
-+	return false;
-+}
-+
- static void test_sev(void *guest_code, u32 type, u64 policy)
- {
-+	struct sev_launch_measure_blob blob;
- 	struct kvm_vcpu *vcpu;
- 	struct kvm_vm *vm;
- 	struct ucall uc;
- 
- 	vm = vm_sev_create_with_one_vcpu(type, guest_code, &vcpu);
- 
--	/* TODO: Validate the measurement is as expected. */
--	vm_sev_launch(vm, policy, NULL);
-+	/*
-+	 * Capture and sanity check the launch measurement.  A full
-+	 * attestation-style validation (recomputing the expected value) isn't
-+	 * possible here as userspace does not possess the transport keys the
-+	 * PSP uses to derive the measurement.  At minimum, the firmware must
-+	 * hand back a non-zero measurement and a non-zero nonce (the blob
-+	 * length is validated by vm_sev_launch()).  SNP does not return a
-+	 * measurement through this path, so skip it.
-+	 */
-+	if (is_sev_snp_vm(vm)) {
-+		vm_sev_launch(vm, policy, NULL);
-+	} else {
-+		memset(&blob, 0, sizeof(blob));
-+		vm_sev_launch(vm, policy, (u8 *)&blob);
-+		TEST_ASSERT(is_range_nonzero(blob.measurement, sizeof(blob.measurement)),
-+			    "SEV launch measurement is unexpectedly all zeros");
-+		TEST_ASSERT(is_range_nonzero(blob.mnonce, sizeof(blob.mnonce)),
-+			    "SEV launch measurement nonce is unexpectedly all zeros");
-+	}
- 
- 	for (;;) {
- 		vcpu_run(vcpu);
--- 
-2.43.7
+Please feel free to add:
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
