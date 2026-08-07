@@ -1,170 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9696C3B8948;
-	Fri,  7 Aug 2026 22:58:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA733E5EEA
+	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 23:06:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786143483; cv=none; b=rDpkg9jYagCLHYzJ7Af9y2+U+eiOSVt7Q30365RD9jnozAadYplppedkpHoQgkBNkmkWN/bizzo/pzUS9ShKHZL0Emq9gmf/OJlxzDSS4pVw5+KyxqvM3lzQ7RidBUs/o/WXNipsYmpWIRIXakfbmG0WDXAE4NPmxCA8OuyETg4=
+	t=1786143976; cv=none; b=VQcbE013FsK5Zb8IhkECi4Tkno4n0wbKMjmTeLXID4G+WNETHy0VQN7IEm/7poAnkLb9v8zrXu02brSukp5I7WIMeSEAd479sPYvhypNsZ5+dTPWey1WM6hg05jGqYeH/5pksxTRAvzGY1l4CdbJcI0840bI5G3O/ZI+zyyBbrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786143483; c=relaxed/simple;
-	bh=XEgq+iwDY02SiK/n3W3QVOYduor4LILIs4ezOgaW1uU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=RGovSZsSCXPao35Y2nLR25mAOu9peTNu2Efb37/PB9lHivKje0ILQQVL3dO4VTltEzrQA2mraM5oOf5dVzkuSiJ4/muUDywOwBmRwa6ojjbaAA1NZukUbrqvF9UPkHsqnwZD2JT8fWnauXo+UOrwV4SEilivkfcDbxa6AYw9L8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OsCbWi6/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786143976; c=relaxed/simple;
+	bh=Ah7os4dPUnM7PXOAVjFiX82IffndnNTATTNU1WZd0JA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=J96vO/xrs7+bmGJYsxHsshpl5YRMz7qWsHQw4rUCgdZ+3QvsgZ9lIZq60QWXF6yNmns8/1gzsoCCDe8FWish30XJo3lHkrn2NWevZAHSXLJfl+TrM+bQNrLZ/dwQGVOTrnKoF2WNBodmwTAC+/RfyAKXkGP9N5KReHHA0iRjxzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NdWgIA23; arc=none smtp.client-ip=209.85.210.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OsCbWi6/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41BCD1F000E9;
-	Fri,  7 Aug 2026 22:58:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786143482;
-	bh=sS1eoKQs5rb8sB8syrW09t1OKEjkyAqmNb3wwIisQ58=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OsCbWi6/gJhos5yWMD2KtJePHgjA+tECRjFVEhKGLgvSBtXp2hlvRnGodVihX+Oul
-	 ywbyyohtAAO7If1xKQo5Oz804U8ViTFSGRTkuAtG8R3lX35aZiCC3bFpFAGQxJ8xbG
-	 Bg7DU7FXiXFm0Stv6x7aTww1BMHS8zBkgyl/HuCu7PByaPmWs21xI9rK6ujdMRNPTa
-	 PsRGdYju9oWQplOidnlX6Zp6+otrmwalN4hx+/BIWO4YIJC3a+CMwSIFrdtif96wdo
-	 5C98cwrdvPKQus49sfRj28F2GViTKgYe4OUH2eUnU0q2iz5vRkDDGluDl+xBcpN5F2
-	 ZH8yeYUfAr0Og==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] s390/vfio-ap: Fix control domain removal in
- vfio_ap_mdev_cfg_remove
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
-Cc: "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org
-In-Reply-To: <20260807223939.573718-1-akrowiak@linux.ibm.com>
-References: <20260807223939.573718-1-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 07 Aug 2026 22:58:01 +0000
-Message-Id: <20260807225802.41BCD1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NdWgIA23"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-84870e7f498so69346b3a.3
+        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 16:06:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786143975; x=1786748775; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Yi54ty/2uOVISFFIV8GBz7xZ1AQ64miqFpO9VtjCRnI=;
+        b=NdWgIA23pPjmpFYaabmXPdmBBIxw9entcOfgxkivCioLxg368CCj7L2zmlzf0lS4DT
+         eKqXt3LybU7ydoCkk/PCO/xb8oMeUCeX8R4siORlESDdwYYUxKVP8GnL+fXWrtqjhcjx
+         fQTONbt2NwhjEMrfVsvMS/WYRAz0hYUROcq/FZbC/RpHaFOypVf9q1YDgpbC/UujOf2x
+         R4Ho2/VhrK8y50QZoYWVJV0fhivcYWVEx1+W/vxLuylb84tVIl7TEi8hz1+J8iYJbsy7
+         Mom+mL/4P8P4+71GRZfz65FyfaHFHO+XiRSVpPnvspIANWkRLhocEtm5aF6idsE3Rorh
+         jO8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786143975; x=1786748775;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Yi54ty/2uOVISFFIV8GBz7xZ1AQ64miqFpO9VtjCRnI=;
+        b=m7r1PVPcYupy+rakXZmCoSb6xc2sBRoY2kuWysVI5At+3AT3oeSjWY/SXRFs8YejaY
+         4RnR6sR49iponTYhVnDItZ+Zl2FCiftGdHtGgdyfTE2uHOlh0GqdU8IfSNJ7iDQbyEjX
+         7NeqwwqTt3QYbNYNusnIBGks7sgzVF3uk764XqfTyIgskGjdpAw3xpzVIfbMfz7BEJRQ
+         fUF/YU7MZXAvJrE9Tq6EeD45MR+43Qs+ZWpBImeWz7Nq5krjLmtkQawVvxJGSJFAT4Xr
+         YMZ/C7agfRCF+2DKGxp/Xx83bTM+pGrjUfKQ2XbERjr8tQnG2NBtj2wb1uTs/SwXAK4Y
+         pUqg==
+X-Forwarded-Encrypted: i=1; AHgh+RogVC2ypSsg6NQNI+9zJwrSvK7pI7dh5wFz/cLiNXY5vQv0jTLqyScAkaYM2cExT9SXl1k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhosOlmSMqMmd6lFbAfMZfFPDnrbAJbHFfFzAAqhpAjT/BhWkI
+	rCSvMCwrxup4w0l+7nKqiiGbh8g43L46uwDx6m+8dTpnB99uLX71T3OrLALjLdy7+IO3BGnSI4s
+	zAhlZEg==
+X-Received: from pfbfr12.prod.google.com ([2002:a05:6a00:810c:b0:848:40f5:a538])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4b02:b0:847:8acd:747c
+ with SMTP id d2e1a72fcca58-84f2e022980mr28214031b3a.13.1786143974654; Fri, 07
+ Aug 2026 16:06:14 -0700 (PDT)
+Date: Fri, 7 Aug 2026 16:06:14 -0700
+In-Reply-To: <6bb4252cf3c41de5e58cce5c5de02660d8350f47.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260807071934.786879-1-zeng_chi911@163.com> <anXnmvp2_Rj62huS@google.com>
+ <6bb4252cf3c41de5e58cce5c5de02660d8350f47.camel@intel.com>
+Message-ID: <anZk5hTf6-8HWHBu@google.com>
+Subject: Re: [PATCH] KVM: Remove the kvm debugfs directory if kvm_init() fails
+From: Sean Christopherson <seanjc@google.com>
+To: Kai Huang <kai.huang@intel.com>
+Cc: "zeng_chi911@163.com" <zeng_chi911@163.com>, "zengchi@kylinos.cn" <zengchi@kylinos.cn>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On Fri, Aug 07, 2026, Kai Huang wrote:
+> > > 
+> > > The stale /sys/kernel/debug/kvm directory isn't just cosmetic: a
+> > > subsequent attempt to load KVM makes debugfs_create_dir() fail with
+> > > -EEXIST, after which kvm_debugfs_dir holds an ERR_PTR and all stat
+> > > files are silently never created again.  Worse, the leaked stat files
+> > > reference file_operations and stat data that live in the KVM module; if
+> > > the module is unloaded after the failed initialization, reading the
+> > > stale files is a use-after-free.
+> > > 
+> > > 
+> 
+> [...]
+> 
+> > 
+> > Already posted (twice) and applied:
+> > 
+> > https://lore.kernel.org/all/20260706095910.39798-1-leixiang@kylinos.cn
+> 
+> Do we need to "Cc: stable"?  The one in your tree (commit db3a46e200df2) doesn't
+> have that.
 
-Pre-existing issues:
-- [High] Missing NULL check on `matrix_mdev->kvm` before acquiring its lock=
- on AP configuration change paths, leading to a kernel panic if a mediated =
-device is unattached.
-- [High] Guest APCB is not updated when the last adapter or domain is remov=
-ed, leaving the guest with unauthorized hardware access.
-- [High] Iterating `mdev_list` without the appropriate mutex allows concurr=
-ent list modifications, leading to list corruption or use-after-free.
---
-
---- Patch [1]: [PATCH] s390/vfio-ap: Fix control domain removal in vfio_ap_=
-mdev_cfg_remove ---
-commit 934a77df4b71bb3ee940f94ad6abdd8290e96d28
-Author: Anthony Krowiak <akrowiak@linux.ibm.com>
-Subject: s390/vfio-ap: Fix control domain removal in vfio_ap_mdev_cfg_remove
-
-This commit modifies the vfio_ap_config_remove function to use bitmap_and()
-instead of bitmap_andnot() when clearing bits from matrix_mdev->matrix.adm.
-This ensures that explicitly unplugged control domains are correctly removed
-from the KVM guest.
-
-> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
-_ap_ops.c
-> index 44b3a1dcc1b36..1bfdbe85023dd 100644
-> --- a/drivers/s390/crypto/vfio_ap_ops.c
-> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-> @@ -2615,9 +2615,9 @@ static void vfio_ap_mdev_cfg_remove(unsigned long *=
-ap_remove,
-
-[Severity: High]
-This is a pre-existing issue, but does vfio_ap_mdev_cfg_remove() safely han=
-dle
-unattached mediated devices?
-
-If an mdev is created via sysfs, matrix_mdev->kvm is initialized to NULL. I=
-f a
-host AP configuration change occurs before this mdev is attached to a guest,
-the loop in this function:
-
-drivers/s390/crypto/vfio_ap_ops.c:vfio_ap_mdev_cfg_remove() {
-    ...
-    list_for_each_entry(matrix_mdev, &matrix_dev->mdev_list, node) {
-        mutex_lock(&matrix_mdev->kvm->lock);
-    ...
-}
-
-will unconditionally dereference the NULL kvm pointer. Is there a missing N=
-ULL
-check for matrix_mdev->kvm before acquiring its lock on AP configuration ch=
-ange
-paths?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but can the iteration over
-mdev_list in vfio_ap_mdev_cfg_remove() race with mdev creation?
-
-vfio_ap_mdev_probe() adds a new mdev to matrix_dev->mdev_list using list_ad=
-d()
-while holding only matrix_dev->mdevs_lock:
-
-drivers/s390/crypto/vfio_ap_ops.c:vfio_ap_mdev_probe() {
-    ...
-    mutex_lock(&matrix_dev->mdevs_lock);
-    list_add(&matrix_mdev->node, &matrix_dev->mdev_list);
-    mutex_unlock(&matrix_dev->mdevs_lock);
-    ...
-}
-
-However, vfio_ap_mdev_cfg_remove() iterates over mdev_list using
-list_for_each_entry() holding only matrix_dev->guests_lock, as mdevs_lock is
-only acquired individually inside the loop body.
-
-Could this lead to kernel memory corruption or use-after-free if a user
-creates a new mdev concurrently with an asynchronous host AP configuration
-change?
-
->  		do_remove |=3D bitmap_and(aqrem, aq_remove,
->  					  matrix_mdev->matrix.aqm,
->  					  AP_DOMAINS);
-> -		do_remove |=3D bitmap_andnot(cdrem, cd_remove,
-> -					     matrix_mdev->matrix.adm,
-> -					     AP_DOMAINS);
-> +		do_remove |=3D bitmap_and(cdrem, cd_remove,
-> +					matrix_mdev->matrix.adm,
-> +					AP_DOMAINS);
-> =20
->  		if (do_remove)
->  			vfio_ap_mdev_hot_unplug_cfg(matrix_mdev, aprem, aqrem,
-
-[Severity: High]
-This is a pre-existing issue, but does vfio_ap_mdev_hot_unplug_cfg() proper=
-ly
-update the guest APCB when the last device is removed?
-
-In vfio_ap_mdev_hot_unplug_cfg(), the decision to update the guest's APCB
-relies on bitmap_andnot():
-
-drivers/s390/crypto/vfio_ap_ops.c:vfio_ap_mdev_hot_unplug_cfg() {
-    ...
-    if (!bitmap_empty(cdrem, AP_DOMAINS))
-        do_hotplug |=3D bitmap_andnot(matrix_mdev->shadow_apcb.adm,
-                                    matrix_mdev->shadow_apcb.adm,
-                                    cdrem, AP_DOMAINS);
-    ...
-}
-
-The kernel's bitmap_andnot() function returns true only if the resulting
-destination bitmap is non-empty. If the last adapter, domain, or control do=
-main
-is explicitly removed, the destination shadow APCB becomes entirely empty,
-causing bitmap_andnot() to return false.
-
-Since do_hotplug remains false, vfio_ap_mdev_update_guest_apcb() is skipped.
-Does this leave KVM guests with unauthorized access to physical hardware de=
-vices
-that have been explicitly removed from the host's AP configuration?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807223939.5737=
-18-1-akrowiak@linux.ibm.com?part=3D1
+I was thinking "no", as I don't think it's likely to be problematic outside of
+fuzzers and error injection, but I also wouldn't object if someone feels strongly
+that it should be sent to LTS kernels.
