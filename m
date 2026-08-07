@@ -1,122 +1,307 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56043317164;
-	Fri,  7 Aug 2026 17:21:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3530039FCC4;
+	Fri,  7 Aug 2026 17:25:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786123273; cv=none; b=lmmnIRhsGYcKVd6NLNTtj1lQftPLgCjlvyd8GkQi708cGEgG3cYyo3PKlHwM3+OrTCpLdyIAKTxJ9xoJ2uhNWijOJPibTGwfdmjuOlLl49Ftmfa+gfsXnFCTQzhsdq0zOduoIV0+delQgIHm3ilE+g9vsbS0Lj29Lbk/Qf5E/So=
+	t=1786123511; cv=none; b=SAsBJ9lbdhdJlon6cEJrvwagVR1ROj/DPhOtZHJEnoee0A5Yb6gciXW2z4cj9NXVeIdKFGYBJkxh2lNx1kjSMgSEp5JLVQzCVXRgR0i0qnh9e5ljWsvaN5DDXF6gufzp8qaYBap/1TbLC7HuwVAol6+HbWSg9FhD3yjhC7bWPfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786123273; c=relaxed/simple;
-	bh=lDkP3zcrOYYiTFLW7DAzu7pDiV+M3vSSRV7EdV8nZ78=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=fbnJPhSMARmcmc4cfAXGpHSTKsZESmu2iHOxpeDyA4e5NzfiUD0L+lN8frsM7Ii3uEVLB3gdZ1R9z/95PKTel37OYgBzcuvLxXOaSE850Nrxl3iJjKpseK4zWvNRgwNccaWYDhVmGUUrMIJdp7jSqNFHXEv0OPgT/HnevpgLOIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ggrD2eay; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786123511; c=relaxed/simple;
+	bh=6W0tv/L3fpDYcpRT/RWNH2SbWBbsEI+jxLTKTuozfnk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GGIoSx09mMZkyqmpQBZtgstU0Hmrzvfyi6WnjzKAxiP8sVBPWEO0eJNjnusnRjePmeRKCYVSCiRFymA1Qrck45M6Oi63EXSvPCrzRmwGPmhWV0x8Anu1Qn0xDO0BCDRow6LnHg7atLeEHWKYpsr+Qqq0Brj5RBSDspwCWozuzfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=PMox8cLq; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ggrD2eay"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACBF1F000E9;
-	Fri,  7 Aug 2026 17:21:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786123271;
-	bh=GjE62yf0K9dWF+khzym+a+bEUb+JNR1nry+wAk8N7k0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ggrD2eaycigsdBqzJu0dh6xm0HrQaY5UGVj/2ghJUchmSaZHWWDsUicCW54cGB+IC
-	 GZ31xlxiafBc5K02/TNBxXRrfDW8FACmaUPcQCu3B9p8rggn8ncrIaF6ktmVvcZFT2
-	 pqlbO6AARin/tHPSkZaxf5wU5OyArap0u7HoybjyX8dldblDNvC2QX/GlcN/F74K7b
-	 6bT8VLYx2Ih3HZQ4BXim6D2YOhEwZyowGIXeLXTa7UNYXTxUdYw2zt8+bLnmJulWgI
-	 1puUKKku88hdUXQEGmfyah/IIB0i/66x+HappttJvZdzN4ycftzGNtReMPtyIixfCL
-	 vCySNQ8kbZ0wQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 43/49] KVM: selftests: Add VGICv5 IST attribute tests
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
-Cc: "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, "Marc
- Zyngier" <maz@kernel.org>
-In-Reply-To: <20260807111159.429128-44-sascha.bischoff@arm.com>
-References: <20260807111159.429128-1-sascha.bischoff@arm.com>
- <20260807111159.429128-44-sascha.bischoff@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 07 Aug 2026 17:21:11 +0000
-Message-Id: <20260807172111.9ACBF1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="PMox8cLq"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 677GlWoi2000828;
+	Fri, 7 Aug 2026 17:24:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=6zXcROzwnPwPNTPbSGxkyl3EGFh9uFhqtCcqOGevi
+	Vc=; b=PMox8cLqAPVJwVRiBATYaZYQWXOdqyfNXCTmKmcI8tEnRb6oZlmqb/3uf
+	NDsWqYF43eN4eGnZSM7zWwzUMGm5stHPhh03xqOZfXOHS5s5KFAFuD9lXELoK6wJ
+	7FB8emE7nuF2MuoXvJnREHRyhfwRDMVmHobhcI9xHiRQLwD7OhAH7CAP/rX60zvY
+	E/nX6kuN/eBJGPPHidFpa9yswXkniyA8aNsD1TyeZKA1f35ADSGKjQ1J3gfV3rky
+	EnbWrNZnECUvLXe8c4QOuyAURkXRweDe7C0UBxKWddNnayGPZKgo9L86QovshKPv
+	RKArwbJQEJJzK0LKVDH8j+BLS5sZg==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fvy0453a6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Aug 2026 17:24:47 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 677HBIYM013485;
+	Fri, 7 Aug 2026 17:24:46 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswu00e3x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Aug 2026 17:24:46 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 677HOgVN38469968
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 7 Aug 2026 17:24:42 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 375F620043;
+	Fri,  7 Aug 2026 17:24:42 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9B5A720040;
+	Fri,  7 Aug 2026 17:24:38 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.124.216.72])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  7 Aug 2026 17:24:38 +0000 (GMT)
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Ritesh Harjani <ritesh.list@gmail.com>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: [PATCH v8 0/4] KVM: PPC: Expose CPU compatibility modes for nested guests
+Date: Fri,  7 Aug 2026 22:54:29 +0530
+Message-ID: <20260807172433.82045-1-amachhiw@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA3MDEzNSBTYWx0ZWRfX1jDcFaET/iGx
+ GD26NqgO0S/My8eWJ+e/Lo00PUjQXyO85afStQVxat/FzYIY7UtmL993ZLXo+uYeDHzh9qFW+tL
+ AzexsK5MtyZffSn6l0i7xzuDppJlz3Y2nrdunvV6bYeNrbNjv2oMKrJWa2rIhbQxl1lfE0rXSxZ
+ 3b299FpiZSdx+9uZYGqkrFC8P4VH9V71WH8bI48Zg+D5v1aC8MFXh96P0jiSMNjwiLFh0PCU79S
+ I+eHUZZZ7YoGLca3vtYIIqy56iEz/83imAFHQ8Shx8XRCHzw5pFLbajgHUZlkRnaL2mSxt//JbK
+ 1wHOR92yzwUZNqoPxAkbksSTDpJckldgGc1ZDxLIptBH8mpkN/QBlFMQL6duCKsx2TfGGMzfevn
+ D3CA2axrF1Adz7iZMrhd6tp5BaResQtAcMkJDXPO7U4ap0pYmrdT8mcy6oX6CxDDeboRiwMdjLY
+ JjBlZS5bYMVSGVdq3cg==
+X-Proofpoint-ORIG-GUID: 75o5t-FBHQuXH7CaBpL_lBEwvwmXAORk
+X-Proofpoint-GUID: jRMFwv4TaiYrO9vTtrGRBdEi3Fx3mliT
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA3MDEzNSBTYWx0ZWRfX3XkNQ1j/4xFA
+ TugffiAPdQa3mwRWJ0+ubIR4ytaC90r90r2ejSYFomsSb3B7pAU/lFjqfYeU+BYFlbE1A5BRURt
+ M3LyK33Mh4JbdG6Z5PLHGgcnTEpSSPY=
+X-Authority-Analysis: v=2.4 cv=WLpPmHsR c=1 sm=1 tr=0 ts=6a7614df cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=h7u5zJOLz3W6SXC_pSsA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-07_03,2026-08-07_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0 clxscore=1015
+ impostorscore=0 priorityscore=1501 phishscore=0 suspectscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608070135
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Incomplete test coverage for VGICv5 IST attribute validation
---
+On POWER systems, newer processor generations can operate in compatibility
+modes corresponding to earlier generations (e.g., a Power11 system running
+in Power10 compatibility mode). In such cases, the effective CPU level
+exposed to guests differs from the physical processor generation.
 
---- Patch [43]: [PATCH v5 43/49] KVM: selftests: Add VGICv5 IST attribute t=
-ests ---
-commit 9ba6d67381650763d50c218233de98711d15304f
-Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
+This creates a problem for nested virtualization. When booting a nested KVM
+guest (L2) inside a host KVM guest (L1) running in a compatibility mode,
+userspace (e.g., QEMU) may derive the CPU model from the raw hardware PVR
+and attempt to configure the nested guest accordingly. However, the L1
+partition is constrained by the compatibility level negotiated with the
+hypervisor (L0), and requests exceeding that level are rejected, leading to
+guest boot failures such as:
 
-KVM: selftests: Add VGICv5 IST attribute tests
+  KVM-NESTEDv2: couldn't set guest wide elements
 
-This commit adds selftests for the VGICv5 IST attribute group. It verifies
-that KVM reports the attribute group correctly and rejects invalid operatio=
-ns,
-such as out-of-order save/restore attempts and badly sized IST buffers.
+This series provides a mechanism for userspace to query the effective CPU
+compatibility modes supported by the host, so it can select an appropriate
+CPU model for nested guests.
 
-> diff --git a/tools/testing/selftests/kvm/arm64/vgic_v5.c b/tools/testing/=
-selftests/kvm/arm64/vgic_v5.c
-> index 54fa13906990b..e053b01bb5be3 100644
-> --- a/tools/testing/selftests/kvm/arm64/vgic_v5.c
-> +++ b/tools/testing/selftests/kvm/arm64/vgic_v5.c
+To achieve this, the series introduces a new KVM capability and ioctl
+(KVM_CAP_PPC_COMPAT_CAPS / KVM_PPC_GET_COMPAT_CAPS) that expose the
+compatibility modes supported by the host.
 
-[ ... ]
+Why a new UAPI?
+===============
+While cpu-version is available in /proc/device-tree/cpus/<cpu#>/cpu-version
+on both L1 booted on PowerNV and PowerVM LPARs, the UAPI approach is
+preferable for several reasons:
 
-> @@ -523,6 +534,114 @@ static void test_vgic_v5_irs_regs_attrs(void)
->  	vm_gic_destroy(&v);
->  }
-> =20
-> +static void test_vgic_v5_ist_attrs(void)
-> +{
+1. pHYP (L0) capabilities: On PowerVM, we need to rely on capabilities
+   negotiated with pHYP in KVM, not just device tree properties. The
+   cpu-version property depicts the current compat mode but doesn't point
+   to what all compat modes are supported for the nested guest.
 
-[ ... ]
+2. procfs dependency: Not all systems run with procfs enabled (CONFIG_PROC_FS
+   is optional). Minimal configurations like buildroot might disable it, but
+   KVM ioctl works regardless since it accesses kernel data structures
+   directly.
 
-> +	/* Check missing and incorrectly sized SPI IST buffers. */
-> +	ist_attr =3D vgic_v5_ist_attr(NULL, 0, NULL, 0);
-> +	ret =3D __kvm_device_attr_get(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_IST,
-> +				    0, &ist_attr);
-> +	TEST_ASSERT(ret && errno =3D=3D EINVAL, "GICv5 IST get accepted missing=
- SPI buffer");
-> +
-> +	ist_attr =3D vgic_v5_ist_attr(spi_ist, sizeof(spi_ist) - sizeof(__u32),
-> +					 NULL, 0);
-> +	ret =3D __kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_IST,
-> +				    0, &ist_attr);
-> +	TEST_ASSERT(ret && errno =3D=3D EINVAL, "GICv5 IST set accepted bad SPI=
- size");
+3. Kernel validation: The kernel validates and normalizes the compatibility
+   information, ensuring userspace gets validated, consistent data.
 
-[Severity: Medium]
-Does this test leave coverage gaps for the set/get paths? For the missing
-SPI buffer, the test only checks __kvm_device_attr_get(), but neglects
-__kvm_device_attr_set(). Similarly, for the incorrectly sized SPI buffer,
-it checks __kvm_device_attr_set() but not __kvm_device_attr_get().=20
+4. Abstraction & stability: /proc/device-tree is an implementation detail.
+   The UAPI provides a stable interface that won't break if the underlying
+   mechanism changes.
 
-Would it make sense to test both the get and set paths for these validation
-checks, similar to how the NULL descriptor checks were handled earlier?
+5. Semantic clarity: KVM_PPC_GET_COMPAT_CAPS clearly expresses what
+   compatibility modes can be used for KVM guests, vs. parsing device tree
+   which requires understanding the semantic meaning of cpu-version.
 
-> +
-> +	/* LPI storage must be absent when no LPI IST is configured. */
-> +	ist_attr =3D vgic_v5_ist_attr(spi_ist, sizeof(spi_ist), spi_ist,
-> +					 sizeof(__u32));
-> +	ret =3D __kvm_device_attr_get(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_IST,
-> +				    0, &ist_attr);
-> +	TEST_ASSERT(ret && errno =3D=3D EINVAL, "GICv5 IST get accepted unexpec=
-ted LPI buffer");
+The implementation supports both:
 
-[Severity: Medium]
-Is this test missing the corresponding check for the set path? As with the
-SPI buffer tests above, it only validates that __kvm_device_attr_get()
-rejects the unexpected LPI buffer, but does not check if
-__kvm_device_attr_set() correctly rejects it as well.
+  - KVM on PowerVM (nested API v2), where compatibility information is
+    served from the cached nested_capabilities value, originally obtained
+    via the H_GUEST_GET_CAPABILITIES hypercall at module init.
+  - KVM on PowerNV (nested API v1), where compatibility is derived from the
+    device tree ("cpu-version") representing the effective processor
+    compatibility level.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807111159.4291=
-28-1-sascha.bischoff@arm.com?part=3D43
+This allows userspace (e.g., QEMU) to select a CPU model consistent with
+the host compatibility mode, avoiding mismatches and enabling successful
+nested guest boot.
+
+Note: This series is built on top of patch [1] which must be applied first.
+Patch [1] ensures arch_compat is validated against the host compatibility
+mode before this series adds the capability query mechanism.
+Commit e4de1b9cb3b5 ("powerpc/dt_cpu_ftrs: Set CPU_FTR_P11_PVR for Power11
+and later processors") which was also a prerequisite has been merged upstream.
+
+Changes in v8:
+ - Add PAGE_SIZE guard after get_user() to bound the check_zeroed_user()
+   scan in the usize > ksize path [Ritesh]
+ - Drop the manual usize > sizeof(host_caps) pre-check; delegate the
+   usize > ksize path entirely to copy_struct_from_user(), which succeeds
+   when trailing bytes are zero (valid forward-compat) and returns -E2BIG
+   only when they are non-zero. Handle -E2BIG by writing back ksize with
+   proper -EFAULT escalation if put_user() fails. [Ritesh]
+ - Fix host_caps.size writeback on success path: use
+   min_t(u64, usize, sizeof(host_caps)) instead of sizeof(host_caps) to
+   avoid reporting a larger size than the kernel actually populated when
+   new userspace passes a larger struct with zero trailing bytes. [Ritesh]
+ - Update documentation to reflect the corrected three-case versioning
+   contract and the revised E2BIG semantics. [Ritesh]
+
+Patch summary:
+  [1/4] Introduce KVM_CAP_PPC_COMPAT_CAPS and wire up ioctl
+  [2/4] Implement capability retrieval for KVM on PowerVM (API v2)
+  [3/4] Add KVM on PowerNV support (API v1)
+  [4/4] Document the new ioctl
+
+Testing (with QEMU v5 patches and on top of patch [1]):
+
+KVM APIv1 Testing
+=================
+  On P10 PowerNV machine (L0)
+  ---------------------------
+    - P10 L1 KVM guest -> works
+      - P10 nested L2 KVM guest -> works
+      - P9 compat nested L2 KVM guest -> works
+    - P9 compat L1 KVM guest -> works
+      - P9 nested L2 KVM guest -> works
+
+  On Powernv11 TCG Guest (L0)
+  ---------------------------
+    - P11 PowerNV TCG L0 guest -> works
+    - P11 L1 KVM guest -> works
+      - P11 L2 KVM guest -> works
+    - P10 compat L1 KVM guest -> works
+      - P10 L2 KVM guest -> works
+    - P9  compat L1 KVM guest -> works
+      - P9 L2 KVM guest -> works
+
+KVM APIv2 Testing
+=================
+  On P11 PowerVM LPAR (L1)
+  ------------------------
+    - P11 L2 KVM guest -> works
+    - P10 compat L2 KVM guest -> works
+    - P9 compat L2 KVM guest fails to boot as expected
+    - Without QEMU patches but Linux patches
+      - P11 L2 KVM guest -> works
+      - P10 compat L2 KVM guest -> works
+      - P9 compat L2 KVM guest fails to boot as expected
+    - Without Linux patches but QEMU patches
+      - P11 L2 KVM guest -> works
+      - P10 compat L2 KVM guest -> works
+
+  On P11 LPAR in P10 compat (L1)
+  ------------------------------
+    - P10 (host compat) L2 KVM guest -> works
+    - Without QEMU patch but Linux patches
+      - P10 guest fails to boot as expected (error: kvm run failed Invalid argument)
+    - Without Linux patch but QEMU patches
+      - P10 guest fails to boot as expected (KVM: unknown exit, hardware reason ffffffffffffffea)
+
+  On P10 PowerVM LPAR (L1)
+  ------------------------
+    - P10 L2 KVM guest -> works
+    - P9 compat L2 KVM guest fails to boot as expected
+
+TCG pSeries Guest
+=================
+    - P11 (default) pSeries guest boots fine
+
+ABI Extensibility Testing (struct size 32, extra member)
+=========================================================
+    - Newer struct on QEMU, older kernel -> works (kernel returns -E2BIG,
+      QEMU retries with correct size)
+    - New struct on Linux kernel, older QEMU -> works (kernel zero-pads
+      trailing fields, QEMU gets correct data)
+
+With this series, nested guests boot successfully in configurations where
+they previously failed due to compatibility mismatches.
+
+Related QEMU series:
+====================
+QEMU v5 series:
+https://lore.kernel.org/all/20260804182914.83091-1-amachhiw@linux.ibm.com/
+
+Previous QEMU versions:
+v4: https://lore.kernel.org/all/20260701052341.62289-1-amachhiw@linux.ibm.com/
+v3: https://lore.kernel.org/all/20260616113915.25589-1-amachhiw@linux.ibm.com/
+v2: https://lore.kernel.org/all/20260502140021.69712-1-amachhiw@linux.ibm.com/
+v1: https://lore.kernel.org/all/20260430061333.37905-1-amachhiw@linux.ibm.com/
+
+Previous versions:
+==================
+v7: https://lore.kernel.org/linuxppc-dev/20260806170645.11892-1-amachhiw@linux.ibm.com/
+v6: https://lore.kernel.org/linuxppc-dev/20260804180705.59160-1-amachhiw@linux.ibm.com/
+v5: https://lore.kernel.org/linuxppc-dev/20260701051409.51820-1-amachhiw@linux.ibm.com/
+v4: https://lore.kernel.org/linuxppc-dev/20260616123314.82721-1-amachhiw@linux.ibm.com/
+v3: https://lore.kernel.org/linuxppc-dev/20260522152744.55251-1-amachhiw@linux.ibm.com/
+v2: https://lore.kernel.org/linuxppc-dev/20260513100755.83195-1-amachhiw@linux.ibm.com/
+v1: https://lore.kernel.org/linuxppc-dev/20260430054906.94431-1-amachhiw@linux.ibm.com/
+
+References:
+===========
+[1] https://lore.kernel.org/all/20260714175432.86388-1-amachhiw@linux.ibm.com/
+
+Amit Machhiwal (4):
+  KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and wire up ioctl
+  KVM: PPC: Book3S HV: Implement compat CPU capability retrieval for KVM
+    on PowerVM
+  KVM: PPC: Book3S HV: Add support for compat CPU capabilities for KVM
+    on PowerNV
+  KVM: PPC: Document KVM_PPC_GET_COMPAT_CAPS ioctl
+
+ Documentation/virt/kvm/api.rst      | 89 +++++++++++++++++++++++++++++
+ arch/powerpc/include/asm/kvm_ppc.h  |  1 +
+ arch/powerpc/include/uapi/asm/kvm.h | 18 ++++++
+ arch/powerpc/kvm/book3s_hv.c        | 56 ++++++++++++++++++
+ arch/powerpc/kvm/powerpc.c          | 78 +++++++++++++++++++++++++
+ include/uapi/linux/kvm.h            |  3 +
+ 6 files changed, 245 insertions(+)
+
+
+base-commit: f9a2394a23482bfd330911e9c8295b71724feacd
+prerequisite-patch-id: 7755786f0e4f415e47065ff1972765008727fe10
+-- 
+2.50.1 (Apple Git-155)
+
