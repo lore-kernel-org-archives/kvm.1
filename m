@@ -1,101 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A367730BF6B;
-	Fri,  7 Aug 2026 16:55:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4433955FA
+	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 17:06:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786121718; cv=none; b=qRwRRpIY15bNrrJzlwwJCp+1SdmsLFcQ1dnZoGIcDI8ea/sVsZFeQ6XDDlDgWNyRIsrXhlgxFBktahQlnviI523X1+5mRs7rAD2SymZowdy7ho41Jfe51JrOZLgdCJ9Y+fbjgpbsfylIQs4Ybmy6GWPZyK2mm9ewIT9dnJ9Fi24=
+	t=1786122419; cv=none; b=eA/N0nkQ5oPlcDz05xvmEGJAo7XIagUNig9iBur+Uptaudo5o3dZw2HlU7b4WdmtcbznJA0rbqAP2xODKzPO0gciQ9wm01wpwMpf7vqxYDRlEe4I4Oy6TKdKMyLGRvphrp37HuwCyXxsuSObNhcJRjrmusZKMDZMgmioQIPbjCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786121718; c=relaxed/simple;
-	bh=YUEYrZ0o8cScx0bdmAjlXvWj3gn80/PGLB/BlKrlRnY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hnyu0jElmAeZgO1sbojoqgvc7KMIojrO1plx9xCWCi3zzyqVrZmJ0QYWmWB9FEPamhtXuJveN40OY5aOplfALNaIRwX8rEE7vJIn48s7xAMbDr4y3BpsQ6aOaKaMTgUXGENgJ7KZnIouCJlO81nuR3bqrMS2gydqBJRWHzJDulg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bqts4DUb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786122419; c=relaxed/simple;
+	bh=lku2N8fUyfDXpjMzfVjWbeC/nH+eWEUefbnvWuzIt8E=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=iCIg2vZhXN+ZOUVvwmVATczhBUz6JD7/YuAwMYuo54+FFX8BGqdO1FfsozjIjSKcyNeuZdpVQbSE3g5mhqF33sfM0DE4uZ7tD8Hz3EN5rzYXEKRXnaGhDQjbuAP11pyMhU/dzTykMqgkB8dgYailzKBZcKAxKlWyc6vzQVUMq8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bKpkTYpk; arc=none smtp.client-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bqts4DUb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7FC21F000E9;
-	Fri,  7 Aug 2026 16:55:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786121717;
-	bh=ykm8uV/8cTTzzPi1HTkNXcDZFyx3Z3m58aIzhGZrJnk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Bqts4DUbbWgUrSLTPbAlgyJrkvdhEGct4WGgDZ6hfk7IgkXMxnlpHk75h099p3N7A
-	 u3n2PTj2ljzQ+dewErN0EvcgKhkxkWXGPu7L9MRPnGcbrkNshbJcPc6gzAC3ivSfgd
-	 m7yHHy9n5v38BIDolZkcK1qjuaXiojKMy6t/ovKqM5H9jvDAbdPHWrQC7GIQb9DfZ+
-	 U1Zpd6Pw3rGUc74Y0kOfwOMYsizO1XObQ0HgdmUlCRat3DbQ3VoH4eR8DKu76nPxH9
-	 dx7UbIo1XWXJF/0GpjS4Q00eLS6OlztgDkqL9OpH9W4rVitNuR/BC9WZQpRkjMGz3I
-	 Zn7pYfS9GO1oQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 36/49] Documentation: KVM: Document
- KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS for VGICv5
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
-Cc: kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, "Marc
- Zyngier" <maz@kernel.org>, kvm@vger.kernel.org
-In-Reply-To: <20260807111159.429128-37-sascha.bischoff@arm.com>
-References: <20260807111159.429128-1-sascha.bischoff@arm.com>
- <20260807111159.429128-37-sascha.bischoff@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 07 Aug 2026 16:55:16 +0000
-Message-Id: <20260807165516.D7FC21F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bKpkTYpk"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e11baa66eso3386841a91.2
+        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 10:06:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786122417; x=1786727217; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LVN3mxHnahAdyvwIzzw2hf3DbBjSxNQ7ddlcDaqj3p0=;
+        b=bKpkTYpk57S4ZNiKjNdgbWoeSOZZmDcPQnZjB6JW0+rvxFF9ZSXZyfWdho1pkd+zdn
+         TxtmpiY7wWlVc1zdk+AIOKxMOykZAWDUH6deaK1U0SRJZFwtuwulnX1ss6qXNVwPoL66
+         rpLoi2bH/8qeyl1IJOu1hZ10C2qfUTBRTRwSx26074bvFYTc302wOKxDzSi+HHdNnIfG
+         1h/jxWz8+JFy3GESQQV/WAR3mzZKJdaptOYUTR4js1dVUctn2OZ6fW10XYDqWsrxRNvJ
+         BpHBIYCZEXzsjq4gi3b0dDpuSywEq/7bGNBT7k1qrG3KZrw1zmwHQslc977/pnxzMPRg
+         isfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786122417; x=1786727217;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LVN3mxHnahAdyvwIzzw2hf3DbBjSxNQ7ddlcDaqj3p0=;
+        b=h9Lb3oU1c9dDPp9tm1UgodMURoDS3UVEykg++PaGBv+jNMqqAcgxN87eNhP0p2u1sx
+         /e/06KjT0gWrsgVkLg9vdjpamX07b5+5OkQbWdvmnAlGE9Yc7/KE8wPw+Z0egV4zipko
+         1Gf5hIA4QIFS8ndzFVGjsvc8U1FDrgPXGcyCdU+I0+MjKD3VgbINi6yCTS9bP+kVsOhd
+         ua+zQq98RV6KPUZ1THeL1TXWvfkDTWCU0MnJcvE00swW+6anM/CCF9qOokSq/cQuW38g
+         Qh8QmQwMBYleo0D++3kXoP8HgHj9FVYnhrTQecn/a/suzZjKOIJ4s8JnS8ZE2VfIAKjk
+         M2xQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoKfL+Jv4mB0kd01EHIxoqoaeVndGF4Lhu5AcXcRXTC/ePheJQFa7T91jCXZIOvPB8REYA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3alVv/TB+Ol7JsBALZfLeL4dk9kM8J/LFEwrpo2sE5TleFBLn
+	p4yvT4r6qRfhQkfp/kTS8dUKx7trM2uTfLG/MkjXlzXhDzn35yz0S7DCOV2y52KL7egPupOZZsX
+	az4Y5LA==
+X-Received: from pjbbb8.prod.google.com ([2002:a17:90b:88:b0:38f:dee9:ffd9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2e42:b0:382:1a6f:ba3b
+ with SMTP id 98e67ed59e1d1-3909d7d2f85mr12577958a91.5.1786122416773; Fri, 07
+ Aug 2026 10:06:56 -0700 (PDT)
+Date: Fri, 7 Aug 2026 10:06:56 -0700
+In-Reply-To: <20260807135327.2629594-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260807135327.2629594-1-pbonzini@redhat.com>
+Message-ID: <anYQsMnpS2kpYoqA@google.com>
+Subject: Re: [GIT PULL] KVM (mostly s390) fixes for Linux 7.2-rc7
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: torvalds@linux-foundation.org, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Restricting user-space writes to VGICv5 system registers, IRS MMIO=
- registers, and IST state after a VCPU has run prevents VM soft reset.
---
++Yosry
 
---- Patch [36]: [PATCH v5 36/49] Documentation: KVM: Document KVM_DEV_ARM_V=
-GIC_GRP_CPU_SYSREGS for VGICv5 ---
-commit 5be826b5b86ddbcfa778f582ad314ba1e4599113
-Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
+On Fri, Aug 07, 2026, Paolo Bonzini wrote:
+> - disable use of INVLPGA when NPT is enabled, because it doesn't seem
+>   to flush TLBs correctly
 
-Documentation: KVM: Document KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS for VGICv5
-   =20
-This commit documents the KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS API for the virt=
-ual
-GICv5, defining the register layout, supported system registers, and error
-codes.
+...
 
-> diff --git a/Documentation/virt/kvm/devices/arm-vgic-v5.rst b/Documentati=
-on/virt/kvm/devices/arm-vgic-v5.rst
-> index c782ea4d4609c..7e41d6699538f 100644
-> --- a/Documentation/virt/kvm/devices/arm-vgic-v5.rst
-> +++ b/Documentation/virt/kvm/devices/arm-vgic-v5.rst
-[ ... ]
-> +  Errors:
-> +
-> +    =3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +    -ENXIO   Getting or setting this register is not supported
-> +    -EBUSY   VCPU is running, or write attempted after a VCPU has run
+> Paolo Bonzini (3):
+>       KVM: SVM: make svm_flush_tlb_gva do a full asid flush if NPT enabled
 
-[Severity: High]
-Does returning -EBUSY when a write is attempted after a VCPU has run prevent
-VM soft resets?
+Why did this get rushed in?  There was quite a bit of discussion, both on the
+code itself[1][2] and on the assessment that this appears to be hardware issue[3].
+IMO, neither of those discussions was resolved enough to merge the patch as-is.
 
-During a soft reset (such as PSCI SYSTEM_RESET), QEMU typically pauses the
-vCPUs and rewrites the initial state of the GIC device while the KVM VM is
-still considered to have run once, since it doesn't destroy and recreate the
-entire KVM VM.
+I can appreciate wanting to get a fix into stable ASAP, but we could have gone
+with a *much* simpler fix for stable@.  The bulk of this change is a performance
+optimization masquerading as a bug fix, and I'm not convinced it's actually
+optimizing anything meaningful, because SVM only queues the TLB flush, and that
+is super cheap.  E.g. the "we don't know why this is failing, let's smack it with
+a hammer" patch could have been:
 
-If KVM enforces this restriction on KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS and
-other device states, won't this reject QEMU's state restore sequence and
-prevent the VM from rebooting gracefully?
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 3057ca7051db..58bc4a1cb7a4 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4237,7 +4237,15 @@ static void svm_flush_tlb_gva(struct kvm_vcpu *vcpu, gva_t gva)
+ {
+        struct vcpu_svm *svm = to_svm(vcpu);
+ 
+-       invlpga(gva, svm->vmcb->control.asid);
++       if (!npt_enabled) {
++               invlpga(gva, svm->vmcb->control.asid);
++               return;
++       }
++
++       if (static_cpu_has(X86_FEATURE_FLUSHBYASID))
++               svm->vmcb->control.tlb_ctl = TLB_CONTROL_FLUSH_ASID;
++       else
++               svm->current_vmcb->asid_generation--;
+ }
+ 
+ static void svm_flush_tlb_guest(struct kvm_vcpu *vcpu)
 
-> +    -EINVAL  Invalid mpidr or register value supplied
-> +    =3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+I don't care _that_ much about the code itself, though I still think the out-param
+is all kinds of ugly.  What frustrates me most is completely ignoring the processes
+that everyone else is trying quite hard to follow.  I'm a-ok with getting overruled
+on jugdment calls and matters of taste, but I'm not at all ok with doing so silently
+and without what I would consider an honest attempt to address review feedback.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807111159.4291=
-28-1-sascha.bischoff@arm.com?part=3D36
+[1] https://lore.kernel.org/all/amPo-XdhFGIZquES@google.com
+[2] https://lore.kernel.org/all/CAO9r8zM=Mb=eTEFGF0G-POvwwbSr7e8SN6zcDp=GstzKtBKcow@mail.gmail.com
+[3] https://lore.kernel.org/all/CAO9r8zMopB=YKXs5pkQmPf9uHKE0P0XORcNbc60AWXTusuY3tg@mail.gmail.com
