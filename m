@@ -1,152 +1,121 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D991C474258
-	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 16:40:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA0F399890
+	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 16:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786120835; cv=pass; b=sS5PrRBissKvWqVa3ue9Tt61Zezgnh6ay/3Pe21263u/OB9S6RF5CGlVMVP3MKKGV22yJytKN3qUQ0idhFz3819ZSARTvnk3GjRO/+tLvay9PrV8SzKoRcTrLd99xRUSA9oZQXOLaopuvvvW/WtKpUSaPm4BvOYjXlLxbR6XREE=
+	t=1786120839; cv=pass; b=YsPaW+DnuZNjfp6VOUASrrfDbOBAIBC6JaWKkJm6VpX29NCF5j/mQe+YhdBoDBVxqDJ7Y24cYCoDddZTe5a42FAZAsZsBZXwubP2w6MaFMQUXz04lEtswHhaCfYyPeFPchlTuWkL7h9xFenodkvzZeri53ru5tYLU6cq52fJk0k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786120835; c=relaxed/simple;
-	bh=2HgwHZgTsQh36SFFCo0O64QWVhGbiodNcVh9j5w48WE=;
+	s=arc-20240116; t=1786120839; c=relaxed/simple;
+	bh=F50iQH4e1nAqdZbITtJdiKr4PRC5QvkQr88iUCNw6Hw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qrRLJurWF1UYGnrwQdls0NU9jeWdddl0wkJLnBDRd/ryZbKnUoj9I1o7OKnvQManzDkX1u4ZqD97E2NKZZr6/gLJR8hEtsFRYL7YKYVssH+RLfh/Vd+UWCOXw42qKZrfpsRq9F34bTSaDnKrJEJGPl6GYJHwJ3z2r8FIeRJFd2M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=iJJwYyIH; arc=pass smtp.client-ip=209.85.128.53
+	 To:Cc:Content-Type; b=fZ48C5YlGKOBqFU/9/ba9keXflX5SWwx93Cy1ALr6W767zpFgxtSnYLWj8HoeavOBvxFDJMkpyqOfJrrQ1p9UsqyEgqzZBAjPZAymZbu2oRk0AHbU2pJyecDTzUCVCHLMoqlDEAs/iifxPNYOJReRVtZO+ohGKOIVjKnaBiACdg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=jWavrccF; arc=pass smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="iJJwYyIH"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4995b0343c1so12352195e9.3
-        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 09:40:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786120828; cv=none;
+	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="jWavrccF"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-47c6e9a694bso2241870f8f.1
+        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 09:40:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786120832; cv=none;
         d=google.com; s=arc-20260327;
-        b=kw60SH7CDI7pZ8UETqhlKiKCp6sAtSxi13FGSE6laBUI35FGpZEiSr7WhdBpu03H7U
-         xK7EfUQiaSu5SEYu22uzeyx67g1YbWje93BKRe6Wz3bX5JHwKORIoK/dnIUkMXYv+Qrj
-         zhHGYxRCFE0hRmlimsa/uUd/J0yiZeo5BE8nGf5dmDyahUFxwrXwUSE6jLa8KC7MTsou
-         yLh4dSRpGaZL+ciSz17WWb44DlsFHmq1MWmQPARNFQ2I7Y8DnSyNiPF0wy1JBFnLIcpV
-         t9rKsgTSl6ICi9crKrsqi6WWJIfFPkIaQelCW/PVd8Z59glULVLszewqxYpSdqhc4oF5
-         4VgQ==
+        b=TQLR1c1TB5k7Ll9h54fMe7k9JaffJAuV7I+zBq3UMRvvZ23X8VPph8GgVN+yLJWeXR
+         Qf/54GwCaHnw919ZlpEtmXfy4KvM7DvxPJNvgjH3rFLK9AinWbusWVyOyN1SX7edi8W1
+         cIhlDEIysxwgJxBuRBTHa4xc0hlr2mVPZDkJRApE7QCQ+1WJ7IXjvw0FOAxjRoCl4mnZ
+         EAv02SjxUTMVsXt8jdcAcSrnx+GWnnvEX+RCiLNZvPvD03On+4dek7z7SHNeTbidPTxp
+         rMEDHfllYOgK37gdfGmg9uv6GpjO1fm2tqTBJDKmXoBau/q9cc6T2FDjrgDQeSgdOxYd
+         Nrfg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=GSyds6W5OQ66XFXpi1LlEJdTPFK3iE4acomSvTp9bj8=;
-        fh=TqkDo7HJm6C2bTHYqbzn7b/i6oYTm+CMOZGiIKAd8p4=;
-        b=JwYsTL+/qKfvYmH2G+PHNx+MBgrLrArAi+iksP749pwaGXoWDU+XVtYUBpI4NrybKW
-         NDiDLNAQT7nxr2/DSdYPTe0jH/ZKoROscgqGlqxaKQVZDs/7ufKJ+kmGPIlnX9QL7kE0
-         dLElHResiPU4oynerTrrXOx7LrA0zsgmIL8mKFn0tvjGXA4TPQun0wdHX53K9PCLXQM8
-         1TAYcpeu8zcIXD6G/zXpfe8WfyhTx+xj3qVy1m0k19nMm1Qb5TeQthQnvD+Yxmwv80QS
-         dqJsj89lpiDsPGWmwt6DeGPJa0hclenstZ35hy/48C+9Ndcl4RcWGgg8YdJmwWRFjHSY
-         inYA==;
+        bh=M3ZQ4lwGybEnFTTAAMTdnaC/1E614SavXr5HowXfnfg=;
+        fh=yLfRJnM9Lz9jtpzhKAXTsWkUUj6QNIKhDgQ2u6+9b/k=;
+        b=G8AAf8uy0P+Po9J9/FwztoCUbabHCf96aKPeFvIEuRxUuOd83hxwQQPaDP7a54Xmiv
+         JLOkJSZxROlM75rnhUkOTI41MIvgjRcvxidE7DViilICyHr81a9uug/+X6VC/x5lEQi9
+         zw5px8xhk3qwmY6QRq+ehTzKwmmHBX4/Qf6co82NHUu13BkpbvczNgsFdkxCBG+tlufa
+         oTGWZDSxPsK5gnUYkUGsiui/GcZUey3PKpCvgpgI3fMOwFXY0u8Ednk3JyufIjR2z2yV
+         2xZHnjpC2xDCwW2L7covwllL6vGAj670jqravNLKpwTxh+td15dPrjoVhgcjAkg+cRBf
+         em3Q==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1786120828; x=1786725628; darn=vger.kernel.org;
+        d=brainfault.org; s=google; t=1786120832; x=1786725632; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=GSyds6W5OQ66XFXpi1LlEJdTPFK3iE4acomSvTp9bj8=;
-        b=iJJwYyIHiIV2W4dVHE+5u5jVDfhi2bT4K6FUQKiqjeJV68stK8t1ibqpxcfMl6LfdQ
-         XvbR5D/QLnA4JcqHt2zy3LphcXlZHNcJA1Lsb3PK2aXMXinJm5rUaUnNkrNXGjozdrYy
-         t2NsZSb5M7rKUQAxsDY1NiySUFMGtzlpV679UKtUT2YsCDBnfzR6a67O2WknMpbce6Vq
-         zi2LfA+BPQOizSes/hi1hZg7KXygneJYvbcKDs8vRK0uvcA1R4u9GDJQ1d8KhnzZ0Rrp
-         idBx6b3F8G1xXbH0NuXqPc5cA0KBK9ovYfi3oSaGiBpJ5LEWUIAbbznaitldBGPlXSIs
-         K18g==
+        bh=M3ZQ4lwGybEnFTTAAMTdnaC/1E614SavXr5HowXfnfg=;
+        b=jWavrccFQYzpeewCm1/91PAdK0Lal/3LFAbUGNPH631rit2yPi6JVqbO1eGNCkn9X1
+         yed7UY/R78wdxV3kV988nC6bITufaqlexR2oJnlpHYTHWdB44XWjG99AyREOs9ynYY8S
+         Mtb7o6XOOXzMmRmcHKqSFnTjpX+2APRpjKOnLg+qVTiGqBpaQkxxJE4EAbBLE9mdZXaH
+         /2tszc1HPwwLEjU42Kp5oTTt128y/6UdAjeVCl8ozI+JkyoKi999eAe8QmH2x39s8LI8
+         sX954aoX/JGM/SR8OshZAAEzxTr96T/ofmoaRYLAyPfhDvgKdHKlLfYC0ZuzLHko6niH
+         ibzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786120828; x=1786725628;
+        d=1e100.net; s=20251104; t=1786120832; x=1786725632;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GSyds6W5OQ66XFXpi1LlEJdTPFK3iE4acomSvTp9bj8=;
-        b=GNLFJ9W7+Z33fpWa5JWMp0d3YDnh++s0pO3rio9vWbqpaRbIHZ9P8L5454ZgCrnxQ3
-         laAJMXbBWkME4DsLi4jgELZlIODO6+Fg7u33Kxul4QolbSRNDRgYMojcMBJcbz5hIxkO
-         1eLYpHYHXeZ0Swp5yBXwhBdlb7DKG9B0vt3e31fvErKi78VvFYJbrQTG/O4IaGmT8vs6
-         QmSHoFCWkGobcJmDDWS7K5od0X7nlplZsu7qH/ZCylN6i3KeCuiadl9wrgBLFasA9/0H
-         NvEsv/z7XYkZRspjcHm1N1+TiPgz7jTXbsg75hQfk0lO+eQ3XWzyLgD/IZCH8QDwVdh7
-         TkSg==
-X-Gm-Message-State: AOJu0YyoBeMBjDn5ZTxkypurKJmry6kNg/P52o2XE63Hbdcr++yskpxs
-	rDl1C8g/GE1lRjtQa2/WiH15xMqnf84+lQEJSO40Mz/E9O5zTkm3NuRE0Oe4fbPmV5XWXM3YR78
-	ECQizQxspISVSF6UnHLMyBD3j0MRX3s8ejZRE4iGwnA==
-X-Gm-Gg: AR+sD12ASDJDDFV+49MHyQQP4LbvRlGkZ1t7bVR+C7Bg/v8k7OxngedKdwlpI1MtE5g
-	wETO9L0vko2wVkuSSt3VugKthZpfLVLRqqrTlVSlKBScWCjwr04LvR9yzwstIV403FwrsPxDl51
-	6nRcaUsIQgmQfACHTNcpznSoeu8hs14JlbPgns+1TVgMhBKBWhKvdR2JGIfu/3HH7EUILHxCvVy
-	/1kHi9Rb9XhY0F6yaLQ6LvJIprzsQZExh1RABHjibhcs4ZpFSfnriBEY8PxrcKeI9CE4sBWQA9N
-	fRdLCHmAZ51SCOx0MRVGzWq1/xJK3MI50rLahPA9plbCfXL5+dTtvUv+/b2cuixWDz5P7ytNA3A
-	MjotdYB4zfGcnkSa62+ewZAgBVU6oo7X9j2B/f+8vEcrK9aFU4fpAffE2c7EgvhDm
-X-Received: by 2002:a05:600c:3545:b0:499:52dd:c1f0 with SMTP id
- 5b1f17b1804b1-49952ddd05amr206480125e9.1.1786120828407; Fri, 07 Aug 2026
- 09:40:28 -0700 (PDT)
+        bh=M3ZQ4lwGybEnFTTAAMTdnaC/1E614SavXr5HowXfnfg=;
+        b=jBxMFX19IjK7s6hcVcEznIh7rNJ0u1ZmlAdMrSKdpZocYoTJ2NbSiHE+pbA7AygJqC
+         GmI5BENADBTNVWHRBRWHgzKOXum62LtBpYotNLPHbgtFRWqQq6Kmn0RyRMJOlyhepfq9
+         cF35whhgFod/jtb1p5H2R0NWyeTpq5q6ad9TQZ8MvRFSo9sv5Y277e+PyliPHgYefT2o
+         eKzE3G9CzIEf0JCdFecaID2MY1sNiDiGlx8dJchLKhXibj8WOFFpz8/ivahQOFZkNaye
+         4po1ui2f/Kpiq4f76i4nYS723ntl/0lCK0JtKCggHc2MUe3m6XAnPXwBYgMmrg+4o9F5
+         CecQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoWGkz6dvJqavyQzuX+A9NL9jLMDlQOmAv14Oj969sPjOcSjEddhxfUHkMvHovLl43LB/I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5K4Kfe0cSR+DRM/d/i//T0Z8kQi88mVA7+gubj8R2QHm58EpU
+	GZERGEIbbGFtAmiBegPQ067YPeiWxZUVETkacMZBuZd9BXtuoESISbJbTWjFUxVsyuldAQyXod1
+	MPSp9nKvCFMHnxYZOz08S3SQUN78nWoffnCQQYiez99Tcra+curfqR5M=
+X-Gm-Gg: AR+sD107RSPfVT8RebaOF7wZvRpXwXW3+msFkoFv3SH5gAC5KPNXiDdy1OZ734EXe1t
+	wIrYCV/DVxUNWyIkV2XI1XVaTSUpmq+Gfis25W3LLru0vgy5xD2Ab0UWbZWXmQAlv/78IuxZd8t
+	rRoYsIwtw3b95RSZbQ7ZgDG4yXhDA64vFVnCUpNU+CmnR4KC7kwMY6pJmRw3LSsGh2xl1P6Rtjc
+	LXCdz0NUrCRUQw3rgvDBnhAngikmWo29yCSV77ZXx+nzf47D21TCY2e1C8isMENQQP1GvnYS5Iz
+	nW81UiY7M04H9ILqlILWZsvkqRRN2WqbCAJhiGiyod6+gLnl6LKAMVeLLKLRVx030ea18S17Hf/
+	trUailHQXD0DcqtSicH+ioKzZqv3qbdGlXkFbk5iSURCXfXKFvmDWV/o1nBhaZN9a
+X-Received: by 2002:adf:ec0e:0:b0:47f:4dfc:ca1e with SMTP id
+ ffacd0b85a97d-48130e7e846mr1247509f8f.5.1786120832608; Fri, 07 Aug 2026
+ 09:40:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260717080654.877151-1-wang.yechao255@zte.com.cn>
-In-Reply-To: <20260717080654.877151-1-wang.yechao255@zte.com.cn>
+References: <20260718033646.002.31dc89f2-caplitmus-rv@iscas.ac.cn>
+In-Reply-To: <20260718033646.002.31dc89f2-caplitmus-rv@iscas.ac.cn>
 From: Anup Patel <anup@brainfault.org>
-Date: Fri, 7 Aug 2026 22:10:16 +0530
-X-Gm-Features: AUfX_mzs5xvuhUuNS2PSxFtD2Spckea2gbhirvVXYUtFbIp9N-L4RwLlBOai4MM
-Message-ID: <CAAhSdy1g5Qa0OVUyjfz4c+bySkcXyk12LcSnsuDUOCCQo=7_ZQ@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Improve dirty log clearing by skipping zero
- bits in mask
-To: Wang Yechao <wang.yechao255@zte.com.cn>
-Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Atish Patra <atish.patra@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>
+Date: Fri, 7 Aug 2026 22:10:20 +0530
+X-Gm-Features: AUfX_mxaKOttqZ90LkDJu3zXy0Nxt0iXONOyY8DEizW4DWkuOLmRJN7Yk8VckPQ
+Message-ID: <CAAhSdy1pw+g84HFq9okYcfmG9_nV=Te8q0YHt5yNtf6zsYP9sQ@mail.gmail.com>
+Subject: Re: [PATCH] RISC-V: KVM: Allow memslots ending at the GPA limit
+To: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Paolo Bonzini <pbonzini@redhat.com>, Yifei Jiang <jiangyifei@huawei.com>, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 17, 2026 at 1:39=E2=80=AFPM Wang Yechao <wang.yechao255@zte.com=
-.cn> wrote:
+On Sat, Jul 18, 2026 at 9:22=E2=80=AFAM Pengpeng Hou <pengpeng@iscas.ac.cn>=
+ wrote:
 >
-> The existing kvm_riscv_gstage_wp_range() walks the entire [start, end)
-> range to apply write protection for dirty log clearing, even when the
-> provided mask has zero bits (i.e., many GFNs do not need protection).
-> This leads to unnecessary page table walks when the mask is sparse.
+> KVM memslots describe half-open ranges [base_gfn, base_gfn + npages). A
+> slot ending exactly at the guest physical-address limit has its final pag=
+e
+> below that limit and is valid.
 >
-> Replace the range-based approach with a new function
-> kvm_riscv_gstage_wp_pt_masked() that iterates only over the set bits in
-> the mask. For each set bit, it looks up the leaf PTE and applies write
-> protection. Once a huge page is encountered, the entire huge-page range
-> is processed in one go, and the corresponding bits in the mask are cleare=
-d
-> using bitmap_clear().
+> The current greater-than-or-equal comparison rejects a valid boundary cas=
+e.
+> Use a strict greater-than comparison, matching equivalent KVM architectur=
+e
+> checks.
 >
-> Performance was measured with KVM selftests dirty_log_perf_test on a
-> Spacemit k3 host with the following configuration:
-> - vCPUs: 2 (-v 2)
-> - Memory: 1GB (-b 1G)
-> - Iterations: 3 (-i 3)
-> - Write percentage varied via -w parameter to simulate different
->   dirty mask densities.
->
-> The following data shows the time spent in the clear-dirty-log phase
-> (i.e., the KVM_CLEAR_DIRTY_LOG ioctl) under each configuration.
->
-> +------------------+------------------+------------------+-------------+
-> | Write Percentage | Original (s)     | Patched (s)      | Improvement |
-> +------------------+------------------+------------------+-------------+
-> | 10%              | 0.012905         | 0.009213         | +28.6%      |
-> | 30%              | 0.014217         | 0.010287         | +27.6%      |
-> | 50%              | 0.014606         | 0.011772         | +19.4%      |
-> | 70%              | 0.014735         | 0.013199         | +10.4%      |
-> | 100%             | 0.014759         | 0.015294         | -3.6%       |
-> +------------------+------------------+------------------+-------------+
->
-> The performance improvement is most significant when the dirty mask is
-> sparse (low write percentage), which is common in real-world scenarios
-> with low to moderate memory write intensity. In the worst-case scenario
-> where the mask is fully set (100% write), the optimization introduces
-> a slight 3.6% overhead due to the additional bit operations, which is
-> acceptable given the substantial gains in common cases.
->
-> This change significantly reduces the number of page-table walks when
-> the dirty mask has many zero bits, improving the efficiency of
-> KVM_CLEAR_DIRTY_LOG and related ioctls.
->
-> Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
+> Fixes: 9d05c1fee837 ("RISC-V: KVM: Implement stage2 page table programmin=
+g")
+> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
 LGTM.
 
@@ -159,123 +128,24 @@ Anup
 
 
 > ---
->  arch/riscv/include/asm/kvm_gstage.h |  3 ++
->  arch/riscv/kvm/gstage.c             | 59 +++++++++++++++++++++++++++++
->  arch/riscv/kvm/mmu.c                |  2 +-
->  3 files changed, 63 insertions(+), 1 deletion(-)
+>  arch/riscv/kvm/mmu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm=
-/kvm_gstage.h
-> index 21e2019df0cf..50c74527ddd2 100644
-> --- a/arch/riscv/include/asm/kvm_gstage.h
-> +++ b/arch/riscv/include/asm/kvm_gstage.h
-> @@ -82,6 +82,9 @@ bool kvm_riscv_gstage_unmap_range(struct kvm_gstage *gs=
-tage,
->
->  bool kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, g=
-pa_t end);
->
-> +bool kvm_riscv_gstage_wp_pt_masked(struct kvm_gstage *gstage, gfn_t base=
-_gfn,
-> +                                  unsigned long mask);
-> +
->  void kvm_riscv_gstage_mode_detect(void);
->
->  static inline unsigned long kvm_riscv_gstage_mode(unsigned long pgd_leve=
-ls)
-> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-> index c4c3b79567f1..9af86b1c5e3c 100644
-> --- a/arch/riscv/kvm/gstage.c
-> +++ b/arch/riscv/kvm/gstage.c
-> @@ -472,6 +472,65 @@ bool kvm_riscv_gstage_wp_range(struct kvm_gstage *gs=
-tage, gpa_t start, gpa_t end
->         return flush;
->  }
->
-> +static inline void clear_huge_mask(unsigned long *mask, unsigned long pa=
-ge_size,
-> +                                  gfn_t base_gfn, gpa_t addr)
-> +{
-> +       unsigned long start_index =3D 0;
-> +       unsigned long end_index =3D BITS_PER_LONG - 1;
-> +       unsigned long end_gfn =3D base_gfn + end_index;
-> +       unsigned long aligned_start_gfn =3D addr >> PAGE_SHIFT;
-> +       unsigned long aligned_end_gfn =3D aligned_start_gfn + (page_size =
->> PAGE_SHIFT) - 1;
-> +       unsigned int nbits =3D 0;
-> +
-> +       if (aligned_start_gfn > base_gfn)
-> +               start_index =3D aligned_start_gfn - base_gfn;
-> +
-> +       if (aligned_end_gfn < end_gfn)
-> +               end_index =3D aligned_end_gfn - base_gfn;
-> +
-> +       nbits =3D end_index - start_index + 1;
-> +       bitmap_clear(mask, start_index, nbits);
-> +}
-> +
-> +bool kvm_riscv_gstage_wp_pt_masked(struct kvm_gstage *gstage, gfn_t base=
-_gfn,
-> +                                  unsigned long mask)
-> +{
-> +       unsigned long page_size;
-> +       bool flush =3D false;
-> +       bool found_leaf;
-> +       u32 ptep_level;
-> +       pte_t *ptep;
-> +       gpa_t addr =3D 0;
-> +       int ret;
-> +
-> +       while (mask) {
-> +               addr =3D (base_gfn + __ffs(mask)) << PAGE_SHIFT;
-> +
-> +               found_leaf =3D kvm_riscv_gstage_get_leaf(gstage, addr, &p=
-tep, &ptep_level);
-> +               ret =3D gstage_level_to_page_size(gstage, ptep_level, &pa=
-ge_size);
-> +               if (ret)
-> +                       break;
-> +
-> +               if (found_leaf) {
-> +                       if (ptep_level) {
-> +                               addr =3D ALIGN_DOWN(addr, page_size);
-> +                               clear_huge_mask(&mask, page_size, base_gf=
-n, addr);
-> +                       }
-> +
-> +                       flush |=3D kvm_riscv_gstage_op_pte(gstage, addr, =
-ptep,
-> +                                                        ptep_level, GSTA=
-GE_OP_WP);
-> +
-> +                       if (ptep_level)
-> +                               continue;
-> +               }
-> +
-> +               /* clear the first set bit*/
-> +               mask &=3D mask - 1;
-> +       }
-> +
-> +       return flush;
-> +}
-> +
->  void __init kvm_riscv_gstage_mode_detect(void)
->  {
->  #ifdef CONFIG_64BIT
 > diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index 082f9b261733..7eab58ff63f9 100644
+> index 082f9b2617338..d3c0c699adb60 100644
 > --- a/arch/riscv/kvm/mmu.c
 > +++ b/arch/riscv/kvm/mmu.c
-> @@ -110,7 +110,7 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct k=
-vm *kvm,
+> @@ -184,7 +184,7 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+>          * Prevent userspace from creating a memory region outside of the=
+ GPA
+>          * space addressable by the KVM guest GPA space.
+>          */
+> -       if ((new->base_gfn + new->npages) >=3D
+> +       if ((new->base_gfn + new->npages) >
+>              kvm_riscv_gstage_gpa_size(kvm->arch.pgd_levels) >> PAGE_SHIF=
+T)
+>                 return -EFAULT;
 >
->         kvm_riscv_gstage_init(&gstage, kvm);
->
-> -       flush =3D kvm_riscv_gstage_wp_range(&gstage, start, end);
-> +       flush =3D kvm_riscv_gstage_wp_pt_masked(&gstage, base_gfn, mask);
->         if (flush)
->                 kvm_flush_remote_tlbs_range(kvm, start >> PAGE_SHIFT,
->                                             (end - start) >> PAGE_SHIFT);
 > --
-> 2.27.0
+> 2.43.0
 >
