@@ -1,175 +1,117 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AC62DECA8;
-	Fri,  7 Aug 2026 14:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28512F8E86;
+	Fri,  7 Aug 2026 14:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786113267; cv=none; b=L/PV9qWE9VwFTFmYOlCAEo7KbgTDNaqSZpZuSryd+CTdOE/fC+PbZzSiXuR4lxBzgP1ZkEs6iLE04uCVi3qyISSyj3cbMba+gLtd8Pz23puFlshXJRvE5ZFIIvz/DTscXKWYlE9mqI9nGyf+DfXfAcgWqh4scEGG2abH05WB6JA=
+	t=1786113423; cv=none; b=foBQ4Pyox9KkizGI7Ant7+eSsjQa9BUPmqRqwhpN87GBUJbc6uz1701YmfgAd7Q4+ZSCCSqrrCGHMYd/FLkpx/QiboTF57G7wi6rbI7C0heZrA5bXQwCyrI1ks0ZOvSKXf0ueY/EMUlvfuNkr0sZKDL4ntFKLiO7sVXXXK9Ahug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786113267; c=relaxed/simple;
-	bh=8kcNWq1VTjZC8p6pufdQSE+3T+dtZEmsZypb0Ts2OTg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=NYVdf3q44B8iOVQaeXvBl8EAsip0jsNEqqeQJS8nKf2GZLfR9o+LBMTvHSpWNC2Iv0NDvmnsdWk2Ah/zqBrJIhHYsrgDa88e+g6G//MGdz3QA2xlBI52alDYky0Okv7yhBk5PGc86K1nR375XJIioOmEd44k8a1BSwwzZibfLYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6hRRqMS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786113423; c=relaxed/simple;
+	bh=AcG/mHbl0tdveN2aTwIeoLBrQKPikZGp7Mg2i8F3ekc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=en0ni+R7aIzIChha5vanpHL/T1uSUEtTScIdjTU1YAZ5KArpVa3ZoaIXoB/fgWOwEvK4tvP25Hju67nVniK5vyoz/mMXqKNrOIYg4UD6RJ/NcN/ekF85EHfMnUSypvOk0O5udLtY62FQSyebAn6KUh9pUrVqhoDaQelWawYGhEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TE6YxHWF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6hRRqMS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88601F000E9;
-	Fri,  7 Aug 2026 14:34:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TE6YxHWF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A16A1F000E9;
+	Fri,  7 Aug 2026 14:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786113266;
-	bh=mg8jozuJ4mGuaqwdetZysxm1dFkPC+qt5GI6D66OP8Q=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=S6hRRqMSjUYRmjXOX68GPPZn3Sc2cPFybCbdmADrQobZyJ3GCN9/gEQijMPb8XUUY
-	 m7Qe5rvqFTDDTAGoQPR+GTxlHPG+Q0gXhSnefe+Io6k6AqrHsPQuY2bSlV9Y5Kqhv9
-	 F1xxquMS9fwziCOQKaY7Ueqgvuf7Aul90OPMAC8/l/MoA64i35Ytelzm5mIwcfGCO9
-	 hDpFm9c7JizrgBkDBrtTW8IHOsKVVdlXuahU08NoWWzpakHwFSqLwCTi5lWT+ikTcl
-	 GAuDh+/Ii827lhof7SD/rPUA5pTN4L8TXa9AOSoj+abWWs2jpmVh75cQ4cBLFSIjHq
-	 Q6VFk8glWPBfw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 20/49] KVM: arm64: gic-v5: Add GICv5 IRS IODEV and
- MMIO emulation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
-Cc: kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev, "Marc
- Zyngier" <maz@kernel.org>
-In-Reply-To: <20260807111159.429128-21-sascha.bischoff@arm.com>
-References: <20260807111159.429128-1-sascha.bischoff@arm.com>
- <20260807111159.429128-21-sascha.bischoff@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 07 Aug 2026 14:34:25 +0000
-Message-Id: <20260807143425.E88601F000E9@smtp.kernel.org>
+	s=k20260515; t=1786113422;
+	bh=RxUlCeB9O2aqfowvaH7/dR8e2Z1foRTum1v/OE+CMyg=;
+	h=Date:From:To:Cc:Subject;
+	b=TE6YxHWFp3KHL6ERC29i2t7yJMIG33unPldRNT56Sn1y9ZGChWHq5q8j76bFhl1E8
+	 RZFgaufrKj2JszOCmEkW+tPrsvP9NqP9SeS8RHvfRfKct+zHIlAE+nENFoqN0cd95b
+	 21/xTvqWUfdct4/RbSGcrw5GW24lnT62zxH8Acbqlfo+vUvKurXlv8CQ7CB1ItCe0f
+	 hnN5q10o/yIrSwW3eyn3bdGgZZkpeiwBnm+UMkNKjf2hgcEYWVtgmxJDLayYBfZh7y
+	 U9m8A/wApomTgn8wjaNarZN0k7sMzv2lTbH1HgS5jctp7zfsrj8BI3Q0t/4e9CwAKe
+	 ptZz0j9dFAPMQ==
+Date: Fri, 7 Aug 2026 15:36:54 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>, KVM <kvm@vger.kernel.org>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: linux-next: manual merge of the kvm tree with the kvm-fixes tree
+Message-ID: <anXthnEjE2hw5sOU@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="R+ok7wGema/NyXMg"
+Content-Disposition: inline
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] 64-bit IRS MMIO registers lack support for 32-bit accesses, leadin=
-g to unhandled MMIO aborts and broken read-modify-write behavior.
-- [Medium] Missing locking in the IRS IST MMIO read handler allows guests t=
-o observe logically torn register states.
-- [Medium] Lockless, sequential updates to GICV5_IRS_CR1 can result in a to=
-rn MMIO write.
---
 
---- Patch [20]: [PATCH v5 20/49] KVM: arm64: gic-v5: Add GICv5 IRS IODEV an=
-d MMIO emulation ---
-commit e3d747ac0ec8b60b894092ad4f2dc0c7959423ef
-Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
+--R+ok7wGema/NyXMg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-KVM: arm64: gic-v5: Add GICv5 IRS IODEV and MMIO emulation
-   =20
-In order to properly support GICv5-based VMs in KVM, emulate the
-CONFIG_FRAME for a virtual IRS. This emulation needs to handle guest
-accesses to the MMIO region and mimic the behaviour of a real IRS.
+Hi all,
 
-> diff --git a/arch/arm64/kvm/vgic/vgic-irs-v5.c b/arch/arm64/kvm/vgic/vgic=
--irs-v5.c
-> new file mode 100644
-> index 0000000000000..c6280795ab551
-> --- /dev/null
-> +++ b/arch/arm64/kvm/vgic/vgic-irs-v5.c
+Today's linux-next merge of the kvm tree got a conflict in:
 
-[ ... ]
+  arch/x86/kvm/mmu/mmu.c
 
-> @@ -0,0 +1,765 @@
-[ ... ]
-> +static void vgic_v5_mmio_write_irs_misc(struct kvm_vcpu *vcpu, gpa_t add=
-r,
-> +					unsigned int len, unsigned long val)
-> +{
-> +	struct vgic_v5_irs *irs =3D vgic_v5_get_irs(vcpu);
-> +	struct vgic_dist *vgic =3D vgic_v5_get_vgic(vcpu);
-> +	const size_t offset =3D addr & (SZ_64K - 1);
-> +
-> +	switch (offset) {
-[ ... ]
-> +	case GICV5_IRS_CR1:
-> +		irs->cr1.sh =3D FIELD_GET(GICV5_IRS_CR1_SH, val);
-> +		irs->cr1.oc =3D FIELD_GET(GICV5_IRS_CR1_OC, val);
-> +		irs->cr1.ic =3D FIELD_GET(GICV5_IRS_CR1_IC, val);
-> +		irs->cr1.ist_ra =3D !!(val & GICV5_IRS_CR1_IST_RA);
-> +		irs->cr1.ist_wa =3D !!(val & GICV5_IRS_CR1_IST_WA);
-> +		irs->cr1.vmt_ra =3D !!(val & GICV5_IRS_CR1_VMT_RA);
-> +		irs->cr1.vpet_ra =3D !!(val & GICV5_IRS_CR1_VPET_RA);
-> +		irs->cr1.vmd_ra =3D !!(val & GICV5_IRS_CR1_VMD_RA);
-> +		irs->cr1.vmd_wa =3D !!(val & GICV5_IRS_CR1_VMD_WA);
-> +		irs->cr1.vped_ra =3D !!(val & GICV5_IRS_CR1_VPED_RA);
-> +		irs->cr1.vped_wa =3D !!(val & GICV5_IRS_CR1_VPED_WA);
-> +		return;
+between commit:
 
-[Severity: Medium]
-Since these sequential writes are performed without holding config_lock,
-is there a risk of data races? If multiple vCPUs concurrently write
-different values to GICV5_IRS_CR1, it seems like the internal KVM state
-for irs->cr1 could end up in a torn state combining the concurrent writes.
+  26505e1b5b546 ("KVM: SVM: make svm_flush_tlb_gva do a full asid flush if =
+NPT enabled")
 
-[ ... ]
+=66rom the kvm-fixes tree and commits:
 
-> +static unsigned long vgic_v5_mmio_read_irs_ist(struct kvm_vcpu *vcpu,
-> +					       gpa_t addr, unsigned int len)
-> +{
-> +	struct vgic_v5_irs *irs =3D vgic_v5_get_irs(vcpu);
-> +	const size_t offset =3D addr & (SZ_64K - 1);
-> +	u64 value =3D 0;
-> +
-> +	switch (offset) {
-[ ... ]
-> +	case GICV5_IRS_IST_BASER:
-> +		value =3D FIELD_PREP(GICV5_IRS_IST_BASER_ADDR_MASK,
-> +				   irs->ist_baser.addr >> GICV5_IRS_IST_BASER_ADDR_SHIFT);
-> +		if (irs->ist_baser.valid)
-> +			value |=3D GICV5_IRS_IST_BASER_VALID;
-> +		break;
+  148fe965df16a ("KVM: x86/mmu: unify root_gva_walk and ngva_walk")
+  0a59a8b8a248e ("KVM: x86/mmu: pull struct kvm_pagewalk out of struct kvm_=
+mmu")
 
-[Severity: Medium]
-Can guests observe logically torn register states here? The write handler
-vgic_v5_mmio_write_irs_ist() correctly holds config_lock to sequentially
-update irs->ist_baser.valid and irs->ist_baser.addr, but this read
-handler accesses them locklessly. If a vCPU reads GICV5_IRS_IST_BASER
-concurrently with a write, it could see an impossible state combining the
-old address with the new valid bit or vice-versa.
+=66rom the kvm tree.
 
-[ ... ]
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
 
-> +static void vgic_v5_mmio_write_irs_ist(struct kvm_vcpu *vcpu, gpa_t addr,
-> +				       unsigned int len, unsigned long val)
-> +{
-> +	struct vgic_v5_irs *irs =3D vgic_v5_get_irs(vcpu);
-> +	const size_t offset =3D addr & (SZ_64K - 1);
-> +	enum gicv5_vcpu_cmd cmd =3D LPI_VIST_MAKE_INVALID;
-> +
-> +	switch (offset) {
-[ ... ]
-> +	case GICV5_IRS_IST_BASER: {
+diff --cc arch/x86/kvm/mmu/mmu.c
+index c9e4739b26d71,6c13da942bfcc..0000000000000
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@@ -6652,9 -6672,17 +6695,17 @@@ void kvm_mmu_invalidate_addr(struct kvm
+  		if (is_noncanonical_invlpg_address(addr, vcpu))
+  			return;
+ =20
+ -		kvm_x86_call(flush_tlb_gva)(vcpu, addr);
+ +		kvm_x86_call(flush_tlb_gva)(vcpu, addr, NULL);
++=20
++ 		if (tdp_enabled)
++ 			return;
++=20
++ 		mmu =3D &vcpu->arch.root_mmu;
++ 	} else {
++ 		mmu =3D &vcpu->arch.guest_mmu;
+  	}
+ =20
++ 	/* Invalidate shadow pages, whether GPA->GVA or nGPA->GPA.  */
+  	if (!mmu->sync_spte)
+  		return;
+ =20
 
-[Severity: High]
-Does this strict matching on exact offsets break read-modify-write for
-32-bit accesses to the high half of the register? If a guest performs a
-32-bit write to offset + 4, it looks like this switch statement drops it.
-Also, interpreting a 32-bit payload as a full 64-bit value without
-adjusting for the offset would corrupt the register state.
+--R+ok7wGema/NyXMg
+Content-Type: application/pgp-signature; name="signature.asc"
 
-[ ... ]
+-----BEGIN PGP SIGNATURE-----
 
-> +static const struct vgic_register_region vgic_v5_irs_registers[] =3D {
-[ ... ]
-> +	REGISTER_DESC_WITH_LENGTH(GICV5_IRS_IST_BASER, vgic_v5_mmio_read_irs_is=
-t,
-> +				  vgic_v5_mmio_write_irs_ist, 8,
-> +				  VGIC_ACCESS_64bit),
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmp17YUACgkQJNaLcl1U
+h9AVUAgAgIX5tIYRaJG9B3m89By7oIhCs35oJAjtcCHQSTkB0jR7Vz64ClLVnxPF
+hav9G+s/hWf3sTzHmJBt1y2h3fDlK7EVzFxFaEJ3cxIYlqFNP0ye2XdmcqKo2zns
+m3JYnhfBv+oDfKNZhuTfBay26PXrkUfcHrtS8aIj9eaSXgAyAQ1LRCTJp1rEtbyH
+V7Go0ju+/82eEGpb+kSIKZe331K05Oh+wJ7v9ll1XP0naGIflL+4Lv0SfC7HoNCf
+S/kBsVeMGwYL13ADn8sbVHlyRwSUSHug1ZC4VKRuZBdruLm3Qs9KbR6WoAU7CXL+
+svh4d/D79I77wwPrxbxjaVz1pxD6Fg==
+=yEOi
+-----END PGP SIGNATURE-----
 
-[Severity: High]
-Could omitting VGIC_ACCESS_32bit for this 64-bit register cause the KVM
-IO bus to reject valid 32-bit guest accesses? If KVM's mmio dispatcher
-rejects a 32-bit access, the request will fall back to userspace IO. Since
-userspace does not emulate the in-kernel IRS, this usually results in an
-unhandled data abort injected into the guest.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807111159.4291=
-28-1-sascha.bischoff@arm.com?part=3D20
+--R+ok7wGema/NyXMg--
