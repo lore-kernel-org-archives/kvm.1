@@ -1,246 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D54947CA9C;
-	Fri,  7 Aug 2026 13:44:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF95282F26
+	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 13:46:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786110286; cv=none; b=RlpO048ZhTieJx6WGdnvqHxWS1bwTpss9x0V6CTC85/nrIgJnZOSJRhuFc9DK1RzrALSuPIMGAOq2iTxfsTkIGdIGY6X8soGsYePy5vRUQ1EqaQKqSKP5aCi56/2khUoQv9iy831i4RPOG5/fC3rzx8Ev3JsYVgBOOFiKPrQuaM=
+	t=1786110408; cv=none; b=bPQBPjlVh3UwDgq7foYcvuOXYV6BOoOpcuAi2eDqQCrncSwaqnfGWjtsYY3tELfwM+g7gT+3eNrTcSxKqVKZgbyNmmKUfsYw+MrA1ml/o4FkZAFMzmP+G35xJqYuEO7n54gJeOqZ0XwveO2mXU8dqwPLGtGLPx+NV6v91Nfms/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786110286; c=relaxed/simple;
-	bh=WKeQJUydtBWaKOoK87Z1nf0RJyi/NUdk18lmB8/hZsQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HxVNfpfr5boYGMN3KO6pz0u6q0lLcJY7uKrDkwQmzC+/DynAv8MOnQevtSCueHjsU1TsB8lCSCinSvUVk4rKaoczuALebrWWxL+BVERO4a2QdKwn2kFaby5cE5fMQ87lNWqbl7MdUPn2zQW23JHdVVmDPBPH5gjqE5QG0AJVyec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mW2yQ4J4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786110408; c=relaxed/simple;
+	bh=8ZCbd1r0p1hFVRN42Nrj31bGv4uQWdavK7XAJwkweJQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N4KTrOTZ9/TfMMIYENVb/HdkDc4uoIBE15zy5MCDrhCyeyYnn/+dzyC9KJCxExl0clqAtDQogveMcMq8f7Jj5OXQLMK3Z6vPOj7DOOVJwFqTmA23L0Ftw4vpuCcDIYUg0EW7Urh9X8iEYvlIJhAOMIZWSroIL3kIGviA2HdHrr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fLWbw0cL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=D+UNdQf0; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mW2yQ4J4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB781F00A3A;
-	Fri,  7 Aug 2026 13:44:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786110276;
-	bh=o1fE6JkjOYv/keYcMbNEp7t7rZGDHzQiCzT8MCcASAM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mW2yQ4J4f2b2rUVorHqYW3uua8RfIC6vpcPSFtr0rFRz6c9FNeTTjVsjQejYSWl8D
-	 Cvoh9fSAJ1Mk5UiAAee3MiEjPu71m5vwFv+13+RN7Tn1+s0CcXw4chyLTJbdgW1YEi
-	 QAkDvd39j6SQXZslqNfW17ExZLsA4ZEjf777Br2NqcYPYPLt3uZf6tS7ieu9eeewiZ
-	 Vx34h2EJEx7B15RNjUahaqs9RqYrWOYZLy2Df7JGyWlCHw/4O1gNTi0S9oGkA3k8eN
-	 y9XBQ1pFqwhc9mOJn9dbF1FG50IU0YEAPNEtF+OfUnx6oRH8/pB4Knb8mcYRMzwOX3
-	 ZOHdLTS4GEquw==
-Date: Fri, 7 Aug 2026 15:44:30 +0200
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, nd <nd@arm.com>,
-	"maz@kernel.org" <maz@kernel.org>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-	Joey Gouly <Joey.Gouly@arm.com>,
-	Suzuki Poulose <Suzuki.Poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org" <peter.maydell@linaro.org>,
-	Timothy Hayes <Timothy.Hayes@arm.com>,
-	"fuad.tabba@linux.dev" <fuad.tabba@linux.dev>
-Subject: Re: [PATCH v5 03/49] irqchip/gic-v5: Set up gic_kvm_info on ACPI
- hosts
-Message-ID: <anXhPp9QUH_rOn2X@red-moon>
-References: <20260807111159.429128-1-sascha.bischoff@arm.com>
- <20260807111159.429128-4-sascha.bischoff@arm.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fLWbw0cL";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="D+UNdQf0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786110400;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ryyH3WMM5bXwtJyWfdY/n49oHZTrsfyGZBILZcJ/9Sk=;
+	b=fLWbw0cLUmchsWntoDmGVZssaquDLrMMvGBYDjrda2Kj5OvhoWeBesjGDpvToS5WoM6Zw3
+	76RBjUVh5Hjyao8jblF99HTA9CO/QIFoQqjJetq5EQHAaS23C0iMHN9hg7XGQp/yLfO2mZ
+	EO0txVmjE+AZenKe/VPK8rE1ibCDqRs=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-81-zB09c8YlNZ2tWoamAAU9Gw-1; Fri, 07 Aug 2026 09:46:37 -0400
+X-MC-Unique: zB09c8YlNZ2tWoamAAU9Gw-1
+X-Mimecast-MFC-AGG-ID: zB09c8YlNZ2tWoamAAU9Gw_1786110397
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47faa02f707so1720654f8f.1
+        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 06:46:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1786110396; x=1786715196; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ryyH3WMM5bXwtJyWfdY/n49oHZTrsfyGZBILZcJ/9Sk=;
+        b=D+UNdQf0mvpMwUgs1vqS2AlbkeO5rnbvV3DEByzYgApIpWNGu3faXsEpCHIsjAm0gK
+         Ul0Pk3pfYcKaUgEX5YMNsdv2oFCXKFrWxwmlXtCOfLiewdPjQnmbpLrEjAMcSFdgG2om
+         Tf3uW2xVQPUP4Km/vhdstLgRAGDN4glXj26LwjI9KYE2ZGbZkjpUXArOEGkyeIEih6Be
+         ItaJw7Kb5qpfxBUKaJBXKUCjpm8ItC1Xz6rNfDha2JQE9OFRS5duqbV3eM1TJ7ggYTbr
+         BuQihWOry+HZsx77ErZESfHn+yF+0GACE4yx9F/cMfs3cYYCjDEGXzduXAbcpbBUJfY7
+         DaTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786110396; x=1786715196;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ryyH3WMM5bXwtJyWfdY/n49oHZTrsfyGZBILZcJ/9Sk=;
+        b=VusnSgUw78SnNflWs7NESas/El3iGiQQxCJDwxrONSyP1vrLp0njE0rLxlfZRcI88t
+         rQjphQgWvT8JpefKUELjz8/bIthCxtPVWIY+RTClNNvU9hnrsaIuWTIWqXNdaEGqPGK7
+         JvO8LCXKgSATMxrze7gg/Md4/yKBp2glsLerKdZXj7LG0k2LjhuLajbFTVoHpYflHjMp
+         xq4jFBc13ZwJ2EtNEPPEGZCxdzSUigfb4kf4NPxG9pr/FXpVfNA1t9pkxDTaIJvh5gWt
+         +pAkBwb18MSxHdEX9XlK/b1D3H2kz4m5diDRw3At1QnsZVkX0UEPRzJ+HO3wnpXAkdyp
+         JsAA==
+X-Forwarded-Encrypted: i=1; AHgh+RrSiu7n4KyYJtE+FZsWWlT8ee3e0AZiqB7/Ddx/FeHvLGHLgigpF6CkHgi8dm5wBByi18g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9Ebny+O7/QeiR0YVQGoZtkYGI6yFkdWm++LcJVd0ylpfc86SG
+	rsbd3RbiRQUpw7UBoRqVUgRWvnvnrkv5lLll2fqzLU4D6UzgcikCItBjdexR2hfCKibS2rS5i9T
+	0TXBguo6tReyNNnnFoUapvU8BeOD8Y701ghj2c0tVzwvQjT4YMQ8vYA==
+X-Gm-Gg: AR+sD12+l6NbcrYs8xZW26FFLVtNUFGKAp5pn93jOoN4M1L3wec/Ysd6PqdgK2SANmu
+	hqoZfgQigKQ+PR2j3VujBH53F//aL6+C3kNCaUt+k0MtVWjbF9NPWtrlxiXO4ji9ac/hMzDfiGX
+	JIP5vkkQ7StahL87h+xYdFSIJeHR46BqeoMMh9mcWMVBqicpUUOHIXEbBMRrHww+wBYUVVzwxRq
+	MoqupuxYJJyzsBjy40RB1YnAYYyP0xTiJBJUCkHNVVwy4VyymkZ8etrdH97FCT1nEKFFR/K5o8+
+	cyE9RuWdbnaW0nswCVAx0IAkv7G2mRfxv9A0v3nVIGN671YYnNDP2LnXo6yzm4fGnHH5LqMTXwf
+	6N3k4HtzBQKNsBTqJMyWrbRqwaUCUKSd+YVxkyIRwWqoID9qr/9aQ7VHGA5dA3AeYpbfPrYk/Sr
+	pMWgc=
+X-Received: by 2002:a05:6000:4204:b0:47f:8603:a879 with SMTP id ffacd0b85a97d-48130b2ccfdmr187614f8f.11.1786110396468;
+        Fri, 07 Aug 2026 06:46:36 -0700 (PDT)
+X-Received: by 2002:a05:6000:4204:b0:47f:8603:a879 with SMTP id ffacd0b85a97d-48130b2ccfdmr187464f8f.11.1786110395790;
+        Fri, 07 Aug 2026 06:46:35 -0700 (PDT)
+Received: from [192.168.10.48] ([151.95.34.92])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021fd392sm5928108f8f.31.2026.08.07.06.46.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2026 06:46:35 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: x86/mmu: WARN and clear role.invalid when creating a child shadow page
+Date: Fri,  7 Aug 2026 15:46:33 +0200
+Message-ID: <20260807134633.2622273-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260807111159.429128-4-sascha.bischoff@arm.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 07, 2026 at 11:14:07AM +0000, Sascha Bischoff wrote:
-> Device-tree based GICv5 probing already passes the IRS details and
-> maintenance interrupt to KVM, but the ACPI path only initialises the
-> irqchip and installs the ACPI IRQ model. As a result, KVM never sees
-> the GICv5 host information required to probe the vGIC on ACPI systems.
-> 
-> Add the ACPI equivalent of the DT KVM setup. Parse the MADT GICC
-> entries for the maintenance interrupt, retaining the value from the
-> first relevant entry and warning if later entries disagree. Warn if
-> firmware describes the interrupt as edge-triggered, but register it as
-> a level-sensitive, active-high GSI. Pass the resulting IRQ together
-> with the IRS base and coherency information to KVM.
-> 
-> Native GICv5 does not require a maintenance interrupt unless the
-> legacy GICv3-compatible CPU interface is present, so preserve the
-> existing no-maintenance-IRQ handling for that case.
-> 
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-> ---
->  drivers/irqchip/irq-gic-v5.c | 95 ++++++++++++++++++++++++++++++++++--
->  1 file changed, 91 insertions(+), 4 deletions(-)
+From: Sean Christopherson <seanjc@google.com>
 
-Just a bunch of nits below.
+Explicitly clear role.invalid when deriving a child shadow page's role from
+its parent to harden against bugs elsewhere in KVM, as violating KVM's
+invariant that invalid pages are NOT on the list of active MMU pages leads
+to use-after-free due to __kvm_mmu_prepare_zap_page() using list_add()
+instead of list_move() when processing an invalid shadow page, i.e. makes a
+bad situation far worse.
 
-> diff --git a/drivers/irqchip/irq-gic-v5.c b/drivers/irqchip/irq-gic-v5.c
-> index e7a7aedcfaf78..5b8ea8551d832 100644
-> --- a/drivers/irqchip/irq-gic-v5.c
-> +++ b/drivers/irqchip/irq-gic-v5.c
-> @@ -1126,7 +1126,7 @@ static void gicv5_set_cpuif_idbits(void)
->  #ifdef CONFIG_KVM
->  static struct gic_kvm_info gic_v5_kvm_info __initdata;
->  
-> -static void __init gic_of_setup_kvm_info(struct device_node *node)
-> +static void __init gic_setup_kvm_info(unsigned int maint_irq)
->  {
->  	struct gicv5_irs_chip_data *irs_data = gicv5_irs_get_chip_data();
->  
-> @@ -1137,17 +1137,19 @@ static void __init gic_of_setup_kvm_info(struct device_node *node)
->  	 */
->  	if (!gicv5_global_data.virt_capable) {
->  		pr_info("GIC implementation is not virtualization capable\n");
-> -		return;
-> +		goto out_dispose_maint_irq;
+Yell loudly if the parent is invalid, as it means KVM has missed a validity
+check, i.e. KVM is attempting to map memory using an invalid/obsolete root,
+but continue on as the child is otherwise still a valid shadow page.
 
-Isn't it cleaner to dispose the mapping in the caller (by returning an
-error value) rather than here ?
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in __kvm_mmu_get_shadow_page+0x1817/0x1860 [kvm]
+  Write of size 8 at addr ff11000153dd1368 by task repro/853
 
-I appreciate this keeps the IRQ mapping disposal in one place but it
-decouples the allocation from the failure path.
+  CPU: 1 UID: 1000 PID: 853 Comm: repro Not tainted 7.2.0-rc2-3aec122bdcaf-next-vm #5 PREEMPT
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x4b/0x70
+   print_report+0x153/0x49c
+   kasan_report+0xbc/0xf0
+   __kvm_mmu_get_shadow_page+0x1817/0x1860 [kvm]
+   mmu_alloc_root+0x141/0x320 [kvm]
+   kvm_mmu_load+0x612/0x20f0 [kvm]
+   kvm_arch_vcpu_ioctl_run+0x3dd5/0x6150 [kvm]
+   kvm_vcpu_ioctl+0x5e4/0x10d0 [kvm]
+   __x64_sys_ioctl+0x131/0x1b0
+   do_syscall_64+0x67/0x5f0
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+   </TASK>
 
->  	}
->  
-> -	gic_v5_kvm_info.type = GIC_V5;
-> +	if (WARN_ON(!irs_data))
-> +		goto out_dispose_maint_irq;
->  
-> +	gic_v5_kvm_info.type = GIC_V5;
->  	gic_v5_kvm_info.gicv5_irs.base = irs_data->irs_base;
->  	gic_v5_kvm_info.gicv5_irs.non_coherent = !!(irs_data->flags & IRS_FLAGS_NON_COHERENT);
->  
->  	/* GIC Virtual CPU interface maintenance interrupt */
->  	gic_v5_kvm_info.no_maint_irq_mask = false;
-> -	gic_v5_kvm_info.maint_irq = irq_of_parse_and_map(node, 0);
-> +	gic_v5_kvm_info.maint_irq = maint_irq;
->  
->  	/*
->  	 * We require an MI if we have legacy support, but don't, otherwise.
-> @@ -1162,11 +1164,95 @@ static void __init gic_of_setup_kvm_info(struct device_node *node)
->  		gic_v5_kvm_info.no_maint_irq_mask = true;
->  
->  	vgic_set_kvm_info(&gic_v5_kvm_info);
-> +	return;
-> +
-> +out_dispose_maint_irq:
-> +	irq_dispose_mapping(maint_irq);
-> +}
-> +
-> +static void __init gic_of_setup_kvm_info(struct device_node *node)
-> +{
-> +	/* GIC Virtual CPU interface maintenance interrupt */
-> +	gic_setup_kvm_info(irq_of_parse_and_map(node, 0));
-> +}
-> +
-> +#ifdef CONFIG_ACPI
-> +struct gicv5_acpi_kvm_info {
-> +	u32 maint_irq;
-> +};
-> +
-> +static struct gicv5_acpi_kvm_info acpi_v5_kvm_info __initdata;
-> +
-> +static int __init gic_acpi_parse_virt_madt_gicc(union acpi_subtable_headers *header,
-> +						const unsigned long end)
-> +{
-> +	struct acpi_madt_generic_interrupt *gicc =
-> +		(struct acpi_madt_generic_interrupt *)header;
-> +	static int first_madt = true;
-> +
-> +	if (!(gicc->flags &
-> +	      (ACPI_MADT_ENABLED | ACPI_MADT_GICC_ONLINE_CAPABLE)))
-> +		return 0;
+  Allocated by task 853:
+   kasan_save_stack+0x20/0x40
+   kasan_save_track+0x14/0x30
+   __kasan_slab_alloc+0x5f/0x70
+   kmem_cache_alloc_noprof+0xfe/0x2e0
+   __kvm_mmu_topup_memory_cache+0x135/0x530 [kvm]
+   paging64_page_fault+0x318/0x1e30 [kvm]
+   kvm_mmu_do_page_fault+0x21d/0x630 [kvm]
+   kvm_mmu_page_fault+0x18c/0x17b0 [kvm]
+   kvm_arch_vcpu_ioctl_run+0x1f35/0x6150 [kvm]
+   kvm_vcpu_ioctl+0x5e4/0x10d0 [kvm]
+   __x64_sys_ioctl+0x131/0x1b0
+   do_syscall_64+0x67/0x5f0
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-This would count as a valid parsed entry even though you don't retrieve the
-maintanance interrupt number, more below.
+  Freed by task 853:
+   kasan_save_stack+0x20/0x40
+   kasan_save_track+0x14/0x30
+   kasan_save_free_info+0x3b/0x60
+   __kasan_slab_free+0x43/0x70
+   kmem_cache_free+0xe2/0x400
+   kvm_mmu_commit_zap_page.part.0+0x1e2/0x310 [kvm]
+   kvm_mmu_free_roots+0x283/0x560 [kvm]
+   kvm_arch_vcpu_ioctl_run+0x33c8/0x6150 [kvm]
+   kvm_vcpu_ioctl+0x5e4/0x10d0 [kvm]
+   __x64_sys_ioctl+0x131/0x1b0
+   do_syscall_64+0x67/0x5f0
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-> +
-> +	if (gicc->flags & ACPI_MADT_VGIC_IRQ_MODE)
-> +		pr_warn_once(FW_BUG "MI wrongly advertised as Edge-triggered\n");
-> +
-> +	if (first_madt) {
-> +		first_madt = false;
-> +
-> +		acpi_v5_kvm_info.maint_irq = gicc->vgic_interrupt;
-> +		return 0;
-> +	}
-> +
-> +	if (acpi_v5_kvm_info.maint_irq != gicc->vgic_interrupt)
-> +		pr_warn_once(FW_BUG "MI not the same on all CPUs\n");
-> +
-> +	return 0;
-> +}
-> +
-> +static bool __init gic_acpi_collect_virt_info(void)
-> +{
-> +	int count;
-> +
-> +	count = acpi_table_parse_madt(ACPI_MADT_TYPE_GENERIC_INTERRUPT,
-> +				      gic_acpi_parse_virt_madt_gicc, 0);
-> +
-> +	return count > 0;
->  }
-> +
-> +static void __init gic_acpi_setup_kvm_info(void)
-> +{
-> +	unsigned int maint_irq = 0;
-> +	int irq;
-> +
-> +	if (!gic_acpi_collect_virt_info()) {
-> +		pr_warn("Unable to get hardware information used for virtualization\n");
-> +		return;
-> +	}
+Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+Fixes: a770f6f28b1a ("KVM: MMU: Inherit a shadow page's guest level count from vcpu setup")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kvm/mmu/mmu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Nit: gic_acpi_collect_virt_info() might return true and you still don't get
-the info you need. Now, at least one GICC entry should be enabled and online
-capable (we are booting on a core after all but never overestimate ACPI tables :))
-so this is theory but I thought I would mention it.
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index c9e4739b26d7..a61750f8e1e3 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -2442,6 +2442,9 @@ static union kvm_mmu_page_role kvm_mmu_child_role(u64 *sptep, bool direct,
+ 	role.direct = direct;
+ 	role.passthrough = 0;
+ 
++	WARN_ON_ONCE(role.invalid);
++	role.invalid = 0;
++
+ 	/*
+ 	 * If the guest has 4-byte PTEs then that means it's using 32-bit,
+ 	 * 2-level, non-PAE paging. KVM shadows such guests with PAE paging
+-- 
+2.55.0
 
-> +
-> +	if (acpi_v5_kvm_info.maint_irq) {
-> +		irq = acpi_register_gsi(NULL, acpi_v5_kvm_info.maint_irq,
-> +					ACPI_LEVEL_SENSITIVE,
-> +					ACPI_ACTIVE_HIGH);
-> +		if (irq > 0)
-> +			maint_irq = irq;
-> +		else
-> +			pr_warn("Failed to register GSI for GICv5 maintenance IRQ\n");
-
-Another nit: do we really need the maint_irq variable ?
-
-Thanks,
-Lorenzo
-
-> +	}
-> +
-> +	gic_setup_kvm_info(maint_irq);
-> +}
-> +#endif // CONFIG_ACPI
->  #else
->  static inline void __init gic_of_setup_kvm_info(struct device_node *node)
->  {
->  }
-> +
-> +#ifdef CONFIG_ACPI
-> +static inline void __init gic_acpi_setup_kvm_info(void)
-> +{
-> +}
-> +#endif
->  #endif // CONFIG_KVM
->  
->  static int __init gicv5_init_common(struct fwnode_handle *parent_domain)
-> @@ -1265,6 +1351,7 @@ static int __init gic_acpi_init(union acpi_subtable_headers *header, const unsig
->  		goto out_irs;
->  
->  	acpi_set_irq_model(ACPI_IRQ_MODEL_GIC_V5, gic_v5_get_gsi_domain_id);
-> +	gic_acpi_setup_kvm_info();
->  
->  	return 0;
->  
-> -- 
-> 2.34.1
