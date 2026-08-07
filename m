@@ -1,426 +1,339 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADB648035B;
-	Fri,  7 Aug 2026 13:05:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F9B4766A5;
+	Fri,  7 Aug 2026 13:07:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786107928; cv=none; b=BKQnnoPyHe4r/9kC+1HTkvd9BLDBQottxkssQvACXk+bt0Ha5QzLFFEEtOAE5igOgImtxnY6AaYKlHlJrhLj43uHdx//NG/wXSQuYQV8DEsFf8/2zqVWblrU30nYxLqK2RBo6rSxfaaI1AakCry/UKYiEIY4TVNJaPRp0+k701k=
+	t=1786108089; cv=none; b=hUfafCPCI9n/5X131ac4jppUOcE1cZslop8REL+CzHGhtpgS9rs6RFicgq/wLBZCUK9U116URJnIVI8VADWt9iR4FDt6Ygv2Q+4og8m4rm8qN85SsjQKI1TDQ32oClae7de5isFG/wgUL5btoGF/XN3qJ0Hpx2KHlisDnVGaoMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786107928; c=relaxed/simple;
-	bh=+y+QG1VdcjfpKSatpfVb8yXZAQWyz1QbF7OUOo6OSB4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JN7BF/0hSM/gy8iRMDKiUq0UN6/CtzFa+ZrHcV0DdP95Uc6KNIOn9+VHNcbEjCakXFWpDIFNYT0Pw+kqbq96npyk6/9TLCAFkYxhDHd0WZ5759NJ3Ne/hgMAYkjbPGqZbADV0m270IJDGbTLCqTmRLtgEaXFiCtxhnPLcrRlBqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WHa9Pmxt; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786108089; c=relaxed/simple;
+	bh=8Jc5DeX31k+DtFp0tnkz8x080ly4zvn1OzvmoLkrUV8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=jd1RLEdRN9IaoE8wwJs/dwwWaw1RxpXZ6exWESYSyVsFWfH+dh3FYcJfwvu/wQlC03gWQjNtjBEHZIYkvz5yEN19kN7YrUO4oQq1IWhwS92QwzsYl8I3HGm/Yd/23/128zwp87of4AaXQKE2o0K3qgk7AOkz7xsPHt6w75f79kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V9M/9Bw0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WHa9Pmxt"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 677Cm4SG1413128;
-	Fri, 7 Aug 2026 13:05:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=c7Zt2c
-	JcYDfRFlMdh4SH0h3y2GANc4Ok5cTjrhSHrhE=; b=WHa9PmxtHNomM3e9BNUpuB
-	HwTvjtwCjN72MnPsZUMMZjZTg3emgJi7rAwQ899cvzfAsHovqSB89M7v9zEgLboR
-	jAjhx/nu/oWLnVaKGHIb7BABSBDDrx0MgiaPhMdJDsfDy8kbxvj9mcCfnF39jwkK
-	YFKmfZg4rCrMUMRVfhQ6vijVPGuC8XoozYvQ38MAqLHwkV6odS1KN51buTIsLh0d
-	2ANIcTDipF5bMOxx2Inkw17wdPDnasGTiMr7TRhJoEuB0/B+4bhx+Vji093fYR9u
-	uAqSVUqqED0uZbEVJ/0z4GOV06oM+KZRa2sp7Do4k5gUcU8u6kEOuv46ecPcC9Wg
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fvy02bva7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Aug 2026 13:04:59 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 677CuHbI028708;
-	Fri, 7 Aug 2026 13:04:59 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qyvva-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Aug 2026 13:04:58 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 677D4txw39256376
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 7 Aug 2026 13:04:55 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 13A9A2004E;
-	Fri,  7 Aug 2026 13:04:55 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 01D6620063;
-	Fri,  7 Aug 2026 13:04:52 +0000 (GMT)
-Received: from fedora (unknown [9.5.7.39])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri,  7 Aug 2026 13:04:51 +0000 (GMT)
-Date: Fri, 7 Aug 2026 18:34:58 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Ritesh Harjani <ritesh.list@gmail.com>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        Gautam Menghani <gautam@linux.ibm.com>
-Subject: Re: [PATCH v7 1/4] KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and
- wire up ioctl
-Message-ID: <20260807182905.c357b7de-95-amachhiw@linux.ibm.com>
-Mail-Followup-To: Ritesh Harjani <ritesh.list@gmail.com>, 
-	linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Vaibhav Jain <vaibhav@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Gautam Menghani <gautam@linux.ibm.com>
-References: <20260806170645.11892-1-amachhiw@linux.ibm.com>
- <20260806170645.11892-2-amachhiw@linux.ibm.com>
- <ik5mlj9n.ritesh.list@gmail.com>
- <20260807161434.73dfde8c-36-amachhiw@linux.ibm.com>
- <8q6ikvqo.ritesh.list@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V9M/9Bw0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3A41F00A3D;
+	Fri,  7 Aug 2026 13:07:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786108073;
+	bh=yf6npyemkd7IcvWnqdAfDHI/t9DnhIgiZz4NZSxE7A8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=V9M/9Bw0SXfLHEPwAd+zbfXWKyx0WukuQG7UTg9EQsE2uzCwU3xO19sCUxi/3oLVY
+	 D74HeP3WEDctkOxR0KcWAT6+vtCxFriPEtTYl0PRZ/JQ0b6scV6qGZo3w1JLOSXzX3
+	 DzUr8GQCrO9yeAPrWf6kJAThtRu7NwMnk5GBPD5GRfRwnznSxmAzBXECi3lmzjQhGW
+	 cHgSeDTM2k36uc17hKqIeaOKYzPdFFQZCmjz4C/Oel2OiRz8ztYnul8IzFXxOYNWT8
+	 P3e7ZHMvDY0KAh41BOvl6YGOS6qiUmkrxYCldp4EEbsH5qWP3DnAKiXq/6Ci05BnFU
+	 MJCcUSLSK1D8A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 10/49] KVM: arm64: gic-v5: Introduce guest IST alloc
+ and management
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
+Cc: kvmarm@lists.linux.dev, "Marc Zyngier" <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org
+In-Reply-To: <20260807111159.429128-11-sascha.bischoff@arm.com>
+References: <20260807111159.429128-1-sascha.bischoff@arm.com>
+ <20260807111159.429128-11-sascha.bischoff@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 07 Aug 2026 13:07:52 +0000
+Message-Id: <20260807130753.3E3A41F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8q6ikvqo.ritesh.list@gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=G6ws1dk5 c=1 sm=1 tr=0 ts=6a75d7fc cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=h3gdUq23L0XHQMYVencA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA3MDEwMCBTYWx0ZWRfX7XHbdyWVZZUp
- bz971WoWmET5t5COtd1tpChD6GwHuWz0KZt87obkz4RFQU+kmByMqHDO6En/0sMw/xTlV8cdTJP
- ThWfLSrfXban3+LKqyXX1jD91hFFsD6oOyJJu9t9saWdbbYbJHVeZ+o5Q/WABrbJbAIxxNXig+x
- OA0RNOzo/ytJyIyL3w8X+DSGdSiU3Tmw+IywUm61XYaB3x6Tj+xGmWsF+XaDN3wmAgyFiu2uBu1
- JEJbSrTzNRNfWUBRElBMT450hH4CIghyDZmHsN8zlJ0RqoKcur4W5i+VdQAJRd76a7dTOWbQkqu
- UuvNZpkM6FOda31Csmqn5oGB39kWFlj/Zp4/UmzkOj3tvIDHSNuQJ4LxA6kAwyglSSZvw5hr6N6
- tuxwtFCb/FJEPgxHfLaB0k0Cw0AS2dJ0DCEb6Pt9RWHJzRzlH1lhijUQIOEEPlZTnAuytkHzkvX
- voXns7bpBxV8DmA1ViQ==
-X-Proofpoint-ORIG-GUID: Dlan0QoHbDmDevN3o__qjBND2Ck4EdFP
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA3MDEwMCBTYWx0ZWRfXy7JInibYBrrc
- YJgrblyoTkc/LWIPSGrex3rWH/i/8LucFZR/kPn3S6My2H5Mcgu6+118GlMlqQGu5XD93L5anR1
- Gs7bL1NcYoijmJ5V2EmQmnl7s4sUJBI=
-X-Proofpoint-GUID: x4LCc1u6ywBL69xwSiNo8KjmO2kF_yiN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-07_02,2026-08-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
- phishscore=0 priorityscore=1501 adultscore=0 bulkscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608070100
 
-On 2026/08/07 05:06 PM, Ritesh Harjani wrote:
-> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
-> 
-> > Hi Ritesh,
-> >
-> > Thanks for reviewing this patch. Please find my response inline below.
-> >
-> > On 2026/08/07 08:38 AM, Ritesh Harjani wrote:
-> >> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
-> >> 
-> >> > Introduce a new capability and ioctl to expose CPU compatibility modes
-> >> > supported by the host processor for nested guests.
-> >> >
-> >> > On IBM POWER systems, newer processor generations (N) can operate in
-> >> > compatibility modes corresponding to earlier generations, like (N-1) and
-> >> > (N-2). This is particularly relevant for nested virtualization, where
-> >> > nested KVM guests may need to run with a specific processor compatibility
-> >> > level.
-> >> >
-> >> > Introduce KVM_CAP_PPC_COMPAT_CAPS capability and the corresponding
-> >> > KVM_PPC_GET_COMPAT_CAPS vm ioctl. The ioctl returns a bitmap describing
-> >> > the compatibility modes supported by the host in respective bit numbers,
-> >> > allowing userspace (e.g., QEMU) to select an appropriate compatibility
-> >> > level when configuring nested KVM guests.
-> >> >
-> >> > The ioctl handling is added in kvm_arch_vm_ioctl() and retrieves host
-> >> > CPU compatibility capabilities via a PowerPC-specific backend
-> >> > implementation when available.
-> >> >
-> >> > The struct kvm_ppc_compat_caps places the 'size' field first so it can
-> >> > be read alone via get_user() before copy_struct_from_user() is called,
-> >> > avoiding pointer arithmetic to locate the size field.
-> >> >
-> >> > The ioctl is defined using _IO so the ioctl number remains stable even if
-> >> > the struct grows in future versions. It uses copy_struct_from_user() and
-> >> > copy_struct_to_user() to provide forward- and backward-compatible
-> >> > extensibility: older userspace passing a smaller struct to a newer kernel
-> >> > gets zero-padded trailing fields, while newer userspace passing a larger
-> >> > struct to an older kernel (usize > ksize) gets sizeof(struct
-> >> > kvm_ppc_compat_caps) written back to host_caps.size so it can retry with the
-> >> > older kernel-supported size, after which the kernel returns -E2BIG.
-> >> >
-> >> > KVM_PPC_COMPAT_CAPS_SIZE_VER0 is defined as a frozen integer constant
-> >> > (24) marking the size of the initial struct version, used as the
-> >> > minimum floor for size field validation, similar to other versioned
-> >> > struct interfaces in the kernel.
-> >> >
-> >> > The 'flags' field is reserved for future use. The kernel rejects any
-> >> > call where flags is non-zero with -EINVAL, preventing garbage values
-> >> > from being baked into ABI permanently.
-> >> >
-> >> > The ioctl returns appropriate error codes: EINVAL for an invalid size
-> >> > or non-zero reserved fields, E2BIG if new userspace provides a larger
-> >> > struct than the kernel knows about (with ksize written back into
-> >> > host_caps.size for the retry), EFAULT for failed copy operations, and
-> >> > ENOTTY if the backend doesn't implement get_compat_caps.
-> >> >
-> >> > Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> >> > Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-> >> > Reviewed-by: Gautam Menghani <gautam@linux.ibm.com>
-> >> > Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
-> >> > Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> >> > ---
-> >> > Changes in this version:
-> >> >   - KVM_CAP_PPC_COMPAT_CAPS: add hv_enabled guard to align the capability
-> >> >     check with ioctl availability; a PR KVM VM on pseries now correctly
-> >> >     returns 0 for the capability [Sashiko]
-> >> >
-> >> >  arch/powerpc/include/asm/kvm_ppc.h  |  1 +
-> >> >  arch/powerpc/include/uapi/asm/kvm.h |  8 ++++
-> >> >  arch/powerpc/kvm/powerpc.c          | 71 +++++++++++++++++++++++++++++
-> >> >  include/uapi/linux/kvm.h            |  3 ++
-> >> >  4 files changed, 83 insertions(+)
-> >> >
-> >> > diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-> >> > index 0953f2daa466..169ea6a7fbad 100644
-> >> > --- a/arch/powerpc/include/asm/kvm_ppc.h
-> >> > +++ b/arch/powerpc/include/asm/kvm_ppc.h
-> >> > @@ -319,6 +319,7 @@ struct kvmppc_ops {
-> >> >  	bool (*hash_v3_possible)(void);
-> >> >  	int (*create_vm_debugfs)(struct kvm *kvm);
-> >> >  	int (*create_vcpu_debugfs)(struct kvm_vcpu *vcpu, struct dentry *debugfs_dentry);
-> >> > +	int (*get_compat_caps)(struct kvm_ppc_compat_caps *host_caps);
-> >> >  };
-> >> >  
-> >> >  extern struct kvmppc_ops *kvmppc_hv_ops;
-> >> > diff --git a/arch/powerpc/include/uapi/asm/kvm.h b/arch/powerpc/include/uapi/asm/kvm.h
-> >> > index 077c5437f521..19e53d5ae540 100644
-> >> > --- a/arch/powerpc/include/uapi/asm/kvm.h
-> >> > +++ b/arch/powerpc/include/uapi/asm/kvm.h
-> >> > @@ -437,6 +437,14 @@ struct kvm_ppc_cpu_char {
-> >> >  	__u64	behaviour_mask;		/* valid bits in behaviour */
-> >> >  };
-> >> >  
-> >> > +/* For KVM_PPC_GET_COMPAT_CAPS */
-> >> > +struct kvm_ppc_compat_caps {
-> >> > +	__u64	size;			/* Size of this structure */
-> >> > +	__u64	flags;			/* Reserved for future use */
-> >> > +	__u64	compat_capabilities;	/* Capabilities supported by the host */
-> >> > +};
-> >> > +#define KVM_PPC_COMPAT_CAPS_SIZE_VER0	24 /* sizeof first published struct */
-> >> > +
-> >> >  /*
-> >> >   * Values for character and character_mask.
-> >> >   * These are identical to the values used by H_GET_CPU_CHARACTERISTICS.
-> >> > diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> >> > index b6b83fe3233f..e64b3cfadd3a 100644
-> >> > --- a/arch/powerpc/kvm/powerpc.c
-> >> > +++ b/arch/powerpc/kvm/powerpc.c
-> >> > @@ -703,6 +703,13 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
-> >> >  			}
-> >> >  		}
-> >> >  		break;
-> >> > +#if defined(CONFIG_KVM_BOOK3S_HV_POSSIBLE)
-> >> > +	case KVM_CAP_PPC_COMPAT_CAPS:
-> >> > +		r = 0;
-> >> > +		if (hv_enabled && kvmhv_on_pseries())
-> >> 
-> >> I think sashiko is just complaining in the 1st patch because we have not
-> >> yet wired up the kvmppc_hv_ops->get_compat_caps() yet in patch-1. I
-> >> think it is expecting..
-> >> 
-> >> if (hv_enabled && kvmhv_on_pseries() && kvmppc_hv_ops->get_compat_caps)
-> >> 
-> >> But either way is fine.
-> >> 
-> >> 
-> >> > +			r = 1;
-> >> > +		break;
-> >> > +#endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
-> >> >  	default:
-> >> >  		r = 0;
-> >> >  		break;
-> >> > @@ -2469,6 +2476,70 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
-> >> >  		r = kvm->arch.kvm_ops->svm_off(kvm);
-> >> >  		break;
-> >> >  	}
-> >> > +	case KVM_PPC_GET_COMPAT_CAPS: {
-> >> > +		struct kvm_ppc_compat_caps host_caps = {};
-> >> > +		u64 usize;
-> >> > +
-> >> > +		/*
-> >> > +		 * Read the size field first to drive copy_struct_from_user.
-> >> > +		 * size must be the first field of the struct.
-> >> > +		 */
-> >> > +		r = -EFAULT;
-> >> > +		if (get_user(usize, (__u64 __user *)argp))
-> >> > +			goto out;
-> >> > +
-> >> > +		/*
-> >> > +		 * Enforce a minimum: reject buffers smaller than the initial
-> >> > +		 * struct version (VER0). This allows old userspace compiled
-> >> > +		 * against the original struct to still work on a newer kernel
-> >> > +		 * that has grown the struct with appended fields.
-> >> > +		 */
-> >> > +		r = -EINVAL;
-> >> > +		if (usize < KVM_PPC_COMPAT_CAPS_SIZE_VER0)
-> >> > +			goto out;
-> >> > +
-> >> > +		/*
-> >> > +		 * New userspace with a larger struct called an older kernel.
-> >> > +		 * Write back ksize in host_caps.size so userspace knows which
-> >> > +		 * older struct to retry with, then fail with -E2BIG.
-> >> > +		 */
-> >> > +		if (usize > sizeof(host_caps)) {
-> >> > +			host_caps.size = sizeof(host_caps);
-> >> > +			r = -EFAULT;
-> >> > +			if (put_user(host_caps.size, (__u64 __user *)argp))
-> >> > +				goto out;
-> >> > +			r = -E2BIG;
-> >> > +			goto out;
-> >> > +		}
-> >> 
-> >> You anyways mentioned copy_struct_from_user() is taking care of both
-> >> forward and backward compat. Then what is the point of this check?
-> >> shouldn't we get rid of this complete if logic? I don't see a point of
-> >> this if we are anyway using copy_struct_from_user().
-> >
-> > The pre-check is intentional and serves a purpose that
-> > copy_struct_from_user() alone cannot provide: explicit kernel struct
-> > size discovery.
-> >
-> > copy_struct_from_user() returns -E2BIG when usize > ksize and trailing
-> > bytes are non-zero — but it gives userspace no way to know what ksize to
-> > retry with. It also silently succeeds when trailing bytes are zero,
-> > which means a new userspace on an old kernel would never learn the
-> > kernel's struct size at all.
-> >
-> > This design is different by intent: when new userspace passes a larger
-> > struct, we always return -E2BIG and write back sizeof(host_caps) into
-> > the size field so userspace learns the exact kernel-supported size and
-> > can retry with it. This explicit negotiation is verified in the ABI
-> > extensibility testing in the cover letter ("Newer struct on QEMU, older
-> > kernel -> works"). The explicit -E2BIG + ksize writeback makes the
-> > version negotiation unambiguous.
-> >
-> 
-> yup, my bad, should have seen the comment in the code above.
+Thank you for your contribution! Sashiko AI review found 6 potential issue(=
+s) to consider:
 
-No worries...
+New issues:
+- [Critical] Hardware Use-After-Free (UAF) due to missing IRS invalidation =
+command during LPI IST teardown.
+- [Critical] Integer truncation in `vgic_v5_alloc_linear_ist` causes ZERO_S=
+IZE_PTR allocation and silent memory corruption.
+- [High] Unconditional NULL pointer dereference of `vcpu0` during IST assig=
+nment.
+- [High] Silent physical address truncation in L2 IST allocation due to unv=
+alidated masking.
+- [Medium] Permanent memory leak of VM resources due to early aborts in `vg=
+ic_v5_vmte_release`.
 
-> 
-> But isn't this a bad design? Tomorrow, say we have a v2, a larger
-> version of this struct and if your newer Qemu (with larger struct size)
-> is running on an older kernel with a smaller struct size, then you will
-> fail it because usize > ksize even though the userspace has zero filled
-> the rest of the trailing bytes... 
+Pre-existing issues:
+- [High] Missing DSB barrier after cache maintenance allows the hardware IR=
+S to read stale VMTE data.
+--
 
-You're right and thanks for pointing this out. A newer userspace that
-zero-initialises the new fields (e.g. struct caps = {}; caps.size =
-sizeof(caps);) is a valid forward-compat call — zero means "use default
-for unknown fields", which is exactly the contract
-copy_struct_from_user() is designed to honour. Forcing a round-trip in
-that case is wrong.
+--- Patch [10]: [PATCH v5 10/49] KVM: arm64: gic-v5: Introduce guest IST al=
+loc and management ---
+commit 4b81b458fb30bd2b57a30edcbe23a8f8de22edbb
+Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
+Date:   Fri Aug 7 11:17:41 2026 +0000
 
-I'll drop the manual usize > sizeof(host_caps) pre-check and let
-copy_struct_from_user() own the usize > ksize path entirely.
+    KVM: arm64: gic-v5: Introduce guest IST alloc and management
 
-One small correction to your suggested snippet though: put_user()
-return value is ignored there. put_user() returns 0 on success or
--EFAULT on failure, so if the write-back fails we'd silently return
--E2BIG instead of -EFAULT. The fix is straightforward:
+GICv5 guests use Interrupt State Tables (ISTs) to track and manage the
+interrupt state for SPIs and LPIs. This commit introduces the machinery
+needed to allocate a linear SPI IST and a shadow LPI IST, and pass them
+to the host's IRS via the VMTE.
 
-  diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-  index e64b3cfadd3a..ed48f069fb76 100644
-  --- a/arch/powerpc/kvm/powerpc.c
-  +++ b/arch/powerpc/kvm/powerpc.c
-  @@ -2498,29 +2498,28 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
-                  if (usize < KVM_PPC_COMPAT_CAPS_SIZE_VER0)
-                          goto out;
-   
-  -               /*
-  -                * New userspace with a larger struct called an older kernel.
-  -                * Write back ksize in host_caps.size so userspace knows which
-  -                * older struct to retry with, then fail with -E2BIG.
-  -                */
-  -               if (usize > sizeof(host_caps)) {
-  -                       host_caps.size = sizeof(host_caps);
-  -                       r = -EFAULT;
-  -                       if (put_user(host_caps.size, (__u64 __user *)argp))
-  -                               goto out;
-  -                       r = -E2BIG;
-  -                       goto out;
-  -               }
-  -
-                  /*
-                   * copy_struct_from_user() handles forward/backward compat:
-                   *   usize == ksize: verbatim copy
-                   *   usize <  ksize: zero-pad trailing (old userspace, new kernel)
-  +                *   usize >  ksize: succeed iff trailing bytes are zero, else -E2BIG
-                   */
-                  r = copy_struct_from_user(&host_caps, sizeof(host_caps),
-                                            argp, usize);
-  -               if (r)
-  +               if (r) {
-  +                       /*
-  +                        * New userspace with a larger struct called an older
-  +                        * kernel. Write back ksize in host_caps.size so
-  +                        * userspace knows which older struct to retry with,
-  +                        * then fail with -E2BIG.
-  +                        */
-  +                       if (r == -E2BIG)
-  +                               if (put_user((__u64)sizeof(host_caps),
-  +                                            (__u64 __user *)argp))
-  +                                       r = -EFAULT;
-                          goto out;
-  +               }
-   
-                  /* Reserved fields must be zero */
-                  r = -EINVAL;
+> diff --git a/arch/arm64/kvm/vgic/vgic-v5-tables.c b/arch/arm64/kvm/vgic/v=
+gic-v5-tables.c
+> index 7252d48431a5a..f088006f39674 100644
+> --- a/arch/arm64/kvm/vgic/vgic-v5-tables.c
+> +++ b/arch/arm64/kvm/vgic/vgic-v5-tables.c
+[ ... ]
+> @@ -581,6 +608,22 @@ int vgic_v5_vmte_release(struct kvm *kvm)
+>  	if (!vmi)
+>  		goto no_vmi;
+> =20
+> +	/* If we have an LPI IST, free it */
+> +	if (vmi->h_lpi_ist) {
+> +		ret =3D vgic_v5_lpi_ist_free(kvm);
+> +		if (ret)
+> +			return ret;
 
-This preserves -EFAULT priority if put_user() fails, consistent with
-how the get_user() guard earlier in the same handler works.
+[Severity: Medium]
+What happens to the remaining allocated resources if this returns early?
 
-Will post v8 with this fix.
+If vgic_v5_lpi_ist_free() returns an error, the function aborts immediately.
+This bypasses the release of vped_base, vpet_base, and vmd_base, and skips
+removing the entry from vm_info, permanently leaking these VM resources.
 
-Thanks,
-Amit
+> +	}
+> +	vmi->h_lpi_ist =3D NULL;
+> +
+> +	/* If we have an SPI IST, free it */
+> +	if (vmi->h_spi_ist) {
+> +		ret =3D vgic_v5_spi_ist_free(kvm);
+> +		if (ret)
+> +			return ret;
 
->      if (usize > sizeof(host_caps)) 
-> 
-> Instead wouldn't it be better if we do something like this?
-> 
-> 		r = copy_struct_from_user(&host_caps, sizeof(host_caps),
-> 					  argp, usize);
-> 		if (r) {
-> 			if (r == -E2BIG)
-> 				put_user(sizeof(host_caps), &argp->size);
-> 			goto out;
-> 		}
-> 
-> So, we only fail if the userspace has passed a newer struct and the
-> trailing bytes, which are unknown to this older kernel, are zeroed,
-> otherwise we return -E2BIG. We also write the ksize back, so the user
-> knows what ksize it supports.
-> 
-> This would avoid an unncessary round trip and will simplify the
-> userspace design, isn't it?
-> 
-> >> 
-<snip>
+[Severity: Medium]
+Similarly, could an error here leak the same resources?
+
+> +	}
+> +	vmi->h_spi_ist =3D NULL;
+[ ... ]
+> @@ -679,3 +722,511 @@ int vgic_v5_vmte_free_vpe(struct kvm_vcpu *vcpu)
+> =20
+>  	return 0;
+>  }
+> +
+> +/*
+> + * Assign an already allocated IST to the VM by populating the fields in=
+ the
+> + * corresponding VMTE. We re-use this code for both an SPI IST and LPI I=
+ST, even
+> + * if the paths to reach it might be vastly different.
+> + */
+> +static int vgic_v5_vmte_assign_ist(struct kvm *kvm, phys_addr_t ist_base,
+> +				   bool two_level, unsigned int id_bits,
+> +				   unsigned int l2sz, unsigned int istsz,
+> +				   bool spi_ist)
+> +{
+> +	struct kvm_vcpu *vcpu0 =3D kvm_get_vcpu(kvm, 0);
+[ ... ]
+> +	scoped_guard(raw_spinlock_irqsave, &vgic_v5_irs_lock) {
+> +		/* Bail if already allocated */
+> +		vgic_v5_clean_inval(vmte, sizeof(*vmte));
+> +		if (le64_to_cpu(READ_ONCE(vmte->val[section])) &
+> +		    GICV5_VMTEL2E_IST_VALID)
+> +			return -EINVAL;
+> +
+> +		WRITE_ONCE(vmte->val[section], cpu_to_le64(tmp));
+> +		vgic_v5_clean_inval(vmte, sizeof(*vmte));
+> +	}
+> +
+> +	/* Finally, mark the entry as valid */
+> +	cmd =3D spi_ist ? SPI_VIST_MAKE_VALID : LPI_VIST_MAKE_VALID;
+> +	ret =3D irq_set_vcpu_affinity(vgic_v5_vpe_db(vcpu0), &cmd);
+
+[Severity: High]
+What happens if vcpu0 is NULL?=20
+
+Userspace can invoke KVM VGIC initialization ioctls before any VCPUs are
+created (where kvm->online_vcpus is 0). In this state, kvm_get_vcpu() retur=
+ns
+NULL. When vgic_v5_vpe_db() attempts to dereference vcpu0 to get the doorbe=
+ll
+address, it would cause a host kernel panic.
+
+[Severity: High]
+This is a pre-existing issue, but does vgic_v5_clean_inval() require a barr=
+ier
+to guarantee completion?
+
+The vgic_v5_clean_inval() function calls dcache_clean_inval_poc() to flush
+caches for a non-coherent IRS. However, it lacks a trailing dsb(sy) or dsb(=
+ish)
+barrier. Because of this, the memory-mapped write to the doorbell in
+irq_set_vcpu_affinity() might execute before the cache flush completes,
+allowing the IRS hardware to read stale VMTE data.
+
+> +
+> +	return ret;
+> +}
+[ ... ]
+> +/*
+> + * Allocate a Linear IST - always used for SPIs and potentially LPIs.
+> + *
+> + * The calculation for n has been taken from section 11.2.2 of the GICv5=
+ EAC0
+> + * spec.
+> + *
+> + * NOTE: istsz is the FIELD used by GICv5, not the actual size (or log2(=
+) of the
+> + * size).
+> + */
+> +static int vgic_v5_alloc_linear_ist(struct kvm *kvm, bool spi_ist,
+> +				    unsigned int id_bits, unsigned int istsz)
+> +{
+> +	const size_t n =3D max(5, id_bits + 1 + istsz);
+> +	u32 vm_id =3D vgic_v5_vm_id(kvm);
+> +	struct vgic_v5_vm_info *vmi;
+> +	__le64 *ist;
+> +	u32 l1sz;
+> +
+> +	vmi =3D xa_load(&vm_info, vm_id);
+> +	if (!vmi)
+> +		return -EINVAL;
+> +
+> +	/*
+> +	 * Allocate the IST. We only have one level, so we just use the L2 ISTE.
+> +	 */
+> +	l1sz =3D BIT(n + 1);
+
+[Severity: Critical]
+Can l1sz overflow and truncate to zero?
+
+If a guest requests a large LPI ID space (e.g., id_bits =3D 30), n can reac=
+h 32.
+BIT(33) evaluates to 8,589,934,592, which truncates to exactly 0 when assig=
+ned
+to the 32-bit u32 l1sz variable.
+
+> +	ist =3D kzalloc(l1sz, GFP_KERNEL_ACCOUNT);
+
+When kzalloc() is called with a size of 0, it returns ZERO_SIZE_PTR (0x10).
+KVM will then translate this via virt_to_phys() and program the bogus physi=
+cal
+address into the hardware's VMTE. The IRS will perform DMA to this address,
+leading to host memory corruption.
+
+> +	if (!ist)
+> +		return -ENOMEM;
+[ ... ]
+> +/*
+> + * Allocate ALL of the second level ISTs for a two-level IST - LPI, only.
+> + *
+> + * The calculation for n has been taken from section 11.2.2 of the GICv5=
+ EAC0
+> + * spec. The l2_size calculation is from section 11.2.3 of the same docu=
+ment.
+> + *
+> + * NOTE: istsz and l2sz are the FIELDS used by GICv5, not the actual siz=
+es (or
+> + * log2() of the sizes).
+> + */
+> +static int vgic_v5_alloc_l2_ists(struct kvm *kvm, unsigned int id_bits,
+> +				 unsigned int istsz, unsigned int l2sz)
+> +{
+[ ... ]
+> +		/*
+> +		 * We are not doing on-demand allocation of the L2 ISTs, and are
+> +		 * instead provisioning the whole IST up front. This means that
+> +		 * we are able to mark the L2 ISTs as valid in the L1 ISTEs as
+> +		 * the overall IST is not yet valid.
+> +		 */
+> +		val =3D (virt_to_phys(l2ist) & GICV5_ISTL1E_L2_ADDR_MASK) |
+> +		      GICV5_ISTL1E_VALID;
+
+[Severity: High]
+Is it possible for virt_to_phys(l2ist) to have bits above the
+GICV5_ISTL1E_L2_ADDR_MASK?
+
+Unlike vgic_v5_vmte_assign_ist() which checks if the address fits the hardw=
+are
+mask, this function unconditionally applies a bitwise AND. On systems with
+LVA/LPA (up to 52-bit PAs), if the allocated page resides above the bits
+covered by the mask, the upper bits are silently truncated. The IRS would t=
+hen
+write incoming LPI states to an aliased, incorrect physical memory address.
+
+> +		l1ist[index] =3D cpu_to_le64(val);
+> +
+> +		vmi->h_lpi_l2_ists[index] =3D l2ist;
+> +
+> +		vgic_v5_clean_inval(l2ist, l2_size);
+> +	}
+[ ... ]
+> +/*
+> + * Free a Linear IST. Can only happen once the VM is dead.
+> + */
+> +static int vgic_v5_linear_ist_free(struct kvm *kvm, bool spi)
+> +{
+> +	u32 vm_id =3D vgic_v5_vm_id(kvm);
+> +	struct vmtl2_entry *vmte;
+> +	struct vgic_v5_vm_info *vmi;
+> +	int section;
+[ ... ]
+> +	if (spi) {
+> +		section =3D GICV5_VMTEL2_SPI_SECTION;
+> +		vgic_v5_free_allocated_spi_ist(kvm);
+> +	} else {
+> +		section =3D GICV5_VMTEL2_LPI_SECTION;
+> +		vgic_v5_free_allocated_lpi_ist(vmi, 0, 0, 0);
+> +	}
+> +
+> +	/* The VM should be dead here, so we can just zero the VMT section */
+> +	scoped_guard(raw_spinlock_irqsave, &vgic_v5_irs_lock) {
+> +		WRITE_ONCE(vmte->val[section], cpu_to_le64(0));
+> +		vgic_v5_clean_inval(vmte, sizeof(*vmte));
+> +	}
+
+[Severity: Critical]
+Does the hardware IRS need to be notified that the LPI IST is now invalid?
+
+The memory is explicitly freed and the software VMTE is zeroed, but no
+LPI_VIST_MAKE_INVALID command is sent to the IRS hardware. Because the hard=
+ware
+IRS is never notified, it will retain the physical address in its cache and
+will continue to DMA incoming LPI state updates to the newly freed host mem=
+ory
+pages, leading to a Use-After-Free and host memory corruption.
+
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Free a Two-Level IST. Can only happen once the VM is dead.
+> + */
+> +static int vgic_v5_two_level_ist_free(struct kvm *kvm, bool spi)
+> +{
+[ ... ]
+> +	vgic_v5_free_allocated_lpi_ist(vmi, id_bits, istsz, l2sz);
+> +
+> +	/* The VM must be dead, so we can just zero the VMT section */
+> +	scoped_guard(raw_spinlock_irqsave, &vgic_v5_irs_lock) {
+> +		WRITE_ONCE(vmte->val[section], cpu_to_le64(0));
+> +		vgic_v5_clean_inval(vmte, sizeof(*vmte));
+> +	}
+
+[Severity: Critical]
+Similarly, does the two-level IST teardown also require an
+LPI_VIST_MAKE_INVALID hardware command?
+
+The LPI IST memory is freed and the VMTE is zeroed without sending the
+invalidation command to the IRS, opening the same race window for hardware
+Use-After-Free.
+
+> +
+> +	return 0;
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807111159.4291=
+28-1-sascha.bischoff@arm.com?part=3D10
