@@ -1,114 +1,133 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A895A3C98BF
-	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 22:39:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890593546CF;
+	Fri,  7 Aug 2026 22:39:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786142343; cv=none; b=pW81q+Eb6wIjgYoNs7B3VOq3H7XHjuwRAQejz/JyQDLOwMUymW/ilQYPGjP4f9nPmfrAVWKJ9zSlq1Q+m0SEiM7iFUmDbIZ6xVV2aRKDIC3Q68psiwQNMGcYIFo3YU9CeZc6guCXKa9SJGTkef2SMFB2fMyPz/jInWC1nOzh+K0=
+	t=1786142389; cv=none; b=Yf/Kq73nwMGbariEII7FycgAH/Z4Oh9//ugYZCv6ow/iKAJCQvz9+ZIb7K0T8MjCTnagponpXb18n43oBcj6zxJnax8LDaFLe/k0f0fXcRjH9pezovGIChp+nqerp6tr+p2uaz59M6n+1eqQ4M8WX55SVZQXn1niVnhFTEE7Sks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786142343; c=relaxed/simple;
-	bh=90qft761TG4mju73n++8iP2u5y7oZ26yA1cyGv2gg0A=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SsQBLQustemHPYIX8GVA6HJbFbEqspomNqtIRklHyxhxpd7Y9wIsjHY42akYUmiP8V5Gbv6+2T/Pmorid8oAYfVhYq99yK7s6GkmFL4jo8Ro/+ddi6M/JbfUFmgK4CwC98ervOsHGP+Sv4ozcfRfo4LW/+ZAlPTcDe0lb8y/vUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uZ1WSLRG; arc=none smtp.client-ip=209.85.210.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786142389; c=relaxed/simple;
+	bh=hsIon1eajFjVKl03EWtbFjJxmKrVHv317CB68xrKeaw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=py+qWLP0lGwL6LWCSkFuRnFju0/+k2YcWh0CGvzIMnazKUb/hc03vp52zsWGBXfdp68V82xvPCbAHNgsOy02iRsEkkSgQ+FNcr1mExsGeQhx4tUdCMHwx2GA5tcmNfdyZIRp4KVrRa8E/azCFoW811qoLvueUyTavK87B+XT5YE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lHgWuNph; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uZ1WSLRG"
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84a251c2e3eso3136027b3a.1
-        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 15:39:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786142341; x=1786747141; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jTXrPvON64U3D8gfjSGTNrFDqHyTIsu8UP1dMgNPkZQ=;
-        b=uZ1WSLRGJPe+Yrp0RPYwGuA+kcmQsbPhz5AAMwqMn2Go4GU6+qbhot2sg2Dr71acpa
-         vwQYyQceedqwJTgcBrBS3YOEwUejeN/a6eXHvUGUp2f/+GEMIyePtinDLMDxXOCoNS/I
-         J6Kx5kn2xnjEIfgQCzWvDrrgxAvCZKpEqGst+QK/iTV06glZJYfEeen1oBAzXKqG0ozt
-         h0IEO5rJd8IS8wNW2LW+GNZdvP44o6odLggOwzdsCHFhKKQbPu+5eWGw2iwW6n0fAI6O
-         61Xa+zHPZYLDhBvYcmohhd9eHVJNA7rpoJVMMXG4K6zW6FTnKBNQr0F4uP1liRzLQSyQ
-         e6Dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786142341; x=1786747141;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jTXrPvON64U3D8gfjSGTNrFDqHyTIsu8UP1dMgNPkZQ=;
-        b=VISgE71yCC+nTy9+oh+yvay+8mD3mdfJMUQ+kVMZNTeye+ZnwS9Z5+j5V10+XSkNTu
-         0O/X7ehhceRe1G5MFo/RXEG5bm+Il9G64401pltyb++31UJIzFbcppmNbxaMjBHzJBgf
-         cTfYVSvIy2mtp1xRuvFKzbsTUm1ofUZbMzt0DEz3TfIic4GJW5tpNuE5GZgQTvUcvenz
-         RI6Mt/n4rq9nEiB1Jh3aKn+HosRRERClUtmaERlgsRTuij4rkolCn7BsjXwbEaz4ZQU7
-         kTUWfcjvHW7HzeKNWasQ9FJz5+Tb5jHI3IdWFS6Hrvs0qpudV3nYFOdkS4Fj1lSX4Dr8
-         SOJg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro478rgAHO0wWDSaJUQwRTVQ3G0JEJvz1K6NEID7ohlTajSIGUnNRMLv9Pj/eGyhrt3STs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzm46SX86Yc7GPOB5BV2++HEzMmf8+4WrwMop4g45jpbkRuYahq
-	ilrLtk8stjGLtA7h3pndk3H9zxvNVTIEnGhx/Vh/nAMYzsT2lisPkL3xDWxKXybylK4kIsDt/Ev
-	NCwzsDQ==
-X-Received: from pgka7.prod.google.com ([2002:a63:e847:0:b0:c9f:dabd:440f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:e8c:b0:3bf:bbad:500e
- with SMTP id adf61e73a8af0-3cbd37eeb21mr2410103637.5.1786142340853; Fri, 07
- Aug 2026 15:39:00 -0700 (PDT)
-Date: Fri, 7 Aug 2026 15:39:00 -0700
-In-Reply-To: <CABgObfak2WM10cj4eQ0DejFQPjsK1ftjS-y2Ygr_gcPs=KyChg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lHgWuNph"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 677LlalJ800092;
+	Fri, 7 Aug 2026 22:39:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=6viU0xdlvJv1AnMFg3+XS2rudq0w/b83N3xgMOSma
+	DA=; b=lHgWuNphE5C+7tIcQDBTqm/qEcrMWyLmYBhRhGSotypfvS/etgjRwo4/l
+	J2ER/OiCUdMGHbiPqV5zrmTnzTZNsLV7I8V/JXN+igSa5iVPDAoxYx8ITC6XsOqI
+	87bGvynD7Z1m3y+JKErqHjnMn9FSjBxBB7ePgyWkozNRTL1QmtuPITD46Ot25Bd3
+	l7FOXlm2F3DBOeJ71re+ETawsfAj6ZwO/L0MkbMvNXT7279aHWRGAcfkPVRry4wk
+	6Eszmg3+7BToojwnuyZ+PMjvbOTDhJG5OXkmBZSylayxhIgb5qS6mUJTCoRQg14m
+	IndvjwFRYpgK7pkBucuw4711R3/Ew==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fvy01p9n2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Aug 2026 22:39:44 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 677MQGOZ000530;
+	Fri, 7 Aug 2026 22:39:43 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4r1v0q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Aug 2026 22:39:43 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 677Mdftd14353038
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 7 Aug 2026 22:39:41 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4CD4A58056;
+	Fri,  7 Aug 2026 22:39:41 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ECCF758050;
+	Fri,  7 Aug 2026 22:39:39 +0000 (GMT)
+Received: from li-4c4c4544-004d-4810-8043-b7c04f423534.ibm.com.com (unknown [9.61.52.19])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  7 Aug 2026 22:39:39 +0000 (GMT)
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
+        pasic@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
+        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        stable@vger.kernel.org
+Subject: [PATCH] s390/vfio-ap: Fix control domain removal in vfio_ap_mdev_cfg_remove
+Date: Fri,  7 Aug 2026 18:39:39 -0400
+Message-ID: <20260807223939.573718-1-akrowiak@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260807135327.2629594-1-pbonzini@redhat.com> <anYQsMnpS2kpYoqA@google.com>
- <CABgObfak2WM10cj4eQ0DejFQPjsK1ftjS-y2Ygr_gcPs=KyChg@mail.gmail.com>
-Message-ID: <anZehP6yD66SRsNj@google.com>
-Subject: Re: [GIT PULL] KVM (mostly s390) fixes for Linux 7.2-rc7
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, kvm <kvm@vger.kernel.org>, 
-	Yosry Ahmed <yosry@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: TlpYmNRbynyElyQ_I2bpblUzlfqDrD4o
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA3MDE3NSBTYWx0ZWRfX+oJtFt5Hj+BI
+ lu3tioKkFj10CGE946AGNNkELzZICPbhgVtMR+b+CtewBWmlZrGEvJxligaI4eR8WsUGQ+qYb02
+ NHAffXNMRujxUy36BQHYobxhvSRinis=
+X-Proofpoint-ORIG-GUID: TlpYmNRbynyElyQ_I2bpblUzlfqDrD4o
+X-Authority-Analysis: v=2.4 cv=afNRWxot c=1 sm=1 tr=0 ts=6a765eb0 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=fkyveIzhjB74ZASU3MYA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA3MDE3NSBTYWx0ZWRfX6ZRkPpC/g0Pg
+ +VafcbyQMciXmPtYgWU6cl6u1Q33xhjLy4wHtZ+O+CaAca3GsUU+id9IKEV0XDr8lDaeqpVR6IT
+ esGxdE+C2V/iUBuiuivOVkiE+XKIoZrKwuS+qcsa07ven7dtPadWiCrB/8OYbEVmRkYgbV5FzB8
+ Mn1PnXnnliKbMZWpjbtyb0wUHmjrCBUvNeEYnGl0XgrqAPkDDTQJyk3t7YSo3A16RMkaPlUOtF1
+ 8cBETvOEFUakadd20FDnwfhRUPQ2wqgEq2FaPc1q8ZWU0JNjGQdq7w3RF1DNCJNyZHWTPeNqll7
+ GqY99e3G2t7tca9zEuB1UlpXU/8seFpWesUWhhxmt1oy27wIlvQh5A43Z2RHFzr7F7pLPS+ewwn
+ mlIN31v13CJ1GPLSH5c0A7I/AggNEx4L2vQtohA5H4VseVk4p7Ii5ZVZAh+raM6kd0hiRIJJHHO
+ KEjMclTiKJI6IXWkU6g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-07_05,2026-08-07_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 phishscore=0 impostorscore=0 adultscore=0
+ suspectscore=0 bulkscore=0 clxscore=1015 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608070175
 
-On Fri, Aug 07, 2026, Paolo Bonzini wrote:
-> Il ven 7 ago 2026, 19:07 Sean Christopherson <seanjc@google.com> ha scritto:
-> > On Fri, Aug 07, 2026, Paolo Bonzini wrote:
-> > I don't care _that_ much about the code itself, though I still think the out-param
-> > is all kinds of ugly. I'm not at all ok with doing so silently
-> >
-> > and without what I would consider an honest attempt to address review feedback.
-> 
-> Sorry about that, but again - I waited two weeks and got no reply to
-> https://lore.kernel.org/all/CABgObfbDE+=ir_phPC+9sVYnNXur6dFx6oAfEGSnCbrOqFoyVA@mail.gmail.com/.
-> I consider two weeks of wait, on a review that so far had been
-> exclusively about taste, to *be* an honest attempt to gather the next
-> round of feedback (which never came).
+The vfio_ap_config_remove function uses the bitmap_andnot function to clear
+bits from the matrix_mdev->matrix.adm (specifies the control domains
+assigned to the mdev). This prevents the explicitly unplugged control
+domains from being removed the KVM guest. The bitmap_and function is used
+instead.
 
-Heh, and I was waiting for a response to Yosry's thread:
-https://lore.kernel.org/all/CAO9r8zODKgCcjTBK=P6BuXBBZRoOAFMeRJU8BmkWL-BCX2LoBw@mail.gmail.com
+Fixes: eeb386aeb5b7c ("s390/vfio-ap: handle config changed and scan complete notification")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+---
+ drivers/s390/crypto/vfio_ap_ops.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-I also didn't prioritize responding (or even digging deeper) because I wasn't
-expecting the patch to get fast-tracked to 7.2.  It's not tagged for stable, the
-code has existed for years, and at least for me, nothing else suggested it needed
-to go in *now*.  It doesn't help that the commit showed up in kvm/master late
-yesterday; the first heads up I got that you were applying the patch as-is was
-this pull request.
+diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+index 44b3a1dcc1b3..1bfdbe85023d 100644
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -2615,9 +2615,9 @@ static void vfio_ap_mdev_cfg_remove(unsigned long *ap_remove,
+ 		do_remove |= bitmap_and(aqrem, aq_remove,
+ 					  matrix_mdev->matrix.aqm,
+ 					  AP_DOMAINS);
+-		do_remove |= bitmap_andnot(cdrem, cd_remove,
+-					     matrix_mdev->matrix.adm,
+-					     AP_DOMAINS);
++		do_remove |= bitmap_and(cdrem, cd_remove,
++					matrix_mdev->matrix.adm,
++					AP_DOMAINS);
+ 
+ 		if (do_remove)
+ 			vfio_ap_mdev_hot_unplug_cfg(matrix_mdev, aprem, aqrem,
+-- 
+2.53.0
 
-In other words, it's the lack of communication that's frustrating.  Even a simple
-"Hey, I'm applying this unless someone screams" would have sufficed.
-
-> If you had proposed the above small patch, for example, it would have
-> been a completely different thing. 
-
-Heh, if only past me had realized we could have done that.  I guess the desire to
-prove someone "wrong" on the internet is the mother of all invention? :-D
-
-> I would have taken your suggestion immediately.
-> 
-> Paolo
-> 
-> >
-> > [1] https://lore.kernel.org/all/amPo-XdhFGIZquES@google.com
-> > [2] https://lore.kernel.org/all/CAO9r8zM=Mb=eTEFGF0G-POvwwbSr7e8SN6zcDp=GstzKtBKcow@mail.gmail.com
-> > [3] https://lore.kernel.org/all/CAO9r8zMopB=YKXs5pkQmPf9uHKE0P0XORcNbc60AWXTusuY3tg@mail.gmail.com
-> >
-> 
