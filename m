@@ -1,58 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C963EEAEB;
-	Fri,  7 Aug 2026 10:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20093F88BE;
+	Fri,  7 Aug 2026 10:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786096951; cv=none; b=jmvfXiwixJBlkUlZuU4b7wTEK+GhOsWf8aqZF7aFmoJGau/3JSwiLQRFbhVY+j45OKzs2uXoIkEpGLkzGujXNesyA4kwUzAUhNggZ2eAM52kW2y36bx11hgXZJ1NWiOc4GrP9KQ7/QDco6JvMA+4XUnZuKOANsY3or+GgTtAgGQ=
+	t=1786097570; cv=none; b=F9ecrLhhcT3glagq2WJe9L54+B4DRgnYZ2HSmdvZH+WXDsJ4c9vF1Xk5YKvzig3uzhONyNmLXP9Stp8IGbvzPqPoD991FI3WRzaOBgB5bXRls13pDla+M7znbPwVC5URJnPwy0DptSdA0HxQeC0DGBo2BhNqzffA1jEgwHjgawI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786096951; c=relaxed/simple;
-	bh=DQuIcsshKYo1K1w9Mq8B43Qf2RtyszDN6LdxwNw/ivU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hrggO0paMp9lwwC5pnya3/znV6nqzjzYmoiGQskL8wnwADV5Q27P3X5Jw1DZ82pGU4RZr1HOvQBF7kDU/eAQwL66c4GwycKzE9GLeA4LpZoWmsMGbY1473WZxt1eT9pw6ubx4NPUQ83hFoaaleX15qhlMMmGdNXEcy1kKXI14Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iXCU9EhS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786097570; c=relaxed/simple;
+	bh=RCjEnEVGvnPhNyVz+L0gppAUU0iJNEMsCr6Uit3ezoM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Zx/AEaq7+TS2YtItD9Or4TSO2eLeZbX65CUXF+dGPDGhRDruMxz+dQgeJ9tATDjTld6oYmawzhQopsZZOUxdhleorOAya9aQgiHFLo31tLRavyQYoFIUfqn19jQWOP63fCYs1ZjyX5yzLQd4nukOCqhIbLaoEB2NcJapAZo3ANQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=RxcFF9v8; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iXCU9EhS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B9A1F000E9;
-	Fri,  7 Aug 2026 10:02:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786096950;
-	bh=DQuIcsshKYo1K1w9Mq8B43Qf2RtyszDN6LdxwNw/ivU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=iXCU9EhS/vij6gV78LE8lv8PXVoN+wrvcmC4q/zLk4Cr0msoytyC91A8HLCgj04xY
-	 Y5+LE6wKatcsJyTbp9sEQtNyl/q31DpmiTBbY6xU4Lohq40dGRuK3jyinZkjSJBgt9
-	 m7T/fuUeRuRkvS5e0cyAL6mWcJOujkOTn4578/DOregRe26UmdpH8qryiE/cMyffzg
-	 glzOVe2VR2zFur1pu8d3/H9L5w88u2elA/BymN8RzSnAVcQ9fl4uezLB/WXoc12V23
-	 Q5lTdbwI1VGA20V0lCxYSO6eBxFfs2Xojlfrrfeo4thMcTF+ujvAYucuThNxWggofW
-	 XgjOYmM0HNi6w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 6/6] KVM: s390: vsie: Create constant
- SCB_ALIGNMENT_SHIFT
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
-Cc: kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>
-In-Reply-To: <20260807-vsie-cleanup-202607-v1-6-b18659b55e3d@linux.ibm.com>
-References: <20260807-vsie-cleanup-202607-v1-0-b18659b55e3d@linux.ibm.com>
- <20260807-vsie-cleanup-202607-v1-6-b18659b55e3d@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 07 Aug 2026 10:02:28 +0000
-Message-Id: <20260807100229.A0B9A1F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="RxcFF9v8"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9B8FB1516;
+	Fri,  7 Aug 2026 03:12:37 -0700 (PDT)
+Received: from [10.57.40.157] (unknown [10.57.40.157])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 389683F9A2;
+	Fri,  7 Aug 2026 03:12:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786097561; bh=RCjEnEVGvnPhNyVz+L0gppAUU0iJNEMsCr6Uit3ezoM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RxcFF9v8HQg/UXJUre/Po0mVBjk1Q+BuwXj0dOswBiiMFJKfkVMFZdDGim2VLPy7O
+	 yWZcoh7+WGEY+nwEVOJP8ugA5VfOQPBj/xE8od5N9Qzs5CYocAPEZN+wTd4Smy6xHC
+	 xPZb4plN5N3J556tMiN/owCKTPJWfiLp3i/UUA5U=
+Message-ID: <92b81b5a-933b-4b4f-b889-7f9ec68d53a5@arm.com>
+Date: Fri, 7 Aug 2026 11:12:36 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 24/45] KVM: arm64: Expose support for private memory
+Content-Language: en-GB
+To: Ackerley Tng <ackerleytng@google.com>, Steven Price
+ <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <20260803134403.80630-25-steven.price@arm.com>
+ <CAEvNRgE5O4FcNQDHwh+DWsHH7gLs3qzm+L4ZQ9FHkt=WoTV2Hw@mail.gmail.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <CAEvNRgE5O4FcNQDHwh+DWsHH7gLs3qzm+L4ZQ9FHkt=WoTV2Hw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> Create a simple constant for the SCB alignment shift.
->=20
-> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+On 05/08/2026 17:02, Ackerley Tng wrote:
+> Steven Price <steven.price@arm.com> writes:
+> 
+>> Select KVM_GENERIC_MEMORY_ATTRIBUTES and provide the necessary support
+>> functions.
+>>
+>> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> Changes since v14:
+>>   * Switch to guest_memfd in-place memory conversion and drop support
+>>     for KVM_VM_MEMORY_ATTRIBUTES.
+>>
+>> [...snip...]
+>>
+>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+>> index 15d42d1993bb..146c52f867c0 100644
+>> --- a/arch/arm64/include/asm/kvm_host.h
+>> +++ b/arch/arm64/include/asm/kvm_host.h
+>> @@ -1510,6 +1510,8 @@ struct kvm *kvm_arch_alloc_vm(void);
+>>
+>>   #define vcpu_is_protected(vcpu)		kvm_vm_is_protected((vcpu)->kvm)
+>>
+>> +#define kvm_arch_has_private_mem(kvm) ((kvm)->arch.is_realm)
+>> +
+> 
+> Perhaps related to Fuad's question about pKVM and CCA state: would
+> conditioning this on is_realm mess up pKVM?
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Not really. The comment is about unifiying the conditions which
+both pKVM and Realm selects. Right now, only CCA uses guest_memfd.
+When pkvm comes along to use guest_memfd, this could be something
+like:
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807-vsie-clean=
-up-202607-v1-0-b18659b55e3d@linux.ibm.com?part=3D6
+kvm->arch.needs_private_mem  (set by both pKVM and Realm) ?
+
+Cheers
+Suzuki
+
+
+> 
+>>   int kvm_arm_vcpu_finalize(struct kvm_vcpu *vcpu, int feature);
+>>   bool kvm_arm_vcpu_is_finalized(struct kvm_vcpu *vcpu);
+>>
+>> --
+>> 2.43.0
 
