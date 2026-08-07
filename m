@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CB52D12ED;
-	Fri,  7 Aug 2026 15:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7975A3A3E7A;
+	Fri,  7 Aug 2026 15:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786116203; cv=none; b=NcwD2YOTBRCcr0ZcO9uuqUfKdqujUpmQDRSmUTjqUn1dv7YXl1X3f1xJHWRz08lUXW7ynkX/lYpoAXcvepx5vMQL0LZqjuwTONlRvnSWFCrdQWT8jJVRYXT30Y6ypi5+/b8WdwDWHmP1cFaHTtstylSBPrNZ8Hs6D6qJ2U9+3DE=
+	t=1786116546; cv=none; b=ip06Y/JIbn1XE27kbXdlGy3cx0SildFvtZWE15Mp5FELbAWfXsW3MLXw8AKQbV5kg5AzLNnAmnmduLni8OUGjtJT29Tmi+1DqLuHT0tLyIxXml7HigMgvGPlvhv958Wf9iSrNm0T9zjih7cFd8rSmIgVU+ZXIO5al8soJ/wcZ00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786116203; c=relaxed/simple;
-	bh=iUjRlGxqAfYWQ0lt+0/CnxJ8mHAHS+muqmBKAC00qQQ=;
+	s=arc-20240116; t=1786116546; c=relaxed/simple;
+	bh=vPVZTrknIyM46hH9bR+9qD8b6SFdxFQ1zOpnSjE9/rc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=qiYkMpwYitBfwqI2nmHL7VfIfORC+xSRp4L3u8a7Wlr55t2GDqs2mklwPB5hDEfioEROPYga5ypznkFPSWTVDFFFuajmqeTYHZ5epXJxMO6bOqo8I2xbPTLlKrSUEH6ejJFtxlduZe5oSOxGQJpveRC5mU+DbtVdQYR0up12wis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=la3kYiid; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=sv+N5myoYlU6obuj//BK1aMw91EsfoG1Hg8GYl1489O1tW7aAm7GXQYxrvT8VOLSA0Q+6Th0wughsxpkC5ly964UuM5UIo2zJo59Bszkcf1aMwgsL6GFFi4NeWKc/KowquP0NlCGWIoj3Gbk+j31eIeQe6XQstN4xpIuuHN7EV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jk4oMTSO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="la3kYiid"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5061F000E9;
-	Fri,  7 Aug 2026 15:23:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jk4oMTSO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF92D1F00A3A;
+	Fri,  7 Aug 2026 15:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786116202;
-	bh=+BsYEP45AmJZZjZf+8yWu6DGNmsLYDC9IbdVjgNQeSo=;
+	s=k20260515; t=1786116545;
+	bh=OOlzRbljKnkFu16/MB9PVUB8MCO2lX7/OJp5C/PvegQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=la3kYiidhvmor4PBQTZ12rTWOyoQrZz/Tv/vKqpJrG3qkfVPMekIjqNkP3qs06VlT
-	 v4bHDifRr7MTnD3Ul65KeN4XewmDHIWwKzAKueyQLU9I9wyHikvUjJL96UghRL4Y0Z
-	 mzVZevD51C387vDePgEqS9HZjbdzk0T8t77Z75f54SbWwmEVgx1vhHCEmXUuUh9pjk
-	 +Wj+IEcBaIDXuHBi3vOy/tePKgHBQHopxiuvjPQ/oiAGbDLvYvdaIJy5RbYBzYpf2x
-	 +tcCpoo4uUtWg/qOj4jdkArlRzDevHMG1NszscCGHnZtgms2GgFSHZXSRavAcNOx4z
-	 FFeNWujtN1giw==
+	b=jk4oMTSOG4RSb2iXlPWPRNmCmYLM8asBJvfEEZ5UQRPs7o+YiI0IqIWMz2vLWXco/
+	 y4RcwjV7BBOSQJ1jtzRmnntbPAmE/ByHrRkCk8Y6qoOpFqyj0DJLCLIcD8AySK5lzG
+	 Awe/ApMw/kZhJA6QJoCtev+9GxG5ntmuPo7ZHqzYa4Ztmg+G+wGaLz+kwHSSFiZibB
+	 GQTe9c3oRDSPUpu2rjTR514KBFMGZOeD5uFTtOLhjbL2NaQivw/OYLR98AAnwWPJD/
+	 ZK3z49cwPjLA646vRabX6GDRopbumjJwlEw6pVGBN4OStfb3GoX+Q0FwzVDW7OQml8
+	 bEnMu2MTDZrFw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 27/49] KVM: arm64: gic-v5: Support SPI injection
+Subject: Re: [PATCH v5 28/49] Documentation: KVM: Extend VGICv5 device
+ attribute docs
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
-Cc: kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, "Marc
- Zyngier" <maz@kernel.org>, kvm@vger.kernel.org
-In-Reply-To: <20260807111159.429128-28-sascha.bischoff@arm.com>
+Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+In-Reply-To: <20260807111159.429128-29-sascha.bischoff@arm.com>
 References: <20260807111159.429128-1-sascha.bischoff@arm.com>
- <20260807111159.429128-28-sascha.bischoff@arm.com>
+ <20260807111159.429128-29-sascha.bischoff@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 07 Aug 2026 15:23:21 +0000
-Message-Id: <20260807152322.3E5061F000E9@smtp.kernel.org>
+Date: Fri, 07 Aug 2026 15:29:04 +0000
+Message-Id: <20260807152904.EF92D1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,81 +47,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] Spectre v1 gadget in `vgic_get_irq` for GICv2/GICv3 SPIs due to im=
-proper use of `array_index_nospec`.
+- [Medium] Reusing KVM_DEV_ARM_VGIC_GRP_NR_IRQS with conflicting semantics =
+for VGICv5 creates a UAPI inconsistency that breaks generic VMM initializat=
+ion.
 --
 
---- Patch [27]: [PATCH v5 27/49] KVM: arm64: gic-v5: Support SPI injection =
----
-commit 33e91ef5257fc1901a945d6c3b84eddc64cc9e09
+--- Patch [28]: [PATCH v5 28/49] Documentation: KVM: Extend VGICv5 device a=
+ttribute docs ---
+commit b29b54b5c700b9d3c2f478e0ca8a49cc3cef29a7
 Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
 
-KVM: arm64: gic-v5: Support SPI injection
+Documentation: KVM: Extend VGICv5 device attribute docs
 
-This commit adds support for injecting GICv5 SPIs to the core VGIC code.
-It updates vgic_get_irq() to allow GICv5 SPI lookups by ID and introduces
-specific irq_ops for handling their pending state without AP list queueing.
+This commit updates the VGICv5 documentation to cover PPI, SPI, and LPI
+interrupts. It documents the GICv5 IRS address attribute and its GPA layout,
+as well as a GICv5-specific interpretation of the KVM_DEV_ARM_VGIC_GRP_NR_I=
+RQS
+attribute.
 
-> diff --git a/arch/arm64/kvm/vgic/vgic.c b/arch/arm64/kvm/vgic/vgic.c
-> index 023792c28fc5c..d571fafb07f32 100644
-> --- a/arch/arm64/kvm/vgic/vgic.c
-> +++ b/arch/arm64/kvm/vgic/vgic.c
-
-[ ... ]
-
-> @@ -86,19 +86,31 @@ static struct vgic_irq *vgic_get_lpi(struct kvm *kvm,=
- u32 intid)
->   */
->  struct vgic_irq *vgic_get_irq(struct kvm *kvm, u32 intid)
->  {
-> -	/* Non-private IRQs are not yet implemented for GICv5 */
-> -	if (vgic_is_v5(kvm))
-> -		return NULL;
-> +	enum kvm_device_type type =3D kvm->arch.vgic.vgic_model;
-> =20
->  	/* SPIs */
-> -	if (intid >=3D VGIC_NR_PRIVATE_IRQS &&
-> -	    intid < (kvm->arch.vgic.nr_spis + VGIC_NR_PRIVATE_IRQS)) {
-> -		intid =3D array_index_nospec(intid, kvm->arch.vgic.nr_spis + VGIC_NR_P=
-RIVATE_IRQS);
-> -		return &kvm->arch.vgic.spis[intid - VGIC_NR_PRIVATE_IRQS];
-> +	if (__irq_is_spi(type, intid)) {
-> +		switch (type) {
+> diff --git a/Documentation/virt/kvm/devices/arm-vgic-v5.rst b/Documentati=
+on/virt/kvm/devices/arm-vgic-v5.rst
+> index 70b9162755c7e..c782ea4d4609c 100644
+> --- a/Documentation/virt/kvm/devices/arm-vgic-v5.rst
+> +++ b/Documentation/virt/kvm/devices/arm-vgic-v5.rst
 
 [ ... ]
 
-> +		default: {
-> +			u32 max_intid =3D kvm->arch.vgic.nr_spis + VGIC_NR_PRIVATE_IRQS;
+> +  KVM_DEV_ARM_VGIC_GRP_NR_IRQS
+> +   Attributes:
 > +
-> +			if (intid < max_intid) {
-> +				intid =3D array_index_nospec(intid, max_intid);
-> +				return &kvm->arch.vgic.spis[intid - VGIC_NR_PRIVATE_IRQS];
+> +    A value describing the number of SPIs for this GIC instance. This is
+> +    GICv5-specific: unlike GICv2/v3, the value does not include SGIs or =
+PPIs.
 
-[Severity: High]
-This is a pre-existing issue, but does this array_index_nospec() usage leave
-the kernel open to speculative out-of-bounds reads?
+[Severity: Medium]
+Does reusing the KVM_DEV_ARM_VGIC_GRP_NR_IRQS attribute with conflicting
+semantics for VGICv5 create a UAPI inconsistency that breaks generic VMM
+initialization?
 
-Since array_index_nospec() only bounds the upper limit, if a guest or
-userspace ioctl triggers this path speculatively with an intid less than
-VGIC_NR_PRIVATE_IRQS (e.g., 0 to 31), the value is passed through unchanged.
+VMMs that use shared, generic GIC initialization code will likely pass
+num_spis + 32 (the standard for GICv2/v3) to this attribute. Will this
+cause them to incorrectly provision the number of IRQs for VGICv5, either
+allocating an unintended number of SPIs or failing initialization entirely
+if the value exceeds the GICv5 SPI limit?
 
-When the code then subtracts VGIC_NR_PRIVATE_IRQS, it underflows to a
-negative index, allowing speculative access to the memory immediately
-preceding the spis array. Additionally, if the CPU speculatively bypasses
-the bounds check with a large intid, array_index_nospec() clamps it to 0,
-which again underflows when the subtraction occurs.
+> +    The value ranges from 32 to KVM's VGICv5 maximum of 1024 SPIs, in
+> +    increments of 32. If userspace does not set this attribute, KVM uses=
+ 32
+> +    SPIs by default.
+> +
+> +    kvm_device_attr.addr points to a __u32 value.
 
-Should the array_index_nospec() instead be applied to the computed array
-index after the subtraction?
-
-> +			}
-> +		}}
->  	}
-> =20
->  	/* LPIs */
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807111159.4291=
-28-1-sascha.bischoff@arm.com?part=3D27
+28-1-sascha.bischoff@arm.com?part=3D28
