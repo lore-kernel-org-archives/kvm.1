@@ -1,135 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CE4280331;
-	Fri,  7 Aug 2026 16:20:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B9146D57D
+	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 16:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786119655; cv=none; b=C7OY9NLH4uAJz/1CUlD8iWVztH8W4oGKue7BD2BW9F8dd4/ygN41o26PSUuyvty0OITUHjaRjNHYwj7onxJ/VIt6yP0iAcKbH6d08zeo0OdZV4LoMm2icc3z1oPekPlxYnWE6paKkqG5vQRH56dCPfWZJMbeDRReB0joeZ5mo4M=
+	t=1786119935; cv=none; b=Rm/PSAeflgXjrVyYYtL0DBILAqkDQ3E6i36vCzI94Gwm+zzqv70tVZyQeQHftRhu6rUHWE7o89pVJJkgJCdi0u8sRJk78JYWtykfvTDqWz3nuZnjS9sBhxBbcpa8jzMERX38tc7K0dba2MLuL2usySFYpeb0xvl00BD3PtjUfw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786119655; c=relaxed/simple;
-	bh=5Kq0D1VDgc/aeeEYkKiaKCkpRQ5bwuPl5hs+zY6tL/Q=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=seSxNVYWCbhmuQ/IyNqYEcd3bUxbcDv06kJdjDu4DVSwI12egPv2p8N13vIFRZhg1/LzT9HeVXkirDin5obZae6Mo6nMjsU9iGBwMabqGOJnDKONlJSbArNgj13ZxFrpcAbC7HVUXQu9bFwC8U+GsDNhjwQetmMv5oeBSxrhO6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mtvC5wQZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786119935; c=relaxed/simple;
+	bh=0kwxv1/eDZYrSwhKI2vAj5MLljSsCZ7KMdZ9AU6PmZY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=sjF1hAQ3oocBoHrAynVY0VrHWfGvfAJ8SlKS6++7WyJPZ43FPqZ61NP+OJMP84be4B7wqczyuUIclcZv+NxobpLuwG1OqoSrFr/HdaTUZkgJlRC6eUAM9Yigjewh5UlSFy24eHuYIouSGGWoCV/tHLeTIYWVT0zZ6dikcSn6vis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KJidNzdA; arc=none smtp.client-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mtvC5wQZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AEC71F000E9;
-	Fri,  7 Aug 2026 16:20:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786119653;
-	bh=5pMFsqQTHcQ+Rn9idFvDXGrE+yz2Oj3OwvnHW54vSWY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mtvC5wQZNmYssl/an8V+StmM3QW+waxkxShkolOw+JL2wRTArb96FxvIMq9Mp52zq
-	 HCIkBTZUtLf/YTdHGl01a4mgUu/XSOx3PTl2Xm0BPygPLM7lkfLbOgeiECbEWp8xcs
-	 KVLsUSCw3JrUDhm/N8EXxda0d/Uuilm4k4s+VxbSGtHEI7NsOJcBDovgLR/YSrXscU
-	 24rGES7Gocr3s8caTRP0OeYhTbiRFEputonf8UQAxQ8vcJ5LFRHQKsXIdurixA42Qh
-	 eUpq/M+unGrppO8lptPCUL9sW2OZVyWP0vbnXG8WAIYPesvaHXAHzjHIbix9usZtaJ
-	 Um/F3IbnoVJLw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 32/49] KVM: arm64: gic-v5: Handle userspace accesses
- to IRS MMIO region
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
-Cc: kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev
-In-Reply-To: <20260807111159.429128-33-sascha.bischoff@arm.com>
-References: <20260807111159.429128-1-sascha.bischoff@arm.com>
- <20260807111159.429128-33-sascha.bischoff@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 07 Aug 2026 16:20:52 +0000
-Message-Id: <20260807162053.3AEC71F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KJidNzdA"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cb7049fa552so2482601a12.2
+        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 09:25:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786119933; x=1786724733; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HAxry1jRMnFZ0bYDegpiXJ+P2Rfk5/3SHM4b8b0+eqc=;
+        b=KJidNzdAKzchz3HsomrkzRNj/E74PsGeEqF+q4/m6FXed61q7FjDG9baI2rjQDFBn8
+         KqgxpaeTD7Ka9NuILu5l1xs3R3QBLz9NHfmL5dWvv8aUI/ReR/qUflbHTHBAW8GGglSq
+         tOWPQWANEKCS2xF4Yu7phfzAYYtNCal2jcxHbkGJuLbMt6t1/EO1awUb8ODpLjYz49Hy
+         dSAumPoKl5vC747TRWs2V23ESEP+KBNBbj7xNDakxOAw2anPau5TkihJHEClVtMF6HyD
+         EC7RLVxZjO2rdOqGH65DtTB0tCH56hzTqd0jIk3NJMA5rMNNxhc1llJgxAX3e6gflhEX
+         /H1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786119933; x=1786724733;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HAxry1jRMnFZ0bYDegpiXJ+P2Rfk5/3SHM4b8b0+eqc=;
+        b=EhOvema528HrmAb1o38HkgKzqOuFFReI9b8VE+Q6kzmGaBMsSiKGiPHghlJWitckaA
+         ABAglWBhUajueKKSs+kNt6uHk88NmfbCUIa1Bbjw06SKWABOxTHOX2nN/XfvB0S3tyHk
+         5LCsUhtwZ92AMkP9VYeCunQUIOKKQztZcyHqm/Z9H9RogS1SOW69KVz8aJu+GbsUSH3Z
+         DQCPJgFmjh6PSiXhuZy+4E9bjTB4YvEOmdSWYVy1Wrx3sUc19/JPbvOtTtouFR/iZqhP
+         FqPJoKpxs+Sk3Mmdm8RbHdCX8Ma3Shr4qQcyAsYfdQYndpqt4L0iafEIVyzay5Y9xMvn
+         oCtg==
+X-Forwarded-Encrypted: i=1; AHgh+RqI6tTs2YSV/+nMqLBJDFxFbKXdPIEg+6B9BHdL44lU///vtNRALiwghtfq4URoWK5ZfRY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/zK5WHc/UHF1+tbsSg462yqDJNIdpgsd831KB/SeEuWBJkRnk
+	+52P7xWEiKaJkSkES2rzP7qyYJUrBRw8ybpD/TY8Tto9DkTS6XSMppw51iPDiygSv90CuKbb4cx
+	dWREtVA==
+X-Received: from pjhk3.prod.google.com ([2002:a17:90a:4c83:b0:381:5fcd:c992])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3847:b0:383:f52b:d616
+ with SMTP id 98e67ed59e1d1-3909d89bd69mr8108741a91.10.1786119932919; Fri, 07
+ Aug 2026 09:25:32 -0700 (PDT)
+Date: Fri,  7 Aug 2026 09:25:21 -0700
+In-Reply-To: <20260731173842.2649391-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260731173842.2649391-1-seanjc@google.com>
+X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
+Message-ID: <178611954141.350753.14844441795145580419.b4-ty@google.com>
+Subject: Re: [PATCH v2 0/5] MAINTAINERS: KVM tweaks and additions
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, Ackerley Tng <ackerleytng@google.com>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
+	Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, 
+	Anup Patel <anup@brainfault.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset="utf-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Userspace can inject an inconsistent state by setting IRS_IST_BASE=
-R.valid=3D1 without allocating a host IST, leading to a CONSTRAINED UNPREDI=
-CTABLE hardware state if the guest subsequently clears the valid bit.
+On Fri, 31 Jul 2026 10:38:37 -0700, Sean Christopherson wrote:
+> A few tangentially related KVM MAINTAINERS updates, details in each patch
+> (though the shortlog is probably enough info in most cases).
+> 
+> v2: Collect David's acks, drop RFC tag.
+> 
+> v1 (RFC): https://lore.kernel.org/all/20260428171541.1342335-1-seanjc@google.com
+> 
+> [...]
+
+Applied to kvm-x86 maintainers.
+
+[1/5] MAINTAINERS: Add kvm-x86 tree to KVM x86 entries
+      https://github.com/kvm-x86/linux/commit/4c6547282f08
+[2/5] KVM: guest_memfd: Move gmem function declarations to dedicated guest_memfd.h
+      https://github.com/kvm-x86/linux/commit/f8479adb280a
+[3/5] MAINTAINERS: Add an entry for KVM's guest_memfd
+      https://github.com/kvm-x86/linux/commit/fad1da20e62a
+[4/5] MAINTAINERS: Add David H. as a KVM guest_memfd reviewer
+      https://github.com/kvm-x86/linux/commit/fc176fd65582
+[5/5] MAINTAINERS: Add myself (Sean) as a reviewer in the main KVM entry
+      https://github.com/kvm-x86/linux/commit/82bd660be36f
+
 --
-
---- Patch [32]: [PATCH v5 32/49] KVM: arm64: gic-v5: Handle userspace acces=
-ses to IRS MMIO region ---
-commit 24ee880222eb3e4ff06c9b27b1d655da134efd7a
-Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Date:   Fri Aug 7 11:28:54 2026 +0000
-
-KVM: arm64: gic-v5: Handle userspace accesses to IRS MMIO region
-   =20
-As part of saving and restoring the state of a GICv5-based system,
-userspace must save and restore the IRS MMIO registers. These include
-important information such as the guest IST configuration, and KVM
-must present consistent state to the guest after migration.
-
-> diff --git a/arch/arm64/kvm/vgic/vgic-irs-v5.c b/arch/arm64/kvm/vgic/vgic=
--irs-v5.c
-> index 095046c7959fa..212066b8d7ed5 100644
-> --- a/arch/arm64/kvm/vgic/vgic-irs-v5.c
-> +++ b/arch/arm64/kvm/vgic/vgic-irs-v5.c
-[ ... ]
-> +static int vgic_v5_mmio_uaccess_write_irs(struct kvm_vcpu *vcpu, gpa_t a=
-ddr,
-> +					  unsigned int len, unsigned long val)
-> +{
-> +	struct vgic_dist *vgic =3D &vcpu->kvm->arch.vgic;
-> +	struct vgic_v5_irs *irs_data =3D vgic->vgic_v5_irs_data;
-> +	size_t offset =3D addr & (SZ_64K - 1);
-> =20
-> -		/* The address cannot be changed while the IST is valid. */
-> -		if (irs->ist_baser.valid && valid)
-> -			return;
-> +	/*
-> +	 * The following registers are ONLY settable via uaccesses. The guest
-> +	 * cannot write them!
-> +	 */
-> =20
-> -		/* Valid -> Invalid */
-> -		if (irs->ist_baser.valid && !valid) {
-> -			/* Make the LPI IST invalid and then ... */
-> -			if (irq_set_vcpu_affinity(vgic_v5_vpe_db(vcpu), &cmd))
-> -				break;
-> +	switch (offset) {
-[ ... ]
-> +	case GICV5_IRS_IST_BASER:
-> +		if (irs_data->ist_baser.valid &&
-> +		    !vgic_v5_ist_baser_matches(irs_data, val))
-> +			return -EINVAL;
-> +
-> +		vgic_v5_update_irs_ist_baser(irs_data, val);
-> +		break;
-
-[Severity: High]
-Does this allow userspace to inject an inconsistent state?
-
-If userspace sets the valid bit of GICV5_IRS_IST_BASER to 1 via
-vgic_v5_mmio_uaccess_write_irs() but does not actually allocate a host LPI =
-IST
-(by omitting the KVM_DEV_ARM_VGIC_GRP_IST ioctl), the VM can still be start=
-ed.
-
-When the guest subsequently clears the valid bit, KVM's MMIO handler:
-
-vgic_v5_write_irs_ist_baser() {
-    ...
-    if (irs->ist_baser.valid && !valid) {
-        /* Make the LPI IST invalid and then ... */
-        rc =3D irq_set_vcpu_affinity(vgic_v5_vpe_db(vcpu), &cmd);
-
-detects a Valid -> Invalid transition and issues the LPI_VIST_MAKE_INVALID
-command. This sends an unmap command to the hardware for a VIST that was ne=
-ver
-mapped.
-
-Since this results in CONSTRAINED UNPREDICTABLE hardware behavior, should K=
-VM
-reject uaccess writes that set the valid bit without a backing IST, or perh=
-aps
-verify IST presence before issuing the unmap command?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807111159.4291=
-28-1-sascha.bischoff@arm.com?part=3D32
+https://github.com/kvm-x86/linux/tree/next
