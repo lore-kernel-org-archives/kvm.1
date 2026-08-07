@@ -1,201 +1,143 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C723DCD8D
-	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 05:01:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1956D42C501
+	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 05:32:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786078899; cv=none; b=DaR7HupbqUDuG6heS5i2ETRZ5qnmnimbDe4pYEE8l2G/4FXmrXOVddhnlREld5YtSG+A4Yw77o6PM+g3xLT0SJ2khDfZcYYoUzTzoOStiR9TLKRVTxyBHKQRTb2gNWKF8Sf5hWw3yDvnW4czR03q6FJPFMJ7942O8DUAey2QZ/Q=
+	t=1786080770; cv=none; b=Wiat+wt9XUvQkO2hjzjO8AAeU61BHN7paPyd9FfzbwMbfPs9r8rvJgIxC6rG3Kh+dQ9Y0F7BKT7DdNOWQDXVlZ7E58nfsOciYf1pxVCDk2ptIHxNY1Y3UsTCx9IV2ojSw5H+9dG4Pph+qVawoWlTfz1Ym8NTJwN5AZTehvjimLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786078899; c=relaxed/simple;
-	bh=GwGIzJRmOrXEhGKC2NN6k5R1SdCDi1PH7dohr9HhOV8=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=ZC5hl98YuUvzwmIK322GIz1ieVfbU3Mdo+r3cvXQN58aVhz4oe/2GzHUZ/fmhZj9Oc01O4koTSjNdzQGu8Mh3yOUeVeggavEWwMho8ykg6Vze3AXn/4AhRkeLL6sDoS2owoDZ6KlWYCH6lPh9vWZOYwOpfwkFyEvn8topujW2q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XZMtcwK3; arc=none smtp.client-ip=209.85.214.180
+	s=arc-20240116; t=1786080770; c=relaxed/simple;
+	bh=L5NkcfVIoKsh+ScG5WKFeiID/xyVQuXFBO4Rcyml1a0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AhHK12rLCVBU3D/itOP5Vj3byWj0nr7Hfw1d5RZxT4eT2QixkDvbl9UmaYPwXohlwZV2ojqgm+Nk05nAm6Mr8GUS225nTFqWjLgsCGVtQxu47p/v2mjOlSavfSogaf+38lxwYmPPBjVDD5SSG6eUBOBh7f4+/h7M9esjzObq2vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NLy6/cS/; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XZMtcwK3"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2d0407aedd6so33367255ad.0
-        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 22:01:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NLy6/cS/"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-ca97d139d5fso2415980a12.0
+        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 22:32:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786078885; x=1786683685; darn=vger.kernel.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=gaexW5MzRJUBpA4wcPJkWsT4Yi4ofryncF8L6Hb2nTM=;
-        b=XZMtcwK3fT1rNTNr4b4iwRClgZJFGJLbLsL8IyR4OZOdwMVYm4H2ijX4ZCFeJ6m22b
-         Ucs3C7Fs6zyHS3gmFhCdPZRP9BYeMILMKy/2Xy6ktlIcEX9VZPXzKB2BFj5SuPy5Jyk8
-         ZUjH9RacR3v+hwWEYN/zZaSqvVP645PMSRwZcQppSY59hUPOHM07dVSwpB7kw3yG/zSY
-         XNJ3ZIko2B8U8L0ozCrDgrwlXJcZtQmccxa+qWog1s8idd3uw4XaGhmo+TmcgfwJrVqm
-         Sn9Gb4uxkyvhfvMQndA5k/oKbVeu7l26NpuUrcRNVXf5rwv7FmdVvxu1MnD7MUIRVVG2
-         KFbA==
+        d=gmail.com; s=20251104; t=1786080766; x=1786685566; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PIbnsun6zq+1L1BT2WwwquArLAsjhJR/tgK45GqLXtI=;
+        b=NLy6/cS/638j9Qwko7KWRZzbvgeqHNtP9vWAjR2DHr9+kiZx3gMmgYZTR45kvBw1/U
+         P8DWn4vd/BlFnmW/f9Y0znMyjgBqGRKwFHAIAsNVADh1gZzYjZpi5SwIv9AhIjVktqYL
+         Y9NebkhBAOGOiFyfzaETctADMVBUUXvXo7+3NCSRGM7D4yG4QUTU8t7Azz/pJfBbdlWA
+         y4mdYlCrM04IE5TRHFC1ZlqN8WccKb+bVXOQfCMd0L+uJPWI2JYz6v3Ds+4hnnm8mGuF
+         QbePO+t9+lYlAoUNokq16AJHCuXGXWB/7b6xhdc+AcX1OcneMdKkQ3Us3N1MfXjIG0jp
+         Qvqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786078885; x=1786683685;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gaexW5MzRJUBpA4wcPJkWsT4Yi4ofryncF8L6Hb2nTM=;
-        b=oK7nZCRNltIwCtcDtDHql6I+t1Ev2o1b7sePJN/LcpAba/6H3fl9Ze55wUEJb0ZJwb
-         DpuTwSYDlP9l3XwnAURitKxL04CXcbb5WBqvH2Gys4860jTCCFc/2OpvGLDMB01eJkI2
-         FJ7J/nXp8XBBBEUyEfu00PCD6DdMSfcv+mcD8CKF2QLmiFmJsxA9Y8p4mJJ4jkMPUku/
-         NcjMyjasA80h42TOf3hLpkzJRflbU/mMBrZvSLRxwP3TIUY/eyv5Iikd40tatQkos/L8
-         qDo1poUyOurMpDPQii1jiO28jV/4HE/a3asvpDBG5RoedyC8KdkS2X0kNUx8rxYswK9p
-         ZFig==
-X-Forwarded-Encrypted: i=1; AHgh+RqGviOFQr0shH6nH1wn5rZplwOY58S976TYPCjaaa0DLBb81mpy4M0SYmVEsvdAhgSMqyw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhmVcYzEUgwZNXO462Hu1UGTPu4ebxn2nNPu9vZ+jCb/BBPN74
-	GEm0DMzUK1YmhRHpD0PUNT6TthDJUueChP7gAy49Tsxoz3fK2Vvp5UQt
-X-Gm-Gg: AR+sD112zeZNfbu7afULugLkcFVmZ7ALf4dMEPCwKXzaWwFfdlVQaLfQPLo0Jrs++Ud
-	EFGQ2sjMW94f24PEZbL9v1aSiLR5r7NQnT6jMPHyesbmqKqs3nG8q0iJCnMW9WrzM/h4kAwg8du
-	+jnF82v/yiuir5G/BTAmt3EFJEgFw/uGCEfk5GkxtmryhTOnN9hKaqUvc14gxPdW+/Un+3FBOhs
-	X2vh9YyvWmSjbkrfHvwDKrFZiyQUT2EXLf0TuJzFClMZzPwhvJVWIYkH601zIymfbVuBNKt7YHy
-	NASNMOIOs1Cg/GTLncs7jhL8rxLvwjFThYMp+feOxe+gtMDJ741r/FfTB5r8W6Jv/s3tbdtHprb
-	awR5fpbaJAHg0ngpPCUMy8etVvEquz+jPm/2nufp8a/tUi/qAaxuSyQqqCqXwBsK8NG2+Ackwwd
-	AXGkmm5riHzOx+6KfDZYTeayj41NkVJ4939oX50Ibmo8bMWEJdaPbYMC7N9zA=
-X-Received: by 2002:a05:6a21:7a9c:b0:3bf:983d:e9b4 with SMTP id adf61e73a8af0-3cb8603af0dmr23716971637.33.1786078884954;
-        Thu, 06 Aug 2026 22:01:24 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315bec2ec20sm3026655eec.28.2026.08.06.22.01.19
+        d=1e100.net; s=20251104; t=1786080766; x=1786685566;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PIbnsun6zq+1L1BT2WwwquArLAsjhJR/tgK45GqLXtI=;
+        b=rLvpDEhihCkxSl1arjG9dkue0BQdCN/zWyre4Ry6XO28keMz/DFZ1ni07qPx8G2ZIm
+         EibejP32882xm+fcWKIF9VxXvy7eCWvwg0vdMFIYl8HlvqpFF/2E/3Ms0YcjpreoQaMP
+         s9zawQ4aCawEGrMULvez8DOVl/ac0MZPX2+wgzX/VlnTwPRTAxs8YWXyfb8HuenWbeXB
+         2Y4yuKu7wcqEPdvaTtPdeSruK7G8iqYUD6mE7yLRBwitwfJIqNWOhOt3UncxIXP/s0oO
+         VGFpie+jkXASYdLDjwfO/y3vuMqB8TQVXhKGgzrn5XNi21ScH3R1472UVXmjpO78vRhB
+         /ItQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ronr3o5XYmbnfqCTrUPlEXkgDAiAGHRSM0xejQCx+UtvnsnD2PJZ0v1UjnkNNuHRBfhsQg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCVhWX6/NahUGGSTOsigGjRfZETwSVoCftkRGd73s6H2RZnk6v
+	abtbtPpPIc2A93TRJSv8JEt9WHxMRiqAEJuG8G1D6YH72wW327ryDd1Y
+X-Gm-Gg: AR+sD11qBVAgPdfi9c24nJhCsE7y0Pb08z7jcoOwZJw3VMj4v6a1qpqODXd8LNZjt1c
+	5DxjCO+FnnlUnXxE7xqaEACi8h+vYsR1peTmSeP1YJNw55+8E6zv1XXMapu9Ng1QuH0Ype84vqX
+	rmWnxk2YRVF0Zill4w2K55INDa0kHo9xXYF+SHdK3s/65ja1GL/ThooB43kMif2r58qBflgd2D6
+	vVwlzE4VDErPcWKsDwX0dBrye6ooQBsf8qBfIMYgyJk7bD1j+yMsEQEaGfkeSnlUG7wqILAOOXy
+	oHP2t+HMjQdSjiUbMWkiJV6NNFe9RUqDf8r8eZadqf9H6jTalpEAtXYNPbLW6XIn/BTx/4/K5XJ
+	H2v8D//fRZXGMMZ93EYCncu4AGhWSrN/7R0UWmQSfoqakxfBdiLNjzxXVGpZB/XjToMmjtiq13b
+	zs0xzrMHtxC/4FCJuXKMEfB/1FljT/asF+KUurH92D4hCrv48GcaD6zTCuMFLxraUOBAH3j0A+u
+	GOnUpg=
+X-Received: by 2002:a05:6a20:918a:b0:3bf:d0c8:2aa4 with SMTP id adf61e73a8af0-3cb85df0a10mr21226501637.8.1786080765955;
+        Thu, 06 Aug 2026 22:32:45 -0700 (PDT)
+Received: from cyh-System-Product-Name.. ([129.227.183.200])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbe8f19634dsm108940a12.7.2026.08.06.22.32.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 22:01:24 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, Amit Machhiwal <amachhiw@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>
-Subject: Re: [PATCH v7 3/4] KVM: PPC: Book3S HV: Add support for compat CPU capabilities for KVM on PowerNV
-In-Reply-To: <20260806170645.11892-4-amachhiw@linux.ibm.com>
-Date: Fri, 07 Aug 2026 10:24:18 +0530
-Message-ID: <bjbeledh.ritesh.list@gmail.com>
-References: <20260806170645.11892-1-amachhiw@linux.ibm.com> <20260806170645.11892-4-amachhiw@linux.ibm.com>
+        Thu, 06 Aug 2026 22:32:45 -0700 (PDT)
+From: "Yuhang.chen" <yhchen312@gmail.com>
+To: anup@brainfault.org
+Cc: atish.patra@linux.dev,
+	palmer@dabbelt.com,
+	pjw@kernel.org,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	pbonzini@redhat.com,
+	shuah@kernel.org,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	zhouquan@iscas.ac.cn,
+	"Yuhang.chen" <yhchen312@gmail.com>
+Subject: [PATCH v2 0/2] RISC-V: KVM: Add PMU event filter support
+Date: Fri,  7 Aug 2026 13:32:25 +0800
+Message-Id: <20260807053227.341700-1-yhchen312@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Amit Machhiwal <amachhiw@linux.ibm.com> writes:
+This series adds PMU event filter support to RISC-V KVM, allowing a
+userspace VMM to restrict which SBI PMU events a guest is permitted to
+program.
 
-> Currently, when booting a compatibility-mode KVM guest (L1) on a PowerNV
-> hypervisor (L0), the guest runs with the expected processor
-> compatibility level. However, when booting a nested KVM guest (L2)
-> inside the L1, QEMU derives the CPU model from the raw host PVR and
-> attempts to run the nested guest at that level, instead of honoring the
-> compatibility mode of the L1.
->
-> Extend host CPU compatibility capability reporting to support nested
-> virtualization on PowerNV systems (PAPR nested API v1).
->
-> For nested API v2 (PowerVM), compatibility capabilities are served from
-> the cached nested_capabilities value (populated at module init via
-> kvmhv_nested_init() using the H_GUEST_GET_CAPABILITIES hcall). This
-> information is not available on PowerNV systems.
->
-> For nested API v1, derive the compatibility capabilities from the L1
-> guest by reading the "cpu-version" property from the device tree, which
-> reflects the effective (logical) processor compatibility level. Map this
-> value to the corresponding compatibility capability bitmap using
-> KVM-specific constants.
->
-> The mapping is cumulative: a system running at a given compatibility
-> level is assumed to also support older generations down the supported
-> chain. Note that unlike KVM on PowerVM (nested API v2), KVM on PowerNV
-> currently does not strictly enforce older generation compatibility modes
-> for nested guests - the reported capabilities reflect what the host CPU
-> can present, not what the hypervisor independently validates.
->
-> Introduce a helper kvmppc_map_compat_capabilities() to translate CPU
-> version values into KVM_PPC_COMPAT_CAP bits using a fallthrough switch,
-> and integrate it into kvmppc_get_compat_caps(). The implementation
-> applies masking to ensure only supported processor modes are exposed.
->
-> This allows userspace to query host CPU compatibility modes on both
-> KVM on PowerVM and on PowerNV platforms via the KVM_PPC_GET_COMPAT_CAPS
-> ioctl.
->
-> Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-> Reviewed-by: Gautam Menghani <gautam@linux.ibm.com>
-> Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
-> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> ---
->  arch/powerpc/kvm/book3s_hv.c | 36 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 36 insertions(+)
->
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 152cd08a5b38..4d0307f55e06 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -6523,20 +6523,56 @@ static bool kvmppc_hash_v3_possible(void)
->  	return true;
->  }
->  
-> +static int kvmppc_map_compat_capabilities(u32 cpu_version,
-> +					  unsigned long *capabilities)
-> +{
-> +	switch (cpu_version) {
-> +	case PVR_ARCH_31_P11:
-> +		*capabilities |= KVM_PPC_COMPAT_CAP_POWER11;
-> +		fallthrough;
-> +	case PVR_ARCH_31:
-> +		*capabilities |= KVM_PPC_COMPAT_CAP_POWER10;
-> +		fallthrough;
-> +	case PVR_ARCH_300:
-> +		*capabilities |= KVM_PPC_COMPAT_CAP_POWER9;
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
->  
->  static int kvmppc_get_compat_caps(struct kvm_ppc_compat_caps *host_caps)
->  {
-> +	struct device_node *np;
->  	unsigned long capabilities = 0;
->  	long rc = -EINVAL;
-> +	u32 cpu_version = 0;
->  
->  	if (kvmhv_on_pseries()) {
->  		if (kvmhv_is_nestedv2()) {
->  			WARN_ON_ONCE(!nested_capabilities);
->  			capabilities = nested_capabilities;
->  			rc = 0;
-> +		} else {
-> +			for_each_node_by_type(np, "cpu") {
-> +				if (!of_property_read_u32(np, "cpu-version",
-> +							  &cpu_version)) {
-> +					of_node_put(np);
-> +					break;
-> +				}
-> +			}
+The KVM_SET_PMU_EVENT_FILTER ioctl and KVM_CAP_PMU_EVENT_FILTER already
+exist as generic KVM uAPI (include/uapi/linux/kvm.h); RISC-V KVM does
+not yet implement them.  Wiring them up lets a VMM limit a guest's PMU
+event access, which is useful for sandboxing and for withholding host
+PMU events the host does not intend to expose.
 
-What happens when we don't have "cpu-version" DT property?
-Check this commit
-5a61ef74f269f2 ("powerpc/64s: Support new device tree binding for discovering CPU features")
+Patch 1 implements the kernel side: the uapi struct, the ioctl handler
+with an SRCU-protected filter, enforcement in
+kvm_riscv_vcpu_pmu_ctr_cfg_match() (a disallowed event fails with
+SBI_ERR_NOT_SUPPORTED), and advertisement of KVM_CAP_PMU_EVENT_FILTER.
+Like the other arch-specific KVM uAPI structs, struct
+kvm_pmu_event_filter is defined per-architecture; its layout reflects
+RISC-V PMU events and the ioctl number encodes the struct size.
 
-And also why do we need to parse the DT properties again?
-Shouldn't we check something like this?
+Patch 2 adds a selftest that covers the ALLOW/DENY semantics with the
+event in and out of the list, filter clearing, and ioctl argument
+rejection (EINVAL/E2BIG).
 
-	if (cpu_has_feature(CPU_FTR_P11_PVR))
-		capabilities |= KVM_PPC_COMPAT_CAP_POWER11;
-	if (cpu_has_feature(CPU_FTR_ARCH_31))
-		capabilities |= KVM_PPC_COMPAT_CAP_POWER10;
-	if (cpu_has_feature(CPU_FTR_ARCH_300))
-		capabilities |= KVM_PPC_COMPAT_CAP_POWER9;
-	
+Testing: built and run under QEMU TCG with nested KVM (an L1 KVM host
+running an L2 guest).  The selftest (patch 2) passes and dmesg stays
+clean throughout the run.
 
--ritesh
+Based on v7.2-rc2 (a635d6748234).
 
-> +			if (!cpu_version)
-> +				return -EINVAL;
-> +			rc = kvmppc_map_compat_capabilities(cpu_version,
-> +							    &capabilities);
->  		}
->  	}
->  
-> +	if (rc < 0)
-> +		return rc;
-> +
->  	host_caps->compat_capabilities = capabilities & KVM_PPC_COMPAT_BITMASK;
->  
->  	return rc;
-> -- 
-> 2.50.1 (Apple Git-155)
+Changes in v2:
+- Mask reserved high bits of the SBI PMU event index before comparing
+  against the filter, so a guest cannot bypass a DENY filter by setting
+  bits above bit 19.  Noted by sashiko-bot review.
+- Reject non-zero pad in the ioctl argument to keep the field usable
+  for future extensions.
+
+Assisted-by: YuanSheng:deepseek-v4-pro
+Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
+Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+Signed-off-by: Yuhang.chen <yhchen312@gmail.com>
+
+Yuhang.chen (2):
+  RISC-V: KVM: Add PMU event filter support
+  RISC-V: KVM: selftests: Add PMU event filter test
+
+ arch/riscv/include/asm/kvm_host.h             |   3 +
+ arch/riscv/include/uapi/asm/kvm.h             |  20 ++
+ arch/riscv/kvm/vcpu_pmu.c                     |  31 +++
+ arch/riscv/kvm/vm.c                           |  69 +++++-
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../kvm/riscv/pmu_event_filter_test.c         | 199 ++++++++++++++++++
+ 6 files changed, 322 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/kvm/riscv/pmu_event_filter_test.c
+
+--
+2.34.1
+
