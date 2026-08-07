@@ -1,100 +1,209 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DABF4570C4
-	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 22:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9EF3F825C;
+	Fri,  7 Aug 2026 22:30:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786141693; cv=none; b=Vt/DW8LZT26gZM0tMm19Dh+QTVvIRsj/SA4IH2LLUdmDPkhsGUtmGerimKS7FDHztRATPBNxnatZ2oCiwlfTMJdSYGpb+vHT1AC33mObo6d9gez6k0to34/QvoiCBrz5IvK0X9ebtzjl4OpYMxXSZx/t0b7FpvGGOsVB+o3/WJc=
+	t=1786141832; cv=none; b=eC58BZxlrP2bFzLWmmXYwMIWWXp/r9ICUHcNMDH9WOop9cntF5QOp/0BbuRl9TElihexlu+YUNmwNDlj7ECHkN+hPf+kv9L4GQZ7aqZZC6ldYGZ42CQrqCUDKSP0wl8sdNxDESGFSGFwrV77SFXQVWkT4RBvxN+W9yMq9mpVdZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786141693; c=relaxed/simple;
-	bh=K0zsIsEW8Yn0Vht5R5cH081Ha1e8oN7aKLVhk3oUXX8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BT+6/6tPYWi+kyt5ndAstRZ16VVlABvGHSLWQFVNpQ5PSfL0VcFfSdwf1D1+5ltK07JACaDqFWAKfErTx0eFgorIJjQhSQDzs4P8iTgTW2edVOqBUyZnPDdTY5ji3qbOZSk2tGeRQ9cPFg0qCVmNpvrKeIUXhfE3dJd7dauw0vI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IQzY2xlx; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1786141832; c=relaxed/simple;
+	bh=8LzY2nLxO9Av3Dq/ESzeI3B0HI3GWklQvZ+uEzEsT24=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=jdIg0jXWZePEj8ID0y8fjbcWg0Z0m6GBi2SGeDDSqiC+scVymQ5uZ/LA43Xdb4rjVzWC66FjGPSedcRoEL6w/ojhCrbpDzfW+136I3bnHZHcCitbIanH54KOgaoNNWyV0Zz+2UEPNwhxCohG74+0IpXg7lxFx8pQvosBB5nJiV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HMz0kPsp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IQzY2xlx"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38e08baf860so39690a91.2
-        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 15:28:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786141685; x=1786746485; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8g4CqNNY+lAFMI0SaWVSjLctp/XfPNWJ0tNY272o3EE=;
-        b=IQzY2xlxyXHHuB8xkTjOM2Q4lYdOEsonMYBlIQ6sGnxNghN6boUEL2Sj+9YnfCuXEw
-         BYOiIzjrSRbXqexnfg/5d03iXc+iHFlUCbtVeNNj/VvsQaL9IH7DIcvSUQJVtATmsFM+
-         mPFHNubFatREccdNfiHP/BIhfz2TnctyCClNYIhjETpbH3JTb/2UkyZZJ0Yo76/2WnK4
-         W/9RThR2McVethI9EqxFQkyaCwlHoChj7TpLDbi1aBDJAwwhin8uyMmR4SpPNO+LFzvc
-         4Aci10HL9aRUlpdUfpdzJRjBf3DfKKr6qdoU/ElRRVBlzThMUiIu0XupN2i1IKn4ESwK
-         dL+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786141685; x=1786746485;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8g4CqNNY+lAFMI0SaWVSjLctp/XfPNWJ0tNY272o3EE=;
-        b=YZ8mhlNpgkNp72SUCR2hzOQ8z9mIxdMPRoaZ3WmymsRtfdrs4oSEOGGVgrGlPBOnlb
-         ghw7x6dXm6QCpL+GL3B+DBaY26+cWtr4IhLC2aEB1dQGPpMOY8uAtWtq69/SpMOVW8dX
-         +n5et01mCRCG8O4qTEo5mz9Bj6mpa+OEOU6vvT3P5tXvNItM0wKC1Oi28onID52mwS91
-         Hu7Z2z0cwlVz1db8POAGJX5VrvGh/5R5DuYrUoN8ekn0BOMXxMv4odwaO4dZCE5J/ttX
-         iIOoJsMdakH5RBGvHoxv4CldRvfd3Ah3NdegddVVCyrxo+6tf5l/Qn8MmeJsM1jclWUg
-         8azg==
-X-Forwarded-Encrypted: i=1; AHgh+Rpph0V1oVUGBiY4l/YuJEjhTBDbxqZKVOttTj/Y2+gd8is4NdVZko4BFbRHHjaXZZELsQY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZLJaXfDXdJslZBv6uiZnyf7pRo4Nw2JKl1WmjyLn1nHWLk1Qy
-	0nJiWC5zpyHglQkH08zABR6mdiTX8JR4DRafASFj5qLB095Lu+80zNpyXfTekbJKFA==
-X-Gm-Gg: AR+sD128yGVXU/YHx4+YgYK0UNz3xieSfbA0Zw5OPFEWDxQUJBjc+x7GNYGY0czFC5t
-	9rLouDU5kwLYaPvh5xZeUahzDFmTkscRMpFoqOlz76wNzBcjzrRB4LT+WoXCOGNaT2j0u5Z/V1x
-	cRPw+PRJ/5YOWbTA4JbQn/pEKhHRo3856cJ/L8F6CKIjiN1B+OdhCS616odWgNAGRZRVZH2IGL/
-	/wLQSmk20w6FRwL+G0sxSD1iK6Sa9BYdlwJ9VEYjoelEaTbESJSiLzXg7AuglmlOju7asNj0KXg
-	GvAY48Xo2pjRH+PPsFZ1h72xPn1alG1ucgEEL6G29LBJtZAg8BC1HqoOVPSZaaT1s3Zl9+flyDk
-	QseeH8e6GPitIn7Iaj9BSCTRG6F4AncEcL+mZ8V8oL7Y9daZ5e+/lJTtXBVKQ7ErJ0f/nEU/au0
-	1sG5EBnsaD3SuJclvThAhZ5lETTgBeuC7ELGnLpkzWlySAstdEEAYcwF6x7IutyGqDwTFblVRbX
-	wyc4NF5KIBOW5fuRBduqRSHs6g7Pw==
-X-Received: by 2002:a17:90b:274d:b0:38e:fea2:df53 with SMTP id 98e67ed59e1d1-3903c534d46mr29628863a91.4.1786141684888;
-        Fri, 07 Aug 2026 15:28:04 -0700 (PDT)
-Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39085f2c714sm6201387a91.10.2026.08.07.15.28.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 15:28:04 -0700 (PDT)
-Date: Fri, 7 Aug 2026 22:27:56 +0000
-From: David Matlack <dmatlack@google.com>
-To: Alex Williamson <alex@shazbot.org>
-Cc: Josh Hilke <jrhilke@google.com>, Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, Vipin Sharma <vipinsh@google.com>,
-	Alex Williamson <alex.williamson@nvidia.com>
-Subject: Re: [PATCH v10 0/3] vfio: selftests: Add driver for Intel Ethernet
- Gigabit Controller (IGB)
-Message-ID: <anZb7DlyLSMgp6sK@google.com>
-References: <20260805-igb_v3_b4-v10-0-9c86dc849c0d@google.com>
- <20260805094621.665d5ec0@shazbot.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HMz0kPsp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D808E1F000E9;
+	Fri,  7 Aug 2026 22:30:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786141831;
+	bh=fI5LPt1pkQWDLThfErbKyuYmyWE0Nme2jmN0Slj6puM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=HMz0kPsp/CeSqlVZWzR+HB9VEvwDiLm60GlmXNv6ywfGC1+v4957qqkd32inh+btd
+	 NBkZyaEVlgBnWIYMbCPK57wSrTSAYz1ROit3EIOjUTGgHzAOHpPZHNbzZTbly9GsaP
+	 /MvTMrz7Oz3hNOzEzbxcjY3/ZZ4RFOK/UevkizfVZfsd0mKnNSEVI08V9TeMGXA7G+
+	 bmkGFcKrmVMB17gF3viiZa8jAQCayePdfVwkT3EHeE56VAqNOlEcLH+/hvHN+B0e5/
+	 zWWuC5U6LenqSSWFqD8gitS2CHax83BL4dYVx9qRBANeFAv3UZMRJSnf0tfrFl3OeK
+	 973vfTzFp29RA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v7 10/15] s390/vfio-ap: File ops called to resume the
+ vfio device migration
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Vasily
+ Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>
+In-Reply-To: <20260807221834.562851-11-akrowiak@linux.ibm.com>
+References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
+ <20260807221834.562851-11-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 07 Aug 2026 22:30:30 +0000
+Message-Id: <20260807223030.D808E1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260805094621.665d5ec0@shazbot.org>
 
-On 2026-08-05 09:46 AM, Alex Williamson wrote:
-> On Wed, 05 Aug 2026 00:20:57 +0000
-> Josh Hilke <jrhilke@google.com> wrote:
-> 
-> > This v10 of a series which adds a VFIO selftest driver for the Intel
-> > Gigabit Ethernet controller (IGB), specifically targeting the 82576
-> > device. IGB is fully virtualized in QEMU, making it suitable for running
-> > VFIO selftests without specialized hardware.
-> 
-> LGTM, passes on physical NIC.  Thanks for the re-spins.
-> 
-> David, do you want to double check and provide an Ack?  Thanks,
-> 
-> Alex
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
+- [Critical] Heap buffer overflow in vfio_ap_resuming_write when processing=
+ the initial chunk of migration data.
+- [High] Memory leak of the dynamically allocated temporary ap_config buffe=
+r in vfio_ap_resuming_write on copy_from_user failure.
+- [High] Use-After-Free condition in set_new_ap_configuration due to a TOCT=
+OU race when the migration session is concurrently replaced.
+- [Medium] Missing validation of migration magic and version fields when th=
+e entire configuration payload is submitted in a single write.
+--
 
-Acked-by: David Matlack <dmatlack@google.com>
+--- Patch [10]: [PATCH v7 10/15] s390/vfio-ap: File ops called to resume th=
+e vfio device migration ---
+commit 1f7d34b59709567819d8ff6eb6bf255fe0360e1b
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+Subject: s390/vfio-ap: File ops called to resume the vfio device migration
+
+This commit implements the write callback for the file stream created to
+restore the vfio-ap device state during the RESUMING phase of migration.
+It parses chunks of user data into a vfio_ap_config structure and sets
+up the new device configuration.
+
+> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
+o/vfio_ap_migration.c
+> index e2e7ae8515e55..4dd7373c3d9d9 100644
+> --- a/drivers/s390/crypto/vfio_ap_migration.c
+> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+[ ... ]
+> @@ -451,11 +539,916 @@ static struct file *vfio_ap_open_file_stream(struc=
+t ap_matrix_mdev *matrix_mdev,
+>  	return filp;
+>  }
+> =20
+> +static int validate_resuming_write_parms(struct file *filp,
+> +					 size_t len, loff_t *pos)
+> +{
+[ ... ]
+> +	/*
+> +	 * If the vfio_ap_config object has been allocated, then the 'config_sz'
+> +	 * field indicates the total size allocated. If the write operation
+> +	 * will exceed the allocation, return an I/O error.
+> +	 */
+> +	if (resuming_mig_file.ap_config) {
+> +		if (resuming_mig_file.ap_config->magic !=3D VFIO_AP_MIG_MAGIC ||
+> +		    resuming_mig_file.ap_config->version !=3D VFIO_AP_MIG_VERSION)
+> +			return -EINVAL;
+> +
+> +		if (*pos + len > resuming_mig_file.config_sz)
+> +			return -EIO;
+> +	}
+> +
+> +	return 0;
+> +}
+
+[Severity: Medium]
+Does this miss validating the magic and version fields if userspace writes
+the entire configuration in a single chunk? The validation here is skipped
+if the configuration buffer is not yet allocated. If all data arrives at
+once, it appears to be allocated and processed in do_post_copy_processing()
+without the magic or version ever being verified against the expected
+values.
+
+[ ... ]
+> +static int set_new_ap_configuration(struct ap_matrix_mdev *matrix_mdev,
+> +				    struct vfio_ap_config *ap_config,
+> +				    size_t cfg_sz)
+> +{
+> +	struct vfio_ap_config *cur_ap_config;
+> +
+> +	mutex_lock(&matrix_dev->mdevs_lock);
+> +	/*
+> +	 * Re-read mig_data under the lock; the device could have been closed
+> +	 * concurrently while the lock was dropped for copy_from_user().
+> +	 */
+> +	if (!matrix_mdev->mig_data) {
+> +		mutex_unlock(&matrix_dev->mdevs_lock);
+> +		return -ENODEV;
+> +	}
+> +
+> +	cur_ap_config =3D matrix_mdev->mig_data->resuming_mig_file.ap_config;
+> +	if (cur_ap_config)
+> +		memcpy(cur_ap_config, ap_config, cfg_sz);
+> +	else
+> +		matrix_mdev->mig_data->resuming_mig_file.ap_config =3D ap_config;
+
+[Severity: High]
+Can a concurrent state change cause a use-after-free here? The mdevs_lock is
+dropped prior to the copy_from_user() call in vfio_ap_resuming_write(). If
+the migration state is cleared during that window, the original ap_config
+pointer would be freed and cur_ap_config will be NULL upon reacquiring the
+lock. This path then assigns the temporary ap_config to resuming_mig_file.
+However, if the write was a continuation (!new_allocation), the temporary
+ap_config is unconditionally freed at the end of vfio_ap_resuming_write(),
+which would leave a dangling pointer in the active migration session.
+
+[ ... ]
+> +static ssize_t vfio_ap_resuming_write(struct file *filp, const char __us=
+er *buf,
+> +				      size_t len, loff_t *pos)
+> +{
+[ ... ]
+> +	/*
+> +	 * If ap_config is a new allocation, then the contents of the
+> +	 * 'magic', 'version' and 'num_queues' fields will already have
+> +	 * been copied in; so the write_pos must be set to the location
+> +	 * following the 'num_queues' field and the length to be written must be
+> +	 * adjusted accordingly.
+> +	 */
+> +	if (new_allocation) {
+> +		size_t nbytes_already_copied =3D VFIO_AP_CONFIG_BUF_SIZE - *pos;
+> +
+> +		write_pos =3D VFIO_AP_CONFIG_BUF_SIZE;
+> +		write_len =3D len - nbytes_already_copied;
+> +		buf +=3D nbytes_already_copied;
+> +	} else {
+> +		write_pos =3D *pos;
+> +		write_len =3D len;
+> +	}
+> +
+> +	*pos +=3D len;
+> +
+> +	mutex_unlock(&matrix_dev->mdevs_lock);
+> +
+> +	if (copy_from_user((char *)ap_config + write_pos, buf, write_len)) {
+
+[Severity: Critical]
+Is there a missing bounds check on the user-supplied len parameter here?
+When allocating a new ap_config, the driver calculates cfg_sz based on the
+num_queues field. However, the calculation for write_len uses the unmodified
+user input len, which is not verified against cfg_sz. If a userspace process
+provides a len that exceeds the dynamically calculated cfg_sz, it seems this
+copy_from_user() will write past the allocated heap buffer bounds.
+
+[Severity: High]
+Does this leak the dynamically allocated temporary ap_config buffer when a
+continuation write fails? During a continuation write (!new_allocation),
+the ap_config buffer is freshly allocated via kvzalloc(). If the subsequent
+copy_from_user() fails, this error path explicitly skips the kvfree()
+because new_allocation is false, leaving the temporary buffer permanently
+leaked.
+
+> +		if (new_allocation)
+> +			kvfree(ap_config);
+> +		ret =3D -EFAULT;
+> +		goto out_clear_write_in_progress;
+> +	}
+> +
+> +	/* Check if we've completed writing the entire configuration */
+> +	if (write_pos + write_len =3D=3D cfg_sz) {
+> +		ret =3D do_post_copy_processing(matrix_mdev, ap_config);
+> +
+> +		if (ret) {
+> +			kvfree(ap_config);
+> +			goto out_clear_write_in_progress;
+> +		}
+> +	}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807221834.5628=
+51-1-akrowiak@linux.ibm.com?part=3D10
