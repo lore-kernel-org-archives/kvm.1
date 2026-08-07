@@ -1,117 +1,211 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED31371868;
-	Fri,  7 Aug 2026 12:06:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8603A7F48;
+	Fri,  7 Aug 2026 12:08:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786104378; cv=none; b=bRVaQT2suisdEXyNKCcpnewG8WPcXo5MaalR+vHH+4wNTBL0wTfjsYovd7KaOYIU98/GkG/zB319AtF02adpi39lCIk1rCeXk9/+zMY84xx/3bxgxEjKxHiMOSXW3STKP3NAkZ3YNQJhtBwGyj2LuKekr/1sxT4UQ8XnU/lGo3A=
+	t=1786104515; cv=none; b=p4Cn2hmHGOubZBhXSfqjRbp45akPCShrxN9RE1J4YRDgvNM8Bf+DmxeSgl380v0Z9ygY/0xQG9PmivcVCRT9tV/m1vFy7lbe8+wed7CGkVfj4Q7Dhapu0JhCd4JTjmc1cwMTIvjMR+qLqQ0VRlVKu+U38IcxHPWm7fxB9+0iDuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786104378; c=relaxed/simple;
-	bh=g4goh5Q6QWcbTQWdn+P1k27xYNcN6Cpp3HaCvqN4YN8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=fN4vth/B49eY55qVmTMRUthNztP2z5iABZqGmwqT0zs7za4OZ3yZYdYmy7o5IWbVG2fpA4slOt7AGrY+FrogwJe/ZOrcby6iSAHQx+I1W6DClZpDyiswXo12ylSPYjSoksaMFv3aElkErgngsI1JfbqPB8rEGZ9muGIIH+7S7YA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MjcyWOJg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786104515; c=relaxed/simple;
+	bh=HSpm/ilFlKL9C7zSnRA7Fv6mPmAahK0SYIkU4uTFUQI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dTtgWhvjB1ZSzoCC77wHeWMvBujXKLUcPVQSoil0/+/fxklHesFSuzp9OG84dKjgzo80QtKYRTNQIekUmIS0coc30QsWLJTT65cjxmnCeE+5JQ/JeBigIaepMYDyvpcjXpjRqnghmQSylTP0534mPMxgPyuJVNKyrW6Rn4c9JII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=e2KVrDgm; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MjcyWOJg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F7A1F000E9;
-	Fri,  7 Aug 2026 12:05:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786104359;
-	bh=epzoVBQ/mGS3kgP2IGJ/2OITvPlU1mX9ibU1p5Eu3QQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MjcyWOJgjDQhEgC0L+1Pa2+CzqRjrCacCOJnqzrew7inQikrZrDdmy6l/FYoPHjli
-	 VP/isQ7wrYgd6KTpMejHzDKRnhWqubXKKtC3i9uo2FeKC4Gzq5ltH7a3J2TEs5KOZV
-	 E22i6ubmWXVrq4dsgESAoFetYjtA17LgRoDbR1IK+pQ3FoqmcscTfGk0T5bIVIv/KX
-	 NlQ15IJ+od0/a6mBuWdpPyg+XP3e1rVO86kuH78zT3pN6H5ZeXnb7Aa7/xopcfYO9K
-	 qgHWn9pNpPZ4QvtyF542YNs9j5J1B0S17mI6YRvUNMUAZqJdx4mdn6zU58YNI3EzJG
-	 2U30hQN7x7W/Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 04/49] KVM: arm64: gic-v5: Define remaining IRS MMIO
- registers
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
-Cc: "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org
-In-Reply-To: <20260807111159.429128-5-sascha.bischoff@arm.com>
-References: <20260807111159.429128-1-sascha.bischoff@arm.com>
- <20260807111159.429128-5-sascha.bischoff@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 07 Aug 2026 12:05:58 +0000
-Message-Id: <20260807120559.38F7A1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="e2KVrDgm"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6770I3pK4135292;
+	Fri, 7 Aug 2026 12:07:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=BfZRbE
+	TEo3DVte5hEdWjaM9qnh99mmSlCn36/NdyqnE=; b=e2KVrDgmyXUj3ITOJZZVoc
+	tkCcCfJsPng8Iksgk3JXSEKilFeIH9+BL8rcFHETI65BBLAFfoznMb3QIDiLLuGW
+	Ow74hTlp+izJpHd8XohBTbuw84+8eebYAsx374GWegeah7SAWGfr3ViyAE6+OGQD
+	gMUG600PPl2Iv2JOGzBGIOA/zmUP5ZFY4sY7wIaX1wUAkhy39sKNChv6cw1TklbX
+	v5F37/ZEkTkr3qGaVbU8wuYS6CQgOcvyrJhzsFT6PhqvLkw3no9w/uHcWMNL0Yue
+	mteztkhQipmwKiKgZ1QUsU5aF7SoESII/mBYz/HSFvta1dLbvSBQY65vReh6RJVA
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fvy043rb1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Aug 2026 12:07:49 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 677BuJDq029357;
+	Fri, 7 Aug 2026 12:07:48 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsv4kfknk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Aug 2026 12:07:48 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 677C7icQ52494812
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 7 Aug 2026 12:07:44 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 737552004D;
+	Fri,  7 Aug 2026 12:07:44 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 210FD20043;
+	Fri,  7 Aug 2026 12:07:41 +0000 (GMT)
+Received: from fedora (unknown [9.5.7.39])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri,  7 Aug 2026 12:07:40 +0000 (GMT)
+Date: Fri, 7 Aug 2026 17:37:47 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Ritesh Harjani <ritesh.list@gmail.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        Gautam Menghani <gautam@linux.ibm.com>
+Subject: Re: [PATCH v7 3/4] KVM: PPC: Book3S HV: Add support for compat CPU
+ capabilities for KVM on PowerNV
+Message-ID: <20260807170704.3280f54c-e2-amachhiw@linux.ibm.com>
+Mail-Followup-To: Ritesh Harjani <ritesh.list@gmail.com>, 
+	linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Vaibhav Jain <vaibhav@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Gautam Menghani <gautam@linux.ibm.com>
+References: <20260806170645.11892-1-amachhiw@linux.ibm.com>
+ <20260806170645.11892-4-amachhiw@linux.ibm.com>
+ <bjbeledh.ritesh.list@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bjbeledh.ritesh.list@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA3MDA5MSBTYWx0ZWRfX5TzLKCqXDqZu
+ b6BiRef/oECz9G4XMeWgvA3fRyFHPyA4v0D6/QI66iMXht8JO4WINYvKcNOhEt85PpoV8J2a4Ey
+ Ep62KKeD9up0soUyfqq97/Agaf+ofRa9IAov4qPkmW8kgpr6EEtPAH5c6kcuAh74iZzDDOJmfiw
+ C11ETLzDAv+8v9CtmCVrYaKj/QlvcE4W8bduXqN9iShbOpd4pClixHWB4PA12rRgbuCLdAIu8D9
+ 4Z8wFDrEWPiLRjfOvIESpnxmdR40/39S/fjIXGWrDvVVIiwiWcl4SMnOXHNjJOMEdRM/nDnA/+K
+ Z/pWhxnM6K6B+XOC8jgpDsop0AFKnexR9tZOtzY/6HJk7vOVEdTKdNFhMjNo8mRDoNfSJiFRtCU
+ y3vQhfWTQjN91c/lpMkAm8VJltSo3Wwc5TxsVSNZvL4f0/Rzr+cgdRkj4srds+m25/GP6hJLDY6
+ pymDQfkM1f/vH/29dhQ==
+X-Proofpoint-ORIG-GUID: ERwgD-8BR_5ciBrCIKEi1d0ZZbgjqrpg
+X-Proofpoint-GUID: CGhTxUgT4QzOkim8g4v8w8QZtS1Ros_H
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA3MDA5MSBTYWx0ZWRfX5fEiy5kiu5dz
+ /9UUwCHcAhK6LahuHI127uI9T+aO2PrM3naXuobCTQWLYO3zlX3oofWQNlmvzDD1esHQHSrWOFw
+ flOx3ORG5JleaUuuz9TdTzA5Mb/G1WA=
+X-Authority-Analysis: v=2.4 cv=WLpPmHsR c=1 sm=1 tr=0 ts=6a75ca96 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=H9A0j7aUrpR-r5edhhgA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-07_01,2026-08-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0 clxscore=1015
+ impostorscore=0 priorityscore=1501 phishscore=0 suspectscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608070091
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] `GICV5_IRS_SETLPIR` is incorrectly defined with an offset of `0x00=
-00`, which aliases the read-only `GICV5_IRS_IDR0` register.
---
+On 2026/08/07 10:24 AM, Ritesh Harjani wrote:
+> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
 
---- Patch [4]: [PATCH v5 04/49] KVM: arm64: gic-v5: Define remaining IRS MM=
-IO registers ---
-commit 4e5353692b267764abed96c8124c3aebc194d9cf
-Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
+<snip>
 
-KVM: arm64: gic-v5: Define remaining IRS MMIO registers
+> >  
+> >  static int kvmppc_get_compat_caps(struct kvm_ppc_compat_caps *host_caps)
+> >  {
+> > +	struct device_node *np;
+> >  	unsigned long capabilities = 0;
+> >  	long rc = -EINVAL;
+> > +	u32 cpu_version = 0;
+> >  
+> >  	if (kvmhv_on_pseries()) {
+> >  		if (kvmhv_is_nestedv2()) {
+> >  			WARN_ON_ONCE(!nested_capabilities);
+> >  			capabilities = nested_capabilities;
+> >  			rc = 0;
+> > +		} else {
+> > +			for_each_node_by_type(np, "cpu") {
+> > +				if (!of_property_read_u32(np, "cpu-version",
+> > +							  &cpu_version)) {
+> > +					of_node_put(np);
+> > +					break;
+> > +				}
+> > +			}
+> 
+> What happens when we don't have "cpu-version" DT property?
+> Check this commit
+> 5a61ef74f269f2 ("powerpc/64s: Support new device tree binding for discovering CPU features")
+> 
+> And also why do we need to parse the DT properties again?
+> Shouldn't we check something like this?
+> 
+> 	if (cpu_has_feature(CPU_FTR_P11_PVR))
+> 		capabilities |= KVM_PPC_COMPAT_CAP_POWER11;
+> 	if (cpu_has_feature(CPU_FTR_ARCH_31))
+> 		capabilities |= KVM_PPC_COMPAT_CAP_POWER10;
+> 	if (cpu_has_feature(CPU_FTR_ARCH_300))
+> 		capabilities |= KVM_PPC_COMPAT_CAP_POWER9;
+> 	
 
-Complete the set of defined IRS MMIO registers in the GICv5 header file.
-Up until now, the set of defined IRS MMIO registers has been driven by
-code requirements. However, in order to properly emulate the IRS MMIO
-interface in KVM, the full set of IRS MMIO registers needs to be added.
+Thanks for the suggestion, Ritesh! After closer analysis, cpu_has_feature()
+would give the same result on pseries, but I believe that using 'cpu-version'
+directly is both more correct and more explicit for this context.
 
-> diff --git a/include/linux/irqchip/arm-gic-v5.h b/include/linux/irqchip/a=
-rm-gic-v5.h
-> index 681c5c51207d6..83cfcd056b250 100644
-> --- a/include/linux/irqchip/arm-gic-v5.h
-> +++ b/include/linux/irqchip/arm-gic-v5.h
-> @@ -62,20 +62,34 @@
+Here's why:
 
-[ ... ]
+1. 'ibm,powerpc-cpu-features' / dt-cpu-ftrs is baremetal (powernv/OPAL) only.
+   SLOF firmware used by pseries guests never provides that node. On pseries,
+   dt_cpu_ftrs_in_use() is always false, and CPU feature bits including
+   CPU_FTR_ARCH_300, CPU_FTR_ARCH_31, CPU_FTR_P11_PVR are set by identify_cpu()
+   from the cpu-version DT property at prom.c:423:
 
->  /*
->   * IRS registers and tables structures
->   */
->  #define GICV5_IRS_IDR0			0x0000
->  #define GICV5_IRS_IDR1			0x0004
->  #define GICV5_IRS_IDR2			0x0008
+     if (!dt_cpu_ftrs_in_use()) {
+         prop = of_get_flat_dt_prop(node, "cpu-version", NULL);
+         if (prop && (be32_to_cpup(prop) & 0xff000000) == 0x0f000000) {
+             identify_cpu(0, be32_to_cpup(prop));
 
-[ ... ]
+   So cpu_has_feature() on pseries is just an indirect readback of what
+   identify_cpu() already derived from 'cpu-version' — the source of truth is
+   still cpu-version.
 
-> @@ -166,15 +255,111 @@
+2. Commit e4de1b9cb3b5 ("powerpc/dt_cpu_ftrs: Set CPU_FTR_P11_PVR for Power11
+   and later processors") explicitly documents this split:
 
-[ ... ]
+     "This issue does not affect pseries guests, where SLOF firmware
+      does not provide this node, causing the kernel to fall back to
+      the traditional cputable path (identify_cpu) which correctly
+      sets CPU_FTR_P11_PVR during PVR-based CPU identification."
 
->  #define GICV5_ISTL1E_VALID		BIT_ULL(0)
-> +#define GICV5_IRS_ISTL1E_SIZE		8UL
-> =20
->  #define GICV5_ISTL1E_L2_ADDR_MASK	GENMASK_ULL(55, 12)
-> =20
-> +#define GICV5_IRS_SETLPIR		0x0000
+   That fix was needed on powernv only — and our code is in the
+   kvmhv_on_pseries() branch, so the dt-cpu-ftrs path is never taken.
 
-[Severity: High]
-Is GICV5_IRS_SETLPIR defined with the correct offset here?
+3. 'cpu-version' is the PAPR-defined compat level indicator — it is what PHYP
+   and QEMU explicitly set to communicate the negotiated compat mode. Reading it
+   directly is semantically correct: we are reporting the compat level the
+   hypervisor advertised, not a kernel-internal feature bit derived from it.
 
-This aliases the read-only GICV5_IRS_IDR0 register defined earlier at 0x000=
-0.
+I also responded to a similar concern from Sashiko covering points 1 and 3 here:
 
-If KVM implements the IRS MMIO emulator expecting guest writes to the SETLP=
-IR
-register at offset 0x0000, will guests attempting to use the correct
-architectural offset for SETLPIR fail?
+  https://lore.kernel.org/all/20260806214117.8a2ca150-97-amachhiw@linux.ibm.com/
 
-Could writes to 0x0000 also interfere with IDR0 emulation, potentially
-breaking LPI generation via the IRS in virtual machines?
+So I'd prefer to keep the direct cpu-version lookup.
 
-> +#define GICV5_IRS_SETLPIR_ID		GENMASK(23, 0)
-> +
->  /*
->   * ITS registers and tables structures
->   */
+Thanks,
+Amit
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807111159.4291=
-28-1-sascha.bischoff@arm.com?part=3D4
