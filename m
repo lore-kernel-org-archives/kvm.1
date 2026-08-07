@@ -1,145 +1,159 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695492F1FDF;
-	Fri,  7 Aug 2026 14:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B4B31AAAA;
+	Fri,  7 Aug 2026 14:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786112233; cv=none; b=Y9DpMI0yPqk+Kh1hrohCmi4zjpp5tU+Nt4h46xyGmHdPgVgoU9fz93kMRE9QxXIbkytcY5n4r7zK88oC65XwQIJqGinIa6R/A16CjF/ZPnuSzx/oj4S5SmP0qL0Sv8cupkeF6LmF1aUAUVEX6DXemAFxWmkjSsh2EzY/nDdd9js=
+	t=1786112882; cv=none; b=WUt90KFBaU8NHXtepdFGGhe7R6vTMaMrwyATfRbRo7MqUCVxYMHn/YRcouXhqL4t9314E3IUnAENYKgeFD4u9PBGomVQ5DZoMVLupXQj5iiOShzVGS4WoIMaXj2BFE3RVDJoLVBrpWBBuEXCKdgw/rANRo8OrpJVsB02yIRZ9dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786112233; c=relaxed/simple;
-	bh=XDeRwMr/Z+mnZAZl+VL6JCojG8uOz3rB5iaNkL+R28M=;
+	s=arc-20240116; t=1786112882; c=relaxed/simple;
+	bh=Y/E06mQWHNqej8p5Xhll6yfCTgTEXBDIYKIoaX0qAek=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=H+iDfY7nL7kFGLlkMCrchDCmu1jVj2gw50H4xQUlBNkyLvvm+zZZLOwwVCwFtoJf5P3g5mA6Kj4gqn3dL0FynuDpWzJR7VjwJd18D4xIVEhmNh5PKSHw3KDxoAroHQkz68DEyJvTO6CJ8eEenaZlFCacV1Arbs1q8PfRFAp5ClA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fz+n4Nol; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=N1ZWyV9lrkgL3gwHqOa6pRt3DdUnpQE9rvgJeQqeqHfgvfVxlUVYBXnpqOz7OLAbkCjkw7aV0vAnsMax7pLn760hHGdhFbzyoa3GSuK39uOaYs1aff9u+S3u6OeIyRgiR2Lrx1+h1YjzF/taXomrDOa0TRYHHxTbaa7kRNA9njk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VwuIEP66; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fz+n4Nol"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4925A1F000E9;
-	Fri,  7 Aug 2026 14:17:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VwuIEP66"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784E41F00A3A;
+	Fri,  7 Aug 2026 14:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786112229;
-	bh=NkCVI9sbm0zg72yQOQ9pIeFu6F31jlko3bKb8CUSgII=;
+	s=k20260515; t=1786112877;
+	bh=Wo4musqEJ3jQvmDVDlxL6FaZ9AEmGBGEH1cTXeUicoc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Fz+n4NollQ0lYROaEx3dWLKokG7aJddz7Fx74tMAv4RioluAYgxMkZdiCC0MdUmtC
-	 tDF5eY/WvZFUpeczYdcbDNPA01izeaNW9pHmpn8gkNzU4nlVhCDfDdVZaQPlCmZkQ6
-	 9a3OuN+PO8xeBDBayCU54IMyhvjxrcneU/0sNOlIE1JP57RT0Q6AB2iq1iY57WpfgK
-	 wxSk58zLm5Uf2CMS9j58qgY1WcB73UxIZ44WDzH1kjbtQKqxgxMSUFYBXIYrC5YfLu
-	 5ywZY/DK9DdJhDUmDiP75tjmvFuXmfOm11aXZX3yow1c0hJjCxKkbqSGuwM2rIdb6t
-	 K9TVa25IV8i7A==
+	b=VwuIEP66/1hx35wyRtNxiWwnKlpiG5Kq9prPhHsCTQlCBvxjNPHFL40z4BNU1X3sP
+	 Dwmn+UhWFucWbzkD4ZwkebFhb/wCd2sB/vVGijKQHXp9Xe2+B6ucH8lLr4v+WJDQza
+	 mjSf0qbO4xsBewDlzrIe35X2tTSWUC5dkXfNGe2v8vwnzOX9DH01jHLBHybLOSpjJU
+	 2H2YGT118HDMmVIqFcWPyxoq4YQTef+EsZ1A2WN/uHQpangB9Z1kCFSCBqI6y1Z8CE
+	 fhoLAiSmQn2alQQuCZRLbPNjm5A3fzmfpQUVLlOAUJsVBfdkZY2/En9HLBaM5NYB/N
+	 JFO5rDf1bsBdg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 16/49] KVM: arm64: gic-v5: Request doorbells when
- VPEs enter WFI
+Subject: Re: [PATCH v5 19/49] KVM: arm64: gic-v5: Add
+ KVM_VGIC_V5_ADDR_TYPE_IRS to UAPI
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
-Cc: kvm@vger.kernel.org, "Marc Zyngier" <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev
-In-Reply-To: <20260807111159.429128-17-sascha.bischoff@arm.com>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, "Marc
+ Zyngier" <maz@kernel.org>
+In-Reply-To: <20260807111159.429128-20-sascha.bischoff@arm.com>
 References: <20260807111159.429128-1-sascha.bischoff@arm.com>
- <20260807111159.429128-17-sascha.bischoff@arm.com>
+ <20260807111159.429128-20-sascha.bischoff@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 07 Aug 2026 14:17:08 +0000
-Message-Id: <20260807141709.4925A1F000E9@smtp.kernel.org>
+Date: Fri, 07 Aug 2026 14:27:57 +0000
+Message-Id: <20260807142757.784E41F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] ABBA deadlock between `rq_lock` and `desc->lock` in `vgic_v5_put` =
-via `irq_set_affinity`.
-- [High] Stale `db_fired` state causes infinite VMEXIT loops upon subsequen=
-t WFIs.
-- [High] Guest-reachable WARN_ON due to host-side `irq_set_affinity` failur=
-es.
+- [High] The patch defines the UAPI constant KVM_VGIC_V5_ADDR_TYPE_IRS for =
+userspace to specify the IRS location, but provides no corresponding kernel=
+ implementation to handle it.
+- [Low] The newly added UAPI macro KVM_VGIC_V5_IRS_SIZE uses the kernel-int=
+ernal macro SZ_64K, which is not exported to userspace and will cause compi=
+lation errors.
 --
 
---- Patch [16]: [PATCH v5 16/49] KVM: arm64: gic-v5: Request doorbells when=
- VPEs enter WFI ---
-commit c40948b426a64dc48dae28e60304e7f29600ab3c
+--- Patch [19]: [PATCH v5 19/49] KVM: arm64: gic-v5: Add KVM_VGIC_V5_ADDR_T=
+YPE_IRS to UAPI ---
+commit 2deebb3b97ce3e2f88f0cdf0452104edbd0a7ea6
 Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
 
-KVM: arm64: gic-v5: Request doorbells when VPEs enter WFI
+KVM: arm64: gic-v5: Add KVM_VGIC_V5_ADDR_TYPE_IRS to UAPI
 
-When a GICv5 VPE is made non-resident as part of the vcpu entering
-WFI, request a VPE doorbell so that KVM can be notified when a
-suitable SPI or LPI becomes pending for that VPE.
+This patch adds the UAPI definitions for the GICv5 IRS address type and siz=
+e=20
+to the arm64 KVM headers. It reserves 2x64kB in the GPA space for the IRS=20
+CONFIG_FRAME and SETLPI_FRAME.
 
-> diff --git a/arch/arm64/kvm/hyp/vgic-v5-sr.c b/arch/arm64/kvm/hyp/vgic-v5=
--sr.c
-> --- a/arch/arm64/kvm/hyp/vgic-v5-sr.c
-> +++ b/arch/arm64/kvm/hyp/vgic-v5-sr.c
-> @@ -22,6 +22,15 @@ void __vgic_v5_make_resident(struct vgic_v5_cpu_if *cp=
-u_if)
+> diff --git a/arch/arm64/include/uapi/asm/kvm.h b/arch/arm64/include/uapi/=
+asm/kvm.h
+> index 1c13bfa2d38aa..d1b2ca317f586 100644
+> --- a/arch/arm64/include/uapi/asm/kvm.h
+> +++ b/arch/arm64/include/uapi/asm/kvm.h
+[ ... ]
+> @@ -97,6 +97,11 @@ struct kvm_regs {
+>  #define KVM_VGIC_V3_REDIST_SIZE		(2 * SZ_64K)
+>  #define KVM_VGIC_V3_ITS_SIZE		(2 * SZ_64K)
 > =20
->  void __vgic_v5_make_non_resident(struct vgic_v5_cpu_if *cpu_if)
->  {
-> +	/*
-> +	 * Clear the db_fired state to ensure that we're ready for the next
-> +	 * doorbell when it is requested. If a doorbell firing caused us to
-> +	 * enter the guest, then we've already consumed that state at this
-> +	 * point, so this is safe to clear. Use WRITE_ONCE() to ensure we're not
-> +	 * racing with the doorbell firing and setting the state true again.
-> +	 */
-> +	WRITE_ONCE(cpu_if->gicv5_vpe.db_fired, false);
+> +/* Supported VGICv5 address types  */
+> +#define KVM_VGIC_V5_ADDR_TYPE_IRS	6
+> +
 
 [Severity: High]
-Will this state management regression leave the db_fired state stale for
-back-to-back WFIs?
+Does this patch provide the kernel implementation to handle
+KVM_VGIC_V5_ADDR_TYPE_IRS?
 
-Since __vgic_v5_make_non_resident() is called from vgic_v5_put(), which is
-invoked upon host preemption or user exit (but not standard guest re-entry
-after kvm_vcpu_block), db_fired appears to remain true when the guest resum=
-es.
+If userspace attempts to use this UAPI definition with the
+KVM_DEV_ARM_VGIC_GRP_ADDR attribute group, vgic_v5_set_attr() explicitly
+returns -ENXIO for that group:
 
-If the guest executes WFI again, kvm_vcpu_check_block() checks
-kvm_vgic_vcpu_pending_irq() in arch/arm64/kvm/vgic/vgic.c and observes
-db_fired is still true, which causes it to instantly abort blocking. This
-could result in the guest continuously spinning in VMEXITs.
+arch/arm64/kvm/vgic/vgic-kvm-device.c:vgic_v5_set_attr() {
+	switch (attr->group) {
+	case KVM_DEV_ARM_VGIC_GRP_ADDR:
+	case KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS:
+	case KVM_DEV_ARM_VGIC_GRP_NR_IRQS:
+		return -ENXIO;
+...
+}
 
-> diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
-> --- a/arch/arm64/kvm/vgic/vgic-v5.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v5.c
+Similarly, kvm_vgic_addr() lacks a case for KVM_VGIC_V5_ADDR_TYPE_IRS and
+would reject it with -ENODEV:
+
+arch/arm64/kvm/vgic/vgic-kvm-device.c:kvm_vgic_addr() {
+...
+	default:
+		r =3D -ENODEV;
+	}
+...
+}
+
+Without handling in the kernel, userspace cannot configure the base address
+of the GICv5 IRS, which renders the GICv5 IRS emulation feature unusable.
+
+> +#define KVM_VGIC_V5_IRS_SIZE		(2 * SZ_64K)
+> +
+
+[Severity: Low]
+Does this newly added UAPI definition rely on the kernel-internal macro
+SZ_64K?
+
+Since <linux/sizes.h> is not exported to userspace, userspace programs
+attempting to use KVM_VGIC_V5_IRS_SIZE will fail to compile with an
+undeclared identifier error for SZ_64K.
+
+While this pattern already exists in the file for GICv3 sizes, introducing a
+new instance perpetuates the UAPI breakage.
+
+>  #define KVM_ARM_VCPU_POWER_OFF		0 /* CPU is started in OFF state */
+>  #define KVM_ARM_VCPU_EL1_32BIT		1 /* CPU running a 32bit VM */
+>  #define KVM_ARM_VCPU_PSCI_0_2		2 /* CPU uses PSCI v0.2 */
+> diff --git a/tools/arch/arm64/include/uapi/asm/kvm.h b/tools/arch/arm64/i=
+nclude/uapi/asm/kvm.h
+> index 1c13bfa2d38aa..d1b2ca317f586 100644
+> --- a/tools/arch/arm64/include/uapi/asm/kvm.h
+> +++ b/tools/arch/arm64/include/uapi/asm/kvm.h
 [ ... ]
-> @@ -1099,6 +1099,46 @@ void vgic_v5_put(struct kvm_vcpu *vcpu)
-[ ... ]
-> +			/*
-> +			 * Make the doorbell affine to this CPU, if it isn't
-> +			 * already. Actively check the cpumask first as it is
-> +			 * cheaper than changing the affinity every time.
-> +			 */
-> +			if (!cpumask_test_cpu(cpu, aff))
-> +				WARN_ON(irq_set_affinity(db_irq, cpumask_of(cpu)));
+> @@ -97,6 +97,11 @@ struct kvm_regs {
+>  #define KVM_VGIC_V3_REDIST_SIZE		(2 * SZ_64K)
+>  #define KVM_VGIC_V3_ITS_SIZE		(2 * SZ_64K)
+> =20
+> +/* Supported VGICv5 address types  */
+> +#define KVM_VGIC_V5_ADDR_TYPE_IRS	6
+> +
+> +#define KVM_VGIC_V5_IRS_SIZE		(2 * SZ_64K)
+> +
 
-[Severity: High]
-Does this introduce an ABBA deadlock regression between rq_lock and desc->l=
-ock?
+[Severity: Low]
+Are the same SZ_64K and missing implementation issues applicable to this
+mirrored tools UAPI header?
 
-When a guest vCPU thread is preempted or enters WFI, the host scheduler's
-__schedule() holds the runqueue lock (rq_lock) while calling
-prepare_task_switch(). This triggers the sched_out preempt notifier, taking
-us through kvm_sched_out() -> kvm_arch_vcpu_put() -> kvm_vgic_put() and
-finally to vgic_v5_put().
-
-Inside vgic_v5_put(), irq_set_affinity() acquires the hardware interrupt
-descriptor lock (desc->lock). Taking desc->lock while already holding
-rq_lock violates the locking hierarchy where desc->lock must be acquired
-before rq_lock.
-
-[Severity: High]
-Can a guest trigger this WARN_ON regression to cause a host denial of servi=
-ce?
-
-Calls to irq_set_affinity() can legitimately fail and return negative error
-codes due to hardware constraints (such as ITS socket-crossing limitations)
-or resource exhaustion.
-
-Since the guest controls when it executes WFI, it can reliably trigger this
-WARN_ON if the host scheduler places it on a restricted CPU. If panic_on_wa=
-rn
-is enabled, this allows the guest to crash the host.
+>  #define KVM_ARM_VCPU_POWER_OFF		0 /* CPU is started in OFF state */
+>  #define KVM_ARM_VCPU_EL1_32BIT		1 /* CPU running a 32bit VM */
+>  #define KVM_ARM_VCPU_PSCI_0_2		2 /* CPU uses PSCI v0.2 */
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807111159.4291=
-28-1-sascha.bischoff@arm.com?part=3D16
+28-1-sascha.bischoff@arm.com?part=3D19
