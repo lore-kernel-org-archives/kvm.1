@@ -1,116 +1,97 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1784C6D
-	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 00:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A041F91E3;
+	Fri,  7 Aug 2026 01:06:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786062725; cv=none; b=pfz87dpfWHYJT7hGvES75Ex5lJmQ1og9PNU3u0SATeiL+9jzKC7N8yzodktXINc6i4YKeUc8AFmAS060R2WdhZHV2oTvpsO1YJHxeTVbUOodvdwV4/DSazccdsYwQfSOOhTlwU9Kgmbj0vAtls/gbPJsfyaObTPI9vmSQVPenPw=
+	t=1786064808; cv=none; b=MqyE7rHvQfla1ksnV6LAYAXzrwUzaC41OCLusi+diyM4GcdTiRUI6p15tYBSAYAmk2YWmGa/FGFUwHMQgnHraay7HczzgTijfMqjVvMvuFBMunBZSqLDuS9qnC5SgMzFQIz6ldR40SyukUt9A3akO47qauB7ht+jgAycdCxjLOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786062725; c=relaxed/simple;
-	bh=OaqD/7GFD/C7GLTIlUmRBirSEoL5NPBI1RXJquudk6k=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GKdIWMup+RIXGye1ny9ZIoD/2vn2yJxs0TtJdT6AoGD8+K6iRIOycn3MX9l3r2p/o4sKFGRo6poo64BUUs9ZoL9CLkhSKsrAcgfBzTi0Z4rouHcRh6Tn4QeXsD+c6a02w+Ua5LqLomr0quK11zFGbzzm76L0tVovJm8Y/aXyyDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TXrWw8x2; arc=none smtp.client-ip=209.85.210.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786064808; c=relaxed/simple;
+	bh=/i3dinCqnhGMOZMpOE4EZNiNA2siHqMenCoTAPc1bZg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rnivwiufJbvopzio+GAH6qhWBSpX67rK9QNtgWT66JVCbYAhzL36wF0NNddueAkL5h83KZpIEL5X3eFfmXBmyWPahcexSytbN17yv6fIi3dWB96WO9wv9Vcr48/9bPyreZomOLDK4w2T8EWBVxMtLlIcJMtaDRqHY4oH2GdwckU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KV3DYxnl; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TXrWw8x2"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-84eee2147ffso3529885b3a.0
-        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 17:32:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786062723; x=1786667523; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=FQ61FKO513ZDkdjmEmRdv5VstyB6n09n16DTaCoYCSQ=;
-        b=TXrWw8x2BdoNbqtHJWDUQakF6GSt3bUzP1d1nSjCz9fJRQqPyys7OBCOE2b53s2+0x
-         +pQ7kxH6GnMUogrclrT0TlETqcSrmInWddqlwI7TRRbezGvqHgMSzFFWlMEYS2MkOpln
-         vwv2fWvJowrn9FeQQBjAtUxBP1bcKfUYAJa5EUg/G02qfK/Jk8+ob6KCAFwxMgDfxehe
-         BjmiKoSCg17ctm+jwk84Z3jSjIxu3rQlOlAvKMgGOUJUqHRHREj85YBcbGJbVjzYgaXZ
-         1hoqB3uCD9JwfCoC33PiRMWD1NWCEZPNo82uEIIPDEaGw2LVg5lYhb97E50jd2avWiaP
-         Tt5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786062723; x=1786667523;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FQ61FKO513ZDkdjmEmRdv5VstyB6n09n16DTaCoYCSQ=;
-        b=bmjBl8D+xG8KJPqOtv9YRh5uKhAiQ0gdhtTtnmlBe0BfKucao76oGE65zw55oEchsG
-         eqQf/2thD72J0s9dmYU5WFR3YEFT39nmJKbYb9bY/NC324vFDtkOQHUmTZh2ZC7O40Gz
-         YVRG5p9qhB8zcs3s4kFdp6VcAZxIsRKRpEOlu4uzNy+YLOvb3S9vuoR4OQZ/qKICbWbn
-         VQn9hozdhn5RRqJERXEkGrqDvQJMlnKmDXqQQjiPxBjBGMbBd7X53Y+ngOZxWAbRfURd
-         +daZ4uMmOuzjBS0wuVrPYPL8w+b1dSOFxeyyKdCDJ8Z+f14vAaIacYknygxgozuMe/eR
-         O+oQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpuXirwheXEtYHmsz5IIfnq0M+91Y47cS6KIrK6uu1nFI/JvYVMf1KG7omNSRPQdDnHGSY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/rCSdy8t9vdKe/ia364ehS8WwkLBCRa0vJfiWq0ZC4/vKzBJ6
-	pKFVjUYFkSnG2rffkyd8HkyuouvgNC4ITlELLjZzEtsyl3752SwHNJHGsAsl0hS+DCkhiFfBPsO
-	eioXRbg==
-X-Received: from pghu18.prod.google.com ([2002:a63:ef12:0:b0:c98:2639:852c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d1f:b0:848:6b43:35dc
- with SMTP id d2e1a72fcca58-84f2e13b57dmr18018952b3a.35.1786062722908; Thu, 06
- Aug 2026 17:32:02 -0700 (PDT)
-Date: Thu, 6 Aug 2026 17:32:02 -0700
-In-Reply-To: <5ab71720460d268e3336e521209c796ca04b0012.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KV3DYxnl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786064806; x=1817600806;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=/i3dinCqnhGMOZMpOE4EZNiNA2siHqMenCoTAPc1bZg=;
+  b=KV3DYxnloc3pS2jKwW9OallvtmsV5rC8bngTwlkG39R0pP7vREwlJXer
+   YShNdgqxhq8eIdu5aT4qE6W7xLPIs1xkQOPI0UShH9OgEoxpMmgUaq21/
+   h8lMCFEMUi+2jZapE/tIOKAc2y6ii4wqCBbcdp1Qf95w4VvCjFIEJzn1d
+   mDhN0JNoKgT075FZgqTX4qQv5I47pJV0NYzXIf/AtKkVNOtxxFbXh8bco
+   47/8/uzy43teqJOPy20rMn9MIJ8Q3TNPs1IoZLgreX5JGYJCfyDdJX9+O
+   oV2GLNEPMwHx52fJwMJ6ZngYnfI3Olr4YTcLEnISJYlroe0r41WjTKOxz
+   Q==;
+X-CSE-ConnectionGUID: yJdSIxjwQeSjN4fBC+ZBzw==
+X-CSE-MsgGUID: eTsskDhtRx+zeExPVB2Vog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="112221112"
+X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
+   d="scan'208";a="112221112"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 18:06:45 -0700
+X-CSE-ConnectionGUID: MXklpJPMRZSPEnWdCK28rA==
+X-CSE-MsgGUID: KeBa1isNSuinRgxmkMd/ew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
+   d="scan'208";a="259649425"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.248]) ([10.124.240.248])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 18:06:18 -0700
+Message-ID: <caedad66-8a7b-4182-9fbb-d4abe1f1696f@intel.com>
+Date: Fri, 7 Aug 2026 09:06:08 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260805031257.1844914-1-xiaoyao.li@intel.com>
- <20260805031257.1844914-2-xiaoyao.li@intel.com> <82482276-0140-4d90-a983-fdfc5bc2e4a5@suse.com>
- <anSRCBhWi2BK9kYB@google.com> <5ab71720460d268e3336e521209c796ca04b0012.camel@intel.com>
-Message-ID: <anUngktlwsNI6oUM@google.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/2] KVM: TDX: Enable Notify VM exit
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "nik.borisov@suse.com" <nik.borisov@suse.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
-	"x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	"hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "tglx@kernel.org" <tglx@kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, Chang Seok Bae <chang.seok.bae@intel.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Nikolay Borisov <nik.borisov@suse.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260805031257.1844914-1-xiaoyao.li@intel.com>
+ <20260805031257.1844914-2-xiaoyao.li@intel.com>
+ <82482276-0140-4d90-a983-fdfc5bc2e4a5@suse.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <82482276-0140-4d90-a983-fdfc5bc2e4a5@suse.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 07, 2026, Rick P Edgecombe wrote:
-> On Thu, 2026-08-06 at 06:50 -0700, Sean Christopherson wrote:
-> > > It should be instruction timeout (as is in the SDM). Please reword th=
-e
-> > > changelog to refer to the name of the features as they are in the SDM=
-. I.e
-> > > if you search for NOTIFY_VMEXIT or NOTIFY_WINDOW absolutely nothing c=
-an be
-> > > found in the SDM.=C2=A0 The changelog should ideally mention both - S=
-DM's
-> > > nomenclature and linux's nomenclature.
-> >=20
-> > No, let's change Linux's nomenclature before merging this, "Notify" was=
- always
-> > vague and confusing.=C2=A0 It's unfortunate that we let that bleed into=
- uAPI
-> > headers, but we can simply #define aliases (or just force userspace to =
-update
-> > as well, if they use kernel headers directly).
->=20
-> Hmm, ok. We were trying to go with a minimal backport friendly fix.
->=20
-> Xiaoyao, if we are going to carve it up, I guess we might as well do the
-> consolidation of the exit handlers too on this version. (a cleanup patch =
-that
-> got left off of this).
+On 8/6/2026 9:33 PM, Nikolay Borisov wrote:
+>> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+>> index 545b03d9d10b..cdc0d24657ac 100644
+>> --- a/arch/x86/kvm/vmx/tdx.c
+>> +++ b/arch/x86/kvm/vmx/tdx.c
+>> @@ -2129,6 +2129,9 @@ int tdx_handle_exit(struct kvm_vcpu *vcpu, 
+>> fastpath_t fastpath)
+>>            * - If it's not an MSMI, no need to do anything here.
+>>            */
+>>           return 1;
+>> +    case EXIT_REASON_NOTIFY:
+>> +        /* NMI blocking state is handled by TDX module */
+>> +        return __handle_notify(vcpu, false);
+> 
+> I'd rather there be a private handle_tdx_notify function in tdx.c than 
+> exposing __handle_notify and introducing the boolean. This is needed 
+> because the TDX module handles the NMI unblocking, so let's keep the 
+> implementation specific to tdx.
 
-Oh, I missed that this was tagged for stable@.  Do the mass rename on top. =
- To
-address Nikolay's concerns, I think a brief blurb at the end calling out th=
-at
-KVM currently uses old terminology would suffice.  E.g.
+The initial version just implemented a separate handler for TDX. It had 
+the exact same code as VMX's handle_notify() except the "NMI blocking 
+handling". So to eliminate the code duplication, I changed to current code.
 
-  Note, KVM uses "pre-production" terminology for the feature formally call=
-ed
-  Notify VM-Exit.  All public versions of the SDM refer to the feature as
-  Instruction Timeout.  This will be remedied in the near future, for now,
-  use KVM's terminology for consistency.
+Sean, please let me if you have a preference. Otherwise, I'll follow 
+Nikolay's preference in a v2.
