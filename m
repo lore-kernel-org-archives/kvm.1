@@ -1,33 +1,60 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20093F88BE;
-	Fri,  7 Aug 2026 10:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7052C41B8EE;
+	Fri,  7 Aug 2026 10:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786097570; cv=none; b=F9ecrLhhcT3glagq2WJe9L54+B4DRgnYZ2HSmdvZH+WXDsJ4c9vF1Xk5YKvzig3uzhONyNmLXP9Stp8IGbvzPqPoD991FI3WRzaOBgB5bXRls13pDla+M7znbPwVC5URJnPwy0DptSdA0HxQeC0DGBo2BhNqzffA1jEgwHjgawI=
+	t=1786098739; cv=none; b=ipQ8D/Cw4MXg40PZa4nj5o4cQ6yuwFI7iZPSABN6Mmy575RusgJTiv9Y1VQ4WMM1Ki/nb51XM8U+Mucczy3Eu8dmvI85idcPd+7ySsBzHodeiV7R2/9juyOQm3JwEpo7TexggxIx6m5OkqkcGgfy2n1tTMoZnmw6gv79qI3oSKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786097570; c=relaxed/simple;
-	bh=RCjEnEVGvnPhNyVz+L0gppAUU0iJNEMsCr6Uit3ezoM=;
+	s=arc-20240116; t=1786098739; c=relaxed/simple;
+	bh=6jPwr4BcnNhEnQlWRJRK6CugI8jK/fk7B++z30GJZuM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zx/AEaq7+TS2YtItD9Or4TSO2eLeZbX65CUXF+dGPDGhRDruMxz+dQgeJ9tATDjTld6oYmawzhQopsZZOUxdhleorOAya9aQgiHFLo31tLRavyQYoFIUfqn19jQWOP63fCYs1ZjyX5yzLQd4nukOCqhIbLaoEB2NcJapAZo3ANQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=RxcFF9v8; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 In-Reply-To:Content-Type; b=bKtxSZcs2pxpG/SxjvNWv8PrBc+SvgEkhUeIs6/1zghBxb3304U+grQGndRgVb4SXmZQ5t7ia1y8oPJfyNWUWKgzPNGtMZ/9MxOUquA7CZ8uxlP79ILsx2QRRugXG1nuq3/AGGvfD88Pbp0NxYnOnrNs/Vj9bf0zG411Oae8I2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sUnIig+F; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="RxcFF9v8"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9B8FB1516;
-	Fri,  7 Aug 2026 03:12:37 -0700 (PDT)
-Received: from [10.57.40.157] (unknown [10.57.40.157])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 389683F9A2;
-	Fri,  7 Aug 2026 03:12:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786097561; bh=RCjEnEVGvnPhNyVz+L0gppAUU0iJNEMsCr6Uit3ezoM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RxcFF9v8HQg/UXJUre/Po0mVBjk1Q+BuwXj0dOswBiiMFJKfkVMFZdDGim2VLPy7O
-	 yWZcoh7+WGEY+nwEVOJP8ugA5VfOQPBj/xE8od5N9Qzs5CYocAPEZN+wTd4Smy6xHC
-	 xPZb4plN5N3J556tMiN/owCKTPJWfiLp3i/UUA5U=
-Message-ID: <92b81b5a-933b-4b4f-b889-7f9ec68d53a5@arm.com>
-Date: Fri, 7 Aug 2026 11:12:36 +0100
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sUnIig+F"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6770HZNL2275998;
+	Fri, 7 Aug 2026 10:32:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ftf8cS
+	ADQIx349O2Eywy9Byz1UFWjQ2N8M9b0/7iU0M=; b=sUnIig+FzG/GxUVoriPO2B
+	dLx+mi2XtexwaWBZboFQQ13uPH5E1xG6s3BU4WTwKtxxFOQGcgAK4aIWzN7C71ZE
+	eUU3xJKIePwmATgVIGy7gdxT+CY/AE1nU8whRi75IwDSQRcT4xNLtg8lpvYvgcDY
+	3MbhcsaOwPU+LWhSpdQrXokaRhQ2kaKcAOS7kpzkJZb2L2Us//hrfmK8llAIBqEx
+	HPAiMT5zAGLaqbo3NZ3ssqaSovCHBi1FKQHsskZAe2QYvjAzIRbV3n/BtIKaGNOO
+	kzoXhYhPkX2NECpvwzRkvakcq2ufxkCZroVrqGppO2d7Sn2RvDQUbQpozZ6koHyA
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fvy01kdyd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Aug 2026 10:32:16 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 677AQQrK016682;
+	Fri, 7 Aug 2026 10:32:15 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qydrd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Aug 2026 10:32:15 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 677AWBgY40173954
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 7 Aug 2026 10:32:11 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7FD642004B;
+	Fri,  7 Aug 2026 10:32:11 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2956520040;
+	Fri,  7 Aug 2026 10:32:11 +0000 (GMT)
+Received: from [9.224.77.173] (unknown [9.224.77.173])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  7 Aug 2026 10:32:11 +0000 (GMT)
+Message-ID: <eea54688-da7f-420d-9b88-04384519572d@linux.ibm.com>
+Date: Fri, 7 Aug 2026 12:32:10 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,75 +62,77 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 24/45] KVM: arm64: Expose support for private memory
-Content-Language: en-GB
-To: Ackerley Tng <ackerleytng@google.com>, Steven Price
- <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20260803134403.80630-1-steven.price@arm.com>
- <20260803134403.80630-25-steven.price@arm.com>
- <CAEvNRgE5O4FcNQDHwh+DWsHH7gLs3qzm+L4ZQ9FHkt=WoTV2Hw@mail.gmail.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <CAEvNRgE5O4FcNQDHwh+DWsHH7gLs3qzm+L4ZQ9FHkt=WoTV2Hw@mail.gmail.com>
+Subject: Re: [PATCH 2/6] KVM: s390: vsie: Remove duplicate assertion
+To: Christoph Schlameuss <schlameuss@linux.ibm.com>, kvm@vger.kernel.org
+Cc: Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org
+References: <20260807-vsie-cleanup-202607-v1-0-b18659b55e3d@linux.ibm.com>
+ <20260807-vsie-cleanup-202607-v1-2-b18659b55e3d@linux.ibm.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20260807-vsie-cleanup-202607-v1-2-b18659b55e3d@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: JDoQ15JVwpgiPWFrgSdkQDo6kVTcJKl8
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA3MDA3OCBTYWx0ZWRfX8TjH3ili/1KQ
+ zkOptYGQcd1YJYCdYjkuYy35F1LLFHhFIhXw3HLRChCsrAn57J8AWBhoB38fpkYYMAKFlRvLGOk
+ M9+f6XuvzbR+lJM+cpX9yZL9PBaBKrM=
+X-Proofpoint-ORIG-GUID: JDoQ15JVwpgiPWFrgSdkQDo6kVTcJKl8
+X-Authority-Analysis: v=2.4 cv=afNRWxot c=1 sm=1 tr=0 ts=6a75b430 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
+ a=P3lmscs1VvsUGeS8l7IA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA3MDA3OCBTYWx0ZWRfX+6T45E7bocPA
+ hKPyuMkZnAD8KnIDDLa4tHJ7s+GfHzGKUbDfVontglvmgVCZyo+Nboo4uT5uXdsEfT8xuqx5fbY
+ KJyU3z67GUg6S1y2jGBeFSgoJYiQE62vS8s2Murlr7D8RO2XIWFuw6YsYeo4cQzsiaYRoIJIix4
+ F+q02PeufSxgGVVCMIg1KLONw0ODj3EoEyiSIWw8dkrpmELxZbznpEkTysdT/Fqqrs0K43T4SJJ
+ OAEd5MXuihyq+K2FK8/KLIlIXQkmhokZnxksptcf0J2b2SFtdgnMY2KhLvjcVvnLlmd1dFA0rwt
+ TNwYjp5dzKX6GDsc6XFC3x++cuNnmOnLCRGYrpiCVH3v03/uZC38EfU+n7G9kCatSH8YK9D4YIm
+ /vnft7OLO0JwLA0ML+sCo4RrFZ2yddbuXcMwlfQFW0Ert03utdDg38R2gYGCL8josjuf2Q7v7OI
+ sNRtFDikAZqIC4cdP+w==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-07_01,2026-08-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 phishscore=0 impostorscore=0 adultscore=0
+ suspectscore=0 bulkscore=0 clxscore=1015 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608070078
 
-On 05/08/2026 17:02, Ackerley Tng wrote:
-> Steven Price <steven.price@arm.com> writes:
+Am 07.08.26 um 11:57 schrieb Christoph Schlameuss:
+> This is covered by a static_assert at the struct vsie_page definition.
 > 
->> Select KVM_GENERIC_MEMORY_ATTRIBUTES and provide the necessary support
->> functions.
->>
->> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> Changes since v14:
->>   * Switch to guest_memfd in-place memory conversion and drop support
->>     for KVM_VM_MEMORY_ATTRIBUTES.
->>
->> [...snip...]
->>
->> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
->> index 15d42d1993bb..146c52f867c0 100644
->> --- a/arch/arm64/include/asm/kvm_host.h
->> +++ b/arch/arm64/include/asm/kvm_host.h
->> @@ -1510,6 +1510,8 @@ struct kvm *kvm_arch_alloc_vm(void);
->>
->>   #define vcpu_is_protected(vcpu)		kvm_vm_is_protected((vcpu)->kvm)
->>
->> +#define kvm_arch_has_private_mem(kvm) ((kvm)->arch.is_realm)
->> +
+> Fixes: e38c884df921 ("KVM: s390: Switch to new gmap")
+
+we could argue to remove this as this is likely not needed for stable
+since its a build bug, but does not hurt.
+
+
+
+> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+> ---
+>   arch/s390/kvm/vsie.c | 1 -
+>   1 file changed, 1 deletion(-)
 > 
-> Perhaps related to Fuad's question about pKVM and CCA state: would
-> conditioning this on is_realm mess up pKVM?
-
-Not really. The comment is about unifiying the conditions which
-both pKVM and Realm selects. Right now, only CCA uses guest_memfd.
-When pkvm comes along to use guest_memfd, this could be something
-like:
-
-kvm->arch.needs_private_mem  (set by both pKVM and Realm) ?
-
-Cheers
-Suzuki
-
-
+> diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
+> index eea24562e7db..3e956c7faa4b 100644
+> --- a/arch/s390/kvm/vsie.c
+> +++ b/arch/s390/kvm/vsie.c
+> @@ -1565,7 +1565,6 @@ int kvm_s390_handle_vsie(struct kvm_vcpu *vcpu)
+>   	if (vcpu->arch.sie_block->gpsw.mask & PSW_MASK_PSTATE)
+>   		return kvm_s390_inject_program_int(vcpu, PGM_PRIVILEGED_OP);
+>   
+> -	BUILD_BUG_ON(sizeof(struct vsie_page) != PAGE_SIZE);
+>   	scb_addr = kvm_s390_get_base_disp_s(vcpu, NULL);
+>   
+>   	/* 512 byte alignment */
 > 
->>   int kvm_arm_vcpu_finalize(struct kvm_vcpu *vcpu, int feature);
->>   bool kvm_arm_vcpu_is_finalized(struct kvm_vcpu *vcpu);
->>
->> --
->> 2.43.0
 
