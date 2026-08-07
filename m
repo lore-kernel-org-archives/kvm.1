@@ -1,160 +1,322 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703F84756C4
-	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 16:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786120841; cv=pass; b=MoNSPRf5hGCb6fme73N4yycZt0IUpIpa0ExM4QrrpCjPBos1at/QImlhZJay22YWbzjo5OS4zadxpL2kYbCWqn7IXFeNkl8t8SvojgRl5IS2eIIrIUDejGsvci3O5ZiEQ8V3L68xftS7sLoegWdo6O9HFRmHH+CHxTYNZo1c6Ns=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786120841; c=relaxed/simple;
-	bh=ZcC9zQ8CA1OOO7vdGCOU8ByGt7F7GkjE8325WF9eOvo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SSyQ0zAk7kJPOYEfIQgnIphTyTe8R7GRkDujRhMunm04Q3W1Pn/fmjDN03r2w/HSEipQumPDZyNA0eNyQYrb/U+kcxB5U3bfpM/HsxFhGcZYKtP6t5ZNdzl8xc0hLFAMjkDkoRsr5UQJHfLDyi31O7//TIRkVwfP/+PjYenQUUM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=h2vS5C69; arc=pass smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080E722579E;
+	Fri,  7 Aug 2026 16:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786121137; cv=none; b=gUrWS52pt40J1lYYfrD6aK/F6b70ZHnOLJeuuGIVm7AkqGulyamB/5jliNv5VI+i2oxrfGxLgQCrQw8wb6EmdUi+gUQbhRLwkAcwdLFRlKPderzf9iqORc85NcI/+hqSWM7eP6Pec4M2FWB98+DmX2TvwO4UEaZLNavD3N0/pbo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786121137; c=relaxed/simple;
+	bh=h1VQHoplqQMgAwEpvb/Kq7J94fLiCxUe+L9VVOgVzdU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DT4mJaMqYgMtK36WlXp3GJTWiCfIyPyeJEGoevKYe1/MLYX374BBYeGzmdnjcpwTHX4Fp4GtJvjNjhaNqL3EdSUIMt7Juc3aFh4XFQ4C/ybrLvUBiGeR20YiYA1PgSWr2ZdGTaW9iry3libmku5su5kTmwXedxd1jDVD2Hrc1Mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IV7kG4vb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="h2vS5C69"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-47f904e80eeso2996968f8f.1
-        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 09:40:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786120834; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YsKL8YNPpI71m6aPRuW4FhsVqVPQUOEl+0u5k1nNGuAtS8zlzPJeSg4MTFxzRd9O27
-         3F3uDmkCj8YtdgBzLMFqV8dNmIhmmRTtTkHatPa1KmmQegCJEv7AUVCPTfIRHm+b0Mrh
-         +F7m6UwkMUTTwYHqViqHLE/r44NBpIx19xFabyDjVgeEP2Y1WTRZlo5gWd6iuM4hNKUj
-         BBPi5vINUhgmWYFf7m8PN5iT25kQWqgrBti7UZ7WZEwuJzmgbWYD6/1Yp9LCHQl5Z4o9
-         n2iT8m09DX+ly1r+PQWa8OIU9QP+I8YRuwLk2FEJFGZ4p7uexiUNZbg7Bssmq/1BQZUP
-         z9Hw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ivwd8b6C0kvbJOzxDYFzgKuMZMZM9eaqiKpZX0jjZbI=;
-        fh=sPToMzKiRLn2xQwR7dUz1xwfTMq4uSStCcjVLIgUuZo=;
-        b=XeuTFO1y3PRI5YplTwtEAr3cPvl3JdXQOAnU61wh5r6oPzJevYZaVumy2qyKNXLi0w
-         gq6qDBbk+vrRvu5/Rmn3PHiYm0g6U7RsI/EjJW6GhtL3tgnPuA4/5d9/3zBw25L34BM0
-         vECf1ZpSZF8PumUwyVpwDLVQr5a4i45PQVDHU69PAjQ+kIcY2H6f9EyBT7h7y077uKsr
-         iEJdwEs9w+/JM3LSpB7F4EUkm7rzYzZ2SV2EDgMVSE7f8IIH/WPN67v/b6R8H74vEn+6
-         m91ys07GUtyDjGl9KIH05Wcp32MBjidnIzcUNQNYBIsg+krj2T4/4xrSknBHob6r6Kr9
-         rCzQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1786120834; x=1786725634; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ivwd8b6C0kvbJOzxDYFzgKuMZMZM9eaqiKpZX0jjZbI=;
-        b=h2vS5C69IOb5KJQd/sizIz5oE2Z3JS3GLQ1jhGlsBpZLZx+8X+08Cra0yZBzbkWqB2
-         L+k0BV9hZuvsf+gUJo/t4FucHaEA1flVY3kpNrqCs4GHiYSNe9Aunii/8PjWWq2eWgFq
-         l5F3j40znhl0YQNMylxj8xKoa100FFgWi/zcE9mBjAa5x7sNj17RK/C61GGwdnJiQVXE
-         h8kI8PV8RW+FlFbxj7J9FiFRvp4aLckfZVnpkGx2fDY/pDYGRBChfnhJdIAzl4pg7JPa
-         r1ZETHHigvV7io+miLhJESW/HlAeJ/g2VscpKse2FjbFZBILDIdGZz5OoOMa4CGwWWP1
-         hUCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786120834; x=1786725634;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ivwd8b6C0kvbJOzxDYFzgKuMZMZM9eaqiKpZX0jjZbI=;
-        b=AaCzMU0PbCe1wq4vAbRnirZsQ8gLMkInzcqNN14rhm+gzO7Oa4agh24Ebb3aCTsNHd
-         fRNHsgD3pm323h95YhP8oqCKH99dFjtwUtDD/5cSwbhCAVuYj3EiUDBCNZynH/duVNd3
-         PumbqWK58UZJJzt2/RM8mGCrmJtwfn4Rfpw7IeNuwn9MjeV56jCsDWVCAhBS4DMYrlyy
-         fTOII9/jJ30ujgvNDDkkC6WyshIdFWDfMWlwZCel4Lhu+ouq/WecyKcCuXa/JgFhEozx
-         SdpPrYKqDNolHMdJ3IZSxZqpjyXEanZzOkJ84BVhpE1mc3tLUNpcyjjt0OyCQnDWN4Fv
-         4xYQ==
-X-Forwarded-Encrypted: i=1; AHgh+RobqDIfTR3Lnp8fEQasrM/LGOaTTnZDON2PLnZHsRdwfk4VeVfilXfxruZlGnN8TP31oJI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyORmKPyQNWG4yGqxveYzZdKtgjZB4dDCW7bT5TBV++OK5OpkVn
-	KedLz3CkND74dQL2DLCRc10O94cqU4YXKlI4q+oC/BmCuQ/h+Yz/jdZzHdB7XdYgQb5vLZlREGg
-	srfxVkmB2+2WIX1ijF+wau4nRJuP+wEkx28UxON2M5A==
-X-Gm-Gg: AR+sD1244SB8Gi1SI6rw48NvEb8gPyjgImAsg6tWkUkIxjZk+2GFzwPQ6te/dh4MLwJ
-	pRtqd1ju3GCcvj0QgtRm19X67r6d6Lj0HPKvZYMCAueFlHlDDwgFQSedBOrYnUkykTlhHHSoJ9K
-	9XmHlTgh/7Vqot+bCMuXCH/UosE+4DiBb5iB1DzCQ4XK1YhrKki6sTJ+2d5EG941yu9T6ieliYK
-	welZ+V/H9G7Ds2NqDSlHsuVXN/bKgvKZDyqgQo3x5wWplzPAK+ldqySJcaW1XHqKxAIjnNidilU
-	7j7odgdumVDerixvjk/2SVeYrjvCKvZlouuuoPhfUZjtEq8ypKrKdfg6f4/NcqgkPkc47IRO81d
-	0hGzt9QXfZGxzauq4osPLo49hYR3WdyDaUSDYKuGLn2Vy+0Hzd4ELClwmJUvsfoMR
-X-Received: by 2002:a05:6000:491e:b0:47d:ee9d:90c8 with SMTP id
- ffacd0b85a97d-47fec4e2910mr44316338f8f.3.1786120834611; Fri, 07 Aug 2026
- 09:40:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IV7kG4vb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49671F000E9;
+	Fri,  7 Aug 2026 16:45:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786121135;
+	bh=pZqskBmPMRbqfd4JABF4XAccPI8j5P/YcYvdWmJ5r7I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IV7kG4vb8BIyQDmdvU+TqD72rD2J7ywbgW0lMSRwx+wygPFbFr0oVvlaChtXTaQ0u
+	 mlhFK4TaA6ftE39/nejr4296WPLUnAhhhMRLFPCRcN4WKrSbgG4wx83MB4T93CYBg0
+	 DncRc6eCS10VCxPoSPXWDV0YCabDWzp+ctLEmbqAOKkVSgN66FIg0ahv5Do/HrvcLD
+	 F2/VGlg228Ogg105vlef+/vL8xniAxrzw0dEYCLhvDwMuT13zmvLD8QAR8UBmd02V+
+	 DDMtL+T4K6ygsn9Bdbn5RhYCqB8d7hKCeGT55b9Yd+bC6pZMZdCfOxo3Fexzkv70WQ
+	 AjdmTLP1KxJUw==
+Date: Fri, 7 Aug 2026 17:45:17 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, Steffen Eiden <seiden@linux.ibm.com>, 
+	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Fuad Tabba <fuad.tabba@linux.dev>, Hyunwoo Kim <imv4bel@gmail.com>, 
+	Yao Yuan <yaoyuan@linux.alibaba.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/8] KVM: arm64: Remove VM-wide VNCR mapping counter
+Message-ID: <anXmBQRdORVwl6Rp@lucifer>
+References: <20260806091026.620700-1-maz@kernel.org>
+ <20260806091026.620700-2-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260718040000.005.6ede2881-caplitmus-rv@iscas.ac.cn>
-In-Reply-To: <20260718040000.005.6ede2881-caplitmus-rv@iscas.ac.cn>
-From: Anup Patel <anup@brainfault.org>
-Date: Fri, 7 Aug 2026 22:10:23 +0530
-X-Gm-Features: AUfX_mwYx18eRgllpSc1cuoaEbtIanIWNOsGbSu5y1XnuqpHv0835ozA8nP-WMI
-Message-ID: <CAAhSdy2j+0sV0_XD=ieDgSDPTK8eAxJBy6EFjR+yFxT0XH-5cQ@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Reject overlapping AIA IMSIC address fields
-To: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260806091026.620700-2-maz@kernel.org>
 
-On Sat, Jul 18, 2026 at 10:05=E2=80=AFAM Pengpeng Hou <pengpeng@iscas.ac.cn=
-> wrote:
+Bear with me being verbose here, as this is both nascent review + learning
+:)
+
+On Thu, Aug 06, 2026 at 10:10:19AM +0100, Marc Zyngier wrote:
+> The global VNCR mapping counter is used to decide whether an L1
+> provided VNCR page is mapped in L0 on any CPU at the point of
+> dealing with a TLB invalidation. It is incremented when a mapping
+> is made in the fixmap, and decremented when unmapped.
 >
-> KVM lets userspace configure the IMSIC guest, HART, group-width, and
-> group-shift fields independently. The individual bounds allow a layout
-> such as guest_bits=3D7, hart_bits=3D6, group_bits=3D1, and group_shift=3D=
-24.
+> As it turns out, this tracking has several flaws:
 >
-> That layout places the group index bit at bit 24 while the lower
-> guest+HART field also extends through bit 24. The IMSIC address helpers
-> later consume these values as one address layout: aia_imsic_ppn() masks
-> the lower guest+HART field and the group field, while
-> aia_imsic_hart_index() combines the group and HART index. Allowing an
-> overlapping configuration therefore gives one address bit two different
-> meanings.
+> - we are trying to invalidate TLBs, and the mapping is only an
+>   opportunistic consequence of the TLB. Checking this counter to
+>   decide whether a TLB needs to be invalidated may result in missed
+>   invalidations.
+
+Is it largely the self-invalidation mentioned below or are there other cases?
+
 >
-> Reject group-index layouts that start before the end of the guest+HART
-> field before initializing the in-kernel irqchip.
+> - an L1 vcpu invalidating its own TLB (a very likely case) will not
+>   succeed in invalidating the VNCR pseudo TLB because that page is
+>   not mapped in L0 at this stage.
+
+Ahh yes this is pretty compelling then!
+
 >
-> Fixes: 89d01306e34d ("RISC-V: KVM: Implement device interface for AIA irq=
-chip")
-> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+> Given that this tracking fails at delivering the minimum guarantees
+> that are required and is only a performance optimisation, remove it
+> completely.
+>
+> Fixes: 4ffa72ad8f37e ("KVM: arm64: nv: Add S1 TLB invalidation primitive for VNCR_EL2")
+> Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
 
-LGTM.
+The change LGTM, it neatly removes the described mechanism which is well
+evidenced.
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
+Comments below that are largely me talking out loud as I learn things :)
 
-Queued this patch for Linux-7.3
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Thanks,
-Anup
-
-
+> Cc: stable@vger.kernel.org
 > ---
->  arch/riscv/kvm/aia_device.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  arch/arm64/include/asm/kvm_host.h | 3 ---
+>  arch/arm64/kvm/hyp/vhe/switch.c   | 3 +--
+>  arch/arm64/kvm/nested.c           | 3 ---
+>  3 files changed, 1 insertion(+), 8 deletions(-)
 >
-> diff --git a/arch/riscv/kvm/aia_device.c b/arch/riscv/kvm/aia_device.c
-> index be83c2d5fc308..0793d4d4cf5e3 100644
-> --- a/arch/riscv/kvm/aia_device.c
-> +++ b/arch/riscv/kvm/aia_device.c
-> @@ -248,6 +248,12 @@ static int aia_init(struct kvm *kvm)
->         if (aia->nr_sources && aia->aplic_addr =3D=3D KVM_RISCV_AIA_UNDEF=
-_ADDR)
->                 return -EINVAL;
+> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> index bae2c4f92ef5c..ac16f96c878d6 100644
+> --- a/arch/arm64/include/asm/kvm_host.h
+> +++ b/arch/arm64/include/asm/kvm_host.h
+> @@ -411,9 +411,6 @@ struct kvm_arch {
+>  	/* Masks for VNCR-backed and general EL2 sysregs */
+>  	struct kvm_sysreg_masks	*sysreg_masks;
 >
-> +       /* Group index bits must not overlap guest and HART index bits. *=
-/
-> +       if (aia->nr_group_bits &&
-> +           aia->nr_group_shift < IMSIC_MMIO_PAGE_SHIFT +
-> +                                         aia->nr_guest_bits + aia->nr_ha=
-rt_bits)
-> +               return -EINVAL;
-> +
->         /* Initialize APLIC */
->         ret =3D kvm_riscv_aia_aplic_init(kvm);
->         if (ret)
+> -	/* Count the number of VNCR_EL2 currently mapped */
+> -	atomic_t vncr_map_count;
+> -
+>  	/*
+>  	 * For an untrusted host VM, 'pkvm.handle' is used to lookup
+>  	 * the associated pKVM instance in the hypervisor.
+> diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
+> index bbe9cebd3d9d5..c09b1d411c584 100644
+> --- a/arch/arm64/kvm/hyp/vhe/switch.c
+> +++ b/arch/arm64/kvm/hyp/vhe/switch.c
+> @@ -427,8 +427,7 @@ static bool kvm_hyp_handle_tlbi_el2(struct kvm_vcpu *vcpu, u64 *exit_code)
+>  	 * If we have to check for any VNCR mapping being invalidated,
+>  	 * go back to the slow path for further processing.
+>  	 */
+> -	if (vcpu_el2_e2h_is_set(vcpu) && vcpu_el2_tge_is_set(vcpu) &&
+> -	    atomic_read(&vcpu->kvm->arch.vncr_map_count))
+> +	if (vcpu_el2_e2h_is_set(vcpu) && vcpu_el2_tge_is_set(vcpu))
+>  		return false;
+
+So this seems to be the crux of it - seems to be 'is there any possibility that
+we will need to check for VNCR mappings being invalidated?'
+
+Checks:
+
+* vcpu_el2_e2h_is_set() - is the guest host kernel (?)'s hcr_el2.e2h
+  enabled? From what I gather hcr_el2.e2h is what allows sysreg_EL1 ->
+  sysreg_EL2 for the host kernel to allow unmodified kernels to run in EL2.
+
+  IOW - is the guest host kernel VHE?
+
+* vcpu_el2_tge_is_set() - Similarly tests for the hcr_el2.tge bit - and this
+  seems to be is 'EL1 -> EL2 redirection on?' - IOW - is this a kernel running
+  in EL2?
+
+Actually I see in is_hyp_ctxt():
+
+	 * We are in a hypervisor context if the vcpu mode is EL2 or
+	 * E2H and TGE bits are set. The latter means we are in the user space
+	 * of the VHE kernel. ARMv8.1 ARM describes this as 'InHost'
+
+So I _think_ the combination of the two is checking to see if you're the L0
+kernel that _could_ send TLBi's that need to be handled?
+
+Previously it seemed the logic was 'if there are no VNCR mappings present then
+we can optimise by short-circuiting the rest of the processing in
+kvm_hyp_handle_sysreg_vhe()'.
+
+It seems that the hardware TLBi has been processed by now so it's actually more
+like - there's still work to be done maintaining the software TLB and that's
+done elsewhere.
+
+As:
+
+static bool kvm_hyp_handle_sysreg_vhe(struct kvm_vcpu *vcpu, u64 *exit_code)
+{
+	if (kvm_hyp_handle_tlbi_el2(vcpu, exit_code)) 	<- return ->true
+		return true;
+
+	if (kvm_hyp_handle_timer(vcpu, exit_code)) 	<- this was a TLBi ->false
+		return true;
+
+	if (kvm_hyp_handle_cpacr_el1(vcpu, exit_code)) 	<- this was a TLBi ->false
+		return true;
+
+	if (kvm_hyp_handle_zcr_el2(vcpu, exit_code))	<- this was a TLBi ->false
+		return true;
+
+	return kvm_hyp_handle_sysreg(vcpu, exit_code);	<- this was a TLBi ->false
+}
+
+And
+
+static const exit_handler_fn hyp_exit_handlers[] = {
+	...
+	[ESR_ELx_EC_SYS64]		= kvm_hyp_handle_sysreg_vhe,
+	...
+};
+
+And:
+
+static inline bool kvm_hyp_handle_exit(struct kvm_vcpu *vcpu, u64 *exit_code,
+				       const exit_handler_fn *handlers)
+{
+	exit_handler_fn fn = handlers[kvm_vcpu_trap_get_class(vcpu)]; <- kvm_hyp_handle_sysreg_vhe()
+	if (fn)
+		return fn(vcpu, exit_code);
+
+	return false;
+}
+
+Annnd:
+
+/*
+ * Return true when we were able to fixup the guest exit and should return to
+ * the guest, false when we should restore the host state and return to the
+ * main run loop.
+ */
+static inline bool __fixup_guest_exit(struct kvm_vcpu *vcpu, u64 *exit_code,
+				      const exit_handler_fn *handlers)
+{
+	...
+	/* Check if there's an exit handler and allow it to handle the exit. */
+	if (kvm_hyp_handle_exit(vcpu, exit_code, handlers))
+		goto guest;
+exit:
+	/* Return to the host kernel and handle the exit */
+	return false;
+	...
+}
+
+Finally in __kvm_vcpu_run_vhe():
+
+	do {
+		/* Jump in the fire! */
+
+(Good track ;)
+
+		exit_code = __guest_enter(vcpu);
+
+		/* And we're baaack! */
+	} while (fixup_guest_exit(vcpu, &exit_code));
+
+(With fixup_guest_exit() ultimately calling __fixup_guest_exit().)
+
+And fixup_guest_exit() will return false, meaning the guest isn't
+re-entered and instead you go back to the full fat slow path:
+
+int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+{
+	...
+		ret = kvm_arm_vcpu_enter_exit(vcpu); <-- does all the above just returned.
+	...
+		ret = handle_exit(vcpu, ret);
+}
+
+Then there's some more stuff in this fuller fat handle_exit() path:
+
+int handle_exit(struct kvm_vcpu *vcpu, int exception_index)
+{
+	...
+	switch (exception_index) {
+	...
+	case ARM_EXCEPTION_TRAP:
+		return handle_trap_exceptions(vcpu);
+	...
+	}
+}
+
+Which then calls kvm_get_exit_handler() which ultimately gets
+handle_tlbi_el2() and calls kvm_handle_s1e2_tlbi() in turn and then
+invalidate_vncr_va():
+
+static void invalidate_vncr_va(struct kvm *kvm,
+			       struct s1e2_tlbi_scope *scope)
+{
+	...
+	kvm_for_each_vncr_tlb(i, vcpu, vt, kvm) {
+		...
+		invalidate_vncr(vt);
+	}
+}
+
+And:
+
+static void invalidate_vncr(struct vncr_tlb *vt)
+{
+	vt->valid = false;
+	if (vt->cpu != -1)
+		clear_fixmap(vncr_fixmap(vt->cpu));
+}
+
+Where you are ultimately clearing the fixmap and setting the
+vncr_tlb->valid to false.
+
+I think this is all vaguely sane :)
+
+>
+>  	__kvm_skip_instr(vcpu);
+> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> index dfb96edbdc43c..f3c75954cf36c 100644
+> --- a/arch/arm64/kvm/nested.c
+> +++ b/arch/arm64/kvm/nested.c
+> @@ -48,7 +48,6 @@ void kvm_init_nested(struct kvm *kvm)
+>  {
+>  	kvm->arch.nested_mmus = NULL;
+>  	kvm->arch.nested_mmus_size = 0;
+> -	atomic_set(&kvm->arch.vncr_map_count, 0);
+>  }
+>
+>  static int init_nested_s2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu)
+> @@ -890,7 +889,6 @@ static void this_cpu_reset_vncr_fixmap(struct kvm_vcpu *vcpu)
+>  	clear_fixmap(vncr_fixmap(vcpu->arch.vncr_tlb->cpu));
+>  	vcpu->arch.vncr_tlb->cpu = -1;
+>  	host_data_clear_flag(L1_VNCR_MAPPED);
+> -	atomic_dec(&vcpu->kvm->arch.vncr_map_count);
+>  }
+>
+>  void kvm_vcpu_put_hw_mmu(struct kvm_vcpu *vcpu)
+> @@ -1592,7 +1590,6 @@ static void kvm_map_l1_vncr(struct kvm_vcpu *vcpu)
+>  	if (pgprot_val(prot) != pgprot_val(PAGE_NONE)) {
+>  		__set_fixmap(vncr_fixmap(vt->cpu), vt->hpa, prot);
+>  		host_data_set_flag(L1_VNCR_MAPPED);
+> -		atomic_inc(&vcpu->kvm->arch.vncr_map_count);
+>  	}
+>  }
+
+And it looks like you got all the places that manipulated this :)
+
+>
 > --
-> 2.43.0
+> 2.47.3
 >
+
+--
+Cheers, Lorenzo
