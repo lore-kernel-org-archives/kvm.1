@@ -1,97 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E0143C067
-	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 05:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A7043E06A;
+	Fri,  7 Aug 2026 05:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786081214; cv=none; b=knp4iA9glJCLLN/QTydJLN8GejPjnCEhcMg7vnBTZsXkrEsOQAgiUjtZWCAbuNHunb/15YhIaBz1NBTfDZMlyeuIcodJ9d5ej+nHswBPufzjqOWShyKi/WO02WewBOtUQXN6PZEQX3x87UZaHPwffyDIJogtHf8/SNdid4ACapI=
+	t=1786081515; cv=none; b=DwclkG4BWIu974NkrzsGH5szewZV3rJdBFRz3dyDQ/keoSRUu5kWIJHpzPsz0vduFhi4Y6oBlsY1iEpOQRm8GghZluJ6ImCQhMvferY5NrnWvnPpN7lyzlp1/OONPOCzonyHgANV3201Ihk4cMx4OzVqJvsUIRI2iB79xgOTpPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786081214; c=relaxed/simple;
-	bh=BRUPNbNnNdPkuHFu5prbFrwhCBOgW6E3vQ6xeN04ldQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=aFd8N2DZZYbrdr22e5GBChwKJhdJxNzs4AMM4NQ8/K6j4XQp5JotfQOceoC5NEDjhDqgRWEjHlfndKlkSR1q5Fm+AVB/Zk8uqQFePCqAETrtK/Lh7QqHvCaAqzo7lkzZjvTrFhY6maUFCpfZqxGqsGstwyy2hMpjdBdhqOZwSbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IQ6aKii9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786081515; c=relaxed/simple;
+	bh=d/2r2+AhBOWQmP8g+FQLL3It27YL3EbPCm6bJRi8Bi8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YuGo+07hUtNgkjBRQD7GRqUJikxCHR3gbt1EWI1WkI0wHCUaNtRfXl++/npP5g65ZUXxDOsjlHEjcfWnDRBhh9QNzhuW+gZ4LaZgf3nXVQUb0NcbhP0IogCDTR8ZaKuJADahEqve3dp1ULUdrAYdUzG+giJ4IV6v+1igEO8NnLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=S4GrgSuW; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IQ6aKii9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB641F000E9;
-	Fri,  7 Aug 2026 05:40:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786081212;
-	bh=PimeBzVDtYWoaup4pUrog3BkXS8dM/ZPSPV5ZhjQBY4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IQ6aKii96W4LWZAL1oQOEtq3hwXxtz2W2W+gXVxFfehIg3hafjm7XwKXEbt4xpkHC
-	 qmeqV7JQDMV78aLTXwFlLXadr/ySZropOrdXaTgWUrxVGhQejlvedZrHwYcUr4qMyv
-	 traaRZOpNd/P5/K54XpvXGQWUL7c3B5s6ukK0q+wmBj+IszoCSMN0mfrW7qM2G8n+Y
-	 QUq6arAvuOAVH2FNc/5TV6U59Xg10pNcIk3Y9W2WhATcwrjXHDZHGf2UUr1YbrOBPA
-	 ZMqrUPBZFBIvraOSIgCxg18VGzqjZg4gQNnms8vQMdVlohKqK4HCY/ueGOjUhF+Vqc
-	 ApGBUh/ZKZmjg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/2] RISC-V: KVM: selftests: Add PMU event filter
- test
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Yuhang.chen <yhchen312@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260807053227.341700-3-yhchen312@gmail.com>
-References: <20260807053227.341700-1-yhchen312@gmail.com>
- <20260807053227.341700-3-yhchen312@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 07 Aug 2026 05:40:11 +0000
-Message-Id: <20260807054012.7EB641F000E9@smtp.kernel.org>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="S4GrgSuW"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D8D6640E0171;
+	Fri,  7 Aug 2026 05:45:10 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id vMOQEzDPpw6P; Fri,  7 Aug 2026 05:45:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1786081502; bh=mqLY/IlkJZJ84OtmC0xGmvvUMgSRewGVQtoJ68Bihu0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=S4GrgSuW7I5NpAWPwkF4o1WCRTLANkSjGpoX7bnOqSaVH+tLUeGrpW5/t/MVGdD+T
+	 JO4JZdNLcj5igK6SQ20ZWu51wsnGvx1CvSJYChz9h4fwuZ/LFlL+sjUK2VREDX4chN
+	 lGdZWt/fPmgezpyvZqv/b5L16gojieUmqO8bKoH9jxl34nX5xzcpz10/ufQIa6qyas
+	 bxRZHerxMFFHyBNO2MBFOQ4B029YbdHobUyMXZALA6KLKMj4Gm7R38sP72E6sMspPM
+	 z7HJluR2PvxocEhqTV86KS0QMQPk84rB1wB8R0HN9oZ5QQzyB6BAsTh+ykksechb5R
+	 SSX54f+HdgvdziuliL7PMaLhniPsQvJ2gFL/Avm/GTFRDuyMeGppTUMWq9Zm+dAQdK
+	 146zeBGeYYhQY3TGLnlfRGtuxo0pfJ+p5JnSoJGwfHjsa+QZipfBIj/jWVSuTR3Q2m
+	 Z5QuETbWSkkEHlwahsnohbtgIKD1Nkj9OWgzpTmEorv9zqIcwJvlbvni1Y4yJsr8Ey
+	 /QL+t7/MFEjiYD7SpHvexIG7s72wtMtZqj0HBODRFrxD7uJ6lzF+oZUkM65LOLao1O
+	 dzQBXf/ldKeHmGwIlMwuwkP9T5BsCaMHisGpR0womS/zDnuWEfDw0vR8T5PhWjA8O6
+	 slIpcCrF3baKHDHrSnwYjZF4=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AD50040E00C3;
+	Fri,  7 Aug 2026 05:44:46 +0000 (UTC)
+Date: Thu, 6 Aug 2026 22:44:43 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Kim Phillips <kim.phillips@amd.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, x86@kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Naveen Rao <naveen.rao@amd.com>,
+	David Kaplan <david.kaplan@amd.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH v4 01/10] x86/bugs: Only log missing retpoline when it's
+ actually the missing mitigation
+Message-ID: <20260807054443.GHanVwy9MnwWZQvfdj@fat_crate.local>
+References: <20260804235611.4053375-1-kim.phillips@amd.com>
+ <20260804235611.4053375-2-kim.phillips@amd.com>
+ <20260805004441.GAanKHecgJwfAOzZzp@fat_crate.local>
+ <65d82937-113d-405b-9399-b70973e84c50@amd.com>
+ <20260805224907.GDanO942iYDbai1kFx@fat_crate.local>
+ <9e5183be-1f31-4f6a-8b91-0f9a92590241@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <9e5183be-1f31-4f6a-8b91-0f9a92590241@amd.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The commit message falsely claims that the guest programs the 'i=
-nstructions' SBI PMU event, but the implementation only ever programs the '=
-cycles' event.
---
+On Thu, Aug 06, 2026 at 03:12:12PM -0500, Kim Phillips wrote:
+> If by 'this' you mean this patch, it's because it fixes a bug with
+> RETPOLINE=n kernels that sashiko found when reviewing the rest of the
+> patches in the series.
+> 
+> If by 'this' you mean RETPOLINE=n configurability in general, this patch
+> isn't adding or removing that.
 
---- Patch [2]: [PATCH v2 2/2] RISC-V: KVM: selftests: Add PMU event filter =
-test ---
-commit 828aa8f61ee14a213c9f6491df6c9b1b9ddbd337
-Author: Yuhang.chen <yhchen312@gmail.com>
+Neither of those things warrant to have this patch, *especially* in bugs.c
+which is a nightmare as it is already.
 
-RISC-V: KVM: selftests: Add PMU event filter test
-   =20
-This patch adds a selftest to verify KVM_SET_PMU_EVENT_FILTER on RISC-V.
-The host applies ALLOW and DENY filters, and asserts that the guest receives
-the expected success or failure when configuring PMU counters.
+Thx.
 
-> Add a selftest that exercises KVM_SET_PMU_EVENT_FILTER on RISC-V. The
-> guest programs the CPU cycles and instructions SBI PMU events through
-> SBI_EXT_PMU_COUNTER_CFG_MATCH while the host installs filters with the
-> ALLOW and DENY actions, asserting that disallowed events return
-> SBI_ERR_NOT_SUPPORTED and allowed events succeed.
+-- 
+Regards/Gruss,
+    Boris.
 
-[Severity: Medium]
-Is this description accurate?
-
-The commit message states that the guest programs both the CPU cycles and
-instructions SBI PMU events.
-
-However, looking at guest_code(), it appears to only ever program EV_CYCLES
-via the SBI_EXT_PMU_COUNTER_CFG_MATCH call:
-
-guest_code() {
-        ...
-        ret =3D sbi_ecall(SBI_EXT_PMU, SBI_EXT_PMU_COUNTER_CFG_MATCH,
-                        0, 1, 0, EV_CYCLES, 0, 0);
-        ...
-}
-
-An inline comment in the test code also explicitly notes that the
-instructions event is never programmed by the guest: "Instructions itself is
-never programmed, so host support for it is irrelevant."
-
-Could the commit message be updated to reflect that only the CPU cycles
-event is actually programmed by the guest code?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807053227.3417=
-00-1-yhchen312@gmail.com?part=3D2
+https://people.kernel.org/tglx/notes-about-netiquette
