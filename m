@@ -1,204 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE5532AABA;
-	Fri,  7 Aug 2026 22:38:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A895A3C98BF
+	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 22:39:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786142322; cv=none; b=Qtr046PV2t3IGeEGIAXPap9BUKKNgLTSrfw9hBhYuhJsp14KvI6d/da9HbRbS9RRi8vZrvrXi+bA4XbUvNv5xCFoII8I1lQSLxWfsA8MFvZXOf+ACZy27ga7weU+Xyu6rM++uWcfXTHenDt89pT6wD4JzllRHvFtxRLf6JXC+uA=
+	t=1786142343; cv=none; b=pW81q+Eb6wIjgYoNs7B3VOq3H7XHjuwRAQejz/JyQDLOwMUymW/ilQYPGjP4f9nPmfrAVWKJ9zSlq1Q+m0SEiM7iFUmDbIZ6xVV2aRKDIC3Q68psiwQNMGcYIFo3YU9CeZc6guCXKa9SJGTkef2SMFB2fMyPz/jInWC1nOzh+K0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786142322; c=relaxed/simple;
-	bh=tzKkrZ8w5bOElHBipjseWunK7TBF/1OnpCrI9FfOhOw=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=cGaioQAjHVJabdyYEoqfiZOQQP0S43tG6Gp0WjoH0YFBOSUy1oUHe5sFdm4qBkt0MKWvMdtBXJYZzY5Y3LxMDYvhEurHkP5JgYomVui6Gl/otQa31Vy/zFqj/aNCmKOhhvGSYeA4EmvAYFJjpTd/P/CNk7e3bOMGcrUU3w/hayY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rldl2Bei; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786142343; c=relaxed/simple;
+	bh=90qft761TG4mju73n++8iP2u5y7oZ26yA1cyGv2gg0A=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=SsQBLQustemHPYIX8GVA6HJbFbEqspomNqtIRklHyxhxpd7Y9wIsjHY42akYUmiP8V5Gbv6+2T/Pmorid8oAYfVhYq99yK7s6GkmFL4jo8Ro/+ddi6M/JbfUFmgK4CwC98ervOsHGP+Sv4ozcfRfo4LW/+ZAlPTcDe0lb8y/vUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uZ1WSLRG; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rldl2Bei"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FCA41F000E9;
-	Fri,  7 Aug 2026 22:38:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786142320;
-	bh=NQKjGYEfPZHwQpv/+G1guZcUrQZCdqg/J1anxhZARW4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Rldl2BeidvKXiMuctxGB853Q8NVQTiUALXonDT31R06uZaeoR9sKLORJ0j5aFqZ7U
-	 8/Vs3P+JzRWqqs5xUmhdY6Jj/F9E+hjA92XFW40/Q95rqAM5umDAIL6884TEHIPxwy
-	 lN3TPSXEPI9Yhgj46HMaaMBA/rqTd4IXpMXvHCcx22vx24l4Su5+QTGNvoQG5fJbo6
-	 axc0EXZkNgoabQM/lP1H9yVjzSgAZS+kNUrFjClGEgIktYc0wp25MtvwgHqDH56vWU
-	 XcNeRjeiWVEcaXfiSP4QkBIRBh28FaxNae5lXK/8+fPjytWE4TyjTtgiIfG2a8fTGq
-	 9yZYCug6ktWSA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 03/15] s390/vfio-ap: Functions to initialize/release
- vfio device migration data
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>
-In-Reply-To: <20260807221834.562851-4-akrowiak@linux.ibm.com>
-References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
- <20260807221834.562851-4-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 07 Aug 2026 22:38:39 +0000
-Message-Id: <20260807223840.4FCA41F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uZ1WSLRG"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84a251c2e3eso3136027b3a.1
+        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 15:39:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786142341; x=1786747141; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jTXrPvON64U3D8gfjSGTNrFDqHyTIsu8UP1dMgNPkZQ=;
+        b=uZ1WSLRGJPe+Yrp0RPYwGuA+kcmQsbPhz5AAMwqMn2Go4GU6+qbhot2sg2Dr71acpa
+         vwQYyQceedqwJTgcBrBS3YOEwUejeN/a6eXHvUGUp2f/+GEMIyePtinDLMDxXOCoNS/I
+         J6Kx5kn2xnjEIfgQCzWvDrrgxAvCZKpEqGst+QK/iTV06glZJYfEeen1oBAzXKqG0ozt
+         h0IEO5rJd8IS8wNW2LW+GNZdvP44o6odLggOwzdsCHFhKKQbPu+5eWGw2iwW6n0fAI6O
+         61Xa+zHPZYLDhBvYcmohhd9eHVJNA7rpoJVMMXG4K6zW6FTnKBNQr0F4uP1liRzLQSyQ
+         e6Dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786142341; x=1786747141;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jTXrPvON64U3D8gfjSGTNrFDqHyTIsu8UP1dMgNPkZQ=;
+        b=VISgE71yCC+nTy9+oh+yvay+8mD3mdfJMUQ+kVMZNTeye+ZnwS9Z5+j5V10+XSkNTu
+         0O/X7ehhceRe1G5MFo/RXEG5bm+Il9G64401pltyb++31UJIzFbcppmNbxaMjBHzJBgf
+         cTfYVSvIy2mtp1xRuvFKzbsTUm1ofUZbMzt0DEz3TfIic4GJW5tpNuE5GZgQTvUcvenz
+         RI6Mt/n4rq9nEiB1Jh3aKn+HosRRERClUtmaERlgsRTuij4rkolCn7BsjXwbEaz4ZQU7
+         kTUWfcjvHW7HzeKNWasQ9FJz5+Tb5jHI3IdWFS6Hrvs0qpudV3nYFOdkS4Fj1lSX4Dr8
+         SOJg==
+X-Forwarded-Encrypted: i=1; AHgh+Ro478rgAHO0wWDSaJUQwRTVQ3G0JEJvz1K6NEID7ohlTajSIGUnNRMLv9Pj/eGyhrt3STs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzm46SX86Yc7GPOB5BV2++HEzMmf8+4WrwMop4g45jpbkRuYahq
+	ilrLtk8stjGLtA7h3pndk3H9zxvNVTIEnGhx/Vh/nAMYzsT2lisPkL3xDWxKXybylK4kIsDt/Ev
+	NCwzsDQ==
+X-Received: from pgka7.prod.google.com ([2002:a63:e847:0:b0:c9f:dabd:440f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:e8c:b0:3bf:bbad:500e
+ with SMTP id adf61e73a8af0-3cbd37eeb21mr2410103637.5.1786142340853; Fri, 07
+ Aug 2026 15:39:00 -0700 (PDT)
+Date: Fri, 7 Aug 2026 15:39:00 -0700
+In-Reply-To: <CABgObfak2WM10cj4eQ0DejFQPjsK1ftjS-y2Ygr_gcPs=KyChg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260807135327.2629594-1-pbonzini@redhat.com> <anYQsMnpS2kpYoqA@google.com>
+ <CABgObfak2WM10cj4eQ0DejFQPjsK1ftjS-y2Ygr_gcPs=KyChg@mail.gmail.com>
+Message-ID: <anZehP6yD66SRsNj@google.com>
+Subject: Re: [GIT PULL] KVM (mostly s390) fixes for Linux 7.2-rc7
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, kvm <kvm@vger.kernel.org>, 
+	Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
+On Fri, Aug 07, 2026, Paolo Bonzini wrote:
+> Il ven 7 ago 2026, 19:07 Sean Christopherson <seanjc@google.com> ha scritto:
+> > On Fri, Aug 07, 2026, Paolo Bonzini wrote:
+> > I don't care _that_ much about the code itself, though I still think the out-param
+> > is all kinds of ugly. I'm not at all ok with doing so silently
+> >
+> > and without what I would consider an honest attempt to address review feedback.
+> 
+> Sorry about that, but again - I waited two weeks and got no reply to
+> https://lore.kernel.org/all/CABgObfbDE+=ir_phPC+9sVYnNXur6dFx6oAfEGSnCbrOqFoyVA@mail.gmail.com/.
+> I consider two weeks of wait, on a review that so far had been
+> exclusively about taste, to *be* an honest attempt to gather the next
+> round of feedback (which never came).
 
-New issues:
-- [High] The patch exposes the VFIO_MIGRATION_STOP_COPY capability to users=
-pace before the actual migration data transfer logic is implemented, causin=
-g silent migration failures.
-- [High] An open migration FD can access a newly allocated migration sessio=
-n if the VFIO device is closed and reopened, bypassing the intended `NULL` =
-check.
+Heh, and I was waiting for a response to Yosry's thread:
+https://lore.kernel.org/all/CAO9r8zODKgCcjTBK=P6BuXBBZRoOAFMeRJU8BmkWL-BCX2LoBw@mail.gmail.com
 
-Pre-existing issues:
-- [High] Unconditional NULL assignments to `req_trigger` and `cfg_chg_trigg=
-er` in `probe` can overwrite valid eventfd contexts set by concurrent ioctl=
-s, causing a memory leak and breaking interrupts.
-- [High] The mediated device is exposed to userspace before it is fully ini=
-tialized and added to the driver's tracking lists, allowing multiple mdevs =
-to attach to the same KVM guest.
---
+I also didn't prioritize responding (or even digging deeper) because I wasn't
+expecting the patch to get fast-tracked to 7.2.  It's not tagged for stable, the
+code has existed for years, and at least for me, nothing else suggested it needed
+to go in *now*.  It doesn't help that the commit showed up in kvm/master late
+yesterday; the first heads up I got that you were applying the patch as-is was
+this pull request.
 
---- Patch [3]: [PATCH v7 03/15] s390/vfio-ap: Functions to initialize/relea=
-se vfio device migration data ---
-commit 04c1b466fec62cf9e53c2d6610cde9ecbf5fefad
-Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+In other words, it's the lack of communication that's frustrating.  Even a simple
+"Hey, I'm applying this unless someone screams" would have sufficed.
 
-s390/vfio-ap: Functions to initialize/release vfio device migration data
+> If you had proposed the above small patch, for example, it would have
+> been a completely different thing. 
 
-This commit provides the initialization and release functions for the data
-structures used during live guest migration of vfio-ap devices. It introduc=
-es
-stubs for the migration operations that will be fully implemented in
-subsequent patches.
+Heh, if only past me had realized we could have done that.  I guess the desire to
+prove someone "wrong" on the internet is the mother of all invention? :-D
 
-> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
-o/vfio_ap_migration.c
-> index 374d3a67cb214..cf303d228a0a5 100644
-> --- a/drivers/s390/crypto/vfio_ap_migration.c
-> +++ b/drivers/s390/crypto/vfio_ap_migration.c
-[ ... ]
-> +static struct file *vfio_ap_set_state(struct vfio_device *vdev,
-> +				      enum vfio_device_mig_state  new_state)
-> +{
-> +	return NULL;
-> +}
-[ ... ]
-> +void vfio_ap_init_migration_capabilities(struct ap_matrix_mdev *matrix_m=
-dev)
-> +{
-> +	if (ap_is_se_guest())
-> +		return;
-> +
-> +	matrix_mdev->vdev.migration_flags =3D VFIO_MIGRATION_STOP_COPY;
-> +	matrix_mdev->vdev.mig_ops =3D &vfio_ap_migration_ops;
-> +}
-
-[Severity: High]
-Will advertising the VFIO_MIGRATION_STOP_COPY capability to userspace befor=
-e=20
-the actual migration data transfer logic is implemented cause silent failur=
-es?
-
-If vfio_ap_set_state() returns NULL for the VFIO_DEVICE_STATE_STOP_COPY
-transition, won't the VFIO core interpret this as a successful transition
-that does not require a data stream? This could cause QEMU to silently
-succeed on the source side without transferring any device state, leaving
-the AP subsystem broken for the guest on the target side.
-
-> +/**
-> + * vfio_ap_release_mig_files:
-> + *
-> + * Free the ap_config buffers for any open migration FDs. Although a
-> + * migration FD may still be held open by userspace, it is safe to free
-> + * mig_data here because:
-> + *
-> + *   1. matrix_mdev remains valid for the lifetime of any open migration
-> + *      FD via the vfio_device registration reference taken in
-> + *      vfio_ap_open_file_stream() and dropped in
-> + *      vfio_ap_release_mig_file().
-> + *
-> + *   2. mig_data is only accessed by the migration file ops
-> + *      (vfio_ap_stop_copy_read, vfio_ap_resuming_write) under
-> + *      mdevs_lock. Once mig_data is set to NULL by the caller, those
-> + *      paths will see NULL and return -ENODEV before dereferencing it.
-> + *
-
-[Severity: High]
-Does this lifecycle design handle the case where the VFIO device is closed
-and reopened while a migration FD is kept open?
-
-If userspace keeps the migration FD open, closes the VFIO device, and then
-reopens it, vfio_ap_mdev_open_device() will allocate a new mig_data. When t=
-he
-old migration FD subsequently performs read or write operations, won't it
-bypass the NULL check and incorrectly access the mig_data belonging to the
-new session?
-
-> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
-_ap_ops.c
-> index 36786d70a88f5..90b0fce0123b5 100644
-> --- a/drivers/s390/crypto/vfio_ap_ops.c
-> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-[ ... ]
-> @@ -797,13 +809,28 @@ static int vfio_ap_mdev_probe(struct mdev_device *m=
-dev)
->  	if (IS_ERR(matrix_mdev))
->  		return PTR_ERR(matrix_mdev);
-> =20
-> +	/*
-> +	 * Migration capabilities must be initialized before calling
-> +	 * vfio_register_emulated_iommu_dev; otherwise, the VFIO core
-> +	 * will see mig_ops as NULL during the registration. This could
-> +	 * prevent the VFIO core from properly setting up migration
-> +	 * infrastructure like debugfs entries.
-> +	 *
-> +	 * This must be done before acquiring mdevs_lock to avoid an ABBA
-> +	 * deadlock: vfio_register_emulated_iommu_dev() acquires dev_set->lock
-> +	 * internally, while vfio_ap_mdev_open_device() is called by the VFIO
-> +	 * core with dev_set->lock already held and then acquires mdevs_lock.
-> +	 */
-> +	vfio_ap_init_migration_capabilities(matrix_mdev);
-> +
->  	ret =3D vfio_register_emulated_iommu_dev(&matrix_mdev->vdev);
->  	if (ret)
->  		goto err_put_vdev;
-> +
-> +	mutex_lock(&matrix_dev->mdevs_lock);
->  	matrix_mdev->req_trigger =3D NULL;
->  	matrix_mdev->cfg_chg_trigger =3D NULL;
-
-[Severity: High]
-This is a pre-existing issue, but does exposing the device to userspace
-before setting these triggers to NULL introduce a race condition?
-
-If userspace immediately opens the device after
-vfio_register_emulated_iommu_dev() and configures interrupts, it will
-allocate and set valid eventfd contexts for req_trigger and cfg_chg_trigger.
-When the probe thread continues and overwrites these with NULL, won't it le=
-ak
-the eventfd contexts and break guest interrupts?
-
->  	dev_set_drvdata(&mdev->dev, matrix_mdev);
-> -	mutex_lock(&matrix_dev->mdevs_lock);
->  	list_add(&matrix_mdev->node, &matrix_dev->mdev_list);
-
-[Severity: High]
-This is also a pre-existing issue, but does calling
-vfio_register_emulated_iommu_dev() before list_add() allow multiple mediated
-devices to attach to the same KVM guest?
-
-If two mdevs are probed and opened concurrently before they are added to
-mdev_list, won't they bypass the conflict detection logic in
-vfio_ap_mdev_set_kvm() and violate KVM uniqueness invariants?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807221834.5628=
-51-1-akrowiak@linux.ibm.com?part=3D3
+> I would have taken your suggestion immediately.
+> 
+> Paolo
+> 
+> >
+> > [1] https://lore.kernel.org/all/amPo-XdhFGIZquES@google.com
+> > [2] https://lore.kernel.org/all/CAO9r8zM=Mb=eTEFGF0G-POvwwbSr7e8SN6zcDp=GstzKtBKcow@mail.gmail.com
+> > [3] https://lore.kernel.org/all/CAO9r8zMopB=YKXs5pkQmPf9uHKE0P0XORcNbc60AWXTusuY3tg@mail.gmail.com
+> >
+> 
