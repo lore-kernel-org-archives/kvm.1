@@ -1,117 +1,186 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28512F8E86;
-	Fri,  7 Aug 2026 14:37:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C46B37E5DD
+	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 14:38:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786113423; cv=none; b=foBQ4Pyox9KkizGI7Ant7+eSsjQa9BUPmqRqwhpN87GBUJbc6uz1701YmfgAd7Q4+ZSCCSqrrCGHMYd/FLkpx/QiboTF57G7wi6rbI7C0heZrA5bXQwCyrI1ks0ZOvSKXf0ueY/EMUlvfuNkr0sZKDL4ntFKLiO7sVXXXK9Ahug=
+	t=1786113516; cv=none; b=qtRmp8BtxoSjUnEBwKBSNJbI5Iq6/sWC1kNo8FTq7cGDAeAGlevl15xyHyeKMQm7j3V8QCjE8Wa7N4c19bZIpg8bUkfPzydtrD/ykLVH9m28zItNs6OwYrS0aliyrgUZ6ybvk6UdvEx2yBnmrdW9eTtfZcdDpfWqmYvB0k05JVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786113423; c=relaxed/simple;
-	bh=AcG/mHbl0tdveN2aTwIeoLBrQKPikZGp7Mg2i8F3ekc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=en0ni+R7aIzIChha5vanpHL/T1uSUEtTScIdjTU1YAZ5KArpVa3ZoaIXoB/fgWOwEvK4tvP25Hju67nVniK5vyoz/mMXqKNrOIYg4UD6RJ/NcN/ekF85EHfMnUSypvOk0O5udLtY62FQSyebAn6KUh9pUrVqhoDaQelWawYGhEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TE6YxHWF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786113516; c=relaxed/simple;
+	bh=/8eBC4cBcmk/OOwRZMskFCKDvUHCS1O1Ty0m2S3GOb0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=a9fgknrtn9rZzVHlTpJFZ5L73DzKcrJWjCNNyi3+7/icJnQwSLLsh572usHcOX0g7A1T07v6lvB9Fv2LVN5aGsyKmDZhPv6VjZQEbSqcnr64xJ+3Sh+YU6OX7fbsqBm2mOQyghzeromIvI5bMe5jcpU2ibOxeyRH+FDnL2jibOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z409DCqQ; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TE6YxHWF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A16A1F000E9;
-	Fri,  7 Aug 2026 14:36:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786113422;
-	bh=RxUlCeB9O2aqfowvaH7/dR8e2Z1foRTum1v/OE+CMyg=;
-	h=Date:From:To:Cc:Subject;
-	b=TE6YxHWFp3KHL6ERC29i2t7yJMIG33unPldRNT56Sn1y9ZGChWHq5q8j76bFhl1E8
-	 RZFgaufrKj2JszOCmEkW+tPrsvP9NqP9SeS8RHvfRfKct+zHIlAE+nENFoqN0cd95b
-	 21/xTvqWUfdct4/RbSGcrw5GW24lnT62zxH8Acbqlfo+vUvKurXlv8CQ7CB1ItCe0f
-	 hnN5q10o/yIrSwW3eyn3bdGgZZkpeiwBnm+UMkNKjf2hgcEYWVtgmxJDLayYBfZh7y
-	 U9m8A/wApomTgn8wjaNarZN0k7sMzv2lTbH1HgS5jctp7zfsrj8BI3Q0t/4e9CwAKe
-	 ptZz0j9dFAPMQ==
-Date: Fri, 7 Aug 2026 15:36:54 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>, KVM <kvm@vger.kernel.org>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: linux-next: manual merge of the kvm tree with the kvm-fixes tree
-Message-ID: <anXthnEjE2hw5sOU@sirena.org.uk>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z409DCqQ"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cfca8558d2so47457755ad.2
+        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 07:38:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786113509; x=1786718309; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=wfh7ukRj1lyo1oKSry2hYUgnDccy+4/yKqQMGL09KaI=;
+        b=Z409DCqQQIeuuMzg5WwomjZrsXJfC39thP4Z5k1P9ZNVZVk0fKhg6bFbSEvp8MyA6v
+         10YRMtDnHQOhU1+gVhQaM5UGl5IYhHuGvkKJxdnX4zFeBhkyxBfDl/Yzoj+fcmw68glr
+         LD4axN2PVXKdZNo8xU7KEwTtlzuvEjsZsC5kWDtO4avTv13ag+Fm48x2EIMhPzHXxTMA
+         YbMwn8+GEPGjWeyHmfWEdxObqZsCU7bbRGGIEhWGHzOBmosL2BQXYAdPYGfylQf3xSJ8
+         qRym7OsP5dhV5AsY0FZO5pUs9CyWRf3JTFezkyKJ2Tu4ARHWum14Zn2BUWPL0+xM0Q+F
+         5W+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786113509; x=1786718309;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wfh7ukRj1lyo1oKSry2hYUgnDccy+4/yKqQMGL09KaI=;
+        b=esgwDeJtx8PyovrboTlygFQcNPQB98HPakcSMdlPw3Y2IL+rFAUxU6xtGrx1Xdx1IR
+         SH5GCkOU5AHEgT+OaBVCUHIj0R8/up+4IlH3rvRo4f8I+0NUpA89OzNyQ60NNZW1B5O8
+         wJ6daLrwX4eGEbpDy8eYGvFMiP+QJfLqTN2ahvtQP4QzXtwLGMTrYLrEzN3HIzpzgVCq
+         p2Fxv58d9E8ySpQq9aIlB56qOTP47/H75szq2HVO0Eyw4+TdR58jONNWVlm3qQJrAbdm
+         4Vu2xlS3eXf5Uz/I5bIYQJKa3S+kE+9cbfS/55pl+9sssM9gcTcATdbs8p2/QWCXwDNd
+         Qcdw==
+X-Forwarded-Encrypted: i=1; AHgh+RoYQ3CCGLQjw5VSDEK2EXFinUWZ9mq4SASc4PSXTchiQfFQxqxbaAegjY1PkyjNLlaoPIo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzg3IPs4ZvGfEiMJsecQdhjwdGzWlzh2phEZvr5ZBO/6xK9xEi4
+	1SfwrM3OfNNNgo6sV4lI19RIK4nGH2L0w+2ntB6iib5PTUSZYSa0Z+YYu1P6ZCfPR7+uaJjRKAU
+	u7DUAOg==
+X-Received: from plbjc21.prod.google.com ([2002:a17:903:25d5:b0:2ca:d66c:97b2])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f68b:b0:2c9:e846:a57e
+ with SMTP id d9443c01a7336-2d2a55ecec6mr12985345ad.0.1786113508614; Fri, 07
+ Aug 2026 07:38:28 -0700 (PDT)
+Date: Fri, 7 Aug 2026 07:38:28 -0700
+In-Reply-To: <caedad66-8a7b-4182-9fbb-d4abe1f1696f@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="R+ok7wGema/NyXMg"
-Content-Disposition: inline
-
-
---R+ok7wGema/NyXMg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
+References: <20260805031257.1844914-1-xiaoyao.li@intel.com>
+ <20260805031257.1844914-2-xiaoyao.li@intel.com> <82482276-0140-4d90-a983-fdfc5bc2e4a5@suse.com>
+ <caedad66-8a7b-4182-9fbb-d4abe1f1696f@intel.com>
+Message-ID: <anXt5Mwa_kRXwRqM@google.com>
+Subject: Re: [PATCH 1/2] KVM: TDX: Enable Notify VM exit
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Nikolay Borisov <nik.borisov@suse.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi all,
+On Fri, Aug 07, 2026, Xiaoyao Li wrote:
+> On 8/6/2026 9:33 PM, Nikolay Borisov wrote:
+> > > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> > > index 545b03d9d10b..cdc0d24657ac 100644
+> > > --- a/arch/x86/kvm/vmx/tdx.c
+> > > +++ b/arch/x86/kvm/vmx/tdx.c
+> > > @@ -2129,6 +2129,9 @@ int tdx_handle_exit(struct kvm_vcpu *vcpu,
+> > > fastpath_t fastpath)
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * - If i=
+t's not an MSMI, no need to do anything here.
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 1;
+> > > +=C2=A0=C2=A0=C2=A0 case EXIT_REASON_NOTIFY:
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* NMI blocking state is =
+handled by TDX module */
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return __handle_notify(vc=
+pu, false);
+> >=20
+> > I'd rather there be a private handle_tdx_notify function in tdx.c than
+> > exposing __handle_notify and introducing the boolean. This is needed
+> > because the TDX module handles the NMI unblocking, so let's keep the
+> > implementation specific to tdx.
+>=20
+> The initial version just implemented a separate handler for TDX. It had t=
+he
+> exact same code as VMX's handle_notify() except the "NMI blocking handlin=
+g".
+> So to eliminate the code duplication, I changed to current code.
+>=20
+> Sean, please let me if you have a preference. Otherwise, I'll follow
+> Nikolay's preference in a v2.
 
-Today's linux-next merge of the kvm tree got a conflict in:
+Handling this like __vmx_handle_ept_violation() and __vmx_deliver_posted_in=
+terrupt()
+seems like the obvious answer.
 
-  arch/x86/kvm/mmu/mmu.c
-
-between commit:
-
-  26505e1b5b546 ("KVM: SVM: make svm_flush_tlb_gva do a full asid flush if =
-NPT enabled")
-
-=66rom the kvm-fixes tree and commits:
-
-  148fe965df16a ("KVM: x86/mmu: unify root_gva_walk and ngva_walk")
-  0a59a8b8a248e ("KVM: x86/mmu: pull struct kvm_pagewalk out of struct kvm_=
-mmu")
-
-=66rom the kvm tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
-diff --cc arch/x86/kvm/mmu/mmu.c
-index c9e4739b26d71,6c13da942bfcc..0000000000000
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@@ -6652,9 -6672,17 +6695,17 @@@ void kvm_mmu_invalidate_addr(struct kvm
-  		if (is_noncanonical_invlpg_address(addr, vcpu))
-  			return;
- =20
- -		kvm_x86_call(flush_tlb_gva)(vcpu, addr);
- +		kvm_x86_call(flush_tlb_gva)(vcpu, addr, NULL);
-+=20
-+ 		if (tdp_enabled)
-+ 			return;
-+=20
-+ 		mmu =3D &vcpu->arch.root_mmu;
-+ 	} else {
-+ 		mmu =3D &vcpu->arch.guest_mmu;
-  	}
- =20
-+ 	/* Invalidate shadow pages, whether GPA->GVA or nGPA->GPA.  */
-  	if (!mmu->sync_spte)
-  		return;
- =20
-
---R+ok7wGema/NyXMg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmp17YUACgkQJNaLcl1U
-h9AVUAgAgIX5tIYRaJG9B3m89By7oIhCs35oJAjtcCHQSTkB0jR7Vz64ClLVnxPF
-hav9G+s/hWf3sTzHmJBt1y2h3fDlK7EVzFxFaEJ3cxIYlqFNP0ye2XdmcqKo2zns
-m3JYnhfBv+oDfKNZhuTfBay26PXrkUfcHrtS8aIj9eaSXgAyAQ1LRCTJp1rEtbyH
-V7Go0ju+/82eEGpb+kSIKZe331K05Oh+wJ7v9ll1XP0naGIflL+4Lv0SfC7HoNCf
-S/kBsVeMGwYL13ADn8sbVHlyRwSUSHug1ZC4VKRuZBdruLm3Qs9KbR6WoAU7CXL+
-svh4d/D79I77wwPrxbxjaVz1pxD6Fg==
-=yEOi
------END PGP SIGNATURE-----
-
---R+ok7wGema/NyXMg--
+diff --git a/arch/x86/kvm/vmx/common.h b/arch/x86/kvm/vmx/common.h
+index 08005676702c..c179fb34c336 100644
+--- a/arch/x86/kvm/vmx/common.h
++++ b/arch/x86/kvm/vmx/common.h
+@@ -4,6 +4,7 @@
+=20
+ #include <linux/kvm_host.h>
+ #include <asm/posted_intr.h>
++#include <asm/vmx.h>
+=20
+ #include "mmu.h"
+=20
+@@ -183,6 +184,25 @@ static inline void __vmx_deliver_posted_interrupt(stru=
+ct kvm_vcpu *vcpu,
+        kvm_vcpu_trigger_posted_interrupt(vcpu, POSTED_INTR_VECTOR);
+ }
+=20
++static inline int __vmx_handle_notify(struct kvm_vcpu *vcpu,
++                                     unsigned long exit_qual)
++{
++
++       bool context_invalid =3D exit_qual & NOTIFY_VM_CONTEXT_INVALID;
++
++       ++vcpu->stat.notify_window_exits;
++
++       if (vcpu->kvm->arch.notify_vmexit_flags & KVM_X86_NOTIFY_VMEXIT_USE=
+R ||
++           context_invalid) {
++               vcpu->run->exit_reason =3D KVM_EXIT_NOTIFY;
++               vcpu->run->notify.flags =3D context_invalid ?
++                                         KVM_NOTIFY_CONTEXT_INVALID : 0;
++               return 0;
++       }
++
++       return 1;
++}
++
+ noinstr void vmx_handle_nmi(struct kvm_vcpu *vcpu);
+=20
+ #endif /* __KVM_X86_VMX_COMMON_H */
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 9abd2ed3aeae..e77c1037e95d 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6289,9 +6289,6 @@ static int handle_bus_lock_vmexit(struct kvm_vcpu *vc=
+pu)
+ static int handle_notify(struct kvm_vcpu *vcpu)
+ {
+        unsigned long exit_qual =3D vmx_get_exit_qual(vcpu);
+-       bool context_invalid =3D exit_qual & NOTIFY_VM_CONTEXT_INVALID;
+-
+-       ++vcpu->stat.notify_window_exits;
+=20
+        /*
+         * Notify VM exit happened while executing iret from NMI,
+@@ -6301,15 +6298,7 @@ static int handle_notify(struct kvm_vcpu *vcpu)
+                vmcs_set_bits(GUEST_INTERRUPTIBILITY_INFO,
+                              GUEST_INTR_STATE_NMI);
+=20
+-       if (vcpu->kvm->arch.notify_vmexit_flags & KVM_X86_NOTIFY_VMEXIT_USE=
+R ||
+-           context_invalid) {
+-               vcpu->run->exit_reason =3D KVM_EXIT_NOTIFY;
+-               vcpu->run->notify.flags =3D context_invalid ?
+-                                         KVM_NOTIFY_CONTEXT_INVALID : 0;
+-               return 0;
+-       }
+-
+-       return 1;
++       return __vmx_handle_notify(vcpu, exit_qual);
+ }
+=20
+ static int vmx_get_msr_imm_reg(struct kvm_vcpu *vcpu)
