@@ -1,145 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC8B2F90E0;
-	Fri,  7 Aug 2026 17:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F70378D92
+	for <kvm@vger.kernel.org>; Fri,  7 Aug 2026 18:35:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786125406; cv=none; b=BAUCk3rwlbZQXiqpNVbnd7ZDt0Y3S4u5/btbM3sj5hVea503jCgG3X6JZ7OhnPQlzVwgPFDfx92HBOLZMIycw9mpOIFRvaI0kMt92GJobBHwZ8Nn2Vs9h4nwdZJxmDWUMiK6XZ2ZXZZvlEtCOy/4ZMvHaRFW1bjWdGipYpZfVuQ=
+	t=1786127750; cv=none; b=o4gTAGc4G0WSLiw6wkSYzx7ztYdK+Ch37mRBCX6MwN8hhQ7+IH5aRuvB0HLgwsUhAnNLLTXY25bJGLgqPcGwYPItI90srDBuaMAdWFv212WzUALkSl/ylW3hqMOILhaULzErPyKgKKKA2mhN5pR3giB/ePc43x3tK0ceID3MH6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786125406; c=relaxed/simple;
-	bh=/F8g3hn+CZXUuvErPv7ZJ40nbSL4yVUr6mpZuXdRREs=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=OrzL8pzYdxhwTNmhk8t3pcj6eKI7ZtPQ2jGUjtOAiklAUQTPtLNJajCdGw3OnmfQ+Sh4wHSsxf35IMPQKlUUXuUQEsIPyr/jRwQKMWnEeqTl5GYVl1/xC3aYXd3E7RdXeW58eaLNIwBWxfcF3pFrDuswKH7f+4oZ1lybOxOyGNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B5awmsXD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786127750; c=relaxed/simple;
+	bh=6HjUsJVBCV1zSooKnz7AQ1gIW9Lpwv5qLqnebJ1Iq2c=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=cLG90m+FNLYw6PlJBXz3wGdaBztm3SrYrpKOsFH6SxYG2nibrkqCdzkdH7t2w3Yxhsf4MyC6oZeph/4eF9da7R93p5zgPO3iDPpwtA5jC0+hFbnyDdDax6gNyHumyz+BU9u7+P52FFngKAZueoBxCYhlk+gii4Hm5h3H1mX59vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BKvkZJdv; arc=none smtp.client-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B5awmsXD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF0F1F000E9;
-	Fri,  7 Aug 2026 17:56:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786125405;
-	bh=CEymFZY2mD/zQE+VUavnk50VCoErSEENfguvLRPB/fw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=B5awmsXDUmF+e3X54kMWVpaNwa7NLFc6czbCWAEe9xIXAj2xha/RIcb4/2NUOzs+X
-	 bAebLrCrDjhWjZKGGriYWJghqjqvrd81CpxT7zetE6S/ASNz4LzH0yONIpgn31uc4Q
-	 XSQ5w2ICSbgFyV+ZihjhmUXniozwD9I1uorbMqX/20CpW7jvmHHXZxDFTexBfVFXkY
-	 QLVNDC4arjBPPF8eZH7uIFBz7/dsAZ2wGpHhbMvaoUXVYIP3dP63Ei0ZYo8wsT3Evh
-	 7hBUVLR3voDU3hfv85GCtNULeCZpKy8RvsmOKtg4Z3QWbwNAC/zh/BzIxeaFcvIebG
-	 4TSYKJhW5mKQA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 49/49] KVM: selftests: Add VGICv5 sparse vCPU IDs
- test
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
-Cc: kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev, "Marc
- Zyngier" <maz@kernel.org>
-In-Reply-To: <20260807111159.429128-50-sascha.bischoff@arm.com>
-References: <20260807111159.429128-1-sascha.bischoff@arm.com>
- <20260807111159.429128-50-sascha.bischoff@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 07 Aug 2026 17:56:44 +0000
-Message-Id: <20260807175645.0FF0F1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BKvkZJdv"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e7621655eso5481309a91.0
+        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 11:35:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786127748; x=1786732548; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pm71kvPkgJxC1haOW3M1MZVVKWNDxYGuYHJrug/WR+c=;
+        b=BKvkZJdvNBacmS+kxbyMxnNHgirX7on72TrEH71/u1yqTn+6Wk2s4ND2YD0GOwT/8g
+         PnWMSFgiyocJWqha5bUexCmAoZfeLcAuVfKsXIpvsbdnaQDGpNsd6sOgziGeNFch3s7a
+         dmLwncWVjyRGXQTQ6C4tbiRPoAfd0tq1j6c6Ca11E6R/fFtnthrdZFFHwU/AV7mLiyLg
+         71Eunct+IEYH3G1moYhH77BTXOARLjIyFYWjAn/Puws0XyoZ4/eGMTk3PPmu51nkZjhE
+         mDDe0X1vJIYSvhONEXMMDf0lnlMNvvFHWuYeVTawwMrde0dGhvqRWJyHsmfUgrdBQ3AN
+         21hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786127748; x=1786732548;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pm71kvPkgJxC1haOW3M1MZVVKWNDxYGuYHJrug/WR+c=;
+        b=az7rMKnGExGYyA17i7crJjzWDVzmsvCU4UY76NIm9ENTbafRO2lscnB2XNqgp+FtAO
+         qIBGrdBS2Kd3GzQrzN+tWnEY09joHifdJUM+jfkJcm+euE6KXnm9u13JIJppsw0CcwLX
+         m7cWzruJtbK+0m/Pv6z1z3m2dH7YdxNw0z+cbun7/QvfXekj571I6miqHiOoQz3JULKU
+         GpOyYFgN17ToAsgBHQfQBQAxJ1tjTb1qK/RXZZqlVMAvVTGPUBzRCHA8dKVXcdPNCsmx
+         RLrsvsi+Ccv6VKvUmGCayJk9ZpM8DriffkJdgv9HIntIQv6/kh9RqNXu1VSpH4ra2J9a
+         /fzA==
+X-Forwarded-Encrypted: i=1; AHgh+RpFMbIMos0RPQhkGrJJqzehoxVOFE8HDJCbdX7KdFLXzuRaOsiUw3M5BCFf5oz1uHJaQEo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxaLcmlXzZhq+HiuNxM1zVefxi55xFfBPuJ+Q2YjLZ4eCq+qWg
+	cpVncyMOGRtVDXZwnIPz7+8zvc/CTqXJoCTzYaTjmFZbFZxY+StqWOxgIAbHA+hbt4Pmt8kHGnk
+	oeG05qQ==
+X-Received: from pjbct6.prod.google.com ([2002:a17:90a:f586:b0:383:bb4e:85a5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:528c:b0:37f:bfd6:8b40
+ with SMTP id 98e67ed59e1d1-3903c5993cemr26345212a91.5.1786127747532; Fri, 07
+ Aug 2026 11:35:47 -0700 (PDT)
+Date: Fri, 7 Aug 2026 11:35:46 -0700
+In-Reply-To: <202608071656.86e9fd06-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <202608071656.86e9fd06-lkp@intel.com>
+Message-ID: <anYlguXMOPZD-cfj@google.com>
+Subject: Re: [kvm-x86:selftests2] [KVM]  a262fc49e0: kselftests.kvm.make.fail
+From: Sean Christopherson <seanjc@google.com>
+To: kernel test robot <oliver.sang@intel.com>
+Cc: David Matlack <dmatlack@google.com>, oe-lkp@lists.linux.dev, lkp@intel.com, 
+	Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] The VGICv5 sparse vCPU IDs test uses an out-of-bounds vCPU ID of=
- 512 to verify GICv5 VPE ID validation, but KVM core globally rejects IDs >=
-=3D 512, making the test a false positive.
-- [Medium] The VGICv5 sparse vCPU IDs test hardcodes a vCPU ID of 17, which=
- will cause spurious test failures on hardware that supports 16 or fewer VP=
-Es per VM.
---
+On Fri, Aug 07, 2026, kernel test robot wrote:
+> 
+> 
+> Hello,
+> 
+> kernel test robot noticed "kselftests.kvm.make.fail" on:
+> 
+> commit: a262fc49e0aafdeeb1b4fd8cb0d79a0fde447757 ("KVM: selftests: Build and link selftests/vfio/lib into KVM selftests")
+> https://github.com/kvm-x86/linux selftests2
+> 
+> [test failed on linux-next/master 78bc8af4affb9a732504eb22eeac7d1e50883853]
+> 
+> in testcase: kselftests
+> version: kselftests-x86_64-848acc8ffe1b-1_20260804
+> with following parameters:
+> 
+> 	group: kvm
+> 
+> 
+> config: x86_64-rhel-9.4-kselftests
+> compiler: gcc-14
+> test machine: 224 threads 2 sockets Intel(R) Xeon(R) Platinum 8480CTDX (Sapphire Rapids) with 256G memory
+> 
+> (please refer to attached dmesg/kmsg for entire log/backtrace)
+> 
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <oliver.sang@intel.com>
+> | Closes: https://lore.kernel.org/oe-lkp/202608071656.86e9fd06-lkp@intel.com
+> 
+> 
+> /usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-a262fc49e0aafdeeb1b4fd8cb0d79a0fde447757/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c:12:10: fatal error: hw.h: No such file or directory
+>    12 | #include "hw.h"
+>       |          ^~~~~~
+> compilation terminated.
+> make[1]: *** [../vfio/lib/libvfio.mk:32:
+> /usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-a262fc49e0aafdeeb1b4fd8cb0d79a0fde447757/tools/testing/selftests/kvm/libvfio/drivers/ioat/ioat.o]
+> Error 1 make[1]: *** Waiting for unfinished jobs....
+> /usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-a262fc49e0aafdeeb1b4fd8cb0d79a0fde447757/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c:14:10:
+> fatal error: registers.h: No such file or directory
+>    14 | #include "registers.h"
+>       |          ^~~~~~~~~~~~~
+> compilation terminated.
+> make[1]: *** [../vfio/lib/libvfio.mk:32:
+> /usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-a262fc49e0aafdeeb1b4fd8cb0d79a0fde447757/tools/testing/selftests/kvm/libvfio/drivers/dsa/dsa.o]
+> Error 1 make[1]: Leaving directory
+> '/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-a262fc49e0aafdeeb1b4fd8cb0d79a0fde447757/tools/testing/selftests/kvm'
+> make: *** [Makefile:218: all] Error 2
 
---- Patch [49]: [PATCH v5 49/49] KVM: selftests: Add VGICv5 sparse vCPU IDs=
- test ---
-commit 253db5fcbd1548e3eb0e84e65ece4ca5747e50c2
-Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
+Any chance the file is literally just not there?  Makefile.kvm's -I$(<D) expands
+to:
 
-KVM: selftests: Add VGICv5 sparse vCPU IDs test
+ -I/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-a262fc49e0aafdeeb1b4fd8cb0d79a0fde447757/tools/testing/selftests/vfio/lib/drivers/dsa
 
-GICv5 uses the userspace-provided vCPU ID as the VPE ID. This must
-work when vCPU IDs are sparse and differ from the dense internal vCPU
-index.
+which matches the directory of the input file:
 
-Add a test that creates vCPUs with IDs 17 and 3, verifies that a vCPU
-with ID 512 is rejected after a GICv5 has been created, and runs both
-vCPUs to check that ICC_IAFFIDR_EL1 reports the correct VPE IDs on
-each.
+ -c/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-a262fc49e0aafdeeb1b4fd8cb0d79a0fde447757/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
 
-> diff --git a/tools/testing/selftests/kvm/arm64/vgic_v5.c b/tools/testing/=
-selftests/kvm/arm64/vgic_v5.c
-> index 47e147bc14b87..3eef2d2da595f 100644
-> --- a/tools/testing/selftests/kvm/arm64/vgic_v5.c
-> +++ b/tools/testing/selftests/kvm/arm64/vgic_v5.c
-> @@ -14,6 +14,10 @@
-
-[ ... ]
-
-> +static void test_vgic_v5_sparse_vcpu_ids(void)
-> +{
-> +	struct kvm_vcpu *vcpus[VGIC_V5_SPARSE_NR_VCPUS];
-> +	const u32 vcpu_ids[VGIC_V5_SPARSE_NR_VCPUS] =3D {
-> +		VGIC_V5_SPARSE_VCPU0_ID,
-> +		VGIC_V5_SPARSE_VCPU1_ID,
-> +	};
-> +	int ret, i;
-> +	struct ucall uc;
-> +	struct vm_gic v;
-> +	u64 attr;
-> +
-> +	v.gic_dev_type =3D KVM_DEV_TYPE_ARM_VGIC_V5;
-> +	v.vm =3D __vm_create(VM_SHAPE_DEFAULT, VGIC_V5_SPARSE_NR_VCPUS, 0);
-> +	v.gic_fd =3D kvm_create_device(v.vm, v.gic_dev_type);
-> +
-> +	/*
-> +	 * A GICv5 VM cannot create a vCPU outside the VPE ID range. We've
-> +	 * already created a GICv5, so it should reject VCPU creation.
-> +	 */
-> +	ret =3D __vm_ioctl(v.vm, KVM_CREATE_VCPU,
-> +			 (void *)(unsigned long)VGIC_V5_SPARSE_TOO_BIG_ID);
-> +	TEST_ASSERT(ret < 0 && errno =3D=3D EINVAL,
-> +		    "GICv5 accepted vCPU ID %u", VGIC_V5_SPARSE_TOO_BIG_ID);
-
-[Severity: Medium]
-Will this test actually verify the GICv5 validation logic as intended?
-
-The test unconditionally calls KVM_CREATE_VCPU with VGIC_V5_SPARSE_TOO_BIG_=
-ID
-(which is 512). The KVM core's kvm_vm_ioctl_create_vcpu() will immediately
-return -EINVAL because the ID is >=3D KVM_MAX_VCPU_IDS (which defaults to 5=
-12
-on ARM64).
-
-This happens before any architecture-specific or GICv5 validation is reache=
-d,
-potentially making this test a false positive.
-
-> +
-> +	/* Now, create two vCPUs with legal, albeit sparse, IDs */
-> +	for (i =3D 0; i < ARRAY_SIZE(vcpus); i++) {
-> +		vcpus[i] =3D vm_vcpu_add(v.vm, vcpu_ids[i], guest_iaffid_code);
-> +		TEST_ASSERT(vcpus[i], "Failed to create vCPU %u", vcpu_ids[i]);
-
-[Severity: Medium]
-Could hardcoding the vCPU ID to 17 cause spurious test failures on some
-hardware?
-
-The test unconditionally adds a vCPU with ID 17 (VGIC_V5_SPARSE_VCPU0_ID).
-In KVM ARM64, a VM's max_vcpus is bounded by hardware capabilities (for
-example, GICV5_IRS_IDR4_VPE_ID_BITS).
-
-If the hardware supports 16 or fewer VPEs per VM, the KVM_CREATE_VCPU ioctl
-for ID 17 will be legitimately rejected by KVM with -EINVAL, which triggers
-this TEST_ASSERT and fails the test.
-
-> +	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807111159.4291=
-28-1-sascha.bischoff@arm.com?part=3D49
+so AFAICT the makefile is working as intended?
