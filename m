@@ -1,40 +1,73 @@
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B477518A6DB
-	for <kvm@vger.kernel.org>; Sat,  8 Aug 2026 05:51:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3E02E762C
+	for <kvm@vger.kernel.org>; Sat,  8 Aug 2026 06:19:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786168271; cv=none; b=twxdL4DmVy1BmA6LZhuMaB0ELbpyPsx6LgbOLtI5s71HdZk3nkO4/o1J/5z7Nkr7AhLiQrdq3km86W+OUR3lOBSPh8aft7dn7dY7WZAVnuFIzwiQaYlU6t4wobYRREfR0fafDibIlOe+C9769g9WcYHhZd3R+KVGVsLWORUKWeI=
+	t=1786169986; cv=none; b=NIzIQHjwIcMlk0gCjyo9F4YIf+pEW0dNjRxIFFD5yrffH1yGH/R6DP1f3JZfencHXFVuzEwZkmZAWEXbDpUO8/gRaw9j3oKBdJSoAKiYRTXu1Mk6I0PyI62IwkHl95pRy06JsOUAgjPXuavyfGaIRceDX6o/gavKlZsppj72jWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786168271; c=relaxed/simple;
-	bh=AjeuuCqEyoYjE4ci6yTOZufut4JLGI/lWmyhdM5KiwU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IPkoVpOn0P7J2TFTXBrV1LvMxUL9Yn6IBPABqqnIypdhP0mJg7JcbIvKWmTkc7UD4griaEaOXoWRltDlB9pXAk0NWXhdvdoM2PaKwf24y5WXz7QtEiQ+4wX4gr6oXCKBcOJ5Tj2tKMU18n0L+55HN8Wq6aezrC47YSt6kb2vj54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=systemssoftware.dev; spf=pass smtp.mailfrom=systemssoftware.dev; dkim=pass (2048-bit key) header.d=systemssoftware.dev header.i=@systemssoftware.dev header.b=Y/k1fihX; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=systemssoftware.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=systemssoftware.dev
+	s=arc-20240116; t=1786169986; c=relaxed/simple;
+	bh=W11b7zco+e8P2IpKVXeEYVsW72hZWQbixLyrhVbiIaU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JuCnCDA74YVb91n7R1m0VfxS4MwXe9+0wF/+zXSdfn7VMYs7Y7BnKZQQBtg2LIazSJadH4zuDp85yzzeL6k6u3w5qbo1HMbLLfLxMXgB90oaIoKhiGJduA6YWIfHqt44LnApfV80xoWUFyHFrNDmYK6uZT+pk4Ob6aIyxjFIrME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jV9zj4J/; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=systemssoftware.dev header.i=@systemssoftware.dev header.b="Y/k1fihX"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=systemssoftware.dev;
-	s=key1; t=1786168265;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=GkulbZmOs+Mth+//HgBbAZCXbWi5X+zveQaLFheV+3w=;
-	b=Y/k1fihXWuDDMdpGfUY64PpSAcewF/r2/MdP76OvuL+IYJ6GTZLhDoSIHnKIHSGp/+pL4f
-	mQ+d4l5vlfjqIWSboLoFFwknxSmjHZU5ii30uvGbiSdoNLDdm07Klg5Z0zfa/hr/kq0I8g
-	s+gn5+KaUzkkWFjMzJCjB47eSNHwIAlIoWA8dioPkywMaLhMVe8qATwJifXTDR2aVwbctV
-	RMW3mAoPjzQJfuAIbj1f4S9+vgg66e7czrq4Ja/W7+mWCWFqN4lTG58pQfelNYjH0dEqjv
-	xv9RwGiR+11ujndZlbjyroz8SnancoE5qE2bWJYWGJS+eCTlZhqM6HNrz2Hi7g==
-From: Sainath Grandhi <sainathg@systemssoftware.dev>
-To: kvm@vger.kernel.org
-Cc: kvm-riscv@lists.infradead.org,
-	Andrew Jones <andrew.jones@linux.dev>,
-	Sainath Grandhi <sainathg@systemssoftware.dev>
-Subject: [kvm-unit-tests PATCH] riscv: Add Zicboz CBO.ZERO tests
-Date: Sat,  8 Aug 2026 05:50:40 +0000
-Message-ID: <20260808055040.2093-1-sainathg@systemssoftware.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jV9zj4J/"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cfbbdfa60bso2254075ad.3
+        for <kvm@vger.kernel.org>; Fri, 07 Aug 2026 23:19:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786169982; x=1786774782; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tf+JFvFnkhWNzBxADsggU6iInPDRTBZiIUNUWTJVRg4=;
+        b=jV9zj4J/Ukrkomz/YXWucF1b9fRd82lGh3gwQmRuqRXDEu+5snYN0q90w+u6cFACin
+         i7htb69Zrg2b53XQ7czQKl3JHPRcYswe85RhEELkcvgchaIMXQlsZXLb0my9ZHBiNs1s
+         hn2MFyn/Sv7b3OTiXYGoTX83UZM7ptG80iv/jH0JYfRIB4NzjJO8ldP4kl1eExxQPg9p
+         shV82j3A49TsqD9CuOuZVgta8y0ED+Y84ULwW7LnV9VOE2hWvbAM3bRLIERDtSdbvugk
+         bGaz9Reswz0fMUvve/kk2ij4JhTPXqn8Fi6V2k8heR4xZaYuGGTB2HOwihvFYCs3V3kn
+         G0gQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786169982; x=1786774782;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=tf+JFvFnkhWNzBxADsggU6iInPDRTBZiIUNUWTJVRg4=;
+        b=jKyAM3d4XATTaEbwLtCXTokGABwNA3osvaoYr+XwJEkm26D0hbXFotvVdf/qt3y0vN
+         k3atUHlQgC6sTYt/WIlrcd3A6BmMWR+pYmwWk+m3jgW1uDjr5eOa/tiduaCew4XjY/lh
+         SnXbgbBO+rTalEo/t4TSvlkdVEX2vPEupkYmKSEQkdMSB4jWCsIQUKQS7J5JBuPJvZ6P
+         o2wy9U/nc2odur0esGsuZmiM1Cq85LMqCKzB661sx4aJ7QLnLk7/pcdyA9pbU6Aem5Dr
+         qUKvl6XDUDYhbgcPuLXMLpQS02+tD6OxmcgLkzFNuSucV/+UTsSixyvJcZJcd944s+8B
+         7xxg==
+X-Forwarded-Encrypted: i=1; AHgh+RoBRoKyXzCDDANHLT2NyXtCrvot0qx16nEO2zF6WoptaVjqEhjbItEPTqg/ffnni/qJUZQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAUFykR9xid27s6alWktFxHV1NSoOAtWX6C8D20smLgM3pwx4o
+	9WnR2xfDY2Onv/aUdNXAnQbBmZGXQ/Fp0OWIr4zUDSi4RUNy0K08YhAa
+X-Gm-Gg: AR+sD13nf8T8Wh9GAPnX6XVfWRCMlL7Wb0z05fIRCIIy7TV3Z893UyCDUaE5oeL3uuT
+	WUL8HU/nfm41PpE5jZA0pzeAJvtt3MdNJfmNXvkPrGdWxDNRZ3N0jyE5j8M5IsgO4StLjDXsXnR
+	G75iALHsbkeHa5w2ZbM3VUwSmZIs8sOi07JlCZeEGvLLN5U4CcEQm10FH4l8EA7chsruCowQXLT
+	X2Vbfn7GEdjLR6AREX8yJvYAUSlyzusAMp+iKBpTVhDKbZXyiWeJN+7lbxsA6pyAsj6OCz0yeUF
+	OHeeIKunwdtwPbBZOAR11VvCqmpTxzRGPsH8WzMHvPXVSWDbb96U29c2xGTkUnVfI81kNO8RRTp
+	GVlCGpyENG+D1PBELD8l7SJrPulsbaZf5wtZySgMnKf1tox2CbF51r7FbrBWpWUq4htG+kiNZzn
+	juMY5THeIJdD9zFOrsyelXWRX4X5Gcnpl+/KUTT9y+49/V3ZIp+v0zTB23qHJaE70T3DsqOSpAr
+	A==
+X-Received: by 2002:a17:902:fd87:b0:2c7:f12d:5d37 with SMTP id d9443c01a7336-2d2a8d55b6dmr79068905ad.17.1786169981975;
+        Fri, 07 Aug 2026 23:19:41 -0700 (PDT)
+Received: from 10-86-27-207.ban-spse ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315bebdf796sm14356280eec.22.2026.08.07.23.19.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2026 23:19:41 -0700 (PDT)
+From: Gokul K <gokul02k@gmail.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: selftests: Fix the bounds of the SEV debug dst buffer check
+Date: Sat,  8 Aug 2026 11:49:34 +0530
+Message-ID: <20260808061934.400892-1-gokul02k@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -42,222 +75,63 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Add a test for CBO.ZERO when Zicboz is advertised. Read the cache-block
-size from riscv,cboz-block-size and allocate three aligned blocks.
-Execute CBO.ZERO at multiple offsets in the middle block and verify that
-the containing block is zeroed while the adjacent blocks remain
-unchanged.
+validate_dst() is passed a starting offset and a byte count, but bounds
+its loop with "i < nr_bytes", comparing the offset against the count
+rather than against offset + nr_bytes.  Only calls that pass offset 0
+check the region they were asked to check.  Every other call checks too
+few bytes, and any call whose offset is >= the count returns without
+checking anything at all.
 
-Skip the test when Zicboz is unavailable.
+Of the 1990 validate_dst() calls a full run makes per VM type, 740 (37%)
+check zero bytes, only the 29 zero-offset calls are correct, and 62% of
+the intended bytes are checked overall.  The unaligned offsets the sweep
+deliberately picks to exercise partial chunks are precisely the ones
+that end up checking nothing.
 
-Signed-off-by: Sainath Grandhi <sainathg@systemssoftware.dev>
+The bug is latent today: validate_buffers() runs first and compares all
+of src[] against dst[], so a genuine {en,de}crypt corruption is still
+caught.  That is presumably why this went unnoticed.
+
+Bound the loop with offset + nr_bytes, and rename the parameter to
+offset so it cannot be mistaken for a length again.  The caller already
+guarantees offset + nr_bytes <= BUFFER_SIZE, so the corrected loop stays
+in bounds.
+
+Fixes: 6edd35e77a42 ("KVM: selftests: Add a test to verify SEV {en,de}crypt debug ioctls")
+Signed-off-by: Gokul K <gokul02k@gmail.com>
 ---
- riscv/Makefile      |   1 +
- riscv/isa-zicboz.c  | 168 ++++++++++++++++++++++++++++++++++++++++++++
- riscv/unittests.cfg |   4 ++
- 3 files changed, 173 insertions(+)
- create mode 100644 riscv/isa-zicboz.c
+Compile-tested only: this host has no SEV (kvm_amd sev=N, no /dev/sev), so
+the test SKIPs here rather than running.
 
-diff --git a/riscv/Makefile b/riscv/Makefile
-index 348a30a7..f4a97575 100644
---- a/riscv/Makefile
-+++ b/riscv/Makefile
-@@ -15,6 +15,7 @@ tests += $(TEST_DIR)/sbi.$(exe)
- tests += $(TEST_DIR)/selftest.$(exe)
- tests += $(TEST_DIR)/sieve.$(exe)
- tests += $(TEST_DIR)/isa-dbltrp.$(exe)
-+tests += $(TEST_DIR)/isa-zicboz.$(exe)
+The figures above come from replaying the exact offset/size sweep of
+__test_sev_dbg() and test_sev_dbg() outside the kernel against both the
+current and the corrected loop.  Injecting a single-byte corruption at every
+position the check is supposed to cover, the current loop detects 62% of them
+and the corrected loop detects all of them.
+
+ tools/testing/selftests/kvm/x86/sev_dbg_test.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/tools/testing/selftests/kvm/x86/sev_dbg_test.c b/tools/testing/selftests/kvm/x86/sev_dbg_test.c
+index eaa8201b937d..0277e38e3556 100644
+--- a/tools/testing/selftests/kvm/x86/sev_dbg_test.c
++++ b/tools/testing/selftests/kvm/x86/sev_dbg_test.c
+@@ -14,9 +14,11 @@ static u8 *data;
+ static u8 src[BUFFER_SIZE] __aligned(PAGE_SIZE);
+ static u8 dst[BUFFER_SIZE] __aligned(PAGE_SIZE);
  
- all: $(tests)
- 
-diff --git a/riscv/isa-zicboz.c b/riscv/isa-zicboz.c
-new file mode 100644
-index 00000000..76a2d209
---- /dev/null
-+++ b/riscv/isa-zicboz.c
-@@ -0,0 +1,168 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Zicboz cache-block-zero instruction tests
-+ *
-+ * Copyright (C) 2026, Sainath Grandhi <sainathg@systemssoftware.dev>
-+ */
-+#include <alloc.h>
-+#include <devicetree.h>
-+#include <libcflat.h>
-+#include <string.h>
+-static void validate_dst(int i, int nr_bytes, u8 pattern)
++static void validate_dst(int offset, int nr_bytes, u8 pattern)
+ {
+-	for ( ; i < nr_bytes; i++)
++	int i;
 +
-+#include <asm/isa.h>
-+#include <asm/processor.h>
-+
-+#define GUARD_BEFORE_PATTERN	0xa5
-+#define TARGET_PATTERN		0x5a
-+#define GUARD_AFTER_PATTERN	0x3c
-+
-+struct zicboz_info {
-+	u64 hartid;
-+	u32 block_size;
-+	int property_len;
-+	bool found;
-+};
-+
-+static void find_zicboz_block_size(int cpu_node, u64 hartid, void *data)
-+{
-+	struct zicboz_info *info = data;
-+	const fdt32_t *property;
-+	int len;
-+
-+	if (hartid != info->hartid)
-+		return;
-+
-+	property = fdt_getprop(dt_fdt(), cpu_node,
-+			       "riscv,cboz-block-size", &len);
-+	if (!property)
-+		return;
-+
-+	info->found = true;
-+	info->property_len = len;
-+	if (len == sizeof(*property))
-+		info->block_size = fdt32_to_cpu(*property);
-+}
-+
-+static bool get_zicboz_block_size(size_t *block_size)
-+{
-+	struct zicboz_info info = {
-+		.hartid = current_thread_info()->hartid,
-+	};
-+	int ret;
-+
-+	ret = dt_for_each_cpu_node(find_zicboz_block_size, &info);
-+	if (ret) {
-+		report_fail("failed to walk CPU nodes: %s", fdt_strerror(ret));
-+		return false;
-+	}
-+
-+	if (!info.found) {
-+		report_fail("riscv,cboz-block-size is missing");
-+		return false;
-+	}
-+
-+	if (info.property_len != sizeof(fdt32_t)) {
-+		report_fail("riscv,cboz-block-size has invalid length %d",
-+			    info.property_len);
-+		return false;
-+	}
-+
-+	if (!is_power_of_2(info.block_size)) {
-+		report_fail("invalid CBO.ZERO block size %u", info.block_size);
-+		return false;
-+	}
-+
-+	*block_size = info.block_size;
-+	return true;
-+}
-+
-+static inline void cbo_zero(void *address)
-+{
-+	asm volatile(".option push\n"
-+		".option arch, +zicboz\n"
-+		"cbo.zero 0(%0)\n"
-+		".option pop\n"
-+		:
-+		: "r" (address)
-+		: "memory");
-+}
-+
-+static bool block_has_value(const u8 *block, size_t block_size, u8 value)
-+{
-+	size_t i;
-+
-+	for (i = 0; i < block_size; i++) {
-+		if (block[i] != value)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
-+static void test_cbo_zero_at_offset(u8 *area, size_t block_size,
-+				    size_t offset, const char *name)
-+{
-+	u8 *guard_before = area;
-+	u8 *target = guard_before + block_size;
-+	u8 *guard_after = target + block_size;
-+
-+	report_prefix_push(name);
-+
-+	memset(guard_before, GUARD_BEFORE_PATTERN, block_size);
-+	memset(target, TARGET_PATTERN, block_size);
-+	memset(guard_after, GUARD_AFTER_PATTERN, block_size);
-+
-+	cbo_zero(target + offset);
-+	asm volatile("fence rw, rw" ::: "memory");
-+
-+	report(block_has_value(target, block_size, 0),
-+	       "target block was zeroed");
-+	report(block_has_value(guard_before, block_size,
-+			       GUARD_BEFORE_PATTERN),
-+	       "preceding block was preserved");
-+	report(block_has_value(guard_after, block_size,
-+			       GUARD_AFTER_PATTERN),
-+	       "following block was preserved");
-+
-+	report_prefix_pop();
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	size_t block_size;
-+	u8 *area;
-+
-+	report_prefix_push("zicboz");
-+
-+	if (!dt_available()) {
-+		report_skip("device tree is not available");
-+		goto out;
-+	}
-+
-+	if (!has_ext("zicboz")) {
-+		report_skip("Zicboz is not available");
-+		goto out;
-+	}
-+
-+	if (!get_zicboz_block_size(&block_size))
-+		goto out;
-+
-+	report_info("CBO.ZERO block size is %lu bytes",
-+		    (unsigned long)block_size);
-+
-+	area = memalign(block_size, 3 * block_size);
-+
-+	/* Every address within a block must select the same containing block. */
-+	test_cbo_zero_at_offset(area, block_size, 0, "block-start");
-+	test_cbo_zero_at_offset(area, block_size, 1, "second-byte");
-+	test_cbo_zero_at_offset(area, block_size, block_size / 2,
-+				"block-middle");
-+	test_cbo_zero_at_offset(area, block_size, block_size - 1,
-+				"block-end");
-+
-+	free(area);
-+
-+out:
-+	report_prefix_pop();
-+	return report_summary();
-+}
-diff --git a/riscv/unittests.cfg b/riscv/unittests.cfg
-index 9e9f58d9..30594fe5 100644
---- a/riscv/unittests.cfg
-+++ b/riscv/unittests.cfg
-@@ -22,3 +22,7 @@ groups = sbi
- [dbltrp]
- file = isa-dbltrp.flat
- groups = isa sbi
-+
-+[zicboz]
-+file = isa-zicboz.flat
-+groups = isa
++	for (i = offset; i < offset + nr_bytes; i++)
+ 		TEST_ASSERT(dst[i] == pattern,
+ 			    "Expected 0x%x at byte %u, got 0x%x",
+ 			    pattern, i, dst[i]);
 -- 
-2.53.0
+2.54.0
+
 
