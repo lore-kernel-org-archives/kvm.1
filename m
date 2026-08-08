@@ -1,54 +1,50 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212421E2834;
-	Sat,  8 Aug 2026 15:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4340721254B;
+	Sat,  8 Aug 2026 15:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786201624; cv=none; b=W3dCLiOqbvaBscdwhfaxJo9se0StenWqQWc1nxnC3q7ZBZ6nX9kqPhkO0ZmD7MFa1nQPpQMHJGcCU3Sy/X3akpXFvTvejnd6DYxUVuy28Yoaq6VzSVTSrZOSw0YXbdoLkFVSSYmfp6ZLjtbnXVmWGeVOBQf+E8kClpwVHLmu7tI=
+	t=1786201733; cv=none; b=eYk1effTrlP3QVlrJcuxVry68aHt39JL++0kbSR6zK4C06FiNO5tVdbYiY9SIga2G2UlZYJhpfBR7uR/TZVOej4BMaXLRP3S0RYKY8Hxiq6xK6Jtu01MsCExhDRUqS4MyzwZ5/sNff1jLoeS3ypMyFXzwPw4OrxcuxFlYXT0v/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786201624; c=relaxed/simple;
-	bh=Fbbn9MQ4G6MUWNu9/+/GjCMrKWLmyryuw2S3ABmDA6I=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
-	 MIME-Version; b=LdDh4hMZoT4XjhAkyOlzj/Qf23Zlp4hS1st85+Q5kzoflOXTPMv6NyeWPiMVsiQKnkC6fvFm28ehXx69TTMlgIGqpgLoKRGYG1Fq5yvEG1NwzT/awyTyIEApsIXUxNno3wLIDsTaAdTP0X7uammfSBzH2N7DSO4tkXWMg+LX334=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=YoP6gRks; arc=none smtp.client-ip=90.155.50.34
+	s=arc-20240116; t=1786201733; c=relaxed/simple;
+	bh=pg23t9+Cq9349ummgjLXRokranw6YorDiUashfy7AcM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YZjdjiqb5yuRoMc03nvr7YNOPIZWxTwm33z3WS/+g9VH0+pGTXd4rCKeP5LdbrOC9wIAybCuBpd6aWQY0YqGQEuBT039HR90rgLt8JhuvVI32Sh1Cgmn9o/Rhkti/GwI8mLX5NZFWsrwYHghFRya3KxyT+OaqDe0Wt54SAvB0dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ch6LXmae; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="YoP6gRks"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ch6LXmae"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
-	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=5/jyAha6D+U5zzU3W+cCpJ3j4Z4I6ySL2lxtV4bdMdQ=; b=YoP6gRksn/p59tVjUCAEqmph19
-	weP9rQo8AlW5WV2KQS0n5f4YHgiz2Pl+8aPdOGfzFhagy5y5Ssii1oWx+2ScxbgznxW9qpWhhA/0A
-	ajwu5drZGj+3XNpCbCT46fXxUbrOlkD2uJ83sZVbE1SzC7/Di1WJW6k7VapxZ+2HdMQAaQlznVIEV
-	+UQAWE1PdzjUoASLyv+2+mTRbnshLC2mqyc36EQJN0F4qjxxBpnPX2O1viAXFperEWI4HRTjeTjR6
-	xIeK1PAAwGivwf9G5AboB23MahXCwnXhFTAhLz7GC1wb64934IM9q5kZI67h4UKuWxz1s50LqEWAp
-	oaelbJ3g==;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=pg23t9+Cq9349ummgjLXRokranw6YorDiUashfy7AcM=; b=ch6LXmaexPUu+upV1Xwjp0mRsQ
+	8FtHySERpun5SV3+D0qZVsSzJjcEz0/Q7H2XXYSZNf1zSDJvMuY7W7KBDtvlrFc8YoIztcX60Wmn8
+	R/QWsqv39lg0L0WanYyjeOgjNfePPzXap69mXAcF0GPqPKkswVzX5sSK+KX6E+y424MGfCpf+yRNY
+	MHNRckb7cDS6X9i6+ED+Se97MFMDrh6O1GauQjvwmx9qY3gAzU9xh+YBRHKNfFB6l+V1KIZb6HJ7D
+	HgtDuhYtE43vnRW++0xzsLU9dFHEc92JBfYbsxtcERAePiC9N6M8wBVFEcXwtaFm8YMSdX95+DBzw
+	6n0oMnTw==;
 Received: from [54.239.6.187] (helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wsidV-00000006ZMH-1xgd;
-	Sat, 08 Aug 2026 15:06:57 +0000
-Message-ID: <908a4fd0ec4498c907decfd105e1662fb4ce19eb.camel@infradead.org>
-Subject: Re: [PATCH v6 24/51] x86/kvm: Get CPU base frequency from CPUID
- when it's available
+	id 1wsifK-00000006ZSG-1WZl;
+	Sat, 08 Aug 2026 15:08:50 +0000
+Message-ID: <7c34aa00b566822c257c52c4b398809354f88bf8.camel@infradead.org>
+Subject: Re: [PATCH v8 05/17] KVM: x86: Avoid NTP frequency skew for KVM
+ clock on 32-bit host
 From: David Woodhouse <dwmw2@infradead.org>
-To: seanjc@google.com
-Cc: kas@kernel.org, rick.p.edgecombe@intel.com, pbonzini@redhat.com, 
-	kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, 	longli@microsoft.com, ajay.kaher@broadcom.com,
- alexey.makhalov@broadcom.com, 	jan.kiszka@siemens.com,
- dave.hansen@linux.intel.com, luto@kernel.org, 	peterz@infradead.org,
- jgross@suse.com, daniel.lezcano@kernel.org, tglx@kernel.org, 
-	jstultz@google.com, x86@kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org
-Date: Sat, 08 Aug 2026 16:06:56 +0100
-In-Reply-To: <20260806233609.212337-25-seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Date: Sat, 08 Aug 2026 16:08:49 +0100
+In-Reply-To: <9D3BEB2D-1FC8-4607-BB92-8C26F138985A@infradead.org>
+References: <20260804233923.3504629-1-seanjc@google.com>
+	 <20260804233923.3504629-6-seanjc@google.com>
+	 <20260805000221.B63F61F00A3A@smtp.kernel.org> <anN_J_KZhVJ1zIeI@google.com>
+	 <anUmdhx0Dh-yd89z@google.com> <anYBYu4rx-jCv8gr@google.com>
+	 <9D3BEB2D-1FC8-4607-BB92-8C26F138985A@infradead.org>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-5qVG4UC9E8Q5nQrvV8Pq"
+	boundary="=-e+Lv7gzkh1GBFcKbaHyg"
 User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,25 +55,30 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-5qVG4UC9E8Q5nQrvV8Pq
+--=-e+Lv7gzkh1GBFcKbaHyg
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2026-08-06 at 16:35 -0700, Sean Christopherson wrote:
-> If CPUID.0x16 is present and valid, use the CPU frequency provided by
-> CPUID instead of assuming that the virtual CPU runs at the same
-> frequency as TSC and/or kvmclock.  Back before constant TSCs were a
-> thing, treating the TSC and CPU frequencies as one and the same was
-> somewhat reasonable, but now it's nonsensical, especially if the
-> hypervisor explicitly enumerates the CPU frequency.
->
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+On Fri, 2026-08-07 at 18:26 +0100, David Woodhouse wrote:
+> (Home and on the phone after an insane week; full attention span
+> might be limited until Monday).
 
-I still don't think I care about Sashiko's complaint.
+Hi, my name is Dave and I'm an addict...
 
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+> The only reason the ktime snapshot stuff is last in the series is
+> because I did that work on the kernel's core timekeeping two years
+> after the rest of the series, and it was still sitting at the tip
+> branch at the time so I didn't want to make it a hard dependency for
+> the kvmclock series. Now the timekeeping stuff is merged we can fold
+> it all into the kvmclock series however we like.
 
---=-5qVG4UC9E8Q5nQrvV8Pq
+I think that goes for "Compute kvmclock base without pvclock_gtod_data"
+too. It *isn't* at the end of the series, but I'm fairly sure (from
+memory) that it's one of the newer commits, and I just shuffled it
+earlier in the series for very similar reasons to the ones you're
+looking at now.
+
+--=-e+Lv7gzkh1GBFcKbaHyg
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -175,22 +176,22 @@ vFEOOmuaq7VamuLEPFQtJM4olmipOW6CzrLcFz6J/6yAecEG3P1ZDoy08eSHvM40MAUgpwGa/w6o
 MAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTowOAYDVQQDEzFEaWdpQ2VydCBB
 c3N1cmVkIEcyIFNNSU1FIFJTQTQwOTYgU0hBMzg0IDIwMjQgQ0ExAhADNSi2uzJskfEdOMo4hV0g
 MA0GCWCGSAFlAwQCAQUAoIIBezAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNjA4MDgxNTA2NTZaMC8GCSqGSIb3DQEJBDEiBCAkPGP3r5uT4tS4OGDg5LaRCyG2yz/P
-/Lwudtzg4ZoebTCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
+BTEPFw0yNjA4MDgxNTA4NDlaMC8GCSqGSIb3DQEJBDEiBCDCsLLfWwOpwZyRFZdszW9NlcQMVnIm
+jzwKtidovAptLDCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
 aUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBT
 SEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAwgYcGCyqGSIb3DQEJEAILMXigdjBiMQsw
 CQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFz
 c3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAw
-DQYJKoZIhvcNAQEBBQAEggIAuRtAu48d3cDEH8Yyruawqxjo+2bBjXqiN17kaxj+u6IcLAW0Nrdo
-nzxRSU7g63188lVFEYlyVH1mR8e/jnhuLNbISNodetQLsVn48QsKDnvjTf03Qg8EfWMW2Q9XPflg
-ujjMSLOjY+oy5TCeXl1MiYwiYhOnWAMOikQybdXiN4yKyu8d7Gkydo8xr8ru8/a0TF2KKhfu3I1d
-2xkI268NxH6+Cv9y5+bGCHzpe9uLgPsEbl59gRqxfxGFniNgDb1s9nmrA0sHNkZ8USM/MDh/KsrM
-qWJWvxLIurJ+Xn7Y9irqlMbA+JP7v6yMYDH2QAHMvxVpw4iaIo0L7UCAFb37/HI6YK7Trdk1GJgF
-HAshq0ZDzPYkkNFl3HBbQldIf4Jy3Eu8QiizlbiiDOvp4HqKCgS0bnBtcjHtx86Ord4r/mzm04qY
-8HDk7icEUoMyxTMJlntkJCEtLvBfQ0SkEACFQmxcXDqaI/EqUzt4YuNYdo7Tp2GAeCyYIDdDMI4H
-ELDUg1Q+jdabA45cKulihQLMEC/5aOkrJGZaPeSwx1uueapFNBUUHdSwIMeXuUdrjVm9IcLgum3c
-YfU7Cd9T4E0dqkggIiLcvkwBSeKK4Ev3lDN6cNSSNzRRQbWp8aMqd6eIh5r9zVWMgsJwnB0UEjBs
-snTppZI8KQqD0ALD+ClLQUYAAAAAAAA=
+DQYJKoZIhvcNAQEBBQAEggIAZBM5FNYvBQm7sNgPNLnhl+opkA4D3KJu8PfIGStpWXVIm//opc32
+0cgi2WGbWdAjpFFuqCebq0QoxWitqaNlPYGV5krY9i6Z2JFd4jATBsZ8IvqKJ58M5eb6Tjg0tGn/
+z57IhAOZPF35z7A06MOtH1Ev5EI1X4zp5qEMqUkDH1ZcGE/l0PwxL+T18lIgbV3f8Byo2jvq32j1
+QBHccCEY49n4jOZGcHcNKPz59J1ts421CGTRoZ5CNI2hfY9nb5+yjhgyakbVAfCm+ZOz5f8JEWII
+Obi3+67Rf/HdNYIqE2EQDdAUCyDg6I+mTm8qLJeMbB9nuYSHQNR1DMW5N092Egkl87gcQMl+JgKZ
+KeicixRKdJac0uMoKDyjsJ4V0/bCLNizCnaJy+VltDMJD/AdWlqcK9/XnUZRmVUEH+fDOPf83ipt
+ohCdWseTCGdLm+jAm9sb6mmtnlUi+RZyHzL6XddT0SNjKOFwNSg8Tkjs1L61nAychdsHliW84Ixm
+c0ar1Cu5VVUBoLQZU81OwtYOIgbRVHlYYshfjOAEI+LScpES/LlzRMjaZ4Fa7+5QhKE+W1X/TOs7
+SNoxwYFFiyaWFyCy4asncw7kvLV8sDLtWDG9/bs5hA3DuGhw8NbgX3FsJ3WbDrC93+/FDBSBM0M9
+RrH3KguFk9q0+CdFJahdEjEAAAAAAAA=
 
 
---=-5qVG4UC9E8Q5nQrvV8Pq--
+--=-e+Lv7gzkh1GBFcKbaHyg--
