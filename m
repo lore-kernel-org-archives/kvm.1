@@ -1,164 +1,194 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C502735B137
-	for <kvm@vger.kernel.org>; Sat,  8 Aug 2026 13:38:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85D03B2FFE
+	for <kvm@vger.kernel.org>; Sat,  8 Aug 2026 13:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786196321; cv=pass; b=tJwZDJOpymhH0uhaTcHJ5dDCB/IcPp9lhTgWEQZAhGcPd4rIJsnUusT3i+1kKLE2xBwKgh95NEseRMw26eqE3lCRTG8F5B6fui+tzjE4JLJyhg14ry/0+MNsmhcfeedopnlQ0mc08TFeF/0zDnhC654yKlYmWI+KRYYSC5zcI7Q=
+	t=1786197221; cv=pass; b=BlhexUT8kviXMLm9G4m3uzQE/I4paMTt1CmKpGRpK4X+Pw29vTHwpyieI4zrXlVUrkyo6C4BMSJno/uKgpXSNpzaO7dHLYT94Ygl4T2kLm9rQis5fWlKR8PYTJ/UoMtpp3xS7Av23vn3n5StFGenyljKAjKyeVAh9S+ikH+yS0E=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786196321; c=relaxed/simple;
-	bh=71wg+Yx9OeDKkrBSUO/2kzZynVoRWwKwtzXMdscHdNM=;
+	s=arc-20240116; t=1786197221; c=relaxed/simple;
+	bh=zdZzMBzY0Vtf9x9oXrd2/FR6qg1HhMz6+KTWPAYIhVI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KjYykCURRiNZzRLkTK7hQRcIIv27hcJ9KwDBSkoaTJ1TDXtliP8BK+3VSaAHVWrfjjY/nhbyzmQicMC2cpu4R7rgrkuKBVASL0IeA37QP8U+134RBJ763PKFLqMwRmQ/F2alp9D1jpv3fc/E5OoRqjwknnOhEbSGkZABGwZfHe8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=khhJ1WJD; arc=pass smtp.client-ip=209.85.221.46
+	 To:Cc:Content-Type; b=svwsgf6XkjmKoso6WWpFo2g7PlK8dQw7J9vh2DEKZMDu0A1zVu64cTO8RhsVBYK9REd3o+4EHhSP4WBj41WOYh2WJ8ZXg3s7ZMUevzFnw7pTug120AIXYY0Iq1ILvesj0DtewkHYiSB8i7Vi0jmkmNiHD6N54TqjsU1+TYuiAwk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=XEXkREdU; arc=pass smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="khhJ1WJD"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-47fde295992so314396f8f.0
-        for <kvm@vger.kernel.org>; Sat, 08 Aug 2026 06:38:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786196318; cv=none;
+	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="XEXkREdU"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-495590dde14so4822955e9.0
+        for <kvm@vger.kernel.org>; Sat, 08 Aug 2026 06:53:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786197218; cv=none;
         d=google.com; s=arc-20260327;
-        b=mdldBNrnT2T+Qfnkc0NaMx5btMivgvf4n0SkXhpCjrVhY8ijz7MWCOsQ8/rGmUZSLQ
-         fdZWddZ/O+XUuHGeKdoSaK3uAE4dLDzxNb/a/ypce5xeNMdE+q6REou+k/IqleR+uami
-         OO2MOmXUb9m3JbjqK9fSFvIyoUfMabWNERT8gQO8WTjsiEPHU6N3SE9Yt/dX5xuKpD51
-         A7lxCS1d1YIcbCUiqtf8vby30c7Uh2YtM1Esj+tJ6LiKQzRvZQWH4pCANoGBy4vdguNM
-         j2rjGbOqg5AOGAUzd8yFrR1+RGgF5dKuCQxP6fgnaZbsvIYCib5P0Ek0jkkyF71nDsV5
-         dHKQ==
+        b=dzmGh04XcidoncKtztnTi46cvUB01F9kiuME5EfjgZ0RYOkAiqWEVIoUdQ9wgpF+aD
+         S5dlkVrRcIWg2XRT+LGtLPVG/fpURwCvyno/3szxC9coVmz+HsYjWRnNcMhsh/etwgyP
+         m8gtHAi8hjRVyS6viser1RwMFkW6Ci2cvsb8YCdeMb5uPsVMP8AYyNxfDCp8pd+AEmST
+         BSteD26eJaeNR5D0t6eOEls57NwxJ4xexO6wLBIr5PateZLESk7b0XWT0JRHhytln2pb
+         IPvXmuZT4zysB3L77Crm+wa01Ivx7985825Hc4QulGe1uiGn1AZDlLyyG6MZNYO+SM2O
+         SXHg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=LfZyWZCjJ1leqVfT0SG7I+7umcPy1TcL4EPeJOs9ZU8=;
-        fh=BNVBoTKk4d4/xLoqOat8aGiFZ7RmpFVPyAN12OkpNXY=;
-        b=WyHiy988ysRJEoJ2jh7pj9ySdHoA2gxngEQZorbbkWKsOriUXzR10O/oV2Q0nbSPGu
-         sVSrbDdqt/e/3HC0n6gOaO1XhSdvjFwft/8dA/m+kdEbNV3vZIAxJDHyy2vLPVEJFZz5
-         beLF7vqtXCL49CxHYBqBqcs1EyOPM4TOdU6x81YO8nNSKIyJXh7oF9PNa6OHV8OxM/3C
-         S6vG3KTVymKBtwVJRXpDQfatMqilWMQxsu4LXOzVRlmrW+vXIpx3OdnzZkwGjh5Of85u
-         n2UQJfs9QGHpjWFzZWysp5kcqbanpac0rFKyjqc2ijqnHaLl9Sw7XNgZJ1AWqMBkECUB
-         43Jw==;
+        bh=74xYgEIE8mnG78Ys3tNqrS7etwpa5hK5YHhCulGv8uw=;
+        fh=vSd00oAeF8eQZqREo7MdDMNxEVCArI2M1Dlj0Oh6ZWs=;
+        b=KkjH0X5MkxB2sPEPwHbUSJbqGTyR8AaCY0960+WeYWX/nUkaHpdHn+b5glbGut4TNL
+         grPEzmhQejS6Wl8h9PINj9yz2/3OTJX2RRW5/rhwiDDBOdYwYGfCm42lvoQNIvltHRnd
+         3mLTXlJ9+Culfs1HD36wdrCI99Nx6lMRIydCC0xSWo7eO3B1Na7z6kNcb+9m7PSziYfE
+         v6+/Xm6Um0530H+H+XXQM8S9l+EX5PmpRxRRYIuku9+R4fzmh4sg/PvS3vSWNdNIft3x
+         QPpx1kXJnzzX5dBbHU5KQ52JCOki9yB5BA+NOY516dTBnsdu0isvj6YCJTC+wvNHkNr1
+         qHKw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1786196318; x=1786801118; darn=vger.kernel.org;
+        d=brainfault.org; s=google; t=1786197218; x=1786802018; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=LfZyWZCjJ1leqVfT0SG7I+7umcPy1TcL4EPeJOs9ZU8=;
-        b=khhJ1WJDczt2RWIekDh2IxOrvdWhLjoMzqGCQVEIvPqFePLrF8UB9/XWtkaKFxM6ot
-         2ohe8ATX/TTMXM3AoNxmweJvdTOJLyHOsuLVwVtXo1UszgGAd5Lo17Q+FXWDLGeuq40g
-         GE8qo644YPVCtGdqHOh4G9UPjmJNy0AXNUdhPkqKWAQZgYby3/+4BRUOuaj4yy6B0+R4
-         GHx/F0b7OfLA+eXOor4MtQY21kOjQU6W5WfxCCGAzyWsnKhjzy9ZqS5G/l7bekl/REj5
-         ec1F2nuhxRkximtsr7rqgsBYbNm/S8zwEgrE7nXVy+cCI+RKcgTCuJXVlbHkgE2aVGAJ
-         FSfw==
+        bh=74xYgEIE8mnG78Ys3tNqrS7etwpa5hK5YHhCulGv8uw=;
+        b=XEXkREdUyXUM0QCXOQvecJXSkVOBj9JaEAvWw4yi5yhwoGdslpz4rFV32GoBwBko1o
+         fkNBlQpG4ai0vH3ucU6AblfX2aFwzMZKuD9xH/zIh6bKiz19aOPejZkETHTSMvDW7R3u
+         2bF4JV/dfZ707b+ZTbn78haNlT/rkejay1XhwRkwn+O0O6ACRCVwcqqHyqQK67bdBc4c
+         YegjxRb1z6wk01U2GEYoc4xyH/F3tjIWzPmHUS7gROVjRB+B2qYaj1qBiS8p4s8PUXYf
+         g/J0jr5pOvXgXSooCK5QdyKBN3UyU9/JAF7NimG9Uh11Q0moDTGqB6IpGO3Kg4sSJExW
+         qQzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786196318; x=1786801118;
+        d=1e100.net; s=20251104; t=1786197218; x=1786802018;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LfZyWZCjJ1leqVfT0SG7I+7umcPy1TcL4EPeJOs9ZU8=;
-        b=DfSyc88rsnmac7L2zODkOaT6ScTeqVPEFnWVFLH2EfK57UTWC8/2Y31knqtr5JD6e6
-         EPlG0zCOwYyLJJLHiw8tYbKKKQbq35PSR281q6cn06eE8E29xkx9aChORqf7O/cdhcvz
-         7IqcNAia+zNCYT/wRkklMCH+1qcpF5XcoRsbTYzOfzQGs9PZHL2mZpyv5fXHGTEX4aR2
-         ZYoPvtrn8gRM1LepVZve8+oEgfTqXUEe7Cpfz97vtKtDi8UqW2HQrGkXiTtk6YKNxjA3
-         ECXPJtPdqQozlPso0XZ2K+lUaCm7HUUqs7OP4sNom9umxFUkRUk4eBEflo3mw14Q3BL7
-         1Twg==
-X-Forwarded-Encrypted: i=1; AHgh+RoueV6SoWNzcjrhckV2LA4Ay5S1TgLOWJka2kYSvrW9SSehKSna4jm8ENwYp+NfCv/M0i0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNO4HTr2QuW/d9t9ySM071sJk30PDEBx5bQu5oYu6xTxL6GCbQ
-	3ScDfnWARErF9swB9YOPAc4gpARfexTdgayLc0bj81UFC9DfAGjwU987WS7oews2RFRfrr/3aid
-	u0p3taJ561nndIoIvlinIV3ksFIZcmuHz73q9gKibNQ==
-X-Gm-Gg: AR+sD12WniqMUAkWP2bOGUeJXhyyp7SNGex5vr9WLFXfijhebkVChFSTpybiMOIy9zT
-	+rrQZx1AnaHLBD6pXxk6Xk+3dunSK5A3zqI/GkzJuz5p9UB2ZNmhD7xg5vFmxYG/nMrFWfhCLlh
-	zZEDuTe6XNS4JD+OQBrkZExqCPH1wHkR5oQEGOX9O5hZwIpmpZOGx9/IcKLIPmIL9sV4xsSAFEl
-	2jwum15zBIjUEByGGwYT1CW9RyDKoRfJAm4lw2K/IRVh0oeRJI6Wg+niitLVpepO+kGKyebq+t7
-	nArSX4Wtg0x7HUDBfo5/v6gdgGuTMVn1j8yXXuCdhmpc5KfZaP1rll9fbwqDidmJYkotp1AdwUX
-	TP8G7P53nlrzdMt6pONQsPi7a1DgIWzRBu+UdC/zgC9/9Xen5IoF5oSGLHcgUCH0=
-X-Received: by 2002:a05:6000:1887:b0:47f:ec53:1d2d with SMTP id
- ffacd0b85a97d-481319549ddmr7552590f8f.7.1786196318049; Sat, 08 Aug 2026
- 06:38:38 -0700 (PDT)
+        bh=74xYgEIE8mnG78Ys3tNqrS7etwpa5hK5YHhCulGv8uw=;
+        b=OXnSFXR2ppM2xBW416zP45UIgNjiGkfWPslOa0cZPZwW3l1g6WaQ63aHlpJOYT7u+2
+         apSFCvf07W6Cu94ZpOqCh5jMQ9peaZKnDNS4avN0HaRSBDN0xHNBzGdWujs2HEtkJM9I
+         6UNv3cockbrf8h7in0g8QHRUUtqlpDbTmH6xlBDp/KPulWToy3SAKCtV8AxEjOmmSz8g
+         SmBUnRLLZw8YKfb7GGZHHrdyqLBtYtTcZC1ysYSK1x1pmu2gXAbg1FXczRseWDL++lQy
+         wQ5edgqSheTfrLFR0uKU9DARcppNpcF1Y4pqXlQSwy+jg9Ju2T/cZKAgO+rpVh9EoFZ8
+         H9KQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrF8WEoVTjPRHsL9e/Xp5aec0VhRFjENWTGXviAJVymIM5aFHtmF9Lqxc1SsPVpC2ycKHo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmdTrh8lFCCd0IgcwclovaTUAH4NiOkYNEZVXPOxmT1WXvMHEz
+	fPT5vcaTF5Z22eI5FWRg8BFtZIJ46K3bRNMuDijAoTxTCR7buT86gxOYt4bNNb/cN48Z577GiWH
+	DKSWObqvkJVaQGJ5wHLbSHkpNi5TsUoBoDYZloV6tCo8dffr5WlvauUg=
+X-Gm-Gg: AR+sD12JuJbdmomIK7geyeqprfsw9bkRFj1qU6g6bivbjXLtKQM7sOa0+8PYrhz3aHp
+	VNRo+g7N8rIPLZKaINfYU6SYAeADC71Xa+nUTWYJvWfsJkjElvBfynIpUbSqjaz8U/PrdZaZPXh
+	+RO/mWGIvRXjXfoHViRPG0ZTT5iSxweH1DbV6l/k0TpyLOk6crpBJTyaJiFE6yB6NJQxty034RM
+	IHNK3/7YiUoPb3jNshIHOv4XmML2029mJlBCp8Ub61jyNUjNeuYWsG2ru376nfqAsdb3OalGKjv
+	jlviiAyvF3jIh6d6qPD0/jLUr7agWNziP0bvmato5mpeszVC19AgGKBZJ+1hMku9ZdF9hddCFK3
+	OFpBqqtHMzS7myb7sRa+ZreIkv1zIuU990cOm+MzUkRsSPcTv34pyt1O/oozozYI=
+X-Received: by 2002:a05:600c:35c8:b0:499:593b:a15b with SMTP id
+ 5b1f17b1804b1-499593ba192mr238069085e9.1.1786197218018; Sat, 08 Aug 2026
+ 06:53:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260721073612.137259-1-xb@ultrarisc.com>
-In-Reply-To: <20260721073612.137259-1-xb@ultrarisc.com>
+References: <20260721-kvm-cpu-pm-v4-0-146bf942547d@sifive.com> <20260721-kvm-cpu-pm-v4-1-146bf942547d@sifive.com>
+In-Reply-To: <20260721-kvm-cpu-pm-v4-1-146bf942547d@sifive.com>
 From: Anup Patel <anup@brainfault.org>
-Date: Sat, 8 Aug 2026 19:08:26 +0530
-X-Gm-Features: AUfX_mzyJKN77fdCLGM6gmkcr4GuDsVCUAGD0eNJkavB7H9aI1HM5JR4BzibWXc
-Message-ID: <CAAhSdy3kDmRxcT_+dOpcUVAkvZ-F0kWdQett+mTy93gPDkwS+Q@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Serialize IMSIC attributes with vCPU migration
-To: Xie Bo <xb@ultrarisc.com>
+Date: Sat, 8 Aug 2026 19:23:26 +0530
+X-Gm-Features: AUfX_myz_LWEpWkQBi4Qgji9kmSumRPQ2nVtYheU7XgWx1CkLYrVIiuTenhmXOE
+Message-ID: <CAAhSdy2f79uavqQb0_VxC_xCxX_c5DcFbbH-CfTA8bUGp=JAqg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] KVM: RISC-V: Clear former VCPU cache on
+ virtualization disable
+To: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
 	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
+	Alexandre Ghiti <alex@ghiti.fr>, =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <radim.krcmar@oss.qualcomm.com>, 
+	Andrew Jones <andrew.jones@oss.qualcomm.com>, Nutty Liu <nutty.liu@hotmail.com>, 
+	Jinyu Tang <tjytimi@163.com>, greentime.hu@sifive.com, vincent.chen@sifive.com, 
+	zong.li@sifive.com, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 21, 2026 at 1:06=E2=80=AFPM Xie Bo <xb@ultrarisc.com> wrote:
+On Wed, Jul 22, 2026 at 11:22=E2=80=AFAM Yong-Xuan Wang
+<yongxuan.wang@sifive.com> wrote:
 >
-> KVM device ioctls are not serialized against KVM_RUN. As a result,
-> kvm_riscv_aia_imsic_rw_attr() can snapshot the physical CPU and HGEI of
-> an IMSIC VS-file before a concurrent vCPU migration releases it.
+> When a CPU is taken offline or enters deep idle states, hypervisor CSR
+> state is lost. The kvm_former_vcpu fast-path optimization caches the
+> last VCPU that ran on each CPU to avoid expensive CSR restoration when
+> the same VCPU is re-scheduled on the same CPU. However, if this cache
+> is not cleared when CSR state is lost, the next VCPU entry will
+> incorrectly skip CSR restoration, leading to corrupt hypervisor state.
 >
-> The HGEI can then be allocated to another vCPU before imsic_vsfile_rw()
-> uses the stale tuple. A GET or SET attribute may consequently access the
-> new owner's interrupt file.
+> Add kvm_riscv_clear_former_vcpu() to invalidate the per-CPU cache and
+> call it from kvm_arch_disable_virtualization_cpu() to ensure proper CSR
+> restoration after CPU offline or system suspend events.
 >
-> Serialize the entire IMSIC attribute operation with the target vCPU
-> mutex. This prevents the VS-file from being migrated and recycled until
-> the attribute access completes.
+> Fixes: 1323a5cfe52c ("KVM: riscv: Skip CSR restore if VCPU is reloaded on=
+ the same core")
 >
-> Fixes: db8b7e97d613 ("RISC-V: KVM: Add in-kernel virtualization of AIA IM=
-SIC")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xie Bo <xb@ultrarisc.com>
+> Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-Please address the new issue reported by Sashiko bot
+LGTM.
 
-Regards,
+Reviewed-by: Anup Patel <anup@brainfault.org>
+
+Queued this patch for Linux-7.3
+
+Thanks,
 Anup
 
 > ---
->  arch/riscv/kvm/aia_imsic.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
+>  arch/riscv/include/asm/kvm_host.h |  2 ++
+>  arch/riscv/kvm/main.c             |  2 ++
+>  arch/riscv/kvm/vcpu.c             | 11 +++++++++++
+>  3 files changed, 15 insertions(+)
 >
-> diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
-> index d38f5de08..2a4f88efe 100644
-> --- a/arch/riscv/kvm/aia_imsic.c
-> +++ b/arch/riscv/kvm/aia_imsic.c
-> @@ -969,9 +969,13 @@ int kvm_riscv_aia_imsic_rw_attr(struct kvm *kvm, uns=
-igned long type,
->         if (!vcpu)
->                 return -ENODEV;
+> diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/k=
+vm_host.h
+> index 60017ceec9d2..808b4ee1bd10 100644
+> --- a/arch/riscv/include/asm/kvm_host.h
+> +++ b/arch/riscv/include/asm/kvm_host.h
+> @@ -319,6 +319,8 @@ bool kvm_riscv_vcpu_stopped(struct kvm_vcpu *vcpu);
 >
-> +       mutex_lock(&vcpu->mutex);
+>  void kvm_riscv_vcpu_record_steal_time(struct kvm_vcpu *vcpu);
+>
+> +void kvm_riscv_clear_former_vcpu(void);
 > +
->         imsic =3D vcpu->arch.aia_context.imsic_state;
-> -       if (!imsic)
-> -               return -ENODEV;
-> +       if (!imsic) {
-> +               rc =3D -ENODEV;
-> +               goto out_unlock;
-> +       }
->         isel =3D KVM_DEV_RISCV_AIA_IMSIC_GET_ISEL(type);
+>  /* Flags representing implementation specific details */
+>  DECLARE_STATIC_KEY_FALSE(kvm_riscv_vsstage_tlb_no_gpa);
 >
->         read_lock_irqsave(&imsic->vsfile_lock, flags);
-> @@ -995,6 +999,8 @@ int kvm_riscv_aia_imsic_rw_attr(struct kvm *kvm, unsi=
-gned long type,
->                 rc =3D imsic_vsfile_rw(vsfile_hgei, vsfile_cpu, imsic->nr=
-_eix,
->                                      isel, write, val);
+> diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
+> index 0924c75100a2..350e4f097d6e 100644
+> --- a/arch/riscv/kvm/main.c
+> +++ b/arch/riscv/kvm/main.c
+> @@ -69,6 +69,8 @@ void kvm_arch_disable_virtualization_cpu(void)
+>         csr_write(CSR_HEDELEG, 0);
+>         csr_write(CSR_HIDELEG, 0);
 >
-> +out_unlock:
-> +       mutex_unlock(&vcpu->mutex);
->         return rc;
+> +       kvm_riscv_clear_former_vcpu();
+> +
+>         kvm_riscv_nacl_disable();
 >  }
 >
+> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
+> index cf6e231e76e2..e48338f907f4 100644
+> --- a/arch/riscv/kvm/vcpu.c
+> +++ b/arch/riscv/kvm/vcpu.c
+> @@ -26,6 +26,17 @@
+>
+>  static DEFINE_PER_CPU(struct kvm_vcpu *, kvm_former_vcpu);
+>
+> +void kvm_riscv_clear_former_vcpu(void)
+> +{
+> +       /*
+> +        * Clear the per-CPU former VCPU pointer because hypervisor CSR s=
+tate
+> +        * will be lost. This ensures that the next VCPU entry will prope=
+rly
+> +        * restore all CSRs instead of incorrectly skipping CSR restorati=
+on
+> +        * via the fast-path optimization.
+> +        */
+> +       __this_cpu_write(kvm_former_vcpu, NULL);
+> +}
+> +
+>  const struct kvm_stats_desc kvm_vcpu_stats_desc[] =3D {
+>         KVM_GENERIC_VCPU_STATS(),
+>         STATS_DESC_COUNTER(VCPU, ecall_exit_stat),
+>
 > --
-> 2.54.0
+> 2.43.7
 >
