@@ -1,261 +1,253 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14103AE19D
-	for <kvm@vger.kernel.org>; Sat,  8 Aug 2026 08:22:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786177364; cv=pass; b=DDz5Fn54xy4siq2zJzIHgoZbPoamO32kIXRtsSkbRCFdm7VUDS4evUL/vOzacoS6MRfsm0bDMpYO4HUoW01P+eYVGjuCblC3eWRWfLJCi2jiy762E5t8BIgpJBXL6gx9Y3XnXrQHT0oftT1NKrVMDv163UgF3iJylPUB9kAQlwo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786177364; c=relaxed/simple;
-	bh=0segiAsmA7pfYrdjdpIr5Jpqv2Hz0wt3DKwBCnqo8SQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sEYqlIMIYGXvFPFbHbo4bVrHm7op4frI66XTQzcOwyUpCH+BceTSUvnLC/U3ul53C6BQ1iFk0qy8N7nV9UVM4YO2ednCv7qefEVid69MYclPXshjdv9+jGogZpVs7y3aYbT44kz8ZYExVvXnhYs4G8fa59IY7VfLXeqMfrrtMaU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=uG9yetNy; arc=pass smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594C92D1F44;
+	Sat,  8 Aug 2026 08:41:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786178504; cv=none; b=X8Em2oSeBNKqoH71kiSJpaWGeymHOpdwHyBVJfpl9fQ6xNhviPgzHhM6CMgEjzj11jOW6ykZqyep2Ag439XK1NNFiIVVkV5yfdZ5SEq6UC0fhz89dl+9vaOpfXYt7SQJv3rdyxiu5ReFao3myJtM+4diJ1e5u5XXtrHs3K4NKVI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786178504; c=relaxed/simple;
+	bh=1+ccyQHLTyXoTOlZONVYdoSGXrIL+vULPwDfgdkoM28=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=R6UsNLxDzgWvSapOS5FKtgd4n25TWBAThF8BxQ+MdcHX6zSshnuDaS0IseIl9YZHYAwrWL8gr4OS1NLBbA56O5UGRPNPV9bLQXhPxOoJfsuemx6XH2Hl2bMJeOHAKRjhLIYuNx7fgDSw4lD/fQB0AJiAlSxpIglFV+4wanBTzB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AgrKIWaf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="uG9yetNy"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4995b0343c1so2751155e9.3
-        for <kvm@vger.kernel.org>; Sat, 08 Aug 2026 01:22:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786177361; cv=none;
-        d=google.com; s=arc-20260327;
-        b=atp3Q7+ZYrc3p5f2pZqBUpKiBaFFFpx0V2c4sti/jR9ZvZhkwyMsgj2gqq1lrOxjMP
-         sP4TO56/rNrLco6nhbvY38+To5KWLAcG6ZANeflzr38j0atWL9Vbu4luSRj4u7TkZ8IB
-         RGha96ZlB6wZ+3a3gXAQfE4kq4BLJtnbNVf48H2GkQcNVnaYdpQwtfxgrXqixJlbWxb8
-         rY4ge+nDbckgRddI9pE8A5EVrd05tdL8i/RtaPgzKS+YWWxZTUrcH2UDauhbokDjmChT
-         OQAScQOzMLy7c4SVij8IR55JqlBZRoxpZE4vezR93jeNgJGp24d4cL9J2gbmkavRTdTF
-         6p/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=aRXS8tM+rb30ygIbdTjOMxib33mj9VgRC9Oyc94RXsk=;
-        fh=/qNOXQLtE0xeJ+RAOmZbESIyvKpXgk47Lol56LV4P8c=;
-        b=i6uIuogBEYhQUyBnGWfHtT0FOLIFwPvwIN9BqrtK1A+qtUH90VOnRlSbR7xzYiH1NZ
-         2jMKJqYSHtvJc9xajQOLfywfWCPCCVIYgg3L5/EdAKZCjM5FZBxYAe4KCY5A6OEhTH+N
-         1eybN3IVYn8/heu3trSRSDZUGOccJxGvICCh+58vKjyP7ts2u1EA2nxAKf9FSHxXTC4g
-         pdoEmDtYGiXLgntqE+nEkiwXZMULYUcnr6e2owc6CCk6vwX/L3nBxgKyzwJomLIJ3KdQ
-         uUkJGOSBGDLh/njMPGCenN9YgO5bs7pUSicy7lQeO/zjSBTBBtqsos8h2Oe2ZyrBjRpM
-         ICzQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1786177361; x=1786782161; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=aRXS8tM+rb30ygIbdTjOMxib33mj9VgRC9Oyc94RXsk=;
-        b=uG9yetNyEU+gXygwfdDgrXEJgoedvpg7Z33WDvtb5LVPRtFNJikhcXu3uh1WKN8tH5
-         MsUkbrlnZsjaKmjhYRTankjNMd7Mrmbdw9HYy4Z0c2se9MIF4Dql3Nytg0sThAw7kK8/
-         lEwXKVoiI+RcgIhv82EtufZY7S7tYDVoPZstWtJlLzde5Yz2Izl+YkhNOCkqLFBM2brT
-         OjGi9pyaJiAbKNERme7lQffsCJMdy7RNXHXqt5CEjMarhNvzMOKEUC2GPku6mqvEB5Ab
-         jzPmZY6Lfg7QxxmeVCJeIIouUV7owF8DyLufHAgIU2MAV28l5MkCWJTICncacGhlQYF2
-         GbCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786177361; x=1786782161;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aRXS8tM+rb30ygIbdTjOMxib33mj9VgRC9Oyc94RXsk=;
-        b=ASimF0/r2rN20+t2GY+SeN8e4liSoXD7TpOe2dF6PZP7+QjBAx4FdSJ+7ZUNP5U057
-         NuSuSbN9cbi7nL+Q0wlb2h3NpWdCm3SvJNJX7BxvueHJMRwliKI66l9ts5MgfE7TCIQP
-         wx19Qsp7EkICWvxkDPC+mLr15K9Wczo0CNDY+hr2RCdizgTM+X3SuUYUzxndyN8a9xHQ
-         sXDLtryTNuV884HeeuXojEzScE8KxbVtKxelEiXTW7sX3W4SSZymL39p/G9cY+aA5+UW
-         PI0ObIgyUIclPiW/7RmTddczb/hwltz7EmIm7wI2ZXTITmpnsdDPonyVfmX+gyfKEtSa
-         UjHQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrYoYEJpV3fjgKg2M8/yKlFcTFzDipAqsKdkIVxAXDTlFuJreOxkTKcwuaiLajJt4eCwtw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFEAsvxIMXuT0k1bgBQh2uG+4mTRDMeKT+HhTPfN4yhUuTQTQK
-	lJdsrv9YIUt7wad2q0CYlcjHOreFns+YKyqAxlZcsjuJSaVjXwamWaXURYSgcqplF62/uc03mVs
-	PZvQHVQewxohFTrSdW3HhjvqSn9tqisCerSY9a/KNuQ==
-X-Gm-Gg: AR+sD101577sJxXNk/tZ1wi+s7zXWSWn96XwLrkbglmXfQMWDqEMAauOCPWEnzhq4pa
-	mNf4UicJMUAOQuF8fKR1Pdl6PqM6xvjbHVHMNbKfMx7/cQXoxowow8a5JR+dusFgCmfkUp3cAtO
-	PFCyF6AG1UTvSLVKcjPdjNnHFzOJ6b43keijWoH3ibZy3pTE9D4JsOVbHN81sqDUrMX0tWxR2cT
-	o7Y5KPaH79i031MzSL3CwCZMRfheTQxiC7xZyh3bY1sKba9CCQEv2EvnKiSwST3BnSwMI4yseGa
-	HvllGEs4ieP6az4RIkS4jRGIw5Z2wB/czxUW/K60zyMLB3Bns72yo+D3STAiY5aOFZXdp1o5qd0
-	PY1Ars4MUF9hvMLOTUMqxXfuMTX35WTfbm5TnuY49SHPAjqMAsTbIJncA63NB8XxzU/Eo5+XR30
-	Q=
-X-Received: by 2002:a05:600c:314f:b0:497:fe58:d714 with SMTP id
- 5b1f17b1804b1-4994e7baa31mr298099605e9.9.1786177360994; Sat, 08 Aug 2026
- 01:22:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AgrKIWaf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 899111F000E9;
+	Sat,  8 Aug 2026 08:41:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786178502;
+	bh=oYbHM1vJ7ZgROmF2e4fVFb9BfOOu7HRtmQzEsZWunto=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=AgrKIWafk6nNePE4pN+KbC1IIY/La+oPxeIqnbIvh29knKD0FFzwxM7mG98fctUjJ
+	 v58GVlLYonD61hoQpRcL6nFccRYUZ5afpCBqKeVmAy/br6WdT2sY14Rd6BtzAkvQfW
+	 QcF6phEZVXfNPecvXzO49Hb0DGP0crcnRundxCGekAqPiXifgIIphaOeEfF+jHcqZo
+	 3IW/C0+/zlX1IncIGcdUK/42PimVyzq0PlLLX95KOyvOV6bEyc8JnaNjqcd9KsRoZk
+	 THL3f6jCNUHEqk8kkb8Ab2KKLbF8kHg9dq46q469ht0knuaphs18mgD9bejzsyTKBV
+	 FgCr4SxqSo7OA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wscce-0000000Dcrl-1Czv;
+	Sat, 08 Aug 2026 08:41:40 +0000
+Date: Sat, 08 Aug 2026 09:43:04 +0100
+Message-ID: <87cxvtovdz.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Yao Yuan <yaoyuan@linux.alibaba.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/8] KVM: arm64: Remove VM-wide VNCR mapping counter
+In-Reply-To: <anXmBQRdORVwl6Rp@lucifer>
+References: <20260806091026.620700-1-maz@kernel.org>
+	<20260806091026.620700-2-maz@kernel.org>
+	<anXmBQRdORVwl6Rp@lucifer>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260718040000.010.826fe94e-caplitmus-rv@iscas.ac.cn>
-In-Reply-To: <20260718040000.010.826fe94e-caplitmus-rv@iscas.ac.cn>
-From: Anup Patel <anup@brainfault.org>
-Date: Sat, 8 Aug 2026 13:52:27 +0530
-X-Gm-Features: AUfX_mzJLGOWo5ULHzUQYvejWaeDBnFMfy6noBsi8JH80jIcqgMsis0BI9D48ek
-Message-ID: <CAAhSdy1Mkfekf5ViagmynJMVii10kFZO=XbgNe14pM_f7Yi78A@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Avoid one-word masks for SBI v0.1 all-harts
-To: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: ljs@kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, fuad.tabba@linux.dev, imv4bel@gmail.com, yaoyuan@linux.alibaba.com, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Sat, Jul 18, 2026 at 10:09=E2=80=AFAM Pengpeng Hou <pengpeng@iscas.ac.cn=
-> wrote:
->
-> KVM already treats a NULL hart-mask pointer in SBI v0.1 calls as all
-> harts, matching OpenSBI's legacy handling. The current handler builds tha=
-t
-> target set as (1UL << online_vcpus) - 1 before iterating the mask.
->
-> That expression shifts by the type width once the VM has BITS_PER_LONG
-> online vCPUs, and a single word cannot represent larger VMs. A count-base=
-d
-> mask also selects the wrong IDs when vCPU IDs are sparse.
->
-> Handle SEND_IPI with a NULL hart-mask by iterating all online vCPUs
-> directly. For remote fence calls, use the existing hbase =3D=3D -1UL
-> convention so the common fence request helper targets the whole VM
-> without consulting hmask.
->
-> Non-NULL guest hart masks keep the existing v0.1 behavior.
->
-> Fixes: a046c2d8578c ("RISC-V: KVM: Reorganize SBI code by moving SBI v0.1=
- to its own file")
-> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+On Fri, 07 Aug 2026 17:45:17 +0100,
+"Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+> 
+> Bear with me being verbose here, as this is both nascent review + learning
+> :)
 
-LGTM.
+No worries.
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
+> 
+> On Thu, Aug 06, 2026 at 10:10:19AM +0100, Marc Zyngier wrote:
+> > The global VNCR mapping counter is used to decide whether an L1
+> > provided VNCR page is mapped in L0 on any CPU at the point of
+> > dealing with a TLB invalidation. It is incremented when a mapping
+> > is made in the fixmap, and decremented when unmapped.
+> >
+> > As it turns out, this tracking has several flaws:
+> >
+> > - we are trying to invalidate TLBs, and the mapping is only an
+> >   opportunistic consequence of the TLB. Checking this counter to
+> >   decide whether a TLB needs to be invalidated may result in missed
+> >   invalidations.
+> 
+> Is it largely the self-invalidation mentioned below or are there other cases?
 
-Queued this patch for Linux-7.3
+No. The self-invalidation is only an additional consequence outlining
+that even the most basic requirements cannot be honoured.
 
-Thanks,
-Anup
+The thing to realise is that is that we are dealing with two separate
+"objects" when it comes to VNCR:
 
+- a SW TLB, which represent the guest VA to guest IPA to host PA
+  translations. This is the vncr_tlb structure, populated as we walk
+  the S1/S2 page tables. This structure's lifetime is controlled by
+  TLB invalidations from the guest, MMU notifiers from the host, and
+  natural eviction (there is only one such structure per vcpu).
 
-> ---
->  arch/riscv/kvm/vcpu_sbi_v01.c | 52 ++++++++++++++++++++---------------
->  1 file changed, 30 insertions(+), 22 deletions(-)
+- a shadow page table that implements the translation at *runtime*, as
+  described by vncr_tlb. This is the per-CPU fixmap mapping. It's
+  lifetime is at most a vcpu_load/vcpu_put cycle, but it can also be
+  torn down by TLBI and notifiers.
+
+vncr_map_count only tracks the latter, not the former. Which means
+that if the mapping is not live on a CPU at the point of TLBI on *any*
+CPU, nothing will happen. That's a blatant violation of the
+architecture, and it could lead to memory corruption in the guest.
+
+The obvious fix is in patch 8, tracking the TLBs rather than the
+mappings.
+
 >
-> diff --git a/arch/riscv/kvm/vcpu_sbi_v01.c b/arch/riscv/kvm/vcpu_sbi_v01.=
-c
-> index c9c323d4577a9..de544ea3f28dc 100644
-> --- a/arch/riscv/kvm/vcpu_sbi_v01.c
-> +++ b/arch/riscv/kvm/vcpu_sbi_v01.c
-> @@ -16,8 +16,9 @@
->  static int kvm_sbi_ext_v01_handler(struct kvm_vcpu *vcpu, struct kvm_run=
- *run,
->                                    struct kvm_vcpu_sbi_return *retdata)
->  {
-> -       ulong hmask;
-> -       int i, ret =3D 0;
-> +       ulong hbase =3D 0, hmask;
-> +       unsigned long i;
-> +       int ret =3D 0;
->         u64 next_cycle;
->         struct kvm_vcpu *rvcpu;
->         struct kvm *kvm =3D vcpu->kvm;
-> @@ -46,20 +47,25 @@ static int kvm_sbi_ext_v01_handler(struct kvm_vcpu *v=
-cpu, struct kvm_run *run,
->                 ret =3D kvm_riscv_vcpu_unset_interrupt(vcpu, IRQ_VS_SOFT)=
-;
->                 break;
->         case SBI_EXT_0_1_SEND_IPI:
-> -               if (cp->a0)
-> +               if (cp->a0) {
->                         hmask =3D kvm_riscv_vcpu_unpriv_read(vcpu, false,=
- cp->a0, utrap);
-> -               else
-> -                       hmask =3D (1UL << atomic_read(&kvm->online_vcpus)=
-) - 1;
-> -               if (utrap->scause)
-> -                       break;
-> -
-> -               for_each_set_bit(i, &hmask, BITS_PER_LONG) {
-> -                       rvcpu =3D kvm_get_vcpu_by_id(vcpu->kvm, i);
-> -                       if (!rvcpu)
-> -                               continue;
-> -                       ret =3D kvm_riscv_vcpu_set_interrupt(rvcpu, IRQ_V=
-S_SOFT);
-> -                       if (ret < 0)
-> +                       if (utrap->scause)
->                                 break;
-> +
-> +                       for_each_set_bit(i, &hmask, BITS_PER_LONG) {
-> +                               rvcpu =3D kvm_get_vcpu_by_id(vcpu->kvm, i=
-);
-> +                               if (!rvcpu)
-> +                                       continue;
-> +                               ret =3D kvm_riscv_vcpu_set_interrupt(rvcp=
-u, IRQ_VS_SOFT);
-> +                               if (ret < 0)
-> +                                       break;
-> +                       }
-> +               } else {
-> +                       kvm_for_each_vcpu(i, rvcpu, kvm) {
-> +                               ret =3D kvm_riscv_vcpu_set_interrupt(rvcp=
-u, IRQ_VS_SOFT);
-> +                               if (ret < 0)
-> +                                       break;
-> +                       }
->                 }
->                 break;
->         case SBI_EXT_0_1_SHUTDOWN:
-> @@ -70,29 +76,31 @@ static int kvm_sbi_ext_v01_handler(struct kvm_vcpu *v=
-cpu, struct kvm_run *run,
->         case SBI_EXT_0_1_REMOTE_FENCE_I:
->         case SBI_EXT_0_1_REMOTE_SFENCE_VMA:
->         case SBI_EXT_0_1_REMOTE_SFENCE_VMA_ASID:
-> -               if (cp->a0)
-> +               if (cp->a0) {
->                         hmask =3D kvm_riscv_vcpu_unpriv_read(vcpu, false,=
- cp->a0, utrap);
-> -               else
-> -                       hmask =3D (1UL << atomic_read(&kvm->online_vcpus)=
-) - 1;
-> +               } else {
-> +                       hbase =3D -1UL;
-> +                       hmask =3D 0;
-> +               }
->                 if (utrap->scause)
->                         break;
+> >
+> > - an L1 vcpu invalidating its own TLB (a very likely case) will not
+> >   succeed in invalidating the VNCR pseudo TLB because that page is
+> >   not mapped in L0 at this stage.
+> 
+> Ahh yes this is pretty compelling then!
+> 
+> >
+> > Given that this tracking fails at delivering the minimum guarantees
+> > that are required and is only a performance optimisation, remove it
+> > completely.
+> >
+> > Fixes: 4ffa72ad8f37e ("KVM: arm64: nv: Add S1 TLB invalidation primitive for VNCR_EL2")
+> > Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> 
+> The change LGTM, it neatly removes the described mechanism which is well
+> evidenced.
+> 
+> Comments below that are largely me talking out loud as I learn things :)
+> 
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 >
->                 if (cp->a7 =3D=3D SBI_EXT_0_1_REMOTE_FENCE_I)
-> -                       kvm_riscv_fence_i(vcpu->kvm, 0, hmask);
-> +                       kvm_riscv_fence_i(vcpu->kvm, hbase, hmask);
->                 else if (cp->a7 =3D=3D SBI_EXT_0_1_REMOTE_SFENCE_VMA) {
->                         vmid =3D READ_ONCE(vcpu->kvm->arch.vmid.vmid);
->                         if (cp->a1 =3D=3D 0 && cp->a2 =3D=3D 0)
-> -                               kvm_riscv_hfence_vvma_all(vcpu->kvm, 0, h=
-mask, vmid);
-> +                               kvm_riscv_hfence_vvma_all(vcpu->kvm, hbas=
-e, hmask, vmid);
->                         else
-> -                               kvm_riscv_hfence_vvma_gva(vcpu->kvm, 0, h=
-mask, cp->a1,
-> +                               kvm_riscv_hfence_vvma_gva(vcpu->kvm, hbas=
-e, hmask, cp->a1,
->                                                           cp->a2, PAGE_SH=
-IFT, vmid);
->                 } else {
->                         vmid =3D READ_ONCE(vcpu->kvm->arch.vmid.vmid);
->                         if (cp->a1 =3D=3D 0 && cp->a2 =3D=3D 0)
-> -                               kvm_riscv_hfence_vvma_asid_all(vcpu->kvm,=
- 0, hmask,
-> +                               kvm_riscv_hfence_vvma_asid_all(vcpu->kvm,=
- hbase, hmask,
->                                                                cp->a3, vm=
-id);
->                         else
-> -                               kvm_riscv_hfence_vvma_asid_gva(vcpu->kvm,=
- 0, hmask,
-> +                               kvm_riscv_hfence_vvma_asid_gva(vcpu->kvm,=
- hbase, hmask,
->                                                                cp->a1, cp=
-->a2, PAGE_SHIFT,
->                                                                cp->a3, vm=
-id);
->                 }
-> --
-> 2.43.0
+> > Cc: stable@vger.kernel.org
+> > ---
+> >  arch/arm64/include/asm/kvm_host.h | 3 ---
+> >  arch/arm64/kvm/hyp/vhe/switch.c   | 3 +--
+> >  arch/arm64/kvm/nested.c           | 3 ---
+> >  3 files changed, 1 insertion(+), 8 deletions(-)
+> >
+> > diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> > index bae2c4f92ef5c..ac16f96c878d6 100644
+> > --- a/arch/arm64/include/asm/kvm_host.h
+> > +++ b/arch/arm64/include/asm/kvm_host.h
+> > @@ -411,9 +411,6 @@ struct kvm_arch {
+> >  	/* Masks for VNCR-backed and general EL2 sysregs */
+> >  	struct kvm_sysreg_masks	*sysreg_masks;
+> >
+> > -	/* Count the number of VNCR_EL2 currently mapped */
+> > -	atomic_t vncr_map_count;
+> > -
+> >  	/*
+> >  	 * For an untrusted host VM, 'pkvm.handle' is used to lookup
+> >  	 * the associated pKVM instance in the hypervisor.
+> > diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
+> > index bbe9cebd3d9d5..c09b1d411c584 100644
+> > --- a/arch/arm64/kvm/hyp/vhe/switch.c
+> > +++ b/arch/arm64/kvm/hyp/vhe/switch.c
+> > @@ -427,8 +427,7 @@ static bool kvm_hyp_handle_tlbi_el2(struct kvm_vcpu *vcpu, u64 *exit_code)
+> >  	 * If we have to check for any VNCR mapping being invalidated,
+> >  	 * go back to the slow path for further processing.
+> >  	 */
+> > -	if (vcpu_el2_e2h_is_set(vcpu) && vcpu_el2_tge_is_set(vcpu) &&
+> > -	    atomic_read(&vcpu->kvm->arch.vncr_map_count))
+> > +	if (vcpu_el2_e2h_is_set(vcpu) && vcpu_el2_tge_is_set(vcpu))
+> >  		return false;
+> 
+> So this seems to be the crux of it - seems to be 'is there any possibility that
+> we will need to check for VNCR mappings being invalidated?'
+
+Yup. If the guest's state is HCR_EL2.{E2H,TGE}={1,1}, then this is the
+guest hypervisor invalidating TLBs for itself (and not its guest), and
+returning 'false' takes us on the slow path where we'll have to look
+at the individual vcnt_tlb structures to find out if there is any overlap.
+
+> 
+> Checks:
+> 
+> * vcpu_el2_e2h_is_set() - is the guest host kernel (?)'s hcr_el2.e2h
+>   enabled? From what I gather hcr_el2.e2h is what allows sysreg_EL1 ->
+>   sysreg_EL2 for the host kernel to allow unmodified kernels to run in EL2.
+
+Amongst other things, yes. Please see FEAT_VHE in the ARM ARM for a
+description of what HCR_EL2.E2H==1 implies.
+
 >
+>   IOW - is the guest host kernel VHE?
+
+Note that for a KVM guest, if FEAT_VHE is present, the FEAT_E2H0 is
+not implemented, which means that E2H is RES1. As an additional
+restriction, we only expose NV to VHE guests. This greatly simplifies
+the scope of what we need to support, and conveniently hides a bunch
+of architecture defects that cannot be otherwise mitigated.
+
+> 
+> * vcpu_el2_tge_is_set() - Similarly tests for the hcr_el2.tge bit - and this
+>   seems to be is 'EL1 -> EL2 redirection on?' - IOW - is this a kernel running
+>   in EL2?
+
+Not quite. We know for sure this is running at virtual EL2 (we trapped
+with HCR_EL2.NV set, for a start). In the TLBI case, HCR_EL2.TGE
+controls whether the behaviour of a TLBI S1E1* instruction targets the
+host (TGE==1) or the guest (TGE==0).
+
+> 
+> Actually I see in is_hyp_ctxt():
+> 
+> 	 * We are in a hypervisor context if the vcpu mode is EL2 or
+> 	 * E2H and TGE bits are set. The latter means we are in the user space
+> 	 * of the VHE kernel. ARMv8.1 ARM describes this as 'InHost'
+> 
+> So I _think_ the combination of the two is checking to see if you're the L0
+> kernel that _could_ send TLBi's that need to be handled?
+
+The combination of the two bits indicates: is this a VHE hypervisor
+invalidating TLBs for itself. If yes, then we need to check the VNCR
+SW TLBs to complete the job.
+
+> Previously it seemed the logic was 'if there are no VNCR mappings present then
+> we can optimise by short-circuiting the rest of the processing in
+> kvm_hyp_handle_sysreg_vhe()'.
+
+Exactly.
+
+> 
+> It seems that the hardware TLBi has been processed by now so it's actually more
+> like - there's still work to be done maintaining the software TLB and that's
+> done elsewhere.
+
+Yup.
+
+[...]
+
+> I think this is all vaguely sane :)
+
+You have been assimilated.
+
+Thanks for reading thus far!
+
+	M.
+
+-- 
+Jazz isn't dead. It just smells funny.
