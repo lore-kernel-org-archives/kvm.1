@@ -1,121 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826BA2EB5A6
-	for <kvm@vger.kernel.org>; Sat,  8 Aug 2026 16:39:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C56B1E1A3D;
+	Sat,  8 Aug 2026 17:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786207144; cv=none; b=GZRgnTwnUy/Zrt9yztPxNlPuO8yvq6plEpXm+WIJhVcry3C/qJkzRvgS1n0t76YFdR61h8U48WdcqG/TLoYDX904ft/NW48INlxN5ZzWezSdsy/xfsCNViUHoOath9xSnvwGMWHWsaufYpaTbxwGrtG+4Hr5x64noswxINWSy0Y=
+	t=1786208842; cv=none; b=Gumm0AqgWD0ghq4PqgzAsk+aOR9K6z69ObglDfj7wPIS6npus0/d783isAB9YQqbA5uMRSVoVgMQwmuDq53ezAHNJwI01uYPxQ2Oj76xojD6H3dD/vNvLl7WhMjZ0ql+WtweFsinHBuzq6tFkZbQS51aCK6wr35L8yjPQt2oPQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786207144; c=relaxed/simple;
-	bh=QXXonF6VhcN1pBmFD1lwRCCUyruaKdG6X+u3ws818Dk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Fe19R/cYCYidb+Ae7ZiWvl13CeEB7p2CbgtInZh03hLIOd5AuHQQp5ma/iBF6lG2quO94+IuJx0ZEbK9bPiVszmk/dICzX7Iz1zh8cXZPdZuNFcVnpIz9qZTD3aCYaRq4XTn2wfyH8KE80LL0ZDECkUZZ5HtsqlRhf14oN2E5v0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NjE6RuP0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786208842; c=relaxed/simple;
+	bh=N7YNTaD708Ak1rcIEbcxnkyicdOsxQywrN2VWQyDoGw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CGp42bmsndg4BQo6zeAAsL/adto3K8/QbmQEML+ikJS02Qkje/HUg2eT2V3oahiBiEVYzbzssWe9Kov7vnPgbMtEW7ILn7KV9CM1PUQVXuw1s2GE1Fnx5G7zDltHLmZuqlLx5yiLgWzmQ2kycS/4iAEhJsvWjXgyMRl9BU6J5Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=a+m1vKrc; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NjE6RuP0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F4F1F000E9;
-	Sat,  8 Aug 2026 16:39:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786207143;
-	bh=h7o1nC0DxpNnPx546UG6nVsXASrQ8v5bNXPJqt6d+TI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NjE6RuP0dVMaXEip4FfoMab0EeVHXmf9sOlPwKBusycrRxt8cNsb9Y0MUWqQ4SVsK
-	 Vqai35XJgd4lLwMyErFWcIVEO0YuJNBq5ZiPQu/Wytb9szyXBv8STOIaCbbq2jfhQt
-	 BBzX4Jqyb/6pP+OETR+hvdK7jppkA75WJZ7/WOeYOhKeEU72qlvkm9Rv/k69CVJIry
-	 phDRc03z3weAow20a/3qC4vC8MOZKRBGOOK5Vvz8SjKYvRCAsgp8IldKXNykKbSdm/
-	 OJQfc0niXQM3tz/glkumEj/zW73cnh19xtCCkqGbriUP/mY9XIyXLW9IfyUnpCLr/0
-	 jQU76ua8kaiYg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 2/4] KVM: PPC: Book3S HV: Implement compat CPU
- capability retrieval for KVM on PowerVM
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Amit Machhiwal" <amachhiw@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260808161148.66673-3-amachhiw@linux.ibm.com>
-References: <20260808161148.66673-1-amachhiw@linux.ibm.com>
- <20260808161148.66673-3-amachhiw@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 08 Aug 2026 16:39:02 +0000
-Message-Id: <20260808163902.E1F4F1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="a+m1vKrc"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 678H1t6E605920;
+	Sat, 8 Aug 2026 17:07:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=EumPc/Z8Qs2I5BfaYp5qyMsIm8lGMzPFXtxpi/APn
+	ZI=; b=a+m1vKrcDDjunBB/BZPAlth8lIJVuBSBguhVpeWK/lshKENbFUqiNjFBa
+	lRkoPDyFsIiiWJkL5+k96MXYGFyaRFSRrl69bImqdLQ7rX5rT+D7zvMTEkYccJCl
+	/LIfW2z4kph8jUzn9HbxMnDyk7UMt2Wz0+KW14QSqhLex2o/1mU0vi/H3X+Opdx2
+	hxoY7e13pu/GTneMnoF6oAOuxUScfaYMANx6oZpbllPsNvUGdHcXi9uccV+v/N1O
+	AEq/vs/vkvZU93vZR/Re4ctRILlAe+TbXcYMU7ZNCH+0icc2X5zEtMv/RJGNtQPO
+	RYDpZnPLpxYg7hzYPMAOcWpVQt2Kw==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvkchn92-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 08 Aug 2026 17:07:16 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 678GucTw020353;
+	Sat, 8 Aug 2026 17:07:16 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsugwm6fc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 08 Aug 2026 17:07:16 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 678H6bBZ3801754
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 8 Aug 2026 17:06:37 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EFD8158050;
+	Sat,  8 Aug 2026 17:07:14 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 50CDF58045;
+	Sat,  8 Aug 2026 17:07:13 +0000 (GMT)
+Received: from li-4c4c4544-004d-4810-8043-b7c04f423534.ibm.com.com (unknown [9.61.94.189])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Sat,  8 Aug 2026 17:07:13 +0000 (GMT)
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
+        pasic@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
+        fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, agordeev@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com
+Subject: [PATCH 0/5] s390/vfio-ap: Fix bugs in vfio_ap device driver callback functions
+Date: Sat,  8 Aug 2026 13:07:07 -0400
+Message-ID: <20260808170712.839066-1-akrowiak@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: CSrL7VKMj1s38YYbZbXy4qxVu4lVkzPw
+X-Authority-Analysis: v=2.4 cv=J86aKgnS c=1 sm=1 tr=0 ts=6a776244 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=JeDQMd_j_dsK6LpMBgMA:9
+X-Proofpoint-ORIG-GUID: CSrL7VKMj1s38YYbZbXy4qxVu4lVkzPw
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA4MDE0NiBTYWx0ZWRfX3cnEck0qpz54
+ hFA8wUgRzkfrz1avNQrVn6Yk77wNKk2No4BbmMROSesK0M4oyLDFuMQ4oUyiBjqpgKVXzZkc1nX
+ NihYGYOa+qUB3NXoM4BnhaCZJq7Qgt0Pk+f/2qOYRE84wNCn80s9IYiH0mpA4Ro3p/uir4Jy+zq
+ i0PfkyoQLEkaYQyLVhI9FFTOh5vcUSIxNlAuY+f9rVTWDFYf7MlZ7sT6MF9K4PE70myGbms/7p2
+ LUGJt6wt1+gahkTxGNdZCUfcltApPGQm+oEt1OE5vpF7th/NQ6UiRb9u6Vv3bVjgvlYX2KofdGx
+ ig/4HLNv5ySCQrNL2ZXBkZnpVkBFL+7VHECrPZn4WM+sHjJXpEOoNYcm6pLN7fRK2FzKqqLQYf4
+ Z8IUjtTzHdHs9wk8KOHMba8J/V2pAxiHKarvx5KJPCd8a/c5s8R9FF/zMgA6JlLfzQzhb6qv+C0
+ 5ABmpu9MIGfvSF6hVDA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA4MDE0NiBTYWx0ZWRfX+AOSxRw/Sbvp
+ /fGbDJgxg0qB7DfkLk0jU8IGynhojA8/o7wdj7DXFpdyLvurqIwaWp2x+cYN4BhhVY/CXeK/LkL
+ erh63JnsYWsxMYAM2uxLUw4EpjSh0zc=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-08_06,2026-08-07_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 suspectscore=0 malwarescore=0 adultscore=0
+ phishscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608080146
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] KVM_CAP_PPC_COMPAT_CAPS advertises capability support on all pseri=
-es hosts, but the KVM_PPC_GET_COMPAT_CAPS ioctl fails with -EINVAL on non-n=
-estedv2 pseries hosts.
---
+Patches 2/5 and 5/5 in this series were previously posted as individual
+fixes upstream. During review of those patches, the reviewer identified
+several pre-existing problems in the same code paths that are addressed
+by the remaining three patches. All five patches are fixes for
+pre-existing bugs and are tagged for stable.
 
---- Patch [2]: [PATCH v9 2/4] KVM: PPC: Book3S HV: Implement compat CPU cap=
-ability retrieval for KVM on PowerVM ---
-commit 48012da6c0966da1bf70f356cb9a87c22af64308
-Author: Amit Machhiwal <amachhiw@linux.ibm.com>
+Patches 1/5, 3/5 and 4/5 fix bugs in the call trees of the two
+callback functions implemented by the vfio_ap device
+driver -- vfio_ap_on_cfg_changed and vfio_ap_on_scan_complete:
 
-KVM: PPC: Book3S HV: Implement compat CPU capability retrieval for KVM on P=
-owerVM
+* Patch 1/5 fixes a stale do_remove flag in vfio_ap_mdev_cfg_remove
+  that causes spurious hot-unplug operations on mdevs that have no
+  assigned adapters, domains or control domains in common with those
+  removed from the host AP configuration.
 
-This commit adds support for retrieving host CPU compatibility capabilities=
-=20
-for nested guests on PowerVM via a new ioctl, KVM_PPC_GET_COMPAT_CAPS. It=20
-retrieves the cached capabilities negotiated via the H_GUEST_GET_CAPABILITI=
-ES=20
-hcall for nestedv2 systems.
+* Patch 3/5 fixes the use of the wrong lock to protect the addition of
+  a newly created ap_matrix_mdev object to the mdev_list in the
+  vfio_ap_mdev_probe function.
 
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 61dbeea317f3b..8799124b80960 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
+* Patch 4/5 fixes the missing mdevs_lock while updating the apm_add,
+  aqm_add and adm_add fields of an ap_matrix_mdev object in
+  vfio_ap_mdev_cfg_add.
 
-[ ... ]
+Anthony Krowiak (5):
+  s390/vfio-ap: Fix stale do_remove flag across iterations in
+    vfio_ap_mdev_cfg_remove
+  s390/vfio-ap: Fix dereference matrix_mdev->kvm without checking for
+    NULL
+  s390/vfio-ap: Fix use of wrong lock in mdev probe function
+  s390/vfio-ap: Fix required lock not held during update of
+    ap_matrix_mdev object
+  s390/vfio-ap: Fix control domain removal in vfio_ap_mdev_cfg_remove
 
-> @@ -6510,6 +6510,25 @@ static bool kvmppc_hash_v3_possible(void)
->  	return true;
->  }
-> =20
-> +
-> +static int kvmppc_get_compat_caps(struct kvm_ppc_compat_caps *host_caps)
-> +{
-> +	unsigned long capabilities =3D 0;
-> +	long rc =3D -EINVAL;
-> +
-> +	if (kvmhv_on_pseries()) {
-> +		if (kvmhv_is_nestedv2()) {
-> +			WARN_ON_ONCE(!nested_capabilities);
-> +			capabilities =3D nested_capabilities;
-> +			rc =3D 0;
-> +		}
-> +	}
-> +
+ drivers/s390/crypto/vfio_ap_ops.c | 59 +++++++++++++++++++++----------
+ 1 file changed, 41 insertions(+), 18 deletions(-)
 
-[Severity: High]
-KVM_CAP_PPC_COMPAT_CAPS appears to be advertised for all pseries hosts in
-kvm_vm_ioctl_check_extension():
+-- 
+2.53.0
 
-	case KVM_CAP_PPC_COMPAT_CAPS:
-		r =3D 0;
-		if (hv_enabled && kvmhv_on_pseries())
-			r =3D 1;
-		break;
-
-But here in kvmppc_get_compat_caps(), the ioctl returns -EINVAL for=20
-non-nestedv2 pseries hosts.
-
-Will this mismatch cause userspace (like QEMU) to fail during guest=20
-initialization if it sees the capability is supported on a non-nestedv2=20
-host, but the ioctl unexpectedly fails with -EINVAL?
-
-> +	host_caps->compat_capabilities =3D capabilities & KVM_PPC_COMPAT_BITMAS=
-K;
-> +
-> +	return rc;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260808161148.6667=
-3-1-amachhiw@linux.ibm.com?part=3D2
