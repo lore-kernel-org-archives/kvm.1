@@ -1,115 +1,316 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4813A7595
-	for <kvm@vger.kernel.org>; Sat,  8 Aug 2026 08:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786176695; cv=none; b=Lvd9+lkmyTKNepceLYM3QuMgJjUcZbUfkGnXp3DRBhjzsix8JVtrz1CSb3tqufFuX08V01wZoO6oLkN+VG2a72NNSluwIzw2K/P94UdWjVlckMRElNT7KeA0wLv0+f/TiliSVjD2B7Kr+AaLEfKo8LfxBwqJrvTjcGuTsXpO7a4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786176695; c=relaxed/simple;
-	bh=MGb5suHwKenoO8+Yoit0TZ1mClXS7TepI3s00xmuOag=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GC3X6mmwvEB+uq53ekre8Wrv6il0x92pZfOVhTNRgCTeb7ayK1MEdxMhb+xJC1rxeJ5xdY1Qp9kkBsMYMguG8ggBmf5raWp+xUbK6GznfbqKgyIPlXM+ZkwRMaw3BbOaxrwg0CJ/cixP20utjcroK5S2eCZTd74OBbEvlIBZEdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZITh+bIa; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5963A9861
+	for <kvm@vger.kernel.org>; Sat,  8 Aug 2026 08:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786177360; cv=pass; b=on29lXSJfcep8iqioXu7ZPEMkNDLPffw0Wt/EHkBywwrPiyqPqm4xw84alAjhayG1Kb1uvZfUF/nffUJI4bwtZTG+tXHqz3sRuslyKywrP1gHi+YYJ0CI+wN2yoUSU9nqKVF6Hnwu/S4uFWlWK4I4R/OktnG+jiEBe4BCClJ71Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786177360; c=relaxed/simple;
+	bh=xgBjcAMTO+mkQsReJ9SuBjgGpg5+u8EJXDIoPPcaBc0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tr6a8fWxQLXQdE/m0thP1ZTh0aCHS+chISqN6xh2YgQ4qckAFtjtN7XZ1AxcmnRaKYtnLd0KL8ak3T9JUfQsoKHrtAVIUocVBj/wEy7CqCB7eyBpc2zEmHWt7fJkoOaDW4nwFBC8XbS+3G6Y3bKu6usLZf64B20oy0YM2FxGUY8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=JDwVlDRK; arc=pass smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZITh+bIa"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38de840f2f0so172619a91.0
-        for <kvm@vger.kernel.org>; Sat, 08 Aug 2026 01:11:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="JDwVlDRK"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47f96c5b722so127378f8f.0
+        for <kvm@vger.kernel.org>; Sat, 08 Aug 2026 01:22:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786177356; cv=none;
+        d=google.com; s=arc-20260327;
+        b=NFHANLUzRNuuqYKchcOlj7Mxz71FpyU6GDxkE5WqHqMOJSNUGnAcBZY0wYng/vlbVg
+         oo5anpBKhBFXM8mekte4QSwyXA6kxQr333NI8lgJ9bl/b4KTfLTHAYbRAp8zOar3Pd6X
+         9AbvHF4uPObdaiJfU4XgCTyxG9vC/VZma6lSbQBu847z+/H59XewgYPr0J6W0bl9A6uW
+         gE2V3sqifjQQse69C+eWhN1BsxMgp0iVwNSchdfElIuYNkRwL1rtU+x86aVzJUxP1Tg+
+         XOLmbyVmvULyHiglq7WQTOjE8zhdesL5jlfwizBaa5daAt4obp6ef8FJIWf2zQTVwfPC
+         BDbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=s2L3p/EqCy6vKn+Ri732A5tGrVw5OVSAOMt2d+I2tL0=;
+        fh=Goetz5TAWZiXHtfFANmlMBsb72U3/mhjxLLNAePrLaA=;
+        b=VHl/sDgapPd56oPhOn7Guft5Xon6Ij7W8kVxFgfDFpfYQ6z3iQ87at0ea361FwvSN1
+         xCxP5x0IfjzHUPjLof+SGLOrQEdtHhEmveQ9qrueFaRV5c+PcwvfSjwHj1pDe4ZFHB8P
+         1t1s2bhNkAKqRhYft8fldCG/cgOM8Zn56OcKDgMy3tyHdNfs9fNSOwlHOHnEiz92XniY
+         RyXXk8WHvsKzyu+Gh7wLBfEptm6I3ygr3zYmH1r1AORKd663LobVKAl82wu/jSLYYCQ7
+         yfAE/4Mtln70daPRxg8PIfB12YcITZ+uVFxeWAPwvbL6ZYUU0B5x0LGezLDCGBhQ+rGu
+         wuYw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786176692; x=1786781492; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=F9dVgwGHiDFCuZ0x2p4Z0K2PT+mB10F3qNo0u+NxB+U=;
-        b=ZITh+bIajm7bYWL/DiNPGuZ6oWti+Aeoagi7E6GE4vCcaGjfD4jZ7xT1ET7vVGhcsq
-         msHlaZ1nycChIHwiMUX3OCIDB/abgpAhcLgwX/cXxptfhsQ6tae5aWSuGRaaBqqfGy/i
-         Y2i/48oCIko3JSzYpCZ2yGoA2XtwzPcMpouu7RFwpX+Z+UTjJPet2ioIIXsdCcQ5NTOl
-         eMKM1ivHEcWZ57qSJzU1Ex5WOtJKS11rTOmDYaWFdMxD0KZXOIccmafIYGdiSo53Zaji
-         A4LKpwS3R67akJ6EfQQHVMsrD5Snx0w8JPXYEAAA/QaQfV4UrcUtAzFGnknxcfztQ2a4
-         jwCA==
+        d=brainfault.org; s=google; t=1786177356; x=1786782156; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=s2L3p/EqCy6vKn+Ri732A5tGrVw5OVSAOMt2d+I2tL0=;
+        b=JDwVlDRK/7fbsNLqD3XswNOJWhgBkP1An2rkVOEHYb9/h1YAJsqLYwqEX8OAEdSONV
+         Bd5ll926FNzXl/owKFNoIBzN69AwQK4XlRdl1aYWWds6kk+JuNVLHqhP5e6S4wGAWCwi
+         6MRgubgpPJD/uMxVYAyPmsHr/PRIB56bEjllclc+zCojzjBgzs+mjqagKuczrU8/bSNs
+         39xYMkO2TIeML+kv0uJF1BAXmQA7TlaWC/ym8PhNnGNS60fBzoTEfJGM8ZR7aVJOqz8j
+         d48s9qTYx7GwSqeRGecGbdxuQdEZlADXWJIprDbe66cME7dJN0GPTdyWFYNYKDX2F309
+         nSYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786176692; x=1786781492;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=F9dVgwGHiDFCuZ0x2p4Z0K2PT+mB10F3qNo0u+NxB+U=;
-        b=PWLhiKCEGJWc9xhP9xgrKIgFiGY5xXSeDLYguHe2ZRf05NPSwioajRTNYBD5Dh7Cvs
-         dtGnygg8GRf6racKSldx1VxwFJNa7XTul4ySPe5Ml/OZrvnnqramBhU9/7zbenfDXfTF
-         ivviNRvkZaFAsucLexBTG26g5+MV8aSjzQOJQ8kebnBJIM8k7yvGxpIcuoi22DMZ9AeP
-         Ex5zoxoiOSuxisNpil8gsQOw2hz+ao8fMAEFN4/99LEb3pj5vIySaE4TwGDvUzRsEjVr
-         s/oR5soVzIjb2rsTMHKuCG1Vj1w8trVYO8gyQ7Bvow8Pc73o+0Xc4BBQz0us14kQdg67
-         tSHA==
-X-Forwarded-Encrypted: i=1; AHgh+RpVduSxQZfEjwdzZ4DSFMzYG7duGmvJd04D3eLPBcmOOpk3pBNHxw+U1UjZlZjn8t9aM/I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmHzqHtbbVwVZNPiktYVRack9ZXaV+bH6tCsXIUid/1ldyOKFX
-	lNUQKxIXunZ/CaQDooq8YdrG9k1vDJPwzy38+o/1bXjA0OaXtiVGsHxW
-X-Gm-Gg: AR+sD11XfQcxQQ8XFVJLPXSyowO8C9LJePAGqcjglfQFM72Z6wuebsi2SOnA+MG3zbj
-	goayk+2CpiS/kjYvMshNWPv8bMt6r4Xa+2YDeV/vq6Ln1eoHFLunP+NUCkFoaHay5t2t5Lyxm/M
-	YvBAiJpxWAEClmLMFh6D8Lv3Pv3u91XCZWzFLY6HVxZ8BWBQ/wjJhN564UJVt3LC7yiTSdBfoZG
-	SywEXscFhWc9agkkEtl5cOXUQAtAcuPx14jY7HA4WR42wOhIcx7SzsKZwwUwzCq7rWRsHreGdJ/
-	kRkvFWxZc8K44mud59/i4/xRZb9wmHyNZGlGFy5yjf5iGbsxgyaxOD9jUjKjmTjzSanyREbk40o
-	tI8Od9G+X9eq8azzCNCyTU11PYzmXKRIptcHdy9naj86O0iVOdGaYSASB9U3UnWspbLqvarRkux
-	O4fWisr6+EAGQcKSEA7zGXgOHEWB5piSyPjLln+TNnHuiL4N360P+ZG3dqfInKf/1It0jFJEwf+
-	SsGn3cZTvMi
-X-Received: by 2002:a17:90b:258f:b0:38e:c232:9d3f with SMTP id 98e67ed59e1d1-39282247ee9mr6250045a91.5.1786176692047;
-        Sat, 08 Aug 2026 01:11:32 -0700 (PDT)
-Received: from 10-86-27-207.ban-spse ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141019b41d9sm13660310c88.5.2026.08.08.01.11.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Aug 2026 01:11:31 -0700 (PDT)
-From: Gokul K <gokul02k@gmail.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] KVM: selftests: Free the VM when NX hugepage disabling is denied
-Date: Sat,  8 Aug 2026 13:40:50 +0530
-Message-ID: <20260808081050.408657-3-gokul02k@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260808081050.408657-1-gokul02k@gmail.com>
-References: <20260808081050.408657-1-gokul02k@gmail.com>
+        d=1e100.net; s=20251104; t=1786177356; x=1786782156;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=s2L3p/EqCy6vKn+Ri732A5tGrVw5OVSAOMt2d+I2tL0=;
+        b=csceluByuypn8q+2gMA8BGPEHwTGfjwky6oO2/IygOXEvmy8X2VQbKOOIe5RW/71WD
+         efV32j/u19EJ5pG9azOSS2EiHsvpl9TMTF5YOdQpJKaqtOfTqZKrO5tXDV5gvc0sL34r
+         J9yTtHyZKpt5xCZv77G9fhX6DdeqnYQj3JKPSp+j7eytRTmLMZX3BuQo4/za8bHZeYF+
+         Y27IC1X3ElZrTcnB5PkOSUQlu7MsfhgN37w0EGJNY0CCZKoASKuE4vRTnrG6Cn9SfjM9
+         DrBsRD5oqdAWsQiDbRzWIezKLOJUXhnPUsmQJL/eHo7n6BS5p73xphr4qtq1dcEjfV/i
+         L/xQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq5NOFRN+KXjWRlbkxFdVxnU/Wh8TpxWNkmLoYPNMHEdQrGiafKcbXn2CQfFNxEs/Keups=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoAoXjRtWTjzUKoMQWwGFbIZSLGv5PrsAZpaba5ZO8nifkJQoK
+	OUZlQRPT+23Ifj4fwcEmRrJdoTUXtMLVrgJ1MT0BWbhVezy52MoM4NUuwO3ADINofrRk4IeFgWI
+	Bfn6qBlYbrGjWTtwAVgxut2xx5+RtzslBlrJxoEbUUw==
+X-Gm-Gg: AR+sD11YTZP8hFXUFXp/ZJZH5SpIMRsBOgwEAlGZ+h9K0tfA7om8ou4ytuftPGk4rsV
+	ak7H8clw9CyVIzVc9v/z3PZdnB2XlHrPQSKVAU+sw4HEUhIrUyQjj0aignEKECUgTNVxk+ke8lp
+	OS1Z2U1NDOs6/G33BJ8LamGZE/1s2t+WyA6GKvO99kuogSV5Wsnfw21f6hKyhE5tzKRsKjkAgOe
+	u7FSkyJPCWOdZ66Y6xt5TrMmVbm1KTjYR36JMGyogkEi0ncPlvnZOaCKYs58c4W6ZdHSszkvaYh
+	KSLd8Xe1Egsc71rRpD9wzdeEwX6xX1UIWbKPMWRR864QIXOdyL2jhJ4Ay/Yn3ZuqULI7/lNVvz8
+	KruKwZVelm3rvIGn04ydxPNyLJNPJfMYCx3YUZa9CkDxsDr+IE0fYmAp1EVY/22Ap
+X-Received: by 2002:adf:e002:0:20b0:47f:f339:556c with SMTP id
+ ffacd0b85a97d-47ff33959f5mr27501389f8f.2.1786177356036; Sat, 08 Aug 2026
+ 01:22:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260718040000.008.17bfd3bd-caplitmus-rv@iscas.ac.cn>
+In-Reply-To: <20260718040000.008.17bfd3bd-caplitmus-rv@iscas.ac.cn>
+From: Anup Patel <anup@brainfault.org>
+Date: Sat, 8 Aug 2026 13:52:24 +0530
+X-Gm-Features: AUfX_mxNG1tt1AmOEVTtXoJ_7yBrPPTk9SVnD337B0nLADfjKaRqhoY00y6bj34
+Message-ID: <CAAhSdy2J9ZAeNPPHcdyjjVs_ZLFbVeSjVXQ-nocmai0xyt0TYw@mail.gmail.com>
+Subject: Re: [PATCH] RISC-V: KVM: Guard HFENCE range loops against overflow
+To: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-run_test() returns as soon as it has confirmed that disabling NX huge
-pages fails with -EPERM, without freeing the VM created a few lines
-earlier.
+On Sat, Jul 18, 2026 at 10:08=E2=80=AFAM Pengpeng Hou <pengpeng@iscas.ac.cn=
+> wrote:
+>
+> The local HFENCE range helpers build the loop end with addr + size and
+> then step through the range by the requested page order. If addr + size
+> wraps, a small range near the top of the address space can be treated as
+> empty and skip the intended fence. The final loop step can also wrap
+> before the loop condition is evaluated again.
+>
+> Treat wrapped ranges conservatively as full-range HFENCE requests and sto=
+p
+> each bounded loop before the next step can wrap past the computed end. Th=
+is
+> keeps the existing large-range fallback and only changes local GVMA/VVMA
+> range construction.
+>
+> Fixes: 2415e46e3a9a ("RISC-V: KVM: Introduce range based local HFENCE fun=
+ctions")
+> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-This is not an obscure path.  nx_huge_pages_test.sh runs the test a
-second time without CAP_SYS_BOOT for any non-root user, and main() calls
-run_test() with disable_nx_huge_pages=true on its second invocation, so
-an ordinary run of the wrapper script always takes it.
+LGTM.
 
-Free the VM before returning.
+Reviewed-by: Anup Patel <anup@brainfault.org>
 
-Fixes: b774da3f2e57 ("KVM: selftests: Test disabling NX hugepages on a VM")
-Signed-off-by: Gokul K <gokul02k@gmail.com>
----
- tools/testing/selftests/kvm/x86/nx_huge_pages_test.c | 1 +
- 1 file changed, 1 insertion(+)
+Queued this patch for Linux-7.3
 
-diff --git a/tools/testing/selftests/kvm/x86/nx_huge_pages_test.c b/tools/testing/selftests/kvm/x86/nx_huge_pages_test.c
-index 70950067b989..49b70c05daec 100644
---- a/tools/testing/selftests/kvm/x86/nx_huge_pages_test.c
-+++ b/tools/testing/selftests/kvm/x86/nx_huge_pages_test.c
-@@ -120,6 +120,7 @@ void run_test(int reclaim_period_ms, bool disable_nx_huge_pages,
- 		} else {
- 			TEST_ASSERT(r == -1 && errno == EPERM,
- 				    "This process should not have permission to disable NX huge pages");
-+			kvm_vm_free(vm);
- 			return;
- 		}
- 	}
--- 
-2.54.0
+Thanks,
+Anup
 
 
+> ---
+>  arch/riscv/kvm/tlb.c | 71 ++++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 59 insertions(+), 12 deletions(-)
+>
+> diff --git a/arch/riscv/kvm/tlb.c b/arch/riscv/kvm/tlb.c
+> index 993b25ea94d67..b0c83e3ccc15a 100644
+> --- a/arch/riscv/kvm/tlb.c
+> +++ b/arch/riscv/kvm/tlb.c
+> @@ -8,6 +8,7 @@
+>  #include <linux/errno.h>
+>  #include <linux/err.h>
+>  #include <linux/module.h>
+> +#include <linux/overflow.h>
+>  #include <linux/smp.h>
+>  #include <linux/kvm_host.h>
+>  #include <asm/cacheflush.h>
+> @@ -24,7 +25,12 @@ void kvm_riscv_local_hfence_gvma_vmid_gpa(unsigned lon=
+g vmid,
+>                                           gpa_t gpa, gpa_t gpsz,
+>                                           unsigned long order)
+>  {
+> -       gpa_t pos;
+> +       gpa_t end, pos, step =3D BIT(order);
+> +
+> +       if (check_add_overflow(gpa, gpsz, &end)) {
+> +               kvm_riscv_local_hfence_gvma_vmid_all(vmid);
+> +               return;
+> +       }
+>
+>         if (PTRS_PER_PTE < (gpsz >> order)) {
+>                 kvm_riscv_local_hfence_gvma_vmid_all(vmid);
+> @@ -33,14 +39,20 @@ void kvm_riscv_local_hfence_gvma_vmid_gpa(unsigned lo=
+ng vmid,
+>
+>         if (has_svinval()) {
+>                 asm volatile (SFENCE_W_INVAL() ::: "memory");
+> -               for (pos =3D gpa; pos < (gpa + gpsz); pos +=3D BIT(order)=
+)
+> +               for (pos =3D gpa; pos < end; pos +=3D step) {
+>                         asm volatile (HINVAL_GVMA(%0, %1)
+>                         : : "r" (pos >> 2), "r" (vmid) : "memory");
+> +                       if (end - pos <=3D step)
+> +                               break;
+> +               }
+>                 asm volatile (SFENCE_INVAL_IR() ::: "memory");
+>         } else {
+> -               for (pos =3D gpa; pos < (gpa + gpsz); pos +=3D BIT(order)=
+)
+> +               for (pos =3D gpa; pos < end; pos +=3D step) {
+>                         asm volatile (HFENCE_GVMA(%0, %1)
+>                         : : "r" (pos >> 2), "r" (vmid) : "memory");
+> +                       if (end - pos <=3D step)
+> +                               break;
+> +               }
+>         }
+>  }
+>
+> @@ -52,7 +64,12 @@ void kvm_riscv_local_hfence_gvma_vmid_all(unsigned lon=
+g vmid)
+>  void kvm_riscv_local_hfence_gvma_gpa(gpa_t gpa, gpa_t gpsz,
+>                                      unsigned long order)
+>  {
+> -       gpa_t pos;
+> +       gpa_t end, pos, step =3D BIT(order);
+> +
+> +       if (check_add_overflow(gpa, gpsz, &end)) {
+> +               kvm_riscv_local_hfence_gvma_all();
+> +               return;
+> +       }
+>
+>         if (PTRS_PER_PTE < (gpsz >> order)) {
+>                 kvm_riscv_local_hfence_gvma_all();
+> @@ -61,14 +78,20 @@ void kvm_riscv_local_hfence_gvma_gpa(gpa_t gpa, gpa_t=
+ gpsz,
+>
+>         if (has_svinval()) {
+>                 asm volatile (SFENCE_W_INVAL() ::: "memory");
+> -               for (pos =3D gpa; pos < (gpa + gpsz); pos +=3D BIT(order)=
+)
+> +               for (pos =3D gpa; pos < end; pos +=3D step) {
+>                         asm volatile(HINVAL_GVMA(%0, zero)
+>                         : : "r" (pos >> 2) : "memory");
+> +                       if (end - pos <=3D step)
+> +                               break;
+> +               }
+>                 asm volatile (SFENCE_INVAL_IR() ::: "memory");
+>         } else {
+> -               for (pos =3D gpa; pos < (gpa + gpsz); pos +=3D BIT(order)=
+)
+> +               for (pos =3D gpa; pos < end; pos +=3D step) {
+>                         asm volatile(HFENCE_GVMA(%0, zero)
+>                         : : "r" (pos >> 2) : "memory");
+> +                       if (end - pos <=3D step)
+> +                               break;
+> +               }
+>         }
+>  }
+>
+> @@ -83,7 +106,13 @@ void kvm_riscv_local_hfence_vvma_asid_gva(unsigned lo=
+ng vmid,
+>                                           unsigned long gvsz,
+>                                           unsigned long order)
+>  {
+> -       unsigned long pos, hgatp;
+> +       unsigned long end, pos, step =3D BIT(order);
+> +       unsigned long hgatp;
+> +
+> +       if (check_add_overflow(gva, gvsz, &end)) {
+> +               kvm_riscv_local_hfence_vvma_asid_all(vmid, asid);
+> +               return;
+> +       }
+>
+>         if (PTRS_PER_PTE < (gvsz >> order)) {
+>                 kvm_riscv_local_hfence_vvma_asid_all(vmid, asid);
+> @@ -94,14 +123,20 @@ void kvm_riscv_local_hfence_vvma_asid_gva(unsigned l=
+ong vmid,
+>
+>         if (has_svinval()) {
+>                 asm volatile (SFENCE_W_INVAL() ::: "memory");
+> -               for (pos =3D gva; pos < (gva + gvsz); pos +=3D BIT(order)=
+)
+> +               for (pos =3D gva; pos < end; pos +=3D step) {
+>                         asm volatile(HINVAL_VVMA(%0, %1)
+>                         : : "r" (pos), "r" (asid) : "memory");
+> +                       if (end - pos <=3D step)
+> +                               break;
+> +               }
+>                 asm volatile (SFENCE_INVAL_IR() ::: "memory");
+>         } else {
+> -               for (pos =3D gva; pos < (gva + gvsz); pos +=3D BIT(order)=
+)
+> +               for (pos =3D gva; pos < end; pos +=3D step) {
+>                         asm volatile(HFENCE_VVMA(%0, %1)
+>                         : : "r" (pos), "r" (asid) : "memory");
+> +                       if (end - pos <=3D step)
+> +                               break;
+> +               }
+>         }
+>
+>         csr_write(CSR_HGATP, hgatp);
+> @@ -123,7 +158,13 @@ void kvm_riscv_local_hfence_vvma_gva(unsigned long v=
+mid,
+>                                      unsigned long gva, unsigned long gvs=
+z,
+>                                      unsigned long order)
+>  {
+> -       unsigned long pos, hgatp;
+> +       unsigned long end, pos, step =3D BIT(order);
+> +       unsigned long hgatp;
+> +
+> +       if (check_add_overflow(gva, gvsz, &end)) {
+> +               kvm_riscv_local_hfence_vvma_all(vmid);
+> +               return;
+> +       }
+>
+>         if (PTRS_PER_PTE < (gvsz >> order)) {
+>                 kvm_riscv_local_hfence_vvma_all(vmid);
+> @@ -134,14 +175,20 @@ void kvm_riscv_local_hfence_vvma_gva(unsigned long =
+vmid,
+>
+>         if (has_svinval()) {
+>                 asm volatile (SFENCE_W_INVAL() ::: "memory");
+> -               for (pos =3D gva; pos < (gva + gvsz); pos +=3D BIT(order)=
+)
+> +               for (pos =3D gva; pos < end; pos +=3D step) {
+>                         asm volatile(HINVAL_VVMA(%0, zero)
+>                         : : "r" (pos) : "memory");
+> +                       if (end - pos <=3D step)
+> +                               break;
+> +               }
+>                 asm volatile (SFENCE_INVAL_IR() ::: "memory");
+>         } else {
+> -               for (pos =3D gva; pos < (gva + gvsz); pos +=3D BIT(order)=
+)
+> +               for (pos =3D gva; pos < end; pos +=3D step) {
+>                         asm volatile(HFENCE_VVMA(%0, zero)
+>                         : : "r" (pos) : "memory");
+> +                       if (end - pos <=3D step)
+> +                               break;
+> +               }
+>         }
+>
+>         csr_write(CSR_HGATP, hgatp);
+> --
+> 2.43.0
+>
