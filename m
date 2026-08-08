@@ -1,194 +1,193 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85D03B2FFE
-	for <kvm@vger.kernel.org>; Sat,  8 Aug 2026 13:53:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786197221; cv=pass; b=BlhexUT8kviXMLm9G4m3uzQE/I4paMTt1CmKpGRpK4X+Pw29vTHwpyieI4zrXlVUrkyo6C4BMSJno/uKgpXSNpzaO7dHLYT94Ygl4T2kLm9rQis5fWlKR8PYTJ/UoMtpp3xS7Av23vn3n5StFGenyljKAjKyeVAh9S+ikH+yS0E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786197221; c=relaxed/simple;
-	bh=zdZzMBzY0Vtf9x9oXrd2/FR6qg1HhMz6+KTWPAYIhVI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=svwsgf6XkjmKoso6WWpFo2g7PlK8dQw7J9vh2DEKZMDu0A1zVu64cTO8RhsVBYK9REd3o+4EHhSP4WBj41WOYh2WJ8ZXg3s7ZMUevzFnw7pTug120AIXYY0Iq1ILvesj0DtewkHYiSB8i7Vi0jmkmNiHD6N54TqjsU1+TYuiAwk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=XEXkREdU; arc=pass smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68A6416866;
+	Sat,  8 Aug 2026 14:39:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786199986; cv=none; b=WDlHriE2BLWKvpDmjZ7vinIbME/1R0nGtuEzhKtazLPPtnbu1zXP+bIf3cbwPSRTfVFKJjpY6V9IQ+VV0Q0OPr8GxOFH7lDQpZzApJZ+Kv6Q+nuPhvMQu1rT/VewDlbbSSs2jU6mNYOR3W/acOxIsRUO/aFoTV/l7eMU/J6AjCI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786199986; c=relaxed/simple;
+	bh=zcSx2XSdEAVzm2aLWJJxByNSKo4VAVjMXcHmClS1zuA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
+	 MIME-Version; b=fOsYL/gAmfAFunRczDPHEIuxMvVirh/Z8j3/nC0qKKj5HDu+Rp/z8/Bw5JQZqsj3bgZlm2kZVKG3+8ifm5QowRICFJg+QQY1blshuIiVC7G7RpF6T6B6jXfgBwc2Q7GQHn5NqhYlloCnFSdH7EuLZLL7+H8fpZN9/S+s9G888N4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Opz4fZKQ; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="XEXkREdU"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-495590dde14so4822955e9.0
-        for <kvm@vger.kernel.org>; Sat, 08 Aug 2026 06:53:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786197218; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dzmGh04XcidoncKtztnTi46cvUB01F9kiuME5EfjgZ0RYOkAiqWEVIoUdQ9wgpF+aD
-         S5dlkVrRcIWg2XRT+LGtLPVG/fpURwCvyno/3szxC9coVmz+HsYjWRnNcMhsh/etwgyP
-         m8gtHAi8hjRVyS6viser1RwMFkW6Ci2cvsb8YCdeMb5uPsVMP8AYyNxfDCp8pd+AEmST
-         BSteD26eJaeNR5D0t6eOEls57NwxJ4xexO6wLBIr5PateZLESk7b0XWT0JRHhytln2pb
-         IPvXmuZT4zysB3L77Crm+wa01Ivx7985825Hc4QulGe1uiGn1AZDlLyyG6MZNYO+SM2O
-         SXHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=74xYgEIE8mnG78Ys3tNqrS7etwpa5hK5YHhCulGv8uw=;
-        fh=vSd00oAeF8eQZqREo7MdDMNxEVCArI2M1Dlj0Oh6ZWs=;
-        b=KkjH0X5MkxB2sPEPwHbUSJbqGTyR8AaCY0960+WeYWX/nUkaHpdHn+b5glbGut4TNL
-         grPEzmhQejS6Wl8h9PINj9yz2/3OTJX2RRW5/rhwiDDBOdYwYGfCm42lvoQNIvltHRnd
-         3mLTXlJ9+Culfs1HD36wdrCI99Nx6lMRIydCC0xSWo7eO3B1Na7z6kNcb+9m7PSziYfE
-         v6+/Xm6Um0530H+H+XXQM8S9l+EX5PmpRxRRYIuku9+R4fzmh4sg/PvS3vSWNdNIft3x
-         QPpx1kXJnzzX5dBbHU5KQ52JCOki9yB5BA+NOY516dTBnsdu0isvj6YCJTC+wvNHkNr1
-         qHKw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1786197218; x=1786802018; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=74xYgEIE8mnG78Ys3tNqrS7etwpa5hK5YHhCulGv8uw=;
-        b=XEXkREdUyXUM0QCXOQvecJXSkVOBj9JaEAvWw4yi5yhwoGdslpz4rFV32GoBwBko1o
-         fkNBlQpG4ai0vH3ucU6AblfX2aFwzMZKuD9xH/zIh6bKiz19aOPejZkETHTSMvDW7R3u
-         2bF4JV/dfZ707b+ZTbn78haNlT/rkejay1XhwRkwn+O0O6ACRCVwcqqHyqQK67bdBc4c
-         YegjxRb1z6wk01U2GEYoc4xyH/F3tjIWzPmHUS7gROVjRB+B2qYaj1qBiS8p4s8PUXYf
-         g/J0jr5pOvXgXSooCK5QdyKBN3UyU9/JAF7NimG9Uh11Q0moDTGqB6IpGO3Kg4sSJExW
-         qQzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786197218; x=1786802018;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=74xYgEIE8mnG78Ys3tNqrS7etwpa5hK5YHhCulGv8uw=;
-        b=OXnSFXR2ppM2xBW416zP45UIgNjiGkfWPslOa0cZPZwW3l1g6WaQ63aHlpJOYT7u+2
-         apSFCvf07W6Cu94ZpOqCh5jMQ9peaZKnDNS4avN0HaRSBDN0xHNBzGdWujs2HEtkJM9I
-         6UNv3cockbrf8h7in0g8QHRUUtqlpDbTmH6xlBDp/KPulWToy3SAKCtV8AxEjOmmSz8g
-         SmBUnRLLZw8YKfb7GGZHHrdyqLBtYtTcZC1ysYSK1x1pmu2gXAbg1FXczRseWDL++lQy
-         wQ5edgqSheTfrLFR0uKU9DARcppNpcF1Y4pqXlQSwy+jg9Ju2T/cZKAgO+rpVh9EoFZ8
-         H9KQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrF8WEoVTjPRHsL9e/Xp5aec0VhRFjENWTGXviAJVymIM5aFHtmF9Lqxc1SsPVpC2ycKHo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmdTrh8lFCCd0IgcwclovaTUAH4NiOkYNEZVXPOxmT1WXvMHEz
-	fPT5vcaTF5Z22eI5FWRg8BFtZIJ46K3bRNMuDijAoTxTCR7buT86gxOYt4bNNb/cN48Z577GiWH
-	DKSWObqvkJVaQGJ5wHLbSHkpNi5TsUoBoDYZloV6tCo8dffr5WlvauUg=
-X-Gm-Gg: AR+sD12JuJbdmomIK7geyeqprfsw9bkRFj1qU6g6bivbjXLtKQM7sOa0+8PYrhz3aHp
-	VNRo+g7N8rIPLZKaINfYU6SYAeADC71Xa+nUTWYJvWfsJkjElvBfynIpUbSqjaz8U/PrdZaZPXh
-	+RO/mWGIvRXjXfoHViRPG0ZTT5iSxweH1DbV6l/k0TpyLOk6crpBJTyaJiFE6yB6NJQxty034RM
-	IHNK3/7YiUoPb3jNshIHOv4XmML2029mJlBCp8Ub61jyNUjNeuYWsG2ru376nfqAsdb3OalGKjv
-	jlviiAyvF3jIh6d6qPD0/jLUr7agWNziP0bvmato5mpeszVC19AgGKBZJ+1hMku9ZdF9hddCFK3
-	OFpBqqtHMzS7myb7sRa+ZreIkv1zIuU990cOm+MzUkRsSPcTv34pyt1O/oozozYI=
-X-Received: by 2002:a05:600c:35c8:b0:499:593b:a15b with SMTP id
- 5b1f17b1804b1-499593ba192mr238069085e9.1.1786197218018; Sat, 08 Aug 2026
- 06:53:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Opz4fZKQ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
+	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:References;
+	bh=zcSx2XSdEAVzm2aLWJJxByNSKo4VAVjMXcHmClS1zuA=; b=Opz4fZKQr5mQdoa8mNtwrphERm
+	UZxNV7GFNsZh6vj3rokfMu6jtiLmubRDSITaBu8i2vMFC4BdxWrHUGnKFVKsSNOJQFB12LYt0vfMq
+	dCibvfzWu9c73U4QJ3LdLjdmZ1lcxgSFnbGlX1nK3+KVAwYhldPl4TvCe3UT4aVTUFMzkjNvjN6Cr
+	ZF3n0ORlBUF19jlI7BqM1Vf7pzx+rHebNIfh3nrnYOZIFE5JTfh23ZcMzB2YGkolb68Obj4BtlK8t
+	fjMNEebsqkNEwhbtKuudD1/ZatUZXMZUJcJR1HqBfYhmBZEmlmLqUzeGzdHh/nPVyJ6j+n4VyoKBw
+	cJC26uNA==;
+Received: from [54.239.6.187] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wsiCt-00000006XD2-20no;
+	Sat, 08 Aug 2026 14:39:27 +0000
+Message-ID: <1309dea94c39c3eeaa09cb394abd8bf2d9b3d8af.camel@infradead.org>
+Subject: Re: [PATCH v6 04/51] x86/tsc: Restrict recalibrate_cpu_khz() export
+ to p4-clockmod and powernow-k7
+From: David Woodhouse <dwmw2@infradead.org>
+To: seanjc@google.com
+Cc: kas@kernel.org, rick.p.edgecombe@intel.com, pbonzini@redhat.com, 
+	kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+ decui@microsoft.com, 	longli@microsoft.com, ajay.kaher@broadcom.com,
+ alexey.makhalov@broadcom.com, 	jan.kiszka@siemens.com,
+ dave.hansen@linux.intel.com, luto@kernel.org, 	peterz@infradead.org,
+ jgross@suse.com, daniel.lezcano@kernel.org, tglx@kernel.org, 
+	jstultz@google.com, x86@kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org
+Date: Sat, 08 Aug 2026 15:39:26 +0100
+In-Reply-To: <20260806233609.212337-5-seanjc@google.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-+ggM4Pf5WdSfLKU8iKJa"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260721-kvm-cpu-pm-v4-0-146bf942547d@sifive.com> <20260721-kvm-cpu-pm-v4-1-146bf942547d@sifive.com>
-In-Reply-To: <20260721-kvm-cpu-pm-v4-1-146bf942547d@sifive.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Sat, 8 Aug 2026 19:23:26 +0530
-X-Gm-Features: AUfX_myz_LWEpWkQBi4Qgji9kmSumRPQ2nVtYheU7XgWx1CkLYrVIiuTenhmXOE
-Message-ID: <CAAhSdy2f79uavqQb0_VxC_xCxX_c5DcFbbH-CfTA8bUGp=JAqg@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] KVM: RISC-V: Clear former VCPU cache on
- virtualization disable
-To: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <radim.krcmar@oss.qualcomm.com>, 
-	Andrew Jones <andrew.jones@oss.qualcomm.com>, Nutty Liu <nutty.liu@hotmail.com>, 
-	Jinyu Tang <tjytimi@163.com>, greentime.hu@sifive.com, vincent.chen@sifive.com, 
-	zong.li@sifive.com, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+
+
+--=-+ggM4Pf5WdSfLKU8iKJa
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 22, 2026 at 11:22=E2=80=AFAM Yong-Xuan Wang
-<yongxuan.wang@sifive.com> wrote:
+On Thu, 2026-08-06 at 16:35 -0700, Sean Christopherson wrote:
+> Export recalibrate_cpu_khz() only for its two users, p4-clockmod.ko and
+> powernow-k7.ko, to help document that recalibration is relevant only to
+> ancient CPUs.
 >
-> When a CPU is taken offline or enters deep idle states, hypervisor CSR
-> state is lost. The kvm_former_vcpu fast-path optimization caches the
-> last VCPU that ran on each CPU to avoid expensive CSR restoration when
-> the same VCPU is re-scheduled on the same CPU. However, if this cache
-> is not cleared when CSR state is lost, the next VCPU entry will
-> incorrectly skip CSR restoration, leading to corrupt hypervisor state.
+> For all intents and purposes, no functional change intended.
 >
-> Add kvm_riscv_clear_former_vcpu() to invalidate the per-CPU cache and
-> call it from kvm_arch_disable_virtualization_cpu() to ensure proper CSR
-> restoration after CPU offline or system suspend events.
->
-> Fixes: 1323a5cfe52c ("KVM: riscv: Skip CSR restore if VCPU is reloaded on=
- the same core")
->
-> Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-LGTM.
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
+--=-+ggM4Pf5WdSfLKU8iKJa
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-Queued this patch for Linux-7.3
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+NDA5NlNIQTM4NDIwMjRDQTEuY3J0MA0GCSqGSIb3DQEBCwUAA4ICAQChxpuuHVw93mze9jmueUFV
+BJNzvOzZlazrt0AiW1H7TlYQutgKVXPNSEyz8s4k+WsRSjjlQMOiZerfwPEV6lo9336I0uNd+ffc
+Rf8gbjiPTiVT+gX9GD1V5AguRgtsJn/H3A6M0dlzhI3J1jsOG9/+xPloHPzy7sPn5rNkntB/VTnv
+Bix4IfUy3ScOu2vnLX0gnwP3EknfdEUvq9+kdkEEBDz7dGqQo3EuhXZoW9CHF2GM0sOpO/cuNQh2
+JzA+to3smTES7sJXYuRrt5GomCRYvtIrRiYGMalFp+z6Jw/843lEIIpNNvpWVfx5Mbawkl+wWG8k
+0IK3rF7FtbNa0it8/s288G/AEHvfsDIQYFmRLlo2LNMxxREkZO/1Qq8GHUsX/602Fi0u88I3uh5w
+bOEIeG32NzBKTKBOjdjpiUrdCA676dyaIFt967CUtnUvFti8bqGA2pe/u7pjIANthqMBAlcnY5B6
+ff2mbdD8BBLItgb4HyUOCVawzy1hc+UR2tglySwYroWeohfoG6afjesGigsl2JmnhaZ9Z0vanF74
+vFEOOmuaq7VamuLEPFQtJM4olmipOW6CzrLcFz6J/6yAecEG3P1ZDoy08eSHvM40MAUgpwGa/w6o
+9ALHQXda/c4TJvAylfHQ6wqArzAuV1pfWldwy7IOBMtKqzQBXQ4dSDGCBCAwggQcAgEBMHYwYjEL
+MAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTowOAYDVQQDEzFEaWdpQ2VydCBB
+c3N1cmVkIEcyIFNNSU1FIFJTQTQwOTYgU0hBMzg0IDIwMjQgQ0ExAhADNSi2uzJskfEdOMo4hV0g
+MA0GCWCGSAFlAwQCAQUAoIIBezAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNjA4MDgxNDM5MjZaMC8GCSqGSIb3DQEJBDEiBCBBdQiKFmqXnTh3gQJ7xEHfosgUxTx5
+vAPUivWkWYWhQjCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
+aUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBT
+SEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAwgYcGCyqGSIb3DQEJEAILMXigdjBiMQsw
+CQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFz
+c3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAw
+DQYJKoZIhvcNAQEBBQAEggIAII6kynXVCZ++SWypAd2Klh0RLvXDGvSVylQVsLJInxyXi4zN214F
+69potnIz6FJoY3TtvszmTmZHsq7eX9jR1gYLV0QvI5JXeFOjqqG8B04Hge3GF6bJjPvDFVzdcokQ
+UI47DP+qc4C6Cuy+dkCvpIV0ZmEIgGfiJZyTN/Xfs++hwoAZrySxDcnxtxp6KovtQwB7xtCqqOj0
+KUEWgJaLNhdb9ThuW3bn8QfeRS9cAK8WbnR/QLUNv56WR8FJjY9Ko0MVojQxcK595bSAohvHrh1d
+fgnfRGA3WwlNDaE70oq4NpxQUkUwDry7dD+BaT3OPRtHV8x+lR968zhpEqvrMH+nRbVEW3mlfXoN
++XHI7iKz+8zfzU6gFD+t7H2PZSFMufuNNQeMF7D1aR85XpJEkqbXOdbwH7cuEb1xIzDjAGxJPBf2
+pbuwIOh9gT14amUq0rVfvqbbCXkyWpV1mecBcgjEsM0kbVfPRC01IEY/qychxc5U08v0Ew0OTkXJ
+dtL1vVzGz9w8vneB1Ny6hXPFgktpfa0HwL3CQZof7Rvoh0xJ/LBG/xBicRuuS96EPhKfDaMuB3IA
+Fx42/Oe5ByXBhgdYcFcfG60qdllOIV5GB0tzjmqv4/9m9lKDoB7WVeFpenhuI3NMoftMcc2MsuYo
+iNGNcSU68Vx0IK8E98Y/kYoAAAAAAAA=
 
-Thanks,
-Anup
 
-> ---
->  arch/riscv/include/asm/kvm_host.h |  2 ++
->  arch/riscv/kvm/main.c             |  2 ++
->  arch/riscv/kvm/vcpu.c             | 11 +++++++++++
->  3 files changed, 15 insertions(+)
->
-> diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/k=
-vm_host.h
-> index 60017ceec9d2..808b4ee1bd10 100644
-> --- a/arch/riscv/include/asm/kvm_host.h
-> +++ b/arch/riscv/include/asm/kvm_host.h
-> @@ -319,6 +319,8 @@ bool kvm_riscv_vcpu_stopped(struct kvm_vcpu *vcpu);
->
->  void kvm_riscv_vcpu_record_steal_time(struct kvm_vcpu *vcpu);
->
-> +void kvm_riscv_clear_former_vcpu(void);
-> +
->  /* Flags representing implementation specific details */
->  DECLARE_STATIC_KEY_FALSE(kvm_riscv_vsstage_tlb_no_gpa);
->
-> diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
-> index 0924c75100a2..350e4f097d6e 100644
-> --- a/arch/riscv/kvm/main.c
-> +++ b/arch/riscv/kvm/main.c
-> @@ -69,6 +69,8 @@ void kvm_arch_disable_virtualization_cpu(void)
->         csr_write(CSR_HEDELEG, 0);
->         csr_write(CSR_HIDELEG, 0);
->
-> +       kvm_riscv_clear_former_vcpu();
-> +
->         kvm_riscv_nacl_disable();
->  }
->
-> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-> index cf6e231e76e2..e48338f907f4 100644
-> --- a/arch/riscv/kvm/vcpu.c
-> +++ b/arch/riscv/kvm/vcpu.c
-> @@ -26,6 +26,17 @@
->
->  static DEFINE_PER_CPU(struct kvm_vcpu *, kvm_former_vcpu);
->
-> +void kvm_riscv_clear_former_vcpu(void)
-> +{
-> +       /*
-> +        * Clear the per-CPU former VCPU pointer because hypervisor CSR s=
-tate
-> +        * will be lost. This ensures that the next VCPU entry will prope=
-rly
-> +        * restore all CSRs instead of incorrectly skipping CSR restorati=
-on
-> +        * via the fast-path optimization.
-> +        */
-> +       __this_cpu_write(kvm_former_vcpu, NULL);
-> +}
-> +
->  const struct kvm_stats_desc kvm_vcpu_stats_desc[] =3D {
->         KVM_GENERIC_VCPU_STATS(),
->         STATS_DESC_COUNTER(VCPU, ecall_exit_stat),
->
-> --
-> 2.43.7
->
+--=-+ggM4Pf5WdSfLKU8iKJa--
