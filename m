@@ -1,184 +1,121 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E43B205E02;
-	Sat,  8 Aug 2026 09:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7EB347BDB
+	for <kvm@vger.kernel.org>; Sat,  8 Aug 2026 10:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786179911; cv=none; b=E3MmvQO+GdhSMvJKb91ozq4PR0VZIdt1I60K6zA+1kzqx0RX/ACogTS8SICbLWqo1s256YZtzE0pW0SxYSpzUfW/biNOZYLDEIbBHUC9ds3S8Rj5AAA6uYQdvtcsvnuKMyV0R1BO2j1J1S9/8LgfX9J0HnWwX4eMz5tS1sgMol0=
+	t=1786183289; cv=none; b=pyR0MbMC+GnwFHQ+8IB2pNYfX5ogSpzEovuCkoLu4k8G8ixX5+tk5gVayCqFjQ4CSDQI7t1EEae+ATx0GTGjQSikIAgbdkaohtKsgPpakizZQsK7+9JiZO7U/H7weRqdVsHlunPY6ZzOc6cpmlaOJrXQgmcBMRFSSC80wa6crmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786179911; c=relaxed/simple;
-	bh=bzaEg3gm2Oynfwunq94gF4vhX2Dly/Gcow3HBJqo3o8=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q885EtXgN5TBKDrz5HrIFu5zhOy3RpOTlqs5LsZeN8Z3MYYJtJvCP4N714z0Vai291O9MgviPuXbQ8g53A19yHyI24wWoycCP8hcq+x7tlRyPp028HIdCXx/lslFVK5srzSj80EWeBgEWCrQNr+0AwYiUbGcQPHKTBuhz3sB8po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lkTGYsW1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786183289; c=relaxed/simple;
+	bh=xsqk3eRLwdV99XDV+yAARGjjj6QNsB6EQxQXhzw7EWM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=SeJ8H1xTv5FpKMs8liNkbUeco3jGh2rr8BlSJR/IZbgIXPugevIZ4Am1WUCi6+O9/MQRMj0O91+0pkeeOFypsK9Q4LfOT/RXXrU2LQIu7pxjy8+my/jUD8ieVmzaNmc0uMZP2uNESf0nPy3zhO0GrA1SKtDKzUX41OdcIttpbm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m4TQaVmK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lkTGYsW1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52511F000E9;
-	Sat,  8 Aug 2026 09:05:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m4TQaVmK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF84C1F000E9;
+	Sat,  8 Aug 2026 10:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786179909;
-	bh=BcQpUXzQNF+2Q+6o8/0P7HWncW1idJum/qJtU1Voeqo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=lkTGYsW1dZasSDUaE9oKcDoNEJuYeo3oNBSycdPzNb9GtBwb9fh8lUX1B+hnDKyBN
-	 LDjvFM/0hlJaHuObNzAnGsZnYgQ6Kz5WYQLet5RwUGQ4llz7MS5l7gnsLdv9g8dzaU
-	 yLEh2e704eiOD488zCQUHBvIQG7J5ZnS2VD8qU/P9Jo9yNeCqtWj4xbJKeTE2L5JbP
-	 kMqaNt6gAkTOJ1M8o+gXFvUDS5a3VNavTNH0OSydcHIwS/Uy7/qUkirAk4fmc2oD/H
-	 ky4rJojkbfGyDVqbNNFpY0Zy4KKvn6X3ldnkXiJP6ixcVZG0lBS8544tnLqsLIVnv7
-	 VUrSTq3sj8Jsw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wsczL-0000000Dd90-3XoN;
-	Sat, 08 Aug 2026 09:05:07 +0000
-Date: Sat, 08 Aug 2026 10:06:31 +0100
-Message-ID: <87bjbdouaw.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Yao Yuan <yaoyuan@linux.alibaba.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/8] KVM: arm64: Handle negative S1 walk levels in VNCR TLB size evaluation
-In-Reply-To: <anYL8J1ejjujgp-A@lucifer>
-References: <20260806091026.620700-1-maz@kernel.org>
-	<20260806091026.620700-3-maz@kernel.org>
-	<anYL8J1ejjujgp-A@lucifer>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20260515; t=1786183288;
+	bh=2KKMSIo0tXkje9SoGhZ3KP144btY8lVHj4ie2qDvqXI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=m4TQaVmKpfUlzKrgs/QE/s0dsLMgH+vrTvpjTt75Q9EDy48Au3bV9sLrabZphPqYk
+	 Vl+jRn3YPDbQ5vc2TR0K9eqkuYnQJ4R06MidKQjJ6vW5v/gVzpH3jAHr2zil0sleOe
+	 OG6sy4vwPY5ZKwjUVUp0ditDmSSmS7Q1CLpuxcg+HoTUTysB6nGkLMcrgh3AF53BA/
+	 rrJIfgbiNunP+S+K+mV1BT6usRxREBO6JjIBW2nWbzrrNPV93tp1In24csaagn8+/H
+	 nYoitM/Pk2b0RocMoxydqC8YFXpapOiRYqEHdI8ExxiB0heGUjD4e3cFzGnQlGDR71
+	 9m/24wEgcunYw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/2] vhost-vdpa: don't install the eventfd_ctx_fdget()
+ error in config_ctx
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Yu Zhang" <yuz08559@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260807100025.19750-2-yuz08559@gmail.com>
+References: <20260807100025.19750-1-yuz08559@gmail.com>
+ <20260807100025.19750-2-yuz08559@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 08 Aug 2026 10:01:26 +0000
+Message-Id: <20260808100127.CF84C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: ljs@kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, fuad.tabba@linux.dev, imv4bel@gmail.com, yaoyuan@linux.alibaba.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Fri, 07 Aug 2026 18:12:18 +0100,
-"Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-[...]
+Pre-existing issues:
+- [Critical] Lack of synchronization between `vhost_vdpa_set_config_call()`=
+ and the config interrupt handler `vhost_vdpa_config_cb()` leads to a Data =
+Race and a Use-After-Free on `v->config_ctx`.
+--
 
-> So actually if granularity is TLBI_TTL_TG_4K this will return SZ_1G and 0 in the
-> other cases unless I'm getting something wrong here?
->
-> This is really more a 'maybe worth mentioning in the commit log to be pedantic'
-> kind of thing :)
-> 
-> IOW you could luck out before with SZ_1G for TLBI_TTL_TG_4K.
+--- Patch [1]: [PATCH 1/2] vhost-vdpa: don't install the eventfd_ctx_fdget(=
+) error in config_ctx ---
+commit 97c24916f7205e9db996343c66b6d1658f9125bd
+Author: Yu Zhang <yuz08559@gmail.com>
 
-Yes, and that's what happens in most cases. But as Huynwoo Kim's
-reports, 16k and 64k lead to something really bad. And even 4k works
-by pure luck, so this is all fsck'd in my book.
+vhost-vdpa: don't install the eventfd_ctx_fdget() error in config_ctx
 
-> 
-> >
-> > Tidy-up pgshift_level_to_ttl() to handle these negative levels, and
-> > ttl_to_size() to always return SZ_1G when no valid TTL is present.
-> > This allows the removal of open-coded checks for similar situations.
-> 
-> I guess SZ_1G is a reasonable default here?
+This commit avoids storing an error pointer in the configuration context on
+failure. It validates the file descriptor prior to swapping it, preventing
+config interrupts from encountering an invalid pointer.
 
-It is more than a reasonable default. It is the maximum block size
-that can architecturally be mapped in the absence of FEAT_LPA*. In
-this situation, 16k pages imply a 32M max block mapping, and 64k
-implies 512M. 4K pages, by virtue of allowing a level-1 block mapping
-result in a 1G size.
+> diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+> --- a/drivers/vhost/vdpa.c
+> +++ b/drivers/vhost/vdpa.c
+> @@ -536,18 +536,14 @@ static long vhost_vdpa_set_config_call(struct vhost=
+_vdpa *v, u32 __user *argp)
+>  		return  -EFAULT;
+> =20
+>  	ctx =3D fd =3D=3D VHOST_FILE_UNBIND ? NULL : eventfd_ctx_fdget(fd);
+> +	if (IS_ERR(ctx))
+> +		return PTR_ERR(ctx);
+> +
+>  	swap(ctx, v->config_ctx);
+> =20
+> -	if (!IS_ERR_OR_NULL(ctx))
+> +	if (ctx)
+>  		eventfd_ctx_put(ctx);
 
-> 
-> >
-> > Note that the check for a negative value not explicitely checking for
-> 
-> NIT: explicitely -> explicitly
-> 
-> > S1_MMU_DISABLED is deliberate, so that actual negative levels introduced
-> > with LVA2 and D128 can take the same path if we ever support them.
-> >
-> > Fixes: 7270cc9157f47 ("KVM: arm64: nv: Handle VNCR_EL2 invalidation from MMU notifiers")
-> > Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-> > Link: https://lore.kernel.org/r/ameGoxbn2wzBq2kL@v4bel
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > Cc: stable@vger.kernel.org
-> > ---
-> >  arch/arm64/kvm/nested.c | 26 +++++++++++++++++++-------
-> >  1 file changed, 19 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> > index f3c75954cf36c..035cda256e2a5 100644
-> > --- a/arch/arm64/kvm/nested.c
-> > +++ b/arch/arm64/kvm/nested.c
-> > @@ -505,7 +505,7 @@ int kvm_walk_nested_s2(struct kvm_vcpu *vcpu, phys_addr_t gipa,
-> >  	return ret;
-> >  }
-> >
-> > -static unsigned int ttl_to_size(u8 ttl)
-> > +static unsigned int __ttl_to_size(u8 ttl)
-> >  {
-> >  	int level = ttl & 3;
-> >  	int gran = (ttl >> 2) & 3;
-> > @@ -561,10 +561,22 @@ static unsigned int ttl_to_size(u8 ttl)
-> >  	return max_size;
-> >  }
-> >
-> > -static u8 pgshift_level_to_ttl(u16 shift, u8 level)
-> > +static unsigned int ttl_to_size(u8 ttl)
-> > +{
-> > +	return __ttl_to_size(ttl) ?: SZ_1G;
-> > +}
-> 
-> Might be worth a comment about the default?
+[Severity: Critical]
+This isn't a bug introduced by this patch, but can this sequence lead to a
+use-after-free if a config interrupt occurs concurrently?
 
-It's the architecture. I'm trying hard not to make KVM a running
-commentary of the ARM ARM ;-).
+In the interrupt handler, the pointer is read locklessly:
 
-> 
-> > +
-> > +static u8 pgshift_level_to_ttl(u16 shift, s8 level)
-> >  {
-> >  	u8 ttl;
-> >
-> > +	/*
-> > +	 * If we don't have a proper level, fallback to the maximum
-> > +	 * size.
-> > +	 */
-> > +	if (level < 0)
-> > +		return 0;
-> > +
-> >  	switch(shift) {
-> >  	case 12:
-> >  		ttl = TLBI_TTL_TG_4K;
-> > @@ -675,7 +687,11 @@ unsigned long compute_tlb_inval_range(struct kvm_s2_mmu *mmu, u64 val)
-> >  		ttl = get_guest_mapping_ttl(mmu, addr);
-> >  	}
-> >
-> > -	max_size = ttl_to_size(ttl);
-> > +	/*
-> > +	 * Don't use the default 1GB fallback, as we can adapt to the
-> > +	 * max mapping size we allow at S2.
-> > +	 */
-> 
-> Being a bit pedantic here but I wonder if simply just to say 'Adapt to the max
-> mapping size allowed at S2' as the fallback is inferred?
+drivers/vhost/vdpa.c:vhost_vdpa_config_cb() {
+    struct eventfd_ctx *config_ctx =3D v->config_ctx;
 
-Sure.
+    if (config_ctx)
+        eventfd_signal(config_ctx);
+    ...
+}
 
-Thanks,
+If the ioctl thread executing vhost_vdpa_set_config_call() swaps out the old
+context and immediately calls eventfd_ctx_put(), it might free the context
+while the interrupt handler has already read the old pointer but hasn't yet
+called eventfd_signal().
 
-	M.
+Does this code need synchronization before freeing the old eventfd context =
+to
+wait for concurrent interrupt handlers to finish?
 
--- 
-Jazz isn't dead. It just smells funny.
+> -	if (IS_ERR(v->config_ctx)) {
+> -		long ret =3D PTR_ERR(v->config_ctx);
+> -
+> -		v->config_ctx =3D NULL;
+> -		return ret;
+> -	}
+> -
+>  	v->vdpa->config->set_config_cb(v->vdpa, &cb);
+> =20
+>  	return 0;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807100025.1975=
+0-1-yuz08559@gmail.com?part=3D1
