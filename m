@@ -1,119 +1,298 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9639822425B;
-	Sun,  9 Aug 2026 13:14:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C1C1C84BC
+	for <kvm@vger.kernel.org>; Sun,  9 Aug 2026 15:24:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786281258; cv=none; b=sbVfRb0GLuVspVPq74KHSMKJGdnaMcpOPhvMxGyNCvmEWmYtTXL9TkRTqnpixaLqjI7V9Y57LYIfWmTKG0IbTGxZ4qlksajL4Qh3oMb2FCSFXeOXXyVUcioYxiRakm9W9+u6SOmUNu9OogZjyVfEIFqbWFCTD+QzNmQZlPgRXNE=
+	t=1786289060; cv=none; b=jVZMavYe2KfXmzq6RFlO7PoPKyrmwKU5kxYUhrDS0rhl+jrfWHHQAZTwhYBotKUtA8YRysScSAqmB9/hEPhWvb81vLkYTdFR+NTZe+jSHNI48Ap5CZPRIY+4A1JJykSdl9WJBhI1bCd6/bCaCzur1ik4pgBkIiIDwpeJOpVu5bU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786281258; c=relaxed/simple;
-	bh=VmYO0OxDiUsxJgENnlEE4yYXE1ZuWgl/dZMQDNH7T7Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cMnJF7smMYqCacnYtaM59SDFYHwtA8ObHSPNsTdzyC19+gsrP/Ql9nfgDDlIK7p+dBuX+8AvtuH/kJ+K365WjpKQcFB8Sqf9MtYAajEWQq9HPmv/1u09KNReoCXgj+domd879LUMv0UhUJNso66KLCdmq2dj8IXGU/Dy7hjabyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=S15dXqKU; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786289060; c=relaxed/simple;
+	bh=pd671asCPrIM7AwKWSNQA+CXH2I7Aq8i3tofN+0aBOA=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rv4AjCiLTOMlVH+0tMM1PW+tz+AxLND/jVAtUHMTIxzLbvtSXLcA+RLCHhc1bnfILfXlF9X4DwnV0+HmcNIymoL2Kf+0ji+DuWISuFC7PShUO1C2UNeq8mCvPkjGIJxDInY0S/HLc3CErcVDjIAlZN3NiwNOwYeT5wOsVWl+wxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n37Jj/OV; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="S15dXqKU"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 679C2bfM2873376;
-	Sun, 9 Aug 2026 13:14:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=rAIMIM
-	Tomtyg5Bzamr/+FfWK+9dIsPwz0g/OOzv7woQ=; b=S15dXqKUIbvLPTPcnvblQU
-	qrSFH7Gp9IiGJuZVNyUVp45kg9nUHB5zbDtDXXkNoKmvV5ojplrcgoFhwpqBeWP7
-	Vq6dbYN40HTaEzkGqM1E5WKTMEHXBVMapIQrlHCkyHqV8HetnDW3kBlEoin6gTSK
-	tLbAOjxfnSO8hybfnq6DpScwzSxWkAt4oz2kSMqr5brj1/3hoEu9fU8/6kvodCb3
-	6bjQZLVExOWOILgT8ZBIr7Z0MPZ1eXSKM7rAmni9+bGwn22MAkDVjrOZeOjmHXzG
-	wv3LpeoyRer72xtZqo8q9MNp7Pc9s72GW53pFbqVQPNu1GYFmmiqWRxjaj0lpH7A
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvq948h5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 09 Aug 2026 13:14:03 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 679DBGwl011321;
-	Sun, 9 Aug 2026 13:14:02 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxf5vsfp1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 09 Aug 2026 13:14:02 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 679DE0iX49480142
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 9 Aug 2026 13:14:00 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5EC3220040;
-	Sun,  9 Aug 2026 13:14:00 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1827E20043;
-	Sun,  9 Aug 2026 13:13:58 +0000 (GMT)
-Received: from Linuxdev.ibmuc.com (unknown [9.43.32.240])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun,  9 Aug 2026 13:13:57 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Thorsten Blum <thorsten.blum@linux.dev>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] KVM: PPC: booke: Use min() in watchdog_next_timeout()
-Date: Sun,  9 Aug 2026 18:43:56 +0530
-Message-ID: <178627549726.530848.18124700226916109095.b4-ty@linux.ibm.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260804112011.59416-3-thorsten.blum@linux.dev>
-References: <20260804112011.59416-3-thorsten.blum@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n37Jj/OV"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6a205b0df35so699727a12.1
+        for <kvm@vger.kernel.org>; Sun, 09 Aug 2026 08:24:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786289057; x=1786893857; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:date
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YCSY1KdqStovoDw2x1htHfbvgdCvirPIGBme1gB4ZDg=;
+        b=n37Jj/OVdo/jB52PtcaFwoonz3gUWXrnKksP8s2qHzM5k7h4WZD58pP48MIT7go0xJ
+         /E+iETL037XFP8FxYCej9HTmRw0aLXk7XtyZQkjnffgrhTxANktPDSORN2L/0M3ra6dk
+         Awv/eX8VFs9+smB8pvdtB0dCSrpYpcctCdAIRE7Q8cIUvTErB6FfHr+QJAPqgyhScpaa
+         scMsTVV3r/MP45d0Sox8lIHG/m3w5NpLYlOJbfPKNMolnFzghaO+JYDz4yK8QJ59H2UU
+         3lDjpDPdIN+RRhrW9jaoSRUk2MkxEv1fJzn45zYR7RmgTu+7ondgMysBvcEMTgjYCgvo
+         /iVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786289057; x=1786893857;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:date
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=YCSY1KdqStovoDw2x1htHfbvgdCvirPIGBme1gB4ZDg=;
+        b=sLx73LphmVy+z6ZlQcTLhPcxdFT3OG+xIq1Nx42jBKtfRYdTRXVHpW6kr5RsQKRx3P
+         /bagXHwDnMRdIDNEundqowNxALuU60gtUAnaed5Bo4wqRJboJJvfQS/nUeCQ4MkGLK8j
+         Mez3FuVwjWX6+ZIHC2KGvxpsV9plk0mhUWZXsfMO4e31sJ4lwPbpQ6K0A6QhEslSWLCW
+         8MhjvWUNIiq9zHLDRYabj0MR8m9Mab5Eqk7ApyHwH5xBzz4Yp15p2TpjPhus3I6QyANm
+         rBOD0b05uRzKGzkNkEGcbTpIGvi2hukI5thy++DRanh+SXqVRuy+Uu4Jp2bfIlIhQctt
+         GmtA==
+X-Forwarded-Encrypted: i=1; AHgh+RqpoCV5s1Slb6nW19/6clQoVNUqRPaRAyh6YbJoQ9yjR+ZkUoOup/RaotvwpZWGk2OOmOA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSrrk3MSkkaigCpVeJD0WHDNHPToCxl03wKZ7PuqwSap4vZQeW
+	m7xawhsAsumrn6rgkV2fVfskEobHfW6fJwv4jo/gzBJOIZ16rYkoyaf1
+X-Gm-Gg: AR+sD11W+JTfyWK5eh87vpP0ZeAsjV5Auw0BIus/PySDAkpNRhulJ6c81QJjHXulzAI
+	jyYV6cZoxKvEmuwhG6RXBTaoCMGASueKz3dC/F9U6JxkdvK3jCpCSlClvgnGOlZwF2OB170YqSn
+	ts64VjkVTTd30j+obo3AILb1bu1t8+9WCq/uVvjsL/lWobCvpr1+r3Aaa42V6NI2ejg5l5Ihevn
+	j2LDiEg7hWMPmOo/wEqJoVgmYyoMSGqnE4gZgb2dP9lH4YZbSGPN6sI+Q9+M47weztPepwyiHQi
+	C+RmDVi012o4eGJC6eHbgwD2qitTWmIjdfYFWlijA9BWdglP9g7HBjUEx8loErcw4dQbQBE/gW+
+	X9hW2NNiVe9si+yO0i0VC+ZL5uyXjeUTnUG51XtNc9Uwg0jAx7V3heaQbAK7s+VVMPN5a4HZM39
+	75WzCevrQVoHeOlOI21WevMq9pdg==
+X-Received: by 2002:a05:6402:278c:b0:6a1:23f3:26b7 with SMTP id 4fb4d7f45d1cf-6a14f13b783mr17145196a12.14.1786289056697;
+        Sun, 09 Aug 2026 08:24:16 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a1e7d5aacesm3112416a12.21.2026.08.09.08.24.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Aug 2026 08:24:15 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Sun, 9 Aug 2026 17:24:14 +0200
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: paulmck@kernel.org, Sean Christopherson <seanjc@google.com>,
+	Boqun Feng <boqun@kernel.org>, kvm@vger.kernel.org,
+	rcu@vger.kernel.org
+Subject: Re: [PATCH v3 3/7] KVM: pfncache: Use RCU for readers instead of a
+ rwlock
+Message-ID: <anibnhTYdwdn51FF@milan>
+References: <0d483855-4d2f-4502-858c-c88077aa0b94@paulmck-laptop>
+ <d0fdf8aa4faa4e349cdc0e051b6e211cddd566b0.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: M6kla8c4D5vQypXwGMBCQj1yqcY9q7Tx
-X-Authority-Analysis: v=2.4 cv=PbDPQChd c=1 sm=1 tr=0 ts=6a787d1c cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=Bagx-dtLvwiT4Ypvb4QA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA5MDExNSBTYWx0ZWRfX6tjGAb2o8NPU
- wdG5kCTMemTKbGiUIZ/7Tpqt4h7FGJVJ597zfbJslHvBKpk3cwz1bwEm6q7kDu4MZZhQ65J8kLC
- sON0vGBtZu/x+tRfMxFyN9++SxZe6K/x7pAijOFagiu9U9iZzx/q3N9VKYDisXxT4EL1en8I3br
- hWL+1pTF0k8Cwm3JFD3jaJjO9FxvIHrbQaKqk7+yljXbhzYLkzSbXtmjhkKHoUYDvjTLwuqmaEs
- //4YdTIOMnm8fGUHQEo26/HXmf0kU40zDvAZPgQpWS5W8WJU9oYjukpMJLb6LBCJJeqH/74ZGh3
- ZHFXdF4IU5kETazVm6Ro09eje/xd0QTcXrQ1DNGv5DQvXsFftdwneqc8gA3o8gQ+7HOQ4nuhsLP
- LhlXOuVWS2+xNb05QZF3ZxOgVlgL13WhT9ouEvDl8oH0a980GngB166ZUQU34bQdCnB7x4+zdUD
- 5gNipWtfOyAk4f95Acg==
-X-Proofpoint-ORIG-GUID: VG_C0zq56BALBfAX0KK3MI9yT-UeIPAQ
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA5MDExNSBTYWx0ZWRfX4UThm9BFSs5R
- 4FwK2bRjOjyd/IAG0Eg1yrvi7HF1/yp7AXI1kkQPFkKK3NGZMG4R+9JKbsMfa3kQl0VALqG4WQ8
- xHjCiLitHBg7/iwAv10P4u0wgw0uk0g=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-09_04,2026-08-07_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0 adultscore=0
- clxscore=1015 priorityscore=1501 suspectscore=0 phishscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608090115
+In-Reply-To: <d0fdf8aa4faa4e349cdc0e051b6e211cddd566b0.camel@infradead.org>
 
-On Tue, 04 Aug 2026 13:20:12 +0200, Thorsten Blum wrote:
-> Replace min_t() with the simpler min() macro since the values are
-> unsigned and compatible.
+On Sun, Aug 09, 2026 at 10:59:59AM +0100, David Woodhouse wrote:
+> On Sat, 2026-08-08 at 10:58 -0700, Paul E. McKenney wrote:
+> > By the way, good point on all the SRCU instances sharing a common
+> > set of workqueues.  More ways to deadlock!  But I don't see having
+> > per-srcu_struct sets of dedicated kthreads.  ;-)
 > 
+> Indeed. Although I did briefly go down the rabbit hole of whether a
+> *reader* sleeping in an allocation could compose into the same kind of
+> cycle.
 > 
+> Conclusion: only if something on the reclaim path synchronizes the
+> *same* srcu_struct that the reader holds — cross-domain it's only
+> latency, since the GP state machine polls and requeues rather than
+> capturing a worker. Which becomes a design rule for GPC usage:
+> never allocate under srcu_read_lock(&kvm->gpc_srcu), because our
+> invalidator *is* on the reaper path. But that's OK because allocating
+> inside the existing GPC rwlock is already verboten.
+> 
+> > True, but shouldn't we take as much pressure off of the spare as we can
+> > so that it will be there for us when we really need it.
+> [...]
+> > Why not do a "GFP_NOWAIT | __GFP_NOWARN" attempt before raiding
+> > srcu_spare_nodes?  Wouldn't that increase the probability that there
+> > would be an srcu_node array available when someone really needed it?
+> 
+> Makes sense. Done that way below: the GFP_NOWAIT attempt comes first,
+> so in the common no-pressure case the spare is never touched and is
+> guaranteed present under the memory pressure it exists for. That also
+> makes the replenish latency mostly moot — it only matters after an
+> allocation has already failed under pressure, and nothing ever waits on
+> it.
+> 
+> > Mightn't !try_cmpxchg() be a better fit here?  You are using the returned
+> > pointer as a boolean anyway.  (One could also argue for xchg(), but why
+> > unnecessarily write to that poor cache line?)
+> 
+> Also done, plus a check of srcu_spare_nodes before the kzalloc as you
+> suggested — the collision is indeed low-probability, but the check is
+> free.
+> 
+> > And the across-SRCU shared-workqueue deadlock that you pointed out is
+> > avoided because the only way that gfp_flags is set to GFP_KERNEL is when
+> > the caller is supplying its own task, correct?
+> 
+> Right. After this patch the only GFP_KERNEL caller of
+> init_srcu_struct_nodes() is init_srcu_struct() in the caller's own
+> task, where blocking is permitted. srcu_gp_end() passes GFP_NOWAIT, so
+> nothing on the grace-period workqueue can ever block in reclaim.
+> 
+> In the meantime, testing found some issues in my original conversion of
+> the GPC code to RCU — dropping gpc->lock broke the atomicity of the
+> final invalidation check against the publish, and the teardown paths
+> could skip the grace period when an invalidation had already cleared
+> the valid flag — re-breaking the syzbot thing I only just fixed, but
+> for which thankfully I had a repro case right there ready to catch it
+> :)
+> 
+> Both reworked: the valid/becoming-valid state now lives in a single
+> atomic word, so the publish is a cmpxchg which an invalidation can
+> veto. (My old needs_invalidation flag back again!). That's now ~30
+> hours into a 48-hour KASAN+lockdep soak with no complaints, and syzbot
+> is chewing on it too.
+> 
+> Tree with all of that plus this SRCU preallocation patch on top:
+> 
+> https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/xen-rcu-srcu-prealloc
+> 
+> Patch below. Still only compile-tested — my metal test hosts are
+> over the big_cpu_lim threshold, so the lazy transition path this
+> changes never executes there; testing it properly wants a small guest
+> or big_cpu_lim= tweaking, which is on the list. But also it's a PITA to
+> actually *trigger* the OOM reaper path anyway, and I've not actually
+> managed it without hacking the kernel to introduce delays.
+> 
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> Subject: [PATCH] srcu: Keep a spare node array so srcu_gp_end() need not block
+>  in reclaim
+> 
+> The one-time transition of an srcu_struct from SRCU_SIZE_SMALL to
+> SRCU_SIZE_BIG allocates the srcu_node combining tree with GFP_KERNEL
+> from srcu_gp_end(). That runs on the same workqueue which processes
+> grace periods for every srcu_struct in the system — including grace
+> periods awaited from OOM/reclaim contexts such as the OOM reaper
+> calling synchronize_srcu() via an mmu_notifier. If the allocation
+> blocks in direct reclaim, it can be waiting on the very OOM reaper
+> whose grace period is queued behind it: a deadlock.
+> 
+> The allocation is literally one size fits all: it depends only on
+> rcu_num_nodes, which is fixed once rcu_init_geometry() has run. So
+> keep a single preallocated spare array, primed in srcu_init() when
+> lazy (contention-triggered) sizing is in effect.
+> 
+> Allocation tries GFP_NOWAIT first, which in the common no-pressure
+> case succeeds and leaves the spare untouched, so that it is still
+> there when there really is pressure. Only when that fails is the
+> spare consumed (with xchg(), so double-consumption is impossible),
+> and the consumer kicks a replenish worker on system_wq — a clean
+> context where GFP_KERNEL is safe and nothing waits on the result.
+> The final fallback uses the caller's own flags: GFP_KERNEL only ever
+> from init_srcu_struct() in the caller's own task, where blocking is
+> permitted; srcu_gp_end() passes GFP_NOWAIT, preserving the guarantee
+> that the grace-period workqueue never blocks in reclaim.
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> Assisted-by: Claude:claude-mythos-5
+> ---
+>  kernel/rcu/srcutree.c | 84 +++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 81 insertions(+), 3 deletions(-)
+> 
+> diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+> index 7c2f7cc131f7..23911fa71c64 100644
+> --- a/kernel/rcu/srcutree.c
+> +++ b/kernel/rcu/srcutree.c
+> @@ -123,6 +123,71 @@ static inline bool srcu_invl_snp_seq(unsigned long s)
+>  	return s == SRCU_SNP_INIT_SEQ;
+>  }
+>  
+> +/*
+> + * A standing spare srcu_node array. The size of the allocation depends
+> + * only on rcu_num_nodes, which is fixed once rcu_init_geometry() has run,
+> + * so one preallocated array fits every srcu_struct in the system.
+> + *
+> + * This exists because srcu_gp_end() may need to allocate the array when
+> + * a size transition is triggered by contention, and srcu_gp_end() runs
+> + * on the same workqueue for every srcu_struct — including grace periods
+> + * awaited from OOM/reclaim contexts (e.g. the OOM reaper via an
+> + * mmu_notifier). Blocking there in GFP_KERNEL reclaim can deadlock: the
+> + * reclaim may be waiting on the very OOM reaper whose grace period is
+> + * queued behind this allocation.
+> + *
+> + * The allocation therefore tries GFP_NOWAIT first — which in the common
+> + * no-pressure case succeeds and leaves the spare untouched — and raids
+> + * the spare only when that fails, i.e. under the memory pressure the
+> + * spare exists for. The spare is replenished from a clean context on
+> + * system_wq. Nothing on the grace-period path ever blocks in reclaim.
+> + */
+> +static struct srcu_node *srcu_spare_nodes;
+> +
+> +static void srcu_spare_replenish_wq(struct work_struct *work)
+> +{
+> +	struct srcu_node *spare, *expect = NULL;
+> +
+> +	if (READ_ONCE(srcu_spare_nodes))
+> +		return;		/* Already refilled. */
+> +
+> +	spare = kzalloc_objs(*spare, rcu_num_nodes, GFP_KERNEL);
+> +	if (!spare)
+> +		return;
+> +	if (!try_cmpxchg(&srcu_spare_nodes, &expect, spare))
+> +		kfree(spare);	/* Someone else refilled it first. */
+> +}
+> +static DECLARE_WORK(srcu_spare_replenish_work, srcu_spare_replenish_wq);
+> +
+> +static struct srcu_node *srcu_alloc_nodes(gfp_t gfp_flags)
+> +{
+> +	struct srcu_node *node;
+> +
+> +	/*
+> +	 * Try a non-blocking allocation first, leaving the spare untouched
+> +	 * in the common no-pressure case so that it is still there when
+> +	 * there really is pressure.
+> +	 */
+> +	node = kzalloc_objs(*node, rcu_num_nodes, GFP_NOWAIT | __GFP_NOWARN);
+>
+GFP_NOWAIT already contains __GFP_NOWARN. It is odd.
 
-Applied to powerpc/next.
+> +	if (node)
+> +		return node;
+> +
+> +	node = xchg(&srcu_spare_nodes, NULL);
+> +	if (node) {
+> +		schedule_work(&srcu_spare_replenish_work);
+>
+I am not sure but if there is a need in doing progress forward, probably
+separate wq with WQ_MEM_RECLAIM | WQ_UNBOUND flags is better. It has an
+extra rescue kthread to do the progress if no memory or high mem-pressure.
 
-[1/2] KVM: PPC: booke: Use min() in watchdog_next_timeout()
-      https://git.kernel.org/powerpc/c/ad0889338bfed33da6b8127d7d8ae0a4d6e4cd5d
-[2/2] KVM: PPC: Use min() in kvm_vm_ioctl_check_extension()
-      https://git.kernel.org/powerpc/c/0fcdb510932b90160c47d3c38f6ce43852d7e14f
+> +		return node;
+> +	}
+> +
+> +	/*
+> +	 * Spare already taken and not yet replenished. Fall back to the
+> +	 * caller's own flags: for init_srcu_struct() this is GFP_KERNEL in
+> +	 * the caller's own task, where blocking is permitted; from
+> +	 * srcu_gp_end() it is GFP_NOWAIT again, preserving the guarantee
+> +	 * that the grace-period workqueue never blocks in reclaim.
+> +	 */
+> +	return kzalloc_objs(*node, rcu_num_nodes, gfp_flags);
+> +}
+> +
+>  /*
+>   * Allocated and initialize SRCU combining tree.  Returns @true if
+>   * allocation succeeded and @false otherwise.
+> @@ -139,8 +204,7 @@ static bool init_srcu_struct_nodes(struct srcu_struct *ssp, gfp_t gfp_flags)
+>  
+>  	/* Initialize geometry if it has not already been initialized. */
+>  	rcu_init_geometry();
+> -	ssp->srcu_sup->node = kzalloc_objs(*ssp->srcu_sup->node, rcu_num_nodes,
+> -					   gfp_flags);
+> +	ssp->srcu_sup->node = srcu_alloc_nodes(gfp_flags);
+>  	if (!ssp->srcu_sup->node)
+>  		return false;
+>  
+> @@ -1004,7 +1068,7 @@ static void srcu_gp_end(struct srcu_struct *ssp)
+>  	/* Transition to big if needed. */
+>  	if (ss_state != SRCU_SIZE_SMALL && ss_state != SRCU_SIZE_BIG) {
+>  		if (ss_state == SRCU_SIZE_ALLOC)
+> -			init_srcu_struct_nodes(ssp, GFP_KERNEL);
+> +			init_srcu_struct_nodes(ssp, GFP_NOWAIT | __GFP_NOWARN);
+>
+Same here.
 
-cheers
+--
+Uladzislau Rezki
