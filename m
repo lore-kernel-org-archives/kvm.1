@@ -1,122 +1,73 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75FF347FCD
-	for <kvm@vger.kernel.org>; Sun,  9 Aug 2026 11:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489E0223DE7
+	for <kvm@vger.kernel.org>; Sun,  9 Aug 2026 11:34:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786274720; cv=none; b=uUjndq+Zg0g2pehoAo6bgi8gv+Wwvjoj3harOslSDwH4WQwHEKq3+LomL4dhBoBQqwFYRcd3NzXNQbVxfLs+lyQoVNrI3KOwl2KL0Y0Fo8F9IylbWAI45Fs2bahIk2vA3Cq+UtjP9DQSN8dUxsyHmv2AouDbXrp47wLDzOypSqM=
+	t=1786275244; cv=none; b=Ug/rCD/se93QzMbwaEALHRgsz6sHbMzur1si7+uGMvP5rCBRyrThcFWNz6skQe0/u9CH87D2mvaeG9CroYW4BG3nMbomeup3iQjNkVtA5d0JXv/7zIVrk2kXqgzWxXKOxwHCGAmjUmW983ucO/HaAIGxyVZw2FnD8teotTTX4wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786274720; c=relaxed/simple;
-	bh=7vna+EMnPrZifh51+jB07m2GAHVqI+DCUtOoQJ08+cU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=piOpCGSr+9YZvTpOkd1K+AwFbUJ7du6z72LK7pVDlOPAD5Q09I7hXvjy5VcMccnDbv2QebhgpobUOB4gnqAYJXjLxpr56hn0csAylUIJ7LQzx77jaI/NUJADE5kbnolGsD83q5S0INaM23LbwY7hQjhlREysYIgzZiyqUtiK47U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kmmBu1zm; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kmmBu1zm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C351F000E9;
-	Sun,  9 Aug 2026 11:25:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786274719;
-	bh=xzFqb/HQJ3ddOuwzzgFoI3D4N/lt1ozHujNG0z8s4tg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kmmBu1zmQLpiLbiELxQO121LZdSZexupvjPkCLCGNXF4O7ArvM2nCOQqV/jLdaRlt
-	 5TNlrnhsoA4/C5vga/+vHXYApMAEfwEJSIqoxeQti8iO4QH/QIJy9byyT4eR6t4zk6
-	 5lkJqkgY02RYaGsoo7EQlWC1ER5MuxF147LBVbD6FjSVTQOxxbTXcbXQbFyhLM03ev
-	 n9YNR5yOg67wJN9aIjWvzC4dpU1xy63+kQRNbzw2GjXC1XPNBPQHzT1AMo3IFZ4lVA
-	 tI9pEnRLC+n7FqIDss+OAdQqpH1v2ujCn+5hh6zLbyvy1jPco031yfslDVTQB/iPK7
-	 MQeak18co8ccA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] vhost/vdpa: reject VRING_NUM larger than device max
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jia Jia" <physicalmtea@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260808112458.101616-1-physicalmtea@gmail.com>
-References: <20260808112458.101616-1-physicalmtea@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 09 Aug 2026 11:25:18 +0000
-Message-Id: <20260809112519.49C351F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1786275244; c=relaxed/simple;
+	bh=4yBC4TOR3j/q0XUdeW9ve1iksgGtLh8N7a5/oa1M6Bw=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=lw/GQEGujaYcnVmeg8iOofKHnE95Zw9OONC8P29Ef/1BMkcI79C1u8SAZQ9tNlE3RF5I8CJujLmGqoQNkoS4DvWbyOsMHKkGJIolqyX4bIUd8ZIIKePgBWGDUIzl4zSKsEFJS2T9y9cg8oCEU0JRBM2bBr6tTsBUHPv7GdgaRUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4a41f46d629so1522577b6e.3
+        for <kvm@vger.kernel.org>; Sun, 09 Aug 2026 04:34:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786275242; x=1786880042;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=OfEaqI1/cm3iEN52zSQnWGci0fCyKRb42i0NGIj1RKw=;
+        b=fmjZbmKTb1OqGjFonjdJGTw3OhVSL3xDTH2huiaeLeQcNPLr0yFDO3BOpfk7GQvAcz
+         whJ86GTAqujFEqDQEOeEtUS4Yy+rOTNahvXs5gZPHYIjhO/gLXeO1Umxi8I9GtBrauuL
+         7/GPg05DvdGpsNyD8jGgHm1XUIbRRBNvWpb1gAS/DjB+xEmMHNeKo2jhN2UUHOgmf61s
+         V0T2vFi5InCcQiaGpxQcU+6JN+JZUEpA/HcbnElzqDnPaKXjoZSfaDSOwdDHAx4Mmapi
+         ERbAQkma8O1A5JlEEwjqqe0wqjxR5b2jOL7/7lDeaH63Z0JohuIFpV3+ajrqHWIjvK33
+         LC1Q==
+X-Forwarded-Encrypted: i=1; AHgh+RoeEvE1NLXvS42ZFT1y7WOYeg5+sg3p2G+MqzKvC8QcsTQOBYpO1Z8WfQccb86ntKpkKbI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxponrD6lXhwU/T2ofQi5deemkCo4DceDtjiGSXIDmL8BsXWYDP
+	zaaJLF6wDNf4+yeVFBTvRrAD5f2egJ3L/kuTnfsokWnKUkLeMxom4FK67c9HiUWhFqpcdKt+3Rs
+	bbY0oG3cMCa2fgUfm7TsrVvE5Yx8dbMZ/uwUReQxZWK3NKP7wGBadlNn9r7Q=
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-Received: by 2002:a05:6808:6904:b0:4af:57e9:4ec6 with SMTP id
+ 5614622812f47-4b1a0fc9a20mr8642099b6e.15.1786275242293; Sun, 09 Aug 2026
+ 04:34:02 -0700 (PDT)
+Date: Sun, 09 Aug 2026 04:34:02 -0700
+In-Reply-To: <e8e1fbbe24ddad3850d77aed52a22a6e3f620cb3.camel@infradead.org>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a7865aa.9c11d2ce.289b96.00ce.GAE@google.com>
+Subject: Re: [syzbot] [kvm-x86?] [kvm?] WARNING: locking bug in kvm_xen_set_evtchn_fast
+From: syzbot <syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com>
+To: dwmw2@infradead.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	paulmck@kernel.org, pbonzini@redhat.com, seanjc@kernel.org, 
+	suryasaimadhu369@gmail.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] The newly added validation for VHOST_SET_VRING_NUM suffers from a =
-double-fetch Time-of-Check to Time-of-Use (TOCTOU) vulnerability, which com=
-pletely bypasses the intended security fix.
---
+Hello,
 
---- Patch [1]: [PATCH v2] vhost/vdpa: reject VRING_NUM larger than device m=
-ax ---
-commit 321003a29055f06433bde7512f4893c5f9acf2a6
-Author: Jia Jia <physicalmtea@gmail.com>
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-vhost/vdpa: reject VRING_NUM larger than device max
+Reported-by: syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com
+Tested-by: syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com
 
-This commit adds a bounds check on the requested virtual queue size in
-vhost_vdpa_vring_ioctl() to prevent an out-of-bounds read in the backend.
-It returns -EINVAL if the requested size is larger than the device's
-maximum reported value.
+Tested on:
 
-> diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-> index c3d913bd7cac7..36fc049a4eaf6 100644
-> --- a/drivers/vhost/vdpa.c
-> +++ b/drivers/vhost/vdpa.c
-> @@ -723,6 +723,13 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa=
- *v, unsigned int cmd,
->  				vhost_vdpa_unsetup_vq_irq(v, idx);
->  		}
->  		break;
-> +	case VHOST_SET_VRING_NUM:
-> +		/* Reject sizes above the max reported by the device. */
-> +		if (copy_from_user(&s, argp, sizeof(s)))
-> +			return -EFAULT;
-> +		if (s.num > ops->get_vq_num_max(vdpa))
-> +			return -EINVAL;
-> +		break;
+commit:         230abd62 KVM: pfncache: Use a dedicated SRCU domain in..
+git tree:       git://git.infradead.org/users/dwmw2/linux.git xen-rcu-fixed
+console output: https://syzkaller.appspot.com/x/log.txt?x=110522c6580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=9cef045500682f6b
+dashboard link: https://syzkaller.appspot.com/bug?extid=919877893c9d28162dc2
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
 
-[Severity: High]
-Does this introduce a double-fetch time-of-check to time-of-use vulnerabili=
-ty?
-
-The size is checked here using copy_from_user(), but the same user space
-pointer (argp) is fetched a second time later in the call chain.
-
-After this check, vhost_vdpa_vring_ioctl() calls vhost_vring_ioctl() which
-passes the same pointer down:
-
-vhost_vring_ioctl() {
-        ...
-        if (ioctl =3D=3D VHOST_SET_VRING_NUM ||
-            ioctl =3D=3D VHOST_SET_VRING_ADDR) {
-                return vhost_vring_set_num_addr(d, vq, ioctl, argp);
-        }
-        ...
-}
-
-This calls into vhost_vring_set_num() and performs a second fetch from argp:
-
-vhost_vring_set_num() {
-        if (copy_from_user(&s, argp, sizeof s))
-                return -EFAULT;
-
-        if (!s.num || s.num > 0xffff || (s.num & (s.num - 1)))
-                return -EINVAL;
-        vq->num =3D s.num;
-}
-
-If a malicious user space thread modifies the memory at argp between the fi=
-rst
-and second fetches, it can bypass the get_vq_num_max() check.=20
-
-The inflated vq->num is then pushed to the backend via ops->set_vq_num(),
-which appears to trigger the exact out-of-bounds read this patch aims to fi=
-x.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260808112458.1016=
-16-1-physicalmtea@gmail.com?part=3D1
+Note: no patches were applied.
+Note: testing is done by a robot and is best-effort only.
