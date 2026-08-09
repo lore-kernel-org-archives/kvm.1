@@ -1,57 +1,56 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104B72FD1A5
-	for <kvm@vger.kernel.org>; Sun,  9 Aug 2026 04:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A44306741
+	for <kvm@vger.kernel.org>; Sun,  9 Aug 2026 04:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786248409; cv=none; b=FgT30q/fZFFb64SlbJqPOlN0XLF6Ei1TS1zG66z5jbpXzAtAEO/qsYnw2iDfqUGhicF4B3SFgBuGudHvqW+EBLCThyyMjWVcaMBUHrWmRbfJ/YC+88A3Izeo/FAtdxy2Cr3By4/NhlMtq+HMYDMB8taZS+W+Ip7gD34SnZXJ1vQ=
+	t=1786248463; cv=none; b=g+KhhbzsVRJX/SLpa1c00aeS6PbDa4V2HPybXhA6svJCHQxx+DclBKvza+a2q2aozcsj5IcU5yhIcL1rIn5YjPL47EtS3RnugijDCmBZJIdgPRaJ7lik1l9mwB/kucNrneSKXum17lYFdIq/nZOIAkn4WDNS1ppBqZn33IpZ2k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786248409; c=relaxed/simple;
-	bh=/t/ZiW8n5Yeko1CynjDpmufMvwTQ0Fpx805diFf1BEc=;
+	s=arc-20240116; t=1786248463; c=relaxed/simple;
+	bh=4E4YvNrn4yDUOCzuehcRYYYu2UMPIlLOvAvw0Hw1J+Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tjx7WI3RQ5uJpgvjh7AKvkyIb31dMP8Eb+RvIUkc5RA4T6we/jVw/V+aqKxV8FwHCXk2b9tMMRWVgVKbF6Ya3NaMtsjKOrw5twGOz2/HJ2duhMPTQoAjLCXzd/Kbb27gSgf75ptLe6h9qNWGJxZv2sskkNTFlJXzMGGwAFPnP+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EYhcmPfo; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=AUmrc0/2F55lE2ZyeYwJuQGUanEtYAtDE2RcDBEIit3lgygO1l+0tVDTBXDMOazm8FxpjkmWGsPPIZ6XknURSRJsBSy43c+yiuAWk1V1C+AVClhqk/gzed69SJon8rogoOkwgy77I3OjN6+5TRdXJm77zGNdNi+4vxfcgNHipq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UMDhbkUv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EYhcmPfo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43911F00A3D
-	for <kvm@vger.kernel.org>; Sun,  9 Aug 2026 04:06:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UMDhbkUv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993511F00A3E
+	for <kvm@vger.kernel.org>; Sun,  9 Aug 2026 04:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786248407;
-	bh=V5oFT+Ue3upspbmCGcePUUJKyiom/9d6zgqPeC8Ttko=;
+	s=k20260515; t=1786248461;
+	bh=L8CSqrRVh74ENGvcKVCmRBoVfhbd7ZDNHVHlxKcRdBo=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=EYhcmPfo3vIfxjEFaNl0F8RAXvCitptUoCZrkw3fHgtUYcbu0Ez6QcnUYZv9M5+2y
-	 3OVAwaDvLZeGH8G1U3zcg/Em+hgHaB0au5JcuVpstQA20ayS8LffqqKFDpUx072vIu
-	 f6wcZY5La1sC9UwPCbPQEyCXEwvyj3UX7vMOyuFRhcWBUk6ykqBLCemlUIB973G2FY
-	 rWqXpgXasaSsjqSXy+daMFh6raxxMdvjPJyXTAAcTBmvwRU2eAhy/fBXqzFHiYO4p9
-	 QdQwHKjypy3mDmRd6b+PVr//Zm+LmQK3dFrsRLrKjck6eV86omKjZpdW+dLHhYg7BK
-	 Fn2MxtRXRRmrQ==
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6a1f7f42510so662260a12.0
-        for <kvm@vger.kernel.org>; Sat, 08 Aug 2026 21:06:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpW3aqrr+8NqqG07+/JNnzcbL4kuy1jxlAZ82e8zqzEvwXjndd9PipzGIrTw4Oj/KMy8AA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxT+6bB90j1aKA4OFId6EvUldUZ4LAzEY1DtsYWj3GcGD2V5vuS
-	RZXNBxdO1eaJmGGnnatKcySqK8qfVZjjCdr4R/SHi6GK/SAV73IxHBEnLDVrVIBQz4JIrr5oS2C
-	BT9E+INRij2Fk7xEyEisND8WKHdZa13U=
-X-Received: by 2002:a05:6402:2394:b0:6a1:7718:ad44 with SMTP id
- 4fb4d7f45d1cf-6a17718af13mr11628599a12.21.1786248406282; Sat, 08 Aug 2026
- 21:06:46 -0700 (PDT)
+	b=UMDhbkUv71ew0A9H0wOkOGtc7OkBhKRxhsp5U5TyHBVfrrvF7vhOb40Z8mVvePlH2
+	 2J9QFiVv4rbd7COGAEid7hgFdo1qmyLkng3dq+2WypcfgLwfKrDSO4g+DtMduQYCBS
+	 6RvP4BKdLHM7KfL/3YdVLgaIGi8vjH+lqeX+xylkKpdvwkZACfRDh5Kl4KzHRls1ow
+	 sPdwU97lLH/dWHBPtkV/d/wju6PElUFsBWIQLsg2DlN16au8k3Jo6y73JickEWGE2F
+	 HTbCPdLeace9pEk91Krzd3EMQAcNbeLbgH/4oALKqIKRqigtLQ4a5nVSX8k64jdmuH
+	 pFAYwhGkT1PqQ==
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6a0a4a8d251so1004549a12.1
+        for <kvm@vger.kernel.org>; Sat, 08 Aug 2026 21:07:41 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwOowU/DW0OynTnRDoKzwZ7yMjhuebj1qQU9SnPz0Qt3K+eRZ8C
+	mxV+TsS9KGzDLaPmmVlDLpmU6CLEVQo4pJ0OTUrI4wqs43C+ZJNSAVtg0G7HTvvnSdZCAaEYGRq
+	UDBaiSxiSlJ9ovRpHQR7XQCYZbV+xx6U=
+X-Received: by 2002:a05:6402:2803:b0:6a1:b23d:e962 with SMTP id
+ 4fb4d7f45d1cf-6a1b23df9c9mr9912252a12.8.1786248460294; Sat, 08 Aug 2026
+ 21:07:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260805054549.287648-1-cui.tao@linux.dev>
-In-Reply-To: <20260805054549.287648-1-cui.tao@linux.dev>
+References: <20260804082153.1220709-1-maobibo@loongson.cn>
+In-Reply-To: <20260804082153.1220709-1-maobibo@loongson.cn>
 From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sun, 9 Aug 2026 12:06:36 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H59uR_WFk5rQDYm=s2_iyr1Gr0D+tE248hrfe3d+2ycog@mail.gmail.com>
-X-Gm-Features: AUfX_mxxD4U35GHvV92UGyMcFQ5uCA8UBJNz6lgl71sWcqe37Jk5c_s9HxcuYV8
-Message-ID: <CAAhV-H59uR_WFk5rQDYm=s2_iyr1Gr0D+tE248hrfe3d+2ycog@mail.gmail.com>
-Subject: Re: [PATCH v2] LoongArch: KVM: Advertise already-supported capabilities
-To: Tao Cui <cui.tao@linux.dev>
-Cc: zhaotianrui@loongson.cn, maobibo@loongson.cn, kernel@xen0n.name, 
-	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+Date: Sun, 9 Aug 2026 12:07:30 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4PcWnwqYqo3swkowKzUvGENfHhFktHaghsLFSaNkkLqg@mail.gmail.com>
+X-Gm-Features: AUfX_mxW-l2u3yg4EChdCTRWOw6G7RCdKyZltYZs2wXsuNmeBQcOv7feOlDwj_I
+Message-ID: <CAAhV-H4PcWnwqYqo3swkowKzUvGENfHhFktHaghsLFSaNkkLqg@mail.gmail.com>
+Subject: Re: [PATCH] LoongArch: KVM: Set cpu before IN_GUEST_MODE is set
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -59,56 +58,40 @@ Applied, thanks.
 
 Huacai
 
-On Wed, Aug 5, 2026 at 1:46=E2=80=AFPM Tao Cui <cui.tao@linux.dev> wrote:
+On Tue, Aug 4, 2026 at 4:29=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrote=
+:
 >
-> Several LoongArch KVM features are fully implemented but were never
-> reported through their standard KVM_CHECK_EXTENSION probes, so userspace
-> cannot discover them.  Advertise the ones that already work and have a
-> real consumer:
+> In function kvm_make_vcpu_request(), it will send IPI to physical CPU
+> when vCPU is in IN_GUEST_MODE mode. And physical CPU is set in function
+> kvm_check_vpid(), and it should be called before IN_GUEST_MODE is set.
+> Otherwise IPI will send to wrong old physical CPU where vCPU is running.
 >
->   - KVM_CAP_STEAL_TIME: steal time works end-to-end (host-side record
->     plus guest paravirt side), and the probe returns kvm_pvtime_supported=
-().
->
->   - KVM_CAP_VCPU_ATTRIBUTES: per-vCPU device-attribute ioctls are
->     implemented (CPUCFG, PVTIME control); advertise the discovery cap.
->
-> This adds no new functionality; it only makes existing features
-> discoverable via the standard probe.
->
-> Signed-off-by: Tao Cui <cui.tao@linux.dev>
+> Fixes: 2fc3bd86db4b ("LoongArch: KVM: Implement basic vcpu interfaces")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 > ---
-> Changes in v2:
->   - Drop KVM_CAP_IRQFD_RESAMPLE: the only consumer is VFIO INTx, which
->     needs IOMMU/VFIO not yet available on LoongArch.
->   - Drop KVM_CAP_VM_GPA_BITS: the cap implies a GPA-width setter that
->     LoongArch does not implement.
+>  arch/loongarch/kvm/vcpu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
->  arch/loongarch/kvm/vm.c | 4 ++++
->  1 file changed, 4 insertions(+)
+> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+> index 20c207d80e31..fd0dd22a7162 100644
+> --- a/arch/loongarch/kvm/vcpu.c
+> +++ b/arch/loongarch/kvm/vcpu.c
+> @@ -300,10 +300,10 @@ static int kvm_pre_enter_guest(struct kvm_vcpu *vcp=
+u)
+>                  */
+>                 local_irq_disable();
+>                 kvm_deliver_exception(vcpu);
+> +               kvm_check_vpid(vcpu);
+>                 /* Make sure the vcpu mode has been written */
+>                 smp_store_mb(vcpu->mode, IN_GUEST_MODE);
+>                 kvm_deliver_intr(vcpu);
+> -               kvm_check_vpid(vcpu);
 >
-> diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
-> index 1317c718f896..0a51931d6f6e 100644
-> --- a/arch/loongarch/kvm/vm.c
-> +++ b/arch/loongarch/kvm/vm.c
-> @@ -122,6 +122,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, lon=
-g ext)
->         case KVM_CAP_IOEVENTFD:
->         case KVM_CAP_MP_STATE:
->         case KVM_CAP_SET_GUEST_DEBUG:
-> +       case KVM_CAP_VCPU_ATTRIBUTES:
->                 r =3D 1;
->                 break;
->         case KVM_CAP_NR_VCPUS:
-> @@ -136,6 +137,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, lon=
-g ext)
->         case KVM_CAP_NR_MEMSLOTS:
->                 r =3D KVM_USER_MEM_SLOTS;
->                 break;
-> +       case KVM_CAP_STEAL_TIME:
-> +               r =3D kvm_pvtime_supported();
-> +               break;
->         default:
->                 r =3D 0;
->                 break;
+>                 /*
+>                  * Called after function kvm_check_vpid()
+>
+> base-commit: 075b74841bd0065a3bda3440873c747938e69b68
+> --
+> 2.39.3
 >
