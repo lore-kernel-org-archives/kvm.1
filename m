@@ -1,97 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A44306741
-	for <kvm@vger.kernel.org>; Sun,  9 Aug 2026 04:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78AF136F900;
+	Sun,  9 Aug 2026 06:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786248463; cv=none; b=g+KhhbzsVRJX/SLpa1c00aeS6PbDa4V2HPybXhA6svJCHQxx+DclBKvza+a2q2aozcsj5IcU5yhIcL1rIn5YjPL47EtS3RnugijDCmBZJIdgPRaJ7lik1l9mwB/kucNrneSKXum17lYFdIq/nZOIAkn4WDNS1ppBqZn33IpZ2k8=
+	t=1786257774; cv=none; b=QEDk2QPxJNUVUm+PmL4pBs18y7uyNbmYmAVld3WhrZ3UVjJJ0n4pWHfCgoMrXyaGF2fZsuaOgO1N0HAEnB5mu+tEYD9aKGI3UTkcZ6QvLZ2gwR5GrD6ljEpGehbTlacm6+qwBO9/xaYmnaT9Bm35JjGh3IFFFWQ74WXMHP5nOto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786248463; c=relaxed/simple;
-	bh=4E4YvNrn4yDUOCzuehcRYYYu2UMPIlLOvAvw0Hw1J+Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AUmrc0/2F55lE2ZyeYwJuQGUanEtYAtDE2RcDBEIit3lgygO1l+0tVDTBXDMOazm8FxpjkmWGsPPIZ6XknURSRJsBSy43c+yiuAWk1V1C+AVClhqk/gzed69SJon8rogoOkwgy77I3OjN6+5TRdXJm77zGNdNi+4vxfcgNHipq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UMDhbkUv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786257774; c=relaxed/simple;
+	bh=R6yBmyxuR+V780x3naz0o++V38Ykhmc588fXz/oxl8I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QRdWviFGDzqjyUmcKAD7kIEjdCf7R1NYj713bsH9bTz1FaknaNJgC7a4l3qeshcgMyxX9+vkq4C/AjFlVwItciw8UKT5mdzAQxxoEGlBJ35Q4YPnWfOH6njFoQxCa0ZKJfDaaoym584AWA80w6aFZg0/gtTeRSQfLnrlEIlrIKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=IXjLH+zF; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UMDhbkUv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993511F00A3E
-	for <kvm@vger.kernel.org>; Sun,  9 Aug 2026 04:07:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786248461;
-	bh=L8CSqrRVh74ENGvcKVCmRBoVfhbd7ZDNHVHlxKcRdBo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=UMDhbkUv71ew0A9H0wOkOGtc7OkBhKRxhsp5U5TyHBVfrrvF7vhOb40Z8mVvePlH2
-	 2J9QFiVv4rbd7COGAEid7hgFdo1qmyLkng3dq+2WypcfgLwfKrDSO4g+DtMduQYCBS
-	 6RvP4BKdLHM7KfL/3YdVLgaIGi8vjH+lqeX+xylkKpdvwkZACfRDh5Kl4KzHRls1ow
-	 sPdwU97lLH/dWHBPtkV/d/wju6PElUFsBWIQLsg2DlN16au8k3Jo6y73JickEWGE2F
-	 HTbCPdLeace9pEk91Krzd3EMQAcNbeLbgH/4oALKqIKRqigtLQ4a5nVSX8k64jdmuH
-	 pFAYwhGkT1PqQ==
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6a0a4a8d251so1004549a12.1
-        for <kvm@vger.kernel.org>; Sat, 08 Aug 2026 21:07:41 -0700 (PDT)
-X-Gm-Message-State: AOJu0YwOowU/DW0OynTnRDoKzwZ7yMjhuebj1qQU9SnPz0Qt3K+eRZ8C
-	mxV+TsS9KGzDLaPmmVlDLpmU6CLEVQo4pJ0OTUrI4wqs43C+ZJNSAVtg0G7HTvvnSdZCAaEYGRq
-	UDBaiSxiSlJ9ovRpHQR7XQCYZbV+xx6U=
-X-Received: by 2002:a05:6402:2803:b0:6a1:b23d:e962 with SMTP id
- 4fb4d7f45d1cf-6a1b23df9c9mr9912252a12.8.1786248460294; Sat, 08 Aug 2026
- 21:07:40 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="IXjLH+zF"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DEFD6152B;
+	Sat,  8 Aug 2026 23:42:47 -0700 (PDT)
+Received: from [10.57.41.8] (unknown [10.57.41.8])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 909D83F9A2;
+	Sat,  8 Aug 2026 23:42:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786257771; bh=R6yBmyxuR+V780x3naz0o++V38Ykhmc588fXz/oxl8I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IXjLH+zFuDRuSANWFWGuHCpS6ALdYgLhbhvVMnuCqMwBhwBPmXa/0cD4MrUh3IKIC
+	 7Mjsp2FKa01EHb/WVQMyqw3gA19/c3hvrFrgMoljCyJ4nYIVr6cfs8GKinuHdvc2Cr
+	 v+3hmtoka+4W+HdTJiae9BKJJ1W4iarPT0cc7iV0=
+Message-ID: <c6c7debd-42e3-41ac-87ca-96ba543f6c84@arm.com>
+Date: Sun, 9 Aug 2026 07:42:46 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260804082153.1220709-1-maobibo@loongson.cn>
-In-Reply-To: <20260804082153.1220709-1-maobibo@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sun, 9 Aug 2026 12:07:30 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4PcWnwqYqo3swkowKzUvGENfHhFktHaghsLFSaNkkLqg@mail.gmail.com>
-X-Gm-Features: AUfX_mxW-l2u3yg4EChdCTRWOw6G7RCdKyZltYZs2wXsuNmeBQcOv7feOlDwj_I
-Message-ID: <CAAhV-H4PcWnwqYqo3swkowKzUvGENfHhFktHaghsLFSaNkkLqg@mail.gmail.com>
-Subject: Re: [PATCH] LoongArch: KVM: Set cpu before IN_GUEST_MODE is set
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 06/45] firmware: arm_rmm: Ensure the RMM has GPT
+ entries for memory
+Content-Language: en-GB
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <20260803134403.80630-7-steven.price@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260803134403.80630-7-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Applied, thanks.
+On 03/08/2026 14:43, Steven Price wrote:
+> The RMM maintains the state of all the granules in the system to make
+> sure that the host is abiding by the rules. This state can be maintained
+> at different granularity, per page (TRACKING_FINE) or per region
+> (TRACKING_COARSE). The region size depends on the underlying
+> "RMI_GRANULE_SIZE". For a "coarse" region all pages in the region must
+> be of the same state, this implies we need to have "fine" tracking for
+> DRAM, so that we can delegate individual pages.
+> 
+> For now we only support a statically carved out memory for tracking
+> granules for the "fine" regions. This can be extended in the future to
+> allow modifying the tracking granularity and remove the need for a
+> static allocation.
+> 
+> Similarly, the firmware may create L0 GPT entries describing the total
+> address space. But if we change the "PAS" (Physical Address Space) of a
+> granule then the firmware may need to create L1 tables to track the PAS
+> at a finer granularity.
 
-Huacai
+This sounds a bit incomplete to me. We could add:
 
-On Tue, Aug 4, 2026 at 4:29=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrote=
-:
->
-> In function kvm_make_vcpu_request(), it will send IPI to physical CPU
-> when vCPU is in IN_GUEST_MODE mode. And physical CPU is set in function
-> kvm_check_vpid(), and it should be called before IN_GUEST_MODE is set.
-> Otherwise IPI will send to wrong old physical CPU where vCPU is running.
->
-> Fixes: 2fc3bd86db4b ("LoongArch: KVM: Implement basic vcpu interfaces")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+"Again, this series do not support creation of L1 GPT tables yet. Thus 
+make sure that the firmware has L1 GPTs covering the DRAM region."
+
+
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
 > ---
->  arch/loongarch/kvm/vcpu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-> index 20c207d80e31..fd0dd22a7162 100644
-> --- a/arch/loongarch/kvm/vcpu.c
-> +++ b/arch/loongarch/kvm/vcpu.c
-> @@ -300,10 +300,10 @@ static int kvm_pre_enter_guest(struct kvm_vcpu *vcp=
-u)
->                  */
->                 local_irq_disable();
->                 kvm_deliver_exception(vcpu);
-> +               kvm_check_vpid(vcpu);
->                 /* Make sure the vcpu mode has been written */
->                 smp_store_mb(vcpu->mode, IN_GUEST_MODE);
->                 kvm_deliver_intr(vcpu);
-> -               kvm_check_vpid(vcpu);
->
->                 /*
->                  * Called after function kvm_check_vpid()
->
-> base-commit: 075b74841bd0065a3bda3440873c747938e69b68
-> --
-> 2.39.3
->
+> Changes since v15:
+>   * Skip firmware-reserved NOMAP memory in rmi_init_metadata()
+>   * Handle negative error codes from wrappers.
+> Changes since v14:
+>   * Move the implementation into drivers/firmware/arm_rmm.
+> Changes since v13:
+>   * Moved out of KVM
+> ---
+>   drivers/firmware/arm_rmm/rmi.c | 101 +++++++++++++++++++++++++++++++++
+>   include/linux/arm-rmi-cmds.h   |   2 +
+>   2 files changed, 103 insertions(+)
+> 
+> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+> index 51ea661cecf9..bce3304bbc1a 100644
+> --- a/drivers/firmware/arm_rmm/rmi.c
+> +++ b/drivers/firmware/arm_rmm/rmi.c
+> @@ -12,6 +12,8 @@
+>   #include <asm/memory.h>
+>   #include <asm/pgtable-hwdef.h>
+>   
+> +static bool arm64_rmi_is_available;
+> +
+>   /* Currently only the first 2 registers are used by Linux */
+>   #define RMI_FEAT_REG_COUNT	2
+>   static __ro_after_init unsigned long rmi_feat_reg_cache[RMI_FEAT_REG_COUNT];
+> @@ -647,6 +649,98 @@ static int rmi_configure(void)
+>   	return ret;
+>   }
+>   
+> +/*
+> + * Make sure the area is tracked by RMM at FINE granularity.
+> + * We do not support changing the tracking yet.
+> + */
+> +static int rmi_verify_memory_tracking(phys_addr_t start, phys_addr_t end)
+> +{
+> +	while (start < end) {
+> +		unsigned long ret, category, state, next;
+> +
+> +		ret = rmi_granule_tracking_get(start, end, &category, &state, &next);
+> +		if (ret != RMI_SUCCESS ||
+> +		    state != RMI_TRACKING_FINE ||
+> +		    category != RMI_MEM_CATEGORY_CONVENTIONAL) {
+> +			/* TODO: Set granule tracking in this case */
+> +			pr_err("Granule tracking for region isn't fine/conventional: %llx\n",
+> +			       start);
+> +			return -ENODEV;
+> +		}
+> +		start = next;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int rmi_create_gpts(phys_addr_t start, phys_addr_t end)
+> +{
+> +	struct rmi_sro_state *sro;
+> +	unsigned long l0gpt_sz;
+> +
+> +	sro = kmalloc_obj(*sro, GFP_KERNEL);
+> +	if (!sro)
+> +		return -ENOMEM;
+> +
+> +	l0gpt_sz = 1UL << (30 + FIELD_GET(RMI_FEATURE_REGISTER_1_L0GPTSZ,
+> +					  rmi_feat_reg(1)));
+> +	start = ALIGN_DOWN(start, l0gpt_sz);
+> +	end = ALIGN(end, l0gpt_sz);
+> +
+> +	while (start < end) {
+> +		long ret = rmi_gpt_l1_create(start, sro, GFP_KERNEL);
+> +
+> +		/*
+> +		 * Make sure the L1 GPT tables are created for the region.
+> +		 * RMI_ERROR_GPT indicates the L1 table already exists.
+> +		 */
+
+minor nit: The comment could be moved down closer to the check.
+
+> +		if (ret < 0) {
+> +			kfree(sro);
+> +			return ret;
+> +		}
+> +
+> +		if (ret != RMI_SUCCESS && RMI_RETURN_STATUS(ret) != RMI_ERROR_GPT) {
+> +			pr_err("GPT Level1 table missing for %llx\n", start);
+> +			kfree(sro);
+> +			return -ENOMEM;
+> +		}
+> +		start += l0gpt_sz;
+> +	}
+> +
+
+Rest looks good to me
+
+Suzuki
