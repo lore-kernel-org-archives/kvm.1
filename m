@@ -1,174 +1,324 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10FF1A683A;
-	Sat,  8 Aug 2026 21:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786225307; cv=none; b=gthJs9L9pN6zeEQith9CuVytJUkn7wzc71mngs75PYz2KV2JS2R/6W7aOhD9kou/MqxXlmQFKPIkdp/RL2sGzbjkgG6PD71rFmPNPmdW84VciMmo5Zjl2iuFAW6NncqfItyp8d8yrFDUnBoNziA70j/P85m9+b6/x+8DAkEz2ls=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786225307; c=relaxed/simple;
-	bh=I4DdleW8mzxVeMyiB3L8HY8f1W4aXjk83V1EP/T4+I4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K7S4oamDmHX2zm6F4cGvxLa89Xkz0w3q9ppUYyrC6hqL7Ze2c2EpET62VcfIjX1H67/MD2N1btPTi9Oa7suXQhm4bXK35y1p5oyP6iClcrHIdZeZooQYT6mTFkvb7XMTdiNn9E/3e5np1XWTduGLKVN5WSdjxSd31ZIV4wqX2Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=BI9ksKow; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723241C84BC
+	for <kvm@vger.kernel.org>; Sun,  9 Aug 2026 00:50:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786236604; cv=pass; b=R983QvDW7i9M6LV7Lq7mok6uk/BvbzQm+Bz7/8c05pcB68lApkhzwQGu49T5lL9HjBs0mAim5fZ6wnk19jnqc+qGlxrzL2w9lgYDmTx2GakT4QnEpv3AB9xDz8BB+TZQrhYSgjUIY9x3fbPzDcqQva/yQCogE7GwNenYXvDc72Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786236604; c=relaxed/simple;
+	bh=uWVe1BdpMd0lRes5ct6uZ9noXUP5xpqgoEGZNp5fE2M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IlRN01JM/2mWaOr+dxFXT/iD0oIbMLXWboB+BqDZzdixdGbUf2qZwHsQ1BTfKFpGEaBon/eWK6YxSZmpDPSpq+IImb72d5LRY0uXYP+uL8pg8GkiV34gyic2HX6pLFP5GK5NVbNryDt04DxMu7aW09x9aBwIZkpfIuoriV2aDLY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RHMbRHXy; arc=pass smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="BI9ksKow"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B301C152B;
-	Sat,  8 Aug 2026 14:41:39 -0700 (PDT)
-Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B7C103F9A2;
-	Sat,  8 Aug 2026 14:41:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786225303; bh=I4DdleW8mzxVeMyiB3L8HY8f1W4aXjk83V1EP/T4+I4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BI9ksKowFBrkK396n5hsWjimnlOOable3MsLV4y3n7S5+1tgNqP6N6WFXFGtDTE32
-	 hEr/u9esRbfm0i0MrHb1lIeDuaaWjUuK/9esr7GvjoQEWbNKWioArCRJofLMM62J3r
-	 8+yBNoBgpQhKZ7WczfW/mYTuBK0b3wymIrkMqDnE=
-Date: Sat, 8 Aug 2026 22:41:31 +0100
-From: Wei-Lin Chang <weilin.chang@arm.com>
-To: Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Cc: Steffen Eiden <seiden@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Oliver Upton <oupton@kernel.org>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Fuad Tabba <fuad.tabba@linux.dev>, 
-	Hyunwoo Kim <imv4bel@gmail.com>, Yao Yuan <yaoyuan@linux.alibaba.com>, ljs@kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 4/8] KVM: arm64: Correctly handle end of VA space TLBI
- invalidation
-Message-ID: <yifz3wn5gk5sr6mapi32trgk5m5kp33bquctsjmkifebnsnndt@fix6u4rthx4g>
-References: <20260806091026.620700-1-maz@kernel.org>
- <20260806091026.620700-5-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RHMbRHXy"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51c15a5b265so178071cf.0
+        for <kvm@vger.kernel.org>; Sat, 08 Aug 2026 17:50:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786236601; cv=none;
+        d=google.com; s=arc-20260327;
+        b=P+J6LQZittjkrg6YqqmZgpqsCF3jzb7WwyxjlXLKupirDiZDJmNjCe1L7ahM/zA6zj
+         3J6khWFEtlgv8P++tH66TXGmpdQRvJ/tm5hQHT1Hfqp1LOxv9/VGyK8N8Vl95BYNbYJq
+         fRA5/wR419oXtaPcqvH+j62lkZC8V2e+GN21W9yaLSeh4JQjfaAki3oHNsKhOofm9IdS
+         /wHHek+sixKbQiIGuxzBSfUoh9mkW0NhLOvOrfphJYrn9oB7Sc99MZyEJoMa+t1pKDJJ
+         i+8cT/XXLXeKmw50ouSvI5Muzo4fEHy4QU6TB8wXTEmqZaRwMiUbPzC49PsmvdMNZm/n
+         VRWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=glHudYQR7Sx8Ip0RwDHznG86gS5ZxNzd6JiJvbqbi6Y=;
+        fh=ofFOFGGGdLskBsezybDoYO6/TARb+6ZmBUzvH/hnry8=;
+        b=VYRIJjfJEBwYVNEepr1eeemGFhUZ3jQGZ97kCphOfZsqvYfzalBHrpdcxCWqD4gFRz
+         RDBkE1BNGROSXGLrI8id3ewgCujasiSSQShYpbw8LQ7Tzq9FKxyCu1pYyEfPvLITCAan
+         dk0/fYeXkL2ObdTLddEKx18ADqu3xZbGV4edTZnxtH/9P/XvLK28HcDD4X3XEpbMJX3n
+         Zqi/7fngSWEsSoJKq6Oe5wnX02y3YM5Vhh0cC8TY+n87JvYdiUNyQoDBVZvh+mGzGjBQ
+         TFbigVW6Vs4/8RVNXKXNDKflS3aUtLLbadw9B8t/8jTV3piQBdebP9+kAo74AU5qHxzb
+         hjpA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786236601; x=1786841401; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=glHudYQR7Sx8Ip0RwDHznG86gS5ZxNzd6JiJvbqbi6Y=;
+        b=RHMbRHXy9rFNhQQ8XljF4g+kfCAGWx9flfFCbodoE+5eDaw13V75Z5OMW4wcl9KGn1
+         Rk8PWRvZkU23L9XZJci3ZCx4kn+77YaLaH7kKDKpZAYH5Vtb5Rw7uzO8DxrzDPwsDGR7
+         8uqgEcA1raSOjHi3YfuuVe+gk0mvxUMzsG8kamBmBv975Zxt3qhLmW6mlvMYMhSuf2Ng
+         lCcWTRBoSDxlEoyc98uUC6nnaUAhCv9NK7Juf5KfRcqkPxNjbuUAtrPEgjP/1pv8gSn7
+         NZe2IbVig7o0klHumnUzFpTN/3Zxp3MqAMeN244lUJvRGObo0SZrYKvR2rq060Jy9vcS
+         HPqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786236601; x=1786841401;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=glHudYQR7Sx8Ip0RwDHznG86gS5ZxNzd6JiJvbqbi6Y=;
+        b=iY9Bdj+QwbBmTsjjwKD4JZUsYyGv8srRL6+AFCAcJflAKrI2hfokEU4xu1TB1sxX8h
+         byvG/B9AxHp97saWfP9vnjyP9TWyfH/wUTTJFupR684RLx721QUax4KRptaa2AgbsRCc
+         0Xq4q3IitKolxI9Nva7/NlFLdGufh75TIVNsUByY5J0HOmUVnqrD1m0ZcEJvEYwUF9nf
+         yGRjBA9733YS1XkeXoiXfXBhKPllPs9fv+OVVzooy6Klvsi1AGlVwQpeX9CWxeHUDR1m
+         ho3+OgCi6HhHz4v2ppjydR51mgAFMp60yepIC5dGNyVwPOnzliYubzHOoSnYgGRHoFHG
+         TDjg==
+X-Forwarded-Encrypted: i=1; AHgh+Rowjjd3kjjNO4Mv5NVvPUGD6r1O/oSCJRSgMMUsd9Hnyzj/4aCd41BFECmHRN1O63Sjc/0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkHcEPkeYgLpqJ5l0flavlWy85js34KvIg3MUI0WBN+WZEi/+q
+	b9ncbWH1B4PGzPKfIqoZPBX98g5YYJvgcpJatFtwVC/ipTPHqgwnqWeoDl9wfwdxysW5fgKv97H
+	G3jSDjMrHf6eS3pIHUlEnM/EZo4VEFYYWB2RrzXm2
+X-Gm-Gg: AR+sD133NjsUsu4l18kP7LY3bwHPFLv5rFbW1PeUpxLS9stAz59jz/FJZCOoT1jwh1r
+	SGkdibib8O0KYeJQ8AZNr9UmIiEH4E3ZPF5W8ybz8Hc9DRyKVsR987izSMqnnfMWedoeieFAJIx
+	peQb0wEMHj9wq2gBnsbXSmCUTHAmDX5gEgxtcnfNu5x/cRpHcVffznSIhulRLMIv8a2jXG77EpD
+	uSdYrnJ1KdXciSZZ9ljm+2rRiO9xSZ4vwDklq4jnooliTS3kDnqAhG5L76Ebm0XQ5yFMdJMMwFP
+	/Nnols6/YfN8dVEKPksMofRjgskGaaMtLsptmIR1Q4Y=
+X-Received: by 2002:ac8:7f4f:0:b0:52b:4ec6:52ba with SMTP id
+ d75a77b69052e-52d23c37702mr15746931cf.6.1786236600065; Sat, 08 Aug 2026
+ 17:50:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260806091026.620700-5-maz@kernel.org>
+References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org> <20260806-b4-scalable-cow-virt-pgoff-v4-3-ab318a350404@kernel.org>
+In-Reply-To: <20260806-b4-scalable-cow-virt-pgoff-v4-3-ab318a350404@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Sat, 8 Aug 2026 17:49:48 -0700
+X-Gm-Features: AUfX_mw1Q82W2dZ-6X55NWg9zTGU5sEbnBW6U_FzEZzOIU5ZiJmeQXvgECKsKPA
+Message-ID: <CAJuCfpGjE66Duhw0r8H0GKBFDExjroRar6n5MgVOOQjz4ZfTuA@mail.gmail.com>
+Subject: Re: [PATCH v4 03/20] mm: introduce linear_anon_page_index()
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Alex Deucher <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Boris Brezillon <boris.brezillon@collabora.com>, 
+	Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>, 
+	Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>, 
+	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	James Clark <james.clark@linaro.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
+	linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Marc,
+On Thu, Aug 6, 2026 at 1:23=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+g> wrote:
+>
+> This function provides the anonymous equivalent of linear_page_index(),
+> instead offsetting based on the anonymous page offset of the VMA.
+>
+> It is valid only for anonymous or MAP_PRIVATE file-backed mappings, in
+> other words CoW mappings.
+>
+> For pure anon VMAs, this will be equal to linear_page_index().
+>
+> Assert that both of these invariants are true In linear_anon_page_index()
 
-On Thu, Aug 06, 2026 at 10:10:22AM +0100, Marc Zyngier wrote:
-> Our TLB invalidation by VA code is based on comparing two ranges,
-> one defined by the TLB, and one defined by the TLBI instruction.
-> 
-> Each range is defined by a start and a size. However, the way the
-> comparison is done doesn't account for address rollover, as it
-> compares an address with (base + size). This works nicely until
-> this expression represent the last page/block in the TTBR1 VA space,
-> as the result is a big fat 0. And a failed TLB invalidation.
-> 
-> Rewrite the comparison in a way that is immune to the address
-> rollover (making the end address inclusive instead of exclusive),
-> and move this into a common helper that is used by both VA and IPA
-> invalidations, as suggested by Hyunwoo Kim (although the IPA version
-> didn't suffer from this particular problem, obviously).
-> 
-> Fixes: 4ffa72ad8f37e ("KVM: arm64: nv: Add S1 TLB invalidation primitive for VNCR_EL2")
-> Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> Cc: stable@vger.kernel.org
+s/In/in
+
+> and implement the algorithm in __linear_anon_page_index().
+>
+> Note that MAP_PRIVATE-/dev/zero mappings will satisfy vma_is_anonymous()
+> but not fulfill this invariant, so when asserting this we check
+> vma->vm_file to account for this.
+>
+> We do not update callsites yet, so no functional change intended.
+>
+> Also const-ify vma_is_anonymous() to make it compatible with the
+> const-ified linear_anon_page_index().
+>
+> While we're here, update linear_page_index() to be more succinct.
+>
+> VMA userland tests are also updated accordingly.
+>
+> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > ---
->  arch/arm64/kvm/nested.c | 43 ++++++++++++++++++-----------------------
->  1 file changed, 19 insertions(+), 24 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> index 27bc7ee4b3382..8a602d074dbb4 100644
-> --- a/arch/arm64/kvm/nested.c
-> +++ b/arch/arm64/kvm/nested.c
-> @@ -999,6 +999,20 @@ static void invalidate_vncr(struct vncr_tlb *vt)
->  		clear_fixmap(vncr_fixmap(vt->cpu));
+>  include/linux/mm.h              |  2 +-
+>  include/linux/pagemap.h         | 40 +++++++++++++++++++++++++++++++++++=
+++---
+>  tools/testing/vma/include/dup.h | 25 ++++++++++++++++++++++++-
+>  3 files changed, 62 insertions(+), 5 deletions(-)
+>
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index a3368c542947..da36a6cc907c 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -1556,7 +1556,7 @@ static inline void vma_desc_set_anonymous(struct vm=
+_area_desc *desc)
+>         desc->vm_ops =3D NULL;
 >  }
->  
-> +static bool vncr_tlb_intersects(struct vncr_tlb *vt, u64 addr,
-> +				u64 scope_start, u64 scope_size)
-> +{
-> +	u64 tlb_size, tlb_start, tlb_end, scope_end;
-> +
-> +	tlb_size = ttl_to_size(pgshift_level_to_ttl(vt->wi.pgshift, vt->wr.level));
-> +
-> +	tlb_start = addr & ~(tlb_size - 1);
-> +	tlb_end = tlb_start + tlb_size - 1;
-> +	scope_end = scope_start + scope_size - 1;
-
-I think if scope_end overflows,
-
-> +
-> +	return !(tlb_end < scope_start || tlb_start > scope_end);
-
-tlb_start > scope_end can evaluate to true and we return false even when
-there is overlap near the end of the TTBR1 address space.
-
-Therefore I think we need to saturate scope_end to ULONG_MAX when overflow
-happens. This is also what the architecture does when looking at the
-pseudocode J1.2.3.442 TLBIRange (M.c).
-
-Thanks,
-Wei-Lin Chang
-
+>
+> -static inline bool vma_is_anonymous(struct vm_area_struct *vma)
+> +static inline bool vma_is_anonymous(const struct vm_area_struct *vma)
+>  {
+>         return !vma->vm_ops;
+>  }
+> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> index c6fc783aaee5..0adfa6605653 100644
+> --- a/include/linux/pagemap.h
+> +++ b/include/linux/pagemap.h
+> @@ -1094,10 +1094,44 @@ static inline pgoff_t linear_page_delta(const str=
+uct vm_area_struct *vma,
+>  static inline pgoff_t linear_page_index(const struct vm_area_struct *vma=
+,
+>                                         const unsigned long address)
+>  {
+> -       pgoff_t pgoff;
+> +       return linear_page_delta(vma, address) + vma_start_pgoff(vma);
 > +}
 > +
->  /*
->   * VNCR TLB invalidation occurs from MMU notifiers or TLBI instructions, and
->   * either can race against a vcpu not being onlined yet (no pseudo-TLB
-> @@ -1021,19 +1035,9 @@ static void kvm_invalidate_vncr_ipa(struct kvm *kvm, u64 start, u64 end)
->  	if (!kvm_has_feat(kvm, ID_AA64MMFR4_EL1, NV_frac, NV2_ONLY))
->  		return;
->  
-> -	kvm_for_each_vncr_tlb(i, vcpu, vt, kvm) {
-> -		u64 ipa_start, ipa_end, ipa_size;
-> -
-> -		ipa_size = ttl_to_size(pgshift_level_to_ttl(vt->wi.pgshift,
-> -							    vt->wr.level));
-> -		ipa_start = vt->wr.pa & ~(ipa_size - 1);
-> -		ipa_end = ipa_start + ipa_size;
-> -
-> -		if (ipa_end <= start || ipa_start >= end)
-> -			continue;
-> -
-> -		invalidate_vncr(vt);
-> -	}
-> +	kvm_for_each_vncr_tlb(i, vcpu, vt, kvm)
-> +		if (vncr_tlb_intersects(vt, vt->wr.pa, start, end - start))
-> +			invalidate_vncr(vt);
+> +static inline pgoff_t __linear_anon_page_index(const struct vm_area_stru=
+ct *vma,
+> +               const unsigned long address)
+> +{
+> +       return linear_page_delta(vma, address) + vma_start_anon_pgoff(vma=
+);
+> +}
+> +
+> +/**
+> + * linear_anon_page_index() - Determine the absolute anonymous page offs=
+et of
+> + * @address within @vma.
+> + * @vma: An anonymous or MAP_PRIVATE file-backed VMA in which @address r=
+esides.
+> + * @address: The address whose absolute page offset is required.
+> + *
+> + * This returns the anonymous page offset of @address, which is the page=
+ offset
+> + * the address possessed at the time the VMA was first faulted.
+> + *
+> + * For anonymous mappings, this returns the same value as linear_page_in=
+dex().
+> + *
+> + * For MAP_PRIVATE file-backed mappings, this returns the anonymous page=
+ offset
+> + * of @address, which is the page offset the address possessed at the ti=
+me the
+> + * VMA was first faulted.
+> + *
+> + * It is not valid to call this function for shared file-backed mappings=
+.
+> + *
+> + * Returns: The absolute anonymous page offset of @address within @vma.
+> + */
+> +static inline pgoff_t linear_anon_page_index(const struct vm_area_struct=
+ *vma,
+> +               const unsigned long address)
+> +{
+> +       const pgoff_t pgoff =3D __linear_anon_page_index(vma, address);
+> +
+> +       VM_WARN_ON_ONCE(!vma_is_cow_mapping(vma));
+
+As discussed off the list, this assertion works even for read-only
+anon mappings because, as you said, "there's no such thing as a pure
+anon mapping that is !VMA_MAYWRITE_BIT, there is no way to achieve
+that."
+It took me some time to see that after reading your discussion with
+David at [1] and [2], and I don't think it's very intuitive. Could you
+please add a comment explaining that? Maybe add a comment at
+vma_is_cow_mapping() definition since you are using the same assertion
+in another patch of this series?
+
+[1] https://lore.kernel.org/linux-mm/anBjpdMicqaGADr-@lucifer/
+[2] https://lore.kernel.org/linux-mm/anLyhaI6kW-EWk13@lucifer/
+
+
+
+> +       /* Account for MAP_PRIVATE-/dev/zero which is only semi-anonymous=
+. */
+> +       if (vma_is_anonymous(vma) && !vma->vm_file)
+> +               VM_WARN_ON_ONCE(pgoff !=3D linear_page_index(vma, address=
+));
+>
+> -       pgoff =3D linear_page_delta(vma, address);
+> -       pgoff +=3D vma_start_pgoff(vma);
+>         return pgoff;
 >  }
->  
->  struct s1e2_tlbi_scope {
-> @@ -1059,28 +1063,19 @@ static void invalidate_vncr_va(struct kvm *kvm,
->  	lockdep_assert_held_write(&kvm->mmu_lock);
->  
->  	kvm_for_each_vncr_tlb(i, vcpu, vt, kvm) {
-> -		u64 va_start, va_end, va_size;
-> -
-> -		va_size = ttl_to_size(pgshift_level_to_ttl(vt->wi.pgshift,
-> -							   vt->wr.level));
-> -		va_start = vt->gva & ~(va_size - 1);
-> -		va_end = va_start + va_size;
-> -
->  		switch (scope->type) {
->  		case TLBI_ALL:
->  			break;
->  
->  		case TLBI_VA:
-> -			if (va_end <= scope->va ||
-> -			    va_start >= (scope->va + scope->size))
-> +			if (!vncr_tlb_intersects(vt, vt->gva, scope->va, scope->size))
->  				continue;
->  			if (vt->wr.nG && vt->wr.asid != scope->asid)
->  				continue;
->  			break;
->  
->  		case TLBI_VAA:
-> -			if (va_end <= scope->va ||
-> -			    va_start >= (scope->va + scope->size))
-> +			if (!vncr_tlb_intersects(vt, vt->gva, scope->va, scope->size))
->  				continue;
->  			break;
->  
-> -- 
-> 2.47.3
-> 
+>
+> diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/=
+dup.h
+> index 40ad83936b28..4c58487b764e 100644
+> --- a/tools/testing/vma/include/dup.h
+> +++ b/tools/testing/vma/include/dup.h
+> @@ -1428,7 +1428,7 @@ static inline void vma_iter_set(struct vma_iterator=
+ *vmi, unsigned long addr)
+>         mas_set(&vmi->mas, addr);
+>  }
+>
+> -static inline bool vma_is_anonymous(struct vm_area_struct *vma)
+> +static inline bool vma_is_anonymous(const struct vm_area_struct *vma)
+>  {
+>         return !vma->vm_ops;
+>  }
+> @@ -1621,3 +1621,26 @@ static inline pgprot_t vma_get_page_prot(const str=
+uct vm_area_struct *vma)
+>  {
+>         return vma_flags_to_page_prot(vma->flags);
+>  }
+> +
+> +static inline pgoff_t __linear_anon_page_index(const struct vm_area_stru=
+ct *vma,
+> +                                              const unsigned long addres=
+s)
+> +{
+> +       pgoff_t pgoff;
+> +
+> +       pgoff =3D linear_page_delta(vma, address);
+> +       pgoff +=3D vma_start_anon_pgoff(vma);
+> +       return pgoff;
+> +}
+> +
+> +static inline pgoff_t linear_anon_page_index(const struct vm_area_struct=
+ *vma,
+> +               const unsigned long address)
+> +{
+> +       const pgoff_t pgoff =3D __linear_anon_page_index(vma, address);
+> +
+> +       VM_WARN_ON_ONCE(!vma_is_cow_mapping(vma));
+> +       /* Account for MAP_PRIVATE-/dev/zero which is only semi-anonymous=
+. */
+> +       if (vma_is_anonymous(vma) && !vma->vm_file)
+> +               VM_WARN_ON_ONCE(pgoff !=3D linear_page_index(vma, address=
+));
+> +
+> +       return pgoff;
+> +}
+>
+> --
+> 2.55.0
+>
