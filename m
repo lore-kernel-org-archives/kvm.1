@@ -1,138 +1,410 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010041.outbound.protection.outlook.com [52.101.193.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6821F3B5311
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 10:18:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786357086; cv=fail; b=r13IANXLEA36X9x7BGIQ+zjX9sCAPaJR8UhZ3CVW1+hGA6E7aXIQu5J1UXvD2IeZQANzOp4qqCePkOAEM0FbzbKVjbvU5uOoxoFzhQhLegU77sG+SVCZh7m5gz2IpgGhssrKb3l1w4pw/E7dTEJkmRdb+Ub9oBAmxsv+6Jv5Xqw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786357086; c=relaxed/simple;
-	bh=a9Y/LjJUspftz40QrN7biDagHlNNiu9RMyC09VgUfWc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DiggJTw8vDI+MToTnv9IjwYdaY82sJYsfhe7EkTloaPOmR1Lay3V0XVNf5UIEQ3RB0fRCmcpw3yfCEIZ7XUi8sDN1HrmIYfPzYalKdS/iCNrSqkxy/tExNGkuC3EJs6oyW3bzFHJLhfLcFW8wCO/hEvbXLwwjc9g62ELEabLA8U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Zfi4nk7v; arc=fail smtp.client-ip=52.101.193.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0986E3B7771
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 10:19:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786357172; cv=none; b=JqiLh3slCrrL9JT4cqe+hHHTbJQUBO136m3v8OMVcsKHe/BJNVUgfaME7Guur7OY7dN+nVUVwNIcpps1PwVge4H7M1w37axt+BO4yfpv+yWnHPB+9tyiSD6+FYl3B3fYLrTZ88Q/sMC6pri5faZ7ek4kgmqKpf7NzIuvT7ZkfZg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786357172; c=relaxed/simple;
+	bh=/VqRg1FiiWK5ygK/J2KLrf5GhjMkP/GTVRwzNgg/XzA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=k9C+ooF/lEe2evpZVzM08/vDYKamz1OvQGVx9ctfGetDUbtu0XPp/k39Be8epn6MufATwfP0aR3o2EDiiczC9Ze+V+JGbaKcn9g4Q3wWDmOW8wIwKni7olh9tM7DwOlKihSY1cg5e9TDtMhKwfH/wYUQEk7cx7/gTUQ5bKgS73U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=DusIShwu; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Zfi4nk7v"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IQPxcEZ5r2gQoCzLtgjq9Z6f8PVqXgtlVcvNz0e7Z4JoLiByO+vDHDdvHLjMhqSGk8ZKpN/DjxgKvcGlWmjKUhR9/Hm1mP3+T8mLk5Mq/pyDrdwdpvRU9VgSe9D4cTiAbX3uqIeFGufR4p9xpaol99X9zYU6Jna3/6y0fWvz7Njn10/q1TTK4X7MPonnDIV0fYfnsYgVm1berk7PwkWpu7HZjryZkQVbWaKWLIhc2ZoWpTHQGxo8aWD7kdKdDqFgRSPIDBMPeLW/03TiJvT4Ctlb2DlRMDwp+p7DKkKgpfLAaYODrsgZjJ2Qvd0rALO7Pj7JCDL57/FkCg5rUzsJkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fMfBCZvO1wjfHH1Cw76AtPAM+49TVwMLkHx9s77SfOQ=;
- b=E9ZXLuHZ8SGj12fLteBRiIB0G/dRBHaV9cQyHrj2Eb/sI9rtWkvDF1NVf58sLn4z17R2VzPt6jyD+KzPH8HNFRN70cq8ywVxZVTonaurohobaVWc7moXYWjPciMVXpBd77DrS400h2MyqDM/ShR+QN3VT+fFEP8TrcnbzCTX74w1pn5noGaClrbTHMIQCzgPEf4/KRz8TLLzl4anXRgxyUB2Q+pMet5UL1XT6ISSPeJdwOpW8vbaYGmij1aoVEeEURUibB3pD4rc6f5yLBSLuVIaWl1qmvonPfFjtJ8Wqd/RlK4eRs396eVHOg4ncG1z7m3WsjrXAwAgY1CD+q5OJw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fMfBCZvO1wjfHH1Cw76AtPAM+49TVwMLkHx9s77SfOQ=;
- b=Zfi4nk7vuiacKTCY/SywaXGxoFN8ncRPDhTzkUD2vTKWdHn3FsuGTfqZ/DHyCILPf/wqxc5eQXXXsmVjdTesVWuMonzNuBmn8F3XhHNl/9t1QhsgxG5irPX5NlLxa9OJ5MzkelbHTMEL0/KaDhTCzI1rbq4cAKh3rm0BbwpUw4o=
-Received: from PH8P221CA0007.NAMP221.PROD.OUTLOOK.COM (2603:10b6:510:2d8::25)
- by DM4PR12MB6133.namprd12.prod.outlook.com (2603:10b6:8:ae::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.292.25; Mon, 10 Aug 2026 10:17:57 +0000
-Received: from MW1PEPF0001615F.namprd21.prod.outlook.com
- (2603:10b6:510:2d8:cafe::80) by PH8P221CA0007.outlook.office365.com
- (2603:10b6:510:2d8::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.25 via Frontend Transport; Mon,
- 10 Aug 2026 10:17:57 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- MW1PEPF0001615F.mail.protection.outlook.com (10.167.249.90) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.339.0 via Frontend Transport; Mon, 10 Aug 2026 10:17:56 +0000
-Received: from sindhu.amdval.net (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Mon, 10 Aug
- 2026 05:17:52 -0500
-From: Sandipan Das <sandipan.das@amd.com>
-To: <kvm@vger.kernel.org>
-CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, Yosry Ahmed
-	<yosry@kernel.org>, Maxim Levitsky <mlevitsk@redhat.com>, Dapeng Mi
-	<dapeng1.mi@linux.intel.com>, Zide Chen <zide.chen@intel.com>, Tom Lendacky
-	<thomas.lendacky@amd.com>, "Nikunj A . Dadhania" <nikunj@amd.com>, "Manali
- Shukla" <manali.shukla@amd.com>, Sandipan Das <sandipan.das@amd.com>
-Subject: [PATCH 8/8] KVM: SEV: Disallow the use of hardware-switched PMU
-Date: Mon, 10 Aug 2026 15:44:56 +0530
-Message-ID: <c88cd7d448c7ff998efae53979624b5b08a045c1.1786345201.git.sandipan.das@amd.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1786345201.git.sandipan.das@amd.com>
-References: <cover.1786345201.git.sandipan.das@amd.com>
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="DusIShwu"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-caf45fc5202so1304526a12.1
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 03:19:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1786357170; x=1786961970; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ThHcrvznI2+QSAI5cW+DWFGODRhB/qhrAmcxC4O4jLs=;
+        b=DusIShwuxKZWozYxV5jAV2zv1vdSxnfq+dPE3zi5Puc/jbaRc/ds4UYuzCqDk0uvKx
+         9lJ23XXiUh9pxHxKZ6g88iwMwp+FLFp51RZNJyTEmEHoJyVSd6BgTLhkR4TsGYzH0Y87
+         RPiGdS4aZVCqSHbFAGmJdfIYTwu++nGbMtGjGnrj9qp19j3q3C6pLVvlAxH7eCe585WB
+         KBx/dZdRyNZwQ/92asFHosU3JeZnA/xVElZRl+gN4dAV6UKcWoLnK3mvWUuDNZfV6iKF
+         iwh1m7YFXaPe8A+qu6tYzeEJRhL9xfCtZSLuKkPG13W4ks1b/iHqB5QLNgRAAhOjvey2
+         bB+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786357170; x=1786961970;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=ThHcrvznI2+QSAI5cW+DWFGODRhB/qhrAmcxC4O4jLs=;
+        b=e5IKWemKcvi+gXiOrQdHRVRCM/Afifdz135wTsFAduptpj0kudxhL8xPyqZkN8iZV+
+         CPmPIbGsW2ow/ZVIrOEyEvYmKOMR7wva7qFDeTK5B7fHGOu+YNFQ3VvnY4FY5amz3gpn
+         DdDO/GZNfFuw0bfFa6hwrOLAtVPGZ7vSp7G6a3iGZeLd1feQg4louX0CMIXMBsl+qvf+
+         JUWMMk019TMlRGyzvyE97pKefigqxkatA4zkmxDfxEXD70bLIjsm5mufgus4zSKLtvIu
+         OH6KtLQX0P/8qt3XzjDNrk6zlse1GiBXcYkS63coHFFPlMmWxP3SM1pM10RZ/E+rB7tI
+         RYNQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqQXK1/Nmpy24htCtCxp6Aycy5JS+VKBrv/ghQJo1wXGblgN7sip9h/rFJraVBFuAA4jqQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/zJf9AVMQe8cTjhFoa5n8ui7kE1R+VF7kyBlwEFMoMOrjfDEC
+	tDAxoUE7HrhAHLePjsErhuTGV5ps0WonGdOvK0dblfLmhbsZspMYxJFDGKTAtRi0/h0=
+X-Gm-Gg: AR+sD10Pmy9bxqpb8/de0QagbS37aYsV5zrkooVEqqz8Dt2ru6Wdb5NjRdqMqdJse0Q
+	nUhN4dWNQY25/P96lht2iDY3fYXnTQwtJwN4BWFQiQlnfo6nlGx4NTSCsFJxToOqyFWPM+gNbqn
+	ip3NT9bRV+PhOvFwPWFeJ6rknzHahcsQOKH0LzH6i3uss/g/usteF62BWR1nZde/QxOguFpP3rU
+	8q5NYJ57SBrZZmBvGiwt8vNnaHWFVo9E+Klgcd8KMQFqUMOITV3YSGKjOZS/HxGaO8lcvUUIO/b
+	fVLG4JW8vUozFo0InybuC7vSm0eiOwaFydhMaWvV0TmhpT2vKF2IfrOCpSM3RPrVEomgamNPy3q
+	0I9k/B383OzvpIqY5YXffsyMa19Upgebn+BwE1TjmFX+iE7UcfhbpB8Tyagm2zvCuBokwEAuptD
+	nrbQCwxAS3pVKKQAAtkk80/5W5Mgj0BVV1xE/CBZ6rtklXtJhqk3tMEfwNl2fExo32ZNQVnK5tH
+	UPvyZVJ4tjRgXXiMD8=
+X-Received: by 2002:a05:6a20:cf8d:b0:3c3:b5db:cd07 with SMTP id adf61e73a8af0-3cb85e61a8emr53401373637.15.1786357170215;
+        Mon, 10 Aug 2026 03:19:30 -0700 (PDT)
+Received: from sw07.internal.sifive.com ([4.53.31.132])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315be86fc7bsm41861803eec.1.2026.08.10.03.19.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 03:19:29 -0700 (PDT)
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Date: Mon, 10 Aug 2026 03:18:50 -0700
+Subject: [PATCH v5] KVM: RISC-V: Add CPU PM notifier for non-retention idle
+ states
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW1PEPF0001615F:EE_|DM4PR12MB6133:EE_
-X-MS-Office365-Filtering-Correlation-Id: f77fd26e-eefb-4bce-8dbf-08def6c8a5e3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|36860700016|1800799024|82310400026|10067099003|56012099006|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	Za4mOsy77OPfXDi9mj+he/WFAkq4ohbQkZ74fZSsGYcbXBZBBqUpmhGPUv4kXHZdE0pfgSEjH/pOfPWXrJZFJewRU8l8J7tHnXOvFot7cKAVCjAXBY6y1iZJYRHwAFo1V7yMvPZrGUzsjxaxXw7wkQ7KQUaAJ3K3waZOhspKXho6eStOp8IoK7OtE2l7WHeZ3/Ef1UnqJ/KdppKXqiLFM904vqJkgWXiavFIX+9J+lgmvxgjMcwnPWajXu3Z0iIy5sr56OwtGwkie+4uT1Cqa29oyoHSGvniQ392jsvFXUZ4v4uwtn5XTeRAwrUz840VPUjGkHZg5PIoNRkSId2fRr5KpwVema7AwciPRlRNiLLRiAQMj0hzBEp/oBETwTMiRuXf+HqCXYW1JPx72kI5U7rmcry1rL3N0tlgABql+FNyJVi+Qge/7hxaONrsGsfaffr6kFsgEKyAcdMZmN3LLL/V8a/eCdVxUKq7ryN+lM1erxAFBiYUSvR6f0b5tBxg4biGvF5jFbG2Z/aFYA0Z56bbvHZ5frExFPXsu+wxiwMiCZScQ6Z6gcR74yVfPXjbFTzWzVBOCUMkNRgr13Hn3inhX6VopOXvyk7FTtzZQ9tATzTpo41sQShIY1uIrV5TaCoUI+fuyXfvA9Zs4T2C5wret2y7wI8Jb7BRhU97pLfjxJzgOyz2pAJmohL8ROZMoq0CKbRkat6FgmYWLfIXHQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(36860700016)(1800799024)(82310400026)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	fDNBreY9GE4yHw3c5UHAEJi0GJmVoWXHEkVrO6FursPB2lWVzn+Q8jVnBqHRsP4bGoUV6jFOl0++AA1FQuK1BZAgJPRm43vosOSD46bmgaVpTDRSBDJbnTYxAnTTz2QNDG8bE1+v9uJcOBBNZpEy/dAymrdEx8vRI5kgjCq4WgJ281QvFgbLnpkwHPFjEHrYqixlDE+8vZw2MP/CQFZMiOG7dtjddUYkMcq5OtRM3MkuTYxkGSquuIbY45eUhaViCzHxWYK0zkQb/kuKh9cvZ1L4t0dD1fRdT8Ouqu93TNX55V/BUkX33UE5PwcjBEyOM9EwdrNlvEMDMyHg7fdnqjgAuWi0b9bdsuC9UH0MvFo2DaJtrTahwiu0qfONXPHzZYAJvU1zdlPWxri2XsaRx9amw+AAFUfrn0kQ+osWfjAxfY9i1MARnqpNdgiKwmY6
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 10:17:56.8926
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f77fd26e-eefb-4bce-8dbf-08def6c8a5e3
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MW1PEPF0001615F.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6133
+Message-Id: <20260810-kvm-cpu-pm-v5-1-6c9e4c95caf5@sifive.com>
+X-B4-Tracking: v=1; b=H4sIAImleWoC/3XNTW7CMBCG4asgr5nKM4zzw4p7oC5sZ1xcFBLFY
+ LVCuXsdumgj2uUnzfPOXSWZoiS139zVJDmmOFzKMNuN8id7eROIXdmKNFW6IoZz7sGPNxh7aBk
+ ZrfjOBKsKGCcJ8eMRO75+73Rz7+KvS2G5OMV0HabPx7eMy92f4YyAYEg3jSDV1phDiiFmefFDr
+ 5Zypt+2WlkCDVw3YiQ0nW/dk939b3fFOtEGrQ3SOvtk+cfWhCvLxSJXLrRMhutuZed5/gK0Urq
+ mawEAAA==
+X-Change-ID: 20260624-kvm-cpu-pm-94141aecd5fa
+To: greentime.hu@sifive.com, vincent.chen@sifive.com, zong.li@sifive.com
+Cc: Yong-Xuan Wang <yongxuan.wang@sifive.com>, 
+ Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+ =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <radim.krcmar@oss.qualcomm.com>, 
+ Andrew Jones <andrew.jones@oss.qualcomm.com>, 
+ Nutty Liu <nutty.liu@hotmail.com>, Jinyu Tang <tjytimi@163.com>, 
+ kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786357169; l=9484;
+ i=yongxuan.wang@sifive.com; s=20260424; h=from:subject:message-id;
+ bh=/VqRg1FiiWK5ygK/J2KLrf5GhjMkP/GTVRwzNgg/XzA=;
+ b=iAYM+gAFzpYb4R/Mq3dv0mA5Ov5+pwu7A2n2aOT5kR1LiY/G6elW/hWelTbdQUKOXFfzd6hXG
+ /hKKgxqd6X0C1UVKkhtWIO60/zJ8pJCYMpicxju11FH2TJeM9H98+kM
+X-Developer-Key: i=yongxuan.wang@sifive.com; a=ed25519;
+ pk=+8NCHB1ZJvZthQAmZspOAaqjo+/snaW8mFSiDx45HxY=
 
-For hardware-switched mediated PMU, the guest PMU state resides in the
-VMCB save area instead of struct kvm_pmu. To inspect or modify that
-state in software, KVM uses the vendor state sync PMU ops.
+Register a CPU_PM notifier to restore hypervisor CSR content during CPU
+non-retention idle states. When a CPU enters a deep idle state that
+powers off the CPU domain, hypervisor CSRs and VS CSRs lose their state
+and must be saved before entry and restored after exit.
 
-When SEV-ES or SEV-SNP is used, these ops cannot work as the guest PMU
-state resides in an encrypted VMSA that KVM can neither read nor write.
-Clear KVM_MEDIATED_PMU_CAP_HW_SWITCHED for such guests so that they
-fall back to the software-switched mode.
+This completes KVM's power management coverage for RISC-V:
+- CPU hotplug: handled by kvm_online_cpu/kvm_offline_cpu (cpuhp callbacks)
+- System suspend: handled by kvm_suspend/kvm_resume (syscore ops)
+- CPU idle (retention): no action needed, CSRs are retained
+- CPU idle (non-retention): handled by this CPU_PM notifier
 
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 ---
- arch/x86/kvm/svm/sev.c | 3 +++
- 1 file changed, 3 insertions(+)
+Changes in v5:
+- Remove patch1 as it was merged.
+- Add per-CPU virtualization state tracking (sashiko)
+- Rename CSR helper functions (Anup)
+- Introduce dedicated PM functions for AIA (Anup)
+- Fix module exit sequence (Anup)
+- Link to v4: https://patch.msgid.link/20260721-kvm-cpu-pm-v4-0-146bf942547d@sifive.com
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index fcb41dfde4c0..8e8cd4feb16a 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -534,6 +534,9 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
- 	if (snp_active)
- 		sev->vmsa_features |= SVM_SEV_FEAT_SNP_ACTIVE;
+Changes in v4:
+- Remove the system_state checking (sashiko)
+- Link to v3: https://patch.msgid.link/20260626-kvm-cpu-pm-v3-0-be051aafe9ba@sifive.com
+
+Changes in v3:
+- Remove the error kvm_riscv_nacl_disable() call in kvm_riscv_csr_disable()
+(sashiko)
+- Unregister CPU PM notifier first in riscv_kvm_exit() (sashiko)
+- Link to v2: https://patch.msgid.link/20260626-kvm-cpu-pm-v2-0-478e5ef8dc9b@sifive.com
+
+Changes in v2:
+- Add patch 1 force restore VCPU after power state transitions (sashiko)
+- Added CPU_PM_ENTER_FAILED event handling (sashiko)
+- Optimized HGEIE save/restore with saved_value field (sashiko)
+- Fixed HIE CSR restoration in lightweight idle resume path (sashiko)
+- Link to v1: https://patch.msgid.link/20260624-kvm-cpu-pm-v1-1-52088e127a55@sifive.com
+---
+To: Anup Patel <anup@brainfault.org>
+To: Atish Patra <atish.patra@linux.dev>
+To: Paul Walmsley <pjw@kernel.org>
+To: Palmer Dabbelt <palmer@dabbelt.com>
+To: Albert Ou <aou@eecs.berkeley.edu>
+To: Alexandre Ghiti <alex@ghiti.fr>
+To: Radim Krčmář <radim.krcmar@oss.qualcomm.com>
+To: Andrew Jones <andrew.jones@oss.qualcomm.com>
+To: Nutty Liu <nutty.liu@hotmail.com>
+To: Jinyu Tang <tjytimi@163.com>
+Cc: greentime.hu@sifive.com
+Cc: vincent.chen@sifive.com
+Cc: zong.li@sifive.com
+Cc: kvm@vger.kernel.org
+Cc: kvm-riscv@lists.infradead.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+ arch/riscv/include/asm/kvm_aia.h |   3 ++
+ arch/riscv/kvm/aia.c             |  42 ++++++++++++++++
+ arch/riscv/kvm/main.c            | 106 ++++++++++++++++++++++++++++++++-------
+ 3 files changed, 133 insertions(+), 18 deletions(-)
+
+diff --git a/arch/riscv/include/asm/kvm_aia.h b/arch/riscv/include/asm/kvm_aia.h
+index c67ec5ac0a14..ab03f853e507 100644
+--- a/arch/riscv/include/asm/kvm_aia.h
++++ b/arch/riscv/include/asm/kvm_aia.h
+@@ -165,6 +165,9 @@ int kvm_riscv_aia_alloc_hgei(int cpu, struct kvm_vcpu *owner,
+ 			     void __iomem **hgei_va, phys_addr_t *hgei_pa);
+ void kvm_riscv_aia_free_hgei(int cpu, int hgei);
  
-+	if (es_active)
-+		kvm_clr_mediated_pmu_caps(kvm, KVM_MEDIATED_PMU_CAP_HW_SWITCHED);
++void kvm_riscv_aia_pm_exit(void);
++void kvm_riscv_aia_pm_enter(void);
 +
- 	ret = sev_asid_new(sev, vm_type);
- 	if (ret)
- 		goto e_no_asid;
--- 
-2.53.0
+ void kvm_riscv_aia_enable(void);
+ void kvm_riscv_aia_disable(void);
+ int kvm_riscv_aia_init(void);
+diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
+index 9a653b4ad40a..0de9b8852ed2 100644
+--- a/arch/riscv/kvm/aia.c
++++ b/arch/riscv/kvm/aia.c
+@@ -25,6 +25,7 @@ struct aia_hgei_control {
+ 	unsigned long free_bitmap;
+ 	struct kvm_vcpu *owners[BITS_PER_LONG];
+ 	unsigned int nr_hgei;
++	unsigned long saved_value;
+ };
+ static DEFINE_PER_CPU(struct aia_hgei_control, aia_hgei);
+ static int hgei_parent_irq;
+@@ -553,6 +554,47 @@ static void aia_hgei_exit(void)
+ 	free_percpu_irq(hgei_parent_irq, &aia_hgei);
+ }
+ 
++void kvm_riscv_aia_pm_exit(void)
++{
++	struct aia_hgei_control *hgctrl;
++
++	if (!kvm_riscv_aia_available())
++		return;
++
++	hgctrl = this_cpu_ptr(&aia_hgei);
++	csr_write(CSR_HGEIE, hgctrl->saved_value);
++
++	csr_write(CSR_HVICTL, aia_hvictl_value(false));
++	csr_write(CSR_HVIPRIO1, 0x0);
++	csr_write(CSR_HVIPRIO2, 0x0);
++#ifdef CONFIG_32BIT
++	csr_write(CSR_HVIPH, 0x0);
++	csr_write(CSR_HIDELEGH, 0x0);
++	csr_write(CSR_HVIPRIO1H, 0x0);
++	csr_write(CSR_HVIPRIO2H, 0x0);
++#endif
++	csr_set(CSR_HIE, BIT(IRQ_S_GEXT));
++	/* Enable IRQ filtering for overflow interrupt only if sscofpmf is present */
++	if (__riscv_isa_extension_available(NULL, RISCV_ISA_EXT_SSCOFPMF))
++		csr_set(CSR_HVIEN, BIT(IRQ_PMU_OVF));
++}
++
++void kvm_riscv_aia_pm_enter(void)
++{
++	struct aia_hgei_control *hgctrl;
++
++	if (!kvm_riscv_aia_available())
++		return;
++
++	if (__riscv_isa_extension_available(NULL, RISCV_ISA_EXT_SSCOFPMF))
++		csr_clear(CSR_HVIEN, BIT(IRQ_PMU_OVF));
++
++	csr_write(CSR_HVICTL, aia_hvictl_value(false));
++
++	hgctrl = this_cpu_ptr(&aia_hgei);
++	hgctrl->saved_value = csr_read(CSR_HGEIE);
++}
++
+ void kvm_riscv_aia_enable(void)
+ {
+ 	const struct imsic_global_config *gc;
+diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
+index 350e4f097d6e..20b516e84e60 100644
+--- a/arch/riscv/kvm/main.c
++++ b/arch/riscv/kvm/main.c
+@@ -10,11 +10,14 @@
+ #include <linux/err.h>
+ #include <linux/module.h>
+ #include <linux/kvm_host.h>
++#include <linux/cpu_pm.h>
+ #include <asm/cpufeature.h>
+ #include <asm/kvm_mmu.h>
+ #include <asm/kvm_nacl.h>
+ #include <asm/sbi.h>
+ 
++static DEFINE_PER_CPU(bool, kvm_riscv_virtualization_enabled);
++
+ DEFINE_STATIC_KEY_FALSE(kvm_riscv_vsstage_tlb_no_gpa);
+ 
+ static void kvm_riscv_setup_vendor_features(void)
+@@ -33,14 +36,9 @@ long kvm_arch_dev_ioctl(struct file *filp,
+ 	return -EINVAL;
+ }
+ 
+-int kvm_arch_enable_virtualization_cpu(void)
++/* Initialize hypervisor CSRs - called during CPU online and non-retention idle resume */
++static void kvm_riscv_csr_init(void)
+ {
+-	int rc;
+-
+-	rc = kvm_riscv_nacl_enable();
+-	if (rc)
+-		return rc;
+-
+ 	csr_write(CSR_HEDELEG, 0);
+ 	csr_write(CSR_HIDELEG, 0);
+ 
+@@ -48,16 +46,11 @@ int kvm_arch_enable_virtualization_cpu(void)
+ 	csr_write(CSR_HCOUNTEREN, 0x02);
+ 
+ 	csr_write(CSR_HVIP, 0);
+-
+-	kvm_riscv_aia_enable();
+-
+-	return 0;
+ }
+ 
+-void kvm_arch_disable_virtualization_cpu(void)
++/* Clear hypervisor CSRs - called during CPU offline and non-retention idle entry */
++static void kvm_riscv_csr_cleanup(void)
+ {
+-	kvm_riscv_aia_disable();
+-
+ 	/*
+ 	 * After clearing the hideleg CSR, the host kernel will receive
+ 	 * spurious interrupts if hvip CSR has pending interrupts and the
+@@ -70,10 +63,69 @@ void kvm_arch_disable_virtualization_cpu(void)
+ 	csr_write(CSR_HIDELEG, 0);
+ 
+ 	kvm_riscv_clear_former_vcpu();
++}
++
++int kvm_arch_enable_virtualization_cpu(void)
++{
++	int rc;
++
++	rc = kvm_riscv_nacl_enable();
++	if (rc)
++		return rc;
++
++	kvm_riscv_csr_init();
++	kvm_riscv_aia_enable();
++
++	__this_cpu_write(kvm_riscv_virtualization_enabled, true);
+ 
++	return 0;
++}
++
++void kvm_arch_disable_virtualization_cpu(void)
++{
++	kvm_riscv_aia_disable();
++	kvm_riscv_csr_cleanup();
+ 	kvm_riscv_nacl_disable();
++
++	__this_cpu_write(kvm_riscv_virtualization_enabled, false);
++}
++
++static int kvm_riscv_cpu_pm_notifier(struct notifier_block *self, unsigned long cmd, void *v)
++{
++	switch (cmd) {
++	case CPU_PM_EXIT:
++	case CPU_PM_ENTER_FAILED:
++		/*
++		 * Only restore hypervisor state if KVM virtualization is
++		 * enabled on this CPU. This prevents unintentional re-enabling
++		 * of virtualization after it has been explicitly disabled.
++		 */
++		if (__this_cpu_read(kvm_riscv_virtualization_enabled)) {
++			kvm_riscv_csr_init();
++			kvm_riscv_aia_pm_exit();
++		}
++		return NOTIFY_OK;
++	case CPU_PM_ENTER:
++		/*
++		 * Only save and clear hypervisor state if KVM virtualization
++		 * is enabled on this CPU.
++		 */
++		if (__this_cpu_read(kvm_riscv_virtualization_enabled)) {
++			kvm_riscv_aia_pm_enter();
++			kvm_riscv_csr_cleanup();
++		}
++		return NOTIFY_OK;
++	default:
++		break;
++	}
++
++	return NOTIFY_DONE;
+ }
+ 
++static struct notifier_block kvm_riscv_cpu_pm_nb = {
++	.notifier_call = kvm_riscv_cpu_pm_notifier,
++};
++
+ static void kvm_riscv_teardown(void)
+ {
+ 	kvm_riscv_aia_exit();
+@@ -174,17 +226,31 @@ static int __init riscv_kvm_init(void)
+ 
+ 	kvm_register_perf_callbacks();
+ 
+-	rc = kvm_init(sizeof(struct kvm_vcpu), 0, THIS_MODULE);
+-	if (rc) {
+-		kvm_riscv_teardown();
+-		return rc;
++	/* Register CPU PM notifier for CPU idle non-retention states */
++	if (IS_ENABLED(CONFIG_CPU_PM)) {
++		rc = cpu_pm_register_notifier(&kvm_riscv_cpu_pm_nb);
++		if (rc) {
++			kvm_err("Failed to register CPU PM notifier: %d\n", rc);
++			goto err_teardown;
++		}
+ 	}
+ 
++	rc = kvm_init(sizeof(struct kvm_vcpu), 0, THIS_MODULE);
++	if (rc)
++		goto err_unregister_cpu_pm;
++
+ 	if (kvm_riscv_aia_available())
+ 		kvm_info("AIA available with %d guest external interrupts\n",
+ 			 atomic_read(&kvm_riscv_aia_nr_hgei));
+ 
+ 	return 0;
++
++err_unregister_cpu_pm:
++	if (IS_ENABLED(CONFIG_CPU_PM))
++		cpu_pm_unregister_notifier(&kvm_riscv_cpu_pm_nb);
++err_teardown:
++	kvm_riscv_teardown();
++	return rc;
+ }
+ module_init(riscv_kvm_init);
+ 
+@@ -192,6 +258,10 @@ static void __exit riscv_kvm_exit(void)
+ {
+ 	kvm_exit();
+ 
++	/* Unregister CPU PM notifier */
++	if (IS_ENABLED(CONFIG_CPU_PM))
++		cpu_pm_unregister_notifier(&kvm_riscv_cpu_pm_nb);
++
+ 	kvm_riscv_teardown();
+ }
+ module_exit(riscv_kvm_exit);
+
+---
+base-commit: dfdf1374fdeccb5b7e3d35186228e01ec5ea5f01
+change-id: 20260624-kvm-cpu-pm-94141aecd5fa
 
