@@ -1,193 +1,91 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9130A3B42CE
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 22:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA2D3B95F6
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 22:58:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786402531; cv=none; b=EKv9r9GtP9pI7iewUPs5d7nRiS7it37kiDe91L/OsENVB83FPJb1AxxzI3imHHp6zLLQFE7FVVn1E1DvpZsJFs1NjpPGQgx1R5kDmz1fVrt9UL1clg32/XUPuV59pog2l6sxbZcoIZgpEIVCeEjlhVbGnYs4KCXHG7ReUgdtd4s=
+	t=1786402702; cv=none; b=b9oJlbDP4c1I02r1fXecNoabT1C5gSZB+WnErVQLISId9UyyzoOf7QbhM2/vQjVY4QHT2tMAjbFdq3AeCcB7EZzyGYi82ubXKAfOhvkYwPChtrFgaqdgJXuaPyCzjlKGFsS2gaphmNtLNdb18CpwBNATWVFuzNSdUpkHBuVe7+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786402531; c=relaxed/simple;
-	bh=ezLJCLMbVJeO1TB2+TOYF2iKtaGrO11RtViA7rAPS+0=;
+	s=arc-20240116; t=1786402702; c=relaxed/simple;
+	bh=CFuIJ7Uu9OrHMxjTOKTqmRsJbmdzzsMA0Hirgq5XFeY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=modTTM2BQBD7MGVpnnkWREzJYIevFyrLQy6IfFTm3AW7rz53LYoCP38CCy1BefsYXHpb7Mhim9Ma6rYABTKwbTWCc7oNHHcDCI4o9FuMtjpkFnZCmOEXcLaMpzfpzmi9nOIrqIfHiyK+lKXhgUbjdnijbbYxhK/WF6ADf5ij/WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K4p8qdpy; arc=none smtp.client-ip=209.85.210.198
+	 To:Cc:Content-Type; b=j1XvRTAT9fVWYZZMfRVNrulc2G+C2u+57RKmhoiFBrkYPcdun7tk1e5Eq6A1ORWG9Xz/TN8WiO8tirHZUpTOMJ1QcXMaQAG43fpVC0TduTDvqt+oeHCxgj2FxS+MItkXiNE1pPULFrLAUNF0Z9/FtE5vLHIHoPLzk8W+tdT2UTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BFzdxsgw; arc=none smtp.client-ip=209.85.216.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K4p8qdpy"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84865f326efso3032302b3a.0
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 15:55:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BFzdxsgw"
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38e4758ab46so2768555a91.0
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 15:58:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786402529; x=1787007329; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786402701; x=1787007501; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=x+HTMJZ+MtQQgAVQxt+nrwT2irv/Xu9LPWilczsy7do=;
-        b=K4p8qdpyCBfam/LuUqtgT50b+4rD41+yLmwkoZ3wP0bkEee99rzhYy1kV6iybuXAGo
-         tr7gVtF9woD9SPM4Lucg3dWq1d63puaGwezATI/0fhW5zUZn3qKBLvWuEG8ON0CFVI3L
-         X5AApxHwd0nEfqqNAXfI4B77XGzEBwk4JDZiF8eGcmOsid5IvJ7t2bSuD6W8NFIgOeRU
-         nv+bUFxuQTDBbcRzp2od9/SLpJGTWrwCS9BrVWgo2/Oji6c34aUrHNDUjvl0X7cFWoOX
-         9j9XKsGvOwLSKJZYhFjazkNYveX5aVtRaFcsYtwDGW+8E4tto52+snDYtlri/2avJsTz
-         kFmA==
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2Mn9WKaRVsVTpGaOSKTBrlWB9M3O9fuL04U/nAsMmiI=;
+        b=BFzdxsgwmV9AfYECEQb5U55p7KLFSBr1yWq0jKJgtc2uNPBAF/Ra9vEUmuP4bFDo5O
+         2fBcSBN81+M/Jhh1Mr45n7WXZ6tqpeZLkK8CvmATDeGurMRBKASPp/+4kVyma7fV9Asz
+         ldyuq6Dsv51G6aA/smBxoIrNF5VySBDAvPHioJDokN+e8BOnLxnwzQuFdaDqV0xtKJ2S
+         +LHrfNlfRx98FGJ55MA9YhsUHBjC0rht1TtMJkyMmhaypoVXC34bWQCwexkV/mct8Qai
+         ENvvCPZWhvZUCsH26DRBUDjqfWrVS5mU/WxP6I229e/DXvsROJzSchKbs93cv/2Ea+MN
+         9ZBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786402529; x=1787007329;
+        d=1e100.net; s=20251104; t=1786402701; x=1787007501;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=x+HTMJZ+MtQQgAVQxt+nrwT2irv/Xu9LPWilczsy7do=;
-        b=JLBp1ebtrUpIAN154vrLA0jgPEdoSCGGOUy0cGWCAYVTc98llvpi4NaOLsfLpbw9jh
-         CqjQd3/dJpMrszDmfgfCSxATf1btkpgyNC+4h5G378rufznub+QLVG3bTpb8G6R8D+7W
-         ajbvWv/SPCCx+OFHkv8hwgKLFPPGEVOWSktg8jJtCpyZXoCK0gNLqVe/dCcp1Qaq2W6L
-         YWGq3jQDX3IzIlnNhMltQe7l6zj8fCAAYnTVDRgEOBoElb+6GsKOt6GD9Xf4K6tPFl7x
-         ZBKfuxAQo01oUj3VbDiRlZss8+Jxl4vdWdln7F0p4UjLYIuQGQ/+em9II0qwEkr/Tovb
-         wPXQ==
-X-Gm-Message-State: AOJu0Yxo3DyMsYNIIiEP3r4CAranyzbGo6q/UyHVptJ1Vpke9GGkDVAn
-	Cefblgh9rYh8dTtdDu1mlGSDOOLy7kpi6o42/fvC4mvEaNiOgwLlEA3EspqTm/fP3WQtfENojuj
-	Xf3uJUg==
-X-Received: from pgv36.prod.google.com ([2002:a63:1564:0:b0:cbe:93b3:1154])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1396:b0:845:eb88:3d74
- with SMTP id d2e1a72fcca58-84f9c9d8504mr4998640b3a.29.1786402528485; Mon, 10
- Aug 2026 15:55:28 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Mon, 10 Aug 2026 15:54:59 -0700
-In-Reply-To: <20260810225500.869288-1-seanjc@google.com>
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2Mn9WKaRVsVTpGaOSKTBrlWB9M3O9fuL04U/nAsMmiI=;
+        b=DlVcCLiGj8kON5USQmb7fGzaCdi1QfO2tZQFziKTSWmwuvY5fkOX45gYb/+b14FlOv
+         j1itJETGnx84Rif/W90GFWXt2zqVj9/kYw/yMvqlLgyHtm3Xxpmyf3EytIgi+XOsDhaS
+         bkbFMeqZ0orH++YsaNwLwGp+KYrH1LLg/42mA0mB+Q+MTkP1jGUeu+XAroHFDL8Cg2u1
+         c4qANFxh5cgvHEOqHiEXA66d27N6hYXIhwR1LySH61UOYqy0pW7mH/6c3Hdh6ONG8dE5
+         aKUpPo2ygNXc1+zDbTD+rJFZXj95zVbj2DTfRRUtAH/ocAxrOvwiQ40USesibSqRAYNJ
+         UrjA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro0mAGphqJENdRu/xfKdeyEwmYxClnKTGPSgtlpabyL6tssraZNBAR07EdnMMc53e4c8Hs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1RD1NV9QNkGOFe1MDnpwdLGFthYJC62hTnFOaxlSA5JDiowBR
+	jJd1heq+VJGkfpvgeFkZUU9z2IcDyCjHg1y3LUoACpwXucrZmaCBI1lNZdNOMp7rj8tsMtd5up/
+	jMfAOAQ==
+X-Received: from pjse9.prod.google.com ([2002:a17:90a:77c9:b0:384:934b:9128])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:590e:b0:38e:6a44:671b
+ with SMTP id 98e67ed59e1d1-3909d301d9cmr33802476a91.0.1786402700758; Mon, 10
+ Aug 2026 15:58:20 -0700 (PDT)
+Date: Mon, 10 Aug 2026 15:58:20 -0700
+In-Reply-To: <20260728121138.1103610-2-tarunsahu@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260810225500.869288-1-seanjc@google.com>
-X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260810225500.869288-22-seanjc@google.com>
-Subject: [PATCH v9 21/21] KVM: x86: Use kernel timekeeping snapshot to get walltime+TSC
+References: <20260728121138.1103610-1-tarunsahu@google.com> <20260728121138.1103610-2-tarunsahu@google.com>
+Message-ID: <anpXjM_lg_UTpl0q@google.com>
+Subject: Re: [PATCH v4 01/11] liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Paul Durrant <paul@xen.org>, David Woodhouse <dwmw@amazon.co.uk>, Dongli Zhang <dongli.zhang@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
+To: Tarun Sahu <tarunsahu@google.com>
+Cc: ackerleytng@google.com, fuad.tabba@linux.dev, 
+	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
+	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
+	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
+	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
+	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
+	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
+	suzuki.poulose@arm.com
+Content-Type: text/plain; charset="us-ascii"
 
-Replace the KVM-private vgettsc()+/do_do_realtime() timekeeping
-reimplementation with calls to the recently crafted, generic
-ktime_get_snapshot_id() interface.  As noted previously, the snapshot
-provides both the system time and the raw_cycles (TSC), atomically paired
-using a sequence counter.
+On Tue, Jul 28, 2026, Tarun Sahu wrote:
+> Introduce the LIVEUPDATE_GUEST_MEMFD Kconfig option. This option
+> enables live update support for KVM guest_memfd files, enabling
+> guest_memfd-backed memory preservation across kernel upgrades.
+> 
+> Currently this support only guest_memfd files that are full-shared
+> (INIT_SHARED and no support for private_mem).
 
-With great pleasure, delete the now unused read_tsc() and vgettsc()
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-[sean: separate from other conversions, express joy at vgettsc()'s demise]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/x86.c | 85 ++++------------------------------------------
- 1 file changed, 6 insertions(+), 79 deletions(-)
-
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 1513e4ae2353..a638898e528f 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1381,82 +1381,6 @@ void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
- 
- #ifdef CONFIG_X86_64
- 
--static u64 read_tsc(void)
--{
--	u64 ret = (u64)rdtsc_ordered();
--	u64 last = pvclock_gtod_data.clock.cycle_last;
--
--	if (likely(ret >= last))
--		return ret;
--
--	/*
--	 * GCC likes to generate cmov here, but this branch is extremely
--	 * predictable (it's just a function of time and the likely is
--	 * very likely) and there's a data dependence, so force GCC
--	 * to generate a branch instead.  I don't barrier() because
--	 * we don't actually need a barrier, and if this function
--	 * ever gets inlined it will generate worse code.
--	 */
--	asm volatile ("");
--	return last;
--}
--
--static inline u64 vgettsc(struct pvclock_clock *clock, u64 *tsc_timestamp,
--			  int *mode)
--{
--	u64 tsc_pg_val;
--	long v;
--
--	switch (clock->vclock_mode) {
--	case VDSO_CLOCKMODE_HVCLOCK:
--		if (hv_read_tsc_page_tsc(hv_get_tsc_page(),
--					 tsc_timestamp, &tsc_pg_val)) {
--			/* TSC page valid */
--			*mode = VDSO_CLOCKMODE_HVCLOCK;
--			v = (tsc_pg_val - clock->cycle_last) &
--				clock->mask;
--		} else {
--			/* TSC page invalid */
--			*mode = VDSO_CLOCKMODE_NONE;
--		}
--		break;
--	case VDSO_CLOCKMODE_TSC:
--		*mode = VDSO_CLOCKMODE_TSC;
--		*tsc_timestamp = read_tsc();
--		v = (*tsc_timestamp - clock->cycle_last) &
--			clock->mask;
--		break;
--	default:
--		*mode = VDSO_CLOCKMODE_NONE;
--	}
--
--	if (*mode == VDSO_CLOCKMODE_NONE)
--		*tsc_timestamp = v = 0;
--
--	return v * clock->mult;
--}
--
--static int do_realtime(struct timespec64 *ts, u64 *tsc_timestamp)
--{
--	struct pvclock_gtod_data *gtod = &pvclock_gtod_data;
--	unsigned long seq;
--	int mode;
--	u64 ns;
--
--	do {
--		seq = read_seqcount_begin(&gtod->seq);
--		ts->tv_sec = gtod->wall_time_sec;
--		ns = gtod->clock.base_cycles;
--		ns += vgettsc(&gtod->clock, tsc_timestamp, &mode);
--		ns >>= gtod->clock.shift;
--	} while (unlikely(read_seqcount_retry(&gtod->seq, seq)));
--
--	ts->tv_sec += __iter_div_u64_rem(ns, NSEC_PER_SEC, &ns);
--	ts->tv_nsec = ns;
--
--	return mode;
--}
--
- static bool kvm_snapshot_has_tsc(struct system_time_snapshot *snap,
- 				 u64 *tsc_timestamp)
- {
-@@ -1523,11 +1447,14 @@ bool kvm_get_monotonic_and_clockread(s64 *kernel_ns, u64 *tsc_timestamp)
- static bool kvm_get_walltime_and_clockread(struct timespec64 *ts,
- 					   u64 *tsc_timestamp)
- {
--	/* checked again under seqlock below */
--	if (!gtod_is_based_on_tsc(pvclock_gtod_data.clock.vclock_mode))
-+	struct system_time_snapshot snap = {};
-+
-+	ktime_get_snapshot_id(CLOCK_REALTIME, &snap);
-+	if (!kvm_snapshot_has_tsc(&snap, tsc_timestamp))
- 		return false;
- 
--	return gtod_is_based_on_tsc(do_realtime(ts, tsc_timestamp));
-+	*ts = ktime_to_timespec64(snap.systime);
-+	return true;
- }
- #endif
- 
--- 
-2.55.0.679.g6767b8d81c-goog
-
+Why?  Specifically, why do we need/want a separate Kconfig for guest_memfd
+liveupdate versus KVM liveupdate?  I can _maybe_ see a KVM-wide Kconfig, but
+even that seems like a stretch given that (AFAIK) hypervisors are the one and
+only use-case for liveupdate.
