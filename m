@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B52D3AFD11;
-	Mon, 10 Aug 2026 09:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5933D3A9D84;
+	Mon, 10 Aug 2026 09:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786354387; cv=none; b=J4WcJw4FbtCsBj3bMakxloCiY8h87oaB8Dm5gDrEao+LoEyCKIsvHYxcR42t7xW311ck010IYg2+4iqCvIy8nYd5k1j9seTy7ez3XW9IJXXWKjpy9w1K6fDZN+vPZNBawyoJ9Jj/nxvwmKE38LnIvDnF74+Sj8uoeiroNILZzEk=
+	t=1786354606; cv=none; b=aJ63w2jr15ycJUoLEW27d2F8rOf8RqHd5clzZVYKf6fi4HuRN9te/Dc5jH51N1Knl6r1z40ANgIK8x12oP7wIQwUDN/FCEu6xnyj4TgT641ObgtXpwvRsefV7mDctgZjBXrqiOyijwYReXfdqlsuDOk1MB+xRgdqbm5uFYR2PP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786354387; c=relaxed/simple;
-	bh=oapsZf1fPfPSEGKl8ZA9AlMSNM2tlXBPlNT75K21Rv0=;
+	s=arc-20240116; t=1786354606; c=relaxed/simple;
+	bh=h7Nc45SrHl4WCfk5QMOMP9uMHtwbzXXTEM+QuY3ciko=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H5tFiehbaGIvEfR1Q9ertu8Uk+z4TB9dLYvoHZe07j1f2qnHBnSrlQ0EgYPXG317RiRTM3d4R03uBm6SjJ56TPm9HmDyD+hSqzd7hz3/qbcrIIrQU6SywDI3qiLGVUwrabVTmLSEURkxpeVQOkJyjgUfvPN66AiXavJZfWyOv1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CFiZ73qw; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=rrIdWaZtXeoRVDkPoj3SEagdS5ca6B18BuSD3KVR0b9691HFM+RJZqLBplIRMY/HUlrKiqIf+AXiZNOcsRTFHTIFOa35JEwERiVG5E64+ri+9A/C94zGcRanr2NpbFsfEY9/8jJpUArTIiU07qIUvkYwQf9ZfVqhd7RxEdy1qnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=naiOe+eg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CFiZ73qw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 237D61F000E9;
-	Mon, 10 Aug 2026 09:32:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="naiOe+eg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6194F1F000E9;
+	Mon, 10 Aug 2026 09:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786354385;
-	bh=puBatuzKpdITG9/LirLMSAY4o6mBGHBdHb4a5q1RtgY=;
+	s=k20260515; t=1786354605;
+	bh=+k/eeTx9qjkejJzGngTPDoZRvZJW0OrywFXyx2wWmks=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CFiZ73qwlmdLBwOq0EF9s3+3mq69NpHgrowj1UkIuK9sjUNhZkM2D9QmAG0wujV/1
-	 k7jgB948Mw1Gd1Aty/UekqvJswDyZX4WVeT7cWQA4x83t6GWQqFuKAuJXIc3nT+bXb
-	 q9CDlfm5UXlj+3yW/ivOAKboC9UIr07TdDGVhTtfh5jGzFaLNHHpK+ee0xzyCCUyCP
-	 la6FjR1ssQobEPVnL2PoMPWL1uadslzCNU5fMFI6MY9Dp6D3dcWl5Du2vc5Vb2zgu4
-	 oHWmiK4HAQt0ZxRSfWd8DWlG8ptVNG5wMTjojS2BF4K1EU/ofhOgRKLJ+Dp8WQ+PEU
-	 4VCGIRMhkbJLQ==
-Message-ID: <ed997598-8ae8-4aec-aa85-3a9204132513@kernel.org>
-Date: Mon, 10 Aug 2026 11:32:44 +0200
+	b=naiOe+egLnCkmhBy384Tr900GjqhrGJqk1C7AcedbDBvoX9KRByDtjUx4JHpXljWs
+	 T+x+GF/wBLrmCAdWQr5DNEFy8+c3mJwhqlG+8nSbFbqfGOH8EO1jeBO7LT2O74f+s/
+	 /FWBeqhvacxTsfe83QPHQPwTK/DabFSLKr8ro7BpI9SsZWpv3iWG9OxuqF55Ew7sx0
+	 XkeYiQ7cylnP+WJsrurG/uDPOzsxQ53VD+MsluKnYFeKoZkz1OThcXBSSd4EvG2vtB
+	 EuxGhzLPq5OvqTSJ+X4toQAWbBJ9FiiZi23Sj1G+LGb5zjQpnzhLpKBKIp0GiS/M52
+	 eKdltieFInJGQ==
+Message-ID: <82ded1ea-e0f6-48d9-8bcb-38a6bc5e9176@kernel.org>
+Date: Mon, 10 Aug 2026 11:36:26 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 19/41] KVM: Move KVM_VM_MEMORY_ATTRIBUTES config
- definition to x86
+Subject: Re: [PATCH v10 20/41] KVM: Let userspace disable per-VM mem
+ attributes, enable per-gmem attributes
 To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
  binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
  jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
@@ -69,7 +69,7 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
  linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
 References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-19-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-20-2fc18ee6d3ba@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -116,36 +116,83 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-19-2fc18ee6d3ba@google.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-20-2fc18ee6d3ba@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 8/7/26 23:52, Ackerley Tng via B4 Relay wrote:
-> From: Sean Christopherson <seanjc@google.com>
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
-> Bury KVM_VM_MEMORY_ATTRIBUTES in x86 to discourage other architectures
-> from adding support for per-VM memory attributes, because tracking private
-> vs. shared memory on a per-VM basis is now deprecated in favor of tracking
-> on a per-guest_memfd basis, and while RWX memory attributes are on the
-> horizon, they too are expected to be x86-only.
+> Make gmem_in_place_conversion a module parameter so that userspace can
+> configure enable or disable the use of VM-level memory attributes. The
+> module parameter is only available if CONFIG_KVM_VM_MEMORY_ATTRIBUTES is
+> enabled.
 > 
-> This will also allow modifying KVM_VM_MEMORY_ATTRIBUTES to be
-> user-selectable (in x86) without creating weirdness in KVM's Kconfigs.
-> Now that guest_memfd supports in-place conversions, it's entirely possible
-> to run x86 CoCo VMs without support for KVM_VM_MEMORY_ATTRIBUTES.
+> To avoid inconsistencies in the way memory attributes are tracked in KVM
+> and guest_memfd, the vm_memory_attributes module_param is made
+> read-only (0444).
 > 
-> Leave the code itself in common KVM so that it's trivial to undo this
-> change if new per-VM attributes do come along.
+> Since selecting CONFIG_KVM_VM_MEMORY_ATTRIBUTES disables in-place
+> conversion, actually make CONFIG_KVM_VM_MEMORY_ATTRIBUTES selectable. Make
+> the config only selectable for (CoCo) VM types that might use
+> vm_memory_attributes.
+> 
+> Since memory attributes are trackable in guest_memfd, the concept of having
+> private memory is no longer dependent on
+> CONFIG_KVM_VM_MEMORY_ATTRIBUTES. Define kvm_arch_has_private_mem() based on
+> platform config, so that having private memory is dependent on (CoCo) VM
+> type.
 > 
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > Reviewed-by: Fuad Tabba <tabba@google.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 > Tested-by: Shivank Garg <shivankg@amd.com>
+> [Define module_param only if CONFIG_KVM_VM_MEMORY_ATTRIBUTES is enabled]
+> Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 > ---
+>  arch/x86/include/asm/kvm_host.h |  4 +++-
+>  arch/x86/kvm/Kconfig            | 14 ++++++++++----
+>  virt/kvm/kvm_main.c             |  5 ++++-
+>  3 files changed, 17 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 497da6aaf2942..bb2c1ade62cf9 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1851,7 +1851,9 @@ enum kvm_intr_type {
+>  	((vcpu) && (vcpu)->arch.handling_intr_from_guest && \
+>  	 (!!in_nmi() == ((vcpu)->arch.handling_intr_from_guest == KVM_HANDLING_NMI)))
+>  
+> -#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> +#if defined(CONFIG_KVM_SW_PROTECTED_VM) ||	\
+> +    defined(CONFIG_KVM_INTEL_TDX) ||		\
+> +    defined(CONFIG_KVM_AMD_SEV)
+>  #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
+>  #endif
+>  
+> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+> index abb108886733a..2c3c22aeafa54 100644
+> --- a/arch/x86/kvm/Kconfig
+> +++ b/arch/x86/kvm/Kconfig
+> @@ -81,13 +81,21 @@ config KVM_WERROR
+>  	  If in doubt, say "N".
+>  
+>  config KVM_VM_MEMORY_ATTRIBUTES
+> -	bool
+> +	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
+> +	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
+> +	help
+> +	  Enable support for tracking PRIVATE vs. SHARED memory using per-VM
+> +	  memory attributes.  Using per-VM attributes is deprecated in favor of
+> +	  tracking PRIVATE state in guest_memfd.  Select this if you need to run
+> +	  CoCo VMs using a VMM that doesn't support guest_memfd memory
+> +	  attributes.
+> +
+> +	  If unsure, say N.
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Hm, does that imply that a distribution that must support both, cannot ship a
+single kernel?
 
 -- 
 Cheers,
