@@ -1,46 +1,46 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011017.outbound.protection.outlook.com [52.101.62.17])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010012.outbound.protection.outlook.com [40.93.198.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF51D386552
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 10:17:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F92E3B8BC1
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 10:17:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786357055; cv=fail; b=dr0LIyWu5tcj1C5oxpq7Qy1IFSPWyjFLMu8eFscwTbEMnAPexcjumS6naT9Q1+HhCYdlzj2WJyCgTtKF0wxF/yUIFbVaLRxTipzl7KuuYsRZjqpAPyJVezvfOeLDl3GgazlLEb5NLnNtq1p+QwOoMrmH2eFHX5KmNvWViGJAEyY=
+	t=1786357068; cv=fail; b=E0KkbGlH3TW8X8fNikFvj1nC5L+20i9tKonJTzYQifwoOvNSfOHiWz8DRBwTQhOK5w9diVqv9RQlUjJvEXq2i1uT23IfaFCdyZK/G6NPNs3sgYa7Moiie1x+b9wH0/aHPjtTsMBXFooXSLrktMhkrMsd/g8F67gCi4tGwzW7S3Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786357055; c=relaxed/simple;
-	bh=i2iF+7gk7Mg2aQ0AOjozSFePRb989j5XjSIF6k8RcLo=;
+	s=arc-20240116; t=1786357068; c=relaxed/simple;
+	bh=sLgF5fNJocxRJrJKX0lIphfwCXvtmYWNtiAvf/67Xcg=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a94sPuyFnQYOqSziLqWr+iBSGkRMfC220P22b37/VbKKp2sm4udlZL9PYtppQN0guaH56s5CUcz0DFNiGdMVd2ESr01Sohr8yzP3dZsNAxVO+4LVY0PuF7B1a09NYEx1SjI96zjlUnj7KVkvvPR2jhNzaqxWfAX8dnxRS8Top8I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=KspTpsfN; arc=fail smtp.client-ip=52.101.62.17
+	 MIME-Version:Content-Type; b=s6rqA85XT4n7U0tc7c3dMz3CzF9yboG2IF7EIUnz8ThFaXCIFzLepgPltTRL17/FUONDE0PRaWE4wTbiwqOJ4FlMe5olT06X6glb5j78uzySbPyPhF7e0eYeTlJw/e75Y//N0c6d2PznBmpkinJpFbkIcpc4rm5NwBPowILsyj4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=IlTHx1mG; arc=fail smtp.client-ip=40.93.198.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="KspTpsfN"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="IlTHx1mG"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A0pr2vZcK9eeiVfmbsheqf27xGoLOsXUCJ95IexNrZ4fprKSuTzxGesyP+rBaIHrkhbg2Joncx0KljY5y843l+4fXB7ZMb7fIcneX8d5MwtYPLg+hXF6yg22C+iFKd6gxlB7V3FtKwPRhXYNYlrNOWBojgWctaZ8x9wfYd80mpOu5ZIWy7hTL7/tHaiJyidkhkp+g0+HFIY914yyMhzs/cD6cH/uq9UuCWIGH0wgnXWczy2fras6+GJ/tL12gSNI3aPFjClElmS6C4GOErtBbXSa96Ql9NHtZIsKrOsN8CR3hbHBIALK/01QQrhfY+PGVfd9DcdLhHx+y6b0x+/zPQ==
+ b=aoIFEZUq/xumNID7Ahq24RBc653rS/NagUqjaozBxDGnuCl3X7ZleflzJMcd3W1elF6ZMbnKunpo953kc6ADlfUae5NellsBjVAH/InJf8ytl2X4gVclrGqZoa/VJTU8Lj8c0uW7JgUaYdHHkCqtk8g0x14GnlXpTS/5u4IYDa+V7L7nSV3yebf87MMZF3S579qonHmPxwYoUcq7AdZlugLXz515svIsTMjxzXmULsVsYAVaMN8Im3QyHBEdJEI9jSHvpcTmWkMH4mSIqMTdZT06Ir6Me/Ppoyxc23tkl5aaeRFy6A4l1baJW/+BCm8FtF0FiuJtixZu3ca9LE4NIA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+5jdxQwxZslw4CEflmx/JQzRBsCSgjsm0kvcGwcbAEs=;
- b=mLm3BnorKUiEiq4ayKS5FIz7QUsLi10OvHUMJwQKR/UE0xlZAXElHbGYI2Ecdn5jO+7cSa4GnB2jEIUTrsJ2u1yY4lDfJbOfgmucu3/NAp3LH+FqCp8zRl1RapBdNd3YGkiAD8+D+hWHlERS9mMo/H1AXMARuIIDrJ792qWtYxCWTPQNB5koX0uRYEd9yMePO+sTt6f8pnNOyVwr/Xa5Ln2b60Ld9NOphxV5IpdY5omhdezuIn0liis5oc5A8kzeTqvWszEsGwk2QBkhmTne0+Bmziaoqgt71/sjyD/078Pyje+y5w3G5WRnBgVTtfC/oizc3G+kEoplc3gG2S2NfA==
+ bh=AvpR2lChk3+EqZyDQalwO6BeWWBhDehhWAlf6qfAr64=;
+ b=eeGVpqGQGwFPGIgeu0vSzBbBOvEfYFITRNEG/ahRRI/lob0LXrEj8fN7Gv8p4amdsZwfoJJ05FJ/xD0Brx0gWLNc0E6K1SHVbWcj8a9TwQHh7yxn9gW7xCp+BUxtUz3wO4TjhIhZeguQXP8GX4hlTa43Myfwu2RJ9gANKKcEsiKkFS/eMQJm07XO/n5mR7//vxrZsG0kM3MUxK60Sjli/2N0ViAlgr8KH9WRvqhku7EHZDBVUYxQTdvSQk6+W7Ht2+sc/0zJb6MeQxuHxsFl7v18aOEkQdCOzxvlVpTEus2Vc76inasMOI95VeD1nJhxu6BRd/989Qo7gyUo0Oob9w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+5jdxQwxZslw4CEflmx/JQzRBsCSgjsm0kvcGwcbAEs=;
- b=KspTpsfNqYTuSBcGdoRqx8BpH+zwZhZlMoGr3ZZmtCHTkr798rOCujSowKY999rtfX1fja4YJ6oWx63JPCkv2bsjV42Y2LPUypJZ5/8H8+QdNHXgivpXtRRmcg2O+XMj6bZTOeUNJ9Y8eA2kQDnsmh98n7wDzht14ihvCJvUIKU=
-Received: from SJ0PR03CA0344.namprd03.prod.outlook.com (2603:10b6:a03:39c::19)
- by PH7PR12MB6587.namprd12.prod.outlook.com (2603:10b6:510:211::17) with
+ bh=AvpR2lChk3+EqZyDQalwO6BeWWBhDehhWAlf6qfAr64=;
+ b=IlTHx1mGjK8iXQ6Oowrm5r2Hrf13ngoCApdiKvFUa/RZmJOUWs+gBMT/FhkOWUpQSgbFxDNXGsLoVcAfQfemrh2+2o+eOxkSGfTK0Q50wyun7FOH00rXXfc56GQ9f8LYg2xBY31M1b/TSnZq3ljsvNtsgTKXkqyDly4UeG1wABM=
+Received: from PH8P221CA0009.NAMP221.PROD.OUTLOOK.COM (2603:10b6:510:2d8::12)
+ by CH2PR12MB4134.namprd12.prod.outlook.com (2603:10b6:610:a7::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Mon, 10 Aug
- 2026 10:17:27 +0000
-Received: from SJ5PEPF000001E9.namprd05.prod.outlook.com
- (2603:10b6:a03:39c:cafe::8f) by SJ0PR03CA0344.outlook.office365.com
- (2603:10b6:a03:39c::19) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 10:17:41 +0000
+Received: from MW1PEPF0001615F.namprd21.prod.outlook.com
+ (2603:10b6:510:2d8:cafe::2b) by PH8P221CA0009.outlook.office365.com
+ (2603:10b6:510:2d8::12) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.25 via Frontend Transport; Mon,
- 10 Aug 2026 10:17:27 +0000
+ 10 Aug 2026 10:17:41 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,13 +48,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF000001E9.mail.protection.outlook.com (10.167.242.197) with Microsoft
+ MW1PEPF0001615F.mail.protection.outlook.com (10.167.249.90) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.315.6 via Frontend Transport; Mon, 10 Aug 2026 10:17:27 +0000
+ 15.21.339.0 via Frontend Transport; Mon, 10 Aug 2026 10:17:40 +0000
 Received: from sindhu.amdval.net (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Mon, 10 Aug
- 2026 05:17:20 -0500
+ 2026 05:17:36 -0500
 From: Sandipan Das <sandipan.das@amd.com>
 To: <kvm@vger.kernel.org>
 CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
@@ -63,9 +63,9 @@ CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
 	<dapeng1.mi@linux.intel.com>, Zide Chen <zide.chen@intel.com>, Tom Lendacky
 	<thomas.lendacky@amd.com>, "Nikunj A . Dadhania" <nikunj@amd.com>, "Manali
  Shukla" <manali.shukla@amd.com>, Sandipan Das <sandipan.das@amd.com>
-Subject: [PATCH 6/8] KVM: SVM: Add support for hardware-switched PMU
-Date: Mon, 10 Aug 2026 15:44:54 +0530
-Message-ID: <901b3726ed48b666f72913e6c395f1317b574dd9.1786345201.git.sandipan.das@amd.com>
+Subject: [PATCH 7/8] KVM: nSVM: Add support for hardware-switched PMU
+Date: Mon, 10 Aug 2026 15:44:55 +0530
+Message-ID: <ee1f0eb2aae5f5984b5db33d89937a06a305d0dc.1786345201.git.sandipan.das@amd.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1786345201.git.sandipan.das@amd.com>
 References: <cover.1786345201.git.sandipan.das@amd.com>
@@ -81,363 +81,262 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001E9:EE_|PH7PR12MB6587:EE_
-X-MS-Office365-Filtering-Correlation-Id: d5870216-ca9f-4998-f113-08def6c89467
+X-MS-TrafficTypeDiagnostic: MW1PEPF0001615F:EE_|CH2PR12MB4134:EE_
+X-MS-Office365-Filtering-Correlation-Id: 077e18db-a6c2-40db-6425-08def6c89c2b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|82310400026|36860700016|1800799024|6133799003|18002099003|22082099003|11063799006|56012099006|10067099003|3023799007;
+	BCL:0;ARA:13230040|36860700016|376014|1800799024|82310400026|23010399003|22082099003|18002099003|10067099003|56012099006|11063799006|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	0P/ombJgpVQHKHBzfRBhgZVhTCRHk81SRCB0JVp0cW3GtIQnalfvPWuCCW8/pbsO8m4g/BXLXOcH+YGLRqPzc8fh12iVC/BhNgCgaK7QlZ8IexwvVqPiM1I8m43OBUXFDqMRf2XFIhkBxM3cTHcrB2F4BfrGCin9c5VxmtCLPKACakOtOik1WtyLaUBYBiCwdiuEes3xMY7buT/iH6jmltVaNe8mFew2SxIVJM4p4C7zaPWYS3BXqx/OeXbDQEdR3vsnSgMFsienQKFAzolndPunwD6fLmcwqPlaXyTNiSxX3gq9o/cPMuztVfTrqlaskzI3s0n0XzE9vLVnzeeJP7TchIe8OcgPiMlegNE7UBNmfa4naOPd7j0SYWJNeZwm8AXpXFa3WQA8v0+9N9LBSjRZHr2Ftm4Q4vw09LMwIxHlQ8h9lLS/8akMF57ugaybQADtALbBdCJA2J2XD63rzvR4Jrxp6AcJgMBZWeOzp+oJ2KJMZQubDK64g0gFNSsZcTvLLjVAc6e//bG6atDMOunX2QiM8/vcQdQWBg5o8A8MJBiXigYi5xNw7DwGaQch/zhBLp6t1mB+r2U1CBurYLFk9qgEeYkmIs+eCSkHJx3/mGhUN+uQq2GCaj1RAdijIw/4yn9+D+dr0z/y2X4vE8lUc66pClH00eSXbhosre4oWzUWAx57QzGYQZP6Vxb2jYy0OaQ82D37cIuP5p6gNg==
+	yLXjk5arfuDV9uR04z/N1u+qSC2WmvK+sX/HCUZIpVIRl36aeg13G5YSRgBCC8KY2ps+LG8f2r0z+k9eGG4sCqZuDJ6J21y210VI/IByLrx9jh+LkDq8WLsZ/5XZ6muxgaGXn5JQO2KdMCtxymNdT+R5VKeGlXQaGNGbiq4/Bi+wMSGResmBnsbbY6eFtC5K1Sa8bgSw1LrRgZAuOIy6pYvIkxzKq5ZSz8MsnHccCsyV9sVnuwAiM8vwYbKUi6LHzPH61kB2uH+Qz9ewOAZEcUdrhKvz5GfRlSN5uV2AsB5eckmavqq8vnR2I/YZoHbwuhd8csVd9uHqgQduNQGwjlDaKCjC1vk2egQxEub/srvFc2iBtqcrIyKMBn+ftqWj1SN8pCGVmui773quz9066y5gGRE+38LN1MDaBcjaO+M6W8V1Q3gt5PXgvaKPFX0T5Wtsr3/cRv9Jw1FvrQg6ve1TnRrLbW4Nf8IwxUjHDZs/uB1EXOztVdjQa/50Ct3/oNYMghrWcVLJz6gXBoEFkKFVL/CAimcmeV1qMMRF3T/4LQL5g0VO5u3iOxWS9ms+jdjJ1wQImUlGmNjfix7vOToTHULssPfXQsP6NVsRowneVyT0k9F6Ju7WSfFV1y/XoKCUExNz329tSBRNQzxaxw6qLygOHMbo3o1pog2ixDJsKB6/jFFGde9HkLPXgZMCVBzSe/k8Fdm/QSITlHcOfw==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(82310400026)(36860700016)(1800799024)(6133799003)(18002099003)(22082099003)(11063799006)(56012099006)(10067099003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(82310400026)(23010399003)(22082099003)(18002099003)(10067099003)(56012099006)(11063799006)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	msq2WRnDwCmqwm+XJvlUwXvfaGu10EuVLZpDNjK2ddnm9VqK1grUjrGUcJ4eUsXwprS/wtUkkK/4xshvea0OwaBrqz+68z9j5Ozpbll4m6A8K+h9+IR6RbZiJmq9/lZiFXDlhV0XVTRuKpuZF04/ZZG/PaIhtIibFzCEQlsMAyJlYW0HSANZX4vhEAfsb7JyhtWdPR3Nuby+aHEMZWPtKu5whxMMC/YO1GO6BRKRQzcovzpM4rTMCGqAJD7yzsK2L5uQQLvV06D5tt7Ec92DEYgQYjsnp6lBm1za3/S/jIR6jotzb/rcpkfkQhhcy86wJZeROyQY78IRNGR0ULxTqSVIIGQGu7EzVTgTh8z3zmsvV2h5cl+Nqfy6tQFl5XAmIJFnXdkgzSC8m4v5oqy7jIREvOPlDl9+sT0z4v06yszk2/fbG5EWSTq6iQk85QDl
+	YZdFGwgCnz9xI6p2++k+s0ujfe3dwREoJGiXWSIj9dRQzrZsFe2q2OyDhl5PoxWAJLsBfZbrTVRUjkeBWKJ+kN3zEzBx0CEzpAjjPDnlijpf7oRzpnO7tfuqSiNhhWCZL6muUrgr7NoDF81AF9MBvpn4mBmL7HXRWmIaeoKX/xXgwiHrQHRE3ODJKZ88a2iKZLcBPr4IIqUNK69qO9T5gNm2eb7Xh4cgDnymdLrX1AMKIPCaJz0fhEJ83GyB364iWOjfgO4cle7gpFvqhGZoSv0gcF91goYRosu0Jkqll/5oT5H2tV/VOdk6aIRD8nvYRTg9aqFZx2QdwcLORMFJW0nJE88AXZ8h3eZOZM2CZ4GxY8keXY6Bdt8ii9ZFgaT/1ZgCh31ngsDE84J6tHOllC0FElaYRBDMys6E3njk423Ru0439MlKlZCPGfQOsy9h
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 10:17:27.6085
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 10:17:40.5821
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d5870216-ca9f-4998-f113-08def6c89467
+X-MS-Exchange-CrossTenant-Network-Message-Id: 077e18db-a6c2-40db-6425-08def6c89c2b
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001E9.namprd05.prod.outlook.com
+	MW1PEPF0001615F.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6587
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4134
 
-Zen 5 processors introduced the ability to offload guest PMU context
-switches to hardware using a feature called PMC virtualization. Use the
-feature, detected using X86_FEATURE_PERFCTR_VIRT, to implement the new
-hardware-switched mode of mediated PMU.
+Add nested support for PMC virtualization and advertise
+X86_FEATURE_PERFCTR_VIRT so that a L1 hypervisor can use it for its L2
+guests. As long as the L0 hypervisor uses hardware-switched mediated
+PMU for L1, it is used while L1 runs L2 guests as well, irrespective of
+what L1 does.
 
-The feature is enabled by setting bit 3 of misc_ctl2 residing in the
-VMCB control area. Since the guest PMU state now resides in the VMCB
-save area, implement the vendor state sync PMU ops for use during event
-filtering, instruction emulation and RDPMC interception to access the
-latest PMU state.
+Since hardware runs L2 from vmcb02, not vmcb12, enable PMC
+virtualization in vmcb02 whenever it is enabled in vmcb01, so that
+hardware switches the PMU state using the vmcb02 save area. The state
+to switch depends on whether L1 enables PMC virtualization for L2.
 
-The vendor state sync calls always use MSR_F15H_PERF_{CTL,CTR}x indices
-because of how GP_EVENTSEL_BASE and GP_COUNTER_BASE are set in the SVM
-kvm_pmu_ops. For legacy models, where X86_FEATURE_PERFCTR_CORE is not
-set, these are translated to the equivalent MSR_K7_{EVNTSEL,PERFCTR}x
-indices, as get_gp_pmc_amd() would otherwise return NULL.
+An L1 hypervisor enables PMC virtualization for L2 by setting bit 3 of
+misc_ctl2 in vmcb12. Following commit 84dc9fd0354d ("KVM: nSVM: Cache
+all used fields from VMCB12"), cache the PMU-related fields to avoid
+TOCTOU hazards. Copy the cached L2 PMU state into vmcb02 for L2 VMRUNs,
+and back into vmcb12 on nested VMEXITs, so that L1 observes the latest
+L2 PMU state.
 
-The underlying implementation depends on the availability of either
-VNMI or AVIC for guest PMI delivery. Synthesized overflows such as
-those resulting from incrementing counters due to instruction emulation
-are still injected through the KVM_REQ_PMI processing path. Since AVIC
-can be inhibited, make VNMI the hard requirement.
+When L1 does not enable PMC virtualization for L2, the PMU state to
+switch is the one in the vmcb01 save area. Copy it into vmcb02 for L2
+VMRUNs, and back into vmcb01 on nested VMEXITs, so that the latest PMU
+state is preserved for L1.
 
-When both VNMI and AVIC are enabled, AVIC gets preference in hardware.
-The main advantage of using AVIC is that it lets the guest change the
-delivery mode in the LVTPC. Unlike AVIC, VNMI ignores the LVTPC, as the
-APIC is emulated, and always presents PMIs as NMIs.
-
-PMC virtualization does not use a VMCB clean bit. Hardware reloads the
-guest PMU state from the VMCB save area on every VMRUN. Hence, any
-software updates to the VMCB do not require calling vmcb_mark_dirty().
-
-The "vpmc" vendor module parameter is introduced to toggle the feature.
-Compared to software-switched mediated PMU, enabling the feature
-reduces the world switch overhead. Hence it is enabled by default when
-the host supports X86_FEATURE_PERFCTR_VIRT and also has mediated PMU
-enabled (kvm_amd.enable_mediated_pmu=1).
+The counter reprogramming done on nested transitions writes into the
+vmcb02 save area, so run it after copying the PMU state into vmcb02;
+otherwise the copy overwrites it.
 
 Signed-off-by: Sandipan Das <sandipan.das@amd.com>
 ---
- arch/x86/include/asm/svm.h |   1 +
- arch/x86/kvm/svm/pmu.c     | 115 +++++++++++++++++++++++++++++++++++++
- arch/x86/kvm/svm/svm.c     |  51 ++++++++++++++++
- arch/x86/kvm/svm/svm.h     |   1 +
- 4 files changed, 168 insertions(+)
+ arch/x86/kvm/cpuid.c      |  1 +
+ arch/x86/kvm/svm/nested.c | 45 ++++++++++++++++++++++++++++++++++++---
+ arch/x86/kvm/svm/svm.c    |  4 ++++
+ arch/x86/kvm/svm/svm.h    | 18 ++++++++++++++++
+ 4 files changed, 65 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index 73f17af22d6c..e1c8a333e86f 100644
---- a/arch/x86/include/asm/svm.h
-+++ b/arch/x86/include/asm/svm.h
-@@ -247,6 +247,7 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index ddb022cb203a..ce4f984bc6e1 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -1217,6 +1217,7 @@ void kvm_initialize_cpu_caps(void)
+ 		VENDOR_F(VGIF),
+ 		VENDOR_F(VNMI),
+ 		VENDOR_F(SVME_ADDR_CHK),
++		VENDOR_F(PERFCTR_VIRT),
+ 	);
  
- #define SVM_MISC2_ENABLE_V_LBR	BIT_ULL(0)
- #define SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE	BIT_ULL(1)
-+#define SVM_MISC2_ENABLE_V_PMC	BIT_ULL(3)
+ 	kvm_cpu_cap_init(CPUID_8000_001F_EAX,
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 73f37b050d0a..a9f9caeb7840 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -605,6 +605,7 @@ static void __nested_copy_vmcb_save_to_cache(struct vmcb_save_area_cached *to,
+ 	to->g_pat = from->g_pat;
  
- #define SVM_TSC_RATIO_RSVD	0xffffff0000000000ULL
- #define SVM_TSC_RATIO_MIN	0x0000000000000001ULL
-diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
-index 5dccf8776368..7d3a151b6cde 100644
---- a/arch/x86/kvm/svm/pmu.c
-+++ b/arch/x86/kvm/svm/pmu.c
-@@ -125,6 +125,89 @@ static bool amd_is_valid_msr(struct kvm_vcpu *vcpu, u32 msr)
- 	return amd_msr_idx_to_pmc(vcpu, msr);
+ 	svm_copy_lbrs(to, from);
++	svm_copy_pmcs(to, from);
  }
  
-+static u32 amd_pmu_adjust_msr_idx(struct kvm_vcpu *vcpu, u32 msr)
-+{
-+	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
-+
-+	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_PERFCTR_CORE) &&
-+	    msr >= MSR_F15H_PERF_CTL0 &&
-+	    msr <= MSR_F15H_PERF_CTR0 + 2 * pmu->nr_arch_gp_counters)
-+		msr = ((msr & 0x1) ? MSR_K7_PERFCTR0 : MSR_K7_EVNTSEL0) +
-+		      ((msr - MSR_F15H_PERF_CTL0) / 2);
-+
-+	return msr;
-+}
-+
-+static int amd_get_vendor_state(struct kvm_vcpu *vcpu, u32 msr)
-+{
-+	struct vmcb_save_area *save = &to_svm(vcpu)->vmcb->save;
-+	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
-+	struct kvm_pmc *pmc;
-+
-+	/* MSR_PERF_CNTR_GLOBAL_* */
-+	switch (msr) {
-+	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS:
-+		pmu->global_status = save->perf_cntr_global_status;
-+		return 0;
-+	case MSR_AMD64_PERF_CNTR_GLOBAL_CTL:
-+		pmu->global_ctrl = save->perf_cntr_global_control;
-+		return 0;
-+	}
-+
-+	msr = amd_pmu_adjust_msr_idx(vcpu, msr);
-+
-+	/* MSR_PERFCTRn */
-+	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_COUNTER);
-+	if (pmc) {
-+		pmc->counter = save->pmc[pmc->idx].perf_ctr;
-+		return 0;
-+	}
-+
-+	/* MSR_EVNTSELn */
-+	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_EVNTSEL);
-+	if (pmc) {
-+		pmc->eventsel_hw = save->pmc[pmc->idx].perf_ctl;
-+		return 0;
-+	}
-+
-+	return 1;
-+}
-+
-+static int amd_set_vendor_state(struct kvm_vcpu *vcpu, u32 msr)
-+{
-+	struct vmcb_save_area *save = &to_svm(vcpu)->vmcb->save;
-+	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
-+	struct kvm_pmc *pmc;
-+
-+	/* MSR_PERF_CNTR_GLOBAL_* */
-+	switch (msr) {
-+	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS:
-+		save->perf_cntr_global_status = pmu->global_status;
-+		return 0;
-+	case MSR_AMD64_PERF_CNTR_GLOBAL_CTL:
-+		save->perf_cntr_global_control = pmu->global_ctrl;
-+		return 0;
-+	}
-+
-+	msr = amd_pmu_adjust_msr_idx(vcpu, msr);
-+
-+	/* MSR_PERFCTRn */
-+	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_COUNTER);
-+	if (pmc) {
-+		save->pmc[pmc->idx].perf_ctr = pmc->counter & pmc_bitmask(pmc);
-+		return 0;
-+	}
-+
-+	/* MSR_EVNTSELn */
-+	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_EVNTSEL);
-+	if (pmc) {
-+		save->pmc[pmc->idx].perf_ctl = pmc->eventsel_hw;
-+		return 0;
-+	}
-+
-+	return 1;
-+}
-+
- static int amd_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- {
- 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
-@@ -134,6 +217,10 @@ static int amd_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	/* MSR_PERFCTRn */
- 	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_COUNTER);
- 	if (pmc) {
-+		if (msr_info->host_initiated &&
-+		    kvm_vcpu_has_mediated_pmu_caps(vcpu, KVM_MEDIATED_PMU_CAP_HW_SWITCHED) &&
-+		    amd_get_vendor_state(vcpu, msr))
-+			kvm_pmu_warn_vendor_state(msr);
- 		msr_info->data = pmc_read_counter(pmc);
- 		return 0;
- 	}
-@@ -158,6 +245,10 @@ static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_COUNTER);
- 	if (pmc) {
- 		pmc_write_counter(pmc, data);
-+		if (msr_info->host_initiated &&
-+		    kvm_vcpu_has_mediated_pmu_caps(vcpu, KVM_MEDIATED_PMU_CAP_HW_SWITCHED) &&
-+		    amd_set_vendor_state(vcpu, msr))
-+			kvm_pmu_warn_vendor_state(msr);
- 		return 0;
- 	}
- 	/* MSR_EVNTSELn */
-@@ -174,6 +265,9 @@ static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 			else
- 				__clear_bit(pmc->idx, pmu->pmc_has_mode_specific_enables);
- 
-+			if (kvm_vcpu_has_mediated_pmu_caps(vcpu, KVM_MEDIATED_PMU_CAP_HW_SWITCHED))
-+				pmc->eventsel_hw = data;
-+
- 			kvm_pmu_request_counter_reprogram(pmc);
- 		}
- 		return 0;
-@@ -239,6 +333,24 @@ static void amd_pmu_init(struct kvm_vcpu *vcpu)
- 	}
+ void nested_copy_vmcb_save_to_cache(struct vcpu_svm *svm,
+@@ -741,6 +742,17 @@ static bool nested_vmcb12_has_lbrv(struct kvm_vcpu *vcpu)
+ 		(to_svm(vcpu)->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR);
  }
  
-+static void amd_pmu_reset(struct kvm_vcpu *vcpu)
++static bool nested_vmcb12_has_vpmc(struct kvm_vcpu *vcpu)
 +{
-+	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
-+	struct vmcb_save_area *save = &to_svm(vcpu)->vmcb->save;
-+	int i;
-+
-+	if (!kvm_vcpu_has_mediated_pmu_caps(vcpu, KVM_MEDIATED_PMU_CAP_HW_SWITCHED))
-+		return;
-+
-+	for (i = 0; i < pmu->nr_arch_gp_counters; i++) {
-+		save->pmc[i].perf_ctl = 0;
-+		save->pmc[i].perf_ctr = 0;
-+	}
-+
-+	save->perf_cntr_global_control = 0;
-+	save->perf_cntr_global_status = 0;
++	/*
++	 * Since nested AVIC is not supported, L2 PMIs can only be delivered
++	 * via VNMI, so make it a hard requirement.
++	 */
++	return guest_cpu_cap_has(vcpu, X86_FEATURE_PERFCTR_VIRT) &&
++		nested_vnmi_enabled(to_svm(vcpu)) &&
++		(to_svm(vcpu)->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_PMC);
 +}
 +
- static bool amd_pmu_is_mediated_pmu_supported(struct x86_pmu_capability *host_pmu)
+ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm)
  {
- 	return host_pmu->version >= 2;
-@@ -311,10 +423,13 @@ struct kvm_pmu_ops amd_pmu_ops __initdata = {
- 	.refresh = amd_pmu_refresh,
- 	.init = amd_pmu_init,
- 	.pmc_is_disabled_in_current_mode = amd_pmc_is_disabled_in_current_mode,
-+	.reset = amd_pmu_reset,
+ 	struct vmcb_ctrl_area_cached *control = &svm->nested.ctl;
+@@ -823,6 +835,11 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm)
+ 	}
+ 	vmcb_mark_dirty(vmcb02, VMCB_LBR);
+ 	svm_update_lbrv(&svm->vcpu);
++
++	if (nested_vmcb12_has_vpmc(vcpu))
++		svm_copy_pmcs(&vmcb02->save, save);
++	else if (kvm_vcpu_has_mediated_pmu_caps(vcpu, KVM_MEDIATED_PMU_CAP_HW_SWITCHED))
++		svm_copy_pmcs(&vmcb02->save, &vmcb01->save);
+ }
  
- 	.is_mediated_pmu_supported = amd_pmu_is_mediated_pmu_supported,
- 	.mediated_load = amd_mediated_pmu_load,
- 	.mediated_put = amd_mediated_pmu_put,
-+	.get_vendor_state = amd_get_vendor_state,
-+	.set_vendor_state = amd_set_vendor_state,
+ static inline bool is_evtinj_soft(u32 evtinj)
+@@ -863,7 +880,6 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
  
- 	.EVENTSEL_EVENT = AMD64_EVENTSEL_EVENT,
- 	.MAX_NR_GP_COUNTERS = KVM_MAX_NR_AMD_GP_COUNTERS,
+ 	/* Enter Guest-Mode */
+ 	enter_guest_mode(vcpu);
+-	svm_pmu_handle_nested_transition(svm);
+ 
+ 	/*
+ 	 * Filled at exit: exit_code, exit_info_1, exit_info_2, exit_int_info,
+@@ -986,6 +1002,10 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
+ 
+ 	/* SVM_MISC2_ENABLE_V_LBR is controlled by svm_update_lbrv() */
+ 
++	/* L0 uses hardware-switched mode for both vmcb01 and vmcb02 */
++	if (kvm_vcpu_has_mediated_pmu_caps(vcpu, KVM_MEDIATED_PMU_CAP_HW_SWITCHED))
++		vmcb02->control.misc_ctl2 |= SVM_MISC2_ENABLE_V_PMC;
++
+ 	if (!nested_vmcb_needs_vls_intercept(svm))
+ 		vmcb02->control.misc_ctl2 |= SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE;
+ 
+@@ -1065,6 +1085,9 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa, bool from_vmrun)
+ 	nested_vmcb02_prepare_control(svm);
+ 	nested_vmcb02_prepare_save(svm);
+ 
++	if (!nested_vmcb12_has_vpmc(vcpu))
++		svm_pmu_handle_nested_transition(svm);
++
+ 	ret = nested_svm_load_cr3(&svm->vcpu, svm->nested.save.cr3,
+ 				  nested_npt_enabled(svm), from_vmrun);
+ 	if (ret)
+@@ -1228,6 +1251,9 @@ void svm_copy_vmrun_state(struct vmcb_save_area *to_save,
+ 		svm_copy_lbrs(to_save, from_save);
+ 		to_save->dbgctl &= ~DEBUGCTL_RESERVED_BITS;
+ 	}
++
++	if (kvm_cpu_cap_has(X86_FEATURE_PERFCTR_VIRT))
++		svm_copy_pmcs(to_save, from_save);
+ }
+ 
+ void svm_copy_vmloadsave_state(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
+@@ -1300,6 +1326,9 @@ static int nested_svm_vmexit_update_vmcb12(struct kvm_vcpu *vcpu)
+ 	if (nested_vmcb12_has_lbrv(vcpu))
+ 		svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
+ 
++	if (nested_vmcb12_has_vpmc(vcpu))
++		svm_copy_pmcs(&vmcb12->save, &vmcb02->save);
++
+ 	vmcb12->control.event_inj	  = 0;
+ 	vmcb12->control.event_inj_err	  = 0;
+ 	vmcb12->control.int_ctl           = svm->nested.ctl.int_ctl;
+@@ -1325,7 +1354,9 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
+ 
+ 	/* Exit Guest-Mode */
+ 	leave_guest_mode(vcpu);
+-	svm_pmu_handle_nested_transition(svm);
++
++	if (!nested_vmcb12_has_vpmc(vcpu))
++		svm_pmu_handle_nested_transition(svm);
+ 
+ 	svm->nested.vmcb12_gpa = 0;
+ 
+@@ -1381,6 +1412,10 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
+ 
+ 	svm_update_lbrv(vcpu);
+ 
++	if (!nested_vmcb12_has_vpmc(vcpu) &&
++	    kvm_vcpu_has_mediated_pmu_caps(vcpu, KVM_MEDIATED_PMU_CAP_HW_SWITCHED))
++		svm_copy_pmcs(&vmcb01->save, &vmcb02->save);
++
+ 	if (vnmi) {
+ 		if (vmcb02->control.int_ctl & V_NMI_BLOCKING_MASK)
+ 			vmcb01->control.int_ctl |= V_NMI_BLOCKING_MASK;
+@@ -1545,7 +1580,8 @@ void svm_leave_nested(struct kvm_vcpu *vcpu)
+ 		 * into PMU state from arbitrary contexts (e.g. to avoid using
+ 		 * stale state).
+ 		 */
+-		__svm_pmu_handle_nested_transition(svm, true);
++		if (!nested_vmcb12_has_vpmc(vcpu))
++			__svm_pmu_handle_nested_transition(svm, true);
+ 
+ 		svm_switch_vmcb(svm, &svm->vmcb01);
+ 
+@@ -2074,6 +2110,9 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+ 
+ 	nested_vmcb02_prepare_control(svm);
+ 
++	if (!nested_vmcb12_has_vpmc(vcpu))
++		svm_pmu_handle_nested_transition(svm);
++
+ 	/*
+ 	 * Any previously restored state (e.g. KVM_SET_SREGS) would mark fields
+ 	 * dirty in vmcb01 instead of vmcb02, so mark all of vmcb02 dirty here.
 diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 2e39b5e752cd..079b1a56e995 100644
+index 079b1a56e995..2023d38bba63 100644
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -179,6 +179,9 @@ module_param(vnmi, bool, 0444);
+@@ -5583,6 +5583,10 @@ static __init void svm_set_cpu_caps(void)
+ 		if (vnmi)
+ 			kvm_cpu_cap_set(X86_FEATURE_VNMI);
  
- module_param(enable_mediated_pmu, bool, 0444);
- 
-+bool vpmc = true;
-+module_param(vpmc, bool, 0444);
++		/* Nested AVIC is not supported, so VNMI must be enabled */
++		if (vpmc && vnmi)
++			kvm_cpu_cap_set(X86_FEATURE_PERFCTR_VIRT);
 +
- static bool __ro_after_init svm_gp_erratum_intercept = true;
- 
- static u8 rsm_ins_bytes[] = "\x0f\xaa";
-@@ -1267,6 +1270,9 @@ static void init_vmcb(struct kvm_vcpu *vcpu, bool init_event)
- 
- 	svm_hv_init_vmcb(vmcb);
- 
-+	if (kvm_vcpu_has_mediated_pmu_caps(vcpu, KVM_MEDIATED_PMU_CAP_HW_SWITCHED))
-+		control->misc_ctl2 |= SVM_MISC2_ENABLE_V_PMC;
-+
- 	kvm_make_request(KVM_REQ_RECALC_INTERCEPTS, vcpu);
- 
- 	vmcb_mark_all_dirty(vmcb);
-@@ -3563,6 +3569,30 @@ static void dump_vmcb(struct kvm_vcpu *vcpu)
- 	       "excp_from:", save->last_excp_from,
- 	       "excp_to:", save->last_excp_to);
- 
-+	if (kvm_vcpu_has_mediated_pmu_caps(vcpu, KVM_MEDIATED_PMU_CAP_HW_SWITCHED)) {
-+		pr_err("%-15s %016llx %-13s %016llx\n",
-+		       "perf_ctl0:", save->pmc[0].perf_ctl,
-+		       "perf_ctr0:", save->pmc[0].perf_ctr);
-+		pr_err("%-15s %016llx %-13s %016llx\n",
-+		       "perf_ctl1:", save->pmc[1].perf_ctl,
-+		       "perf_ctr1:", save->pmc[1].perf_ctr);
-+		pr_err("%-15s %016llx %-13s %016llx\n",
-+		       "perf_ctl2:", save->pmc[2].perf_ctl,
-+		       "perf_ctr2:", save->pmc[2].perf_ctr);
-+		pr_err("%-15s %016llx %-13s %016llx\n",
-+		       "perf_ctl3:", save->pmc[3].perf_ctl,
-+		       "perf_ctr3:", save->pmc[3].perf_ctr);
-+		pr_err("%-15s %016llx %-13s %016llx\n",
-+		       "perf_ctl4:", save->pmc[4].perf_ctl,
-+		       "perf_ctr4:", save->pmc[4].perf_ctr);
-+		pr_err("%-15s %016llx %-13s %016llx\n",
-+		       "perf_ctl5:", save->pmc[5].perf_ctl,
-+		       "perf_ctr5:", save->pmc[5].perf_ctr);
-+		pr_err("%-15s %016llx %-13s %016llx\n",
-+		       "perf_cntr_global_control:", save->perf_cntr_global_control,
-+		       "perf_cntr_global_status:", save->perf_cntr_global_status);
-+	}
-+
- 	if (is_sev_es_guest(vcpu)) {
- 		struct sev_es_save_area *vmsa = (struct sev_es_save_area *)save;
- 
-@@ -4452,6 +4482,14 @@ static noinstr void svm_vcpu_enter_exit(struct kvm_vcpu *vcpu, unsigned enter_fl
- 
- 	amd_clear_divider();
- 
-+	/*
-+	 * On #VMEXIT, PerfCntrGlobalCtl goes back to its reset state since
-+	 * its save slot is of Swap Type C. All enable bits are set but PMC
-+	 * virtualization requires them to be cleared before VMRUN.
-+	 */
-+	if (kvm_vcpu_has_mediated_pmu_caps(vcpu, KVM_MEDIATED_PMU_CAP_HW_SWITCHED))
-+		wrmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_CTL, 0);
-+
- 	if (is_sev_es_guest(vcpu))
- 		__svm_sev_es_vcpu_run(svm, enter_flags,
- 				      sev_es_host_save_area(sd));
-@@ -5289,6 +5327,9 @@ static void svm_vm_destroy(struct kvm *kvm)
- 
- static int svm_vm_init(struct kvm *kvm)
- {
-+	if (vpmc)
-+		kvm_set_mediated_pmu_caps(kvm, KVM_MEDIATED_PMU_CAP_HW_SWITCHED);
-+
- 	sev_vm_init(kvm);
- 
- 	if (!pause_filter_count || !pause_filter_thresh)
-@@ -5735,6 +5776,16 @@ static __init int svm_hardware_setup(void)
- 	if (!enable_pmu)
- 		pr_info("PMU virtualization is disabled\n");
- 
-+	/*
-+	 * PMC virtualization does not raise host PMIs that need to be injected.
-+	 * Instead, it requires VNMI or AVIC for guest PMI delivery. AVIC can,
-+	 * however, get inhibited so make VNMI the hard requirement.
-+	 */
-+	vpmc = vpmc && vnmi && enable_mediated_pmu &&
-+	       cpu_feature_enabled(X86_FEATURE_PERFCTR_VIRT);
-+	if (vpmc)
-+		pr_info("PMC virtualization supported\n");
-+
- 	svm_set_cpu_caps();
- 
- 	kvm_caps.inapplicable_quirks &= ~KVM_X86_QUIRK_CD_NW_CLEARED;
+ 		/* Nested VM can receive #VMEXIT instead of triggering #GP */
+ 		kvm_cpu_cap_set(X86_FEATURE_SVME_ADDR_CHK);
+ 	}
 diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 66b44b54608e..eee26f6ce10c 100644
+index eee26f6ce10c..3db6b73e8163 100644
 --- a/arch/x86/kvm/svm/svm.h
 +++ b/arch/x86/kvm/svm/svm.h
-@@ -53,6 +53,7 @@ extern int vgif;
- extern bool intercept_smi;
- extern bool vnmi;
- extern int lbrv;
-+extern bool vpmc;
+@@ -175,6 +175,12 @@ struct vmcb_save_area_cached {
+ 	u64 br_to;
+ 	u64 last_excp_from;
+ 	u64 last_excp_to;
++	struct {
++		u64 perf_ctl;
++		u64 perf_ctr;
++	} pmc[6];
++	u64 perf_cntr_global_status;
++	u64 perf_cntr_global_control;
+ };
  
- extern int tsc_aux_uret_slot __ro_after_init;
+ struct vmcb_ctrl_area_cached {
+@@ -806,6 +812,18 @@ do {								\
+ 	(to)->last_excp_to	= (from)->last_excp_to;		\
+ } while (0)
  
++#define svm_copy_pmcs(to, from)							\
++do {										\
++	int i;									\
++										\
++	(to)->perf_cntr_global_control = (from)->perf_cntr_global_control;	\
++	(to)->perf_cntr_global_status  = (from)->perf_cntr_global_status;	\
++	for (i = 0; i < kvm_pmu_cap.num_counters_gp; i++) {			\
++		(to)->pmc[i].perf_ctl = (from)->pmc[i].perf_ctl;		\
++		(to)->pmc[i].perf_ctr = (from)->pmc[i].perf_ctr;		\
++	}									\
++} while (0)
++
+ void svm_vcpu_free_msrpm(void *msrpm);
+ void svm_enable_lbrv(struct kvm_vcpu *vcpu);
+ void svm_update_lbrv(struct kvm_vcpu *vcpu);
 -- 
 2.53.0
 
