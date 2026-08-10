@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BABE2236EE;
-	Mon, 10 Aug 2026 08:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BCE31B82B;
+	Mon, 10 Aug 2026 09:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786351837; cv=none; b=ndwnCSj+shG0XCiIizMzfB5mEmz3OAyq/FFOtiZf/y4UkjpdDPz0n6Xp2t2PC6KLcDs0uXi4+e0MNqCbTOakOwg4UC/4znCZtOCci/L/+68SJbbCal2k+NGhS7KyrUA189msffDcJfgm3FErWE33fUD01eyLHa3DO0Tx1BiGKWQ=
+	t=1786352838; cv=none; b=rFk3o3UmfWcXRd9H1U8tAnksAW2u/Sh4BzQOmtGDUmSipo2+tefkvs9qXzY8HugwySlFfZsO2rWhaUxJKFXvuUPmVPhOJuwRtp1fQNWgqqczjioDAr50GEnMvGpTmdNSSN72CNNJw78QDRuROvQJ7Bqsj9KhGE8euHAy2NiZ3Ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786351837; c=relaxed/simple;
-	bh=LwV+TppOY83Rbn/3RCbXsFMRbwDhwemCmOAoJa8KSBo=;
+	s=arc-20240116; t=1786352838; c=relaxed/simple;
+	bh=C9lZItQker8oXuC7y4OpkjizJ/vCVaRKeeWYfFgYPnY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z7lVCEsAFZOjPhVy/k/KLACqX4nbgErjwjQYPgaVBrU8ivsInkzwMIh0R14q0OmqDy5Vl9mGrl4uYnkCKehTcSMo6WJZz1PEthOLxfhWLikC7SZhbRwlTI+ER+V4fVeHtNKKW2Twp2Gb4EAaBT7WGOF+VmJndckQxQsQuDV6Et0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SM/P1WV3; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=Mqv2FuhEOwGECld0wcxj/Jg38cR3hRUs+LxjLyEc6UMgEdAU7Xm5BmcXSjHTacnyU7JsbUAvJd1Zddk8A+pIpSxRe1GAJvN2FYZa45nthFhVJ1rZhjyB0z6EfNasyQxJ0vA6t9zYpz0Nkia48p+ohyfCfxm6wUIR6r5YM5WAeN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6Q0AXKO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SM/P1WV3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0A61F000E9;
-	Mon, 10 Aug 2026 08:50:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6Q0AXKO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315081F000E9;
+	Mon, 10 Aug 2026 09:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786351836;
-	bh=32eQ8RiOgQgeidQGipeTq06XdRmfmVmvwXXxzjSlN3U=;
+	s=k20260515; t=1786352836;
+	bh=kaCqwnPU4MBwQ8WKfnRzGYLwwrlidVKqP1tcsF0Tq/M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SM/P1WV3C8zFESyVbhdVq5tad57H8sCNhjQuEBVfNmdL/9KekwKyq+sy2MoeTRTxi
-	 9gpyYY/u6fxNSmlnmF8Rya5V6q+sZLUqKRPSSFo+VlQsjpY7LPRgD0Z5uX8uZ+AXkn
-	 PM1I7vhmhQF1dIp38+N3NBbQYh5+e3YRGbQhpwBZDmO9ocZbaRM9pSR9VW11aawym0
-	 OJ4wRui0/fC3MBwTXbiS8O8O6upweVhhHwFpOz6/J65qL0+TSbE6L6+sm+A/19QBzU
-	 Oa3z4YInY9KHU97DeC3zmT2SxcsSNTZ7WQYDCIwyrQWzqPdl8VOydPzwsdy2LQJcYl
-	 rqpqifrHLwQ0w==
-Message-ID: <c42c8146-4616-46ba-b46f-85746149e99a@kernel.org>
-Date: Mon, 10 Aug 2026 10:50:15 +0200
+	b=R6Q0AXKO+pDbHy3YbM5oOGtGy7ATbPcXonSgqTFHS9yZtC88Ci0nN34FsVl+ABtU9
+	 4/16utvmo+WPfo4hEU4dSNDqBb1vnAZjJIHrFc7N74FdJ8zzKoRzu7JWJHLs2HXft6
+	 /rpMoQcx5QZrpavyEuASahw8umTEXWe8xFGwFHQwk5aHaSHBKLRA1F9uDJ776sOtqI
+	 aLhM/b0Qd17X/DSF96vf3Pji3IgDpvrUye5wix97PvowCBgMGkx6phjq3JIeRZ7qhI
+	 ZFb00Tc0+hZxWJCiyqEqIc5QC5oG2h9XNc9ckJdD3c8Gqh8myJLBqlX+5L8OHVX7wz
+	 IfiBjL4l0oB9w==
+Message-ID: <13ca60c6-e154-4397-8092-09f861e90fe0@kernel.org>
+Date: Mon, 10 Aug 2026 11:06:56 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 08/41] KVM: Consolidate private memory and guest_memfd
- ifdeffery in kvm_host.h
+Subject: Re: [PATCH v10 09/41] KVM: guest_memfd: Filter both shared and
+ private when invalidating
 To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
  binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
  jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
@@ -67,9 +67,9 @@ To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
+ linux-coco@lists.linux.dev
 References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-8-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-9-2fc18ee6d3ba@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -116,28 +116,44 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-8-2fc18ee6d3ba@google.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-9-2fc18ee6d3ba@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 8/7/26 23:52, Ackerley Tng via B4 Relay wrote:
-> From: Sean Christopherson <seanjc@google.com>
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
-> Move the kvm_arch_has_private_mem() stub and a few guest_memfd function
-> definitions/declarations "down" in kvm_host.h to utilize existing #ifdefs,
-> and so that related code is clustered together.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Tested-by: Shivank Garg <shivankg@amd.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
+> Before conversion, a guest_memfd could be either all shared, or all
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+You mean "in-place conversion support" ?
+
+> private, configured at creation time using the INIT_SHARED flag. Hence,
+> when zapping pages from stage 2 page tables, guest_memfd can filter which
+> to zap based on the initial shared/private state.
+> 
+> With conversion, guest_memfd tracks shared/private state on a per-page
+
+Same here.
+
+> level, so a range can contain both private and shared pages. Zap both
+> private and shared pages for simplicity.
+> 
+> An alternative would be to iterate guest_memfd attributes and only zap both
+> if shared and private pages exist within the range. Setting both the shared
+> and private filters lets the zapping logic do that iteration instead.
+
+I mean, we just want to zap anything that belongs to guest_memfd, independent of
+shared vs. private, really?
+
+IOW, it's not about shared vs. private, but really about zapping anything that
+belongs to guest_memfd.
+
+So, couldn't there just be a KVM_FILTER_GMEM thingy instead?
+
+But I didn't quite digest how these filters are used.
+
+I can see that kvm_gfn_range_filter_to_root_types() does some magic to them, but
+I am not a KVM MMU expert to know what KVM_MIRROR_ROOTS would mean.
 
 -- 
 Cheers,
