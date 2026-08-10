@@ -1,103 +1,102 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6DC3AAF54
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 23:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5593FF882
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 23:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786405501; cv=none; b=FGoICJ17Xe/bPmSJ7VCMSIlXf2a9c6GSdIW1QmhxC4Gjmy28kfs4KRAuMvB6iB+Tiv2dl9+upnoPbbWFmeSoDkcPz/0554ZVD/dtFscU6bAurnhfTFh4jWLwiDPs9KXkwPi+v+CWj3NKeON/bXD+gZ//fGmj1MrnfswCKJ8shNA=
+	t=1786406259; cv=none; b=UBmJ3qO3SUgwZBk+orM2HQ5Z4Yk2wAgJ2+Xa2qhcPWhv/1cSEkRLAFZVGrUpDxs0iwWTvtCc3c3MA5P4vihGmmDoFDHMyEu8l+G4Oq26h24EJGfEXgwBCDeyQ+Yi0m2aqekCqNbhvCNMzZ2pkxEw7tTFP+RGvvokCVltcwZc7YQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786405501; c=relaxed/simple;
-	bh=33plBrcKy5Ba/ieAnvSmeZoRK1u7IAJOuZUoYzX0htw=;
+	s=arc-20240116; t=1786406259; c=relaxed/simple;
+	bh=4BupJwdVyL6umlPiGYOwer+ZhuGrupEyMF3dhJCrF+k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qBapsjbrf5tou6NYp+tJmzK5mdCJmqeeM9tp6+IRtM8bNKmtOyjobHgt2Wjvsk0Jd5862hk/N2KMoX1JraLb9yxWfV6AGmfXKec4/vWMvpzukHqBeMK+3FLQg5iNgvjWqRlc9vopXwSOmRRWNYi7sfQnu2VtY/6/ZkqonZ/MfUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o+6ZUIw1; arc=none smtp.client-ip=209.85.210.198
+	 To:Cc:Content-Type; b=otzJg7AdrmPRnJtnW1Dji+da9529q556Hg/JxisLgCt7E0/nyPqilUdPQBSMUjYcHtigon2yIgaFoFGqSxeWZlG/b9FcwVDY6aC29ZsGej5SPrRZ5xUBR49B8963rXKPBpRE/ujYGEt6XvLqQMdoAjd1Hzafge1n3hqD2X2JlH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GS3Snx1d; arc=none smtp.client-ip=209.85.215.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o+6ZUIw1"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84a3514f912so319760b3a.3
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 16:45:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GS3Snx1d"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c9fe4c5eb39so1690603a12.1
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 16:57:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786405499; x=1787010299; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786406258; x=1787011058; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Lgf1v7ZyMRecW6GzYu5RKpdf3OAqJ1cTW2eoW0KSWKY=;
-        b=o+6ZUIw1MbH/G+nWOFBorS6s4CZFDXy70d12/0joRZpcg7dgK+QMkownJHssYuzaUs
-         3kl9VADZAjGPeG+QspxwLyj5efMYKnOq4kJ5rsN2fuGTC4JPbWSrb/OQngVbADt1dCgV
-         KxYm5MBHegA5nkhaXXYJPHeeJRGYCkwGi51mUb+gAY34inEHHrVAdXXl+ZA/cytpGlnt
-         kh9E/xW7vXqy1oroDzglD0SjZ/XbY2pTmOzTKxgUrpZCv98LV9YDMqxhfqkz7bw/IhpG
-         8Ue43UPTNS3fTAb8IKD2F+ZBYq/ZdS7jEI9zh0v9QpWN/1a27xkToUKAzX/vkbr0HKBF
-         SgyQ==
+        bh=PeZGsgiDsMXG6LZQ2iDpLtip3LMl/NmxKydR78skp+E=;
+        b=GS3Snx1dsJqL2R28OlzooZaplJnTENZJaw02R8RzvToEHMYc3WOsXOxINxT/tDgeE7
+         Wdqm/wyMr0l6aIkC8moFbTyh3iJWsWDXVzbWfyf2H2X/lzHVfOQ02W0czmIVD/BZdE+e
+         dmifoc5KiUqz2H4mNdCcK0kHy4hBd9jwWL4mbCkh230PM+kvwGkrKw1OLpfAHxdaROCJ
+         a7G39etvQhtaGSBsKcc0xUpEQm00j4sy6Jz+dbEpHi5I0LZ5555HylYPOz7AkzJ4iUAQ
+         IR/U+6oxDkqAogt0UY4BXKysn1ucn2B2wHYcONP37CZhuIs7oN3w7hjY9R30UsP/8d/F
+         FTYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786405499; x=1787010299;
+        d=1e100.net; s=20251104; t=1786406258; x=1787011058;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Lgf1v7ZyMRecW6GzYu5RKpdf3OAqJ1cTW2eoW0KSWKY=;
-        b=NxuxhJ8Rd+jnqc1FHehXok3XE8K6W+ynw4RRGF2PdBN1dHrc1SKM/DCUOi5j9PH/By
-         Q3PZ8bg+CiXYMZPgxHFQcvcTnB6UtblC/3LUMUlWMvGh8lkv1nmPYO55dLO4JWi0p1x7
-         BOGpjPca1+F67RKsU7Jt6fxuR+nT8VQOuhkYbIdrOUMreuw7ceG7cvFGPTMd7NYdGP32
-         BI2gG7WMfAMcqOy6GGUv8KE3iVpes3V47zfWIwKJ35HGe/z3RHE4bgObGzvRF+FqJkK2
-         zOTrAQvIIlf1zuw7++ZvrHeMlUCIRP8qrT7tFN4cTydiRnpvzPNXbDCoiys2/5boquOm
-         daOQ==
-X-Forwarded-Encrypted: i=1; AHgh+RopTvUyUIVTMpgv/CmZQgSM4B9GTsZSSu+iqBz9eIv1auWNGPRRfMf7499oyKgreBONe64=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yywfbs7RmA2XVaoHXNC+yKjq+539Q0TvayvUNjWHZui9dfKMgma
-	nNdu/Gxb9lA7rSKuZrl97P6ooyU1ghrknwk7Ort6A5DzZpR3Z3HA4XjSJbtL/w0kt//C8SJFhZI
-	0pj96vA==
-X-Received: from pggg21.prod.google.com ([2002:a63:2015:0:b0:c9b:bdf2:2507])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:178a:b0:845:e97d:447e
- with SMTP id d2e1a72fcca58-84f2e040170mr49815116b3a.26.1786405499340; Mon, 10
- Aug 2026 16:44:59 -0700 (PDT)
-Date: Mon, 10 Aug 2026 16:44:58 -0700
-In-Reply-To: <20260728121138.1103610-8-tarunsahu@google.com>
+        bh=PeZGsgiDsMXG6LZQ2iDpLtip3LMl/NmxKydR78skp+E=;
+        b=StRPbQClPBI9Pdlvo8nItLT1eGQ6ipLSxhbNVYcVqv5ucHlxWcdyn054eCR4F+Mkau
+         NuK/rbXX9ToHN+7tvREa/+TfyvSh9KGf+c+NrCCtHBZtugaWm5D7XF0edPXHQMwQpdQv
+         7Jr3n6yV0LTxRnbC0CLlxon9hp6h/HTvuz3h1yeikiZD+zIEU72xBC5umcGXJHhnvmP4
+         FTbAq10XvzVvJwGOajg8hxtfalo5420c0OU7K4XzTXXP7Srsw7hnmrMrtCmJEM/nCR1Q
+         PTBajV8QmozdiKf8BXuL8brfkLlCYqMdqtJraspUx4n1aBMhJIS77Q0DrvbwI4zs7VDM
+         uSYw==
+X-Forwarded-Encrypted: i=1; AHgh+RrN2ZOpdFA+94H+TIq5iFzEjRT/3g2l14+qF8pvbQxonLX0Y7RkqOp9YfrgPrigenPKV5c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsSIsy12fsB5FwgbqYiJwh2ed4tiRSNO59t0nirg/lWixOlISZ
+	La5zYF0FurnYhKkPsEWFE3QBcuPAipznpQh1kLP4uTwi4DmnGNIFGWFZSGCsF6TUb3t0Nmd9Xk+
+	REKXhmA==
+X-Received: from pgdi6.prod.google.com ([2002:a05:6a02:51e6:b0:c99:aff5:707d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:e598:b0:3c3:93ce:663
+ with SMTP id adf61e73a8af0-3cc1a35367cmr6912795637.26.1786406257898; Mon, 10
+ Aug 2026 16:57:37 -0700 (PDT)
+Date: Mon, 10 Aug 2026 16:57:37 -0700
+In-Reply-To: <13ea6279-a342-493b-a0f8-15ac5b4c59ad@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260728121138.1103610-1-tarunsahu@google.com> <20260728121138.1103610-8-tarunsahu@google.com>
-Message-ID: <anpieno-RyRl54fp@google.com>
-Subject: Re: [PATCH v4 07/11] KVM: guest_memfd: Add support for freezing mappings
+References: <20260810112200.2326727-1-xiaoyao.li@intel.com>
+ <20260810112200.2326727-3-xiaoyao.li@intel.com> <20260810113924.4ACBE1F000E9@smtp.kernel.org>
+ <13ea6279-a342-493b-a0f8-15ac5b4c59ad@intel.com>
+Message-ID: <anplcWfYReCMeu1A@google.com>
+Subject: Re: [PATCH v2 2/3] KVM: TDX: Fix the exit reason handling
 From: Sean Christopherson <seanjc@google.com>
-To: Tarun Sahu <tarunsahu@google.com>
-Cc: ackerleytng@google.com, fuad.tabba@linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
-	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
-	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
-	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
-	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
-	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
-	suzuki.poulose@arm.com
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Jul 28, 2026, Tarun Sahu wrote:
-> +/**
-> + * kvm_gmem_freeze - Freeze or unfreeze a guest_memfd inode mapping.
-> + * @inode: The guest_memfd inode.
-> + * @freeze: True to freeze, false to unfreeze.
-> + *
-> + * This API is used strictly during the live update / preservation transition
-> + * window to prevent host userspace and guest-side faults from making any
-> + * mapping modifications (such as fallocate or page fault allocation)
-> + * to the guest_memfd page cache.
-> + *
-> + * Synchronization Strategy (Sleepable RCU):
-> + * To avoid high-contention VFS locks (like inode_lock or
-> + * filemap_invalidate_lock) on the vCPU page fault hot paths, this subsystem
-> + * implements a lightweight, system-wide Sleepable RCU (SRCU) mechanism
-> + * (`kvm_gmem_freeze_srcu`):
-> + *
-> + * Global vs. Per-Inode SRCU
-> + * ======================
-> + * A single system-wide global static `srcu_struct` is used instead of a
-> + * per-inode SRCU structure to completely prevent unprivileged users from
-> + * exhausting the host's per-CPU memory allocator. 
+On Mon, Aug 10, 2026, Xiaoyao Li wrote:
+> On 8/10/2026 7:39 PM, sashiko-bot@kernel.org wrote:
+> > > @@ -2147,7 +2156,7 @@ void tdx_get_exit_info(struct kvm_vcpu *vcpu, u32 *reason,
+> > >   	struct vcpu_tdx *tdx = to_tdx(vcpu);
+> > >   	*reason = tdx->vt.exit_reason.full;
+> > > -	if (*reason != -1u) {
+> > > +	if (tdx->vt.exit_reason.basic != -1) {
+> > [Severity: Medium]
+> > Will this check always evaluate to true due to C integer promotion rules?
+> > 
+> > The basic field in union vmx_exit_reason is a 16-bit unsigned bitfield. When
+> > comparing it to -1, the unsigned 16-bit value is promoted to a signed 32-bit
+> > integer. If the value was set to -1 (65535), the comparison evaluates as
+> > 65535 != -1, which is always true.
+> > 
+> 
+> Well, how about something below on top of this patch?
 
-This argument doesn't hold up given that each kvm structure has two SRCU structs.
+No, we need to not rely on magic exit_reason.basic values.  Can't this be?
+
+	if ((tdx->vp_enter_ret & TDX_SW_ERROR) != TDX_SW_ERROR) {
+		<read values>
+	} else {
+		<zero values>
+	}
+
+We'd need to use the unsafe version if we go with my suggestion[*], but other
+than that wrinkle, the above seems like the obviously correct fix (maybe too
+obvious)?
+
+[*] https://lore.kernel.org/all/anXxBzO41_5eaaOI@google.com
