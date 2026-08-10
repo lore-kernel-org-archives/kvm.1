@@ -1,149 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FCE378D72;
-	Mon, 10 Aug 2026 08:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E09C39C632
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 08:14:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786349403; cv=none; b=J4oaXjQJRj+KmpDJ6ZEhRhjCXrhE1/ufcJXjsx5YTG4Vnkh2YyR+lPZS9rv3PZacBk0sPXmfnrOWMnZRIw3uLy9AT5pS4g0XIle5MHsVLIUzlpOjMT3G2DpPtwwOjmAlhg8TqL5deUJ5IUfVmUbyc54YO+g+da3hz43Cw7f34Bw=
+	t=1786349651; cv=none; b=g5c5VImGpHWR+qavbXp3z46jyo+upY/GtWzyS3roVtWXMh4cuxtCqLz8mL1uWLeHBu7RXnOSyKFzAu8exdugpG0tkXxW4X/eoN7AJdY2FYbxTLq9MTvUF7bH8dPSHQSIbl0k6LdijyB8Fh459c/dbeyS5IxsC7PJg2fF6ko8s28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786349403; c=relaxed/simple;
-	bh=rRMljgg76tmuBGaTR+PS5T5xZoWc64bk0HQPitOd1vk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U9lxUyV8oP58K954yL34mJjr4V61XDdvpee5KdPWJJ3dkOrJTPSv2nliAzHIbW3e99h5cplpRYl7hndXbmdcVPOZ3WcAaxGmPS0NSf2uFIwl+2+2I8wFDqYS5xLOjmQig1xTkvlVSs3jG2J2h/lwwSZFjpexAvCHm4Bdad7RH+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lfTBdkoY; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786349651; c=relaxed/simple;
+	bh=3AKyvMdTVzVsYFKofuLg+Pna2OqG+0QkRKQaso6tM5A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BYoMYtDBP9JQPL0j5fxdzuJt+07uctrOtl2R/rdso3EHVLuXSZOz+HLyK02UEzLEgui/2Lmm2ea9HwlZwrIj4hgN4iNLng9W3ve8iKuH5zLGvLYa90XUPq2w8h45+paJpu23ZfesXBUI/S3/Zg5SsXvMhqpdACT8seDzyXBi7BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Y2TSQ1/7; arc=none smtp.client-ip=91.218.175.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lfTBdkoY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E16A1F000E9;
-	Mon, 10 Aug 2026 08:09:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786349401;
-	bh=OLW453wfp7TG7edKDi4mkJgnCHT8TeVF/tH4dA3Vb3U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lfTBdkoYldI3SLP2xsB2q3Mtq7LW0RZ9E8cbtg4dD5/f47DT2+XG0pANB1kWTDl7L
-	 lylQlATU6oRkA6IvP6oFcUo1Z+VIpwrk4FHiox9+6y9w1x7BTWrtbTPeenDTdM7gYN
-	 8S7QeZ+oz3zZC1rmM7Mw71FvlX34ZNeD2vQEM4/jcsIVGMDblEeWHkzVW55R0VQMUj
-	 /RKt5fT4EEWLk1ZJSyWWXESIAAqAGqUrpLCRQ3OhzZgiqUU1KqHGsTe5VCucrR+5/8
-	 HptV4VKmMW29q25w0iU06i2gw36L1jh9KhfDxnf2f4CztcxetMZtneIhnW+XFV/9fF
-	 iQuDmu8sJvEMw==
-Message-ID: <2f72a8a3-f158-441b-82fe-25bdb98ea982@kernel.org>
-Date: Mon, 10 Aug 2026 10:09:41 +0200
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Y2TSQ1/7"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786349637;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=jRVHWNocSPspbGuBMPIMFaFQyFZhhskZ5Rpos1IFnl8=;
+	b=Y2TSQ1/7nVoRYVHlURPda4VBamKnnB98geJSs03L0asNGerIINuf8xga9vHLls8eFHcHVy
+	mAMFXd8GVa58f7LEhfhTAatNn71bN2eglkyJo1cdT2mRwqCewVSBSc3dGZ7BoDUzhkWNyt
+	vZK8azv5U0EZrLPRo0bAnIafrSJJJlM=
+From: Tao Cui <cui.tao@linux.dev>
+To: zhaotianrui@loongson.cn,
+	maobibo@loongson.cn
+Cc: chenhuacai@kernel.org,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	cui.tao@linux.dev,
+	Tao Cui <cuitao@kylinos.cn>
+Subject: [PATCH] LoongArch: KVM: Fix TOCTOU race on pv_features
+Date: Mon, 10 Aug 2026 16:13:21 +0800
+Message-ID: <20260810081321.157258-1-cui.tao@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 04/41] KVM: Rename memory attribute APIs to prepare for
- in-place gmem conversion
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
- oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com,
- rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com,
- steven.price@arm.com, tabba@google.com, willy@infradead.org,
- wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com,
- pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org,
- liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-4-35f9aec2aed2@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260728-gmem-inplace-conversion-v9-4-35f9aec2aed2@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 7/29/26 02:35, Ackerley Tng via B4 Relay wrote:
-> From: Sean Christopherson <seanjc@google.com>
-> 
-> Rename memory attribute APIs to add a "vm_" in the name in anticipation of
-> moving PRIVATE tracking into guest_memfd, to allow in-place conversion
-> between SHARED and PRIVATE.  At that point, there will effectively be two
-> (potential) sources of memory attributes: the VM and guest_memfd.
-> 
-> kvm_vm_set_mem_attributes() already has "vm" in the name to indicate that
-> it is a VM ioctl. Rename it to kvm_set_vm_mem_attributes() to show that it
-> is setting the VM's memory attributes. (Drop the VM-ioctl scoping since it
-> is a helper local to the file.) Update the accompanying trace function to
-> match.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Tested-by: Shivank Garg <shivankg@amd.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
+From: Tao Cui <cuitao@kylinos.cn>
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+kvm_loongarch_cpucfg_set_attr() validates and writes the VM-wide
+pv_features with a lockless check-then-set, so two vCPUs racing it can
+both pass the "all-vCPUs-must-match" check and install divergent values.
+Make the check-then-set atomic with a cmpxchg loop; the UPDATED bit
+already packs the configured state into the same word.
 
+Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+---
+ arch/loongarch/kvm/vcpu.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
+
+diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+index 20c207d80e31..55030c37cf06 100644
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -1164,12 +1164,18 @@ static int kvm_loongarch_cpucfg_set_attr(struct kvm_vcpu *vcpu,
+ 		if (val & ~valid)
+ 			return -EINVAL;
+ 
+-		/* All vCPUs need set the same PV features */
+-		if ((kvm->arch.pv_features & LOONGARCH_PV_FEAT_UPDATED)
+-				&& ((kvm->arch.pv_features & valid) != val))
+-			return -EINVAL;
+-		kvm->arch.pv_features = val | LOONGARCH_PV_FEAT_UPDATED;
+-		return 0;
++		/* Atomically install val; the cmpxchg serializes concurrent setters. */
++		for (;;) {
++			unsigned long old, new;
++
++			old = READ_ONCE(kvm->arch.pv_features);
++			if ((old & LOONGARCH_PV_FEAT_UPDATED) &&
++			    ((old & valid) != val))
++				return -EINVAL;
++			new = val | LOONGARCH_PV_FEAT_UPDATED;
++			if (cmpxchg(&kvm->arch.pv_features, old, new) == old)
++				return 0;
++		}
+ 	default:
+ 		return -ENXIO;
+ 	}
 -- 
-Cheers,
+2.43.0
 
-David
