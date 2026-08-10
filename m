@@ -1,234 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D44C3A383C;
-	Mon, 10 Aug 2026 14:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8F33AF66E
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 14:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786370629; cv=none; b=L/1qjWBZnjfHHlcSOpqWKBWh88ArcT+w4aqogJCOGUJ7DqWkZQlU4n81Q3L6R6C9OMo4yN8TNa3OyNjWXEDoGcEDTyNa3t+ngUxWjH4c7IZCFJaqRT4iRIRVLVLuxZoTDsq6Q//o88Icxj0vSCLxTQIvAgjxgytt3FhbzD+dZvg=
+	t=1786370861; cv=none; b=B+vn20I2njDej+yaHHsYwB1st9C55OXGqrb7PyivJJthjaMJEYvIlUta015kIU76YMbuayAtQJg+DseSGIuRjNKmY62Z+skwEJJp0JKtvHM2o5CF5KNUn/KnURd5odj+lLrNZIdf2ufeQvmxO39/3xPP4llrfzYaB1RwYs1caeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786370629; c=relaxed/simple;
-	bh=iKgaQJIjcdWs4LaCjt3vfrTthKiqTPWMkO+qs4P7hfM=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R6oITKMXLuLqGD1ODboN8ZN1kmFPA3HYcY00n0J9bjahN1UM6RsssrtXWNs1tWnPkCQOfBHaV2e/ojLw/QUgI5xAuo5Th25aKZ8liNFNR8RYHPU16IqYF8YZXzM8SeSUIjIxw/lrf1rgBtxv8no18ZiODCrm2UMsXnCo5ZGZdQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SWQRkjKP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786370861; c=relaxed/simple;
+	bh=t1Txx5sP5rjbtyEZIqhukkWiABdroyLY9ierQdCxkwA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ntTmyynFvousvxSjyYU7RCRk+yJAITa1iRzDpu8eLd8bnBUXqo/VRftbuEM9aYL7Y/ft3bQhr8S9pHtSC9hQwZsmTcrJRGw2eIbhzCmRw57d04evqVaVQQn8W8LSFvymPF+z9Lo8Gba3H5biEJSTplkEBh5euXnbgovrxwRbHy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mUwo/+8Q; arc=none smtp.client-ip=209.85.215.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SWQRkjKP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB20F1F000E9;
-	Mon, 10 Aug 2026 14:03:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786370627;
-	bh=Em+BQBracOSXwokRIimW6WdMSO/3+8vopQcKAyQpy+Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=SWQRkjKPpy6Z7XWCAcAQi4AW/srTp0eWQMuAibTB4MPtBtgKWR4V3WXbolzXHvHHY
-	 QtzWvJ8JO7R1vg2lzPAN8biSEP+74sl7wOqPCccf47NCJfqwDbsfv0dB/56OBNe5vX
-	 eu1ja8fMK5ScNpW/ARrrLswNrpJcvolKzVq2UHmXZmtiiCI3HmoyLh5v5aArKDYdbA
-	 Tqvp5deUdQLGmhcizGzCp3y5laEpx9ydGOkrgzcE1L/NPbbZXJR7PfygMJUlTcXO1O
-	 kg6k/ut045DscaciSP6kwFJYwm8vVSQln4AKTXDHZ9ulo4a4NZL5mkJUT/L4UJ1Zw9
-	 QRYfhYK5cOEOg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wtQbR-0000000E8L5-19oa;
-	Mon, 10 Aug 2026 14:03:45 +0000
-Date: Mon, 10 Aug 2026 15:03:44 +0100
-Message-ID: <86tsp2139b.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: Oliver Upton <oupton@kernel.org>,
-	kvmarm@lists.linux.dev,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Eric Auger <eric.auger@redhat.com>,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [RFC PATCH 1/2] KVM: arm64: vgic-v3: Roll back failed redistributor region setup
-In-Reply-To: <4e00fc25aa61ec52e6ef033a53588ce3f5550982.1786344511.git.kmehltretter@gmail.com>
-References: <cover.1786344511.git.kmehltretter@gmail.com>
-	<4e00fc25aa61ec52e6ef033a53588ce3f5550982.1786344511.git.kmehltretter@gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mUwo/+8Q"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cb5ea36f969so2550945a12.2
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 07:07:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786370859; x=1786975659; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PrLr+WVvghUQuf/OY4c2fRyfsehtJvAKrMA4WcW1Fx0=;
+        b=mUwo/+8QisQlpL4de6IZQGN8Z02Xxq4r7YMT6eoek9j3bIAqs6qp2o6ScGrOKZ2FzX
+         CfopVw2yn1pb7bfR37oqda61gJxOpgInubmO6ecABf0QUfOpfpdqVSyy2yoz2B2n5yul
+         g85hBLm5ynYX0ETVfnppMrIzFoAcKN68DjXRMGVHlkrudkaliAlyCtKjZ9V1dIT965SJ
+         uk/i091dQmNJy8j4vS/z/PGQJTxhYIWm9AsBh053SIXtkJ8Yf02K43nRY/Kov3v1RQ+G
+         mfZt0FAbj7SgdeUl/TC3pZy9tDcpdU2/AGFh9jt7Ohp/L4n+86XXBtZZiAGBJT6jfrTz
+         Vu0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786370859; x=1786975659;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PrLr+WVvghUQuf/OY4c2fRyfsehtJvAKrMA4WcW1Fx0=;
+        b=luhkOsts2CJ1ejmLARHE+viMtOUpNAl+2exCf1KBD1CmYbeHI77H0Yu5Z3DdnVyffP
+         JFXLJS4yjMWwTXJoMD9aO2VwpVHQ/N+G0lCp9FDfgZephTs/QYHCXWZp1sBJ5TehJuZO
+         SZi7AXSXR+ms3IznXeMpShc81Ru8tOEysW49oflf2L3abPp6SkcSR7yuYu1o7L88+GwE
+         R5KR8LXTjT7QGfoZuyO+VmW7TxTkcX9bTqYkxok5oPwoyhj0JQvu+Eh+0sGQnLy0Mwbj
+         dOzpSWRP/hQMavodByBA+q398ecQuBw3aBJi6jPH79pB90hjDNXrO59pJwOT7gQwFfrY
+         zAVg==
+X-Forwarded-Encrypted: i=1; AHgh+RrwwqVRV/Wg1Bmsy0yiJL0soNJ7w5tSgc6Q9qVZEIM/wnZi17UyJzMAZh7gLChQjaDK2Mo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1BiFaavz1mkHiHKQ5xmTdEGGWVe3tRgI9NxtmCOBpLr9v1XjD
+	fcaPPu+2WHjJzz4M3yDbqpbBsfAHRHW1aWgINaK9ZXYL20X7Pw37i9DcS5sFokK2qsp0CyzF8cN
+	jqsPWBg==
+X-Received: from pgv28.prod.google.com ([2002:a63:155c:0:b0:cbe:3002:6608])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:da11:b0:3cb:9a16:b159
+ with SMTP id adf61e73a8af0-3cc1a0bc37emr2552599637.6.1786370859292; Mon, 10
+ Aug 2026 07:07:39 -0700 (PDT)
+Date: Mon, 10 Aug 2026 07:07:38 -0700
+In-Reply-To: <20260807071026.195503-1-gokul02k@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kmehltretter@gmail.com, oupton@kernel.org, kvmarm@lists.linux.dev, fuad.tabba@linux.dev, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, pbonzini@redhat.com, shuah@kernel.org, eric.auger@redhat.com, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Mime-Version: 1.0
+References: <20260807071026.195503-1-gokul02k@gmail.com>
+Message-ID: <annbKnNqQvzyn8tp@google.com>
+Subject: Re: [PATCH] KVM: selftests: Compare the entire XSAVE buffer in the
+ SEV smoke test
+From: Sean Christopherson <seanjc@google.com>
+To: Gokul K <gokul02k@gmail.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, 10 Aug 2026 07:52:16 +0100,
-Karl Mehltretter <kmehltretter@gmail.com> wrote:
-
-I'm sorry, but I find it difficult understand what you are trying to
-explain here:
-
-> A later REDIST_REGION attribute can be inserted successfully and then
-
-Later than what?
-
-> fail while registering redistributor iodevs. For example, a region that
-> overlaps the distributor is caught by vgic_v3_check_base() when the first
-> unassigned vCPU is processed.
->
-> The existing rollback unregisters all previously registered
-> redistributor iodevs. It leaves their rd_iodev.base_addr values set, so a
-> corrected retry skips re-registering those stale vCPUs and succeeds with
-> holes in the MMIO bus.
-
-Holes in the MMIO space are the norm. The IPA space can multi-TB
-large, and there is no reason why it'd cover everything (where would
-you place the RAM otherwise?).
-
-Is the problem here that you are left with vcpus that seem to have
-been matched to an RD (base_addr being set), but that really are left
-unconnected?
-
+On Fri, Aug 07, 2026, Gokul K wrote:
+> compare_xsave() stops at index 4094, so the last byte of the XSAVE state
+> is never compared.  Both buffers handed to it are 4096 bytes: the host
+> copy is a struct kvm_xsave, whose region[] member is 1024 u32s, and the
+> guest copy is the PAGE_SIZE shared page that guest_code_xsave() runs
+> XSAVE into.  A VMSA synchronization bug that corrupted only that final
+> byte would go unreported and the test would still pass.
 > 
-> A failure from kvm_io_bus_register_dev() can leave another hole. The
-
-MMIO hole? Coverage hole?
-
-> failing vCPU already has its base address and region assigned, but the
-> old i < c rollback does not include it.
-
-What is "it"?
-
+> Bound the loop with sizeof(struct kvm_xsave) rather than an open-coded
+> length, and make the index unsigned so it does not mix signedness with
+> sizeof.
 > 
-> Preserve devices assigned by earlier successful setters. On failure,
-> unregister only vCPUs associated with the newly inserted region, clear
-> their cached base addresses, and free that region. This also includes the
-> current vCPU when iodev registration itself fails.
-
-What I don't see here is an argument explaining that doing this
-doesn't change the guest-visible assignment of RDs, which would be a
-regression.
-
-> 
-> Fixes: c011f4ea106b ("KVM: arm/arm64: Check vcpu redist base before registering an iodev")
-> Assisted-by: Codex:gpt-5.6-sol
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+> Fixes: 8c53183dbaa2 ("selftests: kvm: add test for transferring FPU state into VMSA")
+> Signed-off-by: Gokul K <gokul02k@gmail.com>
 > ---
->  arch/arm64/kvm/vgic/vgic-mmio-v3.c | 42 ++++++++++++++++++------------
->  1 file changed, 26 insertions(+), 16 deletions(-)
+>  tools/testing/selftests/kvm/x86/sev_smoke_test.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v3.c b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-> index 5913a20d83019..832a7fe65984c 100644
-> --- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-> +++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-> @@ -841,6 +841,31 @@ void vgic_unregister_redist_iodev(struct kvm_vcpu *vcpu)
->  	kvm_io_bus_unregister_dev(vcpu->kvm, KVM_MMIO_BUS, &rd_dev->dev);
->  }
+> diff --git a/tools/testing/selftests/kvm/x86/sev_smoke_test.c b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+> index 6b2cbe2a90b7..c7af27954356 100644
+> --- a/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+> +++ b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+> @@ -90,9 +90,10 @@ asm("guest_code_xsave:\n"
 >  
-> +static void vgic_v3_rollback_redist_region(struct kvm *kvm, u32 index)
-> +{
-> +	struct vgic_redist_region *rdreg;
-> +	struct kvm_vcpu *vcpu;
-> +	unsigned long c;
-> +
-> +	lockdep_assert_held(&kvm->slots_lock);
-> +
-> +	rdreg = vgic_v3_rdist_region_from_index(kvm, index);
-> +
-> +	kvm_for_each_vcpu(c, vcpu, kvm) {
-> +		if (vcpu->arch.vgic_cpu.rdreg == rdreg)
-> +			vgic_unregister_redist_iodev(vcpu);
-> +	}
-> +
-> +	guard(mutex)(&kvm->arch.config_lock);
-> +
-> +	kvm_for_each_vcpu(c, vcpu, kvm) {
-> +		if (vcpu->arch.vgic_cpu.rdreg == rdreg)
-> +			vcpu->arch.vgic_cpu.rd_iodev.base_addr = VGIC_ADDR_UNDEF;
-> +	}
-> +
-> +	vgic_v3_free_redist_region(kvm, rdreg);
-> +}
-> +
->  static int vgic_register_all_redist_iodevs(struct kvm *kvm)
+>  static void compare_xsave(u8 *from_host, u8 *from_guest)
 >  {
->  	struct kvm_vcpu *vcpu;
-> @@ -855,16 +880,6 @@ static int vgic_register_all_redist_iodevs(struct kvm *kvm)
->  			break;
->  	}
->  
-> -	if (ret) {
-> -		/* The current c failed, so iterate over the previous ones. */
-> -		int i;
-> -
-> -		for (i = 0; i < c; i++) {
-> -			vcpu = kvm_get_vcpu(kvm, i);
-> -			vgic_unregister_redist_iodev(vcpu);
-> -		}
-> -	}
-> -
->  	return ret;
->  }
->  
-> @@ -984,12 +999,7 @@ int vgic_v3_set_redist_base(struct kvm *kvm, u32 index, u64 addr, u32 count)
->  	 */
->  	ret = vgic_register_all_redist_iodevs(kvm);
->  	if (ret) {
-> -		struct vgic_redist_region *rdreg;
-> -
-> -		mutex_lock(&kvm->arch.config_lock);
-> -		rdreg = vgic_v3_rdist_region_from_index(kvm, index);
-> -		vgic_v3_free_redist_region(kvm, rdreg);
-> -		mutex_unlock(&kvm->arch.config_lock);
-> +		vgic_v3_rollback_redist_region(kvm, index);
->  		return ret;
->  	}
->  
+> -	int i;
+> +	unsigned int i;
+>  	bool bad = false;
+> -	for (i = 0; i < 4095; i++) {
 
-Based on what I understand of your earlier description, why isn't this
-as simple as this untested hack:
+The fix looks right, but this is so bizarrely wrong that I can't help but wonder
+if it was somehow intentional.
 
-diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v3.c b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-index 5913a20d83019..804fcc69cbd48 100644
---- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-+++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-@@ -859,7 +859,7 @@ static int vgic_register_all_redist_iodevs(struct kvm *kvm)
- 		/* The current c failed, so iterate over the previous ones. */
- 		int i;
- 
--		for (i = 0; i < c; i++) {
-+		for (i = 0; i <= c; i++) {
- 			vcpu = kvm_get_vcpu(kvm, i);
- 			vgic_unregister_redist_iodev(vcpu);
- 		}
-@@ -960,8 +960,10 @@ void vgic_v3_free_redist_region(struct kvm *kvm, struct vgic_redist_region *rdre
- 
- 	/* Garbage collect the region */
- 	kvm_for_each_vcpu(c, vcpu, kvm) {
--		if (vcpu->arch.vgic_cpu.rdreg == rdreg)
-+		if (vcpu->arch.vgic_cpu.rdreg == rdreg) {
- 			vcpu->arch.vgic_cpu.rdreg = NULL;
-+			vcpu->arch.vgic_cpu.rd_iodev.base_addr = VGIC_ADDR_UNDEF;
-+		}
- 	}
- 
- 	list_del(&rdreg->list);
+Paolo?
 
-I don't mind the cleaning up, but not as part of fixing the issue,
-which has to be as small as possible (think of the backports).
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+> +
+> +	for (i = 0; i < sizeof(struct kvm_xsave); i++) {
+>  		if (from_host[i] != from_guest[i]) {
+>  			printf("mismatch at %u | %02hhx %02hhx\n",
+>  			       i, from_host[i], from_guest[i]);
+> -- 
+> 2.54.0
+> 
+> 
