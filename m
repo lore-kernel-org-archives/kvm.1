@@ -1,147 +1,194 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE8A42CAFD
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 21:47:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB07C3314AE;
+	Mon, 10 Aug 2026 22:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786398428; cv=none; b=EWlNJ4jssELpIWyMNY2yprTF1KUcN4aNZqx1leBBft9dVE2vIyPiDBiCaYiPOtsDoRZeoqbAXP9CU11uhWUj23fcJJWLoYKKT2SgTg19OWBlUe2l+1OwFPRxxGxjkyPV4bjU5gb24TuZsgrlMLKreBKmDnSIZV+AhtKr5iM2eqg=
+	t=1786399811; cv=none; b=hlSWU4gbsH9UY6A+r4gZEjgdVHnKwIupQPCa5Xz1RlDNTelu8fNA0OUlNJPLr4oSTci8wsdYTmKE3KipMuzzevgnjaaiVssYZz6NE8s607CQvuFMaBn3iUmDcYkJlDz8KO/RZSa9AfjKwjim2mQWi0KKzULYPhCWGOah0oXPKyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786398428; c=relaxed/simple;
-	bh=gLj89t1XtGHeoqqhdxlQE5veKwLUg9rzru7S0F8D1UE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XYVjVTdZ9kI8aDr/ZH5n5laY30Gb3LdkMrRTZsGr1sJZECrmDsIf0bUvF/uIb2rrl9WLFhAQX3KMY/LIyDQaQEE5Xzg6uJSEWlXNIPoInS5uH+z84oc/yDFikMFU63LP0fYSVt/fd0dBOTjtzSR6j+MqtTQvukiCY5C9ttfl3Sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j5g8fZCx; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1786399811; c=relaxed/simple;
+	bh=0RWpdfIzCKEiyFzszpDc1xkHvtl02bntYX24+KDlego=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=qj8jAECR6HfvLNZWPvRCGW+dv4oD+gMp3zR10Rx3dJ56Ap7Z20lAySDZXQXBEkEQjGkCE9k227c/T7ZCccvVleVy0WgkdwYU7o2cuTY9BVr/IywsO6fOyngywA8nj+tfHR2qKesA8aw3EySDSU75BrPdlm45qHmGneyxG0GT3Ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=UwX/Ilov; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j5g8fZCx"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cede6375caso40125ad.0
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 14:47:06 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="UwX/Ilov"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB66F1F000E9;
+	Mon, 10 Aug 2026 22:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786398426; x=1787003226; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qrPHJG3p8YfDYZ+uVx/4qIrGxMhgcPPKzeLgvNEMm4M=;
-        b=j5g8fZCxB+A45oujTmVO502pCMcEluM+Yy+hlyBteMz1veLwbN3pqadrtBK6hT5oqX
-         d2yUTrhNRkI2qZ1yPaRCYtoRAImuwYaRLyYXeR8ATb1g0hfU4ugaSrQF8yXQ0HAWb5NL
-         ihjJUmQN2Kg2cRpyX3ICU6mJR1FejqZHySCnklE702OG9rLEJNufFyKz9tyKjte1oYPH
-         LrgqLhxWCJGn7hEKQfEPv+RK7cDVgWV3N+NUUKccW4BiOW2sJe1U7L8aHT2+H4uT1kEK
-         8/zbzA2onKcT2HGBRjSF7HIbX4LzLnwKASfV+a0Y9OhcsF3B5L2cBj0ZQvHv8sjo+M0k
-         0iIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786398426; x=1787003226;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qrPHJG3p8YfDYZ+uVx/4qIrGxMhgcPPKzeLgvNEMm4M=;
-        b=MiQS54E5ZaCHwrYK+IEwKyVkJDiMETq7QfdIDxaqJ9jAr4EqXhf9jxMX1oac7ipcNl
-         w/1NCpun0o4zuGSQKF8qWmnXRNVrJaCSJxtIyfmDwlT425r5jQbC9OFf4x5CCl4PAGcO
-         62RJQHXuGweL93PeyXHgYKingcN0kNpyfIQ2hT1aDnLx7YjiXivJAtXbxYeV/AHsP40t
-         6aqecEX50c2dvfu4u0IDP+962CDbJ+ea5MZ6eoxlUrEy1pYFhtYoLRe+U6cus6N9hRHX
-         gZKJW7QcytFHL8dVJyK88agh/xAewu/x5vtD7Y+BUeA0b5uCfHvZcJYllHnzczRLJi16
-         Xajw==
-X-Forwarded-Encrypted: i=1; AHgh+RqXq+Lkp+trFu+77z5NaJ+qLHMJ3NXa1iDCwNYXOgYqs00eFnks6cjXe0tJ3rvmQ+L5bOU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YylXv/mQqYzvYm3u+OHG4qjBd93UtlyBao+Zr3YTc7h4753mqmo
-	pXXTOAyGo0gI6b853HPo11y4N8rtisXC7uP01HezMjZ8M7f9I7a/weSEM/g8CmdUQ0hfQXjem5N
-	O7Wpq1Q==
-X-Gm-Gg: AR+sD123oDy9ufOxrDgtRQQ+huU98Wf6wj7292wqm0z5Wcp+/cfOhffTLWdYZwnLM12
-	Q/T+RPFCeBdlZMzoPthISVnsa6uKaIDgzhCfCWqdoj5v0A/obH9poK2EeGqjzS/UnSz1bz3nSqJ
-	AMxJZwq9pw2P3opkscCFTjQmix5fPsCLXR671v/PHAP3oeJ4UKYP3DtWjeFXd47CwZ2sg+Dj2Mq
-	UCocdOnLBug8NkYpHQTls1/kX/c3R5GyJRXzx+s1yzYnd0pRNuQYq51n/R6K/bhhn86XO+WuF5C
-	+2paaWQxbhG7QZ9YAodpCZwYRJ+gemHsSjy83tm9Yx4yu4KobYz5dv1AN+ossn3AaLsSOHO8/fg
-	m9ik/P6a4JI2pVNK6OMDSMPT6N3rSe4XwHDjLcQBmyr3X9SuOS5wdd7VM/03ANx3AEDogQiwscB
-	RXp4XQpukqbCEwqGXkTKE+P/VZ+sQhHOSAiMH0YFsBTfBOlNsadzR5fDgrqblnrcPuZHUQq1kmb
-	Cyw9GJF7ie7lRTi3e31dh4NPNQLAenxMc/L0FhA7POrL2/fbwDq/qUY/6M=
-X-Received: by 2002:a17:903:b0f:b0:2c7:f0cc:dafa with SMTP id d9443c01a7336-2d312020793mr873965ad.5.1786398425735;
-        Mon, 10 Aug 2026 14:47:05 -0700 (PDT)
-Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-392d51bf886sm1043442a91.7.2026.08.10.14.47.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 14:47:05 -0700 (PDT)
-Date: Mon, 10 Aug 2026 21:47:01 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: "Tian, Kevin" <kevin.tian@intel.com>
-Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	"bhelgaas@google.com" <bhelgaas@google.com>, Leon Romanovsky <leon@kernel.org>, 
-	"dmatlack@google.com" <dmatlack@google.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH 1/1] vfio/pci: Disable sriov on PF device close
-Message-ID: <anpD2sBgwyfQAjqm@google.com>
-References: <20260805003355.728299-1-skhawaja@google.com>
- <20260805003355.728299-2-skhawaja@google.com>
- <CO1PR11MB483582006360CC4F32F97F838CD32@CO1PR11MB4835.namprd11.prod.outlook.com>
+	d=linux-foundation.org; s=korg; t=1786399810;
+	bh=/hUK9nmdYQUfhG6ut1/QpR/T7D3LLI4jSc7+bBZ5Ofc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=UwX/Ilov0bIFii9m3iwtL8q7dWNlzT+Wx3UroPo9PylX7if0NcfH9JAavRDAn86dw
+	 JNwDAbfcVY3VRo/UBsUbAdQe6WqOiVdxquE1mb7LVSCrY0NRcx31i22SVoR5H3wZ9K
+	 Nroa/JyRqqFqLrw3hFrR5C55A7jEiwD4QPiMGP18=
+Date: Mon, 10 Aug 2026 15:10:07 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato
+ <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan
+ Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
+ <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>, Kees Cook
+ <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>, Matthew Brost
+ <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
+ <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
+ <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
+ Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin
+ <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Arnd
+ Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank
+ <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer
+ <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily
+ Gorbik <gor@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Alex
+ Deucher <alexander.deucher@amd.com>, Christian =?ISO-8859-1?Q?K=F6nig?=
+ <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann
+ <tzimmermann@suse.de>, Boris Brezillon <boris.brezillon@collabora.com>,
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
+ Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
+ Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra
+ <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de
+ Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Mark Rutland
+ <mark.rutland@arm.com>, Alexander Shishkin
+ <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
+ Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, James
+ Clark <james.clark@linaro.org>, Jason Gunthorpe <jgg@ziepe.ca>, John
+ Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>, Oscar
+ Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, Kairui Song
+ <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
+ <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Youngjun Park
+ <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 02/20] mm: provide vma_[flags_]is_cow_mapping() and
+ remove is_cow_mapping()
+Message-Id: <20260810151007.c1cfbcf46d498d2f8ce566f9@linux-foundation.org>
+In-Reply-To: <ann-vS6MYT9kuXqu@lucifer>
+References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
+	<20260806-b4-scalable-cow-virt-pgoff-v4-2-ab318a350404@kernel.org>
+	<ann-vS6MYT9kuXqu@lucifer>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <CO1PR11MB483582006360CC4F32F97F838CD32@CO1PR11MB4835.namprd11.prod.outlook.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 05, 2026 at 09:34:32AM +0000, Tian, Kevin wrote:
->> From: Samiullah Khawaja <skhawaja@google.com>
->> Sent: Wednesday, August 5, 2026 8:34 AM
->>
->> When userspace closes a VFIO device file descriptor, the vfio driver
->> performs a hardware reset on the PCIe device to ensure it is returned to
->> a clean state. However, if the closed device is an SR-IOV Physical
->> Function (PF), it may have instantiated Virtual Functions (VFs) that are
->> actively bound to host kernel drivers (or other vfio instances).
->>
->> When the PF is hardware-reset via VFIO, it implicitly disrupts SR-IOV
->> operations at the device level. Because this reset happens without notifying
->> the core PCI driver model, the kernel drivers bound to the VFs remain loaded
->> and operate under the assumption that the VF hardware is still functional.
->>
->> This creates a state mismatch between the kernel's view of the hardware
->> and the actual device state. Subsequent attempts by the host OS or bound
->> drivers to interact with the VFs will fail, leading to unexpected
->> errors.
->>
->> Disable SR-IOV on the device prior to issuing the PF reset so that the
->> VFs can teardown and remove at the software level also.
->>
->> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->> ---
->>  drivers/vfio/pci/vfio_pci_core.c | 7 +++++++
->>  1 file changed, 7 insertions(+)
->>
->> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
->> index a113c55845e1..b36c77eb3c40 100644
->> --- a/drivers/vfio/pci/vfio_pci_core.c
->> +++ b/drivers/vfio/pci/vfio_pci_core.c
->> @@ -826,6 +826,13 @@ void vfio_pci_core_close_device(struct vfio_device
->> *core_vdev)
->>  #if IS_ENABLED(CONFIG_EEH)
->>  	eeh_dev_release(vdev->pdev);
->>  #endif
->> +
->> +	if (pci_num_vf(vdev->pdev)) {
->> +		device_lock(&vdev->pdev->dev);
->> +		vfio_pci_core_sriov_configure(vdev, 0);
->> +		device_unlock(&vdev->pdev->dev);
->> +	}
->> +
->
->Sashiko reported several locking issues with this change:
->
->https://sashiko.dev/#/patchset/20260805003355.728299-2-skhawaja%40google.com
->
->Actually it is a discouraged usage allowing kernel drivers bound to VFs
->which belongs to a PF owned by vfio userspace.
+On Mon, 10 Aug 2026 18:59:34 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 
-Thanks for the feedback Kevin.
+> Hi Andrew - would it be possible to insert the comments added below? Trying
+> to avoid a respin if possible :)
 
-I sent this as an RFC specifically to discuss the right approach for
-resolving this issue before fixing the locking issues that sashiko
-raised. I will get back to this once the discussion to fix this the
-right way concludes in the other thread.
+np, like this?
 
-Thanks,
-Sami
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: mm-provide-vma_is_cow_mapping-and-remove-is_cow_mapping-fix
+Date: Mon Aug 10 03:07:02 PM PDT 2026
+
+add comments, per Lorenzo
+
+Link: https://lore.kernel.org/ann-vS6MYT9kuXqu@lucifer
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/mm.h |   57 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 57 insertions(+)
+
+--- a/include/linux/mm.h~mm-provide-vma_is_cow_mapping-and-remove-is_cow_mapping-fix
++++ a/include/linux/mm.h
+@@ -2271,17 +2271,74 @@ void unpin_user_pages(struct page **page
+ void unpin_user_folio(struct folio *folio, unsigned long npages);
+ void unpin_folios(struct folio **folios, unsigned long nfolios);
+ 
++/**
++ * vma_flags_is_cow_mapping() - Do these VMA flags imply a CoW mapping?
++ * @flags: The VMA flags to check.
++ *
++ * Mappings which could be CoW'd (subject to Copy-On-Write faults) are
++ * described as CoW mappings.
++ *
++ * All mappings backed by anonymous folios (all anonymous mappings and most
++ * MAP_PRIVATE-file backed ranges) are CoW mappings.
++ *
++ * All other mappings (including all writable MAP_SHARED mappings) are
++ * non-CoW.
++ *
++ * The criteria are !VMA_SHARED_BIT, VMA_MAYWRITE_BIT.
++ *
++ * VMA_MAYWRITE_BIT is checked instead of VMA_WRITE_BIT to account for both
++ * future mprotect() calls which can render a read-only mapping writable, and
++ * GUP with FOLL_FORCE (e.g. ptrace) which can CoW a read-only mapping.
++ *
++ * - No anonymous mapping can ever clear VMA_MAYWRITE_BIT.
++ *
++ * - Writes to anonymous mappings do not immediately result in CoW faults but
++ *   may do so after the process is forked or if a read is followed by a
++ *   write.
++ *
++ * - Writes to MAP_PRIVATE file-backed mappings result in CoW faults and may
++ *   do so again after fork.
++ *
++ * - MAP_SHARED mappings of a file opened read-only are transformed into
++ *   VMA_MAYSHARE_BIT, !VMA_SHARED_BIT, !VMA_MAYWRITE_BIT mappings, so remain
++ *   non-CoW.
++ *
++ * - Drivers may clear VMA_MAYWRITE_BIT but do so at mmap() time and cannot
++ *   mark themselves anonymous. Having cleared this flag it is not valid for
++ *   them to leave the VMA_WRITE_BIT flag set.
++ *
++ * As a consequence, the anonymous reverse mapping only tracks CoW mappings.
++ *
++ * Returns: true if the flags indicate a CoW mapping, otherwise false.
++ */
+ static inline bool vma_flags_is_cow_mapping(const vma_flags_t *flags)
+ {
+ 	return vma_flags_test(flags, VMA_MAYWRITE_BIT) &&
+ 		!vma_flags_test(flags, VMA_SHARED_BIT);
+ }
+ 
++/**
++ * vma_is_cow_mapping() - Is this VMA a CoW mapping?
++ * @desc: The VMA to check.
++ *
++ * See vma_flags_is_cow_mapping() for details.
++ *
++ * Returns: true if the VMA is a CoW mapping, otherwise false.
++ */
+ static inline bool vma_is_cow_mapping(const struct vm_area_struct *vma)
+ {
+ 	return vma_flags_is_cow_mapping(&vma->flags);
+ }
+ 
++/**
++ * vma_desc_is_cow_mapping() - Is this VMA descriptor a CoW mapping?
++ * @desc: The VMA descriptor to check.
++ *
++ * See vma_flags_is_cow_mapping() for details.
++ *
++ * Returns: true if the VMA descriptor describes a CoW mapping, otherwise
++ * false.
++ */
+ static inline bool vma_desc_is_cow_mapping(struct vm_area_desc *desc)
+ {
+ 	return vma_flags_is_cow_mapping(&desc->vma_flags);
+_
 
