@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BCE31B82B;
-	Mon, 10 Aug 2026 09:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0976030F7FF;
+	Mon, 10 Aug 2026 09:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786352838; cv=none; b=rFk3o3UmfWcXRd9H1U8tAnksAW2u/Sh4BzQOmtGDUmSipo2+tefkvs9qXzY8HugwySlFfZsO2rWhaUxJKFXvuUPmVPhOJuwRtp1fQNWgqqczjioDAr50GEnMvGpTmdNSSN72CNNJw78QDRuROvQJ7Bqsj9KhGE8euHAy2NiZ3Ho=
+	t=1786353611; cv=none; b=A/p3Qlcy5SxnPng1VLp9jgactHcsh1HD1w073O7IEegozIdKLZ56sh8OjuC8FEIEmgY29/GiZ8M0AMqm7Qblnd9lCQPVWtcqHUYqVsZFveCAI+UDZnhT1KeuIaIoyWB5qUTMvtK30hmRZDzeZOQ5n9L6Ah20EwTuk2autaiLf4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786352838; c=relaxed/simple;
-	bh=C9lZItQker8oXuC7y4OpkjizJ/vCVaRKeeWYfFgYPnY=;
+	s=arc-20240116; t=1786353611; c=relaxed/simple;
+	bh=7vge6SQNAp4DZJJsAeFyFclIvAG4Wz4oqgpUkveaZR4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mqv2FuhEOwGECld0wcxj/Jg38cR3hRUs+LxjLyEc6UMgEdAU7Xm5BmcXSjHTacnyU7JsbUAvJd1Zddk8A+pIpSxRe1GAJvN2FYZa45nthFhVJ1rZhjyB0z6EfNasyQxJ0vA6t9zYpz0Nkia48p+ohyfCfxm6wUIR6r5YM5WAeN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6Q0AXKO; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=rHr5SaFXVYRSwqScj8qAHHkilZKhZ5dYHgq3TqfTK/4iNWjWTjqqLmBmkmaM6JibRFnbuCcY5pDKhS5crZKcSWkrLYqNcXDG10cbmXN1b39/yo74Wl00z08GZDcQMuuEWQwyBS3FNivCP8b75Le6/AYsA9pi7YsYyDS2kFcGvDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Srx5NcHv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6Q0AXKO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315081F000E9;
-	Mon, 10 Aug 2026 09:06:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Srx5NcHv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EA81F000E9;
+	Mon, 10 Aug 2026 09:19:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786352836;
-	bh=kaCqwnPU4MBwQ8WKfnRzGYLwwrlidVKqP1tcsF0Tq/M=;
+	s=k20260515; t=1786353609;
+	bh=NOaEX7G7WbL3WRc3qOqS40hHvnBJZDj9XRocVTD2BrE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=R6Q0AXKO+pDbHy3YbM5oOGtGy7ATbPcXonSgqTFHS9yZtC88Ci0nN34FsVl+ABtU9
-	 4/16utvmo+WPfo4hEU4dSNDqBb1vnAZjJIHrFc7N74FdJ8zzKoRzu7JWJHLs2HXft6
-	 /rpMoQcx5QZrpavyEuASahw8umTEXWe8xFGwFHQwk5aHaSHBKLRA1F9uDJ776sOtqI
-	 aLhM/b0Qd17X/DSF96vf3Pji3IgDpvrUye5wix97PvowCBgMGkx6phjq3JIeRZ7qhI
-	 ZFb00Tc0+hZxWJCiyqEqIc5QC5oG2h9XNc9ckJdD3c8Gqh8myJLBqlX+5L8OHVX7wz
-	 IfiBjL4l0oB9w==
-Message-ID: <13ca60c6-e154-4397-8092-09f861e90fe0@kernel.org>
-Date: Mon, 10 Aug 2026 11:06:56 +0200
+	b=Srx5NcHvuYWHX7NKDmEKead6xMO2DdHxbktyD9Wsiv3rNza+l3o4CtjVjAv1VubgE
+	 3w3ZeQ7jZ+1VmfNPGmp/BFpMnSDsI9RIQtrg0a2v8irfeFG6aMZadFAobQ1+sDZ6ly
+	 4UW4Zj7DfHuZjUIWGda7tQp5AhJ981xhEgzC4cz5rW1S4qzCs7DdoWdLOR7X0Cbtt9
+	 IU3a8mFD5qgLgfiOk59J7AgohHhlXa52xlis0TM8yJMkYifzxw49Fad1jB5MwWHHPm
+	 Xi1xUcLa9D3aOkNAvOT+o2xZ4xRddHQ+h1ExEA7gUCBQQ4G1fXw8ms9QYrrHIJYr3m
+	 BjXmxfFWKGSEw==
+Message-ID: <eb1b5763-37bc-4cb3-890c-1e619e5a8ae4@kernel.org>
+Date: Mon, 10 Aug 2026 11:19:48 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 09/41] KVM: guest_memfd: Filter both shared and
- private when invalidating
+Subject: Re: [PATCH v10 11/41] KVM: guest_memfd: Ensure pages are not in use
+ before conversion
 To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
  binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
  jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
@@ -69,7 +69,7 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
  linux-coco@lists.linux.dev
 References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-9-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-11-2fc18ee6d3ba@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -116,44 +116,116 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-9-2fc18ee6d3ba@google.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-11-2fc18ee6d3ba@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 8/7/26 23:52, Ackerley Tng via B4 Relay wrote:
 > From: Ackerley Tng <ackerleytng@google.com>
 > 
-> Before conversion, a guest_memfd could be either all shared, or all
-
-You mean "in-place conversion support" ?
-
-> private, configured at creation time using the INIT_SHARED flag. Hence,
-> when zapping pages from stage 2 page tables, guest_memfd can filter which
-> to zap based on the initial shared/private state.
+> When converting memory to private in guest_memfd, it is necessary to ensure
+> that the pages are not currently being accessed by any other part of the
+> kernel or userspace to avoid any current user writing to guest private
+> memory.
 > 
-> With conversion, guest_memfd tracks shared/private state on a per-page
-
-Same here.
-
-> level, so a range can contain both private and shared pages. Zap both
-> private and shared pages for simplicity.
+> guest_memfd checks for unexpected refcounts to determine whether a page is
+> still in use. The only expected refcounts after unmapping the range
+> requested for conversion are those that are held by guest_memfd itself.
 > 
-> An alternative would be to iterate guest_memfd attributes and only zap both
-> if shared and private pages exist within the range. Setting both the shared
-> and private filters lets the zapping logic do that iteration instead.
+> Update the kvm_memory_attributes2 structure to include an error_offset
+> field. This allows KVM to report the exact offset where a conversion
+> failed to userspace. If the safety check fails, return -EAGAIN and copy
+> the error_offset back to userspace so that it can potentially retry the
+> operation or handle the failure gracefully.
+> 
+> Update documentation to document the error_offset field and the possible
+> -EAGAIN error.
+> 
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
+> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+> Reviewed-by: Fuad Tabba <tabba@google.com>
+> Tested-by: Shivank Garg <shivankg@amd.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
 
-I mean, we just want to zap anything that belongs to guest_memfd, independent of
-shared vs. private, really?
+[...]
 
-IOW, it's not about shared vs. private, but really about zapping anything that
-belongs to guest_memfd.
+>  #define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 3783e63476569..13c3989136f67 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -524,8 +524,42 @@ static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
+>  	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
+>  }
+>  
+> +static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+> +					    size_t nr_pages, pgoff_t *err_index)
 
-So, couldn't there just be a KVM_FILTER_GMEM thingy instead?
+I would focus on the "to_private" aspect or abstract it to
+"kvm_gmem_mem_has_unexpected_refs" or sth like that.
 
-But I didn't quite digest how these filters are used.
+> +{
+> +	struct address_space *mapping = inode->i_mapping;
+> +	const int filemap_get_folios_refcount = 1;
+> +	pgoff_t last = start + nr_pages - 1;
+> +	struct folio_batch fbatch;
+> +	bool safe = true;
+> +	pgoff_t next;
+> +	int i;
+> +
+> +	folio_batch_init(&fbatch);
+> +
+> +	next = start;
+> +	while (safe && filemap_get_folios(mapping, &next, last, &fbatch)) {
+> +		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+> +			struct folio *folio = fbatch.folios[i];
+> +
+> +			if (folio_ref_count(folio) !=
+> +			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
 
-I can see that kvm_gfn_range_filter_to_root_types() does some magic to them, but
-I am not a KVM MMU expert to know what KVM_MIRROR_ROOTS would mean.
+I'd rather add a comment than have this filemap_get_folios_refcount.
+
+/*
+ * We expect one reference per folio-page in the pagecache and one
+ * reference from filemap_get_folios().
+ */
+if (folio_ref_count(folio) != folio_nr_pages(folio) + 1)
+
+> +				safe = false;
+> +				*err_index = max(start, folio->index);
+> +				break;
+> +			}
+> +		}
+> +
+> +		folio_batch_release(&fbatch);
+> +		cond_resched();
+> +	}
+> +
+> +	return safe;
+> +}
+> +
+>  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> -				     size_t nr_pages, uint64_t attrs)
+> +				     size_t nr_pages, uint64_t attrs,
+> +				     pgoff_t *err_index)
+>  {
+>  	bool to_private = attrs & KVM_MEMORY_ATTRIBUTE_PRIVATE;
+>  	struct address_space *mapping = inode->i_mapping;
+> @@ -542,8 +576,21 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+>  
+>  	mas_init(&mas, mt, start);
+>  	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
+> -	if (r)
+> +	if (r) {
+> +		*err_index = start;
+>  		goto out;
+> +	}
+> +
+> +	if (to_private) {
+
+I'd add a comment here for the "why are we unmapping".
 
 -- 
 Cheers,
