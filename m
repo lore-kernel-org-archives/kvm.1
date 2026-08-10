@@ -1,211 +1,197 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB878C1F
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 01:03:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095283043BE;
+	Mon, 10 Aug 2026 01:15:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786323808; cv=none; b=QCGBj/aWBAGP/xCS9IlWxJY6b+JMB6tfkrxcWKE9SNBofOK9x56/BFKLtfG6Ig+rUoc4juOmonBXXjiaY/BCwEP0JcZlQhgdur6yhIaa35IhTZbcYPWGkukJ/UbiKfqUA5YUc2EtHxOpXeGYciqD8uHZhtxuuVqqJTCcEWY2yg0=
+	t=1786324512; cv=none; b=ey3D20Yt9xO64IxQsTWqIgXIg3Ob0iUDT+wu+ux4Kk+af3zRiSaCJoHU7upUbqfWYmijcWGJL5NJRkkve8veJKLizP1x+nLmvUo4A6fYltiew7lIB+xCZ96CmaeJ0d8KZR02F8kdlNLJDzVxaQMPHM1ecWBk5BgP54p1t1e1Gy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786323808; c=relaxed/simple;
-	bh=/UNLEhTBAnch36SgaK4rfVGlQTG/rEakKekLFDXlBQc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=upk4C7vAAWZw0VWJDLwbUzFwO4PoActwh5nyOJsbppo5aIMZrDoqC8NwoTtlROOUiVWK+QSJ9OWxHFfDJzlj9Cny9bxGUmwqAg8X/jG/O4WMYr6USkUu6nosDJSNZVrMm7Zq8fKTmEFhIwXSgr4tvs7O6wshIZMwKyT/Nq6doOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kGwPP3m+; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786324512; c=relaxed/simple;
+	bh=bw/EwA/bDr+fkYz9/4VEgjOxuqTxNxg3MZJ8IbI4ul0=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=Un5lWcYmsXdwiAIe3vL3brJj/gI6weTwqnBV/4iOT1d0GyMcgIQMLG/F6E+fIlSOqUz7pC6PguXV5Z+dcXmQKgb9Hcy/QN/z5h2gnEFD4YLTB7hDeGopPUox5oBQN3o+dtiI4y//mkoMgdEZUrF25VTSQ4z+nyK5XV+LvrIOGNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=QsKuP7AR; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=QsKuP7AR; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kGwPP3m+"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-38e347638adso1398182a91.0
-        for <kvm@vger.kernel.org>; Sun, 09 Aug 2026 18:03:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786323807; x=1786928607; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=MbbU/F/djf22NMRk+tFA6K7hMv5blZDiEPyCufD11oE=;
-        b=kGwPP3m+84MyCsrHaaTZx34HjnPtRt5oHJl2VtkddFBH/Q4o5kj7S3V7u3ytKySR86
-         zREW5/Lt7AoMcqgNRktRp83vbQ2z7/Bv9qOjzgVPaFerPzm93v7zyQnpT9Dmte740Aiu
-         7x7y4wJHn/T64staKBqy9Mssud5PqLcWQa2FEisIPNJh6+ft8/UpnONDdTtOqoIfwN6z
-         vQNgzjKpVdOZDLVtnmcyi3uHKVp7jCer8bPFQH98gZXscyUG1kcLmLYmX17E4HhPulyF
-         qc8ntXQlposFtb+/4LzSifw8hOVJ1IUa4lkiUOFVOcm8OB5ZRj7FasDjckeVmnui2md6
-         wuzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786323807; x=1786928607;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=MbbU/F/djf22NMRk+tFA6K7hMv5blZDiEPyCufD11oE=;
-        b=i05Dy25SRP5IeaZxGZ+YyVfrS8Wedk5TaECnDHVmmfU3qspGyffSGXTA/zFHL7YAx/
-         2bm+43uo3uRuYnzWnUNp+iJr56XBof4Wr18nKeqUAs5urXfsiKSuegVV1x99XBFzjUJ4
-         qGo51ffQh24HQUEJ6VgRDgSVJMh4y1ZThiCgKm+cCQwAhCwpiqJk+nebFOJvPT6vC/DK
-         A9S2gyECtfKQTYq5LYJKY7ZYk4lxnTZDKCOVGpIpboLM+C2nLrzKqn4K7/cW0MAjUC0e
-         CGuuCbMF/8swNjHHhQbbsG/dh1xh9Ak+d/IXf8thUHF3z/pAmRrao1PWY6HAAbuqlVjg
-         JOgg==
-X-Gm-Message-State: AOJu0Yxa6VcrcvfmG+YpqgAiE0CXsYVLbXEJHcnoDLYY9PoGm/AUNx5c
-	yXePF2EjD3takIsrGWDkvKjFv6ee2ek1xmqeuOtNK9tGYcpt5x0/OiH0
-X-Gm-Gg: AR+sD100Y7HG+T6zOnS3gwBMVrdhwGfqUOuVNs1jVA8mk0laWExbUw+TnOPsAr0cnbj
-	8Z9Qk/bwipIfVnCeihhOX630SdQy6mOcmuDgG0e40JDc8iqlc+OVynEwL2avLr3WDNc1irb7zHZ
-	Af854Ap+JUBaoyl15VjBnFY2E6JH+u9rNS6ddtvwcnovIkU75VzfejKu7t5mTlCQLKRyF/qQa3x
-	wBCsv62KYb3S4O/SzPOUgUpJvj3ZGs6Dr2HmSTLPyOe/Sv1fAFsXYsCcyTlIKRCHPauGNL6cPQo
-	zhmhUkepVsb7JcXlESpVQQfF6B4X2qR0vR1i8fFkGlGTfagV8h+yN4wHTM/XuukwES9vVL5J+NF
-	SOzUMYkQ3tgclSR0t/LDJk+Gxcsp+2qOdZ3J/7FLoSFMZCoP0pY1HPaQlmESZfhJO8AfQ7vYXwP
-	lX7fOxa2i+g6mcUlBLLsprsvUZumtrC5Z/lyBz8YlXi9NR2O93TUbUOHrAd6A=
-X-Received: by 2002:a17:90b:4a0f:b0:38e:9045:bac0 with SMTP id 98e67ed59e1d1-392823340e5mr16894066a91.5.1786323806331;
-        Sun, 09 Aug 2026 18:03:26 -0700 (PDT)
-Received: from gmail.com ([123.118.75.63])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3925ff64b1dsm10138275a91.13.2026.08.09.18.03.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Aug 2026 18:03:25 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: mst@redhat.com,
-	jasowang@redhat.com
-Cc: kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] vhost/vdpa: reject VRING_NUM larger than device max
-Date: Mon, 10 Aug 2026 09:03:00 +0800
-Message-Id: <20260810010300.132959-1-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="QsKuP7AR";
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="QsKuP7AR"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=AnCMHCxYA3w8u95MeRtrua2hq8G/Kwk85wuXOYUVoWY=;
+	b=QsKuP7AROWZEg7Jj5kbqEs3lyZERWfHsJUdKNzQennFexuMqPP1ShpG8tpWHf9jHWO8K7uLm9
+	ZbYrr/pG+9jM2OH23hZW6p8OrEQaSZwdloFJU1FIsg2Jvg1+Bfz8BpFd7wjUf8mcGm9U7+PghTm
+	TG+ruhaJ6GhOMYQjKbNHjwE=
+Received: from canpmsgout04.his.huawei.com (unknown [172.19.92.133])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTPS id 4hJGxw3TDnz126Ltp;
+	Mon, 10 Aug 2026 09:14:44 +0800 (CST)
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=AnCMHCxYA3w8u95MeRtrua2hq8G/Kwk85wuXOYUVoWY=;
+	b=QsKuP7AROWZEg7Jj5kbqEs3lyZERWfHsJUdKNzQennFexuMqPP1ShpG8tpWHf9jHWO8K7uLm9
+	ZbYrr/pG+9jM2OH23hZW6p8OrEQaSZwdloFJU1FIsg2Jvg1+Bfz8BpFd7wjUf8mcGm9U7+PghTm
+	TG+ruhaJ6GhOMYQjKbNHjwE=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4hJGjk5Cktz1prKd;
+	Mon, 10 Aug 2026 09:04:10 +0800 (CST)
+Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6AAF24057D;
+	Mon, 10 Aug 2026 09:14:48 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 10 Aug 2026 09:14:47 +0800
+Message-ID: <e31b0dcf-1a10-4fb5-b364-5f821df6f8dc@huawei.com>
+Date: Mon, 10 Aug 2026 09:14:47 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v20 00/16] vfio/pci: Add PCIe TPH support
+From: fengchengwen <fengchengwen@huawei.com>
+To: <alex@shazbot.org>
+CC: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
+	<wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
+	<wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>
+References: <20260714104325.54444-1-fengchengwen@huawei.com>
+Content-Language: en-US
+In-Reply-To: <20260714104325.54444-1-fengchengwen@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemo500009.china.huawei.com (7.202.194.199)
 
-vhost_vring_set_num() accepts any non-zero power-of-two queue size that
-fits in 16 bits. vhost-vdpa then passes that value to set_vq_num()
-without comparing it with get_vq_num_max().
+Hi Alex,
 
-A process with access to /dev/vhost-vdpa-* can therefore configure a
-queue larger than the device advertises. With vdpa_sim, the worker can
-walk descriptors beyond the mapped descriptor ring. KASAN reports a
-16-byte out-of-bounds read, corresponding to one vring_desc, in the
-vringh IOTLB path:
+Hope everything goes well.
 
-  BUG: KASAN: out-of-bounds in _copy_from_iter
-  Read of size 16
-  copy_from_iotlb
-  copydesc_iotlb
-  vringh_getdesc_iotlb
-  vdpasim_net_work
+I’m sending a gentle follow‑up on my previous mail dated Jul 27,
+about splitting this VFIO‑TPH v20 patchset into standalone‑core series
+and the subsequent dma‑buf P2P TPH extension to resolve the
+invalidate‑mapping lifecycle issue.
 
-Cache get_vq_num_max() immediately after reset. Some backends derive
-it from writable queue-size state, so querying it after SET_NUM may
-return the current size instead of the device capability. Invalidate
-the cached value before reset so a failed reset leaves SET_NUM
-disabled.
+One extra question I’d like to consult with you.
+This v20 series is built upon Zhiping’s v11 dma‑buf TPH patches,
+and his patchset has now advanced to v13.
+Should I rebase my work on top of his latest v13 for the next revision,
+or keep another way to organise the patch series?
 
-For VHOST_SET_VRING_NUM, copy the complete vring state once and use
-the same index and size for validation, vq->num, and set_vq_num().
-This ensures that validation and use operate on the same copied values.
+I will arrange v21 accordingly once I get your advice.
+Thanks a lot.
 
-Fixes: 4c8cf31885f6 ("vhost: introduce vDPA-based backend")
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
----
-v3:
-- Copy VHOST_SET_VRING_NUM once and use the copied values throughout,
-  avoiding the double-fetch race in v2.
-- Cache the device-wide maximum after reset so mutable queue state
-  cannot break a later legal resize; fail closed if reset fails.
+Best regards,
+Chengwen Feng
 
-v2:
-- Add the missing Signed-off-by tag.
+On 7/14/2026 6:43 PM, Chengwen Feng wrote:
+> This patchset enables full userspace configurable PCIe TPH support for
+> VFIO, which brings performance benefits for userspace workloads such as
+> DPDK and SPDK.
+> 
+> Currently VFIO only exposes read-only TPH capability registers to
+> userspace, while all write operations are silently discarded. This
+> prevents userspace from enabling and configuring TPH, limiting performance
+> optimization opportunities.
+> 
+> Per PCIe spec 7.5.3.15: TPH Completer support is applicable to Root Ports
+> and Endpoints, allowing Steering Tags to target host CPUs or peer devices
+> for P2P transactions.
+> 
+> TPH usage model can be divided into three fundamental parts:
+> 1. Retrieve Steering Tag:
+>    - Tags targeting host CPUs are obtained via platform methods (ACPI _DSM)
+>      wrapped in pcie_tph_get_cpu_st(). Userspace requires a generic
+>      interface to query these CPU-associated ST values.
+>    - Tags targeting peer devices are managed by userspace drivers, and set
+>      to kernel by dmabuf ioctl which address by zhiping's patchset.
+> 2. Program Steering Tag table:
+>    - For devices with standard ST table structures (in capability space or
+>      MSI-X table), userspace needs a unified interface to configure ST
+>      entries.
+>    - Devices without standard ST tables are handled by userspace itself.
+> 3. Toggle device TPH Requester enable/disable state.
+> 
+> The patchset builds a complete, secure, staged TPH feature stack with core
+> design objectives:
+> 1. Refactor & fix upstream PCI/TPH core implementation to provide clean,
+>    safe, extendable helper APIs for VFIO consumption;
+> 2. Introduce configurable per-device TPH policy for staged feature
+>    enablement, supporting progressive enabling of No-ST/IV/DS/LITERAL
+>    modes;
+> 3. Fully virtualize PCIe TPH config space: read-only capability header,
+>    virtually writable TPH_CTRL, silent discard invalid writes;
+> 4. Implement unified VFIO user feature uAPI (TPH / TPH_RESOLVE / TPH_ST)
+>    for TPH enablement, tag resolution and batch ST table programming;
+> 
+> The patchset is split into three logical parts:
+> 1. The first three patches is Zhiping's patchset of add TPH support for
+>    p2p access (based on v11), because this patchset support query dmabuf's
+>    ST/PH
+> 2. The second eight patches fix and refactor core PCI/TPH kernel code to
+>    export required helper interfaces
+> 3. The last five patches implement corresponding VFIO TPH virtualization
+>    and uAPI step by step.
+> 
+> Based on earlier RFC work by Wathsala Vithanage
+> 
+> ---
+> v20:
+> - Address almost all comments from Alex about v19, not within Alex's
+>   scope:
+>   - Drop LITERAL policy support
+>   - uAPI changes: cap have been split into fine-grained
+>   - TPH config access: still based on perm mechanism, but restrict the
+>     readable and writable length
+>   - Debugfs add more fields
+> v19:
+> - Address all comments from Alex
+>   - Drop CPU-to-ST translation of PCI/TPH
+>   - Re-implement vfio part, please refer:
+>     https://lore.kernel.org/linux-pci/20260626092232.53ed3a7c@shazbot.org/
+> - Add expose tph_policy via debugfs
+> 
+> Chengwen Feng (13):
+>   PCI/TPH: Fix pcie_tph_get_st_table_loc() field extraction
+>   PCI/TPH: Fix tph_enabled concurrent update race by bitfield packing
+>   PCI/TPH: Cache negotiated max requester type at probe time
+>   PCI/TPH: Refactor pcie_enable_tph and add requester variant
+>   PCI/TPH: Refactor pcie_tph_get_cpu_st & add requester variant
+>   PCI/TPH: Add macros to check standard and extended TPH support
+>   PCI/TPH: Add pcie_tph_set_st_entries() batch ST entry programming
+>     helper
+>   PCI/TPH: Add pci_tph_dsm_supported() helper to detect device TPH ST
+>     _DSM
+>   vfio/pci: Add basic NO-ST TPH VFIO device feature support
+>   vfio/pci: Add IV-ST TPH policy and VFIO TPH_ST batch programming
+>     support
+>   vfio/pci: Add DS-ST TPH policy and extend TPH_RESOLVE capabilities
+>   vfio/pci: Sync core PCI TPH software state across device lifecycle and
+>     resets
+>   vfio/pci: Expose per-device TPH state via debugfs
+> 
+> Zhiping Zhang (3):
+>   PCI/TPH: Add requester/completer type helpers
+>   dma-buf: add optional get_pci_tph() callback
+>   vfio/pci: implement get_pci_tph and DMA_BUF_TPH feature
+> 
+>  drivers/dma-buf/dma-buf.c          |  32 +++
+>  drivers/pci/tph.c                  | 282 ++++++++++++++++++------
+>  drivers/vfio/pci/vfio_pci.c        |  23 ++
+>  drivers/vfio/pci/vfio_pci_config.c | 164 ++++++++++++--
+>  drivers/vfio/pci/vfio_pci_core.c   | 341 ++++++++++++++++++++++++++++-
+>  drivers/vfio/pci/vfio_pci_dmabuf.c | 102 ++++++++-
+>  drivers/vfio/pci/vfio_pci_priv.h   |  18 ++
+>  include/linux/dma-buf.h            |  25 +++
+>  include/linux/pci-tph.h            |  53 ++++-
+>  include/linux/pci.h                |   6 +-
+>  include/linux/vfio_pci_core.h      |   3 +
+>  include/uapi/linux/vfio.h          | 144 ++++++++++++
+>  12 files changed, 1090 insertions(+), 103 deletions(-)
+> 
 
- drivers/vhost/vdpa.c | 44 +++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 37 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index 692564b1bcbb..f2eedb0464c2 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -53,6 +53,7 @@ struct vhost_vdpa {
- 	struct cdev cdev;
- 	atomic_t opened;
- 	u32 nvqs;
-+	u16 vq_num_max;
- 	int virtio_id;
- 	int minor;
- 	struct eventfd_ctx *config_ctx;
-@@ -229,7 +230,9 @@ static void vhost_vdpa_unsetup_vq_irq(struct vhost_vdpa *v, u16 qid)
- static int _compat_vdpa_reset(struct vhost_vdpa *v)
- {
- 	struct vdpa_device *vdpa = v->vdpa;
-+	const struct vdpa_config_ops *ops = vdpa->config;
- 	u32 flags = 0;
-+	int ret;
- 
- 	v->suspended = false;
- 
-@@ -239,7 +242,14 @@ static int _compat_vdpa_reset(struct vhost_vdpa *v)
- 			 VDPA_RESET_F_CLEAN_MAP : 0;
- 	}
- 
--	return vdpa_reset(vdpa, flags);
-+	v->vq_num_max = 0;
-+	ret = vdpa_reset(vdpa, flags);
-+	if (!ret) {
-+		/* Some backends derive the max from mutable queue state. */
-+		v->vq_num_max = ops->get_vq_num_max(vdpa);
-+	}
-+
-+	return ret;
- }
- 
- static int vhost_vdpa_reset(struct vhost_vdpa *v)
-@@ -641,9 +651,15 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
- 	u32 idx;
- 	long r;
- 
--	r = get_user(idx, (u32 __user *)argp);
--	if (r < 0)
--		return r;
-+	if (cmd == VHOST_SET_VRING_NUM) {
-+		if (copy_from_user(&s, argp, sizeof(s)))
-+			return -EFAULT;
-+		idx = s.index;
-+	} else {
-+		r = get_user(idx, (u32 __user *)argp);
-+		if (r < 0)
-+			return r;
-+	}
- 
- 	if (idx >= v->nvqs)
- 		return -ENOBUFS;
-@@ -652,6 +668,23 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
- 	vq = &v->vqs[idx];
- 
- 	switch (cmd) {
-+	case VHOST_SET_VRING_NUM:
-+		mutex_lock(&vq->mutex);
-+		if (vq->private_data) {
-+			r = -EBUSY;
-+		} else if (!s.num || s.num > 0xffff ||
-+			   s.num > v->vq_num_max ||
-+			   (s.num & (s.num - 1))) {
-+			r = -EINVAL;
-+		} else {
-+			vq->num = s.num;
-+			r = 0;
-+		}
-+		mutex_unlock(&vq->mutex);
-+		if (r)
-+			return r;
-+		ops->set_vq_num(vdpa, idx, s.num);
-+		return 0;
- 	case VHOST_VDPA_SET_VRING_ENABLE:
- 		if (copy_from_user(&s, argp, sizeof(s)))
- 			return -EFAULT;
-@@ -765,9 +798,6 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
- 		ops->set_vq_cb(vdpa, idx, &cb);
- 		break;
- 
--	case VHOST_SET_VRING_NUM:
--		ops->set_vq_num(vdpa, idx, vq->num);
--		break;
- 	}
- 
- 	return r;
--- 
-2.34.1
