@@ -1,128 +1,98 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2953B7742
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 10:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62CF3B27E7
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 10:24:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786357362; cv=none; b=NbySYkAElC2zuQXzxkOK+688lYjW55SWMs69j4lWOICPAK4epV73tGMxP7p9/9/JswWyWyuA5o5s6rfMqWojzoe2f2RyjUEQX+ZyDQnekchcbwaFziobrIoMAYMtOllgBZ5CAnM1SHTRzEoZwjdag17Lnt1pJlD5wczEBwgml2Y=
+	t=1786357446; cv=none; b=iFKiv0MHHrZtg6+/tu6DY6wJ+C4eJCVR+xCQJ7+0pPaT78yFHU264TlEQj+GIqdDFeJ3YacYc7slv0hTZX+xWXY9agRnd+LWm+m+Q3v+betTTGty2hO1WQr07lsIf207u7xelFmlz41ii85VI9K5dbOrnCdYmEj9kNIAUnGytSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786357362; c=relaxed/simple;
-	bh=FJRzbufEtBJAhLCkPlm5BxuuEKScVokDrohw9V0wWgI=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jw1/0nFMZwjLuOcUcSePvq52vDusWfBGduNX/52cdJN9Dlm97LywccfbhNMA3hObMTkJi6ug6yrivH4CrTAKbuM85cVCWD+tS7Di/dzAlj7a3OGZNwu3IBVaBBEayOZHCdaXZidRCuSNfnWGEEjYeM/3G5q0cB1Sg6UIygENwys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j3cPWLjI; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786357446; c=relaxed/simple;
+	bh=QYOh2F6nGjwqxKIBc9UN/BPWGu90bWOmHzCT3Z/XzJQ=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=IrAqgNwHlezYscBO+eYGVbHd6cPfLm9ln+KgnNky85NFFXExKLZpgxHt4ctgPA9A5jp9oAeaP6j6wk1QvuZLuo7xZsnBs+JSPxXrhJLdDMSh8JPpnF62EgOQqUeeD5gVFZTkPzdVntfQm/BNNA5NLEOMg+SczbEtWsCv08xdyow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ENCWd3PX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j3cPWLjI"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-39c7fd21b63so11411721fa.0
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 03:22:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786357359; x=1786962159; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=pYeuabCvSp2X+27QeVgnHc3kyISwurDqCe0A6joolwY=;
-        b=j3cPWLjIBF5EubjaIeE5g7F2urbcTjnikWqnZfDp5l/0T5eoG2tYNeRctXcFomsgZs
-         MeUEDx8DWSodxR+t98XUwXYNTx7qjWb4MsWEmLpCLSOAuKmkgYmJz8JLto/2lb6n7amn
-         nkDGG4hZlsmRfJ4mA7btaPjIkI5o2vIWJJo3w4wP8+Jh5k/xGpgLwU0F89wJu5Ahv5dB
-         Hf35earGUIDbd45Ksg+XVp6/Tf+uSP3tu6RDuUYD4PTEKZd8Iu+BEOabHFsA/+dzF4sH
-         UymgeWQxNklnYHEK+RopZm/1/6ojLHSOCYkBI5UO+Pvg4tqe7T0bt4+xDH8FAeU1LNvG
-         E2IQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786357359; x=1786962159;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pYeuabCvSp2X+27QeVgnHc3kyISwurDqCe0A6joolwY=;
-        b=FOROAvY18oALXjewKeuss7MzzSul/xA2w8xp2eMH4OACQAPQ383LUys7kQajmFpXD6
-         yT88M0TqdqrUJyUemudvGXIKUw0lLX3nEN4IiInL2mRUpUK9BukG10ZCCOfcixIYotbk
-         jHINTyelPDUG8ED4n1JpnbYtbxfi/Dex+kAAyduwriy7SBtU5zF1+w8/BBsIdWkvRzbL
-         4aBen6k4diYUQ41lwMgEtIfsOlwUJf3fK6mGHN4LQhgvGm2rTiR11LpFpcEhjGa53Elw
-         PR8V1+2ePVjoZldM60DCzxnreZUCQ47UMWazG8+1/hOITqIy8psrj4rKYM9SAmvFfmlf
-         Cs/Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoWP2kp4saGwO7Yj+WFjmBsCWYyinemWMZFY7Ahv6JsCDLeHltaVqUwJiXu7TE/yySVapc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0AplII9R26AcLEvLYgTk5jBHn1iSv5AvFA4y8kZi/Es/I7tTF
-	VX3FAVjUsgYTqcEvKGOXXPmO4QNEm91gG0C9GRENhCyniBqMUi82qtut
-X-Gm-Gg: AR+sD12IcJlDIrZ0RBZy+QO8t1t+F3IWndCy8J5+7IFav6GdYdtiEFwV+kqW5ct+xt5
-	3lkdh8+4V7fD7u7uCjcqHTPNNx17AmCS+rK9ths7OSp/rR9WbEa9ZIyTZq4oLsY9am9UaeuucdF
-	Kj6uT2jOL2UcuVQEapB5j2qKraXFW7A0jZ2jLGe3D4hr/l2MYum9Tnw02FSOFIP5y3IBz0M/R1N
-	KZqn0QLuvGLJfxeLPbHeYYHQcWxRV8dGZ28SWOtO4fdeFlUhLdKv4s5VRNXuCGJhnfZjUURyGn/
-	D/ZOmH+iptqsTbBpWLEj9ADQjXgEzIYdpvlFiEmvW7EUQZ0T41NR58q8htA6Dca1e+52KL4Lbd3
-	fKu2J010elX8XOn88Ni8pGOnkb5S08mCMvwq5vj9c70XVjVSf5PL/lqUE/23G3kntFPMRhpnSJn
-	Abr7M/6MU5qAR27drLHjqihSWUnQ==
-X-Received: by 2002:a05:651c:1586:b0:39e:ea4f:4202 with SMTP id 38308e7fff4ca-39fbb262b33mr47691471fa.31.1786357358435;
-        Mon, 10 Aug 2026 03:22:38 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39fddd67ec0sm22873191fa.30.2026.08.10.03.22.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 03:22:38 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Mon, 10 Aug 2026 12:22:36 +0200
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Uladzislau Rezki <urezki@gmail.com>, paulmck@kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Boqun Feng <boqun@kernel.org>, kvm@vger.kernel.org,
-	rcu@vger.kernel.org
-Subject: Re: [PATCH v3 3/7] KVM: pfncache: Use RCU for readers instead of a
- rwlock
-Message-ID: <anmmbDqk5rfi_Gsx@milan>
-References: <0d483855-4d2f-4502-858c-c88077aa0b94@paulmck-laptop>
- <d0fdf8aa4faa4e349cdc0e051b6e211cddd566b0.camel@infradead.org>
- <anibnhTYdwdn51FF@milan>
- <54244653-0825-4F1C-8852-003762176FE3@infradead.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ENCWd3PX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF471F000E9;
+	Mon, 10 Aug 2026 10:24:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786357444;
+	bh=doY4eFMYgVgauuMUX2QC15I0PPKB+XaBdccWH+XIA6s=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ENCWd3PXlF/5Yex3sZ1eDQCV8Up+RkzCxxIyqw3VUmNX3ZO4cm03FXgHpWhTHGp/m
+	 T65EmwY0CZHGlNoRfDFJvEgnG9e729LMJ1t2ap+Ftai0IrCzDWwPLxly9as2zicYwA
+	 mqe12nTEnY1FO9+gUmqi5RR6hGuKCj7Oleugjiifkw04p5S59PAl9yNrxlbtfUtJ4A
+	 lqlzLKCdzZ2O8HWzxB7IQm7qtXopGciVT2cMDxJJMq6WmG9p+fAZ4FbTH887IDH3NJ
+	 NqppmhWEXT+uSxDp6SMLp41i8cPwlCvxa1lE0sbZGuvIFbMMnm3zp32G025dN/3xOB
+	 NzK614ofI6l5Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 4/8] x86/cpufeatures: Add PerfCtrVirt feature bit
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sandipan Das" <sandipan.das@amd.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <cdea00ec61978f097d15202a2d5fe4f8fc9c4948.1786345201.git.sandipan.das@amd.com>
+References: <cover.1786345201.git.sandipan.das@amd.com>
+ <cdea00ec61978f097d15202a2d5fe4f8fc9c4948.1786345201.git.sandipan.das@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 10 Aug 2026 10:24:03 +0000
+Message-Id: <20260810102404.4BF471F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <54244653-0825-4F1C-8852-003762176FE3@infradead.org>
 
-On Sun, Aug 09, 2026 at 06:44:55PM +0100, David Woodhouse wrote:
-> On 9 August 2026 16:24:14 BST, Uladzislau Rezki <urezki@gmail.com> wrote:
-> >On Sun, Aug 09, 2026 at 10:59:59AM +0100, David Woodhouse wrote:
-> >> +	/*
-> >> +	 * Try a non-blocking allocation first, leaving the spare untouched
-> >> +	 * in the common no-pressure case so that it is still there when
-> >> +	 * there really is pressure.
-> >> +	 */
-> >> +	node = kzalloc_objs(*node, rcu_num_nodes, GFP_NOWAIT | __GFP_NOWARN);
-> >>
-> >GFP_NOWAIT already contains __GFP_NOWARN. It is odd.
-> 
-> Ack, thanks. Will fix in my tree.
-> 
-> >> +	if (node)
-> >> +		return node;
-> >> +
-> >> +	node = xchg(&srcu_spare_nodes, NULL);
-> >> +	if (node) {
-> >> +		schedule_work(&srcu_spare_replenish_work);
-> >>
-> >I am not sure but if there is a need in doing progress forward, probably
-> >separate wq with WQ_MEM_RECLAIM | WQ_UNBOUND flags is better. It has an
-> >extra rescue kthread to do the progress if no memory or high mem-pressure.
-> 
-> I don't think there is a *need* per se,  as all that happens is a few more less efficient grace periods before the allocation finally succeeds. And frankly, if memory pressure is that bad the efficiency of the grace periods is probably the least of your worries.
-
-Probably. I was thinking about something like(example taken from driver.c):
-
-<snip>
-synchronize_srcu(&encl->srcu);
-mmu_notifier_unregister(&encl_mm->mmu_notifier, encl_mm->mm);
-kfree(encl_mm);
-<snip>
-
-i.e. when we need to free memory. We want a faster reclaim especially
-when low memory conditions. From the other hand it looks like we do not
-call quite often init_srcu_struct_nodes() from srcu_gp_end(), so no
-strong opinion here.
-
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] The patch modifies `arch/x86/include/asm/cpufeatures.h` but fails t=
+o update its synchronized copy in `tools/arch/x86/include/asm/cpufeatures.h=
+`.
 --
-Uladzislau Rezki
+
+--- Patch [4]: [PATCH 4/8] x86/cpufeatures: Add PerfCtrVirt feature bit ---
+commit d0af0746d5778097e8c3fa7f7763e5d0b909732c
+Author: Sandipan Das <sandipan.das@amd.com>
+
+x86/cpufeatures: Add PerfCtrVirt feature bit
+
+This commit defines a feature flag for bit 8 of CPUID leaf 0x8000000A EDX
+which indicates support for PMC virtualization. Hypervisors can use this
+feature to offload the guest PMU context switch to hardware. This enables
+hardware-switched mediated PMU in KVM.
+
+> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cp=
+ufeatures.h
+> index 1b4a48bff18f7..d6281870efe02 100644
+> --- a/arch/x86/include/asm/cpufeatures.h
+> +++ b/arch/x86/include/asm/cpufeatures.h
+> @@ -374,6 +374,7 @@
+>  #define X86_FEATURE_VMCBCLEAN		(15*32+ 5) /* "vmcb_clean" VMCB clean bit=
+s support */
+>  #define X86_FEATURE_FLUSHBYASID		(15*32+ 6) /* "flushbyasid" Flush-by-AS=
+ID support */
+>  #define X86_FEATURE_DECODEASSISTS	(15*32+ 7) /* "decodeassists" Decode A=
+ssists support */
+> +#define X86_FEATURE_PERFCTR_VIRT	(15*32+ 8) /* PMC virtualization suppor=
+t */
+
+[Severity: Low]
+Should this addition also be mirrored in the tools directory?
+
+When arch/x86/include/asm/cpufeatures.h is modified, it usually requires a
+synchronized update in tools/arch/x86/include/asm/cpufeatures.h.
+
+Does omitting this update trigger a kernel ABI header differences warning
+from check-headers.sh during the tools/perf build?
+
+>  #define X86_FEATURE_PAUSEFILTER		(15*32+10) /* "pausefilter" Filtered pa=
+use intercept */
+>  #define X86_FEATURE_PFTHRESHOLD		(15*32+12) /* "pfthreshold" Pause filte=
+r threshold */
+>  #define X86_FEATURE_AVIC		(15*32+13) /* "avic" Virtual Interrupt Control=
+ler */
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1786345201.gi=
+t.sandipan.das@amd.com?part=3D4
