@@ -1,120 +1,168 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56746380FE5
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 10:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9988039BFEC;
+	Mon, 10 Aug 2026 10:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786358453; cv=none; b=ojShjcAolcDWJu/Ib+TPLZhu6AwaXgduV7vyOyUp3s/5RbiUNwQGGphBZvfwHEsQK9XBeHoC19waRdcAPhvTgetkbtsLEUzNrInAsr2F+0IcOTeDoNRAwFG1a7T2+Zmz3N6RxfDF+PZVpBxwT0J51my1EvWP0QEztuI58hMU1vU=
+	t=1786358869; cv=none; b=IJAHVhWAy7r5Y7DnFBFtCnOE9uYb4plr32O7vzJ/qOTbVAb+v2WoM2sqdk6FnOSa6LvNDRQgWtVdv5Cb7vl3r5imk2HD+4/4r1T30Dhi07x72htxEyeMfd27xVeG3INbEFhu6lcNOO12xdOewp4X/Brcy7BYQIWA6jJtQm200kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786358453; c=relaxed/simple;
-	bh=i1C6qlndihuo6RVorEwX36sx+P0rTd6yQlsEtMJImLM=;
+	s=arc-20240116; t=1786358869; c=relaxed/simple;
+	bh=ktGkTr1jjC/VbLwzCuxECS3+XvvQqCyQuimYtPrsIOc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=BNW1A6gkZ25Yy9CE3mzAM68vgOvMUCZ4jlFgpMehBEBRr9ayXnEa5Z59LTJAcv7Vr52walEnA3mWWSixSGipH74ikKjMP+jqvIVLFBVTkyeXrttyB3Tf7W7pQIbNBzWE9pV+vXyMFHYD2GdX3/XbtQYnn1fpjHionSpOZLu0FM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nRBaxnB+; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Gm96TwZoQw5w3gbRA0GFatjoB2EZPPiJYCVm7IZ7nYNTrbEp/COboloJWpFkak1yr+vOJnJVnrLZ7GqBMVQelytsDo1RfoNKaIoDRJUPzD6D6Hh3/YMgd53mRD8vYuIqpspZvqEdYh3pGkz0F2eMMP+E82IHUXPy77mUyUnsIFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MauKF5k7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nRBaxnB+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82981F000E9;
-	Mon, 10 Aug 2026 10:40:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MauKF5k7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5CE71F000E9;
+	Mon, 10 Aug 2026 10:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786358451;
-	bh=tsxPsFJX5evKIhw/S3glrJaAgRUFaIc68fIOhhLiAMc=;
+	s=k20260515; t=1786358868;
+	bh=6cItwXmcnlfdwAe5QeHFKYMQIlzZYOEu2Dc93ob66D4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nRBaxnB+aXupNkBi6n102I/dVhU2c1eu9CYF181K6XjEmMbXBXYcv0IEJHCFtWfgV
-	 1XgHUV/NYemRwEGFHzeC3jl/EE93fd6wKcvbw3saRTXEH/uA9UxyT5TKOsXa/ujmSz
-	 YbTbRZDXIBj6P8wp56BTiB26NI/dmstBzhk9pEOBs/w/6qqWsC7wC7zmoRXAkCaQoy
-	 6ZGTTEtFlVbDjvmLC+ZdlX3Kl8El9ABC+unN/+f3eirY6JlKTatr8Ko4woUFhJ7eff
-	 YQ3dC60VSqW3Nu8tT5PF3qZw/DZrsPeMYB3kuU70Jy8BK44LwKAXmMk0uY2SZAktAE
-	 tg/FrwvDijVxQ==
+	b=MauKF5k7D+GuUScahWl1HSaTvnFpE/8H9V+RZMzdexwB2wfstVOqB7/mI8xeXGscZ
+	 QwV11RnE7wM1cQ/DZB3jNZ2kEXIueJpXOyKOFOUWk2bqGS+TOZY/hAih98IjxUFfUy
+	 2clnUxsf5p89dKo0uYmdPjMjMw4Y1ru3WrgsdCDXX5Ve4kehXahQb2N8sFE7eoVtPZ
+	 w4aqviLe9dKTvnP8RO4HEo+R6/V7DfHirBnY4VbNCciQlpOl+c+zEIvxrVU1mOMrE7
+	 xt+rqJz6VqaJ4xYNPxNHvqYhTUhFVcSFxxm+2VZEfK90q7RFpPfrXLboOqzyf1badD
+	 6+ieXiCfUasxQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 8/8] KVM: SEV: Disallow the use of hardware-switched PMU
+Subject: Re: [PATCH 2/5] irqchip/gic-v5: Clear per-CPU IRS data on teardown
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sandipan Das" <sandipan.das@amd.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <c88cd7d448c7ff998efae53979624b5b08a045c1.1786345201.git.sandipan.das@amd.com>
-References: <cover.1786345201.git.sandipan.das@amd.com>
- <c88cd7d448c7ff998efae53979624b5b08a045c1.1786345201.git.sandipan.das@amd.com>
+To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
+Cc: "Marc Zyngier" <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+In-Reply-To: <20260810102652.758719-3-sascha.bischoff@arm.com>
+References: <20260810102652.758719-1-sascha.bischoff@arm.com>
+ <20260810102652.758719-3-sascha.bischoff@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 10 Aug 2026 10:40:51 +0000
-Message-Id: <20260810104051.C82981F000E9@smtp.kernel.org>
+Date: Mon, 10 Aug 2026 10:47:47 +0000
+Message-Id: <20260810104747.E5CE71F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
 s) to consider:
-- [High] The patch correctly disables hardware-switched PMU for newly initi=
-alized SEV-ES guests to fix a bug where KVM attempts to interact with PMU s=
-tate in the unencrypted VMCB save area instead of the guest's encrypted VMS=
-A. However, this fix fails to apply to SEV-ES VMs created via migration or =
-mirroring.
+
+Pre-existing issues:
+- [High] Unconditional call to irq_domain_remove() with a potentially NULL =
+pointer in gicv5_free_lpi_domain() during error teardown causes a fatal ker=
+nel panic.
+- [High] Missing release of requested memory regions on initialization erro=
+r paths and module removal results in a permanent physical memory leak.
+- [High] The ACPI MADT generic interrupt parser does not validate if get_lo=
+gical_index() successfully found a logical CPU index, leading to out-of-bou=
+nds memory access.
+- [High] Using smp_processor_id() in preemptible context triggers a BUG and=
+ can lead to stale per-CPU data access.
+- [High] The GICv5 IRS hardware is left enabled on initialization error and=
+ teardown paths.
 --
 
---- Patch [8]: [PATCH 8/8] KVM: SEV: Disallow the use of hardware-switched =
-PMU ---
-commit 0e4fd883c1122d7a244f0bb8754669e617c9a34a
-Author: Sandipan Das <sandipan.das@amd.com>
+--- Patch [2]: [PATCH 2/5] irqchip/gic-v5: Clear per-CPU IRS data on teardo=
+wn ---
+commit 280b220e4ca7867e34828e36c13d55683f188fae
+Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
 
-KVM: SEV: Disallow the use of hardware-switched PMU
+irqchip/gic-v5: Clear per-CPU IRS data on teardown
 
-For hardware-switched mediated PMU, the guest PMU state resides in the
-VMCB save area. When SEV-ES or SEV-SNP is used, KVM cannot access the
-encrypted VMSA, so this patch clears KVM_MEDIATED_PMU_CAP_HW_SWITCHED for
-such guests to force software-switched mode.
+IRS affinity setup publishes an IRS pointer and IAFFID state before
+the remaining IRS initialization can fail. This commit adds a teardown
+function to clear the published state to prevent CPUs from being associated
+with freed memory on initialization failure and module removal.
 
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 944aaea6501f2..c5df6da8d030f 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -534,6 +534,9 @@ static int __sev_guest_init(struct kvm *kvm, struct k=
-vm_sev_cmd *argp,
->  	if (snp_active)
->  		sev->vmsa_features |=3D SVM_SEV_FEAT_SNP_ACTIVE;
+Link: https://sashiko.dev/#/patchset/20260724104819.1296803-1-sascha.bischo=
+ff@arm.com?part=3D2
+
+> diff --git a/drivers/irqchip/irq-gic-v5-irs.c b/drivers/irqchip/irq-gic-v=
+5-irs.c
+> index f3fce0b1e25d9..67940ea9e39b7 100644
+> --- a/drivers/irqchip/irq-gic-v5-irs.c
+> +++ b/drivers/irqchip/irq-gic-v5-irs.c
+
+[ ... ]
+
+> @@ -773,6 +786,7 @@ static int __init gicv5_irs_of_init(struct device_nod=
+e *node)
+>  	return ret;
 > =20
-> +	if (es_active)
-> +		kvm_clr_mediated_pmu_caps(kvm, KVM_MEDIATED_PMU_CAP_HW_SWITCHED);
-> +
+>  out_iomem:
+> +	gicv5_irs_clear_affinity(irs_data);
+>  	iounmap(irs_base);
 
 [Severity: High]
-Does this clearing also need to happen when an SEV-ES VM is created via
-migration or mirroring?
+This is a pre-existing issue, but should the IRS hardware be explicitly
+disabled before we unmap the registers?
 
-Looking at sev_migrate_from(), it copies the es_active state to the
-destination VM but does not appear to clear the hardware-switched PMU
-capability:
+The error and teardown paths call iounmap(irs_base) and free the structures,
+but there doesn't seem to be a step to clear GICV5_IRS_CR0_IRSEN. Does this
+abandon active DMA-capable hardware?
 
-arch/x86/kvm/svm/sev.c:sev_migrate_from() {
-	...
-	dst->es_active =3D src->es_active;
-	dst->vmsa_features =3D src->vmsa_features;
-	...
+[Severity: High]
+This is a pre-existing issue, but are we missing a call to
+release_mem_region() on these teardown paths?
+
+The setup path uses of_io_request_and_map() which internally requests a
+memory region, but the cleanup paths only call iounmap(). Does this leave t=
+he
+physical memory permanently stranded in the iomem tree?
+
+>  out_err:
+>  	kfree(irs_data);
+> @@ -787,6 +801,7 @@ void __init gicv5_irs_remove(void)
+>  	struct gicv5_irs_chip_data *irs_data, *tmp_data;
+> =20
+>  	gicv5_free_lpi_domain();
+
+[Severity: High]
+This is a pre-existing issue, but does gicv5_free_lpi_domain() safely handle
+a NULL domain?
+
+Looking at drivers/irqchip/irq-gic-v5.c:gicv5_free_lpi_domain(), it
+unconditionally calls irq_domain_remove(gicv5_global_data.lpi_domain). If
+initialization fails early leaving lpi_domain uninitialized, could this
+trigger a kernel panic during teardown?
+
+>  	gicv5_deinit_lpis();
+> =20
+>  	list_for_each_entry_safe(irs_data, tmp_data, &irs_nodes, entry) {
+> +		gicv5_irs_clear_affinity(irs_data);
+>  		iounmap(irs_data->irs_base);
+>  		list_del(&irs_data->entry);
+>  		kfree(irs_data);
+
+[ ... ]
+
+[Severity: High]
+This is a pre-existing issue, but does gic_acpi_parse_iaffid() validate the
+return value of get_logical_index()?
+
+drivers/irqchip/irq-gic-v5-irs.c:gic_acpi_parse_iaffid() {
+    ...
+    cpu =3D get_logical_index(gicc->arm_mpidr);
+    ...
 }
 
-Similarly, in sev_vm_copy_enc_context_from(), the mirror_sev->es_active flag
-is set to true without clearing the PMU capability:
+If get_logical_index() fails and returns a negative error code, could this
+lead to out-of-bounds memory corruption when cpu is used as an array index?
 
-arch/x86/kvm/svm/sev.c:sev_vm_copy_enc_context_from() {
-	...
-	mirror_sev->es_active =3D source_sev->es_active;
-	...
+[Severity: High]
+This is a pre-existing issue, but is it safe to use smp_processor_id() in
+gicv5_irs_iste_alloc()?
+
+drivers/irqchip/irq-gic-v5-irs.c:gicv5_irs_iste_alloc() {
+    ...
+    irs_data =3D per_cpu(per_cpu_irs_data, smp_processor_id());
+    ...
 }
 
-Since KVM unconditionally sets KVM_MEDIATED_PMU_CAP_HW_SWITCHED during VM
-creation, could failing to clear it on the destination VMs leave the hardwa=
-re
-PMU feature incorrectly enabled?
-
-If a user migrates or mirrors an SEV-ES VM, might KVM attempt to read/write
-PMU state from the unencrypted VMCB save area instead of the guest's
-encrypted VMSA, reintroducing the issue this patch aims to fix?
-
->  	ret =3D sev_asid_new(sev, vm_type);
->  	if (ret)
->  		goto e_no_asid;
+Since this function executes in a sleepable context bound by GFP_KERNEL
+constraints, could using smp_processor_id() without preemption disabled
+trigger a BUG splat or lead to stale per-CPU data access?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1786345201.gi=
-t.sandipan.das@amd.com?part=3D8
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260810102652.7587=
+19-1-sascha.bischoff@arm.com?part=3D2
