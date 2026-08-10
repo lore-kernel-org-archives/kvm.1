@@ -1,56 +1,56 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8829442FC4
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 22:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F763446842
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 22:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786402528; cv=none; b=dTVFnfczyrbl1Lx+HdJ2UjIhPZj4ehL2dqGFlvHHG8vws0pGBZSTqKWY+nTAPvoLjR3P5rlyftD8ynKttVG2WJx4McbHrgt7unYGUS+ijXEosJJhXjEnIxGsf9TU4tANKYEffe81i6hp9qEGVg1ogqfGb86o6dtpm537BpGtVMc=
+	t=1786402530; cv=none; b=EYkouC2tZkiDVGB7na08nx7UlCpPvFATbSElskJ4MhZbouGEYnFU6Iy8K03ImGW8vsxlgaTiTWlkDwHYiBu82/Wj0NnF3rTOHilRr0Z19X+aoeXS3vPVyIXmgblMhc3n2bEYRDdsSVedmxP29iU5Mdu0112JMclBjurwVu5vL44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786402528; c=relaxed/simple;
-	bh=UvWnP8rThQ0I2iu6au3IwSGq/W2BJVM9E1d48NUSteQ=;
+	s=arc-20240116; t=1786402530; c=relaxed/simple;
+	bh=hhQjHicQbVby2oFYCswEc1FMH9bMTv/ejeWgfY93B5M=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ax2GR9gSciP9FGmExd6qtulsNi9Rkb+Wpwvqwuaa6erybeeDKsqDjYOuD31+0qYqThzRxrtwfYT4jcHanoNEJWe2u3pnGasiXkUEsqZnnfthOC3gJeISjdMLuiawhNwbwvoOwjdi9Gm5kplLKWZt19FpdrnJBzyIkFiwgEQqbFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IaRYzKW3; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=P2vrIGCQZHFdQ//uzImNEbVPPwdAxaQsfn6Imsf0a+6gI9lBIAYA3KuYKTve8BSKlCRR1pAP08zfk6ds0JXwJaOaJ2+IiLMsqUmhWa1aQJmfU8YGd6y9eLWDVeQEN34e8r/Ftf4QDorDcIiVbdWwyjy1H8an8eSKNocksxrSfvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cJaow7m2; arc=none smtp.client-ip=209.85.210.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IaRYzKW3"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cd01a14e81so37086855ad.1
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 15:55:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cJaow7m2"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84a67b16217so4065276b3a.3
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 15:55:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786402526; x=1787007326; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786402527; x=1787007327; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=57aBPOihCrGWuqYYWudkiYYcx3GP5FARz7fTh3Mm/5c=;
-        b=IaRYzKW3AZ+vr7omLIP6hsuC5mZVFBNRwls4uZMkBXMPH2I0E0BtlPpu2y+/XWDqpB
-         pmRFkCXZvWc0dQi/yuo8/RuCF+hoh3+kNPKSr3B28PrBFYBf/WF5H3w25yELTcgUjiF1
-         /bInh1egzb6quKATsYrBxeTitO4omykEV5dhvrf4eQRP/y+LblmO2ljbnxkZer1/4PJz
-         0tCqsZ8sQktLeBEG4ICqt+szqfJ0YGlWWvzv7v5I1SndQdPhAu8ypcpFP+hUkA+8Vm6f
-         55PGN78Ea46kZARhkeqvzqvj+UlPWNgjgGVK1Aje1eGfbGqIMcrOREsq5JF/TeJicbva
-         hYIw==
+        bh=qiJ2rCuFTNV6LsYeeN4PZpKxEhzfSbT5iPntzURy2DA=;
+        b=cJaow7m2WBrGLGPBTnS8FQz+/2Iao6vG6MbuBcHt1eBWeZIEWSvVJd4ceUTMUEyEkT
+         PcxaKS1KVSI+BkG+wwfv7iBYUvTMAbf11FAWsUAkiPe5ZrDmz8lTDOWlO51+jSmO1sC+
+         vP/FWzR1mCJO1oOta1ko9+BLq08BbkvBxQikbIPZscm133pJmx/bvkCimGVx4xzEPj2m
+         K47269iKPuksmJLv7gQq15lFB6kyIcwCIsJsIPYbqlot6EKfJ9f5fYGLrRQgpHinUJvv
+         ZIvDEVPLoc+xP0QfSfquVEM5GwcPbQowMmmwBRu3DHn8/s3LnqTondVeIrsQaKq9CreG
+         Xlyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786402526; x=1787007326;
+        d=1e100.net; s=20251104; t=1786402527; x=1787007327;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=57aBPOihCrGWuqYYWudkiYYcx3GP5FARz7fTh3Mm/5c=;
-        b=Rh7BtuwOz9WVIvZESuTQPMB+vcY592Ra+unwTzGCrOrmX4itFeun3pS7WqKcNc3qgZ
-         cUtbMu716LdmzZKDMsMEjEenvwVS09XlipL5fOLM3FzlgADUCjE4uoB/7CdyHcXyK2A6
-         bwL0elht+eprSPsBHvppo3n7apE4Dtu7O6bTweZLIUymwDQhRBvhzIG4zc+Q0uNrzqqV
-         DKIQP2za+NSTsUG9jNS5dhFfaR0ARv/3W6ANfiuXk/cxsmK//xCdKgFZrAvix1ADv8SR
-         m3ctvV1o7qq9pKCGRgie63x/FuQLVhc0NcdMQmruW72cm1+fhblpyQHsW0Zm0nRZCse/
-         gIzQ==
-X-Gm-Message-State: AOJu0YwuosjIQKujB/P0r6gRDn0R8tfSv8vmtnAA3fYqSL8+kJPeMrxC
-	t2aiRYqEcsWk22+XsyV2zM2k5I8EARthoJECaj3vPU8GyLXaHm/msvGs98UwppdsAT1Y4yb1wW9
-	s5CYCVg==
-X-Received: from plsk18.prod.google.com ([2002:a17:902:ba92:b0:2ca:cdc4:8da])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2bcc:b0:2c9:a5e9:c26e
- with SMTP id d9443c01a7336-2d3001e6ebcmr57931765ad.13.1786402526184; Mon, 10
- Aug 2026 15:55:26 -0700 (PDT)
+        bh=qiJ2rCuFTNV6LsYeeN4PZpKxEhzfSbT5iPntzURy2DA=;
+        b=gEJMhMYsNwgWeS3aps3YXYRBnf+9VnQKpUZKA8g6W3Zz/SIkQB+6ZDLb8mZB7cTiKK
+         p7pXGMiz6w8MlEaDkEVzUM+0UeBGTL6H8fhdO6lVtlwCM3YaJjMbejYG3vsasMnvObi1
+         TLItaYlb6guYtcioM0kb7qnu9reMCK+/Hv8i0CvBSOA/D1b5OPQaw7PdXfPh9n4k7Uto
+         Y5kC4fLAxvm4vJVLdVVFjWPloeOlMjxd8e34OiGqS3wU6VdWKSfKELgrI0+2IGhyKDbA
+         5O3rd+GBRYNupG4I4M21yaX0DdZJlqQRMep7kogjF/VFGAYF6sLudBpZQDri3Vj1lKEk
+         pFgw==
+X-Gm-Message-State: AOJu0YxhNp7Uenqn/LF1nomT1fmJJVH+hYfimQrdEkNv/kWYc/91Ocj7
+	sllo18bgIqheEmTt7cUYZTasIuImtJMjdkjDu+IhQEI0ms94Sw+HA28IPXhMXC8sl+DkdW1hQ8a
+	gDe3ddA==
+X-Received: from pfoi24.prod.google.com ([2002:aa7:87d8:0:b0:847:98fd:5a98])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3486:b0:847:9aa8:d3bb
+ with SMTP id d2e1a72fcca58-84f694910cfmr26202403b3a.12.1786402527233; Mon, 10
+ Aug 2026 15:55:27 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Mon, 10 Aug 2026 15:54:57 -0700
+Date: Mon, 10 Aug 2026 15:54:58 -0700
 In-Reply-To: <20260810225500.869288-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,72 +60,41 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260810225500.869288-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260810225500.869288-20-seanjc@google.com>
-Subject: [PATCH v9 19/21] KVM: x86: Use kernel timekeeping snapshots for
- getting kvmclock time since boot
+Message-ID: <20260810225500.869288-21-seanjc@google.com>
+Subject: [PATCH v9 20/21] KVM: x86: Use kernel timekeeping snapshot for
+ monotonic clock
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Paul Durrant <paul@xen.org>, David Woodhouse <dwmw@amazon.co.uk>, Dongli Zhang <dongli.zhang@oracle.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: David Woodhouse <dwmw@amazon.co.uk>
-
-Replace the KVM-private vgettsc()+do_kvmclock_base() timekeeping
+Replace the KVM-private vgettsc()+/do_monotonic() timekeeping
 reimplementation with calls to the recently crafted, generic
-ktime_get_snapshot_id() interface.  This is the first step towards dropping
-KVM's homebrewed implementation entirely (do_monotonic() and do_realtime()
-will be converted in the near future).
-
-As with KVM's implementation, the snapshot provides both the system time
-and the raw_cycles (TSC), atomically paired using a sequence counter.  The
-equivalents to vgettsc()'s TSC and HVCLOCK modes respectively are if the
-clocksource itself is TSC (cs_id == CSID_X86_TSC) and if the underlying
-hardware clocksource is TSC (hw_csid == CSID_X86_TSC).  In the Hyper-V
-case, i.e. hw_csid == CSID_X86_TSC, if the clocksource couldn't provide a
-raw hardware counter value, treat the clock not being based on TSC, which
-which is equivalent to vgettsc() returning VDSO_CLOCKMODE_NONE.
-
-Unlike KVM's current implementation, don't include offs_boot in the
-atomically-acquired tuple as there's simply no need to do so: the time
-since boot only changes at boot (duh) and at suspend/resume boundaries.
-Unless processes aren't being frozen/thawed before/after suspend/resume,
-which would completely break suspend/resume, TK_OFFS_BOOT can't change
-while kvm_get_time_and_clockread() is running.  And if KVM does somehow try
-to take a snapshot during suspend, timekeeping core will WARN and refuse to
-provide the snapshot.
-
-This is a step towards eliminating the pvclock_gtod_data private copy
-of timekeeping state and the associated notifier callback.
+ktime_get_snapshot_id() interface.  As noted previously, the snapshot
+provides both the system time and the raw_cycles (TSC), atomically paired
+using a sequence counter.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-[sean: separate from other conversions, massage changelog accordingly]
+[sean: separate from other conversions]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 57 ++++++++++++++++++++++++----------------------
- 1 file changed, 30 insertions(+), 27 deletions(-)
+ arch/x86/kvm/x86.c | 33 ++++++---------------------------
+ 1 file changed, 6 insertions(+), 27 deletions(-)
 
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index aa39a423694c..85c456dd29d5 100644
+index 85c456dd29d5..1513e4ae2353 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -35,6 +35,7 @@
- #include "smm.h"
- 
- #include <linux/clocksource.h>
-+#include <linux/timekeeping.h>
- #include <linux/interrupt.h>
- #include <linux/kvm.h>
- #include <linux/fs.h>
-@@ -1435,29 +1436,6 @@ static inline u64 vgettsc(struct pvclock_clock *clock, u64 *tsc_timestamp,
+@@ -1436,29 +1436,6 @@ static inline u64 vgettsc(struct pvclock_clock *clock, u64 *tsc_timestamp,
  	return v * clock->mult;
  }
  
 -/*
-- * As with get_kvmclock_base_ns(), this counts from boot time, at the
-- * frequency of CLOCK_MONOTONIC_RAW (hence adding gtos->offs_boot).
+- * This calculates CLOCK_MONOTONIC at the time of the TSC snapshot, with
+- * no boot time offset.
 - */
--static int do_kvmclock_base(s64 *t, u64 *tsc_timestamp)
+-static int do_monotonic(s64 *t, u64 *tsc_timestamp)
 -{
 -	struct pvclock_gtod_data *gtod = &pvclock_gtod_data;
 -	unsigned long seq;
@@ -134,64 +103,34 @@ index aa39a423694c..85c456dd29d5 100644
 -
 -	do {
 -		seq = read_seqcount_begin(&gtod->seq);
--		ns = gtod->raw_clock.base_cycles;
--		ns += vgettsc(&gtod->raw_clock, tsc_timestamp, &mode);
--		ns >>= gtod->raw_clock.shift;
--		ns += ktime_to_ns(ktime_add(gtod->raw_clock.offset, gtod->offs_boot));
+-		ns = gtod->clock.base_cycles;
+-		ns += vgettsc(&gtod->clock, tsc_timestamp, &mode);
+-		ns >>= gtod->clock.shift;
+-		ns += ktime_to_ns(gtod->clock.offset);
 -	} while (unlikely(read_seqcount_retry(&gtod->seq, seq)));
 -	*t = ns;
 -
 -	return mode;
 -}
 -
- /*
-  * This calculates CLOCK_MONOTONIC at the time of the TSC snapshot, with
-  * no boot time offset.
-@@ -1502,6 +1480,29 @@ static int do_realtime(struct timespec64 *ts, u64 *tsc_timestamp)
- 	return mode;
- }
- 
-+static bool kvm_snapshot_has_tsc(struct system_time_snapshot *snap,
-+				 u64 *tsc_timestamp)
-+{
-+	/*
-+	 * ktime_get_snapshot_id() cannot fail for standard clock IDs
-+	 * (only for invalid/aux clocks or during suspend, with a WARN).
-+	 */
-+	if (!snap->valid)
-+		return false;
-+
-+	if (snap->cs_id == CSID_X86_TSC) {
-+		*tsc_timestamp = snap->cycles;
-+		return true;
-+	}
-+
-+	if (snap->hw_csid == CSID_X86_TSC && snap->hw_cycles) {
-+		*tsc_timestamp = snap->hw_cycles;
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
- /*
-  * Calculates the kvmclock_base_ns (CLOCK_MONOTONIC_RAW + boot time) and
-  * reports the TSC value from which it do so. Returns true if host is
-@@ -1509,12 +1510,14 @@ static int do_realtime(struct timespec64 *ts, u64 *tsc_timestamp)
+ static int do_realtime(struct timespec64 *ts, u64 *tsc_timestamp)
+ {
+ 	struct pvclock_gtod_data *gtod = &pvclock_gtod_data;
+@@ -1526,12 +1503,14 @@ static bool kvm_get_time_and_clockread(s64 *kernel_ns, u64 *tsc_timestamp)
   */
- static bool kvm_get_time_and_clockread(s64 *kernel_ns, u64 *tsc_timestamp)
+ bool kvm_get_monotonic_and_clockread(s64 *kernel_ns, u64 *tsc_timestamp)
  {
 -	/* checked again under seqlock below */
 -	if (!gtod_is_based_on_tsc(pvclock_gtod_data.clock.vclock_mode))
 +	struct system_time_snapshot snap = {};
 +
-+	ktime_get_snapshot_id(CLOCK_MONOTONIC_RAW, &snap);
++	ktime_get_snapshot_id(CLOCK_MONOTONIC, &snap);
 +	if (!kvm_snapshot_has_tsc(&snap, tsc_timestamp))
  		return false;
  
--	return gtod_is_based_on_tsc(do_kvmclock_base(kernel_ns,
--						     tsc_timestamp));
-+	*kernel_ns = ktime_to_ns(ktime_mono_to_any(snap.systime, TK_OFFS_BOOT));
+-	return gtod_is_based_on_tsc(do_monotonic(kernel_ns,
+-						 tsc_timestamp));
++	*kernel_ns = ktime_to_ns(snap.systime);
 +	return true;
  }
  
