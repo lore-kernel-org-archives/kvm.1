@@ -1,133 +1,113 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E270B3C1974
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 13:37:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04E33090D9
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 13:40:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786369071; cv=none; b=I7CkjzlRsx5AaQcSXufJBBoVh714iiHh8WI5+xs0JoW9mdmVeUAZ+h5kZrXgoXpkWSYk30co/QOPSVsXsi1e/ibalS5yATeE2kPB5qLLXBa3/qmPa17EneyhRzIG+kUEVHG5Ypek0Th79WC4mm38965MoF0AvodkFHm9GgwcS/E=
+	t=1786369262; cv=none; b=lxnxmFOyJi+nOSYmCei3IGk+iwDUmJKQkUu2W4cdWqT5Z1C3jTfhnjUWCKtIpSxABfMA6KwHmsAObcC7auhAkOjz1ZvSuP80NIUFBhP6tAmPPd2Zbf+YO1goboskI22TWh10diIun+OqA/EU49vyTllLW2ARVuUDElE8Ankb6n4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786369071; c=relaxed/simple;
-	bh=q6FNZp3XFaqNHFhMl6+y/FDb5a1CEfUMMH6myO0ku7Y=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=vDpw4u9/PHaz5OgRN0URaomHJrlFt8qZKb5xnLe92W0RIH/ddJbIOQ0hlRBQFiPNWCLjQXjsSk0g0SFfP2L6t++nyc35tGslW3jw82yNO6RbAC6cOSk156wlppCk9927Kjr97hZaGkhuA7MBuEd8tttEeioz422JwejMhIi344g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sH/JUYIH; arc=none smtp.client-ip=209.85.215.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786369262; c=relaxed/simple;
+	bh=AUbwQjIMvFKx3j6iyCHUmQeCfVu5WpUz9Qg7tHjkwWc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CKFyqAgM5d9uv4VHRk016G0X4wjYagXMX5CzXJ7A520wUy8Ih1wgS3m6HlLeFWIdpmSgLxvHhubjeco+BK2Xq7RSw0o2rFIeUcImLj1rw64BfZK+dI187mFPopVu8+by6RR5OyP1RJYOm1yQtJRHGrLd7K0YB8N5g26p3c3upIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=plw+cpYr; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sH/JUYIH"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cb4bd11ddf8so2393228a12.3
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 06:37:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="plw+cpYr"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-84e507b079dso1088517b3a.0
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 06:40:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786369067; x=1786973867; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/OjVBVJfk4CwI9/GoWgBIfWW3MJVUID0+VTcUKcWM90=;
-        b=sH/JUYIH7yf/OfLstBaHv1v3tygMHWKFFx95P2mEV94SMvLiNy+uFFU3luRo5Oc24J
-         AU3QAnffU6rVvOqp0Rz6M2uXb5A+OkleVdfmxPZc391VHLA6iXSiJxZaSL9cktE/DWGI
-         kkkb5nve9Wqv1AR5UFVcIdxoV+8/of2SnAQwHIOcYaKZw6J84pFrBoDBHB39pJobN926
-         xDrVkvWxEtLH9hhyeW/Z811olNL6fv/C/Bfv8F2PRdAVo9EdgsLiA9jBeaUKbCoM8z1g
-         Kz3xINKIvEQnYfvdBS+xci3Gqs/IauvxD25CB55eRSVRWLo4IirG3vP7rDWQhHDzHqsF
-         Em5A==
+        d=gmail.com; s=20251104; t=1786369259; x=1786974059; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rN0NY1JfJxx/3rIRMWpYI9WN4m1+geIAl9racAyY7U0=;
+        b=plw+cpYrYXm9BoZSdXeu3JQfMsv8d5lG8nFYBQOoQ8cVCj8f2JvKq9H4R49uUeVoTQ
+         RX7cDvT9SWYpoNerZulWyJvCJ1vYA4/Y4Xsg+K5kshOCblHI/w73XG8xHbf2ZQuNEshs
+         m621IqNH6/HMQqhtAtM+yLg2dflSQdlTr1gwAskrq7+VKqP5lSkaSv5mmoiwinaeDq1N
+         P0kdS0BVNqgbWSqo/eLOYxCqYITBGc8ZaFYuZk6O1p7V7fiYGiupKQY9jDqOB6YwvyeI
+         ct/EnAgEXrQLjVSQO2Zv6/U/zvEU6+pnjsQlr+8+FQGdd8fVvr8bPh1KEJf/614hUS3h
+         lBAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786369067; x=1786973867;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1786369259; x=1786974059;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/OjVBVJfk4CwI9/GoWgBIfWW3MJVUID0+VTcUKcWM90=;
-        b=g7Ym+7rMbcr+/TzYf5rMK33hWYIbjTSkBKZl5OZPPbJUGxTP9b4LtMpdOx53+BHOvt
-         xXpLe8A9x6lxgKZcnyQwNSp3Mo7lfNbWWP2hb5wHiZiE8kcTpPTccheOWsR5liS2Q66r
-         ZgtksRY5NrBowL1DZQWTnYmvWax2zrWiqLHIaqXJiSVFwpK14Lnavrdb5NJyvoZ/NLHO
-         7n7s/Y9igKRy5IaMSz2q0zuXqZuoIxgdfiz04TaemIidkLOBzdgVMnBc8LzUcH1X8Qz8
-         OB/iHu1kK4yZ0F9X6hd181z/awGZZh7l5Y6fXATHnL+LeHfcx/NP89NNI4HpkRluKKJC
-         lGKw==
-X-Forwarded-Encrypted: i=1; AHgh+RoWk/hz8GX2fBH7tp1ugUtpunfVp8NgqF7nZ1vXzKTQln90StvwE7RsyusxciYAoCfur4g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNfUzpTi7wAxnIJOTZZald6QRJdgnmRBOFfIW/zT9FkM2crFjb
-	jVutvsz/Hiri41dYJn78TrA0WY6h1zqnE3KbPLeEXw2R2B+GU3J0gak9wVqgE0dzD1t7Bav6ETz
-	IK3Dwcg==
-X-Received: from pgii30.prod.google.com ([2002:a63:221e:0:b0:c9e:41e5:2eec])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:10a:b0:3c3:a140:9380
- with SMTP id adf61e73a8af0-3cbce7fdeb0mr25171510637.16.1786369066622; Mon, 10
- Aug 2026 06:37:46 -0700 (PDT)
-Date: Mon, 10 Aug 2026 06:37:46 -0700
-In-Reply-To: <20260808081050.408657-3-gokul02k@gmail.com>
+        bh=rN0NY1JfJxx/3rIRMWpYI9WN4m1+geIAl9racAyY7U0=;
+        b=VQwYBcq5SMEYLN0H9pJ/vk0mBNmx8P5dOzEW/MeTuhVkDREW/5G0QRLUN5mQd2C/XF
+         ZOB/b5HW5vmVeVpd5rQ6RrweZhO6/RTwGJG3tujNRwcxfWLPk37dNaNPXeKaGF/uf1WP
+         Jk2pDhVsaafiqNEVPz1FClJ9IjVc9245uURzMLxof4bvp+DaPhEQlek0rpE9TwzrgxIA
+         vtNd5uJYfLQDf4pb/kwixr5E4wmHwF0hMvJ0AKKXYjiqRQViFlx6vSoleEjxB979qYwO
+         iYgepdD7/1gLiC6HYHuDq57X/Tx+8NHmqKPs4Ipo0qJZcyCMJzbbWgkP3FC2PQhDsk/H
+         dX/w==
+X-Forwarded-Encrypted: i=1; AHgh+RoEodpX9rNhfZX9MV2HaNQCcchDfQ5sWsmyvXKwyQFbdV9xF3wshl35A4nJDdLSaJlu2BM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHJtFChxHOSJUE6joFur8q0tfnZqPFytg4mqgs16/wEi1OJL5n
+	fTMPnRq67FrCgxzEJeSscBCdvS9wpraO2w14TdjBWkLF4Dk10J5+qauG
+X-Gm-Gg: AR+sD13ZP/VzdBgDgNumRtcVSXxvFB2dOlkNPGiClhIJ22iATdG0Vl3hoCgWkSTlJps
+	6k1bHhtu6atHllCnGCHq1SKD/2fhGgjS2nF4igvSBA193GTcqQivK9CHbIMReneHTNyAgks7faE
+	nR0xOmtksAW2ujj+rdCFfwMFa3BXFrgBg7hcoW8+AGRCDXFnFIXBZZt0dh6fILoiBbGPMDfuM4p
+	4gU6N3A0T0j2WjFyLKR9ZIV1ZwN6M1TaPH7U2FuZFXOGibFOFW2Ko20SYeoatqltd3tOn9vXs1k
+	QX4C28/462K7j27ALZBjgpYmxQkpQBiDKHrhgdJFkfFtvZFNRGwRBcTN/psDXmcCY6FnN29qXWe
+	qWtHbu1JS6XxIbMtX6SDkmMErIqty4bzkLCgmzFeRgtXY6KRWtHaHEqA2dYrmrjay7uAhvLieIV
+	RuPn+3yi+KajoxRtXbFTObhb3gAKns9rrbs8+TK4yUMpgoi36ueeOKkK0eTQokG8vmL+cjrKc=
+X-Received: by 2002:a05:6a00:982:b0:845:3d82:10fc with SMTP id d2e1a72fcca58-84f6926b235mr20673646b3a.0.1786369258800;
+        Mon, 10 Aug 2026 06:40:58 -0700 (PDT)
+Received: from gmail.com ([123.118.75.63])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f5a51f166sm4006236b3a.35.2026.08.10.06.40.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 06:40:58 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: stefanha@redhat.com,
+	sgarzare@redhat.com,
+	mst@redhat.com,
+	jasowangio@gmail.com
+Cc: eperezma@redhat.com,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/2] vhost/vsock: fix device IOTLB feature lifecycle
+Date: Mon, 10 Aug 2026 21:40:16 +0800
+Message-Id: <20260810134018.143973-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260808081050.408657-1-gokul02k@gmail.com> <20260808081050.408657-3-gokul02k@gmail.com>
-Message-ID: <annUKvHeseEqVtp7@google.com>
-Subject: Re: [PATCH 2/2] KVM: selftests: Free the VM when NX hugepage
- disabling is denied
-From: Sean Christopherson <seanjc@google.com>
-To: Gokul K <gokul02k@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Sat, Aug 08, 2026, Gokul K wrote:
-> run_test() returns as soon as it has confirmed that disabling NX huge
-> pages fails with -EPERM, without freeing the VM created a few lines
-> earlier.
-> 
-> This is not an obscure path.
+vhost-vsock leaves the device IOTLB attached when userspace clears
+VIRTIO_F_ACCESS_PLATFORM. It also replaces an existing IOTLB with an
+empty one whenever a later feature update keeps ACCESS_PLATFORM enabled.
 
-FWIW, the relative obscurity of the path doesn't really matter.  
+Patch 1 detaches and frees the old IOTLB when ACCESS_PLATFORM is
+cleared. Each virtqueue drops its IOTLB pointer and metadata cache while
+holding its own mutex. The old IOTLB remains alive until all virtqueues
+have dropped their references. Queued IOTLB miss messages are then
+cleared and blocked readers are woken.
 
-> nx_huge_pages_test.sh runs the test a
-> second time without CAP_SYS_BOOT for any non-root user, and main() calls
-> run_test() with disable_nx_huge_pages=true on its second invocation, so
-> an ordinary run of the wrapper script always takes it.
-> 
-> Free the VM before returning.
-> 
-> Fixes: b774da3f2e57 ("KVM: selftests: Test disabling NX hugepages on a VM")
-> Signed-off-by: Gokul K <gokul02k@gmail.com>
-> ---
->  tools/testing/selftests/kvm/x86/nx_huge_pages_test.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/tools/testing/selftests/kvm/x86/nx_huge_pages_test.c b/tools/testing/selftests/kvm/x86/nx_huge_pages_test.c
-> index 70950067b989..49b70c05daec 100644
-> --- a/tools/testing/selftests/kvm/x86/nx_huge_pages_test.c
-> +++ b/tools/testing/selftests/kvm/x86/nx_huge_pages_test.c
-> @@ -120,6 +120,7 @@ void run_test(int reclaim_period_ms, bool disable_nx_huge_pages,
->  		} else {
->  			TEST_ASSERT(r == -1 && errno == EPERM,
->  				    "This process should not have permission to disable NX huge pages");
-> +			kvm_vm_free(vm);
->  			return;
+Patch 2 keeps the current IOTLB when ACCESS_PLATFORM remains enabled,
+so a runtime logging update does not discard valid translations.
 
-I think I'd prefer the same patter you used in patch 1?  I.e.
+Changes since v2:
+- update each virtqueue under its own mutex instead of locking all
+  virtqueues at once, as suggested by Michael S. Tsirkin
+- keep the old IOTLB alive until all per-virtqueue references are gone
+- clarify that the teardown drops queued IOTLB miss messages
 
-diff --git a/tools/testing/selftests/kvm/x86/nx_huge_pages_test.c b/tools/testing/selftests/kvm/x86/nx_huge_pages_test.c
-index 70950067b989..e3b20033a884 100644
---- a/tools/testing/selftests/kvm/x86/nx_huge_pages_test.c
-+++ b/tools/testing/selftests/kvm/x86/nx_huge_pages_test.c
-@@ -120,7 +120,7 @@ void run_test(int reclaim_period_ms, bool disable_nx_huge_pages,
-                } else {
-                        TEST_ASSERT(r == -1 && errno == EPERM,
-                                    "This process should not have permission to disable NX huge pages");
--                       return;
-+                       goto done;
-                }
-        }
- 
-@@ -213,6 +213,7 @@ void run_test(int reclaim_period_ms, bool disable_nx_huge_pages,
-        check_2m_page_count(vm, disable_nx_huge_pages ? 3 : 2);
-        check_split_count(vm, 0);
- 
-+done:
-        kvm_vm_free(vm);
- }
- 
+Changes since v1:
+- discard the existing IOTLB instead of returning -EBUSY
+- split IOTLB teardown and preservation into separate patches
+- clear queued IOTLB miss messages and wake blocked readers
 
->  		}
->  	}
-> -- 
-> 2.54.0
-> 
-> 
+Jia Jia (2):
+  vhost/vsock: discard IOTLB when ACCESS_PLATFORM is cleared
+  vhost/vsock: keep IOTLB across feature updates
+
+ drivers/vhost/vsock.c | 42 ++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 36 insertions(+), 6 deletions(-)
+
+-- 
+2.34.1
