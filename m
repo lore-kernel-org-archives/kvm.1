@@ -1,222 +1,154 @@
-Received: from esa4.hc1455-7.c3s2.iphmx.com (esa4.hc1455-7.c3s2.iphmx.com [68.232.139.117])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2DE3FD121;
-	Mon, 10 Aug 2026 14:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1627D3F926D
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 15:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786373224; cv=none; b=qtJGcVKKBM5ln3TC3Z7K/Kfv0uPcavqMBVwBAYWDOHBoIfjk8DswDZYbPo76gBd5DX53yBjOJ8IRw+gctKBSMWrYQiN4rZ3wPUGnAeQBvaEBnieaC7u3PUBIzzoRQIe/fsR4+74F9Uof3In7HgfW9YldGP6KX4B8W+daZT9bPCA=
+	t=1786374064; cv=none; b=nzOIgAeLi9vLigqMdl/NRXizT97gBqAZ4ZlvfdpjSGNbt7ZeUN99lZwJdnlgL1QUR5WKE3n0B+WBpBfwp7LVrWozJM1HkTZ5gd8dZmo4x5FIlPk3SWAgt9jO7Ztty3G7l85TG06Y8EqSX3NOBHRuJ+kAeMLDWbldTOE1aA4wjy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786373224; c=relaxed/simple;
-	bh=99XkH2IMF7D6nyHbHISy+8bb2LKxW8tAVwIQzhTqFok=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DaNMgvSMzloHV0Z7lS9KhPttiwDLh9orBZl/qzkkwOqepa9kbp4YNfgOFYJINODp6PtUhovIyQq8W+km8VpWAJ/nIee+YDyeGeVTpfn47Xl7CF/UA3tIFatcnkLyzuG1ZJEs1b3BYB08wz7bKS3Q7hYSjAenaze/j0T1/dUWB4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=b2WhC1tq; arc=none smtp.client-ip=68.232.139.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	s=arc-20240116; t=1786374064; c=relaxed/simple;
+	bh=5qqRAv89nnapnboqyF9PWAGC9EirWJivtNWwArhN4cQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=OOIRKKO10HvgZR4YeVKw4NE7OpwMmEf70ka6cGbI5Hu98qLO6A/g0312yxWtdXLTc3euU4pfzMctZIYRpS6qw1/7LXgacwBkYs5lLwbn54ZaXV2zAAtqCsDiHFVvDl7LXhDmoPZ5JYdIdTfYQO/G4G80r/0aqFzSQJO5IdOkR3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GY1qmaSg; arc=none smtp.client-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="b2WhC1tq"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1786373222; x=1817909222;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=99XkH2IMF7D6nyHbHISy+8bb2LKxW8tAVwIQzhTqFok=;
-  b=b2WhC1tqnIZFGFms0JZ5IDIi/TyS9cJ+VQyKUCMUxrkNgHFH2O0qp3uT
-   JB9aHjK1fMQITsyW67Y467kTpce3i03MqOCYS92uU1pcKulIeRn22MfVc
-   xb86mWgOcu1bwDuO3mxm8GTkSg01niy+KJww/wcyiTLiocTwQnOVco2ig
-   +neDpOBRFqReULtiO8Ic5rrn6/+iCN0ZbFV2PxggA1VsS4JVZoc6Anq+6
-   GVwfnbz2qzvYROh7sYMURYYDyBl2jaQMU9hHZkVx3AeWRg9kcBmW/AthW
-   37+tPbN5tLVFD2BRc4Y0ASqOO2WwDg6gLeVMN0rblJEktkqtq544lSfEj
-   Q==;
-X-CSE-ConnectionGUID: SiCnUT3dQ3WW7mmYc7FahQ==
-X-CSE-MsgGUID: 8yvPkPBPQ8iUtsVBy5En1w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="249929632"
-X-IronPort-AV: E=Sophos;i="6.25,215,1779116400"; 
-   d="scan'208";a="249929632"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa4.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 23:47:00 +0900
-Received: from az2nlsmgm3.fujitsu.com (unknown [10.150.26.205])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 4360042A30A;
-	Mon, 10 Aug 2026 14:47:00 +0000 (UTC)
-Received: from az2uksmom2.o.css.fujitsu.com (unknown [10.151.22.203])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm3.fujitsu.com (Postfix) with ESMTPS id ED8E31810868;
-	Mon, 10 Aug 2026 14:46:59 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.9.24.243])
-	by az2uksmom2.o.css.fujitsu.com (Postfix) with SMTP id 503D314000B0;
-	Mon, 10 Aug 2026 14:46:52 +0000 (UTC)
-Date: Mon, 10 Aug 2026 23:46:50 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v16 30/45] KVM: arm64: CCA: Handle realm vCPU load
-Message-ID: <annfY97FFA8ZuoHE@FCCLS0092175.localdomain>
-References: <20260803134403.80630-1-steven.price@arm.com>
- <20260803134403.80630-31-steven.price@arm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GY1qmaSg"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e1118e4abso3439143a91.0
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 08:01:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786374062; x=1786978862; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qSKxDjTci2S5HKL2Y8g6gVb9b+tAUX3tfJowR2dLyss=;
+        b=GY1qmaSgYhJ/va/G3NzUGSUY4GjFkNC5gVWgR52RyXRFIla9wsw85stzdjcd+hmMcy
+         zLCqHbtmx3TJqIGl8yr54N5EMuBwbnqLVaV14QKiR8nwktJv5i118q0UTHDpnHF6XR/K
+         iYHbJGDMMzaFyHzRuB9FJq9ZxEgcH+O5xUGd72oJyZN+H+Z1XDxUnTfG5N4Kt36gZ7na
+         hrgyE1k0sHC/ft9jP4e3SZFa1KU7fFrV1S4Z4krC6WvT3O6y0T0aUns1ith7sKpoGzuO
+         mN6dU4XpMCjGBKje760lNsVfIAwjYLVAYc8zCc7m++g8uIq4H5awukmFXthbCFoJdux1
+         F7fQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786374062; x=1786978862;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qSKxDjTci2S5HKL2Y8g6gVb9b+tAUX3tfJowR2dLyss=;
+        b=hUW6f/Ze/ITHWtLZkPGJOTy5bP77Z0svrW/NxD0qs3FdKKscCIolOpVvx5GSSp+BHt
+         1fuBpySgY9x5TUJPE381tKOcx0OsudW+T5VC9Gc5suvOHVy4UU55InB0hPDYgRiQP8tZ
+         qmUupElmA4E5KmrN+zdGXF7Eqp1DRgv22YqwwY2D3fa0R91jXt5R6BGD9aQWSxS3YxOC
+         RBxn4uANsloukcCFEzKItYYdCmMcxlQ1fGc2sIrwACy8boRhfgrvmQ3r10dv+4stEAge
+         SInF3P81PWqN9hUCSD57UJG0vnemgbrVU3jPkF7O6y9FCXSbRgGaswLTi3Dp+H0NI3j9
+         GvLQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rod5Jn8oii/dIpn6pmUxau6gkPwolqjuTBZrahvmxt4HjXtV4lIwaB9ZW/xEsncJ1VlEZ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPxPNJNzQinhjWWO6U4OwUpyAUHNtqcuudhJQxRHFfEDorBoZm
+	+cqpKm0L3VKhPzHmG47ipgjNftCj2J3HokwisFnSGxDC40l+6n1j1OWhVM50JrIbqma/BzV5AP8
+	i2QGh8g==
+X-Received: from pjuo6.prod.google.com ([2002:a17:90a:d206:b0:381:2921:e696])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1347:b0:38e:9045:babe
+ with SMTP id 98e67ed59e1d1-392823376d5mr23283260a91.7.1786374060881; Mon, 10
+ Aug 2026 08:01:00 -0700 (PDT)
+Date: Mon, 10 Aug 2026 08:01:00 -0700
+In-Reply-To: <ed483d25-d908-4248-b8c7-862dd35dc6d4@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260803134403.80630-31-steven.price@arm.com>
+Mime-Version: 1.0
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-7-2fc18ee6d3ba@google.com> <ed483d25-d908-4248-b8c7-862dd35dc6d4@kernel.org>
+Message-ID: <annnrGR1noVuBkCc@google.com>
+Subject: Re: [PATCH v10 07/41] KVM: guest_memfd: Stub in ability to enable
+ in-place shared<=>private conversion
+From: Sean Christopherson <seanjc@google.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On 08/03 14:43, Steven Price wrote:
-> When loading a realm VCPU much of the work is handled by the RMM so only
-> some of the actions are required. Rearrange kvm_arch_vcpu_load()
-> slightly so we can bail out early for a realm guest.
-
-Hi Steven,
-
-I found that Realm guests can execute WFI/WFE instructions without
-causing a REC exit, ignoring KVM's WFx trap policy.
-
-I'd suggest translating HCR_EL2.TWE/TWI into the corresponding
-run->enter.flags to honor the policy. Below is the patch I tested.
-
-----
-From 8637cd6f818a3c56d8b898a72874e9485eb94e59 Mon Sep 17 00:00:00 2001
-From: Kohei Enju <enju.kohei@fujitsu.com>
-Date: Mon, 10 Aug 2026 22:54:27 +0900
-Subject: [PATCH] KVM: arm64: CCA: Honor WFx trap policy for Realm vCPUs
-
-Propagate KVM's WFx trap policy to the RMM by translating
-HCR_EL2.TWE/TWI into REC_ENTER TRAP_WFE/WFI flags before entering a REC.
-
-Without this, guests can execute WFE/WFI instructions without causing a
-REC exit, ignoring KVM's common trap policy. Configure the REC_ENTER
-flags to honor the policy.
-
-Signed-off-by: Kohei Enju <enju.kohei@fujitsu.com>
----
- arch/arm64/include/asm/kvm_rmi.h |  2 ++
- arch/arm64/kvm/arm.c             |  3 +++
- arch/arm64/kvm/rmi.c             | 14 ++++++++++++++
- 3 files changed, 19 insertions(+)
-
-diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-index 2789879b6701..b858c6b4db6a 100644
---- a/arch/arm64/include/asm/kvm_rmi.h
-+++ b/arch/arm64/include/asm/kvm_rmi.h
-@@ -109,6 +109,8 @@ void kvm_destroy_realm(struct kvm *kvm);
- int kvm_realm_teardown_stage2(struct kvm *kvm);
- void kvm_destroy_rec(struct kvm_vcpu *vcpu);
- 
-+void kvm_rec_set_wfx_traps(struct kvm_vcpu *vcpu);
-+
- int kvm_rec_enter(struct kvm_vcpu *vcpu);
- int kvm_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
- int kvm_rec_handle_request(struct kvm_vcpu *vcpu);
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 7edc572dd8ab..0cba333b4fd2 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -770,6 +770,9 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 	else
- 		vcpu->arch.hcr_el2 |= HCR_TWI;
- 
-+	if (vcpu_is_rec(vcpu))
-+		kvm_rec_set_wfx_traps(vcpu);
-+
- 	vcpu_set_pauth_traps(vcpu);
- 
- 	if (is_protected_kvm_enabled()) {
-diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-index c242dfc2c7a6..c472f3d03234 100644
---- a/arch/arm64/kvm/rmi.c
-+++ b/arch/arm64/kvm/rmi.c
-@@ -1302,6 +1302,20 @@ static void noinstr load_realm_timer_state(struct kvm_vcpu *vcpu)
- 	write_sysreg_el0(rec_exit->cntp_ctl, SYS_CNTP_CTL);
- }
- 
-+void kvm_rec_set_wfx_traps(struct kvm_vcpu *vcpu)
-+{
-+	struct realm_rec *rec = &vcpu->arch.rec;
-+
-+	rec->run->enter.flags &=
-+		~(REC_ENTER_FLAG_TRAP_WFE | REC_ENTER_FLAG_TRAP_WFI);
-+
-+	if (vcpu->arch.hcr_el2 & HCR_TWE)
-+		rec->run->enter.flags |= REC_ENTER_FLAG_TRAP_WFE;
-+
-+	if (vcpu->arch.hcr_el2 & HCR_TWI)
-+		rec->run->enter.flags |= REC_ENTER_FLAG_TRAP_WFI;
-+}
-+
- int noinstr kvm_rec_enter(struct kvm_vcpu *vcpu)
- {
- 	struct realm_rec *rec = &vcpu->arch.rec;
--- 
-2.43.0
-
+On Mon, Aug 10, 2026, David Hildenbrand (Arm) wrote:
+> On 8/7/26 23:52, Ackerley Tng via B4 Relay wrote:
+> > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> > index 65fbce46b63f4..9477ecebbbced 100644
+> > --- a/include/linux/kvm_host.h
+> > +++ b/include/linux/kvm_host.h
+> > @@ -2580,6 +2580,8 @@ static inline bool kvm_vm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+> >  #endif  /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
+> >  
+> >  #ifdef kvm_arch_has_private_mem
+> > +extern bool gmem_in_place_conversion;
 > 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
->  arch/arm64/kvm/arm.c | 19 ++++++++++++-------
->  1 file changed, 12 insertions(+), 7 deletions(-)
+> Is there a "supports/has/enable" in there? And should we call it "kvm_gmem" for
+> completeness?
+
+It's kinda stupid and definitely more than a bit inconsistent, but overall I think
+I actually like "gmem_in_place_conversion" the best.
+
+gmem_has_in_place_conversion and gmem_supports_in_place_conversion are misleading
+because it's not just that guest_memfd has/supports in-place conversion, it's that
+that KVM is tracking PRIVATE in guest_memfd and so in-place conversion is the only
+option.
+
+On the other hand, while gmem_in_place_conversion_enabled is better, it's not
+quite accurate either because userspace isn't strictly required to do in-place
+conversion.
+
+As for a kvm_ prefix, IMO gmem_ is sufficient for a namespace, and not having kvm_
+is consistent with most module params in KVM.
+
+So I 100% agree this is an odd name and has all kinds of inconsistenties, but all
+in all I actually like the vagueness and the brevity.
+
+> >  typedef bool (kvm_mem_is_private_t)(struct kvm *kvm, gfn_t gfn);
+> >  DECLARE_STATIC_CALL(__kvm_mem_is_private, kvm_mem_is_private_t);
+> >  
+> > @@ -2588,6 +2590,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+> >  	return static_call(__kvm_mem_is_private)(kvm, gfn);
+> >  }
+> >  #else
+> > +#define gmem_in_place_conversion false
+> > +
+> >  static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+> >  {
+> >  	return false;
+> > @@ -2595,6 +2599,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+> >  #endif /* kvm_arch_has_private_mem */
+> >  
+> >  #ifdef CONFIG_KVM_GUEST_MEMFD
+> > +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn);
 > 
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index f1b26b263bf0..96e536d2dda8 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -707,7 +707,7 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
->  	struct kvm_s2_mmu *mmu;
->  	int *last_ran;
->  
-> -	if (is_protected_kvm_enabled())
-> +	if (is_protected_kvm_enabled() || kvm_is_realm(vcpu->kvm))
->  		goto nommu;
->  
->  	if (vcpu_has_nv(vcpu))
-> @@ -751,12 +751,6 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
->  	kvm_vgic_load(vcpu);
->  	kvm_vcpu_load_debug(vcpu);
->  	kvm_vcpu_load_fgt(vcpu);
-> -	if (has_vhe())
-> -		kvm_vcpu_load_vhe(vcpu);
-> -	kvm_arch_vcpu_load_fp(vcpu);
-> -	kvm_vcpu_pmu_restore_guest(vcpu);
-> -	if (kvm_arm_is_pvtime_enabled(&vcpu->arch))
-> -		kvm_make_request(KVM_REQ_RECORD_STEAL, vcpu);
->  
->  	if (kvm_vcpu_should_clear_twe(vcpu))
->  		vcpu->arch.hcr_el2 &= ~HCR_TWE;
-> @@ -778,6 +772,17 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
->  			     &vcpu->arch.vgic_cpu.vgic_v3);
->  	}
->  
-> +	/* No additional state needs to be loaded on Realmed VMs */
-> +	if (vcpu_is_rec(vcpu))
-> +		return;
-> +
-> +	if (has_vhe())
-> +		kvm_vcpu_load_vhe(vcpu);
-> +	kvm_arch_vcpu_load_fp(vcpu);
-> +	kvm_vcpu_pmu_restore_guest(vcpu);
-> +	if (kvm_arm_is_pvtime_enabled(&vcpu->arch))
-> +		kvm_make_request(KVM_REQ_RECORD_STEAL, vcpu);
-> +
->  	if (!cpumask_test_cpu(cpu, vcpu->kvm->arch.supported_cpus))
->  		vcpu_set_on_unsupported_cpu(vcpu);
->  
-> -- 
-> 2.43.0
+> As mentioned in v9, the name is confusing.
 > 
+> 	kvm_gmem_mem_is_private
+> 
+> ?
+
+Ya, +1 to kvm_gmem_mem_is_private.
