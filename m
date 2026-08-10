@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A33A3E7621;
-	Mon, 10 Aug 2026 14:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39EB3EC80E;
+	Mon, 10 Aug 2026 14:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786370888; cv=none; b=H27zyIXoC1I41i4A8pfH6WdCZOBt0tmOOthWEH4CbvmPfDaJUppfod//swEAhITiE9/KsY0Dt8Z28k9yR4GdNPoH4t7CprhwkP8GqYsU+QpXTV3S///kUjpYfCGrGgtcj14OIgeC+RnMGmAfRBpec9gA3IwFd6GVzVHBfnWpgFg=
+	t=1786371065; cv=none; b=VJndvmV5Ob4eLizlrQo8pC7mQyB21/ATQa+KpGBuqWmYmy5G5+cE0dYcF0kW3DKfEyv99+JJau5b4Cz8KYAlLQj5Fkuv63s5tBQ4Dh9aNLhgigxtN2PaxNGobiBp1BOx0dGCjecMpqwT+fT4V0dLQrxL59E9uiXOTaUkPzDB0ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786370888; c=relaxed/simple;
-	bh=fp929i8ZJSwn7AHlDcl8w9pLYLCiXxw0K59jmumxIEs=;
+	s=arc-20240116; t=1786371065; c=relaxed/simple;
+	bh=vuh4kbRPUFLbOmtHCicEajya223aTy/mciIy0utSVoo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tQTnS9YLDHOKKuKZ5WBBJZyvnlotaAQfvlj83l5cmkJip3bCb3cZYUFHwpZAOjDz90Yixjx/kuybWCByMoNHqUxl/jEdIE4jwZsbsJX1zGXWE95mWRhPEtA7JfSMHQlfPqdNsPn8ZM2o6KPMHS+9t3G5WtdO1sWs/wnpH9EJf6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fSlFnvGO; arc=none smtp.client-ip=192.198.163.7
+	 In-Reply-To:Content-Type; b=pk+5iMFz7q1zEL5BYgXBi+nx616KjvkcfCa+PzevlPc7dCl1CGjZYV/txBlygW0jjuLnoJh0095ApASX5tmMJFz0AwZE/ueX81DsC59M92E+UkEkB3bORZ54HEDogYV5rHB7rkxjxpSWgnk4Zg7tzBTlQnwYSHHQc5oircKiW4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OuV3IbZ6; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fSlFnvGO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OuV3IbZ6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786370887; x=1817906887;
+  t=1786371062; x=1817907062;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=fp929i8ZJSwn7AHlDcl8w9pLYLCiXxw0K59jmumxIEs=;
-  b=fSlFnvGONgF6eDyFyCJy88yCcDxCfT/gInzOgfboCsdb6zCsr/EUyDiG
-   yHsDBMCeM+yaUbpgxETtD31wSZBQ9gLuhQLf2fS78m4sD0k//jUPGBOzL
-   /Ll01ZsjUJrHyaHJh0LrXMGAdSyaFuZH0bSwRSF1h7k9HBYHXgoiRINXC
-   Ty11SNrMQDRkIYfpVR3iIYTo9HMkWOdaX4l8BB64kqrU66t2/ByptU/gQ
-   tSSJ5XBRFMU+vxBhsP5mHO2gEWlPyPsMkZG69x8gojhI352zeOicnxEM3
-   kx0d7MjG2j9RhMtkcG8FwsP6tS+x9DGqx967VKsIlXEQaHicMdP3H9ZkR
+  bh=vuh4kbRPUFLbOmtHCicEajya223aTy/mciIy0utSVoo=;
+  b=OuV3IbZ6C7uRo6Q4co6Ymz/WT0cjzUSMNaYd3pNtY/+OVjwnR1Utab9D
+   q05QrTzLqHJ3Sv3UTj8qt5Y/KiXwswVwualSdkeA3WkD6XKiu6QgeGEZm
+   XONFyrQPcBDmNDLnZYvlELVk2mMd1tzNTbo1wQuS1oJ9ptLdqOuBHIQMC
+   UCFxJk8oA/qr0FLyTfM9Ia42ot0JxmRHBMcWXNlO0fCQTWcvPyc590Mcr
+   5CmzBKEl6etk0QNA7pWjdHcB/KDqD48FeBlDOE47DR/HtrIMI0k/JUhjI
+   VcEdSwxvjdeArgqXdhRFeuBDfmk770l34U2sylkJ3Sv1gjP3MCgs5YVGW
    w==;
-X-CSE-ConnectionGUID: xdONWBVRQVqUExFkYjDlfg==
-X-CSE-MsgGUID: jH5RRVdTSrGP0q8drUAZAw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="112430530"
+X-CSE-ConnectionGUID: UyRx8J9IQqyRGCZKw8zBMA==
+X-CSE-MsgGUID: HA4jMk6HQ3mmGEmGqM99yA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="74420154"
 X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
-   d="scan'208";a="112430530"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 07:08:06 -0700
-X-CSE-ConnectionGUID: j69EllATQs+Kr2sneJB2zw==
-X-CSE-MsgGUID: Jc8JHvBiTA+BUh1ndSTzTQ==
+   d="scan'208";a="74420154"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 07:11:00 -0700
+X-CSE-ConnectionGUID: u2clbYScRW6dMcQXpVYwoA==
+X-CSE-MsgGUID: 1jOtyXAARE2rMmszGSwb8Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
-   d="scan'208";a="262535992"
+   d="scan'208";a="261759544"
 Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.110.41]) ([10.125.110.41])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 07:08:06 -0700
-Message-ID: <8e40862e-891a-4cad-8bb8-06ad25ad6061@intel.com>
-Date: Mon, 10 Aug 2026 07:08:04 -0700
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 07:11:00 -0700
+Message-ID: <d2f9f52e-66ba-42d9-bbf7-2bf72d958ca4@intel.com>
+Date: Mon, 10 Aug 2026 07:10:59 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,8 +52,7 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 10/11] Documentation/x86: Add documentation for TDX's
- Dynamic PAMT
+Subject: Re: [PATCH v9 11/11] x86/virt/tdx: Optimize tdx_pamt_get/put()
 To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de, hpa@zytor.com,
  kas@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com,
@@ -61,10 +60,9 @@ To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de, hpa@zytor.com,
  tglx@kernel.org, vannapurve@google.com, x86@kernel.org, chao.gao@intel.com,
  yan.y.zhao@intel.com, kai.huang@intel.com, tony.lindgren@linux.intel.com,
  binbin.wu@intel.com, sohil.mehta@intel.com
-Cc: Hongyu Ning <hongyu.ning@linux.intel.com>,
- Binbin Wu <binbin.wu@linux.intel.com>
+Cc: Hongyu Ning <hongyu.ning@linux.intel.com>
 References: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
- <20260806020850.1221381-11-rick.p.edgecombe@intel.com>
+ <20260806020850.1221381-12-rick.p.edgecombe@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -110,42 +108,14 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260806020850.1221381-11-rick.p.edgecombe@intel.com>
+In-Reply-To: <20260806020850.1221381-12-rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-> +Dynamic PAMT
-> +------------
-> +
-> +Physical Address Metadata Table (PAMT) is memory that the TDX module needs
-> +to keep data about each page (think like struct page). It needs to be handed
-> +to the TDX module for its exclusive use. For normal PAMT, this is installed
-> +when the TDX module is first loaded and comes to about 0.4% of system memory.
+On 8/5/26 19:08, Rick Edgecombe wrote:
+> So create a fast and slow path. Check the refcount outside the lock and
+> only take it for the slow path (0->1 and 1->0 transitions).
 
-The Physical Address Metadata Table (PAMT) is metadata in which the TDX
-module keeps data about each physical page (think struct page). Space
-for it is allocated by the VMM, consumes up to about 0.4% of system
-memory and needs to be supplied to the TDX module for the TDX module is
-first loaded.
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 
-Dynamic PAMT is an add-on feature that allows a VMM to dynamically
-allocate the part of the PAMT which tracks 4k pages. This reduces the
-amount of memory that TDX consumes while TDs are not in use.
-
-Slight tweaks for those first two paragraphs ^
-
-> +When Dynamic PAMT is in use, dmesg shows it like::
-> +
-> +  [..] virt/tdx: Enable Dynamic PAMT
-> +  [..] virt/tdx: 10092 KB allocated for PAMT
-> +  [..] virt/tdx: TDX-Module initialized
-> +
-> +Dynamic PAMT is only enabled when supported and the ``tdx_dpamt=`` kernel
-> +parameter is set to "on". The feature is off by default because TDX module
-> +internal details prevent Dynamic PAMT from working on all keyid partitioning
-> +configurations. When the TDX module is fixed to include these constraints in
-> +its enumeration of Dynamic PAMT support, kernel support can be changed to
-> +default on. For more information, consult the Intel TDX documentation about
-> +Dynamic PAMT.
-
-
+Thanks for the thorough description of how you used the LLMs here.
