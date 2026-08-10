@@ -1,169 +1,233 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F102417D87
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 15:21:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31B040A95F
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 15:27:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786375288; cv=none; b=EfqgFQoHpY6bxjeu885tNLhSudKbZ/8/OZekEtVvgZQm4j2SsFM8MSJuxeuSc9fWkws2M0ScgHoJ8fAhTQY3MMVnZGeNZIMHfFGddqid0Ew3ep1aA6CHN6VV2OFzrooLDLgEzltPe5+ELm4bUUznbrGenpVUaSDIAuFyplsNOlo=
+	t=1786375654; cv=none; b=EOhs1bObc8v24lsVDfU6g4UaN2zF4+rXAoJ5IONIQPE+hmNXoHg20Pe4PUxuaXuaZ8hyeKdbM5rudTwsSrGNHte4WiL5Xa/xvVGLj7frGRDXPhuvwbmnoIMLWOrfMiyXvRQamEMAtx3cNKE7jF7bdfe7qPEPQ+ZU5xKFf3ZsPc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786375288; c=relaxed/simple;
-	bh=MXJFna7WOXuhsBcURmbqxiW45t0tqtrGnhZI0VqXSlI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=F4fKvirg81pWx3ywYeJ3bmQmodsz66iWKgAM3XCJ1kKrogYsFwo3VOe5hJ1tzOGdtog4CknBbg20w7Y/jxB0GM6k9fI76hmj1lngFOyrP+IGxI4Ri09PViiSlCGoco5R7qyvmiPSDDjkINeDyiUVIhvkrk6hbyR9IEk/SxbkcMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=eVYPg/lm; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1786375654; c=relaxed/simple;
+	bh=/+GXtYNIQEoanbyO74E2Z/1ZvUJU9TFAq2W8M3Yf/NA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jXZ317nQSpnWWxAQWm96u+TebJb+84hfuSFxkVqDJgvbF/Ex04CEyvFvF5VpF2beDNCmxHDEbAFfHfmkQM8lknqyS0vcWVbqxWURcGqBaUYsu58Os3wEzhTudSrm8v93PcNcNomadTnZufsid3uLKOd7WO1yHqObKASr7lkBv4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=Hx5o9khX; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="eVYPg/lm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=N3CtHIduiCfm1F1NealDI3MNujbfwOrtNvaganYK7yk=;
-	b=eVYPg/lm302i1QuheXrhW0TZ7DUZ1SmBEFnw/60ZpELj9QWbhdfqSnuJhaI3xR
-	lX5jDJACdbh5E1A3znDuhczDODWGUl+x6N6FphBx+JGQs58qIVJ32C5Q3yD3mTm1
-	3+jL0ZFE45FtzoEGhXA1VxsSIK9iBJpcwxf24XBob43Xo=
-Received: from localhost (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wB3j1pW7HlqPRybAw--.6113S2;
-	Mon, 10 Aug 2026 23:20:54 +0800 (CST)
-Date: Mon, 10 Aug 2026 23:20:54 +0800
-From: Hao Zhang <hao_zhang_kdev@163.com>
-To: "seanjc@google.com" <seanjc@google.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"Huang, Kai" <kai.huang@intel.com>
-Subject: [PATCH v3 3/3] KVM: x86: ioapic: Preserve irr_delivered for
- duplicate edge interrupts
-Message-ID: <annsVk4_GaOGAzCL@192.168.1.215>
+	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="Hx5o9khX"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-92e85499ffbso151453685a.0
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 08:27:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=trailofbits.com; s=google; t=1786375651; x=1786980451; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JeSEH2kZC7O/8qyc+dhZdHeAalMWmSlfY9/FgFd5LWI=;
+        b=Hx5o9khXTSdMRo8B6NjbuZIghCjC/jKrSGbmooI/KZgmZkK5lXF2wHEUut9Pn6Nw9r
+         KE9M0V8jnXdUDjFEQLO9HxqCLBQmCXv4ugykJct8oN/bJli5F9DHRKIUa5mYP6aPOuyx
+         EMpCOBpnV5CJ568/e+pMkwWzRPPjCcg11Gif+XmDebRsL40CC/UEzbi+4vDKGlFZYWSC
+         rdXWI4La+97l8cA//krwLYGcQjW19SekV9LZsw/pXW6zDoTnwz90U8Q1VD+8dWU4+tPa
+         me+7ZMm5PwiGqwBIJ13jOst20JXcvVGy1yRo93ySY/RDVMTa8q0q277jPReM12S6H7ra
+         5R5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786375651; x=1786980451;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JeSEH2kZC7O/8qyc+dhZdHeAalMWmSlfY9/FgFd5LWI=;
+        b=CF0PGRUR7W5Xl+y6J/mkiR6BvPH5sWq7OQX8V4HjdSFhAzRLpH5aCKnSxMg7kqr6+m
+         xtKVsucXDJ0HLSGFYV129rcbSiPCbQ7fsARmJ5DutQuFYc5xVEoOViRY23vfnvV+0ROA
+         rfCxKEcdcTzJK7paWJ6gaqF4DDEbVa6oUvAQO9i1Va30JEut1ozXbHtQgoqxatpQ4hti
+         seCUzyyxigHM5aBdWi/FcR2SxKQfKEBGjSc5ijI209rsY9oeQPvZndP3cwOZxjiAYeRG
+         VLxZciQRVtsPNrujeXi4xfLkM2LpG3NGJJVVwQ083nUzcKRBPH1+P9eWU0Fp/ZLO3cvL
+         49yw==
+X-Forwarded-Encrypted: i=1; AHgh+RqNvkqkO52KpYAQbrS/kZsI7qNpDf6A+PrcKnf5nxWT8vk5VhUhE9mbBVCyhdZjpdQWx44=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAteiQAhhV0dNOv22/Xg5x52bAP+DlrjChqrALx0q5qt1mH5Dq
+	vwUXBJftFWy6XFJW62bZhTbko2atxp6tC/yZ6OxBlezn+/8C5K59RxkHM0zSnzVhq9g=
+X-Gm-Gg: AR+sD10egkBM8dhDXAADNYcGUy6UYFchxjQJkYpJm/WJhOWYU/O+03FbzRR3BP31bXH
+	F4tjh/YzPWcERv2e+9fRD7tk497h1M92U2W3AnTK0JU1kthNiY/BNlKL8kagtVbFf09IjMTS/an
+	MRpwP5S1N04UtPRlDUUX6R6OSQrXxk8yQjlCsNU+JRZP+r/+/ocb4cJW+KNrU6/pY+0b449IdWp
+	OyKuL+vkXeYknNV67IEFBLKFX1++0wcKN2Mo9yzCJtZpUoaTj8D3K0Jq6wNa9sBvBTr/PXJ7Lde
+	9X8BSp+e4VcZjdttS3hh8JZ8NFu2vq0glonUOqfjsmHOZ12zIbLaF/en7cHJ3L/ey6OBgnCDj/4
+	Joz6wy55oD2oYLdtdj+VKMatX6d9hLeOpgnGcPCgx/y8hp3/C32ZK+Z99vqXxpYs7Z22XUIvsL2
+	8JouZxsVUCJPrim4n3xknN4Qyc9To3jBp3IQcwqfig65Ed7Y6dqX1QnQVzhR4vpne0nw==
+X-Received: by 2002:a05:620a:2b85:b0:916:10f6:780f with SMTP id af79cd13be357-9366655a73bmr3212596685a.27.1786375651355;
+        Mon, 10 Aug 2026 08:27:31 -0700 (PDT)
+Received: from localhost ([146.190.222.192])
+        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-9366dc51b43sm808858685a.0.2026.08.10.08.27.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Aug 2026 08:27:31 -0700 (PDT)
+From: David Lee <david.lee@trailofbits.com>
+To: pbonzini@redhat.com
+Cc: Kyle Zeng <kylebot@openai.com>,
+	Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	David Lee <david.lee@trailofbits.com>
+Subject: [PATCH] KVM: pfncache: track all MMU notifier invalidations
+Date: Mon, 10 Aug 2026 15:27:29 +0000
+Message-ID: <20260810152730.841260-1-david.lee@trailofbits.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <annqlqBOOGIQJ7sY@192.168.1.215>
-X-CM-TRANSID:_____wB3j1pW7HlqPRybAw--.6113S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXr1xArWxXw17KF13CFy5CFg_yoWrGrW3p3
-	yDCFZ0vrs5JF1fJa47Ja1DWrWrur1kGrW8C34Du3y8JF15tr97XFs5JrW8XFW5GrWkX3Wa
-	va4rK3W5ua1UAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UOzVnUUUUU=
-X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC3hZJPGp57FYtjQAA30
+Content-Transfer-Encoding: 8bit
 
-From: Hao Zhang <zhanghao1@kylinos.cn>
+From: Kyle Zeng <kylebot@openai.com>
 
-For edge-triggered interrupts, ioapic_set_irq() clears irr_delivered
-before checking whether the new edge is a duplicate.  A duplicate edge
-is then coalesced without being serviced, leaving the interrupt visible
-in KVM_GET_IRQCHIP state even though the original interrupt was already
-delivered.
+There is a race condition in KVM's gfn-to-pfn cache refresh and MMU
+notifier handling. An HVA-backed cache can publish a stale PFN and
+kernel virtual address after the corresponding userspace mapping has
+been invalidated. The Xen shared-info HVA interface immediately reads
+and writes through that stale address, resulting in a host-kernel
+use-after-free.
 
-Move the state update after the duplicate-edge check so duplicate edges
-do not make a delivered interrupt appear pending during VM migration.
+The cache refresh path in virt/kvm/pfncache.c drops gpc->lock while
+resolving and mapping an HVA. It uses mn_active_invalidate_count and
+mmu_invalidate_seq to detect an MMU notifier interval that overlaps
+this unlocked window. However, mmu_invalidate_seq is advanced only
+when the invalidated HVA overlaps a KVM memslot. HVA-backed caches are
+explicitly allowed to refer to memory outside all memslots. If such an
+invalidation starts and finishes while gpc->valid is false, the active
+count returns to zero without a sequence change and the refresh accepts
+a stale PFN.
 
-Add a selftest to verify that a duplicate edge interrupt does not make
-an already-delivered interrupt visible in the saved IRR state.
+An unprivileged process with access to /dev/kvm can reach this path with
+KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA. KASAN-detected use-after-free in
+kvm_xen_shared_info_init(). The affected function reads and writes Xen
+wall-clock fields through the stale mapping, so the issue can cause a
+host-kernel crash and memory corruption.
 
-Fixes: 5bda6eed2e36 ("KVM: ioapic: Record edge-triggered interrupts delivery status")
-Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
+The attached KASAN output confirms:
+
+  BUG: KASAN: use-after-free in kvm_xen_shared_info_init+0x344/0x3d0 [kvm]
+  Read of size 4 at addr ffff888046000900 by task poc/1266
+
+Add a notifier-specific sequence that advances for every completed
+invalidate interval before mn_active_invalidate_count is decremented,
+and use that sequence for pfncache retry. The existing barrier pairing
+then guarantees refresh observes either an active invalidation or a
+sequence change.
+
+Fixes: 721f5b0dda78 ("KVM: pfncache: allow a cache to be activated with a fixed (userspace) HVA")
+Cc: stable@vger.kernel.org # 6.9+
+Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Co-developed-by: David Lee <david.lee@trailofbits.com>
+Signed-off-by: David Lee <david.lee@trailofbits.com>
 ---
- arch/x86/kvm/ioapic.c                              |  2 +-
- .../testing/selftests/kvm/x86/ioapic_state_test.c  | 47 ++++++++++++++++++++++
- 2 files changed, 48 insertions(+), 1 deletion(-)
+Bug found and triaged by OpenAI Security Research and
+validated by Trail of Bits.
 
-diff --git a/arch/x86/kvm/ioapic.c b/arch/x86/kvm/ioapic.c
-index 24a7cc3b8b7e..676effd674f9 100644
---- a/arch/x86/kvm/ioapic.c
-+++ b/arch/x86/kvm/ioapic.c
-@@ -230,11 +230,11 @@ static int ioapic_set_irq(struct kvm_ioapic *ioapic, unsigned int irq,
- 	old_irr = ioapic->irr;
- 	ioapic->irr |= mask;
- 	if (edge) {
--		ioapic->irr_delivered &= ~mask;
- 		if (old_irr == ioapic->irr) {
- 			ret = 0;
- 			goto out;
- 		}
-+		ioapic->irr_delivered &= ~mask;
- 	}
+Trail of Bits has a reproducer for this bug that triggers a
+KASAN use-after-free and can share if needed.
+
+ include/linux/kvm_host.h |  1 +
+ virt/kvm/kvm_main.c      |  9 ++++++++-
+ virt/kvm/pfncache.c      | 18 +++++++++---------
+ 3 files changed, 18 insertions(+), 10 deletions(-)
+
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index ab8cfaec8..0ac382cd9 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -800,6 +800,7 @@ struct kvm {
+ 	/* Used to wait for completion of MMU notifiers.  */
+ 	spinlock_t mn_invalidate_lock;
+ 	unsigned long mn_active_invalidate_count;
++	unsigned long mn_invalidate_seq;
+ 	struct rcuwait mn_memslots_update_rcuwait;
  
- 	ret = ioapic_service(ioapic, irq, line_status);
-diff --git a/tools/testing/selftests/kvm/x86/ioapic_state_test.c b/tools/testing/selftests/kvm/x86/ioapic_state_test.c
-index be5237f34ad2..da0276a1542f 100644
---- a/tools/testing/selftests/kvm/x86/ioapic_state_test.c
-+++ b/tools/testing/selftests/kvm/x86/ioapic_state_test.c
-@@ -3,7 +3,9 @@
-  * Regression tests for in-kernel I/O APIC state.
-  */
+ 	/* For management / invalidation of gfn_to_pfn_caches */
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 45e784462..5e43dd63c 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -812,8 +812,15 @@ static void kvm_mmu_notifier_invalidate_range_end(struct mmu_notifier *mn,
  
-+#include "apic.h"
- #include "kvm_util.h"
-+#include "processor.h"
- #include "test_util.h"
+ 	/* Pairs with the increment in range_start(). */
+ 	spin_lock(&kvm->mn_invalidate_lock);
+-	if (!WARN_ON_ONCE(!kvm->mn_active_invalidate_count))
++	if (!WARN_ON_ONCE(!kvm->mn_active_invalidate_count)) {
++		kvm->mn_invalidate_seq++;
++		/*
++		 * Publish the sequence update before dropping the active count
++		 * so that pfncache refreshes observe one or the other.
++		 */
++		smp_wmb();
+ 		--kvm->mn_active_invalidate_count;
++	}
+ 	wake = !kvm->mn_active_invalidate_count;
+ 	spin_unlock(&kvm->mn_invalidate_lock);
  
- #define TEST_IOAPIC_PIN		16
-@@ -62,6 +64,16 @@ static int kvm_irq_line_status(struct kvm_vm *vm, int level)
- 	return irq.status;
+diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
+index 728d2c1b4..d360f1eda 100644
+--- a/virt/kvm/pfncache.c
++++ b/virt/kvm/pfncache.c
+@@ -124,7 +124,7 @@ static void gpc_unmap(kvm_pfn_t pfn, void *khva)
+ #endif
  }
  
-+static void assert_ioapic_pin_irr(struct kvm_vm *vm, bool expected)
-+{
-+	struct kvm_irqchip irqchip;
-+
-+	get_ioapic(vm, &irqchip);
-+	TEST_ASSERT(!!(irqchip.chip.ioapic.irr & (1 << TEST_IOAPIC_PIN)) == expected,
-+		    "Expected IOAPIC IRR for pin %u to be %u, got 0x%x",
-+		    TEST_IOAPIC_PIN, expected, irqchip.chip.ioapic.irr);
-+}
-+
- static void test_no_remote_irr_for_undelivered_level_interrupt(void)
+-static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long mmu_seq)
++static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long mn_seq)
  {
- 	struct kvm_irqchip irqchip;
-@@ -84,9 +96,44 @@ static void test_no_remote_irr_for_undelivered_level_interrupt(void)
- 	kvm_vm_free(vm);
+ 	/*
+ 	 * mn_active_invalidate_count acts for all intents and purposes
+@@ -136,20 +136,20 @@ static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long mmu_s
+ 	 * Note, it does not matter that mn_active_invalidate_count
+ 	 * is not protected by gpc->lock.  It is guaranteed to
+ 	 * be elevated before the mmu_notifier acquires gpc->lock, and
+-	 * isn't dropped until after mmu_invalidate_seq is updated.
++	 * isn't dropped until after mn_invalidate_seq is updated.
+ 	 */
+-	if (kvm->mn_active_invalidate_count)
++	if (READ_ONCE(kvm->mn_active_invalidate_count))
+ 		return true;
+ 
+ 	/*
+ 	 * Ensure mn_active_invalidate_count is read before
+-	 * mmu_invalidate_seq.  This pairs with the smp_wmb() in
++	 * mn_invalidate_seq.  This pairs with the smp_wmb() in
+ 	 * mmu_notifier_invalidate_range_end() to guarantee either the
+ 	 * old (non-zero) value of mn_active_invalidate_count or the
+-	 * new (incremented) value of mmu_invalidate_seq is observed.
++	 * new (incremented) value of mn_invalidate_seq is observed.
+ 	 */
+ 	smp_rmb();
+-	return kvm->mmu_invalidate_seq != mmu_seq;
++	return READ_ONCE(kvm->mn_invalidate_seq) != mn_seq;
  }
  
-+static void test_duplicate_edge_interrupt_preserves_delivery_state(void)
-+{
-+	struct kvm_lapic_state lapic;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	u64 apicbase;
-+	int status;
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, NULL);
-+	apicbase = vcpu_get_msr(vcpu, MSR_IA32_APICBASE);
-+	vcpu_set_msr(vcpu, MSR_IA32_APICBASE,
-+		     apicbase | MSR_IA32_APICBASE_ENABLE);
-+	vcpu_ioctl(vcpu, KVM_GET_LAPIC, &lapic);
-+	*(u32 *)(lapic.regs + APIC_SPIV) |= APIC_SPIV_APIC_ENABLED;
-+	vcpu_ioctl(vcpu, KVM_SET_LAPIC, &lapic);
-+
-+	set_ioapic_entry(vm, false, vcpu->id);
-+
-+	status = kvm_irq_line_status(vm, 1);
-+	TEST_ASSERT(status > 0,
-+		    "Expected edge interrupt delivery, got %d", status);
-+
-+	assert_ioapic_pin_irr(vm, false);
-+
-+	status = kvm_irq_line_status(vm, 1);
-+	TEST_ASSERT(!status,
-+		    "Expected duplicate edge interrupt to be coalesced, got %d",
-+		    status);
-+
-+	assert_ioapic_pin_irr(vm, false);
-+
-+	kvm_vm_free(vm);
-+}
-+
- int main(void)
- {
- 	test_no_remote_irr_for_undelivered_level_interrupt();
-+	test_duplicate_edge_interrupt_preserves_delivery_state();
+ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+@@ -158,7 +158,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+ 	void *old_khva = (void *)PAGE_ALIGN_DOWN((uintptr_t)gpc->khva);
+ 	kvm_pfn_t new_pfn = KVM_PFN_ERR_FAULT;
+ 	void *new_khva = NULL;
+-	unsigned long mmu_seq;
++	unsigned long mn_seq;
+ 	struct page *page;
  
- 	return 0;
- }
+ 	struct kvm_follow_pfn kfp = {
+@@ -181,7 +181,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+ 	gpc->valid = false;
+ 
+ 	do {
+-		mmu_seq = gpc->kvm->mmu_invalidate_seq;
++		mn_seq = READ_ONCE(gpc->kvm->mn_invalidate_seq);
+ 		smp_rmb();
+ 
+ 		write_unlock_irq(&gpc->lock);
+@@ -232,7 +232,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+ 		 * attempting to refresh.
+ 		 */
+ 		WARN_ON_ONCE(gpc->valid);
+-	} while (mmu_notifier_retry_cache(gpc->kvm, mmu_seq));
++	} while (mmu_notifier_retry_cache(gpc->kvm, mn_seq));
+ 
+ 	gpc->valid = true;
+ 	gpc->pfn = new_pfn;
 -- 
-2.15.0
-
+2.53.0
