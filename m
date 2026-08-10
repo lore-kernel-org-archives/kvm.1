@@ -1,159 +1,207 @@
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A663603EE;
-	Mon, 10 Aug 2026 16:04:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786377878; cv=none; b=MH1RHujFoQVaJOllPd4OB+e3WPmZ+g0MBY7L/qbZCUHzh4Cn68PfAIGzEIEr63pcV0kaZRnofOcd8kxES6wNgbkdhMCLXgpq4RloRMGjIgV7T/3qEVOOYLYaSfisOuKkuAr2lqaV4imSwqqMwaBdChDVE3d+hhfXvjTEjUteiwE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786377878; c=relaxed/simple;
-	bh=n+mLg/vAQEvjdoNqXMlghyaYB/q4ECpZogfuKyTiOyw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EXDDF1/rJA4WbvoO54VKxnZq/DWaUz9VayaiMjoOE91xO5N3jTR5HHBKrzandsJCGOWGTAxhwpfk+bEBfk5PZeAbX/+9JfgpYyG2tO9Uwe4IIv2J1VkPv5xlf9OGjGcDZ/ZQRhIxkI1ZOpOm8nDe7VGobmOkRsIQzT4iqwnQuvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=mRnjUosI; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=R1/jFk2L; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E483FC5BE
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 16:24:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786379080; cv=pass; b=skoGd/uWwJACYF0aZVtXO0+QgJbJ3/AbvV5kyzc52zzNFCJM95ZyXQExFkeXzaiPtwzJWr81g9Tf8Qu4uosSQK8APnhiQwMNhkzq8vxbko+G5/PfaWqoRLwqajxu9jGSQXmoV3erKHQ6pvhH4GxM/JrLp08zoE9y/lIjJ/b2c6A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786379080; c=relaxed/simple;
+	bh=xsv3OYq+qhqNl5YPp2xtEfRcSQIlgKl80gny1Oxx4q8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ui2qQvxVuzBEuSR9aA+ZGpcE0+532RNtmdbJu/v0ZNW0hIkH1DuVqY8qxt3ZUNGMCn3+lYPGCGG3t/8eJbUTb87z+URsK/+8+f+jtdqdraUoaxJuImbzuMC3jY1S+bVYn4FVYigEoENtZWLfyhU5XLvt2zZFcODkd7V3xGjekys=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CwVJn2aU; arc=pass smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="mRnjUosI";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="R1/jFk2L"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 3FDE67A0115;
-	Mon, 10 Aug 2026 12:04:34 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 10 Aug 2026 12:04:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1786377874;
-	 x=1786464274; bh=rx6p32rK5w/1UkIOrv7fFJIIUW+qAWUACBvkYcaCbNM=; b=
-	mRnjUosIAY19rSzjW3fpfm/kIR2yFKrCvbGS91pjQymWURxTtm9NeP0mBf7rPsqr
-	pnkwRA01RVx9qXapyjqqdJdm9BiDL0uZQrRm86BRtNkNzsdgeWC8F+CAImGJhOqz
-	v+oNKG0xFhV6X4tHZNni2zLfSfckTijVh4kttQNDV1N6c+E0yh/JZC73IvhVO50F
-	ehkHpoMPFbJXKQMeTsA55IvXRnEvUWAUmiby8tqlMnUoLU9AB4OOdfDp8OB06Jls
-	SjC03/xbtxtDr+JLchYw/cTwnsZzF9uyHA4D+OhHTrkjLIv1nSe6QqIBRY21e9/L
-	FsCjtXfFtVDsqzN8Cjtrmg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786377874; x=
-	1786464274; bh=rx6p32rK5w/1UkIOrv7fFJIIUW+qAWUACBvkYcaCbNM=; b=R
-	1/jFk2LF4Iepxls0p5pdXgYJp+6qlhOi3GPH98nDvTcekkVOr7PVB4mSqBVJk6+2
-	iK/R6i9bykjn2PqGoW685JMiDt0VEmbvUCqCE+yAtAl5DbejT9YHdE2g45JZXGSH
-	2srcwuB3zDGN5Yq9jmYa0l8ujO9KGA74B1L50hezMJoqEcF+4RBvWUg6YCJn7MmZ
-	eKUbCHJKFFZr5jtBO5U3a0dKjql8ekMqx5TE4dTqZ/ODRQnO259x2NUh0UBm3n31
-	GuxshTcHkGGk5POgBLeSrUaafQWcM8amERvJMlppYzZzhiTAEPyhkG8hHZ3S4XPa
-	q7m/oUvd83l0b9tTOHYkA==
-X-ME-Sender: <xms:kfZ5auzWnSl-FxjpcZRnnRYUZEe4pBTfwAzpiwGlAzO0Mzyj0vHE9A>
-    <xme:kfZ5agwqSrafgubcmhs0bEJ6m1Zt5GGOX0EjRRJlXV8Zs8_pFnWC6ngPvcSE1q__G
-    Dim-NkvoxbeXzMAgrMaH906SV7dycvpCh-PVzVm9Bq3e-GA_rnuWzc>
-X-ME-Received: <xmr:kfZ5auW5VAO3B8zig-g7vzrtTeDwb3JtYJVy9jUWfFS36tB5IU04CuENaYR8fw>
-X-ME-Proxy-Cause: dmFkZTG217UrlL3C7v6kggE3QFxb0+SyLtqHQoVzMtZvS4azD37bWFffW3eDurys8jfJOW
-    Li0aDVvyOhSkfNnCN8Vwms1m2VjJC+vW3BjhbzStvMA5uawzg2mUdmDGJyX2TSKHUAR4p/
-    ltjmypHxvsR0kBcmPol/kdVzVxy8Z4cLIS1qsUfB8uLCxSS8CYe6BSZT2UJZrvUobPNj89
-    O6GPGBbllxaV6voRh9RCFoKEUu9b6bIe7rXirTOytc3ywBRnvcPhwZkwgYuwqO89TWVqzH
-    K6gJEYzGTvxMRyRFeKGEHYyQtSChSJmiHhxJJ0SR0ZOGBUEKg58qh5Iujz66+f9YeX00D0
-    EhzbVIYBmFYPQmIkkJM2BHG//ENSD5wtbEeQIq6YZzXWdiaah8M+X4lgJbGlowswqhvJ2f
-    pX3Ieha/oh2bKCX2P/5uj5jSwnF6T2iHcDKBZd5BcqmfVOWaFwd0L9UGM3kKGvC16r5JIR
-    3cUfQeddbXVkfGG6fUbzPJRCgA2zaIjKN/jAxmE9mDhbhZvti7AQxBT6c5rEPgAAyIUJed
-    uhDUyKP826DJbCtQj/mq0qMFx0GWbHiGvCv29XsiyTxzAof0sMKghcBkBlMkL2zNBxyPiH
-    Qchytzh65AJOkjr5APiA9CsD1NgmNhqIG5+ikLf0jQaKVli8rK15HvwSOM5g
-X-ME-Proxy: <xmx:kfZ5anQw3YxRmvig4_yftyhAP0zpwItTNbq1cd0JMMRpaQvG8m_Tew>
-    <xmx:kfZ5amS8k3Cc524BtPxihNR8NlbmGP3-CT7A6TDd0IT9akHl0_02AA>
-    <xmx:kfZ5avcBH6zjqRh40cqrXGnRzn_c9PKRfHbHqyL5iHpPCIZLKxzWbQ>
-    <xmx:kfZ5ascNI-44V1oLJZ4FbFL4dU8lMFFfoZ5-6KNwPhKYrqIT4s0uYQ>
-    <xmx:kvZ5ajOfbFjBIBjxk0q_pgCWWcKrmjiRmuaMZtGIfEj72XtsT3LoFIVn>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 10 Aug 2026 12:04:32 -0400 (EDT)
-Date: Mon, 10 Aug 2026 10:03:52 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org, Jason Gunthorpe
- <jgg@ziepe.ca>, Ankit Agrawal <ankita@nvidia.com>, Matt Evans
- <mattev@meta.com>, Leon Romanovsky <leon@kernel.org>, Vivek Kasireddy
- <vivek.kasireddy@intel.com>, Jacob Moroni <jmoroni@google.com>, David Hu
- <xuehaohu@google.com>, Samiullah Khawaja <skhawaja@google.com>,
- linux-kernel@vger.kernel.org, alex@shazbot.org
-Subject: Re: [RFC PATCH v1 0/1] vfio/pci: Revoke BARs and DMABUFs during
- sysfs-triggered PCI reset
-Message-ID: <20260810100352.1e2004c8@shazbot.org>
-In-Reply-To: <20260807201405.3717430-1-praan@google.com>
-References: <20260807201405.3717430-1-praan@google.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CwVJn2aU"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51c15a5b265so440661cf.0
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 09:24:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786379076; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Ys93ChjD8fi1DG67LxsTVksTTlpysdvaRte9dRjPg9LcmFFMVruE3INh96rNTMGc9/
+         ml5dsinHXWb34///0KqpVOO3yRPPW5GW1vxXflcUbBJEeRsZAIgvZDZnGg8pyDKwSTC1
+         QeOT4919ouAynkUyyFdkOoLFKmdn05paitg1X1Pe9cCcCd3huI/sSTyCAl2SLPhM4ROd
+         RMr/iFfhJqpECS2iDHmzHFJdIyWq39003NLqtj1ZQ9jHYrzj5dX/XdrHQ2ZiKmY+61LX
+         S9bLkM5Inv4nBg+2f4wDRyK5i8pdk6hkOaXxKPt7zKXlt8EUbCmeQPgl1++FXjKhUdsF
+         G03Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=JnpU+yjthofc0zpgkM1QSjOc8GqltDckB0JeUB3rUkg=;
+        fh=DLnCuij9BlFuI/o5H4E12QNbRzJrH9c9q63MAywafG8=;
+        b=ovMY4+DDgJZGRK6cvWjJW1IbDJx+GQw2S2N+sWahsbPht88U6knfXhyQw2Huv7t5Va
+         7b5atRNC03kweyR8nc/NyxSqerJ28fUM3nDlS/nZSQM2kYKOu+8ixklHeBePdztZkuEY
+         Pfs+S05uGIK4BBZtc46ngudw5xNOtpUj87UB2YU1mb8tKnZvNuyhMOVs2kotPLJQtcWP
+         3DOqSD56dfpDkYq7cr+V8YIA75M6aGpp+GvEVkRpVdN80k9rH55zmmKgYJPOvYVcm0d2
+         r9PGzSyMg08Yal5LIvtV3/hyIcchxj1Xe1+KA/27Hfn0aphB3ShcTT5H20qvTlV7azs/
+         9zAg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786379076; x=1786983876; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JnpU+yjthofc0zpgkM1QSjOc8GqltDckB0JeUB3rUkg=;
+        b=CwVJn2aUT+uPUxvWndznLyNgoAttgvstZNGf6IG+zWNLE0PcW9XUojG1o+LB55xczN
+         eoxS4uFpilcfMF2uGQ9vvcoKMshs03OE07DjaKlRhDxGm2YN8wF6Pz6zC94t0Ebqm6Y/
+         Jmg1TzeA6qCQJz7G6PidXwbBeZQZOElJQcKgtahyQBla3thC2s5HmQy85YM6cBds+D8C
+         Tv+j1RMaHLEQl+fxJQZph3PbguWzf/bB1D/ZMG7wc3BRdQ9EnSqvsmZG9vh+fGU6lqyC
+         qCjCDULhxVX+9MktVBl/uCczxb1m4VD/7p1X5DngHRseshP7DSlWncnCytksMbggpEzU
+         g3cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786379076; x=1786983876;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JnpU+yjthofc0zpgkM1QSjOc8GqltDckB0JeUB3rUkg=;
+        b=GcirSiMTGL/ucOVVz1/nht0KtAYZlx7ejRgH4VZcYXR1uU7ZiJSGnbzYCuLwdauF3K
+         /4EwSO6orKAT4pv5zKaX8jap/pmmMe+7MGVpIrYBhIyWre+fNUlsAQ89Tk6Y4Qmwyj6s
+         5uaeALBMtCG23gcnyxJiLyv3SmXJI7udc6rzrKda4lkTWZukLLHzIaunjJnC2bIYvR3+
+         mMTJsQZbDPA33vCqVk0bkLjdoamQdms3iyOo1QLXPDsMBv13vYkj/hblMbSERsXGRUNW
+         2zK/a0IiwNJhKnYAfb5EEB21c+sKuRcJZkY5USPtoeuH3GvlEDfQqJ0QTRsvOcnvXaJL
+         KZZQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rovc2HqMp+FHp3rboTDzvrn9E8oPcb79h1yIdVDfi0Of9bKsusXHq9bs6ElwIwcx4fpMss=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQa/6K1iv0UPS89RAYVKtVSSyHMoSFCXSeaIqzJEDXCLO+bIMn
+	Y/AD1wtSZn149VxjP7Sm4AuDLPrEOoDMu9F4z6L4tzRLoSa1fuFx6DidJoIuaIAnKVNK69K6IMM
+	oocIBV6MTTfOVIT11FCAQVqhssFwkY2xo6xNKgDBR
+X-Gm-Gg: AR+sD12OHRug/2zFmg4SuG1r42vRiTsAqbUaAfIHQ5yb5+jxzfYbuVIvJA47Bi2LNbY
+	1oZB/2NU4C5F6R8OO9Bn+wX542ruIhaUE7cNJxsXH6QEiQCFCExIm2NGXNc0gDZwi1uZNscPEo9
+	p2yAXnobnNgxJr9B1v7/DUXfXCVxti0rwpGc6MrNiUUejZ+6t5GkQWL9wO8FoH7mYXe3V7ystQd
+	5uJCCDb7V3wR5uLx4bd+hOInjwfB7ot+BS/FShlmgDoxwvWalxn5Mhs8kvFG3XXlBUPF95pnP0H
+	tfaYTmBNYipXIQVbtIz/prT4iG11sZ3lhuu5S0Wm4JO5nph9iKM44w==
+X-Received: by 2002:a05:622a:2b0a:b0:519:b655:235 with SMTP id
+ d75a77b69052e-52d2810222bmr38915311cf.3.1786379075203; Mon, 10 Aug 2026
+ 09:24:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
+ <20260806-b4-scalable-cow-virt-pgoff-v4-1-ab318a350404@kernel.org>
+ <CAJuCfpFAA1H2pOi6EOarNtrdzLQDJyhm6QOGsfZ4SFTuM5eiLQ@mail.gmail.com> <anmLnvWAyIJwjsXj@lucifer>
+In-Reply-To: <anmLnvWAyIJwjsXj@lucifer>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 10 Aug 2026 09:24:23 -0700
+X-Gm-Features: AUfX_mykce6fbL166nHsURFiLv_kMzKY9gOukzdEiVHYnjVKW8Vop-MtXqL00bE
+Message-ID: <CAJuCfpGJuf3NOuPg4+7TaWhNOv5sN7WEY2awZOpDv1VV13J-DQ@mail.gmail.com>
+Subject: Re: [PATCH v4 01/20] mm/vma: introduce VMA anon page offset field and
+ add helpers
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Alex Deucher <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Boris Brezillon <boris.brezillon@collabora.com>, 
+	Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>, 
+	Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>, 
+	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	James Clark <james.clark@linaro.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
+	linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri,  7 Aug 2026 20:14:04 +0000
-Pranjal Shrivastava <praan@google.com> wrote:
+On Mon, Aug 10, 2026 at 1:36=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.o=
+rg> wrote:
+>
+> On Sat, Aug 08, 2026 at 05:51:10PM -0700, Suren Baghdasaryan wrote:
+> > On Thu, Aug 6, 2026 at 1:22=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kerne=
+l.org> wrote:
+> > > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > > index 87feaa5a2b78..df78847f5f07 100644
+> > > --- a/include/linux/mm.h
+> > > +++ b/include/linux/mm.h
+> > > @@ -4393,6 +4393,65 @@ static inline pgoff_t vma_last_pgoff(const str=
+uct vm_area_struct *vma)
+> > >         return vma_end_pgoff(vma) - 1;
+> > >  }
+> > >
+> > > +/**
+> > > + * vma_start_anon_pgoff() - Get the anonymous page offset of the sta=
+rt of @vma
+> > > + * @vma: The VMA whose anonymous page offset is required.
+> > > + *
+> > > + * If unfaulted, then this is vma->vm_start >> PAGE_SHIFT, if faulte=
+d then the
+> > > + * anonymous page offset at the time of first fault.
+> > > + *
+> > > + * If the VMA is anonymous, this returns the same value as vma_start=
+_pgoff().
+> > > + *
+> > > + * This value is used for tracking MAP_PRIVATE file-backed mappings =
+by their
+> > > + * anonymous page offset.
+> >
+> > I assume this function should not be used with shared file-backed
+> > mappings, right? If so, maybe add a comment like the one you have for
+> > linear_anon_page_index(): "It is not valid to call this function for
+> > shared file-backed mappings."?
+>
+> No that's not the case, it is valid to access this for any VMA though it'=
+s only
+> meaningful for MAP_PRIVATE and anonymous VMAs (though in the latter case =
+pgoff
+> =3D=3D anon pgoff).
+>
+> The code keeps the anon pgoff values consistent even for shared mappings =
+because
+> - hey - we have the field anyway and it's easiest and safest to just keep=
+ it the
+> same.
+>
+> One alternative would be to have code that checks the flags and zeroes th=
+e field
+> otherwise , but then you have problems like - early on initialisation now
+> there's an ordering requirement which can easily go wrong.
+>
+> Another alternative is to just leave it stale, but then that seems object=
+ively
+> worse and again requires branching code on update and set.
+>
+> All-in-all it's easier to keep this working the same for any type of mapp=
+ing,
+> it's just useless to do anything with the anon pgoff for a shared mapping=
+ :)
 
-> Introduce PCI .reset_prepare and .reset_done handlers to safely revoke
-> active userspace mappings and exported DMABUFs during sysfs-triggered
-> device resets.
-> 
-> We are seeing a situation where system health and monitoring daemons 
-> (at times erroneously) issue device resets via sysfs for devices bound
-> to vfio-pci:
-> 
->   echo 1 > /sys/bus/pci/devices/0000:01:00.0/reset
-> 
-> However, because vfio-pci does not implement the .reset_prepare and
-> .reset_done error handlers, this hardware reset occurs completely unnoticed
-> by the VFIO driver.
-> 
-> Consequently, active traditional userspace BAR mappings and exported DMABUFs
-> are never zapped or revoked. Importers of the DMABUFs (e.g., RDMA drivers)
-> continue to issue DMAs (such as PCIe Memory Writes) toward the Endpoint. 
-> These transactions are silently dropped by the root port or trigger CTOs 
-> while higher-level actions (e.g., RDMA reg_mr) continue to succeed.
-> 
-> We'd like to fix this by implementing the PCI reset ops for vfio-pci
-> that revoke the DMABUFs and zap the BARs while holding the memory lock
-> allowing concurrent user accesses to sleep and fault back in once the reset
-> completes.
+Makes sense. Thanks for the explanation!
 
-That sounds like a nice, serene solution, but that's not actually what
-happens.  Due to the write vs read memory_lock semaphore, CPU faults
-are stalled.  On the other hand, DMA mappings via IOMMUFD/dmabuf are
-lost.  They require the userspace driver to be involved to perform the
-unmap/remap.
-
-Potentially this is all better than letting the device generate a
-machine check as it's still trying to run across the reset, but let's
-not pretend this is just a hiccup for the device that will continue
-running after the rogue reset.  Thanks,
-
-Alex
- 
-> Note: I've tried to handle the locking as a first attempt here, there
-> might've been some cases that were missed. Also, for the RFC, the
-> drivers that implement their own pci_error_handlers (like nvgrace) are 
-> not altered for now.
-> 
-> Quick Note about Matt's DMABUF mmap Series
-> ==========================================
-> While this patch is aimed for the current upstream code, I believe with
-> Matt's refactor [1] these ops might change slightly. If we have consensus
-> on this patch, I'd send another patch based to Matt based on their series
-> for them to include it in their next version.
-> 
-> [1] https://lore.kernel.org/all/20260715174737.15287-1-matt@ozlabs.org/
-> 
-> Thanks,
-> Praan
-> 
-> Pranjal Shrivastava (1):
->   vfio/pci: Revoke BARs and DMABUFs during sysfs-triggered PCI reset
-> 
->  drivers/vfio/pci/vfio_pci_core.c | 88 ++++++++++++++++++++------------
->  1 file changed, 56 insertions(+), 32 deletions(-)
-> 
-
+>
+> --
+> Cheers, Lorenzo
