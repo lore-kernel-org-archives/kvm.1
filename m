@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E86034DCE4;
-	Mon, 10 Aug 2026 07:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB03385539;
+	Mon, 10 Aug 2026 07:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786348270; cv=none; b=ChZ6GMvhaQiEQ3tkC5w40nGI3zlBCb4yMRhqgaWaZptkZKZvZgCM2caXsNFU7av9quqqDGZSdNx5URsUmG58YDjynSM76J8KgBR4FxM+WF+9/xeRchdn+4iglhgUK8/bpl+2IonLbYsGbFGLl0SLGLWGZDbAdpmdfJuQZvtZCVs=
+	t=1786348431; cv=none; b=B8sT+DEDutPSec6zY/eMlqhjrfySxe7nJQCWxYTWfxZdFB+9bd5Iq7wUxq18sxLGrsXbDB1Bg9EXFsDQMiTVYOAJcknUMGJFuuzsp8PkTov/NxjXgtder7cGtvfzf9ftxzCTnld8t6qg7PPEp9CCtmi1fFQFevI3ZZ5RGrFnAXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786348270; c=relaxed/simple;
-	bh=WpYittFGbe38+Tijb7dCiR0c7d2CZ13R8zo+EwCPt8M=;
+	s=arc-20240116; t=1786348431; c=relaxed/simple;
+	bh=VMV7wF4iX17BywCnYarc9BOhOELXo5U3yK2somfxFbI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jETVTXkFU6u03YS5TGvDg3eyITOasnT8Y5bQUdhshkuT0Q1IuA2UEUHF3MEEUOiQnuO4zZuDrZR8OTCiAe/kPsJD6lsSbvkJIAqWzKVX08rsdc5nRS48uWYt4A4dmjhLSmjxeVUf2NU2EdgBdXf5aqDGgNTgIIt4xPA33ja0Lv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gnfQ9ms/; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=Ifo3Pf5xuRku+6xgQtdF7U+8+pGAZNDXQdQR8ASK434g/2BRQ2Jo67tm+hPNqLesKqvO9v29huEgMNq1lRuiNYEJdzkXPXfHL7HfzBMnU/fnHyMDyiDZeq374B3CiBnHCWYoYAuahqHJFqn2Lpza7CWvUvqjAWWMR7xTdvKrFhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DW4z82QM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gnfQ9ms/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A255D1F000E9;
-	Mon, 10 Aug 2026 07:50:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DW4z82QM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D63B1F000E9;
+	Mon, 10 Aug 2026 07:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786348268;
-	bh=vFgRE53dFjQ80+ECIKjoyM+QU0baooTcvpeBj0dahws=;
+	s=k20260515; t=1786348429;
+	bh=RsQ1603LS78fzd75k/x6TR3rmaLDzL0DbDH4cQP+xIY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gnfQ9ms/oThb5Ch9veMgNhrTO6RV+Xy8+ko76jeYeDO+7MNWt7ILUr4VOZYJYH7Fu
-	 wmVCF3vqoPq0IqhPjG6f7APbnsF6MnV/j4bQ6a3M03YAOg5IZl5nuPItDjbmWadvOo
-	 QvmASc3lZ+x3DL7GHoC+2d2iJ5CyjDwrc80XZ+1fmlDV6W4rWJZODKBNZL5PcEPCoZ
-	 Syh4S9RULj74wrAJ3Cbuymlm32GvB8hwxv6sGMHUk5eGQyl6R8veZWNKMHl1PNE5bG
-	 aksDlkqqBybU0sP8CFGkGWinj/KCckNtR222zEw9cDtLUaYruayTRszZ35YsJGMBqF
-	 H7J6eu2OWuPJA==
-Message-ID: <0a85b27a-121e-40a3-92b6-3927fc298e4e@kernel.org>
-Date: Mon, 10 Aug 2026 09:50:48 +0200
+	b=DW4z82QMtva6XBNmUaUzZLe0byysfZf29zr2G0Oagu6iwv3gzJhRTdY+73TWV76VC
+	 3GiIznMMAdA1VjRdjRC+6TzB1p0b8gcI4x/hHUrwU5ayS9XABnhXcKXqNKhOM2B/x8
+	 23mdTZtUDc/42rg8xEidBlpG6SpASoWPIpKJhSB6fVLXlTnAScj4SlUiUaCGyx6kra
+	 OfgYRsVfVvLKmLQc3RjVdcmA3OFw27AGfkw2aL57TxhkVId3It4gJNivfkVxcrhlhi
+	 QhiUKSDg1PRV4kC6A3y7MWEY1KBv6YQ+C0TOtDTGLk3Wm8OWbCjyIjIdzn41kjR3gU
+	 qujSBCM1IL+mw==
+Message-ID: <fa1ee6d5-9a89-49af-ba50-1beb3b417c6a@kernel.org>
+Date: Mon, 10 Aug 2026 09:53:30 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 01/41] KVM: guest_memfd: Introduce per-gmem attributes,
- use to guard user mappings
+Subject: Re: [PATCH v9 02/41] KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to
+ KVM_VM_MEMORY_ATTRIBUTES
 To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
  binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
  jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
@@ -66,9 +66,9 @@ To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
+ linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
 References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-1-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-2-35f9aec2aed2@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -115,116 +115,29 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260728-gmem-inplace-conversion-v9-1-35f9aec2aed2@google.com>
+In-Reply-To: <20260728-gmem-inplace-conversion-v9-2-35f9aec2aed2@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 7/29/26 02:35, Ackerley Tng via B4 Relay wrote:
 > From: Sean Christopherson <seanjc@google.com>
 > 
-> Start plumbing in guest_memfd support for in-place private<=>shared
-> conversions by tracking attributes via a maple tree.  KVM currently tracks
-> private vs. shared attributes on a per-VM basis, which made sense when a
-> guest_memfd _only_ supported private memory, but tracking per-VM simply
-> can't work for in-place conversions as the shared/private status of a given
-> page needs to be per-gmem_inode, not per-VM.
+> Rename the per-VM memory attributes Kconfig to make it explicitly about
+> per-VM attributes in anticipation of adding memory attributes support to
+> guest_memfd, at which point it will be possible (and desirable) to have
+> memory attributes without the per-VM support, even in x86.
 > 
-> Use the filemap invalidation lock to protect the maple tree, as taking the
-> lock for read when faulting in memory (for userspace or the guest) isn't
-> expected to result in meaningful contention, and using a separate lock
-> would add significant complexity (avoiding deadlock is quite difficult).
+> No functional change intended.
 > 
-> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-> Co-developed-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Fuad Tabba <tabba@google.com>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Reviewed-by: Fuad Tabba <tabba@google.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 > Tested-by: Shivank Garg <shivankg@amd.com>
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 > ---
->  virt/kvm/guest_memfd.c | 133 ++++++++++++++++++++++++++++++++++++++++++-------
->  1 file changed, 116 insertions(+), 17 deletions(-)
-> 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 0bca42a0b346b..3d6547c5ba9a6 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -4,6 +4,7 @@
->  #include <linux/falloc.h>
->  #include <linux/fs.h>
->  #include <linux/kvm_host.h>
-> +#include <linux/maple_tree.h>
->  #include <linux/mempolicy.h>
->  #include <linux/pseudo_fs.h>
->  #include <linux/pagemap.h>
-> @@ -33,6 +34,13 @@ struct gmem_inode {
->  	struct list_head gmem_file_list;
->  
->  	u64 flags;
-> +	/*
-> +	 * Every index in this inode, whether memory is populated or
-> +	 * not, is tracked in attributes. The entire range of indices,
-> +	 * corresponding to the size of this inode, is represented in
-> +	 * this maple tree.
-> +	 */
-> +	struct maple_tree attributes;
->  };
->  
->  static __always_inline struct gmem_inode *GMEM_I(struct inode *inode)
-> @@ -60,9 +68,25 @@ static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
->  	return gfn - slot->base_gfn + slot->gmem.pgoff;
->  }
->  
-> +static u64 kvm_gmem_interpret_entry(struct inode *inode, void *entry)
-> +{
-> +	if (WARN_ON_ONCE(!entry)) {
-> +		bool initially_shared = GMEM_I(inode)->flags &
-> +					GUEST_MEMFD_FLAG_INIT_SHARED;
-> +
-> +		return initially_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
 
-We have the calculation of the default attribute here and ...
-
-> +static int kvm_gmem_init_inode(struct inode *inode, loff_t size, u64 flags)
-> +{
-> +	struct gmem_inode *gi = GMEM_I(inode);
-> +	MA_STATE(mas, &gi->attributes, 0, (size >> PAGE_SHIFT) - 1);
-> +	u64 attrs;
-> +	int r;
-> +
-> +	inode->i_op = &kvm_gmem_iops;
-> +	inode->i_mapping->a_ops = &kvm_gmem_aops;
-> +	inode->i_mode |= S_IFREG;
-> +	inode->i_size = size;
-> +	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
-> +
-> +	/*
-> +	 * guest_memfd memory is neither migratable nor swappable: set
-> +	 * inaccessible to gate off both.
-> +	 */
-> +	mapping_set_inaccessible(inode->i_mapping);
-> +	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
-> +
-> +	gi->flags = flags;
-> +
-> +	mt_set_external_lock(&gi->attributes,
-> +			     &inode->i_mapping->invalidate_lock);
-> +
-> +	/*
-> +	 * Store default attributes for the entire gmem instance. Ensuring every
-> +	 * index is represented in the maple tree at all times simplifies the
-> +	 * conversion and merging logic.
-> +	 */
-> +	attrs = gi->flags & GUEST_MEMFD_FLAG_INIT_SHARED ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
-... here.
-
-Worth a helper?
-
-kvm_gmem_default_attribute(struct inode *inode) ?
-
-Nothing else jumped at me, and I agree with the kvm_gmem_get_attributes()
-improvement :)
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
