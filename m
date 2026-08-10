@@ -1,145 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from esa5.hc1455-7.c3s2.iphmx.com (esa5.hc1455-7.c3s2.iphmx.com [68.232.139.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB03385539;
-	Mon, 10 Aug 2026 07:53:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3846374E5A;
+	Mon, 10 Aug 2026 08:04:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786348431; cv=none; b=B8sT+DEDutPSec6zY/eMlqhjrfySxe7nJQCWxYTWfxZdFB+9bd5Iq7wUxq18sxLGrsXbDB1Bg9EXFsDQMiTVYOAJcknUMGJFuuzsp8PkTov/NxjXgtder7cGtvfzf9ftxzCTnld8t6qg7PPEp9CCtmi1fFQFevI3ZZ5RGrFnAXI=
+	t=1786349070; cv=none; b=GFhx5zTl39z2d01FGnvA1D+9DNYWvTjzkFYsaRn8c3ua0u78y2eAMa7zRIYerlawUaMYcynt27d0xE7jTZRUCJAyMNrGAuPwOBbefYVD3BKy7JtvmdCC+Pncm8MXV6HlojVsv+lvJl3T1P8hK/tydaTSH4mKo17J4v3u1yO6QM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786348431; c=relaxed/simple;
-	bh=VMV7wF4iX17BywCnYarc9BOhOELXo5U3yK2somfxFbI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ifo3Pf5xuRku+6xgQtdF7U+8+pGAZNDXQdQR8ASK434g/2BRQ2Jo67tm+hPNqLesKqvO9v29huEgMNq1lRuiNYEJdzkXPXfHL7HfzBMnU/fnHyMDyiDZeq374B3CiBnHCWYoYAuahqHJFqn2Lpza7CWvUvqjAWWMR7xTdvKrFhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DW4z82QM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786349070; c=relaxed/simple;
+	bh=gTCgRTRbO71RhS/662ipRYrMCfFYH4BSpUcquX2qvVg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VFDfL3uCIVaoYRTiLsDbpNzVLaGcSDZZtcuK8xXyVdOJUiBh6mwBgzM0HNqrkRlELfB9qaRBwtougnAroiJsHqjikIRtB+p75fd6y/Yo8xnOb7uzGqEYHMp3TeRnF5UA6/Ms0ZbbOl720yzH090X6oIJCzwg1t20y3fBXYbhm/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=PthpVJ2S; arc=none smtp.client-ip=68.232.139.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DW4z82QM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D63B1F000E9;
-	Mon, 10 Aug 2026 07:53:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786348429;
-	bh=RsQ1603LS78fzd75k/x6TR3rmaLDzL0DbDH4cQP+xIY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DW4z82QMtva6XBNmUaUzZLe0byysfZf29zr2G0Oagu6iwv3gzJhRTdY+73TWV76VC
-	 3GiIznMMAdA1VjRdjRC+6TzB1p0b8gcI4x/hHUrwU5ayS9XABnhXcKXqNKhOM2B/x8
-	 23mdTZtUDc/42rg8xEidBlpG6SpASoWPIpKJhSB6fVLXlTnAScj4SlUiUaCGyx6kra
-	 OfgYRsVfVvLKmLQc3RjVdcmA3OFw27AGfkw2aL57TxhkVId3It4gJNivfkVxcrhlhi
-	 QhiUKSDg1PRV4kC6A3y7MWEY1KBv6YQ+C0TOtDTGLk3Wm8OWbCjyIjIdzn41kjR3gU
-	 qujSBCM1IL+mw==
-Message-ID: <fa1ee6d5-9a89-49af-ba50-1beb3b417c6a@kernel.org>
-Date: Mon, 10 Aug 2026 09:53:30 +0200
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="PthpVJ2S"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1786349069; x=1817885069;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gTCgRTRbO71RhS/662ipRYrMCfFYH4BSpUcquX2qvVg=;
+  b=PthpVJ2S9rSuDDsvTo6aDAVGYirmnSCGEQBZO18ltKigbPTYYtJ5kJa9
+   92dHj7MgVKxTWI6SV21Z6uwkwAgSSoeTi28B3Af8oys/GXTGK/Ct0EQ+N
+   Qdsqq6n4kLXL/BbzVI47b5ubClOtr1QyAh8Z0gXQpSjYx3gghKnTZKw32
+   q6Za/AZNEk9P4PYQYKhUGZ26xY/9Vjs5+xKEkjd4ygIJBqoQFHADbCSwH
+   vcaIhhsvgdCmMDbFSJLbzzm+pG4sKg8b+Lloagt8uehut2xnREslxCa14
+   Ux0oF8C9Isf1ebttU4nPOBi8ox9zbIp1420MNOV/9uD+Mg7cPX6qmXrjL
+   w==;
+X-CSE-ConnectionGUID: rOqg3S3LS2G3qRQ/sQsKXQ==
+X-CSE-MsgGUID: RdJu/zeVTfaUlQD91ZicUQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="248580175"
+X-IronPort-AV: E=Sophos;i="6.25,215,1779116400"; 
+   d="scan'208";a="248580175"
+Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
+  by esa5.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 17:03:18 +0900
+Received: from az2uksmgm3.o.css.fujitsu.com (unknown [10.151.22.200])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id 87322C00547;
+	Mon, 10 Aug 2026 08:03:18 +0000 (UTC)
+Received: from az2nlsmom4.fujitsu.com (unknown [10.150.26.201])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmgm3.o.css.fujitsu.com (Postfix) with ESMTPS id 3A558C00313;
+	Mon, 10 Aug 2026 08:03:18 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.8.69.80])
+	by az2nlsmom4.fujitsu.com (Postfix) with SMTP id 3776520000EC;
+	Mon, 10 Aug 2026 08:03:09 +0000 (UTC)
+Date: Mon, 10 Aug 2026 17:03:02 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v16 21/45] KVM: arm64: CCA: Handle realm enter/exit
+Message-ID: <anl7EwU9jSig-uQs@FCCLS0092175.localdomain>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <20260803134403.80630-22-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 02/41] KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to
- KVM_VM_MEMORY_ATTRIBUTES
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
- oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com,
- rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com,
- steven.price@arm.com, tabba@google.com, willy@infradead.org,
- wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com,
- pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org,
- liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-2-35f9aec2aed2@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260728-gmem-inplace-conversion-v9-2-35f9aec2aed2@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260803134403.80630-22-steven.price@arm.com>
 
-On 7/29/26 02:35, Ackerley Tng via B4 Relay wrote:
-> From: Sean Christopherson <seanjc@google.com>
-> 
-> Rename the per-VM memory attributes Kconfig to make it explicitly about
-> per-VM attributes in anticipation of adding memory attributes support to
-> guest_memfd, at which point it will be possible (and desirable) to have
-> memory attributes without the per-VM support, even in x86.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Tested-by: Shivank Garg <shivankg@amd.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
+On 08/03 14:43, Steven Price wrote:
+> Entering a realm is done using a SMC call to the RMM. On exit the
+> exit-codes need to be handled slightly differently to the normal KVM
+> path so define our own functions for realm enter/exit and hook them
+> in if the guest is a realm guest.
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Hi Steven,
 
--- 
-Cheers,
+I found that when the host kernel is booting with pseudo-NMI enabled
+(irqchip.gicv3_pseudo_nmi=1), Realm VMs fail boot successfully and the
+watchdog reports RCU stalls and soft lockups.
 
-David
+After some investigations, I confirmed that arch_timer interrupts
+are not being delivered to some CPUs. This appears to be because PMR is
+000000c0 (GICV3_PRIO_IRQ), as shown below:
+
+  [  248.769692] pmr: 000000c0
+
+For normal VMs, KVM opens PMR before entering the guest, because having
+IRQs masked via PMR when entering the guest means the GIC will not
+signal the CPU of interrupts of lower priority, and in the worst case
+a guest exit may never occur.
+(See __kvm_vcpu_run in arch/arm64/kvm/hyp/vhe/switch.c)
+
+[  248.756980] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+[  248.758649] rcu:     3-...0: (113 ticks this GP) idle=d2ec/1/0x4000000000000000 softirq=1631/1633 fqs=297
+[  248.759413] rcu:     4-...0: (7 ticks this GP) idle=b77c/1/0x4000000000000000 softirq=1589/1589 fqs=297
+[  248.760101] rcu:     (detected by 7, t=6003 jiffies, g=4553, q=86 ncpus=8)
+[  248.760731] Sending NMI from CPU 7 to CPUs 3:
+[  248.766814] NMI backtrace for cpu 3
+[  248.768285] CPU: 3 UID: 0 PID: 387 Comm: kvm-vcpu-0 Not tainted 7.2.0-rc2-00267-g7326f0114689 #238 PREEMPT(lazy)
+[  248.768681] Hardware name: QEMU QEMU Virtual Machine, BIOS unknown 02/02/2022
+[  248.768936] pstate: 61402009 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[  248.769021] pc : kvm_rec_enter+0xa0/0xb8
+[  248.769585] lr : kvm_rec_enter+0x24/0xb8
+[  248.769655] sp : ffff800084943830
+[  248.769692] pmr: 000000c0
+[  248.769757] x29: ffff800084943830 x28: ffff0000079c6c00 x27: 0000000000000000
+[  248.770441] x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
+[  248.770536] x23: 0000000080000000 x22: 0000000000000001 x21: 0000000049d99000
+[  248.770590] x20: 0000000049d9a000 x19: ffff00000e018000 x18: 0000000000000000
+[  248.770647] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[  248.770756] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+[  248.770863] x11: 0000000000000000 x10: 0000000000000000 x9 : ffff8000812ab1bc
+[  248.771018] x8 : 0000000000000000 x7 : 0000000000000020 x6 : 0000000000000080
+[  248.771123] x5 : 0000000000000004 x4 : 0000000000000040 x3 : 0000000000000000
+[  248.771172] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
+[  248.771385] Call trace:
+[  248.771612]  kvm_rec_enter+0xa0/0xb8 (P)
+[  248.771757]  kvm_arm_vcpu_enter_exit+0x8c/0x218
+[  248.771796]  kvm_arch_vcpu_ioctl_run+0x274/0x890
+[  248.771843]  kvm_vcpu_ioctl+0x180/0xb50
+[  248.771883]  __arm64_sys_ioctl+0xb4/0x118
+[  248.771920]  invoke_syscall.constprop.0+0xb8/0x120
+[  248.771954]  do_el0_svc+0x48/0xc8
+[  248.771982]  el0_svc+0x48/0x280
+[  248.772012]  el0t_64_sync_handler+0xa0/0xe8
+[  248.772041]  el0t_64_sync+0x1ac/0x1b0
+[...]
+
+> [...]
+> +int noinstr kvm_rec_enter(struct kvm_vcpu *vcpu)
+> +{
+> +	struct realm_rec *rec = &vcpu->arch.rec;
+> +	int ret;
+> +
+> +	ret = rmi_rec_enter(rec->rec_phys, rec->run_phys);
+> +	if (!ret)
+> +		load_realm_timer_state(vcpu);
+> +
+> +	return ret;
+> +}
+
+In my testing environment, adding local_daif_mask/restore() in line with
+__kvm_vcpu_run() fixes the issue, and Realm VMs successfully boot
+without RCU stalls or soft lockups.
+
+However, I'm not sure if we can safely call local_daif_mask/restore()
+here, bacause they call trace_hardirqs_off/on(), which presumably cannot
+be called from noinstr context.
+
+For reference, the VHE hyp path seems to call local_daif_mask/restore()
+from noinstr context, but I'm not sure why this is considered safe:
+  noinstr kvm_arm_vcpu_enter_exit()
+    kvm_call_hyp_ret(__kvm_vcpu_run, vcpu) <- normal function call for VHE
+      local_daif_mask()
+        trace_hardirqs_off()
+      local_daif_restore()
+        trace_hardirqs_off/on()
+
+The following change works in my test environment.
+Any thoughts on the issue and the proposed fix?
+
+diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+index c242dfc2c7a6..dd7cb2d7db88 100644
+--- a/arch/arm64/kvm/rmi.c
++++ b/arch/arm64/kvm/rmi.c
+@@ -1307,7 +1307,13 @@ int noinstr kvm_rec_enter(struct kvm_vcpu *vcpu)
+        struct realm_rec *rec = &vcpu->arch.rec;
+        int ret;
+
++       local_daif_mask();
++       pmr_sync();
++
+        ret = rmi_rec_enter(rec->rec_phys, rec->run_phys);
++
++       local_daif_restore(DAIF_PROCCTX_NOIRQ);
++
+        if (!ret)
+                load_realm_timer_state(vcpu);
+
+Thanks,
+Kohei
