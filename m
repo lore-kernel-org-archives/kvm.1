@@ -1,147 +1,238 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011032.outbound.protection.outlook.com [52.101.57.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD003B6BEE
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 10:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E362D592C
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 10:10:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786356314; cv=pass; b=YAj8da5hMKbMq9DA2KK8VlSgALYJJX/lX1pl1Kz7QJr7Ua5vPG8RtdvuUwzp2GKUfK78e5PPuhV/jYm23wbqNMgZ7LZ7+ndQwO3+KYag2o4tfRJMNLeVbckX1mP8ffp2QilJx1ojhQ3EMBhN2DnQPI/yu91F2DucnEh41F8PZpI=
+	t=1786356656; cv=fail; b=QuoxmG9EiNYd+j1xIovL/W8XQ4ZlHb8feocy3QV37Svf9XN6l6fiPxnzgUlCFpy+sfbx3JjrznOcRKYkHSrA2wY10qz0sQxPZE0NcEAlk3Y5Jh2J6ZI5MY0XO6TNaQJHPNMMToQxp53tK2sqDICmYd35FLjvjNnkDsb1Zw3bx+c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786356314; c=relaxed/simple;
-	bh=4LdAx9fvvsBB7MjnkYBLZN0nPHxZGz7WnwP8m1gHhRo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HwLa81PED/n+/eb0K9o/te+25pNuSUVIP8eP/YqbwDy3V/PBG2zzuan8Y64iyRU7MDmWgXRNIgHJohavY2P4CmvohJfShDOnL453f3x7KEkoUJHsOA2Z6zWg3VOxiX0fvWYDk5lwIUFbT6E3W55lPEVCH+pD/NsxBxVDwqyT0mQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U6eBGlE/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=C550Dx8Y; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786356656; c=relaxed/simple;
+	bh=7eSEXaxkiEc9WStjnV+sG5i5ca428HJblDgx50bnK18=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WW1o3AJw7Z0VOt+uOhPDAzCuc0bhVTgUjXMdsjHZQR/bT42dWYgZFNi7fIP43VUqOZ7EGS4qTJeEAG6Bi7/JyE49f/7EVgD6L0GWr/ZUQvjixAhZZ7DydQu6d/5eH+dlI7xOoyaHRW9vOLO9PtHpzc78k6DoYsquJuQSfLC60ZI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=asdbq/DR; arc=fail smtp.client-ip=52.101.57.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U6eBGlE/";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="C550Dx8Y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786356311;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KTE9q723VNHgSKbOmtVFOArX1damMhZ8BQEArvWAKkE=;
-	b=U6eBGlE/41LwwK4jPh/BeD0iNMAsz0J08ylvRx+vevO9fzM0eiHz7F1Ur8LqXvY+PtZ7K5
-	a2ySYeA58ckc1qHmK+V7r+RtGCmz+NafjLtCaGWJPVw0+2eypzrfxrDdZzjV8IIZ9O/yUd
-	Ws1cCSUflYd2+eJVW8zhe+CJHzpFEmo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-PzVYTjFfOriMwAO7oum6Pg-1; Mon, 10 Aug 2026 06:05:10 -0400
-X-MC-Unique: PzVYTjFfOriMwAO7oum6Pg-1
-X-Mimecast-MFC-AGG-ID: PzVYTjFfOriMwAO7oum6Pg_1786356309
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49955a9dbcdso10290965e9.1
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 03:05:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786356309; cv=none;
-        d=google.com; s=arc-20260327;
-        b=m4qmC9ITHVfjCiV/sMEoD6OeARG0xrdQxj8UArhza9c0U9Vf8JatB2Rk1hZkXJMWSg
-         IELtwl31Q+ok/tPULcY/v1eeQZIYBouwYZZmKRTZ3xcR8GpQpvg/5igh1wkK4Q0r5TmD
-         CKOn05RE8y7SlTEQoUZUFRsppwlZKtKkrXlZ9HZ9nlyjVFGH76HdChysmmBIaT4Z6eBD
-         kecddTqTTvgtxcqkQoguNA/VYv6R3o1b3C1d3zJbwugE21pdw/YNtTrBjdypuJboWSIu
-         ToiGtB/c//JaTa+Oa8+MjDSN8MLWB50D/dS8Ru2yiVbSUcBYO01mfKfzZzoyVwh+RVvj
-         iPQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KTE9q723VNHgSKbOmtVFOArX1damMhZ8BQEArvWAKkE=;
-        fh=oaK1tejvwS0+TNSZQy9Z927lo43xjqOJIoOhwLoRbxw=;
-        b=B4GOHbKvRVqYtYxmdg9JlGQkwXLfkBZgW6zLRFEnn/ifyCBJhM3jRpqyHlPIbZfMuG
-         iWWiCU/21od+ahJEOqS0czduerHjtzgkIaEZ/VNDL+BApGw83JMh/6bJ56jHPf/644Nt
-         Bj0gqCkracYydstgyiseO2loju3BpathabLUxF5vKjn41i4g+A9k9b7fjOTLCNQtum00
-         JiWX0ql+LTcakuwkE5bA7Ql9BvFehHQnVbKq+CB17b+vGmSPr5+1u3d5K8DO7A05OCZ6
-         wi6xZkUH9Ki5ydU6hKxmREQpcmfNJ16GrVPOthE8Q2r2k3pLLjan2JbA8GxT0qZcZzD+
-         aF/A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786356309; x=1786961109; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=KTE9q723VNHgSKbOmtVFOArX1damMhZ8BQEArvWAKkE=;
-        b=C550Dx8Y4F8LdeHXnN+Nag7AvjpSQKSZJigSZZ96cHQU/4uJlKENkqe3evapvfrPWy
-         /Bgzihvkp04i/sbEHSMDONR1oyVL8+nFQH5ixnxdiSihyS6EArcRGJV56mV6bDgg9k4w
-         6uIIYgRkr6suElCfqPTEAi4PKGRNkpV72812R7c3cyIY3wB2RSXG7xRgOAZQDZRkchIQ
-         VR9XVvBbfaGDa7goWuCZgFacuejAawigokyVHlUq10v+yPIGSRcKZ/urTa+iw1dBt6x7
-         UO3AiQSynCtHlZ8o9jtGKNDT/cEcFktSxu3Wka254ps0arMhAEzif2FxWaIn5AH9Lg+U
-         oQBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786356309; x=1786961109;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KTE9q723VNHgSKbOmtVFOArX1damMhZ8BQEArvWAKkE=;
-        b=hUkUGNHydUSzmyFu235LlumSBnrKm80z7IkahHSOfYpytnw7tL+kAX3C72SAewM2Zf
-         Y+GO8PHAj+r/5svg2rCdszKiDZVsusICMnvlaUIxGdy2AR7Mxrj5pgws91nRPg3EtDKp
-         x+vlrh/wYRwZbQu6KGoNik7w8DFUWf48hyJjyYSleAmExzB/7BdHnnBx+tTJrVdHUklE
-         gB6AEFIX1HZhYITSKEwicmzUSgZ/LSTMVXCBphOx4vj4O1v5pKg5ZKd+02Bzs2I/6jaP
-         jrH9AUjMOivLPI/LqFL6Gf0Ew/s4B38RtrwXDUtJcjBPLEIfG2Oa+Hcgcvt9hkWRPAVS
-         a28A==
-X-Forwarded-Encrypted: i=1; AHgh+RqFsZ3DqhOBUO47U/rZ4fkY+r5E5JKJoYqHq6lBoxzR1XjSkfnYJqWRcPYhhFoJMpL0u4I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw59z7sj/JkDYh+OSAMUSQpkPJzKmFKIyL5nMeLFwhuz18t037M
-	uMfIUSVDIwgmRVBbrDS/lID0KRKg9q4a+4gBFIFQSSjAR6pli1CBNY/PPcrYpFYmGMkp/APomyO
-	nt5+b9xu9j4npESeDUpqMSgoZGA39YEUQTp2swyS1PX3s6EU2PpaYzbZ2QgBWiYUPDHi5PROmOG
-	jewKfwHh1RpkYC1RbF2QATDM1vkj/V
-X-Gm-Gg: AR+sD11gzsLwnLI+nfmhvaZeSQylDC5UKcn2ReLKeVF90ZplCAAY7E23w4sq6bhXdMZ
-	2UCjTG92Plh/BWPRaIdXsST7Mwdoaf79K0nhQqM4ihBkApu2I9JXiRlMv5KS31qdsF22Wltm4+G
-	AbIMEWfNz8IgNms50cw1sSm6edQFqwt6LbPx9lByYKTcp/M29WnjopJzjBbNQ7p4SZitk9zNqYh
-	7VCHoF5sASm6net8DKlCR4tgqNGLPtbq2KTxACwirm4Hcr9Kb91RilpiTs=
-X-Received: by 2002:a05:600c:3226:b0:490:e5c1:b8bf with SMTP id 5b1f17b1804b1-499727a3b84mr5344215e9.13.1786356309213;
-        Mon, 10 Aug 2026 03:05:09 -0700 (PDT)
-X-Received: by 2002:a05:600c:3226:b0:490:e5c1:b8bf with SMTP id
- 5b1f17b1804b1-499727a3b84mr5343835e9.13.1786356308812; Mon, 10 Aug 2026
- 03:05:08 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="asdbq/DR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=t/sReo253jZhS1ZdLi4tHMwwy0dyR7x3PA/7jUe7UUjoF79Rh+TZ6hD7a/+aWI/msK/Zxt3ZRy26cyAoVYFjRL+zPcpB2rYEaw5Ukc6JJmVCoZsirSlFD2KGohYy082PVQDgXzLxkXfSFflaNkkY2lp2k7iz9p1x7DixQjJC32NONjzZFC7uWNjbZe1YlSSwXjqIPJXyOifvslMaBw7SREB10waMuRfVmAx9xfpsnP4Sf5P9lyi9XGnId3gQimUcSOHmO23+X0x4WcrDGTKU1McwQXTIYPVmwflw6NTvtA+dJ3Oo3YO/O28ngB8sJ4N3mRqhxxn/lR87IQczkepGPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aSDSxf2WDwWh3MZjkgT1R+wxPZW9UGCr7JcXwMeeeA4=;
+ b=I0M/xmFIW0JMnPjA8dgB4EPltDr9zKFsgSPw6Lg+b69KTix/OkWx0dORaKY0aCymeh+EJ2JWHq/ohrCRC9RG+YgvD7TKQCqZUM6ilUCKTmEHgALdKUJv5xFm1QkmrxPwItbgAEf0lPC8fkIbLYPwLWf03iCP+RY68hPRayKBVPBr88/QbtQ8seBc6xl+J1oKKhYC+UeKBwYxdjwLTf2zssk5/T+GsPlyiiPPurZtyvjQU54I8icxpETuausP4oK9mFogRCNYL4mcg/MQhQ5NB8WZQobwOpYnF1CKGS8RITaip6FdGuagPFFhsC5/oyE6KLnT2PXhsaL/KOYELYuFGg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aSDSxf2WDwWh3MZjkgT1R+wxPZW9UGCr7JcXwMeeeA4=;
+ b=asdbq/DRnPox1IWmOt4sElm8deoA9xU8EQ+IwAsE1aKzg0m7VwuKp6Apvg3U0p9ZW1rqhek7FGasQMhTeX5UI7PL7VFyxv+fGb61xcnIHtKUmVmFixqMoFZoaIppb3Re2YdelzeSq9CHQP4SlAJaJypqSH4xdEb/N2kdJIYA5HM=
+Received: from CH0PR13CA0012.namprd13.prod.outlook.com (2603:10b6:610:b1::17)
+ by CH2PR12MB4327.namprd12.prod.outlook.com (2603:10b6:610:7d::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Mon, 10 Aug
+ 2026 10:10:50 +0000
+Received: from CH2PEPF0000009F.namprd02.prod.outlook.com
+ (2603:10b6:610:b1:cafe::8d) by CH0PR13CA0012.outlook.office365.com
+ (2603:10b6:610:b1::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.11 via Frontend Transport; Mon,
+ 10 Aug 2026 10:10:50 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH2PEPF0000009F.mail.protection.outlook.com (10.167.244.21) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.315.6 via Frontend Transport; Mon, 10 Aug 2026 10:10:50 +0000
+Received: from sindhu.amdval.net (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Mon, 10 Aug
+ 2026 05:10:47 -0500
+From: Sandipan Das <sandipan.das@amd.com>
+To: <kvm@vger.kernel.org>
+CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, Zide Chen
+	<zide.chen@intel.com>, "Nikunj A . Dadhania" <nikunj@amd.com>, Manali Shukla
+	<manali.shukla@amd.com>, Sandipan Das <sandipan.das@amd.com>
+Subject: [kvm-unit-tests PATCH] x86/pmu: Add option to raise NMI on overflow
+Date: Mon, 10 Aug 2026 15:40:02 +0530
+Message-ID: <106bc3a4660653cb7750f3ae07a4dbca42c2762c.1786356229.git.sandipan.das@amd.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260804120529.1730187-1-pbonzini@redhat.com> <20260804120529.1730187-4-pbonzini@redhat.com>
- <49840a84-6d73-4a15-adae-800eccfb1c7d@amd.com>
-In-Reply-To: <49840a84-6d73-4a15-adae-800eccfb1c7d@amd.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 10 Aug 2026 12:04:48 +0200
-X-Gm-Features: AUfX_my6VzuSeHJgh3uVKaTYyn_VnWzP5xLi-qQ5sWEuv-5l4TAmINZeor_-704
-Message-ID: <CABgObfYvz_SrBBXmzJfiW0VsQyRa8OWQdP7myfY=WAws63oguw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/6] drm/ttm, drm/vmwgfx: directly create writable PTEs
- when mkwrite is in use
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Alex Williamson <alex@shazbot.org>, bcm-kernel-feedback-list@broadcom.com, 
-	Boris Brezillon <boris.brezillon@collabora.com>, David Hildenbrand <david@kernel.org>, 
-	dri-devel@lists.freedesktop.org, Fei Li <fei1.li@intel.com>, 
-	Huang Rui <ray.huang@amd.com>, linux-mm@kvack.org, linux-s390@vger.kernel.org, 
-	Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>, Sergio Lopez <slp@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000009F:EE_|CH2PR12MB4327:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6919e0d9-f5c4-419f-c780-08def6c7a7c4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|376014|1800799024|82310400026|23010399003|18002099003|10067099003|56012099006|11063799006|6133799003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	nhepL/Q4H7gIqN++RbMmRpmhF7YTN6orNAKIHO4467q9w53jvrA+AuwGi5ByLXiYhKx5i38M4impxRZrmddA3jvVVHDND8IVRMI4K8Nq/4DuiTxexoEqHrgXJE3SIt422tKSaxW1DoGWrfckbFjW90wnhkR8U1cnGRAGT57R5mc9GUnFfqXBSeuuqJF6dvalh9sqIX1qywaCcBMw+gYCQIMSc/criciSwjguTCF6JFPZNdQF3ZbLDHdUXbIqc5jOQbsZkaNOszbprDBEsmpE09pgnw6RDKbw5LbIUKNpEDc3LilN1xOzrLtRKB/tr6tt4ZGF1LKNv+XLMGKu5dFpbXXz2ZPfS7YvWF9S3hCOE4X1ytGg8ieoVWPjlGp9+dbSBKX++VBQVScYRdHiUuKWd6xBqmiVvt0CY0cQudX06OnrYK6J5H3b3FPBnDvTrXJ9I7CT/nRIa/nB3YJGLAWZY9qq40K+J3qhNsI5ry/q7tk/jAzUXoV+sGjRxmYJXAYTqI12W1iOoPhG2aT7Hs5B9t5sQVKC/t0AKCTrufz1RXynH/NXOD7dlqFFfitUmsNn47DYnWU3SPbloUPP+F433Z3SIgALSvRORcv7l/E6DMTFxTzh9H1E2gTwuzC1GIBqd+07M3lknoSVR03tbuaS67IFs51IvgXnCTfhiRx9ATNiOG93kKoMVkciXGWzXrF3fEwrht5j3QxWAYKfYDkKdw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(82310400026)(23010399003)(18002099003)(10067099003)(56012099006)(11063799006)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	/x9XNpKDKQ8uLl2ymQxXPV8AaID1CBTwpjAx7Bb8dInupWez+wvMBzlmYuEHBD6rARm4erIfimjXOsQWnEA/2TDiniXq5eltuBUaWrkLxb9qeH/RgiVaM9vMw+n3EPYDrMqR1kOADy4+CQvkh/nfh0WC+byIO9BQKIhCO1tABPrpOP/Yq8WyUzRYvorE9EV4YnvXHwNcXKExnX6M9yVz3rqfBh1tx+5ZsykeRxydjC0xvmQVh0yGL3IuRzYzB0NeZXQRl56VRBuG63JkPrJc3Up5DElgKK72adxNV4dVdLM6UowFAmRKXJNw4OK8Eo+RHRolat+CVilzdDYbP5mv5PKZX3zqRiGJWSsbe0UzuEybfqUcdkqYopGgU4BH1U4EFE0sUtIerBgUMeh29GdoFB7mYEXpFwSXalgehkWHHFm2PBcaYm3/LSl0B0cM/ohK
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 10:10:50.6457
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6919e0d9-f5c4-419f-c780-08def6c7a7c4
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF0000009F.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4327
 
-On Mon, Aug 10, 2026 at 12:01=E2=80=AFPM Christian K=C3=B6nig
-<christian.koenig@amd.com> wrote:
->
->
-> > -             /* Never error on prefaulted PTEs */
-> > +             /* Never error on prefaulted PTEs and never map them writ=
-able */
-> > +             mkwrite =3D false;
->
-> As far as I can see that is a really bad idea, we do want the prefaulted =
-PTEs writeable.
->
-> The whole prefaulting is essentially an optimization for cases where taki=
-ng a fault has massively overhead (virtualization for example).
->
-> Wasn't vmf_insert_pfn_prot() making them writeable before?
+Interrupts raised on counter overflow are currently delivered through
+the PMI_VECTOR as regular maskable interrupts. However, for some
+configurations, like SVM with PMC virtualization and VNMI enabled, the
+guest LVTPC is ignored and the interrupts are always delivered as NMIs.
+This causes the test to crash, as seen below, because it does not
+expect NMIs.
 
-In general yes and they still will be, but not if pfn_mkwrite was used
-(as in the vmwgfx driver). I'll change the comment to "never force
-them to be writable". Setting mkwrite to false is exactly the same
-behavior as before, setting it to true is a superset.
+  Unhandled exception 2 #NMI(0) at ip 0000000000400326
+  error_code=0000      rflags=00000056      cs=00000008
+  rax=00000000001300c0 rcx=00000000c0010202 rdx=0000000000000000 rbx=0000000001019f58
+  rbp=0000000001019ee0 rsi=00000000000f4240 rdi=0000000001019f58
+   r8=ffffffffffffe000  r9=00000000000003f8 r10=000000000000000d r11=0000000000000020
+  r12=00000000001300c0 r13=ffffffffff6768f0 r14=ffffffffff6768f0 r15=0000000000000001
+  cr0=0000000080010011 cr2=0000000000000000 cr3=00000000010fe000 cr4=0000000000000020
+  cr8=0000000000000000
+          STACK: @400326 400de1 401715 401e51 4001bd
 
-Paolo
+Add an optional "nmi" argument to improve test coverage for such
+configurations. When passed, the LVTPC has the delivery mode changed to
+NMI (APIC_DM_NMI) and the overflow handler is installed on the
+NMI_VECTOR. Otherwise, it keeps using the maskable PMI_VECTOR.
+
+Unlike maskable interrupts, which stay pending until EFLAGS.IF is set,
+an NMI is not gated by it and arrives as soon as the counter overflows.
+Clearing the interrupt count after the counter has overflowed therefore
+misses the early-arriving NMIs. Hence, reset it before arming the
+counter so that overflows are counted regardless of the delivery mode.
+The downside is that all future users of check_irq() will have to
+maintain this ordering.
+
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+---
+ x86/pmu.c | 39 +++++++++++++++++++++++++++++++--------
+ 1 file changed, 31 insertions(+), 8 deletions(-)
+
+diff --git a/x86/pmu.c b/x86/pmu.c
+index ea31a7a3..236c39b9 100644
+--- a/x86/pmu.c
++++ b/x86/pmu.c
+@@ -250,23 +250,27 @@ static void adjust_events_range(struct pmu_event *gp_events,
+ 		gp_events[branch_miss_idx].min = 0;
+ }
+ 
++static bool nmi = false;
++static u32 lvtpc = PMI_VECTOR;
+ volatile uint64_t irq_received;
+ 
+ static void cnt_overflow(isr_regs_t *regs)
+ {
+ 	irq_received++;
+ 	apic_write(APIC_LVTPC, apic_read(APIC_LVTPC) & ~APIC_LVT_MASKED);
+-	apic_write(APIC_EOI, 0);
++	if (!nmi)
++		apic_write(APIC_EOI, 0);
+ }
+ 
+ static bool check_irq(void)
+ {
+ 	int i;
+-	irq_received = 0;
+-	sti();
++	if (!nmi)
++		sti();
+ 	for (i = 0; i < 100000 && !irq_received; i++)
+ 		asm volatile("pause");
+-	cli();
++	if (!nmi)
++		cli();
+ 	return irq_received;
+ }
+ 
+@@ -347,7 +351,7 @@ static void __start_event(pmu_counter_t *evt, uint64_t count)
+ 	    ctrl = (ctrl & ~(0xf << shift)) | (usrospmi << shift);
+ 	    wrmsr(MSR_CORE_PERF_FIXED_CTR_CTRL, ctrl);
+     }
+-    apic_write(APIC_LVTPC, PMI_VECTOR);
++    apic_write(APIC_LVTPC, lvtpc);
+ }
+ 
+ static void start_event(pmu_counter_t *evt)
+@@ -582,6 +586,7 @@ static void check_counter_overflow(void)
+ 		else
+ 			cnt.config &= ~EVNTSEL_INT;
+ 		idx = event_to_global_idx(&cnt);
++		irq_received = 0;
+ 		__measure(&cnt, cnt.count);
+ 		if (pmu.is_intel) {
+ 			if (pmu.errata.instructions_retired_overcount)
+@@ -984,14 +989,32 @@ static void check_invalid_rdpmc_gp(void)
+ 	       "Expected #GP on RDPMC(64)");
+ }
+ 
+-int main(int ac, char **av)
++int main(int argc, char **argv)
+ {
+ 	int instruction_idx;
+ 	int branch_idx;
+ 	int branch_miss_idx;
++	int i;
++
++	argv++;
++	argc--;
+ 
+ 	setup_vm();
+-	handle_irq(PMI_VECTOR, cnt_overflow);
++
++	for (i = 0; i < argc; i++) {
++		if (!strcmp(argv[i], "nmi")) {
++			nmi = true;
++			break;
++		}
++	}
++
++	if (nmi) {
++		lvtpc = NMI_VECTOR | APIC_DM_NMI;
++		handle_irq(NMI_VECTOR, cnt_overflow);
++	} else {
++		handle_irq(PMI_VECTOR, cnt_overflow);
++	}
++
+ 	buf = malloc(N*64);
+ 
+ 	if (this_cpu_has_perf_global_ctrl())
+@@ -1044,7 +1067,7 @@ int main(int ac, char **av)
+ 			    "Please update test case.", pmu.nr_fixed_counters,
+ 			    (unsigned)ARRAY_SIZE(fixed_events));
+ 
+-	apic_write(APIC_LVTPC, PMI_VECTOR);
++	apic_write(APIC_LVTPC, lvtpc);
+ 
+ 	check_counters();
+ 
+-- 
+2.53.0
 
