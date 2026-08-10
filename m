@@ -1,244 +1,222 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from esa4.hc1455-7.c3s2.iphmx.com (esa4.hc1455-7.c3s2.iphmx.com [68.232.139.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB0E3E0C4C;
-	Mon, 10 Aug 2026 14:37:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2DE3FD121;
+	Mon, 10 Aug 2026 14:47:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.117
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786372680; cv=none; b=WTAuVrKMf88IvurKLKVxkWCpBT09Tc7dHGLq4tY7pdWJNhUPU/Su0xHFjdVRZRYE9mKONQi7ECY0r80mCA2a4//oHepnsfxmBylXKrnDye5mI5C4A4MULUEWzSHj5v8yppTC1Idm0EX2UgQlxhuv4iw5DpfRSPWPkhAsAitgdTI=
+	t=1786373224; cv=none; b=qtJGcVKKBM5ln3TC3Z7K/Kfv0uPcavqMBVwBAYWDOHBoIfjk8DswDZYbPo76gBd5DX53yBjOJ8IRw+gctKBSMWrYQiN4rZ3wPUGnAeQBvaEBnieaC7u3PUBIzzoRQIe/fsR4+74F9Uof3In7HgfW9YldGP6KX4B8W+daZT9bPCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786372680; c=relaxed/simple;
-	bh=0DFjAsfT3BhVZ0HPTS9i8nfIoTLYaEntffNCMTIj48g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=me9O1TlMyy7j68q+9xE5WBTQ424tMufXgxLB2ki5FB0bgfyMFwVyNjf/eDGbhcnQN9XT1VhDLJCZWkK2NxNi+i5KLa59AXKkqRP70KruPqrLgEosY2gqZXLoG25ZBDl/X/30XI2ReYbo5KyBq1sP1vD6Ow/3SqbM17xz6celnlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=o5AUslen; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786373224; c=relaxed/simple;
+	bh=99XkH2IMF7D6nyHbHISy+8bb2LKxW8tAVwIQzhTqFok=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DaNMgvSMzloHV0Z7lS9KhPttiwDLh9orBZl/qzkkwOqepa9kbp4YNfgOFYJINODp6PtUhovIyQq8W+km8VpWAJ/nIee+YDyeGeVTpfn47Xl7CF/UA3tIFatcnkLyzuG1ZJEs1b3BYB08wz7bKS3Q7hYSjAenaze/j0T1/dUWB4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=b2WhC1tq; arc=none smtp.client-ip=68.232.139.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="o5AUslen"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67AD1YdW1611618;
-	Mon, 10 Aug 2026 14:37:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=6214LO
-	BROlGTNdhBlEoVB1kNzk+cxgu9DMeLEJ3uPrI=; b=o5AUslen94tIi/cb5AOADp
-	cOtu0s62FuTws4G4AAEwHGzLzQ5ek+23Ihc2s/NX/0twZvxgWeBwzRQK5+ONrrA6
-	dX+/JQ0hOAOHdHkZyDQzVB0VPGj/HFPqVW4EIWauVGiXPOj7hLjTPVOMqe/REVUX
-	XcCru83c4B+GRVsqK3cMYW5STIyHlMvHn3suB+YBuF3MJAafPm4BfFZKtTcL3gT6
-	6Ul0jePT6fgNqnjqyk3MEWktlBqFb9vJUQXhSqT/qYrtjUQY3Ep3QNzkUXMwEhU8
-	TVH/6I9I3rFthHqvySKQZfiBt11CoDyVstY7cmuj7P39zheZxoH9t8s4A2rSQvLg
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvp2r38k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Aug 2026 14:37:57 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67AEQWkO001011;
-	Mon, 10 Aug 2026 14:37:56 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxespwawv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Aug 2026 14:37:56 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67AEbtIW31064702
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 10 Aug 2026 14:37:55 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A0FE658061;
-	Mon, 10 Aug 2026 14:37:55 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 36A3F5805A;
-	Mon, 10 Aug 2026 14:37:55 +0000 (GMT)
-Received: from [9.61.71.153] (unknown [9.61.71.153])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 10 Aug 2026 14:37:55 +0000 (GMT)
-Message-ID: <33385dd9-483f-4f50-a486-94b3e0513a5c@linux.ibm.com>
-Date: Mon, 10 Aug 2026 10:37:54 -0400
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="b2WhC1tq"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1786373222; x=1817909222;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=99XkH2IMF7D6nyHbHISy+8bb2LKxW8tAVwIQzhTqFok=;
+  b=b2WhC1tqnIZFGFms0JZ5IDIi/TyS9cJ+VQyKUCMUxrkNgHFH2O0qp3uT
+   JB9aHjK1fMQITsyW67Y467kTpce3i03MqOCYS92uU1pcKulIeRn22MfVc
+   xb86mWgOcu1bwDuO3mxm8GTkSg01niy+KJww/wcyiTLiocTwQnOVco2ig
+   +neDpOBRFqReULtiO8Ic5rrn6/+iCN0ZbFV2PxggA1VsS4JVZoc6Anq+6
+   GVwfnbz2qzvYROh7sYMURYYDyBl2jaQMU9hHZkVx3AeWRg9kcBmW/AthW
+   37+tPbN5tLVFD2BRc4Y0ASqOO2WwDg6gLeVMN0rblJEktkqtq544lSfEj
+   Q==;
+X-CSE-ConnectionGUID: SiCnUT3dQ3WW7mmYc7FahQ==
+X-CSE-MsgGUID: 8yvPkPBPQ8iUtsVBy5En1w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="249929632"
+X-IronPort-AV: E=Sophos;i="6.25,215,1779116400"; 
+   d="scan'208";a="249929632"
+Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
+  by esa4.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 23:47:00 +0900
+Received: from az2nlsmgm3.fujitsu.com (unknown [10.150.26.205])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 4360042A30A;
+	Mon, 10 Aug 2026 14:47:00 +0000 (UTC)
+Received: from az2uksmom2.o.css.fujitsu.com (unknown [10.151.22.203])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm3.fujitsu.com (Postfix) with ESMTPS id ED8E31810868;
+	Mon, 10 Aug 2026 14:46:59 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.9.24.243])
+	by az2uksmom2.o.css.fujitsu.com (Postfix) with SMTP id 503D314000B0;
+	Mon, 10 Aug 2026 14:46:52 +0000 (UTC)
+Date: Mon, 10 Aug 2026 23:46:50 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v16 30/45] KVM: arm64: CCA: Handle realm vCPU load
+Message-ID: <annfY97FFA8ZuoHE@FCCLS0092175.localdomain>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <20260803134403.80630-31-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] s390/vfio-ap: Fix dereference matrix_mdev->kvm
- without checking for NULL
-To: sashiko-reviews@lists.linux.dev
-Cc: Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev
- <agordeev@linux.ibm.com>, kvm@vger.kernel.org
-References: <20260808170712.839066-1-akrowiak@linux.ibm.com>
- <20260808170712.839066-3-akrowiak@linux.ibm.com>
- <20260808173625.599D41F000E9@smtp.kernel.org>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <20260808173625.599D41F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=AMtp2X5w c=1 sm=1 tr=0 ts=6a79e245 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=D19gQVrFAAAA:8
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=sW9sOQtXqBq0zZzEPnAA:9 a=QEXdDO2ut3YA:10
- a=W4TVW4IDbPiebHqcZpNg:22
-X-Proofpoint-GUID: DJf5QWtElitn1GOR4UVTfondm6meZNwU
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEwMDEyNSBTYWx0ZWRfXwSJ6NuhTRLCz
- UEMkqK75pQj3DfWceSPoaz8XebeiC2WlYKc1It3VSXVt8DdGxJTjzIfjtPJTo/nBIXc4Hpjq4cY
- 8yJJ6ICX9l18UYgpNSrY7dmiEhVztY2bjbYLl2mjuveLXE33ijCyLIaca8wlQB4F00weu8MC1Ah
- KPlCDvtKgEaYEhRLWlHjcoupOR/8h0VukKzCH7LRV9Rcs4c4n8qKfp4SVTGW4nH0LR8nhy9FpTY
- AhmWi7dRngTFV2d+U+hau+RN//nm3p/LAFIhpe6oCmradoiKMl2GPXK2GZAO4ASio+9EU4vqeFB
- Z+JvkQPq4kkvF9hEb5qzj9QRlDlRDZiPf4v28vVAJPiVpiBGHoQEuXZ3yCoL88Mz53hq9/rkXjx
- 6xQDabikfd1/xTQlrh5lPRSv6Mj5Mzw+qlmVnWL91Gd2GNc6dAjFHHGga8dRoklRxuXr9GbMGk+
- nVZo1w/bPBS6XhAGsgg==
-X-Proofpoint-ORIG-GUID: DJf5QWtElitn1GOR4UVTfondm6meZNwU
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEwMDEyNSBTYWx0ZWRfX45xJ9xLjOaa1
- 1DuRMNUOUsV0GA20oMAd0udq7QY2oCpMypag3dJloINoZCYexljcwlAEhmOf28J9Gqyl5MnG9UN
- lSskMNc6PnHYqRGo7tQBidjNa2eU7KU=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-10_03,2026-08-07_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
- priorityscore=1501 impostorscore=0 phishscore=0 spamscore=0 bulkscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608100125
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260803134403.80630-31-steven.price@arm.com>
 
+On 08/03 14:43, Steven Price wrote:
+> When loading a realm VCPU much of the work is handled by the RMM so only
+> some of the actions are required. Rearrange kvm_arch_vcpu_load()
+> slightly so we can bail out early for a realm guest.
 
+Hi Steven,
 
-On 8/8/26 1:36 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
->
-> Pre-existing issues:
-> - [High] Uninitialized Memory Usage in `vfio_ap_mdev_hot_plug_cfg` leads to random hardware queue resets.
-> - [High] Use-After-Free in KVM's `pqap_hook` due to improper error rollback in `vfio_ap_mdev_set_kvm`.
-> - [High] Unsafe concurrent modification and iteration of `matrix_dev->mdev_list` leading to Data Race / UAF.
-> --
->
-> --- Patch [2]: [PATCH 2/5] s390/vfio-ap: Fix dereference matrix_mdev->kvm without checking for NULL ---
-> commit 9e16afa935b6610f6431f2a073e3d436ec0b7f7d
-> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
->
-> s390/vfio-ap: Fix dereference matrix_mdev->kvm without checking for NULL
->
-> This commit resolves a potential NULL pointer dereference in the AP bus scan
-> callbacks by explicitly checking if matrix_mdev->kvm is set before acquiring
-> its lock. It also adjusts the lock acquisition order in these callbacks.
->
-> Cc: stable@vger.kernel.org
->
->> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
->> index 845c86ba8bc30..e382e5a1cb996 100644
->> --- a/drivers/s390/crypto/vfio_ap_ops.c
->> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-> [ ... ]
->
->> @@ -2821,9 +2828,6 @@ static void vfio_ap_mdev_hot_plug_cfg(struct ap_matrix_mdev *matrix_mdev)
->>   	DECLARE_BITMAP(apm_filtered, AP_DEVICES);
->>   	bool filter_domains, filter_adapters, filter_cdoms, do_hotplug = false;
->>   
->> -	mutex_lock(&matrix_mdev->kvm->lock);
->> -	mutex_lock(&matrix_dev->mdevs_lock);
->> -
->>   	filter_adapters = bitmap_intersects(matrix_mdev->matrix.apm,
->>   					    matrix_mdev->apm_add, AP_DEVICES);
->>   	filter_domains = bitmap_intersects(matrix_mdev->matrix.aqm,
->> @@ -2841,9 +2845,6 @@ static void vfio_ap_mdev_hot_plug_cfg(struct ap_matrix_mdev *matrix_mdev)
->>   		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
->>   
->>   	reset_queues_for_apids(matrix_mdev, apm_filtered);
->> https://lkml.org/lkml/2026/8/6/1775
-> [Severity: High]
-> This is a pre-existing issue, but does this function pass an uninitialized
-> bitmap to reset_queues_for_apids()?
->
-> If the AP configuration only adds control domains, filter_cdoms is true, but
-> both filter_adapters and filter_domains are false. This skips the call to
-> vfio_ap_mdev_filter_matrix() which initializes apm_filtered:
->
->      if (filter_adapters || filter_domains)
->          do_hotplug = vfio_ap_mdev_filter_matrix(matrix_mdev, apm_filtered);
->
-> If this initialization path is bypassed, is it possible for apm_filtered to
-> retain stack garbage when it is subsequently passed to
-> reset_queues_for_apids(), potentially causing unintended guest hardware
-> queues to be reset?
+I found that Realm guests can execute WFI/WFE instructions without
+causing a REC exit, ignoring KVM's WFx trap policy.
 
-Yes, because if no adapters or domains need to be filtered, the call to
-vfio_ap_mdev_filter_matrix - which zeros all bits to apm_filtered - will 
-be bypassed.
-The apm_filtered bitmap needs to be zeroed before the check for 
-filter_adapters
-and filter_domains.
+I'd suggest translating HCR_EL2.TWE/TWI into the corresponding
+run->enter.flags to honor the policy. Below is the patch I tested.
 
->
->> -
->> -	mutex_unlock(&matrix_dev->mdevs_lock);
->> -	mutex_unlock(&matrix_mdev->kvm->lock);
->>   }
->>   
->>   void vfio_ap_on_scan_complete(struct ap_config_info *new_config_info,
->> @@ -2854,15 +2855,29 @@ void vfio_ap_on_scan_complete(struct ap_config_info *new_config_info,
->>   	mutex_lock(&matrix_dev->guests_lock);
->>   
->>   	list_for_each_entry(matrix_mdev, &matrix_dev->mdev_list, node) {
-> [Severity: High]
-> This is a pre-existing issue, but could this list iteration race with
-> concurrent list modifications?
->
-> It appears this list traversal in vfio_ap_on_scan_complete() occurs while
-> holding only matrix_dev->guests_lock at the list level. However, list
-> mutations such as the one in vfio_ap_mdev_probe():
->
-> vfio_ap_mdev_probe() {
->      ...
->      mutex_lock(&matrix_dev->mdevs_lock);
->      list_add(&matrix_mdev->node, &matrix_dev->mdev_list);
->      mutex_unlock(&matrix_dev->mdevs_lock);
->      ...
-> }
->
-> are protected only by matrix_dev->mdevs_lock. Since the internal iteration
-> step happens outside of matrix_dev->mdevs_lock, can this expose the reader to
-> torn or stale pointers, potentially leading to a use-after-free or infinite
-> loop if an administrator concurrently creates a new mdev?
+----
+From 8637cd6f818a3c56d8b898a72874e9485eb94e59 Mon Sep 17 00:00:00 2001
+From: Kohei Enju <enju.kohei@fujitsu.com>
+Date: Mon, 10 Aug 2026 22:54:27 +0900
+Subject: [PATCH] KVM: arm64: CCA: Honor WFx trap policy for Realm vCPUs
 
-This is fixed via patch 3/5 of the series in which this patch is included.
+Propagate KVM's WFx trap policy to the RMM by translating
+HCR_EL2.TWE/TWI into REC_ENTER TRAP_WFE/WFI flags before entering a REC.
 
->
->> +		/*
->> +		 * The mdevs_lock must be held to access fields within matrix_mdev,
->> +		 * and kvm->lock must be taken before mdevs_lock to satisfy the lock
->> +		 * ordering requirement and prevent a lockdep splat.
->> +		 */
-> [ ... ]
->
-> While reviewing this file, I also noticed another potential issue outside the
-> immediate diff in vfio_ap_mdev_set_kvm():
->
->>        kvm->arch.crypto.pqap_hook = &matrix_mdev->pqap_hook;
->>        ...
->>        if (m != matrix_mdev && m->kvm == kvm) {
->>                release_update_locks_for_kvm(kvm);
->>                return -EPERM;
->>        }
-> [Severity: High]
-> This is a pre-existing issue, but is it possible for KVM's pqap_hook to be
-> left pointing to freed memory upon an error?
->
-> The KVM hook is unconditionally updated to point to the incoming matrix_mdev.
-> However, if another mdev is already attached to this KVM instance, the
-> function bails out with -EPERM.
->
-> If the rejected mdev is subsequently freed by userspace, would KVM retain a
-> dangling pointer? Could this cause a use-after-free when a guest later
-> issues a PQAP instruction and handle_pqap() dereferences the hook?
+Without this, guests can execute WFE/WFI instructions without causing a
+REC exit, ignoring KVM's common trap policy. Configure the REC_ENTER
+flags to honor the policy.
 
-A fix for this has already been submitted to the kernel mailing list:
-https://lkml.org/lkml/2026/8/6/1775
+Signed-off-by: Kohei Enju <enju.kohei@fujitsu.com>
+---
+ arch/arm64/include/asm/kvm_rmi.h |  2 ++
+ arch/arm64/kvm/arm.c             |  3 +++
+ arch/arm64/kvm/rmi.c             | 14 ++++++++++++++
+ 3 files changed, 19 insertions(+)
 
->
+diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
+index 2789879b6701..b858c6b4db6a 100644
+--- a/arch/arm64/include/asm/kvm_rmi.h
++++ b/arch/arm64/include/asm/kvm_rmi.h
+@@ -109,6 +109,8 @@ void kvm_destroy_realm(struct kvm *kvm);
+ int kvm_realm_teardown_stage2(struct kvm *kvm);
+ void kvm_destroy_rec(struct kvm_vcpu *vcpu);
+ 
++void kvm_rec_set_wfx_traps(struct kvm_vcpu *vcpu);
++
+ int kvm_rec_enter(struct kvm_vcpu *vcpu);
+ int kvm_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
+ int kvm_rec_handle_request(struct kvm_vcpu *vcpu);
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 7edc572dd8ab..0cba333b4fd2 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -770,6 +770,9 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ 	else
+ 		vcpu->arch.hcr_el2 |= HCR_TWI;
+ 
++	if (vcpu_is_rec(vcpu))
++		kvm_rec_set_wfx_traps(vcpu);
++
+ 	vcpu_set_pauth_traps(vcpu);
+ 
+ 	if (is_protected_kvm_enabled()) {
+diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+index c242dfc2c7a6..c472f3d03234 100644
+--- a/arch/arm64/kvm/rmi.c
++++ b/arch/arm64/kvm/rmi.c
+@@ -1302,6 +1302,20 @@ static void noinstr load_realm_timer_state(struct kvm_vcpu *vcpu)
+ 	write_sysreg_el0(rec_exit->cntp_ctl, SYS_CNTP_CTL);
+ }
+ 
++void kvm_rec_set_wfx_traps(struct kvm_vcpu *vcpu)
++{
++	struct realm_rec *rec = &vcpu->arch.rec;
++
++	rec->run->enter.flags &=
++		~(REC_ENTER_FLAG_TRAP_WFE | REC_ENTER_FLAG_TRAP_WFI);
++
++	if (vcpu->arch.hcr_el2 & HCR_TWE)
++		rec->run->enter.flags |= REC_ENTER_FLAG_TRAP_WFE;
++
++	if (vcpu->arch.hcr_el2 & HCR_TWI)
++		rec->run->enter.flags |= REC_ENTER_FLAG_TRAP_WFI;
++}
++
+ int noinstr kvm_rec_enter(struct kvm_vcpu *vcpu)
+ {
+ 	struct realm_rec *rec = &vcpu->arch.rec;
+-- 
+2.43.0
 
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+>  arch/arm64/kvm/arm.c | 19 ++++++++++++-------
+>  1 file changed, 12 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index f1b26b263bf0..96e536d2dda8 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -707,7 +707,7 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+>  	struct kvm_s2_mmu *mmu;
+>  	int *last_ran;
+>  
+> -	if (is_protected_kvm_enabled())
+> +	if (is_protected_kvm_enabled() || kvm_is_realm(vcpu->kvm))
+>  		goto nommu;
+>  
+>  	if (vcpu_has_nv(vcpu))
+> @@ -751,12 +751,6 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+>  	kvm_vgic_load(vcpu);
+>  	kvm_vcpu_load_debug(vcpu);
+>  	kvm_vcpu_load_fgt(vcpu);
+> -	if (has_vhe())
+> -		kvm_vcpu_load_vhe(vcpu);
+> -	kvm_arch_vcpu_load_fp(vcpu);
+> -	kvm_vcpu_pmu_restore_guest(vcpu);
+> -	if (kvm_arm_is_pvtime_enabled(&vcpu->arch))
+> -		kvm_make_request(KVM_REQ_RECORD_STEAL, vcpu);
+>  
+>  	if (kvm_vcpu_should_clear_twe(vcpu))
+>  		vcpu->arch.hcr_el2 &= ~HCR_TWE;
+> @@ -778,6 +772,17 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+>  			     &vcpu->arch.vgic_cpu.vgic_v3);
+>  	}
+>  
+> +	/* No additional state needs to be loaded on Realmed VMs */
+> +	if (vcpu_is_rec(vcpu))
+> +		return;
+> +
+> +	if (has_vhe())
+> +		kvm_vcpu_load_vhe(vcpu);
+> +	kvm_arch_vcpu_load_fp(vcpu);
+> +	kvm_vcpu_pmu_restore_guest(vcpu);
+> +	if (kvm_arm_is_pvtime_enabled(&vcpu->arch))
+> +		kvm_make_request(KVM_REQ_RECORD_STEAL, vcpu);
+> +
+>  	if (!cpumask_test_cpu(cpu, vcpu->kvm->arch.supported_cpus))
+>  		vcpu_set_on_unsupported_cpu(vcpu);
+>  
+> -- 
+> 2.43.0
+> 
