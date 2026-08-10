@@ -1,233 +1,207 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31B040A95F
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 15:27:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E82A1514F8;
+	Mon, 10 Aug 2026 15:32:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786375654; cv=none; b=EOhs1bObc8v24lsVDfU6g4UaN2zF4+rXAoJ5IONIQPE+hmNXoHg20Pe4PUxuaXuaZ8hyeKdbM5rudTwsSrGNHte4WiL5Xa/xvVGLj7frGRDXPhuvwbmnoIMLWOrfMiyXvRQamEMAtx3cNKE7jF7bdfe7qPEPQ+ZU5xKFf3ZsPc4=
+	t=1786375951; cv=none; b=sxHmUzqczMUVUbqXdgIMXz9p3xPZcgZ1vnND8xfwsCjbDEFBaTrOGV+hhuzNkk2YrtF6u+vkF/SKEoyj72xoMGFZCWEI4awU93sb5aF0U54oC3olCCuRix5ogXNwKe5GVaa3cmuh1hZg2ebA5g2HN2wuOzKLDyjIFkOwQeIIHIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786375654; c=relaxed/simple;
-	bh=/+GXtYNIQEoanbyO74E2Z/1ZvUJU9TFAq2W8M3Yf/NA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jXZ317nQSpnWWxAQWm96u+TebJb+84hfuSFxkVqDJgvbF/Ex04CEyvFvF5VpF2beDNCmxHDEbAFfHfmkQM8lknqyS0vcWVbqxWURcGqBaUYsu58Os3wEzhTudSrm8v93PcNcNomadTnZufsid3uLKOd7WO1yHqObKASr7lkBv4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=Hx5o9khX; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	s=arc-20240116; t=1786375951; c=relaxed/simple;
+	bh=N6+gKXJPXmhT3daZTrJy1XzSeaZlw3VbDa9MR8ypz8k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=okFZJzy+lI8esaqbAjYc6VVYkczsGwVxtZgPbAZxuqRHWrcYPRwxvUCvkk1qI7diWxjZDaHXDEQz9QLEfgQ2t3mIw1/CemBVqDdZXTkOpEInyQvA2FgWe7V3wcCFETMSJSA3v5NU4IPh7NaY2YCnHdEyBSMmhBm7LjUsT62bQh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=iOmDnOPW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EI/Yv8bb; arc=none smtp.client-ip=202.12.124.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="Hx5o9khX"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-92e85499ffbso151453685a.0
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 08:27:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1786375651; x=1786980451; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JeSEH2kZC7O/8qyc+dhZdHeAalMWmSlfY9/FgFd5LWI=;
-        b=Hx5o9khXTSdMRo8B6NjbuZIghCjC/jKrSGbmooI/KZgmZkK5lXF2wHEUut9Pn6Nw9r
-         KE9M0V8jnXdUDjFEQLO9HxqCLBQmCXv4ugykJct8oN/bJli5F9DHRKIUa5mYP6aPOuyx
-         EMpCOBpnV5CJ568/e+pMkwWzRPPjCcg11Gif+XmDebRsL40CC/UEzbi+4vDKGlFZYWSC
-         rdXWI4La+97l8cA//krwLYGcQjW19SekV9LZsw/pXW6zDoTnwz90U8Q1VD+8dWU4+tPa
-         me+7ZMm5PwiGqwBIJ13jOst20JXcvVGy1yRo93ySY/RDVMTa8q0q277jPReM12S6H7ra
-         5R5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786375651; x=1786980451;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JeSEH2kZC7O/8qyc+dhZdHeAalMWmSlfY9/FgFd5LWI=;
-        b=CF0PGRUR7W5Xl+y6J/mkiR6BvPH5sWq7OQX8V4HjdSFhAzRLpH5aCKnSxMg7kqr6+m
-         xtKVsucXDJ0HLSGFYV129rcbSiPCbQ7fsARmJ5DutQuFYc5xVEoOViRY23vfnvV+0ROA
-         rfCxKEcdcTzJK7paWJ6gaqF4DDEbVa6oUvAQO9i1Va30JEut1ozXbHtQgoqxatpQ4hti
-         seCUzyyxigHM5aBdWi/FcR2SxKQfKEBGjSc5ijI209rsY9oeQPvZndP3cwOZxjiAYeRG
-         VLxZciQRVtsPNrujeXi4xfLkM2LpG3NGJJVVwQ083nUzcKRBPH1+P9eWU0Fp/ZLO3cvL
-         49yw==
-X-Forwarded-Encrypted: i=1; AHgh+RqNvkqkO52KpYAQbrS/kZsI7qNpDf6A+PrcKnf5nxWT8vk5VhUhE9mbBVCyhdZjpdQWx44=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAteiQAhhV0dNOv22/Xg5x52bAP+DlrjChqrALx0q5qt1mH5Dq
-	vwUXBJftFWy6XFJW62bZhTbko2atxp6tC/yZ6OxBlezn+/8C5K59RxkHM0zSnzVhq9g=
-X-Gm-Gg: AR+sD10egkBM8dhDXAADNYcGUy6UYFchxjQJkYpJm/WJhOWYU/O+03FbzRR3BP31bXH
-	F4tjh/YzPWcERv2e+9fRD7tk497h1M92U2W3AnTK0JU1kthNiY/BNlKL8kagtVbFf09IjMTS/an
-	MRpwP5S1N04UtPRlDUUX6R6OSQrXxk8yQjlCsNU+JRZP+r/+/ocb4cJW+KNrU6/pY+0b449IdWp
-	OyKuL+vkXeYknNV67IEFBLKFX1++0wcKN2Mo9yzCJtZpUoaTj8D3K0Jq6wNa9sBvBTr/PXJ7Lde
-	9X8BSp+e4VcZjdttS3hh8JZ8NFu2vq0glonUOqfjsmHOZ12zIbLaF/en7cHJ3L/ey6OBgnCDj/4
-	Joz6wy55oD2oYLdtdj+VKMatX6d9hLeOpgnGcPCgx/y8hp3/C32ZK+Z99vqXxpYs7Z22XUIvsL2
-	8JouZxsVUCJPrim4n3xknN4Qyc9To3jBp3IQcwqfig65Ed7Y6dqX1QnQVzhR4vpne0nw==
-X-Received: by 2002:a05:620a:2b85:b0:916:10f6:780f with SMTP id af79cd13be357-9366655a73bmr3212596685a.27.1786375651355;
-        Mon, 10 Aug 2026 08:27:31 -0700 (PDT)
-Received: from localhost ([146.190.222.192])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-9366dc51b43sm808858685a.0.2026.08.10.08.27.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Aug 2026 08:27:31 -0700 (PDT)
-From: David Lee <david.lee@trailofbits.com>
-To: pbonzini@redhat.com
-Cc: Kyle Zeng <kylebot@openai.com>,
-	Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	David Lee <david.lee@trailofbits.com>
-Subject: [PATCH] KVM: pfncache: track all MMU notifier invalidations
-Date: Mon, 10 Aug 2026 15:27:29 +0000
-Message-ID: <20260810152730.841260-1-david.lee@trailofbits.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="iOmDnOPW";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EI/Yv8bb"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id D39D27A0197;
+	Mon, 10 Aug 2026 11:32:26 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Mon, 10 Aug 2026 11:32:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1786375946;
+	 x=1786462346; bh=ID+w4jyAMLOceNx6xVC1CsDjtjWiiAdbunVAg+DGrR8=; b=
+	iOmDnOPWbLc2RJoBRvOFgDEvRW7G8Yj0rloywWitW5Mg35CXHiRvRbj2CGl9ct+2
+	tqcKWCxUnkXOg0bA1hYw5r7VVY+JA0xMoKBUyOjMwQVrt5vMniFWKLSiNejntTvt
+	G40DkXtFJRh7/9ycdcLrVJZ4Wh4YyV4/k3OvtNRAExg8U8ROZjl5OWVQLjNNs1G5
+	W54f0ZjewZCJnZtJLNsUO2GTqLK8fybEM/2sszUbY3TZgYDDfyoUiZVmzQQOjxOl
+	/zkylTs3mhazIE7VC7uZaLknZxHDKbvFKx5GxYgh7y8aMDIEOGudLjr+3Rgc2OvU
+	FL9BdYIaoifr0CzkqI3PAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786375946; x=
+	1786462346; bh=ID+w4jyAMLOceNx6xVC1CsDjtjWiiAdbunVAg+DGrR8=; b=E
+	I/Yv8bbGzdYSlx457iKlRIdGiSFNKRrINBK08gIh0x2Tw44+XMg0CJgYYjnnr1Rb
+	1c/m5IjWdZAHEunr/VUu+0ZCs5+Li6q7mcMp978gwiqNhR2D6VZE6mXimmCvEvyn
+	VN7+1y1fiM9L2MfTIMg40gqMVMHx5rV8wOqoIrTmim4Tb13CWR0dxk+96ZP2JS2X
+	/0a57BUmkUK4w1xY9iWRYj45RkaiK1OZtwBLuxl2K83+IhCZBSlMNSRT3mbDgAnu
+	0WEh6dV9yb6HuvZL+vZjt6tmT7JfdfXGPwPuPbbpx3mXjSrnO+qahVuYGEV8LNVU
+	/Ldklt169r2tSzi7Wk3Fg==
+X-ME-Sender: <xms:Cu95atKtdhberxUVXGm8l3IMQMjFFH0VNnwgsjrtvVhAAcStUzhdTg>
+    <xme:Cu95auFj15eoe6AiCL_7Xh1fLePbQ7u4kHSy6WriiRPFm3JARe_A9B8VF2h0koL4i
+    yNCFU-7QABdV3PWiM2uood0PmWILCUKQTtmKwtveiODso3B-vwl>
+X-ME-Received: <xmr:Cu95ap_cXd1E1-K0XpyEca27fj0od3HthoZUTTWnEbpgx-TKdQoPus6wpHWDag>
+X-ME-Proxy-Cause: dmFkZTFaoRm3BrLSjHI2x7YUS7OdIgak/XncRdR/aqYztwN7oNZEBk4ood28n5POfrP3Xd
+    sb09aIwAqBSj80a4B4vfQ8ffvFryIEJtliIleIfWOVvgur9//58Zn6tCIgeaFseaVVAIlR
+    q5UGdI1Pr922DZpqfujKJ5v3Uy9EbdAhyuXVbU/iAIFQgueCyU/+nTUmpanyIv1QgAUuMh
+    6fbfvcK/iapRxJPvwG+CXLwoLTtEhI1wcLGsOpkAv+7Mb9czbnyCv3nUEGz0rqJi6DdnxR
+    A2qTDP++6y1oFosKKM+MqCtDymseie+Xnir+RBpx1JENztfb4YBE3YWIGon5sQvUpr4Qsc
+    M8skD17o4fQHCq3TlAuToW4HpLkM2TMtjBtNAbHGlZ+2ao4wPAziB2oQoGkLYCFtUP0PUi
+    JBnqYVgjrHvuuJ2FBTEgcYnzLQ0XejeN1EyBNVvMuRehQpxD8GZ7zAaAvL03hbTdIoIqkM
+    O6M4zyRPApZW03WtDw4Crmxf7GrK1WAcNkbA7OMn9hw+XF10pcEzSce7sM6WHiRZLlcr2F
+    xsVxv3WjEHEAD6zG58p+uUvEMm2r12mmA6i0FIlEvUm43mNu4QC1av0kiEBitMPxp5SGCx
+    7XTzedulfPTIjQzS5RlnE9ll1mmlxx4b+XjvQ3cGfJkCp6k+68SSn6X2mpjg
+X-ME-Proxy: <xmx:Cu95auJ_Y-vJsBxwf96r9ZrL1-f1ks_dhchujyC3k3mqYBCC_ez8ig>
+    <xmx:Cu95ant7oUfINdItw33ZgODyROVKb4u7qcwFSxTSHY_IEvj7vNlvfg>
+    <xmx:Cu95alD84YvCVgrXqBxwN9Th2lpOnsXAif_zl-C7-UjSPgwvp0PsCQ>
+    <xmx:Cu95avOGTgUbc2H4mKO2A_RVmYYXhB4o6kpKs0IXbZQalQBmR2E5gg>
+    <xmx:Cu95amDLw1znDMFiJlYSAUwwhQS6zYnwp1ES9JeVV_luMf6oeH6_t5p9>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 10 Aug 2026 11:32:25 -0400 (EDT)
+Date: Mon, 10 Aug 2026 09:32:23 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Samiullah Khawaja <skhawaja@google.com>, bhelgaas@google.com, Kevin Tian
+ <kevin.tian@intel.com>, Leon Romanovsky <leon@kernel.org>,
+ dmatlack@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ alex@shazbot.org
+Subject: Re: [RFC PATCH 1/1] vfio/pci: Disable sriov on PF device close
+Message-ID: <20260810093223.50dbc8d0@shazbot.org>
+In-Reply-To: <20260806194739.GH28508@ziepe.ca>
+References: <20260805003355.728299-1-skhawaja@google.com>
+	<20260805003355.728299-2-skhawaja@google.com>
+	<20260805090323.01b1a36f@shazbot.org>
+	<20260806194739.GH28508@ziepe.ca>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Kyle Zeng <kylebot@openai.com>
+On Thu, 6 Aug 2026 16:47:39 -0300
+Jason Gunthorpe <jgg@ziepe.ca> wrote:
 
-There is a race condition in KVM's gfn-to-pfn cache refresh and MMU
-notifier handling. An HVA-backed cache can publish a stale PFN and
-kernel virtual address after the corresponding userspace mapping has
-been invalidated. The Xen shared-info HVA interface immediately reads
-and writes through that stale address, resulting in a host-kernel
-use-after-free.
+> On Wed, Aug 05, 2026 at 09:03:23AM -0600, Alex Williamson wrote:
+> > On Wed,  5 Aug 2026 00:33:55 +0000
+> > Samiullah Khawaja <skhawaja@google.com> wrote:
+> >   
+> > > When userspace closes a VFIO device file descriptor, the vfio driver
+> > > performs a hardware reset on the PCIe device to ensure it is returned to
+> > > a clean state. However, if the closed device is an SR-IOV Physical
+> > > Function (PF), it may have instantiated Virtual Functions (VFs) that are
+> > > actively bound to host kernel drivers (or other vfio instances).  
+> > 
+> > Wait, what?  We actively try to prevent VFs from a vfio-pci owned PF
+> > from being bound to host drivers other than vfio-pci.  You need to
+> > overwrite the imposed driver_override to make this happen and you're in
+> > a very precarious security model to have the VF owned by a trusted
+> > in-kernel driver while the PF is owned by userspace.  
+> 
+> Maybe, it really depends on the device. I can easially see someone
+> using a device where this would be safe. mlx5 for instance is pretty
+> OK.
+> 
+> So I don't really mind someone doing this, we should block it and warn
+> it and so on, but like noiommu and the other vfio insecure modes, why
+> not give an opt in?
 
-The cache refresh path in virt/kvm/pfncache.c drops gpc->lock while
-resolving and mapping an HVA. It uses mn_active_invalidate_count and
-mmu_invalidate_seq to detect an MMU notifier interval that overlaps
-this unlocked window. However, mmu_invalidate_seq is advanced only
-when the invalidated HVA overlaps a KVM memslot. HVA-backed caches are
-explicitly allowed to refer to memory outside all memslots. If such an
-invalidation starts and finishes while gpc->valid is false, the active
-count returns to zero without a sequence change and the refresh accepts
-a stale PFN.
+An opt-in to what currently?  We generate a warning, but nothing
+actually prevents the re-bind to an in-kernel driver.  Whether that's
+sustainable in eliminating this reset gap is yet to be seen.
 
-An unprivileged process with access to /dev/kvm can reach this path with
-KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA. KASAN-detected use-after-free in
-kvm_xen_shared_info_init(). The affected function reads and writes Xen
-wall-clock fields through the stale mapping, so the issue can cause a
-host-kernel crash and memory corruption.
+Binding a VF from a userspace owned PF flips our model on its head in
+two important ways.  First is the security inversion.  An in-kernel PF
+driver is considered trusted, we absolve ourselves of issues related to
+whether the PF has access to VF data or interrupts VF operations and
+state through reset.  Second, the vf_token model explicitly defines the
+trust and coordination boundaries for the userspace SR-IOV ecosystem.
+An in-kernel bound VF lives entirely outside of that boundary.  For
+example, one mechanism we might use to prevent an MCE around PF reset
+would be to zap VF mappings and invalidate dmabufs.  Reinstatement of
+those mappings would require userspace coordination, which the vf_token
+model would define as an implementation detail in userspace relative to
+vf_token coordination and trust.
 
-The attached KASAN output confirms:
+So we haven't done anything that explicitly blocks or taints this mode,
+yet, but correctly handling reset could be a tipping point.
 
-  BUG: KASAN: use-after-free in kvm_xen_shared_info_init+0x344/0x3d0 [kvm]
-  Read of size 4 at addr ffff888046000900 by task poc/1266
+> > It's possible there are gaps that closing the PF can interrupt the VFs
+> > and we need to defer a reset until the VFs are closed,   
+> 
+> Oh definately, when running in a SRIOV mode it is really problematic
+> for the PF to reset while there are any active VFs. The PF controls a
+> number of shared items (MMIO, ATS, etc) and when it blips everyone is
+> at risk of unexpected fairly catastrophic system crashing errors
+> related to the shared items going away.
+> 
+> So resetting the PF device unconditionally when vfio closes is
+> definately wrong in principal. I can see it maybe working for simple
+> systems, especially ones that don't MCE..
+> 
+> I don't think we can skip the PF reset on close because of dev_set
+> reasons and leave a rouge device for the next user, so the thing looks
+> somewhat troubled?
 
-Add a notifier-specific sequence that advances for every completed
-invalidate interval before mn_active_invalidate_count is decremented,
-and use that sequence for pfncache retry. The existing barrier pairing
-then guarantees refresh observes either an active invalidation or a
-sequence change.
-
-Fixes: 721f5b0dda78 ("KVM: pfncache: allow a cache to be activated with a fixed (userspace) HVA")
-Cc: stable@vger.kernel.org # 6.9+
-Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Co-developed-by: David Lee <david.lee@trailofbits.com>
-Signed-off-by: David Lee <david.lee@trailofbits.com>
----
-Bug found and triaged by OpenAI Security Research and
-validated by Trail of Bits.
-
-Trail of Bits has a reproducer for this bug that triggers a
-KASAN use-after-free and can share if needed.
-
- include/linux/kvm_host.h |  1 +
- virt/kvm/kvm_main.c      |  9 ++++++++-
- virt/kvm/pfncache.c      | 18 +++++++++---------
- 3 files changed, 18 insertions(+), 10 deletions(-)
-
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index ab8cfaec8..0ac382cd9 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -800,6 +800,7 @@ struct kvm {
- 	/* Used to wait for completion of MMU notifiers.  */
- 	spinlock_t mn_invalidate_lock;
- 	unsigned long mn_active_invalidate_count;
-+	unsigned long mn_invalidate_seq;
- 	struct rcuwait mn_memslots_update_rcuwait;
+This is what our vf_token model would handle, if we could use it.
+Re-open with VFs in use through vfio-pci requires the vf_token
+proof/opt-in.  Re-open with no VFs in use could reset the PF, but we
+can't account for VFs bound to in-kernel drivers.
  
- 	/* For management / invalidation of gfn_to_pfn_caches */
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 45e784462..5e43dd63c 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -812,8 +812,15 @@ static void kvm_mmu_notifier_invalidate_range_end(struct mmu_notifier *mn,
- 
- 	/* Pairs with the increment in range_start(). */
- 	spin_lock(&kvm->mn_invalidate_lock);
--	if (!WARN_ON_ONCE(!kvm->mn_active_invalidate_count))
-+	if (!WARN_ON_ONCE(!kvm->mn_active_invalidate_count)) {
-+		kvm->mn_invalidate_seq++;
-+		/*
-+		 * Publish the sequence update before dropping the active count
-+		 * so that pfncache refreshes observe one or the other.
-+		 */
-+		smp_wmb();
- 		--kvm->mn_active_invalidate_count;
-+	}
- 	wake = !kvm->mn_active_invalidate_count;
- 	spin_unlock(&kvm->mn_invalidate_lock);
- 
-diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
-index 728d2c1b4..d360f1eda 100644
---- a/virt/kvm/pfncache.c
-+++ b/virt/kvm/pfncache.c
-@@ -124,7 +124,7 @@ static void gpc_unmap(kvm_pfn_t pfn, void *khva)
- #endif
- }
- 
--static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long mmu_seq)
-+static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long mn_seq)
- {
- 	/*
- 	 * mn_active_invalidate_count acts for all intents and purposes
-@@ -136,20 +136,20 @@ static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long mmu_s
- 	 * Note, it does not matter that mn_active_invalidate_count
- 	 * is not protected by gpc->lock.  It is guaranteed to
- 	 * be elevated before the mmu_notifier acquires gpc->lock, and
--	 * isn't dropped until after mmu_invalidate_seq is updated.
-+	 * isn't dropped until after mn_invalidate_seq is updated.
- 	 */
--	if (kvm->mn_active_invalidate_count)
-+	if (READ_ONCE(kvm->mn_active_invalidate_count))
- 		return true;
- 
- 	/*
- 	 * Ensure mn_active_invalidate_count is read before
--	 * mmu_invalidate_seq.  This pairs with the smp_wmb() in
-+	 * mn_invalidate_seq.  This pairs with the smp_wmb() in
- 	 * mmu_notifier_invalidate_range_end() to guarantee either the
- 	 * old (non-zero) value of mn_active_invalidate_count or the
--	 * new (incremented) value of mmu_invalidate_seq is observed.
-+	 * new (incremented) value of mn_invalidate_seq is observed.
- 	 */
- 	smp_rmb();
--	return kvm->mmu_invalidate_seq != mmu_seq;
-+	return READ_ONCE(kvm->mn_invalidate_seq) != mn_seq;
- }
- 
- static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
-@@ -158,7 +158,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
- 	void *old_khva = (void *)PAGE_ALIGN_DOWN((uintptr_t)gpc->khva);
- 	kvm_pfn_t new_pfn = KVM_PFN_ERR_FAULT;
- 	void *new_khva = NULL;
--	unsigned long mmu_seq;
-+	unsigned long mn_seq;
- 	struct page *page;
- 
- 	struct kvm_follow_pfn kfp = {
-@@ -181,7 +181,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
- 	gpc->valid = false;
- 
- 	do {
--		mmu_seq = gpc->kvm->mmu_invalidate_seq;
-+		mn_seq = READ_ONCE(gpc->kvm->mn_invalidate_seq);
- 		smp_rmb();
- 
- 		write_unlock_irq(&gpc->lock);
-@@ -232,7 +232,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
- 		 * attempting to refresh.
- 		 */
- 		WARN_ON_ONCE(gpc->valid);
--	} while (mmu_notifier_retry_cache(gpc->kvm, mmu_seq));
-+	} while (mmu_notifier_retry_cache(gpc->kvm, mn_seq));
- 
- 	gpc->valid = true;
- 	gpc->pfn = new_pfn;
--- 
-2.53.0
+> Adding the sriov disable here at least makes it defensibly safe, that
+> we do still clear the PF on close, and we don't take risks that the
+> active VFs will crash the system during the FLR blip.
+> 
+> Though I understand it was not the original intention, I feel we have
+> ended up in a strange place with the SRIOV PF feature ..
+
+I think we have 3 potential options for PF reset:
+
+ a) All resets are blocked or deferred while SR-IOV is active.
+
+ b) VF mappings are zapped/invalidated at PF reset and require
+    coordination to be reinstated.
+
+ c) VFs are torn down on all PF resets.
+
+Option (a) is complex and doesn't look like stable material.  A deferred
+reset on .close needs to materialize on .remove or .sriov_configure
+(and of course .open), but to allow in-kernel VF drivers we can't rely
+on vfio usage counts, or even our vf-token trust boundaries, which is
+what leads to the .sriov_configure hook since we need to take advantage
+of every opportunity to issue a deferred reset when SR-IOV is not
+active when we can only rely on the PF state.
+
+Option (b) is potentially more simple, it implements the blocking of
+access on reset in the kernel for enforcement, but defers the
+coordination of reinstantiating mappings to userspace, which is really
+how the vf_token model is intended to work.  This is incompatible with
+in-kernel VF drivers, which I think means tainting on VF unbind from
+vfio-pci and those working outside the model would tread carefully.
+
+Option (c) is the more heavy handed approach, it means that a PF driver
+cannot fail or exit and re-attach.  We have existing logic that handles
+a PF driver re-opening the PF device with active VFs and authenticating
+the vf_token (logic also broken by in-kernel VF drivers that bypass the
+vf_token mechanics).  There also appears to be significant locking
+challenges in this approach, ex. the inversion of getting the device
+lock for SR-IOV teardown from the ioctl, config space, and .close
+contexts.
+
+I'm open to suggestions, PF resets with live VFs is very much a gap
+that I'd like to close in the vfio-pci SR-IOV model.  Thanks,
+
+Alex
