@@ -1,84 +1,85 @@
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB553B3899;
-	Mon, 10 Aug 2026 23:40:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4A43ACEE3;
+	Mon, 10 Aug 2026 23:40:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786405246; cv=none; b=RtG2TAXGz96mVfYiUfW9rQPiU0/VNYGkq5a/Z390tcl+LEcTrloPC4n/SBWHIRmIDwKabBIONNwS/QVxbnRFD4Knt7pMYim+E2FdRMkCNqie/U22/KJqiX+xWnXDtuZ5obN1Nqw89mIT4RciOwSSCcKsaJ7UPb1iL1Nl9+VaE4M=
+	t=1786405253; cv=none; b=Qo+Pv5EXMWgnL+GdKuoL58OogE8PsFEqOlBFQYfqvq7ZVqgOx6kVpuFCwILOV8Uru89GKMuiociyxB82qxpglDpxvTaJipZ16aYFVj+BSHKanQDjyKQ6yIlmZNzbnWuswsOZ+V5jDSyEcEfLPy/8MPDUUPhnbLdSWMjBNX6WQts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786405246; c=relaxed/simple;
-	bh=61i0Tj0rEYYqSEC5nfj1ndmvbU2GK4RVRd6AoQA6d8c=;
+	s=arc-20240116; t=1786405253; c=relaxed/simple;
+	bh=aGHwrGUipdw8/57k51g8XciJA32CVX3nd6yRxbRJEow=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A6GxWsvxGOuwkCMp9FZfmvDYcqnp4OA795uvX61g3nGzs6AdvpvwFDubhZsx0mTJ7QSWT6OohYC4Js/UknFOMpQPdAeYlXBtAB7e7q1717TrbTRhQOe+q9OhYCXKQK+jWhOBRrRVnAU7brX87hFWJGkWfWmjTdGaMtpy0/GZ89k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=1Z5LGVEg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=kdQ/cxF9; arc=none smtp.client-ip=103.168.172.159
+	 MIME-Version:Content-Type; b=WmEFRuYRk1g+TD/zmfhnRfXksz0UXN3xwO9Ooc3rvHi1dI6IaTHeC/c2RnfgdMshOl2riwGjzBwUU7mUUtjGXVU1LCP8VvD389GRPPDsok+gsUpeeBafnr/HFBwlE3ePJRRLf6UGzrapjiNKmjTmZq+yTcRy/N6x5t6AnY2twJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=RucuNH5e; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ef3Fb1zB; arc=none smtp.client-ip=103.168.172.151
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="1Z5LGVEg";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="kdQ/cxF9"
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="RucuNH5e";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ef3Fb1zB"
 Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id D49F1140017D;
-	Mon, 10 Aug 2026 19:40:41 -0400 (EDT)
+	by mailfout.phl.internal (Postfix) with ESMTP id 3A050EC0212;
+	Mon, 10 Aug 2026 19:40:50 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Mon, 10 Aug 2026 19:40:41 -0400
+  by phl-compute-05.internal (MEProxy); Mon, 10 Aug 2026 19:40:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1786405241;
-	 x=1786491641; bh=GqC1G3ieoiRn883tbkElHwNaI4yAZdErJQZ6YzKtag8=; b=
-	1Z5LGVEgG68QB+g72auqrX3Z4R5Z5d385SCykewUxy7t3tBzqwTHWit3xqqTeCc3
-	vuo3bJOmwelWzd43STx3PNiPqbgJVxGNy1t9s8+6tdPPidrUzNBe9jLdF8Ennlto
-	/Y4pm+VYFPQ01gAyx61NoE8Ulp2HC4RIKaR8s3AxzmJcA9TLgNFIkzgE0HGpfTMl
-	yKw8DvWUiA7E3mi/NdJ7/HKkX7nV6Q8aUu4EOee9/v15LNmM8cidSP4S6HNVsO+m
-	LD6eAv3A7TfIuTF6uKUnV4e24bBf9drbGEhxuqX1u7blWrVJQBz2q9cSGt2mKAOs
-	Mkvdf84REw+ww+RofzyEFw==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1786405250;
+	 x=1786491650; bh=9k3iKQHBNAdQlxm9rTH0r+n47JU9e7XSpYd9RvZ9Aoc=; b=
+	RucuNH5eppUigFaSxctqjMezcWylVAYQntlQy7ApQP3E0pE5fEMgUNnFX3pt9APq
+	dqRfGOSzm1tyY3T2xBmKq/L3tPBYv0pV7R2MeNxlwlgn1owBDHbj2a0FZoqMoGKG
+	ju1CETKuwBQwRmpn0qbRIWHxESz9p9BiuudrMNY05ruwiqRmwS2mFhnZdY/5DSje
+	vOsmuVUwFGUM/DAHEK8khk+JfSCu/fvMc8qBVFKhrDK/cDlHEFTPEg4ANF75Phfi
+	yeQdH0xO0rr6SbJHUjP09zIxVjr4LWzB8hVDzsi/qHQR8ydSCDWIM5nrJjEXkA1v
+	fSZfPf8jEsEI/QBZ7+WRog==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786405241; x=
-	1786491641; bh=GqC1G3ieoiRn883tbkElHwNaI4yAZdErJQZ6YzKtag8=; b=k
-	dQ/cxF97oAxKDgSRdj3eOB1ZY+IhKySHfKg/Lyc3f6Xs+OFXS8BPDWHLKBIAvPzm
-	RpPQOZ7Fwaclxxxsg4h3ZRnbLbBWY6ShYvbhCoP1rxlARqavoOycmCRTiV49mfPN
-	UR8UYv30wN/x32CbUqlfxwf2Tb1jao9QMZijpWK+5O90ZC0g+qbLeO8MZoClQhe1
-	+Jr5F/M0PucgaF3H7ux+USWzjKLK7k9AbN4qIjPnht86h4tZzVBbA2pTkdFokvVo
-	+CPn51cmcFrLj5hhNSQLU5GnE/qZlSbmc6SYnK148m0H0DDv2kTpqTtL2INic3Wc
-	dXnTYE6vPn6ohHy0HhOqA==
-X-ME-Sender: <xms:eWF6alG8USHqM2D2xSkQvAsP9nQuFfXR8RH_ZvGK08vXUFn_zq7vmA>
-    <xme:eWF6aigFHDpI-BZcMsG5ClPjoLEqeB8pgR1-2tVBDR9aGIX2NpPOcRuWyoBkL6qBJ
-    hARH_Ao0HtXAQFEcLFkpPGHf77bSNAL034qbkOh-Pgq3FCnh2lO>
-X-ME-Received: <xmr:eWF6aivk6uRCicbX4oJEY1TkOKkZeXOG06z_XHHTolqa_gixFxyNQdJfm45FMQ>
-X-ME-Proxy-Cause: dmFkZTEFKj3tAxVGTQVweajQWmOYcwaM76wEBlyzx/blQIlubAzDhd421/au3fiSOUKUVr
-    /yto4R9en7nCvrz86d6jfbaWc9upRsnUTRWaM3Chg48XiyLMv8HaJsO+8Nyc8/uJB2k9No
-    clYd/vHVJsLgue69wUmqLB/K7UpE3041+ddz5OOcJeyahSi+sj+Z2T/z34R1Y2CWah4HhU
-    E6d+zTpXqtWcIe5kdCCvzs6y2gPvhstyRFn66piZ5FvPMqwr9jb1xxPrM2xUgV71sa0xOi
-    INQessOzONDqabGorf2v3eq3olGGlPT9g6Gl0cqr6uH6P+3AuL0i1Nbazsizw/vNmi4AkY
-    xW3fIoUBqrwNa/UqEIK8dqVGq2mxv8R6fTFWy3DXz679doXt514G5fWXvxYJ5Q56Rt/Z6i
-    kcpB61XZRSQHNYbON7Vjm5qBJjrr0QioHpPizywa1ORXnPtksoTcUTq5OprJuy6jf3BkE1
-    y+cj3S3eK2m7cIr7W4vOY1AGDd8GZGQUuhYwZD0oniy8NNPDJKCCkufuqh3HaDdefJnlK+
-    GiLHZx5KA5m5yfdbv+FuuLN7OhygeQKFANGUfP1HqqvhrS6ay9P+HUt2YKPNPa4BLI+c0X
-    +3ZOEN/TcRvowTcksA0LE5jvsdH8u1EF1aJyULpx6IFZu3pCAOMNLdXFa8Ww
-X-ME-Proxy: <xmx:eWF6altOHoW9dOuzUPDIYT69bHtK0CQWJJgS7TxXcwFmEH_TuCtBOA>
-    <xmx:eWF6anFifwVzFIUOEQXOniPy899lqpilmO5ABMjCRw7mADfMjkZLPA>
-    <xmx:eWF6agNDv37xbGMRM7-PHN4DD7lB6Dy4MALge_CWzKpacQH4ThEHDw>
-    <xmx:eWF6amJVM_7qORBCqZPrFHCgrwtZHGDqcRqEQ0cmzTXa23wYqWzRbw>
-    <xmx:eWF6arweJpaBDY0aQQ5vdKrBymIEFACCoJmLBznapdhTaOTAvZggD6YG>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786405250; x=
+	1786491650; bh=9k3iKQHBNAdQlxm9rTH0r+n47JU9e7XSpYd9RvZ9Aoc=; b=E
+	f3Fb1zBscD2PbwI1NRa9xsgWHiilPL2OpzqQVOlPymrfQvanLr0AmRobKw2mK1ng
+	XcZa1M+bb9Dy7yYlZ1xlnLTiMY9tdNLW7cCpceXRYx4WhkP0tuWAsOWDYLeXpoDg
+	/LFTPFgCzBaabBpyrCTuaRT3+kmXELNyPBumBKPKETrXVJb4kY1LCfHD9+eaLjen
+	DDU4GOOnkRWF2Ao2hjiqwptNwJwhi8EUsMT1yjXbFww8aQ1RSuFx+7ERfL/JzFRF
+	3sZ0zzIHbVZyxgENVD05bfMYYiIx/w9GRjaNTrky0DK7T/tFX79vSR/7EmsBbHh2
+	FtGdRAu7/mxu/G8qW/iAg==
+X-ME-Sender: <xms:gmF6anrZL-qaty1VDGY5SnDlJReaZDhS-2dM4oQVcdk98D87CklUhw>
+    <xme:gmF6aiHr3A3D06KK02nvr71w-b1lvxh4ypr3R2j2n4Uftf7Kml0elFd-iDBkGGruW
+    2J8arJkWI8xXHXh1IA8Con3aiLUmlZC5ApkpY5pKZhNuyrO8x_xnA>
+X-ME-Received: <xmr:gmF6ak6_wovlsfWOwmvVUrVW55K_LUkO3o7i-yfNxkyPP6Uek0ShbMkouKJWWw>
+X-ME-Proxy-Cause: dmFkZTEdc0M5tYo5B3LMfb/Pw9I4WHXy5zXQfbC9vUbftuB8SUi+mXc5rSrgagD5xnEofX
+    uYITiqwaxwTlaIS8lHB7oiaygsLwYaShEThgRKUMNhui58ZqnzoUxnUWVnDfUhtMZBP6nz
+    gWVwuwTzfyDphl4XQ5g2EKPF4yqXLam0FtTmhUdZY7AsJRgc41XwzNuk+x6NaQIAGuwLW7
+    b7BOgC9u+eWeUIUC6cQS4fFJ/zz7/GdVY91yhyQKe4K/M7DsM45Tr/oiNDGqjXL862M6/l
+    mlk16eTS0XQlE5YZgyErGor0fiGi9fthSPZxvZeaoYLKSKLcLHdL1DRwq34snDGYUNJEP/
+    OvkfdMtPBr2YWmuzLhAnu7IGgrI0qBZ3NINdW+wOeuIqHH5cJCB4c6zjxrNEBGcxMcj+Mb
+    Rdas7KNPPFbXJU3fKwirXpNQ4+LYSTBXFhhsMQhfXAAN+5YIpFrepvNkwJnw9RAR63H8pM
+    oQEFK8CagdWJuOKP93I31dhJzk04kB9RD9VM9g5De3xB0UqkH6gJXv9Gi7wPbxPMXFVDr1
+    c8fhn0+jq4v2EQbvOtp4ST2xTr02x6z7OcfKHC94IvisFP+6NG6fo7XkG6nPH+L5WF71Zv
+    OAhzRIHllhoi44eHQqfo1jqV2eiJqEP/RKn9doO17lf1qoHZ0gqD7TihjIXw
+X-ME-Proxy: <xmx:gmF6aidvf_HjIb_i4JSKIr57kAS0J56W37r1da8kZaRnyZuh83GyXw>
+    <xmx:gmF6an6WuQ6W0Jh67hOnbIanN4d0JAUHxyIEAABn5q-3ukPOAEvSlA>
+    <xmx:gmF6av9I1zKdAa8XB6K6CThZ_RFNZcuPmFF3AgkerRyqMjvadJWEvA>
+    <xmx:gmF6apEGcdqioZIC8GmZvgaDai7EKHYJyUQzGdfUG7We_irzCjv6Bg>
+    <xmx:gmF6aunWdC7s4Wrp6vypeTWAeshxMdnqcy9xAlms5W2L85TnJSjj-ml0>
 Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 10 Aug 2026 19:40:40 -0400 (EDT)
-Date: Mon, 10 Aug 2026 17:40:39 -0600
+ 10 Aug 2026 19:40:49 -0400 (EDT)
+Date: Mon, 10 Aug 2026 17:40:48 -0600
 From: Alex Williamson <alex@shazbot.org>
-To: Farhan Ali <alifm@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
- kvm@vger.kernel.org, mjrosato@linux.ibm.com, borntraeger@linux.ibm.com,
- mattev@meta.com, schnelle@linux.ibm.com, alex@shazbot.org
-Subject: Re: [PATCH v1] vfio/pci: Avoid mapping BARs for devices with
- non-mappable BARs
-Message-ID: <20260810174039.12ca9c9c@shazbot.org>
-In-Reply-To: <20260729181116.1373-1-alifm@linux.ibm.com>
-References: <20260729181116.1373-1-alifm@linux.ibm.com>
+To: Josh Hilke <jrhilke@google.com>
+Cc: David Matlack <dmatlack@google.com>, Shuah Khan <shuah@kernel.org>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Vipin Sharma <vipinsh@google.com>, Alex
+ Williamson <alex.williamson@nvidia.com>, alex@shazbot.org
+Subject: Re: [PATCH v10 0/3] vfio: selftests: Add driver for Intel Ethernet
+ Gigabit Controller (IGB)
+Message-ID: <20260810174048.4e83f24f@shazbot.org>
+In-Reply-To: <20260805-igb_v3_b4-v10-0-9c86dc849c0d@google.com>
+References: <20260805-igb_v3_b4-v10-0-9c86dc849c0d@google.com>
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -89,44 +90,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 29 Jul 2026 11:11:16 -0700
-Farhan Ali <alifm@linux.ibm.com> wrote:
+On Wed, 05 Aug 2026 00:20:57 +0000
+Josh Hilke <jrhilke@google.com> wrote:
 
-> vfio_pci_core_map_bars() calls pci_iomap() to set up BAR resources, but not
-> all devices support having their BARs mapped by the CPU. The
-> non_mappable_bars flag indicates that a PCI device's BARs cannot be
-> accessed by the CPU. The ISM device on s390 is one such device. The BAR
-> size for an ISM device is 256 TiB, and attempting to map the BAR will lead
-> to warnings:
+> This v10 of a series which adds a VFIO selftest driver for the Intel
+> Gigabit Ethernet controller (IGB), specifically targeting the 82576
+> device. IGB is fully virtualized in QEMU, making it suitable for running
+> VFIO selftests without specialized hardware.
 > 
-> vmalloc_node_range for size 281474976714752 failed: Address range
-> restricted to 0x2110bab00000 - 0x21903ab00000
+> v9: https://lore.kernel.org/kvm/20260730-igb_v3_b4-v9-0-9e4d8682437e@google.com/
 > 
-> Use pdev->non_mappable_bars to skip pci_iomap() for such devices. This flag
-> is set by the PCI core at enumeration time and already serves the same
-> purpose in vfio_pci_probe_mmaps().
+> Version 10 adds an assert in the IGB driver to prevent DMA transfers
+> smaller than 60 bytes, avoiding out-of-bounds DMA writes caused by
+> hardware padding on short transfers, and squashes the recovery logic
+> (previously Patch 5) into the main driver patch to keep the driver
+> self-contained. Also add some logic from Alex to correct the ordering of
+> Tx/Rx queue setup.
 > 
-> Fixes: 05f2a68b407a ("vfio/pci: Set up BAR resources and maps in vfio_pci_core_enable()")
-> Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c | 3 +++
->  1 file changed, 3 insertions(+)
+> This series applies on top of linux-next, but the VFIO selftests don't
+> build without this patch which fixes a compile error for the test
+> fixture:
+> https://lore.kernel.org/linux-kselftest/20260630213341.1664345-1-dmatlack@google.com/
 > 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index 3f11a9624b9c..6a184588ff23 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -554,6 +554,9 @@ static void vfio_pci_core_map_bars(struct vfio_pci_core_device *vdev)
->  
->  		vdev->barmap[bar] = IOMEM_ERR_PTR(-ENODEV);
->  
-> +		if (pdev->non_mappable_bars)
-> +			continue;
-> +
->  		if (!pci_resource_len(pdev, i))
->  			continue;
->  
+> Testing
+> =======
+> - VFIO selftests builds clean at every commit
+> - vfio_pci_driver_test passes using IGB driver + QEMU. Use the following
+>   command to run the tests:
+> 
+>   vng \
+>   --run arch/x86/boot/bzImage \
+>   --user root \
+>   --disable-microvm \
+>   --memory 32G \
+>   --cpus 8 \
+>   --qemu-opts="-M q35,accel=kvm,kernel-irqchip=split" \
+>   --qemu-opts="-device intel-iommu,intremap=on,caching-mode=on,device-iotlb=on" \
+>   --qemu-opts="-netdev user,id=net0 -device igb,netdev=net0,addr=09.0" \
+>   --append "console=ttyS0 earlyprintk=ttyS0 intel_iommu=on iommu=pt" \
+>   --exec "modprobe vfio-pci && \
+>           ./tools/testing/selftests/vfio/scripts/setup.sh 0000:00:09.0 && \
+>           ./tools/testing/selftests/vfio/scripts/run.sh ./tools/testing/selftests/vfio/vfio_pci_driver_test"
+> --------
+> Changelog:
+> 
+> v9 -> v10:
+> - Add assert in IGB driver to prevent DMA transfers < 60 bytes (Ethernet
+>   minimum payload size) to avoid memory corruption from hardware padding. (Sashiko)
+> - Squash recovery logic into the main driver patch to make the driver self-contained. 
+> - Set per-queue enable bits _after_ enabling global queue bits (Alex)
 
 Applied to vfio next branch for v7.3.  Thanks,
 
