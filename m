@@ -1,56 +1,56 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7603B7B7F
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 22:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF213425886
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 22:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786402526; cv=none; b=oUWtyyVa/LN2fSYjjw5pUXix/L1usz/jZdoChFeP1bj79Ju9rYfTaVX2UzXDCxJ0NvIgy14TSuWyYoLPsGZB9ArR6y40XXYr63uA6jb8uVLJr9rUWNGThiDNZJnQJnN/pcZZ6paDnKYIs283fFlcYv7PNr2I7WmyazBkSsEVQdI=
+	t=1786402526; cv=none; b=quxCdNQ5EjVY8TpPNpGiVkHOIZriNYXU2Jc2Qt+QlwttPtpexNPonbQU2gyRTfdj3tE52uHr+pN5BAIq/oAp1RM9uhErw5vqZTAP2nzMGdRujqxhzJ6TchLX9TlfoRhjaQnWfnT6RKRVSpyYfkS9O9P7zUuFJ4K624LSI8SXcgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786402526; c=relaxed/simple;
-	bh=B+zYaK0jv8vr3cfVGCR9hMeAybdTIs4VKA2n/3aUX4Q=;
+	bh=AnYa9DsB3pC5ovwAQxf38sSPtNt8qCo49QzZbAmqaJw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nVm7TVbnUSUm9doeKuos/778/nlt7mltAbuTHqfWauhg9BaxDVeg3xcAtvyB8UuG3T81jwYjXtfX232i/wAALkK0t/cA4N2G9OpeF0OyKaccB0tK6s2lCsisUsjjAMQNHLomilUOPbBg7nlmoBmMfQXFV+VONCBnFp6/HY/KOjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K2icogYW; arc=none smtp.client-ip=209.85.214.199
+	 To:Cc:Content-Type; b=LQTRQkKLw6193Strofeln5penoo2cWCRnR9LenVGYdsx0U3tbQcue4P5PzgaD6DX6Q8A78SLA9uKaZIEgxDD37N8DPGoYvX/boKrApvxx5qmq+vbDcUMsQOuxZUsY4Ziz4mNijYpHWIgT521iuSumoXEO7QiKkqLinnTfR61stg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oYqa5uQo; arc=none smtp.client-ip=209.85.210.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K2icogYW"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cfa4e4684bso70385965ad.2
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 15:55:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oYqa5uQo"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-84fa3b14ed2so134225b3a.1
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 15:55:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786402517; x=1787007317; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786402522; x=1787007322; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=dxR15fCIX+zSacQBw3/oP3E10naqYejo6NYc0FRWoJM=;
-        b=K2icogYW1E0eiFD/KV3TAZ/+1oYl/SOaDpeQ/mcq3yNHsvUFQSBPbHKb8L2SVwkdQp
-         gQ/8+mhMgQeffmE0aoD2vspXRp5hOUXr3kQNTJ/xdh2EcOy68W2aEBinFHQj/vwfNcRf
-         Yi6S77H2z/zE4kmNdfQ+J00KS8T427bpsDvS+nOLsJsQSQXeUNq/KSX2DArtYxXKqW8d
-         nslmvw3RNu2ph/UddTMlr1hGk8yV8ynfn+11H/oNn0xIo13WEVgjAL9t8o4gPiEoxINu
-         uyZhlQpyUSFCeOGQvHSYolnnpdwvoS8FcQE2PF3b910JRyEmFeoCUxByvJHe6YP+AB4u
-         t1Wg==
+        bh=lVlimL3Aj8kSsMDGDfvignTmc+0OEOZcp7iMQk31IH8=;
+        b=oYqa5uQoDsY/Zs77sINbsZ+SUmOQ3OvFoQQ6u363qFkdmJHGep3VM84qIwUpOB+qCk
+         VuxylniXkthXJT+U5SXZKNh9swTea9m/+Njf3QNvWax9bGHkngwT6sWabhthhbqfexXa
+         q+7+bcpqKW0qIsA6+hf4F9GHKjHTOO6tnt2lLKERbM9zx0wGo2ufyEjDclyTzu7FJ/bJ
+         r2+MB1kFpzAXab5Wl5RDotlGZDpJf0aphRIdHjZdKAzZh8nbkjg9vD8miPsjzEt55lje
+         PotrATiVin8iAWKjpq+/7MzfSwOHfcDZUwuJgnBn7sqfnf84WRDv8BeaAkxAxE8qJIRG
+         rmHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786402517; x=1787007317;
+        d=1e100.net; s=20251104; t=1786402522; x=1787007322;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=dxR15fCIX+zSacQBw3/oP3E10naqYejo6NYc0FRWoJM=;
-        b=UqYmmi5f5JMAEA4o7KMmTOF3wRnJtBI/EDrQZF+s0eCJn5595cUnPW+mU8OW61CpEh
-         6B9aG52+tA/JNOndZjBcZtq4A7gg7xvGiqAWSgqTWpQOEpiCQxIcTl5nUc4SdeQ1YRMU
-         o/YCdmKzL1D9aWrg7JqEaMI2J3SuOdJO4rpFQnRI1V0yW9lhkwOT4mnnzatWXih/8eDM
-         QYCecrisIjszH0aE6zqKMglOwo5I2rj0lI+sYMCbz+WP9nemSMRyuqr3RgzPeL+asUHg
-         do9R+X7vv37nCLyGbZvh/SoX0fIcyCfKY+og4i304zmttVDkd3tp9u30yJuE6rnzvAQ0
-         EFmw==
-X-Gm-Message-State: AOJu0YyUJcCZ432TeZuLFCEhWpV3w7HQz+/mQQk0W9rA0WLvIUfxIVuj
-	ExXz13VmTbMYzicIynFTGv4Bwq/nAEcKVcetDuaaS9grw9AdhPw2lXkdtTCgGRgNfbhHNFsqH4R
-	3CA9C1Q==
-X-Received: from plgo14.prod.google.com ([2002:a17:902:d4ce:b0:2cc:79e2:e717])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e5c1:b0:2d0:cc92:f7ae
- with SMTP id d9443c01a7336-2d294b29499mr283668315ad.3.1786402516633; Mon, 10
- Aug 2026 15:55:16 -0700 (PDT)
+        bh=lVlimL3Aj8kSsMDGDfvignTmc+0OEOZcp7iMQk31IH8=;
+        b=Ex0aHBFKYTpeyJMQQjOF3/f4mRgssXGAvdLurqP57cEqZBkHsRr/fpLAeW77yDTbia
+         KKL8YdcAzt/DO6wpYfmwbjjnW1pH7HPA0XcyYO2FiujNxhfhzNK1VJhquwyrZWcN7Ffw
+         I5sjCmxpsGtPPQ8JrzoyYmZFzsYrmb94PIa1Wv6BYaognD6MOAfbV9+mDTwGP+hecOvi
+         P130r4jFA1QxbB0L4UclvYVtD5H+v7OF8tiCPXpjd/FJyb6QxZpDa+7DGTf7KoMrsQpg
+         /Z3IYvNdxHqXe/eT0AuD0QCdpARq1Pv3Hh/zJ+d2COUZnxpnK7G5Ha5aGK2fN59FK6F/
+         RfhQ==
+X-Gm-Message-State: AOJu0YyFfu7PCLDArdsSJqk9wYQKW7H78pSEy7wnqXvEQSYcyMHVFpOn
+	eNOeidinocdl1GKb2Ak47CRCuiDIzBUYFiZuXVQ97Fc4arG00lsj2QcPjhXPFy3gTp56cIudiWL
+	KlGJ8+g==
+X-Received: from pfuu5.prod.google.com ([2002:a05:6a00:6f85:b0:848:4e44:7f19])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2e19:b0:845:4928:8655
+ with SMTP id d2e1a72fcca58-84f2e0edaddmr45671680b3a.39.1786402521754; Mon, 10
+ Aug 2026 15:55:21 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Mon, 10 Aug 2026 15:54:49 -0700
+Date: Mon, 10 Aug 2026 15:54:53 -0700
 In-Reply-To: <20260810225500.869288-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,166 +60,77 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260810225500.869288-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260810225500.869288-12-seanjc@google.com>
-Subject: [PATCH v9 11/21] KVM: x86: Fix KVM clock precision in get_kvmclock()
- with TSC scaling
+Message-ID: <20260810225500.869288-16-seanjc@google.com>
+Subject: [PATCH v9 15/21] KVM: x86: Make master clock logic in guest PV clock
+ updates 64-bit only
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Paul Durrant <paul@xen.org>, David Woodhouse <dwmw@amazon.co.uk>, Dongli Zhang <dongli.zhang@oracle.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+Wrap kvm_guest_time_update()'s entire use_master_clock block in #ifdef
+CONFIG_X86_64 and provide a hardcoded-to-false variable for the 32-bit
+path, as use_master_clock is never true on 32-bit (host_tsc_clocksource is
+only set under CONFIG_X86_64)
 
-When in master clock mode, the KVM clock is defined in terms of the
-guest TSC. But get_kvmclock() was computing it from the host TSC
-without applying TSC scaling, leading to a systemic drift from the
-values the guest computes from its own TSC.
+Keep the local "ka" variable outside of the 64-bit-only code as it's also
+used for Xen code, but tag it as potentially unused since it's not used on
+32-bit kernels without Xen emulation.
 
-Store the VM's TSC scaling ratio in kvm_arch and precompute the
-guest-TSC-based mul/shift in pvclock_update_vm_gtod_copy(). Use these
-in get_kvmclock() to scale the host TSC delta to guest TSC before
-converting to nanoseconds.
+For all intents and purposes, no functional change intended.
 
-This avoids "definition C" of the KVM clock described in commit
-633d7652f80f ("KVM: x86/xen: Do not corrupt KVM clock in
-kvm_xen_shared_info_init()").
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm_host.h |  4 +++
- arch/x86/kvm/x86.c              | 61 ++++++++++++++++++++++++---------
- 2 files changed, 48 insertions(+), 17 deletions(-)
+ arch/x86/kvm/x86.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 6ddc988576d0..2878a5181cd9 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1236,6 +1236,7 @@ struct kvm_arch {
- 	u64 last_tsc_write;
- 	u32 last_tsc_khz;
- 	u64 last_tsc_offset;
-+	u64 last_tsc_scaling_ratio;
- 	u64 cur_tsc_nsec;
- 	u64 cur_tsc_write;
- 	u64 cur_tsc_offset;
-@@ -1251,6 +1252,9 @@ struct kvm_arch {
- 	u64 master_kernel_ns;
- 	u64 master_cycle_now;
- 	struct ratelimit_state kvmclock_update_rs;
-+	u64 master_tsc_scaling_ratio;
-+	s8  master_tsc_shift;
-+	u32 master_tsc_mul;
- 
- #ifdef CONFIG_KVM_HYPERV
- 	struct kvm_hv hyperv;
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 33ba840d3267..61c65241554d 100644
+index a8dde1d898fb..d3630b2bfd3b 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -1247,6 +1247,7 @@ static void __kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 offset, u64 tsc,
- 	kvm->arch.last_tsc_write = tsc;
- 	kvm->arch.last_tsc_khz = vcpu->arch.virtual_tsc_khz;
- 	kvm->arch.last_tsc_offset = offset;
-+	kvm->arch.last_tsc_scaling_ratio = vcpu->arch.l1_tsc_scaling_ratio;
+@@ -1796,22 +1796,21 @@ static void kvm_setup_guest_pvclock(struct pvclock_vcpu_time_info *ref_hv_clock,
  
- 	vcpu->arch.last_guest_tsc = tsc;
- 
-@@ -1559,6 +1560,8 @@ static bool kvm_get_walltime_and_clockread(struct timespec64 *ts,
-  *
-  */
- 
-+static unsigned long get_cpu_tsc_khz(void);
-+
- static void pvclock_update_vm_gtod_copy(struct kvm *kvm)
+ int kvm_guest_time_update(struct kvm_vcpu *v)
  {
- #ifdef CONFIG_X86_64
-@@ -1582,9 +1585,30 @@ static void pvclock_update_vm_gtod_copy(struct kvm *kvm)
- 				&& !ka->backwards_tsc_observed
- 				&& !ka->boot_vcpu_runs_old_kvmclock;
- 
--	if (ka->use_master_clock)
-+	if (ka->use_master_clock) {
-+		u64 tsc_hz;
-+
- 		atomic_set(&kvm_guest_has_master_clock, 1);
- 
-+		/*
-+		 * Copy the scaling ratio and precompute the mul/shift for
-+		 * converting guest TSC to nanoseconds. These are used by
-+		 * get_kvmclock() to compute kvmclock from the host TSC
-+		 * without needing a vCPU reference.
-+		 */
-+		ka->master_tsc_scaling_ratio = ka->last_tsc_scaling_ratio;
-+		tsc_hz = (u64)get_cpu_tsc_khz() * HZ_PER_KHZ;
-+		if (tsc_hz && kvm_caps.has_tsc_control)
-+			tsc_hz = kvm_scale_tsc(tsc_hz,
-+					       ka->master_tsc_scaling_ratio);
-+		if (tsc_hz)
-+			kvm_get_time_scale(NSEC_PER_SEC, tsc_hz,
-+					   &ka->master_tsc_shift,
-+					   &ka->master_tsc_mul);
-+		else
-+			ka->use_master_clock = false;
-+	}
-+
- 	vclock_mode = pvclock_gtod_data.clock.vclock_mode;
- 	trace_kvm_update_master_clock(ka->use_master_clock, vclock_mode,
- 					vcpus_matched);
-@@ -1658,22 +1682,10 @@ static bool __get_kvmclock_master_clock(struct kvm *kvm,
- 	struct kvm_arch *ka = &kvm->arch;
- 	struct pvclock_vcpu_time_info hv_clock;
- 	struct timespec64 ts;
--	u64 tsc_hz;
- 
- 	if (!ka->use_master_clock)
- 		return false;
- 
--	/*
--	 * Snapshot and validate the TSC frequency as kvmclock_cpu_down_prep()
--	 * zeros the per-CPU value when a CPU is going offline.
--	 */
--	get_cpu();
--	tsc_hz = (u64)get_cpu_tsc_khz() * HZ_PER_KHZ;
--	put_cpu();
--
--	if (!tsc_hz)
--		return false;
--
- 	if (!kvm_get_walltime_and_clockread(&ts, &data->host_tsc))
- 		return false;
- 
-@@ -1683,10 +1695,25 @@ static bool __get_kvmclock_master_clock(struct kvm *kvm,
- 
- 	hv_clock.tsc_timestamp = ka->master_cycle_now;
- 	hv_clock.system_time = ka->master_kernel_ns + ka->kvmclock_offset;
--	kvm_get_time_scale(NSEC_PER_SEC,  tsc_hz,
--				&hv_clock.tsc_shift,
--				&hv_clock.tsc_to_system_mul);
--	data->clock = __pvclock_read_cycles(&hv_clock, data->host_tsc);
++	struct kvm_arch *ka __maybe_unused = &v->kvm->arch;
+ 	struct pvclock_vcpu_time_info hv_clock = {};
+ 	u64 tgt_tsc_hz;
+-	unsigned seq;
+ 	struct kvm_vcpu_arch *vcpu = &v->arch;
+-	struct kvm_arch *ka = &v->kvm->arch;
+ 	s64 kernel_ns;
+ 	u64 tsc_timestamp, host_tsc;
 +
 +	/*
-+	 * Use the precomputed guest-TSC-based mul/shift so that the kvmclock
-+	 * value matches what the guest computes from its own TSC.
++	 * If the host uses TSC clock, then passthrough TSC as stable
++	 * to the guest.
 +	 */
-+	hv_clock.tsc_shift = ka->master_tsc_shift;
-+	hv_clock.tsc_to_system_mul = ka->master_tsc_mul;
-+
-+	if (kvm_caps.has_tsc_control) {
-+		u64 tsc_delta = data->host_tsc - ka->master_cycle_now;
-+
-+		tsc_delta = kvm_scale_tsc(tsc_delta, ka->master_tsc_scaling_ratio);
-+		data->clock = hv_clock.system_time +
-+			      pvclock_scale_delta(tsc_delta,
-+						  hv_clock.tsc_to_system_mul,
-+						  hv_clock.tsc_shift);
-+	} else {
-+		data->clock = __pvclock_read_cycles(&hv_clock, data->host_tsc);
-+	}
- 	return true;
- #else
- 	return false;
++#ifdef CONFIG_X86_64
+ 	bool use_master_clock;
++	unsigned int seq;
+ 
+-	kernel_ns = 0;
+-	host_tsc = 0;
+-
+-	/*
+-	 * If the host uses TSC clock, then passthrough TSC as stable
+-	 * to the guest.
+-	 */
+ 	do {
+ 		seq = read_seqcount_begin(&ka->pvclock_sc);
+ 		use_master_clock = ka->use_master_clock;
+@@ -1820,7 +1819,9 @@ int kvm_guest_time_update(struct kvm_vcpu *v)
+ 			kernel_ns = ka->master_kernel_ns;
+ 		}
+ 	} while (read_seqcount_retry(&ka->pvclock_sc, seq));
+-
++#else
++	const bool use_master_clock = false;
++#endif
+ 	/*
+ 	 * Ensure reading the TSC+frequency pair is done on the same CPU.  When
+ 	 * NOT using the master clock, the TSC frequency may vary between CPUs.
 -- 
 2.55.0.679.g6767b8d81c-goog
 
