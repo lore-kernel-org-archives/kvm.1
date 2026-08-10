@@ -1,57 +1,57 @@
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B813B3C08
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 10:13:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C7C3B5302
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 10:14:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786356832; cv=none; b=mClLZJcwHWs/6TpAcFbYqH3jD0ts7RHbHC2Xcg05hEnlMBnKhmUt1jnJdV8yy2rXk62629Zk5N9Bet1/bC5lwdMHnZVSM3n2YUtMrHzxOpkG2psAUyFlUimsjUSQy/8wnNCT+aAQCYytk8p1Eshn+TFg4hFtnoLSfXKmzbmHxhw=
+	t=1786356854; cv=none; b=cb/JASuocg9s+Vyr6xxcj2ZnU9mlMejWgJrf8yrbtd11e1hgnh+FDETtsMEgFcmZoHa7ViMi0baj2AuYfrdEkJRdtkOeoJU0tm+eTEvpHyXf1GdDD+gAl4uS2JJ4XAtxr2PR2i4bAhD0G1l+8hN7PeWlAQjFQIObha/pjfHrKaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786356832; c=relaxed/simple;
-	bh=MeXfYhzXMPHdPIsGXHtVw7BYqOJa1dL6Rn+GgOZlz7Y=;
+	s=arc-20240116; t=1786356854; c=relaxed/simple;
+	bh=KhRqqZzkzINqMrhJjmlawWrpCrwFP6oGdf7PTZcoZUI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=R17RWkw53UZhhV1cfsLcS+4OzUtXLuwah51fjWpK2pcGtoYSEbuM4/r96VuJxuibpLdMP65aLX30ccAd8bR9GRWSAlor8Mto3RA9xBKJ5mN+R01Qv1s9qjW5T7ZowKPiVzyL0owQ1Z/aT1m3hseu5EBSpuPXQUIsUS1yG2ZgEyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FRdvf8K+; arc=none smtp.client-ip=209.85.208.69
+	 To:Cc:Content-Type; b=L7/Yr7B2B8otYo2syo0yTyrE+aaBW1bBBWJieUwbarA+flR4VopkWD8Yv29kHpvQ2lnmbreinvyIm9dFPdZMiISfg1pHt5Y6Auv5bAWcaangNh8YZtdVUCbJeO7B8NRpu2VT/P1Rfcx8SkOjBpuPXc/zpk3sW6NqIShegAJafb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kOxs23Wa; arc=none smtp.client-ip=209.85.208.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FRdvf8K+"
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-69e70c286ecso1440759a12.0
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 03:13:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kOxs23Wa"
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6a0a4f0e0cbso2024287a12.3
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 03:14:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786356829; x=1786961629; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=K9UaDyUPuckC37zrOmaQcbngoaGVbYZA3xXl4q/mPgY=;
-        b=FRdvf8K+I7qclGg5uIq0LHNyluPEADM+3bxHl1bwMqN0RXcePrpuoD4E9tk+/MURYY
-         vyTl4YsKC01qB5eWB+tGQ8mCND7Xb5rlpVYqkSYf8pKEvn4GF2hSEu/VjPwaODB6CTBq
-         wOGfCIWBKKEweoNniwqGsbVry25k+KPcwYvoDqQrbikQ2yNNgdPR2j9oL76Cd5y/fRwl
-         SqlgM4E+AmvT8ybvpaor64/JaNiFlpZZrA5XCBdbKMTTQlLuPR1iQsq31MjG9JLwHy0Z
-         ybs7hx6Ct7+dxYZjfDzFOe1k9UVSuIIKjrJ+PIq+Zue/kdtVoJULncnDCNzRcZk6YsG9
-         nhCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786356829; x=1786961629;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1786356851; x=1786961651; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=K9UaDyUPuckC37zrOmaQcbngoaGVbYZA3xXl4q/mPgY=;
-        b=UKyZpKMMB7Vz6duKWAtqTjSVnLVfflVCwCaZImqdH/j7nrVgTJnMCrnTwjANnBt0IV
-         1xSJ5KCbTpkIijAHU4RqPkODG8m/d4kXH8FS9FZp8a1aSmZQVEZvVJDZxIMVY2AD1x+Z
-         K2M1JpTpUQMUtIvZ5th2uQcwejFL2wo+AdoTPZ9g3wHAIvF44CcMPG7FgW1R8I/G/i4/
-         YEsBbj6f60Z45tjtAcG2M4jkYmGJb9uyJWlALlfLZWWxKf9/f5gSnlr+7uefhnhTSfqV
-         gEjxAQNq2Kc+I0n7PpD4Lzc3B43euknTyexzQ09Veu0+VfmQvLlmIl9dJmEA+I/yC4S8
-         En0Q==
-X-Gm-Message-State: AOJu0YwTpT00xXGpQfeBThu9xUXuwxsVHxK3fuEMMlKkIxlTykkSXpnl
-	jMNouYD/QllPjabNVidvYcJjWSz+H+ElMKRSPRSbHkD0vOX3pwPQ6hg601Ls66KoPHqrXQza0F9
-	pY2MPFLV5hi21QAoV1Q==
-X-Received: from edyc9.prod.google.com ([2002:aa7:df09:0:b0:697:8356:d9d4])
+        bh=q7bDX99X8heKfUMDjEOLpp44Kc2HBY4XoCrDNhJpdWw=;
+        b=kOxs23WaTkdm0z4kpv+3d+vobW3VA4u++gURekhYwnrq4KhA+9e63+cJBP8Dz5ntA7
+         3kfUfnZhD83IDTmYO+blfEwps6kBl9KIcXymFhcl1E2gzfEfB5eyNEZlmpxwNuFu5xXY
+         ctieUQCi8rRLVN/t00SQ2a/SXXMMEgpA6lkHZ2EnhdOpyXva8jcraA9F2IildZDNxtor
+         VI1nB7AR8IjolCISmLq1FX+if3tysUaNRvfdwbRs1169OotRAmJ6VSZQDd6zj8MA+DKa
+         LWtv4WwdgMDo4xfkVfmIaCTWtnkgZD6fgfSAquvOeOhWqN0x3aZu1rr1OMCGQPkOIvnt
+         1S3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786356851; x=1786961651;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=q7bDX99X8heKfUMDjEOLpp44Kc2HBY4XoCrDNhJpdWw=;
+        b=jUhLLvaWeYdh9m5v6Omji/SEgwx0K5A4Ph3vPGhu4hHz80fhCHHyruwzVaSkbE4VlP
+         gmSn+PgNoUhcmdUmmjCx2Y6Gk4hfWuB+dtKdgV/YNaieG6OuvfaIE007jERdKe5lY61I
+         DgEDjT7wntNfml2OGOov3SDfWrpz9uOV0XPjIxP52eStnyFi95bUytpSRMMpS4UUztGd
+         3xyVG19GJbosukCWxvWvl+jo1lVYQk8vfIIuxuBVpoUq6fdPSeyR1ODg+EPkqOFo0m65
+         a9AtNvDKcYvsmh3hbyPBeur9Oxy2iSCwU6+VpaZRJJGuP3Vgj5dx8MVG/lHNDZdxYQhk
+         q3Cw==
+X-Forwarded-Encrypted: i=1; AHgh+RpvU5GH+ZQd81MyGbO8J5dqi2wszoJ4gn5oDAnjpBwtVgyFFG62rVWVpUeA2DPzqMDKdak=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKLBnUrzT4dxq0WqaQH1uNU0kYH//db99xhUvaCeEVDsx5hkbl
+	tnH572AZLmPQBmiHKFuD4I1OFW/TnNCYZOEa+U3BG8/L0CuwriUt2EGRVlEjaoULo5GAer5y3ti
+	cvV2anfo511BCISpR7g==
+X-Received: from edtp18.prod.google.com ([2002:aa7:cc92:0:b0:69a:bfa3:e91d])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:24db:b0:6a1:feb6:6d78 with SMTP id 4fb4d7f45d1cf-6a1feb6806amr5150242a12.18.1786356829111;
- Mon, 10 Aug 2026 03:13:49 -0700 (PDT)
-Date: Mon, 10 Aug 2026 10:13:47 +0000
-In-Reply-To: <CAEvNRgGHuiXG1KZ24+kX-ZgTS_rqGPFqJMjoJhqf6GpZh4xN3g@mail.gmail.com>
+ 2002:a05:6402:a00e:b0:6a1:fb92:b3c3 with SMTP id 4fb4d7f45d1cf-6a355e19d23mr437843a12.12.1786356851307;
+ Mon, 10 Aug 2026 03:14:11 -0700 (PDT)
+Date: Mon, 10 Aug 2026 10:14:10 +0000
+In-Reply-To: <CAEvNRgGazT2D-G7sEem4RD5nUEj7dmcg8vx2=3bpatS_o5uE+g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -59,65 +59,37 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260728121138.1103610-1-tarunsahu@google.com>
- <20260728121138.1103610-2-tarunsahu@google.com> <20260728122245.AA83D1F000E9@smtp.kernel.org>
- <CAEvNRgGHuiXG1KZ24+kX-ZgTS_rqGPFqJMjoJhqf6GpZh4xN3g@mail.gmail.com>
-Message-ID: <9huzjypy8eqs.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 01/11] liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
+ <20260728121138.1103610-3-tarunsahu@google.com> <CAEvNRgGazT2D-G7sEem4RD5nUEj7dmcg8vx2=3bpatS_o5uE+g@mail.gmail.com>
+Message-ID: <9huzh5l28eq5.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v4 02/11] KVM: Introduce kvm_create_vm_file() helper
 From: tarunsahu@google.com
-To: Ackerley Tng <ackerleytng@google.com>, sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org, Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev, 
-	Oliver Upton <oupton@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-
-
-Thanks for reviewing it.
+To: Ackerley Tng <ackerleytng@google.com>, fuad.tabba@linux.dev, 
+	Andrew Morton <akpm@linux-foundation.org>, seanjc@google.com, dmatlack@google.com, 
+	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>
+Cc: linux-kselftest@vger.kernel.org, andre.przywara@arm.com, 
+	michael.roth@amd.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	will@kernel.org, vannapurve@google.com, maz@kernel.org, fvdl@google.com, 
+	kvm@vger.kernel.org, oliver.upton@linux.dev, kvmarm@lists.linux.dev, 
+	alexandru.elisei@arm.com, skhawaja@google.com, aneesh.kumar@kernel.org, 
+	linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, 
+	kexec@lists.infradead.org, suzuki.poulose@arm.com
+Content-Type: text/plain; charset="UTF-8"
 
 Ackerley Tng <ackerleytng@google.com> writes:
 
-> sashiko-bot@kernel.org writes:
+> Tarun Sahu <tarunsahu@google.com> writes:
 >
->>>
->>> +config LIVEUPDATE_GUEST_MEMFD
->>> +	bool "Live update support for guest_memfd"
->>> +	depends on LIVEUPDATE
->>> +	depends on KVM_GUEST_MEMFD
->>> +	default LIVEUPDATE
->>
->> [Severity: Medium]
->> Is the implementation for this feature missing from this patch?
->>
->> The commit message notes that this patch enables live update support for=
- KVM
->> guest_memfd files, but the newly added LIVEUPDATE_GUEST_MEMFD symbol app=
-ears
->> to be unreferenced in the tree. Since there are no Makefiles, C files, o=
-r
->> preprocessor checks that use it, this currently acts as dead code.
->>
->> Could the implementation be missing, or was this intended to be introduc=
-ed as
->> part of a larger series where the symbol is used in a subsequent patch?
+>> - Move ITOA_MAX_LEN to kvm_mm.h for reuse by upcoming kvm_luo code.
+>> - Introduce kvm_create_vm_file() to wrap kvm_create_vm() and
+>>   anon_inode_getfile(), providing a unified VM file creation API.
 >>
 >
-> Sashiko is right here, I think this patch should be squashed with the
-> first usage.
+> I think these should be 2 separate patches.
 
-Sure, will update it.
-
+Okay, I will split them. Thanks
 >
->>> +	help
->>> +	  Enable live update support for KVM guest_memfd files. This allows
->>> +	  preserving VM Memory backed by guest_memfd file across kernel live
->>> +	  updates.
->>> +
->>> +	  This can only be used for the guest_memfd that are fully-shared
->>> +	  and pre-faulted.
->>> +
->>> +	  If unsure, say N.
->>> +
->>>  endmenu
 >>
->> --
->> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728121138.1=
-103610-1-tarunsahu@google.com?part=3D1
+>> [...snip...]
+>>
