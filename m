@@ -1,269 +1,147 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D64443A8B
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 21:41:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786398074; cv=pass; b=RI1IR+AIaTS3O+5By9fFHWrMX2SQdhUkhD6TWAuM5h91MD3TNzWPhA+P9T61qs9eppJjBPSvFEO3xe4TldjfXDJtx67R0CgGX99USRwxxg/g8DDTCC2iw6erq/bHV8BvDsJzhjwfYOY5DL9KOwDPC1xRiSt6LzfdEQGAVs1w2lY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786398074; c=relaxed/simple;
-	bh=jt7XEvC/fGsYaH886r+jXkuI8QPm4SfTg4myb0QbgN4=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S541EBoEl2nQRihzIQL85p1s0H++/1koTLzyl6v8mYw82x6TsU+HgVPZEgNYJHrn4hhjvxYZAGKn9U85b3NLghiKgI9PBEhiv/3iGeiZJFHBiznQEaEDJeFNjPTkRLAz0cD3TeGx+2/Ucoqk7ZF5Z/XIA7wq9H/YjKsyYHVw3K0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rm1UqUyp; arc=pass smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE8A42CAFD
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 21:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786398428; cv=none; b=EWlNJ4jssELpIWyMNY2yprTF1KUcN4aNZqx1leBBft9dVE2vIyPiDBiCaYiPOtsDoRZeoqbAXP9CU11uhWUj23fcJJWLoYKKT2SgTg19OWBlUe2l+1OwFPRxxGxjkyPV4bjU5gb24TuZsgrlMLKreBKmDnSIZV+AhtKr5iM2eqg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786398428; c=relaxed/simple;
+	bh=gLj89t1XtGHeoqqhdxlQE5veKwLUg9rzru7S0F8D1UE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XYVjVTdZ9kI8aDr/ZH5n5laY30Gb3LdkMrRTZsGr1sJZECrmDsIf0bUvF/uIb2rrl9WLFhAQX3KMY/LIyDQaQEE5Xzg6uJSEWlXNIPoInS5uH+z84oc/yDFikMFU63LP0fYSVt/fd0dBOTjtzSR6j+MqtTQvukiCY5C9ttfl3Sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j5g8fZCx; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rm1UqUyp"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cbe3fed2f58so1860276a12.3
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 14:41:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786398071; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OpAqYRb5Hf7Z81rzr+YBqieW+J2mdJtmdvMYb0fzJs4qpqri9OXMgBk3fE/g2v50GG
-         65PbY/KgcvxTNIAioqRYGSLHAjuLb3+h7Q13tnSyksWNSRR8fFWPGhZS+0vptlldSEnx
-         AN5N4mndX4jkm11kUxUf0/0jcRbaRZD81hjxRQTztzX31iVzA7wmVDK5m4dRWVqeM1Ka
-         pthvMVkTf1jHORjw4PXVd0mgespbu7zk4uq01lrc1vyBchSlQ91sX2qAmc67ytBhAhhv
-         qSr6zzJE7GUIEBiNfEgvw/ngDz+CE81bSfVHZeSjswRn2gR3GtXgP/bQRoLFu2yTxz7M
-         L0Eg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=8crpjggh9sIrGYI26ZMJ/PrD9iP41/J2cmh4fS1aC8Y=;
-        fh=XB7+OGhW2mpX+a7rx2onJFTx8SeZ+m8/Qf7ZqhpB8a0=;
-        b=S/QMVO0LdYo0JmvqKjpX6K08X9+OxzCLbyYxuPRNFFzLZiYxbyP9za25I8pVRrjbIk
-         WfNQxt94NhFFh08jLBJ3+21yUn3WbJJ4X9zCuVJdOJPBnnTWsQjMjRJxuMobVEV2VEsr
-         Fpm1P7io1Ccc+xwCsK304sEI6WL4S9o5mYDaQbltkOzYkcgBBFZdvOwoli3BZvst1pe+
-         3TF41of5R6FnQWeLQ1+Q0OTRLLoKb23bbI9R56AQ0JrjcK9alqsh+6DwTnYiBDj44sAs
-         nt3y156NKKT3A5pekCkcQq0WbH6gvX7Pxc16ldIdsDsqgjUy6ObXBdvc382bNCnNNT8x
-         qTYQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j5g8fZCx"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cede6375caso40125ad.0
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 14:47:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786398071; x=1787002871; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8crpjggh9sIrGYI26ZMJ/PrD9iP41/J2cmh4fS1aC8Y=;
-        b=rm1UqUyp+5TUYy5bGN1dJTezXzfWbRm/wFh5TJ2e/1zrXJmO2KU32N6bM17wLmTMc6
-         Nu4jcKfBCaCMThVnJZ3oHUnP9LW78IrYTctRoploYybp8pkfvTm5N8g6lk1XGWpOSqLW
-         L9+6wS8LSRNUQOfKql7g3mTFRlESv5KVjMYSUDDnZ/n1a2Ru8IVTzi/1VTBw5qMkWLnw
-         JRrMXCVOb7mf2p13EyO+/SozvsTq1tRXXQi52mgRRzpyWX4nHtMNbWzUV0c3R9AYTgQ1
-         fzQG6gL2Fl4R0t4nWXh5UUkhoda4yJjbDW72nn5izOwm1z9c36mqGLYYRM4dEo2SPIRc
-         MZFg==
+        d=google.com; s=20251104; t=1786398426; x=1787003226; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qrPHJG3p8YfDYZ+uVx/4qIrGxMhgcPPKzeLgvNEMm4M=;
+        b=j5g8fZCxB+A45oujTmVO502pCMcEluM+Yy+hlyBteMz1veLwbN3pqadrtBK6hT5oqX
+         d2yUTrhNRkI2qZ1yPaRCYtoRAImuwYaRLyYXeR8ATb1g0hfU4ugaSrQF8yXQ0HAWb5NL
+         ihjJUmQN2Kg2cRpyX3ICU6mJR1FejqZHySCnklE702OG9rLEJNufFyKz9tyKjte1oYPH
+         LrgqLhxWCJGn7hEKQfEPv+RK7cDVgWV3N+NUUKccW4BiOW2sJe1U7L8aHT2+H4uT1kEK
+         8/zbzA2onKcT2HGBRjSF7HIbX4LzLnwKASfV+a0Y9OhcsF3B5L2cBj0ZQvHv8sjo+M0k
+         0iIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786398071; x=1787002871;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8crpjggh9sIrGYI26ZMJ/PrD9iP41/J2cmh4fS1aC8Y=;
-        b=lWaKOJx68sBeiL1UdnUv+jE8cK1L7hXvFOK8ZL18MOcR8ZazI0kAx1AQQ883HSe2jM
-         XAt9W6+RBfiEURp5YxJz9Fan8VTr6vk1ym1+ECKIqswHsI4YyHaU3VTUPYdyqP+DmtW7
-         UlafpCYAJ1OoRyZmnAMapspKcT4lZEdJIu+5ESnK19x8URrRffss1bmTFC73GsHO8NU/
-         kaRR6+yz6nEKVoPEzy+rDQbG4REoAhjRcNAuGD61ZiKtosIMOdcF+zN1eJYfXhXN97kS
-         JZU7QeIuVTkrBKxkHwnSCKO8i/VgnoVB1pGvkG4jdXoU2ZuvowrkOg6wXdZll0j00gQB
-         +Rhw==
-X-Gm-Message-State: AOJu0YwFWLNPbvq2gQamismO4hsNhGaVV8uthqY4gEfTcA9y4gU4zAjR
-	jrZR9lQV3FQrV/zzB4KDIRUYl8B5IMC3VP7QR5PiakExMLszJe40Lyw+wsKE5J2tbIbzwlb7WcS
-	GV7XV9dM7PsmCzCy2lg4ugLX+s22p+ppN3edLiuG4
-X-Gm-Gg: AR+sD12uHp1kyiV/fOCwo5kam67kJ44jBozL2+P39oTAiLK3IB1r0xTCFFAXY/29HvE
-	jeSJnplz6YSQn4OEgKWbAKjPypI4aXdMO8lScDdYbj9Y4jipSx7YeVYdFECsiHLNMAfTBIPckCW
-	eavImomrr7iiLKXoy0o/7xWAYGORK2iWLTOBZqLUP/gT/3LDMDYgr3HES40qpUuI8ct+aSw0Ebn
-	VZONftY1rzkxYaTebHRTB7VTOiY8s/7Qj0SQrQL1tOQF7gN3pn1Xy3KjxUwIflN+20ZPZPcLuj1
-	b3sB/jYdklPVT3Icp5sHj6/evKAOKnwb2IH/i4FPmcTetrPdrxCqu5eLu14yW0ImF3DRVS/PSrp
-	AYwi+U5WMtOyzQflDAwn8XaYLsO10yh+kuLg=
-X-Received: by 2002:a05:6a21:6e8e:b0:3bf:7c02:c46f with SMTP id
- adf61e73a8af0-3cc1a1be7a1mr5874285637.14.1786398070269; Mon, 10 Aug 2026
- 14:41:10 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 10 Aug 2026 14:41:08 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 10 Aug 2026 14:41:08 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <eb1b5763-37bc-4cb3-890c-1e619e5a8ae4@kernel.org>
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-11-2fc18ee6d3ba@google.com> <eb1b5763-37bc-4cb3-890c-1e619e5a8ae4@kernel.org>
+        d=1e100.net; s=20251104; t=1786398426; x=1787003226;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qrPHJG3p8YfDYZ+uVx/4qIrGxMhgcPPKzeLgvNEMm4M=;
+        b=MiQS54E5ZaCHwrYK+IEwKyVkJDiMETq7QfdIDxaqJ9jAr4EqXhf9jxMX1oac7ipcNl
+         w/1NCpun0o4zuGSQKF8qWmnXRNVrJaCSJxtIyfmDwlT425r5jQbC9OFf4x5CCl4PAGcO
+         62RJQHXuGweL93PeyXHgYKingcN0kNpyfIQ2hT1aDnLx7YjiXivJAtXbxYeV/AHsP40t
+         6aqecEX50c2dvfu4u0IDP+962CDbJ+ea5MZ6eoxlUrEy1pYFhtYoLRe+U6cus6N9hRHX
+         gZKJW7QcytFHL8dVJyK88agh/xAewu/x5vtD7Y+BUeA0b5uCfHvZcJYllHnzczRLJi16
+         Xajw==
+X-Forwarded-Encrypted: i=1; AHgh+RqXq+Lkp+trFu+77z5NaJ+qLHMJ3NXa1iDCwNYXOgYqs00eFnks6cjXe0tJ3rvmQ+L5bOU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YylXv/mQqYzvYm3u+OHG4qjBd93UtlyBao+Zr3YTc7h4753mqmo
+	pXXTOAyGo0gI6b853HPo11y4N8rtisXC7uP01HezMjZ8M7f9I7a/weSEM/g8CmdUQ0hfQXjem5N
+	O7Wpq1Q==
+X-Gm-Gg: AR+sD123oDy9ufOxrDgtRQQ+huU98Wf6wj7292wqm0z5Wcp+/cfOhffTLWdYZwnLM12
+	Q/T+RPFCeBdlZMzoPthISVnsa6uKaIDgzhCfCWqdoj5v0A/obH9poK2EeGqjzS/UnSz1bz3nSqJ
+	AMxJZwq9pw2P3opkscCFTjQmix5fPsCLXR671v/PHAP3oeJ4UKYP3DtWjeFXd47CwZ2sg+Dj2Mq
+	UCocdOnLBug8NkYpHQTls1/kX/c3R5GyJRXzx+s1yzYnd0pRNuQYq51n/R6K/bhhn86XO+WuF5C
+	+2paaWQxbhG7QZ9YAodpCZwYRJ+gemHsSjy83tm9Yx4yu4KobYz5dv1AN+ossn3AaLsSOHO8/fg
+	m9ik/P6a4JI2pVNK6OMDSMPT6N3rSe4XwHDjLcQBmyr3X9SuOS5wdd7VM/03ANx3AEDogQiwscB
+	RXp4XQpukqbCEwqGXkTKE+P/VZ+sQhHOSAiMH0YFsBTfBOlNsadzR5fDgrqblnrcPuZHUQq1kmb
+	Cyw9GJF7ie7lRTi3e31dh4NPNQLAenxMc/L0FhA7POrL2/fbwDq/qUY/6M=
+X-Received: by 2002:a17:903:b0f:b0:2c7:f0cc:dafa with SMTP id d9443c01a7336-2d312020793mr873965ad.5.1786398425735;
+        Mon, 10 Aug 2026 14:47:05 -0700 (PDT)
+Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-392d51bf886sm1043442a91.7.2026.08.10.14.47.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 14:47:05 -0700 (PDT)
+Date: Mon, 10 Aug 2026 21:47:01 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: "Tian, Kevin" <kevin.tian@intel.com>
+Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	"bhelgaas@google.com" <bhelgaas@google.com>, Leon Romanovsky <leon@kernel.org>, 
+	"dmatlack@google.com" <dmatlack@google.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH 1/1] vfio/pci: Disable sriov on PF device close
+Message-ID: <anpD2sBgwyfQAjqm@google.com>
+References: <20260805003355.728299-1-skhawaja@google.com>
+ <20260805003355.728299-2-skhawaja@google.com>
+ <CO1PR11MB483582006360CC4F32F97F838CD32@CO1PR11MB4835.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 10 Aug 2026 14:41:08 -0700
-X-Gm-Features: AUfX_mzgTn4rWAG2ncU9fSNARUBhUErwbxwxxfyCmQfQUmSlzmOMXp1B7HqwTck
-Message-ID: <CAEvNRgHyRdt7rp=5e5FMbTT=fXNfB=np7VWd_GdmJcPOQgps4g@mail.gmail.com>
-Subject: Re: [PATCH v10 11/41] KVM: guest_memfd: Ensure pages are not in use
- before conversion
-To: "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <CO1PR11MB483582006360CC4F32F97F838CD32@CO1PR11MB4835.namprd11.prod.outlook.com>
 
-"David Hildenbrand (Arm)" <david@kernel.org> writes:
-
-> On 8/7/26 23:52, Ackerley Tng via B4 Relay wrote:
->> From: Ackerley Tng <ackerleytng@google.com>
+On Wed, Aug 05, 2026 at 09:34:32AM +0000, Tian, Kevin wrote:
+>> From: Samiullah Khawaja <skhawaja@google.com>
+>> Sent: Wednesday, August 5, 2026 8:34 AM
 >>
->> When converting memory to private in guest_memfd, it is necessary to ensure
->> that the pages are not currently being accessed by any other part of the
->> kernel or userspace to avoid any current user writing to guest private
->> memory.
+>> When userspace closes a VFIO device file descriptor, the vfio driver
+>> performs a hardware reset on the PCIe device to ensure it is returned to
+>> a clean state. However, if the closed device is an SR-IOV Physical
+>> Function (PF), it may have instantiated Virtual Functions (VFs) that are
+>> actively bound to host kernel drivers (or other vfio instances).
 >>
->> guest_memfd checks for unexpected refcounts to determine whether a page is
->> still in use. The only expected refcounts after unmapping the range
->> requested for conversion are those that are held by guest_memfd itself.
+>> When the PF is hardware-reset via VFIO, it implicitly disrupts SR-IOV
+>> operations at the device level. Because this reset happens without notifying
+>> the core PCI driver model, the kernel drivers bound to the VFs remain loaded
+>> and operate under the assumption that the VF hardware is still functional.
 >>
->> Update the kvm_memory_attributes2 structure to include an error_offset
->> field. This allows KVM to report the exact offset where a conversion
->> failed to userspace. If the safety check fails, return -EAGAIN and copy
->> the error_offset back to userspace so that it can potentially retry the
->> operation or handle the failure gracefully.
+>> This creates a state mismatch between the kernel's view of the hardware
+>> and the actual device state. Subsequent attempts by the host OS or bound
+>> drivers to interact with the VFs will fail, leading to unexpected
+>> errors.
 >>
->> Update documentation to document the error_offset field and the possible
->> -EAGAIN error.
+>> Disable SR-IOV on the device prior to issuing the PF reset so that the
+>> VFs can teardown and remove at the software level also.
 >>
->> Suggested-by: David Hildenbrand <david@kernel.org>
->> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
->> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
->> Reviewed-by: Fuad Tabba <tabba@google.com>
->> Tested-by: Shivank Garg <shivankg@amd.com>
->> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+>> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
 >> ---
->
-> [...]
->
->>  #define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
->> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
->> index 3783e63476569..13c3989136f67 100644
->> --- a/virt/kvm/guest_memfd.c
->> +++ b/virt/kvm/guest_memfd.c
->> @@ -524,8 +524,42 @@ static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
->>  	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
->>  }
+>>  drivers/vfio/pci/vfio_pci_core.c | 7 +++++++
+>>  1 file changed, 7 insertions(+)
 >>
->> +static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
->> +					    size_t nr_pages, pgoff_t *err_index)
->
-> I would focus on the "to_private" aspect or abstract it to
-> "kvm_gmem_mem_has_unexpected_refs" or sth like that.
->
-
-Do you mean something like kvm_gmem_is_safe_for_to_private_conversion,
-as in that you want to emphasise that "safe" here refers to a to_private
-and not a to_shared conversion?
-
-Perhaps a little ahead of its time, but later with restructuring for
-huge pages, we also need no additional refcounts other than gmem's own
-so that restructuring is safe, hence this function name was meant to
-extend there as well.
-
-In this case "unexpected" (especially since the next patch adds checks
-for maybe dma pinned and unmapping), begs the question "unexpected in
-what way"?
-
->> +{
->> +	struct address_space *mapping = inode->i_mapping;
->> +	const int filemap_get_folios_refcount = 1;
->> +	pgoff_t last = start + nr_pages - 1;
->> +	struct folio_batch fbatch;
->> +	bool safe = true;
->> +	pgoff_t next;
->> +	int i;
+>> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+>> index a113c55845e1..b36c77eb3c40 100644
+>> --- a/drivers/vfio/pci/vfio_pci_core.c
+>> +++ b/drivers/vfio/pci/vfio_pci_core.c
+>> @@ -826,6 +826,13 @@ void vfio_pci_core_close_device(struct vfio_device
+>> *core_vdev)
+>>  #if IS_ENABLED(CONFIG_EEH)
+>>  	eeh_dev_release(vdev->pdev);
+>>  #endif
 >> +
->> +	folio_batch_init(&fbatch);
->> +
->> +	next = start;
->> +	while (safe && filemap_get_folios(mapping, &next, last, &fbatch)) {
->> +		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
->> +			struct folio *folio = fbatch.folios[i];
->> +
->> +			if (folio_ref_count(folio) !=
->> +			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
->
-> I'd rather add a comment than have this filemap_get_folios_refcount.
->
-> /*
->  * We expect one reference per folio-page in the pagecache and one
->  * reference from filemap_get_folios().
->  */
-> if (folio_ref_count(folio) != folio_nr_pages(folio) + 1)
->
-
-This comment explains what's "unexpected". I can do this and switch it
-to kvm_gmem_mem_has_unexpected_refs() unless people have other
-suggestions.
-
-I wish there was a folio_pagecache_refs(folio) that
-folio_expected_ref_count() can share with this, and also
-folio_swapcache_refs(), to solidify the definition of refcounts taken by
-the pagecache.
-
->> +				safe = false;
->> +				*err_index = max(start, folio->index);
->> +				break;
->> +			}
->> +		}
->> +
->> +		folio_batch_release(&fbatch);
->> +		cond_resched();
+>> +	if (pci_num_vf(vdev->pdev)) {
+>> +		device_lock(&vdev->pdev->dev);
+>> +		vfio_pci_core_sriov_configure(vdev, 0);
+>> +		device_unlock(&vdev->pdev->dev);
 >> +	}
 >> +
->> +	return safe;
->> +}
->> +
->>  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
->> -				     size_t nr_pages, uint64_t attrs)
->> +				     size_t nr_pages, uint64_t attrs,
->> +				     pgoff_t *err_index)
->>  {
->>  	bool to_private = attrs & KVM_MEMORY_ATTRIBUTE_PRIVATE;
->>  	struct address_space *mapping = inode->i_mapping;
->> @@ -542,8 +576,21 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
->>
->>  	mas_init(&mas, mt, start);
->>  	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
->> -	if (r)
->> +	if (r) {
->> +		*err_index = start;
->>  		goto out;
->> +	}
->> +
->> +	if (to_private) {
 >
-> I'd add a comment here for the "why are we unmapping".
+>Sashiko reported several locking issues with this change:
 >
-
-Does this sound right:
-
-Unmap here to ensure that userspace page tables have no mappings, which
-also ensures refcounts from those mappings are dropped.
-
-> --
-> Cheers,
+>https://sashiko.dev/#/patchset/20260805003355.728299-2-skhawaja%40google.com
 >
-> David
+>Actually it is a discouraged usage allowing kernel drivers bound to VFs
+>which belongs to a PF owned by vfio userspace.
+
+Thanks for the feedback Kevin.
+
+I sent this as an RFC specifically to discuss the right approach for
+resolving this issue before fixing the locking issues that sashiko
+raised. I will get back to this once the discussion to fix this the
+right way concludes in the other thread.
+
+Thanks,
+Sami
+
