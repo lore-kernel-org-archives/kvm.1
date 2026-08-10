@@ -1,142 +1,244 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCF83AE706
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 20:56:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786395390; cv=none; b=t+vkvWtrUCOnX12xTMEAQweqiNaLaDJr7Bltn65OU8fKpcLIcJR3u9JQUGN08QlOCxedIqF0AqVD7bEL3DZoKLAK2ic3h9XdtU64xUhrSqvhnsN08CPOxbX6SE6APmIPxD+TrL2qspVMCzXvUXTUZHeDb0x28MPflQw0DAclM4A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786395390; c=relaxed/simple;
-	bh=gV3PXNtOPo2dzqJVberp/Nshsac9CmoYYB8G1uWRGMw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MT9UG36bGlRyAyvTnmLxnij9yOxC1JEyvlp4mp0MMaog+EGGDBiCxFSv5CfNct/R4el7yaq63x8Up1+t0Udg+fW56LE7Xq1xrxcIP4Grv0+/uPBWC+UGWxZQQtuQvpW03+UgUl9mFMpG/wPiF6ikbpmdr/inixT7heGLbnRp8ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bNFSUFW+; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8D839A06A
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 21:06:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786395971; cv=pass; b=ByKoHw+oK7gf60wLgSTVjFp0Rw7IXU8JPzv+K/NMAGVRwKZceCPPJTJy8rN7TRiCJeTeoa7Cz93byvmcQypeyypnKRz+4lYubw+iY4ArSywu/BmQxoQd+44/9n0xbdzXLrsyaVhWbSBhGOk+d4tUHjGlG3zsQPGWjpja15VLRbI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786395971; c=relaxed/simple;
+	bh=gI56oLo0KNbRow/rXskAuQ15iNl8L1CwTyWKdxDJ9vc=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Content-Type; b=KOk3NfJ4xSDs9cPSVqRgUuqMHMlXq+/SsXnOx2WCrX6Cyq6nq24fD4liguzi+fssOvQR2QxanF1KFwW/Fuih2Y3gM9tLEcuEbWe3MYPByn1A4+5GtlcOIs58Njl9vcIyxOsHcpsahRy2TTRcM0bInOWHJ1nMm/hAQzC7j1VjPXk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=chHkBcTV; arc=pass smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bNFSUFW+"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cb5ea36f969so2972957a12.2
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 13:56:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="chHkBcTV"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38ea87caafeso1689078a91.3
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 14:06:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786395969; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mTvxXC9nZCzV2gfDv0qkG0FJBVv74dKfAfmFyy7tfDi2zHMGaMdBDOE7+8n2mzylsC
+         zgASHq8oksluWnoPU1zHLTJi4qRrZK2S3IEBN//42mRFynNtsXfOmchPZJDvCPyWObU7
+         w50qg1+C9iZAGlvkn3YxUL3W+2RT3r1w6Kro0pKUX+8gwvYPbn51y/JJ/JoEjIPhVc57
+         f2tR0Wn2SdZZEal/D/LjpC8Nik52eSLVopqpG9/GNHwefnB+ORbxNaPP3fOfJOJYcKSz
+         A6MDgBGQf5S1B7IYMF0fz9cniTWW1JK4+3uytjMdxUvJusD4kq2U/Pt49PfiKCkLH7nc
+         y9IQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:mime-version:references:in-reply-to:from
+         :dkim-signature;
+        bh=jBbGpsBOXqFYnTikH0FoZ8DdjoKWQr2k7+SRpWv9uL4=;
+        fh=M5Yx89GfJHDRtdxAtrSPAF/dndRIrEEeLA1sh0AmoVo=;
+        b=o27Pi2f1pZGkXI4rjepICwdRlGrQ34IDW4dWNVCAUs2eVOD5IlooiETPvzmFHiHSjH
+         k9VQCETojRdkLHLZVmIZEQcJ5gqgdBu4TJhx5jkjsXKx4dpTZ+kKiPqLmuBmrtFBlD0r
+         hp2Y45RJopRv55Zip/xeGviDf+LWBe1DKe9e3OL1d5TIR62MXX5FkzMVaCTZRDv/AtYd
+         Kx7w6ys+cngrVr1iBVELIoHvTOtfF1YYlQLRe9WZ0Qfs5r5MSzyaK3pidPBuGYd3tFmR
+         ZCwqfDn8W+x1VyZB4lc8QDHc9am6NG5By2FuuO0nW/WzXRqB3oS/acWLG6kDL+tAzAaQ
+         A53w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786395387; x=1787000187; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=LCgbuv6Vd7zF2bZTNz0VWHu3WJNY8tSX432zegD8YdU=;
-        b=bNFSUFW+Hwr1m2QoQQwTY3YLdMhY07wlQ2bWpfNlmdFRpWQnc/9ugInC3tOqzfMCju
-         qRkuPEQU1eqU85C4yzJPYQPaGAS1NrW6s8oMOQkjf9LCNSed118JxqCZt92MV5fp4qVy
-         ObWZnmkn+jj4R8IK8TJS1IHNyfzswodPXaxpdIzSe4cdl/ysXHSfo3z7DXfez+w/P4kW
-         dWP4m2QDSle7h3cdAfJ+vkgb9jL2irTF3Zm69u9qOjGuzdMqF9wU4pTW+s2oYvycioJ6
-         Gf1Ms5ppjgdu0N8nRrLJUTdn5RY3cc1yDhLdWVKydyYGg9Vgjfs5D6EY2FjrQANEoOMF
-         I5ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786395387; x=1787000187;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1786395969; x=1787000769; darn=vger.kernel.org;
+        h=content-type:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LCgbuv6Vd7zF2bZTNz0VWHu3WJNY8tSX432zegD8YdU=;
-        b=bX7RGIKTx51d0aSqZHFQa/JaOO1jHimtwlwF3DLxi7/D9bIICXvCkI/NUlhe6bhIvt
-         Q2YhVumnTn/BT2utkeY9dTj2LgvgpWmHPh+y4aNU2T9xHORRI3c4y9bxOaxnuYBHSuh2
-         BW7xDQuLGPSkvCUcEpq4xNNoMNcexLooIlpWNYt2bSX/yFDlml9mO6NeeCSoSNm4w3bR
-         IR1h9fJ9HAEZjupn+7kGDSZtnpAfu8P9dp/ghu7IelElkrjtoV124AQnJvBbpB63lTTW
-         06PRwFmpkw/BvbTCZX9YKNR76OP0lxhnRKEqJFrh+tcVt+niszEeLZiShXJTCntJa1Et
-         Z0jw==
-X-Forwarded-Encrypted: i=1; AHgh+RpckRRmbnT5IAKrm7GHwKnxT1lKRaM3uAqfnCE4Fnr4ztpkSPDbem9WT2YNScnbDW1bhMo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1k2zdI92ZwCIaDfynP4pqQH2yyjqxvwSNieUwd1eF82O31lkI
-	g1R2jNMzJwK2Y3pR6V/Ylgr4YUW674eEv8tc39FdWGpiEPUkrmXChExJUlysVbfd86FSgg/iBVQ
-	x8dbT7Q==
-X-Received: from pgmc19.prod.google.com ([2002:a63:1c53:0:b0:c98:2639:852e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:ad1:b0:848:4d1a:9556
- with SMTP id d2e1a72fcca58-84f9c8f6a11mr4384666b3a.11.1786395387317; Mon, 10
- Aug 2026 13:56:27 -0700 (PDT)
-Date: Mon, 10 Aug 2026 13:56:26 -0700
-In-Reply-To: <acd9b32617f75d188c370a464a922af0d650d4f5.camel@infradead.org>
+        bh=jBbGpsBOXqFYnTikH0FoZ8DdjoKWQr2k7+SRpWv9uL4=;
+        b=chHkBcTVegynp9fkddzQzywbl6aWtS4qaMXEG7wSopjfm1GqjSmO0sTScUZaKZ4p8Q
+         wTTNt+3JxYehOVHERyNeWTHRFSV7wMzvtGP95WjHNXVreUFieuLTOTheavxG37XTrtf2
+         x3HxQOnWfJ42UogUe1jI76trnhVACjmNeeuatdQQzGMgpFewY93jgp1U/3X6EiqB9E9G
+         WZ80lN9lmdW9juyPnDFYXzmBCZRPV5dgy6lL8YDYYEAzoYLaHklWWu4tcke+/RqEVKGJ
+         tGRWRpnlZKvb1CccI2rigqmyHImvgxiLvDdvq7JY9FnsipwYcEMZpDUPYMtjUzXQKAmA
+         IeLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786395969; x=1787000769;
+        h=content-type:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jBbGpsBOXqFYnTikH0FoZ8DdjoKWQr2k7+SRpWv9uL4=;
+        b=FdmtiMRXx9WVaXAB5dW6AdV0oQVCnyI2Q2OSa7QW3FGyNc08iQggNFg1kIGDNOromt
+         0C5NTpqxjypB+Y0pv53eB6+MQ4H3r0gXkhff2TE26VqIKVCGyDzB9h8jMLQEZrskIkMn
+         N1DoN00myCX2mSufNSg3k+Hp+JoM0h7TLYX5QwSTSuihXt3sWwjUebwH/KAtlLAMg1CX
+         mgsDScgKx/msXwqqSFFXJx7HS02FYNlp/hkG/XFhmDGoZlkzeQCY64Pg7LyK/GiQpfys
+         VRpkKsYr9/dKoo1aELXqnug3ZGNwVxozLwcrFGRIB2mTSoOpPt4nlv544R4qu+/Zz4R8
+         XZlg==
+X-Forwarded-Encrypted: i=1; AHgh+RrWcrzDtrpkbSKrw5nOsPNr0EOzWKYFQh/iEG3jEoLjmxJiDovrzQMZ6B+mernwdo7coIg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzI19gpGMZfAQs/e43I64i2e02QVw1M3/UWJlMv0uKq21urDPEI
+	ptVHPe251bGHFLuLKfRfqTjSknM50WUCQXgpbqcz1VUVZowfLrjtA/0HKzUMH3EMV9f/8SxoHDz
+	QCLn+0tE7wBdXpSXOSzWnZJE+HseIU7/nqEunMOzD
+X-Gm-Gg: AR+sD12d2lmL5ALXT4EZKHiMSZuVWAYiCTzopGsm/Kt+aI8nRrXk7TKsn+Kf6SwgVhW
+	6LL8fNPvDkvIZH2pUnttJRqSHlmPjz5ka3mS3x92GjD0X3ueeB2or8tz/lzOl/CJk2IUt6ViZKf
+	oFVBHTs9Y1pkgL81fIKSWM+y6nuz7h2SCWonfoNZkbYTCwYvw7/nSpElH96z188J45vu+MOaCxK
+	vAhCFDiPUNTT+8jYlo2wF2Et/OfV52kh0dMbW40c31OCDxo+SkUTvRQLeZ9tbkpl8v+9L8mo4XC
+	Cu14fAdm2XDzOcHMQJtqlhvtzBi+Ibz/R4mbwXZTyBT5/ULNmszRlpWblC8HCQOtQcysntC5/Cc
+	GkZO2qrAsWRnU5I7ED2mKOmp4nnDCEZ5XKtU=
+X-Received: by 2002:a17:90b:3847:b0:383:f52b:d616 with SMTP id
+ 98e67ed59e1d1-3909d89bd69mr24868036a91.10.1786395967805; Mon, 10 Aug 2026
+ 14:06:07 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 10 Aug 2026 14:06:06 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 10 Aug 2026 14:06:06 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <anj2bPrGqzZgZWMF@yzhao56-desk.sh.intel.com>
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-11-2fc18ee6d3ba@google.com>
+ <anZ4W9o5pTWIEgMY@yzhao56-desk.sh.intel.com> <anj2bPrGqzZgZWMF@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260728144954.355376-1-dwmw2@infradead.org> <20260728144954.355376-18-dwmw2@infradead.org>
- <anoOz2rZ02KFk1l-@google.com> <acd9b32617f75d188c370a464a922af0d650d4f5.camel@infradead.org>
-Message-ID: <ano6-gIZtqMfipiD@google.com>
-Subject: Re: [PATCH v7 17/36] KVM: x86: Allow KVM master clock mode when TSCs
- are offset from each other
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+MIME-Version: 1.0
+Date: Mon, 10 Aug 2026 14:06:06 -0700
+X-Gm-Features: AUfX_myPYbMVlta00ya1-5ZhE7lDWW0LOnyJR-gHZaPeDATx5xIvNNK-iJcLcsY
+Message-ID: <CAEvNRgFzRj_=GVy8T4P8ehhQjYomYxkngzwtKBF0iEL0Cv6fuQ@mail.gmail.com>
+Subject: Re: [PATCH v10 11/41] KVM: guest_memfd: Ensure pages are not in use
+ before conversion
+To: Yan Zhao <yan.y.zhao@intel.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul Durrant <paul@xen.org>, 
-	Jonathan Cameron <jic23@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, 
-	Dongli Zhang <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Aug 10, 2026, David Woodhouse wrote:
-> On Mon, 2026-08-10 at 10:47 -0700, Sean Christopherson wrote:
-> > =C2=A0
-> > > But when the vCPUs merely have a different TSC *offset*, that's not a
-> > > problem. The offset is applied to that vCPU's kvmclock->tsc_timestamp
-> > > field, and it all comes out in the wash.
-> >=20
-> > It's not though?=C2=A0 The value stored in kvmclock->tsc_timestamp is p=
-er-VM, not
-> > per-vCPU, when using the master clock.=C2=A0 It's a little easier to se=
-e once the
-> > master clock TSC isn't shoved into host_tsc:
-> >=20
-> > 	do {
-> > 		seq =3D read_seqcount_begin(&ka->pvclock_sc);
-> > 		use_master_clock =3D ka->use_master_clock;
-> > 		if (!use_master_clock)
-> > 			continue;
-> >=20
-> > 		if (!kvm_get_time_and_clockread(&kernel_ns, &host_tsc)) {
-> > 			use_master_clock =3D false;
-> > 			continue;
-> > 		}
-> >=20
-> > 		master_tsc =3D ka->master_cycle_now;
-> > 		master_ns =3D ka->master_kernel_ns;
-> > 	} while (read_seqcount_retry(&ka->pvclock_sc, seq));
-> >=20
-> > 	...
-> >=20
-> > 	if (use_master_clock) {
-> > 		hv_clock.tsc_timestamp =3D kvm_read_l1_tsc(v, master_tsc);
-> > 		hv_clock.system_time =3D master_ns + v->kvm->arch.kvmclock_offset;
-> > 	} else {
-> > 		hv_clock.tsc_timestamp =3D tsc_timestamp;
-> > 		hv_clock.system_time =3D kernel_ns + v->kvm->arch.kvmclock_offset;
-> > 	}
->=20
-> Meh. I shall have to build a better test case for that one. Thanks.
->=20
-> > To allow different offsets, KVM would need to track a per-vCPU offset t=
-o the
-> > master clock and apply that in kvm_guest_time_update() (and maybe other=
- places?).
-> > Which is doable, but it's not clear to me why we'd want to support that=
- (though
-> > I haven't fully processed the back half ot his series, so it's very pos=
-sible I'm
-> > missing something obvious).
->=20
-> Because I want to reduce the number of cases where we have to fall back
-> to non-masterclock mode. Especially the ones which are driven by
-> *guests* rather than weird choices on the VMM's part.
+Yan Zhao <yan.y.zhao@intel.com> writes:
 
-But why though?  What is the harm to the host or guest?  E.g. does it make =
-it more
-difficult to accurately migrate the VM?  I'm not opposed to allowing master=
--clock
-mode with diverging offsets, just trying to understand why it matters.
+>
+> [...snip...]
+>
+>> > @@ -542,8 +576,21 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+>> >
+>> >  	mas_init(&mas, mt, start);
+>> >  	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
+>> > -	if (r)
+>> > +	if (r) {
+>> > +		*err_index = start;
+>> >  		goto out;
+>> > +	}
+>> > +
+>> > +	if (to_private) {
+>> > +		unmap_mapping_pages(mapping, start, nr_pages, false);
+>> > +
+>> > +		if (!kvm_gmem_is_safe_for_conversion(inode, start, nr_pages,
+>> > +						     err_index)) {
+>> Note: conversion failures could occur if another vCPU is attempting to map a GFN
+>> within this range.
+>>
+>> CPU 0 (setting attributes)          CPU 1 (attempting to map)
+>> --------------------------          --------------------
+>>                                  A: mmu_invalidate_retry_gfn_unsafe
+>>                                     filemap_invalidate_lock_shared
+>>                                     __kvm_gmem_get_pfn ==> folio refcount++
+>>                                     filemap_invalidate_unlock_shared
+>>
+>> filemap_invalidate_lock
+>> filemap_get_folios
+>> check folio_ref_count(folio) ==> Not match !!
+>> filemap_invalidate_unlock
+>>
+>>                                  B: read_lock(&vcpu->kvm->mmu_lock);
+>>                                     is_page_fault_stale
+>>                                     kvm_mmu_finish_page_fault ==>folio recount--
+>> 				    read_unlock(&vcpu->kvm->mmu_lock);
+>>
+>>
 
+Thanks for reporting this!
+
+>> Retrying in kvm_gmem_is_safe_for_conversion() or moving the invocation of
+>> kvm_mmu_invalidate_start() + kvm_mmu_invalidate_range_add() to an earlier
+>> position does not help as long as CPU 1 stays at stage A.
+>>
+
+IIUC CPU 1 isn't blocked by a conversion so stages A and B should
+complete fine, and CPU 0 would already be retrying for other reasons
+anyway, like speculative refcounts from elsewhere in the kernel, so the
+conversion would take longer but it'd work out.
+
+Is that understanding right, that this doesn't completely break
+conversions?
+
+>> So, should we avoid this failure?
+>> e.g., by moving filemap_invalidate_unlock_shared() from stage A to after
+>> stage B?
+
+Not really sure about this, how will control go back to guest_memfd
+after the fault finishes for guest_memfd to unlock the filemap?
+
+>
+> Or what about having KVM always treat gmem page as non-refcounted, and have
+> kvm_gmem_get_pfn() put folio refcount before releasing the filemap invalidate
+> lock?
+> Below patch is applied and tested at the end of this series.
+>
+> From 8c2f29bc15bceb6a8fa103cf2585ec11354fd74e Mon Sep 17 00:00:00 2001
+> From: Yan Zhao <yan.y.zhao@intel.com>
+> Date: Mon, 10 Aug 2026 06:24:52 +0800
+> Subject: [PATCH] KVM: guest_memfd: Return gmem page as non-refcounted
+>
+> Have kvm_gmem_get_pfn() put gmem page refcount before releasing filemap
+> invalidate lock and return the gmem page as non-refcounted. This avoids
+> gmem memory attribute conversion failure caused by temporarily holding gmem
+> page after faulting and before completing mapping.
+>
+> guest_memfd always holds gmem page in filemap cache. TDX does not increment
+> gmem page refcount when having gmem pages mapped in S-EPT. Additionally,
+> as gmem pages are not swappable, setting dirty or accessed bit is not
+> necessary. Therefore, there's no need to treat gmem pages as refcounted
+> pages.
+>
+> Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+> ---
+>  virt/kvm/guest_memfd.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 2115e73e455a..e357b4ffa777 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -1332,11 +1332,10 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  #endif
+>
+>  	folio_unlock(folio);
+> +	folio_put(folio);
+>
+>  	if (!r)
+> -		*page = folio_file_page(folio, index);
+> -	else
+> -		folio_put(folio);
+> +		*page = NULL;
+>
+>  out:
+>  	filemap_invalidate_unlock_shared(file_inode(file)->i_mapping);
+> --
+> 2.43.2
+
+Hmm going with the above CPU 0 and 1 illustration, if instead CPU 0
+truncates the folio and the folio ends up being freed, then KVM's MMU
+has a pointer to a page that is already
+freed. kvm_release_faultin_page() is passed the pointer to this page and
+will dereference the page.
