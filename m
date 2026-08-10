@@ -1,207 +1,136 @@
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E82A1514F8;
-	Mon, 10 Aug 2026 15:32:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C7C2DEA8F
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 15:34:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786375951; cv=none; b=sxHmUzqczMUVUbqXdgIMXz9p3xPZcgZ1vnND8xfwsCjbDEFBaTrOGV+hhuzNkk2YrtF6u+vkF/SKEoyj72xoMGFZCWEI4awU93sb5aF0U54oC3olCCuRix5ogXNwKe5GVaa3cmuh1hZg2ebA5g2HN2wuOzKLDyjIFkOwQeIIHIU=
+	t=1786376095; cv=none; b=Ly/Ms8gb8Bv1XYkh3EmxPcVG6WiSQLbN4tDD0VT2JuLlJsN5DF1UDdceFyiFOKdZIwejMMgN62oyJ2wzqBDvgS8MpgKvjskprwY8j6zA47kr20XV/Yc5SU55ZF7cYLwU0xlNUxO9DFhC08gJBnqTqzI1j9aLGf26vH1TwiP1z6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786375951; c=relaxed/simple;
-	bh=N6+gKXJPXmhT3daZTrJy1XzSeaZlw3VbDa9MR8ypz8k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=okFZJzy+lI8esaqbAjYc6VVYkczsGwVxtZgPbAZxuqRHWrcYPRwxvUCvkk1qI7diWxjZDaHXDEQz9QLEfgQ2t3mIw1/CemBVqDdZXTkOpEInyQvA2FgWe7V3wcCFETMSJSA3v5NU4IPh7NaY2YCnHdEyBSMmhBm7LjUsT62bQh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=iOmDnOPW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EI/Yv8bb; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1786376095; c=relaxed/simple;
+	bh=hKPX+mOjfHOBQZDisLrPxYD06+lONZjwhisWQ4vKDf4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NLV5zM0BUOmVPgrd2fnhA+yx+kXZ0SLwmG7sa/BERmHLvIIu3EXxNWROd7qAn51WTh4Ir7dicHAPT1vmRtLZMl/lU0V9vwu7pw5hwJIgB4Puu1L3XbQFEdCTaSz48z0JWeGXi3qtqZwxG4czN8GHTYeAKl+/rO6tB694mFTM9EU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=upuiGS22; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="iOmDnOPW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EI/Yv8bb"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id D39D27A0197;
-	Mon, 10 Aug 2026 11:32:26 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Mon, 10 Aug 2026 11:32:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1786375946;
-	 x=1786462346; bh=ID+w4jyAMLOceNx6xVC1CsDjtjWiiAdbunVAg+DGrR8=; b=
-	iOmDnOPWbLc2RJoBRvOFgDEvRW7G8Yj0rloywWitW5Mg35CXHiRvRbj2CGl9ct+2
-	tqcKWCxUnkXOg0bA1hYw5r7VVY+JA0xMoKBUyOjMwQVrt5vMniFWKLSiNejntTvt
-	G40DkXtFJRh7/9ycdcLrVJZ4Wh4YyV4/k3OvtNRAExg8U8ROZjl5OWVQLjNNs1G5
-	W54f0ZjewZCJnZtJLNsUO2GTqLK8fybEM/2sszUbY3TZgYDDfyoUiZVmzQQOjxOl
-	/zkylTs3mhazIE7VC7uZaLknZxHDKbvFKx5GxYgh7y8aMDIEOGudLjr+3Rgc2OvU
-	FL9BdYIaoifr0CzkqI3PAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786375946; x=
-	1786462346; bh=ID+w4jyAMLOceNx6xVC1CsDjtjWiiAdbunVAg+DGrR8=; b=E
-	I/Yv8bbGzdYSlx457iKlRIdGiSFNKRrINBK08gIh0x2Tw44+XMg0CJgYYjnnr1Rb
-	1c/m5IjWdZAHEunr/VUu+0ZCs5+Li6q7mcMp978gwiqNhR2D6VZE6mXimmCvEvyn
-	VN7+1y1fiM9L2MfTIMg40gqMVMHx5rV8wOqoIrTmim4Tb13CWR0dxk+96ZP2JS2X
-	/0a57BUmkUK4w1xY9iWRYj45RkaiK1OZtwBLuxl2K83+IhCZBSlMNSRT3mbDgAnu
-	0WEh6dV9yb6HuvZL+vZjt6tmT7JfdfXGPwPuPbbpx3mXjSrnO+qahVuYGEV8LNVU
-	/Ldklt169r2tSzi7Wk3Fg==
-X-ME-Sender: <xms:Cu95atKtdhberxUVXGm8l3IMQMjFFH0VNnwgsjrtvVhAAcStUzhdTg>
-    <xme:Cu95auFj15eoe6AiCL_7Xh1fLePbQ7u4kHSy6WriiRPFm3JARe_A9B8VF2h0koL4i
-    yNCFU-7QABdV3PWiM2uood0PmWILCUKQTtmKwtveiODso3B-vwl>
-X-ME-Received: <xmr:Cu95ap_cXd1E1-K0XpyEca27fj0od3HthoZUTTWnEbpgx-TKdQoPus6wpHWDag>
-X-ME-Proxy-Cause: dmFkZTFaoRm3BrLSjHI2x7YUS7OdIgak/XncRdR/aqYztwN7oNZEBk4ood28n5POfrP3Xd
-    sb09aIwAqBSj80a4B4vfQ8ffvFryIEJtliIleIfWOVvgur9//58Zn6tCIgeaFseaVVAIlR
-    q5UGdI1Pr922DZpqfujKJ5v3Uy9EbdAhyuXVbU/iAIFQgueCyU/+nTUmpanyIv1QgAUuMh
-    6fbfvcK/iapRxJPvwG+CXLwoLTtEhI1wcLGsOpkAv+7Mb9czbnyCv3nUEGz0rqJi6DdnxR
-    A2qTDP++6y1oFosKKM+MqCtDymseie+Xnir+RBpx1JENztfb4YBE3YWIGon5sQvUpr4Qsc
-    M8skD17o4fQHCq3TlAuToW4HpLkM2TMtjBtNAbHGlZ+2ao4wPAziB2oQoGkLYCFtUP0PUi
-    JBnqYVgjrHvuuJ2FBTEgcYnzLQ0XejeN1EyBNVvMuRehQpxD8GZ7zAaAvL03hbTdIoIqkM
-    O6M4zyRPApZW03WtDw4Crmxf7GrK1WAcNkbA7OMn9hw+XF10pcEzSce7sM6WHiRZLlcr2F
-    xsVxv3WjEHEAD6zG58p+uUvEMm2r12mmA6i0FIlEvUm43mNu4QC1av0kiEBitMPxp5SGCx
-    7XTzedulfPTIjQzS5RlnE9ll1mmlxx4b+XjvQ3cGfJkCp6k+68SSn6X2mpjg
-X-ME-Proxy: <xmx:Cu95auJ_Y-vJsBxwf96r9ZrL1-f1ks_dhchujyC3k3mqYBCC_ez8ig>
-    <xmx:Cu95ant7oUfINdItw33ZgODyROVKb4u7qcwFSxTSHY_IEvj7vNlvfg>
-    <xmx:Cu95alD84YvCVgrXqBxwN9Th2lpOnsXAif_zl-C7-UjSPgwvp0PsCQ>
-    <xmx:Cu95avOGTgUbc2H4mKO2A_RVmYYXhB4o6kpKs0IXbZQalQBmR2E5gg>
-    <xmx:Cu95amDLw1znDMFiJlYSAUwwhQS6zYnwp1ES9JeVV_luMf6oeH6_t5p9>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 10 Aug 2026 11:32:25 -0400 (EDT)
-Date: Mon, 10 Aug 2026 09:32:23 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Samiullah Khawaja <skhawaja@google.com>, bhelgaas@google.com, Kevin Tian
- <kevin.tian@intel.com>, Leon Romanovsky <leon@kernel.org>,
- dmatlack@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- alex@shazbot.org
-Subject: Re: [RFC PATCH 1/1] vfio/pci: Disable sriov on PF device close
-Message-ID: <20260810093223.50dbc8d0@shazbot.org>
-In-Reply-To: <20260806194739.GH28508@ziepe.ca>
-References: <20260805003355.728299-1-skhawaja@google.com>
-	<20260805003355.728299-2-skhawaja@google.com>
-	<20260805090323.01b1a36f@shazbot.org>
-	<20260806194739.GH28508@ziepe.ca>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="upuiGS22"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-498012a61f6so81865e9.0
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 08:34:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786376092; x=1786980892; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=c33LbTJSjGuCzeDqGkQ4pNDET5O6ipd+Vg7r1pAYbeE=;
+        b=upuiGS22D+34+VfWZn2ONubQ99sLIS1FpZhUQCGHbobcfBvCP9zrIMMfnB/bWG1IA0
+         hxh/tSc4DFq4oCoMjoXQ4SbGs874kybLhhtw5zZYjJYD0MfmSl6CW9Me2INrGB6AAd3b
+         aHT/ITOzKRBssEqnVuRTNpwF5Tke1AVOqTupEeuc8eT+aVYJdUx/cYPI9go6eP3QCVTa
+         j4ilkhDUKlVQNYUMw4m6Dz+PEAhVyuBxh55gD2wN7C39Fj4XWPd7gAuVf/v7aZpc1O3u
+         E58SDuSJNcsr33Sef9+GW5/bgn38iLY2OzYX7QcO0mL8Jj4GsVFHCqbvJZPDE+hIbwkv
+         Ssog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786376092; x=1786980892;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=c33LbTJSjGuCzeDqGkQ4pNDET5O6ipd+Vg7r1pAYbeE=;
+        b=NI0tFXGH9bxLHHfYVI0plTJT32v7WdIi56Tbc3sogsswB3kpip0+myAWT1lDOBtVOW
+         tt6tRwEClBox87sRiW+rZR8FG0vAdOIU2hF4+2MVPmNbwutqrnODLd11CsdRQzsKRuBg
+         vPZPjza9/lAARpcqMuY3u6EESWFeqe5+klbBa26uUsIdPAfzjEHDJZFJC14SST5FFPf9
+         Vt/V652FZg6ErEwbF1rwSkDBhr6RWBR2JXo4GBBXobbWkKdqD/TxZM56opvyQdQGfPhM
+         poLGA8n4MxV6YivNaH4W+EaKU2rUIT1qjgCzQP5LScg1UmkP7Vaw+cIZtxDdOuxn5YkT
+         9lyQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq1LcnUryiG8Vl9WYIaoK40pXR1Lq2XKbWHOsV4sjO29MoodhGZvau47iTJiQ4xlgPelPM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJm8skc70luM3RF2IzEtWjubBK6ealdT1Kf/jtJLMajsOocr1y
+	0uMOlOqOX0PRu8UZg12aBNPSwoaQDrErtLKRoFDVrQ58D9ULWGbOVL9O9vVDKOtsRBAmypSKSdE
+	Mo6bq/mth
+X-Gm-Gg: AR+sD12OL8uO5kAEPOLkrssWqU/RyB6XhPKHRs4YvbbVGOLDPfHA028GDWoBBr6SQ8E
+	aSaayZafJ/taFwAVYERKyh53Ydd5+Sg7oc2wCJoA4rprDQ9T0Buff8nuw5iUSJ9f/7F31OW2aSY
+	vx1xSMthx6bFS5JwB8hYdj5TpNlhri0TE3jN/Si6TYy6kv2D2Mah0Sg6+FlkMOHBqoIwPkzA027
+	ssQ/LU1wEQmjmclw+RDIzhexfAp8pzB3aAhQVMnR4Bp53DHqRKZIc31BIx15pwlxIIoU2wrG0Ny
+	GGB2s147Gx+SF+I0vqtkpg/iWEgqPvZHnMHxivks+lqg6xOGX3ZL8jREpEilwv7IanoDosGA8zi
+	iR+fPQLXlSoRDDq6hI9hytr1tbW5AI7m4Zh8qLd++1Bs6zG5ICryZaQ7D6Fsc+dWDzR0IGMcYoD
+	iPJF05PrkVlEjp0InQ5vjDb63eVa8BHMTo3dBGAFjIC1dQ0t1vT7Rwz2ETvlaW4mkTvnq/KdLmc
+	qEn7zCDb3/7M0HfrhjtDkO8o+NIPh/TCAJo0eKjL+CoqE0=
+X-Received: by 2002:a05:600c:6b18:b0:499:5f00:4cb5 with SMTP id 5b1f17b1804b1-49962474b50mr3053625e9.0.1786376091576;
+        Mon, 10 Aug 2026 08:34:51 -0700 (PDT)
+Received: from localhost ([2a00:79e0:288a:8:5c4:b02b:cff6:9cc6])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021e7b3fsm38648521f8f.20.2026.08.10.08.34.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 08:34:50 -0700 (PDT)
+From: Jann Horn <jannh@google.com>
+Date: Mon, 10 Aug 2026 17:33:59 +0200
+Subject: [PATCH] KVM: SEV: Fix page dirtying in sev_gmem_post_populate()
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260810-x86-kvm-setpagedirty-v1-1-85f180892d4f@google.com>
+X-B4-Tracking: v=1; b=H4sIAGbveWoC/yXMQQ6CMBBG4auQWTvJQEiDXsW4KPAXRyOSTiEQw
+ t2tuvwW7+1kiAqjS7FTxKKm7zGjPBXU3f04gLXPpkoqJ00pvDaOn8uLDWnyA3qNaWMvNepzEOe
+ CUE6niKDrb3u9/W1z+0CXvi86jg99tTZAeAAAAA==
+X-Change-ID: 20260810-x86-kvm-setpagedirty-a04e49f066f0
+To: Sean Christopherson <seanjc@google.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, kvm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Jann Horn <jannh@google.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786376044; l=1657;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=hKPX+mOjfHOBQZDisLrPxYD06+lONZjwhisWQ4vKDf4=;
+ b=DAc5cALWvZ0LC4ly82cuSkAgxL7iVz6jIR4TGMX0mdPah0bZec/7Vb50vrR8t9+B8mkkkel+c
+ 0Cz8Cfdsz9ECiAaOXHws0PHZNXFSRrBRdpghVt+SJxDKLblMxdaXSsd
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 
-On Thu, 6 Aug 2026 16:47:39 -0300
-Jason Gunthorpe <jgg@ziepe.ca> wrote:
+set_page_dirty() requires that the caller holds some kind of lock to
+ensure that the page's mapping does not concurrently go away.
+That is not the case for a random page we got from get_user_pages_fast(),
+so use set_page_dirty_lock().
 
-> On Wed, Aug 05, 2026 at 09:03:23AM -0600, Alex Williamson wrote:
-> > On Wed,  5 Aug 2026 00:33:55 +0000
-> > Samiullah Khawaja <skhawaja@google.com> wrote:
-> >   
-> > > When userspace closes a VFIO device file descriptor, the vfio driver
-> > > performs a hardware reset on the PCIe device to ensure it is returned to
-> > > a clean state. However, if the closed device is an SR-IOV Physical
-> > > Function (PF), it may have instantiated Virtual Functions (VFs) that are
-> > > actively bound to host kernel drivers (or other vfio instances).  
-> > 
-> > Wait, what?  We actively try to prevent VFs from a vfio-pci owned PF
-> > from being bound to host drivers other than vfio-pci.  You need to
-> > overwrite the imposed driver_override to make this happen and you're in
-> > a very precarious security model to have the VF owned by a trusted
-> > in-kernel driver while the PF is owned by userspace.  
-> 
-> Maybe, it really depends on the device. I can easially see someone
-> using a device where this would be safe. mlx5 for instance is pretty
-> OK.
-> 
-> So I don't really mind someone doing this, we should block it and warn
-> it and so on, but like noiommu and the other vfio insecure modes, why
-> not give an opt in?
+Fixes: 97cd21d57e9b ("KVM: SEV: Mark source page dirty when writing back CPUID data on failure")
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+Note that I have only convinced myself that this is a UAF bug by reading
+the source code, and I have only compile-tested this patch; I do not
+have SEV-SNP hardware to actually test this.
 
-An opt-in to what currently?  We generate a warning, but nothing
-actually prevents the re-bind to an in-kernel driver.  Whether that's
-sustainable in eliminating this reset gap is yet to be seen.
+This bug was introduced in v7.2-rc1, so if we can get the fix in before
+the 7.2 release, this won't require a stable backport.
 
-Binding a VF from a userspace owned PF flips our model on its head in
-two important ways.  First is the security inversion.  An in-kernel PF
-driver is considered trusted, we absolve ourselves of issues related to
-whether the PF has access to VF data or interrupts VF operations and
-state through reset.  Second, the vf_token model explicitly defines the
-trust and coordination boundaries for the userspace SR-IOV ecosystem.
-An in-kernel bound VF lives entirely outside of that boundary.  For
-example, one mechanism we might use to prevent an MCE around PF reset
-would be to zap VF mappings and invalidate dmabufs.  Reinstatement of
-those mappings would require userspace coordination, which the vf_token
-model would define as an implementation detail in userspace relative to
-vf_token coordination and trust.
+For context, I have seen similar bugs (set_page_dirty() on a page from
+GUP) in two out-of-tree drivers in the past, where this led to UAF.
+Evidently set_page_dirty() is a bit of a footgun for GUP users...
+---
+ arch/x86/kvm/svm/sev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-So we haven't done anything that explicitly blocks or taints this mode,
-yet, but correctly handling reset could be a tipping point.
-
-> > It's possible there are gaps that closing the PF can interrupt the VFs
-> > and we need to defer a reset until the VFs are closed,   
-> 
-> Oh definately, when running in a SRIOV mode it is really problematic
-> for the PF to reset while there are any active VFs. The PF controls a
-> number of shared items (MMIO, ATS, etc) and when it blips everyone is
-> at risk of unexpected fairly catastrophic system crashing errors
-> related to the shared items going away.
-> 
-> So resetting the PF device unconditionally when vfio closes is
-> definately wrong in principal. I can see it maybe working for simple
-> systems, especially ones that don't MCE..
-> 
-> I don't think we can skip the PF reset on close because of dev_set
-> reasons and leave a rouge device for the next user, so the thing looks
-> somewhat troubled?
-
-This is what our vf_token model would handle, if we could use it.
-Re-open with VFs in use through vfio-pci requires the vf_token
-proof/opt-in.  Re-open with no VFs in use could reset the PF, but we
-can't account for VFs bound to in-kernel drivers.
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 0f0ea7896af5..49feef14787a 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2389,7 +2389,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+ 		void *dst_vaddr = kmap_local_pfn(pfn);
  
-> Adding the sriov disable here at least makes it defensibly safe, that
-> we do still clear the PF on close, and we don't take risks that the
-> active VFs will crash the system during the FLR blip.
-> 
-> Though I understand it was not the original intention, I feel we have
-> ended up in a strange place with the SRIOV PF feature ..
+ 		memcpy(src_vaddr, dst_vaddr, PAGE_SIZE);
+-		set_page_dirty(src_page);
++		set_page_dirty_lock(src_page);
+ 
+ 		kunmap_local(dst_vaddr);
+ 		kunmap_local(src_vaddr);
 
-I think we have 3 potential options for PF reset:
+---
+base-commit: db2ddb87143519e20a95aa36c60b36107b736a58
+change-id: 20260810-x86-kvm-setpagedirty-a04e49f066f0
 
- a) All resets are blocked or deferred while SR-IOV is active.
+Best regards,
+--  
+Jann Horn <jannh@google.com>
 
- b) VF mappings are zapped/invalidated at PF reset and require
-    coordination to be reinstated.
-
- c) VFs are torn down on all PF resets.
-
-Option (a) is complex and doesn't look like stable material.  A deferred
-reset on .close needs to materialize on .remove or .sriov_configure
-(and of course .open), but to allow in-kernel VF drivers we can't rely
-on vfio usage counts, or even our vf-token trust boundaries, which is
-what leads to the .sriov_configure hook since we need to take advantage
-of every opportunity to issue a deferred reset when SR-IOV is not
-active when we can only rely on the PF state.
-
-Option (b) is potentially more simple, it implements the blocking of
-access on reset in the kernel for enforcement, but defers the
-coordination of reinstantiating mappings to userspace, which is really
-how the vf_token model is intended to work.  This is incompatible with
-in-kernel VF drivers, which I think means tainting on VF unbind from
-vfio-pci and those working outside the model would tread carefully.
-
-Option (c) is the more heavy handed approach, it means that a PF driver
-cannot fail or exit and re-attach.  We have existing logic that handles
-a PF driver re-opening the PF device with active VFs and authenticating
-the vf_token (logic also broken by in-kernel VF drivers that bypass the
-vf_token mechanics).  There also appears to be significant locking
-challenges in this approach, ex. the inversion of getting the device
-lock for SR-IOV teardown from the ioctl, config space, and .close
-contexts.
-
-I'm open to suggestions, PF resets with live VFs is very much a gap
-that I'd like to close in the vfio-pci SR-IOV model.  Thanks,
-
-Alex
