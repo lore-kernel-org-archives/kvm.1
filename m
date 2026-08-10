@@ -1,125 +1,136 @@
-Received: from out198-29.us.a.mail.aliyun.com (out198-29.us.a.mail.aliyun.com [47.90.198.29])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8269F3AB47B
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 08:36:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0473A4505;
+	Mon, 10 Aug 2026 08:36:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786351001; cv=none; b=j57trt7DO7U6gJDuDr+/O40XJEpvjJfZzVAVs3WPp1eJjjL0Ds3Kucw4uTCnq/Q8dFSuK7aqURA6Q84ldr3SgwRZ0ufBkj6SEY/c4DIw61bPB0YpmsvV515f7LBQmHt0Y86nj2TN3zwRq0HqTuUQUUApFy1Z80T3t+N3H5tH4S8=
+	t=1786351016; cv=none; b=cKsLIG302uAFmHa2DLz0E4YM5XqC5VWGCB6yFmWmWKguFsGQ847sHhS5mqMv1qxYtLiDFfQMAfPSLj7+gKoJ8Vbo0DBiCW+v+1KWJtBlQLfPjQ2rjaeZwPatPLF4QgvTe7q9ayt7A/QN2czPxMCEeBoJBuyNchkP/qk1ROfn0FM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786351001; c=relaxed/simple;
-	bh=6md9IcDmAwMKuFCizgpuz4wGQYlErgoSQJ68bhfayow=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HIhP6HWVF0y/zQk2zshfE5L8BeWnluVOhc7Uug8hYUH4DCm1mCEHTPSn2ZNjEk8Nf0fH0Ps+vam35ZFYS5EsJrm2hM2U0ngPNqWgAGXpVSQ+5copmhcbmQtcsnMiIfHZ/hUXlEUObdqzJhQOMs2rV4dzCujjdsAkdnSKM+Z5DeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=47.90.198.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436348|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00378828-0.000704797-0.995507;FP=16568555282154128715|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033032053168;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.iiL7hRH_1786350665;
-Received: from localhost.localdomain(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.iiL7hRH_1786350665 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Mon, 10 Aug 2026 16:31:05 +0800
-From: Tina Zhang <zhang_wei@open-hieco.net>
-To: qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Zhao Liu <zhao1.liu@intel.com>,
-	Yanjing Zhou <zhouyanjing@hygon.cn>,
-	Tina Zhang <zhang_wei@open-hieco.net>
-Subject: [PATCH v2 9/9] target/i386: Use AMD ucode-rev default for Hygon
-Date: Mon, 10 Aug 2026 16:29:56 +0800
-Message-ID: <20260810082956.1768042-10-zhang_wei@open-hieco.net>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260810082956.1768042-1-zhang_wei@open-hieco.net>
-References: <20260810082956.1768042-1-zhang_wei@open-hieco.net>
+	s=arc-20240116; t=1786351016; c=relaxed/simple;
+	bh=0heE0aeUQp5JoHVaYB/JZs1HN8xkC2lK7gU6vSQV+9A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B1E8wyD4Uq1SkzNfffuqybEFJE5SC9+auyTJxhcpXBGB7UTOCYzMmVFnFFYmaTsJJkB9D4PGgJFUal1IvzSqjfNbeL+ybVQet60cLTxjHYmpXFNPkwzzWMLgKlIvtEfR7SSnaz+Xi2VohYWAlS9tmSeXNwlDmlLRVQa+kLxDI/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WG9vfruA; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WG9vfruA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7FC1F00A3D;
+	Mon, 10 Aug 2026 08:36:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786351015;
+	bh=JV5WNgHkpKWzZzTADt5HV8WfufvTRE1W/LdtA3ppIU0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WG9vfruAdcqV26E8riIECGmFnBJZd5QFGEF/vLwr28j8gC4/i7xF0ppv5LbXGsZXX
+	 JxNn+AK3ID5hxM+oY6+3ga/4g5kSAUZ3bpLvKsQ3jdW2iUMHhzYR8K+qeLV3wBd+SH
+	 VfMjlXUAPInIsYgKwkG0faj9NQPkTn8mbqTh93b2RkQ6vc61GikkngdVPvCYS8u1v3
+	 Bbmd+K6Qvi9MyaqQYp3ipshXdNTBrXxLxAhKWBNy+rqBS761NXJu8HVp2apMLGHoSi
+	 TNqEO7IDleHDyLVMiyzHc0N4UA6L3SFYnW+RHipKKKGb19601kNwdtCQOjQmzQOcPt
+	 EgpNCWtEiomWw==
+Date: Mon, 10 Aug 2026 09:36:21 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Alex Deucher <alexander.deucher@amd.com>, 
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, Steven Price <steven.price@arm.com>, 
+	Liviu Dudau <liviu.dudau@arm.com>, Huang Rui <ray.huang@amd.com>, 
+	Matthew Auld <matthew.auld@intel.com>, 
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 01/20] mm/vma: introduce VMA anon page offset field
+ and add helpers
+Message-ID: <anmLnvWAyIJwjsXj@lucifer>
+References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
+ <20260806-b4-scalable-cow-virt-pgoff-v4-1-ab318a350404@kernel.org>
+ <CAJuCfpFAA1H2pOi6EOarNtrdzLQDJyhm6QOGsfZ4SFTuM5eiLQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJuCfpFAA1H2pOi6EOarNtrdzLQDJyhm6QOGsfZ4SFTuM5eiLQ@mail.gmail.com>
 
-QEMU currently gives named Hygon Dhyana CPUs the non-AMD default
-ucode-rev value, 0x100000000.  That is the Intel/KVM-VMX-shaped
-encoding, where the visible revision is in the high 32 bits.
+On Sat, Aug 08, 2026 at 05:51:10PM -0700, Suren Baghdasaryan wrote:
+> On Thu, Aug 6, 2026 at 1:22 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 87feaa5a2b78..df78847f5f07 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -4393,6 +4393,65 @@ static inline pgoff_t vma_last_pgoff(const struct vm_area_struct *vma)
+> >         return vma_end_pgoff(vma) - 1;
+> >  }
+> >
+> > +/**
+> > + * vma_start_anon_pgoff() - Get the anonymous page offset of the start of @vma
+> > + * @vma: The VMA whose anonymous page offset is required.
+> > + *
+> > + * If unfaulted, then this is vma->vm_start >> PAGE_SHIFT, if faulted then the
+> > + * anonymous page offset at the time of first fault.
+> > + *
+> > + * If the VMA is anonymous, this returns the same value as vma_start_pgoff().
+> > + *
+> > + * This value is used for tracking MAP_PRIVATE file-backed mappings by their
+> > + * anonymous page offset.
+>
+> I assume this function should not be used with shared file-backed
+> mappings, right? If so, maybe add a comment like the one you have for
+> linear_anon_page_index(): "It is not valid to call this function for
+> shared file-backed mappings."?
 
-Linux reads MSR 0x8b for Hygon CPUs through the AMD patch-level path,
-using MSR_AMD64_PATCH_LEVEL and storing the low 32 bits as
-cpuinfo_x86.microcode.  With the old QEMU default, a Dhyana guest sees
-microcode revision 0.
+No that's not the case, it is valid to access this for any VMA though it's only
+meaningful for MAP_PRIVATE and anonymous VMAs (though in the latter case pgoff
+== anon pgoff).
 
-Use the AMD/KVM-SVM-shaped default, 0x01000065, for Hygon on this
-specific MSR 0x8b default path.  This does not route Hygon through AMD
-microcode loading and does not claim that Hygon CPUs are otherwise
-identical to AMD CPUs.
+The code keeps the anon pgoff values consistent even for shared mappings because
+- hey - we have the field anyway and it's easiest and safest to just keep it the
+same.
 
-Preserve migration ABI through the vendor CPU ABI compatibility gate used
-by this Hygon bug-fix group.  pc-11.0 and older machine types leave that
-gate off, so they retain the previous ucode-rev default.  Explicit
-user-provided ucode-rev values still override the default.
+One alternative would be to have code that checks the flags and zeroes the field
+otherwise , but then you have problems like - early on initialisation now
+there's an ordering requirement which can easily go wrong.
 
-Add qtest coverage for the new default, the compatibility cases, and an
-explicit user override.
+Another alternative is to just leave it stale, but then that seems objectively
+worse and again requires branching code on update and set.
 
-Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
----
- target/i386/cpu.c                   |  8 ++++++--
- tests/qtest/test-x86-cpuid-compat.c | 19 +++++++++++++++++++
- 2 files changed, 25 insertions(+), 2 deletions(-)
+All-in-all it's easier to keep this working the same for any type of mapping,
+it's just useless to do anything with the anon pgoff for a shared mapping :)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 4d8364f1ef..eb4295e562 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -10219,10 +10219,14 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-     if (cpu->ucode_rev == 0) {
-         /*
-          * The default is the same as KVM's. Note that this check
--         * needs to happen after the evenual setting of ucode_rev in
-+         * needs to happen after the eventual setting of ucode_rev in
-          * accel-specific code in cpu_exec_realizefn.
-+         *
-+         * Hygon uses the AMD patch-level MSR 0x8b encoding, where the visible
-+         * microcode revision is in the low 32 bits.
-          */
--        if (IS_AMD_CPU(env)) {
-+        if (IS_AMD_CPU(env) ||
-+            (IS_HYGON_CPU(env) && cpu->hygon_vendor_abi_fixes)) {
-             cpu->ucode_rev = 0x01000065;
-         } else {
-             cpu->ucode_rev = 0x100000000ULL;
-diff --git a/tests/qtest/test-x86-cpuid-compat.c b/tests/qtest/test-x86-cpuid-compat.c
-index b7f8834052..06cbf35d76 100644
---- a/tests/qtest/test-x86-cpuid-compat.c
-+++ b/tests/qtest/test-x86-cpuid-compat.c
-@@ -404,6 +404,25 @@ static const CpuidTestArgs cpuid_tests[] = {
-         "486", "xlevel2=0xC0000002,xstore=on",
-         NULL, "xlevel2", 0xC0000002,
-     },
-+    {
-+        "x86/cpuid/props/dhyana/ucode-rev/default",
-+        "Dhyana", NULL, NULL, "ucode-rev", 0x01000065,
-+    },
-+    {
-+        "x86/cpuid/props/dhyana/ucode-rev/compat-off",
-+        "Dhyana", "x-hygon-vendor-abi-fixes=off", NULL,
-+        "ucode-rev", 0x100000000LL,
-+    },
-+    {
-+        "x86/cpuid/props/dhyana/ucode-rev/pc-i440fx-11.0",
-+        "Dhyana", NULL, "pc-i440fx-11.0",
-+        "ucode-rev", 0x100000000LL,
-+    },
-+    {
-+        "x86/cpuid/props/dhyana/ucode-rev/user",
-+        "Dhyana", "ucode-rev=0x12345678", NULL,
-+        "ucode-rev", 0x12345678,
-+    },
- };
- 
- /*
--- 
-2.43.7
-
+--
+Cheers, Lorenzo
