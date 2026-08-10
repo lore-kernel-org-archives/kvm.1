@@ -1,146 +1,142 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5280D38C415
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 20:43:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCF83AE706
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 20:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786394631; cv=none; b=K1aRsqiG9syzjoo2JM4rZ/lVvv+KPWUbtSiQDhbnhKCratnnexV5ZwJ87YAmx1Sl4p0L/yx1fklm3ts6wFNaciNGX9KJHUxRJTCzL/atzxyUJO5Ump9Bl8vXmyW4TRNoxwCfB/+QaLsGijHKvvftpouh8kWgFtJB2A4bo8jLAlQ=
+	t=1786395390; cv=none; b=t+vkvWtrUCOnX12xTMEAQweqiNaLaDJr7Bltn65OU8fKpcLIcJR3u9JQUGN08QlOCxedIqF0AqVD7bEL3DZoKLAK2ic3h9XdtU64xUhrSqvhnsN08CPOxbX6SE6APmIPxD+TrL2qspVMCzXvUXTUZHeDb0x28MPflQw0DAclM4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786394631; c=relaxed/simple;
-	bh=Nx2oJxCJfLY0Z/oOuMWDzpg6oQ20XnmlYnotOxoRsYE=;
+	s=arc-20240116; t=1786395390; c=relaxed/simple;
+	bh=gV3PXNtOPo2dzqJVberp/Nshsac9CmoYYB8G1uWRGMw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=TQUtBHZpoNGMhJz3ztd3QNwW/YBqSIDdi6Mv5qp2ZAmCFmHBtKoYrJ+K5qo/pcfhO/o51uXP50GXISUqndjTrZEuap4k4EnINCr4cMpJFQozfFWYYmHsJkbY4owSQXaQRk4UdwgYYcjgDylaWmWjkbYVEPKuWN9YsxLx8JC12AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NehgtyTx; arc=none smtp.client-ip=209.85.210.197
+	 To:Cc:Content-Type; b=MT9UG36bGlRyAyvTnmLxnij9yOxC1JEyvlp4mp0MMaog+EGGDBiCxFSv5CfNct/R4el7yaq63x8Up1+t0Udg+fW56LE7Xq1xrxcIP4Grv0+/uPBWC+UGWxZQQtuQvpW03+UgUl9mFMpG/wPiF6ikbpmdr/inixT7heGLbnRp8ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bNFSUFW+; arc=none smtp.client-ip=209.85.215.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NehgtyTx"
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84885a4fcabso2573476b3a.3
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 13:43:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bNFSUFW+"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cb5ea36f969so2972957a12.2
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 13:56:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786394630; x=1786999430; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786395387; x=1787000187; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=W0CHJxMafMp5KIEbQEKj7SvQsoEqCMl/p3gQ9GclrUs=;
-        b=NehgtyTxPKzJhR2opNI9hbfEJLdM0w/DFLuhbVVzDX6a5ZlqkAZpJvfPF1CnE7JpvK
-         GNcTFEFu7xbH9uBBlUGRvFe8Tmovw6l8+URuCU1kdFxW4KgR/b7fTowwvEiblap9PmpV
-         D+VMB2ihZgAKtrRxxbA6uAEp62w71mGpI7y5GPa0cIV0aNm/vq+5keGPVE2ygo9I1CAt
-         O9l+R3tkD7+Ax2JxTyP0o449lXcRgDtlc/Endyj/QieqkgsZgN/i8nZt5/aal+quwm/C
-         TbkexZR+cHELn2udc4IFSqmyFoEcUx12Ygc+7opoUo8uupAZxeYEXyOMlkZQlawwWedJ
-         pwaQ==
+        bh=LCgbuv6Vd7zF2bZTNz0VWHu3WJNY8tSX432zegD8YdU=;
+        b=bNFSUFW+Hwr1m2QoQQwTY3YLdMhY07wlQ2bWpfNlmdFRpWQnc/9ugInC3tOqzfMCju
+         qRkuPEQU1eqU85C4yzJPYQPaGAS1NrW6s8oMOQkjf9LCNSed118JxqCZt92MV5fp4qVy
+         ObWZnmkn+jj4R8IK8TJS1IHNyfzswodPXaxpdIzSe4cdl/ysXHSfo3z7DXfez+w/P4kW
+         dWP4m2QDSle7h3cdAfJ+vkgb9jL2irTF3Zm69u9qOjGuzdMqF9wU4pTW+s2oYvycioJ6
+         Gf1Ms5ppjgdu0N8nRrLJUTdn5RY3cc1yDhLdWVKydyYGg9Vgjfs5D6EY2FjrQANEoOMF
+         I5ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786394630; x=1786999430;
+        d=1e100.net; s=20251104; t=1786395387; x=1787000187;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=W0CHJxMafMp5KIEbQEKj7SvQsoEqCMl/p3gQ9GclrUs=;
-        b=hFNl/+U0Vye4VgfJ75JJP2wWk5PhAqSrwM94tFFv3M+HMwmJYLSkYIp9iD6LjhwRiT
-         vXn4oUbR5+XbQIw1y2pml7Kmtvj3fTfRa2owgy7dn8RvPmbpsBE93zB9ZY/U/CVQJKId
-         G9mrrH3EqiFwefvnfCxX1r10rXo0wcPfpmaznPTJMLrRpN+SIaoajvdUKcww2JBQIzpP
-         QrwlLffSuQDInl1AIYMcAodcchTHFP7Zh0RAv+aJ5WN0v5kdBZv1k4qcxG6Ap6r5FXSg
-         qvMhpK80vGtddTiCB+XMvw/2xAKPNYN1ReofZbQsj+xfLjNQiHFrzg/k1Lo5vIcN1eAL
-         pM7w==
-X-Forwarded-Encrypted: i=1; AHgh+RqXunhiLQqQilrNC6obUuewbxdzRuNXQIIj0i6KI0N+lsk0t1oQCkcqprSnpSmQowYxglQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzc2lGxZ8CymHXNkcSHrRwL/LRyXM15T2QJir7zOsRxRiFdQw4M
-	wHQFP6JT1FmJKAr46GvMd4EtZf9UTEZj+8FZCAAxwNmnWRMHuILqIQZROaFju87oNZnHrmoGPon
-	I8TxdNw==
-X-Received: from pfbfh36.prod.google.com ([2002:a05:6a00:3924:b0:84e:7be:bd38])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:aa7:88c2:0:b0:847:9518:a6fe
- with SMTP id d2e1a72fcca58-84f4feb850fmr33135084b3a.26.1786394629381; Mon, 10
- Aug 2026 13:43:49 -0700 (PDT)
-Date: Mon, 10 Aug 2026 13:43:48 -0700
-In-Reply-To: <1fc757de50acfdfac5f734a3ad1eaed4123cfbf8.camel@intel.com>
+        bh=LCgbuv6Vd7zF2bZTNz0VWHu3WJNY8tSX432zegD8YdU=;
+        b=bX7RGIKTx51d0aSqZHFQa/JaOO1jHimtwlwF3DLxi7/D9bIICXvCkI/NUlhe6bhIvt
+         Q2YhVumnTn/BT2utkeY9dTj2LgvgpWmHPh+y4aNU2T9xHORRI3c4y9bxOaxnuYBHSuh2
+         BW7xDQuLGPSkvCUcEpq4xNNoMNcexLooIlpWNYt2bSX/yFDlml9mO6NeeCSoSNm4w3bR
+         IR1h9fJ9HAEZjupn+7kGDSZtnpAfu8P9dp/ghu7IelElkrjtoV124AQnJvBbpB63lTTW
+         06PRwFmpkw/BvbTCZX9YKNR76OP0lxhnRKEqJFrh+tcVt+niszEeLZiShXJTCntJa1Et
+         Z0jw==
+X-Forwarded-Encrypted: i=1; AHgh+RpckRRmbnT5IAKrm7GHwKnxT1lKRaM3uAqfnCE4Fnr4ztpkSPDbem9WT2YNScnbDW1bhMo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1k2zdI92ZwCIaDfynP4pqQH2yyjqxvwSNieUwd1eF82O31lkI
+	g1R2jNMzJwK2Y3pR6V/Ylgr4YUW674eEv8tc39FdWGpiEPUkrmXChExJUlysVbfd86FSgg/iBVQ
+	x8dbT7Q==
+X-Received: from pgmc19.prod.google.com ([2002:a63:1c53:0:b0:c98:2639:852e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:ad1:b0:848:4d1a:9556
+ with SMTP id d2e1a72fcca58-84f9c8f6a11mr4384666b3a.11.1786395387317; Mon, 10
+ Aug 2026 13:56:27 -0700 (PDT)
+Date: Mon, 10 Aug 2026 13:56:26 -0700
+In-Reply-To: <acd9b32617f75d188c370a464a922af0d650d4f5.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260806214050.78058-1-seanjc@google.com> <20260806214050.78058-4-seanjc@google.com>
- <7867c759880de0ea4628deccfaa077a5d1c5fce9.camel@intel.com>
- <anZYib2bADjRmxvE@google.com> <1fc757de50acfdfac5f734a3ad1eaed4123cfbf8.camel@intel.com>
-Message-ID: <ano4BBXU-Y_ah4DN@google.com>
-Subject: Re: [PATCH 3/4] KVM: x86/mmu: Top-up memory caches when retrying "map
- private PFN"
+References: <20260728144954.355376-1-dwmw2@infradead.org> <20260728144954.355376-18-dwmw2@infradead.org>
+ <anoOz2rZ02KFk1l-@google.com> <acd9b32617f75d188c370a464a922af0d650d4f5.camel@infradead.org>
+Message-ID: <ano6-gIZtqMfipiD@google.com>
+Subject: Re: [PATCH v7 17/36] KVM: x86: Allow KVM master clock mode when TSCs
+ are offset from each other
 From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Yan Y Zhao <yan.y.zhao@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"sashiko-bot@kernel.org" <sashiko-bot@kernel.org>, Kai Huang <kai.huang@intel.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul Durrant <paul@xen.org>, 
+	Jonathan Cameron <jic23@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, 
+	Dongli Zhang <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 10, 2026, Rick P Edgecombe wrote:
-> On Fri, 2026-08-07 at 15:13 -0700, Sean Christopherson wrote:
-> > > I think it is the same for the other caches consumed by the fault. I =
-guess
-> > > "e.g." covers it. But it's not new after DPAMT.
+On Mon, Aug 10, 2026, David Woodhouse wrote:
+> On Mon, 2026-08-10 at 10:47 -0700, Sean Christopherson wrote:
+> > =C2=A0
+> > > But when the vCPUs merely have a different TSC *offset*, that's not a
+> > > problem. The offset is applied to that vCPU's kvmclock->tsc_timestamp
+> > > field, and it all comes out in the wash.
 > >=20
-> > I don't think so?=C2=A0 Especially since as you point out below, nothin=
-g else can
-> > muck with the SPTEs.=C2=A0 The TDP MMU only consumes an cache entry if =
-it
-> > successfully creates a SPTE, and since nothing can muck with SPTEs, any=
-thing
-> > created on the first attempt will still be there on subsequent attempts=
-.=C2=A0 I.e.
-> > the TDP MMU might create SPTEs that are ultimately unused, but I don't =
-think
-> > it can exhaust a cache.
+> > It's not though?=C2=A0 The value stored in kvmclock->tsc_timestamp is p=
+er-VM, not
+> > per-vCPU, when using the master clock.=C2=A0 It's a little easier to se=
+e once the
+> > master clock TSC isn't shoved into host_tsc:
+> >=20
+> > 	do {
+> > 		seq =3D read_seqcount_begin(&ka->pvclock_sc);
+> > 		use_master_clock =3D ka->use_master_clock;
+> > 		if (!use_master_clock)
+> > 			continue;
+> >=20
+> > 		if (!kvm_get_time_and_clockread(&kernel_ns, &host_tsc)) {
+> > 			use_master_clock =3D false;
+> > 			continue;
+> > 		}
+> >=20
+> > 		master_tsc =3D ka->master_cycle_now;
+> > 		master_ns =3D ka->master_kernel_ns;
+> > 	} while (read_seqcount_retry(&ka->pvclock_sc, seq));
+> >=20
+> > 	...
+> >=20
+> > 	if (use_master_clock) {
+> > 		hv_clock.tsc_timestamp =3D kvm_read_l1_tsc(v, master_tsc);
+> > 		hv_clock.system_time =3D master_ns + v->kvm->arch.kvmclock_offset;
+> > 	} else {
+> > 		hv_clock.tsc_timestamp =3D tsc_timestamp;
+> > 		hv_clock.system_time =3D kernel_ns + v->kvm->arch.kvmclock_offset;
+> > 	}
 >=20
-> Functionally we won't see multiple kvm_tdp_mmu_map() calls during
-> kvm_tdp_mmu_map_private_pfn() because of the locks as we discussed. But..=
-. if we
-> did, then I think we would have the same pattern of freeing but not toppi=
-ng up
-> before retrying:
+> Meh. I shall have to build a better test case for that one. Thanks.
 >=20
-> kvm_tdp_mmu_map():
-> ...
-> 	/*
-> 	 * The SPTE is either non-present or points to a huge page that
-> 	 * needs to be split.
-> 	 */
-> 	sp =3D tdp_mmu_alloc_sp(vcpu);
-> 	tdp_mmu_init_child_sp(sp, &iter); <- shrink mirror
-> 	if (is_mirror_sp(sp))
-> 		kvm_mmu_alloc_external_spt(vcpu, sp); <- shrink external
+> > To allow different offsets, KVM would need to track a per-vCPU offset t=
+o the
+> > master clock and apply that in kvm_guest_time_update() (and maybe other=
+ places?).
+> > Which is doable, but it's not clear to me why we'd want to support that=
+ (though
+> > I haven't fully processed the back half ot his series, so it's very pos=
+sible I'm
+> > missing something obvious).
 >=20
-> 	sp->nx_huge_page_disallowed =3D fault->huge_page_disallowed;
->=20
-> 	if (is_shadow_present_pte(iter.old_spte)) {
-> 		/* Don't support large page for mirrored roots (TDX) */
-> 		KVM_BUG_ON(is_mirror_sptep(iter.sptep), vcpu->kvm);
-> 		r =3D tdp_mmu_split_huge_page(kvm, &iter, sp, true);
-> 	} else {
-> 		r =3D tdp_mmu_link_sp(kvm, &iter, sp, true);<- TDX
-> error(BUSY,etc)
-> 	}
->=20
-> 	/*
-> 	 * Force the guest to retry if installing an upper level SPTE
-> 	 * failed, e.g. because a different task modified the SPTE.
-> 	 */
-> 	if (r) {
-> 		tdp_mmu_free_unused_sp(sp); <- free_page() external and mirror
-> 		goto retry; <- return to kvm_tdp_mmu_map_private_pfn()
-> 	}
-> ...
->=20
-> Without the additional top up in kvm_tdp_mmu_map_private_pfn(), the retry
-> wouldn't have enough, right? The 'sp' goes back to the cache, but the
-> external_pt doesn't. Actually, hmm...
+> Because I want to reduce the number of cases where we have to fall back
+> to non-masterclock mode. Especially the ones which are driven by
+> *guests* rather than weird choices on the VMM's part.
 
-Huh.  Right you are.  I completely forgot that flow existed.  Seems stupidl=
-y
-obvious in hindsight that something like that would have to exist.
+But why though?  What is the harm to the host or guest?  E.g. does it make =
+it more
+difficult to accurately migrate the VM?  I'm not opposed to allowing master=
+-clock
+mode with diverging offsets, just trying to understand why it matters.
 
-> But that is why I thought: No functional issue with or without DPAMT. And=
- the
-> brittleness is existing.
-
-Ya, agreed.
