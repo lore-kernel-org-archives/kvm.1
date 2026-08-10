@@ -1,146 +1,124 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B66F3BADA9
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 10:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27333BBFBB;
+	Mon, 10 Aug 2026 10:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786359281; cv=none; b=EbjGNk7rNZVQ7/taeQ363G9EpcQOgbdN+QwstD0oMB3P9vVcG+ABMfg45CQvrtwfyYmA0jqE+wo2KF1IwqjX5tMynM2iKRVK7rmE+itPw+jqOgenftw6EvwJ8IZmQUYgktcf/VkKkV2I1d5V0yheEyP5fuPjz3YP1Yv1q1fNWVs=
+	t=1786359281; cv=none; b=uZkZxo39yknAKhmDRSZXTnV0Ab9xxfo99XxIowZjWfRqyvJjkrJUDQWVK3QSs0miVX78+WQHzgL6XZ1gDac0zMQCDvxOsDQlH85B++NlP/i83GZszkogblyrgr4SdQTMksBq+TW8/aEHH824Sgj7vP4dhw3NlSjgTNe6hx0RBDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786359281; c=relaxed/simple;
-	bh=icd0TDSyJFsnC/Zd5d0UYWjNtjuKzkMo/ufKb+B+XTo=;
+	bh=HmQEiUWqdb8tE5res2+4v2KxHygT2iwiNHb+G+irwlg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=j/EWcDyotMkMfzHmk/0YnfWpa/CIh/sIW7sH49GTWqRnYFz2//mZPX1z/PbLrrpcOCmcUD6mmL0e+H1M17Os/6CMihd5CKtm6o4eILm7/c6h+0+rmDmvqYAC+s2sL7PqhRxLLPaiV9+YGs+xVc7YGrxmnHH6sFCRZlCBbe2ohRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lRT9WsgP; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=kVAbdIWGJCJlVVqsXUxG5V4HFV97Jvd9MYZ+Fwc224A0KzWE6sCVbfq9vHrRuh6PJxvN7GYWt2g6BixhrMKMV+TUNrqkB1Kv1vZmvUBajsjzNs4etYy2Wbkg0Ptgau9cj00rZECpCxmktWrrAku5TUsT48uAUwGaMUVQaLXOgt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P5z6uQpJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lRT9WsgP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8B01F000E9;
-	Mon, 10 Aug 2026 10:54:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P5z6uQpJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17CBA1F00A3A;
+	Mon, 10 Aug 2026 10:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786359279;
-	bh=HhFtsmRs/oG/kfHXYgfusPtOZthVH9A8MzQu6CkFnnE=;
+	s=k20260515; t=1786359280;
+	bh=ODMuINJTvxLQA0IqXuNhR10q/l9KsOTVInZ5yChRRP8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lRT9WsgPynODU+OVoB2S3Hfaa9XR7pAU6wOFpwT5n22qNMVx769OkSCS3lUekR7ui
-	 y8pg/P5L4vZtYLy0uhbxk70ZIdjnN3Ds+cvJxN/dmFbOsbaXm3ZxNo49drs302YYWV
-	 mfJgQ3muB3QTq8QI8hU7BR3Y32Vqe7sNnS1Snn6M2ZyO1rmfGzL4OoMIiZbhGKiEq+
-	 wt4TmFbvPhal3wWUTaJvxhXbCRz1NEJjKgNwAY3Ea67L7F8Em3XScq9kBqG2YuB2fa
-	 MgV6FSWRGClTRJXIlgmRs3O9SmfCoHNPaAd4PdlszdfUwAW3NMhEAPLYrLJdLuxSMF
-	 OpDZPoKCeJLBw==
+	b=P5z6uQpJnVJwDH7oI6u5RHdQrxBRbibNtkrt7RaVMo/4PRoXcxhaGqV84gppqbCVv
+	 D1ENR/ZHsXCTNCyfphGqCN2yVGcjvGEkT4yoFAu+FYC350U6dxCMfTlvOVzWA2Ur4c
+	 fba7rGX7fBdyHE6xgVZr3dsuWbjLmWfaLhvL/sg9nIt7HWTEh49WJKIZLYx9KPCbAj
+	 qM2rfwOzD9jvx/x8jnamN+mXMQX4MCyJBVsCdshSmpbmyY4k3ldBQqL04Xidi5DK73
+	 xN8Z4spBHQFAC/KW2k4FkpJIt9pfdKZYSL6DhOLX3PkLiM8mPUhwQK+F6/lWTMBNvb
+	 nsOl5/GL1N/6A==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 7/8] KVM: nSVM: Add support for hardware-switched PMU
+Subject: Re: [PATCH 3/5] irqchip/gic-v5: Synchronize CPU interface disable
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sandipan Das" <sandipan.das@amd.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <ee1f0eb2aae5f5984b5db33d89937a06a305d0dc.1786345201.git.sandipan.das@amd.com>
-References: <cover.1786345201.git.sandipan.das@amd.com>
- <ee1f0eb2aae5f5984b5db33d89937a06a305d0dc.1786345201.git.sandipan.das@amd.com>
+To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
+Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+In-Reply-To: <20260810102652.758719-4-sascha.bischoff@arm.com>
+References: <20260810102652.758719-1-sascha.bischoff@arm.com>
+ <20260810102652.758719-4-sascha.bischoff@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 10 Aug 2026 10:54:38 +0000
-Message-Id: <20260810105439.6D8B01F000E9@smtp.kernel.org>
+Date: Mon, 10 Aug 2026 10:54:39 +0000
+Message-Id: <20260810105440.17CBA1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Critical] L1 hypervisor can bypass KVM's PMU event filter for L2 guests.
-- [High] KVM's software PMU state is not context-switched between L1 and L2=
-, allowing L2 MSR writes to permanently corrupt L1's PMU state and leak sta=
-te.
-- [Medium] KVM silently breaks PMU functionality for L1 and L2 if L1 enable=
-s `V_PMC` but L0 does not use hardware-switched mediated PMU.
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but it leaves critic=
+al architectural violations unaddressed due to a misunderstanding of ARM64 =
+requirements (as noted in the commit message). Missing mandatory `isb()` in=
+structions immediately after writing to control-plane system registers (`IC=
+C_*_EL1`). The ARM64 architecture subsystem guidelines mandate that every w=
+rite to a control-plane system register MUST be followed by an `isb()` as t=
+he very next instruction. The `isb()` synchronizes the local CPU pipeline; =
+it does not wait for external interrupt delivery. The patch author explicit=
+ly omitted an `isb()` after writing to `SYS_ICC_CR0_EL1` in `gicv5_cpu_enab=
+le_interrupts()`, claiming 'interrupt delivery is asynchronous'. Furthermor=
+e, there are preexisting violations across multiple functions (`gicv5_cpu_e=
+nable_interrupts()`, `gicv5_ppi_priority_init()`, and `write_ppi_sysreg_s()=
+`) where writes to `ICC_*_EL1` registers are batched with intervening instr=
+uctions before an eventual `isb()`, or lack one entirely.
 --
 
---- Patch [7]: [PATCH 7/8] KVM: nSVM: Add support for hardware-switched PMU=
- ---
-commit 93d914b77cd285073e93f03a803ccbca4c41f03f
-Author: Sandipan Das <sandipan.das@amd.com>
+--- Patch [3]: [PATCH 3/5] irqchip/gic-v5: Synchronize CPU interface disabl=
+e ---
+commit 55c441d845df8718ca0aac7ff0ab6a4a351c19dc
+Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
+irqchip/gic-v5: Synchronize CPU interface disable
 
-KVM: nSVM: Add support for hardware-switched PMU
+This commit adds a missing ISB instruction after the ICC_CR0_EL1 write in
+gicv5_cpu_disable_interrupts() to ensure interrupts are disabled before
+the function returns.
 
-This commit adds nested support for PMC virtualization. It advertises
-X86_FEATURE_PERFCTR_VIRT to allow an L1 hypervisor to use it for L2 guests,
-switching PMU state using vmcb02's save area.
+Link: https://sashiko.dev/#/patchset/20260724104819.1296803-1-sascha.bischo=
+ff@arm.com?part=3D6
 
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index 3e6c671a8dc26..666f8ca38a928 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-[ ... ]
-> @@ -741,6 +742,17 @@ static bool nested_vmcb12_has_lbrv(struct kvm_vcpu *=
-vcpu)
->  		(to_svm(vcpu)->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR);
->  }
-> =20
-> +static bool nested_vmcb12_has_vpmc(struct kvm_vcpu *vcpu)
-> +{
-> +	/*
-> +	 * Since nested AVIC is not supported, L2 PMIs can only be delivered
-> +	 * via VNMI, so make it a hard requirement.
-> +	 */
-> +	return guest_cpu_cap_has(vcpu, X86_FEATURE_PERFCTR_VIRT) &&
-> +		nested_vnmi_enabled(to_svm(vcpu)) &&
-> +		(to_svm(vcpu)->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_PMC);
-> +}
-
-[Severity: Medium]
-Will this break PMU functionality if L0 does not use hardware-switched
-mediated PMU?
-
-If nested_vmcb12_has_vpmc() returns true because the guest CPUID supports
-PERFCTR_VIRT and V_PMC is set in vmcb12, KVM skips the software PMU context
-switch in enter_svm_guest_mode() and nested_svm_vmexit().
-
-However, if KVM uses the legacy software PMU
-(KVM_MEDIATED_PMU_CAP_HW_SWITCHED is not set), SVM_MISC2_ENABLE_V_PMC is
-never set in vmcb02->control.misc_ctl2. Does this result in neither hardware
-nor software PMU context switching occurring for both L1 and L2?
-
-[ ... ]
-> @@ -1065,6 +1085,9 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64=
- vmcb12_gpa, bool from_vmrun)
->  	nested_vmcb02_prepare_control(svm);
->  	nested_vmcb02_prepare_save(svm);
-> =20
-> +	if (!nested_vmcb12_has_vpmc(vcpu))
-> +		svm_pmu_handle_nested_transition(svm);
-> +
-
-[Severity: Critical]
-By skipping svm_pmu_handle_nested_transition() here, are we omitting the PMU
-event filter validation for L2?
-
-The PMU configuration is copied directly from L1's cache into vmcb02 earlier
-in nested_vmcb02_prepare_save(). Without calling the transition handler,
-kvm_mediated_pmu_refresh_event_filter() is bypassed. Could this allow L1 to
-count restricted host events by placing forbidden selectors into vmcb12,
-since hardware will load these unvalidated perf_ctl values on VMRUN?
-
-[ ... ]
-> @@ -1329,7 +1358,9 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
-> =20
->  	/* Exit Guest-Mode */
->  	leave_guest_mode(vcpu);
-> -	svm_pmu_handle_nested_transition(svm);
-> +
-> +	if (!nested_vmcb12_has_vpmc(vcpu))
-> +		svm_pmu_handle_nested_transition(svm);
-> =20
->  	svm->nested.vmcb12_gpa =3D 0;
+> Add an ISB after the ICC_CR0_EL1 write to ensure interrupts are
+> disabled before the function returns. No corresponding ISB is added
+> when enabling the interface, as interrupt delivery is asynchronous and
+> there is no obvious benefit to waiting for it.
 
 [Severity: High]
-Since svm_pmu_handle_nested_transition() is skipped here, does KVM fail to
-restore L1's software PMU state on nested exit?
+This isn't a bug introduced by this patch, but does omitting the ISB
+leave the CPU pipeline in an undefined state?
 
-Because EVNTSEL MSRs are deliberately excluded from MSR merging, L2 writes
-to EVNTSEL MSRs will cause an L0 intercept. This intercept updates KVM's
-shared software PMU state. If we do not context switch this software state
-back to L1's values upon exiting L2, could L2 MSR writes permanently corrupt
-L1's PMU tracking state and leak information?
+The ARM64 architecture requires an isb() immediately after writing to
+control-plane system registers like ICC_*_EL1 to synchronize the local CPU
+pipeline, not just to wait for external interrupt delivery.
+
+> diff --git a/drivers/irqchip/irq-gic-v5.c b/drivers/irqchip/irq-gic-v5.c
+> index e9d1795235a66..6a99c541b559b 100644
+> --- a/drivers/irqchip/irq-gic-v5.c
+> +++ b/drivers/irqchip/irq-gic-v5.c
+> @@ -983,6 +983,7 @@ static void gicv5_cpu_disable_interrupts(void)
+> =20
+>  	cr0 =3D FIELD_PREP(ICC_CR0_EL1_EN, 0);
+>  	write_sysreg_s(cr0, SYS_ICC_CR0_EL1);
+> +	isb();
+>  }
+> =20
+>  static void gicv5_cpu_enable_interrupts(void)
+
+[Severity: High]
+This is a pre-existing issue, but should gicv5_cpu_enable_interrupts()
+and other related functions also be updated to include the mandatory isb()
+instructions?
+
+For example, in gicv5_cpu_enable_interrupts(), writes to registers like
+SYS_ICC_PPI_ENABLER0_EL1 and SYS_ICC_CR0_EL1 lack an immediate isb()
+after each write.
+
+Similarly, are the batched writes in gicv5_ppi_priority_init() and the
+state updates in write_ppi_sysreg_s() missing their required isb()
+synchronizations before returning?=20
+
+Placing a return instruction or intervening instructions before an isb()
+can cause the CPU to observe undefined pipeline state.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1786345201.gi=
-t.sandipan.das@amd.com?part=3D7
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260810102652.7587=
+19-1-sascha.bischoff@arm.com?part=3D3
