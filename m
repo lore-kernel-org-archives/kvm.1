@@ -1,57 +1,58 @@
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DEF3DD51C
-	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 13:20:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F3A3DB96B
+	for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 13:21:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786368039; cv=none; b=G709kT0RT15FWtE+iXGpkfaMd5caAJ+ZqN1lk02ZUl5OeV7YiiasV0LLpDpHMUbV1seZbPPlbhPavEDtQSK5ZfjfQmb0baWNxctemWJZkQm6McDC54JrWp9BeTmryz7XAGFWNk9hHIs/1E2vwaPBa1RcPsZh3P4cRxjiAwOmPC4=
+	t=1786368086; cv=none; b=isw2San44jtFLoobxFVZgkq/DRaR31NuK6EeLVoiQ7yBXsU8jbmA/SmQhtO2/3tnxgCQ7HmctitAWk7VoZUPxOzLGkAXSlfWvzYXfHHiyrBJBJkjqWooJ8s2vT5BWMvJev9PvVpKtxS4xT5z2cTU+ols3wqQx5b7f5c+hfTXNZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786368039; c=relaxed/simple;
-	bh=C02jowBpg6icZy7M67rcd8sfmgZFev9qbAUxwJbAP88=;
+	s=arc-20240116; t=1786368086; c=relaxed/simple;
+	bh=Jritruhw88V157bsaVjUyVKBcWQHYkBHQchXkcJBv5s=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=APIf1r20fd3ZWtriiZYm467Irb7JGv3CFKrRfNoISmL31onnMUhkMt4O+kBAdo5eWx/IhL486qZfSb75VUtzxlpS/UBS8vnrQPC8CfPA8ZPo76iCyJoyI9Cj/IXbBZxoGkhe7zXxs+CombQ8ntM8hhwwqdXShVM5HWtAgagqO/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HfOKlsYm; arc=none smtp.client-ip=209.85.218.70
+	 To:Cc:Content-Type; b=YX7AWlc7L5e6UG/hFiwm3oIrLADPlvWQuD2h2Z/Qk40T1LMIGdcFH5XvAYgMWTr6f1LtNskpgyzXOmdkuBJzIm8FB56Tm2Tcj7Bvy9nOv440dNn7o4h0ccMMmAr8e26frV7IWRQGlWekWuLOiT9xUmKaLLCJfaDV5PqtetKkRPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KsVFpnly; arc=none smtp.client-ip=209.85.128.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HfOKlsYm"
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c15c32294e1so167834166b.3
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 06:20:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KsVFpnly"
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-496b6f97676so18841035e9.2
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 06:21:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786368036; x=1786972836; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aoXL2lcVuXDTzwRL1s4LiTCXpMnjYT/r+wP/urETSuU=;
-        b=HfOKlsYm83vSaL/w75YVQaUCcjUT7asAf4J+kiJjAmUd+9nc5kNC+Eu/SDODK8E8Op
-         Xp1ODgTITjADjskkaPl6UOpJNouTdTaJxVKYoegHaIK4NHke1y/Qe5pEtstir1RmhhzN
-         CdX19QhdDlow4z3LaEtD/26fXHlGdMVtO4nhNejkupESYBYLdoTkF+k2rJN9jn0AeQyW
-         9PWdKCETpXQ4SJCUEN3oFPnKn1rSJJGF7Yx4FJM4i7TWmOdhb++8X+bBOUYXPiRUFD2i
-         OdA9AHNLK7ATg9yZyOFc9RpA/R58H8jNR6DYSgCp8bEMtO7MAd02Ph1epitcPP0X8JGm
-         sogw==
+        d=google.com; s=20251104; t=1786368083; x=1786972883; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=NUXsdBwMwxI/nd8pDWWxjP+P4ja3jy+HCgssAFJhmgg=;
+        b=KsVFpnly6kRpcGVBKOuXSahCz+9YlTaqQAPZ1s3hCO46zs2gz0wHCHTI82CfDjYCwk
+         9xebSdtbw4Y3DMJWj6bFYWZk2FKRp3mxn6gtcC9YR0APA0Y0BXUy3B3um9YQKam9lYIW
+         wsAEgJpcStNeMWM1NXAQt3nxLqUq5IHZA9yzUmHjDRwI/G+A7ThTM/UXsyg14o82jV+c
+         tb1WTCBqLccwI8Xh+oKebSvw4XKdZDWBaJ+NZ0RlEBxckEhWv5c0BYfHt9uYXvX27RRK
+         ouiPs2xaChHJwUY6ON9RlGHaHtAInp1mbH+qjHfFX+l7pmPiIFDPABj1CF+lanQ2ioQs
+         EU8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786368036; x=1786972836;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aoXL2lcVuXDTzwRL1s4LiTCXpMnjYT/r+wP/urETSuU=;
-        b=Evi/u9HWIW2F9kJZBBmCVkoJn9K98ar5M1Q5/vpiBulU0xgU4U2QwOr9F3POsYEzI5
-         Kt4NPX2l3wPxApCFlRJlYrGMrHzZEDlQe2l3pMX3PkjV2U7QIYlBWg9e/KccDbZ5BZrF
-         MIaGKXtvDMvhU4bANh6t2RtHhqIBfRZEOx05i1+/mMsOnaOi3xFqbXbzdmsYoQaVkpT3
-         cQlCOYAYr0jstTbctwTvHDb+jR+MziEfF37gqK35OzJxWBChf+oOUDbaCDiRils/1Hae
-         Yi6N9ZX27ZJ2+qq7my5I9LywXveL7KqNsyArEm/YtGZNBSDSQRelYRDplf9OBgNsjAJv
-         oCmw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp12wNVafkQK5v4IPozJRLaUKHAqm2wA7eLIVU2gaTWG16UBz0QMEPzanTYc5wvn99hrMU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHnVbeXu1qAdWezRF7kwoNRbhLrHUQ4HVQ8G3djhXHZiOD3i13
-	JdnLNgfbuj7SpGkX2WqDUrxf+nKQcAC6U6/QJRdXbuB4YnedCte6qCfdE0BiXU/vN0dBwKtOLA5
-	USCQVeMZH0NrGCmiK4A==
-X-Received: from ejczw12-n2.prod.google.com ([2002:a17:907:e00c:20b0:c19:71f5:ee20])
+        d=1e100.net; s=20251104; t=1786368083; x=1786972883;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NUXsdBwMwxI/nd8pDWWxjP+P4ja3jy+HCgssAFJhmgg=;
+        b=gjId+1CSNRtX1tAa79Xqc8kpVgQHZEAw44sVeRh7U359VUEgryq8U/LTV9EyXdg1gH
+         MlszM6PxwJ4usYjAkUp9064tQuthuVIvoN64ZGhH0wp8HhqxEpBfmZKNeKCVSoJ5CyI0
+         QjAUEQ146s3rxHFP+z3HkRc951G49IYBfWIwSojoG8K7kr4PWj9BU2RF++aG5XsFMlLj
+         kZG5OmgwA+nWFZl/5FrLCWt5WJ0huqmpPAOH1dVtG7DZ0rtqcpF3Lvpf4ikTRlLAoqrt
+         qbKk/5lDjmMqZBBSCq69UcWzv9IlXOxDyz9BYwaaNUF/zKcNYLtvSC6e5VHhXqIjsza3
+         aCLA==
+X-Forwarded-Encrypted: i=1; AHgh+RoYWPb7trF2OIGKHQS16cbGw59scOPdQGpo0fCYPPsdzn0mLxhJh+bspm0I/jUIoMz0hi0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlkbktGftyAYrCcvQgR+OD4m/zfgYWa/EfNgn3xmaphFhpTROE
+	FMLc1zfIGYz/Y/wRDc5DaWFZ7uggCLPBY397UYeCeVkUtvmsyVce13l4bkn310I6sfa0N8HxzGW
+	HL+QgUuH5qdM8ky1S5Q==
+X-Received: from wrwl10.prod.google.com ([2002:a5d:674a:0:b0:47d:fb5d:6130])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:ea8b:b0:c16:126b:98b4 with SMTP id a640c23a62f3a-c2039c03283mr2125010166b.3.1786368035983;
- Mon, 10 Aug 2026 06:20:35 -0700 (PDT)
-Date: Mon, 10 Aug 2026 13:20:34 +0000
-In-Reply-To: <CAEvNRgGJ0s5Vu8xRvfPmA39p2Bmkr-U7JFFkshM9Dyk9j+t-YA@mail.gmail.com>
+ 2002:a05:600c:4715:b0:493:cefc:d113 with SMTP id 5b1f17b1804b1-4996195884bmr227828785e9.5.1786368083378;
+ Mon, 10 Aug 2026 06:21:23 -0700 (PDT)
+Date: Mon, 10 Aug 2026 13:21:22 +0000
+In-Reply-To: <20260728122128.D0E831F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -59,91 +60,95 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260728121138.1103610-1-tarunsahu@google.com>
- <20260728121138.1103610-9-tarunsahu@google.com> <CAEvNRgGJ0s5Vu8xRvfPmA39p2Bmkr-U7JFFkshM9Dyk9j+t-YA@mail.gmail.com>
-Message-ID: <9huz1pc6863h.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 08/11] KVM: guest_memfd: Add support for preservation
- via LUO
+ <20260728121138.1103610-10-tarunsahu@google.com> <20260728122128.D0E831F000E9@smtp.kernel.org>
+Message-ID: <9huzy0ee6rhp.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v4 09/11] docs: liveupdate: Add documentation for VM and
+ guest_memfd preservation
 From: tarunsahu@google.com
-To: Ackerley Tng <ackerleytng@google.com>, fuad.tabba@linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, seanjc@google.com, dmatlack@google.com, 
-	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>
-Cc: linux-kselftest@vger.kernel.org, andre.przywara@arm.com, 
-	michael.roth@amd.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	will@kernel.org, vannapurve@google.com, maz@kernel.org, fvdl@google.com, 
-	kvm@vger.kernel.org, oliver.upton@linux.dev, kvmarm@lists.linux.dev, 
-	alexandru.elisei@arm.com, skhawaja@google.com, aneesh.kumar@kernel.org, 
-	linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, 
-	kexec@lists.infradead.org, suzuki.poulose@arm.com
-Content-Type: text/plain; charset="UTF-8"
+To: sashiko-reviews@lists.linux.dev
+Cc: kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Ackerley Tng <ackerleytng@google.com> writes:
+sashiko-bot@kernel.org writes:
 
-> Tarun Sahu <tarunsahu@google.com> writes:
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+> - [Low] Mismatched kernel-doc section titles cause Sphinx build warnings =
+and missing documentation.
+> --
 >
->>
->> [...snip...]
->>
->> +static bool kvm_gmem_luo_can_preserve(struct liveupdate_file_handler *handler, struct file *file)
->> +{
->> +	struct inode *inode = file_inode(file);
->> +	struct gmem_file *gmem_file;
->> +	struct kvm *kvm;
->> +
->> +	if (inode->i_sb->s_magic != GUEST_MEMFD_MAGIC)
->> +		return false;
->> +
->> +	gmem_file = file->private_data;
->> +	if (!gmem_file)
->> +		return false;
->> +
->> +	/*
->> +	 * Only Fully-shared guest_memfd preservation is supported
->> +	 */
->> +	if (!(GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED))
->> +		return false;
->> +
+> --- Patch [9]: [PATCH v4 09/11] docs: liveupdate: Add documentation for V=
+M and guest_memfd preservation ---
+> commit a930d2f58a9edc06bdcfd10fb383e97d7fe3996c
+> Author: Tarun Sahu <tarunsahu@google.com>
 >
-> The above check can probably be removed. I think the core thing about
-> this series is "we can preserve any memory that doesn't have any
-> encryption state that goes along with it", and so the check for
-> kvm_arch_has_private_mem() below would be sufficient to gate that.
+> docs: liveupdate: Add documentation for VM and guest_memfd preservation
+>    =20
+> Add Documentation/liveupdate/vmm.rst detailing VMM requirements, scope,
+> ordering constraints, and kernel-doc inclusions for KVM VM and
+> guest_memfd preservation via Live Update Orchestrator (LUO).
+>
+>> diff --git a/Documentation/liveupdate/vmm.rst b/Documentation/liveupdate=
+/vmm.rst
+>> new file mode 100644
+>> index 0000000000000..b8e8fb2b63c21
+>> --- /dev/null
+>> +++ b/Documentation/liveupdate/vmm.rst
+>> @@ -0,0 +1,107 @@
+>> +.. SPDX-License-Identifier: GPL-2.0-or-later
+>> +
+>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
+>> +VM & Guest_Memfd Preservation
+>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
+>> +
+>> +.. kernel-doc:: virt/kvm/kvm_luo.c
+>> +   :doc: KVM VM Preservation via LUO
+>> +
+>> +.. kernel-doc:: virt/kvm/guest_memfd_luo.c
+>> +   :doc: Guest_Memfd Preservation via LUO
+>
+> [Severity: Low]
+> Does this section title exactly match the DOC: title in
+> virt/kvm/guest_memfd_luo.c?
+>
+> If the source file uses "Guestmemfd Preservation via LUO" without the
+> underscore, this directive will fail to find the documentation and genera=
+te a
+> Sphinx build warning.
 
 
-Sounds Good. Will remove it in next version. I will rephrase the
-Line: "Support only fully shared guest_memfd" => "Support only
-guest_memfd that does not support private pages and also can not be
-converted to private"
-
+I will correct it. Good find!
 >
->> +	/*
->> +	 * It makes sure that no memory can be converted to private
->> +	 * even if it was initially fully shared (in-place conversions are
->> +	 * prevented).
->> +	 */
->> +	kvm = gmem_file->kvm;
->> +	if (kvm_arch_has_private_mem(kvm))
->> +		return false;
+> [ ... ]
+>
+>> +VM & Guest_Memfd Preservation ABI
+>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 >> +
+>> +.. kernel-doc:: include/linux/kho/abi/kvm.h
+>> +   :doc: DOC: guest_memfd Live Update ABI
 >
-> For now, has_private_mem == has some encryption state that we can't
-> preserve yet.
+> [Severity: Low]
+> Does this section title match the actual title in include/linux/kho/abi/k=
+vm.h?
 >
-> This also gates off KVM_X86_SW_PROTECTED_VM, but I guess that is
-> intended, since when work is done for preserving encryption state, we
-> can then test using KVM_X86_SW_PROTECTED_VM, and only then, remove this
-> check?
-
-Yes, It will be enabled when private memory preservation will be supported.
-
+> If the source file uses "KVM and guest_memfd Live Update ABI", this misma=
+tch
+> will cause empty sections in the generated documentation.
 >
->> +	if (mapping_large_folio_support(inode->i_mapping))
->> +		return false;
+> Also, should the literal "DOC: " prefix be omitted here? The directive
+> typically only expects the text that follows the prefix.
+>
 >> +
->> +	return true;
->> +}
+>> +.. kernel-doc:: include/linux/kho/abi/kvm.h
+>> +   :internal:
 >> +
->>
->> [...snip...]
->>
+>> +See Also
+>
+> --=20
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728121138.11=
+03610-1-tarunsahu@google.com?part=3D9
