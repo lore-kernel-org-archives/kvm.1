@@ -1,134 +1,120 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7253932D4;
-	Tue, 11 Aug 2026 18:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786474447; cv=none; b=cFWjSMNPJ0/yOLLf3MAyAPvbm1KgPqKBpi6zkzWXsVtRd1j96IQ1OBUxoIcpbCyLLpQyMd4de60VUzx6MXW94lQnE95fofVaIQMKCAkFJWdKJdWyYzs9p6oea2zZsr9bvi8vSeBdLDsjj+GTXSVzgrcapwAZ2bS57+XmWFTuJ2I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786474447; c=relaxed/simple;
-	bh=C2cyeyvzWbUOvml+C+zC7hEl4d3+vExD8RvTnskxUQA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AnFgE+bfFM9MXevbbGKrwCwEJkigx/Z8/Vh8vUMlfiXQoJYNfKP3o5GOKj1LyyzLhvxriNBvlwIrkCeB7vUDmLLmcmHEAsE5Jr15j15+kz/cfY+WeWrufPKweQ1G0Nrs+Fi8Rc6JW33ewq7zJBPwuJmuOenHrEN7YoEhqMmS/zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Im4Byakn; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100D33D6CCE
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 18:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786474521; cv=pass; b=oXVlFw9ECZKzmiFhiHf4XzMwqsyPUl/MW8L+jtJPL15Fl4SFO+7dh83d61W96guysFBLnszb/Iiw6Tu0pzq5KO99Qc289A9sOkn8T6vP+0R3NvMIupOJkQChqQk0plaphExTaE4+ULcPs9W8WFTvqcZUqgBn0+odjmHHMBwrx8A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786474521; c=relaxed/simple;
+	bh=PK5DpGIYIZ4Q5mypA8J7nQL3JpavjxnvYneVp4Wv71c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nawyaCgHYJBQry4V/MANYZ3PGbyBIYWRVG1woJfSYMgM9vZZMoXp9uHI3dID/+NBQS4OiQgLSoLlw2ebJukXoV4407hH8KHzMC5/HgLJ7P9x+rXW+zSQGeWxenF/eC9UBdg9s5CdCtubJk/YDVbRdOtqDP+UThDyUvNVQIGlHYw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MvA8cOKC; arc=pass smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Im4Byakn"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67BGVVeh889293;
-	Tue, 11 Aug 2026 18:54:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=C2cyey
-	vzWbUOvml+C+zC7hEl4d3+vExD8RvTnskxUQA=; b=Im4ByaknTIJR2RBjBfyaxE
-	MzE9DjfiMC+YGOk46880ZEexIHvUbU+Ajt4ghDtedeZYrQoWts+7H4+sBtEdrbJR
-	pdDfTRr1emaNrImb0ZPbLLHhlZ1wrHRkx0NQjgGOYSybJ3vlii4NQUWbkKCnfrMC
-	PAmXEI6aI+OiV4LD6HB3CqNBmdBZOJ6q8DFB99fP9wXuAZ01eYJ7B69drsLiCVxG
-	9r4VvYo9fLMZQE+qISzXuwfv/l88RafGcDaDQgG5MnVfrxct5ygBq6tkmfyoivR5
-	gLb0Mb4hzfeKqMT/3siw+tKuxuHBLPmBJr66aHeiPxwBotVtMdH0Fbz9YkoKiaJQ
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvq9ej0y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Aug 2026 18:53:59 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67BIfIFi029001;
-	Tue, 11 Aug 2026 18:53:58 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxg9h2918-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Aug 2026 18:53:58 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67BIrIvZ20972078
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Aug 2026 18:53:19 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CBC8C58056;
-	Tue, 11 Aug 2026 18:53:56 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A91BD58052;
-	Tue, 11 Aug 2026 18:53:55 +0000 (GMT)
-Received: from [9.61.58.252] (unknown [9.61.58.252])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 11 Aug 2026 18:53:55 +0000 (GMT)
-Message-ID: <16b7450a-30e6-48ee-b4ba-ce2193eb11c1@linux.ibm.com>
-Date: Tue, 11 Aug 2026 14:53:55 -0400
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MvA8cOKC"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-384930ca5e2so224666a91.3
+        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 11:55:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786474519; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AQ/ppznggtB8UwRmjAB1PiPOTCSDppYs+KNTZb3q7G4FvUU0RQU/nihWe1zDEr8DVO
+         9VTV3Rm2bI7NqQSjiqlrSe9FAToU2OC6BQQ+4rgceKoCH4BVN+amzK/bhDEuTJTB7fXS
+         ExU4y8qAcb1pqceHC6CgFU6RgLoNhgiNDwOnqhue95PvocMxs+B/1gNL4P3roAqfdESP
+         1H+rJe52j8PqgudLQnDgrlDewPYvsJuMknBO4PAkjcX69DL8R12WTWgBnB4ShwT8X/fs
+         rG1A/W4xjwaJqgAQpyraCQzRyETQck9umrSOeD3jFsfBdz4u2lFOgGqmV51ZR+gfCvAd
+         RfDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=PK5DpGIYIZ4Q5mypA8J7nQL3JpavjxnvYneVp4Wv71c=;
+        fh=XA3qe4weTgpkfpfQnxFl2RTtCQY5h+A/AwIFHnZOcPg=;
+        b=J9AMIEvPQ0U14BfY/XPTT/Oi+y5uVGwIW40V+R/DM0ewjIjz0sjqQeoFiGEdc0CqOv
+         e0sF6/orx4JouteyERhNBf58oyBKZnvKgC5pP9FAuH/LvkMZIgMBkRvwq6eTFC5rh9qY
+         5yVNm8WQukGNcIY1jvd+FNERcXpowhMonffbjBdUUx+qq06ryirhOIuQpBypNLyn2Oc/
+         a2WJTMRIv4Pe9XCZouN5CJg0IS7MxiuKZSAFM879wxYyaUq04wVTTeLk+lSlhOUPb0D/
+         WHewJD3Nq8QHfdq3u3PYxy7hjPOWVsHp5aTvP0s00Nb4dplGPkJWN+z275e3sdaKeo8w
+         zFxQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786474519; x=1787079319; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PK5DpGIYIZ4Q5mypA8J7nQL3JpavjxnvYneVp4Wv71c=;
+        b=MvA8cOKCCXQQlEI5MpSTG7Uni96YcPS5b/rfl+m9QzwZ1k6yGDSnhcD5xe8meOnssX
+         Xs0Pr8pUP4mCgH1sBCVHw7bmve95hnxFLe3DncNcFRrJA2JIGbtAVbfry5z0a1Ab+mNI
+         IgK8R9sRjwIR1fvw8R9WTX/fWpLuPoVEQZpFQNK+i24csuxgw/43lNUo7K3VmfphX6c5
+         x3tVIMLV1Gxw1UdGkArwhiAMJERGpENe+zSp+zEUY2KLf7F1VBCg9VutYYWuBru7qC3+
+         qrJ9hWdcklkm0d6YOqad+x6T1VLz5HHA139/xswx5aDGzlj+eybfBSs4kV9otrqwGUeJ
+         cwRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786474519; x=1787079319;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PK5DpGIYIZ4Q5mypA8J7nQL3JpavjxnvYneVp4Wv71c=;
+        b=WKpU8VzhiK2Qr0Wb1bfM9X8+gJXJ3Oj/gr0ha9K/mm9JqBRzQg5QzrVk3gxo1PxryB
+         IlyzK8YhLuKSnSez26+ODSdxG73v8l0PIjZr9sjz688coI3RbFTwZJswQmxGphkhfEId
+         RgPRPSxKlB5C6P1o8RaOq/IWqPIjo/ON40W9qRbmKNAHOl3nApGvdDPwPHeKDFEURTZt
+         ITV2Cbq/G12z7zUXrvlNPGKMX9qZ1UMgkGiLhAVrr9rpBPDq27Cmn/VJKY2Ke3Vvk6qT
+         07gDhaijy2dhscpkeZ0k4OZ1RYuimkCpNTTaE85QCjmxrpXKrR9/hr160xt6dbG6wjGf
+         slnQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr8n+htd9usWe88eBbnuL9lEUk8gi2jVXSlFove3XrY8Uwc2VeEmCxLSH6VGwIy3dxrq48=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyZXtYC2GyHMq3zOyWmcVgjtadpSRaE678lkuqeGrD33cZ/5J0
+	vDkA+QklKsRaNd/ONQq2lUy+ezt/9U6rDFewdZgeAZXFw68yPsUzUzyQXESRQ4y6AraTrq/mMcN
+	uU+AlVzzi2iN1yR7MfWNVlTFhOnmV7cCoiMC8gt/l
+X-Gm-Gg: AR+sD13YZeiavEX0gZlzKBdazjHZQZo0OnVwgrnczYTQhMYOTA/qXN3ovtXmbWtJn7+
+	EYpQhoIbwDUS0OPr5/At0SDJrWqlH2/JdSx+4+HQ5mWEIu3JVAlp845SVmj7Upg24tzBN7dZ2Mn
+	4AGvnjt3qLDUHltOWbfgw8lSFJ5Ru4/tSsO/GQCq7A/JWLxDederRynDLFbAEHnivchntiCnVT7
+	mphcoxCRbXmzxdKdSnwbUKfru83aApybrNLLPuAhK6ar5RbqdrOpmb5wrEwfQo7VvIMUGgXE9qD
+	WJeoyNeuD/QiDA/NA1cjVpa8CrJRSHvuBWezyBdXSeFP
+X-Received: by 2002:a17:90a:ec90:b0:38e:2860:253f with SMTP id
+ 98e67ed59e1d1-392ec53e6c1mr6200831a91.12.1786474518666; Tue, 11 Aug 2026
+ 11:55:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/8] s390/vfio-ap: Fix use of wrong lock in mdev probe
- function
-To: Matthew Rosato <mjrosato@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, pasic@linux.ibm.com,
-        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
-        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
-        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
-        stable@vger.kernel.org
-References: <20260810192257.1208410-1-akrowiak@linux.ibm.com>
- <20260810192257.1208410-4-akrowiak@linux.ibm.com>
- <4ca672ce-da47-497c-aed1-9500b7e89798@linux.ibm.com>
- <00b0ea7d-bdeb-42d3-aad1-a8a827f2deb1@linux.ibm.com>
- <85212e98-c8db-4428-b5f2-70a0d9fb1207@linux.ibm.com>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <85212e98-c8db-4428-b5f2-70a0d9fb1207@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: sNMUXb6LxuFLnvnX-dGD1e60KYPvjUZB
-X-Authority-Analysis: v=2.4 cv=PbDPQChd c=1 sm=1 tr=0 ts=6a7b6fc7 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=faPK2kdyBIRx-JsfH94A:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODExMDE1NSBTYWx0ZWRfX5iK+QVawx4ct
- AY0MC9SMTozAd8oNjf/NYuFSq5dcQPZMhUkJkaEqUjYg5i3cb4LA2CXn20zp454iICsaSDyOwb3
- Ow3VoJ0E3+WB0/ekk/1X8KN0Eo4sX4KWB49V5+wDtt2oLhyjjV6u68D5xe2zx2vPQHec9m2DMlY
- 0+V/RiOEJKsveIjnrAsF9FVXzPpiwaQiBffW9WSzfUjzCMaRe1t4TU8NaYBsae8niJizXShZHZO
- YxPUVXM3TiUxQXdINMVKONgh5htg0tV7331mo4WbRpbTNQZ44xgHCWwhWzWRiMcpa7gt2eQr1Ea
- /Uaf2ADQ8ygCn3uCSHKokN3HeXAKpmcCqL708VOyxwTZoWOD2E2JZmqH9aZr+7/7QhoF5Bsi8Wl
- 1UloRw3dZgrwXsusHe/MZIjZgVWQyEBDJZWu60RPhbKxeIgxBdducq/17RqinRCZHDmN2t3sxHE
- bEtRKxeVM4Foj1/e5Jg==
-X-Proofpoint-ORIG-GUID: sNMUXb6LxuFLnvnX-dGD1e60KYPvjUZB
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODExMDE1NSBTYWx0ZWRfX6nTwnrLUm5WH
- bV9ODdoSaf9pMbHbp5y1U7m0GP/QDN1mCmPwhO5E1GazhAaP8n2lKoaYSXZjjMZBniRMZHfvKlO
- NHW8cuxotDtfST6FjamDFn32/DKSBks=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-11_04,2026-08-10_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0 adultscore=0
- clxscore=1015 priorityscore=1501 suspectscore=0 phishscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608110155
+References: <0-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com> <20260805183702.GA72896@nvidia.com>
+In-Reply-To: <20260805183702.GA72896@nvidia.com>
+From: David Matlack <dmatlack@google.com>
+Date: Tue, 11 Aug 2026 11:54:50 -0700
+X-Gm-Features: AUfX_mzn4PfVgkS4FrNbhoBz42phR-uhV7z36r-0P3XLSgGGUO-8rzrUFVLpZk0
+Message-ID: <CALzav=f5oUW+B9RvOyaRGtG=6CX_4g-2Di+obFZ4O6B-chZtAQ@mail.gmail.com>
+Subject: Re: [PATCH v3 00/11] mlx5 support for VFIO self test
+To: jgg@ziepe.ca
+Cc: Alex Williamson <alex@shazbot.org>, Justin Stitt <justinstitt@google.com>, kvm@vger.kernel.org, 
+	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, llvm@lists.linux.dev, 
+	Mark Bloch <mbloch@nvidia.com>, Bill Wendling <morbo@google.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, netdev@vger.kernel.org, 
+	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, 
+	patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-
-On 8/11/26 2:44 PM, Matthew Rosato wrote:
->>> Sashiko reports that this patch introduces a regression, which seems
->>> valid.
->>>
->>> AFAICT you resolve this regression with patch 7 of this series.
->>>
->>> For the sake of bisect, can you look at whether squashing these 2
->>> patches together would work so that we don't have an interim regression?
->> The reason for the two different patches is because the shah on the
->> Fixes: tag
->> differ.
->>
-> That's not a good enough reason to break bisect and introduce a regression.
-
-Then I guess I'll squash them and use the commit that introduced the bug in
-the probe function.
-
+On Wed, Aug 5, 2026 at 11:39=E2=80=AFAM <jgg@ziepe.ca> wrote:
 >
+> On Thu, Jul 16, 2026 at 02:03:16PM -0300, Jason Gunthorpe wrote:
+> > Add an mlx5 driver to VFIO self test. This is largely a remix of the
+> > existing VFIO mlx5 driver in rdma-core. It uses an RDMA loopback QP
+> > to issue RDMA WRITE operations which effectively perform memory
+> > copies using DMA. Since mlx5 has a stable programming ABI this
+> > should work on devices from CX5 to current HW. The device FW must
+> > support the QP loopback configuration.
 >
+> David I was going to respin this to fix the minor nits, do you have
+> any more feedback or are we good to merge it ?
 
+Sorry for the delay. This has been on my to-do list, but it keeps
+getting preempted.
+
+I will do a pass through it today and make sure there's nothing else
+needed in the respin.
