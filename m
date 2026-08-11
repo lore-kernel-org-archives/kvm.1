@@ -1,38 +1,38 @@
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A8941F349;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69FB429CFA;
 	Tue, 11 Aug 2026 09:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786441762; cv=none; b=tBzNs6Yd/fS+D8ITn4p+GqvzAhg9UzGC8dROivt0+3sAtd0ZAxGBN+f0kROncBqc1/o+99yXwP8/EBjIYSR0RWYKyao+9ZfWqYm/yvxtonJI9Dej//sHn7aBTAsWadx/AebDULo/RqqFADfMxQ/sV1OmV/QA+Kyb2dCm6tYiMmM=
+	t=1786441763; cv=none; b=MrNXdavmVcA1AJy9Q/hTrFbDgPjHNuTz585cqtWgVBGxu/QFO4YwZC6fOGRfCQlCIbu4vYspKXQU6Hk+TiaL1qQzRqAYCiVk9Mc3fJ2bmwxPkE2L7wm4wAqJxjuUI98+87W1YW6wnGaq3VwlWG9lNpyox2qv3kF+MLujj1JJNNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786441762; c=relaxed/simple;
-	bh=uq1DNqYomQFdT1BWaGwFYLT/qILzlomnOSXCpumGnAU=;
+	s=arc-20240116; t=1786441763; c=relaxed/simple;
+	bh=Vfnh/9fMaArhObs5D3xJh7Si1Lq3Co0mQ7suO5s1OI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h3XK0Me/WyE984JI2zOCWC4hJXzcJk4Yz9UOG3oQF3yrQQW9QLL4lX77AXDqScEbmY15zglEBQWkWq4i+mnjFV4965/cY0sGrEqKS70sRVcaYxzwUQ+H3XBNffqa4l584WA7pQ0kcwxqEJprIw9E371OAApLzEIwg7PVZnCa6y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ovoen+Dl; arc=none smtp.client-ip=90.155.92.199
+	 MIME-Version; b=JlrR0sopPXD6htBt+cxoaK2fPOSWW0Z3hMSm/AYdNqaZFHHygQXhM/cbtii/0KKQx0MWV354Oq5u2Wh6H7dD4qOA5JA/z+/9I3M/7KLdnmFG87AAiSkdbrHk5ODrwBWUY+N8rT1UefV0UQGdZ5D/qF1EypYdDqUT7CabBnM4Pbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=mK5bzx1M; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ovoen+Dl"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="mK5bzx1M"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=HkHpKY1j5MQrV8meOqWYb07EFaYUTTeiKv1xcOb7w90=; b=ovoen+Dliggi4EszTLf97NjiRT
-	RjwuvdCPffjUZAD4oakIwVnd8zvxtsU28HwizWXNDbjorVKX5T7WB/0hSwsNXV+hmXuzA4UCUY6jc
-	kSxdaHiCljAQWqCaYAxwAeku1aDwoIGesmtkgbM9Fe9maQVXYJZfjdkuN6CsxWTs4gCw8nsG1NmwC
-	+R68JS2c1glKbHJ4QT2YK173RUWbUdJ5ufTjKVDGHwXWJM8IsvPeZYwAbLba0wpRgDEvBpi+jJmmP
-	iM42yYweDIfvEk132Dcec5qQIdFjP6JUWWFF+xvcaMTwiSUw7Ix8GYvHUNeI959otuSaCppCZzP3H
-	Sg1khRGQ==;
+	bh=+lDKzQVjcsB78v51FfJbUti+HDh80svUEsboABm2Q3E=; b=mK5bzx1Mb0wC7hQAIqjpQccrlh
+	ky+yPH6Hnmg0IMImOcHXWIsF0Enh/8JawNgHeZbjsX3MVqG4LqyeUaghxXT6H6H54T7KFvihIyZak
+	szoX2x9q3UtBDZQQQjmu0d0jGkK/C1iNKO0yQ/JogncwjxVTXVnzjXsmPBookr0riQeJ8hWSo4Ahs
+	5B6HMMxB46lQojQT8OIcumrzKbIn61aGJgf3jBGNVc2bMPpXjZXRqvzQBUTnjANeVSXkPJVJUsPWz
+	h/nNuisadBQNnmdQz6HkD0qXKOICH2dDEs/9PGl/j6q/SnyQUXTiXnLFcpdgM8dPZxbjkIDJ1j0LV
+	sbIZ2ydQ==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wtj62-0000000EU1S-46H3;
+	id 1wtj62-0000000EU1U-472u;
 	Tue, 11 Aug 2026 09:48:35 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
-	id 1wtj5z-00000000PjV-3qNk;
-	Tue, 11 Aug 2026 10:48:31 +0100
+	id 1wtj60-00000000Pje-08XE;
+	Tue, 11 Aug 2026 10:48:32 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: seanjc@google.com,
 	pbonzini@redhat.com
@@ -53,9 +53,9 @@ Cc: dwmw@amazon.co.uk,
 	lkp@intel.com,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 08/11] KVM: x86/xen: Use 32-bit atomics if vCPU's evtchn_pending_sel isn't aligned
-Date: Tue, 11 Aug 2026 10:37:10 +0100
-Message-ID: <20260811094829.98794-9-dwmw2@infradead.org>
+Subject: [PATCH v2 11/11] KVM: pfncache: use a dedicated invalidation sequence for cache refresh
+Date: Tue, 11 Aug 2026 10:37:13 +0100
+Message-ID: <20260811094829.98794-12-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260811094829.98794-1-dwmw2@infradead.org>
 References: <20260811094829.98794-1-dwmw2@infradead.org>
@@ -69,74 +69,170 @@ Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-From: Sean Christopherson <seanjc@google.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-When propagating pending Xen events from KVM's "cache" to the guest-visible
-structure, use two 32-bit atomic operations to do the bitwise-OR into the
-guest-controlled structure if the structure isn't 64-bit aligned, i.e. if
-the guest registered its vcpu_info in 32-bit mode and then switched to
-64-bit mode, in which case using a 64-bit atomic OR will generate a
-split-lock #AC (if enabled).
+The gfn_to_pfn_cache refresh path guards against mmu notifier
+invalidations which complete while it has dropped gpc->lock for the
+HVA->PFN lookup: hva_to_pfn_retry() samples kvm->mmu_invalidate_seq
+and retries if it changed, or if mn_active_invalidate_count is still
+elevated.
 
-Opportunistically isolate the clearing of the bits from KVM's cache, as
-that structure is KVM-controlled, i.e. is guaranteed to be 64-bit aligned.
-This will allow dropping the open-coded inline asm blobs in the future.
+That is insufficient for HVA-based caches. mmu_invalidate_seq is only
+advanced by kvm_mmu_invalidate_end() when the invalidated range
+overlaps a memslot, and an HVA-based cache (e.g. the Xen shared_info
+page mapped with KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA) need not be backed
+by any memslot at all. An invalidation of the cached HVA which starts
+and ends entirely within the lookup window is thus invisible to the
+retry check: mn_active_invalidate_count is back to zero and the
+sequence never moved. The refresh then publishes a mapping of a page
+which has already been freed, and the next reader dereferences it:
 
-[dwmw2: Cast to u64 before shifting; evtchn_pending_sel is unsigned long,
-        so >> 32 is undefined on 32-bit even though the branch is
-        unreachable there]
+  BUG: KASAN: use-after-free in kvm_xen_shared_info_init+0x3c6/0x440
+  Read of size 4 at addr ffff8880599c2900 by task syz.2.383/7257
 
-Fixes: 14243b387137 ("KVM: x86/xen: Add KVM_IRQ_ROUTING_XEN_EVTCHN and event channel delivery")
-Reported-by: sashiko-bot@kernel.org
-Closes: https://lore.kernel.org/all/20260604193554.1BA311F00893@smtp.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202608071502.rYOi3Pg8-lkp@intel.com/
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Since gfn_to_pfn_cache_invalidate_start() deliberately skips caches
+which are not currently valid (including one whose refresh is in
+progress, as the refresh clears the valid flag before dropping the
+lock), the retry check is the only line of defence, and it must fire
+for *any* invalidation, not just those hitting a memslot.
+
+Add a dedicated kvm->gpc_invalidate_seq, incremented by every
+kvm_mmu_notifier_invalidate_range_end() under mn_invalidate_lock
+before mn_active_invalidate_count is decremented, and check it in
+hva_to_pfn_retry() instead of mmu_invalidate_seq. Incrementing in
+range_end() in the same critical section as the in-progress count
+also closes the variant where the cache is activated with the
+contested HVA only after invalidate_range_start() has run.
+
+The same bug is also reachable through the per-vCPU vcpu_info cache
+(KVM_XEN_VCPU_ATTR_TYPE_VCPU_INFO_HVA), where the stale mapping is
+then dereferenced by kvm_setup_guest_pvclock() on the next KVM_RUN:
+
+  BUG: KASAN: use-after-free in kvm_setup_guest_pvclock+0x5bf/0x660
+
+This intentionally makes refresh retry on *unrelated* mmu notifier
+events; restoring precision (and reworking the GPC locking more
+generally) is left for a subsequent series.
+
+Reproducers: https://david.woodhou.se/xen_shinfo_race.c
+             https://david.woodhou.se/vcpu_info_race.c
+
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Reported-by: syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6a0c5f2c.a00a0220.2c7954.0000.GAE@google.com/
+Tested-by: syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com
+Reported-by: syzbot+fb7c2dd166d3ea63df2a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6a426dd2.854d4ab9.360e1d.0008.GAE@google.com/
+Fixes: b9220d32799a ("KVM: x86/xen: allow shared_info to be mapped by fixed HVA")
+Cc: stable@vger.kernel.org
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Assisted-by: Claude:claude-mythos-5
 ---
- arch/x86/kvm/xen.c | 29 ++++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 7 deletions(-)
+ include/linux/kvm_host.h |  2 ++
+ virt/kvm/kvm_main.c      | 10 ++++++++++
+ virt/kvm/pfncache.c      | 18 +++++++++---------
+ 3 files changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index c935651906ec..419b07fdaa3a 100644
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -663,13 +663,28 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
- 	if (kvm_xen_has_64bit_shinfo(v->kvm)) {
- 		struct vcpu_info *vi = gpc->khva;
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 03bfc92864b6..3dd04605f2e5 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -855,6 +855,8 @@ struct kvm {
+ 	gfn_t mmu_invalidate_range_start;
+ 	gfn_t mmu_invalidate_range_end;
  
--		asm volatile(LOCK_PREFIX "orq %0, %1\n"
--			     "notq %0\n"
--			     LOCK_PREFIX "andq %0, %2\n"
--			     : "=r" (evtchn_pending_sel),
--			       "+m" (vi->evtchn_pending_sel),
--			       "+m" (v->arch.xen.evtchn_pending_sel)
--			     : "0" (evtchn_pending_sel));
-+		if (IS_ALIGNED((unsigned long)&vi->evtchn_pending_sel, sizeof(u64)))
-+			asm volatile(LOCK_PREFIX "orq %[src], %[dst]\n"
-+				     : [dst] "+m" (vi->evtchn_pending_sel)
-+				     : [src] "r" (evtchn_pending_sel));
-+		else
-+			/*
-+			 * The cast keeps the shift well-defined on 32-bit,
-+			 * where evtchn_pending_sel is 32 bits wide and this
-+			 * branch is unreachable anyway (this is inside
-+			 * kvm_xen_has_64bit_shinfo(), which is gated on
-+			 * IS_ENABLED(CONFIG_64BIT)).
-+			 */
-+			asm volatile(LOCK_PREFIX "orl %[src_lo], %[dst_lo]\n"
-+				     LOCK_PREFIX "orl %[src_hi], %[dst_hi]\n"
-+				     : [dst_lo] "+m" (vi->evtchn_pending_sel),
-+				       [dst_hi] "+m" (*(((u32 *)&vi->evtchn_pending_sel) + 1))
-+				     : [src_lo] "r" ((u32)evtchn_pending_sel),
-+				       [src_hi] "r" ((u32)((u64)evtchn_pending_sel >> 32)));
++	unsigned long gpc_invalidate_seq;
 +
-+		asm volatile(LOCK_PREFIX "andq %1, %0\n"
-+			     : "+m" (v->arch.xen.evtchn_pending_sel)
-+			     : "r" (~evtchn_pending_sel));
- 		WRITE_ONCE(vi->evtchn_upcall_pending, 1);
- 	} else {
- 		u32 evtchn_pending_sel32 = evtchn_pending_sel;
+ 	struct list_head devices;
+ 	u64 manual_dirty_log_protect;
+ 	struct dentry *debugfs_dentry;
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 345d56a15fa4..41c88a8ade95 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -812,6 +812,16 @@ static void kvm_mmu_notifier_invalidate_range_end(struct mmu_notifier *mn,
+ 
+ 	/* Pairs with the increment in range_start(). */
+ 	spin_lock(&kvm->mn_invalidate_lock);
++	kvm->gpc_invalidate_seq++;
++
++	/*
++	 * As with the MMU sequence counter and mmu_invalidate_in_progress, the
++	 * GPC sequence increase must be visible before the invalidate count
++	 * goes to zero.  Pairs with the smp_rmb() in
++	 * mmu_notifier_retry_cache().
++	 */
++	smp_wmb();
++
+ 	if (!WARN_ON_ONCE(!kvm->mn_active_invalidate_count))
+ 		--kvm->mn_active_invalidate_count;
+ 	wake = !kvm->mn_active_invalidate_count;
+diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
+index 728d2c1b488a..3659686b97c2 100644
+--- a/virt/kvm/pfncache.c
++++ b/virt/kvm/pfncache.c
+@@ -124,7 +124,7 @@ static void gpc_unmap(kvm_pfn_t pfn, void *khva)
+ #endif
+ }
+ 
+-static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long mmu_seq)
++static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long gpc_seq)
+ {
+ 	/*
+ 	 * mn_active_invalidate_count acts for all intents and purposes
+@@ -136,20 +136,20 @@ static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long mmu_s
+ 	 * Note, it does not matter that mn_active_invalidate_count
+ 	 * is not protected by gpc->lock.  It is guaranteed to
+ 	 * be elevated before the mmu_notifier acquires gpc->lock, and
+-	 * isn't dropped until after mmu_invalidate_seq is updated.
++	 * isn't dropped until after gpc_invalidate_seq is updated.
+ 	 */
+ 	if (kvm->mn_active_invalidate_count)
+ 		return true;
+ 
+ 	/*
+ 	 * Ensure mn_active_invalidate_count is read before
+-	 * mmu_invalidate_seq.  This pairs with the smp_wmb() in
+-	 * mmu_notifier_invalidate_range_end() to guarantee either the
++	 * gpc_invalidate_seq.  This pairs with the smp_wmb() in
++	 * kvm_mmu_notifier_invalidate_range_end() to guarantee either the
+ 	 * old (non-zero) value of mn_active_invalidate_count or the
+-	 * new (incremented) value of mmu_invalidate_seq is observed.
++	 * new (incremented) value of gpc_invalidate_seq is observed.
+ 	 */
+ 	smp_rmb();
+-	return kvm->mmu_invalidate_seq != mmu_seq;
++	return kvm->gpc_invalidate_seq != gpc_seq;
+ }
+ 
+ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+@@ -158,7 +158,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+ 	void *old_khva = (void *)PAGE_ALIGN_DOWN((uintptr_t)gpc->khva);
+ 	kvm_pfn_t new_pfn = KVM_PFN_ERR_FAULT;
+ 	void *new_khva = NULL;
+-	unsigned long mmu_seq;
++	unsigned long gpc_seq;
+ 	struct page *page;
+ 
+ 	struct kvm_follow_pfn kfp = {
+@@ -181,7 +181,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+ 	gpc->valid = false;
+ 
+ 	do {
+-		mmu_seq = gpc->kvm->mmu_invalidate_seq;
++		gpc_seq = gpc->kvm->gpc_invalidate_seq;
+ 		smp_rmb();
+ 
+ 		write_unlock_irq(&gpc->lock);
+@@ -232,7 +232,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+ 		 * attempting to refresh.
+ 		 */
+ 		WARN_ON_ONCE(gpc->valid);
+-	} while (mmu_notifier_retry_cache(gpc->kvm, mmu_seq));
++	} while (mmu_notifier_retry_cache(gpc->kvm, gpc_seq));
+ 
+ 	gpc->valid = true;
+ 	gpc->pfn = new_pfn;
 -- 
 2.55.0
 
