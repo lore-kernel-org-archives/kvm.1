@@ -1,36 +1,36 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9634E39099C;
-	Tue, 11 Aug 2026 01:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147A53921D6;
+	Tue, 11 Aug 2026 01:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786413185; cv=none; b=mT1y5xDx2cPEJxl5kU9q8sQ6lwkYep/3BUsTt4DNpJN6pIORT/JiFB9/zlCoEvLrBXsTf9fmYAcVhagwpq6ASCXQdDXD00LxlSfMuDHFnGFDYdOu/Ee8IWq/ZINlOpb1Tp8AkLkmKtT9i5ANtB3JYGVHFa6G23O0MER03Ivq1sI=
+	t=1786413185; cv=none; b=RGOrgkF97+eGXcmmlebp8BKhbXnDMC/4MmnMJUYCQxOlDEHGM/EDtggphMbuQMgUOuYyU2NY8u+U7N0OS32cImBnOIbXDt+d5rgAUhFWw9XpG6YRGldykiYw+nGJ0AOrUjI84N8FYnLVofNp0FmAmBsy7rmMrsG2rLfx1TC5+bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786413185; c=relaxed/simple;
-	bh=PYYhG6O67cZx5HWElLWmRoe/kV+A1dDZB69Ko8VDD5s=;
+	bh=3IAelxGwB9DPSAJL7/G76sGbJjTkykEJaZ67McK3h4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oHLTttsQ5ShW7/9QrmFIPijP+PaAJbPrsRcX5yaTliEFzCF6F5emHixJO06D7gDflhs/+T0Wq5393ZBJL9N4okAB3TyxMtcpgrNKdZoQfvwYTzHylbJgHGoHBOGwqamJAZDuyS4l5ptFclzz48ZbwWCca8mVoDmmjdTZJxUv324=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Po8uoG/X; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version:Content-Type; b=G4UmAIYuPc78cItKIYNBFcdTdbWJaEx5O6vwLYIYFWgME7dd/cCTmtSo5ARKmS8+v9Fdgh5rm1F3Ad50rNl+JLHexH9O+KYhVORPRnwYvEu8AS1tR8Mz8Tab2fX7lm2x6mglkSSAy2ygNZ+YEnOY8QJZPSi1ZesqpFs8ivwAT0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=HBU9hAQE; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Po8uoG/X"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="HBU9hAQE"
 Received: from fedora (unknown [20.191.74.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id CF0B320B7167;
-	Mon, 10 Aug 2026 18:52:38 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CF0B320B7167
+	by linux.microsoft.com (Postfix) with ESMTPSA id D490220B7168;
+	Mon, 10 Aug 2026 18:52:39 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D490220B7168
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1786413158;
-	bh=gCrdw1OtMtYEvetubz01UCuisBvUuvkH+1QHdHeTasU=;
+	s=default; t=1786413159;
+	bh=iJvMXxgvjmbLh1wHtZxpYG68qJFVjlcVsr0dm5cygfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Po8uoG/XE56sy0794KZMPXdih7tk1/FXCVjB7lFGtXMEabeLta22pdFvwRXqX80W6
-	 z+LgYKjyL2Uz0noqjkSrM6n1typrBYtCN6+736IZnJm8+m/aZ4olmZz9TZn0CKFSg2
-	 6Sa08H7YVY5cuQBvnDDSaWzykHsRE6gdr6Vm0kT8=
+	b=HBU9hAQESeezbGP5swV3Z8I2FAlw9LGq824dQdTdizIIvP9XNYmRQg3FrVlWM3MMv
+	 KCz8k8aXbinQs2t4YtJsANlJOMoI58IO3nt2FzSJ1VYsUp7L3xDsqkD6N4jux3P+Wp
+	 dcaTE5Tpdljt60PUYac0FywoJljvMjQYZ/oMSJCY=
 From: Sriram Nambakam <snambakam@linux.microsoft.com>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v2 4/8] security/vbs: add KVM software planes backend
-Date: Mon, 10 Aug 2026 18:52:39 -0700
-Message-ID: <20260811015243.188486-5-snambakam@linux.microsoft.com>
+Subject: [RFC PATCH v2 5/8] security/vbs: enable the backend after driver init
+Date: Mon, 10 Aug 2026 18:52:40 -0700
+Message-ID: <20260811015243.188486-6-snambakam@linux.microsoft.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260811015243.188486-1-snambakam@linux.microsoft.com>
 References: <20260811015243.188486-1-snambakam@linux.microsoft.com>
@@ -43,239 +43,150 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add the KVM software-planes VBS backend.  It uses a synchronous
-shared-memory calling area and the KVM_HC_VBS_VTL_CALL paravirt hypercall
-(handled by the host) to reach plane-1.
+Activate a registered VBS backend from a late_initcall, once plane-0 is
+otherwise up.  Enabling is opt-in and requires two conditions:
 
-Only the plane lifecycle is implemented: init() allocates the calling
-area and issues VBS_CALL_INIT to load (connect to) the secure plane;
-shutdown() issues VBS_CALL_SHUTDOWN to unload it.  The BSP-pinned
-work_on_cpu() ensures the plane switch always lands on CPU0.
+  1. the operator passes enable-kvm-planes=1 on the kernel command line, and
+  2. the boot image advertises a provisioned secure plane via
+     /etc/Kconfig.kvm-planes containing CONFIG_VM_PLANES=y.
 
-Gated by CONFIG_VBS_KVM_PLANES.
+When both hold, call the backend's init() to load the secure plane and
+register a reboot notifier that invokes shutdown() to unload it.
 ---
- security/vbs/Kconfig      |  15 ++++
- security/vbs/Makefile     |   2 +
- security/vbs/kvm_planes.c | 177 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 194 insertions(+)
- create mode 100644 security/vbs/kvm_planes.c
+ security/vbs/core.c | 114 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 114 insertions(+)
 
-diff --git a/security/vbs/Kconfig b/security/vbs/Kconfig
-index 0e482196c5b7..e21f4f30b6cf 100644
---- a/security/vbs/Kconfig
-+++ b/security/vbs/Kconfig
-@@ -14,3 +14,18 @@ config VBS
- 	  later).  Hardware confidential-compute is out of scope.
+diff --git a/security/vbs/core.c b/security/vbs/core.c
+index 407d49a91b8f..c006b6d53a14 100644
+--- a/security/vbs/core.c
++++ b/security/vbs/core.c
+@@ -8,8 +8,15 @@
  
- 	  If unsure, say N.
-+
-+config VBS_KVM_PLANES
-+	bool "VBS backend: KVM software planes"
-+	depends on VBS && KVM_GUEST
-+	help
-+	  VBS backend that uses a KVM paravirt hypercall to communicate
-+	  between plane-0 (the normal guest kernel) and plane-1 (a secure
-+	  kernel running in a separate KVM VM plane managed by QEMU).
-+
-+	  This minimal backend supports loading (connecting to) and
-+	  unloading the secure plane via a shared-memory calling area.
-+
-+	  Select this if you are running under KVM with VM planes support.
-+
-+	  If unsure, say N.
-diff --git a/security/vbs/Makefile b/security/vbs/Makefile
-index 0fcbb6640ec1..3a161e7cc279 100644
---- a/security/vbs/Makefile
-+++ b/security/vbs/Makefile
-@@ -3,3 +3,5 @@ obj-$(CONFIG_VBS) += vbs.o
- # probe.o links before core.o so the backend is registered (vbs_probe_init)
- # early in the rootfs_initcall level.
- vbs-y := probe.o core.o
-+
-+obj-$(CONFIG_VBS_KVM_PLANES)	+= kvm_planes.o
-diff --git a/security/vbs/kvm_planes.c b/security/vbs/kvm_planes.c
-new file mode 100644
-index 000000000000..af9118c6e74f
---- /dev/null
-+++ b/security/vbs/kvm_planes.c
-@@ -0,0 +1,177 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * VBS backend — KVM software planes
-+ *
-+ * Uses a KVM paravirt hypercall to communicate between plane-0 (the normal
-+ * guest kernel) and plane-1 (a secure kernel running in a separate KVM plane
-+ * managed by QEMU).
-+ *
-+ * Transport: kvm_hypercall1(KVM_HC_VBS_VTL_CALL, gpa) -> KVM_EXIT_HYPERCALL.
-+ *
-+ * The shared-memory VTL-call protocol is synchronous:
-+ *   1. Plane-0 fills the request buffer in the shared calling area.
-+ *   2. Plane-0 issues the hypercall carrying the physical address of the area.
-+ *   3. Plane-1 processes the request and writes a response.
-+ *   4. Plane-0 reads the response from the same page.
-+ *
-+ * This minimal backend implements only the plane lifecycle: init() loads
-+ * (connects to) the secure plane, shutdown() unloads it.
-+ */
-+
-+#include "internal.h"
-+
-+#include <linux/mm.h>
-+#include <linux/gfp.h>
-+#include <linux/io.h>
+ #include <linux/vbs.h>
+ #include <linux/export.h>
++#include <linux/init.h>
++#include <linux/kernel_read_file.h>
++#include <linux/kstrtox.h>
+ #include <linux/mutex.h>
+ #include <linux/printk.h>
++#include <linux/reboot.h>
++#include <linux/sizes.h>
 +#include <linux/string.h>
-+#include <linux/workqueue.h>
-+#include <linux/kvm_para.h>
-+#include <asm/kvm_para.h>
++#include <linux/vmalloc.h>
+ 
+ static const struct vbs_ops *vbs_backend;
+ static DEFINE_MUTEX(vbs_lock);
+@@ -54,3 +61,110 @@ int vbs_vtl_call(enum vbs_call_id id,
+ 	return ops->vtl_call(id, arg, arg_size, resp, resp_size);
+ }
+ EXPORT_SYMBOL_GPL(vbs_vtl_call);
 +
-+/* ── shared-memory calling area ────────────────────────────────────────── */
-+
-+/*
-+ * Single shared page used for both request and response data.  The protocol
-+ * is synchronous, so no concurrent access is possible.
-+ *
-+ * Layout (within one 4 KiB page):
-+ *   [ call_pending | call_id | status | arg_size | resp_size | buffer ]
-+ */
-+struct vbs_kvm_ca {
-+	__u8	call_pending;	/* 1 while call is in flight            */
-+	__u8	rsvd[3];
-+	__u32	call_id;	/* enum vbs_call_id (set by caller)     */
-+	__s32	status;		/* return code (set by responder)       */
-+	__u32	arg_size;	/* request payload size                 */
-+	__u32	resp_size;	/* response payload size                */
-+	__u8	buffer[];	/* request data in, response data out   */
-+} __packed;
-+
-+#define VBS_CA_BUF_SIZE (PAGE_SIZE - sizeof(struct vbs_kvm_ca))
-+
-+static void *kvm_ca_page;	/* single calling-area page             */
-+
-+/* ── low-level VTL call ────────────────────────────────────────────────── */
-+
-+struct kvm_vtl_call_ctx {
-+	enum vbs_call_id id;
-+	const void	*arg;
-+	size_t		arg_size;
-+	void		*resp;
-+	size_t		resp_size;
-+};
++/* ── enable after driver init ────────────────────────────────── */
 +
 +/*
-+ * Issue the VTL-call hypercall.  MUST run on the BSP (CPU0): KVM switches
-+ * planes per logical CPU and the secure plane boots only on CPU0's sibling.
-+ * Driven via work_on_cpu() so the hypercall always lands on CPU0.
++ * A registered backend is only activated when two conditions hold:
++ *   1. the operator opts in on the kernel command line (enable-kvm-planes=1),
++ *      and
++ *   2. the boot image advertises a provisioned secure plane via a plane
++ *      configuration file that enables the expected option.
 + */
-+static long kvm_planes_vtl_call_on_cpu(void *data)
++#define VBS_KCONFIG_PATH	"/etc/Kconfig.kvm-planes"
++#define VBS_KCONFIG_TOKEN	"CONFIG_VM_PLANES=y"
++
++static bool vbs_enable_requested;
++
++static int __init vbs_parse_enable_kvm_planes(char *str)
 +{
-+	struct kvm_vtl_call_ctx *ctx = data;
-+	struct vbs_kvm_ca *ca = kvm_ca_page;
-+	long hc_ret;
++	bool val;
 +
-+	ca->call_id   = ctx->id;
-+	ca->arg_size  = ctx->arg_size;
-+	ca->status    = 0;
-+	ca->resp_size = 0;
-+	if (ctx->arg_size && ctx->arg)
-+		memcpy(ca->buffer, ctx->arg, ctx->arg_size);
-+	ca->call_pending = 1;
-+
-+	hc_ret = kvm_hypercall1(KVM_HC_VBS_VTL_CALL, virt_to_phys(kvm_ca_page));
-+	ca->call_pending = 0;
-+
-+	if (hc_ret) {
-+		pr_err_ratelimited("vbs-kvm: hypercall failed (%ld)\n", hc_ret);
-+		return -EIO;
-+	}
-+
-+	if (ca->status)
-+		return ca->status;
-+
-+	if (ctx->resp && ctx->resp_size && ca->resp_size) {
-+		size_t copy = min_t(size_t, ctx->resp_size, ca->resp_size);
-+
-+		memcpy(ctx->resp, ca->buffer, copy);
-+	}
++	/* Bare "enable-kvm-planes" (no value) means enabled. */
++	if (!str || !*str)
++		vbs_enable_requested = true;
++	else if (!kstrtobool(str, &val))
++		vbs_enable_requested = val;
 +	return 0;
 +}
++early_param("enable-kvm-planes", vbs_parse_enable_kvm_planes);
 +
-+static int kvm_planes_vtl_call(enum vbs_call_id id,
-+			       const void *arg, size_t arg_size,
-+			       void *resp, size_t resp_size)
++static int vbs_reboot_notify(struct notifier_block *nb, unsigned long action,
++			     void *data)
 +{
-+	struct kvm_vtl_call_ctx ctx = {
-+		.id        = id,
-+		.arg       = arg,
-+		.arg_size  = arg_size,
-+		.resp      = resp,
-+		.resp_size = resp_size,
-+	};
++	const struct vbs_ops *ops = READ_ONCE(vbs_backend);
 +
-+	if (!kvm_ca_page)
-+		return -ENOMEM;
-+
-+	if (arg_size > VBS_CA_BUF_SIZE)
-+		return -E2BIG;
-+
-+	/* Pin the plane switch to CPU0's secure sibling. */
-+	return work_on_cpu(0, kvm_planes_vtl_call_on_cpu, &ctx);
++	if (ops && ops->shutdown)
++		ops->shutdown();
++	return NOTIFY_DONE;
 +}
 +
-+/* ── lifecycle: load / unload the secure plane ─────────────────────────── */
++static struct notifier_block vbs_reboot_nb = {
++	.notifier_call = vbs_reboot_notify,
++};
 +
-+static int kvm_planes_init(void)
++/* Return true if VBS_KCONFIG_PATH exists and enables the plane config. */
++static bool __init vbs_plane_config_present(void)
 +{
++	void *buf = NULL;
++	size_t sz = 0;
++	bool ok = false;
 +	int ret;
 +
-+	kvm_ca_page = (void *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
-+	if (!kvm_ca_page)
-+		return -ENOMEM;
-+
-+	ret = kvm_planes_vtl_call(VBS_CALL_INIT, NULL, 0, NULL, 0);
-+	if (ret) {
-+		pr_err("vbs-kvm: plane-1 INIT call failed (%d)\n", ret);
-+		free_page((unsigned long)kvm_ca_page);
-+		kvm_ca_page = NULL;
-+		return ret;
-+	}
-+
-+	pr_info("vbs-kvm: connected to plane-1 secure kernel\n");
-+	return 0;
-+}
-+
-+static void kvm_planes_shutdown(void)
-+{
-+	if (!kvm_ca_page)
-+		return;
-+
-+	kvm_planes_vtl_call(VBS_CALL_SHUTDOWN, NULL, 0, NULL, 0);
-+	free_page((unsigned long)kvm_ca_page);
-+	kvm_ca_page = NULL;
-+}
-+
-+/* ── ops table & registration ──────────────────────────────────────────── */
-+
-+static const struct vbs_ops kvm_planes_ops = {
-+	.name     = "kvm-planes",
-+	.init     = kvm_planes_init,
-+	.shutdown = kvm_planes_shutdown,
-+	.vtl_call = kvm_planes_vtl_call,
-+};
-+
-+bool __init vbs_kvm_planes_detect(void)
-+{
-+	if (!kvm_para_available()) {
-+		pr_debug("vbs-kvm: KVM paravirt not available\n");
++	ret = kernel_read_file_from_path(VBS_KCONFIG_PATH, 0, &buf, SZ_1M, &sz,
++					 READING_UNKNOWN);
++	if (ret < 0) {
++		pr_info("vbs: %s unavailable (%d); backend left idle\n",
++			VBS_KCONFIG_PATH, ret);
 +		return false;
 +	}
-+	return true;
++
++	if (buf && sz)
++		ok = strnstr(buf, VBS_KCONFIG_TOKEN, sz) != NULL;
++	vfree(buf);
++
++	if (!ok)
++		pr_info("vbs: %s present but %s not set; backend left idle\n",
++			VBS_KCONFIG_PATH, VBS_KCONFIG_TOKEN);
++	return ok;
 +}
 +
-+const struct vbs_ops *vbs_kvm_planes_get_ops(void)
++/*
++ * Enable the registered backend after device drivers have initialised.
++ * Runs at late_initcall so the plane is loaded only once the plane-0 kernel
++ * is otherwise up, the operator requested it (enable-kvm-planes=1), and the
++ * boot image advertises a plane config.
++ */
++static int __init vbs_enable(void)
 +{
-+	return &kvm_planes_ops;
++	const struct vbs_ops *ops = READ_ONCE(vbs_backend);
++	int ret;
++
++	if (!ops) {
++		pr_debug("vbs: no backend registered; nothing to enable\n");
++		return 0;
++	}
++
++	if (!vbs_enable_requested) {
++		pr_info("vbs: enable-kvm-planes not set; backend \"%s\" left idle\n",
++			ops->name);
++		return 0;
++	}
++
++	if (!vbs_plane_config_present())
++		return 0;
++
++	if (ops->init) {
++		ret = ops->init();
++		if (ret) {
++			pr_warn("vbs: backend \"%s\" init failed (%d)\n",
++				ops->name, ret);
++			return 0;
++		}
++	}
++
++	register_reboot_notifier(&vbs_reboot_nb);
++	pr_info("vbs: enabled backend \"%s\"\n", ops->name);
++	return 0;
 +}
++late_initcall(vbs_enable);
 -- 
 2.55.0
 
