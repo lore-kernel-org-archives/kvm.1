@@ -1,211 +1,140 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB6113D51E
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 04:44:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D4E30C158;
+	Tue, 11 Aug 2026 04:53:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786423496; cv=none; b=gIQZY3w7zPdXBKJd84dKWh7qtevfv+0YrcUcoxhnTsOWbX7xY3nIJo7rcvAGs09+hggbPa+6uC2g/6QrG5QLCgiZdnsCiV/RiotD+Z0J1JsicojTJM+vPUKQiydgV9vD9aEsZuxfo7O9ZnJYrcq5AQj9tJU9M0t9NskQme8pMTE=
+	t=1786424029; cv=none; b=lBRQGfywTGgtdTiIuJazv1UM3StCO0Ui9ZBpUFiMEhrYAiERgIIBO39CoU+dC9eW+IxQ6UIjS2uSgFW4qPfxygpd2QanqzRosM17wC+IJDA0TN30jPOSsPAAgq4FK8Zc/xOVG/I7Bv8E3ZK3z3qt265EOfOJpr7nSHXyB8eYfsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786423496; c=relaxed/simple;
-	bh=ILGF2Xb7HBRkYzwsMFrZCzDKxAZ9azjM/zJeEIVChmE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HmifTxbPhvvuPamhb6p3K0JAGavlnDV53d6GfIO2E2bbFk8/mPSyHTy2AQpFZUrfzXox9X2lfHl/Aum4A36TBX4txmdIoxKawfCpgjouQMCCtZirpDMkrLa7uSc5ZKf3A2+1oGF0m8X2YBHiC+ZPPyRV2lNwHw3MnNMyU4CJxZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ujt2y7/T; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JO2iWePm; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786424029; c=relaxed/simple;
+	bh=MwJNYXoyFbP4fg9agJMM1tx/XmDkciolpPgOUDkLGY0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=O6OmCbG/wAELAoKHJa87pLYlZCoEvzNNrK30Hu1NyAso/UFnkX82Fug5zAZKPrJhjpKkQSqLQkqLtGqJ5/w1poDKepi2HAkNdjByh+GYCw4ILrMKq9er194zOtp8NCVyNUVtaI7KSvmTfGRZlAxzOzvPee8C6LIhFMEsnvncAjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=gy9QzwTd; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ujt2y7/T";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JO2iWePm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786423491;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A7cCCND3yrSYhonnYSon2tUK602WWKbmDbjjTmzhQ+4=;
-	b=Ujt2y7/TaEhDdgU5OW8OL9CTmRy0ZK7Sxlb/LI6JsSZWRNJ6veUwGneHP/zSQWjVXXAmzR
-	r2KGkSZwQi6uCAzlg2B09Hl5Gc1oAOsFs+NqT+fmPlqRNV5ko09WCzeJgxTn52CmEYw3/s
-	6TkUR3cfNFzgnACyXdVcWKJ5vE05RPE=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-Y0b9MCraNSuAPcPCqLQGbQ-1; Tue, 11 Aug 2026 00:44:44 -0400
-X-MC-Unique: Y0b9MCraNSuAPcPCqLQGbQ-1
-X-Mimecast-MFC-AGG-ID: Y0b9MCraNSuAPcPCqLQGbQ_1786423484
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e7621655eso4962543a91.0
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 21:44:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786423484; x=1787028284; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=A7cCCND3yrSYhonnYSon2tUK602WWKbmDbjjTmzhQ+4=;
-        b=JO2iWePmZ257DvJhj8iI/7+3Moup7ql0bYTZuBzs/LigR4taMz/9W/n4CYMRo/0Wbc
-         lC4QkhQc+VJ45uGU6+KHPq1n2UgN3W19UExjQJBF+CDd5jBNCWp2BwNaM9OxKJt1LsiS
-         bdF+f5RxKCwwt8laHpDN5XJd29+SaZgw9FEpsCWgOSOFub5rTqWxZLlJjUHTND7Q5yLK
-         A9+wthSWv+IFj721rXN1yWbLA4jdo7/jXj0n8sflOJm+qpv9HbXYKA6M0PLxqJvk12AB
-         9zUitUxizIlwiFNx7fjCMYmhHrYvXuAKQmsG+eOqEcBc+o7SOta/9RAhvfuSNZb9Rc3O
-         Af4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786423484; x=1787028284;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=A7cCCND3yrSYhonnYSon2tUK602WWKbmDbjjTmzhQ+4=;
-        b=BaOoZrgHehT7NPuiCjislqLW6NcJAQHM8PeCzQlmuNyjWVq4un25ntkYF1mvG7z7IL
-         Jo1Tfpy3D36Q7y7bIkiy05lHm5761F2unacS0px1TH6g9YNLYyp4JfsuYouMkqDyD8Px
-         1Ed3j0o7I5uDhu0jQlHWcM9qlagVqj3tcgBfEQdm3Z+sK4qgmPguzeiWVWFSxLyh356Q
-         QpgFLRM0L0SfW8H+ym2+B5hp+jCN6Ts+gR18F9gaTD1xhk7IonomC1F8VpGiMhKh6NF2
-         +UcD5r3DkTSr4DqKTa6QCPbGt7GVz3Pnv//cq2QjLztmq1y1vsh2BFGeJU1x4tXeR6zf
-         +KBg==
-X-Forwarded-Encrypted: i=1; AHgh+RrReUO13bab1n77INOu50CjSs3nfhglHwP12AlOeRsoF7J38/xVmkEfGU0NmvWzOBGXONA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3vLin9X2AQ1yuSz4LaiDAU5K7mI3d5fBvXHg5QvGr2x0ZvgwN
-	lBQZZx4ZShCi4NkHH92geDl/pOjXrW8wKt4aIZeqVgf0wGxFOtYo6v0R3XDJI+TjRIKEJZASuxl
-	9Kc3nVq35wVhQrzdiOrwc0r6MV7wxJkHIJt1AoCWDdZoLESetSwQqkw==
-X-Gm-Gg: AR+sD12gA09+TQDeuCBwFSAZD5MvUKONf5O6FNETvvVXtt4tohCGyuxf/QRPN1JWERA
-	QpbEsLXuTqd13XJGeI/u/OUFnZHSptZD/eGjGkwN0WJNevXQwg2Q2CAkdtRdGI5hItcgqEkl3ZB
-	0m+YywoWpCsqqZbkvjiuny3LEJ2C/tlzGj6a1DmGw2fEce7GfL+fi99CPFU/EfbsndYjAVcpXt9
-	GZLftTRTfMNXYqhtJ1SNtEfqgJ6mSw7dAh3tukYQv5I46T5cQqCU0M3hKVKXar91/lwEJbYtOjs
-	u/alqKCxdMLixjq0l+QKWSYBb+KfqXq40LwnHz/hil5Yd6WMnL+AuBkFs/94/k8rsE1xY4QbYQ/
-	oSc1xqmkzSZyLLyk01iImd6Rja9Bk2smlHXtux4/Vpc8=
-X-Received: by 2002:a17:90b:5608:b0:366:3517:1aa2 with SMTP id 98e67ed59e1d1-392ec184a5amr735467a91.0.1786423483660;
-        Mon, 10 Aug 2026 21:44:43 -0700 (PDT)
-X-Received: by 2002:a17:90b:5608:b0:366:3517:1aa2 with SMTP id 98e67ed59e1d1-392ec184a5amr735414a91.0.1786423483127;
-        Mon, 10 Aug 2026 21:44:43 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-392e588aad2sm233317a91.4.2026.08.10.21.44.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Aug 2026 21:44:42 -0700 (PDT)
-Message-ID: <d0ffbcb5-0cca-4d1e-9788-6b430345fa9b@redhat.com>
-Date: Tue, 11 Aug 2026 14:44:30 +1000
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gy9QzwTd"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67AN1anN2999512;
+	Tue, 11 Aug 2026 04:53:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=uz20XD
+	LJ01Y33lENru859JzA8c0KdEFgFXjsz3QA39w=; b=gy9QzwTdg2DogRibWkmjO7
+	gQeH7jTlre3WnTugCjxdxzNZU1ocIDE/cJRvgC0a9AI3BKJmlDCM3aT4pEEftecn
+	UGNV4y7NWpX/LiobkjmnnkABbyLGa7wiSAGJvcf7wVkO4bQxoIjD05eHlMnF9rLm
+	nF1HZxWW2W51cSI5yIz1BTla5QgTAta4HIuZc/GM0aLnKi9ft9F1bfHTJXUEcsvA
+	tHvMW+VNbHepWqRhBAQoRnPdQCcnc/8VJ2BiXH95qjoh1ApbQt5jwy28aSGZ62SS
+	HexgLnoAOd1zl9pdZafP7OLphez8ViM6JBMas0IvbXNVMrlwQCb338HnJntST50g
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvnw2qym-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Aug 2026 04:53:32 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67B4fOut029529;
+	Tue, 11 Aug 2026 04:53:31 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxhfxyc62-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Aug 2026 04:53:31 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67B4rRrq9961908
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 11 Aug 2026 04:53:27 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3E2A520043;
+	Tue, 11 Aug 2026 04:53:27 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2066C20040;
+	Tue, 11 Aug 2026 04:53:22 +0000 (GMT)
+Received: from Linuxdev.ibmuc.com (unknown [9.43.82.57])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 11 Aug 2026 04:53:21 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, Amit Machhiwal <amachhiw@linux.ibm.com>
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Ritesh Harjani <ritesh.list@gmail.com>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        Gautam Menghani <gautam@linux.ibm.com>
+Subject: Re: [PATCH v9 0/4] KVM: PPC: Expose CPU compatibility modes for nested guests
+Date: Tue, 11 Aug 2026 10:23:20 +0530
+Message-ID: <178642395406.173296.2879693080941807837.b4-ty@linux.ibm.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260808161148.66673-1-amachhiw@linux.ibm.com>
+References: <20260808161148.66673-1-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 00/45] arm64: Support for Arm CCA in KVM
-To: Suzuki K Poulose <suzuki.poulose@arm.com>,
- Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20260803134403.80630-1-steven.price@arm.com>
- <42170467-fe36-4382-867f-49bdc6a7bc9a@arm.com>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <42170467-fe36-4382-867f-49bdc6a7bc9a@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=RsP16imK c=1 sm=1 tr=0 ts=6a7aaacc cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
+ a=BDvn-t7a7rEMPqDFjeMA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: LA6sxo_RISA67hFYdRaOcN7AXdgANatr
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODExMDAzNSBTYWx0ZWRfXw0ry2qiISU9z
+ 49OfTxVCoBsf8kvekQQgmR8+y0VzUO4+E5+nk9tJj0RiIkI4AwNcPH/jdsoi75WYbAN7Baocdrz
+ rZJG9kpOW41UOpFwbvUaByM6L3+aDoctT0dhIvL1D9GkH8pi+Urv7+b8yYjN6RxDGdpWKh79XSZ
+ kijkk8MRllEEQqvCbd5LciiJL7u6bwqe7Co3ZFagJDjMi6618MqT83YwamB/VqZOCmtcyFUYStP
+ av6ckDEKqvB4mrKU+J7UvpDvLBQLKoIv3/ffVE03Iow8eXnvqnNVpPC4DpeeMqkeAfRoA/0aD3d
+ kMoI2t74vAIBZz5N4cmU/vYS0RZ/1K1K/aKn/j4eV6cjTkttJQtGCUz+G7XCA06niQZs72jsvyq
+ ppAZlzbZhy6saSWIvx3NRj7o/S5kxzzOH/mcEHeJoPNT1dQd8u9y7pIv8zN8AjctFldmqE504SL
+ VADKv/8LmImqaFowJuQ==
+X-Proofpoint-ORIG-GUID: YER50ExlspIYVf_Aop3_3rI5pD7C4iSZ
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODExMDAzNSBTYWx0ZWRfX0ZQEAAwLF04R
+ 4IGvQD8K76Dm0Ci2t/OFVOIZcyUf/dJKH9C4YI6HJJ41PRKVHc+2OZs0Sxks6FSR5MTsX0oJQCc
+ ZaXJ75gUVaQvq0Wrrbs1zyzT7iSDpuU=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-10_06,2026-08-10_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0 suspectscore=0 clxscore=1015 malwarescore=0
+ phishscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608110035
 
-On 8/7/26 8:05 AM, Suzuki K Poulose wrote:
-
-[...]
-
+On Sat, 08 Aug 2026 21:41:44 +0530, Amit Machhiwal wrote:
+> On POWER systems, newer processor generations can operate in compatibility
+> modes corresponding to earlier generations (e.g., a Power11 system running
+> in Power10 compatibility mode). In such cases, the effective CPU level
+> exposed to guests differs from the physical processor generation.
 > 
-> Here is a cleaned up version, rebased on to Will's kvmtool master
-> branch:
+> This creates a problem for nested virtualization. When booting a nested KVM
+> guest (L2) inside a host KVM guest (L1) running in a compatibility mode,
+> userspace (e.g., QEMU) may derive the CPU model from the raw hardware PVR
+> and attempt to configure the nested guest accordingly. However, the L1
+> partition is constrained by the compatibility level negotiated with the
+> hypervisor (L0), and requests exceeding that level are rejected, leading to
+> guest boot failures such as:
 > 
-> https://gitlab.arm.com/linux-arm/kvmtool-cca cca/kvm-v16
-> 
-> (This works with the v15 of the KVM series too)
-> Build on top of Fuad's Guest memfd support patches.
-> 
+> [...]
 
-With the following combination, I'm able boot up the realm guest.
+Applied to powerpc/next.
 
-   tf-rmm:   https://git.trustedfirmware.org/TF-RMM/tf-rmm.git            (branch: topics/rmm-v2.0-poc_2)
-   tf-a:     https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git  (branch: master)
-   host:     https://git.gitlab.arm.com/linux-arm/linux-cca.git           (branch: cca-host/v16)
-   kvmtool:  https://gitlab.arm.com/linux-arm/kvmtool-cca                 (branch: cca/kvm-v16)
+[1/4] KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and wire up ioctl
+      https://git.kernel.org/powerpc/c/ac3e65ddddf3128c1f0c2187889fab458fcf4a70
+[2/4] KVM: PPC: Book3S HV: Implement compat CPU capability retrieval for KVM on PowerVM
+      https://git.kernel.org/powerpc/c/b76fb087efcdaf6eb5c2c6c5e53c763640fc4b02
+[3/4] KVM: PPC: Book3S HV: Add support for compat CPU capabilities for KVM on PowerNV
+      https://git.kernel.org/powerpc/c/8735048f54ec827102dcbd757a6c1c1e02613fc4
+[4/4] KVM: PPC: Document KVM_PPC_GET_COMPAT_CAPS ioctl
+      https://git.kernel.org/powerpc/c/c1721e584244ff79a593d6f0ad0405a2e07b765a
 
-However, the guest can't boot up and become stuck in SMC_RSI_IPA_STATE_SET request,
-which can't completed by the host.
-
-   tf-rmm:   https://git.trustedfirmware.org/TF-RMM/tf-rmm.git            (branch: topics/rmm-v2.0-poc_3)
-
-(1) Login the emulated host
-
-machine$ ssh -o StrictHostKeyChecking=no root@10.26.1.240
-
-(2) Start realm guest using kvmtool
-
-root@host:~# lkvm run --realm -c 1 -m 256                   \
-              -k /mnt/linux/arch/arm64/boot/Image            \
-              -i /mnt/buildroot/output/images/rootfs.cpio.xz \
-              -p earlycon=uart,mmio,0x101000000
-                  :
-[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x000f0510]
-[    0.000000] Linux version 7.2.0-rc5-gavin-gf5098b6bae76 (gshan@nvidia-grace-hopper-01.khw.eng.bos2.dc.redhat.com) (gcc (GCC) 14.3.1 20251022 (Red Hat 14.3.1-4), GNU ld version 2.41-65.el10) #47 SMP PREEMPT Mon Jul 27 02:29:03 EDT 2026
-[    0.000000] KASLR enabled
-[    0.000000] Machine model: linux,dummy-virt
-[    0.000000] earlycon: uart0 at MMIO 0x0000000101000000 (options '')
-[    0.000000] printk: legacy bootconsole [uart0] enabled
-[    0.000000] efi: UEFI not found.
-[    0.000000] OF: reserved mem: Reserved memory: No reserved-memory node in the DT
-[    0.000000] NUMA: Faking a node at [mem 0x0000000080000000-0x000000008fffffff]
-[    0.000000] NODE_DATA(0) allocated [mem 0x8ff76dc0-0x8ff7ac7f]
-[    0.000000] psci: probing for conduit method from DT.
-[    0.000000] psci: PSCIv1.1 detected in firmware.
-[    0.000000] psci: Using standard PSCI v0.2 function IDs
-[    0.000000] psci: MIGRATE_INFO_TYPE not supported.
-[    0.000000] psci: SMC Calling Convention v1.2
-[    0.000000] RME: Using RSI version 1.0
-<... no more output from the guest ...>
-
-
-(3) The output from host's serial console
-
-SMC_RMI_REALM_CREATE              12a4c7000 12a4c6000 > RMI_INCOMPLETE 0 24 0 0
-       SMC_RMI_OP_MEM_DONATE       0 1002c7098 9 > RMI_INCOMPLETE 9 0 0 0
-       SMC_RMI_OP_CONTINUE         0 0 > RMI_SUCCESS 0 0
-SMC_RMI_RTT_UNPROT_UNMAP          12a4c7000 18f85c000 18fe00000 0 0 > RMI_ERROR_RTT 2 0 0 0 0
-SMC_RMI_RTT_UNPROT_UNMAP          12a4c7000 18fe00000 18fe10000 0 0 > RMI_ERROR_RTT 2 0 0 0 0
-SMC_RMI_RTT_UNPROT_UNMAP          12a4c7000 18fe00000 18fe10000 0 0 > RMI_ERROR_RTT 2 0 0 0 0
-SMC_RMI_REC_CREATE                12a4c7000 12a392000 12a391000 > RMI_INCOMPLETE 0 40 0 0
-       SMC_RMI_OP_MEM_DONATE       0 106406098 10 > RMI_INCOMPLETE 10 0 0 0
-       SMC_RMI_OP_CONTINUE         0 0 > RMI_SUCCESS 0 0
-SMC_RMI_REALM_ACTIVATE            12a4c7000 > RMI_SUCCESS
-Unhandled write S2_0_C0_C2_2
-SMC_RMI_RTT_DATA_MAP              12a4c7000 8ffb4000 8ffb5000 1 129f1d004 > RMI_INCOMPLETE 0 0 0 1
-       SMC_RMI_OP_CONTINUE         0 0 > RMI_SUCCESS 8ffb5000 0
-PSCI_84000000                     0 0 0 0 0 0 0 > 10001 0 0 0
-PSCI_84000006                     0 0 0 0 0 0 0 > ffffffffffffffff 0 0 0
-PSCI_8400000a                     80000000 0 0 0 0 0 0 > 0 0 0 0
-SMC_80000000                      0 0 0 0 0 0 0 > 10002 0 0 0
-SMC_84000050                      1 0 0 ffffacd67d1e8000 ffffacd67d124000 0 0 > ffffffffffffffff 0 0 0
-SMC_80000001                      80000002 ffff 0 ffffacd67d1e8000 ffffacd67d124000 ffffacd67cd5d000 ffffacd67cd5dd38 > ffffffffffffffff 0 0 0
-PSCI_8400000a                     c4000001 0 0 0 0 0 0 > 0 0 0 0
-PSCI_8400000a                     c4000012 0 0 0 0 0 0 > ffffffffffffffff 0 0 0
-PSCI_8400000a                     c4000015 0 0 0 0 0 0 > ffffffffffffffff 0 0 0
-SMC_8600ff01                      ffffacd67cfc0740 10002 0 0 0 0 ffffacd67cfb3cc8 > ffffffffffffffff 0 0 0
-SMC_RSI_VERSION                   10000 > RSI_SUCCESS 10000 10001
-SMC_RSI_REALM_CONFIG              81385000 > RSI_SUCCESS
-SMC_RSI_IPA_STATE_SET             80000000 90000000 1 0
-SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000 > RMI_ERROR_RTT 3
-SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000 > RMI_ERROR_RTT 3
-SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000 > RMI_ERROR_RTT 3
-SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000 > RMI_ERROR_RTT 3
-SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000 > RMI_ERROR_RTT 3
-SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000 > RMI_ERROR_RTT 3
-<... the last message repeats ...>
-
-Thanks,
-Gavin
-
-
+cheers
