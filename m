@@ -1,139 +1,96 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02208403AFA;
-	Tue, 11 Aug 2026 15:59:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4162A3242B8;
+	Tue, 11 Aug 2026 16:03:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786463948; cv=none; b=Gt7lXB2yyz3v//Tfk2ns5ciMAkmoSqqlEdqpmj3K0SjqnQVZv3NFEg8nR6WHD0/OWYj/hMj/DnjP6XC08RwYQRlX5khMCofS7d+ktnRm94/Zv8k0laR6QgpVcxxtdIK3GYvTZEeOdd7UWTfpfM4VI7EcMdMwcL13vlfZUQ/YYTQ=
+	t=1786464231; cv=none; b=ag53eCg6ZfyHVFaNPLXiw55nhNa+PfH9jwRfuBqIgKFNM+uqFwzsRJLXbSkMaLMHmpQY8aE3jEXyLIHmthbqf+agJYu2AcQ/NwYVks23sBbFaVD8VKmrrdMegd0emxy5h5WWyIKAzbrSg/TjJEtklj/LULCwA/gW53Y+T7Ykxic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786463948; c=relaxed/simple;
-	bh=H6j+foj0ik9YUm+6SQ6GyjOJJXXHBETbRi7D6X+PVKo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eZMTMrnIU+RmCGFb6w5plrG3VDYGGvfITO+XdpM2RUelKFB6bkMdyT/FNe3lRM6EZEKD5L1ScdmsSM5iy7nfblRWZV3BOcvtDb+t90V7oX4nLHYnlWNaMVY9qE501lVZXNeC9w4McNnN6vXM0GmLglrqabxM6c6+DV5xkPCyDPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=oYtFUSh9; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+	s=arc-20240116; t=1786464231; c=relaxed/simple;
+	bh=e7Z+l/mTt+5Pf3Y1BUH3J9fnuA6QlidiOwjauwgkWhw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BZ5Jr/A96Y3Nk+quIQL2WJRJMqTfWzihID9rg9jEKfdEtM9O0TLmzTL/21jBoifRKB+evRx0JzKYgrjwpHggWhfiUXMpD0L4sHp5n0JVss6O2/ASjIvg13utiHqtXMkPl4yXY312aZSC3o8poMpD6PB9xn/3UIV2y9CPL7fRooA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Xxn4tmxR; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="oYtFUSh9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1786463939;
-	bh=w2QH4sAWrGs+qGmjMe6f4fRXH0fwoJH3v8g792kcikI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oYtFUSh98nkPETDOM+fvRJ5xc3OYCXwPMqlxjLprkqpxbAdV2TdqS1eCP9l3nHa4A
-	 aXe6errSeEVv1iamPg66CeyPSS4/exUN/enyoT+kKw7UHX7C+YJJIX4qRljR4Fu03G
-	 gSq5mykH/Eef/DHUPuKmXoZg7d3WVmXe1NhVOheKMObXcgs+aap1m4O3DfhvlnNxz1
-	 Tag5ujnt6PnTPIaMgckFgp12v2lhro4oyiO4jZsxp4pQWrJb0srmEu1yP+bQozRbKC
-	 hMOZy9FOIxzSVYkPcPtGNtajl8kUTAskCrNZUydWXydhQbID4+dSMmYGPaaNrFVO9Y
-	 hO1uWDahbsQWQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4hKGWX4HM7z4w2b;
-	Wed, 12 Aug 2026 01:58:47 +1000 (AEST)
-Message-ID: <291625a2-f281-4c05-b51f-553018a34b08@ozlabs.org>
-Date: Tue, 11 Aug 2026 16:58:43 +0100
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Xxn4tmxR"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AAE4D1516;
+	Tue, 11 Aug 2026 09:03:44 -0700 (PDT)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D96803F86F;
+	Tue, 11 Aug 2026 09:03:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786464228; bh=e7Z+l/mTt+5Pf3Y1BUH3J9fnuA6QlidiOwjauwgkWhw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Xxn4tmxRk8DDeLoDWJgLcSjvqgphcHHVSsLy9W3k5A933OGBP25O9NacR3PR0oDK3
+	 ukIq7VgR7qCS4RSCWK4DChBI13S4mlFzVtMR+R0w67k3zZwG691gS+zt/F9N80ybn3
+	 y48X7w43mZz/dl4gMIp+oztTAkaA7JJMYvorezEE=
+Date: Tue, 11 Aug 2026 17:03:43 +0100
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Jack Thomson <jackabt.amazon@gmail.com>, maz@kernel.org,
+	oupton@kernel.org, pbonzini@redhat.com, joey.gouly@arm.com,
+	seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com,
+	catalin.marinas@arm.com, will@kernel.org, shuah@kernel.org,
+	corbet@lwn.net, vladimir.murzin@arm.com,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
+	isaku.yamahata@intel.com, Jack Thomson <jackabt@amazon.com>
+Subject: Re: [PATCH v5 2/5] KVM: arm64: Add pre_fault_memory implementation
+Message-ID: <antH38FPSmAZ0nrB@raptor>
+References: <20260612162354.73378-1-jackabt.amazon@gmail.com>
+ <20260612162354.73378-3-jackabt.amazon@gmail.com>
+ <alEXtW7w-rqlNG09@raptor>
+ <yq5acxvz4u1i.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 7/9] vfio/pci: Clean up BAR zap and revocation
-Content-Language: en-GB
-To: Alex Williamson <alex@shazbot.org>
-Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
- Alex Mastro <amastro@fb.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Logan Gunthorpe <logang@deltatee.com>, Kevin Tian <kevin.tian@intel.com>,
- Pranjal Shrivastava <praan@google.com>, Longfang Liu
- <liulongfang@huawei.com>, Mahmoud Adam <mngyadam@amazon.de>,
- David Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
- Ankit Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org
-References: <20260715174737.15287-1-matt@ozlabs.org>
- <20260715174737.15287-8-matt@ozlabs.org>
- <20260729115204.2a9a50b2@shazbot.org>
- <6a964960-722c-44b5-837d-9d582aeb0a3c@ozlabs.org>
- <20260804141022.71b6429d@shazbot.org>
-From: Matt Evans <matt@ozlabs.org>
-In-Reply-To: <20260804141022.71b6429d@shazbot.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5acxvz4u1i.fsf@kernel.org>
 
-Hi Alex,
+Hi Aneesh,
 
-On 04/08/2026 21:10, Alex Williamson wrote:
-> On Thu, 30 Jul 2026 15:47:13 +0100
-> Matt Evans <matt@ozlabs.org> wrote:
+On Mon, Aug 03, 2026 at 11:36:33AM +0530, Aneesh Kumar K.V wrote:
+> Alexandru Elisei <alexandru.elisei@arm.com> writes:
 > 
->> Hi Alex,
->>
->> On 29/07/2026 18:52, Alex Williamson wrote:
->>> On Wed, 15 Jul 2026 18:47:30 +0100
->>> Matt Evans <matt@ozlabs.org> wrote:  
->>>> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
->>>> index 9a1674c152aa..e2b4252e7c3f 100644
->>>> --- a/include/linux/vfio_pci_core.h
->>>> +++ b/include/linux/vfio_pci_core.h
->>>> @@ -134,6 +134,7 @@ struct vfio_pci_core_device {
->>>>  	bool			pm_intx_masked;
->>>>  	bool			pm_runtime_engaged;
->>>>  	bool			sriov_active;
->>>> +	bool			zap_bars_on_revoke;
->>>>  	struct pci_saved_state	*pci_saved_state;
->>>>  	struct pci_saved_state	*pm_save;
->>>>  	int			ioeventfds_nr;  
->>>
->>> This should be in the bitfield usage group since it's only modified at
->>> init time.  
->>
->> This was intentional, but happy to change it if you're certain ofc.  Is
->> it inconceivable that a sub-driver could set it after init?  I'd say
->> they _shouldn't_, but only review will stop them and this placement
->> intended to be cautious.  It seemed a low cost way to avoid issues
->> around synchronisation on the bitfield.
+> > Hi Jack,
+> >
+> > On Fri, Jun 12, 2026 at 05:23:50PM +0100, Jack Thomson wrote:
+> >> From: Jack Thomson <jackabt@amazon.com>
 > 
-> I'd agree with the statement that they shouldn't, it would be difficult
-> to synchronize setting the flag once there are any active mappings of
-> the BARs.  Also, if we put it in the bitfield category under the
-> comment that the value is only modified at setup/release, it documents
-> the intentions, hopefully to the extent the author or reviewers notice.
-> An argument can always be made to change it if there's a worthwhile use
-> case.  Thanks,
+> ....
+> 
+> >> +		if (kvm_is_error_hva(hva)) {
+> >> +			ret = -EFAULT;
+> >> +			goto out;
+> >> +		}
+> >> +
+> >> +		s2fd.hva = hva;
+> >> +		ret = user_mem_abort(&s2fd);
+> >
+> > If is_protected_kvm_enabled(), this function doesn't check if the mapping
+> > already exists. user_mem_abort() will call **p**kvm_pgtable_stage2_map()
+> > (emphasis is mine) to create the mapping, and pkvm_pgtable_stage2_map() will
+> > return -EAGAIN, and keep returning -EAGAIN until the mapping is destroyed, which
+> > might be some time away.
+> >
+> > Same thing happens **without** pKVM, kvm_pgtable_stage2_map() will return
+> > -EAGAIN if the mapping exists. But that's not such a big issue, when the
+> > user calls KVM_PRE_FAULT_MEMORY on the remaining range
+> > kvm_pgtable_get_leaf() will detect the existing mapping. Which you have
+> > already taken into consideration judging by the comment, so all good here.
+> >
+> 
+> But both gmem_abort() and user_mem_abort() handle -EAGAIN internally, don't they?
 
-(Having noticed in moving this to the bitfield; my previous reply didn't
-supply the real reason it wasn't in the bitfield.)
-
-Isn't the init-time 'event horizon' for writing the bitfield the
-vfio_register_group_dev() in vfio_pci_core_register_device(), after
-which synchronisation is needed?
-
-The hisi_acc_vfio_pci driver's .probe calls
-vfio_pci_core_register_device() and _after that_ sets
-zap_bars_on_revoke, and that's now in the "needs synchronisation to
-write the bitfield" phase.
-
-(Re-reading my comment in vfio_pci_core_register_device() I'd noted
-this, "Drivers can opt out after registration".  Has to be done after by
-definition as the default's set in vfio_pci_core_register_device().)
-
-The concern is just blatting neighbours in the bitfield, not the window
-of time before the flag's set.  The flag's an opt-out of a safe but (for
-this driver) unnecessary zap, so having it unset for a short time is OK.
-
-I still think this really should be a standalone bool, not a bit in the
-bitfield.  It has to be set after registration and having to take a lock
-to do that has downsides.
+I think you're right, please ignore my comment about an existing mapping with
+is_protected_kvm_enabled().
 
 Thanks,
-
-
-Matt
-
+Alex
