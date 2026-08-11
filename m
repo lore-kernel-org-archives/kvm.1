@@ -1,200 +1,209 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24BA318B9B;
-	Tue, 11 Aug 2026 06:32:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786429960; cv=none; b=d8dPLQEurrwcUgLLBrpnmBPERBVZSTvPPyG830Hnd+hl5Rv6T+97lqBZgiQHC4L4fM8KF/ft9SXPOAI7c4aVkNG7DPbwB6TX+hjn04weSrzFECLGa8GhghD072L6V/MOyl5IIyKdjZdovsn8KY026IMX+mSgi5NlD+Tr3lffbME=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786429960; c=relaxed/simple;
-	bh=MDeqe2jSiJcmxbD0bbD/r5Z1VSW6NoU5Zo8Ln43j3Ks=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A3/Sof4meaS2GRo7FbICtsQoq4V3VQPhq9gKZoqWX3Jbw3TPSp06NVC3czQkSSO9zK4cKetUFeLL/vip6av80VCH9TUn7hoJ5KiMJcTrQihZa9SKckzm1AVt1ukPdKDZipChAw0h6p7nBlEitjug3ZJnVswFLzrTNDWC09KySh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=So0qBxTZ; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D3B334C39;
+	Tue, 11 Aug 2026 07:21:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786432905; cv=fail; b=Ie5ooiv7SG5NUKPVDAipaOMro/eqjwG68Up7CAyGH0u/D+/vIywI1ZNuzGo0KX2/H4mID8bZbFvmJZ28KZsQOuEEPHIepCoDO01CaUnw02zRpm21+z2GpDHQI1BbMIxPatWmaUdcSCveXD962j+6YWQJZnns5rPAP7K0/tZ4IH8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786432905; c=relaxed/simple;
+	bh=JqvUJbpKtZQ+RHgD+3eg2t/e+TfXU1rWTmqdnV1LHIE=;
+	h=Date:From:To:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=hEtWlFsiRDLllrNbWTDCRvOujZbsZWeyvAKarRGdUn036rTBijN/CPKkQ98TkNisjPkm+h6bVh8FqrYg3IGAJG+WPWce0uX5GS87I374ZNgbsZFFYD2Tp9oMy47dEovxLicf93qJHrBd2X+X8vLvRuWPqPX5V98NqrhnjLRZTjQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CUu4QjfS; arc=fail smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="So0qBxTZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CUu4QjfS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786429958; x=1817965958;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=MDeqe2jSiJcmxbD0bbD/r5Z1VSW6NoU5Zo8Ln43j3Ks=;
-  b=So0qBxTZERJzTd264J2NulVdOfLetOxLn8s9c5YhOQ9k01SxV+aQddtd
-   Om+vWgXREuLkKjZyjDkc3b2ig3qLMRMV02bLUmFkUkX5K4AuJ4Sg3rzXx
-   /M2hFNIOFaMLwvzo0mgU3FktWrrMY8I/hDTi8iQqlY6kWQ2s1k7O2lVTP
-   1woZVjyA/J5iTZvQ43bP8rqWodbe/Yl84Fsefvkqggp0vXSUDv3vr0md6
-   DQ21PtSe5U8cOANtX1y2Rk2RP3s5gj6KXXUCxTABbKsWKCUAACCxjpLem
-   FQXfUILgBFRzhByULq6HdoASqkTWa+dCTm9Gf+L+rNo/BGzy8OLRB3qkh
-   g==;
-X-CSE-ConnectionGUID: PZcz+DvmTp+547ls6yB8nw==
-X-CSE-MsgGUID: Par90D74QUegJkvmBaz+Yw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="97611429"
+  t=1786432904; x=1817968904;
+  h=date:from:to:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=JqvUJbpKtZQ+RHgD+3eg2t/e+TfXU1rWTmqdnV1LHIE=;
+  b=CUu4QjfSIzFcdwRdzjfF8z3Ran1trCQm2v4Te96YCoZbzz5DDakTDODA
+   lGVT3407tjTo7BLsdPZzwvO9Sx1h18hFcYIsjIserRCIN/Hvt+Q8kqTsj
+   pfmJiiGMqRlzTHeh+aXOQ8L8rm0ZJoOKpeHCbTCJeH/nDvelqPFogp9eu
+   8eK8hiF436aAwEl2uVakPVZByHbysnhAZliBeGWBG5ma8lUTdYKJVVsy6
+   W7wN8VaxTg175xjKlN5U+vdjtSMmCf2HVyvg6fIl+6trBJCgt2AYoEbWD
+   0V8/nOXJRc7+YHfvD8r2UGERZZgqM2fiVJRRs8IZCcuExEmRxFD10UviP
+   w==;
+X-CSE-ConnectionGUID: IsXbgtGwTF6H+CtwsQzJjg==
+X-CSE-MsgGUID: 5QzVsCHoToOjk2EDp+67Zw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="112502298"
 X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; 
-   d="scan'208";a="97611429"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 23:32:37 -0700
-X-CSE-ConnectionGUID: gOWIzqxqROu0+izp0da+kg==
-X-CSE-MsgGUID: dKqF2AB6SHefGa5U1MZEBg==
+   d="scan'208";a="112502298"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 00:21:43 -0700
+X-CSE-ConnectionGUID: dRqDHg8DRJmuUWM6tH2DIA==
+X-CSE-MsgGUID: 8F7LVpu0QnOS0wb34gEwcw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; 
-   d="scan'208";a="259401913"
-Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 23:32:31 -0700
-Message-ID: <2b499ed1-5823-4439-81c3-11ad06957347@linux.intel.com>
-Date: Tue, 11 Aug 2026 14:32:29 +0800
+   d="scan'208";a="261503881"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 00:21:43 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Tue, 11 Aug 2026 00:21:43 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Tue, 11 Aug 2026 00:21:43 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.8) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Tue, 11 Aug 2026 00:21:42 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SOHBXzCIXOKu6P2vajZ+umw11UcMXxFUBzl6sVhkJVnuzuM0ApecNJlyk20ibi6USiw1jVuaR/XLJH9zhLOcBUjmBhuxNv0Lcqsksxe0zgo3stnmInaQBmA/Sz6csTEiPuDkfuXhOxtk3WzqgT6RCGB+6t3AT5xY009fSFY1cAmH6YzuE/dqsB8dL/f5jzCTa2LC3YmFZsHm2NR+BjA6S5wWr28zLxxMkNQVQcDksQpajNJ4kDIa3siWjRPKmRTzRxqumEM/+6eD8zhhT5Bdo/WJ2QVem30uwf1xgSHwkXxkRCCvIK1gZD2IfB8wIxFBUB3nvwELVni5OLTnmpzL+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=y0qu29MUjym6t7f6ws+VtigMfjiiMipFXPKPbcK2KAo=;
+ b=AjFwBtmhENXA5GvxgPMm7GNuPOVLBmqJmyAU6P/MoewIL2xk/PNE8XsR2tBBKf2I8hjEufBUie42hO/eIGahYlSeIik6GgK9I6azu0D0AFPRjhD0JTEIcB6XJXoBM+w29iYiKY49Od5TjeDnTGQRniAff9GoX+fBnqJb9KSEuteTWBLlQLLU3OBmaHxjRGgIO0SypSvY5zKDjT9aMPltBuAI9kWPc2sH8i5+qA/UGqfaR2uOsXRE2dr7gg08OMusBE9eRClWQBzfIrt54kS/b0dHDSbcpV1cEVo6BZ0AWAOzD6A3sksnOrgiW5ro8CHHWVZOqvfKScXlk+zNiWWCeA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DSVPR11MB9579.namprd11.prod.outlook.com (2603:10b6:8:383::17)
+ by MN6PR11MB8218.namprd11.prod.outlook.com (2603:10b6:208:47c::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Tue, 11 Aug
+ 2026 07:21:40 +0000
+Received: from DSVPR11MB9579.namprd11.prod.outlook.com
+ ([fe80::ab5f:5d0f:fb90:9d]) by DSVPR11MB9579.namprd11.prod.outlook.com
+ ([fe80::ab5f:5d0f:fb90:9d%3]) with mapi id 15.21.0292.024; Tue, 11 Aug 2026
+ 07:21:40 +0000
+Date: Tue, 11 Aug 2026 14:40:50 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	Kai Huang <kai.huang@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Sashiko Bot <sashiko-bot@kernel.org>
+Subject: Re: [PATCH 4/4] KVM: x86/mmu: Add sanity check to detect stale page
+ faults in "map private PFN"
+Message-ID: <anrD8nI8RfYoNvbf@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20260806214050.78058-1-seanjc@google.com>
+ <20260806214050.78058-5-seanjc@google.com>
+ <anpr/H5Hxw1EMkTj@yzhao56-desk.sh.intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <anpr/H5Hxw1EMkTj@yzhao56-desk.sh.intel.com>
+X-ClientProxiedBy: SI2PR01CA0050.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:193::21) To DSVPR11MB9579.namprd11.prod.outlook.com
+ (2603:10b6:8:383::17)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 11/22] KVM: selftests: Set up TDX boot parameters
- region
-To: Lisa Wang <wyihan@google.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-11-15ad654a50db@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260722-tdx-selftests-v14-11-15ad654a50db@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DSVPR11MB9579:EE_|MN6PR11MB8218:EE_
+X-MS-Office365-Filtering-Correlation-Id: 810fb378-6044-4e5c-e8ed-08def7792fd0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|10067099003|4143699003|56012099006|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: SFP6KVgBVW5o39O1a8lyQNX0uAeGcQqEpdXmrdOGfCAxnV1WJMxrYZvG9ccgRU1QHU4reMY9kiQFzO2RclmR2C728ItdBSvNhsz1CBgSDnJhuar/V/yDNrgPRbBXx/m87MqP/vefs/DSN7EktQRDJcy1zgR1rgWDiBdctGDaY9VaGlw4MfC9bAJhYqk7ryEirrdx6IH3oCgwfNFTJA/udiz8joL5CgGJiqewuDXLslSt9lg9XUeXGkZPEcoyyMmckUMcdSIzaAbXgt0TRFjevUYyfutZ/Pz9tnypnC+9f7blRGXOVSwLalqj13HRL4fio0S/7ezDbNOM3G4Bsg4yl5H6IqamM2gKvelpjmWomT4sWXlBpTxcbWJrD1NhYPVgeuCy2euU2VztrAXoeMs+YY/dYok3L9MVaPm8IyRannq1FvGtsRPWjbYims4awhJNJWUtMVuuV3mSJ+k+kwnNq7oXk6dOv3rkOwnr77+LtgVUmajCUBt+yAFPeak2EKEknE+KrcwL7N3EgQloGLXQ5VNEfZk8M6NcGGRcgqwgWSjt5NnApBoG8k4hh7GhBMW02QW5dhEfo3NSCEL25eogeGFX5E6r+RedAuCVN2Hglh2wT+nmE71zZZhSw51NvRrEQHLXQDVD6YEQm9ru8/Mk+beLT+S6WMPSLGcPEPkx/EA=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DSVPR11MB9579.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(10067099003)(4143699003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Gv4635ivI5qKLvkqnMGtiF1/35ilCPnlack5fB3qv1lk3jkI6/AMz6bQ6d2B?=
+ =?us-ascii?Q?xCJxj8XbdxwSFoRU5/c6f7vNXRl7pTrC7ZrLbYFjJY/qKvT9boucfRKomnVM?=
+ =?us-ascii?Q?+I8nt52CKnv1Y7PPKAHTyHoLGOShkFtd8aGe93fiXILU9vSW5eqaCywoagye?=
+ =?us-ascii?Q?J3Pi9I+0ZI4GakjQJJNCy8cb9ncc1ylofkLeqrBXwGJ9iIz2DcLg1GaBQF0a?=
+ =?us-ascii?Q?CU4RFi75YlkjU12H4YHWCoXMkCF9YtZfRgIECH7d26WhJMLF4pgeC6eIyxyt?=
+ =?us-ascii?Q?ZrhsvsHPw6OMI8L4h3stiBHVWhiKoa5JmXRpl5aQLiBxhq5cZq6xnfqu4DnD?=
+ =?us-ascii?Q?licUv98R0gO/VsEcmfc6w2vpGBhzpf2DgCymQ0ptyrpDz9eu1fX+4cMRPoBC?=
+ =?us-ascii?Q?DyXfumpcrWytDBg1gWtLCRbk9yqb/U19EzM9/78/zfD8b6aSSj3em4/yMwLV?=
+ =?us-ascii?Q?ZWpUnm1iKYD9S2k7NBw7aC6UF+oWMHEDvCPuO0sn/HHm6vG37qDdvQ52JR9H?=
+ =?us-ascii?Q?st5/V9r3uPvBxprCzI7NdouFO8qFeZJr9ruV6lhYnGZVhiF0lXBn0UOyuqQH?=
+ =?us-ascii?Q?n2Wd9bvcIPROtUN1vAvDU6x1XJHDgbIxQX4LK07UI/yR4XfeFkBNRNbrvz/r?=
+ =?us-ascii?Q?ySu5/6JQpAfEijuugf1e14j3+bzMOJSgxkl2xVh4F0R30HS847AGpq44TjFe?=
+ =?us-ascii?Q?BtvAzjNbsqnLFC9RR9mnxXZTNrBQqk9po6ggNVOMpKl5ndht1WEpO49I92JW?=
+ =?us-ascii?Q?azTq6gCi4PG9JmKBbahWcmHzWzd55IhGnI32VZWGBKqWs73D3B7w3XC9bcAE?=
+ =?us-ascii?Q?79+EaLPqpw+9QJE4yuhEWsKPuS2K4Q62LGnoWAIKfRHBE2Q8SLrpEYnXEm0p?=
+ =?us-ascii?Q?tKxONPHG4jwElu9AcfpMEhEoYlIi+rP0gg4K6C7dtgWbECZN2f84sOSf5Q8Y?=
+ =?us-ascii?Q?OJkTAtmRTRqjV+LktVWt2dLzsz/3vBglsiKfuV9JJ/+yMr0damqqIC57WBKk?=
+ =?us-ascii?Q?zTOPhIvVlGaChSQ4V4UWa+YjqQuTbm6fArA9Dg7NB90KaO3e+iYGOVPD1Zvk?=
+ =?us-ascii?Q?GIJilAlD7nECfuSEpNhSt7/Lk+xTjOaLKJvY8MN7EMTJatG0JGQtZLoMffOy?=
+ =?us-ascii?Q?Jid8SsY/cTaOz2epJrqhLx0GTXG//bhref2YhggwcJMswJrrFlni5Spr8XJ+?=
+ =?us-ascii?Q?/PnB+qK0NbFcC/DW1beuUX6obptmKkj/a41rw2hAnjKGvWPMXwxff/fNhuBH?=
+ =?us-ascii?Q?sUQc8R5W4rEPwZ/Au/BuuDKjGrsr1yDW8oVBXnpBwSKuAiBe2fdwvHsvjdtY?=
+ =?us-ascii?Q?1VKiSJWtsPkRbN9+60c2XevqE0l7ybX0nV0awnXz7VidVxBfMhgaHfqf1BlM?=
+ =?us-ascii?Q?CV3/1ZLp/zly9bqloowvcD9Kwr/QSP+qw+48851qnzTgeKmQDJhkE1WGcJ/P?=
+ =?us-ascii?Q?r1x/bC2yaJ7LnNIvpQuPt7TFrywcaxyUIaVL3cyZPmkFDe68TcfKdAe0JN2R?=
+ =?us-ascii?Q?tkvq/WWizVcsyRropwdYhwB22tYA1yoH5S8jpo4FiggTOh5zDSwBZNjCL97C?=
+ =?us-ascii?Q?PBaqMYHFpn2O2WhS5D3aNOxyXJPRKVCu/N/rNI06wjRmwWDZ6edg88ijOGA5?=
+ =?us-ascii?Q?KOUXomV0fIOZMZaEsYrGyQomi0LsWKV68qty4fK4HR+I2aAe8QmlR7Tb3+rn?=
+ =?us-ascii?Q?utS4lJJCGVcijaLU/QpTpvricbdqcIhJrk6jTNAvhGXWVDvepPRJZ/IH5Bez?=
+ =?us-ascii?Q?Cq8h/cnYbg=3D=3D?=
+X-Exchange-RoutingPolicyChecked: Fyu7SgJFR2yF93tau6UT8qqhQcgZPkhxkcdvyZQYM2Jzgr/bBO0+Nrvnu2HEZ9nteMNvF3aOv7eC8aLYWLqGcjsxCmykTqwsBCnWArUPuTtiPLj7Ix2bHETArS1TCRWLmIB8hUimYjE5uoYktyJurVINSHwl174s9flaqYFwguc76xX2f3YozMsuidV3xaqZxcCsiUe18IfFpw996hr+4DdvnaZLuwOvieuh8M8Ikt7u2ucvZ9UhR8ayYC/SZuewVWJ0YeHqXvv+qWFOTkUnCBHRurq0WnGbypN3NtDY5EwE3QROQiDJaAsBCZCSS+0rHFLT5apeF/4WQsCh0zO7Cg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 810fb378-6044-4e5c-e8ed-08def7792fd0
+X-MS-Exchange-CrossTenant-AuthSource: DSVPR11MB9579.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2026 07:21:39.9683
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nJZfAxaaWEp6wrXoODHBjf+wwoAmj0syJ3KJhaVgOimo34M2QhigFd9G+IzjbfisqxPrMQW7Yh1zWqDqHRgSMQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8218
+X-OriginatorOrg: intel.com
 
-On 7/23/2026 7:13 AM, Lisa Wang wrote:
-> From: Sagi Shahar <sagis@google.com>
+On Tue, Aug 11, 2026 at 08:25:32AM +0800, Yan Zhao wrote:
+> On Thu, Aug 06, 2026 at 02:40:50PM -0700, Sean Christopherson wrote:
+> > Harden the "map private PFN" flow against potentially-fatal bugs or future
+> > KVM changes by checking for a stale "fault" prior to actually mapping the
+> > PFN into the guest.  While it should be impossible for the "page fault" to
+> > become stale, the sanity check is cheap, whereas a broken assumption would
+> > have a high probability of leading to a guest-expoitable use-after-free.
+> > 
+> > Snapshot the invalidation sequence after acquiring mmu_lock to avoid false
+> > positives, even though doing so completely voids anys and all protection
+> > against unexpected invalidations.  Pretty much the entire point of
+> > kvm_tdp_mmu_map_private_pfn() is that it allows mapping a PFN that was
+> > gifted by the caller, i.e. the caller would have to mess up its one and
+> > only responsibility.
+> > 
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >  arch/x86/kvm/mmu/mmu.c | 10 ++++++++++
+> >  1 file changed, 10 insertions(+)
+> > 
+> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> > index 379f570ef04f..76e3cd717324 100644
+> > --- a/arch/x86/kvm/mmu/mmu.c
+> > +++ b/arch/x86/kvm/mmu/mmu.c
+> > @@ -5210,6 +5210,16 @@ int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
+> >  		 */
+> >  		WARN_ON_ONCE(kvm_test_request(KVM_REQ_MMU_FREE_OBSOLETE_ROOTS, vcpu));
+> >  
+> > +		/*
+> > +		 * Snapshot the invalidation sequence counter after acquiring
+> > +		 * mmu_lock, as guest_memfd guarantees the validity of the pfn,
+> > +		 * i.e. any concurrent invalidations are guaranteed to be
+> > +		 * irrelevant.
+> > +		 */
+> > +		fault.mmu_seq = vcpu->kvm->mmu_invalidate_seq;
+> Could you explain more about the conditions under which a fault is stale while
+> guest_memfd guarantees the validity of the pfn?
 > 
-> Allocate memory for TDX boot parameters and define the utility functions
-> necessary to fill this memory with the boot parameters.
-
-The code change looks good to me.
-
-But I think it's better to describe how the parameters are initialized based
-on the HVA when VM_MEM_SRC_SHMEM is used alongside KVM_MEM_GUEST_MEMFD.
-Same for the patch 10.
-
+> Given that kvm_tdp_mmu_map_private_pfn() already asserts holding slots_lock and
+> invalidate_lock, I can't think of one. If we add the sanity check because it's
+> cheap, why don't we save fault.mmu_seq before getting the pfn to guard against
+> stale pfn as well?
 > 
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-> ---
->  .../selftests/kvm/include/x86/tdx/tdx_util.h       |  2 +
->  tools/testing/selftests/kvm/lib/x86/processor.c    |  2 +
->  tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c | 51 ++++++++++++++++++++++
->  3 files changed, 55 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> index 642ffa010da3..f5003cbaa106 100644
-> --- a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> @@ -46,5 +46,7 @@ static inline bool is_tdx_vm(struct kvm_vm *vm)
->  
->  void tdx_init_vm(struct kvm_vm *vm, u64 attributes);
->  void tdx_vm_setup_boot_code_region(struct kvm_vm *vm);
-> +void tdx_vm_setup_boot_parameters_region(struct kvm_vm *vm, u32 nr_runnable_vcpus);
-> +void tdx_vm_load_common_boot_parameters(struct kvm_vm *vm);
->  
->  #endif /* SELFTESTS_TDX_TDX_UTIL_H */
-> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-> index f93953777ca1..748c6041f8bf 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-> @@ -794,6 +794,8 @@ void kvm_arch_vm_post_create(struct kvm_vm *vm, unsigned int nr_vcpus)
->  	if (is_tdx_vm(vm)) {
->  		tdx_init_vm(vm, 0);
->  		tdx_vm_setup_boot_code_region(vm);
-> +		tdx_vm_setup_boot_parameters_region(vm, nr_vcpus);
-> +		tdx_vm_load_common_boot_parameters(vm);
->  	}
->  
->  	r = __vm_ioctl(vm, KVM_GET_TSC_KHZ, NULL);
-> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> index d64d153d19e2..2ce8c297f7ed 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> @@ -6,6 +6,7 @@
->  
->  /* Arbitrarily selected to avoid overlaps with anything else */
->  #define TD_BOOT_CODE_SLOT	20
-> +#define TD_BOOT_PARAMETERS_SLOT	21
->  
->  #define X86_RESET_VECTOR	0xfffffff0ul
->  #define X86_RESET_VECTOR_SIZE	16
-> @@ -49,6 +50,56 @@ void tdx_vm_setup_boot_code_region(struct kvm_vm *vm)
->  	hva[2] = 0xcc;
->  }
->  
-> +void tdx_vm_setup_boot_parameters_region(struct kvm_vm *vm, u32 nr_runnable_vcpus)
-> +{
-> +	size_t boot_params_size =
-> +		sizeof(struct td_boot_parameters) +
-> +		nr_runnable_vcpus * sizeof(struct td_per_vcpu_parameters);
-> +	int npages = DIV_ROUND_UP(boot_params_size, PAGE_SIZE);
-> +	const u64 gmem_flags = 0;
-> +	gpa_t gpa;
-> +
-> +	vm_mem_add(vm, VM_MEM_SRC_SHMEM, TD_BOOT_PARAMETERS_GPA,
-> +		   TD_BOOT_PARAMETERS_SLOT, npages,
-> +		   KVM_MEM_GUEST_MEMFD, -1, 0, gmem_flags);
-> +	gpa = vm_phy_pages_alloc(vm, npages, TD_BOOT_PARAMETERS_GPA, TD_BOOT_PARAMETERS_SLOT);
-> +	TEST_ASSERT(gpa == TD_BOOT_PARAMETERS_GPA, "Failed vm_phy_pages_alloc\n");
-> +
-> +	virt_map(vm, TD_BOOT_PARAMETERS_GPA, TD_BOOT_PARAMETERS_GPA, npages);
-> +}
-> +
-> +void tdx_vm_load_common_boot_parameters(struct kvm_vm *vm)
-> +{
-> +	struct td_boot_parameters *params =
-> +		addr_gpa2hva(vm, TD_BOOT_PARAMETERS_GPA);
-> +	u32 cr4;
-> +
-> +	cr4 = kvm_get_default_cr4(vm->mmu.pgtable_levels);
-> +
-> +	/* TDX spec 11.6.2: CR4 bit MCE is fixed to 1 */
-> +	cr4 |= X86_CR4_MCE;
-> +
-> +	/* TDX spec 11.6.2: CR4 bit VMXE and SMXE are fixed to 0 */
-> +	cr4 &= ~(X86_CR4_VMXE | X86_CR4_SMXE);
-> +
-> +	/* Set parameters! */
-> +	params->cr0 = kvm_get_default_cr0();
-> +	TEST_ASSERT(vm->mmu.pgd < (1ULL << 32),
-> +		    "PGD must be within 32-bit address space for 32-bit boot code");
-> +	params->cr3 = vm->mmu.pgd;
-> +	params->cr4 = cr4;
-> +	params->idtr.base = vm->arch.idt;
-> +	params->idtr.limit = kvm_get_default_idt_limit();
-> +	params->gdtr.base = vm->arch.gdt;
-> +	params->gdtr.limit = kvm_get_default_gdt_limit();
-> +
-> +	TEST_ASSERT(params->cr0 != 0, "cr0 should not be 0");
-> +	TEST_ASSERT(params->cr3 != 0, "cr3 should not be 0");
-> +	TEST_ASSERT(params->cr4 != 0, "cr4 should not be 0");
-> +	TEST_ASSERT(params->gdtr.base != 0, "gdt base address should not be 0");
-> +	TEST_ASSERT(params->idtr.base != 0, "idt base address should not be 0");
-> +}
-> +
->  static struct kvm_tdx_capabilities *tdx_read_capabilities(struct kvm_vm *vm)
->  {
->  	static struct kvm_tdx_capabilities *tdx_cap;
-> 
+> > +		if (is_page_fault_stale(vcpu, &fault))
+is_page_fault_stale() gets sp from vcpu->arch.mmu->root.hpa:
+"struct kvm_mmu_page *sp = root_to_sp(vcpu->arch.mmu->root.hpa);".
 
+For TDX, sp should be from vcpu->arch.mmu->mirror_root_hpa?
+
+> > +			continue;
+> > +
+> >  		r = kvm_tdp_mmu_map(vcpu, &fault);
+> >  	} while (r == RET_PF_RETRY);
+> >
