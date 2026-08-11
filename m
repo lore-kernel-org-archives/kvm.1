@@ -1,123 +1,123 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311B53F327D;
-	Tue, 11 Aug 2026 14:44:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2284144A3E8
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 14:48:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786459503; cv=none; b=PFVddZJBgbdJN4C1k32RteQnSQVcFlbv5Z0aI5MdMTpe6zt6Z1PeIH4PqnlcvG6SgHDvpPsEml7x3pAMhjbS2AOjZJEKQr2PZqemqLXDlBGEufVFVxJb19D51FRljEa0sgbwN7pYusBNyOMMkKamBfHJ4kWc3S6MKbuwWY3WWs8=
+	t=1786459718; cv=none; b=GPty5CWY9KLedvCJryE9im/dhzuSRb1YWhNcnMYAH9BdzU4Ifyirfam9dAxnYm6R+GQI48i2idI6D0DXzv/cmFY5VvYXDuhSIJcFQqnxc7ASpfAH7pEdWOBpSJpSbqHlHQx1GM/WtR7X6t/V0049gNXGKOwZBjzm8/C1t+PINaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786459503; c=relaxed/simple;
-	bh=/LPEH55R6LClPqeXnYARvDZU8XDKgr9ZBtZUHbi7ZdM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r2Ga09EtuVPZmuoOKnLKhbmTgsvDk0UGIiT3UzFS5BkAHv/ffX/OmfNVzso5LH87rZ2lNeXhrRnS372m3IQXug3eqyIE1OkdW07OJvdYWcRqgo/6elI5ECLYKNIexuvMtwN5foOoqduTfTK+iTtMBgyGZirH3iTYCVJJzvMaD2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=UhMkyTJN; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1786459718; c=relaxed/simple;
+	bh=kC6mE8NpGgNSd4MwTOaZbaSstSPzKrQUvf1uS76/vyk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=SInOC7JgfVNeBPcE9dOFYhDUqMmHdKBX/lDVYUNySNk2//ravs4o/PDjBz7aACq5qSWlpTrLu0Fwwc8gk5jxDf3z3jqmNGMM8iJT1gliAW5jKXwM7c9AxvzvonfjLrvgVmBZf3XT/ZHziva2wy1nWkdob/RpDrs6DjN7sYltC48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GRcmnaII; arc=none smtp.client-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="UhMkyTJN"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E97BB1682;
-	Tue, 11 Aug 2026 07:44:54 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EF9DA3F86F;
-	Tue, 11 Aug 2026 07:44:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786459498; bh=/LPEH55R6LClPqeXnYARvDZU8XDKgr9ZBtZUHbi7ZdM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UhMkyTJN6nwQPPoHojp2Lj90fCxYgfZoPQnlFeUfUA7QykLZDiF4BKo9sc5b4f8Cu
-	 tgVMWQsawjcyUgRgg0Bm7XS/nBDFtj0Sesm5suAVALsIGilMsDyBy47x0YNQEeI5bh
-	 5ONfXUPbgnRx3kWP8wbSZ0K3W95SrAy0Gy8N9cpw=
-Date: Tue, 11 Aug 2026 15:44:53 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v16 07/45] arm64: mm: Handle Granule Protection Faults
- (GPFs)
-Message-ID: <ans1ZSwMEKeT9Gfz@arm.com>
-References: <20260803134403.80630-1-steven.price@arm.com>
- <20260803134403.80630-8-steven.price@arm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GRcmnaII"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cee894b3d8so57363565ad.2
+        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 07:48:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786459715; x=1787064515; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rVhz6t6uiOZc1DDgF6HOTd7wvK1RF7/iSTLQV7TuFds=;
+        b=GRcmnaIIP+/yPM8zZlFCvYTUg7pu0uPG2or4YQbI6T7pDdYf7ir/gu9/xuDWSHK070
+         ioMRjOdOy7cxBJGjiT0FE7jyIIio+NMvbKINGAxNfrOsjkzDiuq6AdQ1yDpYgA/zEkcO
+         CqRG3yJ/s3dWdkKPPPaOtcp25+VsyQIo4R/hOcz/X0HLBInaj29OUhdm7eX2m6UnOQM8
+         3kFNHAH7Dqqv8oVfl943ixjGqSPEr17og0wiS11D0AIDf6LjKBGt6mw4iV17qI5ftXyT
+         YJ/mFO/f1LEbouwNfnriX1zuw8NCCwstASSzSvZ+4QJ+sr+rl+9tm9fM14/jWCMN63Dh
+         bEWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786459715; x=1787064515;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rVhz6t6uiOZc1DDgF6HOTd7wvK1RF7/iSTLQV7TuFds=;
+        b=hlrtPKDGGtYZuFcFZAQfAmYVCvw/y1q04MwowFlthJ0xyUbUKxMPYVxviSIjuJ2+BD
+         9YcG+1b68uir2r35dBbGfiqxB77cvij3dC1shVNqyfmiEWwxS1TBYMOjIniQHxGdq1+P
+         SYg5eholE5EYzVclrJI5OH2gDkISqjXyvJ51bd2vCjRWgqjqQjYHCocQy3ua12kZRR3a
+         blZDgCaeJbbZ/l9wML1FOxadK4T9BQXK7J9wbK5tt5SYoW3R/MxDUQtOE5uDWxRtaCWI
+         40OSp2EBN2HtzshlklyejxfMLNwTxkDcbZ1tty1pZlDWgamooyVyV2AJWBIZ3YKLIoUg
+         KzTQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rqw7ft/wuAX+JCDKLt6OdFq2+0JBFbm3y/dVyEZ2Bx36G3trrgfYONn1aZvH7gi04dy/MA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxxkfks2z1fUlHTm8vFUV6fvUl0AVjmGA5rq/w7VxKsffTcbYs4
+	EqdTLTFaXG/PNKUZbfiEQp0cdvZEK8FH9yvb/fTUcxMnXahXoLa1KoxoUQtIqphW0ccPmWHD4LB
+	KvmooDA==
+X-Received: from plbje14.prod.google.com ([2002:a17:903:264e:b0:2ca:eea9:9845])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d488:b0:2d1:1a18:4d0a
+ with SMTP id d9443c01a7336-2d3177a2163mr42800725ad.9.1786459715153; Tue, 11
+ Aug 2026 07:48:35 -0700 (PDT)
+Date: Tue, 11 Aug 2026 07:48:34 -0700
+In-Reply-To: <9huzqzk4zt3n.fsf@tarunix.c.googlers.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260803134403.80630-8-steven.price@arm.com>
+Mime-Version: 1.0
+References: <20260728121138.1103610-1-tarunsahu@google.com>
+ <20260728121138.1103610-2-tarunsahu@google.com> <anpXjM_lg_UTpl0q@google.com> <9huzqzk4zt3n.fsf@tarunix.c.googlers.com>
+Message-ID: <ans2Qvo0453cc_DD@google.com>
+Subject: Re: [PATCH v4 01/11] liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
+From: Sean Christopherson <seanjc@google.com>
+To: tarunsahu@google.com
+Cc: ackerleytng@google.com, fuad.tabba@linux.dev, 
+	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
+	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
+	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
+	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
+	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
+	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
+	suzuki.poulose@arm.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Aug 03, 2026 at 02:43:23PM +0100, Steven Price wrote:
-> If the host attempts to access granules that have been delegated for use
-> in a realm these accesses will be caught and will trigger a Granule
-> Protection Fault (GPF).
+On Tue, Aug 11, 2026, tarunsahu@google.com wrote:
+> Sean Christopherson <seanjc@google.com> writes:
 > 
-> A fault during a page walk signals a bug in the kernel and is handled by
-> oopsing the kernel. A non-page walk fault could be caused by user space
-> having access to a page which has been delegated to the kernel and will
-> trigger a SIGBUS to allow debugging why user space is trying to access a
-> delegated page.
+> > On Tue, Jul 28, 2026, Tarun Sahu wrote:
+> >> Introduce the LIVEUPDATE_GUEST_MEMFD Kconfig option. This option
+> >> enables live update support for KVM guest_memfd files, enabling
+> >> guest_memfd-backed memory preservation across kernel upgrades.
+> >> 
+> >> Currently this support only guest_memfd files that are full-shared
+> >> (INIT_SHARED and no support for private_mem).
+> >
+> > Why?  Specifically, why do we need/want a separate Kconfig for guest_memfd
+> > liveupdate versus KVM liveupdate?  I can _maybe_ see a KVM-wide Kconfig, but
+> > even that seems like a stretch given that (AFAIK) hypervisors are the one and
+> > only use-case for liveupdate.
 > 
-> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v10:
->  * Don't call arm64_notify_die() in do_gpf() but simply return 1.
-> Changes since v2:
->  * Include missing "Granule Protection Fault at level -1"
-> ---
->  arch/arm64/mm/fault.c | 28 ++++++++++++++++++++++------
->  1 file changed, 22 insertions(+), 6 deletions(-)
+> LIVEUPDATE is used in many subsystem. It is possible to enable
+> liveupdate and kvm without enabling KVM_GUEST_MEMFD. So GUEST_MEMFD
+> preservation must depend on CONFIG_LIVEUPDATE and KVM_GUEST_MEMFD both.
+> LIVEUPDATE_GUEST_MEMFD Kconfig is wrapper on both of them. It need not
+> to be visible in menu, So I can make it hidden. WDYT?
 > 
-> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> index 85e23388f9bb..ea3ae0ca7dba 100644
-> --- a/arch/arm64/mm/fault.c
-> +++ b/arch/arm64/mm/fault.c
-> @@ -909,6 +909,22 @@ static int do_tag_check_fault(unsigned long far, unsigned long esr,
->  	return 0;
->  }
->  
-> +static int do_gpf_ptw(unsigned long far, unsigned long esr, struct pt_regs *regs)
-> +{
-> +	const struct fault_info *inf = esr_to_fault_info(esr);
-> +
-> +	die_kernel_fault(inf->name, far, esr, regs);
-> +	return 0;
-> +}
-> +
-> +static int do_gpf(unsigned long far, unsigned long esr, struct pt_regs *regs)
-> +{
-> +	if (!is_el1_instruction_abort(esr) && fixup_exception(regs, esr))
-> +		return 0;
-> +
-> +	return 1;
-> +}
+> Also, KVM VM_FILE preservation and GUEST_MEMFD preservation both depends
+> on LIVEUPDATE_GUEST_MEMFD in this patch series. [PATCH 05/11]*
+> Which is wrong. So I will update KVM VM_FILE preservation to depend only
+> on CONFIG_LIVEUPDATE.
 
-Is there a valid case for fixup_exception() here? IOW, do we ever have a
-valid user mapping of the pages delegated to a guest? If the above is
-considered a kernel bug, I'd not silently ignore this (like return less
-bytes copied or -EFAULT to user) but rather warn, potentially
-rate-limited.
+Or just handle it all in the makefile?  E.g.
 
-If there is a real use-case for this, what's preventing GUP + memcpy()
-from triggering a similar fault with no fixup available?
+diff --git virt/kvm/Makefile.kvm virt/kvm/Makefile.kvm
+index d047d4cf58c9..e6f098498795 100644
+--- virt/kvm/Makefile.kvm
++++ virt/kvm/Makefile.kvm
+@@ -13,3 +13,8 @@ kvm-$(CONFIG_HAVE_KVM_IRQ_ROUTING) += $(KVM)/irqchip.o
+ kvm-$(CONFIG_HAVE_KVM_DIRTY_RING) += $(KVM)/dirty_ring.o
+ kvm-$(CONFIG_HAVE_KVM_PFNCACHE) += $(KVM)/pfncache.o
+ kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd.o
++
++ifdef CONFIG_LIVEUPDATE
++kvm-y += $(KVM)/kvm_luo.o
++kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd_luo.o
++endif
 
--- 
-Catalin
