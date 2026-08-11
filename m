@@ -1,73 +1,100 @@
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665B21F5834
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 15:01:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E362C2472B6;
+	Tue, 11 Aug 2026 15:01:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786460467; cv=none; b=iJtwIHeTAYVsvef9UWC3AIwwMyz9DgRdaSZJfBVXoiTktX7Oy+L++r46tLFwWUJz+cYlTOEa2cCGmXWyX+eZD4FGy6ZA19SgvRkXNfc/uf03BRjI96JACK7XbyVwWuLNTeLlHRkRNOlLcjx67dJadehQ3OInZE+XDfgusSRElkM=
+	t=1786460519; cv=none; b=hMmGpPseJTYZqdieoYctYiBuBOCMQv3JeOskHIbiBWpVElKXVD++LFLbuVpl97B0fmMhxS0MeB9viq4dMnmsPfF3MO/8zUW9wWJ881cfgFMrWxXZEe0Wrfb7xRjjnctE/Z0kbOOzVNynZthlpUqGciFXBzaoodgPuDviI0+vWcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786460467; c=relaxed/simple;
-	bh=FX1+h96SOrDPrbnJM7Y3QDnLs6pnpuwF86BPYhDpA7U=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=aPcLv9ynYVtlYd3yvK5FAX4rDIjF6E6lqNB8T9+ZCrDWHWQ20MRFaCFrTgouWj39TQXdU9bl53hnsZJq2MpW4c6Z7apSjGNGo0J80z5p/3pkzHzIuo7+RvCqdyryg5WbASwsZUPo830d0YVvmIZD2crjhBOhhEjwyl9jW3mdCp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4a46e8eec4bso529147b6e.1
-        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 08:01:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786460463; x=1787065263;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=2euFBMzpkNGPQKLpYaZF3kHB1Ll/hUNRkhQD6KBsYmU=;
-        b=seBjBaXgRQy1pSumHSo5XNiM9L/MeoU6QgUMirpsO+2jAYLYfvGDrIFaN7REifzFiM
-         zCuXqae+NF1yaKNnkal79ra5CaTjWjKVEsJr4DEJDq9/Kz1hxZFsdRbA2TnR9lqUHo2D
-         7X7pxi+/jgdr7xTiWCk7N/jVsX1s8HYIu90IKJv/eCmuY3asvljEIEEEGHeqOxqpWIVU
-         5JgQJK3yE6bS2A2iDos+GiIxZ2rE9rPkiGsTklI/oEPe6IhFUFdalznwTbp9mwUHLjYC
-         kaJaxTX/TuzxCtRinbe0DcHma+QwyMoch4nszMVi5PK7SB+qIxC6goGWTukT229Hj30f
-         hIWg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro7LxxiLPkJljj3yUQgbfTs6Ui7rAJif9t4I3HgiPjK9JhhVtLdLewwqts/GvKlPBpllek=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8b/2a3xWH7rCBDxNK7ONG5rdr6RHt7iHBG57S0LvxhVhq39sd
-	O5noGMDIMXm8nft0bW8lxGaO7ETEFR8Jzy6i4L1xykqeJHleTY4PDlw956eb2Cz2OFzqOA3E0AF
-	w7TyIo3YXH+d2w5plPk5CwFiVoFUuYu24KUOYZbUvKi81h9/nltYrm0s+PPU=
+	s=arc-20240116; t=1786460519; c=relaxed/simple;
+	bh=5UYS20zcl93ZD2GvJ7ph/fpF1Dtf3Q7qsIbwI3L6D54=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O/X3fTQDyFYcYXnhT58qGwTmYnObVu4jHFOFzKSRYIZ1hZ2nAbGnVlkUIRnemzONKRHMTjckwSjdxvMLHDUcbrvmnrJLyFoqnE5p14481hqidp6rGV92ReOBOklDXjzTn9lRvxcLdIasZ8Eqsy9SyrK7ovc4MRFtqNFRxXhihQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MJ9h2tj3; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MJ9h2tj3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33EC1F000E9;
+	Tue, 11 Aug 2026 15:01:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786460517;
+	bh=ftk6Ob5ePi2NG4+2csEQu5wySUZgPfdaprbJPeK1WJM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MJ9h2tj3g/fUBUHukKY9PqJ7Phm1sT71oEsJp6U1a6kRBd2IZ/39qxMaceNktm9hb
+	 4CeC9k52d+jvQcHEAJOFRDHVgAo7R2OY5LhBFgvO5OGHUxFDfswQP0S266ajMhZhYY
+	 3srq8rMdTdgdEEKoi+XWt4awhuIJwsV7lgAlblGBdm+BjQ2wcO52dTCLQRI5IIYx9h
+	 T1V/SL7mYsLb1FrUxKBT0j3JzZ27EnPZgQuVQ05pnfmcUDQjO4s8Ahkyi68Pi4GAaw
+	 wy6w4hOnPOA2IRuguPhkHZCuCdQ/Y812icVTYLviXr95MGCdA4CvM4peVjtdO4/tMS
+	 TKGpwgD77TJCg==
+Date: Tue, 11 Aug 2026 09:01:55 -0600
+From: Tycho Andersen <tycho@kernel.org>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, kvm <kvm@vger.kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [GIT PULL] KVM (mostly s390) fixes for Linux 7.2-rc7
+Message-ID: <ans4ftkEaxuDXtBg@tycho.pizza>
+References: <20260807135327.2629594-1-pbonzini@redhat.com>
+ <anYQsMnpS2kpYoqA@google.com>
+ <CABgObfak2WM10cj4eQ0DejFQPjsK1ftjS-y2Ygr_gcPs=KyChg@mail.gmail.com>
+ <anZehP6yD66SRsNj@google.com>
+ <CABgObfYqWf8WXNTZtz+W=CSK8yrGJhDruObp42LXkywhyK6=0Q@mail.gmail.com>
+ <CAO9r8zP8=M9yx80SZhXXAThFbbH5wNRRnbZyy1tNF6A1JBy5FQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:150c:b0:4af:741c:f60d with SMTP id
- 5614622812f47-4b1fd8e604emr2429300b6e.13.1786460462971; Tue, 11 Aug 2026
- 08:01:02 -0700 (PDT)
-Date: Tue, 11 Aug 2026 08:01:02 -0700
-In-Reply-To: <6829348563b5854a91ce91f724fe5181810239d3.camel@infradead.org>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a7b392e.3668565d.e8814.0000.GAE@google.com>
-Subject: Re: [syzbot] [kvm-x86?] [kvm?] WARNING: locking bug in kvm_xen_set_evtchn_fast
-From: syzbot <syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com>
-To: dwmw2@infradead.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	pbonzini@redhat.com, seanjc@kernel.org, suryasaimadhu369@gmail.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAO9r8zP8=M9yx80SZhXXAThFbbH5wNRRnbZyy1tNF6A1JBy5FQ@mail.gmail.com>
 
-Hello,
+On Mon, Aug 10, 2026 at 02:30:12PM -0700, Yosry Ahmed wrote:
+> On Fri, Aug 7, 2026 at 10:43 PM Paolo Bonzini <pbonzini@redhat.com> wrote:
+> >
+> > Il sab 8 ago 2026, 00:39 Sean Christopherson <seanjc@google.com> ha scritto:
+> > > On Fri, Aug 07, 2026, Paolo Bonzini wrote:
+> > > > I consider two weeks of wait, on a review that so far had been
+> > > > exclusively about taste, to *be* an honest attempt to gather the next
+> > > > round of feedback (which never came).
+> > >
+> > > Heh, and I was waiting for a response to Yosry's thread:
+> > > https://lore.kernel.org/all/CAO9r8zODKgCcjTBK=P6BuXBBZRoOAFMeRJU8BmkWL-BCX2LoBw@mail.gmail.com
+> >
+> > Heh^2, "Pick your poison, I guess" was not really inviting a response.
+> > Overall the sense of my reply to you (that is: there are two callers
+> > so let's not overthink wrappers) applied just as much to his message;
+> > and checking AMD vs. Intel in common code is a total no-no so I kept
+> > the reply in one place.
+> 
+> Aside from the code itself, I was really hoping for a better
+> understanding of the problem, and answers from AMD/Hyper-V folks if
+> possible.
+> 
+> Basically:
+> 
+> (a) Is INVLPGA intended to be used with NPT enabled to flush GVA
+> translations on behalf of the guest?
+> 
+> I assume the answer is yes, and something is broken. But if the answer
+> is no, then we shouldn't be looking any further and the fix proposed
+> by you/Sean is correct regardless.
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+I think the answer here is "no", but we would like to introduce a
+slightly different fix.
 
-Reported-by: syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com
-Tested-by: syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com
+In terms of my reproducing, I may have been doing it this whole time:
+Alexander's ssh script for liveness checking was working, but the
+uptimes of some of the VMs are different, suggesting that BSODs were
+happening along with automatic reboots. I'll see if I can get windows
+to stop doing that.
 
-Tested on:
+I'm also about to go out of office for a while (kid++), so adding
+Boris and Tom to the thread.
 
-commit:         bd0c3496 KVM: x86: Use gfn_to_pfn_cache for steal time..
-git tree:       git://git.infradead.org/users/dwmw2/linux.git xen-srcu-fixed
-console output: https://syzkaller.appspot.com/x/log.txt?x=17dd3132580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=9cef045500682f6b
-dashboard link: https://syzkaller.appspot.com/bug?extid=919877893c9d28162dc2
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+Thanks,
 
-Note: no patches were applied.
-Note: testing is done by a robot and is best-effort only.
+Tycho
