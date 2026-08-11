@@ -1,32 +1,32 @@
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C530142C503
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 23:03:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7118F39CCFA
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 23:03:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786489423; cv=none; b=Pm2oI29Wf6iwmGi4Wb11AGWkMOph5YFafo/lI5ymLaulFwd8UocfN0w8iZOs5vey0Yw7B7mJoSTUdiA+OXdjYuu9Kfe04kkW6jv6RJva0Bo8k/+Vwy4yRGLEJrqA8XZRZ1MPZDiIj+a7uxC96ZfwT0M4SzB+too9HkQrG00wYt0=
+	t=1786489429; cv=none; b=fiKJzwla+zjZ8XhuSbUTyt5YFer729Hj754nez9mVGuYzigjD4XDvZqZ9IN5B8nmwn9gdXlwCvEjaeRfhYv0qyHM9CVfm+jDgihXHe6Mnbvc9XgvNrS7wnsvr4HniRUuwz2NByG/3TvmXYUB6EmeHwVRkXK/JygQs3yKVvKbcIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786489423; c=relaxed/simple;
-	bh=wwIC3eX7Fml2Q+kjJARL44tlkprsNjlDDjhJKw7k/rY=;
+	s=arc-20240116; t=1786489429; c=relaxed/simple;
+	bh=Yvo9LgMLOuQSU56xXqv5p0DmtktsYza1DlVL/M+lu3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSWXlWKlfJUMPsWUBA8tcY55WLSPvYuI3ZoTNYRklqucQDJTH0feI2bC9oSQ8++TTDTJnochi1Ce5qQUKlDWQLFQG4Fy6x3Hc4FvKrOaKIGfeeQAc6ED41kwZXUEAgt0wIhUNq6kpjCjshK24Ud721pdpqQpbHtOHjeBUiYaQM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=aKmFALIB; arc=none smtp.client-ip=91.218.175.189
+	 MIME-Version; b=KBWWlGCkjCn5A8BQZUKdTAdxDqv5bPvliJlZz3xFA1HpJpZ9bQv/09LfHkNH3XkiVwrN3+CqyTc2H+TNm7klQ+/HUJ8gDZa9kZissaHiQRgmTrn2vpkUuvsJ+FYzf3eguN1vzo6KQLjo9eaYxtX2mntMsuoHWP7e9mil35P/zhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=sduuRLgq; arc=none smtp.client-ip=91.218.175.185
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="aKmFALIB"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="sduuRLgq"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786489417;
+	t=1786489425;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OUZulxlEFenT7RvZakt+p4GE/qxIk5ggsq3u1CDIY8o=;
-	b=aKmFALIBIEB1UhNbRDH6xre7z0bcw6q8Ll+3mDGOOS2KPmUD8CLCAFcA8G3EXol/OGGNDu
-	wlpUfjHFYoTy5Gj4sA4rxm5R4E6VWWtdUuFRsJMQwHircRbYKaIXL4SQtGnM1/Roc4E7DK
-	V0Hg1NBCvboosZvc0nzGC6JqeJ6Y3go=
+	bh=nhSfHP9g04wYalHk7dBUvUUOdewrP/fVDAB8KJOgRKY=;
+	b=sduuRLgqmPiCXoUyn5OGRz/tfB+r5Ky7gmSA3mHy31fSS+Yz7xfPDALsM/uOOm0gzOLpnO
+	7F6n8yUdNsxs4Spu+FBmdV3W3nERR/tzpWUSA7Pcz5KtG6S87GocABKRYVL8ngSaFmpcKB
+	VuGClGWJE+uzk0+csXlizPPaisOp5l8=
 From: Jinyu Tang <jinyu.tang@linux.dev>
 To: Anup Patel <anup@brainfault.org>,
 	Anup Patel <apatel@ventanamicro.com>,
@@ -49,9 +49,9 @@ Cc: kvm@vger.kernel.org,
 	Nutty Liu <nutty.liu@hotmail.com>,
 	Jinyu Tang <tjytimi@163.com>,
 	Jinyu Tang <jinyu.tang@linux.dev>
-Subject: [PATCH v2 1/3] KVM: riscv: Implement KVM_PRE_FAULT_MEMORY
-Date: Wed, 12 Aug 2026 07:03:14 +0800
-Message-ID: <20260811230316.218770-2-jinyu.tang@linux.dev>
+Subject: [PATCH v2 2/3] KVM: selftests: Add RISC-V Sv57 page table indexing
+Date: Wed, 12 Aug 2026 07:03:15 +0800
+Message-ID: <20260811230316.218770-3-jinyu.tang@linux.dev>
 In-Reply-To: <20260811230316.218770-1-jinyu.tang@linux.dev>
 References: <20260811230316.218770-1-jinyu.tang@linux.dev>
 Precedence: bulk
@@ -63,110 +63,55 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-The generic KVM_PRE_FAULT_MEMORY ioctl lets userspace populate KVM page
-tables before running a vCPU over a GPA range. x86 already supports the
-ioctl, but RISC-V does not expose the capability and has no arch hook.
+RISC-V selftests can create guests with five page-table levels, for
+example when the selected guest mode is Sv57. The RISC-V page-table
+walker only had index arrays for levels 0 through 3, so
+virt_arch_pg_map() indexed past the end of the arrays when level 4 was
+used.
 
-Add the RISC-V arch hook and reuse the existing G-stage fault mapping
-path with a read access. Report progress using the G-stage mapping
-returned by the map path, so the ioctl can advance by the actual leaf
-size that covers the requested GPA.
-
-Unlike x86, RISC-V's G-stage fault path does not return a detailed
-result such as RET_PF_FIXED or RET_PF_RETRY. Treat a successful call
-that does not return a visible G-stage mapping as no progress, instead
-of reporting that a page was prefaulted.
+Add the missing L4 index mask and shift so selftests can build guest
+page tables for Sv57 VMs.
 
 Signed-off-by: Jinyu Tang <jinyu.tang@linux.dev>
 ---
- arch/riscv/kvm/Kconfig  |  1 +
- arch/riscv/kvm/gstage.c |  3 +++
- arch/riscv/kvm/mmu.c    | 33 +++++++++++++++++++++++++++++++++
- arch/riscv/kvm/vm.c     |  1 +
- 4 files changed, 38 insertions(+)
+ tools/testing/selftests/kvm/include/riscv/processor.h | 3 +++
+ tools/testing/selftests/kvm/lib/riscv/processor.c     | 2 ++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
-index ec2cee0a39e0..8ac209e8ac87 100644
---- a/arch/riscv/kvm/Kconfig
-+++ b/arch/riscv/kvm/Kconfig
-@@ -28,6 +28,7 @@ config KVM
- 	select KVM_COMMON
- 	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
- 	select KVM_GENERIC_HARDWARE_ENABLING
-+	select KVM_GENERIC_PRE_FAULT_MEMORY
- 	select KVM_MMIO
- 	select VIRT_XFER_TO_GUEST_WORK
- 	select SCHED_INFO
-diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-index e5002cb9cbef..6bd8b8fd6ceb 100644
---- a/arch/riscv/kvm/gstage.c
-+++ b/arch/riscv/kvm/gstage.c
-@@ -280,6 +280,9 @@ int kvm_riscv_gstage_map_page(struct kvm_gstage *gstage,
- 						    out_map->level, true);
- 		} else if (ALIGN_DOWN(PFN_PHYS(pte_pfn(ptep_get(ptep))), page_size) == hpa) {
- 			kvm_riscv_gstage_update_pte_prot(gstage, ptep_level, gpa, ptep, prot);
-+			out_map->addr = ALIGN_DOWN(gpa, page_size);
-+			out_map->level = ptep_level;
-+			out_map->pte = ptep_get(ptep);
- 			return 0;
- 		}
- 	}
-diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index 6035b5ec9503..c96e21740c91 100644
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -748,6 +748,39 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 	return ret;
- }
+diff --git a/tools/testing/selftests/kvm/include/riscv/processor.h b/tools/testing/selftests/kvm/include/riscv/processor.h
+index e3acf2ae9881..abde3c71c891 100644
+--- a/tools/testing/selftests/kvm/include/riscv/processor.h
++++ b/tools/testing/selftests/kvm/include/riscv/processor.h
+@@ -127,6 +127,9 @@ void vm_install_exception_handler(struct kvm_vm *vm, int vector, exception_handl
  
-+long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
-+				    struct kvm_pre_fault_memory *range)
-+{
-+	struct kvm_gstage_mapping out_map = { 0 };
-+	struct kvm_memory_slot *memslot;
-+	unsigned long map_size;
-+	unsigned long hva;
-+	gpa_t end;
-+	gfn_t gfn;
-+	int ret;
-+
-+	gfn = gpa_to_gfn(range->gpa);
-+	memslot = kvm_vcpu_gfn_to_memslot(vcpu, gfn);
-+	if (!memslot)
-+		return -ENOENT;
-+
-+	hva = gfn_to_hva_memslot_prot(memslot, gfn, NULL);
-+	if (kvm_is_error_hva(hva))
-+		return -ENOENT;
-+
-+	ret = kvm_riscv_mmu_map(vcpu, memslot, range->gpa, hva, false, &out_map);
-+	if (ret)
-+		return ret;
-+
-+	if (!pte_val(out_map.pte))
-+		return -EAGAIN;
-+
-+	map_size = PAGE_SIZE << (out_map.level * kvm_riscv_gstage_index_bits);
-+	end = ALIGN_DOWN(range->gpa, map_size) + map_size;
-+
-+	return min_t(u64, range->size, end - range->gpa);
-+}
-+
- int kvm_riscv_mmu_alloc_pgd(struct kvm *kvm)
- {
- 	struct page *pgd_page;
-diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
-index a9f083feeb76..58500a19b33b 100644
---- a/arch/riscv/kvm/vm.c
-+++ b/arch/riscv/kvm/vm.c
-@@ -187,6 +187,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	case KVM_CAP_MP_STATE:
- 	case KVM_CAP_IMMEDIATE_EXIT:
- 	case KVM_CAP_SET_GUEST_DEBUG:
-+	case KVM_CAP_PRE_FAULT_MEMORY:
- 		r = 1;
- 		break;
- 	case KVM_CAP_NR_VCPUS:
+ void vm_install_interrupt_handler(struct kvm_vm *vm, exception_handler_fn handler);
+ 
++/* L4 index Bit[56:48] */
++#define PGTBL_L4_INDEX_MASK			0x01FF000000000000ULL
++#define PGTBL_L4_INDEX_SHIFT			48
+ /* L3 index Bit[47:39] */
+ #define PGTBL_L3_INDEX_MASK			0x0000FF8000000000ULL
+ #define PGTBL_L3_INDEX_SHIFT			39
+diff --git a/tools/testing/selftests/kvm/lib/riscv/processor.c b/tools/testing/selftests/kvm/lib/riscv/processor.c
+index ded5429f3448..b4d41a407553 100644
+--- a/tools/testing/selftests/kvm/lib/riscv/processor.c
++++ b/tools/testing/selftests/kvm/lib/riscv/processor.c
+@@ -43,6 +43,7 @@ static u64 pte_index_mask[] = {
+ 	PGTBL_L1_INDEX_MASK,
+ 	PGTBL_L2_INDEX_MASK,
+ 	PGTBL_L3_INDEX_MASK,
++	PGTBL_L4_INDEX_MASK,
+ };
+ 
+ static u32 pte_index_shift[] = {
+@@ -50,6 +51,7 @@ static u32 pte_index_shift[] = {
+ 	PGTBL_L1_INDEX_SHIFT,
+ 	PGTBL_L2_INDEX_SHIFT,
+ 	PGTBL_L3_INDEX_SHIFT,
++	PGTBL_L4_INDEX_SHIFT,
+ };
+ 
+ static u64 pte_index(struct kvm_vm *vm, gva_t gva, int level)
 -- 
 2.43.0
 
