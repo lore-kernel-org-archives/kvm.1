@@ -1,238 +1,398 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A6D2594BD;
-	Tue, 11 Aug 2026 05:24:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786425858; cv=none; b=hg4qdybmTlv1pywSw+Pv2Fujj+KEjA9Iel0YTW5VRyCj+TR6aQEb+8dcMENEEgVYBJzevESgLEqjzjlu4NrlP5l4PIeQO8Icz4zuqFoDBfL5y+AsaIjHiotsDygG7aJATAdxHd6u3oZDAAdBgb71VNsApro+3sJqhvLxfrVcpbQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786425858; c=relaxed/simple;
-	bh=gwT9H6/yaCRuxIbs6fnWrmttzPX8WwDiR3PU+4u6iFE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S1NNnLas636sHD5iUYngWR3yNtWntLXU9iwWWOl+133UuN+iDAVhNVGBQijXI8F1PB3biyewDzrjHGBxHWrsJEMY2ekGZYXaKUCS6rfEMtSJmgQpqPHiKCpY994nOOKW1QCMjV0hTm/aqqqdCax/Ipk/HliPMQ1bOl8FtyMAcFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=XSweaJFe; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFE537A84F;
+	Tue, 11 Aug 2026 05:31:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786426320; cv=fail; b=dU+8IFgg1GdA2D0gZgEwioocMbdKskdDaGkHzNF/AoIb5363KWAVeZx1G6k2+Iup8lrXqo1159SMO15QAjlAcFKDyYxjaxlwnxzzbl8riqqFuyNZ/h3D8M1sbbRJDqMVpgSdEk/PA6CTKtHOlwfs/Ue9Y8lTetzs5MYXPmUk5DA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786426320; c=relaxed/simple;
+	bh=pE7s7rvxHQKRrmhwdR9++C7UnfVHT4/S+5/AT4Za56s=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=BfKfyKawnb2mNH5KWfKJLcJE4uYGmE3mddPBv/BUm8PuQ52vknwR/j4f741aR1Z1Bz8NBp+hlcqcgUYCDMYqkPzUbra+VuKUsEMmLi2JhhkU861x2PyL+IO7vSz2mAcv/QtmfI7ZpzybbffxlyVo1v3cDh3jSZHdMkwos+SjKLY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GkJSPjWB; arc=fail smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="XSweaJFe"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67AN1hXI1102063;
-	Tue, 11 Aug 2026 05:24:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=kuI8KRKLaGX/wHvIyWMrLp/tQGq1BX
-	SnitbWSD//1AU=; b=XSweaJFeIqS+vYbWL95wxRkvSm+krze/6cdC7q2QmbKDQQ
-	f5fAUX3AyrNpRh7LOSxNJe1BAw+wQRKZ9XQhD6PgCEupg3XsZ5NTF9jcH//s2RJk
-	7ZADtgPN+6Xlo3uUO0lJWdExGX6IGn5EsjcrI+79wtAhRaFEx4zjfA8F4TfobPst
-	aaTg0DMZGWQngTTuoUZk9bm3ykqXISgfHGjqxz60rBlmsddQun9X7fNBHyI6+ld6
-	ZFiUDVL2VPyp/9okB7w+Y9E7RaOikgOYXKFNGnSh/k7PmJp3ve530/Bfor93fvcW
-	wNZh9AU5SWEUdxrBQ3CggjxFCLoIxeI9UJo44jtw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvjyuet6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Aug 2026 05:24:07 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67B5BHgQ016234;
-	Tue, 11 Aug 2026 05:24:06 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxh0g7hva-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Aug 2026 05:24:06 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67B5O2Dw35586414
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Aug 2026 05:24:02 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A040920049;
-	Tue, 11 Aug 2026 05:24:02 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 476B220040;
-	Tue, 11 Aug 2026 05:24:01 +0000 (GMT)
-Received: from Unknown_32:98:3c:96:ca:91 (unknown [9.124.217.93])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 11 Aug 2026 05:24:01 +0000 (GMT)
-Date: Tue, 11 Aug 2026 10:53:53 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        kvm-ppc@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] KVM: PPC: Book3S HV nestedv2: Don't drop pending
- doorbell across L2 entry
-Message-ID: <anqx6XCDNMcP-Sva@Unknown_32:98:3c:96:ca:91>
-References: <20260803034426.44249-1-vaibhav@linux.ibm.com>
- <anm0x87QdleHJkCi@Unknown_32:98:3c:96:ca:91>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GkJSPjWB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786426317; x=1817962317;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=pE7s7rvxHQKRrmhwdR9++C7UnfVHT4/S+5/AT4Za56s=;
+  b=GkJSPjWBPYD/w5sgf7AS84aNGcRg7hrFFdxavYG9p7uGIIbNT1LdfpPf
+   Rf006X1dZyMU1P01M7UJ+AE8mzmdbejlzWoN+oFeAS98es16BEHIMFwrB
+   W8co/p52Jgh+ycByR8JTkdv+OBKl6tA3XO3CswVU7mK6cuE/Kf8Y4moFe
+   gWk5PrO/Ny4nbCyaOf6HyRdMHv94p/wyPLmgcmlGlnN9vwaodeEXhyOBX
+   ZQjTdXPHJJsEXNpZKX9PJN5QHbGab9SO4B5FX1wySOD1I0tpkx98gvkB0
+   cijM21FgEdhzN4lMAAZ5ttf7XeSnv0dmmnrNKFaiVDfMEinRbbvw+bUOo
+   g==;
+X-CSE-ConnectionGUID: EYxRNUSFRXC7dL1hfQq/0w==
+X-CSE-MsgGUID: OP/RhCXIQ7G3DC1Yfh1PHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="86070965"
+X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; 
+   d="scan'208";a="86070965"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 22:31:55 -0700
+X-CSE-ConnectionGUID: Ps9ZGFqrRGe3+aiZijArcw==
+X-CSE-MsgGUID: q+LmgAQTTCactctl+pzZPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; 
+   d="scan'208";a="265246577"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 22:31:54 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 10 Aug 2026 22:31:53 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Mon, 10 Aug 2026 22:31:53 -0700
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.68) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 10 Aug 2026 22:31:53 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=R25YZg5A1O8jaos59md0trIvAF9cMpefwEQH/Gqd3n6gh1WukOD+ni7CXOF8DrkGsmOsomnCHoGvQ+CNyamHNEbDsDxmlh1hUCovW93PEZzgHQ3zk4dTr/YHhZADlqqAPtC0GhWIlq54LnoMyS6YwRO0kJF72tfgXavmyeTh2meGhRrrQ37SyWtljuykWwyGbUxGqKJGQMjvYHVeha2XdQ10OiNscPNLfdtrmxX0dKIFIZMpZf/KEXQvcYkThBiauuumGLuf8vggQkXxTKaotorPfEJtfrnJeGWhEkN5AOBGzxUdFJGfB5H+osD//jw0/0t44DwDgOfQdTH2G5ofKA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KXDPQQNVKEUfl6JkIsw153TEE64qimqT9wwotylWm5I=;
+ b=tGzKqe7uBMDIzQsUvRuQjbx6g+nQ/3MdXphAy30MD4c+LC/K/U+WVvhwJJD55lLEAvOvsmwdidGeXwvGvZel+u+LTXjRHT6H/4ZdSlMSYkCByn8YUqfWe5nAMpWYa7QOmUr0QwWuOyr4krUfX1TgyFrbiFkPhIQQntKyia6iato/eVmuSNy6cvPaleJyzUFxzSld3pb1zZ1aFoctM5xWKS8co6zmjO2E7eN/qTSU0ELXjw2aqU4UOX4gQWaq5wACHt7pRAjx5u2gNTuLdVmVibVzZfLNvcB7IIkIpDvXj3+reDJgK6xEKy5hbcffpmyDcbh/uteR0ItxCB/oQuci4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DSVPR11MB9579.namprd11.prod.outlook.com (2603:10b6:8:383::17)
+ by BL1PR11MB5288.namprd11.prod.outlook.com (2603:10b6:208:316::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.11; Tue, 11 Aug
+ 2026 05:31:50 +0000
+Received: from DSVPR11MB9579.namprd11.prod.outlook.com
+ ([fe80::ab5f:5d0f:fb90:9d]) by DSVPR11MB9579.namprd11.prod.outlook.com
+ ([fe80::ab5f:5d0f:fb90:9d%3]) with mapi id 15.21.0292.024; Tue, 11 Aug 2026
+ 05:31:49 +0000
+Date: Tue, 11 Aug 2026 12:50:48 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Ackerley Tng <ackerleytng@google.com>
+CC: <aik@amd.com>, <andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>,
+	<brauner@kernel.org>, <chao.p.peng@linux.intel.com>, <david@kernel.org>,
+	<jmattson@google.com>, <jthoughton@google.com>, <michael.roth@amd.com>,
+	<oupton@kernel.org>, <pankaj.gupta@amd.com>, <qperret@google.com>,
+	<rick.p.edgecombe@intel.com>, <rientjes@google.com>, <shivankg@amd.com>,
+	<steven.price@arm.com>, <tabba@google.com>, <willy@infradead.org>,
+	<wyihan@google.com>, <forkloop@google.com>, <pratyush@kernel.org>,
+	<suzuki.poulose@arm.com>, <aneesh.kumar@kernel.org>, <liam@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Borislav
+ Petkov" <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt
+	<rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, "Mathieu
+ Desnoyers" <mathieu.desnoyers@efficios.com>, Jonathan Corbet
+	<corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan
+	<shuah@kernel.org>, "Vishal Annapurve" <vannapurve@google.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song
+	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
+	<nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, Axel Rasmussen
+	<axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+	<weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, Qi Zheng
+	<qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau
+	<kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe
+	<jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu
+	<peterx@redhat.com>, <tarunsahu@google.com>, Vlastimil Babka
+	<vbabka@kernel.org>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-trace-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-coco@lists.linux.dev>
+Subject: Re: [PATCH v10 11/41] KVM: guest_memfd: Ensure pages are not in use
+ before conversion
+Message-ID: <anqqKH6kuwpvuwp9@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-11-2fc18ee6d3ba@google.com>
+ <anZ4W9o5pTWIEgMY@yzhao56-desk.sh.intel.com>
+ <anj2bPrGqzZgZWMF@yzhao56-desk.sh.intel.com>
+ <CAEvNRgFzRj_=GVy8T4P8ehhQjYomYxkngzwtKBF0iEL0Cv6fuQ@mail.gmail.com>
+ <anp1I64K0KeyQuyo@yzhao56-desk.sh.intel.com>
+ <CAEvNRgFWcndQKJE_q+ZATFZEMYd=6uRLygozLvg7L77bPX0cEQ@mail.gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CAEvNRgFWcndQKJE_q+ZATFZEMYd=6uRLygozLvg7L77bPX0cEQ@mail.gmail.com>
+X-ClientProxiedBy: TPYP295CA0016.TWNP295.PROD.OUTLOOK.COM (2603:1096:7d0:a::8)
+ To DSVPR11MB9579.namprd11.prod.outlook.com (2603:10b6:8:383::17)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anm0x87QdleHJkCi@Unknown_32:98:3c:96:ca:91>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODExMDA0MCBTYWx0ZWRfX9NVrIOoAH8UT
- ATRB85d2IBgJKs6lRBygliKX9orUCad6/sbF3Hj7LQnVPGmv3FYPu8+8ZITotYdxnZ71t0oTDTL
- 6JpJgd2M0AXKn4fRF8qH4SyOBA8aY9oAdDOtoffCUiB3tvX7gauroEarv1Nw/rhOyY5uTtk0u1g
- fckIUh1vINSIWWMvgJHsYsU+jNS9cZdW2xLa1sSAZAOyVpqaw2h6cAv+y9Uitjfoc+m0p8k8+LZ
- gwwUPY0W6b4l8mkhnaCr8ebyU6zITLK1uh2AMIGkNwS5hzawRss0jxq97+1p9uHeNRRYi7A4AVr
- /F2nDZssvdBlaeZ2NkkO392+PriALwanL4jkPvCeGZH2EeXea6I6JG6S8sSqPY2VQjjCBcZ4Eph
- EVRtIFxlapM9v7BcHplfsA4S+m1rs/qGB54HbP8Kqe73Krl6SdXvaR4fyu+zj4kH2uPdLEmyfyr
- 4Gh1eqYfU2+Nvl1lzhA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODExMDA0MCBTYWx0ZWRfX5TRNlsatnwAB
- aiWVQ2cXeq5cJ0M+zVc/HkZtK2gbVhWV/fia4+OavAIlA+YruzhGO1uB6wlpOeL/J2iov+psRaA
- MMC8Dzd2OHArtoXuLrhmQtIZjS2/BAE=
-X-Authority-Analysis: v=2.4 cv=RqD16imK c=1 sm=1 tr=0 ts=6a7ab1f7 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=Bgcttdl6W-Z8whbBMOsA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: j5iZr9XWsGvqXfNV7HnHNbNQ54ogsGX7
-X-Proofpoint-ORIG-GUID: j5iZr9XWsGvqXfNV7HnHNbNQ54ogsGX7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-10_06,2026-08-10_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 suspectscore=0 lowpriorityscore=0
- clxscore=1015 adultscore=0 bulkscore=0 malwarescore=0 impostorscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608110040
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DSVPR11MB9579:EE_|BL1PR11MB5288:EE_
+X-MS-Office365-Filtering-Correlation-Id: 200641ab-e2aa-41ea-76bc-08def769d788
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|3023799007|56012099006|11063799006|4143699003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: RQCV23OFPxH7TCgCW/yTZmlbe2MEOHhHeHu8BRVWrcihV8NF3MjZXd7Hs5yq//4YjXd3lA1gIMLOwOLrvCejLTCwRzMxA9/63ReKAfABdius5ChK5cTTiJR6BKXZrInyMQYY/dF84aI2PuKeHp4jIKv8+82MyG9OfC2rcgX4cwjzBKhhYwzRQrduFb1nIiaqrgCQ1sUeo+dW0oJhBesQcbS/y713Lknw+9xBO+DSxDaNn7+1UKZSoN98Fje1z2VKPJ5yIhL5gMMVhjJ7k29FV83dyfAP0tMuaINPExW40mdbKR1x0x3ZkTOUydi8y8pk/nbVC+fZXvhXFohH4OPcUYlAIilAkAQ2I3hMNxmUii7UhbK+XwqQUQGOnWLamNN4mLXaJy1OSLh9krQoBi4r7PPQC3RuV9IX5P0YjgGev8QR0+XtbuZDVcKkFuWt8S5FUEhpvPJQa3E4J+AKRNew5mVAoPcSeDjQSDo6UfRP5th310KB5oGt5kzJdT53d7Ujv+gLwxXSvBay55J4Sab8JSiK2N1aVXUE4w9xyLgoJLp1yNYTCEYD5gnj77/3Q+2JfigHAL8FizwdtqoaPxVuu2r9zV3nnNzaenYzStTjf7aJlx5lvD9e8HpDZ2R6bTBX1aH2CwEcBmd6lIFYt3vVhQre70j/X6qxsT3U/CVnYxc=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DSVPR11MB9579.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(3023799007)(56012099006)(11063799006)(4143699003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?QE9YXjw2ig4X/YJ5qRpu3ZLgV015unQBRjOHF6VTFjkf1Mp1FWwB7NJ32E6u?=
+ =?us-ascii?Q?nNDYA6tabgI8/zfh9a+p4rTnQ/SG9+yC+Cj2I/ELZn9p38Msh5G1sehurLIo?=
+ =?us-ascii?Q?09zkK/5JzCXpUqsXUu8CL4HMnznbue+BZKsUK9G9td4TDkiMSASz25ATDHqA?=
+ =?us-ascii?Q?W7Z5JdJw7vPQ0aegq+mO/a1LB7XHFFXKeNOiVRWwRw/Tvm6d1FmExQGpKpq9?=
+ =?us-ascii?Q?xk7Roh7lqKRhi0mmK+oX1INdMaRqkzN/AKUFKT9BJMz+n75OsLA6OLgy41v8?=
+ =?us-ascii?Q?FbzhclCMXolZoR4mRoFAz8eEbJkbHL/nJNEjMD/RzRUfVvuZUe8riFBZhfoJ?=
+ =?us-ascii?Q?/ysTdXY/iNGpzf3ESLHAPeR1OtwNkqFrBdfIOCSQC3EK+/gjxpxPQ2Ittz2z?=
+ =?us-ascii?Q?63G/9a5a0jsFmCHSB1S3lToAwJKCP50PLWIdtLnvvRqEWAOLVZlE3rXjUE49?=
+ =?us-ascii?Q?Ate5Z2YcaHx4M2QQPZBsM4sdrOxHOnfxayuqW7h/Rv1qQIsJ8ZqLsGRgRx6o?=
+ =?us-ascii?Q?lEsM2Am0dz2YX25X4vI/XfmecqojQD29FZuvAqG9/PqBhB8KHolBNWXnUWbV?=
+ =?us-ascii?Q?qjpN6+gZ78nex3JIHryOvCvbtVEcHYNofSksxzfPs+hYcbnc5a7Dpxi5b5tY?=
+ =?us-ascii?Q?z0FBV15kDr5U8JVqZhT3PuCdaNNJ6iLhHQsMNH/lptI3IyU9+vzkH9rjk8e+?=
+ =?us-ascii?Q?j7T9jOMSzDmOsJo0s9d5htREVBzd4rw/yZgaczjfIyNJM1CPrP7hbRSGG/Ff?=
+ =?us-ascii?Q?l2+knzX24kxwBsyc5HiL6f1smx4ZQ3iUoZzRSPyjhshZJy/L/zn7EIZdZ+Eg?=
+ =?us-ascii?Q?GZqFrtev8y01vl0YCTtVYpKdGIwFvsaUHeyKOiETrdWYmjNx0J7OTpYW4jun?=
+ =?us-ascii?Q?0ErHipushq1sAw8NiZ8T9ekEBE5NxgMfL7lTC70NyVEOlKww1z2YduoWU1wW?=
+ =?us-ascii?Q?KNLHZTSYjqfgCjr+MtM1PVBAMd+e3RKaHOIdyuhqHtWUPnssOjr1VRfU78Yb?=
+ =?us-ascii?Q?UNIMsqXX1CK0Pw8ZsYw/ltH5+89FuIFECAstFG6Aom6UYIxDJOlN4RWaihLV?=
+ =?us-ascii?Q?s/R3WIoZjf9iVXmhITGK8nJBYLqX0mV0aX0q30vVVA9O44B2DejKve3dyZv+?=
+ =?us-ascii?Q?fQjRXZqNxO8tJCEQ1VBwX8CuCI0Gcrj0mMoKdpBCjd5TTa16PDEg8Swz0Eap?=
+ =?us-ascii?Q?d0VWlPsLtZYx0qGYAZTP7GV1PKhJjdQQbD37UteorAkvfqHDR60XF/AJNqzX?=
+ =?us-ascii?Q?Sp3uyEF4AJ+yfJSz6Fnm7mtvw6nN26BB2qeOpGUfdgcjHSl1HtPVzVa1XBKc?=
+ =?us-ascii?Q?w8jPOHe06hknNQvrsMzJfBLEeu2X/z0gbhS6b6WmjIF4y6ieg34zezjr+iFA?=
+ =?us-ascii?Q?GIPeDIQ+PkjIyH72BvIM4elVMYrvoCi+wTpSCC4x1KtOnZ/HVYOibaWP8gyA?=
+ =?us-ascii?Q?AuabMlq6zQpilcQpklKd3Pe5IiCt9vCBB9y4ZwdKKF7fz/GlqO2pOSb/IaW+?=
+ =?us-ascii?Q?TATuUUdFY2dH7DxTf/Ik9OVkejGFdh9on/koU22N3Yty9CEMIt/xJQ9Po98K?=
+ =?us-ascii?Q?8SoX0XXigs/a+yXkwEaQ7lUY/hVvXpZIk2HVbxkkq/KHnLswY97SY7kfxFSN?=
+ =?us-ascii?Q?MKVp0C4IBRFkkmxF3awvHAsqbbXWbHP2WuSjZeRrgdTVPv6W8xkfY2EScD5G?=
+ =?us-ascii?Q?50hiZqsqiwT2ad/yQ7phgGAB0awC035T9reFWeG1HsnsWfIFGZa/RwQreSnD?=
+ =?us-ascii?Q?c1+xK5yaBw=3D=3D?=
+X-Exchange-RoutingPolicyChecked: lfpzmw1k5ZDzreQV3uR5RsnbbLKOonbtbGColL0m6E0ZBVPjmdYBxVhQ/IYKuftumUNPDkrosCvVyGcGlodzOV6R1ZqPeRPKo/39ZOXdcx/6/7Gh9xX60oCL7twSMxJcsUE8y58gN5vOx5OiUVAUWuvvaJPOKwcT5ZvHWROFbyVUzGoqM1BB5YTX5a5qd6RoNFxCYy0pZ+Jjgi5IFzhhQ9lRGdbuVrR6GV1XTpoDn1WENyqIFjz6Ea2oXvRf1IzQSKyCUJMy5d9Z1HpWowKUTHHbRERnK8avf7g+v7ilakcFhThD/iAwHb33m5hRvEIGQfFQ/658AK1YjGSlh4eR1Q==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 200641ab-e2aa-41ea-76bc-08def769d788
+X-MS-Exchange-CrossTenant-AuthSource: DSVPR11MB9579.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2026 05:31:49.5524
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nluw9H9XZCoBiTcb3C/HcSjw2TaGSZgLzb5HXEBgTaLv2zcywo4HEUIkxGAizOs/uGx6BbdvWeAV7Q4f+3TRCQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB5288
+X-OriginatorOrg: intel.com
 
-On Mon, Aug 10, 2026 at 04:54:18PM +0530, Gautam Menghani wrote:
-> On Mon, Aug 03, 2026 at 09:14:25AM +0530, Vaibhav Jain wrote:
-> > On nestedv2 the L1 converts a pending doorbell into guest DPDES state at
-> > the top of kvmhv_vcpu_entry_nestedv2() and immediately forgets about it:
-> > 
-> > 	if (vcpu->arch.doorbell_request) {
-> > 		vcpu->arch.doorbell_request = 0;
-> > 		kvmppc_set_dpdes(vcpu, 1);
-> > 	}
-> > 
-> > Clearing 'doorbell_request' at this point assumes that handing DPDES to the
-> > L0 is equivalent to the L2 having taken the doorbell. That is not true, and
-> > the doorbell can be lost in two ways:
-> > 
-> >   - The block runs before the lazy_irq_pending() check, so the doorbell is
-> >     consumed even on the path that returns 0 without ever calling
-> >     H_GUEST_RUN_VCPU.
-> > 
-> >   - DPDES stays pending in the L2 until it is actually delivered. The L2
-> >     may exit for an unrelated reason (hcall, page fault, HDEC) with the
-> >     doorbell still set, typically because it was running with MSR[EE]=0.
-> >     Nothing reloads DPDES afterwards, so the L1 never learns this.
-> > 
-> > Once 'doorbell_request' has been cleared, the L1 has no record of the
-> > pending doorbell. kvmppc_doorbell_pending() returns false, so
-> > kvmppc_read_dpdes() reports the target thread as idle when a sibling vCPU
-> > emulates 'mfspr DPDES', and the vCPU can be treated as having no work
-> > pending and blocked. From the L2's point of view the doorbell is silently
-> > lost, which shows up as an SMT guest hanging on a doorbell-based IPI.
-> > 
-> > Fix this by making 'doorbell_request' track the L2's DPDES rather than
-> > being consumed by entry:
-> > 
-> >   - inject DPDES after the early-return paths and before
-> >     kvmhv_nestedv2_flush_vcpu() serializes it into the vcpu run input
-> >     buffer, and no longer clear 'doorbell_request' there,
-> > 
-> >   - after H_GUEST_RUN_VCPU, reload DPDES from the L0. The run output only
-> >     carries the state the L0 chose to return and the 'valids' bitmap is
-> >     zeroed on exit, so an explicit kvmhv_nestedv2_cached_reload() is
-> >     needed to see the L2's current value,
-> > 
-> >   - if DPDES is still set the doorbell was not delivered, so keep
-> >     'doorbell_request' pending so that it is re-injected on the next
-> >     entry; otherwise clear it.
-> > 
-> > This keeps a pending doorbell visible to the L1 for as long as the L2 has
-> > not consumed it, so vCPU wakeup and DPDES emulation on sibling vCPUs stay
-> > consistent with the L2's actual state.
-> > 
-> > Fixes: 54ec2bd9e017 ("KVM: PPC: Book3S HV nestedv2: Fix doorbell emulation")
-> > Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> > Assisted-by: Claude:Opus-5
-> > ---
-> >  arch/powerpc/kvm/book3s_hv.c | 20 +++++++++++++++-----
-> >  1 file changed, 15 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> > index 61dbeea317f3..40f8717b8a7d 100644
-> > --- a/arch/powerpc/kvm/book3s_hv.c
-> > +++ b/arch/powerpc/kvm/book3s_hv.c
-> > @@ -15,6 +15,7 @@
-> >   * by Alexander Graf <agraf@suse.de>.
-> >   */
-> >  
-> > +#include "asm/guest-state-buffer.h"
-> >  #include <linux/kvm_host.h>
-> >  #include <linux/kernel.h>
-> >  #include <linux/err.h>
-> > @@ -4253,11 +4254,6 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
-> >  	int trap;
-> >  	long rc;
-> >  
-> > -	if (vcpu->arch.doorbell_request) {
-> > -		vcpu->arch.doorbell_request = 0;
-> > -		kvmppc_set_dpdes(vcpu, 1);
-> > -	}
-> > -
-> >  	io = &vcpu->arch.nestedv2_io;
-> >  
-> >  	msr = mfmsr();
-> > @@ -4265,6 +4261,9 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
-> >  	if (lazy_irq_pending())
-> >  		return 0;
-> >  
-> > +	if (vcpu->arch.doorbell_request)
-> > +		kvmppc_set_dpdes(vcpu, 1);
-> > +
-> >  	rc = kvmhv_nestedv2_flush_vcpu(vcpu, time_limit);
-> >  	if (rc < 0)
-> >  		return -EINVAL;
-> > @@ -4296,6 +4295,17 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
-> >  	if (rc < 0)
-> >  		return -EINVAL;
-> >  
-> > +	/* Check if privileged door bell was requested and handled */
-> > +	if (vcpu->arch.vcore->dpdes) {
-> > +		kvmhv_nestedv2_cached_reload(vcpu, KVMPPC_GSID_DPDES);
-> > +		if (vcpu->arch.vcore->dpdes)
-> > +			vcpu->arch.doorbell_request |= vcpu->arch.vcore->dpdes;
-> > +		else
-> > +			cpu->arch.doorbell_request = 0;
+On Mon, Aug 10, 2026 at 07:17:11PM -0700, Ackerley Tng wrote:
+> Yan Zhao <yan.y.zhao@intel.com> writes:
 > 
-> This is a compile error, should be "vcpu->"
+> > On Mon, Aug 10, 2026 at 02:06:06PM -0700, Ackerley Tng wrote:
+> >> Yan Zhao <yan.y.zhao@intel.com> writes:
+> >>
+> >> >
+> >> > [...snip...]
+> >> >
+> >> >> > @@ -542,8 +576,21 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> >> >> >
+> >> >> >  	mas_init(&mas, mt, start);
+> >> >> >  	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
+> >> >> > -	if (r)
+> >> >> > +	if (r) {
+> >> >> > +		*err_index = start;
+> >> >> >  		goto out;
+> >> >> > +	}
+> >> >> > +
+> >> >> > +	if (to_private) {
+> >> >> > +		unmap_mapping_pages(mapping, start, nr_pages, false);
+> >> >> > +
+> >> >> > +		if (!kvm_gmem_is_safe_for_conversion(inode, start, nr_pages,
+> >> >> > +						     err_index)) {
+> >> >> Note: conversion failures could occur if another vCPU is attempting to map a GFN
+> >> >> within this range.
+> >> >>
+> >> >> CPU 0 (setting attributes)          CPU 1 (attempting to map)
+> >> >> --------------------------          --------------------
+> >> >>                                  A: mmu_invalidate_retry_gfn_unsafe
+> >> >>                                     filemap_invalidate_lock_shared
+> >> >>                                     __kvm_gmem_get_pfn ==> folio refcount++
+> >> >>                                     filemap_invalidate_unlock_shared
+> >> >>
+> >> >> filemap_invalidate_lock
+> >> >> filemap_get_folios
+> >> >> check folio_ref_count(folio) ==> Not match !!
+> >> >> filemap_invalidate_unlock
+> >> >>
+> >> >>                                  B: read_lock(&vcpu->kvm->mmu_lock);
+> >> >>                                     is_page_fault_stale
+> >> >>                                     kvm_mmu_finish_page_fault ==>folio recount--
+> >> >> 				    read_unlock(&vcpu->kvm->mmu_lock);
+> >> >>
+> >> >>
+> >>
+> >> Thanks for reporting this!
+> >>
+> >> >> Retrying in kvm_gmem_is_safe_for_conversion() or moving the invocation of
+> >> >> kvm_mmu_invalidate_start() + kvm_mmu_invalidate_range_add() to an earlier
+> >> >> position does not help as long as CPU 1 stays at stage A.
+> >> >>
+> >>
+> >> IIUC CPU 1 isn't blocked by a conversion so stages A and B should
+> >> complete fine, and CPU 0 would already be retrying for other reasons
+> >> anyway, like speculative refcounts from elsewhere in the kernel, so the
+> >> conversion would take longer but it'd work out.
+> >>
+> >> Is that understanding right, that this doesn't completely break
+> >> conversions?
+> > It depends on the timing. The max retry count cannot be expected under unlucky
+> > conditions.
+> >
+> >> >> So, should we avoid this failure?
+> >> >> e.g., by moving filemap_invalidate_unlock_shared() from stage A to after
+> >> >> stage B?
+> >>
+> >> Not really sure about this, how will control go back to guest_memfd
+> >> after the fault finishes for guest_memfd to unlock the filemap?
+> > I don't understand your question. But I find this solution is less ideal than my
+> > below proposal.
+> >
 > 
+> When kvm_gmem_get_pfn() is called from kvm_mmu_faultin_pfn_gmem(), KVM
+> MMU takes over from there, there isn't another call when KVM MMU
+> finishes mapping the page into the stage 2 page tables back into
+> guest_memfd.
 > 
-> > +	} else {
-> > +		vcpu->arch.doorbell_request = 0;
-> > +	}
-> > +
+> After stage B, how is filemap_invalidate_unlock_shared() going to be
+> called? Do you mean filemap_invalidate_unlock_shared(folio->mapping)?
+Something like this. However, since this would cause the shared filemap
+invalidate lock to be held longer, conversions may have to wait for any on-going
+faults regardless of the GFN range, which I don't quite like.
+
+> I think filemap_invalidate_unlock_shared(folio->mapping) is a little
+> asymmetric...
 > 
-> I think this entire block after vcpu exit can be reduced to just
+> >> > Or what about having KVM always treat gmem page as non-refcounted, and have
+> >> > kvm_gmem_get_pfn() put folio refcount before releasing the filemap invalidate
+> >> > lock?
+> >> > Below patch is applied and tested at the end of this series.
+> >> >
+> >> > From 8c2f29bc15bceb6a8fa103cf2585ec11354fd74e Mon Sep 17 00:00:00 2001
+> >> > From: Yan Zhao <yan.y.zhao@intel.com>
+> >> > Date: Mon, 10 Aug 2026 06:24:52 +0800
+> >> > Subject: [PATCH] KVM: guest_memfd: Return gmem page as non-refcounted
+> >> >
+> >> > Have kvm_gmem_get_pfn() put gmem page refcount before releasing filemap
+> >> > invalidate lock and return the gmem page as non-refcounted. This avoids
+> >> > gmem memory attribute conversion failure caused by temporarily holding gmem
+> >> > page after faulting and before completing mapping.
+> >> >
+> >> > guest_memfd always holds gmem page in filemap cache. TDX does not increment
+> >> > gmem page refcount when having gmem pages mapped in S-EPT. Additionally,
+> >> > as gmem pages are not swappable, setting dirty or accessed bit is not
+> >> > necessary. Therefore, there's no need to treat gmem pages as refcounted
+> >> > pages.
+> >> >
+> >> > Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+> >> > ---
+> >> >  virt/kvm/guest_memfd.c | 5 ++---
+> >> >  1 file changed, 2 insertions(+), 3 deletions(-)
+> >> >
+> >> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> >> > index 2115e73e455a..e357b4ffa777 100644
+> >> > --- a/virt/kvm/guest_memfd.c
+> >> > +++ b/virt/kvm/guest_memfd.c
+> >> > @@ -1332,11 +1332,10 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >> >  #endif
+> >> >
+> >> >  	folio_unlock(folio);
+> >> > +	folio_put(folio);
+> >> >
+> >> >  	if (!r)
+> >> > -		*page = folio_file_page(folio, index);
+> >> > -	else
+> >> > -		folio_put(folio);
+> >> > +		*page = NULL;
+> >> >
+> >> >  out:
+> >> >  	filemap_invalidate_unlock_shared(file_inode(file)->i_mapping);
+> >> > --
+> >> > 2.43.2
+> >>
+> >> Hmm going with the above CPU 0 and 1 illustration, if instead CPU 0
+> >> truncates the folio and the folio ends up being freed, then KVM's MMU
+> >> has a pointer to a page that is already
+> >> freed. kvm_release_faultin_page() is passed the pointer to this page and
+> >> will dereference the page.
+> > Not really. It's just like KVM mapping non-refcounted pages.
+> > kvm_release_faultin_page() does not access the non-refcounted pages.
+> > The invalidate protocol also ensures no mapping of stale pfn.
+> >
+> > As below, if CPU 0 truncates the folio, it needs to hold filemap invalidate lock,
+> > add KVM mmu invalidate range, hold mmu_lock, zap KVM mappings before the
+> > truncation.
+> >
+> >
+> > CPU 0                                      CPU 1
+> > -----                                    --------
+> >                                          Save fault->mmu_seq
+> >
+> >                                      B1. filemap_invalidate_lock_shared
+> >                                          __kvm_gmem_get_pfn
+> >                                          folio_put
+> >                                          filemap_invalidate_unlock_shared
+> >
+> > 				     B2. read_lock
+> >                                          is_page_fault_stale
+> >
+> >                                      B3. kvm_tdp_mmu_map
+> >                                      B4. kvm_mmu_finish_page_fault
+> >                                          read_unlock
+> > A1. filemap_invalidate_lock
+> >     kvm_gmem_invalidate_start
+> >
+> > A2. write_lock
+> >     zap KVM MMU
+> >     write_unlock
+> >     truncate
+> >
+> > A3. kvm_gmem_invalidate_end
+> >     filemap_invalidate_unlock
+> >
+> >
+> > A1 occurs either before or after B1.
+> > 1) If A1 occurs before B1, B1 will find the correct pfn.
+> > 2) If A1 occurs after B1 and before B2,
+> >    a. if A2 is before B2, B2 must find the fault is stale, so it's fine.
+> >    b. if A2 is after B2, A2 must be after B4 as well. So, accessing stale pfn
+> >       in CPU 1 is fine.
+> > 3) If A1 occurs after B2 and before B3,
+> > 4) If A1 occurs after B3 and before B4,
+> > 5) If A1 occurs after B4,
+> >    A2 must be after B4 (for 3-5 conditions).
+> >    So, accessing stale pfn in CPU 1 is fine.
 > 
->     if (vcpu->arch.doorbell_request)
->         vcpu->arch.doorbell_request = kvmppc_get_dpdes(vcpu);
-> 
+> It's not about the stale PFN, if there's no refcount on the page
+> returned from B1, then after A3, the page can be freed.
+>
+> Contractually, I think KVM is allowed to reference the page?
+> kvm_release_page_clean() calls kvm_set_page_accessed() on the page
+In my patch, "*page = NULL;" is returned in kvm_gmem_get_pfn(). So,
+fault->refcounted_page is NULL. With it, kvm_release_faultin_page() does
+not access the faultin PFN or the page.
+So, no worry about UAF.
 
-Gave this a bit more thought - this can miss the doorbell that was sent
-to this vcpu while the vcpu was running. I think the below code should
-work fine:
+> (UAF?). Not sure which other KVM architectures reference the struct page
+> itself. Are we going to teach the rest of KVM to not reference and not
+> do kvm_release_page_*?
+It's just like how KVM maps non-refcounted pages.
+And guest_memfd actually asks consumers (like TDX) not to take page refcount.
+__kvm_gmem_populate() also puts the folio refcount before invoking
+filemap_invalidate_unlock().
 
-     if (vcpu->arch.doorbell_request) {
-             vcpu->arch.doorbell_request = 0;
-             kvmppc_set_dpdes(vcpu, 1);
-     }
-
-     rc = plpar_guest_run_vcpu(...);
-
-    /* Restore the doorbell status and also account for the doorbell
-     * received when this vcpu was running */
-     if (vcpu->arch.vcore->dpdes)
-        vcpu->arch.doorbell_request |= kvmppc_get_dpdes(vcpu);
+> Would like to see what Sean thinks of this. Either way, is it okay to
+> follow up after conversions lands?
+Let's see what Sean thinks of this :)
+I raised this because the issue was encountered by one TDX's stress selftest.
+I have no strong opinion on whether it should be fixed after this series lands.
+But the fix I proposed is quite small :)
 
 
-- Gautam
