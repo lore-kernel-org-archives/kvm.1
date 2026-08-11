@@ -1,104 +1,100 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1FC2459C5;
-	Tue, 11 Aug 2026 03:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228392DEA74
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 04:09:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786418249; cv=none; b=WKorOeOtmgC7lYgnCF68x7PLKhViiAykxVqzaNHvmOb9+Z28MfrMTV6b+XY/eRsg73Ph54dssN+gVhSDNWz/cZe7hl37OmciFk1yc2SiqMttoiJYgm94NRtoc6p7O9GdQAsIi6+woYEhMkjH1W7twSVRNRg03yfZnagmO40iVPo=
+	t=1786421354; cv=none; b=JkRE83wAJJ0SJgE7si85opvZubfx/Lt6OgM4v+vJXPrG7/6ngpW5v65FHtZYxzDNV88DOhdNVEYOXwDMku+qaJimJmS6vTBov/fuo5BfKvdIcraxb7T8LRvDywCX5yeNwN3rQ8f/ok5in77pUV4fDJdB7yJJI8a6SObx+6LE5G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786418249; c=relaxed/simple;
-	bh=QTCq14i7jxrlvROni+h5Y9gFqQzT44xa9JZvCkaz8yM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ms8HfiA3wUJQrlDQPER++4tXmlW1TzgVdj8YOSLa6vPJ8Za+T8RahO5KumZGONCX5+2bzNBVp1AWxDXaU2wNMhNE3jCrqG4ipvAkqar4kRHHAUfp9XHCNLGN0QbEF67sdZLcab8UirUqQXAptFoE1ukX2DrvfO/yg9cwh/V6UR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BzczaKHC; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786421354; c=relaxed/simple;
+	bh=UCB0aqX38bCGfqeb+Q6Ir9SGHftrsvr77s24jRVQ2N4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JykrTCRjLqMlIPoz6yiOMHBCDB9GrORZZaQsBJOSnxDOpjhgkp7SVgN8X9FyCpgZj7uoOGqP2yAumbmB6sqEn2hcxONFzTO6EhOzzDa8b+qvg1D6N5woLU8/XCYZPqPxJH89VOjBPztcPzGptq4J1VkksH7hIY5grTJNRJylnGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pVTLis25; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BzczaKHC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786418247; x=1817954247;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=QTCq14i7jxrlvROni+h5Y9gFqQzT44xa9JZvCkaz8yM=;
-  b=BzczaKHCafo5Ef51oKkIwxzp6ufkJrXNb5eOIa3xGrt8R9tp2wmqCw1m
-   ijnV6YblAUZqnvc/KiqJAMRln27lWSJX1NtNTxO0CPvOIi8aZPIurE545
-   g6m5u9J+o+nvgAYA7uXxmdnUAMz7mXxUCigd8kTxeIz7kadqHUzFKhujP
-   iQB8NVX1ZZZx+qdxBTujrYld+jC3GqLdkAVejqDGM4tvEccjRBuIHUS47
-   dzmr4Bcb+0HZ2obxelXveb2No6wkErEUUuwKTbf5tRK+ox7u6EdhEL6iG
-   5Mv2aL3KvRf0XxReg3GoFeer4qhDuTpVjXfk6liZSei71lgFCDCmsUVlq
-   g==;
-X-CSE-ConnectionGUID: DnNfQ2wKS6+vOZaT5xIHYg==
-X-CSE-MsgGUID: R0iiYM/HSo6vhME+x0EFXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="86952320"
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; 
-   d="scan'208";a="86952320"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 20:17:27 -0700
-X-CSE-ConnectionGUID: F37ECsn4RsGMoY53defQmQ==
-X-CSE-MsgGUID: 96gk7SEeQGudqam8JoBkqQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; 
-   d="scan'208";a="258938771"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.248]) ([10.124.240.248])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 20:17:24 -0700
-Message-ID: <30686bd2-37a4-4cff-82df-29c918444a58@intel.com>
-Date: Tue, 11 Aug 2026 11:17:21 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pVTLis25"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84867f07d63so3027833b3a.2
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 21:09:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786421352; x=1787026152; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zWXHO5w8Ni1sSCNzQtBM0h6+HBrXqed94gT9w5G/cZw=;
+        b=pVTLis25uzeyFH2lKSc4q+/uaC3qM5/OpyXzbyoRblnXxf4wfFrP1KaFXJkt4BxbLL
+         YsqJDlD6pyPSbAjGFFKRM3LL9TEgqhKiTtjs8NANtjwMyJLXR948V2YhhZ8rRclrVtQb
+         /opoRk5O5o2ACsGy6OtSIKIHJ01urwjtZEbFoNz3ngWn/CVIXZpeENI1T6bQHcvNzvLz
+         Ifm4Ae55bApxZ/pjKV4NSkx9Z5G7ArU5eICC7qWOZHwqa6Fmzh6IyKPTWX+rwclpYVGq
+         c4RQzPz63IcoTVWPaGN9OfmPXJypchsJRENY0bCEEYZ9YQGwzWlmUrUjNooUaefLIOko
+         JzPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786421352; x=1787026152;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zWXHO5w8Ni1sSCNzQtBM0h6+HBrXqed94gT9w5G/cZw=;
+        b=dirx/sXPCb0Adjl2b0mE+ZzepejXRYLRAhGyPdWO8mizGH/KtbfX08+YMmuIMp4OYy
+         OteDGW3Z0S98USUIF4I2T9aDP2pWVn+ZDwVmJaGKCh9mcHnQGZXDeY3Fb/elyh+UJz8p
+         Rb/Cg7RmvJ5FntzEHx9LdEAfTenuCY5NRE0NS43RGEMsMleg6K+wPcdnHQK54VwmF1IM
+         kR6n33Yro44rUKySgEKeOmDwukFqaC8MsT4pKvvfpF/AZNgMhgc/WcExwXnvriFqr3Ek
+         UjFUwkubZ4LL33GswReJA8/Nz7GjtJrgCm0Lw+CWWZY7uDUPgXQz8cdoypCLtY9kHO5f
+         vBzQ==
+X-Gm-Message-State: AOJu0YxkXYrcuD1l6Gj247u6HBV4LjnacWZvm2ZJhmrztXUd3wD1kAWK
+	4N79brI0lcZjyFBpZwsCfjV2RwFhziWwf+KcOjoU8DmG7sgnf1YsQSFmxyWmbbHlETA=
+X-Gm-Gg: AR+sD10Z9thhMoXkEJhyebB/GYm//tfLV25U59Z+JboD+u6xMvWxxdsG4n6VK3i0NwD
+	eWjlxWwBaj1zJDi4zjDyViUEmm83K5YivqtTtu6JgU/TJuIVEK5CjNub2uO2E7M2uAUdqaFYYoy
+	CmVJ6aTGxWjoIMzA54HlnE82HA/bBnM5gZ+P+NGrahnuo3yw85G8WVfXM1e6rcWOJ3ptP6h8D3/
+	CzxnY92sSYUTzEdxT2CCdRvCF3Im5C5AVwRBtrx+OmMHJqe8j/uzHqAs3KCZbPVzowSqTkNhBi1
+	ee0JP520OwoBH1a26imvPaR22mFA2Ka6sixOr57ECdFLzZjHGcjwUCFGhIBhtTGo6VAGgCmTUml
+	nax1bvT6SFSwa3LU8NnP7TKVjNMrViXLF1VZBjDQIvcEdY2TVjVYgLT7T4+JnCCEH1HSevNwAmd
+	exXXr+YzpBDKRkwpFcubjWdMX0/uk5Fw+4FRc4/XuzINdvx4BVbwD1hKxLD+rshrAZMqsRIiTBW
+	h38hCVWxNA=
+X-Received: by 2002:a05:6a21:4cc7:b0:3c8:e140:63a8 with SMTP id adf61e73a8af0-3cc2ba60827mr877093637.23.1786421352444;
+        Mon, 10 Aug 2026 21:09:12 -0700 (PDT)
+Received: from volcano9f8e-host.amd.com ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31c65005accsm29307eec.31.2026.08.10.21.09.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 21:09:11 -0700 (PDT)
+From: Hemanth Selam <hemanth.selam@gmail.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>
+Cc: kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/1] KVM: selftests: SEV: Sanity check the launch measurement
+Date: Tue, 11 Aug 2026 09:38:57 +0530
+Message-ID: <20260811040858.1984593-1-hemanth.selam@gmail.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] KVM: TDX: Fix the exit reason handling
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, Kiryl Shutsemau
- <kas@kernel.org>, Nikolay Borisov <nik.borisov@suse.com>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-References: <20260810112200.2326727-1-xiaoyao.li@intel.com>
- <20260810112200.2326727-3-xiaoyao.li@intel.com> <anpmxJOESl3swUpd@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <anpmxJOESl3swUpd@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 8/11/2026 8:03 AM, Sean Christopherson wrote:
-> The shortlog is way too generic, and the changelog is light on details.  Over
-> the weekend, I managed to forget why this was necessary, and it took me a few
-> seconds to recall why we need to avoid setting bits 31:16.  Of course, one could
-> argue that says as much about me as it does the shortlog+changelog...
-> 
-> Oh, and shortlogs like "Fix the exit reason handling" sometimes lead to amusing
-> follow-ups like "Really fix the exit reason handling".  Don't be that person :-)
-> 
-> Something like:
-> 
->    KVM: TDX: Don't clobber exit_reason[31:16] when TDX-Module didn't try VM-Entry
+This replaces the TODO in test_sev() with a sanity check of the launch
+measurement returned by KVM_SEV_LAUNCH_MEASURE.  A full attestation-style
+validation isn't possible from the selftest because userspace does not
+possess the transport keys the PSP uses to derive the measurement.  The
+check therefore verifies the firmware-reported blob length and that the
+measurement and the nonce are non-zero, with the blob layout described by
+a struct so the buffer and field sizes derive from a single definition.
 
-1. It's not only about clobbering the exit_reason[31:16], but also about 
-how to interpret the basic exit, e.g.. the change
+No functional changes from v1; this posting only adds a cover letter.
 
--	switch (exit_reason) {
-+	switch (exit_reason.basic) {
+v1: https://lore.kernel.org/all/20260807121308.1885737-1-hemanth.selam@gmail.com/
 
-2. It's not only about TDX module doesn't try VM entry, bus also about a 
-valid VM exit after successful VM entry. This patch also preserves the 
-exit_reason[31:16] for a valid VM exit. (One could argue that existing 
-code cannot clobber exit_reason[31；16] because the code to clobber it 
-requires the [31:16] to be 0, because of switch (exit_reason))
+Hemanth Selam (1):
+  KVM: selftests: SEV: Sanity check the launch measurement
 
-3. For the case where TDX module doesn't try VM-Entry, I'm not sure if 
-"clobber" is the correct word. There is no valid exit reason, so nothing 
-to be really clobbered. Just don't synthesize a exit reason with 
-non-zero bit 31:16.
+ tools/testing/selftests/kvm/include/x86/sev.h | 12 +++++++
+ tools/testing/selftests/kvm/lib/x86/sev.c     | 11 +++++--
+ .../selftests/kvm/x86/sev_smoke_test.c        | 33 +++++++++++++++++--
+ 3 files changed, 52 insertions(+), 4 deletions(-)
 
-My intent was just using one patch to handle them all, so as to make KVM 
-behave correctly after enabling Bus Lock VM exit for TDX in the next 
-patch. Because they are targeted for stable kernels.
+-- 
+2.43.7
 
-What's your advice then? What do you think of spliting it into multiple 
-so that it's easier to write a shortlog and changelog for each one.
