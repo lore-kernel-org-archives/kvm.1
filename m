@@ -1,37 +1,37 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213EC431491;
-	Tue, 11 Aug 2026 10:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C8043C7AF;
+	Tue, 11 Aug 2026 10:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786445389; cv=none; b=dbsUyynqx3rPLMpW/1XwlTjINYPJRDd0OD+t+tC2q+8P3SfAE87FDoO6nTHLKrqUEqnKLPM0SI1wwKdSveud98k7cnhmSwHWogJDH/b0B6k7D4+Z0xpnbjf/CyuyhQASBVXYxJ4JLvCCQ11CQInBknc+9S2xjCTPIu1tcMfkCGk=
+	t=1786445394; cv=none; b=UQixLVHRuIQmIu/d7WE2Oru6InHbDVWyvFvIGndRt5By2xWWSxVmYojbnw7k6HvVSIizi2JFUHuV+PwfutQltuANf749z+yv7tcU3sX0KHAOhgV3Cf/jCz8E3pou2lKZpHeVnNTgT+YSi89/YFBRntwbuaBOdGhIhvz/xhVZUyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786445389; c=relaxed/simple;
-	bh=kP2CpCyZAD5m6ki/fI5CnOZOP/OLjaGAXSZDUDrZ6a0=;
+	s=arc-20240116; t=1786445394; c=relaxed/simple;
+	bh=zNx/aPeeZXaFykth++2z0CyLQZNAxDNzR9EDXDIYP3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tTf7M2mCYjKCsGtzbxk9pymzsE2l8FyefA6E3tS/bjaXqVfy5au11+AI8j1ZcDGSYafPt1VbxHcKDlD/rE8dsufnGhXhW+4jpm0hHQEmjxImgtdUUrbg7FSCSPSqPxtvJxEoaGRdenvexRQOKwFUjTt2j5tEr+Rd3iflqDVK1bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=s3CYTy/o; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=L9Ii+/1oBWJ+qeOf6ASMi/ML1e+1Iczk2ZVCyp2MPR/2iQxPWAC6o9c9LqYP8TfO21z40BpIyGfj5mPIb3BV1yD1RsrNdoegyxtjOgnjbOgTB3G9jFGW6Biqf4IkGb0lMhdrrQfMScyg7jalfRykCPKWYok79PbdD6wgjjK+3HY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=KGjixxVe; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="s3CYTy/o"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="KGjixxVe"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=VHPpfZEKhNqpn7dNeV3sq+WTizDuMZH0KaIuUqd3lDE=; b=s3CYTy/oMUAAZB5vH6Qe3q9BNG
-	YyevCv2r63kd8VxWZTYDpzj5OqnwuMGggxxr3jqJfQTOYkT6Gerr4DGfkXZDrzZzrpPxX8Q9eWY2n
-	QZAr1cErAPE3SoLa6DzbVTpzU9b0iZ3IifXyz+6YyCoHwvXEii28VvU4Z4XvTUlq4RIGz7DLPJ3sL
-	TO09Z5UhewmiM+VZ8PncmB+LWDTV1wS5rMwD2lB68+ONQgR32DvJKgDxRTfazLXsZBhEI8+hlmEPq
-	I1+3FhzBL11Gj7Y6lvD0uaF8/v7YdL53rF62S0waItUwx4F1Xsp2NQ1dENX+N0DTD9KD97RzaRgPX
-	1MmAb57g==;
+	bh=cFOix9MEHzEkHL6OuSiUhv0LJF9jrpcWzI6x+Cu6k5w=; b=KGjixxVeU0LwoKhoerTjXMFvis
+	SGQEEF8qjgHBlMQoIViBtJNCqqf+Pk+KgH1vt5o8qdpV9XCWXB0YdZud8EsgYj5e6jZrx/scb5ubj
+	Smm/qOAGvgfos3flDPiHfyipYCB2Ok8cFZObOkqO5/3VUGVhmaZLsdFF5vziROLSbRNB8zAcqEsLr
+	wkjR1zFBs1L2vudTdsPYN9AbEPtY1sGnBOcFG6X8CmlRRByB8iy0oIHOAKhVQ7hIcpr6pTmI6XFPe
+	TF9+lWPDYZUjXPGCFckaiYz2mwOGdfKIDJ/FH3GQJoDkrOllEJetSSmkrXZnv+19v0celP8Mxj/Ju
+	xgZKtMGw==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wtj60-0000000GFnT-1LYS;
-	Tue, 11 Aug 2026 09:48:42 +0000
+	id 1wtj60-0000000GFnZ-1Szg;
+	Tue, 11 Aug 2026 09:48:41 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
-	id 1wtj5z-00000000PjG-2vhE;
+	id 1wtj5z-00000000PjS-3gDp;
 	Tue, 11 Aug 2026 10:48:31 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: seanjc@google.com,
@@ -53,9 +53,9 @@ Cc: dwmw@amazon.co.uk,
 	lkp@intel.com,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 03/11] KVM: x86/xen: Rename max_evtchn_port() to kvm_max_evtchn_port()
-Date: Tue, 11 Aug 2026 10:37:05 +0100
-Message-ID: <20260811094829.98794-4-dwmw2@infradead.org>
+Subject: [PATCH v2 07/11] KVM: x86/xen: Use 32-bit locked bts for vcpu_info evtchn_pending_sel
+Date: Tue, 11 Aug 2026 10:37:09 +0100
+Message-ID: <20260811094829.98794-8-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260811094829.98794-1-dwmw2@infradead.org>
 References: <20260811094829.98794-1-dwmw2@infradead.org>
@@ -71,96 +71,120 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Rename in preparation for adding a variant that takes a latched bool
-argument for use in paths that need a consistent snapshot of the
-shinfo mode.
+Replace test_and_set_bit() on vcpu_info->evtchn_pending_sel with an
+explicit 'lock btsl' in kvm_xen_set_evtchn_fast(). The generic
+test_and_set_bit() uses a 64-bit locked operation ('lock btsq') on
+x86-64, and the address of the per-vCPU info is guest-controlled and
+only required to be 32-bit aligned, so an 8-byte access can generate a
+split-lock #AC exception.
 
-No functional change.
+Since evtchn_pending_sel is at most 64 bits wide and port_word_bit
+ranges 0-63, a 32-bit 'lock btsl' suffices for both native and compat
+vcpu_info layouts, and only requires the 4-byte alignment that is
+already guaranteed by the registration path.
 
-Assisted-by: Kiro:claude-opus-4.6-1m
+This also eliminates the bogus cast of compat_vcpu_info's 32-bit
+evtchn_pending_sel to 'unsigned long *' which was the original source
+of the split-lock hazard.
+
+Note, KVM reuses the local gpc. The atomic accesses to pending_bits is
+on the page-aligned per-VM shared_info structure, i.e. doesn't need the
+same treatment as the access is guaranteed to be 64-bit aligned.
+
+Fixes: 14243b387137 ("KVM: x86/xen: Add KVM_IRQ_ROUTING_XEN_EVTCHN and event channel delivery")
+Reported-by: sashiko-bot@kernel.org
+Closes: https://lore.kernel.org/all/20260604193554.1BA311F00893@smtp.kernel.org
+Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Assisted-by: Claude:claude-mythos-5
 ---
- arch/x86/kvm/xen.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ arch/x86/kvm/xen.c | 47 ++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 33 insertions(+), 14 deletions(-)
 
 diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index e234c2a192c3..00894afea9be 100644
+index 959d79eef0ce..c935651906ec 100644
 --- a/arch/x86/kvm/xen.c
 +++ b/arch/x86/kvm/xen.c
-@@ -1423,7 +1423,7 @@ static int kvm_xen_hypercall_complete_userspace(struct kvm_vcpu *vcpu)
- 	return kvm_xen_hypercall_set_result(vcpu, run->xen.u.hcall.result);
- }
- 
--static inline int max_evtchn_port(struct kvm *kvm)
-+static inline int kvm_max_evtchn_port(struct kvm *kvm)
+@@ -1815,7 +1815,7 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
  {
- 	if (kvm_xen_has_64bit_shinfo(kvm))
- 		return EVTCHN_2L_NR_CHANNELS;
-@@ -1530,7 +1530,7 @@ static bool kvm_xen_schedop_poll(struct kvm_vcpu *vcpu, bool is_64bit,
- 	}
- 
- 	for (i = 0; i < sched_poll.nr_ports; i++) {
--		if (ports[i] >= max_evtchn_port(vcpu->kvm)) {
-+		if (ports[i] >= kvm_max_evtchn_port(vcpu->kvm)) {
- 			*r = -EINVAL;
- 			goto out;
- 		}
-@@ -1817,7 +1817,7 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
- 		WRITE_ONCE(xe->vcpu_idx, vcpu->vcpu_idx);
- 	}
- 
--	if (xe->port >= max_evtchn_port(kvm))
-+	if (xe->port >= kvm_max_evtchn_port(kvm))
- 		return -EINVAL;
- 
- 	rc = -EWOULDBLOCK;
-@@ -1979,7 +1979,7 @@ int kvm_xen_setup_evtchn(struct kvm *kvm,
+ 	struct gfn_to_pfn_cache *gpc = &kvm->arch.xen.shinfo_cache;
+ 	bool has_64bit_shinfo = kvm_xen_has_64bit_shinfo(kvm);
+-	unsigned long *pending_bits, *mask_bits;
++	unsigned long *pending_bits, *mask_bits, vi_pending_sel_ofs;
  	struct kvm_vcpu *vcpu;
+ 	unsigned long flags;
+ 	int port_word_bit;
+@@ -1848,11 +1848,18 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 		pending_bits = (unsigned long *)&shinfo->evtchn_pending;
+ 		mask_bits = (unsigned long *)&shinfo->evtchn_mask;
+ 		port_word_bit = xe->port / 64;
++
++		vi_pending_sel_ofs = offsetof(struct vcpu_info, evtchn_pending_sel);
+ 	} else {
+ 		struct compat_shared_info *shinfo = gpc->khva;
+ 		pending_bits = (unsigned long *)&shinfo->evtchn_pending;
+ 		mask_bits = (unsigned long *)&shinfo->evtchn_mask;
+ 		port_word_bit = xe->port / 32;
++
++		vi_pending_sel_ofs = offsetof(struct compat_vcpu_info, evtchn_pending_sel);
++
++		/* test_and_set_bit() needs 64-bit alignment, but that's OK */
++		BUILD_BUG_ON(offsetof(struct compat_shared_info, evtchn_pending) & 7);
+ 	}
  
  	/*
--	 * Don't check for the port being within range of max_evtchn_port().
-+	 * Don't check for the port being within range of kvm_max_evtchn_port().
- 	 * Userspace can configure what ever targets it likes; events just won't
- 	 * be delivered if/while the target is invalid, just like userspace can
- 	 * configure MSIs which target non-existent APICs.
-@@ -1988,8 +1988,8 @@ int kvm_xen_setup_evtchn(struct kvm *kvm,
- 	 * can be restored *independently* of other things like creating vCPUs,
- 	 * without imposing an ordering dependency on userspace.  In this
- 	 * particular case, the problematic ordering would be with setting the
--	 * Xen 'long mode' flag, which changes max_evtchn_port() to allow 4096
--	 * instead of 1024 event channels.
-+	 * Xen 'long mode' flag, which changes kvm_max_evtchn_port() to allow
-+	 * 4096 instead of 1024 event channels.
- 	 */
+@@ -1868,6 +1875,8 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 		rc = -ENOTCONN; /* Masked */
+ 		kvm_xen_check_poller(vcpu, xe->port);
+ 	} else {
++		bool old;
++
+ 		rc = 1; /* Delivered to the bitmap in shared_info. */
+ 		/* Now switch to the vCPU's vcpu_info to set the index and pending_sel */
+ 		read_unlock_irqrestore(&gpc->lock, flags);
+@@ -1884,19 +1893,29 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 			goto out_rcu;
+ 		}
  
- 	/* We only support 2 level event channels for now */
-@@ -2026,7 +2026,7 @@ int kvm_xen_hvm_evtchn_send(struct kvm *kvm, struct kvm_irq_routing_xen_evtchn *
- 	struct kvm_xen_evtchn e;
- 	int ret;
+-		if (has_64bit_shinfo) {
+-			struct vcpu_info *vcpu_info = gpc->khva;
+-			if (!test_and_set_bit(port_word_bit, &vcpu_info->evtchn_pending_sel)) {
+-				WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
+-				kick_vcpu = true;
+-			}
+-		} else {
+-			struct compat_vcpu_info *vcpu_info = gpc->khva;
+-			if (!test_and_set_bit(port_word_bit,
+-					      (unsigned long *)&vcpu_info->evtchn_pending_sel)) {
+-				WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
+-				kick_vcpu = true;
+-			}
++		/*
++		 * Explicitly use a 32-bit btsl instead of test_and_set_bit(),
++		 * which would use btsq on x86-64. The vcpu_info is guest-
++		 * controlled and only required to be 32-bit aligned, so a
++		 * 64-bit access could generate a split-lock #AC.
++		 *
++		 * Note, this does not apply to the test_and_set_bit() on
++		 * pending_bits above: that is in the per-VM shared_info, which
++		 * is page aligned, so the access is guaranteed to be 64-bit
++		 * aligned.
++		 */
++		old = GEN_BINARY_RMWcc(LOCK_PREFIX "btsl",
++				       *(u32 *)(gpc->khva + vi_pending_sel_ofs),
++				       c, "Ir", port_word_bit);
++		if (!old) {
++			struct vcpu_info *vi = gpc->khva;
++
++			/* No need for compat handling */
++			BUILD_BUG_ON(offsetof(struct vcpu_info, evtchn_upcall_pending) !=
++				     offsetof(struct compat_vcpu_info, evtchn_upcall_pending));
++
++			WRITE_ONCE(vi->evtchn_upcall_pending, 1);
++			kick_vcpu = true;
+ 		}
  
--	if (!uxe->port || uxe->port >= max_evtchn_port(kvm))
-+	if (!uxe->port || uxe->port >= kvm_max_evtchn_port(kvm))
- 		return -EINVAL;
- 
- 	/* We only support 2 level event channels for now */
-@@ -2136,7 +2136,7 @@ static int kvm_xen_eventfd_assign(struct kvm *kvm,
- 
- 	case EVTCHNSTAT_interdomain:
- 		if (data->u.evtchn.deliver.port.port) {
--			if (data->u.evtchn.deliver.port.port >= max_evtchn_port(kvm))
-+			if (data->u.evtchn.deliver.port.port >= kvm_max_evtchn_port(kvm))
- 				goto out_noeventfd; /* -EINVAL */
- 		} else {
- 			eventfd = eventfd_ctx_fdget(data->u.evtchn.deliver.eventfd.fd);
-@@ -2254,7 +2254,7 @@ static int kvm_xen_setattr_evtchn(struct kvm *kvm, struct kvm_xen_hvm_attr *data
- 	if (data->u.evtchn.flags == KVM_XEN_EVTCHN_RESET)
- 		return kvm_xen_eventfd_reset(kvm);
- 
--	if (!port || port >= max_evtchn_port(kvm))
-+	if (!port || port >= kvm_max_evtchn_port(kvm))
- 		return -EINVAL;
- 
- 	if (data->u.evtchn.flags == KVM_XEN_EVTCHN_DEASSIGN)
+ 		/* For the per-vCPU lapic vector, deliver it as MSI. */
 -- 
 2.55.0
 
