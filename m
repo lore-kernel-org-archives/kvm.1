@@ -1,176 +1,205 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74A53B42D3;
-	Tue, 11 Aug 2026 11:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786447912; cv=none; b=bteNnyAR3ESvUKsFo5zKgYhqI+z+iw7eXux/6w7zVjUryrQ93EaXuZu88Ntj50tApDyQIr56tTv0HIvxi2r20NY5VI+TrQRDrs78AsCNz8BTD0WUKAzaASF26u2vDrV8FXmxwF+37jL+F0aYBrhBlks0WL0qc7iiXLyr3dAzddM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786447912; c=relaxed/simple;
-	bh=vkmS5xbZv/MhrmuCuWRhhmFAuTY1aGqY1fkJvBus3Io=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=lf6istahwf4INGLFlN6va8ta78YHse419ZQZXuJRw+qB1vyE2WqW8LILqgciLVbccN1Zdo6WipnY9fuMWPwF36ebCWxysgnG4tO/F1pU9R3n3Wcp5G1MONkxPbHy63X+2oIZc0Ww9CTGynAKrXBw/yS9SSnXZU4jknfUZz0/nIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=om8xJIfj; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A52B364931
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 11:43:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786448614; cv=fail; b=JlIRqsH9xkx0YxEjqluMbQsHZWuWC5eHgDllOI7u+9G5JNcDrYzeYWFlaj1MnHUWtuth4ngv+p9uKHKVF0meFT3cG8NS5/0otz0vj4/WKpv+sYfWFoqV140DR7gM570Tg74OZNqp6JU2yOEbuhRxqz/Z6eQWen+sCRLz0v/7SwI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786448614; c=relaxed/simple;
+	bh=NQ5MIu4kHppt+URDKnXzNVqrh7/nM2GoiNzzOQFqP0g=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=GIo+MZxfh3cdlbfnp9vMIgCHCw/VXClumC6azb024YVrW7uf/MDA84fjAiEJC+E0Nci0QII4JgOzjRFDJyEaJPTqCk2UcS7BGCulr7PzW8mTZi5UIo64BrjMyVGmYdeFxxs+yyFToPea2+vSHtONs6CwiWLBNs4CcZYyW6DZ+no=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BOHnIIs7; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="om8xJIfj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A141F000E9;
-	Tue, 11 Aug 2026 11:31:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786447910;
-	bh=4h7/hkwvCsY0fI00T2PR/Y4OZG0mhUElOQ2zn4pF7HM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=om8xJIfjsRUCvKibHk4AB92a86v/0sm2xMl+BtSmgoyg7QzhmHmd3v9z3YvwkioCW
-	 9u/nZK6wJXKOBRJSadI/b5pqpyXdCXcN7dsJ9BaeaAZz90F1BIBA4twS1gV3wuBHJO
-	 mJtZngYdB7FxDju+zrnYNhjNPFjwE8vD9dfqPU/3VUsDjvBzcsgX4U7GyWO21QietQ
-	 +uDGaQz1ywUPS27qK7TYb35Ab1PJEijr+OqHQQPgoG/BBG0vdmmBqVwPLY/LGZtoQR
-	 7NrPUAPpNv5bhHusvIMbXZwA2gJ2vJg4PJ/zmo8j6qYfhy4KZUMw6mp3S6iqu2krU4
-	 1EuINsbUcsIhg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Tarun Sahu <tarunsahu@google.com>,  ackerleytng@google.com,
-  fuad.tabba@linux.dev,  Andrew Morton <akpm@linux-foundation.org>,
-  dmatlack@google.com,  Shuah Khan <skhan@linuxfoundation.org>,  Jonathan
- Corbet <corbet@lwn.net>,  david@redhat.com,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Pratyush Yadav <pratyush@kernel.org>,
-  sagis@google.com,  Paolo Bonzini <pbonzini@redhat.com>,  Mike Rapoport
- <rppt@kernel.org>,  Alexander Graf <graf@amazon.com>,
-  linux-kselftest@vger.kernel.org,  andre.przywara@arm.com,
-  michael.roth@amd.com,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
-  will@kernel.org,  vannapurve@google.com,  maz@kernel.org,
-  fvdl@google.com,  kvm@vger.kernel.org,  oliver.upton@linux.dev,
-  kvmarm@lists.linux.dev,  alexandru.elisei@arm.com,  skhawaja@google.com,
-  aneesh.kumar@kernel.org,  linux-doc@vger.kernel.org,  David Hildenbrand
- <david@kernel.org>,  yan.y.zhao@intel.com,  kexec@lists.infradead.org,
-  suzuki.poulose@arm.com
-Subject: Re: [PATCH v4 05/11] KVM: LUO: Support VM preservation across live
- updates
-In-Reply-To: <anphyjFv3FhF61iB@google.com> (Sean Christopherson's message of
-	"Mon, 10 Aug 2026 16:42:02 -0700")
-References: <20260728121138.1103610-1-tarunsahu@google.com>
-	<20260728121138.1103610-6-tarunsahu@google.com>
-	<anphyjFv3FhF61iB@google.com>
-Date: Tue, 11 Aug 2026 13:31:43 +0200
-Message-ID: <2vxzpkzo51wg.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BOHnIIs7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786448613; x=1817984613;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=NQ5MIu4kHppt+URDKnXzNVqrh7/nM2GoiNzzOQFqP0g=;
+  b=BOHnIIs7qI2Bp1Nvs0vmCrHjlL+UIcNSeymN0/GdZU9BffuU+mt+eGUX
+   N+KKy4NhMwQ4bMNEm4f6piLURbgDiagMk2//i+ipTVZb72wMe4wAZWHEy
+   8EZGMh6KkXuObEtD5KWnDWfb0p4St20dkWVZL/1k5W9IfrUWdzJ1I9ITd
+   /mnXrA57zbMBByZUgheRGaqDkK8lCc+bMhpPdgDAzEo0Pn3Wu8lIn7ewQ
+   ij97BT64xYsMLdePH95wxjYo7V4Y0twL47T/5Y6tjWHERwJnEM9Yym1Gu
+   mm/hJGY7NQ4hppDhb2T1XkeE+mZt5Q0p+xkOgy6qxhwUaStsZrBC4U8eC
+   A==;
+X-CSE-ConnectionGUID: 206xtZmXQqiWvYrH29l85Q==
+X-CSE-MsgGUID: AyVAvia2S82f8BB0T0DMaA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="74510058"
+X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; 
+   d="scan'208";a="74510058"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 04:43:32 -0700
+X-CSE-ConnectionGUID: 1wXiOhCRR9SAQ7SL2j7W2A==
+X-CSE-MsgGUID: ZL7BmTejRVy6R4WZxARCkA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; 
+   d="scan'208";a="267597115"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 04:43:32 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Tue, 11 Aug 2026 04:43:31 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Tue, 11 Aug 2026 04:43:31 -0700
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.21) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Tue, 11 Aug 2026 04:43:31 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lGkJXRGay/GPRHfTulv4uvarswOpOc2uGLSYt7cQV7ntZvF831i6Baig3TdcBcqLllHnrHRpMgDf3sR5VxnKn9rrV/6Iv08Z+TzXPM2lEQLa+4CmKOoH/7t3pLsnOisaSgid7ZExE8jUMJwE1eyKyzXGt3sxXqU7d+KoeP4uyU5lAUmq13gFC+U7c13d4lD6P/6DJUTi+TMEKzdYkW+GJM8/ptLHy7F9KeDUh5+FZgfcJe/ulO7dyjhwvANNNK3AFJqdoCu8Np0YVK+atU6/iJc1spLCvpABu4XG/VOELVcxjISX/QcJOEBETcGsKnW5UqVQTP5h75vbwtj5fJXhsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NQ5MIu4kHppt+URDKnXzNVqrh7/nM2GoiNzzOQFqP0g=;
+ b=qnjjECzSc8qPhFNIsAa/x+JDHZUsQSeAk7K0XPuQ0tuPaIyZvWlPSJYQkqo8FV0s5qvCtJaF4jbErA6U1fqqPSmXdQrrKGSfCnx4wOusm4vo94G2PwZbHFt5rlH7iNqg+CzdXZVkbNaHmTUxxrPsOmOvaCrGlapzoN7hBcv8SBKaNEYpHBinLqZNhsJbZorRqWDKTgd4/4LjbR3CTnld5mRH/D2HIyEZ8a454U9VK71BPwBc89cw/ZAWPLbaciVCUMczWPEIuMRqiL1i94ONjqTpBPLC4/klhCPl2eTcnOXO9QUvjSaN9TGKgEM2LHKb68Aufn0p7yEmS7mo+nXwQA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CH0PR11MB5300.namprd11.prod.outlook.com (2603:10b6:610:bf::18)
+ by SAWPR11MB9710.namprd11.prod.outlook.com (2603:10b6:806:4c8::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Tue, 11 Aug
+ 2026 11:43:28 +0000
+Received: from CH0PR11MB5300.namprd11.prod.outlook.com
+ ([fe80::3a08:e2e0:c8b9:7a7c]) by CH0PR11MB5300.namprd11.prod.outlook.com
+ ([fe80::3a08:e2e0:c8b9:7a7c%6]) with mapi id 15.21.0315.008; Tue, 11 Aug 2026
+ 11:43:28 +0000
+From: "Huang, Kai" <kai.huang@intel.com>
+To: "seanjc@google.com" <seanjc@google.com>, "hao_zhang_kdev@163.com"
+	<hao_zhang_kdev@163.com>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>
+Subject: Re: [PATCH v4 4/4] KVM: x86: ioapic: Clear irr_delivered on
+ level-triggered RTE
+Thread-Topic: [PATCH v4 4/4] KVM: x86: ioapic: Clear irr_delivered on
+ level-triggered RTE
+Thread-Index: AQHdKWUmSEVFnnW/702aYN/1fgMqyLaYunEA
+Date: Tue, 11 Aug 2026 11:43:28 +0000
+Message-ID: <ff25747d2827c847b0b1153177de6c6c004df8fb.camel@intel.com>
+References: <anrSjerPIvO4Ww-T@192.168.1.215>
+In-Reply-To: <anrSjerPIvO4Ww-T@192.168.1.215>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH0PR11MB5300:EE_|SAWPR11MB9710:EE_
+x-ms-office365-filtering-correlation-id: c221854b-2550-49ad-f983-08def79dc2a8
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|10067099003|56012099006|11063799006|38070700021|6133799003|18002099003|22082099003;
+x-microsoft-antispam-message-info: c2qjzg7XYnLv/CvC3k3MWYekC+ysSAhlb9FFx7AbDFc/tIbUOTAfOVNKqqhqjr9aH/QKtIjHFVs1LAHmfF3F8PvenZbBOlNJLEpeVauhIFEUVgwoqoPdufG3Ta3TxgvhRNJb3qmbPl2cvaHTNODlBDBU7nKNqWJNqSjvCVgmQ1n10pJh/im3QfN6TcEwohv2ReDmMMarEGdmFLZtgak3/G1+BHoEGnY/caxmZEIKKjstFJd0V8kJ2q1OEcBjLb5v9h77C2cGeF3FujrZLQXo6tnxcM6fF5Wc1xXMXmXYwZtxeTk2upzQ+DsFLXhqjus30gPPHojjKNE7b2915stEbvWsVGDWc29kyJAHh7wZLK47h471S5M/Kwr5SFXiNt2CiduW377Eo4E+3SQV7dbTPD0PXCCuj5QcmoDDdFi0dN0dAxOHTDgs87agZDL8aLpGiNIzbncZuiaKdPm+NmNiZWdwMWVMLtgVqmWAi5JYld77uNvKnwOdxPgFR1K2aUrC+fdKrDUQYyx5vMt42A8BsTg0RkQSRRADtUABervaEW9jFEaB6fV7BIUjLi6lGFDro7LRZx4m3MF+FnSKA0cmK1zbgnDxRdWBbKhQu5T3RWsCG143R2L7+hANsr5d99ZqJNsSvGn4Et2uzxh2oRFy/8Ve2XaSqLZRUjOyzewm/Q24bj/5uUNs/35TmdaL0QwxSlCpNue4A3po+mBtMaLGYxdDhoRqyD8LaLFjjtH9ypo=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR11MB5300.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(10067099003)(56012099006)(11063799006)(38070700021)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?a1Y5TVB3OEdlUnhTbUpGR09VVXIrWWxadC9DTWN1VTNwclJjZlJWLzlWdlJM?=
+ =?utf-8?B?KzlVTVF3WVorTndxS1JqZEpMRXEwbi9qenJiRHlPeVFFbUxPOFI1NUFrMTVa?=
+ =?utf-8?B?RGNMZmxqZ0tmaE5ZZzB1U0N3bmdkRklJb0M0Q0FaTjFZYkg5SkgramhOOUxK?=
+ =?utf-8?B?Lzh4MzVZZWZ5Zkg3dXJaUFVjUWwwaWMwZExWNWx4TDVYY3lyQWRPL2FuTXVi?=
+ =?utf-8?B?V3krdndqZU1lVGpHRU5wQkttbTNPdG5NbUNVVmhFR3c5OXZyU29sTGxTcThL?=
+ =?utf-8?B?REtTV0pOdjFtRGlGSm91cXN0anZ0RC93c1dPckw0SkVkUTlhTkt6YlNWekFx?=
+ =?utf-8?B?dGtUYklxS2cvVWdjeklzcFExbUI0empYUFFsNDI4aGpUSDlOSmVSb1hOMXJ0?=
+ =?utf-8?B?ZUhnd0hGQXBxSWVPQjU1eHY3bFF5ODQ4ZFVZOGhvRVB1TWdodVRzTWpEbzhn?=
+ =?utf-8?B?SzBkeGI4UkI2YzNEa2tZdHVmd2NRd08wWkdCc3RqYVg2cXBqeDVKL1VjQTFh?=
+ =?utf-8?B?bkQwUUhxanRMZ2JmUzhLandndjQzTWhZMEVjVTJUMXhNbWxCSndtSWpsNXVp?=
+ =?utf-8?B?SVMvNVB6bWlQSTlET1RDaFBTekFNTTJNSlVRamRVanlvZk9KV3hDWE9Rbi9C?=
+ =?utf-8?B?RnVjaGYzVDc1ellvOXprK0FJU1V2Q0FxdjlTMmMrcHBYNXBoVHppNEduK252?=
+ =?utf-8?B?dURaakh2QUhBVXRaamVNRDJScmREbjRqWHJiVkdyeldDRlBFOC9LQTZvNVl0?=
+ =?utf-8?B?RFFRUFJKR0ZwU2VQbm9BaHYya0NURHArNHZyYlEyVUU2TFFqdk5OYW9YdFZw?=
+ =?utf-8?B?cXdzTEZ0WUR1TUJVQThKV2ZWM21oOTlWdWhWZVozSFk5Yjg2UEF4TXlFbDUx?=
+ =?utf-8?B?UlJOZG5NVUJlUnM1SjFNMTcyaFBoUDNSMlhKNGljRWxqNS95WFc5T1BxQjFS?=
+ =?utf-8?B?ZmdFUEIvZFc4VFJzdVhUUm16ZUlnUXBDeFQzSlVQVVkrZ2xMRnNVZ1JUd1Nm?=
+ =?utf-8?B?cFl1SjBRNmRSMVY1T1c1Vjc4TXFuM1RyVC9aeWVqL0R5clFXeXlyd0F6Rllk?=
+ =?utf-8?B?UnhzZzE2a3ByWXhBc3pCY2xER0UyUWt4QWFiRWEzWTBlZlpSa1FaZjgzdHpK?=
+ =?utf-8?B?d0xEaVd0dnVCTVZjWTJMMS9kUGhBZ3R3Q1VVUllkeWwwU3BSU2d6ZUw2dEk3?=
+ =?utf-8?B?a2tVQThSM1ZTNjdmRGhMN1BqUDhwcmVqcmFYUHJWWjc0OCtTMjJEdFpKcnZ0?=
+ =?utf-8?B?MFhnZXNUblRTZENUVDZTOTVpSTNnMnNNRHZPaEd0WE9pSS9SLzRDdVIzcEta?=
+ =?utf-8?B?ZUlraCtubGg4SDM0RUpnOURaL3FlZERPcERFejJONUowd1NzRmFiU1h0L2p5?=
+ =?utf-8?B?QnlWaDUwV1NSQUdFa2xGQmsyQ2xidVhLYmtUczV5aGY0Q2IrV0V4YXZsZnVt?=
+ =?utf-8?B?N3k4UmNsakphcFFrSkIxNG5EL1FudkJUd1ZFRjE4WEJ4SVI3aVhCaXBVcUR4?=
+ =?utf-8?B?OUxSejVJR1dFK2VQc3pncU9NK3VNUlNQSEhNQ3VaQys2d1AwTllMS0U0N1h3?=
+ =?utf-8?B?bjF5L0dSdXNDVXpoc1FkVW5RNTA2SDQ1MStyem9uTmJTVUh6a1JiUVpzZ2tO?=
+ =?utf-8?B?UlNFSHd1OFQwM2U4U1cwbjk3RTRnNzYxWEtpM3RURU84T083OHppb2xyV0Zt?=
+ =?utf-8?B?S2Zub0xwT2YyUTJjWXk3bkU1d2g1VXFVS1hKbHFWRUhaL1ExYm5IUkpObWh0?=
+ =?utf-8?B?RUdtOHNrdm1UKzFzVkVpTUt1L2paMm9pTExsYjROb1RBWHNRTEZlSDlpZkhW?=
+ =?utf-8?B?THNHQjdYL1ZjUHVNOEhFaWRwMjdpajdNYk5zYUQ5eUUwZlFEZ3ZnL2NXVmd0?=
+ =?utf-8?B?MUtkUnE5OFk0dU5PZFBwc2tvb0hFRU9TNXNuTVR6Y2xramxhOTJVL2xmRGF6?=
+ =?utf-8?B?djJOTWViWXJqS292Nm1CaEh6YlB0YnY5cERtdGV5V2NLSEpqcHg0d043VmNW?=
+ =?utf-8?B?eW1VNE9reUtWak4vb0FRZ29JRG1UMDBJSHNLUS9jVStwYjNVL3JyZ2k2VnFR?=
+ =?utf-8?B?QVl6NEswSjJac21VL0RPOHBjYXpBTGxieVh3L1BMZDVGeE5aZUx3aEJkQWV5?=
+ =?utf-8?B?Y0d6UnVZNzYzK0paOVBrV1UrVlhUKy9rTlNUSERPejF0YlBsNk40RmtCMHFm?=
+ =?utf-8?B?M2NiUmVKOGdpUzJSSWNBM2FMOUl4NktjTUE3Mm9QdGlWZWNHOWFUYTBWVHMw?=
+ =?utf-8?B?ekZHT1hLNldML0JBd0UyWFBaZGVVQjV1Wmk5MXpUTm5zY3RXN040SFRBSnl6?=
+ =?utf-8?B?dEZiSG55QUl5cmtUSlZtcFVQTU9OVjJYOFAvL21HdWk1bmRIdkZhZz09?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <7E6348B3C05C1146A77F4BD42B2A4823@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Exchange-RoutingPolicyChecked: b/HqjQhlCGvrFlS8twZYmAl/NCghznK0lrGX+KC7Appgj3N7H3JdLIk9wKj31wDfTSvPnhEd+kCMcmyEV0MR7uKD/4WAcRt54aND6edGH6LVfn2lHGS0stsHRLVmpt+bpEoerP0JCxy2Q/wb90UdTz6zypqe1zO02aIHxQ85Ueh32B+1Rx5/oNAj6iuKVIV96PD5LI6d0oDS5DAPZ0Xi185ZMDmwrhHZuhfUdbL70uMif1nrzSVhG0wS1JeIayHER6eKNOShyVOvjSfvzRbV20j6aTweEHUbxcGpBXbGzayRo2FMDHkud8PaX7cwVCgC2ceTQxmcNRhb4oRAumBpgA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5300.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c221854b-2550-49ad-f983-08def79dc2a8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Aug 2026 11:43:28.0474
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 4zgZujB9zLQtzpcs+V9b9azsi4hZ4Rn34gekSOd8f4zKEu8j+pui5AbyJhXsrBfih3UV+D9Oh+9RQ5MHeuSWKA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAWPR11MB9710
+X-OriginatorOrg: intel.com
 
-On Mon, Aug 10 2026, Sean Christopherson wrote:
-
-> On Tue, Jul 28, 2026, Tarun Sahu wrote:
->> Register a Live Update Orchestrator (LUO) file handler for KVM VM files
->> to serialize and deserialize VM state across kexec live updates.
->> 
->> Currently, Only VM type (e.g. arch.vm_type on x86) is preserved as part
->> of VM preservation.
->
-> Why?
->
->> On retrieval, kvm_luo_retrieve() recreates the KVM VM file via
->> kvm_create_vm_file() and use an atomically incremented ID for the internal
->> fdname, as the final fdname assigned by userspace is not yet known during
->> retrieval. As this fdname is only used in debugfs infra, This will not break
->> any UAPI.
->> 
->> This infrastructure establishes the foundation for preserving guest_memfd
->> instances across live updates, and can be expanded in the future to
->> preserve additional VM state.
->
-> Uh, why guest_memfd?  As much as I want to push guest_memfd adoption, it seems
-> guest_memfd should be the _last_ thing we support, not the first.  As evidenced
-> by the last two decades, it's very doable to have KVM VMs without guest_memfd,
-> but it's rather hard to have VMs without vCPUs.
-
-You _can_ preserve vCPUs today using KVM_{GET,SET}_REGS, they just won't
-run in the background during the reboot. This series can save you from
-dumping VM memory to disk if it is backed by guest_memfd.
-
->
->> Also updates MAINTAINERS to include virt/kvm/kvm_luo.c and
->> include/linux/kho/abi/kvm.h.
->> 
->> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
->> ---
->>  MAINTAINERS                 |  11 ++
->>  include/linux/kho/abi/kvm.h |  39 ++++++++
->>  virt/kvm/Makefile.kvm       |   1 +
->>  virt/kvm/kvm_luo.c          | 195 ++++++++++++++++++++++++++++++++++++
->>  virt/kvm/kvm_main.c         |   8 ++
->>  virt/kvm/kvm_mm.h           |   8 ++
->>  6 files changed, 262 insertions(+)
->>  create mode 100644 include/linux/kho/abi/kvm.h
->>  create mode 100644 virt/kvm/kvm_luo.c
->> 
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index a3ed337e827d..0283f0fd6ef4 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -14539,6 +14539,17 @@ S:	Maintained
->>  F:	Documentation/devicetree/bindings/leds/backlight/kinetic,ktz8866.yaml
->>  F:	drivers/video/backlight/ktz8866.c
->>  
->> +KVM LIVE UPDATE
->> +M:	Pasha Tatashin <pasha.tatashin@soleen.com>
->> +M:	Mike Rapoport <rppt@kernel.org>
->> +M:	Pratyush Yadav <pratyush@kernel.org>
->> +R:	Tarun Sahu <tarunsahu@google.com>
->> +L:	kexec@lists.infradead.org
->> +L:	kvm@vger.kernel.org
->> +S:	Maintained
->> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git
->
-> NAK on taking changes through a different tree.  This is KVM code, period.
->
-> In general, I'm skeptical of the dedicated MAINTAINERS entry.  It's extremely
-> difficult to tell since this series is little more than a skeleton (either that
-> or liveupdate is way simpler that I was expecting), but I suspect that maintaining
-
-It's a bit of both. This series of course doesn't support everything
-that guest_memfd can. At the same time, I also keep being (pleasantly)
-surprised at preservation being relatively simple. For example, the code
-to preserve a shmem file (via memfd) is roughly 600 lines, a big chunk
-of which is comments. The code of course has some limitations, but it is
-good enough for use in production.
-
-> liveupdate for KVM (or for any subsystem) will require more subsystem-specific
-> knowledge than liveupdate knowledge.
->
-> E.g. the LUO APIs seem pretty straightforward; I assume the bulk of the complexity
-> is going to be in knowing what to save/restore, and how, which is much more about
-> KVM than it is about liveupdate.
-
-I think it is fine if you want to take these changes through the KVM
-tree, but I would like live update maintainers to be listed as reviewers
-at least.
-
-For one, we care about ABI breakages and versioning. The serialized
-state is a part of live update ABI and changes to it should be ACKed by
-us. For another, how the file handlers interact with their dependencies
-can affect the behaviour that VMMs observe. Those changes should also
-pass by some live update eyes.
-
-So I think we should have a separate entry for KVM LIVE UPDATE that
-lists the live update maintainers (or perhaps only kexec@) as a
-reviewer. The patches can still flow through KVM tree but we'd get a
-chance to ACK/NACK them.
-
-Of course this all can evolve later as we see fit but I think this is a
-good starting point.
-
->
->> +F:	virt/kvm/kvm_luo.c
->> +
->>  KVM PARAVIRT (KVM/paravirt)
->>  M:	Paolo Bonzini <pbonzini@redhat.com>
->>  R:	Vitaly Kuznetsov <vkuznets@redhat.com>
-[...]
-
--- 
-Regards,
-Pratyush Yadav
+T24gVHVlLCAyMDI2LTA4LTExIGF0IDE1OjQzICswODAwLCBIYW8gWmhhbmcgd3JvdGU6DQo+IEZy
+b206IEhhbyBaaGFuZyA8emhhbmdoYW8xQGt5bGlub3MuY24+DQo+IA0KPiBpcnJfZGVsaXZlcmVk
+IGhpZGVzIGRlbGl2ZXJlZCBlZGdlIGludGVycnVwdHMgZnJvbSBLVk1fR0VUX0lSUUNISVAuDQo+
+IFRoZSBpbnRlcnJ1cHQgcmVtYWlucyBpbiBJUlIgdW50aWwgdGhlIGd1ZXN0IGRlYXNzZXJ0cyB0
+aGUgbGluZS4NCj4gDQo+IFRoZSBndWVzdCBjYW4gcmVwcm9ncmFtIGFuIElPQVBJQyBSVEUgZnJv
+bSBlZGdlIHRvIGxldmVsIHZpYSBNTUlPLg0KPiBJZiBhbiBlZGdlIGludGVycnVwdCB3YXMgZGVs
+aXZlcmVkIGJlZm9yZSB0aGUgdHJpZ2dlciBtb2RlIGNoYW5nZSwgYQ0KPiBzdGFsZSBpcnJfZGVs
+aXZlcmVkIGJpdCBjYW4gaW5jb3JyZWN0bHkgbWFzayBhIHN1YnNlcXVlbnQgcGVuZGluZyBsZXZl
+bA0KPiBpbnRlcnJ1cHQgZnJvbSBLVk1fR0VUX0lSUUNISVAuDQo+IA0KPiBUaGF0IGNhbiBjYXVz
+ZSB1c2Vyc3BhY2UgdG8gbWlncmF0ZSB0aGUgVk0gd2l0aG91dCBhIHBlbmRpbmcgbGV2ZWwNCj4g
+aW50ZXJydXB0IHRoYXQgaXMgc3RpbGwgcHJlc2VudCBpbiBLVk0ncyBpbi1rZXJuZWwgSU9BUElD
+Lg0KPiANCg0KWy4uLl0NCg0KPiAtLS0gYS9hcmNoL3g4Ni9rdm0vaW9hcGljLmMNCj4gKysrIGIv
+YXJjaC94ODYva3ZtL2lvYXBpYy5jDQo+IEBAIC0zNzcsOCArMzc3LDE3IEBAIHN0YXRpYyB2b2lk
+IGlvYXBpY193cml0ZV9pbmRpcmVjdChzdHJ1Y3Qga3ZtX2lvYXBpYyAqaW9hcGljLCB1MzIgdmFs
+KQ0KPiAgCQkgKiBhcyBlZGdlLXRyaWdnZXJlZC4gVGhpcyBiZWhhdmlvciBpcyB1c2VkIHRvIHNp
+bXVsYXRlIGFuDQo+ICAJCSAqIGV4cGxpY2l0IEVPSSBvbiBJT0FQSUNzIHRoYXQgZG9uJ3QgaGF2
+ZSB0aGUgRU9JIHJlZ2lzdGVyLg0KPiAgCQkgKi8NCj4gLQkJaWYgKGUtPmZpZWxkcy50cmlnX21v
+ZGUgPT0gSU9BUElDX0VER0VfVFJJRykNCj4gKwkJaWYgKGUtPmZpZWxkcy50cmlnX21vZGUgPT0g
+SU9BUElDX0VER0VfVFJJRykgew0KPiAgCQkJZS0+ZmllbGRzLnJlbW90ZV9pcnIgPSAwOw0KPiAr
+CQl9IGVsc2Ugew0KPiArCQkJLyoNCj4gKwkJCSAqIGlycl9kZWxpdmVyZWQgdHJhY2tzIGVkZ2Ut
+dHJpZ2dlcmVkIGludGVycnVwdHMgdGhhdA0KPiArCQkJICogaGF2ZSBhbHJlYWR5IGJlZW4gZGVs
+aXZlcmVkLiAgQ2xlYXIgc3RhbGUgZWRnZS10cmlnZ2VyZWQNCj4gKwkJCSAqIGRlbGl2ZXJ5IHN0
+YXRlIHdoZW4gdGhlIGVudHJ5IGlzIGNvbmZpZ3VyZWQgZm9yDQo+ICsJCQkgKiBsZXZlbC10cmln
+Z2VyZWQgaW50ZXJydXB0cy4NCj4gKwkJCSAqLw0KPiArCQkJaW9hcGljLT5pcnJfZGVsaXZlcmVk
+ICY9IH4oMSA8PCBpbmRleCk7DQo+ICsJCX0NCg0KVG8gYmUgaG9uZXN0IEkgYW0gbm90IHN1cmUg
+d2hldGhlciB3ZSBzaG91bGQgY29uc2lkZXIgdGhpcyBjYXNlLCBidXQgSUlVQyB0aGlzDQpjb2Rl
+IGNoYW5nZSBkb2Vzbid0IHNlZW0gdG8gaGF2ZSBhbnkgaGFybSwgc28gd2lsbCBsZWF2ZSB0byBv
+dGhlcnMuDQoNCj4gIA0KPiAgCQltYXNrX2FmdGVyID0gZS0+ZmllbGRzLm1hc2s7DQo+ICAJCWlm
+IChtYXNrX2JlZm9yZSAhPSBtYXNrX2FmdGVyKQ0KPiBkaWZmIC0tZ2l0IGEvdG9vbHMvdGVzdGlu
+Zy9zZWxmdGVzdHMva3ZtL3g4Ni9pb2FwaWNfc3RhdGVfdGVzdC5jIGIvdG9vbHMvdGVzdGluZy9z
+ZWxmdGVzdHMva3ZtL3g4Ni9pb2FwaWNfc3RhdGVfdGVzdC5jDQo+IGluZGV4IGRhMDI3NmExNTQy
+Zi4uZjAyNGY0ZjAxNTcxIDEwMDY0NA0KPiAtLS0gYS90b29scy90ZXN0aW5nL3NlbGZ0ZXN0cy9r
+dm0veDg2L2lvYXBpY19zdGF0ZV90ZXN0LmMNCj4gKysrIGIvdG9vbHMvdGVzdGluZy9zZWxmdGVz
+dHMva3ZtL3g4Ni9pb2FwaWNfc3RhdGVfdGVzdC5jDQoNCkFnYWluLCBJIHRoaW5rIHlvdSBzaG91
+bGQgc3BsaXQgc2VsZnRlc3QgY29kZSBjaGFuZ2UgYXMgYSBzZXBhcmF0ZSBwYXRjaC4NCg0KQW5k
+IGl0J3MgYmV0dGVyIHRvIGhhdmUgYSBjb3ZlciBsZXR0ZXIgZm9yIHN1Y2ggc2VyaWVzIHdpdGgg
+bXVsdGlwbGUgcGF0Y2hlcy4NCg==
