@@ -1,109 +1,95 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7A229D268
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 00:43:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F20A2F616B
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 00:48:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786409038; cv=none; b=FxqOwJAIW13suhFUWJtK6ZrIjHW0tKZRqL+zzFG2ToU6IqxqxOn18dpYO8YnOHhOtdgUBpD64sVMHw7X6WOTMrHCxR+3Ih5ltR/fE4IgsT6K4Crr1Iun3fhEJ6Ho5GwIwCi3XQnu395JwO0Oq2e9Fp39fgtIQqIllfinuChc5sM=
+	t=1786409292; cv=none; b=fOUJ2QNiXt4hzdo4wxccvrLTZeQGz6qUTFYR+FBH+WZK/++X3j7dV761dzdFB5KpY11RA3XEuXOul43RxUbdGlmM7w8bZ0hgHaRF3cIzi+dy1nFbQiC8SH88eSfqezPlwckFTFrnlZLCba6ZRiXEY4QaUJr5xNId9A6DnqGtjhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786409038; c=relaxed/simple;
-	bh=WQxPyjOmNtM5R8JyZSMh3RwDvaCfdXHPYKo1RlbE7Bk=;
+	s=arc-20240116; t=1786409292; c=relaxed/simple;
+	bh=SW0ZwvYoKhM6FW3ut7EHho8mS7J5qQPyYhcgYTaD0w4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tLgDwibHsymhTDT8WZcP0yXCi4y7GXIkEpaw2p51W66T4sNVq6FtsOkSujInTU0MgC6kw4qv2j31KD1fUsjlz1h6J1fUXEQcXOc+7FYc8hf7PlzNdjBYmrPD1E100N5jXLzMYcUiE9dX86VNhbnFrzMLcxmxabzft0yFxk+n6r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L/hm2/7m; arc=none smtp.client-ip=209.85.215.200
+	 To:Cc:Content-Type; b=QjK9JVD5l2torxKpVlF4AH+TYvxamxUmPTaLGRkJPhXi+qRb0440GswHZ45EEREJCflzGU23YLr8+stgWz/3WaslY22+olfF+DwsaYAem5e42YRamrWna8v2CqlJU8Wd+SDpAUuna77KlPe1UJ/bTWMAWPJCBy3UBUAJrZeb94o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OkF58ZSf; arc=none smtp.client-ip=209.85.215.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L/hm2/7m"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cab041eced3so4144028a12.1
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 17:43:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OkF58ZSf"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-ca8aee88725so506720a12.3
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 17:48:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786409036; x=1787013836; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786409290; x=1787014090; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TdtwI1Ee0mw3e+1rCkhKazccv8OvfhLfoElZh6LGLeY=;
-        b=L/hm2/7mmJCwuA7m9vh86IIP8zUi6vvPgcnxNDnFRww/QTTl+NyHLH6G8tr7oGj1Eu
-         R5jtp/Lm+uwTUAe17Wm/cxUV46QMNuFwbHXMb5w3zA7HweNTFP7Qkh0xpquwUxISJRY3
-         UoPq1w+9fN1NsBmWJLFeHe/ZDGZKgMF/QZjNtqotJg6onFr3SFeAUY3CZsFECxnuQcJB
-         uEIpdOqhA1n/ijNH0iubJUtyoke5BHrBrZ6ZdHfiFeYKdKKusyLXmPkBMcK511e6lD0B
-         H9p6E9bex3wETg3Xz/ojWDO4IsB9T8mxtjc60lrmtGwzPUYYUoNMTyLaDTv8H4zE5PYd
-         HIbw==
+        bh=57qFiioTiYY05WIjQzEmLqwAbaTdR8MUfRFj4mAMGpo=;
+        b=OkF58ZSfbwD6hAKHhtsGYgcNgMEybXUHPMiz4hNTsNgOx1ctbvpYmfpVyUhQIBpYZ4
+         fMr19mCP+i6W1+8U22BrTOZSqwhwIJf4wmokILGULS0RzbhuwC7yMj9kCvLNQ/atUpDs
+         lEuEuhRB1Z0MCWKI+bKtPYBw0A8S1udDZrzdHnArKrT95pSaG9rLMfUwdVDz5Xo8bo0f
+         MMoYmP/jV/dK1/zSIx6y4G/4RDXVR9hZ/i+ITqxiWpry7ULqVvrVXJejHnhrJ7C7DVEs
+         1WKWTCfHbbn6hNEoDGCsIgNw7Qv5FvNdSl2vA3QWc0UpGDt/N1gVXud7pbT+o5igmfdi
+         0wLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786409036; x=1787013836;
+        d=1e100.net; s=20251104; t=1786409290; x=1787014090;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=TdtwI1Ee0mw3e+1rCkhKazccv8OvfhLfoElZh6LGLeY=;
-        b=VTDIF2v8/mfONIlNDYL2jP0vcCP2r1zKFhAgcBCI8nn24r6qtEWIoKtYcr5eAedkSs
-         Q4ruWSzAm8N9a+utdrkH2QXx1eNAzaP9hc336Xh2Y5m7GvPfDRrGLaR5dL0kHFR5+9Lj
-         lLQl4XWOXPmEvjcIfvODjSeUohur51zTfu8X+tS/72wW6/X1iYm8a/zNXA5wmtTqrVJv
-         GJGqZ3j0ErSdHNZsS5roNFXHXV/j12uSTYLIPlkTZMK5FrEupHbMpb52wVVtwk5SARkS
-         lvqegcHdFr075awGBf3LduWd+MwRGVMJkNQe5D+1tiG72YIDPy9kFrZX2PNJzpvsC/IU
-         UNLg==
-X-Forwarded-Encrypted: i=1; AHgh+RqhpIECUa5X+lkKHr/ThBFtJuGlX/y92MwxksqFZYf6w3JnAc9PVg9WH5rC+LPPdqdIiK8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxw9rhHsdVgaN56pt+2W/CRhZI000McX6+HgLoJFAtX0DKaI/zM
-	FNFZmjmgCZ9eOFQht6T9FEf0atw+PYkwJJ3W8Greg5dW2IKrsDVVyKO7yB/IK7rUX0mElrV/ozY
-	2BX3vKQ==
-X-Received: from pgnb22.prod.google.com ([2002:a63:7156:0:b0:c9e:63b8:11b5])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:4a89:b0:3b4:61f:1fec
- with SMTP id adf61e73a8af0-3cc1a0bcd18mr7553175637.2.1786409036317; Mon, 10
- Aug 2026 17:43:56 -0700 (PDT)
-Date: Mon, 10 Aug 2026 17:43:55 -0700
-In-Reply-To: <b50b3535-eaa1-4944-914d-0eea8dac0e06@amd.com>
+        bh=57qFiioTiYY05WIjQzEmLqwAbaTdR8MUfRFj4mAMGpo=;
+        b=LYR1Xh0wuGsAvqES2vE4PCHnEqsdeuXbVlT2jmWSSEtm+wMd1AqyNsF3wEeVsE8fX1
+         BaDNKe1pgwKpAToMLlIMvOWibwIa1011jWSI/0t2jqx9hfkqOea8CENBzfXG34ZeL6VG
+         Vdcx7lvID1cQUyE9Eczcq2lhs3vy4k9+4Y2mmeEvP0y5I837HPgWitX+P9pAtmKK0sIK
+         Wah0Jb4cwlJTIDe2LdAZdhI2FMS1PlofFMoSxqNpcBWmzgxRw6EjXH4810tEdPN4ILiT
+         YGn59DoUPmOLHBy6RlWtI6ERUIQQtcEBDeMG+uxfgA8ulevsMPPgdZsD0wU+N1FDbaIR
+         dmpA==
+X-Forwarded-Encrypted: i=1; AHgh+Rod5efShbEuXRYwXnDneszGNxgKkpuSpQaRAxx9d8pYU17rdosA8n0QEyjIxLw+Qr7xrVU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzbIx/+veWAcrG3/Q7GTp0v5Ce2WRdKLWiXxrBl63eHCRDFEz/
+	dh0VVJNR6gJvm5zLAX/fqV78PMJSNAA3Z82p74gUOUYwpbfUk5JZvtAvukoDXXFntqv4sy/bjBT
+	TGjPRCg==
+X-Received: from pgbgf7.prod.google.com ([2002:a05:6a02:2cc7:b0:cbe:9522:2c9d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4519:b0:847:968d:b101
+ with SMTP id d2e1a72fcca58-84f2e03916amr55995346b3a.21.1786409290016; Mon, 10
+ Aug 2026 17:48:10 -0700 (PDT)
+Date: Mon, 10 Aug 2026 17:48:09 -0700
+In-Reply-To: <20260713105033.15405-1-sarunkod@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260713105033.15405-1-sarunkod@amd.com> <20260713105033.15405-6-sarunkod@amd.com>
- <20260713111119.EC35E1F000E9@smtp.kernel.org> <b50b3535-eaa1-4944-914d-0eea8dac0e06@amd.com>
-Message-ID: <anpwS3C2UIHFz_Uf@google.com>
-Subject: Re: [RFC PATCH v3 5/6] KVM: SVM: Add support for AMD IOMMU Guest APIC
- Physical Processor Interrupt (GAPPI)
+References: <20260713105033.15405-1-sarunkod@amd.com>
+Message-ID: <anpxSbwbYzyJ1SQQ@google.com>
+Subject: Re: [RFC PATCH v3 0/6] Add support for AMD IOMMU GAPPI
 From: Sean Christopherson <seanjc@google.com>
 To: Sairaj Kodilkar <sarunkod@amd.com>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Cc: "Borislav Petkov (AMD)" <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Eric Biggers <ebiggers@kernel.org>, Feng Tang <feng.tang@linux.alibaba.com>, 
+	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Li RongQing <lirongqing@baidu.com>, Marco Elver <elver@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Randy Dunlap <rdunlap@infradead.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>, iommu@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	x86@kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Aug 10, 2026, Sairaj Kodilkar wrote:
-> On 7/13/2026 4:41 PM, sashiko-bot@kernel.org wrote:
-> > [Severity: High]
-> > Can an unprivileged user-space process trigger this WARN_ON?
-> > 
-> > When a vCPU is created, svm->gappi_cpu is initialized to -1 in
-> > avic_init_vcpu(). It is only set to a valid CPU ID later during
-> > __avic_vcpu_load().
-> > 
-> > If host user-space configures device interrupt routing via the KVM_IRQFD ioctl
-> > before the vCPU runs, avic_pi_update_irte() is invoked. This will pass the
-> > uninitialized svm->gappi_cpu (-1) down to this function, hitting the WARN_ON.
-> > If the host has panic_on_warn enabled, this allows host userspace to trigger
-> > a kernel panic.
-> 
-> This is a valid concern.
-> 
-> If host userspace attaches a bypass IRQ targeting a vCPU that has never
-> been loaded. Functionally, there is nothing to do in that window. A vCPU
-> that has never been loaded cannot be blocking, so no GAPPI wakeup is
-> required. The IOMMU still posts the interrupt into the vAPIC backing
-> page, and the pending IRR is evaluated at the first VMRUN after
-> avic_vcpu_load(), which is also where the IRTE gets a valid Destination
-> and IsRun = 1.
-> 
-> This can be resolved by assigning a arbitrary gappi destination, without
-> actually updating the gappi wakeup list of that CPU.
+On Mon, Jul 13, 2026, Sairaj Kodilkar wrote:
+> On newer generations of AMD processors, IOMMU AVIC/x2AVIC guest-mode interrupt
+> remapping can use Guest APIC Physical Processor Interrupt (GAPPI) as an
+> alternative host-notification path when device interrupts target a vCPU that
+> is not running (IRTE[IsRun] = 0).
 
-With the disclaimer that I haven't look super closely at this series, and haven't
-thought too deeply about the feature itself either...
+Why is this still an RFC?  I mean that in a good way.  I haven't looked at this
+super duper closely, but the patches all look to be in generally good shape.
+I.e. this seems well beyond RFC, unless there's a hard blocker or something,
+e.g. known bugs?
 
-Why are we doing anything different than what VMX does?  vCPUs on the wakeup
-list when they block, and come off the list when they wakeup.  It's literally
-one flow that's guarantee to pair put()+load(), and the logic for manipulating
-the list is quite simple as a result.
+Another bigger picture comment: I'm very tempted to say this has a hard dependency
+on KVM's irq_test[*] adding support for AMD.  I know it's being worked on, but I
+can't remember who is doing the work, or when it's expected...
 
-Going a step further, why is GAPPI not sharing code with VMX Posted Interupts?
-At a glance, the only meaningful difference in the wakeup flow is the "should
-this particular vCPU be awakened".
+[*] https://lore.kernel.org/all/20260626213534.3866178-1-seanjc@google.com
