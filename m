@@ -1,205 +1,261 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A52B364931
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 11:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786448614; cv=fail; b=JlIRqsH9xkx0YxEjqluMbQsHZWuWC5eHgDllOI7u+9G5JNcDrYzeYWFlaj1MnHUWtuth4ngv+p9uKHKVF0meFT3cG8NS5/0otz0vj4/WKpv+sYfWFoqV140DR7gM570Tg74OZNqp6JU2yOEbuhRxqz/Z6eQWen+sCRLz0v/7SwI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786448614; c=relaxed/simple;
-	bh=NQ5MIu4kHppt+URDKnXzNVqrh7/nM2GoiNzzOQFqP0g=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=GIo+MZxfh3cdlbfnp9vMIgCHCw/VXClumC6azb024YVrW7uf/MDA84fjAiEJC+E0Nci0QII4JgOzjRFDJyEaJPTqCk2UcS7BGCulr7PzW8mTZi5UIo64BrjMyVGmYdeFxxs+yyFToPea2+vSHtONs6CwiWLBNs4CcZYyW6DZ+no=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BOHnIIs7; arc=fail smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0555743079F
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 11:52:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786449161; cv=none; b=aEg0dHokaUpu+D6IZQ6sa4C+Q0dfERY7uij6JEJA17r4lkyQyjbBkhL+r3HdUsCd/7TkFPX7muZB2OUhKsSg5eqWccXt6adRikStoj++LukuonDSAtm9mdXLNdxb/6cNGxSO1972h9WoqO55VloM6DCgZDq8pIxP7iW2L5eLq8I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786449161; c=relaxed/simple;
+	bh=sF4ZXooBZlNb3igRfzN3K1JDogOA104bctH8cbHjmFA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=InzcVdpyEme2EEtzUczOkKaUoyvvQG/sMO6T2ljbzjhpZI/TFTNXNfy3OYCc8FRhso4MGAWm74fvbcbVOJjk+1MtzglLBJJwV6c9geVDQTjDKAwUGC7ofwwhLwCE6i3Ki+3PCYngAm3o5F/sC6wP+/epQ+f0tYXAWGybHhUoeSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=niaZN9iQ; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BOHnIIs7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="niaZN9iQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786448613; x=1817984613;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=NQ5MIu4kHppt+URDKnXzNVqrh7/nM2GoiNzzOQFqP0g=;
-  b=BOHnIIs7qI2Bp1Nvs0vmCrHjlL+UIcNSeymN0/GdZU9BffuU+mt+eGUX
-   N+KKy4NhMwQ4bMNEm4f6piLURbgDiagMk2//i+ipTVZb72wMe4wAZWHEy
-   8EZGMh6KkXuObEtD5KWnDWfb0p4St20dkWVZL/1k5W9IfrUWdzJ1I9ITd
-   /mnXrA57zbMBByZUgheRGaqDkK8lCc+bMhpPdgDAzEo0Pn3Wu8lIn7ewQ
-   ij97BT64xYsMLdePH95wxjYo7V4Y0twL47T/5Y6tjWHERwJnEM9Yym1Gu
-   mm/hJGY7NQ4hppDhb2T1XkeE+mZt5Q0p+xkOgy6qxhwUaStsZrBC4U8eC
-   A==;
-X-CSE-ConnectionGUID: 206xtZmXQqiWvYrH29l85Q==
-X-CSE-MsgGUID: AyVAvia2S82f8BB0T0DMaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="74510058"
+  t=1786449159; x=1817985159;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=sF4ZXooBZlNb3igRfzN3K1JDogOA104bctH8cbHjmFA=;
+  b=niaZN9iQ3JmDx5CCP14h0ojG956dhgcsn3OJBNiFUDAxlSZkkE6tqyx+
+   j6fMGdoe0kFuMBIHcBs0LTI8vI0St53dNBFPd7eBgRDoQ9+zrJnvz2vPd
+   mkp486sx1jnfcBNnEzqmGqTfGDqPYeQ5d5U0MAuzOwIQop0TcKCS/8URx
+   7S8irpB7RNxwNEOXMNEzb5dvx7nS7CJ2nMXvWgzs4MwQZOaKADlJOGOvI
+   0ja3W4J565AHs8E74Tp1h6L8U6cesdmKwOkVVfGuHkPT3bGZmdXYDu1pu
+   /3Cv5qqIzjuXYqacN54FZ5eTye8fDufOggNJhWYdoMUNq9v1jgsHECHdj
+   g==;
+X-CSE-ConnectionGUID: xhQE3eLESJOAvrp4MfQF3w==
+X-CSE-MsgGUID: qEbfBE5eTy+d8Q+fwUircw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="86856640"
 X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; 
-   d="scan'208";a="74510058"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 04:43:32 -0700
-X-CSE-ConnectionGUID: 1wXiOhCRR9SAQ7SL2j7W2A==
-X-CSE-MsgGUID: ZL7BmTejRVy6R4WZxARCkA==
+   d="scan'208";a="86856640"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 04:52:38 -0700
+X-CSE-ConnectionGUID: F6KNxGlHTXew43spSu7fyA==
+X-CSE-MsgGUID: zAhtEevySJ+OzpICIAvdFg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; 
-   d="scan'208";a="267597115"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 04:43:32 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Tue, 11 Aug 2026 04:43:31 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Tue, 11 Aug 2026 04:43:31 -0700
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.21) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Tue, 11 Aug 2026 04:43:31 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lGkJXRGay/GPRHfTulv4uvarswOpOc2uGLSYt7cQV7ntZvF831i6Baig3TdcBcqLllHnrHRpMgDf3sR5VxnKn9rrV/6Iv08Z+TzXPM2lEQLa+4CmKOoH/7t3pLsnOisaSgid7ZExE8jUMJwE1eyKyzXGt3sxXqU7d+KoeP4uyU5lAUmq13gFC+U7c13d4lD6P/6DJUTi+TMEKzdYkW+GJM8/ptLHy7F9KeDUh5+FZgfcJe/ulO7dyjhwvANNNK3AFJqdoCu8Np0YVK+atU6/iJc1spLCvpABu4XG/VOELVcxjISX/QcJOEBETcGsKnW5UqVQTP5h75vbwtj5fJXhsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NQ5MIu4kHppt+URDKnXzNVqrh7/nM2GoiNzzOQFqP0g=;
- b=qnjjECzSc8qPhFNIsAa/x+JDHZUsQSeAk7K0XPuQ0tuPaIyZvWlPSJYQkqo8FV0s5qvCtJaF4jbErA6U1fqqPSmXdQrrKGSfCnx4wOusm4vo94G2PwZbHFt5rlH7iNqg+CzdXZVkbNaHmTUxxrPsOmOvaCrGlapzoN7hBcv8SBKaNEYpHBinLqZNhsJbZorRqWDKTgd4/4LjbR3CTnld5mRH/D2HIyEZ8a454U9VK71BPwBc89cw/ZAWPLbaciVCUMczWPEIuMRqiL1i94ONjqTpBPLC4/klhCPl2eTcnOXO9QUvjSaN9TGKgEM2LHKb68Aufn0p7yEmS7mo+nXwQA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from CH0PR11MB5300.namprd11.prod.outlook.com (2603:10b6:610:bf::18)
- by SAWPR11MB9710.namprd11.prod.outlook.com (2603:10b6:806:4c8::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Tue, 11 Aug
- 2026 11:43:28 +0000
-Received: from CH0PR11MB5300.namprd11.prod.outlook.com
- ([fe80::3a08:e2e0:c8b9:7a7c]) by CH0PR11MB5300.namprd11.prod.outlook.com
- ([fe80::3a08:e2e0:c8b9:7a7c%6]) with mapi id 15.21.0315.008; Tue, 11 Aug 2026
- 11:43:28 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "seanjc@google.com" <seanjc@google.com>, "hao_zhang_kdev@163.com"
-	<hao_zhang_kdev@163.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>
-Subject: Re: [PATCH v4 4/4] KVM: x86: ioapic: Clear irr_delivered on
- level-triggered RTE
-Thread-Topic: [PATCH v4 4/4] KVM: x86: ioapic: Clear irr_delivered on
- level-triggered RTE
-Thread-Index: AQHdKWUmSEVFnnW/702aYN/1fgMqyLaYunEA
-Date: Tue, 11 Aug 2026 11:43:28 +0000
-Message-ID: <ff25747d2827c847b0b1153177de6c6c004df8fb.camel@intel.com>
-References: <anrSjerPIvO4Ww-T@192.168.1.215>
-In-Reply-To: <anrSjerPIvO4Ww-T@192.168.1.215>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.58.3 (3.58.3-1.fc43) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH0PR11MB5300:EE_|SAWPR11MB9710:EE_
-x-ms-office365-filtering-correlation-id: c221854b-2550-49ad-f983-08def79dc2a8
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|10067099003|56012099006|11063799006|38070700021|6133799003|18002099003|22082099003;
-x-microsoft-antispam-message-info: c2qjzg7XYnLv/CvC3k3MWYekC+ysSAhlb9FFx7AbDFc/tIbUOTAfOVNKqqhqjr9aH/QKtIjHFVs1LAHmfF3F8PvenZbBOlNJLEpeVauhIFEUVgwoqoPdufG3Ta3TxgvhRNJb3qmbPl2cvaHTNODlBDBU7nKNqWJNqSjvCVgmQ1n10pJh/im3QfN6TcEwohv2ReDmMMarEGdmFLZtgak3/G1+BHoEGnY/caxmZEIKKjstFJd0V8kJ2q1OEcBjLb5v9h77C2cGeF3FujrZLQXo6tnxcM6fF5Wc1xXMXmXYwZtxeTk2upzQ+DsFLXhqjus30gPPHojjKNE7b2915stEbvWsVGDWc29kyJAHh7wZLK47h471S5M/Kwr5SFXiNt2CiduW377Eo4E+3SQV7dbTPD0PXCCuj5QcmoDDdFi0dN0dAxOHTDgs87agZDL8aLpGiNIzbncZuiaKdPm+NmNiZWdwMWVMLtgVqmWAi5JYld77uNvKnwOdxPgFR1K2aUrC+fdKrDUQYyx5vMt42A8BsTg0RkQSRRADtUABervaEW9jFEaB6fV7BIUjLi6lGFDro7LRZx4m3MF+FnSKA0cmK1zbgnDxRdWBbKhQu5T3RWsCG143R2L7+hANsr5d99ZqJNsSvGn4Et2uzxh2oRFy/8Ve2XaSqLZRUjOyzewm/Q24bj/5uUNs/35TmdaL0QwxSlCpNue4A3po+mBtMaLGYxdDhoRqyD8LaLFjjtH9ypo=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR11MB5300.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(10067099003)(56012099006)(11063799006)(38070700021)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?a1Y5TVB3OEdlUnhTbUpGR09VVXIrWWxadC9DTWN1VTNwclJjZlJWLzlWdlJM?=
- =?utf-8?B?KzlVTVF3WVorTndxS1JqZEpMRXEwbi9qenJiRHlPeVFFbUxPOFI1NUFrMTVa?=
- =?utf-8?B?RGNMZmxqZ0tmaE5ZZzB1U0N3bmdkRklJb0M0Q0FaTjFZYkg5SkgramhOOUxK?=
- =?utf-8?B?Lzh4MzVZZWZ5Zkg3dXJaUFVjUWwwaWMwZExWNWx4TDVYY3lyQWRPL2FuTXVi?=
- =?utf-8?B?V3krdndqZU1lVGpHRU5wQkttbTNPdG5NbUNVVmhFR3c5OXZyU29sTGxTcThL?=
- =?utf-8?B?REtTV0pOdjFtRGlGSm91cXN0anZ0RC93c1dPckw0SkVkUTlhTkt6YlNWekFx?=
- =?utf-8?B?dGtUYklxS2cvVWdjeklzcFExbUI0empYUFFsNDI4aGpUSDlOSmVSb1hOMXJ0?=
- =?utf-8?B?ZUhnd0hGQXBxSWVPQjU1eHY3bFF5ODQ4ZFVZOGhvRVB1TWdodVRzTWpEbzhn?=
- =?utf-8?B?SzBkeGI4UkI2YzNEa2tZdHVmd2NRd08wWkdCc3RqYVg2cXBqeDVKL1VjQTFh?=
- =?utf-8?B?bkQwUUhxanRMZ2JmUzhLandndjQzTWhZMEVjVTJUMXhNbWxCSndtSWpsNXVp?=
- =?utf-8?B?SVMvNVB6bWlQSTlET1RDaFBTekFNTTJNSlVRamRVanlvZk9KV3hDWE9Rbi9C?=
- =?utf-8?B?RnVjaGYzVDc1ellvOXprK0FJU1V2Q0FxdjlTMmMrcHBYNXBoVHppNEduK252?=
- =?utf-8?B?dURaakh2QUhBVXRaamVNRDJScmREbjRqWHJiVkdyeldDRlBFOC9LQTZvNVl0?=
- =?utf-8?B?RFFRUFJKR0ZwU2VQbm9BaHYya0NURHArNHZyYlEyVUU2TFFqdk5OYW9YdFZw?=
- =?utf-8?B?cXdzTEZ0WUR1TUJVQThKV2ZWM21oOTlWdWhWZVozSFk5Yjg2UEF4TXlFbDUx?=
- =?utf-8?B?UlJOZG5NVUJlUnM1SjFNMTcyaFBoUDNSMlhKNGljRWxqNS95WFc5T1BxQjFS?=
- =?utf-8?B?ZmdFUEIvZFc4VFJzdVhUUm16ZUlnUXBDeFQzSlVQVVkrZ2xMRnNVZ1JUd1Nm?=
- =?utf-8?B?cFl1SjBRNmRSMVY1T1c1Vjc4TXFuM1RyVC9aeWVqL0R5clFXeXlyd0F6Rllk?=
- =?utf-8?B?UnhzZzE2a3ByWXhBc3pCY2xER0UyUWt4QWFiRWEzWTBlZlpSa1FaZjgzdHpK?=
- =?utf-8?B?d0xEaVd0dnVCTVZjWTJMMS9kUGhBZ3R3Q1VVUllkeWwwU3BSU2d6ZUw2dEk3?=
- =?utf-8?B?a2tVQThSM1ZTNjdmRGhMN1BqUDhwcmVqcmFYUHJWWjc0OCtTMjJEdFpKcnZ0?=
- =?utf-8?B?MFhnZXNUblRTZENUVDZTOTVpSTNnMnNNRHZPaEd0WE9pSS9SLzRDdVIzcEta?=
- =?utf-8?B?ZUlraCtubGg4SDM0RUpnOURaL3FlZERPcERFejJONUowd1NzRmFiU1h0L2p5?=
- =?utf-8?B?QnlWaDUwV1NSQUdFa2xGQmsyQ2xidVhLYmtUczV5aGY0Q2IrV0V4YXZsZnVt?=
- =?utf-8?B?N3k4UmNsakphcFFrSkIxNG5EL1FudkJUd1ZFRjE4WEJ4SVI3aVhCaXBVcUR4?=
- =?utf-8?B?OUxSejVJR1dFK2VQc3pncU9NK3VNUlNQSEhNQ3VaQys2d1AwTllMS0U0N1h3?=
- =?utf-8?B?bjF5L0dSdXNDVXpoc1FkVW5RNTA2SDQ1MStyem9uTmJTVUh6a1JiUVpzZ2tO?=
- =?utf-8?B?UlNFSHd1OFQwM2U4U1cwbjk3RTRnNzYxWEtpM3RURU84T083OHppb2xyV0Zt?=
- =?utf-8?B?S2Zub0xwT2YyUTJjWXk3bkU1d2g1VXFVS1hKbHFWRUhaL1ExYm5IUkpObWh0?=
- =?utf-8?B?RUdtOHNrdm1UKzFzVkVpTUt1L2paMm9pTExsYjROb1RBWHNRTEZlSDlpZkhW?=
- =?utf-8?B?THNHQjdYL1ZjUHVNOEhFaWRwMjdpajdNYk5zYUQ5eUUwZlFEZ3ZnL2NXVmd0?=
- =?utf-8?B?MUtkUnE5OFk0dU5PZFBwc2tvb0hFRU9TNXNuTVR6Y2xramxhOTJVL2xmRGF6?=
- =?utf-8?B?djJOTWViWXJqS292Nm1CaEh6YlB0YnY5cERtdGV5V2NLSEpqcHg0d043VmNW?=
- =?utf-8?B?eW1VNE9reUtWak4vb0FRZ29JRG1UMDBJSHNLUS9jVStwYjNVL3JyZ2k2VnFR?=
- =?utf-8?B?QVl6NEswSjJac21VL0RPOHBjYXpBTGxieVh3L1BMZDVGeE5aZUx3aEJkQWV5?=
- =?utf-8?B?Y0d6UnVZNzYzK0paOVBrV1UrVlhUKy9rTlNUSERPejF0YlBsNk40RmtCMHFm?=
- =?utf-8?B?M2NiUmVKOGdpUzJSSWNBM2FMOUl4NktjTUE3Mm9QdGlWZWNHOWFUYTBWVHMw?=
- =?utf-8?B?ekZHT1hLNldML0JBd0UyWFBaZGVVQjV1Wmk5MXpUTm5zY3RXN040SFRBSnl6?=
- =?utf-8?B?dEZiSG55QUl5cmtUSlZtcFVQTU9OVjJYOFAvL21HdWk1bmRIdkZhZz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <7E6348B3C05C1146A77F4BD42B2A4823@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+   d="scan'208";a="259479736"
+Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.239]) ([10.124.241.239])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 04:52:35 -0700
+Message-ID: <ee4968b8-c40e-49f5-9f9d-46c007e78ae7@linux.intel.com>
+Date: Tue, 11 Aug 2026 19:52:32 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: b/HqjQhlCGvrFlS8twZYmAl/NCghznK0lrGX+KC7Appgj3N7H3JdLIk9wKj31wDfTSvPnhEd+kCMcmyEV0MR7uKD/4WAcRt54aND6edGH6LVfn2lHGS0stsHRLVmpt+bpEoerP0JCxy2Q/wb90UdTz6zypqe1zO02aIHxQ85Ueh32B+1Rx5/oNAj6iuKVIV96PD5LI6d0oDS5DAPZ0Xi185ZMDmwrhHZuhfUdbL70uMif1nrzSVhG0wS1JeIayHER6eKNOShyVOvjSfvzRbV20j6aTweEHUbxcGpBXbGzayRo2FMDHkud8PaX7cwVCgC2ceTQxmcNRhb4oRAumBpgA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5300.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c221854b-2550-49ad-f983-08def79dc2a8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Aug 2026 11:43:28.0474
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 4zgZujB9zLQtzpcs+V9b9azsi4hZ4Rn34gekSOd8f4zKEu8j+pui5AbyJhXsrBfih3UV+D9Oh+9RQ5MHeuSWKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAWPR11MB9710
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/8] KVM: Add support for hardware-switched mediated PMU
+To: Sandipan Das <sandipan.das@amd.com>, kvm@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>,
+ Yosry Ahmed <yosry@kernel.org>, Maxim Levitsky <mlevitsk@redhat.com>,
+ Zide Chen <zide.chen@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ "Nikunj A . Dadhania" <nikunj@amd.com>, Manali Shukla <manali.shukla@amd.com>
+References: <cover.1786345201.git.sandipan.das@amd.com>
+ <32239a68-5ba8-4985-b959-1959f331f30a@linux.intel.com>
+ <c240acb1-22ac-48cd-9243-792f415171c3@amd.com>
+Content-Language: en-US
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <c240acb1-22ac-48cd-9243-792f415171c3@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-T24gVHVlLCAyMDI2LTA4LTExIGF0IDE1OjQzICswODAwLCBIYW8gWmhhbmcgd3JvdGU6DQo+IEZy
-b206IEhhbyBaaGFuZyA8emhhbmdoYW8xQGt5bGlub3MuY24+DQo+IA0KPiBpcnJfZGVsaXZlcmVk
-IGhpZGVzIGRlbGl2ZXJlZCBlZGdlIGludGVycnVwdHMgZnJvbSBLVk1fR0VUX0lSUUNISVAuDQo+
-IFRoZSBpbnRlcnJ1cHQgcmVtYWlucyBpbiBJUlIgdW50aWwgdGhlIGd1ZXN0IGRlYXNzZXJ0cyB0
-aGUgbGluZS4NCj4gDQo+IFRoZSBndWVzdCBjYW4gcmVwcm9ncmFtIGFuIElPQVBJQyBSVEUgZnJv
-bSBlZGdlIHRvIGxldmVsIHZpYSBNTUlPLg0KPiBJZiBhbiBlZGdlIGludGVycnVwdCB3YXMgZGVs
-aXZlcmVkIGJlZm9yZSB0aGUgdHJpZ2dlciBtb2RlIGNoYW5nZSwgYQ0KPiBzdGFsZSBpcnJfZGVs
-aXZlcmVkIGJpdCBjYW4gaW5jb3JyZWN0bHkgbWFzayBhIHN1YnNlcXVlbnQgcGVuZGluZyBsZXZl
-bA0KPiBpbnRlcnJ1cHQgZnJvbSBLVk1fR0VUX0lSUUNISVAuDQo+IA0KPiBUaGF0IGNhbiBjYXVz
-ZSB1c2Vyc3BhY2UgdG8gbWlncmF0ZSB0aGUgVk0gd2l0aG91dCBhIHBlbmRpbmcgbGV2ZWwNCj4g
-aW50ZXJydXB0IHRoYXQgaXMgc3RpbGwgcHJlc2VudCBpbiBLVk0ncyBpbi1rZXJuZWwgSU9BUElD
-Lg0KPiANCg0KWy4uLl0NCg0KPiAtLS0gYS9hcmNoL3g4Ni9rdm0vaW9hcGljLmMNCj4gKysrIGIv
-YXJjaC94ODYva3ZtL2lvYXBpYy5jDQo+IEBAIC0zNzcsOCArMzc3LDE3IEBAIHN0YXRpYyB2b2lk
-IGlvYXBpY193cml0ZV9pbmRpcmVjdChzdHJ1Y3Qga3ZtX2lvYXBpYyAqaW9hcGljLCB1MzIgdmFs
-KQ0KPiAgCQkgKiBhcyBlZGdlLXRyaWdnZXJlZC4gVGhpcyBiZWhhdmlvciBpcyB1c2VkIHRvIHNp
-bXVsYXRlIGFuDQo+ICAJCSAqIGV4cGxpY2l0IEVPSSBvbiBJT0FQSUNzIHRoYXQgZG9uJ3QgaGF2
-ZSB0aGUgRU9JIHJlZ2lzdGVyLg0KPiAgCQkgKi8NCj4gLQkJaWYgKGUtPmZpZWxkcy50cmlnX21v
-ZGUgPT0gSU9BUElDX0VER0VfVFJJRykNCj4gKwkJaWYgKGUtPmZpZWxkcy50cmlnX21vZGUgPT0g
-SU9BUElDX0VER0VfVFJJRykgew0KPiAgCQkJZS0+ZmllbGRzLnJlbW90ZV9pcnIgPSAwOw0KPiAr
-CQl9IGVsc2Ugew0KPiArCQkJLyoNCj4gKwkJCSAqIGlycl9kZWxpdmVyZWQgdHJhY2tzIGVkZ2Ut
-dHJpZ2dlcmVkIGludGVycnVwdHMgdGhhdA0KPiArCQkJICogaGF2ZSBhbHJlYWR5IGJlZW4gZGVs
-aXZlcmVkLiAgQ2xlYXIgc3RhbGUgZWRnZS10cmlnZ2VyZWQNCj4gKwkJCSAqIGRlbGl2ZXJ5IHN0
-YXRlIHdoZW4gdGhlIGVudHJ5IGlzIGNvbmZpZ3VyZWQgZm9yDQo+ICsJCQkgKiBsZXZlbC10cmln
-Z2VyZWQgaW50ZXJydXB0cy4NCj4gKwkJCSAqLw0KPiArCQkJaW9hcGljLT5pcnJfZGVsaXZlcmVk
-ICY9IH4oMSA8PCBpbmRleCk7DQo+ICsJCX0NCg0KVG8gYmUgaG9uZXN0IEkgYW0gbm90IHN1cmUg
-d2hldGhlciB3ZSBzaG91bGQgY29uc2lkZXIgdGhpcyBjYXNlLCBidXQgSUlVQyB0aGlzDQpjb2Rl
-IGNoYW5nZSBkb2Vzbid0IHNlZW0gdG8gaGF2ZSBhbnkgaGFybSwgc28gd2lsbCBsZWF2ZSB0byBv
-dGhlcnMuDQoNCj4gIA0KPiAgCQltYXNrX2FmdGVyID0gZS0+ZmllbGRzLm1hc2s7DQo+ICAJCWlm
-IChtYXNrX2JlZm9yZSAhPSBtYXNrX2FmdGVyKQ0KPiBkaWZmIC0tZ2l0IGEvdG9vbHMvdGVzdGlu
-Zy9zZWxmdGVzdHMva3ZtL3g4Ni9pb2FwaWNfc3RhdGVfdGVzdC5jIGIvdG9vbHMvdGVzdGluZy9z
-ZWxmdGVzdHMva3ZtL3g4Ni9pb2FwaWNfc3RhdGVfdGVzdC5jDQo+IGluZGV4IGRhMDI3NmExNTQy
-Zi4uZjAyNGY0ZjAxNTcxIDEwMDY0NA0KPiAtLS0gYS90b29scy90ZXN0aW5nL3NlbGZ0ZXN0cy9r
-dm0veDg2L2lvYXBpY19zdGF0ZV90ZXN0LmMNCj4gKysrIGIvdG9vbHMvdGVzdGluZy9zZWxmdGVz
-dHMva3ZtL3g4Ni9pb2FwaWNfc3RhdGVfdGVzdC5jDQoNCkFnYWluLCBJIHRoaW5rIHlvdSBzaG91
-bGQgc3BsaXQgc2VsZnRlc3QgY29kZSBjaGFuZ2UgYXMgYSBzZXBhcmF0ZSBwYXRjaC4NCg0KQW5k
-IGl0J3MgYmV0dGVyIHRvIGhhdmUgYSBjb3ZlciBsZXR0ZXIgZm9yIHN1Y2ggc2VyaWVzIHdpdGgg
-bXVsdGlwbGUgcGF0Y2hlcy4NCg==
+
+On 8/11/2026 4:37 PM, Sandipan Das wrote:
+> On 11-08-2026 13:19, Mi, Dapeng wrote:
+>> On 8/10/2026 6:14 PM, Sandipan Das wrote:
+>>> Mediated PMU currently saves and restores the guest PMU state in
+>>> software on every world switch. On Zen 5 and later processors, it is
+>>> possible to offload this to the hardware, which automatically saves and
+>>> restores the guest counter state to and from a vendor save area (VMCB)
+>>> during world switches. This feature is called PMC virtualization and
+>>> detailed information about it can be found in Volume 2 of the AMD64
+>>> Architecture Programmer's Manual under Section 15.39.
+>>>
+>>> This series extends the mediated PMU framework with a hardware-switched
+>>> mode and adds the AMD (SVM) implementation, including nested support.
+>>>
+>>> Performance
+>>> -----------
+>>> The difference in the world switch overhead between software-switched
+>>> and hardware-switched modes is measured with the x86/vmexit test from
+>>> kvm-unit-tests on a system with an AMD EPYC 9755 processor. The values
+>>> are in cycles per operation (lower is better), averaged over 5 runs.
+>>>
+>>> ------------------------------------------------------------------------
+>>> test                               sw-switched  hw-switched         gain
+>>> ------------------------------------------------------------------------
+>>> cpuid                                     5333         2592       +51.4%
+>>> vmcall                                   15858         7619       +52.0%
+>>> wbinvd                                    5256         2517       +52.1%
+>>> invd                                      1857         2147       -15.6%
+>>> mov_from_cr8                                18           18         0.0%
+>>> mov_to_cr8                                 157          156        +0.6%
+>>> inl_from_pmtimer                         25934        21176       +18.3%
+>>> inl_from_qemu                            25881        21156       +18.3%
+>>> inl_from_kernel                           5521         2772       +49.8%
+>>> outl_to_kernel                            5522         2778       +49.7%
+>>> mov_dr                                     114          114         0.0%
+>>> self_ipi_sti_nop                          1020         1015        +0.5%
+>>>   ipi self_ipi_sti_nop                     310          307        +1.0%
+>>>   eoi self_ipi_sti_nop                     242          241        +0.4%
+>>> self_ipi_sti_hlt                          2714         2704        +0.4%
+>>>   ipi self_ipi_sti_hlt                     310          307        +1.0%
+>>>   eoi self_ipi_sti_hlt                     242          240        +0.8%
+>>> self_ipi_tpr                              1272         1263        +0.7%
+>>>   ipi self_ipi_tpr                         309          307        +0.6%
+>>>   eoi self_ipi_tpr                         241          240        +0.4%
+>>> self_ipi_tpr_sti_nop                      1304         1295        +0.7%
+>>>   ipi self_ipi_tpr_sti_nop                 309          307        +0.6%
+>>>   eoi self_ipi_tpr_sti_nop                 242          241        +0.4%
+>>> self_ipi_tpr_sti_hlt                      3003         2991        +0.4%
+>>>   ipi self_ipi_tpr_sti_hlt                 309          307        +0.6%
+>>>   eoi self_ipi_tpr_sti_hlt                 242          240        +0.8%
+>>> x2apic_self_ipi_sti_nop                    899          895        +0.4%
+>>>   ipi x2apic_self_ipi_sti_nop              191          190        +0.5%
+>>>   eoi x2apic_self_ipi_sti_nop              242          241        +0.4%
+>>> x2apic_self_ipi_sti_hlt                   2592         2587        +0.2%
+>>>   ipi x2apic_self_ipi_sti_hlt              191          190        +0.5%
+>>>   eoi x2apic_self_ipi_sti_hlt              242          241        +0.4%
+>>> x2apic_self_ipi_tpr                       1159         1151        +0.7%
+>>>   ipi x2apic_self_ipi_tpr                  193          193         0.0%
+>>>   eoi x2apic_self_ipi_tpr                  241          240        +0.4%
+>>> x2apic_self_ipi_tpr_sti_nop               1189         1180        +0.8%
+>>>   ipi x2apic_self_ipi_tpr_sti_nop          193          193         0.0%
+>>>   eoi x2apic_self_ipi_tpr_sti_nop          242          241        +0.4%
+>>> x2apic_self_ipi_tpr_sti_hlt               2887         2875        +0.4%
+>>>   ipi x2apic_self_ipi_tpr_sti_hlt          194          192        +1.0%
+>>>   eoi x2apic_self_ipi_tpr_sti_hlt          242          239        +1.2%
+>>> ple_round_robin                             19           19         0.0%
+>>> wr_kernel_gs_base                           73           73         0.0%
+>>> wr_ibpb_msr                                563          557        +1.1%
+>>> wr_tsc_adjust_msr                         5352         2603       +51.4%
+>>> rd_tsc_adjust_msr                         5330         2586       +51.5%
+>>> toggle_cr0_wp                            11319         5810       +48.7%
+>>> toggle_cr4_pge                           11743         6242       +46.8%
+>>> mmio-no-eventfd:pci-mem                  31890        26835       +15.9%
+>>> mmio-wildcard-eventfd:pci-mem             6461         3666       +43.3%
+>>> mmio-datamatch-eventfd:pci-mem            6449         3671       +43.1%
+>>> portio-no-eventfd:pci-io                 25218        21455       +14.9%
+>>> portio-wildcard-eventfd:pci-io            5512         2774       +49.7%
+>>> portio-datamatch-eventfd:pci-io           5524         2780       +49.7%
+>>> ------------------------------------------------------------------------
+>> Just curious what causes the gain difference between these test cases?
+>> Different vm-exit/vm-entry number in each test case? Suppose the cost for
+>> saving/restoring PMU MSRs on each vm-exit/vm-entry should be same or close.
+>>
+> In this case, the cost is actually lower when hardware handles save-restore
+> of PMU MSRs. Hardware can use fastpaths and optimizations which an usual
+> RDMSR/WRMSR sequence cannot.
+
+Thanks. My question is why the different test case show so much difference
+on the gains, e.g., cpuid has +51%, while invd has -15%. Per my
+understanding, the cost of saving/restoring PMU MSRs for most vm-exits
+(exclude the fastpath vm-exit) should be fixed even for different vm-exit
+reasons. Is it true? 
+
+
+>
+>>> The largest gains are for wbinvd (+52.1%), vmcall (+52.0%), and cpuid
+>>> (+51.4%), followed by the TSC-adjust MSR accesses (~+51%), the
+>>> kernel-handled port I/O paths (~+50%), and the control-register toggles
+>>> (~+47-49%). The wildcard and datamatch MMIO / port-I/O paths improve by
+>>> ~+43-50%, while the slower no-eventfd MMIO / port-I/O and pmtimer/qemu
+>>> port-I/O paths improve by ~+15-18%.
+>>>
+>>> The only meaningful regression is invd (-15.6%). The self-IPI and EOI
+>>> subtests move by at most 1.2% and wr_kernel_gs_base is unchanged, all
+>>> within run-to-run noise.
+>>>
+>>> Design
+>>> ------
+>>>   * The entity responsible for switching the guest PMU state is tracked
+>>>     per-VM via a new set of mediated PMU capability flags in kvm_arch.
+>>>     In software-switched mode the state resides in struct kvm_pmu; in
+>>>     hardware-switched mode it resides in the vendor save area.
+>>>   * Event filtering, instruction emulation, and intercepted RDPMC still
+>>>     need the state in struct kvm_pmu, so new vendor state-sync PMU ops
+>>>     synchronize specific MSRs between struct kvm_pmu and the vendor
+>>>     save area on demand.
+>>>   * On SVM, the feature depends on VNMI for guest PMI delivery and is
+>>>     controlled by the new "vpmc" kvm_amd module parameter, enabled by
+>>>     default when the host supports it and mediated PMU is enabled.
+>>>
+>>> Limitations
+>>> -----------
+>>>   * Not supported for SEV-ES and SEV-SNP guests: the guest PMU state
+>>>     resides in an encrypted VMSA that is inaccessible to the event
+>>>     filtering logic.
+>>>   * With VNMI and no AVIC, overflow interrupts are always delivered as
+>>>     NMIs because the APIC is emulated and the LVTPC is ignored. This
+>>>     shows up as expected behavioral differences in the x86/pmu test of
+>>>     kvm-unit-tests.
+>>>
+>>> Overview
+>>> --------
+>>> Patches 1-3 extend the mediated PMU framework with hardware-switched
+>>> mode: the capability flags, the vendor state-sync ops, and the generic
+>>> support. Patches 4-6 add the SVM enablement: the PerfCtrVirt feature
+>>> bit, the VMCB save-area fields, and the SVM implementation. Patch 7
+>>> adds nested (nSVM) support to use the feature with L2 guests. Patch 8
+>>> explicitly disables the feature for SEV-ES and SEV-SNP guests.
+>>>
+>>> Tested with kvm-unit-tests (KUT) and perf fuzzer. KUT's x86/pmu test
+>>> requires patching to accept overflow interrupts as NMIs (limitation
+>>> because of VNMI ignoring the LVTPC). It is recommended to apply the
+>>> following patches before testing.
+>>> https://lore.kernel.org/kvm/3bfbf15c22652ba00cf4a16fe9e0a3bfe7071f97.1784096302.git.sandipan.das@amd.com/
+>>> https://lore.kernel.org/kvm/b075ec13e95167da1f2229626713c91d291bb75b.1784097178.git.sandipan.das@amd.com/
+>>> https://lore.kernel.org/all/106bc3a4660653cb7750f3ae07a4dbca42c2762c.1786356229.git.sandipan.das@amd.com/
+>>>
+>>> base-commit: 6cf46b37b0356b3408f8ba949e10462cc71b533d
+>>>              (tag: kvm-x86-next-2026.08.07)
+>>>
+>>> Previous versions can be found at:
+>>> rfc: https://lore.kernel.org/kvm/cover.1762960531.git.sandipan.das@amd.com/
+>>>
+>>> Changes in v1:
+>>>   * Introduce mediated PMU capabilities for hardware PMU virtualization
+>>>     features instead of perf PMU capabilities.
+>>>   * Make VNMI a hard requirement since AVIC can be inhibited.
+>>>   * Introduce new PMU ops to access VMCB PMU state instead of relying
+>>>     on host-initiated {get,set}_msr() ops.
+>>>   * Make VMCB PMU state accessible via KVM_{GET,SET}_MSRS for migration.
+>>>   * Implement support for nested SVM.
+>>>   * Disable support for SEV-ES and SEV-SNP guests explicitly.
+>>>
+>>> Sandipan Das (8):
+>>>   KVM: x86/pmu: Add mediated PMU capability flags
+>>>   KVM: x86/pmu: Add PMU ops for vendor state sync
+>>>   KVM: x86/pmu: Add support for hardware-switched PMU
+>>>   x86/cpufeatures: Add PerfCtrVirt feature bit
+>>>   KVM: SVM: Add VMCB fields for PMC virtualization
+>>>   KVM: SVM: Add support for hardware-switched PMU
+>>>   KVM: nSVM: Add support for hardware-switched PMU
+>>>   KVM: SEV: Disallow the use of hardware-switched PMU
+>>>
+>>>  arch/x86/include/asm/cpufeatures.h     |   1 +
+>>>  arch/x86/include/asm/kvm-x86-pmu-ops.h |   3 +
+>>>  arch/x86/include/asm/kvm_host.h        |  11 +++
+>>>  arch/x86/include/asm/svm.h             |  13 ++-
+>>>  arch/x86/kvm/cpuid.c                   |   1 +
+>>>  arch/x86/kvm/pmu.c                     | 102 +++++++++++++++++----
+>>>  arch/x86/kvm/pmu.h                     |  29 ++++++
+>>>  arch/x86/kvm/svm/nested.c              |  45 +++++++++-
+>>>  arch/x86/kvm/svm/pmu.c                 | 117 +++++++++++++++++++++++++
+>>>  arch/x86/kvm/svm/sev.c                 |   3 +
+>>>  arch/x86/kvm/svm/svm.c                 |  58 +++++++++++-
+>>>  arch/x86/kvm/svm/svm.h                 |  19 ++++
+>>>  arch/x86/kvm/vmx/pmu_intel.c           |   2 +
+>>>  arch/x86/kvm/vmx/vmx.c                 |   3 +-
+>>>  arch/x86/kvm/x86.c                     |   2 +
+>>>  15 files changed, 384 insertions(+), 25 deletions(-)
+>>>
