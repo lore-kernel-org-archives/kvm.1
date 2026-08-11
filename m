@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0E13FB055;
-	Tue, 11 Aug 2026 07:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C184D37998C
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 07:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786434223; cv=none; b=gmyi+rl2eqBJEhJk8AUnpjxPR7Ysw/u4QRLxbMgkn0y4VL/bIk26jFk2K5+H2HTYe8Sm2oW2qXkFkNq9rq+VZKTDCutbLUZ7UD8bmhtp6N11RYb/V0bCCV0ynUxb78ghAZL6OJfrowESZ+DykSaxZOi9dHo/Ztmh1h3M/SXIKVQ=
+	t=1786434605; cv=none; b=iNvp3/Rx0cLoR51cOYl/3/wEbFZhVE6DuyWHRMNwns1eFGQf4LpBe+UuITA+L23Td3cnpZnxs7VN8x8XH+4EnJoBWJxE2zUdfK2wOMLxJ18XeVRotXataT+trgEl0CR9imQ+8O1xCo2cs8uMUyrs3ATyJEslfTKYKSMKs8boa6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786434223; c=relaxed/simple;
-	bh=eyAG6Jmsv9SrSGFS/sxLFSdUlwwtvd30wm4wtCIQRnY=;
+	s=arc-20240116; t=1786434605; c=relaxed/simple;
+	bh=3otvyyul0lnH4pBz3q6gcbwj87q1RyMX1el+bKZ7orM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xi+7zMkKbNVSJwKnI41Tav2q0nu45AvVfovesQmAgfvmk0oeVzkrlJYFtcy7ZSszuDBVoWzCB4LSaK4xNck2sU/PFIPQBpJXEogfW9hlFXo1zXpfUZR7BoOu++wIVTL/xpcuD0gWxJIOwrlCMoehRk22/O9AIrB+spBDhHLrRiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ht8P1SBq; arc=none smtp.client-ip=198.175.65.20
+	 In-Reply-To:Content-Type; b=ujEvFpxqDzKogGuixTNXzMnajNZZmUf9D56S3gSjKFVu+r75DpBkrvClG1Hgou9vimvnXUDPs0iqufE/NLUEt4z7oyXiPgiwyTVOFNlp58MW4mksxU1qLSj3RhwKvlQuszTN8lxayRUXNBDHnKQpgNLgbokz3g4zhMWkYkYKoN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IVyw6doi; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ht8P1SBq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IVyw6doi"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786434221; x=1817970221;
+  t=1786434604; x=1817970604;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=eyAG6Jmsv9SrSGFS/sxLFSdUlwwtvd30wm4wtCIQRnY=;
-  b=Ht8P1SBqAdw9yemATyt+o3c/W6TOj2ZnnHi72oNhy+TvWeSDQM0CNH53
-   RoKPcf3ULiZLeHZD0FSQXxPy8DyhQGpEyEowSjxKefEcc0HiG6QYD6qgD
-   7LYXz4S7PaG94KIZjB1uRkVk4yH/5zcbTPiAyxjC8mmIdjNvkyFtV5u0H
-   M9637Ag3FxlU/uq/mRy68ATDYSUVbhpNtW/29f9P3B+sLUgY0CEtT+2tL
-   9+d8C4A96a0tNREMulEDu6HCWr06JfTsg1CKuyxnFC2IO+wi7eSpdsQoF
-   JoTQ7c7wcQpFRKT6krxG2cWtLCROutWytuQTvpddcbfjibzkwWcmfmv+j
-   w==;
-X-CSE-ConnectionGUID: zD/GVcvXSDKczzgM2QYWYw==
-X-CSE-MsgGUID: cfHlDrSxTP62+4JgFJkUUA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="86719633"
+  bh=3otvyyul0lnH4pBz3q6gcbwj87q1RyMX1el+bKZ7orM=;
+  b=IVyw6doi75D89pPfaWfM5/rrcOLh1GTwkO+5lOG3N1GXVSv9FZnob688
+   jHpLXTiMxH+E6CUOnRPbUI7bRbXOBCf/sKs0Fl7NRlpYmdCsdefxPLfte
+   jcrSmEWaQFlmBQVEtykYz1FubCrfKbi1T5hY5sL9DtxJmu0JTXvsKm3S3
+   b7q07oenV+xEzk9f9/MaU+0v8LDTeXJ40RvJi+mLd88jn2GdufEefFiSN
+   /FcDPjVHm8aByIv7NI7cRZGom+HjFrMIUrPz7zR+9psRuHJv9aivsVub5
+   ifOxEm28OFCryvGqlGlnFjZL1arjKAi9das8gAz5vnrkemKOiLxAv/qWe
+   Q==;
+X-CSE-ConnectionGUID: TvtWY1Z0RMWCfSW3Kd4mjA==
+X-CSE-MsgGUID: z7pH8F/gTEmVuyJpzwas9Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="89484895"
 X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; 
-   d="scan'208";a="86719633"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 00:43:41 -0700
-X-CSE-ConnectionGUID: wNlDlRZARwiYdikmBanWjA==
-X-CSE-MsgGUID: utH7HKWvSh2JspRfIAjlrg==
+   d="scan'208";a="89484895"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 00:50:03 -0700
+X-CSE-ConnectionGUID: 6nbYPjqHR0e9k20vx+0RMg==
+X-CSE-MsgGUID: P9LXFTzWS/qWC4jKiJEGoQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; 
-   d="scan'208";a="293207295"
-Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 00:43:35 -0700
-Message-ID: <12ab0d52-b432-4c16-979e-2198a34e8d65@linux.intel.com>
-Date: Tue, 11 Aug 2026 15:43:33 +0800
+   d="scan'208";a="267546533"
+Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.239]) ([10.124.241.239])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 00:50:00 -0700
+Message-ID: <32239a68-5ba8-4985-b959-1959f331f30a@linux.intel.com>
+Date: Tue, 11 Aug 2026 15:49:57 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,92 +52,197 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 12/22] KVM: selftests: Require guest_memfd for TDX VMs
-To: Lisa Wang <wyihan@google.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-12-15ad654a50db@google.com>
+Subject: Re: [PATCH 0/8] KVM: Add support for hardware-switched mediated PMU
+To: Sandipan Das <sandipan.das@amd.com>, kvm@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>,
+ Yosry Ahmed <yosry@kernel.org>, Maxim Levitsky <mlevitsk@redhat.com>,
+ Zide Chen <zide.chen@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ "Nikunj A . Dadhania" <nikunj@amd.com>, Manali Shukla <manali.shukla@amd.com>
+References: <cover.1786345201.git.sandipan.das@amd.com>
 Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260722-tdx-selftests-v14-12-15ad654a50db@google.com>
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <cover.1786345201.git.sandipan.das@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 7/23/2026 7:13 AM, Lisa Wang wrote:
-> Force guest_memfd for TDX VMs.
-> 
-> KVM supports guest_memfd for TDX private memory. Without in-place
-> conversion supports, all pages default attributes are private. Thus,
-> set page to "shared" for shared pages.
-> 
-> Signed-off-by: Lisa Wang <wyihan@google.com>
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+On 8/10/2026 6:14 PM, Sandipan Das wrote:
+> Mediated PMU currently saves and restores the guest PMU state in
+> software on every world switch. On Zen 5 and later processors, it is
+> possible to offload this to the hardware, which automatically saves and
+> restores the guest counter state to and from a vendor save area (VMCB)
+> during world switches. This feature is called PMC virtualization and
+> detailed information about it can be found in Volume 2 of the AMD64
+> Architecture Programmer's Manual under Section 15.39.
+>
+> This series extends the mediated PMU framework with a hardware-switched
+> mode and adds the AMD (SVM) implementation, including nested support.
+>
+> Performance
+> -----------
+> The difference in the world switch overhead between software-switched
+> and hardware-switched modes is measured with the x86/vmexit test from
+> kvm-unit-tests on a system with an AMD EPYC 9755 processor. The values
+> are in cycles per operation (lower is better), averaged over 5 runs.
+>
+> ------------------------------------------------------------------------
+> test                               sw-switched  hw-switched         gain
+> ------------------------------------------------------------------------
+> cpuid                                     5333         2592       +51.4%
+> vmcall                                   15858         7619       +52.0%
+> wbinvd                                    5256         2517       +52.1%
+> invd                                      1857         2147       -15.6%
+> mov_from_cr8                                18           18         0.0%
+> mov_to_cr8                                 157          156        +0.6%
+> inl_from_pmtimer                         25934        21176       +18.3%
+> inl_from_qemu                            25881        21156       +18.3%
+> inl_from_kernel                           5521         2772       +49.8%
+> outl_to_kernel                            5522         2778       +49.7%
+> mov_dr                                     114          114         0.0%
+> self_ipi_sti_nop                          1020         1015        +0.5%
+>   ipi self_ipi_sti_nop                     310          307        +1.0%
+>   eoi self_ipi_sti_nop                     242          241        +0.4%
+> self_ipi_sti_hlt                          2714         2704        +0.4%
+>   ipi self_ipi_sti_hlt                     310          307        +1.0%
+>   eoi self_ipi_sti_hlt                     242          240        +0.8%
+> self_ipi_tpr                              1272         1263        +0.7%
+>   ipi self_ipi_tpr                         309          307        +0.6%
+>   eoi self_ipi_tpr                         241          240        +0.4%
+> self_ipi_tpr_sti_nop                      1304         1295        +0.7%
+>   ipi self_ipi_tpr_sti_nop                 309          307        +0.6%
+>   eoi self_ipi_tpr_sti_nop                 242          241        +0.4%
+> self_ipi_tpr_sti_hlt                      3003         2991        +0.4%
+>   ipi self_ipi_tpr_sti_hlt                 309          307        +0.6%
+>   eoi self_ipi_tpr_sti_hlt                 242          240        +0.8%
+> x2apic_self_ipi_sti_nop                    899          895        +0.4%
+>   ipi x2apic_self_ipi_sti_nop              191          190        +0.5%
+>   eoi x2apic_self_ipi_sti_nop              242          241        +0.4%
+> x2apic_self_ipi_sti_hlt                   2592         2587        +0.2%
+>   ipi x2apic_self_ipi_sti_hlt              191          190        +0.5%
+>   eoi x2apic_self_ipi_sti_hlt              242          241        +0.4%
+> x2apic_self_ipi_tpr                       1159         1151        +0.7%
+>   ipi x2apic_self_ipi_tpr                  193          193         0.0%
+>   eoi x2apic_self_ipi_tpr                  241          240        +0.4%
+> x2apic_self_ipi_tpr_sti_nop               1189         1180        +0.8%
+>   ipi x2apic_self_ipi_tpr_sti_nop          193          193         0.0%
+>   eoi x2apic_self_ipi_tpr_sti_nop          242          241        +0.4%
+> x2apic_self_ipi_tpr_sti_hlt               2887         2875        +0.4%
+>   ipi x2apic_self_ipi_tpr_sti_hlt          194          192        +1.0%
+>   eoi x2apic_self_ipi_tpr_sti_hlt          242          239        +1.2%
+> ple_round_robin                             19           19         0.0%
+> wr_kernel_gs_base                           73           73         0.0%
+> wr_ibpb_msr                                563          557        +1.1%
+> wr_tsc_adjust_msr                         5352         2603       +51.4%
+> rd_tsc_adjust_msr                         5330         2586       +51.5%
+> toggle_cr0_wp                            11319         5810       +48.7%
+> toggle_cr4_pge                           11743         6242       +46.8%
+> mmio-no-eventfd:pci-mem                  31890        26835       +15.9%
+> mmio-wildcard-eventfd:pci-mem             6461         3666       +43.3%
+> mmio-datamatch-eventfd:pci-mem            6449         3671       +43.1%
+> portio-no-eventfd:pci-io                 25218        21455       +14.9%
+> portio-wildcard-eventfd:pci-io            5512         2774       +49.7%
+> portio-datamatch-eventfd:pci-io           5524         2780       +49.7%
+> ------------------------------------------------------------------------
 
-One nit below.
+Just curious what causes the gain difference between these test cases?
+Different vm-exit/vm-entry number in each test case? Suppose the cost for
+saving/restoring PMU MSRs on each vm-exit/vm-entry should be same or close.
 
-> ---
->  tools/testing/selftests/kvm/lib/kvm_util.c     | 2 +-
->  tools/testing/selftests/kvm/lib/ucall_common.c | 8 ++++++++
->  2 files changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-> index 0b9d2d383bfa..4a48c4b42095 100644
-> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
-> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-> @@ -472,7 +472,7 @@ void kvm_set_files_rlimit(u32 nr_vcpus)
->  static bool is_guest_memfd_required(struct vm_shape shape)
->  {
->  #ifdef __x86_64__
-> -	return shape.type == KVM_X86_SNP_VM;
-> +	return (shape.type == KVM_X86_SNP_VM || shape.type == KVM_X86_TDX_VM);
 
-Nit:
-The parentheses can be dropped.
-
->  #else
->  	return false;
->  #endif
-> diff --git a/tools/testing/selftests/kvm/lib/ucall_common.c b/tools/testing/selftests/kvm/lib/ucall_common.c
-> index 029ce21f9f2f..c03dfc763172 100644
-> --- a/tools/testing/selftests/kvm/lib/ucall_common.c
-> +++ b/tools/testing/selftests/kvm/lib/ucall_common.c
-> @@ -27,6 +27,7 @@ static struct ucall_header *ucall_pool;
->  
->  void ucall_init(struct kvm_vm *vm, gpa_t mmio_gpa)
->  {
-> +	struct userspace_mem_region *region;
->  	struct ucall_header *hdr;
->  	struct ucall *uc;
->  	gva_t gva;
-> @@ -37,6 +38,13 @@ void ucall_init(struct kvm_vm *vm, gpa_t mmio_gpa)
->  	hdr = (struct ucall_header *)addr_gva2hva(vm, gva);
->  	memset(hdr, 0, sizeof(*hdr));
->  
-> +	region = vm_get_mem_region(vm, MEM_REGION_DATA);
-> +	if (region->region.flags & KVM_MEM_GUEST_MEMFD) {
-> +		size_t aligned_sz = align_up(sizeof(*hdr), vm->page_size);
-> +
-> +		vm_mem_set_shared(vm, addr_gva2gpa(vm, gva), aligned_sz);
-> +	}
-> +
->  	for (i = 0; i < KVM_MAX_VCPUS; ++i) {
->  		uc = &hdr->ucalls[i];
->  		uc->hva = uc;
-> 
-
+>
+> The largest gains are for wbinvd (+52.1%), vmcall (+52.0%), and cpuid
+> (+51.4%), followed by the TSC-adjust MSR accesses (~+51%), the
+> kernel-handled port I/O paths (~+50%), and the control-register toggles
+> (~+47-49%). The wildcard and datamatch MMIO / port-I/O paths improve by
+> ~+43-50%, while the slower no-eventfd MMIO / port-I/O and pmtimer/qemu
+> port-I/O paths improve by ~+15-18%.
+>
+> The only meaningful regression is invd (-15.6%). The self-IPI and EOI
+> subtests move by at most 1.2% and wr_kernel_gs_base is unchanged, all
+> within run-to-run noise.
+>
+> Design
+> ------
+>   * The entity responsible for switching the guest PMU state is tracked
+>     per-VM via a new set of mediated PMU capability flags in kvm_arch.
+>     In software-switched mode the state resides in struct kvm_pmu; in
+>     hardware-switched mode it resides in the vendor save area.
+>   * Event filtering, instruction emulation, and intercepted RDPMC still
+>     need the state in struct kvm_pmu, so new vendor state-sync PMU ops
+>     synchronize specific MSRs between struct kvm_pmu and the vendor
+>     save area on demand.
+>   * On SVM, the feature depends on VNMI for guest PMI delivery and is
+>     controlled by the new "vpmc" kvm_amd module parameter, enabled by
+>     default when the host supports it and mediated PMU is enabled.
+>
+> Limitations
+> -----------
+>   * Not supported for SEV-ES and SEV-SNP guests: the guest PMU state
+>     resides in an encrypted VMSA that is inaccessible to the event
+>     filtering logic.
+>   * With VNMI and no AVIC, overflow interrupts are always delivered as
+>     NMIs because the APIC is emulated and the LVTPC is ignored. This
+>     shows up as expected behavioral differences in the x86/pmu test of
+>     kvm-unit-tests.
+>
+> Overview
+> --------
+> Patches 1-3 extend the mediated PMU framework with hardware-switched
+> mode: the capability flags, the vendor state-sync ops, and the generic
+> support. Patches 4-6 add the SVM enablement: the PerfCtrVirt feature
+> bit, the VMCB save-area fields, and the SVM implementation. Patch 7
+> adds nested (nSVM) support to use the feature with L2 guests. Patch 8
+> explicitly disables the feature for SEV-ES and SEV-SNP guests.
+>
+> Tested with kvm-unit-tests (KUT) and perf fuzzer. KUT's x86/pmu test
+> requires patching to accept overflow interrupts as NMIs (limitation
+> because of VNMI ignoring the LVTPC). It is recommended to apply the
+> following patches before testing.
+> https://lore.kernel.org/kvm/3bfbf15c22652ba00cf4a16fe9e0a3bfe7071f97.1784096302.git.sandipan.das@amd.com/
+> https://lore.kernel.org/kvm/b075ec13e95167da1f2229626713c91d291bb75b.1784097178.git.sandipan.das@amd.com/
+> https://lore.kernel.org/all/106bc3a4660653cb7750f3ae07a4dbca42c2762c.1786356229.git.sandipan.das@amd.com/
+>
+> base-commit: 6cf46b37b0356b3408f8ba949e10462cc71b533d
+>              (tag: kvm-x86-next-2026.08.07)
+>
+> Previous versions can be found at:
+> rfc: https://lore.kernel.org/kvm/cover.1762960531.git.sandipan.das@amd.com/
+>
+> Changes in v1:
+>   * Introduce mediated PMU capabilities for hardware PMU virtualization
+>     features instead of perf PMU capabilities.
+>   * Make VNMI a hard requirement since AVIC can be inhibited.
+>   * Introduce new PMU ops to access VMCB PMU state instead of relying
+>     on host-initiated {get,set}_msr() ops.
+>   * Make VMCB PMU state accessible via KVM_{GET,SET}_MSRS for migration.
+>   * Implement support for nested SVM.
+>   * Disable support for SEV-ES and SEV-SNP guests explicitly.
+>
+> Sandipan Das (8):
+>   KVM: x86/pmu: Add mediated PMU capability flags
+>   KVM: x86/pmu: Add PMU ops for vendor state sync
+>   KVM: x86/pmu: Add support for hardware-switched PMU
+>   x86/cpufeatures: Add PerfCtrVirt feature bit
+>   KVM: SVM: Add VMCB fields for PMC virtualization
+>   KVM: SVM: Add support for hardware-switched PMU
+>   KVM: nSVM: Add support for hardware-switched PMU
+>   KVM: SEV: Disallow the use of hardware-switched PMU
+>
+>  arch/x86/include/asm/cpufeatures.h     |   1 +
+>  arch/x86/include/asm/kvm-x86-pmu-ops.h |   3 +
+>  arch/x86/include/asm/kvm_host.h        |  11 +++
+>  arch/x86/include/asm/svm.h             |  13 ++-
+>  arch/x86/kvm/cpuid.c                   |   1 +
+>  arch/x86/kvm/pmu.c                     | 102 +++++++++++++++++----
+>  arch/x86/kvm/pmu.h                     |  29 ++++++
+>  arch/x86/kvm/svm/nested.c              |  45 +++++++++-
+>  arch/x86/kvm/svm/pmu.c                 | 117 +++++++++++++++++++++++++
+>  arch/x86/kvm/svm/sev.c                 |   3 +
+>  arch/x86/kvm/svm/svm.c                 |  58 +++++++++++-
+>  arch/x86/kvm/svm/svm.h                 |  19 ++++
+>  arch/x86/kvm/vmx/pmu_intel.c           |   2 +
+>  arch/x86/kvm/vmx/vmx.c                 |   3 +-
+>  arch/x86/kvm/x86.c                     |   2 +
+>  15 files changed, 384 insertions(+), 25 deletions(-)
+>
