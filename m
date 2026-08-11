@@ -1,112 +1,123 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FE3442FB6
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 14:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311B53F327D;
+	Tue, 11 Aug 2026 14:44:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786459467; cv=none; b=NvQEWSPyV71ZLDS2n9zxu5MAbtZ/B2nOXDvCUuMv0yFybqC6EC96o/pgegmiisYqOuADHU/es79QCTpLT48K6kO9fpls3MwEWcSu7Weh7CR4GW8zxBHpP0Sdkgauu8sLlueArYcy0u2SjTG6140bwlt00iWQJUcjaI5KDfkktRs=
+	t=1786459503; cv=none; b=PFVddZJBgbdJN4C1k32RteQnSQVcFlbv5Z0aI5MdMTpe6zt6Z1PeIH4PqnlcvG6SgHDvpPsEml7x3pAMhjbS2AOjZJEKQr2PZqemqLXDlBGEufVFVxJb19D51FRljEa0sgbwN7pYusBNyOMMkKamBfHJ4kWc3S6MKbuwWY3WWs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786459467; c=relaxed/simple;
-	bh=z7M237ruQK7gHK+Tu+KiQLo1PpbdrIFE0xtJTv+oKEs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EBUFx179qof7TuuMKlp9pIWaAPGM7Pde76OMgzwb2CFiCM2AJzTYEVSP2U/82+/4TZC02JLJXukWQAOfNTEmQ/kd7Dr1oMYWPgADYZmKhwSwB9MULxPLgjIbNcuMOhKZmezRsvl3Bsply5m2ioClGeoPtcZE1kwesnZ2rjn9efs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d/jUQlgJ; arc=none smtp.client-ip=209.85.210.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786459503; c=relaxed/simple;
+	bh=/LPEH55R6LClPqeXnYARvDZU8XDKgr9ZBtZUHbi7ZdM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r2Ga09EtuVPZmuoOKnLKhbmTgsvDk0UGIiT3UzFS5BkAHv/ffX/OmfNVzso5LH87rZ2lNeXhrRnS372m3IQXug3eqyIE1OkdW07OJvdYWcRqgo/6elI5ECLYKNIexuvMtwN5foOoqduTfTK+iTtMBgyGZirH3iTYCVJJzvMaD2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=UhMkyTJN; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d/jUQlgJ"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84e3d575d6eso5831947b3a.3
-        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 07:44:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786459466; x=1787064266; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RnIOn+7Rt31kCAO2bTU4UwHzTf1viFKgNwstMdN6akw=;
-        b=d/jUQlgJRnxhy8XZx1HF54pRmognoU2MuX63Z4aSC15ksNvqhE+qGRfWkiZEt3aFPF
-         xw1vKfMhSpeN96p/6l6hFumT2ATcb1Vz9QFNEUUe1/3Ld45TgxkbW0hFuDBA/HqnI6EZ
-         lYpQ4VM8tFgrxEIyBJQXOyzIM7sO23SvSSSQWkPUdsRuxwMKgz96W1Jb+ODwWMWBoO/A
-         hOCwBXN66A3fqjJPMGRr0epi0EiJZ6KFcFJl/CCZ7lBlTPu3NQYXmIpo8fku2HYsoqju
-         KsDAdq6RZ6b9uZCO1741AiqFCs7JC+j8tzmDI+/tiRJEqJxuqTSoAvyvltkLWvrUnDxH
-         exhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786459466; x=1787064266;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RnIOn+7Rt31kCAO2bTU4UwHzTf1viFKgNwstMdN6akw=;
-        b=JkOzwTZOsxmgz2+dFxmwudjNOYM7u+HZyMlseIXoyqIMwSxKwvDBA6Zb4/0Fw50sc0
-         WKYiEEwy6jUmHzIJvthw59pS1sLCt4um1FZIl87b5TYofU2of2g+MpVtVIXbeIR07H4/
-         AzOn62aA+UjD5QGil9XSS7AFIX3afRAMuEJllyNNZIbM5SPQJcWx1aV6dqa/l4AkoB4p
-         gykJ5zUl7+eeF9XCx3Q0UaiUWMjKlyR/RmoYVuqkRo/53WsjEGawU++Dz2szC5fCTPEY
-         NxQezr2w0LoJSzGtY3+HqAf0FaEsKpXbZ+i6fFGhtt30krE/PSR7LqbO8UXQidVoFNRh
-         Uv1w==
-X-Forwarded-Encrypted: i=1; AHgh+RrN6rGJ+jNQ4blia0P7MFpG4ZBfrKQuDiXnL9xgpihS8SCHY2+7iSltyhd35n0uf07KgNQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmVGWFC2iqsM/3q3w25r2uBRyxNIoejYXC0tIAK7Z4uLYhFERV
-	KHYmIsZDp720qtxq1WY7ZK4I3RhdC4v1X1y8+StiuppgI/2xwvW9B4iBfmiisRCgV4M04XBdytc
-	Ssi/cVQ==
-X-Received: from pfbhu19.prod.google.com ([2002:a05:6a00:6993:b0:84b:62d1:9fe3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:bc0b:b0:848:4faa:480b
- with SMTP id d2e1a72fcca58-84fa8690a0cmr4269757b3a.12.1786459465618; Tue, 11
- Aug 2026 07:44:25 -0700 (PDT)
-Date: Tue, 11 Aug 2026 07:44:24 -0700
-In-Reply-To: <K5X5A-vk0kKy96pbo6vsCIfvu4CDhenGoKAy3bdpFLx_5sdQ4ovBeDLABVHxrI08ouImtdBr2cYTqriDJgeTZLZhMIA-Hphgz4jMe7W6M6Q=@rfc2549.ca>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="UhMkyTJN"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E97BB1682;
+	Tue, 11 Aug 2026 07:44:54 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EF9DA3F86F;
+	Tue, 11 Aug 2026 07:44:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786459498; bh=/LPEH55R6LClPqeXnYARvDZU8XDKgr9ZBtZUHbi7ZdM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UhMkyTJN6nwQPPoHojp2Lj90fCxYgfZoPQnlFeUfUA7QykLZDiF4BKo9sc5b4f8Cu
+	 tgVMWQsawjcyUgRgg0Bm7XS/nBDFtj0Sesm5suAVALsIGilMsDyBy47x0YNQEeI5bh
+	 5ONfXUPbgnRx3kWP8wbSZ0K3W95SrAy0Gy8N9cpw=
+Date: Tue, 11 Aug 2026 15:44:53 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v16 07/45] arm64: mm: Handle Granule Protection Faults
+ (GPFs)
+Message-ID: <ans1ZSwMEKeT9Gfz@arm.com>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <20260803134403.80630-8-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <K5X5A-vk0kKy96pbo6vsCIfvu4CDhenGoKAy3bdpFLx_5sdQ4ovBeDLABVHxrI08ouImtdBr2cYTqriDJgeTZLZhMIA-Hphgz4jMe7W6M6Q=@rfc2549.ca>
-Message-ID: <ans1SMXHmdB3uEoe@google.com>
-Subject: Re: 6.1.y status: 2abd5287f083 ("KVM: x86: Check for invalid/obsolete
- root *after* making MMU pages available") / CVE-2026-64561
-From: Sean Christopherson <seanjc@google.com>
-To: "IP over Parrots (with QoS)" <opensource@rfc2549.ca>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260803134403.80630-8-steven.price@arm.com>
 
-On Tue, Aug 11, 2026, IP over Parrots (with QoS) wrote:
-> Hi,
+On Mon, Aug 03, 2026 at 02:43:23PM +0100, Steven Price wrote:
+> If the host attempts to access granules that have been delegated for use
+> in a realm these accesses will be caught and will trigger a Granule
+> Protection Fault (GPF).
 > 
-> Commit 2abd5287f083 ("KVM: x86: Check for invalid/obsolete root
-> *after* making MMU pages available"), which landed in 7.2-rc5 and is
-> tracked as CVE-2026-64561, does not appear to be present in
-> linux-6.1.y as of 6.1.182.
+> A fault during a page walk signals a bug in the kernel and is handled by
+> oopsing the kernel. A non-page walk fault could be caused by user space
+> having access to a page which has been delegated to the kernel and will
+> trigger a SIGBUS to allow debugging why user space is trying to access a
+> delegated page.
 > 
-> I checked with:
+> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes since v10:
+>  * Don't call arm64_notify_die() in do_gpf() but simply return 1.
+> Changes since v2:
+>  * Include missing "Granule Protection Fault at level -1"
+> ---
+>  arch/arm64/mm/fault.c | 28 ++++++++++++++++++++++------
+>  1 file changed, 22 insertions(+), 6 deletions(-)
 > 
->   git log --oneline origin/linux-6.1.y --grep='invalid/obsolete root'
->   git log --oneline origin/linux-6.1.y --grep='2abd5287f083'
-> 
-> Neither returns a match and it doesn't seem to be in the queue.
-> The commit message notes the invariant being violated was
-> introduced in 5.9 by f95eec9bed76, so 6.1 looks in scope,
-> and both hunks sit in direct_page_fault() and FNAME(page_fault)(),
-> which appear structurally unchanged on that branch.
-> 
-> However the announcement[0] only mentions the fix landing in:
-> - 6.6.148
-> - 6.12.101
-> - 6.18.42
-> - 7.1.6
-> - 7.2-rc2
-> 
-> Is a 6.1.y backport planned, or was it skipped deliberately?
+> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+> index 85e23388f9bb..ea3ae0ca7dba 100644
+> --- a/arch/arm64/mm/fault.c
+> +++ b/arch/arm64/mm/fault.c
+> @@ -909,6 +909,22 @@ static int do_tag_check_fault(unsigned long far, unsigned long esr,
+>  	return 0;
+>  }
+>  
+> +static int do_gpf_ptw(unsigned long far, unsigned long esr, struct pt_regs *regs)
+> +{
+> +	const struct fault_info *inf = esr_to_fault_info(esr);
+> +
+> +	die_kernel_fault(inf->name, far, esr, regs);
+> +	return 0;
+> +}
+> +
+> +static int do_gpf(unsigned long far, unsigned long esr, struct pt_regs *regs)
+> +{
+> +	if (!is_el1_instruction_abort(esr) && fixup_exception(regs, esr))
+> +		return 0;
+> +
+> +	return 1;
+> +}
 
-Now planned.  The fix doesn't apply cleanly to 6.1, and the resolving the conflict
-isn't super straightforward (though it's not thaaaat bad either).
+Is there a valid case for fixup_exception() here? IOW, do we ever have a
+valid user mapping of the pages delegated to a guest? If the above is
+considered a kernel bug, I'd not silently ignore this (like return less
+bytes copied or -EFAULT to user) but rather warn, potentially
+rate-limited.
 
-https://lore.kernel.org/all/anpVAhjqvBvIuoa0@google.com
+If there is a real use-case for this, what's preventing GUP + memcpy()
+from triggering a similar fault with no fixup available?
 
-> The security tracker [1] for the Debian 12 stable kernel (6.1.y)
-> shows a vulnerable status.
-> 
-> I do not have a backport to offer, so this is just an inquiry.
-> I am happy to build and test a candidate on 6.1 if that would
-> be useful.
-
-I'll post a patch today and Cc you (unless I get goldfish brain, in which case
-I apologize in advance).
+-- 
+Catalin
