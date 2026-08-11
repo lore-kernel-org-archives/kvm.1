@@ -1,125 +1,159 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A173242B8
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 16:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B743C455C;
+	Tue, 11 Aug 2026 16:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786464238; cv=none; b=Xvl1v0j1WGKdp58L5ZzB8uQdsGfS4hWvtfuqrJBS+WfnxYt5eVrh+cb17Kti5bfzvVzBDRtbTTTR3mdxWwEJbCi7KBSYQuFUSh+cNhtNhCx7rJWm/wEsThsUcKb6TMjOxkkvsiO1fMJ/hrCqDTUHKMTuohzdqRcUAZmOCsXq+6U=
+	t=1786464888; cv=none; b=GOfFlRwbT9PQBHrNFWlXdna8kdEYzitToPxIBrbCo8Alc06yl9PGWF59iSYgVOEi1c5P1n9eBcbw+VJ8OUhMDyK7a4wmvdabPtSCVdrk08OGO0/R/FMjK7ak5hyhOSoS1qT8+kNVcoheMT0GExhzXs6F7lRg3cTNT4e6kEOMe8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786464238; c=relaxed/simple;
-	bh=99emt8x2HrDIgJ9BWyttAeHBGO4VSbdX+I+z+lETRCQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZXrc8bnfDeYPucCaMyBuAhG7InF9YKZueslKrdI2Js5cpvFbFCDWke3QCfkiBIO5sOMTR+V59j4Un2mH+xOfwkfMt6a4swPK8ed82ue/JAKPI2g0jYCEqqoLFitzyIwegLUHpx14fvjlFbBiQQWv/PXZe0dDBGHB/q9MvUv17xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qbZmw2iP; arc=none smtp.client-ip=209.85.210.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786464888; c=relaxed/simple;
+	bh=HdAbxf3/6CAE72nAg7s66s3DoxDSgPEPFZ2O8imvz8g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=snOCz0phPyHvvIwK/mBLGobPh50h1tp1bH8tl3rDYsWdI3Ss+hjiJCXMfWeNXqoyucd/+GQNDVFUBSQlsYQUDxQR/eX+kUzn8hoo82XBtG4GZNfTfQI37Glb5kYVVqibotob1DP28WcdS2eFwdrcuSSeIhSPaY4ler537tI7ZyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CMTJJdIw; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qbZmw2iP"
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84885a4fcabso13373b3a.3
-        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 09:03:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786464236; x=1787069036; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=M9v29TC3yzCAC9R3Zjwzq+fvKSc+kp/PprRrh2ko9Eo=;
-        b=qbZmw2iPcnpzFJWT0nVNe9JFhjWbTLshXAYBKFrixIdlcWT6aPdLQ3GI1RKMbAyzcs
-         tJ+zfz+bY9NlQF639tLp5DfN6SsmMhsayYWZFID93u7E8qv4sW8Ye/Lk91hxpfuemJAz
-         lH7+WReVNy1y0O73cAGJ08aQoGuwxaRosKooq7ZS+PoDJL4J6uhS3DDXOC52anQnSjip
-         hbRVFMiosDySVSkTVUYbddx72lMqE+XlqQTpma0z1453OP96FdTfTriRd3s6P0CaagdV
-         nEKiIMygKhE4zILrdOq5cNSQ70O6ybb7JLxlGHciJtzoKcXOsTy7NkuPHIwZcpuuHEhN
-         LmUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786464236; x=1787069036;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=M9v29TC3yzCAC9R3Zjwzq+fvKSc+kp/PprRrh2ko9Eo=;
-        b=giV9z9Vd/SwH9YIbjqN4r1qnsU0XCDC0/nBriVJznvY+nSbTBUr4NJbw9K8UtEg0Tr
-         pCqVDjQ//1HGf1E5TVE1AH764BW6PtL+fPo83AZ/wWhPdethfcxzrEgEHnd+NOphHRCX
-         jjeilR0gYSv2wblQuuXyqx9DYrY/xCCHHUlbk1ndCa5Rav3b+cphHeoP6vzgmJnDeIgy
-         w0GR2Rv52LefUVG+CdrSg/cWFYM313OQkqqBxPD2tYWzezZC3ara8fmluv+t5+IrPyz1
-         znhkC3HI30Ch2IR62kqKjYg6qeS+oWKOND83a+JbmTuhPvhT6GdNd1MdN0PcEkJuGUR+
-         BEMg==
-X-Forwarded-Encrypted: i=1; AHgh+RqH/b8Z0qsblueN8N1CnjxRAACtIc+RdDXho4dxa+UJMIzSzFePotoI9IHsCIFbNfFoA+8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywpg7IORIje7DhI6uftJZxc836RrkkV7rVndn9X14DnzTh+CwF3
-	LtEVQwcZuys5ACroU3tAmN+/pjWU2TXSOsrAEctQMBup14CWqeqA/lYfmOdRAtS8/mxLPeEOxn9
-	Jg9HzTQ==
-X-Received: from pfnv2.prod.google.com ([2002:aa7:8502:0:b0:847:7765:a4c3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4c1a:b0:84e:24df:3873
- with SMTP id d2e1a72fcca58-84fa88c5340mr4413669b3a.32.1786464235809; Tue, 11
- Aug 2026 09:03:55 -0700 (PDT)
-Date: Tue, 11 Aug 2026 09:03:55 -0700
-In-Reply-To: <ans1SMXHmdB3uEoe@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CMTJJdIw"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67BDX0812865450;
+	Tue, 11 Aug 2026 16:14:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=BLJ5WE
+	uVLSSq6ZfpJZIBjP/KE737NkyKJt2NQXIFHKs=; b=CMTJJdIwZ7CsNJy+lqCtFl
+	cObJHbxRIQwoV0QO6nBQJR76i6Kj6hr4hutkir9OvNq4IIE9j+TUNNeW1LivqyhF
+	32X86epN7raNrHWMARzBIf/rrl9RhSLrK06cfMtf2jofwa1+AF/7vbyn68qRk4OW
+	3B0OSESFAow27L3AdgrXaVMn2RXkaeCiWzlN83VDU9SXRM4fpC+8bQftfxbwfDdo
+	x9xsrcUOH6UgIbkFH0qZnLfMU9FDVs3MtC57K0y4tbZecPMdtZeqjp4ueVjjoR4s
+	cwGGW7sFNADnw8wN3QNvXEz8PTg+uf9AeigAYd8hgu3vknGmaGivuNNlDKLwTU2A
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvjywv70-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Aug 2026 16:14:45 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67BGBHYv005514;
+	Tue, 11 Aug 2026 16:14:44 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxg9h1mdu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Aug 2026 16:14:43 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67BGEetu53477764
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 11 Aug 2026 16:14:40 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 059D220040;
+	Tue, 11 Aug 2026 16:14:40 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D02412004B;
+	Tue, 11 Aug 2026 16:14:39 +0000 (GMT)
+Received: from [127.0.1.1] (unknown [9.87.85.9])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 11 Aug 2026 16:14:39 +0000 (GMT)
+From: Steffen Eiden <seiden@linux.ibm.com>
+Date: Tue, 11 Aug 2026 18:14:21 +0200
+Subject: [PATCH v2 1/2] s390: uv: Fix loop condition in uv_find_secrets
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <K5X5A-vk0kKy96pbo6vsCIfvu4CDhenGoKAy3bdpFLx_5sdQ4ovBeDLABVHxrI08ouImtdBr2cYTqriDJgeTZLZhMIA-Hphgz4jMe7W6M6Q=@rfc2549.ca>
- <ans1SMXHmdB3uEoe@google.com>
-Message-ID: <antH6ysN2SPR2gyV@google.com>
-Subject: Re: 6.1.y status: 2abd5287f083 ("KVM: x86: Check for invalid/obsolete
- root *after* making MMU pages available") / CVE-2026-64561
-From: Sean Christopherson <seanjc@google.com>
-To: "IP over Parrots (with QoS)" <opensource@rfc2549.ca>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260811-uv_secrets_fix-v2-1-64444968ec55@linux.ibm.com>
+References: <20260811-uv_secrets_fix-v2-0-64444968ec55@linux.ibm.com>
+In-Reply-To: <20260811-uv_secrets_fix-v2-0-64444968ec55@linux.ibm.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: David Hildenbrand <david@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Christoph Schlameuss <schlameuss@linux.ibm.com>,
+        Harald Freudenberger <freude@linux.ibm.com>, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Steffen Eiden <seiden@linux.ibm.com>
+X-Mailer: b4 0.14.3
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODExMDEzNCBTYWx0ZWRfX3ap5QyftyWUC
+ C7r8zm6jokn7AHUAvByYzIhaBkMj5vxsNXrYElX78/GZ57KbQr9IHCD0/NaF5axl36nfYGPz2ce
+ L9fyLOsLLpAVPBzJAF40nBq/FTz7vFXhQlt3oxql6ethYENzUJIGbOc1CqK3axfoom6Wfo2Jtb8
+ UQ1Rixfj8ba6Q5lscPu0o051fkJlC9R40rDejKfF5+IywUG8/Wfar2fykHGPd/K/9UFAHTlhXVT
+ HRU942e+PFgZGIF2E1yv7DOi0TZxp3FMzQqKMrQmwpoQ9dsrQkAQ7cWGA8h1bo89xqrglsY3nE4
+ LfUjap1hXTpuN30VSjWrjPe0jnb28exAA3nzQDdvXeRTVl68HpBVPb51ynvagsY+10+OIBt7tjX
+ 1uu0grg1STGxvSgS9SaLJcFjI7Mfqddvm5xUxcFSga0tUNSLSHRD59Vx7QHQeltMFouL++7TXKv
+ 0EKWvmMqIO2pgKv/SxQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODExMDEzNCBTYWx0ZWRfX58yOmKYiyJvL
+ HAlp2UlcCj1v3zVHvWSV7YOAgVszY9EL57etGiDPKoC4jHJR7VFm041E/1u323peAvXUz/8itEo
+ UxjagQQdanhNdSLmbnAzSOxe0VN8af8=
+X-Authority-Analysis: v=2.4 cv=RqD16imK c=1 sm=1 tr=0 ts=6a7b4a75 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
+ a=oTDM0dCkufzkdTJShNUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: H2Gh_TxqxeZ96jfHsYo5P8x7mXffaw1N
+X-Proofpoint-ORIG-GUID: H2Gh_TxqxeZ96jfHsYo5P8x7mXffaw1N
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-11_03,2026-08-10_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 priorityscore=1501 suspectscore=0 lowpriorityscore=0
+ clxscore=1015 adultscore=0 bulkscore=0 malwarescore=0 impostorscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608110134
 
-+Sergey
+Nothing modified `start_idx` between the assignment and the comparison,
+so the condition was always false and the do/while ran exactly once
+even when the UV returned UVC_RC_MORE_DATA. Systems with more than
+85 UV secrets got -ENOENT for any secret past the first page.
 
-On Tue, Aug 11, 2026, Sean Christopherson wrote:
-> On Tue, Aug 11, 2026, IP over Parrots (with QoS) wrote:
-> > Hi,
-> > 
-> > Commit 2abd5287f083 ("KVM: x86: Check for invalid/obsolete root
-> > *after* making MMU pages available"), which landed in 7.2-rc5 and is
-> > tracked as CVE-2026-64561, does not appear to be present in
-> > linux-6.1.y as of 6.1.182.
-> > 
-> > I checked with:
-> > 
-> >   git log --oneline origin/linux-6.1.y --grep='invalid/obsolete root'
-> >   git log --oneline origin/linux-6.1.y --grep='2abd5287f083'
-> > 
-> > Neither returns a match and it doesn't seem to be in the queue.
-> > The commit message notes the invariant being violated was
-> > introduced in 5.9 by f95eec9bed76, so 6.1 looks in scope,
-> > and both hunks sit in direct_page_fault() and FNAME(page_fault)(),
-> > which appear structurally unchanged on that branch.
-> > 
-> > However the announcement[0] only mentions the fix landing in:
-> > - 6.6.148
-> > - 6.12.101
-> > - 6.18.42
-> > - 7.1.6
-> > - 7.2-rc2
-> > 
-> > Is a 6.1.y backport planned, or was it skipped deliberately?
-> 
-> Now planned.  The fix doesn't apply cleanly to 6.1, and the resolving the conflict
-> isn't super straightforward (though it's not thaaaat bad either).
-> 
-> https://lore.kernel.org/all/anpVAhjqvBvIuoa0@google.com
-> 
-> > The security tracker [1] for the Debian 12 stable kernel (6.1.y)
-> > shows a vulnerable status.
-> > 
-> > I do not have a backport to offer, so this is just an inquiry.
-> > I am happy to build and test a candidate on 6.1 if that would
-> > be useful.
-> 
-> I'll post a patch today and Cc you (unless I get goldfish brain, in which case
-> I apologize in advance).
+Fix this by setting the start index at the beginning of the loop not at
+the end. First test if there are more secrets left by comparing
+start_idx with list->next_secret_idx, and then set the start index to the
+next secret index.
 
-Actually, duh, Sasha already posted backports[*], and his approach is much better
-than manually resolving the conflicts.  Testing that now, I'll ACK those assuming
-all goes well.
+Fixes: 7c9137af2042 ("s390/uv: Retrieve UV secrets support")
+Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+---
+ arch/s390/kernel/uv.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-[*] https://lore.kernel.org/all/20260730121535.2208491-1-sashal@kernel.org
+diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
+index a284f98d9716..d970b15ef126 100644
+--- a/arch/s390/kernel/uv.c
++++ b/arch/s390/kernel/uv.c
+@@ -781,11 +781,14 @@ int uv_find_secret(const u8 secret_id[UV_SECRET_ID_LEN],
+ 		   struct uv_secret_list *list,
+ 		   struct uv_secret_list_item_hdr *secret)
+ {
+-	u16 start_idx = 0;
++	u16 start_idx;
+ 	u16 list_rc;
+ 	int ret;
+ 
++	list->next_secret_idx = 0;
++
+ 	do {
++		start_idx = list->next_secret_idx;
+ 		uv_list_secrets(list, start_idx, &list_rc, NULL);
+ 		if (list_rc != UVC_RC_EXECUTED && list_rc != UVC_RC_MORE_DATA) {
+ 			if (list_rc == UVC_RC_INV_CMD)
+@@ -796,7 +799,6 @@ int uv_find_secret(const u8 secret_id[UV_SECRET_ID_LEN],
+ 		ret = find_secret_in_page(secret_id, list, secret);
+ 		if (ret == 0)
+ 			return ret;
+-		start_idx = list->next_secret_idx;
+ 	} while (list_rc == UVC_RC_MORE_DATA && start_idx < list->next_secret_idx);
+ 
+ 	return -ENOENT;
 
-
+-- 
+2.53.0
 
