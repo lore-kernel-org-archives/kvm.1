@@ -1,278 +1,332 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012016.outbound.protection.outlook.com [40.107.209.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B983905E3;
-	Tue, 11 Aug 2026 15:05:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786460728; cv=none; b=Vh7JJz0m3p1KdGJ/CwaUKoiIMFKb3Wg7j708Yk1ZxALpEDN1P+H7SkNF7CEdmVzTiRQ8u5u+Dgcvr4oVgNRhRcsR+R/QvCWUsZAklael8DuFZMYjGDIU8YQN/M1Y42IUGk2iTCHITUqdUhwQkWp5E2RkP63JvFddk3ANfnqToPs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786460728; c=relaxed/simple;
-	bh=qAuyY5O97Y4wSCxhgnCQ6DdUJ63ACOE+3pED0Oqb5QY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=elMTgFmURY9E93SeTRC7BMafRl/fyWBRfp7Biv5PbLDCT3BDftiu13PBvp6IcQhLtfJ07vE4f1lqOXwftFapRnkAnIk9uIJPffj6Yv7x4qocX5IvRZ5O9rx+9mEi9e5sz5elPlCQ8V8dXodoM8PWyWeSYNH4h97FaIsy3qQPbEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=oVq/9ftD; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BB438F251
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 15:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786460870; cv=fail; b=kVdiv2Eepxnr7XaIHA8umaBVD+0FqY3bXag+xxtq7DVwcWfqnzV0AhlLm7iDy9a77KYRL5F4B49BrQCMT9FwRo7lTj/xcdd5rGnDCeY1NBmC0TSkCYPWWSAX0Hl5njcqphYWmwjFyWEHhrpfnh9lnVqPfK644PGv64ZMKP+qF0Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786460870; c=relaxed/simple;
+	bh=7ipFuQ48FUFZAyHb0o9eILm8+/1bakVYO4rKogwfl4c=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=JtfHOaWHcmj6ETUG4DekULxJNtcbaCeGo171gLHQay68ns4Q0uq+RZs/LWcuuuVxnfyz0dwEZaXNXWVy00k+U+1bqfOZBzXlZU31ZDJUE8ndlCdQ/OjZ/1oM6n6a96SPEzhgw20/R44ndhJNTnM21e5qQ1Dlxza9S6j6tNAGv4U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=vrvdJ/48; arc=fail smtp.client-ip=40.107.209.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="oVq/9ftD"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=C6rkUIL+dM1UFpFpZSm+dPCwsMFKdFomwHvt9iy8cEo=; b=oVq/9ftDEOCy0zT21RIRhInWyA
-	xTR9PHbbOmnMF5nK1StXUz7O6WRpcslQPreuEUiQYa1xoJBjIMfSXBEn5zw7slp8C2icWp9oJcoUT
-	3S5wy5GI3r+1zGmQjWyCPh/EpD5Oz3ueAuyNDLD/bMrNuXDjK+exsf+WUkQNvMGO8ZjWJSvk9n6xo
-	OYRlQ7sHKvNVlu5Vud/NojZJibnz1tL6iby4p0WvwWSSxjx+d4emimsCM57wG1R4cK3BU+xcQY0WZ
-	CFWq4sB44UaATIUOZYxJk7m54tmLacdFSZ4aEUikXWc1CDYehcGC6QBoWNQ7Rw2yRPLcfzYf7/99C
-	IVStKiMg==;
-Received: from 54-240-197-227.amazon.com ([54.240.197.227] helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wto2P-00000000avv-0iNZ;
-	Tue, 11 Aug 2026 15:05:09 +0000
-Message-ID: <e256fa4af96e916ba30019cbba501fa896025fb0.camel@infradead.org>
-Subject: Re: [PATCH v7 17/36] KVM: x86: Allow KVM master clock mode when
- TSCs are offset from each other
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>,  Borislav Petkov	 <bp@alien8.de>, Dave
- Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"	
- <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross	
- <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul
- Durrant	 <paul@xen.org>, Jonathan Cameron <jic23@kernel.org>, Sascha
- Bischoff	 <Sascha.Bischoff@arm.com>, Marc Zyngier <maz@kernel.org>, Joey
- Gouly	 <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, Dongli
- Zhang	 <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
-Date: Tue, 11 Aug 2026 16:05:03 +0100
-In-Reply-To: <ansywxh0VX5rtfWc@google.com>
-References: <20260728144954.355376-1-dwmw2@infradead.org>
-	 <20260728144954.355376-18-dwmw2@infradead.org>
-	 <anoOz2rZ02KFk1l-@google.com>
-	 <acd9b32617f75d188c370a464a922af0d650d4f5.camel@infradead.org>
-	 <ano6-gIZtqMfipiD@google.com>
-	 <bb9a12cc663130eb2caa8e839d0f6ca53d722d1c.camel@infradead.org>
-	 <ansuqrD2KwFuLWbV@google.com> <ansywxh0VX5rtfWc@google.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-F6kD8Qx0GpTaOeFjxO+8"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="vrvdJ/48"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DgkNn8o8K4S56isKPdLPP/n4mx6VMzTvEt4p3sJTzQtdfWdQ9RlLVCKHsHATQeYOrj8Q/hdSyuzk81dfK+36e+7Hr+FQJDdQgS+ulxHZ3rd7JMcVb51w80zVRZfr6soxi01EkakhzTylAQHT4pnk/Sq/bEvhWdAFd0hMdarFrMbVaNayrTV538u4W70TLyVrDOcfQuZwmwVg/8IROgFRugNfDyqghcE1Wce0KKnmlI7NUwlNcwB8dQhvIYTfnrmtT82aWxApG/RZnK/YrRNWmd+zHeFAW8yS9oPjSKozzzaXrNAJ7W78G1SYH4LpHBMvhmf+Mp/hpMNqI5ZADeLgxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AKSFm13sFbA/fstvF2Ygae4D2K4m+pIoSW7d6/kvOZQ=;
+ b=I8Wa4lKLdlet+H7Tf6g9jlBcw82vA2WFOFb+WdIbYpR6VP7fa9th6tg/oiHWzHb3o6FG+h8vbai4eRgUyJfDOyYLBzTFfHGXP08+43bFtACWKn5+ZM7zbW5OyUmCMy/7zrTvY/TuHeGvPqmq1/8GYhynPGQHUSM94ZI1gi07r4Z38S936PzjdN5p9B+tqMM+R6hkXDgeBQ0xumD4P1wlFj1JEtPlfGZNAC4tjOTfvtSnTpakCXoQAtKJXGUXa0tEJsn0I620lclmj8H5afvzaxCEvAbIuh+qN71A6FEwh/DG4bBml+CkKjAbBDSqX+sbeTgXMJWCGf1n6ypj3wSd/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AKSFm13sFbA/fstvF2Ygae4D2K4m+pIoSW7d6/kvOZQ=;
+ b=vrvdJ/48RuKNBME8elPZhETyPCFrhAdEgHE3UJh9ouUB6n2TFoaC/uzUySafCD687xJZ+mEVKs6AxIzE/XbaQ58GHyzUylBMSnEj3ODv0lIL5DOx3NApN7PgVov3zjU0rRwuWRqUfxUhid/E+Qj6C9YMISvpc2piSS21NTb7+wY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5712.namprd12.prod.outlook.com (2603:10b6:510:1e3::13)
+ by BL3PR12MB6617.namprd12.prod.outlook.com (2603:10b6:208:38c::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Tue, 11 Aug
+ 2026 15:07:42 +0000
+Received: from PH7PR12MB5712.namprd12.prod.outlook.com
+ ([fe80::afe1:7dd0:ea71:b7e7]) by PH7PR12MB5712.namprd12.prod.outlook.com
+ ([fe80::afe1:7dd0:ea71:b7e7%4]) with mapi id 15.21.0292.024; Tue, 11 Aug 2026
+ 15:07:42 +0000
+Message-ID: <abbf6464-9c72-47e0-bf48-3e80c70287bd@amd.com>
+Date: Tue, 11 Aug 2026 20:37:33 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/8] KVM: Add support for hardware-switched mediated PMU
+To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>, kvm@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>,
+ Yosry Ahmed <yosry@kernel.org>, Maxim Levitsky <mlevitsk@redhat.com>,
+ Zide Chen <zide.chen@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ "Nikunj A . Dadhania" <nikunj@amd.com>, Manali Shukla <manali.shukla@amd.com>
+References: <cover.1786345201.git.sandipan.das@amd.com>
+ <32239a68-5ba8-4985-b959-1959f331f30a@linux.intel.com>
+ <c240acb1-22ac-48cd-9243-792f415171c3@amd.com>
+ <ee4968b8-c40e-49f5-9f9d-46c007e78ae7@linux.intel.com>
+Content-Language: en-US
+From: Sandipan Das <sandipan.das@amd.com>
+In-Reply-To: <ee4968b8-c40e-49f5-9f9d-46c007e78ae7@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PN4PR01CA0034.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:273::7) To PH7PR12MB5712.namprd12.prod.outlook.com
+ (2603:10b6:510:1e3::13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5712:EE_|BL3PR12MB6617:EE_
+X-MS-Office365-Filtering-Correlation-Id: 33c6644e-4696-4d87-df4e-08def7ba4a3e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|366016|1800799024|6133799003|10067099003|4143699003|56012099006|11063799006|18002099003|22082099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	UtECRQj5YJeAM+v0/jqYMpMTd6B0h8YpULIkueA+6GW0C18ldMJqBFwQDujCPwOinvEAtoaYVV70YNS3DPT7RC0OA0gygz57Wqr407WYLjTysrFa9DUV8+Xja29WABjzn6+o2DNXsFEcQhC+2I8bWQd1S09Wjl4cqeX6UIWfxiub98I2mnCKyjjSgsbz8VSPc4ZytHSqclN36a+cQ35/h2HdvMs2oLn3sRN/TbkoAhujSmpi84vIRWaOVIHBLhy2823HB6EIsiVKGkbQGoF0iJ4VYBt9S+m7Esmada1K5eSQUxqy+ZPqHpXOE5ub6d2AYslDZhf7Mg9+Ug28362sLdVUMJHDoKD2Pvxxrmx+v10n2ByaCfTGNO9wf3QmYNeMSQCJhjFx5zNu3wsFFD8Po3PZAJrFfsTQapDgQb8GdVHI3ry/+mD2y95KWeEMTzfiFznQG516nvY1FTkft7snyBuMec0FFfqWRjQXcq3kWpHRpnUysXQv6k50HjNFDDjaBGm3TBwS5pP2Rxtiav84l6qTeIe7S+jAjiTncoBXrtxWlfreUgwRBI0tFYJRdkh+Ld1xsVFN/qarwzIAsfs9oyPrluepYD55qk+u+Vsp9pnJzoGhImJ1lmzZm5Cofme8kVgDkQSGFLs7kKI9l3Bj0llfSPrYQ47Hd0h5inuYSlc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5712.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(6133799003)(10067099003)(4143699003)(56012099006)(11063799006)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UCs3Z2VtWW1IamZhT3VKTWxjUlE2NFo5SjFTejVsZDZKV2xSRW9xZU1KTTAv?=
+ =?utf-8?B?cVJzTkhnTVRMczZxRk1Fc0x2cTFuY0F4SUlNd0lYb2RIbTg5NUpHb0FqR2tZ?=
+ =?utf-8?B?ZXdLN084clFBcjNTR1A2M1VMSElKQVZZTllwS3BxMGNyVGpDY2dwZzcweloz?=
+ =?utf-8?B?OEp1Ky9MRzc1b3c4RllhNTBFSDZ3aFNaS3NXOUNlUFhzMkpURHhJMmI3SE9N?=
+ =?utf-8?B?dmRTQ0NaY3daMElISWhHYjN2Sk5zTFIwS05naCtkeVFmZVpWZ2ZVemkxKzVm?=
+ =?utf-8?B?eFB2djltVTRGTDloTkJNZHJQUC9MOURsTTJub3MzSUowWnJudVFXQmFNQWhQ?=
+ =?utf-8?B?NkltdyttSUpQQ1BCWmtlUDBxZHgxMDYrV2E5OGwyeW9Eb0doTWlmM1d3V1B5?=
+ =?utf-8?B?dlpIeHBtNDQ0NklhUXE5M0NZM09BcGFPamQvLzlvZjBiLzdYeDVEY1h4amJm?=
+ =?utf-8?B?T0R4OGJ3TU5tTUxScDRUeXlZbFdicEtHWm1CWnJuOUFhckxPcDhIRDZCalhh?=
+ =?utf-8?B?VFBLZzNNR0gxOWFKaXk5U3hVdjJiOUdBYi9MQzRIeUxKMGlaVzdTaVVVODhs?=
+ =?utf-8?B?MGpJMnpXSTFRODNDYnNxcGQyeEdyQ0V2Ylc1TU1sYStWVHRJenRxaml1M2ds?=
+ =?utf-8?B?aXRsL2xxZEVmbU0wTzk2dUlBdjNyS2RvaXA4S29NbTZHMTNYSmpXd2lHMTN4?=
+ =?utf-8?B?bUMxSCtpY0lRcUZlV2pvU2RPSXo0Z1g5MDVQeGRRdU5zWVcvWWR0b240bHN0?=
+ =?utf-8?B?R3g4SlpZMmVveSt4Zk1heEJ1czIwNkVnSDNiTVpTdUVQeWV1ZGUyZmM2Tm4y?=
+ =?utf-8?B?WENNb1NpVFJlbXd5YlB4L3dmWkYzOTg5a2pXcE1tSHlQbXZDMU03Umt5ZCsz?=
+ =?utf-8?B?MWJSWmlKRUdlTlAyQUViYXhHSXJmYU1ENENQY2dhdTZYaW9IbVNYVUpBYUZV?=
+ =?utf-8?B?eXNPU1lSWE5nT1JJWmJybEQwK01Zd2ZZWmlCMGQxbDlCdmd1eGdFZjBaQzFJ?=
+ =?utf-8?B?MlQwKys2SVJyWkpFKzVsWGJYSUgzdE9zRkJHMnFFRVllRlBWUU1NS2xHWVRi?=
+ =?utf-8?B?NjhVMVAzRjBzSUJnek5mejlyUHlpNkR5RzFxRThqODJVN1hwbVpQbkRKV1pj?=
+ =?utf-8?B?NXB2a0hxNFE4QjVKZ1U3Wnk1dFZHRGVaeGxkTUpQamZUV3NTNURKbGhUR3RC?=
+ =?utf-8?B?a1l1TjF0Rmw2OFZvd1ZQNUdpV3hsOERRbjJMZE5IQ0J4d1lPcHZxSGJnQi9x?=
+ =?utf-8?B?ZWpOZlU5VHRIeGUyM0FsWFpSN25WZHlSa2dTUFZpUHVra0I0ZDZQWWRFODdE?=
+ =?utf-8?B?K2twZzJKcWJsQXdoRXJrNUxGMWI4QU0yOWV0RjZZQ216RFRDRkZ0Y1ZKY0x5?=
+ =?utf-8?B?ekZFVEc4V0JTZFdBdWYvQ1hodnlwcWlEV3BjdDFOckJIaDBYM3FKRUVUck9F?=
+ =?utf-8?B?c25NWDB1QjJUb2pWeUp1aUMyeTdUQ01remtUVEpIQm5neksvSCtHdStKMUhv?=
+ =?utf-8?B?WFJYekI5VnZiQTNwWldrYlNKOFEzcEZiVU42M0lVM0dhNWlqeE5ScFlmWXU5?=
+ =?utf-8?B?UUJUSXB5V2pTMkJheUtEOUI3ZFA4WCtjeVhkSzhwQ1VLaE1idjlIWjRuTmh4?=
+ =?utf-8?B?ZVB4WlVscnRNR25ISEpZZ0VGZFNUYk42TEYxaUZWQ1ZYTldvbVRlWldTeG5S?=
+ =?utf-8?B?TVBkK3pqMGxlek92SFUyZmxyVjE1ZzBIUTVtMVo3aXVWQ1lUKzBPaVlhcktN?=
+ =?utf-8?B?ZEhBMUR0ZVZwcUdRaEQ1ZW1wdVlJRXVqTzZKcFg3alpNYzJJM081enlRaHgv?=
+ =?utf-8?B?Q3NCVUtvc2J1RjliT2JZZ2RUaXBmU3JBTHpKenc5L3ZBTzhJRHVia1ZWWndL?=
+ =?utf-8?B?ek9JeFJDSHFrOFR6L2twZ3A3eUhIbkJ6RWdWWmZxR3lxdGlSL05ETE9NWmRE?=
+ =?utf-8?B?Uks4UEJlajlRaEJJZmlieHdoV0dvWWJuZU5XSDJmNDhiay9mY0lIM2U2ODlO?=
+ =?utf-8?B?YVF1WUwrdzNtb3prSHlXOERUM3lEdU9qYkFBd0JhY0kvVzcwVzJmQ21Zcngz?=
+ =?utf-8?B?MDZZbkpHT3ZKNDJ5NG5CbnVielBRN1FyRFlwLzdSQlJCRHdxVDM3bnZQTHM2?=
+ =?utf-8?B?V3h3TGU4RWh4Tm1ZOTBaRGlPL2k3T1U1RzYvMGJuZFZ6dXdkRjcwWnVYYWpv?=
+ =?utf-8?B?amJEeDllNHlRNXovTW5RR1A2Sm9yODczaUI3V0l1b1FLVmxBaGREVmpGbWYw?=
+ =?utf-8?B?eXphVWlWci9VV29nbVcwYXN4d1Z2QjZ4enRYT2Fnak04Q0MyMDQ0Wkd2UlRD?=
+ =?utf-8?B?Z1pmTkljQlFxdWhZVnBDSWlRbUJnZUtLK0ZycHdzMFlpSXdLSG8yQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 33c6644e-4696-4d87-df4e-08def7ba4a3e
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5712.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2026 15:07:41.7232
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mIrD5unIvV4jP95dCAjRwaxHNpPlm84SjqTnRyExRMB/t/9/s/t5CbgrX9VOe9+EWwQVMEIcVmiFpgJdVoOMwA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6617
 
+On 11-08-2026 17:22, Mi, Dapeng wrote:
+> 
+> On 8/11/2026 4:37 PM, Sandipan Das wrote:
+>> On 11-08-2026 13:19, Mi, Dapeng wrote:
+>>> On 8/10/2026 6:14 PM, Sandipan Das wrote:
+>>>> Mediated PMU currently saves and restores the guest PMU state in
+>>>> software on every world switch. On Zen 5 and later processors, it is
+>>>> possible to offload this to the hardware, which automatically saves and
+>>>> restores the guest counter state to and from a vendor save area (VMCB)
+>>>> during world switches. This feature is called PMC virtualization and
+>>>> detailed information about it can be found in Volume 2 of the AMD64
+>>>> Architecture Programmer's Manual under Section 15.39.
+>>>>
+>>>> This series extends the mediated PMU framework with a hardware-switched
+>>>> mode and adds the AMD (SVM) implementation, including nested support.
+>>>>
+>>>> Performance
+>>>> -----------
+>>>> The difference in the world switch overhead between software-switched
+>>>> and hardware-switched modes is measured with the x86/vmexit test from
+>>>> kvm-unit-tests on a system with an AMD EPYC 9755 processor. The values
+>>>> are in cycles per operation (lower is better), averaged over 5 runs.
+>>>>
+>>>> ------------------------------------------------------------------------
+>>>> test                               sw-switched  hw-switched         gain
+>>>> ------------------------------------------------------------------------
+>>>> cpuid                                     5333         2592       +51.4%
+>>>> vmcall                                   15858         7619       +52.0%
+>>>> wbinvd                                    5256         2517       +52.1%
+>>>> invd                                      1857         2147       -15.6%
+>>>> mov_from_cr8                                18           18         0.0%
+>>>> mov_to_cr8                                 157          156        +0.6%
+>>>> inl_from_pmtimer                         25934        21176       +18.3%
+>>>> inl_from_qemu                            25881        21156       +18.3%
+>>>> inl_from_kernel                           5521         2772       +49.8%
+>>>> outl_to_kernel                            5522         2778       +49.7%
+>>>> mov_dr                                     114          114         0.0%
+>>>> self_ipi_sti_nop                          1020         1015        +0.5%
+>>>>   ipi self_ipi_sti_nop                     310          307        +1.0%
+>>>>   eoi self_ipi_sti_nop                     242          241        +0.4%
+>>>> self_ipi_sti_hlt                          2714         2704        +0.4%
+>>>>   ipi self_ipi_sti_hlt                     310          307        +1.0%
+>>>>   eoi self_ipi_sti_hlt                     242          240        +0.8%
+>>>> self_ipi_tpr                              1272         1263        +0.7%
+>>>>   ipi self_ipi_tpr                         309          307        +0.6%
+>>>>   eoi self_ipi_tpr                         241          240        +0.4%
+>>>> self_ipi_tpr_sti_nop                      1304         1295        +0.7%
+>>>>   ipi self_ipi_tpr_sti_nop                 309          307        +0.6%
+>>>>   eoi self_ipi_tpr_sti_nop                 242          241        +0.4%
+>>>> self_ipi_tpr_sti_hlt                      3003         2991        +0.4%
+>>>>   ipi self_ipi_tpr_sti_hlt                 309          307        +0.6%
+>>>>   eoi self_ipi_tpr_sti_hlt                 242          240        +0.8%
+>>>> x2apic_self_ipi_sti_nop                    899          895        +0.4%
+>>>>   ipi x2apic_self_ipi_sti_nop              191          190        +0.5%
+>>>>   eoi x2apic_self_ipi_sti_nop              242          241        +0.4%
+>>>> x2apic_self_ipi_sti_hlt                   2592         2587        +0.2%
+>>>>   ipi x2apic_self_ipi_sti_hlt              191          190        +0.5%
+>>>>   eoi x2apic_self_ipi_sti_hlt              242          241        +0.4%
+>>>> x2apic_self_ipi_tpr                       1159         1151        +0.7%
+>>>>   ipi x2apic_self_ipi_tpr                  193          193         0.0%
+>>>>   eoi x2apic_self_ipi_tpr                  241          240        +0.4%
+>>>> x2apic_self_ipi_tpr_sti_nop               1189         1180        +0.8%
+>>>>   ipi x2apic_self_ipi_tpr_sti_nop          193          193         0.0%
+>>>>   eoi x2apic_self_ipi_tpr_sti_nop          242          241        +0.4%
+>>>> x2apic_self_ipi_tpr_sti_hlt               2887         2875        +0.4%
+>>>>   ipi x2apic_self_ipi_tpr_sti_hlt          194          192        +1.0%
+>>>>   eoi x2apic_self_ipi_tpr_sti_hlt          242          239        +1.2%
+>>>> ple_round_robin                             19           19         0.0%
+>>>> wr_kernel_gs_base                           73           73         0.0%
+>>>> wr_ibpb_msr                                563          557        +1.1%
+>>>> wr_tsc_adjust_msr                         5352         2603       +51.4%
+>>>> rd_tsc_adjust_msr                         5330         2586       +51.5%
+>>>> toggle_cr0_wp                            11319         5810       +48.7%
+>>>> toggle_cr4_pge                           11743         6242       +46.8%
+>>>> mmio-no-eventfd:pci-mem                  31890        26835       +15.9%
+>>>> mmio-wildcard-eventfd:pci-mem             6461         3666       +43.3%
+>>>> mmio-datamatch-eventfd:pci-mem            6449         3671       +43.1%
+>>>> portio-no-eventfd:pci-io                 25218        21455       +14.9%
+>>>> portio-wildcard-eventfd:pci-io            5512         2774       +49.7%
+>>>> portio-datamatch-eventfd:pci-io           5524         2780       +49.7%
+>>>> ------------------------------------------------------------------------
+>>> Just curious what causes the gain difference between these test cases?
+>>> Different vm-exit/vm-entry number in each test case? Suppose the cost for
+>>> saving/restoring PMU MSRs on each vm-exit/vm-entry should be same or close.
+>>>
+>> In this case, the cost is actually lower when hardware handles save-restore
+>> of PMU MSRs. Hardware can use fastpaths and optimizations which an usual
+>> RDMSR/WRMSR sequence cannot.
+> 
+> Thanks. My question is why the different test case show so much difference
+> on the gains, e.g., cpuid has +51%, while invd has -15%. Per my
+> understanding, the cost of saving/restoring PMU MSRs for most vm-exits
+> (exclude the fastpath vm-exit) should be fixed even for different vm-exit
+> reasons. Is it true? 
+> 
 
---=-F6kD8Qx0GpTaOeFjxO+8
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+I see. Yes, the absolute savings for the PMU context switch is roughly the
+same across all the test cases. I will clarify this in the next version.
 
-On Tue, 2026-08-11 at 07:33 -0700, Sean Christopherson wrote:
->=20
-> Actually, why are KVM_{G,S}ET_CLOCK_GUEST vCPU-scoped?=C2=A0 Per the docu=
-mentation,
-> the API "Sets the KVM clock (for the whole VM) in terms of the vCPU TSC".=
-=C2=A0 If
-> the APIs are VM-scoped instead of vCPU-scoped, then KVM can simply save/r=
-estore
-> what's in the per-VM masterclock state, no?
+> 
+>>
+>>>> The largest gains are for wbinvd (+52.1%), vmcall (+52.0%), and cpuid
+>>>> (+51.4%), followed by the TSC-adjust MSR accesses (~+51%), the
+>>>> kernel-handled port I/O paths (~+50%), and the control-register toggles
+>>>> (~+47-49%). The wildcard and datamatch MMIO / port-I/O paths improve by
+>>>> ~+43-50%, while the slower no-eventfd MMIO / port-I/O and pmtimer/qemu
+>>>> port-I/O paths improve by ~+15-18%.
+>>>>
+>>>> The only meaningful regression is invd (-15.6%). The self-IPI and EOI
+>>>> subtests move by at most 1.2% and wr_kernel_gs_base is unchanged, all
+>>>> within run-to-run noise.
+>>>>
+>>>> Design
+>>>> ------
+>>>>   * The entity responsible for switching the guest PMU state is tracked
+>>>>     per-VM via a new set of mediated PMU capability flags in kvm_arch.
+>>>>     In software-switched mode the state resides in struct kvm_pmu; in
+>>>>     hardware-switched mode it resides in the vendor save area.
+>>>>   * Event filtering, instruction emulation, and intercepted RDPMC still
+>>>>     need the state in struct kvm_pmu, so new vendor state-sync PMU ops
+>>>>     synchronize specific MSRs between struct kvm_pmu and the vendor
+>>>>     save area on demand.
+>>>>   * On SVM, the feature depends on VNMI for guest PMI delivery and is
+>>>>     controlled by the new "vpmc" kvm_amd module parameter, enabled by
+>>>>     default when the host supports it and mediated PMU is enabled.
+>>>>
+>>>> Limitations
+>>>> -----------
+>>>>   * Not supported for SEV-ES and SEV-SNP guests: the guest PMU state
+>>>>     resides in an encrypted VMSA that is inaccessible to the event
+>>>>     filtering logic.
+>>>>   * With VNMI and no AVIC, overflow interrupts are always delivered as
+>>>>     NMIs because the APIC is emulated and the LVTPC is ignored. This
+>>>>     shows up as expected behavioral differences in the x86/pmu test of
+>>>>     kvm-unit-tests.
+>>>>
+>>>> Overview
+>>>> --------
+>>>> Patches 1-3 extend the mediated PMU framework with hardware-switched
+>>>> mode: the capability flags, the vendor state-sync ops, and the generic
+>>>> support. Patches 4-6 add the SVM enablement: the PerfCtrVirt feature
+>>>> bit, the VMCB save-area fields, and the SVM implementation. Patch 7
+>>>> adds nested (nSVM) support to use the feature with L2 guests. Patch 8
+>>>> explicitly disables the feature for SEV-ES and SEV-SNP guests.
+>>>>
+>>>> Tested with kvm-unit-tests (KUT) and perf fuzzer. KUT's x86/pmu test
+>>>> requires patching to accept overflow interrupts as NMIs (limitation
+>>>> because of VNMI ignoring the LVTPC). It is recommended to apply the
+>>>> following patches before testing.
+>>>> https://lore.kernel.org/kvm/3bfbf15c22652ba00cf4a16fe9e0a3bfe7071f97.1784096302.git.sandipan.das@amd.com/
+>>>> https://lore.kernel.org/kvm/b075ec13e95167da1f2229626713c91d291bb75b.1784097178.git.sandipan.das@amd.com/
+>>>> https://lore.kernel.org/all/106bc3a4660653cb7750f3ae07a4dbca42c2762c.1786356229.git.sandipan.das@amd.com/
+>>>>
+>>>> base-commit: 6cf46b37b0356b3408f8ba949e10462cc71b533d
+>>>>              (tag: kvm-x86-next-2026.08.07)
+>>>>
+>>>> Previous versions can be found at:
+>>>> rfc: https://lore.kernel.org/kvm/cover.1762960531.git.sandipan.das@amd.com/
+>>>>
+>>>> Changes in v1:
+>>>>   * Introduce mediated PMU capabilities for hardware PMU virtualization
+>>>>     features instead of perf PMU capabilities.
+>>>>   * Make VNMI a hard requirement since AVIC can be inhibited.
+>>>>   * Introduce new PMU ops to access VMCB PMU state instead of relying
+>>>>     on host-initiated {get,set}_msr() ops.
+>>>>   * Make VMCB PMU state accessible via KVM_{GET,SET}_MSRS for migration.
+>>>>   * Implement support for nested SVM.
+>>>>   * Disable support for SEV-ES and SEV-SNP guests explicitly.
+>>>>
+>>>> Sandipan Das (8):
+>>>>   KVM: x86/pmu: Add mediated PMU capability flags
+>>>>   KVM: x86/pmu: Add PMU ops for vendor state sync
+>>>>   KVM: x86/pmu: Add support for hardware-switched PMU
+>>>>   x86/cpufeatures: Add PerfCtrVirt feature bit
+>>>>   KVM: SVM: Add VMCB fields for PMC virtualization
+>>>>   KVM: SVM: Add support for hardware-switched PMU
+>>>>   KVM: nSVM: Add support for hardware-switched PMU
+>>>>   KVM: SEV: Disallow the use of hardware-switched PMU
+>>>>
+>>>>  arch/x86/include/asm/cpufeatures.h     |   1 +
+>>>>  arch/x86/include/asm/kvm-x86-pmu-ops.h |   3 +
+>>>>  arch/x86/include/asm/kvm_host.h        |  11 +++
+>>>>  arch/x86/include/asm/svm.h             |  13 ++-
+>>>>  arch/x86/kvm/cpuid.c                   |   1 +
+>>>>  arch/x86/kvm/pmu.c                     | 102 +++++++++++++++++----
+>>>>  arch/x86/kvm/pmu.h                     |  29 ++++++
+>>>>  arch/x86/kvm/svm/nested.c              |  45 +++++++++-
+>>>>  arch/x86/kvm/svm/pmu.c                 | 117 +++++++++++++++++++++++++
+>>>>  arch/x86/kvm/svm/sev.c                 |   3 +
+>>>>  arch/x86/kvm/svm/svm.c                 |  58 +++++++++++-
+>>>>  arch/x86/kvm/svm/svm.h                 |  19 ++++
+>>>>  arch/x86/kvm/vmx/pmu_intel.c           |   2 +
+>>>>  arch/x86/kvm/vmx/vmx.c                 |   3 +-
+>>>>  arch/x86/kvm/x86.c                     |   2 +
+>>>>  15 files changed, 384 insertions(+), 25 deletions(-)
+>>>>
 
-They're vCPU-scoped because they need to be tied to a guest TSC (on
-live migration, neither ka->master_cycle_now nor ka->master_kernel_ns
-are useful =E2=80=94 those are the "per-VM masterclock state").
-
-Theoretically, guest TSCs can be different on each vCPU (different
-offset, different *rate* even. Not that we allow KVM_[GS]ET_CLOCK_GUEST
-at different rates, I concede).
-
-So they operate in the context of a given vCPU, and *its* TSC.
-
-And I think I'm going to defend that 'theoretical they can be
-different', because I *would* like to eliminate the ways that a *guest*
-can force non-masterclock mode, and that does mean allowing the offset-
-TSC case.
-
-FWIW in my local tree I've just extended the pvclock_migration_test to
-test precisely the thing you were concerned about: three vCPUs with
-divergent TSC offsets, migrated by setting each vCPU's TSC and then
-invoking KVM_SET_CLOCK_GUEST once, through vCPU0. Masterclock stays
-active, TSC_STABLE_BIT is correctly clear, and all three vCPUs'
-pvclocks (and KVM_GET_CLOCK) agree to within a nanosecond afterwards.
-I'll include that in the next spin.
-
-> That would also help address my concerns about sanity checking the TSC fr=
-equency
-> against the kvmclock frequency, as the APIs are much more blatantly about=
- saving
-> and restoring masterclock state.=C2=A0 For whatever reason, it feels more=
- natural for
-> me to say that KVM_SET_CLOCK_GUEST will fail if the target frequency does=
-n't
-> (fuzzily?) match the frequency at which the masterclock is already config=
-ured.
-> Probably because use_master_clock directly gates that information?=C2=A0 =
-Whereas the
-> vCPU's frequency is independently configured but obviously influences mas=
-terclock
-> mode.
-
-I am perfectly happy to say that the *existing* check as I have coded
-it, is matching against the frequency at which the masterclock is
-configured. Because we can't *get* there if the guest is not in
-masterclock mode, and it can't be in masterclock mode unless all its
-vCPUs are running at the same rate, which *is* the master clock rate.
-:)
-
-I guess I could even concede to change the actual code rather than just
-the comment... (untested)
-
-Still needs the *offset* of the vCPU though.
-
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -3595,15 +3595,15 @@ static int kvm_vcpu_ioctl_set_clock_guest(struct kv=
-m_vcpu *v, void __user *argp
-
- 	if (kvm_caps.has_tsc_control)
- 		curr_tsc_hz =3D kvm_scale_tsc(curr_tsc_hz,
--					    v->arch.l1_tsc_scaling_ratio);
-+					    ka->master_tsc_scaling_ratio);
-
- 	/*
- 	 * The mul/shift in the provided pvclock structure encode the guest
- 	 * TSC frequency at which it was generated. Sanity-check that it is
--	 * consistent with this vCPU's effective TSC frequency, allowing a
--	 * discrepancy of 1 kHz either way since independently calibrated
--	 * hosts will not measure precisely the same value even for the
--	 * same nominal frequency.
-+	 * consistent with the frequency at which the masterclock is
-+	 * configured, allowing a discrepancy of 1 kHz either way since
-+	 * independently calibrated hosts will not measure precisely the
-+	 * same value even for the same nominal frequency.
- 	 */
- 	if (user_tsc_hz < curr_tsc_hz - 1000 ||
- 	    user_tsc_hz > curr_tsc_hz + 1000) {
-
-
---=-F6kD8Qx0GpTaOeFjxO+8
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-h4FPTROPNaArNi9Wm/TpNrUAAAAAAAA=
-
-
---=-F6kD8Qx0GpTaOeFjxO+8--
