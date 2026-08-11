@@ -1,264 +1,185 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6963921D0
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 18:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5789C3806C9
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 18:41:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786473316; cv=none; b=BtxkptRdReZJIoMo9l+xEV0/CfieO4LRvM9drWO3g966gonFyknMiNyLgoCrhsE6aXO5yTKj0W6rbMosK8sU9awc9oyecbpBLO9zgiuMScdJ+BJda0ICxifyJHaqKgz0gUrx4l9OG3816FwFwPzJslJmTqh9Fqx1R3mZa2POHf8=
+	t=1786473701; cv=none; b=McaC311/Q8kdX2xdYSsPxajM+sDuI5Xl8Qo59Q/7kae05UHTM7nSzXXrzRZJN4EPWiFMaL7QBBRjRPy0E0ghcCG69u5UhNuvTKrzyhq852BWBg+ofznqfrxB0ui24wfXO81Dhgg3+7ejkb8KF+dBCNRYBAcn8kn/DHOnfWwcaS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786473316; c=relaxed/simple;
-	bh=rbhU3BLfxLJ0GV+kvxRPS9jOsLdzo+U9hBKH9Q0YfEk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f8hW5JbCdEhM/536HEa1bQbWrKhZH/MkmHRKAl5zOi8PtuL3Vy87iE1p8InAa0QMeEBreomO+iEHw5yhMyYfvYdc29cHdfxkawPK/6RCkjGflE4v76vpCWntgycIvwnX2izBLxTMkha9ZrT/6tmXUN1iOLdDTR85+WivsjgkTAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Lql9sAjZ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=BjWtxYE7; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1786473701; c=relaxed/simple;
+	bh=94Lt8TmaqiNs5FtCiFHbzvvHftTmibgvQkuT4qx1sEQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=QKrb4dBYGlU9QgO52cvCMPoV+boPnBLAZcWhc9OaPtaKJA909KpIczofBKFQMaV+yy6XlN5Zpa6W9QSyeqHnDJaCX+eApalUaf244ak2uYZ56tVH0yMeQ8qyFlbKrxddcjeXMv1v6xRJHImwUsP405Th+nukuqXneh1ZjSN3rPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jdib0Te2; arc=none smtp.client-ip=209.85.210.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Lql9sAjZ";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="BjWtxYE7"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67BGNv4v858620
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 18:35:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	5cKNYN1YVV/K1jHg9iJCW7yGQ3ybLzpVvQJS3M//mQs=; b=Lql9sAjZZP6bEaBy
-	jmWk3rsV8wV7KJWNWxp3H4c+7+MVeD/Fn0H5xpOyk/HNHk7IDwxEST/2ah/xrW+8
-	kdyPnyB5DfKyagCYVRlY2lhzhqvnEoajGz+4a4SXLNbToZuUKY3B0fjbXVMsTyQW
-	se5K3aHXUuwZlcUnA0KXiBWQNRO0Cb5i0Iya06xrJtQSkGlBOEz9fYsOcg7sP0VJ
-	yqmLBQsQOIBLBAkr6OkqdevuZ0oOd1QIt5clfz1G72GaRPM8o58zdR5J/jqgI8sJ
-	VGv1FSmcmBINDPSh3DS2ExnXXTbQ4dcm7EUBkYkk947dCrJeDSb+c9E3vZkHuPPK
-	PT0vVw==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g049mhh05-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 18:35:13 +0000 (GMT)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51a8db414c7so3361461cf.0
-        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 11:35:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jdib0Te2"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8485d853b08so274452b3a.1
+        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 11:41:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1786473313; x=1787078113; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5cKNYN1YVV/K1jHg9iJCW7yGQ3ybLzpVvQJS3M//mQs=;
-        b=BjWtxYE7IKF9uvnB0I0b9cEqv6LvAJOXVUWRa/4YuFmCMsR0kaNvEEcwehEtzMW28k
-         I2E8+YNRzC2uksH2XwJZ8PuErRBLtmGBDWCAeP9SQPWeb1Cg/dII+vnlYeVaZ84FeaCV
-         YzJBiz/by/6Adayo/Z1r0EQJ44dVvDrbFgrlErbN+Ge0iGIU4GzEpjWz1G/7zDWURXIP
-         KSd2Cc83zLpnH2GPpXylOJ6bYuiQ5pK/rfcWKooWEjn5IV3JhlvMk8q+Mv41wTvDACn/
-         BeMSCl5nyDWvM2OO0Yx/evkvdWxMFc7gBWkLx0tX+F9/9AeVWmjGSF+ZCnbnMKr/XdsY
-         XBww==
+        d=google.com; s=20251104; t=1786473699; x=1787078499; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=fJOzqFK/vfJSw1ado9uoaagkeuADN2fLa/8s2FkuGPk=;
+        b=jdib0Te2Cm3baCHT5yBcxvk0rx7m+lSp0Gemjd24HzyFGYX/y2vtTteCsbsT6yqrZ/
+         gM5hZgaDgWBgXpvT+LIOOLxPza63VZa7YBt5RC7chDqhyvmjYh7ixTJtSWGg285tBNHC
+         pqj5MDGvbnpnwJZ+qDNodKm+P9WGUB8yWU2cK2jY5o80B3bmFc1ZndE4ZwKBpoPp1Dv1
+         eItYviMa07/cvxn9kn3pC5nJaksLQEo+aoe98Z8j7jmouTVP3Uuf29C+2gVpQg6azIXn
+         PFx0gkGRmAvTbAzh9QioDf3wUJKLLsSSGb/QqcfAgcfo1qJgmPqonMgE6onMAVNDjWes
+         2Upg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786473313; x=1787078113;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1786473699; x=1787078499;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5cKNYN1YVV/K1jHg9iJCW7yGQ3ybLzpVvQJS3M//mQs=;
-        b=ahtB6pZ3+5FC/OVVyeleBAY/7dAEHIDJMSWi36/OP/mKRhZHlrt2S48rHMEo+Be/Sc
-         i4C+VRUlT4dmeAVzdrYUu46bE9N7tI2NwW2FKBqsQMCjo3m8QttfaXqGrz55oJ2tBQkQ
-         XSOdf/zHKHychQ4GvfpzNOSMczez1DgUwlrdt/7kmRDIf+YafK6jq4gPlNi2JC45bdQ9
-         OQVTMois2A+z0XoOrUEh/R2pAGTr8gnzuPXYxbtwGGqoF0Y3NjYhYjCw1G4FDlZB+XfZ
-         Bu+KQf4iRc6wDVjPmaHER9jQXebsSHhbeM4qTylZNupJ978C1J2TD4WzGcoy6MqfO67y
-         gOuQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqrOw1dmPVu78Mq1FTIEDeXW0usx5uccccpMujYw4Jy9WkoYqcAlDPt3pSre7vuL/8xzTI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzt6EdXBaP6/R0HKUWS72x1PbN9nWYqa65XTTL4gTkwY36iQPNo
-	pOnmmZe4XkkHCxc06GpmE2ctfQgNdY9iOXXYuXqTmjqfV4WaIj2FhH6OV4ezgADHwEMQo8E2IN5
-	9hPMQE7rQl40lgQS7kMt+QZ9OJutQmasklH8dz0UptCaiJyWvH1meN9yQ6QPzj6w=
-X-Gm-Gg: AR+sD136WepJeaXZXNXiwsLBCn+WVw4QZi44u6YZldAtQLqT3VRwAcT77wRl/JKaivD
-	wOc/NgP16ifUpJdDAYdl3JIVPcAH4MJ9Sz3Q3Rbis8VdViRoC/mp3jLMyrYxP+wr7pBuybnRKpY
-	hmVqhQmCHLsG0hYjFMoeJOsnEUlUZpO2k2c/FNchqgZypBFk6gIyBumLbuIvD7DQrZZQek5KdJl
-	XkvMzllBprGkiGNZowSnZo56XvWBlX+L5d/O92TPCkgJUubudBgG8Nh5O0pNSgm0giZsS9QvqOA
-	ewG2/9FfSCK2OlC33l2bkOhPr6eeDBdSLH2XrfIZP9tc9DgMqVqBVqRy1jeQuk6fbW0UwjR64Jy
-	G+ihGXdrNMphDpo33wB32mgUQ+zhpk3aiJrTr+rgRXQ==
-X-Received: by 2002:ac8:58ca:0:b0:50d:3e1e:7998 with SMTP id d75a77b69052e-52d586946b4mr43853151cf.37.1786473312893;
-        Tue, 11 Aug 2026 11:35:12 -0700 (PDT)
-X-Received: by 2002:ac8:58ca:0:b0:50d:3e1e:7998 with SMTP id d75a77b69052e-52d586946b4mr43852861cf.37.1786473312462;
-        Tue, 11 Aug 2026 11:35:12 -0700 (PDT)
-Received: from localhost.localdomain (pmd666.hd.free.fr. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4997ad79e5csm3958745e9.3.2026.08.11.11.35.10
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 11 Aug 2026 11:35:11 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
-        Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-        qemu-arm@nongnu.org, qemu-s390x@nongnu.org, kvm@vger.kernel.org,
-        qemu-riscv@nongnu.org
-Subject: [PATCH 8/8] hw/cpu: Move system-specific cpu_exec_realize() to cpu-system.c
-Date: Tue, 11 Aug 2026 20:34:10 +0200
-Message-ID: <20260811183410.22428-9-philmd@oss.qualcomm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260811183410.22428-1-philmd@oss.qualcomm.com>
-References: <20260811183410.22428-1-philmd@oss.qualcomm.com>
+        bh=fJOzqFK/vfJSw1ado9uoaagkeuADN2fLa/8s2FkuGPk=;
+        b=EOEf7GjyjeSyEIHxAh3V/5nshjnIi08U5j4usLZhu4qdig5MJZ5auRtWDRKMc9x8gM
+         vxZOoeUQ2su84pZpfXBwe7k1FweNYYvdp8xzxBN+QWxJr0tMYmqMdMlwvXBxUJawV+PH
+         r9rQQ2uKdQIuDfm0do29wweHhPuajel0XJkTR0GfsNKDb3XLrTUZbdm+S1HDp/3fjdxM
+         oPpQZRYjrv2KSwfIa90HPF+bK4k69s7V4sEdaDU5g+oIVWqyVAb2VMPvT+Ox1aKVHfNi
+         dXWiZvCvw2237jU6VUlb9USWkR7K4P8GlIIUXOvA/3ajFPpZf9Nx3X28z4hKHgDmpx5H
+         ryLg==
+X-Forwarded-Encrypted: i=1; AHgh+RrR7C8SzGc7Pte4sArGulJz12eApC0PqQW56tYASnB9gsoakVNpL9JcHRSBwYDDGXl1R7k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1TqTiS4l7R0bsjgBf9JxhIJQAOh51Qd/0cjrfotftW82LOx5O
+	zf5dgTmTOjQDgAi9b+CJkKrbDeouqZOL31hVuciu9j5Ceiw3Ki9U6CkivE0PG5goT39/G9wLiBM
+	Z9C6ZUg==
+X-Received: from pfbih2.prod.google.com ([2002:a05:6a00:8c02:b0:84e:530a:923a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2355:b0:848:2c6c:dfe3
+ with SMTP id d2e1a72fcca58-84fa86c28d9mr5596667b3a.17.1786473699196; Tue, 11
+ Aug 2026 11:41:39 -0700 (PDT)
+Date: Tue, 11 Aug 2026 11:41:37 -0700
+In-Reply-To: <6ab49538675d97f1f4bf01574b1b066aae0bc05c.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: nozpQTIs4NC462shr6xcmwOAvbIznjE1
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODExMDE1NSBTYWx0ZWRfXwlHrdkFzWozt
- oQVtExEshc3wLRjithIaieIDTkNfQZBSt35WY7Et69wXOLzZl7A+e70tjSaHf9s8AX7rjK9Hvip
- LZnTTl/uwyJYSDEFHhfBjgYqX7FAHnY06POD/Z9iO6s2Ox6Dn4y0iuXWnIoddfataKRSP2vZM1W
- Q4fM8QUwDRwuxbV5nOEg4dwhjkBmnpOv0KrVuM4WGOV7GofIohG0SvEHGQ05PFwlotAj6g0C6Ip
- MfonVZ0r0nzkivpYIyPIY3ZqSFj/w3JgLgpLBifmXLHM4i8CtqkVn8o6TyaBzd3xUee0TK70zCF
- cFMnj0f1N51HTExxlnu8nL9WUwkxQBGZUcXISkPGBRwNHE/w09YbL0PcHSHA62t7qvu4g+tyqHu
- Nb8uZAzms5B0AOIF6t1+n52CCcAqIV+HkoyJcN87YQTgHiCWtTWdTyBj7UhSvHwoq/jKzbFujJx
- 0yvZRT/SAJxqHgkFjDg==
-X-Proofpoint-ORIG-GUID: nozpQTIs4NC462shr6xcmwOAvbIznjE1
-X-Authority-Analysis: v=2.4 cv=FbkHAp+6 c=1 sm=1 tr=0 ts=6a7b6b61 cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=4s3hRJSeHn4rkQlkrse1kQ==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=M51BFTxLslgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
- a=EUspDBNiAAAA:8 a=pilchTG5AImVgDdFcq4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=uxP6HrT_eTzRwkO_Te1X:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODExMDE1NSBTYWx0ZWRfX4YiWW+Cg71ye
- BrnuzXYzNqzk94E2k4NHuQSJwKUr2Znf2C3x/uHTWz9PIQhcX6iBhfJZgdP75FzMCNyBfim6skB
- KSs/0ZlkaVo/6HRtn6cpeLZsZotPME4=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-11_04,2026-08-10_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 phishscore=0 clxscore=1015 bulkscore=0 suspectscore=0
- lowpriorityscore=0 priorityscore=1501 spamscore=0 impostorscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608110155
+Mime-Version: 1.0
+References: <acd9b32617f75d188c370a464a922af0d650d4f5.camel@infradead.org>
+ <ano6-gIZtqMfipiD@google.com> <bb9a12cc663130eb2caa8e839d0f6ca53d722d1c.camel@infradead.org>
+ <ansuqrD2KwFuLWbV@google.com> <ansywxh0VX5rtfWc@google.com>
+ <e256fa4af96e916ba30019cbba501fa896025fb0.camel@infradead.org>
+ <antQYJvRxJxOjtut@google.com> <f5dc701cf3319a7b3c8fd1497f26d051aa9fa3ba.camel@infradead.org>
+ <antb01WqOrs-tztm@google.com> <6ab49538675d97f1f4bf01574b1b066aae0bc05c.camel@infradead.org>
+Message-ID: <ants4VjfAiblaWsl@google.com>
+Subject: Re: [PATCH v7 17/36] KVM: x86: Allow KVM master clock mode when TSCs
+ are offset from each other
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul Durrant <paul@xen.org>, 
+	Jonathan Cameron <jic23@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, 
+	Dongli Zhang <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Current cpu_exec_realize() body only contains system-mode
-related code. Move that method out of cpu-common.c to
-cpu-system.c, removing the system / machine mentions in
-this common file. Add an empty stub for user-mode.
+On Tue, Aug 11, 2026, David Woodhouse wrote:
+> On Tue, 2026-08-11 at 10:28 -0700, Sean Christopherson wrote:
+> > On Tue, Aug 11, 2026, David Woodhouse wrote:
+> > > On Tue, 2026-08-11 at 09:40 -0700, Sean Christopherson wrote:
+> > > >=20
+> > > > >=20
+> > > > > FWIW in my local tree I've just extended the pvclock_migration_te=
+st to
+> > > > > test precisely the thing you were concerned about: three vCPUs wi=
+th
+> > > > > divergent TSC offsets, migrated by setting each vCPU's TSC and th=
+en
+> > > > > invoking KVM_SET_CLOCK_GUEST once, through vCPU0.=20
+> > > >=20
+> > > > I wasn't actually concerned about migration, I was concerned about =
+time going
+> > > > backwards from the guest's perspective.
+> > >=20
+> > > But KVM_[SG]ET_CLOCK_GUEST is *purely* for migration.=20
+> >=20
+> > Huh?=C2=A0 I raised my concern in the context of "Allow KVM master cloc=
+k mode when
+> > TSCs are offset from each other", and AFAICT, nothing ensures that won'=
+t cause
+> > problems.
+> >=20
+> > Aaah, it clears PVCLOCK_TSC_STABLE_BIT and relies on the guest to clean=
+ up the
+> > mess.=C2=A0 So the guest won't see time go backwards, but it could see =
+time stop for
+> > an extended duration, or jump forward.
+>=20
+> It shouldn't. Each vCPU gets its *own* pvclock structure, tailored to
+> *its* offset. They should all see *identical* results.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@oss.qualcomm.com>
----
- hw/core/cpu-internal.h |  1 +
- hw/core/cpu-common.c   | 24 ------------------------
- hw/core/cpu-system.c   | 26 ++++++++++++++++++++++++++
- hw/core/cpu-user.c     |  5 +++++
- 4 files changed, 32 insertions(+), 24 deletions(-)
+OMG, I hate this code.  After literally hours of staring at this, and even =
+typing
+up a lengthy example of why guest time would go off the rails, I finally sp=
+otted
+that l1_tsc_offset is accounted for by the call to kvm_read_l1_tsc().  FML.
 
-diff --git a/hw/core/cpu-internal.h b/hw/core/cpu-internal.h
-index ae6a31bca2d..44715b44329 100644
---- a/hw/core/cpu-internal.h
-+++ b/hw/core/cpu-internal.h
-@@ -15,6 +15,7 @@ void cpu_class_init_props(DeviceClass *dc);
- void cpu_exec_class_post_init(CPUClass *cc);
- 
- void cpu_exec_init(CPUState *cpu);
-+void cpu_exec_realize(CPUState *cpu, Error **errp);
- 
- void cpu_vmstate_register(CPUState *cpu);
- void cpu_vmstate_unregister(CPUState *cpu);
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index cd7c8763cf5..4f4c87f33a0 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -33,7 +33,6 @@
- #include "exec/log.h"
- #include "exec/gdbstub.h"
- #include "system/tcg.h"
--#include "hw/core/boards.h"
- #include "hw/core/qdev-properties.h"
- #include "trace.h"
- #ifdef CONFIG_PLUGIN
-@@ -246,29 +245,6 @@ bool cpu_common_realize(CPUState *cpu, Error **errp)
-     return true;
- }
- 
--static void cpu_exec_realize(CPUState *cpu, Error **errp)
--{
--    Object *machine = qdev_get_machine();
--
--    /* qdev_get_machine() can return something that's not TYPE_MACHINE
--     * if this is one of the user-only emulators; in that case there's
--     * no need to check the ignore_memory_transaction_failures board flag.
--     */
--    if (object_dynamic_cast(machine, TYPE_MACHINE)) {
--        MachineClass *mc = MACHINE_GET_CLASS(machine);
--
--        if (mc) {
--            cpu->ignore_memory_transaction_failures =
--                mc->ignore_memory_transaction_failures;
--        }
--    }
--
--    if (DEVICE(cpu)->hotplugged) {
--        cpu_synchronize_post_init(cpu);
--        cpu_resume(cpu);
--    }
--}
--
- static void cpu_common_realizefn(DeviceState *dev, Error **errp)
- {
-     cpu_exec_realize(CPU(dev), errp);
-diff --git a/hw/core/cpu-system.c b/hw/core/cpu-system.c
-index 8a9f2fcea84..feadfb5af00 100644
---- a/hw/core/cpu-system.c
-+++ b/hw/core/cpu-system.c
-@@ -25,10 +25,12 @@
- #include "exec/target_page.h"
- #include "system/memory.h"
- #include "qemu/target-info.h"
-+#include "hw/core/boards.h"
- #include "hw/core/qdev.h"
- #include "hw/core/qdev-properties.h"
- #include "hw/core/sysemu-cpu-ops.h"
- #include "migration/vmstate.h"
-+#include "system/hw_accel.h"
- #include "system/tcg.h"
- #include "cpu-internal.h"
- 
-@@ -221,6 +223,30 @@ static int cpu_common_pre_load(void *opaque)
-     return 0;
- }
- 
-+void cpu_exec_realize(CPUState *cpu, Error **errp)
-+{
-+    Object *machine = qdev_get_machine();
-+
-+    /* qdev_get_machine() can return something that's not TYPE_MACHINE
-+     * if this is one of the user-only emulators; in that case there's
-+     * no need to check the ignore_memory_transaction_failures board flag.
-+     */
-+    if (object_dynamic_cast(machine, TYPE_MACHINE)) {
-+        MachineClass *mc = MACHINE_GET_CLASS(machine);
-+
-+        if (mc) {
-+            cpu->ignore_memory_transaction_failures =
-+                mc->ignore_memory_transaction_failures;
-+        }
-+    }
-+
-+    if (DEVICE(cpu)->hotplugged) {
-+        cpu_synchronize_post_init(cpu);
-+        cpu_resume(cpu);
-+    }
-+
-+}
-+
- static bool cpu_common_exception_index_needed(void *opaque)
- {
-     CPUState *cpu = opaque;
-diff --git a/hw/core/cpu-user.c b/hw/core/cpu-user.c
-index c2cb00a85d3..1e38c88f9bd 100644
---- a/hw/core/cpu-user.c
-+++ b/hw/core/cpu-user.c
-@@ -38,6 +38,11 @@ void cpu_exec_init(CPUState *cpu)
-     /* nothing to do */
- }
- 
-+void cpu_exec_realize(CPUState *cpu, Error **errp)
-+{
-+    /* nothing to do */
-+}
-+
- void cpu_vmstate_register(CPUState *cpu)
- {
-     assert(qdev_get_vmsd(DEVICE(cpu)) == NULL ||
--- 
-2.53.0
+Thanks for being patient and not flaming me too much :-)
 
+> But yeah, if the guest does that then we can't set the
+> PVCLOCK_TSC_STABLE_BIT.
+> >=20
+> > > And your variant just added a dependency on wallclock time back into =
+it
+> >=20
+> > Can you elaborate?=C2=A0 I'm guessing I don't entirely understand what =
+you mean by
+> > wallclock time.
+>=20
+> The system_time field? The unspecified might-be-UTC-might-have-leap-secon=
+ds one :)
+
+Ok, I think I finally understand the goal.  I got turned around by the comb=
+ination
+of the name SET_CLOCK_GUEST and the full pvclock structure being passed to =
+the
+guest.  I was expecting SET_CLOCK_GUEST to literally set the entire clock, =
+e.g.
+mul+shift, timestamp, etc.
+
+But all of that metadata is just a means to an end: the one and only goal i=
+s to
+calculate the per-VM kvmclock_offset for the "new" host's TSC+time snapshot=
+, by
+computing the nanoseconds delta for the new snapshot as if it the guest obs=
+erved
+the TSC while running on the old host.
+
+And that is done in the kernel instead of in userspace to minimize the amou=
+nt of
+slop introduced due to delay between taking the snapshot and computing the =
+offset.
+And for similar reasons, it's undesirable for userspace to redo the GET on =
+the
+target to compute the explicit offset, because there would be a massive TOC=
+TOU
+issue, e.g. if KVM took a new masterclock snapshot between GET and SET.
+
+After working through that, I feel quite strongly that we should have asymm=
+etric
+names for the GET vs. SET flows, because the actually functionality is also=
+ very
+asymmetric.  And setting a field, and only that field, that's doesn't have =
+a
+direct association in the userspace payload is very surprising when the nam=
+e of
+the ioctl suggests a restoration of the entire payload.
+
+E.g. KVM_GET_REFERENCE_PVCLOCK and then KVM_SET_REFERENCE_PVCLOCK_OFFSET?  =
+Or
+maybe UPDATE, CALCULATE, REFRESH, or COMPUTE instead of SET?  I think I'd v=
+ote
+for SET even though it's convoluted, because pretty much everyone associate=
+s SET
+with the restore side of save/restore.
