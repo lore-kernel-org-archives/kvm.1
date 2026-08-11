@@ -1,226 +1,254 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676603403ED;
-	Tue, 11 Aug 2026 20:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719D53563E8
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 20:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786480211; cv=none; b=H9C7Oa0diJZiSTVaATwW0BXq01mnRSc+xRNCiA2zewkNR9EuvGm4BgRQCVNGYeMwcZvVGLbu01bRa8ojRvg8jFG3F6VaENw4ZJUzAnZtdmWwGZCRRLhh4Yugq7xUDtEX23C8EAJLXe1rFXVwKTMGW+lyBlMWjkE3NSGrPAfEcA0=
+	t=1786480317; cv=none; b=h95hz1gVL8M6ODkN2xhMMlQzle84AQgjdSkpPv4HGTxpwRZKkJSgHHemJyD4E9nNEVtu2kgJzG2v7G2qsQdB3wV4QvUrXHSBYpKufEXtEsQtBUJvuVALtehK7n8LoZhYuXRSs+gwaTPbCCzYQpeHLuTkZvuXoIkvKCxb1RSsvno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786480211; c=relaxed/simple;
-	bh=lYLjOZHNRjRcpmu6A5r595KAsoh0CIGpzCW8/4pK/uo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Kk/dGyd8tfIvUFkgwc+jUPfq7bybqnVPQB3fvR3Fd7PHIJFnRBx/X2mTrjO+ORaj4Ra75AEHkLcTh4IsAcV3UR1E9zpDo/6EQlC6mhjTAg7Oph3CgkuV9dzFPGR5fu0iEzaLeburOm3NZWlmwYgkPRRvw9famuQSHNGR7ItdBA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=d8D0WZHr; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1786480317; c=relaxed/simple;
+	bh=43c2sAspAfaKueM+YidHaHPS8dQ8ABbXqcByJfz9V4I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fia+hoEXkqgzw1ZTPaLNb+Kjdtvh4kWUIOwSX52KBuGynQtP9BTs1N5NGKttpOYT4BV1I9tqKkxiKNzH2TzcYeENjKIuop4LyOdGEs0wuEaNWO240FH/zWYJwuvrb3BqlvKOIKUQU0xl2mvNy7zliS7w/cFXgaGN6TCbulf+cRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HRNlA8KK; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="d8D0WZHr"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=xgGbykudFHIttje2K2rWjbkBicrY1aEq9u/MZjdSFj4=; b=d8D0WZHrUfGdECrNxhXTO0Phna
-	ZNRI5A63MYO4bxZbZjulxr5l9ERs4A/e7QardST9l49mTfSh7SdbRnSPyUm/RwDqxosxyMQ7ySnkh
-	xaGLQPF58yRSXtnw7CRQUoELR28q85zh8ks0Ec/AWIsHh8GBhOotNsEwKNQhD7Rpx26zjLoT+2qPP
-	PXz/7uPnrHy2VYVTeNRkcK1AFJshUkLdPd/mrE4Oq8ZW8gG8Ui1xHXqE+1bNagQIZCweY76cmcxx4
-	T+dpU0mnOV78n6sYm89NEfSPUnGqxP3/Q+NGGWVT1VoxVQ1RVzOsQL7pnysINhbv0aK+324Tr5hpo
-	Q/TK+a3A==;
-Received: from 54-240-197-227.amazon.com ([54.240.197.227] helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wtt6j-00000000y8U-0rXF;
-	Tue, 11 Aug 2026 20:29:58 +0000
-Message-ID: <5212728e97749b29bc1815d349e7e2b11d023257.camel@infradead.org>
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: akpm@linux-foundation.org, david@kernel.org, mhocko@suse.com, 
-	rostedt@goodmis.org, bigeasy@linutronix.de, simona.vetter@ffwll.ch, 
-	jglisse@redhat.com, christian.koenig@amd.com, paulmck@kernel.org, 
-	pbonzini@redhat.com, linux-mm@kvack.org, kvm@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
-Date: Tue, 11 Aug 2026 21:29:51 +0100
-In-Reply-To: <anuAq2s4mtyw4_Ql@google.com>
-References: <20260811162423.GL544626@ziepe.ca>
-	 <f33571137d2e3973e440d09c7602edaebe08b714.camel@infradead.org>
-	 <20260811172627.GN544626@ziepe.ca>
-	 <B25708F5-8425-4075-8D95-5E2A00C933DF@infradead.org>
-	 <20260811181915.GO544626@ziepe.ca> <anuAq2s4mtyw4_Ql@google.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-85SRVXFNik7CKKJwkqMg"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HRNlA8KK"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cab97c86bdso9065ad.1
+        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 13:31:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786480315; x=1787085115; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8HHyJsi6w9gqCfUisYo5+cUu/4xV1eXFx3itps6/QZY=;
+        b=HRNlA8KK93Jxc8T1djbfWUier4KMSUhcWwhKN5H0qcK99zvQtkKR4w2SDfBgNzfcYF
+         +7XXgKUwfR802WcvoBnV97zOfTKLvGchlvUna96amGTQNnU6aVL2paZokZGOTmWVUYLU
+         oUQkGZgQVlYub8kMTgTdspQBnWK//ev3JCmNkhDwPgwMDxEJdoaw02awGEWYeYgpEQid
+         jIldhriNnJWzQ19PNCTbJ6dzYigCHJ0Ly5ekNBMfE7DZQLYqsZE09n0Fs0cw9mqIwNvZ
+         UWu3YrtD95q2eYtNmWtL6qCf2xJHni9/XlPZd2yF+llQbhGaf9uN+vZaOrOogATG1uLt
+         i8UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786480315; x=1787085115;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8HHyJsi6w9gqCfUisYo5+cUu/4xV1eXFx3itps6/QZY=;
+        b=VuR4uZxkChjL9R2FzUyDF9SvMAy5p00wck4xYl9Pv7aOGR8cUXl9OCLEu2OYFNjA5Z
+         C7L1QAM89MUTJAJg1/SV1b/nACNPfHyLqNP30eA9tCc3N/hRnbajYmyXM3jMvAlbfqID
+         OG7VZiakzzbjxgAsjs/OnOxrD/f29alFpPOdZmJBLdB1Rz4B8peH12TmbTrVmyUB0xJP
+         iT49zPr0PrD6eoAfYO6CYRmUm1f1oiKLQLllIc2T5RznHC4ATzzCs4k3zCp9PkTzJxEu
+         jhCQJYMQQfh3etl44Vnia87YFBd3iS6x2zskkHnj3nfH2nxaHcAvyZTU3FFpWUcPyVyt
+         r5Og==
+X-Forwarded-Encrypted: i=1; AHgh+RohZxakbbvWukP1I5eZ/+Xq7MdX07gCCpb1QAn+IdRb3OCJHbXmAGuHYxTdwUaXL1Q6usI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGg75TS81+kOmyLFqqT7oQy49cfOFDxArN8bQx9oBPc/+8W4Oh
+	+RsWlD6JpOFm86Rq7/j3mXLrhxhKXEhCcKQTi8UqLZbdjO/kuPe3f1oPqj7PfYIlnw==
+X-Gm-Gg: AR+sD11r368YWsqERdJ6XLB/qE+ZQ8hWFCz4HCR7s4yOKt+DUCWykeu48RqOD32C7Sk
+	Rz+yNJYuMhDQ3qoMtpvlZb4Ln2rwQbibY5nHNiZY/5AVEWhCKo2zOzaHAPRRt3+DX6o5uH0bd3x
+	NTpLLoA2R3RfBq95WSnNck0IUbcD4CPd5spsQ3GGmCe71/nZFJOWNK3UoO3EQP8JY28QenuaBvd
+	AbVNguZmWRj12nVvsjpDDYSFIJwtRjJdpYe36Ez6wqimh33QWPHKFpp8oIaMuBEfaGw+W7XEn4w
+	zdth6VS2Lqnn9V2hrHuGjhE7+FP/F4Jg61vhm6ja0sxzf+5G4kbUhdLIQwWaXpSXAABn8MoWblj
+	yk851b79P2l9gpRdvMn4JI26uEtZ3gOrA5NrkINL4BzTavPpK6scjleoGNkDL2Xa1qAl2IjJxw0
+	5plr3L+CUtZQJ+sV5RYrvmM9oMx1WJhvOpgP8OQZmKkwwaRoIT8bXD6bg/iffTBf9OVYVxjzWAo
+	bkKM7sbL47Sp/9dVwhiJ2B7x4/d19q21Kg4OGV7h2YeH4dSE4Ddv6NQ21h2yZvbIsz3RWB1Q8w=
+X-Received: by 2002:a17:903:3e24:b0:2d0:1aaf:daec with SMTP id d9443c01a7336-2d33a9bb8b9mr1771485ad.9.1786480313955;
+        Tue, 11 Aug 2026 13:31:53 -0700 (PDT)
+Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-392fe4a8c05sm122090a91.2.2026.08.11.13.31.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2026 13:31:53 -0700 (PDT)
+Date: Tue, 11 Aug 2026 20:31:49 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Alex Williamson <alex@shazbot.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, bhelgaas@google.com, 
+	Kevin Tian <kevin.tian@intel.com>, Leon Romanovsky <leon@kernel.org>, dmatlack@google.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 1/1] vfio/pci: Disable sriov on PF device close
+Message-ID: <anpJrnR6Lbmgqad-@google.com>
+References: <20260805003355.728299-1-skhawaja@google.com>
+ <20260805003355.728299-2-skhawaja@google.com>
+ <20260805090323.01b1a36f@shazbot.org>
+ <20260806194739.GH28508@ziepe.ca>
+ <20260810093223.50dbc8d0@shazbot.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260810093223.50dbc8d0@shazbot.org>
 
+On Mon, Aug 10, 2026 at 09:32:23AM -0600, Alex Williamson wrote:
+>On Thu, 6 Aug 2026 16:47:39 -0300
+>Jason Gunthorpe <jgg@ziepe.ca> wrote:
 
---=-85SRVXFNik7CKKJwkqMg
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Thanks Alex and Jason for feedback.
 
-On Tue, 2026-08-11 at 13:06 -0700, Sean Christopherson wrote:
->=20
-> +static inline unsigned long kvm_gpc_read_begin(struct kvm *kvm)
-> +{
-> +	unsigned long flags;
-> +
-> +	local_irq_save(flags);
-> +	cpumask_set_cpu(smp_processor_id(), kvm->gpc_readers);
-> +}
-> +
-> +static inline void kvm_gpc_read_end(struct kvm *kvm, unsigned long flags=
-)
-> +{
-> +	cpumask_clear_cpu(smp_processor_id(), kvm->gpc_readers);
-> +	local_irq_restore(flags);
-> +}
-> +
+>
+>> On Wed, Aug 05, 2026 at 09:03:23AM -0600, Alex Williamson wrote:
+>> > On Wed,  5 Aug 2026 00:33:55 +0000
+>> > Samiullah Khawaja <skhawaja@google.com> wrote:
+>> >
+>> > > When userspace closes a VFIO device file descriptor, the vfio driver
+>> > > performs a hardware reset on the PCIe device to ensure it is returned to
+>> > > a clean state. However, if the closed device is an SR-IOV Physical
+>> > > Function (PF), it may have instantiated Virtual Functions (VFs) that are
+>> > > actively bound to host kernel drivers (or other vfio instances).
+>> >
+>> > Wait, what?  We actively try to prevent VFs from a vfio-pci owned PF
+>> > from being bound to host drivers other than vfio-pci.  You need to
+>> > overwrite the imposed driver_override to make this happen and you're in
+>> > a very precarious security model to have the VF owned by a trusted
+>> > in-kernel driver while the PF is owned by userspace.
+>>
+>> Maybe, it really depends on the device. I can easially see someone
+>> using a device where this would be safe. mlx5 for instance is pretty
+>> OK.
+>>
+>> So I don't really mind someone doing this, we should block it and warn
+>> it and so on, but like noiommu and the other vfio insecure modes, why
+>> not give an opt in?
+>
+>An opt-in to what currently?  We generate a warning, but nothing
+>actually prevents the re-bind to an in-kernel driver.  Whether that's
+>sustainable in eliminating this reset gap is yet to be seen.
+>
+>Binding a VF from a userspace owned PF flips our model on its head in
+>two important ways.  First is the security inversion.  An in-kernel PF
+>driver is considered trusted, we absolve ourselves of issues related to
+>whether the PF has access to VF data or interrupts VF operations and
+>state through reset.  Second, the vf_token model explicitly defines the
+>trust and coordination boundaries for the userspace SR-IOV ecosystem.
+>An in-kernel bound VF lives entirely outside of that boundary.  For
+>example, one mechanism we might use to prevent an MCE around PF reset
+>would be to zap VF mappings and invalidate dmabufs.  Reinstatement of
+>those mappings would require userspace coordination, which the vf_token
+>model would define as an implementation detail in userspace relative to
+>vf_token coordination and trust.
 
-Nah, those are all on the same cache line. SRCU doesn't do that, does it?
-You end up basically reinventing SRCU.
+As you rightly mentioned that this issue would occur with vfio-pci bound
+VFs also. For example a PF bound to vfio-pci can be closed and reset
+meanwhile the VFs bound to vfio-pci keep working as usual. This might be
+ok for some devices. But I think zapping VF mappings and invalidation of
+dmabufs might not be enough. For example these VF drivers can continue
+to generate ATS invalidations (posted PCIe messages that are dropped
+silently).
+>
+>So we haven't done anything that explicitly blocks or taints this mode,
+>yet, but correctly handling reset could be a tipping point.
+>
+>> > It's possible there are gaps that closing the PF can interrupt the VFs
+>> > and we need to defer a reset until the VFs are closed,
+>>
+>> Oh definately, when running in a SRIOV mode it is really problematic
+>> for the PF to reset while there are any active VFs. The PF controls a
+>> number of shared items (MMIO, ATS, etc) and when it blips everyone is
+>> at risk of unexpected fairly catastrophic system crashing errors
+>> related to the shared items going away.
+>>
+>> So resetting the PF device unconditionally when vfio closes is
+>> definately wrong in principal. I can see it maybe working for simple
+>> systems, especially ones that don't MCE..
+>>
+>> I don't think we can skip the PF reset on close because of dev_set
+>> reasons and leave a rouge device for the next user, so the thing looks
+>> somewhat troubled?
+>
+>This is what our vf_token model would handle, if we could use it.
+>Re-open with VFs in use through vfio-pci requires the vf_token
+>proof/opt-in.  Re-open with no VFs in use could reset the PF, but we
+>can't account for VFs bound to in-kernel drivers.
 
-I'm OK with having a special helper for kvm_gpc_read_begin/end. I was
-actually tempted to do that as patch 1 in the series which converted to
-RCU =E2=80=94 it's then an implementation detail whether it's rwlock, spinl=
-ock,
-rwlock-except-on-RT-which-gets-raw-spinlock, SRCU or whatever.
+I think even with this a PF reset blip can be catastrophic for the VFs
+in some usecases or devices. Maybe we need an opt-in where the PF driver
+can specify that keeping the SRIOV enabled during PF reset is
+catastrophic for it and so the reopen is not preferred by it?
+>
+>> Adding the sriov disable here at least makes it defensibly safe, that
+>> we do still clear the PF on close, and we don't take risks that the
+>> active VFs will crash the system during the FLR blip.
+>>
+>> Though I understand it was not the original intention, I feel we have
+>> ended up in a strange place with the SRIOV PF feature ..
+>
+>I think we have 3 potential options for PF reset:
+>
+> a) All resets are blocked or deferred while SR-IOV is active.
+>
+> b) VF mappings are zapped/invalidated at PF reset and require
+>    coordination to be reinstated.
+>
+> c) VFs are torn down on all PF resets.
+>
+>Option (a) is complex and doesn't look like stable material.  A deferred
+>reset on .close needs to materialize on .remove or .sriov_configure
+>(and of course .open), but to allow in-kernel VF drivers we can't rely
+>on vfio usage counts, or even our vf-token trust boundaries, which is
+>what leads to the .sriov_configure hook since we need to take advantage
+>of every opportunity to issue a deferred reset when SR-IOV is not
+>active when we can only rely on the PF state.
 
-If we use the helper and still make it use SRCU, we can still impose
-some of the invariants which make it actually *OK* to use SRCU because
-we know we'll never hit those worst-case latencies that Jason is
-worried about =E2=80=94 like adding non_block_start()/non_block_end() in th=
-e
-helpers to ensure that we keep the atomic semantics within the locks,
-that rwlocks always previously enforced, etc.
+In my cover letter I pointed out that this problem probably exists in
+the in-kernel drivers (or PCI core) level also. For example an SRIOV PF
+driverA can reset the PF while VFs are bound to driverB. This makes me
+wonder whether we should fix this at PCI core level to maintain the same
+policy for all drivers when it comes to PF/VF lifecycle?  Basically,
 
-It isn't *strictly* non_block_start/end because because we invoke it in
-hardirq context, of course. We'd have to work that detail out. Maybe it
-*is* local_irq_save(); not because it's strictly necessary to do so but
-just because it comes with the desired sanity-checks.
+option1) On PF reset when there is SRIOV enabled, PCI core returns
+-EBUSY from the reset API.
 
-But either way, the point is that whether you reinvent SRCU or not, it
-all works purely because we know about the behaviour of the read-side
-users.
+option2) On PF reset, PCI core disables SRIOV. This might be tricky as
+some drivers might block this waiting for VF driver tear down and
+remove.
 
---=-85SRVXFNik7CKKJwkqMg
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+We probably cannot do this as default policy as it will break the
+vfio-pci model where the PF can be reopened as you mentioned above. I
+think if we go down this route, we would need some way of establishing
+trust and lifecycle rules?
+>
+>Option (b) is potentially more simple, it implements the blocking of
+>access on reset in the kernel for enforcement, but defers the
+>coordination of reinstantiating mappings to userspace, which is really
+>how the vf_token model is intended to work.  This is incompatible with
+>in-kernel VF drivers, which I think means tainting on VF unbind from
+>vfio-pci and those working outside the model would tread carefully.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-z1dDOzCcZt6biUeC2DrX8LgAAAAAAAA=
+While this might solve the issue for scenarios where the MMIO of these
+VFs is mapped or exported (dmabufs), this might not be enough as the
+software still remains out of sync as compared to the state of the
+device.
+>
+>Option (c) is the more heavy handed approach, it means that a PF driver
+>cannot fail or exit and re-attach.  We have existing logic that handles
+>a PF driver re-opening the PF device with active VFs and authenticating
+>the vf_token (logic also broken by in-kernel VF drivers that bypass the
+>vf_token mechanics).  There also appears to be significant locking
+>challenges in this approach, ex. the inversion of getting the device
+>lock for SR-IOV teardown from the ioctl, config space, and .close
+>contexts.
 
+I think this can be a reasonable opt-in option that the PF drivers can
+use to indicate that on PF reset keeping the VFs alive is catastrophic
+for it and it does not want to reconnect to the VFs. If we want to go
+for this one, I can maybe try figure out a way to break the locking
+issues.
 
---=-85SRVXFNik7CKKJwkqMg--
+Or we could certainly do this in a deferred way that is somewhat similar
+to the option (a). Basically PF openers can opt-in to not reset the PF
+on close if the VFs are enabled, and teardown the VFs on subsequent
+.open or .remove. This at least gives the system administrator (or
+scripts) opportunity to teardown the VFs in a proper way.
+
+>
+>I'm open to suggestions, PF resets with live VFs is very much a gap
+>that I'd like to close in the vfio-pci SR-IOV model.  Thanks,
+
+Thanks,
+Sami
+>
+>Alex
