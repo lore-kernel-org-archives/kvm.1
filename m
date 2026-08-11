@@ -1,136 +1,154 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC94842643A
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 23:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343DA36C0D6
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 23:23:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786490050; cv=none; b=AN0SNbKaBJDtbJiZ8noCQ75sEfM/k9dmIpClFRUkiYdZNjKzWj8fyNiSGkJpuEk6abXAyipy5BJ685qVsR03S0SwxNDHh7Hw8mGuUFWVgIhQUYihX6aJNzx5ufcXfo6HMMYYLfEr76k6mP+WiByu0NgitBC4nVLKiEas2ZbUX7U=
+	t=1786490589; cv=none; b=dBB/K5CHR20p1ipPz4hLaeMy8AGXDnTNZnescuqmdbgFRGX+ch7h3UuMhkw9yTVzzUy+fKBr8m/DGtYryJDvNvis3bu4MblVhSNQwpDr1LycRSotDcihgNLOvJfhe52qNbiWhuyUCNJiT7HuWYwP703z85gowqRbzeARvPZLaOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786490050; c=relaxed/simple;
-	bh=eTsKS/p1yVC2Lax9wd0GxNhGxmDx0nu+r7cGaHMy4LY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lsU1GtgFqmHqHL94c1XbrrdGEIpr+gILQLG/woImT5ta63e0Y+U48VNU7glq7dCzysEdY09GhCd5Vgjrn4sNCkdt81ukqMM+ui+1qJpqzMuDg4s6QvSZMZknF7vbuSBlizu+pbBOTJdGGjY3c2V/UtUewKLzYZP++JGBsvwASrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sSVWtS92; arc=none smtp.client-ip=209.85.210.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786490589; c=relaxed/simple;
+	bh=P/bkgpCedE3AZ+lCCwCdvVVebPAckWJHmcXAM7dbq+M=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=P8ySKf54FtwPf+if4OhYscGfHwcC+p0MsZngzOyXeJv5z1x9yKN7B8mTwmGE1BVEfHyKW2PGUWRWtT5mfcW4cF3ri4AHKgCBE9cEnp91drchERyfsMsLswcth2WhBWD1Vy9QvwbfgWOr6hNEN1cq5g+na/SJVAeyYXzSRBRRmCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nNPgYpdh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sSVWtS92"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84e048a801dso507381b3a.3
-        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 16:14:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786490048; x=1787094848; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=eTsKS/p1yVC2Lax9wd0GxNhGxmDx0nu+r7cGaHMy4LY=;
-        b=sSVWtS92NG0ooEW0xMXwq5mi/3nLH+vMIO8uI/9m0ss5S0ztIe+1YKM78oMPZ/zBSN
-         f+liOpCRKtJf2yLwR2i5zARbTQ+f8mXexH7F4LGuA26nJy6dQXFHQVTbcflsTmwD7tFC
-         BvQZkS+HhZAcQtYKR6rerXC+4Y/seDII8tjz2kxcqgxDG0aWQf3+6xY6hQUvH/C2jaRP
-         ZDUGKfkyyX+o0FX81Ejnd+U5KSMYUaBWhleaDlculk95zIt7WOrIfbOwwmun3AovMM+x
-         gJssFmOqxovDMimOqwxM1SUkgprWznhpnej3TGtPWqHKFBoFMwR4DltY0X3nFeTAnOD0
-         cXUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786490048; x=1787094848;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eTsKS/p1yVC2Lax9wd0GxNhGxmDx0nu+r7cGaHMy4LY=;
-        b=f4816Gyy9gSRqNhbpxxi9ogGatKpKjw2b8R9XEvqGuD4yGDovsXQW7qsVePGTaL0AR
-         6Q2j0SpVblE3XXxdS1ySwK7xKSM/S7l54sh4Z1/31Q/uRGqkeqE1w1B5WGXm+dvC0bIW
-         m58lJ+UNBw+oaXvqaYvHzpCrcOqWC88NyyUnY0ZkZRJ6tzmYPtkyMZalZfZYGQMv3MSj
-         rMjoiqd5yh6coHQQk/r2b6d6RFce2ySvxCeIPExktI5+PXJP0Sz8gejjgM10hAx8uAqy
-         WhJCOFTSsKs0DyaCpdHjQ4uSkboCPwuuYV5XVgDN7sRB2t3Btni/eXjCQ/rfeI4cZH9H
-         zgsA==
-X-Forwarded-Encrypted: i=1; AHgh+RrzgIREYITkTsV/KW3QhwXvFhIz6OIMxTLqNTlMg06zoRstFnFRvGRTPfkZABe0FGqI/+Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8nVj49KJUIkwtJCASpOnNfTrT4mkWkf+bjAagF8DW/mCbuZ1j
-	sYTjlvLQlszq/70OftQPv0XPtVbgNh0NqMa/Vt7D4WHZotd0POLo/BQkzK8g331udt4aRs0jH9a
-	RJyf4tg==
-X-Received: from pgcc19.prod.google.com ([2002:a63:1c13:0:b0:cbe:9dc7:9ef6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3497:b0:845:e8b9:347
- with SMTP id d2e1a72fcca58-84fb5404a23mr903157b3a.13.1786490048024; Tue, 11
- Aug 2026 16:14:08 -0700 (PDT)
-Date: Tue, 11 Aug 2026 16:14:07 -0700
-In-Reply-To: <5efe7a3914a3610ee00a487379caff84af6aa731.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nNPgYpdh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA56A1F000E9;
+	Tue, 11 Aug 2026 23:23:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786490588;
+	bh=l2I36OBUNKGcfeUc3V4o5k2U/JAMJe7I6GRo9NYHhWg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=nNPgYpdhnO+++IC6dYSqPwTVmKYt16chUSCsy+QrB3OaY6g2hZhn/pA7wVvg3IHld
+	 88HIjKW+77q5XTxV1D1hM2TghKCUXZ+lJCM3ULMW6QmPDD/uAsl9IgIrKJFuR2/v+7
+	 GOa8VK1Iy1z6oaFZFjqExptQI85ID0UeLGGFvw+EFmX37Q02fqsBos9BNZtweuCwYP
+	 DyjWx1eOxrYWynwz7gTcnJn23JLAlO3ucEEw8wJICfiAcDtJ8iHGfqKU/a6wcGVgNH
+	 vxh1YKlsSgMEnvcrjTA/Mxw8oC58UlD99R19qcI0BtLN7zZJrpzJ6ulAYb04vj4wkA
+	 qNvMn0xNaUnHA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 1/3] KVM: riscv: Implement KVM_PRE_FAULT_MEMORY
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jinyu Tang" <jinyu.tang@linux.dev>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260811230316.218770-2-jinyu.tang@linux.dev>
+References: <20260811230316.218770-1-jinyu.tang@linux.dev>
+ <20260811230316.218770-2-jinyu.tang@linux.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 11 Aug 2026 23:23:07 +0000
+Message-Id: <20260811232307.CA56A1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <ansywxh0VX5rtfWc@google.com> <e256fa4af96e916ba30019cbba501fa896025fb0.camel@infradead.org>
- <antQYJvRxJxOjtut@google.com> <f5dc701cf3319a7b3c8fd1497f26d051aa9fa3ba.camel@infradead.org>
- <antb01WqOrs-tztm@google.com> <6ab49538675d97f1f4bf01574b1b066aae0bc05c.camel@infradead.org>
- <ants4VjfAiblaWsl@google.com> <3dc73f745b6abfd1eb53e7d3fce2067eaa3b3c92.camel@infradead.org>
- <anuYNxD81OE3MrQw@google.com> <5efe7a3914a3610ee00a487379caff84af6aa731.camel@infradead.org>
-Message-ID: <anusv0DloFhLMMoW@google.com>
-Subject: Re: [PATCH v7 17/36] KVM: x86: Allow KVM master clock mode when TSCs
- are offset from each other
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul Durrant <paul@xen.org>, 
-	Jonathan Cameron <jic23@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, 
-	Dongli Zhang <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 11, 2026, David Woodhouse wrote:
-> On Tue, 2026-08-11 at 14:46 -0700, Sean Christopherson wrote:
-> > On Tue, Aug 11, 2026, David Woodhouse wrote:
-> > > On Tue, 2026-08-11 at 11:41 -0700, Sean Christopherson wrote:
-> > >=20
-> > > >=20
-> > > > Ok, I think I finally understand the goal.=C2=A0 I got turned aroun=
-d by the combination
-> > > > of the name SET_CLOCK_GUEST and the full pvclock structure being pa=
-ssed to the
-> > > > guest.=C2=A0 I was expecting SET_CLOCK_GUEST to literally set the e=
-ntire clock, e.g.
-> > > > mul+shift, timestamp, etc.
-> > >=20
-> > > That's an implementation detail.=C2=A0
-> >=20
-> > Yes and no.=C2=A0 If the payload didn't literally have all the assets n=
-eeded to set
-> > the kvmclock fields, then I wouldn't care.=C2=A0 But I don't think I'd =
-be the only
-> > person to see a GET+SET pair and expect GET to return exactly what was =
-written
-> > via SET.
->=20
-> Sure, but right now, even a sequence of GET+GET+GET won't necessarily ret=
-urn
-> the same answer three times in a row =E2=80=94 not just because we haven'=
-t fully
-> eliminated the non-masterclock mode (which we might never do) but because=
- the
-> masterclock mode itself isn't truly the first-class citizen =E2=80=94 so =
-we have to
-> kind of reverse-engineer it into the per-VM clock data, and then build ea=
-ch
-> vCPU's pvclock back out of that again.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-True.
+New issues:
+- [High] RISC-V KVM_PRE_FAULT_MEMORY leaks -EAGAIN to userspace on mmu_inva=
+lidate_retry or HWPOISON, which violates the ABI and differs from x86.
 
-> We *ought* to live in a world where that pvclock information *is* the
-> canonical source of truth, and any series of GET/SET/GET/GET/SET should n=
-ever
-> see it change. And we can build our future-looking API around that model.
->=20
-> I think I do stand by my claim that SET/GET/GET potentially having *three=
-*
-> slightly different sets of data is an implementation detail that we will
-> strive to eliminate.
+Pre-existing issues:
+- [High] kvm_riscv_gstage_set_pte overwrites a non-leaf PTE with a leaf PTE=
+ without freeing the lower-level page table, causing a memory leak on THP c=
+ollapse.
+--
 
-I'm not totally opposed to a broader GET, but we should definitely get Paol=
-o's
-eyes on this sooner than later.
+--- Patch [1]: [PATCH v2 1/3] KVM: riscv: Implement KVM_PRE_FAULT_MEMORY ---
+commit 39a9f049be58ef7b5671f786fdc8299c1f217042
+Author: Jinyu Tang <jinyu.tang@linux.dev>
+
+KVM: riscv: Implement KVM_PRE_FAULT_MEMORY
+
+The generic KVM_PRE_FAULT_MEMORY ioctl lets userspace populate KVM page
+tables before running a vCPU over a GPA range. This commit adds the
+RISC-V arch hook and reuses the existing G-stage fault mapping path.
+
+> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
+> index b0474fcf065aa..ebd1e8a4b9e38 100644
+> --- a/arch/riscv/kvm/gstage.c
+> +++ b/arch/riscv/kvm/gstage.c
+
+[ ... ]
+
+> @@ -280,6 +280,9 @@ int kvm_riscv_gstage_map_page(struct kvm_gstage *gsta=
+ge,
+>  						    out_map->level, true);
+>  		} else if (ALIGN_DOWN(PFN_PHYS(pte_pfn(ptep_get(ptep))), page_size) =
+=3D=3D hpa) {
+>  			kvm_riscv_gstage_update_pte_prot(gstage, ptep_level, gpa, ptep, prot);
+> +			out_map->addr =3D ALIGN_DOWN(gpa, page_size);
+> +			out_map->level =3D ptep_level;
+> +			out_map->pte =3D ptep_get(ptep);
+>  			return 0;
+>  		}
+>  	}
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does kvm_riscv_gstage_set_pt=
+e()
+overwrite non-leaf PTEs with leaf PTEs without freeing the lower-level page
+table?
+
+When a THP collapse occurs, KVM attempts to map the huge page at level 1.
+If the previous 4K leaf PTEs at level 0 were unmapped (e.g., via=20
+kvm_riscv_gstage_unmap_range()) but the level-0 page table was left allocat=
+ed,
+kvm_riscv_gstage_get_leaf() returns false.
+
+This function then falls through and calls kvm_riscv_gstage_set_pte() to
+install the level-1 leaf PTE. That appears to blindly overwrite the
+level-1 non-leaf PTE with a leaf PTE via set_pte(ptep, map->pte) without
+freeing the level-0 page table it pointed to.
+
+Could this lead to a memory leak of level-0 page tables over time?
+
+> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+> index 8a0aa5e0e216e..926b53723e31c 100644
+> --- a/arch/riscv/kvm/mmu.c
+> +++ b/arch/riscv/kvm/mmu.c
+
+[ ... ]
+
+> @@ -661,6 +661,39 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct =
+kvm_memory_slot *memslot,
+>  	return ret;
+>  }
+> =20
+> +long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
+> +				    struct kvm_pre_fault_memory *range)
+> +{
+
+[ ... ]
+
+> +	ret =3D kvm_riscv_mmu_map(vcpu, memslot, range->gpa, hva, false, &out_m=
+ap);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (!pte_val(out_map.pte))
+> +		return -EAGAIN;
+
+[Severity: High]
+Does returning -EAGAIN here leak this internal error code to userspace?
+
+When kvm_riscv_mmu_map() handles a concurrent host MMU invalidation
+(mmu_invalidate_retry() returns true) or a HWPOISONed page, it returns 0
+but does not populate out_map.pte.
+
+This arch hook then translates the internal !pte_val(out_map.pte) state
+into an -EAGAIN return value. Since the generic KVM ioctl loop bubbles
+this up, unprivileged userspace VMMs executing the KVM_PRE_FAULT_MEMORY
+ioctl concurrently with memory pressure or page migration will receive
+an undocumented -EAGAIN error, potentially causing them to fatally abort
+VM initialization.
+
+Should this return 0 instead to indicate no progress, or is a different
+mechanism needed to avoid breaking the ABI?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260811230316.2187=
+70-1-jinyu.tang@linux.dev?part=3D1
