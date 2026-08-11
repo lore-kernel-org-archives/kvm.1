@@ -1,169 +1,113 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2A72517AF
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 00:18:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD6C23C8A0
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 00:19:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786407540; cv=none; b=AyWjpi0zfQeUjwd8Fba9tiFco1XQkYTLUSByFcIo3ZdY+5OoZCqCPP8q5LgRLBxTd+MrnOiVmcXd9B4AJGVuDuIIgHokKZ56Gidhl0TIueaNPeBE47iwiv0B4qCQty2XGjMYOypVjn4OoIMmGIzEVInDuttOovOsgUW9tBsXunY=
+	t=1786407584; cv=none; b=OZwYlWVk30/RbvJwKoOKMFzMWbHmiKCYJ2SwUON61VuSwYXBMDh+QSNesWgLQmZCYzRIS09G+63mw4Pmja9nPKgMT2e67txF8JHEf9epNQEP2WyPTuhESbwT9vymn65Tg8nsL5FiP/HNxRnkgMvJe03W2P9XRydSOqKRrCJwOrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786407540; c=relaxed/simple;
-	bh=W9uYraziRHJ/HXbsiKxTSK4X1mr9zUukCf8sFFZRRAo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=c+TfWwrXPPXTjTlk6ch8FpGc26ipiJm7Z2W/HQrSn9QK887iazOS35ECQlQTrKHDrKoOrbouPFY6MUfc8AJLlnr3lS/lwapdPm9cVz0R6SoyLgXtD5H0NHBmP7MhC5Wh03rASZL09Ycdp/XWYDT6fiHR7YxC8+Ax4ONWvfKmEhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D/rW2gWm; arc=none smtp.client-ip=209.85.210.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786407584; c=relaxed/simple;
+	bh=U66L/gSSF6ngUPOZrEqZedSLeI0tHxIkX04NsxIq5Oo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s5qeuy1H5RGmtIUBQZWUHYUGPv30v7VtUgWu5RSH6DakGcO/35xI8v1GFP8R9v9a1senpYXBstaoqNHc3WLvkxHR771bKlhM1LT1l2ZLerxVcjJkyGX/I1VmXaEj4NvnGpNUPkIkzI1aJnoio7LurD0lWxgQWeUEsTUasgaBo1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=He4vDi/c; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D/rW2gWm"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-84e048a801dso3624160b3a.3
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 17:18:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786407538; x=1787012338; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eAiudkcAvitRicnlZsTp/8XRyAoMENjhlvyXGhGU0wA=;
-        b=D/rW2gWmTNAE5+DCLMdWb4DPZZMk+8nv4EYnFqKoFHlMaIG2Nnr6Uk1E/naDkrIY+Q
-         aVjS8+ZQGu/Xa3WUw+QT+YRkTo93E1jLOoRx0O8uAX6XIN1wn/pon0A3rmNZn1ByTKLb
-         kz+kqL6fmyLBAsMsQmKRdsJsl1gwGSkqgnfAoNwQWqSbb2C3jmHM/oq/P0gLtSNqDk4X
-         aK1AgfWLfSf83fXvTYu7b8PnjB9//fYKw/S2HB5TECWpSGT2Rr/fUNvi8AC4q9jgjVsc
-         GSpoK68iMOshthALn/mjGpCRKsBCil3eJMwp3l5t4zIEKFSjgrOQ4IGzjaDNxRdDqncm
-         Tdgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786407538; x=1787012338;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=eAiudkcAvitRicnlZsTp/8XRyAoMENjhlvyXGhGU0wA=;
-        b=eDAOJNzMq2LbcL2aScxuBdPrS8DQHq6o1x8NpHxLRo7TPveoAEx0ZF3uvccmQX4Y53
-         vRPB/YNiB3RhtMHjzO756M04pDu2z3IvEj8lOOllLS8QTFQsztl7f/O7+pkIn9ATBYx2
-         frQQGjYS/dc1YSvpc9pFk7qUydDA6x0BV0NRrd7fqvxdLPhCe/PAMl6TM2qQDj03ZXLY
-         izJwhRjmV1wYruoSo50Ooq9A+Qc0xgBhI+xJ6v6YpJv3DwLT8dlQVJFQ7wwCkFQJnO6m
-         PED2MwGDxtZHD54uvSpbrCOoRm71B0pdNuwjv3/D2OvQ0XL6H1m/qvmwxm8rBtpfgmpg
-         Wj6g==
-X-Forwarded-Encrypted: i=1; AHgh+RoqSqfyFJmGpSHIpFmUxJLNh5pL/0K5DkBrCX8pS0PPiYL1MiLHTdPLIdWu0Ip5Op4g5M4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2r2p9buQUnI3QzRHm78wdIO3iEpEpUivlbKkmVNDQMj9fjv6g
-	9FcHUdbAjhw6hcEM+vQN4lQvzG9yMugG3qZVB+OUw2j1nu9csdVa+gNWQTNyBjYRJIhEpPO8bIF
-	QjUB7LA==
-X-Received: from pglg7.prod.google.com ([2002:a63:1107:0:b0:cbe:948f:d640])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4613:b0:842:2a81:4c63
- with SMTP id d2e1a72fcca58-84f9c95fbfemr5369150b3a.25.1786407537909; Mon, 10
- Aug 2026 17:18:57 -0700 (PDT)
-Date: Mon, 10 Aug 2026 17:18:57 -0700
-In-Reply-To: <CAEvNRgGSK9tO_-TvQvXoMwVwGygh5WjjBUOY-zLOA5yP2DwS1g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="He4vDi/c"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786407581; x=1817943581;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=U66L/gSSF6ngUPOZrEqZedSLeI0tHxIkX04NsxIq5Oo=;
+  b=He4vDi/c41xD3uWC8e9OkrUdhy5WzXvNqxE4b5x9p8YoK2rHo3pNrok5
+   KutEy41SKJhia/H+IFmRNFe7mx6sFrii+UfX13a/Mx79kwoaZw4Y+n0jS
+   S1EP7uDk6Cya/m/O4IU6x9P70eZ3TCRx6NEJuIHNIZeZbMMF7ujlKtLRI
+   WXDQQwK2SO/eMndzSFOiA0dEe9EZBiyeS8/l6CWXut58yP/f4FEsIr5wD
+   Ekk349ypMzvRpIRvNGc4Ko3g6dDRxtgJ+OncWVsxZ1tY8HoEEaBVor/+P
+   xooAfyJe5k2wwElIf8Mov/DFAV1Md6J2HenxhxrBT+CzZ3h4aCOn01Vim
+   w==;
+X-CSE-ConnectionGUID: Wjqh/Qh5TnWAZHm8X7Eayw==
+X-CSE-MsgGUID: yUPBvpjpRM2aa+hegZeUVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="90747209"
+X-IronPort-AV: E=Sophos;i="6.25,216,1779174000"; 
+   d="scan'208";a="90747209"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 17:19:40 -0700
+X-CSE-ConnectionGUID: SiDjlxTFTW+eL2+BBTuAHQ==
+X-CSE-MsgGUID: P7z0nwhJQaum795k3EHlNw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,216,1779174000"; 
+   d="scan'208";a="259879762"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.248]) ([10.124.240.248])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 17:19:38 -0700
+Message-ID: <07df932f-ca83-463d-b830-aa10a8fa11f2@intel.com>
+Date: Tue, 11 Aug 2026 08:19:34 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-16-2fc18ee6d3ba@google.com>
- <dd9ebd52-7171-4353-8c83-9363019d55b8@kernel.org> <CAEvNRgGSK9tO_-TvQvXoMwVwGygh5WjjBUOY-zLOA5yP2DwS1g@mail.gmail.com>
-Message-ID: <anpqcZlwvjWCWGId@google.com>
-Subject: Re: [PATCH v10 16/41] KVM: guest_memfd: Zero page while getting pfn
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] KVM: TDX: Fix the exit reason handling
+To: Sean Christopherson <seanjc@google.com>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20260810112200.2326727-1-xiaoyao.li@intel.com>
+ <20260810112200.2326727-3-xiaoyao.li@intel.com>
+ <20260810113924.4ACBE1F000E9@smtp.kernel.org>
+ <13ea6279-a342-493b-a0f8-15ac5b4c59ad@intel.com>
+ <anplcWfYReCMeu1A@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <anplcWfYReCMeu1A@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 10, 2026, Ackerley Tng wrote:
-> "David Hildenbrand (Arm)" <david@kernel.org> writes:
+On 8/11/2026 7:57 AM, Sean Christopherson wrote:
+> On Mon, Aug 10, 2026, Xiaoyao Li wrote:
+>> On 8/10/2026 7:39 PM, sashiko-bot@kernel.org wrote:
+>>>> @@ -2147,7 +2156,7 @@ void tdx_get_exit_info(struct kvm_vcpu *vcpu, u32 *reason,
+>>>>    	struct vcpu_tdx *tdx = to_tdx(vcpu);
+>>>>    	*reason = tdx->vt.exit_reason.full;
+>>>> -	if (*reason != -1u) {
+>>>> +	if (tdx->vt.exit_reason.basic != -1) {
+>>> [Severity: Medium]
+>>> Will this check always evaluate to true due to C integer promotion rules?
+>>>
+>>> The basic field in union vmx_exit_reason is a 16-bit unsigned bitfield. When
+>>> comparing it to -1, the unsigned 16-bit value is promoted to a signed 32-bit
+>>> integer. If the value was set to -1 (65535), the comparison evaluates as
+>>> 65535 != -1, which is always true.
+>>>
+>>
+>> Well, how about something below on top of this patch?
 > 
-> > On 8/7/26 23:52, Ackerley Tng via B4 Relay wrote:
-> >> From: Ackerley Tng <ackerleytng@google.com>
-> >>
-> >> Move the folio initialization logic from kvm_gmem_get_pfn() into
-> >> __kvm_gmem_get_pfn() to also zero pages if the page is to be used in
-> >> kvm_gmem_populate().
-> >>
-> >> With in-place conversion, the existing data in a guest_memfd page can be
-> >> populated into guest memory through platform-specific ioctls.
-> >>
-> >> Without first zeroing the page obtained using __kvm_gmem_get_pfn(), it
-> >> might contain uninitialized host memory, which would leak to the guest if
-> >> the populate completes.
-> >>
-> >> guest_memfd pages are zeroed at most once in the page's entire lifetime
-> >> with guest_memfd, and that is tracked using the uptodate flag.
-> >>
-> >> Zeroing the page in __kvm_gmem_get_pfn() is chosen over zeroing in
-> >> kvm_gmem_get_folio() since other flows, such as a future write() syscall,
-> >> can get a page, write to the page and then set page uptodate without
-> >> zeroing.
-> >>
-> >> This aligns with the concept of zeroing before first use - the other place
-> >> where zeroing happens is in kvm_gmem_fault_user_mapping().
-> >>
-> >> Don't mark the page uptodate again after populating, since the page would
-> >> already be marked uptodate before the post_populate() call.
-> >
-> > The downside is that __kvm_gmem_populate() will now zero+write. I assume we
-> > don't care about possible performance impacts?
-> >
+> No, we need to not rely on magic exit_reason.basic values.  Can't this be?
 > 
-> Would we rather zero in kvm_gmem_populate() only if !uptodate &&
-> gmem_in_place_conversion && src_addr == 0? That could work too.
+> 	if ((tdx->vp_enter_ret & TDX_SW_ERROR) != TDX_SW_ERROR) {
 
-No.  I'm 99% certain we discussed this (multiple times?), and the consensus was
-that any performance penalties due to redundant zeroing would pale in comparison
-to the cost of actually assigning the page to the VM.
+I think the reason of checking if (*reason != -1u) in the original 
+commit 095b71a03f49 ("KVM: TDX: Add a place holder to handle TDX VM 
+exit") was that, -1u means there is no valid Exit Reason in the lower 32 
+bits in vp_enter_ret.
 
-> Previously, without in-place conversion, populate never reads memory
-> from guest_memfd so there was no danger of leaking uninitialized memory.
-> >> @@ -1159,8 +1159,6 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
-> >>  	}
-> >>
-> >>  	ret = post_populate(kvm, gfn, pfn, src_page, opaque);
-> >> -	if (!ret)
-> >> -		folio_mark_uptodate(folio);
-> >
-> > In case post-populate failed, do we want to re-zero the pages?
+Change it to check TDX_SW_ERROR, doesn't look correct to me. Set the 
+EPT_MISCONFIG magic handling aside, TDX_SW_ERROR only means the SEAMCALL 
+instruction faults, e.g., hitting #UD, #GP, or VMFAILINVALID. Just a 
+small subset of the cases where there is no valid Exit Reason.
+
+> 		<read values>
+> 	} else {
+> 		<zero values>
+> 	}
 > 
-> I believe we can't re-zero the pages. When SNP fails to populate it
-> could be because SNP didn't like the CPUIDs userspace set up, and after
-> the error userspace is expected to check what SNP likes, then
-> retry.
+> We'd need to use the unsafe version if we go with my suggestion[*], but other
+> than that wrinkle, the above seems like the obviously correct fix (maybe too
+> obvious)?
 > 
-> IIUC zeroing will destroy the message SNP wanted to leave for userspace.
-> 
-> Michael should be able to explain more here :)
+> [*] https://lore.kernel.org/all/anXxBzO41_5eaaOI@google.com
 
-Not Michael, but the above is correct.  If firmware rejects a CPUID page, then
-KVM copies back the expected CPUID values provided by firmware.
-
-That said, now that we have have @may_writeback_src we _could_ re-zero the page,
-i.e. only zero pages for which @may_writeback_src is %false.
-
-And _that_ said, I vote "no".  KVM zeros the memory mostly to ensure userspace
-can't read stale data, e.g. someone else's data.  I don't think we need to
-guarantee that a failed populate() (or rather, whatever ioctl called into it)
-will leave memory in any particular state.  It would be easier to document that
-the page contents may be modified on failure.
