@@ -1,172 +1,180 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F503624C2;
-	Tue, 11 Aug 2026 11:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8D01DDC37;
+	Tue, 11 Aug 2026 11:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786446828; cv=none; b=tHugfADW3xAkiLEmXjfNOGtzeDyXPBXPrZe5YL7Vac4KxhSoFe4hYCcvQNDSC0fc7aG+zGazYHFzI26u5RbfJFPvUmCMUiuquyEMlosCxWwFsUppPQKGqYfdroZWXgTpMsY9UqCZlwJkQSx1eK7xXyVWvDfBb0FGcv106wWfwHc=
+	t=1786446836; cv=none; b=QYR5RMxzJzp4fnAuxzG8V9FJAgf0+ALWjgQbz1haRl13yjHfpiPo21XhZ3wdfstkpo7w6LmsBuAcncxcyrLw2pfn5aknhaHEzBCgjNsx68BJB/P37sWPz+d76y7Hez62b5hPicauLxLDtdCzBtJ+trHX8M6cEV4TeJzAkzQubtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786446828; c=relaxed/simple;
-	bh=l6nYj7uXZL/LnslZE7YuEzc/QHr2Fi1n5Hibn0DsYCc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ejA+Y0tlt2iU/JGz6JZm46pZ4MG+1ztDQP+LZpU61QLYSmyk0hlts1iyi6W3vX6MImeDPJOCuaoZqWRrOok5ezIXUlju9321cn19oNLZWwNa94YbmtJPHN9NJ4VnOZaJG2GTj5SRFPGBA+p7u2tOTsl/D3KpsNqeY5LnZ7QK1DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=VGkq5gbR; arc=none smtp.client-ip=90.155.50.34
+	s=arc-20240116; t=1786446836; c=relaxed/simple;
+	bh=5nCaiKt87C6Xoz4NhA/Fqqm0sZj76j2++BqcJIjUsGQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:in-reply-to:Content-Type:
+	 MIME-Version; b=AubfcWe6Cfxbw2pb7fAivLm4QD5FIX9qHKr4yP0HIT1jxfC7ftXgtdaRUotjFHWomrNaZ+vePzfDqKT5iEF7F0KFNxP/bumUczoLsG+6iNqyW1JJgn8sQJOCCSlg6tcwrrNG7iQ5Nn0Kqkoi25W6SHyy6Nl1KP2ig6RdDWL/K/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=tWq849++; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="VGkq5gbR"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="tWq849++"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=wQjtJYPEwM4BxqU86RtKZ6nBPcIOloIFWRg7RF/oMoI=; b=VGkq5gbRKb1gPwtZq/g6L9jK8y
-	eLdF75Slh8nMq7plu7sAjuwxMr9PuqqmAJHLM5Y95BueUdiRj7Tb/DEQdN3iGvyEcWKygdqOjGFsd
-	1LZ78F83UrmtlIjv9RWoHfSPlBgzPV5s4iKelPIjp8/tbD1DfbJljZwXgbgiyl21rLVgQ4ROJWJIs
-	A03cMygeRLNWFNZTr5vg17kDjZY4Zo8d2ZYV0gKCcFR1n5kQKhlLl51RRmXwfny7GuspdSXmnR5Pr
-	x/Ab+Bq11yZkT9cnHLu7zq47USlTRQI9+OgMYvvsBvVWY5e3JvCVIMCGWC6oUZohICmWR5YAo+pP2
-	HfZqZ38A==;
-Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:in-reply-to:
+	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:References;
+	bh=5nCaiKt87C6Xoz4NhA/Fqqm0sZj76j2++BqcJIjUsGQ=; b=tWq849++WpinE0pYfwSLZQXGi9
+	2t8nDOfcJHjFQ5BvIQm9aoYEocuRNjuovPZJXTcn7Wpb+OOb/FuIkUMoRAALxnlabhqGjKYW3AG9M
+	rnQrpg7K9lu6oF+sldg2N3YlhBGVqTk0a5xP0FjBKOhiuP1PSzHz4x12IBoJtF1edzaOvqyanDJX5
+	5HENbsRBAyAMz3fYgNyfNAWxMxDH6v24axxL6wl/CpjYFQ5t/3iuoF/+SvBHO4fJOOSiownJIYfKa
+	fgFnv6Hhf5UYWMT0n+5TXG9KJSCF2UkBfpGBgP0McqPV3MO0pGHWFeIka7Y8IgWs/Dy2xHea6cUFL
+	JuFqxhBQ==;
+Received: from [2001:8b0:10b:5:e09:5b1f:c111:693d] (helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wtj60-0000000GFnR-1TUm;
-	Tue, 11 Aug 2026 09:48:39 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
-	id 1wtj5z-00000000Pj7-28do;
-	Tue, 11 Aug 2026 10:48:31 +0100
+	id 1wtjqB-00000000I3A-1LKG;
+	Tue, 11 Aug 2026 10:36:15 +0000
+Message-ID: <8088767c672d154f7983ccfc5472e38b9cfc85f0.camel@infradead.org>
+Subject: Re: [syzbot] [kvm?] [kvm-x86?] BUG: sleeping function called from
+ invalid context in kvm_xen_set_evtchn_fast
 From: David Woodhouse <dwmw2@infradead.org>
-To: seanjc@google.com,
-	pbonzini@redhat.com
-Cc: dwmw@amazon.co.uk,
-	paul@xen.org,
-	joao.m.martins@oracle.com,
-	boris.ostrovsky@oracle.com,
-	ankur.a.arora@oracle.com,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	hpa@zytor.com,
-	x86@kernel.org,
-	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,
-	syzkaller-bugs@googlegroups.com,
-	suryasaimadhu369@gmail.com,
-	lkp@intel.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 00/11] KVM: x86/xen: Clean up shared info / vcpu info handling
-Date: Tue, 11 Aug 2026 10:37:02 +0100
-Message-ID: <20260811094829.98794-1-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.55.0
+To: syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, seanjc@kernel.org, 
+	pbonzini@redhat.com, syzkaller-bugs@googlegroups.com
+Date: Tue, 11 Aug 2026 11:35:40 +0100
+in-reply-to: <69e0dc10.a00a0220.8f24c.017c.GAE@google.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-5B7Qp7wZWnR7lC7dF+xG"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-KVM reads kvm->arch.xen.long_mode in a dozen places to decide whether the
-guest's shared_info and vcpu_info are in native or compat layout. The guest
-can change that flag at any time from another vCPU, and several code paths
-read it more than once, assuming the two reads agree.
 
-The most serious case is kvm_xen_set_evtchn_fast(), where max_evtchn_port()
-and the bitmap layout selection each call it separately. If the mode changes
-in between, a port accepted by the 64-bit range check (up to 4095) can be
-handled with the 32-bit layout, giving a port_word_bit of up to 127 — and
-test_and_set_bit() then runs off the end of the 8-byte evtchn_pending_sel,
-into the adjacent vcpu_id and timer_virq fields.
+--=-5B7Qp7wZWnR7lC7dF+xG
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Related, the vcpu_info is guest-controlled and only 4-byte aligned, but the
-generic test_and_set_bit()/set_bit() helpers use 64-bit locked operations on
-x86-64. On a host with split_lock_detect=fatal that is a guest-triggerable
-panic.
+This should be fixed by the SRCU conversion of the gfn_to_pfn_cache
+locking, which removes the rwlock which was being taken in hardirq
+context. Please test the branch which contains it:
 
-Patches 10 and 11 are new bugfixes in v2. One bug I found while working 
-on the SRCU conversion of the gfn_to_pfn_cache locking, and syzbot found 
-the other. These could potentially each be submitted separately, but 
-I've elected to round them up here to slightly reduce the number of 
-patch series in flight.
+#syz test: git://git.infradead.org/users/dwmw2/linux.git xen-srcu-fixed
 
-So:
+--=-5B7Qp7wZWnR7lC7dF+xG
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
- - Patches 1-3 are preparatory renames and a kvm_xen_has_64bit_shinfo()
-   helper which does the READ_ONCE() in one place.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+hs3jWaGYMaLx/9dzcUaYszEAAAAAAAA=
 
- - Patches 4-5 latch the mode once on entry to kvm_xen_set_evtchn_fast()
-   and kvm_xen_schedop_poll(), so the range check and the layout selection
-   cannot disagree.
 
- - Patch 6 enforces 4-byte alignment of the vcpu_info registration. Note
-   this deliberately does *not* require 8-byte alignment even in 64-bit
-   mode: a guest may validly register a 4-byte aligned vcpu_info while in
-   32-bit mode and only later switch to 64-bit, and rejecting that would
-   break migration of such guests.
-
- - Patches 7-9 use 32-bit atomics where the address is guest-controlled,
-   and then replace the open-coded asm with the atomic*() APIs.
-
- - Patch 10 takes kvm->srcu in __kvm_xen_has_interrupt(), which has been
-   calling kvm_gpc_check() — and thus dereferencing kvm->memslots — without
-   it since 2022.
-
- - Patch 11 fixes a use-after-free in the gfn_to_pfn_cache refresh path
-   for HVA-based caches (e.g. a shared_info page registered with
-   KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA), reported by syzbot. The refresh
-   retry check relies on kvm->mmu_invalidate_seq, which is only advanced
-   for invalidations overlapping a memslot; an HVA-based cache need not
-   be backed by a memslot at all, so an invalidation of the cached HVA
-   which starts and ends entirely within the HVA->PFN lookup window is
-   invisible to it, and the refresh publishes a mapping of a freed page.
-   Add a dedicated sequence count advanced by every invalidation.
-
-
-v2: 
- - Add patch 10 (kvm->srcu in __kvm_xen_has_interrupt()).
- - Add patch 11 (dedicated invalidation sequence for HVA-based caches).
- - Take Sean's version of the 32-bit atomics patch, and his follow-up
-   replacing the remaining asm blobs with atomic*() APIs.
- - Use GEN_BINARY_RMWcc() rather than open-coding the btsl.
- - Explain why the pending_bits access in kvm_xen_set_evtchn_fast() does
-   not need the same treatment as the vcpu_info one (it is in the page
-   aligned per-VM shared_info).
- - Don't require 8-byte alignment of vcpu_info in 64-bit mode; always
-   accept 4-byte alignment, so as not to break migration of guests which
-   registered while in 32-bit mode.
- - Add Closes: links for the reported issues.
- - Cast to u64 before the >> 32 in the unaligned evtchn_pending_sel
-   handling; evtchn_pending_sel is unsigned long, so the shift was
-   undefined on 32-bit even though the branch is unreachable there
-   (kernel test robot).
- - Rebase onto kvm-x86/next; the mode-aware kvm_<reg>_read() helpers which
-   landed in the meantime subsume most of what patch 1 was doing by hand.
-
-v1: https://lore.kernel.org/all/20260605143034.3603-1-dwmw2@infradead.org/
-
-David Woodhouse (8):
-      KVM: x86/xen: Rename 'longmode' to 'is_64bit' in hypercall handling
-      KVM: x86/xen: Introduce kvm_xen_has_64bit_shinfo() macro
-      KVM: x86/xen: Rename max_evtchn_port() to kvm_max_evtchn_port()
-      KVM: x86/xen: Latch shinfo mode in kvm_xen_schedop_poll()
-      KVM: x86/xen: Enforce 4-byte alignment of vcpu_info registration
-      KVM: x86/xen: Use 32-bit locked bts for vcpu_info evtchn_pending_sel
-      KVM: x86/xen: Take kvm->srcu in __kvm_xen_has_interrupt()
-      KVM: pfncache: use a dedicated invalidation sequence for cache refresh
-
-Hyunwoo Kim (1):
-      KVM: x86/xen: Latch shinfo mode in kvm_xen_set_evtchn_fast()
-
-Sean Christopherson (2):
-      KVM: x86/xen: Use 32-bit atomics if vCPU's evtchn_pending_sel isn't aligned
-      KVM: x86/xen: Use atomic*() APIs instead of open coded equivalents
-
- arch/x86/kvm/xen.c       | 170 ++++++++++++++++++++++++++++++-----------------
- arch/x86/kvm/xen.h       |   5 ++
- include/linux/kvm_host.h |   2 +
- virt/kvm/kvm_main.c      |  10 +++
- virt/kvm/pfncache.c      |  18 ++---
- 5 files changed, 135 insertions(+), 70 deletions(-)
-
-
+--=-5B7Qp7wZWnR7lC7dF+xG--
