@@ -1,97 +1,110 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC47E17B50F
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 00:03:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC111FC8
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 00:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786406604; cv=none; b=E7twZ97/0+6Pogm+fCCa86/q/sBPqpyjw0eFaFNWWxLxiuCkGkUB5HIv+NUSy67bsp7rrgRtfa2DA/Tl7+740IK3LNrR8Kk+3oHoze5JRq3WWecYsm6y0gGsoAd9YSeAjL4K5X7SpDiteD5NNxPu0Y4N2SU5ZNDiyNGAMZuTFSU=
+	t=1786406681; cv=none; b=DEHKiZWYyjARad/8rA4IGwrq+26cp/eoCBA7zQMFeVn4v713FCnun4GPeqzFTKUuDTdX6X+2lzGxPysyVg1X0yti0nIvKuns3YQEtyFR4mYneozk4+eCe7DBUd914xG/aJuOYXDOoaXRsyCc1GnUrYO7s9HQ5MzIaMx0rUip2ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786406604; c=relaxed/simple;
-	bh=VknSZXDkyZLJjuTzL9I1xTfQa1Mt40VNpMN4ud71R3w=;
+	s=arc-20240116; t=1786406681; c=relaxed/simple;
+	bh=HJBF+TSSzQd86uwj6B1uJ2YU+Qpc/TVCzBSZ0dPrIdw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=H/B3cLClkmO0HkOgJ3Ym020CWhlkdwfjvSkCKZxxtf7t5/6SinFAN6BVHVqhQUV8XP+nTSThWkLplypSlJjA9Qw8PAyuEgmO4rblLi9Sfmh+5ZX5MAr2NYmjfqHwjQpCLmYLBokVhostWRmZ6VVnsDxdVw6mJk4xS8lGyjfrulQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XyYay5qA; arc=none smtp.client-ip=209.85.210.199
+	 To:Cc:Content-Type; b=dKy5SG8tbIWnPPpD3vdmSxvof7260HboVI8kdHoG1T1XZSvd/D41RJeBrvT+YQOEE/txZQuILpAT5OWZ9WNOEWdrbQGNnAdmGq0YsGsHOBSckDHCV8Pv6z1nZXGac4hUHImXkkQX2rOYypWsjgowYcNKkxiT3wpU/MHOsrh6yFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GFq54sVZ; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XyYay5qA"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84fa3b14ed2so183179b3a.1
-        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 17:03:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GFq54sVZ"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2caf4173b1cso50996015ad.3
+        for <kvm@vger.kernel.org>; Mon, 10 Aug 2026 17:04:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786406597; x=1787011397; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786406677; x=1787011477; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=V34LZvL3zmDJfeGU5wjT5dtwNItHoDZBEfOxW5gT6qU=;
-        b=XyYay5qA2PTl+xRd3Agi8WYOcXY26/fKT/cngnUvFAIe0o08p6r5d7/jY2lpIcF8yJ
-         glkE35qQ1pxzsE8y6+NyC3vVNcaq0eWer+KAV6Dw9Bw43h8aMgAGI9/inpQKfxAadF3b
-         iRs39UIvnKfDD5jDRVoC1X7bf2tTr6aicy9PFmTFmRVK3ytOlh7I/+0Nm9pcucIeoXWB
-         ioCSIU+/SWpvQmAtnPgSVGl0nCRM8waij0d2HvdgO5u8L6X2Rg4VhFWOG1gQ+FHtc9iV
-         wNNuG3fZ7mCVde59GCht4hXndCOC4led4dH6tqpq2V3Novl1r97VkKlXdvg4NPpOAM4o
-         4Sbg==
+        bh=TWP8fni2Pj7QL+D72A3UzmdRtAr58m5dr4TKd83QRDo=;
+        b=GFq54sVZWH4Ledu3F1dclRiZt05WQTjHbNMIEI2O/LGJ5ZAp2Idw+F4I+GzMDSD3y1
+         QUBbZPfBf8DytUNBPpAJ8oG9/E+XYjPxv/SDa02s+dKyIPfTyP33vuBoIfqxcgz1V6fS
+         FR9LdyLYPJyCkTl+ETCLKbIMihRJ4DuNHsDsrBGEEDy/ygMWMiXV9Yvy2LBMpY5e74qZ
+         klZV8prTfhjrC0LjuJrNEbyd5xVNCk6SeRM2J7I6Dotfe16Ag8JRObxxQ+WKKSq09jzE
+         uUI7XgnELTngpld29cjgfjSlWdF+YlH3LmWxIoV2baIamFmUcyZRDEhLhE+pa/FjA+Sn
+         s+0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786406597; x=1787011397;
+        d=1e100.net; s=20251104; t=1786406677; x=1787011477;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=V34LZvL3zmDJfeGU5wjT5dtwNItHoDZBEfOxW5gT6qU=;
-        b=j9OYNswFWlq43CjaOL/nFLoeM8dzVTMA3ioOCcX4zDU0dW1w2u5FuViInl0XRaE6+q
-         qJgiVKqXNpyPB+AH0g3krzwwLjOvhx1IkOgdkmZGbfRpvzBxlABX2bYfPbdWtk1C7f+Y
-         ekUK739PEbILBHDsY0Axbr3x2+Y/cdMXrL77mX5tHXAweI7KsT3BoMzekNrw2bKoTNSj
-         yjaB8RTD86nsVliUJLbSmgEOhvHQYXUKX+kQBfMrIE4A/aUyUnDC1HwuSoGyLnpJjkEZ
-         XMNRfICVmUU2XAvWP3WdJNrdJIyX4F4hGTHdaPQ47nnuSiNL2KcCfIzkJvQLFx2tlTRV
-         OFjA==
-X-Forwarded-Encrypted: i=1; AHgh+RrWDXCsLno1jDJw1xGbrSgoP2LMkb9mt2ISHpTknWz7AfY//iOn4+xVIay0Bp/CaPBRIWM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhTeAYDaO38itN0fy3gNfomNYDlNI1tHT2tYq/xpu4A8nwLZr0
-	N06igyh9JN7E/P7hUYJgF1TQKFnBuOcmQDQdvwSOa5tAVF/DTYO+fY7leEXqg3rXFU3x/piObhJ
-	a8/C74A==
-X-Received: from pfbgp14.prod.google.com ([2002:a05:6a00:3b8e:b0:847:8e58:df6f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4b11:b0:845:e41f:9696
- with SMTP id d2e1a72fcca58-84f2e00ea6dmr48897452b3a.25.1786406597125; Mon, 10
- Aug 2026 17:03:17 -0700 (PDT)
-Date: Mon, 10 Aug 2026 17:03:16 -0700
-In-Reply-To: <20260810112200.2326727-3-xiaoyao.li@intel.com>
+        bh=TWP8fni2Pj7QL+D72A3UzmdRtAr58m5dr4TKd83QRDo=;
+        b=UQd5nzYa+Qn9mOk/V5oFKDFtNVS/b4Hj7RBdXVxBEMlodhH/es43M/J5MAtRqrm75I
+         8P8JnIuxYznDYhcusKLKpKldZs2Q02SrjCE9+AXF6KVCpbD/3utJSmoH1ZnrSDFYqw7E
+         D7u+qcQH+Er0Y5RIMHIrQgwcn31f1QHoKifI297E8dnqNvYue6cAKSSq4tnO1J1axSXt
+         XLLdG1NG4lK6Yz+FSbZankcoaQT74QtecyYQAZT+IGm+AH4gXjxcb0mQ8lXY5lQwuOpM
+         mmrf5PdNwcxntLMJ9Pu3d6eK0pr52pBmiYaFkVK+nb4uzNnsIoILT1IdZGGuoGq6mMIE
+         EyVQ==
+X-Forwarded-Encrypted: i=1; AHgh+RryLfYOJA4vs8t0HhguMl5oyzk0e5edmxQ3/wQ6it4UzinLPRBO0eLjRdGdz5zz866Vwb4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHP9vHfFIB2GJeDOzKN9mdQpLD4J1NEku/cb587LLXHjlA7VXF
+	quI4yWgPZBstDXx/r4XJGLbEhdslCFf8mVFQ25MMm+gnHvlhf+HjnieWhum2hHj63lcq2yq3Tj5
+	JTBofug==
+X-Received: from plcb3.prod.google.com ([2002:a17:902:d303:b0:2ce:d2e2:393])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1b26:b0:2cf:ccc2:6088
+ with SMTP id d9443c01a7336-2d294b29193mr358218035ad.4.1786406677170; Mon, 10
+ Aug 2026 17:04:37 -0700 (PDT)
+Date: Mon, 10 Aug 2026 17:04:36 -0700
+In-Reply-To: <anplcWfYReCMeu1A@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260810112200.2326727-1-xiaoyao.li@intel.com> <20260810112200.2326727-3-xiaoyao.li@intel.com>
-Message-ID: <anpmxJOESl3swUpd@google.com>
+References: <20260810112200.2326727-1-xiaoyao.li@intel.com>
+ <20260810112200.2326727-3-xiaoyao.li@intel.com> <20260810113924.4ACBE1F000E9@smtp.kernel.org>
+ <13ea6279-a342-493b-a0f8-15ac5b4c59ad@intel.com> <anplcWfYReCMeu1A@google.com>
+Message-ID: <anpnFAK6EZToizbZ@google.com>
 Subject: Re: [PATCH v2 2/3] KVM: TDX: Fix the exit reason handling
 From: Sean Christopherson <seanjc@google.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Nikolay Borisov <nik.borisov@suse.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="us-ascii"
 
-The shortlog is way too generic, and the changelog is light on details.  Over
-the weekend, I managed to forget why this was necessary, and it took me a few
-seconds to recall why we need to avoid setting bits 31:16.  Of course, one could
-argue that says as much about me as it does the shortlog+changelog...
-
-Oh, and shortlogs like "Fix the exit reason handling" sometimes lead to amusing
-follow-ups like "Really fix the exit reason handling".  Don't be that person :-)
-
-Something like:
-
-  KVM: TDX: Don't clobber exit_reason[31:16] when TDX-Module didn't try VM-Entry
-
-and then in the changelog explain precisely why KVM needs to avoid clobbering
-those bits.
-
-On Mon, Aug 10, 2026, Xiaoyao Li wrote:
-> Get and check the exit reason from the low 16 bits of vp_enter_ret, and
-> store the synthesized/transformed exit reason in the "basic" field.
+On Mon, Aug 10, 2026, Sean Christopherson wrote:
+> On Mon, Aug 10, 2026, Xiaoyao Li wrote:
+> > On 8/10/2026 7:39 PM, sashiko-bot@kernel.org wrote:
+> > > > @@ -2147,7 +2156,7 @@ void tdx_get_exit_info(struct kvm_vcpu *vcpu, u32 *reason,
+> > > >   	struct vcpu_tdx *tdx = to_tdx(vcpu);
+> > > >   	*reason = tdx->vt.exit_reason.full;
+> > > > -	if (*reason != -1u) {
+> > > > +	if (tdx->vt.exit_reason.basic != -1) {
+> > > [Severity: Medium]
+> > > Will this check always evaluate to true due to C integer promotion rules?
+> > > 
+> > > The basic field in union vmx_exit_reason is a 16-bit unsigned bitfield. When
+> > > comparing it to -1, the unsigned 16-bit value is promoted to a signed 32-bit
+> > > integer. If the value was set to -1 (65535), the comparison evaluates as
+> > > 65535 != -1, which is always true.
+> > > 
+> > 
+> > Well, how about something below on top of this patch?
 > 
-> Some bits in the upper 16 bits in the exit reason have their own meanings
-> and they might be 1.  When handling the exit reason, only do handling on
-> the lower 16 bits and keep the upper 16 bits unchanged.  This change
-> also helps remove the additional check in tdx_failed_vmentry().
+> No, we need to not rely on magic exit_reason.basic values.  Can't this be?
 > 
-> Note, due to the synthesized invalid exit reason, -1, is changed to
-> assigned to the "basic" field, adjust the checking in tdx_get_exit_info()
-> accordingly.
+> 	if ((tdx->vp_enter_ret & TDX_SW_ERROR) != TDX_SW_ERROR) {
+
+This would arguably be a bug fix as well, because the "real" EXIT_REASON_EPT_MISCONFIG
+path gets a false negative.  E.g. when getting information for an EPT Misconfig
+for the tracepoint, KVM really should print all information, not zeros.
+
+At a glance, this exact change can probably be a separate patch too.
+
+> 		<read values>
+> 	} else {
+> 		<zero values>
+> 	}
+> 
+> We'd need to use the unsafe version if we go with my suggestion[*], but other
+> than that wrinkle, the above seems like the obviously correct fix (maybe too
+> obvious)?
+> 
+> [*] https://lore.kernel.org/all/anXxBzO41_5eaaOI@google.com
