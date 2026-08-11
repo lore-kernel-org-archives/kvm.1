@@ -1,199 +1,172 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E71AC30EF9A;
-	Tue, 11 Aug 2026 11:12:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F503624C2;
+	Tue, 11 Aug 2026 11:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786446745; cv=none; b=Z40IBLDbFeSNil1fki7Gq8RM4ftOvBPtviVtHUGJrQZEt4M1TNVe8hT0qX22/avTJiuoaEHIhwhxkp7pYESf4nUdu/nT5PiD/TwNVONp8y20zu//NXBchFILosgvHjgj5WNoDfYcKBRkZWIpFRJ4Pl9tv0HXmurMcfQfhYlMXxU=
+	t=1786446828; cv=none; b=tHugfADW3xAkiLEmXjfNOGtzeDyXPBXPrZe5YL7Vac4KxhSoFe4hYCcvQNDSC0fc7aG+zGazYHFzI26u5RbfJFPvUmCMUiuquyEMlosCxWwFsUppPQKGqYfdroZWXgTpMsY9UqCZlwJkQSx1eK7xXyVWvDfBb0FGcv106wWfwHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786446745; c=relaxed/simple;
-	bh=gKplmCIiFWG5Z/6+s8DfAcg9pOxWbz0udY6YdKyPRlM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S+P/K01lNNhyys6MQq5zg1oTp3FoyOZTVi9HWAEmZPpOOwqaI50hFeH6lO2r9x0cE5OgYpIbxqZKO0/dheVpoN8W6UKgc3FhmZLqid6tgeE+4R0qZa2GInMTjwplf+okAtyJQj0Elk+ZSJOVn8Dm5pd/DTX2GcTcs79m4j30TcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=nfXtQiXJ; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1786446828; c=relaxed/simple;
+	bh=l6nYj7uXZL/LnslZE7YuEzc/QHr2Fi1n5Hibn0DsYCc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ejA+Y0tlt2iU/JGz6JZm46pZ4MG+1ztDQP+LZpU61QLYSmyk0hlts1iyi6W3vX6MImeDPJOCuaoZqWRrOok5ezIXUlju9321cn19oNLZWwNa94YbmtJPHN9NJ4VnOZaJG2GTj5SRFPGBA+p7u2tOTsl/D3KpsNqeY5LnZ7QK1DQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=VGkq5gbR; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="nfXtQiXJ"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 199711516;
-	Tue, 11 Aug 2026 04:12:18 -0700 (PDT)
-Received: from [10.1.39.55] (Suzukis-MBP.cambridge.arm.com [10.1.39.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 71FAC3F632;
-	Tue, 11 Aug 2026 04:12:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786446742; bh=gKplmCIiFWG5Z/6+s8DfAcg9pOxWbz0udY6YdKyPRlM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nfXtQiXJZlO3Z3ZkFtj2dq7F/omTWRwxMP/XgMXxy7RMF2Fakdm3vNBGGkFHiMwzQ
-	 9DGKaGuqAUF1DvUMVeteyOgBrG4pAzS0K5nfYhkHw1WfwldNzbE/xAZLDwXbSj/0U3
-	 f4WlhUX2SrrjgWDWPIX365fpy62LEZOmYiB49AUk=
-Message-ID: <5e86232a-89ed-40ff-89e2-9e48fbf9554e@arm.com>
-Date: Tue, 11 Aug 2026 12:12:16 +0100
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="VGkq5gbR"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=wQjtJYPEwM4BxqU86RtKZ6nBPcIOloIFWRg7RF/oMoI=; b=VGkq5gbRKb1gPwtZq/g6L9jK8y
+	eLdF75Slh8nMq7plu7sAjuwxMr9PuqqmAJHLM5Y95BueUdiRj7Tb/DEQdN3iGvyEcWKygdqOjGFsd
+	1LZ78F83UrmtlIjv9RWoHfSPlBgzPV5s4iKelPIjp8/tbD1DfbJljZwXgbgiyl21rLVgQ4ROJWJIs
+	A03cMygeRLNWFNZTr5vg17kDjZY4Zo8d2ZYV0gKCcFR1n5kQKhlLl51RRmXwfny7GuspdSXmnR5Pr
+	x/Ab+Bq11yZkT9cnHLu7zq47USlTRQI9+OgMYvvsBvVWY5e3JvCVIMCGWC6oUZohICmWR5YAo+pP2
+	HfZqZ38A==;
+Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wtj60-0000000GFnR-1TUm;
+	Tue, 11 Aug 2026 09:48:39 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
+	id 1wtj5z-00000000Pj7-28do;
+	Tue, 11 Aug 2026 10:48:31 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: seanjc@google.com,
+	pbonzini@redhat.com
+Cc: dwmw@amazon.co.uk,
+	paul@xen.org,
+	joao.m.martins@oracle.com,
+	boris.ostrovsky@oracle.com,
+	ankur.a.arora@oracle.com,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	x86@kernel.org,
+	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,
+	syzkaller-bugs@googlegroups.com,
+	suryasaimadhu369@gmail.com,
+	lkp@intel.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 00/11] KVM: x86/xen: Clean up shared info / vcpu info handling
+Date: Tue, 11 Aug 2026 10:37:02 +0100
+Message-ID: <20260811094829.98794-1-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 00/45] arm64: Support for Arm CCA in KVM
-Content-Language: en-GB
-To: Gavin Shan <gshan@redhat.com>, Steven Price <steven.price@arm.com>,
- kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20260803134403.80630-1-steven.price@arm.com>
- <42170467-fe36-4382-867f-49bdc6a7bc9a@arm.com>
- <d0ffbcb5-0cca-4d1e-9788-6b430345fa9b@redhat.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <d0ffbcb5-0cca-4d1e-9788-6b430345fa9b@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Sender: David Woodhouse <dwmw2@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On 11/08/2026 05:44, Gavin Shan wrote:
-> On 8/7/26 8:05 AM, Suzuki K Poulose wrote:
-> 
-> [...]
-> 
->>
->> Here is a cleaned up version, rebased on to Will's kvmtool master
->> branch:
->>
->> https://gitlab.arm.com/linux-arm/kvmtool-cca cca/kvm-v16
->>
->> (This works with the v15 of the KVM series too)
->> Build on top of Fuad's Guest memfd support patches.
->>
-> 
-> With the following combination, I'm able boot up the realm guest.
-> 
->    tf-rmm:   https://git.trustedfirmware.org/TF-RMM/tf- 
-> rmm.git            (branch: topics/rmm-v2.0-poc_2)
+KVM reads kvm->arch.xen.long_mode in a dozen places to decide whether the
+guest's shared_info and vcpu_info are in native or compat layout. The guest
+can change that flag at any time from another vCPU, and several code paths
+read it more than once, assuming the two reads agree.
+
+The most serious case is kvm_xen_set_evtchn_fast(), where max_evtchn_port()
+and the bitmap layout selection each call it separately. If the mode changes
+in between, a port accepted by the 64-bit range check (up to 4095) can be
+handled with the 32-bit layout, giving a port_word_bit of up to 127 — and
+test_and_set_bit() then runs off the end of the 8-byte evtchn_pending_sel,
+into the adjacent vcpu_id and timer_virq fields.
+
+Related, the vcpu_info is guest-controlled and only 4-byte aligned, but the
+generic test_and_set_bit()/set_bit() helpers use 64-bit locked operations on
+x86-64. On a host with split_lock_detect=fatal that is a guest-triggerable
+panic.
+
+Patches 10 and 11 are new bugfixes in v2. One bug I found while working 
+on the SRCU conversion of the gfn_to_pfn_cache locking, and syzbot found 
+the other. These could potentially each be submitted separately, but 
+I've elected to round them up here to slightly reduce the number of 
+patch series in flight.
+
+So:
+
+ - Patches 1-3 are preparatory renames and a kvm_xen_has_64bit_shinfo()
+   helper which does the READ_ONCE() in one place.
+
+ - Patches 4-5 latch the mode once on entry to kvm_xen_set_evtchn_fast()
+   and kvm_xen_schedop_poll(), so the range check and the layout selection
+   cannot disagree.
+
+ - Patch 6 enforces 4-byte alignment of the vcpu_info registration. Note
+   this deliberately does *not* require 8-byte alignment even in 64-bit
+   mode: a guest may validly register a 4-byte aligned vcpu_info while in
+   32-bit mode and only later switch to 64-bit, and rejecting that would
+   break migration of such guests.
+
+ - Patches 7-9 use 32-bit atomics where the address is guest-controlled,
+   and then replace the open-coded asm with the atomic*() APIs.
+
+ - Patch 10 takes kvm->srcu in __kvm_xen_has_interrupt(), which has been
+   calling kvm_gpc_check() — and thus dereferencing kvm->memslots — without
+   it since 2022.
+
+ - Patch 11 fixes a use-after-free in the gfn_to_pfn_cache refresh path
+   for HVA-based caches (e.g. a shared_info page registered with
+   KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA), reported by syzbot. The refresh
+   retry check relies on kvm->mmu_invalidate_seq, which is only advanced
+   for invalidations overlapping a memslot; an HVA-based cache need not
+   be backed by a memslot at all, so an invalidation of the cached HVA
+   which starts and ends entirely within the HVA->PFN lookup window is
+   invisible to it, and the refresh publishes a mapping of a freed page.
+   Add a dedicated sequence count advanced by every invalidation.
 
 
-Please be aware that CCA KVM v15 onwards, the above branch is not 
-compatible. You should be using rmm-v2.0-poc_3. Please could you
-confirm if this is still an issue ?
+v2: 
+ - Add patch 10 (kvm->srcu in __kvm_xen_has_interrupt()).
+ - Add patch 11 (dedicated invalidation sequence for HVA-based caches).
+ - Take Sean's version of the 32-bit atomics patch, and his follow-up
+   replacing the remaining asm blobs with atomic*() APIs.
+ - Use GEN_BINARY_RMWcc() rather than open-coding the btsl.
+ - Explain why the pending_bits access in kvm_xen_set_evtchn_fast() does
+   not need the same treatment as the vcpu_info one (it is in the page
+   aligned per-VM shared_info).
+ - Don't require 8-byte alignment of vcpu_info in 64-bit mode; always
+   accept 4-byte alignment, so as not to break migration of guests which
+   registered while in 32-bit mode.
+ - Add Closes: links for the reported issues.
+ - Cast to u64 before the >> 32 in the unaligned evtchn_pending_sel
+   handling; evtchn_pending_sel is unsigned long, so the shift was
+   undefined on 32-bit even though the branch is unreachable there
+   (kernel test robot).
+ - Rebase onto kvm-x86/next; the mode-aware kvm_<reg>_read() helpers which
+   landed in the meantime subsume most of what patch 1 was doing by hand.
 
+v1: https://lore.kernel.org/all/20260605143034.3603-1-dwmw2@infradead.org/
 
-Cheers
-Suzuki
+David Woodhouse (8):
+      KVM: x86/xen: Rename 'longmode' to 'is_64bit' in hypercall handling
+      KVM: x86/xen: Introduce kvm_xen_has_64bit_shinfo() macro
+      KVM: x86/xen: Rename max_evtchn_port() to kvm_max_evtchn_port()
+      KVM: x86/xen: Latch shinfo mode in kvm_xen_schedop_poll()
+      KVM: x86/xen: Enforce 4-byte alignment of vcpu_info registration
+      KVM: x86/xen: Use 32-bit locked bts for vcpu_info evtchn_pending_sel
+      KVM: x86/xen: Take kvm->srcu in __kvm_xen_has_interrupt()
+      KVM: pfncache: use a dedicated invalidation sequence for cache refresh
 
+Hyunwoo Kim (1):
+      KVM: x86/xen: Latch shinfo mode in kvm_xen_set_evtchn_fast()
 
->    tf-a:     https://git.trustedfirmware.org/TF-A/trusted-firmware- 
-> a.git  (branch: master)
->    host:     https://git.gitlab.arm.com/linux-arm/linux- 
-> cca.git           (branch: cca-host/v16)
->    kvmtool:  https://gitlab.arm.com/linux-arm/kvmtool- 
-> cca                 (branch: cca/kvm-v16)
-> 
-> However, the guest can't boot up and become stuck in 
-> SMC_RSI_IPA_STATE_SET request,
-> which can't completed by the host.
-> 
->    tf-rmm:   https://git.trustedfirmware.org/TF-RMM/tf- 
-> rmm.git            (branch: topics/rmm-v2.0-poc_3)
-> 
-> (1) Login the emulated host
-> 
-> machine$ ssh -o StrictHostKeyChecking=no root@10.26.1.240
-> 
-> (2) Start realm guest using kvmtool
-> 
-> root@host:~# lkvm run --realm -c 1 -m 256                   \
->               -k /mnt/linux/arch/arm64/boot/Image            \
->               -i /mnt/buildroot/output/images/rootfs.cpio.xz \
->               -p earlycon=uart,mmio,0x101000000
->                   :
-> [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x000f0510]
-> [    0.000000] Linux version 7.2.0-rc5-gavin-gf5098b6bae76 
-> (gshan@nvidia-grace-hopper-01.khw.eng.bos2.dc.redhat.com) (gcc (GCC) 
-> 14.3.1 20251022 (Red Hat 14.3.1-4), GNU ld version 2.41-65.el10) #47 SMP 
-> PREEMPT Mon Jul 27 02:29:03 EDT 2026
-> [    0.000000] KASLR enabled
-> [    0.000000] Machine model: linux,dummy-virt
-> [    0.000000] earlycon: uart0 at MMIO 0x0000000101000000 (options '')
-> [    0.000000] printk: legacy bootconsole [uart0] enabled
-> [    0.000000] efi: UEFI not found.
-> [    0.000000] OF: reserved mem: Reserved memory: No reserved-memory 
-> node in the DT
-> [    0.000000] NUMA: Faking a node at [mem 
-> 0x0000000080000000-0x000000008fffffff]
-> [    0.000000] NODE_DATA(0) allocated [mem 0x8ff76dc0-0x8ff7ac7f]
-> [    0.000000] psci: probing for conduit method from DT.
-> [    0.000000] psci: PSCIv1.1 detected in firmware.
-> [    0.000000] psci: Using standard PSCI v0.2 function IDs
-> [    0.000000] psci: MIGRATE_INFO_TYPE not supported.
-> [    0.000000] psci: SMC Calling Convention v1.2
-> [    0.000000] RME: Using RSI version 1.0
-> <... no more output from the guest ...>
-> 
-> 
-> (3) The output from host's serial console
-> 
-> SMC_RMI_REALM_CREATE              12a4c7000 12a4c6000 > RMI_INCOMPLETE 0 
-> 24 0 0
->        SMC_RMI_OP_MEM_DONATE       0 1002c7098 9 > RMI_INCOMPLETE 9 0 0 0
->        SMC_RMI_OP_CONTINUE         0 0 > RMI_SUCCESS 0 0
-> SMC_RMI_RTT_UNPROT_UNMAP          12a4c7000 18f85c000 18fe00000 0 0 > 
-> RMI_ERROR_RTT 2 0 0 0 0
-> SMC_RMI_RTT_UNPROT_UNMAP          12a4c7000 18fe00000 18fe10000 0 0 > 
-> RMI_ERROR_RTT 2 0 0 0 0
-> SMC_RMI_RTT_UNPROT_UNMAP          12a4c7000 18fe00000 18fe10000 0 0 > 
-> RMI_ERROR_RTT 2 0 0 0 0
-> SMC_RMI_REC_CREATE                12a4c7000 12a392000 12a391000 > 
-> RMI_INCOMPLETE 0 40 0 0
->        SMC_RMI_OP_MEM_DONATE       0 106406098 10 > RMI_INCOMPLETE 10 0 0 0
->        SMC_RMI_OP_CONTINUE         0 0 > RMI_SUCCESS 0 0
-> SMC_RMI_REALM_ACTIVATE            12a4c7000 > RMI_SUCCESS
-> Unhandled write S2_0_C0_C2_2
-> SMC_RMI_RTT_DATA_MAP              12a4c7000 8ffb4000 8ffb5000 1 
-> 129f1d004 > RMI_INCOMPLETE 0 0 0 1
->        SMC_RMI_OP_CONTINUE         0 0 > RMI_SUCCESS 8ffb5000 0
-> PSCI_84000000                     0 0 0 0 0 0 0 > 10001 0 0 0
-> PSCI_84000006                     0 0 0 0 0 0 0 > ffffffffffffffff 0 0 0
-> PSCI_8400000a                     80000000 0 0 0 0 0 0 > 0 0 0 0
-> SMC_80000000                      0 0 0 0 0 0 0 > 10002 0 0 0
-> SMC_84000050                      1 0 0 ffffacd67d1e8000 
-> ffffacd67d124000 0 0 > ffffffffffffffff 0 0 0
-> SMC_80000001                      80000002 ffff 0 ffffacd67d1e8000 
-> ffffacd67d124000 ffffacd67cd5d000 ffffacd67cd5dd38 > ffffffffffffffff 0 0 0
-> PSCI_8400000a                     c4000001 0 0 0 0 0 0 > 0 0 0 0
-> PSCI_8400000a                     c4000012 0 0 0 0 0 0 > 
-> ffffffffffffffff 0 0 0
-> PSCI_8400000a                     c4000015 0 0 0 0 0 0 > 
-> ffffffffffffffff 0 0 0
-> SMC_8600ff01                      ffffacd67cfc0740 10002 0 0 0 0 
-> ffffacd67cfb3cc8 > ffffffffffffffff 0 0 0
-> SMC_RSI_VERSION                   10000 > RSI_SUCCESS 10000 10001
-> SMC_RSI_REALM_CONFIG              81385000 > RSI_SUCCESS
-> SMC_RSI_IPA_STATE_SET             80000000 90000000 1 0
-> SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000 
->  > RMI_ERROR_RTT 3
-> SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000 
->  > RMI_ERROR_RTT 3
-> SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000 
->  > RMI_ERROR_RTT 3
-> SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000 
->  > RMI_ERROR_RTT 3
-> SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000 
->  > RMI_ERROR_RTT 3
-> SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000 
->  > RMI_ERROR_RTT 3
-> <... the last message repeats ...>
-> 
-> Thanks,
-> Gavin
-> 
-> 
+Sean Christopherson (2):
+      KVM: x86/xen: Use 32-bit atomics if vCPU's evtchn_pending_sel isn't aligned
+      KVM: x86/xen: Use atomic*() APIs instead of open coded equivalents
+
+ arch/x86/kvm/xen.c       | 170 ++++++++++++++++++++++++++++++-----------------
+ arch/x86/kvm/xen.h       |   5 ++
+ include/linux/kvm_host.h |   2 +
+ virt/kvm/kvm_main.c      |  10 +++
+ virt/kvm/pfncache.c      |  18 ++---
+ 5 files changed, 135 insertions(+), 70 deletions(-)
+
 
