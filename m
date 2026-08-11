@@ -1,59 +1,59 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C6B2F5A12;
-	Tue, 11 Aug 2026 23:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A47E7260D;
+	Tue, 11 Aug 2026 23:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786492082; cv=none; b=BmXDPxuyheQXKjZwOX+Xlivf/UpveyvqAX9JHkTqcJW/9/8Y6oYxl1hDeYZJXBd7SWkh9EtxYiO9Ttk+P++TFuEG8CJy32ywwVIc4i+8Sq/Grd37qW90Zz2sfd6qcqcZK636V5iHQap2GVDUqGij8/OSB2daEwzA08wPYbdxj3U=
+	t=1786492264; cv=none; b=JNS3hSXN9GWXfkE5qCTgvaIfGuCRpcLRmO/qH0nKYDa76/IGszMD9E3uU8C9X/pBRPpI70oqY0JZz0cWb1Or2g39lXHIeGo8L6p/stXsaM0wk00/1lXW1ugP5I2OSnPp08h4sbPjbmLExIllB+/ssG6Yz/2M/vi0aaORXeCRiV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786492082; c=relaxed/simple;
-	bh=oTyIubf2BBwey8C6TGibqWfsS5/hG77w7ENELaochO4=;
+	s=arc-20240116; t=1786492264; c=relaxed/simple;
+	bh=hZBvnVAQ4n1LKMOWmVvhGGe0T7va1xDoHXp19IE0QAs=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MtZP2d8Vj7GcFysWeaBosl1010lvavEVMPPVoMAq5JMJ4v00bG9w/67HPUqeE21R0r8TWdtPXP7CY7mpCEW0IgaDKgIrDcqBx2sBLEN6i4emd/2U+pautWgvD41xfkUbycCBmtqq4qjnB6GCcNGLuWqqz1ShOmfHMHXsCENZySo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=XHf7dDf0; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:MIME-Version; b=BBU4gikd2PdWKewq1JnZiA6g/nZguD+Ubgu/HXqtncCTZRI86KPtKJjEEUmhm7JQpprpq++DOv1HTGst0NNpkJEydb9zdYswKPoFstrS5soqwtafTdXypBj2KLzGdymZJ5aQwQwjE+peEkO/awl2EwiNh5MiTQS3BWRjmFCZ9d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=W4riWIHV; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="XHf7dDf0"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="W4riWIHV"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=K9O+zc+iuJrnK7GwdfBAM0RuWn2xcnekJCkifX3QOpQ=; b=XHf7dDf0/CRvkm66ogTBZ8as18
-	Cc3enQfly/UEz6C91IZBgXDayswWCRoa1OeHOxKdJZ/feBWe3fMgOe30F5aC40AQneFvWWu0fPXXi
-	vik2ha/q+sXY41s6yuEgid6QlDjUeTdAz1mxA5VmBQbcfJRhVIG0AYSo02C7FSh4yknmVdZ+YHqi2
-	dJCG2tQCpMx032w9m6Nf7YsJMqxxkZx5uj6HOV6jB3N7WgWT4tlM9sEvU7nggEGRnVvmo1rLZ6b9G
-	rfjMADSN+w7/rovSAAcOiRF9dPfHHVA7I8hM+LuxUXtkah9fcmKIkQNgMJPBiSEmTtFstB9Cn6zC5
-	vUNbgbVA==;
+	bh=X6z8WtcQ8fRb1sPFOhslEpIfiG2DhcUo5AcbjKY8Mto=; b=W4riWIHVlWm2ZoE6rOjhMk2wx6
+	LP/MTtuI/K464dDWegq9HibCorv3ga70sENvp5lJTWPDuxcYBNWlNQOUEYxY3eGuFqssISgHeG+Bb
+	aOeJWADrrfI+sB48b/T1XSRzlWj7ysnlEich+Z+7G/Bkrs8UqmtusI+0rwEyuQ+wJX++fnxS5i8CB
+	i9z8pfVTCAjovhdqlCuI3oRfYNqASkx0OFJVF5cCPUdUVWalVbu+ll123jgh/T28do2MVLPZynJrg
+	rXzkgabL5ZKRAwdWDgVKsofw5fmlwWn9QYwkKpgkACkKvNOLazcuOsWw2dmZA6DEFwqh0Qq+HPMaR
+	39Pa7Hjg==;
 Received: from [2001:8b0:10b:5:e09:5b1f:c111:693d] (helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wtwC6-000000019pW-2dt4;
-	Tue, 11 Aug 2026 23:47:42 +0000
-Message-ID: <b93ca22c776855c36c1d1afec7222233eeea0050.camel@infradead.org>
-Subject: Re: [PATCH v7 31/36] KVM: x86: Add KVM_[GS]ET_CLOCK_GUEST for
- accurate KVM clock migration
+	id 1wtwFA-00000001A5d-3ZSe;
+	Tue, 11 Aug 2026 23:50:53 +0000
+Message-ID: <824a27d101d5b2e2a8a53fb81f5e4ecf15140a1f.camel@infradead.org>
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
 From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>,  Borislav Petkov	 <bp@alien8.de>, Dave
- Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"	
- <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross	
- <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul
- Durrant	 <paul@xen.org>, Jonathan Cameron <jic23@kernel.org>, Sascha
- Bischoff	 <Sascha.Bischoff@arm.com>, Marc Zyngier <maz@kernel.org>, Joey
- Gouly	 <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, Dongli
- Zhang	 <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
-Date: Wed, 12 Aug 2026 00:47:37 +0100
-In-Reply-To: <anuy6QxUVLcSSVCn@google.com>
-References: <20260728144954.355376-1-dwmw2@infradead.org>
-	 <20260728144954.355376-32-dwmw2@infradead.org>
-	 <anuy6QxUVLcSSVCn@google.com>
+To: Sean Christopherson <seanjc@google.com>, Fred Griffoul
+	 <fgriffo@amazon.co.uk>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	akpm@linux-foundation.org, david@kernel.org, mhocko@suse.com,
+ rostedt@goodmis.org, 	bigeasy@linutronix.de, simona.vetter@ffwll.ch,
+ jglisse@redhat.com, 	christian.koenig@amd.com, paulmck@kernel.org,
+ linux-mm@kvack.org, 	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Date: Wed, 12 Aug 2026 00:50:47 +0100
+In-Reply-To: <anuo_OxfvJbQnn71@google.com>
+References: <20260811162423.GL544626@ziepe.ca>
+	 <f33571137d2e3973e440d09c7602edaebe08b714.camel@infradead.org>
+	 <20260811172627.GN544626@ziepe.ca>
+	 <B25708F5-8425-4075-8D95-5E2A00C933DF@infradead.org>
+	 <20260811181915.GO544626@ziepe.ca> <anuAq2s4mtyw4_Ql@google.com>
+	 <CABgObfYR+vXBuSm3v5jbbZL8vF=XnocFAnjumdShgXBzod-HCQ@mail.gmail.com>
+	 <27f2326dc66d6341174c0e510aa518a1297b66ae.camel@infradead.org>
+	 <anuo_OxfvJbQnn71@google.com>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-cOU4kZbVOpr6kbcf3uch"
+	boundary="=-PJmlfMzue/hQTdEXciz4"
 User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -64,46 +64,107 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-cOU4kZbVOpr6kbcf3uch
+--=-PJmlfMzue/hQTdEXciz4
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2026-08-11 at 16:40 -0700, Sean Christopherson wrote:
-> > +
-> > +	/*
-> > +	 * If KVM_REQ_CLOCK_UPDATE is already pending, or if the pvclock
-> > +	 * has never been generated at all, call kvm_guest_time_update().
-> > +	 */
-> > +	if (kvm_check_request(KVM_REQ_CLOCK_UPDATE, v) || !vcpu->hw_tsc_hz) {
-> > +		int idx =3D srcu_read_lock(&v->kvm->srcu);
-> > +		int ret =3D kvm_guest_time_update(v);
->=20
-> Invoking kvm_guest_time_update() here is probably a deal-breaker.=C2=A0 U=
-pdating the
-> master clock and other internal state is far from ideal, but should be ok=
+On Tue, 2026-08-11 at 15:58 -0700, Sean Christopherson wrote:
+> On Tue, Aug 11, 2026, David Woodhouse wrote:
+> > On Tue, 2026-08-11 at 22:21 +0200, Paolo Bonzini wrote:
+> > >=20
+> > > for_each_present_cpu(cpu)
+> > > =C2=A0=C2=A0=C2=A0 if (per_cpu(kvm_gpc_reader, cpu) =3D=3D gpc)
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpumask_set_cpu(cpu, gpc_r=
+eaders);
+> > > __kvm_kick_many_cpus(cpus, wait);
+> >=20
+> >=20
+> > I'm literally sitting here watching you reinvent what SRCU already does=
 .
 >=20
-> However, writing guest memory is not.=C2=A0 Specifically, dirtying memory=
- after the
-> last KVM_RUN is a non-starter for many usecases, as is modifying state th=
-at is
-> visible via other GET uAPI (though I don't think that applies here?).=C2=
-=A0 E.g. see
-> commits:
+> The problem, for me at least, is that SRCU does this and a _lot_ more.
+>=20
+> > Which, again, is *fine* given the behaviour of *these* read-side sectio=
+ns.
+>=20
+> Well, yeah.=C2=A0 Why use a nailgun to put a nail into the wall to hang a=
+ picture
+> frame? (other than the indisputable fact that power tools are fun).=C2=A0
 
-I don't think we need it written to guest memory; we only need to
-generate the in-kernel shadow which is then written to the guest.
+It's not a nailgun, it's a drill. And in this analogy, my observation
+that it works absolutely fine for us with *these* SRCU read-side users
+... is equivalent to finding the torque setting that lets you put it
+into screwdriver mode.
 
-I wonder if we can have a boolean 'write_guest' argument to
-kvm_guest_time_update() .. but ick.
+Power tools *are* fun. But I try to avoid buying a new one when I
+already have one that does the job correctly with care.
 
-Or maybe it's OK to just return -EBUSY. Isn't KVM_REQ_CLOCK_UPDATE a
-pathological case anyway these day? I'm trying to ignore
-kvm_set_guest_paused()...=20
 
-I'll take another look in the morning at the whole thing.
+>  SRCU is
+> fantastic infrastructure, but I genuinely think it's not the right fit he=
+re,
+> especially since we'll likely need a different solution for in-guest read=
+ers
+> anyways.
 
---=-cOU4kZbVOpr6kbcf3uch
+The cases where we have to hold the host physical address *during* the
+time we enter guest mode to run a vCPU were never covered by the rwlock
+either.
+
+Fred's patches which reinstate that GUEST_USES_GPC mode are kicking the
+vCPU from the invalidate_start handler, just as the original
+implementation did. However the locking (or RCU) for the in-kernel
+users ends up changing, I don't see the in-guest part changing.
+
+Unless you're imagining some scheme which could handle both? But the
+in-kernel readers are *brief* and will always go away on their own,
+while the in-guest needs to be kicked; they are opposites.
+
+> > I get it. RCU is a versatile tool, and in *some* cases the *Sleepable*
+> > variant of RCU gets used in ways which would cause grace period latenci=
+es
+> > which are thoroughly unacceptable in an MMU notifier callback.
+> >=20
+> > But in the specific case of a dedicated kvm->gpc_srcu whose only
+> > readers are tiny snippets of code that until today were always run with
+> > rwlock_irqsave? That is *not* Jason's worst-case bugbear. It's fine.
+>=20
+> I agree it's more than likely fine for your use case, I'm not convinced i=
+t'll be
+> fine for use cases that heavily overcommit memory, or do NUMA balancing, =
+or (close
+> your eyes) enable KSM.
+>=20
+> E.g. it doesn't take all that much for even a single expedited sync to ge=
+nerate
+> a delay of 20ms.
+> https://lore.kernel.org/all/20260309193059.2244645-1-seanjc@google.com
+
+That looks to me like a pathological case where KVM is trying to use a
+single srcu_struct in two different modes, and getting sad when they
+conflict. That would never be the case for the separate gpc_srcu.
+
+I've been playing with the soak tests, running in parallel with a load
+of about 140, with KASAN/lockdep/etc enabled.
+
+I also implemented that thing I suggested: a try_synchronize_srcu()
+which doesn't even use the waitqueue when it can trivially determine
+that it doesn't need to wait.
+
+Even when we're stressing invalidation vs readers, it ends up taking
+the fast path in about 99% of cases, taking around 4-16=C2=B5s for those;
+32-128=C2=B5s when it does need to call srcu_synchronize_expedited().
+
+It goes above 8ms in 4.4ppm of cases, with the p100 outlier being
+17.6ms. My gut tells me we'd see those occasional outliers even with
+the rwlock at this load, but I'm going to kick that test off and answer
+that definitively in the morning.
+
+
+
+
+
+--=-PJmlfMzue/hQTdEXciz4
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -201,22 +262,22 @@ vFEOOmuaq7VamuLEPFQtJM4olmipOW6CzrLcFz6J/6yAecEG3P1ZDoy08eSHvM40MAUgpwGa/w6o
 MAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTowOAYDVQQDEzFEaWdpQ2VydCBB
 c3N1cmVkIEcyIFNNSU1FIFJTQTQwOTYgU0hBMzg0IDIwMjQgQ0ExAhADNSi2uzJskfEdOMo4hV0g
 MA0GCWCGSAFlAwQCAQUAoIIBezAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNjA4MTEyMzQ3MzdaMC8GCSqGSIb3DQEJBDEiBCDNoC5vHmqlr8maBoWOEpK+4ta/agFR
-cqNlobKqHax+jjCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
+BTEPFw0yNjA4MTEyMzUwNDdaMC8GCSqGSIb3DQEJBDEiBCBnwxX9QMEpFIMNNVxF++G6PwC6bJXh
+YqIB98oCRMvzhjCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
 aUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBT
 SEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAwgYcGCyqGSIb3DQEJEAILMXigdjBiMQsw
 CQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFz
 c3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAw
-DQYJKoZIhvcNAQEBBQAEggIAYOqI3Y5YvAfqblq3XkUrzzRcTve49+U7HVXTSSNK321mw8eLLi48
-a+gzYVEJh6ALXpK2a8f3K5fpsL0d3f6WpXGp0yYMvQ/7v/cfOWdJBeIqX8Yts1Ia8sCoHPoqH706
-sHnZKCBghLYY3BlGb6nEyB8L5MtLlQ/pHDb26dwgKNapzc153cmeq1g/fxpfCaDtE7e27pqg+itg
-IBtOKQp09tcO/13VyFiMhyXuYrIH7EasG0sQ+f2gaBQpy/JX4QJ18eL83OqbL/Xy3CFbuODB12FO
-2hP4YbshtwLuA1uRfMYOU0j8KAjbdwyfx9NevwDV8fR0ll+4farG4xCBfPAmJDNc6R5yDRRt63Gn
-IEGS9B4ZafmyjBJlHBx+sahrOKopZ2hhBYsYm2NVM7UjkHu3uGIfbgkbJczyLPj95zb7YhUvbEqm
-0PVzFeI340tU/rk6EcH31Xu7t+liC3iMIq/w7/5zegGDAhUm1cASOwSLIfmyEvcAZjN/M6B96dRm
-JrKl59O8F0prGwratgXIksPK5ianj9GXRhRMraOfEZi6aPL+BeTiuu8vWxJjrtbklCuf4pcZNlPP
-S0qhJODZIM/Ugo0IeGId8CUw0Vd5xw7DWNbh+4JzsoebNTlmR7uoRjJWw4szZfqec5m+5p+8qoK6
-5/O2AZlo43jG9o1HEzn8MxcAAAAAAAA=
+DQYJKoZIhvcNAQEBBQAEggIAYJegnfs4DVM16tcuYdGdxOTvChm66G8reZ2EthEJpchFISirDqNF
+l2OiP+iTLMOlQAY1fodq1OwWqhiPJpiRjvlvMzwMiUIxBmztUEe4i1XWXKtj9aCKNYJ5hthdsUDv
+8BxgErCklOunO94Nw4jI6m/K7odLiNXpBJ89D3LdXBsnBNQFNBtTfxgyiTscX3eF9OFQhOD+FYpS
+nQpf8+ju/3WCvs9OLDlztWMn4sHJVtARBBdQ3aunadv+mXRM5jgIzXpa5Xv5tS2ITmYD/szFVx42
+Lr+ATUFBaev4mrKL+Wma/299O1m1ntkJ6U7w25BEREkQGEvi7cltdIktd3l+8Xf0EpIjZH8F/P8f
+qF1PMH/eVrvtLGkf4ocAQfcEO/mYeFyEI3KCtCUBdIliDBjHHA29E7C/eLQMt6WAbkFP2asT4ogp
+9L6wOfQWJ8Hl/g3Ft+qrKqL+U69w6qgRFnFXhnGeBWdMkjficTQa8LHJD2Z6IBWgGCDpewekRQxg
+x+vkYqIabdiV2JIIwyDSXxjvSGDMflp6cumeOwoK4DKmxPWZNdWAy7vHxppfWfKAZRFHiftrHlH8
+0mvaXa89zdOGkJkX60dQzksKhBYArm+pTjGCJZO/nrSP8Zkf6/X6Hqk7HoAhYYsKbF3BXEoCKoGZ
+Nhkj9foqGsfBdWPDPcxV5+gAAAAAAAA=
 
 
---=-cOU4kZbVOpr6kbcf3uch--
+--=-PJmlfMzue/hQTdEXciz4--
