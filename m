@@ -1,96 +1,125 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4162A3242B8;
-	Tue, 11 Aug 2026 16:03:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A173242B8
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 16:03:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786464231; cv=none; b=ag53eCg6ZfyHVFaNPLXiw55nhNa+PfH9jwRfuBqIgKFNM+uqFwzsRJLXbSkMaLMHmpQY8aE3jEXyLIHmthbqf+agJYu2AcQ/NwYVks23sBbFaVD8VKmrrdMegd0emxy5h5WWyIKAzbrSg/TjJEtklj/LULCwA/gW53Y+T7Ykxic=
+	t=1786464238; cv=none; b=Xvl1v0j1WGKdp58L5ZzB8uQdsGfS4hWvtfuqrJBS+WfnxYt5eVrh+cb17Kti5bfzvVzBDRtbTTTR3mdxWwEJbCi7KBSYQuFUSh+cNhtNhCx7rJWm/wEsThsUcKb6TMjOxkkvsiO1fMJ/hrCqDTUHKMTuohzdqRcUAZmOCsXq+6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786464231; c=relaxed/simple;
-	bh=e7Z+l/mTt+5Pf3Y1BUH3J9fnuA6QlidiOwjauwgkWhw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BZ5Jr/A96Y3Nk+quIQL2WJRJMqTfWzihID9rg9jEKfdEtM9O0TLmzTL/21jBoifRKB+evRx0JzKYgrjwpHggWhfiUXMpD0L4sHp5n0JVss6O2/ASjIvg13utiHqtXMkPl4yXY312aZSC3o8poMpD6PB9xn/3UIV2y9CPL7fRooA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Xxn4tmxR; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1786464238; c=relaxed/simple;
+	bh=99emt8x2HrDIgJ9BWyttAeHBGO4VSbdX+I+z+lETRCQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ZXrc8bnfDeYPucCaMyBuAhG7InF9YKZueslKrdI2Js5cpvFbFCDWke3QCfkiBIO5sOMTR+V59j4Un2mH+xOfwkfMt6a4swPK8ed82ue/JAKPI2g0jYCEqqoLFitzyIwegLUHpx14fvjlFbBiQQWv/PXZe0dDBGHB/q9MvUv17xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qbZmw2iP; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Xxn4tmxR"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AAE4D1516;
-	Tue, 11 Aug 2026 09:03:44 -0700 (PDT)
-Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D96803F86F;
-	Tue, 11 Aug 2026 09:03:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786464228; bh=e7Z+l/mTt+5Pf3Y1BUH3J9fnuA6QlidiOwjauwgkWhw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Xxn4tmxRk8DDeLoDWJgLcSjvqgphcHHVSsLy9W3k5A933OGBP25O9NacR3PR0oDK3
-	 ukIq7VgR7qCS4RSCWK4DChBI13S4mlFzVtMR+R0w67k3zZwG691gS+zt/F9N80ybn3
-	 y48X7w43mZz/dl4gMIp+oztTAkaA7JJMYvorezEE=
-Date: Tue, 11 Aug 2026 17:03:43 +0100
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Jack Thomson <jackabt.amazon@gmail.com>, maz@kernel.org,
-	oupton@kernel.org, pbonzini@redhat.com, joey.gouly@arm.com,
-	seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com,
-	catalin.marinas@arm.com, will@kernel.org, shuah@kernel.org,
-	corbet@lwn.net, vladimir.murzin@arm.com,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
-	isaku.yamahata@intel.com, Jack Thomson <jackabt@amazon.com>
-Subject: Re: [PATCH v5 2/5] KVM: arm64: Add pre_fault_memory implementation
-Message-ID: <antH38FPSmAZ0nrB@raptor>
-References: <20260612162354.73378-1-jackabt.amazon@gmail.com>
- <20260612162354.73378-3-jackabt.amazon@gmail.com>
- <alEXtW7w-rqlNG09@raptor>
- <yq5acxvz4u1i.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qbZmw2iP"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84885a4fcabso13373b3a.3
+        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 09:03:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786464236; x=1787069036; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=M9v29TC3yzCAC9R3Zjwzq+fvKSc+kp/PprRrh2ko9Eo=;
+        b=qbZmw2iPcnpzFJWT0nVNe9JFhjWbTLshXAYBKFrixIdlcWT6aPdLQ3GI1RKMbAyzcs
+         tJ+zfz+bY9NlQF639tLp5DfN6SsmMhsayYWZFID93u7E8qv4sW8Ye/Lk91hxpfuemJAz
+         lH7+WReVNy1y0O73cAGJ08aQoGuwxaRosKooq7ZS+PoDJL4J6uhS3DDXOC52anQnSjip
+         hbRVFMiosDySVSkTVUYbddx72lMqE+XlqQTpma0z1453OP96FdTfTriRd3s6P0CaagdV
+         nEKiIMygKhE4zILrdOq5cNSQ70O6ybb7JLxlGHciJtzoKcXOsTy7NkuPHIwZcpuuHEhN
+         LmUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786464236; x=1787069036;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=M9v29TC3yzCAC9R3Zjwzq+fvKSc+kp/PprRrh2ko9Eo=;
+        b=giV9z9Vd/SwH9YIbjqN4r1qnsU0XCDC0/nBriVJznvY+nSbTBUr4NJbw9K8UtEg0Tr
+         pCqVDjQ//1HGf1E5TVE1AH764BW6PtL+fPo83AZ/wWhPdethfcxzrEgEHnd+NOphHRCX
+         jjeilR0gYSv2wblQuuXyqx9DYrY/xCCHHUlbk1ndCa5Rav3b+cphHeoP6vzgmJnDeIgy
+         w0GR2Rv52LefUVG+CdrSg/cWFYM313OQkqqBxPD2tYWzezZC3ara8fmluv+t5+IrPyz1
+         znhkC3HI30Ch2IR62kqKjYg6qeS+oWKOND83a+JbmTuhPvhT6GdNd1MdN0PcEkJuGUR+
+         BEMg==
+X-Forwarded-Encrypted: i=1; AHgh+RqH/b8Z0qsblueN8N1CnjxRAACtIc+RdDXho4dxa+UJMIzSzFePotoI9IHsCIFbNfFoA+8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywpg7IORIje7DhI6uftJZxc836RrkkV7rVndn9X14DnzTh+CwF3
+	LtEVQwcZuys5ACroU3tAmN+/pjWU2TXSOsrAEctQMBup14CWqeqA/lYfmOdRAtS8/mxLPeEOxn9
+	Jg9HzTQ==
+X-Received: from pfnv2.prod.google.com ([2002:aa7:8502:0:b0:847:7765:a4c3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4c1a:b0:84e:24df:3873
+ with SMTP id d2e1a72fcca58-84fa88c5340mr4413669b3a.32.1786464235809; Tue, 11
+ Aug 2026 09:03:55 -0700 (PDT)
+Date: Tue, 11 Aug 2026 09:03:55 -0700
+In-Reply-To: <ans1SMXHmdB3uEoe@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5acxvz4u1i.fsf@kernel.org>
+Mime-Version: 1.0
+References: <K5X5A-vk0kKy96pbo6vsCIfvu4CDhenGoKAy3bdpFLx_5sdQ4ovBeDLABVHxrI08ouImtdBr2cYTqriDJgeTZLZhMIA-Hphgz4jMe7W6M6Q=@rfc2549.ca>
+ <ans1SMXHmdB3uEoe@google.com>
+Message-ID: <antH6ysN2SPR2gyV@google.com>
+Subject: Re: 6.1.y status: 2abd5287f083 ("KVM: x86: Check for invalid/obsolete
+ root *after* making MMU pages available") / CVE-2026-64561
+From: Sean Christopherson <seanjc@google.com>
+To: "IP over Parrots (with QoS)" <opensource@rfc2549.ca>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>
+Content-Type: text/plain; charset="us-ascii"
 
-Hi Aneesh,
++Sergey
 
-On Mon, Aug 03, 2026 at 11:36:33AM +0530, Aneesh Kumar K.V wrote:
-> Alexandru Elisei <alexandru.elisei@arm.com> writes:
+On Tue, Aug 11, 2026, Sean Christopherson wrote:
+> On Tue, Aug 11, 2026, IP over Parrots (with QoS) wrote:
+> > Hi,
+> > 
+> > Commit 2abd5287f083 ("KVM: x86: Check for invalid/obsolete root
+> > *after* making MMU pages available"), which landed in 7.2-rc5 and is
+> > tracked as CVE-2026-64561, does not appear to be present in
+> > linux-6.1.y as of 6.1.182.
+> > 
+> > I checked with:
+> > 
+> >   git log --oneline origin/linux-6.1.y --grep='invalid/obsolete root'
+> >   git log --oneline origin/linux-6.1.y --grep='2abd5287f083'
+> > 
+> > Neither returns a match and it doesn't seem to be in the queue.
+> > The commit message notes the invariant being violated was
+> > introduced in 5.9 by f95eec9bed76, so 6.1 looks in scope,
+> > and both hunks sit in direct_page_fault() and FNAME(page_fault)(),
+> > which appear structurally unchanged on that branch.
+> > 
+> > However the announcement[0] only mentions the fix landing in:
+> > - 6.6.148
+> > - 6.12.101
+> > - 6.18.42
+> > - 7.1.6
+> > - 7.2-rc2
+> > 
+> > Is a 6.1.y backport planned, or was it skipped deliberately?
 > 
-> > Hi Jack,
-> >
-> > On Fri, Jun 12, 2026 at 05:23:50PM +0100, Jack Thomson wrote:
-> >> From: Jack Thomson <jackabt@amazon.com>
+> Now planned.  The fix doesn't apply cleanly to 6.1, and the resolving the conflict
+> isn't super straightforward (though it's not thaaaat bad either).
 > 
-> ....
+> https://lore.kernel.org/all/anpVAhjqvBvIuoa0@google.com
 > 
-> >> +		if (kvm_is_error_hva(hva)) {
-> >> +			ret = -EFAULT;
-> >> +			goto out;
-> >> +		}
-> >> +
-> >> +		s2fd.hva = hva;
-> >> +		ret = user_mem_abort(&s2fd);
-> >
-> > If is_protected_kvm_enabled(), this function doesn't check if the mapping
-> > already exists. user_mem_abort() will call **p**kvm_pgtable_stage2_map()
-> > (emphasis is mine) to create the mapping, and pkvm_pgtable_stage2_map() will
-> > return -EAGAIN, and keep returning -EAGAIN until the mapping is destroyed, which
-> > might be some time away.
-> >
-> > Same thing happens **without** pKVM, kvm_pgtable_stage2_map() will return
-> > -EAGAIN if the mapping exists. But that's not such a big issue, when the
-> > user calls KVM_PRE_FAULT_MEMORY on the remaining range
-> > kvm_pgtable_get_leaf() will detect the existing mapping. Which you have
-> > already taken into consideration judging by the comment, so all good here.
-> >
+> > The security tracker [1] for the Debian 12 stable kernel (6.1.y)
+> > shows a vulnerable status.
+> > 
+> > I do not have a backport to offer, so this is just an inquiry.
+> > I am happy to build and test a candidate on 6.1 if that would
+> > be useful.
 > 
-> But both gmem_abort() and user_mem_abort() handle -EAGAIN internally, don't they?
+> I'll post a patch today and Cc you (unless I get goldfish brain, in which case
+> I apologize in advance).
 
-I think you're right, please ignore my comment about an existing mapping with
-is_protected_kvm_enabled().
+Actually, duh, Sasha already posted backports[*], and his approach is much better
+than manually resolving the conflicts.  Testing that now, I'll ACK those assuming
+all goes well.
 
-Thanks,
-Alex
+[*] https://lore.kernel.org/all/20260730121535.2208491-1-sashal@kernel.org
+
+
+
