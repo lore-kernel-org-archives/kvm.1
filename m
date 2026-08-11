@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB8633DED1;
-	Tue, 11 Aug 2026 17:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1434E33556D;
+	Tue, 11 Aug 2026 17:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786470694; cv=none; b=YaMM2cfxcz7/rAgq1/YANblVHq6KVb9Xe0qOU+fDClwf+lEn7dZNcQ4QXwfUUcq+ooxLbku1B1eJyTDxi8XWzjRP2l9PugTenXsnu+rgL2lsdQmNLWtBJzMEz5Xbj+iV9fCTS3hePPev8J4qCoVIUjh+A3oU6+DB3IHYTJHNZ3s=
+	t=1786471038; cv=none; b=nMglGDRI1rxK1HNrfStN3L8P8AltGMuHSFzu5ZUWwvZs/bR8uWyQVCy/8RPx/ci9as+7aK4PeqYF2H4KPSZ4BdizeIpdOaHuV1nCYTFy8qfWggH6ffM/xPVHAgc7P5gYo2TOQIPyJKj6y+tc9n4HyPxhM86SzVADU4dbA/Qit8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786470694; c=relaxed/simple;
-	bh=358iJ4DHbKbtOKT3BZvxeTJsIlFI8mqUUUWUK8oNcD0=;
+	s=arc-20240116; t=1786471038; c=relaxed/simple;
+	bh=lc6nlfL/TgrlC747A3IEU0ciMhetr5c6SQFU+wpDSB4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JI73KGaZKFPEjybLv4cEHZqGatfTf1DRUAPvWrNp7Fn3dXANOkyrwrfPNQ6yfB8iwTWRBLUg0j4dCPH6iET/28UlWrd38VZoGF5cOl0eG+QBoKcZxpQh0VZiZRaJocVmM2+ZJ86aXN2nSFBHpM+uGvJMCyP2aChC6X5tWgO9Alk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CEtG58WZ; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=qHSOObfUnUBLX2Nwc4DxY04WWPNYgua55Z9OBODhiDTt/C6CJQ6JzgWAkoKwGkLFdMVLONcY4rrUNOnCxvVNB/pi8j/ujrzs2DNkrALn43c1a4UyDw//l24eMpD8ulnttoT1xWAOM/N397qixLEHDRzLSueEng27nMyD0a59OR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X4emHB7M; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CEtG58WZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9391F000E9;
-	Tue, 11 Aug 2026 17:51:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X4emHB7M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086321F000E9;
+	Tue, 11 Aug 2026 17:56:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786470692;
-	bh=hkUWYSo1p4I7KyJCkRY80edi6N6SRNlEyVr8qwAlIsE=;
+	s=k20260515; t=1786471036;
+	bh=g/k363n5Lvqavno9fCoFoqYAurRBI/pjeBdWiyEPQAI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CEtG58WZP/nb7XjOILQATFtU23EQe1V5++85x1sfQItE9pg9SrqfcAdIwolUaHOdR
-	 k7nCkI9LJYVKMsmKJX6TyvhshyBr9/7aIX9RW77T3fXsjlKM9geAVDvrLNCZO1rEps
-	 c58d2fJU5s0F5yZtsKnD0HlitOMct+60SRGw6uYnadSz0nd6Gn6ujczut/UZL9v+ai
-	 ipGUdRsOTpBfE9/KApz7HXjbAh3ZmbK9Cic/hkIIrLb9aGYDPyCyPciqFkeq7UONxT
-	 t1w3zyaU0Is9AkP3G6BxapYcxBlwPgrkBymU0FhN7dpYfGz5nDK+yujgVoPxU3rxnh
-	 v9uwmxzNSdtmQ==
-Message-ID: <fc5302dd-77e6-40d6-82fa-b08b27da4ea5@kernel.org>
-Date: Tue, 11 Aug 2026 19:51:14 +0200
+	b=X4emHB7MFkge8y440tlJsYBHJo5+N8Li59e/0ORXOxym8rC+y/HdLt15DOSVbQWZ1
+	 4HO9ZhlCXXfzjkUtIBxtAGmKsTbVUwax3Osp2lGhzk5U6PlORe0UqDJZF2aS14FEkG
+	 AncR9K+gj0URdsSSUZaOsznpEDLwe/cJqEhunPqw+hFAeWd3SOCySFNhesYu2UURLH
+	 3x+CVp0x/ZkCUXlvWC5Vm+AnAcaZt7I+AF0LdrdCIhLZoEehItGo3B1D8Zo7s9HOQL
+	 KUGYasF/2xyLJJbsiIa9x3ecW1a3ytFa0oB+z3tdXlL8ksBKDj0DPO6yA1//U+UCRc
+	 A8CF2e7vWz+TQ==
+Message-ID: <4c638fc5-5a74-43d0-b5bf-d7ef893cb994@kernel.org>
+Date: Tue, 11 Aug 2026 19:56:57 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,7 +35,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 16/41] KVM: guest_memfd: Zero page while getting pfn
+Subject: Re: [PATCH v10 11/41] KVM: guest_memfd: Ensure pages are not in use
+ before conversion
 To: Sean Christopherson <seanjc@google.com>,
  Ackerley Tng <ackerleytng@google.com>
 Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
@@ -66,13 +67,12 @@ Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
  Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev,
- Xiaoyao Li <xiaoyao.li@intel.com>
+ linux-mm@kvack.org, linux-coco@lists.linux.dev
 References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-16-2fc18ee6d3ba@google.com>
- <dd9ebd52-7171-4353-8c83-9363019d55b8@kernel.org>
- <CAEvNRgGSK9tO_-TvQvXoMwVwGygh5WjjBUOY-zLOA5yP2DwS1g@mail.gmail.com>
- <anpqcZlwvjWCWGId@google.com>
+ <20260807-gmem-inplace-conversion-v10-11-2fc18ee6d3ba@google.com>
+ <eb1b5763-37bc-4cb3-890c-1e619e5a8ae4@kernel.org>
+ <CAEvNRgHyRdt7rp=5e5FMbTT=fXNfB=np7VWd_GdmJcPOQgps4g@mail.gmail.com>
+ <anpQJvFw9s-XP3pW@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,40 +119,106 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <anpqcZlwvjWCWGId@google.com>
+In-Reply-To: <anpQJvFw9s-XP3pW@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
->> Previously, without in-place conversion, populate never reads memory
->> from guest_memfd so there was no danger of leaking uninitialized memory.
+> helps the reader understand what's being checked without having to look at the
+> details, and also helps communicate the ordering dependency without needing a
+> comment.
+> 
+> There are definitely times where the usage of a function bleeds into its name,
+> but usually that's because the name and the usage are on and the same.  E.g.
+> get_user() describes both the usage and the "what".  And it's easy/possible to
+> go too far in the opposite direction, e.g. by giving a play-by-play of what a
+> function is doing, but that's why we have bikshedding sessions :-)
+
+Note that the problem I have with kvm_gmem_is_safe_for_conversion() that it is
+all about *conversion to private*, not *conversion to shared*. In that sense,
+the function name is just confusing.
+
+> 
+>> Perhaps a little ahead of its time,
+> 
+> Ya.
+> 
+>> but later with restructuring for huge pages, we also need no additional
+>> refcounts other than gmem's own so that restructuring is safe, hence this
+>> function name was meant to extend there as well.
+> 
+> Given that I've read that at least five times and still don't understand the
+> nuance, I think it's safe (ha!) to say we'll need to revisit and review those
+> changes no matter what. :-)
+> 
+>  
+>> In this case "unexpected" (especially since the next patch adds checks
+>> for maybe dma pinned and unmapping), begs the question "unexpected in
+>> what way"?
+> 
+> Ya, that's why I like "outstanding", it succinctly captures that one or more
+> references have been "loaned" but not yet "repaid".
+> 
 >>>
->>> In case post-populate failed, do we want to re-zero the pages?
->>
->> I believe we can't re-zero the pages. When SNP fails to populate it
->> could be because SNP didn't like the CPUIDs userspace set up, and after
->> the error userspace is expected to check what SNP likes, then
->> retry.
-
-Ah, okay.
-
->>
->> IIUC zeroing will destroy the message SNP wanted to leave for userspace.
->>
->> Michael should be able to explain more here :)
+>>> I'd rather add a comment than have this filemap_get_folios_refcount.
 > 
-> Not Michael, but the above is correct.  If firmware rejects a CPUID page, then
-> KVM copies back the expected CPUID values provided by firmware.
+> +1, the local variable just made me scratch my head.
 > 
-> That said, now that we have have @may_writeback_src we _could_ re-zero the page,
-> i.e. only zero pages for which @may_writeback_src is %false.
+>>>
+>>> /*
+>>>  * We expect one reference per folio-page in the pagecache and one
+>>>  * reference from filemap_get_folios().
 > 
-> And _that_ said, I vote "no".  KVM zeros the memory mostly to ensure userspace
-> can't read stale data, e.g. someone else's data.  I don't think we need to
-> guarantee that a failed populate() (or rather, whatever ioctl called into it)
-> will leave memory in any particular state.  It would be easier to document that
-> the page contents may be modified on failure.
+> Nit, please no pronouns in KVM code.
 
-Let's do that then!
+Whatever floats KVM's boat :)
+
+> 
+>>>  */
+>>> if (folio_ref_count(folio) != folio_nr_pages(folio) + 1)
+>>>
+>>
+>> This comment explains what's "unexpected". I can do this and switch it
+>> to kvm_gmem_mem_has_unexpected_refs() unless people have other
+>> suggestions.
+>>
+>> I wish there was a folio_pagecache_refs(folio) that
+>> folio_expected_ref_count() can share with this, and also
+>> folio_swapcache_refs(), to solidify the definition of refcounts taken by
+>> the pagecache.
+> 
+> ...
+> 
+>>>
+>>> I'd add a comment here for the "why are we unmapping".
+>>>
+>>
+>> Does this sound right:
+>>
+>> Unmap here to ensure that userspace page tables have no mappings, which
+>> also ensures refcounts from those mappings are dropped.
+> 
+> How about:
+> 
+> 		/*
+> 		 * Forcefully unmap the pages from all userspace page tables,
+> 		 * and then verify there are no outstanding references, e.g.
+> 		 * acquired via GUP or similar.  Tell userspace to try again if
+> 		 * there are oustanding references and hope that whatever has
+> 		 * pinned the page will put its reference "soon".
+> 		 */
+> 		unmap_mapping_pages(mapping, start, nr_pages, false);
+> 
+>                 if (!kvm_gmem_is_safe_for_conversion(inode, start, nr_pages,
+>                                                      err_index)) {
+>                         mas_destroy(&mas);
+>                         r = -EAGAIN;
+>                         goto out;
+>                 }
+
+
+Sounds good besides the function still not being clear about *which* kind of
+conversion.
+
 
 -- 
 Cheers,
