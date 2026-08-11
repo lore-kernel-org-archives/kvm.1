@@ -1,208 +1,184 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3251336B90C
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 21:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316A738B7DC
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 21:55:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786484795; cv=none; b=pjAoXFaR8LzJpg4hIyjJjAMebNeAplzfbx7ReKDignTn/z/G57yQ5aQ9ziyXjw0L9PzFvpaGk6FBDX+oQTsV7mJkoFvu+b7uewr9XUYyvcodL7t+3IhKiEj81BpgwCvAFpdODbFlrSQNEwljNhoAs/vq4IsBfhzoZQFLG+AOWIo=
+	t=1786485342; cv=none; b=QfbtzPrs/fYDsjPC3xpd0uyb8BvZfLRe21pmqvRS+0ejwsiFkILrLm75G1sz2TSTcgG0qSSIaTC+lNetWrNHo6DOC9070mfSVddNJlskctFjYWJN17opaq+Ym63EidfQA/cTVRvOvlgnwOykec0FeO+txCj54KD3YooMksgvLiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786484795; c=relaxed/simple;
-	bh=Bzrq/VKcfobXcbNSIJ48oES/vQOba3cFYNFGC6yNXhQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KpNNy2WSIZDmiM6rmUNHd99dISGvFkexqvz5H6/Z+GDZnO/q5f6f05DuDFugJDiLfJQ4AlZwxqrJEbBx7I+Dn6ooSn+B7nVIKBksmCwnRu179ZdS9YwCXcd1UPMeFPjadvuUt+eWX3yjOVJtnmRYHOpGfHFnw9XL0vQFefR2tEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V4Ss0UvV; arc=none smtp.client-ip=209.85.210.198
+	s=arc-20240116; t=1786485342; c=relaxed/simple;
+	bh=HIMalM3M9k909PEFiGTDFWIv584eIgyKiHAvgYYFC4k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dOGp+YrpJkxPwedbvTyW+07yP0QxGL+7JZtgSOyzrqNh4if8CjRUxtuN32T23IoQhRShWKwe4PM0Gy1o/5j4ETxulk5ij58zBfYdgY3+tja47hLeXRMLpWsObVgUUZjvcVatD9TQEIAcV+laUcwiTHrJsf1SsL0S0m6uNHkmFyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BsGCU81S; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V4Ss0UvV"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84e375d9736so128170b3a.2
-        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 14:46:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BsGCU81S"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cc7e86e7aeso5463505ad.2
+        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 14:55:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786484792; x=1787089592; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=GNP84U5NVANNewsvSEzbCgg+MDCqvRSKiMtE5jPKweo=;
-        b=V4Ss0UvVLYZDBtkpuwM9otI200+jqPqEFJftlM4PNtzd8rjir/s2fPmhMOUYZO4bnT
-         rUs/EzczADWpKnCzG4da+7/C3Sp/hM+U/kRuclHztpX1fVGv1DNhlvegl/UxqYHg19Oy
-         sj33bXn8AkV8A62U4GIg5Ivx5/A0cac8mWhkdKLIuMGTayeEo6fNyB9omuz+uuaxZrS5
-         JNX8qDXbQaFogvLxn1yR42mepWAkd475AUPMtrcom+k7WZOEnfKcsxC2qPTpIwh19yxl
-         LQDQAuXLWk5WbTrFwo2OVsi5mC/SKZOGDHwRul3WfqynfL952DJMRpK6sm6JmRHF+CL+
-         8V1A==
+        d=google.com; s=20251104; t=1786485340; x=1787090140; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0UPXsrtsXOH6I+iVrK3H/WaCGADQHjCFmCky99010NQ=;
+        b=BsGCU81S/WNW50w+y8a9mETMTttwKMv4nYwlHwt8k+8raBkYeZAWffCd8rL+hnU3Rx
+         AIiYdfiVIu05ZdNQjba5s8rkXnJlVjp8j+3um3tkeuJGVwiJT3f2E6e7zYLDaALiF3V8
+         qT9Gb7kRltorFkrJQKjhHUgLwxYRK/nwYDVy/TCWYggF9rAJgh6IvOMyRHm99lJEoOof
+         rdYMvATGok7xaxJmffy0yQpLt3vSq4utLCp/t2QWQbqk5JyFizNeePp/0KxHQHjye+9Z
+         p5VACxugaIZviL5dUQmfk7HklppdPCjJxLmB/wWuWSvjWzJiNUqlMX/ypFG4T7+Ic2ha
+         Fpvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786484792; x=1787089592;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
+        d=1e100.net; s=20251104; t=1786485340; x=1787090140;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GNP84U5NVANNewsvSEzbCgg+MDCqvRSKiMtE5jPKweo=;
-        b=ggLD8KtfQeom8wAnsSG7GgqU8r3NyD4K41mVdEiYi/pWxHHJTPdG+Ho20yaYZLramQ
-         TMmiXUe6/1SPO4eGRMjRv3hZmYp2bZy32XUSJ1gDtbCLjbbAHnmC/r/xZnQzIZ0ZN2j0
-         3m8QiPPRnT5a2BeBwnwoPGsxS2KCyp1NSo25CoHFyzP72/ySgsYip7sTM39k/v0GYL+q
-         kUmppdrHj2RW4XKYH6VHUysSnNmZuTn1QBt1mmk64vWdXSYtozU4Ndckjh1TS51NEyGW
-         SBViWt6aDKFP7WIeLSFB4IOjs50ZC6iMdeC9pJCVpJFtsGOCoGiqBICqc166ATG57wRO
-         kT6g==
-X-Forwarded-Encrypted: i=1; AHgh+RoPyaKr7WroP1+11yJQuqd0DawUIjYS80PUmy/knhu2Hn9jOl/B9YC08nEl6KCsfxIrReU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyi4TCAagfvAqQ5x7kQZ/k+x1Bp93mI6BW62ab4nHhGsAZ7Hzyz
-	5bx6pXyAXIgMJ6r7yoqYtpDuShc256sLqAqXbuG9mShAz3r3cFSHPUpAZik2mEDteLYZsCpgrDu
-	wvoMkkg==
-X-Received: from pfbgp12.prod.google.com ([2002:a05:6a00:3b8c:b0:84b:4480:8b65])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2ea8:b0:847:98ff:4af5
- with SMTP id d2e1a72fcca58-84fb54c5d00mr290195b3a.26.1786484792108; Tue, 11
- Aug 2026 14:46:32 -0700 (PDT)
-Date: Tue, 11 Aug 2026 14:46:31 -0700
-In-Reply-To: <3dc73f745b6abfd1eb53e7d3fce2067eaa3b3c92.camel@infradead.org>
+        bh=0UPXsrtsXOH6I+iVrK3H/WaCGADQHjCFmCky99010NQ=;
+        b=YxO49RX79aBr86Lid7wxklY3xhSg4xlTipwtPv75V49vQvcxZz7N7QJFSv7lxSWzZb
+         iPDY2rkleOl1qK+DXRzIXyx9AqXFZbgsGa7jACQ+SwYPgWgVzudSO2bIc3Ab6/X+kkf5
+         rbiXNqPZxjqdRCXmHjIX+C0FfcTyl326V74mHPv21EobvW2aZOSSw9ciNn9DQ1+wWcav
+         ITSUSFIjOiYQkJQOjmPGZ3Q5vtvhaVXX12x8OPs2M/P5XsmdIR/CkSnowYK69PILOlr3
+         5pRI9DrOwxSfIR3XvZ1ZNlnYjOXeCNWk+cOLOEWJqIEnv10n0ftnHkexHiUVtIpK+Kxf
+         ntbQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrYghgL+KxNBLF7w7+MFLBK3+sof08in0Hu5tbYyymg1SZsWELtAJ3T1NPOwfn14HM+UME=@vger.kernel.org
+X-Gm-Message-State: AOJu0YylnevrEAOFnlZC/BrboG0TuEMNAhR41mL/Nc/TCUKsfQ76Uk6N
+	cKXtrrhmqMPJn2sbYzUCWVCCWEGI+YC7KQkEn6LTbVuNPcN0d/KnW0ndtPaBBSHLt5lgXH6qI1q
+	Egh/5Yg==
+X-Gm-Gg: AR+sD13WCfwJYCUrp48rFv9gsI6goPMQoPXLJiIqKlhYvIc+IsQwNMZfvYZUzFNnP0g
+	yRS9ye6k8FdfCqnqxH1601g2nv3q1z4YPOJvODFDD6Y4qkDlV3mpwHOCJe3QCcnCJRj9NSCHZ14
+	3kmW742dKeykCKijw6Xl+xwf1VSNnHvT6d5GaadVVCbdToh5bxzLtkLBT+HTKnMJiLOMQzmPCNq
+	rJjLTPofbVTjZhmJNDWVlw3NDbqhu4H2mBVd2nvluoO8s8x4q/bbBr4JQkggSpN2BgfEClLq2Ex
+	kGYRO6ZWH530p82mIVxMErOPyION17n6tHoySXz2Ncw7bjE86LbMVwqzeC2JUEf2M8x00KMBRC8
+	2kJYCmeE0SAUOdUzmeLg8RNyIHSD6/esGqECB8BF8e0miQU5n04Do7pD4XhCs2FGNx8jeRz1zgq
+	l8eacK/cuu5PIj/GoAhM9KtGfZoIDrwtc5oyGOWU7Xf6rg3WN2dkqga+W4JZVL7GrJoMu83CIh0
+	nipDt2Kb3CHCwyYzKJ44zUhq159lQ==
+X-Received: by 2002:a17:902:e809:b0:2b2:67ca:5ff9 with SMTP id d9443c01a7336-2d34508bd87mr7701655ad.0.1786485339867;
+        Tue, 11 Aug 2026 14:55:39 -0700 (PDT)
+Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d316240c28sm12669675ad.81.2026.08.11.14.55.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2026 14:55:39 -0700 (PDT)
+Date: Tue, 11 Aug 2026 21:55:36 +0000
+From: David Matlack <dmatlack@google.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: kernel test robot <oliver.sang@intel.com>, oe-lkp@lists.linux.dev,
+	lkp@intel.com, Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org
+Subject: Re: [kvm-x86:selftests2] [KVM]  a262fc49e0: kselftests.kvm.make.fail
+Message-ID: <anuaWC4c49JK4poE@google.com>
+References: <202608071656.86e9fd06-lkp@intel.com>
+ <anYlguXMOPZD-cfj@google.com>
+ <anZag-tsavs8YNUl@google.com>
+ <anuXCiFnJEugZb0m@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <bb9a12cc663130eb2caa8e839d0f6ca53d722d1c.camel@infradead.org>
- <ansuqrD2KwFuLWbV@google.com> <ansywxh0VX5rtfWc@google.com>
- <e256fa4af96e916ba30019cbba501fa896025fb0.camel@infradead.org>
- <antQYJvRxJxOjtut@google.com> <f5dc701cf3319a7b3c8fd1497f26d051aa9fa3ba.camel@infradead.org>
- <antb01WqOrs-tztm@google.com> <6ab49538675d97f1f4bf01574b1b066aae0bc05c.camel@infradead.org>
- <ants4VjfAiblaWsl@google.com> <3dc73f745b6abfd1eb53e7d3fce2067eaa3b3c92.camel@infradead.org>
-Message-ID: <anuYNxD81OE3MrQw@google.com>
-Subject: Re: [PATCH v7 17/36] KVM: x86: Allow KVM master clock mode when TSCs
- are offset from each other
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul Durrant <paul@xen.org>, 
-	Jonathan Cameron <jic23@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, 
-	Dongli Zhang <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <anuXCiFnJEugZb0m@google.com>
 
-On Tue, Aug 11, 2026, David Woodhouse wrote:
-> On Tue, 2026-08-11 at 11:41 -0700, Sean Christopherson wrote:
-> > OMG, I hate this code.=C2=A0 After literally hours of staring at this, =
-and even typing
-> > up a lengthy example of why guest time would go off the rails, I finall=
-y spotted
-> > that l1_tsc_offset is accounted for by the call to kvm_read_l1_tsc().=
-=C2=A0 FML.
-> >=20
-> > Thanks for being patient and not flaming me too much :-)
->=20
-> Haha, no judgement. We *all* hate this code. That's why I threw my toys
-> out of the pram and went on this crusade to clean it up a bit.
->=20
-> > > > > And your variant just added a dependency on wallclock time back i=
-nto it
-> > > >=20
-> > > > Can you elaborate?=C2=A0 I'm guessing I don't entirely understand w=
-hat you mean by
-> > > > wallclock time.
-> > >=20
-> > > The system_time field? The unspecified might-be-UTC-might-have-leap-s=
-econds one :)
-> >=20
-> > Ok, I think I finally understand the goal.=C2=A0 I got turned around by=
- the combination
-> > of the name SET_CLOCK_GUEST and the full pvclock structure being passed=
- to the
-> > guest.=C2=A0 I was expecting SET_CLOCK_GUEST to literally set the entir=
-e clock, e.g.
-> > mul+shift, timestamp, etc.
->=20
-> That's an implementation detail.=C2=A0
+On 2026-08-11 09:41 PM, David Matlack wrote:
+> On 2026-08-07 10:21 PM, David Matlack wrote:
+> > On 2026-08-07 11:35 AM, Sean Christopherson wrote:
+> > > On Fri, Aug 07, 2026, kernel test robot wrote:
+> > > > 
+> > > > 
+> > > > Hello,
+> > > > 
+> > > > kernel test robot noticed "kselftests.kvm.make.fail" on:
+> > > > 
+> > > > commit: a262fc49e0aafdeeb1b4fd8cb0d79a0fde447757 ("KVM: selftests: Build and link selftests/vfio/lib into KVM selftests")
+> > > > https://github.com/kvm-x86/linux selftests2
+> > > > 
+> > > > [test failed on linux-next/master 78bc8af4affb9a732504eb22eeac7d1e50883853]
+> > > > 
+> > > > in testcase: kselftests
+> > > > version: kselftests-x86_64-848acc8ffe1b-1_20260804
+> > > > with following parameters:
+> > > > 
+> > > > 	group: kvm
+> > > > 
+> > > > 
+> > > > config: x86_64-rhel-9.4-kselftests
+> > > > compiler: gcc-14
+> > > > test machine: 224 threads 2 sockets Intel(R) Xeon(R) Platinum 8480CTDX (Sapphire Rapids) with 256G memory
+> > > > 
+> > > > (please refer to attached dmesg/kmsg for entire log/backtrace)
+> > > > 
+> > > > 
+> > > > If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> > > > the same patch/commit), kindly add following tags
+> > > > | Reported-by: kernel test robot <oliver.sang@intel.com>
+> > > > | Closes: https://lore.kernel.org/oe-lkp/202608071656.86e9fd06-lkp@intel.com
+> > > > 
+> > > > 
+> > > > /usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-a262fc49e0aafdeeb1b4fd8cb0d79a0fde447757/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c:12:10: fatal error: hw.h: No such file or directory
+> > > >    12 | #include "hw.h"
+> > > >       |          ^~~~~~
+> > > > compilation terminated.
+> > > > make[1]: *** [../vfio/lib/libvfio.mk:32:
+> > > > /usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-a262fc49e0aafdeeb1b4fd8cb0d79a0fde447757/tools/testing/selftests/kvm/libvfio/drivers/ioat/ioat.o]
+> > > > Error 1 make[1]: *** Waiting for unfinished jobs....
+> > > > /usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-a262fc49e0aafdeeb1b4fd8cb0d79a0fde447757/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c:14:10:
+> > > > fatal error: registers.h: No such file or directory
+> > > >    14 | #include "registers.h"
+> > > >       |          ^~~~~~~~~~~~~
+> > > > compilation terminated.
+> > > > make[1]: *** [../vfio/lib/libvfio.mk:32:
+> > > > /usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-a262fc49e0aafdeeb1b4fd8cb0d79a0fde447757/tools/testing/selftests/kvm/libvfio/drivers/dsa/dsa.o]
+> > > > Error 1 make[1]: Leaving directory
+> > > > '/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-a262fc49e0aafdeeb1b4fd8cb0d79a0fde447757/tools/testing/selftests/kvm'
+> > > > make: *** [Makefile:218: all] Error 2
+> > > 
+> > > Any chance the file is literally just not there?  Makefile.kvm's -I$(<D) expands
+> > > to:
+> > > 
+> > >  -I/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-a262fc49e0aafdeeb1b4fd8cb0d79a0fde447757/tools/testing/selftests/vfio/lib/drivers/dsa
+> > > 
+> > > which matches the directory of the input file:
+> > > 
+> > >  -c/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-a262fc49e0aafdeeb1b4fd8cb0d79a0fde447757/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
+> > > 
+> > > so AFAICT the makefile is working as intended?
+> > 
+> > I think this is a problem in how the kernel test robot builds selftests.
+> > 
+> > hw.h and registers.h are symlinks to headers in the kernel source tree.
+> > The selftests build works fine for me when I check out the entire kernel
+> > tree at commit a262fc49e0aafdeeb1b4fd8cb0d79a0fde447757 and build the
+> > KVM selftests.
+> > 
+> > But if I delete one of the symlink destinations, I see the same error.
+> > 
+> > $ ls -l tools/testing/selftests/vfio/lib/drivers/dsa/registers.h
+> > [...] tools/testing/selftests/vfio/lib/drivers/dsa/registers.h -> ../../../../../../../drivers/dma/idxd/registers.h
+> > 
+> > $ rm drivers/dma/idxd/registers.h
+> > 
+> > $ make -C tools/testing/selftests/kvm -s
+> > /usr/local/google/home/dmatlack/kernel/trees/kvm/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c:14:10: fatal error: registers.h: No such file or directory
+> >    14 | #include "registers.h"
+> >       |          ^~~~~~~~~~~~~
+> > compilation terminated.
+> > make: *** [../vfio/lib/libvfio.mk:32: /usr/local/google/home/dmatlack/kernel/trees/kvm/tools/testing/selftests/kvm/libvfio/drivers/dsa/dsa.o] Error 1
+> > 
+> > Maybe the kernel test robot doesn't download the entire kernel tree when
+> > building selftests?
+> 
+> Yeah this seems to be the cause of the build failure. The lkp project
+> only grabs a subset of the kernel directories when packaging up the
+> kernel to build selftests, so it will not have access to the symlink
+> targets used by VFIO selftests:
+> 
+>   https://github.com/intel/lkp-tests/blob/bbbc29c495d9617f28dbc8b799cf0dac9a1ca54e/lib/tests/pkgbuild.sh#L484
+> 
+> I'll get the ball rolling on fixing this in lkp.
 
-Yes and no.  If the payload didn't literally have all the assets needed to =
-set
-the kvmclock fields, then I wouldn't care.  But I don't think I'd be the on=
-ly
-person to see a GET+SET pair and expect GET to return exactly what was writ=
-ten
-via SET.
+Here's my proposed fix, in case anyone wants to follow along:
 
-> It is literally getting the clock as the guest sees it, and setting it
-> again on the destination from the same guest-ABI pvclock structure.
-> From the userspace point of view those actions *are* symmetrical.
-
-Only if userspace holds it just so.
-
-> I'd actually *like* it to just be a memcpy at both ends, even on the
-> SET side, just copying what userspace provides into what we offer to
-> the guest as its pvclock.
->=20
-> But as well as wanting to do some sanity checking, we also live in a
-> world where we might have to switch to the non-masterclock mode at any
-> time, and we have to ingest the information into the per-VM kvmclock
-> setup in a way that the kernel "understands", and that's why it ends up
-> implemented the way it is.
->=20
-> I looked at rewriting the masterclock base information from what
-> userspace is providing, but there are *host* TSC values in there, and
-> it ended up in some cases wanting to set ka->master_cycle_now to a
-> value which is *negative* on the new host, and I didn't want to
-> exercise that wrap-around path. So instead we just adjust
-> ka->kvmclock_offset to give appropriate results based on the existing
-> masterclock base.
->=20
-> Each vCPU's pvclock is then *regenerated* from the VM-side kvmclock
-> data, giving rise to that annoying =C2=B11ns discrepancy that I whined ab=
-out
-> a while back, but didn't give in to my perfectionism and eliminate...
-> yet.
->=20
-> As far as userspace is concerned, KVM_SET_CLOCK_GUEST *does* set the
-> entire clock (at least the relationship between guest TSC and kvmclock
-> nanoseconds, which is what it's for). It's just that the kernel then
-> "tweaks" it a little bit to give a slightly different y=3Dm(x-x')+c
-> equation which is still within the noise of the original.
-
-Again, if and only if the fields match what has been written previoiusly.  =
-To
-me, that's not a SET operation given the full inputs.
-
-I completely agree that conceptually this is intended to SET the entire clo=
-ck,
-but as you note above, reality doesn't allow for that.
-
-> And the kernel actually does that kind of 'tweak' all the time.
-> Although we're working on narrowing them down because "within the
-> noise" is in the eye of the beholder; Dongli had some patches for that
-> which I think I rounded up and included?
->=20
-> > But all of that metadata is just a means to an end: the one and only go=
-al is to
-> > calculate the per-VM kvmclock_offset for the "new" host's TSC+time snap=
-shot, by
-> > computing the nanoseconds delta for the new snapshot as if it the guest=
- observed
-> > the TSC while running on the old host.
->=20
-> That is currently how it is implemented. It isn't the API contract.
->=20
-> > And that is done in the kernel instead of in userspace to minimize the =
-amount of
-> > slop introduced due to delay between taking the snapshot and computing =
-the offset.
->=20
-> Huh? There should be no delays here. If *anything* in this new code is
-> done with something other than a *simultaneous* reading of TSC and
-> ktime that I sweated blood and tears and got shouted at by Thomas for,
-> then that *is* something I care about...
-
-Sorry, I didn't mean to imply there would be delay on the SET side.  What I=
- was
-trying to say is that if this were punted to userspace, then there _would_ =
-be a
-ton of slop because it would be practically impossible for userspace to pro=
-vide
-the correct offset. (I was walking myself through why KVM needed to provide=
- uAPI
-to compute the offset, as opposed to provide uAPI to let userspace jam in w=
-hatever
-value it wanted).
+  https://github.com/intel/lkp-tests/pull/567
