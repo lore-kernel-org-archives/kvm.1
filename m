@@ -1,116 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C3242BE8A;
-	Tue, 11 Aug 2026 10:06:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B3D438FF3;
+	Tue, 11 Aug 2026 10:15:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786442777; cv=none; b=GTaF19UVvO6uvyvLgOKRphgZOcjFMoodHLc5oywJcxvkHomRIxI9xW/9EpDljyRK8+5CSdSX8SvvV/7THZ+kWpI82IRZHqsOPVM0StrXcitzxHhb/C/XucPCx2ckA1xL1tQJmeU7xM9C4atyxEWEK+UNQ5sVzIorfOsoksT5TdA=
+	t=1786443355; cv=none; b=pdAcUQnGbj4m5XS5dAPFOiIbyN5vJ7Nd7XEe3PDVMe6qJAPCtjSl1wror4RwDwMWBWG05afFW4kRtUo9DvwoeKGYvidgrHryHLQU+h1ExBLbWaImjH5CMheM/ob/nrjOsmpR1I4aE034KiWh42VqaUBp2CTLfMBl7u742WB3iiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786442777; c=relaxed/simple;
-	bh=ChzBs6eFPalqN+ZhvLBVhTuPnBWGf6rgJlj+9ZyX3BA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=O+2c08vlL6rl3vPEZaQf4kSjG4m9C0q8AD+p67cpbx1QbY7UdTBxjN4+4VN5rKrOUBBrgZfMvAjlOLUgvBrKIx+1NroTv5usGp1464VVcwENDUHUDwM/CPAMD9pnHR0lg3MvvK7nIRye/dtgM7uDLQymDftQL2kPP0l+eV0/nnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IeDAQ/7I; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786443355; c=relaxed/simple;
+	bh=DGWjPLJhKAHD+YP8/zJi5RapzCJoPLj8jy1KcsBwfEw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YL00dM8byAfQZjchSJT/GE/pQPaynvSfxFHVOQuPAmcD6IOLObqp1/ZNePdt3gOaZTo2RMh45Qb/xwYQ1vVLN1lNRWioSPikgUkUbTD1YD006tYuI1J2vHO6JQFXPi8n4Q8O3QALrQtf3b7WFJ9atb0S83uagY2i+oCt8E5H/0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=C+aahvhe; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IeDAQ/7I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4701F000E9;
-	Tue, 11 Aug 2026 10:06:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786442767;
-	bh=uSgyWUQUOXkT3ixZAZs04DUNanjZeEZwO2+Fu0C0pOU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=IeDAQ/7Ish/yX0U8VJXoYoq4pKb7kydnqDGq/pZDcnkkADYcmeOfiyjd/6K4fk7IH
-	 cD1VmCa377mV5C7Cj0vQzAc2AaiKI0TEGHX+U9dsQGnFq+puC2A9vz85sQwUiPpob+
-	 br1klWfTZVFVWBlODjbrY3ZmJgoyU5EMYoE8/kHeBCejB6ke4jvIlEH5OBQMIZa5Pl
-	 dwv9cup14TcREBxrxzhzwHaGzpYe3kbMzp1upF8cguLIWjEwooCTtLccIjuF7PRNOh
-	 pQysWZPHJp3QJ/A7Uqv3HkfY9Gk5toww7/fsEf60j8QNVj4sYYJTNbMd7S/jJfTE8V
-	 QXq9+WdeSKFUw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Tarun Sahu <tarunsahu@google.com>,  fuad.tabba@linux.dev,  Andrew Morton
- <akpm@linux-foundation.org>,  seanjc@google.com,  dmatlack@google.com,
-  Shuah Khan <skhan@linuxfoundation.org>,  Jonathan Corbet
- <corbet@lwn.net>,  david@redhat.com,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Pratyush Yadav <pratyush@kernel.org>,
-  sagis@google.com,  Paolo Bonzini <pbonzini@redhat.com>,  Mike Rapoport
- <rppt@kernel.org>,  Alexander Graf <graf@amazon.com>,
-  linux-kselftest@vger.kernel.org,  andre.przywara@arm.com,
-  michael.roth@amd.com,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
-  will@kernel.org,  vannapurve@google.com,  maz@kernel.org,
-  fvdl@google.com,  kvm@vger.kernel.org,  oliver.upton@linux.dev,
-  kvmarm@lists.linux.dev,  alexandru.elisei@arm.com,  skhawaja@google.com,
-  aneesh.kumar@kernel.org,  linux-doc@vger.kernel.org,  David Hildenbrand
- <david@kernel.org>,  yan.y.zhao@intel.com,  kexec@lists.infradead.org,
-  suzuki.poulose@arm.com
-Subject: Re: [PATCH v4 11/11] KVM: selftests: Add guest_memfd_preservation_test
-In-Reply-To: <CAEvNRgEbS06snhyHznPSqxnUrdudVEKUuOpPwnU+AJATWFBRBA@mail.gmail.com>
-	(Ackerley Tng's message of "Thu, 30 Jul 2026 11:18:44 -0700")
-References: <20260728121138.1103610-1-tarunsahu@google.com>
-	<20260728121138.1103610-12-tarunsahu@google.com>
-	<CAEvNRgEbS06snhyHznPSqxnUrdudVEKUuOpPwnU+AJATWFBRBA@mail.gmail.com>
-Date: Tue, 11 Aug 2026 12:06:00 +0200
-Message-ID: <2vxzy0ed3rav.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="C+aahvhe"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description;
+	bh=wAdCPHnQoZ+4/m9bjBDY7pqq+MSFVECL1AbZ2EiP2MU=; b=C+aahvheYFVHjTu7GEj16sv1ge
+	MSESyGTe4gl30BuNbk14UbHv0jba6BfBLiBzP745iKsaE9j9vhNY6oEh4OUyI4IiVM77/P8ktHkXb
+	RsNdPb2oiHU46hNpqPaX8ZXt6zPeMBvPZwqoryTQGlEuvciH85XJES/e6DTHru4+Cr4kj9QEQ19eE
+	a1DoLyFkiaSuQ9ElpytMHY5pIfOREi4y+9C0sn0Xtb0DsZC3SXFK04FMoknh8NF5FOCq9W5ryRu2h
+	FMcjWjs0nZjgrC3BPrLyLFwftIgiW/c2ribW1BT6C+AdwozFmVZxj/GNjyY6+pg24LAD306htQkdz
+	CpOUeHqg==;
+Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wtj60-0000000GFnS-1Tir;
+	Tue, 11 Aug 2026 09:48:42 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
+	id 1wtj5z-00000000PjJ-36AO;
+	Tue, 11 Aug 2026 10:48:31 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: seanjc@google.com,
+	pbonzini@redhat.com
+Cc: dwmw@amazon.co.uk,
+	paul@xen.org,
+	joao.m.martins@oracle.com,
+	boris.ostrovsky@oracle.com,
+	ankur.a.arora@oracle.com,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	x86@kernel.org,
+	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,
+	syzkaller-bugs@googlegroups.com,
+	suryasaimadhu369@gmail.com,
+	lkp@intel.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 04/11] KVM: x86/xen: Latch shinfo mode in kvm_xen_set_evtchn_fast()
+Date: Tue, 11 Aug 2026 10:37:06 +0100
+Message-ID: <20260811094829.98794-5-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260811094829.98794-1-dwmw2@infradead.org>
+References: <20260811094829.98794-1-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Sender: David Woodhouse <dwmw2@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On Thu, Jul 30 2026, Ackerley Tng wrote:
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-> Tarun Sahu <tarunsahu@google.com> writes:
->
->> Add guest_memfd_preservation_test to verify that KVM VM state and guest
->> memory backed by guest_memfd are preserved across a kexec reboot via Live
->> Update Orchestrator (LUO).
->>
->> This test includes multiple tests
->> - (A) Test to preserve non-guest_memfd, non-memfd which must fail (/dev/null)
->> - (B) Test to preserve guest_memfd with no INIT_SHARED flag which must fail
->> - (C) Test to allocate the guest_memfd memory after preservation because
->>   preservation makes the guest_memfd frozen. Which must fail as well.
->> - (D) Test to verify guest_memfd with INIT_SHARED flag preservation across
->>   kexec: Below is the details of stages in this test.
-[...]
->> +++ b/tools/testing/selftests/kvm/guest_memfd_preservation_test.c
->> @@ -0,0 +1,357 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Copyright (C) 2026, Google LLC.
->> + *
->> + * Author: Tarun Sahu <tarunsahu@google.com>
->> + *
->> + * Test for VM and guest_memfd preservation across kexec (Live Update) via LUO.
->> + *
->> + * NOTE: This is a MANUAL test and is excluded from automated CI/testing
->> + * frameworks because Stage 1 daemonizes into the background to pin resources
->> + * and requires a human operator to manually trigger kexec before Stage 2
->> + * is executed. Running Stage 1 automatically would leak the background daemon
->> + * and cause CI runners to falsely interpret it as a passed test.
->> + *
+kvm_xen_set_evtchn_fast() assumes the port range check in
+max_evtchn_port() and the bitmap layout selection observe the same
+shinfo mode, but each calls kvm_xen_has_64bit_shinfo() separately.
+If the guest changes the mode in between, a port accepted by the
+64-bit range check is handled with the 32-bit layout, and
+port_word_bit falls outside evtchn_pending_sel.
 
-I think this is fine as a first step but we really should automate
-these.
+Latch kvm_xen_has_64bit_shinfo() once on entry so the range check
+and both layout computations use the same value.
 
-We have some infrastructure to automate other live update tests across
-both stages already by launching a VM under qemu and making the test
-process as the init task. See tools/testing/selftests/kho/vmtest.sh. For
-KVM tests you'd need the runner to be able to run nested VMs.
+In practice this is harmless: the evtchn_pending bitmap is at the same
+offset in both native and compat shared_info layouts, so a stale mode
+just results in setting a bit in what the guest (in its new compat mode)
+considers the evtchn_mask, wallclock, or the arch_shared_info fields
+which follow it — all of which are in the guest's own page. Even with
+this fix, the same corruption can occur if 64-bit mode is latched and
+the guest switches to 32-bit mode immediately afterward. Like Xen, KVM
+makes no attempt to *convert* when shinfo mode is changed. Only the
+wallclock field is updated in the new location.
 
-The script right now is pretty bare bones, but I really think we should
-spend time improving it to the point where we can automate all our tests
-using it.
+This fix is for internal consistency rather than correcting any
+observable bug.
 
->
-> Usually there aren't many printfs in tests, but since this is a MANUAL
-> test, maybe that's ok?
->
-> Would like to know what Sean thinks of this, and printfs in general.
+Fixes: 14243b387137 ("KVM: x86/xen: Add KVM_IRQ_ROUTING_XEN_EVTCHN and event channel delivery")
+Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+Closes: https://lore.kernel.org/all/aiHPPUk5DY7rH-zL@v4bel/
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+[dwmw2: Rework on top of long_mode/has_64bit_shinfo cleanups]
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+---
+ arch/x86/kvm/xen.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
+diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+index 00894afea9be..9edfdc585337 100644
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -1423,14 +1423,19 @@ static int kvm_xen_hypercall_complete_userspace(struct kvm_vcpu *vcpu)
+ 	return kvm_xen_hypercall_set_result(vcpu, run->xen.u.hcall.result);
+ }
+ 
+-static inline int kvm_max_evtchn_port(struct kvm *kvm)
++static inline int max_evtchn_port(bool has_64bit_shinfo)
+ {
+-	if (kvm_xen_has_64bit_shinfo(kvm))
++	if (has_64bit_shinfo)
+ 		return EVTCHN_2L_NR_CHANNELS;
+ 	else
+ 		return COMPAT_EVTCHN_2L_NR_CHANNELS;
+ }
+ 
++static inline int kvm_max_evtchn_port(struct kvm *kvm)
++{
++	return max_evtchn_port(kvm_xen_has_64bit_shinfo(kvm));
++}
++
+ static bool wait_pending_event(struct kvm_vcpu *vcpu, int nr_ports,
+ 			       evtchn_port_t *ports)
+ {
+@@ -1800,8 +1805,9 @@ static void kvm_xen_check_poller(struct kvm_vcpu *vcpu, int port)
+ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ {
+ 	struct gfn_to_pfn_cache *gpc = &kvm->arch.xen.shinfo_cache;
+-	struct kvm_vcpu *vcpu;
++	bool has_64bit_shinfo = kvm_xen_has_64bit_shinfo(kvm);
+ 	unsigned long *pending_bits, *mask_bits;
++	struct kvm_vcpu *vcpu;
+ 	unsigned long flags;
+ 	int port_word_bit;
+ 	bool kick_vcpu = false;
+@@ -1817,7 +1823,7 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 		WRITE_ONCE(xe->vcpu_idx, vcpu->vcpu_idx);
+ 	}
+ 
+-	if (xe->port >= kvm_max_evtchn_port(kvm))
++	if (xe->port >= max_evtchn_port(has_64bit_shinfo))
+ 		return -EINVAL;
+ 
+ 	rc = -EWOULDBLOCK;
+@@ -1828,7 +1834,7 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 	if (!kvm_gpc_check(gpc, PAGE_SIZE))
+ 		goto out_rcu;
+ 
+-	if (kvm_xen_has_64bit_shinfo(kvm)) {
++	if (has_64bit_shinfo) {
+ 		struct shared_info *shinfo = gpc->khva;
+ 		pending_bits = (unsigned long *)&shinfo->evtchn_pending;
+ 		mask_bits = (unsigned long *)&shinfo->evtchn_mask;
+@@ -1869,7 +1875,7 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 			goto out_rcu;
+ 		}
+ 
+-		if (kvm_xen_has_64bit_shinfo(kvm)) {
++		if (has_64bit_shinfo) {
+ 			struct vcpu_info *vcpu_info = gpc->khva;
+ 			if (!test_and_set_bit(port_word_bit, &vcpu_info->evtchn_pending_sel)) {
+ 				WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
 -- 
-Regards,
-Pratyush Yadav
+2.55.0
+
