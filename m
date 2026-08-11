@@ -1,183 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A9F3B14CD;
-	Tue, 11 Aug 2026 16:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFACA3BCD15
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 16:24:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786465200; cv=none; b=f3OpRtTqxuub4JtUAHsdHk3fEguu3csxq+21tLrZbd3aP27U/1CPd9nwlB2V+LzIwf/J9gjk9UqH7ECu9vfYRKAgfnqUSkNiYPBs6qTJsaq70eQ00OEvYbDUiM1Tq+mLU3IoDmbqPzSX7L9zdUTeoim+Uu25mQDipR7xET0XG7w=
+	t=1786465467; cv=none; b=JwfT9cUaHlggkdze9+UKDsNl4ZxyecYb6RgQikMEgIFmfY33Y1AxgOKp03m7se/JL635068tMZQj9QWZBEVFzjSarjUkC1ZsR654zrgn3+WLGewZXWQ8gX+d6Olvuo08ZSEWNe8JWwh1dnpuf3zYQI24iu/r3V09L7R62DBq9rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786465200; c=relaxed/simple;
-	bh=EgPlDPoB7az0Uv1m/TPt2TlTfcV5y6OPXkHnh19meog=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TAbBKe2GQrRBCsFdohuKCe56Pv0qZ+/E2YkmVvZQsPtLHpcvzoEUKIRMg640q9DtLGMIu2rg8NJXujMq+gRmQpL6atiEVN7WaGC/JyGQlKgcQalQA99mbzVUezkkb1WNpxoE9ePZGdwOdFYs2gCdEYr20rajq/QQJU8TMJ19Cy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D9zlC8Ue; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786465467; c=relaxed/simple;
+	bh=HwC3T/puzehhf8bSut7phAm1yYtmjq0Oh6XDbBl2A68=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RlpBf2Xsx8Qi62dyuhpTc8zK6eE6gSr41TsrCPxJsPE8yuxBxArWlgO50Nbs6XDSTnW+z23IKpwRHUZEMsEcGFS/t/Y/m/b8gkCZX0SsJT5b/zE+OKY1wMi9c8xZM8WMx9+ZMOUWiB0RCP9aOhiB4ebpI4K7P1xMKVpxol66uKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=XMRiV+3z; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D9zlC8Ue"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44F91F000E9;
-	Tue, 11 Aug 2026 16:19:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786465198;
-	bh=D7CISCZNOUacwFken/zE3V4XA36dbwptL0r4v8Me1CY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=D9zlC8Ue7xyoRzrsbwUuTAn1JU7oiR5DVZid6WO7JwmYfxYK7juv4wK4YWA3jvPG9
-	 fMNh6tkMCQAiV+0Zo803pEDObPx++QRzDbMTeqC8FVs213MQc6MHYwYbGM82/YGtMG
-	 tumFrAoC8OmH0ntJar3oMIJddzwnBWGwpC3au/UO2THkmABUJaTyb0scTymw68IjPu
-	 kkzGIAx14f0Jo7Xj9f/5/MjJGsLzrZgyFQOhYEJ9un76PSAbLqN1pq7gCZuqWWpzIm
-	 6wtuElC4RxaAl6cqVD+qTUPqAZdGhDYxOoD/cQsukiy/qeg4CvEDax1X263j94k9PW
-	 qvRYNgLu9hing==
-Message-ID: <1d8cd29b-8a4d-454c-8dce-121b97e9d52b@kernel.org>
-Date: Tue, 11 Aug 2026 18:19:31 +0200
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="XMRiV+3z"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-9063b380982so180206d6.0
+        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 09:24:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1786465465; x=1787070265; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Ge2DKXL/0cigzsh3KdWGGLhQNvufZEJOXUsvNTDWwxU=;
+        b=XMRiV+3zHn7csMteo7qplcPoE0IJjjaZOqOxsoSP1uyWa1jOVvdePlhXC+eOKo4bw/
+         1Ktyf+6oXen/UGN9QtwETFY08PBvRM3mVKYLLySMOIC8viSgDh7qLvmaBvi9aTdNw2d1
+         bP42Kc/LXzQ9PboxRgm0rsUT0kasw85YTZ6/Yub2Ues3dzsPL+kKi/bVbdI55T+I2dM2
+         c4ghxew3iGVPvg9JBKpBUMVrHLIAu1h4lTg8FDeMvrdudUTm2geMLFkhi4KttJ1AC2Tt
+         aPO7z6KCEhJxSoJqLyqKqeKfi/nLJIoJBgiBQ/jMSGN09lhDW03WNm5hv8ijAZV5YAtD
+         BUOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786465465; x=1787070265;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ge2DKXL/0cigzsh3KdWGGLhQNvufZEJOXUsvNTDWwxU=;
+        b=XgELWJU5/nd753A7CdZ1uzbQMqAWMkpMXuSg6ILp+M6vte5XDLfYmcqXNNgdVYAjTF
+         ig36bqFy7pj/6GxRugjq0OKOcF9V4+JPq+yZj+Ge1AQkvbVQeLFP35gWTAhexEl16ofw
+         wggewVXfQkm8xeHLBrrOvrx7yM6Wg9z0YIy/AiWRkXwU8kvmUlPnGnMH9KjXGnLLliE3
+         l7gG4rfH9zE0Re6+XPbjoY/o82xxNhCe57Q9ftddep5APok56wnCMbLSMpkaQOKyoYq7
+         znQIV59IIJRYohUKl6eFc9uhoQRkz+OJBJMQoKhTYTiS1Sg/D8azWHRV7WFRPvJTA7vc
+         JHMA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq3ls+4B7de3qXWxeUNXb8+cfFFeOdFBUNaWGEDZg2Lo8k0KY8ucbPbEF1fYq2/T59nzb4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0pEzED6O7/t4eO5Zc92GOI/+Wd0ZsgNjSRI+nNcVbI9S6kRZG
+	793xifL6j4EI3fiJsGaqUKce5OujiUAOl7MvSywmOiTb2oVoEt2/M4YHHCJ4xzB+BuA=
+X-Gm-Gg: AR+sD13UGaw5gUzpFEcRTw5IXCgvdHuRb6SYsQwiBzD+tBt9+IFKP0kkl04bZrcP+XH
+	wDvr9Opvebc45Nn2zsoH3v9jRmIzJF12kn8ObL8hSx7RceLne4mZIljH8rlog3j/25DBo2Ls9Cm
+	8rJvlrKW5uS/KDs2znIvIrQj9T6Yd8CrcP02tvT+ci4h4hHwo2hL8FPCQoSJWyUAmwcTsHt1Lcm
+	j1EPMu8huG2H4iTtjrg7AiTsYjA+Z2DqvlfVrU8ro8eGkTN8WlpnCTHBq6414NqjNaM1akne29m
+	rJsz/l2gW6i24e4gvisUt6m82ryQH4LKfUL147md9l2hyDL29PvgQJ0B8EQoHmlx3qzaMDaUs45
+	g/X2UOFjeQ0SbOJJZE6Ma1ebKIpfjAM0Lew++Now+REQzfuEl76ZZto2G+fqe2KsfDoqd55JDgg
+	tiLwVR7K7337O1O9jpCbMX9lwOPnMlsJFS/o/Oo8a7iTeQp4oP
+X-Received: by 2002:a05:6214:5d81:b0:8ef:ea2a:2728 with SMTP id 6a1803df08f44-90a66df2c02mr43379816d6.19.1786465464725;
+        Tue, 11 Aug 2026 09:24:24 -0700 (PDT)
+Received: from ziepe.ca ([142.166.156.215])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90a6c3c38c4sm2442696d6.36.2026.08.11.09.24.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2026 09:24:23 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wtpH5-00000002YAS-0rLs;
+	Tue, 11 Aug 2026 13:24:23 -0300
+Date: Tue, 11 Aug 2026 13:24:23 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Sean Christopherson <seanjc@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
+	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Message-ID: <20260811162423.GL544626@ziepe.ca>
+References: <a247c49dd61af1df7ddc4dcb1cccbcb36b04d9d5.camel@infradead.org>
+ <20260811135537.GC544626@ziepe.ca>
+ <1d669aca4ffee797b9c29215382444a5b23624b3.camel@infradead.org>
+ <20260811142730.GG544626@ziepe.ca>
+ <15a7bd252a9aaeefe393f5609ec383ce2c61694a.camel@infradead.org>
+ <20260811152435.GH544626@ziepe.ca>
+ <eac6f58590798a0bd96573d0ab15e0700937ec1d.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/20] mm: introduce linear_anon_page_index()
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Alex Deucher
- <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Youngjun Park <youngjun.park@lge.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kvm@vger.kernel.org, linux-s390@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
- <20260806-b4-scalable-cow-virt-pgoff-v4-3-ab318a350404@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260806-b4-scalable-cow-virt-pgoff-v4-3-ab318a350404@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <eac6f58590798a0bd96573d0ab15e0700937ec1d.camel@infradead.org>
 
-On 8/6/26 22:21, Lorenzo Stoakes (ARM) wrote:
-> This function provides the anonymous equivalent of linear_page_index(),
-> instead offsetting based on the anonymous page offset of the VMA.
+On Tue, Aug 11, 2026 at 04:29:55PM +0100, David Woodhouse wrote:
+> On Tue, 2026-08-11 at 12:24 -0300, Jason Gunthorpe wrote:
+> > It is documented to be like this, even if it is hard to test..
 > 
-> It is valid only for anonymous or MAP_PRIVATE file-backed mappings, in
-> other words CoW mappings.
+> So don't change your documentation :)
 > 
-> For pure anon VMAs, this will be equal to linear_page_index().
+> > Even for normal blocking notifiers you should not be using
+> > synchronize_rcu().
 > 
-> Assert that both of these invariants are true In linear_anon_page_index()
-> and implement the algorithm in __linear_anon_page_index().
-> 
-> Note that MAP_PRIVATE-/dev/zero mappings will satisfy vma_is_anonymous()
-> but not fulfill this invariant, so when asserting this we check
-> vma->vm_file to account for this.
-> 
-> We do not update callsites yet, so no functional change intended.
-> 
-> Also const-ify vma_is_anonymous() to make it compatible with the
-> const-ified linear_anon_page_index().
-> 
-> While we're here, update linear_page_index() to be more succinct.
-> 
-> VMA userland tests are also updated accordingly.
-> 
-> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
+> This is SRCU not RCU, and the read-side sections are converted from
+> rwlocks and never had any allocations inside them anyway.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+To be clear you should not be using any synchronize_[s]rcu() primitive
+inside the invalidation callbacks. These are well known to have
+multi-second delays on loaded systems which are a completely
+inappropriate performance characteristic for these mm callbacks.
 
--- 
-Cheers,
+This statement has nothing to do with deadlock.
 
-David
+RCU is always a trade off, you can make the read side run really fast
+and the write side is ghastly slow. If you can't handle the slow write
+you shouldn't use RCU techniques.
+
+Jason
