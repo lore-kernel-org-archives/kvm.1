@@ -1,37 +1,37 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB662FE07D;
-	Tue, 11 Aug 2026 13:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015DF311977;
+	Tue, 11 Aug 2026 13:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786454576; cv=none; b=LGhYMtUpOUL6uf0p8TGcwJAD/azUoSwyyKLTE31h40cPWsPn9VdjNI/H0+t49gVPj/7Utrf4bKIMHXFH+Djic3XDmF2pQR0vLtggn7eBiFY/cfhFL0fTq6EySEuYq2tCgtMyd41GWbpJ74Vj9xUJi5g0IF+jkP5b0lgLcefERrI=
+	t=1786454576; cv=none; b=l2NeqSvKwyI8whmJ1XqFM0tf25GcAvjH94ltJN/uDYISgOYXMm1uQqxo3wvGMB29FV14e8csJ5HQjeSxk2q87LjcS5DtFeT5TKNRtej8q8le8FJYejh4J8uKCRco0fmc8OCJM4xeaed5Y0PZIg7hqMzULPfSLhzTiIvpWMYR18w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786454576; c=relaxed/simple;
-	bh=t8lK9Snhc9yquoPRTRoV93Fn4Ux8130cQotiqUI7WSE=;
+	bh=fq6CY8sB2LogKrKscGrbqFHAiA+DZ8bXdzlJuE5HAWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z/ob/AYqOGDDc2AY5c57TP/nj5wheKkNGSHfL98waHx/J2NTWVdZFL6USy7hP/5rL1UG48sWKiWfTGG4hzBcRetvIu8IyAIQKFykWUx1pYhfU+WFLLufcDBFGjS+10dSAn78ZnN2qdGrrTlVG1lpJOkhGE1I7/RCWplL0IhQB7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=TXUVYBPu; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version:Content-Type; b=b/2EqFN+p1EE1YyYRhwljVA1vhoidwoKTzi7Jf+eMZNYG0KzeA9e4gJF2x7p19QEbpzdHx5Tn4ALc3QtNmnvaJrlA4WTdwvhoS4DqSHszc97Nd8LVwu8IcLtd4rS1qjfEx7fMWUi78m07FSUbwjVvK0WnVPkgTLdzU/NDYBS59A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pKp08oBZ; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="TXUVYBPu"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pKp08oBZ"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
 	To:From:Reply-To:Content-ID:Content-Description;
-	bh=38VDlC3T9U7k5c8RZkKKjsBg4drLylSLp9dK+J84LzQ=; b=TXUVYBPuhtawpFgnGcR2yMasLr
-	VSAED2oudrQ4i5pCQsu8QveShjkrlc9+KfZofbqxVR2YlUDScRQT8pi7BZsVnB0xZFbn+ZBRwsZKq
-	orbVM/eNfEq9xYXq98l+P32mZOkAyTJGeYwlKMjXRAMeBbDgql4frml9QBAeE+IX6+UyKBZTQVL0g
-	OfoVbYaXUNHgiyVCZ9GbDqzf+MmgyufviRLznnPkKGh4h24joZOGlIobHg1Zs9ggK3yPVHJRtkMze
-	L2A15dM3pm9RKKF+pa4W4Q2rOO6yD7xbg3e82ctr5VH2UpOjVas0oKJX+rCMN5+s7ze3S/oBngMeG
-	NwdEymXQ==;
+	bh=USjcj653Zr/NH8yJpm5nWfRcAU4X9NdS2j89SsPVCCU=; b=pKp08oBZPXCjniTyySuFCKu5nJ
+	RLrYa6iTLM6B+9D1Rk4FOw4EFynTnDPae9QXDlzN9RJhSmExEAstqEq1CsGvLD8b3w/QxYjK+3CS+
+	3FAiqNyQuzET+UzLF9iLpwZsmHTfAHiyBrcx6zcrH0HYR+2RbdbWk//ksvfUaxtzNP1ler0+9cJ6l
+	0OS8cBAcwQviCFuMmgyew0eYa3Jbq63B5xRrup0BbT3huEMvxMf4X8vUuwh6Ad9nsfknY1SoD22LL
+	F5c613VwQKS2CyqKQZI9rhi+jL8X6kq73q//lKQDOz87giznauBgir5OtmBbY8b4Y+7BsBCquXXnm
+	sTavY6vQ==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wtmRC-00000000TZ4-2wxa;
+	id 1wtmRC-00000000TZ5-37Uf;
 	Tue, 11 Aug 2026 13:22:39 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
-	id 1wtmRC-00000000Qlu-23nS;
+	id 1wtmRC-00000000Qly-2Jo8;
 	Tue, 11 Aug 2026 14:22:38 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: seanjc@google.com,
@@ -53,9 +53,9 @@ Cc: dwmw2@infradead.org,
 	syzkaller-bugs@googlegroups.com,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 5/6] KVM: x86: Request the guest TLB flush from record_steal_time()
-Date: Tue, 11 Aug 2026 13:49:55 +0100
-Message-ID: <20260811132237.102400-6-dwmw2@infradead.org>
+Subject: [PATCH v4 6/6] KVM: x86: Use gfn_to_pfn_cache for steal time / preempted status
+Date: Tue, 11 Aug 2026 13:49:56 +0100
+Message-ID: <20260811132237.102400-7-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260811132237.102400-1-dwmw2@infradead.org>
 References: <20260811132237.102400-1-dwmw2@infradead.org>
@@ -70,90 +70,308 @@ Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Carsten Stollmaier <stollmc@amazon.com>
 
-record_steal_time() performs a TLB flush on the guest's behalf when the
-guest sets KVM_VCPU_FLUSH_TLB. With shadow paging, kvm_vcpu_flush_tlb_guest()
-ends up in mmu_sync_children(), which can reschedule via
-cond_resched_rwlock_write(). That is why the flush currently sits between
-a user_access_end() and a fresh user_access_begin(): it cannot be done
-while the guest page is mapped for access.
+This largely reverts commit 7e2175ebd695 ("KVM: x86: Fix recording of
+guest steal time / preempted status"), which dropped the use of the
+gfn_to_pfn_cache because it was not integrated with the MMU notifiers
+at the time. That shortcoming has long since been addressed, making
+the GPC work correctly for this use case.
 
-Raise KVM_REQ_TLB_FLUSH_GUEST instead of flushing inline, and move the
-processing of KVM_REQ_STEAL_UPDATE ahead of where the TLB flush requests
-are serviced in vcpu_enter_guest() so that the flush still happens before
-the vCPU enters the guest. There is no requirement for it to complete any
-earlier than that.
+Aside from cleaning up the last open-coded assembler access to user
+addresses and associated explicit asm exception fixups, moving back
+to the now-functional GPC also resolves an issue with contention on
+the mmap_lock with userfaultfd. The contention issue is as follows:
 
-kvm_make_request() on the vCPU which is running is nothing more than a
-barrier and a set_bit(), so unlike the flush itself it can be done from
-any context — which lets the surrounding access be simplified later.
+On vcpu_run, before entering the guest, the update of the steal time
+information causes a page-fault if the page is not present. In our
+scenario, this gets handled by do_user_addr_fault() and successively
+handle_userfault() because the region is registered to that.
 
-Note that the xchg() must stay where it is: it atomically consumes any
-KVM_VCPU_FLUSH_TLB which the guest has set, as required by commit
-b043138246a4 ("x86/KVM: Make sure KVM_VCPU_FLUSH_TLB flag is not missed").
+Since handle_userfault() uses TASK_INTERRUPTIBLE, it is interruptible
+by signals. But do_user_addr_fault() then busy-retries if the pending
+signal is non-fatal, which leads to heavy contention of the mmap_lock.
 
-Reported-by: Sashiko AI review <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/all/20260530061932.7849D1F00893@smtp.kernel.org
-Suggested-by: Sean Christopherson <seanjc@google.com>
+By restoring the use of GPC for accessing the guest steal time, the
+contention is avoided and refreshing the GPC happens when the vCPU is
+next scheduled.
+
+Since the gfn_to_pfn_cache gives a kernel mapping rather than a
+userspace HVA, accesses are now plain C instead of unsafe_put_user()
+et al. Use READ_ONCE()/WRITE_ONCE() to prevent the compiler from
+reordering or tearing the accesses, and add an smp_wmb() before the
+final version increment to ensure the data writes are ordered before
+the seqcount update — the old unsafe_put_user() inline assembly acted
+as an implicit compiler barrier.
+
+In kvm_steal_time_set_preempted(), which is called from the scheduler
+path via kvm_sched_out(), just take the RCU read lock and bail if the
+cache is not currently valid. The cache cannot be refreshed from that
+context, but setting the preempted flag is best-effort anyway — the
+old HVA-based code used copy_to_user_nofault(), which could equally
+silently fail — and kvm_arch_vcpu_load() unconditionally raises
+KVM_REQ_STEAL_UPDATE, so record_steal_time() will refresh the cache
+from task context before the vCPU next enters the guest.
+
+[dwmw2: Port to RCU-protected GPC. The original was written against a
+        gpc->lock rwlock and needed a read_trylock() dance to be safe
+        from the scheduler path on PREEMPT_RT; rcu_read_lock() is
+        unconditionally safe there, so all of that goes away.]
+
+Signed-off-by: Carsten Stollmaier <stollmc@amazon.com>
+Co-developed-by: David Woodhouse <dwmw@amazon.co.uk>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Assisted-by: Claude:claude-mythos-5
 ---
- arch/x86/kvm/x86.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/kvm_host.h |   2 +-
+ arch/x86/kvm/msrs.c             |   7 +-
+ arch/x86/kvm/x86.c              | 119 +++++++++++++++-----------------
+ 3 files changed, 62 insertions(+), 66 deletions(-)
 
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 283847619ff8..93514cb1f2f7 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -873,7 +873,7 @@ struct kvm_vcpu_arch {
+ 		u8 preempted;
+ 		u64 msr_val;
+ 		u64 last_steal;
+-		struct gfn_to_hva_cache cache;
++		struct gfn_to_pfn_cache cache;
+ 	} st;
+ 
+ 	u64 l1_tsc_offset;
+diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
+index 66fa7140d65d..37d79d84e2f8 100644
+--- a/arch/x86/kvm/msrs.c
++++ b/arch/x86/kvm/msrs.c
+@@ -1717,8 +1717,13 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 
+ 		vcpu->arch.st.msr_val = data;
+ 
+-		if (!(data & KVM_MSR_ENABLED))
++		if (!(data & KVM_MSR_ENABLED)) {
++			kvm_gpc_deactivate(&vcpu->arch.st.cache);
+ 			break;
++		}
++
++		kvm_gpc_activate(&vcpu->arch.st.cache, data & ~KVM_MSR_ENABLED,
++				 sizeof(struct kvm_steal_time));
+ 
+ 		kvm_make_request(KVM_REQ_STEAL_UPDATE, vcpu);
+ 
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 75e5f894153f..d2e60d1146e0 100644
+index d2e60d1146e0..ac961f4c91da 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -2106,8 +2106,22 @@ static void record_steal_time(struct kvm_vcpu *vcpu)
+@@ -2047,12 +2047,11 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_service_local_tlb_flush_requests);
  
- 		trace_kvm_pv_tlb_flush(vcpu->vcpu_id,
- 				       st_preempted & KVM_VCPU_FLUSH_TLB);
-+		/*
-+		 * Request the flush instead of performing it inline. With
-+		 * shadow paging kvm_vcpu_flush_tlb_guest() can reschedule (via
-+		 * mmu_sync_children()), which is why the user access above has
-+		 * to be closed before it. Requesting the flush is just a bit
-+		 * set on the running vCPU, and the request is serviced before
-+		 * the vCPU enters the guest; nothing requires the flush to
-+		 * have completed any earlier than that.
-+		 *
-+		 * Note the xchg above must remain as-is: it atomically
-+		 * consumes any KVM_VCPU_FLUSH_TLB the guest set, as required
-+		 * by commit b043138246a4 ("x86/KVM: Make sure
-+		 * KVM_VCPU_FLUSH_TLB flag is not missed").
-+		 */
+ static void record_steal_time(struct kvm_vcpu *vcpu)
+ {
+-	struct gfn_to_hva_cache *ghc = &vcpu->arch.st.cache;
+-	struct kvm_steal_time __user *st;
+-	struct kvm_memslots *slots;
+-	gpa_t gpa = vcpu->arch.st.msr_val & KVM_STEAL_VALID_BITS;
++	struct gfn_to_pfn_cache *gpc = &vcpu->arch.st.cache;
++	struct kvm_steal_time *st;
+ 	u64 steal;
+ 	u32 version;
++	int idx;
+ 
+ 	if (kvm_xen_msr_enabled(vcpu->kvm)) {
+ 		kvm_xen_runstate_set_running(vcpu);
+@@ -2065,42 +2064,27 @@ static void record_steal_time(struct kvm_vcpu *vcpu)
+ 	if (WARN_ON_ONCE(current->mm != vcpu->kvm->mm))
+ 		return;
+ 
+-	slots = kvm_memslots(vcpu->kvm);
++	/* We rely on the fact that it fits in a single page. */
++	BUILD_BUG_ON((sizeof(*st) - 1) & KVM_STEAL_VALID_BITS);
+ 
+-	if (unlikely(slots->generation != ghc->generation ||
+-		     gpa != ghc->gpa ||
+-		     kvm_is_error_hva(ghc->hva) || !ghc->memslot)) {
+-		/* We rely on the fact that it fits in a single page. */
+-		BUILD_BUG_ON((sizeof(*st) - 1) & KVM_STEAL_VALID_BITS);
++	idx = srcu_read_lock(&vcpu->kvm->gpc_srcu);
++	while (!kvm_gpc_check(gpc, sizeof(*st))) {
++		srcu_read_unlock(&vcpu->kvm->gpc_srcu, idx);
+ 
+-		if (kvm_gfn_to_hva_cache_init(vcpu->kvm, ghc, gpa, sizeof(*st)) ||
+-		    kvm_is_error_hva(ghc->hva) || !ghc->memslot)
++		if (kvm_gpc_refresh(gpc, sizeof(*st)))
+ 			return;
++
++		idx = srcu_read_lock(&vcpu->kvm->gpc_srcu);
+ 	}
+ 
+-	st = (struct kvm_steal_time __user *)ghc->hva;
++	st = gpc->khva;
++
+ 	/*
+ 	 * Doing a TLB flush here, on the guest's behalf, can avoid
+ 	 * expensive IPIs.
+ 	 */
+ 	if (guest_pv_has(vcpu, KVM_FEATURE_PV_TLB_FLUSH)) {
+-		u8 st_preempted = 0;
+-		int err = -EFAULT;
+-
+-		if (!user_access_begin(st, sizeof(*st)))
+-			return;
+-
+-		asm volatile("1: xchgb %0, %2\n"
+-			     "xor %1, %1\n"
+-			     "2:\n"
+-			     _ASM_EXTABLE_UA(1b, 2b)
+-			     : "+q" (st_preempted),
+-			       "+&r" (err),
+-			       "+m" (st->preempted));
+-		if (err)
+-			goto out;
+-
+-		user_access_end();
++		u8 st_preempted = xchg(&st->preempted, 0);
+ 
+ 		vcpu->arch.st.preempted = 0;
+ 
+@@ -2122,39 +2106,33 @@ static void record_steal_time(struct kvm_vcpu *vcpu)
+ 		 */
  		if (st_preempted & KVM_VCPU_FLUSH_TLB)
--			kvm_vcpu_flush_tlb_guest(vcpu);
-+			kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
+ 			kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
+-
+-		if (!user_access_begin(st, sizeof(*st)))
+-			goto dirty;
+ 	} else {
+-		if (!user_access_begin(st, sizeof(*st)))
+-			return;
+-
+-		unsafe_put_user(0, &st->preempted, out);
++		WRITE_ONCE(st->preempted, 0);
+ 		vcpu->arch.st.preempted = 0;
+ 	}
  
- 		if (!user_access_begin(st, sizeof(*st)))
- 			goto dirty;
-@@ -8089,6 +8103,14 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 			if (unlikely(r))
- 				goto out;
- 		}
-+		/*
-+		 * Process the steal time update before the TLB flush requests
-+		 * are serviced below; a subsequent change will have it request
-+		 * KVM_REQ_TLB_FLUSH_GUEST on the guest's behalf rather than
-+		 * performing the flush itself.
-+		 */
-+		if (kvm_check_request(KVM_REQ_STEAL_UPDATE, vcpu))
-+			record_steal_time(vcpu);
- 		if (kvm_check_request(KVM_REQ_MMU_SYNC, vcpu))
- 			kvm_mmu_sync_roots(vcpu);
- 		if (kvm_check_request(KVM_REQ_LOAD_MMU_PGD, vcpu))
-@@ -8138,8 +8160,6 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 			r = 1;
- 			goto out;
- 		}
--		if (kvm_check_request(KVM_REQ_STEAL_UPDATE, vcpu))
--			record_steal_time(vcpu);
- 		if (kvm_check_request(KVM_REQ_PMU, vcpu))
- 			kvm_pmu_handle_event(vcpu);
- 		if (kvm_check_request(KVM_REQ_PMI, vcpu))
+-	unsafe_get_user(version, &st->version, out);
++	version = READ_ONCE(st->version);
+ 	if (version & 1)
+ 		version += 1;  /* first time write, random junk */
+ 
+ 	version += 1;
+-	unsafe_put_user(version, &st->version, out);
++	WRITE_ONCE(st->version, version);
+ 
+ 	smp_wmb();
+ 
+-	unsafe_get_user(steal, &st->steal, out);
++	steal = READ_ONCE(st->steal);
+ 	steal += current->sched_info.run_delay -
+ 		vcpu->arch.st.last_steal;
+ 	vcpu->arch.st.last_steal = current->sched_info.run_delay;
+-	unsafe_put_user(steal, &st->steal, out);
++	WRITE_ONCE(st->steal, steal);
++
++	smp_wmb();
+ 
+ 	version += 1;
+-	unsafe_put_user(version, &st->version, out);
++	WRITE_ONCE(st->version, version);
+ 
+- out:
+-	user_access_end();
+- dirty:
+-	mark_page_dirty_in_slot(vcpu->kvm, ghc->memslot, gpa_to_gfn(ghc->gpa));
++	kvm_gpc_mark_dirty_in_slot(gpc);
++	srcu_read_unlock(&vcpu->kvm->gpc_srcu, idx);
+ }
+ 
+ static inline bool kvm_can_mwait_in_guest(void)
+@@ -2628,11 +2606,8 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ 
+ static void kvm_steal_time_set_preempted(struct kvm_vcpu *vcpu)
+ {
+-	struct gfn_to_hva_cache *ghc = &vcpu->arch.st.cache;
+-	struct kvm_steal_time __user *st;
+-	struct kvm_memslots *slots;
+-	static const u8 preempted = KVM_VCPU_PREEMPTED;
+-	gpa_t gpa = vcpu->arch.st.msr_val & KVM_STEAL_VALID_BITS;
++	struct gfn_to_pfn_cache *gpc = &vcpu->arch.st.cache;
++	struct kvm_steal_time *st;
+ 
+ 	/*
+ 	 * The vCPU can be marked preempted if and only if the VM-Exit was on
+@@ -2657,20 +2632,31 @@ static void kvm_steal_time_set_preempted(struct kvm_vcpu *vcpu)
+ 	if (unlikely(current->mm != vcpu->kvm->mm))
+ 		return;
+ 
+-	slots = kvm_memslots(vcpu->kvm);
+-
+-	if (unlikely(slots->generation != ghc->generation ||
+-		     gpa != ghc->gpa ||
+-		     kvm_is_error_hva(ghc->hva) || !ghc->memslot))
+-		return;
+-
+-	st = (struct kvm_steal_time __user *)ghc->hva;
+-	BUILD_BUG_ON(sizeof(st->preempted) != sizeof(preempted));
+-
+-	if (!copy_to_user_nofault(&st->preempted, &preempted, sizeof(preempted)))
++	/*
++	 * This is called from the scheduler path (via kvm_sched_out), so
++	 * the cache cannot be refreshed here.  Setting 'preempted' is
++	 * best-effort anyway; the old HVA-based code used
++	 * copy_to_user_nofault(), which could also silently fail.  If the
++	 * cache is invalid, it will be refreshed from task context by
++	 * record_steal_time() before the vCPU next enters the guest, since
++	 * kvm_arch_vcpu_load() unconditionally raises KVM_REQ_STEAL_UPDATE.
++	 */
++	guard(srcu)(&vcpu->kvm->gpc_srcu);
++	if (kvm_gpc_check(gpc, sizeof(*st))) {
++		st = gpc->khva;
++		WRITE_ONCE(st->preempted, KVM_VCPU_PREEMPTED);
+ 		vcpu->arch.st.preempted = KVM_VCPU_PREEMPTED;
+ 
+-	mark_page_dirty_in_slot(vcpu->kvm, ghc->memslot, gpa_to_gfn(ghc->gpa));
++		kvm_gpc_mark_dirty_in_slot(gpc);
++	}
++}
++
++static void kvm_steal_time_reset(struct kvm_vcpu *vcpu)
++{
++	kvm_gpc_deactivate(&vcpu->arch.st.cache);
++	vcpu->arch.st.preempted = 0;
++	vcpu->arch.st.msr_val = 0;
++	vcpu->arch.st.last_steal = 0;
+ }
+ 
+ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+@@ -9368,6 +9354,8 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+ 
+ 	kvm_gpc_init(&vcpu->arch.pv_time, vcpu->kvm);
+ 
++	kvm_gpc_init(&vcpu->arch.st.cache, vcpu->kvm);
++
+ 	if (!irqchip_in_kernel(vcpu->kvm) || kvm_vcpu_is_reset_bsp(vcpu))
+ 		kvm_set_mp_state(vcpu, KVM_MP_STATE_RUNNABLE);
+ 	else
+@@ -9475,6 +9463,8 @@ void kvm_arch_vcpu_destroy(struct kvm_vcpu *vcpu)
+ 	kvm_clear_async_pf_completion_queue(vcpu);
+ 	kvm_mmu_unload(vcpu);
+ 
++	kvm_steal_time_reset(vcpu);
++
+ 	kvmclock_reset(vcpu);
+ 
+ 	for_each_possible_cpu(cpu)
+@@ -9595,7 +9585,8 @@ void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
+ 	kvm_make_request(KVM_REQ_EVENT, vcpu);
+ 	vcpu->arch.apf.msr_en_val = 0;
+ 	vcpu->arch.apf.msr_int_val = 0;
+-	vcpu->arch.st.msr_val = 0;
++
++	kvm_steal_time_reset(vcpu);
+ 
+ 	kvmclock_reset(vcpu);
+ 
 -- 
 2.55.0
 
