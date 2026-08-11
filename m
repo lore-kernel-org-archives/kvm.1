@@ -1,96 +1,112 @@
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5216B40F740;
-	Tue, 11 Aug 2026 14:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FE3442FB6
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 14:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786459347; cv=none; b=hySElm7L21+OnHr7tmKTdxw+2H+taDS02XVAyZf4/+uUBbqujzA9LmI6iBeWq8qNvPqoit7cg1Dcv4wA9jxFblvtzQ5uWyhvS4h8F+HVem3iK9o4GYgYz2fqQPdK2qkn8Zw1yvVfRHgVytMGD1OZI/SWJt8lrutATAuaYWkibcg=
+	t=1786459467; cv=none; b=NvQEWSPyV71ZLDS2n9zxu5MAbtZ/B2nOXDvCUuMv0yFybqC6EC96o/pgegmiisYqOuADHU/es79QCTpLT48K6kO9fpls3MwEWcSu7Weh7CR4GW8zxBHpP0Sdkgauu8sLlueArYcy0u2SjTG6140bwlt00iWQJUcjaI5KDfkktRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786459347; c=relaxed/simple;
-	bh=x8JM/8uKzUCIYdjLzqYgrf/L/uVF3VjP5scTvdfVuog=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rFR9xJWhV7U6G1sVVRnbTGfmwVFBs92f/ONLtYdyWmKaU1S8B0repKxIN3Nkropvs2umZrWrJStqdxJfWFbhXrRwAIEgqCKzs3oPl5jvzFQTenEBP3RL2Z7Fk66uYBte6GQq1P1qFpUsH5qXHqf94bzapnaqcyWY9psqGsVC4L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 80210A04AB;
-	Tue, 11 Aug 2026 14:42:22 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf06.hostedemail.com (Postfix) with ESMTPA id 1BDE720010;
-	Tue, 11 Aug 2026 14:42:18 +0000 (UTC)
-Date: Tue, 11 Aug 2026 10:42:29 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand	 <david@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, "Liam R. Howlett"	 <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport	 <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko	 <mhocko@suse.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams
- <clrkwllms@kernel.org>, Simona Vetter	 <simona.vetter@ffwll.ch>,
- =?UTF-8?B?SsOpcsO0bWU=?= Glisse  <jglisse@redhat.com>, Christian
- =?UTF-8?B?S8O2bmln?=	 <christian.koenig@amd.com>, "Paul E. McKenney"
- <paulmck@kernel.org>, Sean Christopherson <seanjc@google.com>, Paolo
- Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, kvm@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <20260811104229.72fdd928@gandalf.local.home>
-In-Reply-To: <a552b227e18ddbb3fa1f2edf2d1cb30ee6ccff13.camel@infradead.org>
-References: <a247c49dd61af1df7ddc4dcb1cccbcb36b04d9d5.camel@infradead.org>
-	<20260811135537.GC544626@ziepe.ca>
-	<1d669aca4ffee797b9c29215382444a5b23624b3.camel@infradead.org>
-	<20260811142730.GG544626@ziepe.ca>
-	<a552b227e18ddbb3fa1f2edf2d1cb30ee6ccff13.camel@infradead.org>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1786459467; c=relaxed/simple;
+	bh=z7M237ruQK7gHK+Tu+KiQLo1PpbdrIFE0xtJTv+oKEs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=EBUFx179qof7TuuMKlp9pIWaAPGM7Pde76OMgzwb2CFiCM2AJzTYEVSP2U/82+/4TZC02JLJXukWQAOfNTEmQ/kd7Dr1oMYWPgADYZmKhwSwB9MULxPLgjIbNcuMOhKZmezRsvl3Bsply5m2ioClGeoPtcZE1kwesnZ2rjn9efs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d/jUQlgJ; arc=none smtp.client-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d/jUQlgJ"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84e3d575d6eso5831947b3a.3
+        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 07:44:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786459466; x=1787064266; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RnIOn+7Rt31kCAO2bTU4UwHzTf1viFKgNwstMdN6akw=;
+        b=d/jUQlgJRnxhy8XZx1HF54pRmognoU2MuX63Z4aSC15ksNvqhE+qGRfWkiZEt3aFPF
+         xw1vKfMhSpeN96p/6l6hFumT2ATcb1Vz9QFNEUUe1/3Ld45TgxkbW0hFuDBA/HqnI6EZ
+         lYpQ4VM8tFgrxEIyBJQXOyzIM7sO23SvSSSQWkPUdsRuxwMKgz96W1Jb+ODwWMWBoO/A
+         hOCwBXN66A3fqjJPMGRr0epi0EiJZ6KFcFJl/CCZ7lBlTPu3NQYXmIpo8fku2HYsoqju
+         KsDAdq6RZ6b9uZCO1741AiqFCs7JC+j8tzmDI+/tiRJEqJxuqTSoAvyvltkLWvrUnDxH
+         exhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786459466; x=1787064266;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RnIOn+7Rt31kCAO2bTU4UwHzTf1viFKgNwstMdN6akw=;
+        b=JkOzwTZOsxmgz2+dFxmwudjNOYM7u+HZyMlseIXoyqIMwSxKwvDBA6Zb4/0Fw50sc0
+         WKYiEEwy6jUmHzIJvthw59pS1sLCt4um1FZIl87b5TYofU2of2g+MpVtVIXbeIR07H4/
+         AzOn62aA+UjD5QGil9XSS7AFIX3afRAMuEJllyNNZIbM5SPQJcWx1aV6dqa/l4AkoB4p
+         gykJ5zUl7+eeF9XCx3Q0UaiUWMjKlyR/RmoYVuqkRo/53WsjEGawU++Dz2szC5fCTPEY
+         NxQezr2w0LoJSzGtY3+HqAf0FaEsKpXbZ+i6fFGhtt30krE/PSR7LqbO8UXQidVoFNRh
+         Uv1w==
+X-Forwarded-Encrypted: i=1; AHgh+RrN6rGJ+jNQ4blia0P7MFpG4ZBfrKQuDiXnL9xgpihS8SCHY2+7iSltyhd35n0uf07KgNQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmVGWFC2iqsM/3q3w25r2uBRyxNIoejYXC0tIAK7Z4uLYhFERV
+	KHYmIsZDp720qtxq1WY7ZK4I3RhdC4v1X1y8+StiuppgI/2xwvW9B4iBfmiisRCgV4M04XBdytc
+	Ssi/cVQ==
+X-Received: from pfbhu19.prod.google.com ([2002:a05:6a00:6993:b0:84b:62d1:9fe3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:bc0b:b0:848:4faa:480b
+ with SMTP id d2e1a72fcca58-84fa8690a0cmr4269757b3a.12.1786459465618; Tue, 11
+ Aug 2026 07:44:25 -0700 (PDT)
+Date: Tue, 11 Aug 2026 07:44:24 -0700
+In-Reply-To: <K5X5A-vk0kKy96pbo6vsCIfvu4CDhenGoKAy3bdpFLx_5sdQ4ovBeDLABVHxrI08ouImtdBr2cYTqriDJgeTZLZhMIA-Hphgz4jMe7W6M6Q=@rfc2549.ca>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspamout01
-X-Rspamd-Queue-Id: 1BDE720010
-X-Stat-Signature: oxypg9f677wxwcpnaarkrfp38fcwugwo
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX19dAleZhUOu5jMhgkH99lyj0Dn95BWTID4=
-X-HE-Tag: 1786459338-307469
-X-HE-Meta: U2FsdGVkX1979J+Q3OdtvU+zN/hhYl9JQhI0wFYQuN1ZrCOyLwM835zzoagX5l163DZzohmxYfjMQMg9LMvXrD6bg3AeHd1TrLiR6S1r8L72HAN+v3XhoxZRX8xO+2I0Jc1dgxN+O60SUmzois9+y6MU9QJdwUAoXwKZYXZvgflOY5MkQGkqp/ZeTZ3GzgxqRZ0WF8S3WS8LB8o7TyvqBGXiA98/d9imuVuTVh0RKt7dphRhabMtXLx1CHkUp+8F6TrPt7w6fDOjixFfwzPAI0/VQK18sVl3nuIRCZ+fXGfIeFWakblsUYrcuLOfrE2v16Fx2y20k2tKyfUJUKu/Aa1kEnu9UsWEY7fVgeGUG4kiRo2q1nZuksArsq2JybJg
+Mime-Version: 1.0
+References: <K5X5A-vk0kKy96pbo6vsCIfvu4CDhenGoKAy3bdpFLx_5sdQ4ovBeDLABVHxrI08ouImtdBr2cYTqriDJgeTZLZhMIA-Hphgz4jMe7W6M6Q=@rfc2549.ca>
+Message-ID: <ans1SMXHmdB3uEoe@google.com>
+Subject: Re: 6.1.y status: 2abd5287f083 ("KVM: x86: Check for invalid/obsolete
+ root *after* making MMU pages available") / CVE-2026-64561
+From: Sean Christopherson <seanjc@google.com>
+To: "IP over Parrots (with QoS)" <opensource@rfc2549.ca>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, 11 Aug 2026 15:33:18 +0100
-David Woodhouse <dwmw2@infradead.org> wrote:
-
-> > If might_sleep doesn't work sanely at all in preempt_rt then just
-> > globally turn it off?  
+On Tue, Aug 11, 2026, IP over Parrots (with QoS) wrote:
+> Hi,
 > 
-> Turn might_sleep off? Or PREEMPT_RT? :)
+> Commit 2abd5287f083 ("KVM: x86: Check for invalid/obsolete root
+> *after* making MMU pages available"), which landed in 7.2-rc5 and is
+> tracked as CVE-2026-64561, does not appear to be present in
+> linux-6.1.y as of 6.1.182.
 > 
-> The RT maintainers are on this thread if you want to pick either of
-> those fights... that was not the course of action I chose to take.
+> I checked with:
+> 
+>   git log --oneline origin/linux-6.1.y --grep='invalid/obsolete root'
+>   git log --oneline origin/linux-6.1.y --grep='2abd5287f083'
+> 
+> Neither returns a match and it doesn't seem to be in the queue.
+> The commit message notes the invariant being violated was
+> introduced in 5.9 by f95eec9bed76, so 6.1 looks in scope,
+> and both hunks sit in direct_page_fault() and FNAME(page_fault)(),
+> which appear structurally unchanged on that branch.
+> 
+> However the announcement[0] only mentions the fix landing in:
+> - 6.6.148
+> - 6.12.101
+> - 6.18.42
+> - 7.1.6
+> - 7.2-rc2
+> 
+> Is a 6.1.y backport planned, or was it skipped deliberately?
 
-I guess the question is, what exactly is the reason for sleeping to be
-prohibited? In RT, sleeping is allowed in most context because most context
-are threads (like interrupt handlers and such). Now, you still can't sleep
-in NMIs and hard interrupt handlers that were not converted to threads, but
-I'm not sure that's the case here anyway.
+Now planned.  The fix doesn't apply cleanly to 6.1, and the resolving the conflict
+isn't super straightforward (though it's not thaaaat bad either).
 
-If the non_block_start() is just a big hammer to make sure things are fine
-in non-RT, it will likely still be fine in RT even though it may block and
-sleep. But what it blocks on are sleeping spin locks that likely would not
-cause an issue here if they didn't cause an issue in non-RT.
+https://lore.kernel.org/all/anpVAhjqvBvIuoa0@google.com
 
-Thus, perhaps something like this:
+> The security tracker [1] for the Debian 12 stable kernel (6.1.y)
+> shows a vulnerable status.
+> 
+> I do not have a backport to offer, so this is just an inquiry.
+> I am happy to build and test a candidate on 6.1 if that would
+> be useful.
 
- 		if (ops->invalidate_range_start) {
- 			int _ret;
- 
-			if (!IS_ENABLED(CONFIG_PREEMPT_RT) && !mmu_notifier_range_blockable(range))
-				non_block_start();
- 			_ret = ops->invalidate_range_start(subscription, range);
-			if (!IS_ENABLED(CONFIG_PREEMPT_RT) && !mmu_notifier_range_blockable(range))
-				non_block_end();
-
-?
+I'll post a patch today and Cc you (unless I get goldfish brain, in which case
+I apologize in advance).
