@@ -1,203 +1,224 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AD740A938
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 21:09:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B74388E69;
+	Tue, 11 Aug 2026 21:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786482556; cv=none; b=oavPKDs31kczf24JETIM/8B9khWRWbdMqw4aza/cdVxrwv1RwI79XhU8nq0rKW8O/hJfy04tNUJj6N2gH8uJrppg6Yubsb07QxOL8xPgYDXkAdjj5bqir6+FSETvKNs3gtcHpluZ9jrfwCHdJZzvpKwkFWHSNR99hEKoMSqmPTg=
+	t=1786482874; cv=none; b=UXZ0UsWxvCg5AerngSH2qik0fgt5AVvebx4c/jBHq6wM1jmlrGEX/AtjVnpgEDOYafAMT+HDRaj6tfrqfk939vQUSkUw94GfF3aNe58WiYBjrc5/d6WIK0wyK5dCiViKCjSbRDpEQifz414/GJm05eAoawKVNcsmoW2czNODXi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786482556; c=relaxed/simple;
-	bh=FwNARzcbMbLf7kTkzLZos3PP0XC44XFJ9Kq/f19ElGA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Luv5ci1EKvcRA9FlnwfUF4Ca8LOiasRWRfh1NDUgTbBE9DmijMmuKUH38geGnLrlM0KTqCUItWX6DuaLOk0xu4C8c4h8eDSwyNUt6qrH9tq3spI23RwxwWnpR8fa8aquSVUzXN7aNh9fvXZcLmix4ztJ/GFv6QAG1lJSGvYnxFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=foy9iZUV; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1786482874; c=relaxed/simple;
+	bh=GJYVKc4vqFpGY2GyZOX5iayxai8wJ3bqqyeqPSJxzvI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=sjK1zhdXPyqI5qTTHw/f+fviR1Kv2XRTuDhLV8yXiU3vHCxeTBnqV/IjBmR/3G+K8sArkUZh/sMjPUFeF76L/6djyRCC4c2TJl8XLxv/Uz587nOqQQNNF1giUbUIZHodjibnBm4dHD9NUCLEWQqqLviMW8VirYvy0mxbib0ubzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=mCLPDBWm; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="foy9iZUV"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-84faf0fa17eso345089b3a.2
-        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 14:09:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786482554; x=1787087354; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FCfe6U3NJnWWh5FIk3E/yNJv391SUeQXzwUsI84caIo=;
-        b=foy9iZUVOTorzawNa69ViPer6GywjUCRuHMiQX9DDcq/zR5DQDUip2I+seA5xEwp+/
-         obrm4G/NrkFlgvFT1rp2vHu732Q5Amhl6oofT2qpx9JpzVUvvXjGaJIJeQCrxFIwD0ba
-         bPxJwtmzRAPtZc4sexwMoREbo7aULpRojkdFkciUUZy8VvQk2KQhU7gOHTnDJv1ygng5
-         tVogFQx2qeyB6K8lA3ABXgGd3QL+ZGA/Y8BZCwvuJiGEmFKDm3SK4l5WRNXsv8YXizqz
-         /5mU7LAu8+hTiYX9ucAVuOMVISYmb7I1A5hCA7VH/8FPeJt0EEzmKRljuiwfJ54MqNj/
-         VgfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786482554; x=1787087354;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FCfe6U3NJnWWh5FIk3E/yNJv391SUeQXzwUsI84caIo=;
-        b=H4LZv15OTFoXwY1ThR6VIhi+tOileaTSqdmwZpZvHb/7OIQG16v77U8Tw+7iBbnJ+L
-         HJCh5eHM34/BJeZYdqXRJSIVCWRjJwsMp8U7PjmvwNzdxXzuqsUHDYPvmI8DZuDQN2cM
-         Q+vOw3zLatQd3CbVBePgxPmyQwR0EgYI48KtDFWNXeoflHgyGTgHxjbDHHdPPAyhO57L
-         Fnb095ZCK9F2nhFd9iS+VPTg6piGVQElicYBY+qfnrSFNzVtn4n6aKTa2ipO6qWhd1cV
-         8juy5zGsQXQU0ioMYOgMF2hbghuKyOuRP/rLVjeEUSKHexdPaKDYO8OneOJG+e7Ip3wb
-         wScQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoTwTx9SIZ/ZUrhpy2cwtMEXTCw556jhYaWjP8FueK7BYjI/7NqxBJoB2XSvqZywKPsrJ0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbJYM+BAfBZhZIcgScO3h/sW4LJVnb3HAPvoWx8649fdozimeA
-	qdyvBFP1pp8ZqOGtaqsXpVFIkqrObhOotOYo8EvfbLRYTDt1jD2tRU6Cvb62k1x0Og==
-X-Gm-Gg: AR+sD10J8o65utis/kgJAPyq9zhSR3twmNE3bWj0RUfUpmMtpcWzI2mMPmUuH71N+Xa
-	Lq7CL/fKBoS6KHYgYycGwMZauk9f/Ya3cLrTaHAYVsz5CXCIeDME1PyvD/YIva+C4AkQtyh8arJ
-	WIpHdHXIgOQdGt9qYUygp4U6/nju0gHBwC0wg5V5RHISKVYp1h3A7xjR9Q9X+Dh7HuFDCuOqVhj
-	3PR9AQDamQHwtWteLKyG8xN2v1RlhvyM7ejHgduWSD7kg4D1hzqFcn3lnu5QCd1Q2eqoX/vnXcq
-	GmRvdh6gG/UkUF3a5h8NHmrEu4B0hHWsOXFAqOdLqwEa0H095hiNjSP/DPsMsDv6fJu+HCBaGH3
-	G1fcopZSuDbCcjRWZfwzKEGOQzkU2/V13P7l3j4pSYPoNQ1/saRl1003BwjT2ycThu89Fih2Pwr
-	VLFsZcTT0rUs1MbdPPybO8P8RT4jPdcXg8NHbot/0PBorvJ2jp8nIsO9i3PR6t7HN3klSF1krmT
-	5b9H10AvUTpMC98Nutg4KkKzCALpg==
-X-Received: by 2002:a05:6a00:4217:b0:84f:3f5e:f072 with SMTP id d2e1a72fcca58-84fb53ff444mr185899b3a.10.1786482553078;
-        Tue, 11 Aug 2026 14:09:13 -0700 (PDT)
-Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84fb1f6b2e2sm237294b3a.55.2026.08.11.14.09.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 14:09:12 -0700 (PDT)
-Date: Tue, 11 Aug 2026 21:09:09 +0000
-From: David Matlack <dmatlack@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>,
-	Justin Stitt <justinstitt@google.com>, kvm@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
-	linux-rdma@vger.kernel.org, llvm@lists.linux.dev,
-	Mark Bloch <mbloch@nvidia.com>, Bill Wendling <morbo@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>, netdev@vger.kernel.org,
-	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>, patches@lists.linux.dev
-Subject: Re: [PATCH v3 07/11] vfio: selftests: Allow drivers to specify
- required region size
-Message-ID: <anuPdf84cFtZbeE1@google.com>
-References: <0-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
- <7-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="mCLPDBWm"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=GJYVKc4vqFpGY2GyZOX5iayxai8wJ3bqqyeqPSJxzvI=; b=mCLPDBWmADvLXBLPtDhC+cOaCt
+	7ws1QwQlnSnP7zWVQwfSlHZYXfaXlKkqVdvrCpK1MUpfQIOYKTE6J8AQXOZP4yW7/DtBmgenGZMkp
+	QF88oLkDYUvREyG/bmCM0vWfg30Z7WW6AwwWM4HbM9JZ0RIDH/8AITZiEUJzC+mRJ3Sn6RCCc+DDS
+	dJkO0oWpNm+X5vHG1MXt1upDL6R2VSdJ1QE8kPfQa7HfAk1IjlaJFIhDNC+wNNyc5a9CcTclMH8ZH
+	i3oXuuZDDEzDdut/joMiRGAdxdsXd17kTJPEFHJbJLLb7RXOcGXgv7lc7lh3uu4N9v5p8IZ0WaugZ
+	Cn7JuRbg==;
+Received: from [2001:8b0:10b:5:e09:5b1f:c111:693d] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wttnj-000000010lM-2H7N;
+	Tue, 11 Aug 2026 21:14:23 +0000
+Message-ID: <27f2326dc66d6341174c0e510aa518a1297b66ae.camel@infradead.org>
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+From: David Woodhouse <dwmw2@infradead.org>
+To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, akpm@linux-foundation.org,
+ david@kernel.org, 	mhocko@suse.com, rostedt@goodmis.org,
+ bigeasy@linutronix.de, 	simona.vetter@ffwll.ch, jglisse@redhat.com,
+ christian.koenig@amd.com, 	paulmck@kernel.org, linux-mm@kvack.org,
+ kvm@vger.kernel.org, 	linux-rt-devel@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Date: Tue, 11 Aug 2026 22:14:17 +0100
+In-Reply-To: <CABgObfYR+vXBuSm3v5jbbZL8vF=XnocFAnjumdShgXBzod-HCQ@mail.gmail.com>
+References: <20260811162423.GL544626@ziepe.ca>
+	 <f33571137d2e3973e440d09c7602edaebe08b714.camel@infradead.org>
+	 <20260811172627.GN544626@ziepe.ca>
+	 <B25708F5-8425-4075-8D95-5E2A00C933DF@infradead.org>
+	 <20260811181915.GO544626@ziepe.ca> <anuAq2s4mtyw4_Ql@google.com>
+	 <CABgObfYR+vXBuSm3v5jbbZL8vF=XnocFAnjumdShgXBzod-HCQ@mail.gmail.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-TbVLQf1nSIoSFSmwNNnR"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On 2026-07-16 02:03 PM, Jason Gunthorpe wrote:
-> Add a region_size field to struct vfio_pci_driver_ops so drivers can
-> declare how much DMA-mapped region they need. The mlx5 driver will need
-> ~18MB for firmware pages. Existing drivers pass in the sizeof their state
-> struct. The core code will round up and minimize it to SZ_2M so as not to
-> change any test behavior.
 
-Please update this last sentence to match the patch.
+--=-TbVLQf1nSIoSFSmwNNnR
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> Assisted-by: Claude:claude-opus-4.6
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> ---
->  tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c         | 1 +
->  tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c       | 1 +
->  .../selftests/vfio/lib/include/libvfio/vfio_pci_driver.h   | 6 ++++++
->  tools/testing/selftests/vfio/lib/vfio_pci_driver.c         | 7 +++++++
->  tools/testing/selftests/vfio/vfio_pci_driver_test.c        | 3 ++-
->  5 files changed, 17 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-> index 19d9630b24c23f..40b8541b588eee 100644
-> --- a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-> +++ b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-> @@ -418,6 +418,7 @@ static void dsa_send_msi(struct vfio_pci_device *device)
->  
->  const struct vfio_pci_driver_ops dsa_ops = {
->  	.name = "dsa",
-> +	.region_size = sizeof(struct dsa_state),
->  	.probe = dsa_probe,
->  	.init = dsa_init,
->  	.remove = dsa_remove,
-> diff --git a/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c b/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
-> index a871b935542bad..c9b28365c5eb6b 100644
-> --- a/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
-> +++ b/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
-> @@ -226,6 +226,7 @@ static void ioat_send_msi(struct vfio_pci_device *device)
->  
->  const struct vfio_pci_driver_ops ioat_ops = {
->  	.name = "ioat",
-> +	.region_size = sizeof(struct ioat_state),
+On Tue, 2026-08-11 at 22:21 +0200, Paolo Bonzini wrote:
+>=20
+> for_each_present_cpu(cpu)
+> =C2=A0=C2=A0=C2=A0 if (per_cpu(kvm_gpc_reader, cpu) =3D=3D gpc)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpumask_set_cpu(cpu, gpc_reade=
+rs);
+> __kvm_kick_many_cpus(cpus, wait);
 
-When you rebase on top of vfio/next please also make these changes to
-the NV Falcon and IGB drivers that have recently landed.
 
->  	.probe = ioat_probe,
->  	.init = ioat_init,
->  	.remove = ioat_remove,
-> diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
-> index e5ada209b1d102..547369c5cff95a 100644
-> --- a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
-> +++ b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
-> @@ -9,6 +9,12 @@ struct vfio_pci_device;
->  struct vfio_pci_driver_ops {
->  	const char *name;
->  
-> +	/*
-> +	 * Size of the driver's state structure overlaid on
-> +	 * device->driver.region.vaddr
-> +	 */
-> +	u64 region_size;
-> +
->  	/**
->  	 * @probe() - Check if the driver supports the given device.
->  	 *
-> diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-> index 6827f4a6febe99..e13bbb7ee423dc 100644
-> --- a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-> +++ b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-> @@ -1,5 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  #include "kselftest.h"
-> +#include <linux/sizes.h>
-> +#include <linux/log2.h>
->  #include <libvfio.h>
->  
->  #ifdef __x86_64__
-> @@ -28,6 +30,11 @@ void vfio_pci_driver_probe(struct vfio_pci_device *device)
->  			continue;
->  
->  		device->driver.ops = ops;
-> +
-> +		VFIO_ASSERT_NE(ops->region_size, 0);
-> +		device->driver.region.size =
-> +			max_t(u64, roundup_pow_of_two(ops->region_size),
-> +			      getpagesize());
+I'm literally sitting here watching you reinvent what SRCU already
+does.
 
-Blegh this is because the IOVA allocator insists on a power-of-2 size as
-you pointed out [1]. Can you add a comment here to document that? Or
-better yet, move the rounding up into iova_allocator_alloc() so the
-callers don't have to deal with it like this.
+Which, again, is *fine* given the behaviour of *these* read-side
+sections.
 
-[1] https://lore.kernel.org/all/20260529173753.GB128816@nvidia.com/
+> Alternatively, there's always the poor-man RCU using an rwlock_t; you
+> do read_lock/read_unlock as usual for begin/end of reads, while the
+> write side does
+>=20
+> =C2=A0=C2=A0 write_lock(&kvm->gpc_readers);
+> =C2=A0=C2=A0 write_unlock(&kvm->gpc_readers);
+>=20
+> in place of synchronize_src().
 
->  	}
->  }
->  
-> diff --git a/tools/testing/selftests/vfio/vfio_pci_driver_test.c b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-> index afa0480ddd9b2a..f68239da574f5a 100644
-> --- a/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-> +++ b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-> @@ -80,7 +80,8 @@ FIXTURE_SETUP(vfio_pci_driver_test)
->  	driver = &self->device->driver;
->  
->  	region_setup(self->iommu, self->iova_allocator, &self->memcpy_region, SZ_1G);
-> -	region_setup(self->iommu, self->iova_allocator, &driver->region, SZ_2M);
-> +	region_setup(self->iommu, self->iova_allocator, &driver->region,
-> +		     driver->region.size);
->  
->  	/* Any IOVA that doesn't overlap memcpy_region and driver->region. */
->  	self->unmapped_iova = iova_allocator_alloc(self->iova_allocator, SZ_1G);
-> -- 
-> 2.43.0
-> 
+And now we've come full circle to the rwlock we already *have* =E2=80=94 bu=
+t
+which is back to a shared cache line for readers, and which RT turns
+into a sleeping lock, which is what I started out trying to fix in the
+first place.
+
+I get it. RCU is a versatile tool, and in *some* cases the *Sleepable*
+variant of RCU gets used in ways which would cause grace period
+latencies which are thoroughly unacceptable in an MMU notifier
+callback.
+
+But in the specific case of a dedicated kvm->gpc_srcu whose only
+readers are tiny snippets of code that until today were always run with
+rwlock_irqsave? That is *not* Jason's worst-case bugbear. It's fine.
+
+--=-TbVLQf1nSIoSFSmwNNnR
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+XP/YFFWeFcqoD/OEHoejP5kAAAAAAAA=
+
+
+--=-TbVLQf1nSIoSFSmwNNnR--
