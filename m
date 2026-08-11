@@ -1,185 +1,137 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5789C3806C9
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 18:41:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1583737F010;
+	Tue, 11 Aug 2026 18:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786473701; cv=none; b=McaC311/Q8kdX2xdYSsPxajM+sDuI5Xl8Qo59Q/7kae05UHTM7nSzXXrzRZJN4EPWiFMaL7QBBRjRPy0E0ghcCG69u5UhNuvTKrzyhq852BWBg+ofznqfrxB0ui24wfXO81Dhgg3+7ejkb8KF+dBCNRYBAcn8kn/DHOnfWwcaS8=
+	t=1786473845; cv=none; b=MwMQd3yVF8fLsyj6FnEgaVSxpkRgXm70JLoyNc2c4Ll/EocAgF2ipcwFEPcV9YGajBsdFcLVPstbAGe2bRs68O5sQqIJQxT7b/jxoTtt2s3kHRdvbDTWwNlfV0mnOWpkRvA+8T4dO7u5p2hs3y3Za00XbmHOjNsrVQcyHaUw2Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786473701; c=relaxed/simple;
-	bh=94Lt8TmaqiNs5FtCiFHbzvvHftTmibgvQkuT4qx1sEQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QKrb4dBYGlU9QgO52cvCMPoV+boPnBLAZcWhc9OaPtaKJA909KpIczofBKFQMaV+yy6XlN5Zpa6W9QSyeqHnDJaCX+eApalUaf244ak2uYZ56tVH0yMeQ8qyFlbKrxddcjeXMv1v6xRJHImwUsP405Th+nukuqXneh1ZjSN3rPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jdib0Te2; arc=none smtp.client-ip=209.85.210.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786473845; c=relaxed/simple;
+	bh=t7LQz+NXpuUjMAQMy9r/sy8XRbnOC4NPbwuc6164idc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mNjbZT3XssdOAVQqWPry1dovCo8sY+rdB8JzBlKLNAXjpC+aezvkoSeuAKiWnvEJWwwz7owWChG9gUdQxpOkcDX60eNj7l/CT3+Oici6qVYRalweZPOaq+f5CTHQmuxGYyST7+CB3bHcTFcumeIQ5m3GYVKc1dfzVWr1ygWHpqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=O7fMMoLZ; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jdib0Te2"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8485d853b08so274452b3a.1
-        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 11:41:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786473699; x=1787078499; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=fJOzqFK/vfJSw1ado9uoaagkeuADN2fLa/8s2FkuGPk=;
-        b=jdib0Te2Cm3baCHT5yBcxvk0rx7m+lSp0Gemjd24HzyFGYX/y2vtTteCsbsT6yqrZ/
-         gM5hZgaDgWBgXpvT+LIOOLxPza63VZa7YBt5RC7chDqhyvmjYh7ixTJtSWGg285tBNHC
-         pqj5MDGvbnpnwJZ+qDNodKm+P9WGUB8yWU2cK2jY5o80B3bmFc1ZndE4ZwKBpoPp1Dv1
-         eItYviMa07/cvxn9kn3pC5nJaksLQEo+aoe98Z8j7jmouTVP3Uuf29C+2gVpQg6azIXn
-         PFx0gkGRmAvTbAzh9QioDf3wUJKLLsSSGb/QqcfAgcfo1qJgmPqonMgE6onMAVNDjWes
-         2Upg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786473699; x=1787078499;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fJOzqFK/vfJSw1ado9uoaagkeuADN2fLa/8s2FkuGPk=;
-        b=EOEf7GjyjeSyEIHxAh3V/5nshjnIi08U5j4usLZhu4qdig5MJZ5auRtWDRKMc9x8gM
-         vxZOoeUQ2su84pZpfXBwe7k1FweNYYvdp8xzxBN+QWxJr0tMYmqMdMlwvXBxUJawV+PH
-         r9rQQ2uKdQIuDfm0do29wweHhPuajel0XJkTR0GfsNKDb3XLrTUZbdm+S1HDp/3fjdxM
-         oPpQZRYjrv2KSwfIa90HPF+bK4k69s7V4sEdaDU5g+oIVWqyVAb2VMPvT+Ox1aKVHfNi
-         dXWiZvCvw2237jU6VUlb9USWkR7K4P8GlIIUXOvA/3ajFPpZf9Nx3X28z4hKHgDmpx5H
-         ryLg==
-X-Forwarded-Encrypted: i=1; AHgh+RrR7C8SzGc7Pte4sArGulJz12eApC0PqQW56tYASnB9gsoakVNpL9JcHRSBwYDDGXl1R7k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1TqTiS4l7R0bsjgBf9JxhIJQAOh51Qd/0cjrfotftW82LOx5O
-	zf5dgTmTOjQDgAi9b+CJkKrbDeouqZOL31hVuciu9j5Ceiw3Ki9U6CkivE0PG5goT39/G9wLiBM
-	Z9C6ZUg==
-X-Received: from pfbih2.prod.google.com ([2002:a05:6a00:8c02:b0:84e:530a:923a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2355:b0:848:2c6c:dfe3
- with SMTP id d2e1a72fcca58-84fa86c28d9mr5596667b3a.17.1786473699196; Tue, 11
- Aug 2026 11:41:39 -0700 (PDT)
-Date: Tue, 11 Aug 2026 11:41:37 -0700
-In-Reply-To: <6ab49538675d97f1f4bf01574b1b066aae0bc05c.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="O7fMMoLZ"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67BGVTta889197;
+	Tue, 11 Aug 2026 18:43:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=t7LQz+
+	NXpuUjMAQMy9r/sy8XRbnOC4NPbwuc6164idc=; b=O7fMMoLZ0ZYl/oGbsLUI7t
+	D+6Bn0e8PXravfrIwKlqRfw8R3GupUtVqMtFSRH8schSvfFvU0VUkRu6Y33QhU5n
+	cE0cR5wWYt6B0GDyTRdo7deTQYDX2VfZCsNHgagk+XTyBK24g8SQDJV4mzGDuDtd
+	gqPI+Hb/KRIa2SaVLFGDOToNirw06nbi64JrVR3qUWTz1j3yube0d73CypPp0Rt/
+	GJsShhDVTdXtS/fKvYonSsxmyCZaEXgI4L/U1UMFYnCfpQh4Uhqpx0cWs5ly5UhD
+	JQc979sZSMmTYZYg/ZXsju5LfiKGskogycbeSp2MJ3tSTd0ZX4ZII5G7bFn3D1ag
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvq9egjc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Aug 2026 18:43:35 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67BIfGCe024444;
+	Tue, 11 Aug 2026 18:43:34 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxf5w2cyy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Aug 2026 18:43:34 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67BIhXda47055160
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 11 Aug 2026 18:43:33 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 296C358052;
+	Tue, 11 Aug 2026 18:43:33 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2567558056;
+	Tue, 11 Aug 2026 18:43:32 +0000 (GMT)
+Received: from [9.61.58.252] (unknown [9.61.58.252])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 11 Aug 2026 18:43:32 +0000 (GMT)
+Message-ID: <6bdacd0c-572e-405a-a378-663f13edc154@linux.ibm.com>
+Date: Tue, 11 Aug 2026 14:43:31 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <acd9b32617f75d188c370a464a922af0d650d4f5.camel@infradead.org>
- <ano6-gIZtqMfipiD@google.com> <bb9a12cc663130eb2caa8e839d0f6ca53d722d1c.camel@infradead.org>
- <ansuqrD2KwFuLWbV@google.com> <ansywxh0VX5rtfWc@google.com>
- <e256fa4af96e916ba30019cbba501fa896025fb0.camel@infradead.org>
- <antQYJvRxJxOjtut@google.com> <f5dc701cf3319a7b3c8fd1497f26d051aa9fa3ba.camel@infradead.org>
- <antb01WqOrs-tztm@google.com> <6ab49538675d97f1f4bf01574b1b066aae0bc05c.camel@infradead.org>
-Message-ID: <ants4VjfAiblaWsl@google.com>
-Subject: Re: [PATCH v7 17/36] KVM: x86: Allow KVM master clock mode when TSCs
- are offset from each other
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul Durrant <paul@xen.org>, 
-	Jonathan Cameron <jic23@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, 
-	Dongli Zhang <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 7/8] s390/vfio-ap: Fix required lock not held during
+ display of sysfs status attribute
+To: Matthew Rosato <mjrosato@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
+        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
+        stable@vger.kernel.org
+References: <20260810192257.1208410-1-akrowiak@linux.ibm.com>
+ <20260810192257.1208410-8-akrowiak@linux.ibm.com>
+ <5d755e25-be9d-4227-b06c-63563fcce0b5@linux.ibm.com>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <5d755e25-be9d-4227-b06c-63563fcce0b5@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 5dK9bfIx5FEzaNtlF8kZDiQd0Gm7QmEw
+X-Authority-Analysis: v=2.4 cv=PbDPQChd c=1 sm=1 tr=0 ts=6a7b6d58 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=8gt7DvUvnbPXcpqzDXYA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODExMDE1NSBTYWx0ZWRfX+oYbvsoOjRea
+ bPFtkg+13P3p3siufY6vRQTC2MWuBsYaXMXHYKKk5zl5F50DSL6bt0ok6kUI3fJZCCr2Jh+2xQK
+ p/ycct9mnBwSFqXZ8HP6iaZe8vyok06chIq37pzOkTWJnKZCGxxsL1mXt3hHoChG56d6k/RJdsM
+ 8xPiDhRfmw1fGwb+xtiKxZR/UjaCfx48MtDXZQTdY3AcyoFWfwR6zUlrKl4dGU7UJ6m/4S7ABfj
+ hSU1T0qXl42ItDhtWFe1pfvo1vG7PZjJUFjPvr9H240FlI2b33jzw965HKcinP5Ip3VY1z0qJ9R
+ MFOIkhL6sx3JU0GlGrhSnFkn4/X8LNRazJnVxl2ou9h0nw821Mw859Ecp0b6X8OazfMriHiveSM
+ BlAP3YfsK81XqMOnWEq2mcVncR5etzWIt2YfDaheqcTfyJ/0n9r/J5MKySvgZWpTLcPtsvp5pFd
+ 9iX9NGy+XS9XMcD30LQ==
+X-Proofpoint-ORIG-GUID: 5dK9bfIx5FEzaNtlF8kZDiQd0Gm7QmEw
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODExMDE1NSBTYWx0ZWRfXzgScLTJlGGLO
+ ftHAlQ8OfQoj1cTfpFllx3yJWaZFp+azpBIyovFpAHd0A5KWYEDLmbN7bUYQhLKuIRNhByc7gqx
+ MCaHRwIbDFcKqEfKVmy4ZMpL04g84R0=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-11_04,2026-08-10_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 priorityscore=1501 suspectscore=0 phishscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608110155
 
-On Tue, Aug 11, 2026, David Woodhouse wrote:
-> On Tue, 2026-08-11 at 10:28 -0700, Sean Christopherson wrote:
-> > On Tue, Aug 11, 2026, David Woodhouse wrote:
-> > > On Tue, 2026-08-11 at 09:40 -0700, Sean Christopherson wrote:
-> > > >=20
-> > > > >=20
-> > > > > FWIW in my local tree I've just extended the pvclock_migration_te=
-st to
-> > > > > test precisely the thing you were concerned about: three vCPUs wi=
-th
-> > > > > divergent TSC offsets, migrated by setting each vCPU's TSC and th=
-en
-> > > > > invoking KVM_SET_CLOCK_GUEST once, through vCPU0.=20
-> > > >=20
-> > > > I wasn't actually concerned about migration, I was concerned about =
-time going
-> > > > backwards from the guest's perspective.
-> > >=20
-> > > But KVM_[SG]ET_CLOCK_GUEST is *purely* for migration.=20
-> >=20
-> > Huh?=C2=A0 I raised my concern in the context of "Allow KVM master cloc=
-k mode when
-> > TSCs are offset from each other", and AFAICT, nothing ensures that won'=
-t cause
-> > problems.
-> >=20
-> > Aaah, it clears PVCLOCK_TSC_STABLE_BIT and relies on the guest to clean=
- up the
-> > mess.=C2=A0 So the guest won't see time go backwards, but it could see =
-time stop for
-> > an extended duration, or jump forward.
->=20
-> It shouldn't. Each vCPU gets its *own* pvclock structure, tailored to
-> *its* offset. They should all see *identical* results.
 
-OMG, I hate this code.  After literally hours of staring at this, and even =
-typing
-up a lengthy example of why guest time would go off the rails, I finally sp=
-otted
-that l1_tsc_offset is accounted for by the call to kvm_read_l1_tsc().  FML.
 
-Thanks for being patient and not flaming me too much :-)
+On 8/11/26 2:03 PM, Matthew Rosato wrote:
+> On 8/10/26 3:22 PM, Anthony Krowiak wrote:
+>> The status_show function that supports display of the status attribute of
+>> the devices in /sys/bus/ap/devices calls the vfio_ap_mdev_for_queue
+>> function which iterates the matrix_dev->mdev_list to find the object
+>> representing the queue device whose status is to be displayed. In order to
+>> traverse this list, the matrix_dev->guests_lock mutex must be held which is
+>> not the case.
+>>
+>> To fix this, the guests_lock mutex is taken prior to taking the
+>> matrix_dev->mdevs_lock mutex in the status_show function. It is taken
+>> there rather than the vfio_ap_mdev_for_queue function - where it is
+>> needed - because it must be taken prior to the mdevs_lock mutex in order to
+>> adhere to the proper locking order and prevent a lockdep splat; also
+>> because the mdevs_lock is needed there to access fields within
+>> the matrix_mdev object in that function.
+>>
+>> Fixes: f139862b92cf ("s390/vfio-ap: add status attribute to AP queue device's sysfs dir")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+> Please see my comment on patch 3.
 
-> But yeah, if the guest does that then we can't set the
-> PVCLOCK_TSC_STABLE_BIT.
-> >=20
-> > > And your variant just added a dependency on wallclock time back into =
-it
-> >=20
-> > Can you elaborate?=C2=A0 I'm guessing I don't entirely understand what =
-you mean by
-> > wallclock time.
->=20
-> The system_time field? The unspecified might-be-UTC-might-have-leap-secon=
-ds one :)
+See my response to your comment on patch 3:)
 
-Ok, I think I finally understand the goal.  I got turned around by the comb=
-ination
-of the name SET_CLOCK_GUEST and the full pvclock structure being passed to =
-the
-guest.  I was expecting SET_CLOCK_GUEST to literally set the entire clock, =
-e.g.
-mul+shift, timestamp, etc.
 
-But all of that metadata is just a means to an end: the one and only goal i=
-s to
-calculate the per-VM kvmclock_offset for the "new" host's TSC+time snapshot=
-, by
-computing the nanoseconds delta for the new snapshot as if it the guest obs=
-erved
-the TSC while running on the old host.
-
-And that is done in the kernel instead of in userspace to minimize the amou=
-nt of
-slop introduced due to delay between taking the snapshot and computing the =
-offset.
-And for similar reasons, it's undesirable for userspace to redo the GET on =
-the
-target to compute the explicit offset, because there would be a massive TOC=
-TOU
-issue, e.g. if KVM took a new masterclock snapshot between GET and SET.
-
-After working through that, I feel quite strongly that we should have asymm=
-etric
-names for the GET vs. SET flows, because the actually functionality is also=
- very
-asymmetric.  And setting a field, and only that field, that's doesn't have =
-a
-direct association in the userspace payload is very surprising when the nam=
-e of
-the ioctl suggests a restoration of the entire payload.
-
-E.g. KVM_GET_REFERENCE_PVCLOCK and then KVM_SET_REFERENCE_PVCLOCK_OFFSET?  =
-Or
-maybe UPDATE, CALCULATE, REFRESH, or COMPUTE instead of SET?  I think I'd v=
-ote
-for SET even though it's convoluted, because pretty much everyone associate=
-s SET
-with the restore side of save/restore.
