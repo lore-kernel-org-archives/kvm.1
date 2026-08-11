@@ -1,144 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD6843D4EE;
-	Tue, 11 Aug 2026 17:07:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106BF453A2F
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 17:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786468026; cv=none; b=qd7IY4tHQgTtifLWFt9jC3cX/8Z4Uqm8AetRQiRpJdrMGqOtWV7AZEbkaK0ivmnMYM8R3gKMGY/hCcnQmb/8GvT3YCLVgMmegoUi9zw6skx9Kus9MOjJDiauI+9wqZqCUd6zG1+bTlIPTEGN/l0oxjwNeoyIg1IYEwXAHoJ/NF0=
+	t=1786468064; cv=none; b=LUjilkZpyLgQn5K4YrzhpVFEaX+CN01sbsVTominbPImjtUi7VIXgJRoGe3zTgDoiOnnbkz5MEmFmSuDU37vIQl24y+Y0wW+gGJzKNBE7yQkkkg63druTga5cJNvQz/dOvlVaQaljXxqCQvpBTph8wpH1iiEaRtmGPUmY4l6wtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786468026; c=relaxed/simple;
-	bh=tzHgNprRUHzM+nWJ/u98+1Hlh2UAUyJ3Kbr/TZIbCxA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZZOIhdLPzj1DC/xCO2FzkdV2lcDv7zXO1uWQV7zkklocbOOlmMdyJca8spVJ1DsDzX30MqA6Zrv7bqG6SlSOi611nWUZkh6sr17NFiW9lhLclrVX49J0vDeLtauLmyQvRGiMCkiN6mj5Yb0KKkprXPPTBvc0UxkOlBUtYLs/zbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bf5TjJfO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786468064; c=relaxed/simple;
+	bh=qCketXdC6G4ZLCZLNhe1WZPM9Debu7ygnkGEqtz+VmA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ObqYBZBy/kHtXgHR8v0QM+xWXWNbBOQgbNgCCU6xUGHOeprz7TJsp6lUdn17OYIPQc9fR4880zqCajttIKYZDgM2KyP7FfS4+2mNkD1vqQ32j11rWZSXzAipze17GEdymkDZ/HXkuuPehjkZ49KC5tWsJ8VRbU8r+5D4/+b1We8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F49X/zVv; arc=none smtp.client-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bf5TjJfO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56DAB1F000E9;
-	Tue, 11 Aug 2026 17:06:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786468024;
-	bh=tzHgNprRUHzM+nWJ/u98+1Hlh2UAUyJ3Kbr/TZIbCxA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Bf5TjJfOh3SVJsd4OtNdIG5B5d2xI11qP61qJcO2dcoDBDjurnJvmNPwolN5e/u0t
-	 B+s35+Ba3k0Ns93TcFR/N9sUve5/+B3Goi9qQ4RIFY2/TfV1P1ngNQrwNDWdpXcp/r
-	 4q69xnZYEQ2sxu0tJvaoTKAAFegaeOn7niN+JtEhikAMpqH+Kg8C+KtvXPzvej/CwY
-	 f4+zv+hOyB74boEfRrhRV6IzRg4W734UjR7CsmOmmM/IuOBia8qp9ei8JtAxef+bGo
-	 fuAaB+9VFjwnNgmP/8bxFEXx+LF/kKv9tXOqV2pglDl8d/GMZ6T8XshRpJkqe6TIUs
-	 eq8QHs1RDNSBg==
-Date: Tue, 11 Aug 2026 18:06:44 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Alex Deucher <alexander.deucher@amd.com>, 
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Steven Price <steven.price@arm.com>, 
-	Liviu Dudau <liviu.dudau@arm.com>, Huang Rui <ray.huang@amd.com>, 
-	Matthew Auld <matthew.auld@intel.com>, 
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 07/20] mm/vma: fix self-merge check in copy_vma()
-Message-ID: <antWi82nEl-7GY7u@gremlin>
-References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
- <20260806-b4-scalable-cow-virt-pgoff-v4-7-ab318a350404@kernel.org>
- <3a0a9aaf-20f5-4f92-b848-00ab702e8fe2@kernel.org>
- <antTCpT9gXN7pSRn@gremlin>
- <20f5b9eb-c4ad-4241-9556-e9bfce9ac715@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F49X/zVv"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-c85798977dcso16458a12.0
+        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 10:07:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786468062; x=1787072862; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gwvEEAMAfJPVoc+KKEpciJe+2g7dIY92dShmHQsz/E0=;
+        b=F49X/zVv8UmGsm5oyFjALIX5FyEeO1+grXbI3CXTiYRcIUb0Jt7ltOLzswg3CpGVr4
+         LjahIee1/j0WtHHzYWR7WMW+ovoRI6/JR3THFYctwGqEVqm4bbloMbIl2GIr9sxAlXP9
+         iLoqQzPAxHfRxidsyxu5Liv6Wtxi4+ROIo+3CsTTDF4L08gsEA8SciNO3sVC/0rqSmwd
+         DdlbiZ1rXAMmUygV23t7bhqENdYNdgvTilW7lZfhdP49truENISEyQK3YY83sk8CZ05U
+         INve+T5y411zZ3XPqBRBPqIxJXe9UU1TYz3HpNKNWwT3rqs/PuLN3iVH4HBMw/z4hA8V
+         hqBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786468062; x=1787072862;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gwvEEAMAfJPVoc+KKEpciJe+2g7dIY92dShmHQsz/E0=;
+        b=dyQ78dR5hdO9I2llZKArf0iYuw2NlqqucqlMCSMc5OGhlIPYhhQOVf95EJG+GYgeTC
+         hI+oYVay1w609aqLBY8+m4Es7SRG0FRjJxy1x53/MQix1D46CZP2z+GlLenPQeT9fAmq
+         tqRc1eD0k/JslFNJm5EXE4nw5Si1Gml1fpRAinQJhezrZkUhORtyvyBJVTLypAbR20xB
+         +UbkaOEd4kxHWZakfVWl9cfbSz1pNUMV2SeVuX5spO+U7vNTEQsaooZbaPedhnpQ6I+V
+         KthUpLtR4ExkV/2IGKsWBQGOMOSJeH2PGxa5MH3cLKBA0mx2qfS6FgIuBoxcohpJpZ4v
+         Vk4w==
+X-Forwarded-Encrypted: i=1; AHgh+Rp/YcuzxvBYc4BBx7fcpaj8zW8Fy1zDH7a7OW81RkPOlryQRjJXveSQMDx/aVVmpvgs+yU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHdI1YmVjqUjuecvbYx3VkwCrb8dj9sPluHGdQvd6CU5+fqL7V
+	903U6ANwngNfE1YQPu8vSrOfaPi27Hl9f+FrJVCeLl4LPxTnzPfPSb+H0rH+7L0qBjVqNgIWagY
+	8MpHCEw==
+X-Received: from pgly26.prod.google.com ([2002:a63:181a:0:b0:c96:680f:db07])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:1b81:b0:3bf:7c02:c46f
+ with SMTP id adf61e73a8af0-3cc2b853809mr6508305637.14.1786468062243; Tue, 11
+ Aug 2026 10:07:42 -0700 (PDT)
+Date: Tue, 11 Aug 2026 10:07:41 -0700
+In-Reply-To: <anrI0WZ3rA0q6X+Z@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20f5b9eb-c4ad-4241-9556-e9bfce9ac715@kernel.org>
+Mime-Version: 1.0
+References: <20260806214050.78058-1-seanjc@google.com> <20260806214050.78058-3-seanjc@google.com>
+ <anrI0WZ3rA0q6X+Z@yzhao56-desk.sh.intel.com>
+Message-ID: <antW3aKeEabMCsyV@google.com>
+Subject: Re: [PATCH 2/4] KVM: x86/mmu: Harden "map private PFN" against
+ unexpected root invalidation
+From: Sean Christopherson <seanjc@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Kai Huang <kai.huang@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Sashiko Bot <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Aug 11, 2026 at 06:53:05PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/11/26 18:51, Lorenzo Stoakes (ARM) wrote:
-> > On Tue, Aug 11, 2026 at 06:44:01PM +0200, David Hildenbrand (Arm) wrote:
-> >>>
-> >>> Since copy_vma_and_data() which calls copy_vma() intends to reference the
-> >>> old VMA after the merge, it must have this pointer updated.
-> >>>
-> >>> This kind of self-merge is not possible with a succeeding merge, as the
-> >>> merge always prefers to expand the preceding VMA if possible.
-> >>>
-> >>> copy_vma() accounts for this by explicitly checking to see if a self-merge
-> >>> occurred and updating the vmap pointer if so. However it incorrect did so
-> >>> even for a subsequent merge (this is simply a noop so it had no impact).
-> >>
-> >> Took me longer than it should to find out that this is no real fix ;)
-> >>
-> >>>
-> >>> So change this to only check for the case which matters - a backwards
-> >>> merge - and rearrange the parameters to make it clearer we're doing that -
-> >>> i.e. check new_vma->vm_start < old_vma_start (having already renamed
-> >>> vma_start to old_vma_start to make it clear this is the previous VMA).
-> >>>
-> >>> Also update the existing wall-of-text comment to be a lot clearer.
-> >>>
-> >>> While we're here, replace the VM_BUG_ON_VMA() with a VM_WARN_ON_ONCE_VMA()
-> >>> and update the VMA userland tests accordingly.
-> >>>
-> >>> No functional change intended.
-> >>>
-> >>> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> >>> ---
-> >> I skimmed over it, looks correct, but the merging stuff is way over my head to
-> >> confidentially give a RB tag her :)
-> >
-> > Well that's what A-b is for ;)
->
-> Assisted-by? Half-assed-by?
->
-> ;)
+On Tue, Aug 11, 2026, Yan Zhao wrote:
+> On Thu, Aug 06, 2026 at 02:40:48PM -0700, Sean Christopherson wrote:
+> > Move kvm_tdp_mmu_map_private_pfn()'s reload of the MMU into its tight loop
+> > so that an unexpected root invalidation has a better chance of being
+> > handled gracefully, even though it should be impossible for the vCPU's root
+> > to be invalidated after the initial reload.  As is, encountering an invalid
+> > root is *guaranteed* to put the task into an infinite loop (albeit a
+> > breakable loop that honors NEED_RESCHED).
+> Note: without the newly added is_page_fault_stale() check in patch 4, an invalid
+> root would not put the task into an infinite loop :) 
+> 
+> BTW: As noted in [1], is_page_fault_stale() only checks !mirror roots, and
+> kvm_mmu_reload() reloads mirror roots only when !mirror roots are also invalid,
+> since an invalid mirror root was considered impossible. (up to now, no?)
+> 
+> [1] https://lore.kernel.org/all/anrD8nI8RfYoNvbf@yzhao56-desk.sh.intel.com
 
-A schloppy schplatch I like? ;)
+> > Add a WARN to try and detect bugs that break KVM's expectations, along with
+> > a comment to explain why it should be impossible for the root to be
+> > invalidated.
+> And there's already a warning in kvm_tdp_mmu_map():
+> "KVM_MMU_WARN_ON(!root || root->role.invalid);".
+> So the warning also seems redundant.
 
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+No, KVM_REQ_MMU_FREE_OBSOLETE_ROOTS can be pending even if the current root is
+valid.  And once the is_page_fault_stale() check comes along, the WARN in
+kvm_tdp_mmu_map() is effectively unreachable.  The patch ordering is weird, but
+there wasn't a great solution because adding is_page_fault_stale() first would
+create an obvious infinite loop.
 
-Thanks!
+> > Cc: Kai Huang <kai.huang@intel.com>
+> > Cc: Yan Zhao <yan.y.zhao@intel.com>
+> > Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >  arch/x86/kvm/mmu/mmu.c | 15 +++++++++++----
+> >  1 file changed, 11 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> > index 621b0a42f2a1..c6cac893cbad 100644
+> > --- a/arch/x86/kvm/mmu/mmu.c
+> > +++ b/arch/x86/kvm/mmu/mmu.c
+> > @@ -5184,10 +5184,6 @@ int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
+> >  	if (kvm_gfn_is_write_tracked(kvm, fault.slot, fault.gfn))
+> >  		return -EPERM;
+> >  
+> > -	r = kvm_mmu_reload(vcpu);
+> > -	if (r)
+> > -		return r;
+> > -
+> >  	r = mmu_topup_memory_caches(vcpu, false);
+> >  	if (r)
+> >  		return r;
+> > @@ -5199,10 +5195,21 @@ int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
+> >  		if (kvm_test_request(KVM_REQ_VM_DEAD, vcpu))
+> >  			return -EIO;
+> >  
+> > +		r = kvm_mmu_reload(vcpu);
+> > +		if (r)
+> > +			return r;
+> > +
+> Since kvm_mmu_reload() is moved inside the loop, should we also move
+> kvm_gfn_is_write_tracked() inside the loop to prevent unexpected bugs?
 
->
-> --
-> Cheers,
->
-> David
-
---
-Cheers, Lorenzo
+I'm leaning no?  That check was extreme paranoia in the first place.
