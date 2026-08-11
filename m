@@ -1,128 +1,214 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDA7445AD3;
-	Tue, 11 Aug 2026 14:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7C7446BED
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 14:05:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786457038; cv=none; b=cxpQ+8HYU45OM3LvF6tMjPyA8PerOneedDBC1Xml+xzn9SD6jsjkaSlSFGwSp5i9tpvXq5ywduO77TyA7oJEoe3tqj3S+FsGOSMO3E3yn0RdkBXvszRCLYyyDPUBIifOpAHK1DOWw7Llmqlj9DZDvhXaPNitY+OuUaotm0gVlLI=
+	t=1786457150; cv=none; b=fmg3qGDdEs0aOZjXjITYjwP5vYv8dhgb1U+HVR2/+yFcned6CxDvZl4phBFoZwuivbcYY6IlpsXYpS2IS0Ncn8a8PBnGltXoIxW5PPwNVozeIkriFPWlPVDSk4vxlD5mLspFgRmGAoQ81XsxmRaCdSfXqJ/YJVdc01WdiNpBOdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786457038; c=relaxed/simple;
-	bh=7JHJsVwv8q9ro12ZyXg8t3aIaavLSfxDmwSP+nXunHo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AG/jZBtVOlvSv3/0rtck+EpozXO3mGho54rjhFg/QnAc8A7mTFzhm0E4In6ckvoxgMHXjesZv5ejIaS6Y60zUsm3eyI5WcaJkFwWBooA9nMcpIblN0D34WQbn7guvkO6GJUsQ+UNUsZ5p0PYf3tKwdC3WWswX+3FiD9YteLJTmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rKBHPFAg; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786457150; c=relaxed/simple;
+	bh=IpGRwjcNXY0ZjSkV0KzCG7krK0XNKqIE0KLfGji2OHs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=KHVY6ltWe3XBP+VjctRfjNtXe5PnRw3rQo2AEJtF9xyWvA6rFHYYmDmUZoQ4d8qi/Wg4A2IvF/Ur5azQkohxZqpZ50bzh0gwtyn1Elw+QGkK8PWQmGFHJZSIJQRTpOpZmXivr1PGPQX/h4zFiC7QMQeoL6gZbF/gfZPvtAhFaCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rECrfNiz; arc=none smtp.client-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rKBHPFAg"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67BDWct5492485;
-	Tue, 11 Aug 2026 14:03:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=dKAHFXuRiLyTFft9S
-	xrzg1DrtOzev+TQHXYWHsfwFkw=; b=rKBHPFAgz+E5rgmuXJO7q9WMQa8Y/3NIo
-	Bg/MM0iDRHiUctH6L42X8JgKfmQUyz/1jl33d1SVvLfHLSTe2SMXU5GIhZN/wKXy
-	GsIWNLMvgHT83bqOGv9SWaM4FxcvDZpgaBEKtqOehNzt39js86I+IAROaMS99Hup
-	CULsI+3us876Q1T9iPXsXRMcSaFL3joDbruxwlIRymmKcg+eFVfFwtuEwCH8tSQZ
-	lHcU0pkM8bvPclYkhIJebekMANBbHqMNj7Pjz7+5kqHy1BGu+/QSIFb0e/7F7r17
-	oYPkzca9L38gmxZ4ZPL0rwbhxJs2KjJCCQzYovgpSB7NSw0fWoSkQ==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvq9d839-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Aug 2026 14:03:47 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67BDuG8g029804;
-	Tue, 11 Aug 2026 14:03:46 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxhfy0yv7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Aug 2026 14:03:46 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67BE3hWF40305104
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Aug 2026 14:03:43 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 253A52004B;
-	Tue, 11 Aug 2026 14:03:43 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F07A220040;
-	Tue, 11 Aug 2026 14:03:40 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.124.219.6])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 11 Aug 2026 14:03:40 +0000 (GMT)
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: maddy@linux.ibm.com, atrajeev@linux.ibm.com, npiggin@gmail.com,
-        mpe@ellerman.id.au, chleroy@kernel.org
-Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] powerpc/perf: Update prev_count of event to get accurate values
-Date: Tue, 11 Aug 2026 19:33:09 +0530
-Message-ID: <20260811140313.15397-4-gautam@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260811140313.15397-1-gautam@linux.ibm.com>
-References: <20260811140313.15397-1-gautam@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rECrfNiz"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cfc52ddc55so46612685ad.3
+        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 07:05:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786457146; x=1787061946; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iAJktWiCLBpTuTmwKXB+qiv4Wjmxms+UGlXDoh/JJdk=;
+        b=rECrfNizDdV4vI1MnkyyolEio222NwToG7pVVrndUb3uV5l0Dw1F0NFyyqxxSl4rX/
+         U8Cy/gptGAYkcIekbSy18r4ZVhCDLCtoYMBAWl69zFIoS99GoJ1yL13vqYWQCB+sExvG
+         puiMj4+VC98SntxxPhFw1E/4PpeNLdRgTLTL+EFbQ5BhgCTJ9he3BPnXe7Dg9vdkPzYK
+         Y7GE3hv3xl5RAPIxuDvvT/ZPk1/OY8OSZFsQOa/YHg8VS29UCYnUW/MokJU+slldyFe4
+         u0bWRRYlCIw3o1lKw9VfP332HKiGNlAa9G2o4OG331RlyWlcq2NH6Om9Wlcn7/lQ0z6f
+         Gd5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786457146; x=1787061946;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iAJktWiCLBpTuTmwKXB+qiv4Wjmxms+UGlXDoh/JJdk=;
+        b=jRrSTrUpwBqPWYKSWgb+zKokdmp+q6GbWNy0T2SDvZ2b1IqoxTjg3mhuLa/DwgRdum
+         ACqPsmp0uMBLuzLgffTSB6NnzOSKCZCX4B4Z/5SbHsy5vHZc47OjS1G0eo8GZe6QwL4Y
+         BK8CQ/p+2Yx9hKMb2CGQG72ML++s1Bs2cbHWVXvfDnno5nUdaNwDr+evae6VvQ+Hq73t
+         ICnsDamSz7zGzY+ciD89DqsCQMGSWrU8mT2gm3aPFzpRBGvINlKavjb/XKAMj8nMsyWc
+         WJpMov3vLRom79kQeEhByivPo7iXalvZDx1VDiBfjuw5hi/xZixkX2VZWjyOIgmgL5xO
+         SD0g==
+X-Forwarded-Encrypted: i=1; AHgh+RrhGTbHWI1Pfac+FLhmIydxCE0Rjl4/Z062x7dddSoFhJnh7O7rVJ/yJK4bQjZDP5dB3TY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5kDkG/Kc3hSF13y7rtN4a3EJdlMZIcR88iTsU3CY1ZpBhfy0r
+	lET3/SeVpP6fQ49/RL3OevJcAZtuvGq+MEtGRgMhnWLrjej2eOLc/trOw7RfF7zuafYTVwASlp0
+	uqfzBBg==
+X-Received: from plok3.prod.google.com ([2002:a17:903:3bc3:b0:2cc:8fa5:7221])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f64a:b0:2c6:a012:6241
+ with SMTP id d9443c01a7336-2d3177a171dmr43949945ad.6.1786457145880; Tue, 11
+ Aug 2026 07:05:45 -0700 (PDT)
+Date: Tue, 11 Aug 2026 07:05:45 -0700
+In-Reply-To: <2vxzpkzo51wg.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: u4Na4jzxmqRsBFgKisVgJDNiZERexDqA
-X-Authority-Analysis: v=2.4 cv=PbDPQChd c=1 sm=1 tr=0 ts=6a7b2bc4 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=2AWsWaKDJcEKxLcdIakA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODExMDExNyBTYWx0ZWRfX5VXTNq0FaKf8
- Qysatjkipqj+OzTqOUeaHVRPTakkrv9q1p693Ntr8EIoaZ2Cyndj4mMwXbausru4ksnUcAYWkaY
- yxCiiUAlie/++h+VxfZ8hmXWdaFZzCqsFXB87TjVPpr5JCN5pkvA3pXkIOWUK7M+9mmLdIZtgqw
- 9YxANRKgNZC65QHFwJnXawGu0IFvgxhuH/d2EZUHNM5DCUMD9QhEeoz2Bicgd1PePMZ1g44ycHK
- zzSKbKxCr68TZCRwmKw7Fi5HlZEPbVjUr1Q09MbdOgCeeHEjh+rVKq/zbQq9FoX/Rd0zqrGdyuQ
- xj/XnKbrDlecmjYerkTiqCoNEpAqSeGdWp8JtbzOXrj1aI6yd34+aa1wNrYwAzhwh1Hpb+VEoh0
- fKHIio2PXGJ3geINzIxgoBXz05YeWnpVcRinUbOZv5zZmaZTB4n+yEVOO26E+gb3sR1nKjsoX6K
- Pr6Ktr5Vj48836BSecg==
-X-Proofpoint-ORIG-GUID: pIdlkqF6E0zehb9GQMbNwchtfqSQ5FfX
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODExMDExNyBTYWx0ZWRfXw3ycQyk6lPb0
- smC+YbrhzeemXW+C0Ww5dmPd981VMHLC3HKID6iGE5lFcWMtN99hg+Nedkfu//8nCRQKNPoMVBh
- /1RFk5tDkh7XOquPjhqSFlyBt++z1zA=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-11_03,2026-08-10_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0 adultscore=0
- clxscore=1015 priorityscore=1501 suspectscore=0 phishscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608110117
+Mime-Version: 1.0
+References: <20260728121138.1103610-1-tarunsahu@google.com>
+ <20260728121138.1103610-6-tarunsahu@google.com> <anphyjFv3FhF61iB@google.com> <2vxzpkzo51wg.fsf@kernel.org>
+Message-ID: <anssOQFNZ2LfihbU@google.com>
+Subject: Re: [PATCH v4 05/11] KVM: LUO: Support VM preservation across live updates
+From: Sean Christopherson <seanjc@google.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Tarun Sahu <tarunsahu@google.com>, ackerleytng@google.com, fuad.tabba@linux.dev, 
+	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
+	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, sagis@google.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
+	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
+	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
+	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
+	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
+	suzuki.poulose@arm.com
+Content-Type: text/plain; charset="us-ascii"
 
-When vpa_pmu_read() is called twice while a process is running on a cpu,
-the "event->hw.prev_count" variable returns a stale value on the 2nd
-read which results in a larger value getting added to event->count.
+On Tue, Aug 11, 2026, Pratyush Yadav wrote:
+> On Mon, Aug 10 2026, Sean Christopherson wrote:
+> 
+> > On Tue, Jul 28, 2026, Tarun Sahu wrote:
+> >> Register a Live Update Orchestrator (LUO) file handler for KVM VM files
+> >> to serialize and deserialize VM state across kexec live updates.
+> >> 
+> >> Currently, Only VM type (e.g. arch.vm_type on x86) is preserved as part
+> >> of VM preservation.
+> >
+> > Why?
+> >
+> >> On retrieval, kvm_luo_retrieve() recreates the KVM VM file via
+> >> kvm_create_vm_file() and use an atomically incremented ID for the internal
+> >> fdname, as the final fdname assigned by userspace is not yet known during
+> >> retrieval. As this fdname is only used in debugfs infra, This will not break
+> >> any UAPI.
+> >> 
+> >> This infrastructure establishes the foundation for preserving guest_memfd
+> >> instances across live updates, and can be expanded in the future to
+> >> preserve additional VM state.
+> >
+> > Uh, why guest_memfd?  As much as I want to push guest_memfd adoption, it seems
+> > guest_memfd should be the _last_ thing we support, not the first.  As evidenced
+> > by the last two decades, it's very doable to have KVM VMs without guest_memfd,
+> > but it's rather hard to have VMs without vCPUs.
+> 
+> You _can_ preserve vCPUs today using KVM_{GET,SET}_REGS, they just won't
+> run in the background during the reboot.
 
-Fix this by updating the event->hw.prev_count every time vpa_pmu_read()
-is called.
+What about x86 CoCo VMs?  Which are quite literally _the_ reason guest_memfd was
+created in the first place.  
 
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
----
- arch/powerpc/perf/vpa-pmu.c | 1 +
- 1 file changed, 1 insertion(+)
+> This series can save you from dumping VM memory to disk if it is backed by
+> guest_memfd.
 
-diff --git a/arch/powerpc/perf/vpa-pmu.c b/arch/powerpc/perf/vpa-pmu.c
-index 334ef7719db9..f5cfa4d5e369 100644
---- a/arch/powerpc/perf/vpa-pmu.c
-+++ b/arch/powerpc/perf/vpa-pmu.c
-@@ -145,6 +145,7 @@ static void vpa_pmu_read(struct perf_event *event)
- 	final_data = new_data - prev_data;
+Or to word it another way, one _can_ save guest_memfd, it's just slower.  My
+point is that this series needs to provide a _lot_ more information about the
+bigger KVM picture.  For those of us that are on the very fringes of live update,
+it's practically impossible to review because, to us, it seems very arbitrary.
+
+The part that's especially confusing is the saving of the VM type.  That comes
+straight from userspace, so it's super bizarre to automatically save/restore that,
+but nothing else.
+
+> >> +KVM LIVE UPDATE
+> >> +M:	Pasha Tatashin <pasha.tatashin@soleen.com>
+> >> +M:	Mike Rapoport <rppt@kernel.org>
+> >> +M:	Pratyush Yadav <pratyush@kernel.org>
+> >> +R:	Tarun Sahu <tarunsahu@google.com>
+> >> +L:	kexec@lists.infradead.org
+> >> +L:	kvm@vger.kernel.org
+> >> +S:	Maintained
+> >> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git
+> >
+> > NAK on taking changes through a different tree.  This is KVM code, period.
+> >
+> > In general, I'm skeptical of the dedicated MAINTAINERS entry.  It's extremely
+> > difficult to tell since this series is little more than a skeleton (either that
+> > or liveupdate is way simpler that I was expecting), but I suspect that maintaining
+
+...
+
+> > E.g. the LUO APIs seem pretty straightforward; I assume the bulk of the complexity
+> > is going to be in knowing what to save/restore, and how, which is much more about
+> > KVM than it is about liveupdate.
+> 
+> I think it is fine if you want to take these changes through the KVM
+> tree, but I would like live update maintainers to be listed as reviewers
+> at least.
+
+Why not simply add a file pattern match to the LIVE UPDATE entry?
+
+diff --git MAINTAINERS MAINTAINERS
+index 8014b9f8253e..2eb57b22c37f 100644
+--- MAINTAINERS
++++ MAINTAINERS
+@@ -15052,8 +15052,8 @@ F:      include/linux/liveupdate.h
+ F:     include/uapi/linux/liveupdate.h
+ F:     kernel/liveupdate/
+ F:     lib/tests/liveupdate.c
+-F:     mm/memfd_luo.c
+ F:     tools/testing/selftests/liveupdate/
++N:     [^a-z]luo
  
- 	local64_add(final_data, &event->count);
-+	local64_set(&event->hw.prev_count, new_data);
- }
- 
- static void vpa_pmu_del(struct perf_event *event, int flags)
--- 
-2.54.0
+ LLC (802.2)
+ L:     netdev@vger.kernel.org
 
+> At the same time, I also keep being (pleasantly)
+> surprised at preservation being relatively simple. For example, the code
+> to preserve a shmem file (via memfd) is roughly 600 lines, a big chunk
+> of which is comments. The code of course has some limitations, but it is
+> good enough for use in production.
+> 
+> For one, we care about ABI breakages and versioning. 
+
+Which is amusing to me because that implies KVM does not, and I would hazard to
+guess that KVM has the biggest ABI surface of any subsystem in the kernel by a
+country mile (though I'm probably wildly underestimating the effective ABI surface
+of filesystems).
+
+> The serialized state is a part of live update ABI and changes to it should be
+> ACKed by us. 
+
+Meh, "Don't break userspace" is a universal rule in the kernel, I genuinely don't
+see why liveupdate needs special treatment.
+
+> For another, how the file handlers interact with their dependencies can
+> affect the behaviour that VMMs observe. Those changes should also pass by
+> some live update eyes.
+
+Perhaps in the short term, but IMO, that's not a winning strategy in the long
+term.  From my perspective, that like saying the PAGE CACHE maintainers should
+review every usage of the filemap APIs, because how the APIs are used impacts
+the page cache and affects userspace-visible behavior.  There are myriad analogies
+like that throughout the kernel.
+
+Yes, liveupdate is new and shiny, but IMO for it to be successful and maintainable,
+it needs to be treated like any other core infrastructure in the kernel, not a
+special snowflake whose details are known only by a handful of people.  Because
+I think it's likely liveupdate goes one of two ways: either liveupdate becomes a
+very niche thing that is used sparingly throughout the kernel, or it becomes a
+broadly used feature that is supported by many filesystems and subsystems.
+
+If liveupdate is relegated to niche status, then it probably isn't going to see
+a significant amount of ongoing development, at which point the folks working on
+liveupdate will naturally migrate to other projects, and maintenance will largely
+be left to subsystem maintainers.
+
+If liveupdate is broadly used, then having a single group of people maintain
+every subsystem's usage won't scale, and maintenance will again largely fall on
+the shoulder of subsystem maintainers.  Which is totally fine and working as
+intended, because that's exactly what subystem maintainers are signing up for
+by merging support for liveupdate.
