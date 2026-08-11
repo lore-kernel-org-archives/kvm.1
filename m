@@ -1,124 +1,245 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948803B14BE;
-	Tue, 11 Aug 2026 16:38:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A393C3438
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 16:40:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786466309; cv=none; b=hQcFjvllqNs73t21/ZK6hNtLdUni2Zg3UfskqStonZPUU8zMqd8XfSoxRHNwxEuCNB/49xkKQOgdpmHuEHDDm8Qo8c/7mPXEAzAXOdxVTygWwsAPKOan1jzr6Wru17AX+YaixEnZIlUb4K8eBerzgCho+Qdt6n5bQsoLifwFdi0=
+	t=1786466405; cv=none; b=Qk3Yrd5+LjZxKUfa1pp+K+jKFW8YBON+frZM93juJ+tEmqJvNwMin2yVEHftCGSqHwV2Jk872AoWD4+NHD8fGEZNg4sLbZ5yCE2rDlh71ZwDj1njdp5IiJ6VpgO/g0bCZzG+rl5HFCYktBSFrTVXUtSasc0Mr5Giqz4lCOa7tTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786466309; c=relaxed/simple;
-	bh=BSmjIm5YUDJJZqV49VPLL3xpx1XVuUgkpKXoywhBd7o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cZnf9ndIvEpsoR8NsPOYBb9xsIA6yyd1SYXlqf9Kc8E4kCygnLl92vcnrocJnRfaKmUjIa6Z6eBMolJnBUDjlamBr6NdIzvmFUeoI84wFrOAWmIiTFUceqfqe6SU8y8C6/6xy85phEK+MqxZfRpOMmy1078I5fO1YR0IdDJ7xCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bU0e5lru; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786466405; c=relaxed/simple;
+	bh=x3WgV96TSRrgaGzvHZOrZd8amq4PmoTOJA0PE5Bc3ro=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=TjAP7tOErKilXnzwK4oBiwr9p5Zr6R76DGwWgK2KR7nEkS8FgqQM3UOAfQc5XlolvGf0F1sjXz1564VdiXxPcWzEuQ71CVgQS7hnutnJzLFN7whlD/3RYZLVEjGqVUnlohoyFWcXEBLc9aT0opKw/plc5UDjgj3FFJp4tAOZ77c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Id7aDxyj; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bU0e5lru"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67BGVauF3260708;
-	Tue, 11 Aug 2026 16:38:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=X9P76/
-	opMyHH6vtL+p1sAt9/8idsOBgbdHRV2tUFjow=; b=bU0e5lru3tqu33GUX/IIyV
-	B2r8B6sHQbmbz/MYmoAeOyLEy7bjLN9B6Mmn5ualTKL3A+ZlyEtNKcAU3Ieozm66
-	Qe64nJ/iop0xft4gRUOxXQExXhO12thqhheQaldzYtapCPYHsqitCHScsF7cgzrq
-	GGadDkKiYahsal9081DrYNHDm1U8abWkGc20T60L+1oGmg4ug2kRXKWYxqJmZUTD
-	UkbN2RMP0PtxTAM7PQR2uFUXKskga8x/dghE31HZbr19hVqZ9GPPJXjgCYH2+xw2
-	iT6TzR6Y9d/xfA99bSHb7uH2hvEdFGL1IZyjbKsPObsrisqJX0nO+xvrogL961NA
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvjywyfs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Aug 2026 16:38:22 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67BGQhVg024338;
-	Tue, 11 Aug 2026 16:38:20 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxg9h1q76-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Aug 2026 16:38:20 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67BGcJEr33424006
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Aug 2026 16:38:19 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5C34458056;
-	Tue, 11 Aug 2026 16:38:19 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 423F65805A;
-	Tue, 11 Aug 2026 16:38:18 +0000 (GMT)
-Received: from [9.61.146.44] (unknown [9.61.146.44])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 11 Aug 2026 16:38:18 +0000 (GMT)
-Message-ID: <05763614-9402-4c3c-84de-90d7f1ff09e4@linux.ibm.com>
-Date: Tue, 11 Aug 2026 12:38:17 -0400
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Id7aDxyj"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84885a4fcabso45971b3a.3
+        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 09:40:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786466401; x=1787071201; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=1rxRzhkW3E+GRLBK4lU1PGGkM/l3GS9nXng7CK7oPdQ=;
+        b=Id7aDxyjRTKI88j+VwxcbAXr5kXxAAztogV2G7Wej5LcmJ8FJnzmA1omJlXueLMvUb
+         vAsiRI7Oxhj60eeT2q08khLtem6MrMvngBonpRzVC5CKQynW3glA4b/jZBePBljfkR3k
+         YGSTimCHHsT8139hH3DHyxdJrCg6VC80DF0X+K8b3yPti8f8bS49w/0DJn56q+ej5vSM
+         stHXcAcXGG6S5zqc/47oODus7SjiTxlyAfMIY0UrQPAtun+yaL0VZx1skA9e1QAa3zC3
+         44jdE2CtvXRSEmjPiQT1/IwFTrTV4gjCV5uwILQTb+StCBsfb7v1/muiLDv2Wni38Ogl
+         gBOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786466401; x=1787071201;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1rxRzhkW3E+GRLBK4lU1PGGkM/l3GS9nXng7CK7oPdQ=;
+        b=UvrgHuuyVzwL8ZZVbeBIis9mf3FmBryv3cS5dlUiucZaOScDsSzho6QNl4XLXqycE7
+         YOmpEjEYluDdbK5PF8sXt4bmMqjv7DW3M5LD1+2iyWDXh9L2Ii6R+JVKftdZzdFUbvFj
+         v0wpwcUcS811maLcfu0kz2wHIPZ1Mb4MfB8S/F5GXEkufvKNayPlA8RhqBtSouWDl8D7
+         JOdJoXnK/CkQP9VDbPb9Z0dOdlyAz1fMXH1llI1zJmlZ9meRWNA5tfA66bkIdUHFG+nU
+         XOe8Ix23MkHbRdZgsa7YLBGuyy1IYwRnUnoCB691jZCvC+E6oJvrKQKuTxqka1DCOQBO
+         YvUg==
+X-Forwarded-Encrypted: i=1; AHgh+RoJvI+PshSkW2x9JHA5XIHsGO9RIpgc4G2iaVNZuEYi+MUm3hoo5huQHJTh+9IRS4WxxbQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4OdfIHKffg9l61yJ0DKvwbMKwOTIfVK+nt9WKIayOKd6OatWC
+	azdBiV4Bt7PrQx3Yp5QaPEbtyg8DR4bnz52tubrjygL5/DhWaCfSyI9+9C9BhmlGJcDpTMbX10u
+	QDLxjvw==
+X-Received: from pfst18.prod.google.com ([2002:aa7:8f92:0:b0:848:8d8a:9463])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:b42:b0:848:30c3:45dd
+ with SMTP id d2e1a72fcca58-84fa86e1489mr4667146b3a.11.1786466401012; Tue, 11
+ Aug 2026 09:40:01 -0700 (PDT)
+Date: Tue, 11 Aug 2026 09:40:00 -0700
+In-Reply-To: <e256fa4af96e916ba30019cbba501fa896025fb0.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/8] s390/vfio-ap: Fix required lock not held during
- update of ap_matrix_mdev object
-To: Anthony Krowiak <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, pasic@linux.ibm.com,
-        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
-        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
-        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
-        stable@vger.kernel.org
-References: <20260810192257.1208410-1-akrowiak@linux.ibm.com>
- <20260810192257.1208410-5-akrowiak@linux.ibm.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <20260810192257.1208410-5-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODExMDEzOCBTYWx0ZWRfXxgTFIvxi4AWf
- 8tRv2bmXmVOt6uuA5F8O3Ks5A+FQKPq+BX6DghH74tjUfxk11FilnfnS1Hv/kjMCaQ8/JcYz98f
- ZSphA0shtW3z5RtE4Qsd4xkQeQpaIKqjuvxTIsYxGBnF/jCmCO2AXke0kBC3zxhB0O1RjQsNzQ/
- aW0Ib6VZUB1kmTk9xmY5m+NHiv68muLU6vgKyQ1RTJHcFprGXjjaeFp6mBVhRaL5yecX+Hlfm9P
- 9cBF7dEAw/kyY4llJETfXzYm+QGdoUsn+TSrjSKSk8aIMX4Rgok+fvxy/Ehx6E2b0/CpnUkwOwq
- 1ZHxHwoLfA3VBzBVB4Ah9ATIKyhKRDTvhxa+7Dj6/RyQMdQbGDICaJaz2VT5dGDCp6G+RzPyjXd
- wZZ/pf2GMp/c+unmuv+ZICRwW/mGUmheVuJSEiFp+NBP+67xUc1XhhVeNPGR+GymCfy88esxp7l
- hapgmnzKvZ1pTrBstjw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODExMDEzOCBTYWx0ZWRfX1G5j+HKw/Jtr
- 85DcA5rfw7sG9HLyhwmY6+6ZSXUMqJw1F0JvP8Kt9vX+CCSmy49UiE/iau/ENBHlgykqNm0p+zw
- 1HB9Fg1dB2ym2LTGq5jOnNIsMedUXOk=
-X-Authority-Analysis: v=2.4 cv=RqD16imK c=1 sm=1 tr=0 ts=6a7b4ffe cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=utj1NnzjcZOxplUDwPcA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: U1HbXl1ax7NZQzq2UAI2WzUEG7SZrgae
-X-Proofpoint-ORIG-GUID: U1HbXl1ax7NZQzq2UAI2WzUEG7SZrgae
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-11_04,2026-08-10_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 suspectscore=0 lowpriorityscore=0
- clxscore=1015 adultscore=0 bulkscore=0 malwarescore=0 impostorscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608110138
+Mime-Version: 1.0
+References: <20260728144954.355376-1-dwmw2@infradead.org> <20260728144954.355376-18-dwmw2@infradead.org>
+ <anoOz2rZ02KFk1l-@google.com> <acd9b32617f75d188c370a464a922af0d650d4f5.camel@infradead.org>
+ <ano6-gIZtqMfipiD@google.com> <bb9a12cc663130eb2caa8e839d0f6ca53d722d1c.camel@infradead.org>
+ <ansuqrD2KwFuLWbV@google.com> <ansywxh0VX5rtfWc@google.com> <e256fa4af96e916ba30019cbba501fa896025fb0.camel@infradead.org>
+Message-ID: <antQYJvRxJxOjtut@google.com>
+Subject: Re: [PATCH v7 17/36] KVM: x86: Allow KVM master clock mode when TSCs
+ are offset from each other
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul Durrant <paul@xen.org>, 
+	Jonathan Cameron <jic23@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, 
+	Dongli Zhang <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/10/26 3:22 PM, Anthony Krowiak wrote:
-> In the vfio_ap_mdev_cfg_add function, the apm_add, aqm_add and adm_add
-> fields of an ap_matrix_mdev object fields are modified while not holding
-> the matrix_dev->mdevs_lock. This lock must be held while making these
-> to guard against a race condition with another caller that may be
-> concurrently modifying these fields or any of the fields in the
-> matrix_mdev->matrix.
-> 
-> Fixes: eeb386aeb5b7c ("s390/vfio-ap: handle config changed and scan complete notification")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+On Tue, Aug 11, 2026, David Woodhouse wrote:
+> On Tue, 2026-08-11 at 07:33 -0700, Sean Christopherson wrote:
+> >=20
+> > Actually, why are KVM_{G,S}ET_CLOCK_GUEST vCPU-scoped?=C2=A0 Per the do=
+cumentation,
+> > the API "Sets the KVM clock (for the whole VM) in terms of the vCPU TSC=
+".=C2=A0 If
+> > the APIs are VM-scoped instead of vCPU-scoped, then KVM can simply save=
+/restore
+> > what's in the per-VM masterclock state, no?
+>=20
+> They're vCPU-scoped because they need to be tied to a guest TSC (on
+> live migration, neither ka->master_cycle_now nor ka->master_kernel_ns
+> are useful =E2=80=94 those are the "per-VM masterclock state").
 
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+But master clock is also tied to guest TSC.
 
+> Theoretically, guest TSCs can be different on each vCPU (different
+> offset, different *rate* even. Not that we allow KVM_[GS]ET_CLOCK_GUEST
+> at different rates, I concede).
 
+Sure, but not masterclock, and if we're saying that KVM_[GS]ET_CLOCK_GUEST =
+is
+for migrating masterclock state, then as you concede, vCPUs with TSCs at di=
+fferent
+frequencies is completely out of scope.
+
+> So they operate in the context of a given vCPU, and *its* TSC.
+
+Yes, but KVM_[GS]ET_CLOCK_GUEST aren't saving/restoring vCPU state, they're
+saving/restoring masterclock state, which is VM-scoped.  What I don't like =
+about
+the proposed uAPI is that it implicitly consumes state, from an arbitrary v=
+CPU,
+that KVM very explicitly tracks in masterclock.  And AFAICT, there's zero r=
+eason
+to do so.
+
+E.g. as a strawman, I would expect something like this to migrate masterclo=
+ck
+state (deliberately avoiding "master" in the uAPI, because checkpatch is al=
+ready
+screaming too much).  I didn't try too hard to get the math right, I just w=
+anted
+to highlight that all the state needed to restore the masterclock is availa=
+ble
+in the masterclock (which seems comically obvious when I type it out).
+
+struct kvm_pvclock {
+	__u64 tsc_timestamp;
+	__u64 tsc_scaling_ratio;
+	__u64 tsc_offset;
+	__u64 system_time;
+	__u32 tsc_to_system_mul;
+	__s8  tsc_shift;
+	__u8  pad0;
+	__u16 pad1;
+	__u32 pad2;
+};
+
+#define KVM_SET_PVCLOCK		_IOW(KVMIO, 0xd6, struct kvm_pvclock)
+#define KVM_GET_PVCLOCK		_IOR(KVMIO, 0xd7, struct kvm_pvclock)
+
+static int kvm_vcpu_ioctl_set_pvclock(struct kvm *kvm, void __user *argp)
+{
+	struct kvm_pvclock user_hv_clock;
+	struct kvm_arch *ka =3D &kvm->arch;
+	u64 curr_tsc_hz, user_tsc_hz;
+	u64 user_clk_ns;
+	u64 guest_tsc;
+	int rc =3D 0;
+
+	if (copy_from_user(&user_hv_clock, argp, sizeof(user_hv_clock)))
+		return -EFAULT;
+
+	if (user_hv_clock.pad0 || user_hv_clock.pad1 || user_hv_clock.pad2)
+		return -EINVAL;
+
+	if (!user_hv_clock.tsc_scaling_ratio || !user_hv_clock.tsc_to_system_mul)
+		return -EINVAL;
+
+	if (user_hv_clock.tsc_shift < -31 || user_hv_clock.tsc_shift > 31)
+		return -EINVAL;
+
+	user_tsc_hz =3D hvclock_to_hz(user_hv_clock.tsc_to_system_mul,
+				    user_hv_clock.tsc_shift);
+
+	kvm_hv_request_tsc_page_update(kvm);
+
+	/*
+	 * kvm_start_pvclock_update() takes tsc_write_lock and opens
+	 * the pvclock seqcount; kvm_end_pvclock_update() closes both.
+	 * All clock state modifications between them are atomic with
+	 * respect to readers in kvm_guest_time_update().
+	 */
+	kvm_start_pvclock_update(kvm);
+	pvclock_update_vm_gtod_copy(kvm);
+
+	if (!ka->use_master_clock) {
+		rc =3D -ENODATA;
+		goto out;
+	}
+
+	curr_tsc_hz =3D (u64)get_cpu_tsc_khz() * HZ_PER_KHZ;
+	if (unlikely(curr_tsc_hz =3D=3D 0)) {
+		rc =3D -EBUSY;
+		goto out;
+	}
+
+	if (kvm_caps.has_tsc_control)
+		curr_tsc_hz =3D kvm_scale_tsc(curr_tsc_hz,
+					    user_hv_clock.tsc_scaling_ratio);
+
+	/*
+	 * The mul/shift in the provided pvclock structure encode the guest TSC
+	 * frequency at which it was generated. Sanity-check that it is
+	 * consistent with the existing pvclock information, and by extension
+	 * all vCPUs' effective TSC frequenies.  Allow a discrepancy of 1 kHz
+	 * either way since independently calibrated hosts will not measure
+	 * precisely the same value even for the same nominal frequency.
+	 */
+	if (user_tsc_hz < curr_tsc_hz - 1000 ||
+	    user_tsc_hz > curr_tsc_hz + 1000) {
+		rc =3D -ERANGE;
+		goto out;
+	}
+
+	/*
+	 * Calculate the guest TSC at the new reference point, and the
+	 * corresponding KVM clock value according to user_hv_clock.
+	 * Adjust kvmclock_offset so both definitions agree.
+	 */
+	guest_tsc =3D user_hv_clock.tsc_offset +
+		    kvm_scale_tsc(user_hv_clock.system_time,
+				  user_hv_clock.tsc_scaling_ratio);
+
+	if (guest_tsc !=3D user_hv_clock.tsc_timestamp +- ???) {
+		rc =3D -EINVAL;
+		goto out;
+	}
+
+	<fill in masterclock>
+
+out:
+	kvm_end_pvclock_update(kvm);
+	return rc;
+}
+
+> And I think I'm going to defend that 'theoretical they can be
+> different', because I *would* like to eliminate the ways that a *guest*
+> can force non-masterclock mode, and that does mean allowing the offset-
+> TSC case.
+>=20
+> FWIW in my local tree I've just extended the pvclock_migration_test to
+> test precisely the thing you were concerned about: three vCPUs with
+> divergent TSC offsets, migrated by setting each vCPU's TSC and then
+> invoking KVM_SET_CLOCK_GUEST once, through vCPU0.=20
+
+I wasn't actually concerned about migration, I was concerned about time goi=
+ng
+backwards from the guest's perspective.
