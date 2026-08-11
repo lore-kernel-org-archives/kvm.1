@@ -1,248 +1,189 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C184D37998C
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 07:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9FF35A39F;
+	Tue, 11 Aug 2026 08:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786434605; cv=none; b=iNvp3/Rx0cLoR51cOYl/3/wEbFZhVE6DuyWHRMNwns1eFGQf4LpBe+UuITA+L23Td3cnpZnxs7VN8x8XH+4EnJoBWJxE2zUdfK2wOMLxJ18XeVRotXataT+trgEl0CR9imQ+8O1xCo2cs8uMUyrs3ATyJEslfTKYKSMKs8boa6U=
+	t=1786436360; cv=none; b=DfQyMoe3s5WP/O0fAjnW6kRL0Fh4Epe9jWjKNjGi8s7BW4RqnbJMw0la+ETWPafDRp5t2OZtFV7hj82USk6oNQo952P22ckyM5Bybxz96+WUFvYaJ37Zs+0KWmTYijnKgf+0P8KklGDPlRDXMRvXjg85Z0oxmDZuvRyR7F0sNvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786434605; c=relaxed/simple;
-	bh=3otvyyul0lnH4pBz3q6gcbwj87q1RyMX1el+bKZ7orM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ujEvFpxqDzKogGuixTNXzMnajNZZmUf9D56S3gSjKFVu+r75DpBkrvClG1Hgou9vimvnXUDPs0iqufE/NLUEt4z7oyXiPgiwyTVOFNlp58MW4mksxU1qLSj3RhwKvlQuszTN8lxayRUXNBDHnKQpgNLgbokz3g4zhMWkYkYKoN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IVyw6doi; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1786436360; c=relaxed/simple;
+	bh=0JGxfMj//08ol/mMVjBNNDfqhkXTnfYDw7RB9+jZNxo=;
+	h=Message-ID:Subject:From:To:Cc:Date:in-reply-to:Content-Type:
+	 MIME-Version; b=prA8KY6rweteLqwocSclmrByY7UWNxiH5uB7ki2JUApJfn9rsRwvBVt/zYhsR4aaw3iUlq5UE30E8+YqE0k6kgIdFPrcgxt6K8yNeA2SnySBfGikM4sBtq1mTAhUACVH8IBcEwN/gZo771clOc054YAPr9U1J6mA+qtXPlbSODw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=auezavfP; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IVyw6doi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786434604; x=1817970604;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=3otvyyul0lnH4pBz3q6gcbwj87q1RyMX1el+bKZ7orM=;
-  b=IVyw6doi75D89pPfaWfM5/rrcOLh1GTwkO+5lOG3N1GXVSv9FZnob688
-   jHpLXTiMxH+E6CUOnRPbUI7bRbXOBCf/sKs0Fl7NRlpYmdCsdefxPLfte
-   jcrSmEWaQFlmBQVEtykYz1FubCrfKbi1T5hY5sL9DtxJmu0JTXvsKm3S3
-   b7q07oenV+xEzk9f9/MaU+0v8LDTeXJ40RvJi+mLd88jn2GdufEefFiSN
-   /FcDPjVHm8aByIv7NI7cRZGom+HjFrMIUrPz7zR+9psRuHJv9aivsVub5
-   ifOxEm28OFCryvGqlGlnFjZL1arjKAi9das8gAz5vnrkemKOiLxAv/qWe
-   Q==;
-X-CSE-ConnectionGUID: TvtWY1Z0RMWCfSW3Kd4mjA==
-X-CSE-MsgGUID: z7pH8F/gTEmVuyJpzwas9Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="89484895"
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; 
-   d="scan'208";a="89484895"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 00:50:03 -0700
-X-CSE-ConnectionGUID: 6nbYPjqHR0e9k20vx+0RMg==
-X-CSE-MsgGUID: P9LXFTzWS/qWC4jKiJEGoQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; 
-   d="scan'208";a="267546533"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.239]) ([10.124.241.239])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 00:50:00 -0700
-Message-ID: <32239a68-5ba8-4985-b959-1959f331f30a@linux.intel.com>
-Date: Tue, 11 Aug 2026 15:49:57 +0800
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="auezavfP"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:in-reply-to:
+	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:References;
+	bh=0JGxfMj//08ol/mMVjBNNDfqhkXTnfYDw7RB9+jZNxo=; b=auezavfPpr8vK1iNJQa5VNQz1i
+	MCWAkvEzOBXm7eiPLi4S5U0gorhI08dIYgm537HUvlFotuWBAaZqdNW6BbdNgqsLlwGHXeCgW1wpx
+	G9wQhQNEJ1cRi73Qcb5lXSUhbFKWJTSIqQm4RWChMC6sEFqBOOPZ3434ka0V2g7sMZapBwvBhd1tg
+	T22wuNPVLh+vYRzKIQwsopxD3dhC8LlUsRS+t5oP/1qT7bFuNlsQc4iggxL8WPN3WMBkNCy1Sibdj
+	AERcBfxe9JDZPjrtlZZkXDILv8/W0RmkW2dNCqzVvus1dJ01dl8El7770Z3Z1LXcaHRMoaUNQ1g7g
+	7zQWaXoA==;
+Received: from 54-240-197-235.amazon.com ([54.240.197.235] helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wthGn-0000000Dux9-2SMv;
+	Tue, 11 Aug 2026 07:51:34 +0000
+Message-ID: <6829348563b5854a91ce91f724fe5181810239d3.camel@infradead.org>
+Subject: Re: [syzbot] [kvm-x86?] [kvm?] WARNING: locking bug in
+ kvm_xen_set_evtchn_fast
+From: David Woodhouse <dwmw2@infradead.org>
+To: syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, seanjc@kernel.org, 
+	pbonzini@redhat.com, suryasaimadhu369@gmail.com,
+ syzkaller-bugs@googlegroups.com
+Date: Tue, 11 Aug 2026 08:51:09 +0100
+in-reply-to: <6a79d964.9c11d2ce.289b96.00ee.GAE@google.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-xRbRoEa1mYcFJ0X3Y4ty"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/8] KVM: Add support for hardware-switched mediated PMU
-To: Sandipan Das <sandipan.das@amd.com>, kvm@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>,
- Yosry Ahmed <yosry@kernel.org>, Maxim Levitsky <mlevitsk@redhat.com>,
- Zide Chen <zide.chen@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- "Nikunj A . Dadhania" <nikunj@amd.com>, Manali Shukla <manali.shukla@amd.com>
-References: <cover.1786345201.git.sandipan.das@amd.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <cover.1786345201.git.sandipan.das@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
-On 8/10/2026 6:14 PM, Sandipan Das wrote:
-> Mediated PMU currently saves and restores the guest PMU state in
-> software on every world switch. On Zen 5 and later processors, it is
-> possible to offload this to the hardware, which automatically saves and
-> restores the guest counter state to and from a vendor save area (VMCB)
-> during world switches. This feature is called PMC virtualization and
-> detailed information about it can be found in Volume 2 of the AMD64
-> Architecture Programmer's Manual under Section 15.39.
->
-> This series extends the mediated PMU framework with a hardware-switched
-> mode and adds the AMD (SVM) implementation, including nested support.
->
-> Performance
-> -----------
-> The difference in the world switch overhead between software-switched
-> and hardware-switched modes is measured with the x86/vmexit test from
-> kvm-unit-tests on a system with an AMD EPYC 9755 processor. The values
-> are in cycles per operation (lower is better), averaged over 5 runs.
->
-> ------------------------------------------------------------------------
-> test                               sw-switched  hw-switched         gain
-> ------------------------------------------------------------------------
-> cpuid                                     5333         2592       +51.4%
-> vmcall                                   15858         7619       +52.0%
-> wbinvd                                    5256         2517       +52.1%
-> invd                                      1857         2147       -15.6%
-> mov_from_cr8                                18           18         0.0%
-> mov_to_cr8                                 157          156        +0.6%
-> inl_from_pmtimer                         25934        21176       +18.3%
-> inl_from_qemu                            25881        21156       +18.3%
-> inl_from_kernel                           5521         2772       +49.8%
-> outl_to_kernel                            5522         2778       +49.7%
-> mov_dr                                     114          114         0.0%
-> self_ipi_sti_nop                          1020         1015        +0.5%
->   ipi self_ipi_sti_nop                     310          307        +1.0%
->   eoi self_ipi_sti_nop                     242          241        +0.4%
-> self_ipi_sti_hlt                          2714         2704        +0.4%
->   ipi self_ipi_sti_hlt                     310          307        +1.0%
->   eoi self_ipi_sti_hlt                     242          240        +0.8%
-> self_ipi_tpr                              1272         1263        +0.7%
->   ipi self_ipi_tpr                         309          307        +0.6%
->   eoi self_ipi_tpr                         241          240        +0.4%
-> self_ipi_tpr_sti_nop                      1304         1295        +0.7%
->   ipi self_ipi_tpr_sti_nop                 309          307        +0.6%
->   eoi self_ipi_tpr_sti_nop                 242          241        +0.4%
-> self_ipi_tpr_sti_hlt                      3003         2991        +0.4%
->   ipi self_ipi_tpr_sti_hlt                 309          307        +0.6%
->   eoi self_ipi_tpr_sti_hlt                 242          240        +0.8%
-> x2apic_self_ipi_sti_nop                    899          895        +0.4%
->   ipi x2apic_self_ipi_sti_nop              191          190        +0.5%
->   eoi x2apic_self_ipi_sti_nop              242          241        +0.4%
-> x2apic_self_ipi_sti_hlt                   2592         2587        +0.2%
->   ipi x2apic_self_ipi_sti_hlt              191          190        +0.5%
->   eoi x2apic_self_ipi_sti_hlt              242          241        +0.4%
-> x2apic_self_ipi_tpr                       1159         1151        +0.7%
->   ipi x2apic_self_ipi_tpr                  193          193         0.0%
->   eoi x2apic_self_ipi_tpr                  241          240        +0.4%
-> x2apic_self_ipi_tpr_sti_nop               1189         1180        +0.8%
->   ipi x2apic_self_ipi_tpr_sti_nop          193          193         0.0%
->   eoi x2apic_self_ipi_tpr_sti_nop          242          241        +0.4%
-> x2apic_self_ipi_tpr_sti_hlt               2887         2875        +0.4%
->   ipi x2apic_self_ipi_tpr_sti_hlt          194          192        +1.0%
->   eoi x2apic_self_ipi_tpr_sti_hlt          242          239        +1.2%
-> ple_round_robin                             19           19         0.0%
-> wr_kernel_gs_base                           73           73         0.0%
-> wr_ibpb_msr                                563          557        +1.1%
-> wr_tsc_adjust_msr                         5352         2603       +51.4%
-> rd_tsc_adjust_msr                         5330         2586       +51.5%
-> toggle_cr0_wp                            11319         5810       +48.7%
-> toggle_cr4_pge                           11743         6242       +46.8%
-> mmio-no-eventfd:pci-mem                  31890        26835       +15.9%
-> mmio-wildcard-eventfd:pci-mem             6461         3666       +43.3%
-> mmio-datamatch-eventfd:pci-mem            6449         3671       +43.1%
-> portio-no-eventfd:pci-io                 25218        21455       +14.9%
-> portio-wildcard-eventfd:pci-io            5512         2774       +49.7%
-> portio-datamatch-eventfd:pci-io           5524         2780       +49.7%
-> ------------------------------------------------------------------------
+--=-xRbRoEa1mYcFJ0X3Y4ty
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Just curious what causes the gain difference between these test cases?
-Different vm-exit/vm-entry number in each test case? Suppose the cost for
-saving/restoring PMU MSRs on each vm-exit/vm-entry should be same or close.
+On Mon, 2026-08-10 at 07:00 -0700, syzbot wrote:
+> Hello,
+>=20
+> syzbot tried to test the proposed patch but the build/boot failed:
+>=20
+> failed to checkout kernel repo git://git.infradead.org/users/dwmw2/linux.=
+git/xen-srcu-fixed: failed to run ["git" "-c" "core.hooksPath=3D/dev/null" =
+"fetch" "--force" "73b08201ab8ba1d188f45210a65f33cb30e5efaf" "xen-srcu-fixe=
+d"]: exit status 128
+
+Huh, try again:
+
+#syz test: git://git.infradead.org/users/dwmw2/linux.git xen-srcu-fixed
+
+--=-xRbRoEa1mYcFJ0X3Y4ty
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+6pVqPxIiL5J4d47L1TBvJzwAAAAAAAA=
 
 
->
-> The largest gains are for wbinvd (+52.1%), vmcall (+52.0%), and cpuid
-> (+51.4%), followed by the TSC-adjust MSR accesses (~+51%), the
-> kernel-handled port I/O paths (~+50%), and the control-register toggles
-> (~+47-49%). The wildcard and datamatch MMIO / port-I/O paths improve by
-> ~+43-50%, while the slower no-eventfd MMIO / port-I/O and pmtimer/qemu
-> port-I/O paths improve by ~+15-18%.
->
-> The only meaningful regression is invd (-15.6%). The self-IPI and EOI
-> subtests move by at most 1.2% and wr_kernel_gs_base is unchanged, all
-> within run-to-run noise.
->
-> Design
-> ------
->   * The entity responsible for switching the guest PMU state is tracked
->     per-VM via a new set of mediated PMU capability flags in kvm_arch.
->     In software-switched mode the state resides in struct kvm_pmu; in
->     hardware-switched mode it resides in the vendor save area.
->   * Event filtering, instruction emulation, and intercepted RDPMC still
->     need the state in struct kvm_pmu, so new vendor state-sync PMU ops
->     synchronize specific MSRs between struct kvm_pmu and the vendor
->     save area on demand.
->   * On SVM, the feature depends on VNMI for guest PMI delivery and is
->     controlled by the new "vpmc" kvm_amd module parameter, enabled by
->     default when the host supports it and mediated PMU is enabled.
->
-> Limitations
-> -----------
->   * Not supported for SEV-ES and SEV-SNP guests: the guest PMU state
->     resides in an encrypted VMSA that is inaccessible to the event
->     filtering logic.
->   * With VNMI and no AVIC, overflow interrupts are always delivered as
->     NMIs because the APIC is emulated and the LVTPC is ignored. This
->     shows up as expected behavioral differences in the x86/pmu test of
->     kvm-unit-tests.
->
-> Overview
-> --------
-> Patches 1-3 extend the mediated PMU framework with hardware-switched
-> mode: the capability flags, the vendor state-sync ops, and the generic
-> support. Patches 4-6 add the SVM enablement: the PerfCtrVirt feature
-> bit, the VMCB save-area fields, and the SVM implementation. Patch 7
-> adds nested (nSVM) support to use the feature with L2 guests. Patch 8
-> explicitly disables the feature for SEV-ES and SEV-SNP guests.
->
-> Tested with kvm-unit-tests (KUT) and perf fuzzer. KUT's x86/pmu test
-> requires patching to accept overflow interrupts as NMIs (limitation
-> because of VNMI ignoring the LVTPC). It is recommended to apply the
-> following patches before testing.
-> https://lore.kernel.org/kvm/3bfbf15c22652ba00cf4a16fe9e0a3bfe7071f97.1784096302.git.sandipan.das@amd.com/
-> https://lore.kernel.org/kvm/b075ec13e95167da1f2229626713c91d291bb75b.1784097178.git.sandipan.das@amd.com/
-> https://lore.kernel.org/all/106bc3a4660653cb7750f3ae07a4dbca42c2762c.1786356229.git.sandipan.das@amd.com/
->
-> base-commit: 6cf46b37b0356b3408f8ba949e10462cc71b533d
->              (tag: kvm-x86-next-2026.08.07)
->
-> Previous versions can be found at:
-> rfc: https://lore.kernel.org/kvm/cover.1762960531.git.sandipan.das@amd.com/
->
-> Changes in v1:
->   * Introduce mediated PMU capabilities for hardware PMU virtualization
->     features instead of perf PMU capabilities.
->   * Make VNMI a hard requirement since AVIC can be inhibited.
->   * Introduce new PMU ops to access VMCB PMU state instead of relying
->     on host-initiated {get,set}_msr() ops.
->   * Make VMCB PMU state accessible via KVM_{GET,SET}_MSRS for migration.
->   * Implement support for nested SVM.
->   * Disable support for SEV-ES and SEV-SNP guests explicitly.
->
-> Sandipan Das (8):
->   KVM: x86/pmu: Add mediated PMU capability flags
->   KVM: x86/pmu: Add PMU ops for vendor state sync
->   KVM: x86/pmu: Add support for hardware-switched PMU
->   x86/cpufeatures: Add PerfCtrVirt feature bit
->   KVM: SVM: Add VMCB fields for PMC virtualization
->   KVM: SVM: Add support for hardware-switched PMU
->   KVM: nSVM: Add support for hardware-switched PMU
->   KVM: SEV: Disallow the use of hardware-switched PMU
->
->  arch/x86/include/asm/cpufeatures.h     |   1 +
->  arch/x86/include/asm/kvm-x86-pmu-ops.h |   3 +
->  arch/x86/include/asm/kvm_host.h        |  11 +++
->  arch/x86/include/asm/svm.h             |  13 ++-
->  arch/x86/kvm/cpuid.c                   |   1 +
->  arch/x86/kvm/pmu.c                     | 102 +++++++++++++++++----
->  arch/x86/kvm/pmu.h                     |  29 ++++++
->  arch/x86/kvm/svm/nested.c              |  45 +++++++++-
->  arch/x86/kvm/svm/pmu.c                 | 117 +++++++++++++++++++++++++
->  arch/x86/kvm/svm/sev.c                 |   3 +
->  arch/x86/kvm/svm/svm.c                 |  58 +++++++++++-
->  arch/x86/kvm/svm/svm.h                 |  19 ++++
->  arch/x86/kvm/vmx/pmu_intel.c           |   2 +
->  arch/x86/kvm/vmx/vmx.c                 |   3 +-
->  arch/x86/kvm/x86.c                     |   2 +
->  15 files changed, 384 insertions(+), 25 deletions(-)
->
+--=-xRbRoEa1mYcFJ0X3Y4ty--
