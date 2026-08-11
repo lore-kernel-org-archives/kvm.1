@@ -1,162 +1,332 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6166841B8F8;
-	Tue, 11 Aug 2026 08:44:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CC13321AA;
+	Tue, 11 Aug 2026 08:49:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786437855; cv=none; b=RBjIzeDdjDSmqYOtkHcbTyrOEDTieUGEh+keCSdGA9Fbw0Swi6QxWO/YqlTC7k/VTKskWbmOx4eJA8IQppdW0hqrryijtm5roGEjSZ9X9zW/yuDXe0zWkNzWETtyfjV0uw9YmzQbkf2SHErL8VhddnbDIqmpQKd5FiorkW+EZ7k=
+	t=1786438201; cv=none; b=MEXEVKgQeQoXq4/mTF9Vz0oJS9N32pjDqfsbbfjz0+x6HuvqVKJe3kgM2OKvEbHWrR50pp+rymTQdrjwPBQtLenIk5eB5ULj9YmgyyQoU8IG8Pdsx3le8iH50sBY0X6mNFKI4ALSgOXFTUpabwnBNZLSHI0LhzFlKXOemrEesa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786437855; c=relaxed/simple;
-	bh=rSkSxd7H6sMnrV3dfh8+hFotskFFf4wzUZl2cq9TNYg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=fLG3+3+hqmKIAxwb+6jj6G1leuaeYAfbcT/yl2sUifBXUfNCdOjDIdUvyZ3JgssJ5wH/QH3H7y+20n8X0PM3i6iRkvSUfKy6ZS2IaChzrX0kKKjBfEeuj0Z8X91/n7z0kXSaeYrPHFYEay9SDbjDBQPwXCsYouX3c7sfDN2zNL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pasm5HuG; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786438201; c=relaxed/simple;
+	bh=P0UWCuYOa1EGGDMa2d147EdaSvn6kWcMAiO5CbqBt/k=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=BgDFGikAE0V2QaiiP5aK06G+dgA7AThPb0c/zIPUBvl4BfvrwZ0RcFD1FpFGtDx66bdsDlEbUuYPX1QfbDikyEqDoRRLbYcXVcgYW+I5/G0KUP9HeVVDfdEqfmRd7rZVepTPXks1wPQ1NrdxODpm+4dzyZarm8yxe2IX1AGBrUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=VlDpHMxl; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pasm5HuG"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67AN1bhB2999523;
-	Tue, 11 Aug 2026 08:44:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=1c6WUok7b6+FnOaOJYOHsUnnYqZq
-	mzg+63DdIUAWgD8=; b=pasm5HuG6zFh2TUYEM9qY2aZFl2kiOupBG9yEqKia7Lj
-	JWJXHeXxNLooTOU/JnBVY8MQRpbImjX/I474CdQ9H8srA5lUxcKxRuwjOaMAT7vI
-	5wrIix4zXui7IYTFy0q2BuvC6AfOL5rceJhBjXYqRVXsP466wWXOYbIMoDd9K3Go
-	X2Yu0lSvmJiejXJXeAl8o9SzCC8eJYQRlqLJ0o4YxvB5N6UE+RsYy/BxYCUywj6u
-	axHN1NGS3E2RDdQ4xDZR3QVbNaqggmoP51nZOnuRKoHRLVo0PJEe0nbSWblMvxGu
-	q/Ycwiqa+5RRsb1tyS1cQX0NWlph/vyAF84m68sL2Q==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvnw3er6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Aug 2026 08:44:05 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67B8fHmr019249;
-	Tue, 11 Aug 2026 08:44:05 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxf5w0axg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Aug 2026 08:44:04 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67B8i18X41156962
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Aug 2026 08:44:01 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0FD3D20043;
-	Tue, 11 Aug 2026 08:44:01 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D15A420040;
-	Tue, 11 Aug 2026 08:44:00 +0000 (GMT)
-Received: from [127.0.1.1] (unknown [9.87.85.9])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 11 Aug 2026 08:44:00 +0000 (GMT)
-From: Steffen Eiden <seiden@linux.ibm.com>
-Date: Tue, 11 Aug 2026 10:43:52 +0200
-Subject: [PATCH] s390: uv: Fix loop condition in uv_find_secrets
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="VlDpHMxl"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:Date:Cc:To:
+	From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=1DFJ1+Yc2fe403LOy/A7nU0aiqv+MDiyugPAjBOLLdc=; b=VlDpHMxlBlu1DjgL9FHAcZoDih
+	1HvSqJQaVYSs75Lr5OKNVUSkZE862zZNMSwtF+jxRGoIy9aWRLcR5r0eOg8cNWajGSRXoEyUm9tc5
+	NvHvI3xbytArR2e7obubjfexWQ/21GvjxC1QxovkA75992t4E/fRL2FKn1VOuQrUf8n9ski6oLpwg
+	zciRw7ha/6H0up5hcofeHfO70qvD6yEeRKo6k45rGMfNPOH2ZFeqUkZy3LGiKyVNMEUEVDiSSGW1L
+	1MT/ZUTNTC2OGX6LeSbYm1rUYdLlPPetqsiiw83mWU7CklOu22M3YapbYKjxuC1Gk4PIFGnsYu8Lr
+	FuKqHlLA==;
+Received: from [2001:8b0:10b:5:e09:5b1f:c111:693d] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wti4U-0000000EwG6-2YyA;
+	Tue, 11 Aug 2026 08:42:54 +0000
+Message-ID: <6eed3fe3461e9690b486ca98fa7563f60d3940ff.camel@infradead.org>
+Subject: [PATCH] srcu: Keep a spare node array so srcu_gp_end() need not
+ block in reclaim
+From: David Woodhouse <dwmw2@infradead.org>
+To: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>, Josh Triplett	
+ <josh@joshtriplett.org>, Steven Rostedt <rostedt@goodmis.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Neeraj Upadhyay	 <neeraj.upadhyay@kernel.org>, Joel
+ Fernandes <joel@joelfernandes.org>,  Uladzislau Rezki	 <urezki@gmail.com>,
+ Sean Christopherson <seanjc@kernel.org>, Paolo Bonzini	
+ <pbonzini@redhat.com>, rcu@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Tue, 11 Aug 2026 09:42:20 +0100
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-2Td9HET66dXaRJWW8010"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260811-uv_secrets_fix-v1-1-940a421a9292@linux.ibm.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqAIBAAvyJ7TkiziL4SIWZb7cXCLQnCvycdZ
- 2DmBcZIyDCIFyImYjpCAVUJ8LsLG0paCoOudVf3Ssk7WUYf8WK70iPb3nXNbJxBb6BEZ8Si/+E
- 45fwBSxBGZWAAAAA=
-X-Change-ID: 20260811-uv_secrets_fix-58a63b4a4ec4
-To: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: David Hildenbrand <david@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Christoph Schlameuss <schlameuss@linux.ibm.com>,
-        Harald Freudenberger <freude@linux.ibm.com>, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Steffen Eiden <seiden@linux.ibm.com>
-X-Mailer: b4 0.14.3
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=RsP16imK c=1 sm=1 tr=0 ts=6a7ae0d5 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=oTDM0dCkufzkdTJShNUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: Ffpj1HA0S_0oZidvkTBzFP0Bb-JQD8Es
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODExMDA3MCBTYWx0ZWRfX//EH8xOrB1Ob
- WOfh/DBeYLpekAc9efSyuNfvhGMlpmXevObljCe7MCpl4sp69AiYNI8DnFNMxw7kZf/QN7F1uPp
- gHQV4HyKqlkfOG15b14mqddXvyP03HQ2213bQL7Wqf9AMV692EKs9lOdz2xeVi8kaLGccpCTmUn
- lgGsfKRcJwW09XxA5TAhEz7CjKDd0Ce79CAg95kf3gvNJsnZOZg1fNIw486LCH0VpALBNTPnlsv
- q21ozunRhgJVL8/6hKch6+AnfKQFvpmJY3MsxOmJERpv4hUG7irpFYAVGyywq1sUSCVhN/842aG
- hgGwoyjQFbyRsbMqnI1YDrdff3lCADB8DfYZvw9EZ35xAuxbw7IzFfaBdP/2xUqRf5/xe2Zu+gE
- JhXEFhDN4qVS6iPIKT9i9YcCiSmFZtbL194p7lG2bewYxaztxuH6YxXcsjGESp/KBMQ01BXB/AR
- WNhTrBIYCMB2WEryDZQ==
-X-Proofpoint-ORIG-GUID: Ffpj1HA0S_0oZidvkTBzFP0Bb-JQD8Es
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODExMDA3MCBTYWx0ZWRfXwFsUgRFAaosF
- rVywTHUA4vppVps32twOBFydDUeF9q5pE1SrqgLWNJQ4a6I8h5fLzOQp50CDcetMrV0oqiVQH53
- 1yn19bBFKxi7qUBOVSoVQn9czToUp2Q=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-10_06,2026-08-10_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 suspectscore=0 clxscore=1015 malwarescore=0
- phishscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608110070
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-Nothing modified `start_idx` between the assignment and the comparison,
-so the condition was always false and the do/while ran exactly once
-even when the UV returned UVC_RC_MORE_DATA. Systems with more than
-85 UV secrets got -ENOENT for any secret past the first page.
 
-Fix this by setting the start index at the beginning of the loop not at
-the end. First test if there are more secrets left by comparing
-start_idx with list->next_secret_idx, and then set the start index to the
-next secret index.
+--=-2Td9HET66dXaRJWW8010
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 7c9137af2042 ("s390/uv: Retrieve UV secrets support")
-Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
+
+The one-time transition of an srcu_struct to SRCU_SIZE_BIG allocates
+the srcu_node tree with GFP_KERNEL from srcu_gp_end(), which runs on
+the same workqueue that processes grace periods for every srcu_struct
+in the system =E2=80=94 including those awaited from OOM/reclaim contexts s=
+uch
+as the OOM reaper via an mmu_notifier. If the allocation blocks in
+reclaim, it can be waiting on the very OOM reaper whose grace period
+is queued behind it: a deadlock.
+
+The size of the array depends only on rcu_num_nodes, fixed once
+rcu_init_geometry() has run, so one preallocated spare fits every
+srcu_struct. Have srcu_gp_end() allocate with GFP_NOWAIT, falling back
+to the spare, which is replenished from system_wq where blocking is
+harmless. If both fail, nothing is lost: the srcu_struct simply
+remains un-upgraded =E2=80=94 fully functional, just contended =E2=80=94 an=
+d the
+upgrade is retried on a later grace period.
+
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Assisted-by: Claude:claude-mythos-5
 ---
- arch/s390/kernel/uv.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Based on the discussion at=20
+https://lore.kernel.org/all/4a8c82b27972f9dda156aede0fb352d58fa66db7.camel@=
+infradead.org/
 
-diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
-index a284f98d9716..d970b15ef126 100644
---- a/arch/s390/kernel/uv.c
-+++ b/arch/s390/kernel/uv.c
-@@ -781,11 +781,14 @@ int uv_find_secret(const u8 secret_id[UV_SECRET_ID_LEN],
- 		   struct uv_secret_list *list,
- 		   struct uv_secret_list_item_hdr *secret)
- {
--	u16 start_idx = 0;
-+	u16 start_idx;
- 	u16 list_rc;
- 	int ret;
- 
-+	list->next_secret_idx = 0;
+ kernel/rcu/srcutree.c | 85 +++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 82 insertions(+), 3 deletions(-)
+
+diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+index 7c2f7cc131f7..2601566c254a 100644
+--- a/kernel/rcu/srcutree.c
++++ b/kernel/rcu/srcutree.c
+@@ -123,6 +123,72 @@ static inline bool srcu_invl_snp_seq(unsigned long s)
+ 	return s =3D=3D SRCU_SNP_INIT_SEQ;
+ }
+=20
++/*
++ * A standing spare srcu_node array. The size of the allocation depends
++ * only on rcu_num_nodes, which is fixed once rcu_init_geometry() has run,
++ * so one preallocated array fits every srcu_struct in the system.
++ *
++ * This exists because srcu_gp_end() may need to allocate the array when
++ * a size transition is triggered by contention, and srcu_gp_end() runs
++ * on the same workqueue for every srcu_struct =E2=80=94 including grace p=
+eriods
++ * awaited from OOM/reclaim contexts (e.g. the OOM reaper via an
++ * mmu_notifier). Blocking there in GFP_KERNEL reclaim can deadlock: the
++ * reclaim may be waiting on the very OOM reaper whose grace period is
++ * queued behind this allocation.
++ *
++ * The allocation is therefore attempted with the caller's own flags
++ * (GFP_NOWAIT on the grace-period path), and the spare is raided only
++ * when that fails =E2=80=94 i.e. under the memory pressure the spare exis=
+ts
++ * for. The spare is replenished from a clean context on system_wq.
++ * Nothing on the grace-period path ever blocks in reclaim.
++ */
++static struct srcu_node *srcu_spare_nodes;
 +
- 	do {
-+		start_idx = list->next_secret_idx;
- 		uv_list_secrets(list, start_idx, &list_rc, NULL);
- 		if (list_rc != UVC_RC_EXECUTED && list_rc != UVC_RC_MORE_DATA) {
- 			if (list_rc == UVC_RC_INV_CMD)
-@@ -796,7 +799,6 @@ int uv_find_secret(const u8 secret_id[UV_SECRET_ID_LEN],
- 		ret = find_secret_in_page(secret_id, list, secret);
- 		if (ret == 0)
- 			return ret;
--		start_idx = list->next_secret_idx;
- 	} while (list_rc == UVC_RC_MORE_DATA && start_idx < list->next_secret_idx);
- 
- 	return -ENOENT;
++static void srcu_spare_replenish_wq(struct work_struct *work)
++{
++	struct srcu_node *spare, *expect =3D NULL;
++
++	if (READ_ONCE(srcu_spare_nodes))
++		return;		/* Already refilled. */
++
++	spare =3D kzalloc_objs(*spare, rcu_num_nodes, GFP_KERNEL);
++	if (!spare)
++		return;
++	if (!try_cmpxchg(&srcu_spare_nodes, &expect, spare))
++		kfree(spare);	/* Someone else refilled it first. */
++}
++static DECLARE_WORK(srcu_spare_replenish_work, srcu_spare_replenish_wq);
++
++static struct srcu_node *srcu_alloc_nodes(gfp_t gfp_flags)
++{
++	struct srcu_node *node;
++
++	/*
++	 * Try the caller's own flags first, raiding the spare only if that
++	 * fails. For init_srcu_struct() the flags are GFP_KERNEL in the
++	 * caller's own task, where blocking is permitted: such a caller
++	 * only ever reaches the spare under genuine OOM, rather than
++	 * consuming it on any transient pressure. From srcu_gp_end() the
++	 * flags are GFP_NOWAIT, so nothing on the grace-period workqueue
++	 * ever blocks in reclaim, and the spare is the fallback it exists
++	 * to provide. If the spare is also gone (already raided, not yet
++	 * replenished), fail: srcu_gp_end() retries the size transition
++	 * on a later grace period.
++	 */
++	node =3D kzalloc_objs(*node, rcu_num_nodes, gfp_flags);
++	if (node)
++		return node;
++
++	/*
++	 * Kick the replenisher whether or not the raid succeeds: the
++	 * replenisher does not retry a failed allocation itself, so this
++	 * is what retries the refill on each pressure event.
++	 */
++	node =3D xchg(&srcu_spare_nodes, NULL);
++	schedule_work(&srcu_spare_replenish_work);
++	return node;
++}
++
+ /*
+  * Allocated and initialize SRCU combining tree.  Returns @true if
+  * allocation succeeded and @false otherwise.
+@@ -139,8 +205,7 @@ static bool init_srcu_struct_nodes(struct srcu_struct *=
+ssp, gfp_t gfp_flags)
+=20
+ 	/* Initialize geometry if it has not already been initialized. */
+ 	rcu_init_geometry();
+-	ssp->srcu_sup->node =3D kzalloc_objs(*ssp->srcu_sup->node, rcu_num_nodes,
+-					   gfp_flags);
++	ssp->srcu_sup->node =3D srcu_alloc_nodes(gfp_flags);
+ 	if (!ssp->srcu_sup->node)
+ 		return false;
+=20
+@@ -1004,7 +1069,7 @@ static void srcu_gp_end(struct srcu_struct *ssp)
+ 	/* Transition to big if needed. */
+ 	if (ss_state !=3D SRCU_SIZE_SMALL && ss_state !=3D SRCU_SIZE_BIG) {
+ 		if (ss_state =3D=3D SRCU_SIZE_ALLOC)
+-			init_srcu_struct_nodes(ssp, GFP_KERNEL);
++			init_srcu_struct_nodes(ssp, GFP_NOWAIT);
+ 		else
+ 			smp_store_release(&sup->srcu_size_state, ss_state + 1);
+ 	}
+@@ -2111,6 +2176,20 @@ void __init srcu_init(void)
+ 		}
+ 	}
+=20
++	/*
++	 * Prime the spare node array if lazy (contention-triggered) size
++	 * transitions are possible, so that srcu_gp_end() never needs to
++	 * allocate. Early-boot GFP_KERNEL is implicitly non-blocking
++	 * (gfp_allowed_mask strips __GFP_RECLAIM until much later), and
++	 * failure here is harmless: the GFP_NOWAIT fallback and replenish
++	 * worker remain.
++	 */
++	if (SRCU_SIZING_IS_CONTEND() || SRCU_SIZING_IS_TORTURE()) {
++		rcu_init_geometry();
++		srcu_spare_nodes =3D kzalloc_objs(*srcu_spare_nodes,
++						rcu_num_nodes, GFP_KERNEL);
++	}
++
+ 	/*
+ 	 * Once that is set, call_srcu() can follow the normal path and
+ 	 * queue delayed work. This must follow RCU workqueues creation
+--=20
+2.43.0
 
----
-base-commit: d58772d8520c7ef247c4b95c9bd76d3a25da9ff5
-change-id: 20260811-uv_secrets_fix-58a63b4a4ec4
 
-Best regards,
--- 
-Steffen Eiden <seiden@linux.ibm.com>
+--=-2Td9HET66dXaRJWW8010
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+4G1jDHVH34kcb/lDn59HP/oAAAAAAAA=
+
+
+--=-2Td9HET66dXaRJWW8010--
