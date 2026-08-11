@@ -1,131 +1,96 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF5B34252B
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 14:40:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5216B40F740;
+	Tue, 11 Aug 2026 14:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786459210; cv=none; b=h6GSFATp5WhD/hYTqCx29KpUJ1ndMhCmONKXLMbzSxLoRtPXnimpGfZayDtbt3IwjkDPJyd/+TY0VhsHvJ4csFbS0aUE1IMXztNadrsa9BjDa7jhnKe0tP+jfgkmEojlcdHBs3SSdI9wWOfiP595JbnjG7+3I7zIyxAyB+EbUJQ=
+	t=1786459347; cv=none; b=hySElm7L21+OnHr7tmKTdxw+2H+taDS02XVAyZf4/+uUBbqujzA9LmI6iBeWq8qNvPqoit7cg1Dcv4wA9jxFblvtzQ5uWyhvS4h8F+HVem3iK9o4GYgYz2fqQPdK2qkn8Zw1yvVfRHgVytMGD1OZI/SWJt8lrutATAuaYWkibcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786459210; c=relaxed/simple;
-	bh=UFX6Tqeb6IePKdToSptpGmrdLCj2iNkNV3bvfdpJ3Qs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=L/2S0Vho5pqYaAzZUCGI7GGwDuX8JpeZxZU/EgLGkJsv2ZgCZ31pul/I8skiCjwQXIqHhKZQ8TMps+ZguYRWR1KfQtFTIDedmDxkBXPPvvsYWvO5c8C0VpS284gFFy9qjSGROmT5tDYDety3L/5kNfk2AK7ose48HmffYvJthGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Nusgcz/M; arc=none smtp.client-ip=209.85.215.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Nusgcz/M"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-c96b4f58ddcso2599480a12.3
-        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 07:40:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786459208; x=1787064008; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zmcZw7eQs6vTJnb1q/TfEti4GMDcO2FFXTD8wseJb6M=;
-        b=Nusgcz/MABz224RhumoVsNiUERLzHl1qcC9Nh7HnA/kCkwwcEaRApK7evAMZijGg4u
-         WQyGrKAxWFO7caNd7IGPJONb3+o8hLmoUVZZWg0/S53d3ma0Ttu5kpbSdSb8exWVBbRm
-         wNSQ9k5XMgYdCLboClBKnVw2/B8+6k7PxyFE47UpdCt6Gy5v/AnvGydRs4VMqSjj6+n2
-         2TSv3uyK1cPtJlkqYeAWe5o2Fs/GI+mKShZRzTwNhXxNWm3Jbcu4Ht13BPlLwaKgcTwF
-         coPPx9UKi9WrEZspoiMFwobiT3vwVHVT9hgYjzx9AD9BiJmaI828pKOgsA2Ryq66jrlu
-         cUmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786459208; x=1787064008;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zmcZw7eQs6vTJnb1q/TfEti4GMDcO2FFXTD8wseJb6M=;
-        b=U5IPK9D+3eZRsm09ZisDYPnAiYAIUpb9pBU9GJXrNk+82wYKrkmAI0UY72c7m+G+0i
-         zgXLYdXCCFSYx9ZhY5o0ltwg8FTucu/l8AsgBXkmEkuO7ResJBqiMPjsLDQVZKYURZYT
-         kn4wvRfTd1c4DD52QoSKJkdzn9zdptyeg2viyCpvX/2qMeASkPITNcMd7APgzXmdPLv5
-         8uYZszPhT4I2OLLoRYauSRjAXjtVbxitkt2RBukqwbnwp647uO6nTi4jHknf4DHIXvtk
-         hU/FEyyG6uSUb3+NU4UGsO5A4xwON3sV2rRoOVvuqbl3txkijJ2cPzo8yLY3FQBiDMsz
-         k1hQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpoSYG7Er7DWTNXiYQ1MUW/Cyo73ZpoXBtiiT4hSfbWdXDbTSXbm6x2utkL6Pmp8XGZnKw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmWKmD3pVbmN//AAzjpKb9GUI0rjKC2G4cg+qbcNov58nk0NGi
-	saSHpZpHm+Q11DPBdZ2rfnsQm9oxnbBb/TFyH2NjWkmKrEZMbr5iZWbguzvKSRxw9q7TLrLaQB4
-	FhWfamw==
-X-Received: from pgaq65.prod.google.com ([2002:a63:4344:0:b0:c8d:1b0:ab70])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:ce4d:b0:3c0:eeb7:28b
- with SMTP id adf61e73a8af0-3cc2b8df2afmr5644517637.8.1786459207891; Tue, 11
- Aug 2026 07:40:07 -0700 (PDT)
-Date: Tue, 11 Aug 2026 07:40:07 -0700
-In-Reply-To: <20260810152730.841260-1-david.lee@trailofbits.com>
+	s=arc-20240116; t=1786459347; c=relaxed/simple;
+	bh=x8JM/8uKzUCIYdjLzqYgrf/L/uVF3VjP5scTvdfVuog=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rFR9xJWhV7U6G1sVVRnbTGfmwVFBs92f/ONLtYdyWmKaU1S8B0repKxIN3Nkropvs2umZrWrJStqdxJfWFbhXrRwAIEgqCKzs3oPl5jvzFQTenEBP3RL2Z7Fk66uYBte6GQq1P1qFpUsH5qXHqf94bzapnaqcyWY9psqGsVC4L8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 80210A04AB;
+	Tue, 11 Aug 2026 14:42:22 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf06.hostedemail.com (Postfix) with ESMTPA id 1BDE720010;
+	Tue, 11 Aug 2026 14:42:18 +0000 (UTC)
+Date: Tue, 11 Aug 2026 10:42:29 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand	 <david@kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, "Liam R. Howlett"	 <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport	 <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko	 <mhocko@suse.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams
+ <clrkwllms@kernel.org>, Simona Vetter	 <simona.vetter@ffwll.ch>,
+ =?UTF-8?B?SsOpcsO0bWU=?= Glisse  <jglisse@redhat.com>, Christian
+ =?UTF-8?B?S8O2bmln?=	 <christian.koenig@amd.com>, "Paul E. McKenney"
+ <paulmck@kernel.org>, Sean Christopherson <seanjc@google.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, kvm@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Message-ID: <20260811104229.72fdd928@gandalf.local.home>
+In-Reply-To: <a552b227e18ddbb3fa1f2edf2d1cb30ee6ccff13.camel@infradead.org>
+References: <a247c49dd61af1df7ddc4dcb1cccbcb36b04d9d5.camel@infradead.org>
+	<20260811135537.GC544626@ziepe.ca>
+	<1d669aca4ffee797b9c29215382444a5b23624b3.camel@infradead.org>
+	<20260811142730.GG544626@ziepe.ca>
+	<a552b227e18ddbb3fa1f2edf2d1cb30ee6ccff13.camel@infradead.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260810152730.841260-1-david.lee@trailofbits.com>
-Message-ID: <ans0RzGmObCkAb6e@google.com>
-Subject: Re: [PATCH] KVM: pfncache: track all MMU notifier invalidations
-From: Sean Christopherson <seanjc@google.com>
-To: David Lee <david.lee@trailofbits.com>
-Cc: pbonzini@redhat.com, Kyle Zeng <kylebot@openai.com>, 
-	"Dominik 'Disconnect3d' Czarnota" <dominik.czarnota@trailofbits.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	David Woodhouse <dwmw2@infradead.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspamout01
+X-Rspamd-Queue-Id: 1BDE720010
+X-Stat-Signature: oxypg9f677wxwcpnaarkrfp38fcwugwo
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19dAleZhUOu5jMhgkH99lyj0Dn95BWTID4=
+X-HE-Tag: 1786459338-307469
+X-HE-Meta: U2FsdGVkX1979J+Q3OdtvU+zN/hhYl9JQhI0wFYQuN1ZrCOyLwM835zzoagX5l163DZzohmxYfjMQMg9LMvXrD6bg3AeHd1TrLiR6S1r8L72HAN+v3XhoxZRX8xO+2I0Jc1dgxN+O60SUmzois9+y6MU9QJdwUAoXwKZYXZvgflOY5MkQGkqp/ZeTZ3GzgxqRZ0WF8S3WS8LB8o7TyvqBGXiA98/d9imuVuTVh0RKt7dphRhabMtXLx1CHkUp+8F6TrPt7w6fDOjixFfwzPAI0/VQK18sVl3nuIRCZ+fXGfIeFWakblsUYrcuLOfrE2v16Fx2y20k2tKyfUJUKu/Aa1kEnu9UsWEY7fVgeGUG4kiRo2q1nZuksArsq2JybJg
 
-+David W
+On Tue, 11 Aug 2026 15:33:18 +0100
+David Woodhouse <dwmw2@infradead.org> wrote:
 
-On Mon, Aug 10, 2026, David Lee wrote:
-> From: Kyle Zeng <kylebot@openai.com>
+> > If might_sleep doesn't work sanely at all in preempt_rt then just
+> > globally turn it off?  
 > 
-> There is a race condition in KVM's gfn-to-pfn cache refresh and MMU
-> notifier handling. An HVA-backed cache can publish a stale PFN and
-> kernel virtual address after the corresponding userspace mapping has
-> been invalidated. The Xen shared-info HVA interface immediately reads
-> and writes through that stale address, resulting in a host-kernel
-> use-after-free.
+> Turn might_sleep off? Or PREEMPT_RT? :)
 > 
-> The cache refresh path in virt/kvm/pfncache.c drops gpc->lock while
-> resolving and mapping an HVA. It uses mn_active_invalidate_count and
-> mmu_invalidate_seq to detect an MMU notifier interval that overlaps
-> this unlocked window. However, mmu_invalidate_seq is advanced only
-> when the invalidated HVA overlaps a KVM memslot. HVA-backed caches are
-> explicitly allowed to refer to memory outside all memslots. If such an
-> invalidation starts and finishes while gpc->valid is false, the active
-> count returns to zero without a sequence change and the refresh accepts
-> a stale PFN.
-> 
-> An unprivileged process with access to /dev/kvm can reach this path with
-> KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA. KASAN-detected use-after-free in
-> kvm_xen_shared_info_init(). The affected function reads and writes Xen
-> wall-clock fields through the stale mapping, so the issue can cause a
-> host-kernel crash and memory corruption.
-> 
-> The attached KASAN output confirms:
-> 
->   BUG: KASAN: use-after-free in kvm_xen_shared_info_init+0x344/0x3d0 [kvm]
->   Read of size 4 at addr ffff888046000900 by task poc/1266
-> 
-> Add a notifier-specific sequence that advances for every completed
-> invalidate interval before mn_active_invalidate_count is decremented,
-> and use that sequence for pfncache retry. The existing barrier pairing
-> then guarantees refresh observes either an active invalidation or a
-> sequence change.
-> 
-> Fixes: 721f5b0dda78 ("KVM: pfncache: allow a cache to be activated with a fixed (userspace) HVA")
-> Cc: stable@vger.kernel.org # 6.9+
-> Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> Co-developed-by: David Lee <david.lee@trailofbits.com>
-> Signed-off-by: David Lee <david.lee@trailofbits.com>
-> ---
-> Bug found and triaged by OpenAI Security Research and
-> validated by Trail of Bits.
-> 
-> Trail of Bits has a reproducer for this bug that triggers a
-> KASAN use-after-free and can share if needed.
+> The RT maintainers are on this thread if you want to pick either of
+> those fights... that was not the course of action I chose to take.
 
-Go ahead and share, syzbot has been reporting this race for some time, i.e. how
-to repro this isn't exactly a secret, and the more testcases the better.  This is
-also like the fourth or fifth proposed fix for the bug (bugs?).  I think the most
-recent version of the fix we are pursuing is here:
+I guess the question is, what exactly is the reason for sleeping to be
+prohibited? In RT, sleeping is allowed in most context because most context
+are threads (like interrupt handlers and such). Now, you still can't sleep
+in NMIs and hard interrupt handlers that were not converted to threads, but
+I'm not sure that's the case here anyway.
 
-https://lore.kernel.org/all/20260811094829.98794-12-dwmw2@infradead.org
+If the non_block_start() is just a big hammer to make sure things are fine
+in non-RT, it will likely still be fine in RT even though it may block and
+sleep. But what it blocks on are sleeping spin locks that likely would not
+cause an issue here if they didn't cause an issue in non-RT.
 
-Thanks!
+Thus, perhaps something like this:
+
+ 		if (ops->invalidate_range_start) {
+ 			int _ret;
+ 
+			if (!IS_ENABLED(CONFIG_PREEMPT_RT) && !mmu_notifier_range_blockable(range))
+				non_block_start();
+ 			_ret = ops->invalidate_range_start(subscription, range);
+			if (!IS_ENABLED(CONFIG_PREEMPT_RT) && !mmu_notifier_range_blockable(range))
+				non_block_end();
+
+?
