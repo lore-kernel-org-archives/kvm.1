@@ -1,214 +1,123 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7C7446BED
-	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 14:05:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF4234040D
+	for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 14:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786457150; cv=none; b=fmg3qGDdEs0aOZjXjITYjwP5vYv8dhgb1U+HVR2/+yFcned6CxDvZl4phBFoZwuivbcYY6IlpsXYpS2IS0Ncn8a8PBnGltXoIxW5PPwNVozeIkriFPWlPVDSk4vxlD5mLspFgRmGAoQ81XsxmRaCdSfXqJ/YJVdc01WdiNpBOdo=
+	t=1786457773; cv=none; b=mRLtSm27wGh/RIjTFB4ZgC8HFMKE3AWK4WrxaD75JUcFH/mvCNX2h5YWPg+I96ia6jIh7JvKrZcNQHokAjd1TeSZTi2+mpZa62+4HpsGrnnr5/WIlnVF2Vr47Dt/V5I+5Xbr1YCE+hWoCwCJPQT89U5uWOsgBkWuEXqjyM3UnnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786457150; c=relaxed/simple;
-	bh=IpGRwjcNXY0ZjSkV0KzCG7krK0XNKqIE0KLfGji2OHs=;
+	s=arc-20240116; t=1786457773; c=relaxed/simple;
+	bh=0x2URhZVNyLUMnaCJcyZpjyHlUxRNnCvJLXmuoMKMjI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KHVY6ltWe3XBP+VjctRfjNtXe5PnRw3rQo2AEJtF9xyWvA6rFHYYmDmUZoQ4d8qi/Wg4A2IvF/Ur5azQkohxZqpZ50bzh0gwtyn1Elw+QGkK8PWQmGFHJZSIJQRTpOpZmXivr1PGPQX/h4zFiC7QMQeoL6gZbF/gfZPvtAhFaCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rECrfNiz; arc=none smtp.client-ip=209.85.214.199
+	 To:Cc:Content-Type; b=XT4DYr89Ji5rZOvgGEtWyeLowzQtTIe1WoD8MMj+fVy8lAuAsR54SrIpEnmYnql/J+pEnubuDYn0xD1XTOTpnFwQ5oa2vzmiPytkUKsmVEArFy4h1J572gUfujd2Sg0hCX1uz0OkrDqDNz93B5KKqcURA+I8CiFJp0NFPZAQVCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XEO4CqtS; arc=none smtp.client-ip=209.85.210.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rECrfNiz"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cfc52ddc55so46612685ad.3
-        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 07:05:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XEO4CqtS"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84e04598adeso2552104b3a.2
+        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 07:16:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786457146; x=1787061946; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iAJktWiCLBpTuTmwKXB+qiv4Wjmxms+UGlXDoh/JJdk=;
-        b=rECrfNizDdV4vI1MnkyyolEio222NwToG7pVVrndUb3uV5l0Dw1F0NFyyqxxSl4rX/
-         U8Cy/gptGAYkcIekbSy18r4ZVhCDLCtoYMBAWl69zFIoS99GoJ1yL13vqYWQCB+sExvG
-         puiMj4+VC98SntxxPhFw1E/4PpeNLdRgTLTL+EFbQ5BhgCTJ9he3BPnXe7Dg9vdkPzYK
-         Y7GE3hv3xl5RAPIxuDvvT/ZPk1/OY8OSZFsQOa/YHg8VS29UCYnUW/MokJU+slldyFe4
-         u0bWRRYlCIw3o1lKw9VfP332HKiGNlAa9G2o4OG331RlyWlcq2NH6Om9Wlcn7/lQ0z6f
-         Gd5A==
+        d=google.com; s=20251104; t=1786457772; x=1787062572; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=0x2URhZVNyLUMnaCJcyZpjyHlUxRNnCvJLXmuoMKMjI=;
+        b=XEO4CqtS8aDisY+Uw7VySRK0BIWEWbYHQIsFGfqni7rAGJbYKYNhet2im8KYQoPPuo
+         80dW73Ssja6qRmy18juP6gb6zhSu1Ofp2Fe7BCBat5vCXXx/krQp2ubmAS2C8JPSxE5V
+         X7HIT30zzpcncs3FC+i4eVeELwXtBn8YCbhR8AIeW55Db1LmKi+u9dw7gx2faf00mvmo
+         l6QyQQtmSdouN0pXKR8n8fk948lJMW376Tmg/GalgBWPCTWGdp3hRlVEpnn91uD6dEcR
+         AMLTwYa4Q70dYWszBdy2gWWTGGIwbPpPDt3yP9Nv/WNEaIN/0M3N8jOWBuGaUyMV2+7x
+         49EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786457146; x=1787061946;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=iAJktWiCLBpTuTmwKXB+qiv4Wjmxms+UGlXDoh/JJdk=;
-        b=jRrSTrUpwBqPWYKSWgb+zKokdmp+q6GbWNy0T2SDvZ2b1IqoxTjg3mhuLa/DwgRdum
-         ACqPsmp0uMBLuzLgffTSB6NnzOSKCZCX4B4Z/5SbHsy5vHZc47OjS1G0eo8GZe6QwL4Y
-         BK8CQ/p+2Yx9hKMb2CGQG72ML++s1Bs2cbHWVXvfDnno5nUdaNwDr+evae6VvQ+Hq73t
-         ICnsDamSz7zGzY+ciD89DqsCQMGSWrU8mT2gm3aPFzpRBGvINlKavjb/XKAMj8nMsyWc
-         WJpMov3vLRom79kQeEhByivPo7iXalvZDx1VDiBfjuw5hi/xZixkX2VZWjyOIgmgL5xO
-         SD0g==
-X-Forwarded-Encrypted: i=1; AHgh+RrhGTbHWI1Pfac+FLhmIydxCE0Rjl4/Z062x7dddSoFhJnh7O7rVJ/yJK4bQjZDP5dB3TY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5kDkG/Kc3hSF13y7rtN4a3EJdlMZIcR88iTsU3CY1ZpBhfy0r
-	lET3/SeVpP6fQ49/RL3OevJcAZtuvGq+MEtGRgMhnWLrjej2eOLc/trOw7RfF7zuafYTVwASlp0
-	uqfzBBg==
-X-Received: from plok3.prod.google.com ([2002:a17:903:3bc3:b0:2cc:8fa5:7221])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f64a:b0:2c6:a012:6241
- with SMTP id d9443c01a7336-2d3177a171dmr43949945ad.6.1786457145880; Tue, 11
- Aug 2026 07:05:45 -0700 (PDT)
-Date: Tue, 11 Aug 2026 07:05:45 -0700
-In-Reply-To: <2vxzpkzo51wg.fsf@kernel.org>
+        d=1e100.net; s=20251104; t=1786457772; x=1787062572;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0x2URhZVNyLUMnaCJcyZpjyHlUxRNnCvJLXmuoMKMjI=;
+        b=OsO27bQ1tQ0NJUuOh/RK1DFQ2u4RCPmbDZ846tr9+m7kEAkJV4aCmpZ6IY5HZHJGoD
+         M2S4MsHfWL2wY0J1cZBANMvJ5KyTJZIXRtjl6sfVzC5W8cAq9kA6ULLZx/84hZEFKbpJ
+         jOFRTSFk0xcztWGnWJ/8yP66kLi/u4uvN0Y4XoaQdKxHTjtxiyiRYcnub3q918AhYIXS
+         dzWdDNO1MiYi6Z5yvfm9gQsV09hkLz3FTs+noo9oxr+4c7n9vynTfoIBjHkZZvGW9l/g
+         0jsXfLd4KhqhvW16umvHmN+MsZQz65IKO6MQHLT/qCKVRRP+2YScjtPow3Eo5C9TyHyo
+         JACg==
+X-Forwarded-Encrypted: i=1; AHgh+RqseqRB7k7OPtrh4AVGsy6q+rDhOcl+A2+xQS6/BybgpxLVGI1fHF1UxI/I1rek5KV1GEE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRQf69I4QAtxIMma9lZP/w8qwE7nnPUiOZEjF1AvRTSY39pjzu
+	xEdqLRv6s3T6yRSlTyUTLXz1yysGlgkJWcyTFw0qDx7w5m84fX5gazvoczCvuopJVNWp7nDANBG
+	BN/J2nQ==
+X-Received: from pfbkm16.prod.google.com ([2002:a05:6a00:3c50:b0:84a:310d:317a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:f8b:b0:84e:4d6:78fe
+ with SMTP id d2e1a72fcca58-84fa86b672amr4014025b3a.3.1786457771384; Tue, 11
+ Aug 2026 07:16:11 -0700 (PDT)
+Date: Tue, 11 Aug 2026 07:16:10 -0700
+In-Reply-To: <bb9a12cc663130eb2caa8e839d0f6ca53d722d1c.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260728121138.1103610-1-tarunsahu@google.com>
- <20260728121138.1103610-6-tarunsahu@google.com> <anphyjFv3FhF61iB@google.com> <2vxzpkzo51wg.fsf@kernel.org>
-Message-ID: <anssOQFNZ2LfihbU@google.com>
-Subject: Re: [PATCH v4 05/11] KVM: LUO: Support VM preservation across live updates
+References: <20260728144954.355376-1-dwmw2@infradead.org> <20260728144954.355376-18-dwmw2@infradead.org>
+ <anoOz2rZ02KFk1l-@google.com> <acd9b32617f75d188c370a464a922af0d650d4f5.camel@infradead.org>
+ <ano6-gIZtqMfipiD@google.com> <bb9a12cc663130eb2caa8e839d0f6ca53d722d1c.camel@infradead.org>
+Message-ID: <ansuqrD2KwFuLWbV@google.com>
+Subject: Re: [PATCH v7 17/36] KVM: x86: Allow KVM master clock mode when TSCs
+ are offset from each other
 From: Sean Christopherson <seanjc@google.com>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Tarun Sahu <tarunsahu@google.com>, ackerleytng@google.com, fuad.tabba@linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
-	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, sagis@google.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
-	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
-	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
-	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
-	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
-	suzuki.poulose@arm.com
-Content-Type: text/plain; charset="us-ascii"
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul Durrant <paul@xen.org>, 
+	Jonathan Cameron <jic23@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, 
+	Dongli Zhang <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 11, 2026, Pratyush Yadav wrote:
-> On Mon, Aug 10 2026, Sean Christopherson wrote:
-> 
-> > On Tue, Jul 28, 2026, Tarun Sahu wrote:
-> >> Register a Live Update Orchestrator (LUO) file handler for KVM VM files
-> >> to serialize and deserialize VM state across kexec live updates.
-> >> 
-> >> Currently, Only VM type (e.g. arch.vm_type on x86) is preserved as part
-> >> of VM preservation.
-> >
-> > Why?
-> >
-> >> On retrieval, kvm_luo_retrieve() recreates the KVM VM file via
-> >> kvm_create_vm_file() and use an atomically incremented ID for the internal
-> >> fdname, as the final fdname assigned by userspace is not yet known during
-> >> retrieval. As this fdname is only used in debugfs infra, This will not break
-> >> any UAPI.
-> >> 
-> >> This infrastructure establishes the foundation for preserving guest_memfd
-> >> instances across live updates, and can be expanded in the future to
-> >> preserve additional VM state.
-> >
-> > Uh, why guest_memfd?  As much as I want to push guest_memfd adoption, it seems
-> > guest_memfd should be the _last_ thing we support, not the first.  As evidenced
-> > by the last two decades, it's very doable to have KVM VMs without guest_memfd,
-> > but it's rather hard to have VMs without vCPUs.
-> 
-> You _can_ preserve vCPUs today using KVM_{GET,SET}_REGS, they just won't
-> run in the background during the reboot.
+On Mon, Aug 10, 2026, David Woodhouse wrote:
+> On Mon, 2026-08-10 at 13:56 -0700, Sean Christopherson wrote:
+> > =C2=A0
+> > > > To allow different offsets, KVM would need to track a per-vCPU offs=
+et to the
+> > > > master clock and apply that in kvm_guest_time_update() (and maybe o=
+ther places?).
+> > > > Which is doable, but it's not clear to me why we'd want to support =
+that (though
+> > > > I haven't fully processed the back half ot his series, so it's very=
+ possible I'm
+> > > > missing something obvious).
+> > >=20
+> > > Because I want to reduce the number of cases where we have to fall ba=
+ck
+> > > to non-masterclock mode. Especially the ones which are driven by
+> > > *guests* rather than weird choices on the VMM's part.
+> >=20
+> > But why though?=C2=A0 What is the harm to the host or guest?=C2=A0 E.g.=
+ does it make it more
+> > difficult to accurately migrate the VM?=C2=A0 I'm not opposed to allowi=
+ng master-clock
+> > mode with diverging offsets, just trying to understand why it matters.
+>=20
+> Accurate migration without masterclock is hard, yes. The
+> KVM_SET_CLOCK_GUEST thing relies on it (because the principle is that
+> you get the *TSC* right, then the KVM clock is just a fixed
+> mathematical function of that).
+>=20
+> That *shouldn't* be difficult with offsets between vCPUs. Just use the
+> TSC of vCPU0 as the reference for KVM_SET_CLOCK_GUEST and let the
+> others just have their offset from that.
 
-What about x86 CoCo VMs?  Which are quite literally _the_ reason guest_memfd was
-created in the first place.  
-
-> This series can save you from dumping VM memory to disk if it is backed by
-> guest_memfd.
-
-Or to word it another way, one _can_ save guest_memfd, it's just slower.  My
-point is that this series needs to provide a _lot_ more information about the
-bigger KVM picture.  For those of us that are on the very fringes of live update,
-it's practically impossible to review because, to us, it seems very arbitrary.
-
-The part that's especially confusing is the saving of the VM type.  That comes
-straight from userspace, so it's super bizarre to automatically save/restore that,
-but nothing else.
-
-> >> +KVM LIVE UPDATE
-> >> +M:	Pasha Tatashin <pasha.tatashin@soleen.com>
-> >> +M:	Mike Rapoport <rppt@kernel.org>
-> >> +M:	Pratyush Yadav <pratyush@kernel.org>
-> >> +R:	Tarun Sahu <tarunsahu@google.com>
-> >> +L:	kexec@lists.infradead.org
-> >> +L:	kvm@vger.kernel.org
-> >> +S:	Maintained
-> >> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git
-> >
-> > NAK on taking changes through a different tree.  This is KVM code, period.
-> >
-> > In general, I'm skeptical of the dedicated MAINTAINERS entry.  It's extremely
-> > difficult to tell since this series is little more than a skeleton (either that
-> > or liveupdate is way simpler that I was expecting), but I suspect that maintaining
-
-...
-
-> > E.g. the LUO APIs seem pretty straightforward; I assume the bulk of the complexity
-> > is going to be in knowing what to save/restore, and how, which is much more about
-> > KVM than it is about liveupdate.
-> 
-> I think it is fine if you want to take these changes through the KVM
-> tree, but I would like live update maintainers to be listed as reviewers
-> at least.
-
-Why not simply add a file pattern match to the LIVE UPDATE entry?
-
-diff --git MAINTAINERS MAINTAINERS
-index 8014b9f8253e..2eb57b22c37f 100644
---- MAINTAINERS
-+++ MAINTAINERS
-@@ -15052,8 +15052,8 @@ F:      include/linux/liveupdate.h
- F:     include/uapi/linux/liveupdate.h
- F:     kernel/liveupdate/
- F:     lib/tests/liveupdate.c
--F:     mm/memfd_luo.c
- F:     tools/testing/selftests/liveupdate/
-+N:     [^a-z]luo
- 
- LLC (802.2)
- L:     netdev@vger.kernel.org
-
-> At the same time, I also keep being (pleasantly)
-> surprised at preservation being relatively simple. For example, the code
-> to preserve a shmem file (via memfd) is roughly 600 lines, a big chunk
-> of which is comments. The code of course has some limitations, but it is
-> good enough for use in production.
-> 
-> For one, we care about ABI breakages and versioning. 
-
-Which is amusing to me because that implies KVM does not, and I would hazard to
-guess that KVM has the biggest ABI surface of any subsystem in the kernel by a
-country mile (though I'm probably wildly underestimating the effective ABI surface
-of filesystems).
-
-> The serialized state is a part of live update ABI and changes to it should be
-> ACKed by us. 
-
-Meh, "Don't break userspace" is a universal rule in the kernel, I genuinely don't
-see why liveupdate needs special treatment.
-
-> For another, how the file handlers interact with their dependencies can
-> affect the behaviour that VMMs observe. Those changes should also pass by
-> some live update eyes.
-
-Perhaps in the short term, but IMO, that's not a winning strategy in the long
-term.  From my perspective, that like saying the PAGE CACHE maintainers should
-review every usage of the filemap APIs, because how the APIs are used impacts
-the page cache and affects userspace-visible behavior.  There are myriad analogies
-like that throughout the kernel.
-
-Yes, liveupdate is new and shiny, but IMO for it to be successful and maintainable,
-it needs to be treated like any other core infrastructure in the kernel, not a
-special snowflake whose details are known only by a handful of people.  Because
-I think it's likely liveupdate goes one of two ways: either liveupdate becomes a
-very niche thing that is used sparingly throughout the kernel, or it becomes a
-broadly used feature that is supported by many filesystems and subsystems.
-
-If liveupdate is relegated to niche status, then it probably isn't going to see
-a significant amount of ongoing development, at which point the folks working on
-liveupdate will naturally migrate to other projects, and maintenance will largely
-be left to subsystem maintainers.
-
-If liveupdate is broadly used, then having a single group of people maintain
-every subsystem's usage won't scale, and maintenance will again largely fall on
-the shoulder of subsystem maintainers.  Which is totally fine and working as
-intended, because that's exactly what subystem maintainers are signing up for
-by merging support for liveupdate.
+Yeah, my only (quite mild) concern is that we would introduce fragility by =
+adding
+yet another variable that needs to be accounted for, but AFAICT it's litera=
+lly
+just the tsc_timestamp in the shared data structure that consumes the per-v=
+CPU
+offset.
