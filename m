@@ -1,36 +1,36 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147A53921D6;
-	Tue, 11 Aug 2026 01:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5478397928;
+	Tue, 11 Aug 2026 01:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786413185; cv=none; b=RGOrgkF97+eGXcmmlebp8BKhbXnDMC/4MmnMJUYCQxOlDEHGM/EDtggphMbuQMgUOuYyU2NY8u+U7N0OS32cImBnOIbXDt+d5rgAUhFWw9XpG6YRGldykiYw+nGJ0AOrUjI84N8FYnLVofNp0FmAmBsy7rmMrsG2rLfx1TC5+bc=
+	t=1786413187; cv=none; b=YzHQ0rgAhyPnWuBF/biUSUtVj5RMXM3D7QmEwzuaR9vaqOSi3dp42ncaB5yEDn7SQBaq+tnQg/vbFhhmf7FScI5qN7+N9gMd8zgXImePMuQyQNNwsSsx9COGuGIQnKYL96YE3xT3GR3PDvbkx6heh1vvqKKNOnbygd8qcclFxiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786413185; c=relaxed/simple;
-	bh=3IAelxGwB9DPSAJL7/G76sGbJjTkykEJaZ67McK3h4U=;
+	s=arc-20240116; t=1786413187; c=relaxed/simple;
+	bh=USSkt37zjiXpaOXdgBUUDjvtIRuME9JAeB4aUsmjfyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G4UmAIYuPc78cItKIYNBFcdTdbWJaEx5O6vwLYIYFWgME7dd/cCTmtSo5ARKmS8+v9Fdgh5rm1F3Ad50rNl+JLHexH9O+KYhVORPRnwYvEu8AS1tR8Mz8Tab2fX7lm2x6mglkSSAy2ygNZ+YEnOY8QJZPSi1ZesqpFs8ivwAT0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=HBU9hAQE; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=M5uOqjem3XVFz1IakFJH/6FGcYEOfv00j8D06UUW72fud00gK7/VMGc0ymBIzqc0nwDHJ0kbJ+tKLnjPt0Er1qRrTvAxhDjHmAGQRX0bLlfgAw/inigDcV2Nx4R92WNYcpyrf0dDb8nKO2SoznPIf3WIotYMhN1F6ll3z2/5YME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=prelG2wa; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="HBU9hAQE"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="prelG2wa"
 Received: from fedora (unknown [20.191.74.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id D490220B7168;
-	Mon, 10 Aug 2026 18:52:39 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D490220B7168
+	by linux.microsoft.com (Postfix) with ESMTPSA id BAF9F20B7167;
+	Mon, 10 Aug 2026 18:52:41 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BAF9F20B7167
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1786413159;
-	bh=iJvMXxgvjmbLh1wHtZxpYG68qJFVjlcVsr0dm5cygfg=;
+	s=default; t=1786413161;
+	bh=Pcwn2qTvc4F7UFe7dpQt3hY0hptv0VmVSVeDqOtxU0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HBU9hAQESeezbGP5swV3Z8I2FAlw9LGq824dQdTdizIIvP9XNYmRQg3FrVlWM3MMv
-	 KCz8k8aXbinQs2t4YtJsANlJOMoI58IO3nt2FzSJ1VYsUp7L3xDsqkD6N4jux3P+Wp
-	 dcaTE5Tpdljt60PUYac0FywoJljvMjQYZ/oMSJCY=
+	b=prelG2waOEkg+YHrpjADM1dxegjor/NYa52LbtEHFtAwKCEQbss793J4A3cARuI5H
+	 LgffnUJUV7OP5tcyoX6lqgAsvoEgcg6godkTUx7cR5W97Z80XZ4QzAmu69hDV3jUdv
+	 9UzBHEzdhse5a0VIotnLLrcBYoOa6ykfMB3CaCHE=
 From: Sriram Nambakam <snambakam@linux.microsoft.com>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v2 5/8] security/vbs: enable the backend after driver init
-Date: Mon, 10 Aug 2026 18:52:40 -0700
-Message-ID: <20260811015243.188486-6-snambakam@linux.microsoft.com>
+Subject: [RFC PATCH v2 7/8] security/vbs: bootstrap the plane from the enable path
+Date: Mon, 10 Aug 2026 18:52:42 -0700
+Message-ID: <20260811015243.188486-8-snambakam@linux.microsoft.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260811015243.188486-1-snambakam@linux.microsoft.com>
 References: <20260811015243.188486-1-snambakam@linux.microsoft.com>
@@ -40,153 +40,62 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Activate a registered VBS backend from a late_initcall, once plane-0 is
-otherwise up.  Enabling is opt-in and requires two conditions:
+When the KVM software-planes backend is enabled, create and activate the
+secure plane before the backend issues its first VTL call.  vbs_enable()
+runs at late_initcall -- after device drivers have initialised and before
+userspace starts -- which is where vm_planes_bootstrap() now runs.
 
-  1. the operator passes enable-kvm-planes=1 on the kernel command line, and
-  2. the boot image advertises a provisioned secure plane via
-     /etc/Kconfig.kvm-planes containing CONFIG_VM_PLANES=y.
-
-When both hold, call the backend's init() to load the secure plane and
-register a reboot notifier that invokes shutdown() to unload it.
+Select VM_PLANES from VBS_KVM_PLANES so the plane bootstrap is built in
+whenever the backend is.
 ---
- security/vbs/core.c | 114 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 114 insertions(+)
+ security/vbs/Kconfig |  1 +
+ security/vbs/core.c  | 12 ++++++++++++
+ 2 files changed, 13 insertions(+)
 
+diff --git a/security/vbs/Kconfig b/security/vbs/Kconfig
+index e21f4f30b6cf..7a2ebc13e479 100644
+--- a/security/vbs/Kconfig
++++ b/security/vbs/Kconfig
+@@ -18,6 +18,7 @@ config VBS
+ config VBS_KVM_PLANES
+ 	bool "VBS backend: KVM software planes"
+ 	depends on VBS && KVM_GUEST
++	select VM_PLANES
+ 	help
+ 	  VBS backend that uses a KVM paravirt hypercall to communicate
+ 	  between plane-0 (the normal guest kernel) and plane-1 (a secure
 diff --git a/security/vbs/core.c b/security/vbs/core.c
-index 407d49a91b8f..c006b6d53a14 100644
+index c006b6d53a14..8dd4567bcb9c 100644
 --- a/security/vbs/core.c
 +++ b/security/vbs/core.c
-@@ -8,8 +8,15 @@
- 
- #include <linux/vbs.h>
- #include <linux/export.h>
-+#include <linux/init.h>
-+#include <linux/kernel_read_file.h>
-+#include <linux/kstrtox.h>
- #include <linux/mutex.h>
- #include <linux/printk.h>
-+#include <linux/reboot.h>
-+#include <linux/sizes.h>
-+#include <linux/string.h>
-+#include <linux/vmalloc.h>
+@@ -16,6 +16,7 @@
+ #include <linux/reboot.h>
+ #include <linux/sizes.h>
+ #include <linux/string.h>
++#include <linux/vm_planes.h>
+ #include <linux/vmalloc.h>
  
  static const struct vbs_ops *vbs_backend;
- static DEFINE_MUTEX(vbs_lock);
-@@ -54,3 +61,110 @@ int vbs_vtl_call(enum vbs_call_id id,
- 	return ops->vtl_call(id, arg, arg_size, resp, resp_size);
- }
- EXPORT_SYMBOL_GPL(vbs_vtl_call);
-+
-+/* ── enable after driver init ────────────────────────────────── */
-+
-+/*
-+ * A registered backend is only activated when two conditions hold:
-+ *   1. the operator opts in on the kernel command line (enable-kvm-planes=1),
-+ *      and
-+ *   2. the boot image advertises a provisioned secure plane via a plane
-+ *      configuration file that enables the expected option.
-+ */
-+#define VBS_KCONFIG_PATH	"/etc/Kconfig.kvm-planes"
-+#define VBS_KCONFIG_TOKEN	"CONFIG_VM_PLANES=y"
-+
-+static bool vbs_enable_requested;
-+
-+static int __init vbs_parse_enable_kvm_planes(char *str)
-+{
-+	bool val;
-+
-+	/* Bare "enable-kvm-planes" (no value) means enabled. */
-+	if (!str || !*str)
-+		vbs_enable_requested = true;
-+	else if (!kstrtobool(str, &val))
-+		vbs_enable_requested = val;
-+	return 0;
-+}
-+early_param("enable-kvm-planes", vbs_parse_enable_kvm_planes);
-+
-+static int vbs_reboot_notify(struct notifier_block *nb, unsigned long action,
-+			     void *data)
-+{
-+	const struct vbs_ops *ops = READ_ONCE(vbs_backend);
-+
-+	if (ops && ops->shutdown)
-+		ops->shutdown();
-+	return NOTIFY_DONE;
-+}
-+
-+static struct notifier_block vbs_reboot_nb = {
-+	.notifier_call = vbs_reboot_notify,
-+};
-+
-+/* Return true if VBS_KCONFIG_PATH exists and enables the plane config. */
-+static bool __init vbs_plane_config_present(void)
-+{
-+	void *buf = NULL;
-+	size_t sz = 0;
-+	bool ok = false;
-+	int ret;
-+
-+	ret = kernel_read_file_from_path(VBS_KCONFIG_PATH, 0, &buf, SZ_1M, &sz,
-+					 READING_UNKNOWN);
-+	if (ret < 0) {
-+		pr_info("vbs: %s unavailable (%d); backend left idle\n",
-+			VBS_KCONFIG_PATH, ret);
-+		return false;
-+	}
-+
-+	if (buf && sz)
-+		ok = strnstr(buf, VBS_KCONFIG_TOKEN, sz) != NULL;
-+	vfree(buf);
-+
-+	if (!ok)
-+		pr_info("vbs: %s present but %s not set; backend left idle\n",
-+			VBS_KCONFIG_PATH, VBS_KCONFIG_TOKEN);
-+	return ok;
-+}
-+
-+/*
-+ * Enable the registered backend after device drivers have initialised.
-+ * Runs at late_initcall so the plane is loaded only once the plane-0 kernel
-+ * is otherwise up, the operator requested it (enable-kvm-planes=1), and the
-+ * boot image advertises a plane config.
-+ */
-+static int __init vbs_enable(void)
-+{
-+	const struct vbs_ops *ops = READ_ONCE(vbs_backend);
-+	int ret;
-+
-+	if (!ops) {
-+		pr_debug("vbs: no backend registered; nothing to enable\n");
+@@ -154,6 +155,17 @@ static int __init vbs_enable(void)
+ 	if (!vbs_plane_config_present())
+ 		return 0;
+ 
++	/*
++	 * Create and activate the secure plane before the backend issues its
++	 * first VTL call.  A failure here leaves the backend idle.
++	 */
++	ret = vm_planes_bootstrap();
++	if (ret) {
++		pr_warn("vbs: plane bootstrap failed (%d); backend \"%s\" left idle\n",
++			ret, ops->name);
 +		return 0;
 +	}
 +
-+	if (!vbs_enable_requested) {
-+		pr_info("vbs: enable-kvm-planes not set; backend \"%s\" left idle\n",
-+			ops->name);
-+		return 0;
-+	}
-+
-+	if (!vbs_plane_config_present())
-+		return 0;
-+
-+	if (ops->init) {
-+		ret = ops->init();
-+		if (ret) {
-+			pr_warn("vbs: backend \"%s\" init failed (%d)\n",
-+				ops->name, ret);
-+			return 0;
-+		}
-+	}
-+
-+	register_reboot_notifier(&vbs_reboot_nb);
-+	pr_info("vbs: enabled backend \"%s\"\n", ops->name);
-+	return 0;
-+}
-+late_initcall(vbs_enable);
+ 	if (ops->init) {
+ 		ret = ops->init();
+ 		if (ret) {
 -- 
 2.55.0
 
