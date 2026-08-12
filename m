@@ -1,138 +1,330 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F92E340416;
-	Wed, 12 Aug 2026 21:45:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0917218592;
+	Wed, 12 Aug 2026 21:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786571157; cv=none; b=W/ShZFlbAyWIUSL2VeyoY5V2TP5O4q0Mnuy/eIfMx3lhxWymPKhjtfluNVGq8rthFZlZsp4TV0hxo3CnYxsf9mwjp7GswTW0yX4/tvIdTSnZ3C7Em5UF+Gm4CKFR8wbCVtrVQZnMPFXBGq+WAl7ExVZkQF8byxGJHXYRkEoLLlM=
+	t=1786571758; cv=none; b=rEXiGSuC6XgftBHFRLjov9AQ6r87Lp0LK/kdJVa2bwb0bGupNR5UWqyaDaTm+I0ZuFLWI3Pzt3lsd3BbmkGF2UZOF3WfVqnn2smJMDrRFzUvtWc61llDjFMD31R6MTcabF3gKR+hnMo8h4LcYTDvKuwfdJxpS9sbSOB4Rg+LBI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786571157; c=relaxed/simple;
-	bh=OcVOeV4upUSCDuMo+6r3YF9hexEpQEDgRc2xxKTAK6Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=OGY3MtacvF4E9zch4mrJOuc7bjLm0JeJ/XuCtPJLgtv8vzcxR0C8jmvp6qTE+S+rqvGdUPDItF5NrPm1Fk2wxMcbYXhCg3YmtJZajIZXnRdHC0SAike5e1RNyvqAz21tNfWEVQSBoC9gcE1DnpgTMfGIhw4erZO+yZkSw/kLuA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ajGQ2BUI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786571758; c=relaxed/simple;
+	bh=m6uew+0g+zhKgaDEYuiYr/eGGIAF38F0STtlNqhIya0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=BPHUCy/fVLdUkZLVkJWysmWsI4bQiJGGlckslRiZPT3DfjngUS5v5eT9USGxrsHIDrpVhzTGtv785fz0b5zM+fBgk48ussziDz5WGvavo8JSRL63g213JGuv5VVj7klnvjrm7w84pkQReNDIhhlGggQH2pKiGZ1bs3k7iMa9dkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=RKQVXxmZ; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ajGQ2BUI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D512E1F000E9;
-	Wed, 12 Aug 2026 21:45:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786571156;
-	bh=RcVzn1g6Qh/ei/KZFaNk2QQnIh9Fbz3gVQVVwhoamp0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=ajGQ2BUITVbRWNNzJxnl6sLsDqf3191d6Tr0c39fHp8EKKBtUrWXIwbHXwoiNRcEo
-	 LplgsVv8EVZvC49Bg4iKhO4C9GZFHGVdji02NMO3sxA4qeBLsiFkfi2OSjULfWRk68
-	 NKLTz5qfZyhI/EGOOJcRW/7kSU5l8S1YwWniS5FEjMfI1wcT3Pg7tLjbt+txXzF5Mo
-	 ULRKb3eQaxeAK99BkpNYlGmLzUBzx/oce/AZi/6qZGPGySawlhjaywhUiUQZ9DwusZ
-	 RWqEcptoJlkSmRu5QSweVgV5nkVlU1ELZHtOh/9bAK2Su+lGmklq+TIy+p/X0/hdk0
-	 u+XGMC5EfSo5A==
-Date: Wed, 12 Aug 2026 16:45:54 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Alex Williamson <alex.williamson@nvidia.com>
-Cc: kvm <kvm@vger.kernel.org>, Alex Williamson <alex@shazbot.org>,
-	skhawaja@google.com, Jason Gunthorpe <jgg@ziepe.ca>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	linux-pci <linux-pci@vger.kernel.org>,
-	Andrii Staikov <andrii.staikov@intel.com>,
-	Mitch Williams <mitch.a.williams@intel.com>,
-	Nick Nunley <nicholas.d.nunley@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: Re: [RFC PATCH 0/5] PCI/vfio-pci: Guard resets against active SR-IOV
- VFs
-Message-ID: <20260812214554.GA1067593@bhelgaas>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="RKQVXxmZ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=m6uew+0g+zhKgaDEYuiYr/eGGIAF38F0STtlNqhIya0=; b=RKQVXxmZf1CFtMZ96X7dDZ81Hz
+	Urnhe9TE8GUFDpYTymBvMVHmbNIUauMGo/zQNFR1v9EX5lHuR6zv473CKJIheIvPl33hrFzRRUnuH
+	lVz1BtziSsdrgnDlUwEOmTuQnO6OO/NGy9Rf55xAk3rYfjCxeqLnluW/9xByMjZYOVwM13xEQVtLe
+	BON02z6xrFxO9ikYzVbRPtnGVtAX7rqDuGUwUcv7f2TCcDc84koSu2zOm12RmFXHxyRzTlrQZn10P
+	u69Zz1jiVgBeLFuUMikOEav2s8IKNswOI2UDmnCVxB5wbZSezmUrDL+7Ums3CFg15bFkohvGHF375
+	HIXCbQTw==;
+Received: from [2001:8b0:10b:5:a3a3:d97e:a004:df29] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wuGvG-00000002cDu-47Q1;
+	Wed, 12 Aug 2026 21:55:43 +0000
+Message-ID: <b5f16da93f87dcb53414e27f2b1c647a3378fb48.camel@infradead.org>
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+From: David Woodhouse <dwmw2@infradead.org>
+To: paulmck@kernel.org
+Cc: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+  Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Andrew Morton	 <akpm@linux-foundation.org>, David Hildenbrand
+ <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka	 <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan	 <surenb@google.com>, Sebastian
+ Andrzej Siewior <bigeasy@linutronix.de>,  Clark Williams
+ <clrkwllms@kernel.org>, Simona Vetter <simona.vetter@ffwll.ch>,
+ =?ISO-8859-1?Q?J=E9r=F4me?= Glisse <jglisse@redhat.com>, Christian
+ =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>, linux-mm@kvack.org, kvm@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, 	linux-kernel@vger.kernel.org
+Date: Wed, 12 Aug 2026 22:55:33 +0100
+In-Reply-To: <b736237c-64ee-4eb2-8201-5685a3853844@paulmck-laptop>
+References: <44c51ace9b0dc44b795f6f48c91cda440eed910b.camel@infradead.org>
+	 <20260812122759.GA662699@ziepe.ca>
+	 <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org>
+	 <20260812134934.GC662699@ziepe.ca>
+	 <a48e6e7063122b22a8083bb0792984a204f316e6.camel@infradead.org>
+	 <fb87f673bf290cad133d113dbb0750a7752b9d30.camel@infradead.org>
+	 <a94b75e8b9b1d2191f365c0f4275fd5082332df5.camel@infradead.org>
+	 <d0692500893f303906fba1d7d596eb59a07a806a.camel@infradead.org>
+	 <anydY25Cl78l1HfU@google.com>
+	 <932DB129-1794-4855-A61E-F4C2B54B1EE6@infradead.org>
+	 <b736237c-64ee-4eb2-8201-5685a3853844@paulmck-laptop>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-F6IIwXViLfBkqZzqMoie"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260812045325.2733631-1-alex.williamson@nvidia.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-[+cc Andrii, Mitch, Nick, Tony, Przemek]
 
-On Tue, Aug 11, 2026 at 10:53:18PM -0600, Alex Williamson wrote:
-> It's recently been found[1] that vfio-pci doesn't restrict resets on PFs
-> while SR-IOV is enabled.  This can not only result in an uncoordinated
-> disruption of the use of the associated VFs, but the ongoing use of and
-> access to the VF has the potential to result in machine checks.
+--=-F6IIwXViLfBkqZzqMoie
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-I suspect this might also be related to the somewhat weird usage of
-pci_restore_msi_state() to restore VF MSI state in several network
-drivers:
+T24gV2VkLCAyMDI2LTA4LTEyIGF0IDE0OjM4IC0wNzAwLCBQYXVsIEUuIE1jS2VubmV5IHdyb3Rl
+Ogo+IE9uIFdlZCwgQXVnIDEyLCAyMDI2IGF0IDA2OjE3OjUwUE0gKzAxMDAsIERhdmlkIFdvb2Ro
+b3VzZSB3cm90ZToKPiA+IE9uIDEyIEF1Z3VzdCAyMDI2IDE3OjIwOjUxIEJTVCwgU2VhbiBDaHJp
+c3RvcGhlcnNvbiA8c2VhbmpjQGdvb2dsZS5jb20+IHdyb3RlOgo+ID4gPiBPbiBXZWQsIEF1ZyAx
+MiwgMjAyNiwgRGF2aWQgV29vZGhvdXNlIHdyb3RlOgo+ID4gPiA+IE9uIFdlZCwgMjAyNi0wOC0x
+MiBhdCAxNjowMyArMDEwMCwgRGF2aWQgV29vZGhvdXNlIHdyb3RlOgo+ID4gPiA+ID4gT24gV2Vk
+LCAyMDI2LTA4LTEyIGF0IDE1OjM0ICswMTAwLCBEYXZpZCBXb29kaG91c2Ugd3JvdGU6Cj4gPiA+
+ID4gPiA+IE9uIFdlZCwgMjAyNi0wOC0xMiBhdCAxNTowNSArMDEwMCwgRGF2aWQgV29vZGhvdXNl
+IHdyb3RlOgo+ID4gPiA+ID4gPiA+IEknbGwgcmVwaHJhc2UgdGhhdCBmb3IgbXkgb3duIHVuZGVy
+c3RhbmRpbmc6Cj4gPiA+ID4gPiA+ID4gCj4gPiA+ID4gPiA+ID4gKklmKiB3ZSBnbyBhbGwgdGhl
+IHdheSB0byBidWlsZGluZyBhIHdob2xlIFNSQ1UgZmxhdm91ciBmb3IgdGhpcyAqYW5kKgo+ID4g
+PiA+ID4gPiA+IGltcGxlbWVudGluZyBhIHNwaW4tb25seSB2YXJpYW50IG9mIHNyY3Vfc3luY2hy
+b25pemUoKSB3aGljaCBpcwo+ID4gPiA+ID4gPiA+IHRhaWxvcmVkIHRvIHRoZSBhdG9taWMtcmVh
+ZGVyIHVzZSBjYXNlLCAqdGhlbiogd2UgZG9uJ3QgbmVlZCB0byByZW1vdmUKPiA+ID4gPiA+ID4g
+PiB0aGUgbm9uX2Jsb2NrX3tzdGFydCxlbmR9IGd1YXJkcyBhcm91bmQgdGhlIE1NVSBub3RpZmll
+cnMsIHdoaWNoIGFyZQo+ID4gPiA+ID4gPiA+IGJhc2ljYWxseSBuZXZlciBiZWluZyBjYWxsZWQg
+YW55d2F5IGFuZCBkb24ndCBhY3R1YWxseSBzZWVtIHRvIHByb3RlY3QKPiA+ID4gPiA+ID4gPiBh
+Z2FpbnN0IGFueSByZWFsIGJ1Z3MuCj4gPiA+ID4gPiA+ID4gCj4gPiA+ID4gPiA+ID4gWWVzPwo+
+ID4gPiA+ID4gPiAKPiA+ID4gPiA+ID4gRldJVyBpdCBsb29rcyBzb21ldGhpbmcgbGlrZSB0aGlz
+LiBJJ2xsIHRocm93IGl0IGludG8gbXkgdG9ydHVyZSBhbmQKPiA+ID4gPiA+ID4gbGF0ZW5jeSB0
+ZXN0cywgYW5kIHdlIGNhbiBzZWUgd2hhdCBQYXVsIHRoaW5rcyBvZiBpdC4gSSdtIHN0aWxsIHV0
+dGVybHkKPiA+ID4gPiA+ID4gdW5jb252aW5jZWQgaXQncyBuZWVkZWQsIGJ1dCBJIGNvbmNlZGUg
+aXQgaGFzIGl0cyBnb29kIHBvaW50cy4KPiA+ID4gPiA+IAo+ID4gPiA+ID4gVGhpcyBzbGlnaHRs
+eSByZWZhY3RvcmVkIHZlcnNpb24gaXMgdGhlIG9uZSB0aGF0J3MgYWN0dWFsbHkgZ29pbmcgaW50
+bwo+ID4gPiA+ID4gbXkgdG9ydHVyZSB0ZXN0cy4uLgo+ID4gPiA+IAo+ID4gPiA+IFdlbGwsIGl0
+IHN1cnZpdmVkIGZpcnN0IGNvbnRhY3QsIGFuZCBpdCdzIGRvaW5nIHRoZSBzb2FrIHRlc3Rpbmcg
+bm93Lgo+ID4gPiA+IAo+ID4gPiA+IFRoZSBhdmVyYWdlIGlzIGJhc2ljYWxseSBubyBiZXR0ZXIg
+dGhhbiB0aGUgdHJ5X3N5bmNocm9uaXplX3NyY3UoKQo+ID4gPiA+IGNhc2UsIHVuc3VycHJpc2lu
+Z2x5IOKAlCBhcyAqYm90aCogb2YgdGhlbSBqdXN0IG9ic2VydmUgdGhhdCB0aGVyZSBhcmUgbm8K
+PiA+ID4gPiByZWFkZXJzIGFuZCBwcm9jZWVkIGltbWVkaWF0ZWx5LCBpbiBhdCBsZWFzdCA5OSUg
+b2YgY2FzZXMuCj4gPiA+ID4gCj4gPiA+ID4gTGlrZSB0aGUgZXhpc3Rpbmcgcndsb2NrIGNhc2Us
+IGl0IHN0aWxsIG1hbmFnZXMgZG91YmxlLWRpZ2l0IHAxMDAKPiA+ID4gPiBsYXRlbmN5IGV2ZW4g
+d2hlbiB0aG91Z2ggKmRvZXNuJ3QqIGFjdHVhbGx5IHNsZWVwLgo+ID4gPiA+IAo+ID4gPiA+IEkg
+ZG9uJ3QgKmhhdGUqIGl0LCBidXQgSSBkbyBxdWVzdGlvbiB0aGUgYmVuZWZpdCBvZiBpdCBvdmVy
+IHRyeS1maXJzdC4KPiA+ID4gCj4gPiA+IEZXSVcsIHRoZSBtYXggbGF0ZW5jeSBhbmQgPjhtcyBu
+dW1iZXJzIGFyZSB2ZXJ5IGFwcGVhbGluZyB0byBtZSwgYXMgbXkgY29uY2VybnMKPiA+ID4gd2l0
+aCB1c2luZyBTUkNVIGFyZSBhbGwgYWJvdXQgdGhlIHRhaWwgbGF0ZW5jaWVzLgo+ID4gPiAKPiA+
+ID4gQnV0IEknbSBvYnZpb3VzbHkgbm90IHRoZSBvbmUgd2hvJ2QgYmUgc2FkZGxlZCB3aXRoIG1h
+aW50YWluaW5nIHRoZSBjb2RlLCBzbyBJJ20KPiA+ID4gbW9yZSB0aGFuIGEgbGl0dGxlIGJpYXNl
+ZCB0b3dhcmRzIGNob29zaW5nIHRoZSBtb3JlIGNvbXBsZXggdmVyc2lvbi4KPiA+IAo+ID4gQWNr
+LiBXZWxsLCBpdCBpc24ndCBldmVuICp0aGF0KiBiYWQgaW4gdGVybXMgb2YgY29tcGxleGl0eS4g
+SXQncwo+ID4gbW9zdGx5IGp1c3QgYSB3aGlsZSBsb29wIGFyb3VuZCB0aGUgY29yZSBvZiB0aGUK
+PiA+IHRyeV9zeW5jaHJvbml6ZV9zcmN1KCkgSSBwb3N0ZWQgYmVmb3JlLCBhbmQgc29tZSBzeW50
+YWN0aWMgc3VnYXIKPiA+IGFuZCBzYWZlZ3VhcmRzLgo+ID4gCj4gPiBMZXQncyBzZWUgd2hhdCBQ
+YXVsIHRoaW5rcy4KPiAKPiBBIHNpbmdsZSBjYWxsIHRvIHRyeV9zeW5jaHJvbml6ZV9zcmN1KCkg
+dGhhdCwgdXBvbiBmYWlsdXJlLCBpbnZva2VzCj4gc3luY2hyb25pemVfc3JjdV9leHBlZGl0ZWQo
+KSB3b3VsZCB3b3JrIGZpbmUuwqAgQW5kIGEgbGltaXRlZCBsb29wIG9uCj4gdHJ5X3N5bmNocm9u
+aXplX3NyY3UoKSB0aGF0IGludm9rZXMgc3luY2hyb25pemVfc3JjdV9leHBlZGl0ZWQoKSB1cG9u
+Cj4gcmVwZWF0ZWQgZmFpbHVyZSByZXR1cm4gd291bGQgYWxzbyB3b3JrIGZpbmUuCj4gCj4gQnV0
+IGlmIHlvdSBoYWQgYSBsYXJnZSBzeXN0ZW0sIGFuIHVubGltaXRlZCBsb29wIG9uIHRyeV9zeW5j
+aHJvbml6ZV9zcmN1KCkKPiBjb3VsZCB3YWl0IGZvcmV2ZXIgb24gYSBzeXN0ZW0gdGhhdCB3YXMg
+bGFyZ2UgZW5vdWdoIHRoYXQgdGhlcmUgd2FzIGF0Cj4gbGVhc3Qgb25lIHJlYWRlciBhdCBhbGwg
+dGltZXMuwqAgVG8gZ3VhcmFudGVlIGxvb3AgdGVybWluYXRpb24sIGl0IGlzCj4gbmVjZXNzYXJ5
+IHRvIGZsaXAgdGhlIGluZGV4LsKgIFRoYXQgd2F5LCBuZXcgcmVhZGVycyB3b3VsZCB1c2UgdGhl
+IGluZGV4Cj4gdGhhdCB3YXMgYWxyZWFkeSBzZWVuIHRvIGJlIGNsZWFyLCBhbmQgb2xkIHJlYWRl
+cnMgd291bGQgZXZlbnR1YWxseQo+IGRyYWluIGZyb20gdGhlIG9sZCBpbmRleC4KClJpZ2h0LiBU
+aGUgJ3doaWxlIGxvb3AgYXJvdW5kIHRyeV9zeW5jaHJvbml6ZV9zcmN1KCknIGFzIEkgZGVzY3Jp
+YmVkIGl0CmFib3ZlIHdhcyBwbGF5aW5nIG9uIG15IG1pbmQgYSBsaXR0bGUgYXMgSSB3YXMgb3V0
+IGh1bnRpbmcgdGhlIHNvbGFyCmVjbGlwc2UgdGhpcyBldmVuaW5nLCBhbmQgeW91ICpqdXN0KiBi
+ZWF0IG1lIHRvIHBvaW50aW5nIGl0IG91dC4gCgo+IFNvIGlzIHlvdXIgdXNlIGNhc2UgYWRkZHJl
+c3NlZCBieSB0aGUgc2luZ2xlIGNhbGwgdG8KPiB0cnlfc3luY2hyb25pemVfc3JjdSgpIHRoYXQs
+IHVwb24gZmFpbHVyZSwgaW52b2tlcwo+IHN5bmNocm9uaXplX3NyY3VfZXhwZWRpdGVkKCk/wqAg
+SWYgc28sIHdlIGhhdmUgYSBzb2x1dGlvbiEKCkkgd2FzIGFuZ2xpbmcgZm9yIHRoYXQuLi4gYnV0
+IGdpdmVuIFNlYW4ncyBsYXRlc3QgcmVzcG9uc2UgYWJvdmUsIEkKZG9uJ3QgdGhpbmsgSSB3YXMg
+d2lubmluZyA6KQoKRXZlbiBpZiBpdCB3YXNuJ3QgYSBzaW5nbGUgY2FsbCwgYnV0IHNwaW4gZm9y
+IGEgd2hpbGUgYmVmb3JlIGZhbGxpbmcKYmFjaywgdGhhdCBzdGlsbCBkb2Vzbid0IGFkZHJlc3Mg
+U2VhbidzIGNvbmNlcm4gYWJvdXQgdGhlIHRhaWwKbGF0ZW5jaWVzLgoKPiBJZiBub3QsIHBsZWFz
+ZSBsZXQgbWUga25vdywgYW5kIEkgd2lsbCBwdXQgdG9nZXRoZXIgdGhhdCBkb2VzIHRoZSBqb2Iu
+CgpJIHRoaW5rIGl0IHdvdWxkIGJlIGdvb2QgdG8gdGFrZSBhIGxvb2sgYXQgdGhhdCBvcHRpb24s
+IHllcyBwbGVhc2UgaWYKaXQncyBhIHJlYXNvbmFibGUgdGhpbmcgdG8gZG8uCgoKPiAJCQkJCQkJ
+VGhhbngsIFBhdWwKPiAKPiA+ID4gPiBBZ2FpbiwgSSdsbCBkZWZlciB0byBQYXVsLCBidXQgcGVy
+c29uYWxseSBJJ2Qgd2FudCB0byBzZWUgYSBtb3JlCj4gPiA+ID4gY29tcGVsbGluZyB1c2UgY2Fz
+ZSBmb3IgaXQuCj4gPiA+ID4gCj4gPiA+ID4gwqAg4pSM4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSs4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSs4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSs4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSQCj4gPiA+ID4gwqAg
+4pSCwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCDilILCoMKgwqDCoMKgIGV4cGVkaXRlZMKg
+wqDCoMKgwqAg4pSCwqDCoMKgwqAgdHJ5LWZpcnN0wqDCoMKgwqAg4pSCwqDCoMKgwqDCoMKgIGF0
+b21pY8KgwqDCoMKgwqDCoMKgIOKUggo+ID4gPiA+IMKgIOKUnOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUpAo+ID4gPiA+
+IMKgIOKUgiBtZWRpYW4gZHJhaW7CoCDilIIgMzItMTI4wrVzwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCDilIIgNC0xNsK1c8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAg4pSCIDQtMTbCtXPCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoCDilIIKPiA+ID4gPiDCoCDilJzilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilLzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilLzilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilLzilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilKQKPiA+ID4gPiDC
+oCDilIIgYXZnwqDCoMKgwqDCoMKgwqDCoMKgwqAg4pSCIDExOMK1c8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqAg4pSCIDEzLjjCtXPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIOKUgiAxMi4zwrVz
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg4pSCCj4gPiA+ID4gwqAg4pSc4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS84pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS84pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS84pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSk
+Cj4gPiA+ID4gwqAg4pSCID4xbXPCoMKgwqDCoMKgwqDCoMKgwqAg4pSCIH45NTBwcG3CoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAg4pSCIH45OTBwcG3CoMKgwqDCoMKgwqDCoMKgwqDCoCDilIIgODM4
+cHBtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg4pSCCj4gPiA+ID4gwqAg4pSc4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS84pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS84pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS84pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSkCj4gPiA+ID4gwqAg4pSCID44bXPCoMKgwqDCoMKgwqDCoMKgwqAg4pSCIDQycHBtwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCDilIIgNC40cHBtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCDi
+lIIgMC4xMHBwbcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCDilIIKPiA+ID4gPiDCoCDilJzilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilLzilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilLzilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilLzi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilKQKPiA+ID4gPiDCoCDilIIgbWF4wqDCoMKgwqDCoMKgwqDCoMKgwqAg4pSCIDMzLjZt
+c8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIOKUgiAxNy42bXPCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgIOKUgiAxMC4yNW1zwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIOKUggo+ID4gPiA+IMKgIOKU
+nOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+vOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUpAo+ID4gPiA+IMKgIOKUgiBmYWxsYmFjayByYXRlIOKUgiDigJTCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg4pSCIDEuMiXCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCDilIIgMCXCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIOKUggo+ID4g
+PiA+IMKgIOKUnOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+vOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUpAo+ID4gPiA+IMKgIOKUgiBzYW1wbGXCoMKgwqDCoMKgwqDC
+oCDilIIgMzIuNk0gZHJhaW5zLCAxMG1pbiDilIIgNDFNIGRyYWlucywgMTBtaW4g4pSCIDQwLjVN
+IGRyYWlucywgMTBtaW4g4pSCCj4gPiA+ID4gwqAg4pSU4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSYCj4gPiAK
 
-  https://git.kernel.org/linus/371e576ff3e8 ("i40e: Restore VF MSI-X state during PCI reset")
-  https://git.kernel.org/linus/7e4dcc13965c ("iavf: restore MSI state on reset")
-  https://git.kernel.org/linus/a54a0b24f4f5 ("ice: restore VF MSI-X state during PCI reset")
 
-I think these are a little weird because they only run on a PF but
-call pci_restore_msi_state() on all the VFs.
+--=-F6IIwXViLfBkqZzqMoie
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-I guess these paths are recovery after FLR of the PF destroys the VFs,
-and after the FLR, pci_restore_state() on the PF re-enables the VFs
-but leaves them uninitialized.  It seems kind of ad hoc to restore VF
-MSI state but not the rest of VF config space.  This all seems kind of
-messy and makes me dubious about exporting pci_restore_msi_state()
-directly to drivers.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+DLb10ien5ebtNCEK35Z14zsAAAAAAAA=
 
-> This series proposes that this gap is largely an oversight of
-> pci_reset_function() to recognize that a PF reset affecting SR-IOV VFs
-> violates the scope boundary of the pci_reset_function() API.
-> 
-> Patch 1 introduces guards in the common wrappers where we can hold
-> device_lock to prevent .sriov_configure races.  This covers locking
-> conformant use cases.  __pci_reset_function_locked() can't be gated in
-> PCI-core; it runs after the potentially destructive .reset_prepare.
-> Therefore its callers must provide the gating, along with the locking
-> and state manipulation the interface already demands.  The vfio-pci
-> change is included as an example and known use case here.
-> 
-> Patch 2 introduces a callback to pci_reset_bus() which allows a lock
-> dependent callback to be evaluated after locking the physical hierarchy
-> and before initiating the actual reset.  This allows use cases such as
-> in the following patch to evaluate the SR-IOV PF configuration without
-> racing.
-> 
-> Patch 3 implements exactly that test in vfio-pci-core, such that the
-> hot-reset ioctl can be blocked when SR-IOV VFs are present on a bus/slot
-> affected PF.  This completes the lockdown of resets induced on behalf of
-> the vfio-pci in-kernel or userspace drivers.
-> 
-> Patch 4 exports pci_reset_supported, which allows patch 5 to remove the
-> latched reset_works flag, which already had the potential to become
-> stale due to reset_method manipulation through sysfs, but now may also
-> become stale due to the SR-IOV state of the PF.
-> 
-> This is RFC to capture the discussion of [1] while it's active but
-> requires testing before formal proposal.  This effectively side-steps
-> the feasibility and security question of the operating model in use by
-> the referenced thread by generically gating resets affecting PFs with
-> active SR-IOV.  Please review and comment.  Thanks,
-> 
-> Alex
-> 
-> 
-> [1]https://lore.kernel.org/all/20260805003355.728299-1-skhawaja@google.com/
-> 
-> Alex Williamson (5):
->   PCI: Refuse function reset of an SR-IOV PF with enabled VFs
->   PCI: Add pci_reset_bus_cond() for a caller-gated slot or bus reset
->   vfio/pci: Refuse to reset an SR-IOV PF with enabled VFs
->   PCI: Export pci_reset_supported()
->   vfio/pci: Use pci_reset_supported() in place of reset_works
-> 
->  drivers/pci/pci.c                | 117 +++++++++++++++++++++++++++----
->  drivers/pci/pci.h                |   1 -
->  drivers/vfio/pci/vfio_pci_core.c |  28 +++++---
->  include/linux/pci.h              |   4 ++
->  include/linux/vfio_pci_core.h    |   1 -
->  include/uapi/linux/vfio.h        |   3 +
->  6 files changed, 129 insertions(+), 25 deletions(-)
-> 
-> -- 
-> 2.53.0
-> 
+
+--=-F6IIwXViLfBkqZzqMoie--
