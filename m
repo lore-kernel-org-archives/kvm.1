@@ -1,57 +1,57 @@
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABCBB471CED;
-	Wed, 12 Aug 2026 15:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411534749F3;
+	Wed, 12 Aug 2026 15:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786549056; cv=none; b=SOX8Gz4v6T6D2FY3gcXnARF8XVD+vYXsX0fUaDfiFtWeIEl4GcMRBXZIsmpkroRE+O0qrusMsHndbRgyFBaT+Y01TpCRuCfzev3CC8BJdj43vw2+bBSrJaWpiIu/4Mb9by1OJuN9cqwNvxGMfFO3akZpQSg69AG29uxJR/AC0zo=
+	t=1786549072; cv=none; b=BRMJwCOFUbRNZYkmFogGsAtwpnrgA1TES447IJs7CqySohBwESd1aig8LkbY8paOqITg7AiOUBDP4fE8uNt2fpPEka62YnZiaO7Kym+jEW4ySSviPNJCTGOheUxWF2NHlWzTpgWz5UEwvJaF8P4q/eU7xyOst4312NtXIaHxHmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786549056; c=relaxed/simple;
-	bh=x/ZjU7Uj1RWHl/AmJuJPwoRA/mPFZOnx6wBXE54Z+A8=;
+	s=arc-20240116; t=1786549072; c=relaxed/simple;
+	bh=+ZFvEZKeSCu0sZHY43uIeV6Y9EyewU+Qda5p0vvySSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M8G8qjoqXik9JXsYJAme808oSjfwMyHsmVusCSwqGS7NparzUTTjyk2XL/D5M5qblKAUZMN/2bNLEO+CqyG1tw2pObFJJKRP6xcyhVKxhMB19FL3QBmnKRPgmnEZIKXICER7Q/hCWD7JFOtlKBtnT1rRC+s+qt59vYTVQW8zW1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=m6Qqd7PT; arc=none smtp.client-ip=148.163.156.1
+	 MIME-Version; b=MhV9ZOpTRQZGdd34dUwgeJwYGT9sn6Qm09GiOzK2jZuDxmc0mR79q23gQvk6OEa7dxqkvymr6f62xX+gUJTVgpfLTgAzMtY6tB5finwd0iEHxK+6QyCkQFC1mLluUC3ExXHklbvA+AnJr38EUmdKVYNuN6jBIyBbSAreaF+yioY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HblgiD6N; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="m6Qqd7PT"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67CE1fY23640434;
-	Wed, 12 Aug 2026 15:36:48 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HblgiD6N"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67CE1U1R1816401;
+	Wed, 12 Aug 2026 15:36:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=H25bAw4HLzyZZD/1V
-	qpp7CJhWwsxKelfUtshIBBNIWg=; b=m6Qqd7PTod7Yb+U/BOdPJ99vnnC9O90Lz
-	lPAs+HbZbfZzSfbuK29KvUc9G471yH32lSRyAFzR7MeyXLgfd6c/rKprK9sCVkcv
-	MgrhX9G174/X9hA68RfzCbi7vaJSFUBf5IlVBIUmvqialT436KrGq49Y8K9Yk47v
-	rXS6w1YjRlql5iu6daN+MEI3Ir8O3hFzBLFDH22NWZwHi3XrmvVHMB0Gt0mtYMPA
-	wa3o55yMeKIgCQD/5FwkLRN1KJddAU1g2OTk8hQxHgZX7rWPXS70coS5zPRUJd0R
-	1UhepG/eF2ynfxJwCjfYFF41HGPhJS5aZarQsWXvj3bbxhivS194Q==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvq9k7cn-1
+	:mime-version:references:subject:to; s=pp1; bh=+ybf6ef7YiwCLG4K6
+	TTJ1lMv4MLFbJ+OtG+JrhZ4gg0=; b=HblgiD6NDTLEeR7ea7XZ2ckvxUg1awYck
+	hYF0X1+7PD3jPmsQw2MdjCzh2Q8xaWu1CMNX7nTrvyO65WNT53mjrA+sXjR8lzGN
+	oN23WrD7nFDe0UwCENytxW3l8/rYNQmRcJ0HROA8ujEBGaZZVt9nVtpqfIg+IfK0
+	3GzBONqvGIT057uVtQ/9GlLMAZB0DJklpoTeOP089je2CMaI8VPv1qUs21nM9fK8
+	hk7Zvfc5DFHp0Mc6uEy8IE+wviVdjI1bNcATvA6Ahx3qt6JZvJtxf2q8j/1LMWkt
+	V00345PLOZ8pKg4CoVDez2u+y7rxRI/e5cvYSeBVwKBAOTAPVsS0A==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvk0380u-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Aug 2026 15:36:47 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67CFBKx4018652;
-	Wed, 12 Aug 2026 15:36:46 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxf5w6tdh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Aug 2026 15:36:46 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67CFaga038797672
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Aug 2026 15:36:42 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0E8FC2004B;
-	Wed, 12 Aug 2026 15:36:42 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B39CC2004E;
 	Wed, 12 Aug 2026 15:36:41 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67CFQOWp021753;
+	Wed, 12 Aug 2026 15:36:40 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxhfy6g3w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Aug 2026 15:36:40 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67CFaajx38797598
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Aug 2026 15:36:36 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7979E2004D;
+	Wed, 12 Aug 2026 15:36:36 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 28EFF2004E;
+	Wed, 12 Aug 2026 15:36:36 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 12 Aug 2026 15:36:41 +0000 (GMT)
+	Wed, 12 Aug 2026 15:36:36 +0000 (GMT)
 From: Steffen Eiden <seiden@linux.ibm.com>
 To: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
@@ -78,9 +78,9 @@ Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
         Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
         Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
         Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH v6 26/33] KVM: s390: arm64: Introduce host definitions
-Date: Wed, 12 Aug 2026 17:36:22 +0200
-Message-ID: <20260812153631.3376090-27-seiden@linux.ibm.com>
+Subject: [PATCH v6 11/33] KVM: arm64: Share arm64 code with s390
+Date: Wed, 12 Aug 2026 17:36:07 +0200
+Message-ID: <20260812153631.3376090-12-seiden@linux.ibm.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260812153631.3376090-1-seiden@linux.ibm.com>
 References: <20260812153631.3376090-1-seiden@linux.ibm.com>
@@ -93,314 +93,160 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: RAYggf5VcZ7dUQtVn0gwi4mGnDODcrd3
-X-Authority-Analysis: v=2.4 cv=PbDPQChd c=1 sm=1 tr=0 ts=6a7c930f cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDEyNiBTYWx0ZWRfX1BhaPEZos6ct
+ RO0pbWeTlCzCEUWhgrp9NQxCDaZE9fKXxOZJMX+uzKXnit0Icwob0ca1lCbjr/MPWuTx7ao58P8
+ thVDmSKJT1ApuShVVAFFUm3TJDVQt5EWoIUFjipW1eJoaWEK0WOAaczYrt9Pk2hn2MQ8zG+fYLA
+ eQaO3nmbzMQJi3DoNVMFJOydU/el8ySSy583jBr+lzoWI+2auyeqZbcxxgKLCA0E7Cxdsbc0lDe
+ VDI4Tr2h/FSnKOrZMY3d248JJGMyWmlzhaXvpQNP8eQMJZ7abr18N9kWq7PcgiczlPh6wNMkMVW
+ sU1SpaNobT7YQzsrEDVEgXSqgvLQOrGHEswjqShFLBi+qE4HrzJDqG4Icjh+ZF0CgBS/F+NtD/O
+ GghaK/wCReYMvhri0l6HYtCelBxg4wR8GbWvvQAdvk+BJy67l1hlTwvZZvXli2QGbDpJKok5XFn
+ VGAma8qh3OR8fn2xnCQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDEyNiBTYWx0ZWRfX1yPf6ykDrKjC
+ UKMEtLbIinV58ppVQwtWAkSY/nGJIDQJQprxVjfGfbxLJo49ht+P6uUiOan7b0tbpO4PumbCtZG
+ BNeghFTrZ3LY0rO9V6ju02Panb8mGIs=
+X-Authority-Analysis: v=2.4 cv=RqD16imK c=1 sm=1 tr=0 ts=6a7c9309 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
  a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=NkYWUXnGwG2_pH3cPtwA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDEyNiBTYWx0ZWRfX1sgKyZLmGcAI
- OGUHBY/L8Cw4l16olF4omsbKlc3kjGwUXBEoP22m+YSCVOAr3F1Lav/7mkI4qprPif5JtU3Cdpl
- IfhS6eSsY4jZ4YCy2sIyan9i7dJCZluQs5XQ5mkIFlhtAMCzy+1KkX8Tc/UnpQ9IxTtr2gRGeQH
- K3ct7AsvLsPW4NpLPSAuAc6utT/94NSMm79+VHmirQfHAZT1pBFfEZxXe0tJrjeQ5KL1Yver20/
- Pt3K6fxHciXzvymanjDZyv5xG8FNRv3JIw+JfWI2go0NnSPnA8iOYK85O32x5LaGJC+pcirrvys
- s2dPQJkzJiOqCqJ1RvofsSHncc1SbW6wLhXoagF48jPbDQXY8RMZu0w/WeqUK2NgK4aexqO90AW
- 89OB3QdeBMcOLMl0bNi6y5Sk9hcnWiVKeHZRX2CNHJ8JZRkcFN9G4vt1SkAwuLjr+5uz7ZxFB6p
- fpr1dZUAUmMYat901EQ==
-X-Proofpoint-ORIG-GUID: 0wtBmBzsvROsXEyg0Sj8Trfp2lzDLqnM
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDEyNiBTYWx0ZWRfX+OGrLqwbb5Ea
- /CAUqa/QAGqzk3o529rpwqgU2H6vjdyuH+ZB+KMZNDySqAV4Sbv5R4za2ajo7mou89TOM8P2gcv
- psBrZc/8naiFqTr6Yip8n3qdsJvKP8M=
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=DWVxlzv4wnVo_M8M_fcA:9
+X-Proofpoint-GUID: RzOi_joBKYaBt7eikWmH33uUyADdeH-G
+X-Proofpoint-ORIG-GUID: CqTfyBBWehjnw3w_OEzzq3sCLHnrxF-M
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-12_04,2026-08-12_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0 adultscore=0
- clxscore=1015 priorityscore=1501 suspectscore=0 phishscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ phishscore=0 priorityscore=1501 suspectscore=0 lowpriorityscore=0
+ clxscore=1015 adultscore=0 bulkscore=0 malwarescore=0 impostorscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
  definitions=main-2608120126
 
-Add all basic definitions the arm on s390 KVM host requires. Including,
-but not limited to, struct kvm*arch definitions, various functions (to
-be implemented in the following patches), and various defines required
-to run arm64 guests.
+Mark functions that s390 can use to implement arm on s390 as shared
+functions.
 
-Enlighten asm/kvm_host.h for the new header variant. The new
-header is chosen instead of asm/kvm_host_s390.h if KVM_S390_ARM64
-is defined.
+No functional change.
 
-Co-developed-by: Andreas Grapentin <gra@linux.ibm.com>
-Signed-off-by: Andreas Grapentin <gra@linux.ibm.com>
-Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
 ---
- arch/s390/include/asm/kvm.h            |   6 +
- arch/s390/include/asm/kvm_host.h       |   9 +
- arch/s390/include/asm/kvm_host_arm64.h | 220 +++++++++++++++++++++++++
- 3 files changed, 235 insertions(+)
- create mode 100644 arch/s390/include/asm/kvm.h
- create mode 100644 arch/s390/include/asm/kvm_host_arm64.h
+ arch/arm64/kvm/arm.c         | 3 +++
+ arch/arm64/kvm/guest.c       | 6 ++++++
+ arch/arm64/kvm/handle_exit.c | 6 ++++++
+ arch/arm64/kvm/mmio.c        | 2 ++
+ 4 files changed, 17 insertions(+)
 
-diff --git a/arch/s390/include/asm/kvm.h b/arch/s390/include/asm/kvm.h
-new file mode 100644
-index 000000000000..aeb11dc631d5
---- /dev/null
-+++ b/arch/s390/include/asm/kvm.h
-@@ -0,0 +1,6 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifdef KVM_S390_ARM64
-+#include <uapi/arm64/kvm.h>
-+#else
-+#include <uapi/asm/kvm.h>
-+#endif
-diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
-index 147325978225..cd6d572883ab 100644
---- a/arch/s390/include/asm/kvm_host.h
-+++ b/arch/s390/include/asm/kvm_host.h
-@@ -3,7 +3,16 @@
- #ifndef ASM_KVM_HOST_H
- #define ASM_KVM_HOST_H
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 8b080804bc90..6b92a3c1d490 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -1603,6 +1603,7 @@ static unsigned long system_supported_vcpu_features(void)
+ 	return features;
+ }
  
-+#ifdef KVM_S390_ARM64
-+#include <asm/kvm_host_arm64.h>
-+#else
- #include <asm/kvm_host_s390.h>
-+#endif
-+
-+static inline  bool kvm_arch_pmi_in_guest(struct kvm_vcpu *vcpu)
-+{
-+	return false;
-+}
++#ifdef ARM64_S390_COMMON
+ static int kvm_vcpu_init_check_features(struct kvm_vcpu *vcpu,
+ 					const struct kvm_vcpu_init *init)
+ {
+@@ -1656,6 +1657,8 @@ static bool kvm_vcpu_init_changed(struct kvm_vcpu *vcpu,
+ 			     KVM_VCPU_MAX_FEATURES);
+ }
  
- #define PGM_OPERATION			0x01
- #define PGM_PRIVILEGED_OP		0x02
-diff --git a/arch/s390/include/asm/kvm_host_arm64.h b/arch/s390/include/asm/kvm_host_arm64.h
-new file mode 100644
-index 000000000000..8088409bb041
---- /dev/null
-+++ b/arch/s390/include/asm/kvm_host_arm64.h
-@@ -0,0 +1,220 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef ASM_KVM_HOST_ARM64_H
-+#define ASM_KVM_HOST_ARM64_H
++#endif /* ARM64_S390_COMMON */
 +
-+#include <linux/bug.h>
+ static int kvm_setup_vcpu(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm *kvm = vcpu->kvm;
+diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
+index 773f6c8e5026..6ca5a9f357cd 100644
+--- a/arch/arm64/kvm/guest.c
++++ b/arch/arm64/kvm/guest.c
+@@ -62,6 +62,7 @@ const struct kvm_stats_header kvm_vcpu_stats_header = {
+ 		       sizeof(kvm_vcpu_stats_desc),
+ };
+ 
++#ifdef ARM64_S390_COMMON
+ static bool core_reg_offset_is_vreg(u64 off)
+ {
+ 	return off >= KVM_REG_ARM_CORE_REG(fp_regs.vregs) &&
+@@ -306,6 +307,8 @@ static int set_core_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
+ 	return err;
+ }
+ 
++#endif /* ARM64_S390_COMMON */
 +
-+#include <asm/kvm_host_types.h>
-+#include <asm/debug.h>
+ #define vq_word(vq) (((vq) - SVE_VQ_MIN) / 64)
+ #define vq_mask(vq) ((u64)1 << ((vq) - SVE_VQ_MIN) % 64)
+ #define vq_present(vqs, vq) (!!((vqs)[vq_word(vq)] & vq_mask(vq)))
+@@ -543,6 +546,7 @@ int kvm_arch_vcpu_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
+ 	return -EINVAL;
+ }
+ 
++#ifdef ARM64_S390_COMMON
+ static int copy_core_reg_indices(const struct kvm_vcpu *vcpu,
+ 				 u64 __user *uindices)
+ {
+@@ -591,6 +595,8 @@ static unsigned long num_core_regs(const struct kvm_vcpu *vcpu)
+ 	return copy_core_reg_indices(vcpu, NULL);
+ }
+ 
++#endif /* ARM64_S390_COMMON */
 +
-+#define vcpu_gp_regs(v)		((v)->arch.sae_block.gpr)
+ static unsigned long num_sve_regs(const struct kvm_vcpu *vcpu)
+ {
+ 	const unsigned int slices = vcpu_sve_slices(vcpu);
+diff --git a/arch/arm64/kvm/handle_exit.c b/arch/arm64/kvm/handle_exit.c
+index 29108e5c0206..6a6ef2c074f4 100644
+--- a/arch/arm64/kvm/handle_exit.c
++++ b/arch/arm64/kvm/handle_exit.c
+@@ -213,6 +213,7 @@ static int kvm_handle_guest_debug(struct kvm_vcpu *vcpu)
+ 	return 0;
+ }
+ 
++#ifdef ARM64_S390_COMMON
+ static int kvm_handle_unknown_ec(struct kvm_vcpu *vcpu)
+ {
+ 	u64 esr = kvm_vcpu_get_esr(vcpu);
+@@ -224,6 +225,8 @@ static int kvm_handle_unknown_ec(struct kvm_vcpu *vcpu)
+ 	return 1;
+ }
+ 
++#endif /* ARM64_S390_COMMON */
 +
-+#include <arm64/kvm_host.h>
-+#include <arm64/ptrace.h>
+ /*
+  * Guest access to SVE registers should be routed to this handler only
+  * when the system doesn't support SVE.
+@@ -404,6 +407,7 @@ static exit_handle_fn arm_exit_handlers[] = {
+ 	[ESR_ELx_EC_GCS]	= kvm_handle_gcs,
+ };
+ 
++#ifdef ARM64_S390_COMMON
+ static exit_handle_fn kvm_get_exit_handler(struct kvm_vcpu *vcpu)
+ {
+ 	u64 esr = kvm_vcpu_get_esr(vcpu);
+@@ -439,6 +443,8 @@ static int handle_trap_exceptions(struct kvm_vcpu *vcpu)
+ 	return handled;
+ }
+ 
++#endif /* ARM64_S390_COMMON */
 +
-+#include <asm/sae.h>
-+
-+#define KVM_HAVE_MMU_RWLOCK
-+#define KVM_MAX_VCPUS 1
-+#define KVM_S390_ARM64_IMPL_FEATURES \
-+	(BIT(KVM_ARM_VCPU_PTRAUTH_ADDRESS) | BIT(KVM_ARM_VCPU_PTRAUTH_GENERIC))
-+
-+#define KVM_HALT_POLL_NS_DEFAULT 50000
-+
-+#define KVM_S390_MANAGES_S390_GUEST 0
-+
-+/* Minimal (=no) vgic definitions */
-+#define KVM_IRQCHIP_NUM_PINS 1
-+#define irqchip_in_kernel(_k) false
-+
-+#define __ctxt_sys_reg(ctx, reg) NULL
-+struct kvm_cpu_context {
-+	/*
-+	 * These are just for 32 bit, which we don't have, making them RES0.
-+	 * They are exposed to user space.
-+	 */
-+	u64	spsr_abt;
-+	u64	spsr_und;
-+	u64	spsr_irq;
-+	u64	spsr_fiq;
-+
-+	__vector128 __aligned(16) vregs[32];
-+};
-+
-+struct kvm_vcpu_arch {
-+	struct kvm_sae_block sae_block;
-+	struct kvm_sae_save_area save_area;
-+	struct kvm_cpu_context ctxt;
-+
-+	u32 host_acrs[NUM_ACRS];
-+
-+	/* Hypervisor Configuration Register */
-+	u64 hcr_elz;
-+
-+	/* Configuration flags, set once and for all before the vcpu can run */
-+	u8 cflags;
-+
-+	/* Input flags to the hypervisor code, potentially cleared after use */
-+	u8 iflags;
-+
-+	/* State flags for kernel bookkeeping, unused by the hypervisor code */
-+	u8 sflags;
-+
-+	/*
-+	 * Don't run the guest (internal implementation need).
-+	 *
-+	 * Contrary to the flags above, this is set/cleared outside of
-+	 * a vcpu context, and thus cannot be mixed with the flags
-+	 * themselves (or the flag accesses need to be made atomic).
-+	 */
-+	bool pause;
-+
-+	/* vcpu power state */
-+	struct kvm_mp_state mp_state;
-+	/* lock for mp_state & reset_state.reset */
-+	spinlock_t mp_state_lock;
-+
-+	/* vcpu reset state */
-+	struct vcpu_reset_state reset_state;
-+
-+	/* GMAP */
-+	struct gmap *gmap;
-+	struct kvm_s390_mmu_cache *mc;
-+
-+	void *debugfs_state_data;
-+};
-+
-+struct kvm_vcpu_stat {
-+	struct kvm_vcpu_stat_generic generic;
-+	/* ARM64 stats */
-+	u64 hvc_exit_stat;
-+	u64 wfe_exit_stat;
-+	u64 wfi_exit_stat;
-+	u64 mmio_exit_user;
-+	u64 mmio_exit_kernel;
-+	u64 signal_exits;
-+	u64 exits;
-+	/* GMAP stats */
-+	u64 pfault_sync;
-+};
-+
-+#define _vcpu_get_flag(v, flagset, ...)	\
-+	__vcpu_get_flag(&(v)->arch.flagset, __VA_ARGS__)
-+#define _vcpu_set_flag(v, flagset, ...)	\
-+	__vcpu_set_flag(&(v)->arch.flagset, __VA_ARGS__)
-+#define _vcpu_clear_flag(v, flagset, ...)	\
-+	__vcpu_clear_flag(&(v)->arch.flagset, __VA_ARGS__)
-+#define _vcpu_test_and_clear_flag(v, flagset, ...)	\
-+	__vcpu_test_and_clear_flag(&(v)->arch.flagset, __VA_ARGS__)
-+
-+#define kvm_has_mte(_kvm) false
-+#define vcpu_has_sve(_vcpu) false
-+#define vcpu_has_ptrauth(_vcpu) false
-+
-+struct kvm_arch_memory_slot {
-+};
-+
-+struct kvm_arch {
-+	struct gmap *gmap;
-+	u64 guest_phys_size;
-+
-+	/* VM-wide vCPU feature set */
-+	unsigned long flags;
-+
-+	/* Protects VM-scoped configuration data */
-+	struct mutex config_lock;
-+
-+	debug_info_t *dbf;
-+
-+	DECLARE_BITMAP(vcpu_features, KVM_VCPU_MAX_FEATURES);
-+
-+	unsigned long mem_limit;
-+};
-+
-+static inline bool __vcpu_has_feature(const struct kvm_arch *ka, int feature)
-+{
-+	return test_bit(feature, ka->vcpu_features);
-+}
-+
-+struct kvm_vm_stat {
-+	struct kvm_vm_stat_generic generic;
-+};
-+
-+static inline bool system_has_full_ptr_auth(void)
-+{
-+	return true;
-+}
-+
-+#define kvm_vm_is_protected(_kvm) false
-+#define vcpu_is_protected(_vcpu) false
-+
-+#define vcpu_is_loaded(_vcpu) ((_vcpu)->cpu != -1)
-+
-+#define KVM_HVA_ERR_BAD		-1UL
-+#define KVM_HVA_ERR_RO_BAD	-2UL
-+
-+#define kvm_phys_size(__kvm) ((__kvm)->arch.guest_phys_size)
-+static inline bool kvm_is_error_hva(unsigned long addr)
-+{
-+	return IS_ERR_VALUE(addr);
-+}
-+
-+u32 get_kvm_ipa_limit(void);
-+
-+/* unused, but required functions */
-+static inline void kvm_arch_free_memslot(struct kvm *kvm, struct kvm_memory_slot *slot) {}
-+static inline void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen) {}
-+static inline void kvm_arch_flush_shadow_all(struct kvm *kvm) {}
-+static inline void kvm_arch_flush_shadow_memslot(struct kvm *kvm, struct kvm_memory_slot *slot) {}
-+static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
-+static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
-+static inline void kvm_arch_sync_events(struct kvm *kvm) {}
-+static inline void kvm_arch_sched_in(struct kvm_vcpu *vcpu, int cpu) {}
-+static inline void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
-+							   struct kvm_memory_slot *slot,
-+							   gfn_t gfn_offset,
-+							   unsigned long mask) {}
-+
-+int kvm_handle_guest_abort(struct kvm_vcpu *vcpu);
-+
-+/* arm64 guests do not use async-pf. Defined because Kbuild requires it as s390 kvm turns it on. */
-+#define ASYNC_PF_PER_VCPU 0
-+struct kvm_arch_async_pf {
-+	unsigned long pfault_token;
-+};
-+
-+#define __unsupp_async_call(fn) WARN_ONCE(true, "async not supported on kvm-arm64 %s", fn)
-+
-+static inline bool kvm_arch_can_dequeue_async_page_present(struct kvm_vcpu *vcpu)
-+{
-+	__unsupp_async_call(__func__);
-+	return false;
-+};
-+
-+static inline void kvm_arch_async_page_ready(struct kvm_vcpu *vcpu,
-+					     struct kvm_async_pf *work)
-+{
-+	__unsupp_async_call(__func__);
-+};
-+
-+static inline bool kvm_arch_async_page_not_present(struct kvm_vcpu *vcpu,
-+						   struct kvm_async_pf *work)
-+{
-+	__unsupp_async_call(__func__);
-+	return false;
-+};
-+
-+static inline void kvm_arch_async_page_present(struct kvm_vcpu *vcpu,
-+					       struct kvm_async_pf *work)
-+{
-+	__unsupp_async_call(__func__);
-+};
-+
-+static inline void kvm_arch_async_page_present_queued(struct kvm_vcpu *vcpu)
-+{
-+	__unsupp_async_call(__func__);
-+};
-+
-+#define kvm_supports_32bit_el0() false
-+
-+#endif /* ASM_KVM_HOST_ARM64_H */
+ /*
+  * Return > 0 to return to guest, < 0 on error, 0 (and set exit_reason) on
+  * proper exit to userspace.
+diff --git a/arch/arm64/kvm/mmio.c b/arch/arm64/kvm/mmio.c
+index d1c3a352d5a2..5161102da507 100644
+--- a/arch/arm64/kvm/mmio.c
++++ b/arch/arm64/kvm/mmio.c
+@@ -10,6 +10,7 @@
+ 
+ #include "trace.h"
+ 
++#ifdef ARM64_S390_COMMON
+ void kvm_mmio_write_buf(void *buf, unsigned int len, unsigned long data)
+ {
+ 	void *datap = NULL;
+@@ -258,3 +259,4 @@ int io_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa)
+ 	run->exit_reason	= KVM_EXIT_MMIO;
+ 	return 0;
+ }
++#endif /* ARM64_S390_COMMON */
 -- 
 2.53.0
 
