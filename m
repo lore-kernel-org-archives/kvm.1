@@ -1,178 +1,211 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54A543E06F;
-	Wed, 12 Aug 2026 12:18:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786537132; cv=none; b=N899KaGoMbGSBx8qS8sMFtRIUCgtmT4aOZiHVq9SYhuC4S8fSbbh1DO4AnE7avjF0F0TjQ24s9pSZqhHb2kktPw7zYxowHBLCPQYPkBuzGEIzGXucoBx3/pXxa4RcdWTDWRmZzB5NOJXmRds6Fx2wL+ANRVQ1UwB525b59bG59o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786537132; c=relaxed/simple;
-	bh=enjpyTGV6J/Ax7972/ygga5P+saUH5TOac+lROt0YfI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IDg7RJDzBeZ6dab89G+lHY2TQNkiIGq6lwFhtq8lU5AnEwKwSpUGPJY4citio4dAp0G5hqlwma279exzBX+/D0RYunsFyXr/jusnB7SM5jm/bVNM9gQqAymJYHc3bk+P0c02wMRcpIO6FvEMJaiX27JMngoAppQQkYxdE/lLrUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=kNCmgPa7; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazolkn19013082.outbound.protection.outlook.com [52.103.43.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986DC2C08CF;
+	Wed, 12 Aug 2026 12:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.43.82
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786537385; cv=fail; b=aZWgCIFA1+z1UT3RGDL444F4vRG/cfbMBEsW1zQBQZVDStjvaFLpuJObNz/fNgjOna/8fsn1BnOziX4aqXNFE0ct6ajs7cVtXsb8aa3/ClQMNGT/85Bp8dtPoWql+bb2aMVgqXrU0npJJ1m372qTmS7ByQH0Fs+3SQMCMgcDcLg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786537385; c=relaxed/simple;
+	bh=aTAVkHaxAGXFivMaycOAabXG4mYJ5z5H4p1mNStV45U=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=r/M7wVzySLeP8ETNMOgSEkeFo8TIMeSGM9iKGEe/Gv63fzB8kxFxUte6dtyC3yGmR+/4JoQeU4GB9W119cO/sFmPdZXc+Unj/RagGsK5R1tkmlfoT0qf9Vvy3gnSs+r73jPi/Rjxxo+Cl/Ds0AG62GgOjMJuInnQwb0PDlrmsHk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=JH20ttMq; arc=fail smtp.client-ip=52.103.43.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="kNCmgPa7"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 19FC61596;
-	Wed, 12 Aug 2026 05:18:45 -0700 (PDT)
-Received: from [10.57.44.219] (unknown [10.57.44.219])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 614353F632;
-	Wed, 12 Aug 2026 05:18:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786537129; bh=enjpyTGV6J/Ax7972/ygga5P+saUH5TOac+lROt0YfI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kNCmgPa7qbwWpc4aPu/N9O4IsZPqlPzAwORtgDQiHuFdRMliEFHLMbHgcSvs8EDCJ
-	 n4amYci4PH8hgMq4unWEILtiTirpl3DM9zhHsyb+uOFBMrPYCDKBIgGlx4RPhm6WqX
-	 pG4b/waj23NmfedDPTA6MyJ3XEjTDadHBaaYzNUc=
-Message-ID: <650bb70a-a02d-4976-a5c8-7cc5fb811b55@arm.com>
-Date: Wed, 12 Aug 2026 13:18:43 +0100
+	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="JH20ttMq"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lHGZdngpGU9fxPwiPKDIexg4fcCDBgHXAE637wvnu0MOHdFxVEzMp6nK7xYjxPYvXv7jZBEjr5+AakXy0EKb6LwlLNsIxGCxgqno5537JrNXCTQi6QA03P2bm06IoVrcQCf1GdDpTZ5JMF+UcgiWDamt9M/6JVsybZQ4uWYodBGwaFiEJUV+iIr6bq5NdEUlP10It0TaPlSluMmlb16OBKH8ggrAYoyBynqbz+UEjaM6GDmTAsazw7PAVGPjo1dlP8AoJD+rrsHSdUfPaKG/S3pdQGZdH7uuJvQFhk/nCeOkX0OBtmMVI9GJTo11XLmnlRODeJlDfO1BaT7A5wu7tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=i86GRI0411of84NhW3F7VKaGZyhtrF/Opm61EJR3bQY=;
+ b=SXviTxQzH1CJgmokHZJoopfXCr7ZnpuQhrjmG9IUtGZ3qyiGTpUZY6jiaDmQAJXbnlGc1a7E7P8sk2b8zzHPRqRUQePHvSM0l9ZRh7SvmFwN6FPJgS7nqcGyjCfzz4hXRW6b8lTzpdvFKF2uOomgl71vOxaTk7wrmNckyHx548qjL5J2/K/E42b0Av5Z9ja5F4pLOCmTIKxJqQWEqhXBZ+usgcwtpJT+vOGk5xR+UfeblrTNpTFtffR0ed0gtUINKQPLszJuzO/seYDiZ1VwN6lPZj35a37ACbz2iAwuQyUYMFaCYWdHpvm8iDVkDBGUGIvX7RkB0S7GKCXsiqWs4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i86GRI0411of84NhW3F7VKaGZyhtrF/Opm61EJR3bQY=;
+ b=JH20ttMqPtclF/w9apdnt3riFY1DiKGJYDeJ05o0Net2vYsIlP8Pk2NnnmB82RVN7Fb/gN7pVdfOUBEaHghmKoNUZ3pky+3YlnV0RiT2sD4gLQfUJv2osxCwixJ/sJkX2rdmIKCoInNIZStbHVRsg4uURodroBg5n4U+oZJQm7JvE82LQuVaBsWMsCsBTB9USFYckfml8eWY8A6Bi9neZP2ie+Uup15+DhXhB/c4RFJjl7Hnja54FxvN6ufswCNX2fLB1FkGMjTLmOygCjPN9XXBzbh2/mfhJBtqO6z4rti2dw5r6Y1gPw/95KOPZ0occG6nKJnTOUSwS0xNuos3jA==
+Received: from SE3PR04MB8922.apcprd04.prod.outlook.com (2603:1096:101:2e9::7)
+ by SEZPR04MB6477.apcprd04.prod.outlook.com (2603:1096:101:9d::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.12; Wed, 12 Aug
+ 2026 12:22:58 +0000
+Received: from SE3PR04MB8922.apcprd04.prod.outlook.com
+ ([fe80::3450:f139:5238:8f58]) by SE3PR04MB8922.apcprd04.prod.outlook.com
+ ([fe80::3450:f139:5238:8f58%5]) with mapi id 15.21.0315.011; Wed, 12 Aug 2026
+ 12:22:58 +0000
+Message-ID:
+ <SE3PR04MB8922A641FF933A0BF913E343F3DC2@SE3PR04MB8922.apcprd04.prod.outlook.com>
+Date: Wed, 12 Aug 2026 20:22:49 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] KVM: selftests: Add RISC-V Sv57 page table
+ indexing
+To: Jinyu Tang <jinyu.tang@linux.dev>, Anup Patel <anup@brainfault.org>,
+ Anup Patel <apatel@ventanamicro.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Atish Patra <atish.patra@linux.dev>,
+ Paul Walmsley <pjw@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Andrew Jones
+ <andrew.jones@oss.qualcomm.com>, Conor Dooley <conor.dooley@microchip.com>,
+ Yong-Xuan Wang <yongxuan.wang@sifive.com>, Jinyu Tang <tjytimi@163.com>
+References: <20260811230316.218770-1-jinyu.tang@linux.dev>
+ <20260811230316.218770-3-jinyu.tang@linux.dev>
+Content-Language: en-US
+From: "Nutty.Liu" <nutty.liu@hotmail.com>
+In-Reply-To: <20260811230316.218770-3-jinyu.tang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TPYP295CA0041.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:7d0:7::19) To SE3PR04MB8922.apcprd04.prod.outlook.com
+ (2603:1096:101:2e9::7)
+X-Microsoft-Original-Message-ID:
+ <9c5a5dd0-ab15-4532-8bca-194392f60e75@hotmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 00/45] arm64: Support for Arm CCA in KVM
-Content-Language: en-GB
-To: Gavin Shan <gshan@redhat.com>, Alper Gun <alpergun@google.com>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
- Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Javier.AlmansaSobrino@arm.com
-References: <20260803134403.80630-1-steven.price@arm.com>
- <42170467-fe36-4382-867f-49bdc6a7bc9a@arm.com>
- <d0ffbcb5-0cca-4d1e-9788-6b430345fa9b@redhat.com>
- <5e86232a-89ed-40ff-89e2-9e48fbf9554e@arm.com>
- <e2894206-7470-4606-b9ac-eedc8d2bdaf3@redhat.com>
- <CABpDEukGY+ctSi6wHAaC7o4pGmastX_Y18K2_VYDhNME7TF+wQ@mail.gmail.com>
- <f5d47f5f-5869-4e3a-a176-4fd632567975@arm.com>
- <ad7d1093-685d-4c11-807d-929d16271cdb@redhat.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <ad7d1093-685d-4c11-807d-929d16271cdb@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SE3PR04MB8922:EE_|SEZPR04MB6477:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6721c541-1f47-46d8-8b33-08def86c714d
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|24121999003|22091999003|5072599009|55001999006|25010399006|15080799012|6090799003|23021999003|4140399003|16041099003|19101099003|19110799012|8060799015|440099028|3412199025|41105399003|40105399003|53005399003|2607281247196008|26121999007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?d3VuWU8yc1JPZCtBYmhxUXFCd2pnWWhsMzdrUHlzdzBSZDhGNW5OVFNXSXky?=
+ =?utf-8?B?MzBqWHl3YjloaWRjTjFXM3ZiWThFZGZGcWRRSVJlQmFvN1hIdGlRTmZOY0sz?=
+ =?utf-8?B?djByTWRESHNid2JqZ1BZaWc4dGFjL1h3ekxrbkV3a1BwRmFpM2EzSG9JYkZ0?=
+ =?utf-8?B?U1NiL1Z4eTNOTWFtUFJOcGxpWkdtd0YyQ0JuMGZUSmtHcjVwYyt5elRMNGQ3?=
+ =?utf-8?B?b0JOanYwbWhrVXJsZnpBVWxlNHJJeGZpRkhxaWdoQXZkdkVMZVg0NHlZSnFC?=
+ =?utf-8?B?cUlGTkh1ZEdRN2cxLzh4MEM5T3ZvNkNkU0NpMWhYYkxEcjJNYUtVcC8wQ0dZ?=
+ =?utf-8?B?Wm15OXlUNDNUM2V3YUc5ay9iS0N4bk44Z2J1RkxXajlsclBrbGd3ZndHZ2JU?=
+ =?utf-8?B?cDNmOXdEajBOcFVIYnNFczQ3SVQxbXg1SnpOUWpnYW1FbUlQOU1mVDlEa21E?=
+ =?utf-8?B?TGhSU243NHRram9reGJnN243OHEzeXlWZWJpZnlKeUxzQVdjZGF3dW9oL3h4?=
+ =?utf-8?B?dlhieUVpN0ZVR3U5RktGYkxRNjRyZ2lVWmlaZlozdlJxbEEvVThUa1hZUko0?=
+ =?utf-8?B?UnpuRUVtM0w0ekI4ZmtOQWc4MVVuWTVNRXMwSTJKeFRSMTJMRTh5REM0UXph?=
+ =?utf-8?B?MGhzSnBjVkN5enh1WXVTR3RjM0R5RWxaemZITUg3TlJDVDNVM1FpSGlLNGQx?=
+ =?utf-8?B?OW5uaSt1UmE1UXR6dkhiSG9hN25FdTNqVTJPNWticVFpOUV3MWlXUDY5MGVW?=
+ =?utf-8?B?bnlnUUtsQ05lUk5KSVJlQlBUVDRkQ1MxMVZLTzhGNGFFS3BrTFE1SkNNbXpT?=
+ =?utf-8?B?ZEJYamwxYWt3VkxXUDIwNE0vTXFLaDNaakQzaytuemVkbEhvQlFIVWg5ampS?=
+ =?utf-8?B?d3VSZHFoajB5WFhlNVh6ZVo4MEZOWnNGSHFaRlR5QjVQVi9VL0VnY20zM0dE?=
+ =?utf-8?B?d01ndHdmT29ZbDkvT3QvU3crMzZFOWlXdnBlOGc3STU2SmhmU3RBSWpmdEtU?=
+ =?utf-8?B?T1ZpWk9ob0VOcUc5WkZCeTFQT240YkluMVM3ZUpSMTIvV2xvUVV4TWNuTmhY?=
+ =?utf-8?B?bTBUS0xEa2RSWHVhRmN1ZlpuRmVvR0Ira2NtalVSVVJBRGVWN0dISWhhaXVw?=
+ =?utf-8?B?S0kvQTltVjZCSm9UZDZOR1VUNVJrUmQzUUVVSWpESEtiUjU3NDA0Z1VwWWRm?=
+ =?utf-8?B?dUZrdGpZNEhtUHJPY29yOXNoV0llVlNQVWhFcG1TNnRWKzlkSXkrcFlKTm1Z?=
+ =?utf-8?B?cjhOV2JJZjJXVThyNFpSeHA5L1AvN0RKVE4wUE50NmM2cDluS0JrdzY4L3pi?=
+ =?utf-8?B?blBFeDRtWlVhc3ZVZ3NxRmhLTjVCaXlOdklnRG9RSXlueXlGb0xUclljT2Ry?=
+ =?utf-8?B?REpDTWtSbkdZOFRWQ1N6SVI2UUEyMFlaMFYwU1piMGRnR0JqYUJTRTJLNDkw?=
+ =?utf-8?B?TEpOWkhESEVZeGN4SWZERFJMNWUzb2xBOG04YWxXVWtqV3VjZGVSTnNEelVR?=
+ =?utf-8?B?dWY1SmZXemhJKys1dHpnN3loV0ZyTktyMnRGMVJjTFNURlhFMTBMWGxIWG5M?=
+ =?utf-8?B?ckVBZz09?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YlRxMzJlczVQcno4MHdxZUdKaW9RSjc1SkFTL3NMZ2JoRUhheDBxQ0hubFpw?=
+ =?utf-8?B?YmJNNDN0TzlScXhES1hLWmpub29sNnZjc1JlSHdDZmUvc1FkRk9oSzNYR2Vi?=
+ =?utf-8?B?NVlwNVVncWNrQTIyNjQ4ZEkxSGt4aU52T0lka0JjVkZxaTNvcDI4K1VBZlJn?=
+ =?utf-8?B?cHFkZU9Ld2RuUVUrNnd6cGR4SkhmUlJwbVBzSHNURjU3M1BiTlgxamhMQS9L?=
+ =?utf-8?B?djFzMTZobEVIaFAvbGRsOFo4WmNsa3F2aWpOdS8rdDg4a0JlYnFlaVRIdkRO?=
+ =?utf-8?B?Sng3VDhlOGhlVllPZk5ic3l1SjE2RCtTd2g4N3RmYnVOWjkxbUZLUEJuekNr?=
+ =?utf-8?B?YTZtMmF6aGppWDFNOHpoaExMcjhuRWhvL1pPUVRyK2ZiWHdQY0FqeWVIZGhR?=
+ =?utf-8?B?K201SDIzcWkybXZrNHZzc2RvN2hnZjNuNDZkZXVvbUI0ZGxaZ2Y0MGYrNHQ2?=
+ =?utf-8?B?R0RxMVV1RzMwSDVkYWFKdmtSWnBWOTNiUERjNEFQMUZZRXg2OTluenRVNDhK?=
+ =?utf-8?B?N0p4MXhwNFI2Vmc3a05XUW9Qby94a2hBejNnUHFwVGxSWnN2VXJjNHk4VlR5?=
+ =?utf-8?B?MGRaRlNidFpQRnUzUG9rY3dQM3F5d0pVN01WZnZnZFB6a3piVHBGMlNKM1lZ?=
+ =?utf-8?B?UElxcnpHZUZiTEJRcUJVT0RrYkJwQkRnZ3RTbVhuYVFZY2tQYXlqTVhMZ0h2?=
+ =?utf-8?B?OXN4UzJjM3hmNXFPc1R2OGlvY2JabzltYjJxV1dzZUZVS3BBa2JaUFJ3OWxF?=
+ =?utf-8?B?MC9WTTIwV3RTUEtrVW9CRDdpTVVxWGRHem9iZGp1bkFVR1VCZDI5SVJUM3Ba?=
+ =?utf-8?B?cnhuVlRWNVh2R0hETU1CQkhlL1Y2ampzbVBOamVnYU5qNlo1M1YvOFRBb1JE?=
+ =?utf-8?B?Qk9GZ1l4WGF0OXh5N3dQUTB0b2JncGw2VTQwK2hsaWpkQXFLelRXTStycm03?=
+ =?utf-8?B?TXhhVVNPYmpGaDZIanIrU2NDcUlWeHpHNUxpb2JoS2dJaUFuT1c5aks1QlpW?=
+ =?utf-8?B?VDVLVm9kRllrckNFU1o0NmdSVEdhZDNCWVRkTG1lUHp0QnFCTVRyZXpsOEVS?=
+ =?utf-8?B?QlJkaGFnUmFCbFgyaXV5RVl6WDU5VXlmSy9RNEMxRlk0a1YyZEkyemNmMko0?=
+ =?utf-8?B?NkdLTC9IWTlIZWt2VHk0Q2c2K3BNa0trRzZOMFBRc3prdkV1dWF5VFFkQysy?=
+ =?utf-8?B?VDZnNTMzRWNVUmlZdldkRWZYYUtlL1p0eHFaM29hKzlMZkRYSXdEQm1WbGVQ?=
+ =?utf-8?B?eFp3ZUgxL2hVSTZ3WTM5d2ZnRDYrY2FaZXJzM0NXNUdlVkxDVHphcEdEZXVo?=
+ =?utf-8?B?MmdRTzI1dytXOTB5NC9tdDEyNVptVU5KTTZvM2xKTHZFL29wUW1YVmdicnF0?=
+ =?utf-8?B?KzRtT0lHOWpxa0VHZDJENmx3NkdqVXYvcE5BdDFnZEsrNXl5T2FnbHZaWStP?=
+ =?utf-8?B?MlBaVmxTSnhSSVpzNVJoZS8wQ2txK09MM3hXMG1OV21vWURYSmkzWXNoWmp4?=
+ =?utf-8?B?enZWQWpCTTByTzBNQ243U0JrcW1sM25oWXB3Zmh4Mjhoc3hDTGZDNjJjeFNp?=
+ =?utf-8?B?S0l4b3FnT01pV004OElGZGdlY1J1QWU2emtVbDBTemxsZXJhNmFkWU9teFVV?=
+ =?utf-8?B?WEtqUnIyUTlmZHphNlJIRWR3TjBKMGF4YjJGa1l5Q0d1ZGtzWCtIazh4bXUw?=
+ =?utf-8?B?aGxURDZ3Q2Y4eThpdGlFUGRQUlhzRC9VQWh1Ry8rNXNCaDg5SGJEUVVPbGcz?=
+ =?utf-8?B?SnkzRmhmRlkyT3BxRW1KK09ZNk9rYVZJUmloaXozU1lqbjJoL2U2Zy8vRk81?=
+ =?utf-8?B?R3pQS05PSnp1R1pSdGl4eXFVWklLbW9FblJkNGlIckZ6VmhqOGpoRDJHQzhr?=
+ =?utf-8?Q?pFXyautRGlpUS?=
+X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-c3e7a.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6721c541-1f47-46d8-8b33-08def86c714d
+X-MS-Exchange-CrossTenant-AuthSource: SE3PR04MB8922.apcprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2026 12:22:57.9898
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR04MB6477
 
-On 12/08/2026 11:35, Gavin Shan wrote:
-> Hi Alper and Suzuki,
-> 
-> On 8/12/26 4:04 PM, Suzuki K Poulose wrote:
->> Hi Alper, Gavin
->>
->> On 12/08/2026 04:25, Alper Gun wrote:
->>> On Tue, Aug 11, 2026 at 8:08 PM Gavin Shan <gshan@redhat.com> wrote:
->>>> As the following calltrace indicates, -EAGAIN is returned from tf- 
->>>> rmm::update_ripas()
->>>> because true is returned from s2tte_drain_pending() for the S2TTE 
->>>> corresponding to
->>>> IPA 0x80000000. Linux host received error (RMI_ERROR_RTT, level=3) 
->>>> in ripas_change().
->>>> Upon this specific error and the IPA range [0x80000000 0x90000000], 
->>>> find_map_level()
->>>> returns level of 2, and realm_create_rtt_levels() returns 0 without 
->>>> populating any
->>>> RTTs. After that, rmi_rtt_set_ripas() is re-executed and the above 
->>>> loop starts over
->>>> again.
->>>>
->>>>     Linux host
->>>>     ==========
->>>>     kvm_arch_vcpu_ioctl_run                     // cca/host-v16
->>>>       check_vcpu_requests
->>>>         kvm_check_request
->>>>           kvm_rec_handle_request
->>>>             kvm_complete_ripas_change
->>>>               realm_set_ipa_state
->>>>                 ripas_change
->>>>                   rmi_rtt_set_ripas
->>>>                     SMC_RMI_RTT_SET_RIPAS
->>>>
->>>>     TF-RMM
->>>>     ======
->>>>     SMC_RMI_RTT_SET_RIPAS                      // tf-rmm/topics/rmm- 
->>>> v2.0-poc_3
->>>>       smc_rtt_set_ripas
->>>>         s2tt_walk_lock_unlock
->>>>         rtt_set_ripas_range
->>>>           update_ripas
->>>>             s2tte_drain_pending                // true, returns -EAGAIN
->>>>
->>>> The problem is the pending-bit for RTE corresponding IPA address 
->>>> 0x80000000 isn't cleared
->>>> when SMC_RMI_RTT_SET_RIPAS is invoked. I didn't figure out how this 
->>>> bit is set and why
->>>> it's not cleared in time.
->>
->> Thanks for the details.
->>
->>>>
->>>
->>> Hi Gavin, Suzuki,
->>>
->>> I think I ran into a similar issue on rmm-v2.0-poc_3 last week.
->>> This looks like a potential RMM bug: could bit 32 be part of the 
->>> physical
->>> Address (if PA >= 4 GiB)?
->>>
->>> It seems s2tte_drain_pending() in lib/s2tt/src/s2tt.c checks bit 32 
->>> without
->>> checking whether the descriptor is valid or invalid.
->>>
->>> In my testing, guarding the drain checks with a check for 
->>> S2TTE_INVALID seemed
->>> to resolve the boot hang:
->>> --- a/lib/s2tt/src/s2tt.c
->>> +++ b/lib/s2tt/src/s2tt.c
->>> @@ -1701,6 +1701,10 @@ unsigned long
->>> s2tte_clear_drain_pending(unsigned long s2tte)
->>>
->>>   bool s2tte_drain_pending(unsigned long s2tte)
->>>   {
->>> + if ((s2tte & S2TT_DESC_VALID_MASK) != S2TTE_INVALID) {
->>> + return false;
->>
->> We should use also consider cases where the entry is INVALID, but
->> has HIPAS=ASSIGNED/ASSIGNED_DEV to make it tighter. So, I think
->> it is better to use :
->>
->> s2tte_is_unassigned() or in the library stick to :
->>
->> if (!s2tte_has_hipas(s2tte, S2TTE_INVALID_HIPAS_UNASSIGNED))
->>      return false;
->>
->> May be we should assert this and make the caller responsible for
->> checking the bit. I will leave it to the tf-RMM team to fix.
->>
->> But for now, please use the above fix.
->>
-> 
-> Both worked for me. With the extra check in place, the realm guest can boot
-> up successfully.
-> 
-> FYI, The below additional checks in s2tte_tlbi_pending() and 
-> s2tte_drain_handle()
-> aren't needed because they're always guarded by s2tte_drain_pending() in 
-> all
-> calling sites.
 
-fyi, the tf-RMM patch is out for review here : (Thanks Javier)
+On 8/12/2026 7:03 AM, Jinyu Tang wrote:
+> RISC-V selftests can create guests with five page-table levels, for
+> example when the selected guest mode is Sv57. The RISC-V page-table
+> walker only had index arrays for levels 0 through 3, so
+> virt_arch_pg_map() indexed past the end of the arrays when level 4 was
+> used.
+>
+> Add the missing L4 index mask and shift so selftests can build guest
+> page tables for Sv57 VMs.
+>
+> Signed-off-by: Jinyu Tang <jinyu.tang@linux.dev>
+Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
 
-https://review.trustedfirmware.org/c/TF-RMM/tf-rmm/+/53531
-
-Please feel free to cherry-pick that one
-
-Cheers
-Suzuki
+Thanks,
+Nutty
+> ---
+>   tools/testing/selftests/kvm/include/riscv/processor.h | 3 +++
+>   tools/testing/selftests/kvm/lib/riscv/processor.c     | 2 ++
+>   2 files changed, 5 insertions(+)
+>
+> diff --git a/tools/testing/selftests/kvm/include/riscv/processor.h b/tools/testing/selftests/kvm/include/riscv/processor.h
+> index e3acf2ae9881..abde3c71c891 100644
+> --- a/tools/testing/selftests/kvm/include/riscv/processor.h
+> +++ b/tools/testing/selftests/kvm/include/riscv/processor.h
+> @@ -127,6 +127,9 @@ void vm_install_exception_handler(struct kvm_vm *vm, int vector, exception_handl
+>   
+>   void vm_install_interrupt_handler(struct kvm_vm *vm, exception_handler_fn handler);
+>   
+> +/* L4 index Bit[56:48] */
+> +#define PGTBL_L4_INDEX_MASK			0x01FF000000000000ULL
+> +#define PGTBL_L4_INDEX_SHIFT			48
+>   /* L3 index Bit[47:39] */
+>   #define PGTBL_L3_INDEX_MASK			0x0000FF8000000000ULL
+>   #define PGTBL_L3_INDEX_SHIFT			39
+> diff --git a/tools/testing/selftests/kvm/lib/riscv/processor.c b/tools/testing/selftests/kvm/lib/riscv/processor.c
+> index ded5429f3448..b4d41a407553 100644
+> --- a/tools/testing/selftests/kvm/lib/riscv/processor.c
+> +++ b/tools/testing/selftests/kvm/lib/riscv/processor.c
+> @@ -43,6 +43,7 @@ static u64 pte_index_mask[] = {
+>   	PGTBL_L1_INDEX_MASK,
+>   	PGTBL_L2_INDEX_MASK,
+>   	PGTBL_L3_INDEX_MASK,
+> +	PGTBL_L4_INDEX_MASK,
+>   };
+>   
+>   static u32 pte_index_shift[] = {
+> @@ -50,6 +51,7 @@ static u32 pte_index_shift[] = {
+>   	PGTBL_L1_INDEX_SHIFT,
+>   	PGTBL_L2_INDEX_SHIFT,
+>   	PGTBL_L3_INDEX_SHIFT,
+> +	PGTBL_L4_INDEX_SHIFT,
+>   };
+>   
+>   static u64 pte_index(struct kvm_vm *vm, gva_t gva, int level)
