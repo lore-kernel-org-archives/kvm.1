@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469C03AB5DC;
-	Wed, 12 Aug 2026 08:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD123AEF2E;
+	Wed, 12 Aug 2026 08:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786522059; cv=none; b=DMcDI3BDssVvBjxr54LjjmduJlwub8xKYsmhdPWYX5XID4IQvNqKXJLQtCk42/z30EWJ7TLc1pL7TX2EHSewsR6JeBkk2ncCkZQSfPtsuFanwFYl9JjUiFttCi5Ief1YbzogNKJMS3liP+xZCKQoAeBc+H0Mc8vkvfqs3KELJFw=
+	t=1786522061; cv=none; b=I31SGs5xxSTnV+Xw0xdx8P+olZJ0R7GIJ7UGO4bjW7aGdAtaIg72opDL791GeWvTEKUbrc8cggjelhxcFPfMvdYg/ylkz/PNgD5134MDEpzHy0BQ32k1KwDcj9x1dvI2XRoVuunGRb8L5wf+GN5U0AIXeufWM8Dt2FB0ZzR549U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786522059; c=relaxed/simple;
-	bh=L4spiYJFEJEiZk3CSxwoVyBsU6EW1jSTQ+XS2NMGpGU=;
+	s=arc-20240116; t=1786522061; c=relaxed/simple;
+	bh=Lu8Qhs9++6B5zuYN8anq/u17JE0wvBoLdBQXd6evmas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c4y+w6m8HTQKV6KsnS75tquobHT0/el5aLeKnc1hg/AZxicW4Dg7EaLwpUe84UUBTl1Z31pG4rj7rdJe/km1vlKXvripFkabxfbTZ4ZqGlsnPBjD1RhLxeSILPwQe66itfW1SYjzd2S6s9Dcj/BzwlzOGhdyFRFeQR7UyZmWmiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=btlBMOJI; arc=none smtp.client-ip=198.175.65.11
+	 MIME-Version; b=SSmxpknkywPwlGFB2Lr9V1EUKTV70XtdNbsJdZ5IYzX3gIXR0qtOu+wUy+qwrcALTe4LiRzL11hLWNDpunmi6zJ4XEiF82ntphAN07luktOxZz+EBLIIHxYZjTy82deiHSWOwWISAoFO60VM5YcD+VTXyXymMs3DyIfh69w5LEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WM/L9C7p; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="btlBMOJI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WM/L9C7p"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786522058; x=1818058058;
+  t=1786522060; x=1818058060;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=L4spiYJFEJEiZk3CSxwoVyBsU6EW1jSTQ+XS2NMGpGU=;
-  b=btlBMOJI2OA4gCux3Ox87ilUuXb6F0r1zWza7ev+RAq7DzmG0+rT4904
-   xQ3ijJORPWkBP4IBzWBWXrB8YXeuickipwujL97Xiqgr17mDBrQAki+99
-   TddGTbYR2apys21kwLPwSJR981pgbr83xTyhn4bPnKf1Ur93i1yPJvrvd
-   1nV85jArERBWhGQLZEZCszfKxRCPUCgGCOb4wRMdFRKMF/Nvbqe1oypMQ
-   Mpl3XM9kAk4LwRBg3W+kwb69t/VrqsN1RNct66d8pWn6WP5eZ+sJ8vyXy
-   /4KF23g0KWNFgSiYkX4rHZN69nKj2j1d23YRanZqLtvqYl7USkSaFIM1m
+  bh=Lu8Qhs9++6B5zuYN8anq/u17JE0wvBoLdBQXd6evmas=;
+  b=WM/L9C7p/fKdFGqP0QEWP16gMGhQjXuYd5jzLR/bqLPhfwKVqi7oyD1o
+   2vL1POSPDFlUyt6yerTJh+9+o71wh+GCvA3asRnHpPQybVUSX7gfouWSg
+   0xkilndSNIqS3YHYLPt9nMXtc1zIPHYWG1aYt89oBEKGBTdrEEs+NGnda
+   rcT567KSkp5GED4jFwA9HTOBVYYNNSFO8Pi2Sp8edVICNjtMGjmFeCALN
+   lUU+DA/pbbYv+/msIdrxwGUEnLjCstdF8ZQe7+JroY9DWWZVHIumWCaY3
+   k3W+d+2HXCp3BituLuGiDRm3ElIlS2M+LA4MaLnFzN6aNEpIfFSWVHGcP
    w==;
-X-CSE-ConnectionGUID: fXD9ul6RTKaYFE/hP63Vgg==
-X-CSE-MsgGUID: DR1dUBsVT5ChfYyV2zs+Fw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="97413267"
+X-CSE-ConnectionGUID: 4o0tNQhUQz+p4WD/UZh0wg==
+X-CSE-MsgGUID: 3j/yW3IKTLKRB0XTuwcsPg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="97413278"
 X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
-   d="scan'208";a="97413267"
+   d="scan'208";a="97413278"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 01:07:37 -0700
-X-CSE-ConnectionGUID: XYTo//OhQ9ieJuyS2Af/Xg==
-X-CSE-MsgGUID: smHoPCHqS5iEomWJlATsaQ==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 01:07:40 -0700
+X-CSE-ConnectionGUID: PvpEugD9R9ycPwWbXvs4Mg==
+X-CSE-MsgGUID: qp5D6KbHQi+WsGgV//ZOSg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
-   d="scan'208";a="287000379"
+   d="scan'208";a="287000395"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.33])
-  by fmviesa002.fm.intel.com with ESMTP; 12 Aug 2026 01:07:34 -0700
+  by fmviesa002.fm.intel.com with ESMTP; 12 Aug 2026 01:07:37 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>
@@ -53,9 +53,9 @@ Cc: Kiryl Shutsemau <kas@kernel.org>,
 	linux-coco@lists.linux.dev,
 	nik.borisov@suse.com,
 	xiaoyao.li@intel.com
-Subject: [PATCH v3 1/4] KVM: TDX: Enable Notify VM exit
-Date: Wed, 12 Aug 2026 16:02:26 +0800
-Message-ID: <20260812080229.2481439-2-xiaoyao.li@intel.com>
+Subject: [PATCH v3 2/4] KVM: TDX: Set bits 31:16 to 0 for the synthesized Exit Reason
+Date: Wed, 12 Aug 2026 16:02:27 +0800
+Message-ID: <20260812080229.2481439-3-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260812080229.2481439-1-xiaoyao.li@intel.com>
 References: <20260812080229.2481439-1-xiaoyao.li@intel.com>
@@ -67,160 +67,96 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Enable Notify VM exit functionality for TDX guests.
+Set bits 31:16 to 0 instead of all-1s for KVM's synthesized Exit Reason.
 
-Notify VM exit is an existing feature supported by KVM.  Userspace can
-enable Notify VM exit through KVM_CAP_X86_NOTIFY_VMEXIT when it's
-reported as supported.  However, KVM reports the support of this CAP just
-based on the hardware capability but doesn't differentiate between VMX
-and TDX.  This leads to the issue that userspace can enable this cap for
-TDX guests without getting an error, but the feature is not actually
-enabled because KVM doesn't call the TDX module API to program the
-relevant TD VMCS fields.
+KVM is going to support Bus Lock VM exit for TDX, after which bit 26 of
+the Exit Reason becomes meaningful and indicates that a bus lock happened.
+The existing synthesized Exit Reason, -1u, will cause a false positive in
+that case.  Change the synthesized Exit Reason from -1u to U16_MAX, so that
+bits 31:16 are set to 0.  This also avoids the potential issues when other
+bits in 31:16 become valid in the future.
 
-Enable Notify VM exit for TDX guests by:
+As a bonus, the check for synthesized Exit Reason in tdx_failed_vmentry()
+becomes unnecessary. Drop it.
 
-  - Invoking TDX module API calls to set NOTIFY_VM_EXITING and Notify
-    Window in TD VMCS.  It's done in tdx_vcpu_init() where other TD VMCS
-    bits are set.  Since TDX vCPU cannot be reset, it only needs to be
-    configured once when initializing the TDX vCPU.
-
-  - Adding corresponding exit handler for TDX Notify VM Exit.
-
-Notify VM exit can happen when executing the IRET instruction.  If the
-IRET unblocks the NMI blocking state, bit 12 of the exit qualification
-is set.  In this case, the VMM needs to restore the "blocked by NMI" state
-when it decides to re-enter the guest.  For TDX, KVM cannot manage the
-GUEST_INTERRUPTIBILITY_INFO and it's TDX module's responsibility to
-handle it.  Extract the common part without NMI blocking handling into a
-helper in common.h so that it can be shared between VMX and TDX.
-
-Note, KVM uses "pre-production" terminology for the feature formally called
-Notify VM-Exit.  All public versions of the SDM refer to the feature as
-Instruction Timeout.  This will be remedied in the near future, for now,
-use KVM's terminology for consistency.
-
-Note, #2, there is no enumeration bit for Notify VM exit by TDX module
-because all TDX modules support it, and allow to set the corresponding
-TD VMCS fields as long as the hardware supports the feature.
-
-Fixes: 161d34609f9b ("KVM: TDX: Make TDX VM type supported")
 Cc: stable@vger.kernel.org
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
+Note, the checking of (*reason != TDX_INVALID_EXIT_REASON) in
+tdx_get_exit_info() can cause a false-positive when the real exit reason
+is EPT_MISCONFIG. This issue is orthogonal to enabling Bus Lock VM exit and
+it's not urgent since EPT_MISCONFIIG is not supposed to happen unless
+current KVM code is buggy. We leave the fix for this issue to the future.
+
+Note, #2, the checking of tdx_failed_vmentry() seems to miss the case
+where a real EPT_MISCONFIG happens with failed_vmentry being set.
+First, in practice, EPT_MISCONFIG cannot happen with failed_vmentry being
+set. Second, even if it can, this is an pre-existing issue and the next
+patch can address it.
+
 Changes in v3:
-- Collect R-b tag from Rick
-
-Changes in v2:
-- Mention the feature name mismatch between KVM and SDM in changelog and
-  leave the renaming to future, since this patch is targeted for stable
-- Extract the common handling into a helper, and put the helper in
-  common.h instead of refactorin the existing handle_notify() in vmx.h
-- Add a note to clarify the feature is always supported by TDX module,
-  to make Sashiko happy.
+- split from the patch 2 in v2.
+- define a MARCO for the synthesized invalid Exit Reason.
 ---
- arch/x86/kvm/vmx/common.h | 19 +++++++++++++++++++
- arch/x86/kvm/vmx/tdx.c    | 10 ++++++++++
- arch/x86/kvm/vmx/vmx.c    | 13 +------------
- 3 files changed, 30 insertions(+), 12 deletions(-)
+ arch/x86/kvm/vmx/tdx.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/common.h b/arch/x86/kvm/vmx/common.h
-index 08005676702c..2cbaa9aba901 100644
---- a/arch/x86/kvm/vmx/common.h
-+++ b/arch/x86/kvm/vmx/common.h
-@@ -4,6 +4,7 @@
- 
- #include <linux/kvm_host.h>
- #include <asm/posted_intr.h>
-+#include <asm/vmx.h>
- 
- #include "mmu.h"
- 
-@@ -183,6 +184,24 @@ static inline void __vmx_deliver_posted_interrupt(struct kvm_vcpu *vcpu,
- 	kvm_vcpu_trigger_posted_interrupt(vcpu, POSTED_INTR_VECTOR);
- }
- 
-+static inline int __vmx_handle_notify(struct kvm_vcpu *vcpu,
-+				      unsigned long exit_qual)
-+{
-+	bool context_invalid = exit_qual & NOTIFY_VM_CONTEXT_INVALID;
-+
-+	++vcpu->stat.notify_window_exits;
-+
-+	if (vcpu->kvm->arch.notify_vmexit_flags & KVM_X86_NOTIFY_VMEXIT_USER ||
-+	    context_invalid) {
-+		vcpu->run->exit_reason = KVM_EXIT_NOTIFY;
-+		vcpu->run->notify.flags = context_invalid ?
-+					  KVM_NOTIFY_CONTEXT_INVALID : 0;
-+		return 0;
-+	}
-+
-+	return 1;
-+}
-+
- noinstr void vmx_handle_nmi(struct kvm_vcpu *vcpu);
- 
- #endif /* __KVM_X86_VMX_COMMON_H */
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index b272c20586a7..7338ac0af693 100644
+index 7338ac0af693..df23db9430f0 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
-@@ -2126,6 +2126,9 @@ int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
- 		 * - If it's not an MSMI, no need to do anything here.
+@@ -921,6 +921,9 @@ static __always_inline u32 tdcall_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
+ 	return EXIT_REASON_TDCALL;
+ }
+ 
++/* Synthesized invalid Exit Reason */
++#define TDX_INVALID_EXIT_REASON		U16_MAX
++
+ static __always_inline u32 tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_tdx *tdx = to_tdx(vcpu);
+@@ -934,7 +937,12 @@ static __always_inline u32 tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
+ 	case TDX_NON_RECOVERABLE_TD_WRONG_APIC_MODE:
+ 		break;
+ 	default:
+-		return -1u;
++		/*
++		 * Return the synthesized invalid Exit Reason, as the TDX
++		 * module never attempted to run the vCPU, i.e. the Exit
++		 * Reason is undefined, but this is NOT a failed VM-Enter
++		 */
++		return TDX_INVALID_EXIT_REASON;
+ 	}
+ 
+ 	exit_reason = tdx->vp_enter_ret;
+@@ -950,7 +958,7 @@ static __always_inline u32 tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
+ 		 * Defer KVM_BUG_ON() until tdx_handle_exit() because this is in
+ 		 * non-instrumentable code with interrupts disabled.
  		 */
- 		return 1;
-+	case EXIT_REASON_NOTIFY:
-+		/* NMI blocking state is handled by TDX module */
-+		return __vmx_handle_notify(vcpu, vmx_get_exit_qual(vcpu));
+-		return -1u;
++		return TDX_INVALID_EXIT_REASON;
  	default:
  		break;
  	}
-@@ -3154,6 +3157,13 @@ static int tdx_vcpu_init(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *cmd)
- 	td_vmcs_write64(tdx, POSTED_INTR_DESC_ADDR, __pa(&tdx->vt.pi_desc));
- 	td_vmcs_setbit32(tdx, PIN_BASED_VM_EXEC_CONTROL, PIN_BASED_POSTED_INTR);
+@@ -981,8 +989,7 @@ static noinstr void tdx_vcpu_enter_exit(struct kvm_vcpu *vcpu)
  
-+	if (kvm_notify_vmexit_enabled(vcpu->kvm)) {
-+		td_vmcs_setbit32(tdx, SECONDARY_VM_EXEC_CONTROL,
-+				 SECONDARY_EXEC_NOTIFY_VM_EXITING);
-+		td_vmcs_write32(tdx, NOTIFY_WINDOW,
-+				vcpu->kvm->arch.notify_window);
-+	}
-+
- 	tdx->state = VCPU_TD_STATE_INITIALIZED;
- 
- 	return 0;
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index e3bfe6aca1a0..e53cc96002c7 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6279,9 +6279,6 @@ static int handle_bus_lock_vmexit(struct kvm_vcpu *vcpu)
- static int handle_notify(struct kvm_vcpu *vcpu)
+ static bool tdx_failed_vmentry(struct kvm_vcpu *vcpu)
  {
- 	unsigned long exit_qual = vmx_get_exit_qual(vcpu);
--	bool context_invalid = exit_qual & NOTIFY_VM_CONTEXT_INVALID;
--
--	++vcpu->stat.notify_window_exits;
- 
- 	/*
- 	 * Notify VM exit happened while executing iret from NMI,
-@@ -6291,15 +6288,7 @@ static int handle_notify(struct kvm_vcpu *vcpu)
- 		vmcs_set_bits(GUEST_INTERRUPTIBILITY_INFO,
- 			      GUEST_INTR_STATE_NMI);
- 
--	if (vcpu->kvm->arch.notify_vmexit_flags & KVM_X86_NOTIFY_VMEXIT_USER ||
--	    context_invalid) {
--		vcpu->run->exit_reason = KVM_EXIT_NOTIFY;
--		vcpu->run->notify.flags = context_invalid ?
--					  KVM_NOTIFY_CONTEXT_INVALID : 0;
--		return 0;
--	}
--
--	return 1;
-+	return __vmx_handle_notify(vcpu, exit_qual);
+-	return vmx_get_exit_reason(vcpu).failed_vmentry &&
+-	       vmx_get_exit_reason(vcpu).full != -1u;
++	return vmx_get_exit_reason(vcpu).failed_vmentry;
  }
  
- static int vmx_get_msr_imm_reg(struct kvm_vcpu *vcpu)
+ static fastpath_t tdx_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
+@@ -2144,7 +2151,7 @@ void tdx_get_exit_info(struct kvm_vcpu *vcpu, u32 *reason,
+ 	struct vcpu_tdx *tdx = to_tdx(vcpu);
+ 
+ 	*reason = tdx->vt.exit_reason.full;
+-	if (*reason != -1u) {
++	if (*reason != TDX_INVALID_EXIT_REASON) {
+ 		*info1 = vmx_get_exit_qual(vcpu);
+ 		*info2 = tdx->ext_exit_qualification;
+ 		*intr_info = vmx_get_intr_info(vcpu);
 -- 
 2.43.0
 
