@@ -1,157 +1,202 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6B3355F22;
-	Wed, 12 Aug 2026 13:51:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4C733DEE6;
+	Wed, 12 Aug 2026 13:52:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786542698; cv=none; b=qwuBuTA9v8Cfsi/gwe9P1Ux9k/S6dmmORxp6GseWqCCgMn11ubOwRpP6t8IqOJ8AsR+gwfijzb5EgeAgsDXvuO6xnP5cH6cenQNoR2h60bodSMtgv6lWa6NK/w+vmRuxPcAzcmY2SDbozpEWTwQKRbqi6qs2i080gAeyLOipe4Y=
+	t=1786542767; cv=none; b=ng+LbHzac+9ai7t0z4j211VCqpWvVezYQqL1rJ9Y9F5qX4Giub2lrg4xVg5wPb2FriYY80g8VP2bnNoIskvGSSQBbwdpHG4B2che3052gJTUyTLpfS7EJXKJbhi+C7OKWLX0tlAdjPzWnsDeJDe3EImRg4D2a6BMzEEIpOw11DE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786542698; c=relaxed/simple;
-	bh=7nCoc+Gd4dBqkVM3L9DgfcWFTtT0Go8fgXf2EaF6ryw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BA20NWmnCBbCOjkVhRwFvM8kSyM36HQSg04VoH75qvkhxC0Q3iIIO1UOtWRIFGS9b2gzeG1GgEK2UdQWUzDCsu6xFZc5WqkPAVeBlQgpyj0ybJCcHAZNDzD5HKsBF2TSu8KZSzx1/xiwa00sc6rjgXwAHwShBMuhH/W8FbIo+vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=mdhIzOxU; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1786542767; c=relaxed/simple;
+	bh=d8Dg5j0V5SzCLNVNV5VQSLJQ1m8rSNAgaYu52ter21k=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=rqlrw0aFqCBy3/urElTPFTxXT7wbxVcAIvdF9d91KB3x0UT8e4k40TYZp06Br+G6zXgSozWaPsU0nkhEC2qPougxaGmtvDyAV69jXoGaX+QtFKi/Fjl+10VG04lfYJaK73WCaHFFowHKhjbAzbr17vmNnWYrOKaQpXS5pR50xjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lvUSL/dv; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="mdhIzOxU"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 95556153B;
-	Wed, 12 Aug 2026 06:51:31 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6B3253F66F;
-	Wed, 12 Aug 2026 06:51:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786542695; bh=7nCoc+Gd4dBqkVM3L9DgfcWFTtT0Go8fgXf2EaF6ryw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mdhIzOxU4DrVBTfWu9sQVemCRyfbINm+gJGsobbhcHm6RT2xmNZhB26+0R9dosOlZ
-	 xJoZ5cz12TtS+PoAC7Z6fjscj7CPeR3vEFkFy0T4SY9x7smJreqT9+FtH5Fyd4YiTR
-	 1YAp2YSqYL4igzdFr1iNMh6k+hMv25AjPvBXLAdU=
-Date: Wed, 12 Aug 2026 14:51:29 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Pavan Kondeti <pavan.kondeti@oss.qualcomm.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v16 07/45] arm64: mm: Handle Granule Protection Faults
- (GPFs)
-Message-ID: <anx6YbPMVz3OlpA5@arm.com>
-References: <20260803134403.80630-1-steven.price@arm.com>
- <20260803134403.80630-8-steven.price@arm.com>
- <ans1ZSwMEKeT9Gfz@arm.com>
- <d4bdecca-517a-4b4b-bf67-cef6b09bc8c1@arm.com>
- <7d4e5920-aa20-40cd-954e-037631bd0d6c@quicinc.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lvUSL/dv"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67CB3igf3214463;
+	Wed, 12 Aug 2026 13:52:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=WvekDS
+	N0CSb0DJiY9HiU3dQYui0nflg0O5cO9yw9k7I=; b=lvUSL/dvxdh5UziCS+R3Oo
+	KeJsBg7sLBhsZNeEhpE6uEkfRFJEE5kfD95olvzEwBj130rPKAC4U+6Q1dvG5FXB
+	5IdOiQYyMdeneoMoczGvf1demfL0E5KVwwZcYKmMN24/oeKrPtVc2VSoPa5ntH4h
+	WZPZHfzlHzUC0GURTZ0hyk0SDaEBL7zZtZiTN+lnDoJFV5sVSUKgKV5mIgmbJ0ti
+	20fFxwodLuHEU5aC9AJQUcE6Topt4gvNP+NEAL7/PZ4PfHzNaZup9yoWcwBg+npB
+	0MQb+t2KnJpWs+lxdqerbpZGAXI2luQAtaC++xcSbMjBj6awr0jQWjZDsiGxoFWQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvp31wqb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Aug 2026 13:52:41 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67CDfdmL010016;
+	Wed, 12 Aug 2026 13:52:41 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxesq6dm7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Aug 2026 13:52:40 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67CDqb5Z42009072
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Aug 2026 13:52:37 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 38D7120040;
+	Wed, 12 Aug 2026 13:52:37 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0810620043;
+	Wed, 12 Aug 2026 13:52:37 +0000 (GMT)
+Received: from [9.224.78.25] (unknown [9.224.78.25])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 12 Aug 2026 13:52:36 +0000 (GMT)
+From: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Date: Wed, 12 Aug 2026 15:52:31 +0200
+Subject: [PATCH v4 02/20] KVM: s390: vsie: Move SCAO validation into a
+ function
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7d4e5920-aa20-40cd-954e-037631bd0d6c@quicinc.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260812-vsie-sigpi-v4-2-f19e49666315@linux.ibm.com>
+References: <20260812-vsie-sigpi-v4-0-f19e49666315@linux.ibm.com>
+In-Reply-To: <20260812-vsie-sigpi-v4-0-f19e49666315@linux.ibm.com>
+To: kvm@vger.kernel.org, linux-s390@vger.kernel.org
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Eric Farman <farman@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>, Nico Boehr <nrb@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+        Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Christoph Schlameuss <schlameuss@linux.ibm.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2591;
+ i=schlameuss@linux.ibm.com; h=from:subject:message-id;
+ bh=d8Dg5j0V5SzCLNVNV5VQSLJQ1m8rSNAgaYu52ter21k=;
+ b=owGbwMvMwCUmoqVx+bqN+mXG02pJDFk1VYtcpJiPvmZa+Pgmv96UI0FnJv7WPD212Cz2WqfjK
+ pb3MpHfOkpZGMS4GGTFFFmqxa3zqvpal845aHkNZg4rE8gQBi5OAZjIKkWGv3J9j40yuCS5tpR+
+ aP+io+SfdFuTW11lccfWX78Fpz7SusPIsPSIAe/EO7t3RqVt7Djb9sLykO5M71WVkl4VWTnbD26
+ ZzQYA
+X-Developer-Key: i=schlameuss@linux.ibm.com; a=openpgp;
+ fpr=0E34A68642574B2253AF4D31EEED6AB388551EC3
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=AMtp2X5w c=1 sm=1 tr=0 ts=6a7c7aa9 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=s9IE1rU8jnNbY5ds4h0A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: E1NAR5KvpISRHRdGuAy0ghKv8VzkfooE
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDExMCBTYWx0ZWRfX6fDN9/Jku4PK
+ 7/CCwEexsAjZREMTEDorCaSI+AYMq4IG4zrB/7bZtoNlaEAKSFhNR5bI7dbMVCyeoP84fiVKCbD
+ pV3HLh3oJN6oiWfDBkD5VUyCOJLek2tyf7UiUgOd6EDsZpNJrPzorSw3nypL9UuPcBP7QlB8MVz
+ mGsFANMTK/r3ED6p4sCzBOVnjKN/YXnUYz91vRTXIluD2dA4M8cbHbweUBcevdFCOWRV4VCqMP9
+ Q7hQu+0Phxq9D15xfIdHdbpdeoOlQTbFjqV/ViYE+FS/jX1MMDqJONtYACPwxbWEoN5Ipqgjuz5
+ wJsc/OvX2elDfIy4xGXraXdDa1EPobcUKr4klrWj+oV10zBdMyLYKloB9gimrOp5S8NYiG/xl5+
+ pguIHXuv+dgkd4NyAdQF5hwFD9WI21j13CDoHpJavyzOveroPn32ecSE8LImRGASvx9cwX0GjfL
+ 0/rCj02MyVbqI9XB63w==
+X-Proofpoint-ORIG-GUID: E1NAR5KvpISRHRdGuAy0ghKv8VzkfooE
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDExMCBTYWx0ZWRfX67+jr4tLfZCM
+ 4momAwPFLnWBkNPh9W1wptr1K43qEWS8pni345EPRzyS09itMWWj54/kVsEreXc9oqdzpZI2CeH
+ PiymXxfQlWo0dfPxP6Eb2OGeF7HabBU=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-12_03,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
+ priorityscore=1501 impostorscore=0 phishscore=0 spamscore=0 bulkscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608120110
 
-On Wed, Aug 12, 2026 at 06:12:09PM +0530, Pavan Kondeti wrote:
-> On Tue, Aug 11, 2026 at 04:11:13PM +0100, Suzuki K Poulose wrote:
-> > On 11/08/2026 15:44, Catalin Marinas wrote:
-> > > On Mon, Aug 03, 2026 at 02:43:23PM +0100, Steven Price wrote:
-> > > > If the host attempts to access granules that have been delegated for use
-> > > > in a realm these accesses will be caught and will trigger a Granule
-> > > > Protection Fault (GPF).
-> > > > 
-> > > > A fault during a page walk signals a bug in the kernel and is handled by
-> > > > oopsing the kernel. A non-page walk fault could be caused by user space
-> > > > having access to a page which has been delegated to the kernel and will
-> > > > trigger a SIGBUS to allow debugging why user space is trying to access a
-> > > > delegated page.
-> > > > 
-> > > > Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> > > > Reviewed-by: Gavin Shan <gshan@redhat.com>
-> > > > Signed-off-by: Steven Price <steven.price@arm.com>
-> > > > ---
-> > > > Changes since v10:
-> > > >   * Don't call arm64_notify_die() in do_gpf() but simply return 1.
-> > > > Changes since v2:
-> > > >   * Include missing "Granule Protection Fault at level -1"
-> > > > ---
-> > > >   arch/arm64/mm/fault.c | 28 ++++++++++++++++++++++------
-> > > >   1 file changed, 22 insertions(+), 6 deletions(-)
-> > > > 
-> > > > diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> > > > index 85e23388f9bb..ea3ae0ca7dba 100644
-> > > > --- a/arch/arm64/mm/fault.c
-> > > > +++ b/arch/arm64/mm/fault.c
-> > > > @@ -909,6 +909,22 @@ static int do_tag_check_fault(unsigned long far, unsigned long esr,
-> > > >   	return 0;
-> > > >   }
-> > > > +static int do_gpf_ptw(unsigned long far, unsigned long esr, struct pt_regs *regs)
-> > > > +{
-> > > > +	const struct fault_info *inf = esr_to_fault_info(esr);
-> > > > +
-> > > > +	die_kernel_fault(inf->name, far, esr, regs);
-> > > > +	return 0;
-> > > > +}
-> > > > +
-> > > > +static int do_gpf(unsigned long far, unsigned long esr, struct pt_regs *regs)
-> > > > +{
-> > > > +	if (!is_el1_instruction_abort(esr) && fixup_exception(regs, esr))
-> > > > +		return 0;
-> > > > +
-> > > > +	return 1;
-> > > > +}
-> > > 
-> > > Is there a valid case for fixup_exception() here? IOW, do we ever have a
-> > > valid user mapping of the pages delegated to a guest? If the above is
-> > > considered a kernel bug, I'd not silently ignore this (like return less
-> > > bytes copied or -EFAULT to user) but rather warn, potentially
-> > > rate-limited.
-> > 
-> > Good question. This shouldn't be a valid case. We expect the VMM to use
-> > guest_memfd and that should prevent any mmaps and thus fixups shouldn't
-> > be required. That said, this series doesn't enforce that the VMM uses
-> > GMEM backed memslots for Guest RAM. We should probably do that while
-> > mapping things in.
-> > 
-> > With that, we could drop that fixup and scream a bit.
-> 
-> There is a valid case for fixup_exception() to be needed here in GPF
-> handling.
-> 
-> -000 |load_unaligned_zeropad(inline)
-> -000 |hash_name(inline)
-> -000 |link_path_walk()
-> -001 |path_lookupat()
-> -002 |filename_lookup()
-> -003 |vfs_statx()
-> -004 |vfs_fstatat()
-> 
-> We observed this in Android running Gunyah when the page is mapped in
-> EL1 but unmapped at EL2. path_lookupat() can actually handle this
-> via fixup_exeption() when a word load crosses the page boundary.
-> However, Gunyah injects a Synchronous External Abort and we have
-> a downstream patch [1] that adds fixup_exception() in do_sea(). pKVM
-> injects [2] such faults back to EL1 and fixup_exception() is taken care.
+Improve readability as well as allow re-use in coming patches.
 
-Ah, good point, completely forgot about load_unaligned_zeropad(). Since
-we don't unmap the linear map for delegated pages, we'll need the
-fixup_exception(). And I guess warning in this case is not desirable
-either. We could limit it to EX_TYPE_KACCESS_ERR_ZERO and
-EX_TYPE_LOAD_UNALIGNED_ZEROPAD, though not sure it's worth it.
+In particular add the logic to be able to check the validity of BSCA and
+ESCA origin addresses.
+
+Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+---
+ arch/s390/kvm/vsie.c | 42 ++++++++++++++++++++++++++++++------------
+ 1 file changed, 30 insertions(+), 12 deletions(-)
+
+diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
+index 7bf3e921ca9a..eea670530acb 100644
+--- a/arch/s390/kvm/vsie.c
++++ b/arch/s390/kvm/vsie.c
+@@ -72,6 +72,11 @@ struct vsie_page {
+ 
+ static_assert(sizeof(struct vsie_page) == PAGE_SIZE);
+ 
++static inline bool sie_uses_esca(struct kvm_s390_sie_block *scb)
++{
++	return (scb->ecb2 & ECB2_ESCA);
++}
++
+ static unsigned long read_scao(struct kvm *kvm, struct kvm_s390_sie_block *scb)
+ {
+ 	unsigned long vsie_sca = READ_ONCE(scb->scaol) & ~0xfUL;
+@@ -98,6 +103,25 @@ static int set_validity_icpt(struct kvm_s390_sie_block *scb,
+ 	return 1;
+ }
+ 
++/* The sca header must not cross pages etc. */
++static int validate_scao(struct kvm_vcpu *vcpu, struct kvm_s390_sie_block *scb, gpa_t gpa)
++{
++	int offset;
++
++	if (gpa < 2 * PAGE_SIZE)
++		return set_validity_icpt(scb, 0x0038U);
++	if ((gpa & ~0x1fffUL) == kvm_s390_get_prefix(vcpu))
++		return set_validity_icpt(scb, 0x0011U);
++
++	if (sie_uses_esca(scb))
++		offset = offsetof(struct esca_block, cpu[0]) - 1;
++	else
++		offset = offsetof(struct bsca_block, cpu[0]) - 1;
++	if ((gpa & PAGE_MASK) != ((gpa + offset) & PAGE_MASK))
++		return set_validity_icpt(scb, 0x003bU);
++	return 0;
++}
++
+ /* mark the prefix as unmapped, this will block the VSIE */
+ static void prefix_unmapped(struct vsie_page *vsie_page)
+ {
+@@ -788,20 +812,14 @@ static int pin_blocks(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+ 
+ 	gpa = read_scao(vcpu->kvm, scb_o);
+ 	if (gpa) {
+-		if (gpa < 2 * PAGE_SIZE)
+-			rc = set_validity_icpt(scb_s, 0x0038U);
+-		else if ((gpa & ~0x1fffUL) == kvm_s390_get_prefix(vcpu))
+-			rc = set_validity_icpt(scb_s, 0x0011U);
+-		else if ((gpa & PAGE_MASK) !=
+-			 ((gpa + offsetof(struct bsca_block, cpu[0]) - 1) & PAGE_MASK))
+-			rc = set_validity_icpt(scb_s, 0x003bU);
+-		if (!rc) {
+-			rc = pin_guest_page(vcpu->kvm, gpa, &hpa);
+-			if (rc)
+-				rc = set_validity_icpt(scb_s, 0x0034U);
+-		}
++		rc = validate_scao(vcpu, scb_s, gpa);
+ 		if (rc)
+ 			goto unpin;
++		rc = pin_guest_page(vcpu->kvm, gpa, &hpa);
++		if (rc) {
++			rc = set_validity_icpt(scb_s, 0x0034U);
++			goto unpin;
++		}
+ 		vsie_page->sca_gpa = gpa;
+ 		write_scao(scb_s, hpa);
+ 	}
 
 -- 
-Catalin
+2.55.0
+
