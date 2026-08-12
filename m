@@ -1,291 +1,146 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010024.outbound.protection.outlook.com [52.101.46.24])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DFA36196E;
-	Wed, 12 Aug 2026 06:29:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786516183; cv=fail; b=RV6RRj8sMB76G45vH/19K7PkiHeYNzjK6FlSCTFoNcQafAopO+TM6MmsfgyNlPxlSjH08IWI2PDMeg2XmtUu+IdQGiY9uisNC6zoqxWItEPj+W/9CsiW4EOjRCwdUOAnQ+W5EZSkPGrI10uKpkyItA/Jq4r2iNfsoZc5ypufpzs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786516183; c=relaxed/simple;
-	bh=WdjFpgaYHHYuiLQAMO+DijP6kweePEs8yeiTXJL7w6E=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KdXWsnp8cQGLa0WEgu0eJxDd5FCDCle8pwzwwxNTdaNWnAkXNz5Z2FmQIbhPaeKM8RKZHDfdhbEYYyyT8K4oL3ar77+82UiZ3nK00cA3QW4sp2nFtJ6Nmbb2DVBGhhRTIm/qR3OHHGU5w1OWx0/jFAFOHVPlcUaW2Gr6UBMpFA0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=QHlpcyy5; arc=fail smtp.client-ip=52.101.46.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8372833556D;
+	Wed, 12 Aug 2026 07:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786518139; cv=none; b=JZccyLi0cT4Nd3N3KjW4jBrv2s7FGgiVp2tS7RSl3eQCHCKhL9BxomE1W3fLyTyHatFlzUTbwybTSvxXNtqXpq1+sddbe0L4NwIwMe0eHKgvS6YOZO45Fa8Pi3QOjShQegVnCrnsbhhPKj2UP3tlp5Iq4j7YvvlZMv+Yxq4af9Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786518139; c=relaxed/simple;
+	bh=dHYATjJJ+WNqjqoTLb+lO2lEAc1PAu1SabcgDUbtirk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kHErZ4OgIcodBoKi4Yi16gllPqgHQHb8f67Yf+1o9NwAig7ZKhIxXe0zJ99UHsdgeWXuhSSutekyEhj2+Wf0zwq1eQWnuzV/p2rlxwXkB475zetgjpc0GVuQORHcQslwEaSAOypbGosSVx9DLN7BxOUaGz9bqbunqq78fPe555Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com; spf=pass smtp.mailfrom=de.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=oONVI7P+; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="QHlpcyy5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mJYz9JoZKomyo+UlRi8nB8+iHk5LWAb0uZGP9tOGKYHLFPuai7oIQ/QbaC8cIaqXEo3YfSVxHdtmg/5tRWIR/UlwcAuIdHRw0YFlS5en5J+ZZy7o2VsnmWJ1j/XZ7VmDKrWXt73LWvge+xLeQzSvtF5gDmnNv7YK4Q2egaDbTSj7WEWELKaJCooaBPeP0/PFGkNGioWakn49Kcu8mtMmBSBCQ6hlKJvPkd6PuXwzqatx4gYNT/q73o1lI6JJCwboAk4DTW2Xu2JC8/eX37cGqmX7JbhltWaN3h8A/xywMlX9lN1Lbuu7a/jwpq8/LWXjz+73kLa4pgZ2v9h+wcsspQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GT7hyokwjYTEB/Srqhl3IYymrScqmoHb3flAi9lx8YQ=;
- b=fonRp2OpGfPbSva1a/ZIFs3XBaWD/0U4zoAcH0FhgsE+jak0xecwMIkKud6IVWxD5JXgS7HwegYrB3iQHdvdWJ+4db3j5/Fh8K/FSP8RVntkJ33gCkGaqRO+ys5U7S0u2Wfygm1/Y73UEmnbOzviqnd3HoOX4JdczmXpc26A1QirGiPjpjLM8Jj7dpi7nzUVh+C4bwTd4nYAfW4kpTyMRvUt8qIV2FmkVvOL8R2TSHfkzU0DTi257XwDdyvSmjzoFhes1B/SEVN2s6ikWFS9BEWBuqU4Bzv1SiUvGj4okxPfDgi7h6m9F/eEJ4z+PU+/N3FHC4dsB2JVm9Gp3QuAbw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GT7hyokwjYTEB/Srqhl3IYymrScqmoHb3flAi9lx8YQ=;
- b=QHlpcyy5GtXFS1YHq6nBOxnCK6Wi8Bb/bsMeR06Y74f+KxlVx2WmESv99+WjfQ1G51iaU6HGCLsutVUxqEC1fUYHEVTr65K9b7JaYgPm5PzBIyPQUgdioV8Q8fhvwm32iGoAttlai/sWhp6d6ZxwMjn/qd4ziSiWdVi4C/yXgFU=
-Received: from DS0PR17CA0017.namprd17.prod.outlook.com (2603:10b6:8:191::28)
- by PH8PR12MB7231.namprd12.prod.outlook.com (2603:10b6:510:225::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.12; Wed, 12 Aug
- 2026 06:29:33 +0000
-Received: from SA2PEPF000015C9.namprd03.prod.outlook.com
- (2603:10b6:8:191:cafe::57) by DS0PR17CA0017.outlook.office365.com
- (2603:10b6:8:191::28) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.13 via Frontend Transport; Wed,
- 12 Aug 2026 06:29:32 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SA2PEPF000015C9.mail.protection.outlook.com (10.167.241.199) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.315.6 via Frontend Transport; Wed, 12 Aug 2026 06:29:32 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 12 Aug
- 2026 01:29:31 -0500
-Received: from amd.com (10.180.168.240) by satlexmb08.amd.com (10.181.42.217)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45 via Frontend
- Transport; Wed, 12 Aug 2026 01:29:26 -0500
-Date: Wed, 12 Aug 2026 06:29:18 +0000
-From: Ankit Soni <Ankit.Soni@amd.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-CC: David Woodhouse <dwmw2@infradead.org>, Lu Baolu
-	<baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon
-	<will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy
-	<robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, Alex Williamson
-	<alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, <iommu@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, Pratyush Yadav
-	<pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, David
- Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>,
-	Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v4 09/18] iommu: Add APIs to get iommu and device
- preserved state
-Message-ID: <wjt4qqbzwsiaxz7bxog6prag5qvverji5o7dvdsek6frakuptd@urudi4rsvmbk>
-References: <20260808022723.3893618-1-skhawaja@google.com>
- <20260808022723.3893618-10-skhawaja@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="oONVI7P+"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67C63PLQ1580881;
+	Wed, 12 Aug 2026 07:02:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=KGiR1c
+	HK0dsTKDZ0fPqjmNwgXO82p51xLp+Ao9d1om0=; b=oONVI7P+XRT7fsAJYNKBVS
+	aMvHk/297W9yn6zs5U8HkHiwuvc5aWnpTGBZahO7ndBy2Di3x/wwOoUIimLDWoom
+	2Eojz3PAtP4gqG7pqDH9QJjE3ARU2Kq7qFEOq7e/4mo9/F+QrX0TeXxzd0znoG4S
+	qrgPYzd1psvtLWmy1JFv+PcbSSgCjN+uDbJDgyL8nqjDmG2TWqn5mvBmavZysLeK
+	k090VaW6t646kmoPXO1zlk8BTP73gRIlom6DXdzeUFzNLdDSWQodRwcxNVUyZy6L
+	bjz+EGKnzHXofpuU8028/TDWA+Z69E6nkMzjvEgn2Q/QaPGtTWHawGnhpdMYzE0A
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fyb23suba-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Aug 2026 07:02:15 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67C6uQgZ015799;
+	Wed, 12 Aug 2026 07:02:15 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxf5w51rf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Aug 2026 07:02:15 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67C72B2X6881772
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Aug 2026 07:02:11 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E358620043;
+	Wed, 12 Aug 2026 07:02:10 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A706120040;
+	Wed, 12 Aug 2026 07:02:10 +0000 (GMT)
+Received: from [9.224.77.173] (unknown [9.224.77.173])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 12 Aug 2026 07:02:10 +0000 (GMT)
+Message-ID: <bc6e44fb-67d5-4a84-8ba5-20b866b5473c@de.ibm.com>
+Date: Wed, 12 Aug 2026 09:02:10 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260808022723.3893618-10-skhawaja@google.com>
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF000015C9:EE_|PH8PR12MB7231:EE_
-X-MS-Office365-Filtering-Correlation-Id: c1241db8-9615-47d9-b56d-08def83b1229
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|7416014|376014|1800799024|23010399003|36860700016|22082099003|18002099003|4143699003|11063799006|5023799004|56012099006|6133799003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	roKfxXFouquw4T2SpuPdDIFyLP9FV8qj+Di/TzltdsWcbVUFCvVMvLVq/XSps9si9PJdhB0b2ink1OXblOY06tF1iFhAHTg6mf4ULyGRaRRrYjsY0rpO0+dW4Dfn/a8HoJ5GDaQdI317f3hBgSBwOK5Nd481ANDRGe+UK2GGmApAIIfElrC9BA12xTZKLs9eXFucqayYGpjTtqFa2Gt7Mw0qB6DDLFQEb1FAzG0mlFm64oI330+aehhEzMkKYoHHS8OVUxGziPyqmIpOLnnS3FQk2O4LvrTafDtmxCH1CG8Y9tuK/zQwYu/wke8+UuvpKgRHVyv+t+RZpgEGYZEmXlTP7bwZ4AgfFb5DrIt/GDgPBFufCJmbg3joSrmpvVqmX1wbaNZH3WhbumweFITAWuX8KfJrXRGGAdVDnSb3iYnbkjDMBTAZsd2n4Xf45wHh2aj/I/qj69cNTMLNEecVV6ajl4yhdMQuGhgVlah5IhctimyUodMQGEn9ErlTkGi26s5X/5m16mJP+xXIeIODgsWwDQxKC+pIkx4Tj7LaeDUgV2T+kRThoEryqWfs1I5eKCpEjMXIchVhxgEtI8Ujio7oJBJq/w3BD2cRcV8rLPoaTRIvXB1wI/HIaGDl6w0KvpsJ9UjEENVRk23rE+DvXPoBs8Sf0UBzzKjQIpcMJNOC7VyOaydqZ7yyS1abbmmdsUYfS37wX/6KJpEeeK/wFA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(1800799024)(23010399003)(36860700016)(22082099003)(18002099003)(4143699003)(11063799006)(5023799004)(56012099006)(6133799003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	RkhhEoQUfnSYvwZvYg/GwNJdXB2KGh89hbIGxb+L3GpV6CP8OvlHHDq2L3anMmDIxSWEfSxcuO+j2GexxPqezWeJPe6a6is1lXXtCM9Ms79GvlwJ1fsPC4xJbMnhJmlYCuvlQHHklD5vizKyVURJEVS1nmweSKFF5JU1KXRysnL7AyP8jscQBFYIbMcfIA/YOytbuWEYWec/yTzJfyrPInivkXZULVGzesQ9gjqDeswf7T3CASx7IOe9/cT7ZloEF0qdLSLxhU4hhuLuRoc9XgAMuTFT4FAaTYBdQomTFwv/cKnuLH5VgiyipYJfeJiJ/hltmK+HurqzSnnY5QRYvMHqnIkru0BKiZJivZM61BMxcqOI8Ypl/luJtYpoxG92NZ4FIIJ5JlbxoENVSgIAng2NeaXg0Fcb8yHP84bQhEh9SjsIwRoRIiREREdTaAVX
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2026 06:29:32.4039
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c1241db8-9615-47d9-b56d-08def83b1229
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF000015C9.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7231
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 01/11] KVM: s390: Properly handle NULL pointer in
+ dat_cond_set_storage_key()
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com,
+        david@kernel.org, seiden@linux.ibm.com, nrb@linux.ibm.com,
+        schlameuss@linux.ibm.com, gra@linux.ibm.com
+References: <20260811155641.219777-1-imbrenda@linux.ibm.com>
+ <20260811155641.219777-2-imbrenda@linux.ibm.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@de.ibm.com>
+In-Reply-To: <20260811155641.219777-2-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=XqfK/1F9 c=1 sm=1 tr=0 ts=6a7c1a77 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=vhqekoQfE-IZdy2BCykA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDA1NCBTYWx0ZWRfX+vUdJxu+83rP
+ jrt1ii+gIinwuY5h/liIrj61EGr8DHTX3MB0YrViKhfINheRuZEIkOd017Fu3Co3zFJk62S5GYB
+ hKY8m4SmGnvAhr2XA7Wvl/V1l0REIrbJZehs3Cg0e08gJj6+DR4Crv6VFulido8lHYUz178YTxI
+ yiYnpNagrFD2H312N6vZF8OJeuSVq1UtVBqZ01qRWlWsIr2V/RSrjrzwID3UUhwOVoZpkxaiedZ
+ TIxc2hV3bSUzhBQ2SeMZDzsTjy6ObhXRErZt4hIZjai+IQV4KPjib4HIBCzcSnKIt0vOHmPnX0n
+ zN1ot8bTWZCumEo1lvN2BqOVBM4/0lQfpUToivfu37Mhzk0PH5Ob8cZ277EA1//hKH3tBBRDeWq
+ EoBtnZlU15VmemsiK2FI6flQ6nLbGZJFYJxawRClj+AJ3j9hpYbdr1ywdZWGR2KVJ0xbUUqhLJf
+ XSTSiap6npk4s2BtSeg==
+X-Proofpoint-ORIG-GUID: ajaEHEY4RZqGYapkGAvJWVFSwOY3PDE7
+X-Proofpoint-GUID: ajaEHEY4RZqGYapkGAvJWVFSwOY3PDE7
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDA1NCBTYWx0ZWRfXzKy/lMBJSNN5
+ 3TmC6D+C5RVTB3e92JtruaXfV0fw0lWyFkF9g58Djifks3Mhy5Wx5k/xYVrlo4NyeQA4YAeM6Wa
+ zZ1Pkjpg01o4sXizYiZa7A5gEdXSp84=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-12_02,2026-08-10_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 spamscore=0 adultscore=0 malwarescore=0 clxscore=1015
+ suspectscore=0 priorityscore=1501 impostorscore=0 phishscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608120054
 
-On Sat, Aug 08, 2026 at 02:27:14AM +0000, Samiullah Khawaja wrote:
-> The preserved state of the device and IOMMU needs to be fetched during
-> shutdown and boot in the next kernel. Add APIs that can be used to fetch
-> the preserved state of a device and IOMMU. The APIs will only be used
-> during shutdown and after liveupdate so no locking needed.
+
+
+Am 11.08.26 um 17:56 schrieb Claudio Imbrenda:
+> Some callers pass NULL as oldkey. Calling page_cond_set_storage_key()
+> will cause that NULL pointer to get dereferenced.
 > 
-> Reviewed-by: Pranjal Shrivastava <praan@google.com>
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> Fix by checking for NULL and assigning the pointer to a dummy local
+> variable to avoid crashes.
+> 
+> Fixes: 8e03e8316eb2 ("KVM: s390: KVM page table management functions: storage keys")
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+
+the whole thing looks a bit complicated, but as as fix I cannot see anything better
+
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+
+
+
 > ---
->  drivers/iommu/liveupdate.c       | 122 +++++++++++++++++++++++++++++++
->  include/linux/iommu-liveupdate.h |  45 ++++++++++++
->  2 files changed, 167 insertions(+)
+>   arch/s390/kvm/dat.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
-> index 7f349ae5a124..20acf123b47a 100644
-> --- a/drivers/iommu/liveupdate.c
-> +++ b/drivers/iommu/liveupdate.c
-
-../..
-
-> @@ -262,6 +273,117 @@ void iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler)
->  }
->  EXPORT_SYMBOL(iommu_liveupdate_unregister_flb);
->  
-> +/*
-> + * iommu_liveupdate_flb_get_incoming() - Helper function to get FLB state
-> + * @flb_objp: Pointer to get the restored FLB object
-> + *
-> + * Return: 0 if FLB state found and restored, error if no data found
-> + */
-> +static int iommu_liveupdate_flb_get_incoming(struct iommu_flb_obj **flb_objp)
-> +{
-> +	struct iommu_flb_obj *flb_obj;
-> +	int ret;
-> +
-> +	ret = liveupdate_flb_get_incoming(&iommu_flb, (void **)flb_objp);
-> +	if (ret)
-> +		return ret;
-> +
-> +	flb_obj = *flb_objp;
-> +	mutex_lock(&flb_obj->lock);
-> +
-> +	/*
-> +	 * FLB version mismatch is considered fatal for security reasons for
-> +	 * now.
-> +	 */
-> +	if (flb_obj->ser->version != IOMMU_LUO_FLB_VERSION)
-> +		goto err_fatal;
-> +
-> +	/*
-> +	 * Array Phys of each type should be valid if the FLB was created for
-> +	 * preservation. This is true even if no devices, iommus or domains were
-> +	 * preserved.
-> +	 */
-> +	if (!flb_obj->ser->iommu_array_phys ||
-> +	    !flb_obj->ser->device_array_phys ||
-> +	    !flb_obj->ser->iommu_domain_array_phys)
-> +		goto err_fatal;
-> +
-> +	mutex_unlock(&flb_obj->lock);
-> +	return 0;
-> +
-> +err_fatal:
-> +	panic("Failed to restore IOMMU Live Update FLB\n");
-> +}
-
-../..
-
-> +/**
-> + * iommu_get_preserved_data() - Get preserved data for an IOMMU HW
-> + * @token: Token used to preserve this IOMMU HW
-> + * @type: IOMMU type in preserved state
-> + *
-> + * Gets the preserved state of an IOMMU HW using token and the IOMMU type.
-> + *
-> + * Return: struct iommu_hw_ser on success, NULL if no preserved state found.
-> + */
-> +struct iommu_hw_ser *iommu_get_preserved_data(u64 token, enum iommu_type_ser type)
-> +{
-> +	struct iommu_hw_ser *iommu_ser = NULL;
-> +	struct iommu_hw_array_ser *array;
-> +	struct iommu_flb_obj *flb_obj;
-> +	int ret, idx;
-> +
-> +	ret = iommu_liveupdate_flb_get_incoming(&flb_obj);
-> +	if (ret)
-> +		return NULL;
-
-Hi,
-
-Returning NULL for every failure loses a distinction the caller needs.
-"Nothing was handed over" and "something was handed over and the lookup
-failed" are different states, and this helper is the only place that can
-tell them apart.
-
-Of the errors reachable here, three mean nothing was handed over:
-
-        -EOPNOTSUPP     live update disabled or not built
-        -ENODATA        no incoming handover data
-        -ENOENT         the handover carried no IOMMU FLB
-
-An -ENOMEM out of a .retrieve() callback means the opposite, and returns
-the same NULL.
-
-The distinction matters because callers read NULL as a cold boot and act
-on it. Both VT-d call sites in 10/18 do. init_dmars():
-
-        if (!iommu_ser)
-                init_translation_status(iommu);
-
-        if (translation_pre_enabled(iommu) && !is_kdump_kernel()) {
-                iommu_disable_translation(iommu);
-                clear_translation_pre_enabled(iommu);
-                pr_warn("Translation was enabled for %s but we are not in kdump mode\n",
-                        iommu->name);
-        }
-
-and intel_iommu_add():
-
-        if (!iommu_ser && iommu->gcmd & DMA_GCMD_TE)
-                iommu_disable_translation(iommu);
-
-On an -ENOMEM both disable an IOMMU that the previous kernel left
-translating, underneath devices still doing DMA through it. The warning
-attributes it to a stale enable outside kdump, so the log points away from
-the actual cause.
-
-The helper already treats this class of failure as fatal a few lines
-lower. A version mismatch and a missing array pointer both reach err_fatal
-and panic(), because data was handed over and cannot be trusted. A failed
-fetch is the same class -- something was handed over and could not be read
-back -- but it returns an error that becomes NULL, and callers read that
-as a cold boot.
-
-A single failure also spreads. luo_flb_retrieve_one() caches a failed
-.retrieve() in incoming.retrieve_status and returns it directly on every
-later call, so one -ENOMEM makes the lookup return NULL for every IOMMU in
-the system, not just the one that hit it.
-
-Is returning NULL for all of them intentional? If callers are meant to
-treat every failure as "nothing was handed over", that is worth saying in
-a comment here.
-
-If not, the smallest fix is to return NULL for the absent cases only and
-an ERR_PTR for everything else:
-
-        ret = iommu_liveupdate_flb_get_incoming(&flb_obj);
-        if (ret)
-                return iommu_incoming_absent(ret) ? NULL : ERR_PTR(ret);
-
-where iommu_incoming_absent() tests the three codes above.
-intel_iommu_add() can then return PTR_ERR() directly, and init_dmars() can
-goto free_iommu. Nothing else about the helper needs to change.
-
-The whole point is that a caller can tell a cold boot from a failed lookup.
-
-Thanks,
-Ankit
-
-> +
-> +	array = phys_to_virt(flb_obj->ser->iommu_array_phys);
-> +	iommu_liveupdate_for_each_arr(array) {
-> +		iommu_liveupdate_for_each_obj(array, iommu_ser, idx) {
-> +			if (iommu_ser->token == token && iommu_ser->type == type)
-> +				goto out;
-> +		}
+> diff --git a/arch/s390/kvm/dat.c b/arch/s390/kvm/dat.c
+> index 3f2d6e8902d7..165c704fcf29 100644
+> --- a/arch/s390/kvm/dat.c
+> +++ b/arch/s390/kvm/dat.c
+> @@ -722,9 +722,12 @@ int dat_cond_set_storage_key(struct kvm_s390_mmu_cache *mmc, union asce asce, gf
+>   	if (rc)
+>   		return rc;
+>   
+> -	if (!ptep)
+> +	if (!ptep) {
+> +		if (!oldkey)
+> +			oldkey = &prev;
+>   		return page_cond_set_storage_key(large_crste_to_phys(*crstep, gfn), skey, oldkey,
+>   						 nq, mr, mc);
 > +	}
-> +
-> +	iommu_ser = NULL;
-> +out:
-> +	liveupdate_flb_put_incoming(&iommu_flb);
-> +	return iommu_ser;
-> +}
-> +EXPORT_SYMBOL(iommu_get_preserved_data);
-> -- 
-> 2.55.0.679.g6767b8d81c-goog
-> 
+>   
+>   	old = pgste_get_lock(ptep);
+>   	pgste = old;
+
