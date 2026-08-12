@@ -1,163 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE6237A83F
-	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 08:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC97E3B14C2;
+	Wed, 12 Aug 2026 08:23:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786522988; cv=none; b=TBcHmaxtNbGahUZ8aq1/BYjswifgS/xMj2NHGLUhtr+kS86IMG3p03nqvJ5dsn/IcPK1zd7s31kOmo9nmB5IbTHxNfafQtUuGFMc/z3l7Jnx40E8Jn32l6VfoNNaRd8Y+sZfoveKymn3uu5T0o/2QfoIkK/INFJo2tItblxa+yE=
+	t=1786523036; cv=none; b=sNuzP5zVIlnIu3lP6IWyR+/dH4PwcwTCz58SM1Bmm+gG0F1HbzQ9JP6CwAgJ3ihdF00QrNTv2N//ga1a5SqovSM7rcrl5wLDhhvMQ8w/y9Rf1+FQlGy1lc8cFBQ/D0yeH0/wDQMgzq1SY/MyHLPbiDdzZ80WrNsH+oJVWw6d1F4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786522988; c=relaxed/simple;
-	bh=OtOZyGakKa6tD83HQXNc8Z42QhkOwVATdTB1dnz7bjQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Yj7bfOgKXcARUHbX9KZ1gaDSlDQWRzOpsiEpkpI6hjaVNL8JXPSItoo6KWK77J67Ej2ChIPkDvdjz2DvRRPxLxaGRC9u7graL4aeEWQLGbku4i1+JTnT6sQEFoPxdeisXmEj25KAmGkwcFE/s+HDm0I+873BSRHrq5YdHgxDDe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gIWP5eOt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786523036; c=relaxed/simple;
+	bh=W+jcq+2Wzamwh76nz0OcGlGI0ou5c5gwJ2B1PP/p9zc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TirvHX9G45P1K+ny1Xl+XasBe/95vN9znAsCuxImeHOO8rSqSQB658p2L/70850kIFt5Bhou6tfCW/wdD7f+PjyJ8ePB+Mbd7Azv9zTZJO4UsnrKzQLtEU5VGSl8SrjpEGrSTP/4UcUGmTzujoksBupcY34QvA0ANaTBYIooGpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iwAyO77L; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gIWP5eOt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E8B1F000E9;
-	Wed, 12 Aug 2026 08:23:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786522986;
-	bh=0d+JohWNWPunFpf8K4AjvVKb1G+DRBcF2Oi6nXi/j3k=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gIWP5eOt7Ho17NGMFOHRenFsdMuzWNVhykHV4CrxtjeAxNkHC8ywQY2TdDgRJPpFp
-	 vmxvPGe7hmyikVKyR0erfIde+0LICjbONWIXvY6vmRmwlJ4jV5f3yaaWRda5RLg7UQ
-	 MElY3/c+YMNPieUI6jlnMCeh8Abmo/jWbaA4LQKx3kDxbg7bBdu6GZD+L4g63m0pGr
-	 Mt5V+56mnZPBBYtSrO/t8nTkikfa7eivhpL/W8VR07EyXSUcMP3wglirCUjKH4pH0q
-	 myl+RSRnppLlhu2pz/ZKlRmA1oMMRtZZq+ttysioTmbAps3zUHqcWVHkda7W+KK19m
-	 WOAouauzgV8Ng==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 3/4] KVM: TDX: Don't assume exit_reason[31:16] as
- all-0 in tdx_to_vmx_exit_reason()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Xiaoyao Li" <xiaoyao.li@intel.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260812080229.2481439-4-xiaoyao.li@intel.com>
-References: <20260812080229.2481439-1-xiaoyao.li@intel.com>
- <20260812080229.2481439-4-xiaoyao.li@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 12 Aug 2026 08:23:05 +0000
-Message-Id: <20260812082306.11E8B1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iwAyO77L"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786523034; x=1818059034;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=W+jcq+2Wzamwh76nz0OcGlGI0ou5c5gwJ2B1PP/p9zc=;
+  b=iwAyO77Lo6lBb6+g4b2tI7LUg2VT6cotOs2bWrp4VmWDIAASSOMBrT5U
+   qIIRuv+/SQNvzUU4ihHx+QN4SjUC/jm9ZCNtdtCB2tA5/yFTdJVeiGZyh
+   xC48v+DpXl2gAZ3fEM0goc2rFtVeSyyY9rV0zci2ydjsglRLjtdaTnSNj
+   HLK7z3qVSICsRWxGL25m5oZN0eZ2LWj2ifw3CIeV2IfwiXX6zwPYIVcqS
+   ussQYa9GvThMdSsKLsPJNvthSMhyDMan40zsS1b4ijc6EEerosC0hNyoQ
+   42bMXuxtOzhcmIH6ZWnKlE4KRMoM/s66C9oL+c9QD7TX8P95O4do4R5Zq
+   w==;
+X-CSE-ConnectionGUID: ZueSlsXgTXap1rgwctY1NA==
+X-CSE-MsgGUID: nNxRgY5aSEeJgWHFQEABVg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="97414832"
+X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
+   d="scan'208";a="97414832"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 01:23:53 -0700
+X-CSE-ConnectionGUID: BVDpwXjLQ5mrX6YTBE6jjA==
+X-CSE-MsgGUID: wd0espIgTjCF/EZNhS5SlA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
+   d="scan'208";a="257380624"
+Received: from unknown (HELO [10.238.208.98]) ([10.238.208.98])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 01:23:34 -0700
+Message-ID: <2f68b143-f3e1-48b7-8666-52072249e0be@intel.com>
+Date: Wed, 12 Aug 2026 16:23:31 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 04/41] KVM: Enumerate support for PRIVATE memory iff
+ kvm_arch_has_private_mem is defined
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-4-2fc18ee6d3ba@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-4-2fc18ee6d3ba@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE based
+> on kvm_arch_has_private_mem being #defined in anticipation of tracking
+> PRIVATE vs. SHARED state per-guest_memfd, not per-VM (to allow in-place
+> conversion).
+> 
+> guest_memfd support for memory attributes is expected to be unconditional
+> to avoid yet more macros (all architectures that support guest_memfd are
+> expected to use per-gmem attributes at some point), at which point
+> enumerating support KVM_MEMORY_ATTRIBUTE_PRIVATE based solely on memory
+> attributes being supported by KVM at-large would result in a system-scope
+> check (NULL @kvm) over-reporting support on arm64.
+> 
+> Give architectures full control over overriding the default definition of
+> kvm_arch_has_private_mem() by removing the coupling with
+> CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
+> 
+> In a later patch, kvm_arch_has_private_mem() will be defined based on
+> whether architectural features are compiled in, and made orthogonal to
+> CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Reviewed-by: Fuad Tabba <tabba@google.com>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Tested-by: Shivank Garg <shivankg@amd.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-New issues:
-- [Medium] `tdx_get_exit_info()` incorrectly compares the full 32-bit exit =
-reason against the 16-bit `TDX_INVALID_EXIT_REASON`, exposing meaningless/i=
-nconsistent exit qualification and interrupt info.
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Pre-existing issues:
-- [High] Strict equality checks against `vp_enter_ret` in `tdx_handle_exit(=
-)` and `tdx_vcpu_run()` fail to mask the basic exit reason, bypassing criti=
-cal bug checks when upper exit reason bits are set.
---
+> ---
+>   include/linux/kvm_host.h | 2 +-
+>   virt/kvm/kvm_main.c      | 2 ++
+>   2 files changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 3e86cdd00e59b..e3666d0b40b74 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -722,7 +722,7 @@ static inline int kvm_arch_vcpu_memslots_id(struct kvm_vcpu *vcpu)
+>   }
+>   #endif
+>   
+> -#ifndef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> +#ifndef kvm_arch_has_private_mem
+>   static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
+>   {
+>   	return false;
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index e3a77d1e6d8ae..560ff05e95959 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -2422,8 +2422,10 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
+>   #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+>   static u64 kvm_supported_mem_attributes(struct kvm *kvm)
+>   {
+> +#ifdef kvm_arch_has_private_mem
+>   	if (!kvm || kvm_arch_has_private_mem(kvm))
+>   		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
+> +#endif
+>   
+>   	return 0;
+>   }
+> 
 
---- Patch [3]: [PATCH v3 3/4] KVM: TDX: Don't assume exit_reason[31:16] as =
-all-0 in tdx_to_vmx_exit_reason() ---
-commit 129e5cab6b9416a1d4e5f1f8c42f24dc1a44940c
-Author: Xiaoyao Li <xiaoyao.li@intel.com>
-
-KVM: TDX: Don't assume exit_reason[31:16] as all-0 in tdx_to_vmx_exit_reaso=
-n()
-   =20
-When handling the real Exit Reason, don't assume the upper 16 bits as
-all-0 in tdx_to_vmx_exit_reason(), in preparation for enabling Bus Lock
-VM exit. Also preserve the bit 31:16 when changing the (basic) Exit
-Reason, to not lose the information in bit[31:16].
-
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index df23db9430f06..598b85d772e37 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-[ ... ]
-> @@ -942,23 +942,27 @@ static __always_inline u32 tdx_to_vmx_exit_reason(s=
-truct kvm_vcpu *vcpu)
->  		 * module never attempted to run the vCPU, i.e. the Exit
->  		 * Reason is undefined, but this is NOT a failed VM-Enter
->  		 */
-> -		return TDX_INVALID_EXIT_REASON;
-> +		return (union vmx_exit_reason) {
-> +			.basic =3D TDX_INVALID_EXIT_REASON,
-> +		};
->  	}
-> =20
-> -	exit_reason =3D tdx->vp_enter_ret;
-> +	exit_reason.full =3D (u32)tdx->vp_enter_ret;
-> =20
-> -	switch (exit_reason) {
-> +	switch (exit_reason.basic) {
->  	case EXIT_REASON_TDCALL:
->  		if (tdvmcall_exit_type(vcpu))
-> -			return EXIT_REASON_VMCALL;
-> -
-> -		return tdcall_to_vmx_exit_reason(vcpu);
-> +			exit_reason.basic =3D EXIT_REASON_VMCALL;
-> +		else
-> +			exit_reason.basic =3D tdcall_to_vmx_exit_reason(vcpu);
-> +		break;
->  	case EXIT_REASON_EPT_MISCONFIG:
->  		/*
->  		 * Defer KVM_BUG_ON() until tdx_handle_exit() because this is in
->  		 * non-instrumentable code with interrupts disabled.
->  		 */
-> -		return TDX_INVALID_EXIT_REASON;
-> +		exit_reason.basic =3D TDX_INVALID_EXIT_REASON;
-> +		break;
-
-[Severity: Medium]
-When the basic exit reason is set to TDX_INVALID_EXIT_REASON here, but uppe=
-r=20
-bits like Bus Lock are preserved in exit_reason.full, does this break=20
-tdx_get_exit_info()?
-
-In tdx_get_exit_info(), it evaluates against the full 32-bit exit reason:
-
-    *reason =3D tdx->vt.exit_reason.full;
-    if (*reason !=3D TDX_INVALID_EXIT_REASON) {
-        *info1 =3D vmx_get_exit_qual(vcpu);
-        ...
-
-Since TDX_INVALID_EXIT_REASON is the 16-bit 0xFFFF, this check will pass if=
-=20
-any upper bits are set, even if the basic reason was marked invalid,=20
-incorrectly exposing meaningless hardware state.
-
-[Severity: High]
-This isn't a bug introduced by this patch, but by highlighting that=20
-vp_enter_ret can contain upper exit reason bits (like bit 26), does this=20
-expose a flaw in the strict equality checks for EPT misconfigurations?
-
-In tdx_vcpu_run(), the check is strictly against the 64-bit value:
-
-    if (unlikely(tdx->vp_enter_ret =3D=3D EXIT_REASON_EPT_MISCONFIG))
-        return EXIT_FASTPATH_NONE;
-
-Similarly, in tdx_handle_exit(), the bug check is also a strict comparison:
-
-    if (unlikely(vp_enter_ret =3D=3D EXIT_REASON_EPT_MISCONFIG)) {
-        KVM_BUG_ON(1, vcpu->kvm);
-        return -EIO;
-    }
-
-If a hardware EPT misconfig occurs while upper bits are set in the raw=20
-vp_enter_ret, won't these checks fail to identify the misconfig, bypassing=
-=20
-the KVM_BUG_ON() entirely?
-
->  	default:
->  		break;
->  	}
->
->  	return exit_reason;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260812080229.2481=
-439-1-xiaoyao.li@intel.com?part=3D3
