@@ -1,399 +1,165 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980293EB7FB;
-	Wed, 12 Aug 2026 13:24:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786541102; cv=none; b=qcMKxStLVBfpY7JDiapHvIVoyn7bByEGKTxtPskxBztDIaMlGeqpLCzoMZT35nCiPfSTmkJrR+2h78s1n9mZdJ5oNUYl7kCaf3vYxWduzB2DYpmAJNxxTJVWijjXE34rOEXweO7i3jqPAFfuIOU9VuD3BdTxaI2kjIL4xiYkEz4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786541102; c=relaxed/simple;
-	bh=Oab6G4Zahn9j9yy2wQPDqBdxqS7pGy8E+1mLML9NQpI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=J+2CywYi4ACRsKlOsllvi0jad8OCX7xUxRwn83CFryuwD7woTYv7LPZIMRuYZd3ElZT11gewjaofR4IYBn/YBsURwU5i0JsjJeBBaA4w1MJSVp/HZZO3F7Xx9980WLkGBJCRwJEF5A2r6jab4NVkQ6OBBeyY+7rR+ndntCfOFg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=su++aBVu; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8AD4503F1
+	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 13:35:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786541715; cv=pass; b=KwVRoyVI01cBNVYVq1lDwkPEWbK2GVKVV19Z84QGyiXR74jX44hustTXLBLMTgn9e/jnKf6mNm8gL5kQQVoImLa4fY0QXjX6owVz5jmLtAVtVl6Z586H2lJxUEMoMkJ29MARxQv9PCXqnNXsrUdIsmidVm7c0mdqhiXTmOwjGog=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786541715; c=relaxed/simple;
+	bh=Qd0DA5nheV/pXBjB/+20R2YQSj6wjwSeW68i3S2Fko4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fBY06AlMUp4ePpo3EBXItlqS1I5kOeuifPUgeTQmDhS2qCBXEUxwIp3XlyNfTXyQszm8Gdww+Rkpequ0L1sATys1btWIuuJkT9qb9ipBUpt466zGpvAtFB3OvhL6WDxsjctOMpPwU9SHjSD2V9tDUw/9G7AqV6nCgNr2QDLNuVw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d6cdPoRv; arc=pass smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="su++aBVu"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=29ehwn/a/DZNEfUsYRgzqZ38k/KDLS5Gy5YfqCelmVs=; b=su++aBVujRW3oREKT6kipzNRbD
-	NMtPSkU+1tEwBg5OTIsOtlh8oQby08qxtunV46+b7jnsOJJ23Q8zWAl6n3PrA6vUMRgrVIY04K9zj
-	drROtqiKJfKM8R4OW7ZZGTg0UKT50XSdFIyJ1YBLPNNgWPFzMvxiTqnSINQun4RO7+2ypHqgont8I
-	k9AMd0ne2yKt2fDCaW1NQE0y0Qh6zaWRYQ3dFwTFn8h7lxTPdDZQuf4jqQtNSpi9KactnW2MEbxw9
-	5UPoa3xcFO8oSYnW/gMSv8Z23fk9Vq0pRpVr3WP1Qy5zLaCpc7mUIgYgU19vdwxltpd9h0JzTYY1m
-	zF83wwCg==;
-Received: from [2001:8b0:10b:5:a3a3:d97e:a004:df29] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wu8wp-000000021W6-2alX;
-	Wed, 12 Aug 2026 13:24:47 +0000
-Message-ID: <041c720a44dfe612ef54cf7075adaae01dd20d92.camel@infradead.org>
-Subject: Re: [PATCH] srcu: Add try_synchronize_srcu() for callers which can
- prove readers absent
-From: David Woodhouse <dwmw2@infradead.org>
-To: "Paul E. McKenney" <paulmck@kernel.org>, Sean Christopherson
-	 <seanjc@google.com>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>, Josh Triplett	
- <josh@joshtriplett.org>, Steven Rostedt <rostedt@goodmis.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Boqun Feng
- <boqun.feng@gmail.com>, Neeraj Upadhyay	 <neeraj.upadhyay@kernel.org>, Joel
- Fernandes <joel@joelfernandes.org>,  Uladzislau Rezki	 <urezki@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, rcu@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 12 Aug 2026 14:24:41 +0100
-In-Reply-To: <0f4dea21bac43685d3286df329401177e4452b36.camel@infradead.org>
-References: <0f4dea21bac43685d3286df329401177e4452b36.camel@infradead.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-Rr74TMf0VsGUSldOt9uw"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d6cdPoRv"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-51c15a5b265so228041cf.0
+        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 06:35:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786541710; cv=none;
+        d=google.com; s=arc-20260327;
+        b=m+KmUynaOEa9GX1cffyyksNyJQaul6/Sr0NoaWC3Ddj72xRdn4TNR2vXUudt6dV+nD
+         sqgRDNYjdmEaze73huwnZnIpFR/p80M4SxNxEC/sDt4Gp1RYMCpJ2dcx9g1t/J3aglsI
+         BL9nNEvWag0dkmMNV8XwIh0tNW8WJrCmgbZerx+JJ1lq/9bzQkPJwV7jO2Pcyo3EasF7
+         DgCUSCMBgIFzHMzTnQOL7WjkQ0LEHRfnYeC8M2xpQOZmmVg3JYOU6d6+QSEKAstsrZeR
+         sk6UMc0RGh9H6M++LXDe6nXozN7gioreBzJOmu0xsYHIpiT4ruawHkUdw5MPA1CzxTIh
+         3K3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=btatRIN/qVx6m6u+kKi9+q5rHWXBFe/go9/mpyrKKkA=;
+        fh=a3r2GwRHEs6FiyTvs2aaHNugbOCNEC4D1LKpcMlz81A=;
+        b=Uhty5L6fSynh+9Jc9NkWsNQv6VScNWzyLEUEdIwA19eK4DzCadbWf2a/+tdddV6Iah
+         dYZrCCPitYaIoC/wgAsQifEe+77PYorYPCQxBS7JT1cFBG/UmSgTjmezUsYFtEzcME3H
+         TUrgG7qW/lHRb+euge9Ozg2ZTkewgN6KL2RCFlcXuyuFJTbSIESQxpkJa8mJX7j/BO6r
+         ygYapPsHigrVq/3tSALDWAuP3e/ccrbNnjCOikVafaXStLRGWVW4QtcL88rBKW3BMutL
+         FwFRr9qlM5RBdBx/nBLh/zZkANOnsD86RHdVvXWhvjN6xhwPTqHPSMiMvRWIoXCSbM0S
+         tWLw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786541710; x=1787146510; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=btatRIN/qVx6m6u+kKi9+q5rHWXBFe/go9/mpyrKKkA=;
+        b=d6cdPoRvZLtbyQOxdILVtHHSWKF/GQGf/zERGvY3/BzBHVWvov+zxPMSX2kyHlICNu
+         +0hb1Nac+n4kZVPFWD5giqXCajCunsRCxt3aVabQ6aKBx2CRzoOoXdnr7AwOmeGgKpuD
+         udDmOnfv1Ksi+hQQpagcD7i0GvF7ESEKICfUMOVU3Xwq8UrMX99Dbx/92eUDY8+8IO0z
+         YYBIegDZhK3t5vFWVOnteSqfDRmGzRB88bIhUECPjxnmW+NH8yGh8yKO9DClXqgcwY5G
+         URk9cnGcr+4GjGWJAodya56YhUG2tlfuyU5JR8ZNi4312tTS5EMPTLJwCNjHhwxF4plp
+         k/bA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786541710; x=1787146510;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=btatRIN/qVx6m6u+kKi9+q5rHWXBFe/go9/mpyrKKkA=;
+        b=foIg+Wk8L5r/oitgawriOffdOwi4kLFb/g8KNSsYEgWC7RSfhlHedWLfXWK5d2BjJl
+         tVv7Rs384NMFcZ19nY/jM3YoTOKiKm6wL2pDkIfnFg8wE1kQf0WPYB3zHtZ4alE0CHdg
+         H9kfZPYnVdMQ8wESjNv4FaYxx/ZZm8JdomXg86+7st0fXugVYnypIwNCoz7i6ewqjJlk
+         Oe6VjttRTCikl9ykQ9Fc9+uYTY+Re1TGCVfJchp6BwAdBcoQr8KXTW6jR4wivB2xa+du
+         3l+aTEIsR/ShiICw9iRAjpBxotytxBEQAyxZmCioJTrszBRIPx8a9S49ershTpBm6R7P
+         z7yg==
+X-Forwarded-Encrypted: i=1; AHgh+RohXFpvTRA6B+SjPPov6jl7ClgaQnovN6QT83xDsvqiKN49sb74cNo8GFUZjWemz9gMztc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjLDwNdgEFrFyrQhP4ANo8TZ/X1HHM1JutBD1xXdtlun5ef3St
+	GJ1Nj19Ranr22Jm3fEJKkF4BhLh3XHu4fPA2kYsN1zK1MQlHQ7gEqZhGYblBt7vvN6LBJ5yzGZu
+	mVDeDVDEtNb39rzMPJjlhiCIp0+MlIAUCVXrOsk1y
+X-Gm-Gg: AR+sD11OuS+ZADi9iV4/f5zAnaNeke8Ekxtl8g1OcVb6/sVPbaCxk9CcWzh2XzbEm+4
+	ju1KiJEUE5LxZuUFzCMF3FzhC8wfxiMKYahTJeag/Uq0Y+BhXaRjjVRz9107e/pr8rX894q3WND
+	hb/HOyxjgPPV31lNLXTC7lsASAch2iUHYA242IqjvAmyMvzn0UmWrefqSUC2REX0cLzEVkVYeE2
+	SsoC5Xv6r2IA9ACl5YaOavBMSj7LqLe+8Nn0jzYrECr4cDd9NKFrom+5Xtb1ex9IWRGLaN+aqnL
+	zajKgD7fataVFHRCs4uZagOTTDCcUiEF5KSWreyl9KHzmw==
+X-Received: by 2002:a05:622a:e198:10b0:50f:af60:3496 with SMTP id
+ d75a77b69052e-52d65464646mr13714571cf.1.1786541709957; Wed, 12 Aug 2026
+ 06:35:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-
-
---=-Rr74TMf0VsGUSldOt9uw
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com> <20260807-gmem-inplace-conversion-v10-1-2fc18ee6d3ba@google.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-1-2fc18ee6d3ba@google.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Wed, 12 Aug 2026 15:34:32 +0200
+X-Gm-Features: AUfX_mzDGNX5m7h-J9AcKRPzqX1cpxh6BaIQgAnDEV-ghyjmfpFsGGynIKZZ1iE
+Message-ID: <CA+EHjTzkOQD0YddPUs=2=yThG6s3=jQR2xwm+CeAedjyFaANZA@mail.gmail.com>
+Subject: Re: [PATCH v10 01/41] KVM: guest_memfd: Use kvm_mem_is_private() when
+ populating guest_memfd memory
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Argh, a random syzbot fix has polluted my recipient cache; adding Sean for =
-real.
+On Fri, 7 Aug 2026 at 23:52, Ackerley Tng via B4 Relay
+<devnull+ackerleytng.google.com@kernel.org> wrote:
+>
+> From: Sean Christopherson <seanjc@google.com>
+>
+> Using kvm_mem_is_private() when populating guest_memfd instead of using an
+> open coded equivalent.  In addition to simplifying the populate code *now*,
+> this avoids the need to provide a range-based gmem lookup API in the future
+> as well.
+>
+> No functional change intended.
+>
+> Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-On Wed, 2026-08-12 at 13:32 +0100, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
->=20
-> For a dedicated srcu_struct whose read-side critical sections are
-> short, atomic, and usually absent =E2=80=94 such as one converted from a
-> spinning lock =E2=80=94 the common case at synchronize time is that there=
- are
-> no readers at all. Even synchronize_srcu_expedited() still costs the
-> caller an unconditional sleep and two trips through the SRCU workqueue
-> to discover that: tens of microseconds of machinery to wait for
-> nothing. And synchronize_srcu()'s auto-expedite heuristic explicitly
-> declines to expedite within exp_holdoff (25=C2=B5s) of the previous grace
-> period, which is exactly the regime a burst of back-to-back
-> invalidations puts such a domain in.
->=20
-> Provide try_synchronize_srcu(), which proves the no-readers case
-> inline and returns true without sleeping, without the workqueue, and
-> without advancing the grace-period sequence (so cookies from
-> get_state_synchronize_srcu() and queued callbacks are unaffected). If
-> the proof fails, it returns false and the caller falls back:
->=20
-> 	if (!try_synchronize_srcu(ssp))
-> 		synchronize_srcu_expedited(ssp);
->=20
-> For Tree SRCU the proof sums both epochs' unlock counters, executes a
-> full barrier, then sums both epochs' lock counters. Equality proves a
-> moment within this function at which no reader existed: a reader
-> entering between the sums inflates only the lock sum (spurious
-> fallback, safe), and a reader whose increment is unobserved has not
-> yet returned from srcu_read_lock() =E2=80=94 the barrier pairing with
-> __srcu_read_lock() guarantees such a reader sees every store the
-> caller made beforehand, so it is not a reader the caller is obliged
-> to wait for. Summing both epochs means no index flip is required, and
-> without a flip the counter-wrap concerns of
-> srcu_readers_active_idx_check() do not arise. Readers of the _fast()
-> flavors elide the read-side barrier this depends on; any sign of them
-> (in the unlock-side rdm mask, which is gathered unconditionally)
-> disqualifies the fast path.
->=20
-> For Tiny SRCU (!SMP) both nesting counts being zero already proves no
-> reader exists =E2=80=94 a mid-section reader could only be preempted or i=
-n an
-> interrupt, either of which leaves its count visibly elevated =E2=80=94 an=
-d
-> program order on the sole CPU provides all the required ordering.
->=20
-> The immediate motivation is a proposed conversion of KVM's
-> gfn_to_pfn_cache to use SRCU=C2=B9, where the mmu_notifier invalidation
-> path must drain readers of a cache (in the manner of a TLB shootdown)
-> before the primary MMU zaps the backing page. Those readers are short
-> non-sleeping fast paths, some in contexts which cannot sleep (hardirq
-> event channel delivery, the scheduler's sched-out hook); measurement
-> under a worst-case invalidation flood shows 98.8% of drains complete inli=
-ne
-> in 4-16=C2=B5s where the expedited grace period took 32-128=C2=B5s, with =
-the
-> wait dominated by workqueue round-trip latency, not by readers.
->=20
-> =C2=B9 https://lore.kernel.org/all/20260811132237.102400-1-dwmw2@infradea=
-d.org/
->=20
-> More potential use cases already exist in the tree with the same
-> no-readers-common-case profile: kvm->irq_srcu takes half a dozen
-> expedited grace periods in the irqfd and routing-update paths (bursts
-> of which, at VM boot, fall inside the exp_holdoff window), and mshv's
-> pt_irq_srcu is the same shape.
->=20
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> Assisted-by: Claude:claude-mythos-5
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+
+Cheers,
+/fuad
 > ---
-> Compile-tested for Tiny SRCU (tinyconfig); the Tree version has had
-> the KVM gfn_to_pfn_cache conversion soaking on it under an adversarial
-> invalidation flood.
->=20
-> =C2=A0include/linux/srcu.h=C2=A0 |=C2=A0 1 +
-> =C2=A0kernel/rcu/srcutiny.c | 23 ++++++++++++++
-> =C2=A0kernel/rcu/srcutree.c | 70 ++++++++++++++++++++++++++++++++++++++++=
-+++
-> =C2=A03 files changed, 94 insertions(+)
->=20
-> diff --git a/include/linux/srcu.h b/include/linux/srcu.h
-> index a54ce9e808b9..0d7543c7becc 100644
-> --- a/include/linux/srcu.h
-> +++ b/include/linux/srcu.h
-> @@ -91,6 +91,7 @@ void call_srcu(struct srcu_struct *ssp, struct rcu_head=
- *head,
-> =C2=A0		void (*func)(struct rcu_head *head));
-> =C2=A0void cleanup_srcu_struct(struct srcu_struct *ssp);
-> =C2=A0void synchronize_srcu(struct srcu_struct *ssp);
-> +bool try_synchronize_srcu(struct srcu_struct *ssp);
-> =C2=A0
-> =C2=A0#define SRCU_GET_STATE_COMPLETED 0x1
-> =C2=A0
-> diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
-> index a2e2d516e51b..f07159cae241 100644
-> --- a/kernel/rcu/srcutiny.c
-> +++ b/kernel/rcu/srcutiny.c
-> @@ -260,6 +260,29 @@ void synchronize_srcu(struct srcu_struct *ssp)
-> =C2=A0}
-> =C2=A0EXPORT_SYMBOL_GPL(synchronize_srcu);
-> =C2=A0
-> +/**
-> + * try_synchronize_srcu - inline grace period for a reader-free srcu_str=
-uct
-> + * @ssp: srcu_struct with which to synchronize.
-> + *
-> + * If @ssp provably has no readers in either epoch, provide the
-> + * synchronize_srcu() guarantee to the caller immediately, without
-> + * sleeping. Returns true on success; on failure the caller must fall
-> + * back to synchronize_srcu().
-> + *
-> + * On !SMP a reader can only be mid-critical-section if it was
-> + * preempted (or is running in an interrupt which preempted us), in
-> + * which case its nesting count is visibly non-zero. Both counts being
-> + * zero therefore proves that no reader exists, and any reader which
-> + * begins after this function returns will, by program order on this
-> + * sole CPU, observe every store the caller made before calling it.
-> + */
-> +bool try_synchronize_srcu(struct srcu_struct *ssp)
-> +{
-> +	return !READ_ONCE(ssp->srcu_lock_nesting[0]) &&
-> +	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 !READ_ONCE(ssp->srcu_lock_nesting[=
-1]);
-> +}
-> +EXPORT_SYMBOL_GPL(try_synchronize_srcu);
-> +
-> =C2=A0/*
-> =C2=A0 * get_state_synchronize_srcu - Provide an end-of-grace-period cook=
-ie
-> =C2=A0 */
-> diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
-> index 2601566c254a..76a78336feaa 100644
-> --- a/kernel/rcu/srcutree.c
-> +++ b/kernel/rcu/srcutree.c
-> @@ -1645,6 +1645,76 @@ void synchronize_srcu(struct srcu_struct *ssp)
-> =C2=A0}
-> =C2=A0EXPORT_SYMBOL_GPL(synchronize_srcu);
-> =C2=A0
-> +/**
-> + * try_synchronize_srcu - inline grace period for a reader-free srcu_str=
-uct
-> + * @ssp: srcu_struct with which to synchronize.
-> + *
-> + * If @ssp provably has no readers in either epoch, provide the
-> + * synchronize_srcu() guarantee to the caller immediately: without
-> + * sleeping, without a trip through the SRCU workqueue, and without
-> + * advancing the grace-period sequence. Returns true on success; on
-> + * failure the caller must fall back to synchronize_srcu() or
-> + * synchronize_srcu_expedited().
-> + *
-> + * This serves dedicated srcu_struct structures whose read-side critical
-> + * sections are short, atomic, and usually absent =E2=80=94 where even a=
-n
-> + * expedited grace period costs two trips through the workqueue and an
-> + * unconditional sleep of the caller, three orders of magnitude more
-> + * than the check below.
-> + *
-> + * Only readers of the srcu_read_lock() and srcu_read_lock_nmisafe()
-> + * flavors are compatible with this proof; if the _fast() flavors have
-> + * ever been used on @ssp, this function always returns false.
-> + */
-> +bool try_synchronize_srcu(struct srcu_struct *ssp)
-> +{
-> +	unsigned long unlocks0, unlocks1;
-> +	unsigned long rdm0, rdm1;
-> +
-> +	check_init_srcu_struct(ssp);
-> +
-> +	/*
-> +	 * Order the caller's prior stores before the counter reads below.
-> +	 * Pairs (store-buffering pattern) with the smp_mb() in
-> +	 * __srcu_read_lock(): any reader whose lock increment is not
-> +	 * observed by the sums below is guaranteed to observe, within its
-> +	 * critical section, every store the caller made before calling
-> +	 * this function.
-> +	 */
-> +	smp_mb();
-> +
-> +	unlocks0 =3D srcu_readers_unlock_idx(ssp, 0, &rdm0);
-> +	unlocks1 =3D srcu_readers_unlock_idx(ssp, 1, &rdm1);
-> +
-> +	/*
-> +	 * Reader flavors which elide the read-side smp_mb() that the
-> +	 * pairing above depends on cannot be proven absent this way;
-> +	 * they need a real grace period.
-> +	 */
-> +	if ((rdm0 | rdm1) & SRCU_READ_FLAVOR_SLOWGP)
-> +		return false;
-> +
-> +	/*
-> +	 * As in srcu_readers_active_idx_check(): ensure that a lock is
-> +	 * always counted if the corresponding unlock is counted, so that
-> +	 * a reader racing with these sums can only inflate the lock sum
-> +	 * and force the (safe) fallback. Summing both epochs means no
-> +	 * index flip is needed: a stable equality proves there was a
-> +	 * moment in this function at which no readers existed at all.
-> +	 */
-> +	smp_mb();
-> +
-> +	if (!srcu_readers_lock_idx(ssp, 0, false, unlocks0))
-> +		return false;
-> +	if (!srcu_readers_lock_idx(ssp, 1, false, unlocks1))
-> +		return false;
-> +
-> +	/* Order the caller's subsequent accesses after the proof. */
-> +	smp_mb();
-> +	return true;
-> +}
-> +EXPORT_SYMBOL_GPL(try_synchronize_srcu);
-> +
-> =C2=A0/**
-> =C2=A0 * get_state_synchronize_srcu - Provide an end-of-grace-period cook=
-ie
-> =C2=A0 * @ssp: srcu_struct to provide cookie for.
-
---=-Rr74TMf0VsGUSldOt9uw
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-6MTbTwTrqwfEncAQfw4TRekAAAAAAAA=
-
-
---=-Rr74TMf0VsGUSldOt9uw--
+>  virt/kvm/guest_memfd.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index b596486d184ca..a11cf6dc785da 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -811,9 +811,7 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+>
+>         folio_unlock(folio);
+>
+> -       if (!kvm_range_has_memory_attributes(kvm, gfn, gfn + 1,
+> -                                            KVM_MEMORY_ATTRIBUTE_PRIVATE,
+> -                                            KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
+> +       if (!kvm_mem_is_private(kvm, gfn)) {
+>                 ret = -EINVAL;
+>                 goto out_put_folio;
+>         }
+>
+> --
+> 2.55.0.654.g21b8a5bc05-goog
+>
+>
