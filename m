@@ -1,56 +1,56 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4609F3FFFA7
-	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 21:32:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B88C400E1A
+	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 21:32:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786570331; cv=none; b=HWkAylmOwl1nZVSShGVNQsCD/AI/Xjbb4+mhJsCLwBAxkPT9LfPKwWl8pm7Tlvddj78yXBbQ6VwZM+wCikQYh4E+Hsfp1/eFGbqVOvlnn+z5tBHvHVu0kwsbwDIKB5xAphuBZkkN81oNc3cm2P1KqpqasAH/ISqwB9efsJBOSv0=
+	t=1786570332; cv=none; b=Ry4+r+bllrcB6sL+MheEDwwpVGI6QOxzGD8r5JOxHYPZDnBrP03/Yb80ois4z05r0Nc+fZ4G+diGPhQ6oK6kMa4S/P9DXmk4SJBrzQAS1zEiN/o+ty8Bv/fd7p/1Wo1Ii0KL8jB5TYo+eDMaIFbMQbpZxvS7012PyY7hd33Ypjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786570331; c=relaxed/simple;
-	bh=aFOxGhVzQic/FWI3xEtk8IbkE7UM2PKarHE98jdy0rY=;
+	s=arc-20240116; t=1786570332; c=relaxed/simple;
+	bh=rEj+MrH4Lp0YV7pHrXfPro581Yt4MojO4YZiz52yvn0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kGD4put0cLI/z//b+pQoGRJM8zAkY0wxgOyfQLP8qUp1KJzFYdC1psxDBRcqaO6attqRiED5L07FebzY9mdatiXpNez21zq9/Ynv9WwmpeHQTqRza4UkqwkelEwzOVQEpmwPAGMT7D4WqFLEDGAKJyTBcgxBAap9r6awWK1WZTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dbFKvAef; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=mn1pS5t1lqlTL07oyaDgHOEvgc251PcvAcjZlHoG2vtNLjtfdakQncwt+KhX1hzeJWyBhvu6vNB8IQG+2YseyTRnU0BIcKYWNh79udcu7nGqbFRwL1HB037BnB1B960zJt0+OxhA/Wv0u05anRdL7H3z0WQkkgrfLJzB0VTo+JU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Yl0Fzlhc; arc=none smtp.client-ip=209.85.216.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dbFKvAef"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d001671a54so1719835ad.2
-        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 14:32:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Yl0Fzlhc"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38dc085b0a7so162617a91.2
+        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 14:32:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786570329; x=1787175129; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786570330; x=1787175130; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=c1vp8DF5tocEb4EaUT/LG0aScCVX78MBlVWsKRXci4A=;
-        b=dbFKvAefstHHV6nk93aJ0IOzUCuiRqivix5w1LTFH8PVmCHZpr2HFkl+7fHvdwhUYv
-         2wCvUeCadxwNhfVZPFk1TQ8QFZ6mYfWz74f1O+59u8u2a/SK3vto3Fuy1SoR25oVWHur
-         yVmySl/XXj1q/7VNY783F5W5WgTJ2Tr02R8kRcq33JsU+1T8Ap8Exn7NCRG9cKSr0iH6
-         X5tJpaSh15ajPU1YSxT+eXCb5xFHCdgYiMPYR1vSyAUSCZWgRtyQEooQO25bVq3BpZB3
-         GDCvp9X6I30xW7AucpzStfyiKLhJlM+EED2ImMk/yhuuPpVDPRYOPvph+JGqkQa3xgva
-         acEw==
+        bh=TeIYWn7gjY6tiQvzqA0pDdLaRhbsPjFnxMbQwbw7xaI=;
+        b=Yl0FzlhcOzf1YyRf/Wd+KgEtduF0OtJ+SBF70pDOY72tPUv27Wqwwyuu3QyIzEs5K2
+         gW8/peiaL8RiHWc2Fecz4bSILQBZOSTUmttAXiV38kzu8VojSWaGT05poX3bkiHS4H21
+         JxsZ76nDg5FsYbcHFNWJQ/u3NssJf/UZAFeAKDXwPO6c3EahCYOCxoL/J/C3ScQrZxJQ
+         2vIMvoMT7BLVgFM8fUUtSNlOXW6YXGwxImQmpj8c44CXpprHs9eKtX1dr8vb6BWD0q4h
+         ppSwYXICRHUmZZldFt6kwR8ymFlHw1I5EilLKZujjHSxmGZD76O5dm8yGiLpLXV/iEMg
+         7l6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786570329; x=1787175129;
+        d=1e100.net; s=20251104; t=1786570330; x=1787175130;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=c1vp8DF5tocEb4EaUT/LG0aScCVX78MBlVWsKRXci4A=;
-        b=GhZLllabKT051gTIgTDEgu5VhcfaRDa4qHftbdJddo51grze/hPli299C5I1+OsYXY
-         0w33VQaBAP4xJwdcTpC0uY8Kj53amGSVnQMDR9SHsY6/y+adKbh5nEcbsuNFVN2juvhN
-         eLoCWk7noKqO1UDcK6DT1Pt1Phk7psBY8i/ODV5ojLDDlyldKyFrbo4SY1QNGV2hfdYY
-         q4dC08xaVaZ/w+QLte7kyDEha/Js+dgxKCLD9kBCBUAkA9EuqtQeS0ljc9J6MCX/pg4W
-         QvI/LSqjqG8hc7EvWMkEkJx1Z2jwmCfLMgd7v9k1sN981PmaDnGqd3WZ+xkIaTgt4tiK
-         Ve2A==
-X-Gm-Message-State: AOJu0YxVBco1SqSGnOwYAUJnVSGJgJBM1Rr0pXvMrJiaGSfcnE1eU7PY
-	f9f3uFaQYIp9NFMkD1CtBo0L3w3dFeYxJjhEtwItSTqxZxZFmzfPdYrBHcRhDgGqtUU7QG5waBi
-	pcTvqVQ==
-X-Received: from plbki16.prod.google.com ([2002:a17:903:690:b0:2d0:f9b3:3acb])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1a43:b0:2d0:cc92:f7a7
- with SMTP id d9443c01a7336-2d37e852f06mr11917405ad.13.1786570329303; Wed, 12
- Aug 2026 14:32:09 -0700 (PDT)
+        bh=TeIYWn7gjY6tiQvzqA0pDdLaRhbsPjFnxMbQwbw7xaI=;
+        b=lLAkM1L64M2tQZ7ra+Gk8BMPaSJ8xehbCpLDV/bWTCkhHOJ23vZkiEBNw2YqN/yf9T
+         f6OAZDoFfCz5beK0JiKxdsfT7i4BwH6/Z2oE5clFyp9Y4Dd6/yDv0+ch8Xiw7CZhR2O3
+         mcdCpzYSjeISczT/IzHFq0yfcn2MllMO6lo+ghH0zOKvnOnybgxWbw5KZJk/aHgxzgN/
+         erEqPS2ovrDZVSco2aHyf9ymk53Xc0r2WLaOTqgkW5z89ZzQsRYSz5Ta2dBeYIdqtJtw
+         q93/YeXDPdS32XJeCXdAeLLclIRDR7EYSbfIq/1Gxx8G6D5t24G5MFGI6FPgEPfn4jL1
+         Q/bw==
+X-Gm-Message-State: AOJu0Yzm/Y5u+dtJss/C7OjcJICIJ9od89u7j1pXw9z3JygcpriIQlST
+	cChTo4gOmp23GGO+xP/wa67MUBej2VkNvrakuC5b5nsYHE6dU+eub7fcON/Ssbx8ZzQ57Obybfk
+	3B0clQQ==
+X-Received: from pjpq3.prod.google.com ([2002:a17:90a:a003:b0:38e:c91c:3667])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2688:b0:392:e5b1:d833
+ with SMTP id 98e67ed59e1d1-3931e25e5f9mr1448335a91.13.1786570330386; Wed, 12
+ Aug 2026 14:32:10 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 12 Aug 2026 14:31:56 -0700
+Date: Wed, 12 Aug 2026 14:31:57 -0700
 In-Reply-To: <20260812213206.1564354-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,59 +60,79 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260812213206.1564354-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
-Message-ID: <20260812213206.1564354-2-seanjc@google.com>
-Subject: [GIT PULL] KVM: x86: Xen clock/timekeeping changes for 7.3
+Message-ID: <20260812213206.1564354-3-seanjc@google.com>
+Subject: [GIT PULL] KVM: guest_memfd and x86 CoCo changes for 7.3
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Sean Christopherson <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Three small Xen-specific changes.  I was hoping to include a much larger pile
-of kvmclock and timekeeping changes from David, hence the "clocks" name.
-Another 21 patches _this_ close to making the 7.3 cut, and there's another 25
-coming on top of those.
+Fix the SNP VMSA PUNCH_HOLE bug, and prepare guest_memfd for in-place
+conversion.  Regarding in-place conversion, my goal is to get it applied very
+soon after 7.3-rc1, and then get you a pull request by -rc3 or -rc4.  I think
+we're past the functional issues phase and fully into bikeshedding, so fingers
+crossed.
 
-While kvmclock is on your mind (or at least, close to being on your mind), can
-you weigh on on the KVM_SET_CLOCK_GUEST discussion[*]?  I hopefully, finally
-understand the code well enough to be comfortable merging the code, but your
-input on the uAPI would be super helpful.  Thanks!
+The following changes since commit a204badd8432f93b7e862e7dac6db0fe3d65f370:
 
-[*] https://lore.kernel.org/all/ants4VjfAiblaWsl@google.com
-
-The following changes since commit 8cdeaa50eae8dad34885515f62559ee83e7e8dda:
-
-  Linux 7.2-rc2 (2026-07-05 14:44:06 -1000)
+  Merge branch 'kvm-chainsaw' into HEAD (2026-06-25 11:32:09 +0200)
 
 are available in the Git repository at:
 
-  https://github.com/kvm-x86/linux.git tags/kvm-x86-clocks-7.3
+  https://github.com/kvm-x86/linux.git tags/kvm-x86-coco-7.3
 
-for you to fetch changes up to 7d3bd21e457bd091beb982553fcf32fd9ee5929f:
+for you to fetch changes up to 2abcdf03fda1380bcbe00417b9ce2b4afb30899b:
 
-  KVM: x86: Remove runtime Xen TSC frequency CPUID update (2026-08-07 09:11:56 -0700)
-
-----------------------------------------------------------------
-KVM x86 PV clocks and timekeeping related changes for 7.3
-
- - Remove a defunct masterclock update from kvm_xen_shared_info_init() that
-   could result in corrupting kvmclock, for a lose definition or "corrupting",
-   due to triggering an unnecessary switch to/from masterclock mode.
-
- - Skip Xen runstate time updates if time has effectively gone backwards, so
-   that the guest doesn't report 100% steal time for a very, very long time.
-
- - Drop KVM's runtime updates of the Xen PV timing CPUID leaf, as KVM was
-   updating the wrong sub-leaf, and upstream KVM will soon provide all the
-   information needed by userspace to populate the CPUID field itself.
+  KVM: guest_memfd: Make private exactly what can be mapped on page fault (2026-07-27 09:43:44 -0700)
 
 ----------------------------------------------------------------
-David Woodhouse (3):
-      KVM: x86/xen: Do not corrupt KVM clock in kvm_xen_shared_info_init()
-      KVM: x86/xen: Prevent runstate times from becoming negative
-      KVM: x86: Remove runtime Xen TSC frequency CPUID update
+KVM guest_memfd and x86 CoCo changes for 7.3
 
- arch/x86/kvm/cpuid.c | 16 ----------------
- arch/x86/kvm/xen.c   | 30 ++++++++++++++++++++++--------
- arch/x86/kvm/xen.h   | 13 -------------
- 3 files changed, 22 insertions(+), 37 deletions(-)
+ - Forcefully invalidate SNP VMSA pages if their backing guest_memfd page is
+   zapped/invalidated, e.g. due to a PUNCH_HOLE in response to a Page-State
+   Change request.
+
+ - Rework the so called "prepare" and "invalidate" guest_memfd hooks to prepare
+   for in-place private<=>shared conversion, and clean up a few warts along the
+   way.
+
+----------------------------------------------------------------
+Ackerley Tng (1):
+      KVM: guest_memfd: Only "prepare" folios for private pages
+
+Sean Christopherson (20):
+      KVM: SEV: Track the GPA of the guest-controlled VMSA used for SNP guests
+      KVM: SEV: Extract loading of guest-provided VMSA to a separate helper
+      KVM: SEV: Mark vCPU RUNNABLE after AP_CREATE, even if VMSA is unusable
+      KVM: SEV: Wire up kvm_x86_ops.gmem_xxx() if and only if CONFIG_KVM_AMD_SEV=y
+      KVM: x86: Serialize writes to disabled_quirks using kvm->lock
+      KVM: x86: Ensure runtime reads of disabled_quirks are resolved once
+      KVM: x86/mmu: Fold kvm_mmu_zap_memslot() into kvm_arch_flush_shadow_memslot()
+      KVM: x86/mmu: Split kvm_mmu_zap_all_fast() into "front" and "back" halves
+      KVM: x86/mmu: Use split "zap all fast" helpers when invalidating memslot
+      KVM: SEV: Forcefully invalidate SNP VMSA if its backing gmem page is zapped
+      KVM: SEV: Mark vCPU has having guest-provided VMSA even if its invalid
+      KVM: x86: Guard .gmem_prepare() declarations with HAVE_KVM_GMEM_PREPARE=y
+      KVM: guest_memfd: Pass the number of pages instead of the end pfn into .invalidate()
+      KVM: guest_memfd: Rename invalidate() arch hook to reclaim() and isolate it
+      KVM: x86: Rename kvm_x86_ops' gmem_invalidate() to gmem_make_shared()
+      KVM: guest_memfd: Drop the redundant printk on arch gmem_prepare() failure
+      KVM: guest_memfd: Add helpers to query SHARED vs. PRIVATE for a given page
+      KVM: guest_memfd: Rename prepare() hook and Kconfig to make_private() / CONVERT
+      KVM: guest_memfd: Explicitly pass number of pages to make_private() hook
+      KVM: guest_memfd: Make private exactly what can be mapped on page fault
+
+ arch/x86/include/asm/kvm-x86-ops.h |  12 ++-
+ arch/x86/include/asm/kvm_host.h    |  15 ++-
+ arch/x86/kvm/Kconfig               |   3 +-
+ arch/x86/kvm/mmu/mmu.c             |  74 ++++++++------
+ arch/x86/kvm/svm/sev.c             | 197 +++++++++++++++++++++++++------------
+ arch/x86/kvm/svm/svm.c             |  10 +-
+ arch/x86/kvm/svm/svm.h             |  19 ++--
+ arch/x86/kvm/x86.c                 |  25 +++--
+ arch/x86/kvm/x86.h                 |   2 +-
+ include/linux/kvm_host.h           |  11 ++-
+ virt/kvm/Kconfig                   |   6 +-
+ virt/kvm/guest_memfd.c             |  72 ++++----------
+ 12 files changed, 269 insertions(+), 177 deletions(-)
