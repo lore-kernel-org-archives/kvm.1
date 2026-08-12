@@ -1,124 +1,401 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4668F382292;
-	Wed, 12 Aug 2026 03:27:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646D21922F5;
+	Wed, 12 Aug 2026 03:46:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786505274; cv=none; b=qiLu3juZTH6tUhzExPXivIOqzFjpK3Nz/BH4wdKZy49F69/9Ao6CzbX5zH5Ecs1widHf72tfzqRfdQzZE1YDX4op85QX0M1hVxtgZNuPk53ikqUEG5ZlsmMU1WB2UTbUpuZaxSf7Zgvx2G5SgbsjeSACUGKhZBUTjU+1GMuSykY=
+	t=1786506411; cv=none; b=KP3EUcCeYDCj8ubFRCOhLJ9nlTxMNLG03iN4svmRmm/2a8l23u7QLxlFuGn5jtF1/mDqH3uWD8CMDWaiTV7uOLdBLllxMdwdBIelbjgu5lBQsF7mPc8MWEz542fffbKdo4z6lEhH3rDKenn5mgpECL24KMfuEhgO6cSTsM49N1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786505274; c=relaxed/simple;
-	bh=DHngFFMTzobiHwpPz3SjP9y266L3Dd5I1hQOUiek3dg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eaNjNx8uOd9SEamCax3DX79nZrDxyQdjeNvNQ8u/DBxgaceEsGxJmXf/59lL+953Z69wTWrvERAFofaW7Oo49FdzME88Z5Q1m461oeravVFP2X8/54o8Sb7a5VbDbbFXLxBQn8rFIDdgoBAez5/OO/1gXtkoW0NZYzEK769rUAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lSWSVr6I; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1786506411; c=relaxed/simple;
+	bh=P0sCEqrYZEAu0FpigxrRd/1d/igq57VqybjdspbKV2g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qS2JkWjOvDbt2qOWsTb/VbBixdSiNW8qyZs9zF5lRApm5uPDuktLmXlG4QSx3WZ7rIYkju4brH+d3hDicoJRAnghg+5gCnXyB/KLbslHlKGkgRQcsGKtuRRzR+i9ow4/BJaaOc1TdFXaTSwex30Bo8jBl0biPh/p98cxQCIRTrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Vc3ovu9/; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lSWSVr6I"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786505273; x=1818041273;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=DHngFFMTzobiHwpPz3SjP9y266L3Dd5I1hQOUiek3dg=;
-  b=lSWSVr6IIOBA+nE7CS6HNVGsc9J50fb6vBLrJdIFK1d/Ev+djFY2Uc/+
-   GHAkiKAFc/D2Qo911CnmwaTqBA4yI3NDQ4V7XKO99xMA/EkcANsSR5yGa
-   ZjCeA0Odl/zYPSalIw40aZTv1WdeliIzMqNlbPW5RwPFp/83Rg+Q3KkfK
-   yo6mZTXzZmUPXClwUksKZQJ483XRuAI6mBHIgO2H7d+prcykvciF320+h
-   i85afMebF1kAiOE7TWLq3CXf9axQLj+l9kU6bYJKhD+r/lGAMsf72AjKb
-   WDfsj16UZWFpJxhpdhcY9d3iWbFcqe3CR7zgN08qWBPVRfo43HpLZdRCz
-   g==;
-X-CSE-ConnectionGUID: 9A8I7pjyS1yRoYv6HYrq1g==
-X-CSE-MsgGUID: uOSsAfyWSF+DDxFWnDwXIQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="89575901"
-X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
-   d="scan'208";a="89575901"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 20:27:52 -0700
-X-CSE-ConnectionGUID: jXyrUnQUTjijHpNVquEIwg==
-X-CSE-MsgGUID: bUYlg8z2QcKiPLUcckGC1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
-   d="scan'208";a="261763974"
-Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 20:27:38 -0700
-Message-ID: <5d7151af-79a4-4e3b-8d06-949b1dd670ee@linux.intel.com>
-Date: Wed, 12 Aug 2026 11:27:35 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Vc3ovu9/"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67C31hXf2285240;
+	Wed, 12 Aug 2026 03:46:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=RlTHa3koWgbHAkcHblOzwz27zcB+0vrMaMu9AkyEX
+	E4=; b=Vc3ovu9/Wn3hBc0N0yXq/9hyDfFxW8DLfmBhkwdBsgn6EanP33MvOfsk2
+	9oSqdxf5IWZRtOuCh3ZO6fUW2+CFsbP5rAD0n3ME5qAK6pHcRXqhZpgjslLvH4hO
+	OvRtXrr8r7QoxKWT5VEELZW34AVC13TD2vTKAE+XsqbxKfKUjQadptlkuzc6o7Ui
+	2ORUF8PMDY6vuOwCwpaX2Ph/tB+2pIurWYfXBNb+pEG8oxp7KoxLDNYTrR1oA1xM
+	ix/Yl/pwuKJZUOUJoNnnWUZR8b3qspUtR7XWjBidqKWCSCcp33eYlb52/z90iY4V
+	j3gYHIN8M0NbgTRGoYHoHj4qKC/1A==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvm9rnkb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Aug 2026 03:46:39 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67C3QNo8016602;
+	Wed, 12 Aug 2026 03:46:38 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxfsjvayn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Aug 2026 03:46:38 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67C3kahS33030828
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Aug 2026 03:46:37 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DBCFE58063;
+	Wed, 12 Aug 2026 03:46:36 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9BE5858055;
+	Wed, 12 Aug 2026 03:46:33 +0000 (GMT)
+Received: from vaibhav?linux.ibm.com (unknown [9.127.3.174])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with SMTP;
+	Wed, 12 Aug 2026 03:46:33 +0000 (GMT)
+Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Wed, 12 Aug 2026 09:16:31 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        kvm-ppc@vger.kernel.org
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v2] KVM: PPC: Book3S HV: Don't drop pending doorbell across L2 entry
+Date: Wed, 12 Aug 2026 09:16:26 +0530
+Message-ID: <20260812034628.1122115-1-vaibhav@linux.ibm.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 02/41] KVM: guest_memfd: Introduce per-gmem
- attributes, use to guard user mappings
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev,
- Xiaoyao Li <xiaoyao.li@intel.com>
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-2-2fc18ee6d3ba@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-2-2fc18ee6d3ba@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDAyNSBTYWx0ZWRfXwuI1TZg8fR1b
+ iAqhodKhm7JokUEfWRb/rHTLnbqJ8kSTrJq/3WLVgtvVd9IE0lshsIci7SX+JBZbcIp6rLBxSTr
+ 63KJvJ9mGHlpIhs+SSFFd8X5v4DBc/+fxlstdWss0uJ9COKNladPQ9dmnPircAiif/VkYrKRNcj
+ pFS3MTgERX4V7UlMDW/3Yratpn2xnepoyK1NJFbuKM4gLJiynjYlFlICpAjrOZ6uasKfUqRsFOo
+ pQr/+CUkVmpE07WAPvSRCxYT7uO0aosziHI37+kDfHXOWxbEZf5kQqFRUwsCUg1GOrVNWssMCkZ
+ j84EhoU5uavnyOFGCDVOQc7hqGLMNSBCGuK+faDQHEXYyLFtl0GDzyC1a2UBeDfsPVPO/K3YpjQ
+ APALS4rYfNb9Iw2SrT73D4sCWuNYnHr508Tx5EnjPLKShS1ewdGrK5z2vgNbYVzLjtM+uDXTcWn
+ WkGGUZURo6fXTHe5smA==
+X-Proofpoint-ORIG-GUID: zOoaDepBYphW4XhPN6tbpop1tsODEhIB
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDAyNSBTYWx0ZWRfX5+JAVjqIrwIQ
+ 6IcpZ56wyfYsROefkt/8bI3JW8kH6LXaECyuJa4FSjJQbLLf4dHQ40hAJfsFMQuztFjLnJdozU7
+ nlQMbS3FLteql87jfqxUdvPh4A+A6Wo=
+X-Authority-Analysis: v=2.4 cv=IfK3n2qa c=1 sm=1 tr=0 ts=6a7bec9f cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=OjXTmG7aikRSz7Sv7TEA:9
+X-Proofpoint-GUID: zOoaDepBYphW4XhPN6tbpop1tsODEhIB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-12_01,2026-08-10_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1011
+ lowpriorityscore=0 adultscore=0 malwarescore=0 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608120025
 
-On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
-> From: Sean Christopherson <seanjc@google.com>
-> 
-> Start plumbing in guest_memfd support for in-place private<=>shared
-> conversions by tracking attributes via a maple tree.  KVM currently tracks
-> private vs. shared attributes on a per-VM basis, which made sense when a
-> guest_memfd _only_ supported private memory, but tracking per-VM simply
-> can't work for in-place conversions as the shared/private status of a given
-> page needs to be per-gmem_inode, not per-VM.
-> 
-> Use the filemap invalidation lock to protect the maple tree, as taking the
-> lock for read when faulting in memory (for userspace or the guest) isn't
-> expected to result in meaningful contention, and using a separate lock
-> would add significant complexity (avoiding deadlock is quite difficult).
-> 
-> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-> Co-developed-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Tested-by: Shivank Garg <shivankg@amd.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+On nestedv2 the L1 converts a pending doorbell into guest DPDES state at
+the top of kvmhv_vcpu_entry_nestedv2() and immediately forgets about it:
 
-With Sean's fixup in https://lore.kernel.org/kvm/annqex-kBOc0UJvp@google.com/ 
+	if (vcpu->arch.doorbell_request) {
+		vcpu->arch.doorbell_request = 0;
+		kvmppc_set_dpdes(vcpu, 1);
+	}
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Clearing 'doorbell_request' at this point assumes that handing DPDES to the
+L0 is equivalent to the L2 having taken the doorbell. That is not true, and
+the doorbell can be lost in two ways:
+
+  - The block runs before the lazy_irq_pending() check, so the doorbell is
+    consumed even on the path that returns 0 without ever calling
+    H_GUEST_RUN_VCPU.
+
+  - DPDES stays pending in the L2 until it is actually delivered. The L2
+    may exit for an unrelated reason (hcall, page fault, HDEC) with the
+    doorbell still set, typically because it was running with MSR[EE]=0.
+    Nothing reloads DPDES afterwards, so the L1 never learns this.
+
+Once 'doorbell_request' has been cleared, the L1 has no record of the
+pending doorbell. kvmppc_doorbell_pending() returns false, so
+kvmppc_read_dpdes() reports the target thread as idle when a sibling vCPU
+emulates 'mfspr DPDES', and the vCPU can be treated as having no work
+pending and blocked. From the L2's point of view the doorbell is silently
+lost, which shows up as an SMT guest hanging on a doorbell-based IPI.
+
+Fix this by converting 'doorbell_request' to an atomic to track the L2's
+DPDES rather than being consumed by entry. This also enables new doorbells
+to be queued up on a vcpu while and active doorbell request is being
+handled.
+
+Since kvm_vcpu_arch 'doorbell_request' is also shared across APIv1 and
+Bare-Metal KVM infrastructure on PPC64, the patch also updates these
+paths to use kernel's 'atomic_t' helpers.
+
+With this following changes to kvmhv_vcpu_entry_nestedv2() code flow are
+done:
+
+  - inject DPDES after the early-return paths and before
+    kvmhv_nestedv2_flush_vcpu() serializes it into the vcpu run input
+    buffer, and no longer clear 'doorbell_request' there,
+
+  - after H_GUEST_RUN_VCPU, reload DPDES from the L0. The run output only
+    carries the state the L0 chose to return and the 'valids' bitmap is
+    zeroed on exit, so an explicit kvmhv_nestedv2_cached_reload() is
+    needed to see the L2's current value,
+
+  - if DPDES is still set the doorbell was not delivered, so keep
+    'doorbell_request' pending so that it is re-injected on the next
+    entry; otherwise clear it.
+
+This keeps a pending doorbell visible to the L1 for as long as the L2 has
+not consumed it, so vCPU wakeup and DPDES emulation on sibling vCPUs stay
+consistent with the L2's actual state.
+
+Testing
+=======
+This patch has been tested with continuous migration for a APIv2 KVM guest
+running stress-ng workload with lots of IPIs flying around, top of a
+PowerVM-LPAR and seems to work. Without the patch the migration loop used
+to eventually endup in KVM guest reporting lockups, which arent seen
+anymore with this patch.
+
+I haven't tested it yet with Bare-Metal nor APIv1 based PPC64 KVM
+guests. Will be able to share their results (Hopefully) in next version of
+this patch.
+
+Fixes: 54ec2bd9e017 ("KVM: PPC: Book3S HV nestedv2: Fix doorbell emulation")
+Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Assisted-by: Claude:Opus-5
+
+---
+Change-log:
+Since V1:
+https://lore.kernel.org/linuxppc-dev/20260803034426.44249-1-vaibhav@linux.ibm.com/T/#u
+* Address review comments around a typo [Shashiko]
+* Address a race condition which Shashiko had pointed to [Shashiko]
+* Updated the patch description and added test results
+* Refactored 'doorbell_request' to an 'atomic_t'
+* Updated code to use atomic_t helpers
+---
+ arch/powerpc/include/asm/kvm_host.h   |  2 +-
+ arch/powerpc/kvm/book3s_hv.c          | 39 ++++++++++++++++-----------
+ arch/powerpc/kvm/book3s_hv_builtin.c  |  3 +--
+ arch/powerpc/kvm/book3s_hv_nested.c   |  9 ++++---
+ arch/powerpc/kvm/book3s_hv_p9_entry.c |  7 +++--
+ 5 files changed, 34 insertions(+), 26 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
+index 2d139c807577..03fac7422aa2 100644
+--- a/arch/powerpc/include/asm/kvm_host.h
++++ b/arch/powerpc/include/asm/kvm_host.h
+@@ -775,7 +775,7 @@ struct kvm_vcpu_arch {
+ 	unsigned long pending_exceptions;
+ 	u8 ceded;
+ 	u8 prodded;
+-	u8 doorbell_request;
++	atomic_t doorbell_request;
+ 	u8 irq_pending; /* Used by XIVE to signal pending guest irqs */
+ 	unsigned long last_inst;
+ 
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 61dbeea317f3..fb80c13dbb29 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -15,6 +15,7 @@
+  * by Alexander Graf <agraf@suse.de>.
+  */
+ 
++#include "asm/guest-state-buffer.h"
+ #include <linux/kvm_host.h>
+ #include <linux/kernel.h>
+ #include <linux/err.h>
+@@ -881,7 +882,7 @@ static bool kvmppc_doorbell_pending(struct kvm_vcpu *vcpu)
+ 	int thr;
+ 	struct kvmppc_vcore *vc;
+ 
+-	if (vcpu->arch.doorbell_request)
++	if (atomic_read(&vcpu->arch.doorbell_request))
+ 		return true;
+ 	if (cpu_has_feature(CPU_FTR_ARCH_300))
+ 		return false;
+@@ -1557,17 +1558,16 @@ static int kvmppc_emulate_doorbell_instr(struct kvm_vcpu *vcpu)
+ 		tvcpu = kvmppc_find_vcpu(kvm, vcpu->vcpu_id - thr + arg);
+ 		if (!tvcpu)
+ 			break;
+-		if (!tvcpu->arch.doorbell_request) {
+-			tvcpu->arch.doorbell_request = 1;
++		if (atomic_inc_return(&tvcpu->arch.doorbell_request) >= 1)
+ 			kvmppc_fast_vcpu_kick_hv(tvcpu);
+-		}
+ 		break;
+ 	case OP_31_XOP_MSGCLRP:
+ 		arg = kvmppc_get_gpr(vcpu, rb);
+ 		if (((arg >> 27) & 0x1f) != PPC_DBELL_SERVER)
+ 			break;
+-		vcpu->arch.vcore->dpdes = 0;
+-		vcpu->arch.doorbell_request = 0;
++
++		if (atomic_dec_return(&vcpu->arch.doorbell_request) <= 0)
++			vcpu->arch.vcore->dpdes = 0;
+ 		break;
+ 	case OP_31_XOP_MFSPR:
+ 		switch (get_sprn(inst)) {
+@@ -2313,7 +2313,7 @@ static int kvmppc_get_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 		 * On POWER8, doorbell_request is 0.
+ 		 */
+ 		if (cpu_has_feature(CPU_FTR_ARCH_300))
+-			*val = get_reg_val(id, vcpu->arch.doorbell_request);
++			*val = get_reg_val(id, atomic_read(&vcpu->arch.doorbell_request));
+ 		else
+ 			*val = get_reg_val(id, vcpu->arch.vcore->dpdes);
+ 		break;
+@@ -2565,7 +2565,7 @@ static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 		break;
+ 	case KVM_REG_PPC_DPDES:
+ 		if (cpu_has_feature(CPU_FTR_ARCH_300))
+-			vcpu->arch.doorbell_request = set_reg_val(id, *val) & 1;
++			atomic_inc(&vcpu->arch.doorbell_request);
+ 		else
+ 			vcpu->arch.vcore->dpdes = set_reg_val(id, *val);
+ 		break;
+@@ -4253,10 +4253,6 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	int trap;
+ 	long rc;
+ 
+-	if (vcpu->arch.doorbell_request) {
+-		vcpu->arch.doorbell_request = 0;
+-		kvmppc_set_dpdes(vcpu, 1);
+-	}
+ 
+ 	io = &vcpu->arch.nestedv2_io;
+ 
+@@ -4265,6 +4261,10 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	if (lazy_irq_pending())
+ 		return 0;
+ 
++	/* Set DPDES if any doorbell is requested */
++	if (atomic_read(&vcpu->arch.doorbell_request) > 0)
++		kvmppc_set_dpdes(vcpu, 1);
++
+ 	rc = kvmhv_nestedv2_flush_vcpu(vcpu, time_limit);
+ 	if (rc < 0)
+ 		return -EINVAL;
+@@ -4298,6 +4298,17 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
+ 
+ 	timer_rearm_host_dec(*tb);
+ 
++	/* Check if privileged door bell was requested and handled */
++	if (atomic_read(&vcpu->arch.doorbell_request) > 0) {
++		/* In case PHYP doesn't return updated dpdes in output gsb */
++		if (vcpu->arch.vcore->dpdes)
++			kvmhv_nestedv2_cached_reload(vcpu,
++						     KVMPPC_GSID_DPDES);
++		/* if dpdes was handled then reduce the doorbell count */
++		if (!vcpu->arch.vcore->dpdes)
++			atomic_dec(&vcpu->arch.doorbell_request);
++	}
++
+ 	/* Record context switch and guest_run_time data */
+ 	if (kvmhv_get_l2_counters_status())
+ 		do_trace_nested_cs_time(vcpu);
+@@ -4356,9 +4367,7 @@ static int kvmhv_vcpu_entry_p9_nested(struct kvm_vcpu *vcpu, u64 time_limit, uns
+ 	 * enables us to receive doorbells when H_ENTER_NESTED is
+ 	 * in progress for this vCPU
+ 	 */
+-
+-	if (vcpu->arch.doorbell_request)
+-		vcpu->arch.doorbell_request = 0;
++	atomic_set(&vcpu->arch.doorbell_request, 0);
+ 
+ 	/*
+ 	 * When setting DEC, we must always deal with irq_work_raise
+diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
+index fa0e3a22cac0..76bda278cff9 100644
+--- a/arch/powerpc/kvm/book3s_hv_builtin.c
++++ b/arch/powerpc/kvm/book3s_hv_builtin.c
+@@ -594,11 +594,10 @@ void kvmppc_guest_entry_inject_int(struct kvm_vcpu *vcpu)
+ 		}
+ 	}
+ 
+-	if (vcpu->arch.doorbell_request) {
++	if (atomic_dec_if_positive(&vcpu->arch.doorbell_request) >= 0) {
+ 		mtspr(SPRN_DPDES, 1);
+ 		vcpu->arch.vcore->dpdes = 1;
+ 		smp_wmb();
+-		vcpu->arch.doorbell_request = 0;
+ 	}
+ }
+ 
+diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
+index 22e616662255..cc81089b2bcd 100644
+--- a/arch/powerpc/kvm/book3s_hv_nested.c
++++ b/arch/powerpc/kvm/book3s_hv_nested.c
+@@ -32,7 +32,7 @@ void kvmhv_save_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state *hr)
+ 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
+ 
+ 	hr->pcr = vc->pcr | PCR_MASK;
+-	hr->dpdes = vcpu->arch.doorbell_request;
++	hr->dpdes = atomic_read(&vcpu->arch.doorbell_request);
+ 	hr->hfscr = vcpu->arch.hfscr;
+ 	hr->tb_offset = vc->tb_offset;
+ 	hr->dawr0 = vcpu->arch.dawr0;
+@@ -105,7 +105,7 @@ static void save_hv_return_state(struct kvm_vcpu *vcpu,
+ {
+ 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
+ 
+-	hr->dpdes = vcpu->arch.doorbell_request;
++	hr->dpdes = atomic_read(&vcpu->arch.doorbell_request);
+ 	hr->purr = vcpu->arch.purr;
+ 	hr->spurr = vcpu->arch.spurr;
+ 	hr->ic = vcpu->arch.ic;
+@@ -143,7 +143,7 @@ static void restore_hv_regs(struct kvm_vcpu *vcpu, const struct hv_guest_state *
+ 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
+ 
+ 	vc->pcr = hr->pcr | PCR_MASK;
+-	vcpu->arch.doorbell_request = hr->dpdes;
++	atomic_set(&vcpu->arch.doorbell_request, hr->dpdes);
+ 	vcpu->arch.hfscr = hr->hfscr;
+ 	vcpu->arch.dawr0 = hr->dawr0;
+ 	vcpu->arch.dawrx0 = hr->dawrx0;
+@@ -176,7 +176,8 @@ void kvmhv_restore_hv_return_state(struct kvm_vcpu *vcpu,
+ 	 *   a) Sent after H_ENTER_NESTED was called on this vCPU (arch.doorbell_request would be 1)
+ 	 *   b) Doorbell was not handled and L2 exited for some other reason (hr->dpdes would be 1)
+ 	 */
+-	vcpu->arch.doorbell_request = vcpu->arch.doorbell_request | hr->dpdes;
++	if (hr->dpdes)
++		atomic_inc(&vcpu->arch.doorbell_request);
+ 	vcpu->arch.hfscr = hr->hfscr;
+ 	vcpu->arch.purr = hr->purr;
+ 	vcpu->arch.spurr = hr->spurr;
+diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
+index 34bc0a8a1288..fc44d8aa7a6a 100644
+--- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
++++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
+@@ -610,10 +610,9 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 
+ 	if (vc->pcr)
+ 		mtspr(SPRN_PCR, vc->pcr | PCR_MASK);
+-	if (vcpu->arch.doorbell_request) {
+-		vcpu->arch.doorbell_request = 0;
++
++	if (atomic_dec_if_positive(&vcpu->arch.doorbell_request) >= 0)
+ 		mtspr(SPRN_DPDES, 1);
+-	}
+ 
+ 	if (dawr_enabled()) {
+ 		if (vcpu->arch.dawr0 != host_dawr0)
+@@ -838,7 +837,7 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 
+ 	dpdes = mfspr(SPRN_DPDES);
+ 	if (dpdes)
+-		vcpu->arch.doorbell_request = 1;
++		atomic_inc(&vcpu->arch.doorbell_request);
+ 
+ 	vc->vtb = mfspr(SPRN_VTB);
+ 
+-- 
+2.55.0
+
