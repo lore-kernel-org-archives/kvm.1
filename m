@@ -1,145 +1,127 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD9B2FFF8D;
-	Wed, 12 Aug 2026 18:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159813002B9
+	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 18:49:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786560504; cv=none; b=HlZxI6Y9CjsdlAtRVq6nXx5g9xKr9148KUCYzC55S0YvihCje0WjZATUTg2gAxZ3W7AjUUiXFUdlVgU1GUQpvUlXWtvXUkcfLjsrQ/KvkPYap3kFys6dEfRMISDPSvdAWwnzK+61cPVE138QWMD6bTrEwBbEnwEbjpARwU+WPws=
+	t=1786560544; cv=none; b=lBGcdHP/NqGSQRv11rWuIiwvQtwuqREKaD7Qpvg1ihuX5pb3O9vfOk+58yK+niEhZPGifJL15HqfxrqYdaii89dNn43xgwirfiva5fP6E4qEQCk7MzZWsd1RmewBuIPeJ/s/pTO69Nsw3wh5p68xaZnIegcVTGBQUCmW8GAQ1sE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786560504; c=relaxed/simple;
-	bh=FVuGmVwviypveTwj/LLxWJxcBGqTSJxxcJ6sLAL3fK8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DAoEl//GXRjfdALCLXgxKSbsrzPJU7hwEKijRBuK2AMXvQDNAc9Q4ojlA0uUn88CTlrNh95RmkHDi+qTZxADQRgzqblroUOrtOuvb1xJMRh/oBmy+FBkXd6PrDe+YWZ/hLzU4ADqKbDsUXnTjuKqlaVIDljmUujCuN5i2zEw7FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=AF4pRSYd; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786560544; c=relaxed/simple;
+	bh=bjNZqx7xPYsvFKEQ3VqkFi7d8GnMq1tCvPz1WqU87Jc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DLXXrD49yz4h2uEOHjUYX0hKtTSe+e6gtKhXkHnYBlgxXu+iW9FlmOtY4WNTFVKnsFfXdDKQPqrmmAuggHF4gYqybm+FaJAOrtbedLiZZx6gUeEMvXK+BkkUTvEtsw5QUWC2yPOlZZV696lJDFY2ArrqMEyF5CUgT7ye9WX/zpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xpr70uer; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="AF4pRSYd"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67CH1dxZ4120438;
-	Wed, 12 Aug 2026 18:48:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=B9s21O
-	ZwuHn7qsHzphu5vs1xZb2IpqddTQ8MCpBT1Hc=; b=AF4pRSYdPC/a1Kx08GLEpP
-	C4aI2faN2XSbc+3PajRhO2uK7SRqn034PSbup/3MwGA5jte3Bl1JsXS5sFnfrtSF
-	L3K6z0wi2WKeP/vZ4AoD/jqdgz8uCEUrHV2H2FT3eK8ef5/SMAFr/VHKBNlNWYO0
-	KOG1TnYvsfyTass33SAr0DiEiuADRy1S6+8FhrOV5pVrBxREbZ+Rgvqx/sMCsizc
-	7fM4/9CxjO3j6xVSzSNM4sJCodz4EmnTC7mopQ9fThAyDOlfur0+7rvpuXlv/b9a
-	2knKm7GKvLxRVne7cvJjpxUqmetX/QZNWjHm7NBHgcQXbGaDRguyPGUVsrAp9tNw
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvnwb8fg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Aug 2026 18:48:02 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67CIfLQn009310;
-	Wed, 12 Aug 2026 18:48:01 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxfsjyfu2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Aug 2026 18:48:01 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67CIlvsP42140034
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Aug 2026 18:47:57 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 441B620040;
-	Wed, 12 Aug 2026 18:47:57 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 280F720049;
-	Wed, 12 Aug 2026 18:47:56 +0000 (GMT)
-Received: from [9.87.128.143] (unknown [9.87.128.143])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 12 Aug 2026 18:47:56 +0000 (GMT)
-Message-ID: <677fe1ce-17c9-4f6b-bdc6-60c34453f8a1@linux.ibm.com>
-Date: Wed, 12 Aug 2026 20:47:55 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xpr70uer"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786560541;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ion7zsM1wuwj8v0X2H7I2jwkGAjdwsZsd5vjRG/Ldx0=;
+	b=Xpr70uerHPO43d4bLWFtWomlDgRT5F4GblBpkq+63SHXlFyLvCsKhLTUhsFRWUXYrCCzmE
+	6TWIYzvSnk1Xl0o5hK1FcppmUK8ljG0vXqv+ThEBgeanuMDakx2FkVZkh8WrB7RgUPEi67
+	K1P/lQGCljk/Dea8KDrsqc9731CsCMY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-642-u1vxOzhdNkS-PUrf-N4Saw-1; Wed,
+ 12 Aug 2026 14:48:51 -0400
+X-MC-Unique: u1vxOzhdNkS-PUrf-N4Saw-1
+X-Mimecast-MFC-AGG-ID: u1vxOzhdNkS-PUrf-N4Saw_1786560530
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B8943180035C;
+	Wed, 12 Aug 2026 18:48:49 +0000 (UTC)
+Received: from localhost (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id ECB37422;
+	Wed, 12 Aug 2026 18:48:48 +0000 (UTC)
+Date: Wed, 12 Aug 2026 14:48:45 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Jia Jia <physicalmtea@gmail.com>
+Cc: mst@redhat.com, jasowang@redhat.com, michael.christie@oracle.com,
+	pbonzini@redhat.com, eperezma@redhat.com,
+	virtualization@lists.linux.dev, kvm@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] vhost-scsi: serialize completion notification with
+ callfd updates
+Message-ID: <20260812184845.GA259475@fedora>
+References: <20260806065143.55584-1-physicalmtea@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 17/33] KVM: s390: Move PGM code definitions to
- asm/kvm_host.h
-To: Steffen Eiden <seiden@linux.ibm.com>, kvm@vger.kernel.org,
-        kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
-        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Friedrich Welter
- <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
-        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Vasily Gorbik
- <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>
-References: <20260812153631.3376090-1-seiden@linux.ibm.com>
- <20260812153631.3376090-18-seiden@linux.ibm.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20260812153631.3376090-18-seiden@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=RsP16imK c=1 sm=1 tr=0 ts=6a7cbfe2 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=RYzP9iL54Ol3iwj30fUA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 4d2N9M56DqJlK0d6xcI5aANx9aGBz6EC
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDE0OSBTYWx0ZWRfX5efu8lcXn34Y
- gsPe5zUu3IUNNGPXZv75684MY0T99zWMNG+SkZeoksVYg6+SBRKpvZxPIpNUhtzU5H6rMikBm+O
- d2BMLVYiXsXjoO+/5mrZy7QGTwe3Km8PRwUpkr8mHIL5EhzJ9mOhugv8S/J8rlmUbKouqsXUXPg
- /w3Nz++aKWvx7dHBOfrtAyUUjxeYMJAwFubnhI60yl139e8/Fe2Y8ph3UnxnGrnvzM4JfULkaeM
- 1Wl2zUf0fLWtHoWCe6YsuLPcQjEM9Hx2ZylXeGHTPqVcfyF/bOotVkHl2ByD2IZDVrVtAj65ril
- pHF7/YmPLptxwZwSbvfADcDwTEYNBVLK5pEmZNP2+4QbGkNoaQXeqYYLNfJzWHfrdpIze3fciil
- LE2olaivNf+gf8gWQpoT7kRSetnUl9+I34lILvCLCxzMTYuB0SBjyyvYIfkeKq5HYV8zucUP2zJ
- Iv73pwmGV0EfOW6Il4w==
-X-Proofpoint-ORIG-GUID: Z3HeYohtmWMvPUTza24a0xrLm73byAaz
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDE0OSBTYWx0ZWRfX0eQAW9TgmzbI
- F084dpi9dbcKnMuKNNeYiY3glclXQSgxA6T2BhZLFvuPgLWPknJS/bYOjSS0y9yGBJbTGyj6QnC
- z+UUGhNHqZvm6QmUIJ0T7mJEGk7wLIM=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-12_05,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 suspectscore=0 clxscore=1015 malwarescore=0
- phishscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608120149
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="nes+HIqLeHiA28pN"
+Content-Disposition: inline
+In-Reply-To: <20260806065143.55584-1-physicalmtea@gmail.com>
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-Am 12.08.26 um 17:36 schrieb Steffen Eiden:
-> Move PGM code definitions from kvm_host_s390.h (back) to the generic
-> kvm_host.h. These definitions are needed by multiple KVM implementations
-> and should be in a shared location.
-> 
-> No functional change.
-> 
-> Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+--nes+HIqLeHiA28pN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Aug 06, 2026 at 02:51:43PM +0800, Jia Jia wrote:
+> vhost_scsi_complete_cmd_work() drops the virtqueue mutex before calling
+> vhost_signal(). VHOST_SET_VRING_CALL replaces call_ctx.ctx and releases t=
+he
+> old eventfd_ctx while holding the same mutex. vhost_signal() reads the ca=
+ll
+> context before and after vhost_notify(), so a concurrent callfd update can
+> make it signal a freed context or NULL.
+>=20
+> KASAN reported the use through:
+>=20
+> 	eventfd_signal_mask
+> 	vhost_signal
+> 	vhost_scsi_complete_cmd_work
+>=20
+> The context was released through:
+>=20
+> 	eventfd_ctx_put
+> 	vhost_vring_ioctl
+> 	vhost_scsi_ioctl
+>=20
+> Keep the mutex held through vhost_signal() so completion notification and
+> callfd updates are serialized.
+>=20
+> Fixes: 057cbf49a1f0 ("tcm_vhost: Initial merge for vhost level target fab=
+ric driver")
+> Link: https://lore.kernel.org/r/20260720085306.1519294-1-physicalmtea@gma=
+il.com
+> Signed-off-by: Jia Jia <physicalmtea@gmail.com>
 > ---
->   arch/s390/include/asm/kvm_host.h      | 57 +++++++++++++++++++++++++++
->   arch/s390/include/asm/kvm_host_s390.h | 57 ---------------------------
->   2 files changed, 57 insertions(+), 57 deletions(-)
+> Changes since RFC:
+> - Send as a non-RFC v2.
+> - Add Fixes and Link tags.
+>=20
+>  drivers/vhost/scsi.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
-Can look weird from a first glance, but this helped to reduce the overall
-patch size and for rename detection and easier review.
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+--nes+HIqLeHiA28pN
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmp8wA0ACgkQnKSrs4Gr
+c8gS9wf7B5UusKdqG9SmB9caKbFt9+tVhCHTHHu5YqHL1TrUkssemsA+b/2grmt5
+No+sYQ/zGeyoYPvFLrNQm+2r49/Pz+kq84KbovRe4BzRRtISWicqPDALsChD+wsU
+RxCYfkfB3gelfgBTZrWzr+hycIPWnDv/36OBE+jwMTf6ZkWR7riu1enH0NS76Qow
+5omHltl0cMxd1egdTOa6ZxrTldw3rv1Cdey31sbaYmqiBZMnSb2AHp1lCTqfSq7q
+D9+ftvlRHr0I8xbWQsrEbChZK48PQtTCJr5KFgnNCZ1wQM/Fo+L0Lt7ppeRPlih1
+PcZ1owKQzZ6OeedAyzQkHPq5jEGB8w==
+=7yPr
+-----END PGP SIGNATURE-----
+
+--nes+HIqLeHiA28pN--
+
