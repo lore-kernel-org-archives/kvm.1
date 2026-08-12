@@ -1,150 +1,142 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDA23002C8
-	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 16:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786550705; cv=pass; b=gf8vCzu/oPg62P25gf1Ub1LNYiOEoEnQjt2xgXt0MPWGFPnTHJingbgEWs6yiRAnfWuJCluMQPNTmPggVfc1syNEGMhQwWRQ/64NudPezROSNZNfXwVfcP99YTyexJnOLYC50+ITGrVkCJCmxgQgQePbKmgDc7cNS1rc2CpWGOg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786550705; c=relaxed/simple;
-	bh=KNvFYWPxYeka6RYVhSJtPG0o9VDuxxFMEgnpnDdSwQU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fbA4Uw8docqpGpyYhCu9L9umXHVGLn/WwHfGVyN8p06mqnPkRi3lVaKpJiIOwomhXN2fU0LgTE4JK15eEyoQsyMqt5pV1lEKyA4L0sg/njcXYgRZO14iEL/RTe/fXVh49UuSXT+wSlDYJ7F+Tg33rowDJZx5FpYraKSBZ6mP/yY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CdYZ4bnS; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=fGHuPm6j; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B249A364042;
+	Wed, 12 Aug 2026 16:05:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786550751; cv=none; b=sssTmEehD3hBQrT2O5taHqnoq4ESgWayDS4TSng+zXW1HUCX4ghnVqiRXq0xtsF1n7yRarClkdUh4Ixw7Ly+ekdOkNw+mlpp7CFearv3YFba0OoM1relFKJSJGy2q3yyDtH4M2pPMq5TX8w9yUOqZewP2aVCT1F6CUMulzCSY2Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786550751; c=relaxed/simple;
+	bh=zsVfuH+XopEA7fntzxMJSZ7UxtuPBb8OpvTggewejxk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uPshdAau2gfFNEYsFbVGnh1ed8zPXgBV5lPI6iAGd1lb5kOwjfym1n78ATK0jyC+0bPjtssVG87pPlIUVCrsIwlTXvzY/CbJ1H8HLWJEnzn5hzQIC3/M93L5/9LsgBYscgSTX/oUMcIkN9RVuktk+N6XF9z7Q6e2Sp2ZhpYDi0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=kaHdDJ4c; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CdYZ4bnS";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="fGHuPm6j"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786550702;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XVrpa6t08jfvsuIkBMY48klo1RAJTpG8dCB8zk4ETDc=;
-	b=CdYZ4bnSgChe7aYw9isAlQzANB1I3LBg35CkItiIcbIVVrDCYC6xzcxD5fTgN+I4o1ebMC
-	DX+JsdS2IBz/wkYygKua111brE/P9+YPjD/SlLn/rfO7Owgrtejcd3vcrpsPKs8c8BhpBz
-	E1MZDhzYwhKhne+oid/x5OEBB74iNLo=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-132-dP4toeBEMaCyuxvdd2Rbkw-1; Wed, 12 Aug 2026 12:05:01 -0400
-X-MC-Unique: dP4toeBEMaCyuxvdd2Rbkw-1
-X-Mimecast-MFC-AGG-ID: dP4toeBEMaCyuxvdd2Rbkw_1786550700
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47f90dbaf84so900560f8f.1
-        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 09:05:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786550700; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WBRNqjmSKi6BI5X1MXEwptLMIzADqS2spmYBva18mErscFtvb3elhWmjbqc5Z3h+O/
-         fAKpkjGWl1iIRZDbyzya4XFu64wx2kFf5YexK688CtJmm9Twhx7T+VQf5GHZzlAYl4Yg
-         jCmmi8CzGebfF9SBC/n8so5pKMS7/00Xt+bHda9+kFwI/NH3LnPjZKhE2yqrY4Y2AtOP
-         1QzHbg9k2qMvWz4ZUNQxfHD9lxbENeotwBE2N3gWIrnHDpvWxjvlPDtWDfYrhdTgX0HQ
-         ku/AQhRxq3fN4Ugxh0Fe6GC4aCQVWSl1V4wukP3DYRbqRJpa15XyN4aGDsvnsVdid1rV
-         1sqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=XVrpa6t08jfvsuIkBMY48klo1RAJTpG8dCB8zk4ETDc=;
-        fh=MLjZ8/xeh8xCb58rHiLLp3S0XyAOc1+YunUWH8pmBC8=;
-        b=EowM/HwLJKpRlRA+AJyt1F1Nzfxc2ebOs+EyDIlBS64WkPN5iDFHIjAkXqbZD/+q7M
-         Layomk6rIMY6/BvBaL4dSrKTBtKZWGWesZHP2Ye4SOhM3uPMd+c0FeTVAvy5PF6PKMo8
-         0DIXuYYZRBEClNeWgETh2a0uwvrEJuzWcuJXSN3+ulDlQtrhY7mB9lUJdkx+z3R8/LSv
-         CHuHZb+kOS8zPEGUUjzOpXTHvbyOQF+KSd3iByo7OJadiobs3oIteHqqwCmjFsIstSLa
-         m+K9BjH5VZiWNjVPWtn2UNeVONHe8uyKyJz5JlF1fOiwVb/CrRyUF7tZ0xUT1qVasz4T
-         ekUQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786550700; x=1787155500; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XVrpa6t08jfvsuIkBMY48klo1RAJTpG8dCB8zk4ETDc=;
-        b=fGHuPm6jzE36BlvA7r9S19w8ixNgE0cBf+Ccl0DVNcMz8AarBSypQ0WgBKV8vqFPng
-         C02v7BWI2Uzy7SzT2q4B3X9we+QutnJ6PWLAYHu47b2ICdrqPFQjRu9fy+EwIoG/YnoX
-         lfV1wG7OtqRFyjnLy0OOt2axAgNq41TJ2k+/XpLn9067wCWXw3rBSNjLLTM3iWP/I4zQ
-         f8dLZXlVuiE4hHDGL04ol3g0AcBW1rUpVezZu4e8h3vjTUDNoKSup1sv/uuuEKlbidM1
-         CpJCpWhMyytbPu2uoaFpe04TDxb4X9MXij0tpomWf4P/Bl5X9fsMkFPNGQ5lQBq0/JS6
-         kwJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786550700; x=1787155500;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=XVrpa6t08jfvsuIkBMY48klo1RAJTpG8dCB8zk4ETDc=;
-        b=OczPo1SeOge3m9JPC++ze4visFh5qbzVmFyv0Kkz1oEw7HTFO+Q811qsTP/6h3BhkN
-         EAlX37/ZfSB5sDxD733ZOhOWNeSrbPy3UNqd7DLhQUpJJnFr7uslu/A+/9NZa7Imtkvo
-         yLDd3d3sPDEqV3c6JzieoYBysYHvjgYK84D28zJS1d1PGnu3V4uNa+6fhpUo7mJJ4g7k
-         IjBCiVcvdLBu7stZb/RtvRQdQHdBSCfoLODRFYdr6N/EK31mXwNSuLom0qnndoY/MPBp
-         ip0ymjY7Z8DuT46Yr2bgPBUCDydhycuXHFVhvRt3JR8sW6/CtjijYIe3/v+4KxTE0RTb
-         hKHQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrqayIsCUX1SJLuwgm0T9oEVF7SUC1CjPu3FhIfDJYA9wml+bEMaTriMdCQ9BmkD8VatsI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLuMAl+h2qF4heGmQ8C0Nl2RJ8w1kwGsKP8xOSSsgSfUGDv3Wi
-	HYZHyyEuKgklfAeW9uue26LXRc7l3G8YEk5uJS5M2NNYu1QrKFVGkIt4OdtngegWCK4cdIahcRO
-	wmwrjIsxYrRvu21YigFpOpjtbg9gcYSJavrKxroc1ACMNCClBPqtoZqR9Tc88ackia1xGtSrdZ7
-	u5wy1lucjDjW1WZCOpANlh3c2T6PhS
-X-Gm-Gg: AR+sD13GWKVdZ4KDpl9YaKpJQvDr7pEXVtdFunoY+kq8TkyCY8UdMoizkERq++F2IWj
-	BfwTaK6vnS8ugwKMFOyw4/mSlisDFy3rVYpu58TfmXJ38Z/6Z5274bt2IlQNpiFeOhrx2M5Vm26
-	KhsNirZqf0X3fAplJ44cOlvotmzykmcNPcHQGEbeEi4L+Js2xspkA/U5ouCi1XO8VPliN13PD0y
-	n9FB0BQZy/ksyCJm5CT5OEHkNM7yFYWNOqJKxezdkHJ0GeWawQDCqw8CTA=
-X-Received: by 2002:a05:6000:25ee:b0:47f:943a:45fa with SMTP id ffacd0b85a97d-48152b01a7dmr8831829f8f.29.1786550700439;
-        Wed, 12 Aug 2026 09:05:00 -0700 (PDT)
-X-Received: by 2002:a05:6000:25ee:b0:47f:943a:45fa with SMTP id
- ffacd0b85a97d-48152b01a7dmr8831732f8f.29.1786550700093; Wed, 12 Aug 2026
- 09:05:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="kaHdDJ4c"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67CE1oHr3640578;
+	Wed, 12 Aug 2026 16:05:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=EaTi9W
+	uD890My2q5ivgqs0PDsW9S32YRbq0YLCdUeL0=; b=kaHdDJ4cWNi1i0Gy4CR1vC
+	PI3tiM+1U0yNI78Dn58sGrNYXRMmZYX1/t9VSUAmtW6sJ+cE8mkADOGE/tSUtY9f
+	OV1PS1KxPCBK6xDmjIhVBscb4NvS8Hf5OxO4FvlLbnWCHni+DMh8JCaznmCkryec
+	BCCJL9I3oqht7QDPAmeK6yGRxL3jwmd2RyKMvrPfSnpIV9Dw9uFIIAd5iXTHpM4y
+	QWAbwE869jL900552gOENcvu0eZklGhlTDDuZkq8Hf6BELLiE/Gdjt3TJoppCQzl
+	PD4fC7NBNMzs0LJe0qSlfPgXBqlvKEFxetpLuR1BQOcTW5vGBOFtspzmsnQ59SNw
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvq9kc80-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Aug 2026 16:05:43 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67CFuLmB030334;
+	Wed, 12 Aug 2026 16:05:42 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxh0geq7a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Aug 2026 16:05:42 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67CG5fwP1901274
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Aug 2026 16:05:41 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 60B0958056;
+	Wed, 12 Aug 2026 16:05:41 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5365A5803F;
+	Wed, 12 Aug 2026 16:05:40 +0000 (GMT)
+Received: from [9.61.74.89] (unknown [9.61.74.89])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 12 Aug 2026 16:05:40 +0000 (GMT)
+Message-ID: <e8edfcb2-0bc9-4d0a-abaf-0c5b9fba1e83@linux.ibm.com>
+Date: Wed, 12 Aug 2026 12:05:39 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260811135537.GC544626@ziepe.ca> <1d669aca4ffee797b9c29215382444a5b23624b3.camel@infradead.org>
- <20260811142730.GG544626@ziepe.ca> <a552b227e18ddbb3fa1f2edf2d1cb30ee6ccff13.camel@infradead.org>
- <20260811104229.72fdd928@gandalf.local.home> <37b83b429b9f14ea6ad4ca1c13cc8e565ec09033.camel@infradead.org>
- <anwraNIKJV8zwrNT@tiehlicka> <44c51ace9b0dc44b795f6f48c91cda440eed910b.camel@infradead.org>
- <20260812122759.GA662699@ziepe.ca> <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org>
- <20260812134934.GC662699@ziepe.ca> <a48e6e7063122b22a8083bb0792984a204f316e6.camel@infradead.org>
- <fb87f673bf290cad133d113dbb0750a7752b9d30.camel@infradead.org> <a94b75e8b9b1d2191f365c0f4275fd5082332df5.camel@infradead.org>
-In-Reply-To: <a94b75e8b9b1d2191f365c0f4275fd5082332df5.camel@infradead.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 12 Aug 2026 18:04:47 +0200
-X-Gm-Features: AUfX_mxYjj1lPDXZPmp8aW6GUhdMuK_6ly_mDoPX9KEz7UGbw_A0i1e76HlJ2LU
-Message-ID: <CABgObfYjdQ13Gd9AH-kck85ZWch7j_E00rajawFuRdt5D=m3Sg@mail.gmail.com>
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Simona Vetter <simona.vetter@ffwll.ch>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Sean Christopherson <seanjc@google.com>, linux-mm@kvack.org, 
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 9/9] s390/vfio-ap: Fix memory leak when queue removed
+ from host AP config
+To: Anthony Krowiak <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
+        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
+        stable@vger.kernel.org
+References: <20260812115139.576303-1-akrowiak@linux.ibm.com>
+ <20260812115139.576303-10-akrowiak@linux.ibm.com>
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <20260812115139.576303-10-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: e2aWmmAWYJ7rBgkH4TEVPqZRLVCJcqnh
+X-Authority-Analysis: v=2.4 cv=PbDPQChd c=1 sm=1 tr=0 ts=6a7c99d7 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=aQWKK2KQ0X-UDO9gmigA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDEzMCBTYWx0ZWRfX57Y8pr60J5EZ
+ P0f23FORjFNmrqDYHhxTdjPaYeaEoVdNcQCbQxatjqh3itzsh0sJgaUmRRj2XExziCvOVE15qnX
+ xkFsYsHcY5zY/2yO1Mh+mkPmBLi/LqKFwHzvoWS1lBu30pUVKuwEPe70EsKhtj+loX44V8pwNdF
+ 9arYAxCwyp5TawK35OGYYXU8j8KJHXyKgR2kdS1001Q2e2Ar3lntBu2rji3tDYE1hTNi5OKIoLN
+ 2cHrAphDtfnY9jB/BhJilbm8e52gCK1Wdjq/5o7RtOqDqe8VmHBEIkXLZMCeVt7vZqe/IKqtJAG
+ uGOsjZXn8W+VgPMMb895mfHe1QyhUWJwpeUC+vxnXttAR8UG/TpEQaILupQHdAmq6xdk6q34Mv0
+ rDjKDfuqXIt4mTp3igPJpXcGqcNCgSZDtQmatEQFNuXSt46IK6u6T6Hw8spLjQMNuWVvL9zHTQ9
+ 6N1UtJUPwwrFDMOC+5Q==
+X-Proofpoint-ORIG-GUID: e2aWmmAWYJ7rBgkH4TEVPqZRLVCJcqnh
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDEzMCBTYWx0ZWRfX3wilkj/e3JeZ
+ /ZJbTp0Xi2GUdQokQFGhNshqjYjraEZpNZBoBQWPyjsPq9sxnMtr5jfBFj7XLg7ZeBXFPE/2hF7
+ RSzUZF3w0LhqfebHiedlHry29ofjNTM=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-12_04,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 priorityscore=1501 suspectscore=0 phishscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608120130
 
-> + * Atomic-flavor readers run with preemption disabled, so every
-> + * read-side critical section is bounded and running (not blocked) on
-> + * some CPU, which is what makes spinning here sane: the wait is
-> + * bounded by the longest such section. No index flip and no
-> + * grace-period sequence update occur, so concurrent call_srcu(),
-> + * synchronize_srcu() and srcu_barrier() are entirely unaffected.
+On 8/12/26 7:51 AM, Anthony Krowiak wrote:
+> When an adapter or domain is removed from the host's AP configuration, the
+> AP bus invokes vfio_ap_on_cfg_changed() to notify the vfio_ap device
+> driver. For each ap_matrix_mdev object to which the adapter or domain
+> is assigned, vfio_ap_mdev_hot_unplug_cfg() is called and removes the
+> adapter or domain from the matrix_mdev->shadow_apcb (i.e., the guest's AP
+> configuration) and hot unplugs it if a guest is using it. The new host
+> AP configuration (sans adapter or domain) is then stored in
+> matrix_dev->info.
+> 
+> When the AP bus subsequently unbinds the physical queue devices associated
+> with the adapter or domain that has been removed, it invokes
+> vfio_ap_mdev_remove_queue() for each queue removed. At this point, the
+> adapter or domain will no longer be assigned to the
+> matrix_mdev->shadow_apcb or the matrix_dev->info object because they would
+> have been removed by vfio_ap_on_cfg_changed(). Consequently,
+> vfio_ap_mdev_reset_queue(q) is bypassed and kfree(q) is called
+> without executing vfio_ap_free_aqic_resources(). This indefinitely pins
+> guest memory (q->saved_iova) and leaks KVM GISC resources (q->saved_isc).
+> 
+> Note that resetting the queue would fail with an invalid APQN error due to
+> the fact the queue is not longer in the host's AP configuration; however,
+> it is still necessary to free the AQIC resources. The fix here is to call
+> vfio_ap_free_aqic_resources if the adapter or domain is neither in
+> matrix_mdev->shadow_apcb or matrix_dev->info.
+> 
+> Fixes: b9bd10c43456d ("s390/vfio-ap: do not reset queue removed from host config")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-Making synchronize_srcu_atomic() spin in CONFIG_PREEMPT_RT is a
-slightly tall request - it's basically putting it on the same level as
-raw_spinlock. But if the MMU notifier guys really want to make OOM
-notifiers atomic, this would be basically the only way to do so.
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
 
-If instead it's okay to remove nonblock_start/end under
-CONFIG_PREEMPT_RT, for RT kernels I'd rather avoid
-preempt_disable/enable and only make synchronize_srcu_atomic() try to
-skip the index flip:
-
-   if (!try_synchronize_srcu(ssp))
-      synchronize_srcu_expedited(ssp);
-
-Paolo
 
