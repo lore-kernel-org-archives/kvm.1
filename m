@@ -1,56 +1,56 @@
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A404486B91
-	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 21:32:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51B3490BE0
+	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 21:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786570341; cv=none; b=EYL7nGBqExlS8LP9ezunlH/EGoUyln/yGa8Ua7o+fK8RcQkEt/JfmaRUcC8HCFnpvLuaFRPNM/7Bx9ftTljbmJRwpVhbuSn1rWw6E6WadGDQRXsIcgwgxFjQhTBOK8ZtAUYgjx4PND6NoG9Q1o5zYunUvrjPhb1ibl3m9IkPrDk=
+	t=1786570342; cv=none; b=LDOGikG7lsZ2apDTF8O9iHx3wprN0InIzLJU9OTolbFYf7FJtGB6qRENxGWUMq8VlfzxObyFNYLt6nibHQu0veGL25gTmz3D0tezUrHepertlEt4Xr95hbIqiG1E0KJz4GBthShdIvimlqoPGCnX3jOvynls49y/tXr/QW0gZog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786570341; c=relaxed/simple;
-	bh=WPb+oNCguq+D+nsPzsQHeXuOUkU5lLZuneD2Dm6MSSg=;
+	s=arc-20240116; t=1786570342; c=relaxed/simple;
+	bh=Yr312KCUoo8OMZoPKGFMFMxvuxatrPCoMn2wDYFGKKM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bVwRGos6tzRoCZ7rwIjEuR9r697YiXneH+oWWCI/dwiJRjb0KeCSjZGY9IBbx4JdREccjhyT7egaO7FvdpdyovkZoqE+x1cNk5j4QQvc8aVp0GQheOd/8/pD54fx8gj8NZtKUiqkW/EYm92aukMY2pnY5EVHZlVl9gXF1uxjHSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q/h70TxK; arc=none smtp.client-ip=209.85.216.71
+	 To:Cc:Content-Type; b=oXVFGnciAZhZRDbuLVZLk0W5R80Xfa7g3vkAyJ8CdSa7BEVx2SiH3tZwk9n6LlxzYFPzzwgyrJjLh9nFrcqsOaUNAqpBT5tDXIAI+M/DdbKflKCcYMFcgV6F5lCU5UxUq9+BTBRXgYN7b+j8MBQht4Lft2jQYv/J6HY/7Kxn3A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T2g5cPlD; arc=none smtp.client-ip=209.85.215.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q/h70TxK"
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38e7621655eso2166351a91.0
-        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 14:32:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T2g5cPlD"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb11535e6a1so114729a12.0
+        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 14:32:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786570339; x=1787175139; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786570340; x=1787175140; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=IQRjHeJHDNL9dVABA640wyJElasdD4QcDvaWcZI2PI4=;
-        b=q/h70TxKMXcaaFEjrdmXCNROcXJZ3YE19A09MgHhijDDtdYS0eopgUIPZ/XD9sHQ36
-         JhiImmNQQBkAmClWRQisaobgVjaXJU90NOUsPi4+/0dlyAfvvNCegrUa5EL5XwrbESV3
-         uU+1apI1BAks5oq6pcM+pubsxhFtoFV/ehGwHAjYSBe5LD1+pqGDds4cLCwYqzrJamDZ
-         1AGt8bWLT89ijW1OwQjUyZh+0mJiAJomZvKikc61o2i7rx8r2wXcedRzXz4FYHJJQY02
-         rsflTlU0mScUfYxRtqE402+/vtwMnC09r7jZhaimenUSYhQPXvYuG4V7zD4bWuJCjXc0
-         O79A==
+        bh=oSMrpCIn/OuVMMxbucvWWd45G3HPwvwQRDE6imx6eGo=;
+        b=T2g5cPlD+IF3A1fyz2hnjC1GaUWTbjz10pnZNJmsaFxmibV/qlrjoTayb8SooWfb9H
+         /ber8u7bPOjHFY+QrmEpDOAtXQY/uhBbMfx1Fq9IdbCYTrUw2OfYXN+2zyUQK53oO+F4
+         1YktJ89zj9h9fOClXAXRMjvOXn3yf3jVaNRg3JycCso8OipX6PJ8GXFz/hMjeMWDWFKd
+         EpJZFh/k48HQ26yq2jBWm1rU98TOdDbUyLg7aItQ2puBPDtfIw0c0ERWBc9yGF9l+2iw
+         sAPA8cvR0x9HSYbAJ6JVw8KFRKSC1kxKQDgGYJQqcuxvXEk+R+JE21TxQjQdBSKhFLUL
+         mtGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786570339; x=1787175139;
+        d=1e100.net; s=20251104; t=1786570340; x=1787175140;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=IQRjHeJHDNL9dVABA640wyJElasdD4QcDvaWcZI2PI4=;
-        b=p9kdmercZdkCjozO72DXydtAvk6/RzA7R0vprxEDv5XvbdFqRj+KOnULFdHWko1Eki
-         LOohCHqHkFFfR+4pQ1abZxr8gDirJzfvOpbUidNjjPiSLtduTqUFdVZclyK72DD1LR1P
-         y64EODqHrcY/5QrLXT4d79xO43hE0Tbk2exTdu1J8KuPjGBQYcRWkOX0F4tvOhgCy3c1
-         imhpIpZjn8YoiEneOvQtOEPywRb6/7rflhNkAbmJbtpPp8C0HlvWx5+dulhGQaUFGh0U
-         5OfCbRcr+OSPMIAhZcXpZHOTt/zG1Wh0eo1zPZHZCJx4JMl70l+pS1afGSF4V0ZqKubj
-         qXjA==
-X-Gm-Message-State: AOJu0YzC4eWP5qH6utqFN3uMek6Gyn2+JJcDtjDYwLfH/4J2X23sSPcM
-	fcKqvj00I4DYklc6nrBuJiUucnpO/9IG/H3sid5KnhHzM/GATAWKZ07zl7I6cEhM4w6v28+4LFj
-	ppaMP4w==
-X-Received: from pjbfr7.prod.google.com ([2002:a17:90a:e2c7:b0:38e:7e4f:b5ed])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:580e:b0:37c:18e0:90dc
- with SMTP id 98e67ed59e1d1-3931e2537dbmr1495915a91.16.1786570338692; Wed, 12
- Aug 2026 14:32:18 -0700 (PDT)
+        bh=oSMrpCIn/OuVMMxbucvWWd45G3HPwvwQRDE6imx6eGo=;
+        b=e8ErXWMVob4VMlBvtmTwqxjKX9Hf4j2Kox1Sq8KGr5mQM0rub4eW3AxnbX0P1dBVLw
+         OneK4iRIFGcd1UB/Kcxgp2Rn9v/3iLdpqkeX7yD8lnmFf2FSYj2H6zhEgHs4wLMsyhD8
+         L07JwqyBxOmUiSpCfRCIk6/aV/8iCDjVJzJSuo6WtsqGuicDW0mopmM3mSfORcPgyUlv
+         U+wlAnroVT5xkwOjN8iCWKFO9AxzrHs/BHabfzCiuVdz2dWMv0R9khT25xspk0F6HdXo
+         3GpeU3DT118ZSIxXZUEO88cL/B40iiiJ574sMw8hb9DooUog/Di4ckUK959Rx+eiEfg9
+         V5vA==
+X-Gm-Message-State: AOJu0YxBUqK2wwbafCA+KoT4b+8/fQTVHXtWi606QbG3nn+dj+6aqJ1+
+	xlbZ+GNTaFUiFYLDKNj4vGS6uEgITnV7sPBhMLVwlKD3TF5nPm21InqLMzU0zbq0qLaG3JL515d
+	F0p3oYg==
+X-Received: from pgar27.prod.google.com ([2002:a05:6a02:2e9b:b0:c9e:2db2:a2cf])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:c68e:b0:3bf:7eb5:9459
+ with SMTP id adf61e73a8af0-3cc552c3804mr1622639637.20.1786570339711; Wed, 12
+ Aug 2026 14:32:19 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 12 Aug 2026 14:32:04 -0700
+Date: Wed, 12 Aug 2026 14:32:05 -0700
 In-Reply-To: <20260812213206.1564354-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,17 +60,15 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260812213206.1564354-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
-Message-ID: <20260812213206.1564354-10-seanjc@google.com>
-Subject: [GIT PULL] KVM: x86: SVM changes for 7.3
+Message-ID: <20260812213206.1564354-11-seanjc@google.com>
+Subject: [GIT PULL] KVM: x86: VMX changes for 7.3
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Sean Christopherson <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-A somewhat random collection of fixes.  Note, dropping FOLL_WRITE is safe as
-GUP breaks CoW for FOLL_PIN.  This is explained in the changelog, but I figured
-I'd call it out here too in case you have the same knee-jerk reaction I had.
+Like the SVM changes, a small batch of fixes and cleanups.
 
 The following changes since commit a204badd8432f93b7e862e7dac6db0fe3d65f370:
 
@@ -78,48 +76,34 @@ The following changes since commit a204badd8432f93b7e862e7dac6db0fe3d65f370:
 
 are available in the Git repository at:
 
-  https://github.com/kvm-x86/linux.git tags/kvm-x86-svm-7.3
+  https://github.com/kvm-x86/linux.git tags/kvm-x86-vmx-7.3
 
-for you to fetch changes up to ec9a16c6aeba8e19ce98c58a1ac255681a4dd0ac:
+for you to fetch changes up to 0aaedada606aef1732cf0e123403a1e8b8b38c0d:
 
-  KVM: SVM: Always intercept ICEBP to workaround AMD ICEBP+TASK_SWITCH flaws (2026-07-24 13:15:14 -0700)
-
-----------------------------------------------------------------
-KVM SVM changes for 7.3
-
- - Remove a dying VM from the GA Log notifier list before the VM is actually
-   destroyed, to fix a potential use-after-free.
-
- - Don't pass FOLL_WRITE when registering encrypted memory regions, i.e. when
-   pinning SEV/SEV-ES guest memory, to fix a regression with file-backed memory
-   introduced by KVM's (correct) usage of long-term pins.
-
- - Allocate full pages for SEV/SEV-ES {DE,EN}CRYPT ops on SNP-enabled hosts to
-   fix a data corruption issue due to the PSP driver assigning to-be-written
-   pages to firmware (as required by the SNP specs).
-
- - Unconditionally intercept ICBEP so that KVM generates the correct guest RIP
-   when handling an ICEBP-induced TASK_SWITCH #VMEXIT.
+  KVM: VMX: Cap VMX preemption timer to work around Intel erratum (2026-07-31 13:41:56 -0700)
 
 ----------------------------------------------------------------
-David Woodhouse (1):
-      KVM: SVM: Always intercept ICEBP to workaround AMD ICEBP+TASK_SWITCH flaws
+KVM VMX changes for 7.3
 
-Pankaj Gupta (1):
-      KVM: SEV: Drop FOLL_WRITE for encrypted region registration
+ - Service local TLB flushes on a failed nested VM-Enter to fix a bug where KVM
+   could miss a TLB on a future, successful VM-Enter with the same L2 VPID.
 
-Qiang Ma (1):
-      KVM: SVM: Remove redundant ret = 0 in svm_set_nested_state
+ - Cap the maximum value shoved into the VMX Preemption Timer to workaround an
+   erratum that affects all existing Intel CPUs that support CPUID 0x15.
 
-Sean Christopherson (4):
-      KVM: SVM: Make kvm_x86_ops.vcpu_precreate() hook fully AVIC specific
-      KVM: SVM: Do all per-VM AVIC initialization during vCPU precreation phase
-      KVM: SVM: Remove VM from the GA Log notifier list before VM destruction
-      KVM: SEV: Allocate full pages for {DE,EN}CRYPT ops on SNP-enabled hosts
+----------------------------------------------------------------
+Hao Zhang (1):
+      KVM: VMX: Use cached vcpu_vmx pointer in MSR and segment helpers
 
- arch/x86/kvm/svm/avic.c   | 96 +++++++++++++++++++++++++++++++----------------
- arch/x86/kvm/svm/nested.c |  1 -
- arch/x86/kvm/svm/sev.c    | 29 ++++++++++++--
- arch/x86/kvm/svm/svm.c    | 34 +++++++++++------
- arch/x86/kvm/svm/svm.h    |  4 +-
- 5 files changed, 113 insertions(+), 51 deletions(-)
+Jim Mattson (1):
+      KVM: VMX: Cap VMX preemption timer to work around Intel erratum
+
+Sean Christopherson (1):
+      KVM: VMX: Bury all of the VMX preemption timer code under CONFIG_X86_64=y
+
+Yosry Ahmed (1):
+      KVM: nVMX: Service local TLB flushes on failed nested VM-Enter
+
+ arch/x86/kvm/vmx/nested.c |   8 +++
+ arch/x86/kvm/vmx/vmx.c    | 171 +++++++++++++++++++++++++++++-----------------
+ 2 files changed, 117 insertions(+), 62 deletions(-)
