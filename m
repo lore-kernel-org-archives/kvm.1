@@ -1,168 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038A544DB6D;
-	Wed, 12 Aug 2026 16:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4451D38944D
+	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 16:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786551612; cv=none; b=PcZdaUaGvNFLpKGas7sJEZh9wqDdY7OBm2IjpiUgID9ACIYdrkTubv98GOjKlU6ckUtwc24OHgmrRVjh6t9x3qahkFhu3YH2asCFk459kGp/wwSAu94dTIXJpMpCosQvZEaCPXp2Jmckq44XsTU0PF85K42Py7iL1NXGRZqw7Qg=
+	t=1786551654; cv=none; b=OsFTqfJfxM4Dm+fTtrdtC2VajA4g44vm+Ev7HdADuujaRvXDP8hMzcMwfGQqnsUmk5zhGXkzvPk0YFKKuzno+re0ZvRgJrw3mOzBVI7yJ0At5uQeIfvqwGFMT+r/6whRKubPDPO/D1JEtqGqdZ86Cz+461UFoKXXGRzqaKfXDEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786551612; c=relaxed/simple;
-	bh=+NWfW28nbPmYfTbko0osMS5UamyB4ywhIenqw+HHgko=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=kPq8w8jEEVl9nzLOc8wGC1xmPTh+3+C7DrP8T1es3lyCDAJlan8UMXU2R/+mWV/xXsG0ToTKBHvNE19yoXry8VxvM+Sb2gq4WbOjmCP9h49c742p6aUo7ONqjARV3nT4uAfAysvv5JDAE30EuASgffW/tJCNTwxdor6nhMYIo90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S39IFU/z; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786551654; c=relaxed/simple;
+	bh=CEQ391AoIELd5ZL0TGv9zp+VHLeiMTcHE3SJdOMg5/U=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=fy8DX6NAWJJI97Fo9VE17FPc1qiSLp8T0aA5Ci3Afc6NLOWiZ+67aj7KIoodqnA067Bh3yMiAuQnpkRwfqMdxNvAwlxAEjksozc0F7YYPyvNqjvIOVVBE0xgsMeQMGBeash+OD3b5efoUyeQX07Ec9e5IUKewbVs4Ub2NwWPotA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZtRA5Brj; arc=none smtp.client-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S39IFU/z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB031F000E9;
-	Wed, 12 Aug 2026 16:20:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786551610;
-	bh=OY0Va5TMCH71I+jF9Yi14gEWikEzj7wpJatvmXwLXe0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=S39IFU/zjniTN5Cat1Lz4mC5KIetOOv2XwVPAgxX+zFimDZsCQ35xdouNgt1SBiZq
-	 MLaC6Px8HFxbO8O92juhS4s+NL+Fobefj4FeEe5pSpoeCglRaN9+/Fd4QgSmp67eKQ
-	 dH5VwP5Wk967N7ULu1+99CV5DwpQoKiIuR3BEnnGTBjm+IieGfBHALDccAv6jKNqZ0
-	 uULO+8TXTiGpchqAmzJBPCiEh9KIck0ezrowQJCXrI1iJrciIrZksPvFr3Fet5rWVN
-	 5+VTp54ys1F4dj69K8bwZvQ7byK48QgUjXZaWhpKNoRW8iWZ3qh+Kq7/zoB27CLV0x
-	 NbYe1WV9G6QxA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 10/33] arm64: Share arm64 headers with s390
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Eiden" <seiden@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev, "Heiko
- Carstens" <hca@linux.ibm.com>, "Oliver Upton" <oupton@kernel.org>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Marc Zyngier" <maz@kernel.org>, "Christian
- Borntraeger" <borntraeger@linux.ibm.vom>, "Vasily Gorbik" <gor@linux.ibm.com>
-In-Reply-To: <20260812153631.3376090-11-seiden@linux.ibm.com>
-References: <20260812153631.3376090-1-seiden@linux.ibm.com>
- <20260812153631.3376090-11-seiden@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 12 Aug 2026 16:20:09 +0000
-Message-Id: <20260812162010.1AB031F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZtRA5Brj"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38dd87656d3so1416052a91.2
+        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 09:20:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786551652; x=1787156452; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=CEQ391AoIELd5ZL0TGv9zp+VHLeiMTcHE3SJdOMg5/U=;
+        b=ZtRA5BrjaF3TZYYK1LNzaJ8tMV3rzBae/4anL5wyphkO/K9Zy+S6cLjEbEjDIIB9wi
+         4T+VQG5HZoxNYreBSwptW1w6917n8uICWlxE0cQWiXNxBOhx3Z1UXgSBPDPK2aCK1keR
+         85wtUZnBH4NpMJVMvMT6aiiu7m/khPrFzAedsf6JcAdBHWFESsNZwwP3nJAy0B0C+0Yp
+         A9g+KdoQi+GH1Q3w/WdRGbqp+X1GdOti40lhrpdeDiaAe8X9uubC70r99m6fMBhwogkO
+         Nh0RPopF7umVh/RVhlGIQsytJ2NBoscDx6E9gFix3LvWKi9x1RSFpkliLzMFPeK5jRKd
+         suLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786551652; x=1787156452;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CEQ391AoIELd5ZL0TGv9zp+VHLeiMTcHE3SJdOMg5/U=;
+        b=hMc6dv4D6IVCDoHvaELsrZHbp7TJ98ihQMVT7jPelEbE8Fygw0I2o566MWnmfz8VDz
+         0uvSCILIHhYzEW7InWG4v5E3NRGiiR5lhyQR90pEtt6//bwJjBA1htS/SSWa6uv7OukP
+         +8P7XAO8OgwzihlT+ZgRtXPnFt794btgl1skb46Dpsi0XNYTGC+2P1GqlWzdZC9pxPnn
+         ZHyEI20zIx7HCnVykrho96xeJ+CwaUZeTpPVlIVuW1tx5E9EKcTqk7hHLaRPTnZ7MAGX
+         LTak3+ODHkVETseVN9Aag6ynIV0QkWoSTOZjjzNneHcQT9bD6pHR79kUcgiiMEtL0KDX
+         GsYg==
+X-Forwarded-Encrypted: i=1; AHgh+RpUrVH2AImB4SiTIcgiTqxEP+4HHfnuqzbLSdvWnPKUi7rq71qlbbMY++Ftz3dNeLVBtM8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykDUeITdevl8rLiSpUE8J2hEOT84OzHduxSRmAYPV/OWDpZ3gO
+	I6LSi4/7Y0tgATBdmYp8VQe3IXGoQYtP7d5k5deML84y6mxcyR9WGtKDMrkra/AlsqnFecT3af+
+	Lz3h38Q==
+X-Received: from pjbbb8.prod.google.com ([2002:a17:90b:88:b0:38f:dee9:ffd9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:57c6:b0:37f:c22a:c188
+ with SMTP id 98e67ed59e1d1-39301285e89mr7098236a91.4.1786551652307; Wed, 12
+ Aug 2026 09:20:52 -0700 (PDT)
+Date: Wed, 12 Aug 2026 09:20:51 -0700
+In-Reply-To: <d0692500893f303906fba1d7d596eb59a07a806a.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <37b83b429b9f14ea6ad4ca1c13cc8e565ec09033.camel@infradead.org>
+ <anwraNIKJV8zwrNT@tiehlicka> <44c51ace9b0dc44b795f6f48c91cda440eed910b.camel@infradead.org>
+ <20260812122759.GA662699@ziepe.ca> <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org>
+ <20260812134934.GC662699@ziepe.ca> <a48e6e7063122b22a8083bb0792984a204f316e6.camel@infradead.org>
+ <fb87f673bf290cad133d113dbb0750a7752b9d30.camel@infradead.org>
+ <a94b75e8b9b1d2191f365c0f4275fd5082332df5.camel@infradead.org> <d0692500893f303906fba1d7d596eb59a07a806a.camel@infradead.org>
+Message-ID: <anydY25Cl78l1HfU@google.com>
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Simona Vetter <simona.vetter@ffwll.ch>, 
+	"=?utf-8?B?SsOpcsO0bWU=?= Glisse" <jglisse@redhat.com>, 
+	"Christian =?utf-8?B?S8O2bmln?=" <christian.koenig@amd.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, kvm@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] Gating core arm64 macros behind `#ifdef ARM64_S390_COMMON` break=
-s userspace tooling (perf, KVM selftests, BPF) and creates inconsistent hea=
-der views for linker scripts.
-- [Medium] Using active C preprocessor `#ifdef` blocks as text-extraction m=
-arkers for another architecture creates fragile coupling and pollutes the a=
-rm64 build system.
---
-
---- Patch [10]: [PATCH v6 10/33] arm64: Share arm64 headers with s390 ---
-commit 20e1eb14886be076f6d4d8836cb6c7175057685e
-Author: Steffen Eiden <seiden@linux.ibm.com>
-
-arm64: Share arm64 headers with s390
-
-Allow sharing of arm64 headers with s390 by marking the shared regions
-or add a comment that the whole file is shared. The preprocessor symbol
-ARM64_S390_COMMON is always defined for arm64.
-
-> diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-> index 6b005c8fef706..1cd7cd94a8554 100644
-> --- a/arch/arm64/Makefile
-> +++ b/arch/arm64/Makefile
-> @@ -43,7 +43,9 @@ CC_FLAGS_NO_FPU	:=3D -mgeneral-regs-only
->  KBUILD_CFLAGS	+=3D $(CC_FLAGS_NO_FPU) \
->  		   $(compat_vdso) $(cc_has_k_constraint)
->  KBUILD_CFLAGS	+=3D $(call cc-disable-warning, psabi)
-> +KBUILD_CFLAGS	+=3D -DARM64_S390_COMMON
->  KBUILD_AFLAGS	+=3D $(compat_vdso)
-> +KBUILD_AFLAGS	+=3D -DARM64_S390_COMMON
-
-[Severity: Medium]
-Since this macro is injected into C and assembly compilation flags, does th=
-is
-omit it from KBUILD_CPPFLAGS used for linker scripts?
-
-Could this create an inconsistency where the C and assembly code sees the s=
-hared
-blocks, but the linker script preprocessing silently strips them?
-
-[ ... ]
-
-> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/as=
-m/kvm_emulate.h
-> index a34a9417ff4da..09f04a5686a18 100644
-> --- a/arch/arm64/include/asm/kvm_emulate.h
-> +++ b/arch/arm64/include/asm/kvm_emulate.h
-> @@ -47,6 +47,7 @@ void kvm_skip_instr32(struct kvm_vcpu *vcpu);
->  int kvm_inject_dabt_excl_atomic(struct kvm_vcpu *vcpu, u64 addr);
->  int kvm_inject_serror_esr(struct kvm_vcpu *vcpu, u64 esr);
-> =20
-> +#ifdef ARM64_S390_COMMON
->  void kvm_inject_undefined(struct kvm_vcpu *vcpu);
->  void kvm_inject_sync(struct kvm_vcpu *vcpu, u64 esr);
-
-[Severity: Medium]
-Is using an active C preprocessor macro as a text-extraction marker for
-another architecture a robust design?
-
-By using an active ifdef to delineate text for an s390 extraction script, it
-forces arm64 to modify its global Makefiles just to parse its own native
-headers. Would it be safer to use specially formatted code comments for scr=
-ipt
-scraping to avoid altering C preprocessor semantics?
-
-[ ... ]
-
-> diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sys=
-reg.h
-> index ab205f9db94ad..1c5c4df260bea 100644
-> --- a/arch/arm64/include/asm/sysreg.h
-> +++ b/arch/arm64/include/asm/sysreg.h
-> @@ -16,6 +16,8 @@
-> =20
->  #include <asm/gpr-num.h>
-> =20
-> +#ifdef ARM64_S390_COMMON
-> +
->  /*
->   * ARMv8 ARM reserves the following encoding for system registers:
->   * (Ref: ARMv8 ARM, Section: "System instruction class encoding overview=
-",
-> @@ -50,6 +52,8 @@
->  #define sys_reg_CRm(id)	(((id) >> CRm_shift) & CRm_mask)
->  #define sys_reg_Op2(id)	(((id) >> Op2_shift) & Op2_mask)
-> =20
-> +#endif /* ARM64_S390_COMMON */
-
-[Severity: Medium]
-Will gating fundamental arm64 macros like sys_reg() behind this macro break
-userspace tooling (such as perf, KVM selftests, and BPF)?
-
-When these headers are synced to tools/, their independent Makefiles will n=
-ot
-inherit the kernel's KBUILD_CFLAGS. This means the macro is undefined and
-core arm64 macros are completely hidden from those builds.
-
-[ ... ]
-
-> @@ -1251,6 +1262,8 @@
->  	par;								\
->  })
-> =20
-> +#ifdef ARM64_S390_COMMON
-> +
->  #define SYS_FIELD_VALUE(reg, field, val)	reg##_##field##_##val
-> =20
->  #define SYS_FIELD_GET(reg, field, val)		\
-
-[Severity: Medium]
-Similar to the sys_reg() macro above, does hiding widely used field-extract=
-ion
-macros behind this conditional break builds for external tools that lack the
-new compiler flag when headers are synced?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260812153631.3376=
-090-1-seiden@linux.ibm.com?part=3D10
+T24gV2VkLCBBdWcgMTIsIDIwMjYsIERhdmlkIFdvb2Rob3VzZSB3cm90ZToKPiBPbiBXZWQsIDIw
+MjYtMDgtMTIgYXQgMTY6MDMgKzAxMDAsIERhdmlkIFdvb2Rob3VzZSB3cm90ZToKPiA+IE9uIFdl
+ZCwgMjAyNi0wOC0xMiBhdCAxNTozNCArMDEwMCwgRGF2aWQgV29vZGhvdXNlIHdyb3RlOgo+ID4g
+PiBPbiBXZWQsIDIwMjYtMDgtMTIgYXQgMTU6MDUgKzAxMDAsIERhdmlkIFdvb2Rob3VzZSB3cm90
+ZToKPiA+ID4gPiBJJ2xsIHJlcGhyYXNlIHRoYXQgZm9yIG15IG93biB1bmRlcnN0YW5kaW5nOgo+
+ID4gPiA+IAo+ID4gPiA+ICpJZiogd2UgZ28gYWxsIHRoZSB3YXkgdG8gYnVpbGRpbmcgYSB3aG9s
+ZSBTUkNVIGZsYXZvdXIgZm9yIHRoaXMgKmFuZCoKPiA+ID4gPiBpbXBsZW1lbnRpbmcgYSBzcGlu
+LW9ubHkgdmFyaWFudCBvZiBzcmN1X3N5bmNocm9uaXplKCkgd2hpY2ggaXMKPiA+ID4gPiB0YWls
+b3JlZCB0byB0aGUgYXRvbWljLXJlYWRlciB1c2UgY2FzZSwgKnRoZW4qIHdlIGRvbid0IG5lZWQg
+dG8gcmVtb3ZlCj4gPiA+ID4gdGhlIG5vbl9ibG9ja197c3RhcnQsZW5kfSBndWFyZHMgYXJvdW5k
+IHRoZSBNTVUgbm90aWZpZXJzLCB3aGljaCBhcmUKPiA+ID4gPiBiYXNpY2FsbHkgbmV2ZXIgYmVp
+bmcgY2FsbGVkIGFueXdheSBhbmQgZG9uJ3QgYWN0dWFsbHkgc2VlbSB0byBwcm90ZWN0Cj4gPiA+
+ID4gYWdhaW5zdCBhbnkgcmVhbCBidWdzLgo+ID4gPiA+IAo+ID4gPiA+IFllcz8KPiA+ID4gCj4g
+PiA+IEZXSVcgaXQgbG9va3Mgc29tZXRoaW5nIGxpa2UgdGhpcy4gSSdsbCB0aHJvdyBpdCBpbnRv
+IG15IHRvcnR1cmUgYW5kCj4gPiA+IGxhdGVuY3kgdGVzdHMsIGFuZCB3ZSBjYW4gc2VlIHdoYXQg
+UGF1bCB0aGlua3Mgb2YgaXQuIEknbSBzdGlsbCB1dHRlcmx5Cj4gPiA+IHVuY29udmluY2VkIGl0
+J3MgbmVlZGVkLCBidXQgSSBjb25jZWRlIGl0IGhhcyBpdHMgZ29vZCBwb2ludHMuCj4gPiAKPiA+
+IFRoaXMgc2xpZ2h0bHkgcmVmYWN0b3JlZCB2ZXJzaW9uIGlzIHRoZSBvbmUgdGhhdCdzIGFjdHVh
+bGx5IGdvaW5nIGludG8KPiA+IG15IHRvcnR1cmUgdGVzdHMuLi4KPiAKPiBXZWxsLCBpdCBzdXJ2
+aXZlZCBmaXJzdCBjb250YWN0LCBhbmQgaXQncyBkb2luZyB0aGUgc29hayB0ZXN0aW5nIG5vdy4K
+PiAKPiBUaGUgYXZlcmFnZSBpcyBiYXNpY2FsbHkgbm8gYmV0dGVyIHRoYW4gdGhlIHRyeV9zeW5j
+aHJvbml6ZV9zcmN1KCkKPiBjYXNlLCB1bnN1cnByaXNpbmdseSDigJQgYXMgKmJvdGgqIG9mIHRo
+ZW0ganVzdCBvYnNlcnZlIHRoYXQgdGhlcmUgYXJlIG5vCj4gcmVhZGVycyBhbmQgcHJvY2VlZCBp
+bW1lZGlhdGVseSwgaW4gYXQgbGVhc3QgOTklIG9mIGNhc2VzLgo+IAo+IExpa2UgdGhlIGV4aXN0
+aW5nIHJ3bG9jayBjYXNlLCBpdCBzdGlsbCBtYW5hZ2VzIGRvdWJsZS1kaWdpdCBwMTAwCj4gbGF0
+ZW5jeSBldmVuIHdoZW4gdGhvdWdoICpkb2Vzbid0KiBhY3R1YWxseSBzbGVlcC4KPiAKPiBJIGRv
+bid0ICpoYXRlKiBpdCwgYnV0IEkgZG8gcXVlc3Rpb24gdGhlIGJlbmVmaXQgb2YgaXQgb3ZlciB0
+cnktZmlyc3QuCgpGV0lXLCB0aGUgbWF4IGxhdGVuY3kgYW5kID44bXMgbnVtYmVycyBhcmUgdmVy
+eSBhcHBlYWxpbmcgdG8gbWUsIGFzIG15IGNvbmNlcm5zCndpdGggdXNpbmcgU1JDVSBhcmUgYWxs
+IGFib3V0IHRoZSB0YWlsIGxhdGVuY2llcy4KCkJ1dCBJJ20gb2J2aW91c2x5IG5vdCB0aGUgb25l
+IHdobydkIGJlIHNhZGRsZWQgd2l0aCBtYWludGFpbmluZyB0aGUgY29kZSwgc28gSSdtCm1vcmUg
+dGhhbiBhIGxpdHRsZSBiaWFzZWQgdG93YXJkcyBjaG9vc2luZyB0aGUgbW9yZSBjb21wbGV4IHZl
+cnNpb24uCgo+IEFnYWluLCBJJ2xsIGRlZmVyIHRvIFBhdWwsIGJ1dCBwZXJzb25hbGx5IEknZCB3
+YW50IHRvIHNlZSBhIG1vcmUKPiBjb21wZWxsaW5nIHVzZSBjYXNlIGZvciBpdC4KPiAKPiAgIOKU
+jOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUrOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+rOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUrOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUkAo+ICAg4pSCICAgICAgICAgICAgICAg4pSCICAgICAgZXhwZWRpdGVkICAg
+ICAg4pSCICAgICB0cnktZmlyc3QgICAgIOKUgiAgICAgICBhdG9taWMgICAgICAgIOKUggo+ICAg
+4pSc4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS84pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pS84pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pS84pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSkCj4gICDilIIgbWVkaWFuIGRyYWluICDilIIgMzItMTI4wrVzICAgICAg
+ICAgICAg4pSCIDQtMTbCtXMgICAgICAgICAgICDilIIgNC0xNsK1cyAgICAgICAgICAgICAg4pSC
+Cj4gICDilJzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilLzi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilLzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilLzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilKQKPiAgIOKUgiBhdmcgICAgICAgICAgIOKUgiAxMTjCtXMgICAg
+ICAgICAgICAgICDilIIgMTMuOMK1cyAgICAgICAgICAgIOKUgiAxMi4zwrVzICAgICAgICAgICAg
+ICDilIIKPiAgIOKUnOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUpAo+ICAg4pSCID4xbXMgICAgICAgICAg4pSCIH45NTBw
+cG0gICAgICAgICAgICAg4pSCIH45OTBwcG0gICAgICAgICAgIOKUgiA4MzhwcG0gICAgICAgICAg
+ICAgIOKUggo+ICAg4pSc4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pS84pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pS84pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pS84pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSkCj4gICDilIIgPjhtcyAgICAgICAgICDilIIgNDJw
+cG0gICAgICAgICAgICAgICDilIIgNC40cHBtICAgICAgICAgICAg4pSCIDAuMTBwcG0gICAgICAg
+ICAgICAg4pSCCj4gICDilJzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilLzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilLzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilLzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilKQKPiAgIOKUgiBtYXggICAgICAgICAgIOKUgiAz
+My42bXMgICAgICAgICAgICAgIOKUgiAxNy42bXMgICAgICAgICAgICDilIIgMTAuMjVtcyAgICAg
+ICAgICAgICDilIIKPiAgIOKUnOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUpAo+ICAg4pSCIGZhbGxiYWNrIHJhdGUg4pSC
+IOKAlCAgICAgICAgICAgICAgICAgICDilIIgMS4yJSAgICAgICAgICAgICAg4pSCIDAlICAgICAg
+ICAgICAgICAgICAg4pSCCj4gICDilJzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilLzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilLzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilLzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilKQKPiAgIOKUgiBzYW1wbGUgICAgICAg
+IOKUgiAzMi42TSBkcmFpbnMsIDEwbWluIOKUgiA0MU0gZHJhaW5zLCAxMG1pbiDilIIgNDAuNU0g
+ZHJhaW5zLCAxMG1pbiDilIIKPiAgIOKUlOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUtOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUtOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUtOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUmAo=
