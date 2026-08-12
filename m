@@ -1,118 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A88402B87
-	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 08:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2948399357;
+	Wed, 12 Aug 2026 09:01:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786524751; cv=none; b=W7rOcxMDW8PR2KGKhbTb844rGxGmFa07xRO5JnLhMyWikE6IC9KxHdiPkse5YxNCl/9AR/46AKu4DOzDV1ePnqZ+roleTUe43xrGIQyJdnMSVyFJ5qOVUEpGKvoCxdxaCel8DPEfxk8SaMr9Xq0HGs1v196PsxAQQFmObTqm4R0=
+	t=1786525318; cv=none; b=Gm0W6BLXL58M7+VrNB/F38aGL+7kSBh3gxD4Elhv5UgQqj8cfvQh5kabKuMpePZQoCiZQj947ilB43+4tKGyCaOYbcqx7CFjL33WVXhE9HCtcxwgxyo+ZuGTGvlFNAGgpZtJ1Bu/KNQnYovJcnW0x01IiM5sxnHKmWYvfAR3xl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786524751; c=relaxed/simple;
-	bh=zE2tbfKe2hnjtVnx64JpiE30lZRJpIDE13x2mX5tr0s=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=q08+jQGMA3fvq8VaRMjXCEVLSrvbIKO42f4xpmPo23gHZwo3gchs3jtOmecvNV6nXNkyr8HhPccZzTD+pwpIiSQZUS2WaXGplr4NooAbIBQ9p4xAUx6wEia3QJ/jkdR+Rv1T1DcawHMyHdWiIAvVbhuUPHJDEyUbGotZgI7xWRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hmaebmJv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786525318; c=relaxed/simple;
+	bh=fhi1CG9KJ7r5EFbdg94wZP9tdmI61cXorDFoinPpFvI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PoMvh8bwdapVznMxQZSqLI3gcx6Qga5oM4eFx9t/tDvkqLK1OBLkpZQKtivyd+6fTq0DCAVRnQ9jdR0sL6CDJVSVcNyJa/OkwAH/N+5WZN6zifNyL6qESwJ60bEXRD3S22/kTRLjTLjAIYp0eWjORf6E79fBTXZk7M4lB2+Exgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=QGPEfFKy; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hmaebmJv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA541F000E9;
-	Wed, 12 Aug 2026 08:52:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786524749;
-	bh=d1G/PQ7aGjC1ctKY1CV/rLqQ7lwqCl/imrcgjybVfwE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=hmaebmJvXk9W5wPtMTenS0xtiHmuJ7NuEfZlWg+ObXrgokHp09V8A3FBhEyAAOGng
-	 k+c+byHWDbkwJSLj1/mWC3I1Fsnlx1E0NfboBR+LAt7WblNy9zbAKH4MEmghA6uZdk
-	 keyubQrV3t8Hjnt4H/LWnt9HQ9nmagZYScdGhKCLrm3Px5b8Tq9D3Z29n52T8aYTPi
-	 oRUyNs7IolrB36vYLd6kOukArqVJSFvoRXnqhBS/Yh6v6VSMjAXAQ+BoAXOBjdFCPz
-	 uDefVr6j+fstBfDI4Jq8bHMg89OrdpJEMEEHrNIc2fh0gx7gvZgklvcsdmGl15CkTf
-	 pKBU8aK4eQUCw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 3/6] KVM: x86: ioapic: Preserve irr_delivered for
- duplicate edge interrupts
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Hao Zhang" <hao_zhang_kdev@163.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <anwwV80QWHxemrWS@192.168.1.215>
-References: <anwwV80QWHxemrWS@192.168.1.215>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 12 Aug 2026 08:52:28 +0000
-Message-Id: <20260812085229.4EA541F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="QGPEfFKy"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DE1441596;
+	Wed, 12 Aug 2026 02:01:51 -0700 (PDT)
+Received: from [10.57.44.219] (unknown [10.57.44.219])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BE2753F86F;
+	Wed, 12 Aug 2026 02:01:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786525315; bh=fhi1CG9KJ7r5EFbdg94wZP9tdmI61cXorDFoinPpFvI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=QGPEfFKybXe6rNomdv0fzgoUx1xUydEqGfiSseGhGVM9AgQ2oBiMSL++OZ1Z6BDei
+	 +U9WxgtH3yQbk+rt/X7cx2cSz05c1xdVZ1kJ0xtqt3bmOl2mIEkr28sEjAiJ86XpQm
+	 sXbjd99E1hsDc3d4VRdqy/3aroVUYRnmw2mUPcuo=
+Message-ID: <b512db4b-793b-4dd1-baac-e873b39f5b0b@arm.com>
+Date: Wed, 12 Aug 2026 10:01:48 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 29/45] KVM: arm64: CCA: Support runtime faulting of
+ memory
+Content-Language: en-GB
+To: Catalin Marinas <catalin.marinas@arm.com>,
+ Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, Marc Zyngier
+ <maz@kernel.org>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <20260803134403.80630-30-steven.price@arm.com> <antC5JOxDPs7i876@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <antC5JOxDPs7i876@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On 11/08/2026 16:42, Catalin Marinas wrote:
+> On Mon, Aug 03, 2026 at 02:43:45PM +0100, Steven Price wrote:
+>> At runtime if the realm guest accesses memory which hasn't yet been
+>> mapped then KVM needs to either populate the region or fault the guest.
+>>
+>> For memory in the lower (protected) region of IPA a fresh page is
+>> provided to the RMM which will zero the contents. For memory in the
+>> upper (shared) region of IPA, the memory from the memslot is mapped
+>> into the realm VM non secure.
+> 
+> Is this still true with in-place guestmem conversion?
+> 
+>> @@ -1693,7 +1709,14 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
+>>   	kvm_fault_lock(kvm);
+>>   	if (mmu_invalidate_retry(kvm, mmu_seq)) {
+>>   		ret = -EAGAIN;
+>> -		goto out_unlock;
+>> +		goto out_release_page;
+>> +	}
+>> +
+>> +	if (kvm_is_realm(kvm)) {
+>> +		prot &= ~KVM_PGTABLE_PROT_X;
+>> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn,
+>> +				    PAGE_SIZE, prot, memcache);
+>> +		goto out_release_page;
+>>   	}
+> 
+> [...]
+> 
+>> +int realm_map_ipa(struct kvm *kvm, phys_addr_t ipa,
+>> +		  kvm_pfn_t pfn, unsigned long map_size,
+>> +		  enum kvm_pgtable_prot prot,
+>> +		  struct kvm_mmu_memory_cache *memcache)
+>> +{
+>> +	struct realm *realm = &kvm->arch.realm;
+>> +
+>> +	ipa = ALIGN_DOWN(ipa, map_size);
+>> +	if (!kvm_realm_is_private_address(realm, ipa)) {
+>> +		return realm_map_non_secure(kvm, ipa, pfn, map_size, prot,
+>> +					    memcache);
+>> +	}
+>> +
+>> +	/* It's impossible to map protected pages read-only. */
+>> +	if (WARN_ON(!(prot & KVM_PGTABLE_PROT_W)))
+>> +		return -EFAULT;
+>> +	return realm_map_protected(kvm, ipa, pfn, map_size, memcache);
+>> +}
+> 
+> I was trying to understand (with the help of some LLMs) to understand
+> whether we can end up on the do_gpf() path as a result of VMM actions.
+> The above kvm_realm_is_private_address() only checks for the IPA but
+> does not check against guestmem if the page is truly private. I probably
+> miss something but the scenario would be something like:
+> 
+> 1. VMM creates the gmem region with GUEST_MEMFD_FLAG_MMAP |
+>     GUEST_MEMFD_FLAG_INIT_SHARED, mmap()able and GUP-pinnable
+> 
+> 2. VMM starts an O_DIRECT write() from that mapping; the block layer
+>     FOLL_PINs the shared folio
+> 
+> 3. VMM runs a vCPU so the realm touches the protected-IPA alias of the
+>     same gfn. gmem_abort() delegates the pinned, still-shared page to
+>     the RMM
+> 
+> 4. The in-flight I/O then reads the now-Realm page from the kernel
+>     linear map. That access takes a GPF at EL1, so do_gpf() ->
+>     die_kernel_fault()
 
-Pre-existing issues:
-- [High] KVM's IOAPIC fails to latch edge-triggered interrupts if they puls=
-e while the pin is masked, and fails to deliver latched edge-triggered inte=
-rrupts upon unmasking.
---
+This is correct. The fundamental issue is that we have a disconnect
+between the "gmem attribute" changes (to private/shared) and the
+RIPAS and this is something we want to fix.
 
---- Patch [3]: [PATCH v5 3/6] KVM: x86: ioapic: Preserve irr_delivered for =
-duplicate edge interrupts ---
-commit 691f4f74cce4e2c3436bc9f3cdf594c985c284e3
-Author: Hao Zhang <zhanghao1@kylinos.cn>
+e.g., the KVM CCA driver sets the entire DRAM to RIPAS_RAM for
+the Realm before ACTIVATION and we expect that the VMM changes
+the gmem to PRIVATE. They both are not in sync. his is something
+we were discussing the other day with Aneesh.
 
-KVM: x86: ioapic: Preserve irr_delivered for duplicate edge interrupts
+Once they are in sync, we are protected. If the RIPAS=EMPTY
+(gmem=shared) a stage2 fault doesn't come to the Host.
 
-For edge-triggered interrupts, ioapic_set_irq() clears irr_delivered before
-checking whether the new edge is a duplicate. This patch moves the state
-update after the duplicate-edge check to prevent duplicate edges from making
-a delivered interrupt appear pending during VM migration.
+If the RIPAS=RAM, the gmem is private and there are no usespace
+mappings.
 
-> diff --git a/arch/x86/kvm/ioapic.c b/arch/x86/kvm/ioapic.c
-> index 24a7cc3b8b7ef..676effd674f9e 100644
-> --- a/arch/x86/kvm/ioapic.c
-> +++ b/arch/x86/kvm/ioapic.c
-> @@ -230,11 +230,11 @@ static int ioapic_set_irq(struct kvm_ioapic *ioapic=
-, unsigned int irq,
+The reason why it is disconnected at the moment is due to the
+weird semantics for Guest triggered conversions in CCA
+i.e., Realm requests via RSI_IPA_STATE_SET, triggering a RIPAS_CHANGE
+exit to the KVM.
 
-[Severity: High]
-This isn't a bug introduced by this patch, but while reviewing
-ioapic_set_irq(), does KVM fail to latch edge-triggered interrupts if they
-pulse while the pin is masked?
+The KVM exits to VMM with MEMORY_FAULT_EXIT and the VMM can service this
+by invoking GMEM(SET_ATTRIBUTES2). But, the KVM needs to invoke the
+RMI_RTT_SET_RIPAS in the context of the "vcpu", which we don't have
+from the "kvm" context. I guess we can fix it by running through the
+vcpus and find the matching one with the "ipa" range and the "ripas".
 
-Earlier in ioapic_set_irq(), the IRR bit is cleared unconditionally when the
-pin goes low:
+And as for the VMM requests before the Realm is activated, we could
+map that to RMI_RTT_INIT_RIPAS and removing the implicit change
+from KVM arm64.
 
-	if (!irq_level) {
-		ioapic->irr &=3D ~mask;
-		ret =3D 1;
-		goto out;
-	}
 
-This appears to destroy the latch state for edge-triggered interrupts that
-were not yet delivered.
+Thanks
+Suzuki
 
-Furthermore, looking at ioapic_write_indirect(), when unmasking, pending
-interrupt injection is restricted only to level-triggered interrupts:
 
-		if (e->fields.trig_mode =3D=3D IOAPIC_LEVEL_TRIG &&
-		    ioapic->irr & (1 << index) && !e->fields.mask && !e->fields.remote_ir=
-r) {
+> 
+> x86, IIUC, also checks kvm_gmem_is_private(). They also have
+> kvm_arch_gmem_make_private() triggered on the kvm_gmem_get_pfn() path
+> but I got lost in the call sites, not sure whether that's strictly
+> needed if we check both private IPA and kvm_gmem_is_private().
+> 
 
-Could this sequence cause latched edge-triggered interrupts to be silently
-ignored and lost if a guest temporarily masks IOAPIC pins during interrupt
-handling?
-
->  	old_irr =3D ioapic->irr;
->  	ioapic->irr |=3D mask;
->  	if (edge) {
-> -		ioapic->irr_delivered &=3D ~mask;
->  		if (old_irr =3D=3D ioapic->irr) {
->  			ret =3D 0;
->  			goto out;
->  		}
-> +		ioapic->irr_delivered &=3D ~mask;
->  	}
-> =20
->  	ret =3D ioapic_service(ioapic, irq, line_status);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/anwugm-oU0v1VM-t@19=
-2.168.1.215?part=3D3
