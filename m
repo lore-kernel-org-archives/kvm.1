@@ -1,201 +1,217 @@
-Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C603128AB;
-	Wed, 12 Aug 2026 16:00:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CE33911BC;
+	Wed, 12 Aug 2026 16:00:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786550411; cv=none; b=g+49iUXXVeHtZUFjdkfYdH98p1moYn+TiZWf0RHvRxxVEbxxGLbZFiT+gmW3zYfj2sx5RE3JeDNWJ397iqZp+kJwDdf9YfgtPAX22DA3RD2TZ6l9gerdzDnBl4Prs7Ty+S1NOw9JZN3xz+yPAzUoIqKk1RpyClcrd91P+ZaUgAk=
+	t=1786550451; cv=none; b=RKfDBWvpaEMAtjoledBKL6EgzyI3Xv7wbtZyefJWq0PLif6DWUetRf+E733Tmj5AAfOxnsffiJMLOr03f70iYj6RortEsRBtxWAnuSIIYs961W18w4ydYQfIz/ySVAVEfVqd21LPx9vgENXyKe7Zu/b8fxSavF6gG3cD8a+Mb0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786550411; c=relaxed/simple;
-	bh=ivO8JgoHooWAgnN/QKQlbLJawm0RyeqI+R+yHrKJaGE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=THz7EQK0hqW3EqTlOJdpBSOxg8POzshDnsEt9t/2nIwAsjc2ZnheuUSSSgO+RQRDzoayxQqh++qO6SjSSMG94p5OE2pcy5lHO1UzKZbbR0wk2G2J1cbdOyMP0nIe6kC99NbIbHVUeADo3DrA96EM5zHz5Fw9wjZd3GR9JEsus+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=NLJkmsNH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TxWIbJwt; arc=none smtp.client-ip=103.168.172.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1786550451; c=relaxed/simple;
+	bh=8kEV9PzoKddYDklakfaMxe3szi5eEjkFZhlFDEjjx/4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=qEIWRz5SPjncivJD/9imJS3A2Tj+OSvMf7WxIG2q5Op/TMWwPAwvS4U3JQVPut9Js54jablPCspCZhmvoZKtiTez1gogY4YiYmkzAh01FA9o77HTEU2OvionhNtbtMHj2IJDmxJ6CmKQcrvJNssG1GyXApPbKw/UgP/PjXm4DOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fyL1yykn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="NLJkmsNH";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TxWIbJwt"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 1E387EC0247;
-	Wed, 12 Aug 2026 12:00:07 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Wed, 12 Aug 2026 12:00:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1786550407;
-	 x=1786636807; bh=FvDyWH9NYxW6w+E8w9CVN6nT5ieu4qqykikKUH6CVts=; b=
-	NLJkmsNHBkOAdl/gOJM15vxGnmsBtLNEJuv4W6wRCLTNNAMGjnsdipP8OKMnGLDS
-	XNNmExEJwCSEusjrXOkymWmQoEuSo+oU/tbk1Tn3/YpktOM6Gn07sksHHvzOKw3r
-	aT1KunRwi2kXPpmm/moOV+fyI9k598t5QoyDhPKsEAUy1z+rLeAQlX0XPKNgDlfq
-	qCiJQb8ooSXY7HZrucRdL0iw/zwuO6H3aV1IXib8bA5FRudDaYcuOKZ35G0F8dc2
-	nGS3qVWUBRQnvNLVwdDP7Xd0KZuHM4q2azgQRdPdvR14BLEGcoUo6/V1Xe7weCIB
-	mOMaUTq3RHDKFI+KOGhbLg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786550407; x=
-	1786636807; bh=FvDyWH9NYxW6w+E8w9CVN6nT5ieu4qqykikKUH6CVts=; b=T
-	xWIbJwt/9aIvKHGVWHhRrWyR8Su9fins8sSnVQFySm0H+B+rq/8SuJBWqcJHHuFS
-	dvMrmLjN1zxBMjmGnVpP9q7wg837UhzinJqUxohjFJEX06Zz9ZI8o2jTQbb2bDcN
-	z2df0S6QVfRTe+goO2ou6DMrLAQC4uFnpuc5XkSJLEqrTYB5zGVOZB9HNpjyyVs3
-	BrW9EvoL3qeVHvP7mhKp53LbFto5YEXBJsDGRO50ub0/2lPT+5xqpagJf9VwXnAH
-	DdlGWtZ5d2t7Amc8Dhlb5AMMQIY/8NDKM7e13MiI08sdnCsEPBQZr/7posbPk758
-	LuJFpJ8nwqFB00Y/6WLJA==
-X-ME-Sender: <xms:hph8arA6nE5UdeVGne7uQtEwfT-vqzXxfLynro3Nb3KryiWzwucPGg>
-    <xme:hph8amfSC533uuP1g17F4MGRkhzLvnQIZiGjILdHeDSTL4MXKlLz9TALoMsibGzc3
-    aNDQG_BtXbKeJIlx_Ms45gBFW7X2U_hBzACdYLr5aPLkbGKT1PsXo0>
-X-ME-Received: <xmr:hph8aq1PhUcHFH1L0unl7FA-nEXQTvEAcwdbKGDbiFfoqP9tl7kQszdSGBxn5g>
-X-ME-Proxy-Cause: dmFkZTETO7FEfGZ1zn66HWUtEoeJP0PzsDeGvLzJslmFv3X8DrRm4YGM8IYn89/onlTw1p
-    VfvkYU/U0FRnkNk38qxpaHv6kKPg4nWqGfvz7hcsM3xzoABC+O6yXECJl8X8TmxZ7kt5Fe
-    OKFbBu8CHW5hVmoki7dESLwaMzlR0FSsvBkWQtocIsHvsNO7fqJ0dAU1UYw9HOi1lxYAD/
-    h2P+3YYL0Fg62ToppIVFKFt+KMVu4f4mGL6wzZuEsIQ5jsQj3TF183dzqbYi6TgFopDUjX
-    /IqII75p1eV4nLw0Q+faY52zpKKKkgi/ODsaBOKf5ZBGhW8Gs67ds7M585NBo+XAfMUPKi
-    EZbRlB6kGNesiuupzqT0KugvkCBA72jLgkVU3fVbEyZybvvx9GcT8T9wnyYt1U+bCCubIe
-    Ljr5I0nfEGeZGZdxgYcnA5Ao2ucYhSDXbmJodwuN8fD4RGH4/azY8k6+75Vb0vwcV/LvVu
-    s8PHq6nsGkP2iiaQ5ErTgLVEiiJGFfwK6eN7G+e/oShKZiNbbw/NfzLDfvv0tgr/eXAggA
-    8X41PDWbpFdYM1ZyeBI/P0L1rmsW64gDuIxEYf+/hKvmbr4CFuSixPUaQKFRDeMnlNM6Fs
-    /8tTi7zPSZWd209DCzzvo4HkG6JCfvX7L+FqQiZaWbfY0LPhJnteKY16uljw
-X-ME-Proxy: <xmx:hph8atgQdsTY6R1UuZAeL4uvN-VtGwciROr1I5O8hQrKpspxcjnVBg>
-    <xmx:hph8ajk4jlnk9v2elgcS3aJMuNHinBOQMpMBbtAmV933j__PNQLF1w>
-    <xmx:hph8ajYNaaKQ2QZagrGQeoJNmXiyc-YUGMcM9uCYOx8qVC3HBjrPrg>
-    <xmx:hph8auFcB_47s6BTJPYPGSwQ27oJcdnemaB4kl_YZZJRGR_jAy_D5Q>
-    <xmx:h5h8ajZgZLcnvppvHTLEuU_2ekNDNRnVCRLliJ_0zIbh3qUU4JgvHuRS>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 12 Aug 2026 12:00:05 -0400 (EDT)
-Date: Wed, 12 Aug 2026 10:00:03 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: "Tian, Kevin" <kevin.tian@intel.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Samiullah Khawaja <skhawaja@google.com>,
- "bhelgaas@google.com" <bhelgaas@google.com>, Leon Romanovsky
- <leon@kernel.org>, "dmatlack@google.com" <dmatlack@google.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, alex@shazbot.org
-Subject: Re: [RFC PATCH 1/1] vfio/pci: Disable sriov on PF device close
-Message-ID: <20260812100003.7e276faa@shazbot.org>
-In-Reply-To: <CO1PR11MB48350170CB4BDC89DB1FF96F8CDD2@CO1PR11MB4835.namprd11.prod.outlook.com>
-References: <20260805003355.728299-1-skhawaja@google.com>
-	<20260805003355.728299-2-skhawaja@google.com>
-	<20260805090323.01b1a36f@shazbot.org>
-	<20260806194739.GH28508@ziepe.ca>
-	<20260810093223.50dbc8d0@shazbot.org>
-	<CO1PR11MB48350170CB4BDC89DB1FF96F8CDD2@CO1PR11MB4835.namprd11.prod.outlook.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fyL1yykn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D4321F000E9;
+	Wed, 12 Aug 2026 16:00:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786550449;
+	bh=znbEQP5qeKkTvLwzEeo1qv7S+Toyr6Dx3zZPsY0fb1I=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=fyL1yyknhziDYrEpczp824Goa1mJKSzdLKBNilGAqyhRyo38EOG+cEo+FF6s4jprU
+	 eyWocQTF/fK0p+6G81gnm0y3+BUifDKfyfp57ARL9QRP8/DQwlvFGFOiF1zJOR8XY1
+	 LrNZ8Y+w2TkplzD5fJJaWCuu171NQ0jnwYVzjQce5dAOjKDGx5tTIC6UaCSda2vrwg
+	 K5AjKVg5DeCmqiUuHNbvE+jLic2xQrDh6xDiNFZk4lmmUjvyIrlQZE2UZBqfaKFmSS
+	 l6UUtEhUCy6vhUhbt78xEVrQ6WVquVMSMtN267B10vSLNAut8JhqMn47Pd/gRl6dHn
+	 b9chuBrjL8SeQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v6 01/33] vfio: Use file-based reference counting for
+ KVM
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steffen Eiden" <seiden@linux.ibm.com>
+Cc: kvmarm@lists.linux.dev, linux-s390@vger.kernel.org, "Marc Zyngier" <maz@kernel.org>, "Christian
+ Borntraeger" <borntraeger@linux.ibm.vom>, kvm@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Oliver
+ Upton" <oupton@kernel.org>, "Vasily Gorbik" <gor@linux.ibm.com>
+In-Reply-To: <20260812153631.3376090-2-seiden@linux.ibm.com>
+References: <20260812153631.3376090-1-seiden@linux.ibm.com>
+ <20260812153631.3376090-2-seiden@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 12 Aug 2026 16:00:48 +0000
+Message-Id: <20260812160049.4D4321F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Tue, 11 Aug 2026 09:52:37 +0000
-"Tian, Kevin" <kevin.tian@intel.com> wrote:
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Critical] VFIO retains a dangling weak pointer to the KVM VM `struct fil=
+e` when the VM fd is closed, leading to use-after-free and type confusion i=
+f the file memory is reallocated.
+- [Medium] Direct, unsafe access to the RCU-protected pointer `kvm->file` w=
+ithout using RCU primitives.
+--
 
-> > From: Alex Williamson <alex@shazbot.org>
-> > Sent: Monday, August 10, 2026 11:32 PM
-> > 
-> > On Thu, 6 Aug 2026 16:47:39 -0300
-> > Jason Gunthorpe <jgg@ziepe.ca> wrote:
-> >   
-> > > Adding the sriov disable here at least makes it defensibly safe, that
-> > > we do still clear the PF on close, and we don't take risks that the
-> > > active VFs will crash the system during the FLR blip.
-> > >
-> > > Though I understand it was not the original intention, I feel we have
-> > > ended up in a strange place with the SRIOV PF feature ..  
-> > 
-> > I think we have 3 potential options for PF reset:  
-> 
-> Is there any coordination between in-kernel PF driver and in-kernel VF
-> drivers regarding to reset? At a glance looks that requesting FLR on PF
-> via sysfs would silently affect active VFs anyway...
+--- Patch [1]: [PATCH v6 01/33] vfio: Use file-based reference counting for=
+ KVM ---
+commit fbb73952530ea819e76b37873395b8b6ce2e0444
+Author: Steffen Eiden <seiden@linux.ibm.com>
 
-Yes, and this is a key aspect that the RFC I sent last night tackles.
-pci_reset_function(), and it's exposure through pci-sysfs, is intended
-to have function level scope.  We could walk the VFs, save and restore
-their PCI state, and trigger their reset callbacks, but this is a
-destructive operation relative to the VFs and their drivers.  A better
-fit of our scope model would be if we simply declare that while a PF has
-active VFs, the PF does not have a function scoped reset.
+vfio: Use file-based reference counting for KVM
 
-This immediately, and cleanly, makes the open/close, config space, and
-ioctl resets in vfio-pci inaccessible for PFs in this state.  We can
-then further push the vfio-pci hot-reset interface to require SR-IOV is
-first disabled on any affected PF devices, as the VFs are not currently
-accounted for in the set of affected devices.
+This commit replaces manual module reference counting with file-based
+reference counting for KVM integration. It updates the VFIO-KVM interface
+to pass struct file pointers instead of struct kvm pointers, relying on
+get_file_active() and fput() for reference management.
 
+> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
+_ap_ops.c
+> index 99a0efd999ef9..875e67063d8e5 100644
+> --- a/drivers/s390/crypto/vfio_ap_ops.c
+> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+[ ... ]
+> @@ -1822,12 +1823,25 @@ static const struct attribute_group *vfio_ap_mdev=
+_attr_groups[] =3D {
+>   * @matrix_mdev: a mediated matrix device
+>   * @kvm: reference to KVM instance
+>   *
+> - * Return: 0 if no other mediated matrix device has a reference to @kvm;
+> - * otherwise, returns an -EPERM.
+> + * Returns: 0 if the reference to kvm is successfully retrieved from @kv=
+m_file
+> + * and set into @matrix_mdev; otherwise, returns:
+> + *	-ENOENT if a reference to kvm could not be retrieved from @kvm_file
+> + *	-EPERM if another mediated matrix device already has a reference to t=
+he same kvm instance
+>   */
+>  static int vfio_ap_mdev_set_kvm(struct ap_matrix_mdev *matrix_mdev,
+> -				struct kvm *kvm)
+> +				struct file **kvm_file)
+>  {
+> +	struct file *kvm_file_ref __free(fput) =3D NULL;
+> +	struct kvm *kvm;
+> +
+> +	kvm_file_ref =3D get_file_active(kvm_file);
+> +	if (!kvm_file_ref)
+> +		return -ENOENT;
+> +
+> +	kvm =3D kvm_file_ref->private_data;
+> +	if (!kvm)
+> +		return -ENOENT;
 
-> >  a) All resets are blocked or deferred while SR-IOV is active.
-> > 
-> >  b) VF mappings are zapped/invalidated at PF reset and require
-> >     coordination to be reinstated.
-> > 
-> >  c) VFs are torn down on all PF resets.
-> > 
-> > Option (a) is complex and doesn't look like stable material.  A deferred
-> > reset on .close needs to materialize on .remove or .sriov_configure
-> > (and of course .open), but to allow in-kernel VF drivers we can't rely
-> > on vfio usage counts, or even our vf-token trust boundaries, which is
-> > what leads to the .sriov_configure hook since we need to take advantage
-> > of every opportunity to issue a deferred reset when SR-IOV is not
-> > active when we can only rely on the PF state.
-> > 
-> > Option (b) is potentially more simple, it implements the blocking of
-> > access on reset in the kernel for enforcement, but defers the
-> > coordination of reinstantiating mappings to userspace, which is really
-> > how the vf_token model is intended to work.  This is incompatible with
-> > in-kernel VF drivers, which I think means tainting on VF unbind from
-> > vfio-pci and those working outside the model would tread carefully.
-> > 
-> > Option (c) is the more heavy handed approach, it means that a PF driver
-> > cannot fail or exit and re-attach.  We have existing logic that handles
-> > a PF driver re-opening the PF device with active VFs and authenticating
-> > the vf_token (logic also broken by in-kernel VF drivers that bypass the
-> > vf_token mechanics).  There also appears to be significant locking
-> > challenges in this approach, ex. the inversion of getting the device
-> > lock for SR-IOV teardown from the ioctl, config space, and .close
-> > contexts.
-> > 
-> > I'm open to suggestions, PF resets with live VFs is very much a gap
-> > that I'd like to close in the vfio-pci SR-IOV model.  Thanks,
-> >   
-> 
-> Before closing the open on reset, does it make sense to first fit it into
-> the coming trust infrastructure [1]? e.g. initially set to TRUST_NONE
-> for any VF with a PF owned by vfio-pci, preventing any bind to
-> in-kernel VF drivers. Then opt-in is allowed to promote the trust of
-> such VFs to TRUST_ADVERSARY, allowing driver binding but also put
-> it in precaution with IOMMU protection. So a malicious userspace
-> PF driver cannot indirectly affect VFs to do dma-based attack.
-> 
-> somehow VFs in this scenario feel akin to Thunderbolt devices...
-> 
-> [1] https://lore.kernel.org/linux-coco/20260705220819.2472765-10-djbw@kernel.org/
+[Severity: Critical]
+If kvm_file_ref points to a file that was freed and reallocated to a
+completely different type of file (due to SLAB_TYPESAFE_BY_RCU), could
+this cause type confusion?
 
-That certainly puts a more cohesive driver-core story around binding VFs
-from a userspace owned PF to in-kernel drivers.
+Since struct file memory can be reused, extracting private_data without fir=
+st
+verifying the file's operations (f_op) could lead to arbitrary memory
+corruption. Should this code use file_is_kvm() or file_to_kvm() before
+dereferencing private_data?
 
-We currently have our own hand-rolled version for the PF/VF use case.
-Each bound PF registers a bus notifier that monitors actions for VFs
-whose physfn is the vfio-pci bound PF.  On BUS_NOTIFY_ADD_DEVICE we
-write the VF driver_override to the PF driver name, preventing any other
-in-kernel driver from binding the VF without a userspace override.  We
-also then monitor BUS_NOTIFY_BOUND_DRIVER and generate a pci_warn() if
-a VF is bound to any other driver.
+> diff --git a/drivers/vfio/pci/vfio_pci_zdev.c b/drivers/vfio/pci/vfio_pci=
+_zdev.c
+> index 0990fdb146b78..d3a1101013531 100644
+> --- a/drivers/vfio/pci/vfio_pci_zdev.c
+> +++ b/drivers/vfio/pci/vfio_pci_zdev.c
+[ ... ]
+> @@ -144,6 +144,7 @@ int vfio_pci_info_zdev_add_caps(struct vfio_pci_core_=
+device *vdev,
+>  int vfio_pci_zdev_open_device(struct vfio_pci_core_device *vdev)
+>  {
+>  	struct zpci_dev *zdev =3D to_zpci(vdev->pdev);
+> +	struct kvm *kvm;
+> =20
+>  	if (!zdev)
+>  		return -ENODEV;
+> @@ -151,8 +152,12 @@ int vfio_pci_zdev_open_device(struct vfio_pci_core_d=
+evice *vdev)
+>  	if (!vdev->vdev.kvm)
+>  		return 0;
+> =20
+> +	kvm =3D vdev->vdev.kvm->private_data;
+> +	if (!kvm)
+> +		return -ENOENT;
 
-So semantically, it still requires an administrative opt-in, but once
-opt'd in, the receiving in-kernel driver has no idea the device is
-driven by userspace.
+[Severity: Critical]
+Does this code also need to validate that vdev->vdev.kvm is actually a KVM
+file before interpreting its private_data as a struct kvm pointer?
 
-Maybe the trust level of the device becomes more evident with an
-adversarial tag, but coordination between drivers relative to things
-like reset still seems like an orthogonal topic.  Thanks,
+> diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+> index 423ead48aafe3..b06d1a9116051 100644
+> --- a/drivers/vfio/vfio_main.c
+> +++ b/drivers/vfio/vfio_main.c
+[ ... ]
+> @@ -472,36 +472,17 @@ void vfio_unregister_group_dev(struct vfio_device *=
+device)
+>  EXPORT_SYMBOL_GPL(vfio_unregister_group_dev);
+> =20
+>  #if IS_ENABLED(CONFIG_KVM)
+> -void vfio_device_get_kvm_safe(struct vfio_device *device, struct kvm *kv=
+m)
+> +void vfio_device_get_kvm_safe(struct vfio_device *device, struct file **=
+kvm)
+>  {
+> -	void (*pfn)(struct kvm *kvm);
+> -	bool (*fn)(struct kvm *kvm);
+> -	bool ret;
+> +	struct file *kvm_file_ref __free(fput) =3D NULL;
+> =20
+>  	lockdep_assert_held(&device->dev_set->lock);
+> =20
+> -	if (!kvm)
+> +	kvm_file_ref =3D get_file_active(kvm);
+> +	if (!kvm_file_ref)
+>  		return;
 
-Alex
+[Severity: Critical]
+Can this result in getting a reference to a completely unrelated file objec=
+t?
+
+If userspace opens a KVM VM and creates a KVM VFIO device (taking a referen=
+ce
+to the kvm object), VFIO stores a weak pointer to the KVM struct file.
+
+If userspace then closes the KVM VM fd while keeping the KVM VFIO device fd
+open:
+
+1. The VM fd closes, dropping the f_count to 0 and freeing the struct file
+   via RCU.
+2. The kvm->users_count remains > 0 (due to the open KVM VFIO device fd), so
+   kvm_destroy_vm() is never called to clear the VFIO weak pointer.
+3. Because struct file uses SLAB_TYPESAFE_BY_RCU, the freed memory can be
+   reallocated to a completely unrelated file.
+
+When get_file_active() is later called here on the dangling pointer, wouldn=
+'t
+it successfully take a reference on the reused struct file?
+
+> diff --git a/virt/kvm/vfio.c b/virt/kvm/vfio.c
+> index 6cdc4e9a333a3..0166cc4d39b31 100644
+> --- a/virt/kvm/vfio.c
+> +++ b/virt/kvm/vfio.c
+[ ... ]
+> @@ -168,7 +168,7 @@ static int kvm_vfio_file_add(struct kvm_device *dev, =
+unsigned int fd)
+>  	kvf->file =3D get_file(filp);
+>  	list_add_tail(&kvf->node, &kv->file_list);
+> =20
+> -	kvm_vfio_file_set_kvm(kvf->file, dev->kvm);
+> +	kvm_vfio_file_set_kvm(kvf->file, dev->kvm->file);
+
+[Severity: Medium]
+Is it safe to access dev->kvm->file directly here?
+
+Since kvm->file is explicitly annotated as a __rcu pointer in struct kvm,
+shouldn't this be accessed within an RCU read-side critical section using
+rcu_dereference() to avoid data races with kvm_vm_release()?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260812153631.3376=
+090-1-seiden@linux.ibm.com?part=3D1
