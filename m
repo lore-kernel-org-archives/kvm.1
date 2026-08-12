@@ -1,150 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C02477E4F;
-	Wed, 12 Aug 2026 18:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045B5483BDE;
+	Wed, 12 Aug 2026 18:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786558145; cv=none; b=e7V80HsfUhUL+zIGaBEBQN0MpG/sLQOhE5YGRiq76yWFEPlZX4WhzzICcf6qBIb5Fd1uDFykZ5WP9A1Ai0SVfv4gP5jvQ2xPOyVba6iKJ2SLjKgkeLHtjk9gTZTDb3EQX4yaDajVwks9uE2vrkjN9EsYgV8Z7bHuDqm61uLsQwU=
+	t=1786558411; cv=none; b=pVI02sQcEu5LMHrJ2RYq5fXRy68KxewyX7QnDVt7HBIj8xPNZwvn9zvG8vHh1UYghJ84ykj8DFDHxRcooEEdZBLlgDQ/HJRhVfEc21sdwWJXMNe+EtJ5EWMrVt9TcwJLUyeK80CnVzrh7fAmMWa319r9wMOoQ9ttOAncU55CvdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786558145; c=relaxed/simple;
-	bh=Yi5far2ZKXnrZTlfHu9Izikx3SvheQpzfjRHuGQy+xY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hhlEuUeHi6j6kJiRovbFy0NlqR6RSB1kRMmZRRtVRaBwXpW+AHcrW2tBfOw3gj4oUt1/gsitHWw54w8tP001wfo69huuM5+yFbuPIDMgvnJmF05NbZ+h+T2i1tXrRhIEaurB+xzYJ0zoLu5mENX6TJq8S1yscqhaL3+PWQixHTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FPZqAbLL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786558411; c=relaxed/simple;
+	bh=Lk2RrlDAtXzkQSpU4fqKVVauO1qmIi2Q7x/f5Bkt6Fk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qsPGGe4OjR28UJyaxlhf9jktnV727ZUzntqBTJ9R0Y7O88luId3sf37WAG+O8F6e8UQ/WHxqNFuTuYrDB3jCXkneuronIJQbg/olEnfnQFUuSIc18s85mjV18GJY1RthdcKxFA4WgUFHSoTQZFPhJLG9KSR6cH19mQbPteyACeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YwNlw8fl; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FPZqAbLL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7B41F000E9;
-	Wed, 12 Aug 2026 18:08:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786558144;
-	bh=/4wKYM9MxtqgdWEMOzwNt0V2ekWexcqa8GGAN8Nt6p8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FPZqAbLLWRIKnNz+QQXKAqF9IVzq9IiefDRz1565tIbl/YT7GDxa0hVfpHvtuPJOv
-	 21Vj/7WrU8+huUaZKOGhGAzGzQWLjfUMZVZt2ff4LGvtC2SCdGUaGADsrWisnU+XWO
-	 beIMV93LtMwcdcrt2YjPyUDHzLIhwRqnV3IEVkVEGVWMozBMT+LElOjqy90TkkKs+N
-	 ZQx0XKNVpk1LWcEBgnepPPW8ZiW8sWwUJy3aW30MjDw6aprydwCd/wc7rmQd1wt6sB
-	 wuQg/3oKhwJjGNZDGpj090xIWx/Y23Nxl83v8P3inLlBDasM7ar0kQeBrH3IL7iRZm
-	 rzZ5tMbMJv3NQ==
-Date: Wed, 12 Aug 2026 19:08:29 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Alex Deucher <alexander.deucher@amd.com>, 
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Steven Price <steven.price@arm.com>, 
-	Liviu Dudau <liviu.dudau@arm.com>, Huang Rui <ray.huang@amd.com>, 
-	Matthew Auld <matthew.auld@intel.com>, 
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 19/20] tools/testing/vma: add test to assert
- MAP_PRIVATE-/dev/zero is anon
-Message-ID: <any2O0nZdz7R3V-G@lucifer>
-References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
- <20260806-b4-scalable-cow-virt-pgoff-v4-19-ab318a350404@kernel.org>
- <5d1a35d2-8541-44d5-8958-1efa9773d7bb@kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YwNlw8fl"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67CH1Svw4040648;
+	Wed, 12 Aug 2026 18:13:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=JG39/F
+	4KEfF7inLCq813KLTycRSDoXWv8uD9Shm+z+w=; b=YwNlw8fl7VP6ApJJ9JTOa+
+	xGYnbMSSEBo7kGAKG6xasiEnCuJzvzAHYVxm6EFOx8JXzkHp1hU96EYEDzNMyt2E
+	UdtdXO08Z3/9oAL1mQpb3jzja+rp7p6BI9E7W5vu+j9w1sifAQJfWKjTu8YWHkO3
+	MAD/AzF8MuaajxbMsXJSSH3bXK2HDbcNiOqZTm8uvry2UoWq59vp9Cwz7PlDecQE
+	nmxgLAU6P6YkhGBxDqhtJc/RpBV9Z5Q6suFbjQLGT5Q0TV/X3eUT7H3xJ+dCVGeJ
+	81dtdg2Pe+okPkRXb8l0uITWwX7wHa5xKICZslrPTfEE5u3Dmf4YG1VCPpb/Jndw
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvq9kx55-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Aug 2026 18:13:04 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67CIBNw6017516;
+	Wed, 12 Aug 2026 18:13:03 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxf5w7fff-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Aug 2026 18:13:03 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67CICxJl30343546
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Aug 2026 18:12:59 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F09AD20049;
+	Wed, 12 Aug 2026 18:12:58 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CC28E20040;
+	Wed, 12 Aug 2026 18:12:57 +0000 (GMT)
+Received: from [9.87.128.143] (unknown [9.87.128.143])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 12 Aug 2026 18:12:57 +0000 (GMT)
+Message-ID: <4ed01037-4df6-49dd-ae2e-fdf83422916e@linux.ibm.com>
+Date: Wed, 12 Aug 2026 20:12:57 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5d1a35d2-8541-44d5-8958-1efa9773d7bb@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 15/33] KVM: s390: Move kvm_host definitions to
+ kvm_host_s390
+To: Steffen Eiden <seiden@linux.ibm.com>, kvm@vger.kernel.org,
+        kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Friedrich Welter
+ <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>,
+        Gautam Gala <ggala@linux.ibm.com>,
+        Hariharan Mari <hari55@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
+        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
+        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+        Vasily Gorbik
+ <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+        Zenghui Yu <yuzenghui@huawei.com>
+References: <20260812153631.3376090-1-seiden@linux.ibm.com>
+ <20260812153631.3376090-16-seiden@linux.ibm.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20260812153631.3376090-16-seiden@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: DsaBQ2h3naiO3Vo2oYkoKH1-T5s06xyZ
+X-Authority-Analysis: v=2.4 cv=PbDPQChd c=1 sm=1 tr=0 ts=6a7cb7b1 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=Vz5mpp0vxluPlbYFWZQA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDE0NSBTYWx0ZWRfX5sG+8ghjFw9B
+ 3hGlAJaTVJO81fBbX4+2mVesHPIkDLCLDofnQdtRlEBNlPWhPfOTPbAUtdkuaEWpHPV5W1w/LQH
+ bWm/lgB1guMgdtYhR03oqwrVM3tbEDfluvnS8PXg3WaJ7a9ybyTbMyLvfCU36QsnLN+73kR28at
+ iuIwkWN7Jqf+QOo2YHfQeQc4HBrmpDu+MwnRkqIiRpj/b7Z1pa1io2s9qJ1BAas6Xx4eU1KAN5j
+ z4mbMlvz0Mw7gUpdPbJbr3GGwJdxZoNWRGzfT8rnw2yCMuUhtV1ihHiZDmvmoIBkrBEyecEeDkb
+ CHNXWADj/VqN6M2D0jwQ/iTQFgYTwE53Lf5JPMobIHSVkWmXjDeueAdodyA6LVwvAuJlfuPVGzc
+ t46CtWyMxWnE5YD7t+/0eD2MNjSkgrhUrna9dq+w6yuDUi09pFzmiYXb/PMLDJVJtsY8A/GVjC6
+ pLY+kC0knLoNeZKXftQ==
+X-Proofpoint-ORIG-GUID: Fe3qyqHBNR55QIRDPbvdUnSJe2ysgWdj
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDE0NSBTYWx0ZWRfXwfqwvJ0fRyi2
+ o39pRT2WPS/wYglQns9+vs5SWaIYgpfre+b7y6PuoBJdUBlA7O+53GbxwpzLubT1gesiW1AIuai
+ I3zrqUo0bmy1HyclBaATQIK8HBMk0tM=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-12_05,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 priorityscore=1501 suspectscore=0 phishscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608120145
 
-On Wed, Aug 12, 2026 at 07:17:39PM +0200, David Hildenbrand (Arm) wrote:
-> > +static bool test_pure_anon_dev_zero(void)
-> > +{
-> > +	const vma_flags_t vma_flags = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
-> > +			VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT);
-> > +	const struct file_operations f_op = {
-> > +		.mmap_prepare = dummy_mmap_prepare,
-> > +	};
-> > +	struct inode inode = {
-> > +		.i_mode = S_IFCHR,
-> > +		.i_rdev = MKDEV(MEM_MAJOR, DEVZERO_MINOR),
-> > +	};
-> > +	struct file file = {
-> > +		.f_inode = &inode,
-> > +		.f_op = &f_op,
-> > +	};
-> > +	struct mm_struct mm = {};
-> > +	struct vm_area_struct *vma;
-> > +	unsigned long addr;
-> > +	VMA_ITERATOR(vmi, &mm, 0);
-> > +
->
-> When we go with a zero_vm_ops this gets a bit simpler (see schloppedi-schlop).
+Am 12.08.26 um 17:36 schrieb Steffen Eiden:
+> Rename kvm_host.h to kvm_host_s390.h and kvm_host_types.h to
+> kvm_host_s390_types.h to distinguish s390-specific KVM definitions
+> from the generic kvm_host.h that will be used for shared definitions.
+> 
+> No functional change.
+> 
+> Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
 
-Obviously will have to replace this with something else that just sets anon in
-an mmap_prepare callback once I drop 17/20.
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 
->
-> > +	current->mm = &mm;
-> > +
-> > +	/*
-> > +	 * Map a MAP_PRIVATE-/dev/zero mapping at address 0x300000 with a page
-> > +	 * offset of 0x10, which we expect to be reset to the anonymous page
-> > +	 * offset.
-> > +	 */
-> > +	addr = __mmap_region(&file, 0x300000, 0x3000, vma_flags, 0x10, NULL);
-> > +	ASSERT_EQ(addr, 0x300000);
-> > +
-> > +	/* Assert that it truly is an anonymous mapping. */
-> > +	vma = vma_lookup(&mm, addr);
-> > +	ASSERT_NE(vma, NULL);
-> > +	ASSERT_TRUE(vma_is_anonymous(vma));
-> > +	ASSERT_EQ(vma->vm_file, NULL);
-> > +	ASSERT_EQ(vma->vm_private_data, NULL);
-> > +	/* Expect anonymous page offsets. */
-> > +	ASSERT_EQ(vma->vm_pgoff, 0x300);
-> > +	ASSERT_EQ(vma_start_anon_pgoff(vma), 0x300);
->
-> Yes, that looks good to me.
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Thanks
 
->
-> --
-> Cheers,
->
-> David
-
---
-Cheers, Lorenzo
