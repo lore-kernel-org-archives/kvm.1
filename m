@@ -1,69 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2405F347532
-	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 12:43:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD3A346E67
+	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 12:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786538584; cv=none; b=qIJu0RHxIhEdBbqxSaoDiiXFG84Yh3usWnJVKaPMqF7MinbMndDuCctYkj0pNx80XUMVvLuOR0MEgoR+v4y+YOQePQ9bFkcwYNr+LLNY1bOPnBw/jwDjAHFikCZdlRiaAgX77iTqZmWxyd3wU54qC5CGvJdxx2wV+ydFmbdZO2w=
+	t=1786539232; cv=none; b=WuznzDGcqmI2XZRIevTlrIDIxZo//1dnYPHXKdsV4xSNxgRNq/nb+H+lVqGShNikvC7cA+R3vSjY1WfOMb3/83e7FT9Aox5yT+fGqPW8L5SLIX2PepkGqA6NVsBxpy1mlAn+kD+7NVobcClM+vqIs8DXKjgvGjy5Nl0kGlJp6LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786538584; c=relaxed/simple;
-	bh=VFG95vPM1lnfVDbcSxaaz8CVUKDbzXdSVZrkWTvifpU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YGLeqyZKozoPGAzBx9VjSXfzey19YWkfIs/dztzkZKfSUFQ8UFlt/04WcTaxEcVcN2GQ+Q129atPqbh1c/voW/I99Sf0oCcI/1MfYql8vB/CR7gSztLDTRFhjd+z8diibpru1N02G/6rPscUUKzEMWY4RmTsqvMArrky3vgD1go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fenpdk7r; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786539232; c=relaxed/simple;
+	bh=Nsey5we6rIhYyiJ87M7AhJFBPy6Qd1JEoFQxTIJhaY4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T0RWyCdmm1vIpMy8qGKQKFtKgiKnBXVfxKfSP0SFAtgSassMy6MylwniP4qm7lOjLPIkpzG7SefWTE3BHADi/dBvlu/aSAmdmZyAzD7JuqwqaIYz1cMckZb9tpDggxV/mWUmcP71w2pBhEXM0P5gEjFICvPUZFja5fR5Evs9CDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=QS9svdAB; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fenpdk7r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307FF1F000E9;
-	Wed, 12 Aug 2026 12:43:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786538582;
-	bh=nryLpqAojdgxbsL4qVm2RXl99LJBr6MU3sWlNLsEpIY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fenpdk7rpnvgtW8lEhetOj2eyV5XpiiWQchXYZju4feRzhgnjr7lzGIGPAwMkOYJf
-	 XwRLA1u4GmXkUOpTLk5BKVjXTJhRBqCfCoEUKoAO/0Hy/M0UOuFSPhnV+AkIm8/Xmc
-	 N0c/s055uPbbdcl9385F6LR+IGpJmpR0EBLvUYjcfLoDzYmXKRelwG4ciZZVOccI3Z
-	 tMvmgCtzs/9zszI5LQ5RmMmNzA+RlVdFQXM6OjzAKOOgdpI60JD30c+Lzdd2mINoed
-	 AiGF2eCP2na/gKAuNpJJVtBsx99oi9u2hZsv9gU7b0MyH4PR+ub5EDeK2WKDNdS+ou
-	 LrNoeGp+dJkWQ==
-From: Will Deacon <will@kernel.org>
-To: Zongmin Zhou <min_halo@163.com>
-Cc: catalin.marinas@arm.com,
-	kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
-	julien.thierry.kdev@gmail.com,
-	kvm@vger.kernel.org,
-	Zongmin Zhou <zhouzongmin@kylinos.cn>
-Subject: Re: [PATCH kvmtool v2] arm64: Fix resource leaks in find_pmu_cpumask()
-Date: Wed, 12 Aug 2026 13:42:54 +0100
-Message-ID: <178653832325.2645867.10313265431292725253.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260806023218.21068-1-min_halo@163.com>
-References: <amzVh6ILi4rd6PwU@google.com> <20260806023218.21068-1-min_halo@163.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="QS9svdAB"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6EE401596;
+	Wed, 12 Aug 2026 05:53:46 -0700 (PDT)
+Received: from e143914.arm.com (e143914.arm.com [10.2.213.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EC3303F632;
+	Wed, 12 Aug 2026 05:53:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786539230; bh=Nsey5we6rIhYyiJ87M7AhJFBPy6Qd1JEoFQxTIJhaY4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QS9svdABJ7Q7clDrd//faRMSGmsQiRrjhxaocMz0cbDDTn+rOE7PwoHvcJWprFwrs
+	 AG+ifvva752QB+fPVJ8NZacgBX+ptPGpcXZr9lBUZC3fklqmfezltGCVDkxxI+pzTq
+	 TEC8QvpfAOaf1zEqKg+SQf6ra0gPAitmbunC927Y=
+Date: Wed, 12 Aug 2026 13:53:43 +0100
+From: Joey Gouly <joey.gouly@arm.com>
+To: Sascha Bischoff <Sascha.Bischoff@arm.com>
+Cc: "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, nd <nd@arm.com>,
+	"maz@kernel.org" <maz@kernel.org>,
+	"oupton@kernel.org" <oupton@kernel.org>,
+	Suzuki Poulose <Suzuki.Poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>
+Subject: Re: [PATCH v2 4/4] KVM: arm64: Validate GICv5 timer PPIs before
+ claiming ownership
+Message-ID: <anxs1yj3Qbv2JkTf@e143914.arm.com>
+References: <20260811150941.941295-1-sascha.bischoff@arm.com>
+ <20260811150941.941295-5-sascha.bischoff@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260811150941.941295-5-sascha.bischoff@arm.com>
 
-On Thu, 06 Aug 2026 10:32:18 +0800, Zongmin Zhou wrote:
-> Close file descriptors on read_file() failure and close the directory
-> stream before returning from the function.
+On Tue, Aug 11, 2026 at 03:11:48PM +0000, Sascha Bischoff wrote:
+> With GICv5, timer PPIs use architecturally defined IDs, and therefore
+> we require userspace to use the architected IDs too. We perform this
+> validation in timer_irqs_are_valid(), which validates the configured
+> PPI after claiming it with kvm_vgic_set_owner(). This is obviously the
+> wrong order, and could both result in a NULL pointer dereference for
+> an ID >= 64 and in an incorrect ownership claim.
 > 
+> Switch the order to first validate the PPI before setting the
+> owner. This both prevents an invalid GICv5 timer PPI from reaching the
+> IRQ lookup, and avoids claiming an IRQ for a timer configuration that
+> will be rejected.
 > 
+> Fixes: 06c85b58e0b1 ("KVM: arm64: Move GICv5 timer PPI validation into timer_irqs_are_valid()")
+> Link: https://sashiko.dev/#/message/20260810111614.DDC731F000E9%40smtp.kernel.org
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> ---
+>  arch/arm64/kvm/arch_timer.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
+> index 4155fe89b58a1..af7e2894cd690 100644
+> --- a/arch/arm64/kvm/arch_timer.c
+> +++ b/arch/arm64/kvm/arch_timer.c
+> @@ -1529,13 +1529,14 @@ static bool timer_irqs_are_valid(struct kvm_vcpu *vcpu)
+>  
+>  		ctx = vcpu_get_timer(vcpu, i);
+>  		irq = timer_irq(ctx);
+> -		if (kvm_vgic_set_owner(vcpu, irq, ctx))
+> -			break;
+>  
+>  		/* With GICv5, the default PPI is what you get -- nothing else */
+>  		if (vgic_is_v5(vcpu->kvm) && irq != get_vgic_ppi(vcpu->kvm, default_ppi[i]))
+>  			break;
+>  
+> +		if (kvm_vgic_set_owner(vcpu, irq, ctx))
+> +			break;
+> +
+>  		/*
+>  		 * We know by construction that we only have PPIs, so all values
+>  		 * are less than 32 for non-GICv5 VGICs. On GICv5, they are
 
-Applied to kvmtool (master), thanks!
-
-[1/1] arm64: Fix resource leaks in find_pmu_cpumask()
-      https://git.kernel.org/will/kvmtool/c/f67bc0bdae94
-
-Cheers,
--- 
-Will
-
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
+Reviewed-by: Joey Gouly <joey.gouly@arm.com>
