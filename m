@@ -1,164 +1,270 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E5B21D5B0
-	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 01:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786498422; cv=fail; b=fDdumZ1k0F7tMrjszqsKSNVaVNvJIaIlr+pQp/XhXbtGDh7kyLcDzdm5pqrN5Gfh2VZR5iphoKc66KYpCuG4VRDXUC2TTHTnY1VTGPbtvbNCG+DIc+U0wHPc89ca1G94VGtjqsCoxhXQnWFVK7iBhrUQ/RMiXw66Et5LnNWW+SU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786498422; c=relaxed/simple;
-	bh=MbBslOJbSd2iCoBlfC8UR0qi/MbRWoLt7h4IUANtLP0=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=d4BDXz01S530ldLy/9gOEDL9rkp9vswOScVOYdN16kWgPIBwsmH7KZaG/kELUckYFImijo4lSKLwRKdNwhIfw5DmMSL3XaLlMUFzusGTtxVQ7LOBkbgUTjdlMoEIVBZbMGX4NOfVpvPSTV2AACbmsjgXY1koC6XTE2kv52NLO6g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ae3BGgLG; arc=fail smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7D92FFF8B
+	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 03:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786504088; cv=none; b=K/1C5X+DJtPilBx8HuHYprpeSto02TSdsaFajG7+BaLufUErxrhUgeqji++St47ruCMqyBz0VGDTtInL60dOtPBXas3dTEeHAX6fUQG27HO9XdrB2hphYKdvkIkzdaOMb9jSgqlJz5WC2xFyIaJcQREcpHNU1cfHRgeaCiGK+8c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786504088; c=relaxed/simple;
+	bh=dwCyngrPXg1hdkiPj675xR7xZrZpa4gLsSEMPohWafc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fxw2JjBvk2P0JuIcxMdQKvtA71T/0JFBE/OF3GcvunaGEISMmlQjE5nJOBlgYCfxDS0P1yZmF3wS+F8jhwz2cehq+LbXr1SFqKYqnNLNE7Z3I/TIEe5qVj3t54FPYQxFPsiaTCK2mtdv0/iwjXgpvdgs/fib/WhRX9Qqa2Oy5sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MYC3uA4/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=pdzeY3wD; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ae3BGgLG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786498421; x=1818034421;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=MbBslOJbSd2iCoBlfC8UR0qi/MbRWoLt7h4IUANtLP0=;
-  b=Ae3BGgLGt/QYqxTA9qjx4XKv77RnhJ576K+v6dgq1pAup/XVfW007iM9
-   Hk0XnffgVi4bHZ1zN+PB7qcyGb2ZUjg/qJv0FdZi3uKE7psUx/ar/0GvY
-   pDOzwp2ifAN6FhiU4TcYTJjA1v1Rfu1Mlgr03DmeYQYdVW/FjvtCvUG9j
-   VgWp7jGAT0jYfhZ8v0U2eU4CT2XqBGRoOokYwaeh/b6Sm3Cjy6SzGTu1K
-   wfXxxkad/XISQeeU7W5QA7R52pwpKCGKTRYunK8IoFBbZpDIJhwqypg4X
-   1QKqPJOFoCgh+MxDeWh9Q3UXlNgFp/P1CavgDX4AgyY1HGkOxo4tbFdSG
-   Q==;
-X-CSE-ConnectionGUID: J5w/GvJhSQae/Lebjq/1tA==
-X-CSE-MsgGUID: 58WHSqEIROSa4zsc8ohQCQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="98188292"
-X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
-   d="scan'208";a="98188292"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 18:33:41 -0700
-X-CSE-ConnectionGUID: xxySV0w9Sy+wS90npoxdVQ==
-X-CSE-MsgGUID: 0KtalRe7R8WdOL3tbBtUtw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
-   d="scan'208";a="263535102"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 18:33:40 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Tue, 11 Aug 2026 18:33:40 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Tue, 11 Aug 2026 18:33:40 -0700
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.56) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Tue, 11 Aug 2026 18:33:39 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=p8lPKsHciR2PugGaZZkp+QQwqsO6utimjghBLc9gL5Ttfxs1u72v3945Fd46GCOyayhkSSex7KQZQssEO7NyFUJNr2hI/2YhCwR2d/kzByhlo/7vaIKDZ/iQkMhlkXrR7d+rnQElrpQiJ/KvI9c36RsQn20FBM2Gi7I7z98g2H1IejJozkiKye2PoGBZ0labN68CQDSSmYXb1ucKFC6Fx2c7Y2qQAIzJkFBQQHBFDAgYkbnUJsrvS5Ma2tq1+lYCWjb3Q/EACKEj90mm8Le7ofr4Fi23rpnoz6Vhld15FbecZNfxaV9ueZ+VPQp0wZDzM2tOXq7RYqOoJb/J8k27BA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dnKeUPUgzYoFPS0SZ7J6BQZxGyXz/zRmvTCbeO8CXQg=;
- b=qJbGu2gT8nBCAOYWLLbYP1ubxEVO3uE35eOLV7ZFswv8pgP+uwonEsWRThLADJBOZOfC0tVufmIwWoXODhmKHMdOpdr2uiMnmx8PU9+i94VA+QvF6RMxSBstxsPnTI4G00sKwpkf/Qu3jFE4cebjBkIUc2BizSw+ALnhMP0sv8Bypwyd4f6nDA8sHu3pMP7DfoTLpayZgvCPX+emcw9jzISNXVXE8vLWgEDbu02loW5QPcyUJJDI0VAQeWf1Ry8vDUJnDCiwi1oLN5DsRs7jWKAogdBDlWs6E9LsiK66cpLWQAhs/bWqKslqsdlATJt1ieheMyeSeLVuMY2yM14GAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB5214.namprd11.prod.outlook.com (2603:10b6:a03:2df::22)
- by PH7PR11MB6953.namprd11.prod.outlook.com (2603:10b6:510:204::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.11; Wed, 12 Aug
- 2026 01:33:36 +0000
-Received: from SJ0PR11MB5214.namprd11.prod.outlook.com
- ([fe80::5926:3836:4212:8640]) by SJ0PR11MB5214.namprd11.prod.outlook.com
- ([fe80::5926:3836:4212:8640%4]) with mapi id 15.21.0315.011; Wed, 12 Aug 2026
- 01:33:36 +0000
-Date: Wed, 12 Aug 2026 09:33:26 +0800
-From: Philip Li <philip.li@intel.com>
-To: David Matlack <dmatlack@google.com>
-CC: Sean Christopherson <seanjc@google.com>, kernel test robot
-	<oliver.sang@intel.com>, <oe-lkp@lists.linux.dev>, <lkp@intel.com>, "Josh
- Hilke" <jrhilke@google.com>, <kvm@vger.kernel.org>
-Subject: Re: [kvm-x86:selftests2] [KVM]  a262fc49e0: kselftests.kvm.make.fail
-Message-ID: <anvNZohisTxmNKOT@rli9-mobl>
-References: <202608071656.86e9fd06-lkp@intel.com>
- <anYlguXMOPZD-cfj@google.com>
- <anZag-tsavs8YNUl@google.com>
- <anuXCiFnJEugZb0m@google.com>
- <anuaWC4c49JK4poE@google.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <anuaWC4c49JK4poE@google.com>
-X-ClientProxiedBy: SI2PR02CA0017.apcprd02.prod.outlook.com
- (2603:1096:4:194::17) To SJ0PR11MB5214.namprd11.prod.outlook.com
- (2603:10b6:a03:2df::22)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MYC3uA4/";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="pdzeY3wD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786504085;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fpiOMTsisd39/3xRFpTUfEaourSQhZrPCO2dxugBjZI=;
+	b=MYC3uA4/AAiSF5/pTimwJdnTzh49HBiTDi9a4MqEpSZJMn1D5J/B+/rkWHhhdKabc6VhLL
+	Sx6YG2D5bJ+1+PTJHaAPWuTZNS219WMDciokRRBv6KF3v6QLAQ/6ZbGxGDSMf1FfiaKlz7
+	ERo1WIjM2Zhs+NauoaWSLlYNT1+IB8Y=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-35-C1JxB3mjMduTKAFwR_0oEw-1; Tue, 11 Aug 2026 23:08:04 -0400
+X-MC-Unique: C1JxB3mjMduTKAFwR_0oEw-1
+X-Mimecast-MFC-AGG-ID: C1JxB3mjMduTKAFwR_0oEw_1786504083
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38e8fee6af3so624826a91.1
+        for <kvm@vger.kernel.org>; Tue, 11 Aug 2026 20:08:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1786504083; x=1787108883; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fpiOMTsisd39/3xRFpTUfEaourSQhZrPCO2dxugBjZI=;
+        b=pdzeY3wDT0KX+ooty2m/X+ytYtATveK21zYQMovUfD4bi7/qyvXfjjWyGY/+HRfGHO
+         iJB5GBY3qlo9LXD9OWbVZEnjF8DkAH8uJ3Tf1qL1CCyNSe0wmDlWemRSN7zsDq/XayCy
+         zi6j/bPJFe3TH1Fh3zTxUrPuLmF/PnJd8h5DMcNBIljVcRyp9/sPlUPXVqjvKtVN+n5t
+         QAF+cZq9VJ9br2QQlzAJCjBZKJ4x8xAPqKO0L5guN1g3f1IvmcYfQ3uQqeRkKQX0x8T5
+         UK+d19oDcTJmg8epSgDNDfgM03PSKTovxU3VmkE9rs8v1PDUp4KaAIMN821ZeGzi2mKX
+         7KgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786504083; x=1787108883;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fpiOMTsisd39/3xRFpTUfEaourSQhZrPCO2dxugBjZI=;
+        b=k+k7psO7U6P6bLPy79zmUV1nHS225I3aS4/hWsURFAZRgSJfStAyaeWWKqzhqZ+hJV
+         dPstomLu9aUf+qN9uLjyot9iEPpQBheHOUf6oTAFrzGRImjP8onXSFGSTRWcUlNWrvFg
+         AnFvLOErzDJmzoFwgWuPp+yiNGBQYvEVxR3Mno5I8Qa88Aw3R86wjcc80Dnnka7EDhTy
+         XqvwZ3fUYDuMC7Rv3FLjnJWynajndO3oTvMBkEsRV+UV5UALvI1JbLoZaAJdh6MXS82d
+         DBhC5G9q12KTDwiyfz3frtCQ3rYWO9K1ykXG20eWu4CUCahP0HaE8ht8yNtjN4JiHXBD
+         edwg==
+X-Forwarded-Encrypted: i=1; AHgh+RrnJCfl1/puXN5lSDFTnU0zrj2pJ/juuFGqs90g02M4WhVltUnvIxRDdTIMxRBpy33iKS4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywjy5oAQAEIaNHNt0tDxdLyjMEuAjnWlJCgRwOGhl9lOqkJLsaR
+	EL9crugA4qxyhzrMgwRlPzSvjbIynCiJRcNp4AGYp+k6Qz2YW0K3wUdsaAR8OLhRQ93qmzgjsNP
+	IhHuGr9JbEx9c9n4Vv1acGTnT47EYy/vms0CUlupiks+NJMPdM4hUrg==
+X-Gm-Gg: AR+sD10RFpCAAYL16uJZhcADUX15GYfUA8Kk+b/9pSimPAQDE+UFgxGqpBi6DHBsyj1
+	7WNbewoLtkk2avwt7tWSMmakU1UgAfBbghLhvO0aNrLFkMy45+6ldkj4j/VaqWKvYQkzFn9mkxN
+	3AhxzCozCwHMFK0rpGaGnrpyyws97Og0BxI68sOVNC7V22o8j4+N7BBFmZVygzw55bmF/uH/7g5
+	/2zEE14MwNUYoFRdSPLglUKk3pPT7iBga2njUjw+Kt0SKxC+7sGitHjGD/BGzX3hdXcXuLygkaV
+	z1Xx1Y8WHNEXsvLgExWZRNUH91IfYrDdZc9gHvTCg/acLmSUEqtjEumJ96IZFYHs2JhQdZXpoQ0
+	jvYtxb2HkvD8TxskeCeGSvkWc3/whh0tkeS4yuXelmNY=
+X-Received: by 2002:a17:90b:3cc5:b0:38f:efed:5448 with SMTP id 98e67ed59e1d1-3930128b3a4mr2076403a91.8.1786504082764;
+        Tue, 11 Aug 2026 20:08:02 -0700 (PDT)
+X-Received: by 2002:a17:90b:3cc5:b0:38f:efed:5448 with SMTP id 98e67ed59e1d1-3930128b3a4mr2076287a91.8.1786504082103;
+        Tue, 11 Aug 2026 20:08:02 -0700 (PDT)
+Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31cf6d79bd6sm5309888eec.28.2026.08.11.20.07.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Aug 2026 20:08:00 -0700 (PDT)
+Message-ID: <e2894206-7470-4606-b9ac-eedc8d2bdaf3@redhat.com>
+Date: Wed, 12 Aug 2026 13:07:50 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB5214:EE_|PH7PR11MB6953:EE_
-X-MS-Office365-Filtering-Correlation-Id: 535d1991-1433-4f0c-850d-08def811ba71
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|366016|376014|1800799024|56012099006|11063799006|4143699003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: GDSD9tPTo2vFez64ZfUCQk1Z3cAEW7GtThyCxmn63Y09WF81B9D8WzvAgYLk6PhDq+b3U2CvkpjIKPDquBCLAjdu5XhSViAZM5RTQExAAl+0vjs/jVr3kw76YxqHFf9OBeZc5BHHf2/nUm+XDhMR1DtJ708Ue5UK6a18/wgoHBCWa+8U1MptVet1eKFHVluZK2ujkWy/AAFy8vpIivFYSUt3i0MMgLuN3gf4hGg/FMCNjENnZrhHDr2MlYOZpuqhYSVCo0f7fo5fvccYOukUNqU28n1MPeM8yyXjVntaP7cfLMstm4M7rofA3ZggK1RnRucbkmRijNkE0Jhu9/O/atSfnP5nfdNco6lT2eVy7IGz/6Z1EqhWyexRgvZLRdsQs+Tmurn3gkdCoHEQwrVZfxl/IbNat6VFCO/Ovcb+AyNw++Gb6cctKXUPCQ5RF+0QffLNu8ac23PHTCX5KQQ6ocNRPLZ/pXJ0JZv/U6NBJQfbTYn5foJFWbRLZWUhDs9b7fHDTGQC6pLBN5mmsSGSsaf0VfSnjnzDGwzNXUtY2s6T2rUguA8/FzZpiztAfQh+Bn+JJRiDME9D41kTGpH3Of+kL5crcQZ2wLD1Dg3HTZiOe218GsIDnh35XGYTNdCueRzcfQ28KPxuoVlG3A9sVdB1LGZKg5nxKiuzD9E3m8w=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5214.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(56012099006)(11063799006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?n6iiGRTcWd2DK2Wpkav6i1poNSKRujtAgYgkKnlLT7FihWY153ztShIlU9Pm?=
- =?us-ascii?Q?RIS6LsXcFI5QiCc5XLA6I78wb9vM01MZ1ynS3PKMEsDcjj9sRgIzYLkLYRuc?=
- =?us-ascii?Q?pEs1C6cXE3MTXOAPRs098MzmKxvviRPgCIGokpYMrolkr872uHQ5i+dgFo5F?=
- =?us-ascii?Q?CVDuagM9dOQsZx88Ugv2Xlei8hzKfb5W+lyoBSdhMFIZlEMp5BQISctYqJrI?=
- =?us-ascii?Q?JGexPCc5fyFWfAN7PCmZsW0M+6jhGvP9+dWTzkGf8+gatFqlmbMDOliwHDZ1?=
- =?us-ascii?Q?uHdblVZ5x8R5RI+R3wJXQR8cR7a+IUL3c2caB1fRYto3Ay9qLj9HNtEQvenR?=
- =?us-ascii?Q?ZCmuqMLfPwkVJPPwmfME8OeY+K0G/a09SziwL+Cxo+CnmYyJuR3CWw7HYbmL?=
- =?us-ascii?Q?15DVfAUbd2eMgg7hMu12gPXDGwNTHH0f/elQtK+MHHaZR2P17J+7VCoEnOkz?=
- =?us-ascii?Q?Y5cDas3ps5skaeltRfCiCcUNtbIl9O65xG/PrmebeiN/nMcOxjpZ2cq7sQc7?=
- =?us-ascii?Q?0h2pRNmQjEx72D5VJhj8CQzcDegsG6czu66Gib9PIyh999JBzj9voOlYoocF?=
- =?us-ascii?Q?aPDDh2D5cUBQKxh2mJ8QXwD2N/entngtqpEeyHErRJETwiL0dru7xGhC0tSC?=
- =?us-ascii?Q?rkDoYuhrGE+TCIJWlrP+zkkfjo9jiKT1/PDZYcJoNlfIwsmIeL7gKGGh6gQp?=
- =?us-ascii?Q?tmFEDDtDHrbf3StLmu0zAP1uLYQpl06roS3TwIWxxtQZxxnyvAY0+A3UKSJ4?=
- =?us-ascii?Q?PZxULrhsywU9L/ZDrJvzYtR1PNFX7SVbpXN7i1aDXlye5h19rSuAeZMD8uHm?=
- =?us-ascii?Q?r276XU5CVW9OYk2+00HMFUH209THqWjWTOcg5BIFUkZ+S5I9UNojXgEmYLrK?=
- =?us-ascii?Q?Tg6NePdV6bXvGoqJBO2zxUdCATO8Wd5Gf05G5kC+yQGM8IWH/8Yx83eOrvqP?=
- =?us-ascii?Q?uvhn6ZVr1lyindO5yTDorM5oXiUifYjw7SkPGFcNyjxWQgkNRA8jrkcA1ao9?=
- =?us-ascii?Q?FppNSDRK//b/1RnR8PEq2isER2fpWjmTU+8ofaxeh1nj/GaXHvVf8VhploUH?=
- =?us-ascii?Q?4cSEFJ864G0LHPDSUpxpEH/SSGrSK89GUdzTPq4iJGClVNicrzAZg5sQdkQj?=
- =?us-ascii?Q?eOXkjqit6xp4OPWzK4cO32pUSpmD/58/kkgyJ1NvofrCFQ8bnSFosPfgSP3y?=
- =?us-ascii?Q?EmlX5Uo5VtUqltRP4A6s16NqSybCNVrN6qF8246t7CiVozMf8HLl4FO2MQw3?=
- =?us-ascii?Q?/5d3v8mPn7otIeU7zyUq1cyzUTp4vWBWsR6fAsJGx7S20mCHFM+pISuQbDcs?=
- =?us-ascii?Q?DPE36F7vHRk5PtOr06lJjlhPj2IoByYm0yL4yE58+Bjz6kXT6w5No4GTxw8b?=
- =?us-ascii?Q?n7RRk1MAFQUPj4Q1BJGIhg0cBBMLFp4gWDH1+iIsLDcg5qxx0NMOqw7QKa17?=
- =?us-ascii?Q?HYC9ylik+t/Ep6VDa5kISqZ/Q9z6yijsCgymMjxWQFL8KkKmkgqec9QL9CVv?=
- =?us-ascii?Q?9CoLW4WyOq8/tzy/h1bLQcVGOxG5qOEa25z6Y8IANGJVzdfxW0TMp5zx8++F?=
- =?us-ascii?Q?g/wOlQj8YJcY/K5Dd8JCWMLbJuKls8Yqg5x/cGTgdIDQDvaQgkkV6g5l+LA9?=
- =?us-ascii?Q?p4cKYOGN9e06Um8V9W4nWHN2ne1gd2+2LI0ydRSDJ3zwrNfz6OoUKrxjWZ/k?=
- =?us-ascii?Q?LsbQaa13x7tUk2J6sDzFtQQYN5HeGLTrURjB/H1dMcjlbU/YGKlBWGG08neC?=
- =?us-ascii?Q?uqDHEOjkIA=3D=3D?=
-X-Exchange-RoutingPolicyChecked: qu0A2DNgb2Qixq4xayk6po4+baePbLPOWliz73CgPDg2/gdtFWw1kgLrdIWzx/kiMYdUP4qUc0f7D4wEVyMi/66QXHhNpufFGQeHCoXAIkfNljtPi0BldPaGwZicuxWQ3QooWZMmaUtO3hg5cGMUMoDpK4LboZvMPuIFfXrRpyHnWRoOlKvW3ZADoAzRdBiEC8DNFwWLH+6V/D5bqrG01uLkJQox06x3Rp6yda7q4SrgtQ7pV2sjPzWFYPcEHVexJbbOHGHK3cflhBpWBZKa+nFxrwcMqB+tZ7ZRxWrvas4EYHji+xoSj5estBj9Tl5LAgt3osCVbPnPkAoKcVRj/A==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 535d1991-1433-4f0c-850d-08def811ba71
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5214.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2026 01:33:36.3127
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AZc/2wmWu+vswgncU9muWJYhObzEGfz2JdWCX3d9qsyRDJMMScKdMgBORS80qLvNpjAezcrY1RVbjUpjgS4PKQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6953
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 00/45] arm64: Support for Arm CCA in KVM
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
+ <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <42170467-fe36-4382-867f-49bdc6a7bc9a@arm.com>
+ <d0ffbcb5-0cca-4d1e-9788-6b430345fa9b@redhat.com>
+ <5e86232a-89ed-40ff-89e2-9e48fbf9554e@arm.com>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <5e86232a-89ed-40ff-89e2-9e48fbf9554e@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 11, 2026 at 09:55:36PM +0000, David Matlack wrote:
+On 8/11/26 9:12 PM, Suzuki K Poulose wrote:
+> On 11/08/2026 05:44, Gavin Shan wrote:
+>> On 8/7/26 8:05 AM, Suzuki K Poulose wrote:
+>>
+>> [...]
+>>
+>>>
+>>> Here is a cleaned up version, rebased on to Will's kvmtool master
+>>> branch:
+>>>
+>>> https://gitlab.arm.com/linux-arm/kvmtool-cca cca/kvm-v16
+>>>
+>>> (This works with the v15 of the KVM series too)
+>>> Build on top of Fuad's Guest memfd support patches.
+>>>
+>>
+>> With the following combination, I'm able boot up the realm guest.
+>>
+>>    tf-rmm:   https://git.trustedfirmware.org/TF-RMM/tf- rmm.git            (branch: topics/rmm-v2.0-poc_2)
 > 
-> Here's my proposed fix, in case anyone wants to follow along:
 > 
->   https://github.com/intel/lkp-tests/pull/567
+> Please be aware that CCA KVM v15 onwards, the above branch is not compatible. You should be using rmm-v2.0-poc_3. Please could you
+> confirm if this is still an issue ?
+> 
 
-Thanks again, I will follow up this PR.
+With tf-rmm/topics/rmm-v2.0-poc_2 + cca/host-v16 + kvmtool/cca/v16, there is no issue
+and the realm guest can boot up successfully.
+
+When tf-rmm/topics/rmm-v2.0-poc_3 is used, the realm guest boot gets stuck as I reported
+earlier. Note the host is emulated by QEMU (TCG mode).
+
+As the following calltrace indicates, -EAGAIN is returned from tf-rmm::update_ripas()
+because true is returned from s2tte_drain_pending() for the S2TTE corresponding to
+IPA 0x80000000. Linux host received error (RMI_ERROR_RTT, level=3) in ripas_change().
+Upon this specific error and the IPA range [0x80000000 0x90000000], find_map_level()
+returns level of 2, and realm_create_rtt_levels() returns 0 without populating any
+RTTs. After that, rmi_rtt_set_ripas() is re-executed and the above loop starts over
+again.
+
+   Linux host
+   ==========
+   kvm_arch_vcpu_ioctl_run                     // cca/host-v16
+     check_vcpu_requests
+       kvm_check_request
+         kvm_rec_handle_request
+           kvm_complete_ripas_change
+             realm_set_ipa_state
+               ripas_change
+                 rmi_rtt_set_ripas
+                   SMC_RMI_RTT_SET_RIPAS
+
+   TF-RMM
+   ======
+   SMC_RMI_RTT_SET_RIPAS                      // tf-rmm/topics/rmm-v2.0-poc_3
+     smc_rtt_set_ripas
+       s2tt_walk_lock_unlock
+       rtt_set_ripas_range
+         update_ripas
+           s2tte_drain_pending                // true, returns -EAGAIN
+
+The problem is the pending-bit for RTE corresponding IPA address 0x80000000 isn't cleared
+when SMC_RMI_RTT_SET_RIPAS is invoked. I didn't figure out how this bit is set and why
+it's not cleared in time.
+
+Thanks,
+Gavin
 
 > 
+> Cheers
+> Suzuki
+> 
+> 
+>>    tf-a:     https://git.trustedfirmware.org/TF-A/trusted-firmware- a.git  (branch: master)
+>>    host:     https://git.gitlab.arm.com/linux-arm/linux- cca.git           (branch: cca-host/v16)
+>>    kvmtool:  https://gitlab.arm.com/linux-arm/kvmtool- cca                 (branch: cca/kvm-v16)
+>>
+>> However, the guest can't boot up and become stuck in SMC_RSI_IPA_STATE_SET request,
+>> which can't completed by the host.
+>>
+>>    tf-rmm:   https://git.trustedfirmware.org/TF-RMM/tf- rmm.git            (branch: topics/rmm-v2.0-poc_3)
+>>
+>> (1) Login the emulated host
+>>
+>> machine$ ssh -o StrictHostKeyChecking=no root@10.26.1.240
+>>
+>> (2) Start realm guest using kvmtool
+>>
+>> root@host:~# lkvm run --realm -c 1 -m 256                   \
+>>               -k /mnt/linux/arch/arm64/boot/Image            \
+>>               -i /mnt/buildroot/output/images/rootfs.cpio.xz \
+>>               -p earlycon=uart,mmio,0x101000000
+>>                   :
+>> [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x000f0510]
+>> [    0.000000] Linux version 7.2.0-rc5-gavin-gf5098b6bae76 (gshan@nvidia-grace-hopper-01.khw.eng.bos2.dc.redhat.com) (gcc (GCC) 14.3.1 20251022 (Red Hat 14.3.1-4), GNU ld version 2.41-65.el10) #47 SMP PREEMPT Mon Jul 27 02:29:03 EDT 2026
+>> [    0.000000] KASLR enabled
+>> [    0.000000] Machine model: linux,dummy-virt
+>> [    0.000000] earlycon: uart0 at MMIO 0x0000000101000000 (options '')
+>> [    0.000000] printk: legacy bootconsole [uart0] enabled
+>> [    0.000000] efi: UEFI not found.
+>> [    0.000000] OF: reserved mem: Reserved memory: No reserved-memory node in the DT
+>> [    0.000000] NUMA: Faking a node at [mem 0x0000000080000000-0x000000008fffffff]
+>> [    0.000000] NODE_DATA(0) allocated [mem 0x8ff76dc0-0x8ff7ac7f]
+>> [    0.000000] psci: probing for conduit method from DT.
+>> [    0.000000] psci: PSCIv1.1 detected in firmware.
+>> [    0.000000] psci: Using standard PSCI v0.2 function IDs
+>> [    0.000000] psci: MIGRATE_INFO_TYPE not supported.
+>> [    0.000000] psci: SMC Calling Convention v1.2
+>> [    0.000000] RME: Using RSI version 1.0
+>> <... no more output from the guest ...>
+>>
+>>
+>> (3) The output from host's serial console
+>>
+>> SMC_RMI_REALM_CREATE              12a4c7000 12a4c6000 > RMI_INCOMPLETE 0 24 0 0
+>>        SMC_RMI_OP_MEM_DONATE       0 1002c7098 9 > RMI_INCOMPLETE 9 0 0 0
+>>        SMC_RMI_OP_CONTINUE         0 0 > RMI_SUCCESS 0 0
+>> SMC_RMI_RTT_UNPROT_UNMAP          12a4c7000 18f85c000 18fe00000 0 0 > RMI_ERROR_RTT 2 0 0 0 0
+>> SMC_RMI_RTT_UNPROT_UNMAP          12a4c7000 18fe00000 18fe10000 0 0 > RMI_ERROR_RTT 2 0 0 0 0
+>> SMC_RMI_RTT_UNPROT_UNMAP          12a4c7000 18fe00000 18fe10000 0 0 > RMI_ERROR_RTT 2 0 0 0 0
+>> SMC_RMI_REC_CREATE                12a4c7000 12a392000 12a391000 > RMI_INCOMPLETE 0 40 0 0
+>>        SMC_RMI_OP_MEM_DONATE       0 106406098 10 > RMI_INCOMPLETE 10 0 0 0
+>>        SMC_RMI_OP_CONTINUE         0 0 > RMI_SUCCESS 0 0
+>> SMC_RMI_REALM_ACTIVATE            12a4c7000 > RMI_SUCCESS
+>> Unhandled write S2_0_C0_C2_2
+>> SMC_RMI_RTT_DATA_MAP              12a4c7000 8ffb4000 8ffb5000 1 129f1d004 > RMI_INCOMPLETE 0 0 0 1
+>>        SMC_RMI_OP_CONTINUE         0 0 > RMI_SUCCESS 8ffb5000 0
+>> PSCI_84000000                     0 0 0 0 0 0 0 > 10001 0 0 0
+>> PSCI_84000006                     0 0 0 0 0 0 0 > ffffffffffffffff 0 0 0
+>> PSCI_8400000a                     80000000 0 0 0 0 0 0 > 0 0 0 0
+>> SMC_80000000                      0 0 0 0 0 0 0 > 10002 0 0 0
+>> SMC_84000050                      1 0 0 ffffacd67d1e8000 ffffacd67d124000 0 0 > ffffffffffffffff 0 0 0
+>> SMC_80000001                      80000002 ffff 0 ffffacd67d1e8000 ffffacd67d124000 ffffacd67cd5d000 ffffacd67cd5dd38 > ffffffffffffffff 0 0 0
+>> PSCI_8400000a                     c4000001 0 0 0 0 0 0 > 0 0 0 0
+>> PSCI_8400000a                     c4000012 0 0 0 0 0 0 > ffffffffffffffff 0 0 0
+>> PSCI_8400000a                     c4000015 0 0 0 0 0 0 > ffffffffffffffff 0 0 0
+>> SMC_8600ff01                      ffffacd67cfc0740 10002 0 0 0 0 ffffacd67cfb3cc8 > ffffffffffffffff 0 0 0
+>> SMC_RSI_VERSION                   10000 > RSI_SUCCESS 10000 10001
+>> SMC_RSI_REALM_CONFIG              81385000 > RSI_SUCCESS
+>> SMC_RSI_IPA_STATE_SET             80000000 90000000 1 0
+>> SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000  > RMI_ERROR_RTT 3
+>> SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000  > RMI_ERROR_RTT 3
+>> SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000  > RMI_ERROR_RTT 3
+>> SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000  > RMI_ERROR_RTT 3
+>> SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000  > RMI_ERROR_RTT 3
+>> SMC_RMI_RTT_SET_RIPAS             12a4c7000 12a392000 80000000 90000000  > RMI_ERROR_RTT 3
+>> <... the last message repeats ...>
+>>
+>> Thanks,
+>> Gavin
+>>
+>>
+> 
+
