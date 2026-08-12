@@ -1,56 +1,56 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B88C400E1A
-	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 21:32:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF47403B1A
+	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 21:32:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786570332; cv=none; b=Ry4+r+bllrcB6sL+MheEDwwpVGI6QOxzGD8r5JOxHYPZDnBrP03/Yb80ois4z05r0Nc+fZ4G+diGPhQ6oK6kMa4S/P9DXmk4SJBrzQAS1zEiN/o+ty8Bv/fd7p/1Wo1Ii0KL8jB5TYo+eDMaIFbMQbpZxvS7012PyY7hd33Ypjw=
+	t=1786570334; cv=none; b=a1Io1FuK5SrHsjnsPiI+mMQKntTEVLnyeWXKljA+NtmeoZow/FUOOyo1PdaldkdpETFXGQTklwB9HnmUu4inRTWlcaCkm0G4OD80PjFOh28NRxjd1kmZ5tW+YD2PF1r+LwixT2fuz+5R4P6ymGeFpqlXuebOXoB4ArC/O6J9dj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786570332; c=relaxed/simple;
-	bh=rEj+MrH4Lp0YV7pHrXfPro581Yt4MojO4YZiz52yvn0=;
+	s=arc-20240116; t=1786570334; c=relaxed/simple;
+	bh=vH42Pip6yAwemluINMec8IxpQu0j3dQULGEC5Oyah0E=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mn1pS5t1lqlTL07oyaDgHOEvgc251PcvAcjZlHoG2vtNLjtfdakQncwt+KhX1hzeJWyBhvu6vNB8IQG+2YseyTRnU0BIcKYWNh79udcu7nGqbFRwL1HB037BnB1B960zJt0+OxhA/Wv0u05anRdL7H3z0WQkkgrfLJzB0VTo+JU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Yl0Fzlhc; arc=none smtp.client-ip=209.85.216.72
+	 To:Cc:Content-Type; b=D9Rqx/kHbNVXGgqqOvb4DV75Z7ccnJqbgVk+A9FTDotA3q817g3RR7AmiPksynjTWAmnRX2TJAuejESIBLQzSAumemp9xC+oLEUcwqPM2uf0eHQy3n5m6vFVseivDygaQztBA7QEef1EjcRxltNbwt7VBIEZApuonqKxtXuCsdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dxI83zqP; arc=none smtp.client-ip=209.85.210.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Yl0Fzlhc"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38dc085b0a7so162617a91.2
-        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 14:32:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dxI83zqP"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84e1da97175so70419b3a.0
+        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 14:32:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786570330; x=1787175130; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786570332; x=1787175132; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=TeIYWn7gjY6tiQvzqA0pDdLaRhbsPjFnxMbQwbw7xaI=;
-        b=Yl0FzlhcOzf1YyRf/Wd+KgEtduF0OtJ+SBF70pDOY72tPUv27Wqwwyuu3QyIzEs5K2
-         gW8/peiaL8RiHWc2Fecz4bSILQBZOSTUmttAXiV38kzu8VojSWaGT05poX3bkiHS4H21
-         JxsZ76nDg5FsYbcHFNWJQ/u3NssJf/UZAFeAKDXwPO6c3EahCYOCxoL/J/C3ScQrZxJQ
-         2vIMvoMT7BLVgFM8fUUtSNlOXW6YXGwxImQmpj8c44CXpprHs9eKtX1dr8vb6BWD0q4h
-         ppSwYXICRHUmZZldFt6kwR8ymFlHw1I5EilLKZujjHSxmGZD76O5dm8yGiLpLXV/iEMg
-         7l6A==
+        bh=lS5dYJ1KUEgthzakfjc+HD1tkYed587QlN0KmyiINhY=;
+        b=dxI83zqPynlfX1M3e2HNmBH8gn2m1tHs5hi9CDV7BMXRECjUVia6y/s4Szqh7HaqOc
+         tg77kg+WwH+gVFwNeXKA0oFOiOWjAI16maEOLjPen+v9VyvXKk1/lfeOJncEEzC0Jf1i
+         VXA20Cdv3VHW9SGdg3ng7hMhIpzXuUMwViHkEeA9m8SmpTCNkJMKHymmdGHLoHLW6YTK
+         dxpmgjM5P9RIYJVflI79FvZcU/SBfv6xGlUmzZ2E/2qzInp+VWF9oiOunjhlA22UCxzH
+         RvUm+xiFStwZFeHuOVrDnYJKka8wJAsX+qljzE0zL+fTTFO3HMY+P3lV05OXqQXy5LVd
+         kV9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786570330; x=1787175130;
+        d=1e100.net; s=20251104; t=1786570332; x=1787175132;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=TeIYWn7gjY6tiQvzqA0pDdLaRhbsPjFnxMbQwbw7xaI=;
-        b=lLAkM1L64M2tQZ7ra+Gk8BMPaSJ8xehbCpLDV/bWTCkhHOJ23vZkiEBNw2YqN/yf9T
-         f6OAZDoFfCz5beK0JiKxdsfT7i4BwH6/Z2oE5clFyp9Y4Dd6/yDv0+ch8Xiw7CZhR2O3
-         mcdCpzYSjeISczT/IzHFq0yfcn2MllMO6lo+ghH0zOKvnOnybgxWbw5KZJk/aHgxzgN/
-         erEqPS2ovrDZVSco2aHyf9ymk53Xc0r2WLaOTqgkW5z89ZzQsRYSz5Ta2dBeYIdqtJtw
-         q93/YeXDPdS32XJeCXdAeLLclIRDR7EYSbfIq/1Gxx8G6D5t24G5MFGI6FPgEPfn4jL1
-         Q/bw==
-X-Gm-Message-State: AOJu0Yzm/Y5u+dtJss/C7OjcJICIJ9od89u7j1pXw9z3JygcpriIQlST
-	cChTo4gOmp23GGO+xP/wa67MUBej2VkNvrakuC5b5nsYHE6dU+eub7fcON/Ssbx8ZzQ57Obybfk
-	3B0clQQ==
-X-Received: from pjpq3.prod.google.com ([2002:a17:90a:a003:b0:38e:c91c:3667])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2688:b0:392:e5b1:d833
- with SMTP id 98e67ed59e1d1-3931e25e5f9mr1448335a91.13.1786570330386; Wed, 12
- Aug 2026 14:32:10 -0700 (PDT)
+        bh=lS5dYJ1KUEgthzakfjc+HD1tkYed587QlN0KmyiINhY=;
+        b=G/JhWnFmX9zeIdrkex0mgTNbP9ulHsJ+jQDN2NrBmBe8Ez6qIzSqmvhbPRW+RzUI/2
+         I16sejfFQBNw0mdJC981bXeGZCRdxQonlBiSQAdoc8nRnUosJsFMe8S2fOnV6BR0/Bx6
+         jHcgplSNJ19TAM7AoTjKjp9urRk1KSEdFGt0lxRGMb4ePkyNEwRn1aVTTSpS3sQ6/IfI
+         G79CP+fygErx6Qtse959PdbK06uS6EWWBQLEBAkQ/nRRWIUmRbkTDgqQR/mFQj94qNCd
+         mLQHGhqdC/9kCwzxnEEBsjUacQwjVF5WMNcrfhrXZhNY/cDAlo+XuaCU6umy+j4VjEn6
+         DUtw==
+X-Gm-Message-State: AOJu0YzqjRKwG8eT9j5gdEmuICCXp0TchkjQVAYS+x75eaiJA9Fp5eLZ
+	eW8oPb3RA2zeGuJxUe9Wfa8OYcub4e0DDWx25i0zp3yAkNmj4wGI742a9Yswu9Hny9kqyzNvCvY
+	ZkO60IA==
+X-Received: from pfmy3.prod.google.com ([2002:aa7:8043:0:b0:847:9be8:84d5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:b93:b0:84f:a170:4f5b
+ with SMTP id d2e1a72fcca58-84fc6ce8e92mr814546b3a.8.1786570331536; Wed, 12
+ Aug 2026 14:32:11 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 12 Aug 2026 14:31:57 -0700
+Date: Wed, 12 Aug 2026 14:31:58 -0700
 In-Reply-To: <20260812213206.1564354-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,19 +60,29 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260812213206.1564354-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
-Message-ID: <20260812213206.1564354-3-seanjc@google.com>
-Subject: [GIT PULL] KVM: guest_memfd and x86 CoCo changes for 7.3
+Message-ID: <20260812213206.1564354-4-seanjc@google.com>
+Subject: [GIT PULL] KVM: Generic and documentation updates for 7.3
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Sean Christopherson <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Fix the SNP VMSA PUNCH_HOLE bug, and prepare guest_memfd for in-place
-conversion.  Regarding in-place conversion, my goal is to get it applied very
-soon after 7.3-rc1, and then get you a pull request by -rc3 or -rc4.  I think
-we're past the functional issues phase and fully into bikeshedding, so fingers
-crossed.
+So the subject is a bit of a lie, as three of the five patches are x86 specific.
+But two are common documentation updates, and the third has a hard dependency on
+a common KVM change that might be questionable.
+
+The potentially controversial change is to add a per-VM bitmap to track which
+vCPU IDs have been "claimed", so that arch code doesn't have to guard against
+duplicate vCPU IDs during kvm_arch_vcpu_create() and kvm_arch_vcpu_destroy().
+The part that's a little less than awesome is that the bitmap is effectively
+wasted memory once the VM has reached steady state.  But, AFAICT, it shouldn't
+be a meaningful amount of memory in practice.
+
+The alternative solution we came up with was to use another xarray so that the
+tracking entry could be deleted once a vCPU is fully realized.  The consensus
+was that the complexity of the xarray approach wasn't justified, even though
+the added complexity is relatively small.
 
 The following changes since commit a204badd8432f93b7e862e7dac6db0fe3d65f370:
 
@@ -80,59 +90,44 @@ The following changes since commit a204badd8432f93b7e862e7dac6db0fe3d65f370:
 
 are available in the Git repository at:
 
-  https://github.com/kvm-x86/linux.git tags/kvm-x86-coco-7.3
+  https://github.com/kvm-x86/linux.git tags/kvm-x86-generic-7.3
 
-for you to fetch changes up to 2abcdf03fda1380bcbe00417b9ce2b4afb30899b:
+for you to fetch changes up to b41f2ca6c06011c36b75f5d53aa17c05ed90be21:
 
-  KVM: guest_memfd: Make private exactly what can be mapped on page fault (2026-07-27 09:43:44 -0700)
-
-----------------------------------------------------------------
-KVM guest_memfd and x86 CoCo changes for 7.3
-
- - Forcefully invalidate SNP VMSA pages if their backing guest_memfd page is
-   zapped/invalidated, e.g. due to a PUNCH_HOLE in response to a Page-State
-   Change request.
-
- - Rework the so called "prepare" and "invalidate" guest_memfd hooks to prepare
-   for in-place private<=>shared conversion, and clean up a few warts along the
-   way.
+  KVM: VMX: Fix stale PID-pointer table entry left after vCPU free (2026-07-31 15:13:31 -0700)
 
 ----------------------------------------------------------------
-Ackerley Tng (1):
-      KVM: guest_memfd: Only "prepare" folios for private pages
+KVM arch-neutral and documentation changes for 7.3
 
-Sean Christopherson (20):
-      KVM: SEV: Track the GPA of the guest-controlled VMSA used for SNP guests
-      KVM: SEV: Extract loading of guest-provided VMSA to a separate helper
-      KVM: SEV: Mark vCPU RUNNABLE after AP_CREATE, even if VMSA is unusable
-      KVM: SEV: Wire up kvm_x86_ops.gmem_xxx() if and only if CONFIG_KVM_AMD_SEV=y
-      KVM: x86: Serialize writes to disabled_quirks using kvm->lock
-      KVM: x86: Ensure runtime reads of disabled_quirks are resolved once
-      KVM: x86/mmu: Fold kvm_mmu_zap_memslot() into kvm_arch_flush_shadow_memslot()
-      KVM: x86/mmu: Split kvm_mmu_zap_all_fast() into "front" and "back" halves
-      KVM: x86/mmu: Use split "zap all fast" helpers when invalidating memslot
-      KVM: SEV: Forcefully invalidate SNP VMSA if its backing gmem page is zapped
-      KVM: SEV: Mark vCPU has having guest-provided VMSA even if its invalid
-      KVM: x86: Guard .gmem_prepare() declarations with HAVE_KVM_GMEM_PREPARE=y
-      KVM: guest_memfd: Pass the number of pages instead of the end pfn into .invalidate()
-      KVM: guest_memfd: Rename invalidate() arch hook to reclaim() and isolate it
-      KVM: x86: Rename kvm_x86_ops' gmem_invalidate() to gmem_make_shared()
-      KVM: guest_memfd: Drop the redundant printk on arch gmem_prepare() failure
-      KVM: guest_memfd: Add helpers to query SHARED vs. PRIVATE for a given page
-      KVM: guest_memfd: Rename prepare() hook and Kconfig to make_private() / CONVERT
-      KVM: guest_memfd: Explicitly pass number of pages to make_private() hook
-      KVM: guest_memfd: Make private exactly what can be mapped on page fault
+ - Remove kvm_debugfs_dir if kvm_init() fails after creating KVM's debugfs.
 
- arch/x86/include/asm/kvm-x86-ops.h |  12 ++-
- arch/x86/include/asm/kvm_host.h    |  15 ++-
- arch/x86/kvm/Kconfig               |   3 +-
- arch/x86/kvm/mmu/mmu.c             |  74 ++++++++------
- arch/x86/kvm/svm/sev.c             | 197 +++++++++++++++++++++++++------------
- arch/x86/kvm/svm/svm.c             |  10 +-
- arch/x86/kvm/svm/svm.h             |  19 ++--
- arch/x86/kvm/x86.c                 |  25 +++--
- arch/x86/kvm/x86.h                 |   2 +-
- include/linux/kvm_host.h           |  11 ++-
- virt/kvm/Kconfig                   |   6 +-
- virt/kvm/guest_memfd.c             |  72 ++++----------
- 12 files changed, 269 insertions(+), 177 deletions(-)
+ - Document some of the "fun" gotchas with the APIC base when creating IRQCHIPs
+   on x86.
+
+ - Add a per-VM bitmap to track which vCPU IDs have been "claimed" but for
+   which the vCPU isn't yet online, and use the bitmap to reject duplicate IDs
+   before calling into arch code.  This allows arch code to consume vcpu_id
+   without having to worry about cross-vCPU clobbering (at least s390 and x86
+   have had related bugs).
+
+ - Zero a vCPU's entry in VMX's Posted Interrupt Descriptor table used for IPI
+   virtualization when the vCPU is freed to fix a use-after-free where hardware
+   will write to a freed vCPU's PID.
+
+----------------------------------------------------------------
+Dmytro Maluka (2):
+      KVM: Check for duplicate vcpu_id as early as possible
+      KVM: VMX: Fix stale PID-pointer table entry left after vCPU free
+
+Tim Wiederhake (2):
+      KVM: x86: Document that KVM_CREATE_IRQCHIP must precede vCPU creation
+      KVM: x86: Document APIC base address constraint for in-kernel irqchip
+
+leixiang (1):
+      KVM: Remove kvm_debugfs_dir on kvm_init() error paths
+
+ Documentation/virt/kvm/api.rst | 15 ++++++++++++++-
+ arch/x86/kvm/vmx/vmx.c         |  3 +++
+ include/linux/kvm_host.h       |  1 +
+ virt/kvm/kvm_main.c            | 10 +++++++++-
+ 4 files changed, 27 insertions(+), 2 deletions(-)
