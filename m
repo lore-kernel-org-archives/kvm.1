@@ -1,135 +1,193 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56DDF449B09;
-	Wed, 12 Aug 2026 17:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873083644B3;
+	Wed, 12 Aug 2026 17:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786556323; cv=none; b=SRdA/IR9FbQYq/hE3z+v5Bujai3py9TDmS7ObHg0ToKO1nBbuqlwgnFiCb/n5V6BTt+trcPdDaKXep/v8wZEyc/j4eqJFO9an1eNuwW5BzBIJ68efDDwkOKs0/19jP3W3pQedjUKBP1dJyC4gy640wZdDy5XXmotqBaB78kIYT8=
+	t=1786556758; cv=none; b=gfgH2md/ETqVSZevathMmdJNIw+Xm6zouyNKVl1ghQcgnRnYf19ds2rkkOkXqx7i5HXfDiEdy0BOhMSVitiRw6n7bMkwADcEYUFAjmthFQG7rLW4MyJdN7Z2rLUcDY2d2jIIUg56z4SEIg1IfWZs4oKvNMhQzJYtgO9GxHR79KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786556323; c=relaxed/simple;
-	bh=3Go29JJO6X2G3d3LWaeFzIN2F+YQZqxVPltw9X7TD7g=;
+	s=arc-20240116; t=1786556758; c=relaxed/simple;
+	bh=wbY21i7M7Q/sZSQzHcOT3M3Pvh+fdzZZDGqvoN8kDkA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=fdjLRu66nXWyieMvntGZQrq1PTqD6EUlQUVPumnvJWfvKVwUlgP3JomQ2TeU3rHvx9I8M60cWLDw38La4mJ6C00uat9R6i/x05dIcziXPtXe/cqsu588TW62yVKwRpH9MmEgFnqcTaPW6t8FYbXCCnYUDJO7DjUkv/pBdYqvGPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SEmezSoQ; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=N4dqgyj6+RmTyyH4/f3uxaB2f5hmfMC2hESmQRhfz+cHoLnpGBc7FBZ8Z7u2aV9Bgdpl5Fstg4upuASK1EetAIF/bAU8q9JU7CSQ88oKdslJr8g+HSTLcMRowd6CfB9CCf7EXBbLkNrJVKmmxPenMnskuWm7v9T6/Rb2fUit9p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ig6HBv6q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SEmezSoQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7FAD1F000E9;
-	Wed, 12 Aug 2026 17:38:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ig6HBv6q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10CB1F000E9;
+	Wed, 12 Aug 2026 17:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786556322;
-	bh=Esp5tca4upMfW5W5zYjys9R0fgsrkME8I/GKgTrYgB8=;
+	s=k20260515; t=1786556757;
+	bh=JU6UOv+LgfIu7CXPqilPAwmbzoedJ7nnrH2mDnSEO0I=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SEmezSoQqC6hFgjtjs9IG4HUIKcECLeUyE7WV+6FI8I5xs0s7hvU3UWUoZRs4II/J
-	 7YmhWDqZM3Fb0eNiih2kRzqc+MlzV04JipLdWMucHOLMrCOn3olhEtQsuBzUsuuB8q
-	 3IyzRTBh3uxVwGSEOao68gnb+0AsQ1ae4FdRJMuSwBK73/xICRU9fmI+VXBH3VYGRe
-	 jTurmarz61LjxI/iIfphjC9TpFjOEVGbEO2JXBxbzTv/ZFpofO1eLX/+sNHXiCMSpp
-	 O2it8y0R7Yq1l80boMlmrZiMBpwPgP7D6885kgh1hfaw56o5lUokXgjgC2ebXR6FXj
-	 8UeaOWwXFfTcw==
+	b=Ig6HBv6qrEL9tUQu3C7tN1XJ96OqxGZI4ZmxFWEAFbJkbiDWhqAlubS1A84KuZmCN
+	 9NVSjHUhPnjAVP6kLC2NDLKX5kf7TFeUigl+gGNIzUHEGMEhSttPXRW32hHkd1lZ8J
+	 4q4D3t4H/BrlYA/POQoAq/W4PAuFUp5XwbS6rsMao2U/6aitglp3ncguKv5aPLd7dd
+	 C9b/0iz7HmZG9HbVoMoQMnJWXdiH1jexXWfT1PTsrvweL4LL11NvUVx75C8qqaFEK7
+	 8oPyjXWFB6ksMgjxWRLigvszfTlrmXaQdghpVjKuPIVc9jhEBXa2pJ87wkEoBFfx8V
+	 0kRje42RqLSzg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 9/9] s390/vfio-ap: Fix memory leak when queue removed
- from host AP config
+Subject: Re: [PATCH v4 20/20] KVM: s390: vsie: Enable use of VSIE SSCA
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Christian
- Borntraeger" <borntraeger@linux.ibm.vom>, "Vasily Gorbik" <gor@linux.ibm.com>
-In-Reply-To: <20260812170945.738351-10-akrowiak@linux.ibm.com>
-References: <20260812170945.738351-1-akrowiak@linux.ibm.com>
- <20260812170945.738351-10-akrowiak@linux.ibm.com>
+To: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
+Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, "Christian
+ Borntraeger" <borntraeger@linux.ibm.vom>
+In-Reply-To: <20260812-vsie-sigpi-v4-20-f19e49666315@linux.ibm.com>
+References: <20260812-vsie-sigpi-v4-0-f19e49666315@linux.ibm.com>
+ <20260812-vsie-sigpi-v4-20-f19e49666315@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 12 Aug 2026 17:38:41 +0000
-Message-Id: <20260812173841.A7FAD1F000E9@smtp.kernel.org>
+Date: Wed, 12 Aug 2026 17:45:56 +0000
+Message-Id: <20260812174556.B10CB1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [High] The patch introduces potential `WARN_ON` kernel splats and fails t=
-o fully fix the resource leak if the mdev is destroyed or the queue is unas=
-signed before the AP bus invokes `vfio_ap_mdev_remove_queue()`.
+- [Critical] Guest-2 can trigger an out-of-bounds array access (both read a=
+nd write) in host kernel memory by supplying a malicious `icpua` value.
+- [High] The newly introduced VSIE SCA shadowing code contains multiple WAR=
+N_ON_ONCE assertions that can be triggered by a malicious guest, leading to=
+ a host kernel panic.
+- [High] VSIE unconditionally allows nested guests to use SSCA (SIGPI and S=
+RSI interpretation) if the host supports it, bypassing the guest-2's negoti=
+ated CPU model capabilities.
+- [High] Guest-triggerable QEMU/VM abort via invalid or unaligned SCA entry=
+ addresses.
 --
 
---- Patch [9]: [PATCH v4 9/9] s390/vfio-ap: Fix memory leak when queue remo=
-ved from host AP config ---
-commit 29bff4de7f99aebfbf379edfd50ba6273390d8d9
-Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+--- Patch [20]: [PATCH v4 20/20] KVM: s390: vsie: Enable use of VSIE SSCA -=
+--
+commit 3bbd1f1a442d7f9a9ee468b6c61e02cb8392ba96
+Author: Christoph Schlameuss <schlameuss@linux.ibm.com>
 
-s390/vfio-ap: Fix memory leak when queue removed from host AP config
+KVM: s390: vsie: Enable use of VSIE SSCA
 
-When an adapter or domain is removed from the host's AP configuration, the
-AP bus invokes vfio_ap_on_cfg_changed() to notify the vfio_ap device
-driver. For each ap_matrix_mdev object to which the adapter or domain
-is assigned, vfio_ap_mdev_hot_unplug_cfg() is called and removes the
-adapter or domain from the matrix_mdev->shadow_apcb (i.e., the guest's AP
-configuration) and hot unplugs it if a guest is using it.
+This commit enables code paths configuring and using VSIE SIGPI and SRSI.
+It adds a new module parameter to globally disable SIGP, but defaults to
+enabled on supported hardware to improve guest-3 performance.
 
-> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
-_ap_ops.c
-> index b0454a296c67e..a8de98d5e71ed 100644
-> --- a/drivers/s390/crypto/vfio_ap_ops.c
-> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-> @@ -2515,12 +2515,15 @@ void vfio_ap_mdev_remove_queue(struct ap_device *=
-apdev)
->  	/*
->  	 * If the queue is not in the host's AP configuration, then resetting
->  	 * it will fail with response code 01, (APQN not valid); so, let's make
-> -	 * sure it is in the host's config.
-> +	 * sure it is in the host's config. If it is not, then free the KVM GISC
-> +	 * resources.
->  	 */
->  	if (test_bit_inv(apid, (unsigned long *)matrix_dev->info.apm) &&
->  	    test_bit_inv(apqi, (unsigned long *)matrix_dev->info.aqm)) {
->  		vfio_ap_mdev_reset_queue(q);
->  		flush_work(&q->reset_work);
-> +	} else {
-> +		vfio_ap_free_aqic_resources(q);
+> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> index c21603f2745bf..59561d459a4f3 100644
+> --- a/arch/s390/kvm/kvm-s390.c
+> +++ b/arch/s390/kvm/kvm-s390.c
+
+[ ... ]
+
+> @@ -477,6 +482,8 @@ static void __init kvm_s390_cpu_feat_init(void)
+>  		allow_cpu_feat(KVM_S390_VM_CPU_FEAT_KSS);
+>  	if (sclp.has_astfleie2)
+>  		allow_cpu_feat(KVM_S390_VM_CPU_FEAT_ASTFLEIE2);
+> +	if (sclp.has_vsie_interp_extf && ssca)
+> +		allow_cpu_feat(KVM_S390_VM_CPU_FEAT_SIGPIF);
 
 [Severity: High]
-Can this bypass the resource cleanup and cause kernel splats if the mdev is=
-=20
-destroyed or the queue is unassigned before this point?
+Does this globally enable SSCA for the VM without verifying if the guest was
+provisioned with the feature?
 
-If userspace unassigns the queue or QEMU closes the mdev, paths like
-vfio_ap_mdev_unset_kvm() or unassign_adapter_store() will attempt to reset=
-=20
-the queue by calling vfio_ap_mdev_reset_queue().
+Looking at use_ssca() in arch/s390/kvm/vsie.c, it only checks the host-level
+flag kvm->arch.use_ssca:
 
-Since the adapter is no longer in the host config, ap_zapq() returns 0x01
-(AP_RESPONSE_Q_NOT_AVAIL). However, vfio_ap_mdev_reset_queue() does not han=
-dle
-this response code in its switch statement. This bypasses the synchronous
-cleanup in vfio_ap_free_aqic_resources(), leaving q->saved_isc and
-q->saved_iova valid.
+arch/s390/kvm/vsie.c:use_ssca() {
+    if (!kvm->arch.use_ssca)
+        return false;
+    ...
+}
 
-The cleanup routines then proceed to clear q->matrix_mdev or
-q->matrix_mdev->kvm.
+Would this allow a nested guest to use SSCA features even if QEMU explicitly
+disabled KVM_S390_VM_CPU_FEAT_SIGPIF for the CPU model, potentially breaking
+capability negotiation and live migration?
 
-When the AP bus later asynchronously calls vfio_ap_mdev_remove_queue(), this
-newly added else block is reached.
+[ ... ]
 
-Inside vfio_ap_free_aqic_resources():
-
-	if (q->saved_isc !=3D VFIO_AP_ISC_INVALID &&
-	    !WARN_ON(!(q->matrix_mdev && q->matrix_mdev->kvm))) {
-		kvm_s390_gisc_unregister(q->matrix_mdev->kvm, q->saved_isc);
-		...
-	if (q->saved_iova && !WARN_ON(!q->matrix_mdev)) {
-		vfio_unpin_pages(&q->matrix_mdev->vdev, q->saved_iova, 1);
-
-Because q->matrix_mdev or q->matrix_mdev->kvm is now NULL, the WARN_ON chec=
-ks
-evaluate to true. This triggers a kernel splat and bypasses the actual clea=
-nup
-calls, leaking the KVM GISC resources and pinned pages.
-
->  	}
+> @@ -3389,7 +3393,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long=
+ type)
 > =20
->  done:
+>  	kvm->arch.use_pfmfi =3D sclp.has_pfmfi;
+>  	kvm->arch.use_skf =3D sclp.has_skey;
+> -	kvm->arch.use_ssca =3D sclp.has_vsie_interp_extf;
+> +	kvm->arch.use_ssca =3D sclp.has_vsie_interp_extf && ssca;
+
+[Severity: Critical]
+Is there a potential out-of-bounds array access when validating the guest's
+icpua index now that these paths are being used?
+
+In kvm_s390_handle_vsie(), the bounds check compares scb_o->icpua against
+KVM_S390_MAX_VSIE_VCPUS:
+
+arch/s390/kvm/vsie.c:kvm_s390_handle_vsie() {
+    if (scb_o->icpua >=3D KVM_S390_MAX_VSIE_VCPUS) {
+        rc =3D kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
+        goto out_unpin;
+    }
+    ...
+}
+
+Since icpua is a signed 16-bit integer, could a negative value bypass this
+check?
+
+Additionally, scb_o resides in guest memory. Is there a TOCTOU race where t=
+he
+guest could change icpua after the check, before it is read again for the
+array index in get_vsie_page_cpu_nr()?
+
+arch/s390/kvm/vsie.c:get_vsie_page_cpu_nr() {
+    ...
+    vsie_page =3D vsie_sca->pages[cpu_nr];
+    ...
+    WRITE_ONCE(vsie_sca->pages[cpu_nr], vsie_page_new);
+}
+
+Could this lead to host memory corruption if an untrusted guest supplies a
+malicious index?
+
+[Severity: High]
+Could enabling these code paths allow a guest to trigger host kernel panics
+via WARN_ON_ONCE assertions?
+
+For example, if a guest configures a nested guest with an unmapped SCA addr=
+ess,
+pin_guest_pages() or pin_scb() would return a negative error code (like
+-EFAULT). This error is assigned to sca_o_nr_pages and triggers a warning:
+
+arch/s390/kvm/vsie.c:pin_sca() {
+    ...
+    if (WARN_ON_ONCE(vsie_sca->sca_o_nr_pages !=3D nr_pages))
+    ...
+}
+
+Similar warnings exist in get_vsie_page_cpu_nr() and get_vsie_page() when
+vsie_page_init() fails. Since KVM guidelines advise against guest-reachable
+WARN_ON assertions, should these be converted to avoid host Denial of Servi=
+ce?
+
+[Severity: High]
+Could this also allow a guest to crash the hypervisor by supplying invalid
+nested SCB addresses?
+
+In _shadow_sca(), if the guest provides an unaligned address, it returns
+-EINVAL directly:
+
+arch/s390/kvm/vsie.c:_shadow_sca() {
+    if (scb_o_gpa & 0x1ffUL) {
+        rc =3D -EINVAL;
+        goto err;
+    }
+    ...
+}
+
+If the address is unmapped, get_vsie_page_cpu_nr() fails and returns -ENOME=
+M.
+These error codes appear to propagate up to the main instruction intercept
+handler. Will this cause KVM to exit to userspace with the error, aborting
+the QEMU process instead of injecting an architectural program exception in=
+to
+the guest?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260812170945.7383=
-51-1-akrowiak@linux.ibm.com?part=3D9
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260812-vsie-sigpi=
+-v4-0-f19e49666315@linux.ibm.com?part=3D20
