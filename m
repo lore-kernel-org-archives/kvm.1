@@ -1,145 +1,134 @@
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4490432AAB5
-	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 20:45:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0740E3AB29E;
+	Wed, 12 Aug 2026 20:54:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786567532; cv=none; b=mPF+3F0NvL6c4VHSMuXFTjvZ2C88J68Wv64bXCPRTwGzmL/l8rwyPXlHYfaHjRST9fZeTVR7kNDB7Ys/BTgKWqQtJ88KrGhuEek9nOK+Ve5NkbKbkC1+gjjfsPGo/eDh3Xks9VqNDL+rNedO6aa/aVlaedX8CQxgS4fDvZt97VI=
+	t=1786568099; cv=none; b=roZv+ptuOu46N5NdV7Mekub8CW5ImLiqCrwxwEGMx+3jiWaFi9tIH83UsEmTo72XkNiDtBojnGvuGSq1oQ/snqoPOK5Qms5OwwDak7GBwSCPnZVoXKHHabY654lFN86wQfZn9h6BCavtwNVf6/rfrdyciXldR+RAVY+r6PsApIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786567532; c=relaxed/simple;
-	bh=rFwUI1O6iAgNzWLgm/J9bi1SgsUeg3/DyEX1T2M8KIY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Content-Type; b=SdXT9m77TFKGQiVnB/gxCIsSdfQxcVeFq5gJ/DaMpNZGseN86zaa0602Rm4M7WodLi0m1MMB7j6ZeRZYvUZ+CJ0XYrrhFZKciXgdbh7ORzCqgN2Nx4wB5VUojtjfwDevjBv9SA4Felfnhu41VE4dQnNqx7QwEbP5HayR9TpC5lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wnQucr4u; arc=none smtp.client-ip=209.85.216.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786568099; c=relaxed/simple;
+	bh=RBgmZx5W5XTCdjY7SkY1E1McKukoOV/oaHCHgAt8DQY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WMP9zL7sOwlWxEQuuuec8+2fZgI01gx3xKefL9w5VxtjubFDh+GMttJzwaUDzu/N/UUs1VcXDhf+PE4oyAX5ZLOiN56P8Q9Oa9miwOQtbmgu7J0yozwe4cXKjgYokni8lo82WVuBZME9AM1EKAIyTbMtOL0YiGAF1m5dm+SSut8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=V7p9kvcS; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wnQucr4u"
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-388cfc4848dso1603294a91.3
-        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 13:45:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786567530; x=1787172330; darn=vger.kernel.org;
-        h=content-type:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hPeKxQgdY4MheVucVURWAKOB7JzvLvW2CiBPsSMFwIc=;
-        b=wnQucr4uq4aDL6+0nMGoJRmqA6n30Vos+2VM1d5oWLKbHLkWZ5EbQWm1GKy8pq2BWN
-         V/FA9quiBGePMupt2EVHPLhGhgg50Wzqzvt7z6B83zauidMC2P4+q5/plLA1LGYij0GT
-         U++CAOoznRdFLaAsTtshzX7WwUIvhwU3E87Hg4Yo4lZtXI5LoH+DOz0PiBD7R+GYdy+U
-         LJzsSbUBP0nMPLbT887bp+Pbuu8hW6C/z1wbY1ulstyutgo9s6pQoR0wwgURoje3Ifou
-         LV4Qh7jACiOPIvuUiU6QvZqB/6oL46iku/iO4zkSJt4tqGdgRLNg4mtqvx1pSX+5F5fw
-         xVCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786567530; x=1787172330;
-        h=content-type:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hPeKxQgdY4MheVucVURWAKOB7JzvLvW2CiBPsSMFwIc=;
-        b=J7TkAAXHMtQ+AIbxJmaxdQarO66kCWrYU+KYOLiQbm5DE8GFQMrtn8EgzEQJ8uu8xw
-         F8/HHBvRhOXokmuTQHrEJ9jCPbit/fLthxOfV1byhb1kdMRH2YqdE96QcA+gqflCCcp+
-         zfE2cAgJcGgXjnEFoFw/G4VmHW8Wuo+DntnS7wMH1de8d5gO0kWrFQk89OZtn4IHtQ5U
-         CeBBx6E6YFjKDnx/s70yp2rOyvxVVFS3Wtau1klfZuEp4fpOPDbNG/JS9+CYZTCNSSvb
-         S/uXYl9gxSs8v5F9j9TNvZijUgCAtdOaMxhv/5xDF0NpPnVTbB5CSs8UiNNE014E53ad
-         iOHQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqCE1aeg4/EBM141lGQvLrmgNrp1Im6wki4H1bJ/iStGAXyyDsHb7SeYRBi/X/4h4dGIFk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1ffAkYPv8Rj/K3OgwBdLWMCC5Z988dsnhLhQtOUheVAviznA9
-	/eTJdwrv0JLJK6NSw4nXzOkE+EkJME45M06qI6VriDnQ7TePuVhItWUsKoHH+EMd68xPIfQe2Xf
-	zJMO0xw==
-X-Received: from pjbgi9.prod.google.com ([2002:a17:90b:1109:b0:38e:ffcd:b70f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2dc8:b0:38e:e9b:ffa4
- with SMTP id 98e67ed59e1d1-3931e0262aemr1153095a91.6.1786567530369; Wed, 12
- Aug 2026 13:45:30 -0700 (PDT)
-Date: Wed, 12 Aug 2026 13:45:29 -0700
-In-Reply-To: <20260810225500.869288-7-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="V7p9kvcS"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67CK2e0r291749;
+	Wed, 12 Aug 2026 20:54:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=REtpvE
+	vIMNJ9hjkK6JevTlaZXvmRDuv01B0CiK1UD+U=; b=V7p9kvcS7qQ72AfX879M2G
+	sQQhTPpV+iYN3lkRABL9S/Iu4REbK4v+NgeK9SPoRayLqZIMdxtqBBEXXFRRYE2y
+	ZskE3RJo63t66b2aUDWLzdlDvyGYAQzb2a2zMF1HjTGKsVCnwJAFxABcfuAssvLe
+	P5XfOiWbG1mVfoF2iGyfKkdsEauBnQxq8exPhGeDo3inK5AL3ROG0kfr1cwuPVM7
+	m/DNKb3AWPLjQIam41+iqQwgfKZTS6nd0ooHtjgYFvRXVqitE9moTjRpxVPANYVh
+	oQZn/KLEEdbf5G5b6Hcy2zz0kylAQah4Fv44LKW/OtZhvEwvCjeLKhuDdFzLgGjg
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvm9vrsk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Aug 2026 20:54:46 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67CKfICH024656;
+	Wed, 12 Aug 2026 20:54:45 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxesq85y3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Aug 2026 20:54:45 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67CKsiPi25952784
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Aug 2026 20:54:45 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DC0D758060;
+	Wed, 12 Aug 2026 20:54:44 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D6ED758056;
+	Wed, 12 Aug 2026 20:54:43 +0000 (GMT)
+Received: from [9.61.74.89] (unknown [9.61.74.89])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 12 Aug 2026 20:54:43 +0000 (GMT)
+Message-ID: <913258a5-7211-4efc-ab34-72fce38ed17e@linux.ibm.com>
+Date: Wed, 12 Aug 2026 16:54:43 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260810225500.869288-1-seanjc@google.com> <20260810225500.869288-7-seanjc@google.com>
-Message-ID: <anzbaS86UUGNOmfn@google.com>
-Subject: Re: [PATCH v9 06/21] KVM: x86: Avoid NTP frequency skew for KVM clock
- on 32-bit host
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Paul Durrant <paul@xen.org>, David Woodhouse <dwmw@amazon.co.uk>, Dongli Zhang <dongli.zhang@oracle.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 8/9] s390/vfio-ap: Fix NULL deref in status_show()
+ during queue probe
+To: Anthony Krowiak <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
+        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
+        stable@vger.kernel.org
+References: <20260812200240.818004-1-akrowiak@linux.ibm.com>
+ <20260812200240.818004-9-akrowiak@linux.ibm.com>
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <20260812200240.818004-9-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDE2NSBTYWx0ZWRfX95sTmbwNKP46
+ 4vvXE8we3I/cbF8wLIDessMCV61bkJhaaFMBYjczMqYTdADzXN05waMqo6ZlxXcUpOD3JsgKobI
+ 1lBFh126mBsCNbAS5hMpY2NzR2Fx06QCC3x5TS1lDJOK6LfLB5fhQoxu5a8oDMzvSlY2GchqqyX
+ a/SmLqgw0xhBhdVTKUjfrGiQqnTMP4Zjbx80agDGdtRNDxMou7nSI3rmwSpMgPSW/IJSIhIbse6
+ jmOse2vdxXAj0gf4TRFHz1XvX/uTsxcMqazJZquqwnXGQpHEe8dR+AEO9lIPrqXBDzPOtXzNUWN
+ ethN+fVlP+670s7ldKlrT3GkDkufGtSlGt0aa8WhgipqQN4mnTrohDECHla8OX9uCiLWqoEJxPg
+ b7nPRhTC77Y2rt/ijLR8yk/cDeOnNB7JeTzGzxMGtp5ntzPK2gkThB0xMVAp8yarnuUrN5aubhR
+ EH8S89RrpbJLrNEh/pg==
+X-Proofpoint-ORIG-GUID: _UpAGCbV2nlfMh-3KC8oqwVJxh4QnV_I
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDE2NSBTYWx0ZWRfX2O8w65OffHjI
+ r5yGmDZ8YjK4htl5b4fb6s1AcNv4XcwcMY1SNb5Q+FBv7/kGNzPXsvZRcFQ6XZD2oyNPVdpgXcq
+ vN5a3OAgvN4ZbE0pVtizn1XwQofW8/U=
+X-Authority-Analysis: v=2.4 cv=IfK3n2qa c=1 sm=1 tr=0 ts=6a7cdd96 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=3ogWLBYsyzpkYmsBJL4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: _UpAGCbV2nlfMh-3KC8oqwVJxh4QnV_I
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-12_06,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
+ lowpriorityscore=0 adultscore=0 malwarescore=0 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608120165
 
-On Mon, Aug 10, 2026, Sean Christopherson wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
+On 8/12/26 4:02 PM, Anthony Krowiak wrote:
+> When vfio_ap_mdev_probe_queue() creates the sysfs attribute group,
+> the queue's driver data has not yet been set. A concurrent read of
+> the 'status' attribute can therefore call dev_get_drvdata() and
+> get NULL, which is then passed directly to
+> vfio_ap_mdev_for_queue() where q->apqn is unconditionally
+> dereferenced, causing a NULL pointer dereference.
 > 
-> Commit 53fafdbb8b21 ("KVM: x86: switch KVMCLOCK base to monotonic raw
-> clock") did so only for 64-bit hosts, by capturing the boot offset from
-> within the existing clocksource notifier update_pvclock_gtod().
+> Fix this by acquiring the update locks before calling
+> sysfs_create_group(). The status_show() function acquires
+> guests_lock before reading the driver data, so any concurrent
+> read will block until after dev_set_drvdata() has been called
+> and the update locks are released.
 > 
-> That notifier was added in commit 16e8d74d2da9 ("KVM: x86: notifier for
-> clocksource changes") but only on x86_64, because its original purpose
-> was just to disable the "master clock" mode which is only supported on
-> x86_64.
+> As a bonus, the APQN no longer needs to be read from the queue
+> struct after allocation — it can be read directly from apdev
+> before allocation and stored in a local variable, which is then
+> assigned to q->apqn once the allocation succeeds.
 > 
-> Now that the notifier is used for more than disabling master clock mode,
-> enable it for the 32-bit build too so that get_kvmclock_base_ns() can be
-> unaffected by NTP sync on 32-bit too.
-> 
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> Reviewed-by: Paul Durrant <paul@xen.org>
-> [sean: rebase on top of ktime_mono_to_any() usage]
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
+> Fixes: 260f3ea141382 ("s390/vfio-ap: move probe and remove callbacks to vfio_ap_ops.c")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-...
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
 
-> @@ -7118,9 +7111,9 @@ int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
->  
->  	if (pi_inject_timer == -1)
->  		pi_inject_timer = housekeeping_enabled(HK_TYPE_TIMER);
-> -#ifdef CONFIG_X86_64
->  	pvclock_gtod_register_notifier(&pvclock_gtod_notifier);
 
-From https://sashiko.dev/#/patchset/20260810225500.869288-1-seanjc%40google.com:
-
- : Does this add unnecessary overhead to the timekeeper update path on 32-bit
- : builds?
- : 
- : The commit message notes a rebase on top of ktime_mono_to_any() usage. Because
- : of that rebase, get_kvmclock_base_ns() now uses ktime_mono_to_any() directly
- : and no longer reads from pvclock_gtod_data.
- : 
- : Since all other readers of pvclock_gtod_data remain guarded by CONFIG_X86_64,
- : is pvclock_gtod_data now effectively write-only on 32-bit? This would mean
- : update_pvclock_gtod() runs on every host core timekeeping update just to
- : populate an unused struct.
-
-Huh.  Indeed.  Now that "Compute kvmclock base without pvclock_gtod_data" will
-land before this patch, there's no need to register KVM's notifier on 32-bit,
-and this patch is simply:
-
-diff --git arch/x86/kvm/x86.c arch/x86/kvm/x86.c
-index 67c762b3bf28..edafe13f74cf 100644
---- arch/x86/kvm/x86.c
-+++ arch/x86/kvm/x86.c
-@@ -926,19 +926,13 @@ static void update_pvclock_gtod(struct timekeeper *tk)
- 
-        write_seqcount_end(&vdata->seq);
- }
-+#endif
- 
- static s64 get_kvmclock_base_ns(void)
- {
-        /* Count up from boot time, but with the frequency of the raw clock.  */
-        return ktime_to_ns(ktime_mono_to_any(ktime_get_raw(), TK_OFFS_BOOT));
- }
--#else
--static s64 get_kvmclock_base_ns(void)
--{
--       /* Master clock not used, so we can just use CLOCK_BOOTTIME.  */
--       return ktime_get_boottime_ns();
--}
--#endif
- 
- static uint32_t div_frac(uint32_t dividend, uint32_t divisor)
- {
-
-I'll post a v10, since this is a non-trivial change.
