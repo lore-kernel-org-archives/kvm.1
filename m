@@ -1,159 +1,206 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C7B2D3ED1;
-	Wed, 12 Aug 2026 15:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64074746D7;
+	Wed, 12 Aug 2026 15:37:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786549005; cv=none; b=o8koMkikn+K+WcDv475MKUp2GSuMk0Y+GQ0VbLAWETcJKosXO+Jt7X1BT3nGIwGtkqqo1OEHuBIvPmGvWTnp6ZbSPdJMRO1KonyQMcHcfOrPtYkYIS/tHUHlybrFdqenIGg9GO1nhBJwwq4cL6DbDSUrZrjXpewh9dNVmhqhheU=
+	t=1786549041; cv=none; b=jH95u47j/WovJCh1Gn8Xt8z1cHSkCt+Hxn9rmCByylRIi/g471lL5WlnEx1ncZpP75B+9ECTdKYhiEVRFGg82RDcPaBXcOmQDTqckOWm28AdqkUPvIDHSG8uEbvGC6L/nsjwPmU988NJWZKmj5oAli6sng9eTJISX9jjeB6d8pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786549005; c=relaxed/simple;
-	bh=Z4aWhybO8QyHscTL+FfeVldumdpj57eg6iiNLjR08e4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y7UvBT4oB/WW+8Wc5/kEvLxERcA9h6UlnTj1PVACKpxwqBMlp/Wog7AwkungqWpkOXUvewhsjILwlmE8JsGmJVJq4IBRVcGYhBCaTfwJwCG5lCxeRQrRrUFqd4BG2Ezh+rAXiDcVFIIeCp4U9Fp3how7ObBNLn1xFyq01dMnxZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WRoBoHMm; arc=none smtp.client-ip=148.163.158.5
+	s=arc-20240116; t=1786549041; c=relaxed/simple;
+	bh=31tWlAySrS7NW+tnf3QuyeIDEyQzztjvH4O6gocnGJI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kX1XRLzlL05ncCKQ3qt5mnPa/l6mFr1KsazZSMyBVHGTQ+rt/UAGwwZlM1SPkw6CCfO0x8GvVIM44fuWUiC4cLqTJmgAxDV63oyLvL5OzvWNnSDG93GfOVwmhpgsPqNbQfOwnJmytyvbz6HVMje6f8UUL1T/bWlYURawQRBdOs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rlEXqtgP; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WRoBoHMm"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67CE1uFf3594446;
-	Wed, 12 Aug 2026 15:36:30 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rlEXqtgP"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67CE1pHC3640585;
+	Wed, 12 Aug 2026 15:36:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=NhNEQc
-	z76y4duudzQ8IfaOpMZZ+iu5utIKN/qAbRk8Y=; b=WRoBoHMmxb+akGHTeyYZG3
-	vVup3oguiscbindm4w1wfo/FfLtlmpUjfPOvkZ9pqHoDs+ifPsbPR5IiVbGq4vht
-	XJuErWftC721p+PZQ5AC1gHQBXD3RzF3Oe1e19270kg/La1S6+nqHzxfNe7C+OXC
-	Q3RTIaO1XyGXKQ24RVsuTzhN0XVERlW8YyBJFRT2zfH2ecmWxoUsxPapBk8fJj+X
-	h3txXeVtJcl/R0cgDamy7g0UKy/kVq6nPzd8qs9GN0yAOLGYwHFr9+HopXllYjNX
-	/k/ouMtIw2HcQiD3cCYvuHU0Qjk2eL7CtLMKh17niQDXYdU0H7jYBFE3loC0Acog
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvp32e02-1
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=rJrLyzddm9CEpE2TZ
+	Zohj7jwwyh45qkZ85dZIflvNdE=; b=rlEXqtgPpJxQnGEBAEYtV8jtCkb5LbI0W
+	GOy1nWe7BvFfcByl9X8O3mm1mBNe+AW11AA4/fL8GKzQ6zof6StHFLp/R2ADbcrN
+	xG2JPIVQvskACbkfTL/cG1a0VqEkNaLXG0EZnwTiMnQzGPQA6KcCabVX9zFpgLJ7
+	DEBnriGwMii/SMfxHvsxjGeq5MDKWCZDbLYM8KAyYTZkUjtBHn5qSntSYnY0Bgm1
+	fKJXS8CfO4e1NfTJWQOcKf9luQXdW0VV1MYDmehSfxL7sOtTApPtU7ADJKys1oXM
+	xKzdiljjDq9BTJY0lN6hkpb6b4IlBZk/HdE4xIs5nZosVQN1pH+yA==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvq9k7bg-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Aug 2026 15:36:29 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67CFQGe5021692;
-	Wed, 12 Aug 2026 15:36:28 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxhfy6g2v-1
+	Wed, 12 Aug 2026 15:36:39 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67CFBKqN018660;
+	Wed, 12 Aug 2026 15:36:38 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxf5w6tcx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Aug 2026 15:36:28 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67CFaRMR23659208
+	Wed, 12 Aug 2026 15:36:38 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67CFaYE148693686
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Aug 2026 15:36:28 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D8E6D5803F;
-	Wed, 12 Aug 2026 15:36:27 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CEBF158060;
-	Wed, 12 Aug 2026 15:36:26 +0000 (GMT)
-Received: from [9.61.74.89] (unknown [9.61.74.89])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 12 Aug 2026 15:36:26 +0000 (GMT)
-Message-ID: <4edf514c-9044-4530-ad47-4fb468160835@linux.ibm.com>
-Date: Wed, 12 Aug 2026 11:36:26 -0400
+	Wed, 12 Aug 2026 15:36:34 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 46D6220040;
+	Wed, 12 Aug 2026 15:36:34 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EF1642004D;
+	Wed, 12 Aug 2026 15:36:33 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 12 Aug 2026 15:36:33 +0000 (GMT)
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>,
+        Gautam Gala <ggala@linux.ibm.com>,
+        Hariharan Mari <hari55@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
+        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
+        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+        Zenghui Yu <yuzenghui@huawei.com>
+Subject: [PATCH v6 05/33] arm64: ptrace: Use constants for compat register numbers
+Date: Wed, 12 Aug 2026 17:36:01 +0200
+Message-ID: <20260812153631.3376090-6-seiden@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260812153631.3376090-1-seiden@linux.ibm.com>
+References: <20260812153631.3376090-1-seiden@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/9] s390/vfio-ap: Fix bugs in vfio_ap device driver
- callback functions
-To: Christian Borntraeger <borntraeger@de.ibm.com>,
-        Anthony Krowiak <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: jjherne@linux.ibm.com, pasic@linux.ibm.com, alex@shazbot.org,
-        kwankhede@nvidia.com, fiuczy@linux.ibm.com, pbonzini@redhat.com,
-        frankja@linux.ibm.com, imbrenda@linux.ibm.com, agordeev@linux.ibm.com,
-        hca@linux.ibm.com, gor@linux.ibm.com
-References: <20260812115139.576303-1-akrowiak@linux.ibm.com>
- <14e82371-8e39-4af6-b220-6f0d1bdf25d4@de.ibm.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <14e82371-8e39-4af6-b220-6f0d1bdf25d4@de.ibm.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=AMtp2X5w c=1 sm=1 tr=0 ts=6a7c92fd cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=epKttwDpbV6lW6S5-OMA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 2oLfxmlaanfYIDEPaZ_fSb6uG8c9PzRE
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDEyNiBTYWx0ZWRfX1/cdd5AW1zoa
- NUf2osL5qzrH+RqeBjce5JuUqdfWeM8/J8LRzinSHUhxUhkikBIrTC7+P7F350At3HTA5xI3s/G
- 0cOWQjUH9LZtywP8P6OrIrCmUSPtwV3loWjytg0lhYGTqcqDbDEKlAdcDCwu+OiopwTV8DZcGOr
- bbxMQjvAR3yX3f/mgkKGwojAoza8ltICOKvTUT/rJmR/jb5k/4l4PQtQUU/HtHj+1N1fqvPB37w
- rUQLC84TRi4qNR0bP5sGSMYy+FecOzqDuqDU600Xkk4Gbv/B91ReyCvmyBwIEAVs4frG9Zas4FW
- 6LSFfEbvobs59FH4jISHkwGSn0l/1IHH3fLsdca1McY8V0+gVdpqMojXw2th96hQHMhzOHkbZKk
- xZkSqGuRio0sN6JntjOd/2xhY/CoqiF/TeYgE5Yw3nVlUa06jxCvZJh0Faaff2VrXQfmyLzEilA
- 7e+DDgmTXal0jugvgmg==
-X-Proofpoint-ORIG-GUID: 2oLfxmlaanfYIDEPaZ_fSb6uG8c9PzRE
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDEyNiBTYWx0ZWRfX5wGUS9lRWdnk
- 9X/Ce/HwASTPQmTS5ah/nQDsTtD+VbkRbWdkzsCjwtUxgf52FNP3Rntr53q10acGP+GywVXDL3G
- FRUmYSBrl3T564IGkS1O3HLmBvA0DHA=
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: XxRMhA5t4KAqrWvUZzivpLuljWJk0Lzz
+X-Authority-Analysis: v=2.4 cv=PbDPQChd c=1 sm=1 tr=0 ts=6a7c9308 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=8sKaXpLx0aSSeG29UzUA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDEyNiBTYWx0ZWRfX9zkNOYox4fBp
+ Uuvky4U1aRpnkBfvNenjPz4iMYWUKb1jEzdwn/u9z894jXTideB3xIJWqGXGGibH5hQ0xlGI0OD
+ u/TwQu0htUNNtcy1VlAGbVCqpUA81OpNJfbT0QyQNo530zVBuu7n4H4wZJ16fyRoRfA0+Fgco1o
+ rlZHaI6N3qMHkK0q735j9BJKETpSvEqznxUF94aEVOV/CksLd5UfMVH2flvRN3NBaGSNJGuCGgw
+ CTrk7Nz+K2Cw1ObcDXLoYsPzgWHGufNt1kA7H1tipK0N5DsA0hVQZiPnHW2vuCHbt4WDQB6EMkM
+ FrEJCmjof74ri367kWN85/N1asbhdAxI9tZnrVA5yrY7yErEHHCC4ns/uezFi9BPNwSRmkjjcd8
+ Bee6+ISQ1wDouUfGjgE1j5xXYy9nBUyqYrYIxogHGPC7NrnMO2WD/5anaLZERDTKtQia6iqfwHz
+ dMOetXE2cGDDGRmw2Vg==
+X-Proofpoint-ORIG-GUID: dbaGJcJQZP5wv0qSovhsnwwl7zprjDUF
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDEyNiBTYWx0ZWRfX+Oc2q8yfDASJ
+ zjOhW+KMaKrLuIwGsAxixDhLVAQHnmVBxkAIJUvDpdJfjT0jhnBNfFZy3w+E/2sqBCgbPSZQiOg
+ ggAY2IN3+EC3hr1L+ApLaVSxFijskKw=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-12_04,2026-08-12_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
- priorityscore=1501 impostorscore=0 phishscore=0 spamscore=0 bulkscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 priorityscore=1501 suspectscore=0 phishscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
  definitions=main-2608120126
 
-On 8/12/26 11:30 AM, Christian Borntraeger wrote:
-> 
-> Am 12.08.26 um 13:51 schrieb Anthony Krowiak:
->> During review of patches by the Sashiko AI, several pre-existing bugs
->> were
->> discovered. This 9-patch series fixes those bugs
->>
->> Change log v2 => v3:
->> ~~~~~~~~~~~~~~~~~~~
->> Patch 3: Fix use of wrong lock in mdev probe function
->> Patch 7: Fix required lock not held during display of sysfs status
->> attribute
->> * Squashed these two patches into a new patch entitled "Fix missing lock
->>    required to access list of ap_matrix_mdev objects"
->> * Added two new patches that fix pre-existing bugs:
->>    ~ s390/vfio-ap: Fix NULL deref in status_show() during queue probe
->>    ~ s390/vfio-ap: Fix memory leak when queue removed from host AP config
->>
->> Anthony Krowiak (9):
->>    s390/vfio-ap: Fix stale do_remove flag across iterations in
->>      vfio_ap_mdev_cfg_remove
->>    s390/vfio-ap: Fix dereference matrix_mdev->kvm without checking for
->>      NULL
->>    s390/vfio-ap: Fix missing lock required to access list of
->>      ap_matrix_mdev objects
->>    s390/vfio-ap: Fix required lock not held during update of
->>      ap_matrix_mdev object
->>    s390/vfio-ap: Fix control domain removal in vfio_ap_mdev_cfg_remove
->>    s390/vfio-ap: fix potential use of uninitialized apm_filtered bitmap
->>    s390/vfio-ap: Fix hot-unplug skipped when last AP adapter or domain
->>      removed
->>    s390/vfio-ap: Fix NULL deref in status_show() during queue probe
->>    s390/vfio-ap: Fix memory leak when queue removed from host AP config
->>
->>   drivers/s390/crypto/vfio_ap_ops.c | 110 ++++++++++++++++++++----------
->>   1 file changed, 75 insertions(+), 35 deletions(-)
->>
-> 
-> 
-> Sashiko has one new finding for patch8. Everything else is unrelated.
-> Will you do a respin for this?
+Define an enum to determine the register number for the mapping from
+AArch32 and AArch64 registers. This allows for a more flexible use of
+the register mappings.
 
-I am going thru this version now but yes I would like a respin that
-fixes patch 8.
+Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+---
+ arch/arm64/include/asm/ptrace.h | 60 ++++++++++++++++++++++-----------
+ 1 file changed, 41 insertions(+), 19 deletions(-)
 
-> I plan to take this for the next merge window.
+diff --git a/arch/arm64/include/asm/ptrace.h b/arch/arm64/include/asm/ptrace.h
+index f7dc5fb9427d..49a83a0636b9 100644
+--- a/arch/arm64/include/asm/ptrace.h
++++ b/arch/arm64/include/asm/ptrace.h
+@@ -102,26 +102,48 @@
+ #define COMPAT_USER_SZ	296
+ 
+ /* Architecturally defined mapping between AArch32 and AArch64 registers */
++enum {
++	__compat_fp		= 11,
++	__compat_sp		= 13,
++	__compat_lr		= 14,
++	__compat_sp_hyp		= 15,
++	__compat_lr_irq		= 16,
++	__compat_sp_irq		= 17,
++	__compat_lr_svc		= 18,
++	__compat_sp_svc		= 19,
++	__compat_lr_abt		= 20,
++	__compat_sp_abt		= 21,
++	__compat_lr_und		= 22,
++	__compat_sp_und		= 23,
++	__compat_r8_fiq		= 24,
++	__compat_r9_fiq		= 25,
++	__compat_r10_fiq	= 26,
++	__compat_r11_fiq	= 27,
++	__compat_r12_fiq	= 28,
++	__compat_sp_fiq		= 29,
++	__compat_lr_fiq		= 30,
++};
++
+ #define compat_usr(x)	regs[(x)]
+-#define compat_fp	regs[11]
+-#define compat_sp	regs[13]
+-#define compat_lr	regs[14]
+-#define compat_sp_hyp	regs[15]
+-#define compat_lr_irq	regs[16]
+-#define compat_sp_irq	regs[17]
+-#define compat_lr_svc	regs[18]
+-#define compat_sp_svc	regs[19]
+-#define compat_lr_abt	regs[20]
+-#define compat_sp_abt	regs[21]
+-#define compat_lr_und	regs[22]
+-#define compat_sp_und	regs[23]
+-#define compat_r8_fiq	regs[24]
+-#define compat_r9_fiq	regs[25]
+-#define compat_r10_fiq	regs[26]
+-#define compat_r11_fiq	regs[27]
+-#define compat_r12_fiq	regs[28]
+-#define compat_sp_fiq	regs[29]
+-#define compat_lr_fiq	regs[30]
++#define compat_fp	regs[__compat_fp]
++#define compat_sp	regs[__compat_sp]
++#define compat_lr	regs[__compat_lr]
++#define compat_sp_hyp	regs[__compat_sp_hyp]
++#define compat_lr_irq	regs[__compat_lr_irq]
++#define compat_sp_irq	regs[__compat_sp_irq]
++#define compat_lr_svc	regs[__compat_lr_svc]
++#define compat_sp_svc	regs[__compat_sp_svc]
++#define compat_lr_abt	regs[__compat_lr_abt]
++#define compat_sp_abt	regs[__compat_sp_abt]
++#define compat_lr_und	regs[__compat_lr_und]
++#define compat_sp_und	regs[__compat_sp_und]
++#define compat_r8_fiq	regs[__compat_r8_fiq]
++#define compat_r9_fiq	regs[__compat_r9_fiq]
++#define compat_r10_fiq	regs[__compat_r10_fiq]
++#define compat_r11_fiq	regs[__compat_r11_fiq]
++#define compat_r12_fiq	regs[__compat_r12_fiq]
++#define compat_sp_fiq	regs[__compat_sp_fiq]
++#define compat_lr_fiq	regs[__compat_lr_fiq]
+ 
+ static inline unsigned long compat_psr_to_pstate(const unsigned long psr)
+ {
+-- 
+2.53.0
 
-I am also going thru all of the Sashiko reports, most are already
-resolved by this series.  But I will send Tony a pruned list to
-investigate after this series vs adding more fixes to this one.
