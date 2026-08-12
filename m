@@ -1,162 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1AF2C027C;
-	Wed, 12 Aug 2026 21:38:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241DE37F8BA
+	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 21:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786570720; cv=none; b=Hq9VJKYOWMnyL5drLqHfrLOlpFnjI1XqiC0RK4yIyEn0kBSmCbodYyqXR8VGOGy9KRtu9MrBrH+QsCJiUSXLOrT1tM58SIw+wm/wpoZF+K8ETY7izu0+hYdhxPP/wgc0mi7eumsZKYZ7upjEe7LdzyHuvzUWjOAylEFNrvO1aog=
+	t=1786570896; cv=none; b=iiVLQGImP6uX0+g9us+Dt7BeUk5A6h7Pe3AySDUgn+N7TjOXYY9+dJybRmqilK0CZxX6A7ZUjQPyusMhrVhECBms48Y8V/UrhB+LHZz9Uq9TgKl8t9wxUFEq0RIPBBkYXaDnYvpbpqaAVpyug9Lhv5htK9t6VJidnTpQJngLsnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786570720; c=relaxed/simple;
-	bh=stKds13iSSP2ngSa0pzJ8Vud6Mih+cAVmVydvNFaIPI=;
+	s=arc-20240116; t=1786570896; c=relaxed/simple;
+	bh=Myn0f5PoONuBeSnhGPwFLjCEATkMK/fQIXssiOVSNy0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pqtAgdb/JR4cMMOCokupmPyfBPUwbxupYLkF1imF3BKhsjMyBmAFyyGvEee3PJT2Ogt9QcaxW7hlskr3+LPJoem+XYAUQ0itBYgn0MBO+wyAXtZIEVTl3cyS77V7Y3ZD8Q7KdV+5wvNJxPmu6RGz8RwXvvzYalK6bk7aN7w7GoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mipp/Tam; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=oBfqk4082aDT/lDo58v9xrX4eB4t56ftGaiwCOCV8NzQGGOeV9VlEHVjRAQKNI95K0yS8UnIXTEjWJiwN2UeRk+9p4u/KbJHO30IcadbqhkX9Tz+neglupK2NS/wByERNvR9VBGSVPXB/e4Tqfo4XWMyWeH4I4pynOc4YKTwk7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=choYcLMz; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mipp/Tam"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE0081F000E9;
-	Wed, 12 Aug 2026 21:38:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786570718;
-	bh=Cp8VKR+mPn5OPJBFC9VfSl1Nu9BWx9Sa1qFuiOfB2n8=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=Mipp/TamjMFifPGmGfcl3Aa7QIIOnIoUyxP5D2zaiECAy4CT+kswN3I69AAIXMqj1
-	 TIfrfHGeiC3EyvRqGYWBT6/CZW6A2ZFdyWIZyFrs2+4a882RT1BgAu6RV4wGrZuCQ0
-	 Uf5bIPpg66u1BEdyUQ62PQGF0lttJQWukYKr7OChDw8pMrAz8qXzu7zt2YT1gUTLFz
-	 5EPpBLTRA46qUC3Vk5MIMkwQaDOlvKgL59FWWAhne9iGmRq79LhrYcyfGwuQlkr7V0
-	 z5fb08Jf9qTh9XGB3p00AiEd+p1M+Z241W6YMJaDiNYb39skY3A+A5kRlfr9OTPQEy
-	 O0FoyCy9nblUw==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 519DECE0EBE; Wed, 12 Aug 2026 14:38:38 -0700 (PDT)
-Date: Wed, 12 Aug 2026 14:38:38 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <b736237c-64ee-4eb2-8201-5685a3853844@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <44c51ace9b0dc44b795f6f48c91cda440eed910b.camel@infradead.org>
- <20260812122759.GA662699@ziepe.ca>
- <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org>
- <20260812134934.GC662699@ziepe.ca>
- <a48e6e7063122b22a8083bb0792984a204f316e6.camel@infradead.org>
- <fb87f673bf290cad133d113dbb0750a7752b9d30.camel@infradead.org>
- <a94b75e8b9b1d2191f365c0f4275fd5082332df5.camel@infradead.org>
- <d0692500893f303906fba1d7d596eb59a07a806a.camel@infradead.org>
- <anydY25Cl78l1HfU@google.com>
- <932DB129-1794-4855-A61E-F4C2B54B1EE6@infradead.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="choYcLMz"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cf452def93so3051515ad.1
+        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 14:41:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786570893; x=1787175693; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NPvoXejEXMCOLtks/4P44XseBHeJ9j+rFY5G6V1i118=;
+        b=choYcLMzzYt+EkneTOegz0/c40LRIGJvd4bO/SM6+11qBRjCZHyFmO+vsdAOFxsS1w
+         EiFXkb4eR8TjF0JQdMn3RBqgg/nXvx0gBedu1SzsFJcl4U6vYEWZrfNp0A8MWJF8Fx2/
+         U/UEgb/kTjJEUR07MFRmoWAoNe5HDnLansO0wH3tlYyq/revCNq39mFPtxb0TpoqM9vH
+         AYgxFm1KNabjVNnER7ZHZyUWclO/RwYCg7CeFztB5IgHuTbR+T3tUVfm1rzd+UDr7OXz
+         v5dMxhIf8DGqcZlN39Hv939A46x5dcPthyVGFAW/Zn2jBSNQUufxPVWtYQkniVf/Dpus
+         kAiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786570893; x=1787175693;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NPvoXejEXMCOLtks/4P44XseBHeJ9j+rFY5G6V1i118=;
+        b=fZSn0dChgvY8PSAOsVEpTqXZWCvQjWH3KPw8028YkkcTdnALXN9670LBGUztGuYp07
+         jEaFiAUEIxWdiDofIQapno0Z1WtRXwS+NsaOf32O97CH9+alI/ASQG3KBtAb3hUn7L2l
+         lVIgUsslro9P9CTNnpEzdO7yR4q5Sssf48MPpS0QTqdyjrcV1yEwj4E7CWgZUWsPQDms
+         PRd8WnYqDRpr1zKsuz50NduMoA5gz1U4hU+8hVevODp140mrQrHJG8NBAPjamDQkPwQI
+         YT7LJNYJz3NL8WGtl0swiR19WXuEpVTAku2UAv21mPzn/R5OsfH+KhIg3rbd7bR7zG8O
+         eU1w==
+X-Forwarded-Encrypted: i=1; AHgh+RoAM0Nx++WwBbvImfcQfImjwhVvpGHptxy0u7uPiRltATUUWmoPv7VNUBagak89JavdPCw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoWFnzExAkeMAleJZhiFYN/rloegpPHceK0855vjR2CLF7AxxQ
+	UJgQ9QOcgu3qMQ7WJZqUSd6sHvE/nFo1hhbyMgog2e3goM4EbcvTQ/5kIhT0+KOXhg==
+X-Gm-Gg: AR+sD112WT3/tE1unFZJKoU3mfVnRP3dlqAihA4dhGKUdI5Urzt3NHJcyfDX3j8gTA8
+	0+fNxbGBHvsLZGFHNsQdokygvIaueaNzCAno4KBzpO/aicRoudqAT8FQalY/qc1fRMUeqql4ldW
+	OYoBug5d7ZrYlzxJqW4aR0P9OsqR9LmUX6O/1pmMGTH8gwQDrJmt7Vwldn5uOaqXvz/U3UhqwKs
+	GOKH67oauYPuwimCXRRdVuCgyiEhqBZa2L5MVD996Q68hwRh8RMBWuz5M8GdSoVtAYKYguTGR4G
+	KbIxOdRnk+Rvy8j3FPkvK9A70bjxVwF5jkm7xDM+xYFzUp6ytKOvIoj1oQH3DMEfD4jvuNgjlv8
+	vpA7oLpCn+i2ieTEB78fZXY48Tcm1/HUseVmi0KV3GyYRHzIOAZhs7E4RpzZoPsVdalHBIsAweo
+	qF8PxjiEtNl77wY/c7xGhImRN7thuEmuLIgXvv9kV8grAn2Xp2q4gvU+ASZjicxPdtXZUpC4dDo
+	8mF7JT9FpN5ZqPt0Abahdyj0cF+TA==
+X-Received: by 2002:a17:90b:274c:b0:36b:de66:92c3 with SMTP id 98e67ed59e1d1-3931f583a5amr478962a91.10.1786570892837;
+        Wed, 12 Aug 2026 14:41:32 -0700 (PDT)
+Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3931ced0781sm878738a91.11.2026.08.12.14.41.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2026 14:41:32 -0700 (PDT)
+Date: Wed, 12 Aug 2026 21:41:28 +0000
+From: David Matlack <dmatlack@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
+	netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+	patches@lists.linux.dev
+Subject: Re: [PATCH v4 08/10] vfio: selftests: Add mlx5 driver - HW init and
+ command interface
+Message-ID: <anzoiALsjiWrsZtl@google.com>
+References: <0-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
+ <8-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <932DB129-1794-4855-A61E-F4C2B54B1EE6@infradead.org>
+In-Reply-To: <8-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
 
-On Wed, Aug 12, 2026 at 06:17:50PM +0100, David Woodhouse wrote:
-> On 12 August 2026 17:20:51 BST, Sean Christopherson <seanjc@google.com> wrote:
-> >On Wed, Aug 12, 2026, David Woodhouse wrote:
-> >> On Wed, 2026-08-12 at 16:03 +0100, David Woodhouse wrote:
-> >> > On Wed, 2026-08-12 at 15:34 +0100, David Woodhouse wrote:
-> >> > > On Wed, 2026-08-12 at 15:05 +0100, David Woodhouse wrote:
-> >> > > > I'll rephrase that for my own understanding:
-> >> > > > 
-> >> > > > *If* we go all the way to building a whole SRCU flavour for this *and*
-> >> > > > implementing a spin-only variant of srcu_synchronize() which is
-> >> > > > tailored to the atomic-reader use case, *then* we don't need to remove
-> >> > > > the non_block_{start,end} guards around the MMU notifiers, which are
-> >> > > > basically never being called anyway and don't actually seem to protect
-> >> > > > against any real bugs.
-> >> > > > 
-> >> > > > Yes?
-> >> > > 
-> >> > > FWIW it looks something like this. I'll throw it into my torture and
-> >> > > latency tests, and we can see what Paul thinks of it. I'm still utterly
-> >> > > unconvinced it's needed, but I concede it has its good points.
-> >> > 
-> >> > This slightly refactored version is the one that's actually going into
-> >> > my torture tests...
-> >> 
-> >> Well, it survived first contact, and it's doing the soak testing now.
-> >> 
-> >> The average is basically no better than the try_synchronize_srcu()
-> >> case, unsurprisingly — as *both* of them just observe that there are no
-> >> readers and proceed immediately, in at least 99% of cases.
-> >> 
-> >> Like the existing rwlock case, it still manages double-digit p100
-> >> latency even when though *doesn't* actually sleep.
-> >> 
-> >> I don't *hate* it, but I do question the benefit of it over try-first.
-> >
-> >FWIW, the max latency and >8ms numbers are very appealing to me, as my concerns
-> >with using SRCU are all about the tail latencies.
-> >
-> >But I'm obviously not the one who'd be saddled with maintaining the code, so I'm
-> >more than a little biased towards choosing the more complex version.
-> 
-> Ack. Well, it isn't even *that* bad in terms of complexity. It's mostly just a while loop around the core of the try_synchronize_srcu() I posted before, and some syntactic sugar and safeguards.
-> 
-> Let's see what Paul thinks.
+On 2026-08-12 11:59 AM, Jason Gunthorpe wrote:
 
-A single call to try_synchronize_srcu() that, upon failure, invokes
-synchronize_srcu_expedited() would work fine.  And a limited loop on
-try_synchronize_srcu() that invokes synchronize_srcu_expedited() upon
-repeated failure return would also work fine.
+> diff --git a/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5_hw.h b/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5_hw.h
+> new file mode 100644
+> index 00000000000000..a2506ec8a19523
+> --- /dev/null
+> +++ b/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5_hw.h
+> @@ -0,0 +1,108 @@
+> +/* SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB */
+> +/*
+> + * mlx5 VFIO selftest driver - HW definitions
+> + *
+> + * Typed wrappers, constants, and helpers for programming mlx5 hardware
+> + * via the VFIO selftest framework.  Most HW constants and all MLX5_SET/GET
+> + * macros come from the kernel headers (mlx5_ifc.h, mlx5_ifc_macros.h).
+> + */
+> +#ifndef SELFTESTS_VFIO_MLX5_HW_H
+> +#define SELFTESTS_VFIO_MLX5_HW_H
+> +
+> +#include <linux/io.h>
+> +#include <linux/build_bug.h>
+> +#include <vdso/bits.h>
+> +
+> +#include "mlx5_ifc.h"
+> +#include "mlx5_ifc_macros.h"
 
-But if you had a large system, an unlimited loop on try_synchronize_srcu()
-could wait forever on a system that was large enough that there was at
-least one reader at all times.  To guarantee loop termination, it is
-necessary to flip the index.  That way, new readers would use the index
-that was already seen to be clear, and old readers would eventually
-drain from the old index.
+I'm getting a compiler warning here when building with clang which is
+getting upgraded to error from -Werror.
 
-So is your use case adddressed by the single call to
-try_synchronize_srcu() that, upon failure, invokes
-synchronize_srcu_expedited()?  If so, we have a solution!
+  /usr/local/google/home/dmatlack/kernel/trees/review/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5_ifc.h:2706:50: error: field 'menu'
+  with variable sized type 'struct mlx5_ifc_resource_dump_menu_segment_bits' not at the end of a struct or class is a GNU
+        extension [-Werror,-Wgnu-variable-sized-type-not-at-end]
+         2706 |         struct mlx5_ifc_resource_dump_menu_segment_bits menu;
+               |                                                         ^
+           1 error generated.
+           make: *** [lib/libvfio.mk:36:
 
-If not, please let me know, and I will put together that does the job.
+I assume the mlx5 header needs to be fixed... But we can also work
+around it in VFIO selftests if that turns out to be a can of worms:
 
-							Thanx, Paul
+diff --git a/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5_hw.h b/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5_hw.h
+index 2c451e411ec1..b9fad2b722a0 100644
+--- a/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5_hw.h
++++ b/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5_hw.h
+@@ -13,9 +13,18 @@
+ #include <linux/build_bug.h>
+ #include <vdso/bits.h>
 
-> >> Again, I'll defer to Paul, but personally I'd want to see a more
-> >> compelling use case for it.
-> >> 
-> >>   ┌───────────────┬─────────────────────┬───────────────────┬─────────────────────┐
-> >>   │               │      expedited      │     try-first     │       atomic        │
-> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
-> >>   │ median drain  │ 32-128µs            │ 4-16µs            │ 4-16µs              │
-> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
-> >>   │ avg           │ 118µs               │ 13.8µs            │ 12.3µs              │
-> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
-> >>   │ >1ms          │ ~950ppm             │ ~990ppm           │ 838ppm              │
-> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
-> >>   │ >8ms          │ 42ppm               │ 4.4ppm            │ 0.10ppm             │
-> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
-> >>   │ max           │ 33.6ms              │ 17.6ms            │ 10.25ms             │
-> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
-> >>   │ fallback rate │ —                   │ 1.2%              │ 0%                  │
-> >>   ├───────────────┼─────────────────────┼───────────────────┼─────────────────────┤
-> >>   │ sample        │ 32.6M drains, 10min │ 41M drains, 10min │ 40.5M drains, 10min │
-> >>   └───────────────┴─────────────────────┴───────────────────┴─────────────────────┘
-> 
++#ifdef __clang__
++#pragma clang diagnostic push
++#pragma clang diagnostic ignored "-Wgnu-variable-sized-type-not-at-end"
++#endif
++
+ #include "mlx5_ifc.h"
+ #include "mlx5_ifc_macros.h"
+
++#ifdef __clang__
++#pragma clang diagnostic pop
++#endif
++
+ /*
+  * Typed HW object wrappers for driver region arrays.
+  *
+
