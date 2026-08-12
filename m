@@ -1,271 +1,388 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060AD3314D2
-	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 12:28:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E537F312815;
+	Wed, 12 Aug 2026 12:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786537732; cv=none; b=VvYCUc5ZKQ1Q0xiFPKMhhhzbxo3PnqSsEnLDu++648uon871pBGlkPSn3ew95jhrZ/QS9+2wyH/K6jUVCD9lPTsy7oSvU/s8fUdU7oKoR1rBoKutfneumiyRlELnWmOChDve6qtbA1ypoqZR3/KWaJDx3Xne1Tdrw/s6fLgrjq8=
+	t=1786537988; cv=none; b=QDn5ZyDXiyDpYcUxV8cqbKitbYZvKWr44pNM9aJavegE+oInBmMqpx04SOZ8AN8MF0bwmXj3XvDC56sBKnu36B1NHssa2gcxDqUTGWxv8LP/XLDRuk+tKxebvh3oLxqODlUQCu9aJ+e7VcFh5jnhlxISF2dpRWYYTlFWki8xZrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786537732; c=relaxed/simple;
-	bh=4LxiFYCHHCmoMFkLpeAMYklp1aHvDjzyy1OxE/p4MxI=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=JjyaRZGj3gZNrGwLVfCkSrNDiD2LYfeKBIfrHa5wtHtOAeNUk3EzbnUH9uGgO+9fJ0wB2ueCkfs6O884DxYEBARH8BW33kSapCTFKf0AoHsNv81cLFr8TcZUy5B96PKnlsb1aEf59CzFNGAy5VS3az/OWOXADkvjdKZKwfi9/KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VUI1VjNr; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786537988; c=relaxed/simple;
+	bh=IOyXjno5nRcrnnd69NRAT2LtcEiMEi+Bo4btZfpHCXE=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=GcK9cqbvBJGhr0+ozxp0cOhLHs4VfqkgIDz9HJHDIztNkbe1zrkZPNoKQ8s8Pkx6Rqo+DhmGPixYrYUb8PWHWmmKpvFycq/xivafocVANcu52bYQ9xlo7ScdPiykpGpk4Ggfx6dSrhdRryazhMmF4hsjFJWDVUu3uz9s8Ydmluo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=THQDjiwb; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VUI1VjNr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786537730; x=1818073730;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=4LxiFYCHHCmoMFkLpeAMYklp1aHvDjzyy1OxE/p4MxI=;
-  b=VUI1VjNrASnvG1qH67rq+tP8ZXHr9HRvXKvgIWksEqeeDC1YeIFQv0Gf
-   e66p9naDB5RamhxWe0axMpYhdJS9tyk/APqNhNljItgPXZAs/xTpl46Jx
-   rned9T9Rmszd2CEWwRzy6NAHUvQSNb3KRE5HukllmQ7SWI765V6QuFcho
-   PZTteByCpf8KWQ7OFgCZa01FKGvxafczHb2NTXmPcfpkGjwvrBFf7qaOH
-   ZWJ4nJZGjByNC1wa3cvpzv6qtAQWuhSqcOFM8b52lfhHJLgMKvrosN7Ov
-   VztPPnGrKM+30d+/9EB0zAFoSNHmr/4iIAwcMDEPZ9BhLgHvGXfx3u3yI
-   w==;
-X-CSE-ConnectionGUID: 7AtGf2GZSxmL/Xp6XYJwRw==
-X-CSE-MsgGUID: /XSHfT+oSpeo796b/NRWDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="98235785"
-X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
-   d="scan'208";a="98235785"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 05:28:49 -0700
-X-CSE-ConnectionGUID: NLHutKhjTiSAB5baGwtQ9Q==
-X-CSE-MsgGUID: x+itKN7uS9iPIS2c/2v+vg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
-   d="scan'208";a="267888704"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.248]) ([10.124.240.248])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 05:28:48 -0700
-Message-ID: <646f9595-459f-4224-b4e5-4ec2eecc0bc6@intel.com>
-Date: Wed, 12 Aug 2026 20:28:46 +0800
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="THQDjiwb"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:Date:Cc:To:
+	From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=EicYZ76eMzKkSScYkmiZYanS2FTRFqxHA6Nq3VEb/MY=; b=THQDjiwbnND73DOXBVmVBb5tsv
+	or64xWAQwN+5IIbCt62UwHTyKXjEq8nhOlk9GJnw5nTmnmTIlKuuzHcviF444WpLmf/DWoH4LQqz3
+	hFwfkU74nju40gCm4taiYIRZ5Zvo1vpeHGMqDDEgSlemaRnJIjgdq25dmKWte7+gzmW/QgdTF6/D+
+	MtPxgrujvEb5U/LzcCq9FFEmuOVshrElr/LwgfLMWIgpi6/7Sye8tphZBKt7ApsDM+NSFJNcX4ZBT
+	SMNXblnQVAFF/pBFV+lus3gUTdYHVLNE0bOtI9DR0utjmM27bpWZul08u8zSkuDtmBCukGW/OL/ek
+	LFI05dPg==;
+Received: from [2001:8b0:10b:5:a3a3:d97e:a004:df29] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wu88d-00000001xWe-0OuE;
+	Wed, 12 Aug 2026 12:32:55 +0000
+Message-ID: <0f4dea21bac43685d3286df329401177e4452b36.camel@infradead.org>
+Subject: [PATCH] srcu: Add try_synchronize_srcu() for callers which can
+ prove readers absent
+From: David Woodhouse <dwmw2@infradead.org>
+To: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>, Josh Triplett	
+ <josh@joshtriplett.org>, Steven Rostedt <rostedt@goodmis.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Neeraj Upadhyay	 <neeraj.upadhyay@kernel.org>, Joel
+ Fernandes <joel@joelfernandes.org>,  Uladzislau Rezki	 <urezki@gmail.com>,
+ Sean Christopherson <seanjc@kernel.org>, Paolo Bonzini	
+ <pbonzini@redhat.com>, rcu@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Wed, 12 Aug 2026 13:32:48 +0100
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-wwyu+v0JwJmH30IRm2i1"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] KVM: TDX: Fix the exit reason handling
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20260810112200.2326727-1-xiaoyao.li@intel.com>
- <20260810112200.2326727-3-xiaoyao.li@intel.com>
- <20260810113924.4ACBE1F000E9@smtp.kernel.org>
- <13ea6279-a342-493b-a0f8-15ac5b4c59ad@intel.com>
- <anplcWfYReCMeu1A@google.com> <anpnFAK6EZToizbZ@google.com>
- <95d81370-3244-43c8-a6fb-6c2146d24dda@intel.com>
-Content-Language: en-US
-In-Reply-To: <95d81370-3244-43c8-a6fb-6c2146d24dda@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-On 8/12/2026 11:20 AM, Xiaoyao Li wrote:
-> On 8/11/2026 8:04 AM, Sean Christopherson wrote:
->> On Mon, Aug 10, 2026, Sean Christopherson wrote:
->>> On Mon, Aug 10, 2026, Xiaoyao Li wrote:
->>>> On 8/10/2026 7:39 PM, sashiko-bot@kernel.org wrote:
->>>>>> @@ -2147,7 +2156,7 @@ void tdx_get_exit_info(struct kvm_vcpu 
->>>>>> *vcpu, u32 *reason,
->>>>>>        struct vcpu_tdx *tdx = to_tdx(vcpu);
->>>>>>        *reason = tdx->vt.exit_reason.full;
->>>>>> -    if (*reason != -1u) {
->>>>>> +    if (tdx->vt.exit_reason.basic != -1) {
->>>>> [Severity: Medium]
->>>>> Will this check always evaluate to true due to C integer promotion 
->>>>> rules?
->>>>>
->>>>> The basic field in union vmx_exit_reason is a 16-bit unsigned 
->>>>> bitfield. When
->>>>> comparing it to -1, the unsigned 16-bit value is promoted to a 
->>>>> signed 32-bit
->>>>> integer. If the value was set to -1 (65535), the comparison 
->>>>> evaluates as
->>>>> 65535 != -1, which is always true.
->>>>>
->>>>
->>>> Well, how about something below on top of this patch?
->>>
->>> No, we need to not rely on magic exit_reason.basic values.  Can't 
->>> this be?
->>>
->>>     if ((tdx->vp_enter_ret & TDX_SW_ERROR) != TDX_SW_ERROR) {
->>
->> This would arguably be a bug fix as well, because the "real" 
->> EXIT_REASON_EPT_MISCONFIG
->> path gets a false negative.  E.g. when getting information for an EPT 
->> Misconfig
->> for the tracepoint, KVM really should print all information, not zeros.
->>
->> At a glance, this exact change can probably be a separate patch too.
-> 
-> Yeah, this issue can be fixed by the patch which turns real 
-> EPT_MISCONFIG to TDX_SW_ERROR.
-> 
-> Side topic, tdx_to_vmx_exit_reason() can change EXIT_REASON_TDCALL to 
-> other Exit Reason. Do we want to print TDCALL instead of the transformed 
-> reason here?
-
-Well, the more I think about this all, the more I dislike the fancy 
-trick to turn TDCALL into other Exit Reason, in 
-tdx_to_vmx_exit_reason().  Without it, it's straightforward to handle 
-the EPT_MISCONFIG. And without it, the exit trace can also get the 
-correct Exit Reason. How about something below? which is on top of 
-kvm-x86/next
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index b272c20586a7..2474a298e2cd 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -924,7 +924,6 @@ static __always_inline u32 
-tdcall_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
-  static __always_inline u32 tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
-  {
-         struct vcpu_tdx *tdx = to_tdx(vcpu);
--       u32 exit_reason;
+--=-wwyu+v0JwJmH30IRm2i1
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-         switch (tdx->vp_enter_ret & TDX_SEAMCALL_STATUS_MASK) {
-         case TDX_SUCCESS:
-@@ -932,30 +931,11 @@ static __always_inline u32 
-tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
-         case TDX_NON_RECOVERABLE_TD:
-         case TDX_NON_RECOVERABLE_TD_NON_ACCESSIBLE:
-         case TDX_NON_RECOVERABLE_TD_WRONG_APIC_MODE:
--               break;
-+               return (u32)tdx->vp_enter_ret;
-         default:
-                 return -1u;
-         }
+From: David Woodhouse <dwmw@amazon.co.uk>
 
--       exit_reason = tdx->vp_enter_ret;
--
--       switch (exit_reason) {
--       case EXIT_REASON_TDCALL:
--               if (tdvmcall_exit_type(vcpu))
--                       return EXIT_REASON_VMCALL;
--
--               return tdcall_to_vmx_exit_reason(vcpu);
--       case EXIT_REASON_EPT_MISCONFIG:
--               /*
--                * Defer KVM_BUG_ON() until tdx_handle_exit() because 
-this is in
--                * non-instrumentable code with interrupts disabled.
--                */
--               return -1u;
--       default:
--               break;
--       }
--
--       return exit_reason;
-  }
+For a dedicated srcu_struct whose read-side critical sections are
+short, atomic, and usually absent =E2=80=94 such as one converted from a
+spinning lock =E2=80=94 the common case at synchronize time is that there a=
+re
+no readers at all. Even synchronize_srcu_expedited() still costs the
+caller an unconditional sleep and two trips through the SRCU workqueue
+to discover that: tens of microseconds of machinery to wait for
+nothing. And synchronize_srcu()'s auto-expedite heuristic explicitly
+declines to expedite within exp_holdoff (25=C2=B5s) of the previous grace
+period, which is exactly the regime a burst of back-to-back
+invalidations puts such a domain in.
 
-  static noinstr void tdx_vcpu_enter_exit(struct kvm_vcpu *vcpu)
-@@ -1093,9 +1073,6 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, u64 
-run_flags)
+Provide try_synchronize_srcu(), which proves the no-readers case
+inline and returns true without sleeping, without the workqueue, and
+without advancing the grace-period sequence (so cookies from
+get_state_synchronize_srcu() and queued callbacks are unaffected). If
+the proof fails, it returns false and the caller falls back:
 
-         kvm_clear_available_registers(vcpu, ~TDX_REGS_AVAIL_SET);
+	if (!try_synchronize_srcu(ssp))
+		synchronize_srcu_expedited(ssp);
 
--       if (unlikely(tdx->vp_enter_ret == EXIT_REASON_EPT_MISCONFIG))
--               return EXIT_FASTPATH_NONE;
--
-         if (unlikely((tdx->vp_enter_ret & TDX_SW_ERROR) == TDX_SW_ERROR))
-                 return EXIT_FASTPATH_NONE;
+For Tree SRCU the proof sums both epochs' unlock counters, executes a
+full barrier, then sums both epochs' lock counters. Equality proves a
+moment within this function at which no reader existed: a reader
+entering between the sums inflates only the lock sum (spurious
+fallback, safe), and a reader whose increment is unobserved has not
+yet returned from srcu_read_lock() =E2=80=94 the barrier pairing with
+__srcu_read_lock() guarantees such a reader sees every store the
+caller made beforehand, so it is not a reader the caller is obliged
+to wait for. Summing both epochs means no index flip is required, and
+without a flip the counter-wrap concerns of
+srcu_readers_active_idx_check() do not arise. Readers of the _fast()
+flavors elide the read-side barrier this depends on; any sign of them
+(in the unlock-side rdm mask, which is gathered unconditionally)
+disqualifies the fast path.
 
-@@ -2027,6 +2004,41 @@ int tdx_complete_emulated_msr(struct kvm_vcpu 
-*vcpu, int err)
-         return 1;
-  }
+For Tiny SRCU (!SMP) both nesting counts being zero already proves no
+reader exists =E2=80=94 a mid-section reader could only be preempted or in =
+an
+interrupt, either of which leaves its count visibly elevated =E2=80=94 and
+program order on the sole CPU provides all the required ordering.
 
-+#define TDVMCALL_CPUID         EXIT_REASON_CPUID
-+#define TDVMCALL_HLT           EXIT_REASON_HLT
-+#define TDVMCALL_IO_INSTRUCTION        EXIT_REASON_IO_INSTRUCTION
-+#define TDVMCALL_MSR_READ      EXIT_REASON_MSR_READ
-+#define TDVMCALL_MSR_WRITE     EXIT_REASON_MSR_WRITE
-+#define TDVMCALL_MMIO          EXIT_REASON_EPT_VIOLATION
-+
-+static int handle_tdcall(struct kvm_vcpu *vcpu)
+The immediate motivation is a proposed conversion of KVM's
+gfn_to_pfn_cache to use SRCU=C2=B9, where the mmu_notifier invalidation
+path must drain readers of a cache (in the manner of a TLB shootdown)
+before the primary MMU zaps the backing page. Those readers are short
+non-sleeping fast paths, some in contexts which cannot sleep (hardirq
+event channel delivery, the scheduler's sched-out hook); measurement
+under a worst-case invalidation flood shows 98.8% of drains complete inline
+in 4-16=C2=B5s where the expedited grace period took 32-128=C2=B5s, with th=
+e
+wait dominated by workqueue round-trip latency, not by readers.
+
+=C2=B9 https://lore.kernel.org/all/20260811132237.102400-1-dwmw2@infradead.=
+org/
+
+More potential use cases already exist in the tree with the same
+no-readers-common-case profile: kvm->irq_srcu takes half a dozen
+expedited grace periods in the irqfd and routing-update paths (bursts
+of which, at VM boot, fall inside the exp_holdoff window), and mshv's
+pt_irq_srcu is the same shape.
+
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Assisted-by: Claude:claude-mythos-5
+---
+Compile-tested for Tiny SRCU (tinyconfig); the Tree version has had
+the KVM gfn_to_pfn_cache conversion soaking on it under an adversarial
+invalidation flood.
+
+ include/linux/srcu.h  |  1 +
+ kernel/rcu/srcutiny.c | 23 ++++++++++++++
+ kernel/rcu/srcutree.c | 70 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 94 insertions(+)
+
+diff --git a/include/linux/srcu.h b/include/linux/srcu.h
+index a54ce9e808b9..0d7543c7becc 100644
+--- a/include/linux/srcu.h
++++ b/include/linux/srcu.h
+@@ -91,6 +91,7 @@ void call_srcu(struct srcu_struct *ssp, struct rcu_head *=
+head,
+ 		void (*func)(struct rcu_head *head));
+ void cleanup_srcu_struct(struct srcu_struct *ssp);
+ void synchronize_srcu(struct srcu_struct *ssp);
++bool try_synchronize_srcu(struct srcu_struct *ssp);
+=20
+ #define SRCU_GET_STATE_COMPLETED 0x1
+=20
+diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
+index a2e2d516e51b..f07159cae241 100644
+--- a/kernel/rcu/srcutiny.c
++++ b/kernel/rcu/srcutiny.c
+@@ -260,6 +260,29 @@ void synchronize_srcu(struct srcu_struct *ssp)
+ }
+ EXPORT_SYMBOL_GPL(synchronize_srcu);
+=20
++/**
++ * try_synchronize_srcu - inline grace period for a reader-free srcu_struc=
+t
++ * @ssp: srcu_struct with which to synchronize.
++ *
++ * If @ssp provably has no readers in either epoch, provide the
++ * synchronize_srcu() guarantee to the caller immediately, without
++ * sleeping. Returns true on success; on failure the caller must fall
++ * back to synchronize_srcu().
++ *
++ * On !SMP a reader can only be mid-critical-section if it was
++ * preempted (or is running in an interrupt which preempted us), in
++ * which case its nesting count is visibly non-zero. Both counts being
++ * zero therefore proves that no reader exists, and any reader which
++ * begins after this function returns will, by program order on this
++ * sole CPU, observe every store the caller made before calling it.
++ */
++bool try_synchronize_srcu(struct srcu_struct *ssp)
 +{
-+       struct vcpu_tdx *tdx = to_tdx(vcpu);
-+
-+       if (tdvmcall_exit_type(vcpu))
-+               return tdx_emulate_vmcall(vcpu);
-+
-+       switch (tdvmcall_leaf(vcpu)) {
-+       case TDVMCALL_CPUID:
-+               return tdx_emulate_cpuid(vcpu);
-+       case TDVMCALL_HLT:
-+               return kvm_emulate_halt_noskip(vcpu);
-+       case TDVMCALL_IO_INSTRUCTION:
-+               return tdx_emulate_io(vcpu);
-+       case TDVMCALL_MSR_READ:
-+               kvm_ecx_write(vcpu, tdx->vp_enter_args.r12);
-+               return kvm_emulate_rdmsr(vcpu);
-+       case TDVMCALL_MSR_WRITE:
-+               kvm_ecx_write(vcpu, tdx->vp_enter_args.r12);
-+               kvm_eax_write(vcpu, tdx->vp_enter_args.r13);
-+               kvm_edx_write(vcpu, tdx->vp_enter_args.r13 >> 32);
-+               return kvm_emulate_wrmsr(vcpu);
-+       case TDVMCALL_MMIO:
-+               return tdx_emulate_mmio(vcpu);
-+       default:
-+               return handle_tdvmcall(vcpu);
-+       }
++	return !READ_ONCE(ssp->srcu_lock_nesting[0]) &&
++	       !READ_ONCE(ssp->srcu_lock_nesting[1]);
 +}
++EXPORT_SYMBOL_GPL(try_synchronize_srcu);
++
+ /*
+  * get_state_synchronize_srcu - Provide an end-of-grace-period cookie
+  */
+diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+index 2601566c254a..76a78336feaa 100644
+--- a/kernel/rcu/srcutree.c
++++ b/kernel/rcu/srcutree.c
+@@ -1645,6 +1645,76 @@ void synchronize_srcu(struct srcu_struct *ssp)
+ }
+ EXPORT_SYMBOL_GPL(synchronize_srcu);
+=20
++/**
++ * try_synchronize_srcu - inline grace period for a reader-free srcu_struc=
+t
++ * @ssp: srcu_struct with which to synchronize.
++ *
++ * If @ssp provably has no readers in either epoch, provide the
++ * synchronize_srcu() guarantee to the caller immediately: without
++ * sleeping, without a trip through the SRCU workqueue, and without
++ * advancing the grace-period sequence. Returns true on success; on
++ * failure the caller must fall back to synchronize_srcu() or
++ * synchronize_srcu_expedited().
++ *
++ * This serves dedicated srcu_struct structures whose read-side critical
++ * sections are short, atomic, and usually absent =E2=80=94 where even an
++ * expedited grace period costs two trips through the workqueue and an
++ * unconditional sleep of the caller, three orders of magnitude more
++ * than the check below.
++ *
++ * Only readers of the srcu_read_lock() and srcu_read_lock_nmisafe()
++ * flavors are compatible with this proof; if the _fast() flavors have
++ * ever been used on @ssp, this function always returns false.
++ */
++bool try_synchronize_srcu(struct srcu_struct *ssp)
++{
++	unsigned long unlocks0, unlocks1;
++	unsigned long rdm0, rdm1;
++
++	check_init_srcu_struct(ssp);
++
++	/*
++	 * Order the caller's prior stores before the counter reads below.
++	 * Pairs (store-buffering pattern) with the smp_mb() in
++	 * __srcu_read_lock(): any reader whose lock increment is not
++	 * observed by the sums below is guaranteed to observe, within its
++	 * critical section, every store the caller made before calling
++	 * this function.
++	 */
++	smp_mb();
++
++	unlocks0 =3D srcu_readers_unlock_idx(ssp, 0, &rdm0);
++	unlocks1 =3D srcu_readers_unlock_idx(ssp, 1, &rdm1);
++
++	/*
++	 * Reader flavors which elide the read-side smp_mb() that the
++	 * pairing above depends on cannot be proven absent this way;
++	 * they need a real grace period.
++	 */
++	if ((rdm0 | rdm1) & SRCU_READ_FLAVOR_SLOWGP)
++		return false;
++
++	/*
++	 * As in srcu_readers_active_idx_check(): ensure that a lock is
++	 * always counted if the corresponding unlock is counted, so that
++	 * a reader racing with these sums can only inflate the lock sum
++	 * and force the (safe) fallback. Summing both epochs means no
++	 * index flip is needed: a stable equality proves there was a
++	 * moment in this function at which no readers existed at all.
++	 */
++	smp_mb();
++
++	if (!srcu_readers_lock_idx(ssp, 0, false, unlocks0))
++		return false;
++	if (!srcu_readers_lock_idx(ssp, 1, false, unlocks1))
++		return false;
++
++	/* Order the caller's subsequent accesses after the proof. */
++	smp_mb();
++	return true;
++}
++EXPORT_SYMBOL_GPL(try_synchronize_srcu);
++
+ /**
+  * get_state_synchronize_srcu - Provide an end-of-grace-period cookie
+  * @ssp: srcu_struct to provide cookie for.
+--=20
+2.43.0
 
-  int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
-  {
-@@ -2037,11 +2049,6 @@ int tdx_handle_exit(struct kvm_vcpu *vcpu, 
-fastpath_t fastpath)
-         if (fastpath != EXIT_FASTPATH_NONE)
-                 return 1;
 
--       if (unlikely(vp_enter_ret == EXIT_REASON_EPT_MISCONFIG)) {
--               KVM_BUG_ON(1, vcpu->kvm);
--               return -EIO;
--       }
--
-         /*
-          * Handle TDX SW errors, including TDX_SEAMCALL_UD, 
-TDX_SEAMCALL_GP and
-          * TDX_SEAMCALL_VMFAILINVALID.
-@@ -2083,26 +2090,12 @@ int tdx_handle_exit(struct kvm_vcpu *vcpu, 
-fastpath_t fastpath)
-         case EXIT_REASON_EXTERNAL_INTERRUPT:
-                 ++vcpu->stat.irq_exits;
-                 return 1;
--       case EXIT_REASON_CPUID:
--               return tdx_emulate_cpuid(vcpu);
--       case EXIT_REASON_HLT:
--               return kvm_emulate_halt_noskip(vcpu);
-         case EXIT_REASON_TDCALL:
--               return handle_tdvmcall(vcpu);
--       case EXIT_REASON_VMCALL:
--               return tdx_emulate_vmcall(vcpu);
--       case EXIT_REASON_IO_INSTRUCTION:
--               return tdx_emulate_io(vcpu);
--       case EXIT_REASON_MSR_READ:
--               kvm_ecx_write(vcpu, tdx->vp_enter_args.r12);
--               return kvm_emulate_rdmsr(vcpu);
--       case EXIT_REASON_MSR_WRITE:
--               kvm_ecx_write(vcpu, tdx->vp_enter_args.r12);
--               kvm_eax_write(vcpu, tdx->vp_enter_args.r13);
--               kvm_edx_write(vcpu, tdx->vp_enter_args.r13 >> 32);
--               return kvm_emulate_wrmsr(vcpu);
-+               return handle_tdcall(vcpu);
-         case EXIT_REASON_EPT_MISCONFIG:
--               return tdx_emulate_mmio(vcpu);
-+               /* EPT MISCONFIGs are *always* KVM/kernel bugs. */
-+               KVM_BUG_ON(1, vcpu->kvm);
-+               return -EIO;
-         case EXIT_REASON_EPT_VIOLATION:
-                 return tdx_handle_ept_violation(vcpu);
-         case EXIT_REASON_OTHER_SMI:
+--=-wwyu+v0JwJmH30IRm2i1
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+NDA5NlNIQTM4NDIwMjRDQTEuY3J0MA0GCSqGSIb3DQEBCwUAA4ICAQChxpuuHVw93mze9jmueUFV
+BJNzvOzZlazrt0AiW1H7TlYQutgKVXPNSEyz8s4k+WsRSjjlQMOiZerfwPEV6lo9336I0uNd+ffc
+Rf8gbjiPTiVT+gX9GD1V5AguRgtsJn/H3A6M0dlzhI3J1jsOG9/+xPloHPzy7sPn5rNkntB/VTnv
+Bix4IfUy3ScOu2vnLX0gnwP3EknfdEUvq9+kdkEEBDz7dGqQo3EuhXZoW9CHF2GM0sOpO/cuNQh2
+JzA+to3smTES7sJXYuRrt5GomCRYvtIrRiYGMalFp+z6Jw/843lEIIpNNvpWVfx5Mbawkl+wWG8k
+0IK3rF7FtbNa0it8/s288G/AEHvfsDIQYFmRLlo2LNMxxREkZO/1Qq8GHUsX/602Fi0u88I3uh5w
+bOEIeG32NzBKTKBOjdjpiUrdCA676dyaIFt967CUtnUvFti8bqGA2pe/u7pjIANthqMBAlcnY5B6
+ff2mbdD8BBLItgb4HyUOCVawzy1hc+UR2tglySwYroWeohfoG6afjesGigsl2JmnhaZ9Z0vanF74
+vFEOOmuaq7VamuLEPFQtJM4olmipOW6CzrLcFz6J/6yAecEG3P1ZDoy08eSHvM40MAUgpwGa/w6o
+9ALHQXda/c4TJvAylfHQ6wqArzAuV1pfWldwy7IOBMtKqzQBXQ4dSDGCBCAwggQcAgEBMHYwYjEL
+MAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTowOAYDVQQDEzFEaWdpQ2VydCBB
+c3N1cmVkIEcyIFNNSU1FIFJTQTQwOTYgU0hBMzg0IDIwMjQgQ0ExAhADNSi2uzJskfEdOMo4hV0g
+MA0GCWCGSAFlAwQCAQUAoIIBezAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNjA4MTIxMjMyNDhaMC8GCSqGSIb3DQEJBDEiBCB5Nha+W/eodkM8uze1ZOluRnoafn75
+wnC2IhIWT/0V6zCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
+aUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBT
+SEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAwgYcGCyqGSIb3DQEJEAILMXigdjBiMQsw
+CQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFz
+c3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAw
+DQYJKoZIhvcNAQEBBQAEggIAaVrIdfGHlMIiOuk4Rda+L8f0xvZaZOqR4uhUoqre/LiVpWGFDijq
+7/J5MTwDfWzK0XpOZxEujQgmn31A2uf+5nmEO3O4sSfLWlEsoz06Jxjky8nPrCSlqVxEmrUcOdoU
+1MX16GtADx4s6iFIytP5ofsOBsS59O8ZiWNwpl63VRI56PeDnTZqArxvyGiCkOylE89/hohFcMCn
+oktGZaASmceqUKY17fX/qdaxSFvril5oormoenpBGDsTinQ4x1teptlnqr6/HsQpnK/FF072zOlN
+tdfyRVJE+YhPS3xirh8mwfOzNb9oZjRJnGvuapEbDSjb65NmQRSLyNJFcHz9/c7VctRV4HBbOBdk
+Lv+KZX8nwnIfqWQdgCDELvsG0CCe9bFV3YMceaMcw53HG6WnC1Dcy26GmL9TZR650uCn5vmlWVhJ
+MKyGj13h0ChYbkTsYwbixwH4mkR3j2FyJp+T3oMbpqnYqcjj5GlBbFnlXbUmb3IB3eZcoCWvGySB
+jNYqRBxGmvWVv7d8RXJM6fHLj8tVgYxFJKTNatKLPnoYe1JvlDa26xqQEqFWCMRTdrnpJIknITtM
+ej5yq6xsNoQKwhFQPbV9qRkoI4g3jiXBOaRNOBOOlnXvy+q0fy4NhQTNYaj3yVRi4u5oD33G1c/1
++yfLZ763ZE4EaNVPuCyUfqUAAAAAAAA=
+
+
+--=-wwyu+v0JwJmH30IRm2i1--
