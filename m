@@ -1,159 +1,201 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C31471263;
-	Wed, 12 Aug 2026 17:27:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35D2335081;
+	Wed, 12 Aug 2026 17:27:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786555655; cv=none; b=ZmBFXbLto4fUo9ESR/2AwPw5Y80DMb852J8JSrX0QvjkXZYjhtFjOgQWKyMHb5AGSUlaD2a3E3l5cYnSCeZXp4AbMVXe4eFbyh2hklx4nZy042l9SVaUiCfqYTug68x9jW5wxgI38mCz0HOi22WrlKP5C6D23l3h9jsuEX5LtMM=
+	t=1786555660; cv=none; b=gxSUbbtRSb8CDJw+KKtoqXpSqfgu9mGqgC/axhCMJyz20BJfi5pFIYLfuVepPP28wm1RoYbFeqmuSA+z9hMx2TWnmSBVAISzbdlFQExP2pIId5vf4zih+QyXaCfUp0PveBnwSiFbYdZntijQDR5cX3Xtt8ofg2J0A/Al4Md0jKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786555655; c=relaxed/simple;
-	bh=hKmn/F9N3cCzLvpx5n8DEU2Xez+ZDGrOvbq2JFzEWb4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=SC20FnG712DbZqK4FHeD0B/E+JkcimPY1Ue+uQ9xjwnFcmAYCGWF1Ya4zQcBdaIL3KwWzvEvSakX93B9Ajk6bosONaJv7nhVdGDnkaDhqBL2Dupw425+lMjzlD9Qc+zp2rlBBEuQM60tcFd9iPlBX0tgd+4aqHrxSb/3scT4Bzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mJ3IodLe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786555660; c=relaxed/simple;
+	bh=WJPLHXt8itB/Cw880Ar8NhbyTTeEUpwQxfJvdcAm5iw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aQLbsfilyYZC0e2GXaHUA/kOpqQ5DOi25CmNiRT5VYWMuyZ9izBUbuviAelx7dcZMBkjU1pRFgGw6Nebs+xOkm4oNRJr/gszpFeZq2KhFRSnZYWaZ64GsIpui8Q+Y0xJLpDYXsDxH4xNq7r4d4ODVNzN8oUcZfItC5NTmK1imuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jwSvUCMl; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mJ3IodLe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAF21F000E9;
-	Wed, 12 Aug 2026 17:27:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786555654;
-	bh=dY223rn9levgmdfXC4IBgIB5AyUXkNPUQpfLasR3khg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mJ3IodLeM90QBZCElp6tROG4eq6vztyVpMWuD7DWhfqmZ5hUy4JcKDv3FhujXL8EO
-	 QCZnSV53NQ1Lkny/2vE7Jo+cpfJ5ysPpd8dQ82vN+MruX6J2zWs0tAnMw+HzJTvKHZ
-	 sdc7Epke5Fo9QX9fLE7+CNC0ozqO1FkkNb3stMQlN26unwlPwXqVwPPEIqC6BiaRRa
-	 yVeI7/J8AH3Z9sIWURKxRyigCoT5uNpS3EOQfRXKb8KEGb5hIQiR0TLCZf48zfNVSS
-	 yYA6hZs86ISUqhKqGGiqQxkumyGzGiqemYzNJ6zLaboFH6wTYVmXjkmVK+CZfSi0X0
-	 WY+inmkWY/AGA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 8/9] s390/vfio-ap: Fix NULL deref in status_show()
- during queue probe
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.vom>, kvm@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>
-In-Reply-To: <20260812170945.738351-9-akrowiak@linux.ibm.com>
-References: <20260812170945.738351-1-akrowiak@linux.ibm.com>
- <20260812170945.738351-9-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 12 Aug 2026 17:27:33 +0000
-Message-Id: <20260812172733.ABAF21F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jwSvUCMl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786555659; x=1818091659;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=WJPLHXt8itB/Cw880Ar8NhbyTTeEUpwQxfJvdcAm5iw=;
+  b=jwSvUCMlc5rI50YMMFht4yNKyz9ajttHHpXEoFQOMPE4k48kCMtzqw90
+   VR7vDM1q37HJvMkkJiiaHds5/++lu2VhNe95kF8vpjjFLWKc+ZFDDBVN7
+   hyhqACzDxM9XnD5qozg5VUHOcmSc0tjmka12CWrmKWlXkKN5VXo2DYxO+
+   xm5+M/chtEhX+jkovg4pWRyPVgUMct49Wa+jf2qF9W+08FA80/KL3Ypw4
+   AUK5achkseH0292SvcjE+YfOa9x/+OlWKVM24nzNLp6bPxaEteVyFvkLH
+   vU4rgLTMe/yuCzWPZaXbbz6XfDrxo4Cmka7iEB8/oI636XlRjaKUd4pQ8
+   A==;
+X-CSE-ConnectionGUID: ruaDc2OURxK5B2R1YDNySw==
+X-CSE-MsgGUID: EJ5pb0DUTROI4ndXYoRCkA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="90996220"
+X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
+   d="scan'208";a="90996220"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 10:27:38 -0700
+X-CSE-ConnectionGUID: e4SWaOEVTd+gRiS5EYjQbg==
+X-CSE-MsgGUID: Auz9Ud84QUGgNeZ3b4NBoA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
+   d="scan'208";a="261936541"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.185.5]) ([10.122.185.5])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 10:27:36 -0700
+Message-ID: <16296d40-67f3-4e50-923c-5b26fc122121@intel.com>
+Date: Wed, 12 Aug 2026 12:27:35 -0500
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 14/21] KVM: arm64: Apply dynamic guest counter
+ reservations
+To: Colton Lewis <coltonlewis@google.com>, kvm@vger.kernel.org
+Cc: Alexandru Elisei <alexandru.elisei@arm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
+ Mingwei Zhang <mizhang@google.com>, Joey Gouly <joey.gouly@arm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, Mark Rutland <mark.rutland@arm.com>,
+ Shuah Khan <shuah@kernel.org>,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ James Clark <james.clark@linaro.org>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, linux-perf-users@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20260612192909.1153907-1-coltonlewis@google.com>
+ <20260612192909.1153907-15-coltonlewis@google.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <20260612192909.1153907-15-coltonlewis@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
 
-Pre-existing issues:
-- [High] The patch attempts to fix a TOCTOU race by holding update locks du=
-ring sysfs group creation, but leaves the exact same race window open on th=
-e allocation error path, leading to a NULL pointer dereference.
-- [High] Missing flush or cancellation of `q->reset_work` in `vfio_ap_mdev_=
-remove_queue` leads to a Use-After-Free.
---
 
---- Patch [8]: [PATCH v4 8/9] s390/vfio-ap: Fix NULL deref in status_show()=
- during queue probe ---
-commit 9b9dde366169d761a8888f77c5299cbff3f3b6ea
-Author: Anthony Krowiak <akrowiak@linux.ibm.com>
-
-s390/vfio-ap: Fix NULL deref in status_show() during queue probe
-
-This commit acquires the update locks before calling sysfs_create_group()
-during queue probe to prevent a NULL pointer dereference in a concurrent
-read of the status attribute. It also optimizes APQN retrieval.
-
-> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
-_ap_ops.c
-> --- a/drivers/s390/crypto/vfio_ap_ops.c
-> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-
-[ ... ]
-
-> @@ -2472,8 +2474,13 @@ int vfio_ap_mdev_probe_queue(struct ap_device *apd=
-ev)
->  	return ret;
-> =20
->  err_remove_group:
-> +	release_update_locks_for_mdev(matrix_mdev);
->  	sysfs_remove_group(&apdev->device.kobj, &vfio_queue_attr_group);
->  	return ret;
-
-[Severity: High]
-This is a pre-existing issue, but does releasing the update locks before
-removing the sysfs group reopen the race window on the allocation error pat=
-h?
-
-If kzalloc_obj() fails, the error path releases guests_lock before calling
-sysfs_remove_group(). This immediately unblocks any concurrent readers of
-status_show() while the sysfs file still exists.
-
-Once unblocked, status_show() will retrieve NULL from dev_get_drvdata() and
-pass it to vfio_ap_mdev_for_queue(), which unconditionally dereferences it:
-
-vfio_ap_ops.c:status_show()
-    q =3D dev_get_drvdata(&apdev->device);
-    matrix_mdev =3D vfio_ap_mdev_for_queue(q);
-
-vfio_ap_ops.c:vfio_ap_mdev_for_queue()
-    unsigned long apid =3D AP_QID_CARD(q->apqn);
-
-Should sysfs_remove_group() be called before release_update_locks_for_mdev()
-here to prevent this NULL pointer dereference?
-
-> +
-> +err_release_locks:
-> +	release_update_locks_for_mdev(matrix_mdev);
-> +	return ret;
+On 6/12/2026 2:29 PM, Colton Lewis wrote:
+> Apply dynamic guest counter reservations by checking if the requested
+> guest mask collides with any events the host has scheduled and calling
+> pmu_perf_resched_update() with a hook that updates the mask of
+> available counters in between schedule out and schedule in.
+> 
+> Signed-off-by: Colton Lewis <coltonlewis@google.com>
+> ---
+>  arch/arm64/kvm/pmu-direct.c  | 69 +++++++++++++++++++++++++++++++++++-
+>  include/linux/perf/arm_pmu.h |  1 +
+>  2 files changed, 69 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/kvm/pmu-direct.c b/arch/arm64/kvm/pmu-direct.c
+> index 49f1feb5d280c..044f011c9c84b 100644
+> --- a/arch/arm64/kvm/pmu-direct.c
+> +++ b/arch/arm64/kvm/pmu-direct.c
+> @@ -87,6 +87,73 @@ u64 kvm_pmu_direct_pmcr_read(struct kvm_vcpu *vcpu)
+>  		ARMV8_PMU_PMCR_N);
 >  }
-> =20
->  void vfio_ap_mdev_remove_queue(struct ap_device *apdev)
->  {
+>  
+> +/* Callback to update counter mask between perf scheduling */
+> +static void kvm_pmu_update_mask(struct pmu *pmu, void *data)
+> +{
+> +	struct arm_pmu *arm_pmu = to_arm_pmu(pmu);
+> +	unsigned long *new_mask = data;
+> +
+> +	bitmap_copy(arm_pmu->cntr_mask, new_mask, ARMPMU_MAX_HWEVENTS);
+> +}
+> +
+> +/**
+> + * kvm_pmu_set_guest_counters() - Handle dynamic counter reservations
+> + * @cpu_pmu: struct arm_pmu to potentially modify
+> + * @guest_mask: new guest mask for the pmu
+> + *
+> + * Check if guest counters will interfere with current host events and
+> + * call into perf_pmu_resched_update if a reschedule is required.
+> + */
+> +static void kvm_pmu_set_guest_counters(struct arm_pmu *cpu_pmu, u64 guest_mask)
+> +{
+> +	struct pmu_hw_events *cpuc = this_cpu_ptr(cpu_pmu->hw_events);
+> +	DECLARE_BITMAP(guest_bitmap, ARMPMU_MAX_HWEVENTS);
+> +	DECLARE_BITMAP(new_mask, ARMPMU_MAX_HWEVENTS);
+> +	bool need_resched = false;
+> +
+> +	bitmap_from_arr64(guest_bitmap, &guest_mask, ARMPMU_MAX_HWEVENTS);
+> +	bitmap_copy(new_mask, cpu_pmu->hw_cntr_impl, ARMPMU_MAX_HWEVENTS);
+> +
+> +	if (guest_mask) {
+> +		/* Subtract guest counters from available host mask */
+> +		bitmap_andnot(new_mask, new_mask, guest_bitmap, ARMPMU_MAX_HWEVENTS);
+> +
+> +		/* Did we collide with an active host event? */
+> +		if (bitmap_intersects(cpuc->used_mask, guest_bitmap, ARMPMU_MAX_HWEVENTS)) {
+> +			int idx;
+> +
+> +			need_resched = true;
+> +			cpuc->host_squeezed = true;
+> +
+> +			/* Look for pinned events that are about to be preempted */
+> +			for_each_set_bit(idx, guest_bitmap, ARMPMU_MAX_HWEVENTS) {
+> +				if (test_bit(idx, cpuc->used_mask) && cpuc->events[idx] &&
+> +				    cpuc->events[idx]->attr.pinned) {
+> +					pr_warn_once("perf: Pinned host event squeezed out by KVM guest PMU partition\n");
+> +					break;
+> +				}
+> +			}
+> +		}
+> +	} else {
+> +		/*
+> +		 * Restoring to hw_cntr_impl.
+> +		 * Only resched if we previously squeezed an event.
+> +		 */
+> +		if (cpuc->host_squeezed) {
+> +			need_resched = true;
+> +			cpuc->host_squeezed = false;
+> +		}
+> +	}
+> +
+> +	if (need_resched) {
+> +		/* Collision: run full perf reschedule */
+> +		perf_pmu_resched_update(&cpu_pmu->pmu, kvm_pmu_update_mask, new_mask);
+> +	} else {
+> +		/* Host was never using guest counters anyway */
+> +		bitmap_copy(cpu_pmu->cntr_mask, new_mask, ARMPMU_MAX_HWEVENTS);
+> +	}
+> +}
+> +
+>  /**
+>   * kvm_pmu_host_counter_mask() - Compute bitmask of host-reserved counters
+>   * @pmu: Pointer to arm_pmu struct
+> @@ -209,6 +276,7 @@ void kvm_pmu_load(struct kvm_vcpu *vcpu)
+>  
+>  	pmu = vcpu->kvm->arch.arm_pmu;
+>  	guest_counters = kvm_pmu_guest_counter_mask(pmu);
+> +	kvm_pmu_set_guest_counters(pmu, guest_counters);
+>  	kvm_pmu_apply_event_filter(vcpu);
+>  
+>  	for_each_set_bit(i, &guest_counters, ARMPMU_MAX_HWEVENTS) {
+> @@ -317,7 +385,6 @@ void kvm_pmu_put(struct kvm_vcpu *vcpu)
+>  	/* Stop guest counters and disable interrupts in hardware. */
+>  	write_sysreg(mask, pmcntenclr_el0);
+>  	write_sysreg(mask, pmintenclr_el1);
+> -
+>  	kvm_pmu_set_guest_counters(pmu, 0);
 
-[ ... ]
+I must have missed something.
 
->  	if (test_bit_inv(apid, (unsigned long *)matrix_dev->info.apm) &&
->  	    test_bit_inv(apqi, (unsigned long *)matrix_dev->info.aqm)) {
->  		vfio_ap_mdev_reset_queue(q);
->  		flush_work(&q->reset_work);
->  	} else {
->  		vfio_ap_free_aqic_resources(q);
->  	}
-> =20
->  done:
->  	if (matrix_mdev)
->  		vfio_ap_unlink_queue_fr_mdev(q);
-> =20
->  	dev_set_drvdata(&apdev->device, NULL);
->  	kfree(q);
+Here, vcpu->kvm->arch.arm_pmu->cntr_mask is restored to cntr_mask_impl.
+Is this same struct shared with the perf driver
+(to_arm_pmu(event->pmu)), and shared across other vCPUs as well?
 
-[Severity: High]
-This is a pre-existing issue, but does this conditional bypass of
-flush_work() create a use-after-free risk?
+If so, if another pCPU still has a PMU-partition-enabled vcpu loaded
+with guest-owned counters (MDCR_EL2.HPMN is set), could a host event be
+scheduled onto one of those guest-owned counters, conflicting with the
+guest?
 
-If a hardware hot-unplug races with a background reset operation, and the
-queue is not in the host's AP configuration, the teardown path skips flushi=
-ng
-the reset_work and frees the queue object.
+>  	preempt_enable();
+>  }
 
-Meanwhile, the background worker continues executing and accesses the freed
-structure:
 
-vfio_ap_ops.c:apq_reset_check()
-    q =3D container_of(reset_work, struct vfio_ap_queue, reset_work);
-    memcpy(&status, &q->reset_status, sizeof(status));
-    ...
-    status =3D ap_tapq(q->apqn, NULL);
-
-Should flush_work() or cancel_work_sync() be called unconditionally before
-kfree(q) to prevent this memory corruption?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260812170945.7383=
-51-1-akrowiak@linux.ibm.com?part=3D8
