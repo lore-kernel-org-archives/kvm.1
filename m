@@ -1,126 +1,100 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C923B0AD3;
-	Wed, 12 Aug 2026 08:39:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2677B3E171C
+	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 08:39:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786523965; cv=none; b=Q6PLSQkP+4ygl4b0aWRqZF7gcP6WJeY+dObpWe0/Bjzn/Mz6QmjstDpaJ4FDwyd3J6UInANl1ZtFDLRl7pXoyCBAjh+6JE3DvRwuhs5M200vg4uTi1bTAOj8i036kb5RqrgUOOwVN4B6FZHN4qDBF+vy1uAKMWi+2FMCP5lOB9U=
+	t=1786523982; cv=none; b=H6CivErzp2j1PMoJ9bOohtzrtQB5gM2d8i3bOCS/RcE6QinlZr3zr39alzoMljjXSpruEMM9Q3GHymn6+Py7t6FcI3FfRNg+J5i/eUjEryCNyZ2o+062nCMU0WH67EtvVTzzwkAFTm8XmelRVrDDKvM48G0RXIEAj6GrDIW9aus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786523965; c=relaxed/simple;
-	bh=hdocen/qwj5N8F9Gg2N8mxRz+jb+3u2m2Z0f3iWnUyU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=udMOT2y1WPT8buFpni9JKBO/kFkmm07iyeP2rFPovI6ZnQAhPYnCqr/ulkkqtbIjNnsdeIfgfv0N6yFQoxTPnu2WOmCe6tKFMgc3iZwxF5HCGQM3v8nrtyxBdKpjmgXvc/tQHtRjI5qkAqo01H/WzQy4pZVI1veTslNnAh5xoXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com; spf=pass smtp.mailfrom=de.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bvR4BBLC; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.ibm.com
+	s=arc-20240116; t=1786523982; c=relaxed/simple;
+	bh=y/mZIHpLkUD8rchDcl8nd3UVsTrxSurInsR3eeqy2d8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=rTUFen/NfbMY1aX2PDotL46SAhYZJafvEmJxyP2Q5KyTnWnN5JpQetg8JxrQ3mizj3Ab4LjqCYQS1EfHHoujCnpIM4n1ljQvBk/RgfGT+gyyzhLkSHhQb2bDy5wkeNUtsUfkv/xVyPfhFOExu9qNxApeyLmmF1WVDvwHupQSkr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=hc6qnr6l; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bvR4BBLC"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67C62ean2679008;
-	Wed, 12 Aug 2026 08:39:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=d6HEyU
-	knJoFu9FXspgQyyNqyDoQTtsZhFHrSZXTyqCY=; b=bvR4BBLCmRQuII30k/AjTr
-	QzCb+HTatvlS+HR0bDZoFovyRrqjhlE68WXCYDlqbT9BfNbZECKFZg0UR9VToHN1
-	FmirPm9uoIjHVjsHxLLPH3Y4/AgXtcEK9L04c3AlIN7H2MlYeq11CanGkQLwFtns
-	IQtbzaNPANRZ/Nvhle4HXehSl13ywE2JIi31xvY2sM2MwpqCbNLbGhpsyhkcclAk
-	Emz6+n2KAMvgOWXf5FSk0fjkLmjCasTa8k9tidqI5msl6FM5o2SKZpgbmm0gjNj8
-	Y4uPEA41uxsAOZAwbAemP/B3eD9Ww2+ZhJP/hAFG5xLlkZ2mjEtNGXWkD+Z1EvZQ
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvm9skx6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Aug 2026 08:39:22 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67C8QRfe023476;
-	Wed, 12 Aug 2026 08:39:21 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxesq5d35-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Aug 2026 08:39:21 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67C8dI8W38797608
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Aug 2026 08:39:18 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E53F320043;
-	Wed, 12 Aug 2026 08:39:17 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 86D9620040;
-	Wed, 12 Aug 2026 08:39:17 +0000 (GMT)
-Received: from [9.224.77.173] (unknown [9.224.77.173])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 12 Aug 2026 08:39:17 +0000 (GMT)
-Message-ID: <4681efd5-2b71-4def-91a7-fe353b18d05f@de.ibm.com>
-Date: Wed, 12 Aug 2026 10:39:17 +0200
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="hc6qnr6l"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=gxfJs/zHb7nHF591FwcoW5Pj/IAvpxr1Zc32xpPuphU=;
+	b=hc6qnr6lhCeOLYd5RtFgzloPc+qqHdcUHi1ei0fFFRq4TcAsnaFBeGNLw5nBXW
+	TWPO5fUeG4jDfOiKsbhaiOO/WX7UkRHnyIh9NB25pVyIGugPHpzskzigMR26JE5U
+	0THOusNuSwn5QeXt2XtYnYrO1Z4GnFfH15tpUcKXabyzI=
+Received: from localhost (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgAnIyIuMXxqRlN6Lw--.52315S2;
+	Wed, 12 Aug 2026 16:39:10 +0800 (CST)
+Date: Wed, 12 Aug 2026 16:39:07 +0800
+From: Hao Zhang <hao_zhang_kdev@163.com>
+To: "seanjc@google.com" <seanjc@google.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"Huang, Kai" <kai.huang@intel.com>
+Subject: [PATCH v5 5/6] KVM: x86: ioapic: Clear irr_delivered on
+ level-triggered RTE
+Message-ID: <anwxK1aCSCGVygih@192.168.1.215>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 07/11] KVM: s390: Move all code into
- kvm_arch_prepare_memory_region()
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com,
-        david@kernel.org, seiden@linux.ibm.com, nrb@linux.ibm.com,
-        schlameuss@linux.ibm.com, gra@linux.ibm.com
-References: <20260811155641.219777-1-imbrenda@linux.ibm.com>
- <20260811155641.219777-8-imbrenda@linux.ibm.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@de.ibm.com>
-In-Reply-To: <20260811155641.219777-8-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDA2NyBTYWx0ZWRfX+qliYXM1eFRu
- bG2ZiQsAgd6IYsjZkVBoQDmCtv+DEOkCDVooLs1iVixaiHsJDSHxJc8eUV+oDoSHQ993415j4uW
- /TEItTIxWb9e11yB29nNn4hxkNF8x16ErmS9I07URsJvlVsemFMNj9YZss40KEscF/AhCMWrPEm
- h22RqaN1L7j+AOV4Du5flh0fQJ6XlDbECL8XQvM+P3cbzcasxJaH4kcek8yVWSadXTRE0oNN407
- 2oFVp4Z0/JinxZymQ2uFr1tlh6v/fbSosnkvyd63nhcCEkmpMbTYdbe+cSHM7CKjFJoQAZvLl0w
- iOMrBjFUTsJQa38TTkgVFt+hH4RRafB4mYNEsCFKOlbDXy6eHnHIvP29cwROqqVdq2PN/jPemeD
- YPq7l3fAoPZax7o6u2431Vm8EnubF2MuwFniBxFmskQPHSpJFntw3DmwkpPGyAezl/NCBY98HfN
- SOntxzXbLreKa1knKmg==
-X-Proofpoint-ORIG-GUID: IKOHEhyaqz9_t6rTj2iHyVjAYwWh7cFv
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDA2NyBTYWx0ZWRfX8dtHQrTCx94v
- jeY0onwC1teQj4AY1oHPWpZe7e9mwVAi3+osMbKR6UfP8Bj4Q9g/iw8/BkMcLY7uz3axQStDMsc
- +09xEaJaWdVpZ98ezlp87ZR/sEKIiX0=
-X-Authority-Analysis: v=2.4 cv=IfK3n2qa c=1 sm=1 tr=0 ts=6a7c313a cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=-t7BpDlB4R7MeXi6VmAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: IKOHEhyaqz9_t6rTj2iHyVjAYwWh7cFv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-12_02,2026-08-10_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
- lowpriorityscore=0 adultscore=0 malwarescore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608120067
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <anwugm-oU0v1VM-t@192.168.1.215>
+X-CM-TRANSID:QCgvCgAnIyIuMXxqRlN6Lw--.52315S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7CF15CryrAFyxuFWftFWrKrg_yoW8ArWkpa
+	y0kan5ur4DXwn5Gas7Aa10gF9xu3s5Jr43CrWDC3yUtayYg3s2qFs3CrWkWa4rWrWxAw42
+	qr1Fyw1rWFyDAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRo5l5UUUUU=
+X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC3Q4RBGp8MS5VlgAA3M
 
-Am 11.08.26 um 17:56 schrieb Claudio Imbrenda:
-> Move all code from kvm_arch_commit_memory_region() into
-> kvm_arch_prepare_memory_region(). This allows the function to fail
-> gracefully if needed. The previous behaviour was to print a warning and
-> continue execution with page tables incosistent with the memslots.
-> 
-> The new kvm_s390_mmu_cache_extended_topup() function is used to
-> guarantee that the necessary DAT table updates can be performed
-> successfully.
-> 
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> Fixes: e38c884df921 ("KVM: s390: Switch to new gmap")
+From: Hao Zhang <zhanghao1@kylinos.cn>
 
-Uhh, this feels pretty large for stable. sashiko founnd the  KVM_BUG_ON return code
-but this is hard tor review.
+irr_delivered hides delivered edge interrupts from KVM_GET_IRQCHIP.
+The interrupt remains in IRR until the guest deasserts the line.
 
+The guest can reprogram an IOAPIC RTE from edge to level via MMIO.
+If an edge interrupt was delivered before the trigger mode change, a
+stale irr_delivered bit can incorrectly mask a subsequent pending level
+interrupt from KVM_GET_IRQCHIP.
 
-Another think.
-kvm_s390_mmu_cache_extended_topup() asks for up to 32 order-2 allocations,
-roughly 512 KiB. Even for a delete?
+That can cause userspace to migrate the VM without a pending level
+interrupt that is still present in KVM's in-kernel IOAPIC.
+
+Clear irr_delivered when the RTE is configured for level-triggered
+interrupts.
+
+Fixes: 5bda6eed2e36 ("KVM: ioapic: Record edge-triggered interrupts delivery status")
+Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
+---
+ arch/x86/kvm/ioapic.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kvm/ioapic.c b/arch/x86/kvm/ioapic.c
+index 676effd674f9..81db025d2ac9 100644
+--- a/arch/x86/kvm/ioapic.c
++++ b/arch/x86/kvm/ioapic.c
+@@ -377,8 +377,17 @@ static void ioapic_write_indirect(struct kvm_ioapic *ioapic, u32 val)
+ 		 * as edge-triggered. This behavior is used to simulate an
+ 		 * explicit EOI on IOAPICs that don't have the EOI register.
+ 		 */
+-		if (e->fields.trig_mode == IOAPIC_EDGE_TRIG)
++		if (e->fields.trig_mode == IOAPIC_EDGE_TRIG) {
+ 			e->fields.remote_irr = 0;
++		} else {
++			/*
++			 * irr_delivered tracks edge-triggered interrupts that
++			 * have already been delivered.  Clear stale edge-triggered
++			 * delivery state when the entry is configured for
++			 * level-triggered interrupts.
++			 */
++			ioapic->irr_delivered &= ~(1 << index);
++		}
+ 
+ 		mask_after = e->fields.mask;
+ 		if (mask_before != mask_after)
+-- 
+2.15.0
 
