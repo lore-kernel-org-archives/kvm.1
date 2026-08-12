@@ -1,237 +1,186 @@
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010027.outbound.protection.outlook.com [52.101.85.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E170937DEBA;
-	Wed, 12 Aug 2026 05:39:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786513196; cv=none; b=BrQKgF0AVz5e2pUMN/3ZEwOIQugxrMWVjrzDarJ4Cx76fVBYGKXXLZa6o5LgNsPI6XX4xHWSi1wG6la4xDzNhtTwZ8f3ek6nIO5rOcihtf7tQhWUUWvSEKuHS7J5f1X5/Lt9BNhMdx8FvbzBAlZiL4w91//UF4j0Oszkb4bYW0M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786513196; c=relaxed/simple;
-	bh=nkGX5BJ/2eIbUb924iQqtUVrC3DCMdOrC+PKV7KbnPw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iS2eiAK2FnrlvSiMQHFS4mS5UIqQCJIl7lf0hq96g7uZie+s776AyD82K+5k7FDgDxSzSddgnT9+je0ZwPIV7wppd5IDAas1cvvaaFlRNkkGrpOZhHPcZ9euv4mDhwM8q5JiVaxOlNlSxKCtzmtA9hr58z2fqfmy0/uPTNgPp3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [111.196.241.250])
-	by APP-05 (Coremail) with SMTP id zQCowADnVD8UB3xqybQxBQ--.41533S3;
-	Wed, 12 Aug 2026 13:39:35 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-To: Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>
-Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Fangyu Yu <fangyu.yu@linux.alibaba.com>,
-	Andrew Jones <andrew.jones@oss.qualcomm.com>,
-	Nutty Liu <nutty.liu@hotmail.com>,
-	Guo Ren <guoren@kernel.org>,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] RISC-V: KVM: Validate AIA MMIO address ranges
-Date: Wed, 12 Aug 2026 13:39:31 +0800
-Message-ID: <38f87205419f328693bc6ab25ae78f021c2dd003.1786512671.git.pengpeng@iscas.ac.cn>
-In-Reply-To: <cover.1786512671.git.pengpeng@iscas.ac.cn>
-References: <cover.1786512671.git.pengpeng@iscas.ac.cn>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F63326927
+	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 05:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786513670; cv=fail; b=IEMK3CEQ9y62ZCY2bFsMYujQEfzvifTGC8PQ9X29CI9jEL29hVPHni8z2+ZEkmlljB1hKPvvGQPLMFWRDtz+jeRsqGS0YoLJEPd6/iu+j4Vq/aY4oNzfft9RexTAxum+pvoyUiJ08kZmnisu3kBNJVYBUlCqjFoKbPYttUnEkDA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786513670; c=relaxed/simple;
+	bh=30BRmc0ZOHnB4s3dM6Fgn3YftSILatD8YHH5HTr0G9g=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=PdRD2hTfIYgg5M5hRBG2f1hnQa/Iej9eXFY+RO2YW9O2/OkKKogcn/JAYc70xZF/nWAOL299/+nh9pO4KBTZwsAT1SCxnRyllcIR0HoHSCBn9qfbyxEjZsVEyyPk29qxpY1+jKiS3EcL+JcxF3jDf6FtiFIzQvcEi0yqIQM+F3U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=lH0cpcnR; arc=fail smtp.client-ip=52.101.85.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="lH0cpcnR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gO24vb3aNwA9flq5uezQw2/rU/t/NsUqcTXwkMlYZZ1u9Ue+/Q/D1kZQ4Uk6MfWl3LBEPWGc8UO8efOgIEzrphxbfB4zPXtDdCeFkDXZWWViYSePd8BsL2TYJ9GtXfOtkr4qOAkcp951rG2VshOoZiE1xPz8ELpneatR2uj7bKpBf9feTw3K/2xf/WKyXczeJkM761OBdgSAnl7B5gHRKyh/L4X7GDMTQIUhz/4Fl11pnwoCgjkBsBVwqsDssuyU5WLXLnlcEqnVcpV0CIxq1OmlbSFLLJ0W0FnVNkEae5CZuqfWfNO++8+gc0MiIjNmQCi4+jWqcDMSAustBhpFcQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O5hWH1o/RZFIdmQ/q00IcB7hWbi3fNcHVFatxXxXbek=;
+ b=P+D5+gI8Ubgt4gKrMmoQIvD7pRAckEt3L8rjZOXYtEp/l6d7uGrVTWDvCPPa8PClSywEXLzzRn1Y/LATFKs7iBK2LZEyROAdu5bAc9usM3Lj3OHEQW7tKOr1Ts9K7MgRgzUysFTDUIWtnoZhGG/T5dJ/qH2grScbie8+7zRVX0Qkth/FF7eegYNNI0vcqwl3beoRkCE5k/zNyJW7NX9nwWs8iXd4EYLEOZo8L0CCRm71Q7M4eC2FCjgC9pwgdxo5UHXI55n/vibm7ldoHwWR6xfb6fPkzAfLbbsBJ98Ftax72PTN3hPJQn85pCkD6PIgNN08klxrHnVqnziRpTqsdw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O5hWH1o/RZFIdmQ/q00IcB7hWbi3fNcHVFatxXxXbek=;
+ b=lH0cpcnRcjVrwgoUJ9mo/YU/Hkt4jsuvuAQNmvLWS5d1t5oD1qXMTPbmIAJufVSq1WvrV6WHQiho4PTVF0RUz+aZUbs+286CjvWX8q5ch4pi02MW2I7aS1cyctrYyHDXOI6vOSQC0lCbAp7s/IvwyDUDO2pB2ePVtr/Zho2KF+I=
+Received: from IA4P220CA0011.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:558::11)
+ by PH7PR12MB8155.namprd12.prod.outlook.com (2603:10b6:510:2b2::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.13; Wed, 12 Aug
+ 2026 05:47:43 +0000
+Received: from BL02EPF0002992D.namprd02.prod.outlook.com
+ (2603:10b6:208:558:cafe::7d) by IA4P220CA0011.outlook.office365.com
+ (2603:10b6:208:558::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.13 via Frontend Transport; Wed,
+ 12 Aug 2026 05:47:43 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL02EPF0002992D.mail.protection.outlook.com (10.167.249.58) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.315.6 via Frontend Transport; Wed, 12 Aug 2026 05:47:43 +0000
+Received: from [10.252.200.247] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 12 Aug
+ 2026 00:47:41 -0500
+Message-ID: <5149127b-32ce-4409-a443-02b5a9600e14@amd.com>
+Date: Wed, 12 Aug 2026 11:17:33 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowADnVD8UB3xqybQxBQ--.41533S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxGr4rXr1rAw13Aw4Duw45KFg_yoW7JF13pr
-	47G393WrWFq3yxWwsYyr1qkwn09w10ka1fGryUua1Fkr1IqryfKF1vga4UXF98JrykuF4a
-	yF4rta15uF4Fyw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPC14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jr4l82xGYIkIc2
-	x26xkF7I0E14v26r4j6ryUM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
-	Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1l84
-	ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AI
-	xVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20x
-	vE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xv
-	r2IY64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7Mx
-	kF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4U
-	MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67
-	AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0
-	cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z2
-	80aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI
-	43ZEXa7VUjrHUDUUUUU==
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
+User-Agent: Mozilla Thunderbird
+CC: <sarunkod@amd.com>, <sashiko-reviews@lists.linux.dev>,
+	<kvm@vger.kernel.org>, Vasant Hegde <vasant.hegde@amd.com>
+Subject: Re: [RFC PATCH v3 5/6] KVM: SVM: Add support for AMD IOMMU Guest APIC
+ Physical Processor Interrupt (GAPPI)
+Content-Language: en-US
+To: Sean Christopherson <seanjc@google.com>
+References: <20260713105033.15405-1-sarunkod@amd.com>
+ <20260713105033.15405-6-sarunkod@amd.com>
+ <20260713111119.EC35E1F000E9@smtp.kernel.org>
+ <b50b3535-eaa1-4944-914d-0eea8dac0e06@amd.com> <anpwS3C2UIHFz_Uf@google.com>
+From: Sairaj Kodilkar <sarunkod@amd.com>
+In-Reply-To: <anpwS3C2UIHFz_Uf@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0002992D:EE_|PH7PR12MB8155:EE_
+X-MS-Office365-Filtering-Correlation-Id: a90f92b7-6c8b-4364-8b01-08def8353ac8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|376014|23010399003|36860700016|22082099003|18002099003|5023799004|11063799006|4143699003|56012099006|6133799003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	lxRNKRctfQ1B7+9Of9DADzKU8Kgtret2l5+t+EXS03AyjYLgGfoScbOYiTDmLy6/5ucHygmG/tiomQ3KiYAsjbuEyHdQWn0wHbBJB4X2GfN89ZazOQIgR5/+iwwITgD5xUIWas7GPGQrKZlUyRM2/sITux8ZvsXJ58ELm2IV4oR56q8JW7CSM4MZV9h4nRavpb+5E4WOpSN5oaL+mvsjFHcb8okLfGYeEoLtYHAIZr0dqElgaw8CP/nSKzx+uaemBYQyYRYWo9uyMxZ5oNAc2/UZb0Gdrvx/YplLC1cH6QYCU3vr51RtwG3ZcnggmCRgBrapRAkFgudndrUM6+kD75vXgP/DX+38FmqPJIJVGYWK2GIgb3nr4XXGbuc1CxK6o6k4/oTQjbqQ6+vBP6qP60t//15NJdvSFw3JuJdUWA0cGGoKoAFvwsjMrsHydLTr5BoKyZZYHSmXI8pg5sfD87S6ulqVkTEvZ8gzO38jkhAz6Ik/h3dMw207hPPbLfbZraaXWbpxH77TzxaA7wsXaDILRRZJDSzVEnFK52B8MVZwNIHAVIF3NQteG/BSt9lAZX+gG8ltqeuYk9i391ZtmEGBDe0MqfDasUy56KNThxp0mWC6sc6iFyesY5QtDRXEVlx8aZzUWa+9NqkqqPiAwp3Z90TslhlZ1SHWJMTElp/ZfrZvINtggaaPnp4L2VGf+Xu0cYJeONakfSMcd77WwA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(23010399003)(36860700016)(22082099003)(18002099003)(5023799004)(11063799006)(4143699003)(56012099006)(6133799003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	wU3aezBGZOKhbIi6InH3399iU4TZMbY0MbSn+Yz2a9QfN0CerHIxveRye5jJdeAtIG2/58g4popSH+GMg1TEUEmXaAuZoCRz55UmG+mgBHG0m0B4Rl0EocKK3BaBM0KI8MFaNugu+OPaaBka2NfTw3FoV3CG06gtUoREKc7lYK+gSBAntch9iYx+I2WGdeuqcvpmojxH29UBlny5QjeMWFrO88CKZdvdSSDfs8zAA3Semg5eYPJGNhyMAfDLm9xjHiNc14drARqW5gzS35zN98avn2p+4tlJlcOSGHBob16wHuiAqo3SSsgrt9AXRdTqXUkLj/S/OgfWeWoqgq/g513EtUvYPWuDr5ZCfbnOzee3UGWNZDPgqkjXtwmdryjfezL7CmFgkDAeKa51Fb7DDmiDDTSO+ryO5iuDFKAHhXvjkYNFNzbN72dKIj+EV5KN
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2026 05:47:43.5650
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a90f92b7-6c8b-4364-8b01-08def8353ac8
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0002992D.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8155
 
-Userspace supplies the APLIC and per-vCPU IMSIC base addresses through
-the AIA device API.  The address setters currently reject only
-misaligned addresses.
 
-The regions are later registered on KVM's MMIO bus with fixed sizes.  An
-aligned base near U64_MAX can therefore wrap when the range end is
-formed.  A lower base can still place the range beyond the selected
-guest stage-2 physical address space.  kvm_io_bus_cmp() assumes that
-registered ranges do not wrap.
 
-Validate the complete interval when an address is stored.  Since
-KVM_CAP_VM_GPA_BITS can change the selected GPA width before AIA
-initialization, validate every address again before registering the
-first MMIO device.
+On 8/11/2026 6:13 AM, Sean Christopherson wrote:
+> On Mon, Aug 10, 2026, Sairaj Kodilkar wrote:
+>> On 7/13/2026 4:41 PM, sashiko-bot@kernel.org wrote:
+>>> [Severity: High]
+>>> Can an unprivileged user-space process trigger this WARN_ON?
+>>>
+>>> When a vCPU is created, svm->gappi_cpu is initialized to -1 in
+>>> avic_init_vcpu(). It is only set to a valid CPU ID later during
+>>> __avic_vcpu_load().
+>>>
+>>> If host user-space configures device interrupt routing via the KVM_IRQFD ioctl
+>>> before the vCPU runs, avic_pi_update_irte() is invoked. This will pass the
+>>> uninitialized svm->gappi_cpu (-1) down to this function, hitting the WARN_ON.
+>>> If the host has panic_on_warn enabled, this allows host userspace to trigger
+>>> a kernel panic.
+>>
+>> This is a valid concern.
+>>
+>> If host userspace attaches a bypass IRQ targeting a vCPU that has never
+>> been loaded. Functionally, there is nothing to do in that window. A vCPU
+>> that has never been loaded cannot be blocking, so no GAPPI wakeup is
+>> required. The IOMMU still posts the interrupt into the vAPIC backing
+>> page, and the pending IRR is evaluated at the first VMRUN after
+>> avic_vcpu_load(), which is also where the IRTE gets a valid Destination
+>> and IsRun = 1.
+>>
+>> This can be resolved by assigning a arbitrary gappi destination, without
+>> actually updating the gappi wakeup list of that CPU.
+> 
+> With the disclaimer that I haven't look super closely at this series, and haven't
+> thought too deeply about the feature itself either...
+> 
+> Why are we doing anything different than what VMX does?  vCPUs on the wakeup
+> list when they block, and come off the list when they wakeup.  It's literally
+> one flow that's guarantee to pair put()+load(), and the logic for manipulating
+> the list is quite simple as a result.
+> 
 
-Return -EINVAL for misalignment or arithmetic overflow and -E2BIG when
-the end exceeds the stage-2 GPA limit, following the arm64 VGIC
-address-validation convention.
+I was trying to manipulate the vCPU list after is_empty(ir_list) check
+in put() and load() path. Which complicated the things, since
+pi_update_irte() will have to add the vCPU to the list if it was a first
+interrupt assigned to given vCPU.
 
-Fixes: 89d01306e34d ("RISC-V: KVM: Implement device interface for AIA irqchip")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
----
- arch/riscv/kvm/aia_device.c | 79 +++++++++++++++++++++++++++++++------
- 1 file changed, 66 insertions(+), 13 deletions(-)
+I think its better to keep the list operations before is_empty(ir_list)
+check in order to simplify things a little bit.Note that it may increase
+the list size and potentially increasing time for gappi_wakeup_handler.
 
-diff --git a/arch/riscv/kvm/aia_device.c b/arch/riscv/kvm/aia_device.c
-index efc7c0bcfba9..e969dbdc4b97 100644
---- a/arch/riscv/kvm/aia_device.c
-+++ b/arch/riscv/kvm/aia_device.c
-@@ -10,7 +10,9 @@
- #include <linux/bits.h>
- #include <linux/irqchip/riscv-imsic.h>
- #include <linux/kvm_host.h>
-+#include <linux/overflow.h>
- #include <linux/uaccess.h>
-+#include <asm/kvm_gstage.h>
- #include <asm/kvm_isa.h>
- 
- static int aia_create(struct kvm_device *dev, u32 type)
-@@ -142,17 +144,37 @@ static int aia_config(struct kvm *kvm, unsigned long type,
- 	return 0;
- }
- 
-+static int aia_check_addr_range(struct kvm *kvm, u64 addr, u64 alignment,
-+				u64 size)
-+{
-+	u64 end;
-+
-+	if (!IS_ALIGNED(addr, alignment))
-+		return -EINVAL;
-+
-+	if (check_add_overflow(addr, size, &end))
-+		return -EINVAL;
-+
-+	if (end > kvm_riscv_gstage_gpa_size(kvm->arch.pgd_levels))
-+		return -E2BIG;
-+
-+	return 0;
-+}
-+
- static int aia_aplic_addr(struct kvm *kvm, u64 *addr, bool write)
- {
- 	struct kvm_aia *aia = &kvm->arch.aia;
-+	int ret;
- 
- 	if (write) {
- 		/* Writes can only be done before irqchip is initialized */
- 		if (kvm_riscv_aia_initialized(kvm))
- 			return -EBUSY;
- 
--		if (*addr & (KVM_DEV_RISCV_APLIC_ALIGN - 1))
--			return -EINVAL;
-+		ret = aia_check_addr_range(kvm, *addr, KVM_DEV_RISCV_APLIC_ALIGN,
-+					   KVM_DEV_RISCV_APLIC_SIZE);
-+		if (ret)
-+			return ret;
- 
- 		aia->aplic_addr = *addr;
- 	} else
-@@ -166,6 +188,7 @@ static int aia_imsic_addr(struct kvm *kvm, u64 *addr,
- {
- 	struct kvm_vcpu *vcpu;
- 	struct kvm_vcpu_aia *vcpu_aia;
-+	int ret;
- 
- 	vcpu = kvm_get_vcpu(kvm, vcpu_idx);
- 	if (!vcpu)
-@@ -177,8 +200,10 @@ static int aia_imsic_addr(struct kvm *kvm, u64 *addr,
- 		if (kvm_riscv_aia_initialized(kvm))
- 			return -EBUSY;
- 
--		if (*addr & (KVM_DEV_RISCV_IMSIC_ALIGN - 1))
--			return -EINVAL;
-+		ret = aia_check_addr_range(kvm, *addr, KVM_DEV_RISCV_IMSIC_ALIGN,
-+					   KVM_DEV_RISCV_IMSIC_SIZE);
-+		if (ret)
-+			return ret;
- 	}
- 
- 	mutex_lock(&vcpu->mutex);
-@@ -191,6 +216,40 @@ static int aia_imsic_addr(struct kvm *kvm, u64 *addr,
- 	return 0;
- }
- 
-+static int aia_validate_addr_ranges(struct kvm *kvm)
-+{
-+	struct kvm_aia *aia = &kvm->arch.aia;
-+	struct kvm_vcpu_aia *vaia;
-+	struct kvm_vcpu *vcpu;
-+	unsigned long idx;
-+	int ret;
-+
-+	if (aia->nr_sources) {
-+		if (aia->aplic_addr == KVM_RISCV_AIA_UNDEF_ADDR)
-+			return -EINVAL;
-+
-+		ret = aia_check_addr_range(kvm, aia->aplic_addr,
-+					   KVM_DEV_RISCV_APLIC_ALIGN,
-+					   KVM_DEV_RISCV_APLIC_SIZE);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	kvm_for_each_vcpu(idx, vcpu, kvm) {
-+		vaia = &vcpu->arch.aia_context;
-+		if (vaia->imsic_addr == KVM_RISCV_AIA_UNDEF_ADDR)
-+			return -EINVAL;
-+
-+		ret = aia_check_addr_range(kvm, vaia->imsic_addr,
-+					   KVM_DEV_RISCV_IMSIC_ALIGN,
-+					   KVM_DEV_RISCV_IMSIC_SIZE);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
- static gpa_t aia_imsic_ppn(struct kvm_aia *aia, gpa_t addr)
- {
- 	u32 h, l;
-@@ -244,9 +303,9 @@ static int aia_init(struct kvm *kvm)
- 	if (aia->nr_ids < aia->nr_sources)
- 		return -EINVAL;
- 
--	/* APLIC base is required for non-zero number of sources */
--	if (aia->nr_sources && aia->aplic_addr == KVM_RISCV_AIA_UNDEF_ADDR)
--		return -EINVAL;
-+	ret = aia_validate_addr_ranges(kvm);
-+	if (ret)
-+		return ret;
- 
- 	/* Group index bits must not overlap guest and HART index bits. */
- 	if (aia->nr_group_bits &&
-@@ -263,12 +322,6 @@ static int aia_init(struct kvm *kvm)
- 	kvm_for_each_vcpu(idx, vcpu, kvm) {
- 		vaia = &vcpu->arch.aia_context;
- 
--		/* IMSIC base is required */
--		if (vaia->imsic_addr == KVM_RISCV_AIA_UNDEF_ADDR) {
--			ret = -EINVAL;
--			goto fail_cleanup_imsics;
--		}
--
- 		/* All IMSICs should have matching base PPN */
- 		if (base_ppn == KVM_RISCV_AIA_UNDEF_ADDR)
- 			base_ppn = aia_imsic_ppn(aia, vaia->imsic_addr);
--- 
-2.50.1 (Apple Git-155)
+> Going a step further, why is GAPPI not sharing code with VMX Posted Interupts?
+> At a glance, the only meaningful difference in the wakeup flow is the "should
+> this particular vCPU be awakened".
+
+On Intel there is a level of indirection: KVM hands the IOMMU the
+physical address of the PI descriptor once, at IRQ affinity setup time
+(vmx_pi_update_irte()). After that the descriptor is the only thing that
+needs updating, so vcpu_load()/vcpu_put() just write NDST/NV/SN in
+memory and never call into the IOMMU driver again.
+
+AMD has no such indirection. The destination APIC ID, IsRun and GATag
+live directly in the IRTE, and there is no per-vCPU structure that the
+IOMMU dereferences. So every vcpu_load()/vcpu_put() has to call into the
+AMD IOMMU driver to update each IRTE targeting the vCPU, via
+avic_update_iommu_vcpu_affinity() -> amd_iommu_update_ga().
+
+That difference leaks into the wakeup list handling. On Intel, putting a
+vCPU on the per-pCPU list is self-contained. On AMD it has to happen in
+the same ir_list_lock critical section as the IRTE update, and it is
+conditional on the vCPU actually having posted IRQs (ir_list being non
+empty), because the pCPU that the vCPU is enqueued on is also what gets
+programmed into IRTE[Destination].
+
+Because of above complications I did not try to factor out the common code.
+
+Thanks
+Sairaj
 
