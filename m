@@ -1,230 +1,136 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8899419304;
-	Wed, 12 Aug 2026 09:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B7542048E;
+	Wed, 12 Aug 2026 10:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786527949; cv=none; b=D1bqff4KCT7BmLDuKU8fXrqmRrC6wqCvfM/kacJl8QJHJVf9ffMXDhVSvuxe185KkE4uJWYFB/QVT2znlSpfNyYEpH1efVGvBJDbcrEKFLHOXOh5arFRrMajNHupqjYXsv4N2syHNKsn0ZXsaYqMEIXKkwAja8vEXMkBRfpjjUE=
+	t=1786530113; cv=none; b=A+XjpNAmcyONnd6otO1oWbWw0MvLdZR9dLyoVVw0UZS+fpGT3AFnXDJ5lVDyLtpIbXOuWrmMOY/QNhzYkbaE4oIf46ds+UUWhyBXlZ4QHg99Ts1BuQtHLh6AoUPFNDcPPediwuxy6QqDmO+BZ3jbE2PeE2enXBNDymdKauGCt4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786527949; c=relaxed/simple;
-	bh=k2pFVBuHbEgDL9fsrNxSQM9oxmXhYdThPBDj2S6Ri8o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P3Jp9rRQgElBeB0EWGH9Gtozt8EbD5Ygr3w5urOIksUThF18FY109NFQM13FFN6RC3m/WFOvnKbxKrB62OucJ+aySNtupwfPDMKwLZlr5/x7oRWlLl4XDPmcV+Ho1fFM7kc4Txp8GrSfgrIvd9XhanyzpNxPPA53LhUxVUruO5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yx9zgwzI; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786530113; c=relaxed/simple;
+	bh=Fnm/NwVzgNJikc6UxTyQecbizuLLQwDbXLyB8j0J2wM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RTllWIXGWJcttkOVa95j9Ftji2vZjCrrwvoIGH894B/gd3cWxxt6FsLCFRkpqH8vKNKwiOTeKjY4PqNTjOi8QBVL93ifE+hkR/S0kFbI8VqAUN0eDtYwl3oRXMM9yVxiGJJhJWIUaeDvpDtEWwthwJaaRnSLd+GjFy5LG2/aoRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=cqyGD/aT; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yx9zgwzI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786527948; x=1818063948;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=k2pFVBuHbEgDL9fsrNxSQM9oxmXhYdThPBDj2S6Ri8o=;
-  b=Yx9zgwzIOwyRR465ww7BXCcFgCDdfBLQapk2hZ8uNSJ+W7bYiuabiAcY
-   9pMhf8xjVYNogMfHet11TjmIGjSECm2IU3EWmQOJ7jN0vs+3xW1tALdEI
-   hP8Rcw3aKOhHqM3blBLMqisCzr/0r493VBWA/a+5r9KmDDLmsgeRSF6la
-   BNNHcFhYym6mMslymIvy+2ywdFPDoPeXH8cOXY0nc18r2Ns4Q+KTt5avD
-   tljefOM1fxHoMD78cl4liTi8n/FghrTFj0DIl9ABPG7j/8ni2zIpRllmM
-   4E7yINxJ29JjBLATGWfmlyYWXT33K3vriluYuzTe0U/KA4Rw4+PxaZCzm
-   A==;
-X-CSE-ConnectionGUID: QnSQZY3/RlmNSOVN3FKmWQ==
-X-CSE-MsgGUID: VfdbsRAzT1+vJZe81uyrqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="87097282"
-X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
-   d="scan'208";a="87097282"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 02:45:47 -0700
-X-CSE-ConnectionGUID: iA51UbaQRN6kQuJUiJ7UBg==
-X-CSE-MsgGUID: Sa2YR4TXTseveV8gKuW5Bw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
-   d="scan'208";a="267093839"
-Received: from unknown (HELO [10.238.208.98]) ([10.238.208.98])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 02:45:32 -0700
-Message-ID: <33482cef-9fb7-4a45-b45a-261e0a4e7de3@intel.com>
-Date: Wed, 12 Aug 2026 17:45:29 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="cqyGD/aT"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67CA1me02078021;
+	Wed, 12 Aug 2026 10:21:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=bSm8nA
+	ItODasQTnlDuR6kdvk+BKwubj6/O0NIF8QBM4=; b=cqyGD/aTjxFdAwytp8c+Ky
+	8JbbXuTEcgNA0WK7p0mNU1bGB1b9gUo042KHLVyvAMrUnTAOMYWcsP1ov7fqx29W
+	nN3Rhy517oP5wIpNKHKovGf0Y64vBO+Dxy/nq9PC0oPYqlzVgnWaD/6CGKnOA6iJ
+	E+T3jBJotLUZ7F/43ZIxxio8fvWaduG/tvJkkzy8obSwQXhw4+TISUlB8CquX937
+	c8Fp8YtPXgKYfDEJtdE/QT44znISmi0+3dlKOZ4+oFLawyDs6DHTUSuHYz1qo9kJ
+	wjpaprTiWqRzIYMXR4BTGMhLHoJscXZ+RuFigPmhQFnH7tAH8f+34s1OnRVdnyug
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fyb23tgsw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Aug 2026 10:21:43 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67CABKkv016702;
+	Wed, 12 Aug 2026 10:21:43 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxf5w5nqb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Aug 2026 10:21:43 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67CALdcn30409208
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Aug 2026 10:21:39 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C05EF20043;
+	Wed, 12 Aug 2026 10:21:39 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4CADC20040;
+	Wed, 12 Aug 2026 10:21:39 +0000 (GMT)
+Received: from osiris (unknown [9.87.155.64])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 12 Aug 2026 10:21:39 +0000 (GMT)
+Date: Wed, 12 Aug 2026 12:21:37 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Steffen Eiden <seiden@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Christoph Schlameuss <schlameuss@linux.ibm.com>,
+        Harald Freudenberger <freude@linux.ibm.com>, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] s390: uv: Fix loop condition in uv_find_secrets
+Message-ID: <20260812102137.18999Bd8-hca@linux.ibm.com>
+References: <20260811-uv_secrets_fix-v2-0-64444968ec55@linux.ibm.com>
+ <20260811-uv_secrets_fix-v2-1-64444968ec55@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 07/41] KVM: guest_memfd: Stub in ability to enable
- in-place shared<=>private conversion
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-7-2fc18ee6d3ba@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-7-2fc18ee6d3ba@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260811-uv_secrets_fix-v2-1-64444968ec55@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=XqfK/1F9 c=1 sm=1 tr=0 ts=6a7c4937 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=8nJEP1OIZ-IA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=JP91DYv6CA5BUcaABPAA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDA4MCBTYWx0ZWRfX0ykuHc+FycKX
+ GcgHuhgnUS6czhWpYOOzdpNzAJSqJXN23w0TUIKDfI8JwlcMQMfcLUakqO4wjPlOfDsmrE/u9+H
+ aMsnXQU/YZEneZ/LNNV6PCzEoRUWothBjqqbMFI2YfAPMs+fwIZ2AxyeuDNCQW0bGgLxsualzk1
+ z+wLl0NoRhYp5JHGynubIFGWaYnA2/C13XNLyX+70hoOPEb7qkCAqQVnIaIxSBjpD+IuWWTBXcT
+ 3og6X8tDcxI10rJLtJmsKDFuOdZuwppwwixOMGepfUHa20PyFQaH+9XqYFIo6yQxgBTxsFqcH+3
+ ppCQqAJ/guJ6rcS0OuJEs2SBkp9mjbsN9p4DoIyMdAL16ESgb60DyvN0bnUXFtn26cDjoVOB5VI
+ buWB6VFze2RLpRZ9LWBg6gxM7qkP6Fbt0e6B/nasH4nnnafjlQFopY1olm31wT9i/mMVLqhSHQh
+ HyxN+Aqe+d2rDxoybhQ==
+X-Proofpoint-ORIG-GUID: RQPnj2g4uGwMNP652HC5txgABxfKWwo5
+X-Proofpoint-GUID: RQPnj2g4uGwMNP652HC5txgABxfKWwo5
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDA4MCBTYWx0ZWRfX1PldV+q7nZjt
+ RsL3yxTIUvjDorpESTFWk0RKSKepz4z8vngxWcmmj0omLIjGvmV+9v4o0fO9NldTsMKUnsUZXFz
+ PSN/+3Vrrri/5250UndBwDNorK+urAI=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-12_03,2026-08-10_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 spamscore=0 adultscore=0 malwarescore=0 clxscore=1015
+ suspectscore=0 priorityscore=1501 impostorscore=0 phishscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608120080
 
-On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
-> From: Sean Christopherson <seanjc@google.com>
+On Tue, Aug 11, 2026 at 06:14:21PM +0200, Steffen Eiden wrote:
+> Nothing modified `start_idx` between the assignment and the comparison,
+> so the condition was always false and the do/while ran exactly once
+> even when the UV returned UVC_RC_MORE_DATA. Systems with more than
+> 85 UV secrets got -ENOENT for any secret past the first page.
+
+If you would leave the first sentence away this would be much more readable.
+Starting like above  makes me wonder: "what is this all about? context?".
+
+> Fix this by setting the start index at the beginning of the loop not at
+
+Please add reference to the function where you fix a loop.
+
+> the end. First test if there are more secrets left by comparing
+> start_idx with list->next_secret_idx, and then set the start index to the
+> next secret index.
 > 
-> Stub in global variable to enable in-place guest_memfd private<=>shared
-> memory conversion, which will eventually be exposed to userspace via a
-> module param, and wire up the __kvm_mem_is_private() static call to the
-> guest_memfd version when in-place conversion is enabled, i.e. when gmem is
-> the sole authority on private vs. shared memory.
-> 
-> Cc: Fuad Tabba <tabba@google.com>
-> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-
-The names will finalized eventually and it won't impact the 
-implementation. So,
-
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-
+> Fixes: 7c9137af2042 ("s390/uv: Retrieve UV secrets support")
+> Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
 > ---
->   include/linux/kvm_host.h |  6 ++++++
->   virt/kvm/guest_memfd.c   | 26 ++++++++++++++++++++++++++
->   virt/kvm/kvm_main.c      | 12 +++++++++++-
->   3 files changed, 43 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 65fbce46b63f4..9477ecebbbced 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -2580,6 +2580,8 @@ static inline bool kvm_vm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->   #endif  /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
->   
->   #ifdef kvm_arch_has_private_mem
-> +extern bool gmem_in_place_conversion;
-> +
->   typedef bool (kvm_mem_is_private_t)(struct kvm *kvm, gfn_t gfn);
->   DECLARE_STATIC_CALL(__kvm_mem_is_private, kvm_mem_is_private_t);
->   
-> @@ -2588,6 +2590,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->   	return static_call(__kvm_mem_is_private)(kvm, gfn);
->   }
->   #else
-> +#define gmem_in_place_conversion false
-> +
->   static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->   {
->   	return false;
-> @@ -2595,6 +2599,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->   #endif /* kvm_arch_has_private_mem */
->   
->   #ifdef CONFIG_KVM_GUEST_MEMFD
-> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn);
-> +
->   int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->   		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
->   		     int *max_order);
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 1f1ae61b4878b..75979c885e030 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -475,6 +475,32 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
->   	return 0;
->   }
->   
-> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
-> +{
-> +	struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
-> +	struct inode *inode;
-> +
-> +	if (!slot)
-> +		return 0;
-> +
-> +	CLASS(gmem_get_file, file)(slot);
-> +	if (!file)
-> +		return 0;
-> +
-> +	inode = file_inode(file);
-> +
-> +	/*
-> +	 * Rely on the maple tree's internal RCU lock to ensure a stable result.
-> +	 * This result can become stale as soon as the lock is dropped, so the
-> +	 * caller _must_ protect consumption of private vs. shared either by
-> +	 * holding guest_memfd's invalidate lock for the entire duration, or by
-> +	 * checking mmu_invalidate_retry_gfn() under mmu_lock to serialize
-> +	 * against concurrent attribute updates.
-> +	 */
-> +	return kvm_gmem_is_private_mem(inode, kvm_gmem_get_index(slot, gfn));
-> +}
-> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_is_private);
-> +
->   static struct file_operations kvm_gmem_fops = {
->   	.mmap		= kvm_gmem_mmap,
->   	.open		= generic_file_open,
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index a01d336eab18b..0a5a1bee8de0f 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -102,6 +102,10 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(halt_poll_ns_shrink);
->   static bool __ro_after_init allow_unsafe_mappings;
->   module_param(allow_unsafe_mappings, bool, 0444);
->   
-> +#ifdef kvm_arch_has_private_mem
-> +bool __ro_after_init gmem_in_place_conversion = false;
-> +#endif
-> +
->   /*
->    * Ordering of locks:
->    *
-> @@ -2423,6 +2427,9 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
->   static u64 kvm_supported_vm_mem_attributes(struct kvm *kvm)
->   {
->   #ifdef kvm_arch_has_private_mem
-> +	if (gmem_in_place_conversion)
-> +		return 0;
-> +
->   	if (!kvm || kvm_arch_has_private_mem(kvm))
->   		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
->   #endif
-> @@ -2634,8 +2641,11 @@ EXPORT_STATIC_CALL_GPL(__kvm_mem_is_private);
->   
->   static void kvm_init_memory_attributes(void)
->   {
-> +	if (gmem_in_place_conversion)
-> +		static_call_update(__kvm_mem_is_private, kvm_gmem_is_private);
->   #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> -	static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
-> +	else
-> +		static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
->   #endif
->   }
->   #else
-> 
+>  arch/s390/kernel/uv.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 
+Please also fix the patch subject: It should be "s390/uv:"
+instead of "s390: uv:".
