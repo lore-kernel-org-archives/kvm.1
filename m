@@ -1,244 +1,224 @@
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A768468C36;
-	Wed, 12 Aug 2026 17:19:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786555190; cv=none; b=cnGzXgL0+xlEK3d0FyzBf8Xjqfrll1YHNEbj4n/HRMcoZsEeuXDp92EZv0WSe99lccqDvdLRSPfvajF794rsh9BieVtyIi+TqmnADFlN9vCUaVbTDz8/t7jUnNqe9VfP5qO4WuEpcnw3lCBnYzZePIPtT97lAnT3hV6yN2y74KY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786555190; c=relaxed/simple;
-	bh=vV+iFHhOcKMR2wsm2kBUMaHXfqyYOqZX0tyoDOk+Zas=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FLk/L9z7P4I05k4QsYA47yPdUf3x1rBUGn4G2TFYBpfJGJ4ufQ5GgpO2HoiXkqX5x/r/OLkw4yldUICXVhuzQT4TreifC81C7iYjpodS9/l1CRwloIFhb4AlVgaJISdTQFNR/GZZnMrMnBXvfdLih2IdhMC+wNgldzq6o+UUMy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=kfe2hQ3N; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NLFwZLHu; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E33480955;
+	Wed, 12 Aug 2026 17:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786555338; cv=fail; b=snJAR+E7mt4ymguArrPuohjx3QiJ4ErBj9b2xavKaIr7EekgwAjeII7ZMOazvAHzGJOccKWowq+A0dVLF/eyd4na3izeHrdd5/wTIftxcVg4ROQ1y/mkopt9AvpHMDJ1UeGEUEg4fBS/VU19vHuh/EljmbxP+Lx4xzQrPMN4ZX0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786555338; c=relaxed/simple;
+	bh=X3rsSJo+N0OHNlI1DvUKTSXK0f3kkL4xrpsdr/mf9GM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=j/NzyYnYaOeynuqLPuIYHNYK5i2v/BsAcWuI6GH+gnqEHum582XpEbphcnq60NZZ2gzR0Mz6laAnSFbhLJagNggU/SIJ7YPj/C/kRcRg4I4rAXNH2EK5v5Oe9yUw//q2otPAeW1qKgRllmeV1JI2Ipbu4fMPpA1oEW1nuvFy3Ak=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HV6Hmuy4; arc=fail smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="kfe2hQ3N";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NLFwZLHu"
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 674371400036;
-	Wed, 12 Aug 2026 13:19:46 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Wed, 12 Aug 2026 13:19:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1786555186;
-	 x=1786641586; bh=DqEzTheIjqZHkO4lsXKH6Je4BNnU++YXXpF3d1lJCG8=; b=
-	kfe2hQ3NcDb15kVlCUjLmBRzbjtak12BcCKuZcE/5BX+Xdwjse4NwjdX1VoZN3jr
-	ug/ZZpUgVT+fY33QbBjhwQkc40xuTWYnyyqvUsPJo36yHGXligFSF5feYhDAPD5+
-	u19Dvhzhut5BRKWo+BBX12ScYvkxsXRkBOoO9S3iJkUgP7Ev++bPfFNeQDQPA/mJ
-	XhT53E54kXeuSgOnDzXwwcNjrG+tn+LmiWYbFJbjHHxyNM7FR9zL/qgibxIjvVR8
-	LwWMZalNGsgC6GC9otQS7ePLCGKRD4OnuxbZV8TbX+ER3uMefoLsP/Xp2/UJVlu2
-	Xe4xHQTGsWWn2r2LIuw0+A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786555186; x=
-	1786641586; bh=DqEzTheIjqZHkO4lsXKH6Je4BNnU++YXXpF3d1lJCG8=; b=N
-	LFwZLHuKOTmGtN8e1lM3skirIR0NASeVKorUKnyxgmQaGK3oe/CT1JIOeyeMRr5F
-	C/YWQ4alYjt9CDVmlOnz0V08P8IVB6ASKoWfOfC4/6GgYHTI0DthjuhndLQlbPWQ
-	u7Odos9LxklcEAjvzxly0+cGAwy/DI5ZM91GkENsQ5uIWWaMivO4Yc1IlYIvqBZB
-	NyIZGsELPZIxYxiNOJAziQkoFWjCscCTlsnZrsFPj1l/LeWUbQ6etmYja51CGWZE
-	nJwsW3i23AVfkkLSLmQO4S+aPQRU3MpioBQNLz51coq/FldEoKZt1FEBk+L6+aOl
-	lWUzPTcfMnSFOAJc0hLsw==
-X-ME-Sender: <xms:Mqt8ag9vfymItHstl9PjPJj0oZNnWzKxj3vU05ZqMX9NOgL8q07FBQ>
-    <xme:Mqt8atp4appUs34Q6lIz4B9EIAGKTwoqU2hYH5v4ECtrabOfNz-OqnIOrr12gavua
-    4AyucG3T9kyGXoDtxl1IC3doO8F9_Eq92gvSEYuAewQ5yYKUXfG6w>
-X-ME-Received: <xmr:Mqt8aqSAYV6A3tF1Vp-wOcuzooNRq0HCG6zEsNkK3_o7EuQ5Xbkj53FoT1jfIQ>
-X-ME-Proxy-Cause: dmFkZTGlk2U3cmazbXTMqtnLUfzkoZ2LhSWd2iDnp/nXlbGjdRGd6yXyG6goPPvCjd9mE3
-    EjLhRvwL4+HZb/CzVlLkOIEeBwVEbWQ2OddsFBmtoBIm685INsO2fso8tFH7BH1KE95F18
-    otYRa9+DZPgbDpRGwpc9HCe7oDyV7Z98TlRaLaH8gonG2fTphKgI4OpxxQrejc9YNOkguw
-    vUznQsnVOLQnRRamiI7ZqswXKXEBm365l8uwZOaYeW4uNQQo85S/MO66ikZfPf8X9is0j5
-    /cxuwTliKQLKOa55p3J6rjqe4x6Gl+sBfmLrKapXbGN/pCj9QvVTjWfqvnkRjV4Mm39cO/
-    534LxsIp+15DUX+ur3SdI/J+rl4GLUOr7UqPCn7EcizGn5yH4h1ogtBUAw1V7cKwiD1ICf
-    ZgREqPdHJoFAiST1doSYQWMY6kSTh6S8KYWlkuY7JN53q4JRDL6xhVyryibnZURao/bsc5
-    C4cskpvpB2DgtY7JEN8wg5zWF8y2S00LhKkqL27PAi65kU0dEkasjyFLVVnKpHoXc+qefL
-    JKfyjREU0gw96+/ihGa9MYjjF0EE7gyl5vqIjKkac1VR3Fb6zNhMfPQ4fx2e9kO3rh+z7J
-    NOjhjadCmFupecxMWF9wFtihfTVXKflX3h6JyD6R+TPTD2w3Yy0Ovwowp1/g
-X-ME-Proxy: <xmx:Mqt8agPU6Km8gGSo4NYvhqcQBcVBWbVZf1cV6gin__FfWAuHWnZJbw>
-    <xmx:Mqt8aojzZ1yXxCYSefWSaJYeOSZO_L8X1YX8IzOa2AiUwpAaVj_SGA>
-    <xmx:Mqt8atnHOqZ_41mWYcTnqHsUx7dvsnuBogFnlSsF5zApVzmVn3Cd-Q>
-    <xmx:Mqt8akhGRnRibv4gjVe8Gg5ovZ-a3O3OJmd5PLO06XyER-7UfvdfWA>
-    <xmx:Mqt8alG0YTgynmURv0AmK2mvScAMMZgRjVXQBUkjw1XFWzTMm92f0tEj>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 12 Aug 2026 13:19:45 -0400 (EDT)
-Date: Wed, 12 Aug 2026 11:19:43 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, bhelgaas@google.com, Kevin Tian
- <kevin.tian@intel.com>, Leon Romanovsky <leon@kernel.org>,
- dmatlack@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- alex@shazbot.org
-Subject: Re: [RFC PATCH 1/1] vfio/pci: Disable sriov on PF device close
-Message-ID: <20260812111943.31cf9cea@shazbot.org>
-In-Reply-To: <anpJrnR6Lbmgqad-@google.com>
-References: <20260805003355.728299-1-skhawaja@google.com>
-	<20260805003355.728299-2-skhawaja@google.com>
-	<20260805090323.01b1a36f@shazbot.org>
-	<20260806194739.GH28508@ziepe.ca>
-	<20260810093223.50dbc8d0@shazbot.org>
-	<anpJrnR6Lbmgqad-@google.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HV6Hmuy4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786555336; x=1818091336;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=X3rsSJo+N0OHNlI1DvUKTSXK0f3kkL4xrpsdr/mf9GM=;
+  b=HV6Hmuy4px0snkUvRue6Ruf1YOPFRsivVG0F51tVzhLbfhAf960Tsk46
+   wyQpHSDsYgIhnQKohIzqrUjQDrCeG4Fk3w3A36kD3Bu2VBa2AtEP2dcWO
+   E7wMauT9kLomqR8dosrrj8o3GII+IlmRoM4YyHg2uiXd0DPihunXlH8il
+   3Ftr/OyMVQgjyAUZNqop1On5dXhrA3KVNQejU8QRmazuy8zeMXsI4uEYE
+   BLnhvCIdjuydp42VxW3TS/jy4exCIAYYo44so6c7DBaJzdZHCW7VwFK7D
+   igAHOCWDHtfAnQydzsNRhAPcQo093kx2Ixdm1xs4EkuKLj8t3mBIm4h3o
+   Q==;
+X-CSE-ConnectionGUID: 8/d4sWL9RlaXaupkT3kfAA==
+X-CSE-MsgGUID: OgmcrcvgTnyVJ3/gWUVTxQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="86996983"
+X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
+   d="scan'208";a="86996983"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 10:22:16 -0700
+X-CSE-ConnectionGUID: RuCfmt4xS3i6iuKamuevHQ==
+X-CSE-MsgGUID: 7Y9LWlRVQRybAdmG/JJXsg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
+   d="scan'208";a="263748485"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 10:22:16 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 12 Aug 2026 10:22:14 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Wed, 12 Aug 2026 10:22:14 -0700
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.39) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 12 Aug 2026 10:22:14 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lSv/M9uRpakn4FVFY50TsWQWYQoVrSnVIpvqNKXOC4RV28wr2DGgMaKjVfff9iV7hmwjym302jjlGs7M4Oau32Ev97/BbTVbPyZHgoL3sO6KjFxGu1ZkISHsafgQOba395PbotNYveBrtYavgPM47pXbJ3LjCQ6cWUOWVbAHFvbDmd0EWLlVZ03Un6JF2u14PCm5mDCeRgkqS8ykTeGfkUhtW++H4DntNQgdciHQKuV8UIGdMn0ZdO0Ta4BDajRNpwdgrj3ht+tEEy5VIHxs1uOTRMxu1XnlMIXL5ei6pu5Zpogxvnm2bKbh4+9XaU/Ecec8hTpbwQFBAylUmQokbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=X3rsSJo+N0OHNlI1DvUKTSXK0f3kkL4xrpsdr/mf9GM=;
+ b=arW8FOm6JhRkC5rB1TNUgtf7VVk6+ScVGBph4EquroTxRNKY30mpQGD+VS3kzFOuebWFD/oa5Ai/+iRwfvi9A/ZBU9mTKRcI425FVBATAgVWu0f1kVcFkETyjqyHfwC5JeXV0Wqz69udkfZTaPxcmsnTmdM+95d4Gg+RCGoktvoGw9F9DgTdEXk8wUzoGDAi9kPH+4Cqpd1FpOhoUWnuvUYZPWpajseIEaArX+JHhaSZhZAZRfSBFw1+jXW1VdgJoFJ/rFNnvYRb+/huz6pd81umpq8ZNEbCVQxYW08tw/tzcbYem8QKZToiVOM5sWodCj91X2xBaTz4ov0YVNXu0Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6771.namprd11.prod.outlook.com (2603:10b6:510:1b5::20)
+ by DM6PR11MB4513.namprd11.prod.outlook.com (2603:10b6:5:2a2::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Wed, 12 Aug
+ 2026 17:22:11 +0000
+Received: from PH7PR11MB6771.namprd11.prod.outlook.com
+ ([fe80::effa:162e:c9c9:a1b4]) by PH7PR11MB6771.namprd11.prod.outlook.com
+ ([fe80::effa:162e:c9c9:a1b4%4]) with mapi id 15.21.0315.014; Wed, 12 Aug 2026
+ 17:22:11 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "seanjc@google.com" <seanjc@google.com>
+CC: "tglx@kernel.org" <tglx@kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "bp@alien8.de" <bp@alien8.de>, "kas@kernel.org"
+	<kas@kernel.org>, "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
+	"hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Bityutskiy, Artem"
+	<artem.bityutskiy@intel.com>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Fang, Peter"
+	<peter.fang@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: Re: [PATCH v3 0/4] tdx-guest: Make Quote buffer size dynamic
+Thread-Topic: [PATCH v3 0/4] tdx-guest: Make Quote buffer size dynamic
+Thread-Index: AQHdH1YE/ME7/hSMIEe/+GB5P8Iam7aFAbAAgBSEcgCAAQNDAIAAIM6AgAAKnQCAAAuxgA==
+Date: Wed, 12 Aug 2026 17:22:11 +0000
+Message-ID: <ed4891a59096c59e43a893910c9f17d0ff6086b8.camel@intel.com>
+References: <20260729122939.1340412-1-peter.fang@intel.com>
+	 <e0a90fba3f8424412387aa08f1fdc708abeedc73.camel@intel.com>
+	 <80b4ea89ebf17398c3bee21d157c7f97ea32aadf.camel@intel.com>
+	 <anxvwV_Pz4UYaxxt@google.com>
+	 <86d532f33816cd4fa3e29c40079a6003abf89324.camel@intel.com>
+	 <anyiwqi9i0NSv0QW@google.com>
+In-Reply-To: <anyiwqi9i0NSv0QW@google.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.52.3-0ubuntu1.1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB6771:EE_|DM6PR11MB4513:EE_
+x-ms-office365-filtering-correlation-id: e825465f-7c21-4892-97ca-08def8963e9a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|23010399003|366016|7416014|10067099003|11063799006|56012099006|4143699003|6133799003|22082099003|18002099003|38070700021;
+x-microsoft-antispam-message-info: 2DVjJpDtbEgYOsrh2tNfP9yFelQpa2+QN8ui19rztG2Wbq/g+GFN0y+REF7wxN2yvc7dFY/gE3egvDxyzdLQxpZy39/CLwf+9DKZRAzfvWb9h5gb8EzFqY1oYFn91K6MJr3bjVjd25BkLsvzroSAG7KyPKiIbwVgEpQKC2rmXKE68FD/DLtG4g2pjXBNevqSJGaSfFBaU0LFPPLe0TsYmNaAYb2BI1pLTsQrhKG9Vi6ufqI0xJegYsHIuX946N8rbUNUcnSmCVAjttz4S5JTnWioYzaVQtg62canuhaSQEDiz+GR9eB72mSd9GvIsUCpIv9Rtn98I3Pcdsq2dWbtA4H+04XHiTdtDtY6kBMKarFN4YTTsKUrvcj0p1ZwLRqy5hs4oCeQhjDPRNzNq5EoZGU5KGhuPhie69XSQMLNzEX9ldKoVOXZnGKk+NYx9dG+mZLW+zNkwdyynsKfEcgdEvObe2FwHhcx+XaggjDEjXfaeKvD+NkN9fGUDoMzNX9AQ9r0MvHL0eR0YZskiL8Zs7eTstaJ7s89F07o0UZ5yUCS9Ap2TOdPhSE/qfgri7d9WBYYcGWJlQB5O43uSe4Z3m0lOKNSKXk7m/eh23oShOOD1uf0ZcoB9G8ULlc5c1Hux24C44QWwS4ua1kTNFzILCuxKDm34uX63UBa55cj0bQtg+VGNxlZcTY3L6e9LWptTgjWLTSgQDyW1mlA4vDZEetKEr4jd+aGlXYFSMrtaoA=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6771.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(7416014)(10067099003)(11063799006)(56012099006)(4143699003)(6133799003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VkEwTC9LZmhxTUFqU1Avd2ZiSitmcEdvempERmpWK3JXS1dxZ2s4VXRyRzVl?=
+ =?utf-8?B?YU53OTgyeGk2bk13UTUxczh1aklGa2k5SEUzV2VZVGZZa0UvUGpGT2dUb2hn?=
+ =?utf-8?B?TFhNRmVvZHJ6elordktQTy9teWt2NE1PRmh6YXRyTU45TWEvaFpaRGs5QTFh?=
+ =?utf-8?B?R3lUeXN0NURsUW40ZllOYTVpRXpzZWFFYkFBeTJXMytYMjNldGR3dU9JdDRk?=
+ =?utf-8?B?QTJ3clljT3JHY0xFclBWV2NzSlB1V0plRWdYeHZDTmZkNmI0ZDl1Nmo3SzNH?=
+ =?utf-8?B?VDNKUmVMTGFsNURPWlUzT2JTaFBjMXczYjFRU2h0ZEgyQURJUTlab3k1a1JS?=
+ =?utf-8?B?anpXVW00ZVJ3TzZsbHlHTHJ6cjN6VW91cm4vT1BaMHBYYkVud2h0TTRXWWNO?=
+ =?utf-8?B?WlJBVmRiQmdJNkk1dFJ3MUlDdDkvaU5md2o2T2pUc1lUZCtITmduVi9GOXlI?=
+ =?utf-8?B?ZlhwSGZXM1l1TmZZS3dmdXlSL3RwU2RaMjhWL1I1OUxsNjJpeEE0K2EraFVE?=
+ =?utf-8?B?YmRPZFlxMEZ0Z0hJWkhmeUMxaVNzWDF1bGtXVW51L2ZoQzFXSG54cWNranVJ?=
+ =?utf-8?B?cG9jUG5XMVZsNEdnbngwVTJTbERPZ2k5UmlOTXhyYmxkSEgvd0xxNlNCVzV1?=
+ =?utf-8?B?SDBFM0JKUkFWbEc2SEZWbWdLTXEvNnd5N1hRUUk3UERzeERMemZKQkVNYjA3?=
+ =?utf-8?B?bzdRNlRXVlR3ZGl3RUNHQTZQY1hkVStkT3FHRGh2ZXZON2ZiMjBKUXRCbFFV?=
+ =?utf-8?B?bldQS0MrQXNXVU5wRXdjZ3NSSm5mREQ4bHNHWjRnRFczV00wbmxpQjF6UW0z?=
+ =?utf-8?B?REVjMER6c3Ridy9yNDVVd1F5WHJldHZyNGRhdmc0SnR2dVRpQllNcVQ0OVJR?=
+ =?utf-8?B?eXFPcjNCYkp0blRVZVpPem04czJDYms4azg1UXdTWDhqWGRRNGMyeld3SEUz?=
+ =?utf-8?B?TTBwekk5SHprNmlUVmJ5RXRVNlBLQVM4WkczNktkK3p3RHl6WmRLRlo4UkM1?=
+ =?utf-8?B?Z29NUWtCeUdMTUprc1B1Q25MQjBxWlJkVGgvdWNXa1hrc244U0ZHcjkyb1Rl?=
+ =?utf-8?B?TExVTlhvRXlpRlBxci9Sck4yTDIxSnh2TUtCaXpma3FnVHhDcmRyZFU0L2dC?=
+ =?utf-8?B?aFpDQWdXZ2UvYUR0MTJET1RjSG5pK0VUMXlBKzJLTDZOVFF2SnJYTUV3SlNj?=
+ =?utf-8?B?Um9hb1lHV1FhMDU1MW9TNHZmNzRBR09YR2ZDT0dSVWRHVGpXWndGaWc5bVo4?=
+ =?utf-8?B?ZndOVU5ZWHFVVkxoaFc0cFFDemN1aS9nNkpKcURJTTA4YUtDdXMxcXIrSnR6?=
+ =?utf-8?B?bDE5MW01blZnVWp6eHhtRFRtRGViLzRmWm92QnU1bW10b2pOQmtXVkNzQ3F4?=
+ =?utf-8?B?Q0ZWcUhId1VhUGtSL0lIcFRzUmg4aDBkdDFlUjk4eFQ4RlRlS0ZlL2ZyM1FJ?=
+ =?utf-8?B?dEVZaXJLTVdzeVRYb3d4TkE5eTBXVEJzU3o4cVppQW9GRXhnSitRVjBNOUFi?=
+ =?utf-8?B?STg2SlVmeENjNnE1cEMxdkFXR2x1bW1KbjBGOFo3Y3NvT0RmVnFzOU5WaEIv?=
+ =?utf-8?B?bnQyZmNKSGJ1VFpQY3NzbVZEUDM2Q0c4bjVXTjVRaFhwbExZQnhPT3RDMmhx?=
+ =?utf-8?B?Nld1U2VCOFViRHZhdUJ0Mm10QSt0UlZpVGp2dTJrQStoNzhLVHFrbmhtNkZ1?=
+ =?utf-8?B?UmJsMDJscGJFRFYyU0NpSTBPbElHbXBBZk5jTC9aR1RuL3krUm1mbWFML3FE?=
+ =?utf-8?B?RGZEdGQ0L0hreE1PaiswL2xiWldpWDZRdEFwdW5DRGNiOVdNWUNkNkMvVXRX?=
+ =?utf-8?B?R0k1ZlZIaDU1WVI2MnN5MkM0aFJhY1FTd2pFRThyT1hPV0VhRFVYY2hMQWZ6?=
+ =?utf-8?B?Z3RlWm9OazZ5cVplR21FcGFIWll2cU9qZnVuUjIwZTRlbWV4ekw0bWVVZ1d6?=
+ =?utf-8?B?ZVowM0pKNHZJQ3ZJR2pTT3NnWU9rUkRUVnpFQ0djcFdmcFA2UlA5UW1yV2Fz?=
+ =?utf-8?B?SHppeldMVW5DM1BydXZ3bldQc3VveTBVZngweUlJTVZFbGVUZGZpdHplZUF0?=
+ =?utf-8?B?ckNJN01YaEFib3d4TmdKeklKaFdtN0RXaDlseTJzZlhPK2Y0TXhIOXBmTEFS?=
+ =?utf-8?B?YjlTbGYrTWpQcEZlRG1HbXJTeWVRdlZ5YVJNUUNiblBzSlFPK2NIOHlrallj?=
+ =?utf-8?B?UkhiWEt6bzNZOEd6Yi9HRnVuNWJ5NTdPdFZweFU2VTM3U0lFbWVPSUFBcUts?=
+ =?utf-8?B?S3NBK2krVFdOUkw4ZHRxdVBTZmh4SmVjL2VxTmZpdVdpT3pVUlo2UVIvL1By?=
+ =?utf-8?B?V2s0dis0RkhzY040aUt6bUJScVFZV3E3MkZ3eVZUQ1M1dHVwT2ZTd1ZXRGlJ?=
+ =?utf-8?Q?hyljsA5eZ0bAmggI=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E436A17504EF1B49998EAB79385D4F27@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-Exchange-RoutingPolicyChecked: ibz5RpFIzz+rtN01bU4wB67DHCzflY/pXLSI52Kxg+1XHb8WIn2CYL7anBUMCwytNDz76zQgsrgKY251Yu9lmCpolAj+Gj9b09x4M6l7roy2dHnePFvslHvrt2uPcXl6ovUntHzXWHqLPXZIK3xkFuAQlE0Jr8KO/5R1iONQAAM1ixrH+aVdoopkMzW5fsL18gAjQBsDdGT8BVjEVakLzREugEdgCfmRRp1u7tBgdkUhkyEdoL5MO0Djf7/yJgF4uXFLaMA4yrYUoVzrNg137FtZMu09OhArNhQkWr2xkEKrkRes28oXMXW5/NDD56EpyvZm8GOog5QglgNurTsWgA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6771.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e825465f-7c21-4892-97ca-08def8963e9a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Aug 2026 17:22:11.2049
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: NUrARFRv5k1oYmHcWDJ6njp7J/XcSlkWnT1VytQl8SzCdClO7iPjB/tEmaY/+znkCZMoogIE2Y12JXtU37NFj2/dUaFhMnnYR8OW1e6w6M0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4513
+X-OriginatorOrg: intel.com
 
-On Tue, 11 Aug 2026 20:31:49 +0000
-Samiullah Khawaja <skhawaja@google.com> wrote:
-
-> On Mon, Aug 10, 2026 at 09:32:23AM -0600, Alex Williamson wrote:
-> >On Thu, 6 Aug 2026 16:47:39 -0300
-> >Jason Gunthorpe <jgg@ziepe.ca> wrote:  
-> >> On Wed, Aug 05, 2026 at 09:03:23AM -0600, Alex Williamson wrote:  
-> >> > It's possible there are gaps that closing the PF can interrupt the VFs
-> >> > and we need to defer a reset until the VFs are closed,  
-> >>
-> >> Oh definately, when running in a SRIOV mode it is really problematic
-> >> for the PF to reset while there are any active VFs. The PF controls a
-> >> number of shared items (MMIO, ATS, etc) and when it blips everyone is
-> >> at risk of unexpected fairly catastrophic system crashing errors
-> >> related to the shared items going away.
-> >>
-> >> So resetting the PF device unconditionally when vfio closes is
-> >> definately wrong in principal. I can see it maybe working for simple
-> >> systems, especially ones that don't MCE..
-> >>
-> >> I don't think we can skip the PF reset on close because of dev_set
-> >> reasons and leave a rouge device for the next user, so the thing looks
-> >> somewhat troubled?  
-> >
-> >This is what our vf_token model would handle, if we could use it.
-> >Re-open with VFs in use through vfio-pci requires the vf_token
-> >proof/opt-in.  Re-open with no VFs in use could reset the PF, but we
-> >can't account for VFs bound to in-kernel drivers.  
-> 
-> I think even with this a PF reset blip can be catastrophic for the VFs
-> in some usecases or devices. Maybe we need an opt-in where the PF driver
-> can specify that keeping the SRIOV enabled during PF reset is
-> catastrophic for it and so the reopen is not preferred by it?
-
-AFAICT, there's really no case where a VF can be operating
-independently from the PF that a PF reset is not catastrophic.  Per the
-PCI spec, the default SR-IOV capability state is disabled, so
-post-reset the PF is effectively bringing up fresh, scrubbed VFs.
-
-> >> Adding the sriov disable here at least makes it defensibly safe, that
-> >> we do still clear the PF on close, and we don't take risks that the
-> >> active VFs will crash the system during the FLR blip.
-> >>
-> >> Though I understand it was not the original intention, I feel we have
-> >> ended up in a strange place with the SRIOV PF feature ..  
-> >
-> >I think we have 3 potential options for PF reset:
-> >
-> > a) All resets are blocked or deferred while SR-IOV is active.
-> >
-> > b) VF mappings are zapped/invalidated at PF reset and require
-> >    coordination to be reinstated.
-> >
-> > c) VFs are torn down on all PF resets.
-> >
-> >Option (a) is complex and doesn't look like stable material.  A deferred
-> >reset on .close needs to materialize on .remove or .sriov_configure
-> >(and of course .open), but to allow in-kernel VF drivers we can't rely
-> >on vfio usage counts, or even our vf-token trust boundaries, which is
-> >what leads to the .sriov_configure hook since we need to take advantage
-> >of every opportunity to issue a deferred reset when SR-IOV is not
-> >active when we can only rely on the PF state.  
-> 
-> In my cover letter I pointed out that this problem probably exists in
-> the in-kernel drivers (or PCI core) level also. For example an SRIOV PF
-> driverA can reset the PF while VFs are bound to driverB. This makes me
-> wonder whether we should fix this at PCI core level to maintain the same
-> policy for all drivers when it comes to PF/VF lifecycle?  Basically,
-> 
-> option1) On PF reset when there is SRIOV enabled, PCI core returns
-> -EBUSY from the reset API.
-> 
-> option2) On PF reset, PCI core disables SRIOV. This might be tricky as
-> some drivers might block this waiting for VF driver tear down and
-> remove.
-> 
-> We probably cannot do this as default policy as it will break the
-> vfio-pci model where the PF can be reopened as you mentioned above. I
-> think if we go down this route, we would need some way of establishing
-> trust and lifecycle rules?
-
-The PCI-core level change is the same conclusion I came to and posted
-in the RFC[1].  I think our only practical option is (1), function
-scoped resets must be rejected on PFs with SR-IOV enabled.  This is
-compatible with the re-open scenario, but leans on the fact that resets
-are best effort.
-
-The vf_token continues to form the boundary of trust for VFs operating
-within the vfio framework.  The adversarial device support Kevin
-referenced could influence the security posture of the driver taking on
-an untrusted device like this, but I don't currently see much
-opportunity to introduce coordination between vfio and non-vfio drivers.
-
-[1]https://lore.kernel.org/all/20260812045325.2733631-1-alex.williamson@nvidia.com/
-
-> >Option (b) is potentially more simple, it implements the blocking of
-> >access on reset in the kernel for enforcement, but defers the
-> >coordination of reinstantiating mappings to userspace, which is really
-> >how the vf_token model is intended to work.  This is incompatible with
-> >in-kernel VF drivers, which I think means tainting on VF unbind from
-> >vfio-pci and those working outside the model would tread carefully.  
-> 
-> While this might solve the issue for scenarios where the MMIO of these
-> VFs is mapped or exported (dmabufs), this might not be enough as the
-> software still remains out of sync as compared to the state of the
-> device.
-
-This is the same problem as the .reset_prepare/.reset_done hooks,
-invalidating the dma-buf only prevents the machine check, it doesn't
-necessarily allow for ongoing operation.  This gets back to the point
-that all PF resets are catastrophic for the VF driver.
-
-> >Option (c) is the more heavy handed approach, it means that a PF driver
-> >cannot fail or exit and re-attach.  We have existing logic that handles
-> >a PF driver re-opening the PF device with active VFs and authenticating
-> >the vf_token (logic also broken by in-kernel VF drivers that bypass the
-> >vf_token mechanics).  There also appears to be significant locking
-> >challenges in this approach, ex. the inversion of getting the device
-> >lock for SR-IOV teardown from the ioctl, config space, and .close
-> >contexts.  
-> 
-> I think this can be a reasonable opt-in option that the PF drivers can
-> use to indicate that on PF reset keeping the VFs alive is catastrophic
-> for it and it does not want to reconnect to the VFs. If we want to go
-> for this one, I can maybe try figure out a way to break the locking
-> issues.
-
-My exploration of this space suggests the locking issues run pretty
-deep with this approach.
-
-> Or we could certainly do this in a deferred way that is somewhat similar
-> to the option (a). Basically PF openers can opt-in to not reset the PF
-> on close if the VFs are enabled, and teardown the VFs on subsequent
-> .open or .remove. This at least gives the system administrator (or
-> scripts) opportunity to teardown the VFs in a proper way.
-
-But VFs can be enabled before the PF is opened.  If we're strictly
-within the vfio-pci model of using VFs, VFs cannot be opened until the
-vf_token is known, which requires a PF driver to set the token.
-However, binding VFs to in-kernel drivers entirely removes them from
-that ordering and coordination.  The disposition of the VFs is changed
-without PF driver involvement.
-
-I don't see how we really have an opportunity to create an opt-in
-beyond a module level global opt-in, but even then it's not clear
-what the opt-in can realistically choose.  Thanks,
-
-Alex
+T24gV2VkLCAyMDI2LTA4LTEyIGF0IDA5OjQzIC0wNzAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
+b3RlOg0KPiA+IEl0IHNlZW1zIHRvIG1lIHRoYXQgZnJvbSB0aGUgb3ZlcmFsbCBzb2x1dGlvbiBs
+ZXZlbCwgdGhlIHJlcG9ydCBzaG91bGQgbmV2ZXINCj4gPiBoYXZlIGhhZCB0aGUgZGV0YWlscyBp
+biBpdC4gSXQgc2hvdWxkIGp1c3QgYmUgc29tZSBub25jZSBvciBzb21lIHR5cGUgb2YNCj4gPiB0
+aGluZyB0aGF0IGNhbiB0aWUgdGhlIGd1ZXN0IHJlcXVlc3QgdG8gdGhlIHF1b3RlIHRoYXQgaXQg
+ZW5kcyB1cCBnZXR0aW5nDQo+ID4gYmFjay7CoERvZXNuJ3QgaXQgc2VlbSB3ZWlyZCB0byBnZXQg
+YSBidW5jaCBvZiBkZXRhaWxzIGZyb20gdGhlIFREWCBtb2R1bGUsDQo+ID4gdGhlbiBwYXNzIHRo
+ZW0gZnJvbSB0aGUgZ3Vlc3QgdG8gaG9zdCBLVk0gdG8gaG9zdCB1c2Vyc3BhY2UgdGhlbiBiYWNr
+IHRvIHRoZQ0KPiA+IFREWCBtb2R1bGUuLi4gd2hpY2ggYWxyZWFkeSBoYWQgYWxsIHRob3NlIGRl
+dGFpbHM/DQo+IA0KPiBIbW0sIG15IG1lbnRhbCBtb2RlbCBvZiB0aGlzIGlzIHRoYXQgdGhlIHJl
+cG9ydCBjb250YWlucyB0aGUgInJlYWwiIHBheWxvYWQsDQo+IGkuZS4gdGhlIG1ldGFkYXRhIGRl
+c2NyaWJpbmcgd2hhdCBpcyBydW5uaW5nIGFuZCB3aGF0bm90LCB3aGlsZSB0aGUgcXVvdGUNCj4g
+ZWZmZWN0aXZlbHkgc2lnbnMgdGhlIHBheWxvYWQgdG8gcHJvdmUgdGhlIHByb3ZlbmFuY2Ugb2Yg
+dGhlIHJlcG9ydC7CoCBUaGF0J3MNCj4gd2h5IEkgdmlldyB0aGUgcmVwb3J0IGFzIFRELXNwZWNp
+ZmljICh3aGF0J3MgcnVubmluZykgYW5kIHRoZSBxdW90ZSBhcw0KPiBwbGF0Zm9ybS1zcGVjaWZp
+YyAocHJvdmlkZXMgcm9vdCBvZiB0cnVzdCkuDQoNCkFyZ2guIFNvIEkgdGhpbmsgSSB3YXMgbm90
+IGNsZWFyIGVub3VnaCBpbiB0aGUgZGVzY3JpcHRpb24uIEFuZCBob3BlZnVsbHkgUGV0ZXINCndp
+bGwgYXBwZWFyIHNvb24gYW5kIGNsYXJpZnkgdGhpcyBpcyBhbGwgY29ycmVjdCwgYmVjYXVzZSBJ
+J20gcmVsYXlpbmcgd2hhdCBoZQ0KZXhwbGFpbmVkIHRvIG1lLsKgDQoNCldlIHRoaW5rIHF1b3Rl
+ICpvcGVyYXRpb24qIGNhbiBiZSBwbGF0Zm9ybSBzcGVjaWZpYyBpbnN0ZWFkIG9mIFREIHNwZWNp
+ZmljIGlmIHdlDQp3YW50LiBNZWFuaW5nIHRoZSBTRUFNQ0FMTCBpc24ndCBwYXNzZWQgYSBURFIu
+IEJ1dCB0aGUgYml0cyB0aGF0IGFjdHVhbGx5IGFyZSBpbg0KdGhlIHJlc3VsdGluZyBxdW90ZSBh
+cmUgVEQgc3BlY2lmaWMuIEluIG90aGVyIHdvcmRzLCBhdCBsZWFzdCBzb21lIG9mIHRoZSBiaXRz
+DQppbiB0aGUgcmVwb3J0IGVuZCB1cCBpbiB0aGUgcXVvdGUgdG9vLiBUaG9zZSBURCBzcGVjaWZp
+YyBiaXRzIGVpdGhlciBjb21lIGZyb20NCnRoZSBwYXNzZWQgaW4gcmVwb3J0LCBvciBhZGRlZCBs
+YXRlciBkdXJpbmcgdGhlIHF1b3RlIG9wZXJhdGlvbiBiYXNlZCBvbiB0aGUgVERYDQptb2R1bGUn
+cyBURCBrbm93bGVkZ2UuIEJlY2F1c2Ugb2YgY291cnNlIHRoZSBhdHRlc3RhdGlvbiBuZWVkcyB0
+byBrbm93IGFib3V0IHRoZQ0KVEQgZGV0YWlscy4NCg0KT3IgSSBndWVzcy4uLiBpZiB3ZSB3YW50
+ZWQgdG8gaGFuZCB0aGUgcmVwb3J0IGFuZCBxdW90ZSB0byB0aGUgdmVyaWZpZXIgYXMNCnNlcGFy
+YXRlIHBheWxvYWRzLiBUaGVuLi4uIGZyb20gbXkgYmFzaWMgY3J5cHRvIHVuZGVyc3RhbmRpbmcs
+IGl0IGNvdWxkIHdvcmsNCnRvby4gSXMgdGhhdCB5b3VyIG1vZGVsPyBJIHRoaW5rIGl0IHdvdWxk
+IGJlIGEgbWFqb3IgY2hhbmdlIGF0IGxlYXN0Lg0KDQpCdXQgcGFydCBvZiB0aGlzIHRvbywgaXMg
+dGhhdCAiRElDRSIgaXMgYW4gaW5kdXN0cnkgc3RhbmRhcmQgWzBdLiBTb21lIG9mIHRoZQ0KZXhp
+c3RpbmcgVERYIGF0dGVzdGF0aW9uIGZvcm1hdCBpcyBURFggc3BlY2lmaWMsIGFuZCBtb3Zpbmcg
+dG8gdGhlIHN0YW5kYXJkIGlzDQpleHBlY3RlZCB0byBtYWtlIHRoZSB2ZXJpZmllciBiZXR0ZXIu
+IFNvIFREWCBkb2VzIG5vdCBoYXZlIGZ1bGwgZmxleGliaWxpdHkgaW4NCmNob29zaW5nIHdoaWNo
+IGJpdHMgZ28gd2hlcmUuIFRoZXJlIGlzIHNvbWUuIEJ1dCBJJ20gbm90IHN1cmUgd2hpY2guDQoN
+CkkgdGhpbmsgSSBtZW50aW9uZWQgdGhpcywgYnV0IHdoYXQgd2UgZXhwZXJpZW5jZWQgaW50ZXJu
+YWxseSBvbiB0aGlzIGZlYXR1cmUgaXMNCnRoYXQgYmFzaWMgcXVlc3Rpb25zIGxpa2UgIndoZXJl
+IHNob3VsZCB0aGUgcXVvdGUgdUFCSSBsaXZlIiBxdWlja2x5IHNwaXJhbCBpbnRvDQphIGxvdCBv
+ZiBURFggYXJjaCB0cmFkZW9mZnMgYW5kIGxlZ2FjeSBjb21wbGljYXRpb25zLiBJJ2xsIHRha2Ug
+aXQgd2Ugc2hvdWxkDQpwcm92ZSBvdXQgKDEpIGEgYml0IG1vcmUgdG8gZ2V0IGJldHRlciBjbGFy
+aXR5IG9uIGlmIHRoZXJlIGFyZSBhbnkgc25hZ3MuDQoNClswXSBodHRwczovL3RydXN0ZWRjb21w
+dXRpbmdncm91cC5vcmcvcmVzb3VyY2UvZGljZS1hdHRlc3RhdGlvbi1hcmNoaXRlY3R1cmUvDQo=
