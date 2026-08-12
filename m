@@ -1,102 +1,61 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022F345DF6E
-	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 13:49:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6B3355F22;
+	Wed, 12 Aug 2026 13:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786542578; cv=none; b=JJpvSd7t3rtNYEogTaL1USAtZVRIQa9tIKZ98158FUtLmqcdYwllehl2EMtSHawbIG16VB8w+O+WqTRrVTP2duHESkPlTfokNNokMJnI0KPI4k7wANC+QVvpP+hsv1aFoJUFerLvM/S6w3RH2Dud5o5SPTU+87R3HY1ILQvg3Gc=
+	t=1786542698; cv=none; b=qwuBuTA9v8Cfsi/gwe9P1Ux9k/S6dmmORxp6GseWqCCgMn11ubOwRpP6t8IqOJ8AsR+gwfijzb5EgeAgsDXvuO6xnP5cH6cenQNoR2h60bodSMtgv6lWa6NK/w+vmRuxPcAzcmY2SDbozpEWTwQKRbqi6qs2i080gAeyLOipe4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786542578; c=relaxed/simple;
-	bh=LvwifihpyQl04XWVsmiC/g59oClWiM8qKJQT0nS9CgQ=;
+	s=arc-20240116; t=1786542698; c=relaxed/simple;
+	bh=7nCoc+Gd4dBqkVM3L9DgfcWFTtT0Go8fgXf2EaF6ryw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ncRMesJkwAhrlapfywG5l+h2Qm1H4BqRlvKwdyAP01JO8+RcOyfS3yyDh4rZPOhTBKas9jm4Vl6HPyuD1ZVGac+fRYL3Nf1LSq/9a4yOo+lLbheTiAYUkqzvEC84qmqUVIfsQM3udor7ox0IBW5bf2UKAZQtKgbIVDvctLwv7ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=HoEfNc5l; arc=none smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=BA20NWmnCBbCOjkVhRwFvM8kSyM36HQSg04VoH75qvkhxC0Q3iIIO1UOtWRIFGS9b2gzeG1GgEK2UdQWUzDCsu6xFZc5WqkPAVeBlQgpyj0ybJCcHAZNDzD5HKsBF2TSu8KZSzx1/xiwa00sc6rjgXwAHwShBMuhH/W8FbIo+vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=mdhIzOxU; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="HoEfNc5l"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-527e352a167so4624651cf.1
-        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 06:49:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1786542576; x=1787147376; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kc4Afb6aXWQXjmXmnDB66MIWvaDryZWAnPWngJIIDAE=;
-        b=HoEfNc5lyU/Ll7hN0GPE+9hljvoua4Qpye46SRrlgLYSsFB08P74Cw+HiY95R/9SKR
-         KrjVHI6m6PmEeRl/FWnaPIF2smRTxGXu9Jt7rKg3FIx+sOfPF2ij88BPp9JzB73C1g82
-         fI452m4cyK7obORK07nYNN8pedDlhZa7vvaEXF+bY+pvg0vyK/qR/6PlTH8ikXeK2XRR
-         XJRCIiMVfeY48NSOJlzxjHvMxFmUJLZsnksLcS7Se52daZBJ2VCfSyLNS5Dj7GMXfp6e
-         +mAuhqq0FTddib/3Wb6/F7Jdql6e7XWizRh+RzqIOsPRK9aCmpYPbQCTXJ9BLnoLI7xI
-         rlAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786542576; x=1787147376;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kc4Afb6aXWQXjmXmnDB66MIWvaDryZWAnPWngJIIDAE=;
-        b=kmyrPXuUOjDk7fv1WquHPkRCcxCgkVfbAlivBa1UCKA67Ib75l933aOIv1hJ6OZoRw
-         F2Puh4s8STx/k7QEfvUPWFzhwlL23uSf/OYKnR/VtWnfL33rli6GREZIoPBRk8iVvBJS
-         UdP/oROauCMF8qPBZcgGoJsOFh54yXvkaq8gfrXBAUH0pwbUZxpdDEsO8J4Bcd6tgDoj
-         TN1eW1Vqe2G/GC0i1pupd3LAEcamJVi+d+eWS2oQFBVXqlH9foNfV3dKkahVOyyIext6
-         +n36P/Dx8O3J6P7r1HzUrU+cz/phAllXs43uD210DXJdQsbuVm28HpZh/Q21FtMqJLra
-         12Qg==
-X-Forwarded-Encrypted: i=1; AHgh+Rpfm/3sKcHY9tqr8a0Y6pphJcS6WBt7ze2dH/ydAITOFH9eS5XovZWkZKXP+xm3OzItIBY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXtF4w1usBZacu8tC24tu+BV7+dzvGl6MNRdy5hwn79wjIy2OS
-	Z3qun3tafzbc30AzjoDQ/nCyiMKH58nuuxRKax+rxsFXduSN0hhtNzs5iJ5Xs7B3awA=
-X-Gm-Gg: AR+sD12qiA5fU34asv1iutkqUxkLVbvvAwevenONtFyymWxDFjyJtfRbON2xN7JSH8n
-	qRM/cLuUZDK/9uBgS50prmyfzL1Cv8al+NbaLNw91R5eiQUYWPXeEsRKxh9q5WbaC8Nu8gFS0sA
-	Mb1vNNyXDs8Um/c+fMWeT6GCr6OfY3hFTi95IYPPaGdqh/Xh4RQZcNe5yWod7sC7fFgfvkCqTiQ
-	AUH9HFIvx3DR+nMfUZQyHYLofgDuZLG/jfipIel3V7ywGMN9QSWkd0azqWfPt/JekwCpoP9Dksi
-	MPxKyedh+YnN8Ugibj5Do8wV3BmeeVd1GXIl7HmaZncakr0mw1ehWmtVLxImFLoO7CG0dgMuekd
-	pJ8ADt5Q1bDIrG0TYzgKEOcvjJ5bqPi0vhFSkA0tpc89P5Vj0MJLQL0cX93Uc4NzNXo//64x/B0
-	XmW0JZUoQMD9sM3gQ7QxnlxfQUagQGr2ZBS6MJuQ==
-X-Received: by 2002:ac8:7f47:0:b0:516:dbf6:f8e7 with SMTP id d75a77b69052e-52d646fa46bmr42007131cf.17.1786542575667;
-        Wed, 12 Aug 2026 06:49:35 -0700 (PDT)
-Received: from ziepe.ca ([142.166.156.215])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52d61c0821esm18333021cf.4.2026.08.12.06.49.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 06:49:34 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wu9Ko-000000033xl-0724;
-	Wed, 12 Aug 2026 10:49:34 -0300
-Date: Wed, 12 Aug 2026 10:49:34 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <20260812134934.GC662699@ziepe.ca>
-References: <20260811135537.GC544626@ziepe.ca>
- <1d669aca4ffee797b9c29215382444a5b23624b3.camel@infradead.org>
- <20260811142730.GG544626@ziepe.ca>
- <a552b227e18ddbb3fa1f2edf2d1cb30ee6ccff13.camel@infradead.org>
- <20260811104229.72fdd928@gandalf.local.home>
- <37b83b429b9f14ea6ad4ca1c13cc8e565ec09033.camel@infradead.org>
- <anwraNIKJV8zwrNT@tiehlicka>
- <44c51ace9b0dc44b795f6f48c91cda440eed910b.camel@infradead.org>
- <20260812122759.GA662699@ziepe.ca>
- <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="mdhIzOxU"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 95556153B;
+	Wed, 12 Aug 2026 06:51:31 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6B3253F66F;
+	Wed, 12 Aug 2026 06:51:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786542695; bh=7nCoc+Gd4dBqkVM3L9DgfcWFTtT0Go8fgXf2EaF6ryw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mdhIzOxU4DrVBTfWu9sQVemCRyfbINm+gJGsobbhcHm6RT2xmNZhB26+0R9dosOlZ
+	 xJoZ5cz12TtS+PoAC7Z6fjscj7CPeR3vEFkFy0T4SY9x7smJreqT9+FtH5Fyd4YiTR
+	 1YAp2YSqYL4igzdFr1iNMh6k+hMv25AjPvBXLAdU=
+Date: Wed, 12 Aug 2026 14:51:29 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Pavan Kondeti <pavan.kondeti@oss.qualcomm.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v16 07/45] arm64: mm: Handle Granule Protection Faults
+ (GPFs)
+Message-ID: <anx6YbPMVz3OlpA5@arm.com>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <20260803134403.80630-8-steven.price@arm.com>
+ <ans1ZSwMEKeT9Gfz@arm.com>
+ <d4bdecca-517a-4b4b-bf67-cef6b09bc8c1@arm.com>
+ <7d4e5920-aa20-40cd-954e-037631bd0d6c@quicinc.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -105,27 +64,94 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org>
+In-Reply-To: <7d4e5920-aa20-40cd-954e-037631bd0d6c@quicinc.com>
 
-On Wed, Aug 12, 2026 at 02:46:08PM +0100, David Woodhouse wrote:
-> I hear you. I'm less sceptical, given the use case, but I'll certainly
-> concede that the universe is known for inventing better idiots.
+On Wed, Aug 12, 2026 at 06:12:09PM +0530, Pavan Kondeti wrote:
+> On Tue, Aug 11, 2026 at 04:11:13PM +0100, Suzuki K Poulose wrote:
+> > On 11/08/2026 15:44, Catalin Marinas wrote:
+> > > On Mon, Aug 03, 2026 at 02:43:23PM +0100, Steven Price wrote:
+> > > > If the host attempts to access granules that have been delegated for use
+> > > > in a realm these accesses will be caught and will trigger a Granule
+> > > > Protection Fault (GPF).
+> > > > 
+> > > > A fault during a page walk signals a bug in the kernel and is handled by
+> > > > oopsing the kernel. A non-page walk fault could be caused by user space
+> > > > having access to a page which has been delegated to the kernel and will
+> > > > trigger a SIGBUS to allow debugging why user space is trying to access a
+> > > > delegated page.
+> > > > 
+> > > > Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > > > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > > > Signed-off-by: Steven Price <steven.price@arm.com>
+> > > > ---
+> > > > Changes since v10:
+> > > >   * Don't call arm64_notify_die() in do_gpf() but simply return 1.
+> > > > Changes since v2:
+> > > >   * Include missing "Granule Protection Fault at level -1"
+> > > > ---
+> > > >   arch/arm64/mm/fault.c | 28 ++++++++++++++++++++++------
+> > > >   1 file changed, 22 insertions(+), 6 deletions(-)
+> > > > 
+> > > > diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+> > > > index 85e23388f9bb..ea3ae0ca7dba 100644
+> > > > --- a/arch/arm64/mm/fault.c
+> > > > +++ b/arch/arm64/mm/fault.c
+> > > > @@ -909,6 +909,22 @@ static int do_tag_check_fault(unsigned long far, unsigned long esr,
+> > > >   	return 0;
+> > > >   }
+> > > > +static int do_gpf_ptw(unsigned long far, unsigned long esr, struct pt_regs *regs)
+> > > > +{
+> > > > +	const struct fault_info *inf = esr_to_fault_info(esr);
+> > > > +
+> > > > +	die_kernel_fault(inf->name, far, esr, regs);
+> > > > +	return 0;
+> > > > +}
+> > > > +
+> > > > +static int do_gpf(unsigned long far, unsigned long esr, struct pt_regs *regs)
+> > > > +{
+> > > > +	if (!is_el1_instruction_abort(esr) && fixup_exception(regs, esr))
+> > > > +		return 0;
+> > > > +
+> > > > +	return 1;
+> > > > +}
+> > > 
+> > > Is there a valid case for fixup_exception() here? IOW, do we ever have a
+> > > valid user mapping of the pages delegated to a guest? If the above is
+> > > considered a kernel bug, I'd not silently ignore this (like return less
+> > > bytes copied or -EFAULT to user) but rather warn, potentially
+> > > rate-limited.
+> > 
+> > Good question. This shouldn't be a valid case. We expect the VMM to use
+> > guest_memfd and that should prevent any mmaps and thus fixups shouldn't
+> > be required. That said, this series doesn't enforce that the VMM uses
+> > GMEM backed memslots for Guest RAM. We should probably do that while
+> > mapping things in.
+> > 
+> > With that, we could drop that fixup and scream a bit.
 > 
-> I'm certainly not averse to having a wrapper so that the read sections
-> don't just srcu_read_lock() directly, but also get a sanity check
-> (non_block_start? local_irq_save? what would it actually be? does it
-> have to be different for the hardirq vs. process-context invocations?)
-> for free.
+> There is a valid case for fixup_exception() to be needed here in GPF
+> handling.
 > 
-> Or instead of a GPC-specific wrapper, do we make it a first-class SRCU
-> citizen, SRCU_READ_FLAVOR_ATOMIC? If it disables preemption, we'd know
-> that lock+unlock must happen on the *same* CPU, which could potentially
-> simplify my new try_synchronize_srcu() and/or allow for a *spinning*
-> grace period if we really do want that (although I'm unconvinced; it's
-> *latency* we care about here, and punting to the WQ when we *already*
-> have to wait is fair enough).
+> -000 |load_unaligned_zeropad(inline)
+> -000 |hash_name(inline)
+> -000 |link_path_walk()
+> -001 |path_lookupat()
+> -002 |filename_lookup()
+> -003 |vfs_statx()
+> -004 |vfs_fstatat()
+> 
+> We observed this in Android running Gunyah when the page is mapped in
+> EL1 but unmapped at EL2. path_lookupat() can actually handle this
+> via fixup_exeption() when a word load crosses the page boundary.
+> However, Gunyah injects a Synchronous External Abort and we have
+> a downstream patch [1] that adds fixup_exception() in do_sea(). pKVM
+> injects [2] such faults back to EL1 and fixup_exception() is taken care.
 
-These all seem like good ideas, then you don't need to touch the
-notifiers..
+Ah, good point, completely forgot about load_unaligned_zeropad(). Since
+we don't unmap the linear map for delegated pages, we'll need the
+fixup_exception(). And I guess warning in this case is not desirable
+either. We could limit it to EX_TYPE_KACCESS_ERR_ZERO and
+EX_TYPE_LOAD_UNALIGNED_ZEROPAD, though not sure it's worth it.
 
-Jason
+-- 
+Catalin
