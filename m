@@ -1,39 +1,39 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2423C1083
-	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 08:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFDE3A9DB6
+	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 08:34:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786523585; cv=none; b=rE4WGszE605qhi38Kg126UvSgv/dldKcgucXbaEV956ZRBzMEDOJx/ErIfNKAYTEZp2qIWD8kdhgSQ5VQw671TR95FWxXhw2mfxp6XEWvq/MavxZga5855Kn1F5zt93xex/5xCFTPv4Ktp/frBcAr0lcB2S4AMPK1Z3x0r+m/6U=
+	t=1786523689; cv=none; b=NcV0ELGm9kk0nNiaJwPTn2N95XIiOiY1d6/LZlKBr4K/rKLSKTMtlZDjIWjdmwTTqkmgSdlGrgneWyDJ1yJT3UBl4C+GLunE8WvssmPyWyJD2WWYPbBoXxPmcmVIcdgBwNIvk+m3MlU0BQXd9iLKXXoR7ICRj7JwK9uU2qE5U44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786523585; c=relaxed/simple;
-	bh=jcbf4Q/ZCiHLtPboKt7yWBli351/l4gj9y58h7XFN2s=;
+	s=arc-20240116; t=1786523689; c=relaxed/simple;
+	bh=plaso9psqK0+k1Ga3BN7NauBow/911i3F/L2DYtOlAw=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Scuvaw0uqn/pBjn9Zm9A5IWlDue4spDtTQZbYjyvbkngUgn+OMa1c8EhUMcHaQx9H1V4tC8L0j2kVn5sIzDD3QPTM74cioW0W5L5+/+NXH3gBgT8RlQe2nkE3uPIHLbBjkpFQNEiz9Wuy54rF6rTmdpOLCar3UoHETLTrhhSnmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=QtcHJp5n; arc=none smtp.client-ip=220.197.31.4
+	 Content-Disposition:In-Reply-To; b=m1jO4UwFaK7MBNjIGzIAZ26v81XloWONOxIzstK/FkpcQZ5HsaFiqhhdnIHpSJqajYFKN9rOwKE5jEgXdIk8BJMC/KU6lFspjexaEXDX3Pe+ReEzobSpqgGj6hFVdwROhMKd80QCgG90KkxJ0lpjXEP14VOlcMPdR4RPWjR3Dt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=T2Zp7Mje; arc=none smtp.client-ip=220.197.31.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="QtcHJp5n"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="T2Zp7Mje"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=ZAuocx5o9n++Xk2ruFvdsesTtJNxAkYKQ9L7LRJC/7Y=;
-	b=QtcHJp5nogv6UwxSdk27XkJfcOGNQgQH1gzP6KOl0hKn1wdH1BMc8FybylyDF1
-	jEc9FyUy0Bo6G9VdyQpCOXO3EFgaviINm69mCPCf9EZWekElQ9pyCNvdwWXpRJHy
-	Uk437NgvcDtpccq/tK0xy6wOszKMFIQWBjuEl2i9hqXf8=
+	Content-Type; bh=rhmk74NoGX0rjcG+7snUa3STz7lzqxTtPbndz82Ntww=;
+	b=T2Zp7Mjepl2iXa4BN8eninlL/lr0NxX18Cg5DBPXGvtL4Q77rJO87UmURLiqMW
+	ih5Vrej0Nt2euO3AwqRh/wMa2RS8/dWmWM8PbteqnuEd0Zb9OYfb6m5YUQ2JonBD
+	75qXyz8qt0V2FpPT72hhQBUQd+oGzQx4PnAs3RzOQja3I=
 Received: from localhost (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PygvCgBXrcaeL3xquIjELw--.51318S2;
-	Wed, 12 Aug 2026 16:32:30 +0800 (CST)
-Date: Wed, 12 Aug 2026 16:32:28 +0800
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wDnf4QGMHxqkPqKOw--.62474S2;
+	Wed, 12 Aug 2026 16:34:14 +0800 (CST)
+Date: Wed, 12 Aug 2026 16:34:12 +0800
 From: Hao Zhang <hao_zhang_kdev@163.com>
 To: "seanjc@google.com" <seanjc@google.com>
 Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
 	"pbonzini@redhat.com" <pbonzini@redhat.com>,
 	"Huang, Kai" <kai.huang@intel.com>
-Subject: [PATCH v5 1/6] KVM: x86: ioapic: Update remote_irr only after
- successful delivery
-Message-ID: <anwvnBuFNqKBthtZ@192.168.1.215>
+Subject: [PATCH v5 2/6] KVM: selftests: Verify failed IOAPIC delivery
+ preserves state
+Message-ID: <anwwBMhPdMbU3qw9@192.168.1.215>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -43,54 +43,139 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 In-Reply-To: <anwugm-oU0v1VM-t@192.168.1.215>
-X-CM-TRANSID:PygvCgBXrcaeL3xquIjELw--.51318S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7AFyxKw1xtF4UJFyUKr15Arb_yoW8AFW5pF
-	Z5CFsFgr4kGr1rGFWkJF4xAF98ur93ZrWfCr1Du39rAan09r9rXr1Iy340v34UWrWrAay5
-	tF4Yvw1rWFWUJaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UonQUUUUUU=
-X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC3h6sn2p8L54-KwAA3A
+X-CM-TRANSID:_____wDnf4QGMHxqkPqKOw--.62474S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXw47Xry8JFWDtFyUtrWDArb_yoWrAr4Dp3
+	4kC340vr4rGFyxKF1rJF1DWr15uFyqkay8Cw10gry8JFyrJ397AFs2qFW8Za4Ygw48Kws3
+	Za4rX345uw4UAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRrb15UUUUU=
+X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC3QfGuWp8MAc+sAAA3K
 
 From: Hao Zhang <zhanghao1@kylinos.cn>
 
-The I/O APIC sets remote_irr for level-triggered interrupts that have
-been accepted by a local APIC and are waiting for an EOI.
+Add an x86 selftest for the in-kernel I/O APIC state that is exposed
+through KVM_GET_IRQCHIP.
 
-ioapic_service() currently treats any non-zero return from
-kvm_irq_delivery_to_apic() as successful delivery.  But negative return
-values are failures, not successful delivery.  Setting remote_irr after
-such a failed delivery leaves the pin blocked forever waiting for an EOI
-that will never be generated.
+Create a VM with an in-kernel irqchip and no vCPUs, route an unmasked
+level-triggered I/O APIC pin to a non-existent APIC ID, and verify that
+failed delivery does not set remote_irr.
 
-The bug dates back to commit 4925663a079c ("KVM: Report IRQ injection
-status to userspace."), which made ioapic_service() preserve and return
-the delivery result, initialized the result to -1, but kept using
-"ret != 0" as the condition for setting remote_irr.  As a result, any
-negative delivery failure that reaches this path is incorrectly treated
-as a delivered level-triggered interrupt.
-
-Update remote_irr only when the delivery result is positive, i.e. when
-at least one local APIC accepted the interrupt.
-
-Fixes: 4925663a079c ("KVM: Report IRQ injection status to userspace.")
-Reviewed-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
 ---
- arch/x86/kvm/ioapic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/kvm/Makefile.kvm           |  1 +
+ .../testing/selftests/kvm/x86/ioapic_state_test.c  | 92 ++++++++++++++++++++++
+ 2 files changed, 93 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/x86/ioapic_state_test.c
 
-diff --git a/arch/x86/kvm/ioapic.c b/arch/x86/kvm/ioapic.c
-index 757667fb2bfa..24a7cc3b8b7e 100644
---- a/arch/x86/kvm/ioapic.c
-+++ b/arch/x86/kvm/ioapic.c
-@@ -491,7 +491,7 @@ static int ioapic_service(struct kvm_ioapic *ioapic, int irq, bool line_status)
- 	} else
- 		ret = kvm_irq_delivery_to_apic(ioapic->kvm, NULL, &irqe);
- 
--	if (ret && irqe.trig_mode == IOAPIC_LEVEL_TRIG)
-+	if (ret > 0 && irqe.trig_mode == IOAPIC_LEVEL_TRIG)
- 		entry->fields.remote_irr = 1;
- 
- 	return ret;
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 6fc34e9bf8e1..89e3f82e75b0 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -86,6 +86,7 @@ TEST_GEN_PROGS_x86 += x86/hyperv_features
+ TEST_GEN_PROGS_x86 += x86/hyperv_ipi
+ TEST_GEN_PROGS_x86 += x86/hyperv_svm_test
+ TEST_GEN_PROGS_x86 += x86/hyperv_tlb_flush
++TEST_GEN_PROGS_x86 += x86/ioapic_state_test
+ TEST_GEN_PROGS_x86 += x86/kvm_clock_test
+ TEST_GEN_PROGS_x86 += x86/kvm_pv_test
+ TEST_GEN_PROGS_x86 += x86/kvm_buslock_test
+diff --git a/tools/testing/selftests/kvm/x86/ioapic_state_test.c b/tools/testing/selftests/kvm/x86/ioapic_state_test.c
+new file mode 100644
+index 000000000000..be5237f34ad2
+--- /dev/null
++++ b/tools/testing/selftests/kvm/x86/ioapic_state_test.c
+@@ -0,0 +1,92 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Regression tests for in-kernel I/O APIC state.
++ */
++
++#include "kvm_util.h"
++#include "test_util.h"
++
++#define TEST_IOAPIC_PIN		16
++#define TEST_VECTOR		0x50
++#define NO_SUCH_APIC_ID		0xfe
++#define TEST_IOAPIC_EDGE_TRIG	0
++#define TEST_IOAPIC_LEVEL_TRIG	1
++
++static void get_ioapic(struct kvm_vm *vm, struct kvm_irqchip *irqchip)
++{
++	int r;
++
++	irqchip->chip_id = KVM_IRQCHIP_IOAPIC;
++	r = __vm_ioctl(vm, KVM_GET_IRQCHIP, irqchip);
++	if (r && errno == ENXIO)
++		__TEST_REQUIRE(0, "In-kernel I/O APIC not available");
++
++	TEST_ASSERT(!r, KVM_IOCTL_ERROR(KVM_GET_IRQCHIP, r));
++}
++
++static void set_ioapic(struct kvm_vm *vm, struct kvm_irqchip *irqchip)
++{
++	irqchip->chip_id = KVM_IRQCHIP_IOAPIC;
++	vm_ioctl(vm, KVM_SET_IRQCHIP, irqchip);
++}
++
++static void set_ioapic_entry(struct kvm_vm *vm, bool level_triggered,
++			     u32 dest_id)
++{
++	struct kvm_irqchip irqchip;
++
++	get_ioapic(vm, &irqchip);
++
++	irqchip.chip.ioapic.redirtbl[TEST_IOAPIC_PIN].fields.vector =
++		TEST_VECTOR;
++	irqchip.chip.ioapic.redirtbl[TEST_IOAPIC_PIN].fields.dest_id =
++		dest_id;
++	irqchip.chip.ioapic.redirtbl[TEST_IOAPIC_PIN].fields.dest_mode = 0;
++	irqchip.chip.ioapic.redirtbl[TEST_IOAPIC_PIN].fields.trig_mode =
++		level_triggered ? TEST_IOAPIC_LEVEL_TRIG :
++				  TEST_IOAPIC_EDGE_TRIG;
++	irqchip.chip.ioapic.redirtbl[TEST_IOAPIC_PIN].fields.mask = 0;
++	irqchip.chip.ioapic.redirtbl[TEST_IOAPIC_PIN].fields.remote_irr = 0;
++
++	set_ioapic(vm, &irqchip);
++}
++
++static int kvm_irq_line_status(struct kvm_vm *vm, int level)
++{
++	struct kvm_irq_level irq = {
++		.irq = TEST_IOAPIC_PIN,
++		.level = level,
++	};
++
++	vm_ioctl(vm, KVM_IRQ_LINE_STATUS, &irq);
++	return irq.status;
++}
++
++static void test_no_remote_irr_for_undelivered_level_interrupt(void)
++{
++	struct kvm_irqchip irqchip;
++	struct kvm_vm *vm;
++	int status;
++
++	vm = vm_create_barebones();
++	vm_create_irqchip(vm);
++
++	set_ioapic_entry(vm, true, NO_SUCH_APIC_ID);
++
++	status = kvm_irq_line_status(vm, 1);
++	TEST_ASSERT(status == -1,
++		    "Expected failed interrupt delivery, got %d", status);
++
++	get_ioapic(vm, &irqchip);
++	TEST_ASSERT(!irqchip.chip.ioapic.redirtbl[TEST_IOAPIC_PIN].fields.remote_irr,
++		    "KVM set remote_irr for a level-triggered interrupt that wasn't delivered");
++
++	kvm_vm_free(vm);
++}
++
++int main(void)
++{
++	test_no_remote_irr_for_undelivered_level_interrupt();
++
++	return 0;
++}
 -- 
 2.15.0
 
