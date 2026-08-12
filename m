@@ -1,201 +1,191 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35D2335081;
-	Wed, 12 Aug 2026 17:27:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2551480942;
+	Wed, 12 Aug 2026 17:28:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786555660; cv=none; b=gxSUbbtRSb8CDJw+KKtoqXpSqfgu9mGqgC/axhCMJyz20BJfi5pFIYLfuVepPP28wm1RoYbFeqmuSA+z9hMx2TWnmSBVAISzbdlFQExP2pIId5vf4zih+QyXaCfUp0PveBnwSiFbYdZntijQDR5cX3Xtt8ofg2J0A/Al4Md0jKo=
+	t=1786555704; cv=none; b=m5O+nAY61hUquAljwvcZZCL/Hh/iAY3XJu7ddvt1d3nSCUu4MV6eFZgzz/Loq653qQkLkWVV+QUvo5APfp5LY9QRP/AIuclEdJ0gsxm5KAVN9cvH5WCxUchbQml7O+mG4DOx6Ifofaw8XR1M5azzONeIgcK69KeD+74moJM88LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786555660; c=relaxed/simple;
-	bh=WJPLHXt8itB/Cw880Ar8NhbyTTeEUpwQxfJvdcAm5iw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aQLbsfilyYZC0e2GXaHUA/kOpqQ5DOi25CmNiRT5VYWMuyZ9izBUbuviAelx7dcZMBkjU1pRFgGw6Nebs+xOkm4oNRJr/gszpFeZq2KhFRSnZYWaZ64GsIpui8Q+Y0xJLpDYXsDxH4xNq7r4d4ODVNzN8oUcZfItC5NTmK1imuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jwSvUCMl; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786555704; c=relaxed/simple;
+	bh=4FXW24aTakuJq+Z57F/jABxW2z/rHTxHMYcpaIQ22rM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=ooUM5hyC5pOgANCPWWpW9JP52LEE3HJIvNhFS0Z5F7yh9h/52s6FJ4kFKKzlHOlxuWd2JboH23k305DO0wS7bHMkgGfY2IvBYWXF/F9uHQal2Qu5COB90tqLsPL7jRc3jwJ2EuN7sx4QUG0YhLpZvSHYAZZZN4zQfOft3yrx0iI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UC3gOMeZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jwSvUCMl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786555659; x=1818091659;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=WJPLHXt8itB/Cw880Ar8NhbyTTeEUpwQxfJvdcAm5iw=;
-  b=jwSvUCMlc5rI50YMMFht4yNKyz9ajttHHpXEoFQOMPE4k48kCMtzqw90
-   VR7vDM1q37HJvMkkJiiaHds5/++lu2VhNe95kF8vpjjFLWKc+ZFDDBVN7
-   hyhqACzDxM9XnD5qozg5VUHOcmSc0tjmka12CWrmKWlXkKN5VXo2DYxO+
-   xm5+M/chtEhX+jkovg4pWRyPVgUMct49Wa+jf2qF9W+08FA80/KL3Ypw4
-   AUK5achkseH0292SvcjE+YfOa9x/+OlWKVM24nzNLp6bPxaEteVyFvkLH
-   vU4rgLTMe/yuCzWPZaXbbz6XfDrxo4Cmka7iEB8/oI636XlRjaKUd4pQ8
-   A==;
-X-CSE-ConnectionGUID: ruaDc2OURxK5B2R1YDNySw==
-X-CSE-MsgGUID: EJ5pb0DUTROI4ndXYoRCkA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="90996220"
-X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
-   d="scan'208";a="90996220"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 10:27:38 -0700
-X-CSE-ConnectionGUID: e4SWaOEVTd+gRiS5EYjQbg==
-X-CSE-MsgGUID: Auz9Ud84QUGgNeZ3b4NBoA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
-   d="scan'208";a="261936541"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.185.5]) ([10.122.185.5])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 10:27:36 -0700
-Message-ID: <16296d40-67f3-4e50-923c-5b26fc122121@intel.com>
-Date: Wed, 12 Aug 2026 12:27:35 -0500
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UC3gOMeZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B691F000E9;
+	Wed, 12 Aug 2026 17:28:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786555702;
+	bh=VDH7kr8gEhvrvuS9qT2fYJNha0/Kyh9MrwouODGgtck=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=UC3gOMeZhL0Xjcu4pOsY9y7AssL+cKuwyIozx7To8gs4f8St7wHhhg1HlYG3qzB3r
+	 BnyohofqJPmkE/Er1YzKPvHMbfOlz0NoGx/uYAby4cWtzHNvsTkFcIurm5nwLmypv3
+	 SOQq+vPDabgcdKyjfnRGiP7HwFtSZaM615si5WDvGoCj6JR/vqcnO4oCRF7r0COIo1
+	 fPbig1rw/9GUL4lH0FfHM+a9LLwstFFUzGTphbTqRv0HYMZS/B9ENiOP2LkGOdz+QN
+	 qMYmPkc8q19wnfKmk8OXeFU1CaB55Ydk2hnF11gLEIVQWmt31uULGt3CzoV94TQaLy
+	 NsMZHMHvCzYfQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 2/9] s390/vfio-ap: Fix dereference matrix_mdev->kvm
+ without checking for NULL
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Christian
+ Borntraeger" <borntraeger@linux.ibm.vom>
+In-Reply-To: <20260812170945.738351-3-akrowiak@linux.ibm.com>
+References: <20260812170945.738351-1-akrowiak@linux.ibm.com>
+ <20260812170945.738351-3-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 12 Aug 2026 17:28:21 +0000
+Message-Id: <20260812172822.29B691F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/21] KVM: arm64: Apply dynamic guest counter
- reservations
-To: Colton Lewis <coltonlewis@google.com>, kvm@vger.kernel.org
-Cc: Alexandru Elisei <alexandru.elisei@arm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
- Mingwei Zhang <mizhang@google.com>, Joey Gouly <joey.gouly@arm.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, Mark Rutland <mark.rutland@arm.com>,
- Shuah Khan <shuah@kernel.org>,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- James Clark <james.clark@linaro.org>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- kvmarm@lists.linux.dev, linux-perf-users@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20260612192909.1153907-1-coltonlewis@google.com>
- <20260612192909.1153907-15-coltonlewis@google.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <20260612192909.1153907-15-coltonlewis@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
+Pre-existing issues:
+- [High] Concurrent modification and traversal of the `matrix_dev->mdev_lis=
+t` without a shared lock leads to list corruption.
+- [High] Uninitialized stack variable `apm_filtered` causes arbitrary queue=
+ resets.
+- [High] Use-after-free on `kvm->lock` inside `vfio_ap_mdev_unset_kvm()`.
+--
 
-On 6/12/2026 2:29 PM, Colton Lewis wrote:
-> Apply dynamic guest counter reservations by checking if the requested
-> guest mask collides with any events the host has scheduled and calling
-> pmu_perf_resched_update() with a hook that updates the mask of
-> available counters in between schedule out and schedule in.
-> 
-> Signed-off-by: Colton Lewis <coltonlewis@google.com>
-> ---
->  arch/arm64/kvm/pmu-direct.c  | 69 +++++++++++++++++++++++++++++++++++-
->  include/linux/perf/arm_pmu.h |  1 +
->  2 files changed, 69 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/kvm/pmu-direct.c b/arch/arm64/kvm/pmu-direct.c
-> index 49f1feb5d280c..044f011c9c84b 100644
-> --- a/arch/arm64/kvm/pmu-direct.c
-> +++ b/arch/arm64/kvm/pmu-direct.c
-> @@ -87,6 +87,73 @@ u64 kvm_pmu_direct_pmcr_read(struct kvm_vcpu *vcpu)
->  		ARMV8_PMU_PMCR_N);
->  }
->  
-> +/* Callback to update counter mask between perf scheduling */
-> +static void kvm_pmu_update_mask(struct pmu *pmu, void *data)
-> +{
-> +	struct arm_pmu *arm_pmu = to_arm_pmu(pmu);
-> +	unsigned long *new_mask = data;
-> +
-> +	bitmap_copy(arm_pmu->cntr_mask, new_mask, ARMPMU_MAX_HWEVENTS);
-> +}
-> +
-> +/**
-> + * kvm_pmu_set_guest_counters() - Handle dynamic counter reservations
-> + * @cpu_pmu: struct arm_pmu to potentially modify
-> + * @guest_mask: new guest mask for the pmu
-> + *
-> + * Check if guest counters will interfere with current host events and
-> + * call into perf_pmu_resched_update if a reschedule is required.
-> + */
-> +static void kvm_pmu_set_guest_counters(struct arm_pmu *cpu_pmu, u64 guest_mask)
-> +{
-> +	struct pmu_hw_events *cpuc = this_cpu_ptr(cpu_pmu->hw_events);
-> +	DECLARE_BITMAP(guest_bitmap, ARMPMU_MAX_HWEVENTS);
-> +	DECLARE_BITMAP(new_mask, ARMPMU_MAX_HWEVENTS);
-> +	bool need_resched = false;
-> +
-> +	bitmap_from_arr64(guest_bitmap, &guest_mask, ARMPMU_MAX_HWEVENTS);
-> +	bitmap_copy(new_mask, cpu_pmu->hw_cntr_impl, ARMPMU_MAX_HWEVENTS);
-> +
-> +	if (guest_mask) {
-> +		/* Subtract guest counters from available host mask */
-> +		bitmap_andnot(new_mask, new_mask, guest_bitmap, ARMPMU_MAX_HWEVENTS);
-> +
-> +		/* Did we collide with an active host event? */
-> +		if (bitmap_intersects(cpuc->used_mask, guest_bitmap, ARMPMU_MAX_HWEVENTS)) {
-> +			int idx;
-> +
-> +			need_resched = true;
-> +			cpuc->host_squeezed = true;
-> +
-> +			/* Look for pinned events that are about to be preempted */
-> +			for_each_set_bit(idx, guest_bitmap, ARMPMU_MAX_HWEVENTS) {
-> +				if (test_bit(idx, cpuc->used_mask) && cpuc->events[idx] &&
-> +				    cpuc->events[idx]->attr.pinned) {
-> +					pr_warn_once("perf: Pinned host event squeezed out by KVM guest PMU partition\n");
-> +					break;
-> +				}
-> +			}
-> +		}
-> +	} else {
+--- Patch [2]: [PATCH v4 2/9] s390/vfio-ap: Fix dereference matrix_mdev->kv=
+m without checking for NULL ---
+commit cad0d18fff47859a49a2659088e88c6398e464b7
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+Subject: s390/vfio-ap: Fix dereference matrix_mdev->kvm without checking fo=
+r NULL
+
+This commit fixes a potential NULL pointer dereference in the callback
+functions vfio_ap_on_cfg_changed and vfio_ap_on_scan_complete. It adds
+checks to ensure matrix_mdev->kvm is not NULL before acquiring the
+matrix_mdev->kvm->lock mutex. The lock acquisition in
+vfio_ap_mdev_hot_plug_cfg is also moved to the calling functions to
+satisfy lock ordering requirements.
+
+> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
+_ap_ops.c
+> index 845c86ba8bc30..c6bee69cc22f6 100644
+> --- a/drivers/s390/crypto/vfio_ap_ops.c
+> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+> @@ -2605,8 +2605,20 @@ static void vfio_ap_mdev_cfg_remove(unsigned long =
+*ap_remove,
+>  	DECLARE_BITMAP(cdrem, AP_DOMAINS);
+>  	int do_remove;
+> =20
+> +	/*
+> +	 * It is safe to traverse this list here because the
+> +	 * required guard - matrix_dev->guests_lock - is taken in the
+> +	 * vfio_ap_on_cfg_changed function prior to this function getting
+> +	 * called.
+> +	 */
+>  	list_for_each_entry(matrix_mdev, &matrix_dev->mdev_list, node) {
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does the traversal of
+matrix_dev->mdev_list here race with list modifications?
+
+In vfio_ap_mdev_probe(), a newly created mediated device is added to the li=
+st
+while holding only mdevs_lock:
+
+	mutex_lock(&matrix_dev->mdevs_lock);
+	list_add(&matrix_mdev->node, &matrix_dev->mdev_list);
+	mutex_unlock(&matrix_dev->mdevs_lock);
+
+Here in vfio_ap_mdev_cfg_remove() (and similarly in=20
+vfio_ap_on_scan_complete()), the list is traversed while holding only
+guests_lock. Since the writer and readers do not acquire a shared lock, can
+this concurrent execution lead to a corrupted doubly linked list?
+
+> -		mutex_lock(&matrix_mdev->kvm->lock);
 > +		/*
-> +		 * Restoring to hw_cntr_impl.
-> +		 * Only resched if we previously squeezed an event.
+> +		 * The mdevs_lock must be held to access fields within matrix_mdev,
+> +		 * and kvm->lock must be taken before mdevs_lock to satisfy the lock
+> +		 * ordering requirement and prevent a lockdep splat.
 > +		 */
-> +		if (cpuc->host_squeezed) {
-> +			need_resched = true;
-> +			cpuc->host_squeezed = false;
-> +		}
-> +	}
-> +
-> +	if (need_resched) {
-> +		/* Collision: run full perf reschedule */
-> +		perf_pmu_resched_update(&cpu_pmu->pmu, kvm_pmu_update_mask, new_mask);
-> +	} else {
-> +		/* Host was never using guest counters anyway */
-> +		bitmap_copy(cpu_pmu->cntr_mask, new_mask, ARMPMU_MAX_HWEVENTS);
-> +	}
-> +}
-> +
->  /**
->   * kvm_pmu_host_counter_mask() - Compute bitmask of host-reserved counters
->   * @pmu: Pointer to arm_pmu struct
-> @@ -209,6 +276,7 @@ void kvm_pmu_load(struct kvm_vcpu *vcpu)
->  
->  	pmu = vcpu->kvm->arch.arm_pmu;
->  	guest_counters = kvm_pmu_guest_counter_mask(pmu);
-> +	kvm_pmu_set_guest_counters(pmu, guest_counters);
->  	kvm_pmu_apply_event_filter(vcpu);
->  
->  	for_each_set_bit(i, &guest_counters, ARMPMU_MAX_HWEVENTS) {
-> @@ -317,7 +385,6 @@ void kvm_pmu_put(struct kvm_vcpu *vcpu)
->  	/* Stop guest counters and disable interrupts in hardware. */
->  	write_sysreg(mask, pmcntenclr_el0);
->  	write_sysreg(mask, pmintenclr_el1);
+> +		if (matrix_mdev->kvm)
+> +			mutex_lock(&matrix_mdev->kvm->lock);
+>  		mutex_lock(&matrix_dev->mdevs_lock);
+
+[ ... ]
+
+> @@ -2821,9 +2834,6 @@ static void vfio_ap_mdev_hot_plug_cfg(struct ap_mat=
+rix_mdev *matrix_mdev)
+>  	DECLARE_BITMAP(apm_filtered, AP_DEVICES);
+>  	bool filter_domains, filter_adapters, filter_cdoms, do_hotplug =3D fals=
+e;
+> =20
+
+[Severity: High]
+This is a pre-existing issue, but could apm_filtered remain uninitialized
+before being consumed?
+
+If a host AP configuration change adds only control domains, filter_adapters
+and filter_domains will evaluate to false:
+
+	filter_adapters =3D bitmap_intersects(matrix_mdev->matrix.apm,
+					    matrix_mdev->apm_add, AP_DEVICES);
+	filter_domains =3D bitmap_intersects(matrix_mdev->matrix.aqm,
+					   matrix_mdev->aqm_add, AP_DOMAINS);
+
+This causes the code to skip calling vfio_ap_mdev_filter_matrix(), which
+normally initializes apm_filtered.
+
+The uninitialized stack variable is then passed to reset_queues_for_apids():
+
+	reset_queues_for_apids(matrix_mdev, apm_filtered);
+
+Does this cause reset_queues_for_apids() to iterate over random stack garba=
+ge
+and reset unintended queues?
+
+> -	mutex_lock(&matrix_mdev->kvm->lock);
+> -	mutex_lock(&matrix_dev->mdevs_lock);
 > -
->  	kvm_pmu_set_guest_counters(pmu, 0);
+>  	filter_adapters =3D bitmap_intersects(matrix_mdev->matrix.apm,
+>  					    matrix_mdev->apm_add, AP_DEVICES);
+>  	filter_domains =3D bitmap_intersects(matrix_mdev->matrix.aqm,
 
-I must have missed something.
+[ ... ]
 
-Here, vcpu->kvm->arch.arm_pmu->cntr_mask is restored to cntr_mask_impl.
-Is this same struct shared with the perf driver
-(to_arm_pmu(event->pmu)), and shared across other vCPUs as well?
+Additionally, there appears to be another pre-existing issue in
+vfio_ap_mdev_unset_kvm() which isn't part of this diff:
 
-If so, if another pCPU still has a PMU-partition-enabled vcpu loaded
-with guest-owned counters (MDCR_EL2.HPMN is set), could a host event be
-scheduled onto one of those guest-owned counters, conflicting with the
-guest?
+[Severity: High]
+Is there a potential use-after-free on kvm->lock in vfio_ap_mdev_unset_kvm(=
+)?
 
->  	preempt_enable();
->  }
+In vfio_ap_mdev_unset_kvm(), the code acquires kvm->lock via=20
+get_update_locks_for_kvm(kvm) and later drops the KVM reference:
 
+	get_update_locks_for_kvm(kvm);
+	kvm_arch_crypto_clear_masks(kvm);
+	vfio_ap_mdev_reset_queues(matrix_mdev);
+	kvm_put_kvm(kvm);
+	matrix_mdev->kvm =3D NULL;
+	release_update_locks_for_kvm(kvm);
 
+If userspace has already closed the KVM VM file descriptor, kvm_put_kvm()
+could drop the final reference and free the kvm structure.
+
+Immediately after this, release_update_locks_for_kvm(kvm) attempts to unlock
+the mutex residing in the freed memory:
+
+	if (kvm)
+		mutex_unlock(&kvm->lock);
+
+Could this result in a use-after-free on kvm->lock?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260812170945.7383=
+51-1-akrowiak@linux.ibm.com?part=3D2
