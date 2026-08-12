@@ -1,57 +1,104 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02143876BB;
-	Wed, 12 Aug 2026 16:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554B986341;
+	Wed, 12 Aug 2026 16:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786552011; cv=none; b=FifS6qOSzOBWghrAem5uTCix6oF3US1JCZ8HB6dsIjgJbyhUpYedAIuLpwu7VpaLkBrdmWOGUZExRTkbZBRnvuIuYiNX5+WFNAjMdJCgFHlBOOjywlBQWiGfF2YjW4iHgMz/ck5bNvmTa5TTg2tbWzUEJBh4N64H4SNlNWr/nC0=
+	t=1786552041; cv=none; b=EAW8a1aRIasUYckS73xn6q2P8XxvfA23qA3o/wylvHReIMXxsCJye7PcZIdbNwEw5sU7nfeWFiinVKqPXOdlA2qwnVr/R1qNVsLaXDvdtV57tkUY1an8RabtGkTYuj70Mc9Tn2HhmGEgV22nNfAf9DXugHgBXblSchHnnWKfJY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786552011; c=relaxed/simple;
-	bh=Xn1LuF8TySnWMvXqzBdBfiwzIB8VARJpc29I9xzHMms=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IhC5Z7ajRdBp0Maav+IsEdSYpXty5Hl5atA6qn/6jWj8oGbd0858owk+s14B6B+a/3miRRAe8Q3VPs6sqkaksd283dvW9UGKJattF8GsLmkq6HdxJhCREdf5Pdg2Uvc6EjeiacAHG77X/z3PfGgjM2x4giPawiaWJCPueRAy7AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eFfbfPJ+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786552041; c=relaxed/simple;
+	bh=vQpSLFklztsXIzACp5l/NzVQqqC9Bg+xcL9sxMCY6Is=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=H0/ItUlli0cz1qBu7+86GALLeEGvenwfE3SgslQoNjIXHO0YIbXxcbizvPBGY46AJqbCyfIS1yAK/8+EBkjvxJj4oHZibVq8qkk6PjWSEv7HfQCjl1ltQvc0J3Q4G+lxTNNarPHLGUKywEzCyHAWSDb+SGnk7lH2kNTVdyNY68s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iF8WuTez; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eFfbfPJ+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FCC1F000E9;
-	Wed, 12 Aug 2026 16:26:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iF8WuTez"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE931F000E9;
+	Wed, 12 Aug 2026 16:27:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786552010;
-	bh=8YzjQEdmFeIZz2dVD2KntK1d6Hq9jpMIS5ckAdDZquQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eFfbfPJ+9NtuDmDxFJVT45PX/28M/dHsbCYCfrrM/LOtrQmwMlgTyyEAEr6RLTKmT
-	 d3jOa6FZpCLjVK0N0ZkkWn5ZjxizJwMjCr9yCpJmFyL8UgZO4yMT48DY41ge12r3t5
-	 DAOaUJ5wQv6vBKtqdIw8awxGSI8WArrZRxB4BuBTdaZlKxZKEoD9cNNHAUGJO+SBt3
-	 l6LzF6PdkNhYD3gtxaDWTtxPH4mG13IAV1hx2TZ3JkoF1t7udywBfsEbEmdRcRhiAV
-	 EOV5Sb++KOlMVvq6sZuDyuMsRn78x16iJczLUfU247EGkxrniHvp3oBawb+I2p98xV
-	 cA5q7PZb7b2gQ==
-From: Sasha Levin <sashal@kernel.org>
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"IP over Parrots (with QoS)" <opensource@rfc2549.ca>
-Subject: Re: 6.1.y status: 2abd5287f083 ("KVM: x86: Check for invalid/obsolete root *after* making MMU pages available") / CVE-2026-64561
-Date: Wed, 12 Aug 2026 12:26:38 -0400
-Message-ID: <20260812161500.10001-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <K5X5A-vk0kKy96pbo6vsCIfvu4CDhenGoKAy3bdpFLx_5sdQ4ovBeDLABVHxrI08ouImtdBr2cYTqriDJgeTZLZhMIA-Hphgz4jMe7W6M6Q=@rfc2549.ca>
-References: <K5X5A-vk0kKy96pbo6vsCIfvu4CDhenGoKAy3bdpFLx_5sdQ4ovBeDLABVHxrI08ouImtdBr2cYTqriDJgeTZLZhMIA-Hphgz4jMe7W6M6Q=@rfc2549.ca>
+	s=k20260515; t=1786552039;
+	bh=RwM0+WViKuyQRQrItx1lD1tXwYTMLhAi72lTSuNoH2c=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=iF8WuTezE9v2D7LHBypTUUInpr3zTNskyVpLHv7moBBiYQ09dd7y6t9q7UsOvYbjk
+	 m5AODAVmAHFICcH+rA2gx9z5qwLZv8dNU6Qm6HuEHyeb0oHLcQZbQRU9zc7jKxVIPj
+	 CJ0n3Sh0iQjAoNkz8I2VKIzDRoVE+DVxStJiaRP7Adap73CvW0pa1t637E1+gimhEt
+	 Z4MojapFCi60jkwiKe70CSRFd5/d0Ti5ZNGsLAnP3z6oUtxXj6ijaLLjAbxn4bRAVV
+	 x8CUBmclUV2+gjASHResDLbfq/JMEQ4GNy14QvV2GbN0cqlacSGxMSy+19AFKQb9/3
+	 nZUItNQS3zrcw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v6 26/33] KVM: s390: arm64: Introduce host definitions
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steffen Eiden" <seiden@linux.ibm.com>
+Cc: kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, kvmarm@lists.linux.dev, "Oliver
+ Upton" <oupton@kernel.org>, "Christian Borntraeger" <borntraeger@linux.ibm.vom>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org, "Marc
+ Zyngier" <maz@kernel.org>, "Vasily Gorbik" <gor@linux.ibm.com>
+In-Reply-To: <20260812153631.3376090-27-seiden@linux.ibm.com>
+References: <20260812153631.3376090-1-seiden@linux.ibm.com>
+ <20260812153631.3376090-27-seiden@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 12 Aug 2026 16:27:18 +0000
+Message-Id: <20260812162719.4DE931F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 11, 2026 at 01:41:37PM +0000, David Moreau-Simard wrote:
-> Is a 6.1.y backport planned, or was it skipped deliberately?
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] The vcpu flag wrapper macros (`_vcpu_get_flag`, `_vcpu_set_flag`, e=
+tc.) are syntactically broken and will cause build failures if instantiated.
+--
 
-Queued for 6.1, thanks.
+--- Patch [26]: [PATCH v6 26/33] KVM: s390: arm64: Introduce host definitio=
+ns ---
+commit 9d09eb59e082ce9c0d035d93867a0ac53fc503a3
+Author: Steffen Eiden <seiden@linux.ibm.com>
 
--- 
-Thanks,
-Sasha
+KVM: s390: arm64: Introduce host definitions
+
+This commit adds basic definitions required by the ARM on s390 KVM host.
+It introduces struct kvm*arch definitions and various defines needed to
+run arm64 guests, selecting the new header variant if KVM_S390_ARM64 is
+defined.
+
+> diff --git a/arch/s390/include/asm/kvm_host_arm64.h b/arch/s390/include/a=
+sm/kvm_host_arm64.h
+> new file mode 100644
+> index 0000000000000..8088409bb0411
+> --- /dev/null
+> +++ b/arch/s390/include/asm/kvm_host_arm64.h
+
+[ ... ]
+
+> +#define _vcpu_get_flag(v, flagset, ...)	\
+> +	__vcpu_get_flag(&(v)->arch.flagset, __VA_ARGS__)
+> +#define _vcpu_set_flag(v, flagset, ...)	\
+> +	__vcpu_set_flag(&(v)->arch.flagset, __VA_ARGS__)
+> +#define _vcpu_clear_flag(v, flagset, ...)	\
+> +	__vcpu_clear_flag(&(v)->arch.flagset, __VA_ARGS__)
+> +#define _vcpu_test_and_clear_flag(v, flagset, ...)	\
+> +	__vcpu_test_and_clear_flag(&(v)->arch.flagset, __VA_ARGS__)
+
+[Severity: Low]
+Will these wrapper macros cause a build failure when instantiated?
+
+Looking at __vcpu_get_flag() and the related macros from the shared arm64
+headers, they expect exactly four arguments: v, flagset, f, and m.=20
+
+In these wrappers, we pass &(v)->arch.flagset as the first argument and
+__VA_ARGS__ as the remaining arguments. Since standard flag constants usual=
+ly
+expand to two arguments (for example, BIT(0), BIT(0) for f and m), this
+invocation only provides three arguments in total instead of the required f=
+our.
+
+Does this need an additional argument or a different macro structure to
+resolve the arity mismatch?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260812153631.3376=
+090-1-seiden@linux.ibm.com?part=3D26
