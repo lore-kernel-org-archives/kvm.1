@@ -1,126 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0D242379A;
-	Wed, 12 Aug 2026 12:16:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54A543E06F;
+	Wed, 12 Aug 2026 12:18:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786537004; cv=none; b=EvT4YML+X6enEe8CIucxagPUnZuqgzSC323jtYRJL/FN1e1rAbBA5fzn5i4cQTYUZ+6/E48+Sc1ORcFLrCANEbw+CKMvXRTPPzSYlntpEfYqLBw8FjJRM8fYgDEbpssoG6NRYjwnbrm5qiybzB0hddxd73W8ZN6Icbqy4chGwIA=
+	t=1786537132; cv=none; b=N899KaGoMbGSBx8qS8sMFtRIUCgtmT4aOZiHVq9SYhuC4S8fSbbh1DO4AnE7avjF0F0TjQ24s9pSZqhHb2kktPw7zYxowHBLCPQYPkBuzGEIzGXucoBx3/pXxa4RcdWTDWRmZzB5NOJXmRds6Fx2wL+ANRVQ1UwB525b59bG59o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786537004; c=relaxed/simple;
-	bh=Y5pNa2ZPZ7QOHTj6Z58dqlvKaeRh8BMGM3eywtqMoJs=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=CFw7jWy9a8VdG5efRUZDoLZe1gd+LN/DfoeXVRw6+OuWEWPldPehbzTuthCH2pc2SsNP9RKUhMaYzFtRNdDaUD2hs+KqUi5EIPxZnIzsWyzDcLnWECD0WhsKz/59BLEkvUlPUKizpBqTF58xAtA4hTTg+2ccpq44gQCRRumLE08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i9U25A74; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786537132; c=relaxed/simple;
+	bh=enjpyTGV6J/Ax7972/ygga5P+saUH5TOac+lROt0YfI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IDg7RJDzBeZ6dab89G+lHY2TQNkiIGq6lwFhtq8lU5AnEwKwSpUGPJY4citio4dAp0G5hqlwma279exzBX+/D0RYunsFyXr/jusnB7SM5jm/bVNM9gQqAymJYHc3bk+P0c02wMRcpIO6FvEMJaiX27JMngoAppQQkYxdE/lLrUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=kNCmgPa7; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i9U25A74"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CB51F000E9;
-	Wed, 12 Aug 2026 12:16:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786537000;
-	bh=4BnkytiivFlkjj/n+bqyy+yetlhSRKDyFGU72RBw26M=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=i9U25A74ggnD1S0OLRn4/U5HnKAcWZyG3IeRtW597VepRK2L3o41dUU27APKbjnIG
-	 zAaIYNhb16vVlTQlBrQEKTTH/xR4m6NXGfhGS/BjhI5SrZ+VPLUX+6x3By9vb6EuwE
-	 AewW4hsnA/U8ON9AhuJKBDu2if2llQT0HbwmGHw4gMqtnEw6tL7W8U+slQmqF47QhV
-	 mZgkKK4AYqf69AkAH3BvoSdxNRrjZjwQd7qAqWl7e2qoZapLAZtf92P9DYGenUVQDs
-	 /+XFzSQW//4vlTrx4629vuCK563pGcYvGzecWI1KU5palwMtwWii5qfdZ+82uT3bZV
-	 0q0wmqhT9YiAA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 8/9] s390/vfio-ap: Fix NULL deref in status_show()
- during queue probe
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.vom>, kvm@vger.kernel.org
-In-Reply-To: <20260812115139.576303-9-akrowiak@linux.ibm.com>
-References: <20260812115139.576303-1-akrowiak@linux.ibm.com>
- <20260812115139.576303-9-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 12 Aug 2026 12:16:39 +0000
-Message-Id: <20260812121639.90CB51F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="kNCmgPa7"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 19FC61596;
+	Wed, 12 Aug 2026 05:18:45 -0700 (PDT)
+Received: from [10.57.44.219] (unknown [10.57.44.219])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 614353F632;
+	Wed, 12 Aug 2026 05:18:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786537129; bh=enjpyTGV6J/Ax7972/ygga5P+saUH5TOac+lROt0YfI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kNCmgPa7qbwWpc4aPu/N9O4IsZPqlPzAwORtgDQiHuFdRMliEFHLMbHgcSvs8EDCJ
+	 n4amYci4PH8hgMq4unWEILtiTirpl3DM9zhHsyb+uOFBMrPYCDKBIgGlx4RPhm6WqX
+	 pG4b/waj23NmfedDPTA6MyJ3XEjTDadHBaaYzNUc=
+Message-ID: <650bb70a-a02d-4976-a5c8-7cc5fb811b55@arm.com>
+Date: Wed, 12 Aug 2026 13:18:43 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 00/45] arm64: Support for Arm CCA in KVM
+Content-Language: en-GB
+To: Gavin Shan <gshan@redhat.com>, Alper Gun <alpergun@google.com>
+Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
+ Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
+ <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Javier.AlmansaSobrino@arm.com
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <42170467-fe36-4382-867f-49bdc6a7bc9a@arm.com>
+ <d0ffbcb5-0cca-4d1e-9788-6b430345fa9b@redhat.com>
+ <5e86232a-89ed-40ff-89e2-9e48fbf9554e@arm.com>
+ <e2894206-7470-4606-b9ac-eedc8d2bdaf3@redhat.com>
+ <CABpDEukGY+ctSi6wHAaC7o4pGmastX_Y18K2_VYDhNME7TF+wQ@mail.gmail.com>
+ <f5d47f5f-5869-4e3a-a176-4fd632567975@arm.com>
+ <ad7d1093-685d-4c11-807d-929d16271cdb@redhat.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <ad7d1093-685d-4c11-807d-929d16271cdb@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] ABBA deadlock in the probe error path between kernfs active refere=
-nce and guests_lock.
---
+On 12/08/2026 11:35, Gavin Shan wrote:
+> Hi Alper and Suzuki,
+> 
+> On 8/12/26 4:04 PM, Suzuki K Poulose wrote:
+>> Hi Alper, Gavin
+>>
+>> On 12/08/2026 04:25, Alper Gun wrote:
+>>> On Tue, Aug 11, 2026 at 8:08 PM Gavin Shan <gshan@redhat.com> wrote:
+>>>> As the following calltrace indicates, -EAGAIN is returned from tf- 
+>>>> rmm::update_ripas()
+>>>> because true is returned from s2tte_drain_pending() for the S2TTE 
+>>>> corresponding to
+>>>> IPA 0x80000000. Linux host received error (RMI_ERROR_RTT, level=3) 
+>>>> in ripas_change().
+>>>> Upon this specific error and the IPA range [0x80000000 0x90000000], 
+>>>> find_map_level()
+>>>> returns level of 2, and realm_create_rtt_levels() returns 0 without 
+>>>> populating any
+>>>> RTTs. After that, rmi_rtt_set_ripas() is re-executed and the above 
+>>>> loop starts over
+>>>> again.
+>>>>
+>>>>     Linux host
+>>>>     ==========
+>>>>     kvm_arch_vcpu_ioctl_run                     // cca/host-v16
+>>>>       check_vcpu_requests
+>>>>         kvm_check_request
+>>>>           kvm_rec_handle_request
+>>>>             kvm_complete_ripas_change
+>>>>               realm_set_ipa_state
+>>>>                 ripas_change
+>>>>                   rmi_rtt_set_ripas
+>>>>                     SMC_RMI_RTT_SET_RIPAS
+>>>>
+>>>>     TF-RMM
+>>>>     ======
+>>>>     SMC_RMI_RTT_SET_RIPAS                      // tf-rmm/topics/rmm- 
+>>>> v2.0-poc_3
+>>>>       smc_rtt_set_ripas
+>>>>         s2tt_walk_lock_unlock
+>>>>         rtt_set_ripas_range
+>>>>           update_ripas
+>>>>             s2tte_drain_pending                // true, returns -EAGAIN
+>>>>
+>>>> The problem is the pending-bit for RTE corresponding IPA address 
+>>>> 0x80000000 isn't cleared
+>>>> when SMC_RMI_RTT_SET_RIPAS is invoked. I didn't figure out how this 
+>>>> bit is set and why
+>>>> it's not cleared in time.
+>>
+>> Thanks for the details.
+>>
+>>>>
+>>>
+>>> Hi Gavin, Suzuki,
+>>>
+>>> I think I ran into a similar issue on rmm-v2.0-poc_3 last week.
+>>> This looks like a potential RMM bug: could bit 32 be part of the 
+>>> physical
+>>> Address (if PA >= 4 GiB)?
+>>>
+>>> It seems s2tte_drain_pending() in lib/s2tt/src/s2tt.c checks bit 32 
+>>> without
+>>> checking whether the descriptor is valid or invalid.
+>>>
+>>> In my testing, guarding the drain checks with a check for 
+>>> S2TTE_INVALID seemed
+>>> to resolve the boot hang:
+>>> --- a/lib/s2tt/src/s2tt.c
+>>> +++ b/lib/s2tt/src/s2tt.c
+>>> @@ -1701,6 +1701,10 @@ unsigned long
+>>> s2tte_clear_drain_pending(unsigned long s2tte)
+>>>
+>>>   bool s2tte_drain_pending(unsigned long s2tte)
+>>>   {
+>>> + if ((s2tte & S2TT_DESC_VALID_MASK) != S2TTE_INVALID) {
+>>> + return false;
+>>
+>> We should use also consider cases where the entry is INVALID, but
+>> has HIPAS=ASSIGNED/ASSIGNED_DEV to make it tighter. So, I think
+>> it is better to use :
+>>
+>> s2tte_is_unassigned() or in the library stick to :
+>>
+>> if (!s2tte_has_hipas(s2tte, S2TTE_INVALID_HIPAS_UNASSIGNED))
+>>      return false;
+>>
+>> May be we should assert this and make the caller responsible for
+>> checking the bit. I will leave it to the tf-RMM team to fix.
+>>
+>> But for now, please use the above fix.
+>>
+> 
+> Both worked for me. With the extra check in place, the realm guest can boot
+> up successfully.
+> 
+> FYI, The below additional checks in s2tte_tlbi_pending() and 
+> s2tte_drain_handle()
+> aren't needed because they're always guarded by s2tte_drain_pending() in 
+> all
+> calling sites.
 
---- Patch [8]: [PATCH v3 8/9] s390/vfio-ap: Fix NULL deref in status_show()=
- during queue probe ---
-commit dd5ddcd73e238630c53e21354f9251a158e8bee2
-Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+fyi, the tf-RMM patch is out for review here : (Thanks Javier)
 
-s390/vfio-ap: Fix NULL deref in status_show() during queue probe
+https://review.trustedfirmware.org/c/TF-RMM/tf-rmm/+/53531
 
-This commit fixes a NULL pointer dereference in status_show() during queue
-probe by acquiring update locks before creating the sysfs attribute group.
-This ensures any concurrent read blocks until driver data is set and locks
-are released.
+Please feel free to cherry-pick that one
 
-> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
-_ap_ops.c
-> index cb1e5db69d8a7..3652ba792be73 100644
-> --- a/drivers/s390/crypto/vfio_ap_ops.c
-> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-> @@ -2419,14 +2419,17 @@ void vfio_ap_mdev_unregister(void)
-> =20
->  int vfio_ap_mdev_probe_queue(struct ap_device *apdev)
->  {
-> -	int ret;
-> +	int ret, apqn;
->  	struct vfio_ap_queue *q;
->  	DECLARE_BITMAP(apm_filtered, AP_DEVICES);
->  	struct ap_matrix_mdev *matrix_mdev;
-> =20
-> +	apqn =3D to_ap_queue(&apdev->device)->qid;
-> +	matrix_mdev =3D get_update_locks_by_apqn(apqn);
-> +
->  	ret =3D sysfs_create_group(&apdev->device.kobj, &vfio_queue_attr_group);
->  	if (ret)
-> -		return ret;
-> +		goto err_release_locks;
-> =20
->  	q =3D kzalloc_obj(*q);
->  	if (!q) {
-> @@ -2434,11 +2437,10 @@ int vfio_ap_mdev_probe_queue(struct ap_device *ap=
-dev)
->  		goto err_remove_group;
->  	}
-[ ... ]
-> @@ -2468,6 +2470,8 @@ int vfio_ap_mdev_probe_queue(struct ap_device *apde=
-v)
-> =20
->  err_remove_group:
->  	sysfs_remove_group(&apdev->device.kobj, &vfio_queue_attr_group);
-
-[Severity: High]
-Does this create an ABBA deadlock on the error path?
-
-If kzalloc_obj() fails, we jump to err_remove_group and call
-sysfs_remove_group() while still holding matrix_dev->guests_lock (acquired
-via get_update_locks_by_apqn()).
-
-If a concurrent reader opens the 'status' sysfs file before we hit the error
-path, it acquires a kernfs active reference and blocks on:
-
-status_show()
-    mutex_lock(&matrix_dev->guests_lock);
-
-Then sysfs_remove_group() blocks in kernfs_drain() waiting for the reader to
-release its active reference, resulting in a deadlock.
-
-> +err_release_locks:
-> +	release_update_locks_for_mdev(matrix_mdev);
->  	return ret;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260812115139.5763=
-03-1-akrowiak@linux.ibm.com?part=3D8
+Cheers
+Suzuki
