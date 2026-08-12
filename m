@@ -1,292 +1,239 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194642ED141;
-	Wed, 12 Aug 2026 12:35:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4E1352034
+	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 12:42:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786538143; cv=none; b=IW7Q88zICyz5soJLKeJGu5hPskQjrx9na68aRikDoWOoW/1sQ5vDNMIp5sO4TzU460Vps2dLnZGws4QdIIdmPP8sBrDOmLHzQEjHbkADFWGbFmeCpjwWW4Nig7Jr3kBL8Uken9LDCJZyuGi+sT7N5gJ8SQa+Kejv5CCFS4ebsGk=
+	t=1786538547; cv=none; b=WFLGaRtfZJRtHLqVx9QGiilhh5oe0qqsBibnZEKyemKDL+wWgsuRufvPY4lOpVAzebrd4CTRZWZkyI7LkBLqgSX+UoK6uS7KfsBVYIhC4sdTU2m4Ls+wLh9/On+H+WCpHW+NneLiQ6RLWIdkswQ1oGczNQrqYWNUf2LEAsU433s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786538143; c=relaxed/simple;
-	bh=zRHowdmKzD4WRK1QJgRSsPSX7OOAN9vH/+rpQC+WnW4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Sl6PajNxi7AUYqtcI0e+oaESnvXgmKCJ1ol2DjtoSonZNZUnCiuDTf1uOF+gOvzYU8QK6SWFh6YOuJVsK5UOPCGsgHBdmBzh/um5gj7+ug8V3YKhdlnfGqcEekfT/rHhJ8yFKf8XADGpDQfPmbR/lgy98R3WYv3OvTh4F4fin9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=VVW9kaY/; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786538547; c=relaxed/simple;
+	bh=LHkQmmIVO12tqfXq5MuBnKiU3Zac/gB4CKobR6v3pWM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oRp6ax/9q7RmbqlKHn1dCu7s1xKBtoSvb64qNVVI7msANqcIchEKn5InYSlSg1ePuSDdQSk2AEWrdc30kHGq86Kvr21TaCC9aU/VkExDg1pKV8Zv6jqVehL7E+uELXSdhtPrkszCMlQuMg1ZSkFWlL4H0K3bEEH4rn406AHJQYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=hc07wEyf; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=heNdBWj2; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="VVW9kaY/"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67CB3WLB3334208;
-	Wed, 12 Aug 2026 12:35:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=XKPe0T
-	L6ORosxcSQE3OJ8cJLXmYgGasgvnub9hK4GnU=; b=VVW9kaY/4VheJXPQBuvq7X
-	Q72PWeAeyItpeb3Ytsora+xRw+7O10/gnDiFkMnKOJ4BrAApi095c4mER7kyIuf5
-	zzwBdkhpz05Kgj6XFmk/IcDGVL4zcDFsv4jvSnETszpAs0Zf1+CGAq6oktxCSyPz
-	lp49FuoipDxGs/AAutcOipg2LbDqBOzYSbNMIKoToTnV8erF5YLI/UN6fKr1k4Dq
-	7Z5vLf/uedJ+1/CNYs+0DUQaTqf47Rq070ACF4DfxJFgP9rd5OZAJPxCSsFgiSC/
-	RZ0fyZ/vMelmMGnnDFebXRCXZeafrnm062WmpyvFwCjSSrqWVttbDX1hOgkRTmkg
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvnw9k2t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Aug 2026 12:35:40 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67CCQGQT026375;
-	Wed, 12 Aug 2026 12:35:39 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxhfy5rpb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Aug 2026 12:35:39 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67CCZb9Z17760818
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Aug 2026 12:35:38 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A0A8F58056;
-	Wed, 12 Aug 2026 12:35:37 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E286358052;
-	Wed, 12 Aug 2026 12:35:36 +0000 (GMT)
-Received: from [9.61.9.29] (unknown [9.61.9.29])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 12 Aug 2026 12:35:36 +0000 (GMT)
-Message-ID: <d81b9dd2-9cd3-44a3-99c1-b5fb395cc00f@linux.ibm.com>
-Date: Wed, 12 Aug 2026 08:35:36 -0400
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="hc07wEyf";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="heNdBWj2"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67CB4VLT4182162
+	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 12:42:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=RpsE0CluZfRv1K7AmPiInqF3
+	1WCTjf8G43ue2nF02Wo=; b=hc07wEyf9hg1I2f1Af4LWb4Jsokg20l/rGEwe5rl
+	ocDQF+TuF3htAoKsm/rsEG5gAePzRqwEIesef6OglYL+cgmZ0oO0cHLEmkVy/NC/
+	od/eWLXtRbBrFzncpV02t4rKejnDJWGEyoVVVKUk19lNLeaw0DOU0x9WzbZi3Rzq
+	PE8ITNEdEC9/O6NBHLb9dYr94tuoY7LL7lEodPo0HX80XPltXc5Er7cRzXl6oTFA
+	s7ZNlZ+M2j9erAShKWgECpMmULNV6/RNo75pXhKS6StbHpI9lDodoQC8F+eUWhdm
+	Q/FJTupgpj2BCmus5KSB50yen1bgVEbRClGc4d91mRB61Q==
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g08j5kuc7-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 12:42:20 +0000 (GMT)
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cbef1d25500so45473a12.1
+        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 05:42:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1786538540; x=1787143340; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RpsE0CluZfRv1K7AmPiInqF31WCTjf8G43ue2nF02Wo=;
+        b=heNdBWj2ZCfd18CMxcrpBhS4f64MHMN2VOzXQBh6cManrkdc1VtWdiK51V9JappKT+
+         qeUpusmZZiYdQT0UCjuj6rPll7p4ZIWzYxnlkYkN4dAzA8Ue5QK9dfdzbMOB9+jHXmWg
+         XByYFYODAU1SlW7pKNIcYh6lGUYZHyVwU7UqFKStPzjXXY7Y0YElmbqNG0iGPc24P2OQ
+         EeScC60rx+hZo5u33/Iog7Ok5yp3NeUu3614KNH/0KPQDF1v+ttA8Y/W1nAPRW/5Qec+
+         ZBtLf8GlsE0mqu/IM1cPTaSMxvIQPVKCm1rhGxku7J/wFYlzIm9Up3JhSAldYwcL4UQt
+         MvCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786538540; x=1787143340;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RpsE0CluZfRv1K7AmPiInqF31WCTjf8G43ue2nF02Wo=;
+        b=khoMwNLuRqgItCnFPmBbOziuRcEdIOblmnDrArIAmGHAJjlElMlEZqFrgPCBB6SEm8
+         Xsj8kWna1sO/K8/3xzxH4Lk35l+w3e/4pWo9JTH1h5dngSvCt66VuzBgdDfws1Qfzglr
+         O/IzH4QJX28LMRNQKBJbJw3Y8Lu5mj/QD/xXf6wWJ3dOadmJHrICDAaNBeSvpsCkkZOg
+         9WDYOVW/NS+NJuynd/+xkX+OwXy+3TAyGdnksuAOUayOuAFrQgQ+TkWkxdEzas90M7Wp
+         WfBYZYbzL1HZPJjpMpMbEJqdwCEcgiGZ8M5lnvEs8c0gLQi1VKNU6MqZWV09pdxAw3Ch
+         OU4w==
+X-Forwarded-Encrypted: i=1; AHgh+RqIxwIXsht8FQkDB/6GDqacGfLrXX/qfBWnU6XDR38hkYlIYoHUBCQDAjOBuHdTE/cEGMQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCEWDRw42jWheYFfiHlnyxiPJzUT7s4wNXqf0FLpKGnguC/r0D
+	oSOGhFqGH7x2wKNLCi/2Yiwe/76FkmLdAj7r7exuhSlAo6e7ybDIK1mhh7LEcFaddS+wm3p+NAj
+	yv1Oy/rzXS7pCytAKlOLPIz2SJXK91NoEEkzap/lrD+wLy92kwDU35jE=
+X-Gm-Gg: AR+sD10j4+kTlrzU0iU1WNvfoWb39/1YUNWpsGOVzQeKMsX0a2JPTCfJvaptOZieYM7
+	nsEW3dStC2RNdyXJI+qDVN3ljiY2gZu5ERH2kSnnSmGK88hdjQz864mcwKky3xjrN03LeUYSW7m
+	nR7qnhF6K/WKk8S/B6XmvAmSIcm1fFCJxdiqBDi1Kv431cxQmEtqb7/0p0aQnWyHizxiapl6SMc
+	x+C1SGN9x1a/3VbD0dklBB4WPqImnEr6ozDS6sk5NL3xQmAginMekxV3noPpnjbfMhb2wtHRRKL
+	ShkrA+jRSyKzaSZT/zAC9fFghUmXqOl9o9Sf32XG38KKRqPIyj6hfHrePwLPRufJAnzqxqm3jhg
+	Wg29ak2Z55pjYbOd53lpGpEL2cxpm/wJ21A==
+X-Received: by 2002:a05:6a21:700d:b0:3cb:b3ea:858a with SMTP id adf61e73a8af0-3cc3f739945mr5799523637.20.1786538539872;
+        Wed, 12 Aug 2026 05:42:19 -0700 (PDT)
+X-Received: by 2002:a05:6a21:700d:b0:3cb:b3ea:858a with SMTP id adf61e73a8af0-3cc3f739945mr5799443637.20.1786538539337;
+        Wed, 12 Aug 2026 05:42:19 -0700 (PDT)
+Received: from hu-pkondeti-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31cf628e42asm13617523eec.15.2026.08.12.05.42.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2026 05:42:18 -0700 (PDT)
+Date: Wed, 12 Aug 2026 18:12:09 +0530
+From: Pavan Kondeti <pavan.kondeti@oss.qualcomm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+        Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+        kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
+        Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+        Oliver Upton <oliver.upton@linux.dev>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Joey Gouly <joey.gouly@arm.com>,
+        Alexandru Elisei <alexandru.elisei@arm.com>,
+        Christoffer Dall <christoffer.dall@arm.com>,
+        Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+        Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+        Gavin Shan <gshan@redhat.com>,
+        Shanker Donthineni <sdonthineni@nvidia.com>,
+        Alper Gun <alpergun@google.com>,
+        "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+        Emi Kisanuki <fj0570is@fujitsu.com>,
+        Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v16 07/45] arm64: mm: Handle Granule Protection Faults
+ (GPFs)
+Message-ID: <7d4e5920-aa20-40cd-954e-037631bd0d6c@quicinc.com>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <20260803134403.80630-8-steven.price@arm.com>
+ <ans1ZSwMEKeT9Gfz@arm.com>
+ <d4bdecca-517a-4b4b-bf67-cef6b09bc8c1@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 07/15] s390/vfio-ap: File ops called to save the vfio
- device migration state
-To: sashiko-reviews@lists.linux.dev
-Cc: Heiko Carstens <hca@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Vasily Gorbik
- <gor@linux.ibm.com>, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, Jason Herne <jjherne@linux.ibm.com>,
-        Matthew Rosato
- <mjrosato@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>
-References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
- <20260807221834.562851-8-akrowiak@linux.ibm.com>
- <20260807223752.4A6F21F000E9@smtp.kernel.org>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <20260807223752.4A6F21F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=RsP16imK c=1 sm=1 tr=0 ts=6a7c689c cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=4yvAY2ebU2nt4NgkF2QA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: kIVN9rqTG6JGkM-S4JTOam-gikl0eAfz
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDEwMiBTYWx0ZWRfXxqSQE5Ft9fqf
- HZVSTG4YUDjzq14GvtQPui/hixskXvyoh21TwbGG3DCS/9zdXGQd8hQRzAlUVunTQkZHR+MnA3W
- XOfa7euU23Kn0e8b7HByOYGfv5f4nOw8iw1/PefIUslRm7riP2f2pyTqVrJCyfyxuW7MFSXnUh9
- w6yArZ+acD3e/1OiTw0OG5TO603v7/OaLggcPmBGvg3c1IfL90GJi9rAfIsO9C7t0xZIP8oy2ox
- 6UVhUxweGyeRdMXZhXfUMVmV+5B+nDBGp2Gs4FrcB0sMqGMyk9FO0VEOnNthbJQUx9iRvBL/3CI
- 08YqYTLUtz/cpXfYKIv7fc/iXzWlewMJw6qMNd0dtmc/xjEAqA/cR2g8k9sCgc7qVHjQ9Kdu9k7
- rGRKyglaPjL3PnJq5Lix8Y2Txq/a7xTAzgyz126VInmbkkxwI1hHKReAP41kMtAlrbPuTKAiRQs
- ubMGzhOrxSKXftY3O7A==
-X-Proofpoint-ORIG-GUID: kIVN9rqTG6JGkM-S4JTOam-gikl0eAfz
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDEwMiBTYWx0ZWRfX/PQ9Hf9TOfQt
- a1P5h0+bHTTFa6kqBoPAbhT1g9uAlYYDMVdp6h/ZfoIR4QmxJBvbbZH9wyfiU71KP+IltF00eH3
- ZWhewdCTG3S5K5GjBbLwoazee16RjqM=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d4bdecca-517a-4b4b-bf67-cef6b09bc8c1@arm.com>
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDEwMyBTYWx0ZWRfX7eM3ZutVxcWW
+ gXmltSrD8r0wKe96KXXmWSuqIgPaeEB+dPKJgQKrBPG9v5X3YfFb1qzaDASYhdxV2vXSXCEI6es
+ TmYtyg5mVXNHQBXWbRvxLVILYZ4LVDs=
+X-Authority-Analysis: v=2.4 cv=evHvCIpX c=1 sm=1 tr=0 ts=6a7c6a2c cx=c_pps
+ a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
+ a=Oh2cFVv5AAAA:8 a=VwQbUJbxAAAA:8 a=7CQSdrXTAAAA:8 a=20KFwNOVAAAA:8
+ a=okfElxvwRwk4E0nMkqUA:9 a=CjuIK1q_8ugA:10 a=3WC7DwWrALyhR5TkjVHa:22
+ a=7KeoIwV6GZqOttXkcoxL:22 a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-GUID: -LbOhZW-cg1KCgHa9a9LhaTJpCDZ-qTb
+X-Proofpoint-ORIG-GUID: -LbOhZW-cg1KCgHa9a9LhaTJpCDZ-qTb
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDEwMyBTYWx0ZWRfX/+qPFdd6qf/n
+ YNAAsp4CDg4PVaCZZsFXHFOftI5RoNKHT1lZ+tHMZ7mnb0Ix/1aFiZJzDEuNRQ85x5CerfBUPsR
+ PUvzrQOI4DqEo41l3qtoG7C1+ZvoP8ceG78/htw/mGiHSRJnnwUcJZdLcBA1/ixI7sDKBfmobeX
+ Jn2CPT6wftjofN9zOzAGaCvyi4e8sxckj2TRVhSOEfELs57u0zKqkxhY+C1jMyxbyWeI+0ar2/+
+ LN3gOMjNCdmYGHJFy6CfXcCkW6YX+T82VEjLH19hmG1iTW8fX04A1F4nb0UI+yoqDhAsk9sKmdj
+ nypu5UEp//eaSsWfN93nQp3SeihKx7QADPL/jyikvOHpGxEUPWVX3eP7roYkgqi6aoWzGPlYxdc
+ THo0f26HfLmHEbznEFH+EHudY2xZXiH0f4tE91rwcKiL2Un1WdllLPgmoW+qyNWU570o8Ku/rOa
+ krN+nMbk2DyJ4OQM0oA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-12_03,2026-08-12_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 suspectscore=0 clxscore=1015 malwarescore=0
- phishscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608120102
+ impostorscore=0 lowpriorityscore=0 adultscore=0 priorityscore=1501
+ bulkscore=0 suspectscore=0 clxscore=1011 phishscore=0 spamscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608120103
+
+On Tue, Aug 11, 2026 at 04:11:13PM +0100, Suzuki K Poulose wrote:
+> On 11/08/2026 15:44, Catalin Marinas wrote:
+> > On Mon, Aug 03, 2026 at 02:43:23PM +0100, Steven Price wrote:
+> > > If the host attempts to access granules that have been delegated for use
+> > > in a realm these accesses will be caught and will trigger a Granule
+> > > Protection Fault (GPF).
+> > > 
+> > > A fault during a page walk signals a bug in the kernel and is handled by
+> > > oopsing the kernel. A non-page walk fault could be caused by user space
+> > > having access to a page which has been delegated to the kernel and will
+> > > trigger a SIGBUS to allow debugging why user space is trying to access a
+> > > delegated page.
+> > > 
+> > > Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > > Signed-off-by: Steven Price <steven.price@arm.com>
+> > > ---
+> > > Changes since v10:
+> > >   * Don't call arm64_notify_die() in do_gpf() but simply return 1.
+> > > Changes since v2:
+> > >   * Include missing "Granule Protection Fault at level -1"
+> > > ---
+> > >   arch/arm64/mm/fault.c | 28 ++++++++++++++++++++++------
+> > >   1 file changed, 22 insertions(+), 6 deletions(-)
+> > > 
+> > > diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+> > > index 85e23388f9bb..ea3ae0ca7dba 100644
+> > > --- a/arch/arm64/mm/fault.c
+> > > +++ b/arch/arm64/mm/fault.c
+> > > @@ -909,6 +909,22 @@ static int do_tag_check_fault(unsigned long far, unsigned long esr,
+> > >   	return 0;
+> > >   }
+> > > +static int do_gpf_ptw(unsigned long far, unsigned long esr, struct pt_regs *regs)
+> > > +{
+> > > +	const struct fault_info *inf = esr_to_fault_info(esr);
+> > > +
+> > > +	die_kernel_fault(inf->name, far, esr, regs);
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +static int do_gpf(unsigned long far, unsigned long esr, struct pt_regs *regs)
+> > > +{
+> > > +	if (!is_el1_instruction_abort(esr) && fixup_exception(regs, esr))
+> > > +		return 0;
+> > > +
+> > > +	return 1;
+> > > +}
+> > 
+> > Is there a valid case for fixup_exception() here? IOW, do we ever have a
+> > valid user mapping of the pages delegated to a guest? If the above is
+> > considered a kernel bug, I'd not silently ignore this (like return less
+> > bytes copied or -EFAULT to user) but rather warn, potentially
+> > rate-limited.
+> 
+> Good question. This shouldn't be a valid case. We expect the VMM to use
+> guest_memfd and that should prevent any mmaps and thus fixups shouldn't
+> be required. That said, this series doesn't enforce that the VMM uses
+> GMEM backed memslots for Guest RAM. We should probably do that while
+> mapping things in.
+> 
+> With that, we could drop that fixup and scream a bit.
+> 
+
+There is a valid case for fixup_exception() to be needed here in GPF
+handling.
+
+-000 |load_unaligned_zeropad(inline)
+-000 |hash_name(inline)
+-000 |link_path_walk()
+-001 |path_lookupat()
+-002 |filename_lookup()
+-003 |vfs_statx()
+-004 |vfs_fstatat()
+
+We observed this in Android running Gunyah when the page is mapped in
+EL1 but unmapped at EL2. path_lookupat() can actually handle this
+via fixup_exeption() when a word load crosses the page boundary.
+However, Gunyah injects a Synchronous External Abort and we have
+a downstream patch [1] that adds fixup_exception() in do_sea(). pKVM
+injects [2] such faults back to EL1 and fixup_exception() is taken care.
+
+This patch allows Hypervisors like Gunyah to simulate GPF instead of
+Synchronous External Abort for kernel to gracefully handle the 
+load_unaligned_zeropad() access.
+
+Thanks,
+Pavan
 
 
-
-On 8/7/26 6:37 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
-> - [Critical] Dropping `mdevs_lock` before `copy_to_user()` in `vfio_ap_stop_copy_read` exposes `mig_data` and its `ap_config` buffer to concurrent frees, leading to a Use-After-Free and kernel memory leak.
-> - [High] Concurrent reads from the stop_copy file race to initialize `ap_config` because `mdevs_lock` is temporarily dropped in `vfio_ap_get_config()`, causing memory leaks of dynamically allocated configuration buffers.
-> - [High] Caching the local `mig_file` pointer before dropping `mdevs_lock` in `vfio_ap_get_config()` leads to a Use-After-Free if `mig_data` is reallocated.
-> --
->
-> --- Patch [7]: [PATCH v7 07/15] s390/vfio-ap: File ops called to save the vfio device migration state ---
-> commit 373ad9ea7be2af5d58b1a74f7797578d1528e3b7
-> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
->
-> s390/vfio-ap: File ops called to save the vfio device migration state
->
-> This patch implements the read callback for the vfio-ap device migration
-> state file. It copies the guest's AP configuration and hardware information
-> to userspace when the migration state transitions to STOP_COPY. This state
-> data will then be transferred to the destination host.
->
->> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
->> index de693b308925d..50781b61f7f18 100644
->> --- a/drivers/s390/crypto/vfio_ap_migration.c
->> +++ b/drivers/s390/crypto/vfio_ap_migration.c
-> [ ... ]
->> @@ -150,6 +144,279 @@ static int vfio_ap_release_mig_file(struct inode *file_inode, struct file *filp)
->>   	return 0;
->>   }
-> [ ... ]
->> +static int vfio_ap_get_config(struct ap_matrix_mdev *matrix_mdev)
->> +{The scenario requires two read() calls to simultaneously observe ap_config == NULL and both enter vfio_ap_get_config(). This cannot happen because:
->>
->> The fd is opened with stream_open(), which serializes read calls on the same fd.
->> Even if two independent fds existed (they don't — one fd per STOP_COPY transition), both callers still serialize on mdevs_lock. The second to acquire the lock will find ap_config already populated and skip the allocation.
-> [ ... ]
->> +	ap_configuration = kvzalloc(ap_config_size, GFP_KERNEL_ACCOUNT);
->> +	if (!ap_configuration)
->> +		return -ENOMEM;
-> [ ... ]
->> +	/*
->> +	 * Unlock the mdevs_lock so other mdevs are not precluded from being
->> +	 * accessed while a potentially long running operation is performed.
->> +	 */
->> +	mutex_unlock(&matrix_dev->mdevs_lock);
->> +	ret = vfio_ap_store_queue_info(mdev_name, ap_configuration);
->> +	mutex_lock(&matrix_dev->mdevs_lock);
->> +	if (ret) {
->> +		kvfree(ap_configuration);
->> +		return ret;
->> +	}
->> +
->> +	if (!matrix_mdev->mig_data) {
->> +		kvfree(ap_configuration);
->> +		return -ENODEV;
->> +	}
->> +
->> +	matrix_mdev->mig_data->stop_copy_mig_file.ap_config = ap_configuration;
-> [Severity: High]
-> Can two concurrent reads cause a memory leak here?
->
-> Since mdevs_lock is temporarily dropped above, both threads might observe
-> that ap_config is NULL in vfio_ap_stop_copy_read(), and both would allocate
-> an ap_configuration buffer.
->
-> When they reacquire the lock here, they will both blindly overwrite
-> matrix_mdev->mig_data->stop_copy_mig_file.ap_config with their respective
-> allocations, permanently leaking the buffer allocated by the first thread.
-
-The scenario requires two read() calls to simultaneously observe
-ap_config == NULL and both enter vfio_ap_get_config(). This cannot happen
-because:
-
-1. The fd is opened with stream_open(), which serializes read calls on the
-    same fd.
-2. Even if two independent fds existed (they don't — one fd per
-    STOP_COPY transition), both callers still serialize on mdevs_lock. The
-    second to acquire the lock will find ap_config already populated and
-    skip the allocation.
-
->
->> +	matrix_mdev->mig_data->stop_copy_mig_file.config_sz = ap_config_size;
->> +
->> +	return 0;
->> +}
->> +
->> +static ssize_t vfio_ap_stop_copy_read(struct file *filp, char __user *buf,
->> +				      size_t len, loff_t *pos)
->> +{
-> [ ... ]
->> +	matrix_mdev = filp->private_data;
->> +	mig_file = &matrix_mdev->mig_data->stop_copy_mig_file;
->> +
->> +	if (!mig_file->ap_config) {
->> +		ret = vfio_ap_get_config(matrix_mdev);
-> [Severity: High]
-> Could the cached mig_file pointer become stale and cause a use-after-free?
->
-> Because vfio_ap_get_config() temporarily drops mdevs_lock, a concurrent
-> thread could potentially free and reallocate the mig_data structure. When
-> vfio_ap_get_config() returns, the stack-cached mig_file pointer might still
-> point to the old, freed mig_data structure.
-
-The concern that mig_data is freed while the lock is dropped inside
-vfio_ap_get_config(), making the pointer stale when
-vfio_ap_stop_copy_read() uses it afterward is unfounded:
-
-1. All callers that free or NULL out mig_data —
-    vfio_ap_release_migration_data() and vfio_ap_reset_migration_state() -
-    hold mdevs_lock, same as the unlock/relock pair inside
-    vfio_ap_get_config().
-
-2. vfio_ap_get_config() already re-checks matrix_mdev->mig_data after
-    re-acquiring the lock and returns -ENODEV before touching anything if it
-    was freed. That return propagates up to vfio_ap_stop_copy_read(), which
-    exits before the stale mig_file is accessed.
-
->
->> +		if (ret) {
->> +			mutex_unlock(&matrix_dev->mdevs_lock);
->> +			return ret;
->> +		}
->> +	}
->> +
->> +	/*
->> +	 * Compute the offset and clamped length fully under the lock so that
->> +	 * concurrent read()s on this stream file each see a consistent view of
->> +	 * the current position.  *pos is advanced here while we still hold the
->> +	 * lock; copy_to_user() then uses the snapshot read_pos.  This prevents
->> +	 * two threads from calculating the same offset and both copying the
->> +	 * same region (or one reading past the end of the buffer).
->> +	 */
->> +	if (*pos >= mig_file->config_sz) {
->> +		mutex_unlock(&matrix_dev->mdevs_lock);
->> +		return 0;
->> +	}
->> +
->> +	len = min_t(size_t, mig_file->config_sz - *pos, len);
->> +	if (len == 0) {
->> +		mutex_unlock(&matrix_dev->mdevs_lock);
->> +		return 0;
->> +	}
->> +
->> +	read_pos = *pos;
->> +	*pos += len;
->> +
->> +	/*
->> +	 * Drop the lock only for the copy_to_user().  The ap_config buffer is
->> +	 * stable: it is allocated once in vfio_ap_get_config() and freed only
->> +	 * in vfio_ap_release_stop_copy_file() which requires mdevs_lock.
->> +	 * Since we already advanced *pos above, no other thread will compute an
->> +	 * overlapping region.
->> +	 */
->> +	mutex_unlock(&matrix_dev->mdevs_lock);
->> +
->> +	if (copy_to_user(buf, (char *)mig_file->ap_config + read_pos, len))
-> [Severity: Critical]
-> Is it safe to access mig_file and its ap_config here without the lock?
->
-> Once mdevs_lock is dropped, a concurrent thread could close the VFIO device
-> or issue a reset, which acquires mdevs_lock and frees both the ap_config
-> buffer and the mig_data struct.
->
-> If that happens before or during copy_to_user(), it could result in reading
-> freed kernel memory and leaking it to userspace, or crashing the kernel.
-
-The code dropped mdevs_lock before copy_to_user(), but
-vfio_ap_reset_migration_state() (e.g. triggered by VFIO_DEVICE_RESET while
-the stop-copy fd is still open) calls vfio_ap_release_stop_copy_file()
-under the lock, which kvfree()s the buffer. A concurrent copy_to_user()
-outside the lock would then read freed kernel memory.
-
-Since the ap_config data is at most a few KB for any realistic AP
-configuration, the fix would be to hold the lock while the
-copy_from_user is executing. This is safe to do under a sleeping mutex.
-
->
->> +		return -EFAULT;
->> +
->> +	return len;
->> +}
-
+[1] https://android-review.googlesource.com/c/kernel/common/+/2996781
+[2] https://lore.kernel.org/all/20260330144841.26181-20-will@kernel.org/
