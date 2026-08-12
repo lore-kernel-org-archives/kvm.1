@@ -1,163 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C183ACF04;
-	Wed, 12 Aug 2026 16:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD2C359A68;
+	Wed, 12 Aug 2026 17:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786553955; cv=none; b=Ms4vE8LMPhwBHl5eJ2x5XyXHAh7kmre3c4mI4pKCjBQSr19fNkh2jOIpaTYt5tpbV3pnnnA27IcAVCHy64kiv7Lh97AEktVgiJFvlgLlPE+nLX5pPOv3/aFMblc8qFIVusTaF1gpl70c0Z5Wz/FtJWn8f2EOrFhNjxynyV6VruY=
+	t=1786554165; cv=none; b=e+V7ZDj98TkBMrgsL2wtRq7l3YItCPFBlHvKBu1tG5AugJVabOCuRpGEDXaqr9QqYW0GVhPPS6braSNURokl/lyFlqR/ThGkoLPI88dgK3cW/WNWP6AwxQsmY/FTs2vwEActHLq7U+gzg9Ij79VgGVIUFVs7x7nC1tp4rvFW0oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786553955; c=relaxed/simple;
-	bh=E3vInNis2xJIkjOjFjpgtJI9yDD7vXEo4llG/3S6xYg=;
+	s=arc-20240116; t=1786554165; c=relaxed/simple;
+	bh=6VOJNswuY6WkTHqE/hhD52A3XG+51+b8E1UzxLQGgm8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=h8gS5PwSyfc7KFITOVnID/4pX7wv9Euly9r/Cw3bSZY0Jj3+vpyirYHs+DsBl4pNX/NarE/cCIO+pekrRh4R2M5zi1DrQfCqr590aN3WsN+yO8PtV1rs/dZOdeud9D05J3sE/pKaiyR628QG9vn3qrk+ScKYm3aqCKnDOx8cRdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SH0qmu4B; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=lEMdRkrkh6ZEqVMzYpi5bMDDFzoXv4OPbXYlSxzGeK5ai6/9uUrBV5+DHYu+rG3RNpe/JxOeFbHddFmPNeheAgv4DeQwnURxa9jUL8CElae61J3Bpx1k/E+rRZoiBjLfp/ByBACzCW04WTpQ4u189dvqROZjnQuK1bDrs1pwh3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZCFw9RdE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SH0qmu4B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB7351F000E9;
-	Wed, 12 Aug 2026 16:59:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZCFw9RdE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8088E1F000E9;
+	Wed, 12 Aug 2026 17:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786553951;
-	bh=3V0itp+OJ0kUUqTzHdPrFG5f0jqkDgW+cSWJ4Nzqk88=;
+	s=k20260515; t=1786554163;
+	bh=HoNx70rDm0mHuzbLOF5mfgWsRSVNWaTC1Uw0GbmVGkk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SH0qmu4BuxQfRTkpLfJh5QIBjR1PpSgRjj6btY05d3f1nHzFoJylIKgykz7VYOMUg
-	 3yWfKV9aT6F/y+IBXyhWvVr/pjBuo4Q/6iAHnsOS21eUwyyr77zPpwMqnNHyMlXRdT
-	 9iOdptDSpZyj36Cs9BXOoL+K+ZZOq9s40ue4IYUAceKr7bym9KqGQWfMByGzdVYKRf
-	 QxpxHO97zYh8WwKMGdiNMrJAmpiOLURUTAVV37PRR4vpCVwFBeoye6Cj6lIiATDeeW
-	 yW9ltEf+R2Wfx883xTDlAKQijiLljd5x/9UHmG/FvcvdT7xjjZe9Pu0qEUZyAOFCtC
-	 N2rN7z7D+ayIQ==
+	b=ZCFw9RdEDGwqOr2iPY5uWJ0GgI9OWzpXl+5QsgmxVe+6W5O4kkazK7Uint2hRoxJI
+	 BPG1NZGYNA0IVHsDNR2oqnLXuGV6nszf9ebACEp9sfbpMX+lXG5KRy/SQwlG1HtYQz
+	 rrYBPL4dxH8MKz/1L63TsDMPq9rmlyUv4Z2DuxjuT9H8d7Uh8OnS+nCT7cvmuYKxgS
+	 ELbdk77HhUwJdhRksJ2P/6dOdvWx1AEK6dHWNoyEkOMhyCLp0dvjJL0NFAmvhJvNgk
+	 wrqum0KO1nkccosz2s+HGyxQzbR7MA+JKSkkxwlXVKvx8hx8J/A6xN1zlryb2QteJm
+	 oYYYoV+nnd0tg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 33/33] KVM: s390: arm64: Enable KVM_ARM64 config and
- Kbuild
+Subject: Re: [PATCH v4 18/20] KVM: s390: vsie: Add VSIE shadow stat counters
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Eiden" <seiden@linux.ibm.com>
-Cc: "Vasily Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, linux-s390@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.vom>, "Marc
- Zyngier" <maz@kernel.org>, "Alexander Gordeev" <agordeev@linux.ibm.com>, kvmarm@lists.linux.dev
-In-Reply-To: <20260812153631.3376090-34-seiden@linux.ibm.com>
-References: <20260812153631.3376090-1-seiden@linux.ibm.com>
- <20260812153631.3376090-34-seiden@linux.ibm.com>
+To: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
+Cc: "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Christian
+ Borntraeger" <borntraeger@linux.ibm.vom>, kvm@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org
+In-Reply-To: <20260812-vsie-sigpi-v4-18-f19e49666315@linux.ibm.com>
+References: <20260812-vsie-sigpi-v4-0-f19e49666315@linux.ibm.com>
+ <20260812-vsie-sigpi-v4-18-f19e49666315@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 12 Aug 2026 16:59:10 +0000
-Message-Id: <20260812165910.AB7351F000E9@smtp.kernel.org>
+Date: Wed, 12 Aug 2026 17:02:43 +0000
+Message-Id: <20260812170243.8088E1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] Trace event name collisions completely break tracing for the kvm=
--arm64 subsystem.
-- [Low] The `$(NM) -jU` command is incompatible with GNU nm, causing build =
-failures.
-- [Low] The Makefile passes `-O default` to `objcopy`, which is an invalid =
-BFD target.
+- [Medium] The `vsie_shadow_scb` statistic undercounts allocated shadow SCB=
+ pages if their initialization fails, and incorrectly categorizes subsequen=
+t uses as reuses.
 --
 
---- Patch [33]: [PATCH v6 33/33] KVM: s390: arm64: Enable KVM_ARM64 config =
-and Kbuild ---
-commit 9d8a545589b9d6b384f0fa20e8bcb8b16fc11bd1
-Author: Steffen Eiden <seiden@linux.ibm.com>
+--- Patch [18]: [PATCH v4 18/20] KVM: s390: vsie: Add VSIE shadow stat coun=
+ters ---
+commit 30e90ae4cab73ef72cfd191918cda52ff46f4c0c
+Author: Christoph Schlameuss <schlameuss@linux.ibm.com>
 
-KVM: s390: arm64: Enable KVM_ARM64 config and Kbuild
+KVM: s390: vsie: Add VSIE shadow stat counters
 
-Adds Kbuild/Makefile configurations to build a second KVM module on s390
-implementing the arm64-KVM API. To prevent symbol conflicts with kvm-s390,
-internal symbols in kvm-arm64 are mangled if compiled as built-in.
+This commit adds new statistics counters to track the allocation and reuse =
+of
+VSIE shadow SCBs and SCAs.
 
-> diff --git a/arch/s390/kvm/arm64/Makefile b/arch/s390/kvm/arm64/Makefile
-> new file mode 100644
-> index 0000000000000..2ae4a5624151d
-> --- /dev/null
-> +++ b/arch/s390/kvm/arm64/Makefile
-> @@ -0,0 +1,91 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +
-> +KVM :=3D ../../../../virt/kvm
-> +include $(srctree)/virt/kvm/Makefile.kvm
-> +include $(srctree)/arch/s390/kvm/gmap/Makefile
-> +include $(src)/Makefile.gen
-> +
-> +ccflags-y +=3D -I $(src) -I $(objtree)/$(obj) -I$(srctree)/arch/s390/kvm=
-/gmap -DKVM_S390_ARM64
-> +
-> +kvm-arm64-obj :=3D \
-> +	arm.o \
-> +	guest.o \
-> +	handle_exit.o \
-> +	inject_fault.o \
-> +	mmu.o \
-> +	mmio.o \
-> +	reset.o \
-> +
-> +kvm-arm64-obj +=3D $(patsubst %.o,%-arm64.o,$(kvm-y))
-
-[Severity: Medium]
-Because kvm_main.c is compiled into both the s390 kvm.ko and kvm-arm64.ko
-modules, it includes the trace headers with TRACE_SYSTEM kvm. Does this mean
-both modules will generate trace event structures mapped to the exact same
-system and event names? If eventfs processes these tracepoints during module
-load, could the kvm-arm64 trace events be permanently shadowed by the kvm
-subsystem's events?
+> diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
+> index 5f6dd4b9e9fd7..a1b679b4aa361 100644
+> --- a/arch/s390/kvm/vsie.c
+> +++ b/arch/s390/kvm/vsie.c
 
 [ ... ]
-> +prereq-o-cmd =3D $(foreach o, $(filter %.o, $^), $(dir $(o)).$(notdir $(=
-o)).cmd)
-> +cmd_gen_symversions_o =3D \
-> +	grep --no-filename "^\#SYMVER" $(prereq-o-cmd) >> $(dot-target).cmd || =
-true
-> +
-> +define rule_ld_o_o
-> +	$(call cmd_and_savecmd,ld)
-> +	$(call cmd,gen_symversions_o)
-> +endef
-> +
-> +LDFLAGS_kvm-unnamespaced.o :=3D -r --whole-archive
-> +$(obj)/kvm-unnamespaced.o: $(addprefix $(obj)/,$(kvm-arm64-obj)) FORCE
-> +	$(call if_changed_rule,ld_o_o)
-> +
-> +quiet_cmd_nm_filter =3D NMFLTR  $@
-> +	cmd_nm_filter =3D $(NM) -jU $< | sort -u > $@
 
-[Severity: Low]
-Are the -j and -U flags compatible with standard GNU nm? GNU nm does not
-support these flags natively and requires --defined-only instead. Will this
-cause a build failure on systems using standard GCC/binutils toolchains?
+> @@ -2042,6 +2047,7 @@ static struct vsie_page *get_vsie_page_cpu_nr(struc=
+t kvm_vcpu *vcpu, struct vsie
+>  		}
+>  	}
+>  	if (vsie_page !=3D vsie_page_new) {
+> +		vsie_page_is_new =3D false;
+>  		if (vsie_page_new)
+>  			free_vsie_page(vsie_page_new);
+> =20
+> @@ -2059,6 +2065,11 @@ static struct vsie_page *get_vsie_page_cpu_nr(stru=
+ct kvm_vcpu *vcpu, struct vsie
+>  			put_vsie_page(vsie_page);
+>  			return ERR_PTR(rc);
+>  		}
+> +
+> +		if (vsie_page_is_new)
+> +			vcpu->kvm->stat.vsie_shadow_scb++;
+> +		else
+> +			vcpu->kvm->stat.vsie_shadow_scb_reuse++;
+>  	}
+> =20
+>  	return vsie_page;
 
-> +
-> +$(obj)/kvm_symbol_list: $(obj)/kvm-unnamespaced.o FORCE
-> +	$(call if_changed,nm_filter)
-> +
-> +define rule_oc_o_o
-> +	$(call cmd_and_savecmd,objcopy)
-> +	$(call cmd,gen_objtooldep)
-> +	$(call cmd,gen_symversions_o)
-> +endef
-> +
-> +OBJCOPYFLAGS_kvm-namespaced.o :=3D -O default --localize-symbols=3D$(obj=
-)/kvm_symbol_list
+[Severity: Medium]
+Will this lead to an undercount of vsie_shadow_scb allocations if
+vsie_page_init() fails?
 
-[Severity: Low]
-Is default a valid BFD architecture/target name for objcopy? GNU objcopy
-strictly requires a recognized target like elf64-s390, or for the -O flag to
-be omitted entirely to preserve the input format. Could this cause a fatal
-invalid bfd target error?
+If vsie_page_init() fails in get_vsie_page_cpu_nr(), it returns ERR_PTR(rc)
+and skips the stat increment here.
 
-> +$(obj)/kvm-namespaced.o: $(obj)/kvm-unnamespaced.o $(obj)/kvm_symbol_lis=
-t FORCE
-> +	$(call if_changed_rule,oc_o_o)
-> +
-> +kvm-arm64-y =3D kvm-namespaced.o
-> +
-> +targets +=3D kvm-unnamespaced.o kvm_symbol_list kvm-namespaced.o
-> +
-> +endif
-> +
-> +obj-$(CONFIG_KVM_ARM64) +=3D kvm-arm64.o
+However, the newly allocated page is already saved in vsie_sca->pages[cpu_n=
+r]
+earlier in the function. The next time this page is fetched from the array,
+vsie_page_is_new will evaluate to false, causing vsie_shadow_scb_reuse to be
+incremented instead of counting the initial allocation.
+
+Should the vsie_shadow_scb counter be incremented earlier upon successful
+allocation, or should the page be removed from vsie_sca->pages[cpu_nr] on
+error?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260812153631.3376=
-090-1-seiden@linux.ibm.com?part=3D33
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260812-vsie-sigpi=
+-v4-0-f19e49666315@linux.ibm.com?part=3D18
