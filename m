@@ -1,197 +1,188 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA8E40928D
-	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 21:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261DD40EB80
+	for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 22:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786571945; cv=none; b=lonJfueLkUIB3r4cyznb+A9HLCdT+xdQSAJk0UR268L2AfjdikwxqpTd6Ghu5xG6KB+xa9iRQpgvhZstp9MoCzGT26splz5DvdxWAN788VoUdZ+PZwiAFDs6phPVtZwsBqABSLtwvIIhYRH5fhZEffvWztS81xHGbRpcbTzgbzI=
+	t=1786572696; cv=none; b=hWfyq4YTW87T6Xub2ARZ2JJSx9e2XUXPWf1oPgQhfYJy/UuRxMzL6j28V33kneirLcdOi7IAmzexVN5rToHDgUjBwi8zad74DP4ePPpjVVYebnociqDpDnWnkU3YAO8BUbpqRR4/41dPu+q45x6RBJmhkdhaai1twxHehSjSy6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786571945; c=relaxed/simple;
-	bh=ymZafs7g1MYV7KFwirGxlA1XH5+iRDPuHI9OtZIExJI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=f3MDYj5MWbCq27BesIA3xM62vREM347/IDoWIq06Z7ALlXLrXP45d2cN+cBo578kAmLwKtUNW5moTfrm767QxNDYC74Xp2K4XsLxdQQvq3nbYbbtlT4ezwdascRZEHXI2OXYVyw+zLd7rj5PJTB+1NBx3pj13YEhWNPj1u06bNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vTOMM+HP; arc=none smtp.client-ip=209.85.215.199
+	s=arc-20240116; t=1786572696; c=relaxed/simple;
+	bh=W/W3zvPMNBs7G76j3kOF1p094KPwTL9rIaA3xKhxAak=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O2w/oMhAPd9GaaC97h/KEUokP1Se0A2otBtD/F6aH0YoNfFMmkzPUEaQBzmdYAd5mR67DbS0ydijpV3Tyok0y1LljoMmz2ubVQNigo7bornvFkBrs/7iQQRfGetY36BSwpwlrv/HxuFGwIDcXf8GxS5nPaPB54Pj4ffrKNxkR4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b1audKXP; arc=none smtp.client-ip=209.85.215.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vTOMM+HP"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-ca6bd8a190cso173124a12.0
-        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 14:59:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b1audKXP"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-ca00f126b7eso107139a12.2
+        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 15:11:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786571943; x=1787176743; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ai5CXOJ0yTxSabLVF9PiGbcqNEQLp6B7VruK8ZH87b4=;
-        b=vTOMM+HPqGsbuJBbdLgzhNrrXRjtPHQDcH8XhhhrFD1OFzyDQkcvWZiFvV9Xjz+jde
-         GucUU2FuDU43G1GGTSOXVfA4U4x7xZNEFqOiph3A7oHuMbregJC3MI29HvqJmZ/jUjSV
-         pbi8gud4D5loU9lByC9gEX70Yim44PviRrltbiKEGuLEZKtO052Zx+kaK5gS5k4DPAJv
-         mnEto4upqPlcGzyl9FCleIB2YY9gGpeN+we50TxZVtW60VVPkCpZM4vOi/3xnXZTHjb/
-         Ow9SvZk7OTGOaJtm9NUL97BJYd99iVrVyO5la6NxHwxzebStlRFYvG7UQ1NTghhGmfAY
-         hCUw==
+        d=google.com; s=20251104; t=1786572694; x=1787177494; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=84UXfrTD07ipm4YJ6onVJzQAj8OjhirewXBuPuaWHiM=;
+        b=b1audKXPkNEsbprP/21dt8eCxWRxsYxa/GOozXuN5qGs32HUmVAgah8nnSlQiA9qt4
+         yemXEBo77/c9hmwW4V2CajXk8Vb3S6oF2DaLb3dluWA54Upnz7x/okW/fG5kSLn7tDrH
+         waGV7QElPGtLnMahXnqgsB8s23KGB7cK3MWrFol+p4ofEAPxjBC34xpCgPslOisc+jTP
+         nZEUIc+wZpuZoaVddHf3mJVlxf/vUPWLp8TWzub2px7FuZyhgI8GCTTdJhcFg7aesNV6
+         kUrqvuIqYe7gHs0dz6G81gU3E+7P3Eg/+GzQ5mn0QXxEp1tYc1U1A6arKPXsv+tgfATt
+         PqQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786571943; x=1787176743;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ai5CXOJ0yTxSabLVF9PiGbcqNEQLp6B7VruK8ZH87b4=;
-        b=ab8l7n87v+oa1JTxWdtbunV6Ma9/Y6/yylWbYvrFtWVLrhXNzuxj6Y1Pz2ZMSgrNt/
-         9Om8GYV3yWS6xdtK1kCtOO3gnSVbZM7L12jXweBX5fbqBxn2nJ2vBR9SYGauMo47NQGS
-         +V0u68VZ4chVHS/4i5gXU7k03xHqSUA6LOprKogGSXqk5wLprx32ah0BC9Je3g9FX75B
-         qww8hgHlpEP3RdKUuDMTXjqMVRhPzfb8RVNgphUjPPU900JMXa9EZGiFcq4UEcANwBT/
-         XB4uGfcTQYANFcVYTzO9ZaTIqhYMZgyBMrrqJBqdzyyJS1DJKwKAcwCRaKLPtH3RAKvH
-         zhOA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq6ddEwiNgBVhp9/X82GiDJRJ3MInmS/4H0NoOqDkT83QosXtU01qThc+5jayA+eFemw34=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOP6iuzhLz/05Jx3lRloyOmLu7UJZDt3C7fH4/TEmF1w4UZR79
-	AaAr9wXiXs1SILpg3eaHBbghDxnwJNMl27LaTV+eVmixtVd7571ESmV4TJ+53jIbxC0Wzp5ZGf5
-	Iysz/Bw==
-X-Received: from pgkd1.prod.google.com ([2002:a63:f241:0:b0:cbe:e700:726f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3293:b0:3c3:b628:6d17
- with SMTP id adf61e73a8af0-3cc553cab60mr1433299637.25.1786571942938; Wed, 12
- Aug 2026 14:59:02 -0700 (PDT)
-Date: Wed, 12 Aug 2026 14:59:02 -0700
-In-Reply-To: <5149127b-32ce-4409-a443-02b5a9600e14@amd.com>
+        d=1e100.net; s=20251104; t=1786572694; x=1787177494;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=84UXfrTD07ipm4YJ6onVJzQAj8OjhirewXBuPuaWHiM=;
+        b=DF8mqj39613vu7KC5EnHLIpRIOoi6FN7kr/KwahTZ6ovOa9tS62mvBBbRLqChr9gOU
+         amAX4HIdSMbRpZxyG0MPL2gZYIoYqEK8IvvmIdWnK/20BASCPPtN8ZBvVMMbEMfSItww
+         4xZRY4mKLYUBAdEYR004i0ZH9U6IjyCTVRhVSVTd7GqeMwRQneW8/0HR3E/txo9L0ihX
+         f0Cf+vHDD79/4W7yGC1OBU83Ir7N+/I5FZHiRl+hDshcoRkySPnvW4W3AMprrrwT4l44
+         zCqEwD+6W3WYshpqzDDJrD3Fvp095u227c4KDVS318ROJNRP2TxveimFlirDMrCht2ir
+         6f0w==
+X-Forwarded-Encrypted: i=1; AHgh+RqWneTvoe8wJL4QmB8WoqKkkAu7gx7Kn+Yi/RDWGg3SQOgWGTiM1678xBTGVmWv+R8DX0k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgZcFAon2KaegZ9rqg+LVcwH3hfnqItWQUGI2sD6Yl/bgCgY8v
+	lIq8KYdUtAG+qw2eoUhsPj5O4YX/8+GTlqZkjIQozp8wnFIUlmC4ZW9qgFPElTF53g==
+X-Gm-Gg: AR+sD10A/G3OBiGh5kjd2KtmluNu7HVcX1/HSOEBG3MrVwG2ltMPt81Um6TtuU6GjBM
+	8tYHaqW8t0leQ9eBHOiEHGoCEEPXUJ4AyKJy/1js5wLOGzgye2kVar8A9vgRRnP3dxuKWeLlcth
+	d6Ng2hjRekf6u4FaT0KIs7fPQ5ssdJLev1KQuXsw8HPBwkLwGfdneVbNJtk7I7c2h4stGPjrtyl
+	t/yNroQlzFbvs7wXVeZyA6DwndkdFpcLeizW4ownGaHpoOoqG94GBM7ea/PXgVqy/Lj/EVu21nU
+	VagoURV45OVukXCApeUU817nwKcoKWLOhW8NfVM3xyixA0Ul1mlnW7WdiNHv5ZTsharkszq9wHa
+	aTm7iwNv+GeT7HMr25asd8ypJqGNFpJHK2wXJDl//xVEIOCpPPG6LqoKm1woF0BIEUd99AHXjjM
+	X1i0+jDMJPcB6exK7XclVkcaE8883UJEYenO9zsb34xV+OdDUCjNMt53rah1ap1Pw/oDSsBIr4S
+	uuZMT9UeMtT2GC9KxPYkpgVFVZZDw==
+X-Received: by 2002:a05:6a00:3923:b0:835:6388:655d with SMTP id d2e1a72fcca58-84fc6ce7c17mr1032589b3a.14.1786572693710;
+        Wed, 12 Aug 2026 15:11:33 -0700 (PDT)
+Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbef7109658sm202295a12.16.2026.08.12.15.11.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2026 15:11:33 -0700 (PDT)
+Date: Wed, 12 Aug 2026 22:11:30 +0000
+From: David Matlack <dmatlack@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
+	netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+	patches@lists.linux.dev
+Subject: Re: [PATCH v4 06/10] vfio: selftests: Allow drivers to specify
+ required region size
+Message-ID: <anzvkibgzTae9eV9@google.com>
+References: <0-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
+ <6-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260713105033.15405-1-sarunkod@amd.com> <20260713105033.15405-6-sarunkod@amd.com>
- <20260713111119.EC35E1F000E9@smtp.kernel.org> <b50b3535-eaa1-4944-914d-0eea8dac0e06@amd.com>
- <anpwS3C2UIHFz_Uf@google.com> <5149127b-32ce-4409-a443-02b5a9600e14@amd.com>
-Message-ID: <anzsptZlkU4VOKGi@google.com>
-Subject: Re: [RFC PATCH v3 5/6] KVM: SVM: Add support for AMD IOMMU Guest APIC
- Physical Processor Interrupt (GAPPI)
-From: Sean Christopherson <seanjc@google.com>
-To: Sairaj Kodilkar <sarunkod@amd.com>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, 
-	Vasant Hegde <vasant.hegde@amd.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
 
-On Wed, Aug 12, 2026, Sairaj Kodilkar wrote:
+On 2026-08-12 11:59 AM, Jason Gunthorpe wrote:
+> Add a region_size field to struct vfio_pci_driver_ops so drivers can
+> declare how much DMA-mapped region they need. The mlx5 driver will need
+> ~18MB for firmware pages. Existing drivers pass in the sizeof their state
+> struct. Since drivers all use only their declared state we can use the
+> value directly and remove the SZ_2M hard coding.
 > 
-> 
-> On 8/11/2026 6:13 AM, Sean Christopherson wrote:
-> > On Mon, Aug 10, 2026, Sairaj Kodilkar wrote:
-> >> On 7/13/2026 4:41 PM, sashiko-bot@kernel.org wrote:
-> >>> [Severity: High]
-> >>> Can an unprivileged user-space process trigger this WARN_ON?
-> >>>
-> >>> When a vCPU is created, svm->gappi_cpu is initialized to -1 in
-> >>> avic_init_vcpu(). It is only set to a valid CPU ID later during
-> >>> __avic_vcpu_load().
-> >>>
-> >>> If host user-space configures device interrupt routing via the KVM_IRQFD ioctl
-> >>> before the vCPU runs, avic_pi_update_irte() is invoked. This will pass the
-> >>> uninitialized svm->gappi_cpu (-1) down to this function, hitting the WARN_ON.
-> >>> If the host has panic_on_warn enabled, this allows host userspace to trigger
-> >>> a kernel panic.
-> >>
-> >> This is a valid concern.
-> >>
-> >> If host userspace attaches a bypass IRQ targeting a vCPU that has never
-> >> been loaded. Functionally, there is nothing to do in that window. A vCPU
-> >> that has never been loaded cannot be blocking, so no GAPPI wakeup is
-> >> required. The IOMMU still posts the interrupt into the vAPIC backing
-> >> page, and the pending IRR is evaluated at the first VMRUN after
-> >> avic_vcpu_load(), which is also where the IRTE gets a valid Destination
-> >> and IsRun = 1.
-> >>
-> >> This can be resolved by assigning a arbitrary gappi destination, without
-> >> actually updating the gappi wakeup list of that CPU.
-> > 
-> > With the disclaimer that I haven't look super closely at this series, and haven't
-> > thought too deeply about the feature itself either...
-> > 
-> > Why are we doing anything different than what VMX does?  vCPUs on the wakeup
-> > list when they block, and come off the list when they wakeup.  It's literally
-> > one flow that's guarantee to pair put()+load(), and the logic for manipulating
-> > the list is quite simple as a result.
-> 
-> I was trying to manipulate the vCPU list after is_empty(ir_list) check
-> in put() and load() path. Which complicated the things, since
-> pi_update_irte() will have to add the vCPU to the list if it was a first
-> interrupt assigned to given vCPU.
+> Assisted-by: Claude:claude-opus-4.6
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 
-No, there are other options.  Specifically, the solution VMX uses is to put the
-vCPU on the wakeup list if it *might* get a posted IRQ.  Again, why reinvent the
-wheel?
- 
-> I think its better to keep the list operations before is_empty(ir_list)
-> check in order to simplify things a little bit.Note that it may increase
-> the list size and potentially increasing time for gappi_wakeup_handler.
->
-> > Going a step further, why is GAPPI not sharing code with VMX Posted Interupts?
-> > At a glance, the only meaningful difference in the wakeup flow is the "should
-> > this particular vCPU be awakened".
-> 
-> On Intel there is a level of indirection: KVM hands the IOMMU the
-> physical address of the PI descriptor once, at IRQ affinity setup time
-> (vmx_pi_update_irte()). After that the descriptor is the only thing that
-> needs updating, so vcpu_load()/vcpu_put() just write NDST/NV/SN in
-> memory and never call into the IOMMU driver again.
-> 
-> AMD has no such indirection. The destination APIC ID, IsRun and GATag
-> live directly in the IRTE, and there is no per-vCPU structure that the
-> IOMMU dereferences. So every vcpu_load()/vcpu_put() has to call into the
-> AMD IOMMU driver to update each IRTE targeting the vCPU, via
-> avic_update_iommu_vcpu_affinity() -> amd_iommu_update_ga().
-> 
-> That difference leaks into the wakeup list handling. On Intel, putting a
-> vCPU on the per-pCPU list is self-contained. On AMD it has to happen in
-> the same ir_list_lock critical section as the IRTE update, and it is
-> conditional on the vCPU actually having posted IRQs (ir_list being non
-> empty), because the pCPU that the vCPU is enqueued on is also what gets
-> programmed into IRTE[Destination].
+...
 
-And?  That's literally calling one function from a slightly difference location
-on Intel vs. AMD.  E.g. unless I'm missing something, the handling should be
-something like this, sans actual code movement:
+> diff --git a/tools/testing/selftests/vfio/lib/iova_allocator.c b/tools/testing/selftests/vfio/lib/iova_allocator.c
+> index 4a660f636f4972..c8075575e9131d 100644
+> --- a/tools/testing/selftests/vfio/lib/iova_allocator.c
+> +++ b/tools/testing/selftests/vfio/lib/iova_allocator.c
+> @@ -13,8 +13,10 @@
+>  
+>  #include <linux/iommufd.h>
+>  #include <linux/limits.h>
+> +#include <linux/log2.h>
+>  #include <linux/mman.h>
+>  #include <linux/overflow.h>
+> +#include <linux/sizes.h>
+>  #include <linux/types.h>
+>  #include <linux/vfio.h>
+>  
+> @@ -50,7 +52,8 @@ void iova_allocator_cleanup(struct iova_allocator *allocator)
+>  iova_t iova_allocator_alloc(struct iova_allocator *allocator, size_t size)
+>  {
+>  	VFIO_ASSERT_GT(size, 0, "Invalid size arg, zero\n");
+> -	VFIO_ASSERT_EQ(size & (size - 1), 0, "Invalid size arg, non-power-of-2\n");
+> +	/* Adjust the size to the allocator requirements */
+> +	size = max_t(u64, roundup_pow_of_two(size), getpagesize());
 
-diff --git arch/x86/kvm/svm/avic.c arch/x86/kvm/svm/avic.c
-index c5b1d294b15a..c9a6da646c8e 100644
---- arch/x86/kvm/svm/avic.c
-+++ arch/x86/kvm/svm/avic.c
-@@ -1020,6 +1020,9 @@ static void avic_update_iommu_vcpu_affinity(struct kvm_vcpu *vcpu, int cpu,
- 
-        lockdep_assert_held(&svm->ir_list_lock);
- 
-+       if (ga_log_intr && gappi && kvm_can_use_device_posted_irqs(vcpu->kvm))
-+               kvm_pi_enable_wakeup_handler(vcpu);
-+
-        /*
-         * Here, we go through the per-vcpu ir_list to update all existing
-         * interrupt remapping table entry targeting this vcpu.
-diff --git arch/x86/kvm/vmx/posted_intr.c arch/x86/kvm/vmx/posted_intr.c
-index 4a6d9a17da23..f6e3fea11baa 100644
---- arch/x86/kvm/vmx/posted_intr.c
-+++ arch/x86/kvm/vmx/posted_intr.c
-@@ -144,7 +144,7 @@ void vmx_vcpu_pi_load(struct kvm_vcpu *vcpu, int cpu)
-                pi_set_on(pi_desc);
- }
- 
--static bool vmx_can_use_vtd_pi(struct kvm *kvm)
-+static bool kvm_can_use_device_posted_irqs(struct kvm *kvm)
+...
+
+> diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
+> index 5e65434d2318b2..52b9c2a2bbb9b6 100644
+> --- a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
+> +++ b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
+> @@ -32,6 +32,9 @@ void vfio_pci_driver_probe(struct vfio_pci_device *device)
+>  			continue;
+>  
+>  		device->driver.ops = ops;
+> +
+> +		VFIO_ASSERT_NE(ops->region_size, 0);
+> +		device->driver.region.size = ops->region_size;
+
+I'm seeing failures with the IGB driver with this series. I think it's
+coming from here. The region size needs to be page-aligned so that the
+IOMMU map/unmap calls can work?
+
+The size of struct igb is 0x20080 bytes which is not page-aligned. The
+size of struct mlx5st_device is 0x200D000, which is page-aligned, so
+that's probably why your Claude did not notice.
+
+# #  RUN           vfio_pci_driver_test.iommufd.send_msi ...
+# /usr/local/google/home/dmatlack/kernel/trees/review/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h:42:
+# Assertion Failure
+#
+#   Expression: __iommu_map(iommu, region) == 0
+#   Observed: 0xffffffffffffffea == 0
+#   [errno: 22 - Invalid argument]
+#
+# # send_msi: Test failed
+# #          FAIL  vfio_pci_driver_test.iommufd.send_msi
+# not ok 33 vfio_pci_driver_test.iommufd.send_msi
+
+Applying this on top fixes things and also avoids a potential overflow
+when doing the roundup_pow_of_two() in the allocator.
+
+diff --git a/tools/testing/selftests/vfio/lib/iova_allocator.c b/tools/testing/selftests/vfio/lib/iova_allocator.c
+index c8075575e913..66a160d4ff9d 100644
+--- a/tools/testing/selftests/vfio/lib/iova_allocator.c
++++ b/tools/testing/selftests/vfio/lib/iova_allocator.c
+@@ -52,8 +52,11 @@ void iova_allocator_cleanup(struct iova_allocator *allocator)
+ iova_t iova_allocator_alloc(struct iova_allocator *allocator, size_t size)
  {
-        /*
-         * Note, reading the number of possible bypass IRQs can race with a
-@@ -217,7 +217,7 @@ static bool vmx_needs_pi_wakeup(struct kvm_vcpu *vcpu)
-         * back to the pi_wakeup_handler() function.
-         */
-        return (vmx_can_use_ipiv(vcpu) && !is_td_vcpu(vcpu)) ||
--               vmx_can_use_vtd_pi(vcpu->kvm);
-+               kvm_can_use_device_posted_irqs(vcpu->kvm);
- }
- 
- void vmx_vcpu_pi_put(struct kvm_vcpu *vcpu)
-@@ -242,7 +242,7 @@ void vmx_vcpu_pi_put(struct kvm_vcpu *vcpu)
-        if (!vcpu->preempted && kvm_vcpu_is_blocking(vcpu) &&
-            ((is_td_vcpu(vcpu) && tdx_interrupt_allowed(vcpu)) ||
-             (!is_td_vcpu(vcpu) && !vmx_interrupt_blocked(vcpu))))
--               pi_enable_wakeup_handler(vcpu);
-+               kvm_pi_enable_wakeup_handler(vcpu);
-        else
-                pi_set_sn(pi_desc);
+ 	VFIO_ASSERT_GT(size, 0, "Invalid size arg, zero\n");
+-	/* Adjust the size to the allocator requirements */
+-	size = max_t(u64, roundup_pow_of_two(size), getpagesize());
++	VFIO_ASSERT_LT(size, rounddown_pow_of_two(SIZE_MAX),
++		       "Invalid size arg, too large (%lu)\n", size);
++
++	size = roundup_pow_of_two(size);
+
+ 	for (;;) {
+ 		struct iommu_iova_range *range;
+diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
+index 96a940ea59b5..b31abfe2c7ff 100644
+--- a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
++++ b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
+@@ -36,7 +36,8 @@ void vfio_pci_driver_probe(struct vfio_pci_device *device)
+ 		device->driver.ops = ops;
+
+ 		VFIO_ASSERT_NE(ops->region_size, 0);
+-		device->driver.region.size = ops->region_size;
++		device->driver.region.size =
++			round_up(ops->region_size, getpagesize());
+ 	}
  }
