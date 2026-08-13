@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B962B31C56D
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 22:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5348B3E2747;
+	Thu, 13 Aug 2026 22:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786660763; cv=none; b=lbUA+z2nKK97a+BjeDPgWs1oqeCYenVSwqvyABis7CHv8YJ7f+DoAtGXvFmYsElPqlyGAHep9wPkG00KB8u/r42uuZHCnCIJ96guP062LbIqYxl3bDEBrFCIXBLhNU6IFxOm0BXNc2Khvd7eCBoBR1AsWMbu+tERQJzey0oZkMQ=
+	t=1786661020; cv=none; b=qjn7g34PdYVICCObHbe+QHEbl5T6H1fyyVI3FmudrgKxCwysrtboZNpUOQ59myMYvmgJP+zKeOwP0dE/UN0WPCFHzY8kHOq4boyMpexg87JlpwvGamSQ1JSl105NnDrpLqnRRrdJVntW7DMDBWScZevgkuTdAoMKYV4zKOEHYpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786660763; c=relaxed/simple;
-	bh=/FcMfFePowVPbIY/nVi+bxBmjIYYJfenpBNb3hnfWCM=;
+	s=arc-20240116; t=1786661020; c=relaxed/simple;
+	bh=yidAZR2+rMRX6azVrH41SRcmLaNdRDTCNeG6uDz4Pqo=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=osfGKMF6WT9C+F0xqSyuOfLE8kX88QtM8d1s+l+S7Eaxd8D5kMju6pOhKf4Rka+YWg4dv59ASQfd0QhFk0gbFK24Nxp7GxtOZ0zP4CytjND9Fttb5Mz/9yy8uUgJlq67juVZZhefl+iKArpwcBPzG+bHJijn5hIe/BmYZYXW3mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I0qk8CJ5; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=kn+4+T8knmOlpr9pn9LIUPH/Qk4ZvfX59QceeTaMEE2lIR48VajUImSMO6RIoEKnOPUF3V5+Z2tznxJMkJQKyfXtKjL65ERL/H1E6dnG3sGbSz0yFo3SUo3zeyv3y4qXxXlF0kMmPx0mDBe5FzjcYiecGjpoQ/rVfY7YgZ4oyCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fy9O2UZ7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I0qk8CJ5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 283901F000E9;
-	Thu, 13 Aug 2026 22:39:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fy9O2UZ7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC941F000E9;
+	Thu, 13 Aug 2026 22:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786660762;
-	bh=TWO9mf7347J4T9b1ErWeafy3Wy1+Mz7yk+On/NuxT94=;
+	s=k20260515; t=1786661019;
+	bh=y78v3zzdZT2rnCHJEoF/HWrCMA7r+5oL2fUwZN/EiT8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=I0qk8CJ5UJkoKTVzVkwtvG5MRiM3GkqNLGAHhCSgRKkdHQ7Go/i4wPjA7BSkAdl3D
-	 CTRrKcGPk7pOygadIBLVuVR/LOOk45YvNNTvxy57lEj0rF3BIjbr4Ar7ylozXC0qJc
-	 6ombb11Jbli+dCtG566iKIPhbvRK0MBwEP46A3qhxxcNvcg8C3NGHtN4+aDdgRMm+D
-	 vHAiFGCdBdMXrAuaTLRAtKbMwwLYPZ+boRAkU+x6WShQGLmZPsGlVlG3gkIJr7eUqv
-	 xjFX5VkYcO6lz6ObVBoAMnVNKr/2HeSBlyM0MPBL2n4zAQxSX1gZUsX14PMSoDQiMT
-	 XkVsotXzjvc3g==
+	b=Fy9O2UZ7SxydGngVXUptJNAI2XspKsfttxcsSzEi0OInHsDEaCxmkz/Vo6hJewQD5
+	 T12xm0DzfL09EziXZaXel5D46vyh/D0nOwSujD+F6WVHF2Q+t52/gd0b1ekYoVED73
+	 vD5wM/MvLGDF0AVGrY5jGXycAdFkG68rFCwoo/Z6/PX2uLxu9/q5VDHFQh1c5FdHod
+	 /IC0P19RZXsnlw5135LueyN4vYHHogSJs7/uiYe9dNQIx8VDeIwEc14NwkFMnk/hr8
+	 6q+tIO/rj82WOYGJvZvFlnEZ6PkGjae0nO+dQgfuROm1I0tUkv3nj8JWfPWA9yNuDK
+	 xI92/lc28uo0w==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 5/5] KVM: selftests: teach sev_*_test about revoking
- VM types
+Subject: Re: [PATCH v3 7/9] KVM: s390: vsie: Fix unshadowing while shadowing
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tycho Andersen" <tycho@kernel.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260324194034.1442133-6-tycho@kernel.org>
-References: <20260324194034.1442133-6-tycho@kernel.org>
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+Cc: kvm@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Christian
+ Borntraeger" <borntraeger@linux.ibm.vom>, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
+ Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org
+In-Reply-To: <20260324174301.232921-8-imbrenda@linux.ibm.com>
+References: <20260324174301.232921-8-imbrenda@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 13 Aug 2026 22:39:21 +0000
-Message-Id: <20260813223922.283901F000E9@smtp.kernel.org>
+Date: Thu, 13 Aug 2026 22:43:34 +0000
+Message-Id: <20260813224338.9EC941F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -48,99 +49,72 @@ Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [Medium] The patch updates SEV-ES and SEV-SNP support checks to use `KVM_=
-CAP_VM_TYPES` instead of `CPUID` to handle cases where VM types are revoked=
- (e.g., due to ASID exhaustion), but misses applying this logic to basic SE=
-V, leading to test crashes.
+- [Critical] Missing unshadowing check in `_do_shadow_pte` and `_do_shadow_=
+crste` leads to orphaned shadow mappings and use-after-free of host memory.
 --
 
---- Patch [5]: [PATCH v2 5/5] KVM: selftests: teach sev_*_test about revoki=
-ng VM types ---
-commit 2ec0ef2342e44224fa7c2705ca4877c7bb8e8605
-Author: Tycho Andersen (AMD) <tycho@kernel.org>
+--- Patch [7]: [PATCH v3 7/9] KVM: s390: vsie: Fix unshadowing while shadow=
+ing ---
+commit d5030d28123280edd38c0f9ad86e8a0833ab9f12
+Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-KVM: selftests: teach sev_*_test about revoking VM types
+KVM: s390: vsie: Fix unshadowing while shadowing
 
-Updates KVM selftests to use the VM type bit instead of CPUID to
-determine SEV-ES and SEV-SNP support. This accommodates environments
-where kernel and firmware configurations revoke VM types.
+If shadowing causes the shadow gmap to get unshadowed, exit early to
+prevent an attempt to dereference the parent pointer, which at this
+point is NULL.
 
-> diff --git a/tools/testing/selftests/kvm/x86/sev_init2_tests.c b/tools/te=
-sting/selftests/kvm/x86/sev_init2_tests.c
-> index b238615196ade..97bd036b4f1c5 100644
-> --- a/tools/testing/selftests/kvm/x86/sev_init2_tests.c
-> +++ b/tools/testing/selftests/kvm/x86/sev_init2_tests.c
-> @@ -133,9 +133,8 @@ int main(int argc, char *argv[])
->  	have_sev =3D kvm_cpu_has(X86_FEATURE_SEV);
->  	TEST_ASSERT(have_sev =3D=3D !!(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KV=
-M_X86_SEV_VM)),
->  		    "sev: KVM_CAP_VM_TYPES (%x) does not match cpuid (checking %x)",
->  		    kvm_check_cap(KVM_CAP_VM_TYPES), 1 << KVM_X86_SEV_VM);
+> diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
+> index 70703bf866dbe..0ac2d775d4c05 100644
+> --- a/arch/s390/kvm/gaccess.c
+> +++ b/arch/s390/kvm/gaccess.c
+> @@ -1472,6 +1472,9 @@ static int _do_shadow_crste(struct gmap *sg, gpa_t =
+raddr, union crste *host, uni
+>  		return rc;
 > =20
->  	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SEV_VM));
+>  	do {
+> +		/* _gmap_crstep_xchg_atomic() could have unshadowed this shadow gmap */
+> +		if (!sg->parent)
+> +			return -EAGAIN;
+>  		oldcrste =3D READ_ONCE(*host);
+>  		newcrste =3D _crste_fc1(f->pfn, oldcrste.h.tt, f->writable, !p);
 
-[Severity: Medium]
-This isn't a bug introduced by this patch, but does the same logic need to
-be applied to basic SEV here?=20
+[Severity: Critical]
+This is a pre-existing issue, but since we are checking for unshadowing her=
+e,
+could _gmap_crstep_xchg_atomic() unshadow the shadow gmap on the exact=20
+iteration where it succeeds?
 
-If base SEV ASIDs are exhausted, the kernel revokes KVM_X86_SEV_VM support,
-but CPUID still advertises X86_FEATURE_SEV. Since this code asserts that
-CPUID perfectly matches KVM_CAP_VM_TYPES, won't this cause a test crash when
-they inevitably diverge?
+If _gmap_crstep_xchg_atomic() succeeds but unshadows sg, the loop exits and
+bypasses this check on the next iteration. It would then unconditionally in=
+stall
+the shadow entry just below the loop:
 
-> -	have_sev_es =3D kvm_cpu_has(X86_FEATURE_SEV_ES);
-> +	have_sev_es =3D kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SEV_ES_VM=
-);
+_do_shadow_crste() {
+    ...
+	} while (!_gmap_crstep_xchg_atomic(sg->parent, host, oldcrste, newcrste, f=
+->gfn, false));
+
+	newcrste =3D _crste_fc1(f->pfn, oldcrste.h.tt, 0, !p);
+	gfn =3D gpa_to_gfn(raddr);
+	while (!dat_crstep_xchg_atomic(table, READ_ONCE(*table), newcrste, gfn, sg=
+->asce))
+		;
+    ...
+}
+
+Could this leave the guest with orphaned shadow mappings? If the host later
+unmaps the page, it iterates over parent->children to invalidate shadow page
+tables. Since sg was removed during unshadowing, it would fail to find and=
+=20
+invalidate it, which seems like it might allow a use-after-free of host mem=
+ory.
+
+Would we need a similar check after the loop exits here, and similarly in
+_do_shadow_pte() after _gmap_ptep_xchg() returns?
 
 [ ... ]
-
-> diff --git a/tools/testing/selftests/kvm/x86/sev_migrate_tests.c b/tools/=
-testing/selftests/kvm/x86/sev_migrate_tests.c
-> index 0a6dfba3905b6..3f2c3b00e3bc4 100644
-> --- a/tools/testing/selftests/kvm/x86/sev_migrate_tests.c
-> +++ b/tools/testing/selftests/kvm/x86/sev_migrate_tests.c
-> @@ -374,7 +374,7 @@ int main(int argc, char *argv[])
-> =20
->  	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SEV));
-
-[Severity: Medium]
-This is a pre-existing issue, but should this TEST_REQUIRE check
-KVM_CAP_VM_TYPES instead of CPUID?=20
-
-If the SEV VM type has been revoked, CPUID will still report support, which
-might lead to crashes upon VM creation when the migration tests execute.
-
-> -	have_sev_es =3D kvm_cpu_has(X86_FEATURE_SEV_ES);
-> +	have_sev_es =3D kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SEV_ES_VM=
-);
-> =20
->  	if (kvm_has_cap(KVM_CAP_VM_MOVE_ENC_CONTEXT_FROM)) {
->  		test_sev_migrate_from(/* es=3D */ false);
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/kvm/x86/sev_smoke_test.c b/tools/tes=
-ting/selftests/kvm/x86/sev_smoke_test.c
-> index 8bd37a476f159..f3c39335ff39a 100644
-> --- a/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-> +++ b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-> @@ -247,8 +247,8 @@ int main(int argc, char *argv[])
->  {
->  	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SEV));
-> =20
->  	test_sev_smoke(guest_sev_code, KVM_X86_SEV_VM, 0);
-
-[Severity: Medium]
-This is a pre-existing issue, but does gating execution on CPUID rather
-than KVM_CAP_VM_TYPES cause an issue here?=20
-
-If KVM lacks SEV support despite CPUID, won't it crash when calling
-test_sev_smoke() for base SEV?
-
-> -	if (kvm_cpu_has(X86_FEATURE_SEV_ES))
-> +	if (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SEV_ES_VM))
->  		test_sev_smoke(guest_sev_es_code, KVM_X86_SEV_ES_VM, SEV_POLICY_ES);
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260324194034.1442=
-133-1-tycho@kernel.org?part=3D5
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260324174301.2329=
+21-1-imbrenda@linux.ibm.com?part=3D7
