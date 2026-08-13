@@ -1,141 +1,117 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7D734B43F
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 23:32:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035BA31F984;
+	Thu, 13 Aug 2026 23:40:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786663979; cv=none; b=j+AxTdCsAXBl+g0pZNgPP57xK4m6Rh2Ub9GGw4VWcLhxRMumLqIXIYkur5lTXdsGOK65fY26G0oBNIItBJUsk2t2zcM/Wrxpb9fLbBcgZH2G0zgFndRA/PtIGtUbaCqxpkfGzQr/AX3XaLpyovXVE1vNsaIPd46jE0p41r751QE=
+	t=1786664454; cv=none; b=lPQIsRCy/JRZOq2z8I301L5dbWDlg63PnZS3TajTZZVho/t5uP9S0+ITMBGAwImvD9iwcOVEg3BnQUniRWb26/FtLNsq4RHWvbZpVmMTR37851FXo85utQzAtQqpmFjUX4Suv+baYduNx6iOsvbVapp16y02UUdQE6v9DISn9Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786663979; c=relaxed/simple;
-	bh=OA5h+aV+ThA7Ai5qz/1Lb2Sur7kTcoij03QdezWTZcE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=c3p0MNTreEsap/98zAtvHOHcdqz72C7jGAxEZrsvBTogRKtmtYCfdo7Fm0JB7Tec5Am0zNWzdmmUP/USRwXfIqcOpWZpXVSHQqNDgEDUjZR6+UVAVYQgA5XjQKSKP38IVdeghEkeUvAbK9fyVsBVadSEpu1tp2Iw7oJvDOUbPpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YHR4auvZ; arc=none smtp.client-ip=209.85.210.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786664454; c=relaxed/simple;
+	bh=g0vJrIhp/IFphXuZLnHGpSHcX8i/lpGR5sH5Jcv25bk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=nslT/uHFJorAIDjebenaSkWD2HyFlk8VwOsMZmcLpPTDfaLMvoOTiaj+8TfJzM2wYD+reUOBrBM5Gl2x5DN59WCh1jP3BbLE+9CrnsJp6WMTAU32WikM/9xpri55sOTeouoEQ7ZP6N4kyFKUpvrS3Vp2HT3BtpSZpAjZjUAZKwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e8O5e+t+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YHR4auvZ"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84e01a62d99so386776b3a.0
-        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 16:32:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786663977; x=1787268777; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Nfsw3dCbG2eROZ65PkHFv78AeM3AjkoQEz/YIwe6msI=;
-        b=YHR4auvZZmPgicrE1I7VKyCBYXe2Jw/S2C0R+e7Y9iTJ/Iqarmn5VcO+V9eR+fMfUS
-         RVLhnEyeeCMxX19qV89+nbDv3/wkijoY1CYy1GTB5r4t1CEXJCkNPTQNhZZCfEawlsxJ
-         aDa6MIQ6zduAs1ygDsMwfQk+Db4FgDFMiyl6MyCVj7VkA/53F86d0swEetBX/wiUJxcT
-         C4wX2NkMuTfgAeV1mTsKX2TUCb9gCAsH7Iza/XMnTggBm6DZ3pGa6onvi1lpItU/fzPB
-         HdIWl1kA9+rVPkwlZuqSdJOeMF9SG/JINhtD4ALiPKbIcr1qR18eQKE91QDPPfiew8y6
-         BhoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786663977; x=1787268777;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Nfsw3dCbG2eROZ65PkHFv78AeM3AjkoQEz/YIwe6msI=;
-        b=aPFqKs5xhM0SYl25ikrINSvtpqY5dZehB5OM442NF/tJB70IpIV0Ny1sjYgdBYcXiy
-         6jfm1segdA+VwftU+9sYldhz/8+nB+kIQnEA1C/AwOM3KK5j3VHgQbM71UK21NCa0G8z
-         UV5vvW04+FXmaXglT7KA35X3OCDdYu0PKdaekLpL/m93q511EFqG6GTx6iITjReq8DD9
-         wBi4AH9fvSHta4/DQXv3SbNS3cBSC/iLeJU+XtWPDMAHpgE8ISjpX82o/mtihrZduE2J
-         jkcmw+3wTFS5yvONnwPcfUaukHvlkJ/hMrLcqHS2ahP/YtQlsMS1cCjyi74HkVg0wXBr
-         +Z4Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rqkw9v2zksCw5JTorLspQNACnExJeNGG6EHKQXojlPI1I2GFpGnpMqdtd5IpsU5qFomlUU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPdUSlhiJuIVt9lzeW/A5r/45biEPZioKYNUBh4KMVL/eMye26
-	Bh8Y/9bE7RxSc3/oNQZACx/diu6D7hvpC5YvD2pNwk+mccYf/Q/hC2qO6QTkkGF6XWtSYGwnN5B
-	50+LrKQ==
-X-Received: from pgch28.prod.google.com ([2002:a05:6a02:509c:b0:c9a:ffcc:19c8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:ab0b:b0:845:ebbf:e7be
- with SMTP id d2e1a72fcca58-84fde2c543amr1679491b3a.23.1786663976531; Thu, 13
- Aug 2026 16:32:56 -0700 (PDT)
-Date: Thu, 13 Aug 2026 16:32:55 -0700
-In-Reply-To: <b6080c23-a2a8-4bc5-b3bd-982bd766c648@arm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e8O5e+t+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12B61F000E9;
+	Thu, 13 Aug 2026 23:40:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786664452;
+	bh=glbMup09peRFIDMkoWez21RDNoa37s6Ixxfk8euJiXw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=e8O5e+t+NIXVm4rrQotNWdx8JCK9DdyLITFoszwIIIe91curwedgrsGLozqwLeTk0
+	 XgjvGQiEBN/FMvauevjndeaHbASLl4B/zMLx4Gt45oe/+3IZOiSn4j5VCCuOzfBq2o
+	 vzpBxKVFcH/aCCDXgKriLxjKbTqlF1KkMuoNetuKnpWd/lY7d5G7dFt81K0fsldMyk
+	 7L2yABHg+sCwrjcJodwK82adD0YZUUeU/2zS48uG8UrcAjLnF9XD3GMoMscixjOcB/
+	 1Ze9O4ueFs9pklBeELSChFZCyecrVJkJKg/C2J8QGPuWmDBE66J1cnlP+A1rycirTL
+	 jlM71RHsqlxlQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 02/16] s390/vfio-ap: Provide access to queue objects
+ and related info
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
+Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
+ Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, "Christian
+ Borntraeger" <borntraeger@linux.ibm.vom>, kvm@vger.kernel.org
+In-Reply-To: <20260407205100.331150-3-akrowiak@linux.ibm.com>
+References: <20260407205100.331150-3-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 13 Aug 2026 23:40:45 +0000
+Message-Id: <20260813234046.F12B61F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260702142912.6395-1-alexandru.elisei@arm.com>
- <akxOrMnlNga-vtQv@google.com> <ak0wSQ1133O7B96D@raptor> <ak0ziUcCXUlDdcla@google.com>
- <ak-EKSslAz1uqEtv@J2N7QTR9R3> <ak_wC4Q-mQe14DI8@google.com>
- <alDI1b8fC99SG4_a@J2N7QTR9R3> <a127176a-1722-460c-aa84-754e1d343f53@arm.com>
- <an3sEiQlIuGEjUur@raptor> <b6080c23-a2a8-4bc5-b3bd-982bd766c648@arm.com>
-Message-ID: <an5UJ4S_P1LUFmzD@google.com>
-Subject: Re: [RFC PATCH 0/3] KVM: Dirty page logging for guest_memfd-only memslots
-From: Sean Christopherson <seanjc@google.com>
-To: David Hildenbrand <david.hildenbrand@arm.com>
-Cc: Alexandru Elisei <alexandru.elisei@arm.com>, Mark Rutland <mark.rutland@arm.com>, pbonzini@redhat.com, 
-	kvm@vger.kernel.org, maz@kernel.org, oupton@kernel.org, joey.gouly@arm.com, 
-	seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	fuad.tabba@linux.dev
-Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Aug 13, 2026, David Hildenbrand wrote:
-> On 8/13/26 18:09, Alexandru Elisei wrote:
-> > On Mon, Jul 13, 2026 at 04:11:57PM +0200, David Hildenbrand wrote:
-> >>> Yeah. I agree (with the caveats you mention). Arm folk need to go figure
-> >>> out if it's worthwhile to support with all those caveats.
-> >>
-> >> Right, disabling migration (once gmem supports it) was also what I discussed
-> >> with Alexandru when that topic comes up.
-> >>
-> >> How to communicate to gmem that it wants these fixed mappings is a good question.
-> > 
-> > There's already a proposal for how to do this in the migratable guest_memfd
-> > series [1] - it's a new guest_memfd creation flag that disables migration.
-> 
-> In the guest_memfd call I was arguing against the flag in the first version, and
-> instead adding it when actually required.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] Inefficient O(N*M) loop to calculate the number of queues instea=
+d of a constant-time weight calculation.
+--
 
-Ya, right now a flag is meaningless.  Telling guest_memfd not to do something it
-doesn't ever do...
+--- Patch [2]: [PATCH v2 02/16] s390/vfio-ap: Provide access to queue objec=
+ts and related info ---
+commit ead4ee761bf33471a8b6bc2e8080a705110bd528
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-> I was also raising whether KVM couldn't tell guest_memfd (e.g., at creation
-> time?) that it supports a CPU feature that requires S2 to be always mapped to
-> disable migration.
-> 
-> It would then be a contract between KVM and guest_memfd without user space
-> having to be involved on that level.
-> 
-> > With Sean's comment that he expects swap/reclaim to be fully userspace
-> > driven, I believe that would be enough to guarantee on the _kernel_ side
-> > that SPE will work as intended for a guest.
-> 
-> That's my understanding.
-> 
-> > 
-> > I'm a slightly concerned though that all of this will work by chance, and
-> > not by design, and in the future the behaviour might change to allow
-> > guest_memfd memory to be unmapped from stage 2 without the VMM or KVM
-> > explicitly allowing it or initiating it.
+s390/vfio-ap: Provide access to queue objects and related info
 
-Meh, TDX on x86 already has the same requirement.  Unmapping a page from the S-EPT
-kills the VM unless the VM was expecting the page to be lost. 
+This commit provides functions to access vfio_ap_queue objects and to return
+the number of queues passed through to a guest. It makes an existing queue
+retrieval function non-static, adds a lockdep assertion, and introduces a
+new function to count the total queues.
 
-> Thus my idea of the explicit contract between KVM and guest_memfd. Instead of
-> being a "this doesn't support migration" it would be a "S2 always mapped"
-> kind-of contract.
+> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
+_ap_ops.c
+> index ef3101f6865e5..cd85866b81a05 100644
+> --- a/drivers/s390/crypto/vfio_ap_ops.c
+> +++ b/drivers/s390/crypto/vfio_ap_ops.c
 
-Who would that contract be between though?  KVM can tell a guest_memfd instance
-that page migration is/isn't supported, but telling guest_memfd that the VM will
-always keep the entirety of the guest_memfd mapped in stage-2 is nonsensical.
-guest_memfd simply doesn't care if the page is mapped or not, it only cares if
-migration is supported.
+[ ... ]
 
-> > My understanding from the conversation so far is that the plan for the
-> > future of guest_memfd is to support an option/mode where the memory is
-> > effectively "pinned" at stage 2 (but which allows userspace to explicitly
-> > free/unmap it, of course). Is that correct, or am I being overly optimistic
-> > in my interpretation?
-> 
-> We could then even disallow fallocate() to punch holes if that contract is
-> negotiated.
+> @@ -2098,6 +2098,20 @@ static void vfio_ap_mdev_request(struct vfio_devic=
+e *vdev, unsigned int count)
+>  	release_update_locks_for_mdev(matrix_mdev);
+>  }
+> =20
+> +int vfio_ap_mdev_get_num_queues(struct ap_matrix *ap_matrix)
+> +{
+> +	unsigned long apid, apqi;
+> +	int num_queues =3D 0;
+> +
+> +	lockdep_assert_held(&matrix_dev->mdevs_lock);
+> +
+> +	for_each_set_bit_inv(apid, ap_matrix->apm, AP_DEVICES)
+> +		for_each_set_bit_inv(apqi, ap_matrix->aqm, AP_DOMAINS)
+> +			num_queues++;
 
-Why?  If userspace pulls a stupid and kills its guest, that's userspace's problem.
+[Severity: Medium]
+Since the total number of AP queues is determined by the Cartesian product =
+of
+the set bits in these two matrices, could this be calculated more efficient=
+ly
+without a nested loop?
 
-KVM would also have to block memslot changes, and probably other things in the
-future that would unmap stage-2 in response to userspace syscalls/ioctls.
+For example, utilizing bitmap_weight() would avoid the iterations entirely:
+bitmap_weight(ap_matrix->apm, AP_DEVICES) * bitmap_weight(ap_matrix->aqm, A=
+P_DOMAINS)
+
+The current nested loop executes an iteration for every set bit combination=
+=20
+while holding the mdevs_lock, whereas the bitmap_weight approach would achi=
+eve
+the same result in a few word-level popcount operations.
+
+> +
+> +	return num_queues;
+> +}
+> +
+>  static int vfio_ap_mdev_get_device_info(unsigned long arg)
+>  {
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260407205100.3311=
+50-1-akrowiak@linux.ibm.com?part=3D2
