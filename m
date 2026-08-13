@@ -1,146 +1,105 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C123EB0F0
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 14:43:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898FE42C505
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 15:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786632217; cv=none; b=FX8AAs8c6kdzM+VV8h3tA50TVaH53rY0vLEDbZaLWvPhm1fORJy4hc2d3BmExkaJrlxjpwd1aTj+EFzR35UITKeJljl1bN43hRi8ELrjYF4pt7L/rh03+oah0N2pv6zyHhDZkeNOuDVF/wswVNDd/kWCaNtf5hdSNxuaeNtmoxE=
+	t=1786633214; cv=none; b=Cuxxoyq8ex+BnPPiNiaJa+pGqRLWrxU56TILFM1aoH9Y5m6nk9pE+YpAavl9GuLlCXOxsiDkjxo5cd0jQ7/17vR87qMLfkltokNOMtISVHdjZyW3iZLWwkkLaKdgqqEK1pnpcdHH+HBKJlx5uDWWqaPw35uBvD/2DlssrZYo59M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786632217; c=relaxed/simple;
-	bh=mWHX8G1vMtcvD4xBylDXDlohI1gXLpgdVH2pH08gA+Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Gpq1k68s9TuQtdYefAWxKZWXqcn5GWs2EcayGAN5KTc50lEkrwRMDoOIzZH7hSa6YAcQBruBfLDkMuaZmfM0Oct8FYdfAeQM3aEBZMfmzhHNRCG1ziJiRfEzV8IwjNl6HdOn5Avae2aNv+IZMjrpVV3TqE9sYXH/oB77dH5O/j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jLc58nWN; arc=none smtp.client-ip=209.85.214.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786633214; c=relaxed/simple;
+	bh=zlpuBNvhEWlH4yvzKgyw1eRO1rsqYEg+EtN5KWY+PAs=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=m93XISZvHlBa/Axac/pWkIa/NVcBnoW2mWTrkjIlKbf9IalmvCMtp+n75ar3KPihCi9Mdiy1l+0ZvToga5AZQMUNEs8hFNG4LHYXgyXl9RCdQivqbih8hcLBBg1gVw33yysYmnaug07V3jxgr5OU8B8I574kDWQ4+VsD8U5uHjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJAA6g66; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jLc58nWN"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ce8a76df2dso38426125ad.2
-        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 07:43:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786632215; x=1787237015; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=XtnzlHO9m29l9/hpBVjg+n0DEKeFZ76f2zo+ZLPVNMk=;
-        b=jLc58nWNytQmFTcQYmKqWocNLcCkndguv1gswxsvwKF6SElL/ICcAeL3230Z5WW4l5
-         lHLUXYt6X+TEuDXoC7dMfwf35CwQwq/xIAXVPWAnpRUxz4ATX0mIcYbBaepwy6L1DM/7
-         nMQmkJzTLxyaH4bNyz2ZyMx69yoUEAibP7oWv+IVK7tRkp1vwiK26HTym1ItXxEq9a7Z
-         74moA3e/da3f+VWsQLQLJ2JdNiRTn0+fbczpJKnY8TdK0WK3lKGq+MMLvQ5yYTLeojKP
-         Nwx0S/vVE9xbgCcWp4onjO+p/aFheVlmuR9iAsj667U3M6BqIpwc6VALMYl+ONIVADM+
-         GjFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786632215; x=1787237015;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XtnzlHO9m29l9/hpBVjg+n0DEKeFZ76f2zo+ZLPVNMk=;
-        b=nw+mTwjLTmFyJA+n7cuHXsIph8SML4OGEv1W9adFBa/cMFszAAEz8okIzswdUe5nCg
-         r2TPj8TIbKjBcwwcRMSlWypRuUWBvxDS94IyWK0kkyDWqoP5MrlcwIxJXnttjXRZ9qux
-         1jmJRfrJT8SAjwCDMCbnHwKNJxQyf8uO78KQQNPBkpz0oPDFWh6wbj9j7rJzXH7jWvSQ
-         +aNI2X8wftEtCOD9hLD79gP4b34FqDQXjbVuL5s9b9sH7JIHTxgAdR4P2gsVFPe6Sjp8
-         Mjk//bOnoeJyPBCOVTlasz0+0FZro7i60wumZ/1IgXaxPMBOPrLgsb69XxxabqfMa4Xb
-         EfQw==
-X-Forwarded-Encrypted: i=1; AHgh+RokzLYBZTFpXzQ8HQ9rQq+Nv22ajv7ok0BjO3j6eHctntSN5iinz2HgzjNzQIIV0pOdaZ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2bAXAJc78iGap46TGx7KGbUMDDXy1tcfv5KHF1iqRlxCY5SWN
-	EGKyTvcAaZpznS8zqy9w5BAGPIIGSf5O8AQ49QwIBBQAKn6bzqDNGYRiZ6ofAH2Qci/W3rjVgvp
-	0DqgZwg==
-X-Received: from plge13.prod.google.com ([2002:a17:902:cf4d:b0:2ca:f1f8:ea00])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:153:b0:2cf:b68a:2050
- with SMTP id d9443c01a7336-2d37e83cdbemr62702595ad.15.1786632215477; Thu, 13
- Aug 2026 07:43:35 -0700 (PDT)
-Date: Thu, 13 Aug 2026 07:43:34 -0700
-In-Reply-To: <1cf47118-2a19-44d5-ab74-b4c7ffa8890c@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJAA6g66"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3091F000E9;
+	Thu, 13 Aug 2026 15:00:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786633207;
+	bh=zlpuBNvhEWlH4yvzKgyw1eRO1rsqYEg+EtN5KWY+PAs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=RJAA6g66YPZ2/wBrsxr0bK+Chaudalh+E4tWcRxSTsxWwGkpYtSw4uc6Y1/ZppQ9C
+	 Ej3WuHolgsmPJWmlXAQhw3Eef1f2J//UmWjsHnBSF4Hz47UxyGgZigjfZlcbP49xTJ
+	 v3adz0XCnP1CYGJQNPV5s+dnOgc8eDf/ryq1DEFeK9IWaZb7PCi0KL3H9oROxPH+hp
+	 y5DcnlcXCxofYQSRFTIrZlOzk0/YjOpdGlTfXc1AJVPbRvxaz4S0iRhCtLTOZxCsQv
+	 Fnzz4AKyU8+v1jtAzQK6EvQuV+Bdj2B587mxyaYGWW+YRGU10FkMHWF2J4xbF/U+mg
+	 5lognXJTceDew==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 03/10] net/mlx5: Extract MLX5_SET/GET macros into
+ mlx5_ifc_macros.h
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jason Gunthorpe" <jgg@nvidia.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <3-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
+References: <3-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 13 Aug 2026 15:00:06 +0000
+Message-Id: <20260813150006.EA3091F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260812080229.2481439-1-xiaoyao.li@intel.com>
- <20260812080229.2481439-5-xiaoyao.li@intel.com> <868c0d3c792d789347c767031612977c31cc227f.camel@intel.com>
- <1cf47118-2a19-44d5-ab74-b4c7ffa8890c@intel.com>
-Message-ID: <an3YFiDbjRs3PUwn@google.com>
-Subject: Re: [PATCH v3 4/4] KVM: TDX: Enable Bus Lock VM exit
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "kas@kernel.org" <kas@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"nik.borisov@suse.com" <nik.borisov@suse.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 13, 2026, Xiaoyao Li wrote:
-> On 8/13/2026 6:58 AM, Edgecombe, Rick P wrote:
-> > On Wed, 2026-08-12 at 16:02 +0800, Xiaoyao Li wrote:
-> > > -	if (unlikely(READ_ONCE(to_kvm_tdx(vcpu->kvm)->wait_for_sept_zap)))
-> > > +	if (unlikely(READ_ONCE(to_kvm_tdx(vcpu->kvm)->wait_for_sept_zap))) =
-{
-> > > +		vt->exit_reason.bus_lock_detected =3D 0;
-> > >  =C2=A0		return EXIT_FASTPATH_EXIT_HANDLED;
-> > > +	}
-> >=20
-> > This still feels hacky to me. It at least deserves a comment I think. I=
-f you
-> > spin another version.
->=20
-> I spent more time on this today and I find there is an existing issue. Wh=
-en
-> the previous Exit Reason is EXIT_REASON_EXTERNAL_INTERRUPT, the early ret=
-urn
-> here can go to the path due to the stale exit_reason.
->=20
-> kvm_x86_call(handle_exit_irqoff)(vcpu)
->   vmx_handle_exit_irqoff()
->     handle_external_interrupt_irqoff()
->=20
-> This makes the host process the external interrupt twice, and maybe more
-> times if the wait_for_sept_zap remains longer.
->=20
-> I think we need an separate fix to set
->=20
-> 	vt->exit_reasons.full =3D TDX_INVALID_EXIT_REASON;
->=20
-> so that if some patch is going to consume the stale Exit Reason, it can b=
-e
-> caught by TDX_INVALID_EXIT_REASON.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] The newly extracted `mlx5_ifc_macros.h` header lacks necessary incl=
+ude directives for the types and macros it uses, violating the kernel's sel=
+f-contained header rule.
+--
 
-The more I look at this, the more I'm against shoving garbage into vt->exit=
-_reasons.
-With tdx_is_exit_reason_valid(), this is trivially easy to handle, *and* ex=
-plicitly
-captures the logic instead of subtly rerouting KVM away from meaningful han=
-dling.
+--- Patch [3]: [PATCH v4 03/10] net/mlx5: Extract MLX5_SET/GET macros into =
+mlx5_ifc_macros.h ---
+commit 76e6552b0716c94811acb9f5971adc7809d4dee0
+Author: Jason Gunthorpe <jgg@ziepe.ca>
 
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index 95d89d809c19..a1f5b5dc1fa3 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -157,6 +157,14 @@ static fastpath_t vt_vcpu_run(struct kvm_vcpu *vcpu, u=
-64 run_flags)
-        return vmx_vcpu_run(vcpu, run_flags);
- }
-=20
-+static void vt_handle_exit_irqoff(struct kvm_vcpu *vcpu)
-+{
-+       if (is_td_vcpu(vcpu) && !tdx_is_exit_reason_valid(vcpu))
-+               return;
-+
-+       vmx_handle_exit_irqoff();
-+}
-+
- static int vt_handle_exit(struct kvm_vcpu *vcpu,
-                          enum exit_fastpath_completion fastpath)
- {
-@@ -1071,7 +1079,7 @@ struct kvm_x86_ops vt_x86_ops __initdata =3D {
-        .load_mmu_pgd =3D vt_op(load_mmu_pgd),
-=20
-        .check_intercept =3D vmx_check_intercept,
--       .handle_exit_irqoff =3D vmx_handle_exit_irqoff,
-+       .handle_exit_irqoff =3D vt_op(handle_exit_irqoff),
-=20
-        .update_cpu_dirty_logging =3D vt_op(update_cpu_dirty_logging),
+net/mlx5: Extract MLX5_SET/GET macros into mlx5_ifc_macros.h
+
+This commit extracts the MLX5_SET/GET macro family from device.h into a new
+standalone header, mlx5_ifc_macros.h. The extraction allows VFIO selftests
+to use these macros without pulling in the dependencies of device.h.
+
+[ ... ]
+> diff --git a/include/linux/mlx5/mlx5_ifc_macros.h b/include/linux/mlx5/ml=
+x5_ifc_macros.h
+> new file mode 100644
+> index 0000000000000..d357acfd351de
+> --- /dev/null
+> +++ b/include/linux/mlx5/mlx5_ifc_macros.h
+> @@ -0,0 +1,133 @@
+> +/* SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB */
+> +/*
+> + * Copyright (c) 2013-2026, Mellanox Technologies. All rights reserved.
+> + *
+> + * Accessor macros for mlx5 IFC structures.
+> + *
+> + * Extracted from device.h so that code which cannot include device.h
+> + * (e.g. selftests) can still use the MLX5_SET/GET family directly.
+> + */
+> +
+> +#ifndef MLX5_IFC_MACROS_H
+> +#define MLX5_IFC_MACROS_H
+
+[Severity: Low]
+Does this new header need to include its dependencies such as <linux/types.=
+h>,
+<linux/stddef.h>, <linux/build_bug.h>, and <asm/byteorder.h>?
+
+Since the commit message mentions this header is intended for independent u=
+se
+by VFIO selftests, without these includes, files that include this header
+directly might fail to compile due to missing definitions for u32, offsetof,
+BUILD_BUG_ON, and cpu_to_be32.
+
+> +
+> +/* Internal helpers -- 32-bit */
+> +#define __mlx5_nullp(typ) ((struct mlx5_ifc_##typ##_bits *)0)
+> +#define __mlx5_bit_sz(typ, fld) sizeof(__mlx5_nullp(typ)->fld)
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/0-v4-021df3fb5a3f+9=
+8e-mlx5st_jgg@nvidia.com?part=3D3
