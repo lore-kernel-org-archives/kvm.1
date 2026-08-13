@@ -1,209 +1,271 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761FC36728B;
-	Thu, 13 Aug 2026 07:55:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786607711; cv=none; b=ld8SdlexgT11w+dQvVMbPaKacEjsZK+5uocsHkDQbATWi38s6U73rKm7mD7X9qT/m386u/s6IlLORwKA4kTbW5+mV33l7560a29SRr+OpsBs07TzxN3tpnL9/SvrKhxLOSM4v6zCkyXFmI9LDIc8tixXQ8U/1hmq6YltW/knWQE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786607711; c=relaxed/simple;
-	bh=WOgwzjyAadVx0ZDU+mKs3DNtLoxxj6BgXSurYWlX1As=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dSNvpA2/IbGR38yry4YCinpa8/mFRjPHOslk6ybGATqE893YpOvXEg8l11m9zdUdWnZ9SA5HKuB5qsmJPEuYN+VUflCCvir9KwNde2XhAuGYtXZ4ow5P4JYwd65pLMfZrLyg6XCOYEc7KR92nm7m7PtvaTArF/bWNOgqkRa4AK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=g+efvutL; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F9813E02A
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 08:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786608630; cv=pass; b=QOvPFyDZyDrspkIcEA+YiJJlh/ivdRHsa3eECfgAEO+VfKfg2a6sFgSVnHRjGHkGqhuV/HBh6vOOmsTIou86zjvcGlCM+vCdZd9QaufhXDcRtWGr77oJLCTPm5YZkmvlQg2lUmvZcCEidRmk9Eh2nUmP/py1K03aS52H7jtl48M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786608630; c=relaxed/simple;
+	bh=niJTrQimvgcND0qsT4lU4KxAPaq3dvYplsB6A+l+Zog=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ea1BQr6jX49W+t8yCb7BpJf0/xD4HunAcZ/hvFJyaJ/tMcGmFz52RS3BAgkdHmr3ipQ1QrYUOlBKL+2DVt8ffvxrTpqFl7Tg2g0sBkp1AqolgGiQZj47zxJ/IPdQ1IYEQZfn1iNmpJJ4XmCw1hEgM2X8K8UHSWnAImOMKlS4Qj0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XZHnKcc9; arc=pass smtp.client-ip=74.125.224.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="g+efvutL"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=WOgwzjyAadVx0ZDU+mKs3DNtLoxxj6BgXSurYWlX1As=; b=g+efvutLBu0Z11e+6rIY9KEaKd
-	hcaX6pPaaLyx+Q0rd21wj62nYtFYOgvPEmMKU95ziw4bz7VlCAlFvQ7B2tmzAZBQLy8IwHI4KuU8j
-	PmIsO9RIL2sErIylofvKfWuZRGFic3FOj31XE5RuxQghpB9ezwhSgU937khc4fotkzGzDhh83Koxq
-	d6DpqLwSL056QB5q0RBAh0AFAgLiKzUcIACfqJoYiUbeliLSIjgngItMfeuSltqBhznuDKr0u5sGo
-	Ptgnsx4XC4OAyeMp4pJRUejR2NCacszBXSwNfopgFX1MUouA24+NyEFQuFVgQtkv9cb2REP4RVLoE
-	C6gcQSUQ==;
-Received: from [2001:8b0:10b:5:9e94:e235:608c:ebeb] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wuQH6-00000003E9a-0Faw;
-	Thu, 13 Aug 2026 07:54:52 +0000
-Message-ID: <5f6a0669f319951462c2aae3a50d595983a42e4c.camel@infradead.org>
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-From: David Woodhouse <dwmw2@infradead.org>
-To: paulmck@kernel.org
-Cc: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-  Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
- Andrew Morton	 <akpm@linux-foundation.org>, David Hildenbrand
- <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka	 <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan	 <surenb@google.com>, Sebastian
- Andrzej Siewior <bigeasy@linutronix.de>,  Clark Williams
- <clrkwllms@kernel.org>, Simona Vetter <simona.vetter@ffwll.ch>,
- =?ISO-8859-1?Q?J=E9r=F4me?= Glisse <jglisse@redhat.com>, Christian
- =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,  Paolo Bonzini
- <pbonzini@redhat.com>, linux-mm@kvack.org, kvm@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, 	linux-kernel@vger.kernel.org
-Date: Thu, 13 Aug 2026 08:54:44 +0100
-In-Reply-To: <b736237c-64ee-4eb2-8201-5685a3853844@paulmck-laptop>
-References: <44c51ace9b0dc44b795f6f48c91cda440eed910b.camel@infradead.org>
-	 <20260812122759.GA662699@ziepe.ca>
-	 <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org>
-	 <20260812134934.GC662699@ziepe.ca>
-	 <a48e6e7063122b22a8083bb0792984a204f316e6.camel@infradead.org>
-	 <fb87f673bf290cad133d113dbb0750a7752b9d30.camel@infradead.org>
-	 <a94b75e8b9b1d2191f365c0f4275fd5082332df5.camel@infradead.org>
-	 <d0692500893f303906fba1d7d596eb59a07a806a.camel@infradead.org>
-	 <anydY25Cl78l1HfU@google.com>
-	 <932DB129-1794-4855-A61E-F4C2B54B1EE6@infradead.org>
-	 <b736237c-64ee-4eb2-8201-5685a3853844@paulmck-laptop>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-IX+4oJh5LTlmEhkCvzNP"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XZHnKcc9"
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-669944f60b3so2036694d50.1
+        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 01:10:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786608628; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HphMR9I7norqrhInNu0o6JG5R4Bc0FRJLEImj7Y7Oah7SAR7AMkgGTuxzE0yyJfX3C
+         cNziy/MTuADgHBfd01JSAkrLrY1sqhDZL+yjSO2GmPqFJOMF8DAGacnV1xeDCtyN/MqM
+         rLUHPQnbQswt6ktVQ5WVvGZ+mj9Y2U/HZMjfTYsDejH2enQYJl6MIRIuonp3lGD2E/Ua
+         K0183eDu7FvFnQR+vVYOy15Fu1MWgL+oRSJbQ2QRGjIHnfliMbsGxnipO0wZH1zB5Qso
+         N4Mhrxexzprs65ROxpNqDhRsXkLP6/IdvYy2OWzpW3xUJ53tg6GKbamFO1/T40+SUsy+
+         DPRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=oKtx0i4elGHzS/TrpdIRihoilG6TmZJLuqjz3TSb5KI=;
+        fh=FonJYf1ANnisU4uqs4ZRAk47a6DggmByevp78CSlRTE=;
+        b=J+I2OluzGYLXPonDMrFuUe1kZ5Z8Xqe7ocXctcxD1fO1IF/uV6rghcGvzsiuXxxq3m
+         MFM7ua1i+mqOU/88MFaQhQWsl3WnzKzZDbst7hIu6u+LnC6JJj/e+oOFwfL+Gg1q7D1Y
+         zX9mLriax/3/FGUlfK2frRTWqKwHie5+nx3QQ7MC6X4VYN5wg0nrvx1QhtEasi2WqoZA
+         wlhEKCUD42jCWMOLg2sjV4Uu7Pd/g5PTXQvkj3dXCZwOJgtnXpbrmoRvR6RLg2KGcLuV
+         0p4gYPM51nsjUSdhW9h1mAzTEKMTYgQ+nooRfzNTg64Z+QlWXhvQDFPkFLMCLMDUkSDN
+         yGsw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786608628; x=1787213428; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=oKtx0i4elGHzS/TrpdIRihoilG6TmZJLuqjz3TSb5KI=;
+        b=XZHnKcc9usy2RjvxFGdweWY24uDtcjLNR2hQRxMhrLwh/h7k87BA6hMnHlaeXIQuXG
+         tdGiqEL/cY38LGRS+5Qv+XZsrRNF8L6Fcw/CUZwh0EHSQf11frAkflbPWZBeDDokLP0J
+         NJ3CzjGOyHoOOIiv4McA5RvypZl9Cn+PkDSdq9CM0PozHDGDdN8Wp6bYdu3UBmD0+0f8
+         zIvu0dqPx/qctAe6lsdGbS5uixrTG8DhJ+fl5fnDq4OAsrOI/hR4OX8tp1LuC8sGqRz6
+         U8TKm6pVyoJ3ozMQTasC/Oyce5dD0GArLMCuDnfiI4uTnpwumHvxFbN9BPvY3uKsoQtF
+         U6Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786608628; x=1787213428;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oKtx0i4elGHzS/TrpdIRihoilG6TmZJLuqjz3TSb5KI=;
+        b=mY5s16ZECRwoZjkTUwTzCaj1CSK/eJDt3OZ1SpQ05gYsPbTdzMfxS6Om5tVbCvBdKM
+         2ltPXkGA1I3exOSCRKc/8JteBs35Gt7tqkUfykuOkAjdiegc7WCag8m23bpTYLLwcl+A
+         gnyyvb9NPc4FH9avPWOJb5WF4NyzmL1uVYHpaG7kJAafzNX2YH59MvfyaQDadVeNg44s
+         yy49Id1ACYV685E4Vi2FCsvB1Ltdpor4EjiXrEazmRmuxKRFtpkiuZJ0aUl7bOMmRua6
+         9M1FLK1xlWFfP5DF0KfrVGS/gZPrl8s8gxOK49QQGsSNHrYOLg652+3+9edVtwVDrP8V
+         hViQ==
+X-Gm-Message-State: AOJu0YxkmA7iivtFK7GVuhnzggLVttGP2xmGHtV00+PyG2bmmc3070uG
+	fVFy2ZQSiFgam4SXu7FNJm5P2R+DRzQQvLZ7aYJASk1P8CZdJb502yIHCNZW6R/gCvZBjGxhJiR
+	EghqwypT2+xJ1wTgu9+wcpNwbZ3GV/ds=
+X-Gm-Gg: AR+sD129xg/3j//xxwVeydVz+22kTMf0dYN1G1QiqiSG3gtFGcviTd1U3agjF34SbNH
+	ZQi1oqs4H9noZO8wYQ4Ta8tN8zsrr/sQbZL3jOKre9DYJ/1LbNji+uIYJbMfGzcwhrc/CEeishE
+	XkH+u09gdM/1uu9Vd33ONvWEO/7VaTTbWkv+4OQhRG85DAWpUPLX/Jtl3hFUhnDAlhyndmbtEtX
+	1E2RPcmZO9EiBDw/2UCuzf+e5czmHanaEafQ1eCpgfevv0lOEaXMiunslGZEPJpTOn/ukWeW+IU
+	CbZKjhhW5hNZBUiGx5g1DOCS14IyJhMf9I85nIN5+Ocu6B+cwG7/eDr8Lc5fnUB7C71ejvgr2Nw
+	8
+X-Received: by 2002:a05:690c:e0ce:10b0:826:8d41:897a with SMTP id
+ 00721157ae682-83471a15e8emr15505347b3.13.1786608627750; Thu, 13 Aug 2026
+ 01:10:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-
-
---=-IX+4oJh5LTlmEhkCvzNP
+References: <20260813043932.3214460-1-rkskek9254@gmail.com> <20260813045727.903981F000E9@smtp.kernel.org>
+In-Reply-To: <20260813045727.903981F000E9@smtp.kernel.org>
+From: Jinwoo Lee <rkskek9254@gmail.com>
+Date: Thu, 13 Aug 2026 17:10:14 +0900
+X-Gm-Features: AUfX_my7pDDZdtOGVM6xAlmp3xb5ZCqcno-jeV0YYXEDFl_sKpw6E4hQlOTbqJ4
+Message-ID: <CALz4YMQa4h0oHxrpsiFsPd2qWZO1Q-pE2mbDwvT2wV1b+ukZdg@mail.gmail.com>
+Subject: Re: [PATCH] KVM: nVMX: Re-arm the vmcs12 pages request if mapping the
+ pages fails
+To: sashiko-reviews@lists.linux.dev, seanjc@google.com, pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2026-08-12 at 14:38 -0700, Paul E. McKenney wrote:
-> If not, please let me know, and I will put together that does the
-> job.
+Resending as plain text; the previous copy was rejected by
+kvm@vger.kernel.org because Gmail included an HTML MIME part.  Sorry
+for the duplicate on lists that received the first copy.
+---
+Thanks for the review.
 
-If you're working on that, I assume it'd need the readers to be known-
-atomic. So if any of the read-side SRCU_READ_FLAVOR_ATOMIC thing I
-already threw together is useful, you can find it in my tree at
-https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Drefs/=
-heads/srcu-atomic
+> This is a pre-existing issue, but should the same re-arm be applied to
+> vmx_get_nested_state_pages() and svm_get_nested_state_pages()?
 
-Slightly orthogonally, what do you think of making
-synchronize_srcu{_expedited,}() attempt try_synchronize_srcu() first
-for an early return?
+At the request-lifetime level, yes.  kvm_check_request() consumes
+KVM_REQ_GET_NESTED_STATE_PAGES before get_nested_state_pages() is called.
+If the callback returns false, the request needs to remain pending;
+otherwise a later KVM_RUN can skip the deferred setup.
 
---=-IX+4oJh5LTlmEhkCvzNP
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+On further inspection, re-arming the request in
+nested_get_vmcs12_pages() is too low-level.  That helper is also called
+directly from the normal nested VM-Entry path, before enter_guest_mode(),
+and that caller switches back to vmcs01 if the helper fails.  I will move
+the retry to the KVM_REQ_GET_NESTED_STATE_PAGES consumption path in
+vcpu_enter_guest(), or to an equivalent wrapper, so that the request is
+re-armed only after it was actually consumed.  That will also cover
+failures returned by both the VMX and SVM get_nested_state_pages()
+callbacks.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-YnYMhjeVkakI0g+6uHd4F6YAAAAAAAA=
+The eVMCS path needs additional handling beyond a generic re-arm.
+nested_vmx_handle_enlightened_vmptrld() releases the old eVMCS mapping
+before attempting to map the new GPA.  If kvm_vcpu_map() fails,
+hv_evmcs_vmptr is left as EVMPTR_INVALID, whereas
+nested_get_evmcs_page() retries the mapping only when hv_evmcs_vmptr is
+EVMPTR_MAP_PENDING.  Re-arming the request alone would therefore not
+necessarily retry the failed eVMCS mapping.  I will preserve or restore
+a retryable eVMCS state on that failure path in v2.
+
+For SVM, I agree that failures in load_pdptrs(),
+nested_svm_merge_msrpm(), and kvm_hv_verify_vp_assist() can lose the
+consumed request, and that L2 must not resume until the deferred setup
+has completed successfully.
+
+However, I do not currently see evidence that the SVM failures have the
+same unpinned-HPA/UAF mechanism as the nVMX APIC-backed VMCS02 fields.
+In particular, nested_vmcb02_prepare_control() initially copies
+vmcb01's KVM-owned MSRPM address into vmcb02, and
+nested_svm_merge_msrpm() switches vmcb02 to the KVM-owned merged MSRPM
+only after the merge completes successfully.  Losing the request after
+a failed merge can therefore allow L2 to run without L1's complete MSR
+intercept state, but it does not appear to leave hardware pointing at an
+unpinned guest page.  I will describe and test the SVM impact separately
+instead of treating it as the same UAF without supporting evidence.
+
+> Does this allow L2 to resume with unpinned HPAs and lead to a
+> use-after-free?
+
+Not uniformly across these paths.  The unpinned-HPA mechanism is the
+concern for the nVMX VMCS02 address fields described in the patch, but I
+have not yet reproduced host-page reuse or an actual use-after-free end
+to end.  For eVMCS and SVM, the current evidence establishes that the
+deferred setup request can be lost; it does not yet establish the same
+unpinned-HPA mechanism.
+
+I will also correct the commit message.  Not every failure reports
+KVM_EXIT_INTERNAL_ERROR: the load_pdptrs() failure used by my RSM
+reproducer returns with exit_reason unchanged, which is
+KVM_EXIT_UNKNOWN in the test.
+
+I will rework the patch and selftest accordingly and runtime-test the
+fix before posting v2.
+
+Thanks,
+Jinwoo
 
 
---=-IX+4oJh5LTlmEhkCvzNP--
+On Thu, Aug 13, 2026 at 1:57=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+>
+> Pre-existing issues:
+> - [High] The patch fixes the missing re-arming of `KVM_REQ_GET_NESTED_STA=
+TE_PAGES` in `nested_get_vmcs12_pages()` for VMX but overlooks identical vu=
+lnerabilities in `vmx_get_nested_state_pages()` (VMX eVMCS) and `svm_get_ne=
+sted_state_pages()` (SVM).
+> --
+>
+> --- Patch [1]: [PATCH] KVM: nVMX: Re-arm the vmcs12 pages request if mapp=
+ing the pages fails ---
+> commit ce93ee9654c7f639f51372bb8a7e1b25a376436b
+> Author: Jinwoo Lee <rkskek9254@gmail.com>
+>
+> KVM: nVMX: Re-arm the vmcs12 pages request if mapping the pages fails
+>
+> This commit ensures KVM_REQ_GET_NESTED_STATE_PAGES is re-armed if
+> nested_get_vmcs12_pages() fails to map the pages. This forces KVM to retr=
+y the
+> mapping on the next KVM_RUN rather than resuming L2 with a stale vmcs02, =
+which
+> prevents hardware from accessing unpinned host physical pages.
+>
+> > diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> > index ddf6df7bee93b..9e9bd6c541baa 100644
+> > --- a/arch/x86/kvm/vmx/nested.c
+> > +++ b/arch/x86/kvm/vmx/nested.c
+> [ ... ]
+> > @@ -3525,6 +3525,20 @@ static bool nested_get_vmcs12_pages(struct kvm_v=
+cpu *vcpu)
+> >               exec_controls_clearbit(vmx, CPU_BASED_USE_MSR_BITMAPS);
+> >
+> >       return true;
+> > +
+> > +fail:
+> > +     /*
+> > +      * Re-arm the request so that KVM retries the mapping instead of =
+running
+> > +      * L2 with a stale vmcs02.  Bailing here leaves the vCPU in guest=
+ mode
+> > +      * with vmcs02 loaded and its APIC-access, virtual-APIC and poste=
+d
+> > +      * interrupt descriptor addresses still pointing at the host page=
+s that
+> > +      * were mapped for the *previous* nested VM-Enter, which have sin=
+ce been
+> > +      * unmapped and unpinned by nested_put_vmcs12_pages().  KVM retur=
+ns to
+> > +      * userspace without leaving guest mode, so if userspace resumes =
+the
+> > +      * vCPU, VM-Enter succeeds and hardware accesses those stale HPAs=
+.
+> > +      */
+> > +     kvm_make_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
+> > +     return false;
+> >  }
+> >
+> >  static bool vmx_get_nested_state_pages(struct kvm_vcpu *vcpu)
+>
+> [Severity: High]
+> This is a pre-existing issue, but should the same re-arm be applied to
+> vmx_get_nested_state_pages() and svm_get_nested_state_pages()?
+>
+> If nested_get_evmcs_page() fails in vmx_get_nested_state_pages(), it retu=
+rns
+> false and exits to userspace with KVM_EXIT_INTERNAL_ERROR without re-armi=
+ng
+> the request:
+>
+> arch/x86/kvm/vmx/nested.c:vmx_get_nested_state_pages() {
+>         if (!nested_get_evmcs_page(vcpu)) {
+>                 pr_debug_ratelimited("%s: enlightened vmptrld failed\n",
+>                                      __func__);
+>                 vcpu->run->exit_reason =3D KVM_EXIT_INTERNAL_ERROR;
+>                 vcpu->run->internal.suberror =3D
+>                         KVM_INTERNAL_ERROR_EMULATION;
+>                 vcpu->run->internal.ndata =3D 0;
+>
+>                 return false;
+>         }
+>     ...
+> }
+>
+> Similarly, in arch/x86/kvm/svm/nested.c:svm_get_nested_state_pages(), if
+> load_pdptrs(), kvm_hv_verify_vp_assist(), or nested_svm_merge_msrpm() fai=
+l,
+> they also exit without re-arming.
+>
+> If a compromised QEMU sets KVM_REQ_GET_NESTED_STATE_PAGES and KVM clears =
+the
+> request but fails in these setup steps, a subsequent KVM_RUN could skip s=
+tate
+> setup and proceed directly to VM-Enter L2 with stale control structures.
+>
+> Does this allow L2 to resume with unpinned HPAs and lead to a use-after-f=
+ree?
+>
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260813043932.32=
+14460-1-rkskek9254@gmail.com?part=3D1
