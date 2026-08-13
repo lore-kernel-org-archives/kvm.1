@@ -1,84 +1,84 @@
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8F238F947
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 18:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA352F4A05
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 18:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786645029; cv=none; b=LxHD95iWVROtC0Xicavif1TVQyOjGaIeVuMVWPnVgcTRMm30WocJoAy/UaxchrKo6PmKvrHqDihGhWMQfGs1BEgISVUVszDze/EzpM4jJ3R1AsQGqFJTBXlVsP9wq8DFEpB/lWKkgw4A/ltp/ZIDc8t5wRH2JCDw647Dd5Bz6s4=
+	t=1786645036; cv=none; b=fbB93jLfzAkhM6jJp+v5nMhi5Cja7877dzpbkVCh6TkUfc/WncFKZsXUAdwA3zCwj4dt586/ytYhPCC6fVjaTvnIeLLqTJIWuG9r3rqmVBtPiKKDtccVeVAt4VXufkK94MvenGPD7ODzpBEQcGlcta+QnnIxYv6UvKc/nXwaya8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786645029; c=relaxed/simple;
-	bh=KpiwAfDqoXgPPNhc0GLmT1ulP4yIL9Z4yHIdZg6NdEM=;
+	s=arc-20240116; t=1786645036; c=relaxed/simple;
+	bh=0ANc+mjD76iTo8ZkDJLIJy8AQTGxeg4nskOHVfykLAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QlcUK3mqN0I+Jw8nQI5EZkQTpJ2keO1igtClUHf/iX4+FapXyebSJZUrfZPQPBo1cdZhkRxCEK2sOO47FGPUWUADLeufQR5fv40xNrbM06onqa2oaZ2JLq2ZUW/7P3/eikBx124WMXXz79aBseVPXyE+Ay8hkQpXuruL1BuZx9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cKXJ/dGI; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=YcfDv9rp; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=U4nHBPDVtXMM9TWyMHvO0bKAyzd4oE9bDT3N+BQqAHMCVu52x2zYSWEMa2UcICtSbvicwaAfjPi1+B4ABtAi23dV/7s8soHAjjdEsRZUuBkojDhJxQCP5KEga4QWh2b8e2u/EVUpybPeCzFMv4gsK31SqHJk19M2lvd+USJ0R/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pnUQhFoV; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=D0E9XWZS; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cKXJ/dGI";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="YcfDv9rp"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67DFTn6O3050465
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 18:17:07 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pnUQhFoV";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="D0E9XWZS"
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67DGV0e92076866
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 18:17:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ii+NakEKXLwaKt59HrJUbtrSCVrxMYJtk4E5DyQdSG8=; b=cKXJ/dGITmTYU76g
-	QK6H2QsSx0tIKzWS+1UbfDX6ErVmzta/AHyXVk2GTefp6qPAKcukvlXoAaFIGXfz
-	56W6fpGRKhgWlpm9QXQD//3F6BagJWRX/5fqg30tQNR874qolvR6X4eV3ow0+RZw
-	TG6dj0PEnIZZv3JYew8/2laMYaNPI9bU7Xbsag2+XwzEC088taqtc41ouFFZ0PPU
-	u8N7Ut1KzEnlMgasU/Q+dptng8KYLSFGkTxbdyq9+jWt0ib2oI/lsrmGiwo1VHK6
-	ryRSHnPeNx9x3jPbB+oHg2amgacWrfD0jvfhfvTO8YTnQoAao3J4YrJMD9eUDeu0
-	6BJpLw==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g1fg3s6md-1
+	KExF4MwbTUUQ/1tzwHuPXSMnN5BfvbjHcIrr3pOpFSs=; b=pnUQhFoVW11HG5T/
+	+qFN91c4WEKaLfjB5+LNkNFCF6vStDtgEgoh0EU3j8U0k0yi/4Z4IvkaYUhYCGXW
+	ctvpTjdYAFCIO7uL++oSHHC3Ms2k+iB+SVUXxpHjfwaiTk/YGQHl+O+n7/RgBdjJ
+	iGuFiqRlwn3tn6OQ4GT2IFHt82wMNMM53ScXjA0pWA+5pZ3I4z3ou+UMCvYEDw8w
+	HW0Z10PC4LMkzTrHQbs81l3Fj3/M4KW5TjPMmlmH7chIn56rASSlLo3E42fzyVng
+	TW5Q9f59L59gb/2tD5s8enCOZ7eJfR7bqAQhoTt9s3FSGw5JLPd/TyJDR8DlSYxU
+	dS/GNQ==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g1hgy0f57-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 18:17:06 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-52769fc3f2eso2907841cf.0
-        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 11:17:06 -0700 (PDT)
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 18:17:14 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51c0408254aso20240261cf.0
+        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 11:17:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1786645026; x=1787249826; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1786645033; x=1787249833; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ii+NakEKXLwaKt59HrJUbtrSCVrxMYJtk4E5DyQdSG8=;
-        b=YcfDv9rp3KpPnjb1diUH2vGZl7cEk3TF4gRkfivi9Rfo05XmPP6C/jX++JQa5ccm9h
-         jrG2M9ahV6XR4jtGaLWbsUyuL9G/a820mPexO5qJSqpD5QV2lfLMWRDFGNm+flhyimFx
-         4iMpmzoyCGDG/FaNKi/EepfP9daerzNHT4kG4GyceBFXnHgqcIFibtDR/fVSCdmd+LIJ
-         B63dw5+biqYTMFGkJ1L5sP34mTOfedrZCgEMYIj9n4PgjBbfSdTBXCQHXrwkZqwuvKoz
-         XwYtQQ7JhyWqFYvOH2c1QU2ppQNsiWV5brMWagR/qVnG14ZwRiqqcP2BJdVO3EOIfuhi
-         gGeQ==
+        bh=KExF4MwbTUUQ/1tzwHuPXSMnN5BfvbjHcIrr3pOpFSs=;
+        b=D0E9XWZSJIGNuA+ALGunk3CpljVFG+CPVH9ZJrfPa9rMK14iAS9Zj0QhzY5UbvCbvU
+         /o3vzBDw8ymREo5uSbJk3hzyuz0fut2e/hZ9dU3lmQo4EgN4dFfnWmvSyRu/6c5MtsNg
+         UQwxUlYqmo4iZYymZhuavjqUpb3Aao3SOLsA2XWDAUcQjPJHInRcKfAdi0KDoIIZPrnD
+         0RCswiahmBTejkRiHYSpPSPq1kyx4ML/uwyn50iaT4EZv90uBx7O3EWOe5tXVLP7ZpeQ
+         hd4p4GkpJeuzM6kYjS8lZ2qqPj9DJUXH3PoE/Z9bacxqx/1WurztjG+5RH7jlewUncDG
+         V5KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786645026; x=1787249826;
+        d=1e100.net; s=20251104; t=1786645033; x=1787249833;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ii+NakEKXLwaKt59HrJUbtrSCVrxMYJtk4E5DyQdSG8=;
-        b=k3TOESIXqMCJQJZbuf/bM4bT6VMG3Ds1nlIPPcLYprxdydu5CW6KjZBpoD1BBrGfA2
-         iNb81ITDn3MmayUQtAduZ1f03Q8uJ3m/LHF1owVzN0+kuzdG79VMFWeRIy3SiQ0jgGH2
-         NyaRChy1kbMhsstFkP5kYllx/c3cQhHtihC5EADYUA6okiP311xrLaDheblg3aq8awE9
-         BfFKdwOYdxHIs/VqyI3ERCt8Rhom8aamvKerdi4yAoaRuwVocI33TN5iWXU6AJ3YEgBL
-         9TtBkMYg1bnMWjHI/luEZ7HimwO6CZNXi2TC5GAWCGA8B1t3BqJNwmKRGI88VyVkS/M9
-         QUsg==
-X-Forwarded-Encrypted: i=1; AHgh+RqvXMa7Wz2vKNeC1vtirZ9PjjAccDvyUWZodEzWD8FBXdqGrOz70K3SJ8E4k/XgsdQgMrQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzfhi8OPCrtny27NIJaghoegYh2QYfQU6IhdDOWTN8xpOs9Ocig
-	yz7B7AelBB8ItG1YEHzfwirPfK30Phux8URfIznCxYqcdzsMFsHyFja8aN1dWa2NXV+iH17bnBv
-	aibAAq1tZoe3UV3x4J/+h3JFomArfBg0KpH5BqbycAyGhIVKE+j15t6A=
-X-Gm-Gg: AR+sD12KZZ7vNUjH6VUWLTjXfsNTEh8P7NWeCMCFw8T3J1gs+VksGwa2SAXtuM+/idv
-	XbeF7xMaRDkZuOsBQH0M2U4cpkpHohv/TOpgaR0sI8/66zws6eARlvmJdtg+1V3DqFbkcCyUDVr
-	1743PY9fkIQjhY08JPn13EfzyKev/H/9iGEdJnjG96PuGvAJzxKE53qzb6xU8DC8xiNwuW0Fanu
-	xZqFA7MFotGMIgOGOJ7J2ECZPjRKBcuana7aBt0lpCqz8+R59IxMuPyN/pG64e4RL3rvrQegS8O
-	HT1EjzxdTb+MgCMwxEawr3OkM40YYqTK2do0YEtrnellLInNybW/cEOXgiPwDECqHYc+1W0ZH/+
-	3X/Fy1AHRCYGVf7hs7DK30hKr4ppHxIqJ05hj4F4dpw==
-X-Received: by 2002:ac8:574a:0:b0:516:d699:a99b with SMTP id d75a77b69052e-52d73da2a13mr76548011cf.40.1786645026291;
-        Thu, 13 Aug 2026 11:17:06 -0700 (PDT)
-X-Received: by 2002:ac8:574a:0:b0:516:d699:a99b with SMTP id d75a77b69052e-52d73da2a13mr76547071cf.40.1786645025661;
-        Thu, 13 Aug 2026 11:17:05 -0700 (PDT)
+        bh=KExF4MwbTUUQ/1tzwHuPXSMnN5BfvbjHcIrr3pOpFSs=;
+        b=EQHYT3InZhiwBFb+9ByPpmA8J7qEpiL344SBMFqcyzoVkFF4YSflKo1fF/HsYp0M4+
+         LTQWT2L2225j1ZBFRFy4ZYZERhwLeYP0xR+CUMhK5060rCN5FYQiXKrGaH+8mNMVBD9I
+         V7gdHT3vU2/nZ5DeJnxRw9YtdLoDsh8LfJT6jjhEpOchelqs0/gz4WMCfLMxvuCwSgMb
+         PZf+2z/F4Isiy7GvpXocGu9c8LFL8v58cLF6o8GHeJgnN14hy2qDl7gn3w09yxe0SbC5
+         7HWd5Q8hHYSSTLpZ+MCfHidsJfqY5earh61tH+Zg/o48tzDin4yQMJk5UjeTBg645qWs
+         CFWg==
+X-Forwarded-Encrypted: i=1; AHgh+RpQ6iVMcnqWENK9wczdOoQgA8wiGdErN6q+9F6/rofb/0P8q8GEDnwvgHuHOo5xXk4fV+k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlKV/wb6yHU+zJ8g0j/+bA9y59ESMPQQ3398kSLZ3MXDOZOMh/
+	0WDsMAneJW9E7r2eHH068c9jLp9upBP/zqeNWH4cew5+EoQS2gu20ysWPJAaaqUBP9b05aJ2425
+	klFUSn+Bb/nxqxsT/EspwLaT/Oj6AorgnQ+NmIl+vc8/EXKKcMv17VnA=
+X-Gm-Gg: AR+sD10OY15tBJVDjYWqqerJhzr/+LgSlRp+zSzKwu4ZSYGJZI8BO/maw2bWAMFwB9k
+	VGjvh9clW3ocYj0W7H+0iUj+m8eYPoonCdSIpJR9mmkxj6cx9kY1akztd1JGoNJi/H+iPpj8y8d
+	xVydvqcn0mrbbP3UqhdKF7eH0kTj2rHmu5yElmVjtZOurRI+P6CbrVNnwKjhHxAywRooeC6pRnx
+	kWz2XUhTcoxftPc2srQ6fmLR/fLKXX54e8wc3IdClrA+YB9l8Hgvm0AMSlhq8a6uYWdk/f9CPFz
+	YyexLicdpvo3uGSeJb3g/DD6LKzhEDEsUVmz78OtHme3XSxJvxLtGjFWLUit3XbrWeTLFBgN8jg
+	OWFHv9v19rj7LeNj09ZvnJ39Rh/0TGk0mrjk7pQv1zg==
+X-Received: by 2002:a05:622a:1a81:b0:516:35fe:5524 with SMTP id d75a77b69052e-52d74a3546cmr70162081cf.5.1786645033365;
+        Thu, 13 Aug 2026 11:17:13 -0700 (PDT)
+X-Received: by 2002:a05:622a:1a81:b0:516:35fe:5524 with SMTP id d75a77b69052e-52d74a3546cmr70161411cf.5.1786645032819;
+        Thu, 13 Aug 2026 11:17:12 -0700 (PDT)
 Received: from localhost.localdomain (pmd666.hd.free.fr. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f2c6115sm1270516f8f.32.2026.08.13.11.17.04
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499877d20fdsm5607615e9.1.2026.08.13.11.17.11
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 13 Aug 2026 11:17:05 -0700 (PDT)
+        Thu, 13 Aug 2026 11:17:12 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>
 To: qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
@@ -91,12 +91,10 @@ Cc: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
         Magnus Kulke <magnuskulke@linux.microsoft.com>,
         Peter Maydell <peter.maydell@linaro.org>,
         =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
         =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@mailo.com>
-Subject: [PATCH 03/16] cpus: Rename cpu_stop_current() -> qemu_cpu_stop_self()
-Date: Thu, 13 Aug 2026 20:16:26 +0200
-Message-ID: <20260813181640.6537-4-philmd@oss.qualcomm.com>
+Subject: [PATCH 04/16] cpus: Rename qemu_cpu_stop() to qemu_cpu_ack_stop_request()
+Date: Thu, 13 Aug 2026 20:16:27 +0200
+Message-ID: <20260813181640.6537-5-philmd@oss.qualcomm.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260813181640.6537-1-philmd@oss.qualcomm.com>
 References: <20260813181640.6537-1-philmd@oss.qualcomm.com>
@@ -108,124 +106,75 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=NsfhtcdJ c=1 sm=1 tr=0 ts=6a7e0a22 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=4s3hRJSeHn4rkQlkrse1kQ==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDEzMiBTYWx0ZWRfX5bITwXEgI7e/
+ USqQKgKq8V72qchUN9bwAmYO350j07WBlw6spgMre40Fqkc/5cl0dkwIo2qdS7cNB+9SI+Dy+gA
+ noIloOlIPzYICOFty0cqWwJomQeblbJbOXF5S14QGCQICbyNthKLvsS3mtWocDR43OI6IZWH5Vy
+ Rz0E16dSxF121jou/PfmqGBq7bsClrTFTtOu/bAITiE/CIjPMV60GvJrZaM+VD9YmZyAAX++kSl
+ sfmDZ3E6hHZ1jffPKj6F/Dmy6Je3E5EofHkBWBGoJ3pHX2JQgiq3xOUUidarEsVyrfqEUevQxm3
+ 0vwzLxRmYFB19fUShRIxHYwBWKnvw+q7KzWh0clBK4LNymISEnmixEd68ROT9+7zNaRk+OSMSDI
+ Nidrc2FtlVDIiE2GlABoSww0KFRtNeGmvviZawwbT69AboDoKyjjhUg+mKKd8TV4mtUMwQva1E8
+ DFxUP36MblZIdre6osQ==
+X-Authority-Analysis: v=2.4 cv=AaSB2XXG c=1 sm=1 tr=0 ts=6a7e0a2a cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=4s3hRJSeHn4rkQlkrse1kQ==:17
  a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=M51BFTxLslgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=EUspDBNiAAAA:8 a=ao8Q1kDP7eBHT8PKhbAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDEzMiBTYWx0ZWRfX7ZeFToQ/aEA5
- HvNvdG7D9S0HfWD6Bzgbe2hWGd3ikxr3vDPNJhHDOKrm2CgXfQs66Asz2ZU7OB7jjIRhnhQzeyJ
- DONNOOgraG+q6PodOTXAhqdugzR2ABlaO5LjIn7Ii/Md0QEV4yGzSgwMgb1M8LKUGunJTNfPHC1
- QR+DUCXDUUBz3G+hzzRcJY0NqqbRhKgYjRL0v3t3LUOwBExlaCJHL6SFyT16YjB5d87rT0JQLHe
- 6DtSVn7jwvP2Onw58QPYfKrbNOTppuEMnc5bbl3Ium3pUWT5ilAHhOyenviyV/KpaF/+SjCOP2K
- 2vKmieTHXIwOveMqZugdmQTANZ64HIpo2wl3WA91eFlJXXhEcSB5o2waYVxHv5JWlLdl3Rh9BWY
- R2bgQN03I7ORFxV8BnOe9ViiWBRiAvGFq4TUQbQ9/jsoV2FjCdxUdiayNl0OOYU0tgW8SSCvzJu
- /n6WvtwnbcT0Ic9bnUA==
-X-Proofpoint-ORIG-GUID: hPboZ5CGqVXwhtWYY1EekFuTZcqg52jq
-X-Proofpoint-GUID: hPboZ5CGqVXwhtWYY1EekFuTZcqg52jq
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDEzMiBTYWx0ZWRfX9+O+Ok5liR+9
- BCglYRRoH3CmDt5YuShY1cq1ZQAasz7LaFuBNnh69DUGfWGQt/t8AUtsuBITlBvr+/wp5iYbFOI
- dDY4nqqPZ9Yhxqbogu+/Ej7GQzjTegs=
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
+ a=EUspDBNiAAAA:8 a=oALTtu6IgWlc6orpIWcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-ORIG-GUID: Pdkxo3FDyexeX44s7ugAdBgvsm2eUZKd
+X-Proofpoint-GUID: Pdkxo3FDyexeX44s7ugAdBgvsm2eUZKd
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDEzMiBTYWx0ZWRfX5e161lMKwQyR
+ bt9FI/fFbhj57qQOqE5hN0jWQn6LlxHv+yZEAEYyPX1mC5p+HAwNavCXQq8S7OQx711IBzoNdf7
+ ko5BFJvVkpajxw+AwuYdCrkmMTgOgLk=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-13_05,2026-08-12_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0 adultscore=0
- clxscore=1015 priorityscore=1501 malwarescore=0 suspectscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608130132
+ adultscore=0 malwarescore=0 clxscore=1015 priorityscore=1501 spamscore=0
+ impostorscore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608130132
 
-There is a single method with ending with _current() suffix.
-Align with qemu_cpu_kick_self() and pthread conventions by
-renaming cpu_stop_current() -> qemu_cpu_stop_self() for
-consistency.
+Stopping a vCPU is not a simple state transition: an asynchronous
+request (CPUState::stop flag) is acknowledged (CPUState::stopped
+flag). Use a better name to clarify.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@oss.qualcomm.com>
 ---
- include/system/cpus.h | 8 +++++++-
- hw/ppc/spapr_rtas.c   | 2 +-
- system/cpus.c         | 2 +-
- system/runstate.c     | 6 +++---
- 4 files changed, 12 insertions(+), 6 deletions(-)
+ system/cpus.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/system/cpus.h b/include/system/cpus.h
-index ade13e068eb..2365c7c4597 100644
---- a/include/system/cpus.h
-+++ b/include/system/cpus.h
-@@ -28,7 +28,13 @@ bool qemu_in_vcpu_thread(void);
- void qemu_init_cpu_loop(void);
- void resume_all_vcpus(void);
- void pause_all_vcpus(void);
--void cpu_stop_current(void);
-+
-+/**
-+ * qemu_cpu_stop_self - Stop execution of the current vCPU
-+ *
-+ * Note: No effect if not executing within a vCPU thread.
-+ */
-+void qemu_cpu_stop_self(void);
- 
- /**
-  * qemu_cpu_kick_self - Force vCPU to re-enter to its inner main loop
-diff --git a/hw/ppc/spapr_rtas.c b/hw/ppc/spapr_rtas.c
-index 328fc27c400..80cd4246af8 100644
---- a/hw/ppc/spapr_rtas.c
-+++ b/hw/ppc/spapr_rtas.c
-@@ -93,7 +93,7 @@ static void rtas_power_off(PowerPCCPU *cpu, SpaprMachineState *spapr,
-         return;
-     }
-     qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
--    cpu_stop_current();
-+    qemu_cpu_stop_self();
-     rtas_st(rets, 0, RTAS_OUT_SUCCESS);
- }
- 
 diff --git a/system/cpus.c b/system/cpus.c
-index f37e215c586..1a6fd286a81 100644
+index 1a6fd286a81..f69558c760c 100644
 --- a/system/cpus.c
 +++ b/system/cpus.c
-@@ -674,7 +674,7 @@ void qemu_init_vcpu(CPUState *cpu)
-     }
+@@ -382,7 +382,8 @@ void run_on_cpu(CPUState *cpu, run_on_cpu_func func, run_on_cpu_data data)
+     do_run_on_cpu(cpu, func, data, &bql);
  }
  
--void cpu_stop_current(void)
-+void qemu_cpu_stop_self(void)
+-static void qemu_cpu_stop(CPUState *cpu, bool exit)
++/* Must be called by the owning thread */
++static void qemu_cpu_ack_stop_request(CPUState *cpu, bool exit)
  {
-     if (current_cpu) {
-         current_cpu->stop = true;
-diff --git a/system/runstate.c b/system/runstate.c
-index d3e64d2b625..1302fea9ccd 100644
---- a/system/runstate.c
-+++ b/system/runstate.c
-@@ -472,7 +472,7 @@ int vm_stop(RunState state)
-          * FIXME: should not return to device code in case
-          * vm_stop() has been requested.
-          */
--        cpu_stop_current();
-+        qemu_cpu_stop_self();
-         return 0;
+     g_assert(qemu_cpu_is_self(cpu));
+     cpu->stop = false;
+@@ -397,7 +398,7 @@ void qemu_process_cpu_events_common(CPUState *cpu)
+ {
+     qatomic_set_mb(&cpu->thread_kicked, false);
+     if (cpu->stop) {
+-        qemu_cpu_stop(cpu, false);
++        qemu_cpu_ack_stop_request(cpu, false);
      }
- 
-@@ -900,7 +900,7 @@ void qemu_system_reset_request(ShutdownCause reason)
+     process_queued_cpu_work(cpu);
+ }
+@@ -555,7 +556,7 @@ void cpu_thread_signal_destroyed(CPUState *cpu)
+ void cpu_pause(CPUState *cpu)
+ {
+     if (qemu_cpu_is_self(cpu)) {
+-        qemu_cpu_stop(cpu, true);
++        qemu_cpu_ack_stop_request(cpu, true);
      } else {
-         reset_requested = reason;
-     }
--    cpu_stop_current();
-+    qemu_cpu_stop_self();
-     qemu_notify_event();
- }
- 
-@@ -918,7 +918,7 @@ void qemu_system_suspend_request(void)
-         return;
-     }
-     suspend_requested = 1;
--    cpu_stop_current();
-+    qemu_cpu_stop_self();
-     qemu_notify_event();
- }
- 
+         cpu->stop = true;
+         cpu_exit(cpu);
 -- 
 2.53.0
 
