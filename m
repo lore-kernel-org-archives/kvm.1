@@ -1,212 +1,162 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB613B6C1C
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 21:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFD63C0630
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 22:08:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786656638; cv=none; b=AIMgZHz81yvrd/VJmWdq1nmwF6TsTQgtWPD6SiparAbAL4XhpZMDQOeSEmUgT36AE6wu6oXh8rxpyEt/zZC++qdK/MRmuyZoWfZYfAcMYqYIYgHIS/IndRTx2r039IqPaGeF/yGlDxAHlgnzdra1OTxxbZvr7p/gW2ohX+WZhVg=
+	t=1786658933; cv=none; b=q8UsdzBeJJLMOsDnMRI+r61hmGAQ5sQQF5cZMGhP2A69ZI6gttiJmtyfdHRgzdFPC9Qw964qzCLVN/6IuBWcwr9ffw7cs97ZaMIwgfR/qiNcfSw89xZXHJ6l/CruDF4H1jnyawZT7FzQ0381colVTvmn7pxZJFvLpR0dYrzoEzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786656638; c=relaxed/simple;
-	bh=nVAxZUkvlVp9dhvAZrx6Ys9jgAnC+0z5dRPztAZgc3s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QqmKFsWuNvxLgqaQ9GERyeJft4PSR1Yrc7Zg3+ymIMiFTkmCjWNvgOar2PxUf4phdqk//emBRsvj+8RlHImeU61EeC6YPBlUUuTHwVUiq7h4OFh6ojlCLb5jR7ohvyTuPoHbEVIaWXMRYJ3nciCk0Lcrl9zbwDw4qZhkCvwWJFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O0+bVkuN; arc=none smtp.client-ip=209.85.214.175
+	s=arc-20240116; t=1786658933; c=relaxed/simple;
+	bh=KiztK1JbpO5JZhhPbKHjeFsloeqjBsAvtQBBDIoVGKs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=UygXldFQRToCYHaNxEmEVIR2QZ6HtK+3mCdQ2AyPuX5tGqw0qzZKlL4a+VrvMgTdUrBXVC4mPvTi3A505lI0sjGQaZ3+gSGJKcDhDJfjNCou0k7dCcXuRMv1ScQP34kXQ4kgQDjs6GDI4y7/mj44Xxktc0oxjFWDiySPGVfHCkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O77IikC1; arc=none smtp.client-ip=209.85.215.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O0+bVkuN"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cedda2ce6fso3037975ad.1
-        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 14:30:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O77IikC1"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cbedfa3898aso185953a12.3
+        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 15:08:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786656626; x=1787261426; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dWSuePOKYwlsV5LOPEAbGHpXrrAUcnGt3ey9OMumPFM=;
-        b=O0+bVkuN5iDiRGXqBUE92Rn5MM+7Btja9Daw4DV9/HD3ZK3BGIVppaZgA2RmIqoe/q
-         1muKtcVfW1OYKpfRrHP3aVUa9jbL336AqSKfZ9XUXFe/pqr39X/VIs/oWlvBxXrUX7/P
-         hJqPcYyVHJtZeL2E3IQwhHzvARge2KaTl+2YJcRP2u0TpD/7FvaXduLbqiGjRAYTMc3U
-         0fHcg5oB6xZcsfGKvTGh/WcQJIIhY1olXtMtJOX+SrZeeRZr3nvv9ZBVnDSRtx7254rX
-         csiqg6X2QvhFHI1zPCdD0OqCX9mDzqFBo4Wo4nRWC/jn//JF5vYRI88isDeiz68TpG88
-         hk6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786656626; x=1787261426;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1786658930; x=1787263730; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=dWSuePOKYwlsV5LOPEAbGHpXrrAUcnGt3ey9OMumPFM=;
-        b=WxWlgmGZxGU86BAkYedZNnoy1N/zLJX2GkSaXq7nFIVNPJ2D8+qDjx4ui9va5wOGHS
-         u7pPRnOVZeqV9OWKVUvVCDT0wOxnJzA6Rvk74oc/xEoCiqQV12s67CM6cvT8o/5+1J/x
-         c/QDFwqKp37/bikw2fRG07059lel0BNy/sT1qgVOUKf4TrIX3PjH0USgye5mtVaciOM9
-         x9aE7OgILZ3RDOx6C7aoraBIOkVvVnYFDwVHnA/VGWANoIqOJidExRxPWfx25jzN5zuV
-         tW61y2xaXV48snPxCrtfTVNoIBH4gLk503l5sUd+fqu5+/CB4MHFb+Vb1lsmL5Sv7W12
-         RDRg==
-X-Forwarded-Encrypted: i=1; AHgh+RqaVL8hW/DHRPpfpcFjdNgowx267Wyq7MCFZ5dTdGGUTtU2pIHJvXygZM0ZfpNVuGNOIvY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxK+n4KwXaHsJyYQwLl3hqYBSG7esamZ10wpjh8vLUaNYw8Jm+r
-	pW/xsPBqVtwYgI3DDey1iwaDHAesAaLVQSYzazS+Dqg5BZdYhqEPQgfjx5yUxBQ5Pg==
-X-Gm-Gg: AR+sD10UG/zncZSFGsXSdHZ9wTmVGiEmo+Z2DnwCXLYxXJNNbteB/iEW0qqnTzWAJny
-	1+fko7OOcsPp1pWFIneE1enHC9NgBcdZDFoRqZiPqnxqMp2WVEJ+5SVhIw9vaYuwJ9odxTiFmCz
-	Lsiaijv4oaWeLxGpZy0DKU6xPy9Xynz3AeK1efx6wzJwsf5LT94bo+IrTOap4hs7E7fpsC1nrD1
-	pG8nEFrpBvcQ15DMxKhBGrJo9gd74HxxAQejGVekdkwAnmIDuRKvXjHi4Ed9OHJi14mQK6kp5/c
-	yzVOa0YcuzB35osemaDGfewq0zpSAXyT9am2CpG9anUA2O2GkI+2qJJ26LA/doNtcH29Hfp0j8D
-	9qpgxkuxZUGmgM4C5A8QgWV+DPXV7UYZB2a4K/dcgXxN52hFdE2JDgLDdky/a87BuoJsncSWoWF
-	5DG13uvIc0p18frOMWPdy3cQuvgMaPmRlmLpj2D5CXOKVOvKZELdrMHu7XLTfhj4KJTHscAKnoJ
-	/diEwVSrY4JL5nS7Xi0/Bg+VpwqCA==
-X-Received: by 2002:a17:90b:254d:b0:38e:e9b:ffa4 with SMTP id 98e67ed59e1d1-3933b75bc6fmr1028096a91.6.1786656625764;
-        Thu, 13 Aug 2026 14:30:25 -0700 (PDT)
-Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3931cce323fsm4938361a91.3.2026.08.13.14.30.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 14:30:25 -0700 (PDT)
-Date: Thu, 13 Aug 2026 21:30:22 +0000
-From: David Matlack <dmatlack@google.com>
-To: Irene Wang <yiranirenewang@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Jones <andrew.jones@linux.dev>,
-	Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org,
-	Yosry Ahmed <yosry@kernel.org>, Jim Mattson <jmattson@google.com>
-Subject: Re: [kvm-unit-tests PATCH v3] x86: pci: Support unaligned register
- access in PCI config read/write
-Message-ID: <an43bksYniPqk8mp@google.com>
-References: <anZgkSwhjHDG3dWy@google.com>
- <20260813205742.2752510-2-yiranirenewang@gmail.com>
+        bh=N/3XZWjnKAuEX+EJn/U2x2ZdOkAMPrJlBbo8McfTGik=;
+        b=O77IikC1sR3xbQiMdywHmVt9JDOGw8IV08kS1LlwG8tzdQFj+o2dEb5UtJfGTjdWMh
+         pgDMHr1drHwz1I8R/nduFxDD3mpZjyZ++TGcDlZyZcxBYFUDrjwowv1eTOikIInNxZK2
+         C+BVoq7Rs9oMQv2z+nf3MxU/4RS2i6u6Pxm9pG6jOBNP7zkUxOTEtpiMBbclB7Exjwtk
+         eLzyLlr0iUpPg+Uj/+ovfahhebV2/xui++RgIUBhZHyjnJ5MUZcEkEyf4t1dIX/Vg0C+
+         Pyjk4KGvxS80cFbaFhV6oQ01WJyWy0A5Tvo9HpI6vkZFozu109yY7U7GGivUD5HBvXEP
+         IHdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786658930; x=1787263730;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=N/3XZWjnKAuEX+EJn/U2x2ZdOkAMPrJlBbo8McfTGik=;
+        b=BKZehhbko64Urn2oPwfVX9EHCwD9RO4yObxYy4SzjO5nFm/ymhXgHzu96m4f1uqfmP
+         05/wI1BwzMMzXlf8dQvJuTOU1CpuCjj5vTq1uPCj3HY40vhJh0T6SrFt3oPgEchumfQ6
+         vYP5AU0l2VFduF8ITjWfLuJ6DzqTSgfipAi/yzM23/wpiCsFoaSRuk23CacaMOLQ38QD
+         XIFCB159bL0PwgW5odpW6r7U2wRnovox5TYE0SEeccTL7wnEj/wh9Kp2isv15tevFQJU
+         ydoiRU8GN0oDmrWRz3dWezJ35sL4mydZyP1GycBzTl1bG1Q5zscQLLe8vKUZ6xC/lWpS
+         h0Xg==
+X-Forwarded-Encrypted: i=1; AHgh+RqyOWsqgg1BpR0sHW/OgxJQs7RGDeiA8nxu8bONK5HzVqLJccaVxnVzqOaa5d3VQ+PuySY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjLTJVpigp8UD9ud53gChxJ//2KUIMPySyT8AqMD0NMQ695uM9
+	bR6bwaDhPaKWQbZH243S61k23Xyik8edx994K/3BMb/iP+S5tOZ/SSqSnMLkxk7KXu0myFAKKCB
+	i0wGjgQ==
+X-Received: from pgcd20.prod.google.com ([2002:a05:6a02:4c54:b0:c9e:41e5:2eec])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a21:b0:3b5:489c:7bb5
+ with SMTP id adf61e73a8af0-3cc71d1e1c7mr839682637.28.1786658929498; Thu, 13
+ Aug 2026 15:08:49 -0700 (PDT)
+Date: Thu, 13 Aug 2026 15:08:48 -0700
+In-Reply-To: <CAEvNRgGpCVCGVjc9jCt9Yr+XypF=71h6eBahkXNkrXhfrtGY+g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260813205742.2752510-2-yiranirenewang@gmail.com>
+Mime-Version: 1.0
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-12-2fc18ee6d3ba@google.com>
+ <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com> <an3o4h-E8mj6CUaM@google.com>
+ <CAEvNRgGpCVCGVjc9jCt9Yr+XypF=71h6eBahkXNkrXhfrtGY+g@mail.gmail.com>
+Message-ID: <an5AcEG9mqDgnBYk@google.com>
+Subject: Re: [PATCH v10 12/41] KVM: guest_memfd: Call arch make_shared
+ callback for to-shared conversion
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Binbin Wu <binbin.wu@linux.intel.com>, aik@amd.com, andrew.jones@linux.dev, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, Fuad Tabba <fuad.tabba@linux.dev>
+Content-Type: text/plain; charset="us-ascii"
 
-On 2026-08-13 08:57 PM, Irene Wang wrote:
-> Per the PCI Local Bus Specification (Section 3.2.2.3.2, "Configuration
-> Mechanism #1"), port 0xCF8 (CONFIG_ADDRESS) requires a DWORD-aligned
-> register offset (bits [1:0] = 00b), while byte and word offsets within
-> the DWORD must be selected via data port 0xCFC + (reg & 3).
+On Thu, Aug 13, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
 > 
-> Previously, PCI_CONF1_ADDRESS did not clear bits [1:0], and 8-bit /
-> 16-bit helpers always accessed base port 0xCFC directly. This worked
-> in QEMU because its PCI host bridge emulation preserves unaligned bits
-> in CONFIG_ADDRESS and uses them during CONFIG_DATA accesses. However,
-> in strictly spec-compliant VMMs (and potentially real hardware), bits
-> [1:0] of 0xCF8 are ignored, causing non-aligned reads/writes at port
-> 0xCFC to erroneously target byte 0 of the DWORD. In practice, this
-> causes pci_find_dev() to read the vendor ID twice instead of reading
-> the vendor ID and device ID.
+> > On Thu, Aug 13, 2026, Binbin Wu wrote:
+> >> On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
+> >> > +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> >> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end)
+> >> > +{
+> >> > +	struct folio_batch fbatch;
+> >> > +	pgoff_t next = start;
+> >> > +	int i;
+> >> > +
+> >> > +	folio_batch_init(&fbatch);
+> >> > +	while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
+> >> > +		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+> >> > +			struct folio *folio = fbatch.folios[i];
+> >> > +			pgoff_t start_index, end_index;
+> >> > +			kvm_pfn_t start_pfn;
+> >> > +			kvm_pfn_t nr_pages;
+> >> > +
+> >> > +			start_index = max(start, folio->index);
+> >> > +			end_index = min(end, folio_next_index(folio));
+> >> > +			/*
+> >> > +			 * end_index is either in folio or points to
+> >> > +			 * the first page of the next folio. Hence,
+> >> > +			 * all pages in range [start_index, end_index)
+> >> > +			 * are contiguous.
+> >> > +			 */
+> >> > +			start_pfn = folio_file_pfn(folio, start_index);
+> >> > +			nr_pages = end_index - start_index;
+> >> > +
+> >> > +			kvm_arch_gmem_make_shared(start_pfn, nr_pages);
+> >> > +		}
+> >> > +
+> >> > +		folio_batch_release(&fbatch);
+> >> > +		cond_resched();
+> >> > +	}
+> >> > +}
+> >> > +#else
+> >> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end) {}
+> >> > +#endif
+> >> > +
+> >> >  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> >> >  				     size_t nr_pages, uint64_t attrs,
+> >> >  				     pgoff_t *err_index)
+> >> > @@ -599,7 +636,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> >> >
+> >> >  	filter = to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
+> >> >  	kvm_gmem_invalidate_start(inode, start, end, filter);
+> >> > +
+> >> > +	if (!to_private)
 > 
-> Fix this by masking `reg` with `~3` in PCI_CONF1_ADDRESS and adding
-> the `(reg & 3)` offset to the CONFIG_DATA port for 8-bit and 16-bit
-> accessors, ensuring compatibility across QEMU and other VMMs. Additionally,
-> add an ASSERT_PCI_CONF1_VALID macro to guard against illegal accesses that
-> cross DWORD boundaries.
+> Should I make this condition
 > 
-> Assisted-by: Gemini:gemini-3.6-flash
-> Reviewed-by: Jim Mattson <jmattson@google.com>
-> Signed-off-by: Irene Wang <yiranirenewang@gmail.com>
-
-Looks good aside from the comment nits.
-
-Reviewed-by: David Matlack <dmatlack@google.com>
-
-> ---
-> v2 -> v3:
->  - Add comment in PCI_CONF1_ADDRESS explicitly explaining that clearing
->    bits [1:0] prevents QEMU from double-offsetting accesses (David)
->  - Introduce ASSERT_PCI_CONF1_VALID macro checking that access offset +
->    access size do not read/write past 4-byte window (David)
+> 	if (!to_private && kvm_x86_ops.gmem_make_shared)
 > 
-> Link to v2: https://lore.kernel.org/kvm/20260804232344.2976694-2-yiranirenewang@gmail.com/
-> Link to v1: https://lore.kernel.org/kvm/20260730182053.905335-1-yiranirenewang@gmail.com/
-> ---
->  lib/x86/asm/pci.h | 25 ++++++++++++++++++++-----
->  1 file changed, 20 insertions(+), 5 deletions(-)
+> instead?
 > 
-> diff --git a/lib/x86/asm/pci.h b/lib/x86/asm/pci.h
-> index 03e55c27..144a4459 100644
-> --- a/lib/x86/asm/pci.h
-> +++ b/lib/x86/asm/pci.h
-> @@ -9,22 +9,35 @@
->  #include "pci.h"
->  #include "x86/asm/io.h"
->  
-> -#define PCI_CONF1_ADDRESS(dev, reg)	((0x1 << 31) | (dev << 8) | reg)
-> +/*
-> + * Bits [1:0] offset into data port, not address port. Spec compliant
-> + * host bridges ignore them in CONFIG_ADDRESS, but QEMU does not; mask them out
-> + * here so QEMU doesn't double-offset the access.
-> + */
+> Will that help?
 
-nit: Wrap at 80 chars.
-
-/*
- * Bits [1:0] offset into data port, not address port. Spec compliant host
- * bridges ignore them in CONFIG_ADDRESS, but QEMU does not; mask them out here
- * so QEMU doesn't double-offset the access.
- */
-
-> +#define PCI_CONF1_ADDRESS(dev, reg)	((0x1 << 31) | ((dev) << 8) | ((reg) & ~3))
-> +
-> +/*
-> + * Ensure access offset + size stays within the 4-byte (DWORD) boundary.
-> + */
-
-nit: Use /* ... */ style for one-line comments.
-
-/* Ensure access offset + size stays within the 4-byte (DWORD) boundary. */
-
-> +#define ASSERT_PCI_CONF1_VALID(reg, type) \
-> +	assert(((reg) & 3) + sizeof(type) <= 4)
->  
->  static inline uint8_t pci_config_readb(pcidevaddr_t dev, uint8_t reg)
->  {
->      outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
-> -    return inb(0xCFC);
-> +    return inb(0xCFC + (reg & 3));
->  }
->  
->  static inline uint16_t pci_config_readw(pcidevaddr_t dev, uint8_t reg)
->  {
-> +    ASSERT_PCI_CONF1_VALID(reg, uint16_t);
->      outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
-> -    return inw(0xCFC);
-> +    return inw(0xCFC + (reg & 3));
->  }
->  
->  static inline uint32_t pci_config_readl(pcidevaddr_t dev, uint8_t reg)
->  {
-> +    ASSERT_PCI_CONF1_VALID(reg, uint32_t);
->      outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
->      return inl(0xCFC);
->  }
-> @@ -33,19 +46,21 @@ static inline void pci_config_writeb(pcidevaddr_t dev, uint8_t reg,
->                                       uint8_t val)
->  {
->      outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
-> -    outb(val, 0xCFC);
-> +    outb(val, 0xCFC + (reg & 3));
->  }
->  
->  static inline void pci_config_writew(pcidevaddr_t dev, uint8_t reg,
->                                       uint16_t val)
->  {
-> +    ASSERT_PCI_CONF1_VALID(reg, uint16_t);
->      outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
-> -    outw(val, 0xCFC);
-> +    outw(val, 0xCFC + (reg & 3));
->  }
->  
->  static inline void pci_config_writel(pcidevaddr_t dev, uint8_t reg,
->                                       uint32_t val)
->  {
-> +    ASSERT_PCI_CONF1_VALID(reg, uint32_t);
->      outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
->      outl(val, 0xCFC);
->  }
-> -- 
-> 2.55.0.691.gc56d675ccc-goog
-> 
+No, because that's bleeding x86 details into common code, which defeats the purpose
+of arch hooks.  That's why I think it's worth analyzing the cost: if it's in the
+noise, leave it alone.  If it's meaningful, figure out a not-too-gross way to skip
+the entire thing if kvm_arch_gmem_make_shared() is a glorified nop in the end.
