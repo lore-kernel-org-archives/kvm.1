@@ -1,193 +1,138 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802BD3B9937;
-	Thu, 13 Aug 2026 15:29:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883DB48CD6D
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 15:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786634961; cv=none; b=icRMIWiqdxXzqaUAr8TMTvdQL52ybqdB7fYs9/3lWim53ROHlQbhz5SCscfPWZed2/Fq6gnDRZqy1HjDd8UosqZHhKOfYlTeiV4y/Qf9nU9zLKWvAwSZ+Q2e+yv0TCA3L+ZFCLNdWnZCCx6uUFR5C/aCBl24HuTSgoSocyqh+QE=
+	t=1786635642; cv=none; b=TPdG4a+7yW+YQUc3NaXAuI4Ni2UFtbij65SQ6q9hkEcGrsQwAaqza9cnZUrFi/rzCBdT5RI73zWRDERHSRnL10oPqR6DOAJ37lozWuaCV6c9W5MmYxqx0delVF9eIuSrVvU0KY6/VZi1J68eUs+xdN47pAdAqV8lxORwmd/rVtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786634961; c=relaxed/simple;
-	bh=XiCbGqpOXXJXofURPwtzJHhcISrABgmJajxK9Ioz9y4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qBeCkP/PxDptSPtQBCGyIct97Dg2QL99r9iiOK2Fqfw+Bq5wRPlHw24ZzlU8ghsJ/3E32D4q2xzWSTVIjsyJbkp2+COChjFGmnQcEbviFCaYmHBRLkJszm3Os0uN8fAzi5s2nt1hp33ctQ/KlEE8+eEePEtG5tEaYODKHTtAffM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Wz4RW0h7; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1786635642; c=relaxed/simple;
+	bh=WtqsLzrgSjg/xVRfW9WfYBYpQ3bP/9ChUav4NHg7yVg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ih0N7nYyqPliGHoD01YDN8tyaiN44KhlwD4CxjfcGvtCoksnJzcPOHXgputrH1wuybOWWzmslzqYgtlokQbGcgddftQnXRMabhuh5BrIm9MwbUeSSkw3sumkTdIAlzC/K0gPEuOOOo9k4DL2FGIpS/13Le7WLr28znOliT5T6vM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dF8Cx924; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Wz4RW0h7"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ECFD31756;
-	Thu, 13 Aug 2026 08:29:14 -0700 (PDT)
-Received: from [10.1.25.28] (e122027.cambridge.arm.com [10.1.25.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CA5E33F632;
-	Thu, 13 Aug 2026 08:29:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786634958; bh=XiCbGqpOXXJXofURPwtzJHhcISrABgmJajxK9Ioz9y4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Wz4RW0h79cKIdIsdDbdMd8NGAcegqk85VdY1+tdw4yN8gzlnr05Af5QUdIpck76X6
-	 zeiPKM1/qTYrljz4IWISGzv11YICemYUYPJ+cHWftg4mGDfdsKJeLy8eqrrAWIx1MC
-	 Ojrc6+AQac06tJK3Wqj+8qD9p2CTw3puSp/Cy5KE=
-Message-ID: <a36e83e2-8f26-4d68-9b5e-756ca8740abf@arm.com>
-Date: Thu, 13 Aug 2026 15:38:26 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dF8Cx924"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2caced6038eso15229675ad.0
+        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 08:40:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786635637; x=1787240437; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=AcZvN96x3R8L9Ww6tvDjLJoxtHOJUhdmG67qkMsuoE8=;
+        b=dF8Cx924z63s7ot0bcNk24y7I0YPDSgB9NNaJVzHc9+3Yt/JGlCfFcrjl5hDlLMxTt
+         4MaEDpK12ekLLATLF+cwf3ufcrM029EuFcouefRhyELSWlu7wH6mDorsVx0fyKzD1NDS
+         LGD1Rj5ARKXA0ZtgpswP3jq3CN1QHKO38uyVtYfnr0GHaAlPvgJ11BoL71E1NFVq1LuX
+         7Qsi3yfCb3BPFwq+ZvxYOfzLVs6xDhks+uZtJKfEVVGuzn+W/57XaORu3wOspuM2F9cn
+         AMKxPhm7UYvvFASH+Wh2uWcq2oT74ZkNKGOAsz22bnmreYWkD7FnSH1W20QMhFCBLUGJ
+         x5bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786635637; x=1787240437;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AcZvN96x3R8L9Ww6tvDjLJoxtHOJUhdmG67qkMsuoE8=;
+        b=B0Att34gOjDPQgwnLM59F9wJWtXTXAAQmNrlgPNQvV78Gi8/0V2e1Lv4qEwgNm0lpk
+         UmqJV4m2x1eW9kZCvpNI55MHNwLltMuqaYLmGfk3sWwzO/bSW0j18dv2Zo72XfQnCW6D
+         peo0e0qhvEI/igywGsc7haBbZT1FjEf2TCjQcJNbuvwU7tRd3Ev+rvQyXsTuuFPCzCUU
+         BrVdNQUU0FTSqF0rQU26jfdpLFp6itbaHBMa773ofVdy5khMyjApa7cnl8uORP6NJGEP
+         07+zFPCh6gBDkAhRqVcCa/YIL/lqa6fjGG6EPeJuDKQ2CkznOiTweVvyKJaadNt19Nyd
+         TqgA==
+X-Forwarded-Encrypted: i=1; AHgh+RpeyzBwAAtqY0iivdjZH+okQhf962uhVWxri820Xar4JXkPaif8q1LOgTC3+gh/rwQsOig=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFM4Hsyu9c58M+a6G2C7SBvd8nlimpBhW2l/XNKFJTQ9HNdVGG
+	PI5+k7aOEs/SIdLoDgammY2/8UbX+iQgXUcqNz11Iv3U9iOOnbtkAvccIesf3VVb/A==
+X-Gm-Gg: AR+sD1365vh8jqyQEt8VO6xiSJ9m3uVrlBV4ATacK7rYwz+iWFe3umoeNFxvw92I+1j
+	D2MsiOzjVbacbIkMXn5QEWX1y+f4dUenA9joCobJ0+tHipjUeyuaLY4X0gr4o+Dpl+BaGkAUtUD
+	2Y+NzoSzk8bb/6fmgUuE6G7dbqiC2iJC03qW1SyGDALR5v9XSZVsfYGKCaz/tFBvid2daoVf4GF
+	r0HR+dUTx+DUhpoJX22zvQjZT1khQ1Gr+Xo/p+kzVT8oWGivD4nykUHMM/7nsKRB60nhYrfeNdZ
+	AeMF/TUfj0b5bhn7e6KfUrMVLOGaNCO2xiLYW4yJEbqCtWq6ZK5eAkmhUhBKC5qPxuzQJyRHJhN
+	aQstrIScNoULwG8lhoVIDcWwcLvzmySOiEHvfFsXr3BDR2NeaXexsLKvCc/YZQ84JryiBXwbs3B
+	lY3ebeAFUjYEfabZ6xN2CQj+xh6WufCPhWcwmIM6TsPQDqib6gbA4RvRA2kkyzZ2ZCmccnybX0q
+	fEg1d9ozfcr7Fmo5oE6ekBQ3+gyVmuxpweG1iUh
+X-Received: by 2002:a17:902:f64e:b0:2cf:70d2:da7c with SMTP id d9443c01a7336-2d37f77fdfemr84524235ad.12.1786635636542;
+        Thu, 13 Aug 2026 08:40:36 -0700 (PDT)
+Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d37c2000bbsm12399845ad.7.2026.08.13.08.40.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 08:40:35 -0700 (PDT)
+Date: Thu, 13 Aug 2026 15:40:32 +0000
+From: David Matlack <dmatlack@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
+	netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+	patches@lists.linux.dev
+Subject: Re: [PATCH v4 08/10] vfio: selftests: Add mlx5 driver - HW init and
+ command interface
+Message-ID: <an3lcKmhXbRnDpRL@google.com>
+References: <0-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
+ <8-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
+ <anzoiALsjiWrsZtl@google.com>
+ <20260812233207.GB730363@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 21/45] KVM: arm64: CCA: Handle realm enter/exit
-To: Kohei Enju <enju.kohei@fujitsu.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20260803134403.80630-1-steven.price@arm.com>
- <20260803134403.80630-22-steven.price@arm.com>
- <anl7EwU9jSig-uQs@FCCLS0092175.localdomain>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <anl7EwU9jSig-uQs@FCCLS0092175.localdomain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260812233207.GB730363@nvidia.com>
 
-On 10/08/2026 09:03, Kohei Enju wrote:
-> On 08/03 14:43, Steven Price wrote:
->> Entering a realm is done using a SMC call to the RMM. On exit the
->> exit-codes need to be handled slightly differently to the normal KVM
->> path so define our own functions for realm enter/exit and hook them
->> in if the guest is a realm guest.
+On 2026-08-12 08:32 PM, Jason Gunthorpe wrote:
+> On Wed, Aug 12, 2026 at 09:41:28PM +0000, David Matlack wrote:
+> > On 2026-08-12 11:59 AM, Jason Gunthorpe wrote:
+> > > @@ -0,0 +1,108 @@
+> > > +/* SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB */
+> > > +/*
+> > > + * mlx5 VFIO selftest driver - HW definitions
+> > > + *
+> > > + * Typed wrappers, constants, and helpers for programming mlx5 hardware
+> > > + * via the VFIO selftest framework.  Most HW constants and all MLX5_SET/GET
+> > > + * macros come from the kernel headers (mlx5_ifc.h, mlx5_ifc_macros.h).
+> > > + */
+> > > +#ifndef SELFTESTS_VFIO_MLX5_HW_H
+> > > +#define SELFTESTS_VFIO_MLX5_HW_H
+> > > +
+> > > +#include <linux/io.h>
+> > > +#include <linux/build_bug.h>
+> > > +#include <vdso/bits.h>
+> > > +
+> > > +#include "mlx5_ifc.h"
+> > > +#include "mlx5_ifc_macros.h"
+> > 
+> > I'm getting a compiler warning here when building with clang which is
+> > getting upgraded to error from -Werror.
 > 
-> Hi Steven,
+> I don't get that. My builds have -Wno-gnu-variable-sized-type-not-at-end
+> which comes from here:
 > 
-> I found that when the host kernel is booting with pseudo-NMI enabled
-> (irqchip.gicv3_pseudo_nmi=1), Realm VMs fail boot successfully and the
-> watchdog reports RCU stalls and soft lockups.
+> tools/testing/selftests/lib.mk:
 > 
-> After some investigations, I confirmed that arch_timer interrupts
-> are not being delivered to some CPUs. This appears to be because PMR is
-> 000000c0 (GICV3_PRIO_IRQ), as shown below:
+> # gcc defaults to silence (off) for the following warnings, but clang defaults
+> # to the opposite. The warnings are not useful for the kernel itself, which is
+> # why they have remained disabled in gcc for the main kernel build. And it is
+> # only due to including kernel data structures in the selftests, that we get the
+> # warnings from clang. Therefore, disable the warnings for clang builds.
+> CFLAGS += -Wno-address-of-packed-member
+> CFLAGS += -Wno-gnu-variable-sized-type-not-at-end
 > 
->   [  248.769692] pmr: 000000c0
-> 
-> For normal VMs, KVM opens PMR before entering the guest, because having
-> IRQs masked via PMR when entering the guest means the GIC will not
-> signal the CPU of interrupts of lower priority, and in the worst case
-> a guest exit may never occur.
-> (See __kvm_vcpu_run in arch/arm64/kvm/hyp/vhe/switch.c)
-> 
-> [  248.756980] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-> [  248.758649] rcu:     3-...0: (113 ticks this GP) idle=d2ec/1/0x4000000000000000 softirq=1631/1633 fqs=297
-> [  248.759413] rcu:     4-...0: (7 ticks this GP) idle=b77c/1/0x4000000000000000 softirq=1589/1589 fqs=297
-> [  248.760101] rcu:     (detected by 7, t=6003 jiffies, g=4553, q=86 ncpus=8)
-> [  248.760731] Sending NMI from CPU 7 to CPUs 3:
-> [  248.766814] NMI backtrace for cpu 3
-> [  248.768285] CPU: 3 UID: 0 PID: 387 Comm: kvm-vcpu-0 Not tainted 7.2.0-rc2-00267-g7326f0114689 #238 PREEMPT(lazy)
-> [  248.768681] Hardware name: QEMU QEMU Virtual Machine, BIOS unknown 02/02/2022
-> [  248.768936] pstate: 61402009 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-> [  248.769021] pc : kvm_rec_enter+0xa0/0xb8
-> [  248.769585] lr : kvm_rec_enter+0x24/0xb8
-> [  248.769655] sp : ffff800084943830
-> [  248.769692] pmr: 000000c0
-> [  248.769757] x29: ffff800084943830 x28: ffff0000079c6c00 x27: 0000000000000000
-> [  248.770441] x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
-> [  248.770536] x23: 0000000080000000 x22: 0000000000000001 x21: 0000000049d99000
-> [  248.770590] x20: 0000000049d9a000 x19: ffff00000e018000 x18: 0000000000000000
-> [  248.770647] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-> [  248.770756] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-> [  248.770863] x11: 0000000000000000 x10: 0000000000000000 x9 : ffff8000812ab1bc
-> [  248.771018] x8 : 0000000000000000 x7 : 0000000000000020 x6 : 0000000000000080
-> [  248.771123] x5 : 0000000000000004 x4 : 0000000000000040 x3 : 0000000000000000
-> [  248.771172] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
-> [  248.771385] Call trace:
-> [  248.771612]  kvm_rec_enter+0xa0/0xb8 (P)
-> [  248.771757]  kvm_arm_vcpu_enter_exit+0x8c/0x218
-> [  248.771796]  kvm_arch_vcpu_ioctl_run+0x274/0x890
-> [  248.771843]  kvm_vcpu_ioctl+0x180/0xb50
-> [  248.771883]  __arm64_sys_ioctl+0xb4/0x118
-> [  248.771920]  invoke_syscall.constprop.0+0xb8/0x120
-> [  248.771954]  do_el0_svc+0x48/0xc8
-> [  248.771982]  el0_svc+0x48/0x280
-> [  248.772012]  el0t_64_sync_handler+0xa0/0xe8
-> [  248.772041]  el0t_64_sync+0x1ac/0x1b0
-> [...]
-> 
->> [...]
->> +int noinstr kvm_rec_enter(struct kvm_vcpu *vcpu)
->> +{
->> +	struct realm_rec *rec = &vcpu->arch.rec;
->> +	int ret;
->> +
->> +	ret = rmi_rec_enter(rec->rec_phys, rec->run_phys);
->> +	if (!ret)
->> +		load_realm_timer_state(vcpu);
->> +
->> +	return ret;
->> +}
-> 
-> In my testing environment, adding local_daif_mask/restore() in line with
-> __kvm_vcpu_run() fixes the issue, and Realm VMs successfully boot
-> without RCU stalls or soft lockups.
+> Why doesn't yours? Are you building it correctly?
 
-Hi Kohei,
+Ah I see the problem. I was building with this command:
 
-Thanks for the detailed investigation.
+  make CC=clang -C tools/testing/selftests/vfio
 
-> However, I'm not sure if we can safely call local_daif_mask/restore()
-> here, bacause they call trace_hardirqs_off/on(), which presumably cannot
-> be called from noinstr context.
-> 
-> For reference, the VHE hyp path seems to call local_daif_mask/restore()
-> from noinstr context, but I'm not sure why this is considered safe:
->   noinstr kvm_arm_vcpu_enter_exit()
->     kvm_call_hyp_ret(__kvm_vcpu_run, vcpu) <- normal function call for VHE
->       local_daif_mask()
->         trace_hardirqs_off()
->       local_daif_restore()
->         trace_hardirqs_off/on()
+But the correct way to build selftests with clang is to use:
 
-Yes I'm not sure if there's an existing VHE bug there. But it's only if
-CONFIG_TRACE_IRQFLAGS is enabled, so perhaps no-one has noticed?
+  make LLVM=1 -C tools/testing/selftests/vfio
 
-> The following change works in my test environment.
-> Any thoughts on the issue and the proposed fix?
-
-Your proposed fix looks like it matches the VHE behaviour, so I'll go
-for that. If there's an existing VHE bug then hopefully the below will
-work after the fix for that too.
-
-Thanks,
-Steve
-
-> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> index c242dfc2c7a6..dd7cb2d7db88 100644
-> --- a/arch/arm64/kvm/rmi.c
-> +++ b/arch/arm64/kvm/rmi.c
-> @@ -1307,7 +1307,13 @@ int noinstr kvm_rec_enter(struct kvm_vcpu *vcpu)
->         struct realm_rec *rec = &vcpu->arch.rec;
->         int ret;
-> 
-> +       local_daif_mask();
-> +       pmr_sync();
-> +
->         ret = rmi_rec_enter(rec->rec_phys, rec->run_phys);
-> +
-> +       local_daif_restore(DAIF_PROCCTX_NOIRQ);
-> +
->         if (!ret)
->                 load_realm_timer_state(vcpu);
-> 
-> Thanks,
-> Kohei
-
+LLVM=1 triggers the conditional logic to add
+-Wno-gnu-variable-sized-type-not-at-end to CFLAGS and the build works.
