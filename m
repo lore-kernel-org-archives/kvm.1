@@ -1,136 +1,149 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060083B9937;
-	Thu, 13 Aug 2026 09:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C35A39B947;
+	Thu, 13 Aug 2026 09:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786613589; cv=none; b=p0f5fNuJwz/fmEQYurT+/LmnGHk2haAMLPQtGEfx6MnmSwViY/J+enIYPZ79Zvbh51SjWNALeaFXQflHB99GgBHzp98FWqovG4Qg4bgJMlQumyShx476Tm9YgAlhxVbxLNXHQ6xAE61M+nnw9+6F/oKQmiOmXP5gXX68CvGd9xg=
+	t=1786613687; cv=none; b=C8wkTEvJiovebDViKGW4fLng75Butd72uweCg3pUO0cLk7YpB17bDeyxVH5h3VBHRryImBUNpnB0rqyadC4XLgBMdsSphKLCEyJNu2vk8ucOa7/juMdOPt3YQmU0eVHnV/Z91dgiVgmN3HXAIaYTXaNlw257X0097Rpahl+4hjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786613589; c=relaxed/simple;
-	bh=TCCeNw6/6InKS6yKzz6wtJNG01BstF82n0QFE8i6qJo=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uUtatvrjWzGqwH5li9HZjSedp6CLGJiV0pxSsiRidXT+LONpwju/GYPCZgeHdB0AXAP14Js9VvUy+NUuwkuEVWd72w/cS1DPAlRrEOCKogu5iYdFiIXOQp3J2m5TYieMsjjexDkVd9STx2onG7Z9z2PlajBUhQEab6R4Z2dsdgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HjIuT5uP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786613687; c=relaxed/simple;
+	bh=8GGJeMXZjenStr/KzvJ5bvXYBWbaVtnV9BN6Q25mvnc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uRmARe2gcehSxd8nflLUy88EEikRIVwXkl5HOaaN2EKz8bfbKSqL71YBT0qmpTFvhDQQC7bfuUj5+VQAQq/nvYBPXPXzCBCDsGyMqtPq+xY9yvZiVw8HbsKEZf9RKSe+TreIGdPMFOrlUGxkkn+Lx5CmDRwV6sBQ6hinuv1Ch84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bUE5dJPA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HjIuT5uP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC271F000E9;
-	Thu, 13 Aug 2026 09:33:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bUE5dJPA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E2C21F00A3A;
+	Thu, 13 Aug 2026 09:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786613587;
-	bh=LxMU8Wh5IEENDMpZo4oo0mR+i7a46pl2E7NjfryRXQ8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=HjIuT5uPEzbtrapTnOryZUgB/anrlIB0mDwEFOBe2JspqtXYBOpqTUziewIegCUcq
-	 z5/1zVk7Olqz5KNZ4V6vFk4w+2ed/IzjWAtcCefJFHbig5FQ7+TLSW1MNksvLgnZ/q
-	 xvyD4+z02nim3gZ2D0YsV0b16hq/2Lv+4njWZtN49B2H+7TYHtNqovnqP4zEZg1mp+
-	 N5i09/N8k0LpFf9sUrr2N/avdp7T7Exfq29CkXZBKU063rAl3DkfkcoQfBmuGjNmbv
-	 bSix7SMa3EghI/NpfqzmdwNTbygyZqaEeToVdub5WIWdSOuePQlXLuhmtg3L3kPkaB
-	 /9FCpf1I8xiRw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wuRo9-0000000FGvb-1YDY;
-	Thu, 13 Aug 2026 09:33:05 +0000
-Date: Thu, 13 Aug 2026 10:33:04 +0100
-Message-ID: <86cxvm1i27.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Grapentin <gra@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Friedrich Welter <fritz@linux.ibm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Gautam Gala <ggala@linux.ibm.com>,
-	Hariharan Mari <hari55@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-	Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v6 06/33] arm64: sysreg: Convert SPSR_ELx to automatic register generation
-In-Reply-To: <20260812153631.3376090-7-seiden@linux.ibm.com>
-References: <20260812153631.3376090-1-seiden@linux.ibm.com>
-	<20260812153631.3376090-7-seiden@linux.ibm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20260515; t=1786613677;
+	bh=8GGJeMXZjenStr/KzvJ5bvXYBWbaVtnV9BN6Q25mvnc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bUE5dJPAlkV0e3vT0h7pYlLJU5zXJxR2LXxBNspnyo1VD4QhHtGs98mt311XJsBdW
+	 NwB8Nq4PllboYzEJBi81NS4Znt7rwrq4KgMryMSE0C43kPgg4JZBe4YaD73IDj3Qhc
+	 hkISD3HoCeXW5N5BR+POiDBs1yZqmn+EUOSooN1tXl82a26xMjeWiPMpVvfYRQfG/x
+	 ZMtuu9DxIOMyxMhsNgoWAd1PzcOu+EcD2NUsikKPG7Mr3cJCZt6UfUjHm2RYLp+0Px
+	 1/SSm+fTyu/vmq45+SrPqFDYNWi/Yibqy+QbWRYX2IwQzUF1p8qhv0/ihpFi9UoHkc
+	 0QX0gdddlS7+w==
+Date: Thu, 13 Aug 2026 10:34:00 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Alex Deucher <alexander.deucher@amd.com>, 
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, Steven Price <steven.price@arm.com>, 
+	Liviu Dudau <liviu.dudau@arm.com>, Huang Rui <ray.huang@amd.com>, 
+	Matthew Auld <matthew.auld@intel.com>, 
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 18/20] mm/vma: make MAP_PRIVATE-mapped /dev/zero
+ mappings truly anonymous
+Message-ID: <an2PQD_pT-ZpSCvP@lucifer>
+References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
+ <20260806-b4-scalable-cow-virt-pgoff-v4-18-ab318a350404@kernel.org>
+ <517ea018-d6a9-4c78-b0a6-4f002b3b72ca@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, tabba@google.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, seanjc@google.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <517ea018-d6a9-4c78-b0a6-4f002b3b72ca@kernel.org>
 
-On Wed, 12 Aug 2026 16:36:02 +0100,
-Steffen Eiden <seiden@linux.ibm.com> wrote:
-> 
-> Convert SPSR_EL{1, 2, 12} to automatic register generation as per
-> DDIO616 2026-06. No functional change.
-> 
-> Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
-> ---
->  arch/arm64/include/asm/sysreg.h |  3 ---
->  arch/arm64/tools/sysreg         | 48 +++++++++++++++++++++++++++++++++
->  2 files changed, 48 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
-> index 4bfdac9401bd..1aa601c95188 100644
-> --- a/arch/arm64/include/asm/sysreg.h
-> +++ b/arch/arm64/include/asm/sysreg.h
+On Thu, Aug 13, 2026 at 11:29:43AM +0200, David Hildenbrand (Arm) wrote:
+> On 8/6/26 22:21, Lorenzo Stoakes (ARM) wrote:
+> > When mapping /dev/zero with MAP_PRIVATE, one ends up with strange VMAs
+> > originating from Linux's distant past.
+> >
+> > These have vma->vm_file set but NULL vma->vm_ops, meaning they satisfy
+> > vma_is_anonymous() but otherwise resemble a file-backed VMA.
+> >
+> > The introduction of anonymous page offsets and their subsequent use as
+> > indexes for MAP_PRIVATE-file-backed mappings mean the rmap does the right
+> > thing with these but we are left with inconsistencies.
+> >
+> > The vma_start_pgoff(vma) == vma_start_anon_pgoff(vma) invariant is true for
+> > all other anonymous VMAs, but not these.
+> >
+> > These VMAs are also observable as files in /proc/<pid>/[maps, smaps,
+> > map_files] but otherwise behave like anonymous mappings.
+> >
+> > Therefore let's make these VMAs actually anonymous at mapping time which
+> > will activate the anonymous code path for mappings.
+> >
+> > This means we no longer have to account for this discrepancy anywhere and
+> > no longer have to think about these at all.
+> >
+> > This is user-observable, as MAP_PRIVATE-/dev/zero will no longer appear in
+> > procfs as a file-backed mapping, but the impact of this change should be
+> > low as likely nobody is relying upon this.
+>
+> As discussed off-list, it's best to discuss the impact with the wider community.
+> I'm afraid not many people made it to patch #18 in this series. :)
+>
+> I don't expect this to actually break something, but we should be clear that
+> doing a mmap("/dev/zero") will no longer indicate that as a file mapping in /proc/.
+>
+> You could mention that e.g., criu checks for "/dev/zero" mappings explicitly,
+> but will just keep doing the right thing once this is a proper anon mapping; we
+> expect similar use cases to do exactly that, and rather check for "/dev/zero"
+> only to conclude themselves "this is just an anon mapping".
+>
+> Doing some digging, AI raised that there is the potential of some workload
+> explicitly using "/dev/zero" to get an entry in map_files. I think that's
+> essentially what our selftests do that you have to modify. I cannot thing of a
+> good reason why someone would do that in their workload, and at least AI wasn't
+> able to easily identify any such users.
 
-[...]
+I already fixed the self tests and yeah it's not very likely.
 
-> +Enum	4:0	M
-> +	0b0000	EL0
-> +	0b0100	EL1t
-> +	0b0101	EL1h
-> +	0b1000	EL2t
-> +	0b1001	EL2h
+But as discussed off-list, let's defer the /dev/zero stuff to the next cycle and
+get the core of this series in first. It's clear there's more discussion to be
+had there :)
 
-I think you need to be consistent with the way you represent things,
-as you are mixing two representations:
+Will respin with the /dev/zero stuff peeled off!
 
-- either you have a separate M[4] representing PSTATE.nRW, and then
-  the M[3-0] enum is a 4 bit field (and for simplicity you only
-  describe the AArch64 ELs including EL3[th], which are missing here)
+>
+> --
+> Cheers,
+>
+> David
 
-- or M is a 5 bit field and, and you represent everything as a 5 bit
-  enum, providing all the AArch32 modes and EL3.
-
-The former matches the JSON, the latter is closer to the
-representation in older versions of the ARM ARM.
-
-Pick one, stick to it.
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+--
+Cheers, Lorenzo
