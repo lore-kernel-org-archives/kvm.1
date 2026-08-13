@@ -1,141 +1,113 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B9843F8C9;
-	Thu, 13 Aug 2026 09:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C62468C33
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 09:46:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786614367; cv=none; b=MmpT6pnpMAQmIuJRrOdrOFBaWCv9p7iTk385V1GBpX65Ten4sSnMh/VixLiUQojyJbyUxcznhYQHqFrCA/ye1aVCqaYMlBIJ0rwSVNFxKDpNP/r19Untf8XyA8UvmQRYlVcRELdrk7+Iy1Yom+QE18oVWz3hIB9LIGAE4yTG3kY=
+	t=1786614371; cv=none; b=SpHXZaRa0RR7XcOwGA/Wq7WRYe638/VWOU8LEqE9ZeiUJjTzm5ZrKJ46GsDZVVKFGL9nK/SrmDbKkLuZDNurMlKWiL/g68mm5pkw3q+zkOjUJ/NfZ9bAvw2Mt/EEZSGrc1jChdQIjZkeHWib2ZPWC5rTFdLeu/pTyJbOPthcwc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786614367; c=relaxed/simple;
-	bh=+tAjd6C0k7kSBbUm2ZIFNxz+zWI/GByXCXkx1R/ul4E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqwcQ78R0CxmvuE90DB9zgfqLZh12sSjrWLLqhklGp+HV++3s1gHhqlACWxPZTcY7vDF8Bmv3RafDDIu9XUevRZftjAVsDnQVS49VvGONYdFeFG8vb+2gTNyvI2i1IgPbT8hn/pSfl5r0sSeCDBf6PTMu2a/pWFawszmobRIUWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bZfJF9sb; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786614371; c=relaxed/simple;
+	bh=Js1yuJKDINGmwIpIKn7lqOlrDFzN78nEZYrZy8WFYIM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=nqDqM8WIh6ZvYbsbEBM2xtrZNf37SftsqnhCT+fxMsjo2BMz5yVZNTiAzF1EaEyW1tiMuDZ04a2cxpfEHW5CXx/EI5XwwRf4K/tA6U1ExJbM2YAFa2CNQ3zXO1clA1CQhhm4svsTOveh1C+/Lpp09wIEtYe1lwuB62rEq81NKkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KWWkiYTF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bZfJF9sb"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67D98viO1949806;
-	Thu, 13 Aug 2026 09:45:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=Me4pOBVWGAwV+SjWn
-	URhczqoZAZkgyY5rVmFqXV8CZE=; b=bZfJF9sbQsIlrEvmUD0P6DS0FFLaLOnOn
-	HXGrdcIWxckcQ0Jb1m8FrGv+G/sVGu4tMbQ6l1bg8ao6HR1CFoMM4DhbTBQc7TKo
-	olqp1po5sGE27a8zh7AvxEoLCvgmTl+xIMYbM7eFBAQy9nh1zePyu1cvh1QDYwGv
-	DxvQbBucukSac4nA0EdqZ8s+kpOp+6S8dp2RwtcouG380IbwcRYllGpXHbW/IJd0
-	026jCXkAl4f+7oFTF87tw2HA9huats+KBnnGT48rTsb9L+7yNa/4w6ABz/hxGkZP
-	f5EOrrxtDG+WdpUDi5xNxMJLKk685LBzzVBAlDwaZsows/tC6uvjA==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvnwe9dn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Aug 2026 09:45:53 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67D9fLON007509;
-	Thu, 13 Aug 2026 09:45:52 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxg9had5u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Aug 2026 09:45:52 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67D9jm9835324338
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Aug 2026 09:45:49 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D1EF420043;
-	Thu, 13 Aug 2026 09:45:48 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4776D20040;
-	Thu, 13 Aug 2026 09:45:46 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.39.17.189])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 13 Aug 2026 09:45:46 +0000 (GMT)
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: maddy@linux.ibm.com, atrajeev@linux.ibm.com, npiggin@gmail.com,
-        mpe@ellerman.id.au, chleroy@kernel.org
-Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH v2 1/3] KVM: PPC: Book3S HV: Maintain aggregate context switch values for vCPUs
-Date: Thu, 13 Aug 2026 15:15:30 +0530
-Message-ID: <20260813094535.10083-2-gautam@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260813094535.10083-1-gautam@linux.ibm.com>
-References: <20260813094535.10083-1-gautam@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KWWkiYTF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73C51F000E9;
+	Thu, 13 Aug 2026 09:46:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786614369;
+	bh=2WnQQF/+fx7nsd4NJf3q3zAt6XH7bQoejdCb6s1DRjE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=KWWkiYTFPS/sCubFg/aZgaSbtS0jn/U8ouizDv+LBexyYcJ4r2IjUWWRVDyOs/pVE
+	 ulUS06UAOPBiJhJzRvgP8t4E+aKyoqVJhzYdwBIZ2T8M9+bC49eszvMx9E8aAnQNgr
+	 1UQcPMCF95NBTiM60QSz+1oVDviNt056kYy1sQcJjlwKFzOaj3HHrmT49qmthVLXh9
+	 pXYmNmdVhZ6hPDtZGCldEEq8MucgUeEKkuYQu+CILRILYTnjlRyiwHLKmB1Yo6oVJO
+	 yxUnMykLA/EIDUZD+Gcvbq4oaf/HC5jJyKRz+4qErdGMkEwNejgsXQDsSRtuh2Dyyl
+	 q3X/TSma9Mdkw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v11] KVM: selftests: riscv: Add lazy V extension
+ enablement for guests
+Reply-To: sashiko-reviews@lists.linux.dev
+To: JinRui <jinrui@haiwei.tech>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <EF5308EB97ADC8DE+20260813093751.3817371-1-jinrui@haiwei.tech>
+References: <733FC2542EECADE1+20260813090306.3756434-1-jinrui@haiwei.tech>
+ <EF5308EB97ADC8DE+20260813093751.3817371-1-jinrui@haiwei.tech>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 13 Aug 2026 09:46:09 +0000
+Message-Id: <20260813094609.B73C51F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=RsP16imK c=1 sm=1 tr=0 ts=6a7d9251 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=8xd0QCqRopuxImrV20AA:9
-X-Proofpoint-GUID: FJw04xx-zq-jRSzXgaWVKHzJ8V_3V8OC
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDA2NiBTYWx0ZWRfXzbqV3NAfqiUA
- 4Zve2XUWRTP950oaUmfCq34ufdbDadXHR68oiBUx1wBqIBbAmKkWh8FCRZUaLfArl5dPWDm6tG5
- IUiJ93qvtA/QeGtzRgQoCif45F7XeGRKeuiQoouNFX5fdoXFz5FyzvFEI6BG2VKEEPwu62pVG4N
- oopScX6g4uyGBadk8XwYOEfFzlrwmf3sw/tBd+rz+fxKoDtLkfixrfa1fUEe0Ip8d8Nnd+oZZQ3
- s6lISq6pfYtbL4PpRzitmwXEabFCVI59A+tEEsUU3CXjCDb1v7FPc98ToyGxtWmI5FdBvKkOs69
- nDXbNedTy3GLJCl/JNSbPAkVw9naW3uzeS8O5td1MgVD9iExWK6q8kOse90u8u2rzbSjQGWBKwB
- ikSAXWn1fI9LPzcJr1+fuKiZAmltl/JlLDk0UdBRfgQP64o9g5aNXVtkWh/atT/gPjIcrcZ3N34
- wo7KKSVmPjukOalBELQ==
-X-Proofpoint-ORIG-GUID: tmBil1HnmRbOVSnISHa86FAV-Ok2_DWh
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDA2NiBTYWx0ZWRfXyE901yEXWmtc
- /dLzIwqe0vAr9tsXGqbHMq5yb/+0ctlcRXDYEVw1hUII2G05+o+bx6v94MaAGmEl8R42WkjzOC7
- KwKtHVLvxGBhfcJsU9T0yip1EUVk9fI=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-13_03,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 suspectscore=0 clxscore=1015 malwarescore=0
- phishscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608130066
 
-The variables in vcpu->arch currently store the latest values read from
-PACA when the vCPU exits. Change this to instead store aggregate values
-so that every vCPU has its own record of total context switch latencies
-it has accumulated. This is essential for the vpa-pmu driver to report
-correct numbers.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] Directly reading a 32-bit instruction from `regs->epc` can trigg=
+er an unhandled Misaligned Load or Load Page Fault exception in the guest.
+--
 
-Fixes: 176cda0619b6 ("powerpc/perf: Add perf interface to expose vpa counters")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
----
-v1 -> v2:
-1. Add stable/fixes tags
+--- Patch [1]: [PATCH v11] KVM: selftests: riscv: Add lazy V extension enab=
+lement for guests ---
+commit 53e28f775e49a3c6cc2ff1526d5a5089a4c1c737
+Author: jinrui <jinrui@haiwei.tech>
 
- arch/powerpc/kvm/book3s_hv.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+KVM: selftests: riscv: Add lazy V extension enablement for guests
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 61dbeea317f3..342168b8bfc8 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4163,12 +4163,12 @@ static void do_trace_nested_cs_time(struct kvm_vcpu *vcpu)
- 	trace_kvmppc_vcpu_stats(vcpu, l1_to_l2_ns - *l1_to_l2_cs_ptr,
- 					l2_to_l1_ns - *l2_to_l1_cs_ptr,
- 					l2_runtime_ns - *l2_runtime_agg_ptr);
-+	vcpu->arch.l1_to_l2_cs += (l1_to_l2_ns - *l1_to_l2_cs_ptr);
-+	vcpu->arch.l2_to_l1_cs += (l2_to_l1_ns - *l2_to_l1_cs_ptr);
-+	vcpu->arch.l2_runtime_agg += (l2_runtime_ns - *l2_runtime_agg_ptr);
- 	*l1_to_l2_cs_ptr = l1_to_l2_ns;
- 	*l2_to_l1_cs_ptr = l2_to_l1_ns;
- 	*l2_runtime_agg_ptr = l2_runtime_ns;
--	vcpu->arch.l1_to_l2_cs = l1_to_l2_ns;
--	vcpu->arch.l2_to_l1_cs = l2_to_l1_ns;
--	vcpu->arch.l2_runtime_agg = l2_runtime_ns;
- }
- 
- u64 kvmhv_get_l1_to_l2_cs_time(void)
--- 
-2.54.0
+This commit adds lazy enablement of the V (vector) extension in KVM RISC-V
+guest selftests to handle compiler auto-vectorization. It updates the
+exception routing to decode faulting instructions and enable the V extension
+if a vector instruction is executed while VS is off.
 
+> diff --git a/tools/testing/selftests/kvm/lib/riscv/processor.c b/tools/te=
+sting/selftests/kvm/lib/riscv/processor.c
+> --- a/tools/testing/selftests/kvm/lib/riscv/processor.c
+> +++ b/tools/testing/selftests/kvm/lib/riscv/processor.c
+
+[ ... ]
+
+> @@ -432,6 +472,27 @@ void route_exception(struct pt_regs *regs)
+>  		ec =3D 0;
+>  	}
+> =20
+> +	/*
+> +	 * Lazily enable V on the first vector instruction: if the faulting
+> +	 * instruction decodes as vector while VS is off, set VS to Initial
+> +	 * and re-execute it, like the kernel's riscv_v_first_use_handler().
+> +	 * Genuinely illegal instructions continue to the unexpected-exception
+> +	 * path.
+> +	 */
+> +	if (!(regs->cause & CAUSE_IRQ_FLAG) && ec =3D=3D EXC_INST_ILLEGAL &&
+> +	    handlers && handlers->v_available && !(regs->status & SR_VS)) {
+> +		u32 insn =3D (u32)regs->badaddr;
+> +
+> +		/* stval is not guaranteed to hold the faulting instruction */
+> +		if (!insn)
+> +			insn =3D *(u32 *)regs->epc;
+
+[Severity: Medium]
+Can reading a full 32-bit value directly from regs->epc trigger an unhandled
+misaligned load or load page fault in the guest?
+
+If the faulting instruction is a compressed 16-bit instruction at a 2-byte
+aligned address, this 32-bit read will be unaligned and might trap on
+hardware that does not support unaligned accesses.
+
+Additionally, if the 16-bit instruction sits exactly at the end of a mapped
+page and the next page is unmapped, reading 32 bits could trigger a page
+fault instead of correctly handling the illegal instruction exception.
+
+> +
+> +		if (insn_is_vector(insn)) {
+> +			regs->status |=3D SR_VS_INITIAL;
+> +			return;
+> +		}
+> +	}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/EF5308EB97ADC8DE+20=
+260813093751.3817371-1-jinrui@haiwei.tech?part=3D1
