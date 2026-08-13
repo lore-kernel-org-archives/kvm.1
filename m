@@ -1,139 +1,137 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BA943F4D9
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 09:44:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A3A388880;
+	Thu, 13 Aug 2026 09:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786614259; cv=none; b=cNukcZtt7DJgFUqvRkD7Z4A5Vgok7gIgguONPJOcjqm+LlfZSciltSz+l1Rh0ht3lYiyz/ZPW7vAbuxQ3I1zUZKyMQurmKlWDCS+H5lxPcPqcOTIH5hF/l+RovxDiEjmYNyDsYIHDD83lbRjtH2lNnB+X7hzCbVQOxYyDElkO/U=
+	t=1786614365; cv=none; b=anbWIgqEcvVlvACzT9+QgPybCvjKEqBDJTwtQ6M5PpbICA+1vG75q/699ySqyoEh9NcfJgxv+PB9rp9KOcI+o7nq7wWjAeODsAK/2faNAmiZd0eha4ZWruMbS5N4dzmsR6fRMRxxI56TgQxA1+Ktqzr2ngHqpAVM8AvbiuO7IC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786614259; c=relaxed/simple;
-	bh=vgzaF3qPw7XT8z3S/p3BGnzqBFJxnHBrEI32qQLtUnA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oa+DTAiffHNoNgQnWA1lc1WWfvfFve23mbOL6gBQSETT3LJ0IhW53v++AnlNhiHbo04a7NqoJoq9NqEVO3l0NMNmlEGs1I5S7g2LXNs8mpWu5sh+dkK+TShPfGTpp9CfVUCc/IGSfN9R7t2lEz5G2dtAwuiCHXNXjXQPGcwyRyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gD0SgOMi; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Hgj3RKT8; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786614365; c=relaxed/simple;
+	bh=E7cpcLlmdHz/JVpyc3lcptNDixrl9wnrlRMimDoIxl4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pAih2JTeYUBSqp7LwHowACIZ00tdBuGBkauvZM1dVBemR0Pm7DvllI/WPWAQYP7NGVl/UHqorR9PWh+rPF9WDzwwp9btd3wX/rO/OkgHejqOSlT30K8t+Ae2VSJYgU/mWYzitDaVFVOEsE68W9gj8buKI++H4Cb2BJciHPdEmmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=R4pZneih; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gD0SgOMi";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Hgj3RKT8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786614256;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8D9Deqo+ItAekvrmdJrfUPwAZJZl2cNIOe034Qvr694=;
-	b=gD0SgOMiTrWVTo+TEOnhWChAEQNO7gYVDxbPczvGe5x+pIABHiXMyFHbXpNhOurH7BPW/q
-	irdpSopPoEOtxb2+kY9O4pcXowxQFlxnaOcjW3AMbbWgAM2vqmym7I2Ztd+t7iSiH1orOg
-	VjVLOw/GEPQh8Ymgkrdccu0RbtP1Sko=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-435-aAFDJ0RPMAWuYmuc_-k0lg-1; Thu, 13 Aug 2026 05:44:15 -0400
-X-MC-Unique: aAFDJ0RPMAWuYmuc_-k0lg-1
-X-Mimecast-MFC-AGG-ID: aAFDJ0RPMAWuYmuc_-k0lg_1786614255
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47f2de3ba47so1292545f8f.1
-        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 02:44:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786614254; x=1787219054; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8D9Deqo+ItAekvrmdJrfUPwAZJZl2cNIOe034Qvr694=;
-        b=Hgj3RKT8yzVl0dmnvaoJ/RmOT0bVF1Ag2CrcpvBBw4f2fUriA4pkgun3v+mxr/wTGC
-         T0dGKFLEZ34PyMcatkvf3SHl532NhNNL2R+YHj7PvJUsr6RO3N5xCRVLDabcNHScNFWM
-         k3xNADqAbxlUgRGvTp4vmo8aIO/eY8GnJEru78EO8VIC5QvACZ0VmG7JUc7tais5HCii
-         neksxOLUN9MmJ0OYHTbw2BrUSDXuf4XxfgrbSPI4G3xvl8dGYUL0aocrG7UqE8Mo8FYk
-         XNrzRuYC+d22+FHAFbVGmhZqQ+99WNuPk1q4s9R+wB3KzcVnBfn+3K5+zkh/smarRBAB
-         RjnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786614254; x=1787219054;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8D9Deqo+ItAekvrmdJrfUPwAZJZl2cNIOe034Qvr694=;
-        b=Nl38ZacOjMv5GgapCV91xpGzQZ827wMK9MWkbvd7jrhIicwiiwTKNDmElx93iMt9NT
-         LxBdss9Qf3aFONRpzm3/gqZwgJWIy1D+8qGhNW2Xvakvn1K0xZvV6m5ALtl5sZ339dQ3
-         Wt37s3TEQIJEZ+9D8pArNyM+YSnxjOEwLf4m1WTSuwialSPfukeNLsj3iY+XO1MWpAg8
-         iPpVxCo5uc5OiccEPf32CdcRJ37k1wSaaKtb5wVN9CX3OpMOQr9CyMCc+JdzzhNG0KZA
-         8s6M4HccElPztvXfpuAbHjR2LE2Uha2IQ96H5uGJnFhTT1CqugPU+hSaxwVF0iOxEKn8
-         4fDw==
-X-Forwarded-Encrypted: i=1; AHgh+RoULVJeOswJKJ8i5mnFnwEVZ6AWMCB6YKJlK6BrXdx4+ywFjKLAzAtcSoNL/tzhNKewZlI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsO7JHDmvZ69nufDsIRzOMeIz2Li/7JVfvCrqh7EuRHTIJSYr9
-	uW4zmmgQ7DdSF10AI4Zn0gzDSJ3+DFLi9xRgCpArdvx3/vQAGUJrvi77Uk8OwHine4UPRIGmOKE
-	FdK4C5tVB+yrvgDSWzlahHZZAcc6Svf58zgT4jtf6U3Y9MuoZh8WTcQ==
-X-Gm-Gg: AR+sD11rCNcajZoMClgSYt1ig8L07U7H9AZkA6QZKzBad5qs+Fy+cicgqnlVpG/4Bp4
-	S9U4SuuhtI6Ah9wtRXY6M+GRQD26YM581mXm8ztErf5a5U/jvCST0d3I1mMYsjGTdtLsS2EJnN5
-	mi/LjMQsZt/UAFIU5ZotYSNDgospbVKNzkXYtKV1J73rGBI9+2uZs2wb4DUN+yTMZDGI3pqmCoO
-	goY1N2DOGqSypHLAp1Gwys6viwN0arKeiblIbQWDnyA1Dwm8vIqZYipbME9hG/GAGDnOCUCRZH/
-	gZqQvF0NckN68nja+SC12ogchE71heY2aKoAJSBqY/wEQ509uEHVM1AaNJp5qkA3L297UdXDZUN
-	X6FDYFVwUeev9i1Nv4V9Nr5JpnmVS4ShG0K7+dDleF+D7JnDx59dI
-X-Received: by 2002:a05:6000:2304:b0:47f:81c4:36a5 with SMTP id ffacd0b85a97d-48159fe3877mr5877717f8f.15.1786614254505;
-        Thu, 13 Aug 2026 02:44:14 -0700 (PDT)
-X-Received: by 2002:a05:6000:2304:b0:47f:81c4:36a5 with SMTP id ffacd0b85a97d-48159fe3877mr5877650f8f.15.1786614254041;
-        Thu, 13 Aug 2026 02:44:14 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-154.retail.telecomitalia.it. [82.53.135.154])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815a5613e2sm6594939f8f.6.2026.08.13.02.44.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 02:44:13 -0700 (PDT)
-Date: Thu, 13 Aug 2026 11:44:11 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: stefanha@redhat.com, mst@redhat.com, jasowangio@gmail.com, 
-	eperezma@redhat.com, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] vhost/vsock: keep IOTLB across feature updates
-Message-ID: <an2RzeZ2zI8mWFRM@sgarzare-redhat>
-References: <20260810134018.143973-1-physicalmtea@gmail.com>
- <20260810134018.143973-3-physicalmtea@gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="R4pZneih"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67D98x0c811213;
+	Thu, 13 Aug 2026 09:45:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=U/U4gNffHLdPUWX384p/FMq5oq6FLru5o4PpaR4Sm
+	xw=; b=R4pZneihKmTt+x757r3d69MSrwXl5+1FM8yOOStjNOaofAh+g5z7rWqJ5
+	YXfZSU1ZHIGamTwPW3I2GzytX/3IRL2vEQjKQ9LuMX9kzpzbWBJkYuaNql2ha8Im
+	bAY06DTW5qg2FR56XW2Jlj1D9ZxIUBsmA8M1UBK9yHnSQJ1YOg1bM1X0yO73ke2Z
+	BvpgtTIT03gVn94/8dyLkVll4Bd5VJTRxCXVtGWJtMJo7Pn4WA4naEvBNgu37b3A
+	EkW1l7zmkJmgNw3asY2JRqDODzZNdgZlpQ2qh8sSlNIgkjQaVPweZ9hmKG/TyMQJ
+	ac4PFouJ5u/isIacUdTF2sd1Yt7Tw==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fyb23ymx2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Aug 2026 09:45:48 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67D9fGpv018318;
+	Thu, 13 Aug 2026 09:45:47 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxh0gjawb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Aug 2026 09:45:47 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67D9jhLX31785364
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Aug 2026 09:45:43 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 59E772004B;
+	Thu, 13 Aug 2026 09:45:43 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 020E520040;
+	Thu, 13 Aug 2026 09:45:41 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.39.17.189])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 13 Aug 2026 09:45:40 +0000 (GMT)
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: maddy@linux.ibm.com, atrajeev@linux.ibm.com, npiggin@gmail.com,
+        mpe@ellerman.id.au, chleroy@kernel.org
+Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/3] powerpc/perf: Fix vpa-pmu driver to report correct numbers
+Date: Thu, 13 Aug 2026 15:15:29 +0530
+Message-ID: <20260813094535.10083-1-gautam@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260810134018.143973-3-physicalmtea@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=XqfK/1F9 c=1 sm=1 tr=0 ts=6a7d924c cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=2wL9yz101uEFEcatHFYA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDA2NiBTYWx0ZWRfX6gmCqVpDCrrv
+ IWi1CGa16WotAhKVgfGQThtJ0RomSkkxGwl1G255d6hhx6xr/20fwBFDOmRZFCVpc2FibEp7L1Z
+ dvRVIwFKEl0R7EP8PFiTSj2+QAwjivm51G8D8+JPa7Ea86H0+BOTRtLRreifDgHWv7ybvESbr7u
+ 5Omacbth/3ZQX6sD5+R8CsjjeV/B8g/9VstRG7ljd4+2ASTANlc/u4ur26bViQAmE3XWNlPB39Y
+ ph2tRPJfZXC3xvX2LHv7AyJXxjzm5iNkCrQRKO6ICNk3y4ntgZbCmAvu8ElypCI6SkCv0f8mvUu
+ 5yRXNOB4EgTiIPuTV6xTrd9823EvuBMjwM3h+OJG389LcdqKl5jJBi6wciOJScL+Cx4ZicjD2+h
+ 7y7aBwf9D4SKgh0e8jMArC4PzfPwa8i5GfezYlPDuCNPj6DpwZGNPmQuXQPg+/o0ddgOH5+XdbM
+ UKkUYIdr5HAkyD1Cl1w==
+X-Proofpoint-ORIG-GUID: ID7kYmrJxcWXZHrqcgLaWReLcQmOSBY7
+X-Proofpoint-GUID: AbZaUBK5c7U3HdG4ZewI4kU9M2eop95W
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDA2NiBTYWx0ZWRfXxMhu3+nsu6Uj
+ pvCIWMSGmwE7RDDu/r7mx0/V0dX8dVCm6PzM0J/TUOuHQmTeBk1wowBXVZRXZfla+p8iY0eP5eL
+ mgo24AGxnJOdipNJnbL+l3b86KCAzBM=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-13_03,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 spamscore=0 adultscore=0 malwarescore=0 clxscore=1015
+ suspectscore=0 priorityscore=1501 impostorscore=0 phishscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608130066
 
-On Mon, Aug 10, 2026 at 09:40:18PM +0800, Jia Jia wrote:
->VHOST_SET_FEATURES is also used to update logging while a device is
->running. When ACCESS_PLATFORM stays enabled, allocating a new empty
->IOTLB on every call drops valid translations and forces avoidable
->misses.
->
->Initialize the device IOTLB only when one does not already exist.
->
+The vpa-pmu driver can sometimes report incorrect context switch latency
+numbers:
 
-Do we need a Fixes tag here?
+$ perf stat -e vpa_pmu/l1_to_l2_lat/  --tid=2061  -I 1000
+           time             counts unit events
+     1.001022517 18,446,744,073,708,177,408      vpa_pmu/l1_to_l2_lat/
+     2.002120674            345,092      vpa_pmu/l1_to_l2_lat/
+     3.003171582            406,342      vpa_pmu/l1_to_l2_lat/
+     4.004234838            340,836      vpa_pmu/l1_to_l2_lat/
 
->Signed-off-by: Jia Jia <physicalmtea@gmail.com>
->---
-> drivers/vhost/vsock.c | 3 ++-
-> 1 file changed, 2 insertions(+), 1 deletion(-)
->
->diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
->index 7372c22691de..1beae7f5b9a9 100644
->--- a/drivers/vhost/vsock.c
->+++ b/drivers/vhost/vsock.c
->@@ -889,7 +889,8 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
-> 		goto err;
-> 	}
->
->-	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM))) {
->+	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)) &&
->+	    !vsock->dev.iotlb) {
+These invalid numbers are observed because the vpa-pmu driver does not
+handle the following scenarios:
 
-Do we need to do the same in vhost-net too?
+1. The vCPU process gets rescheduled to a different host cpu.
 
-Thanks,
-Stefano
+2. The vCPU process is not running, and vpa_pmu_read() is called to read
+counter values.
 
-> 		if (vhost_init_device_iotlb(&vsock->dev))
-> 			goto err;
-> 	}
->-- 
->2.34.1
->
+Fix the above cases by maintaining aggregate counter values inside the
+vcpu->arch struct and using them to report data.
+
+
+changes in v2:
+1. Fix the output for "perf stat --cpu ..."
+2. Add stable and fixes tags
+
+Gautam Menghani (3):
+  KVM: PPC: Book3S HV: Maintain aggregate context switch values for
+    vCPUs
+  powerpc/perf: Use the aggregate context switch values from vcpu struct
+  powerpc/perf: Update prev_count of event to get accurate values
+
+ arch/powerpc/include/asm/kvm_book3s_64.h |  3 --
+ arch/powerpc/kvm/book3s_hv.c             | 51 ++----------------------
+ arch/powerpc/perf/vpa-pmu.c              | 25 +++++++++---
+ 3 files changed, 22 insertions(+), 57 deletions(-)
+
+-- 
+2.54.0
 
