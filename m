@@ -1,338 +1,180 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36F537187F
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 23:20:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27107335BBB
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 23:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786663208; cv=none; b=FNQuNl1wfXk6VSBXLzs4P6cDAcvSxrtxzAoiOzCP68NiiUWKovGq+WuaU7TcfFhoZryn6nEb+mDroBUAwht5sGOl5znO+T9sjyoV6XuzXkX7T1kZgYOtDS8yxQbd1jlMDGPv+aykP2tXZG4maUvss032y29U9OH76rEmT7P0OPY=
+	t=1786663360; cv=none; b=kXjxs8RDoqoNOUxTjxISFqSdcYT2NwwogmncUFqOCZcYIc3yfCxARrY/3WDF+8rZsxzpw3gVQ+1V2xIf+Kd/M3k7i4kxZG9d1fhsEloOpY0GA26PZaDb2uCxRqDgTjrn9S62Ke3PJpDycsTCex5TxpcyNEN1qGLehlO1E/SEG5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786663208; c=relaxed/simple;
-	bh=P1xSyofiihGU4hoXXl6kH7BNXuJ3Sw3I4xzRxoTH5Cs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mw18rNr2L3mr4in+qWHO2bw53mnphTg9RjjbDwMZZyGtNYOrkgooeahkfnqU1V/ZBJKz7M7IG5RKz/P7AbY+pPa2fsTPFwNa5RaOBR2+ufscfB3neVABkvkAI1EJdpF9jIxsD+IXtyZan9ZQoYh4yAEI1hzGsy86lJnPNJJgt8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=urv4aPk6; arc=none smtp.client-ip=209.85.216.72
+	s=arc-20240116; t=1786663360; c=relaxed/simple;
+	bh=zoIMJrccZY0ljOJzOdO289pVY44K9AtZaROD/mLUnN4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k1unfCDRuPnsS/goHFL0jZPbWsFYGeX3jHqtOJEPeK9+ytd1yxuKKp/1Fvnzx18Y07B1kL8hkqMgFrAcWrTCbXpmG9hKibyCz+SfvcByoIXgmORakNt2X+GPqXKhzqkwyEl6mjUWhTxuvcceZ9REEkqOT9KVRwP3wdbvnt9jMco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j9D03r7J; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="urv4aPk6"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38fa7b09921so502393a91.1
-        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 16:20:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j9D03r7J"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cede6375caso51365ad.0
+        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 16:22:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786663206; x=1787268006; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=s7W2EF/B1upW3gWk47NaF5dFLDVwJn/JvniCK/05iC4=;
-        b=urv4aPk6SOCaLrpve7drVVfnL5qXcye3heu9q+C/C8UvA/0tsPIQvHiGSMliit3v8q
-         rxN1MmxfCXaMNfAsFkIao7ki0cHZcw5/0zoeLO4mQOqhTz/0ajwb4T7Bkpz2GwvlBW2o
-         WekDcSWvHmTIOdT6lUBGCIXfE4ehj/lSTWjcJJjUgo0BGRjmYeJigwyQioM68Qt/Jnod
-         FVxX58Fap+seOSVWOjqXKNmsDF2dGQh0zfalXxjorG1oIWkLOjNCadul6LvFFUP8mBmA
-         zNsByWlbNv3HAyh9gGnpej7M0zmz8Nfelju2H20tjMjAL029AjTyKKihTB1LZuwYu7kf
-         +vRg==
+        d=google.com; s=20251104; t=1786663357; x=1787268157; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=O6zTNUvhCr4kYx+co1eaUK1ut6aQypeR2ZuMTnUh8p8=;
+        b=j9D03r7Jbh0eMHbUH7b1yZ15fIqHpQvm20fHbEkxK0kxasXgaTaG3fz4JsM7lFGPWk
+         maMrLePYRsaJ1Kds5AtEOTcbCmJXjLlsLdpYUBXT5XxoMY4QaOcF9UhXlRlPFmqybegs
+         UXGYwO5XND+ETIqrMwYirhlOZxuxZCZQmsEoLfGvGINpoEpQa3zEwYcM7KokVsOa+bfg
+         AFP3GIo1rTNMFDFHQYgRggoEHafA0sW6w8VKJDjIy6KPkEKwkUdoRBEBI2Q/iXgh7xJs
+         IHkh6iBxZj+SVulBFXL5FAyRdO6CqCxJaKcay00PikgUkusa+lXMadcPC2UM/JnNUATH
+         840A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786663206; x=1787268006;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=s7W2EF/B1upW3gWk47NaF5dFLDVwJn/JvniCK/05iC4=;
-        b=ZyR/BBRmoeLz5FmbMD+tiVWhUeuqzbsIHVROL6Vwlcg2r2tDy4RkQWNyXOP2EbEBdu
-         FXwGQymMpxeRc28pqclH5wRAAeaWvCZlOVznHa3UwS9kQulvvw5sF8gkQBNsynuYgou7
-         WTqw1IZiDia+1lHaOPyv76dtpliFhHpQindn7QBgBR9iIntQpyNerV6+FPlQrjai6oAz
-         N7K5UTHjI7O2+00L874j08PpHcKmi4G+Qx1HhTDAzzBbP7SxfZn3ljY9yh9bJqo6Gn3Q
-         9MBsKR4FfjAckHcWfLGxec09nkiHGQ9tcgRB61GQGMQEbWRLjRRwJwrANXTwR7Zm6rTs
-         Vosw==
-X-Forwarded-Encrypted: i=1; AHgh+RqHNCiObanYgk0/KadYSGX4dWj7Uh02vlCnH0fjWOUAkpxsoAcTpUWtCzmFwUEZy7V0ruU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8MQkRNV80wxKc6B5NmmgO7zr9UehAzWXGXIAlG/DaWkZXlILq
-	ozYtYFTAN8tgE4Wu0nSMG1b4Cprm8rMykEMNQRkTpXLmc16a2LnO9n+4DyWBKs0gaE+QdlHVtOY
-	/ZH/T5w==
-X-Received: from pjuf1.prod.google.com ([2002:a17:90a:ce01:b0:38e:aa86:7cac])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:dfcd:b0:38e:c7b0:84ad
- with SMTP id 98e67ed59e1d1-3933b503abcmr1679606a91.0.1786663205745; Thu, 13
- Aug 2026 16:20:05 -0700 (PDT)
-Date: Thu, 13 Aug 2026 16:20:05 -0700
-In-Reply-To: <0c80b9b0e13e3ab2cbe4f9eaf4a02ebba25a7001.camel@intel.com>
+        d=1e100.net; s=20251104; t=1786663357; x=1787268157;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=O6zTNUvhCr4kYx+co1eaUK1ut6aQypeR2ZuMTnUh8p8=;
+        b=LgrteLM+/4h1TPGedW61GXrb2uAkRW21/ou0msklvl7a6Y0Yw5g41MHwr2kCRCzVnJ
+         K8x4LZ4rnK0l9iJ290BoGP3G9iSDAE3gKtBhW5MagAmB7x12mrYeqOH0YN/a+MXWqicL
+         NgdMMWS3Amcklaw8XpNzgO3EQpOWL+kiRUjnrWyj6eMACSWmYfOleABTQKFtPzqfseBU
+         185S3q0WtLOwjrCP3oN86gInYtAkkWdse+QxdtdOR7GCWSA1TtWqAf0K8YWJKR71JTm6
+         cW5LYBUOVBjsaOkVi2yG6L6d7DVP/vcxCtyZAs6s39TDGE539ZqAqTwn2VwDIn+qONrY
+         2Urw==
+X-Gm-Message-State: AOJu0YykfasUvxZ3nlJTDWyDO/9mJWbsbVnDaeGgck8/PP8CjJMRk3hG
+	yaM7JiKlj/eY/Ll6IxCKTXLgUCTDqh1gKNwsqnQhBpJ+RU+x1p/C+owRJwcHsfyhsw==
+X-Gm-Gg: AR+sD13FU/6wxGlE84cdLawi0xccco8NT0UEcEdDSkZ2VpnBdxIggRvdks+nCxt6P/L
+	LlXyD/HYm6aqbZVlE/fnlGUD6/NWfT7wGbIvedtEc2KnyaMP4795Ojw95r2ddm3iliJJTBOHuLD
+	ah1cB/oheQc3A+Qi2gGQFUxEoF+cybs+ZYuEzJJhXpSWgyaqtwbwKTUYsx/T+oztXpl9TYh3vJa
+	jBuTrC80CZPFLHpyaDvE6VQKYQ5EJsXAq8XXH/Cjqg60FEDQG4TMfcK82I1wQPdc9sps3mPR2L2
+	cSDY2j6pSjjFsRpulFnsGpOp+GMZe9TIJG3Xvs2KEAyh7mmvndsF4VCq9FMpe48junmdJJ5A8lv
+	cqjw0oGyNnRXOTWylqv4blcL43YQBwuvJTmxWjFXWYAw4zDrwY9V7qX7IL1NMVJ3H++PG2DvEjt
+	YbWKMgcnZJBL3Cqz1erDVoypDNi16p7zfpdGFit6nNaL1af0OIGUBkJkUftW/KwHCRY/zeBfJk5
+	LbbwwqP6khGV4Zr5ZaUl3lQK5IjnvXtAiyLpbTto4zfTIyze1kx8XwLILs=
+X-Received: by 2002:a17:902:ea03:b0:2c9:bd54:cf with SMTP id d9443c01a7336-2d3aef5eff0mr4207285ad.4.1786663356848;
+        Thu, 13 Aug 2026 16:22:36 -0700 (PDT)
+Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-394e921709dsm39472a91.0.2026.08.13.16.22.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 16:22:36 -0700 (PDT)
+Date: Thu, 13 Aug 2026 23:22:33 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Alex Williamson <alex.williamson@nvidia.com>
+Cc: kvm <kvm@vger.kernel.org>, Alex Williamson <alex@shazbot.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Kevin Tian <kevin.tian@intel.com>, linux-kernel <linux-kernel@vger.kernel.org>, 
+	linux-pci <linux-pci@vger.kernel.org>
+Subject: Re: [RFC PATCH 1/5] PCI: Refuse function reset of an SR-IOV PF with
+ enabled VFs
+Message-ID: <an5JbIzz40svS3xe@google.com>
+References: <20260812045325.2733631-1-alex.williamson@nvidia.com>
+ <20260812045325.2733631-2-alex.williamson@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <anZ4W9o5pTWIEgMY@yzhao56-desk.sh.intel.com> <anj2bPrGqzZgZWMF@yzhao56-desk.sh.intel.com>
- <CAEvNRgFzRj_=GVy8T4P8ehhQjYomYxkngzwtKBF0iEL0Cv6fuQ@mail.gmail.com>
- <anp1I64K0KeyQuyo@yzhao56-desk.sh.intel.com> <CAEvNRgFWcndQKJE_q+ZATFZEMYd=6uRLygozLvg7L77bPX0cEQ@mail.gmail.com>
- <anqqKH6kuwpvuwp9@yzhao56-desk.sh.intel.com> <CAEvNRgGWDY_fxbyBM-5sMdYMevMe0HzVP9kbC1cCGLE_dV=_Gw@mail.gmail.com>
- <a71d4fccdffd1f6a12332ddd18fa812542ea2118.camel@intel.com>
- <CAEvNRgHxda6XK_XqWaqqVnA7oW=Fhp_C5gF4vNcL+-HfwfXMqQ@mail.gmail.com> <0c80b9b0e13e3ab2cbe4f9eaf4a02ebba25a7001.camel@intel.com>
-Message-ID: <an5RJYTwlYeym--O@google.com>
-Subject: Re: [PATCH v10 11/41] KVM: guest_memfd: Ensure pages are not in use
- before conversion
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "ackerleytng@google.com" <ackerleytng@google.com>, Yan Y Zhao <yan.y.zhao@intel.com>, 
-	"david@kernel.org" <david@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"steven.price@arm.com" <steven.price@arm.com>, "peterx@redhat.com" <peterx@redhat.com>, 
-	"forkloop@google.com" <forkloop@google.com>, "tabba@google.com" <tabba@google.com>, 
-	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	Vishal Annapurve <vannapurve@google.com>, "willy@infradead.org" <willy@infradead.org>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "wyihan@google.com" <wyihan@google.com>, 
-	"pratyush@kernel.org" <pratyush@kernel.org>, "aik@amd.com" <aik@amd.com>, 
-	"jmattson@google.com" <jmattson@google.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "rientjes@google.com" <rientjes@google.com>, 
-	"andrew.jones@linux.dev" <andrew.jones@linux.dev>, 
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "chrisl@kernel.org" <chrisl@kernel.org>, 
-	"shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
-	"mathieu.desnoyers@efficios.com" <mathieu.desnoyers@efficios.com>, "oupton@kernel.org" <oupton@kernel.org>, 
-	"mhiramat@kernel.org" <mhiramat@kernel.org>, "baohua@kernel.org" <baohua@kernel.org>, 
-	"tarunsahu@google.com" <tarunsahu@google.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
-	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jthoughton@google.com" <jthoughton@google.com>, 
-	"yuanchu@google.com" <yuanchu@google.com>, "hpa@zytor.com" <hpa@zytor.com>, 
-	"shikemeng@huaweicloud.com" <shikemeng@huaweicloud.com>, "nphamcs@gmail.com" <nphamcs@gmail.com>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "shivankg@amd.com" <shivankg@amd.com>, 
-	"shuah@kernel.org" <shuah@kernel.org>, "youngjun.park@lge.com" <youngjun.park@lge.com>, 
-	"kasong@tencent.com" <kasong@tencent.com>, "pankaj.gupta@amd.com" <pankaj.gupta@amd.com>, 
-	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
-	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"vbabka@kernel.org" <vbabka@kernel.org>, "weixugc@google.com" <weixugc@google.com>, 
-	"michael.roth@amd.com" <michael.roth@amd.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, 
-	"mingo@redhat.com" <mingo@redhat.com>, "qperret@google.com" <qperret@google.com>, 
-	"brauner@kernel.org" <brauner@kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
-	"baoquan.he@linux.dev" <baoquan.he@linux.dev>, "corbet@lwn.net" <corbet@lwn.net>, 
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "liam@infradead.org" <liam@infradead.org>, 
-	"axelrasmussen@google.com" <axelrasmussen@google.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"qi.zheng@linux.dev" <qi.zheng@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260812045325.2733631-2-alex.williamson@nvidia.com>
 
-On Thu, Aug 13, 2026, Rick P Edgecombe wrote:
-> On Thu, 2026-08-13 at 11:51 -0700, Ackerley Tng wrote:
-> > "Edgecombe, Rick P" <rick.p.edgecombe@intel.com> writes:
-> > 
-> > > On Tue, 2026-08-11 at 10:35 -0700, Ackerley Tng wrote:
-> > > > > > Would like to see what Sean thinks of this. Either way, is it okay to
-> > > > > > follow up after conversions lands?
-> > > > > Let's see what Sean thinks of this :)
-> > > > > I raised this because the issue was encountered by one TDX's stress
-> > > > > selftest.
-> > > > 
-> > > > Which stress selftest is this? I can try running this on my side too.
-> > > 
-> > > We have some selftests that are built on the basic TDX selftests. One just
-> > > hammers the MMU stuff with a bunch of zaps and also weird stuff from the guest.
-> > > It was eventually too much work to try to keep the internal enhancements rebased
-> > 
-> > Would like all the comments we can get on TDX selftests v14 [1]!
-> 
-> I think we had a few. Let me try to round up some more folks.
-> 
-> > 
-> > > nicely so we actually just run an old branch's TDX selftests against newer
-> > > kernels. So the branch is a bit of a pile, and not really suitable for sharing.
-> > > We plan to clean it and upstream it when the path clears. So it would really
-> > > help to get those basic ones upstream. We remain happy to help, so please let us
-> > > know.
-> > 
-> > I guess at this point I'm hoping y'all and Sean are okay that this
-> > conversions series merges, and we let this stress test failure be
-> > handled later. I'll be around to fix things :)
-> > 
-> > I'd say the line of sight to fixing this would be when the KVM MMU only
-> > gets PFNs (and no pages at all) from guest_memfd.
-> 
-> Hmm, I think we shouldn't upstream a uABI that we don't have line of sight to
-> making robust. So it would be good to settle this thread at least.
+On Tue, Aug 11, 2026 at 10:53:19PM -0600, Alex Williamson wrote:
+>pci_reset_function() and its locked and try variants are intended to
+>provide a function-scoped reset.  The bus and slot methods supporting
+>this interface refuse when sibling or subordinate devices are present.
+>SR-IOV VFs however, are not currently considered in this scope.
+>
+>Correct this oversight by testing for non-zero VF count in calls
+>through the pci_reset_function() interfaces.  This test needs to occur
+>under device_lock to avoid races with .sriov_configure.  It should
+>also occur before pci_dev_save_and_disable() to avoid calling
+>potentially destructive reset hooks.  Tests are therefore added
+>to each of pci_reset_function(), pci_reset_function_locked(), and
+>pci_try_reset_function().
+>
+>The __pci_reset_function_locked() interface remains a low-level
+>primitive depending on the caller to perform such tests as necessary.
+>The vfio_pci_core use case of __pci_reset_function_locked() is pulled
+>through with this test.  Other use cases, such as xen-pciback, that
+>don't obviously support or prevent binding to SR-IOV enabled PFs will
+>need to decide whether VFs are possible and can be preserved.
+>Additionally, direct callers of sriov_enable() that do not hold
+>device_lock (lpfc) are considered a preexisting, non-compliance issue.
+>
+>Fixes: dd7cc44d0bce ("PCI: add SR-IOV API for Physical Function driver")
+>Cc: stable@vger.kernel.org
+>Assisted-by: Claude:claude-opus-4-8
+>Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+>---
+> drivers/pci/pci.c                | 19 +++++++++++++++++++
+> drivers/vfio/pci/vfio_pci_core.c |  4 +++-
+> 2 files changed, 22 insertions(+), 1 deletion(-)
+>
+>diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+>index 77b17b13ee61..b40b00c0c0c9 100644
+>--- a/drivers/pci/pci.c
+>+++ b/drivers/pci/pci.c
+>@@ -5222,11 +5222,22 @@ int pci_reset_function(struct pci_dev *dev)
+> 		pci_dev_lock(bridge);
+>
+> 	pci_dev_lock(dev);
+>+
+>+	/*
+>+	 * Reset of an SR-IOV PF necessarily resets any active VFs.  Such resets are
+>+	 * beyond the scope advertised for pci_reset_function() and variants, refuse.
+>+	 */
+>+	if (pci_num_vf(dev) > 0) {
+>+		rc = -ENOTTY;
+>+		goto unlock;
+>+	}
+>+
+> 	pci_dev_save_and_disable(dev);
+>
+> 	rc = __pci_reset_function_locked(dev);
+>
+> 	pci_dev_restore(dev);
+>+unlock:
+> 	pci_dev_unlock(dev);
+>
+> 	if (bridge)
+>@@ -5264,6 +5275,9 @@ int pci_reset_function_locked(struct pci_dev *dev)
+> 	if (!pci_reset_supported(dev))
+> 		return -ENOTTY;
+>
+>+	if (pci_num_vf(dev) > 0)
+>+		return -ENOTTY;
+>+
+> 	pci_dev_save_and_disable(dev);
+>
+> 	rc = __pci_reset_function_locked(dev);
+>@@ -5290,6 +5304,11 @@ int pci_try_reset_function(struct pci_dev *dev)
+> 	if (!pci_dev_trylock(dev))
+> 		return -EAGAIN;
+>
+>+	if (pci_num_vf(dev) > 0) {
+>+		pci_dev_unlock(dev);
+>+		return -ENOTTY;
+>+	}
 
-This isn't uABI.  You're talking about hitting a race condition between one task
-converting a page and another faulting in the same page.  An NMI, SMI, or IRQ at
-just the right/wrong time, especially on a preemptible kernel, could lead to the
-same test failures, even if KVM drops the refcount "immediately".
+I am wondering whether we should return EAGAIN from here, since this
+function is used by vfio_pci_core_enable() during open and it doesn't
+fail the open on ENOTTY. Basically whether we should allow the user to
+reopen the device if the reset was skipped previously? In the previous
+instance of open, the device was setup with vfio/iommufd and the vfio fd
+was abruptly closed and the reset was skipped. But the device went back
+to the IOMMU default domain and that is probably an Identity domain. If
+we allow the device to be opened and re-enable busmaster without a
+reset, is there a chance that device would continue to DMA based on its
+previous setup/context? Probably unlikely?
 
-That said, I am 100% in favor of not handing the caller a struct page.  Now that
-the TDX APIs no longer require one, it's more than feasible.  But, we absolutely
-shouldn't just nullify the pointer, we should drop the param entirely.  Not just
-because it's cleaner, but because it also forces an audit of the callers to see
-if they subtly require a refcount (spoiler alert).
+Note this is different from the current vfio-pci behaviour where device
+is always reset during close.
 
-The lone holdout at this point is sev_handle_rmp_fault(), which could end up
-PSMASH-ing a PFN that has since been freed by KVM.  Assuming holding mmu_lock
-while doing RMP operations is ok, something like the below?  Completely untested.
+Maybe thinking with too much paranoia about it :D.
 
-As for in-place conversion, this is not a blocker.
+Thanks,
+Sami
 
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index 6c941aaa10c6..8ef16ccf26ce 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -1641,7 +1641,7 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
- 	/* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
- 	smp_rmb();
- 
--	ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, gfn, &pfn, &page, NULL);
-+	ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, gfn, &pfn, NULL);
- 	if (ret) {
- 		kvm_prepare_memory_fault_exit(s2fd->vcpu, s2fd->fault_ipa, PAGE_SIZE,
- 					      write_fault, exec_fault, false);
-diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-index fb54f6dad995..c982a6454fc9 100644
---- a/arch/arm64/kvm/nested.c
-+++ b/arch/arm64/kvm/nested.c
-@@ -1411,7 +1411,7 @@ static int kvm_translate_vncr(struct kvm_vcpu *vcpu, bool *is_gmem)
- 		if (is_error_noslot_pfn(pfn) || (write_fault && !writable))
- 			return -EFAULT;
- 	} else {
--		ret = kvm_gmem_get_pfn(vcpu->kvm, memslot, gfn, &pfn, &page, NULL);
-+		ret = kvm_gmem_get_pfn(vcpu->kvm, memslot, gfn, &pfn, NULL);
- 		if (ret) {
- 			kvm_prepare_memory_fault_exit(vcpu, vt->wr.pa, PAGE_SIZE,
- 					      write_fault, false, false);
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index c519e8e8d646..f0da212ab108 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4603,8 +4603,7 @@ static int kvm_mmu_faultin_pfn_gmem(struct kvm_vcpu *vcpu,
- 		return -EFAULT;
- 	}
- 
--	r = kvm_gmem_get_pfn(vcpu->kvm, fault->slot, fault->gfn, &fault->pfn,
--			     &fault->refcounted_page, &max_order);
-+	r = kvm_gmem_get_pfn(vcpu->kvm, fault->slot, fault->gfn, &fault->pfn, &max_order);
- 	if (r) {
- 		kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
- 		return r;
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index fcb41dfde4c0..3b1c42e03deb 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -4060,7 +4060,7 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
- 	 * The new VMSA will be private memory guest memory, so retrieve the
- 	 * PFN from the gmem backend.
- 	 */
--	if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, &page, NULL))
-+	if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, NULL))
- 		return;
- 
- 	read_lock(&kvm->mmu_lock);
-@@ -5003,7 +5003,7 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
- 	struct kvm_memory_slot *slot;
- 	struct kvm *kvm = vcpu->kvm;
- 	int order, rmp_level, ret;
--	struct page *page;
-+	unsigned long mmu_seq;
- 	bool assigned;
- 	kvm_pfn_t pfn;
- 	gfn_t gfn;
-@@ -5030,7 +5030,10 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
- 		return;
- 	}
- 
--	ret = kvm_gmem_get_pfn(kvm, slot, gfn, &pfn, &page, &order);
-+	mmu_seq = kvm->mmu_invalidate_seq;
-+	smp_rmb();
-+
-+	ret = kvm_gmem_get_pfn(kvm, slot, gfn, &pfn, &order);
- 	if (ret) {
- 		pr_warn_ratelimited("SEV: Unexpected RMP fault, no backing page for private GPA 0x%llx\n",
- 				    gpa);
-@@ -5041,7 +5044,7 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
- 	if (ret || !assigned) {
- 		pr_warn_ratelimited("SEV: Unexpected RMP fault, no assigned RMP entry found for GPA 0x%llx PFN 0x%llx error %d\n",
- 				    gpa, pfn, ret);
--		goto out_no_trace;
-+		return;
- 	}
- 
- 	/*
-@@ -5069,26 +5072,29 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
- 	if (rmp_level == PG_LEVEL_4K)
- 		goto out;
- 
--	ret = snp_rmptable_psmash(pfn);
--	if (ret) {
--		/*
--		 * Look it up again. If it's 4K now then the PSMASH may have
--		 * raced with another process and the issue has already resolved
--		 * itself.
--		 */
--		if (!snp_lookup_rmpentry(pfn, &assigned, &rmp_level) &&
--		    assigned && rmp_level == PG_LEVEL_4K)
-+	scoped_guard(read_lock)(&kvm->mmu_lock) {
-+		if (mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn))
- 			goto out;
- 
--		pr_warn_ratelimited("SEV: Unable to split RMP entry for GPA 0x%llx PFN 0x%llx ret %d\n",
--				    gpa, pfn, ret);
-+		ret = snp_rmptable_psmash(pfn);
-+		if (ret) {
-+			/*
-+			 * Look it up again. If it's 4K now then the PSMASH may have
-+			 * raced with another process and the issue has already
-+			 * resolved itself.
-+			 */
-+			if (!snp_lookup_rmpentry(pfn, &assigned, &rmp_level) &&
-+		    	    assigned && rmp_level == PG_LEVEL_4K)
-+				goto out;
-+
-+			pr_warn_ratelimited("SEV: Unable to split RMP entry for GPA 0x%llx PFN 0x%llx ret %d\n",
-+					    gpa, pfn, ret);
-+		}
- 	}
- 
- 	kvm_zap_gfn_range(kvm, gfn, gfn + PTRS_PER_PMD);
- out:
- 	trace_kvm_rmp_fault(vcpu, gpa, pfn, error_code, rmp_level, ret);
--out_no_trace:
--	kvm_release_page_unused(page);
- }
- 
- static bool is_pfn_range_shared(kvm_pfn_t start, kvm_pfn_t end)
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 03bfc92864b6..502465119ca0 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2586,13 +2586,11 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
- 
- #ifdef CONFIG_KVM_GUEST_MEMFD
- int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
--		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
--		     int *max_order);
-+		     gfn_t gfn, kvm_pfn_t *pfn, int *max_order);
- #else
- static inline int kvm_gmem_get_pfn(struct kvm *kvm,
- 				   struct kvm_memory_slot *slot, gfn_t gfn,
--				   kvm_pfn_t *pfn, struct page **page,
--				   int *max_order)
-+				   kvm_pfn_t *pfn, int *max_order)
- {
- 	KVM_BUG_ON(1, kvm);
- 	return -EIO;
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index b596486d184c..ba7b46c1aa15 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -751,8 +751,7 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
- }
- 
- int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
--		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
--		     int *max_order)
-+		     gfn_t gfn, kvm_pfn_t *pfn, int *max_order)
- {
- 	pgoff_t index = kvm_gmem_get_index(slot, gfn);
- 	struct folio *folio;
-@@ -780,12 +779,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- #endif
- 
- 	folio_unlock(folio);
--
--	if (!r)
--		*page = folio_file_page(folio, index);
--	else
--		folio_put(folio);
--
-+	folio_put(folio);
- 	return r;
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
