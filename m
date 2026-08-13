@@ -1,161 +1,166 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C9C470EAA
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 15:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55551471264
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 15:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786633215; cv=none; b=C7k+glQ6PSv5Z3PU51dxAmhaxlUo2ejVcjao3zXiTA2+rVnIhQEnh1wGVMSGIGE66l7HGa76GsK5gx1WQlWMHdXzVlp9XtJoFNTAy34iHWba+Mivz+KS4a41h6hS9A7aN7B8nSGL/36zIY7SkIxX3N44k8OCqVCTM31eu1R2jSw=
+	t=1786633215; cv=none; b=nmxLqe/2hHXdppNTj2Qxzn8dpoMM20Jjqg3SmZGCIbaZYdqe7U2JEyLpAIW7rSSx43IGZFcr3HvCWonQlbeHarGvNzUvXD6uu2DfbZ0+ZdS2cVr5lAYKcCIyJXiyHIIq9FEecgmNkF04Z4EbKKl5bFQhYfaABx3lesRglGEa2U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786633215; c=relaxed/simple;
-	bh=dFut0bDEPJ8yVRdPR4MTdKvzpAOU6nVqanSDPIqimX4=;
+	bh=5sM+1zSlul2kfYvbLYRPOSLBGN5aFbmaQpNogzsyE7c=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=D++/jhSbFvNULzyZHyeiUsU33xqVZYPlZ8cAd0CRslXxWyMhGPYNa1XK0NWJpsDRCtusJV5IJ2jNg/OyZxay/c4PQPW4dW0AtpN8zdfpijYnNIJxMYNmfIEMu5RqQ9fd7GE0KpvL/rSqafmh63tiAxPBV8TpPrAKmQWCsUkuL34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h0sjxVpF; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=KfCdeZAssqoSfK+JTaO/Idqn63elqg0W0lvVYtloBURYIpY6dGiOiG9tXdEjqqw7wxvFI3zHdh74sOfWv4fPyBomE+Uo/gxcQCz1/vmc9AKAQtdjKMbPA7H8s5YZzcJn9L05vGAiZe0yyVFugzTo0rJLYuxmVyOmdQduHTTqsq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBM/XjH1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h0sjxVpF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AED91F00A3D;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBM/XjH1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA4D1F00A3E;
 	Thu, 13 Aug 2026 15:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786633208;
-	bh=dNyVtsw2PpifOTrmFRKJ35Wx/4U2g9yEqilARH2mSX8=;
+	s=k20260515; t=1786633209;
+	bh=yaVUpc1VxFtIh5R5GXu1iwxwShjuXGAgPOGgUALwEqI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=h0sjxVpFVqDzLyX0e6THduZRyXodMzx75FQ2gqZmtvNySIX+sFRCShUxNtDBUAKNe
-	 icgaupLnBgvtSzrpkAEMUw5SLi3x1Nhh/oc60lJiT66/eZBXhQMEW0wH7n6xYJzV6b
-	 GAyk697SazaX5k/Xv4ghYq8DfUCno8N8xeIV73tQQqkLGWQ2eBut/aNKsGrtbXZaqJ
-	 XDjKn+e1RIVQjHtPgqnbrdy/MqXve/W1SOwrNf2+oWZa4T4l43PaMTlNUsj5XMDT14
-	 Fn0CpVNGzPdfJSkMTyIeqDzRFGiMAHTfBEI6wKCmxyO/tmi7ducYP0urkvR9pMtJ3B
-	 8htaAK+XHK9jw==
+	b=PBM/XjH1JT6cOwPh5zbA/1iHBl1WIfqU1z7oRm1rFYY18GGPu+ZwqqGBDXwzdCUyr
+	 YXFalH1wd/4yMBU5tCUw4CSg+qpjmp4xnbXpL/VzVqFgbMUC6nxowIf0DSXxpgr414
+	 clPdPM2xAXl3cB/cpW5Jl/3PQMwYUcU7EzcEpXEgAC6/lJ37tYpTb5sDaMN2Ooe3OX
+	 97465gYjQMRNUfWzVRgdiRtdcu7JsY6IpHsJ2+3f3NV5MWoVGwvO0OXkJSYnBbUGNc
+	 G9FiEXKyXR9bQ+a17/PISNiV16hAYXjL7YoEQQyFOrKwXVkiDBFqGj1/GlNs0iwTD+
+	 m/0h8ve2GGuFw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 08/10] vfio: selftests: Add mlx5 driver - HW init and
- command interface
+Subject: Re: [PATCH v4 09/10] vfio: selftests: Add mlx5 driver - data path
+ and memcpy ops
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Jason Gunthorpe" <jgg@nvidia.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <8-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
-References: <8-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
+In-Reply-To: <9-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
+References: <9-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 13 Aug 2026 15:00:07 +0000
-Message-Id: <20260813150008.4AED91F00A3D@smtp.kernel.org>
+Date: Thu, 13 Aug 2026 15:00:08 +0000
+Message-Id: <20260813150008.ECA4D1F00A3E@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] The teardown loop draining the async pages command slot lacks a =
-timeout, risking an infinite hang if the firmware fails to respond.
-- [Medium] Missing bounds validation on firmware-returned `output_num_entri=
-es` can lead to heap out-of-bounds reads and writes.
-- [Low] Signed integer overflow when calculating the doorbell vector for th=
-e async pages slot.
+- [High] Race condition in CQ polling where the `recv_counter` doorbell is =
+updated before all CQE fields are read.
+- [Medium] Strict aliasing violation when extracting the 64-bit doorbell va=
+lue via type punning.
 --
 
---- Patch [8]: [PATCH v4 08/10] vfio: selftests: Add mlx5 driver - HW init =
-and command interface ---
-commit 7a09d2b7794945d7a16a9b914796b529c3098e0b
+--- Patch [9]: [PATCH v4 09/10] vfio: selftests: Add mlx5 driver - data pat=
+h and memcpy ops ---
+commit 22f15a19e89d217e93d4e9e51e36db1a9fa3c2c2
 Author: Jason Gunthorpe <jgg@ziepe.ca>
-Subject: vfio: selftests: Add mlx5 driver - HW init and command interface
 
-This patch introduces a bare-metal mlx5 ConnectX selftest driver for
-VFIO, implementing hardware initialization, teardown, and the command
-interface.
+vfio: selftests: Add mlx5 driver - data path and memcpy ops
+
+This commit completes the mlx5 driver by adding CQ/QP creation, QP state
+transitions, WQE posting, CQ polling, and the memcpy_start/memcpy_wait
+callbacks. It enables functional DMA tests by implementing RDMA Write
+self-loopback via an RC QP with force-loopback.
 
 > diff --git a/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5.c b/tools=
 /testing/selftests/vfio/lib/drivers/mlx5/mlx5.c
-> new file mode 100644
-> index 0000000000000..804801cc564e7
-> --- /dev/null
+> index 804801cc564e7..e5e75adb25316 100644
+> --- a/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5.c
 > +++ b/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5.c
 
 [ ... ]
 
-> @@ -710,9 +710,9 @@ static void mlx5st_pages_slot_post(struct mlx5st_devi=
-ce *dev, void *in,
->  				    unsigned int ilen, unsigned int olen)
->  {
->  	mlx5st_cmd_post(dev, dev->pages_cmd_lay, dev->pages_in_mbox,
->  			dev->pages_out_mbox, in, ilen, olen,
->  			1 << dev->pages_slot);
-
-[Severity: Low]
-Does this code risk signed integer overflow?=20
-
-If `dev->pages_slot` is 31, shifting the signed literal 1 by 31 bits will
-shift into the sign bit, causing undefined behavior in C. Would `1U <<
-dev->pages_slot` be safer here?
-
-[ ... ]
-
-> @@ -826,12 +826,12 @@ static void mlx5st_pages_slot_complete(struct mlx5s=
-t_device *dev)
->  			mlx5st_cmd_copy_from_mbox(
->  				(u8 *)out + MLX5_CMD_INLINE_SZ,
->  				dev->pages_out_mbox,
->  				outlen - MLX5_CMD_INLINE_SZ);
-> =20
->  		num_claimed =3D
->  			MLX5_GET(manage_pages_out, out, output_num_entries);
->  		for (i =3D 0; i < num_claimed; i++)
->  			iovas[i] =3D MLX5_ARRAY_GET64(manage_pages_out, out, pas,
->  						    i);
-
-[Severity: Medium]
-Could this result in out-of-bounds heap accesses if the firmware returns an
-unexpectedly large output_num_entries?
-
-Should num_claimed be validated against dev->pages_reclaim_npages before
-iterating over iovas and out?
-
-[ ... ]
-
-> @@ -1187,14 +1187,14 @@ static void mlx5st_fw_pages_reclaim(struct mlx5st=
-_device *dev, u16 func_id)
->  		MLX5_SET(manage_pages_in, in, input_num_entries, batch);
-> =20
->  		mlx5st_cmd_exec(dev, in, inlen, out, outlen);
-> =20
->  		num_claimed =3D
->  			MLX5_GET(manage_pages_out, out, output_num_entries);
->  		for (i =3D 0; i < num_claimed; i++)
->  			iovas[i] =3D MLX5_ARRAY_GET64(manage_pages_out, out, pas,
->  						    i);
-
-[Severity: Medium]
-Similar to the async completion path above, is it possible for a malfunctio=
-ning
-device to return a num_claimed larger than the allocated batch size?=20
-
-Would it make sense to add a bounds check here to prevent out-of-bounds
-array accesses?
-
-[ ... ]
-
-> @@ -1274,13 +1274,13 @@ static void mlx5st_hca_teardown(struct mlx5st_dev=
+> @@ -1343,6 +1343,354 @@ static void mlx5st_destroy_mkey(struct mlx5st_dev=
 ice *dev)
->  	u32 out[MLX5_ST_SZ_DW(teardown_hca_out)] =3D {};
->  	u32 in[MLX5_ST_SZ_DW(teardown_hca_in)] =3D {};
-> =20
->  	/* Drain async pages slot, then stop EQ processing */
->  	while (dev->pages_slot_in_use) {
->  		if (!MLX5_GET_ONCE(cmd_queue_entry, dev->pages_cmd_lay,
->  				   ownership))
->  			mlx5st_pages_slot_complete(dev);
->  		else
->  			sched_yield();
->  	}
+
+[ ... ]
+
+> +static void mlx5st_post_rdma_write(struct mlx5st_device *dev, u64 src_ad=
+dr,
+> +				    u32 src_lkey, u64 dst_addr, u32 dst_rkey,
+> +				    u32 length, bool signaled)
+> +{
+
+[ ... ]
+
+> +	/* Ensure WQE is visible to device before doorbell record */
+> +	dma_wmb();
+> +
+> +	WRITE_ONCE(dev->qp_dbrec.send_counter,
+> +		   cpu_to_be32(dev->sq_pi & 0xffff));
+> +
+> +	/*
+> +	 * Ring doorbell: write first 8 bytes of ctrl to UAR BF register,
+> +	 * iowrite has an internal dma_wmb() so the doorbell record will be
+> +	 * visible.
+> +	 */
+> +	iowrite64be(be64_to_cpu(*(__be64 *)wqe),
+> +		    (u8 __iomem *)dev->uar_base + dev->uar_bf_offset);
 
 [Severity: Medium]
-Can this loop hang indefinitely?=20
+Does casting the struct mlx5st_send_wqe pointer to a __be64 pointer violate
+strict aliasing rules?
 
-Unlike regular commands which use a timeout mechanism, if the firmware fails
-to process the async page command and never clears the ownership bit, it lo=
-oks
-like this will yield forever. Should this include a timeout fallback?
+Because files under tools/ assume standard -fstrict-aliasing, type punning
+with incompatible pointers can cause the compiler to reorder the memory read
+before the WQE fields are fully initialized, potentially sending uninitiali=
+zed
+data to the device doorbell.
+
+> +	dev->uar_bf_offset ^=3D MLX5_BF_SIZE;
+> +}
+> +
+> +/*
+> + * Poll CQ
+> + */
+> +static int mlx5st_poll_cq_batch(struct mlx5st_device *dev,
+> +				unsigned int max_cqe)
+> +{
+
+[ ... ]
+
+> +		opcode =3D MLX5_GET(cqe64, cqe, opcode);
+> +
+> +		dev->cq_ci++;
+> +		WRITE_ONCE(dev->cq_dbrec.recv_counter,
+> +			   cpu_to_be32(dev->cq_ci & 0xffffff));
+> +
+> +		if (opcode =3D=3D MLX5_CQE_REQ) {
+> +			dev->sq_ci =3D
+> +				(u16)(MLX5_GET(cqe64, cqe, wqe_counter) + 1);
+
+[Severity: High]
+Can the hardware overwrite the CQE memory slot while the CPU is still parsi=
+ng
+it?
+
+By updating the recv_counter doorbell record here, it signals to the hardwa=
+re
+that the CQ slot is free to be reused. Immediately after, the CPU reads the
+wqe_counter (and syndrome on error paths) from the CQE. If the hardware pos=
+ts
+new completions rapidly, it might DMA the next CQE into the same slot before
+these reads complete.
+
+Could the doorbell update be delayed until after all fields have been read
+from the CQE, or batched at the end of the poll loop?
+
+> +			polled++;
+> +			continue;
+> +		}
+> +		if (opcode =3D=3D MLX5_CQE_REQ_ERR ||
+> +		    opcode =3D=3D MLX5_CQE_RESP_ERR) {
+> +			dev_dbg(dev->device,
+> +				"CQE error: opcode=3D0x%x syndrome=3D0x%x vendor=3D0x%x\n",
+> +				opcode,
+> +				MLX5_GET(cqe64, cqe, error_syndrome.syndrome),
+> +				MLX5_GET(cqe64, cqe,
+> +					 error_syndrome.vendor_error_syndrome));
+> +			return -1;
+> +		}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/0-v4-021df3fb5a3f+9=
-8e-mlx5st_jgg@nvidia.com?part=3D8
+8e-mlx5st_jgg@nvidia.com?part=3D9
