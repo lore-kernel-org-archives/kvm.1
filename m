@@ -1,148 +1,125 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD6A3FDC18
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 10:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B92243E9C9
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 10:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786615386; cv=none; b=Vcn3rdGLEfkFe0Vod8wjImTkN2foji9/43HuzdmHb6oofpLuzF5+re+TACjqQt7WC1JD+xn+EiA6ydThq2CcQ0u9toPw5nwr4oMYP5YmpHgne0THyPXIBfeoIFVcPHUX5JZvnaHsVzztXDLZa9Q0mpShL36qfPs8b7MvkRw1uKk=
+	t=1786615478; cv=none; b=Cjy+BSB96eBVRD/nJy4Y7EtPJNPX6hTwAMepKZU4HoKXli+5dQUK+Uu5l+xsPaUgd/G/q9w1n7EI5xmtm/5VV2txiFLTGPx/APNMat8hyp3bP+cJD8M9LJcccvhjkzg9us04Gawz25YPufwRvsKSAfnvdsK7KkKd7D1KX1x2jn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786615386; c=relaxed/simple;
-	bh=3EFTB40/tjnJYr2saDHNvQFwnvxyUzB59gImaiZ1zjs=;
+	s=arc-20240116; t=1786615478; c=relaxed/simple;
+	bh=FHfXOKbw4G7S1g6+dPTTIBaor8EqrIYAVdDpP3oy83I=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=O2sjChCKRG6uvZeunm3KX7Ho0k+KGjxi2s/Es+vEbKV6M2/8PAljtIkyDP0cdmT0b4jPBT7tsW6TLolloUVYy6uYOIEMZp2RnriYuUplD5m+JA+YwPDDSp4+ITX8ggtM0xFxnn44IyOj5HT7sLObWlZSDk0c/NUPaC7olWvmqic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VvDhWOIR; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=BSQ01g1D3PrDqYvuCZT8Qn5/gaFbC6k+6jgcylw6uGJG0ftKUFB+cFL1i+1ex9wqTrhenK7iRXeJ4SRJdkJpkhYUi3a7gf2fa9mUgJZfSzM247hwdLO9/NJOV2/hlsWXhZiJnCW2Y5mHsLzmunVFSPAx+dz3cQcY5B2uCAiCZZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gJ8I5/au; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VvDhWOIR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 426951F000E9;
-	Thu, 13 Aug 2026 10:03:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gJ8I5/au"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E621F000E9;
+	Thu, 13 Aug 2026 10:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786615385;
-	bh=wj9TRtvTqqCoAuWezavRO2qgDG0HB/oBvtD3B8U8rYM=;
+	s=k20260515; t=1786615477;
+	bh=5SfqBhJto6CJlrshI0jZA2jF/upBj/8MRut/kRltKOM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VvDhWOIR819BlqFLTrh3qjuR7VHdvoo9m1sSVD4FtkQOGWHHmeNOpYbcA1PGf98Sl
-	 uihfbM9gcXBtRqg8PdaNOXValtowE6Bg1RuXslEVrG2RoiiZd2qaFbN37vlkiGjLm6
-	 QdnqC+3w1BwEuA++Mi+1JOjqzAx6sP1ZDB8/+E+DMP8F4XWHfEJ6AhydpMPhJy/kXn
-	 +YDD4CfmBl3bR/4Jwg0D/tdPWg/WEzA0WRkyAslv4p2egnjiw3zpTPCPxHa7+gurnM
-	 PkdTgpZiu4VujV+mfVjUZ6vt9/i7zmN+taf0EYHe4ACJur0AHfOnNBdAlk5YL4XTWK
-	 l9faeXymub23Q==
+	b=gJ8I5/au0XABsADj2eIPWRkKijdfZC4bGVsIEhADgdFMM6mt/gL6kFxmW1IJM1DM2
+	 olvYLLkBW0GME7uuO1O7VBI3PQ7Ix3ZHoEmjhHhLrp+PyBWaNInQ3KAklD0hzUw3VW
+	 g1TQv7/We7jroRqNlqJlxXUOEQ/MU+M3OA12w6SLaq2w4iKPIhJndCjUBJbyxrbQ9t
+	 hKhBJ9+a2WnZUYTTGfkALWr6q723gYXGer3KF4wOWtBVWvUdcre71GlbpOwRynKB/m
+	 XJ6ant6wfWi6FBArpPRqTDTOpFrLot5Q+Ku3blpnxeRPqKZ7TOKJYhbx4G6iRIgOPC
+	 ESF+bLO3a4MCQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/3] KVM: PPC: Book3S HV: Maintain aggregate context
- switch values for vCPUs
+Subject: Re: [PATCH v12] KVM: selftests: riscv: Add lazy V extension
+ enablement for guests
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Gautam Menghani" <gautam@linux.ibm.com>
+To: JinRui <jinrui@haiwei.tech>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260813094535.10083-2-gautam@linux.ibm.com>
-References: <20260813094535.10083-1-gautam@linux.ibm.com>
- <20260813094535.10083-2-gautam@linux.ibm.com>
+In-Reply-To: <7C0512E558D1614D+20260813095615.3843757-1-jinrui@haiwei.tech>
+References: <EF5308EB97ADC8DE+20260813093751.3817371-1-jinrui@haiwei.tech>
+ <7C0512E558D1614D+20260813095615.3843757-1-jinrui@haiwei.tech>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 13 Aug 2026 10:03:04 +0000
-Message-Id: <20260813100305.426951F000E9@smtp.kernel.org>
+Date: Thu, 13 Aug 2026 10:04:36 +0000
+Message-Id: <20260813100437.06E621F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-New issues:
-- [High] The patch breaks task-bound VPA PMU events by subtracting independ=
-ent VCPU aggregates, leading to severe underflows.
-
-Pre-existing issues:
-- [Critical] Pre-existing Use-After-Free (UAF) and cross-VM data leak via s=
-tale `kvm_hstate.kvm_vcpu` pointer in VPA PMU callbacks.
+- [Medium] Unaligned 32-bit memory access when decoding 32-bit instructions
 --
 
---- Patch [1]: [PATCH v2 1/3] KVM: PPC: Book3S HV: Maintain aggregate conte=
-xt switch values for vCPUs ---
-commit b8e49dde6d70a4c423cf40d03275e97149e3916e
-Author: Gautam Menghani <gautam@linux.ibm.com>
+--- Patch [1]: [PATCH v12] KVM: selftests: riscv: Add lazy V extension enab=
+lement for guests ---
+commit cffe485ad3478e658853f5e74fe97f4c03d20bf6
+Author: jinrui <jinrui@haiwei.tech>
 
-KVM: PPC: Book3S HV: Maintain aggregate context switch values for vCPUs
+KVM: selftests: riscv: Add lazy V extension enablement for guests
 
-This commit changes the vCPU context switch latency variables in vcpu->arch
-to store aggregate values rather than the latest snapshots read from PACA.
-The goal is to provide each vCPU with its own record of total context
-switch latencies for the vpa-pmu driver.
+This commit introduces lazy enablement of the RISC-V vector (V) extension
+for guest tests. It updates the exception routing to decode faulting
+instructions and re-execute vector instructions when the VS status is off.
 
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 61dbeea317f3b..342168b8bfc86 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -4163,12 +4163,12 @@ static void do_trace_nested_cs_time(struct kvm_vc=
-pu *vcpu)
->  	trace_kvmppc_vcpu_stats(vcpu, l1_to_l2_ns - *l1_to_l2_cs_ptr,
->  					l2_to_l1_ns - *l2_to_l1_cs_ptr,
->  					l2_runtime_ns - *l2_runtime_agg_ptr);
-> +	vcpu->arch.l1_to_l2_cs +=3D (l1_to_l2_ns - *l1_to_l2_cs_ptr);
-> +	vcpu->arch.l2_to_l1_cs +=3D (l2_to_l1_ns - *l2_to_l1_cs_ptr);
-> +	vcpu->arch.l2_runtime_agg +=3D (l2_runtime_ns - *l2_runtime_agg_ptr);
+> diff --git a/tools/testing/selftests/kvm/lib/riscv/processor.c b/tools/te=
+sting/selftests/kvm/lib/riscv/processor.c
+> index ded5429f34483..e677137d5e448 100644
+> --- a/tools/testing/selftests/kvm/lib/riscv/processor.c
+> +++ b/tools/testing/selftests/kvm/lib/riscv/processor.c
 
-[Severity: Critical]
-This is a pre-existing issue, but does relying on kvm_hstate.kvm_vcpu expose
-a use-after-free and cross-VM data leak here?
+[ ... ]
 
-When a task-bound VPA PMU event schedules in, vpa_pmu_add() calls into KVM
-which reads the vCPU from the physical CPU's PACA:
+> @@ -432,6 +472,37 @@ void route_exception(struct pt_regs *regs)
+>  		ec =3D 0;
+>  	}
+> =20
+> +	/*
+> +	 * Lazily enable V on the first vector instruction: if the faulting
+> +	 * instruction decodes as vector while VS is off, set VS to Initial
+> +	 * and re-execute it, like the kernel's riscv_v_first_use_handler().
+> +	 * Genuinely illegal instructions continue to the unexpected-exception
+> +	 * path.
+> +	 */
+> +	if (!(regs->cause & CAUSE_IRQ_FLAG) && ec =3D=3D EXC_INST_ILLEGAL &&
+> +	    handlers && handlers->v_available && !(regs->status & SR_VS)) {
+> +		u32 insn =3D (u32)regs->badaddr;
+> +
+> +		/*
+> +		 * stval is not guaranteed to hold the faulting instruction.
+> +		 * Vector instructions are always 32-bit, so read a 16-bit
+> +		 * halfword first and only load the full 32-bit instruction when
+> +		 * it is not compressed; this avoids an unaligned or cross-page
+> +		 * access on a compressed instruction.
+> +		 */
+> +		if (!insn) {
+> +			u16 half =3D *(u16 *)regs->epc;
+> +
+> +			if ((half & 0x3) =3D=3D 0x3)
+> +				insn =3D *(u32 *)regs->epc;
 
-arch/powerpc/kvm/book3s_hv.c:kvmhv_get_l1_to_l2_cs_time_vcpu() {
-    ...
-    vcpu =3D local_paca->kvm_hstate.kvm_vcpu;
-    if (vcpu) {
-        arch =3D &vcpu->arch;
-        return arch->l1_to_l2_cs;
-    ...
-}
+[Severity: Medium]
+Will this result in an unaligned 32-bit memory access on certain hardware?
 
-Since local_paca->kvm_hstate.kvm_vcpu is set during guest entry in
-kvmhv_run_single_vcpu() but never cleared on exit, it remains pointing to
-the last vCPU that executed on this physical CPU.
+If a 32-bit vector instruction is placed at a 2-byte aligned address (which
+is valid when the RISC-V 'C' compressed extension is enabled), regs->epc
+will only be 2-byte aligned.
 
-If that vCPU belonged to a different VM, its context switch data is leaked.
-If the VM was destroyed, wouldn't this dereference a freed vCPU pointer?
+Casting a potentially 2-byte aligned address to a u32 pointer is undefined
+behavior in C, and the compiler typically emits a standard 32-bit word load
+instruction.
 
-[Severity: High]
-Will changing these fields to accumulate independent aggregates cause massi=
-ve
-underflows in the PMU driver?
+On strict-alignment RISC-V hardware, won't this trap and crash the selftest
+guest with a 'Load Address Misaligned' exception?
 
-Before this patch, these fields stored a snapshot of the global monotonic
-timer. Now they store independent per-vCPU aggregates.
-
-Because of the stale local_paca pointer issue mentioned above, vpa_pmu_add()
-records the previous vCPU's aggregate as the starting baseline:
-
-arch/powerpc/perf/vpa-pmu.c:vpa_pmu_add() {
-    ...
-    data =3D get_counter_data(event);
-    local64_set(&event->hw.prev_count, data);
-    ...
-}
-
-Later, vpa_pmu_read() subtracts this from the current vCPU's aggregate:
-
-arch/powerpc/perf/vpa-pmu.c:vpa_pmu_read() {
-    ...
-    final_data =3D new_data - prev_data;
-    local64_add(final_data, &event->count);
-}
-
-Since new_data and prev_data are now completely unrelated aggregates from
-different vCPUs rather than two points on a shared global timeline, won't
-this subtraction produce garbage values and severe underflows?
-
->  	*l1_to_l2_cs_ptr =3D l1_to_l2_ns;
->  	*l2_to_l1_cs_ptr =3D l2_to_l1_ns;
->  	*l2_runtime_agg_ptr =3D l2_runtime_ns;
-> -	vcpu->arch.l1_to_l2_cs =3D l1_to_l2_ns;
-> -	vcpu->arch.l2_to_l1_cs =3D l2_to_l1_ns;
-> -	vcpu->arch.l2_runtime_agg =3D l2_runtime_ns;
->  }
+> +		}
+> +
+> +		if (insn_is_vector(insn)) {
+> +			regs->status |=3D SR_VS_INITIAL;
+> +			return;
+> +		}
+> +	}
+> +
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260813094535.1008=
-3-1-gautam@linux.ibm.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/7C0512E558D1614D+20=
+260813095615.3843757-1-jinrui@haiwei.tech?part=3D1
