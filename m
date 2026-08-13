@@ -1,112 +1,208 @@
-Received: from out28-123.mail.aliyun.com (out28-123.mail.aliyun.com [115.124.28.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1222F3C18
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 04:00:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153023161A1
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 04:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786593632; cv=none; b=H+B9ITKn1/zneSUCJ4ttxAWrgthRMUVF1mEM0XDTTpNXn9MHAy7YKu4nkCdcbGZDcqq8oypwKruYEeGZn7GhTJW4wJGkz7Sr5TBPu0Qk12OOd4ogbg6TAEPlCUJt2/kkrqy0wmBJBIjYtDxVS6BeK2dnYBl5d31ZasWB7eNn02k=
+	t=1786595983; cv=none; b=WemiMwiGeoxZkq4EaLfXvehiPWsQ2DL40BjlvBI3WMX/Gl6xwgEdQWLAF2/K9bqqHy3xcRosX3tou2szmD2WE3AdMHIkWcwVqlM8F8/carkwgV43PhbO/6HuzqXm6gh2iUWWltq/L/z1s/FGUrqEOBz5YiXNn6yOWbKnBXKo4fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786593632; c=relaxed/simple;
-	bh=48n+PIx5SYWw7YnTqfji9aLdKgIsVTBFMaBGAKvUAx4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fHh2eJfXpicOzuSebq1uXHxKfmX04FG2k45w8/gROlvfM0VzQG0T8PYpkG3/IymgaGk18ZVa5c29GVRXNZtpbkXFZvGNViNmlb6lVzvx/AIEXvjG5nbPY52MaL6nK3wXXNzQoot/+oX7im+S3C+IYTOMuREM7QgqbPFp+nyMiJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.0909289|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.0200195-0.000325931-0.979655;FP=7811912649937782567|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037025160;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=2;RT=2;SR=0;TI=SMTPD_---.ikx0Cbo_1786593302;
-Received: from 172.18.22.44(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.ikx0Cbo_1786593302 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Thu, 13 Aug 2026 11:55:02 +0800
-Message-ID: <3ba91bb9-312a-4b55-9cb5-ae53bfb8dacf@open-hieco.net>
-Date: Thu, 13 Aug 2026 11:55:02 +0800
+	s=arc-20240116; t=1786595983; c=relaxed/simple;
+	bh=MrA1eUn49JHHtkGSWBVP0LTaU/MxZzymHsQV1rsechk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GDLmbgxzrrA6c4u7x7x/vvR0EeSEdCvFmm4ehVVlSdS7yDMCjMZriat8KkCt2zeYJjN+FiFWfS0YAKenHfkPiPuqWjcYOIcA5N2DxbA9kAyN4eEaXOh6M77CnZf2d1lA/f55hDG5HLBuVkyHmD3GVa9DvaX1xFiTqg9V7IX7uoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oyXlXK49; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oyXlXK49"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c9b373d5af0so285657a12.2
+        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 21:39:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786595981; x=1787200781; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QY0PhIaQe303xAQrTg2FMWpE3pS6R1npxD02nSQKkGo=;
+        b=oyXlXK494Z/C6uht5qpC3+QJ3ej6LcpMvgO00eTR9vcmcgZfySI5GuzQy0YwPYr+Wb
+         OtmHz8tYVWAUZkXyXedaIkBxXhWWTzY/iw6ocV1LE/oTpKZNtpeTiVE213Hgt2kpUHrb
+         wO51ZcKRW+4wZh9wMozFYId0u1Uky4SfugYyi9c6sPV1sCZq0VXvrss+N4N1ool1n3PW
+         OwMtma1nSXrDCsHRoQZv8Z3vw0CUAd9dqN1WX6GugWm9WUf6cHiB03131Ikkm259sLxv
+         vmVcLQNCXfAAViPADi7fcI2bOHze88PWIXymoKCgLU6Wiznhf7WTaYXGevNY7coB+dwk
+         LK0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786595981; x=1787200781;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QY0PhIaQe303xAQrTg2FMWpE3pS6R1npxD02nSQKkGo=;
+        b=q840g8YyUFg4/z/1hmci7Tt043XBHkm21S0x2IJEeu4grS/fNyWID6KGSXLw6YDKyU
+         TwadZhjlFCMXNyDFF4hPu/e3hOIPZqq90hJlb0Y3g+n8IZReZfF1e4jRBp0/B02SEikb
+         JMd3+5HFh0Oyb0+/UtTdqyCdGoSU+RJPCWjhTctB7QvW1gzPePhdsEZwMXbBT5Pq5dG+
+         3tzrY+f7p8OHrUMxMI+/5hDmYhJQEwx8M3tQIxvvOnd0XNMRXqhB++ApQiy1bGSZBWVw
+         74hoycW9qTvBQxjk8N2jwKt90TLrW69UWW2gKLSwa1WMtJvXvCcKh6EtgEn7pRywigrv
+         kDkA==
+X-Gm-Message-State: AOJu0YwAV1fiutWL6HZBHjHq7JrG10G0LxeYhmRswCD8JvaazbedZjQa
+	5609aqSZxPBQZtJt25RY1JbwE31gAO8jHpWPzn98fWNqoT9KqhyfqLEF
+X-Gm-Gg: AR+sD12POi/mdc3kV+ZY20BD4nS2CgR/QnceFB3o9LbOjN4Z6/tk3x0LqRsBl1l4PPI
+	4LgSUd12SMZwk8EQlO/TyiUuTw0jffFBLFiD/Ip7O9vpHHxu6uYefTC4KT6Z0c+lNgdfAkpzDQ6
+	jhq/7Ckp60oZVbRxEmE8fjOaw+h6YbViDbUPq/p4m10sYrqHDhEBQawR3jo0jnekRL1baEyW4Xd
+	XkmYTcnbmDCHY3vvfzlVnx3y/PtheYMplQKA+eS3hY3dOrwVZV8erKSZf/Fhch3umgbSSttc6Wc
+	eKVClqJY0La+PZrDpV3qxn3kSrr3rEoJHyVz4UcXja9qIrNihzbOAaZucMByDoiJajGDG4E/2Ov
+	nV3iXDmsAdxuGu210FtDFfPc/9X4g6DawZdL1kFbAi72zRTjBIa/lP73e7EkijMliRkQPKEgqXv
+	XZKJBdSHYdRPPJP6Na8ajOzdRAmk6Bz4M2HRnVY3Ol/C+cCFdi6YhDZN87ivyMvAy4sHYaGndQP
+	4ewipIspLnaJ+SZv8iD0s4XOUA=
+X-Received: by 2002:a05:6a20:549c:b0:3c3:a9ad:a747 with SMTP id adf61e73a8af0-3cc553d8f30mr4537871637.26.1786595981038;
+        Wed, 12 Aug 2026 21:39:41 -0700 (PDT)
+Received: from CT104.localdomain ([118.223.79.56])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbef710b05csm417325a12.15.2026.08.12.21.39.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2026 21:39:40 -0700 (PDT)
+From: Jinwoo Lee <rkskek9254@gmail.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jinwoo Lee <rkskek9254@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: nVMX: Re-arm the vmcs12 pages request if mapping the pages fails
+Date: Thu, 13 Aug 2026 04:39:32 +0000
+Message-ID: <20260813043932.3214460-1-rkskek9254@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/9] KVM: x86: Add helper to provide intercept linear
- addresses
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-References: <cover.1785411877.git.zhang_wei@open-hieco.net>
- <233ea37ecf646692c2d2aa6d335643c3dbb1fe09.1785411877.git.zhang_wei@open-hieco.net>
- <20260730123830.A3EF01F000E9@smtp.kernel.org>
-Content-Language: en-US
-From: Tina Zhang <zhang_wei@open-hieco.net>
-In-Reply-To: <20260730123830.A3EF01F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+
+Re-arm KVM_REQ_GET_NESTED_STATE_PAGES when nested_get_vmcs12_pages()
+fails, so that KVM retries the mapping on the next KVM_RUN instead of
+resuming L2 with a stale vmcs02.
+
+On failure KVM exits to userspace with KVM_EXIT_INTERNAL_ERROR but
+leaves the vCPU in guest mode with vmcs02 loaded.  The request has
+already been consumed by kvm_check_request() in vcpu_enter_guest(), and
+nothing re-arms it, so a subsequent KVM_RUN goes straight to VM-Enter.
+
+vmcs02's APIC_ACCESS_ADDR, VIRTUAL_APIC_PAGE_ADDR and
+POSTED_INTR_DESC_ADDR still hold the host physical addresses that were
+mapped for the previous nested VM-Enter.  Those pages have already been
+unmapped and unpinned by nested_put_vmcs12_pages(), which runs after
+vmx_switch_vmcs() to vmcs01 and therefore cannot clear the vmcs02
+fields, and prepare_vmcs02_early() re-arms the controls that consume
+them without rewriting the address fields.  Hardware then accesses
+pages that KVM no longer holds a reference to.
+
+The SECONDARY_EXEC_VIRTUALIZE_APIC_ACCESSES branch makes this worse by
+returning before the CPU_BASED_TPR_SHADOW and posted interrupt
+fallbacks, which would otherwise write INVALID_GPA to
+VIRTUAL_APIC_PAGE_ADDR and clear PIN_BASED_POSTED_INTR.
+
+Commit 671ddc700fd0 ("KVM: nVMX: Don't leak L1 MMIO regions to L2")
+replaced the "clear the control" fallback with an error return.  The
+intent is right, but it left vmcs02 in a usable state.  Re-arming the
+request closes that; if the mapping keeps failing KVM keeps exiting to
+userspace, which is noisy but safe.
+
+Note this relies on KVM_REQ_GET_NESTED_STATE_PAGES being cleared on
+nested VM-Exit, which "KVM: nVMX: Ensure KVM_REQ_GET_NESTED_STATE_PAGES
+is cleared on VM-Exit" makes unconditional.
+
+Fixes: 671ddc700fd0 ("KVM: nVMX: Don't leak L1 MMIO regions to L2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jinwoo Lee <rkskek9254@gmail.com>
+---
+Notes for reviewers, not intended for the commit log.
+
+Affected versions: v5.4-rc5 (671ddc700fd0) through v7.2-rc6.  Verified that
+nested_get_vmcs12_pages() and the KVM_REQ_GET_NESTED_STATE_PAGES consumer in
+vcpu_enter_guest() are unchanged in kvm-x86/next as of 2026-08-13.
+
+Disclosure: this was found with AI-assisted code review, so per
+Documentation/process/security-bugs.rst it is being reported publicly rather
+than to security@kernel.org.
+
+What I verified empirically, on the RSM path with the load_pdptrs() abort:
+
+  - KVM consumes KVM_REQ_GET_NESTED_STATE_PAGES, the mapping fails, KVM_RUN
+    returns 0 with run->exit_reason left at KVM_EXIT_UNKNOWN, and the vCPU is
+    still in guest mode.
+  - The request is not re-armed, and the next KVM_RUN VM-Enters L2, which then
+    executes with vmcs02 still naming the previously mapped pages.  Confirmed
+    deterministically (4/4) with a selftest, plus a control run showing that
+    the same sequence without the poison maps successfully.
+  - With the patch applied the code compiles clean, but I have not been able to
+    boot a patched kernel, so the fix itself is not runtime tested.  The
+    selftest fails on an unpatched kernel as expected.
+
+What I did not verify:
+
+  - The APIC-access branch end to end.  That is the interesting one, because it
+    is reachable by L1 alone (point vmcs12->apic_access_addr at an unbacked
+    GPA) and it returns before the CPU_BASED_TPR_SHADOW and posted interrupt
+    fallbacks.  This host does not expose
+    SECONDARY_EXEC_VIRTUALIZE_APIC_ACCESSES or PIN_BASED_POSTED_INTR to L1, so
+    I could only reach the load_pdptrs() abort, which needs userspace to poison
+    the PDPTEs through a KVM_GUESTDBG_SINGLESTEP window and is therefore not
+    guest-triggerable on its own.
+  - Whether a stale page is actually reused by the host.  The selftest keeps
+    every page allocated as its own guest RAM for the whole run.
+
+On whether userspace resumes: QEMU's kvm_cpu_exec() treats
+KVM_INTERNAL_ERROR_EMULATION as recoverable and returns EXCP_INTERRUPT when
+kvm_arch_stop_on_emulation_error() is false, which for x86 is the case when the
+guest is in protected mode at CPL 3 (target/i386/kvm/kvm.c).  It does not
+re-push nested state on that path.  This is from reading qemu.git at
+055952c0aa91; I have not run it.
+
+A selftest is available.  I have not included it here per the reproducer
+guidance in security-bugs.rst; happy to post it if you want it.
+
+ arch/x86/kvm/vmx/nested.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index ddf6df7bee93..9e9bd6c541ba 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -3453,7 +3453,7 @@ static bool nested_get_vmcs12_pages(struct kvm_vcpu *vcpu)
+ 		 * state which can lead to a load of wrong PDPTRs.
+ 		 */
+ 		if (CC(!load_pdptrs(vcpu, vcpu->arch.cr3)))
+-			return false;
++			goto fail;
+ 	}
 
 
+@@ -3469,7 +3469,7 @@ static bool nested_get_vmcs12_pages(struct kvm_vcpu *vcpu)
+ 			vcpu->run->internal.suberror =
+ 				KVM_INTERNAL_ERROR_EMULATION;
+ 			vcpu->run->internal.ndata = 0;
+-			return false;
++			goto fail;
+ 		}
+ 	}
 
-On 7/30/2026 8:38 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> 
-> Pre-existing issues:
-> - [High] The patch computes `intercept_linear_addr` and adds it to `x86_instruction_info`, but fails to actually use it in the architecture-specific intercept handlers (`svm_check_intercept` and `vmx_check_intercept`), leaving a severe preexisting bug unfixed.
-> --
-> 
-> --- Patch [1]: [PATCH v3 1/9] KVM: x86: Add helper to provide intercept linear addresses ---
-> commit e0c208c3018cdb4b9689064eac5e998c1b4d07df
-> Author: Tina Zhang <zhang_wei@open-hieco.net>
-> 
-> KVM: x86: Add helper to provide intercept linear addresses
-> 
-> This commit adds get_intercept_linear_addr() to compute the linear address
-> for INVLPG intercepts. It passes this address through x86_instruction_info
-> so intercept handlers can use it directly without duplicating the calculation.
-> 
->> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
->> --- a/arch/x86/kvm/emulate.c
->> +++ b/arch/x86/kvm/emulate.c
-> [ ... ]
->> @@ -427,6 +447,7 @@ static int emulator_check_intercept(struct x86_emulate_ctxt *ctxt,
->>   		.src_type   = ctxt->src.type,
->>   		.dst_type   = ctxt->dst.type,
->>   		.ad_bytes   = ctxt->ad_bytes,
->> +		.intercept_linear_addr = get_intercept_linear_addr(ctxt, intercept),
->>   		.rip	    = ctxt->eip,
->>   		.next_rip   = ctxt->_eip,
->>   	};
-> 
-> [Severity: High]
-> This isn't a bug introduced by this patch, but it looks like the architecture
-> backends might still need to be updated to consume this new field.
-> 
-> If an L2 guest executes an INVLPG instruction that KVM intercepts and emulates,
-> and L1 is also intercepting INVLPG, the KVM emulator populates
-> intercept_linear_addr here.
-> 
-> However, if the handlers in arch/x86/kvm/svm/svm.c:svm_check_intercept() and
-> arch/x86/kvm/vmx/vmx.c:vmx_check_intercept() don't use this new field, does
-> KVM synthesize nested VM-exits for INVLPG incorrectly?
-> 
-> For SVM, if it falls through to the default case and leaves
-> vmcb->control.exit_info_1 unmodified, could this leak previous host or
-> VM-exit data to the L1 hypervisor?
-> 
-> For VMX, does lacking a case for x86_intercept_invlpg entirely cause it to
-> return X86EMUL_UNHANDLEABLE and fail emulation?
-> 
-> Should the hardware intercept handlers be updated in this series to prevent
-> stale data leakage and L2 DoS?
+@@ -3525,6 +3525,20 @@ static bool nested_get_vmcs12_pages(struct kvm_vcpu *vcpu)
+ 		exec_controls_clearbit(vmx, CPU_BASED_USE_MSR_BITMAPS);
 
-The SVM consumer is added in patch 2/9.
-svm_prepare_decode_assist_exit_info() uses
-info->intercept_linear_addr for x86_intercept_invlpg and writes it to
-EXITINFO1 before constructing the nested VM-Exit.
+ 	return true;
++
++fail:
++	/*
++	 * Re-arm the request so that KVM retries the mapping instead of running
++	 * L2 with a stale vmcs02.  Bailing here leaves the vCPU in guest mode
++	 * with vmcs02 loaded and its APIC-access, virtual-APIC and posted
++	 * interrupt descriptor addresses still pointing at the host pages that
++	 * were mapped for the *previous* nested VM-Enter, which have since been
++	 * unmapped and unpinned by nested_put_vmcs12_pages().  KVM returns to
++	 * userspace without leaving guest mode, so if userspace resumes the
++	 * vCPU, VM-Enter succeeds and hardware accesses those stale HPAs.
++	 */
++	kvm_make_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
++	return false;
+ }
 
-The absence of x86_intercept_invlpg handling in vmx_check_intercept()
-predates this series.  VMX does not implement SVM DecodeAssists or VMCB
-EXITINFO semantics, and patch 1 does not change the existing VMX
-behavior.  Supporting emulated nested VMX INVLPG would be a separate
-change.
-
-Thanks,
-Tina
-
-> 
-
+ static bool vmx_get_nested_state_pages(struct kvm_vcpu *vcpu)
+--
+2.43.0
