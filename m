@@ -1,166 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55551471264
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 15:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D33B33F5BC;
+	Thu, 13 Aug 2026 15:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786633215; cv=none; b=nmxLqe/2hHXdppNTj2Qxzn8dpoMM20Jjqg3SmZGCIbaZYdqe7U2JEyLpAIW7rSSx43IGZFcr3HvCWonQlbeHarGvNzUvXD6uu2DfbZ0+ZdS2cVr5lAYKcCIyJXiyHIIq9FEecgmNkF04Z4EbKKl5bFQhYfaABx3lesRglGEa2U4=
+	t=1786633268; cv=none; b=ej4SfsQyeka5j9dZD30hhtdcR+iwdLDmuwHfxNXt5gI4SCqiDN9cqPBfzgjMAtUZ9MVBDM0Rc97EFL2OvS0bkOpyTQG+wVKN+9QJN4UH+Cz/n9mM+d4ZPfTqFoCl0Q2Sx373d1DHBUU6Ga/1FmZw5BKdaZ/aPnGK92OB2iCWf+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786633215; c=relaxed/simple;
-	bh=5sM+1zSlul2kfYvbLYRPOSLBGN5aFbmaQpNogzsyE7c=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=KfCdeZAssqoSfK+JTaO/Idqn63elqg0W0lvVYtloBURYIpY6dGiOiG9tXdEjqqw7wxvFI3zHdh74sOfWv4fPyBomE+Uo/gxcQCz1/vmc9AKAQtdjKMbPA7H8s5YZzcJn9L05vGAiZe0yyVFugzTo0rJLYuxmVyOmdQduHTTqsq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBM/XjH1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786633268; c=relaxed/simple;
+	bh=eXTTWXqoagVkPe8ahcfUnJXTMT/akoQydSkZwvQ9u5k=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YRH+1+7gc8xkkkSGlucvFqTC6jioyRjTw4yhWyywxN+qZhWAGT6/u/th7KH1a5YddUtW7O9zSR4lAhdYfMWKTUsK53SrO2ZBmzrx4rdLEYjN8hsmUmYJobm+2HiwcCpfzKzSt92d3IANXKpGjJ1nAVPC3Iu+shuvapCFpJ5Btxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EgRk7AGh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBM/XjH1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA4D1F00A3E;
-	Thu, 13 Aug 2026 15:00:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EgRk7AGh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B60DB1F00A3A;
+	Thu, 13 Aug 2026 15:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786633209;
-	bh=yaVUpc1VxFtIh5R5GXu1iwxwShjuXGAgPOGgUALwEqI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PBM/XjH1JT6cOwPh5zbA/1iHBl1WIfqU1z7oRm1rFYY18GGPu+ZwqqGBDXwzdCUyr
-	 YXFalH1wd/4yMBU5tCUw4CSg+qpjmp4xnbXpL/VzVqFgbMUC6nxowIf0DSXxpgr414
-	 clPdPM2xAXl3cB/cpW5Jl/3PQMwYUcU7EzcEpXEgAC6/lJ37tYpTb5sDaMN2Ooe3OX
-	 97465gYjQMRNUfWzVRgdiRtdcu7JsY6IpHsJ2+3f3NV5MWoVGwvO0OXkJSYnBbUGNc
-	 G9FiEXKyXR9bQ+a17/PISNiV16hAYXjL7YoEQQyFOrKwXVkiDBFqGj1/GlNs0iwTD+
-	 m/0h8ve2GGuFw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 09/10] vfio: selftests: Add mlx5 driver - data path
- and memcpy ops
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jason Gunthorpe" <jgg@nvidia.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <9-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
-References: <9-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 13 Aug 2026 15:00:08 +0000
-Message-Id: <20260813150008.ECA4D1F00A3E@smtp.kernel.org>
+	s=k20260515; t=1786633266;
+	bh=iDYD01JzcNkmhOWGFh5QbccO2ho8Cwznacy5VjZDXQM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=EgRk7AGh2m/Gnf9z5Po7mfly2YewNQgWKeYo76ap52SkjssoYHVDzGE9aFT9hNWvu
+	 ucAXRTeo41NlsZLphB5Zn1UUBBb9gNdjfuV0Nb0xQcHgZUkmNxvb3+XBNb7zuMWk+Y
+	 fWKJgajo8wR/2CX4huM3KKZFDgYDb5LAj90HYYqjSxEka541fkF2LsIEgojBgYbTFv
+	 s1snZdyShAmfBOQUUm/jkQtfONbobYAeGSzn/zxNZvU/vy574iJz6Z/IHz5zKGPvIH
+	 SMDgxkMkPHdK9PSD3E2GV/0wu293gBj8vzmVH0Z5UpJEMePNxTdQjUCJHLpLyFDFlN
+	 /tR5NVUNBljsg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wuWvY-0000000FMlC-3sey;
+	Thu, 13 Aug 2026 15:01:05 +0000
+Date: Thu, 13 Aug 2026 16:01:04 +0100
+Message-ID: <861pc212vj.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Sascha Bischoff <Sascha.Bischoff@arm.com>
+Cc: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	nd <nd@arm.com>,
+	"oupton@kernel.org"
+	<oupton@kernel.org>,
+	Joey Gouly <Joey.Gouly@arm.com>,
+	Suzuki Poulose
+	<Suzuki.Poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>
+Subject: Re: [PATCH v2 0/4] KVM: arm64: GICv5 KVM IRS review fixes
+In-Reply-To: <20260811150941.941295-1-sascha.bischoff@arm.com>
+References: <20260811150941.941295-1-sascha.bischoff@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oupton@kernel.org, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, lpieralisi@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] Race condition in CQ polling where the `recv_counter` doorbell is =
-updated before all CQE fields are read.
-- [Medium] Strict aliasing violation when extracting the 64-bit doorbell va=
-lue via type punning.
---
+On Tue, 11 Aug 2026 16:09:46 +0100,
+Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
+> 
+> Hi all,
+> 
+> v1 [1] combined irqchip and KVM fixes identified by Sashiko [2] while
+> reviewing the GICv5 KVM IRS series [3]. Following feedback, v2 splits
+> the fixes into separate irqchip and KVM postings. This posting
+> contains the KVM fixes; the irqchip fixes are posted separately.
 
---- Patch [9]: [PATCH v4 09/10] vfio: selftests: Add mlx5 driver - data pat=
-h and memcpy ops ---
-commit 22f15a19e89d217e93d4e9e51e36db1a9fa3c2c2
-Author: Jason Gunthorpe <jgg@ziepe.ca>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
 
-vfio: selftests: Add mlx5 driver - data path and memcpy ops
+	M.
 
-This commit completes the mlx5 driver by adding CQ/QP creation, QP state
-transitions, WQE posting, CQ polling, and the memcpy_start/memcpy_wait
-callbacks. It enables functional DMA tests by implementing RDMA Write
-self-loopback via an RC QP with force-loopback.
-
-> diff --git a/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5.c b/tools=
-/testing/selftests/vfio/lib/drivers/mlx5/mlx5.c
-> index 804801cc564e7..e5e75adb25316 100644
-> --- a/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5.c
-> +++ b/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5.c
-
-[ ... ]
-
-> @@ -1343,6 +1343,354 @@ static void mlx5st_destroy_mkey(struct mlx5st_dev=
-ice *dev)
-
-[ ... ]
-
-> +static void mlx5st_post_rdma_write(struct mlx5st_device *dev, u64 src_ad=
-dr,
-> +				    u32 src_lkey, u64 dst_addr, u32 dst_rkey,
-> +				    u32 length, bool signaled)
-> +{
-
-[ ... ]
-
-> +	/* Ensure WQE is visible to device before doorbell record */
-> +	dma_wmb();
-> +
-> +	WRITE_ONCE(dev->qp_dbrec.send_counter,
-> +		   cpu_to_be32(dev->sq_pi & 0xffff));
-> +
-> +	/*
-> +	 * Ring doorbell: write first 8 bytes of ctrl to UAR BF register,
-> +	 * iowrite has an internal dma_wmb() so the doorbell record will be
-> +	 * visible.
-> +	 */
-> +	iowrite64be(be64_to_cpu(*(__be64 *)wqe),
-> +		    (u8 __iomem *)dev->uar_base + dev->uar_bf_offset);
-
-[Severity: Medium]
-Does casting the struct mlx5st_send_wqe pointer to a __be64 pointer violate
-strict aliasing rules?
-
-Because files under tools/ assume standard -fstrict-aliasing, type punning
-with incompatible pointers can cause the compiler to reorder the memory read
-before the WQE fields are fully initialized, potentially sending uninitiali=
-zed
-data to the device doorbell.
-
-> +	dev->uar_bf_offset ^=3D MLX5_BF_SIZE;
-> +}
-> +
-> +/*
-> + * Poll CQ
-> + */
-> +static int mlx5st_poll_cq_batch(struct mlx5st_device *dev,
-> +				unsigned int max_cqe)
-> +{
-
-[ ... ]
-
-> +		opcode =3D MLX5_GET(cqe64, cqe, opcode);
-> +
-> +		dev->cq_ci++;
-> +		WRITE_ONCE(dev->cq_dbrec.recv_counter,
-> +			   cpu_to_be32(dev->cq_ci & 0xffffff));
-> +
-> +		if (opcode =3D=3D MLX5_CQE_REQ) {
-> +			dev->sq_ci =3D
-> +				(u16)(MLX5_GET(cqe64, cqe, wqe_counter) + 1);
-
-[Severity: High]
-Can the hardware overwrite the CQE memory slot while the CPU is still parsi=
-ng
-it?
-
-By updating the recv_counter doorbell record here, it signals to the hardwa=
-re
-that the CQ slot is free to be reused. Immediately after, the CPU reads the
-wqe_counter (and syndrome on error paths) from the CQE. If the hardware pos=
-ts
-new completions rapidly, it might DMA the next CQE into the same slot before
-these reads complete.
-
-Could the doorbell update be delayed until after all fields have been read
-from the CQE, or batched at the end of the poll loop?
-
-> +			polled++;
-> +			continue;
-> +		}
-> +		if (opcode =3D=3D MLX5_CQE_REQ_ERR ||
-> +		    opcode =3D=3D MLX5_CQE_RESP_ERR) {
-> +			dev_dbg(dev->device,
-> +				"CQE error: opcode=3D0x%x syndrome=3D0x%x vendor=3D0x%x\n",
-> +				opcode,
-> +				MLX5_GET(cqe64, cqe, error_syndrome.syndrome),
-> +				MLX5_GET(cqe64, cqe,
-> +					 error_syndrome.vendor_error_syndrome));
-> +			return -1;
-> +		}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/0-v4-021df3fb5a3f+9=
-8e-mlx5st_jgg@nvidia.com?part=3D9
+-- 
+Without deviation from the norm, progress is not possible.
