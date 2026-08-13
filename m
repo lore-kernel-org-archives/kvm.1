@@ -1,102 +1,114 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2F348AE35
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 16:09:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDCA495501;
+	Thu, 13 Aug 2026 16:43:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786637364; cv=none; b=pnswa2+IMFzcv3u+ra7gzKvddXwmmvaphNpG1ydmFvmM6wHo44haLLMoCfSLapQX4jcEv1VqWrJk0/JimlF2480ILVqDbS8nNgnBjnebu1mO5C2qB+L6tOU9eQ0VzeA77uw5G3DInC0BIOOR0wu49IOdNWDCrX+GpTtExo0sVYQ=
+	t=1786639423; cv=none; b=CFXvCEvx3Ar1S2+eiP386bL26KblMH2zYsq/EsWo1Vwngb6uyFE7OCFWKvaKPsNy3u0vwO05oRklA87yY93S5ce3+cg2WoXKUpLQOVV84pcxR+AaM4ipSNqpbQY3iAb5krlC0OUoMWEp6YZ2hZYNPUkSloyUO4OcRC57Y+x7Ams=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786637364; c=relaxed/simple;
-	bh=w0ELszWBGMJXb0VVRoNWZwzpnHUnbxdOH2FQkHXWfls=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pk7usWMYxPKufidBNhtCGCqOlKu/OV737gpJl+e0TzVkjYkYNuMKk0JsqSvUsnMdDfz4yY9AbDAwBMQ0SKBqnfUo9dRWR6l5UmcrjC92O3Xlp9ztRh3N9UBmTN3sPaZixELtorlu2/kNuAZm23UiCzVIaB93qvcBn2bissi/Lnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=bA34YwnO; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1786639423; c=relaxed/simple;
+	bh=1pFmfPJ/NS4woqYIYPZY2u5Z4FXyXNnoiEkLH8xPrCM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p+P510zCWzKcWCA4K36jOkKhyaG+aJ1SWrL6llQ2sfA80BW/Jj7rxj2cQes9bYDKu0fILlOPG6PcCUi0S3NaZNfq7WI9M8EEEpXvgrCtUtKspjkLt31bmuyvSyCr3tvYatT4B+8jifkYFRoWng3dxqEPDO6eTWLace/ni1dHJ+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TXj8ZcO5; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="bA34YwnO"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 09FE81596;
-	Thu, 13 Aug 2026 09:09:06 -0700 (PDT)
-Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1EA383F66F;
-	Thu, 13 Aug 2026 09:09:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786637349; bh=w0ELszWBGMJXb0VVRoNWZwzpnHUnbxdOH2FQkHXWfls=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bA34YwnO7if1PuJeP3jbH2rR0JQIu6urfwGn3nVRTyJGyNDO/+M8twCJaRopKkJgo
-	 UmebfCbiRP4QBsH/gblc2UolCHVWi1SrF/GHV2Mop5szUFPXkokFcyIKMMoPWcSs9o
-	 GV8RQ6Y5T7v6rPb7Def9re3E21GeI7JfIHkps1jg=
-Date: Thu, 13 Aug 2026 17:09:05 +0100
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: David Hildenbrand <david.hildenbrand@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>,
-	Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com,
-	kvm@vger.kernel.org, maz@kernel.org, oupton@kernel.org,
-	joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com,
-	yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev, fuad.tabba@linux.dev
-Subject: Re: [RFC PATCH 0/3] KVM: Dirty page logging for guest_memfd-only
- memslots
-Message-ID: <an3sEiQlIuGEjUur@raptor>
-References: <20260702142912.6395-1-alexandru.elisei@arm.com>
- <akxOrMnlNga-vtQv@google.com>
- <ak0wSQ1133O7B96D@raptor>
- <ak0ziUcCXUlDdcla@google.com>
- <ak-EKSslAz1uqEtv@J2N7QTR9R3>
- <ak_wC4Q-mQe14DI8@google.com>
- <alDI1b8fC99SG4_a@J2N7QTR9R3>
- <a127176a-1722-460c-aa84-754e1d343f53@arm.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TXj8ZcO5"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67DFWg051629131;
+	Thu, 13 Aug 2026 16:43:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=mCu5XM
+	+/703dwdT+kC7YbRAuyNhk17M21ts/P/wSqb4=; b=TXj8ZcO5KayzNVRaqpzZEX
+	u5fgeSqp652cZ8pWdHAhj0cb6NEIO4CPVmunj+y7l3gFgc76EdkrDW5J0n2mA1pV
+	WLeZTBSdESyIs8eFVYeq2eNIIzoWdfXTUmRFmAlHtj6zMY0Dct9tcM2aVTaKnHNk
+	Ej0hdjahN+2wVcNBNhrQZlokJ9UjU+FKQHOJwrThhm4wvJZBvAEGtfd8u+19cYug
+	kj1tmPLWtm/gkV3Ksm4l293HVnO5XAz5TYEcosH3AgF0QWiwqtgKDO52Ev2H5G65
+	iphJeNtyPddgzBhN6hGdrduuVyzY3KBSpJUfJmLsplagX403pslz26KQFph4RnJw
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fyb24192h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Aug 2026 16:43:29 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67DGfK2c002548;
+	Thu, 13 Aug 2026 16:43:29 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxf5wbwbb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Aug 2026 16:43:29 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67DGhPBc38404370
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Aug 2026 16:43:25 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2144520043;
+	Thu, 13 Aug 2026 16:43:25 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E385620040;
+	Thu, 13 Aug 2026 16:43:24 +0000 (GMT)
+Received: from [9.111.39.35] (unknown [9.111.39.35])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 13 Aug 2026 16:43:24 +0000 (GMT)
+Message-ID: <ac0193b2-f286-404b-b8e9-8f67e4489aa8@linux.ibm.com>
+Date: Thu, 13 Aug 2026 18:43:24 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a127176a-1722-460c-aa84-754e1d343f53@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] kvm: s390: Improve floating IRQ injection behavior
+To: Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org
+Cc: imbrenda@linux.ibm.com, linux-s390@vger.kernel.org
+References: <20260813154040.73437-1-frankja@linux.ibm.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20260813154040.73437-1-frankja@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=XqfK/1F9 c=1 sm=1 tr=0 ts=6a7df431 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=vhUChTvZ1_M9NrF1dGAA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDExOSBTYWx0ZWRfXylf6wl5Z3kwo
+ cSj2FDWspK12nlyeu/gktsg3sgLXitQx5SdYfaMXPhWu4hDRPVyrZQp7XeOpRL9hapfeU+sMoaE
+ pJ3pvPUkB0ujFvHAWJFIb8XHjhyUFBUzwYheaU1PKm7WIzW/N8opOuRKzB6m9q5uwTNurdWxA0i
+ vo7mxAm3qwxfM35vOorK2gue/gtu3WrOfMAXVhR6j/3FsMbDb9woDIIOGBmsflNIuDhHDfdcHMP
+ vgehQOPulvrUpUQqq3qFeAnb5pRleWseUPigQ+i4Bi7kTjVzWkQU/K8aWMl+rxwF8L0iWD4Yxjt
+ O1V7Rtdg6t0vyeLltHxKOT9Ave44hOPajrzMbe7RfU64A/2e2FWCyw9cjg23zsKf7TQUaR3b12+
+ Jaw5ASdzp/eFa9OcrSfs9eUX4Cu2OZ4AyI2WEWhxxXni7D8khonzKNlPJ6O4zgMIK0QLXqK9bt0
+ HmGMSnCxveJYSjPX8jw==
+X-Proofpoint-ORIG-GUID: 09UimnzEgnZiMvf7nGIp6Lsg3y0kSHGX
+X-Proofpoint-GUID: 09UimnzEgnZiMvf7nGIp6Lsg3y0kSHGX
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDExOSBTYWx0ZWRfXyfel2LQg7H8Q
+ BVeMiZY3xc7cow3WkEjAhaZxg08X+me4ql4ohrAFyqWRT0QKHO4jZZMBV829F3PCIX/JU8d+gc7
+ OdX3FEIkiUhILxHZmRSdCvA2LZc1GaQ=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-13_05,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 spamscore=0 adultscore=0 malwarescore=0 clxscore=1015
+ suspectscore=0 priorityscore=1501 impostorscore=0 phishscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608130119
 
-Hi Sean, David,
 
-On Mon, Jul 13, 2026 at 04:11:57PM +0200, David Hildenbrand wrote:
-> 
-> >> That said, odds are good that we'll end up with per-gmem flags to communicate to
-> >> guest_memfd whether or not the gmem instance supports page migration (x86's TDX
-> >> and SNP in particular require extra consideration).  So if the anticipated use
-> >> cases are fine with all-or-nothing "pinning", or with juggling guest_memfd files
-> >> in userspace if a more dynamic setup is desired, then you should be ok?
-> >>
-> >> E.g. if the anticipated use cases are all slice-of-hardware style setups where
-> >> the VM will be statically assigned a chunk of memory, then for the most part this
-> >> will all Just Work.
-> > 
-> > Yeah. I agree (with the caveats you mention). Arm folk need to go figure
-> > out if it's worthwhile to support with all those caveats.
-> 
-> Right, disabling migration (once gmem supports it) was also what I discussed
-> with Alexandru when that topic comes up.
-> 
-> How to communicate to gmem that it wants these fixed mappings is a good question.
 
-There's already a proposal for how to do this in the migratable guest_memfd
-series [1] - it's a new guest_memfd creation flag that disables migration.
+Am 13.08.26 um 16:56 schrieb Janosch Frank:
+  	kvm_s390_set_cpuflags(vcpu, CPUSTAT_WAIT);
+> @@ -1933,7 +1964,8 @@ static void __floating_irq_kick(struct kvm *kvm, u64 type)
+>   	for (sigcpu = kvm->arch.float_int.last_sleep_cpu; ; sigcpu++) {
+>   		sigcpu %= online_vcpus;
+>   		dst_vcpu = kvm_get_vcpu(kvm, sigcpu);
+> -		if (!is_vcpu_stopped(dst_vcpu))
+> +		if (!is_vcpu_stopped(dst_vcpu) &&
+> +		    deliverable_irqs(dst_vcpu))
 
-With Sean's comment that he expects swap/reclaim to be fully userspace
-driven, I believe that would be enough to guarantee on the _kernel_ side
-that SPE will work as intended for a guest.
-
-I'm a slightly concerned though that all of this will work by chance, and
-not by design, and in the future the behaviour might change to allow
-guest_memfd memory to be unmapped from stage 2 without the VMM or KVM
-explicitly allowing it or initiating it.
-
-My understanding from the conversation so far is that the plan for the
-future of guest_memfd is to support an option/mode where the memory is
-effectively "pinned" at stage 2 (but which allows userspace to explicitly
-free/unmap it, of course). Is that correct, or am I being overly optimistic
-in my interpretation?
-
-[1] https://lore.kernel.org/all/20260805-shivank-gmem-migrate-v3-4-00d8bdec4e1d@amd.com/
-
-Thanks,
-Alex
+We have the type. Wouldnt it be better to actually check if type is deliverable?
