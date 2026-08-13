@@ -1,117 +1,141 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E223A8759
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 22:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FCB332E151;
+	Thu, 13 Aug 2026 23:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786661546; cv=none; b=AiyjlOuSdC+U5rOOKnfx6B4mUL7P2xHIBKQ2os9WTrretHHI+oeAtGFW3Xa2sOp0lzhON/wYHi6OTx/Gl9ktkm10gNjlz3C/DzGZgVfaO8VjRA2pLTBIBHYXHxQFTb7KXF5VljlJmOoZaKNC95xueuVdVGAf6NBju4ZUt/HxrkU=
+	t=1786662069; cv=none; b=VSU8Gc9MDYxRiG4hECPMWTzY6J6MdTO9arUylEAlr09pwSXKlRMnw3dLNBAxp+ZFtYbv/n+TCk2eA1LESCGk1hxxKi0IL8BpK+NRljfSIKh/Ab/IlQNJu42tx3Mlxrt/t3RDTh1UK8nj//+I+Sf85xkRfEGNQN+o6i+w+O/nyNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786661546; c=relaxed/simple;
-	bh=f8xaBSmaK2Zm/vtSY81QIsjj194l9S2TFlvJtf8mH7E=;
+	s=arc-20240116; t=1786662069; c=relaxed/simple;
+	bh=GAsgRMnWz8UoL5rOje3fwcF5A2QZZXdQeRTDnxyDoxc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=qOuCqi/DV0kG6MkAWqV/7WqzdeMNIOa8qOzgj1awMru9BpaKS2sjG4JtIYu6h++PzzbXrf0aTRuUyAa/P6Xg29K+Y4Nlx+Y0PAi4jAjI/Fwt8OPRTppZN7nfCisTjuOjJMdnR1+AKe9XPlJdvQYUK9Lrv9kFYVvq3o0593e4PoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nUJ+HtuH; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=l280BqdyjWfPVBm9/H2cnrWrNr7WDuQbjBG9TVuFfPjFFHkGw7yCD0TguVbSGO0RPUZ/cFSEOPGAyHExngwPteay8lOtNtxB/RJdCE4QVqanfYzvev1aRauNcL9sOhF9+NU/Qp3GvAPoq2UEvFKU9TSFZeU8fm/4TnPXNbC854E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K2l/zfFq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nUJ+HtuH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 543991F000E9;
-	Thu, 13 Aug 2026 22:52:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K2l/zfFq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99CA11F00A3A;
+	Thu, 13 Aug 2026 23:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786661544;
-	bh=qJEfPNtwW6Lypc28zjRFnewd58bpUDKPZ+4Vs/yXX0k=;
+	s=k20260515; t=1786662068;
+	bh=VhTIDfGcFAlgV0IxMBpanCzug3fm+uF81rfDUPeaWi4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nUJ+HtuHyECVMbelHw08BS82g1OvJ4oA7WeTK4WSXEG/Av87xqOu6D29oHAlInSyd
-	 Mvzc1RS3Mc12HjqagAM4mcIdRNASBvVZpeth0b0UeGLa1ATJaZqZ3S2VjqXn6IM/Q+
-	 gMm6AGFaSrX/qqYtewmr4lqhZ+8c2PTPhUvFzbbsyQw1yZ7Hc6l84e3fn0Ainv3yuW
-	 iibShekUUmSgz4WiLOHLQXQjJ2p1qHs1gpoHwArBrPVK4/jvlLvFELepCMaNZBhSYH
-	 y7vvBaAiqYlwWaoTBPwUkdhlhVbwDwsOJE00iQlFC6/FdjCcyI3F5i40d0f2biFsh6
-	 laPuDGHEbqNDg==
+	b=K2l/zfFqy3aDhAVjL7lvXqVDh/F3E92H3gylkvFtRQvS2q1UUEWa/1yQMa758ll6l
+	 rF34xBGwqkODlSolHU6uNrDfOD5ULId4+OVsStnZuHqG9vzdscAM6P6TUvUnRe7UO7
+	 QO7qv2ZeTuPCGxNI/ILdVhw0ul50t4S6ykxJkkRoJmgan0Kky9P65JmkpSxVQtRxNX
+	 WXzfrsLixoZGYD3YMjMptfZ7WBMhPKsxljntQsC07uMHwxvIGA4wZYDG0HSnbeebs1
+	 +mI1IjYOm84qyeBLo0P7dM8ghgtuOFCb4VjrlHA9lLb0dkh1ZqEhHM8VBAILAm0LbS
+	 hxPSD9H6XpLTA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 07/22] coco/tdx-host: Implement firmware upload sysfs
- ABI for TDX module updates
+Subject: Re: [PATCH v3 8/9] KVM: s390: vsie: Fix guest page tables
+ protection
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chao Gao" <chao.gao@intel.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260326084448.29947-8-chao.gao@intel.com>
-References: <20260326084448.29947-8-chao.gao@intel.com>
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+Cc: kvm@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org, "Christian
+ Borntraeger" <borntraeger@linux.ibm.vom>, "Vasily Gorbik" <gor@linux.ibm.com>, "Heiko
+ Carstens" <hca@linux.ibm.com>
+In-Reply-To: <20260324174301.232921-9-imbrenda@linux.ibm.com>
+References: <20260324174301.232921-9-imbrenda@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 13 Aug 2026 22:52:23 +0000
-Message-Id: <20260813225224.543991F000E9@smtp.kernel.org>
+Date: Thu, 13 Aug 2026 23:01:07 +0000
+Message-Id: <20260813230107.99CA11F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The module pins itself in memory and becomes permanently un-unload=
-able due to a reference cycle.
-- [Medium] seamldr_init() failure propagates to tdx_host_probe() and fails =
-the whole tdx-host module.
+- [Critical] Uninitialized variable 'gl' used in condition, leading to skip=
+ped allocation and host kernel NULL pointer dereference.
 --
 
---- Patch [7]: [PATCH v6 07/22] coco/tdx-host: Implement firmware upload sy=
-sfs ABI for TDX module updates ---
-commit 805f010d78ca6bd2ca042a5f57d4d4c84f3c2978
-Author: Chao Gao <chao.gao@intel.com>
+--- Patch [8]: [PATCH v3 8/9] KVM: s390: vsie: Fix guest page tables protec=
+tion ---
+commit ff58b599b812f86d2edff5eab1c005a2ef716cc7
+Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-coco/tdx-host: Implement firmware upload sysfs ABI for TDX module updates
+KVM: s390: vsie: Fix guest page tables protection
 
-This patch introduces a sysfs ABI using the fw_upload framework to allow=20
-userspace to provide TDX module updates. It explicitly chooses fw_upload
-over request_firmware() to give userspace full control over module
-versioning and non-linear update policies.
+This patch adjusts the levels of guest page tables that are write-protected
+when shadowing, and avoids double protecting the last level. It also skips
+attempting to shadow the DAT tables when the nested guest is running in a
+real address space.
 
-> diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/td=
-x-host/tdx-host.c
-> index 01f68c390a49e..d4a5528530211 100644
-> --- a/drivers/virt/coco/tdx-host/tdx-host.c
-> +++ b/drivers/virt/coco/tdx-host/tdx-host.c
+> diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
+> index 0ac2d775d4c05..93a757749a6ee 100644
+> --- a/arch/s390/kvm/gaccess.c
+> +++ b/arch/s390/kvm/gaccess.c
+> @@ -1518,6 +1518,13 @@ static int _gaccess_do_shadow(struct kvm_s390_mmu_=
+cache *mc, struct gmap *sg,
+>  	    (!ptep && crste_leaf(*table) && !table->h.i && table->h.p =3D=3D w-=
+>p))
+>  		return 0;
+> =20
+> +	/* In case of a real address space */
+> +	if (w->level <=3D LEVEL_MEM) {
+> +		l =3D TABLE_TYPE_PAGE_TABLE;
+> +		hl =3D TABLE_TYPE_REGION1;
+> +		goto real_address_space;
+> +	}
+> +
+>  	gl =3D get_level(table, ptep);
+
 [ ... ]
-> +static int seamldr_init(struct device *dev)
-> +{
-> +	struct fw_upload *tdx_fwl;
-> +
-> +	if (!can_expose_seamldr())
-> +		return 0;
-> +
-> +	tdx_fwl =3D firmware_upload_register(THIS_MODULE, dev, "tdx_module",
-> +					   &tdx_fw_ops, NULL);
 
-[Severity: High]
-Passing THIS_MODULE to firmware_upload_register() increments the module's=20
-reference count.=20
+> @@ -1542,6 +1549,7 @@ static int _gaccess_do_shadow(struct kvm_s390_mmu_c=
+ache *mc, struct gmap *sg,
+>  	/* Get the smallest granularity */
+>  	l =3D min3(gl, hl, w->level);
+> =20
+> +real_address_space:
+>  	flags =3D DAT_WALK_SPLIT_ALLOC | (uses_skeys(sg->parent) ? DAT_WALK_USE=
+S_SKEYS : 0);
+>  	/* If necessary, create the shadow mapping */
+>  	if (l < gl) {
+                  ^^
+[Severity: Critical]
+Does this leave the variable gl uninitialized when taking the goto?
 
-Since tdx-host uses a root faux_device without a sysfs unbind mechanism,=20
-the elevated reference count will cause rmmod to always fail with -EBUSY.=20
+When a nested guest is running in a real address space, the new goto
+statement bypasses the initialization of gl:
 
-Does this effectively pin the module in memory permanently and prevent upda=
-tes=20
-without rebooting? Should this pass NULL instead of THIS_MODULE to avoid th=
-e=20
-reference cycle?
+_gaccess_do_shadow() {
+    ...
+    if (w->level <=3D LEVEL_MEM) {
+        l =3D TABLE_TYPE_PAGE_TABLE;
+        hl =3D TABLE_TYPE_REGION1;
+        goto real_address_space;
+    }
+   =20
+    gl =3D get_level(table, ptep);
+    ...
+real_address_space:
+    ...
+    if (l < gl) {
 
-> +	if (IS_ERR(tdx_fwl))
-> +		return PTR_ERR(tdx_fwl);
-> +
-> +	return devm_add_action_or_reset(dev, seamldr_deinit, tdx_fwl);
-> +}
+If the uninitialized stack value for gl causes the if (l < gl) condition
+to evaluate to false, the dat_entry_walk() call is skipped.=20
 
-[Severity: Medium]
-The v3 changelog mentions "Don't fail the whole tdx-host device if=20
-seamldr_init() met an error", but returning the errors here propagates them=
-=20
-back to tdx_host_probe().=20
+Since ptep was initialized to NULL at the start of _gaccess_do_shadow()
+and the initial dat_entry_walk() may have stopped early without setting it,
+ptep can remain NULL.=20
 
-This causes the entire tdx-host module initialization to fail if the option=
-al=20
-firmware upload interface fails to register.=20
+Later in the function, _do_shadow_pte() is called with this NULL ptep,
+which could lead to a NULL pointer dereference in pgste_get_trylock() and
+a host kernel panic.
+       =20
+Is there a way to ensure gl is initialized before the jump, or provide a
+safe default when running in a real address space?
 
-Did this inadvertently revert the v3 design intent? Should this function
-ignore these errors and return 0 instead?
+>  		rc =3D dat_entry_walk(mc, gpa_to_gfn(saddr), sg->asce, flags, l, &tabl=
+e, &ptep);
+>  		if (rc)
+>  			return rc;
+>  	}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260326084448.2994=
-7-1-chao.gao@intel.com?part=3D7
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260324174301.2329=
+21-1-imbrenda@linux.ibm.com?part=3D8
