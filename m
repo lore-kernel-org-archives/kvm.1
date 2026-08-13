@@ -1,120 +1,193 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964543ACA5D
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 05:57:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1922642F702;
+	Thu, 13 Aug 2026 06:56:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786600674; cv=none; b=V2RFHtD/7C8+epakbvhVzqGMJ2RuEfVy1srS8g7ts1v4mpINOhIjtk8dsVd790oObYPRD5fTYEQic2fZs7ETgk6eHtDIuvbl4pF4TsMFkSA1zjRbs2+y6zVnGMUS337IGD9aW7Q39iYG7EAO4q0BIuf0a3e0Z+TEneUouom1glw=
+	t=1786604191; cv=none; b=UPfU/keSsThGkaShUdtA294MKFnxuhjvECinhjk/FZCVNm3Be1n22zFl819MWKAefMNzq073MgXBJQ3FP3k7VXMhfeD3NEUHMwnLxZWJml3m0wt+HlSR+LZ5VEVzZFgqtqGVyvGN4Pmx9CrGr5aMcFgNK6DPino9m13WsSv602w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786600674; c=relaxed/simple;
-	bh=Mrl9k2OYxCttpt0oaJBvFcDv/awuA7xGxUf0yffgjFU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=buYaKiXLkPHchyITkPIus2qcirlFEfVlZjHsF7epb+xNvMh+LA+YsAJrW/U7B1eyk4wtbEqvAUQ90qlQoFo6XVrQX1YHUX6JiaKUvpXg3WBz9w2ip/fE6yw2MWDO0yHYkMAEGZN4ybfpIn+aHUNrAD/V4HqQJvyn2XPDm0VsSQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y5r8olKb; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786604191; c=relaxed/simple;
+	bh=EiRUT7eibLcdH0tOQiOYhPqjIQxyxShzLvniKf9KyN0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lrErwSUz+inmbBN7aQytfeOC/+3GPPHFB4vW7spnYexe3qCCZNp9P8sWI4CmYXU0XX4eS/w3htRCyXuqLMMUn4bDgyeSxccMO9Gq7F8x5wPkIi+vPpT5VqC2EQQDzCfJoQ75g1WjmOnP7pu2dPUo57NtN/bsbIkrAPYMOJ0Ia8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DcUSMufw; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y5r8olKb"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-495757ccbc1so2598405e9.2
-        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 22:57:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786600671; x=1787205471; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+7PeLXe+ue8rItbBi6+JlGfhsV/36WDiPAKPGI7m+do=;
-        b=Y5r8olKbQA4KmcW9MwLfY1sP4HOfESCCn2SatRrFA1havzjn0jngfHP5fQr+C0cUyG
-         fTw0KXazOJ/aIWTvGZrcSno+nEZYHc6nPo1dPcOgL9YSixO6mslcCv0kUUkP+0l5o8CP
-         ZXzKp1GQ9ztiLIIAl1MNiLrcukdAk6UsKM6ziWifIzBFTPYnbUdxfzMYowI6cXBbOgDq
-         3hMccu51xyUq6krsQ1N1jxgU/eGuNjm7yai5L9fy2tdTvgdlex6VAQ3rz2trW7TZmYCA
-         r8NEtB3BBC0y1MW3r2OSGnroBwfSCih2ThnoroyJ2prTNj8hiVMI0sifs/YiREQ/8NEG
-         Eu+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786600671; x=1787205471;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+7PeLXe+ue8rItbBi6+JlGfhsV/36WDiPAKPGI7m+do=;
-        b=MpZv82AJrLpcicCiANu3r1DG8V3R0NBQ4yQCTN4gxxA0lcAEbaymx5spvmOXjm1hNG
-         PXdBC1opvRi/JBaS4UkH7MGCv0TLSx96hM7xH4lWq9sIMpvWqxZWVjYkjshYrvMVRMIw
-         tUPf4CXzvjC/xTKIywPUyByt3Ow3SChGviNYgMZ3RN9Le0LkORVzLJ9n0XsiRriphzhl
-         QYf3vJBA7hIc6njCoTGGuyLJaX3gnDv7iQZtavypfxd8D3Hl4wNh21qvb5w7jrMdHkQl
-         oZq4hOyOtKIl+M3+zILu+Ao2kdY3Vng88g55uufeKwcfShFa3Riordht2MfE8BV7Gfgo
-         obow==
-X-Forwarded-Encrypted: i=1; AHgh+RqA3H48wU4qDpunTn2KPtKr8KP7sB8AdCt89KpjhSe5/7/cJuHOAu5KE7vAgqGcE6cq1t4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIthoIwx9AhDlEgs3pYZk4vn1kH13I2AO1W+lOC1B08b4qx87j
-	Ri++PFDjIrVSrTIvX9WEbKvdQ2ZfzfAky9dX5UPMs7L6SEixNAfBCdh7
-X-Gm-Gg: AR+sD13ERp7O5EQKRSB7fYuRdo6kP+TJY9nVJ5mTRyt0pe2WKleUoef9ri3JeRYhNwC
-	qQsTLXZ8egC/PfG34MCzkDZgUXNC0lNXd99WvZXECn9ylGdMEaMfhtg/pyiP9Ku3YOX9C/94mAn
-	2hAxSj0KOvXkFgoG9udH2uJgokhK0Q8iU6JwAsm0bznEqKetPsnGK1DEbnrtj1Ypg3siOYaYca/
-	V/UDbYk5aF+qvIpOmNv8lTbvLM10JxumaOzqKBkN7h+ZRKrFnB8qNYfP3ljzZfBHkKviyJYfQ4K
-	FwRHTZ5n8H8b8anBtYIMIcQ2rIVWJrdBYxYGS2ruBaedy+osvE28Fz8GlxMPCGY5BL44n/pYw6l
-	uFtem9BZgRkJco/eS9atxp5lUoQQi2uUfoDcTMZ0R/WPjbrBIdLjCZRaRZjUO/08S81YsBZeqtm
-	EikFTAdNbidetwUcsK0qHuzBGPdpPdt4zcRjh2Gkpttaaq2X5WdA9AvHZv6dQuS/kVIoBaKTRLS
-	7lhirRM9K/3ybjvP+VfkriKWa4od2GN65ZT3NtWhQBRgmIR5qqVKDPYgIh9ZxwaoAIuqptvHCnF
-	hk7fO6YiQwaVav51L++1wUNGCsbTzj0nnbX9PJ5ZUNEFmjO4r8OKyO8GluDtl2l2tpQ=
-X-Received: by 2002:a05:600c:190f:b0:499:484a:98e7 with SMTP id 5b1f17b1804b1-4998218e63dmr29591735e9.14.1786600670592;
-        Wed, 12 Aug 2026 22:57:50 -0700 (PDT)
-Received: from MacBook-Pro-von-Karl (dynamic-2a02-3100-9c79-1f01-1565-573d-10dc-99f9.310.pool.telefonica.de. [2a02:3100:9c79:1f01:1565:573d:10dc:99f9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4998216cf70sm28991305e9.12.2026.08.12.22.57.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 22:57:49 -0700 (PDT)
-Date: Thu, 13 Aug 2026 07:57:48 +0200
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
-	Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, Eric Auger <eric.auger@redhat.com>, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [RFC PATCH 1/2] KVM: arm64: vgic-v3: Roll back failed
- redistributor region setup
-Message-ID: <an1cYl928Fue-z3s@gmail.com>
-References: <cover.1786344511.git.kmehltretter@gmail.com>
- <4e00fc25aa61ec52e6ef033a53588ce3f5550982.1786344511.git.kmehltretter@gmail.com>
- <86tsp2139b.wl-maz@kernel.org>
- <anotFcOP0kcQJwrA@gmail.com>
- <86jypv1lxo.wl-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DcUSMufw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786604190; x=1818140190;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=EiRUT7eibLcdH0tOQiOYhPqjIQxyxShzLvniKf9KyN0=;
+  b=DcUSMufwNz+PqSYYqon6wSY5/VjfeChHGQXmwYoKYBh8Gq/gJ7yjtmBu
+   Rv4sdZFiAz4zJSUdftQx8GwX1aqM/GDbvtgp8x4f+vf4pMLn2MQoGj6ng
+   WzQtELWbFYyhH23sAENDUh8rbBMidu3fV61vuFCmqKsdG2OLrOKZ0EUSy
+   R2HYLu3xF01GugRrqv/sW17Xg23h5lrNiJLY0L4WdeQx8rK2twPXv5WFg
+   eKDFQXY0EnLBL3TrIFKQiZiX8Yl1xhVzLjMrtyLrapazUXwo2TXx5moZy
+   R9U/KyitPKRoWuXYZevkGtx9g1TF0/zsF3GPmrz/FvD7Fwwa6vLnxyLaz
+   A==;
+X-CSE-ConnectionGUID: GhMaEBwOTG+85KdnOVhNkw==
+X-CSE-MsgGUID: YMbghMO9ShyDNeycten64g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="86290007"
+X-IronPort-AV: E=Sophos;i="6.25,220,1779174000"; 
+   d="scan'208";a="86290007"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 23:56:28 -0700
+X-CSE-ConnectionGUID: G3H/IDqNR/ShOWEVvKkhtw==
+X-CSE-MsgGUID: hHyHwXdWQJSEvzpnZYeIQg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,220,1779174000"; 
+   d="scan'208";a="265841672"
+Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 23:56:14 -0700
+Message-ID: <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com>
+Date: Thu, 13 Aug 2026 14:56:12 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <86jypv1lxo.wl-maz@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 12/41] KVM: guest_memfd: Call arch make_shared
+ callback for to-shared conversion
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, linux-coco@lists.linux.dev,
+ Fuad Tabba <fuad.tabba@linux.dev>
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-12-2fc18ee6d3ba@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-12-2fc18ee6d3ba@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 12, 2026 at 02:57:07PM +0100, Marc Zyngier wrote:
-> On Mon, 10 Aug 2026 22:22:37 +0100,
-> Karl Mehltretter <kmehltretter@gmail.com> wrote:
-> > Is this closer to what you had in mind?
+On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
-> No. I want *all* RDs to be gone on failure, and the next successful
-> registration to result in all possible RDs to be matched against a
-> vcpu if there are enough of them. Effectively an atomic behaviour from
-> the PoV of userspace.
+> When memory in guest_memfd is converted from private to shared, the
+> platform-specific state associated with the guest-private pages must be
+> invalidated or cleaned up.
 > 
-> See the patch below for what I came up with.
+> Iterate over the folios in the affected range and call the
+> kvm_arch_gmem_make_shared() hook for each PFN range. This allows
+> architectures to update hardware metadata or encryption states to
+> transition pages to the shared state.
+> 
+> Invoke this helper after indicating to KVM's mmu code that an invalidation
+> is in progress to stop in-flight page faults from succeeding.
+> 
+> Omit support for calling the arch hook to make private, since SNP, the only
+> implementer of the arch make-private hook today, would actually prefer
+> making private only just before faulting memory into the NPTs.
+> 
+> Calling the make-private arch hook would require iterating both bindings
+> and the filemap to find the intersection of bindings and allocated
+> folios. On top of that, SNP would need to figure out whether to actually
+> make private based on whether the memory is about the be faulted, or
+                                                     ^
+the -> to?
+
+> whether it is a conversion.
 > 
 
-Understood. I believe your sketch needs two small adjustments:
+[...]
 
-free_index must be incremented before kvm_io_bus_register_dev().
-If registration fails, the current vCPU already has an RD assignment, but
-there is otherwise no increment for the teardown path to undo.
+>  
+> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end)
+> +{
+> +	struct folio_batch fbatch;
+> +	pgoff_t next = start;
+> +	int i;
+> +
+> +	folio_batch_init(&fbatch);
+> +	while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
+> +		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+> +			struct folio *folio = fbatch.folios[i];
+> +			pgoff_t start_index, end_index;
+> +			kvm_pfn_t start_pfn;
+> +			kvm_pfn_t nr_pages;
+> +
+> +			start_index = max(start, folio->index);
+> +			end_index = min(end, folio_next_index(folio));
+> +			/*
+> +			 * end_index is either in folio or points to
+> +			 * the first page of the next folio. Hence,
+> +			 * all pages in range [start_index, end_index)
+> +			 * are contiguous.
+> +			 */
+> +			start_pfn = folio_file_pfn(folio, start_index);
+> +			nr_pages = end_index - start_index;
+> +
+> +			kvm_arch_gmem_make_shared(start_pfn, nr_pages);
+> +		}
+> +
+> +		folio_batch_release(&fbatch);
+> +		cond_resched();
+> +	}
+> +}
+> +#else
+> +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end) {}
+> +#endif
+> +
+>  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+>  				     size_t nr_pages, uint64_t attrs,
+>  				     pgoff_t *err_index)
+> @@ -599,7 +636,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+>  
+>  	filter = to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
+>  	kvm_gmem_invalidate_start(inode, start, end, filter);
+> +
+> +	if (!to_private)
+> +		kvm_gmem_make_shared(inode, start, end);
 
-The garbage collection in vgic_v3_free_redist_region() should remain.
-VM teardown frees the regions before unregistering the RD iodevs, so
-removing it would leave rdreg pointers referring to freed regions.
+If both KVM_AMD_SEV and KVM_INTEL_TDX are enabled, HAVE_KVM_ARCH_GMEM_CONVERT
+will be enabled and the logic in kvm_gmem_make_shared() introduces unnecessary
+overhead for TDX.
+Not sure about CSPs, but in a standard distribution kernel, it's very likely
+that both are enabled, right？ Should kvm_gmem_make_shared() do some
+optimization or the overhead is relative small in the conversion to shared
+path so that the optimization is not worth it? 
 
-Does that look OK to you? If so, I could include both in v2.
-I'll also split the selftest change and have it check only the
-final state after the retry.
 
-Thanks,
-Karl
+> +
+>  	mas_store_prealloc(&mas, xa_mk_value(attrs));
+> +
+>  	kvm_gmem_invalidate_end(inode, start, end);
+>  out:
+>  	filemap_invalidate_unlock(mapping);
+> 
+
