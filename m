@@ -1,301 +1,116 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E164746B4;
-	Thu, 13 Aug 2026 11:55:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42F9411F9D;
+	Thu, 13 Aug 2026 12:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786622121; cv=none; b=Wf9rGbtm37xijxsi6RR/hJ2sDgALmVENt3h2tR6vWoa9Y/bgTv0G8fsywha4uQ1DycSqtQ2A8kPzt+hbs8uVtPoc/Fv3S1QFxiRnOnX5DloFxWeorKktjiVyvvfyCVSTaAMEx1LSPVSlb6+//8lZF07aWQSMkndtymQlkLTQ9mE=
+	t=1786622938; cv=none; b=r78+4WB5uP2a2PyMufJAEBidCXlcsknk35cWeYGqR32M7RxY+ggbYvZGbkgHLYYSYzabvhpW9aZ3r5jIjEHbgIZ38t/XvoWihg2oZLw+mIORSniCIZGlYLtJICRVsK98MbHPEj8/FLO0oWrUxrqlE0rRRLdjqbInf6jgUP/zYpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786622121; c=relaxed/simple;
-	bh=8PcfYA86wvaPg8JqagrWUJ5kfbN2MMl7H4Axli79LNA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TzFk7FBo0blGJbT94o3HGn2JtVaH50bw+xmOssRX1WWWddTVC1Uy4STmpUsSlucwCQaheaQ6EZKuR42e/AyuhWi5aVHwuQI4MocwTqyGe43Vnm5Af+l6vkFhGGsA3v9/eVk8leCQGr0TBa7pGh/R18o6nI/6UU8ObiM5BK5CjLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rApxB09L; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rApxB09L"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67D98pp11916162;
-	Thu, 13 Aug 2026 11:55:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=JipJWS
-	7cDeW1jAsDd4aDo4sm9o9IaQKPZ2SdhaQPZq8=; b=rApxB09LhnRoFHHe83dgir
-	o42WsFcoqLfHNee+7mDansbVD7FQouYkfcMMCDBVWkkJNMBVoUGWYsKRe+QHiPgW
-	wwE6R1jgfqogA4X5t3OhYT8NFhF1crcaX7mD2KvTSOSCLTAkjf8kUiSKZxVcZm3m
-	rRPCwpwoCaj3UFZby2rJp1Hc2jkCDF2FWLH8/joNym7KMscqiPm42/UvenVTAuuD
-	+LxDFqVPBw7ggktxO3V90bnz3zgD/YKJf4cmCzkkFmcvGy7np7iaC+JYCaYP2V/g
-	y/+UKvSQ4uFvdNZYKdXKKESukV41pYLQ0UwO3qux5FLwSg+EGKvqSD0cNDSuhnYg
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvm9yrmq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Aug 2026 11:55:14 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67DBfL2e017670;
-	Thu, 13 Aug 2026 11:55:13 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxg9hat22-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Aug 2026 11:55:13 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67DBtBmL23659186
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Aug 2026 11:55:12 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7A6BA58045;
-	Thu, 13 Aug 2026 11:55:11 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F13BB58050;
-	Thu, 13 Aug 2026 11:55:09 +0000 (GMT)
-Received: from [9.61.3.203] (unknown [9.61.3.203])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 13 Aug 2026 11:55:09 +0000 (GMT)
-Message-ID: <e94dfa4a-e2b3-4cda-904a-ef571d2277db@linux.ibm.com>
-Date: Wed, 12 Aug 2026 12:04:25 -0400
+	s=arc-20240116; t=1786622938; c=relaxed/simple;
+	bh=V9m7jIolaMqzijtPL4jganEyjYv4SPayUvnBdtIm/js=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AIlzhmMUtkIwwVeCLp25gvhNj5WyyWZCAFDyvZVU+j6h1mj51V+SLSOQKHycivRXO3nzz/mHoBqY2PamYqWEsym0OVA98FHGVpUDRMyQX5rdgBeWavHWl/WfgWSJmeuxJMhqO9d5WRXfHgQqkccCrN0INOb59ffsSm3crUEWMzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.87])
+	by gateway (Coremail) with SMTP id _____8DxC9LUs31qI+YAAA--.2715S3;
+	Thu, 13 Aug 2026 20:08:52 +0800 (CST)
+Received: from kernelserver (unknown [223.64.68.87])
+	by front1 (Coremail) with SMTP id qMiowJAxX8_Gs31qZ10DAA--.22644S2;
+	Thu, 13 Aug 2026 20:08:52 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>
+Cc: kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [GIT PULL] LoongArch KVM changes for v7.3
+Date: Thu, 13 Aug 2026 20:08:29 +0800
+Message-ID: <20260813120829.823203-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 05/15] s390/vfio-ap: Callback to get/set vfio device
- mig state during guest migration
-To: Anthony Krowiak <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: borntraeger@de.ibm.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
-        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
-        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
-        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com
-References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
- <20260807221834.562851-6-akrowiak@linux.ibm.com>
-Content-Language: en-US
-From: "Jason J. Herne" <jjherne@linux.ibm.com>
-In-Reply-To: <20260807221834.562851-6-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDA4MSBTYWx0ZWRfX2w2RoOsNRsJO
- zy4SQsNBjxTHcBv2EqXAwzF1BWfhfSv5EvoabZT2RDFSIqEkUixmC7rEzILCN1iB6cRuax4h6Gq
- IPqpUgmOtzZr/iNRblopZS9LH14xOMZ4/w68CJv/UFKEvQwrLkiKc2P6eY+pbqFUAjPEVlk/17W
- /+cis75XLIpRp5XRkeZrUgw0iPeLSl+FmLSiMbG00ge5EaAxK4OBgYTis+oz6UTv+Bqo1gP58OP
- alfY1KUy9gc7OAgG4vK9l16TnUorFuN5PDUOGLWTGV5+QrWEnT+u0E6YOU3aPGKYAdMUqT3/EsK
- YnzY8d3Hno3uYyXrewwvtvIBXpDmK/nbYUxteBDyGxPnULOYiWEy8OAX1tjBBubwsRRjdeP9aXe
- 93u1Yxn1O6ZFKl7G0eh07UliSwXS0em1UXtxiO7h2S1selNPNPoCaD7fjHjz7MShPWy5zz/PEnU
- odfuqtHUI0dtBer9b1Q==
-X-Proofpoint-ORIG-GUID: VnxFgVyCPhP2q2xF0VXf7bnsoTknamym
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDA4MSBTYWx0ZWRfX+90hGFRshwFa
- IFy4E5GSufiwTLTwEWk2fdm4n3tz34Au1GcMOpyNPVwg5bI8NmQwnxvtV7m7tvPCU6gfACmhmdA
- ePiXgDjhulRy5sFinXyxfPzTcQnXobc=
-X-Authority-Analysis: v=2.4 cv=IfK3n2qa c=1 sm=1 tr=0 ts=6a7db0a2 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=nxkqimRYtrKaij7qo54A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: VnxFgVyCPhP2q2xF0VXf7bnsoTknamym
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-13_03,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1011
- lowpriorityscore=0 adultscore=0 malwarescore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608130081
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJAxX8_Gs31qZ10DAA--.22644S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7ZF4xZr48JFy8Xry7trWDGFX_yoW5Jr17pF
+	Wa9rnxKrs5JF43JwnFva4qqF43tF1xCr1xW3W5Kry8Cr4DAryUXry7GrZ7XFy5G395Xr1F
+	vr1rGw15WF1UJacCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU9Yb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	XVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
+	AKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v2
+	6r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
+	CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
+	0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
+	AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIev
+	Ja73UjIFyTuYvjxU2MKZDUUUU
 
+The following changes since commit db2ddb87143519e20a95aa36c60b36107b736a58:
 
+  Linux 7.2-rc7 (2026-08-09 14:54:50 -0700)
 
-On 8/7/26 6:18 PM, Anthony Krowiak wrote:
-> Implements two callbacks related to the current state of a vfio-ap device:
-> * The callback that sets a new migration state of a vfio-ap device during
->    live migration of guests with pass-through access to AP devices. This
->    callback is mandatory for VFIO_DEVICE_FEATURE_MIGRATION support.
-> 
->    The function pointer for this callback is specified via the
->    'migration_set_state' field of the 'vfio_migration_ops' structure
->    which is stored with the VFIO device when the 'vfio_device'
->    structure representing the mediated device is initialized.
-> 
-> * The callback that returns the current vfio device migration state during
->    live migration of guests with pass-through access to AP devices.
-> 
->    The function pointer for this callback is specified via the
->    'migration_get_state' field of the 'vfio_migration_ops' structure
->    which is stored with the VFIO device when the 'vfio_device'
->    structure representing the mediated device is initialized.
-> 
-> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
-> ---
->   drivers/s390/crypto/vfio_ap_migration.c | 130 +++++++++++++++++++++++-
->   1 file changed, 128 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
-> index 1613813124b6..af740b177c97 100644
-> --- a/drivers/s390/crypto/vfio_ap_migration.c
-> +++ b/drivers/s390/crypto/vfio_ap_migration.c
-> @@ -128,16 +128,141 @@ static void vfio_ap_release_resuming_file(struct vfio_ap_migration_data *mig_dat
->   	 */
->   }
->   
-> +static struct file *
-> +vfio_ap_transition_to_state(struct ap_matrix_mdev *matrix_mdev,
-> +			    enum vfio_device_mig_state new_state)
-> +{
-> +	struct vfio_ap_migration_data *mig_data;
-> +	enum vfio_device_mig_state cur_state;
-> +
-> +	lockdep_assert_held(&matrix_dev->mdevs_lock);
-> +	mig_data = matrix_mdev->mig_data;
-> +	cur_state = mig_data->mig_state;
-> +	dev_dbg(matrix_mdev->vdev.dev, "%s: %d -> %d\n", __func__, cur_state,
-> +		new_state);
-> +
-> +	if (cur_state == VFIO_DEVICE_STATE_STOP &&
-> +	    new_state == VFIO_DEVICE_STATE_STOP_COPY) {
-> +		/* TODO */
-> +		return ERR_PTR(-EOPNOTSUPP);
-> +	}
-> +
-> +	if (cur_state == VFIO_DEVICE_STATE_STOP &&
-> +	    new_state == VFIO_DEVICE_STATE_RESUMING) {
-> +		/* TODO */
-> +		return ERR_PTR(-EOPNOTSUPP);
-> +	}
-> +
-> +	if ((cur_state == VFIO_DEVICE_STATE_RESUMING &&
-> +	     new_state == VFIO_DEVICE_STATE_STOP) ||
-> +	    (cur_state == VFIO_DEVICE_STATE_STOP_COPY &&
-> +	     new_state == VFIO_DEVICE_STATE_STOP)) {
-> +		/* TODO */
-> +		return ERR_PTR(-EOPNOTSUPP);
-> +	}
-> +
-> +	if ((cur_state == VFIO_DEVICE_STATE_STOP &&
-> +	     new_state == VFIO_DEVICE_STATE_RUNNING) ||
-> +	    (cur_state == VFIO_DEVICE_STATE_RUNNING &&
-> +	     new_state == VFIO_DEVICE_STATE_STOP)) {
-> +		/* TODO */
-> +		return ERR_PTR(-EOPNOTSUPP);
-> +	}
-> +
-> +	/* vfio_mig_get_next_state() does not use arcs other than the above */
-> +	WARN_ON(true);
-> +
-> +	return ERR_PTR(-EINVAL);
-> +}
-> +
->   static struct file *vfio_ap_set_state(struct vfio_device *vdev,
->   				      enum vfio_device_mig_state  new_state)
->   {
-> -	return NULL;
-> +	int ret;
-> +	struct file *filp = NULL;
-> +	struct ap_matrix_mdev *matrix_mdev;
-> +	enum vfio_device_mig_state next_state;
-> +	struct vfio_ap_migration_data *mig_data;
-> +
-> +	matrix_mdev = container_of(vdev, struct ap_matrix_mdev, vdev);
+are available in the Git repository at:
 
-The container_of() pointer swizzle is done under lock in 
-vfio_ap_get_state, but not here. Why? They should probably be handled 
-consistently.
+  git://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.git tags/loongarch-kvm-7.3
 
-> +
-> +	mutex_lock(&matrix_dev->mdevs_lock);
-> +	if (ap_is_se_guest()) {
-> +		dev_err_once(matrix_mdev->vdev.dev,
-> +			     "Migration not allowed from or to a Secure Execution guest\n");
-> +		mutex_unlock(&matrix_dev->mdevs_lock);
-> +		return ERR_PTR(-EPERM);
-> +	}
-> +
-> +	mig_data = matrix_mdev->mig_data;
-> +
-> +	/*
-> +	 * The mig_data pointer is set in the vfio_ap_init_migration_data
-> +	 * function which is called when the vfio-ap device fd is opened.
-> +	 * Since the implicit pre-open state is RUNNING, a request to set
-> +	 * RUNNING is a no-op. Any other state transition is invalid before
-> +	 * open_device.
-> +	 */
-> +	if (!mig_data) {
-> +		mutex_unlock(&matrix_dev->mdevs_lock);
-> +		if (new_state == VFIO_DEVICE_STATE_RUNNING)
-> +			return NULL;
-> +		return ERR_PTR(-ENODEV);
-> +	}
-> +
-> +	dev_dbg(vdev->dev, "%s -> %d\n", __func__, new_state);
-> +
-> +	while (mig_data->mig_state != VFIO_DEVICE_STATE_ERROR &&
-> +	       mig_data->mig_state != new_state) {
-> +		ret = vfio_mig_get_next_state(vdev, mig_data->mig_state,
-> +					      new_state, &next_state);
-> +		if (ret) {
-> +			filp = ERR_PTR(ret);
-> +			break;
-> +		}
-> +
-> +		filp = vfio_ap_transition_to_state(matrix_mdev, next_state);
-> +		if (IS_ERR(filp))
-> +			break;
-> +
-> +		mig_data->mig_state = next_state;
-> +
-> +		if (WARN_ON(filp && new_state != next_state)) {
-> +			fput(filp);
-> +			filp = ERR_PTR(-EINVAL);
-> +			break;
-> +		}
-> +	}
-> +
-> +	mutex_unlock(&matrix_dev->mdevs_lock);
-> +
-> +	return filp;
->   }
->   
->   static int vfio_ap_get_state(struct vfio_device *vdev,
->   			     enum vfio_device_mig_state  *current_state)
->   {
-> -	return -EOPNOTSUPP;
-> +	struct ap_matrix_mdev *matrix_mdev;
-> +	struct vfio_ap_migration_data *mig_data;
-> +
-> +	mutex_lock(&matrix_dev->mdevs_lock);
-> +
-> +	matrix_mdev = container_of(vdev, struct ap_matrix_mdev, vdev);
-> +	mig_data =  matrix_mdev->mig_data;
+for you to fetch changes up to c5959723aaae06aa617253528e6b228b3c858215:
 
-Why bother with temp variable? You could just access 
-matrix_mdev->mig_data directly.
+  KVM: LoongArch: selftests: Add FPU/LSX/LASX test cases (2026-08-10 12:21:58 +0800)
 
-> +
-> +	/*
-> +	 * The mig_data pointer is set in the vfio_ap_init_migration_data
-> +	 * function which is called when the vfio-ap device fd is opened.
-> +	 * If mig_data is NULL, report RUNNING as the implicit pre-open state
-> +	 * so userspace doesn't need to perform any state transition before the
-> +	 * device becomes active.
-> +	 */
-> +	*current_state = (mig_data) ? mig_data->mig_state :
-> +				      VFIO_DEVICE_STATE_RUNNING;
-> +
-> +	mutex_unlock(&matrix_dev->mdevs_lock);
-> +
-> +	return 0;
->   }
->   
->   static int vfio_ap_get_data_size(struct vfio_device *vdev,
-> @@ -159,6 +284,7 @@ static const struct vfio_migration_ops vfio_ap_migration_ops = {
->    */
->   void vfio_ap_init_migration_capabilities(struct ap_matrix_mdev *matrix_mdev)
->   {
-> +	/* Live guest migration is not supported for SE guests */
->   	if (ap_is_se_guest())
->   		return;
->   
+----------------------------------------------------------------
+LoongArch KVM changes for v7.3
 
-Comment is unrelated to the rest of the patch.
+1. Advertise already-supported capabilities.
+2. Some bug fixes about timer and MMIO.
+3. Some hardening about interrupt injection.
+4. Replace kvm_err() with kvm_pr_unimpl().
+5. Add FPU/LSX/LASX test cases for selftests.
+
+----------------------------------------------------------------
+Bibo Mao (8):
+      LoongArch: KVM: Set vcpu->cpu before IN_GUEST_MODE is set
+      LoongArch: KVM: Set default MAILBOX access size with 8
+      LoongArch: KVM: Return directly when IPI address is not aligned
+      LoongArch: KVM: Fix uninitialized stack variable issue with dmsintc
+      LoongArch: KVM: Use internal API to deliver interrupt in kernel mode
+      LoongArch: KVM: Replace kvm_err() with kvm_pr_unimpl()
+      KVM: LoongArch: selftests: Enable LSX/LASX by auto detection
+      KVM: LoongArch: selftests: Add FPU/LSX/LASX test cases
+
+Tao Cui (3):
+      LoongArch: KVM: Advertise already-supported capabilities
+      LoongArch: KVM: Reload one-shot TVAL on migration destination
+      LoongArch: KVM: Prevent division by zero in periodic timer restore
+
+Zeng Chi (1):
+      LoongArch: KVM: Fix PC double advance in kernel MMIO read fast path
+
+ arch/loongarch/kvm/exit.c                          |  19 ++-
+ arch/loongarch/kvm/intc/dmsintc.c                  |  18 +--
+ arch/loongarch/kvm/intc/eiointc.c                  |  32 ++---
+ arch/loongarch/kvm/intc/ipi.c                      |  77 ++++++------
+ arch/loongarch/kvm/intc/pch_pic.c                  |  12 +-
+ arch/loongarch/kvm/timer.c                         |  14 +++
+ arch/loongarch/kvm/vcpu.c                          |   7 +-
+ arch/loongarch/kvm/vm.c                            |   4 +
+ tools/testing/selftests/kvm/Makefile.kvm           |   3 +-
+ .../selftests/kvm/include/loongarch/processor.h    |  18 +++
+ .../selftests/kvm/lib/loongarch/processor.c        |  11 +-
+ tools/testing/selftests/kvm/loongarch/fpu_test.c   | 137 +++++++++++++++++++++
+ 12 files changed, 269 insertions(+), 83 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/loongarch/fpu_test.c
 
