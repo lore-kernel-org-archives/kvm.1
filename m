@@ -1,153 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out28-77.mail.aliyun.com (out28-77.mail.aliyun.com [115.124.28.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BF5443AB0
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 09:13:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD9032ABCA
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 09:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786612388; cv=none; b=FzYTlafwnHK4Pk7UpKBRaMaYAomW7cv8ZRyvFTgGPQIM/InfM6KRdSz1NdaIeFmSPk38NRMrBFq+Br3yRsuT3+eOw9EbLe4dYgUs7kSIf2X/mfkVZiwYOhTv591YxyY3CPOc1eLZcZag3FvW2UNAL7nIkcujZnGGbzRdk1D0vvQ=
+	t=1786612463; cv=none; b=tXJ9SzX2URGJ/r0OW3YzHl9DgxEPTKfS3+SzVICdrMVq+lYPxyTiMaskzGT/LlE/m5LOnS+etdsy9laZxpPUnm/UqwNHTS/bCIL1xdM3SZBkXhWvW/hbawmrk97gWqY9zpoHWpg07pQ9CmRrR5cbziVbk7szWPVMXxLYYdY6Igs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786612388; c=relaxed/simple;
-	bh=ZbPcU3vUXXCAJitrsBOurxH0FdWsc3cUmDfX9VBbYhs=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=d5qwcHpixiG9bZ+EpOEkmm7D4GveezZroAqr5apJb9ArwfDhoNUU5fIDD0kYoMD7aiNhdav3iOfGPH2L4jodJvjH52DA/b+dC4UbbI5rUlMhQSj5PV5qtCgvnvhq63ImqyqjhuJgy/uVtfudtFt8OoUjwfDjO+pHaOJgtiVColE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OVCwp2Sv; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OVCwp2Sv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235891F000E9;
-	Thu, 13 Aug 2026 09:13:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786612385;
-	bh=AFt2z29jLXYvosz8a3mm/63cTTrxjEzWErWP6yvMmuI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OVCwp2SvTc5doqsomHTGuFNoJPnrb1VySFl6P4MAJoP4ygpZybcRxH8I9RCsoqamn
-	 IB/Aq7oUn/R3araAzLwdifqh71bedD5si5NC/e+R84E/wqktfesGfXEm5mLGqTwhy9
-	 acKpe1u0m6kOQcoyKbPqoeRAxW5mpxSUp8jMXDguKMrHcQ4H0kekGkNq2OGzqhDlAr
-	 Y6Eadv0K/RrXcxyEaykdQ5clVo7kXl0x5ICbgEFIXG/kXWy57adEghugHfQVqFypmZ
-	 8Vcym/q3eUgLq93FY37xyPzRS6Hxd/EHxeZcziEkS1zTHW1nkv+BG1oiU7u/2NXQXl
-	 BOUyk8qIOtndw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v10] KVM: selftests: riscv: Add lazy V extension
- enablement for guests
-Reply-To: sashiko-reviews@lists.linux.dev
-To: JinRui <jinrui@haiwei.tech>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <733FC2542EECADE1+20260813090306.3756434-1-jinrui@haiwei.tech>
-References: <034CA48A67574B32+20260811085036.2862645-1-jinrui@haiwei.tech>
- <733FC2542EECADE1+20260813090306.3756434-1-jinrui@haiwei.tech>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 13 Aug 2026 09:13:04 +0000
-Message-Id: <20260813091305.235891F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1786612463; c=relaxed/simple;
+	bh=OWUMjswUzu4FIhnAXtgfD2CXxeLWa7HJ75JodK3l8r4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GlsgiI8fTS7X0G3OZovp/N3MHW8mhxFVRqnoBSV+2EFmsxtM2FSBYWN4RkQdViwnHl7zQDdwCQmfKqeIRlmSzlOIFepRLAYQ/5gxPJHAExztunWSCTKWEyp3y997z1aNOrJXmg2BNKajiADOevHMT3l4DoCA+CGmK+7BZiYnD8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1259383|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_enroll_verification|0.00281212-7.93854e-05-0.997108;FP=5182439596747294178|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037071049;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=2;RT=2;SR=0;TI=SMTPD_---.ilDde5q_1786612449;
+Received: from 172.18.22.44(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.ilDde5q_1786612449 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Thu, 13 Aug 2026 17:14:10 +0800
+Message-ID: <f6ea6f1c-46e3-4853-b3a4-f2ae91442e56@open-hieco.net>
+Date: Thu, 13 Aug 2026 17:14:10 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 8/9] KVM: nSVM: Advertise DecodeAssists to L1
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+References: <cover.1785411877.git.zhang_wei@open-hieco.net>
+ <29c2042af283e6d1a0b928b78d944b499153dace.1785411877.git.zhang_wei@open-hieco.net>
+ <20260730123316.AC92B1F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Tina Zhang <zhang_wei@open-hieco.net>
+In-Reply-To: <20260730123316.AC92B1F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] Lazy V extension enablement fails on hardware that does not popu=
-late stval for illegal instructions.
-- [Medium] Storing a per-vCPU V-extension availability flag in a VM-wide sh=
-ared structure causes test failures in mixed-vCPU VMs.
---
 
---- Patch [1]: [PATCH v10] KVM: selftests: riscv: Add lazy V extension enab=
-lement for guests ---
-commit a24ebca96066b2892004c26d282cf14c6162da61
-Author: jinrui <jinrui@haiwei.tech>
-KVM: selftests: riscv: Add lazy V extension enablement for guests
 
-This commit adds lazy V extension enablement for guests in KVM RISC-V selft=
-ests
-to handle auto-vectorized instructions when sstatus.VS is off. It registers=
- a
-full exception vector table, advertises V to KVM, and lazily enables V in
-route_exception().
+On 7/30/2026 8:33 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Low] Missing VENDOR_F(DECODEASSISTS) initialization in CPUID 0x8000000A leaf definition.
+> --
+> 
+> --- Patch [8]: [PATCH v3 8/9] KVM: nSVM: Advertise DecodeAssists to L1 ---
+> commit 2694559bd05c1133d7f21075f9c95dc19418651a
+> Author: Tina Zhang <zhang_wei@open-hieco.net>
+> 
+> KVM: nSVM: Advertise DecodeAssists to L1
+> 
+> This patch advertises DecodeAssists to L1 guests by checking and setting
+> the X86_FEATURE_DECODEASSISTS capability when supported by hardware. This
+> enables QEMU configurations that enforce the decodeassists feature.
+> 
+>> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+>> index 6e2ceb700567c..4e01a6ede4246 100644
+>> --- a/arch/x86/kvm/svm/svm.c
+>> +++ b/arch/x86/kvm/svm/svm.c
+>> @@ -5588,6 +5588,8 @@ static __init void svm_set_cpu_caps(void)
+>>   		 */
+>>   		kvm_cpu_cap_set(X86_FEATURE_FLUSHBYASID);
+>>   
+>> +		kvm_cpu_cap_check_and_set(X86_FEATURE_DECODEASSISTS);
+> 
+> [Severity: Low]
+> Does this feature also need to be initialized in arch/x86/kvm/cpuid.c?
+> 
+> Currently, kvm_cpu_cap_check_and_set() is used here to enable it, but
+> VENDOR_F(DECODEASSISTS) appears to be missing from the CPUID_8000_000A_EDX
+> capabilities array in cpuid.c:
+> 
+> arch/x86/kvm/cpuid.c:kvm_cpu_cap_init() {
+>      /* All SVM features required additional vendor module enabling. */
+>      kvm_cpu_cap_init(CPUID_8000_000A_EDX,
+>          VENDOR_F(NPT),
+>          VENDOR_F(VMCBCLEAN),
+>          ...
+> }
+> 
+> Without VENDOR_F(DECODEASSISTS), this skips KVM's standard compile-time
+> validation and raw CPUID masking logic. Should it be added to the vendor
+> feature list as well?
 
-> diff --git a/tools/testing/selftests/kvm/lib/riscv/processor.c b/tools/te=
-sting/selftests/kvm/lib/riscv/processor.c
-> index ded5429f34483..ffd84212c9b0d 100644
-> --- a/tools/testing/selftests/kvm/lib/riscv/processor.c
-> +++ b/tools/testing/selftests/kvm/lib/riscv/processor.c
-[ ... ]
-> @@ -348,8 +346,22 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm,=
- u32 vcpu_id)
->  	/* Setup sscratch for guest_get_vcpuid() */
->  	vcpu_set_reg(vcpu, RISCV_GENERAL_CSR_REG(sscratch), vcpu_id);
-> =20
-> -	/* Setup default exception vector of guest */
-> -	vcpu_set_reg(vcpu, RISCV_GENERAL_CSR_REG(stvec), (unsigned long)guest_u=
-nexp_trap);
-> +	/*
-> +	 * Advertise V to KVM so -O2 auto-vectorization in guest code is valid;
-> +	 * ignore errors since the tests work without V too. Use the full
-> +	 * exception vector table (which lazily enables V in route_exception())
-> +	 * as the default handler; vm_init_vector_tables() is idempotent.
-> +	 */
-> +	__vcpu_set_reg(vcpu, RISCV_ISA_EXT_REG(KVM_RISCV_ISA_EXT_V), 1);
-> +	vm_init_vector_tables(vm);
-> +	vcpu_init_vector_tables(vcpu);
-> +
-> +	/* Record V availability for route_exception(), which runs in guest con=
-text. */
-> +	{
-> +		struct handlers *h =3D addr_gva2hva(vm, vm->handlers);
-> +
-> +		h->v_available =3D __vcpu_has_isa_ext(vcpu, KVM_RISCV_ISA_EXT_V);
+Yes, DecodeAssists should also be declared with VENDOR_F(DECODEASSISTS).
+I'll add it in the next version.
 
-[Severity: Medium]
-Does this overwrite a shared VM-wide state with a per-vCPU capability?
+Thanks,
+Tina
+> 
+>> +
+>>   		if (nrips)
+>>   			kvm_cpu_cap_set(X86_FEATURE_NRIPS);
+>>
+> 
 
-The handlers structure is allocated once per VM in vm_init_vector_tables().
-If a VM is created with a mix of vCPUs, and the last added vCPU has the V
-extension, h->v_available will be true globally for all vCPUs.
-
-If a non-V vCPU encounters an illegal instruction that happens to decode as=
- a
-vector instruction, could route_exception() see h->v_available as true and
-continually set SR_VS_INITIAL, causing an infinite exception loop?
-
-> +	}
-> =20
->  	return vcpu;
->  }
-[ ... ]
-> @@ -432,6 +468,20 @@ void route_exception(struct pt_regs *regs)
->  		ec =3D 0;
->  	}
-> =20
-> +	/*
-> +	 * Lazily enable V on the first vector instruction: if the faulting
-> +	 * instruction (stval) decodes as vector while VS is off, set VS to
-> +	 * Initial and re-execute it, like the kernel's
-> +	 * riscv_v_first_use_handler(). Genuinely illegal instructions fall
-> +	 * through to the unexpected-exception path.
-> +	 */
-> +	if (!(regs->cause & CAUSE_IRQ_FLAG) && ec =3D=3D EXC_INST_ILLEGAL &&
-> +	    handlers && handlers->v_available && !(regs->status & SR_VS) &&
-> +	    insn_is_vector((u32)regs->badaddr)) {
-
-[Severity: Medium]
-Does this assume hardware always populates stval (which is mapped to
-regs->badaddr) for illegal instruction exceptions?
-
-If a test executes on hardware that does not populate stval and leaves it a=
-s 0,
-insn_is_vector() would evaluate to false.
-
-Would this cause genuinely auto-vectorized instructions to unexpectedly fall
-through to kvm_exit_unexpected_exception() instead of being lazily enabled?
-
-Should this fall back to reading the instruction directly from guest memory=
- at
-regs->epc when badaddr is 0?
-
-> +		regs->status |=3D SR_VS_INITIAL;
-> +		return;
-> +	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/733FC2542EECADE1+20=
-260813090306.3756434-1-jinrui@haiwei.tech?part=3D1
