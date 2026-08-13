@@ -1,135 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out28-149.mail.aliyun.com (out28-149.mail.aliyun.com [115.124.28.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E19233936B
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 04:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C353B637C
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 05:13:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786597049; cv=none; b=r1pCCN2Hy4NSi9ad9RrvwyXe/LZ/9KVUfJCXuHPWijxJ/EU5+lWqkwOWWXjztWnDkenWy2Ej2pis7Qzz+MxxwU4qLiXzbiczBd2W5xV4D9u8Gzgg7ZBcRismexqIsqwEDxuzZdND7ujhxh9B+LEPTrh/wtX+3jCDP8VDbTn7O64=
+	t=1786598014; cv=none; b=uebniV9kZPTom1hRf1zzcrR0ymutgF4BVuv1rmU5hh9ljhwGg5Yj7qjd6tb70MeAOX9r5IjRFk8H02f4k+KiWDOEvLqDKub76z1mxz1x3JbDCSOpKsoIxQzfXXXrACE2+N4nxcYQwOs0TzmSxfx0X3hD3cqiluKWN9B6Fwyahk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786597049; c=relaxed/simple;
-	bh=EkR/HzsHgp69LLnuHdAgq/1v/rcIjpylLpWgW0v1Gog=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=oJ5xth6SncsO+jpQi+YpA6cLOcwvZtSHA+9gSmi+6VIsiAAGhT0AmFKKgZdixcv+MnjyGW/+77ZuM8ez9GRqhxppbwescqEPwTyLvgPSmJZ7vXKRWxFS9JMDLrXp/131we9dVVPG+s5TbmIT8UVlVRr+dJ0TVfWUHbESNsC+nCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OkErHoy3; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OkErHoy3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903981F000E9;
-	Thu, 13 Aug 2026 04:57:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786597047;
-	bh=DGovaHJczWC91v9AVf4SkRjibDBg6E/QuJiJb9qlr98=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OkErHoy3zbjHEQa5PvG/eJ3GJpmLA31czxhLD/plXLCDVhAnhsH7xUBK82lioMqw5
-	 Vmr5Z0bDjdewtiFj30rDeyLBeHhAAwjEOqsTtuTJY4YImEj9gSAXfa248jOrydA882
-	 qkB/VKV+7T2VYcfgQI6FMuRF0sow9yt21Vnm8Pw9aEGW+1GDiymUfUtrer/FcwCpi1
-	 M4R3kgnwQnZJwerhxH3T22wFXWDw3mbRe9iz0OmvTaZtqiQyKfHV00RX5hkKcaLSry
-	 JneIF7B2RrNCUTjwbRDH+dEMJjvHzzhufnvmam7IjljEfnoqd68+BcwyDbhW0U5KOd
-	 kz9XJb0tHo9Vg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: nVMX: Re-arm the vmcs12 pages request if mapping
- the pages fails
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jinwoo Lee" <rkskek9254@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260813043932.3214460-1-rkskek9254@gmail.com>
-References: <20260813043932.3214460-1-rkskek9254@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 13 Aug 2026 04:57:27 +0000
-Message-Id: <20260813045727.903981F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1786598014; c=relaxed/simple;
+	bh=LiT8uigoMWZFNftXGyY3ZzF76pXMrXintb98icAvOo4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r1z4PgZIiTehtauXyEmyYjsd62V1/uik0FG10iz9cgDKNZfvDan2LKnSr1fWsidrGScYaIlTDCIQwq3PXltt1xr4jg6cZuABCCGpSbOEet+xc9bc3bOTZbKpW+w5ma689x5sIiR4xFI7aOmik9scXnMZSAHbGH7gYuehcZL6h1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.166705|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.203107-0.00302257-0.79387;FP=5109737411339666614|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045213054;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=2;RT=2;SR=0;TI=SMTPD_---.ikx1dIp_1786597971;
+Received: from 172.18.22.44(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.ikx1dIp_1786597971 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Thu, 13 Aug 2026 13:12:51 +0800
+Message-ID: <8fc500dd-5a56-4d7e-b964-73dea89309b8@open-hieco.net>
+Date: Thu, 13 Aug 2026 13:12:51 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/9] KVM: nSVM: Synthesize DecodeAssists EXITINFO for
+ emulated intercepts
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+References: <cover.1785411877.git.zhang_wei@open-hieco.net>
+ <31fd4e46d29c57b004b635d8e6a23020cc9ba0fb.1785411877.git.zhang_wei@open-hieco.net>
+ <20260730123008.9C58B1F00A3F@smtp.kernel.org>
+Content-Language: en-US
+From: Tina Zhang <zhang_wei@open-hieco.net>
+In-Reply-To: <20260730123008.9C58B1F00A3F@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
 
-Pre-existing issues:
-- [High] The patch fixes the missing re-arming of `KVM_REQ_GET_NESTED_STATE=
-_PAGES` in `nested_get_vmcs12_pages()` for VMX but overlooks identical vuln=
-erabilities in `vmx_get_nested_state_pages()` (VMX eVMCS) and `svm_get_nest=
-ed_state_pages()` (SVM).
---
 
---- Patch [1]: [PATCH] KVM: nVMX: Re-arm the vmcs12 pages request if mappin=
-g the pages fails ---
-commit ce93ee9654c7f639f51372bb8a7e1b25a376436b
-Author: Jinwoo Lee <rkskek9254@gmail.com>
+On 7/30/2026 8:30 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] Synthesized EXITINFO1 is incorrectly populated for SVM_EXIT_CR0_SEL_WRITE intercepts triggered by MOV CR0, violating the AMD APM.
+> --
+> 
+> --- Patch [2]: [PATCH v3 2/9] KVM: nSVM: Synthesize DecodeAssists EXITINFO for emulated intercepts ---
+> commit 60593c4facd0e8bdc8b0aa501c98449feeced81a
+> Author: Tina Zhang <zhang_wei@open-hieco.net>
+> 
+> KVM: nSVM: Synthesize DecodeAssists EXITINFO for emulated intercepts
+> 
+> This commit populates the architectural EXITINFO fields when DecodeAssists
+> is exposed to L1 and KVM synthesizes a nested VM-Exit for emulated
+> instructions. It targets specific intercepts like MOV CR/DR, INTn, and
+> INVLPG.
+> 
+>> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+>> index d68cba12c772b..b63234a2feb8d 100644
+>> --- a/arch/x86/kvm/svm/svm.c
+>> +++ b/arch/x86/kvm/svm/svm.c
+>> @@ -4822,6 +4822,52 @@ static const struct __x86_intercept {
+> [ ... ]
+>> +static void svm_prepare_decode_assist_exit_info(struct kvm_vcpu *vcpu,
+>> +						const struct x86_instruction_info *info)
+>> +{
+>> +	struct vmcb *vmcb = to_svm(vcpu)->vmcb;
+>> +	u64 exit_info_1;
+>> +
+>> +	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_DECODEASSISTS))
+>> +		return;
+>> +
+>> +	switch (info->intercept) {
+>> +	case x86_intercept_cr_read:
+>> +	case x86_intercept_cr_write:
+>> +		/* MOV CRx: bit 63 set, GPR number in bits 3:0. */
+>> +		exit_info_1 = BIT_ULL(63) | (info->modrm_rm & 0xf);
+> 
+> [Severity: High]
+> Will this incorrectly populate exit_info_1 for selective CR0 writes?
+> 
+> In svm_check_intercept(), the exit code can be dynamically upgraded to
+> SVM_EXIT_CR0_SEL_WRITE for MOV CR0 instructions:
+> 
+> svm_check_intercept() {
+>          ...
+>          cr0 = vcpu->arch.cr0 & ~SVM_CR0_SELECTIVE_MASK;
+>          val = info->src_val  & ~SVM_CR0_SELECTIVE_MASK;
+>          if (cr0 ^ val)
+>                  icpt_info.exit_code = SVM_EXIT_CR0_SEL_WRITE;
+>          ...
+> }
+> 
+> Since svm_prepare_decode_assist_exit_info() is subsequently called and
+> only checks the original instruction intercept (x86_intercept_cr_write),
+> could this wrongly populate exit_info_1 with decode assist information
+> instead of leaving it zero as required by the AMD architecture manual
+> for SVM_EXIT_CR0_SEL_WRITE?
 
-KVM: nVMX: Re-arm the vmcs12 pages request if mapping the pages fails
+SVM_EXIT_CR0_SEL_WRITE does not imply that EXITINFO1 must be zero.
+The exit code identifies the selective CR0 intercept, whereas the
+DecodeAssist contents describe the instruction that triggered it.
 
-This commit ensures KVM_REQ_GET_NESTED_STATE_PAGES is re-armed if
-nested_get_vmcs12_pages() fails to map the pages. This forces KVM to retry =
-the
-mapping on the next KVM_RUN rather than resuming L2 with a stale vmcs02, wh=
-ich
-prevents hardware from accessing unpinned host physical pages.
+For MOV-to-CR0, the APM specifies that EXITINFO1 provides the GPR
+number and identifies the instruction as MOV CRx.  For LMSW and CLTS,
+no additional information is provided and bit 63 is clear.
 
-> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> index ddf6df7bee93b..9e9bd6c541baa 100644
-> --- a/arch/x86/kvm/vmx/nested.c
-> +++ b/arch/x86/kvm/vmx/nested.c
-[ ... ]
-> @@ -3525,6 +3525,20 @@ static bool nested_get_vmcs12_pages(struct kvm_vcp=
-u *vcpu)
->  		exec_controls_clearbit(vmx, CPU_BASED_USE_MSR_BITMAPS);
-> =20
->  	return true;
-> +
-> +fail:
-> +	/*
-> +	 * Re-arm the request so that KVM retries the mapping instead of running
-> +	 * L2 with a stale vmcs02.  Bailing here leaves the vCPU in guest mode
-> +	 * with vmcs02 loaded and its APIC-access, virtual-APIC and posted
-> +	 * interrupt descriptor addresses still pointing at the host pages that
-> +	 * were mapped for the *previous* nested VM-Enter, which have since been
-> +	 * unmapped and unpinned by nested_put_vmcs12_pages().  KVM returns to
-> +	 * userspace without leaving guest mode, so if userspace resumes the
-> +	 * vCPU, VM-Enter succeeds and hardware accesses those stale HPAs.
-> +	 */
-> +	kvm_make_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
-> +	return false;
->  }
-> =20
->  static bool vmx_get_nested_state_pages(struct kvm_vcpu *vcpu)
+Checking info->intercept is therefore intentional, as it distinguishes
+MOV-to-CR0 from LMSW when both can result in SVM_EXIT_CR0_SEL_WRITE.
 
-[Severity: High]
-This is a pre-existing issue, but should the same re-arm be applied to
-vmx_get_nested_state_pages() and svm_get_nested_state_pages()?
+Thanks,
+Tina
 
-If nested_get_evmcs_page() fails in vmx_get_nested_state_pages(), it returns
-false and exits to userspace with KVM_EXIT_INTERNAL_ERROR without re-arming
-the request:
+> 
+>> +		break;
+>> +	case x86_intercept_clts:
+> [ ... ]
+> 
 
-arch/x86/kvm/vmx/nested.c:vmx_get_nested_state_pages() {
-	if (!nested_get_evmcs_page(vcpu)) {
-		pr_debug_ratelimited("%s: enlightened vmptrld failed\n",
-				     __func__);
-		vcpu->run->exit_reason =3D KVM_EXIT_INTERNAL_ERROR;
-		vcpu->run->internal.suberror =3D
-			KVM_INTERNAL_ERROR_EMULATION;
-		vcpu->run->internal.ndata =3D 0;
-
-		return false;
-	}
-    ...
-}
-
-Similarly, in arch/x86/kvm/svm/nested.c:svm_get_nested_state_pages(), if
-load_pdptrs(), kvm_hv_verify_vp_assist(), or nested_svm_merge_msrpm() fail,
-they also exit without re-arming.
-
-If a compromised QEMU sets KVM_REQ_GET_NESTED_STATE_PAGES and KVM clears the
-request but fails in these setup steps, a subsequent KVM_RUN could skip sta=
-te
-setup and proceed directly to VM-Enter L2 with stale control structures.
-
-Does this allow L2 to resume with unpinned HPAs and lead to a use-after-fre=
-e?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260813043932.3214=
-460-1-rkskek9254@gmail.com?part=3D1
