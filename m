@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E012EBBB9;
-	Thu, 13 Aug 2026 22:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E223A8759
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 22:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786661496; cv=none; b=OYnF28p074+A6O8diczMq/n54u5l1RbBzP/HQdthemIYQsEMY3EMmnbX2wOYI6sqeEQ7rfF57S0EfhUQ7IrzYn0iuf8KMCyBSrphBj+fOiBOPsmMwKQPYVbv0b/uCEUUrw0vwKeUjRPud9Zhgmqh1RqC1Y8EI5IzLU5o1npFGig=
+	t=1786661546; cv=none; b=AiyjlOuSdC+U5rOOKnfx6B4mUL7P2xHIBKQ2os9WTrretHHI+oeAtGFW3Xa2sOp0lzhON/wYHi6OTx/Gl9ktkm10gNjlz3C/DzGZgVfaO8VjRA2pLTBIBHYXHxQFTb7KXF5VljlJmOoZaKNC95xueuVdVGAf6NBju4ZUt/HxrkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786661496; c=relaxed/simple;
-	bh=CMBCQjjuL9iHDRdGF1/bzRuWSoVNhKKBAnbkYC2bJqQ=;
+	s=arc-20240116; t=1786661546; c=relaxed/simple;
+	bh=f8xaBSmaK2Zm/vtSY81QIsjj194l9S2TFlvJtf8mH7E=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=If/9FHANET4cN3bXhRcci+V1Y+P2mZcndcbllMz/jEYncAcivG+PEucOZWx4UbaaMyUa7gTiGCSNVglaXl3gtRJUmzG6FXZJTox3mjGE1VI84LicRlS1D7nNgzaHFrTbQGIGwyipw+Xjos4+zj8PQh9UM6rQ8k8v3o+lD91IyVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mAuUZH87; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=qOuCqi/DV0kG6MkAWqV/7WqzdeMNIOa8qOzgj1awMru9BpaKS2sjG4JtIYu6h++PzzbXrf0aTRuUyAa/P6Xg29K+Y4Nlx+Y0PAi4jAjI/Fwt8OPRTppZN7nfCisTjuOjJMdnR1+AKe9XPlJdvQYUK9Lrv9kFYVvq3o0593e4PoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nUJ+HtuH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mAuUZH87"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF471F000E9;
-	Thu, 13 Aug 2026 22:51:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nUJ+HtuH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 543991F000E9;
+	Thu, 13 Aug 2026 22:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786661495;
-	bh=U2ytmh6H0BwdypntoKyZImTiAoYrsm6+Io/A1/Krb9A=;
+	s=k20260515; t=1786661544;
+	bh=qJEfPNtwW6Lypc28zjRFnewd58bpUDKPZ+4Vs/yXX0k=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mAuUZH87CVPkrqaZ8TqrjUAQ3oeiW72COow/LB7vtGOYg9e10ukDMeiFwj3aqdtaL
-	 vME3hAVFlQGbW3Djn4R+FE5DEvkpOEddLIx9JsUKpZ6qIAH4zwRWu+jfSkYmHRuvkd
-	 qdrlkZqQj8EjYKek5fmeOuYrbDO6VT2vjm5+2VU92u68nQBZkMD910OfdaWwUOqOHC
-	 B+T8RjnCfVSqjKWfzOcXyvQtnx1ZMjZR+rLppyKEN2rn4zSpjrFkUUpzgLpgdCRmSA
-	 W1oLlGDwIx+FnXxwvtMetKQv/I91AaIIYhUotaTX9P/ryvLoTyxQAO2yoEh7/jy/4i
-	 5uJmwtAzpcYkg==
+	b=nUJ+HtuHyECVMbelHw08BS82g1OvJ4oA7WeTK4WSXEG/Av87xqOu6D29oHAlInSyd
+	 Mvzc1RS3Mc12HjqagAM4mcIdRNASBvVZpeth0b0UeGLa1ATJaZqZ3S2VjqXn6IM/Q+
+	 gMm6AGFaSrX/qqYtewmr4lqhZ+8c2PTPhUvFzbbsyQw1yZ7Hc6l84e3fn0Ainv3yuW
+	 iibShekUUmSgz4WiLOHLQXQjJ2p1qHs1gpoHwArBrPVK4/jvlLvFELepCMaNZBhSYH
+	 y7vvBaAiqYlwWaoTBPwUkdhlhVbwDwsOJE00iQlFC6/FdjCcyI3F5i40d0f2biFsh6
+	 laPuDGHEbqNDg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v4 13/44] KVM: guest_memfd: Apply content modes
- while setting memory attributes
+Subject: Re: [PATCH v6 07/22] coco/tdx-host: Implement firmware upload sysfs
+ ABI for TDX module updates
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ackerley Tng" <ackerleytng@google.com>
-Cc: kvm@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-In-Reply-To: <20260326-gmem-inplace-conversion-v4-13-e202fe950ffd@google.com>
-References: <20260326-gmem-inplace-conversion-v4-13-e202fe950ffd@google.com>
+To: "Chao Gao" <chao.gao@intel.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260326084448.29947-8-chao.gao@intel.com>
+References: <20260326084448.29947-8-chao.gao@intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 13 Aug 2026 22:51:34 +0000
-Message-Id: <20260813225134.DFF471F000E9@smtp.kernel.org>
+Date: Thu, 13 Aug 2026 22:52:23 +0000
+Message-Id: <20260813225224.543991F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,102 +46,72 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] WARN_ON() discards the error code from kvm_gmem_apply_content_mode=
-(), leading to silent failures and a user-triggerable kernel warning (DoS v=
-ector).
-- [Medium] Applying content mode without invalidating MMU mappings when mem=
-ory attributes do not change causes data races and potential hardware machi=
-ne checks.
+- [High] The module pins itself in memory and becomes permanently un-unload=
+able due to a reference cycle.
+- [Medium] seamldr_init() failure propagates to tdx_host_probe() and fails =
+the whole tdx-host module.
 --
 
---- Patch [13]: [PATCH RFC v4 13/44] KVM: guest_memfd: Apply content modes =
-while setting memory attributes ---
-commit 47c20f7dd20767b04a5efc7e5951d56b44e5a590
-Author: Ackerley Tng <ackerleytng@google.com>
+--- Patch [7]: [PATCH v6 07/22] coco/tdx-host: Implement firmware upload sy=
+sfs ABI for TDX module updates ---
+commit 805f010d78ca6bd2ca042a5f57d4d4c84f3c2978
+Author: Chao Gao <chao.gao@intel.com>
 
-KVM: guest_memfd: Apply content modes while setting memory attributes
+coco/tdx-host: Implement firmware upload sysfs ABI for TDX module updates
 
-Provide defined memory content modes so that KVM can make guarantees about
-memory content after setting memory attributes, according to userspace
-requests.
+This patch introduces a sysfs ABI using the fw_upload framework to allow=20
+userspace to provide TDX module updates. It explicitly chooses fw_upload
+over request_firmware() to give userspace full control over module
+versioning and non-linear update policies.
 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index e270e54e030f0..eeac7678fcf4e 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-
+> diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/td=
+x-host/tdx-host.c
+> index 01f68c390a49e..d4a5528530211 100644
+> --- a/drivers/virt/coco/tdx-host/tdx-host.c
+> +++ b/drivers/virt/coco/tdx-host/tdx-host.c
 [ ... ]
+> +static int seamldr_init(struct device *dev)
+> +{
+> +	struct fw_upload *tdx_fwl;
+> +
+> +	if (!can_expose_seamldr())
+> +		return 0;
+> +
+> +	tdx_fwl =3D firmware_upload_register(THIS_MODULE, dev, "tdx_module",
+> +					   &tdx_fw_ops, NULL);
 
-> @@ -752,9 +783,23 @@ static int __kvm_gmem_set_attributes(struct inode *i=
-node, pgoff_t start,
-> =20
->  	filemap_invalidate_lock(mapping);
-> =20
-> +	if (!kvm_gmem_content_mode_is_supported(kvm, content_mode,
-> +						to_private)) {
-> +		r =3D -EOPNOTSUPP;
-> +		*err_index =3D start;
-> +		goto out;
-> +	}
+[Severity: High]
+Passing THIS_MODULE to firmware_upload_register() increments the module's=20
+reference count.=20
+
+Since tdx-host uses a root faux_device without a sysfs unbind mechanism,=20
+the elevated reference count will cause rmmod to always fail with -EBUSY.=20
+
+Does this effectively pin the module in memory permanently and prevent upda=
+tes=20
+without rebooting? Should this pass NULL instead of THIS_MODULE to avoid th=
+e=20
+reference cycle?
+
+> +	if (IS_ERR(tdx_fwl))
+> +		return PTR_ERR(tdx_fwl);
 > +
->  	mas_init(&mas, mt, start);
-> =20
->  	if (kvm_gmem_range_has_attributes(mt, start, nr_pages, attrs)) {
-> +		/*
-> +		 * Even if no update is required to attributes, the
-> +		 * requested content mode is applied.
-> +		 */
-> +		WARN_ON(kvm_gmem_apply_content_mode(kvm, content_mode,
-> +						    inode, start, end));
-> +
->  		r =3D 0;
->  		goto out;
->  	}
+> +	return devm_add_action_or_reset(dev, seamldr_deinit, tdx_fwl);
+> +}
 
 [Severity: Medium]
-Does this path allow the host to modify memory (e.g., zeroing it) while the
-guest still has active PTEs?
+The v3 changelog mentions "Don't fail the whole tdx-host device if=20
+seamldr_init() met an error", but returning the errors here propagates them=
+=20
+back to tdx_host_probe().=20
 
-Since this early exit path skips kvm_gmem_invalidate_begin() or
-unmap_mapping_pages(), the KVM MMU is not zapped. Could this introduce guest
-data races, or hardware state machine violations if the architecture-specif=
-ic
-preserve operation acts on actively mapped private pages?
+This causes the entire tdx-host module initialization to fail if the option=
+al=20
+firmware upload interface fails to register.=20
 
-[Severity: High]
-Is the error code from kvm_gmem_apply_content_mode() being discarded here?
-
-WARN_ON() evaluates to a boolean and its return value isn't captured. If a
-folio is hardware-poisoned and kvm_gmem_apply_content_mode_zero() returns
--EHWPOISON, it appears this will silently return 0 (success) to userspace=20
-meaning memory was not zeroed as requested.
-
-Additionally, since this is reachable by untrusted userspace via the=20
-KVM_SET_MEMORY_ATTRIBUTES2 ioctl, could this trigger a host denial of
-service if panic_on_warn is enabled?
-
-[ ... ]
-
-> @@ -786,6 +831,9 @@ static int __kvm_gmem_set_attributes(struct inode *in=
-ode, pgoff_t start,
->  	if (!to_private)
->  		kvm_gmem_invalidate(inode, start, end);
-> =20
-> +	WARN_ON(kvm_gmem_apply_content_mode(kvm, content_mode, inode,
-> +					    start, end));
-> +
->  	mas_store_prealloc(&mas, xa_mk_value(attrs));
-> =20
->  	kvm_gmem_invalidate_end(inode, start, end);
-
-[Severity: High]
-Similar to the early exit path above, does this discard the error code from
-kvm_gmem_apply_content_mode()?
-
-If this is modified to capture and return the error code, would we also
-need to call mas_destroy(&mas) on the error path to avoid leaking the
-preallocated maple tree nodes?
+Did this inadvertently revert the v3 design intent? Should this function
+ignore these errors and return 0 instead?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260326-gmem-inpla=
-ce-conversion-v4-0-e202fe950ffd@google.com?part=3D13
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260326084448.2994=
+7-1-chao.gao@intel.com?part=3D7
