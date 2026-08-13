@@ -1,241 +1,157 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013019.outbound.protection.outlook.com [40.93.201.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C63244D01C
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 09:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786613982; cv=none; b=MvJrAac8u0UZmwFFZeI8AF+jOpt0W/exrtRISdihPF1sTFs5tp92jeAwqwW0/D9cKtbtgA27EkPuKAUOOMgYwsz4c3OdLNtZpPlv1xy3ZnNIMKWvHLWDBWrCT8Tks+9M7zwoAS8c0mq8RmyanMQrUqd5BanCjY37tSSiyKA2aSI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786613982; c=relaxed/simple;
-	bh=RIJDgA6soFRVC0k78nWGXCgPMPcUzn7IBwof5CGhtdY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bkSYrCm6vyQ3hWnPINQJ4qLH4k5g5alfoqqGf0Fz5GLkDJnJcm4KUF3Csk2fWzyxNXdogk0yTHwzJ3cRvu0rWuEgtpngclSvo3yK9ma119NEu2bf6JVY0lnPu+pDjnTiBrlBAW2uTMFPl5Y7Bn8OvO1Hc79BLHzx/Y4j3Gq8QD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iOeEwPZM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=g4Rhbbso; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFBD4446F7;
+	Thu, 13 Aug 2026 09:39:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786613987; cv=fail; b=Y7vyApXcXa/iObbggIbYHUJS8cNMD7XjA8j4hPdbtaNDUBpweCznYKF0n0iucU2+AtZQ6k0bAegyAw77CPVuXCeTkqxO4efVNutvTS+auXQ+WeKtyYMyqfweERHXJZW9WwH/v12PLkskETfnDng93DCadYAMgapPWr5KthaSTkY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786613987; c=relaxed/simple;
+	bh=D6akNIkGUSbIux95uT0+SHTdNmxuWzKOciXJolnT2rw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cLEntMmw1bjgulTw3vKt9EbdMjfDRy2V1GZaFKMaxXye5/Tt9B9qO/FojNwtTUinSGu1lcxMnQnTZLgdB/T0GlwFaMu6KBeahdFMNfBcajSPGKgUvOqSdJftgmSppxpSSU9PObCkKhLPq0AIW2cgTh0e0xqQh4wtw0xpx9ZZnx0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MxxkMP2O; arc=fail smtp.client-ip=40.93.201.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iOeEwPZM";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="g4Rhbbso"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786613979;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9F6N+VCq58ZT8xzy15i+HHmMii8MMNX7ejz2MgM7nfQ=;
-	b=iOeEwPZM8hlgzWCnSy9YZXjAJo3Ua7dUNuu09DJJcPfX0BYDFm/ksIMKJqx1eBfPAioo7b
-	+xi7sZ8npUY66EvC937F1/rOIWUSivjjt7eUMGG6Ep5gIfQJUeIks5eyEmWSLGE8tFSVex
-	zpbgxi37Fm3a3FRIZ+YANsfLY09U7NQ=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-582-Ox0dmU4tPx6LDoi8cRYlmQ-1; Thu, 13 Aug 2026 05:39:38 -0400
-X-MC-Unique: Ox0dmU4tPx6LDoi8cRYlmQ-1
-X-Mimecast-MFC-AGG-ID: Ox0dmU4tPx6LDoi8cRYlmQ_1786613977
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47fe85684b9so521407f8f.3
-        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 02:39:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786613977; x=1787218777; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9F6N+VCq58ZT8xzy15i+HHmMii8MMNX7ejz2MgM7nfQ=;
-        b=g4RhbbsoWwZ6Qo89Ln/kJCk0roFSbuIkv5AqKjdrxS7eDIwmkbAoiWp9MSJmqI95j2
-         B0bJs2SLcsVSCJfgRidFnzQ1/bRDoqoL4YxJ+xq2xBSv9D4+Q6YfoFiIaLDuDSbwpBgR
-         fBUGeJfT1Ql/By4/LdULUbZxcX2nh7ZqL8IyN243D7iojjmT3T5r/uNQSaTRLh0LxeQy
-         R4dp4kqaAuCKyMYYED0EiSix9ffhlqkWsri0v30rylZuqPrOxNev594yn5TQ2oQsqFri
-         c30hH7pyjmY1CwMLZ82J/kUdE3UIB8THHhi2KVjlnPmawuqgnbprOqilwEZZa/e/3Eyt
-         hQqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786613977; x=1787218777;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9F6N+VCq58ZT8xzy15i+HHmMii8MMNX7ejz2MgM7nfQ=;
-        b=OsQKX/i1Ag7u2lSQmos5hlDuvRZPUS012/O4IW2AKUs/noBQyS//2uyCcMm3rYjHAd
-         IBs5i7gP1DOVMCpTkBwP+D1SdWtOzog+Xa3UfLkls3tuf79lF9+wJNz2SpuFei+NsmxX
-         cIA/f6AtNKiw9h85eklzhUbzriVXhO4ClIzKN8HLMlifedvmwUp0X2L8RubewuTT2dK3
-         jSs0QSChzhT2vXEz4jKr3hE3YlJFTlhXZaHPLGAOFmMJoiwh6a229AX9ygab1PDp8Me8
-         KBXnHffwxhPP200WaXFnrMD6PpLRvvc0c32SF5HTlZiVhVguhHEljUlSgP0VsjIQvjhZ
-         Ti+w==
-X-Forwarded-Encrypted: i=1; AHgh+Ro7mhj7a2VkkrbOzvBTYT2hxDO7ewRam4LnU1725cF+fHbG010IE4nqahdDugYIvFGMhP8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMVI/D6L+O7X+UH/gB/tmN5eWEJ9QUZeetrC/BBKfFPYF66ujO
-	pxvr66ucfv7MqLYWLPEknIv/HaxlC0HPEWmld8F44NbF3wAU90/Kg+T/x/MdzU11hx6Q/2gcGam
-	r/EHcv8dwVGuqqT/sWYJqw8ZeRJPdSrnVcJU4o4km7QEs2bnFGRD9xw==
-X-Gm-Gg: AR+sD11ETTLCZvQ1++D3PeTK8hnyBYoGnp9fb/BcWnuUBzlGOYPqrtzd2DZzUg+v32v
-	ryWyTOfDAZgIOHphb1p/9knlQLb2j0iEU89aYAq6lMA1IvK4f7T+NTv0H8bQjJkHzio26htPQL4
-	PutDA6o8YTd1vXR0SRn5JMeODNPbH5HHPu7KiykbZJzY4vfX4mNjjMs2qRhyjN9yKUxGcSlWXrH
-	hbuK36UO6CzwuAhRiJwAKI4sd910FD9ZdZpbt6VL0EMspxAt7uztTVYiItd6XhYgEfxby48SjUy
-	60ooe/ZFN5JQntRq49wBSK9dOfRcclC0BO0S2VV7P0IsHmy1HT6qUi8pc8qwsMcYB2nCat1kSbd
-	vVgn32lfIZN6QOCABRW2DIQiRZ3LWzVBZr3h3pjTlTZxrDxnSg0t4
-X-Received: by 2002:a05:6000:220d:b0:475:3a97:8e2c with SMTP id ffacd0b85a97d-4815a01c666mr5772524f8f.16.1786613976705;
-        Thu, 13 Aug 2026 02:39:36 -0700 (PDT)
-X-Received: by 2002:a05:6000:220d:b0:475:3a97:8e2c with SMTP id ffacd0b85a97d-4815a01c666mr5772398f8f.16.1786613976129;
-        Thu, 13 Aug 2026 02:39:36 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-154.retail.telecomitalia.it. [82.53.135.154])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815a5612d0sm4972789f8f.2.2026.08.13.02.39.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 02:39:35 -0700 (PDT)
-Date: Thu, 13 Aug 2026 11:39:30 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: stefanha@redhat.com, mst@redhat.com, jasowangio@gmail.com, 
-	eperezma@redhat.com, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] vhost/vsock: discard IOTLB when ACCESS_PLATFORM
- is cleared
-Message-ID: <an2KTuUm-mZ0nnDQ@sgarzare-redhat>
-References: <20260810134018.143973-1-physicalmtea@gmail.com>
- <20260810134018.143973-2-physicalmtea@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MxxkMP2O"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=A+sChqy/lF6vzK0MNnoUngYcLS07TbIZqPH5MAadZW0adCU4WNbDMdYV9x9mhtniv913rxVk6uQ3xAjZ+PIkXgHkJ1fz0Y2l1H13ieuQgiaoIcCgacD1vjfyXnObpxR+PaA2h8PHfOZF7N9Sx6+8ITN5mLu1WlEpMIh+dEIMq2RmkO0LICTPU6i+tkkZkmSqTjoQcAWjs/lDwsox74wYZdpeRju3gvAAQUFTbprTq+0pIoxtKfeYQtCcz4H3JZmZf9XxD+rlN16a183dlWnzSnRGYE097V7yZJ8pb8dFigb3RDu2lHHnwsaKUEynOtrYXBu4Zh92KF6mZoZPLYMxvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=B5BXKy+4XmUzqCsdpysaudrRS4yHrdCktJ3+pEDxt+0=;
+ b=uu+A5HGw+p25RHjy5FNyd95lrkRO8NoDCPXfpdJW/943Md0ngPGSBN6FQRrceocKLRMTgeVzHPYZpLhdIZvYn9teqSygQSK6tA1ZRfanFjw+sf27N8E2Rdd1Q4G3XPbp0Z6kgLWZwbPXm+IOMC5tigYitUvP5TCc8lERm8/3HIAbRoi26z9Zv4Ri3digfDLTqfMhDpK53FLvAWiYUfgMg3m93jehGVMBVJ7kWZp8+eKTmqTRFD+wZqsn4b961aUy4ByyjynoZTCLdemgOpBIQvy+HMODZlN9NlxtWh67OIj7l6QNuEyvH/uabO09c2xkN4undhF14zggVnrlxHNocA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=shazbot.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=B5BXKy+4XmUzqCsdpysaudrRS4yHrdCktJ3+pEDxt+0=;
+ b=MxxkMP2OkqyjRQNlt1TI1kDGO0xcCzIoWlBXhrmFNg/py2myGr5nbI+Nu902/4ce65gvTCK4s58stF1O4evNjAHo76S6VPdkQ6V3nvfn2SBHER7STmzUL1l4/SAp5p3B+PM3wEBa7+AsS/vxeHf1+jf/R1EDSn9w3ALqhazIBPSwL/Q65RPy9q63QzEcmdMy2GdZsbmUPCVE9JkSe0jocPjxEG0NyYioGcXHSTtD5m7kE/QOTTAIBuch7qjP1m+U6hDqhNmBDIZCcvw6yNcopJ5ZzE3pw11pF2Nwe8OPUgb7izBOuZZVapR0PLvNDWWNZJvV93AW1d6ZXUrshJy8OQ==
+Received: from BN9PR03CA0875.namprd03.prod.outlook.com (2603:10b6:408:13c::10)
+ by IA0PR12MB8838.namprd12.prod.outlook.com (2603:10b6:208:483::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.12; Thu, 13 Aug
+ 2026 09:39:40 +0000
+Received: from BN1PEPF00004687.namprd05.prod.outlook.com
+ (2603:10b6:408:13c:cafe::41) by BN9PR03CA0875.outlook.office365.com
+ (2603:10b6:408:13c::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.12 via Frontend Transport; Thu,
+ 13 Aug 2026 09:39:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BN1PEPF00004687.mail.protection.outlook.com (10.167.243.132) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.339.3 via Frontend Transport; Thu, 13 Aug 2026 09:39:40 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Thu, 13 Aug
+ 2026 02:39:24 -0700
+Received: from nvidia-4028GR-scsim.nvidia.com (10.126.230.37) by
+ rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Thu, 13 Aug 2026 02:39:15 -0700
+From: <mhonap@nvidia.com>
+To: <alex@shazbot.org>, <jgg@ziepe.ca>, <ankita@nvidia.com>,
+	<jic23@kernel.org>, <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
+	<smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+	<dave@stgolabs.net>, <alison.schofield@intel.com>,
+	<vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
+	<yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+	<bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
+	<gustavoars@kernel.org>
+CC: <cjia@nvidia.com>, <kjaju@nvidia.com>, <vsethi@nvidia.com>,
+	<zhiw@nvidia.com>, <mhonap@nvidia.com>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>
+Subject: [PATCH v4 14/27] vfio: Add CXL region type for the HDM region
+Date: Thu, 13 Aug 2026 15:06:18 +0530
+Message-ID: <20260813093631.2288172-15-mhonap@nvidia.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260813093631.2288172-1-mhonap@nvidia.com>
+References: <20260813093631.2288172-1-mhonap@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260810134018.143973-2-physicalmtea@gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF00004687:EE_|IA0PR12MB8838:EE_
+X-MS-Office365-Filtering-Correlation-Id: cf6f523e-152d-4c22-a590-08def91ecc79
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|23010399003|82310400026|7416014|376014|56012099006|11063799006|10067099003|6133799003|18002099003|22082099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	KjPBzQ3M/NVPltqDhYf31n9tK21BnFbBD+24zXwgITd7SoQ1pomC1x1H3sei7xjOXLlzfNqadutr/wnK8bjkjoeAln/at/8xBkAZhAYWg+k3QURVSqWol4ZzP4imSnw9YprlghSXSMeYP6qJITq3PRjN6qsIb8g+WDHRiUDita4U2fNT1iFppqP2WnIuguiRq556nkZwUfsRkkJzO2aqoz+UVGLZ6lTzAy8KC3Fh0fezjZlt1UiJALGximlqosJ8CfUZ1ur6dUoJ2kTE6z2BgFYGV8rVWHnjrYzaRu8GLPFHLP/1eNl/ywa4HMHKSL77HSeeGt7TKTZQe/1hL0Jm65slevaxwhBw11v4sLl2m4OgnD6aXf0XHFxCeKW1WPw9EvJEK+dyKE8yp84sYHyYBVycGRzCzISyERpaDntWhYXOy9xdOsZzTD5YM6URxl8X9hbFIEbub0uw70vhn6SRr9N3dM1PAbkKlVzD10xstZfknaZwLiwPkl0DLCfEBNkt95FojEXPwtWVQxYgCm7g/rOS1UbJshrD/uvFdje3wbkoPkkZ225RY6XBu7G/O2y+d5zh5f8ezPax1B3pntm+9uhLhklClWwk5uRua/6ubR//aklqpHkZRLdd464kTwTV7X6/t2VZW0NRHTVZySe9XaB+sgcpxJQZheRvvtu/kmNojdOB6K3U2FXnG/rW97eQm+G6XwolD3wOlSiteql0ZLLSTMRfDu9i/B6UWAIbWdFPufxwUkR7SciroOgH+hC8
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(23010399003)(82310400026)(7416014)(376014)(56012099006)(11063799006)(10067099003)(6133799003)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	5ROnWtlZcV/GIAgd7CDgRz+MzLgQ0lXYCc+yYZ2dVIDUac5I7V3328qxcxVDWvZtZ2QVAcfFqRyGdK1/nBQCXHCcesGPNOkiwOoMwS1YLt/BxfBPn37iD0ziHcGPq5jPpx6wymEK4cNXCPpVwruydjvKfLWaRx8wX+h/dl7X2DHXdzvA35apH6Gp1PoeYxs+h6Wc+YD/UVLY6JZckZLcTtdNi6pLW/II+m/H9ld8nmNvTCPpDl4XfjDKCRdhix1/x8eSHCKFpTeGd2lW7P+pclOH13FzeXVe4BGRy3fN+Er5g+yYh4ElmrjfDbiW6uBMw12nqI5OJXxK8RRw2v3/hSIAtf90hTDYHKh6WAHbcKQXgrwGckKzxa51rSsUuufdWKqINhUKKhuiWHEP3rt8LWvatN9CG0DGWUGL6nrVSiVDqHXQ4T1SmDVXcXgGyLw2
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2026 09:39:40.6271
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf6f523e-152d-4c22-a590-08def91ecc79
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF00004687.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8838
 
-On Mon, Aug 10, 2026 at 09:40:17PM +0800, Jia Jia wrote:
->vhost_vsock_set_features() leaves the device IOTLB attached when
->userspace clears VIRTIO_F_ACCESS_PLATFORM. Descriptors can therefore
->continue to use translations installed before the feature change,
->including HVAs made stale by a later memory table update.
->
->Detach the device IOTLB before acknowledging a feature mask without
->ACCESS_PLATFORM. Serialize each virtqueue handoff with its own mutex
->while clearing its IOTLB pointer, resetting its metadata cache, and
->updating its acknowledged features. Keep the old IOTLB alive until all
->virtqueues have dropped their references, then free it.
->
->Also drop queued IOTLB miss messages and wake readers now that the
->device no longer accepts IOTLB updates.
->
->Fixes: e13a6915a03f ("vhost/vsock: add IOTLB API support")
->Suggested-by: Michael S. Tsirkin <mst@redhat.com>
->Signed-off-by: Jia Jia <physicalmtea@gmail.com>
->---
-> drivers/vhost/vsock.c | 39 ++++++++++++++++++++++++++++++++++-----
-> 1 file changed, 34 insertions(+), 5 deletions(-)
->
->diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
->index 9aaab6bb8061..7372c22691de 100644
->--- a/drivers/vhost/vsock.c
->+++ b/drivers/vhost/vsock.c
->@@ -851,6 +851,30 @@ static int vhost_vsock_set_cid(struct vhost_vsock *vsock, u64 guest_cid)
-> 	return 0;
-> }
->
->+/* Caller must hold the device mutex. */
->+static void vhost_vsock_clear_iotlb(struct vhost_vsock *vsock, u64 features)
->+{
->+	struct vhost_iotlb *iotlb;
->+	struct vhost_virtqueue *vq;
->+	int i;
->+
->+	iotlb = vsock->dev.iotlb;
->+	vsock->dev.iotlb = NULL;
->+
->+	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
->+		mutex_lock(&vsock->vqs[i].mutex);
->+		vq = &vsock->vqs[i];
+From: Manish Honap <mhonap@nvidia.com>
 
-You can assing vq before the mutex_lock() and use it there too (and in 
-mutex_unlock()), as we do in all other places in this file.
+A CXL Type-2 device exposes its HDM memory to the guest as a dedicated
+VFIO region rather than a PCI BAR. Add a CXL region type and a memory
+sub-type for it; vfio-cxl registers the window under these so userspace
+can discover and map it.
 
->+		vq->iotlb = NULL;
->+		memset(vq->meta_iotlb, 0, sizeof(vq->meta_iotlb));
->+		vq->acked_features = features;
->+		mutex_unlock(&vsock->vqs[i].mutex);
->+	}
->+
->+	vhost_clear_msg(&vsock->dev);
->+	vhost_iotlb_free(iotlb);
->+	wake_up_interruptible_poll(&vsock->dev.wait, EPOLLIN | EPOLLRDNORM);
->+}
+Signed-off-by: Manish Honap <mhonap@nvidia.com>
+---
+ include/uapi/linux/vfio.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-I don't see anything vsock specific here. Would it be better to move 
-this to vhost.c and reuse some of the functions we have there?
-
-I mean something like this (untested and may be incomplete):
-
-
-void vhost_clear_device_iotlb(struct vhost_dev *d)
-{
-	struct vhost_iotlb *iotlb;
-	int i;
-
-	iotlb = d->iotlb;
-	d->iotlb = NULL;
-
-	for (i = 0; i < d->nvqs; ++i) {
-		struct vhost_virtqueue *vq = d->vqs[i];
-
-		mutex_lock(&vq->mutex);
-		vq->iotlb = NULL;
-		__vhost_vq_meta_reset(vq);
-		mutex_unlock(&vq->mutex);
-	}
-
-	vhost_clear_msg(d);
-	vhost_iotlb_free(iotlb);
-	wake_up_interruptible_poll(&d->wait, EPOLLIN | EPOLLRDNORM);
-}
-EXPORT_SYMBOL_GPL(vhost_clear_device_iotlb);
-
-
->+
-> static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
-> {
-> 	struct vhost_virtqueue *vq;
->@@ -872,11 +896,16 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
->
-> 	vsock->seqpacket_allow = features & (1ULL << VIRTIO_VSOCK_F_SEQPACKET);
->
->-	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
->-		vq = &vsock->vqs[i];
->-		mutex_lock(&vq->mutex);
->-		vq->acked_features = features;
->-		mutex_unlock(&vq->mutex);
->+	if (!(features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)) &&
->+	    vsock->dev.iotlb) {
->+		vhost_vsock_clear_iotlb(vsock, features);
->+	} else {
->+		for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
->+			vq = &vsock->vqs[i];
->+			mutex_lock(&vq->mutex);
->+			vq->acked_features = features;
->+			mutex_unlock(&vq->mutex);
->+		}
-
-TBH I don't like this mix.
-
-Why assigning acked_features inside vhost_vsock_clear_iotlb()?
-
-IMO it's confusing. I see that you're saving another loop around the 
-VQs, but this code is not easy to understand IMO.
-
-I think we have 2 options:
-1. leave the loop for acked_features and don't set it in
-    vhost_vsock_clear_iotlb() (less code touched by this patch).
-    This is also what to do if we move the clear_iotlb() function
-    in vhost.c.
-2. change the code to have a single for loop with if block inside to
-    reset IOTLB stuff if needed. In this case maybe better to avoid the
-    function and move the entire code here.
-
-I prefer 1 with clear_iotlb() in vhost.c, but I'm not fully against 2.
-
-Thanks,
-Stefano
-
-
-> 	}
-> 	mutex_unlock(&vsock->dev.mutex);
-> 	return 0;
->-- 
->2.34.1
->
+diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+index 5de618a3a5ee..540e62312671 100644
+--- a/include/uapi/linux/vfio.h
++++ b/include/uapi/linux/vfio.h
+@@ -345,6 +345,7 @@ struct vfio_region_info_cap_type {
+ #define VFIO_REGION_TYPE_GFX                    (1)
+ #define VFIO_REGION_TYPE_CCW			(2)
+ #define VFIO_REGION_TYPE_MIGRATION_DEPRECATED   (3)
++#define VFIO_REGION_TYPE_CXL			(4)
+ 
+ /* sub-types for VFIO_REGION_TYPE_PCI_* */
+ 
+@@ -373,6 +374,10 @@ struct vfio_region_info_cap_type {
+ /* sub-types for VFIO_REGION_TYPE_GFX */
+ #define VFIO_REGION_SUBTYPE_GFX_EDID            (1)
+ 
++/* sub-types for VFIO_REGION_TYPE_CXL */
++/* CXL.mem HDM region of a Type-2 device, mmap-able */
++#define VFIO_REGION_SUBTYPE_CXL_MEM		(1)
++
+ /**
+  * struct vfio_region_gfx_edid - EDID region layout.
+  *
+-- 
+2.25.1
 
