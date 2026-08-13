@@ -1,238 +1,156 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E2D48D87E;
-	Thu, 13 Aug 2026 15:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B41B3955F9;
+	Thu, 13 Aug 2026 15:50:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786635663; cv=none; b=PIf+F8R87ZtXCISysr/VTZcsvLc8RGOfWzpWk0e/zEK/y9+A9V6jBkGDtjdUKbIBCDDWPzyGC5M+lv4U5hCuffl5OppZJgcXaMw2cEn1G5R1yFceOvUNRHsmw135iFw8BmT/Jb/F1cL8p2Iriu6AqXwj18hkwQeS7P9L6lg3KmQ=
+	t=1786636223; cv=none; b=ABgq6j1MaGL0RZ5CxD5rv6FZMiiPyq9QKVTVVtjqbdsThQRkeEGe3ZWxv62avn5BDlQa5Q9DLgyENc119aQg/ppLT6TLf9Wjx9IDtm1qzppLpXCfwPKk20sJdkZ1C7fz8RuswcjfPH1wV/w6VH1KtXAgjW7eHfeQWlfq3YhEZQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786635663; c=relaxed/simple;
-	bh=Hcb38o3x3BLrXWMFwgxvA7KELaSam0G2TLB55T7WeG4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eRGgvHgYnGEDLfW/vWiWqPCPEU6Vy42ECu/og2CTeZ7tt1695g2qtiX6w6M75NBlkkKYnysApnfyXEC+6/w6/R3+dEg3ElVH5c50AQuLL1e0RTffOd45LrlybBdGFEsZcTs3QrxVQJyMIrhq3CwTohw9W3Z/7Og+hlYRAODNB7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EMYQdmsD; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786636223; c=relaxed/simple;
+	bh=r4fAFmUDrtddKraDNS8TmzAzDA8Z1bk/cbz11RoC7dA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gXnXcftWAjt0eM64liW7H5Brh5Fsa8wMTLTVr7znw1THeNCW4kdDa4+zion0waLrW9xFZanQSuBq43GdmIdfbvDQdtj4CtlsZD1rbdXKPpU6AAPO5nqntabFWkjQoukk8M1IwNG6DRGgyDfjyR1UT3+Zkp9+BagSnGMd0erQGN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=HksqieLv; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EMYQdmsD"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67DFX2TU861887;
-	Thu, 13 Aug 2026 15:40:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=3gzANj3yKV/apWNwW3G07NFhXV1h4RuOK0M/lNmYT
-	D4=; b=EMYQdmsDy+/BpRy2Uxi90IoDkQKupxEAkLZBLxdWy0BLq4Ce7+rlj3l2k
-	bqqLdLIdSZ3P1CkCERBmm+iuD3HkjocWW4U7B5FUhZkU6CcGSt0sClKRwv0iiU8E
-	OfsEh/d3TTjLN2KZKsIReQwDvwwjR7M/VslVCFAtS6OkkZpZcjQnUQL9H0+gGCD0
-	lGq8SefBC7v+iX4NGyjuqIYqD2l9rfDuFiYMIY0JjjUE2f4E9FS3+jxU+VYMsbSc
-	fxvVXda1mDQfcYjRnVJHTdonmfyIIbPWwlNsJu/xtK963tfOTy4om3iLUERmtoTD
-	gdTxK/V51tNsRIvuOSwJ1tJ5pYR2Q==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvk08mrt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Aug 2026 15:40:52 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67DFQQ92026035;
-	Thu, 13 Aug 2026 15:40:51 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxfsk3j9c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Aug 2026 15:40:51 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67DFejU944892616
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Aug 2026 15:40:45 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AEC1B20043;
-	Thu, 13 Aug 2026 15:40:45 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 95EC820040;
-	Thu, 13 Aug 2026 15:40:45 +0000 (GMT)
-Received: from b46lp25.lnxne.boe (unknown [9.87.84.240])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 13 Aug 2026 15:40:45 +0000 (GMT)
-From: Janosch Frank <frankja@linux.ibm.com>
-To: kvm@vger.kernel.org
-Cc: imbrenda@linux.ibm.com, linux-s390@vger.kernel.org,
-        borntraeger@linux.ibm.com
-Subject: [PATCH] kvm: s390: Improve floating IRQ injection behavior
-Date: Thu, 13 Aug 2026 14:56:23 +0000
-Message-ID: <20260813154040.73437-1-frankja@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="HksqieLv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
+	s=201707; t=1786636209;
+	bh=XIhu+nqQzjz2LR4uuSfg1nS0R2BhHb+M3dJJmBjOuH8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HksqieLv+7l3go3qji728AvWDA/KOIJMhP8NA/h/2+sy+kKQunlYCHfEKDxNClQPF
+	 2D+lUyQofOGCJVyhHzI5v3ELDfMKl3kpqVhDP3ogL5IJH3aOoKdsrlF7u3JZrLzOGy
+	 ZGu9k5dFmblugyvQNVlLvLpkCIoz0pa9PBSxtiVGqQVeB3fQg85ECFqBaCv8vrKUt4
+	 +wJ3G00wsquFBfzpJJNV72lRDJWGxD8tzO0ohmJmot+a8+DWMPNEhwLskicyzMR4ja
+	 g7zeN2f8qpeqfmHY3gxZ8WkX/zrkWO/QkFI5gp6aLodJtQ+w2/En3WS01z1nuBvVCv
+	 73KeJrw3kUHmw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4hLVDR6fLRz4wDm;
+	Fri, 14 Aug 2026 01:49:59 +1000 (AEST)
+Message-ID: <2ba56abd-797c-4051-b345-e025a5ed0421@ozlabs.org>
+Date: Thu, 13 Aug 2026 16:49:55 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDExMSBTYWx0ZWRfX+UyAQh6scq0r
- i4QQUyDEOMqZE86HTXL7P6lcWReh92Coq4qY+FmPcEwjf64RkLI44BsHG7gTO1C6iGoWGfW88gW
- v9G4dwClTOgLGRNYx1TxVCu6yjfKfh69UDSAMpaIsiZZXPG9BmjTvTuyj5gMQp2PJWmgiLySbHB
- eLqqFuCzyQst/1xB8smXA9+bKPJUY5QcxFV6VMHywmG6ZNd9FqL1fx3W7INxrShVVjIv9gAuXMP
- OhINzPhjAn0mBsN2OjZTjA8BPPa29FMFwrD0Nx3/JW9on73iDrDLGbPUXixdCtpSjGsnnM33qIK
- 98JD+elWKehoDjM6voXg8J791hs6hziHnZZbw7bHQDIA2KHGFO8o4nOdKvfQmlYMHoj0cGcfZzk
- q77AkoGCyQ3F+axnCrUSQSoHZWmx28coimTnHM8WfQyNAPd4r9wsYMJNJsSr+U/LIjY6UmzYio5
- /JkDM5nEvIGyZfoolkw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDExMSBTYWx0ZWRfX+vwbBgZVahzw
- gip51Sonp6ClH+Oa189m44Q8bG+PcOjbC4mI+gSgv9ycmkkRmQO1NOeRcbx8jzE0FobfARIM4KO
- kOMaGYbpQBNzxnP9AjyWmgHQUyhFq4s=
-X-Authority-Analysis: v=2.4 cv=RqD16imK c=1 sm=1 tr=0 ts=6a7de584 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=eafQdAodyzljY6xa4VIA:9
-X-Proofpoint-GUID: fg93QdYc-_pVnNvgx6i2UmTdxAhakapL
-X-Proofpoint-ORIG-GUID: fg93QdYc-_pVnNvgx6i2UmTdxAhakapL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-13_05,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 suspectscore=0 lowpriorityscore=0
- clxscore=1015 adultscore=0 bulkscore=0 malwarescore=0 impostorscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608130111
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 7/9] vfio/pci: Clean up BAR zap and revocation
+Content-Language: en-GB
+To: Alex Williamson <alex@shazbot.org>
+Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ Alex Mastro <amastro@fb.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Logan Gunthorpe <logang@deltatee.com>, Kevin Tian <kevin.tian@intel.com>,
+ Pranjal Shrivastava <praan@google.com>, Longfang Liu
+ <liulongfang@huawei.com>, Mahmoud Adam <mngyadam@amazon.de>,
+ David Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-pci@vger.kernel.org
+References: <20260715174737.15287-1-matt@ozlabs.org>
+ <20260715174737.15287-8-matt@ozlabs.org>
+ <20260729115204.2a9a50b2@shazbot.org>
+ <6a964960-722c-44b5-837d-9d582aeb0a3c@ozlabs.org>
+ <20260804141022.71b6429d@shazbot.org>
+ <291625a2-f281-4c05-b51f-553018a34b08@ozlabs.org>
+ <20260812140657.247b9fa3@shazbot.org>
+From: Matt Evans <matt@ozlabs.org>
+In-Reply-To: <20260812140657.247b9fa3@shazbot.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Floating IRQs can be handled by any VCPU that opened its masks. The
-current design does not check if the mask is open when a floating IRQ
-is injected via the FLIC. It will wakeup the last VCPU that went
-sleeping hoping it's the correct one.
+Hola Alex,
 
-Improve this by at least checking if the VCPU has pending IRQs and if
-not try to find another VCPU which can take the IRQ.
+On 12/08/2026 21:06, Alex Williamson wrote:
+> On Tue, 11 Aug 2026 16:58:43 +0100
+> Matt Evans <matt@ozlabs.org> wrote:
+> 
+>> Hi Alex,
+>>
+>> [snip]
+>> Isn't the init-time 'event horizon' for writing the bitfield the
+>> vfio_register_group_dev() in vfio_pci_core_register_device(), after
+>> which synchronisation is needed?
+>>
+>> The hisi_acc_vfio_pci driver's .probe calls
+>> vfio_pci_core_register_device() and _after that_ sets
+>> zap_bars_on_revoke, and that's now in the "needs synchronisation to
+>> write the bitfield" phase.
+>>
+>> (Re-reading my comment in vfio_pci_core_register_device() I'd noted
+>> this, "Drivers can opt out after registration".  Has to be done after by
+>> definition as the default's set in vfio_pci_core_register_device().)
+>>
+>> The concern is just blatting neighbours in the bitfield, not the window
+>> of time before the flag's set.  The flag's an opt-out of a safe but (for
+>> this driver) unnecessary zap, so having it unset for a short time is OK.
+>>
+>> I still think this really should be a standalone bool, not a bit in the
+>> bitfield.  It has to be set after registration and having to take a lock
+>> to do that has downsides.
+> 
+> You're right on the ordering, the device is live after
+> vfio_pci_core_register_device().  However, I think that's evidence that
+> vfio-pci-core is setting the default polarity, inferred from the mmap
+> op, in the wrong place.  It should happen in init, not register_device.
+> 
+> The same mmap op pointer is available in vfio_pci_core_init_dev(), which
 
-Also add a function to distribute floating IRQs which can be called on
-VCPU enter or exit. It will check for pending floating IRQs and wakeup
-sleeping VCPUs which have pending IRQs.
+Ahaa, they're passed into vfio_alloc_device()!
 
-This is not the final fix around this topic but we'll eventually
-inject a pending IRQ. The current code can easily deadlock a VM and
-with this fix we work around that.
+> is used by all vfio-pci variant drivers in their init callback.  The
+> proposed vfio_pci_core_register_device() change just needs to be lifted
+> into vfio_pci_core_init_dev().  hisi_acc is then modified to fix the
+> flag after vfio_pci_core_init_dev(), something like below.
+> 
+> I think that's better than anticipating it being dynamic when we don't
+> have a use case that requires it.  Thanks,
 
-This will fix this test's hangs as well as another hang that's already
-been present before I added the new test code. See:
-https://lore.kernel.org/kvm/20260813144058.7125-1-frankja@linux.ibm.com/T/#u
+Yes, that works nicely.  Done.  As ever, thanks for the suggestion.
 
-Fixes: 352ccf890a3e ("KVM: s390: improve interrupt cpu for wakeup")
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
----
 
-Currently this is in the entry path and therefore might affect
-latency. I chose to do it this way as we inject IRQs into the current
-cpu a couple of lines above the distribute_float_irqs() call which
-should mean we have a higher chance that no other floating IRQs are
-pending since we already handled an IRQ.
+Matt
 
-A simple boot of a smp guest resulted in 275 injects via the new code.
 
-I haven't done any performance tests yet.
+PS: Series v6 has several improvements/review fixes ready, but I'm 
+holding off posting it.  It'd depend on resolving the awful deadlock I 
+posted about on patch [4/9].
 
----
- arch/s390/include/asm/kvm_host_s390.h |  1 +
- arch/s390/kvm/s390/interrupt.c        | 34 ++++++++++++++++++++++++++-
- arch/s390/kvm/s390/s390.c             |  3 +++
- arch/s390/kvm/s390/s390.h             |  1 +
- 4 files changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/include/asm/kvm_host_s390.h b/arch/s390/include/asm/kvm_host_s390.h
-index cd692f8fb764..a86863e621b7 100644
---- a/arch/s390/include/asm/kvm_host_s390.h
-+++ b/arch/s390/include/asm/kvm_host_s390.h
-@@ -412,6 +412,7 @@ struct kvm_vm_stat {
- 	u64 gmap_shadow_r3_entry;
- 	u64 gmap_shadow_sg_entry;
- 	u64 gmap_shadow_pg_entry;
-+	u64 inject_redist;
- };
- 
- struct kvm_arch_memory_slot {
-diff --git a/arch/s390/kvm/s390/interrupt.c b/arch/s390/kvm/s390/interrupt.c
-index 0381ae981703..663fc2e3eca5 100644
---- a/arch/s390/kvm/s390/interrupt.c
-+++ b/arch/s390/kvm/s390/interrupt.c
-@@ -372,6 +372,37 @@ static unsigned long deliverable_irqs(struct kvm_vcpu *vcpu)
- 	return active_mask;
- }
- 
-+void distribute_float_irqs(struct kvm *kvm)
-+{
-+	struct kvm_vcpu *dst_vcpu;
-+	int sigcpu, online_vcpus;
-+
-+	if (!READ_ONCE(kvm->arch.float_int.pending_irqs))
-+		return;
-+
-+	online_vcpus = atomic_read(&kvm->online_vcpus);
-+
-+	/*
-+	 * Not too worried about synchronization for idle_mask. We
-+	 * might burn too many cycles but apart from that waking a
-+	 * vcpu is not harmful.
-+	 */
-+	sigcpu = find_first_bit(kvm->arch.idle_mask, online_vcpus);
-+	/* Well nobody's sleeping so someone will likely take the IRQ soon */
-+	if (sigcpu == online_vcpus)
-+		return;
-+
-+	do {
-+		dst_vcpu = kvm_get_vcpu(kvm, sigcpu);
-+		if (deliverable_irqs(dst_vcpu)) {
-+			kvm->stat.inject_redist++;
-+			kvm_s390_vcpu_wakeup(dst_vcpu);
-+			break;
-+		}
-+		sigcpu = find_next_bit(kvm->arch.idle_mask, online_vcpus, ++sigcpu);
-+	} while (sigcpu < online_vcpus);
-+}
-+
- static void __set_cpu_idle(struct kvm_vcpu *vcpu)
- {
- 	kvm_s390_set_cpuflags(vcpu, CPUSTAT_WAIT);
-@@ -1933,7 +1964,8 @@ static void __floating_irq_kick(struct kvm *kvm, u64 type)
- 	for (sigcpu = kvm->arch.float_int.last_sleep_cpu; ; sigcpu++) {
- 		sigcpu %= online_vcpus;
- 		dst_vcpu = kvm_get_vcpu(kvm, sigcpu);
--		if (!is_vcpu_stopped(dst_vcpu))
-+		if (!is_vcpu_stopped(dst_vcpu) &&
-+		    deliverable_irqs(dst_vcpu))
- 			break;
- 		/* avoid endless loops if all vcpus are stopped */
- 		if (nr_tries++ >= online_vcpus)
-diff --git a/arch/s390/kvm/s390/s390.c b/arch/s390/kvm/s390/s390.c
-index b0839e887221..2ee0ab6b926a 100644
---- a/arch/s390/kvm/s390/s390.c
-+++ b/arch/s390/kvm/s390/s390.c
-@@ -87,6 +87,7 @@ const struct kvm_stats_desc kvm_vm_stats_desc[] = {
- 	STATS_DESC_COUNTER(VM, gmap_shadow_r3_entry),
- 	STATS_DESC_COUNTER(VM, gmap_shadow_sg_entry),
- 	STATS_DESC_COUNTER(VM, gmap_shadow_pg_entry),
-+	STATS_DESC_COUNTER(VM, inject_redist),
- };
- 
- const struct kvm_stats_header kvm_vm_stats_header = {
-@@ -4549,6 +4550,8 @@ static int vcpu_pre_run(struct kvm_vcpu *vcpu)
- 		rc = kvm_s390_deliver_pending_interrupts(vcpu);
- 		if (rc || guestdbg_exit_pending(vcpu))
- 			return rc;
-+
-+		distribute_float_irqs(vcpu->kvm);
- 	}
- 
- 	rc = kvm_s390_handle_requests(vcpu);
-diff --git a/arch/s390/kvm/s390/s390.h b/arch/s390/kvm/s390/s390.h
-index d284a263ba70..e518339fb290 100644
---- a/arch/s390/kvm/s390/s390.h
-+++ b/arch/s390/kvm/s390/s390.h
-@@ -375,6 +375,7 @@ enum hrtimer_restart kvm_s390_idle_wakeup(struct hrtimer *timer);
- int __must_check kvm_s390_deliver_pending_interrupts(struct kvm_vcpu *vcpu);
- void kvm_s390_clear_local_irqs(struct kvm_vcpu *vcpu);
- void kvm_s390_clear_float_irqs(struct kvm *kvm);
-+void distribute_float_irqs(struct kvm *kvm);
- int __must_check kvm_s390_inject_vm(struct kvm *kvm,
- 				    struct kvm_s390_interrupt *s390int,
- 				    struct kvm_s390_interrupt_info *inti);
--- 
-2.53.0
+
+
+> 
+> Alex
+> 
+> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+> @@ -1564,6 +1564,7 @@ static int hisi_acc_vfio_pci_migrn_init_dev(struct vfio_device *core_vdev)
+>          struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_get_vf_dev(core_vdev);
+>          struct pci_dev *pdev = to_pci_dev(core_vdev->dev);
+>          struct hisi_qm *pf_qm = hisi_acc_get_pf_qm(pdev);
+> +       int ret;
+>   
+>          hisi_acc_vdev->vf_id = pci_iov_vf_id(pdev) + 1;
+>          hisi_acc_vdev->pf_qm = pf_qm;
+> @@ -1575,7 +1576,9 @@ static int hisi_acc_vfio_pci_migrn_init_dev(struct vfio_device *core_vdev)
+>          core_vdev->migration_flags = VFIO_MIGRATION_STOP_COPY | VFIO_MIGRATION_PRE_COPY;
+>          core_vdev->mig_ops = &hisi_acc_vfio_pci_migrn_state_ops;
+>   
+> -       return vfio_pci_core_init_dev(core_vdev);
+> +       ret = vfio_pci_core_init_dev(core_vdev);
+> +       hisi_acc_vdev->core_device.zap_bars_on_revoke = false;
+> +       return ret;
+>   }
+>   
+>   static const struct vfio_device_ops hisi_acc_vfio_pci_migrn_ops = {
 
