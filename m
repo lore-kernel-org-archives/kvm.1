@@ -1,98 +1,161 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5546B417D99
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 15:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C9C470EAA
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 15:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786633214; cv=none; b=U5XHw1DhIV74ci78p/0C7jq1UFlJLea2ON+Kc+XOSyJLf9XG8kHBd1Wq8Yx7YcRR27cpAketwjLmX2V0Y/oAH/E/3B2a/myFFn+OT1us6W3HZpTq1c/NxjmM3p/OToH0FPAE6aN1Ua4xU5+HuVzO77qBC50Eq2IpHe8XXMSC1eI=
+	t=1786633215; cv=none; b=C7k+glQ6PSv5Z3PU51dxAmhaxlUo2ejVcjao3zXiTA2+rVnIhQEnh1wGVMSGIGE66l7HGa76GsK5gx1WQlWMHdXzVlp9XtJoFNTAy34iHWba+Mivz+KS4a41h6hS9A7aN7B8nSGL/36zIY7SkIxX3N44k8OCqVCTM31eu1R2jSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786633214; c=relaxed/simple;
-	bh=OdszaCZfnZUJEmN7Qe5Cs1Ewj/Cu5urowp4nqy8qHhY=;
+	s=arc-20240116; t=1786633215; c=relaxed/simple;
+	bh=dFut0bDEPJ8yVRdPR4MTdKvzpAOU6nVqanSDPIqimX4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ct3qS5uaAYi/glANNjfIJjDAvE8+uhZTmgNyCzLp7AWwgbDDJDYRpRnaizS33BpnnbuiDgxbx7Ne/Ss1SpVmhKI3MM7zGOxVAAjpLpyGYI9EmKyFbamvVOAgXKt6sRWlr9S5KwOAXF6MRQjLj63ljEimoGoYxtOJtAUZoIYYDwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lxHrTq6z; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=D++/jhSbFvNULzyZHyeiUsU33xqVZYPlZ8cAd0CRslXxWyMhGPYNa1XK0NWJpsDRCtusJV5IJ2jNg/OyZxay/c4PQPW4dW0AtpN8zdfpijYnNIJxMYNmfIEMu5RqQ9fd7GE0KpvL/rSqafmh63tiAxPBV8TpPrAKmQWCsUkuL34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h0sjxVpF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lxHrTq6z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ADE11F00A3A;
-	Thu, 13 Aug 2026 15:00:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h0sjxVpF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AED91F00A3D;
+	Thu, 13 Aug 2026 15:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786633207;
-	bh=kTNMfuHz4bxjv2UYGVkBMZL4xQ6gifTYlTCYto9HMqA=;
+	s=k20260515; t=1786633208;
+	bh=dNyVtsw2PpifOTrmFRKJ35Wx/4U2g9yEqilARH2mSX8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lxHrTq6zUezztKYEPO8v9btx9gAJ1KAkhAkUvOXHA1DijyXJPcO0Y1vY2w877mnie
-	 +Gf52l37WwxYuQxyN6ENB1lsf+3qCeCSFjedBPnGrm4N1Fd5fSEo9dpg0huXxSqDqX
-	 TuikgYtAVssMAXCqtZY1ffD3W7Y7R3KP3/kb0kitvPoiNry31aVFRwltonKX4qtk3D
-	 9ShSbkyN50McvtBtuoi7NurCsgSPUAEzOQHeWvIVHdFMx1FA2UG0EMl/xTMiBsj16Y
-	 o6q8SwJNmKHzhwVf7N8n3q4sn3WTu8SMUXY+tI63N1rTxTuBB2dWEv/FQaI+JzBzFH
-	 TIS3Lkm4HlpHg==
+	b=h0sjxVpFVqDzLyX0e6THduZRyXodMzx75FQ2gqZmtvNySIX+sFRCShUxNtDBUAKNe
+	 icgaupLnBgvtSzrpkAEMUw5SLi3x1Nhh/oc60lJiT66/eZBXhQMEW0wH7n6xYJzV6b
+	 GAyk697SazaX5k/Xv4ghYq8DfUCno8N8xeIV73tQQqkLGWQ2eBut/aNKsGrtbXZaqJ
+	 XDjKn+e1RIVQjHtPgqnbrdy/MqXve/W1SOwrNf2+oWZa4T4l43PaMTlNUsj5XMDT14
+	 Fn0CpVNGzPdfJSkMTyIeqDzRFGiMAHTfBEI6wKCmxyO/tmi7ducYP0urkvR9pMtJ3B
+	 8htaAK+XHK9jw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 06/10] vfio: selftests: Allow drivers to specify
- required region size
+Subject: Re: [PATCH v4 08/10] vfio: selftests: Add mlx5 driver - HW init and
+ command interface
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Jason Gunthorpe" <jgg@nvidia.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <6-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
-References: <6-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
+In-Reply-To: <8-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
+References: <8-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Date: Thu, 13 Aug 2026 15:00:07 +0000
-Message-Id: <20260813150007.9ADE11F00A3A@smtp.kernel.org>
+Message-Id: <20260813150008.4AED91F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Medium] The DMA region sizes provided by the driver ops are not page-ali=
-gned, causing the IOMMU mapping ioctls to fail with -EINVAL and crashing th=
-e selftests.
+- [Medium] The teardown loop draining the async pages command slot lacks a =
+timeout, risking an infinite hang if the firmware fails to respond.
+- [Medium] Missing bounds validation on firmware-returned `output_num_entri=
+es` can lead to heap out-of-bounds reads and writes.
+- [Low] Signed integer overflow when calculating the doorbell vector for th=
+e async pages slot.
 --
 
---- Patch [6]: [PATCH v4 06/10] vfio: selftests: Allow drivers to specify r=
-equired region size ---
-commit 4f2bbead708ec429c301f599e1115b9b6e4e3c22
+--- Patch [8]: [PATCH v4 08/10] vfio: selftests: Add mlx5 driver - HW init =
+and command interface ---
+commit 7a09d2b7794945d7a16a9b914796b529c3098e0b
 Author: Jason Gunthorpe <jgg@ziepe.ca>
+Subject: vfio: selftests: Add mlx5 driver - HW init and command interface
 
-vfio: selftests: Allow drivers to specify required region size
+This patch introduces a bare-metal mlx5 ConnectX selftest driver for
+VFIO, implementing hardware initialization, teardown, and the command
+interface.
 
-This patch adds a region_size field to struct vfio_pci_driver_ops, allowing
-drivers to declare their needed DMA-mapped region size. It replaces the
-hardcoded SZ_2M value with the exact sizes of the drivers' state structures.
+> diff --git a/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5.c b/tools=
+/testing/selftests/vfio/lib/drivers/mlx5/mlx5.c
+> new file mode 100644
+> index 0000000000000..804801cc564e7
+> --- /dev/null
+> +++ b/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5.c
 
-> diff --git a/tools/testing/selftests/vfio/vfio_pci_driver_test.c b/tools/=
-testing/selftests/vfio/vfio_pci_driver_test.c
-> index 761bf117d624f..2bd949aafd731 100644
-> --- a/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-> +++ b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
 [ ... ]
-> @@ -87,7 +87,8 @@ FIXTURE_SETUP(vfio_pci_driver_test)
->  	driver =3D &self->device->driver;
+
+> @@ -710,9 +710,9 @@ static void mlx5st_pages_slot_post(struct mlx5st_devi=
+ce *dev, void *in,
+>  				    unsigned int ilen, unsigned int olen)
+>  {
+>  	mlx5st_cmd_post(dev, dev->pages_cmd_lay, dev->pages_in_mbox,
+>  			dev->pages_out_mbox, in, ilen, olen,
+>  			1 << dev->pages_slot);
+
+[Severity: Low]
+Does this code risk signed integer overflow?=20
+
+If `dev->pages_slot` is 31, shifting the signed literal 1 by 31 bits will
+shift into the sign bit, causing undefined behavior in C. Would `1U <<
+dev->pages_slot` be safer here?
+
+[ ... ]
+
+> @@ -826,12 +826,12 @@ static void mlx5st_pages_slot_complete(struct mlx5s=
+t_device *dev)
+>  			mlx5st_cmd_copy_from_mbox(
+>  				(u8 *)out + MLX5_CMD_INLINE_SZ,
+>  				dev->pages_out_mbox,
+>  				outlen - MLX5_CMD_INLINE_SZ);
 > =20
->  	region_setup(self->iommu, self->iova_allocator, &self->memcpy_region, S=
-Z_1G);
-> -	region_setup(self->iommu, self->iova_allocator, &driver->region, SZ_2M);
-> +	region_setup(self->iommu, self->iova_allocator, &driver->region,
-> +		     driver->region.size);
+>  		num_claimed =3D
+>  			MLX5_GET(manage_pages_out, out, output_num_entries);
+>  		for (i =3D 0; i < num_claimed; i++)
+>  			iovas[i] =3D MLX5_ARRAY_GET64(manage_pages_out, out, pas,
+>  						    i);
 
 [Severity: Medium]
-Since the drivers populate region_size with the exact struct size (such as
-sizeof(struct dsa_state) or sizeof(struct igb)), will this cause IOMMU
-mapping ioctls to fail?
+Could this result in out-of-bounds heap accesses if the firmware returns an
+unexpectedly large output_num_entries?
 
-IOMMU mapping ioctls generally require the requested DMA mapping length to =
-be
-an exact multiple of the minimum IOMMU page size. Passing this unaligned
-size to region_setup() sets the region size to the unaligned value.
+Should num_claimed be validated against dev->pages_reclaim_npages before
+iterating over iovas and out?
 
-When iommu_map() later issues the VFIO_IOMMU_MAP_DMA or IOMMU_IOAS_MAP
-ioctl, could the kernel reject the unaligned size with -EINVAL and crash
-the test suite?
+[ ... ]
 
-Does region_size need to be page-aligned before being used for DMA mappings?
+> @@ -1187,14 +1187,14 @@ static void mlx5st_fw_pages_reclaim(struct mlx5st=
+_device *dev, u16 func_id)
+>  		MLX5_SET(manage_pages_in, in, input_num_entries, batch);
+> =20
+>  		mlx5st_cmd_exec(dev, in, inlen, out, outlen);
+> =20
+>  		num_claimed =3D
+>  			MLX5_GET(manage_pages_out, out, output_num_entries);
+>  		for (i =3D 0; i < num_claimed; i++)
+>  			iovas[i] =3D MLX5_ARRAY_GET64(manage_pages_out, out, pas,
+>  						    i);
+
+[Severity: Medium]
+Similar to the async completion path above, is it possible for a malfunctio=
+ning
+device to return a num_claimed larger than the allocated batch size?=20
+
+Would it make sense to add a bounds check here to prevent out-of-bounds
+array accesses?
+
+[ ... ]
+
+> @@ -1274,13 +1274,13 @@ static void mlx5st_hca_teardown(struct mlx5st_dev=
+ice *dev)
+>  	u32 out[MLX5_ST_SZ_DW(teardown_hca_out)] =3D {};
+>  	u32 in[MLX5_ST_SZ_DW(teardown_hca_in)] =3D {};
+> =20
+>  	/* Drain async pages slot, then stop EQ processing */
+>  	while (dev->pages_slot_in_use) {
+>  		if (!MLX5_GET_ONCE(cmd_queue_entry, dev->pages_cmd_lay,
+>  				   ownership))
+>  			mlx5st_pages_slot_complete(dev);
+>  		else
+>  			sched_yield();
+>  	}
+
+[Severity: Medium]
+Can this loop hang indefinitely?=20
+
+Unlike regular commands which use a timeout mechanism, if the firmware fails
+to process the async page command and never clears the ownership bit, it lo=
+oks
+like this will yield forever. Should this include a timeout fallback?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/0-v4-021df3fb5a3f+9=
-8e-mlx5st_jgg@nvidia.com?part=3D6
+8e-mlx5st_jgg@nvidia.com?part=3D8
