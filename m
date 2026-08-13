@@ -1,138 +1,238 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883DB48CD6D
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 15:40:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E2D48D87E;
+	Thu, 13 Aug 2026 15:40:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786635642; cv=none; b=TPdG4a+7yW+YQUc3NaXAuI4Ni2UFtbij65SQ6q9hkEcGrsQwAaqza9cnZUrFi/rzCBdT5RI73zWRDERHSRnL10oPqR6DOAJ37lozWuaCV6c9W5MmYxqx0delVF9eIuSrVvU0KY6/VZi1J68eUs+xdN47pAdAqV8lxORwmd/rVtg=
+	t=1786635663; cv=none; b=PIf+F8R87ZtXCISysr/VTZcsvLc8RGOfWzpWk0e/zEK/y9+A9V6jBkGDtjdUKbIBCDDWPzyGC5M+lv4U5hCuffl5OppZJgcXaMw2cEn1G5R1yFceOvUNRHsmw135iFw8BmT/Jb/F1cL8p2Iriu6AqXwj18hkwQeS7P9L6lg3KmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786635642; c=relaxed/simple;
-	bh=WtqsLzrgSjg/xVRfW9WfYBYpQ3bP/9ChUav4NHg7yVg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ih0N7nYyqPliGHoD01YDN8tyaiN44KhlwD4CxjfcGvtCoksnJzcPOHXgputrH1wuybOWWzmslzqYgtlokQbGcgddftQnXRMabhuh5BrIm9MwbUeSSkw3sumkTdIAlzC/K0gPEuOOOo9k4DL2FGIpS/13Le7WLr28znOliT5T6vM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dF8Cx924; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1786635663; c=relaxed/simple;
+	bh=Hcb38o3x3BLrXWMFwgxvA7KELaSam0G2TLB55T7WeG4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eRGgvHgYnGEDLfW/vWiWqPCPEU6Vy42ECu/og2CTeZ7tt1695g2qtiX6w6M75NBlkkKYnysApnfyXEC+6/w6/R3+dEg3ElVH5c50AQuLL1e0RTffOd45LrlybBdGFEsZcTs3QrxVQJyMIrhq3CwTohw9W3Z/7Og+hlYRAODNB7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EMYQdmsD; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dF8Cx924"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2caced6038eso15229675ad.0
-        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 08:40:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786635637; x=1787240437; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=AcZvN96x3R8L9Ww6tvDjLJoxtHOJUhdmG67qkMsuoE8=;
-        b=dF8Cx924z63s7ot0bcNk24y7I0YPDSgB9NNaJVzHc9+3Yt/JGlCfFcrjl5hDlLMxTt
-         4MaEDpK12ekLLATLF+cwf3ufcrM029EuFcouefRhyELSWlu7wH6mDorsVx0fyKzD1NDS
-         LGD1Rj5ARKXA0ZtgpswP3jq3CN1QHKO38uyVtYfnr0GHaAlPvgJ11BoL71E1NFVq1LuX
-         7Qsi3yfCb3BPFwq+ZvxYOfzLVs6xDhks+uZtJKfEVVGuzn+W/57XaORu3wOspuM2F9cn
-         AMKxPhm7UYvvFASH+Wh2uWcq2oT74ZkNKGOAsz22bnmreYWkD7FnSH1W20QMhFCBLUGJ
-         x5bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786635637; x=1787240437;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AcZvN96x3R8L9Ww6tvDjLJoxtHOJUhdmG67qkMsuoE8=;
-        b=B0Att34gOjDPQgwnLM59F9wJWtXTXAAQmNrlgPNQvV78Gi8/0V2e1Lv4qEwgNm0lpk
-         UmqJV4m2x1eW9kZCvpNI55MHNwLltMuqaYLmGfk3sWwzO/bSW0j18dv2Zo72XfQnCW6D
-         peo0e0qhvEI/igywGsc7haBbZT1FjEf2TCjQcJNbuvwU7tRd3Ev+rvQyXsTuuFPCzCUU
-         BrVdNQUU0FTSqF0rQU26jfdpLFp6itbaHBMa773ofVdy5khMyjApa7cnl8uORP6NJGEP
-         07+zFPCh6gBDkAhRqVcCa/YIL/lqa6fjGG6EPeJuDKQ2CkznOiTweVvyKJaadNt19Nyd
-         TqgA==
-X-Forwarded-Encrypted: i=1; AHgh+RpeyzBwAAtqY0iivdjZH+okQhf962uhVWxri820Xar4JXkPaif8q1LOgTC3+gh/rwQsOig=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFM4Hsyu9c58M+a6G2C7SBvd8nlimpBhW2l/XNKFJTQ9HNdVGG
-	PI5+k7aOEs/SIdLoDgammY2/8UbX+iQgXUcqNz11Iv3U9iOOnbtkAvccIesf3VVb/A==
-X-Gm-Gg: AR+sD1365vh8jqyQEt8VO6xiSJ9m3uVrlBV4ATacK7rYwz+iWFe3umoeNFxvw92I+1j
-	D2MsiOzjVbacbIkMXn5QEWX1y+f4dUenA9joCobJ0+tHipjUeyuaLY4X0gr4o+Dpl+BaGkAUtUD
-	2Y+NzoSzk8bb/6fmgUuE6G7dbqiC2iJC03qW1SyGDALR5v9XSZVsfYGKCaz/tFBvid2daoVf4GF
-	r0HR+dUTx+DUhpoJX22zvQjZT1khQ1Gr+Xo/p+kzVT8oWGivD4nykUHMM/7nsKRB60nhYrfeNdZ
-	AeMF/TUfj0b5bhn7e6KfUrMVLOGaNCO2xiLYW4yJEbqCtWq6ZK5eAkmhUhBKC5qPxuzQJyRHJhN
-	aQstrIScNoULwG8lhoVIDcWwcLvzmySOiEHvfFsXr3BDR2NeaXexsLKvCc/YZQ84JryiBXwbs3B
-	lY3ebeAFUjYEfabZ6xN2CQj+xh6WufCPhWcwmIM6TsPQDqib6gbA4RvRA2kkyzZ2ZCmccnybX0q
-	fEg1d9ozfcr7Fmo5oE6ekBQ3+gyVmuxpweG1iUh
-X-Received: by 2002:a17:902:f64e:b0:2cf:70d2:da7c with SMTP id d9443c01a7336-2d37f77fdfemr84524235ad.12.1786635636542;
-        Thu, 13 Aug 2026 08:40:36 -0700 (PDT)
-Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d37c2000bbsm12399845ad.7.2026.08.13.08.40.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 08:40:35 -0700 (PDT)
-Date: Thu, 13 Aug 2026 15:40:32 +0000
-From: David Matlack <dmatlack@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
-	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
-	netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
-	Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
-	patches@lists.linux.dev
-Subject: Re: [PATCH v4 08/10] vfio: selftests: Add mlx5 driver - HW init and
- command interface
-Message-ID: <an3lcKmhXbRnDpRL@google.com>
-References: <0-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
- <8-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
- <anzoiALsjiWrsZtl@google.com>
- <20260812233207.GB730363@nvidia.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EMYQdmsD"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67DFX2TU861887;
+	Thu, 13 Aug 2026 15:40:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=3gzANj3yKV/apWNwW3G07NFhXV1h4RuOK0M/lNmYT
+	D4=; b=EMYQdmsDy+/BpRy2Uxi90IoDkQKupxEAkLZBLxdWy0BLq4Ce7+rlj3l2k
+	bqqLdLIdSZ3P1CkCERBmm+iuD3HkjocWW4U7B5FUhZkU6CcGSt0sClKRwv0iiU8E
+	OfsEh/d3TTjLN2KZKsIReQwDvwwjR7M/VslVCFAtS6OkkZpZcjQnUQL9H0+gGCD0
+	lGq8SefBC7v+iX4NGyjuqIYqD2l9rfDuFiYMIY0JjjUE2f4E9FS3+jxU+VYMsbSc
+	fxvVXda1mDQfcYjRnVJHTdonmfyIIbPWwlNsJu/xtK963tfOTy4om3iLUERmtoTD
+	gdTxK/V51tNsRIvuOSwJ1tJ5pYR2Q==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvk08mrt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Aug 2026 15:40:52 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67DFQQ92026035;
+	Thu, 13 Aug 2026 15:40:51 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxfsk3j9c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Aug 2026 15:40:51 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67DFejU944892616
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Aug 2026 15:40:45 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AEC1B20043;
+	Thu, 13 Aug 2026 15:40:45 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 95EC820040;
+	Thu, 13 Aug 2026 15:40:45 +0000 (GMT)
+Received: from b46lp25.lnxne.boe (unknown [9.87.84.240])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 13 Aug 2026 15:40:45 +0000 (GMT)
+From: Janosch Frank <frankja@linux.ibm.com>
+To: kvm@vger.kernel.org
+Cc: imbrenda@linux.ibm.com, linux-s390@vger.kernel.org,
+        borntraeger@linux.ibm.com
+Subject: [PATCH] kvm: s390: Improve floating IRQ injection behavior
+Date: Thu, 13 Aug 2026 14:56:23 +0000
+Message-ID: <20260813154040.73437-1-frankja@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260812233207.GB730363@nvidia.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDExMSBTYWx0ZWRfX+UyAQh6scq0r
+ i4QQUyDEOMqZE86HTXL7P6lcWReh92Coq4qY+FmPcEwjf64RkLI44BsHG7gTO1C6iGoWGfW88gW
+ v9G4dwClTOgLGRNYx1TxVCu6yjfKfh69UDSAMpaIsiZZXPG9BmjTvTuyj5gMQp2PJWmgiLySbHB
+ eLqqFuCzyQst/1xB8smXA9+bKPJUY5QcxFV6VMHywmG6ZNd9FqL1fx3W7INxrShVVjIv9gAuXMP
+ OhINzPhjAn0mBsN2OjZTjA8BPPa29FMFwrD0Nx3/JW9on73iDrDLGbPUXixdCtpSjGsnnM33qIK
+ 98JD+elWKehoDjM6voXg8J791hs6hziHnZZbw7bHQDIA2KHGFO8o4nOdKvfQmlYMHoj0cGcfZzk
+ q77AkoGCyQ3F+axnCrUSQSoHZWmx28coimTnHM8WfQyNAPd4r9wsYMJNJsSr+U/LIjY6UmzYio5
+ /JkDM5nEvIGyZfoolkw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDExMSBTYWx0ZWRfX+vwbBgZVahzw
+ gip51Sonp6ClH+Oa189m44Q8bG+PcOjbC4mI+gSgv9ycmkkRmQO1NOeRcbx8jzE0FobfARIM4KO
+ kOMaGYbpQBNzxnP9AjyWmgHQUyhFq4s=
+X-Authority-Analysis: v=2.4 cv=RqD16imK c=1 sm=1 tr=0 ts=6a7de584 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=eafQdAodyzljY6xa4VIA:9
+X-Proofpoint-GUID: fg93QdYc-_pVnNvgx6i2UmTdxAhakapL
+X-Proofpoint-ORIG-GUID: fg93QdYc-_pVnNvgx6i2UmTdxAhakapL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-13_05,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 priorityscore=1501 suspectscore=0 lowpriorityscore=0
+ clxscore=1015 adultscore=0 bulkscore=0 malwarescore=0 impostorscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608130111
 
-On 2026-08-12 08:32 PM, Jason Gunthorpe wrote:
-> On Wed, Aug 12, 2026 at 09:41:28PM +0000, David Matlack wrote:
-> > On 2026-08-12 11:59 AM, Jason Gunthorpe wrote:
-> > > @@ -0,0 +1,108 @@
-> > > +/* SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB */
-> > > +/*
-> > > + * mlx5 VFIO selftest driver - HW definitions
-> > > + *
-> > > + * Typed wrappers, constants, and helpers for programming mlx5 hardware
-> > > + * via the VFIO selftest framework.  Most HW constants and all MLX5_SET/GET
-> > > + * macros come from the kernel headers (mlx5_ifc.h, mlx5_ifc_macros.h).
-> > > + */
-> > > +#ifndef SELFTESTS_VFIO_MLX5_HW_H
-> > > +#define SELFTESTS_VFIO_MLX5_HW_H
-> > > +
-> > > +#include <linux/io.h>
-> > > +#include <linux/build_bug.h>
-> > > +#include <vdso/bits.h>
-> > > +
-> > > +#include "mlx5_ifc.h"
-> > > +#include "mlx5_ifc_macros.h"
-> > 
-> > I'm getting a compiler warning here when building with clang which is
-> > getting upgraded to error from -Werror.
-> 
-> I don't get that. My builds have -Wno-gnu-variable-sized-type-not-at-end
-> which comes from here:
-> 
-> tools/testing/selftests/lib.mk:
-> 
-> # gcc defaults to silence (off) for the following warnings, but clang defaults
-> # to the opposite. The warnings are not useful for the kernel itself, which is
-> # why they have remained disabled in gcc for the main kernel build. And it is
-> # only due to including kernel data structures in the selftests, that we get the
-> # warnings from clang. Therefore, disable the warnings for clang builds.
-> CFLAGS += -Wno-address-of-packed-member
-> CFLAGS += -Wno-gnu-variable-sized-type-not-at-end
-> 
-> Why doesn't yours? Are you building it correctly?
+Floating IRQs can be handled by any VCPU that opened its masks. The
+current design does not check if the mask is open when a floating IRQ
+is injected via the FLIC. It will wakeup the last VCPU that went
+sleeping hoping it's the correct one.
 
-Ah I see the problem. I was building with this command:
+Improve this by at least checking if the VCPU has pending IRQs and if
+not try to find another VCPU which can take the IRQ.
 
-  make CC=clang -C tools/testing/selftests/vfio
+Also add a function to distribute floating IRQs which can be called on
+VCPU enter or exit. It will check for pending floating IRQs and wakeup
+sleeping VCPUs which have pending IRQs.
 
-But the correct way to build selftests with clang is to use:
+This is not the final fix around this topic but we'll eventually
+inject a pending IRQ. The current code can easily deadlock a VM and
+with this fix we work around that.
 
-  make LLVM=1 -C tools/testing/selftests/vfio
+This will fix this test's hangs as well as another hang that's already
+been present before I added the new test code. See:
+https://lore.kernel.org/kvm/20260813144058.7125-1-frankja@linux.ibm.com/T/#u
 
-LLVM=1 triggers the conditional logic to add
--Wno-gnu-variable-sized-type-not-at-end to CFLAGS and the build works.
+Fixes: 352ccf890a3e ("KVM: s390: improve interrupt cpu for wakeup")
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+---
+
+Currently this is in the entry path and therefore might affect
+latency. I chose to do it this way as we inject IRQs into the current
+cpu a couple of lines above the distribute_float_irqs() call which
+should mean we have a higher chance that no other floating IRQs are
+pending since we already handled an IRQ.
+
+A simple boot of a smp guest resulted in 275 injects via the new code.
+
+I haven't done any performance tests yet.
+
+---
+ arch/s390/include/asm/kvm_host_s390.h |  1 +
+ arch/s390/kvm/s390/interrupt.c        | 34 ++++++++++++++++++++++++++-
+ arch/s390/kvm/s390/s390.c             |  3 +++
+ arch/s390/kvm/s390/s390.h             |  1 +
+ 4 files changed, 38 insertions(+), 1 deletion(-)
+
+diff --git a/arch/s390/include/asm/kvm_host_s390.h b/arch/s390/include/asm/kvm_host_s390.h
+index cd692f8fb764..a86863e621b7 100644
+--- a/arch/s390/include/asm/kvm_host_s390.h
++++ b/arch/s390/include/asm/kvm_host_s390.h
+@@ -412,6 +412,7 @@ struct kvm_vm_stat {
+ 	u64 gmap_shadow_r3_entry;
+ 	u64 gmap_shadow_sg_entry;
+ 	u64 gmap_shadow_pg_entry;
++	u64 inject_redist;
+ };
+ 
+ struct kvm_arch_memory_slot {
+diff --git a/arch/s390/kvm/s390/interrupt.c b/arch/s390/kvm/s390/interrupt.c
+index 0381ae981703..663fc2e3eca5 100644
+--- a/arch/s390/kvm/s390/interrupt.c
++++ b/arch/s390/kvm/s390/interrupt.c
+@@ -372,6 +372,37 @@ static unsigned long deliverable_irqs(struct kvm_vcpu *vcpu)
+ 	return active_mask;
+ }
+ 
++void distribute_float_irqs(struct kvm *kvm)
++{
++	struct kvm_vcpu *dst_vcpu;
++	int sigcpu, online_vcpus;
++
++	if (!READ_ONCE(kvm->arch.float_int.pending_irqs))
++		return;
++
++	online_vcpus = atomic_read(&kvm->online_vcpus);
++
++	/*
++	 * Not too worried about synchronization for idle_mask. We
++	 * might burn too many cycles but apart from that waking a
++	 * vcpu is not harmful.
++	 */
++	sigcpu = find_first_bit(kvm->arch.idle_mask, online_vcpus);
++	/* Well nobody's sleeping so someone will likely take the IRQ soon */
++	if (sigcpu == online_vcpus)
++		return;
++
++	do {
++		dst_vcpu = kvm_get_vcpu(kvm, sigcpu);
++		if (deliverable_irqs(dst_vcpu)) {
++			kvm->stat.inject_redist++;
++			kvm_s390_vcpu_wakeup(dst_vcpu);
++			break;
++		}
++		sigcpu = find_next_bit(kvm->arch.idle_mask, online_vcpus, ++sigcpu);
++	} while (sigcpu < online_vcpus);
++}
++
+ static void __set_cpu_idle(struct kvm_vcpu *vcpu)
+ {
+ 	kvm_s390_set_cpuflags(vcpu, CPUSTAT_WAIT);
+@@ -1933,7 +1964,8 @@ static void __floating_irq_kick(struct kvm *kvm, u64 type)
+ 	for (sigcpu = kvm->arch.float_int.last_sleep_cpu; ; sigcpu++) {
+ 		sigcpu %= online_vcpus;
+ 		dst_vcpu = kvm_get_vcpu(kvm, sigcpu);
+-		if (!is_vcpu_stopped(dst_vcpu))
++		if (!is_vcpu_stopped(dst_vcpu) &&
++		    deliverable_irqs(dst_vcpu))
+ 			break;
+ 		/* avoid endless loops if all vcpus are stopped */
+ 		if (nr_tries++ >= online_vcpus)
+diff --git a/arch/s390/kvm/s390/s390.c b/arch/s390/kvm/s390/s390.c
+index b0839e887221..2ee0ab6b926a 100644
+--- a/arch/s390/kvm/s390/s390.c
++++ b/arch/s390/kvm/s390/s390.c
+@@ -87,6 +87,7 @@ const struct kvm_stats_desc kvm_vm_stats_desc[] = {
+ 	STATS_DESC_COUNTER(VM, gmap_shadow_r3_entry),
+ 	STATS_DESC_COUNTER(VM, gmap_shadow_sg_entry),
+ 	STATS_DESC_COUNTER(VM, gmap_shadow_pg_entry),
++	STATS_DESC_COUNTER(VM, inject_redist),
+ };
+ 
+ const struct kvm_stats_header kvm_vm_stats_header = {
+@@ -4549,6 +4550,8 @@ static int vcpu_pre_run(struct kvm_vcpu *vcpu)
+ 		rc = kvm_s390_deliver_pending_interrupts(vcpu);
+ 		if (rc || guestdbg_exit_pending(vcpu))
+ 			return rc;
++
++		distribute_float_irqs(vcpu->kvm);
+ 	}
+ 
+ 	rc = kvm_s390_handle_requests(vcpu);
+diff --git a/arch/s390/kvm/s390/s390.h b/arch/s390/kvm/s390/s390.h
+index d284a263ba70..e518339fb290 100644
+--- a/arch/s390/kvm/s390/s390.h
++++ b/arch/s390/kvm/s390/s390.h
+@@ -375,6 +375,7 @@ enum hrtimer_restart kvm_s390_idle_wakeup(struct hrtimer *timer);
+ int __must_check kvm_s390_deliver_pending_interrupts(struct kvm_vcpu *vcpu);
+ void kvm_s390_clear_local_irqs(struct kvm_vcpu *vcpu);
+ void kvm_s390_clear_float_irqs(struct kvm *kvm);
++void distribute_float_irqs(struct kvm *kvm);
+ int __must_check kvm_s390_inject_vm(struct kvm *kvm,
+ 				    struct kvm_s390_interrupt *s390int,
+ 				    struct kvm_s390_interrupt_info *inti);
+-- 
+2.53.0
+
