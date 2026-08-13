@@ -1,133 +1,138 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BF33AAF78
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 12:12:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740224746D5;
+	Thu, 13 Aug 2026 13:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786623174; cv=none; b=NIhCSe3vQETaXYxXPTNd6WxQVDfl0+fIrKKmFVA4eDJzeBDP/JXNVogWLxzTXr6fBfTMDLFw5HwM9hN/Xcupukq2gR9espU7PbZeiI8MISx84ixK96Cunq32f39QgB8HHNQbe4p+j819MeZx4LBpmzMKdc3gwmYekY5gPvQ1Iv4=
+	t=1786626345; cv=none; b=SOAp9LPn28M7OHXwSKwEbQ/sE/nd1TeFpLkxPF6PhoipxiYP0qMwT1wYZWmgzHIl2uJh+4j6RHhyD75Yk4Mm2Td2tp1Akncdfm0n4ETormT7sb7WHiLeVnuCCQoY6YCh9KqHdq/bZJ+Bpv7EdQ/9p9PQhd2GnWLHeOdKFowiXvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786623174; c=relaxed/simple;
-	bh=/17flycYSc19MMlgQ2UNX8D5txCWeH/AzDfCPa7n4L8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DJsqxuttBQhK9VXS1BGMm1SfUZz0+lti1ABjHcIhmSwbVf7xaUeU1nUEPcdncvDn42vhMwpdN3HQBaU5jrcZCSDm3abrUFl5RlLtWBOBLauIgDDYW57sU6iBk66BLx/JpzalpEji/jIHVnUt2NH/QuK+JHc9JktJ8wfgbjZf3NY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oFIUTMOR; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786626345; c=relaxed/simple;
+	bh=XY1mUBaLv9rvxqR+a9N8Mnr5PdDxW45CtziYPO4PUxQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h70xPYOqAAyZtyaWpTjKGs4y0xMNn6+DUOaFSOa2BLAn2V5VOc80wphHZB+6+itxED8epFI8Bllv6iC2rYjrEkmAgOq65UqRw/zd8OOneommeLamF1+H5xAa05eEZ3PWltF3Yk0jOxgPz6pSNQQo3B9mUIn+vz7nsCV1ofaJVGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com; spf=pass smtp.mailfrom=de.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mEeWf1l9; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oFIUTMOR"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ceab75934dso8130335ad.2
-        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 05:12:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786623172; x=1787227972; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=P7D5ColudFir3efNk2jSAtS6dOixRUPB2JAx0kV9F6Y=;
-        b=oFIUTMORwgOEieNGXp2MtRKZf1gdtvqY6OpjO5d/YUXOirjCGApqU+liN7/7UCL8yY
-         xQ02uHRCFTif20wkEjf8/I47eR9e0km8xgR37h+wd144r0Z3h2O2GDXdTnh+QrFbXvZ+
-         xTD7fA6O/Pc0AqkjYuSNa6xEySdjzDDNDa7qP5DgOgGvS+dBlrdgcWBHGgfVkk+ZuMuy
-         KXQ68IKI7TV36Tpt+FSNfPGWtrb+ZvdC15u91Ga27otBvW16eChB8fE2P3NsF3F9t8qf
-         XYNDat4wJ/Imi9DiWPx/DN0OcdbVjXORttG9AGZEzqQMMu/HqgTrXRpGkNVVmHW+GuBO
-         5XdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786623172; x=1787227972;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=P7D5ColudFir3efNk2jSAtS6dOixRUPB2JAx0kV9F6Y=;
-        b=M1WVozm6oXroA4d3U7TPEC0Ze6oUtZBteKYvVBhq0e2zNc+hx/o5fPr65JAI+I7+NM
-         e2nTkv3tjKO8OPS/IEqi29+R/iZovvfJil3xMCCWFJkfgAGU5bhak9c4EVDkFTzgwOwL
-         RBhMpUgITOCngjvpzMH1EMTaMzZb979t1D5NnZbmCCBuCVq7Q8DXnGyK0Ohpv6Dyxx2r
-         OWqBC6sy0TiGZWD0oPtqiuFFQioURTwWjoulhOFU27rxMQnX5i0dwj9O/bPi83VIwIbY
-         MzgSnOWqDEuF+DOFZepf3mDOrvuKkwWomXBpYbK3lIYqxfiYi5rrFCOAmn0KAyxUq213
-         3ZIg==
-X-Forwarded-Encrypted: i=1; AHgh+RpS06XaySZ/Uw7zuMjJNNYlBDVjRDjhaP2bUObg0eFZPPLqt+vKfjsLjN7eVW7uuOQj71c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqMtdN74wWrPOCnaVO45vCha5SmbXnKXGaZd/G77JlUJUWMM6L
-	th0sY3SrnvvWpyV166FPenpDyTRPfzK7DD9Nb3HkFQc5JraiMG/EQbIt
-X-Gm-Gg: AR+sD12d11WjUneVX5dFddt2IXPa6w3zg2BXikfqyEy2Vf8Idw2nXRBgs68v5qoXMna
-	kf5dYGRDKc5zg9hmW7FB4/LhJeiKLOVNQuKblNYOc2q81S3c/zP4fVEa5PhDW2j46MNTqSceT7z
-	mEK7kQ3Q8K0pu43FCTwKKB9t5CN6uY1E0hDTOBlZ2Zv4G9fp5bNJJHXOL+iRgLr701Ulf3mbqFK
-	/qzoYDmL2I+76VLO/N3oi2vbTtfl/g74EmtUTxnSytToIFQuLQQdeLyoHZ1JfmeIRHGSfhGIa+5
-	A9J02nK7wXbyZnFgRZhy9b2C6lPgT/C9KegU4uWLDQ+9D2V/TX9PoWYScjWrzFXMHGxUk3Wm5Vw
-	OkVvXeH+IWlefW7MGUe3CxdV6rkekL6rLudWiB7TZ8Pk0hv/yOkvWrfEV4E6mJ1KMOh5sMWm+Po
-	JejMo1RQsV0iiN7DnTXFmWI+9NsSK7cgab26uoM+uqwrh7Xm/HXsG6P8z/d2W+lB8nHtZ7cbpz
-X-Received: by 2002:a17:90b:53cb:b0:381:1c96:829b with SMTP id 98e67ed59e1d1-3931e0241cemr6853696a91.3.1786623171943;
-        Thu, 13 Aug 2026 05:12:51 -0700 (PDT)
-Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3931d872ec5sm1069999a91.0.2026.08.13.05.12.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 05:12:51 -0700 (PDT)
-From: Daehyeon Ko <4ncienth@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	Daehyeon Ko <4ncienth@gmail.com>
-Subject: [PATCH net] vsock/virtio: validate packet source for connected sockets
-Date: Thu, 13 Aug 2026 21:12:36 +0900
-Message-ID: <20260813121236.2328599-1-4ncienth@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mEeWf1l9"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67DCW4nt2293631;
+	Thu, 13 Aug 2026 13:05:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=WBQbBS
+	sk4dtTbX/6G8uZXElHUA51A8v3Tbx+uh2kXzY=; b=mEeWf1l9N/9zbGL3kCUKwJ
+	RtjNu2L4zjQwqTCc8u87W3/oNLv7tZegPW3juPVGPy/tUEYW6tcAMGvshnMfzYRA
+	+p3yFtib4zS/i6Si4eoWRYeEtkJ9hvozIwTvctzmqbqVrk4LhWdTd8jqFQ/qEaIz
+	Fa4pN7N+AFzlrK+eFlrjhvyBQDD1y/HYuHEh30rqYJhr23jYUbBjvpIxRWr0NVcq
+	yR/YpsOvpb/CpXCgTaiWEgEqccN3GcxUmsUjIxhNwp0kMWBIkrftDRWV7Pr8sFGL
+	Xoiznk7szPvz2oYTS8x1qaEFNEdLxjd24Wo/w6nCY9sgZPDgcoCTLW30Pa5gnhaw
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvq9qye9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Aug 2026 13:05:37 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67DCuH06016645;
+	Thu, 13 Aug 2026 13:05:37 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxhfyaw2s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Aug 2026 13:05:36 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67DD5XxA17498594
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Aug 2026 13:05:33 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1A6B620040;
+	Thu, 13 Aug 2026 13:05:33 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9966720043;
+	Thu, 13 Aug 2026 13:05:32 +0000 (GMT)
+Received: from [9.224.77.173] (unknown [9.224.77.173])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 13 Aug 2026 13:05:32 +0000 (GMT)
+Message-ID: <3c541591-1275-41a5-ab85-d1fb300625d2@de.ibm.com>
+Date: Thu, 13 Aug 2026 15:05:32 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/9] s390/vfio-ap: Fix bugs in vfio_ap device driver
+ callback functions
+To: Anthony Krowiak <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
+        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
+        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com
+References: <20260812200240.818004-1-akrowiak@linux.ibm.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@de.ibm.com>
+In-Reply-To: <20260812200240.818004-1-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: wBWqBkvrVpMVfU-YlZbeVp4pflWpADBd
+X-Authority-Analysis: v=2.4 cv=PbDPQChd c=1 sm=1 tr=0 ts=6a7dc121 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=1LJs0ifWi0Os6_OiI_cA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDA5MyBTYWx0ZWRfX5te4MW/vtdt7
+ X1vO7eJSs7mxv8Zjxdt3ySG0rj2b0QVrco55qT33iMwV3WtYsOukyMZaPpEavRtF+qTv1opzael
+ 2iMzgbgZDT9mkeq1SMhN+K0h7oRnqrqb9Sp9neMpz9z4N/i2IRLcII7qL8jyOX5qq2vxazroeS1
+ Kww846obgJzyN8ez+OhvtHdzXTLtBn00iNdP8VyPuxOzI3/v0rNPuveyqasBnEDXYNI+2I2lXiw
+ Sj+op590Y6o39vM7FC+e3XKALlp9Mznpop1XUOS6QxhURyRoGJxa5tiWrwiyJuhMdsJ8OtG72hC
+ QO6LDPuBohSa+O8ltIrz8O01eH7jYVrdVyIuX6bi31oNca+8EGq8X+eEkdFaCxRGAPzDqNt2Avn
+ UVFaUjQQ3QCSHzdg5VVcsHNk+e9YmXEdpzoFQ+LPlN8r+tpkt6dWhqjaYhP6IdGj2q3SmcMyOXz
+ ZSm4uaU3Kgi6X78lfZg==
+X-Proofpoint-ORIG-GUID: wBWqBkvrVpMVfU-YlZbeVp4pflWpADBd
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDA5MyBTYWx0ZWRfX/xa3RM07NB3a
+ VrWDCCnsl+cYWs4Rj4/FLexNVQUAccv4i2wTwy2+AkTG6bUNnnBVs/rkVhts4w/5ypnlqtQATaG
+ 6MHcDn2YgqHni8ipSWXRSg0mfArLSJc=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-13_04,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 priorityscore=1501 suspectscore=0 phishscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608130093
 
-virtio_transport_recv_pkt() first looks up a socket using the full source
-and destination tuple.  If that misses, it falls back to a bound-socket
-lookup using only the destination address.  The fallback is needed for
-listening and connecting sockets, but it can also select an established
-socket that remains in the bound table.
+Am 12.08.26 um 22:02 schrieb Anthony Krowiak:
+> During review of patches by the Sashiko AI, several pre-existing bugs were
+> discovered. This 9-patch series fixes those bugs.
+> 
+> Change log v4 => v5:
+> ~~~~~~~~~~~~~~~~~~~
+> Patch 8/9: Fix NULL deref in status_show() during queue probe
+> * Check if q = dev_get_drvdata(&apdev->device) actually returns a pointer
+>    to a vfio_ap_queue object. If not, the return AP_QUEUE_UNASSIGNED
+> 
+> Anthony Krowiak (9):
+>    s390/vfio-ap: Fix stale do_remove flag across iterations in
+>      vfio_ap_mdev_cfg_remove
+>    s390/vfio-ap: Fix dereference matrix_mdev->kvm without checking for
+>      NULL
+>    s390/vfio-ap: Fix missing lock required to access list of
+>      ap_matrix_mdev objects
+>    s390/vfio-ap: Fix required lock not held during update of
+>      ap_matrix_mdev object
+>    s390/vfio-ap: Fix control domain removal in vfio_ap_mdev_cfg_remove
+>    s390/vfio-ap: fix potential use of uninitialized apm_filtered bitmap
+>    s390/vfio-ap: Fix hot-unplug skipped when last AP adapter or domain
+>      removed
+>    s390/vfio-ap: Fix NULL deref in status_show() during queue probe
+>    s390/vfio-ap: Fix memory leak when queue removed from host AP config
+> 
+>   drivers/s390/crypto/vfio_ap_ops.c | 163 +++++++++++++++++++++++-------
+>   1 file changed, 126 insertions(+), 37 deletions(-)
+> 
 
-As a result, a packet from an unrelated source can be dispatched to a
-non-listening socket.  In TCP_SYN_SENT, a source-blind RESPONSE marks the
-selected socket established while retaining its original remote address.
-Subsequent RW packets can likewise be delivered through the
-destination-only fallback.
-
-This was reproduced with two capless processes under different UIDs.  The
-attacker discovered the victim tuple through unprivileged AF_VSOCK
-sock_diag and injected a chosen 16-byte payload into the victim established
-loopback socket.  The legitimate peer received none of those bytes.
-
-After taking the socket lock, verify that packets for non-listening sockets
-come from the peer stored in remote_addr.  Listening sockets continue to
-accept packets from any source.
-
-Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
----
- net/vmw_vsock/virtio_transport_common.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 8becad812..f73e0406a 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1822,11 +1822,15 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
- 
- 	lock_sock(sk);
- 
--	/* Check if sk has been closed or assigned to another transport before
--	 * lock_sock (note: listener sockets are not assigned to any transport)
-+	/* Check if sk has been closed, assigned to another transport, or if the
-+	 * packet is from a different peer than the one connected to sk.  These
-+	 * properties could have changed before lock_sock.  Listener sockets are
-+	 * not assigned to any transport and accept packets from any peer.
- 	 */
- 	if (sock_flag(sk, SOCK_DONE) ||
--	    (sk->sk_state != TCP_LISTEN && vsk->transport != &t->transport)) {
-+	    (sk->sk_state != TCP_LISTEN &&
-+	     (vsk->transport != &t->transport ||
-+	      !vsock_addr_equals_addr(&src, &vsk->remote_addr)))) {
- 		(void)virtio_transport_reset_no_sock(t, skb, net);
- 		release_sock(sk);
- 		sock_put(sk);
-
-base-commit: 9006c116dd111d457bf5d074990210f70a4ad2c8
--- 
-2.54.0
-
+So I picked 1-8. Lets do 9 later with the other open issues.
