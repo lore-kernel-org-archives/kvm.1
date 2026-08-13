@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898FE42C505
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5546B417D99
 	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 15:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786633214; cv=none; b=Cuxxoyq8ex+BnPPiNiaJa+pGqRLWrxU56TILFM1aoH9Y5m6nk9pE+YpAavl9GuLlCXOxsiDkjxo5cd0jQ7/17vR87qMLfkltokNOMtISVHdjZyW3iZLWwkkLaKdgqqEK1pnpcdHH+HBKJlx5uDWWqaPw35uBvD/2DlssrZYo59M=
+	t=1786633214; cv=none; b=U5XHw1DhIV74ci78p/0C7jq1UFlJLea2ON+Kc+XOSyJLf9XG8kHBd1Wq8Yx7YcRR27cpAketwjLmX2V0Y/oAH/E/3B2a/myFFn+OT1us6W3HZpTq1c/NxjmM3p/OToH0FPAE6aN1Ua4xU5+HuVzO77qBC50Eq2IpHe8XXMSC1eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786633214; c=relaxed/simple;
-	bh=zlpuBNvhEWlH4yvzKgyw1eRO1rsqYEg+EtN5KWY+PAs=;
+	bh=OdszaCZfnZUJEmN7Qe5Cs1Ewj/Cu5urowp4nqy8qHhY=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=m93XISZvHlBa/Axac/pWkIa/NVcBnoW2mWTrkjIlKbf9IalmvCMtp+n75ar3KPihCi9Mdiy1l+0ZvToga5AZQMUNEs8hFNG4LHYXgyXl9RCdQivqbih8hcLBBg1gVw33yysYmnaug07V3jxgr5OU8B8I574kDWQ4+VsD8U5uHjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJAA6g66; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=ct3qS5uaAYi/glANNjfIJjDAvE8+uhZTmgNyCzLp7AWwgbDDJDYRpRnaizS33BpnnbuiDgxbx7Ne/Ss1SpVmhKI3MM7zGOxVAAjpLpyGYI9EmKyFbamvVOAgXKt6sRWlr9S5KwOAXF6MRQjLj63ljEimoGoYxtOJtAUZoIYYDwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lxHrTq6z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJAA6g66"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3091F000E9;
-	Thu, 13 Aug 2026 15:00:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lxHrTq6z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ADE11F00A3A;
+	Thu, 13 Aug 2026 15:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1786633207;
-	bh=zlpuBNvhEWlH4yvzKgyw1eRO1rsqYEg+EtN5KWY+PAs=;
+	bh=kTNMfuHz4bxjv2UYGVkBMZL4xQ6gifTYlTCYto9HMqA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RJAA6g66YPZ2/wBrsxr0bK+Chaudalh+E4tWcRxSTsxWwGkpYtSw4uc6Y1/ZppQ9C
-	 Ej3WuHolgsmPJWmlXAQhw3Eef1f2J//UmWjsHnBSF4Hz47UxyGgZigjfZlcbP49xTJ
-	 v3adz0XCnP1CYGJQNPV5s+dnOgc8eDf/ryq1DEFeK9IWaZb7PCi0KL3H9oROxPH+hp
-	 y5DcnlcXCxofYQSRFTIrZlOzk0/YjOpdGlTfXc1AJVPbRvxaz4S0iRhCtLTOZxCsQv
-	 Fnzz4AKyU8+v1jtAzQK6EvQuV+Bdj2B587mxyaYGWW+YRGU10FkMHWF2J4xbF/U+mg
-	 5lognXJTceDew==
+	b=lxHrTq6zUezztKYEPO8v9btx9gAJ1KAkhAkUvOXHA1DijyXJPcO0Y1vY2w877mnie
+	 +Gf52l37WwxYuQxyN6ENB1lsf+3qCeCSFjedBPnGrm4N1Fd5fSEo9dpg0huXxSqDqX
+	 TuikgYtAVssMAXCqtZY1ffD3W7Y7R3KP3/kb0kitvPoiNry31aVFRwltonKX4qtk3D
+	 9ShSbkyN50McvtBtuoi7NurCsgSPUAEzOQHeWvIVHdFMx1FA2UG0EMl/xTMiBsj16Y
+	 o6q8SwJNmKHzhwVf7N8n3q4sn3WTu8SMUXY+tI63N1rTxTuBB2dWEv/FQaI+JzBzFH
+	 TIS3Lkm4HlpHg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 03/10] net/mlx5: Extract MLX5_SET/GET macros into
- mlx5_ifc_macros.h
+Subject: Re: [PATCH v4 06/10] vfio: selftests: Allow drivers to specify
+ required region size
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Jason Gunthorpe" <jgg@nvidia.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <3-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
-References: <3-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
+In-Reply-To: <6-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
+References: <6-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 13 Aug 2026 15:00:06 +0000
-Message-Id: <20260813150006.EA3091F000E9@smtp.kernel.org>
+Date: Thu, 13 Aug 2026 15:00:07 +0000
+Message-Id: <20260813150007.9ADE11F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,60 +46,53 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] The newly extracted `mlx5_ifc_macros.h` header lacks necessary incl=
-ude directives for the types and macros it uses, violating the kernel's sel=
-f-contained header rule.
+- [Medium] The DMA region sizes provided by the driver ops are not page-ali=
+gned, causing the IOMMU mapping ioctls to fail with -EINVAL and crashing th=
+e selftests.
 --
 
---- Patch [3]: [PATCH v4 03/10] net/mlx5: Extract MLX5_SET/GET macros into =
-mlx5_ifc_macros.h ---
-commit 76e6552b0716c94811acb9f5971adc7809d4dee0
+--- Patch [6]: [PATCH v4 06/10] vfio: selftests: Allow drivers to specify r=
+equired region size ---
+commit 4f2bbead708ec429c301f599e1115b9b6e4e3c22
 Author: Jason Gunthorpe <jgg@ziepe.ca>
 
-net/mlx5: Extract MLX5_SET/GET macros into mlx5_ifc_macros.h
+vfio: selftests: Allow drivers to specify required region size
 
-This commit extracts the MLX5_SET/GET macro family from device.h into a new
-standalone header, mlx5_ifc_macros.h. The extraction allows VFIO selftests
-to use these macros without pulling in the dependencies of device.h.
+This patch adds a region_size field to struct vfio_pci_driver_ops, allowing
+drivers to declare their needed DMA-mapped region size. It replaces the
+hardcoded SZ_2M value with the exact sizes of the drivers' state structures.
 
+> diff --git a/tools/testing/selftests/vfio/vfio_pci_driver_test.c b/tools/=
+testing/selftests/vfio/vfio_pci_driver_test.c
+> index 761bf117d624f..2bd949aafd731 100644
+> --- a/tools/testing/selftests/vfio/vfio_pci_driver_test.c
+> +++ b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
 [ ... ]
-> diff --git a/include/linux/mlx5/mlx5_ifc_macros.h b/include/linux/mlx5/ml=
-x5_ifc_macros.h
-> new file mode 100644
-> index 0000000000000..d357acfd351de
-> --- /dev/null
-> +++ b/include/linux/mlx5/mlx5_ifc_macros.h
-> @@ -0,0 +1,133 @@
-> +/* SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB */
-> +/*
-> + * Copyright (c) 2013-2026, Mellanox Technologies. All rights reserved.
-> + *
-> + * Accessor macros for mlx5 IFC structures.
-> + *
-> + * Extracted from device.h so that code which cannot include device.h
-> + * (e.g. selftests) can still use the MLX5_SET/GET family directly.
-> + */
-> +
-> +#ifndef MLX5_IFC_MACROS_H
-> +#define MLX5_IFC_MACROS_H
+> @@ -87,7 +87,8 @@ FIXTURE_SETUP(vfio_pci_driver_test)
+>  	driver =3D &self->device->driver;
+> =20
+>  	region_setup(self->iommu, self->iova_allocator, &self->memcpy_region, S=
+Z_1G);
+> -	region_setup(self->iommu, self->iova_allocator, &driver->region, SZ_2M);
+> +	region_setup(self->iommu, self->iova_allocator, &driver->region,
+> +		     driver->region.size);
 
-[Severity: Low]
-Does this new header need to include its dependencies such as <linux/types.=
-h>,
-<linux/stddef.h>, <linux/build_bug.h>, and <asm/byteorder.h>?
+[Severity: Medium]
+Since the drivers populate region_size with the exact struct size (such as
+sizeof(struct dsa_state) or sizeof(struct igb)), will this cause IOMMU
+mapping ioctls to fail?
 
-Since the commit message mentions this header is intended for independent u=
-se
-by VFIO selftests, without these includes, files that include this header
-directly might fail to compile due to missing definitions for u32, offsetof,
-BUILD_BUG_ON, and cpu_to_be32.
+IOMMU mapping ioctls generally require the requested DMA mapping length to =
+be
+an exact multiple of the minimum IOMMU page size. Passing this unaligned
+size to region_setup() sets the region size to the unaligned value.
 
-> +
-> +/* Internal helpers -- 32-bit */
-> +#define __mlx5_nullp(typ) ((struct mlx5_ifc_##typ##_bits *)0)
-> +#define __mlx5_bit_sz(typ, fld) sizeof(__mlx5_nullp(typ)->fld)
-[ ... ]
+When iommu_map() later issues the VFIO_IOMMU_MAP_DMA or IOMMU_IOAS_MAP
+ioctl, could the kernel reject the unaligned size with -EINVAL and crash
+the test suite?
+
+Does region_size need to be page-aligned before being used for DMA mappings?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/0-v4-021df3fb5a3f+9=
-8e-mlx5st_jgg@nvidia.com?part=3D3
+8e-mlx5st_jgg@nvidia.com?part=3D6
