@@ -1,37 +1,72 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42F9411F9D;
-	Thu, 13 Aug 2026 12:08:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BF33AAF78
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 12:12:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786622938; cv=none; b=r78+4WB5uP2a2PyMufJAEBidCXlcsknk35cWeYGqR32M7RxY+ggbYvZGbkgHLYYSYzabvhpW9aZ3r5jIjEHbgIZ38t/XvoWihg2oZLw+mIORSniCIZGlYLtJICRVsK98MbHPEj8/FLO0oWrUxrqlE0rRRLdjqbInf6jgUP/zYpE=
+	t=1786623174; cv=none; b=NIhCSe3vQETaXYxXPTNd6WxQVDfl0+fIrKKmFVA4eDJzeBDP/JXNVogWLxzTXr6fBfTMDLFw5HwM9hN/Xcupukq2gR9espU7PbZeiI8MISx84ixK96Cunq32f39QgB8HHNQbe4p+j819MeZx4LBpmzMKdc3gwmYekY5gPvQ1Iv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786622938; c=relaxed/simple;
-	bh=V9m7jIolaMqzijtPL4jganEyjYv4SPayUvnBdtIm/js=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AIlzhmMUtkIwwVeCLp25gvhNj5WyyWZCAFDyvZVU+j6h1mj51V+SLSOQKHycivRXO3nzz/mHoBqY2PamYqWEsym0OVA98FHGVpUDRMyQX5rdgBeWavHWl/WfgWSJmeuxJMhqO9d5WRXfHgQqkccCrN0INOb59ffsSm3crUEWMzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.87])
-	by gateway (Coremail) with SMTP id _____8DxC9LUs31qI+YAAA--.2715S3;
-	Thu, 13 Aug 2026 20:08:52 +0800 (CST)
-Received: from kernelserver (unknown [223.64.68.87])
-	by front1 (Coremail) with SMTP id qMiowJAxX8_Gs31qZ10DAA--.22644S2;
-	Thu, 13 Aug 2026 20:08:52 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>
-Cc: kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Xuerui Wang <kernel@xen0n.name>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [GIT PULL] LoongArch KVM changes for v7.3
-Date: Thu, 13 Aug 2026 20:08:29 +0800
-Message-ID: <20260813120829.823203-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1786623174; c=relaxed/simple;
+	bh=/17flycYSc19MMlgQ2UNX8D5txCWeH/AzDfCPa7n4L8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DJsqxuttBQhK9VXS1BGMm1SfUZz0+lti1ABjHcIhmSwbVf7xaUeU1nUEPcdncvDn42vhMwpdN3HQBaU5jrcZCSDm3abrUFl5RlLtWBOBLauIgDDYW57sU6iBk66BLx/JpzalpEji/jIHVnUt2NH/QuK+JHc9JktJ8wfgbjZf3NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oFIUTMOR; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oFIUTMOR"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ceab75934dso8130335ad.2
+        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 05:12:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786623172; x=1787227972; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=P7D5ColudFir3efNk2jSAtS6dOixRUPB2JAx0kV9F6Y=;
+        b=oFIUTMORwgOEieNGXp2MtRKZf1gdtvqY6OpjO5d/YUXOirjCGApqU+liN7/7UCL8yY
+         xQ02uHRCFTif20wkEjf8/I47eR9e0km8xgR37h+wd144r0Z3h2O2GDXdTnh+QrFbXvZ+
+         xTD7fA6O/Pc0AqkjYuSNa6xEySdjzDDNDa7qP5DgOgGvS+dBlrdgcWBHGgfVkk+ZuMuy
+         KXQ68IKI7TV36Tpt+FSNfPGWtrb+ZvdC15u91Ga27otBvW16eChB8fE2P3NsF3F9t8qf
+         XYNDat4wJ/Imi9DiWPx/DN0OcdbVjXORttG9AGZEzqQMMu/HqgTrXRpGkNVVmHW+GuBO
+         5XdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786623172; x=1787227972;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=P7D5ColudFir3efNk2jSAtS6dOixRUPB2JAx0kV9F6Y=;
+        b=M1WVozm6oXroA4d3U7TPEC0Ze6oUtZBteKYvVBhq0e2zNc+hx/o5fPr65JAI+I7+NM
+         e2nTkv3tjKO8OPS/IEqi29+R/iZovvfJil3xMCCWFJkfgAGU5bhak9c4EVDkFTzgwOwL
+         RBhMpUgITOCngjvpzMH1EMTaMzZb979t1D5NnZbmCCBuCVq7Q8DXnGyK0Ohpv6Dyxx2r
+         OWqBC6sy0TiGZWD0oPtqiuFFQioURTwWjoulhOFU27rxMQnX5i0dwj9O/bPi83VIwIbY
+         MzgSnOWqDEuF+DOFZepf3mDOrvuKkwWomXBpYbK3lIYqxfiYi5rrFCOAmn0KAyxUq213
+         3ZIg==
+X-Forwarded-Encrypted: i=1; AHgh+RpS06XaySZ/Uw7zuMjJNNYlBDVjRDjhaP2bUObg0eFZPPLqt+vKfjsLjN7eVW7uuOQj71c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqMtdN74wWrPOCnaVO45vCha5SmbXnKXGaZd/G77JlUJUWMM6L
+	th0sY3SrnvvWpyV166FPenpDyTRPfzK7DD9Nb3HkFQc5JraiMG/EQbIt
+X-Gm-Gg: AR+sD12d11WjUneVX5dFddt2IXPa6w3zg2BXikfqyEy2Vf8Idw2nXRBgs68v5qoXMna
+	kf5dYGRDKc5zg9hmW7FB4/LhJeiKLOVNQuKblNYOc2q81S3c/zP4fVEa5PhDW2j46MNTqSceT7z
+	mEK7kQ3Q8K0pu43FCTwKKB9t5CN6uY1E0hDTOBlZ2Zv4G9fp5bNJJHXOL+iRgLr701Ulf3mbqFK
+	/qzoYDmL2I+76VLO/N3oi2vbTtfl/g74EmtUTxnSytToIFQuLQQdeLyoHZ1JfmeIRHGSfhGIa+5
+	A9J02nK7wXbyZnFgRZhy9b2C6lPgT/C9KegU4uWLDQ+9D2V/TX9PoWYScjWrzFXMHGxUk3Wm5Vw
+	OkVvXeH+IWlefW7MGUe3CxdV6rkekL6rLudWiB7TZ8Pk0hv/yOkvWrfEV4E6mJ1KMOh5sMWm+Po
+	JejMo1RQsV0iiN7DnTXFmWI+9NsSK7cgab26uoM+uqwrh7Xm/HXsG6P8z/d2W+lB8nHtZ7cbpz
+X-Received: by 2002:a17:90b:53cb:b0:381:1c96:829b with SMTP id 98e67ed59e1d1-3931e0241cemr6853696a91.3.1786623171943;
+        Thu, 13 Aug 2026 05:12:51 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3931d872ec5sm1069999a91.0.2026.08.13.05.12.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 05:12:51 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	Daehyeon Ko <4ncienth@gmail.com>
+Subject: [PATCH net] vsock/virtio: validate packet source for connected sockets
+Date: Thu, 13 Aug 2026 21:12:36 +0900
+Message-ID: <20260813121236.2328599-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -39,78 +74,60 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxX8_Gs31qZ10DAA--.22644S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW7ZF4xZr48JFy8Xry7trWDGFX_yoW5Jr17pF
-	Wa9rnxKrs5JF43JwnFva4qqF43tF1xCr1xW3W5Kry8Cr4DAryUXry7GrZ7XFy5G395Xr1F
-	vr1rGw15WF1UJacCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9Yb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	XVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
-	AKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v2
-	6r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
-	CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
-	0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
-	AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIev
-	Ja73UjIFyTuYvjxU2MKZDUUUU
 
-The following changes since commit db2ddb87143519e20a95aa36c60b36107b736a58:
+virtio_transport_recv_pkt() first looks up a socket using the full source
+and destination tuple.  If that misses, it falls back to a bound-socket
+lookup using only the destination address.  The fallback is needed for
+listening and connecting sockets, but it can also select an established
+socket that remains in the bound table.
 
-  Linux 7.2-rc7 (2026-08-09 14:54:50 -0700)
+As a result, a packet from an unrelated source can be dispatched to a
+non-listening socket.  In TCP_SYN_SENT, a source-blind RESPONSE marks the
+selected socket established while retaining its original remote address.
+Subsequent RW packets can likewise be delivered through the
+destination-only fallback.
 
-are available in the Git repository at:
+This was reproduced with two capless processes under different UIDs.  The
+attacker discovered the victim tuple through unprivileged AF_VSOCK
+sock_diag and injected a chosen 16-byte payload into the victim established
+loopback socket.  The legitimate peer received none of those bytes.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.git tags/loongarch-kvm-7.3
+After taking the socket lock, verify that packets for non-listening sockets
+come from the peer stored in remote_addr.  Listening sockets continue to
+accept packets from any source.
 
-for you to fetch changes up to c5959723aaae06aa617253528e6b228b3c858215:
+Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
+Cc: stable@vger.kernel.org
+Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+---
+ net/vmw_vsock/virtio_transport_common.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-  KVM: LoongArch: selftests: Add FPU/LSX/LASX test cases (2026-08-10 12:21:58 +0800)
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 8becad812..f73e0406a 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1822,11 +1822,15 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+ 
+ 	lock_sock(sk);
+ 
+-	/* Check if sk has been closed or assigned to another transport before
+-	 * lock_sock (note: listener sockets are not assigned to any transport)
++	/* Check if sk has been closed, assigned to another transport, or if the
++	 * packet is from a different peer than the one connected to sk.  These
++	 * properties could have changed before lock_sock.  Listener sockets are
++	 * not assigned to any transport and accept packets from any peer.
+ 	 */
+ 	if (sock_flag(sk, SOCK_DONE) ||
+-	    (sk->sk_state != TCP_LISTEN && vsk->transport != &t->transport)) {
++	    (sk->sk_state != TCP_LISTEN &&
++	     (vsk->transport != &t->transport ||
++	      !vsock_addr_equals_addr(&src, &vsk->remote_addr)))) {
+ 		(void)virtio_transport_reset_no_sock(t, skb, net);
+ 		release_sock(sk);
+ 		sock_put(sk);
 
-----------------------------------------------------------------
-LoongArch KVM changes for v7.3
-
-1. Advertise already-supported capabilities.
-2. Some bug fixes about timer and MMIO.
-3. Some hardening about interrupt injection.
-4. Replace kvm_err() with kvm_pr_unimpl().
-5. Add FPU/LSX/LASX test cases for selftests.
-
-----------------------------------------------------------------
-Bibo Mao (8):
-      LoongArch: KVM: Set vcpu->cpu before IN_GUEST_MODE is set
-      LoongArch: KVM: Set default MAILBOX access size with 8
-      LoongArch: KVM: Return directly when IPI address is not aligned
-      LoongArch: KVM: Fix uninitialized stack variable issue with dmsintc
-      LoongArch: KVM: Use internal API to deliver interrupt in kernel mode
-      LoongArch: KVM: Replace kvm_err() with kvm_pr_unimpl()
-      KVM: LoongArch: selftests: Enable LSX/LASX by auto detection
-      KVM: LoongArch: selftests: Add FPU/LSX/LASX test cases
-
-Tao Cui (3):
-      LoongArch: KVM: Advertise already-supported capabilities
-      LoongArch: KVM: Reload one-shot TVAL on migration destination
-      LoongArch: KVM: Prevent division by zero in periodic timer restore
-
-Zeng Chi (1):
-      LoongArch: KVM: Fix PC double advance in kernel MMIO read fast path
-
- arch/loongarch/kvm/exit.c                          |  19 ++-
- arch/loongarch/kvm/intc/dmsintc.c                  |  18 +--
- arch/loongarch/kvm/intc/eiointc.c                  |  32 ++---
- arch/loongarch/kvm/intc/ipi.c                      |  77 ++++++------
- arch/loongarch/kvm/intc/pch_pic.c                  |  12 +-
- arch/loongarch/kvm/timer.c                         |  14 +++
- arch/loongarch/kvm/vcpu.c                          |   7 +-
- arch/loongarch/kvm/vm.c                            |   4 +
- tools/testing/selftests/kvm/Makefile.kvm           |   3 +-
- .../selftests/kvm/include/loongarch/processor.h    |  18 +++
- .../selftests/kvm/lib/loongarch/processor.c        |  11 +-
- tools/testing/selftests/kvm/loongarch/fpu_test.c   | 137 +++++++++++++++++++++
- 12 files changed, 269 insertions(+), 83 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/loongarch/fpu_test.c
+base-commit: 9006c116dd111d457bf5d074990210f70a4ad2c8
+-- 
+2.54.0
 
