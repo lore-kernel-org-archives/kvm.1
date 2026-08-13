@@ -1,300 +1,179 @@
-Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098FB353EDF;
-	Thu, 13 Aug 2026 09:56:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AD439CCFA
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 09:58:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786615008; cv=none; b=Oh+coyQqoYtB83LSTHHvP1M1sFE4mA3VTw3ZpsQY09Twl1oPkep6FahuBYVSB3QVfkpkr0BYC3TrbY9bo+qjiIlmtqKI2Yg3CxJBqcdbXcWpkJc9DFaYaAd0AP18gfppv47ZSopPsvt7uZBXXIfeyxEDYnBieZWlFdmj5T4hsPo=
+	t=1786615133; cv=none; b=QNyJLtn+fCW6u6croxDf4+qnLVs19FTSwUE5tmWYo3Q13NUf/XLnVaQxjsO0be3jq7U6d4cwdyTdYPfRFUDmyBNMBh0fBNssoe3OxDbD8kf37MYLONMX+prkYQrnWy7P+On9ZmREflkFG/3w1zTUmlp/VdOlVfBx2kqFxbtNCJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786615008; c=relaxed/simple;
-	bh=UIcKos7kRtXCUP0MPnOTjPlCFzvG2NJu8oDkvOG86vM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n/AQKTbLNwh+5y4BaX3PmQtOqthY1BWF6FyXhT3WvqG/pnQ1x9B55br7rCQZlec+2Uy4iGBrJ4fhNRhXBZBO7NLZxmG9TmP68Zj7uMeWPf/vC9ulvzZFvzm6rxs4zrcTuqt3ph199s+xZdkSO7jp1ICWvKPiDhNDrjDiaQggYGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=haiwei.tech; spf=pass smtp.mailfrom=haiwei.tech; arc=none smtp.client-ip=54.243.244.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=haiwei.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=haiwei.tech
-X-QQ-mid: zesmtpgz7t1786614980t0a4c8aa1
-X-QQ-Originating-IP: YI18fi8haOXgFIrcSxG0og0EAUmOcw8WGDWMzEE4JSI=
-Received: from rsl ( [183.242.33.186])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 13 Aug 2026 17:56:17 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 10837892026488473328
-EX-QQ-RecipientCnt: 15
-From: JinRui <jinrui@haiwei.tech>
-To: anup@brainfault.org,
-	pbonzini@redhat.com,
-	shuah@kernel.org,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu
-Cc: atish.patra@linux.dev,
-	alex@ghiti.fr,
-	sashiko-bot@kernel.org,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jinrui@haiwei.tech
-Subject: [PATCH v12] KVM: selftests: riscv: Add lazy V extension enablement for guests
-Date: Thu, 13 Aug 2026 09:56:15 +0000
-Message-ID: <7C0512E558D1614D+20260813095615.3843757-1-jinrui@haiwei.tech>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <EF5308EB97ADC8DE+20260813093751.3817371-1-jinrui@haiwei.tech>
-References: <EF5308EB97ADC8DE+20260813093751.3817371-1-jinrui@haiwei.tech>
+	s=arc-20240116; t=1786615133; c=relaxed/simple;
+	bh=vRtxxer00uc2U187miiPsg53rKVr+Yn7ChiCt6eg99k=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=sWCBE6wW/2KZzj81WK6Emeg81CZJsK+eplnwnF6Tbm/xBIAr3Oajm8izHGbJDpZnt3tViRhwsCYRTt9ilf2EZfce/Lx5KHeoKwADUpglPgmlg8EnSA6QZq30iNkbcQFP46qC2XOQX9EjlS1m8RQvtgaxNew/XPJyzlX8CIARNxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YyuuB02t; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YyuuB02t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D9CD1F000E9;
+	Thu, 13 Aug 2026 09:58:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786615131;
+	bh=MOOoPWm58b+obKIqdnYUykn+oeY4/UGYzLcndzimaBY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=YyuuB02tjfIXg08pCLyfw40zr0yJB7Dbp3TlX6lwgIBr9HUYzDKDCPU8sAivSyDsV
+	 aJVpaeUYD9DOBE20dylcRzGK7ufym2j7EeKTnGyqdKMDZNwDihsB4He8mAuppfcPoj
+	 2FEwzsTDF7l+sHd/xGEcsvhYeZ73fe8lQknuHd/V3rRYpSYZlwAqD83P7uX1N3UZl0
+	 29HuaJrGDtTr2FilWE+w2qhYB95s0SjBzQSMPirohqf40Rp210bo6fxp4ptOFqyO9I
+	 LhzaK2JmDHh/TTcDmR7U6/PfVZpRCmP0hMVoEkaFYrIy4cIKA3scHO5Wjx9+pilAxu
+	 6m450b2BpmJ7w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/3] powerpc/perf: Use the aggregate context switch
+ values from vcpu struct
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Gautam Menghani" <gautam@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260813094535.10083-3-gautam@linux.ibm.com>
+References: <20260813094535.10083-1-gautam@linux.ibm.com>
+ <20260813094535.10083-3-gautam@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 13 Aug 2026 09:58:50 +0000
+Message-Id: <20260813095851.4D9CD1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:haiwei.tech:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MiUxkXieYO8R8L0HWg0nLFaiiMKuv3+zyMXLXWzQsu01wqF3s3/E0eGi
-	Xly3oO9llSFooyGv+atUP86DwwOcn8vTbBULIn9oN4kjVRbbdqYSwN0VgNLZllzDByDn9/r
-	4YDh2kG9ToA1gIqWWUkPqEKJV1PegAp9EghorlUf1ldT2SphZZQlUQ26eOVeQf7sA8UO/N5
-	UJ9Qq0DvQ9MeeDZ8jB72nKNxbvREuP0PgdFU8gXLLJgzYUqJTJMiMvDpm7nOvjVy1NN+Ug1
-	aulwfyXyR2921FL+w2xPkEn/UhjkR+cALFi1gFJ9zRNL8cxk8pmSjl68A2i+V8SLI7sWtaY
-	5TTExmThqT5MAzIs/CSeqnu4tEXlaDOT5x4BMcQFA9ABzN2VhyjqcvRMaJIOAoU8/7+jY/u
-	I33QlByi+QB91FOn6NzYF+ThDTmOr/KZ6xv0aa5jerEvTu4cQT3mFemKVR+FQyP1BpQK5+X
-	sEALXQ1BKyBTIM+q+T5pgVmhT67q/SUIZmWoZXLhPhCYJLQ9chb3jzGikV8NGbuIivcPadP
-	FGYFDFual+4i+CI2V60fMteYqeJFmQ4OK+XO4/MH2rX1CVStFIo0hjcScZblzvBZsCcV7Vs
-	SlvQuiVoiu4E3LmEfmvShDDwXDOGckGRtDOMN/LEHXaTqmkuBcZ/EQKlg5HtIB//KP2iFTg
-	oRsRBEY3f8AkA7fYeaYhC1ujtA/vNX3tyrm/3zAzleUvMxJr4FZmZUK6eykfYcn0wKdXOGC
-	d3UxoM7hyUYn3bF5rWTMnvOY9pk8EfxeohOphVtkfus+jrRugRuHSdMRwR8x3aEGo/QQmPJ
-	bLEb7IGg8OiamzVhTFQkkCr3LWYj/29/C1sueAoXzrjJlrdQ0i3oG+3NtuSRtfpw3AtA//q
-	0UUgigp3z+Pt2MJ9bNEzJEDRtpBc+VaUMKU2KXyOCl0R16VYjCXqvBlsyEDKigRoopTr+WX
-	MvD0zWz5ElI9pO6waSp1l4pO4fv63srrH7gIE/q73cTT2GJwL4o07Wo5Q0fYkWy6c57AxUx
-	kHxKdexLOq2kWQQSwbEFy0ivyQyggH8wdyt5B5DMpmmb2ekmz5dMYuflrbkBjcCjtHIv3Na
-	A==
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-X-QQ-RECHKSPAM: 0
 
-From: jinrui <jinrui@haiwei.tech>
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+s) to consider:
 
-When the cross-compiler defaults to an -march that includes the V
-(vector) extension, -O2 auto-vectorization generates vector instructions
-(e.g. vsetvli, vadd.vv) in guest code. Executing such an instruction with
-sstatus.VS Off raises EXC_INST_ILLEGAL (scause=2); KVM's hedeleg forwards
-it to the guest, but the bare-metal selftest cannot handle it, so all
-guest tests fail. A real kernel handles this via
-riscv_v_first_use_handler(), which enables V and re-executes the
-instruction.
+New issues:
+- [High] Task-bound PMU events cache a stale vCPU pointer, resulting in tra=
+cking the wrong vCPU.
+- [High] CPU-wide and system-wide PMU events are broken and silently report=
+ 0 if added when no guest is running.
+- [High] Uninitialized event state on task migration leaks stale vCPU point=
+ers.
+- [Medium] Unbalanced disablement of the global hardware PMU counters.
 
-Fix it in processor.c:
+Pre-existing issues:
+- [Critical] Dereferencing `kvm_hstate.kvm_vcpu` leads to a Use-After-Free =
+if the previously running VM has been destroyed.
+--
 
-1. Delete the now-unused guest_unexp_trap() handler, replaced by the full
-   exception vector table.
+--- Patch [2]: [PATCH v2 2/3] powerpc/perf: Use the aggregate context switc=
+h values from vcpu struct ---
+commit e328e1f6c8baf0140410c1983f559e87d1d0efdc
+Author: Gautam Menghani <gautam@linux.ibm.com>
+powerpc/perf: Use the aggregate context switch values from vcpu struct
 
-2. In vm_arch_vcpu_add(), advertise V to KVM via __vcpu_set_reg(V, 1)
-   (best-effort, errors ignored on hardware without V) and install the
-   full exception vector table instead of a raw stvec handler.
+This commit aims to fix inaccurate vpa-pmu counter reporting during vCPU
+migrations and when vCPUs are not running by fetching aggregate values
+from the vcpu struct instead of relying on the host cpu's PACA.
 
-3. In route_exception(), decode the faulting instruction (stval) with
-   insn_is_vector() and, when it is a vector instruction while sstatus.VS
-   is Off, set VS to Initial and sret to re-execute it, before any
-   test-registered handler. Genuinely illegal instructions still reach
-   the unexpected-exception path.
+> diff --git a/arch/powerpc/perf/vpa-pmu.c b/arch/powerpc/perf/vpa-pmu.c
+> --- a/arch/powerpc/perf/vpa-pmu.c
+> +++ b/arch/powerpc/perf/vpa-pmu.c
+[ ... ]
+> @@ -99,19 +99,19 @@ static unsigned long get_counter_data(struct perf_eve=
+nt *event)
+>  	switch (config) {
+>  	case L1_TO_L2_CS_LAT:
+>  		if (event->attach_state & PERF_ATTACH_TASK)
+> -			data =3D kvmhv_get_l1_to_l2_cs_time_vcpu();
+> +			data =3D vcpu->arch.l1_to_l2_cs;
 
-4. Make vm_init_vector_tables() idempotent by checking vm->handlers
-   before allocating, so tests that call it directly (ebreak_test,
-   arch_timer, sbi_pmu_test) do not leak memory.
+[Severity: Critical]
+This is a pre-existing issue, but does dereferencing the vcpu pointer here
+lead to a use-after-free if the previously running VM has been destroyed?
 
-Tested on a riscv64 host with KVM enabled.
+When KVM exits a guest, it does not clear local_paca->kvm_hstate.kvm_vcpu,
+leaving a dangling pointer in the host's PACA.=20
 
-Signed-off-by: jinrui <jinrui@haiwei.tech>
----
-Changes in v12:
-- Read a 16-bit halfword first and only load the full 32-bit instruction
-  when it is not compressed, avoiding an unaligned or cross-page access in
-  the stval fallback (Sashiko review).
+The PMU driver reads this dangling pointer in vpa_pmu_add() and permanently
+caches it in event->pmu_private. Subsequent calls to vpa_pmu_read() pass
+this cached pointer to get_counter_data(), which dereferences the freed
+memory here.
 
- .../selftests/kvm/include/riscv/processor.h   |  13 +++
- .../selftests/kvm/lib/riscv/processor.c       | 100 +++++++++++++++---
- 2 files changed, 100 insertions(+), 13 deletions(-)
+>  		else
+>  			data =3D kvmhv_get_l1_to_l2_cs_time();
+>  		break;
+[ ... ]
+> @@ -126,21 +126,33 @@ static int vpa_pmu_add(struct perf_event *event, in=
+t flags)
+>  {
+>  	u64 data;
+> +	struct kvm_vcpu *vcpu;
+> =20
+> +	vcpu =3D local_paca->kvm_hstate.kvm_vcpu;
+> +	if (!vcpu)
+> +		goto out;
 
-diff --git a/tools/testing/selftests/kvm/include/riscv/processor.h b/tools/testing/selftests/kvm/include/riscv/processor.h
-index e3acf2ae9881..685baefebdb1 100644
---- a/tools/testing/selftests/kvm/include/riscv/processor.h
-+++ b/tools/testing/selftests/kvm/include/riscv/processor.h
-@@ -25,6 +25,19 @@
- #define GET_RM(insn)            (((insn) & INSN_MASK_FUNCT3) >> INSN_SHIFT_FUNCT3)
- #define GET_CSR_NUM(insn)       (((insn) & INSN_CSR_MASK) >> INSN_CSR_SHIFT)
- 
-+/* Vector (V) instruction decoding, matching arch/riscv/include/asm/insn.h */
-+#define RV_INSN_OPCODE_MASK	0x7f
-+#define RVG_OPCODE_SYSTEM	0x73
-+#define RVV_OPCODE_VECTOR	0x57
-+#define RVV_OPCODE_VL		0x07
-+#define RVV_OPCODE_VS		0x27
-+#define RVV_VL_VS_WIDTH_8	0
-+#define RVV_VL_VS_WIDTH_16	5
-+#define RVV_VL_VS_WIDTH_32	6
-+#define RVV_VL_VS_WIDTH_64	7
-+#define RVV_EXTRACT_VL_VS_WIDTH(insn)	(((insn) >> 12) & 0x7)
-+#define RVG_EXTRACT_SYSTEM_CSR(insn)	(((insn) >> 20) & 0xfff)
-+
- static inline u64 __kvm_reg_id(u64 type, u64 subtype, u64 idx, u64 size)
- {
- 	return KVM_REG_RISCV | type | subtype | idx | size;
-diff --git a/tools/testing/selftests/kvm/lib/riscv/processor.c b/tools/testing/selftests/kvm/lib/riscv/processor.c
-index ded5429f3448..e677137d5e44 100644
---- a/tools/testing/selftests/kvm/lib/riscv/processor.c
-+++ b/tools/testing/selftests/kvm/lib/riscv/processor.c
-@@ -17,6 +17,11 @@
- 
- static gva_t exception_handlers;
- 
-+struct handlers {
-+	exception_handler_fn exception_handlers[NR_VECTORS][NR_EXCEPTIONS];
-+	bool v_available;
-+};
-+
- bool __vcpu_has_ext(struct kvm_vcpu *vcpu, u64 ext)
- {
- 	unsigned long value = 0;
-@@ -298,13 +303,6 @@ void vcpu_arch_dump(FILE *stream, struct kvm_vcpu *vcpu, u8 indent)
- 		core.regs.t3, core.regs.t4, core.regs.t5, core.regs.t6);
- }
- 
--static void __aligned(16) guest_unexp_trap(void)
--{
--	sbi_ecall(KVM_RISCV_SELFTESTS_SBI_EXT,
--		  KVM_RISCV_SELFTESTS_SBI_UNEXP,
--		  0, 0, 0, 0, 0, 0);
--}
--
- void vcpu_arch_set_entry_point(struct kvm_vcpu *vcpu, void *guest_code)
- {
- 	vcpu_set_reg(vcpu, RISCV_CORE_REG(regs.pc), (unsigned long)guest_code);
-@@ -348,8 +346,26 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
- 	/* Setup sscratch for guest_get_vcpuid() */
- 	vcpu_set_reg(vcpu, RISCV_GENERAL_CSR_REG(sscratch), vcpu_id);
- 
--	/* Setup default exception vector of guest */
--	vcpu_set_reg(vcpu, RISCV_GENERAL_CSR_REG(stvec), (unsigned long)guest_unexp_trap);
-+	/*
-+	 * Advertise V to KVM so -O2 auto-vectorization in guest code is valid;
-+	 * ignore errors since the tests work without V too. Use the full
-+	 * exception vector table (which lazily enables V in route_exception())
-+	 * as the default handler; vm_init_vector_tables() is idempotent.
-+	 */
-+	__vcpu_set_reg(vcpu, RISCV_ISA_EXT_REG(KVM_RISCV_ISA_EXT_V), 1);
-+	vm_init_vector_tables(vm);
-+	vcpu_init_vector_tables(vcpu);
-+
-+	/*
-+	 * Record V availability for route_exception(), which runs in guest
-+	 * context. V is enabled uniformly for every vCPU, so this is a
-+	 * VM-wide property.
-+	 */
-+	{
-+		struct handlers *h = addr_gva2hva(vm, vm->handlers);
-+
-+		h->v_available = __vcpu_has_isa_ext(vcpu, KVM_RISCV_ISA_EXT_V);
-+	}
- 
- 	return vcpu;
- }
-@@ -408,19 +424,43 @@ void assert_on_unhandled_exception(struct kvm_vcpu *vcpu)
- 	struct ucall uc;
- 
- 	if (get_ucall(vcpu, &uc) == UCALL_UNHANDLED) {
-+		vcpu_dump(stderr, vcpu, 2);
- 		TEST_FAIL("Unexpected exception (vector:0x%lx, ec:0x%lx)",
- 			uc.args[0], uc.args[1]);
- 	}
- }
- 
--struct handlers {
--	exception_handler_fn exception_handlers[NR_VECTORS][NR_EXCEPTIONS];
--};
-+static bool insn_is_vector(u32 insn)
-+{
-+	u32 opcode = insn & RV_INSN_OPCODE_MASK;
-+	u32 width, csr;
-+
-+	/* All V-related instructions are 4-byte, i.e. not compressed. */
-+	if ((insn & 0x3) != 0x3)
-+		return false;
-+
-+	switch (opcode) {
-+	case RVV_OPCODE_VECTOR:
-+		return true;
-+	case RVV_OPCODE_VL:
-+	case RVV_OPCODE_VS:
-+		width = RVV_EXTRACT_VL_VS_WIDTH(insn);
-+		return width == RVV_VL_VS_WIDTH_8 || width == RVV_VL_VS_WIDTH_16 ||
-+		       width == RVV_VL_VS_WIDTH_32 || width == RVV_VL_VS_WIDTH_64;
-+	case RVG_OPCODE_SYSTEM:
-+		csr = RVG_EXTRACT_SYSTEM_CSR(insn);
-+		return (csr >= CSR_VSTART && csr <= CSR_VCSR) ||
-+		       (csr >= CSR_VL && csr <= CSR_VLENB);
-+	}
-+
-+	return false;
-+}
- 
- void route_exception(struct pt_regs *regs)
- {
- 	struct handlers *handlers = (struct handlers *)exception_handlers;
--	int vector = 0, ec;
-+	int vector = 0;
-+	unsigned long ec;
- 
- 	ec = regs->cause & ~CAUSE_IRQ_FLAG;
- 	if (ec >= NR_EXCEPTIONS)
-@@ -432,6 +472,37 @@ void route_exception(struct pt_regs *regs)
- 		ec = 0;
- 	}
- 
-+	/*
-+	 * Lazily enable V on the first vector instruction: if the faulting
-+	 * instruction decodes as vector while VS is off, set VS to Initial
-+	 * and re-execute it, like the kernel's riscv_v_first_use_handler().
-+	 * Genuinely illegal instructions continue to the unexpected-exception
-+	 * path.
-+	 */
-+	if (!(regs->cause & CAUSE_IRQ_FLAG) && ec == EXC_INST_ILLEGAL &&
-+	    handlers && handlers->v_available && !(regs->status & SR_VS)) {
-+		u32 insn = (u32)regs->badaddr;
-+
-+		/*
-+		 * stval is not guaranteed to hold the faulting instruction.
-+		 * Vector instructions are always 32-bit, so read a 16-bit
-+		 * halfword first and only load the full 32-bit instruction when
-+		 * it is not compressed; this avoids an unaligned or cross-page
-+		 * access on a compressed instruction.
-+		 */
-+		if (!insn) {
-+			u16 half = *(u16 *)regs->epc;
-+
-+			if ((half & 0x3) == 0x3)
-+				insn = *(u32 *)regs->epc;
-+		}
-+
-+		if (insn_is_vector(insn)) {
-+			regs->status |= SR_VS_INITIAL;
-+			return;
-+		}
-+	}
-+
- 	if (handlers && handlers->exception_handlers[vector][ec])
- 		return handlers->exception_handlers[vector][ec](regs);
- 
-@@ -448,6 +519,9 @@ void vcpu_init_vector_tables(struct kvm_vcpu *vcpu)
- 
- void vm_init_vector_tables(struct kvm_vm *vm)
- {
-+	if (vm->handlers)
-+		return;
-+
- 	vm->handlers = __vm_alloc(vm, sizeof(struct handlers), vm->page_size,
- 				  MEM_REGION_DATA);
- 
--- 
-2.53.0
+[Severity: High]
+Does this early exit break CPU-wide and system-wide profiling?
+
+If a user initiates a CPU-wide profiling session (e.g. perf stat -a) and no
+guest is actively running on that specific CPU at that moment, vcpu is NULL.
+The function exits early returning 0 without initializing event->pmu_private
+or event->hw.prev_count.=20
+
+Subsequent calls to vpa_pmu_read() check if (!vcpu) and immediately return,
+silently leaving the event counter permanently at 0.
+
+[Severity: High]
+Could this early exit also leak state from a previous CPU when a task
+migrates?
+
+When a task with a vpa_pmu event migrates to a new CPU, perf core calls
+pmu->del on the old CPU and pmu->add on the new CPU. If vcpu is NULL on the
+new CPU, it returns 0 (success) but jumps to out without updating or
+clearing event->pmu_private.=20
+
+The event silently retains the old vcpu pointer and prev_count from the
+previous CPU, resulting in corrupted profiling data calculated against an
+unrelated CPU's context.
+
+[Severity: Medium]
+Are the global hardware PMU counters skipped here on early bailout, leading
+to an unbalanced disablement later?
+
+If a user creates a PMU event on a CPU where no vCPU is active, this early
+exit skips calling kvmhv_set_l2_counters_status(cpu, true).=20
+
+However, when the event is deleted or scheduled out, vpa_pmu_del()
+unconditionally calls kvmhv_set_l2_counters_status(cpu, false). This
+unbalanced behavior forcefully disables the hardware counters even when they
+were never enabled, which could break legitimate concurrent KVM tracing
+sessions.
+
+> +
+> +	event->pmu_private =3D vcpu;
+
+[Severity: High]
+Is it possible caching the vcpu pointer here results in tracking the wrong
+vCPU for task-bound events?
+
+When a user creates a task-bound vpa_pmu perf event, the core perf
+subsystem calls vpa_pmu_add() during perf_event_context_sched_in(). At this
+point, the task has been scheduled but has not yet invoked the KVM_RUN
+ioctl.
+
+Because of this, local_paca->kvm_hstate.kvm_vcpu does not point to the
+incoming task's vCPU; it contains a stale pointer to the last vCPU that
+executed on this physical host CPU. Caching this pointer permanently means
+the event tracks unrelated data.
+
+>  	kvmhv_set_l2_counters_status(smp_processor_id(), true);
+> =20
+> -	data =3D get_counter_data(event);
+> +	data =3D get_counter_data(vcpu, event);
+>  	local64_set(&event->hw.prev_count, data);
+> =20
+> +out:
+>  	return 0;
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260813094535.1008=
+3-1-gautam@linux.ibm.com?part=3D2
