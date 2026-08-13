@@ -1,208 +1,135 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153023161A1
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 04:39:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E19233936B
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 04:57:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786595983; cv=none; b=WemiMwiGeoxZkq4EaLfXvehiPWsQ2DL40BjlvBI3WMX/Gl6xwgEdQWLAF2/K9bqqHy3xcRosX3tou2szmD2WE3AdMHIkWcwVqlM8F8/carkwgV43PhbO/6HuzqXm6gh2iUWWltq/L/z1s/FGUrqEOBz5YiXNn6yOWbKnBXKo4fk=
+	t=1786597049; cv=none; b=r1pCCN2Hy4NSi9ad9RrvwyXe/LZ/9KVUfJCXuHPWijxJ/EU5+lWqkwOWWXjztWnDkenWy2Ej2pis7Qzz+MxxwU4qLiXzbiczBd2W5xV4D9u8Gzgg7ZBcRismexqIsqwEDxuzZdND7ujhxh9B+LEPTrh/wtX+3jCDP8VDbTn7O64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786595983; c=relaxed/simple;
-	bh=MrA1eUn49JHHtkGSWBVP0LTaU/MxZzymHsQV1rsechk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GDLmbgxzrrA6c4u7x7x/vvR0EeSEdCvFmm4ehVVlSdS7yDMCjMZriat8KkCt2zeYJjN+FiFWfS0YAKenHfkPiPuqWjcYOIcA5N2DxbA9kAyN4eEaXOh6M77CnZf2d1lA/f55hDG5HLBuVkyHmD3GVa9DvaX1xFiTqg9V7IX7uoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oyXlXK49; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786597049; c=relaxed/simple;
+	bh=EkR/HzsHgp69LLnuHdAgq/1v/rcIjpylLpWgW0v1Gog=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=oJ5xth6SncsO+jpQi+YpA6cLOcwvZtSHA+9gSmi+6VIsiAAGhT0AmFKKgZdixcv+MnjyGW/+77ZuM8ez9GRqhxppbwescqEPwTyLvgPSmJZ7vXKRWxFS9JMDLrXp/131we9dVVPG+s5TbmIT8UVlVRr+dJ0TVfWUHbESNsC+nCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OkErHoy3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oyXlXK49"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c9b373d5af0so285657a12.2
-        for <kvm@vger.kernel.org>; Wed, 12 Aug 2026 21:39:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786595981; x=1787200781; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QY0PhIaQe303xAQrTg2FMWpE3pS6R1npxD02nSQKkGo=;
-        b=oyXlXK494Z/C6uht5qpC3+QJ3ej6LcpMvgO00eTR9vcmcgZfySI5GuzQy0YwPYr+Wb
-         OtmHz8tYVWAUZkXyXedaIkBxXhWWTzY/iw6ocV1LE/oTpKZNtpeTiVE213Hgt2kpUHrb
-         wO51ZcKRW+4wZh9wMozFYId0u1Uky4SfugYyi9c6sPV1sCZq0VXvrss+N4N1ool1n3PW
-         OwMtma1nSXrDCsHRoQZv8Z3vw0CUAd9dqN1WX6GugWm9WUf6cHiB03131Ikkm259sLxv
-         vmVcLQNCXfAAViPADi7fcI2bOHze88PWIXymoKCgLU6Wiznhf7WTaYXGevNY7coB+dwk
-         LK0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786595981; x=1787200781;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QY0PhIaQe303xAQrTg2FMWpE3pS6R1npxD02nSQKkGo=;
-        b=q840g8YyUFg4/z/1hmci7Tt043XBHkm21S0x2IJEeu4grS/fNyWID6KGSXLw6YDKyU
-         TwadZhjlFCMXNyDFF4hPu/e3hOIPZqq90hJlb0Y3g+n8IZReZfF1e4jRBp0/B02SEikb
-         JMd3+5HFh0Oyb0+/UtTdqyCdGoSU+RJPCWjhTctB7QvW1gzPePhdsEZwMXbBT5Pq5dG+
-         3tzrY+f7p8OHrUMxMI+/5hDmYhJQEwx8M3tQIxvvOnd0XNMRXqhB++ApQiy1bGSZBWVw
-         74hoycW9qTvBQxjk8N2jwKt90TLrW69UWW2gKLSwa1WMtJvXvCcKh6EtgEn7pRywigrv
-         kDkA==
-X-Gm-Message-State: AOJu0YwAV1fiutWL6HZBHjHq7JrG10G0LxeYhmRswCD8JvaazbedZjQa
-	5609aqSZxPBQZtJt25RY1JbwE31gAO8jHpWPzn98fWNqoT9KqhyfqLEF
-X-Gm-Gg: AR+sD12POi/mdc3kV+ZY20BD4nS2CgR/QnceFB3o9LbOjN4Z6/tk3x0LqRsBl1l4PPI
-	4LgSUd12SMZwk8EQlO/TyiUuTw0jffFBLFiD/Ip7O9vpHHxu6uYefTC4KT6Z0c+lNgdfAkpzDQ6
-	jhq/7Ckp60oZVbRxEmE8fjOaw+h6YbViDbUPq/p4m10sYrqHDhEBQawR3jo0jnekRL1baEyW4Xd
-	XkmYTcnbmDCHY3vvfzlVnx3y/PtheYMplQKA+eS3hY3dOrwVZV8erKSZf/Fhch3umgbSSttc6Wc
-	eKVClqJY0La+PZrDpV3qxn3kSrr3rEoJHyVz4UcXja9qIrNihzbOAaZucMByDoiJajGDG4E/2Ov
-	nV3iXDmsAdxuGu210FtDFfPc/9X4g6DawZdL1kFbAi72zRTjBIa/lP73e7EkijMliRkQPKEgqXv
-	XZKJBdSHYdRPPJP6Na8ajOzdRAmk6Bz4M2HRnVY3Ol/C+cCFdi6YhDZN87ivyMvAy4sHYaGndQP
-	4ewipIspLnaJ+SZv8iD0s4XOUA=
-X-Received: by 2002:a05:6a20:549c:b0:3c3:a9ad:a747 with SMTP id adf61e73a8af0-3cc553d8f30mr4537871637.26.1786595981038;
-        Wed, 12 Aug 2026 21:39:41 -0700 (PDT)
-Received: from CT104.localdomain ([118.223.79.56])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbef710b05csm417325a12.15.2026.08.12.21.39.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 21:39:40 -0700 (PDT)
-From: Jinwoo Lee <rkskek9254@gmail.com>
-To: seanjc@google.com,
-	pbonzini@redhat.com
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jinwoo Lee <rkskek9254@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] KVM: nVMX: Re-arm the vmcs12 pages request if mapping the pages fails
-Date: Thu, 13 Aug 2026 04:39:32 +0000
-Message-ID: <20260813043932.3214460-1-rkskek9254@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OkErHoy3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903981F000E9;
+	Thu, 13 Aug 2026 04:57:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786597047;
+	bh=DGovaHJczWC91v9AVf4SkRjibDBg6E/QuJiJb9qlr98=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=OkErHoy3zbjHEQa5PvG/eJ3GJpmLA31czxhLD/plXLCDVhAnhsH7xUBK82lioMqw5
+	 Vmr5Z0bDjdewtiFj30rDeyLBeHhAAwjEOqsTtuTJY4YImEj9gSAXfa248jOrydA882
+	 qkB/VKV+7T2VYcfgQI6FMuRF0sow9yt21Vnm8Pw9aEGW+1GDiymUfUtrer/FcwCpi1
+	 M4R3kgnwQnZJwerhxH3T22wFXWDw3mbRe9iz0OmvTaZtqiQyKfHV00RX5hkKcaLSry
+	 JneIF7B2RrNCUTjwbRDH+dEMJjvHzzhufnvmam7IjljEfnoqd68+BcwyDbhW0U5KOd
+	 kz9XJb0tHo9Vg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] KVM: nVMX: Re-arm the vmcs12 pages request if mapping
+ the pages fails
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jinwoo Lee" <rkskek9254@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260813043932.3214460-1-rkskek9254@gmail.com>
+References: <20260813043932.3214460-1-rkskek9254@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 13 Aug 2026 04:57:27 +0000
+Message-Id: <20260813045727.903981F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Re-arm KVM_REQ_GET_NESTED_STATE_PAGES when nested_get_vmcs12_pages()
-fails, so that KVM retries the mapping on the next KVM_RUN instead of
-resuming L2 with a stale vmcs02.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-On failure KVM exits to userspace with KVM_EXIT_INTERNAL_ERROR but
-leaves the vCPU in guest mode with vmcs02 loaded.  The request has
-already been consumed by kvm_check_request() in vcpu_enter_guest(), and
-nothing re-arms it, so a subsequent KVM_RUN goes straight to VM-Enter.
-
-vmcs02's APIC_ACCESS_ADDR, VIRTUAL_APIC_PAGE_ADDR and
-POSTED_INTR_DESC_ADDR still hold the host physical addresses that were
-mapped for the previous nested VM-Enter.  Those pages have already been
-unmapped and unpinned by nested_put_vmcs12_pages(), which runs after
-vmx_switch_vmcs() to vmcs01 and therefore cannot clear the vmcs02
-fields, and prepare_vmcs02_early() re-arms the controls that consume
-them without rewriting the address fields.  Hardware then accesses
-pages that KVM no longer holds a reference to.
-
-The SECONDARY_EXEC_VIRTUALIZE_APIC_ACCESSES branch makes this worse by
-returning before the CPU_BASED_TPR_SHADOW and posted interrupt
-fallbacks, which would otherwise write INVALID_GPA to
-VIRTUAL_APIC_PAGE_ADDR and clear PIN_BASED_POSTED_INTR.
-
-Commit 671ddc700fd0 ("KVM: nVMX: Don't leak L1 MMIO regions to L2")
-replaced the "clear the control" fallback with an error return.  The
-intent is right, but it left vmcs02 in a usable state.  Re-arming the
-request closes that; if the mapping keeps failing KVM keeps exiting to
-userspace, which is noisy but safe.
-
-Note this relies on KVM_REQ_GET_NESTED_STATE_PAGES being cleared on
-nested VM-Exit, which "KVM: nVMX: Ensure KVM_REQ_GET_NESTED_STATE_PAGES
-is cleared on VM-Exit" makes unconditional.
-
-Fixes: 671ddc700fd0 ("KVM: nVMX: Don't leak L1 MMIO regions to L2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jinwoo Lee <rkskek9254@gmail.com>
----
-Notes for reviewers, not intended for the commit log.
-
-Affected versions: v5.4-rc5 (671ddc700fd0) through v7.2-rc6.  Verified that
-nested_get_vmcs12_pages() and the KVM_REQ_GET_NESTED_STATE_PAGES consumer in
-vcpu_enter_guest() are unchanged in kvm-x86/next as of 2026-08-13.
-
-Disclosure: this was found with AI-assisted code review, so per
-Documentation/process/security-bugs.rst it is being reported publicly rather
-than to security@kernel.org.
-
-What I verified empirically, on the RSM path with the load_pdptrs() abort:
-
-  - KVM consumes KVM_REQ_GET_NESTED_STATE_PAGES, the mapping fails, KVM_RUN
-    returns 0 with run->exit_reason left at KVM_EXIT_UNKNOWN, and the vCPU is
-    still in guest mode.
-  - The request is not re-armed, and the next KVM_RUN VM-Enters L2, which then
-    executes with vmcs02 still naming the previously mapped pages.  Confirmed
-    deterministically (4/4) with a selftest, plus a control run showing that
-    the same sequence without the poison maps successfully.
-  - With the patch applied the code compiles clean, but I have not been able to
-    boot a patched kernel, so the fix itself is not runtime tested.  The
-    selftest fails on an unpatched kernel as expected.
-
-What I did not verify:
-
-  - The APIC-access branch end to end.  That is the interesting one, because it
-    is reachable by L1 alone (point vmcs12->apic_access_addr at an unbacked
-    GPA) and it returns before the CPU_BASED_TPR_SHADOW and posted interrupt
-    fallbacks.  This host does not expose
-    SECONDARY_EXEC_VIRTUALIZE_APIC_ACCESSES or PIN_BASED_POSTED_INTR to L1, so
-    I could only reach the load_pdptrs() abort, which needs userspace to poison
-    the PDPTEs through a KVM_GUESTDBG_SINGLESTEP window and is therefore not
-    guest-triggerable on its own.
-  - Whether a stale page is actually reused by the host.  The selftest keeps
-    every page allocated as its own guest RAM for the whole run.
-
-On whether userspace resumes: QEMU's kvm_cpu_exec() treats
-KVM_INTERNAL_ERROR_EMULATION as recoverable and returns EXCP_INTERRUPT when
-kvm_arch_stop_on_emulation_error() is false, which for x86 is the case when the
-guest is in protected mode at CPL 3 (target/i386/kvm/kvm.c).  It does not
-re-push nested state on that path.  This is from reading qemu.git at
-055952c0aa91; I have not run it.
-
-A selftest is available.  I have not included it here per the reproducer
-guidance in security-bugs.rst; happy to post it if you want it.
-
- arch/x86/kvm/vmx/nested.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index ddf6df7bee93..9e9bd6c541ba 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -3453,7 +3453,7 @@ static bool nested_get_vmcs12_pages(struct kvm_vcpu *vcpu)
- 		 * state which can lead to a load of wrong PDPTRs.
- 		 */
- 		if (CC(!load_pdptrs(vcpu, vcpu->arch.cr3)))
--			return false;
-+			goto fail;
- 	}
-
-
-@@ -3469,7 +3469,7 @@ static bool nested_get_vmcs12_pages(struct kvm_vcpu *vcpu)
- 			vcpu->run->internal.suberror =
- 				KVM_INTERNAL_ERROR_EMULATION;
- 			vcpu->run->internal.ndata = 0;
--			return false;
-+			goto fail;
- 		}
- 	}
-
-@@ -3525,6 +3525,20 @@ static bool nested_get_vmcs12_pages(struct kvm_vcpu *vcpu)
- 		exec_controls_clearbit(vmx, CPU_BASED_USE_MSR_BITMAPS);
-
- 	return true;
-+
-+fail:
-+	/*
-+	 * Re-arm the request so that KVM retries the mapping instead of running
-+	 * L2 with a stale vmcs02.  Bailing here leaves the vCPU in guest mode
-+	 * with vmcs02 loaded and its APIC-access, virtual-APIC and posted
-+	 * interrupt descriptor addresses still pointing at the host pages that
-+	 * were mapped for the *previous* nested VM-Enter, which have since been
-+	 * unmapped and unpinned by nested_put_vmcs12_pages().  KVM returns to
-+	 * userspace without leaving guest mode, so if userspace resumes the
-+	 * vCPU, VM-Enter succeeds and hardware accesses those stale HPAs.
-+	 */
-+	kvm_make_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
-+	return false;
- }
-
- static bool vmx_get_nested_state_pages(struct kvm_vcpu *vcpu)
+Pre-existing issues:
+- [High] The patch fixes the missing re-arming of `KVM_REQ_GET_NESTED_STATE=
+_PAGES` in `nested_get_vmcs12_pages()` for VMX but overlooks identical vuln=
+erabilities in `vmx_get_nested_state_pages()` (VMX eVMCS) and `svm_get_nest=
+ed_state_pages()` (SVM).
 --
-2.43.0
+
+--- Patch [1]: [PATCH] KVM: nVMX: Re-arm the vmcs12 pages request if mappin=
+g the pages fails ---
+commit ce93ee9654c7f639f51372bb8a7e1b25a376436b
+Author: Jinwoo Lee <rkskek9254@gmail.com>
+
+KVM: nVMX: Re-arm the vmcs12 pages request if mapping the pages fails
+
+This commit ensures KVM_REQ_GET_NESTED_STATE_PAGES is re-armed if
+nested_get_vmcs12_pages() fails to map the pages. This forces KVM to retry =
+the
+mapping on the next KVM_RUN rather than resuming L2 with a stale vmcs02, wh=
+ich
+prevents hardware from accessing unpinned host physical pages.
+
+> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> index ddf6df7bee93b..9e9bd6c541baa 100644
+> --- a/arch/x86/kvm/vmx/nested.c
+> +++ b/arch/x86/kvm/vmx/nested.c
+[ ... ]
+> @@ -3525,6 +3525,20 @@ static bool nested_get_vmcs12_pages(struct kvm_vcp=
+u *vcpu)
+>  		exec_controls_clearbit(vmx, CPU_BASED_USE_MSR_BITMAPS);
+> =20
+>  	return true;
+> +
+> +fail:
+> +	/*
+> +	 * Re-arm the request so that KVM retries the mapping instead of running
+> +	 * L2 with a stale vmcs02.  Bailing here leaves the vCPU in guest mode
+> +	 * with vmcs02 loaded and its APIC-access, virtual-APIC and posted
+> +	 * interrupt descriptor addresses still pointing at the host pages that
+> +	 * were mapped for the *previous* nested VM-Enter, which have since been
+> +	 * unmapped and unpinned by nested_put_vmcs12_pages().  KVM returns to
+> +	 * userspace without leaving guest mode, so if userspace resumes the
+> +	 * vCPU, VM-Enter succeeds and hardware accesses those stale HPAs.
+> +	 */
+> +	kvm_make_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
+> +	return false;
+>  }
+> =20
+>  static bool vmx_get_nested_state_pages(struct kvm_vcpu *vcpu)
+
+[Severity: High]
+This is a pre-existing issue, but should the same re-arm be applied to
+vmx_get_nested_state_pages() and svm_get_nested_state_pages()?
+
+If nested_get_evmcs_page() fails in vmx_get_nested_state_pages(), it returns
+false and exits to userspace with KVM_EXIT_INTERNAL_ERROR without re-arming
+the request:
+
+arch/x86/kvm/vmx/nested.c:vmx_get_nested_state_pages() {
+	if (!nested_get_evmcs_page(vcpu)) {
+		pr_debug_ratelimited("%s: enlightened vmptrld failed\n",
+				     __func__);
+		vcpu->run->exit_reason =3D KVM_EXIT_INTERNAL_ERROR;
+		vcpu->run->internal.suberror =3D
+			KVM_INTERNAL_ERROR_EMULATION;
+		vcpu->run->internal.ndata =3D 0;
+
+		return false;
+	}
+    ...
+}
+
+Similarly, in arch/x86/kvm/svm/nested.c:svm_get_nested_state_pages(), if
+load_pdptrs(), kvm_hv_verify_vp_assist(), or nested_svm_merge_msrpm() fail,
+they also exit without re-arming.
+
+If a compromised QEMU sets KVM_REQ_GET_NESTED_STATE_PAGES and KVM clears the
+request but fails in these setup steps, a subsequent KVM_RUN could skip sta=
+te
+setup and proceed directly to VM-Enter L2 with stale control structures.
+
+Does this allow L2 to resume with unpinned HPAs and lead to a use-after-fre=
+e?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260813043932.3214=
+460-1-rkskek9254@gmail.com?part=3D1
