@@ -1,113 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69416442FB2;
-	Thu, 13 Aug 2026 10:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D0E411F9D;
+	Thu, 13 Aug 2026 11:17:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786618405; cv=none; b=vDOhvNffxGsS50GsCmszboIer05S0Lq8wZBKr91pPrmHq/5bkylUOnESWtHMbmFvHHdzR6zp+WgAuvcAgyjb0+9ULClBTuuCIfo+EZB/J5nk9+UR9oVvpaVx4HPtCtQSoOKhaxTc48WT/K/iHTVMNbnAPZtsCPnQBQtga46Um+A=
+	t=1786619886; cv=none; b=oCYapdYk7CMwQAhprXuk7mQBr8NcUaqGfaHyjEbFghGhKUvMMmdiox0Y6WRzxz9ZIiJWWU9GHrXhxJByhnwYKrb+zEa3A3YPOdwPAmFZh+ZcvFN3hkkOtLNXPT/31dMWQj5dKQwk3clwFuyX80CwBYw4j02T0ks3XFM0BHvpqhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786618405; c=relaxed/simple;
-	bh=UmtOQgh8AlUQn3iyv8wluvEBx3/kVGOP518uE9gGsqg=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FuoPvZsajS8jkcAMhC/nLlhNea6BY5oneOkZSRwvlAJNhUdWwg6A0VxMEIaS8TtzUPiLmX4D5DPDrSYSk/D0Oz+e4vgVAyJVASjJfjhCk2V8pjvUEr6RDLasgCzNA0KBKuGO5G1kJjfJg2daTaWMTiCRTNy2ZtTUkJysjZ63+eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nzksol/D; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786619886; c=relaxed/simple;
+	bh=xx9oG2xHYM26s/BHC4lUJLQVlvF6d1WWPvhliTgmXmc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cpFSXl0h6fccdWdQzMnmDD4+eo/3RYf76wrokGoYlCwkhl9ApbB3J/0ayOJIe4529UgQbCc78EmEEcH4k0YGZhIHxOCMuV5DMrPZkZXTNIzmty451TdeLC+bAt5O7Rs+Up/twiJ+piaHIIk2YU7SqFtu6m9/YQrX6iyYZrQiiww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dxcTKg7V; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nzksol/D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10BE91F000E9;
-	Thu, 13 Aug 2026 10:53:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786618387;
-	bh=VClEaxk6PDCpbMUBw2853JJXBEWZhgyWS9kaf0qrafQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=nzksol/DmEAKL+PU4VlCleNZvyT2VvWMcIssccG/5Y0HHY+sS8wwZrHwailJWtN2W
-	 ioW61Xkgktd1X2ogFCtzfYbJBPeLCGIHXRFXzyIk1AgKYQWr3F+aO/DlP8/Dt33RDr
-	 VuFO44XSAULWO/reQ7+nAgD2+RgBlqOz/2kKOChf0GH596MsDKHCA8fB/s9YuYKtkg
-	 kuV1l1z7UpK9FbBkcBzQqghnCxltBGxhHmDm7v28xEBJ5khRkJj0g+xXMgVbNiu/BA
-	 cTrMjvz2g7BjhBnNENloZ4Ep4h3onORffkRCuEwo9cACH3GIjjAME+KfOkmragPrM6
-	 MXCMii2/SljwA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wuT3Z-0000000FIud-0BzS;
-	Thu, 13 Aug 2026 10:53:05 +0000
-Date: Thu, 13 Aug 2026 11:53:04 +0100
-Message-ID: <867blu1ecv.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Grapentin <gra@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Friedrich Welter <fritz@linux.ibm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Gautam Gala <ggala@linux.ibm.com>,
-	Hariharan Mari <hari55@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-	Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v6 00/33] KVM: s390: Introduce arm64 KVM
-In-Reply-To: <20260812153631.3376090-1-seiden@linux.ibm.com>
-References: <20260812153631.3376090-1-seiden@linux.ibm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dxcTKg7V"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786619880; x=1818155880;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=xx9oG2xHYM26s/BHC4lUJLQVlvF6d1WWPvhliTgmXmc=;
+  b=dxcTKg7Vm7yzoIiactbpt5yskxuWcUNYwOFtHiyyCWUyr5eYE+JVG0YT
+   8ChPHhFPnugab7z62ATzewIbefM9svNalvicjQGD7Nfut10Vt3j69aNhI
+   hGRk5bdQQUDpTHjViB4pQLiED9Kkn0msda429hlqYcvNk8CXe6HoU3wR2
+   iPDBCciv9D631m8UgCQhj9EoXkbzIiCnO6KWOFQ3jdwJgVLTCMioC7LdU
+   UUMJGT8XGpqbGFGbrtvjaGdSwfUD2T1PNfMn5I6Ltd2G15s030UapWiDv
+   cqsCBGBCmeVUwxpY2f3E6oTVYvftQxFKAefv60NuPyQ6ymimbl+jVbyBG
+   g==;
+X-CSE-ConnectionGUID: U/6/Un7sQySgV/kiUu5hAw==
+X-CSE-MsgGUID: mFSGUCNARWSMhX4ADtAgcQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="98546782"
+X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; 
+   d="scan'208";a="98546782"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 04:17:58 -0700
+X-CSE-ConnectionGUID: JkQVRITDRDq8SiS7CGqZ7Q==
+X-CSE-MsgGUID: 1Q9nArxnRAy/dMJgcuT2Xw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; 
+   d="scan'208";a="293856816"
+Received: from unknown (HELO [10.238.208.98]) ([10.238.208.98])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 04:17:56 -0700
+Message-ID: <1cf47118-2a19-44d5-ab74-b4c7ffa8890c@intel.com>
+Date: Thu, 13 Aug 2026 19:17:53 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, tabba@google.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, seanjc@google.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/4] KVM: TDX: Enable Bus Lock VM exit
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "seanjc@google.com" <seanjc@google.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "kas@kernel.org" <kas@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "nik.borisov@suse.com" <nik.borisov@suse.com>
+References: <20260812080229.2481439-1-xiaoyao.li@intel.com>
+ <20260812080229.2481439-5-xiaoyao.li@intel.com>
+ <868c0d3c792d789347c767031612977c31cc227f.camel@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <868c0d3c792d789347c767031612977c31cc227f.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, 12 Aug 2026 16:35:56 +0100,
-Steffen Eiden <seiden@linux.ibm.com> wrote:
+On 8/13/2026 6:58 AM, Edgecombe, Rick P wrote:
+> On Wed, 2026-08-12 at 16:02 +0800, Xiaoyao Li wrote:
+>> -	if (unlikely(READ_ONCE(to_kvm_tdx(vcpu->kvm)->wait_for_sept_zap)))
+>> +	if (unlikely(READ_ONCE(to_kvm_tdx(vcpu->kvm)->wait_for_sept_zap))) {
+>> +		vt->exit_reason.bus_lock_detected = 0;
+>>   		return EXIT_FASTPATH_EXIT_HANDLED;
+>> +	}
+>>   
 > 
-> Introduce arm-on-s390. Enable KVM-accelerated ARM CPU virtualisation on s390.
+> This still feels hacky to me. It at least deserves a comment I think. If you
+> spin another version.
 
-[...]
+I spent more time on this today and I find there is an existing issue. 
+When the previous Exit Reason is EXIT_REASON_EXTERNAL_INTERRUPT, the 
+early return here can go to the path due to the stale exit_reason.
 
-> Based on next-20260811.
+kvm_x86_call(handle_exit_irqoff)(vcpu)
+   vmx_handle_exit_irqoff()
+     handle_external_interrupt_irqoff()
 
-Please don't do that. -next isn't a reliable base for *anything*. For
-all I know, half of what's in -next is broken and will never be
-merged. This makes the whole thing untestable.
+This makes the host process the external interrupt twice, and maybe more 
+times if the wait_for_sept_zap remains longer.
 
-Base your patches on a release tag: ideally an -rc from Linus' tree,
-or (worse case) a kvmarm tag for patches targeting KVM/arm64.
+I think we need an separate fix to set
 
-We can easily deal with conflicts at merge time if necessary, and ask
-you to check that nothing broke in the process.
+	vt->exit_reasons.full = TDX_INVALID_EXIT_REASON;
 
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+so that if some patch is going to consume the stale Exit Reason, it can 
+be caught by TDX_INVALID_EXIT_REASON.
