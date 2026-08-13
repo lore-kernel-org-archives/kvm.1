@@ -1,104 +1,134 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5761147D959
-	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 13:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AF4481657
+	for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 13:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786628722; cv=none; b=RhleaoCjARAqH0ejbudy5DR8noKRl5Xwb1s5SNK8HU6QMtvR0yg/qrhihTAXrggL9KoqOyNEYtQlozkF4lRHWAvYPdHWUu3yh97lE9TGlorSMdbx5b4EAHMgpxwOKZKBll4gw/2GvZWrHh91p9Os2/pk7NldXUa1rJ0/Xi9NNWA=
+	t=1786629579; cv=none; b=tu5qI4qIBJhr1L75Tzet3vvIE9t3KJrqnnZd6vqWrPn3X5XQ1MYpr0f7YIpsBxVAzX0Fb5mhGAwdnnAMxW/+txESbXYu+ohVEr/eWK2u4sxBqzp1QS2SNxTrTKbGtFOY9YuVXh1ll+S6Tv9e7+0QLPh7UaOuT+rfX4iqvBdO8+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786628722; c=relaxed/simple;
-	bh=NBWxDMgX1ntQ8itk3D8CiEXlI/bvH+OxmmfTTWKn8Mc=;
+	s=arc-20240116; t=1786629579; c=relaxed/simple;
+	bh=Jcs6K+YlygMbTqlTpKMywOxSkiWRViSArY2ePaaIAWI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=osiMeip7nmot0E0+g+wLNmCi6Su/eREs6c7GimLjHKQvlxptObErr5mGxFmmbk7vOivwQTj6AtEwTinpdML4UwGFJGs4Ft3byn9OBFkCVxktC9haWs4LexM5IfRtNNxUn9+0Jpm8623nOKLwvoOxPt6wJ4zdsl6PSzq0XUhKgDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Bq2Pb4MJ; arc=none smtp.client-ip=209.85.210.199
+	 To:Cc:Content-Type; b=GhAwmF4vHig02WEnShLtFTSc1hShaaN1CJpmxMgyyVHq4XHL7Z5pajpW0bxYJ+YbsHT6I3PlGUTGcPevfqwmmfRr8CWEJoG4hmTqbCfm5k/VvZnoM1/dErFso2H/s1bK+VWHS70K923JmeWzsnQx1qE/z1KYIPdFIv2qRuFRs2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M5uc+9Cq; arc=none smtp.client-ip=209.85.215.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Bq2Pb4MJ"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84885a4fcabso2214887b3a.3
-        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 06:45:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M5uc+9Cq"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cbedc1899f7so503384a12.2
+        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 06:59:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786628720; x=1787233520; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Fl6HuvcqJhrZa9ThhaR07J0ykt0HktDxO4pMG4WTz+A=;
-        b=Bq2Pb4MJUuc/f6ON76Sk+UykEDGCaxmAs6yMz/X5aY1WcU43HNj6iJEgdo4IqbM+QK
-         EK9XG5tP2wcaP+xRALKpqq4NeoeiQR6j5r1cf4aZkUREvGFrxjVzL4BEDq72/pnO31B6
-         WukFMckau5mS7DiSWWzld6+05Szc4MXAl4WvUmtfX8CCBga+sctMK4X2bYA6euLYm8BX
-         nyWNCUTQtV1MWxySfEs3OAPMqcrX+Sx1wIaNFbOKw2e1ta/F3LGOn540qWd9uJT3cLfu
-         TgeyBe+LeFcC096Pqi1s1vh4aQwGRbOT0Af7vcnUUzt05OViA0hLF+jklualVnKpMp6U
-         VxoA==
+        d=google.com; s=20251104; t=1786629577; x=1787234377; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Yp2r6l/p49Xe2R6+sIrvq42A9Bi9ttiTK9kJ5Xxsr58=;
+        b=M5uc+9Cqkjq1iX+ZF0Fq6wAEdJQSLRCZRW0pJbKfzOl9LYgzyQq4gZ+PzvB4qA6g7S
+         TMZ3BX/kK6VTzBNiRWP72PjXq4sHPB7jBBhPnBy3IFudtJhtXKjYvu2YOqrOmtOLPtrX
+         SDw0DBamEToL++RmoHYy2pCc+L56xN2zlgo3r3IqKouwY3yzoU5eeOFBo7Jd1eNpfJqO
+         w56I+Zy/auTMknHJvtMr+J04XITwcXIJJZgiCwHQhDB2eYL3EX2KWe4zXhI2pvpxYfmf
+         taqxPTvWWVTUtyzEkAw3/zRFvEoKqsekuzEp1ruAfnFhxo3+3PZPhZZb9TXxC7smQeYg
+         iLnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786628720; x=1787233520;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Fl6HuvcqJhrZa9ThhaR07J0ykt0HktDxO4pMG4WTz+A=;
-        b=kr04fNIK7Ts58QsjQr+XIru9ytpdCWl8uUS5PB8Fv0exlzebIoMlGhxXdwipI20ZXr
-         6+7sjwdyviDMiDhu3I2S9nkEKYv26YSBr9bX6kquQePi9ON9SilnYq8yZuhcwmPBIchR
-         yBmq1uQJwUENOq2MEVbqd4vWZSfUcz/hifgYTYDeaLvPMAnl52i/xBYGJ92c8ZAC10K3
-         df9QMqNYcXZlyrjMXY778SO/pL+3CY+5saU/BzmdX40OjAYAjOrE0xptyfDvGvdUSt5r
-         8XMr9grr73TVEtQiAFomEckxLe/eXWBiva73OyLBdalWGbfEk8+IiNP9MO5X7EHbqS1S
-         njjQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrztDeQo36f6QIBcwsvMQtHEMJAgrdGDHyO5PifU091rgI0VMRhLNY51LEBY+QqborLFAU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzzjj9rxmBC2QawekActhMA43fK8mqqRE6GXW4rrq+08hm+zY8P
-	HaDkc3nvvSB73sQKxt4AQj1Z1TrcYryaL4jdlGxNr6ZR77jGrFwWfNsBEVYj6xi+dTfHxGwwBX4
-	0JNd6Bw==
-X-Received: from pfblb8.prod.google.com ([2002:a05:6a00:4f08:b0:845:4da8:56a5])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:6c8a:b0:848:8445:6956
- with SMTP id d2e1a72fcca58-84fc6e03a04mr6167423b3a.18.1786628720300; Thu, 13
- Aug 2026 06:45:20 -0700 (PDT)
-Date: Thu, 13 Aug 2026 06:45:18 -0700
-In-Reply-To: <CALz4YMQa4h0oHxrpsiFsPd2qWZO1Q-pE2mbDwvT2wV1b+ukZdg@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1786629577; x=1787234377;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Yp2r6l/p49Xe2R6+sIrvq42A9Bi9ttiTK9kJ5Xxsr58=;
+        b=n4XhamgKxwugkGJpKJHhmYaR6xxHXiMcxP6xSmnlJbXpYRPFF0GoU1aCLDkoCLHeSt
+         IXv/We4ZAFuX+q5LxnmtmaNFSA2wVGisCI/+DKcYEx7DhY46/K9UGxflyP9XgR126YsN
+         Wg0Qs9UqABv2jKOFwGU+yvMFJl0rUFVojadTlUiTY0AZzGvWFs4g43ji80w9La8KG8yR
+         pvLaEFXtJk8pgQ9sQfBAN7qHXDz+mp7cvrUX6mEEY4ndO2jQd9XS8IuDeYYswqBazhp3
+         wlBiFMudpIvRDB/vSj+P2CwElCS/xzcHOHMesOXY8M8BeIVQ24ASefABlhkXQNe58YVh
+         OG1g==
+X-Forwarded-Encrypted: i=1; AHgh+Rrq+z9ng9OmS2EffDyBXcc7EOJ+QIrhN+D4MXFjo7xMTV0hWYwuISIo5SWZ/q4p9u6DtL0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLYe5uIvl9IBxOzj1Qp70stUdNnazU+tRAEM+qxxM8hE3jW5KK
+	fPjGZRvu9WoQ08P4hvnIDrQ1x/IPz/RpP0sn1s3BVpJkxtH4ejvNx5F8XdgC0QbWTXetRD0J8Cq
+	UQnp3yw==
+X-Received: from pgl8.prod.google.com ([2002:a63:b08:0:b0:c86:61a1:3390])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6017:b0:3c9:1c1f:f516
+ with SMTP id adf61e73a8af0-3cc552c3825mr7736253637.19.1786629577230; Thu, 13
+ Aug 2026 06:59:37 -0700 (PDT)
+Date: Thu, 13 Aug 2026 06:59:36 -0700
+In-Reply-To: <8ba4860fec45afeaa305bcb011d732ef0da302d6.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260813043932.3214460-1-rkskek9254@gmail.com>
- <20260813045727.903981F000E9@smtp.kernel.org> <CALz4YMQa4h0oHxrpsiFsPd2qWZO1Q-pE2mbDwvT2wV1b+ukZdg@mail.gmail.com>
-Message-ID: <an3Kbl3zTaOLmaa4@google.com>
-Subject: Re: [PATCH] KVM: nVMX: Re-arm the vmcs12 pages request if mapping the
- pages fails
+References: <37b83b429b9f14ea6ad4ca1c13cc8e565ec09033.camel@infradead.org>
+ <anwraNIKJV8zwrNT@tiehlicka> <44c51ace9b0dc44b795f6f48c91cda440eed910b.camel@infradead.org>
+ <20260812122759.GA662699@ziepe.ca> <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org>
+ <20260812134934.GC662699@ziepe.ca> <a48e6e7063122b22a8083bb0792984a204f316e6.camel@infradead.org>
+ <20260812142659.GD662699@ziepe.ca> <9e65be44430e7d013fedf9a1626caba020ad6d94.camel@infradead.org>
+ <8ba4860fec45afeaa305bcb011d732ef0da302d6.camel@infradead.org>
+Message-ID: <an3NyIYrdN3li0ag@google.com>
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
 From: Sean Christopherson <seanjc@google.com>
-To: Jinwoo Lee <rkskek9254@gmail.com>
-Cc: sashiko-reviews@lists.linux.dev, pbonzini@redhat.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Simona Vetter <simona.vetter@ffwll.ch>, 
+	"=?utf-8?B?SsOpcsO0bWU=?= Glisse" <jglisse@redhat.com>, 
+	"Christian =?utf-8?B?S8O2bmln?=" <christian.koenig@amd.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, kvm@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 13, 2026, Jinwoo Lee wrote:
-> However, I do not currently see evidence that the SVM failures have the
-> same unpinned-HPA/UAF mechanism as the nVMX APIC-backed VMCS02 fields.
+On Thu, Aug 13, 2026, David Woodhouse wrote:
+> On Wed, 2026-08-12 at 15:38 +0100, David Woodhouse wrote:
+> > On Wed, 2026-08-12 at 11:26 -0300, Jason Gunthorpe wrote:
+> > > On Wed, Aug 12, 2026 at 03:05:43PM +0100, David Woodhouse wrote:
+> > > > the non_block_{start,end} guards around the MMU notifiers, which ar=
+e
+> > > > basically never being called anyway and don't actually seem to prot=
+ect
+> > > > against any real bugs.
+> > >=20
+> > > If you think this blocked stuff is dead code then lets remove it, but
+> > > I'm pretty sure it is called and I remember seeing bug reports about
+> > > it being triggered in the wild. Vetter certainly added it because
+> > > their tests were actually triggering and they had bugs in their DRM
+> > > stack directly connected to this.
+> > >=20
+> > > It might not trigger for your hypervisor case but we aren't here just
+> > > to make only kvm work now are we?
+> >=20
+> > I'm sure there can be real-world use cases where it can trigger, but
+> > when I was *trying* to exercise the code path, to validate my belief
+> > (from source inspection) that even the plain spinlock would trigger the
+> > splat, I ended up having to hack the kernel to do so:
+> >=20
+> > https://lore.kernel.org/all/787aa26cf62dfd361eea8ed19f384fc517892501.ca=
+mel@infradead.org/
+> >=20
+> > Perhaps in the past it was easier to trigger 'naturally'?
+>=20
+> I did a bit more digging. On the one hand, I was wrong to claim that it
+> never triggers =E2=80=94 there *are* a handful of reports; of my searches=
+ this
+> was probably the most fruitful:
+> https://lore.kernel.org/all/?q=3D%22non_block%3A+1%22
+>=20
+> On the other hand, they are basically *all* false positives from the
+> point of view of what the check was actually trying to do. And in KVM.
 
-Eh, doesn't really matter.  It's still ugly/flawed code that we should fix,
-especially since fixing this in a common location should be a net reduction in
-code.
+FWIW, all of the KVM false positives are due to PREEMPT_RT turning mmu_lock=
+ into
+a sleepable lock on x86.  So killing off the restriction for PREEMPT_RT wou=
+ld
+"fix" the KVM issues.
 
-> In particular, nested_vmcb02_prepare_control() initially copies
-> vmcb01's KVM-owned MSRPM address into vmcb02, and
-> nested_svm_merge_msrpm() switches vmcb02 to the KVM-owned merged MSRPM
-> only after the merge completes successfully.  Losing the request after
-> a failed merge can therefore allow L2 to run without L1's complete MSR
-> intercept state, but it does not appear to leave hardware pointing at an
-> unpinned guest page.  I will describe and test the SVM impact separately
-> instead of treating it as the same UAF without supporting evidence.
-> 
-> > Does this allow L2 to resume with unpinned HPAs and lead to a
-> > use-after-free?
-> 
-> Not uniformly across these paths.  The unpinned-HPA mechanism is the
-> concern for the nVMX VMCS02 address fields described in the patch, but I
-> have not yet reproduced host-page reuse or an actual use-after-free end
-> to end.  For eVMCS and SVM, the current evidence establishes that the
-> deferred setup request can be lost; it does not yet establish the same
-> unpinned-HPA mechanism.
-> 
-> I will also correct the commit message.  Not every failure reports
-> KVM_EXIT_INTERNAL_ERROR: the load_pdptrs() failure used by my RSM
-> reproducer returns with exit_reason unchanged, which is
-> KVM_EXIT_UNKNOWN in the test.
-
-Heh, which as I pointed out in my other reply, is a bug, not intentional.
+> It's causing more issues than it fixes. Including some bizarre MM
+> gymnastics: https://lore.kernel.org/all/amMZFqs1smKmMuj5@lucifer/
+>=20
+> At this point I don't think I even *care* whether we manage to do the
+> atomic SRCU thing; I think this check should die *anyway*.
