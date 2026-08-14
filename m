@@ -1,114 +1,104 @@
-Received: from mta1.migadu.com (out-114.mta1.migadu.com [95.215.58.114])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742AA36194A
-	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 11:46:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.114
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FAE189F43
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 11:56:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786707981; cv=none; b=R4PZyw5UF/R1uuSm38qvR3PqMlaC9ug1xoabdR0Xep2CLbW4Nuo5DBDmCyFCKxE2IPiZfkbg0fNhFjumH+0Obmy1ae8tXGshXLAj+xDbCzKB9eCi/k74bsqQTONPCsYsQfHYPf30os1Vf3mNeAzngfWtiINRn+kX/sx1pdbcLas=
+	t=1786708598; cv=none; b=QaVAR5s7QXmffqBZ5LsU9HxNicEcMv2wmrw+gTMAnEkF9cbOBiJpHJiWqtosRAM6aGvW0jsF9XZcsJgZYatYvWwUjC5Rb070RyidYoRGbI4P8NJWhtB4n9REG2IxMxO4SDZRKIsQNYkSjpwxhxZciH46WO9N+llBH6NlPMnxLk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786707981; c=relaxed/simple;
-	bh=DWVWKUddK6cm3cADsjGMhQ+YmtUIIGHlVIpbg6PZ+20=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UBOsh3cGcxTV/6Y3jSwHPTV6pDbZpcX6OPx2i2A2aICoTgL3ESlV0GL4wlz33ogS9o7UTkF5gaM1kkRPapHksrDO8lx9havgo+FZXKfHzwQHkrtlduTg8xWFqwesluo0/vq6WcD/Iax/kxXXn1czzM7WTyoHcYl1qTQe/1yohq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Mgnu+qNy; arc=none smtp.client-ip=95.215.58.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786708598; c=relaxed/simple;
+	bh=zrCQV8g4BsbbYSD2zfuevsQMa66d9LMXeb6HvD0DvyA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NrfE7oAuzJiRkN/9LAXNF4mdBenGshJ7yhiH2Ve2MvyQJdJQwgnlOL9pZ3WHNllt1X2HRfZxi6jSFVc0cXMXMLafWJ2sgzc+NR7IG/M66/QOhSDc0wbKHWdb6zI76zX8kQY78GknvLQM20uiOxn2PqJiwZcQ9S0EbKw57AmYa8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aZ8Azt9x; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Mgnu+qNy"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=DWVWKUddK6cm3cADsjGMhQ+YmtUIIGHlVIpbg6PZ+20=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786707976; v=1; x=1787312776;
- b=Mgnu+qNy6Iz1+MR4NJ3XFgkQrO+0DMir9y68GygGO3dLVzA4wXNxxBZvwKYpt0RCeNRHwlJT
- rb58ufnUyi92xEHdQZG1Ihp4Lsr1PG3gwwNfONEa9FAeZk1dEo7qMC6X6UzRDsD7JphP2h/ZL0Y
- 3XYwncCQ/OtG3UH5it9772xY=
-X-Envelope-To: kvm@vger.kernel.org
-Received: from localhost.localdomain (2408:823d:2011:2c0:e810:54f9:f0a3:99d)
-	by smtp.migadu.com with ESMTPS id f255273505126e07;
-	Fri, 14 Aug 2026 11:46:13 +0000
-X-Migadu-Flow: FLOW_OUT
-From: Jinyu Tang <jinyu.tang@linux.dev>
-To: Anup Patel <anup@brainfault.org>,
-	Anup Patel <apatel@ventanamicro.com>,
-	Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aZ8Azt9x"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8485ef63b68so822221b3a.1
+        for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 04:56:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786708596; x=1787313396; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zrCQV8g4BsbbYSD2zfuevsQMa66d9LMXeb6HvD0DvyA=;
+        b=aZ8Azt9xgJWTsyBCwf8wtIdNlz9N8bCTzOHqabPya9kRe39gCqyd2xPM0BIdAUxtoA
+         BHutru/Rj+jVDgDiaP2TxjvvSPiE4tR2RBJ0OnzIrtksC4P5x0r8iI/sMDfAUkt07dlt
+         ueOv7QEFt9K6byU0zbFOVmx3LfoBibGs13oi5JYAGXq+IvK5iV+xA5OIGfLLvd/xYB4W
+         +WZ0Lc9TlfCxRIikm1D1OIvPtDSKOfMQ9NteIZbbV9HbdWRS0mvxkTD8G+CKVxryky10
+         yM7zadSsNwz9DMMr1Kxd0WyM7NfcjcCaysLSkLhjKQ4ry9K2t0LZPEqdRAJhERCP6vXD
+         Bm/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786708596; x=1787313396;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zrCQV8g4BsbbYSD2zfuevsQMa66d9LMXeb6HvD0DvyA=;
+        b=lOGT1x121yfABEuLjJuk+JRq8cqyuanCYxfzlu1hpGIVFjcn25TrS53BhvLgCGAbbO
+         iMofA+8hjcQuSxCmN9fDSCHtbA2l31XuZQmG9F/PV2AhRgbIGL1D10tL0iN8qqWOQRNr
+         TG+fC+soiat2u1EN+xMha61kw153FtlYm/+anvZdRuFCpMDM4BPa5aYCmQp4hVUKhFkP
+         BZ4NxIrj59B/Gs57qF6HalbPK3q/WZ3V1CAYIwWiezM+YzoFdKxuABgBanqlp+Z2kitV
+         UFIqwA9e7dcgWwEM5vv59tS7vZNZoSh5RcLK3PRNg74FWRormaJYUqZe3+l2cbndXbLP
+         AXKg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq62efSqteHuJg5SLTVzzdT5z2eSeRS5Y3DNwbBLcFO179UOXilLGdnsQw009VTZG/h4GA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbgmkeMa9WW+IQqyXiOQS8q6eAvygBAJVwU5h4xHZOUAOQ27Ra
+	U8r8nWWtmbm08TPgM/02sXNWA8J6idrC/PfNscDwta+wWdlm6Bn7a5co
+X-Gm-Gg: AR+sD10jcwvX2SV8+dnLWqxAJ7qy79SHVgRZBLYsLyxbHYIMhvoosZsrmQsmatIefgd
+	4gsystO2hLxXyM8oiQHmFQpxqheG74hoKrUK8JcsU9LKTgGbWBm43C1DYRnMuxAPwxwxxN9ZfSm
+	IhoueLwcrLDHwSQR/f2a5SUuePjwQZ+GXuKQzdUYF1NTw8+hWcZh0pSphcxrlFEC+SSgMyYWekI
+	0uvjY1IS5smEB3UT5pjhYae3k8f16OIVMzwn8I5QjKA6SvZvwVSw9p81fG5SUhMUA1lueFYe93C
+	oWgJ3+UMi90IU8bFwoFEEc3XgYvUH8dcPEv53SKPDVmd0mFAbUA6Nkma5a0bZDmf17QkLIFC/6D
+	PWKWzBh/tWZY2Aw1ebkBnlVgnVVcWp9bU+/+ri+Lfb3QK0HskbwJwQmEEjISmZZGMY7f8aJc579
+	jpgkfEWQ5gPLfYCcLmfRDftAf3irQx3T+U10EY09LRYcPmjbMhKw/oVNeeMcUS
+X-Received: by 2002:a05:6a00:88c:b0:845:e8f3:bdd0 with SMTP id d2e1a72fcca58-84fde2b6841mr5495706b3a.33.1786708595434;
+        Fri, 14 Aug 2026 04:56:35 -0700 (PDT)
+Received: from gmail.com ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8517cfeb3d9sm366669b3a.11.2026.08.14.04.56.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 04:56:35 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: sgarzare@redhat.com
+Cc: Jia Jia <physicalmtea@gmail.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Atish Patra <atish.patra@linux.dev>,
-	Paul Walmsley <pjw@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andrew Jones <andrew.jones@oss.qualcomm.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
-	Nutty Liu <nutty.liu@hotmail.com>,
-	Jinyu Tang <tjytimi@163.com>,
-	Jinyu Tang <jinyu.tang@linux.dev>
-Subject: [PATCH v3 3/3] KVM: selftests: Enable pre_fault_memory_test for RISC-V
-Date: Fri, 14 Aug 2026 07:45:07 -0400
-Message-ID: <20260814114507.583424-4-jinyu.tang@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260814114507.583424-1-jinyu.tang@linux.dev>
-References: <20260814114507.583424-1-jinyu.tang@linux.dev>
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/3] vhost/vsock: fix device IOTLB feature lifecycle
+Date: Fri, 14 Aug 2026 19:56:11 +0800
+Message-Id: <20260814115612.127842-1-physicalmtea@gmail.com>
+In-Reply-To: <an7JAlFpRVOiC4WQ@sgarzare-redhat>
+References: <20260814072903.124991-1-physicalmtea@gmail.com> <an7JAlFpRVOiC4WQ@sgarzare-redhat>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-RISC-V now supports KVM_PRE_FAULT_MEMORY, so include the generic
-pre_fault_memory_test in the RISC-V KVM selftest build.
+> In the v3 you mentioned that this could be used also in vhost-net and
+> maybe vhost-scsi. Would it be better to include the other patches in
+> this series as well, since we're basically fixing the same issues, or
+> have they already been merged?
 
-The test uses PAGE_SIZE from the architecture processor header. Define
-the normal 4K RISC-V selftest page size so the generic test can build
-for RISC-V.
+I did not explain this clearly before. vhost-scsi itself does not
+negotiate VIRTIO_F_ACCESS_PLATFORM; the fix I referred to addressed a
+different issue. See:
 
-Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
-Signed-off-by: Jinyu Tang <jinyu.tang@linux.dev>
----
-v1 -> v2:
-- Drop the per-test guest_modes_append_default() call from
-  pre_fault_memory_test.c.  RISC-V already initializes supported and
-  default guest modes from kvm_selftest_arch_init(), which is called by
-  the common kvm_selftest_init() constructor, as suggested by Sean.
+20260726144314.1652934-1-physicalmtea@gmail.com
 
- tools/testing/selftests/kvm/Makefile.kvm              | 1 +
- tools/testing/selftests/kvm/include/riscv/processor.h | 3 +++
- 2 files changed, 4 insertions(+)
+The issue addressed by this series also led me to find corresponding
+problems in vhost-net and vhost-vsock. It now appears that these are the
+relevant backends here, so I will include the vhost-net changes in this
+series as well.
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 6fc34e9bf8e1..ac64ac92fd4b 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -225,6 +225,7 @@ TEST_GEN_PROGS_riscv += coalesced_io_test
- TEST_GEN_PROGS_riscv += dirty_log_perf_test
- TEST_GEN_PROGS_riscv += get-reg-list
- TEST_GEN_PROGS_riscv += mmu_stress_test
-+TEST_GEN_PROGS_riscv += pre_fault_memory_test
- TEST_GEN_PROGS_riscv += rseq_test
- TEST_GEN_PROGS_riscv += steal_time
- 
-diff --git a/tools/testing/selftests/kvm/include/riscv/processor.h b/tools/testing/selftests/kvm/include/riscv/processor.h
-index abde3c71c891..70487c8ed155 100644
---- a/tools/testing/selftests/kvm/include/riscv/processor.h
-+++ b/tools/testing/selftests/kvm/include/riscv/processor.h
-@@ -12,6 +12,9 @@
- #include <asm/vdso/processor.h>
- #include "kvm_util.h"
- 
-+#define PAGE_SHIFT		12
-+#define PAGE_SIZE		BIT_ULL(PAGE_SHIFT)
-+
- #define INSN_OPCODE_MASK	0x007c
- #define INSN_OPCODE_SHIFT	2
- #define INSN_OPCODE_SYSTEM	28
--- 
-2.43.0
+Thanks,
+Jia
