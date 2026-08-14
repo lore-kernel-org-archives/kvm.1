@@ -1,111 +1,130 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C685B19E96D
-	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 01:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB6119E96D;
+	Fri, 14 Aug 2026 01:09:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786669363; cv=none; b=VZwLUlqWJXzKYgQoJ7NeaIWoXj/spJyxTK6bpxWtIv82JnK72rPInQ2a08N7UKhdwsoJvVD2msqBm0FN41vt+Cs6v/24Mfm2w4Dv9ubvd7/5fa2/uPYYDw+4yKpf2+3S2CL1dFQeUQ55UKYXisKBctgB1RW5JLRUO4OkmqpT73w=
+	t=1786669746; cv=none; b=mH5EUCK74JzM/rCJtLcSjdlT1WnzdTz7WNOw4Riyq7SiInOuV9UVsRiqOrwub6ZbF9km1fw4WSn1S29MTOoKd8JlUVrbJVjNdZS5l1Uoibil/dwVk/60cdGBchB65wWv7AFUVMZ+LVSKEMIolG1nEFs5XoBV/2aDvZD+W5sH5co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786669363; c=relaxed/simple;
-	bh=0B46lS5Ljpeg4FS+ptKt2QMcbDX4xRoabXK9BHZHmQA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BAyQTCOQofEeIrWpOCOaaADfRSm8WVC0QW1BjTYCeGuL+Tuq2Xv5ikk5su1tTlwHX10ZujWvmLotaWm9oE1DLFtXxg4GNwcL6V+6aXAoztZbcta/AeDWGsdxWWOteoNoudHn/gNHe7aYz77ifyHo6Nv/5CFIUX+bXGUXrXdPW7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aZawGTaT; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aZawGTaT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786669362; x=1818205362;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=0B46lS5Ljpeg4FS+ptKt2QMcbDX4xRoabXK9BHZHmQA=;
-  b=aZawGTaTckMZFWIpB5zYG2fV0v61PX//D7RlYvAjlEDVrwHHoZbyrt4q
-   SFOx/qt3wa+Q+AzjPBCk5OQD/9P8NM3CK7oOY+HjV12K0kG8kx4nvLPuM
-   RcAR70MbDOh7LRW6gJwBjv8181Rxz5b+WHkDnuUO8bk61tZinicjVHYgU
-   TPWmIPMqCa9Pi8uUd9Z98rizku24sd/IG518zVI98uBktpuchDQuLrEiZ
-   6E0LHxDeiNv40bBwyGdjctJLAgjUGSs61SdsJnlVxKOmMpaWg4+XPashL
-   y4cDsk01mFIK1TnE8CRCbC0yevGCkYm9AItXsHVW7DQtbttd0xNZ+NGLT
-   Q==;
-X-CSE-ConnectionGUID: /Gh85ii6TpiEWpg8gpIiJQ==
-X-CSE-MsgGUID: oNUKLpFXRWqhs3lh7LLOmA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11874"; a="104784435"
-X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
-   d="scan'208";a="104784435"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 18:02:41 -0700
-X-CSE-ConnectionGUID: DkZRhqoFS6O3q42sglhDtw==
-X-CSE-MsgGUID: kdZDrTQ2R4CPO59AfLNKbQ==
-X-ExtLoop1: 1
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.248]) ([10.124.240.248])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 18:02:39 -0700
-Message-ID: <eddf28d4-c211-41fb-b0a3-586e5afde030@intel.com>
-Date: Fri, 14 Aug 2026 09:02:36 +0800
+	s=arc-20240116; t=1786669746; c=relaxed/simple;
+	bh=w64a7Z4GIJBQMHHeEWLAsXt+Pf8BkxyVv0y+3bYbrwU=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=gd2aX0kwUXHpIfj7CpP3CpHsya1INHhsIvflHJ21Eeg+4L6d0E6lPUZ/pcfkVRfiPQbLxYRCCWPqLF4ctvGID71y4+RBswxkrvIqO3nwbBMsMeaa/1GQxZCWEicjkttPgThZhWF+gud80jnYGN/am1y5y+3lgmm0/9m8FRWbu38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8AxntKtan5qNhYBAA--.3349S3;
+	Fri, 14 Aug 2026 09:09:01 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJDxTs+oan5qzREEAA--.26901S2;
+	Fri, 14 Aug 2026 09:08:59 +0800 (CST)
+Subject: Re: [PATCH v2] LoongArch: KVM: Fix TOCTOU race on pv_features
+To: Tao Cui <cui.tao@linux.dev>
+Cc: zhaotianrui@loongson.cn, chenhuacai@kernel.org, kvm@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Tao Cui <cuitao@kylinos.cn>
+References: <20260813232542.2098930-1-cui.tao@linux.dev>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <d26fdd03-dcfe-8ae0-d925-d121866e566d@loongson.cn>
+Date: Fri, 14 Aug 2026 09:08:44 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/4] KVM: TDX: Don't assume exit_reason[31:16] as all-0
- in tdx_to_vmx_exit_reason()
-To: Sean Christopherson <seanjc@google.com>,
- Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-References: <20260812080229.2481439-1-xiaoyao.li@intel.com>
- <20260812080229.2481439-4-xiaoyao.li@intel.com>
- <20260812082306.11E8B1F000E9@smtp.kernel.org>
- <8b05ead1-ef2c-472f-a613-bcd1a65b64e1@intel.com>
- <138969948dac13369ddebd72bf523dda4dda6b85.camel@intel.com>
- <an5W5XC97HK229MX@google.com>
+In-Reply-To: <20260813232542.2098930-1-cui.tao@linux.dev>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <an5W5XC97HK229MX@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxTs+oan5qzREEAA--.26901S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxArWkGFWfJFWfuFy3tr1DJwc_yoW5Jw1fpF
+	9ruF95JrWrGr1xAF9rtwn09r4UZw48Gr4aqFyY9a48AF1agr9xZr10yFZrZF4qq3y09a97
+	WF1ftas0van0v3XCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWU
+	AwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jepB-UUUUU=
 
-On 8/14/2026 7:44 AM, Sean Christopherson wrote:
-> On Wed, Aug 12, 2026, Rick P Edgecombe wrote:
->> Side note. I really dislike how tangled this area is for something that seems
->> like it should be much more straightforward. Deriving partially I think from the
->> overloading of the TDVMCALL leafs with the exit reasons. So we have things like:
->> ...
->> 	case EXIT_REASON_EPT_VIOLATION:
->> 		return EXIT_REASON_EPT_MISCONFIG;
->> ...
+
+
+On 2026/8/14 上午7:25, Tao Cui wrote:
+> From: Tao Cui <cuitao@kylinos.cn>
 > 
-> I peeked at that code again, and FWIW I still think swizzling the exit_reason for
-> TDVMCALL is the least awful solution.  If we don't do that, then we'll have to
-> update every single use of the exit_reason to demux TDVMCALL into the "real" exit
-> reason, which will be a mess.
-
-I'm not sure if you read my idea[1]?
-
-I think there is only one place KVM cares about the exit_reason 
-TDVMCALL, just the
-
-	case EXIT_REASON_TDCALL:
-
-in tdx_handle_exit().
-[1] 
-https://lore.kernel.org/all/646f9595-459f-4224-b4e5-4ec2eecc0bc6@intel.com/
-> And once we track the exit_reason separately from vp_enter_ret, IMO it all becomes
-> more logical and easier to follow.  vp_enter_ret holds the information about why
-> VP.ENTER returned/exited, while exit_reason holds information about why the _guest_
-> exited.  Obviously it's imperfect since we're still fudging EXIT_REASON_EPT_MISCONFIG,
-> but again, I think that's a better alternative than demuxing exit_reason in multiple
-> locations.
-
-The question do we really need to swizzle EXIT_REASON_TDCALL to other 
-exit reasons ahead? why cannot them just be handled in the central 
-handler for EXIT_REASON_TDCALL?
-
-I think there will be more problems when TDX can exit with the reasons 
-that are currently swizzled from the TDVMCALL. e.g., when EPT_MISCONFIG 
-can happen on private memory.
+> The check-then-set on kvm->arch.pv_features in
+> kvm_loongarch_cpucfg_set_attr() is lockless, so two vCPUs can race
+> past the validation and set different values.  Add a spinlock to
+> serialize it.
+> 
+> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+> ---
+> 
+> Changes in v2: use a spinlock instead of a cmpxchg loop (Bibo Mao).
+> Link: https://lore.kernel.org/all/20260810081321.157258-1-cui.tao@linux.dev/
+> 
+>   arch/loongarch/include/asm/kvm_host.h | 2 ++
+>   arch/loongarch/kvm/vcpu.c             | 6 +++++-
+>   arch/loongarch/kvm/vm.c               | 1 +
+>   3 files changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
+> index 23cfbecebbd7..cdbbd90e0584 100644
+> --- a/arch/loongarch/include/asm/kvm_host.h
+> +++ b/arch/loongarch/include/asm/kvm_host.h
+> @@ -128,6 +128,8 @@ struct kvm_arch {
+>   	struct kvm_phyid_map  *phyid_map;
+>   	/* Enabled PV features */
+>   	unsigned long pv_features;
+> +	/* Serializes pv_features updates */
+> +	spinlock_t pv_features_lock;
+>   	/* Supported KVM features */
+>   	unsigned long kvm_features;
+>   
+> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+> index 20c207d80e31..551ed39b2d1f 100644
+> --- a/arch/loongarch/kvm/vcpu.c
+> +++ b/arch/loongarch/kvm/vcpu.c
+> @@ -1165,10 +1165,14 @@ static int kvm_loongarch_cpucfg_set_attr(struct kvm_vcpu *vcpu,
+>   			return -EINVAL;
+>   
+>   		/* All vCPUs need set the same PV features */
+> +		spin_lock(&kvm->arch.pv_features_lock);
+>   		if ((kvm->arch.pv_features & LOONGARCH_PV_FEAT_UPDATED)
+> -				&& ((kvm->arch.pv_features & valid) != val))
+> +				&& ((kvm->arch.pv_features & valid) != val)) {
+> +			spin_unlock(&kvm->arch.pv_features_lock);
+>   			return -EINVAL;
+> +		}
+>   		kvm->arch.pv_features = val | LOONGARCH_PV_FEAT_UPDATED;
+> +		spin_unlock(&kvm->arch.pv_features_lock);
+>   		return 0;
+>   	default:
+>   		return -ENXIO;
+> diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
+> index 1317c718f896..b984cc54f305 100644
+> --- a/arch/loongarch/kvm/vm.c
+> +++ b/arch/loongarch/kvm/vm.c
+> @@ -76,6 +76,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>   		return -ENOMEM;
+>   	}
+>   	spin_lock_init(&kvm->arch.phyid_map_lock);
+> +	spin_lock_init(&kvm->arch.pv_features_lock);
+>   
+>   	kvm_init_vmcs(kvm);
+>   	kvm_vm_init_features(kvm);
+> 
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
 
