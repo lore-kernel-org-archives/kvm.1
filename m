@@ -1,200 +1,429 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994643ABD80;
-	Fri, 14 Aug 2026 21:18:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786742302; cv=fail; b=PD+F9RF825540TTevYTbkyN6VQ5bSAkJzus7WjZCCVkXzzyfcfGvKB7cXn8fDlSAbUKzMudHFFr32rl5Q0lpAad0N11tWlw2U+FOZliAiM2OcOdjLTNlcgLTq74oPIgXEDkwnqnRfCDznU8BY3LPZs0+WFBPnOlTnQBBS1CKhbg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786742302; c=relaxed/simple;
-	bh=qGdEzj2ThNhRFIB6q52e9HwX+LuDM9HGXy0pBBtAK24=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=UwyYmfT37wX0ILXkJG6h1D2p4SZcgk9zEhKxDFUt8bYTf1e117gsqFk+RFFFmVCdP+KEQwL4aXOTF/68X4mHcBFGDD9H5NRtISmls/Gu4ULTzaQKg+9x60xie+ZJ5uuff5Xyx09uMGDaXGvijZpeHpomMKUZe1xB1mmhjXHhvdo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mRRxiqeE; arc=fail smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286DB3655FA
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 22:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786747087; cv=none; b=bmEPuCqv4uTjEjtSCt/53j4QiiXWRC5CNV72/ehzgqMUHhrrnpZ0d0HXYcRWmH/FZPHk/wNkAtcYK2I0F+F/SaYPMmtOqtTdrll1bzprzCBNK/gRh45n2G4imSphvyV82v0d6yljl9MzJrQ28NxOZ5aUHkLwqN9xhy00xZefhK8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786747087; c=relaxed/simple;
+	bh=MVl6e7TWu5n/rWliXmwAB5C+9kHukL00XfG1mML9xF4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ownkzA+cyNrgInc0qkiniqojboUxSjzUg4K78vRWnmEH48NHlBXJQrHzqikbpFklJPGFwIflfxcizT6xx1E5lreM9R9C0Zfye4ewRk4cueWHLv/IDJipQ4jwak9BK5ZrBArwcrzRFwVkDPtVytvQ20AzSKtoRsSNf6UjTFuuhY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BlQZQHb8; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mRRxiqeE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786742300; x=1818278300;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=qGdEzj2ThNhRFIB6q52e9HwX+LuDM9HGXy0pBBtAK24=;
-  b=mRRxiqeE30ZzZc8qGH1qFeMp6/3ND5TXeiLcGMe++kWlx/UbX/OkIUnp
-   vOGfrwanWeMBrMFGVytQ8U6nitDW7IyLefDfRjq0Da401QA+1NG1WQmu/
-   WBu9host2fZe83JCO2dDjBNNDtAciPi6nrzh84s1aDI11F1aDEKt+P3Dl
-   FwH5yiStQhStAxymYM2YqN9ePZIQr2BS+TbZzeiz4Sy9t1z6xjTb4nWhS
-   tBkADZuHx1cmPluu08PmvjOo0JATOPBm2gYAjELce/X31WhSw/0/9cr3Y
-   jp/TOU6kmWLw8NDYQEK6m1/EzuM3WqT2IiAvW1RxrOhTfgtM7VC21e7xe
-   g==;
-X-CSE-ConnectionGUID: Mjui8BqYRdSD2uMtjnNRKg==
-X-CSE-MsgGUID: BZxUDI+wSFOGZkWJNpJwyA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11875"; a="87183863"
-X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
-   d="scan'208";a="87183863"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 14:18:20 -0700
-X-CSE-ConnectionGUID: dDOm4D88RkG68xbFHdHBBw==
-X-CSE-MsgGUID: wu2W8gIkTdWh6yZ/sLy4sQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
-   d="scan'208";a="264940970"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 14:18:20 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 14 Aug 2026 14:18:19 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Fri, 14 Aug 2026 14:18:19 -0700
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.71) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 14 Aug 2026 14:18:19 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Bw2PHFJzc9XVY36mPFFopUvC1HQ794Yjt1Fy/rOV4kfe1pT50mSCqKZVRLlpTejwNxYIkKmfpV+ssIx+3Z4hKtNRINGi/u3IDI188tGTpuYfioSmMTD+XE0fqwcrrykZDsKIf93SJTXJ5EOzXer0OUdqUTiQjXvz8pOlQjAqfzrSNqkvu/dJ6edPt1/hNyyz+EaLQsO9qsMZd1SWljdvKIZwCQ2KZg6/fJc2UfACr5deuM+szPThM2FkQ0VKphrdETpYwbNx6WOajdj7BB1Rc3fC+WiZeM0c6v5tnVbhFClmp5mbfjxBcznIC4ho/gCPh3vLhqBC9bfY/0HSsvlm7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2sMt+gvjZ0vEz3xGurx5m24n5ykX9k2W0GKoY1ulnjY=;
- b=iZvRLPGd1nWmR5SfwKxCENzzGpfvSwienmVhAk6i67VL7kKiVPL9aDMzc46f2dzkQjm+0Elwz9iKFhUzkuvvHR5nBDP0dzNZCp40f2LOSiwxQHO4WKbMqdHg28F/ToQcTV/vcK4mGfBQBdj53lpBR9VaKDoQthj+AU35VFwkzvSdIdQei9s3cZK+kXTdg886TBFTEZqyxOGl4yvZ0F1oqwrTPiISTV1Yprh6/G5zi66qg2nbcA8MaSwRQRMQtLVQFChCUPMNJDq04W/PEguprJo6z3AKKoytknxA23T2KSNf5POsT4QZOYZe0HS9/fSOnppUMSwNxEQdYxtBkamPZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB5645.namprd11.prod.outlook.com (2603:10b6:a03:3b9::19)
- by SA0PR11MB4574.namprd11.prod.outlook.com (2603:10b6:806:71::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.16; Fri, 14 Aug
- 2026 21:18:16 +0000
-Received: from SJ0PR11MB5645.namprd11.prod.outlook.com
- ([fe80::fb19:f933:8bb3:b42e]) by SJ0PR11MB5645.namprd11.prod.outlook.com
- ([fe80::fb19:f933:8bb3:b42e%4]) with mapi id 15.21.0315.014; Fri, 14 Aug 2026
- 21:18:16 +0000
-Date: Fri, 14 Aug 2026 14:18:14 -0700
-From: Peter Fang <peter.fang@intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-CC: "Aktas, Erdem" <erdemaktas@google.com>, "Li, Xiaoyao"
-	<xiaoyao.li@intel.com>, "shuah@kernel.org" <shuah@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"afranji@google.com" <afranji@google.com>, "kas@kernel.org" <kas@kernel.org>,
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
-	"ira.weiny@intel.com" <ira.weiny@intel.com>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "Chatre, Reinette" <reinette.chatre@intel.com>,
-	"isaku.yamahata@intel.com" <isaku.yamahata@intel.com>,
-	"ackerleytng@google.com" <ackerleytng@google.com>, "seanjc@google.com"
-	<seanjc@google.com>, "pratikrajesh.sampat@amd.com"
-	<pratikrajesh.sampat@amd.com>, "oupton@kernel.org" <oupton@kernel.org>,
-	"wyihan@google.com" <wyihan@google.com>, "sagis@google.com"
-	<sagis@google.com>, "Gao, Chao" <chao.gao@intel.com>, "Wang, Roger"
-	<runanwang@google.com>, "linux-kselftest@vger.kernel.org"
-	<linux-kselftest@vger.kernel.org>, "ajones@ventanamicro.com"
-	<ajones@ventanamicro.com>, "Qiang, Chenyi" <chenyi.qiang@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "jmcrey@google.com" <jmcrey@google.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH v14 03/22] KVM: selftests: Initialize the TDX VM
-Message-ID: <20260814211814.GG1013044@pedri>
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-3-15ad654a50db@google.com>
- <0706f7fc02ac17d292ada97443ca40a806c0582c.camel@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <0706f7fc02ac17d292ada97443ca40a806c0582c.camel@intel.com>
-X-ClientProxiedBy: SJ0PR13CA0130.namprd13.prod.outlook.com
- (2603:10b6:a03:2c6::15) To SJ0PR11MB5645.namprd11.prod.outlook.com
- (2603:10b6:a03:3b9::19)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BlQZQHb8"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8485ef63b68so1220495b3a.1
+        for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 15:38:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786747085; x=1787351885; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CPYoXlQLa9cb/zBr4H0XgoMSmy+mWin+YeKrV4UQeaU=;
+        b=BlQZQHb8RepoIm9DhGkwwy6EUXbrJt1pfXHCArj7/C0rae/wqTTFXOztXrBXprOGF2
+         xSQo/r/pXWjMZot8T91OdH8z+GZ5qBVvQrkBMFO83tGTJOqFByu6ubI6f1eF5NsPBc4O
+         Ls1x/XGEOjwFRyk9Q9gK6YXaIJv7xXSpBmZFN6f7++vkVBfhu6dmRvpWwOqOiALYrZpO
+         wKWwnPSskIu6Q0oCLtFk/nQ6++M5dTqprPZDNYBOpI/nV34sYJyrIjUPLafAF6RS/Zse
+         O7VPF+8gSsSWcxPf9PwKEeEZw8MQJZQL7o6jbmFxle6YEPsR2HMSo6ZZtTmZRL5W7Xfe
+         j8Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786747085; x=1787351885;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CPYoXlQLa9cb/zBr4H0XgoMSmy+mWin+YeKrV4UQeaU=;
+        b=QmfyrL2vUSx1YyYsP+mF72+gMfGSLn0bYEiEEnWaRlLV9NJXh/9T092rA8vh5ITWXw
+         3CnN8ZbVx3qRttK8a9J3BI1n0MeI7EhTj9S00SZY9eyLzbW1SKJY2iSs6K6S24SuyfYl
+         SxIdFeZHPzeDxP9gnGYRSUM5WuvLpjYYlegDI4sjVmyB9B74RZmB2xgR45+3jQU7qx0V
+         QucsL0Cl3PxJOgGHcEh3X1J5i028GGb1LjWlh1pqy3F4o0l6M83eVpimcIYJhfqGvLD1
+         aEWQmkhblm9OjUV5y4NjjhMU0IPczDc9tOYif+UZ2zNfv2j8yHH0iSEJcnEt/0k5ih5V
+         tsAQ==
+X-Gm-Message-State: AOJu0YwIPOfsJlOmFZboFXDCQKa1UlSt2lCt9DyQ+s8V8/nO0cECiLWl
+	2K4gbQuuXPQU9UtlLKei1tQOHxL9QbQfmfw2eGizIDjzXxEZeUW8STMF8K9cNEeG2g==
+X-Gm-Gg: AR+sD12vD3VkR0+fO3ayEuThzhV26r02U0U/DxksWqFIg6IOm+TpNEzaCaA/qg3CASs
+	qias0G+4qukPO4FX3jVJh1YlMeGpk+5Xq66YxRdNEuAkDsP3RzV9x/KFBWilN1cnwL9GyetI7k8
+	bQABHXvBunN8N2GG5DNhY8ORoG/W2SL/tUaLPJXVAfpNrIQg9v7lfJGcrsud1gAs7tFHN5pOFNH
+	AOj1PYqghcolHkmqe29D/HXsZaz1bRdYgJ7UpHrhVPYdCWyAcPTtV8xVgnybFZ7S5pCW+gIDK69
+	vTyrfPdkgTrksm8HTb3ROD59LFGUcsOzZFGHM5GTGZL4GqlkwP2fCr49P7njw0zzH/mFywOng30
+	00OLaaCNY2bgqhRgM6DXqozyCuheTc3qfdDan8n+QyYTjsu7GknKJkSPVaY7RDD0WsbqpJJ/hdZ
+	RNxF9wHVYKfiE8RrlevpbZMHGQqL4CwXeWObSjQi9gUeWP5SJgnWHtPVNHzt4+sBbVU13pUYwd5
+	bCdxQwbJyMWwO7EkrUFfPgvFFagvA==
+X-Received: by 2002:a05:6a00:a21b:b0:848:417a:d1a6 with SMTP id d2e1a72fcca58-84fddfec0e9mr9695576b3a.15.1786747084730;
+        Fri, 14 Aug 2026 15:38:04 -0700 (PDT)
+Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8517d223d97sm973133b3a.28.2026.08.14.15.38.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 15:38:04 -0700 (PDT)
+Date: Fri, 14 Aug 2026 22:38:01 +0000
+From: David Matlack <dmatlack@google.com>
+To: Aaron Lewis <aaronlewis@google.com>
+Cc: kvm@vger.kernel.org, alex@shazbot.org, jgg@nvidia.com
+Subject: Re: [PATCH v2 4/4] vfio: selftests: Allow a size for
+ vfio_dma_mapping_perf_test
+Message-ID: <an-YyQV-CtoulEHr@google.com>
+References: <20260804165748.1060476-1-aaronlewis@google.com>
+ <20260804165748.1060476-5-aaronlewis@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB5645:EE_|SA0PR11MB4574:EE_
-X-MS-Office365-Filtering-Correlation-Id: a78ac6d6-2051-4043-df01-08defa498e43
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|4143699003|56012099006|6133799003|10067099003|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: JoAN4K1cHxqGqOiTAHRaYda9RKa1CXGXTxNH/LOE2lSStA4RYW184K8gqlgT+vF7pkS1TjsBemBdX88Lrv6jm/7ECaQP3GCZUemuuwXaQkv/YiuWFjQ9qRc/3jyJzXpcfQqyvDi/Aj2UABAwLfYuucS0pTtIroh+8L6vLo2QlyhljzG1NFDTBHLb7mFwvSJcbDEm0adhSMlZ4p/ZNghUlJ6q4EwiNE2yq4bN3VCRNIfdY6ZdQ+D0YF54whQW16izcWyVb/FRv1iZGHkQVpmYm5qiD8cB3pryM7lak1NXqyuf9tHIlY3MeRzn3HfBglASV3ozDnudAJqdXOCdKN2lwVW/7zwLVTb56wN+/tCUQg+YT27gG3u0OAeuMv3EtmTOu8uCx1yNeW++7qkTVFTNGidsewn8gl0SxrCBQmnngcdjVm27bkLGlib+fJGaqr9g69D6B7K5bdlP6y9eQ0m5IKsfQhBPHnOdLj13Eed70EQrD0Z95Hums6pj0Iw9U4XSOw/4Bv0PfY2n2mvFJb+HGSTMPe5+JGlzgwrHvfpjO2KVQJNv7WGcsZSSy6Wh4ZwxsKNDuD6QOHYZa3f7pgbTzpL6P+NYZimDE9vRQ0RvoP/PtwK7XSyjjceRBuEEYcUa1VrcY721LgtNufwnnkBWHPCQtSoWtQuhVLPbCANYfPY=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5645.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(4143699003)(56012099006)(6133799003)(10067099003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ASHZyDtsCi066oW1YhSBMG9R69Yvp2Snwp5L2G129mEvo3WE+AxbnaGNbwAB?=
- =?us-ascii?Q?kG9xBJw+MCNdX2Qj7yiZhDnl6LJb2StGHetSJ1COdbVPx93l8HRACxu6sPSR?=
- =?us-ascii?Q?yEQK/sz8Lp7xrMpxrn96MQSCR1PINdFQAIAluKT1hBBZhn2jgTkGoxCkWG6Z?=
- =?us-ascii?Q?AixYpc3EJOBdFmHkhk3zLLIZfZ/10pci9QcJGyltWa5bgoVDkwXE2kWwS+jX?=
- =?us-ascii?Q?4S99ihtpOG6OcQbYdNDv/3jJKLAms9ae1vON8jGu5zdYbuyIsVKXrjF7NFs8?=
- =?us-ascii?Q?ch43AW/v1Hh6Jgbkw4VWJcTRTDcbvT5msMCYDmvW8yvbxRO7mTO7udv0Lr9Q?=
- =?us-ascii?Q?wfcdGSRuQ+iP9ARvbw8PDpUAVQHiFAmkt71mVoVm0/bbGHNtTVUBdnpIx03G?=
- =?us-ascii?Q?2XWooKAiqnvHfwmvqJeZ89dMfkhlX7IGTW142D7PuNxImJ1LzpcNkuPt+1b/?=
- =?us-ascii?Q?TNf8+RoHCnv/MXQzNKT0cLLmT4r9H5U7lfOKvLhtui7mocdvTPnXY4mA0A96?=
- =?us-ascii?Q?r8BnHM8nn994b7LUSOJEU4eJBInDTezdwKp3Nnhu3sWJccLVaQ9vs/zZebO+?=
- =?us-ascii?Q?ziHlbBxf3VW8Zpv8JRJMfLpUhdIi1SSKKlrjXH1obqmX74nO4pAf2PmcF+iz?=
- =?us-ascii?Q?XU9LWzl3E6pwZHsTwI+UXsExmF8urmcGzQ7O2q0hZptAZqaiLj24eAIZNhIv?=
- =?us-ascii?Q?uCxwS40YYg4tWebncB18GOgW2pQqqZbW0VwwTYsPEqfsWCVhSrOPP8ucnJI3?=
- =?us-ascii?Q?0fBGpx3+1kMxx6uyt97gCOSQd4CiGYIlgP0VIWn9wHfOWkRZRGOz54BTGb8X?=
- =?us-ascii?Q?S7qpcv14oP/6kX4ylUX3IiYC9zqfOCq/HBna05FwSfwQVGo9ycyebfi6KK7K?=
- =?us-ascii?Q?aRs+eVjoVbxjgG2w8xxRuY+W0qGWd20nDdcunLKCfthqOyXrz5eocGfMSVpJ?=
- =?us-ascii?Q?1YXikOzPJXwK6pQgStzBJB8bh+wcj1RBBqfgq75E8PvVwPXWM71PPAvnbzMl?=
- =?us-ascii?Q?6frdzTgX0zzIknJhRWGAaC5qB2jLwt6lKu7046t49+ZTyZ1j7Vo4ynw5r4Ew?=
- =?us-ascii?Q?wjwv9Hp2FwWZu8I5c+38BDJTMHRT7LMtS3H87RO4ppZUfzJ2noRARijNtikC?=
- =?us-ascii?Q?Ykau7Lq2vFHUkB+lbZyQCmLneunOvDPx2+8sLsPe80R2ofubYbYNxgq3WEJe?=
- =?us-ascii?Q?rXoKMPXXYtECRR7ceRP7uHzP1YRqsiZXHy2sTUPLN/G1sSYUQBkfKBrsO3NY?=
- =?us-ascii?Q?qH4NKr4HlzyLfOr5skKdhw/T+qg87ZRiZSEYm06wrclw6R9Jp8Hss1Gx3k8L?=
- =?us-ascii?Q?yBIdvglI/vSaDeDmyBr0WhdKNqnsdykq7prYeTwWVYfifb/WcPmzy3Qo/emA?=
- =?us-ascii?Q?l8zw7qgybu/SHdmEPeOCtGBiyvFxgazJXOlGz9NUgUsRJELdD1UcRQSHdS9x?=
- =?us-ascii?Q?xK9Da2Zj8PrXOTAjXPaRzpmbxWDvo78VMK5YJgwZ3AvX+LCwGKaNAFP4gD7e?=
- =?us-ascii?Q?zz0BYE6YKYS7M8hUydYQZlTbZjFTjNKzpAqpNoktnH7fv9crplaGEYWnM3lK?=
- =?us-ascii?Q?cKa6veEXEoVTkeQn1MyqK1JISNoMGaFnKAqTnfuVIxG5rLAZYPIsHKkkQ8D7?=
- =?us-ascii?Q?1k333A/Cb1e68O8LWA7mTixVv2FP4Ntkvw8NSFcnXa8lCuwymUJBf83kh5Zj?=
- =?us-ascii?Q?6Rjs61fMf8PMZ297FCSLBWYYM4RS4CKtFmhqdMpGo3NsJ7CTvOsc/xSnR8WA?=
- =?us-ascii?Q?jUMD7Bx9Qg=3D=3D?=
-X-Exchange-RoutingPolicyChecked: URs82fmzYONVKaN4oepJ6+CX5l6RGcowzKtJ3hE/EnlAzYlUNt+8OH85Gi2vT7bz3xmZU4H7t5O5BLeKfgy1w52OKqgLck16gb5WjjpwRDCXIZxfv09lyK1DlcEcHeGSRAV4cHQsa/ycD0wHairrj9eumDuVQD3i6YBfUvBKXbu0m4tQ/y8PB3ayZtpg8js8ee6eOeWcVe0kkGD9yctml3eUBYByx/trSGK2iO5qoTIqcYWzSJoRaDcgYd6d4qu/ZRuQwALnDFlv9FOoePFfB0WtJ04GKEK0wZz+72W0WuQ0eHI3mYuA41s5L9AIKUgYzx0KvgMr/KeJEqSwMBYPfA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: a78ac6d6-2051-4043-df01-08defa498e43
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5645.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2026 21:18:16.1338
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YQW9HFMaJfPPEOQ8ATNuSzkkejc7RYGWDQfoPpn27kP60W7byOnsW4qkRghUteH87U7/KJYkSPmLi607iB/sKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4574
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260804165748.1060476-5-aaronlewis@google.com>
 
-On Thu, Aug 13, 2026 at 04:41:07PM -0700, Edgecombe, Rick P wrote:
-> On Wed, 2026-07-22 at 23:13 +0000, Lisa Wang wrote:
-> > From: Sagi Shahar <sagis@google.com>
-> > 
-> > Add tdx_init_vm() to handle the mandatory VM-level initialization
-> > sequence required for Intel TDX.
-> > 
-> > For TDX, the guest's CPUID configuration must be "sealed" during
-> > KVM_TDX_INIT_VM before any vCPUs are created. This is necessary because
-> > the TDX hardware directly virtualizes CPUID and includes the
-> > configuration in the guest's initial security measurement.
+On 2026-08-04 04:57 PM, Aaron Lewis wrote:
+> Allow the user to specify a DMA region size via the command line for
+> vfio_dma_mapping_perf_test.
 > 
-> "TDX hardware" should be TDX module. But I'm not sure what it is trying to say
-> about directly virtualizes.
+> Because the selftest harness also parses command-line parameters, sharing
+> them directly is problematic. Adding options directly to the test could
+> create conflicts with harness-defined options. Even without conflicts, the
+> harness would need to be updated to recognize test-specific options to avoid
+> failing on unknown parameters.
 > 
-> Also, it is not accurate to say that the CPUID configuration is included in the
-> measurement? Is that right Peter? It's not in the report, but is it in the
-> measurement?
+> Resolve this by isolating the two sets of parameters. The standard command-line
+> options are consumed by the test itself. To pass options through to the test
+> harness, introduce a new '-a' option.
+> 
+> For example, both the test size and the test harness options can be set
+> like this:
+> 
+> ./vfio_dma_mapping_perf_test -b 16G -a "-v vfio_type1_iommu_memfd_hugetlb_1gb"
 
-CPUID is not in the report or the TDX module's measurement. TD
-attributes and XFAM are in both the report and initial measurement, and
-some of the bits in there are related to CPUID (e.g. ATTRIBUTES.PKS or
-XFAM.MAXPA_VIRT). Probably better to make a distinction between these
-things.
+I tried this out and it's a little clunky to work with. Especially -h.
+Plus it's quite a bit of code in the test to deal with the different
+argv arrays and parse everything...
 
+Here are the other options I think we should consider:
+
+ 1. Abandon the kselftest_harness for this test and manually replicate
+    across the different IOMMU modes and memory types. I don't love this
+    since it will differ from other VFIO selftests, we'll need to
+    reinvent the test fixture replication, and we lose the TAP output.
+
+ 2. Add first-class support to kselftest_harness for custom test
+    arguments. I ran it through Gemini and it came up with something
+    relatively clean [1].
+
+ 3. Just use an environment variable for this one argument. This would
+    be extremely simple to implement and use.
+
+ 4. Have the test look up how many HugeTLB pages are free on the system
+    and just use all of them. You can control how much memory the test
+    uses by controlling how many HugeTLB pages are allocated on the
+    system.
+
+What are your thoughts?
+
+[1]
+  In kselftest_harness.h:
+
+    #ifndef OPT_CUSTOM_STR
+    # define OPT_CUSTOM_STR ""
+    # define OPT_CUSTOM_HANDLER(opt, optarg) KSFT_FAIL
+    # define OPT_CUSTOM_HELP()
+    #endif
+
+    // Modify test_harness_argv_check()
+    static int test_harness_argv_check(int argc, char **argv)
+    {
+        int opt;
+        char optstring[128] = "dhlF:f:V:v:t:T:r:";
+        // Safely append OPT_CUSTOM_STR to optstring
+        strncat(optstring, OPT_CUSTOM_STR, sizeof(optstring) - strlen(optstring) - 1);
+
+        while ((opt = getopt(argc, argv, optstring)) != -1) {
+            switch (opt) {
+                /* ... existing core cases ... */
+                case 'h':
+                    fprintf(stderr, "Usage: %s [-h|-l|-d] [-t|-T|-v|-V|-f|-F|-r name]\n...", argv[0]);
+                    OPT_CUSTOM_HELP();
+                    return KSFT_SKIP;
+
+                default:
+                    if (OPT_CUSTOM_HANDLER(opt, optarg) == KSFT_PASS)
+    			break;
+                    return KSFT_FAIL;
+            }
+        }
+        return KSFT_PASS;
+    }
+
+  In vfio_dma_mapping_perf_test.c (before #include "kselftest_harness.h"):
+
+    static void opt_custom_help(void) {
+        fprintf(stderr, "\t-b bytes Specify the size of the DMA region...\n");
+    }
+
+    static int opt_custom_handler(int opt, char *optarg) {
+        if (opt == 'b') {
+            test_params.size = parse_size(optarg);
+            return KSFT_PASS;
+        }
+        return KSFT_FAIL;
+    }
+
+    #define OPT_CUSTOM_STR "b:"
+    #define OPT_CUSTOM_HANDLER(opt, optarg) opt_custom_handler(opt, optarg)
+    #define OPT_CUSTOM_HELP() opt_custom_help()
+
+    #include "kselftest_harness.h"
+
+
+> This invocation configures a 16G DMA region and restricts execution to the
+> specified test variant, which is useful when debugging DMA mapping latency
+> issues for a specific IOMMU type.
 > 
-> Or maybe it doesn't really need to be in the log anyway.
+> Signed-off-by: Aaron Lewis <aaronlewis@google.com>
+> ---
+>  .../vfio/vfio_dma_mapping_perf_test.c         | 159 ++++++++++++++++--
+>  1 file changed, 149 insertions(+), 10 deletions(-)
 > 
-> > 
+> diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
+> index 5ef85deba4ee..af2273a0c6f5 100644
+> --- a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
+> +++ b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
+> @@ -4,6 +4,7 @@
+>  #include <sys/mman.h>
+>  #include <time.h>
+>  #include <unistd.h>
+> +#include <wordexp.h>
+>  
+>  #include <linux/iommufd.h>
+>  #include <linux/limits.h>
+> @@ -17,7 +18,12 @@
+>  
+>  #include "kselftest_harness.h"
+>  
+> -static const char *device_bdf;
+> +static struct {
+> +	u64 size;
+> +	const char *device_bdf;
+> +} test_params = {
+> +	.size = SZ_1G,
+> +};
+>  
+>  FIXTURE(vfio_dma_mapping_perf_test) {
+>  	struct iommu *iommu;
+> @@ -45,7 +51,7 @@ FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(anonymous_hugetlb_1gb, MAP_HUGETLB | MAP_HUG
+>  FIXTURE_SETUP(vfio_dma_mapping_perf_test)
+>  {
+>  	self->iommu = iommu_init(variant->iommu_mode);
+> -	self->device = vfio_pci_device_init(device_bdf, self->iommu);
+> +	self->device = vfio_pci_device_init(test_params.device_bdf, self->iommu);
+>  	self->iova_allocator = iova_allocator_init(self->iommu);
+>  }
+>  
+> @@ -58,7 +64,7 @@ FIXTURE_TEARDOWN(vfio_dma_mapping_perf_test)
+>  
+>  TEST_F(vfio_dma_mapping_perf_test, dma_map_unmap)
+>  {
+> -	const u64 size = SZ_1G;
+> +	const u64 size = test_params.size;
+>  	const int flags = variant->mmap_flags;
+>  	struct dma_region region;
+>  
+> @@ -115,7 +121,7 @@ FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd_hugetlb_1gb,
+>  FIXTURE_SETUP(vfio_dma_mapping_perf_memfd_test)
+>  {
+>  	self->iommu = iommu_init(variant->iommu_mode);
+> -	self->device = vfio_pci_device_init(device_bdf, self->iommu);
+> +	self->device = vfio_pci_device_init(test_params.device_bdf, self->iommu);
+>  	self->iova_allocator = iova_allocator_init(self->iommu);
+>  }
+>  
+> @@ -159,17 +165,17 @@ static void teardown_memfd(int fd, u64 size, void *vaddr)
+>  
+>  TEST_F(vfio_dma_mapping_perf_memfd_test, dma_map_unmap_from_file)
+>  {
+> -	const u64 size = SZ_1G;
+> -	const int flags = variant->mmap_flags;
+> +	const u64 size = test_params.size;
+> +	const int mmap_flags = variant->mmap_flags;
+>  	struct dma_region region;
+>  	int fd;
+>  
+>  	printf("mmap size = %lluG\n", (unsigned long long)(size / SZ_1G));
+>  
+> -	region.vaddr = setup_memfd(&fd, size, variant->mmap_flags, variant->memfd_flags);
+> +	region.vaddr = setup_memfd(&fd, size, mmap_flags, variant->memfd_flags);
+>  
+>  	/* Skip the test if there aren't enough HugeTLB pages available. */
+> -	if (flags & MAP_HUGETLB && region.vaddr == MAP_FAILED)
+> +	if (mmap_flags & MAP_HUGETLB && region.vaddr == MAP_FAILED)
+>  		SKIP(return, "setup_memfd() failed: %s (%d)\n", strerror(errno), errno);
+>  	else
+>  		ASSERT_NE(region.vaddr, MAP_FAILED);
+> @@ -185,8 +191,141 @@ TEST_F(vfio_dma_mapping_perf_memfd_test, dma_map_unmap_from_file)
+>  	teardown_memfd(fd, size, region.vaddr);
+>  }
+>  
+> +/*
+> + * Parses "[0-9]+[kmgt]?".
+> + */
+> +u64 parse_size(const char *size)
+> +{
+> +	int shift = 0;
+> +	char *scale;
+> +	u64 base;
+> +
+> +	VFIO_ASSERT_TRUE(size && isdigit(size[0]),
+> +			 "Need at least one digit in '%s'.", size);
+> +
+> +	base = strtoull(size, &scale, 0);
+> +
+> +	VFIO_ASSERT_TRUE(base != ULLONG_MAX, "Overflow parsing size!");
+> +
+> +	switch (tolower(*scale)) {
+> +	case 't':
+> +		shift = 40;
+> +		break;
+> +	case 'g':
+> +		shift = 30;
+> +		break;
+> +	case 'm':
+> +		shift = 20;
+> +		break;
+> +	case 'k':
+> +		shift = 10;
+> +		break;
+> +	case 'b':
+> +	case '\0':
+> +		shift = 0;
+> +		break;
+> +	default:
+> +		VFIO_FAIL("Unknown size letter '%c'.", *scale);
+> +	}
+> +
+> +	VFIO_ASSERT_TRUE((base << shift) >> shift == base,
+> +			 "Overflow scaling size!");
+> +
+> +	return base << shift;
+> +}
+> +
+> +static void help(char *name)
+> +{
+> +	puts("");
+> +	printf("usage: %s [-h] [-b bytes] [-a \"test harness args\"]\n", name);
+> +	puts("");
+> +	printf(" -h: Display this help message.\n"
+> +	       " -b: Specify the size of the DMA region to be mapped\n"
+> +	       "     and unmapped. e.g. 16M or 8G, (default: 1G)\n"
+> +	       " -a: Args that are forwarded to the test harness,\n"
+> +	       "     e.g. -a \"-t dma_map_unmap_from_file\"\n");
+
+This should be printed to stderr so that this and the kselftest_harness
+help message get printed to the same place.
+
+Also the -h output is pretty confusing because it just has the 2 usage
+logs one after another:
+
+  usage: tools/testing/selftests/vfio_dma_mapping_perf_test ...
+  ...
+
+  Usage: tools/testing/selftests/vfio_dma_mapping_perf_test ...
+  ...
+
+Some extra logging to help the user understand would be needed.
+
+> +}
+> +
+> +struct harness_args {
+> +	int argc;
+> +	char **argv;
+> +	wordexp_t exp;
+> +};
+> +
+> +static void populate_harness_args(struct harness_args *args, const char *argv_0,
+> +				  const char *cmdlne)
+> +{
+> +	int flags = WRDE_NOCMD;
+> +
+> +	if (!args->argv) {
+> +		/*
+> +		 * Initialize the argument list with the program name (argv[0]).
+> +		 * WRDE_NOCMD disables command substitution for safety.
+> +		 */
+> +		if (wordexp(argv_0, &args->exp, flags) != 0)
+> +			VFIO_FAIL("Failed to evaluate test harness argv_0 args!");
+> +	}
+> +
+> +	flags |= WRDE_APPEND;
+> +
+> +	/*
+> +	 * Use wordexp() to reliably parse the user-supplied command line string
+> +	 * into individual arguments, respecting shell quoting and escaping rules.
+> +	 * WRDE_APPEND merges these new arguments with the earlier argv[0].
+> +	 */
+> +	if (wordexp(cmdlne, &args->exp, flags) != 0)
+> +		VFIO_FAIL("Failed to evaluate test harness cmdlne args!");
+> +
+> +	args->argc = args->exp.we_wordc;
+> +	args->argv = args->exp.we_wordv;
+> +}
+> +
+> +static void setup_test(struct harness_args *args, int *argc, char *argv[])
+> +{
+> +	char *h_argv[] = { argv[0], "-h" };
+> +	int opt;
+> +
+> +	test_params.device_bdf = vfio_selftests_get_bdf(argc, argv);
+> +
+> +	while ((opt = getopt(*argc, argv, "a:b:h")) != -1) {
+> +		switch (opt) {
+> +		case 'a':
+> +			populate_harness_args(args, argv[0], optarg);
+> +			break;
+> +		case 'b':
+> +			test_params.size = parse_size(optarg);
+> +			break;
+> +		case 'h':
+> +		default:
+> +			help(argv[0]);
+> +			exit(test_harness_run(2, h_argv));
+
+Need to reset optind to 1 before calling test_harness_run(). Also maybe
+this should just call test_harness_argv_check()?
+
+> +		}
+> +	}
+> +
+> +	// Reset getopt() state to allow the test harness to use it.
+> +	optind = 1;
+> +}
+> +
+> +static void teardown_test(struct harness_args *args)
+> +{
+> +	if (args->argv) {
+> +		args->argc = 0;
+> +		args->argv = NULL;
+> +		wordfree(&args->exp);
+> +	}
+> +}
+> +
+>  int main(int argc, char *argv[])
+>  {
+> -	device_bdf = vfio_selftests_get_bdf(&argc, argv);
+> -	return test_harness_run(argc, argv);
+> +	char *default_hargs[] = { argv[0], NULL };
+> +	struct harness_args args = {};
+> +	int r;
+> +
+> +	setup_test(&args, &argc, argv);
+> +
+> +	r = test_harness_run(args.argc ?: 1, args.argv ?: default_hargs);
+> +
+> +	teardown_test(&args);
+> +
+> +	return r;
+>  }
+> -- 
+> 2.55.0.654.g21b8a5bc05-goog
+> 
