@@ -1,202 +1,273 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374EA453A25;
-	Fri, 14 Aug 2026 08:33:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65525447803
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 08:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786696395; cv=none; b=allO3iR9XO3ZDESC7QlqwcRt7ye2zqiIE1y2r/21SbRoygdjdN+i21rsRBh6Bc+jYAjB+o2dKVb3Pq012NMa9st3O7k+m1moGeoY0fsf7MiHH5iqoaZuSNmESkEC+P8IMnT86ikZ1cCjLtE3j3r0mNf40YGuAafZ3dWJTrcfD44=
+	t=1786696416; cv=none; b=mnT+IiSGte1FRsP2trs57M0Z/WtN5ZsaTH956qlzH89JvuNy7cSiBYxIMsRRrjfFyo3bB9x/XcCwETbj71yuRo8PBK1TfQPD/9nKzhGvY0PgV7Qldg4bajIDEJSwO1TpLeBBgHfiTXiPh4OHxt9UaC4F80/ja98s9dUPBdddyFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786696395; c=relaxed/simple;
-	bh=mNltrAyR9hZzHlJWXIBFJLDbWMrhnCpIF5u/lBabfts=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jcqKe/2/vLmq1BE8kVbYmDzgRaux+KTtUc/RZcGJegzcPfjUAKYw0TvvcY+b7s+NYpneoROyUvRzNUz5kD2HlZ+W5PcJVvjAu7/JY4Lv/bHxtM/EtPNUzCSnzkWeQdkS91pmwo70cOMDoDrnXD7SZqYyIapEXJmWq+LmrDK/rK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C+xPeKkK; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786696416; c=relaxed/simple;
+	bh=kkdhU9HvxO9a2iwDACmdUBrjvBCHmEHvHRMmZu+eeM8=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=S7pdaJtATRvj3pQiBm6BwM4p0t1Qzz1qiHtEUzdWDvia4KafqsPwh5KRa2rd5GdrzFa0jCFQyCqQJRgIdlSJT5EIwBXy4nDf4J7eujwmGTWQu1PqDXACyeUJwbCY2c8OOv7S08+yWiierLlnKG6mf5CPAklVINA+eGxdb7vANdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=qpjETMD6; arc=none smtp.client-ip=115.124.30.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C+xPeKkK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786696392; x=1818232392;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=mNltrAyR9hZzHlJWXIBFJLDbWMrhnCpIF5u/lBabfts=;
-  b=C+xPeKkKUtg5f5IPy0+hIZe8QRwy8l3PpfYLo97COR3OmSDpw6bQW1ZG
-   wZ3laMVfcm/oqYYutfTb/r5Qk/yTUaIWT3LOUKuG2wYMrsUs3+wDCssIU
-   ut72iv9ZgjKTeJxuOiNxxP6/4ByAkZVVf5KDlLU/MWwIFiZIKigzju2q5
-   luS5Ahbk0VcM4arO1fBEzTdi6JiX2kb55Yi54IvTX+cr2eTjBb9IuS6PX
-   81MaxOrqocspQzB3r81wALwq3Qast0NRnUvD2h/KQ1cKLe+gYtZQG9ddT
-   O2rq+z4DO9YtupCSKgc9uRMJjrTXbc0MRvep3ucX2O4te/fXF4HObCYT6
-   g==;
-X-CSE-ConnectionGUID: K9lKaSLkSsSFdz/GSPQVWg==
-X-CSE-MsgGUID: RQaFkWBBQZCrzBqCmL19Qw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11874"; a="87200435"
-X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
-   d="scan'208";a="87200435"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 01:33:07 -0700
-X-CSE-ConnectionGUID: JPzmKiCQQ+Gz5oN0oJ8dYw==
-X-CSE-MsgGUID: EHPMtIH9RMOCEe3sPv2Oxg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
-   d="scan'208";a="266153841"
-Received: from unknown (HELO [10.238.208.98]) ([10.238.208.98])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 01:33:01 -0700
-Message-ID: <31ddbd64-eeb4-4008-87fb-ff57de93635d@intel.com>
-Date: Fri, 14 Aug 2026 16:32:59 +0800
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="qpjETMD6"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1786696398; h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
+	bh=n9/kMpHi1J6Odqy/MBWzFhpWVy4M9vqZHPs1iNyrDgU=;
+	b=qpjETMD6L+dQMAZKwpSLzQ2NXRqrofZPx48Q4YEkavYQxeedn5W3RpBf1aiQoZBQhol9rugPJOwk/GdN58yVIJ7Td9nmzMEvS1fkJJJdyzVMU8mkfH/A9sEFKhgplbRyYJK7qt1bNhJ2z4e3nY4lCLjOl2nJG7U9tsisNNk4NmI=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R791e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=zhengrong_li@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0X8wvugu_1786696392;
+Received: from U-92DF4J33-2338.local(mailfrom:zhengrong_li@linux.alibaba.com fp:SMTPD_---0X8wvugu_1786696392 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 14 Aug 2026 16:33:18 +0800
+From: Zhengrong Li <zhengrong_li@linux.alibaba.com>
+To: kvm@vger.kernel.org
+Cc: seanjc@google.com, pbonzini@redhat.com, zhengrong_li@linux.alibaba.com
+Subject:
+ [RFC] Expose L1 guest register state for nested VMX via KVM_GET_NESTED_STATE
+Date: Fri, 14 Aug 2026 16:32:58 +0800
+Message-ID: <178669637845.81620.8189698601844425753@linux.alibaba.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 15/22] KVM: selftests: Call KVM_TDX_INIT_VCPU when
- creating a new TDX vcpu
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Binbin Wu
- <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-15-15ad654a50db@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260722-tdx-selftests-v14-15-15ad654a50db@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 7/23/2026 7:13 AM, Lisa Wang wrote:
-> From: Sagi Shahar <sagis@google.com>
-> 
-> TDX VMs need to issue the KVM_TDX_INIT_VCPU ioctl for each vcpu after
-> vcpu creation.
-> 
-> Since the cpuids for TD are managed by the TDX module, read the values
+[RFC] Expose L1 guest register state for nested VMX via KVM_GET_NESTED_STATE
 
-Please use CPUIDs instead of cpuids.
+Problem
+=======
 
-> virtualized for the TD using KVM_TDX_GET_CPUID and set them in kvm using
-> KVM_SET_CPUID2 so that kvm has an accurate view of the VM cpuid values.
+KVM_GET_REGS and KVM_GET_SREGS always return the register state of the
+currently active guest context.  When a vCPU is in VMX non-root
+operation running an L2 nested guest, these ioctls return L2 state.
+There is no way for userspace to retrieve L1 guest state while L2 is
+active.
 
-This does two things, and KVM_SET_CPUID2 isn't a hard requirement for 
-KVM_TDX_INIT_VCPU.  we'd better split it into two patches.
+This affects any tool that inspects vCPU register state.  For example,
+QEMU's "info registers" monitor command and GDB stub both show L2
+registers when L2 is running, making nested VM debugging difficult.
+Users have no way to determine where L1 was executing, what page tables
+it was using, or which privilege level it was in.
 
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-> ---
->   .../selftests/kvm/include/x86/tdx/tdx_util.h       | 21 ++++++++++++++
->   tools/testing/selftests/kvm/lib/x86/processor.c    | 33 ++++++++++++++++------
->   2 files changed, 46 insertions(+), 8 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> index f5003cbaa106..07e7f5c90329 100644
-> --- a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> @@ -44,6 +44,27 @@ static inline bool is_tdx_vm(struct kvm_vm *vm)
->   	}								\
->   })
->   
-> +#define __tdx_vcpu_ioctl(vcpu, cmd, _flags, arg)			\
-> +({									\
-> +	union {								\
-> +		struct kvm_tdx_cmd c;					\
-> +		unsigned long raw;					\
-> +	} tdx_cmd = { .c = {						\
-> +		.id = (cmd),						\
-> +		.flags = (u32)(_flags),					\
-> +		.data = (u64)(arg),					\
-> +	} };								\
-> +									\
-> +	__vcpu_ioctl(vcpu, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd.raw);	\
-> +})
-> +
-> +#define tdx_vcpu_ioctl(vcpu, cmd, flags, arg)				\
-> +({									\
-> +	int ret = __tdx_vcpu_ioctl(vcpu, cmd, flags, arg);		\
-> +	TEST_ASSERT(!ret, "%s failed, errno: %d (%s)",			\
-> +		     #cmd, errno, strerror(errno));			\
-> +})
+SVM Comparison
+==============
 
-It doesn't handle the tdx_cmd.c.hw_error for vcpu ioctl, but handle it 
-for vm ioctl, which looks inconsistent. This at least deserves a 
-justification in the changelog.
+For AMD/SVM, KVM_GET_NESTED_STATE already returns the vmcb01 save area,
+which provides comprehensive L1 state (see svm_get_nested_state() in
+arch/x86/kvm/svm/nested.c, line 1943):
 
->   void tdx_init_vm(struct kvm_vm *vm, u64 attributes);
->   void tdx_vm_setup_boot_code_region(struct kvm_vm *vm);
->   void tdx_vm_setup_boot_parameters_region(struct kvm_vm *vm, u32 nr_runnable_vcpus);
-> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-> index 8f8bb90fec35..f6a2aa6b86a4 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-> @@ -838,6 +838,17 @@ gva_t kvm_allocate_vcpu_stack(struct kvm_vm *vm)
->   	return stack_gva;
->   }
->   
-> +static void tdx_vcpu_init(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
-> +{
-> +	struct kvm_cpuid2 *cpuid;
-> +
-> +	cpuid = allocate_kvm_cpuid2(MAX_NR_CPUID_ENTRIES);
-> +	tdx_vcpu_ioctl(vcpu, KVM_TDX_GET_CPUID, 0, cpuid);
+    copy_to_user(&user_vmcb->save, &svm->vmcb01.ptr->save,
+                 sizeof(user_vmcb->save));
 
-If I remember correctly, though KVM_TDX_GET_CPUID is a vcpu ioctl, the 
-data returned by KVM is retrived from TDX module and TDX module only 
-maintains the TD scope CPUID. So the CPUID returned here is TD scope, 
-for per-vcpu CPUIDs, e.g., x2apicid, we need to update them accordingly.
+The SVM vmcb_save_area includes:
 
-This seems not a functional gap. I'm OK to leave it to the future, but 
-please leave a TODO comment for it.
+  Registers:  RIP, RSP, RAX, RFLAGS
+  Control:    CR0, CR2, CR3, CR4, EFER
+  Debug:      DR6, DR7
+  Segments:   ES/CS/SS/DS/FS/GS (selector, base, limit, attr)
+  Tables:     GDTR, IDTR, LDTR, TR
+  Syscall MSRs: STAR, LSTAR, CSTAR, SFMASK, KERNEL_GS_BASE,
+                SYSENTER_CS/ESP/EIP
+  Other:      PAT, SPEC_CTRL, CPL
 
-> +	vcpu_init_cpuid(vcpu, cpuid);
-> +	free(cpuid);
-> +	tdx_vcpu_ioctl(vcpu, KVM_TDX_INIT_VCPU, 0, NULL);
-> +}
-> +
->   struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
->   {
->   	struct kvm_mp_state mp_state;
-> @@ -845,15 +856,21 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
->   	struct kvm_regs regs;
->   
->   	vcpu = __vm_vcpu_add(vm, vcpu_id);
-> -	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
-> -	vcpu_init_sregs(vm, vcpu);
-> -	vcpu_init_xcrs(vm, vcpu);
->   
-> -	/* Setup guest general purpose registers */
-> -	vcpu_regs_get(vcpu, &regs);
-> -	regs.rflags = regs.rflags | 0x2;
-> -	regs.rsp = kvm_allocate_vcpu_stack(vm);
-> -	vcpu_regs_set(vcpu, &regs);
-> +	if (is_tdx_vm(vm)) {
-> +		tdx_vcpu_init(vm, vcpu);
-> +	} else {
-> +		vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
-> +
-> +		vcpu_init_sregs(vm, vcpu);
-> +		vcpu_init_xcrs(vm, vcpu);
-> +
-> +		/* Setup guest general purpose registers */
-> +		vcpu_regs_get(vcpu, &regs);
-> +		regs.rflags = regs.rflags | 0x2;
-> +		regs.rsp = kvm_allocate_vcpu_stack(vm);
-> +		vcpu_regs_set(vcpu, &regs);
-> +	}
->   
->   	/* Setup the MP state */
->   	mp_state.mp_state = 0;
-> 
+This gives userspace a near-complete snapshot of L1 state.
 
+VMX has no equivalent.  KVM_GET_NESTED_STATE for VMX returns vmcs12
+(which contains L2 guest state + L1 host-state area for VM-exit) but
+never exposes L1's running guest state from vmcs01.
+
+Proposed: L1 Guest State Snapshot for VMX
+=========================================
+
+Add a new section to the VMX nested state data that provides a
+comprehensive L1 register snapshot, assembled from all sources KVM has
+access to.
+
+The data should be returned as a VMCS12-sized blob (same format as the
+existing vmcs12 and shadow_vmcs12 sections).  This reuses existing
+infrastructure and lets userspace parse fields using the well-known
+vmcs12 layout.
+
+Fields to include (from vmcs01 hardware VMCS):
+  GUEST_RSP, GUEST_RIP, GUEST_RFLAGS
+  GUEST_CR0, GUEST_CR3, GUEST_CR4
+  GUEST_IA32_EFER, GUEST_IA32_PAT
+  GUEST_DR7
+  GUEST_ES/CS/SS/DS/FS/GS (selector, base, limit, ar_bytes)
+  GUEST_GDTR, GUEST_IDTR (base, limit)
+  GUEST_LDTR, GUEST_TR (selector, base, limit, ar_bytes)
+  GUEST_SYSENTER_CS, GUEST_SYSENTER_ESP, GUEST_SYSENTER_EIP
+  GUEST_PDPTR0-3
+  GUEST_INTERRUPTIBILITY_INFO, GUEST_ACTIVITY_STATE
+
+Additional fields from KVM's vcpu software model (vcpu->arch.*):
+  CR2      -- vcpu->arch.cr2 (cached from last #PF)
+  DR6      -- vcpu->arch.dr6 (cached from last debug event)
+  MSR_IA32_SPEC_CTRL  -- vcpu->arch.spec_ctrl
+  MSR_KERNEL_GS_BASE  -- via kvm_get_msr() or uret array
+  MSR_STAR, MSR_LSTAR, MSR_CSTAR, MSR_SF_MASK
+    -- via uret/uret_msrs array (populated on VM-exit)
+
+Note: the MSR-derived fields (KERNEL_GS_BASE, STAR, LSTAR, CSTAR,
+SFMASK, SPEC_CTRL) are not VMCS guest-state fields in Intel VMX.  They
+are saved/restored by the VM-entry MSR-load mechanism or KVM's MSR
+save/restore path.  The proposal is to populate these into the vmcs01
+blob's corresponding vmcs12 fields if equivalents exist, or define a
+small extension area for VMX-only fields.
+
+Hardware Limitation (GPRs)
+==========================
+
+Neither Intel VMX nor AMD SVM saves general-purpose registers (beyond
+RAX/RSP/RIP) into the VMCS/VMCB on VM-entry.  RBX, RCX, RDX, RSI, RDI,
+R8-R15 remain in physical registers and are overwritten when L2 starts.
+
+For SVM, hardware saves RAX to the VMCB save area; for VMX, RAX is not
+in the VMCS guest-state area at all.  This is a hardware constraint,
+not something KVM can work around.
+
+The L1 hypervisor is responsible for saving its own GPRs (typically on
+its stack), which KVM cannot locate.
+
+Despite this limitation, having RIP, RSP, CR3, CR4, EFER, segment
+state, syscall MSRs, and debug registers provides a comprehensive
+snapshot for debugging: it tells you WHERE L1 was executing, its paging
+mode, stack pointer, privilege level, syscall entry points, and debug
+state.
+
+Implementation Approach
+=======================
+
+1. New flag in arch/x86/include/uapi/asm/kvm.h:
+
+   #define KVM_STATE_NESTED_VMX_L1_GUEST_STATE  0x08
+
+2. Extend struct kvm_vmx_nested_state_data:
+
+   struct kvm_vmx_nested_state_data {
+       __u8 vmcs12[KVM_STATE_NESTED_VMX_VMCS_SIZE];
+       __u8 shadow_vmcs12[KVM_STATE_NESTED_VMX_VMCS_SIZE];
+       __u8 vmcs01[KVM_STATE_NESTED_VMX_VMCS_SIZE];  /* new */
+   };
+
+   The vmcs01 section is only populated when:
+   - KVM_STATE_NESTED_VMX_L1_GUEST_STATE is set in input flags
+   - The vCPU is currently in guest mode (L2 active)
+
+3. In vmx_get_nested_state():
+
+   When is_guest_mode(vcpu) and the new flag is set:
+   a. Load vmcs01 temporarily (vmx_load_vmcs01 already exists)
+   b. Read guest-state fields via vmcs_read*()
+   c. Populate vmcs01 blob with guest-state values
+   d. Fill non-VMCS fields (CR2, DR6, syscall MSRs, SPEC_CTRL)
+      from vcpu->arch.* caches into a defined extension area
+   e. Restore vmcs02 as active VMCS
+
+   Alternatively, KVM caches some vmcs01 guest state in the vcpu
+   software model (vcpu->arch.cr0/cr3/cr4/efer).  These cached values
+   could be used for the fields that are always kept in sync, avoiding
+   the need to load vmcs01 for those fields.  The vmcs_read*() approach
+   is still needed for segment state and other fields that KVM does not
+   cache in vcpu->arch.
+
+   When the flag is not set, behavior is identical to today -- fully
+   backward compatible.
+
+Implementation Note
+-------------------
+
+Loading vmcs01 while L2 is active requires care:
+- Must be done with preemption disabled
+- vmx_load_vmcs01() already exists for this purpose
+- copy_vmcs02_to_vmcs12_rare() demonstrates the pattern of temporarily
+  switching VMCS for state reads
+- After reading, vmcs02 must be reloaded as the active VMCS
+
+QEMU Usage
+==========
+
+QEMU would use this to provide accurate nested debugging output.
+When the vCPU is in L2 mode, the output would clearly label which
+context the registers belong to, and additionally show L1 state:
+
+   (qemu) info registers
+   CPU#0 [L2 guest mode]
+
+   L2 (current context from KVM_GET_REGS/KVM_GET_SREGS):
+   RAX=0000000000000000 RBX=0000000000000000 RCX=0000000000040082 ...
+   RIP=fffff8041602ab1f RSP=fffff80414323f68 RFL=00040282 CPL=0 HLT=1
+   CS=0010 DS=002b ES=002b FS=0053 GS=002b SS=0018
+   CR0=80050033 CR2=00000037a86f225a CR3=00000000001ae000 CR4=00350ef8
+   DR6=00000000ffff0ff0 DR7=0000000000000400
+   EFER=0000000000000d01
+   ...
+
+   L1 (from vmcs01 / vcpu caches):
+   RIP=fffff8001234abcd RSP=fffff80014000000 RFL=00000246
+   CR0=80050033 CR2=0000000000000000 CR3=00000000001ad000 CR4=00350ef8
+   DR6=00000000ffff0ff0 DR7=0000000000000400
+   EFER=0000000000000d01
+   CS=0010 base=0000000000000000 limit=ffffffff ar=00a09b00
+   DS=002b base=0000000000000000 limit=ffffffff ar=00c0f300
+   ...
+
+Alternatives Considered
+=======================
+
+1. New ioctl (KVM_GET_NESTED_REGS)
+   - Separate interface for L1 registers
+   - More API surface, but cleaner separation
+   - Could return a flat struct with all L1 register fields
+
+2. Extend KVM_GET_REGS/KVM_GET_SREGS with a "context" parameter
+   - Add a flag to request L1 vs current
+   - Changes semantics of widely-used ioctls
+
+3. QEMU parses vmcs12 host-state area (no kernel change)
+   - Already available, but only gives L1 VM-exit handler state
+   - Missing most guest state; insufficient for debugging
+
+4. Do nothing
+   - SVM already exposes comprehensive L1 state; VMX users have no
+     equivalent, creating a debugging gap
+   - Nested VMX is increasingly common (Hyper-V on KVM, KVM on KVM)
+
+I lean toward extending KVM_GET_NESTED_STATE because it reuses existing
+infrastructure and parallels the SVM approach.  But I welcome feedback
+on whether a new ioctl would be preferred, especially if maintainers
+feel the vmcs12 blob format is not ideal for L1 state.
+
+Questions for Maintainers
+=========================
+
+1. Is exposing L1 guest state via KVM_GET_NESTED_STATE acceptable?
+   Are there security or stability concerns?
+
+2. Is the vmcs12 blob format the right container for L1 state, or
+   would a flat struct (like kvm_sregs) be preferred?
+
+3. For MSR-derived fields (KERNEL_GS_BASE, STAR, LSTAR, etc.) that
+   are not in the VMCS guest-state area: is it acceptable to populate
+   them from vcpu->arch caches, or should they be omitted?
+
+4. Is the GPR limitation (no RBX/RCX/RDX/etc., and no RAX for VMX)
+   acceptable?  This is a hardware constraint shared by both Intel
+   and AMD.
+
+5. For the implementation: should we load vmcs01 to read all fields,
+   or use cached values from vcpu->arch where available?  Are there
+   concerns about cached state being stale?
+
+Thank you for your time.
+
+--
+Zhengrong Li
