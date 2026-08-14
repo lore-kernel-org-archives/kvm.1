@@ -1,65 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2466140E8D7;
-	Fri, 14 Aug 2026 16:43:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C991F45C710
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 16:44:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786725835; cv=none; b=VtUyVf+ZJOBp+AUMHkHa1Mumr37cB1/Qx/SNTZvkJn4EIFWJeZ0mVNhsu1MHwYrs42SoiTI6cF3edJcjkp0U87DpvoJGtUWa8peLvMNbwAjQyz4kVxkFfhxh1KHrIMOjWIqQrvfRpuY6S1j4eXtlL0bBWmTRBRz/wp/wUn1mAxU=
+	t=1786725879; cv=none; b=SyTVe66h5dCUp/vurmNzJkrZJDJIanKtFKRvWh2gPFmbCYu7lp+DRSpS0hrLxdCgOU82IELVRYVOLeVb0KujEg5NlN7U72/ZmqwobJLVbPomAiJWyjnD+FB+cY5+2Ei0s1c16IG6BuUEhynnQTMOjbfTPP0hTYY3wgFgBOU6PaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786725835; c=relaxed/simple;
-	bh=mI5f665LgEmU8MdOHU8YHgBPiRniTiY+tpgPy7K4sgQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=S1+NSebupRL4Ip2LXbOLKYQf0y2p/TKzQSbEy4vmuj3cxvWY/SmZy9ZfnLGl72zdOb9gf/95XDX5UaCpDhtmlioTixNQhaXZm+A1PPMse4ziYrkN/+DM0F6go0DaBWVXchc2i+CIGtGm9Wn9a6frMQBzzRmbtz1IT+DzojXn7bY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jaPJd7/2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786725879; c=relaxed/simple;
+	bh=SXMUBMpWqjsSZ8UZUax/xd2jiHPkqWpJd/+6vxgoa0s=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Ejamlj7M5PHuO5NTqdH0eziurH3BzH4MzVWTe7jHfl59JOtTEab68T7sw/SkqB7KtU05o+bHrAvCwtoytaMeebw7/C+NK8lSpVeqD4BgadU8Fu3s0A6bQhg2ka6h9kRGTMm6Fk2lM0AJo5OlzvGs9r6msTYJl3hibq1MaFhbafE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Guon7HHi; arc=none smtp.client-ip=209.85.215.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jaPJd7/2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D9E1F000E9;
-	Fri, 14 Aug 2026 16:43:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786725833;
-	bh=mI5f665LgEmU8MdOHU8YHgBPiRniTiY+tpgPy7K4sgQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jaPJd7/2IqeVkixik2SwA59zw9XZGUcPubNKFeLF85g/3KArguZkImOTzhiH27JK7
-	 IiGmsfHmiJDeNNO7FYK1DYDbfYibr3gGZYYt+hrPYvW8bx5CoQNGTTD/sbKoQ9wB8Q
-	 fFLz8kGqhctGVkypdxEdXnRP1MVbgdQmjobQ040QK6ZT48YyR9wI1iIPdROef6aV8o
-	 SeBNzR4FDmB5979GNp8hMP7IYQ45bTda81SC4IPJ6eqJjhkST9ixIykvgX0ncYiGUc
-	 OhtYT5pSA1S3e0mw63w6WHXb4F1IFcqoWeElKi9LWpeI3/gE0/fR0Zav8S97m7HAl2
-	 eUDIy6mTEDy8A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 5/6] KVM: s390: Add missing srcu in
- kvm_s390_set_irq_state()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>, "Christian
- Borntraeger" <borntraeger@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Vasily
- Gorbik" <gor@linux.ibm.com>
-In-Reply-To: <20260814163355.227191-6-imbrenda@linux.ibm.com>
-References: <20260814163355.227191-1-imbrenda@linux.ibm.com>
- <20260814163355.227191-6-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 14 Aug 2026 16:43:52 +0000
-Message-Id: <20260814164353.56D9E1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Guon7HHi"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cb5cc1e13f8so980472a12.3
+        for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 09:44:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786725877; x=1787330677; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=OHHH7uTWtnNMDgIrudvSIouxtfc87FvfYM1qiAcx7gY=;
+        b=Guon7HHiGBtZqJhU2zoxeptoiX6XU8sOCSxE7I8bjSTDxeS7n4pFMht/gedEt34AM6
+         7C1loXpzWTsZquOeZ1+s3SneCWnVXJpeJ5bjVFzoWKyoInK4WekzI4mjquJvV9yzaNdz
+         URIK7Y5vtn0Cat3yE/mMQBuf8ieh+rzT5YAr6KY8U5p9Mhh7MWTQWR6fypS8bJyLKcqC
+         9ogzH2GzIeJNOMFyv2EFPINVLkg+oHTdeD5FH8P+l51GM7zcdozWvo6Z9VpalKT2zIiE
+         N/dxT6P2lZ+DMBtGDhKFd9AqdZfu0rCISuspIDHiMDhc/OEG0neyTz84I9CcTOepotSn
+         bQcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786725877; x=1787330677;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OHHH7uTWtnNMDgIrudvSIouxtfc87FvfYM1qiAcx7gY=;
+        b=hSeJwo74XuTGGmCcylA/t9C1G+HqpbwJRY3fE7v+TbChmVpu40fyPwmCKKYyLV1co0
+         nx5YxOtqHEAKFCLjk1D6fI+GoL3L/tgRx4BqsjgqG+juKHjYqRuK1YrkM9n7HJ2My2PR
+         BL9GZ99Vjo08N1E7SBPwDgKqPu22fjBHNjijP3phxdF/Iirz6B/nqdxG3T9BZFVirzUI
+         0LyU3RQaRaS415NFcbglSXROQwf1FjLeUHBZT1Az5lgpoDcnRTup9sbm2zH7ZIM4vKrj
+         nUEGJqEUAVWwp3uk3O2o0bY8NirIjJKMhUbHuPZlZMnNWZCiAosyIFSN7g/FYnAZwiYa
+         JJpQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqT4PO/pjdmJty8BL8alHGmplzZW44PrTjk6X29d4GrC7S7VDFuvSSRfdkN0WsmAs8JHZc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywf/mKS56RHPArvzocAkK4z6o7euzisvXv1L5AF99yQ1b3mexno
+	jqSMPQk4mUpAmN+fRWN8LoRpk4Hr8IQ6NZ4tXhDs8UEY2fb2yW7NDMdE5oemJVMYls1k8I8tH9e
+	WRa8Pvw==
+X-Received: from pfbgp14.prod.google.com ([2002:a05:6a00:3b8e:b0:847:8e58:df6f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:21c8:b0:847:973b:3cf6
+ with SMTP id d2e1a72fcca58-84fddde3c32mr7348818b3a.0.1786725876826; Fri, 14
+ Aug 2026 09:44:36 -0700 (PDT)
+Date: Fri, 14 Aug 2026 09:44:36 -0700
+In-Reply-To: <20260814163207.D8C5D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260814162221.2144473-1-vkuznets@redhat.com> <20260814162221.2144473-3-vkuznets@redhat.com>
+ <20260814163207.D8C5D1F000E9@smtp.kernel.org>
+Message-ID: <an9F9EJj4yLkc8Op@google.com>
+Subject: Re: [PATCH 2/4] KVM: nVMX: Make VMPTRST return eVMCS GPA when it is used
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Like kvm_s390_inject_vcpu(), kvm_s390_set_irq_state() also needs the
-> kvm->srcu or the slots lock when performing the Store status operation.
+On Fri, Aug 14, 2026, sashiko-bot@kernel.org wrote:
+> > diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> > index c78c67525ac9b..d13a4d47bc68f 100644
+> > --- a/arch/x86/kvm/vmx/nested.c
+> > +++ b/arch/x86/kvm/vmx/nested.c
+> [ ... ]
+> > @@ -5958,8 +5958,14 @@ static int handle_vmptrst(struct kvm_vcpu *vcpu)
+> >  	if (!nested_vmx_check_permission(vcpu))
+> >  		return 1;
+> > =20
+> > -	if (unlikely(nested_vmx_is_evmptr12_valid(to_vmx(vcpu))))
+> > -		return 1;
+> > +	/*
+> > +	 * Hyper-V TLFS does not specify the behavior of VMPTRST when eVMCS i=
+s used
+> > +	 * but genuine Hyper-V seems to be returning eVMCS GPA.
+> > +	 */
+> > +	if (nested_vmx_is_evmptr12_valid(to_vmx(vcpu)))
+> > +		current_vmptr =3D to_vmx(vcpu)->nested.hv_evmcs_vmptr;
 >=20
-> Fix by taking kvm->srcu in kvm_s390_set_irq_state().
+> [Severity: Low]
+> Will this cause a build failure when CONFIG_KVM_HYPERV is disabled?
 >=20
-> Fixes: ba5c1e9b6cee ("KVM: s390: interrupt subsystem, cpu timer, waitpsw")
-> Fixes: 062e44a9319f ("KVM: s390: Use srcu in kvm_arch_vcpu_unlocked_ioctl=
-()")
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> Because nested_vmx_is_evmptr12_valid() is a static inline function rather
+> than a preprocessor macro, the compiler still evaluates and type-checks
+> this branch even when the helper is hardcoded to return false. If the
+> hv_evmcs_vmptr member in struct nested_vmx is conditionally compiled base=
+d
+> on CONFIG_KVM_HYPERV, the compiler will fail to find it here.
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Yep.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260814163355.2271=
-91-1-imbrenda@linux.ibm.com?part=3D5
-
+arch/x86/kvm/vmx/nested.c: In function =E2=80=98handle_vmptrst=E2=80=99:
+arch/x86/kvm/vmx/nested.c:5971:53: error: =E2=80=98struct nested_vmx=E2=80=
+=99 has no member named =E2=80=98hv_evmcs_vmptr=E2=80=99
+ 5971 |                 current_vmptr =3D to_vmx(vcpu)->nested.hv_evmcs_vmp=
+tr;
+      |                                                     ^
