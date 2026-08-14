@@ -1,249 +1,81 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013071.outbound.protection.outlook.com [40.93.201.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAAB4908A9;
-	Fri, 14 Aug 2026 17:00:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786726814; cv=fail; b=WXgyRaXd8u+2kqWmw3TlxEUcfClNNNwhVRgX19He2f4ZfN2CkpkTEuLyoqV7hXk0ZHXJgH211DaNAKCWrOZDqgvzGZ353ilxwvN4zyx4vGmzYSD8scn83pTdNW7i+uza2iE2Nha5A2OJKWthrVomCkQj+FJSpr47SplPZTLDGzA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786726814; c=relaxed/simple;
-	bh=zSj9e3Vlsv9ZfrM/aDqpxAvY99BjB/oVJVeVhiI77TE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pp6/XlaqroOo/Bt/E4wDBz/gAwMZsNXYA+Rm/70Oo8A7wP1e+SjcZnsTUnZHR9lcvcLEYhnhY0HKoKZ9kt/DKAfOTAYXCGIMykQ8/6aFnQ7r4pjp4G0KXmM4sm0dBkIRQJ86ZSEfl1dUtSz/OPKzsDaOW9DMEHVyCm46hxeI9co=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=e6vAKO3l; arc=fail smtp.client-ip=40.93.201.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512EB486BB4
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 17:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786726966; cv=none; b=DMOurJt6Vr75Rh08Mhdov4EsLfcegcafYSFL9wICgJbmDEbMlEfJO4u7BctOITRbu6c2z6IxdBsqdPvJrXry+YD7X66qigoUDZ8wwgMU5BQJAxbsmCZ6t+mo4PM0QXXK+R+7waTpWoZ/rtFfdSPCd1gEtgc+jIomxNf18XZ2NgI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786726966; c=relaxed/simple;
+	bh=JoZqmxpuuPNKAmYYoCdlkybFxzPOn0hNPVsF9oZo2WY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=jOOFKjR6tKysNqFymM1hkeg9pubWTifwur6xYKrsH5X6V94cwA/K45VxZURoY9W2PovNJMVyusexXbuCCNG/8u5s8Oiz50lpuTi2m1bgaQknZ11EhNePERdZnedzcZodeHGqgY/OYhJmuN9CGPYj8pFwtfZPFI6YNmH0W0+qb7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d0e5ut7Q; arc=none smtp.client-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="e6vAKO3l"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FpTuDtxdFJatfhWnZoIjTB9iFEoWJPFJ1f2kDX6x7biTcAQHom314Bsy3qnA900QIYCfDghLxNRbbXpgME8WbP6rhDsCc3ZSvMpHRYaUH3mV+o0mCpWG4cq8sGFw0p0Wzp/RddJ3LEVEfaRZFg5otDV5jABha9rdnkGkwHe0edHIR4Iv2EKCuZBVTlPlZYyafXp0dpedjXa7zoz2cQNMspzaAZCSANkbi80co3kGK4qPZ0D0QC2tG3ULIm6YJQnqmQw57wP3efTtkBBCMjgkLG58IvprGJixZ+zzzH2VqLAYHUBWu9UguO+bBypsSc5ze43BISqdA79LKD2wI92q6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BE6qkKupRCH+U2n4Kzu4y1WXSbysfCuVXEjBgGVKX5g=;
- b=cXon5IqxKV7Gp90MJX78YuAH/8WIcPi5buGLjdzWy+XfBD5by2tWaG7ZLxAV2uJqvEsh7a2VsZel3i1frtaB9RMowAi4pzO3lFECxgsEchqRFviA2+n1wjRtoDS5XHCXFhU9mA6m3NIv427m08MbYjPT/fxrA08gs/d0qGDApLOf/vYTtI/IqwvKMooa41YGfi1gPF88COJ8iRPgutWfseNhnBCI5Yu4lSb9pyJ6XxW37zIZ8h58ntHJR7MgeVpL95hkyZ4kaF2fEG3617yF6xMukZFiW1tKEemouSHp/Gwzbg9NMyKn7jB9pefCmQpIX85GoT/d0MOhMy0lw9K2Kw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BE6qkKupRCH+U2n4Kzu4y1WXSbysfCuVXEjBgGVKX5g=;
- b=e6vAKO3ltT4qUxEG3CU04NY53cmUxIJ7dqiAc2xkr9oGW/6jrZxEjdfTECWhWpRf1BD6J6r5dDcXwjAlNwqVDDvJ0mhXLcsjZN5dMsd2iU+p930VTcN6zHMZ3UjBJfkTGnUvQxp0bfbfQJ7+LTe7CPYpJROfD7TFn8umFXzGRAw=
-Received: from SJ0PR05CA0036.namprd05.prod.outlook.com (2603:10b6:a03:33f::11)
- by IA0PR12MB8645.namprd12.prod.outlook.com (2603:10b6:208:48f::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.16; Fri, 14 Aug
- 2026 17:00:08 +0000
-Received: from SJ1PEPF00002315.namprd03.prod.outlook.com
- (2603:10b6:a03:33f:cafe::67) by SJ0PR05CA0036.outlook.office365.com
- (2603:10b6:a03:33f::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.5 via Frontend Transport; Fri, 14
- Aug 2026 17:00:08 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SJ1PEPF00002315.mail.protection.outlook.com (10.167.242.169) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.339.3 via Frontend Transport; Fri, 14 Aug 2026 17:00:08 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 14 Aug
- 2026 12:00:04 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 14 Aug
- 2026 12:00:03 -0500
-Received: from amd.com (10.180.168.240) by satlexmb07.amd.com (10.181.42.216)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45 via Frontend
- Transport; Fri, 14 Aug 2026 11:59:58 -0500
-Date: Fri, 14 Aug 2026 16:59:50 +0000
-From: Ankit Soni <Ankit.Soni@amd.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-CC: David Woodhouse <dwmw2@infradead.org>, Lu Baolu
-	<baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon
-	<will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy
-	<robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, Alex Williamson
-	<alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, <iommu@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, Pratyush Yadav
-	<pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, "David
- Matlack" <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>,
-	Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v4 11/18] iommu: Restore and reattach preserved domains
- to devices
-Message-ID: <xssagtjtc27kxprwyz7exeiotigcr3ksnvr53ap56ialuqlfe4@xql3pr5va6m5>
-References: <20260808022723.3893618-1-skhawaja@google.com>
- <20260808022723.3893618-12-skhawaja@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d0e5ut7Q"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cb5cc1e139bso893392a12.3
+        for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 10:02:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786726965; x=1787331765; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JoZqmxpuuPNKAmYYoCdlkybFxzPOn0hNPVsF9oZo2WY=;
+        b=d0e5ut7QhAvb7W95+C04h7Xkqa1kBXgiHj6RIKAD2OqSWyP9WWQZmo5sarxcSZ5QoA
+         9naNl/phGM3xOVyeG1oUDgfnRVuzijP6dLguN8k1BdEi+Oo8tPlFLpPPrPqaLYr1bEcZ
+         D/ObU/DFR5soxnP2O4lhcqk7la1Bv339pPXPaRnknwOt0IJtrHDacuZ8fHFrITVI/y42
+         9pYCId6GvUWUjxFwgYwyZ3Wm0ufGtoNJPbQEVpNSnSLxd+rzcXxIXdVyY/gP2AHFyxPs
+         SbNxhzb98A7YoWTwWOM6mYkQJRK2hwVfvu2ApzIwcUyUU6oPhEUx7j4jP2d8AbvlagD4
+         4F4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786726965; x=1787331765;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JoZqmxpuuPNKAmYYoCdlkybFxzPOn0hNPVsF9oZo2WY=;
+        b=HX1BjcqtkfCAeXGxylFAiVcviUPzYu6UGqoqUJqWXMhdDyj0+jyO+kXQubRP7ulSys
+         fyDpncnygWkKFS3qlTNkMGbhiNj7L4Y//g4Qlf9tPBFn5kVwOZTvLdnVmdqhDxPFzu97
+         DCcVfFt7TxnbE+n/30uhzeDfBdor7ziOGnD1QNjtIg9+piIFOcuO9X+HLtF1vvhTe9ac
+         KQ+hwEi+5zwiC8G/BwrC0uIif8m58diO4INMSc/h7IFusPJ9pN6K5QWRhsQ7a+DoV9D0
+         GmyUPlH6oM5CsDKxJK53rVQ7Y94/WbeYQxmNWzbDXMXinyy4DYEUp32NN9IQ2/eWLsZg
+         I2jA==
+X-Gm-Message-State: AOJu0Yxc45rmLeuCCkFCy4HptqCV/+sNljvHX8xyoIr1L3xZZQmDxVV/
+	GKrLH+hgmvgw2LnJ5WUxBbYufKbN3AebZo74SfTLZWula6ENlu9lfHe3tTQOsiiYBofg4Ns5pE+
+	icDtuLw==
+X-Received: from pgnd14.prod.google.com ([2002:a63:734e:0:b0:c9a:b3b0:a861])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a0d:b0:3cc:1d29:f172
+ with SMTP id adf61e73a8af0-3cc71fa83c4mr8041630637.22.1786726964456; Fri, 14
+ Aug 2026 10:02:44 -0700 (PDT)
+Date: Fri, 14 Aug 2026 10:02:43 -0700
+In-Reply-To: <20260814161950.136041F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20260814161129.2177118-1-seanjc@google.com> <20260814161129.2177118-4-seanjc@google.com>
+ <20260814161950.136041F000E9@smtp.kernel.org>
+Message-ID: <an9KM3Ye-GX7WggF@google.com>
+Subject: Re: [PATCH 3/3] KVM: VMX: Rename posted interrupt prefixes from "vmx"
+ to "vt"
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260808022723.3893618-12-skhawaja@google.com>
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002315:EE_|IA0PR12MB8645:EE_
-X-MS-Office365-Filtering-Correlation-Id: 15c6f29c-32bf-4da8-bd08-08defa257ef8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|7416014|1800799024|36860700016|23010399003|56012099006|10067099003|4143699003|5023799004|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	ajZVYntJ9IUL7WH3P4/0gGbbR6IOJgC7agMzp1qc0dBj/oFpxEmDZtHjY1RS5im74cXSuqpEZh4gjxd/p47Yw4cqlUWgg/6XkMTLjiVpYr9zkROIgwtPU5w6MSJLMZGtdopQk9QapekqIXh7nfHne+/4luNmgRGG+eMo7a8THEJuN9zph/n3hV3nHSa/eTDAAeW2/ICMuVAAfnucEjuMsslJJASmvt5+vd9K0Bx0a+0MzvdI6ZVNXBwTXTsx0BS8hupE2/jTbwZEEnh7sq67Nu4Cqo530xM+WxnAuH/kHL2EUcn0+VRWbN52P71AnEECohHYv/BpMEFajvegoNWmfYWMgEMhgqcBSKn5X2crtrXwJTRafW/XCMOpw6dxbf1291LOPAnpdXe3Ci1C5YGUVIqliJLNPyH3rPRKA/A6mXnPkcV6ive4349Hp0fJKrPC4URXMGwb8+QdjI5RQQqNANO7ya/cliTNYPCE0STowE3uTJpbEKsNYrKFlcJPVBKyG+W9phKen+b7N2eKsuM2OnsVTIsL1ZRuZBIGbWdr2O7iNN5p7O+0bzZGu+Cbn21lZcX1CXcnUXJpqgv6gFaiC4m93cLGS22NE/Im+lFPBJFDQJ0rUCjaeNG6OTI3D/x4Pmgw+9UP6qFVUZYo7YtsTFsXUowvRoYEsGwfLLGweUNJ6zXBpCJR/A1LHNSIQtPXljm7B9uKrINF8cEOva5WVQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(1800799024)(36860700016)(23010399003)(56012099006)(10067099003)(4143699003)(5023799004)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	IHHLYf+cDgSeMkzyLHkc4tRoxz/ToM6z2pr8cjeZnDyP/L9HxTE26m84Fy9RTfFWQc70Hb+gDySJbGtdix727u1nkGOpQztfVe7Po5wavmzLCS1Jc1MpcOc6h8qrhigloMsacXLO6ED3TESZ+iXGcUD53EHxrD9SRG/e+VQ4GvhK+VBTEKQh+h91AGKw9D3gKFD36Bws57wxZi6SsTSXLLnoGgquBIAjKC7ou89iu+vMq2NZ5FD6vVEfxDMyWnVzNH7BVxpR+EDMDce/b1goJkr1ZYpPFaWbVASzMqtVkOmVblanpSckweQMnEYShAFVjm8YOFDCiwgkomvuwkuvAcOytQIMDHFi2yU8ASFsbzgKvOFmx6Cj9jsskWdo50zNn0ZOySUrVdM4KW/YnIlL5WBmeYns53KjxlXpUXvYFpBRxQIwSLtVcVOJ00NYKT/T
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2026 17:00:08.3254
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 15c6f29c-32bf-4da8-bd08-08defa257ef8
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002315.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8645
 
-On Sat, Aug 08, 2026 at 02:27:16AM +0000, Samiullah Khawaja wrote:
-> During default domain setup, restore the preserved domains by restoring
-> the page tables using restore() iommupt op. Associated the restored
-> domain with the iommu group of the preserved device, and reattach the
-> domain to the device.
-> 
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> ---
->  drivers/iommu/iommu.c            |  76 ++++++++++++++++++
->  drivers/iommu/liveupdate.c       | 130 +++++++++++++++++++++++++++++++
->  include/linux/iommu-liveupdate.h |  69 ++++++++++++++++
->  3 files changed, 275 insertions(+)
-> 
+On Fri, Aug 14, 2026, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> - [Low] The function `vmx_needs_pi_wakeup()` was not renamed to `vt_needs_pi_wakeup()`.
+> - [Low] The shared inline API `__vmx_deliver_posted_interrupt()` was not renamed to `__vt_deliver_posted_interrupt()`.
+> - [Low] A comment inside `vt_can_use_vtd_pi()` references the old `vmx_pi_start_bypass()` function name.
+> --
 
-../..
+I also missed vmx_handle_nmi() and __vmx_handle_ept_violation().
 
-> diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
-> index 20acf123b47a..04c0212cd81b 100644
-> --- a/drivers/iommu/liveupdate.c
-> +++ b/drivers/iommu/liveupdate.c
-> @@ -708,3 +708,133 @@ void iommu_unpreserve_device(struct iommu_domain *domain, struct device *dev)
->  	liveupdate_flb_put_outgoing(&iommu_flb);
->  }
->  EXPORT_SYMBOL_GPL(iommu_unpreserve_device);
-> +
-> +static inline bool match_device_ser(struct iommu_device_ser *match,
-> +				    struct pci_dev *pdev)
-> +{
-> +	return match->devid == pci_dev_id(pdev) && match->pci_domain_nr == pci_domain_nr(pdev->bus);
-> +}
-> +
-> +/**
-> + * iommu_init_device_preserved_data() - Initialize preserved state for device
-> + * @dev: Target device
-> + *
-> + * Looks up incoming Live Update state for @dev and attaches it to the device if
-> + * found.
-> + */
-> +void iommu_init_device_preserved_data(struct device *dev)
-> +{
-> +	struct iommu_device_ser *device_ser = NULL;
-> +	struct iommu_device_array_ser *array;
-> +	struct iommu_flb_obj *flb_obj;
-> +	int ret, idx;
-> +
-> +	if (!dev_is_pci(dev))
-> +		return;
-> +
-> +	ret = iommu_liveupdate_flb_get_incoming(&flb_obj);
-> +	if (ret)
-> +		return;
-> +
-> +	mutex_lock(&flb_obj->lock);
-> +	array = phys_to_virt(flb_obj->ser->device_array_phys);
-> +	iommu_liveupdate_for_each_arr(array) {
-> +		iommu_liveupdate_for_each_obj(array, device_ser, idx) {
-> +			if (match_device_ser(device_ser, to_pci_dev(dev))) {
-> +				device_ser->hdr.flags |= IOMMU_SER_FLAG_INCOMING;
-> +				goto out;
-> +			}
-> +		}
-> +	}
-> +
-> +	device_ser = NULL;
-> +out:
-> +	WRITE_ONCE(dev->iommu->device_ser, device_ser);
-> +	mutex_unlock(&flb_obj->lock);
-> +	liveupdate_flb_put_incoming(&iommu_flb);
-> +}
-> +EXPORT_SYMBOL(iommu_init_device_preserved_data);
-> +
-> +/**
-> + * iommu_release_restored_device() - Release a restored device
-> + * @dev: Target device
-> + */
-> +void iommu_release_restored_device(struct device *dev)
-> +{
-> +	/*
-> +	 * We do not support releasing the restored devices that are not
-> +	 * reclaimed by the device drivers as they can fallback to the default
-> +	 * domain.
-> +	 */
-> +	BUG_ON(dev_iommu_restored_state(dev));
-
-Hi,
-After a successful live update this is one sysfs write away, and nothing in
-the series disarms it.
-
-At PCI probe, iommu_init_device_preserved_data() matches the incoming FLB on
-devid + pci_domain_nr and sets IOMMU_SER_FLAG_INCOMING.
-Nothing clears the flag or device_ser afterwards. The group is meanwhile owned
-on behalf of iommufd (iommu.c:3229-3231, "will be reclaimed later by the
-entity (iommufd) that preserved them"), and iommufd_liveupdate_retrieve() is
--EOPNOTSUPP, so the reclaim that would end the restored state cannot happen
-yet. The device is left with the state permanently set.
-
-A remove then BUG_ONs, in pci_stop_and_remove_bus_device_locked(), with
-pci_rescan_remove_lock held. Any device_del() gets there, so surprise unplug
-too, not only sysfs;
-
-Hit with my live-update work for AMD on top of this series, on a preserved
-device with no driver bound:
-
-  # echo 1 > /sys/bus/pci/devices/0000:43:00.0/remove
-
-  kernel BUG at drivers/iommu/liveupdate.c:782!
-  RIP: 0010:iommu_release_restored_device+0x24/0x30
-  Call Trace:
-   iommu_release_device+0x36/0x70
-   iommu_bus_notifier+0x46/0x60
-   ...
-   device_del+0x267/0x3c0
-   pci_stop_and_remove_bus_device_locked+0x22/0x40
-   remove_store+0x8d/0xa0
-
-Two suggestions:
-
-  - Clear the flag and device_ser together when the restored state ends.
-	The two helpers partition on that bit.
-  - WARN_ON and fall back to the default domain rather than BUG_ON, and either
-    way do not die holding pci_rescan_remove_lock.
-
-The same missing clear should also fail a second preserve, since
-iommu_preserve_device() returns -EBUSY when device_ser is set.
-Reaching that needs a reclaim first, so it may not be live today; static reading, I have not run it.
-
-Thanks,
-Ankit
-
-> +}
-> +
+I'll also add a blurb in the changelog for patch 1 to explain that keeping the
+vmx_ prefix is intentional so that vt_op() doesn't require a one-line forwarder
+when CONFIG_KVM_INTEL_TDX=y.
