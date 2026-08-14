@@ -1,102 +1,183 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCD546AA88
-	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 11:56:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F65339399
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 12:04:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786708601; cv=none; b=KQJrUJ9h1XmcTnjNaI3OLeF4CO4yLZCdI9hLFjswvxNwm+Tcd6dsf8PspCIMKJNtvArA2kxGnHCjUoSCzJVHHFKj39BEm85INdDcwrUWqU0Oc/0/hfxXualG+kMKUx5tT9bmi0rbRselLiQBETkqvhhOE99y0xOqkNVbKoNbRss=
+	t=1786709086; cv=none; b=XtKg/wt/iwKBBtX3hIobtMcBVVYWykCggAMcyRPMOHs3Za6UYc4pjvKs361SO2v0aI52hNXJbZs13ZLxZplCp9HMem0KFEdEY2Uru32FEzxyNQq6jY44sk32/3fD/DarixTTPDa/vNvlRzVMd3qImDqTzxpUDk+PBGUHh/9YWp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786708601; c=relaxed/simple;
-	bh=75WIdoyehgQt4Cvq9Rasz+hBaYGFXii+O4btnkeMIkc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YNW4zFKgUgV1B/IZgCMR+SfPBAGxRdPNwP3xKKvor5TXLHYaZ0q3XfXHssHJ50mochH/4fzdi7kSi0YCXe7QWWss5NqUkdV28dzhaw0jct8yYysboVbtiu4FPKMA9+bFjLVqsEO4svDRmz407ldZ+v5V1SH4iPZnnA+II+k0xyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nbhDcVGb; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786709086; c=relaxed/simple;
+	bh=VerDLJfCU78lktImv4eb3uegv6JdMKTI46vNwYmI5c8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=P7ra4vOuu6AKubIAhPvHx/sIj79Yydy+TBPXsTvLq8cjCCe1oTIjugscMz7CgBrR4yAXg6mZ0IuscGCSeOSRo60q95UyAIcOwm+CSulu5Kb/ytgn+XubHCERpfFbueefZBu0eVE7wJjx09sxtiOtH2LLAxk9B/0xGJ1Dccxh3sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MLJSre87; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nbhDcVGb"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-84e507b079dso510817b3a.0
-        for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 04:56:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786708600; x=1787313400; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=75WIdoyehgQt4Cvq9Rasz+hBaYGFXii+O4btnkeMIkc=;
-        b=nbhDcVGbRY6mEqtji4ay7q2+IgyyPEQWwJJNfssRWJArWGGxQ5FF/BGPblC4PAHeRx
-         1qM/1oTnuvSc3id8cFxNLvRpz934XWJEmdJ8AdLD0maQIPPm1WCac5WX1PH7FTkS1iso
-         dEoWDn8Kf1vOK2m+jBdoHDuzBWWjUxvqvgM+B6VQSSwM9/PbpIlQUYdTavzVbOHCBqXq
-         EMZ/HMeGrIVrdW5MxpL23QAMaMGKNydw9hRxXSm/PusMv1L9jmTlHrpgLXTXFE18kYyZ
-         1tEiZX18Sn7Ze3xc0twCmfLDyFNCzpmcFDHZfp+TkCuRvo+Og98Qz4qHBr9XIeMF65VU
-         //Qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786708600; x=1787313400;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=75WIdoyehgQt4Cvq9Rasz+hBaYGFXii+O4btnkeMIkc=;
-        b=hm0UdT+70HcyVd1BUVQEVRocN35FAOrcravYWTnTgPKjO1oWNWJSds2sqg3/iMw7AU
-         lAlqWwLua5cStQHUxABrNjrvQKT6wqtRLtAIwf+hQwne4pS6zxpXAZW2jdT5vsE0YXbb
-         Pc323bsXCTx3Gl82HieJAS7Jx8axkqgEc7t+/iDuB9nOpiEKftX/SoSycaEaJruOY1lm
-         Qt+WjVNozBPHUZzxQpj9RUd5pt8wWvvanVIPPBnv/NkVAcplGNjhcjJ6GI84XkhUqORt
-         Iue/88tkKI2RQ8isy0jEzAl/0ibZLivBrx0TaW+GCBb+MpGNisvMic7aGuS6zs8mDFNn
-         fLIg==
-X-Forwarded-Encrypted: i=1; AHgh+RpqvBWKFiIl3MAJmHcImZyVpzZkIC5I7h+0TQoCHbgr5TwjBktSn+o5BjX/2MdvuWdWe4A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynmdScfIDeqJxr9G5cXG63TDfetbNX0b8fX6bTPDVWJS9AtEUp
-	UCsEGgM0YsAetUc0MLmYH6hMr07DONuGxp9Pk7kUR8NgSSy3360Vsslsd1jFA3l7
-X-Gm-Gg: AR+sD13tatKvoZtdi8dJeNEu1koOPLILUpigVjQczAfoR+Z6cx4s/ISjmEJL3gFcih5
-	aHb+AkZHL6270Xp689AXXrBSXpiZ5YNxjRIwNYjb9lWqaBysn9HZP+ABjWY4MzdeU/ppA3mnes5
-	O7PmP1nNNShSIZazyKp10ugG2E0RvjbsgEXwnXzOHpV26SmqpQXpCdECOPoxfEgD+UDTrlkQXCo
-	7nsPB7NxKP6OBZFkE1+p/kj50OFxVYr7+ocSidWw+Fid5KYoQ8EaCOinqPJoDI5+ksughkTU9Tn
-	3GAYjLJUDVS0B1bz+rt/RXq3ZnXEFtPdn8VjLe/xPKHr5WdZptoxqYF8I++U/7FPCiqUiDoIy4i
-	p/1mbIqqKfDHxTMg3nspu3RksIWCiW9nIrWYtvYOPddM8NOsEFT+B5SLUbPrzA8waV7G3tQxO4V
-	iMCKb1DicQhZBXwFYxOH9FywqkUrp9Yne/4aPb1+0vnB5w9f79K0oVimfsFurN
-X-Received: by 2002:a05:6a00:b48:b0:845:a435:a2eb with SMTP id d2e1a72fcca58-84fde41c7a4mr5213758b3a.31.1786708599236;
-        Fri, 14 Aug 2026 04:56:39 -0700 (PDT)
-Received: from gmail.com ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8517cfeb3d9sm366669b3a.11.2026.08.14.04.56.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 04:56:38 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: sgarzare@redhat.com
-Cc: Jia Jia <physicalmtea@gmail.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] vhost/vsock: keep IOTLB across feature updates
-Date: Fri, 14 Aug 2026 19:56:12 +0800
-Message-Id: <20260814115612.127842-2-physicalmtea@gmail.com>
-In-Reply-To: <an7KyotZ5vZOURu2@sgarzare-redhat>
-References: <20260814072903.124991-1-physicalmtea@gmail.com> <20260814072903.124991-4-physicalmtea@gmail.com> <an7KyotZ5vZOURu2@sgarzare-redhat>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MLJSre87"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3324C1F00A3A;
+	Fri, 14 Aug 2026 12:04:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786709085;
+	bh=BVqwMgFc5QR2OxC5NYKUReIxVJb42kIU9Y5Tm0SUteM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=MLJSre87pe7/CjCc4FZatUzhajUi6kNX4OVfs3tNvcQINUM0vW2BKoin7yBdKNkEK
+	 W3yackfzuX1PxaNGte3q2Gkmu6S8QEjInVVMWJnkEtToJ+5VPqEL2fA3az0UsC68aM
+	 qZysgdyp1swysBvoGLqlMfl9I5cpGyhZ97pPOpmCAepro6DYo/WaiDSWn9GKrebm4Q
+	 W7htLSXLzc6cjR5pnz6bvFS1LsBJF6zZpJtDKiU0b9Mib/oZ77OGNtAiP9+urkFAFh
+	 Y1wb8fWeAqLKT1OdRqTGg8ryM8921OEniwtik99kpqB2hE7DsBxJrANJ6x7j0k5fYb
+	 VKAeVnjvQomyQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 1/3] KVM: riscv: Implement KVM_PRE_FAULT_MEMORY
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jinyu Tang" <jinyu.tang@linux.dev>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260814114507.583424-2-jinyu.tang@linux.dev>
+References: <20260814114507.583424-1-jinyu.tang@linux.dev>
+ <20260814114507.583424-2-jinyu.tang@linux.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 14 Aug 2026 12:04:44 +0000
+Message-Id: <20260814120445.3324C1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-> Will we do the same in vhost-net? If yes, all the callers will call
-> vhost_init_device_iotlb() with dev.iotlb NULL, so should we remove
-> that behaviour and add the check we are adding here inside the
-> vhost_init_device_iotlb()?
->
-> Or there is an use case where vhost_init_device_iotlb() is called with
-> an already initialized dev.iotlb ?
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
 
-I will check whether there is any valid use case for calling
-vhost_init_device_iotlb() with an already initialized dev->iotlb. If
-there is no such use case, I will move the check into
-vhost_init_device_iotlb() and apply the same change to vhost-net as
-well.
+New issues:
+- [High] The KVM_PRE_FAULT_MEMORY ioctl handler loops infinitely in the ker=
+nel if it encounters a HWPOISON page and the userspace thread has blocked S=
+IGBUS.
+- [Medium] kvm_arch_vcpu_pre_fault_memory() can silently skip requested pag=
+es and report false progress when mapping a split THP page.
 
-Thanks,
-Jia
+Pre-existing issues:
+- [High] Infinite VMExit page fault loop when a guest accesses an unaligned=
+ THP address on a split page table.
+- [High] Physical page table leak when overwriting a lower-level page table=
+ directory with a huge page leaf PTE.
+--
+
+--- Patch [1]: [PATCH v3 1/3] KVM: riscv: Implement KVM_PRE_FAULT_MEMORY ---
+commit ac8ca417e02ba68eb7b7c58fbc637ee417dc2c72
+Author: Jinyu Tang <jinyu.tang@linux.dev>
+
+KVM: riscv: Implement KVM_PRE_FAULT_MEMORY
+
+This commit introduces the KVM_PRE_FAULT_MEMORY ioctl handler for RISC-V.
+It reuses the existing G-stage fault mapping path with a read access to
+populate KVM page tables before running a vCPU, looping until a mapping
+is installed or an exit condition is met.
+
+> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
+> index b0474fcf065aa..ebd1e8a4b9e38 100644
+> --- a/arch/riscv/kvm/gstage.c
+> +++ b/arch/riscv/kvm/gstage.c
+> @@ -280,6 +280,9 @@ int kvm_riscv_gstage_map_page(...)
+>  		} else if (ALIGN_DOWN(PFN_PHYS(pte_pfn(ptep_get(ptep))), page_size) =
+=3D=3D hpa) {
+>  			kvm_riscv_gstage_update_pte_prot(gstage, ptep_level, gpa, ptep, prot);
+> +			out_map->addr =3D ALIGN_DOWN(gpa, page_size);
+> +			out_map->level =3D ptep_level;
+> +			out_map->pte =3D ptep_get(ptep);
+>  			return 0;
+>  		}
+>  	}
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does this lead to an
+infinite VMExit loop when a guest accesses an unaligned THP address on
+a split page table?
+
+During fault handling, transparent_hugepage_adjust() in kvm_riscv_mmu_map()
+can silently overwrite the original faulting gpa with the 2MB-aligned
+base address.
+
+If the G-stage page table is currently split into 4KB PTEs, this block in
+kvm_riscv_gstage_map_page() intentionally updates only the 4KB PTE at the
+newly aligned gpa. The originally faulting 4KB page remains unmapped,
+causing the guest to immediately fault again upon resumption.
+
+[ ... ]
+
+>  	out_map->pte =3D pfn_pte(PFN_DOWN(hpa), prot);
+>  	out_map->pte =3D pte_mkdirty(out_map->pte);
+> =20
+>  	return kvm_riscv_gstage_set_pte(gstage, pcache, out_map);
+>  }
+
+[Severity: High]
+This is a pre-existing issue, but does this leak physical page tables when
+overwriting a lower-level page table directory with a huge page leaf PTE?
+
+If 4KB leaf PTEs inside a THP-backed region are zapped (for example, via
+MADV_DONTNEED) but the page directory remains, a subsequent fault triggers
+a THP mapping. kvm_riscv_gstage_get_leaf() fails to find a leaf.
+
+The code then falls through here to kvm_riscv_gstage_set_pte(), which blind=
+ly
+overwrites the existing directory entry with a huge page leaf PTE. Because
+freeing page tables is not yet supported, the orphaned child page tables
+appear to be leaked.
+
+> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+> index 8a0aa5e0e216e..c71c1ebb07857 100644
+> --- a/arch/riscv/kvm/mmu.c
+> +++ b/arch/riscv/kvm/mmu.c
+
+[ ... ]
+
+> +	for (;;) {
+> +		if (signal_pending(current))
+> +			return -EINTR;
+> +
+> +		if (kvm_check_request(KVM_REQ_VM_DEAD, vcpu))
+> +			return -EIO;
+> +
+> +		cond_resched();
+> +		ret =3D kvm_riscv_mmu_map(vcpu, memslot, range->gpa, hva, false, &out_=
+map);
+> +		if (ret)
+> +			return ret;
+> +
+> +		if (pte_val(out_map.pte))
+> +			break;
+> +	}
+
+[Severity: High]
+Can this loop spin infinitely if the userspace thread blocks SIGBUS and
+KVM encounters a hardware-poisoned page?
+
+Looking at kvm_riscv_mmu_map(), it handles HWPOISON by calling
+send_sig_mceerr() and returning 0 without populating out_map.
+
+If the userspace thread has SIGBUS blocked, send_sig_mceerr() queues the
+signal but might not set TIF_SIGPENDING. In that scenario, signal_pending()
+won't catch the pending signal, out_map.pte remains empty, and the loop
+will retry infinitely without yielding back to userspace.
+
+> +
+> +	map_size =3D PAGE_SIZE << (out_map.level * kvm_riscv_gstage_index_bits);
+> +	end =3D ALIGN_DOWN(range->gpa, map_size) + map_size;
+> +
+> +	return min_t(u64, range->size, end - range->gpa);
+> +}
+
+[Severity: Medium]
+Does this miscalculate the mapped progress when handling a split THP page?
+
+If transparent_hugepage_adjust() aligns the gpa down to the 2MB base and
+kvm_riscv_gstage_map_page() falls back to a 4KB mapping, the 4KB PTE is
+populated at the base address. out_map.addr is correctly set to this base.
+
+However, the progress here is calculated using the original unaligned
+range->gpa instead of out_map.addr. If the requested GPA was at an offset,
+KVM might falsely report progress for the unmapped requested page while
+actually mapping the unrequested base page.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260814114507.5834=
+24-1-jinyu.tang@linux.dev?part=3D1
