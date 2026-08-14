@@ -1,429 +1,253 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286DB3655FA
-	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 22:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD333BBFDB
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 22:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786747087; cv=none; b=bmEPuCqv4uTjEjtSCt/53j4QiiXWRC5CNV72/ehzgqMUHhrrnpZ0d0HXYcRWmH/FZPHk/wNkAtcYK2I0F+F/SaYPMmtOqtTdrll1bzprzCBNK/gRh45n2G4imSphvyV82v0d6yljl9MzJrQ28NxOZ5aUHkLwqN9xhy00xZefhK8=
+	t=1786747514; cv=none; b=Ox1Eu9sPHxdMnCKKL6huBVoPEN/b7R9G0sfbTDOAvAQ6qdPgp3JUhMWDZf/x0svehj4gIcT7/1rOTo2oMRFbK7aYHqXjoBHJWVqxiHjF0RcVu7wbS3KUSf2p5SahZO69PVJp+2TDvFRec1fJ1cA9vRlMSFLG1DlEeQYA8u/r5Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786747087; c=relaxed/simple;
-	bh=MVl6e7TWu5n/rWliXmwAB5C+9kHukL00XfG1mML9xF4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ownkzA+cyNrgInc0qkiniqojboUxSjzUg4K78vRWnmEH48NHlBXJQrHzqikbpFklJPGFwIflfxcizT6xx1E5lreM9R9C0Zfye4ewRk4cueWHLv/IDJipQ4jwak9BK5ZrBArwcrzRFwVkDPtVytvQ20AzSKtoRsSNf6UjTFuuhY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BlQZQHb8; arc=none smtp.client-ip=209.85.210.176
+	s=arc-20240116; t=1786747514; c=relaxed/simple;
+	bh=nw5IvSEB5wpVmf4cVUFFz5inbV7Os9oqLOB+NCiN6UI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=BDrG7E5ijWNuTRbwJkuu6KaUY+1sgq0HRHz9ipWxohF3AJqqSM/9+8goo1WQ48OYOeLeSLaziNSSN8/Ka5sy7Sn9bvYS35ADP6Vrcn92RR/F6EP/LaDRYZ8iBGIV0J78Qb7NH+83OVqg32CxjdABb0az4FvVGEbKyUobWnpDkWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W0neo5jw; arc=none smtp.client-ip=209.85.214.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BlQZQHb8"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8485ef63b68so1220495b3a.1
-        for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 15:38:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W0neo5jw"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2d54187d8b0so4582695ad.0
+        for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 15:45:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786747085; x=1787351885; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CPYoXlQLa9cb/zBr4H0XgoMSmy+mWin+YeKrV4UQeaU=;
-        b=BlQZQHb8RepoIm9DhGkwwy6EUXbrJt1pfXHCArj7/C0rae/wqTTFXOztXrBXprOGF2
-         xSQo/r/pXWjMZot8T91OdH8z+GZ5qBVvQrkBMFO83tGTJOqFByu6ubI6f1eF5NsPBc4O
-         Ls1x/XGEOjwFRyk9Q9gK6YXaIJv7xXSpBmZFN6f7++vkVBfhu6dmRvpWwOqOiALYrZpO
-         wKWwnPSskIu6Q0oCLtFk/nQ6++M5dTqprPZDNYBOpI/nV34sYJyrIjUPLafAF6RS/Zse
-         O7VPF+8gSsSWcxPf9PwKEeEZw8MQJZQL7o6jbmFxle6YEPsR2HMSo6ZZtTmZRL5W7Xfe
-         j8Pw==
+        d=google.com; s=20251104; t=1786747511; x=1787352311; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pliuRHo29I6egc2gNeBr49sOpidrbP1eYnD6HzsJLuI=;
+        b=W0neo5jwwkqe9ziJTHEULgNVqdfMlADm5E2plaubvJblEKQbXytpufhR1TqCQCLAoW
+         Y5VjLztceoTPYGqM4D8IfHK9CSfmDlVpmeXDeouYVgHC1PiXvb5rHgNi8E7vwEVKPHSm
+         c2Cd0qnIVZ4XRRK0l9hoA8zyw8weIIlhEUpwDjp6gZBofeK5aZAMDeQ5nQC+DWTTwrrN
+         XHARBvSaG7PbRpvhT+0XV+OEjjXZAO7iO8AIuzCMiT57I2UJsrUYpXD1c1tESbP7FARB
+         /s97i3M8sCFLz8JGeGkdMLSCOfdK+8rJQLFyhAlc8WNIQ1ubYo9fvfx7VcZdNXwszapt
+         5K7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786747085; x=1787351885;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CPYoXlQLa9cb/zBr4H0XgoMSmy+mWin+YeKrV4UQeaU=;
-        b=QmfyrL2vUSx1YyYsP+mF72+gMfGSLn0bYEiEEnWaRlLV9NJXh/9T092rA8vh5ITWXw
-         3CnN8ZbVx3qRttK8a9J3BI1n0MeI7EhTj9S00SZY9eyLzbW1SKJY2iSs6K6S24SuyfYl
-         SxIdFeZHPzeDxP9gnGYRSUM5WuvLpjYYlegDI4sjVmyB9B74RZmB2xgR45+3jQU7qx0V
-         QucsL0Cl3PxJOgGHcEh3X1J5i028GGb1LjWlh1pqy3F4o0l6M83eVpimcIYJhfqGvLD1
-         aEWQmkhblm9OjUV5y4NjjhMU0IPczDc9tOYif+UZ2zNfv2j8yHH0iSEJcnEt/0k5ih5V
-         tsAQ==
-X-Gm-Message-State: AOJu0YwIPOfsJlOmFZboFXDCQKa1UlSt2lCt9DyQ+s8V8/nO0cECiLWl
-	2K4gbQuuXPQU9UtlLKei1tQOHxL9QbQfmfw2eGizIDjzXxEZeUW8STMF8K9cNEeG2g==
-X-Gm-Gg: AR+sD12vD3VkR0+fO3ayEuThzhV26r02U0U/DxksWqFIg6IOm+TpNEzaCaA/qg3CASs
-	qias0G+4qukPO4FX3jVJh1YlMeGpk+5Xq66YxRdNEuAkDsP3RzV9x/KFBWilN1cnwL9GyetI7k8
-	bQABHXvBunN8N2GG5DNhY8ORoG/W2SL/tUaLPJXVAfpNrIQg9v7lfJGcrsud1gAs7tFHN5pOFNH
-	AOj1PYqghcolHkmqe29D/HXsZaz1bRdYgJ7UpHrhVPYdCWyAcPTtV8xVgnybFZ7S5pCW+gIDK69
-	vTyrfPdkgTrksm8HTb3ROD59LFGUcsOzZFGHM5GTGZL4GqlkwP2fCr49P7njw0zzH/mFywOng30
-	00OLaaCNY2bgqhRgM6DXqozyCuheTc3qfdDan8n+QyYTjsu7GknKJkSPVaY7RDD0WsbqpJJ/hdZ
-	RNxF9wHVYKfiE8RrlevpbZMHGQqL4CwXeWObSjQi9gUeWP5SJgnWHtPVNHzt4+sBbVU13pUYwd5
-	bCdxQwbJyMWwO7EkrUFfPgvFFagvA==
-X-Received: by 2002:a05:6a00:a21b:b0:848:417a:d1a6 with SMTP id d2e1a72fcca58-84fddfec0e9mr9695576b3a.15.1786747084730;
-        Fri, 14 Aug 2026 15:38:04 -0700 (PDT)
-Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8517d223d97sm973133b3a.28.2026.08.14.15.38.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 15:38:04 -0700 (PDT)
-Date: Fri, 14 Aug 2026 22:38:01 +0000
-From: David Matlack <dmatlack@google.com>
-To: Aaron Lewis <aaronlewis@google.com>
-Cc: kvm@vger.kernel.org, alex@shazbot.org, jgg@nvidia.com
-Subject: Re: [PATCH v2 4/4] vfio: selftests: Allow a size for
- vfio_dma_mapping_perf_test
-Message-ID: <an-YyQV-CtoulEHr@google.com>
-References: <20260804165748.1060476-1-aaronlewis@google.com>
- <20260804165748.1060476-5-aaronlewis@google.com>
+        d=1e100.net; s=20251104; t=1786747511; x=1787352311;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=pliuRHo29I6egc2gNeBr49sOpidrbP1eYnD6HzsJLuI=;
+        b=VVlSTpKOInpsXzh6sjgmJPLCBNpeskXQ1AmH/c6CD1czivgTXZWRMxJCmtJoqKPjPG
+         jGgxfeJyFxUyE2ZDiXwEAcy5mb0tmeWoxfi6W+UilA9EiET6idUMHfu1cYW2bHUkCXcc
+         KYL4CyezLmRlM0n9LWi2BxnAt4bcA4Zd0f2wjOW18uUQhVF9yO/AlvYa643e/onBPB/d
+         p5TXiO5eRiVrHtpIcQWlq4a2wBe91OtJABXPxB/Mzo9L/Lgi4uk8tF7/Wdb9BeXk9erP
+         66TPtwqQBaXj1ALNhZPwlDbVBMlDHgP1R6RC9tUladZ1b7llRMZXZ2hGrpB1gf4azxR3
+         Ijbg==
+X-Forwarded-Encrypted: i=1; AHgh+RrhlItarIgU4+Dg7jSUVzg/XxkwtfbhS0tVvznvfEiT9aBtxi7Yl8bLUPt7nRd94kPVsK0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwIVsZXN0qfXeQDRIpoiUoBdwKkSXik1z/Gj9tTwE9+3043KzC
+	+IPIOk/GjfxqNNLa6E2sxaYNRVWyAOuV5goCX946kDmv9xwt5UbAeR3L/zgD4G6ZzZ7XENmjDA7
+	vrv9kcw==
+X-Received: from plhc1.prod.google.com ([2002:a17:903:2341:b0:2d1:1cf0:2039])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:18b:b0:2cf:ccc2:6088
+ with SMTP id d9443c01a7336-2d3b080be2dmr95854275ad.4.1786747510886; Fri, 14
+ Aug 2026 15:45:10 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri, 14 Aug 2026 15:45:09 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260804165748.1060476-5-aaronlewis@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
+Message-ID: <20260814224509.2342760-1-seanjc@google.com>
+Subject: [PATCH] KVM: VMX: Explicitly track TDX VMs' root level instead of
+ guessing it from CPUID
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, kvm@vger.kernel.org, x86@kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Kai Huang <kai.huang@intel.com>, Yan Zhao <yan.y.zhao@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 2026-08-04 04:57 PM, Aaron Lewis wrote:
-> Allow the user to specify a DMA region size via the command line for
-> vfio_dma_mapping_perf_test.
-> 
-> Because the selftest harness also parses command-line parameters, sharing
-> them directly is problematic. Adding options directly to the test could
-> create conflicts with harness-defined options. Even without conflicts, the
-> harness would need to be updated to recognize test-specific options to avoid
-> failing on unknown parameters.
-> 
-> Resolve this by isolating the two sets of parameters. The standard command-line
-> options are consumed by the test itself. To pass options through to the test
-> harness, introduce a new '-a' option.
-> 
-> For example, both the test size and the test harness options can be set
-> like this:
-> 
-> ./vfio_dma_mapping_perf_test -b 16G -a "-v vfio_type1_iommu_memfd_hugetlb_1gb"
+Explicitly track the root level for TDX VMs instead of trying to infer the
+depth of the paging tree based on an individual vCPU's CPUID information.
+Applying KVM's existing logic to select the root level to TDX is flawed as
+nothing *requires* userspace to fill in the correct guest.MAXPHYADDR for a
+vCPU's CPUID.  Guessing at the correct root level is also ridiculous given
+that userspace has already told KVM the root level during TD initialization.
 
-I tried this out and it's a little clunky to work with. Especially -h.
-Plus it's quite a bit of code in the test to deal with the different
-argv arrays and parse everything...
+Relying on userspace to set the expected/correct CPUID lets a misbehaving
+userspace trip the KVM_BUG_ON() in tdx_load_mmu_pgd() by configuring guest
+CPUID to use an "incorrect" guest.MAXPHYADDR.
 
-Here are the other options I think we should consider:
+Keep gfn_direct_bits even though it can be trivially derived from
+mirror_root_level as saving a whole eight bytes per VM is meaningless, and
+the value is queried fairly often and in hot paths.
 
- 1. Abandon the kselftest_harness for this test and manually replicate
-    across the different IOMMU modes and memory types. I don't love this
-    since it will differ from other VFIO selftests, we'll need to
-    reinvent the test fixture replication, and we lose the TAP output.
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: Kai Huang <kai.huang@intel.com>
+Cc: Yan Zhao <yan.y.zhao@intel.com>
+Fixes: 20d913729c11 ("KVM: x86/mmu: Taking guest pa into consideration when calculate tdp level")
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
 
- 2. Add first-class support to kselftest_harness for custom test
-    arguments. I ran it through Gemini and it came up with something
-    relatively clean [1].
+Compile-tested only, and found by inspection, i.e. I haven't proven that this
+works, or that there's actually a bug.  But I'm pretty sure there's a bug.
 
- 3. Just use an environment variable for this one argument. This would
-    be extremely simple to implement and use.
+Came across this when looking at our out-of-tree intrahost migration code, and
+wanted to assert that could be at most one mirror root per TDX VM.
 
- 4. Have the test look up how many HugeTLB pages are free on the system
-    and just use all of them. You can control how much memory the test
-    uses by controlling how many HugeTLB pages are allocated on the
-    system.
+ arch/x86/include/asm/kvm_host.h |  1 +
+ arch/x86/kvm/cpuid.c            | 14 --------------
+ arch/x86/kvm/cpuid.h            |  1 -
+ arch/x86/kvm/mmu.h              |  9 +++++++++
+ arch/x86/kvm/mmu/mmu.c          | 16 ++++++++--------
+ arch/x86/kvm/vmx/tdx.c          | 12 +++---------
+ 6 files changed, 21 insertions(+), 32 deletions(-)
 
-What are your thoughts?
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 283847619ff8..b2a74c69cc4a 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1406,6 +1406,7 @@ struct kvm_arch {
+ 	struct kvm_mmu_memory_cache split_desc_cache;
+ 
+ 	gfn_t gfn_direct_bits;
++	int mirror_root_level;
+ 
+ 	/*
+ 	 * Size of the CPU's dirty log buffer, i.e. VMX's PML buffer. A Zero
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index ddb022cb203a..34c609a60eef 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -483,20 +483,6 @@ int cpuid_query_maxphyaddr(struct kvm_vcpu *vcpu)
+ 	return 36;
+ }
+ 
+-int cpuid_query_maxguestphyaddr(struct kvm_vcpu *vcpu)
+-{
+-	struct kvm_cpuid_entry2 *best;
+-
+-	best = kvm_find_cpuid_entry(vcpu, 0x80000000);
+-	if (!best || best->eax < 0x80000008)
+-		goto not_found;
+-	best = kvm_find_cpuid_entry(vcpu, 0x80000008);
+-	if (best)
+-		return (best->eax >> 16) & 0xff;
+-not_found:
+-	return 0;
+-}
+-
+ /*
+  * This "raw" version returns the reserved GPA bits without any adjustments for
+  * encryption technologies that usurp bits.  The raw mask should be used if and
+diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
+index 8d863f45585d..46bfe8699e67 100644
+--- a/arch/x86/kvm/cpuid.h
++++ b/arch/x86/kvm/cpuid.h
+@@ -68,7 +68,6 @@ void __init kvm_init_xstate_sizes(void);
+ u32 xstate_required_size(u64 xstate_bv, bool compacted);
+ 
+ int cpuid_query_maxphyaddr(struct kvm_vcpu *vcpu);
+-int cpuid_query_maxguestphyaddr(struct kvm_vcpu *vcpu);
+ u64 kvm_vcpu_reserved_gpa_bits_raw(struct kvm_vcpu *vcpu);
+ 
+ static inline int cpuid_maxphyaddr(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+index 2ae7f9ed4cf8..cc37e210787c 100644
+--- a/arch/x86/kvm/mmu.h
++++ b/arch/x86/kvm/mmu.h
+@@ -389,6 +389,15 @@ static inline gpa_t kvm_translate_gpa(struct kvm_vcpu *vcpu,
+ 						     exception, pte_access);
+ }
+ 
++static __always_inline void kvm_mmu_set_mirror_root_level(struct kvm *kvm,
++							  int level)
++{
++	BUILD_BUG_ON(level != 4 && level != 5);
++
++	kvm->arch.mirror_root_level = level;
++	kvm->arch.gfn_direct_bits = gpa_to_gfn(BIT_ULL(level == 4 ? 47 : 51));
++}
++
+ static inline bool kvm_has_mirrored_tdp(const struct kvm *kvm)
+ {
+ 	return kvm->arch.vm_type == KVM_X86_TDX_VM;
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index c519e8e8d646..a51a852c1bec 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -5928,19 +5928,19 @@ void __kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
+ 
+ static inline int kvm_mmu_get_tdp_level(struct kvm_vcpu *vcpu)
+ {
+-	int maxpa;
+-
+-	if (vcpu->kvm->arch.vm_type == KVM_X86_TDX_VM)
+-		maxpa = cpuid_query_maxguestphyaddr(vcpu);
+-	else
+-		maxpa = cpuid_maxphyaddr(vcpu);
+-
+ 	/* tdp_root_level is architecture forced level, use it if nonzero */
+ 	if (tdp_root_level)
+ 		return tdp_root_level;
+ 
++	/*
++	 * If the VM has mirror roots, then the root level is fixed as the gfn
++	 * used to select between the normal and mirror root must be covered.
++	 */
++	if (vcpu->kvm->arch.mirror_root_level)
++		return vcpu->kvm->arch.mirror_root_level;
++
+ 	/* Use 5-level TDP if and only if it's useful/necessary. */
+-	if (max_tdp_level == 5 && maxpa <= 48)
++	if (max_tdp_level == 5 && cpuid_maxphyaddr(vcpu) <= 48)
+ 		return 4;
+ 
+ 	return max_tdp_level;
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index b272c20586a7..6d8e9befd9e6 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -56,9 +56,6 @@
+ bool enable_tdx __ro_after_init;
+ module_param_named(tdx, enable_tdx, bool, 0444);
+ 
+-#define TDX_SHARED_BIT_PWL_5 gpa_to_gfn(BIT_ULL(51))
+-#define TDX_SHARED_BIT_PWL_4 gpa_to_gfn(BIT_ULL(47))
+-
+ static const struct tdx_sys_info *tdx_sysinfo;
+ 
+ void tdh_vp_rd_failed(struct vcpu_tdx *tdx, char *uclass, u32 field, u64 err)
+@@ -1609,10 +1606,7 @@ static int handle_tdvmcall(struct kvm_vcpu *vcpu)
+ 
+ void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int pgd_level)
+ {
+-	u64 shared_bit = (pgd_level == 5) ? TDX_SHARED_BIT_PWL_5 :
+-			  TDX_SHARED_BIT_PWL_4;
+-
+-	if (KVM_BUG_ON(shared_bit != kvm_gfn_direct_bits(vcpu->kvm), vcpu->kvm))
++	if (KVM_BUG_ON(pgd_level != vcpu->kvm->arch.mirror_root_level, vcpu->kvm))
+ 		return;
+ 
+ 	td_vmcs_write64(to_tdx(vcpu), SHARED_EPT_POINTER, root_hpa);
+@@ -2823,9 +2817,9 @@ static int tdx_td_init(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
+ 	kvm_tdx->xfam = td_params->xfam;
+ 
+ 	if (td_params->config_flags & TDX_CONFIG_FLAGS_MAX_GPAW)
+-		kvm->arch.gfn_direct_bits = TDX_SHARED_BIT_PWL_5;
++		kvm_mmu_set_mirror_root_level(kvm, 5);
+ 	else
+-		kvm->arch.gfn_direct_bits = TDX_SHARED_BIT_PWL_4;
++		kvm_mmu_set_mirror_root_level(kvm, 4);
+ 
+ 	kvm_tdx->state = TD_STATE_INITIALIZED;
+ out:
 
-[1]
-  In kselftest_harness.h:
+base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
+-- 
+2.55.0.691.gc56d675ccc-goog
 
-    #ifndef OPT_CUSTOM_STR
-    # define OPT_CUSTOM_STR ""
-    # define OPT_CUSTOM_HANDLER(opt, optarg) KSFT_FAIL
-    # define OPT_CUSTOM_HELP()
-    #endif
-
-    // Modify test_harness_argv_check()
-    static int test_harness_argv_check(int argc, char **argv)
-    {
-        int opt;
-        char optstring[128] = "dhlF:f:V:v:t:T:r:";
-        // Safely append OPT_CUSTOM_STR to optstring
-        strncat(optstring, OPT_CUSTOM_STR, sizeof(optstring) - strlen(optstring) - 1);
-
-        while ((opt = getopt(argc, argv, optstring)) != -1) {
-            switch (opt) {
-                /* ... existing core cases ... */
-                case 'h':
-                    fprintf(stderr, "Usage: %s [-h|-l|-d] [-t|-T|-v|-V|-f|-F|-r name]\n...", argv[0]);
-                    OPT_CUSTOM_HELP();
-                    return KSFT_SKIP;
-
-                default:
-                    if (OPT_CUSTOM_HANDLER(opt, optarg) == KSFT_PASS)
-    			break;
-                    return KSFT_FAIL;
-            }
-        }
-        return KSFT_PASS;
-    }
-
-  In vfio_dma_mapping_perf_test.c (before #include "kselftest_harness.h"):
-
-    static void opt_custom_help(void) {
-        fprintf(stderr, "\t-b bytes Specify the size of the DMA region...\n");
-    }
-
-    static int opt_custom_handler(int opt, char *optarg) {
-        if (opt == 'b') {
-            test_params.size = parse_size(optarg);
-            return KSFT_PASS;
-        }
-        return KSFT_FAIL;
-    }
-
-    #define OPT_CUSTOM_STR "b:"
-    #define OPT_CUSTOM_HANDLER(opt, optarg) opt_custom_handler(opt, optarg)
-    #define OPT_CUSTOM_HELP() opt_custom_help()
-
-    #include "kselftest_harness.h"
-
-
-> This invocation configures a 16G DMA region and restricts execution to the
-> specified test variant, which is useful when debugging DMA mapping latency
-> issues for a specific IOMMU type.
-> 
-> Signed-off-by: Aaron Lewis <aaronlewis@google.com>
-> ---
->  .../vfio/vfio_dma_mapping_perf_test.c         | 159 ++++++++++++++++--
->  1 file changed, 149 insertions(+), 10 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
-> index 5ef85deba4ee..af2273a0c6f5 100644
-> --- a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
-> +++ b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
-> @@ -4,6 +4,7 @@
->  #include <sys/mman.h>
->  #include <time.h>
->  #include <unistd.h>
-> +#include <wordexp.h>
->  
->  #include <linux/iommufd.h>
->  #include <linux/limits.h>
-> @@ -17,7 +18,12 @@
->  
->  #include "kselftest_harness.h"
->  
-> -static const char *device_bdf;
-> +static struct {
-> +	u64 size;
-> +	const char *device_bdf;
-> +} test_params = {
-> +	.size = SZ_1G,
-> +};
->  
->  FIXTURE(vfio_dma_mapping_perf_test) {
->  	struct iommu *iommu;
-> @@ -45,7 +51,7 @@ FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(anonymous_hugetlb_1gb, MAP_HUGETLB | MAP_HUG
->  FIXTURE_SETUP(vfio_dma_mapping_perf_test)
->  {
->  	self->iommu = iommu_init(variant->iommu_mode);
-> -	self->device = vfio_pci_device_init(device_bdf, self->iommu);
-> +	self->device = vfio_pci_device_init(test_params.device_bdf, self->iommu);
->  	self->iova_allocator = iova_allocator_init(self->iommu);
->  }
->  
-> @@ -58,7 +64,7 @@ FIXTURE_TEARDOWN(vfio_dma_mapping_perf_test)
->  
->  TEST_F(vfio_dma_mapping_perf_test, dma_map_unmap)
->  {
-> -	const u64 size = SZ_1G;
-> +	const u64 size = test_params.size;
->  	const int flags = variant->mmap_flags;
->  	struct dma_region region;
->  
-> @@ -115,7 +121,7 @@ FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd_hugetlb_1gb,
->  FIXTURE_SETUP(vfio_dma_mapping_perf_memfd_test)
->  {
->  	self->iommu = iommu_init(variant->iommu_mode);
-> -	self->device = vfio_pci_device_init(device_bdf, self->iommu);
-> +	self->device = vfio_pci_device_init(test_params.device_bdf, self->iommu);
->  	self->iova_allocator = iova_allocator_init(self->iommu);
->  }
->  
-> @@ -159,17 +165,17 @@ static void teardown_memfd(int fd, u64 size, void *vaddr)
->  
->  TEST_F(vfio_dma_mapping_perf_memfd_test, dma_map_unmap_from_file)
->  {
-> -	const u64 size = SZ_1G;
-> -	const int flags = variant->mmap_flags;
-> +	const u64 size = test_params.size;
-> +	const int mmap_flags = variant->mmap_flags;
->  	struct dma_region region;
->  	int fd;
->  
->  	printf("mmap size = %lluG\n", (unsigned long long)(size / SZ_1G));
->  
-> -	region.vaddr = setup_memfd(&fd, size, variant->mmap_flags, variant->memfd_flags);
-> +	region.vaddr = setup_memfd(&fd, size, mmap_flags, variant->memfd_flags);
->  
->  	/* Skip the test if there aren't enough HugeTLB pages available. */
-> -	if (flags & MAP_HUGETLB && region.vaddr == MAP_FAILED)
-> +	if (mmap_flags & MAP_HUGETLB && region.vaddr == MAP_FAILED)
->  		SKIP(return, "setup_memfd() failed: %s (%d)\n", strerror(errno), errno);
->  	else
->  		ASSERT_NE(region.vaddr, MAP_FAILED);
-> @@ -185,8 +191,141 @@ TEST_F(vfio_dma_mapping_perf_memfd_test, dma_map_unmap_from_file)
->  	teardown_memfd(fd, size, region.vaddr);
->  }
->  
-> +/*
-> + * Parses "[0-9]+[kmgt]?".
-> + */
-> +u64 parse_size(const char *size)
-> +{
-> +	int shift = 0;
-> +	char *scale;
-> +	u64 base;
-> +
-> +	VFIO_ASSERT_TRUE(size && isdigit(size[0]),
-> +			 "Need at least one digit in '%s'.", size);
-> +
-> +	base = strtoull(size, &scale, 0);
-> +
-> +	VFIO_ASSERT_TRUE(base != ULLONG_MAX, "Overflow parsing size!");
-> +
-> +	switch (tolower(*scale)) {
-> +	case 't':
-> +		shift = 40;
-> +		break;
-> +	case 'g':
-> +		shift = 30;
-> +		break;
-> +	case 'm':
-> +		shift = 20;
-> +		break;
-> +	case 'k':
-> +		shift = 10;
-> +		break;
-> +	case 'b':
-> +	case '\0':
-> +		shift = 0;
-> +		break;
-> +	default:
-> +		VFIO_FAIL("Unknown size letter '%c'.", *scale);
-> +	}
-> +
-> +	VFIO_ASSERT_TRUE((base << shift) >> shift == base,
-> +			 "Overflow scaling size!");
-> +
-> +	return base << shift;
-> +}
-> +
-> +static void help(char *name)
-> +{
-> +	puts("");
-> +	printf("usage: %s [-h] [-b bytes] [-a \"test harness args\"]\n", name);
-> +	puts("");
-> +	printf(" -h: Display this help message.\n"
-> +	       " -b: Specify the size of the DMA region to be mapped\n"
-> +	       "     and unmapped. e.g. 16M or 8G, (default: 1G)\n"
-> +	       " -a: Args that are forwarded to the test harness,\n"
-> +	       "     e.g. -a \"-t dma_map_unmap_from_file\"\n");
-
-This should be printed to stderr so that this and the kselftest_harness
-help message get printed to the same place.
-
-Also the -h output is pretty confusing because it just has the 2 usage
-logs one after another:
-
-  usage: tools/testing/selftests/vfio_dma_mapping_perf_test ...
-  ...
-
-  Usage: tools/testing/selftests/vfio_dma_mapping_perf_test ...
-  ...
-
-Some extra logging to help the user understand would be needed.
-
-> +}
-> +
-> +struct harness_args {
-> +	int argc;
-> +	char **argv;
-> +	wordexp_t exp;
-> +};
-> +
-> +static void populate_harness_args(struct harness_args *args, const char *argv_0,
-> +				  const char *cmdlne)
-> +{
-> +	int flags = WRDE_NOCMD;
-> +
-> +	if (!args->argv) {
-> +		/*
-> +		 * Initialize the argument list with the program name (argv[0]).
-> +		 * WRDE_NOCMD disables command substitution for safety.
-> +		 */
-> +		if (wordexp(argv_0, &args->exp, flags) != 0)
-> +			VFIO_FAIL("Failed to evaluate test harness argv_0 args!");
-> +	}
-> +
-> +	flags |= WRDE_APPEND;
-> +
-> +	/*
-> +	 * Use wordexp() to reliably parse the user-supplied command line string
-> +	 * into individual arguments, respecting shell quoting and escaping rules.
-> +	 * WRDE_APPEND merges these new arguments with the earlier argv[0].
-> +	 */
-> +	if (wordexp(cmdlne, &args->exp, flags) != 0)
-> +		VFIO_FAIL("Failed to evaluate test harness cmdlne args!");
-> +
-> +	args->argc = args->exp.we_wordc;
-> +	args->argv = args->exp.we_wordv;
-> +}
-> +
-> +static void setup_test(struct harness_args *args, int *argc, char *argv[])
-> +{
-> +	char *h_argv[] = { argv[0], "-h" };
-> +	int opt;
-> +
-> +	test_params.device_bdf = vfio_selftests_get_bdf(argc, argv);
-> +
-> +	while ((opt = getopt(*argc, argv, "a:b:h")) != -1) {
-> +		switch (opt) {
-> +		case 'a':
-> +			populate_harness_args(args, argv[0], optarg);
-> +			break;
-> +		case 'b':
-> +			test_params.size = parse_size(optarg);
-> +			break;
-> +		case 'h':
-> +		default:
-> +			help(argv[0]);
-> +			exit(test_harness_run(2, h_argv));
-
-Need to reset optind to 1 before calling test_harness_run(). Also maybe
-this should just call test_harness_argv_check()?
-
-> +		}
-> +	}
-> +
-> +	// Reset getopt() state to allow the test harness to use it.
-> +	optind = 1;
-> +}
-> +
-> +static void teardown_test(struct harness_args *args)
-> +{
-> +	if (args->argv) {
-> +		args->argc = 0;
-> +		args->argv = NULL;
-> +		wordfree(&args->exp);
-> +	}
-> +}
-> +
->  int main(int argc, char *argv[])
->  {
-> -	device_bdf = vfio_selftests_get_bdf(&argc, argv);
-> -	return test_harness_run(argc, argv);
-> +	char *default_hargs[] = { argv[0], NULL };
-> +	struct harness_args args = {};
-> +	int r;
-> +
-> +	setup_test(&args, &argc, argv);
-> +
-> +	r = test_harness_run(args.argc ?: 1, args.argv ?: default_hargs);
-> +
-> +	teardown_test(&args);
-> +
-> +	return r;
->  }
-> -- 
-> 2.55.0.654.g21b8a5bc05-goog
-> 
