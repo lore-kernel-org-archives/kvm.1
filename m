@@ -1,118 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951BC356766
-	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 16:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D683822B7
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 16:22:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786724391; cv=none; b=aHCY4D2n1uminUNu9CFSJFyx3oKneLGUjzPYF9vtoAHNZzaiU6H5RBiHfpJp9tIXSGdtGZNQFV81iMLSaWbh1PF7GZHXH/V+KUq41j7btjmbeubtEwJZ6ivPFMvO+pz8lGu+OJ0hLKszApNfWWvhfwa3+fHqQeUUW3cdWXvzFNc=
+	t=1786724551; cv=none; b=FkgqwGfkvULFy9dm2oHfXgTr2PJJMEI0P0hdbRJ+7gzQ43OfjBoOn25dy5Dl0u27dSGSAKA2NCi1NP1c6k5LlMEJHbfzp0RK2rK/h6X0fL7Q47S3awb2DSSlgkiW5O1Pe2M7HSh1ZR5XD71217c1K9gjMayoS2r1ZrgosHszN2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786724391; c=relaxed/simple;
-	bh=rnpgzI3T32Lapc99tzCMZ9KwSphlTA7cUs/U6m83Zao=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ju21vmZVr1yI5yuqIXXGCWr8V3l07zv6sBBxqwzDVzYWac7bJ4t5GzZP6saalJYVxlIww1TcuNeIaJzY4VJnDtdmsdI+9JziCx8Wh1WoTrpylq4kvnIGFNd2JPAd8j+qvnbHHGlKoqSgQxd278u/prOdLuNHnOEg/kAqeQkqfq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ovM/rxp9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786724551; c=relaxed/simple;
+	bh=KH7dFySbXlcN2p/xeodlN6wUzyw0iKCSzl5adxkvQDM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VG0XpV49eCtHoaFjGnoOqAYfAPi+wzLaW71LLdfG4Y2lOqD7WuSeRe8nQB9/kK0iA0I84iqp2V0Gmr0Z88gBHgMW2YTwF8bQoQUaOyuUMRG3akiWNuTFOkmw/PumK+X9JzvpElzsPdIM3DRIpQfGp1aLOSYlXp6o1SDCKempNOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ah8ix21y; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ovM/rxp9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136041F000E9;
-	Fri, 14 Aug 2026 16:19:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786724390;
-	bh=4Cwo0VwwVUrH3c1Bjav6EvEBmzynNZLGLAXugv6EgIo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ovM/rxp9Dx1VKi0564IWq3OEzffFBRVUUuhWZEtKbDS1gOJAiN3PhYsIiyjkTW/ZE
-	 3fXRhREGj2Tl180nv07X/60bXIsQPRFMt0hXLYhkoiYFuLR4ODTlfmtxIEFWxVXr0G
-	 6qHA5X5zyM0L7k0P27lJV6XcVdM2f+2hIv4efLfyvV+wVRMX/ZXSCXJyBiRxUSyKUe
-	 pJZ5sxy5F8z4m4+S2hDiSnhgdUv+P5axnngBio2dT9/Vyow3ZBMhzRlqX0lNievvGe
-	 TBtba++5jDDlkbcqqnBC3PGBgYNLcl9pqTze4DvmTBIsNBT4kAucJQqlGO7k5HnRsT
-	 E7fjcJgaWQOpQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/3] KVM: VMX: Rename posted interrupt prefixes from
- "vmx" to "vt"
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260814161129.2177118-4-seanjc@google.com>
-References: <20260814161129.2177118-1-seanjc@google.com>
- <20260814161129.2177118-4-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 14 Aug 2026 16:19:49 +0000
-Message-Id: <20260814161950.136041F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ah8ix21y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786724548;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DIV3ESPHWZHWTP/39EDpQjrS0S1Q18Piic27WrFpl3k=;
+	b=Ah8ix21yhQNA/2XCe0YqLwFqctQCkAalXwBxalFS7BheJpmPnzHX0ey8pkrRnnhvH9lcTX
+	Gaisd49tg//CaQ7P0AcdlrmOo0mX/0vxsK9XCwOeu/mbIXL5mh4gsaGUiUaakmzzL04tTb
+	fO/Y+vr6tx/pac81tIKYedOVCBww6YQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-251-hwC0LzgqMMCEu-kMnAo0ag-1; Fri,
+ 14 Aug 2026 12:22:26 -0400
+X-MC-Unique: hwC0LzgqMMCEu-kMnAo0ag-1
+X-Mimecast-MFC-AGG-ID: hwC0LzgqMMCEu-kMnAo0ag_1786724545
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E9A1D1956046;
+	Fri, 14 Aug 2026 16:22:24 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.48.234])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 10073423;
+	Fri, 14 Aug 2026 16:22:22 +0000 (UTC)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: kvm@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: f734222792@gmail.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/4] KVM: nVMX: Adjust VMPTRLD/VMPTRST behavior with active eVMCS
+Date: Fri, 14 Aug 2026 18:22:17 +0200
+Message-ID: <20260814162221.2144473-1-vkuznets@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Low] The function `vmx_needs_pi_wakeup()` was not renamed to `vt_needs_p=
-i_wakeup()`.
-- [Low] The shared inline API `__vmx_deliver_posted_interrupt()` was not re=
-named to `__vt_deliver_posted_interrupt()`.
-- [Low] A comment inside `vt_can_use_vtd_pi()` references the old `vmx_pi_s=
-tart_bypass()` function name.
---
+It was reported (https://bugzilla.kernel.org/show_bug.cgi?id=221841) that
+KVM's emulation of VMPTRLD/VMPTRST instructions when Enlightened VMCS is
+active is sub-optimal: returning '1' does not make the L1 guest skip the
+instruction so a hang is likely to happen. While TLFS does not really
+specify the expected behavior, genuine Hyper-V seems to return #UD for
+VMPTRLD and eVMCS pointer for VMPTRST. Alter the behavior in KVM and check
+it in selftests.
 
---- Patch [3]: [PATCH 3/3] KVM: VMX: Rename posted interrupt prefixes from =
-"vmx" to "vt" ---
-commit 735ede2af83c20ffbbfab70a4d63203f6ab6beab
-Author: Sean Christopherson <seanjc@google.com>
+Note: this is not a security issue. Misbehaving L1 can only do self-harm
+by doing VMPTRLD/VMPTRST when it also uses eVMCS.
 
-KVM: VMX: Rename posted interrupt prefixes from "vmx" to "vt"
+Vitaly Kuznetsov (4):
+  KVM: nVMX: Make VMPTRLD result in #UD when eVMCS is used
+  KVM: nVMX: Make VMPTRST return eVMCS GPA when it is used
+  KVM: selftests: Adapt to the updated VMPTRST behavior when eVMCS is
+    used
+  KVM: selftests: Check VMPTRLD with active eVMCS
 
-Rename all common posted interrupt APIs that use a "vmx" prefix to instead
-use a "vt" prefix to capture that they are used for both VMX and TDX vCPUs.
+ arch/x86/kvm/vmx/nested.c                     | 22 +++++++++++++------
+ tools/testing/selftests/kvm/include/x86/vmx.h |  6 -----
+ .../testing/selftests/kvm/x86/hyperv_evmcs.c  | 18 ++++++++++-----
+ 3 files changed, 28 insertions(+), 18 deletions(-)
 
-[Severity: Low]
-This isn't a bug, but should __vmx_deliver_posted_interrupt() in
-arch/x86/kvm/vmx/common.h also be renamed? It appears to be a common API
-used by TDX code (tdx_deliver_interrupt() in arch/x86/kvm/vmx/tdx.c).
+-- 
+2.55.0
 
-No functional change intended.
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-> diff --git a/arch/x86/kvm/vmx/posted_intr.c b/arch/x86/kvm/vmx/posted_int=
-r.c
-> index 24221ba553be1..7a6a445870442 100644
-> --- a/arch/x86/kvm/vmx/posted_intr.c
-> +++ b/arch/x86/kvm/vmx/posted_intr.c
-
-[ ... ]
-
-> @@ -146,7 +146,7 @@ void vmx_vcpu_pi_load(struct kvm_vcpu *vcpu, int cpu)
->  		pi_set_on(pi_desc);
->  }
-> =20
-> -static bool vmx_can_use_vtd_pi(struct kvm *kvm)
-> +static bool vt_can_use_vtd_pi(struct kvm *kvm)
->  {
->  	/*
->  	 * Note, reading the number of possible bypass IRQs can race with a
-
-[Severity: Low]
-This isn't a bug, but the comment just below this line still references the
-old name: "vmx_pi_start_bypass() ensures blockng vCPUs will see...". Should
-this be updated to vt_pi_start_bypass()?
-
-[ ... ]
-
-> @@ -219,10 +219,10 @@ static bool vmx_needs_pi_wakeup(struct kvm_vcpu *vc=
-pu)
->  	 * back to the pi_wakeup_handler() function.
->  	 */
->  	return (vmx_can_use_ipiv(vcpu) && !is_td_vcpu(vcpu)) ||
-> -		vmx_can_use_vtd_pi(vcpu->kvm);
-> +		vt_can_use_vtd_pi(vcpu->kvm);
->  }
-
-[Severity: Low]
-This isn't a bug, but should vmx_needs_pi_wakeup() also be renamed to
-vt_needs_pi_wakeup()? It explicitly handles both VMX and TDX cases by
-checking is_td_vcpu(vcpu).
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260814161129.2177=
-118-1-seanjc@google.com?part=3D3
