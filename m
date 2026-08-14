@@ -1,96 +1,97 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3A148A2DD
-	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 16:04:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42D648BD46
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 16:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786723493; cv=none; b=otgC5RYEJMQ8yP/C4tkd8bci6FzGKn0HYS/fyYuiaRg30P0Oet8+Z6jzSm/AK7wZBFpx3UVMCQjzQtlb/VUvz92hrS2V8r7fWsbJjUwQq47OGP+D1IpgQ+YopeGUU+frKlyHHkd5vMVTLs+4bMK/d2VBRkbDpxxQeO2LH8xw4Gc=
+	t=1786723896; cv=none; b=H22o2uf/506OFq2At05BZImEX0aOqTFUfgKyumxd4qew7+8v1RBqHULmksYHK3e0jKEAOlbAojpAsTfeBbLnK6ruaisGSpkokrJlSLEF6ZabsfEUzK8hzsGevxfmeeMHy+XhUDyPO6429mDlpyIkG84dr46G+2kWk5btyOlbSDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786723493; c=relaxed/simple;
-	bh=L7+zwvJ4nASrYVbjUeFFeoHP7BESPz4/u7WlgERYTLU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QOC2KIKzokGWf74bJpU0uktNf//45U7DpaA05dOQfVq41OvbF1Smi+Oz3L17fyk+076HItgIm3f1G9SP5NHu599ir+fR5rw6zlMgwvOvSIMiH9QY0Aj2A5cH/WT7C32KAsSn1enCmQxP+7E6+jflXLH+v3/v/BVxBNlvBUZo6qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G0DEhB9v; arc=none smtp.client-ip=209.85.215.199
+	s=arc-20240116; t=1786723896; c=relaxed/simple;
+	bh=Yjwp5sXg8hA+IFzilFQC+IgVznGjRjghxOVmLb6eHpE=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=o0QGDX/2YVmW0RraiNgwEt6LO0vtwq2lMOsMNMe1OYMaxh/5a8kgsHgZ5puIiy4efG00AWm4J18b0QGA1J48pu1PYPpMTeI1Fsb9LKJOh3t0JWexHJNVaz15dRGp8hEVDBRVxo/lNalngM0jeBrY6AUkLba17/qnFK8JQruLj+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qltv+PQx; arc=none smtp.client-ip=209.85.216.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G0DEhB9v"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-c85798977dcso1660678a12.0
-        for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 09:04:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qltv+PQx"
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38e22137fb3so1782036a91.0
+        for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 09:11:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786723487; x=1787328287; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=M45GqPAfaWkAxTNfkHv5H0q0VgCGytksnXS+eq9PrHc=;
-        b=G0DEhB9vz354JHNfrGcd+POi56pUytWxa/YNaE57Ndv6yY65lIMoIHehnTNJjfsAwu
-         hkC8HyA+zKIf/v8+AsHoNqSi9A+ZBSjtKOqGIVqELpXOpDrkS+zBO/I5p6FQjfmFzETq
-         5rHy13VchQoa4KIaxHRfR2/qz3AP8ov2f9NF3yrmU+gyVVxpdrL8gF5UMtu7hzO06j03
-         //wBzvdTTxNQFegf4vFUXWk2FBD3Wo53yOrmz2gdjOCMD5tC6PJ8KMJ5AafNH/Nmg4G+
-         1bydRtYpVfr9XsA6MmggzANfd9vGAyRHnfBsbaSUzpEKMO+31a5jvbRZstaJUqMBiVqB
-         prew==
+        d=google.com; s=20251104; t=1786723891; x=1787328691; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=G1QOpGA/mOfm9r1jqGgG0mT+xGoxs+eURoQ2xm4eLKI=;
+        b=Qltv+PQxSyw0/tlKWfSDW9CAJCpkSRpSUo72cg0XhSi457U0yVVJtSsz3d3BoP3Srg
+         N+6re9DFRj44WFJgMLmqYC1FW1278fOHxmrikTUTlW0r8F8G8AXbQxCMPq27f9zzR4M/
+         Hbh9SMDHJfesFkRRNqE9xQQAirX85OdReILNlLQ6/fO1t95OY6QrA60t0fXvEyUOXQgL
+         CAc/QXvU2+EueqaywAvO6lGCaT47Lx2KKiY9WuAyPoL4vWQAByyxU/qAedR4uzte0UWN
+         IL3zJIQj+YhTb7TrMXyjRbib65mmVELh9dC1AoIi1xIuUV+WU57pFMbVZ+0N5Uvx2bQH
+         AyMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786723487; x=1787328287;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=M45GqPAfaWkAxTNfkHv5H0q0VgCGytksnXS+eq9PrHc=;
-        b=AH6vfsZPf9ER3qq+hF87BmlXLgGKBs+KvdaHVome3ksTq566C7ekAQZoiRYV/GYSUl
-         3UQaemM/CuuGtE7J+z+ac5f2G7xGnzMWNLyxoa+JQq2J4Zp1DtFuMK9RKoNUglImmGy1
-         Ngfu4UlAgIlKi/tf7Ak41LkRl3qI5KT09bpGXase5CYY/Lue0uMcNljgxt4SrlQGEuDh
-         ++bExl1AiPeZ3a4sisR1Bn2oDdLGauRyTF49Iwb5BYPhHQ46vuR3WBSIoEt9UGYaMmYW
-         O4roGlQ1Bxx8sEwOTFYM1CUeJmz47iiK0iVwVUnyjNhMOc8T9X4OUS1+Iw1IXaVTSLH0
-         c0PA==
-X-Forwarded-Encrypted: i=1; AHgh+RoMtXZzgUzOxHMB78RRjLEOQ6s4mP76ZZlr9b3VdLS8uv3mDjbZLhBgJNvHFcdMzfuWkYA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymFMJF/S0UOTpxNi7q+YA/uUgw76FlowjGw/PwVVOavMRnRKyp
-	dgKrkk+VPe9J3xnAli9pH5SRue5Wn+RK75sN3382fmikZBFkkgb4HbZlO+KMyCslcDsL+dNuqVQ
-	aQRKxPg==
-X-Received: from pgcc9.prod.google.com ([2002:a63:1c09:0:b0:c9b:2759:d240])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6f8a:b0:3c4:1916:9d46
- with SMTP id adf61e73a8af0-3cc71f4a5famr9143644637.27.1786723487045; Fri, 14
- Aug 2026 09:04:47 -0700 (PDT)
-Date: Fri, 14 Aug 2026 09:04:46 -0700
-In-Reply-To: <an86rPn4P2dRO1RB@raptor>
+        d=1e100.net; s=20251104; t=1786723891; x=1787328691;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=G1QOpGA/mOfm9r1jqGgG0mT+xGoxs+eURoQ2xm4eLKI=;
+        b=LA4mFeYLmfF/1VmWQEUqZzohZd803yrlZ8pfD/+LrV/h6NpUMIUjWxrMgQGp7VUaMY
+         NKB1ok2y5BtueTzNN+UXZcRjeHZw4MvR8g42GtU3rvDb81Uf4pyrEx8NSbAKO7f+J3rn
+         IMRMTh3GhQwCfhEphgwDSrvPmIvD/xoxHWMBnTMZmolj5aC1dmp1NT3ORRnyrF60p+44
+         AZJxRokIVkPpB/PdDceuJQSt76cVpCLMMy4gTdNRdZBGSUJBWj17czN3FxAIibjAPLIj
+         MbuMbuNxvTDSVHQJpamv41kILhfLo3XboykQ7W3LykNT2ucIWNNpiz+UDeX8fQDC8bQC
+         Fi+g==
+X-Forwarded-Encrypted: i=1; AHgh+RpucxkafYCVUWPLu/f7Z0tyD3G5sTmpAD0ON8+sQPtyBi7qVCcqVF0Z4MSjBi6hioQmREQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywy7K7eJ66CsTXI9b8sagTbLUJzCR7Th8okwvWnpz3HWA8gcpT3
+	mpeb/XJXBVkLQ2s2a3ZPRmFmb206/MsDiTltiZ0lniBj/xcrzLXXqfr22+fFE250VspbDqlYEIW
+	/Mh0OAg==
+X-Received: from pjte4.prod.google.com ([2002:a17:90a:c204:b0:38f:749d:db46])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:384b:b0:37f:e1af:df22
+ with SMTP id 98e67ed59e1d1-3933ba90e38mr7162627a91.17.1786723891326; Fri, 14
+ Aug 2026 09:11:31 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri, 14 Aug 2026 09:11:26 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <ak-EKSslAz1uqEtv@J2N7QTR9R3> <ak_wC4Q-mQe14DI8@google.com>
- <alDI1b8fC99SG4_a@J2N7QTR9R3> <a127176a-1722-460c-aa84-754e1d343f53@arm.com>
- <an3sEiQlIuGEjUur@raptor> <b6080c23-a2a8-4bc5-b3bd-982bd766c648@arm.com>
- <an5UJ4S_P1LUFmzD@google.com> <487aa57c-72ad-453b-971d-ca24a8380429@arm.com>
- <an8SOvLybeilzCEU@google.com> <an86rPn4P2dRO1RB@raptor>
-Message-ID: <an88nuw0FKT87a-W@google.com>
-Subject: Re: [RFC PATCH 0/3] KVM: Dirty page logging for guest_memfd-only memslots
+X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
+Message-ID: <20260814161129.2177118-1-seanjc@google.com>
+Subject: [PATCH 0/3] KVM: VMX: Harden against interpreting TDX vCPU as vcpu_vmx
 From: Sean Christopherson <seanjc@google.com>
-To: Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: David Hildenbrand <david.hildenbrand@arm.com>, Mark Rutland <mark.rutland@arm.com>, pbonzini@redhat.com, 
-	kvm@vger.kernel.org, maz@kernel.org, oupton@kernel.org, joey.gouly@arm.com, 
-	seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	fuad.tabba@linux.dev
-Content-Type: text/plain; charset="us-ascii"
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, kvm@vger.kernel.org, x86@kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Kai Huang <kai.huang@intel.com>, Yan Zhao <yan.y.zhao@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Aug 14, 2026, Alexandru Elisei wrote:
-> On Fri, Aug 14, 2026 at 06:03:54AM -0700, Sean Christopherson wrote:
-> > > That would be in contrast to user space having to guess that page migration on
-> > > the current hardware with the current guest_memfd implementation does not
-> > > support page migration, to then disable exactly that.
-> 
-> If guest_memfd picks up support for another feature that might lead to
-> memory being unmapped from stage 2 without userspace initiating it, would
-> you be ok with that feature being gated by another guest_memfd flag?
+Move vmx_handle_exit_irqoff() and all its helpers to main.c, and then poison
+to_vmx() for the common .c files to harden KVM against misinterpreting a TDX
+vCPU as a VMX vCPU, i.e. consuming to_vmx() on a TDX vCPU.  Spotted when
+working through the bus lock series.
 
-Yes, absolutely.  FWIW, if I get my way and reclaim is driven by userspace, then
-hopefully such a feature never comes along.  But if guest_memfd does gain some
-feature that triggers invalidations, then yeah, at the very least it would need
-to have some knowledge of whether or not the associated VM supports said feature.
+TDX changes are compile-tested only (one of these days I'll track down a host
+that's fully TDX-capable).
 
-> I get the feeling we're all on the same page, that guest_memfd will support
-> a mode where memory isn't unmapped from stage 2, and right now the
-> discussion is more about how that will be implemented.
+Sean Christopherson (3):
+  KVM: VMX: Move the shared "IRQs off" exit handler(s) to common code
+  KVM: VMX: Disallowing using to_vmx() in common VT code
+  KVM: VMX: Rename posted interrupt prefixes from "vmx" to "vt"
 
-Ya.
+ arch/x86/kvm/vmx/common.h      |  6 +++
+ arch/x86/kvm/vmx/main.c        | 75 +++++++++++++++++++++++++++++++-
+ arch/x86/kvm/vmx/posted_intr.c | 18 ++++----
+ arch/x86/kvm/vmx/posted_intr.h |  8 ++--
+ arch/x86/kvm/vmx/tdx.c         |  4 +-
+ arch/x86/kvm/vmx/vmx.c         | 78 +---------------------------------
+ arch/x86/kvm/vmx/x86_ops.h     |  1 -
+ 7 files changed, 97 insertions(+), 93 deletions(-)
+
+
+base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
+-- 
+2.55.0.691.gc56d675ccc-goog
+
