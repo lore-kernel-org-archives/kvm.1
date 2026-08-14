@@ -1,173 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-132.mta0.migadu.com [91.218.175.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BE93B27C3;
-	Fri, 14 Aug 2026 09:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E7038333C
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 09:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786700760; cv=none; b=eQaeZ0QhkjVVlQALbkCcGM57+ZXHQ6eOPzJ3X6Ec9MB1TzK6qTXgO5axwVXxrKcFmwWjhnkM+NyufpT619g0dUIQ4+fyBQl7fxDjXu+ZUvlkH9Ay4QX5dYeVbizCkIve7lSN/1U/A0pdznFq+QyynkapfCfFMHrSbVaFd53tfg8=
+	t=1786700873; cv=none; b=G7fn9oPvno70QT+EQx7GrPxEg0Wuy4EPtJfLY+IUKuWCk7nesf2uK/3bTQ4rxCwrP6X9vAG2Lnv1rWSKGyb+pZJQnb8ZWFhAfusyOjDC3gNvLo6n8cSkAimoUpeyRdOu4lyo4rMv8ZEPA3rPwsHrhV7rVtS/GYwxACISX4X62B4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786700760; c=relaxed/simple;
-	bh=yPneA5IEX3jYmiulL4/kXkWxC7UQdPIf5+i4X9r/HNM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pWD9uF9T7nwTl+7Wm61I0CnQwkO5moEbSJ3zrgXmlmJx2Jmr0AsKVyJ3GPxdGOfkecwJ4wKZh2Ii8RHVt3ERQ8ejYXgojOjFF+6d1Kz0mcNUmtmuhudB4V/MqIWKaD/q9vqc9H+8o9yHEpgWhC5oAzWZQuTW0kMZyEufknW25uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y1eS4vcH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786700873; c=relaxed/simple;
+	bh=sjh+hkIiI+r1dCer0VvlH2yysDJcghD9yoIoJrbQ1pw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WgrIbhPVI08gqw5EoCEJjRIfCSaVhbIZ5DDKRsjvsDBfe5vZOC7XhHYv6VVkMegGqGrjJF1L7s5mlhL5nF3IH+t6zpes+3bk3nNEUd5naX9z62LHUC8sjkpu89JybBEttkLnxpoY9lKxZX6eUvSQuje4ELiAV+B4J3QCQfSoma4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jBNBTLOt; arc=none smtp.client-ip=91.218.175.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y1eS4vcH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E511F000E9;
-	Fri, 14 Aug 2026 09:45:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786700746;
-	bh=5HIwgrpO1fXJmlHwW1EBASxu2Cq7Szkx1H/G3rD/398=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Y1eS4vcHSMq+0bM/nbkCMNcnwAnFodiBa9e+itcKuVlj+6p1zLi+IiA5WuDkjYAIn
-	 JGpyjlk6a2Ol0t21YFqdfItFcmVwQxPSJaDWeVhtyEbiJNWokMYU/EUI38gTq4JIS4
-	 TsVfwKNpaRK0anYl2q2uFtRsX5aPJzgZdEl1t8ZwMqOl4rG7SM+frXo0RL/EM1S++N
-	 Sr4/yRe6OpOplXzFeyG3IqTVjQmhij5rCnGF0iyRtjfKyvWuhE4dkgUvf4vJGnOs+q
-	 3LQ/JgyfEqf+coYSTWKUIXUhoLnLGAUd1kHFdLzqa8r5jTnoEd+kLbjaCFzNe78lvi
-	 FLy5TqJ8Grvvg==
-Date: Fri, 14 Aug 2026 12:45:15 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Usama Arif <usama.arif@linux.dev>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>, Huang Rui <ray.huang@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
-	linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
-	linux-perf-users@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	syzbot@syzkaller.appspotmail.com
-Subject: Re: [PATCH v5 00/16] mm/rmap: index MAP_PRIVATE file-backed folios
- by anonymous pgoff
-Message-ID: <an7jq2QI6CaTgFxK@kernel.org>
-References: <20260813-b4-scalable-cow-virt-pgoff-v5-0-c21581c0c3c8@kernel.org>
- <20260813115346.2aaad419a351341a4f5f3ae0@linux-foundation.org>
- <an7SkamROquJ7If0@lucifer>
- <an7dekaY7IMMrzID@kernel.org>
- <an7eSrKUHUqPpVGv@lucifer>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jBNBTLOt"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=sjh+hkIiI+r1dCer0VvlH2yysDJcghD9yoIoJrbQ1pw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786700866; v=1; x=1787305666;
+ b=jBNBTLOtySJ8JNzD+V9+50+12faaKKt7KRtAX3SVh2TLlosH8bJMvRQ9bweYpdY9EGOjsvEc
+ JaiAk8szFyb3PsivAusMUaj75X73hvOFHbD0I24jCG30LbBpNVJm8QjnjPThNh/iB7ri1dFJYSE
+ ru5ZzE95C6xmMY5jkbpZzvvE=
+X-Envelope-To: kvm@vger.kernel.org
+Received: from ctao-book.. (111.162.215.50)
+	by smtp.migadu.com with ESMTPS id fccdeeeffe8d6076;
+	Fri, 14 Aug 2026 09:47:46 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Tao Cui <cui.tao@linux.dev>
+To: chenhuacai@kernel.org,
+	maobibo@loongson.cn
+Cc: zhaotianrui@loongson.cn,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	cui.tao@linux.dev,
+	Tao Cui <cuitao@kylinos.cn>
+Subject: [PATCH v3] LoongArch: KVM: Fix TOCTOU race on pv_features
+Date: Fri, 14 Aug 2026 17:47:38 +0800
+Message-ID: <20260814094738.2552440-1-cui.tao@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <an7eSrKUHUqPpVGv@lucifer>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 14, 2026 at 10:23:33AM +0100, Lorenzo Stoakes (ARM) wrote:
-> On Fri, Aug 14, 2026 at 12:18:50PM +0300, Mike Rapoport wrote:
-> > On Fri, Aug 14, 2026 at 10:01:19AM +0100, Lorenzo Stoakes (ARM) wrote:
-> > > On Thu, Aug 13, 2026 at 11:53:46AM -0700, Andrew Morton wrote:
-> > > > You'll be mortified to hear that Sashiko wasn't able to find anything
-> > > > to which to apply this.
-> > >
-> > > :))
-> > >
-> > > Well, when it's right it's useful, when it's wrong or suggesting unrelated
-> > > what-nots it's less useful :>)
-> > >
-> > > I do locally put things through claude + Chris Mason's prompts a lot, I
-> > > don't always invoke local sashiko as it's very slow and token-heavy or has
-> > > been so far, but am planning to do that more also in future.
-> > >
-> > > >
-> > > > Sashiko can be guided with a base-commit: tag but I'm not sure how to
-> > > > tell it what tree/branch to try, or even if that's necessary.  Perhaps
-> > > > someone can figure this out sometime.
-> > >
-> > > b4 gives a base commit, but I think because the trees are rebased it ends
-> > > up being the incorrect one.
-> >
-> > It's not only that the tree is rebased, but also that mm-unstable carries
-> > the previous version of the patches.
-> 
-> Yeah that's part of the issue, I can't rebase on mm-unstable as a result
-> obviously.
-> 
-> Is hard to know what is sensible to rebase on - if I rebase on base of my old
-> version of the series in mm-unstable that'll probably be a bogus commit at some
-> point due to other rebasing.
+From: Tao Cui <cuitao@kylinos.cn>
 
-If the work does not depend on other commits in mm-unstable, it's possible
-to base on -rcX. But often it's not the case.
+The check-then-set on kvm->arch.pv_features in
+kvm_loongarch_cpucfg_set_attr() is lockless, so two vCPUs can race
+past the validation and set different values.  Add a spinlock to
+serialize it.
 
-> > > Not sure what the solution is!
-> > >
-> > > --
-> > > Cheers, Lorenzo
-> >
-> > --
-> > Sincerely yours,
-> > Mike.
-> 
-> --
-> Cheers, Lorenzo
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+---
 
+Changes in v2: use a spinlock instead of a cmpxchg loop (Bibo Mao).
+Changes in v3: rename the lock to pv_setting_lock and place it next to
+phyid_map_lock (Huacai Chen).
+
+v1: https://lore.kernel.org/all/20260810081321.157258-1-cui.tao@linux.dev/
+v2: https://lore.kernel.org/all/20260813232542.2098930-1-cui.tao@linux.dev/
+
+ arch/loongarch/include/asm/kvm_host.h | 1 +
+ arch/loongarch/kvm/vcpu.c             | 6 +++++-
+ arch/loongarch/kvm/vm.c               | 1 +
+ 3 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
+index 23cfbecebbd7..3538a199aac6 100644
+--- a/arch/loongarch/include/asm/kvm_host.h
++++ b/arch/loongarch/include/asm/kvm_host.h
+@@ -125,6 +125,7 @@ struct kvm_arch {
+ 	unsigned int  pte_shifts[MAX_PGTABLE_LEVELS];
+ 	unsigned int  root_level;
+ 	spinlock_t    phyid_map_lock;
++	spinlock_t    pv_setting_lock;
+ 	struct kvm_phyid_map  *phyid_map;
+ 	/* Enabled PV features */
+ 	unsigned long pv_features;
+diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+index 20c207d80e31..e47fa463a8be 100644
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -1165,10 +1165,14 @@ static int kvm_loongarch_cpucfg_set_attr(struct kvm_vcpu *vcpu,
+ 			return -EINVAL;
+ 
+ 		/* All vCPUs need set the same PV features */
++		spin_lock(&kvm->arch.pv_setting_lock);
+ 		if ((kvm->arch.pv_features & LOONGARCH_PV_FEAT_UPDATED)
+-				&& ((kvm->arch.pv_features & valid) != val))
++				&& ((kvm->arch.pv_features & valid) != val)) {
++			spin_unlock(&kvm->arch.pv_setting_lock);
+ 			return -EINVAL;
++		}
+ 		kvm->arch.pv_features = val | LOONGARCH_PV_FEAT_UPDATED;
++		spin_unlock(&kvm->arch.pv_setting_lock);
+ 		return 0;
+ 	default:
+ 		return -ENXIO;
+diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
+index 1317c718f896..86ba7d54e81f 100644
+--- a/arch/loongarch/kvm/vm.c
++++ b/arch/loongarch/kvm/vm.c
+@@ -76,6 +76,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+ 		return -ENOMEM;
+ 	}
+ 	spin_lock_init(&kvm->arch.phyid_map_lock);
++	spin_lock_init(&kvm->arch.pv_setting_lock);
+ 
+ 	kvm_init_vmcs(kvm);
+ 	kvm_vm_init_features(kvm);
 -- 
-Sincerely yours,
-Mike.
+2.43.0
+
