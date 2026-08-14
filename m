@@ -1,177 +1,214 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5268A392C21;
-	Fri, 14 Aug 2026 19:25:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456C430594E
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 19:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786735543; cv=none; b=LpOGxBSbitvLPmadJjgu4aBtrmrxK+qYaDMGewBkK/v7DZBg1MLRApDIt4jKcgiA7UdyJAq9leagUs0ycGFjsgu7JWamo7QawIyPb8V/k9TipkAMjJfe8vhUSlDy9tZXiGFUt5vPcAOICinTAXBn+EJzbLe3L1O4IcJ/Ln9sIU8=
+	t=1786736767; cv=none; b=XcuKyYnoo7q9VEUV9eKAjWzh1YIc0ORZnXxaZZaC+sOgtr4DKZWyG27z7JLd8GjB4ekqdYKCGMoWSTqDYBtUFpEFm6inu7lyx2DnvxIEWtnYeK3WYNVjoNfcVXvgEyBPfs3HQnhhEhLYixD5fB2S/oy2Z6r1w18N4voWfA0K4Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786735543; c=relaxed/simple;
-	bh=Znhj9UGC0yOpZe9rzKavaN+bghIiemEVZX7NSWCMvQ4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
-	 MIME-Version; b=IbVjxXWLO4M2kaBwRWBloaoMtd45FpzhP50ZX3J27MRKz5+AHwb8DvxhevIQucdADmbdFLbkkPKevMOWAjkl95SfNj4OG16Cojj3Fv4WoFztfpYa93A1MBzbBdghZJwg5kyWz2kjwktoPb4SMPsN+GsmamWCiUKSgLSbCa/OsvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=X6A/NSho; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1786736767; c=relaxed/simple;
+	bh=baOJZPd7nJlBagSvu4EY/e0qB3OgSpSkb6F80UmuE5I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YqXD306USfxpTY7u/24YkaK4+Q5wgnEhdpPZnGzdqFuEYjwyqRWZsDgI25iP40u+rf83DSqc7TNQ7WFjSJoRbPNwA9VJONNkJerPqEl/m7ZfR6RMgP94UUnF9zxFDrKAcGhwM69r5ppIJNAM0JunoojcmuMfjnAlOvc3dkK9Qyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mfMkq1dV; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="X6A/NSho"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
-	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=Znhj9UGC0yOpZe9rzKavaN+bghIiemEVZX7NSWCMvQ4=; b=X6A/NSho6UU8+IcsUIVbeXz+mo
-	hj34PpL40gA6gXxlVzT8rqVwI0t7V2388ALLd+Vt2btPtdUCfcjGZTsb5ehipHLPkrJtWdCZLyldf
-	gZSNtW0GP84HX44p+P4SVNyH2Fe31VPZoQl1NyG6Mhvm4HM+7+BxXf8a4WQ87AHub+Vj7pGZvxex+
-	gqjgK2khjKVm+9hTDTr5JqimI6GwEzgRxiCaOCuJBGdTOLCJXRK+yotSaOXZ+2D3sNlou52QWcQDB
-	T0p7cqcQmIZDabLax9R2vt3phWtrpNOIeGfj8JdS4MkTIUEUG/bR7whfZ8inUxajqyg8LKlzPYiWp
-	jPbmI9Lw==;
-Received: from [2001:8b0:10b:5:84af:4c52:575c:6551] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wuxX6-00000005ecJ-0hSC;
-	Fri, 14 Aug 2026 19:25:36 +0000
-Message-ID: <2c501584d34eea17016d39c9a5f78ca3d60861b4.camel@infradead.org>
-Subject: Re: [GIT PULL] KVM: x86 pull requests for 7.3
-From: David Woodhouse <dwmw2@infradead.org>
-To: seanjc@google.com
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com
-Date: Fri, 14 Aug 2026 20:25:26 +0100
-In-Reply-To: <20260812213206.1564354-1-seanjc@google.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-SYyEaq2coE6ak7syw8+f"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mfMkq1dV"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cede6375caso154325ad.0
+        for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 12:46:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786736765; x=1787341565; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=S64AgIWO7QxYO2SGcf+4LpPDoMjsF/PwjvLqa2d2Geo=;
+        b=mfMkq1dVA4S4J8SNbiRKDV3R241tM+IHBOMv9IU/o1WDIm7Iwv4lvlBZOrmin63rxY
+         vM+Jeot8v8LWcvNdu6ybHSWlmvEfMXxpUX2NRKgawxBILFLxLZGdLLmE0mpNncZ//SQL
+         +Kkrgzb+MDHoHySCMgqOIVP4jqwLXom1Hdo7NGreHRMBkRHMil8ClSuwBHBxQItUXeKJ
+         EqtTmAhITKmZxAQ3XTlcwsBCkid0E/9OBDfD/fKTXMTG1yjfD6l4I2oG4FjiURYl84WR
+         FXmZd5Z7DZnXoJvan7N7g+3mH+xRXk5me1jSseeGBwwUAbPKVfrPmmgE70OzyyymyW0J
+         DERg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786736765; x=1787341565;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=S64AgIWO7QxYO2SGcf+4LpPDoMjsF/PwjvLqa2d2Geo=;
+        b=rbEpiOF1J2jvX7LKyWYbC+s/K5EBVcR7D0IDe6sYpwN3q0zrCzUHuVtBHrmYQ6DQz8
+         SijvR5Ht7QllBaK+LT5jtC+hFmSYjo+axpkeIl0ha4j25WW2cm0xkRmYz3hGjg4MEYSw
+         El98q+JuG+gEC1U/yAI8HO3JydbVEHdkPuV9qhthhGyfpSSBDPOfgD7NGqhVWqaZhcYz
+         YBVg8RPcuAYP/qrGrgFU+brmqapBLuqSDkHMzCnvGtvch8sXwuxZIcTmmMVb196VTU2r
+         8K2QPWe0GPuyBjx6gF85p+g96RB9aEvuNUKezJcsf/aa/aBG1s7cYwayngB4w/Z8Za9N
+         4msg==
+X-Forwarded-Encrypted: i=1; AHgh+Rqw/KxsGwyo6ngJYLnu7AsD1leqNP2snCRkZx99PDuaqPW11rD23vHBDN4tHe66hpYCNQE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0rfgRGMiGp0AEu08/vaQMqQhhkECsPXRFQ6ayMMNReRyekCI0
+	uegmOeth8jjN83d/Q+HabyEnkzJRFpAX5Jhy3zX9PWRUkj2n3ZxZhk9c9WK+31/KtA==
+X-Gm-Gg: AR+sD13ovq3mf8VgqRoAKWC4SqPFhWphIirDSIPaokMvct3InNtNLngPqrINQER6RHE
+	hSKOKmBngJ4MyfwEvvIuG7B5AJxR/pZA0h+E8xHBD5d4XuMBvTVqcbf9Xe9TC2veK8vtWm815EJ
+	RNBFgX8UfuZ94pn5CVBDRslb8ux1V9iDVLg4p9ZkYSecgcsJbp8rdvHaYiltn07JLA3cORNwfvF
+	lpBvOvhBNb5/qF2A52IJhMbE5Q4WFeGYwUyTBOxK896L4LCYe3Umjr97hYrywtk4CDLi3UFIll0
+	mDvkyh32W6KwHyh8PmrSE/74vujuitpda/zUIKOtzjfILzWbTXSl3RImmT3d+aRTuftbGLPGGAq
+	5vcTnaonWlbt115INtvo4y8MdZFUMRbpo59LzkLAZtEYMD4Hc5kwZruntB+FHI77wn4TxUfIclc
+	r/vVR6y5GacsTXhzAiPkJiK8XFlbCzj2j+ER3GDcNIxdL7Lu4cB8TeGrez2mNpGuk563z9IR59g
+	kB/ldSy7Er1/65KeRLPKQ5KCjVXTUMiuJeSSfNLdg85/y9ju5GeYaJUnU/VFxjN
+X-Received: by 2002:a17:903:1b0f:b0:2cf:41ba:96b8 with SMTP id d9443c01a7336-2d3af229eb1mr12458355ad.6.1786736764793;
+        Fri, 14 Aug 2026 12:46:04 -0700 (PDT)
+Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-394ea99ab1dsm3742041a91.7.2026.08.14.12.46.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 12:46:04 -0700 (PDT)
+Date: Fri, 14 Aug 2026 19:46:01 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Ankit Soni <Ankit.Soni@amd.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
+	Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v4 11/18] iommu: Restore and reattach preserved domains
+ to devices
+Message-ID: <an9mwcflLcLtwDrn@google.com>
+References: <20260808022723.3893618-1-skhawaja@google.com>
+ <20260808022723.3893618-12-skhawaja@google.com>
+ <xssagtjtc27kxprwyz7exeiotigcr3ksnvr53ap56ialuqlfe4@xql3pr5va6m5>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <xssagtjtc27kxprwyz7exeiotigcr3ksnvr53ap56ialuqlfe4@xql3pr5va6m5>
 
+On Fri, Aug 14, 2026 at 04:59:50PM +0000, Ankit Soni wrote:
+>On Sat, Aug 08, 2026 at 02:27:16AM +0000, Samiullah Khawaja wrote:
+>> During default domain setup, restore the preserved domains by restoring
+>> the page tables using restore() iommupt op. Associated the restored
+>> domain with the iommu group of the preserved device, and reattach the
+>> domain to the device.
+>>
+>> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> ---
+>>  drivers/iommu/iommu.c            |  76 ++++++++++++++++++
+>>  drivers/iommu/liveupdate.c       | 130 +++++++++++++++++++++++++++++++
+>>  include/linux/iommu-liveupdate.h |  69 ++++++++++++++++
+>>  3 files changed, 275 insertions(+)
+>>
+>
+>../..
+>
+>> diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
+>> index 20acf123b47a..04c0212cd81b 100644
+>> --- a/drivers/iommu/liveupdate.c
+>> +++ b/drivers/iommu/liveupdate.c
+>> @@ -708,3 +708,133 @@ void iommu_unpreserve_device(struct iommu_domain *domain, struct device *dev)
+>>  	liveupdate_flb_put_outgoing(&iommu_flb);
+>>  }
+>>  EXPORT_SYMBOL_GPL(iommu_unpreserve_device);
+>> +
+>> +static inline bool match_device_ser(struct iommu_device_ser *match,
+>> +				    struct pci_dev *pdev)
+>> +{
+>> +	return match->devid == pci_dev_id(pdev) && match->pci_domain_nr == pci_domain_nr(pdev->bus);
+>> +}
+>> +
+>> +/**
+>> + * iommu_init_device_preserved_data() - Initialize preserved state for device
+>> + * @dev: Target device
+>> + *
+>> + * Looks up incoming Live Update state for @dev and attaches it to the device if
+>> + * found.
+>> + */
+>> +void iommu_init_device_preserved_data(struct device *dev)
+>> +{
+>> +	struct iommu_device_ser *device_ser = NULL;
+>> +	struct iommu_device_array_ser *array;
+>> +	struct iommu_flb_obj *flb_obj;
+>> +	int ret, idx;
+>> +
+>> +	if (!dev_is_pci(dev))
+>> +		return;
+>> +
+>> +	ret = iommu_liveupdate_flb_get_incoming(&flb_obj);
+>> +	if (ret)
+>> +		return;
+>> +
+>> +	mutex_lock(&flb_obj->lock);
+>> +	array = phys_to_virt(flb_obj->ser->device_array_phys);
+>> +	iommu_liveupdate_for_each_arr(array) {
+>> +		iommu_liveupdate_for_each_obj(array, device_ser, idx) {
+>> +			if (match_device_ser(device_ser, to_pci_dev(dev))) {
+>> +				device_ser->hdr.flags |= IOMMU_SER_FLAG_INCOMING;
+>> +				goto out;
+>> +			}
+>> +		}
+>> +	}
+>> +
+>> +	device_ser = NULL;
+>> +out:
+>> +	WRITE_ONCE(dev->iommu->device_ser, device_ser);
+>> +	mutex_unlock(&flb_obj->lock);
+>> +	liveupdate_flb_put_incoming(&iommu_flb);
+>> +}
+>> +EXPORT_SYMBOL(iommu_init_device_preserved_data);
+>> +
+>> +/**
+>> + * iommu_release_restored_device() - Release a restored device
+>> + * @dev: Target device
+>> + */
+>> +void iommu_release_restored_device(struct device *dev)
+>> +{
+>> +	/*
+>> +	 * We do not support releasing the restored devices that are not
+>> +	 * reclaimed by the device drivers as they can fallback to the default
+>> +	 * domain.
+>> +	 */
+>> +	BUG_ON(dev_iommu_restored_state(dev));
+>
+>Hi,
 
---=-SYyEaq2coE6ak7syw8+f
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-This was intended as the safe stable bugfix part, split out from all
-the RCU and rwlock RT fun that can come later:
+Thanks for looking at this.
 
-https://lore.kernel.org/all/20260811094829.98794-1-dwmw2@infradead.org/
+>After a successful live update this is one sysfs write away, and nothing in
+>the series disarms it.
+>
+>At PCI probe, iommu_init_device_preserved_data() matches the incoming FLB on
+>devid + pci_domain_nr and sets IOMMU_SER_FLAG_INCOMING.
+>Nothing clears the flag or device_ser afterwards. The group is meanwhile owned
+>on behalf of iommufd (iommu.c:3229-3231, "will be reclaimed later by the
+>entity (iommufd) that preserved them"), and iommufd_liveupdate_retrieve() is
+>-EOPNOTSUPP, so the reclaim that would end the restored state cannot happen
+>yet. The device is left with the state permanently set.
 
---=-SYyEaq2coE6ak7syw8+f
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Yes, these points are valid and this is intentional. The IOMMU
+persistence support is split into two phases as mentioned in the cover
+letter. The reclaim logic in iommufd will come later as a phase 2. The
+preserved devices go to normal state when these are reclaimed through
+iommufd.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-aMNyL6mWy/jD23GylIV2hmUAAAAAAAA=
+https://lore.kernel.org/all/20260128195943.GY1641016@ziepe.ca/
 
+Regarding the handling of sysfs, my concern is about it coming back and
+going to default domain as mentioned in the comment. But I will evaluate
+if we can allow device tear down here and reattach it to the preserved
+domain.
 
---=-SYyEaq2coE6ak7syw8+f--
+Also please see the patchset breakdown here:
+https://docs.google.com/document/d/1enDn-uPE9U77U-xHEnzn6HHGKiePSAtMIP8EDU3NO0M
+
+Btw since this phase 1 is relatively stable and I don't expect many
+changes in it. I have started reviving the Phase 2 patches and will be
+sending them out as RFC soon if you want to experiment with it.
+
+Sami
+
