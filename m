@@ -1,162 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8306233998
-	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 12:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DB246C837
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 12:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786711929; cv=none; b=lndX+rJ2sJX1PIDfkrrladGI/Y+VykPIMFtm2HyXdGzUXH7fJuFxlzLvs72zR15jZamp2zfvkvRqP/1OUrN8eahUyD+dvjoHBrU9igYyUOQm4Ch/EiMo0Bgmxkp2zjQzvB8cd6uJL1KrqooRkrqiDM/Q+zyeS3idZTIIfWXl0sQ=
+	t=1786712269; cv=none; b=ETF/HTtX5xfabqCZ5KZc1WH1doSdy5v4hHN2yRnYPOAkEPk1Cr0WpWxCzsKbjMqngvHg2VAEh3k/6kftnI2YmulKbMJuLFuPMwQUINrD8VhA6m/mdvWy63WulBcq3tbm+OWwhHaQ0ypLtCA3mjKsBwAP9mb5L7V2uPmOSJeWpSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786711929; c=relaxed/simple;
-	bh=J7EuI7AXOb05t5irAu1+dj7gfsKp2XltqGAdhbSbv38=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=OZSbSHRiWQTcO8V8Xn6jeD0cCWFpRxdhKo6o8V+O8IV7SDvqyXFiFxlkwGPqNjzgTbEqYplH4USQ88P/QJwC6Ta2+8VMJWRVSt7u8J3azhtSPkzV0Mg8a5kH4mT2CwGg5eTbItYx91siyuSpNTWn2JXfqLdsKu36+UPaDz3Fx30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BDbq23mI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786712269; c=relaxed/simple;
+	bh=izbe7ZcJLT4/vE0QipHanYV81LIiL3sGrBu3pjzK7pU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=QM592MHCUT8XauBGI3aHi47S+0T0WyG+lUMapdcMs9PfPAxxGFPdFEwnDMsmUfmRLCYe0hiavCBzde2IYEfZTAK/4IRruC35C1TX+FLmCn5BMesNIHERf+JjbfbxYbDOUD58tBv+pR5QFyyOStYduwiblxo0g7rAB/wqFpoa+rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CpVGSKLM; arc=none smtp.client-ip=209.85.210.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BDbq23mI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F501F000E9;
-	Fri, 14 Aug 2026 12:52:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786711925;
-	bh=5oDqbTRdpt7aq0AOlapv4saH1UrwJcCy5AVyBgsn5fk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BDbq23mIywMngFJseR9ab3Y4OSO9nq9rQvUdxIjgk7B/RZuTYA00PnPEu0k2E6MF8
-	 zdbRK3x99BYe4LH12QuQzE+g6nLaahudaxO9/pVfA1S8RyNWS8UHIgi+b9SdQ20cmx
-	 Wj0NIfoOJzljZLPyRAnlUiYLXvi9NV86gLA5/UD/gLftTinEROFMsV7ITX/pxU06+T
-	 KBw2WnY+Ewnvz15alcRbUCn65ZBf+t7eGVSCVRFV9ft8Eje68yk+BOAB4tSAsEUuCb
-	 kvhaVd4s9VwdRuSXHXItS/zY9fWQBflPHcM31cQQeOsPpxK3VV+yE6DO6N8sGhY0Fl
-	 3WpJvcZSGr8QA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: riscv: Avoid redundant interrupt check for pending
- timers
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jinyu Tang" <jinyu.tang@linux.dev>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260814123541.593613-1-jinyu.tang@linux.dev>
-References: <20260814123541.593613-1-jinyu.tang@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 14 Aug 2026 12:52:05 +0000
-Message-Id: <20260814125205.82F501F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CpVGSKLM"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-848474825ffso1279976b3a.0
+        for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 05:57:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786712267; x=1787317067; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bDJ7mlcbwJNTCYEfJjjmPhvi6YvmwwLSKsLivI/3Dm4=;
+        b=CpVGSKLMoYgoYRwgrtRQB5XyA5EJbHXlAZ43FVWRYzng6iRZm9mEvtSpEGr6E1It8z
+         XWRuZMP5ZqfBcftsqX7ODr48zeKhwXoH9SofhSfDa/PeQOHbbdq+g09rLStKMSIdDFhd
+         dmINW9JBjq/M+GddVXWMzU+TRGjXPGN2QyvWEc7L3xt0zVyZ+oNxQ7Uz+9n+c1+x/tAk
+         cTM7YQIETc9s17zOf14sgtsZf+Gt0oKxQL73aVwo0qxxYK7/cUOz+dRrgKOo2tgHtxxA
+         a/EBmqANlSPnVm8pB4rcb5IgZuWNzq3C57m9f/letwy/SQ41HpXIb10rDcZdIcWK9AHJ
+         cnvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786712267; x=1787317067;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bDJ7mlcbwJNTCYEfJjjmPhvi6YvmwwLSKsLivI/3Dm4=;
+        b=eP1l/TO6iCdCjvANl9hJBKBCSe9LCpL8b2rtMFH1KM6TRHFdA1ioyCsPPWCer/sXW4
+         yw2jhwCR6LI5y8J5UxUoSVvXIG7NZcgWotGuYoU+koiMLrS8AeMsjXHiNUa/yAmcWyMM
+         V29gRNDai9AVUuoWg9XmhPTXg1xfeVMoXASwKR2ksEkqIfpP+N05Lk82NZTQ7ooEn1LN
+         gphVwCTy21IltHFRnqYk8/LbGmIHukT5ck+wmzrT0tqcf0ouSRk+UukwW2dSlWlvAWtw
+         i341sHkvH16VSzce8ijYrAugAT6sCEN2oBvbcoJg+f+PTRTUKyrvNqrqSporpbkFBP5L
+         b7qw==
+X-Gm-Message-State: AOJu0YysTo6Br13jeHz34FZMMFXSRUK9BBntvg4XKvfTYgBNINzyoMx4
+	Di74v+SfXpzzgPmW9IHqg2zRb+CD4w00nBdFWaafhmfXGHOAQfjaGU6rwbGFMtuJKRrAAr09ZTe
+	hVooMdg==
+X-Received: from pfoo3.prod.google.com ([2002:a05:6a00:1a03:b0:84c:282c:5608])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:bd0e:b0:84e:cd14:aeba
+ with SMTP id d2e1a72fcca58-84fdc6800aemr5107346b3a.6.1786712266971; Fri, 14
+ Aug 2026 05:57:46 -0700 (PDT)
+Date: Fri, 14 Aug 2026 05:57:45 -0700
+In-Reply-To: <178669637845.81620.8189698601844425753@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <178669637845.81620.8189698601844425753@linux.alibaba.com>
+Message-ID: <an8QybMBNTk3zdIF@google.com>
+Subject: Re: [RFC] Expose L1 guest register state for nested VMX via KVM_GET_NESTED_STATE
+From: Sean Christopherson <seanjc@google.com>
+To: Zhengrong Li <zhengrong_li@linux.alibaba.com>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On Fri, Aug 14, 2026, Zhengrong Li wrote:
+> [RFC] Expose L1 guest register state for nested VMX via KVM_GET_NESTED_STATE
+> 
+> Problem
+> =======
+> 
+> KVM_GET_REGS and KVM_GET_SREGS always return the register state of the
+> currently active guest context.  When a vCPU is in VMX non-root
+> operation running an L2 nested guest, these ioctls return L2 state.
+> There is no way for userspace to retrieve L1 guest state while L2 is
+> active.
+> 
+> This affects any tool that inspects vCPU register state.  For example,
+> QEMU's "info registers" monitor command and GDB stub both show L2
+> registers when L2 is running, making nested VM debugging difficult.
+> Users have no way to determine where L1 was executing, 
 
-Pre-existing issues:
-- [High] Masked timer interrupts cause an infinite loop of spurious WFI wak=
-eups, leading to 100% CPU usage for idle guests.
-- [High] The hrtimer cancellation during vCPU teardown can be bypassed, lea=
-ding to a Use-After-Free if the timer callback executes concurrently.
-- [High] Restoring KVM_REG_RISCV_TIMER_REG(state) via the ONE_REG interface=
- overwrites the timer's compare value with the state flag (1).
---
+vmcs12.HOST_RIP will provide a solid clue given that software convention is to
+put the exit handler close to the entry point.
 
---- Patch [1]: [PATCH] KVM: riscv: Avoid redundant interrupt check for pend=
-ing timers ---
-commit 91f0cac16b524c91a61fc14d9cc9aaf56d289c69
-Author: Jinyu Tang <jinyu.tang@linux.dev>
+> what page tables it was using,
 
-KVM: riscv: Avoid redundant interrupt check for pending timers
-   =20
-kvm_vcpu_check_block() calls kvm_arch_vcpu_runnable() before
-checking whether a timer is pending. On RISC-V, kvm_arch_vcpu_runnable()
-already checks all pending guest interrupts through
-kvm_riscv_vcpu_has_interrupts(vcpu, -1UL), including IRQ_VS_TIMER.
+vmcs12.HOST_{CR3,CR4} and vmcs12.HOST_EFER
 
-Drop the repeated IRQ_VS_TIMER pending-interrupt check from
-kvm_riscv_vcpu_timer_pending() and keep the helper focused on the timer
-deadline state. If the timer becomes pending after the runnable check,
-the timer path still injects IRQ_VS_TIMER and kicks the vCPU through the
-normal wakeup path.
+> or which privilege level it was in.
 
-> diff --git a/arch/riscv/kvm/vcpu_timer.c b/arch/riscv/kvm/vcpu_timer.c
-> index 85a7262115e13..f6919048a584b 100644
-> --- a/arch/riscv/kvm/vcpu_timer.c
-> +++ b/arch/riscv/kvm/vcpu_timer.c
-> @@ -130,11 +130,7 @@ bool kvm_riscv_vcpu_timer_pending(struct kvm_vcpu *v=
-cpu)
->  	struct kvm_vcpu_timer *t =3D &vcpu->arch.timer;
->  	struct kvm_guest_timer *gt =3D &vcpu->kvm->arch.timer;
-> =20
-> -	if (!kvm_riscv_delta_cycles2ns(t->next_cycles, gt, t) ||
-> -	    kvm_riscv_vcpu_has_interrupts(vcpu, 1UL << IRQ_VS_TIMER))
-> -		return true;
-> -	else
-> -		return false;
-> +	return !kvm_riscv_delta_cycles2ns(t->next_cycles, gt, t);
+Given that VMLAUNCH and VMRESUME are CPL0-only, this one's easy. :-D
 
-[Severity: High]
-This is a pre-existing issue, but this function returns true when the timer
-has expired without checking if the timer interrupt is actually unmasked by
-the guest.
+> SVM Comparison
+> ==============
+> 
+> For AMD/SVM, KVM_GET_NESTED_STATE already returns the vmcb01 save area,
+> which provides comprehensive L1 state (see svm_get_nested_state() in
+> arch/x86/kvm/svm/nested.c, line 1943):
+> 
+>     copy_to_user(&user_vmcb->save, &svm->vmcb01.ptr->save,
+>                  sizeof(user_vmcb->save));
+> 
+> The SVM vmcb_save_area includes:
+> 
+>   Registers:  RIP, RSP, RAX, RFLAGS
+>   Control:    CR0, CR2, CR3, CR4, EFER
+>   Debug:      DR6, DR7
+>   Segments:   ES/CS/SS/DS/FS/GS (selector, base, limit, attr)
+>   Tables:     GDTR, IDTR, LDTR, TR
+>   Syscall MSRs: STAR, LSTAR, CSTAR, SFMASK, KERNEL_GS_BASE,
+>                 SYSENTER_CS/ESP/EIP
+>   Other:      PAT, SPEC_CTRL, CPL
+> 
+> This gives userspace a near-complete snapshot of L1 state.
+> 
+> VMX has no equivalent.  KVM_GET_NESTED_STATE for VMX returns vmcs12
+> (which contains L2 guest state + L1 host-state area for VM-exit) but
+> never exposes L1's running guest state from vmcs01.
 
-Can this cause an infinite loop of spurious WFI wakeups? If a guest OS masks
-the timer interrupt (vsie.STIE =3D 0), leaves the timer comparator in the p=
-ast,
-and executes the WFI instruction, kvm_arch_vcpu_runnable() correctly returns
-false.
+Because there is no L1 "running" state.  The majority of the data that's listed
+above is explicitly loaded from vmcs12 on VM-Exit from L2 => L1.  CR2 isn't
+loaded because it's software's responsibility to context switch CR2.
 
-However, kvm_cpu_has_pending_timer() might use this helper and return true,
-ignoring the mask. KVM would then break out of kvm_vcpu_block() and resume
-the guest. The guest would re-execute WFI, immediately trapping again.
+In other words, what you want is already available via KVM_GET_NESTED_STATE, it
+simply requires reading vmcs12.HOST_xxx.
 
-Could this lead to 100% host CPU usage for idle guests?
+> Proposed: L1 Guest State Snapshot for VMX
+> =========================================
+> 
+> Add a new section to the VMX nested state data that provides a
+> comprehensive L1 register snapshot, assembled from all sources KVM has
+> access to.
+> 
+> The data should be returned as a VMCS12-sized blob (same format as the
+> existing vmcs12 and shadow_vmcs12 sections).  This reuses existing
+> infrastructure and lets userspace parse fields using the well-known
+> vmcs12 layout.
+> 
+> Fields to include (from vmcs01 hardware VMCS):
+>   GUEST_RSP, GUEST_RIP, GUEST_RFLAGS
+>   GUEST_CR0, GUEST_CR3, GUEST_CR4
+>   GUEST_IA32_EFER, GUEST_IA32_PAT
+>   GUEST_DR7
+>   GUEST_ES/CS/SS/DS/FS/GS (selector, base, limit, ar_bytes)
+>   GUEST_GDTR, GUEST_IDTR (base, limit)
+>   GUEST_LDTR, GUEST_TR (selector, base, limit, ar_bytes)
+>   GUEST_SYSENTER_CS, GUEST_SYSENTER_ESP, GUEST_SYSENTER_EIP
+>   GUEST_PDPTR0-3
+>   GUEST_INTERRUPTIBILITY_INFO, GUEST_ACTIVITY_STATE
+> 
+> Additional fields from KVM's vcpu software model (vcpu->arch.*):
+>   CR2      -- vcpu->arch.cr2 (cached from last #PF)
+>   DR6      -- vcpu->arch.dr6 (cached from last debug event)
+>   MSR_IA32_SPEC_CTRL  -- vcpu->arch.spec_ctrl
+>   MSR_KERNEL_GS_BASE  -- via kvm_get_msr() or uret array
+>   MSR_STAR, MSR_LSTAR, MSR_CSTAR, MSR_SF_MASK
+>     -- via uret/uret_msrs array (populated on VM-exit)
+> 
+> Note: the MSR-derived fields (KERNEL_GS_BASE, STAR, LSTAR, CSTAR,
+> SFMASK, SPEC_CTRL) are not VMCS guest-state fields in Intel VMX.  They
+> are saved/restored by the VM-entry MSR-load mechanism or KVM's MSR
+> save/restore path.  
 
->  }
-> =20
->  static void kvm_riscv_vcpu_timer_blocking(struct kvm_vcpu *vcpu)
+No.  Like GPRs, KVM can't distinguish between L1 and L2 values because how L1
+manages L2's values is defined by L1 software, not by the architecture.
 
-[Severity: High]
-This isn't a bug introduced by this patch, but can hrtimer cancellation
-during vCPU teardown be bypassed, leading to a Use-After-Free?
+> Hardware Limitation (GPRs)
+> ==========================
+> 
+> Neither Intel VMX nor AMD SVM saves general-purpose registers (beyond
+> RAX/RSP/RIP) into the VMCS/VMCB on VM-entry.  RBX, RCX, RDX, RSI, RDI,
+> R8-R15 remain in physical registers and are overwritten when L2 starts.
+> 
+> For SVM, hardware saves RAX to the VMCB save area; for VMX, RAX is not
+> in the VMCS guest-state area at all.  This is a hardware constraint,
+> not something KVM can work around.
+> 
+> The L1 hypervisor is responsible for saving its own GPRs (typically on
+> its stack), which KVM cannot locate.
 
-Looking at kvm_riscv_vcpu_hrtimer_expired() in arch/riscv/kvm/vcpu_timer.c:
+Well, KVM could locate that, but so could QEMU.  The host RSP will provide a
+very good starting point for guessing L1's GPR state.
 
-	t->next_set =3D false;
-	kvm_riscv_vcpu_set_interrupt(vcpu, IRQ_VS_TIMER);
+> Questions for Maintainers
+> =========================
+> 
+> 1. Is exposing L1 guest state via KVM_GET_NESTED_STATE acceptable?
 
-And in kvm_riscv_vcpu_timer_cancel():
-
-	if (!t->init_done || !t->next_set)
-		return -EINVAL;
-
-	hrtimer_cancel(&t->hrt);
-
-Since t->next_set is cleared locklessly in kvm_riscv_vcpu_hrtimer_expired()
-before it finishes accessing the vcpu structure, what happens if VM teardown
-races with this callback?
-
-If kvm_riscv_vcpu_timer_deinit() calls kvm_riscv_vcpu_timer_cancel() and se=
-es
-t->next_set as false, it skips hrtimer_cancel(). Does this allow teardown to
-free the vcpu while the callback is still actively using it?
-
-[Severity: High]
-This is a pre-existing issue, but is the timer's compare value overwritten
-when restoring KVM_REG_RISCV_TIMER_REG(state) via the ONE_REG interface?
-
-In arch/riscv/kvm/vcpu_timer.c:kvm_riscv_vcpu_set_reg_timer():
-
-	case KVM_REG_RISCV_TIMER_REG(state):
-		if (reg_val =3D=3D KVM_RISCV_TIMER_STATE_ON)
-			ret =3D kvm_riscv_vcpu_timer_next_event(vcpu, reg_val);
-		else
-			ret =3D kvm_riscv_vcpu_timer_cancel(t);
-		break;
-
-When userspace restores the VM state during live migration, restoring state
-with KVM_RISCV_TIMER_STATE_ON (1) incorrectly passes reg_val (1) as the tar=
-get
-cycles deadline to kvm_riscv_vcpu_timer_next_event().
-
-Would this overwrite t->next_cycles with 1, permanently losing the actual
-restored timer comparator value and causing immediate spurious interrupts?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260814123541.5936=
-13-1-jinyu.tang@linux.dev?part=3D1
+No, because architecturally it has no meaning, and in practice the vmcs12 host
+state should give you pretty much everything you need.  If you want more debug
+information than what is avaiable via KVM ioctls, then there's always BPF.
