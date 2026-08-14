@@ -1,130 +1,104 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB6119E96D;
-	Fri, 14 Aug 2026 01:09:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2B1175A8D
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 01:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786669746; cv=none; b=mH5EUCK74JzM/rCJtLcSjdlT1WnzdTz7WNOw4Riyq7SiInOuV9UVsRiqOrwub6ZbF9km1fw4WSn1S29MTOoKd8JlUVrbJVjNdZS5l1Uoibil/dwVk/60cdGBchB65wWv7AFUVMZ+LVSKEMIolG1nEFs5XoBV/2aDvZD+W5sH5co=
+	t=1786669968; cv=none; b=RGGf1HjwtR2tUGc97jOKSJMUxTHaDfpBcJTNwsAi4dPv9vjm2jCoUpC54Ce2WEtZJsQkjWax3vdq22wK6CiQKPuQ0vzuPL+lREpUplhYHmHUATJP1y0TM1nuo4ZAd1QZhtPhIgDNjWjpvQsLktClTfx5ZE1/ue9p3iaKzb0xgww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786669746; c=relaxed/simple;
-	bh=w64a7Z4GIJBQMHHeEWLAsXt+Pf8BkxyVv0y+3bYbrwU=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=gd2aX0kwUXHpIfj7CpP3CpHsya1INHhsIvflHJ21Eeg+4L6d0E6lPUZ/pcfkVRfiPQbLxYRCCWPqLF4ctvGID71y4+RBswxkrvIqO3nwbBMsMeaa/1GQxZCWEicjkttPgThZhWF+gud80jnYGN/am1y5y+3lgmm0/9m8FRWbu38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8AxntKtan5qNhYBAA--.3349S3;
-	Fri, 14 Aug 2026 09:09:01 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJDxTs+oan5qzREEAA--.26901S2;
-	Fri, 14 Aug 2026 09:08:59 +0800 (CST)
-Subject: Re: [PATCH v2] LoongArch: KVM: Fix TOCTOU race on pv_features
-To: Tao Cui <cui.tao@linux.dev>
-Cc: zhaotianrui@loongson.cn, chenhuacai@kernel.org, kvm@vger.kernel.org,
- loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
- Tao Cui <cuitao@kylinos.cn>
-References: <20260813232542.2098930-1-cui.tao@linux.dev>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <d26fdd03-dcfe-8ae0-d925-d121866e566d@loongson.cn>
-Date: Fri, 14 Aug 2026 09:08:44 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1786669968; c=relaxed/simple;
+	bh=GlnDYwFGGLDYutOM6HPj1F35OIEL3ElIdqJQ6KJRVTc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EepCcx6KJZTMObB2+lt1D74jAzGLaRPYjbZnvRJjsjgenMDZLFh3PGoauT53PHBOCShe7dq30rJ5ma/M2FaHSdF+hdReNjVCQrytLBiezAO2qcgqJMYhztOUnsVBZMFMCHLIKIIWfmhlg3dEyyCdmIt33uth9PQtFFRVlrP3V1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=U077U9Ga; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="U077U9Ga"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cbe6295f05bso1201471a12.1
+        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 18:12:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=trailofbits.com; s=google; t=1786669966; x=1787274766; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GlnDYwFGGLDYutOM6HPj1F35OIEL3ElIdqJQ6KJRVTc=;
+        b=U077U9GaT1dCukOcEwadD8LjwuA4U1xeiKcnu0fixGTVD++EcqU09caXQTtHYy20GD
+         LQgR06juufTVk0O1M9FEu0ompVoZz28jNuOgj4cKFEDokNXETZHKeNZtk9tTgwnZzKbW
+         IE8RI9j837JUZhQXr41K68vHQBFLT2X07dPP3jOX0aFFhZwRUe4tSRE6vyoG2qDh3ew1
+         eF3QGq3gfTHp435B4fSJGxtwEEIgR3dY128qhQp+GBlOdDT8sv1xBYmW+2rJs9fEYKvm
+         c2zY85RS2FpEvz2scBbc6fJhqOvFXYl5p4QggtdgYwLaGH3mNbMF0uALdf9K64pzfhCB
+         ha+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786669966; x=1787274766;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=GlnDYwFGGLDYutOM6HPj1F35OIEL3ElIdqJQ6KJRVTc=;
+        b=iSwDDx70GdX+5nd1ipPtaKZ369wq/m/lPTJvHBkoIONWyLYarMr74PFzaFVGmX0ax9
+         41aYOWUE9cRs1gx1FxZ6m0NTaQsFyBgnK3YeD01/fxmd7vrhjHUypldtiW2xs2tudZEp
+         eDWG6AMD/OpZfB834+wfSW/AsOl4iZLFD9xUMHlYjtc8YFjuNRemOBdueDfw9mAVTy3z
+         DS47yQCTw021qQgnCzElRKZGdWQ7F4PrIng0JnjdAhdr2kdDuqz1wEuEgBISBsxuAU8y
+         LkM3UD4g0L0/RENqGvGvfgIUf3BLNxvRFfHg7Dz6ihY/FyiPlitG5/7kUwjXmN/cM2lh
+         R1KA==
+X-Forwarded-Encrypted: i=1; AHgh+RopZJrp2EJn0Uab1e7Oek/eo5ZdOXpZt5x7EezelICoGaL94j6vgrr9tk4CThOylgefkts=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4nVW6lGfdN0pG7Oy7l3qs7m1qFTr9RTzr44vI2xYmQtfOcEFP
+	2wwhzBLruWW/w+4RkAmHfos592Lt6dRWkNqkwzg/eec9qqaO4RHsIK4oif9+c8uXCb8=
+X-Gm-Gg: AR+sD10zwui51Si20xLqt8A6hliGSp87jpsqmt/hca7OHajEXRAlBqKpKzD97l40Zvb
+	8HS9LrOTDQVQAaLHoFlrAStCS4F5MHdxdBOOzxJ4xXXESmIQdzz7Lbsch58oyaV9uxUbQ4U1bxu
+	bEhZ/cQ3m2xt2X0ZhEZxZOgDpWZcOfyZZKsRqB6vlp3IX5ER5DQU2YWqApD6Kb5Kfdqo+bpw7Ge
+	pIQHIb3HI37Skpz8R5Y4NxgEyHU7Pb4sUm4thhbhUyuNixroMRGZAHTJgpJUXR7QsqatLdFG5n4
+	+JWppsRZhsE6hvpo6zhoff4CI/icRnC9u2+w91GE7JkDRxfkGB8gI8biJ3AfpmFas07CyYJrVCG
+	AzktGM9kri8t/rQIicV1huhlPg9zdumVTg6iwgT4uRfb1/Kx1sxKj8qYsurZ7UG5kMInTE1GL4v
+	tCKb/4xzW8QMsZECfxjLh72xgSmgwfSoqONEzXctUqjVJCan8mtqGI1I8I2bUteauzSJCv9HiEZ
+	RwPXKAfEUekta+3jko74OB5c36GRYjFC5EQRkEhJAnFSCupc1R58NLcS3c0xw==
+X-Received: by 2002:a17:90b:264c:b0:369:7491:7b24 with SMTP id 98e67ed59e1d1-3931f47d73bmr6214537a91.6.1786669966275;
+        Thu, 13 Aug 2026 18:12:46 -0700 (PDT)
+Received: from localhost.localdomain ([2603:8001:5f01:8bab:591a:2e75:81f3:25ff])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31f15063cd8sm9015120eec.9.2026.08.13.18.12.45
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 13 Aug 2026 18:12:45 -0700 (PDT)
+From: Artem Dinaburg <artem@trailofbits.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Artem Dinaburg <artem@trailofbits.com>,
+	Jinu Kim <kimjw04271234@gmail.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	x86@kernel.org
+Subject: Re: [PATCH v2] KVM: x86/mmu: Write-protect tracked GFNs in all address spaces
+Date: Thu, 13 Aug 2026 21:12:27 -0400
+Message-ID: <20260814011229.72845-1-artem@trailofbits.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <anOLfLhAGbOXT30p@google.com>
+References: <20260804105755.276646-1-kimjw04271234@gmail.com> <anHk2wTLHYxdB0jD@google.com> <CAH+3ta4uD-QYju=6YRqHvd4Vwa-WAa9T9a65soCzdu49wNxV8g@mail.gmail.com> <anOLfLhAGbOXT30p@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260813232542.2098930-1-cui.tao@linux.dev>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxTs+oan5qzREEAA--.26901S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxArWkGFWfJFWfuFy3tr1DJwc_yoW5Jw1fpF
-	9ruF95JrWrGr1xAF9rtwn09r4UZw48Gr4aqFyY9a48AF1agr9xZr10yFZrZF4qq3y09a97
-	WF1ftas0van0v3XCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWU
-	AwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
-	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
-	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
-	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
-	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
-	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jepB-UUUUU=
 
+On Wed, Aug 05, 2026 at 12:14:04PM -0700, Sean Christopherson wrote:
+> Actually, irrespective of what we do with SMM, we should harden KVM to
+> skip marking upper-level SPs as unsync, because while corrupting guest
+> memory is bad, corrupting guest memory *and* crashing/compromising the
+> host is worse.
 
+This is correct. There is a working guest-to-host escape via an
+upper-level unsync shadow page. It works on Debian oldstable and
+likely other shipping distributions. I'd like to see that patch
+applied even if the SMM question stays open.
 
-On 2026/8/14 上午7:25, Tao Cui wrote:
-> From: Tao Cui <cuitao@kylinos.cn>
-> 
-> The check-then-set on kvm->arch.pv_features in
-> kvm_loongarch_cpucfg_set_attr() is lockless, so two vCPUs can race
-> past the validation and set different values.  Add a spinlock to
-> serialize it.
-> 
-> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-> ---
-> 
-> Changes in v2: use a spinlock instead of a cmpxchg loop (Bibo Mao).
-> Link: https://lore.kernel.org/all/20260810081321.157258-1-cui.tao@linux.dev/
-> 
->   arch/loongarch/include/asm/kvm_host.h | 2 ++
->   arch/loongarch/kvm/vcpu.c             | 6 +++++-
->   arch/loongarch/kvm/vm.c               | 1 +
->   3 files changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
-> index 23cfbecebbd7..cdbbd90e0584 100644
-> --- a/arch/loongarch/include/asm/kvm_host.h
-> +++ b/arch/loongarch/include/asm/kvm_host.h
-> @@ -128,6 +128,8 @@ struct kvm_arch {
->   	struct kvm_phyid_map  *phyid_map;
->   	/* Enabled PV features */
->   	unsigned long pv_features;
-> +	/* Serializes pv_features updates */
-> +	spinlock_t pv_features_lock;
->   	/* Supported KVM features */
->   	unsigned long kvm_features;
->   
-> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-> index 20c207d80e31..551ed39b2d1f 100644
-> --- a/arch/loongarch/kvm/vcpu.c
-> +++ b/arch/loongarch/kvm/vcpu.c
-> @@ -1165,10 +1165,14 @@ static int kvm_loongarch_cpucfg_set_attr(struct kvm_vcpu *vcpu,
->   			return -EINVAL;
->   
->   		/* All vCPUs need set the same PV features */
-> +		spin_lock(&kvm->arch.pv_features_lock);
->   		if ((kvm->arch.pv_features & LOONGARCH_PV_FEAT_UPDATED)
-> -				&& ((kvm->arch.pv_features & valid) != val))
-> +				&& ((kvm->arch.pv_features & valid) != val)) {
-> +			spin_unlock(&kvm->arch.pv_features_lock);
->   			return -EINVAL;
-> +		}
->   		kvm->arch.pv_features = val | LOONGARCH_PV_FEAT_UPDATED;
-> +		spin_unlock(&kvm->arch.pv_features_lock);
->   		return 0;
->   	default:
->   		return -ENXIO;
-> diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
-> index 1317c718f896..b984cc54f305 100644
-> --- a/arch/loongarch/kvm/vm.c
-> +++ b/arch/loongarch/kvm/vm.c
-> @@ -76,6 +76,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
->   		return -ENOMEM;
->   	}
->   	spin_lock_init(&kvm->arch.phyid_map_lock);
-> +	spin_lock_init(&kvm->arch.pv_features_lock);
->   
->   	kvm_init_vmcs(kvm);
->   	kvm_vm_init_features(kvm);
-> 
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+> it wasn't clear to me how marking an upper-level SP as unsync leads to a
+> corrupted rmap, and I hadn't thought too hard about it.
 
+There is a bug, unrelated to rmap and still unfixed in the longterm
+trees, that turns an unsync upper-level shadow page into a writable
+mapping the guest shouldn't have. It can be readily found via AI
+assistance.
+
+Either of the two suggested fixes would be fine, but the unsync
+behavior is dangerous and should be prevented.
