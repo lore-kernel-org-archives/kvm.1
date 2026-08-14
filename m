@@ -1,173 +1,198 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865F8346A04;
-	Fri, 14 Aug 2026 05:18:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE6A2D322E
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 05:46:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786684717; cv=none; b=omiDrswumaSrjXLBoPBlQKC1QQyFg9LFdHv9DxmfjneJwHH8Pt/SLpFWV/hpDW2phLDa/oFgT7fRKorrg5wKTszsT5ItHEIvzVqx3EB1+i3LNBmLdMjlVhwTYaBZIrAzKid3KW+APknNK5K3QPmNXwJl8G5O56xBud1R87ZPA8c=
+	t=1786686364; cv=none; b=nEaJJ6hWM5CZwPHDN0j2VH1KMDr4UHIS+/Un04wDUcYMP4elIESFyfPt3X64Vkofb6QTMbQNCa9BXIRseALlf5kmlGYsAazKT2M0xozGrwV6kBQ5KiSqsbZiqUmXbflyo01tsP8ydosnOKtv5N9G/IhusUCrSoSPwO83QF7JVK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786684717; c=relaxed/simple;
-	bh=+MUxfRWOkqREAuoekA780+CfxxKTEqlm5E/NKiwihFE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EqP04Dc8rKKALwPXMed/HPrSR7MmaRdN86c/QccuQzeEm1MUCYdh2vxkSvmP4mq2PxKAyUGIxW/q2oifs1teLhlEp2Hjwtf/ENHoeuD+T9JxA67e9cuJSoA7AcEEbP3bc0Nn8oXkp+LNXf4DCXRk09M4zbrEHGRKJ8f8tV/cXKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P1kHph+z; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1786686364; c=relaxed/simple;
+	bh=B5+V8aDXSgyHBeZtsMhJdBvt5jrhqFzJiO/bvbPuF3Y=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WHP86Irnoq72W4wbtB2GKcuLsi0xkGAmygHXa4Dm3CpZsBXc5HNggV2NywDZoHJFJPbAKq0S2U5vpjT5rXgqFduN3oYYVXj0EI1Ek3b2g7JaeUkmEzHNyY/HVgWR81Ri6/ysqTyuHCWWzXQDyRJfn+6keL9ng/kWfWUd+4Zexx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KTVRRWmE; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P1kHph+z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786684715; x=1818220715;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=+MUxfRWOkqREAuoekA780+CfxxKTEqlm5E/NKiwihFE=;
-  b=P1kHph+zrCFpTLxg8CIkAkdkjhiuKSHXRCYAK7lTE1/8HU0mB3OVubg1
-   2BAytgo0YmAoX+4n5xlaij/qwnDx4IryD0Ek9UF0G6KWfHYT+H8IjLDPH
-   FKjUzluaZ5kbA9cMujrKMwoZQ2P/yv8t7Y+28wvFaYI+VwOIPX5GZxkwI
-   gW4+53d/MqJCRuTXV4B7yjUGbFvhDXz3rRoiLYoPtmuse4JjeTqRzRoOG
-   4mOGkwwf0/SD65ZExxbTNOr2+q9UtUlXrdxHPLg9VpxJWXWp8iIRv6Aof
-   /cSEp+j909mfj7JlnI7TIUJDAKbK8BRMn4mir1HlY4+BLfs21mAUs1W5I
-   w==;
-X-CSE-ConnectionGUID: Z3Veuck/TZeR6EpD4DSAaw==
-X-CSE-MsgGUID: 5M++MCpnSomnIdFo8yQZsQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11874"; a="87481113"
-X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
-   d="scan'208";a="87481113"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 22:18:34 -0700
-X-CSE-ConnectionGUID: IN/b0L//SVCz/TGsloL3PQ==
-X-CSE-MsgGUID: VWlRvfb+T1OqDKsfu60fhQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
-   d="scan'208";a="266117899"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 22:18:20 -0700
-Message-ID: <645af2bd-2791-473a-9441-40db01f58913@linux.intel.com>
-Date: Fri, 14 Aug 2026 13:18:17 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KTVRRWmE"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-47f92e3c14bso492331f8f.0
+        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 22:46:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786686361; x=1787291161; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=Q8H/CbRo+VwI/8mgs+C0XfBgtzPkoXXEyoqc4BkrmCk=;
+        b=KTVRRWmEBvbPBm6fTcKufv2MI3aPNJEDwzC+VSTskYpRgQR7NHnWUFvMQjCiDfauTY
+         Uqt6rztXPqsIXY8yfEWWda4PG7WmZ3G2dfG8YFIiZtaYxJ3AErmltIesSG2tUGzrsDsV
+         LKPR544HB78132buvXDCxtzL2Z4nDz0xkDtecjtitOzbJEuaJgAXI6gwIUPKR1VEvwn3
+         plpCpamOYIjnQRYA7SOucebZSc8ZOKY57pEmsosV0PUNygJLSCGRhu6DwJ/v1xsxYLHi
+         X8WNuSwemaYbZFW370mZMbUVwzhn5X5Bm18wT/TSqBIzrO6IfWNI3lMpuI71OurluWTr
+         8URw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786686361; x=1787291161;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Q8H/CbRo+VwI/8mgs+C0XfBgtzPkoXXEyoqc4BkrmCk=;
+        b=nVJUf6zQdkBmkClWUvluVPeJo5Cc09H3LTeOBfEsZWgl4v0vMs5NAmarNHDDQd6zVy
+         cMpIQyWLTQX2FlG89MnGznp61DpZ5WnxOM6XKDG0zGVnYq4bFbLXOEZ1Ij0uRotmJuBL
+         nhhySUETCt0BoOU+zIw77ag2PGQAU17wHIZwy62N4AmZ1R2909T0GC6xp9KBOyWuU1R1
+         /y3zAzPcyLgIGw2tLZEHFkv4vpS/ZLzoPFqlq14/2u/TvzIEf9ynan/Ks9x9pSXygykz
+         /BuDRLieDicj3kN4S9+5bGb2LYg1yp5rVof9MDqqupv5d1FyPLobCnkHLO05Xzb4We0n
+         xtcg==
+X-Forwarded-Encrypted: i=1; AHgh+RqT9jElJZ3r/+mvtx9Xnzoo9kHQiuFeRHx9YCtkEa26bnSvkthdYxVGA+soU5HJeSJ/4c4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhyymUetUTnOUYbW6+trjPRhcRlMeJITLc9pwF+v6ilk8kXrhK
+	hQiF/0kAHZFzYFsDaKC6N9md0pARSHqqKy/8JLqk9C9QcHxrlAf1ff4U
+X-Gm-Gg: AR+sD11EM8YZOyqd14gnw1ofRkhTd9kibUoHDqQ/2UWIN/8uY3DkezrloI/e0LMxo+M
+	ZEeHrnLWQIJ3kAWaShNwhrTjiPh5D2opEFHzSkdLyfz5S1ZzmxQjL1MwRg1mFWcK46KcT8Wfpmn
+	Q/1ik5X8qC8JMHa6dI2USmxPt5zFQpbS6/YVojHxOn9kOaMk4iZfI9qTuhPoeh8sDN1XStFPwmy
+	as0M2hVOqqW3VwzBSfAiIIhidlhK0+r1B9OCeluRKbBnUWd8bVliQlzU8F0n+AY+mlui1oPssri
+	aewDz7GrrZylwrRonzhxmSNX06+RI0jgtsbTYurqKDYzqpo8itn31WXEOZqzegWT8IGKVbd1gVg
+	d589hid4edGiSKbun26YF023vyzwoxgPHQqhAo0S7URyI6Dxn1JBhKJSLuwzCP43zAoEd3HCeBQ
+	fQqZ2KgXDGwX7e2a6Au8Ccx20wS5KMi0qNrjSyekYnUuaZ0qJ4hz4YkpzcL10SkOfY
+X-Received: by 2002:a05:6000:2612:b0:47f:c648:e265 with SMTP id ffacd0b85a97d-48160758afcmr4474351f8f.17.1786686360494;
+        Thu, 13 Aug 2026 22:46:00 -0700 (PDT)
+Received: from [10.245.244.143] ([134.191.227.46])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-481626fd0f0sm1280557f8f.28.2026.08.13.22.45.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 22:45:59 -0700 (PDT)
+Message-ID: <8b432c8731167e97432b2e917d0b1c855fedf47c.camel@gmail.com>
+Subject: Re: [PATCH v3 0/4] tdx-guest: Make Quote buffer size dynamic
+From: Artem Bityutskiy <dedekind1@gmail.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "seanjc@google.com"
+	 <seanjc@google.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+ "x86@kernel.org"	 <x86@kernel.org>, "dave.hansen@linux.intel.com"
+ <dave.hansen@linux.intel.com>,  "kas@kernel.org"	 <kas@kernel.org>,
+ "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,  "Li, Xiaoyao"
+ <xiaoyao.li@intel.com>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, 
+ "sathyanarayanan.kuppuswamy@linux.intel.com"	
+ <sathyanarayanan.kuppuswamy@linux.intel.com>, "bp@alien8.de"
+ <bp@alien8.de>,  "kvm@vger.kernel.org"	 <kvm@vger.kernel.org>,
+ "tglx@kernel.org" <tglx@kernel.org>, "hpa@zytor.com"	 <hpa@zytor.com>,
+ "mingo@redhat.com" <mingo@redhat.com>, "Fang, Peter"	 <peter.fang@intel.com>
+Date: Fri, 14 Aug 2026 08:45:55 +0300
+In-Reply-To: <4ad451969522eecb445289ca74a88ee73d51336d.camel@intel.com>
+References: <20260729122939.1340412-1-peter.fang@intel.com>
+		 <e0a90fba3f8424412387aa08f1fdc708abeedc73.camel@intel.com>
+		 <80b4ea89ebf17398c3bee21d157c7f97ea32aadf.camel@intel.com>
+		 <anxvwV_Pz4UYaxxt@google.com>
+		 <86d532f33816cd4fa3e29c40079a6003abf89324.camel@intel.com>
+		 <anyiwqi9i0NSv0QW@google.com>
+		 <ed4891a59096c59e43a893910c9f17d0ff6086b8.camel@intel.com>
+		 <20260812223707.GD1013044@pedri>
+		 <6191a69559e58e04c8e3f1efa776e9639796af3d.camel@intel.com>
+		 <anz9b6CDkhr5D5RG@google.com>
+		 <c697ff1d97fe62882eaf3bd86a4213bf2e79fc09.camel@intel.com>
+		 <98dcc8a12f117745a1cb9981dc8f0f1548e9c96f.camel@gmail.com>
+	 <4ad451969522eecb445289ca74a88ee73d51336d.camel@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 16/41] KVM: guest_memfd: Zero page while getting pfn
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev,
- Xiaoyao Li <xiaoyao.li@intel.com>
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-16-2fc18ee6d3ba@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-16-2fc18ee6d3ba@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> Move the folio initialization logic from kvm_gmem_get_pfn() into
-> __kvm_gmem_get_pfn() to also zero pages if the page is to be used in
-> kvm_gmem_populate().
-> 
-> With in-place conversion, the existing data in a guest_memfd page can be
-> populated into guest memory through platform-specific ioctls.
-> 
-> Without first zeroing the page obtained using __kvm_gmem_get_pfn(), it
-> might contain uninitialized host memory, which would leak to the guest if
-> the populate completes.
-> 
-> guest_memfd pages are zeroed at most once in the page's entire lifetime
-> with guest_memfd, and that is tracked using the uptodate flag.
-> 
-> Zeroing the page in __kvm_gmem_get_pfn() is chosen over zeroing in
-> kvm_gmem_get_folio() since other flows, such as a future write() syscall,
-> can get a page, write to the page and then set page uptodate without
-> zeroing.
-> 
-> This aligns with the concept of zeroing before first use - the other place
-> where zeroing happens is in kvm_gmem_fault_user_mapping().
-> 
-> Don't mark the page uptodate again after populating, since the page would
-> already be marked uptodate before the post_populate() call.
-> 
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Tested-by: Shivank Garg <shivankg@amd.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+On Thu, 2026-08-13 at 20:14 +0000, Edgecombe, Rick P wrote:
+> > 3. Why freezing TD report size
+> >=20
+> > Linux supports 1024-byte TD reports via the `TDX_CMD_GET_REPORT0`
+> > ioctl. It is already full, no more TD evidence fits, and changing TD
+> > report size would require a new ioctl.
+> >=20
+> > Also, as I understand it, based on TDX feature requests from customers,
+> > there may be a need to increase TD report size more often and more
+> > significantly than one would expect.
+> >=20
+> > Therefore, for DICE-based attestation the TDX module adds new TD
+> > evidence in the quote instead of expanding the TD report.
+> >=20
+> > Is this the cleanest approach? Maybe not.=C2=A0
+> >=20
+>=20
+> I was thinking the cleanest, time-travel facilitated, approach would be t=
+o have
+> the "report" really just be a replay protection thing and not include any=
+ TD
+> details. Then the quote could add everything it needed in the final forma=
+t
+> location. So no re-verifying and shuffling things between formats. But si=
+nce
+> that didn't work for SGX based attestation, the report has extra stuff du=
+e to
+> legacy. But from Linux's POV, going forward we can consider the report as=
+ really
+> an oversized replay protection blob and forget about the TD details in it=
+. Isn't
+> it a pretty clean separation of concerns? And for Linux (guest), the bene=
+fit
+> shows up in not having to increase TD report size since it has really onl=
+y one
+> job.
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Replay attack protection is a binding value between the remote party
+and the final quote. It must sit in final quote. It only needs to exist
+in the TD report because of the 2-flow design.
 
-> ---
->  virt/kvm/guest_memfd.c | 12 +++++-------
->  1 file changed, 5 insertions(+), 7 deletions(-)
-> 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 030af0855f8b0..41950c8105b5d 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -1079,6 +1079,11 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
->  		return ERR_PTR(-EHWPOISON);
->  	}
->  
-> +	if (!folio_test_uptodate(folio)) {
-> +		clear_highpage(folio_page(folio, 0));
-> +		folio_mark_uptodate(folio);
-> +	}
-> +
->  	*pfn = folio_file_pfn(folio, index);
->  	if (max_order)
->  		*max_order = 0;
-> @@ -1108,11 +1113,6 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->  		goto out;
->  	}
->  
-> -	if (!folio_test_uptodate(folio)) {
-> -		clear_highpage(folio_page(folio, 0));
-> -		folio_mark_uptodate(folio);
-> -	}
-> -
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
->  	if (kvm_gmem_is_private_mem(file_inode(file), index))
->  		r = kvm_arch_gmem_make_private(kvm, gfn, *pfn,
-> @@ -1159,8 +1159,6 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
->  	}
->  
->  	ret = post_populate(kvm, gfn, pfn, src_page, opaque);
-> -	if (!ret)
-> -		folio_mark_uptodate(folio);
->  
->  out_put_folio:
->  	folio_put(folio);
-> 
+But why DICE-based attestation uses 2-flow design? Could TD run a
+TDCALL[TDG.GET.QUOTE2] or something directly. No concept of TD report
+would be needed. That would be my current vision of "cleanest".
 
+But the approach that was taken is to minimize software changes. Within
+that tradeoff, keeping the 2-step flow, preserving the TD report format
+and size absolutely intact, and adding the extra information in the
+quote is arguably a clean practical path.
+
+Is this the cleanest in some absolute sense? No.
+Is it acceptable? I would say yes.
+
+> >=20
+> > 4. Migration-specific case
+> >=20
+> > For the normal user attestation path, the TD report is TD-scoped. For
+> > migration, the report is effectively platform-scoped, just because the
+> > migration flow does not need TD-specific evidence.
+> >=20
+> > I would say that clean design is when Linux does not need to know this
+> > and care about this specific case: be able to treat all TD reports as
+> > per-TD.
+>=20
+> I was hoping you could chime in about the thing you mentioned off-list re=
+garding
+> *when* the quote operation is needed for migration. As in, what stage of =
+the TD
+> lifecycle and how it fits into a KVM VM TD scoped ioctl.
+
+The first step in TDX live migration is `TDH.MIG.SETUP` seamcall. It
+is=C2=A0called multiple times on both the source and destination hosts.
+The TDX=C2=A0 module keeps the setup session state and drives the protocol
+by telling the VMM what to do next through exit codes.
+
+Each call follows the same pattern:
+1. The VMM calls `TDH.MIG.SETUP` for the source TD or the destination
+   TD.
+2. The TDX module reads the optional input buffer and may produce an
+   output buffer.
+3. The exit code tells the VMM what to do before the next call.
+
+One of the possible exit codes is TDX_MIG_SETUP_GET_QUOTE. It means:
+deliver me the quote. The output buffer contains the TD report.
+
+The idea was to pass this directly to QEMU. QEMU would call the
+proposed "get quote" ioctl on the TD under migration, and provide the
+TD report from `TDH.MIG.SETUP` on ioctl input. QEMU would not need to
+care about the scope rules and would just treat the TD report as
+belonging to the TD under migration.
+
+The ioctl would then run TDH.GET.QUOTE with TDR for the TD under
+migration. The seamcall would handle the scope logic internally. It
+would be an internal TDX module detail.
+
+Did you mean this or something else?
