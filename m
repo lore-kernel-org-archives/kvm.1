@@ -1,68 +1,75 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07B9476CC6;
-	Fri, 14 Aug 2026 14:40:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D5B47ACFE
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 14:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786718458; cv=none; b=S3e6wnMJrsjMHI6HgRD0+5ukjlSCyiYR6mpzEd9djLOwAcxm7dtvDb933K6xlJ5fB30jWi3GvD+uUGiJEknXZ1NWgiTC9Yg2QGleTuJZlj326NLUBxLeEXAD0imGmK9NyKUDoO6vc3Mr+leBIIkTafc9WlTLBDBb4hAOn4pM/Rk=
+	t=1786718774; cv=none; b=mH1eZsfcxKdWK82dQHtH/thZgJz+rGgvooNzVsn4sfN9hwIE0e3AqNhXNmV9p3pwfAKbvtcBWAb82VAodVT0FquvkAMkoIuMS6+Wns7itGRKoGCDkmiYdKlkRyC2dSc+UU0/KypYNTS8vXEGWDYmKOhHGPyjAwl7JzqgFz3F38g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786718458; c=relaxed/simple;
-	bh=38WLb7tJBA54vnYXwUGVTGPnr/7/N2hZdYahs0DftHI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VwHxuHkWCCzkUh3mEZJfS4R+qMvL0aVRyhCqXoo9C0HZkVbqIEDUF61dwzoq8Zayyh/DjvPrSwJ7KPiTr0Q5MUbUACLeKAu5aHlDu120vhxI1WqnseeVL/m+MX5HRDKBeK0Cr4TwCowpcRVfVl2Zz3M1hA/0JZ7j78uzzZdfA8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ptvlZajY; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786718774; c=relaxed/simple;
+	bh=j/48CqOv5Aa/AgwEHKe/KPlAizt7dHvsChDRKjlkCf4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=j+srU55RDKXWqV2Anl7/O9SVoBRNplqvQb5Cs8btRVEdp9l7L8Yhu0tF3LaiF2MnUY1lvDjkcvdKQA1VP1OTgEH1kNHGBTizRFF/MPfIOXxNnVyKa6VbSedssmp8s3RUuxrP6hS5/k/fk4/f7dHTyhbxONYdsNtw8Nk0twau+7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RAP8DK/G; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ptvlZajY"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67EE5jQ41370431;
-	Fri, 14 Aug 2026 14:40:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=Kly62Bl/mmZtytbLO
-	I2Iw+g+MeZCeCzbeA6vm4lyVKs=; b=ptvlZajYv0Nn/iFzJfZfp14nsyTWUSrkA
-	IAK7xF+HyL+jZ4ZmQwzcZ9GDwz9/HSmlhoPO2zQIEfDEozPv9FYxYINkNkRDE2uh
-	CcjWsBnRan8E+jpDchPHVHuhLamc9OVHaSa8KEckmPjppkFZ/otqUlCjQROkgfnO
-	oAffAsTalkocc3StwixecVIZb9KlxYmJWWSmry4AbKNO2M5cZGucNYLnyYZyGoVl
-	UbHbjncugUstcaOXvbyuFCwFfGURRUNkfFSeoAOFRwIwNQltLtkRNQTNUWlnZ/6+
-	aL67sk0ZJSMjapTZy6en0czgubKq0y2vIH9i+Fmv2HRG7/lOQWSSA==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvnwm2wy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Aug 2026 14:40:49 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67EEQJmA004015;
-	Fri, 14 Aug 2026 14:40:48 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxfsk7n6c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Aug 2026 14:40:48 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67EEegRX37880206
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Aug 2026 14:40:42 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 62E9820040;
-	Fri, 14 Aug 2026 14:40:42 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3C8A82004B;
-	Fri, 14 Aug 2026 14:40:42 +0000 (GMT)
-Received: from p-imbrenda.ehn-de.ibm.com (unknown [9.224.75.30])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 14 Aug 2026 14:40:42 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
-        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com
-Subject: [PATCH v1 1/6] KVM: s390: Fix dirty marking in adapter_indicators_set*()
-Date: Fri, 14 Aug 2026 16:40:36 +0200
-Message-ID: <20260814144041.169025-2-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260814144041.169025-1-imbrenda@linux.ibm.com>
-References: <20260814144041.169025-1-imbrenda@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RAP8DK/G"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cc73e322dbso17334515ad.1
+        for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 07:46:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786718772; x=1787323572; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ktbN0mlbgnTk1vGFkp72jrY6OVL4246SkIwlC5oRky4=;
+        b=RAP8DK/GufnOjCir6ZqbbpbWfoQar+pEL4RsGpQcBSPHOJKnIn4EX0QSB35N6Pk5cm
+         BgArLTE14CLbyxP/vJ0zD4qEg7LQXj7cAS/lE21FuN7V8LqRTIoB6bVF+wjNGa3BGNS3
+         lf6uraxdHHEgi3qonzY0VFfesqq+td2wr5VBTEWi/6uTz7m+oJGCRHNZ3OewouU4sU1T
+         fHVERZEAuuxCcyTrEK5Uexivyk+s1LfQE5DxPP4d2JilTBScBWrYG0oehy4WwPxVAzQN
+         sCPkkTVSkEDwizj+yNWw2aZBRXhrKKn3k3/heG4udP1JkLfcgdvBbrNIQzTcTmTYIl0W
+         luFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786718772; x=1787323572;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ktbN0mlbgnTk1vGFkp72jrY6OVL4246SkIwlC5oRky4=;
+        b=ijHD+HCl6oF6dgTKsSu6reu7eA7eV6ih4ufI83afb+hJBP/ry4xu77weY8Yo3nl9tq
+         U7H7x9mIDL7BL2Z+ALj3FGnDd3EcYp4fbW7e1j0BKLlbPz/IupNnFN+D72Ouk6ZcNEjT
+         +Cjric0ClWggJCwoDlomeUvrZItsjAuU0pd9wrkDP188K3P9hWD3oWnbHUFIIaBMdwq8
+         9AEnB7D0kNiD6tBJOaq8IbU33SQK4sLjpocSNH0tLYHXogO2fJ/LbptG5hH/4HAAVRSR
+         4wY3D6YV5Dxd/cgFvF0Z4BKyTffWa+9QvccDp/hNic/m0fp4xVNWeXb+6YEwqW+pjfh8
+         sDwQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rpg3vKBAQgVzbDo5nj6ex/dUFGOPzeyq6fJf/lGkUAGXA60gTrOEKjmU4FuD2GaMvZo0DM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGitR7AhgYPwAk8tX5DjmrfqOlwl6gVjMQ8Gep/SxCCV83G9Hn
+	mr/0t3p/OYUpXtZS8uLLLbK1YRHPcXVaflO8KDN/t0hWxqP8Z1pcjGwJ
+X-Gm-Gg: AR+sD13QiTyvXFNtRJJMBVssX4+N6Al8qvZfPvRf1Wp4Bss3gc+J/dvEV8qnOtX7bOS
+	VhtJy7k1w3eIX+ELr17ShqWpsPtWdwUKhIhVP1J+9gLPyQuUN9yhy3hvroLUNGLekjiLk+lt/Ya
+	vTLwEvZ7T1Jn7C6kqcCLrg02SP1xL6EZ5B35GzpungzTjLPr0g/aIfxAOxfCcCczudtbIRJkreu
+	HY7pQ1DwGUx6K+FXsFwXhbO9zEQqPSUDtMZnA4+cUPkeKNYLsvq+0lYrv1weEjLS+01lDcMhym7
+	Taw0whOMSsmIhxMeKgETWegj4ZBrM9/4jj57+oZSc578PsDzpz9e2hRfcCez99vy5Eq/sJAA950
+	lcIN+UYwdfD+kpBqsO5op/ku3EwyfmbkHh6p4pKMmgEXjdXdfep4uaIcxUy3p3G0bm5cWiW+OQg
+	IWsdnZGnvULXo9NIBzMd9r0dcadGNXjyDdk2Mu3tW0DsBDdUvCNE5hqubWI4JUk/g=
+X-Received: by 2002:a05:6a20:4325:b0:3bf:7eb5:9459 with SMTP id adf61e73a8af0-3cc71fa8cd1mr7381930637.20.1786718771362;
+        Fri, 14 Aug 2026 07:46:11 -0700 (PDT)
+Received: from [127.0.1.1] ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-320d60eb8eesm5547344eec.10.2026.08.14.07.46.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 07:46:10 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: stefanha@redhat.com,
+	sgarzare@redhat.com,
+	mst@redhat.com,
+	jasowangio@gmail.com
+Cc: eperezma@redhat.com,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 0/3] vhost: fix device IOTLB feature lifecycle
+Date: Fri, 14 Aug 2026 22:45:55 +0800
+Message-Id: <20260814144558.134314-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,168 +77,42 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=RsP16imK c=1 sm=1 tr=0 ts=6a7f28f1 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=erwwKp9ikJBr0o1lINgA:9
-X-Proofpoint-GUID: Go7x-9ahecc0UR7BdG9hxYdw3ciebVtV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE0MDExMSBTYWx0ZWRfX+gvyftSF2Wo4
- VjywaFksegEgkjK1n6/YMdZ86umu4Ab0uN42FVwM/5mYfg1GgrxxeCVTuJnvUIXYpaZRrkG9qud
- aqYaOWeWqfnMOHGKPEKCGax2Yggo5DHQ+aYQuXa6f+siv8LgnYwtmrCQw5p2UGyFUN5lFpqhIG2
- THmVea8Kdna8Sifhmue0plJRWUeM0gK7j+sBKwt3n7yVh1AMtLTTjLIG8x7iBM2Wd9rQaDOkTR/
- ypjha2vY+5YA4qUTuP7PnHfqaNhbU8pKn/HKYMce9RwrEKONv4LXdHVSMKN5DqNDUmGQCgHGsb7
- 8d4X3NqPONgOmkruc1LGodhGwALp1Q9FDphewrPvuGByUpF/moz3govVSt5sfLWLqm8KR86ZeWI
- JOvNjHwFIWX7usoE+7ESQ6pyCTKC/FMaaSRe8BEFlrBWp7Wg/AebdTC9AB3nzxvHX+pLUUH9Sh4
- Tz6p77itBC8nyvJiR4A==
-X-Proofpoint-ORIG-GUID: Go7x-9ahecc0UR7BdG9hxYdw3ciebVtV
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE0MDExMSBTYWx0ZWRfXw8eW405SONi9
- hiLTOhzf8OSsyh1qeFPppO680sNa4agmfZnCoDN3IztzxluQtCeLfxXO0x71BwPx5Dj8bwV8g8e
- XiFBCknN85wybYAXFUNC591pMbNr4Kc=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-14_05,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 suspectscore=0 clxscore=1015 malwarescore=0
- phishscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608140111
 
-When the indicator and/or summary bits are set in the guest, the
-accessed page was only marked dirty in KVM if the access was performed
-using the slow path; accesses through the new kvm_arch_set_irq_inatomic
-fast inject path would not mark the page as dirty.
+Both vhost-vsock and vhost-net can leave the device IOTLB attached when
+userspace clears VIRTIO_F_ACCESS_PLATFORM. They also replace an existing
+IOTLB with a new empty table when a later feature update keeps
+ACCESS_PLATFORM enabled, for example when updating logging.
 
-Fix by adding/moving the missing calls to mark_page_dirty(). Note that
-for the inatomic path set_page_dirty{,_lock}() is not needed as the
-page stays pinned; the unpin path correctly marks it as dirty.
+The stale IOTLB can keep old translations active after a memory table
+change, while replacing an existing table discards valid translations and
+causes avoidable IOTLB misses.
 
-Opportunistically reorder the local variables to be in reverse
-Christmas tree order and refactor to use guard().
+Patch 1 makes device IOTLB initialization idempotent and adds a common
+teardown helper. The helper detaches the table from every virtqueue,
+resets metadata caches, clears queued IOTLB miss messages, and frees the
+old table after the virtqueue handoff. It is a no-op when no device IOTLB
+is installed.
 
-Fixes: 1e95e3bc6b05 ("KVM: s390: Enable adapter_indicators_set to use mapped pages")
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
----
- arch/s390/kvm/interrupt.c | 40 ++++++++++++++++++++-------------------
- 1 file changed, 21 insertions(+), 19 deletions(-)
+Patches 2 and 3 use the common helper when vhost-vsock and vhost-net clear
+ACCESS_PLATFORM. The backend-specific code continues to update
+acked_features in its own virtqueue loop.
 
-diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-index da740a378a8c..fc4d1f8193d9 100644
---- a/arch/s390/kvm/interrupt.c
-+++ b/arch/s390/kvm/interrupt.c
-@@ -2984,12 +2984,14 @@ static int adapter_indicators_set(struct kvm *kvm,
- 				  struct s390_io_adapter *adapter,
- 				  struct kvm_s390_adapter_int *adapter_int)
- {
--	unsigned long bit;
--	int summary_set, idx;
- 	struct s390_map_info *ind_info, *summary_info;
--	void *map;
- 	struct page *ind_page, *summary_page;
- 	unsigned long flags;
-+	unsigned long bit;
-+	int summary_set;
-+	void *map;
-+
-+	guard(srcu)(&kvm->srcu);
- 
- 	ind_page = NULL;
- 
-@@ -3000,14 +3002,11 @@ static int adapter_indicators_set(struct kvm *kvm,
- 		ind_page = pin_map_page(kvm, adapter_int->ind_addr, 0);
- 		if (!ind_page)
- 			return -1;
--		idx = srcu_read_lock(&kvm->srcu);
- 		map = page_address(ind_page);
- 		bit = get_ind_bit(adapter_int->ind_addr,
- 				  adapter_int->ind_offset, adapter->swap);
- 		set_bit(bit, map);
--		mark_page_dirty(kvm, adapter_int->ind_gaddr >> PAGE_SHIFT);
- 		set_page_dirty_lock(ind_page);
--		srcu_read_unlock(&kvm->srcu, idx);
- 		unpin_user_page(ind_page);
- 	} else {
- 		map = page_address(ind_info->page);
-@@ -3015,6 +3014,7 @@ static int adapter_indicators_set(struct kvm *kvm,
- 		set_bit(bit, map);
- 		spin_unlock_irqrestore(&adapter->maps_lock, flags);
- 	}
-+	mark_page_dirty(kvm, gpa_to_gfn(adapter_int->ind_gaddr));
- 
- 	spin_lock_irqsave(&adapter->maps_lock, flags);
- 	summary_info = get_map_info(adapter, adapter_int->summary_addr);
-@@ -3023,14 +3023,11 @@ static int adapter_indicators_set(struct kvm *kvm,
- 		summary_page = pin_map_page(kvm, adapter_int->summary_addr, 0);
- 		if (!summary_page)
- 			return -1;
--		idx = srcu_read_lock(&kvm->srcu);
- 		map = page_address(summary_page);
- 		bit = get_ind_bit(adapter_int->summary_addr,
- 				  adapter_int->summary_offset, adapter->swap);
- 		summary_set = test_and_set_bit(bit, map);
--		mark_page_dirty(kvm, adapter_int->summary_gaddr >> PAGE_SHIFT);
- 		set_page_dirty_lock(summary_page);
--		srcu_read_unlock(&kvm->srcu, idx);
- 		unpin_user_page(summary_page);
- 	} else {
- 		map = page_address(summary_info->page);
-@@ -3039,6 +3036,7 @@ static int adapter_indicators_set(struct kvm *kvm,
- 		summary_set = test_and_set_bit(bit, map);
- 		spin_unlock_irqrestore(&adapter->maps_lock, flags);
- 	}
-+	mark_page_dirty(kvm, gpa_to_gfn(adapter_int->summary_gaddr));
- 
- 	return summary_set ? 0 : 1;
- }
-@@ -3048,26 +3046,29 @@ static int adapter_indicators_set_fast(struct kvm *kvm,
- 				       struct kvm_s390_adapter_int *adapter_int,
- 				       int setbit)
- {
-+	struct s390_map_info *ind_info, *summary_info;
- 	unsigned long bit;
- 	int summary_set;
--	struct s390_map_info *ind_info, *summary_info;
- 	void *map;
- 
--	spin_lock(&adapter->maps_lock);
-+	guard(srcu)(&kvm->srcu);
-+	guard(spinlock)(&adapter->maps_lock);
-+
- 	ind_info = get_map_info(adapter, adapter_int->ind_addr);
--	if (!ind_info) {
--		spin_unlock(&adapter->maps_lock);
-+	if (!ind_info)
- 		return -EWOULDBLOCK;
--	}
-+
- 	map = page_address(ind_info->page);
- 	bit = get_ind_bit(ind_info->addr, adapter_int->ind_offset, adapter->swap);
--	if (setbit)
-+	if (setbit) {
- 		set_bit(bit, map);
-+		mark_page_dirty(kvm, gpa_to_gfn(adapter_int->ind_gaddr));
-+	}
-+
- 	summary_info = get_map_info(adapter, adapter_int->summary_addr);
--	if (!summary_info) {
--		spin_unlock(&adapter->maps_lock);
-+	if (!summary_info)
- 		return -EWOULDBLOCK;
--	}
-+
- 	map = page_address(summary_info->page);
- 	bit = get_ind_bit(summary_info->addr, adapter_int->summary_offset,
- 			  adapter->swap);
-@@ -3077,7 +3078,8 @@ static int adapter_indicators_set_fast(struct kvm *kvm,
- 		summary_set = test_and_set_bit(bit, map);
- 	else
- 		summary_set = test_and_clear_bit(bit, map);
--	spin_unlock(&adapter->maps_lock);
-+	mark_page_dirty(kvm, gpa_to_gfn(adapter_int->summary_gaddr));
-+
- 	return summary_set ? 0 : 1;
- }
- 
+Changes since v4:
+- move the existing-IOTLB check into vhost_init_device_iotlb()
+- remove the vhost-vsock-specific keep-IOTLB patch
+- add the corresponding ACCESS_PLATFORM teardown to vhost-net
+- make vhost_clear_device_iotlb() handle an absent device IOTLB
+
+Jia Jia (3):
+  vhost: add helpers for device IOTLB lifecycle
+  vhost/vsock: discard IOTLB when ACCESS_PLATFORM is cleared
+  vhost/net: discard IOTLB when ACCESS_PLATFORM is cleared
+
+ drivers/vhost/net.c   |  4 ++++
+ drivers/vhost/vhost.c | 28 ++++++++++++++++++++++++++++
+ drivers/vhost/vhost.h |  1 +
+ drivers/vhost/vsock.c |  4 ++++
+ 4 files changed, 36 insertions(+), 3 deletions(-)
+
 -- 
-2.55.0
-
+2.34.1
