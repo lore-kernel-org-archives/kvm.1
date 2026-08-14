@@ -1,190 +1,143 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CFD415F07
-	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 07:52:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07CD35C687
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 07:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786693937; cv=none; b=uvKg89i5214LFGa9EG6liUkjHkgPNdW+qZXNayb4SrqBSDhoG1crx2x53LFu4dETFBIZrpXKnMEluCtAScM88S6k2orzEYw6IJ3ZpY94ZCLoPhYInxmHKKchGoe5kRndsRaTPmk/grQ43JfltwTCKpHnQGQXhgbnnOrYeXjEho0=
+	t=1786693987; cv=none; b=R3jkfyd32Uuuns3oMLj3M53suzjcAHw8XoZfY1SpeNvLCr1qIBWeeTu41iZ42EuyfkXh6Jl3SH3qf+dMl3BoSYe3MkWyj0EcWbRfdoEVJylEYsPTHOU9iD3oFOStgVrkqdGaxL0RMD2GGWruK6dDkoqH+/o2QmsytU1k4qWHYS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786693937; c=relaxed/simple;
-	bh=pvWepx/Y+qxnHPm7o4i8hNztzzU4ml6+AnCL7TAlGUA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Ef4Vcpcbsn8JrKJ4hAHHl+G+uGn+NFXuFVMMeCDJ8biu5lmomwYj8/SnrNQO+4UJVLwnzLrUvvwzGjt0gwrlQ1vOc3/MZGq28ffbGdSF7C51d53HmmlGpd9euplKOFipW4cnS6ftk9KhCORS1E0Ayxwnwd9bpjtuux7rM3CB5yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=AKfWoENa; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1786693987; c=relaxed/simple;
+	bh=H+L3QTFFkyCFXwrBvc0mOg6GVJz81+DSixh03RV0aKI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RxCiZMURTXh1J1XVE0et56iZr5R23O69/KHkTPS/cgjmgkgxP24DaUa/Ux/ke8NpKU7SaACazdk0TlnHQtVKIzX3CXaeIbGHztE0zf2tUXM6f6DTw319jsNiOUpdgfqzTlUT2speJYWjsw0VIz0NgykU6y5GsTyDdb48zy1kVXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MZnWbMks; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZiY/drJf; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="AKfWoENa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=xE2AMEqC0b61W2uHzP8yB8NGuZ3joZcbTT4pGkhwj3c=;
-	b=AKfWoENacsml+mywdzFdj26PsuGusNjPZchSg8w2H9PnU3pvS2FGuNYj1R84Ym
-	REuqOJ4sRJvg+kcS24lL5kP+3GrYKyRbBNK2DpxBA2aWCsY7EpJWSENqtt7wQOSw
-	ZAPKcuh7KKdVknKumNP1amsCBONm6zhUSAHtcbZph2yMM=
-Received: from localhost (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgBHi_kayX5q2XkGNA--.22350S2;
-	Fri, 14 Aug 2026 15:51:55 +0800 (CST)
-Date: Fri, 14 Aug 2026 15:51:54 +0800
-From: Hao Zhang <hao_zhang_kdev@163.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Subject: [RFC PATCH 0/1] KVM: x86: Skip empty TDP leaf page tables
-Message-ID: <an7JGuzynPBaYB5t@192.168.1.215>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MZnWbMks";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZiY/drJf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786693984;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IBgk91sGaugiFnpdKSnVzGaySlJCzjj+raiMAVYJqa0=;
+	b=MZnWbMks08HsznDqliDTAs1YoUyyXhBJWO8Mk38vZfOWwJWoaEBp073Ng6AI27qELDWAOb
+	UFmQA0XrqjBeuOdyvLIe2cnEi4bsQM52xANZHfLly69ygOPCRPyU57nF8yWiR2JU4uO+XI
+	c6m+JoL3LZFmdnDr3saGjkFmVWAX8E4=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-530-HZLVghP5P-WL8X3_E2mozg-1; Fri, 14 Aug 2026 03:52:52 -0400
+X-MC-Unique: HZLVghP5P-WL8X3_E2mozg-1
+X-Mimecast-MFC-AGG-ID: HZLVghP5P-WL8X3_E2mozg_1786693972
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47f7039fa59so528214f8f.1
+        for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 00:52:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1786693971; x=1787298771; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=IBgk91sGaugiFnpdKSnVzGaySlJCzjj+raiMAVYJqa0=;
+        b=ZiY/drJfZEBM3NZxD1R0lKRhFEO48TeHnVV4YWHs5wU5NmiIdrmnN5h2PzgbB6nlwJ
+         gOJO7mvPkD4AXrb741H1fFIMHh6Dl44umsgNcGmoCuiv2rhqQVrDhT+JhquioP6sewSW
+         4khZMXfyZNW7Y01k0vLMTjrvGBmGHXsWZJ4d7vdAsuBWh/PCY+v0JoPxI1KyyQ1uY0/6
+         E3jL2s31LCypig5n+OFRFhTNrXalSpgRz3Ou8cODM6mY7H+BJ/KhYuqi7Yvnu3zjIxyj
+         YDhekuLVAWo7dziF0yzB6EccraHrU6d/2VrOhyjYAYxvoiSlPAeOffuuiPw5aZ6XQ+h/
+         a3gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786693971; x=1787298771;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IBgk91sGaugiFnpdKSnVzGaySlJCzjj+raiMAVYJqa0=;
+        b=Ivo27Q/i2GYWyFiUncPYQZE734UsDQdV477eET49e/69YO75CUrSK6JC8PR4alxK38
+         CauQduNtaTn0u0iA7S3pH9n6/XhH9+xeU9PTQKdf8r826EutTWS80bcI/oSXaIPYsXNm
+         9YU+uWie4h0C1erQZh0cXdPHNzImmjPTrIFW5WM20IYepG4aQ6Gpa2EpUdc+7dgVDpJd
+         u+oRFuMHMoc1fy3iJ0pczt5Tqtc4CwNaECQ/a+JIH31z60kvaVJ1B4Sl42x95EGIUKBb
+         /2MjEg6kHL37hRsmlSG7nNHJ9ch+Enc9XCRsH8nMS8s906OgkK1jPFEz0lgARaEyXhj7
+         PJbg==
+X-Forwarded-Encrypted: i=1; AHgh+RrbrTafHSpRhlvtFjSZZyZ33YlvrK7/xZ/n6gCumHHJ2qOMUETL76SNq0d+rqz3DX64yB0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzM0yj817TVWDPEeljhTzj8ondfltALXAtNUuzxGiAR4fv9YmH
+	9WpPaZ119lgPM4j0uj8KDVBg3NVEj/bUEJ+iaoVvqUEHOgQUmp8l9uL2/IEYrRS0zLA2Ek18/L4
+	1La4KLy1k4sufF4+zYghcvYaNaWEcRMRnHzrJOm4XFIeeARm3C2YmdQ==
+X-Gm-Gg: AR+sD13OZeHty9BT96ly5ZS+evmst5WAV9ptRdKIBofU0/C3PGoQlqpePCGI/dnk5mk
+	LTHMLPOpGbw3icarKlktaqFThgv+5yc3XXqF0UDDvOYHyBKcINpqGJKBBdNi198hLo2XYokAQm4
+	JVt3WWv8DNjAVUqgdIOcC50BRkAQ1fnedsuc0m/f3DOg8KMV/QPbWTT7HvGiRy3zM20+D4aYG7o
+	FBKninWhsp65q3qybE4D7gmxdHcb7cS61Y1BtnsknA0AlxF/8C4EOFPO2+1gHXjZzmcTofBmB5H
+	FqIFX8wqx7XU9gDSj8f+Ftnm42MqtbqAl83Ktu/llaxKZ9zQT7L+hzxP9P/66ZWtFmZK1L7Z4xL
+	9WtD8gybvCJsmZirw4nYNnSsuVADnZ39Ioa0ELCXRWl5ztmF1PCgQ
+X-Received: by 2002:a05:600c:1da8:b0:496:bbce:fc with SMTP id 5b1f17b1804b1-4998798467amr50729605e9.12.1786693971592;
+        Fri, 14 Aug 2026 00:52:51 -0700 (PDT)
+X-Received: by 2002:a05:600c:1da8:b0:496:bbce:fc with SMTP id 5b1f17b1804b1-4998798467amr50729125e9.12.1786693971141;
+        Fri, 14 Aug 2026 00:52:51 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-154.retail.telecomitalia.it. [82.53.135.154])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49988b1d33asm33182265e9.10.2026.08.14.00.52.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 00:52:50 -0700 (PDT)
+Date: Fri, 14 Aug 2026 09:52:44 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Jia Jia <physicalmtea@gmail.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/3] vhost/vsock: fix device IOTLB feature lifecycle
+Message-ID: <an7JAlFpRVOiC4WQ@sgarzare-redhat>
+References: <20260814072903.124991-1-physicalmtea@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-X-CM-TRANSID:PigvCgBHi_kayX5q2XkGNA--.22350S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxKw15JrWDurW3WFWrXw43ZFb_yoWxWFW8pr
-	WfJ3sxtrs5tasavrn7Aw4ktF1ruws5Wrs5Jry5GFykAan0vryjqrW0kF18AFW7Cr9YqF12
-	qF4jg34Dua1UZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRK-ewUUUUU=
-X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC+huypWp+yRuG5QAA3T
+In-Reply-To: <20260814072903.124991-1-physicalmtea@gmail.com>
 
-From: Hao Zhang <zhanghao1@kylinos.cn>
+On Fri, Aug 14, 2026 at 03:29:00PM +0800, Jia Jia wrote:
+>vhost-vsock leaves the device IOTLB attached when userspace clears
+>VIRTIO_F_ACCESS_PLATFORM. It also replaces an existing IOTLB with an
+>empty one whenever a later feature update keeps ACCESS_PLATFORM enabled.
+>
+>Patch 1 adds a common vhost helper that detaches the device IOTLB from
+>all virtqueues, clears their metadata caches, drops queued IOTLB miss
+>messages, and frees the old table after all virtqueues have released
+>their pointers.
 
-Hi,
+In the v3 you mentioned that this could be used also in vhost-net and 
+maybe vhost-scsi. Would it be better to include the other patches in 
+this series as well, since we're basically fixing the same issues, or 
+have they already been merged?
 
-KVM intentionally keeps the TDP page table hierarchy when zapping only
-leaf SPTEs, because the backing memslot stays valid and future faults
-can reuse the existing paging structure.  But when the same guest range
-is invalidated repeatedly, every later zap still descends through the
-retained 4K leaf page tables whose 512 SPTEs are all non-present.  Each
-such descent is pure overhead: the walk scans 512 entries, zaps
-nothing, and on a contended host that can also force a yield/restart
-cycle.
+Thanks,
+Stefano
 
-This pattern can occur when userspace repeatedly unmaps or discards the
-same guest range, e.g. ballooning or memory-discard/reset paths depending
-on userspace behavior: each notifier-driven unmap zaps the range, the
-guest refaults, and the next unmap zaps the same range again.
-
-The patch adds a TDP-MMU-only hint on 4K leaf page tables, set when a
-zap that covers the whole 2MiB region reaches the last entry of the
-page table, and cleared whenever a leaf SPTE is installed.  If a later
-zap fully covers the corresponding 2MiB range and the hint is set, the
-iterator skips descending into that child page table.  The hierarchy
-stays linked, so refaults can still reuse it.  The hint is
-conservative: a false value only costs one extra descent, never a
-missed zap.
-
-Why not unlink the empty page table instead?  Unlinking the 2MiB
-non-leaf SPTE requires a TLB flush and an RCU free of the page table,
-and the next fault then has to allocate and relink a fresh one.  KVM
-retains empty page tables today regardless, so the hint does not change
-KVM's memory-ownership behavior; it only makes repeated zaps cheaper.
-The saved work is host-side only, i.e. not directly guest-visible; the
-value is CPU on the host during invalidation churn on overcommitted
-machines.
-
-Correctness rests on an existing invariant: gfn-range zaps run only
-while mmu_invalidate_in_progress is elevated or slots_lock is held
-(kvm_unmap_gfn_range() asserts exactly this), so no vCPU can install a
-leaf SPTE between the walk zapping an entry and the walk marking the
-page table empty.  Every SPTE installation goes through
-__handle_changed_spte(), which clears the hint, so a stale-true hint is
-not possible; a stale-false hint is harmless.
-
-Scope notes:
-
- - Only 4K leaf page tables are tracked.  The 2M-level page tables are
-   walked anyway for any range that spans them, so a hint there would
-   buy little; the expensive part is descending into 4K page tables.
- - Partial ranges are never skipped; the hint is only consumed when the
-   zap range fully covers the 2MiB region of the page table.
- - Ranges smaller than a complete 2MiB region bypass the hint checks
-   entirely.
- - The hint is TDP-MMU-only.
- - On the tested configuration, the new bool lives in existing padding of
-   struct kvm_mmu_page.
- - Yield/restart never preserves a stale skip decision; the restarted
-   walk re-evaluates page-table state from the root.
-
-Test setup:
-
- - Host: same x86 host for all runs, PREEMPT kernel, so that zaps of
-   large ranges exercise the yield/restart path.
- - Guest: 4 vCPUs, 1GiB memory.
- - Workload: guest threads continuously fault and write guest memory
-   while the host repeatedly invalidates guest memory with
-   MADV_DONTNEED.
- - Measured paths: tdp_mmu_zap_leafs() duration and vCPU fault-side
-   mmu_lock wait time, collected with perf probes.
- - Mechanism validation: kprobes on tdp_iter_skip_child() and
-   tdp_mmu_zap_leafs().
-
-Two invalidation patterns were used:
-
- - "same": repeatedly invalidate the same 16MiB or 4MiB host range.
-   This stresses retained empty leaf page tables, because later zaps
-   revisit page tables that earlier zaps emptied.
- - "sweep": invalidate rolling 16MiB, 4MiB, 2MiB and 1MiB chunks
-   across the 1GiB guest.  Less favorable to the hint, since guest
-   faults often repopulate page tables before the next zap reaches the
-   same range.
-
-Results from five matched repetitions on the same host, comparing the
-uninstrumented patched kernel against the original kernel:
-
-  Pattern       Original median    Patched median    Delta
-  ----------    ----------------   ----------------  --------------------------
-  same16        330ms              35ms              -89%
-  same4         341ms              54ms              -84%
-  sweep16       1.456s             1.386s            -5%
-  sweep4        1.252s             1.244s            roughly flat
-  sweep2        1.197s             1.246s            +4%
-  sweep1        1.353s             1.138s            -16%
-
-The same host, guest size, vCPU pinning, madvise rate, and chunk
-scenarios were used for both kernels.
-
-The result matches the intended scope: repeated same-range invalidation is
-where the retained-empty hint removes substantial zap-side work; rolling
-sweeps are mostly neutral, with small run-to-run variation.
-
-An intermediate version without the sub-2MiB gate ran the hint checks on
-every entry and regressed sweep1 to 1.64s zap total in one run.  The final
-version bypasses the hint path for sub-2MiB ranges entirely; in the matched
-five-run comparison above, sweep1 was not worse than the original kernel.
-
-Fault-side mmu_lock wait showed no scenario with the earlier
-millisecond-scale regression.  Median fault-wait p99.9 improved mainly in
-same-range cases, from 78us to 61us for same16 and from 62us to 38us for
-same4.  Rolling sweep fault-wait p99.9 was effectively unchanged.
-
-Mechanism counters:
-
- - same16: tdp_iter_skip_child() was hit 2000 times over 867 zap calls
-   in the final counter run.  The misses are page tables repopulated
-   between zaps, i.e. the hint-clear path working as intended.
- - sweep1: tdp_iter_skip_child() was never hit, confirming that
-   sub-2MiB ranges bypass the hint path.
- - A writeback/refault variant reduced skip hits sharply: c16 dropped from
-   4177 skips over 290 zap calls without writeback to 187 skips over 245
-   zap calls with writeback.  This confirms that installing a new leaf SPTE
-   clears the hint and prevents skipping page tables that became non-empty
-   again.
-
-The main RFC question is whether this style of retained-tree hint is
-acceptable for avoiding repeated empty 4K leaf-page-table walks, or
-whether KVM should keep treating retained empty TDP leaf page tables as
-intentionally reusable structure with no additional state.
-
-Hao Zhang (1):
-  KVM: x86: Skip empty TDP leaf page tables
-
- arch/x86/kvm/mmu/mmu_internal.h |  2 ++
- arch/x86/kvm/mmu/tdp_iter.c     | 10 +++++-
- arch/x86/kvm/mmu/tdp_iter.h     |  6 ++++
- arch/x86/kvm/mmu/tdp_mmu.c      | 74 ++++++++++++++++++++++++++++++++++++-----
- 4 files changed, 82 insertions(+), 10 deletions(-)
-
-base-commit: c21bb4193868a8de71fc4693fa741e195fdf5d86
--- 
-2.15.0
+>
+>Patch 2 uses the helper when vhost-vsock clears ACCESS_PLATFORM. The
+>acked_features update remains in the vhost-vsock-specific loop.
+>
+>Patch 3 avoids replacing an existing IOTLB when ACCESS_PLATFORM remains
+>enabled across a feature update.
+>
+>Changes since v3:
+>- move the IOTLB teardown helper from vhost-vsock into common vhost code
+>- keep acked_features updates in the backend-specific loop
+>- add the common helper as a separate first patch
+>
+>Jia Jia (3):
+>  vhost: add helper to clear device IOTLB
+>  vhost/vsock: discard IOTLB when ACCESS_PLATFORM is cleared
+>  vhost/vsock: keep IOTLB across feature updates
+>
+> drivers/vhost/vhost.c | 24 ++++++++++++++++++++++++
+> drivers/vhost/vhost.h |  1 +
+> drivers/vhost/vsock.c |  7 ++++++-
+> 3 files changed, 31 insertions(+), 1 deletion(-)
+>
+>-- 
+>2.34.1
+>
 
