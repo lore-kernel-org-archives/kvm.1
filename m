@@ -1,109 +1,163 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C991F45C710
-	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 16:44:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75F63C0610;
+	Fri, 14 Aug 2026 16:46:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786725879; cv=none; b=SyTVe66h5dCUp/vurmNzJkrZJDJIanKtFKRvWh2gPFmbCYu7lp+DRSpS0hrLxdCgOU82IELVRYVOLeVb0KujEg5NlN7U72/ZmqwobJLVbPomAiJWyjnD+FB+cY5+2Ei0s1c16IG6BuUEhynnQTMOjbfTPP0hTYY3wgFgBOU6PaI=
+	t=1786725987; cv=none; b=KrWlL2OOGyUbhEAE4YL9mjjBxhOKcQPeCkIzOxgUatDfeq88QpjSuke9rtT82y2I47eqyFrZL1u8TkLuayIY3+4sLGPwfpPeysfDnBPMU9Z+5+hYsnHH5EErGXBZCnkxr7nCK+Uf3wXa7VfmP+AacOeLurLOcltMexj2MA1z/kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786725879; c=relaxed/simple;
-	bh=SXMUBMpWqjsSZ8UZUax/xd2jiHPkqWpJd/+6vxgoa0s=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Ejamlj7M5PHuO5NTqdH0eziurH3BzH4MzVWTe7jHfl59JOtTEab68T7sw/SkqB7KtU05o+bHrAvCwtoytaMeebw7/C+NK8lSpVeqD4BgadU8Fu3s0A6bQhg2ka6h9kRGTMm6Fk2lM0AJo5OlzvGs9r6msTYJl3hibq1MaFhbafE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Guon7HHi; arc=none smtp.client-ip=209.85.215.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786725987; c=relaxed/simple;
+	bh=X3xy9AcwfIfdnc24r4obB+YdF3LD+ZRrSVq8m0pOGPA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=W5pHzknCGFhB4B/kVPj6yE7wFIKVjgOWosYoxkwEH7fX0cFbhFYGti0ZPLptloB/AnlPXUgbQsRmpHyELvXDmlV1EIGx9RssNZ7zA7omR3xzTdfb89mzcwy5P0/4RP0W/MDEU59uU2Zr38OEdhXvOyY1a0wnZFgu30/0NOL25aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F+W8MC6g; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Guon7HHi"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cb5cc1e13f8so980472a12.3
-        for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 09:44:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786725877; x=1787330677; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=OHHH7uTWtnNMDgIrudvSIouxtfc87FvfYM1qiAcx7gY=;
-        b=Guon7HHiGBtZqJhU2zoxeptoiX6XU8sOCSxE7I8bjSTDxeS7n4pFMht/gedEt34AM6
-         7C1loXpzWTsZquOeZ1+s3SneCWnVXJpeJ5bjVFzoWKyoInK4WekzI4mjquJvV9yzaNdz
-         URIK7Y5vtn0Cat3yE/mMQBuf8ieh+rzT5YAr6KY8U5p9Mhh7MWTQWR6fypS8bJyLKcqC
-         9ogzH2GzIeJNOMFyv2EFPINVLkg+oHTdeD5FH8P+l51GM7zcdozWvo6Z9VpalKT2zIiE
-         N/dxT6P2lZ+DMBtGDhKFd9AqdZfu0rCISuspIDHiMDhc/OEG0neyTz84I9CcTOepotSn
-         bQcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786725877; x=1787330677;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OHHH7uTWtnNMDgIrudvSIouxtfc87FvfYM1qiAcx7gY=;
-        b=hSeJwo74XuTGGmCcylA/t9C1G+HqpbwJRY3fE7v+TbChmVpu40fyPwmCKKYyLV1co0
-         nx5YxOtqHEAKFCLjk1D6fI+GoL3L/tgRx4BqsjgqG+juKHjYqRuK1YrkM9n7HJ2My2PR
-         BL9GZ99Vjo08N1E7SBPwDgKqPu22fjBHNjijP3phxdF/Iirz6B/nqdxG3T9BZFVirzUI
-         0LyU3RQaRaS415NFcbglSXROQwf1FjLeUHBZT1Az5lgpoDcnRTup9sbm2zH7ZIM4vKrj
-         nUEGJqEUAVWwp3uk3O2o0bY8NirIjJKMhUbHuPZlZMnNWZCiAosyIFSN7g/FYnAZwiYa
-         JJpQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqT4PO/pjdmJty8BL8alHGmplzZW44PrTjk6X29d4GrC7S7VDFuvSSRfdkN0WsmAs8JHZc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywf/mKS56RHPArvzocAkK4z6o7euzisvXv1L5AF99yQ1b3mexno
-	jqSMPQk4mUpAmN+fRWN8LoRpk4Hr8IQ6NZ4tXhDs8UEY2fb2yW7NDMdE5oemJVMYls1k8I8tH9e
-	WRa8Pvw==
-X-Received: from pfbgp14.prod.google.com ([2002:a05:6a00:3b8e:b0:847:8e58:df6f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:21c8:b0:847:973b:3cf6
- with SMTP id d2e1a72fcca58-84fddde3c32mr7348818b3a.0.1786725876826; Fri, 14
- Aug 2026 09:44:36 -0700 (PDT)
-Date: Fri, 14 Aug 2026 09:44:36 -0700
-In-Reply-To: <20260814163207.D8C5D1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F+W8MC6g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242221F000E9;
+	Fri, 14 Aug 2026 16:46:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786725985;
+	bh=F3IvnyYd+KrtMq1DfflIUddsVbVYI6XXOSELq8KmcMI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=F+W8MC6gB3RuWP5UgV8124F8DpMnDmagcwRQd9r5zRAowUDn3fwpkdKui/OEBHmJm
+	 De8EazFXOBVpAyzV3Am3rvzvJy6IvxrFW3Q/uomdlYmmfrgTp9AE4hxY9x0mn3CHnU
+	 LgmqDPkIV/KvfJmwpQGvdKtI0xMnFACEIr5gzO9rBKCEcJLe+LnPXhJH3tu4vmvENN
+	 eTFZH5psXkf42UnnyOrGbJUmJ6inhok41avpyZHpdk6o/zK5f0z359E4jKnT+GuZMc
+	 dJvyfivr4/yVno7H46v2eZ+8d0WfozQP68Cd0qDe7PcFcFqxjqp0h5fauuDLvXT/T9
+	 o5PsEba7irioA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 6/6] KVM: s390: Fix potential races in dat skey
+ functions
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+Cc: "Christian Borntraeger" <borntraeger@linux.ibm.com>, linux-s390@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>
+In-Reply-To: <20260814163355.227191-7-imbrenda@linux.ibm.com>
+References: <20260814163355.227191-1-imbrenda@linux.ibm.com>
+ <20260814163355.227191-7-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 14 Aug 2026 16:46:24 +0000
+Message-Id: <20260814164625.242221F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260814162221.2144473-1-vkuznets@redhat.com> <20260814162221.2144473-3-vkuznets@redhat.com>
- <20260814163207.D8C5D1F000E9@smtp.kernel.org>
-Message-ID: <an9F9EJj4yLkc8Op@google.com>
-Subject: Re: [PATCH 2/4] KVM: nVMX: Make VMPTRST return eVMCS GPA when it is used
-From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 14, 2026, sashiko-bot@kernel.org wrote:
-> > diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> > index c78c67525ac9b..d13a4d47bc68f 100644
-> > --- a/arch/x86/kvm/vmx/nested.c
-> > +++ b/arch/x86/kvm/vmx/nested.c
-> [ ... ]
-> > @@ -5958,8 +5958,14 @@ static int handle_vmptrst(struct kvm_vcpu *vcpu)
-> >  	if (!nested_vmx_check_permission(vcpu))
-> >  		return 1;
-> > =20
-> > -	if (unlikely(nested_vmx_is_evmptr12_valid(to_vmx(vcpu))))
-> > -		return 1;
-> > +	/*
-> > +	 * Hyper-V TLFS does not specify the behavior of VMPTRST when eVMCS i=
-s used
-> > +	 * but genuine Hyper-V seems to be returning eVMCS GPA.
-> > +	 */
-> > +	if (nested_vmx_is_evmptr12_valid(to_vmx(vcpu)))
-> > +		current_vmptr =3D to_vmx(vcpu)->nested.hv_evmcs_vmptr;
->=20
-> [Severity: Low]
-> Will this cause a build failure when CONFIG_KVM_HYPERV is disabled?
->=20
-> Because nested_vmx_is_evmptr12_valid() is a static inline function rather
-> than a preprocessor macro, the compiler still evaluates and type-checks
-> this branch even when the helper is hardcoded to return false. If the
-> hv_evmcs_vmptr member in struct nested_vmx is conditionally compiled base=
-d
-> on CONFIG_KVM_HYPERV, the compiler will fail to find it here.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Yep.
+New issues:
+- [High] The functions `dat_get_storage_key` and `dat_reset_reference_bit` =
+loop infinitely when the requested guest address is unmapped, leading to a =
+host lockup (Denial of Service).
 
-arch/x86/kvm/vmx/nested.c: In function =E2=80=98handle_vmptrst=E2=80=99:
-arch/x86/kvm/vmx/nested.c:5971:53: error: =E2=80=98struct nested_vmx=E2=80=
-=99 has no member named =E2=80=98hv_evmcs_vmptr=E2=80=99
- 5971 |                 current_vmptr =3D to_vmx(vcpu)->nested.hv_evmcs_vmp=
-tr;
-      |                                                     ^
+Pre-existing issues:
+- [Critical] Missing TOCTOU fix for concurrent large page split in `_destro=
+y_pages_crste()` allows KVM to use out-of-bounds physical addresses, leadin=
+g to host memory corruption or panic.
+--
+
+--- Patch [6]: [PATCH v2 6/6] KVM: s390: Fix potential races in dat skey fu=
+nctions ---
+commit 7ad4916f2fab0f5e4f1cfe048d34867e81b79c1b
+Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+
+KVM: s390: Fix potential races in dat skey functions
+
+This commit addresses a race window between dat_entry_walk() and
+large_crste_to_phys() where a large page could be split concurrently.
+It fixes this by using READ_ONCE on the crste pointer and retrying the
+walk if a race is detected.
+
+> diff --git a/arch/s390/kvm/dat.c b/arch/s390/kvm/dat.c
+> index 7e5dd5a1eb1ef..b4c318ebd91e9 100644
+> --- a/arch/s390/kvm/dat.c
+> +++ b/arch/s390/kvm/dat.c
+> @@ -620,17 +620,20 @@ int dat_get_storage_key(union asce asce, gfn_t gfn,=
+ union skey *skey)
+>  	union pte *ptep;
+>  	int rc;
+> =20
+> +again:
+>  	skey->skey =3D 0;
+>  	rc =3D dat_entry_walk(NULL, gfn, asce, DAT_WALK_ANY, TABLE_TYPE_PAGE_TA=
+BLE, &crstep, &ptep);
+>  	if (rc)
+>  		return rc;
+> =20
+>  	if (!ptep) {
+> -		union crste crste;
+> +		union crste crste =3D READ_ONCE(*crstep);
+> =20
+> -		crste =3D READ_ONCE(*crstep);
+> -		if (!crste.h.fc || !crste.s.fc1.pr)
+> +		if (!crste_leaf(crste))
+> +			goto again;
+
+[Severity: High]
+If the guest address is unmapped, dat_entry_walk() with DAT_WALK_ANY can
+return 0 with ptep =3D=3D NULL and an unmapped directory entry (where crste=
+.h.fc
+is 0).
+
+Since crste_leaf() returns false when fc is 0, won't this unconditionally
+trigger the goto again path and create an infinite loop?
+
+> +		if (!crste.s.fc1.pr)
+>  			return 0;
+> =20
+>  		skey->skey =3D page_get_storage_key(large_crste_to_phys(crste, gfn));
+
+[ ... ]
+
+> @@ -775,9 +792,12 @@ int dat_reset_reference_bit(union asce asce, gfn_t g=
+fn, union skey *skey)
+>  	if (!ptep) {
+>  		union crste crste =3D READ_ONCE(*crstep);
+> =20
+> -		if (!crste.h.fc || !crste.s.fc1.pr)
+> +		/* A large page has been split concurrently, try again */
+> +		if (!crste_leaf(crste))
+> +			goto again;
+
+[Severity: High]
+Does this also suffer from the same infinite loop issue as
+dat_get_storage_key() when processing an unmapped physical address?
+
+> +		if (!crste.s.fc1.pr)
+>  			return 0;
+> -		skey->skey =3D page_reset_referenced(large_crste_to_phys(*crstep, gfn)=
+) << 1;
+> +		skey->skey =3D page_reset_referenced(large_crste_to_phys(crste, gfn)) =
+<< 1;
+>  		return 0;
+>  	}
+
+[Severity: Critical]
+This isn't a bug introduced by this patch, but while reviewing the TOCTOU
+fixes here, I noticed a similar pre-existing issue in
+arch/s390/kvm/gmap.c:_destroy_pages_crste():
+
+	if (!crstep->h.fc || !crstep->s.fc1.pr)
+		return 0;
+
+	origin =3D crste_origin_large(*crstep);
+
+The crstep pointer is dereferenced twice without READ_ONCE(). If a concurre=
+nt
+large page split occurs between these reads, crste_origin_large() could ret=
+urn
+-1, passing an out-of-bounds address to phys_to_page() and
+__kvm_s390_pv_destroy_page().
+
+Should this also be updated with READ_ONCE() to prevent potential host memo=
+ry
+corruption?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260814163355.2271=
+91-1-imbrenda@linux.ibm.com?part=3D6
