@@ -1,63 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4283546F7;
-	Fri, 14 Aug 2026 16:46:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3543648F824
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 16:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786725993; cv=none; b=aWQRY22/LGh9iZ0NvczvURDzy4HtxrwQt+G0+tm/IP2Fo2A/LyHUq+h45fxRit22RNEpIWs3kAI1yY+XnhL80pztiBXg5JUUoxP9Vkaz2KkRQ6w6EORJbcFg5Q6oriy8rw809hT8+BkxRehFvNbkyOlHRRDlgotd52FKmBnWSgI=
+	t=1786726647; cv=none; b=ZTseSpx5fEVXpbbEbNSYZU585uPFlEBerr+pwsUM+1ijR9mK8BCRW1PuHC8H5pd/d5f7mVw1c44v2ic0JciwJc0l7u/ctCr70Cj/eNbkzcC0/7DekEjrUY2aSnsVQsQ/mDfr+haTjT4acITOWW3JxQE8gzGtVt5XkExB7/OfP74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786725993; c=relaxed/simple;
-	bh=qxBXXpe4J3j5oM8z7FZZie0ef0arlGjt+6txYGpRG30=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=FSl2bD5uKtg1aXHucrLiZCQ86qghNOAQGxlP7kguGYh6UZ6rbFYZW75fBKRrddnl//EYTjiAqTuSGJbM8YAwrAc9ddeNzu8HEGMu/Gdihb1Qn/As12Qax4flBYBr8UMt0754DIHDaDjSUJM/6p0yqdpct7iQ+1mW4WIzf3fxx0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B/a+sqSB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786726647; c=relaxed/simple;
+	bh=P6TsHROzGFuvuQhbbFjiY+3j2uy9Mvh2w6OicTyhP+4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ssdCxJrlaqFMi3NpMw/w2pjJfJiteyDTIGyREMTxeiYrSLOtlrbiTNLuaa3qI5JttaMrQ88gVd0tt+SM7HqpcyjahKkoLeI302cFn1JWxTwY6R8GFWLfa+0uOGy7ArepnGmvprO0dP4F6s9C1sslVxDIsT5xihhpbLnRAoeX74s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AJIfzpYP; arc=none smtp.client-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B/a+sqSB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF4D91F000E9;
-	Fri, 14 Aug 2026 16:46:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786725992;
-	bh=qxBXXpe4J3j5oM8z7FZZie0ef0arlGjt+6txYGpRG30=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=B/a+sqSBOHsma4DBPb9s8z02tD61YjjJaFe+ALeND3TGM8IM7Cpor5JBILuUG6LY0
-	 Pxeb8NzFxsumPJVYbXRFB+kBv/4YoTNkkrMOxtymO1DSB9sIrQZfUZOyDqgjMKWCh3
-	 1ZtSdonEDwcjrdeyZt7KKdrtE5V2mPGheSj6LH663N1bjpO/jwNER/vHv++iO590wK
-	 9h50992tvo1wqXMuItVe4/UiCokNY4+fxebBmknUmS2mWtCWByVClkmWRT9i7tjjXr
-	 wtmfjAQ9lBJ644Mb0UnRMA/zQsCSarAIcFE6UB7kCmKvTUWu2l9T42EGekA8kLmJY5
-	 okiXJ2vT3zQCA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/6] KVM: s390: Refactor dat_set_slot()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>, kvm@vger.kernel.org, "Alexander
- Gordeev" <agordeev@linux.ibm.com>
-In-Reply-To: <20260814163355.227191-4-imbrenda@linux.ibm.com>
-References: <20260814163355.227191-1-imbrenda@linux.ibm.com>
- <20260814163355.227191-4-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 14 Aug 2026 16:46:31 +0000
-Message-Id: <20260814164631.EF4D91F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AJIfzpYP"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e8fee6af3so1397761a91.1
+        for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 09:57:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786726645; x=1787331445; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=X2uuaYXrIG65WiBuHQ7NDeP7zvEjj+v6bDkDWDXYLIs=;
+        b=AJIfzpYP7ZOCo0Y0NYaXmZzmOg1LUTSoNOlQ5e9z/q5JgcRbE+1QijDFzAvNPwrFsO
+         3ZoQPn354oZU0XPq4sdIq4X8cdL4iYMoROGXUjrIdUSm8XNucEp+ii/cT4bYn3JgUEGo
+         j+giJo1V4bYIPEkzkvB7M13JnQdn2FvYJ+pUIFiQ1fkThcUFlR+qIhGzHuWYW3hc1FSU
+         cICp59phLHLHbBhh7dpHFT1durglijsi1PnMvB1MoXhYEIwBAqGyrJNSxIe7966KB+Z8
+         ZnwVubVq0Qp7bE4RN18/2g49B4/yPX+7x337Ob39qwQVTKRxAHPeUCTFcBNfuX0ng5lX
+         0hkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786726645; x=1787331445;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=X2uuaYXrIG65WiBuHQ7NDeP7zvEjj+v6bDkDWDXYLIs=;
+        b=h0p/AlEIEBeyBFj+f4Gve6Fh3m8L/Bzc7QgmgQ+Q1kgznpcGeezFu3D9WgVzSA4S6z
+         cZRfamwupv+OUzhgrwbRJ0bVn9LJ1fweauZprMKJEHbEnn3rPAUobZj8myvhkWqLznpH
+         AQQbc3p1lR1DZLGdbW0T3iHzZ2v6iWOYVG8pkjPll56FEZZYm4bwp3aawZD+M+B5Is2f
+         Hz/+UfUAtuLql+9kPjqozjmjWhRYG04MH1+AXCbUcnWsO4OXSZK4c+U5ccN+5TFqhgr3
+         DFnMZYYz843Za6SozTQ/H1GjdR2e7tP1fCUVLsF14y106E22BfrzO4opKgFb/4rMEq2T
+         uH0A==
+X-Forwarded-Encrypted: i=1; AHgh+RpkA5dCE70GcjbNaCYG942biKQyVfh3MRnNE5futwTr2rLfkT0n8fHVK/Iw5CHtnP2hI7E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAERyfmy7tK1dM+eNrPc3az6/A9uU6V02v4AWhAxP0vwK+p3YJ
+	iC8Ev02Ekc+vgT5vE6Ic6XjH4hezoLPxiNfTzhE1CxVPl0BDT5ou2BSgDHZ9+DzGFzlAj4CXfNx
+	/NcqINg==
+X-Received: from pgmu38.prod.google.com ([2002:a63:2366:0:b0:c99:90dc:7b3f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:6708:b0:3b4:6026:6c5d
+ with SMTP id adf61e73a8af0-3cc7196e726mr8567420637.5.1786726645347; Fri, 14
+ Aug 2026 09:57:25 -0700 (PDT)
+Date: Fri, 14 Aug 2026 09:57:24 -0700
+In-Reply-To: <4f58be1f-74de-411b-9aac-896ad7af57ee@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260129063653.3553076-1-shivansh.dhiman@amd.com>
+ <20260129063653.3553076-8-shivansh.dhiman@amd.com> <aauJ80pZrw_SfF31@google.com>
+ <db768f80-dfda-42a2-8601-8d0af35c2959@amd.com> <an0BbcxUNRKqnUSJ@google.com>
+ <fede3476-5c56-4cee-b0a9-2e89e5a334ae@amd.com> <an5XdrvIoMKreMLp@google.com> <4f58be1f-74de-411b-9aac-896ad7af57ee@amd.com>
+Message-ID: <an9I9Lhw4zoDFQWE@google.com>
+Subject: Re: [PATCH 7/7] KVM: SVM: Enable save/restore of FRED MSRs
+From: Sean Christopherson <seanjc@google.com>
+To: "Nikunj A. Dadhania" <nikunj@amd.com>
+Cc: Shivansh Dhiman <shivansh.dhiman@amd.com>, pbonzini@redhat.com, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
+	hpa@zytor.com, xin@zytor.com, nikunj.dadhania@amd.com, santosh.shukla@amd.com
+Content-Type: text/plain; charset="us-ascii"
 
-> Refactor dat_set_slot(), _dat_slot_pte(), _dat_slot_crste(). Now they
-> only take a struct kvm_s390_mmu_cache as priv. For dat_delete_slot(),
-> mc is NULL, as no allocations should take place.
->=20
-> This is needed as a prerequisite to move gmap DAT table setup from
-> kvm_arch_commit_memory_region() to kvm_arch_prepare_memory_region().
->=20
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+On Fri, Aug 14, 2026, Nikunj A. Dadhania wrote:
+> 
+> 
+> On 8/14/2026 5:17 AM, Sean Christopherson wrote:
+> > On Thu, Aug 13, 2026, Nikunj A. Dadhania wrote:
+> >> On 8/13/2026 4:57 AM, Sean Christopherson wrote:
+> >>> On Mon, Aug 10, 2026, Shivansh Dhiman wrote:
+> >>>> Would you prefer it handled in svm_recalc_fred_msr_intercepts() instead
+> >>>> while setting intercepts? Or is there a better way to deal with this?
+> >>>
+> >>> Take a hard dependency on an upcoming APM update that states the control area
+> >>> is valid after shutdown, and rework KVM to not clobber control fields on shutdown
+> >>> interception.
+> >>
+> >> AMD APM 3.45 [1] is now publicly available and has the updated wording:
+> >>
+> >>     "After an intercepted shutdown, the VMCB control area is valid (with
+> >>      the exception of offsets 60h, 61h, and 68h) and the VMCB state save
+> >>      area is undefined."
+> > 
+> > Very tangential side topic: are combined versions (all five volumes in one PDF)
+> > of the APM available?  	Having to open five different PDFs to find information
+> > is a pain in the rear, especially since I can never remember what's in which
+> > volume.  I can manually splice the PDFs together, but that's far from ideal.
+> 
+> Yes, combined version (Vol 1-5) is available here:
+> 
+>   https://docs.amd.com/v/u/en-US/40332_4.10_APM_Vol1-5
 
-Sashiko has reviewed this patch and found no issues. It looks great!
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260814163355.2271=
-91-1-imbrenda@linux.ibm.com?part=3D3
-
+Awesome, thanks!
