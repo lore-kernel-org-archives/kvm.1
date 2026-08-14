@@ -1,87 +1,137 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9240E381E81
-	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 16:26:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562823B6BF9
+	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 16:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786724767; cv=none; b=AZoXt30d0vC2yFzlnkmV48JORDoqKMtbmS+iE7bgttuNB7ZPBF6k6G7DfaQxEQRsikkKNfMaUzfeMiqW1JgS6ukUrOiLFJkPP2m+V2qeD6vbpy0qWCZb5tmK5bV+4tPhOIzciWHze/lhUCN6aN0LbwQZuyj88V2iwYyrwMEBBqs=
+	t=1786725067; cv=none; b=gy5oUTiMmuuCCgWeGGsEOssVIAAwvqjFc7LXAaeypFH+vfmgzm4CfHD5CPT+hn6YP9RFxmoVcw9W2OvmUFLhWsLPR0QMr4bjQdvNbzacjd/mJFERD/fttW57+u79mVyN5Ahoi7rCFsvtCCCrmdrUXscLQwHgzLkRLg6VWAqN2fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786724767; c=relaxed/simple;
-	bh=MTPBOHQFJvYtb+AHcGvBZoYpVjfEnZJvBa0lWB+9N4g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=COUSpz7vFmaW/sMyJhPz1Tgcl7eDncm9kApj/SysJTaqYNXeoUy7OmMExKRla0yzSjFyLNmS+VqxdVZvEqmxAQYMzNrlGBFuNO8btdwbf5VhJStMs+F6XPIEng8gAJMRVHj2ulRiXX3uUc8SGcG2j7EaX/qTb4gSoVf0/RDzG/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=DWgoTJHq; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1786725067; c=relaxed/simple;
+	bh=ad2KSZ6aj9LaZljjaGmb+DSGR3m4x4q92q9df7qesM4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=q/AGZzk2N8WIwCJX0QOLlLz/Q4Imm7k7uFdHcOrZSXWaP1I7LcX899BdzX1jVh400GPdqqOU1Zt9FQhc2DmPf4031XN0auuaS6e3pRQBFPRVADiOtAIk+EgTwmN1yq/35z4KOBawAH4h/EUdKCgXgi/d5nA8VbAB0WKoeabbI0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MHZ+a15h; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="DWgoTJHq"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 175141596;
-	Fri, 14 Aug 2026 09:26:01 -0700 (PDT)
-Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DC3FF3F632;
-	Fri, 14 Aug 2026 09:26:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786724765; bh=MTPBOHQFJvYtb+AHcGvBZoYpVjfEnZJvBa0lWB+9N4g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DWgoTJHqOCjad3GIisdj3ANJUPRHIZpHgG+PT2LH+0PtFsBB96Dx1ZWBk/dLSVIz+
-	 lWRVVd6FJRFZeOnqUQYcjh+8S6wGBxgK1yknbk6JSYoFK6km4YAdjMZ7aIaOXQKrjf
-	 JFfOrlqAtKTXo1ga4xKDGaXnVaQRHXeH2UegfyMA=
-Date: Fri, 14 Aug 2026 17:26:00 +0100
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: David Hildenbrand <david.hildenbrand@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>, pbonzini@redhat.com,
-	kvm@vger.kernel.org, maz@kernel.org, oupton@kernel.org,
-	joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com,
-	yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev, fuad.tabba@linux.dev
-Subject: Re: [RFC PATCH 0/3] KVM: Dirty page logging for guest_memfd-only
- memslots
-Message-ID: <an9BmCMFP2iok-0t@raptor>
-References: <ak_wC4Q-mQe14DI8@google.com>
- <alDI1b8fC99SG4_a@J2N7QTR9R3>
- <a127176a-1722-460c-aa84-754e1d343f53@arm.com>
- <an3sEiQlIuGEjUur@raptor>
- <b6080c23-a2a8-4bc5-b3bd-982bd766c648@arm.com>
- <an5UJ4S_P1LUFmzD@google.com>
- <487aa57c-72ad-453b-971d-ca24a8380429@arm.com>
- <an8SOvLybeilzCEU@google.com>
- <an86rPn4P2dRO1RB@raptor>
- <an88nuw0FKT87a-W@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MHZ+a15h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDEC31F000E9;
+	Fri, 14 Aug 2026 16:31:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786725065;
+	bh=wfz+GtiP4IhrbH+BjJ8TCxWccRMAaQb6+4yzbeYz808=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=MHZ+a15hv1JILMIE10fwu0/38f3hY84hwsVr878JF2lyH3C3rxztEZQZ7MAu4Djpz
+	 3dqF9zca46w6rNL6zBn7yPDjTlNwyy16O3rI3uR+rWx1bLqg9sSggCTLqv45Hn4HIP
+	 JxIpVdmzFubV9LURUSjj+AfizXPBByuDzh57oML8Xy5UpxdjrbRr7L1wWY5B9JoB23
+	 hAcrJehZBMckRWr8XnXsm35KPjMPSqSChbSJ/ZJ/WO1rR/DElr9R88r2sSETLSsQlB
+	 4QlJ+BB7TdTmV8rVQPpk4flMIXzrRoLYwBOeAhs03QCArIkOjinfnHRxHVAp8LNK7q
+	 xGLRVEdhoDYfw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 4/4] KVM: selftests: Check VMPTRLD with active eVMCS
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Vitaly Kuznetsov" <vkuznets@redhat.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260814162221.2144473-5-vkuznets@redhat.com>
+References: <20260814162221.2144473-1-vkuznets@redhat.com>
+ <20260814162221.2144473-5-vkuznets@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 14 Aug 2026 16:31:05 +0000
+Message-Id: <20260814163105.BDEC31F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <an88nuw0FKT87a-W@google.com>
 
-Hi,
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] The hardcoded `VMPTRLD_INSN_SIZE` of 5 bytes is brittle because =
+`vmptrld` is executed using an inline assembly memory operand constraint (`=
+"m"`), which results in a variable-sized instruction depending on compiler =
+optimizations and register allocation.
+--
 
-On Fri, Aug 14, 2026 at 09:04:46AM -0700, Sean Christopherson wrote:
-> On Fri, Aug 14, 2026, Alexandru Elisei wrote:
-> > On Fri, Aug 14, 2026 at 06:03:54AM -0700, Sean Christopherson wrote:
-> > > > That would be in contrast to user space having to guess that page migration on
-> > > > the current hardware with the current guest_memfd implementation does not
-> > > > support page migration, to then disable exactly that.
-> > 
-> > If guest_memfd picks up support for another feature that might lead to
-> > memory being unmapped from stage 2 without userspace initiating it, would
-> > you be ok with that feature being gated by another guest_memfd flag?
-> 
-> Yes, absolutely.  FWIW, if I get my way and reclaim is driven by userspace, then
-> hopefully such a feature never comes along.  But if guest_memfd does gain some
-> feature that triggers invalidations, then yeah, at the very least it would need
-> to have some knowledge of whether or not the associated VM supports said feature.
-> 
-> > I get the feeling we're all on the same page, that guest_memfd will support
-> > a mode where memory isn't unmapped from stage 2, and right now the
-> > discussion is more about how that will be implemented.
-> 
-> Ya.
+--- Patch [4]: [PATCH 4/4] KVM: selftests: Check VMPTRLD with active eVMCS =
+---
+commit 80c84d1f71bebfd26712329b4fe8a487216ec3fb
+Author: Vitaly Kuznetsov <vkuznets@redhat.com>
 
-That's great, thanks for confirming.
+KVM: selftests: Check VMPTRLD with active eVMCS
 
-Alex
+Check that VMPTRLD when eVMCS is active results in #UD. This matches
+genuine Hyper-V's behavior.
+
+> diff --git a/tools/testing/selftests/kvm/x86/hyperv_evmcs.c b/tools/testi=
+ng/selftests/kvm/x86/hyperv_evmcs.c
+> index 88262ddf7fcb2..6a6d940a78918 100644
+> --- a/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
+> +++ b/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
+> @@ -18,12 +18,16 @@
+>  #include "hyperv.h"
+>  #include "vmx.h"
+> =20
+> +#define VMLAUNCH_INSN_SIZE 3
+> +#define VMPTRLD_INSN_SIZE 5
+> +
+>  static int ud_count;
+> +static int ud_insn_skip_size;
+> =20
+>  static void guest_ud_handler(struct ex_regs *regs)
+>  {
+>  	ud_count++;
+> -	regs->rip +=3D 3; /* VMLAUNCH */
+> +	regs->rip +=3D ud_insn_skip_size;
+>  }
+
+[ ... ]
+
+> @@ -182,10 +186,15 @@ void guest_code(struct vmx_pages *vmx_pages, struct=
+ hyperv_test_pages *hv_pages,
+>  	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) =3D=3D EXIT_REASON_VMCALL);
+>  	GUEST_SYNC(11);
+> =20
+> +	ud_insn_skip_size =3D VMPTRLD_INSN_SIZE;
+> +	vmptrld(hv_pages->enlightened_vmcs_gpa);
+
+[Severity: Medium]
+Could this hardcoded instruction size lead to guest instruction stream
+corruption?
+
+The vmptrld() inline assembly in include/x86/vmx.h uses a memory operand
+constraint ("m") for the physical address:
+
+static inline int vmptrld(u64 vmcs_pa)
+{
+	u8 ret;
+
+	__asm__ __volatile__ ("vmptrld %[pa]; setna %[ret]"
+		: [ret]"=3Drm"(ret)
+		: [pa]"m"(vmcs_pa)
+		: "cc", "memory");
+        ...
+}
+
+Depending on compiler optimizations and register allocation, the resulting
+instruction might not be exactly 5 bytes in size (for example, it could be 4
+or 7 bytes depending on the chosen addressing mode).
+
+Since guest_ud_handler() unconditionally advances regs->rip by
+ud_insn_skip_size, if the generated instruction length does not match
+VMPTRLD_INSN_SIZE, resuming the guest could land in the middle of an
+instruction and cause #GP faults or infinite #UD loops.
+
+> +	GUEST_ASSERT(ud_count =3D=3D 1);
+> +
+>  	/* Try enlightened vmptrld with an incorrect GPA */
+> +	ud_insn_skip_size =3D VMLAUNCH_INSN_SIZE;
+>  	evmcs_vmptrld(0xdeadbeef, hv_pages->enlightened_vmcs);
+>  	GUEST_ASSERT(vmlaunch());
+> -	GUEST_ASSERT(ud_count =3D=3D 1);
+> +	GUEST_ASSERT(ud_count =3D=3D 2);
+>  	GUEST_DONE();
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260814162221.2144=
+473-1-vkuznets@redhat.com?part=3D4
