@@ -1,108 +1,173 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEF1189F43
-	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 04:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865F8346A04;
+	Fri, 14 Aug 2026 05:18:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786681896; cv=none; b=R8x83qP3sh7Ue2cRVuudIjtnuqK3ETjMzFRwvbof8uaWThClK6s6eH04UZ9PfOhLnAHzxoOPDAwUsXTt25tI7RJ2Iik4q9++ubVWXgGsPTZq9DKMbpZO2rzpQ7FU7WOfRevYmGx+Kdrm9R4FDcfucxTLB5VPlSeqY69Rlpor39Q=
+	t=1786684717; cv=none; b=omiDrswumaSrjXLBoPBlQKC1QQyFg9LFdHv9DxmfjneJwHH8Pt/SLpFWV/hpDW2phLDa/oFgT7fRKorrg5wKTszsT5ItHEIvzVqx3EB1+i3LNBmLdMjlVhwTYaBZIrAzKid3KW+APknNK5K3QPmNXwJl8G5O56xBud1R87ZPA8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786681896; c=relaxed/simple;
-	bh=mqmbsOhXmMeoZa7URMfx+LqBREMmyjr0EHGmAVBhs04=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uoT6QX0aNZMlwJUJbMz2zvsrEawoXu5rA3Wu5kUNxQ5qEpeYg7OQzN41wo3EOQdWcuXEm7lM5SFj3Cvb+myxezWaDZl7npaQtxT391+8JMqRzpv3Iu3i3+dVynAb2jJ1GURHnk5tq8mJFaMupEpY+qyRBn/R1DPK033jwL+oiIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HVsh6BYu; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786684717; c=relaxed/simple;
+	bh=+MUxfRWOkqREAuoekA780+CfxxKTEqlm5E/NKiwihFE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EqP04Dc8rKKALwPXMed/HPrSR7MmaRdN86c/QccuQzeEm1MUCYdh2vxkSvmP4mq2PxKAyUGIxW/q2oifs1teLhlEp2Hjwtf/ENHoeuD+T9JxA67e9cuJSoA7AcEEbP3bc0Nn8oXkp+LNXf4DCXRk09M4zbrEHGRKJ8f8tV/cXKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P1kHph+z; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HVsh6BYu"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c9e7391839cso530420a12.0
-        for <kvm@vger.kernel.org>; Thu, 13 Aug 2026 21:31:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786681894; x=1787286694; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mqmbsOhXmMeoZa7URMfx+LqBREMmyjr0EHGmAVBhs04=;
-        b=HVsh6BYusvxxr6KiwoulZbhma1smZpPjV/2j0kU6mle8rSe4HR43IYiwHB57+v18K+
-         2leoaDP4nOaLOclAAB0Ssosb5A1kc1G/2DhEk8Dvukja2zeOGQENRfAFWZh0zr/zlgZE
-         iJkefA00cfykwokspMuPnZ58XwV3VXqb18otGeK7BtFYlr22j7ZaqhVfrh1CkbFrbq43
-         nfACF+cbE8UclOHjXfc5UJ/c8CI49DIr+p2a0XTU1oBLk5RQMJOGYQVMXhdQvo3H/tr8
-         hxtMZKu5sHCkpLXGxB8kz9dE9eX21jdZsGhG582mVomWxjzcduVVdz2XwMcYOb51Wg3A
-         kNmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786681894; x=1787286694;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mqmbsOhXmMeoZa7URMfx+LqBREMmyjr0EHGmAVBhs04=;
-        b=NZtTgDXBOMqm00nw4ZSvzQaVl5rvpPyVTn8rNoISqOpbxc/FsJXK2MX/4uqUoBYX2E
-         6dkt0S7oKl9VKuvPdY9J3+yIxlYGhTnhT+7L9udwIXdQeOVVw0GjQcZmlBedpvtkGWzo
-         pZWM1QCt/D0nV0sAQ8hfkwXMJTt4ah6uFvpOOlzulUhSVnmuHxDbdAp5zgYA3FrX8s1M
-         ZPvkJzFUlqWWrLXKn9+7+BIUMVH+PQiWLKSYiC4+eWWgBuCV8nn59lzFgJwgUxuAy/ZV
-         5duarhoMsNX6afS0dYtLdzdhbR1MJ6wjDBRpww0WDZOd6IMpiEjccfSwwUs7UIRku3VT
-         Y8YQ==
-X-Forwarded-Encrypted: i=1; AHgh+RppOnoG4zJ/gqrvfsogYgIA29H5ZNe2j4rKqZNbQMxk9FMVxMiHRwe6+r1Q2k80k+g/Mnw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwbCRcqnz0Y52cj5LBhuF5DsByyP3PlEaPC1hrZXZhJJMqQKF6
-	OIh7E2VlBUqgjlf+yPzHm1D64+998gI6+3YT4LeXbnJ2T2YbPrAeunBd
-X-Gm-Gg: AR+sD102QUB6ikJFBerc3SGn4kUw49bpVCyF4Yw9XNus+JEvaYC8dhzq4qZ4IqCBH3H
-	6l6KJIGxpejmro/mNus+MDokOFu2LwMHVgG6NlFln8u1/c3vrpB7huPxil7++OVtV2nxiZ9rUuE
-	u24KY6b2Rt1EtuNSwgIQjQH2V+Q3y9CGQFKRGKDZwUiuqwJTKIQ429TU0PKi+qizeAIda0xPt/N
-	KoTLTUnX/6O+qZvBQlZwmLSnmkqEYhcUkeOfkLuwhQhSFwisNPzdE5Wbgbnko+AblB48+vCMxE+
-	t9fJsfC4QWJZpc/CWK/UfB+F6nhHp3IlGngPl7oP+I8NrktGbH2bl6sV01rpnHHvw+pNOXS5Jki
-	0pteLpnIsqrbVJ90vXAplG2KTDDfg6g1Aalwkfut8mQElYwK3wjrwG9BunA3/mecaEdU7qBU3XH
-	cOHUvHUSB4nK52OvSp3RG/lvDa+M6tGYNq0Ktl6NZ1zk6FIusPTE0LrxqtEbpAdYs=
-X-Received: by 2002:a05:6a20:4321:b0:3c3:88a5:83e4 with SMTP id adf61e73a8af0-3cc71a2974cmr3124821637.10.1786681893513;
-        Thu, 13 Aug 2026 21:31:33 -0700 (PDT)
-Received: from [127.0.1.1] ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1413889d914sm4450683c88.13.2026.08.13.21.31.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 21:31:33 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: sgarzare@redhat.com
-Cc: stefanha@redhat.com,
-	mst@redhat.com,
-	jasowangio@gmail.com,
-	eperezma@redhat.com,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] vhost/vsock: keep IOTLB across feature updates
-Date: Fri, 14 Aug 2026 12:31:21 +0800
-Message-Id: <20260814043121.59610-1-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <an2RzeZ2zI8mWFRM@sgarzare-redhat>
-References: <20260810134018.143973-1-physicalmtea@gmail.com>
- <20260810134018.143973-3-physicalmtea@gmail.com>
- <an2RzeZ2zI8mWFRM@sgarzare-redhat>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P1kHph+z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786684715; x=1818220715;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=+MUxfRWOkqREAuoekA780+CfxxKTEqlm5E/NKiwihFE=;
+  b=P1kHph+zrCFpTLxg8CIkAkdkjhiuKSHXRCYAK7lTE1/8HU0mB3OVubg1
+   2BAytgo0YmAoX+4n5xlaij/qwnDx4IryD0Ek9UF0G6KWfHYT+H8IjLDPH
+   FKjUzluaZ5kbA9cMujrKMwoZQ2P/yv8t7Y+28wvFaYI+VwOIPX5GZxkwI
+   gW4+53d/MqJCRuTXV4B7yjUGbFvhDXz3rRoiLYoPtmuse4JjeTqRzRoOG
+   4mOGkwwf0/SD65ZExxbTNOr2+q9UtUlXrdxHPLg9VpxJWXWp8iIRv6Aof
+   /cSEp+j909mfj7JlnI7TIUJDAKbK8BRMn4mir1HlY4+BLfs21mAUs1W5I
+   w==;
+X-CSE-ConnectionGUID: Z3Veuck/TZeR6EpD4DSAaw==
+X-CSE-MsgGUID: 5M++MCpnSomnIdFo8yQZsQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11874"; a="87481113"
+X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
+   d="scan'208";a="87481113"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 22:18:34 -0700
+X-CSE-ConnectionGUID: IN/b0L//SVCz/TGsloL3PQ==
+X-CSE-MsgGUID: VWlRvfb+T1OqDKsfu60fhQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
+   d="scan'208";a="266117899"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 22:18:20 -0700
+Message-ID: <645af2bd-2791-473a-9441-40db01f58913@linux.intel.com>
+Date: Fri, 14 Aug 2026 13:18:17 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 16/41] KVM: guest_memfd: Zero page while getting pfn
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, linux-coco@lists.linux.dev,
+ Xiaoyao Li <xiaoyao.li@intel.com>
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-16-2fc18ee6d3ba@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-16-2fc18ee6d3ba@google.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-> Do we need a Fixes tag here?
+On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
+> 
+> Move the folio initialization logic from kvm_gmem_get_pfn() into
+> __kvm_gmem_get_pfn() to also zero pages if the page is to be used in
+> kvm_gmem_populate().
+> 
+> With in-place conversion, the existing data in a guest_memfd page can be
+> populated into guest memory through platform-specific ioctls.
+> 
+> Without first zeroing the page obtained using __kvm_gmem_get_pfn(), it
+> might contain uninitialized host memory, which would leak to the guest if
+> the populate completes.
+> 
+> guest_memfd pages are zeroed at most once in the page's entire lifetime
+> with guest_memfd, and that is tracked using the uptodate flag.
+> 
+> Zeroing the page in __kvm_gmem_get_pfn() is chosen over zeroing in
+> kvm_gmem_get_folio() since other flows, such as a future write() syscall,
+> can get a page, write to the page and then set page uptodate without
+> zeroing.
+> 
+> This aligns with the concept of zeroing before first use - the other place
+> where zeroing happens is in kvm_gmem_fault_user_mapping().
+> 
+> Don't mark the page uptodate again after populating, since the page would
+> already be marked uptodate before the post_populate() call.
+> 
+> Reviewed-by: Fuad Tabba <tabba@google.com>
+> Tested-by: Shivank Garg <shivankg@amd.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-I overlooked the Fixes tag. Thanks for pointing that out. I will add:
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-Fixes: e13a6915a03f ("vhost/vsock: add IOTLB API support")
+> ---
+>  virt/kvm/guest_memfd.c | 12 +++++-------
+>  1 file changed, 5 insertions(+), 7 deletions(-)
+> 
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 030af0855f8b0..41950c8105b5d 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -1079,6 +1079,11 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
+>  		return ERR_PTR(-EHWPOISON);
+>  	}
+>  
+> +	if (!folio_test_uptodate(folio)) {
+> +		clear_highpage(folio_page(folio, 0));
+> +		folio_mark_uptodate(folio);
+> +	}
+> +
+>  	*pfn = folio_file_pfn(folio, index);
+>  	if (max_order)
+>  		*max_order = 0;
+> @@ -1108,11 +1113,6 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  		goto out;
+>  	}
+>  
+> -	if (!folio_test_uptodate(folio)) {
+> -		clear_highpage(folio_page(folio, 0));
+> -		folio_mark_uptodate(folio);
+> -	}
+> -
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+>  	if (kvm_gmem_is_private_mem(file_inode(file), index))
+>  		r = kvm_arch_gmem_make_private(kvm, gfn, *pfn,
+> @@ -1159,8 +1159,6 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  	}
+>  
+>  	ret = post_populate(kvm, gfn, pfn, src_page, opaque);
+> -	if (!ret)
+> -		folio_mark_uptodate(folio);
+>  
+>  out_put_folio:
+>  	folio_put(folio);
+> 
 
-> Do we need to do the same in vhost-net too?
-
-Yes, vhost-net has the same IOTLB lifecycle issue. I previously posted a
-separate patch for vhost-net:
-
-https://lore.kernel.org/all/20260726141158.1652386-1-physicalmtea@gmail.com/
-
-I will update that patch in the next version to use the common IOTLB
-teardown handling for the ACCESS_PLATFORM transition, while retaining
-the vhost-net-specific checks for IN_ORDER and other unsafe feature
-changes.
-
-Thanks,
-Jia
