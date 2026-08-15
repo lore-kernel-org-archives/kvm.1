@@ -1,123 +1,137 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0362931F1
-	for <kvm@vger.kernel.org>; Sat, 15 Aug 2026 10:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE92344DAE
+	for <kvm@vger.kernel.org>; Sat, 15 Aug 2026 10:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786790817; cv=none; b=iVEPuetOftltJRWqipVpSMtc/Pkx2oWFUBaTNZ6OPRD0rHIMe05iAKZCVpu4Sk4rt2/bxqhVrY34iPeI5/KXGeNDG06XaA0ZUZSYUzdMg2YxKOXmoTyyAX9remm/Nlf1LihenL7Af0Zh56rDiOM+kCQ27s2vd++rkbcwvRIcIZA=
+	t=1786790878; cv=none; b=HappX3F3vqvJ6Vykd6/EzS7NMTlabTvm6lx9Jj+1POzZjOePbuyK/u5hZTRiS5WJ3vIY0VjeMjz2qIyxpyTKV+WXwSOLzeSh+vVbg79aNwUsW1YIj7qr+HQwY1A0zstTQ3Eh2r68ZYer/H7SeMCqM8bJewtLfDWV3fp7N29/aeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786790817; c=relaxed/simple;
-	bh=q0mWBmciDLDn/DbyavIzG6BiGLXmbG05apcp1+eeYts=;
+	s=arc-20240116; t=1786790878; c=relaxed/simple;
+	bh=R6BkbsKdbaHGyXpefGsoTLw3B9uAplpLhs+InXr//KQ=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=GU9v47cJPNzFHQXorcLl3/0vxtS+CGL/KxbgXGQP1JBES8ni51DBMeYF/2wZ42e+M28q4NTCXguTxmpRQqeHEeLjk6ASuCBWKA+WDpcyiy+OcnqZ8gSXGZk9YajdjpKks1WxBOj0kRN7Vz1N+XCBCoXG9to9MgW4FFAc3wNxtNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K4pYe6lr; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=rFvX8Qw5m0rZhhQEjWC11S0FkcWaHg6NX9IODy0vY537HYT8sHBUiYuGTZ3srCPQaamuv+qjHax7g/iXDqsYDfIX3MsL63zcVzxPH4EclQrQrI6FS7U3iKIxzdjRN2TPMf6ibBM2JcUMu1YDRcN3HvPcI4FZ1SxYdJmXUHd5gQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NRvlB+WA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K4pYe6lr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D091F000E9;
-	Sat, 15 Aug 2026 10:46:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NRvlB+WA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E821F000E9;
+	Sat, 15 Aug 2026 10:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786790816;
-	bh=52fhOS7UaUHZSs2npuzjbMkzO7satOKE/EEmOeYKfZo=;
+	s=k20260515; t=1786790877;
+	bh=ROYC5NvxBdOnCuknqgzfKV+iunS8XkLuD9NR20BskSY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=K4pYe6lr2YgdaDbn41WePNlTvlhEdG1p5BpkXzXIWmbTavVbMcozi7Pf+GEha/X59
-	 AMWMrEJsxx4LjIfXmakrwFWehmt/C1bbN7Y3l4DDCzizpSRB379fNurKHivTpnwMaI
-	 GEbrNODADqQhGa0gG3tnaBnJyU/1vhO02sXMAgiUrLAFFVvnSSVRmkTnHKQSzU5BaS
-	 wr1ON0au73jFJmu2msgN3QvRpikQco7BjGTMCEQ5mXx5lHThpJUfb7AtPR6tasmafX
-	 1idTCQFJ6kDRnV6jgBKKIpQHThbumZotW34FOMrimVnTp1e/ESszPLnRdTdyszGD/S
-	 Hzu+R0zfKf63w==
+	b=NRvlB+WAWhIk3FeBYusgVGLENC8wfLUb0HC6WvkGbjkYmo+o4Nkm39swoBheCNi3V
+	 Olq3CrFRoBz0/fC7eQQFJoB+zEPt/dXCKHtGRVPM3Kaw6DhPbMthQ08EV3vvNse8Jp
+	 /vaz4QT7Wc1j+F7/71cKSWoETToI+urMoJwCN6iueY9Mum+zIbHa/yxaPMTBOnwyYt
+	 Ny0l3eR3fyQcYK6GvFRmLd0ub6fKl7bSg5Eat1EvaVQtG51C72SAVA1nJUX6XA4gql
+	 ZSkP8CwWpAX4y7Dlb5i+xKNOf0pK/6kcw30rDLJ19Evzod09G5jaozZr6Kru4n11a2
+	 y863xASbRHPcg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 RESEND 2/5] KVM: riscv: Avoid THP adjustment for
- existing 4K G-stage leaves
+Subject: Re: [PATCH v4 RESEND 3/5] KVM: riscv: Implement
+ KVM_PRE_FAULT_MEMORY
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Jinyu Tang" <jinyu.tang@linux.dev>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260815103245.864925-1-jinyu.tang@linux.dev>
+In-Reply-To: <20260815103341.865013-1-jinyu.tang@linux.dev>
 References: <20260815102833.864330-1-jinyu.tang@linux.dev>
- <20260815103245.864925-1-jinyu.tang@linux.dev>
+ <20260815103341.865013-1-jinyu.tang@linux.dev>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 15 Aug 2026 10:46:55 +0000
-Message-Id: <20260815104656.21D091F000E9@smtp.kernel.org>
+Date: Sat, 15 Aug 2026 10:47:56 +0000
+Message-Id: <20260815104756.D9E821F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] The patch's fix for an infinite page fault livelock is incomplete.=
- It fails to detect a split THP when the specific faulting GPA lacks a vali=
-d 4K leaf, leading to an incorrect PMD alignment and a continuing infinite =
-loop.
+- [Critical] Modifying the HWPOISON path in `kvm_riscv_mmu_map()` to return=
+ `-EFAULT` breaks standard `KVM_RUN` memory error handling.
+- [High] Incorrect address and boundary calculation for `out_map.addr` caus=
+es KVM to skip pre-faulting requested memory or underflow range calculation=
+s.
 --
 
---- Patch [2]: [PATCH v4 RESEND 2/5] KVM: riscv: Avoid THP adjustment for e=
-xisting 4K G-stage leaves ---
-commit e6651e4debdd3eb4a9adeb5c1e519831130009d2
+--- Patch [3]: [PATCH v4 RESEND 3/5] KVM: riscv: Implement KVM_PRE_FAULT_ME=
+MORY ---
+commit 28eceecf0e650b3722970e6824e30848edb82b44
 Author: Jinyu Tang <jinyu.tang@linux.dev>
-KVM: riscv: Avoid THP adjustment for existing 4K G-stage leaves
 
-This commit attempts to fix a page fault handling issue where
-transparent_hugepage_adjust() rewrites the fault GPA to the PMD base,
-causing the wrong 4K leaf to be updated. It checks if the original fault
-GPA already has a 4K G-stage leaf, and if so, skips THP adjustment.
+KVM: riscv: Implement KVM_PRE_FAULT_MEMORY
 
-> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index bfd6168ebe308..2fabcd4099919 100644
-> --- a/arch/riscv/kvm/mmu.c
-> +++ b/arch/riscv/kvm/mmu.c
-[ ... ]
-> @@ -500,10 +500,21 @@ static int get_hva_mapping_size(struct kvm *kvm,
-> =20
->  static unsigned long transparent_hugepage_adjust(struct kvm *kvm,
->  						 struct kvm_memory_slot *memslot,
-> +						 struct kvm_gstage *gstage,
->  						 unsigned long hva,
->  						 kvm_pfn_t *hfnp, gpa_t *gpa)
->  {
->  	kvm_pfn_t hfn =3D *hfnp;
-> +	u32 ptep_level;
-> +	pte_t *ptep;
-> +
-> +	/*
-> +	 * Keep the existing split G-stage leaf and update the original
-> +	 * faulting 4K page in the vCPU fault path.
-> +	 */
-> +	if (kvm_riscv_gstage_get_leaf(gstage, *gpa, &ptep, &ptep_level) &&
-> +	    !ptep_level)
-> +		return PAGE_SIZE;
+The generic KVM_PRE_FAULT_MEMORY ioctl lets userspace populate KVM page
+tables before running a vCPU over a GPA range. This commit implements the
+arch hook for RISC-V and reuses the G-stage fault mapping path.
+
+> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
+> index 54d45addf18f9..dff315dfd24ed 100644
+> --- a/arch/riscv/kvm/gstage.c
+> +++ b/arch/riscv/kvm/gstage.c
+> @@ -286,6 +286,9 @@ int kvm_riscv_gstage_map_page(struct kvm_gstage *gsta=
+ge,
+>  						    out_map->level, true);
+>  		} else if (ALIGN_DOWN(PFN_PHYS(pte_pfn(ptep_get(ptep))), page_size) =
+=3D=3D hpa) {
+>  			kvm_riscv_gstage_update_pte_prot(gstage, ptep_level, gpa, ptep, prot);
+> +			out_map->addr =3D ALIGN_DOWN(gpa, page_size);
+> +			out_map->level =3D ptep_level;
 
 [Severity: High]
-This is a pre-existing issue, but does the fix remain incomplete when the
-specific faulting GPA lacks a valid 4K leaf?
+When pre-faulting a range backed by THP, could aligning out_map->addr to the
+huge page size while setting out_map->level to the existing leaf size (e.g.,
+4KB) cause an underflow later?
 
-If the guest accesses a 4K page within a THP-backed region during dirty
-logging, it gets faulted in. If another page in that same split PMD directo=
-ry
-remains unmapped when dirty logging is disabled, what happens when the guest
-eventually faults on the unmapped offset?
+If out_map->addr is aligned to a 2MB boundary in kvm_riscv_gstage_map_page(=
+),
+but the map_size is calculated using the 4KB level in=20
+kvm_arch_vcpu_pre_fault_memory():
 
-In that scenario, kvm_riscv_gstage_get_leaf() for the unmapped GPA returns
-false. This allows transparent_hugepage_adjust() to fall through and align =
-the
-GPA to the PMD base.
+    map_size =3D PAGE_SIZE << (out_map.level * kvm_riscv_gstage_index_bits);
+    end =3D out_map.addr + map_size;
 
-When kvm_riscv_gstage_map_page() is subsequently called with the PMD-aligned
-GPA and PMD_SIZE, it finds the existing 4K leaf at the PMD base. Because the
-PFNs match, it updates the protection of the base leaf and returns success,
-without mapping the originally faulting GPA or replacing the split table.
+The calculated end might be less than range->gpa. For example, if range->gpa
+is (2MB_aligned_gpa + 8KB), then (end - range->gpa) would underflow to a
+massive unsigned value, causing the ioctl to silently return range->size and
+terminate early without actually pre-faulting the requested memory.
 
-Can this result in an infinite page fault loop since the faulted page is
-never actually mapped?
+> +			out_map->pte =3D ptep_get(ptep);
+>  			return 0;
+>  		}
+>  	}
 
-> =20
->  	/*
->  	 * Make sure the adjustment is done only for THP pages. Also make
+[ ... ]
+
+> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+> index 2fabcd4099919..f6ca86da53eb8 100644
+> --- a/arch/riscv/kvm/mmu.c
+> +++ b/arch/riscv/kvm/mmu.c
+> @@ -717,7 +717,7 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct k=
+vm_memory_slot *memslot,
+>  	if (hfn =3D=3D KVM_PFN_ERR_HWPOISON) {
+>  		send_sig_mceerr(BUS_MCEERR_AR, (void __user *)hva,
+>  				vma_pageshift, current);
+> -		return 0;
+> +		return -EFAULT;
+
+[Severity: Critical]
+Does returning -EFAULT here break the standard KVM_RUN memory error handlin=
+g?
+
+By returning -EFAULT instead of 0 for KVM_PFN_ERR_HWPOISON, KVM_RUN will ex=
+it
+to userspace with -EFAULT. Userspace VMMs (like QEMU) typically treat an
+-EFAULT from KVM_RUN as an unrecoverable hypervisor error and will abruptly
+terminate the VM.
+
+Returning 0 allows the run loop to exit cleanly with -EINTR, ensuring the V=
+MM
+can handle the queued SIGBUS (via send_sig_mceerr()), isolate the poisoned
+page, and inject a Machine Check Exception into the guest.
+
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260815102833.8643=
-30-1-jinyu.tang@linux.dev?part=3D2
+30-1-jinyu.tang@linux.dev?part=3D3
