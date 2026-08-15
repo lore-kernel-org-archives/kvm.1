@@ -1,126 +1,101 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD66355819
-	for <kvm@vger.kernel.org>; Sat, 15 Aug 2026 07:56:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786780579; cv=pass; b=PjXanVlBQOk5nRQT/8+Pb+C3e7SB5WEQxRrqzGAoEI1ng7gcg7S6IdqycxqDthYv6gVAEqVkAf57NOqxMT+By1Mi63M+zueiHvG/bee6JDnhHo5GhIBxiI63A53IS4qbLWPAjhOxdG7CHwJe8pyWWvMwj/0VQE5IcklTXqJE2k0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786780579; c=relaxed/simple;
-	bh=oS2jgexovXKZsveAUZFioS88sWSaj+0/57ed+61vT5U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N1fNQY7ShsPLdTWMhNCuhCo+n03tU6sV0HggKKQyRD7Tn30pUHqWKturQMDaO2zNCX1UB5rJTbuDIh9dx46dDEBe3GcUFjgB+1GYIANhtFeKzghBuYMnxEqyYOq7DC6eD/vFJIRLgRTMnAdUDvJRTyd/eEmjCr5NeSjVNUDgCdA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aOUyu68l; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=geFy/E2S; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330E93655D4;
+	Sat, 15 Aug 2026 09:17:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786785472; cv=none; b=JAm4bfhl5OLlkbo2KWMFvpf42BmTN2W1SW1GzsofxNEUd5xttp1g+j767HlWK8gTdi0m3LJvKDIS9suLEu8Jmt0VAX+K5IHdr/eUUZZCEVTja8FcX5fz+z/CjxbVNwoM/sTnSPX/Pgbxn8RIVyxKCS8avPKSvqdkdr9nFvHHKiY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786785472; c=relaxed/simple;
+	bh=svRArkOXWyF/IfmglPw4+QW++psuxkU5D4yBGbQ9Q3o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s38+z3nE/EQQcgt1El3fayCWMFXKa3YqwlA+cyfBr5n+gyzGaPqES99cLkCSEefOaIVUkssLK4MJbxLgCYUXiSlap6zjFlrqOVC1xby+SaBWmL1kzwCgZFVz9dooulPGtD3z1PHnKaC0ijHshiJQyrZvxp1MN1IT1YrvpvR2pik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DL732SVg; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aOUyu68l";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="geFy/E2S"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786780575;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oS2jgexovXKZsveAUZFioS88sWSaj+0/57ed+61vT5U=;
-	b=aOUyu68lIf/oHgojW/jdS2UYqGryGLMTS3KAfnk30Vu3HLEB9D1hiL0p5mVVR7wiJXGB78
-	r1DPaiLhbFYl38qOBlsu7roJ6YF6e9WTTf36QSg8JCa7K1NFYp+xhu42mqRfdx06CcvJEQ
-	RQsHWmhNsFAqLZMmQuNXqv5B6ApHzC8=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-259-foAwsCwMOZuEymKR3yH8hA-1; Sat, 15 Aug 2026 03:56:12 -0400
-X-MC-Unique: foAwsCwMOZuEymKR3yH8hA-1
-X-Mimecast-MFC-AGG-ID: foAwsCwMOZuEymKR3yH8hA_1786780571
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47feac2021eso992043f8f.3
-        for <kvm@vger.kernel.org>; Sat, 15 Aug 2026 00:56:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786780571; cv=none;
-        d=google.com; s=arc-20260327;
-        b=K4B1M88y9sXDV/z2eZJWSZ/4YLuxvky5Hi6cA0L+ZTshxGeclvbeVwPO/z3brPAzxR
-         jQV2V/csjXKL7nQ8+tJhVy9XzkivYLcYegn3ftd+7SnwZh4Wz26DRPI7GcaTyCVUTIZe
-         TVjRBMdjt2vVhYVhaCCg3FY8wAlYRsB9wVmiYV0b6+27DvhVtzWhSvNAx6ey5jJWpvWW
-         0pnAzP09hU2NiAPHD9EoyMFBkz8rqR6AEGZbLKkQoiWLCqiYdcYmOdrCotGT3KnLfXC0
-         qYVsmMmYwjNYb+paYOmtjH0+vNpX4X0bVNaLO3asVjPuPhzxkxt9aAgRGMhlaaLfaNp1
-         ag5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=oS2jgexovXKZsveAUZFioS88sWSaj+0/57ed+61vT5U=;
-        fh=uj2eFdtsQq9D6xSa4uhD/OaMiv2Kk3vBe3bGaaCKM9A=;
-        b=Il1MKH4LcQvIfZmFx0Lf78OugR/2es+1d3dcij5NqcyPmCCnGFKJyr/xlX7iTRdOyN
-         AUqLpNYwDXHMg7Ph8AxeafKBNUEN+xPvTljrUl7kEbxVmri4qEnhLgLYlQaeBKgwbLqD
-         4Y+qE/ZYvpn7m8x1/4xol+FX3NYs5a+CBKt2uhZnQMK5QvXfAot7yAncNwenOVsIrfRM
-         E+gob6I+0dAcBgL+ZpmniFSL64VvO0BGpo5hWbcNgIDYAHbJgRtaFchVsFq6tzxQNBGe
-         nsG07IHYoJWP/HPbgLSAKYXabPNdG09AbUkN1EYJ9KHBvhTOF/3QtBwrCvyi6KQ61oZE
-         aUvg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786780571; x=1787385371; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oS2jgexovXKZsveAUZFioS88sWSaj+0/57ed+61vT5U=;
-        b=geFy/E2S0UBXaAhzhc2FqD4EUb3FhBC3nzUHKKX8bXcmtv2R8X3CxIK9sAGUeNAvoM
-         hLXj1Nez9+ZBQXl6+Llj0sSkPwksRkBOc25Tnnrr41QbDug2ti8HbtUM8XIQazXgG7yW
-         y+ktsf2k89srUNo9Ydj6G9vQZhQOaCoowoPTNgvW2aiD5rfPNtRQUsD4gpCU7WYlMN79
-         QFwFkqG5gtY/oV+C/5ISKMZNkvNZyWwqWuXud2X9haXbC2OI2B6n6wJzEkRuvo9Mhj5y
-         7Bgb92I86r6Xa+1kuVttoaVk7A2A8m+2Kb3ceNjV4kczFwTqot4UyPvUhAbPe8pZxa2s
-         f//w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786780571; x=1787385371;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=oS2jgexovXKZsveAUZFioS88sWSaj+0/57ed+61vT5U=;
-        b=ctDPey5jksGraKrOeMkaP8eABOR0MMS7Lx3SoqwCQBK877LFl0D8yIjlv8TG3GLZGs
-         /gxP9tfd+voO7oc2YvmpGnAenOVMdQkFQ3alCpKTPHnCDzSsT/r76qu3QuzwMI6DLkfv
-         zMaWN2SYP4Ab7d4m40Xgghlj9TwAs0UWI92o6l5smQbEj/qRZywgfbe87GkXEuJeM3IM
-         WcSouyXJiHr3vXRa3III8FalSasV5bYs/ZYXRZuQXIjzRcSqBQayDpvPAdKLs0IMiMZx
-         ePg/vATcERTznHi0px/K6SP1C7u0axw4VpydMZNs7jb950d0vpghuySD3KJWi78Vyouv
-         alJQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpzCWxXMHSoCSPnwMb8VPODt2bu7e8UrjYXl8l1uYUDvgSjWcoUQeWCm+/aG27/2yMz2Ss=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzm2SX0EMj8Z+j0JOhhbYlc+Kfx2NegAozrd2tKp93IBbYkuQV/
-	PzNipd4eGjVd/ncxtJele/9D5ocILBMhcB9U9V6rohjYr7onreKQrpN6b2NGu3d6NNxcYYPatfE
-	zMhF2BSzHzKn07Y+nO08mTT2bqiruwfJIqB5NvxHnI5BP8lbyFJM5LqYBhsqgUE/V9mEGNA6oON
-	lIwd8tw50E0zfvVqGfdTwWpMKC/pHp
-X-Gm-Gg: AR+sD11Sz8Zy4K+h+130U16Y16lo5Zisny7QNVNV/rXq0kgR0UPB/4SIH2TGotsvRyc
-	muGq++EgNyssY0kGDRYY0ZrpI0QftwCx166hEcBFtJFSDqbd9M1Pqta6Q5B6k/cP+ICjAhfHVps
-	FBDfbXeLbEwab5gADEGOZYLsYFo3GGvtGDdeKhGrTYPGbEvb0Dd2eDpERRqZnOR7dGE9c0P1Ags
-	kNnV4kmJzX8z3fE2ipxCZA+9gymd4CM89WKvP3nQn18qE96v20PtY5gQAw=
-X-Received: by 2002:a05:6000:985:b0:47f:f3fe:1ebf with SMTP id ffacd0b85a97d-48160760ce6mr16878669f8f.20.1786780571039;
-        Sat, 15 Aug 2026 00:56:11 -0700 (PDT)
-X-Received: by 2002:a05:6000:985:b0:47f:f3fe:1ebf with SMTP id
- ffacd0b85a97d-48160760ce6mr16878626f8f.20.1786780570616; Sat, 15 Aug 2026
- 00:56:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DL732SVg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786785470; x=1818321470;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=svRArkOXWyF/IfmglPw4+QW++psuxkU5D4yBGbQ9Q3o=;
+  b=DL732SVgATsg5dkqLZL/Y4RyqenJcniYWs2AKn0SaosrZZWgerl7/PWQ
+   /vBVVoCKkMv3yz4Esov5jBikvIBPnmnjHzREepVrqjeOlzp7UcsapImAy
+   1mDgMzv6SNA/imf/musrsLX7q+ir4QLuHoec3/Q/OoQtviRcOaCxhSX/8
+   ZvxXop8sf5IAror6yYSRuFvltyRln8fijSk3/ZLcmozN2nUhJzeuMSgPV
+   fJAgIpFNzQ9vsMNwvmY1pt5puH0RnrzJghXHbJ3KB8OI7mQ87iB9g2jC+
+   ispwmTI5xWjVD/Fi7LRuPt7ngRLh5fU6dLcgp8vdfJS9v9JPmVtoQP50y
+   A==;
+X-CSE-ConnectionGUID: +pyO59XuQMqiyex4RzSbWA==
+X-CSE-MsgGUID: d0olni8+R+61++CsyBTn0w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11875"; a="91018978"
+X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
+   d="scan'208";a="91018978"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2026 02:17:49 -0700
+X-CSE-ConnectionGUID: wOdvqNPFStKVoyoG04Hffw==
+X-CSE-MsgGUID: ZYM05GKERBKoTMVQsmcX2A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
+   d="scan'208";a="261794215"
+Received: from unknown (HELO [10.238.208.98]) ([10.238.208.98])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2026 02:17:44 -0700
+Message-ID: <93f122d3-38de-40f5-b655-2389ac393d21@intel.com>
+Date: Sat, 15 Aug 2026 17:17:41 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260812213206.1564354-1-seanjc@google.com> <2c501584d34eea17016d39c9a5f78ca3d60861b4.camel@infradead.org>
-In-Reply-To: <2c501584d34eea17016d39c9a5f78ca3d60861b4.camel@infradead.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Sat, 15 Aug 2026 09:55:58 +0200
-X-Gm-Features: AcwNN1XX9MMOhRVIngXaFGbeTok_aF-DF_lHqqKCoRseS6Pn6J0-kAtMlyPOwLY
-Message-ID: <CABgObfanoHLfdfNshuLCHkWgtsP5Km9G5WsdwfGBcLsJ_LKD8A@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM: x86 pull requests for 7.3
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Sean Christopherson <seanjc@google.com>, kvm <kvm@vger.kernel.org>, 
-	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 03/22] KVM: selftests: Initialize the TDX VM
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "Aktas, Erdem" <erdemaktas@google.com>, "shuah@kernel.org"
+ <shuah@kernel.org>, "dave.hansen@linux.intel.com"
+ <dave.hansen@linux.intel.com>, "afranji@google.com" <afranji@google.com>,
+ "kas@kernel.org" <kas@kernel.org>,
+ "Chatre, Reinette" <reinette.chatre@intel.com>,
+ "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "seanjc@google.com" <seanjc@google.com>,
+ "ackerleytng@google.com" <ackerleytng@google.com>,
+ "pratikrajesh.sampat@amd.com" <pratikrajesh.sampat@amd.com>,
+ "oupton@kernel.org" <oupton@kernel.org>,
+ "wyihan@google.com" <wyihan@google.com>, "sagis@google.com"
+ <sagis@google.com>, "Wang, Roger" <runanwang@google.com>,
+ "Gao, Chao" <chao.gao@intel.com>,
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+ "ajones@ventanamicro.com" <ajones@ventanamicro.com>,
+ "Qiang, Chenyi" <chenyi.qiang@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "jmcrey@google.com" <jmcrey@google.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
+ <20260722-tdx-selftests-v14-3-15ad654a50db@google.com>
+ <c8b7a800-58ed-4ef7-91bd-31da77763717@intel.com>
+ <52fa4033cd3ccc4caf0bfd46fccca0bc8aac0dfa.camel@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <52fa4033cd3ccc4caf0bfd46fccca0bc8aac0dfa.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Il ven 14 ago 2026, 21:25 David Woodhouse <dwmw2@infradead.org> ha scritto:
->
-> This was intended as the safe stable bugfix part, split out from all
-> the RCU and rwlock RT fun that can come later:
->
-> https://lore.kernel.org/all/20260811094829.98794-1-dwmw2@infradead.org/
+On 8/14/2026 7:41 AM, Edgecombe, Rick P wrote:
+> On Thu, 2026-07-23 at 16:44 +0800, Xiaoyao Li wrote:
+>>> +	init_vm->attributes = attributes;
+>>
+>> Besides CPUID, it only allows attributes to be configure but leave XFAM
+>> as 0. I think the changelog needs to explain why we need to configure
+>> attributes.
+>>
+>> The rest of the patch looks good to me.
+> 
+> How about directly setting xfam to zero for clarity?
 
-Ok, I will take a look.
-
-Paolo
-
->
-
+Agreed. It's simple.
