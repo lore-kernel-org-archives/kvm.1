@@ -1,107 +1,183 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E642282F17
-	for <kvm@vger.kernel.org>; Sat, 15 Aug 2026 13:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC023B813C;
+	Sat, 15 Aug 2026 13:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786799266; cv=none; b=tbrUet4Sim1yebFhop9HfObgZJ97ey45duYq3mBhGTbv0thggeTTxOvNoYZdRlDiQXAwcVrhc4Qec9Ob8S/uuP71brSRCxl7HjqtRU8nsLWgymwNy1/JBJXI9KqVDRN/r/MiSTu8A5/YB/zg0gtqsfuMfVSBd2/9JuzY5R8VJPU=
+	t=1786800541; cv=none; b=nb3vXmDY/VyWxIhjYfyzKD0CWgpEf94Y4gk4nQsvEG5/tlqBOhx5ImEapIkArvZTbPdECWgoOxYPbmjPasF/GZEkRdyHLxjafAuNw8Of8FAn8rLBPHwSrRU7pgsU5a2sJko84nNrySMVBhvptuXDNjGKQcCAY95wx7q4UiGMbI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786799266; c=relaxed/simple;
-	bh=0jndbey5Pvjf3v9MX03JkuXQsBTNP/XZ6T3cuUpF9wc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RiB6an9fHqXpllM2RnaiPUXMqzGBoNG0xPRcJDVel+MKBguBFsbHPHnl/L9xPzzic9bDGnCCVQinCNtDXLd9MSLn4gEU44dGO7Ac8jLLNkSedJI9GQuQZQ3WvQPDXu35a5ue0ol5y5XZ1YvnFJ+l2rZX9GoouFakd4ANDcoUkHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V3Ei5dp4; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786800541; c=relaxed/simple;
+	bh=THvHm6nPWyf6op2qdpKJnFAD6ZpAhw95hd9KdLocYS4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=grOgP5cJ6XmykGVzvlZ7hAIKogIrRnrA/1SNO0+dWY4f+TBO3u4aRfOeFJjQZblFYNrZN/KTVJenkD+nkOHkUJv96cz0APshFYchhuOCfRXzU5i/4ZkhKcQk2WPoagZlJC7snq7SJ3CoQOXA8jhK9NOQQGyN37gfdd7oM4bwz6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lYHEHVOI; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V3Ei5dp4"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4956242332dso19940795e9.2
-        for <kvm@vger.kernel.org>; Sat, 15 Aug 2026 06:07:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786799262; x=1787404062; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2daFPoDS4/53WEkckbjnmN8AXIA4cD/WTxo7tO7xRQI=;
-        b=V3Ei5dp4UCIdByixQtEwEXOY2t2tcdfLjXiWv36qTY8Gj0p2MEM+E50ookIpB+AJC0
-         E5HevSVLjjHehj02hG6aKvHTx4tIXZytAJwI/SNeaZkFD60r+7YNQnXrhAR9rLN9XFgl
-         OqKG0IxJQZURxWp3a9xplLXkiCZsABGPR0uTnJJWJ0YvxqxJJR3t2E3xjx/UGDrZC0l/
-         RpSruO4E8n5O6e3HIrSTHiAU6sve/yOxEjH84FuMFMGqR3uS0ss12yIzIN2WigsNhTpr
-         reU7HCld2o8EToQswS52Br4lZbjnH0SZq2BNtl3DorODbngo0nNjvfHRdx0uKqaYS2dC
-         By1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786799262; x=1787404062;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2daFPoDS4/53WEkckbjnmN8AXIA4cD/WTxo7tO7xRQI=;
-        b=hin1G4fGHiF1cUGeF6mbP3sSNmgzDfZEQpk44x0R2B+3rbHZLnuvz50Qd0sPc3pgCb
-         /VZCc9zNhXSg/8HQPVg0NWzPq7NSPzTLdMjYDwUIyFl8cLhLMCMFy3o5TcSnW8J2cMih
-         zHtrjDU8awcaH0bumx0b3p48vDn/uENYXg05DpgcAnam+HVv69d8gm5b3pswUvaFxTQ5
-         PL1ak+olJLxWoBN6tk2XTinMi8PQ1O1ep592QDr4u4FQCZr7IrxloSpcbJKhyna0d7fG
-         scMNOxcrGI7ENKStgx8PQLjE1kI0EFsAtgPY7Kqpm518LL/hItZPdmnfXBi/8hxRGcES
-         gr+Q==
-X-Forwarded-Encrypted: i=1; AHgh+RqKs4/2CbRiwKdchCXV8dKtDM2cuNrUZNbJENI47tNHcAD9iBwqr21G7Tou92Gut+sdTcM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy195MiQ11/hQbVvjp1BzJLO3XhfXfqh6BP0P4P3rRR8HAHk+mn
-	dXIB7Xyr5lnPGZi9KhSGMKXAKpQMqSznYbku5Z6eCM2gf7J+CWm45v2q
-X-Gm-Gg: AR+sD118/c3ltc8/dvvZZ7Xm0DGTKLe6xXb6HKme2pIxiRi6AthQNuCPErBGvNJU2Q/
-	tinBbsvomUDJhSm0HqWLZcVJTTI2+08BI5/9823oK9X/vtX6ItNQgSihObeur1+NsaGQCozFI5g
-	9y7CvovDlegoUe5XeAmzqQaznxuxoBsclwQJN5Q1UDn/S5uV2FP+eNGcUVJZ8UReC9UkHRXHUhn
-	YFgzCwUAL6+b6qk6tjPPc8OoB87LfgvNMbCUn+KgaIXMe1HAfBtYu75KcFo0N//pBkr44yv8qZW
-	XOwuoKERxgHCglZh20kOz4fLbWhrVPP1IsMKT7GpX8P4FdkWdUkWaUBpnl5m0sYBb62PAuGQgIS
-	9sH69VTXLYuN80/ip2cNGMkzcnkZPpAhzSMFpRzQsIADny+lsFDuCGsriuVsCF16afoyLcrFT95
-	zJ7juZLYWA4lNm99ma8WrWQW+cV9Kjw9loeDlwIdNJk5UHh9ykne1pHs4+gYDIIWpH/APYjHyV7
-	bHG/qAQR4eHjmALGEknhiKa3HFWJM7RXe9GC9eESRIHkGCNAxoUHJ5LNr1LIxaXBiqKxKJ0OP+z
-	BsUXya1o5fgD2c2e9cvVCFrTHcUhY9SFxiDwyBF1AzAKVLK8r9eEwhOp8d7VCc39qw==
-X-Received: by 2002:a05:600c:3b8f:b0:495:4491:b8c2 with SMTP id 5b1f17b1804b1-499906ce446mr55403245e9.3.1786799261853;
-        Sat, 15 Aug 2026 06:07:41 -0700 (PDT)
-Received: from unknown748F3CBA5068 (dynamic-2a02-3100-aecb-d601-fc34-eb31-14a1-3704.310.pool.telefonica.de. [2a02:3100:aecb:d601:fc34:eb31:14a1:3704])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49988b1d33asm146700145e9.10.2026.08.15.06.07.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Aug 2026 06:07:40 -0700 (PDT)
-Date: Sat, 15 Aug 2026 15:07:38 +0200
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oupton@kernel.org>, 
-	Sascha Bischoff <sascha.bischoff@arm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Jonathan Cameron <jic23@kernel.org>, Timothy Hayes <timothy.hayes@arm.com>, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Documentation: KVM: Fix the GICv5 KVM_IRQ_LINE PPI range
-Message-ID: <aoBhU6XIarXxeQYB@gmail.com>
-References: <20260815092537.31737-1-kmehltretter@gmail.com>
- <86wltrzm5n.wl-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lYHEHVOI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786800538; x=1818336538;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=THvHm6nPWyf6op2qdpKJnFAD6ZpAhw95hd9KdLocYS4=;
+  b=lYHEHVOI3aVGzktdPbNDW4nFsIH1oqfCVMLAvQtRSqxGbuYsaQ0fscfH
+   kw1uBJILJd7azmJZZTiPtthBU84YJM8SXJxAaT8O9iao1EXDkWYNl8/Dz
+   JD5StyT7kikiboGYjkm/UikcP8/XHYLq5VedQtaWwTtOeg1ESbNhDNwMP
+   A66r8x/NL9NtNNhAZUGZMChCxiZvuQ5qwr+TJt9e+u/Oup/VqQcH4lKS5
+   8vIW42MPSDHStjYVpQv5yuG03+LM3D6kyYAa60017PCKnma6El0HvoRnQ
+   rf8BumQoFGmNM821CqI6jYFFvRTlscSYMqs5XENaZEWPO3EHO2ZFHaoYK
+   A==;
+X-CSE-ConnectionGUID: LfqfCo6FSNGd5mCw1dYqdQ==
+X-CSE-MsgGUID: zHa9mcmVR+KH6LEiF+0IAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11876"; a="87479581"
+X-IronPort-AV: E=Sophos;i="6.25,225,1779174000"; 
+   d="scan'208";a="87479581"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2026 06:28:57 -0700
+X-CSE-ConnectionGUID: fsbUrLpkT7eUTEWuaedeXw==
+X-CSE-MsgGUID: uH/+Gt5+QtCVKPsDcFxFXA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,225,1779174000"; 
+   d="scan'208";a="266471729"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2026 06:28:55 -0700
+Message-ID: <1dcbf1b2-dc89-4624-b98e-d34f40558cfb@intel.com>
+Date: Sat, 15 Aug 2026 21:28:53 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <86wltrzm5n.wl-maz@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/4] KVM: TDX: Enable Bus Lock VM exit
+To: Sean Christopherson <seanjc@google.com>
+Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "kas@kernel.org" <kas@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "nik.borisov@suse.com" <nik.borisov@suse.com>
+References: <20260812080229.2481439-1-xiaoyao.li@intel.com>
+ <20260812080229.2481439-5-xiaoyao.li@intel.com>
+ <868c0d3c792d789347c767031612977c31cc227f.camel@intel.com>
+ <1cf47118-2a19-44d5-ab74-b4c7ffa8890c@intel.com>
+ <an3YFiDbjRs3PUwn@google.com>
+ <77567574-d26c-4d2c-b5ce-5da28a7178d6@intel.com>
+ <an84cenJjf7EqhVM@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <an84cenJjf7EqhVM@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sat, Aug 15, 2026 at 11:57:24AM +0100, Marc Zyngier wrote:
-> > +	       in-kernel GICv5: PPI, irq_id between 0 and 63 (incl.), and
+On 8/14/2026 11:46 PM, Sean Christopherson wrote:
+> On Fri, Aug 14, 2026, Xiaoyao Li wrote:
+>> On 8/13/2026 10:43 PM, Sean Christopherson wrote:
+>>> On Thu, Aug 13, 2026, Xiaoyao Li wrote:
+>>>> On 8/13/2026 6:58 AM, Edgecombe, Rick P wrote:
 > 
-> No. Please understand the difference between *implementation* and
-> *architecture*.
-
-Got it. That distinction could perhaps be clearer in api.rst, but 0-127
-is intentional, not a missed doc update.
-
-> > +      Userspace must query this attribute after initializing the VGIC with
-> > +      KVM_DEV_ARM_VGIC_CTRL_INIT.
-> > +
+> ...
 > 
-> Must? Why? Userspace can perfectly live with ever querying this.
+>>> The more I look at this, the more I'm against shoving garbage into vt->exit_reasons.
+>>> With tdx_is_exit_reason_valid(), this is trivially easy to handle, *and* explicitly
+>>> captures the logic instead of subtly rerouting KVM away from meaningful handling.
+>>
+>> tdx_is_exit_reason_valid() doesn't work unless we update the vp_enter_ret to
+>> one that isn't one of the status code with valid Exit Reason. See below.
+> 
+> Correct.
+> 
+>> About the idea, isn't the purpose of setting the Exit Reason to a synthesized
+>> one is to avoid the undefined Exit Reason causing false-positives when it
+>> happens to match one of the existing ones?
+> 
+> Yes.  The nuance is that I'm against clobbering the *full* exit reason.  I am
+> not against setting exit_reason.basic to something like EXIT_REASON_INVALID_STATE.
 
-Hah, yes. I meant "if you query this, you must do so after init
-to get anything other than zero"
+I'm not sure why you are not OK with setting the bit[31:16] to 0 ...
 
-Please consider this patch withdrawn.
+>> If we are going to use tdx_is_exit_reason_valid(), does it mean we can drop
+>> the synthesized Exit Reason entirely and check tdx_is_exit_reason_valid()
+>> everywhere when KVM is going to consume Exit Reason?  e.g., for this initial
+>> bus_lock_detected bit handling here. we can avoid it by below. (Which makes
+>> it different for VMX, and somehow prevents consolidating the code between VMX
+>> and TDX around the exit handlers that we plan to do after series)
+> 
+> I'd rather not, as it would make checking for tdx_is_exit_reason_valid() much
+> more load bearing.  I.e. I want to minimize the number of flows that *need* to
+> check tdx_is_exit_reason_valid(), and an easy way to help on that front is to
+> ensure that exit_reason[31:16] is accurate with respect to what to the last
+> (attempted) entry to the guest.
 
-Thanks,
-Karl
+... and why bit[31:16] need to be preserved (as much as possible) to 
+what to the last (attempted) entry to the guest.
+
+Here KVM is emulating an EXIT without really Entering the guest, and the 
+emulated EXIT is different to the previous handled one. If KVM preserves 
+the bit[31:16] of the previous EXIT, wouldn't it be likely to cause the 
+bit being counted twice? I think KVM needs to clear the bit[31:16] 
+unless the specific EMULATED EXIT requires them to be preserved.
+
+>> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+>> index b6c30c4c6b84..52360313dd82 100644
+>> --- a/arch/x86/kvm/vmx/tdx.c
+>> +++ b/arch/x86/kvm/vmx/tdx.c
+>> @@ -2169,7 +2169,8 @@ int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t
+>> fastpath)
+>>          int ret = __tdx_handle_exit(vcpu, fastpath);
+>>
+>>          /* Exit to user space when bus lock was detected */
+>> -       if (vmx_get_exit_reason(vcpu).bus_lock_detected) {
+>> +       if (tdx_is_exit_reason_valid(vcpu) &&
+>> +           vmx_get_exit_reason(vcpu).bus_lock_detected) {
+>>                  if (ret > 0) {
+>>                          vcpu->run->exit_reason = KVM_EXIT_X86_BUS_LOCK;
+>>                          ret = 0;
+>>
+>>> diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
+>>> index 95d89d809c19..a1f5b5dc1fa3 100644
+>>> --- a/arch/x86/kvm/vmx/main.c
+>>> +++ b/arch/x86/kvm/vmx/main.c
+>>> @@ -157,6 +157,14 @@ static fastpath_t vt_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+>>>           return vmx_vcpu_run(vcpu, run_flags);
+>>>    }
+>>> +static void vt_handle_exit_irqoff(struct kvm_vcpu *vcpu)
+>>> +{
+>>> +       if (is_td_vcpu(vcpu) && !tdx_is_exit_reason_valid(vcpu))
+>>
+>> No, this doesn't work.
+>>
+>> The previous vp_enter_ret was TDX_SUCCESS with
+>> EXIT_REASON_EXTERNAL_INTERRUPT. KVM handled it and is going to re-enter the
+>> TD. But wait_for_sept_zap is set by other vCPU thread, KVM decides to return
+>> directly but the vp_entere_ret isn't updated.
+> 
+> Oh, right, it really is the same situation as emulation_required, sort of.  The
+> key difference is that wait_for_sept_zap is per-VM, not per-VM, and so if it's
+> *cleared* between tdx_vcpu_run() and vt_handle_exit_irqoff(), then KVM would get
+> a false negative and again synthesize a duplicate IRQ.
+> 
+> Actually, can't we just do this?  Logically it's sound: if the exit was handled,
+> then there's nothing to be done.
+
+yeah. This looks good to me.
+
+> diff --git arch/x86/kvm/x86.c arch/x86/kvm/x86.c
+> index 0626e835e9eb..6cace57e45fd 100644
+> --- arch/x86/kvm/x86.c
+> +++ arch/x86/kvm/x86.c
+> @@ -8374,7 +8374,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+>          if (vcpu->arch.xfd_no_write_intercept)
+>                  fpu_sync_guest_vmexit_xfd_state();
+>   
+> -       kvm_x86_call(handle_exit_irqoff)(vcpu);
+> +       if (exit_fastpath != EXIT_FASTPATH_EXIT_HANDLED)
+> +               kvm_x86_call(handle_exit_irqoff)(vcpu);
+>   
+>          if (vcpu->arch.guest_fpu.xfd_err)
+>                  wrmsrq(MSR_IA32_XFD_ERR, 0);
+
