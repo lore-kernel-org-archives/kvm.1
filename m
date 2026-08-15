@@ -1,253 +1,179 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD333BBFDB
-	for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 22:45:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AA615C14F;
+	Sat, 15 Aug 2026 00:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786747514; cv=none; b=Ox1Eu9sPHxdMnCKKL6huBVoPEN/b7R9G0sfbTDOAvAQ6qdPgp3JUhMWDZf/x0svehj4gIcT7/1rOTo2oMRFbK7aYHqXjoBHJWVqxiHjF0RcVu7wbS3KUSf2p5SahZO69PVJp+2TDvFRec1fJ1cA9vRlMSFLG1DlEeQYA8u/r5Sc=
+	t=1786754829; cv=none; b=jnC+WP6Tn4To2tGRvZ/QqyYylF0mJm3gJO0UaAuZfgT9SlTVq2dWJqrhDMdIO2hc7ZQBtICX5U9SmjbSqaf8365N5WRlKvfV+pV16djHT5AHlhUVve2ovnJ9AhG3nNJ1eWLWbIdaloDyCO0fTNWAmhZATD/ECG1eDNumkGRkh8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786747514; c=relaxed/simple;
-	bh=nw5IvSEB5wpVmf4cVUFFz5inbV7Os9oqLOB+NCiN6UI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=BDrG7E5ijWNuTRbwJkuu6KaUY+1sgq0HRHz9ipWxohF3AJqqSM/9+8goo1WQ48OYOeLeSLaziNSSN8/Ka5sy7Sn9bvYS35ADP6Vrcn92RR/F6EP/LaDRYZ8iBGIV0J78Qb7NH+83OVqg32CxjdABb0az4FvVGEbKyUobWnpDkWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W0neo5jw; arc=none smtp.client-ip=209.85.214.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786754829; c=relaxed/simple;
+	bh=NObMa3pZfRNWZi7qClKgPXqIqjV99yfig0YmhAPyyY8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bMrAylW8GE6j8jf77C6qrmjGt9e93l3RIr2xu8jup0lKcmzlSxorYMPysBnm5XxRti5uxFvrMQZlK+wAzNprj8CKycfhdpQKdZhiZZb5ABsHNGMT6G+b6o0hWn+bsX+x+jTcAUuZwNygjay9iV1ak9JkadafYsL6Nzpyj+087QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XUGCy5cY; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W0neo5jw"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2d54187d8b0so4582695ad.0
-        for <kvm@vger.kernel.org>; Fri, 14 Aug 2026 15:45:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786747511; x=1787352311; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pliuRHo29I6egc2gNeBr49sOpidrbP1eYnD6HzsJLuI=;
-        b=W0neo5jwwkqe9ziJTHEULgNVqdfMlADm5E2plaubvJblEKQbXytpufhR1TqCQCLAoW
-         Y5VjLztceoTPYGqM4D8IfHK9CSfmDlVpmeXDeouYVgHC1PiXvb5rHgNi8E7vwEVKPHSm
-         c2Cd0qnIVZ4XRRK0l9hoA8zyw8weIIlhEUpwDjp6gZBofeK5aZAMDeQ5nQC+DWTTwrrN
-         XHARBvSaG7PbRpvhT+0XV+OEjjXZAO7iO8AIuzCMiT57I2UJsrUYpXD1c1tESbP7FARB
-         /s97i3M8sCFLz8JGeGkdMLSCOfdK+8rJQLFyhAlc8WNIQ1ubYo9fvfx7VcZdNXwszapt
-         5K7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786747511; x=1787352311;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=pliuRHo29I6egc2gNeBr49sOpidrbP1eYnD6HzsJLuI=;
-        b=VVlSTpKOInpsXzh6sjgmJPLCBNpeskXQ1AmH/c6CD1czivgTXZWRMxJCmtJoqKPjPG
-         jGgxfeJyFxUyE2ZDiXwEAcy5mb0tmeWoxfi6W+UilA9EiET6idUMHfu1cYW2bHUkCXcc
-         KYL4CyezLmRlM0n9LWi2BxnAt4bcA4Zd0f2wjOW18uUQhVF9yO/AlvYa643e/onBPB/d
-         p5TXiO5eRiVrHtpIcQWlq4a2wBe91OtJABXPxB/Mzo9L/Lgi4uk8tF7/Wdb9BeXk9erP
-         66TPtwqQBaXj1ALNhZPwlDbVBMlDHgP1R6RC9tUladZ1b7llRMZXZ2hGrpB1gf4azxR3
-         Ijbg==
-X-Forwarded-Encrypted: i=1; AHgh+RrhlItarIgU4+Dg7jSUVzg/XxkwtfbhS0tVvznvfEiT9aBtxi7Yl8bLUPt7nRd94kPVsK0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwIVsZXN0qfXeQDRIpoiUoBdwKkSXik1z/Gj9tTwE9+3043KzC
-	+IPIOk/GjfxqNNLa6E2sxaYNRVWyAOuV5goCX946kDmv9xwt5UbAeR3L/zgD4G6ZzZ7XENmjDA7
-	vrv9kcw==
-X-Received: from plhc1.prod.google.com ([2002:a17:903:2341:b0:2d1:1cf0:2039])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:18b:b0:2cf:ccc2:6088
- with SMTP id d9443c01a7336-2d3b080be2dmr95854275ad.4.1786747510886; Fri, 14
- Aug 2026 15:45:10 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 14 Aug 2026 15:45:09 -0700
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XUGCy5cY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786754827; x=1818290827;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NObMa3pZfRNWZi7qClKgPXqIqjV99yfig0YmhAPyyY8=;
+  b=XUGCy5cY4e6wSKJsXAoYwGKq1VUsONEFXWC51fRI/tWZ+kDEdr0+qYr6
+   4Grnw3jn4X3pWCG8BY0HUqNems20o0L6V7h7njJDKCoSx3rkVlpD3A+ji
+   h+an8q24w+v7M/aNbATDlNisavKA6lM0ILnDuJ4Ry5IhLfMG7VpTNdj3G
+   G/Qz4XjrDPCUg7yK8B7xUdhGKbxsauWXlV92WrpNTD2pnkSROHQ1RBU+j
+   mfL1dMoXV424geE2fDt690KaHp1bk887QOccUJhfKGoDDBxRRPsZ4QgCe
+   rHDJQxK5+PRDT4rs6IToXwC7SEKia5msaK7GDGAYXKUD5m9J/JeSoZJDV
+   w==;
+X-CSE-ConnectionGUID: afrvlbGESwaxWiyRI7a0kw==
+X-CSE-MsgGUID: qrp/f6a1Rx26OizMsaxjjQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11875"; a="98487996"
+X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
+   d="scan'208";a="98487996"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 17:47:06 -0700
+X-CSE-ConnectionGUID: 8db7sIexQ1KwqJAkCbD22A==
+X-CSE-MsgGUID: jO6fncqJTxmuWNzokzeYnQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
+   d="scan'208";a="263030085"
+Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 14 Aug 2026 17:47:04 -0700
+Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wv2YA-00000000afm-1Qcd;
+	Sat, 15 Aug 2026 00:47:02 +0000
+Date: Sat, 15 Aug 2026 08:46:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org, kvm-ppc@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Vaibhav Jain <vaibhav@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] KVM: PPC: Book3S HV nestedv2: Don't drop pending
+ doorbell across L2 entry
+Message-ID: <202608150815.zhSReMmH-lkp@intel.com>
+References: <20260803034426.44249-1-vaibhav@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
-Message-ID: <20260814224509.2342760-1-seanjc@google.com>
-Subject: [PATCH] KVM: VMX: Explicitly track TDX VMs' root level instead of
- guessing it from CPUID
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, kvm@vger.kernel.org, x86@kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Kai Huang <kai.huang@intel.com>, Yan Zhao <yan.y.zhao@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260803034426.44249-1-vaibhav@linux.ibm.com>
 
-Explicitly track the root level for TDX VMs instead of trying to infer the
-depth of the paging tree based on an individual vCPU's CPUID information.
-Applying KVM's existing logic to select the root level to TDX is flawed as
-nothing *requires* userspace to fill in the correct guest.MAXPHYADDR for a
-vCPU's CPUID.  Guessing at the correct root level is also ridiculous given
-that userspace has already told KVM the root level during TD initialization.
+Hi Vaibhav,
 
-Relying on userspace to set the expected/correct CPUID lets a misbehaving
-userspace trip the KVM_BUG_ON() in tdx_load_mmu_pgd() by configuring guest
-CPUID to use an "incorrect" guest.MAXPHYADDR.
+kernel test robot noticed the following build errors:
 
-Keep gfn_direct_bits even though it can be trivially derived from
-mirror_root_level as saving a whole eight bytes per VM is meaningless, and
-the value is queried fairly often and in hot paths.
+[auto build test ERROR on powerpc/topic/ppc-kvm]
+[also build test ERROR on kvm/queue kvm/next mst-vhost/linux-next linus/master v7.2-rc7 next-20260813]
+[cannot apply to kvm/linux-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Kai Huang <kai.huang@intel.com>
-Cc: Yan Zhao <yan.y.zhao@intel.com>
-Fixes: 20d913729c11 ("KVM: x86/mmu: Taking guest pa into consideration when calculate tdp level")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
+url:    https://github.com/intel-lab-lkp/linux/commits/Vaibhav-Jain/KVM-PPC-Book3S-HV-nestedv2-Don-t-drop-pending-doorbell-across-L2-entry/20260815-070415
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
+patch link:    https://lore.kernel.org/r/20260803034426.44249-1-vaibhav%40linux.ibm.com
+patch subject: [PATCH] KVM: PPC: Book3S HV nestedv2: Don't drop pending doorbell across L2 entry
+config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20260815/202608150815.zhSReMmH-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 16.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260815/202608150815.zhSReMmH-lkp@intel.com/reproduce)
 
-Compile-tested only, and found by inspection, i.e. I haven't proven that this
-works, or that there's actually a bug.  But I'm pretty sure there's a bug.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608150815.zhSReMmH-lkp@intel.com/
 
-Came across this when looking at our out-of-tree intrahost migration code, and
-wanted to assert that could be at most one mirror root per TDX VM.
+All errors (new ones prefixed by >>):
 
- arch/x86/include/asm/kvm_host.h |  1 +
- arch/x86/kvm/cpuid.c            | 14 --------------
- arch/x86/kvm/cpuid.h            |  1 -
- arch/x86/kvm/mmu.h              |  9 +++++++++
- arch/x86/kvm/mmu/mmu.c          | 16 ++++++++--------
- arch/x86/kvm/vmx/tdx.c          | 12 +++---------
- 6 files changed, 21 insertions(+), 32 deletions(-)
+   arch/powerpc/kvm/book3s_hv.c: In function 'kvmhv_vcpu_entry_nestedv2':
+>> arch/powerpc/kvm/book3s_hv.c:4304:25: error: 'cpu' undeclared (first use in this function)
+    4304 |                         cpu->arch.doorbell_request = 0;
+         |                         ^~~
+   arch/powerpc/kvm/book3s_hv.c:4304:25: note: each undeclared identifier is reported only once for each function it appears in
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 283847619ff8..b2a74c69cc4a 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1406,6 +1406,7 @@ struct kvm_arch {
- 	struct kvm_mmu_memory_cache split_desc_cache;
- 
- 	gfn_t gfn_direct_bits;
-+	int mirror_root_level;
- 
- 	/*
- 	 * Size of the CPU's dirty log buffer, i.e. VMX's PML buffer. A Zero
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index ddb022cb203a..34c609a60eef 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -483,20 +483,6 @@ int cpuid_query_maxphyaddr(struct kvm_vcpu *vcpu)
- 	return 36;
- }
- 
--int cpuid_query_maxguestphyaddr(struct kvm_vcpu *vcpu)
--{
--	struct kvm_cpuid_entry2 *best;
--
--	best = kvm_find_cpuid_entry(vcpu, 0x80000000);
--	if (!best || best->eax < 0x80000008)
--		goto not_found;
--	best = kvm_find_cpuid_entry(vcpu, 0x80000008);
--	if (best)
--		return (best->eax >> 16) & 0xff;
--not_found:
--	return 0;
--}
--
- /*
-  * This "raw" version returns the reserved GPA bits without any adjustments for
-  * encryption technologies that usurp bits.  The raw mask should be used if and
-diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
-index 8d863f45585d..46bfe8699e67 100644
---- a/arch/x86/kvm/cpuid.h
-+++ b/arch/x86/kvm/cpuid.h
-@@ -68,7 +68,6 @@ void __init kvm_init_xstate_sizes(void);
- u32 xstate_required_size(u64 xstate_bv, bool compacted);
- 
- int cpuid_query_maxphyaddr(struct kvm_vcpu *vcpu);
--int cpuid_query_maxguestphyaddr(struct kvm_vcpu *vcpu);
- u64 kvm_vcpu_reserved_gpa_bits_raw(struct kvm_vcpu *vcpu);
- 
- static inline int cpuid_maxphyaddr(struct kvm_vcpu *vcpu)
-diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-index 2ae7f9ed4cf8..cc37e210787c 100644
---- a/arch/x86/kvm/mmu.h
-+++ b/arch/x86/kvm/mmu.h
-@@ -389,6 +389,15 @@ static inline gpa_t kvm_translate_gpa(struct kvm_vcpu *vcpu,
- 						     exception, pte_access);
- }
- 
-+static __always_inline void kvm_mmu_set_mirror_root_level(struct kvm *kvm,
-+							  int level)
-+{
-+	BUILD_BUG_ON(level != 4 && level != 5);
-+
-+	kvm->arch.mirror_root_level = level;
-+	kvm->arch.gfn_direct_bits = gpa_to_gfn(BIT_ULL(level == 4 ? 47 : 51));
-+}
-+
- static inline bool kvm_has_mirrored_tdp(const struct kvm *kvm)
- {
- 	return kvm->arch.vm_type == KVM_X86_TDX_VM;
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index c519e8e8d646..a51a852c1bec 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5928,19 +5928,19 @@ void __kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
- 
- static inline int kvm_mmu_get_tdp_level(struct kvm_vcpu *vcpu)
- {
--	int maxpa;
--
--	if (vcpu->kvm->arch.vm_type == KVM_X86_TDX_VM)
--		maxpa = cpuid_query_maxguestphyaddr(vcpu);
--	else
--		maxpa = cpuid_maxphyaddr(vcpu);
--
- 	/* tdp_root_level is architecture forced level, use it if nonzero */
- 	if (tdp_root_level)
- 		return tdp_root_level;
- 
-+	/*
-+	 * If the VM has mirror roots, then the root level is fixed as the gfn
-+	 * used to select between the normal and mirror root must be covered.
-+	 */
-+	if (vcpu->kvm->arch.mirror_root_level)
-+		return vcpu->kvm->arch.mirror_root_level;
-+
- 	/* Use 5-level TDP if and only if it's useful/necessary. */
--	if (max_tdp_level == 5 && maxpa <= 48)
-+	if (max_tdp_level == 5 && cpuid_maxphyaddr(vcpu) <= 48)
- 		return 4;
- 
- 	return max_tdp_level;
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index b272c20586a7..6d8e9befd9e6 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -56,9 +56,6 @@
- bool enable_tdx __ro_after_init;
- module_param_named(tdx, enable_tdx, bool, 0444);
- 
--#define TDX_SHARED_BIT_PWL_5 gpa_to_gfn(BIT_ULL(51))
--#define TDX_SHARED_BIT_PWL_4 gpa_to_gfn(BIT_ULL(47))
--
- static const struct tdx_sys_info *tdx_sysinfo;
- 
- void tdh_vp_rd_failed(struct vcpu_tdx *tdx, char *uclass, u32 field, u64 err)
-@@ -1609,10 +1606,7 @@ static int handle_tdvmcall(struct kvm_vcpu *vcpu)
- 
- void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int pgd_level)
- {
--	u64 shared_bit = (pgd_level == 5) ? TDX_SHARED_BIT_PWL_5 :
--			  TDX_SHARED_BIT_PWL_4;
--
--	if (KVM_BUG_ON(shared_bit != kvm_gfn_direct_bits(vcpu->kvm), vcpu->kvm))
-+	if (KVM_BUG_ON(pgd_level != vcpu->kvm->arch.mirror_root_level, vcpu->kvm))
- 		return;
- 
- 	td_vmcs_write64(to_tdx(vcpu), SHARED_EPT_POINTER, root_hpa);
-@@ -2823,9 +2817,9 @@ static int tdx_td_init(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
- 	kvm_tdx->xfam = td_params->xfam;
- 
- 	if (td_params->config_flags & TDX_CONFIG_FLAGS_MAX_GPAW)
--		kvm->arch.gfn_direct_bits = TDX_SHARED_BIT_PWL_5;
-+		kvm_mmu_set_mirror_root_level(kvm, 5);
- 	else
--		kvm->arch.gfn_direct_bits = TDX_SHARED_BIT_PWL_4;
-+		kvm_mmu_set_mirror_root_level(kvm, 4);
- 
- 	kvm_tdx->state = TD_STATE_INITIALIZED;
- out:
 
-base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
--- 
-2.55.0.691.gc56d675ccc-goog
+vim +/cpu +4304 arch/powerpc/kvm/book3s_hv.c
 
+  4248	
+  4249	static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
+  4250					     unsigned long lpcr, u64 *tb)
+  4251	{
+  4252		struct kvmhv_nestedv2_io *io;
+  4253		unsigned long msr, i;
+  4254		int trap;
+  4255		long rc;
+  4256	
+  4257		io = &vcpu->arch.nestedv2_io;
+  4258	
+  4259		msr = mfmsr();
+  4260		kvmppc_msr_hard_disable_set_facilities(vcpu, msr);
+  4261		if (lazy_irq_pending())
+  4262			return 0;
+  4263	
+  4264		if (vcpu->arch.doorbell_request)
+  4265			kvmppc_set_dpdes(vcpu, 1);
+  4266	
+  4267		rc = kvmhv_nestedv2_flush_vcpu(vcpu, time_limit);
+  4268		if (rc < 0)
+  4269			return -EINVAL;
+  4270	
+  4271		kvmppc_gse_put_u64(io->vcpu_run_input, KVMPPC_GSID_LPCR, lpcr);
+  4272	
+  4273		accumulate_time(vcpu, &vcpu->arch.in_guest);
+  4274		rc = plpar_guest_run_vcpu(0, vcpu->kvm->arch.lpid, vcpu->vcpu_id,
+  4275					  &trap, &i);
+  4276	
+  4277		if (rc != H_SUCCESS) {
+  4278			pr_err("KVM Guest Run VCPU hcall failed\n");
+  4279			if (rc == H_INVALID_ELEMENT_ID)
+  4280				pr_err("KVM: Guest Run VCPU invalid element id at %ld\n", i);
+  4281			else if (rc == H_INVALID_ELEMENT_SIZE)
+  4282				pr_err("KVM: Guest Run VCPU invalid element size at %ld\n", i);
+  4283			else if (rc == H_INVALID_ELEMENT_VALUE)
+  4284				pr_err("KVM: Guest Run VCPU invalid element value at %ld\n", i);
+  4285			return -EINVAL;
+  4286		}
+  4287		accumulate_time(vcpu, &vcpu->arch.guest_exit);
+  4288	
+  4289		*tb = mftb();
+  4290		kvmppc_gsm_reset(io->vcpu_message);
+  4291		kvmppc_gsm_reset(io->vcore_message);
+  4292		kvmppc_gsbm_zero(&io->valids);
+  4293	
+  4294		rc = kvmhv_nestedv2_parse_output(vcpu);
+  4295		if (rc < 0)
+  4296			return -EINVAL;
+  4297	
+  4298		/* Check if privileged door bell was requested and handled */
+  4299		if (vcpu->arch.vcore->dpdes) {
+  4300			kvmhv_nestedv2_cached_reload(vcpu, KVMPPC_GSID_DPDES);
+  4301			if (vcpu->arch.vcore->dpdes)
+  4302				vcpu->arch.doorbell_request |= vcpu->arch.vcore->dpdes;
+  4303			else
+> 4304				cpu->arch.doorbell_request = 0;
+  4305		} else {
+  4306			vcpu->arch.doorbell_request = 0;
+  4307		}
+  4308	
+  4309		timer_rearm_host_dec(*tb);
+  4310	
+  4311		/* Record context switch and guest_run_time data */
+  4312		if (kvmhv_get_l2_counters_status())
+  4313			do_trace_nested_cs_time(vcpu);
+  4314	
+  4315		return trap;
+  4316	}
+  4317	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
