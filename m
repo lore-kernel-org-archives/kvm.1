@@ -1,137 +1,135 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE92344DAE
-	for <kvm@vger.kernel.org>; Sat, 15 Aug 2026 10:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC70C3264CB;
+	Sat, 15 Aug 2026 10:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786790878; cv=none; b=HappX3F3vqvJ6Vykd6/EzS7NMTlabTvm6lx9Jj+1POzZjOePbuyK/u5hZTRiS5WJ3vIY0VjeMjz2qIyxpyTKV+WXwSOLzeSh+vVbg79aNwUsW1YIj7qr+HQwY1A0zstTQ3Eh2r68ZYer/H7SeMCqM8bJewtLfDWV3fp7N29/aeM=
+	t=1786791449; cv=none; b=owzAZarTxMkRSdDFkvdOZ+iLAKqH6/OPHRtAzCRY0gqtgzlLEuU65+jlc/A71v8VZlLjxNDrr/ezfAtEPEQt512/uE+Ui0cZL6UhNcx28VQwrOz6SFQyt1BAEq/m6x9604gWDnGWY7kk0rhAkAQ2ocFuukYnzQ+07j7DUHw8QqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786790878; c=relaxed/simple;
-	bh=R6BkbsKdbaHGyXpefGsoTLw3B9uAplpLhs+InXr//KQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rFvX8Qw5m0rZhhQEjWC11S0FkcWaHg6NX9IODy0vY537HYT8sHBUiYuGTZ3srCPQaamuv+qjHax7g/iXDqsYDfIX3MsL63zcVzxPH4EclQrQrI6FS7U3iKIxzdjRN2TPMf6ibBM2JcUMu1YDRcN3HvPcI4FZ1SxYdJmXUHd5gQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NRvlB+WA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786791449; c=relaxed/simple;
+	bh=9ZZsIPJvQ4oTXZDcdbVq0S3Y1eoSAmQvOSgmSSPlqsE=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fD0Nlz5qSkyZ5DZficMomuQQGnAtLke3srRv384sic/bRjyYtSTbiY5PYeDrqKl/NYrC2wpaYznQ1FvTSGhuR9qKemQQ2ynHAvzgJqgLwGEr/cSbcFx1ksjtLPjx4f5vK/N7YX/VGYwFmZ1tG2cAPACF7tUWSsX1FbjDu/y3KzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IiqZEHXO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NRvlB+WA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E821F000E9;
-	Sat, 15 Aug 2026 10:47:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IiqZEHXO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897FC1F000E9;
+	Sat, 15 Aug 2026 10:57:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786790877;
-	bh=ROYC5NvxBdOnCuknqgzfKV+iunS8XkLuD9NR20BskSY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NRvlB+WAWhIk3FeBYusgVGLENC8wfLUb0HC6WvkGbjkYmo+o4Nkm39swoBheCNi3V
-	 Olq3CrFRoBz0/fC7eQQFJoB+zEPt/dXCKHtGRVPM3Kaw6DhPbMthQ08EV3vvNse8Jp
-	 /vaz4QT7Wc1j+F7/71cKSWoETToI+urMoJwCN6iueY9Mum+zIbHa/yxaPMTBOnwyYt
-	 Ny0l3eR3fyQcYK6GvFRmLd0ub6fKl7bSg5Eat1EvaVQtG51C72SAVA1nJUX6XA4gql
-	 ZSkP8CwWpAX4y7Dlb5i+xKNOf0pK/6kcw30rDLJ19Evzod09G5jaozZr6Kru4n11a2
-	 y863xASbRHPcg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 RESEND 3/5] KVM: riscv: Implement
- KVM_PRE_FAULT_MEMORY
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jinyu Tang" <jinyu.tang@linux.dev>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260815103341.865013-1-jinyu.tang@linux.dev>
-References: <20260815102833.864330-1-jinyu.tang@linux.dev>
- <20260815103341.865013-1-jinyu.tang@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 15 Aug 2026 10:47:56 +0000
-Message-Id: <20260815104756.D9E821F000E9@smtp.kernel.org>
+	s=k20260515; t=1786791447;
+	bh=UzMEI1MTAOXlmFMkVLNj5lVlgOkP81/6CiG3vw2PuIk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=IiqZEHXOLZffGOcgY5ayZvce6UcpLb5BMTb4EJj6LZM/b2JNIuTSmYtGiJ5Vo0k3j
+	 sXNQ3l2VbvP1QhYZ6iHDANq1++B4KIZRXCMMp98o3AuBTaLvGaYauV7GOQtAd0+XN0
+	 Klf8oiLC1az4AqgAlXbx/Lp9BXbntA/fkN2p/46332ZigCTTKnENJ5didJl7A6IWWc
+	 aMp32dzUw2rgy2yz3tO8tLAvXW0FMdwCFw/ERCs+E40KmFxZQHbBABqQlewnT35By0
+	 8u0qq1+qzZCc0qLiRVYsFhvj2VFq9x/U9jr1NnXPwX807pUqGcS0Bb6sHVAz8jCvlc
+	 kjYPJVcW0s9BA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wvC4r-0000000FseR-0emI;
+	Sat, 15 Aug 2026 10:57:25 +0000
+Date: Sat, 15 Aug 2026 11:57:24 +0100
+Message-ID: <86wltrzm5n.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Oliver Upton <oupton@kernel.org>,
+	Sascha Bischoff <sascha.bischoff@arm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Timothy Hayes <timothy.hayes@arm.com>,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Documentation: KVM: Fix the GICv5 KVM_IRQ_LINE PPI range
+In-Reply-To: <20260815092537.31737-1-kmehltretter@gmail.com>
+References: <20260815092537.31737-1-kmehltretter@gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kmehltretter@gmail.com, oupton@kernel.org, sascha.bischoff@arm.com, pbonzini@redhat.com, corbet@lwn.net, skhan@linuxfoundation.org, jic23@kernel.org, timothy.hayes@arm.com, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Critical] Modifying the HWPOISON path in `kvm_riscv_mmu_map()` to return=
- `-EFAULT` breaks standard `KVM_RUN` memory error handling.
-- [High] Incorrect address and boundary calculation for `out_map.addr` caus=
-es KVM to skip pre-faulting requested memory or underflow range calculation=
-s.
---
+On Sat, 15 Aug 2026 10:25:37 +0100,
+Karl Mehltretter <kmehltretter@gmail.com> wrote:
+> 
+> KVM rejects GICv5 PPI irq_id values above 63, while the documented
+> range extends to 127. KVM also rejects PPIs not present in the
 
---- Patch [3]: [PATCH v4 RESEND 3/5] KVM: riscv: Implement KVM_PRE_FAULT_ME=
-MORY ---
-commit 28eceecf0e650b3722970e6824e30848edb82b44
-Author: Jinyu Tang <jinyu.tang@linux.dev>
+This is on purpose, and that's not a bug.
 
-KVM: riscv: Implement KVM_PRE_FAULT_MEMORY
+> KVM_DEV_ARM_VGIC_USERSPACE_PPIS mask. That mask is populated by
+> KVM_DEV_ARM_VGIC_CTRL_INIT; reading it beforehand currently succeeds
+> but returns all zeroes.
+> 
+> Correct the range, document the mask restriction, and require the mask
+> to be queried after VGIC initialization.
+> 
+> Fixes: b88d05a893cb ("KVM: arm64: gic-v5: Support GICv5 interrupts with KVM_IRQ_LINE")
+> Assisted-by: Claude:claude-fable-5
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+> ---
+>  Documentation/virt/kvm/api.rst                  | 4 +++-
+>  Documentation/virt/kvm/devices/arm-vgic-v5.rst | 3 +++
+>  2 files changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> index e3003a241d5b0..6d8fd74174492 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -912,7 +912,9 @@ The irq_type field has the following values:
+>  	       in-kernel GICv5: SPI, irq_id between 0 and 65535 (incl.)
+>  - KVM_ARM_IRQ_TYPE_PPI:
+>  	       in-kernel GICv2/GICv3: PPI, irq_id between 16 and 31 (incl.)
+> -	       in-kernel GICv5: PPI, irq_id between 0 and 127 (incl.)
+> +	       in-kernel GICv5: PPI, irq_id between 0 and 63 (incl.), and
 
-The generic KVM_PRE_FAULT_MEMORY ioctl lets userspace populate KVM page
-tables before running a vCPU over a GPA range. This commit implements the
-arch hook for RISC-V and reuses the G-stage fault mapping path.
+No. Please understand the difference between *implementation* and
+*architecture*.
 
-> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-> index 54d45addf18f9..dff315dfd24ed 100644
-> --- a/arch/riscv/kvm/gstage.c
-> +++ b/arch/riscv/kvm/gstage.c
-> @@ -286,6 +286,9 @@ int kvm_riscv_gstage_map_page(struct kvm_gstage *gsta=
-ge,
->  						    out_map->level, true);
->  		} else if (ALIGN_DOWN(PFN_PHYS(pte_pfn(ptep_get(ptep))), page_size) =
-=3D=3D hpa) {
->  			kvm_riscv_gstage_update_pte_prot(gstage, ptep_level, gpa, ptep, prot);
-> +			out_map->addr =3D ALIGN_DOWN(gpa, page_size);
-> +			out_map->level =3D ptep_level;
+Also, the GICv5 architecture mandates which PPI is used for which
+device for the range 0-63. This is not a carbon copy of the previous
+versions.
 
-[Severity: High]
-When pre-faulting a range backed by THP, could aligning out_map->addr to the
-huge page size while setting out_map->level to the existing leaf size (e.g.,
-4KB) cause an underflow later?
+> +	       only if present in the mask returned by the
+> +	       KVM_DEV_ARM_VGIC_USERSPACE_PPIS attribute
 
-If out_map->addr is aligned to a 2MB boundary in kvm_riscv_gstage_map_page(=
-),
-but the map_size is calculated using the 4KB level in=20
-kvm_arch_vcpu_pre_fault_memory():
+Which, if you look carefully enough, returns a 128bit mask, as per the
+architecture.
 
-    map_size =3D PAGE_SIZE << (out_map.level * kvm_riscv_gstage_index_bits);
-    end =3D out_map.addr + map_size;
+>  
+>  (The irq_id field thus corresponds nicely to the IRQ ID in the ARM GIC specs)
+>  
+> diff --git a/Documentation/virt/kvm/devices/arm-vgic-v5.rst b/Documentation/virt/kvm/devices/arm-vgic-v5.rst
+> index d328cf1e22c1f..e24aed0c4afcd 100644
+> --- a/Documentation/virt/kvm/devices/arm-vgic-v5.rst
+> +++ b/Documentation/virt/kvm/devices/arm-vgic-v5.rst
+> @@ -35,6 +35,9 @@ Groups:
+>        populated with the userspace PPI mask. The lower __u64 contains the mask
+>        for the lower 64 PPIS, with the remaining 64 being in the second __u64.
+>  
+> +      Userspace must query this attribute after initializing the VGIC with
+> +      KVM_DEV_ARM_VGIC_CTRL_INIT.
+> +
 
-The calculated end might be less than range->gpa. For example, if range->gpa
-is (2MB_aligned_gpa + 8KB), then (end - range->gpa) would underflow to a
-massive unsigned value, causing the ioctl to silently return range->size and
-terminate early without actually pre-faulting the requested memory.
+Must? Why? Userspace can perfectly live with ever querying this.
 
-> +			out_map->pte =3D ptep_get(ptep);
->  			return 0;
->  		}
->  	}
+	M.
 
-[ ... ]
-
-> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index 2fabcd4099919..f6ca86da53eb8 100644
-> --- a/arch/riscv/kvm/mmu.c
-> +++ b/arch/riscv/kvm/mmu.c
-> @@ -717,7 +717,7 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct k=
-vm_memory_slot *memslot,
->  	if (hfn =3D=3D KVM_PFN_ERR_HWPOISON) {
->  		send_sig_mceerr(BUS_MCEERR_AR, (void __user *)hva,
->  				vma_pageshift, current);
-> -		return 0;
-> +		return -EFAULT;
-
-[Severity: Critical]
-Does returning -EFAULT here break the standard KVM_RUN memory error handlin=
-g?
-
-By returning -EFAULT instead of 0 for KVM_PFN_ERR_HWPOISON, KVM_RUN will ex=
-it
-to userspace with -EFAULT. Userspace VMMs (like QEMU) typically treat an
--EFAULT from KVM_RUN as an unrecoverable hypervisor error and will abruptly
-terminate the VM.
-
-Returning 0 allows the run loop to exit cleanly with -EINTR, ensuring the V=
-MM
-can handle the queued SIGBUS (via send_sig_mceerr()), isolate the poisoned
-page, and inject a Machine Check Exception into the guest.
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260815102833.8643=
-30-1-jinyu.tang@linux.dev?part=3D3
+-- 
+Without deviation from the norm, progress is not possible.
