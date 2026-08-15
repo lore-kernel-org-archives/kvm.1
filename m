@@ -1,33 +1,33 @@
-Received: from mta0.migadu.com (out-192.mta0.migadu.com [91.218.175.192])
+Received: from mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0676528E0F
-	for <kvm@vger.kernel.org>; Sat, 15 Aug 2026 10:04:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.192
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76EA83A1C9
+	for <kvm@vger.kernel.org>; Sat, 15 Aug 2026 10:06:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786788274; cv=none; b=gBI6oKF+9aJs9xenrwrpBQbVY8OF64EodaxNprU6WVt3xJm2C98SFLXfHOl2bvU3g30CYgRRU1jskgWgW9ctk6/RPaUwXpcM77bNLhhlV9jiaavbED7b1pvgu64UzMYprmr/Fa4ClZQ51MwhLm54JVaO+hdMUN7w2kR9dBeHz7Q=
+	t=1786788411; cv=none; b=s/PkVrrdYNCWv/MnToTWjX8bIEtcCy1hQ92KA3w47rKM1MBDGVsR94vgy+f6tksEyb9KpQchmHblJ0cI0DH8nSOFF1wIUAshnYeWRz3rgjCbvKs5p3GQEFTci5UMWMIODQSsPzantOKpV2GQzsGzMjCYQCb85ueuW3p22YlUn88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786788274; c=relaxed/simple;
-	bh=Ibq8FmFzfS79pa12j1e6KYtVVh8objCmcS0oBVDNFx4=;
+	s=arc-20240116; t=1786788411; c=relaxed/simple;
+	bh=V5XVfLEQRMIUdVa1VN5yR7RiRSe4x0lsprp3ClMwZ+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pR75riWXVCuunRnzBhnzAMh8TcT5zRGyGMIGvc7mp90w/OBY+/EUR+bwKe04Ka5CqrZNK7oGUfoDhhdBpN1NkF4vPq+1NYFlp+RMjpwj4WFFGh+GBpllBrm73AWaGPWQtjmKPu+A01P3CkkxSkigZS1Jl1hKLxwaB+0PHwX3l6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=epaB+RCp; arc=none smtp.client-ip=91.218.175.192
+	 MIME-Version; b=HJ5XuMPvUgtJo7vIWQUrNrJ73gdCLsXwtvs+IwxObRMl9uprh6ffY9AbMPKGo+CDZMIny5BpoB22lL5OL54TM/zw+PHynPxHlXnMtprT/AhVXaATO/LS13eGKjPf/X1fnEkJqc/okmd+m9UNS0bP/GaTEpe3EaXd6nilhDgOnb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Pw5IeT68; arc=none smtp.client-ip=95.215.58.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="epaB+RCp"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Pw5IeT68"
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=Ibq8FmFzfS79pa12j1e6KYtVVh8objCmcS0oBVDNFx4=;
+DKIM-Signature: a=rsa-sha256; bh=V5XVfLEQRMIUdVa1VN5yR7RiRSe4x0lsprp3ClMwZ+c=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786788270; v=1; x=1787393070;
- b=epaB+RCpKQ4KRswU1vwBeiAfaKT9TZPx/YPpQtpFb2WCv1wW+vrssC+maherE7+38w36J82J
- DVQLqUmA9r61bPa7P3kGUqkJJOS2SM/wVVe9ihjpP7Rho4WDzhQ7djE3W6V49UMrmb0GDQjiAre
- jXtv0tbQZNFs59E4kUFOgBlw=
+ t=1786788407; v=1; x=1787393207;
+ b=Pw5IeT68zZDgXeePaxQkEEnXXexNKsckbJio3dp3pidhD9GwsOrhY+PUYNHPgD8KSqJ7oTBO
+ OjnTyNa0uGPyGH6NC+1hfoONLGZinX31u4cYld1pJOja1MvCMjaebEglmVlSXIyDTkYEKNWNN+u
+ YKPvBoTzRZdtig4p/dbz+i8Y=
 X-Envelope-To: kvm@vger.kernel.org
 Received: from localhost.localdomain (2408:823d:2011:2c0:e810:54f9:f0a3:99d)
-	by smtp.migadu.com with ESMTPS id 55f3467a102004f0;
-	Sat, 15 Aug 2026 10:04:19 +0000
+	by smtp.migadu.com with ESMTPS id e58b234c548717e0;
+	Sat, 15 Aug 2026 10:06:47 +0000
 X-Migadu-Flow: FLOW_OUT
 From: Jinyu Tang <jinyu.tang@linux.dev>
 To: Anup Patel <anup@brainfault.org>,
@@ -52,9 +52,9 @@ Cc: kvm@vger.kernel.org,
 	Yifei Jiang <jiangyifei@huawei.com>,
 	Jinyu Tang <tjytimi@163.com>,
 	Jinyu Tang <jinyu.tang@linux.dev>
-Subject: [PATCH v4 2/5] KVM: riscv: Avoid THP adjustment for existing 4K G-stage leaves
-Date: Sat, 15 Aug 2026 06:04:08 -0400
-Message-ID: <20260815100411.861526-1-jinyu.tang@linux.dev>
+Subject: [PATCH v4 3/5] KVM: riscv: Implement KVM_PRE_FAULT_MEMORY
+Date: Sat, 15 Aug 2026 06:06:36 -0400
+Message-ID: <20260815100636.861901-1-jinyu.tang@linux.dev>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260815095548.860018-1-jinyu.tang@linux.dev>
 References: <20260815095548.860018-1-jinyu.tang@linux.dev>
@@ -66,61 +66,125 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When dirty logging is disabled after a G-stage PMD mapping has been
-split, the fault path may see a 4K G-stage leaf while the backing host
-page is still THP-backed. The existing kvm_riscv_gstage_map_page()
-comment says that this path should update the small leaf and leave huge
-mapping recovery to a later ioctl path.
+The generic KVM_PRE_FAULT_MEMORY ioctl lets userspace populate KVM page
+tables before running a vCPU over a GPA range. x86 already supports the
+ioctl, but RISC-V does not expose the capability and has no arch hook.
 
-However, transparent_hugepage_adjust() runs before that G-stage lookup
-and rewrites the fault GPA to the PMD base. If the original fault is not
-at the PMD base, the lookup can find and update the wrong 4K leaf.
-
-Check the original fault GPA in transparent_hugepage_adjust(). If it
-already has a 4K G-stage leaf, skip THP adjustment and keep handling the
-fault at PAGE_SIZE granularity.
+Add the RISC-V arch hook and reuse the existing G-stage fault mapping
+path with a read access. Report progress using the G-stage mapping
+returned by the map path, so the ioctl can advance by the actual leaf
+size that covers the requested GPA. Retry until a mapping is installed
+or a signal, VM-dead request, or real error is observed.
 
 Signed-off-by: Jinyu Tang <jinyu.tang@linux.dev>
 ---
- arch/riscv/kvm/mmu.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ arch/riscv/kvm/Kconfig  |  1 +
+ arch/riscv/kvm/gstage.c |  3 +++
+ arch/riscv/kvm/mmu.c    | 45 ++++++++++++++++++++++++++++++++++++++++-
+ arch/riscv/kvm/vm.c     |  1 +
+ 4 files changed, 49 insertions(+), 1 deletion(-)
 
+diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
+index ec2cee0a39e0..8ac209e8ac87 100644
+--- a/arch/riscv/kvm/Kconfig
++++ b/arch/riscv/kvm/Kconfig
+@@ -28,6 +28,7 @@ config KVM
+ 	select KVM_COMMON
+ 	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
+ 	select KVM_GENERIC_HARDWARE_ENABLING
++	select KVM_GENERIC_PRE_FAULT_MEMORY
+ 	select KVM_MMIO
+ 	select VIRT_XFER_TO_GUEST_WORK
+ 	select SCHED_INFO
+diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
+index 54d45addf18f..dff315dfd24e 100644
+--- a/arch/riscv/kvm/gstage.c
++++ b/arch/riscv/kvm/gstage.c
+@@ -286,6 +286,9 @@ int kvm_riscv_gstage_map_page(struct kvm_gstage *gstage,
+ 						    out_map->level, true);
+ 		} else if (ALIGN_DOWN(PFN_PHYS(pte_pfn(ptep_get(ptep))), page_size) == hpa) {
+ 			kvm_riscv_gstage_update_pte_prot(gstage, ptep_level, gpa, ptep, prot);
++			out_map->addr = ALIGN_DOWN(gpa, page_size);
++			out_map->level = ptep_level;
++			out_map->pte = ptep_get(ptep);
+ 			return 0;
+ 		}
+ 	}
 diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index bfd6168ebe30..2fabcd409991 100644
+index 2fabcd409991..f6ca86da53eb 100644
 --- a/arch/riscv/kvm/mmu.c
 +++ b/arch/riscv/kvm/mmu.c
-@@ -500,10 +500,21 @@ static int get_hva_mapping_size(struct kvm *kvm,
+@@ -717,7 +717,7 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
+ 	if (hfn == KVM_PFN_ERR_HWPOISON) {
+ 		send_sig_mceerr(BUS_MCEERR_AR, (void __user *)hva,
+ 				vma_pageshift, current);
+-		return 0;
++		return -EFAULT;
+ 	}
+ 	if (is_error_noslot_pfn(hfn))
+ 		return -EFAULT;
+@@ -782,6 +782,49 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
+ 	return ret;
+ }
  
- static unsigned long transparent_hugepage_adjust(struct kvm *kvm,
- 						 struct kvm_memory_slot *memslot,
-+						 struct kvm_gstage *gstage,
- 						 unsigned long hva,
- 						 kvm_pfn_t *hfnp, gpa_t *gpa)
- {
- 	kvm_pfn_t hfn = *hfnp;
-+	u32 ptep_level;
-+	pte_t *ptep;
++long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
++				    struct kvm_pre_fault_memory *range)
++{
++	struct kvm_gstage_mapping out_map = { 0 };
++	struct kvm_memory_slot *memslot;
++	unsigned long map_size;
++	unsigned long hva;
++	gpa_t end;
++	gfn_t gfn;
++	int ret;
 +
-+	/*
-+	 * Keep the existing split G-stage leaf and update the original
-+	 * faulting 4K page in the vCPU fault path.
-+	 */
-+	if (kvm_riscv_gstage_get_leaf(gstage, *gpa, &ptep, &ptep_level) &&
-+	    !ptep_level)
-+		return PAGE_SIZE;
- 
- 	/*
- 	 * Make sure the adjustment is done only for THP pages. Also make
-@@ -730,7 +741,8 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 	 * so do not promote them through the THP helper.
- 	 */
- 	if (!logging && !is_hugetlb && vma_pagesize == PAGE_SIZE)
--		vma_pagesize = transparent_hugepage_adjust(kvm, memslot, hva, &hfn, &gpa);
-+		vma_pagesize = transparent_hugepage_adjust(kvm, memslot, &gstage,
-+							   hva, &hfn, &gpa);
- 
- 	if (writable) {
- 		mark_page_dirty_in_slot(kvm, memslot, gfn);
++	gfn = gpa_to_gfn(range->gpa);
++	memslot = kvm_vcpu_gfn_to_memslot(vcpu, gfn);
++	if (!memslot)
++		return -ENOENT;
++
++	hva = gfn_to_hva_memslot_prot(memslot, gfn, NULL);
++	if (kvm_is_error_hva(hva))
++		return -ENOENT;
++
++	for (;;) {
++		if (signal_pending(current))
++			return -EINTR;
++
++		if (kvm_check_request(KVM_REQ_VM_DEAD, vcpu))
++			return -EIO;
++
++		cond_resched();
++		ret = kvm_riscv_mmu_map(vcpu, memslot, range->gpa, hva, false, &out_map);
++		if (ret)
++			return ret;
++
++		if (!pte_val(out_map.pte))
++			continue;
++
++		map_size = PAGE_SIZE << (out_map.level * kvm_riscv_gstage_index_bits);
++		end = out_map.addr + map_size;
++		break;
++	}
++
++	return min_t(u64, range->size, end - range->gpa);
++}
++
+ int kvm_riscv_mmu_alloc_pgd(struct kvm *kvm)
+ {
+ 	struct page *pgd_page;
+diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
+index a9f083feeb76..58500a19b33b 100644
+--- a/arch/riscv/kvm/vm.c
++++ b/arch/riscv/kvm/vm.c
+@@ -187,6 +187,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 	case KVM_CAP_MP_STATE:
+ 	case KVM_CAP_IMMEDIATE_EXIT:
+ 	case KVM_CAP_SET_GUEST_DEBUG:
++	case KVM_CAP_PRE_FAULT_MEMORY:
+ 		r = 1;
+ 		break;
+ 	case KVM_CAP_NR_VCPUS:
 -- 
 2.43.0
 
