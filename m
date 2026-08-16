@@ -1,145 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6F33C5522;
-	Sun, 16 Aug 2026 05:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B551FD4
+	for <kvm@vger.kernel.org>; Sun, 16 Aug 2026 12:32:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786859727; cv=none; b=GgcNRe58ml7NjkVsxUJsshP094FY4ICaUBZRjBFXcYa9JrdvOmO9cZwHzQZBlzRNkWiSxSDffpK+Gg3akZnnMFrYe/giliQj3TjwJu2aPNYrlIsjYTAIsDB7fEoA/G4tGhLtJT/Q8BDQevwSCnn4Xd3ZJ1oIWY/HgH30/rOEzGA=
+	t=1786883578; cv=none; b=sjR0wjmJZUETqqJ6/xIt9zfpNyrbcTPjvvp3Gif5VTv5VkVymz5/gUMfkMKJQwb/KZNqM0ndm4a/DJNyoePjag3gDdHl5o8diWHaZkz+Nrp0kPzTUkH/CFo6kyyqeA8NtfCaNWUPrG4DZuFOjZdw20oywEJc4cEbwJixLN0qQgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786859727; c=relaxed/simple;
-	bh=KFU7DcTQ9dXc7a00lVpoE2cuL3f04kJwqGoRfuj8nnI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=KZjEVJkhgM+kHM0nE1sOPFQ9VAbO58/OvgN1qisMqy0RywN77QNGZRF8hoF1La2Gq2brX78BzmR0x2hJhdG7EE7qsjgAJu44WRnvQpzWAAioDe/7A+DZRsVBqgoytP3An1nsFu2rosPyQShr8UfkkZdBxmzhmujKbVu8zn9Yac4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fg1N4Huh; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fg1N4Huh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41D61F000E9;
-	Sun, 16 Aug 2026 05:55:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786859725;
-	bh=z91W/pRu/ZnTGcuDy4zh03KFAv4l/s2gPANdNuwm3Iw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fg1N4HuhGmuBFLQqoziAZa7oKU+n3b95rfVGUcw7wXcqxTHhkmCdy6cbHcHUnjoDt
-	 VulkrYZzpSxskfy1d//WdjYLDn/+nA9i3A725miOYeUO4cUGkQWO2OB6AA1DbVrgQB
-	 VteGVCsarwz6DdCkfGc2vlfcNbCvpnNouJaJdtsqR6BVj1F2qE7epjzB1eNa+sMtLi
-	 DMopmyaGkNTWOpkWm1uQjtXRZ1SHvR0nq0U4WOzS2vGOLVJ2fJC8lFsbmOehbYFWLD
-	 zZra8hkz0wmkJY6/ntEzQLLupz4XUCAb0A+Qd1o3xcZeg9OzVsKtEWWPWAf7aDkcxd
-	 vGjhXxsLWHJTw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/4] KVM: x86: Reset last_steal on vCPU pid change
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Dongli Zhang" <dongli.zhang@oracle.com>
-Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-In-Reply-To: <20260816053630.527528-2-dongli.zhang@oracle.com>
-References: <20260816053630.527528-1-dongli.zhang@oracle.com>
- <20260816053630.527528-2-dongli.zhang@oracle.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 16 Aug 2026 05:55:25 +0000
-Message-Id: <20260816055525.A41D61F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1786883578; c=relaxed/simple;
+	bh=iJqQ48nabiDhrniyeKmwHTy09FdZA/dAIdCtjoSf1Jw=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Bze9C0uznTWcM5cvFUNvXlsMYS2YCaeohaxz5g7UVbQUQzBWzvXeg9pcYetqYrs8iwRuNHlOcjR/GD9i3OLyyWY6WbVuSx+CbJ1VRrBAIfBpl5jYMLUr5vQE9FgqZPBXAO2IZ7SsdLQol7hUybIHvqhAB1VkR1jJFBp2RGRg1A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4a485034d01so3361517b6e.3
+        for <kvm@vger.kernel.org>; Sun, 16 Aug 2026 05:32:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786883575; x=1787488375;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eOY5y+uI5Lm+sxlWKlbZWqyawWuzPDYB1tOiDWK6Uak=;
+        b=SZTPDngpgbxxkVwS82tLs/X0r3kykOwAlB84Bmi7ltAzH15E5A5+pZltvsx04UcfMI
+         iywMmtGVz9HL/1c783oM73KFY42g4sDp7ASwFNyi0bioTMxrB2t7xI/JN04b0Yicf2Nu
+         4Nrg2WdG5TJmO/SAn1JsesLLBqKheovO0ioYd+H+hR3eOigSebfM/kDSW8xslr5Sv3f0
+         fojGoVNtLApoej121AvkJhnk0KYDAo/6DLcBSiDTkI+FYgD3Ga3H3oRJrsnRDqPLoJjl
+         pgN/C7yIwlqEBbEI+4bE/qoyw0lPUWlkPPx02+Ok5IqzwVBxNfcbQ6wNPpAVhrgsAIBI
+         piOg==
+X-Gm-Message-State: AOJu0YzO9hqVJed2J7PjCxUWJb4y0RMedovz8vlXoST33kRT8Q6Uk7aN
+	kOF8aV2BqmRrQAQKq96uKCXrktNJUWn2AvveiCPSA7eY/9+i8T3Yv6YE9bDNIY+3gwqQzzKahEC
+	C4i/eN/XeTkjEf6gjgTWQKCm0gR5UDKo1OiExoDk4Bv0lErLCMfOCEGyQG4Q=
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-Received: by 2002:a05:6808:6808:b0:4a0:cf55:3cf0 with SMTP id
+ 5614622812f47-4b24152d08fmr16867572b6e.9.1786883575709; Sun, 16 Aug 2026
+ 05:32:55 -0700 (PDT)
+Date: Sun, 16 Aug 2026 05:32:55 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a81adf7.dbb3a75c.20434b.002e.GAE@google.com>
+Subject: [syzbot] Monthly kvm report (Aug 2026)
+From: syzbot <syzbot+list43eec91d395b70f62e8b@syzkaller.appspotmail.com>
+To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+Hello kvm maintainers/developers,
 
-Pre-existing issues:
-- [High] The patch addresses the steal time corruption on vCPU PID change f=
-or x86 KVM PV but completely misses the equivalent KVM Xen steal time (`vcp=
-u->arch.xen.last_steal`), leaving it exposed to the identical integer under=
-flow.
-- [High] The identical vCPU thread migration bug exists in ARM64, RISC-V, a=
-nd LoongArch steal time accounting, but the patch only implements the fix f=
-or x86.
---
+This is a 31-day syzbot report for the kvm subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/kvm
 
---- Patch [1]: [PATCH 1/4] KVM: x86: Reset last_steal on vCPU pid change ---
-commit d7367ba78784ba11d9b540abce98359a8e902828
-Author: Dongli Zhang <dongli.zhang@oracle.com>
+During the period, 1 new issues were detected and 0 were fixed.
+In total, 6 issues are still open and 68 have already been fixed.
+There are also 2 low-priority issues.
 
-KVM: x86: Reset last_steal on vCPU pid change
+Some of the still happening issues:
 
-KVM does not reset last_steal on vCPU re-creation/hotplug, causing a bogus
-large steal time due to run_delay starting from zero. This patch fixes it by
-resetting vcpu->arch.st.last_steal in kvm_arch_vcpu_run_pid_change on x86.
+Ref Crashes Repro Title
+<1> 1201    Yes   WARNING in __kvm_gpc_refresh (3)
+                  https://syzkaller.appspot.com/bug?extid=cde12433b6c56f55d9ed
+<2> 35      No    WARNING: refcount bug in call_timer_fn (4)
+                  https://syzkaller.appspot.com/bug?extid=07dcf509f4c013e25dc5
+<3> 3       Yes   BUG: sleeping function called from invalid context in kvm_xen_set_evtchn_fast (2)
+                  https://syzkaller.appspot.com/bug?extid=e42793f1299e53beb2ee
 
-> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-> index 801bf9e520db3..b7cb2ceda6d9a 100644
-> --- a/arch/x86/kvm/Kconfig
-> +++ b/arch/x86/kvm/Kconfig
-> @@ -40,6 +40,7 @@ config KVM_X86
->  	select HAVE_KVM_MSI
->  	select HAVE_KVM_CPU_RELAX_INTERCEPT
->  	select HAVE_KVM_NO_POLL
-> +	select HAVE_KVM_VCPU_RUN_PID_CHANGE
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-[Severity: High]
-This is a pre-existing issue, but does this same integer underflow bug exist
-on other architectures?
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
-Looking at ARM64, RISC-V, and LoongArch, they all track steal time using
-current->sched_info.run_delay and subtract the old last_steal value, which
-appears identically vulnerable to underflow on vCPU thread recreation.
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
-For example, on ARM64:
-
-arch/arm64/kvm/pvtime.c:kvm_update_stolen_time() {
-    ...
-    steal +=3D vcpu->arch.steal.last_steal - last_steal;
-    ...
-}
-
-(Note that arm64's kvm_arch_vcpu_run_pid_change() returns early if
-vcpu_has_run_once(vcpu) is true, skipping the opportunity to update last_st=
-eal.)
-
-Are there plans to address this on the other architectures?
-
->  	select VIRT_XFER_TO_GUEST_WORK
->  	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
->  	select KVM_VFIO
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 47cb9eba113b1..33be45eec32bc 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-[ ... ]
-> @@ -3717,6 +3717,13 @@ void kvm_service_local_tlb_flush_requests(struct k=
-vm_vcpu *vcpu)
->  }
->  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_service_local_tlb_flush_requests);
-> =20
-> +int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
-> +{
-> +	vcpu->arch.st.last_steal =3D current->sched_info.run_delay;
-> +
-
-[Severity: High]
-This isn't a bug introduced by this patch, but should this function also
-reset vcpu->arch.xen.last_steal?
-
-Looking at kvm_xen_update_runstate() in arch/x86/kvm/xen.c, the stolen time
-for Xen runstate is calculated similarly:
-
-arch/x86/kvm/xen.c:kvm_xen_update_runstate() {
-    ...
-    u64 steal_ns =3D run_delay - vx->last_steal;
-    delta_ns -=3D steal_ns;
-    vx->runstate_times[RUNSTATE_runnable] +=3D steal_ns;
-    ...
-    vx->last_steal =3D run_delay;
-}
-
-If the thread changes and run_delay resets to 0, wouldn't vx->last_steal
-also cause an identical integer underflow?
-
-> +	return 0;
-> +}
-> +
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260816053630.5275=
-28-1-dongli.zhang@oracle.com?part=3D1
+You may send multiple commands in a single email message.
