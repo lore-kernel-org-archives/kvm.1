@@ -1,51 +1,49 @@
 Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5C733C198;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4035394794;
 	Sun, 16 Aug 2026 05:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786858893; cv=none; b=lr+kYhO6Rp5tfhq3Yx9k6CLxoiM+nmYxBXtez8GRFwxgaKBnlA24yIVDMMqW63huUW4E/JfjB8uHypgrWcaq1/kfTrbNNPJyVIarOG59tvdFjtvCXAkhzX59+ihlZKNHqqpiEXiaOSsgR7Hpc4hqrraqS4pgnSJkgfXepx5nO0s=
+	t=1786858894; cv=none; b=joRiXtF2FhQvOQCd1Ggm/TmB+iL+gQQSgDR3Kjf1QXnBEiOTZEEkw5Fe/uIhsm079z1zEeNjNvJCyh7ZPMF1CA5kkngH8K/QLeEEtDxgOztRZyrWi09Ahit2aFh3WyRQsjsMEBmC5Jv8+QFCSGBrtn3mviQfijZVLBL9KA34a9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786858893; c=relaxed/simple;
-	bh=5nzLa1/IjgFGwHvpkMMcWFoTfKxcDovrnBnmzt48Ias=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RsCB5ZD/cNeBsyeY9FKQkZvuxTm12nd31pnT5gWqo4OVom4nnG7QkimnyD8O7oYPmEUznsYcoVjYrkRI05ozy3xs+uGbF5gKCeuRKCVnMepEOTz3fpYu4XiDORMyZL8T45durPgQwcdQAEeVqPmGzdK/noFDQCB1vw4lIyOc9Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Brq0GIJ+; arc=none smtp.client-ip=205.220.165.32
+	s=arc-20240116; t=1786858894; c=relaxed/simple;
+	bh=wBBhpjt9dzv4hRA2sOo75BTjLCdd0Tnawc/rHhRDPw8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dDNLlhov3gXUOSH990SU8WR26PEgE+kebkTiiLEvFyo+wypDNkl3+bddaT1YE+nbKN8wHzM1X1+8JvOqVg7X2es4EmIL2jxdTedQGVqzlFf5j5pNQgCDXXIOhbaU2WUpG8nThajvg/1Gc4+0sUl1t8yGwCZk9wdU4DFfIplVo38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=bY8+eqB8; arc=none smtp.client-ip=205.220.165.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Brq0GIJ+"
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67G5FYJS1547265;
-	Sun, 16 Aug 2026 05:40:55 GMT
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="bY8+eqB8"
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67G5OXtM2035357;
+	Sun, 16 Aug 2026 05:40:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=CcCoJ
-	nmGr7A2rPibgyIxfI9G6Wu7ebLWcr2cfop2j58=; b=Brq0GIJ+KHovuldPahFEF
-	7043ZiIYioAS7GPXSAJf878S6gYEJXe/UrNfzANBNzITbeIU1mOaXwPv7QqeDy+m
-	vTl65+VBp9t8/EnNt0+Ap6WXjO5tHqCFpWfIBAp6UWXAz92wsCEkRTVo1TNoEixA
-	bR0d7iZOkCWt1caiFqV8OafCNloccTSa73uiv8RwpUizijr0m31C3IYzDKvrHHr/
-	WBLCRUS02HQKiVTXO+HLrO1wxtUZXVe/mIo6a24p90xWUkzSPtkpha/4kQOK6dqc
-	COqgQKTeEUyL1caz1BsJThLlcYvPqHCZnnZXes6EYCsvrHnqCshNhts96zPlQc37
-	g==
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=r2J9JgQhkLHvjLeRmeT0qNNRndodC
+	l+R5/yh+PljVnQ=; b=bY8+eqB8QzJlLFOCCP1D2k2I5Hj/wd9f8tvRk0VRkcX2a
+	s2lHr3h8ToQynAxRaz3/98O3VlI82qVFaqHHYeF7kQ0tRaWcc/DuWOgddlOl8oj3
+	lDdPqzb47tsHu9VpVp6jpqDEnXpMxmrc0fKVPolDQRsYSWTXvkde6yBhdnDfECtj
+	k6BEniOA3uolJF8eKu0LEB3D0h3JIobCu5EkVyIa8unZk3gQPWmC9EbijHVVtF32
+	GOn0ivXhFxSbXoymSJ52MaKuyEz3SxGRO6pyc6sJXSe+Ob3GykMywcmDhqUQ1z78
+	auJX4ztOsEhR6RFUZJT7Cf2owOmTroqSQ6+K0u9jw==
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4g2epy10yb-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4g2f1brv5m-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 16 Aug 2026 05:40:55 +0000 (GMT)
+	Sun, 16 Aug 2026 05:40:54 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 67G5e9w8010974;
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 67G5e9Jw011028;
 	Sun, 16 Aug 2026 05:40:54 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4g2ejammc0-1
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4g2ejammbt-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 16 Aug 2026 05:40:54 +0000 (GMT)
+	Sun, 16 Aug 2026 05:40:53 +0000 (GMT)
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 67G5ereV012353;
-	Sun, 16 Aug 2026 05:40:54 GMT
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 67G5ereT012353;
+	Sun, 16 Aug 2026 05:40:53 GMT
 Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4g2ejammbp-2;
-	Sun, 16 Aug 2026 05:40:54 +0000 (GMT)
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4g2ejammbp-1;
+	Sun, 16 Aug 2026 05:40:53 +0000 (GMT)
 From: Dongli Zhang <dongli.zhang@oracle.com>
 To: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
         linux-kselftest@vger.kernel.org
@@ -53,12 +51,10 @@ Cc: seanjc@google.com, pbonzini@redhat.com, maz@kernel.org, oupton@kernel.org,
         fuad.tabba@linux.dev, joey.gouly@arm.com, seiden@linux.ibm.com,
         suzuki.poulose@arm.com, yuzenghui@huawei.com, dwmw2@infradead.org,
         joe.jin@oracle.com
-Subject: [PATCH 1/4] KVM: x86: Reset last_steal on vCPU pid change
-Date: Sat, 15 Aug 2026 22:33:02 -0700
-Message-ID: <20260816053630.527528-2-dongli.zhang@oracle.com>
+Subject: [PATCH 0/4] KVM: Reset steal time accounting on vCPU pid change (x86 and arm64)
+Date: Sat, 15 Aug 2026 22:33:01 -0700
+Message-ID: <20260816053630.527528-1-dongli.zhang@oracle.com>
 X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20260816053630.527528-1-dongli.zhang@oracle.com>
-References: <20260816053630.527528-1-dongli.zhang@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -73,77 +69,110 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
  lowpriorityscore=0 mlxscore=0 spamscore=0 suspectscore=0 bulkscore=0
  adultscore=0 malwarescore=0 mlxlogscore=999 classifier=spam adjust=0
  reason=mlx scancount=1 engine=8.19.0-2606160000 definitions=main-2608160039
-X-Proofpoint-GUID: Rc4XRtgyggpCeWmJ58vn7PszBwYVTPcl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE2MDAzOSBTYWx0ZWRfX+8pT09+NWa5T
- X3e6Kry1fHWIY5K1niPoS9QHCe51vvk4hFtC8RHUpVrPDnSRELCutLlzqcHW/7I+OZ6IBZHKZCY
- nuSyjBcYjmVuZ2/5xGXOEah5vEYTc1c0DAz2iAF31lx+t1W24/7xbPo/+Y8chuRwKjmJieNvQ5n
- PtNVxDKQYDthuHPjhjqxzCg1w8vBA6Ml5VoRrR1iJPKdH0liUNH8Q+p9NfYLxGuNcFtTVbwSXXr
- 5I04wQS0UTH7LAEPIXANUYPDIZ4Q6xj8ZHoqk4LZh6Vn1xRBeoqWu5JjZCdWcxFX4IParuuA0+i
- 4JiT+eH84WlocdfYGoegt61I0iysw0K6alNv2QzHPu10zkPqBNJBS4Fv0J2CJt6N/I1hVkvUrgi
- ELJO06c3dYFccrdfepcCeedN5vIqbxSoXgRZBDDwhEjSEJr5lPfdHuA3JauvW40fzPX3xEAVpVx
- zbD8Ajspll3Zm4DGrsQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE2MDAzOSBTYWx0ZWRfXyn1OPQl4+yfH
- eq0NPjrhFzABmQ+c4avr7Uor1j0pBlJ3PXfJLRcJ5u5iUxvyDCrXRmvnkLtzBb7OEcdBA6otlVy
- WnIGeuGREhypS9HGI3TzYi6jcRtRIdOpBpOHTPGC1ZDltJ77XfUp
-X-Proofpoint-ORIG-GUID: Rc4XRtgyggpCeWmJ58vn7PszBwYVTPcl
-X-Authority-Analysis: v=2.4 cv=EP02FVZC c=1 sm=1 tr=0 ts=6a814d67 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE2MDAzOSBTYWx0ZWRfX9/Lk+lcRitS5
+ 0mP3cqxr3xqPvVUpon+JekmKkr3Wb9U3a1N5ClxTauVmQ8G7uAvBsZF9B4riIAo8NkLAiIP1Dwf
+ 1AK74LiMvzWs03X2raZSdaCBavLi4gMkfQzFxhRJy3Wg+eEF2P5CMBrQ/UynABAEyBKku/zhQwq
+ OhRdXGKPU0yh+VT10FGVefXxaFbfra8GhkZmxVsMPiIda+f8YHvA47i4bRXvHMtaUH67z95WmwA
+ lsk4uNQOvk2jua6Tnj5BwZdy3qUFPxpAkdXoOiGe8GAi+dVJqlU6Nm4h2g8EvQzg2TU3Mi0ninW
+ A3Nh8nAJ7Z6iH83Pi58AJsIPJ+3RmVintx0a6xsINGgV12QA/XdzS/GCMxt9OeJSKreU56XXwhH
+ X2f7s45fKE/rtZLZravC+yflBNKQAlZ7mINF7OZrnk6wVrOzuNiGnuNpqUInDe3iFMFCi3inhHO
+ PqnEEykiPK5MdCjIPJA==
+X-Authority-Analysis: v=2.4 cv=D/937PRj c=1 sm=1 tr=0 ts=6a814d66 cx=c_pps
  a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
  a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=RD47p0oAkeU5bO7t-o6f:22 a=yPCof4ZbAAAA:8 a=JTYwcDXl0W004yyQ3KQA:9
+ a=x0eKOSpe3m1H3M0S9YoZ:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
+ a=DtIxHsc76qG4-ebJFCwA:9
+X-Proofpoint-ORIG-GUID: QBcnolLFr_s4KGrVbr09-cz7HZp28BHw
+X-Proofpoint-GUID: QBcnolLFr_s4KGrVbr09-cz7HZp28BHw
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE2MDAzOSBTYWx0ZWRfX+Wy9tqOnhA9t
+ kGW4yBgwGPYhcrW0jh5sBW/jIWDBoasrR9mXB40c1ztq6FSPV/CglWWa1X0HDGujqdTkqc4Xn4b
+ 7KIZuQ4BNKavMgfZ3Mhm9zxz0K5GjKaqxaZwB7uDk3S/8hyN21zH
+
+I previously sent the patchset below, but I am not sending this series as
+v2 because the topic has changed significantly.
+
+[PATCH 0/5] Fix and enhance KVM steal accounting for both guest and host
+https://lore.kernel.org/all/20260505003044.78693-1-dongli.zhang@oracle.com
 
 KVM does not support vCPU hotplug. When a vCPU is removed, its
 corresponding data structures are not freed by KVM. Instead, QEMU destroys
 only the userspace state and the vCPU thread, while the KVM vCPU fd remains
 open and parked in QEMU.
 
-As a result, vcpu->arch.st.last_steal is not reset.
+As a result, vcpu->arch.st.last_steal is not reset. If the same vCPU is
+later re-created by QEMU, last_steal retains its old value, while
+current->sched_info.run_delay starts from zero since a new vCPU thread is
+created. This causes current->sched_info.run_delay - vcpu->arch.st.last_steal
+to produce a large, bogus value.
 
-If the same vCPU is later re-created by QEMU, last_steal retains its old
-value, while current->sched_info.run_delay starts from zero since a new
-vCPU thread is created. This causes
-current->sched_info.run_delay - vcpu->arch.st.last_steal to produce a
-large, bogus value.
+For instance, current->sched_info.run_delay can become smaller than
+vcpu->arch.st.last_steal (see line 3804) if a QEMU vCPU is re-added after
+it has previously been removed.
 
-Fix this by resetting vcpu->arch.st.last_steal unconditionally to
-current->sched_info.run_delay when KVM vCPU PID is changed.
+As a result, st->steal restarts from a very small value, close to
+current->sched_info.run_delay.
 
-Assisted-by: Codex:GPT-5.5
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
----
- arch/x86/kvm/Kconfig | 1 +
- arch/x86/kvm/x86.c   | 7 +++++++
- 2 files changed, 8 insertions(+)
+3720 static void record_steal_time(struct kvm_vcpu *vcpu)
+3721 {
+... ...
+3803         unsafe_get_user(steal, &st->steal, out);
+3804         steal += current->sched_info.run_delay -
+3805                 vcpu->arch.st.last_steal;
+3806         vcpu->arch.st.last_steal = current->sched_info.run_delay;
+3807         unsafe_put_user(steal, &st->steal, out);
 
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index 801bf9e520db..b7cb2ceda6d9 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -40,6 +40,7 @@ config KVM_X86
- 	select HAVE_KVM_MSI
- 	select HAVE_KVM_CPU_RELAX_INTERCEPT
- 	select HAVE_KVM_NO_POLL
-+	select HAVE_KVM_VCPU_RUN_PID_CHANGE
- 	select VIRT_XFER_TO_GUEST_WORK
- 	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
- 	select KVM_VFIO
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 47cb9eba113b..33be45eec32b 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -3717,6 +3717,13 @@ void kvm_service_local_tlb_flush_requests(struct kvm_vcpu *vcpu)
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_service_local_tlb_flush_requests);
- 
-+int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
-+{
-+	vcpu->arch.st.last_steal = current->sched_info.run_delay;
-+
-+	return 0;
-+}
-+
- static void record_steal_time(struct kvm_vcpu *vcpu)
- {
- 	struct gfn_to_hva_cache *ghc = &vcpu->arch.st.cache;
--- 
-2.43.5
+
+This patchset:
+
+1. Resets vcpu->arch.st.last_steal when the vCPU PID changes, as suggested
+by Sean. Both x86 and arm64 are supported.
+
+2. Although David suggested accounting the run_delay left over from the
+previous vCPU PID, this series does not do that. It would be easy to make
+that work if KVM could simply assume every transition is a vCPU PID change.
+In practice, KVM does not always have enough information about the previous
+vCPU PID, e.g. after live migration, unless a new ioctl is introduced. For
+now, this series simply resets last_steal.
+
+3. Although David also suggested doing the same for Xen-on-KVM vCPUs, this
+series does not reset last_steal for Xen vCPUs. That change itself would
+not be difficult, but Xen uses a different mechanism to account downtime,
+including runnable time and offline time when a vCPU is not running. It may
+therefore need no additional ioctl, or a smaller ioctl extension, to account
+run_delay left over from the previous PID. For now, this series changes only
+regular x86 steal time and arm64 PV time.
+
+4. Guest kernel changes are not included. I may send it separately to keep
+this series limited to the KVM hypervisor.
+
+[PATCH 1/5] x86/kvm: Reset prev_steal_time and prev_steal_time_rq when enabling steal time
+https://lore.kernel.org/all/20260505003044.78693-2-dongli.zhang@oracle.com
+
+5. There is one remaining corner case: this series resets last_steal when
+the vCPU run PID changes, but not when steal time is enabled. If additional
+host run_delay is accumulated after the PID changes but before the guest
+enables steal time, that delta could be unexpectedly accounted to guest
+vCPU steal time. In practice, this should not happen for Linux guests.
+
+
+Dongli Zhang (4)
+  KVM: x86: Reset last_steal on vCPU pid change
+  KVM: arm64: Reset last_steal on vCPU pid change
+  KVM: selftests: Test steal time across vCPU pid changes on x86
+  KVM: selftests: Add arm64 coverage for steal time pid changes
+
+ arch/arm64/include/asm/kvm_host.h               |   1 +
+ arch/arm64/kvm/arm.c                            |   2 +
+ arch/arm64/kvm/pvtime.c                         |   5 +
+ arch/x86/kvm/Kconfig                            |   1 +
+ arch/x86/kvm/x86.c                              |   7 +
+ tools/testing/selftests/kvm/Makefile.kvm        |   2 +
+ .../selftests/kvm/steal_time_change_pid.c       | 216 +++++++++++++++++++
+ 7 files changed, 234 insertions(+)
+
+base-commit: 3eb40771c00a8488fa6ed2cc1fe203477908bf38
+
+Thank you very much!
+
+Dongli Zhang
 
