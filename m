@@ -1,286 +1,294 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CAD213254
-	for <kvm@vger.kernel.org>; Sun, 16 Aug 2026 16:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786897848; cv=pass; b=ng4cm7A1w4rrPM7NW3AekFr2ixE1hT6zeGRx4XihFSwoBiTNNdcf0Gx7mFQdh/ofv0Muc3x6G6OgkWHFbfNQ1z2Biw3GAaHJX5zz0FXbad6Ivpw5fzRxNbhobDqakvvPdcPIAl8GkJ3LbhTcjiR0DvAes9W9bP8J0gXbJEvyvUw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786897848; c=relaxed/simple;
-	bh=lyIOK0Fwe9u9oLlJGgcvBAoE+5AUU4CoHDlbj7aRaEk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TKCywrPBN49JFvUeQq9O/byZxV9Ri/naohuS7vffrKH5lqYPPoQvafGxIkp5iIXk7K15bOokcVPe25lwrG+e/GV2g7nB+OLAm1M4qY1oJ/sa1CDK0tp/9WNjAL66488RNR+jV5ZG0YwqQ02RhEzbuBYHUNXi+r1bbbXW6Zs8q98=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=QpkjUCIY; arc=pass smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630722E737D
+	for <kvm@vger.kernel.org>; Sun, 16 Aug 2026 19:13:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786907605; cv=none; b=Rs/Sqsl4omS5T2oMr9qtsFJCBEfZuqkWE0NwJMxv0bp4IY6Fz6/7IdyiPYi8VnPXbWz+OwuRoxMgnBsl+yRf4qjGcn74YDbHevnbPreG3qey1ok5RyRNHAfDubOcOk8WS4ZyT6g71kmgT4bDP43rxGwU9u5bgqcdXNDhAyVEKME=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786907605; c=relaxed/simple;
+	bh=o/yEwsZkXnbE4yqKZMMJ1dRx5P6T3KLfXBYSN+saGmk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=P7EsEIfYRlFSqBIg4FnHkOak8XbSVwERgaTOy/N+Z59BjmsL5ONW/AabWaRJsdOdtCGwSPtkCHxpbJdUTItK7yotMPutuqgFdiWywkFEtcc23MkvUTXReWJGv6lXY2gUnhTju6KvHDcy1Z5EB46zCAJnQy822JFIjc974GNAp3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VJAayYhW; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="QpkjUCIY"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-47362928f65so2537021f8f.2
-        for <kvm@vger.kernel.org>; Sun, 16 Aug 2026 09:30:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786897844; cv=none;
-        d=google.com; s=arc-20260327;
-        b=l728tddhAC5MMl9N47NOAT2s0wPl3SKt+SCa04cz5DwBCUoW3WtMK8OGJ43sYqMdVw
-         LYr69MEplwGyZOleFQMvKh1r9Dvds0aG6+dmAGbNjm+ZX4FWH6+W6hTqBh6vbgJm7k3r
-         sigDvf7jC0J3Mn+NVA9z0ICx5Hb20ZDXpaHfJ5jFtBcQ3BrmtobbaeQeQxSJTJvHIo/H
-         b0ocI6tHrRl0n3qWALZxdKZ7wNDj+izWTnNCZSowR8NvxF4+qmhjGeQzDycdaJ+O3CzX
-         wsQJgBI/o/V4X1cpHqV8PmDspzAGCWYNVi3KIz8Cu+Ro5P4PepzaWNLp0dzLHR8k+d1C
-         DXSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Gsir39bvo4crz0oUefgwXVCPjEjw0HYQy4PeY/lGMoM=;
-        fh=K+Jiu+20smOlUYeGERszc+SZGfXJ/pyHHAwHKRxV3zI=;
-        b=J0r1l4PubRRu8ksQ8JC6sBPL0Sggv5tMsi/+lU19yr0fkumGLIWjCXhz7HlGbucLg8
-         EJPoJglqsLKeOr1rmTvKVKJ4DGfiwT05TYBFuA4lktUy1H0FZAnRpzDPwwlnoAm6pCn2
-         /+gxfphN+NNWb7y4IIb3UFW6xhJGqzHK6vhbnIbUDkIlTlI1fqTK4xhhxE8wePlksal/
-         nUEUTvHAc3KUV79HxyRn9CQt14/2fKiv+eB61yWncS9b1xsbybXdLrVXrJsFIGXynEV2
-         04a9+BzUEy3oLoeY6iRbNuh/42y24MAJX2gjAbaNYgX9UYl3uY+koTcVoypLY218gT9J
-         75sA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1786897844; x=1787502644; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Gsir39bvo4crz0oUefgwXVCPjEjw0HYQy4PeY/lGMoM=;
-        b=QpkjUCIYW3QBb40UONMIon+N0mtY5KcrvFuEYqbN/zfuSe6oNDkz52PgVWocW5yShy
-         aOr0b/wTHWcNOEwlBNofrwxJUYqWqroB5hRKXVE3ouArA+usA5HAMN+el2r951sTQ1Di
-         6U92S8zUQUBIDAUezib80ujXZIfjPH7rK9gI9MaJNNyqM3Iou8CZUM6VOO9GOm7WHOJs
-         tSjXtNLWlp1e7FU/vmniYHsRHbY+7yrNPvvO2KKGsPLPCmM5nNm5sAX3bp54CLFPPu1Q
-         Zr8kQwTTapJh0gRMYlLPiSLb23zJB0L42VDUx/qvV0PnuGDgPMWkAlju1I+EPMJQH1+X
-         H1NQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786897844; x=1787502644;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Gsir39bvo4crz0oUefgwXVCPjEjw0HYQy4PeY/lGMoM=;
-        b=gCLJs8UbhQ5q0Zk+gqZ/eyBvXiWVtY15RYdza7i6VacROFJXcqVD/ZVFO3qJKjc/WR
-         kxgMoadofluvToOD+qVqw2Zzv5IzyWVSVAS1hNHeEWZguYFJVhdgft4I8XdzBWn5XKgG
-         ooHMct68nOoyNXxRNv38AcYckAQGZCA66O4dbwmf+UjJwT/aVC7s6aMP8cbQ+ffeuKUL
-         O7YrS38Ty4pRoFwRrszZ1VbkOYEa9gUIpzFcyJmE5SO8nLshuROgmqyD9++MIhznVSZs
-         w/E0JSlmJ3n8YH+pmE9FatrirW9bm9ho5kFdJaBo/zzIoBPSUoNyXHxAx40Ycp2UgWWN
-         7REA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro5vBpcbIiOhotugDlepBPkF70s98MfiQJznwJh2x4nqJbIZDT8BInyJO+8Ia5lG3fx9DE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOt93xiq2xW2nREe2xE0EM5aUqyUYx8rtqpoI6AFdN2wWf97UE
-	2hQUyxrPnwxwfTjI5BdM+DRK1gGITp9i4CyPsMvhr+dtexn5/M4SeK0CdtJX+/6I16ejijMLCCu
-	pboMAAYqfdsUx6/uvnHZbixurYfL/0LW8Dzr9kfStjQ==
-X-Gm-Gg: AR+sD10fYnF6xT3h5dOPENL4OvBicfj4WvxckbaRx8uTJ2SszPfyznpJcUeMOQjUB8C
-	uJQkgNEm5RE9qa2okZJQYFQa73Kj1GGTllJC6I3TfGoZS54o3cgthA+AoDROFoGe+FC8Y5EHUEF
-	jvgcu1ULpXdCRDR3dfZvAbOcONKaaK6bxUK2hO8UQqgpRE95AeBHWN3bEbMBGxafeFrdE9dZBD9
-	4F3KtzIdxCCJEnp+Z0FJ31Jp8MMWfdEn79iOixiq0bgdfiDbDjqjFUCYHv3qwmkJG9YrAcQKojQ
-	thrsidQoAtWHIBYEbPY9zIm4FDazf0hJCqOdv4uyThGn7YltUo128HTrXInfNcV8IKTieuLtrxk
-	LhNSJxebWtBpS8WYRhaJWqc7TnAcywx5FJ8w2lLrb8dnKTPfyD6tzgziQsQiLW0ov
-X-Received: by 2002:a05:6000:4a05:b0:45e:f8d0:d22c with SMTP id
- ffacd0b85a97d-48160761e84mr31010929f8f.25.1786897844332; Sun, 16 Aug 2026
- 09:30:44 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VJAayYhW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786907602;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+5wpuBZXAGueWMmgc7XSO8gFuXPjkb9QB1fhiVwJj/Q=;
+	b=VJAayYhWCs1r250FmP7Hgku/MgrNPNhkDCBW8grOLX95N3ntoXcFVZmr5D2XEIh2ydpzIT
+	DmiJuclr41NaxzshS9HIRs7IYCc3TMWfDXJ/0lYT0X/XFwODt4T7B/IC4p/JjVkcaVrhVq
+	Jc+MGV6nxgLDyH9xmuDWpipg5j1jIzo=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-556-8siE_Vi6M-287743nMDNgA-1; Sun,
+ 16 Aug 2026 15:13:13 -0400
+X-MC-Unique: 8siE_Vi6M-287743nMDNgA-1
+X-Mimecast-MFC-AGG-ID: 8siE_Vi6M-287743nMDNgA_1786907592
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BCF231800471;
+	Sun, 16 Aug 2026 19:13:12 +0000 (UTC)
+Received: from localhost (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7718718005BB;
+	Sun, 16 Aug 2026 19:13:11 +0000 (UTC)
+From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+Date: Sun, 16 Aug 2026 23:12:31 +0400
+Subject: [PATCH v3 04/49] target/i386: decouple cpu_x86_inject_mce() from
+ Monitor
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAAhSdy2AOkykd1JyrF6kJNsZv9M8rYJqVX1TUZNe3RDehZMxHQ@mail.gmail.com>
-In-Reply-To: <CAAhSdy2AOkykd1JyrF6kJNsZv9M8rYJqVX1TUZNe3RDehZMxHQ@mail.gmail.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Sun, 16 Aug 2026 22:00:31 +0530
-X-Gm-Features: AcwNN1V5WjOXt2BdHCccYQ73p0KVFwqjs6aePVps2XGzyv7PMYjCvxF-XjFQWuk
-Message-ID: <CAAhSdy1GMWcYMoNTvSxdu39AWhexZLHc56kVyBeDC1PNAL5fzA@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM/riscv changes for 7.3
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, 
-	Andrew Jones <andrew.jones@oss.qualcomm.com>, Atish Patra <atish.patra@linux.dev>, 
-	"KVM RISC-V (KVM/riscv)" <kvm-riscv@lists.infradead.org>, KVM General <kvm@vger.kernel.org>, 
-	linux-riscv <linux-riscv@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260816-qemu-no-hmp-v3-4-e53fc35bc550@redhat.com>
+References: <20260816-qemu-no-hmp-v3-0-e53fc35bc550@redhat.com>
+In-Reply-To: <20260816-qemu-no-hmp-v3-0-e53fc35bc550@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Zhao Liu <zhao1.liu@intel.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
+ kvm@vger.kernel.org, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7649;
+ i=marcandre.lureau@redhat.com; h=from:subject:message-id;
+ bh=o/yEwsZkXnbE4yqKZMMJ1dRx5P6T3KLfXBYSN+saGmk=;
+ b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBqgguw/K+6+Wb9ySL/wnYLu5qf6JBMHQdY2tXNP
+ VxBIKL3BauJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCaoILsAAKCRDa6OEJdZac
+ 5S6+D/9p5VmubM0NyBiQerNIxYrPJ3uhqE5TBYq5YReIM6GfwQ6g7aPmIf19hoYReKkQyPmr+aS
+ dwMB3FvsB2H/hZiJqHn4DQo+7WeYIDdkLiNCem1jK2iIUKyExZo2G2CIzYHN55pVQ+OU2bffnPP
+ xMVkbYv3eKVOZJBMm03FNwRfbeinpZ+XPgsAWytQ0F3Yc2DmVerK0UhhmWKWSd7ktWI9WaFfd0t
+ ihitg+AY8oKUlfIUPslTKGqLJ+CN4qFZGzT29BaBHmLPnSa99SNrQm2l60dutYhMGsnEQNWHcu4
+ 8HHWCulkyMz0RPtijPv+YYB9L3UEV/MjUMft203Q6yd+Yk5UMDuz6LoHJ3erzk8iquWqgHow/Tz
+ aeeztJ126yNZRFbBWyTTJXookfh5iuvg02tsGrigewxx0xW+rkR+pmEM4c68eujaLfNlPBjBq5i
+ Hmlp+gaLhjUOzl004g/KrS7ZNiP4GDb05eOy8qNJeNe7bbA3m4y+EJ+/vpdEarhy7SixYxrymI5
+ sLyjOUcvF21kExh7eayYhMR2/6769Vtg7r7ygcjLDcceFfer0BXnwf53edTmjo4teAP8acm55AR
+ lQVNUIXIU/ThhS6ta9OQ0B4VDtNgDvx7GPcYXXd+WbvHrk2XCpjUpEYCMwwXGF4nj//upx9BDjK
+ XSskOL3YhU9mfgA==
+X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
+ fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Hi Paolo,
+Replace monitor_printf() error reporting with the standard **errp
+pattern. Drop the Monitor *mon parameter and return bool to indicate
+success, improving the function usage from non-HMP contexts. Update the
+KVM MCE injection path and hmp_mce() accordingly.
 
-There is a small conflict between the kvm-riscv tree and the riscv tree whi=
-ch
-slipped through the cracks. This conflict will appear at your end if the 7.=
-3
-pull-request from RISC-V tree is merged before your 7.3 pull-request.
+Notes:
+ - we may want to print the error in KVM path too
 
-This can be resolved as follows:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ target/i386/cpu.h     |  4 ++--
+ target/i386/helper.c  | 49 ++++++++++++++++++++++++++++---------------------
+ target/i386/kvm/kvm.c |  4 ++--
+ target/i386/monitor.c |  6 ++++--
+ 4 files changed, 36 insertions(+), 27 deletions(-)
 
-diff --cc arch/riscv/kvm/vcpu_vector.c
-index 3c3183b39ae2a,bf5c94d8786b5..0000000000000
---- a/arch/riscv/kvm/vcpu_vector.c
-+++ b/arch/riscv/kvm/vcpu_vector.c
-@@@ -56,9 -56,8 +56,8 @@@ void kvm_riscv_vcpu_guest_vector_restor
-                                         unsigned long *isa)
-  {
-        if ((cntx->sstatus & SR_VS) !=3D SR_VS_OFF) {
- -              if (riscv_isa_extension_available(isa, v))
- +              if (riscv_isa_extension_available(isa, V))
--                       __kvm_riscv_vector_restore(cntx);
--               kvm_riscv_vcpu_vector_clean(cntx);
-+                       riscv_v_flags_set(riscv_v_flags() |
-RISCV_V_VCPU_NEED_RESTORE);
-        }
-  }
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index e6a197602d87..4f342b69f471 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2847,9 +2847,9 @@ void do_cpu_init(X86CPU *cpu);
+ #define MCE_INJECT_BROADCAST    1
+ #define MCE_INJECT_UNCOND_AO    2
+ 
+-void cpu_x86_inject_mce(Monitor *mon, X86CPU *cpu, int bank,
++bool cpu_x86_inject_mce(X86CPU *cpu, int bank,
+                         uint64_t status, uint64_t mcg_status, uint64_t addr,
+-                        uint64_t misc, int flags);
++                        uint64_t misc, int flags, Error **errp);
+ 
+ uint32_t cpu_cc_compute_all(CPUX86State *env1);
+ 
+diff --git a/target/i386/helper.c b/target/i386/helper.c
+index 683621416213..4133b5f244c6 100644
+--- a/target/i386/helper.c
++++ b/target/i386/helper.c
+@@ -18,6 +18,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qapi/error.h"
+ #include "qapi/qapi-events-run-state.h"
+ #include "cpu.h"
+ #include "exec/cputlb.h"
+@@ -27,7 +28,6 @@
+ #ifndef CONFIG_USER_ONLY
+ #include "system/hw_accel.h"
+ #include "system/memory.h"
+-#include "monitor/monitor.h"
+ #include "kvm/kvm_i386.h"
+ #endif
+ #include "qemu/log.h"
+@@ -381,7 +381,7 @@ out:
+ }
+ 
+ typedef struct MCEInjectionParams {
+-    Monitor *mon;
++    Error **errp;
+     int bank;
+     uint64_t status;
+     uint64_t mcg_status;
+@@ -428,9 +428,9 @@ static void do_inject_x86_mce(CPUState *cs, run_on_cpu_data data)
+          * reporting is disabled
+          */
+         if ((cenv->mcg_cap & MCG_CTL_P) && cenv->mcg_ctl != ~(uint64_t)0) {
+-            monitor_printf(params->mon,
+-                           "CPU %d: Uncorrected error reporting disabled\n",
+-                           cs->cpu_index);
++            error_setg(params->errp,
++                "CPU %d: Uncorrected error reporting disabled",
++                cs->cpu_index);
+             return;
+         }
+ 
+@@ -439,10 +439,9 @@ static void do_inject_x86_mce(CPUState *cs, run_on_cpu_data data)
+          * reporting is disabled for the bank
+          */
+         if (banks[0] != ~(uint64_t)0) {
+-            monitor_printf(params->mon,
+-                           "CPU %d: Uncorrected error reporting disabled for"
+-                           " bank %d\n",
+-                           cs->cpu_index, params->bank);
++            error_setg(params->errp,
++                "CPU %d: Uncorrected error reporting disabled for bank %d",
++                cs->cpu_index, params->bank);
+             return;
+         }
+ 
+@@ -459,7 +458,7 @@ static void do_inject_x86_mce(CPUState *cs, run_on_cpu_data data)
+         if (need_reset) {
+             emit_guest_memory_failure(MEMORY_FAILURE_ACTION_RESET, ar,
+                                       recursive);
+-            monitor_printf(params->mon, "%s", msg);
++            error_setg(params->errp, "%s", msg);
+             qemu_log_mask(CPU_LOG_RESET, "%s\n", msg);
+             qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
+             return;
+@@ -488,14 +487,15 @@ static void do_inject_x86_mce(CPUState *cs, run_on_cpu_data data)
+     emit_guest_memory_failure(MEMORY_FAILURE_ACTION_INJECT, ar, recursive);
+ }
+ 
+-void cpu_x86_inject_mce(Monitor *mon, X86CPU *cpu, int bank,
++bool cpu_x86_inject_mce(X86CPU *cpu, int bank,
+                         uint64_t status, uint64_t mcg_status, uint64_t addr,
+-                        uint64_t misc, int flags)
++                        uint64_t misc, int flags, Error **errp)
+ {
++    ERRP_GUARD();
+     CPUState *cs = CPU(cpu);
+     CPUX86State *cenv = &cpu->env;
+     MCEInjectionParams params = {
+-        .mon = mon,
++        .errp = errp,
+         .bank = bank,
+         .status = status,
+         .mcg_status = mcg_status,
+@@ -506,24 +506,27 @@ void cpu_x86_inject_mce(Monitor *mon, X86CPU *cpu, int bank,
+     unsigned bank_num = cenv->mcg_cap & 0xff;
+ 
+     if (!cenv->mcg_cap) {
+-        monitor_printf(mon, "MCE injection not supported\n");
+-        return;
++        error_setg(errp, "MCE injection not supported");
++        return false;
+     }
+     if (bank >= bank_num) {
+-        monitor_printf(mon, "Invalid MCE bank number\n");
+-        return;
++        error_setg(errp, "Invalid MCE bank number");
++        return false;
+     }
+     if (!(status & MCI_STATUS_VAL)) {
+-        monitor_printf(mon, "Invalid MCE status code\n");
+-        return;
++        error_setg(errp, "Invalid MCE status code");
++        return false;
+     }
+     if ((flags & MCE_INJECT_BROADCAST)
+         && !cpu_x86_support_mca_broadcast(cenv)) {
+-        monitor_printf(mon, "Guest CPU does not support MCA broadcast\n");
+-        return;
++        error_setg(errp, "Guest CPU does not support MCA broadcast");
++        return false;
+     }
+ 
+     run_on_cpu(cs, do_inject_x86_mce, RUN_ON_CPU_HOST_PTR(&params));
++    if (*errp) {
++        return false;
++    }
+     if (flags & MCE_INJECT_BROADCAST) {
+         CPUState *other_cs;
+ 
+@@ -537,8 +540,12 @@ void cpu_x86_inject_mce(Monitor *mon, X86CPU *cpu, int bank,
+                 continue;
+             }
+             run_on_cpu(other_cs, do_inject_x86_mce, RUN_ON_CPU_HOST_PTR(&params));
++            if (*errp) {
++                return false;
++            }
+         }
+     }
++    return true;
+ }
+ 
+ static inline target_ulong get_memio_eip(CPUX86State *env)
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 644c45fb0a02..1eeadb99adac 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -748,8 +748,8 @@ static void kvm_mce_inject(X86CPU *cpu, hwaddr paddr, int code)
+         flags = 0;
+     }
+ 
+-    cpu_x86_inject_mce(NULL, cpu, 9, status, mcg_status, paddr,
+-                       (MCM_ADDR_PHYS << 6) | 0xc, flags);
++    cpu_x86_inject_mce(cpu, 9, status, mcg_status, paddr,
++                       (MCM_ADDR_PHYS << 6) | 0xc, flags, NULL);
+ }
+ 
+ static void emit_hypervisor_memory_failure(MemoryFailureAction action, bool ar)
+diff --git a/target/i386/monitor.c b/target/i386/monitor.c
+index a536712c755a..785a13dd7107 100644
+--- a/target/i386/monitor.c
++++ b/target/i386/monitor.c
+@@ -580,6 +580,7 @@ void hmp_mce(Monitor *mon, const QDict *qdict)
+     uint64_t addr = qdict_get_int(qdict, "addr");
+     uint64_t misc = qdict_get_int(qdict, "misc");
+     int flags = MCE_INJECT_UNCOND_AO;
++    Error *err = NULL;
+ 
+     if (qdict_get_try_bool(qdict, "broadcast", false)) {
+         flags |= MCE_INJECT_BROADCAST;
+@@ -587,7 +588,8 @@ void hmp_mce(Monitor *mon, const QDict *qdict)
+     cs = qemu_get_cpu(cpu_index);
+     if (cs != NULL) {
+         cpu = X86_CPU(cs);
+-        cpu_x86_inject_mce(mon, cpu, bank, status, mcg_status, addr, misc,
+-                           flags);
++        cpu_x86_inject_mce(cpu, bank, status, mcg_status, addr, misc,
++                           flags, &err);
++        hmp_handle_error(mon, err);
+     }
+ }
 
-Best Regards,
-Anup
+-- 
+2.55.0.543.g5ebe2ebe4ea8
 
-
-
-On Sat, Aug 15, 2026 at 4:28=E2=80=AFPM Anup Patel <anup@brainfault.org> wr=
-ote:
->
-> Hi Paolo,
->
-> We have the following KVM RISC-V changes for 7.3:
-> 1) Svadu/Zicfiss/Zicfilp FWFT support for Guest
-> 2) Use try_cmpxchg for IMSIC MRIF RMW
-> 3) More arch-specific tracepoints in KVM RISC-V
-> 4) Eager Page Splitting for KVM RISC-V
-> 5) Optimize hfence request handling for SMP Guests
-> 6) Improve dirty log clearing by skipping zero bits in mask
-> 7) Guard HFENCE range loops against overflow
-> 8) CPU PM notifiers in KVM RISC-V for non-retentive idle states
-> 9) Fix kernel-mode vector context save/restore for Guest
->
-> In addition to the above, we also have a few small fixes such as
-> limit checks, array overflow checks, data type changes, etc.
->
-> Please pull.
->
-> Regards,
-> Anup
->
-> The following changes since commit f5098b6bae761e346ebcd9da7f95622c04733c=
-ff:
->
->   Linux 7.2-rc5 (2026-07-26 14:45:48 -0700)
->
-> are available in the Git repository at:
->
->   https://github.com/kvm-riscv/linux.git tags/kvm-riscv-7.3-1
->
-> for you to fetch changes up to b5060a4aa33d7d78a8c1837ab08ef0c81ea96650:
->
->   RISC-V: KVM: fix vcpu vector context handling for kernel-mode vector
-> (2026-08-13 13:20:02 +0530)
->
-> ----------------------------------------------------------------
-> KVM/riscv changes for 7.3
->
-> - Svadu/Zicfiss/Zicfilp FWFT support for Guest
-> - Use try_cmpxchg for IMSIC MRIF RMW
-> - More arch-specific tracepoints in KVM RISC-V
-> - Eager Page Splitting for KVM RISC-V
-> - Optimize hfence request handling for SMP Guests
-> - Improve dirty log clearing by skipping zero bits in mask
-> - Guard HFENCE range loops against overflow
-> - CPU PM notifiers in KVM RISC-V for non-retentive idle states
-> - Fix kernel-mode vector context save/restore for Guest
->
-> ----------------------------------------------------------------
-> Andy Chiu (3):
->       riscv: vector: refactor riscv_v_start_kernel_context
->       riscv: vector: allow non-preemptible kernel-mode vector with IRQs o=
-ff
->       RISC-V: KVM: fix vcpu vector context handling for kernel-mode vecto=
-r
->
-> Bingyu.Xian (2):
->       RISC-V: KVM: Use unsigned int for vma_pageshift
->       RISC-V: KVM: Widen G-stage fault address to gpa_t
->
-> Guidong Han (1):
->       RISC-V: KVM: Fix PMU event info array size overflow
->
-> Inochi Amaoto (11):
->       RISC-V: KVM: Add support for Svadu FWFT features
->       KVM: riscv: selftests: add Svadu FWFT extension to get-reg-list tes=
-t
->       RISC-V: KVM: Allow Zicfiss/Zicfilp extensions for Guest/VM
->       RISC-V: KVM: Add ssp context save/restore
->       RISC-V: KVM: Handle software-check exits for VCPU
->       RISC-V: KVM: Add support for control-flow integrity FWFT features
->       KVM: riscv: selftests: add Zicfiss/Zicfilp extension to get-reg-lis=
-t test
->       RISC-V: KVM: Add SBI extension validate callback
->       RISC-V: KVM: Add SBI FWFT validation support
->       RISC-V: KVM: Reset the SBI extension when disable it
->       RISC-V: KVM: Mark the reset callback of FWFT extension always dirti=
-es CSR
->
-> Pengpeng Hou (4):
->       RISC-V: KVM: Allow memslots ending at the GPA limit
->       RISC-V: KVM: Reject overlapping AIA IMSIC address fields
->       RISC-V: KVM: Guard HFENCE range loops against overflow
->       RISC-V: KVM: Avoid one-word masks for SBI v0.1 all-harts
->
-> Wang Yechao (8):
->       RISC-V: KVM: Add the split page cache for ioctl context
->       RISC-V: KVM: Split huge pages when dirty logging is enabled
->       RISC-V: KVM: Remove redundant TLB flush operations
->       RISC-V: KVM: Split huge pages during KVM_CLEAR_DIRTY_LOG
->       RISC-V: KVM: Add the eager_page_split module parameter
->       RISC-V: KVM: Separate req and fallback_req masks in make_xfence_req=
-uest
->       RISC-V: KVM: Introduce make_xfence_request_nodata for FENCE.I reque=
-sts
->       RISC-V: KVM: Improve dirty log clearing by skipping zero bits in ma=
-sk
->
-> Yicong Yang (1):
->       RISC-V: KVM: Use try_cmpxchg for IMSIC MRIF RMW
->
-> Yong-Xuan Wang (2):
->       KVM: RISC-V: Clear former VCPU cache on virtualization disable
->       KVM: RISC-V: Add CPU PM notifier for non-retention idle states
->
-> Yuhang.Chen (1):
->       RISC-V: KVM: Add more arch-specific tracepoints
->
-> Yuhang.chen (1):
->       RISC-V: KVM: Account VM-scoped allocations to the VM cgroup
->
-> Zongmin Zhou (1):
->       KVM: riscv: Fix infinite loop in NACL hfence entry allocation
->
->  Documentation/admin-guide/kernel-parameters.txt  |   7 +-
->  arch/riscv/include/asm/csr.h                     |   1 +
->  arch/riscv/include/asm/kvm_aia.h                 |   3 +
->  arch/riscv/include/asm/kvm_gstage.h              |   9 +-
->  arch/riscv/include/asm/kvm_host.h                |  10 ++
->  arch/riscv/include/asm/kvm_vcpu_insn.h           |   4 +-
->  arch/riscv/include/asm/kvm_vcpu_sbi.h            |   4 +
->  arch/riscv/include/asm/kvm_vcpu_vector.h         |  24 +++
->  arch/riscv/include/asm/processor.h               |   8 +
->  arch/riscv/include/asm/simd.h                    |  16 +-
->  arch/riscv/include/asm/vector.h                  |   5 +
->  arch/riscv/include/uapi/asm/kvm.h                |  13 ++
->  arch/riscv/kernel/kernel_mode_vector.c           |  88 +++++++---
->  arch/riscv/kvm/aia.c                             |  42 +++++
->  arch/riscv/kvm/aia_aplic.c                       |   3 +-
->  arch/riscv/kvm/aia_device.c                      |   6 +
->  arch/riscv/kvm/aia_imsic.c                       |  18 +-
->  arch/riscv/kvm/gstage.c                          |  82 ++++++++-
->  arch/riscv/kvm/isa.c                             |   2 +
->  arch/riscv/kvm/main.c                            | 112 ++++++++++--
->  arch/riscv/kvm/mmu.c                             | 108 +++++++++++-
->  arch/riscv/kvm/nacl.c                            |   2 +-
->  arch/riscv/kvm/tlb.c                             | 117 ++++++++++---
->  arch/riscv/kvm/trace.h                           |  81 ++++++++-
->  arch/riscv/kvm/vcpu.c                            |  34 ++++
->  arch/riscv/kvm/vcpu_config.c                     |   2 +
->  arch/riscv/kvm/vcpu_exit.c                       |  20 ++-
->  arch/riscv/kvm/vcpu_insn.c                       |  17 +-
->  arch/riscv/kvm/vcpu_onereg.c                     |  68 +++++++-
->  arch/riscv/kvm/vcpu_pmu.c                        |  16 +-
->  arch/riscv/kvm/vcpu_sbi.c                        |  30 ++++
->  arch/riscv/kvm/vcpu_sbi_fwft.c                   | 207 +++++++++++++++++=
-+++++-
->  arch/riscv/kvm/vcpu_sbi_v01.c                    |  52 +++---
->  arch/riscv/kvm/vcpu_vector.c                     |  26 ++-
->  tools/testing/selftests/kvm/riscv/get-reg-list.c |  90 ++++++++++
->  35 files changed, 1169 insertions(+), 158 deletions(-)
