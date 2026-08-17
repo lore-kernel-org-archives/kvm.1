@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255873A7833
-	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 18:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE20340280
+	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 18:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786992732; cv=none; b=W6zWyX4smbuaHsuvGWIvRhymZkuOLrZfYt08KNizp+BxxcFSp1VefHA3ZEabf2yyIHWdpvxUUX0YxFjU1FL0OhdGT0OyOb0+zkyUxrQCR5pi07zbV5zdC62kuR9EXxfczS8/bdKFcbrN5/MORLqlSYMWlgxQUAK07N2dzRznoAg=
+	t=1786993074; cv=none; b=RqaIs9ZfwRnHXdp1DjcdzOzoYokCzp6JBSZ9VJz7UVyht6YpqvMQOyfNTMkVkI3VL2Vk2T1JVOYvLeNkJ2FwvKvmO/srmwG3++Bl/VIZ63Gb7rrbTOs8tiVo4iGwTEm74F4lY6JDh+rYApwEyIemBtwwl9pKLqqxTjE81aZE3s8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786992732; c=relaxed/simple;
-	bh=U59YY8tWt2DXoeT3VNgQ0uOaUwp/owrCgMMuo/R+fdA=;
+	s=arc-20240116; t=1786993074; c=relaxed/simple;
+	bh=egmA9exPVNOMULm/4yYyTjHvLNp+l0NQWIiGQeSAsqM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=TwgA1ysRB+LE80dmSkD0xKlmXxd4X0wSRHohPhqAjD9PwJI8k8qCgf4LHknlSTEtu9YmDGeS2AS1A2wrxDTp5Y+BElCIsMs/S82nPcO+FukM9BCe7oYIItT7fNnPwAeik0q2/+NJuKfh2dtVKTHAcNqCzg1JSH2wfQyqvK6lWFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RQEiVoHJ; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=FFn/C+NQfwi31pmNZv/Qqe8OkO7eesbLvSM+SWyIha+WcVrJUX7VPML/2KlM6wXtfI/cXK6jjG3/4EBreeq9MUKYZVie5C3lLigEuB2djhT8qnylKFICAv+cj0NVcfgQk/W1ZqYMCFrPpQEgScklXacUE71RUrFlr9sOOsIiaR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y3h13urf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RQEiVoHJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9FA61F000E9;
-	Mon, 17 Aug 2026 18:52:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y3h13urf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605521F00A3A;
+	Mon, 17 Aug 2026 18:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786992731;
-	bh=31px42Tr6HXJg0KuJTF2qxS87jxczlKfIQkYxPKKug8=;
+	s=k20260515; t=1786993073;
+	bh=Ri5AiNhZXHMzPDoA6P4Ud+Pf14qy/yTM6+Zf2kv+vb4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RQEiVoHJ59+LdRtd4pTdR6eA55MaYSthwPsfjxiuRCHes0ZAbXC5X3TIajF2fcsSX
-	 tHwg7tf4VIUi33zFT7h7cj83CWsfXQs6FwwfuRmkRzcXzV4BKGWOdUmjfZL8Gft3dG
-	 B5e4cH9x0AoXo5Trl3NLXB3YueftFqWvkRJKuYuvY2RakEUaX/8eo51HJuyvBDnN5w
-	 cezan+H20BFMsHedASdRD/HgzL94fvmCfG/YdHMEcr0p32g2weBKzEQ4dn8vNLs5r5
-	 XR/y3n7kmpVSShlRUIXcynkDtSVDA0uIA2Rlyoblz4YX3fn9eTkAsnX+jN23hm52Rc
-	 566orMcX7ghSw==
+	b=Y3h13urfbMD9ILeqm4DpPdZ5LpZEXW0kPM0ONsNtMnhQ7AjiUdAZZO7tpOny3OzYK
+	 iMx3APFDVJLcU1oZj+9D6gA3wJYVslH8YOiXwNieRavFvS3w31723RJEORaE1g+9Km
+	 /B6Zrfk/0up/EXkDzSAVBU6wwNYUlzEeQXcJid6LFkymwrBfu2LUtdBzkhyBRdM3r6
+	 gnmzAdmi1XXtPP66W8iPJt5uAqBX/Hj3JGUR7hevt2mTP3QZvDjgECMRhEHvbf7i+E
+	 1jT1CdZK9KrPOffVHscTCEbGgHxtT2bFFR6Enaj3cFEALYreh0NMT2HTZKDSMWdKbY
+	 jz3+31KrjFLQQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 3/8] KVM: x86/pmu: Rename and move
- vcpu_get_perf_capabilities() to pmu.h
+Subject: Re: [PATCH v8 8/8] KVM: selftests: Add PERF_METRICS and fixed
+ counter 3 tests
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Zide Chen" <zide.chen@intel.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260817183143.226156-4-zide.chen@intel.com>
+In-Reply-To: <20260817183143.226156-9-zide.chen@intel.com>
 References: <20260817183143.226156-1-zide.chen@intel.com>
- <20260817183143.226156-4-zide.chen@intel.com>
+ <20260817183143.226156-9-zide.chen@intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 17 Aug 2026 18:52:10 +0000
-Message-Id: <20260817185210.C9FA61F000E9@smtp.kernel.org>
+Date: Mon, 17 Aug 2026 18:57:52 +0000
+Message-Id: <20260817185753.605521F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,77 +47,50 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] Header files pmu.h and pmu_intel.h lack required includes, violatin=
-g self-contained header practices.
+- [Medium] Unhandled #GP / Selftest Crash when writing 0xdeaddead to MSR_PE=
+RF_METRICS.
 --
 
---- Patch [3]: [PATCH v8 3/8] KVM: x86/pmu: Rename and move vcpu_get_perf_c=
-apabilities() to pmu.h ---
-commit 7eb009fb5328b80368e10acda6cfe621b3e1e1c0
+--- Patch [8]: [PATCH v8 8/8] KVM: selftests: Add PERF_METRICS and fixed co=
+unter 3 tests ---
+commit 19d6869fac1fbdcc63ff54623403cec33b922848
 Author: Zide Chen <zide.chen@intel.com>
 
-KVM: x86/pmu: Rename and move vcpu_get_perf_capabilities() to pmu.h
+KVM: selftests: Add PERF_METRICS and fixed counter 3 tests
 
-This commit renames vcpu_get_perf_capabilities() to kvm_vcpu_get_perf_caps()
-and moves it to the common x86 PMU header. This prepares the function to be
-called from common x86 code to check the guest's PERF_METRICS capability.
+This commit adds a test case to exercise IA32_PERF_METRICS for Topdown
+(TMA) Level 1 metrics and extends the PMU selftest to cover Intel fixed
+counter 3.
 
-> diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
-> index 090c9bbb74f48..82f955e5a4507 100644
-> --- a/arch/x86/kvm/pmu.h
-> +++ b/arch/x86/kvm/pmu.h
+> diff --git a/tools/testing/selftests/kvm/x86/pmu_counters_test.c b/tools/=
+testing/selftests/kvm/x86/pmu_counters_test.c
+> --- a/tools/testing/selftests/kvm/x86/pmu_counters_test.c
+> +++ b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
 [ ... ]
-> @@ -271,6 +271,14 @@ static inline bool kvm_pmu_is_fastpath_emulation_all=
-owed(struct kvm_vcpu *vcpu)
->  				  X86_PMC_IDX_MAX);
->  }
-> =20
-> +static inline u64 kvm_vcpu_get_perf_caps(struct kvm_vcpu *vcpu)
+> +static void __guest_test_perf_metrics(void)
 > +{
-> +	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_PDCM))
-> +		return 0;
-
-[Severity: Low]
-Does this file need to include cpuid.h? guest_cpu_cap_has() is used here,
-but pmu.h does not include the header that defines it.
-
-> +
-> +	return vcpu->arch.perf_capabilities;
-> +}
-> +
->  void kvm_pmu_deliver_pmi(struct kvm_vcpu *vcpu);
 [ ... ]
-> diff --git a/arch/x86/kvm/vmx/pmu_intel.h b/arch/x86/kvm/vmx/pmu_intel.h
-> index 5d9357640aa18..dd447d8b6fdde 100644
-> --- a/arch/x86/kvm/vmx/pmu_intel.h
-> +++ b/arch/x86/kvm/vmx/pmu_intel.h
-> @@ -4,19 +4,9 @@
-> =20
->  #include <linux/kvm_host.h>
-> =20
-> -#include "cpuid.h"
-> -
-> -static inline u64 vcpu_get_perf_capabilities(struct kvm_vcpu *vcpu)
-> -{
-> -	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_PDCM))
-> -		return 0;
-> -
-> -	return vcpu->arch.perf_capabilities;
-> -}
-> -
->  static inline bool fw_writes_is_enabled(struct kvm_vcpu *vcpu)
->  {
-> -	return (vcpu_get_perf_capabilities(vcpu) & PERF_CAP_FW_WRITES) !=3D 0;
-> +	return (kvm_vcpu_get_perf_caps(vcpu) & PERF_CAP_FW_WRITES) !=3D 0;
+> +	/* Sanity check after PERF_METRICS disabled. */
+> +	__asm__ __volatile__("loop ." : "+c"((int){NUM_LOOPS}));
+> +	GUEST_ASSERT_EQ(rdmsr(MSR_PERF_METRICS), metrics);
+> +	wrmsr(MSR_PERF_METRICS, 0xdeaddead);
+> +
+> +	guest_test_rdpmc(INTEL_RDPMC_METRICS, true, 0xdeaddead);
+> +}
 
-[Severity: Low]
-Should pmu_intel.h include pmu.h? It calls kvm_vcpu_get_perf_caps() which
-is now defined in pmu.h, but the include appears to be missing.
+[Severity: Medium]
+Will this wrmsr(MSR_PERF_METRICS, 0xdeaddead) cause an unhandled #GP and
+crash the selftest on hosts with Mediated PMU pass-through?
 
->  }
-> =20
->  bool intel_pmu_lbr_is_enabled(struct kvm_vcpu *vcpu);
+Writing an architecturally invalid non-zero value to MSR_PERF_METRICS
+generates a #GP on real hardware. Under Mediated PMU, KVM configures the
+VMCS to pass-through MSR accesses directly to hardware, so this fault
+would be injected into the guest.
+
+If the hardware silently discards the write instead of faulting, will the
+subsequent guest_test_rdpmc() assertion fail because it expects to read back
+0xdeaddead, while the hardware holds the previous value?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260817183143.2261=
-56-1-zide.chen@intel.com?part=3D3
+56-1-zide.chen@intel.com?part=3D8
