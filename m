@@ -1,79 +1,234 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FB92405EB
-	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 03:07:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786936034; cv=none; b=rOevFOSqban2s7RET4/WKVjCL2Q4d6ZFWSEwn3ep/pBtJ3473M3Z7j8ZnKxYY2S+CtwTsjSm5zZm3Ql9Vu2f15XgUbxPdzHopiZd3fTztp417EYgRW5vsTfMpW2mIbuSypE0/dAR734EqZweWBQOkbfmZRjLZ4FB01MGaYPgeYY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786936034; c=relaxed/simple;
-	bh=zx70qdlLZTX+xp8Od42KhigdB2tEb9WRMnzoK9FvDgU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tSO3DscDlmama9IAqsEilIW+kGSX+fJQvYVNwgBNTg8Jkrjx36Ay7KtSl04DtXJlaUUiQ8lR/PLubOaucq1n0wxn0n/u7+zhSlwMZPsfnlourYIoriitYm1aMFfeHotcHG6ojEXBDug64LTJcxTD8m/GzXQlQ4befENtiwK3/lI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a6wRYQ0B; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87AC830216D
+	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 04:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786940362; cv=pass; b=shhMNPbLqv7rdbmiN8FgbS3LEmNsa9KrS/OWv0G8PbBBw0eWPBoV/iT0a6Q1pL8PZpinqbGvwF5KMaKGsn/Xup7rQPlQhwyzz88azEUrhphbG/IPoFgPzy+TXZjwnPSLPudg2QzIcCpoNaeiORwAuioXroM1KmVAx/hET1zTj58=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786940362; c=relaxed/simple;
+	bh=lpIs2XFFMgCO2eDKG9XpvrzJFsvhZRkiOhUb37vJUuk=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=puHfzcopYTG4NfFiyAOCTcF8quhKn24B78DELoL7CTominIdJkDTTSUvPHH4K0FbWMY4xHrbwTQuSUo+61RkbhMkUtVlwVmmqaKZABRGpa2C+H2zkXGjGgwWRtUbGgOSbNzqO4qrXKPsqBR1BLNbCLnFlo4Jmy0ZVoCekFVLNPc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d4Z1qDgx; arc=pass smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a6wRYQ0B"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786936032; x=1818472032;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=zx70qdlLZTX+xp8Od42KhigdB2tEb9WRMnzoK9FvDgU=;
-  b=a6wRYQ0BG+wuO2iBmtBpu0sErLUA3ZMPDIENImY/kyHiGLODtzps0t4T
-   c/Mrh+yGFzYVEJ+WTb6CXUia7OIY6vCo4l7klpw4dlWDPr/mlGWmsUTA2
-   gyct7bvnpOB3nTHnhX2sBfjfZaIQ3HVhnfAqwAs743LzRTnMr+elLu5Zq
-   6rxoZnkm8nZIOwAlz/wwlZkYGgTq8gHgKRcs0PBvZkKsRduIvE2eN5hMR
-   aVyWSOkP58jDqUrAuQfOUVv3I3nmXxKwL5yODClbUac+qYzSLzADF//Cp
-   ghwtLfaWBQMXZdgBUZjmoX9u9cWs2wcgPmDFUQhbGpAM+VxDKl5ce5mwt
-   A==;
-X-CSE-ConnectionGUID: 3k2EkuvDQuWAqUFquDf5JA==
-X-CSE-MsgGUID: fOSKv+L6RNiAJXpbEgJ14w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="86527038"
-X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
-   d="scan'208";a="86527038"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2026 20:07:12 -0700
-X-CSE-ConnectionGUID: urmtcBZkRuWLNwkvVW77JQ==
-X-CSE-MsgGUID: JbHYTAQcTb6X0OnutPoBjQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
-   d="scan'208";a="264828541"
-Received: from unknown (HELO [10.238.208.98]) ([10.238.208.98])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2026 20:07:12 -0700
-Message-ID: <901ee69d-9bd6-45fa-ae0f-0df35d80b94f@intel.com>
-Date: Mon, 17 Aug 2026 11:07:09 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d4Z1qDgx"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38ec1402b05so2140503a91.2
+        for <kvm@vger.kernel.org>; Sun, 16 Aug 2026 21:19:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786940360; cv=none;
+        d=google.com; s=arc-20260327;
+        b=iPfbmYyfPTuaZ51PNe65lubWvX2/M4QKeu//kg7FdO5jc1bxKRHL0QMRMLEA0cjz0g
+         5owOFa9ThqLAF6NcJ6P8bVdq8SmVr+pTP+TggBwzO0PEkHU/0kKCHZ8JXElCiVZtYAhI
+         cgqeTnmD4pW3IZUYusp+a3rBgHps8I6Vwbe6xR2NL/q1Mq9bRKSlvhS4u8N2miTpVNxH
+         f3Kvjr8dIWPR/OxYuzncxaZQYOTbOforPwsT9C6W7xBIeJkTbQTSanP+bODq0rhdc4Hs
+         I9+ElFFr1Qpwv7UNgBBCHMlSF0J6vg75AMYV+1WHDG5Nz+dhLP5hU0YtxFRu9WxHP9XH
+         QP4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=xivEul2vQ6DVrmdcX4kLhJE8WzqBo4aY4NPSm+NocTk=;
+        fh=JZMODi/udyKofpHC22Oik7ypB7wG2Zj/TXpwEXq+Ycc=;
+        b=qOlJ0/Vs0RTOzNQxuXYgY/ZL541IIRMCFZFBYcyLB7n2HHdoNxGqaEb+fG1oNE7/8x
+         jObUYHbpgnws0aeN9ILrkecojgNnAOljOlj2y0WEkxvxdvmJO55WXnwe1HFr7riVPINc
+         rINQVIhaEhRKnYBvRaPRII5zc/gLO2cfNVNEhLktCra4hSCYgpSk1NHdJnq/be2qQC5n
+         SH3KIDNEtn1Pk7n07CKd8JLLKv0t1xa5iermdPuSOi2l+DFj1FE/IqbeVf5si3fH8frr
+         LBtI7g3F5iA3KIwsSmFha+nrReXcZbec30miurAs2jzcTJ/RW013uHwjD/o7D/zRAqFl
+         TneQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786940360; x=1787545160; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xivEul2vQ6DVrmdcX4kLhJE8WzqBo4aY4NPSm+NocTk=;
+        b=d4Z1qDgxn//0BBIeicBMU83aBpv6v4tsbWYbUbIbSVWScYdFNjNy6C4K6w/Ow0EURs
+         I6R75I8GF57mZEt3CfTmnNDvZmbzHlUitckQjbTItPENaCMf+5+bi9nLe+OjcODUWQnh
+         BA6k1m5oq//xD4QG2+MRyxsfvIKbOk/9z1eUkIgimDGTS/5w6UbtzFfKWUaxtgBsZgQO
+         J3pX1wsUVan4fCuTH/sYLY1fKB3gZNXm5yED8i5TsQUpOpdj0H6Ql7AxkgmFUEol8yLm
+         8MYJdbE9mTnbIiNDL9GPzIqx11IbJy4+gdtTzOraOEU4c7MzXGoiCo1rBp2uEu5TTkvu
+         QJuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786940360; x=1787545160;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xivEul2vQ6DVrmdcX4kLhJE8WzqBo4aY4NPSm+NocTk=;
+        b=AFn19Ew5Kor/XFTN60VNCGAT0I2FHFczMNQ9LgOPrk6pNisSFbU1NGstr2Xrxtvz/z
+         f5QqS+0ysq1nJKdKBJy+Ezk2nwUnE5YSivRmSH5moNADYpLq7UJgLf+sSiYFj41Uq2DH
+         eTkpxkeCcmT/Z8wYkciZlLvtOJYzQVOVJw5M+1o+EGRhmG9bGuWyUFwNHoVtQKV6TtNU
+         giv4FzQT6h8quOm8qJDWjKNMUzEeFRvyZevn0T68EgJ231ahZaKEGkxW99AiiV0Jnzu4
+         F3jwg4P++bVSeQMioq74FUCLAFqQhvpEuGrPIwNAah9NmrknHHOjHt6X36lPuRmJNRLj
+         vmyw==
+X-Gm-Message-State: AOJu0YxeBrW4SK+N6gORQb2pOJJ64/0pSQj8y+QqyqvIizIPPDqwVDu9
+	/6CQu5tuokHb8gE0bmxKNMyOlLngvwAfLe3k4zy69UEyC5Dh4DP7xnzaA86IXZKL8sr4xnrphO1
+	IhTEBR3ece8PfJhZmFr5OwoMtPmCjgF4i6lXNHhxq
+X-Gm-Gg: AR+sD11ZKVv38dslVqLBVptVPsvcAAsC/Ut/cydvIwILnoktGpOtgQtXZrWI1ZV61dA
+	3fpe81UsUSpqjYGnL1tIIkLtojPcqru4Qbdqa2dXqoUSx0WCrSGKZ4enW+z/kMmsfJLTa3gwCOl
+	9aONivAvOONqfUmBxcmw6/LlpIa1Cq0fzhTRZfHleJhOBUtFF1GM4Zs1SpNsziSqQNnm1Tki6QD
+	lsHvaBjyQVd/J6GO3bWnHmGPTK45XgDPp1Ug7QGeibsUplGrSmJ1S6+buXv4SwK7mZaHch3b1l5
+	vL+eJTBg/KKyIyabl8QlWZu0uPCwne8tMEExh2RmgvOApRv9keTjV9R8pQWGfyzMeJoKTSpWJvo
+	p784Jzm0a3uJ5
+X-Received: by 2002:a17:90b:4c92:b0:37f:c28a:de61 with SMTP id
+ 98e67ed59e1d1-3933b958b03mr19010729a91.17.1786940359155; Sun, 16 Aug 2026
+ 21:19:19 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Sun, 16 Aug 2026 21:19:17 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Sun, 16 Aug 2026 21:19:17 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <4828f8e29801adb29a4d48b8980d3b3a0a813e06.camel@intel.com>
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
+ <5a44a6925715e1edbd379ac0ea5526ec990eb819.camel@intel.com> <4828f8e29801adb29a4d48b8980d3b3a0a813e06.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] KVM: VMX: Rename posted interrupt prefixes from "vmx"
- to "vt"
-To: Sean Christopherson <seanjc@google.com>, sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-References: <20260814161129.2177118-1-seanjc@google.com>
- <20260814161129.2177118-4-seanjc@google.com>
- <20260814161950.136041F000E9@smtp.kernel.org> <an9KM3Ye-GX7WggF@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <an9KM3Ye-GX7WggF@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Date: Sun, 16 Aug 2026 21:19:17 -0700
+X-Gm-Features: AcwNN1VIHmwnnDA2bzacKAIVX0yEdPw0lSMkAp36cPs6xox3IG56dYLMbQiMxOc
+Message-ID: <CAEvNRgELDhXvPFKaoz+w-yywoJn0WMWvA-Y2jfdnwJVSbCSWyw@mail.gmail.com>
+Subject: Re: [PATCH v14 00/22] TDX KVM selftests
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "Aktas, Erdem" <erdemaktas@google.com>, 
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>, "shuah@kernel.org" <shuah@kernel.org>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "afranji@google.com" <afranji@google.com>, 
+	"kas@kernel.org" <kas@kernel.org>, "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
+	"ira.weiny@intel.com" <ira.weiny@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"Chatre, Reinette" <reinette.chatre@intel.com>, 
+	"isaku.yamahata@intel.com" <isaku.yamahata@intel.com>, "seanjc@google.com" <seanjc@google.com>, 
+	"pratikrajesh.sampat@amd.com" <pratikrajesh.sampat@amd.com>, "oupton@kernel.org" <oupton@kernel.org>, 
+	"wyihan@google.com" <wyihan@google.com>, "sagis@google.com" <sagis@google.com>, "Gao, Chao" <chao.gao@intel.com>, 
+	"Wang, Roger" <runanwang@google.com>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, 
+	"ajones@ventanamicro.com" <ajones@ventanamicro.com>, "Qiang, Chenyi" <chenyi.qiang@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "jmcrey@google.com" <jmcrey@google.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Hunter, Adrian" <adrian.hunter@intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On 8/15/2026 1:02 AM, Sean Christopherson wrote:
-> On Fri, Aug 14, 2026,sashiko-bot@kernel.org wrote:
->> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
->> - [Low] The function `vmx_needs_pi_wakeup()` was not renamed to `vt_needs_pi_wakeup()`.
->> - [Low] The shared inline API `__vmx_deliver_posted_interrupt()` was not renamed to `__vt_deliver_posted_interrupt()`.
->> - [Low] A comment inside `vt_can_use_vtd_pi()` references the old `vmx_pi_start_bypass()` function name.
->> --
-> I also missed vmx_handle_nmi() and __vmx_handle_ept_violation().
+"Edgecombe, Rick P" <rick.p.edgecombe@intel.com> writes:
 
-So for TDX VMDoS series, I need to rename __vmx_handle_notify() to 
-vt_handle_notify() and extract handle_bus_lock_vmexit() from vmx.c to 
-main.c as vt_handle_bus_lock_vmexit() or just inline function in common.h?
+> On Thu, 2026-08-13 at 15:47 -0700, Rick Edgecombe wrote:
+>> On Wed, 2026-07-22 at 23:13 +0000, Lisa Wang wrote:
+>> > v14 revision for TDX KVM selftests based on kvm/next and guest_memfd:
+>> > In-place conversion support[1]. This series needs some changes from
+>> > in-place conversion v9. For ease of testing, an extra hack commit has
+>> > been added. The complete code is available at:
+>> > https://github.com/googleprodkernel/linux-cc/commits/tdx-selftests-v14
+>>
+>> Are you able to get sashiko review on this? Or did you internally somehow? It
+>> seems the public sashiko cannot figure out this stack.
+>
+> Actually why is this on top of in-place conversion? I thought the idea was to
+> break the series apart to get something basic upstream:
+> https://lore.kernel.org/all/aJ-6JpHD6xhAvZPy@google.com/
+>
+> Adding in-place conversion tests seems to be going in the opposite direction.
+>
+
+We wanted to have this series based on in-place conversion since
+non-in-place conversion is on a deprecation path. Also, it makes the set
+up easier :)
+
+At this point I don't think this series is going to make it for 7.3, so
+at best it makes it for 7.4 (together with in-place conversion), which I
+think works out?
+
+Sean, let us know what you think about scheduling. We can rebase without
+in-place conversion if necessary.
+
+>
+> Also, the branch does not build for me:
+> /usr/bin/ld: .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S:26:
+> undefined reference to `TD_BOOT_PARAMETERS_PER_VCPU'
+> /usr/bin/ld: .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S:30:
+> undefined reference to `TD_PER_VCPU_PARAMETERS_ESP_GVA'
+> /usr/bin/ld: .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S:33:
+> undefined reference to `TD_BOOT_PARAMETERS_GDT'
+> /usr/bin/ld: .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S:37:
+> undefined reference to `TD_BOOT_PARAMETERS_IDT'
+> /usr/bin/ld: .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S:44:
+> undefined reference to `TD_BOOT_PARAMETERS_CR4'
+> /usr/bin/ld: .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S:46:
+> undefined reference to `TD_BOOT_PARAMETERS_CR3'
+> /usr/bin/ld: .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S:48:
+> undefined reference to `TD_BOOT_PARAMETERS_CR0'
+> /usr/bin/ld: .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S:54:
+> undefined reference to `TD_PER_VCPU_PARAMETERS_GUEST_CODE'
+> collect2: error: ld returned 1 exit status
+> make: *** [Makefile.kvm:351:
+> .../linux/tools/testing/selftests/kvm/demand_paging_test] Error 1
+> make: *** Waiting for unfinished jobs....
+> /usr/bin/ld: .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.o: in
+> function `td_boot':
+> .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S:24: undefined
+> reference to `SIZEOF_TD_PER_VCPU_PARAMETERS'
+> /usr/bin/ld: .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S:26:
+> undefined reference to `TD_BOOT_PARAMETERS_PER_VCPU'
+> /usr/bin/ld: .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S:30:
+> undefined reference to `TD_PER_VCPU_PARAMETERS_ESP_GVA'
+> /usr/bin/ld: .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S:33:
+> undefined reference to `TD_BOOT_PARAMETERS_GDT'
+> /usr/bin/ld: .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S:37:
+> undefined reference to `TD_BOOT_PARAMETERS_IDT'
+> /usr/bin/ld: .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S:44:
+> undefined reference to `TD_BOOT_PARAMETERS_CR4'
+> /usr/bin/ld: .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S:46:
+> undefined reference to `TD_BOOT_PARAMETERS_CR3'
+> /usr/bin/ld: .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S:48:
+> undefined reference to `TD_BOOT_PARAMETERS_CR0'
+> /usr/bin/ld: .../linux/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S:54:
+> undefined reference to `TD_PER_VCPU_PARAMETERS_GUEST_CODE'
+> collect2: error: ld returned 1 exit status
+> make: *** [Makefile.kvm:351:
+> .../linux/tools/testing/selftests/kvm/dirty_log_test] Error 1
+>
+> If I apply these patches on 8cf3969a0b7d4 from the branch, it builds though. It
+> looks like a few changes are missing from the branch:
+>
+> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c
+> b/tools/testing/selftests/kvm/guest_memfd_test.c
+> index d6528c6f5e031..b099b09cbae3d 100644
+> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
+> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+> @@ -14,7 +14,7 @@
+>  #include <linux/bitmap.h>
+>  #include <linux/falloc.h>
+>  #include <linux/sizes.h>
+> -#include <sys/mman.h>
+> +#include <linux/mman.h>
+
+I recall a similar fix [1] you posted, I think both Lisa and I are
+relying on some LSP auto-including, we'll adopt <linux/mman.h>. Let me
+know you know a good way to configure the auto-includes.
+
+[1] https://lore.kernel.org/all/20260427204313.50741-1-rick.p.edgecombe@intel.com/
+
+What compiler/version are you using? We'd like to reproduce.
+
+>  #include <sys/types.h>
+>  #include <sys/stat.h>
+>
+> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/td_boot_offsets.c
+> b/tools/testing/selftests/kvm/lib/x86/tdx/td_boot_offsets.c
+> index b81cd16198ecf..7f76a3585b99a 100644
+> --- a/tools/testing/selftests/kvm/lib/x86/tdx/td_boot_offsets.c
+> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/td_boot_offsets.c
+> @@ -5,7 +5,7 @@
+>
+>  #include "tdx/td_boot.h"
+>
+> -static void __used common(void)
+> +static void __attribute__((used)) common(void)
+
+Not sure about this, I'll let Lisa look at this in more detail. I wonder
+if declaring __used is necessary at all.
+
+>  {
+>         OFFSET(TD_BOOT_PARAMETERS_CR0, td_boot_parameters, cr0);
+>         OFFSET(TD_BOOT_PARAMETERS_CR3, td_boot_parameters, cr3);
