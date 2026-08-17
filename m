@@ -1,71 +1,86 @@
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7033B42EB
-	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 08:46:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D673597B;
+	Mon, 17 Aug 2026 08:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786956374; cv=none; b=D7AlQi2py4bqUpqBtC1IyS5lJLkHqwhyTTcq9+SGGS6XEi/QmJV0qHP6j19z4TP75qW73q7MCYjKrKlCaFtzmGoYE7emTSoZu7Q7nOu0qd0wk9Jws1hL5CGxlHBXod6wnTILuv5mxF3ktXbgrukVr+c9iD1hTgT5CLtb9B+VdcM=
+	t=1786956782; cv=none; b=bJsxmdqeZW+r4IxWu8mWsVl2TeXMIBQAlnIXMRBq35IZVTqBSRbJCIPnJc4LDqms35JFp3s8EHQJkaCWZNUdsX32ft5dFNfkfl2IXmeSk7w332WBPjCoOhUoopaz/g3NPTzAE4jMe855+rg/Yym5koTE/J3aBlRcnpwlDuYnzMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786956374; c=relaxed/simple;
-	bh=isLS9t3d8SJlInC0ilegt2UmV8A4lwBTmAjCzmJ5etI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ITAg0afQpF4ltgLOF9yKhxpejoeVz5vCdT1PaFV2wouf4BO+LXM2aiTOeFD+CBJmMsCivFmoWSGcyp6I+gIGqz8XcSpftWXEBf1xJ592kykL0IXc10SI7GL8Xf28Uewsd5cqWJY+1jphBsEvpr7Q40VoXRYQFaKdFBK36ml1GaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=cUy8JAdY; arc=none smtp.client-ip=115.124.30.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1786956782; c=relaxed/simple;
+	bh=hlArnnRBlxvFxienYxvUPq5zg8b6uZlS1r5dFcXNOUs=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bicK5IZSQZMI6yIlz9Lx+EXNglD0o9DiVmYA4SPdN5o9gTRrapmveIQBEyW/k97c21GspoA6ZwdUaiEKV9mo1AHhL8SKVtZQEVoOwtuh0ASp6Kza8HN8oMpF6WAb+966nfeG9Xaq5E+clZ12oCwLSimhQI0ExN955WqzNfm5gvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oVAsPwUG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="cUy8JAdY"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1786956367; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=OQAIXAFFYEwB1C5m43LzwLj1VOY7JemLsHMd6qpeG3Y=;
-	b=cUy8JAdYC3ufdsqZ6nL7/Tz/r8bK5IDj7yeQrq8FgWbzeV9hN/3OuzzqaeGNtRMvf8LTrN/yyiS//0+zbH6fkHoPtCvSHyCzG44wbi/nyz/KewWCMzdvvQKsXjdpesnW8T1YbrAf92dNCOXFxLRUQeycnPBQS722iRpUOpnw4eA=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R611e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=yaoyuan@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0X95DvBL_1786956366;
-Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0X95DvBL_1786956366 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 17 Aug 2026 16:46:07 +0800
-From: Yao Yuan <yaoyuan@linux.alibaba.com>
-To: kvm@vger.kernel.org,
-	julien.thierry.kdev@gmail.com,
-	will@kernel.org
-Cc: yaoyuan0329os@gmail.com,
-	yaoyuan@linux.alibaba.com
-Subject: [PATCH kvmtool 1/1] Makefile: Don't set -CFLAGS := in Makefile
-Date: Mon, 17 Aug 2026 16:45:34 +0800
-Message-Id: <20260817084534.92780-2-yaoyuan@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20260817084534.92780-1-yaoyuan@linux.alibaba.com>
-References: <20260817084534.92780-1-yaoyuan@linux.alibaba.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oVAsPwUG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91AED1F000E9;
+	Mon, 17 Aug 2026 08:53:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786956780;
+	bh=zZavtv5iKk4G+rubVn2CbRlhboRCftd+KV1d+zlJox4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=oVAsPwUGV4rgDgDfnEl8zJ4cpHX6o3lNLvLMxxKzmfS5tM/s47Jum+fHCuBrvqdwz
+	 FzOYS13ZZ5OgjM91h1GrYxwwGu6b7zrF7gHGwklQBE42D2qbTwNJUyDyFbwxgLIiL1
+	 PnXA6wAuKNFKSUVwWd42mis4QuZXbmkNbXwjb9Y1erV4JZB8Hwc0l54gKNd2TAQX9b
+	 HEh5pmJNLEK6GYQq17rNC93caUazgNsdilEg9Ik7kotOJh3NV7wPBnnX6Jx6dWQpJN
+	 9Cr7kntYhNI6razMah8YrtvT9aKAO71U4YQmknhnwkGevvg+38quSCtNuSgzVkS7ma
+	 WizxBoeRQUfUw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wvt5W-0000000GD03-1gGx;
+	Mon, 17 Aug 2026 08:52:58 +0000
+Date: Mon, 17 Aug 2026 09:52:58 +0100
+Message-ID: <86qzjxyvpx.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Like Xu <like.xu.linux@gmail.com>
+Cc: Oliver Upton <oupton@kernel.org>,
+	kvmarm@lists.linux.dev,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Jiaqi Yan <jiaqiyan@google.com>
+Subject: Re: [PATCH] KVM: selftests: arm64: Skip sea_to_user without 1GB hugepages
+In-Reply-To: <20260817080759.25601-1-likexu@tencent.com>
+References: <20260817080759.25601-1-likexu@tencent.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: like.xu.linux@gmail.com, oupton@kernel.org, kvmarm@lists.linux.dev, pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, jiaqiyan@google.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Don't set CFLAGS to empty in the Makefile to allow
-set the addtional CFLAGS option from environment,
-support e.g native static compiling.
++ Jiaqi.
 
-Signed-off-by: Yao Yuan <yaoyuan@linux.alibaba.com>
----
- Makefile | 1 -
- 1 file changed, 1 deletion(-)
+On Mon, 17 Aug 2026 09:07:59 +0100,
+Like Xu <like.xu.linux@gmail.com> wrote:
+> 
+> sea_to_user backs guest memory with 1GB hugepages but never checks any
+> are reserved, aborting instead of skipping when the host has none:
+> 
+>   kvm_syscalls.h:68: mem != MAP_FAILED, errno=12 (ENOMEM)
+>   not ok 1 selftests: kvm: sea_to_user # exit=254
+> 
+> Check for enough free hugepages up front so the test skips cleanly.
 
-diff --git a/Makefile b/Makefile
-index 60e551f..6755910 100644
---- a/Makefile
-+++ b/Makefile
-@@ -20,7 +20,6 @@ include config/feature-tests.mak
- -include $(OUTPUT)KVMTOOLS-VERSION-FILE
- 
- CC	:= $(CROSS_COMPILE)gcc
--CFLAGS	:=
- LD	:= $(CROSS_COMPILE)ld
- LDFLAGS	:=
- OBJCOPY	:= $(CROSS_COMPILE)objcopy
+See my comments at [1].
+
+This test is totally borked, and Jiaqi stopped replying. It is a
+liability, and I'd like it *removed*. But if you want to fix it,
+please go ahead.
+
+	M.
+
+[1] https://lore.kernel.org/all/86y0le9cvz.wl-maz@kernel.org/
+
 -- 
-2.43.5
-
+Without deviation from the norm, progress is not possible.
