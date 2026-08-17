@@ -1,237 +1,276 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A943D091C
-	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 22:20:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBE8345CC9;
+	Mon, 17 Aug 2026 22:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787005258; cv=none; b=FKZHncayl5YizAzPHc1kfB5MvTiiWDLUKYRSICKNmCppxUcwHqZykK6zDKvza1a/Z1BlDZwFZDdLOOAEVuSVoJ5YBVXDf7zaUsXCWg2Fnl4rd5xCfxzxRFY+LVTuuyUNKs1fBzl+CZx8IS0SRGObXaMlx8yZhsXkRliK3vyFp54=
+	t=1787005455; cv=none; b=lS3DXBhoEO9pQL6mecgylBSgx6oxLozUP1ePzQOkoyxyT0MNRQ1hNLVNv+bXag1Rm6b0oCzjhd4NH77YDSeCbV8riah4NQSionk74ovMuglWrYFrFWjFPL2syV9UrCgIFdZymJpD8lcIvVOThliogXxvOzDnNSyzvUVMq0BJYgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787005258; c=relaxed/simple;
-	bh=HVO2gWIaxzA+bK6MQldJkeSZrAesQZSo8QAWoKoMJBg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=n20ngnFn8IMiKdAHnadutktc++ht6S19CjTRTvuuXmcQupTG7HXn+FkhDR9trpmOmG/cd6EKksjXo+rdP1bJIvQ1pEdg6lAV+czymJCMqXrsJQwXp5pSHQ7ItVgjkELEwX2rKFRzIFKgUz9m13u8B2kWl6tSaHSjCe2j5iWvF6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MwvAJQ2o; arc=none smtp.client-ip=209.85.210.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787005455; c=relaxed/simple;
+	bh=qsQd0M7EwZCUn3LhiSGdGbJStgqYLC6lv8ovyKKRVb8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Fj7fdbERCenY3l/fzJOHS0BkpMCzxmmCvlutd/nhVKJcHUVoWyQt3ExC/MKFueQ4HqcW9ii8AFRaVmefAmamY8Lr++g1zAtJvYWCivN0n2468TT9dSi00Wu+Fyi85eOhQsoilbQW0P7CI5qSKWrpLlQ/y5xqtEBnDrrmURR1OSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=g1WDZDgD; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MwvAJQ2o"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8487eb67173so6734853b3a.2
-        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 15:20:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787005255; x=1787610055; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4QnMwcUHFkDNVo8ywONCXuoDqyMfQDcpXyu7v/SbVys=;
-        b=MwvAJQ2oGHvoha92iRMkn3EnfY+Qi+Ks8Eh/b91Veh8upE1e/4RgAhPynpytTouxPm
-         zeJDtVx8/qEnNpF4dXLz4Zu1To4vz+AgEnQFatNpNZDS1bHt3Ml5QaSDGTSrvyuYj6SR
-         E2nVXAdl9deGuRwYZbMdgVGZvTCC5GlTQHOjRT1lMlXxST8v1C+lQMOBKRz9Z8tUfcc4
-         QmZKH3yT1xxIAFy9H4FFyYr5VjoVz8SXXuq33eUCcHqL7bg3JOcLuP0S3kez8m/4usUw
-         ufO1wuEkY+qTcvgCtwcJaXYfjgmafvPf3XQOaFDePBLEY6fy41l+y/MHrxVpSHEXH73f
-         ukgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787005255; x=1787610055;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4QnMwcUHFkDNVo8ywONCXuoDqyMfQDcpXyu7v/SbVys=;
-        b=PE3ZvtRuaOEiJwuLHoNHesmRW5iiWGIM0yVFC7z+tYpZR+vo247lfSU6DWvzB0VOSj
-         UzK5TOS6nsP3JyOqbgYkW781z/atG6OqKx5OUJWN/fSLManfJLJ1guE+AOo/GKdhzVWf
-         SpjNlt5Z0gAe7K9Xt/1F0pgrkEDEycgwv3rDMQg4h3JR4hBRefu30vcujXJunfDDl9b2
-         hGzGZ5KMIqG75LRwrnLXwpaLdwKNbgfa8MmkvgsuPHtJ1hZcu5B6G9lEXU7MFNI7dilz
-         9VtmRM7tunN/bkabyaRHJi2LPk9hGPyyBF9pnjtU8RrOPBZoYvs2ww4yeNXOEtat0yee
-         Mb6A==
-X-Forwarded-Encrypted: i=1; AHgh+RoY/APmF1U5BBisR6aRSkhtqldZMQUJ2z8PPGco2g0eA+Y28X0OXILaZJ9myt5h9WBuRBE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRfeWr3V3VZkcG+n+2VachRFlamzrv5M8ryyVhaL4oWoUaP+sL
-	owWg7syMMnd5bprn3mU3K/oFykQYyF4TGlS71jzZ/TGnI9V4C5tjb18SlSeqve7Uy1GjxwHLhOA
-	xJjyxVA==
-X-Received: from pfbfq10.prod.google.com ([2002:a05:6a00:60ca:b0:84a:3bc9:3bcd])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1149:b0:847:7ffd:ce35
- with SMTP id d2e1a72fcca58-851b87eaa83mr3450412b3a.8.1787005255291; Mon, 17
- Aug 2026 15:20:55 -0700 (PDT)
-Date: Mon, 17 Aug 2026 15:20:54 -0700
-In-Reply-To: <CAEvNRgH_=8YqKHb_OJfT583ZJ346cceRimd9YJ762Vv08uJGHQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="g1WDZDgD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Gmb4MSTAVstfarGUBFV97VWzcx634xGco37skHtM3yA=; b=g1WDZDgDGyOuilVmWfSLmzj3uN
+	h3TOfSeAV6eNxYFvBOsAGJwmLF7gpQdOKgTm5ILxNAKb5Rf7aXbHM8GYZ/wMWA2IwHieTsVmrFlN+
+	/MGMul7R8jgsyigqHoZ7yGMadT3EsrvcS5suYA6cRyZgdlg42kLUXsJt8jTS4zlETmyR9YSV59SJw
+	KxKMOyuMKpMCf5CwpWZErgir+2Nckvin1O42b9DmzYAxdELOunoUvaTCko2MNEepz4wMZhEjU4ZhL
+	dCPIVSTR9KYYY6WAAq29NpUZ3l0ORt5Zp424HgUX5/PLXEK27Rt8LSTcncgg8cqVOcj0yXs1Wllcg
+	dWB2mh6w==;
+Received: from [2001:8b0:10b:5:21b4:de29:7387:4faa] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1ww5kT-0000000AtIv-3xMZ;
+	Mon, 17 Aug 2026 22:24:06 +0000
+Message-ID: <bdf847f75c283862e02c6f3fee2155b829f6b0b2.camel@infradead.org>
+Subject: Re: [PATCH 0/4] KVM: Reset steal time accounting on vCPU pid change
+ (x86 and arm64)
+From: David Woodhouse <dwmw2@infradead.org>
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	linux-kselftest@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com, 
+	maz@kernel.org, oupton@kernel.org, fuad.tabba@linux.dev,
+ joey.gouly@arm.com, 	seiden@linux.ibm.com, suzuki.poulose@arm.com,
+ yuzenghui@huawei.com, 	joe.jin@oracle.com
+Date: Mon, 17 Aug 2026 23:23:54 +0100
+In-Reply-To: <f2f5065e-a6ea-4b90-9426-fc9ea7926cc5@oracle.com>
+References: <b2843bdcbe1123945552e113b0c2727db51d9606.camel@infradead.org>
+	 <f2f5065e-a6ea-4b90-9426-fc9ea7926cc5@oracle.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-ktYJqoo19BDKdG6d2q4j"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <CAEvNRgFWcndQKJE_q+ZATFZEMYd=6uRLygozLvg7L77bPX0cEQ@mail.gmail.com>
- <anqqKH6kuwpvuwp9@yzhao56-desk.sh.intel.com> <CAEvNRgGWDY_fxbyBM-5sMdYMevMe0HzVP9kbC1cCGLE_dV=_Gw@mail.gmail.com>
- <a71d4fccdffd1f6a12332ddd18fa812542ea2118.camel@intel.com>
- <CAEvNRgHxda6XK_XqWaqqVnA7oW=Fhp_C5gF4vNcL+-HfwfXMqQ@mail.gmail.com>
- <0c80b9b0e13e3ab2cbe4f9eaf4a02ebba25a7001.camel@intel.com>
- <an5RJYTwlYeym--O@google.com> <aoKnmW9St5zCoTD3@yzhao56-desk.sh.intel.com>
- <aoNrFX9yLfsM7KQI@google.com> <CAEvNRgH_=8YqKHb_OJfT583ZJ346cceRimd9YJ762Vv08uJGHQ@mail.gmail.com>
-Message-ID: <aoOJRk5SXBzzT24K@google.com>
-Subject: Re: [PATCH v10 11/41] KVM: guest_memfd: Ensure pages are not in use
- before conversion
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Yan Zhao <yan.y.zhao@intel.com>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
-	"david@kernel.org" <david@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"steven.price@arm.com" <steven.price@arm.com>, "peterx@redhat.com" <peterx@redhat.com>, 
-	"forkloop@google.com" <forkloop@google.com>, "tabba@google.com" <tabba@google.com>, 
-	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	Vishal Annapurve <vannapurve@google.com>, "willy@infradead.org" <willy@infradead.org>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "wyihan@google.com" <wyihan@google.com>, 
-	"pratyush@kernel.org" <pratyush@kernel.org>, "aik@amd.com" <aik@amd.com>, 
-	"jmattson@google.com" <jmattson@google.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "rientjes@google.com" <rientjes@google.com>, 
-	"andrew.jones@linux.dev" <andrew.jones@linux.dev>, 
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "chrisl@kernel.org" <chrisl@kernel.org>, 
-	"shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
-	"mathieu.desnoyers@efficios.com" <mathieu.desnoyers@efficios.com>, "oupton@kernel.org" <oupton@kernel.org>, 
-	"mhiramat@kernel.org" <mhiramat@kernel.org>, "baohua@kernel.org" <baohua@kernel.org>, 
-	"tarunsahu@google.com" <tarunsahu@google.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
-	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jthoughton@google.com" <jthoughton@google.com>, 
-	"yuanchu@google.com" <yuanchu@google.com>, "hpa@zytor.com" <hpa@zytor.com>, 
-	"shikemeng@huaweicloud.com" <shikemeng@huaweicloud.com>, "nphamcs@gmail.com" <nphamcs@gmail.com>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "shivankg@amd.com" <shivankg@amd.com>, 
-	"shuah@kernel.org" <shuah@kernel.org>, "youngjun.park@lge.com" <youngjun.park@lge.com>, 
-	"kasong@tencent.com" <kasong@tencent.com>, "pankaj.gupta@amd.com" <pankaj.gupta@amd.com>, 
-	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
-	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"vbabka@kernel.org" <vbabka@kernel.org>, "weixugc@google.com" <weixugc@google.com>, 
-	"michael.roth@amd.com" <michael.roth@amd.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, 
-	"mingo@redhat.com" <mingo@redhat.com>, "qperret@google.com" <qperret@google.com>, 
-	"brauner@kernel.org" <brauner@kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
-	"baoquan.he@linux.dev" <baoquan.he@linux.dev>, "corbet@lwn.net" <corbet@lwn.net>, 
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "liam@infradead.org" <liam@infradead.org>, 
-	"axelrasmussen@google.com" <axelrasmussen@google.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"qi.zheng@linux.dev" <qi.zheng@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On Mon, Aug 17, 2026, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> > On Mon, Aug 17, 2026, Yan Zhao wrote:
-> >> > converting a page and another faulting in the same page.  An NMI, SMI, or IRQ at
-> >> > just the right/wrong time, especially on a preemptible kernel, could lead to the
-> >> > same test failures, even if KVM drops the refcount "immediately".
-> >> Could you elaborate on how an NMI, SMI, or IRQ at just the right/wrong time
-> >> could lead to the same test failures?
-> >
-> > Ah, sorry, my bad.  I was speed reading and missed that the key to your suggested
-> > "*page = NULL" change was that the reference was put _before_
-> > filemap_invalidate_unlock_shared(), i.e. before dropping
-> > the invalidate lock and thus before __kvm_gmem_set_attributes() will walk the
-> > folios to look for outstanding references.  I was thinking that putting the
-> > reference right away was just shrinking the timing window, but putting the
-> > reference while still holding the invalidate lock closes the window entirely.
-> >
-> > So, I take back what I said about this not being ABI, and about this not blocking
-> > in-place conversion.  It most definitely affects ABI, and so needs to be addressed
-> > before merging in-place conversion.
-> 
-> I thought back then when David suggested that conversion can return
-> -EAGAIN, one of the core ABI benefits is that this leaves the door open
-> for things to gradually improve. If we can improve stuff within the
-> kernel, then the the kernel would just return fewer errors. This retains
-> backward compatibility, since extra userspace code that handles errors
-> can continue to exist, it just won't be used.
 
-Ya, that's definitely one of my hesitations to trying to guarantee success in
-the kernel.
+--=-ktYJqoo19BDKdG6d2q4j
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > The only question is if we want to commit to
-> > guaranteeing that conversion will succeed in this scenario, or if we want to take
-> > the easy way out and formally document that conversion can fail with EAGAIN at any
-> > time, even if userspace has never mmap()'d the memory in question.
-> 
-> I don't really think there's a need to commit to this, IIUC in principle,
-> ignoring that on many paths of those guest_memfd may be excluded, refcounts
-> can be taken even if there are no host userspace mappings. For one, memory
-> failure handling doesn't care if there are mappings, the refcount will be
-> taken for a short while and could cause this conversion failure.
-> 
-> Here's the relevant part of the documentation added for conversions:
-> 
->   If this ioctl returns -EAGAIN, the offset of the page with unexpected
->   refcounts will be returned in `error_offset`. This can occur if there
->   are transient refcounts on the pages, taken by other parts of the
->   kernel.
-> 
->   Userspace is expected to figure out how to remove all known refcounts
->   on the shared pages, such as refcounts taken by get_user_pages(), and
->   try the ioctl again. A possible source of these long term refcounts is
->   if the guest_memfd memory was pinned in IOMMU page tables.
->
-> > I'm leaning pretty strongly towards guaranteeing conversion will succeed.  We'll
-> > still need to document the EAGAIN behavior, but IMO there's a massive difference
-> > between conversion failing if there's a lingering reference acquired via a VMA,
-> > conversion failing because a vCPU page fault raced with conversion.  E.g. being
-> > able to assert success in a very curated test, as the stress test presumably does,
-> > would be extremely valuable for helping detect/prevent edge case bugs.
-> >
-> > The argument against guaranteeing success is that we might make our future lives
-> > harder, e.g. if it turns out there are legitimate, hard-to-solve edge cases.  But
-> > I'm ok with that risk, as it seems highly unlikely to be problematic in practice,
-> > and there is real benefit to guaranteeing success.
-> >
-> 
-> Is there really a need to commit to anything? This is already documented
-> as "can fail", and it's orthogonal to whether the memory was mapped.
+On Mon, 2026-08-17 at 15:04 -0700, Dongli Zhang wrote:
+>=20
+>=20
+> On Mon, Aug 17, 2026 4:51:38AM -0700, David Woodhouse wrote:
+> > On Sat, 2026-08-15 at 22:33 -0700, Dongli Zhang wrote:
+> > > 3. Although David also suggested doing the same for Xen-on-KVM vCPUs,=
+ this
+> > > series does not reset last_steal for Xen vCPUs.
+> >=20
+> > Hm, the more I look at this, the more I like the Xen-on-KVM approach of
+> > just letting userspace save/restore the values.
+> >=20
+> > Migration Just Works=E2=84=A2, as the runstate times are migrated along=
+ with
+> > the 'current' runstate being set to RUNSTATE_runnable, and the next
+> > catch-up attributes all the intervening time to steal time, correctly
+> > tracking the migration downtime.
+> >=20
+> > For your vCPU hotplug case, a VMM hosting Xen guests can use the same
+> > API to set all the times to zero and the current runstate to
+> > RUNSTATE_offline.
+> >=20
+> > Shouldn't we just add the same save/restore facility for the native KVM
+> > steal time too? It'd make live migration fully transparent, and a VMM
+> > could handle your vCPU hotplug case just the same way by setting it to
+> > zero (the ioctl would recapture last_steal on the current pid just like
+> > KVM_XEN_VCPU_ATTR_TYPE_RUNSTATE_DATA does).
+>=20
+> +1
+>=20
+> I fully agree with this.
+>=20
+> I agree that a save/restore for native KVM stealtime is the best approach=
+ so
+> far. Instead of only getting/setting last_steal, perhaps it should also i=
+nclude
+> the current vCPU kvm-clock value when the vCPU is preempted.
 
-Yes, but the above docs also say "it's userspace's problem".  Which I generally
-agree with, but that's not a very good story when it comes to KVM itself taking
-transient references, because then the answer becomes "Stop running all vCPUs",
-which I don't like.  E.g. in a very pathological scenario, it's theoretically
-possible that conversion may never succeed.  That's what gives me pause.
+There's no "perhaps" about it. You NEVER add clock APIs which just take
+one clock value in isolation with nothing to relate it to. Yes, it
+*absolutely* has to be a tuple of { steal, kvmclock } at the same
+moment, much like the Xen runstates are.
 
-> The transient nature of refcounts on pages in general makes it hard to
-> guarantee, and this stretches outside of KVM. I mean, anything could take a
-> refcount on a page in future and we can't be auditing the entire kernel for
-> no refcounts on guest_memfd pages ever.
+I guess the 'set' API might also want a flag to indicate whether the
+delta (the time from the kvmclock in the tuple, to the current
+kvmclock) should be accounted as stolen or not. Or would it *always* be
+stolen?
 
-True, but at the same time, if there were never any VMAs then I would expect there
-to never be transient refcounts, modulo memory failure.  And it'd be easy enough
-to document the memory failure angle.
+>  In addition to live
+> migration and vCPU hotplug, I have recently identified more scenarios whe=
+re
+> steal time can be problematic, which I can share in a separate thread.
+>=20
+> That said, KVM steal time may need to be rearchitected.
+>=20
+> However, I still think the current patchset is useful. It is small and ca=
+n be
+> backported to stable kernels, where adding support for a new ioctl would =
+not be
+> appropriate.
+>=20
+> >=20
+> >=20
+> > On the *guest* side, is anything really needed once we fix the host not
+> > to expose nonsense values? You've given Marc the impression that we
+> > need guest-side changes to match the host-side changes in this thread,
+> > and that wasn't my understanding.
+> >=20
+> > We *should* still fix the guests, of course, but I still prefer my
+> > approach to that, as discussed in=20
+> > https://lore.kernel.org/all/f0535c47ea81a311efd5cade70543cdf7b25b15c.ca=
+mel@infradead.org/
+>=20
+>=20
+> Regarding the guest side: yes, your approach avoids accounting an excessi=
+ve
+> amount of steal time from bogus host values. But I still wonder whether i=
+t also
+> makes sense for the guest to reset its own baseline whenever it starts us=
+ing the
+> feature.
+>=20
+> For example, KVM paravirtualization initializes "kvm_sched_clock_offset" =
+when
+> kvm-clock starts being used, and Xen paravirtualization uses
+> "xen_sched_clock_offset" for a similar purpose. So perhaps it is not a ba=
+d idea
+> to reset the baseline when enabling a paravirtual feature.
+>=20
+> For x86 KVM steal time, that would mean resetting "rq->prev_steal_time" a=
+nd
+> "rq->prev_steal_time_rq" before enabling MSR_KVM_STEAL_TIME.
 
-> >> > As for in-place conversion, this is not a blocker.
-> >> Sorry. I didn't intend to block in-place conversion.
-> >
-> > LOL, what we intend and what happens aren't always the same. :-)
-> 
-> I don't think we're ready to guarantee conversion success when guest_memfd
-> pages are not mapped to userspace 
+Yeah, maybe. Although when you said above that it might need to be
+rearchitected, I was kind of hoping you were planning for KVM to
+remember the actual value and not just increment it in guest memory.
 
-Yeah, that was too strong of wording on my part.  The needle I was trying to
-thread was "conversion for this specific scenario, in a controlled environment,
-is guaranteed to succeed".
+--=-ktYJqoo19BDKdG6d2q4j
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-> without dragging this out way further.
->
-> I'm all for KVM not taking any references on guest_memfd, but I think
-> eliminating KVM itself as a source of transient refcounts can be a
-> series in itself.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+kkdjRoQHGegSqNkLSiisrzAAAAAAAAA=
 
-Yes, it would definitely be a separate mini-series.
 
-> KVM not taking any references on guest_memfd memory is definitely welcome,
-> it'll pave the way to using non-struct-page memory in guest_memfd.
-> 
-> It'll come, can we not block on this please?
-
-FWIW, it doesn't have to block initial merge, just the final release.  E.g. even
-if we decide that this is a blocking issue, we can still land the in-place
-conversion series, so long as it's not exposed to userspace in the final release
-of 7.4 (or whatever kernel) without fixing the transient refcount issue.
-
-> If we find a way to strengthen the guarantee, wouldn't that be an iterative
-> improvement?
-
-Yes, but we do need to draw a line in the sand.  E.g. if conversion failed 99%
-of the time because KVM was taking spurious references, I think we'd all agree
-that needs to be fixed before the code is released.
-
-I'm still leaning towards saying this one has to be fixed, because it would give
-us a solid baseline from which to start, and a way to enforce it going forward
-(Yan's stress test).  I could certinaly be convinced otherwise, though dropping
-the transiest reference seems straightforward enough that hopefully it's a moot
-point, i.e. we land both in 7.4 and don't actually have to make a decision.
+--=-ktYJqoo19BDKdG6d2q4j--
