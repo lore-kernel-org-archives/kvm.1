@@ -1,128 +1,223 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339E33AEB39
-	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 07:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786952009; cv=none; b=a3VVf7UmujDOcidPxMeRg6ZGQx4ImGrrKX3dH/QIMgHrqMY5i9W0r2O78kMfRDUBPFPW8JDrYXzgZBRCsQJLb6hnQZI5yj7egRZOWUc09IRMETFncVxXO2FgKUEz+qMFO8Wmr+cOKm5v0m63tvxMMYSf0ttPcOYQJ9SuDdPGzDU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786952009; c=relaxed/simple;
-	bh=tM0pTha1/9nfcltCgNGuo/8gpha3J9wIDaj3gZsBSBo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=V93NAHP4UDrYOsSZ3t8WJ4x/QOg/AXpyQqUy5V5zgKDSygAwAwLWe+E96HLcIz9fru02FyNVe/l6shIihBwqy2wMOv38EiE4zgMZ+Jgc+RFKz16raoI6MOPQ0odeLQmPiFqEbTZsqzdojaucLQj3pitdlbLsG+TDcYjU//98PXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=kRPYtlGp; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891DA222590;
+	Mon, 17 Aug 2026 07:34:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786952045; cv=fail; b=Xhe2eaOOCzFWcnr3XzdMpwL+nlEvxAuEWmtEkpyWnEoLwUj9esuZt0ejWG6RStrX5FcD8GmBPxKrvebTgM1XCG1Kr0ouPsnjo3FyinlRtr/RwDq+jS0RwIO1BCVf6BsWBejhtL2yGw4eEBeALfS7PgOwx3pY4hiEGrLwUWU/juk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786952045; c=relaxed/simple;
+	bh=lnJ1ftbqYnOzLc6StgNIJkeXTVASNX6OyqJe51SKnL4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=glVd4vlS54pQmc4TJzVlyU1pNx91AwZoZ1qmiPl0OEIjuMWnx4r+wu4j4TdFRp93BC5ay+mAyUSjXrytP/ZtsCBIoCp/53gVjCljxu6kr1R+ZDKRexnNXZ5DFM49xRd3J3Kx3DHrhzOl9lpTlS7X4N80iCkpPOdmyDhNcg3M2Mo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ej0vICQZ; arc=fail smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="kRPYtlGp"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c9aea40d799so1685830a12.0
-        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 00:33:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1786952007; x=1787556807; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=ctO/918wY9I8dgMN/rNhQAZPgaBP/6EBpuY/G7CkCVE=;
-        b=kRPYtlGp6tjDZO1MoOKwooRhe9o+y77qwcwF+6aR1wNLqQ9Wrehxsh5PiQMu2KWEg6
-         z8RkNRDrZf2G+/ujyyaBfuAjjMZmV2qluBkP6kbvZ+wzWpYySyeOUu1AjH6eLUC0MN+I
-         lTufIYkgF+iALfcuWL7KZXLL5vIwxqWIV1LTsXwILPlGXgZ9eC2NW3zovUWoBIoZ5K47
-         0MRo07D2gfamrBRXwynGF8xR4uWpn5T1tjVmbqlrEe7oAGnjCrYWT3uf+xT9oWoW7JEo
-         k7jL4sVHcnvoWeVSqLi5/6LkaXsZ6gntW1s1d+Sew5ovojzqqb2FN9Q/1kVJ1Ll4m6as
-         svIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786952007; x=1787556807;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=ctO/918wY9I8dgMN/rNhQAZPgaBP/6EBpuY/G7CkCVE=;
-        b=jFrZqB89NTv4usUw+IUecmgrco+AEUlV/oQcxL0Qw7Is0BEbc7rcq32TaLKoNekV18
-         zFNXTlAvaOHUYzCYyhgX5uYqnFWximSLbDSa6S6HwRlaQOBvQ1fDYD3upHu3/WKk+FKM
-         l28VTXQUxfnu+51KgVkbSqIWF5QM775bnSFZv6IeQZK5BOgNycMmdyOAfDU5QjNt0bYn
-         z4aYAYNh/hUC506dEDP0VR6UOpCNr9PkSOpyX38yrt/nglDLEsDRrJVnCpwtddvCeLi4
-         nuiiVAVWuO3eeIyp3dJGRIgwXJr0i6n2eAuSbycl7IigF8Y7z8SObo7xPIlXQ7mRFe7R
-         ggNw==
-X-Forwarded-Encrypted: i=1; AHgh+RoJT6bqMh45ZnGwkx+abdk5gv97lj4JCPS1BOULsBfmxkQh+7py0bNsRNeDoIikhSTtO2o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztV0Y3+nkShvMvPbfs1wn9Ybn+T6fEUv8ovY8RMNDvXDTbUnji
-	yrgH6nKmr58fcLhFSibXTkk8RzgZUnDEn5uEC/TqL/3REm/hDM31jVF9dzM6mEzE9qQ=
-X-Gm-Gg: AR+sD105F5yxthkFapwcNnnkXUHNEMc7kt9s59dNmoXSGKiGSX6nsH0wvjhfy5fVQN9
-	mRColOrNM/Eefi5CJwHNiUnlW9fCR6Lr+ndO9NUzkFaF2CLMEYtAIhzE4Bi0qIhHpHptPrHsk1Y
-	/hFbFTEGwJOv8GKkD0QAcUyiw9uxLADYH4WGPuBxn4pTC0gzIHafWilEkqmI77Eke+R+nJqCwV2
-	qXgxo3pH7czrur2qo+n8nQW/zM+De5nUsARskX/jmP46rYpM8uRYwdZGcbMPtvHtOblHZ2gKZB9
-	79+86xjzx8M66iGJRivxCOvIK9+d6cKxK+5yxwzFmi8dTGarBA+pXMZ7wrzVacnmt75MFBw33QN
-	4y+jUGibrW9fgeRnqAj23bx+tddb7L101jv8CnE8tQKMrC+gf6asI9rSR8OlF+bEnbwZa4MCSSl
-	9pYx1zYOa9jvI+GvAc40sMKbTlBEPpRsLFzANyWvAjd4PbwaTQqcCVHlIicvfx88tjrL4hx+/FJ
-	DbYD+Xl
-X-Received: by 2002:a05:6a21:7702:b0:3b3:d0f:7883 with SMTP id adf61e73a8af0-3cc7196eda5mr27885097637.7.1786952007506;
-        Mon, 17 Aug 2026 00:33:27 -0700 (PDT)
-Received: from sw07.internal.sifive.com ([4.53.31.132])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-326796d646bsm3575972eec.10.2026.08.17.00.33.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 00:33:26 -0700 (PDT)
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Date: Mon, 17 Aug 2026 00:32:59 -0700
-Subject: [PATCH] KVM: RISC-V: Clear HSTATUS.HU on hypervisor initialization
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ej0vICQZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786952043; x=1818488043;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=lnJ1ftbqYnOzLc6StgNIJkeXTVASNX6OyqJe51SKnL4=;
+  b=ej0vICQZOKBgKiEW5QTGpzF0LHdeBZduBUOVVp2RM6WqdWPqC1023Trt
+   8EunQnUrbS9+mDCbJ8e2uZitGRwsAEtkOMmXvn63VFhmjwqIjpJXiwEVE
+   T+WxunftH2Qd2rqpVOosrU1c7zDvwacAPJ942PRsky8PC0VFmbtklRgD+
+   nA7U3f7coiMavNuMvdCwOYh2PQg001G4j0vngIZHG4ov8KZVd80tmLd5d
+   x5zd4xJTjm3fh2wxOPM6vzpNQbA+/AxGWO5sYPbPYxJa+kxQFDcC7alke
+   cc8zFLTn/4M7oQQ82peQ16uKrw+n1v6TmR49rgwfewxue8BEkxi85BmOt
+   Q==;
+X-CSE-ConnectionGUID: Q3ALzzxqQuqVkrj3uU+wEA==
+X-CSE-MsgGUID: tS1A6VW+RhK63j4GQQi/pw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="104955471"
+X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
+   d="scan'208";a="104955471"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 00:34:03 -0700
+X-CSE-ConnectionGUID: LqHLlHgMQqGZI8FJpFfBgw==
+X-CSE-MsgGUID: 0QqRW5QOTF+gxegHyahpjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
+   d="scan'208";a="265456092"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 00:34:03 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 17 Aug 2026 00:34:02 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Mon, 17 Aug 2026 00:34:02 -0700
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.38)
+ by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 17 Aug 2026 00:34:02 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=g/lHn0R5CNEeyFKfrtarf3fVT2AF+QR0znyw/LU9q8pLofGxott3EYaf2svR2W/DqSt9wGXYuwdTwB5oY24SUOyDYNOFhWiniLAhcfQjCL7kJa6GBb/XUQIufa3lkDXSQsHdRWckoHfOkfNRPoQN1VLgdB/CwYFIb4hzRysbqiFXGofIW2oteW7A/6d73o2mefjJZFMEGp9CQxrYn5ez/OG4usv1sJY9cC3dzrI61Ys9iOLfzih7hIHjMmVBAMg09KgjePVVNk9Dcl4cZdH6lmL7VaJrd5CjOcNaWwPXTj5ia4Cv1hJSmX7qGux9ikg69v4Nr33Zg5By05a6JOWnTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c4DSTp8xKFOA0I1+CPi+xoh6ZigcCQjGMiCrgr25fbo=;
+ b=Ht/4kS8mfr+AfltqlFX72G5fwwg1zjtIOkG/LZHYeSUe73RsR2c8m4NSwBLGUcNh+7S3+wiamK25SGdAlC/YdGjjJFHiP/PZ/BTspshUeWxqO7uXmM1XdZuXFyL1JRBR9zMGQhmiIZUCxPy5yoKpP+fBMV6hU4vjKfOvP2xxkOksTECf8U+Ntp3sbbd8a85PxsepwHk33+Je3AEKJmba9pvPhjyw0S8Qt4BGsklexyp/03et5FoQDS5foOzfu3MJ0iIWFEUMnHYFoyQEXtlsBtJqTOB1jWTa095M8jJ6a/bpooCu6mXwmFrskjy8sTFdmEN9qeAhdkAtJr/tXpZijw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LVUPR11MB9589.namprd11.prod.outlook.com (2603:10b6:408:3a4::10)
+ by DM4PR11MB6238.namprd11.prod.outlook.com (2603:10b6:8:a8::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
+ 2026 07:33:59 +0000
+Received: from LVUPR11MB9589.namprd11.prod.outlook.com
+ ([fe80::6158:db0b:38aa:9c5a]) by LVUPR11MB9589.namprd11.prod.outlook.com
+ ([fe80::6158:db0b:38aa:9c5a%4]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
+ 07:33:59 +0000
+Date: Mon, 17 Aug 2026 14:53:06 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Paolo Bonzini <pbonzini@redhat.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Kai Huang <kai.huang@intel.com>, "Rick
+ Edgecombe" <rick.p.edgecombe@intel.com>, Sashiko Bot <sashiko-bot@kernel.org>
+Subject: Re: [PATCH 4/4] KVM: x86/mmu: Add sanity check to detect stale page
+ faults in "map private PFN"
+Message-ID: <aoKv0vneW5hleZ9F@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20260806214050.78058-1-seanjc@google.com>
+ <20260806214050.78058-5-seanjc@google.com>
+ <anpr/H5Hxw1EMkTj@yzhao56-desk.sh.intel.com>
+ <antX6NCs4-C_ChXD@google.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <antX6NCs4-C_ChXD@google.com>
+X-ClientProxiedBy: SI2PR02CA0018.apcprd02.prod.outlook.com
+ (2603:1096:4:194::18) To LVUPR11MB9589.namprd11.prod.outlook.com
+ (2603:10b6:408:3a4::10)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260817-hstatus_hu-v1-1-28c53cdfb408@sifive.com>
-X-B4-Tracking: v=1; b=H4sIACq5gmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDC0Nz3YziksSS0uL4jFLdRMNEC4tEI/Nk8yRDJaCGgqLUtMwKsGHRsRB
- +cWlSVmpyCcgEpdpaANvzj4duAAAA
-X-Change-ID: 20260817-hstatus_hu-a1a88a27c7b1
-To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>
-Cc: greentime.hu@sifive.com, vincent.chen@sifive.com, zong.li@sifive.com, 
- kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Yong-Xuan Wang <yongxuan.wang@sifive.com>, 
- Samuel Holland <samuel.holland@sifive.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786952006; l=1212;
- i=yongxuan.wang@sifive.com; s=20260424; h=from:subject:message-id;
- bh=tM0pTha1/9nfcltCgNGuo/8gpha3J9wIDaj3gZsBSBo=;
- b=xzAemguTvxKYZkrL488xqh1xU5+sYfHiXmghrUUa42oEqlIaC+MMhYmzECXbY6IRHF230q1PA
- xRvrYY3gIRDCL/W3d8Js+WjMQhGkDGoZJqmExKFef81IWvX/6NJVnCE
-X-Developer-Key: i=yongxuan.wang@sifive.com; a=ed25519;
- pk=+8NCHB1ZJvZthQAmZspOAaqjo+/snaW8mFSiDx45HxY=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LVUPR11MB9589:EE_|DM4PR11MB6238:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8d8b8062-cf7f-4560-5958-08defc31e71b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|10067099003|11063799006|56012099006|6133799003|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: 6NO5BVjg0OHIccM99KaJzAwONsX8aH34DKxO4Xqv6GuCGQGOFBbGQ6YqtoC4fb+aOOU7ARAyzmQkIL3XMhRBe9EmFwFoAMp9exI8STz24JsPzWR3r1hqVovaGmcoja6qRPPl//eKwXCWCHJKwPwkYHKPJVo2YZXo4gZSriu7FxP5uwaNQU0U8IA3zVKAVF/5BI/wl80x0UFjwY8rIzQkrDrCnh1HKdI+Nzm0vAvqG1z1IVT0PlFw0ldfhKdRzfiRYouFVsFNvLwDloAzD9aa97RyNPPvG/GDOkdQMUuis/3n/iHE1sM8NGUwAKNxLXh9E51HpMvkH4arg6AtKwxsfBVTCXi/f1QRm284ds4O1rZF3Lsf4Td+GupsWuQxmWdSdxQ7I0l70rgvIcRzKX5+MgtFYIQRS8ZuY8hF3IcZ5X1iTYTIBno2idQNpT4qL7tjKh1Lq542TKL5cjp4DojYxWHmdw6EEjCtZJ4AmVx/o720b8wf9peYd2c9cBSFPYsS8uLcD/QzsYRKS8ycksaWhRoViRyqmmOC/2ZPOeuXTCUnStP+kjun46Y8qCNEYlzHjPHUArFjOHDPGxjuflMX0PVCeHiTdaoJWRtMM6WmSp0s0UoyDP3PsNVYBCuJxp2eOn3DvlcznB3xBSDyBvoGQ2hu8ruk6Ku0c44xDkkV7R8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LVUPR11MB9589.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(10067099003)(11063799006)(56012099006)(6133799003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?G8AaLZGP4FAt6TuggrW8jykg+eOdAIHFMFqfc8vI3SWfc4C0BaPwLPiNcLA4?=
+ =?us-ascii?Q?0TyZpDCGyFWdlTWReOri7o0Q/BpcxMlY1rXUS3FlpFLgvfzObLJptFKB3AMk?=
+ =?us-ascii?Q?TZetw3Ib/ckdbPhVJaILS1rAMl3rRZBSiTECVKTHIK7gVnDuasmfvrn8tyC3?=
+ =?us-ascii?Q?gp3kI0NUNfC9dCjoT45d5nvZefiU+eMwYvJJm0fiJkAMNftlAHkywF2lfgBz?=
+ =?us-ascii?Q?OgXdbjjloIRJtwfZO3bX6pd82suagcLh10/VIC0VMmvSnUGG9XDFoLbAvKfk?=
+ =?us-ascii?Q?99yZWa8AVR1qj+K2KywItkcZJvNlTvmn+Nm4OLt8C4p+tvHYQHBnpQ2fnF+l?=
+ =?us-ascii?Q?GSvRdPMPU5rNbieDUMgxgOYhw+dFtYpEnkmQt4YE6yBFvnDXjuppZ0i0hWfZ?=
+ =?us-ascii?Q?Ys9OKxVP+QhAL0VaUebC+ZnH6YbtGAaP52a/CEE+97fIKLASmCDj2mCekwks?=
+ =?us-ascii?Q?VmUKve78NuRdjHJeLEOsZzOOzoQpaZGlzoqiXsSN5Mi4VhVlt6feEilJwfvN?=
+ =?us-ascii?Q?ZitcruIhXqSTaMirUL1iWZ9YhNRztGi0Fo0TYMhNe/jGTLYTs9g/O9E2yAN+?=
+ =?us-ascii?Q?GAZaj6Zx48Pd1YzXSuEmNjATBJTzufdfqwM1TcySCal9XINv67H134bd4fjh?=
+ =?us-ascii?Q?tYmnYMHaRDfJOH4mkWOayhGGx77Hh6vcnBaI6wpiIEPyCzBR/uSZn2RH6try?=
+ =?us-ascii?Q?gv9QoK6j5/L3aX71MWNt5bfvCUJ4yG3XFJn7XTTfXQ/yrUKA1c5fc0BG6eZ+?=
+ =?us-ascii?Q?df+yANzeey6wtztCrsWduO6v7p0OrohkGlz0M9L2B3KZ0YBDrn+sLNARejQG?=
+ =?us-ascii?Q?MDyf8AP319YDSdzIjayyLDpSkVW/ug2KQ9VZ06Ibtjctx6ESR/qJHJosdzAo?=
+ =?us-ascii?Q?gDQMEM474TLiu6F0VFKANXlQ8ZEuwV5w7kKhbdZwJ9ufBZl1cavQQErVoMCj?=
+ =?us-ascii?Q?NKa7cySOMAnITj+rqXsixlvPmts8rFcCghDAKGZ4OBZ4S8b/jp473MpKFS1o?=
+ =?us-ascii?Q?tx122OtLKIDgjoVC6cVsaHNM66M+x72QS07UpFAW18CA9nj5Ot1OHGmgOZMr?=
+ =?us-ascii?Q?F2LdHaWywYoRHBHCCbvYK5LUiqPwWrRMiEAhV6RbVhGQC3t5btdryHhxoN0O?=
+ =?us-ascii?Q?kFoNj3x+ahC21DDSf1QVljKpJ0a1MNzti4HIt4MSgXki791IwEAVVPdp9B9K?=
+ =?us-ascii?Q?d7PN8rtPXyTN0aqigVLgWc6aqglFyhc+joYR3/feoyujJ5x0Z1Nsl3xqCbg7?=
+ =?us-ascii?Q?7geacfpVcX6sZMgGW9p2hBZDu3Fvotk+m7JZ21YPLmR7T8P+zVw4kfCvpvBo?=
+ =?us-ascii?Q?h6j1rgogu7psA1583QxyoMsMJNEYj9FSwFzBUb49ltPL35niVwnAUiTDW8+4?=
+ =?us-ascii?Q?4XGjskA5f3gXAcxEdW55IFNH3CBcluT3HkTgcn4i7hb7UN4JH3rSPgMf0mAY?=
+ =?us-ascii?Q?mwqzsvKv02IF822t+mo0qpVYpOi+BxOAxy6BbozG6+sZsyIvFsLv6r4OgYRY?=
+ =?us-ascii?Q?bSY7lEBdR8QWcF7/bYnRa0Tsik3PQl1pRUKoV3oyOLXQ1gMy7TLhcIzK/bsD?=
+ =?us-ascii?Q?FCAxeAaeOVczpu6K63I5VPyXG801V8ACWreWI3RJMoI/qpHpA1BNy0wQPdk8?=
+ =?us-ascii?Q?Q29FCOJcNyI30W51h94nq4CX58QjEfPHGGGHBi6rNZmFGp/m8wJn35aGiPlX?=
+ =?us-ascii?Q?NZkaOO6cyfj3616sEMKMhT8YYwxbmG1nT22hXpA1wh2P7fD3uT/DDvTiulIY?=
+ =?us-ascii?Q?j/8Wsrfekw=3D=3D?=
+X-Exchange-RoutingPolicyChecked: hrGaW9JwcsTwQngIx+cVtFoDsIfXm7iRQyja4JZkJh/moo6ORhh6tn7fomArovWBRxBZ3BBzAtG2bkqB2CKVheLzQmm2JL665c9c7OEXI0Lv1GwQa11gO3zWWWFgE7oJlvSQGe938/aPvV8iIc1j68wusiuHboboz0HUgfLDo9CoRm1Kr90tPccTQwwCtSMwQK26TIgl8sI+UQ1hfmo7GNk6OzrRS8XxfG0nIGwbkx5QOw4hmJrx7U//JlZVgEZHwhxmLnTrvPaiQYdc+7wxGxT9+BuZI3P69JkJ3MrxZF7UC8lbIPQ8Z60XVj0ZYDVsVMkO+zKdRC6iezqmFjs4yQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8d8b8062-cf7f-4560-5958-08defc31e71b
+X-MS-Exchange-CrossTenant-AuthSource: LVUPR11MB9589.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 07:33:59.6386
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: k8IvQSta5IbPA6whGyhvH8KpSiWFwQ7bmWghPrhMcYJY89jWPffCQ6zd7KubDySKBKZwUKnwXimOQjfiKfVzMA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6238
+X-OriginatorOrg: intel.com
 
-The RISC-V privileged specification does not mandate HSTATUS reset
-values, leaving the HU bit potentially set after hardware reset.
-When HU=1, hypervisor instructions (HLV/HLVX/HSV) can execute in
-U-mode to access guest memory, which may cause unintended behavior
-if not explicitly controlled.
+Sorry for the late reply!
 
-Clear HSTATUS.HU during KVM initialization to ensure hypervisor
-instructions are only available in HS-mode, preventing unexpected
-guest memory access from U-mode code.
+On Tue, Aug 11, 2026 at 10:12:08AM -0700, Sean Christopherson wrote:
+> On Tue, Aug 11, 2026, Yan Zhao wrote:
+> > On Thu, Aug 06, 2026 at 02:40:50PM -0700, Sean Christopherson wrote:
+> > > Harden the "map private PFN" flow against potentially-fatal bugs or future
+> > > KVM changes by checking for a stale "fault" prior to actually mapping the
+> > > PFN into the guest.  While it should be impossible for the "page fault" to
+> > > become stale, the sanity check is cheap, whereas a broken assumption would
+> > > have a high probability of leading to a guest-expoitable use-after-free.
+> > > 
+> > > Snapshot the invalidation sequence after acquiring mmu_lock to avoid false
+> > > positives, even though doing so completely voids anys and all protection
+> > > against unexpected invalidations.  Pretty much the entire point of
+> > > kvm_tdp_mmu_map_private_pfn() is that it allows mapping a PFN that was
+> > > gifted by the caller, i.e. the caller would have to mess up its one and
+> > > only responsibility.
+> > > 
+> > > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > > ---
+> > >  arch/x86/kvm/mmu/mmu.c | 10 ++++++++++
+> > >  1 file changed, 10 insertions(+)
+> > > 
+> > > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> > > index 379f570ef04f..76e3cd717324 100644
+> > > --- a/arch/x86/kvm/mmu/mmu.c
+> > > +++ b/arch/x86/kvm/mmu/mmu.c
+> > > @@ -5210,6 +5210,16 @@ int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
+> > >  		 */
+> > >  		WARN_ON_ONCE(kvm_test_request(KVM_REQ_MMU_FREE_OBSOLETE_ROOTS, vcpu));
+> > >  
+> > > +		/*
+> > > +		 * Snapshot the invalidation sequence counter after acquiring
+> > > +		 * mmu_lock, as guest_memfd guarantees the validity of the pfn,
+> > > +		 * i.e. any concurrent invalidations are guaranteed to be
+> > > +		 * irrelevant.
+> > > +		 */
+> > > +		fault.mmu_seq = vcpu->kvm->mmu_invalidate_seq;
+> > Could you explain more about the conditions under which a fault is stale while
+> > guest_memfd guarantees the validity of the pfn?
+> > 
+> > Given that kvm_tdp_mmu_map_private_pfn() already asserts holding slots_lock and
+> > invalidate_lock, I can't think of one. 
+> 
+> A non-guest_memfd mmu_notifier invalidation bumps mmu_invalidate_seq.  And because
+> the range-based invalidation checks are deliberately coarse, in-flight invalidations
+> could also trigger a false positive if GFNs N and N+2 are being invalidate, while
+> kvm_tdp_mmu_map_private_pfn() is trying to map N+1.
+Could updating fault.mmu_seq in each iteration cause a false negative?
+I may be wrong, as I am unaware of the specific bugs or future changes you
+mentioned below in 'defense-in-depth against bugs and against future changes'.
+Could you elaborate a little more on those bugs or future changes?
 
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
----
- arch/riscv/kvm/main.c | 3 +++
- 1 file changed, 3 insertions(+)
+> > If we add the sanity check because it's cheap, why don't we save
+> > fault.mmu_seq before getting the pfn to guard against stale pfn as well?
+> 
+> Because as the changelog says, the whole point of this API is to provide a stable
+> PFN.  I want to add an is_page_fault_stale() check as defense-in-depth against bugs,
+Ok. So adding is_page_fault_stale() is not intended to ensure that a private PFN
+is stable (i.e., not stale).
+Any background on why we cannot update the code when the bug/future changes
+actually arise? :)
 
-diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
-index 85e772588fad..e80a99e93d56 100644
---- a/arch/riscv/kvm/main.c
-+++ b/arch/riscv/kvm/main.c
-@@ -47,6 +47,9 @@ static void kvm_riscv_csr_init(void)
- 	csr_write(CSR_HCOUNTEREN, 0x02);
- 
- 	csr_write(CSR_HVIP, 0);
-+
-+	/* clear HSTATUS.HU */
-+	csr_clear(CSR_HSTATUS, HSTATUS_HU);
- }
- 
- /* Clear hypervisor CSRs - called during CPU offline and non-retention idle entry */
-
----
-base-commit: b5060a4aa33d7d78a8c1837ab08ef0c81ea96650
-change-id: 20260817-hstatus_hu-a1a88a27c7b1
-
+> and against future changes, e.g. if we extend is_page_fault_stale() to cover more
+> reason why a page fault can become stale.  The downside is that is_page_fault_stale()
+> is susceptible to false positives; the funky code here is to minimize the chances of
+> a false positives, while maintaining a reasonable level of safety.
