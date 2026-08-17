@@ -1,189 +1,273 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD9A4B0497;
-	Mon, 17 Aug 2026 19:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F933E073D
+	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 19:47:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786995731; cv=none; b=pGySoxvifv7IEu5CVvNNqMBXrS4N+rKgSo9jiDU+yEDWkoeJR86EUDtV4wcxzHAgqacucAaCKMAYN8SEWcVrclwAK9095HMq3tto+fWnxMlgHBvShruk668i6jOThPvcd8KhUWyAAKIzX/Kimn/kxLwtdFVw6a8uYWgcno33Dsg=
+	t=1786996072; cv=none; b=OyfaChNWm6/qo13stHRpxy0r4UHgzwgC+UkJp0dUSJKdVHZYe/5AK2D9G0zLQ2/l2TjtJ9VR46+PowcwafXidd2z1cLv0EFSqtAeV36Nn7g29CMfD+GO+I0lQO06LshDmpYSjh+ImJDW+64Z9YvKpSn67zfL83NJU+ulXjGXFi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786995731; c=relaxed/simple;
-	bh=msaCP7P7zFsk3kOA4Xyn44FuBrLd+J03e70RcS9Yieo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GdvYAqM8if8YTbr3QXHJ0Xf8oXD9l5nfwksKf4X89vmGOjSzoKO9ovNtSBPIO9pHvM+zwZN0ohqrns0PtU/rZXPVdnfWhv8MIJsw0GVssbr6ja7K13Qe08CvU9IMDi9DDPRZN1ipMwztga+uhvBL0xKvsB5kIIEPNOUEoHuMCiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JV+RvCiw; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786996072; c=relaxed/simple;
+	bh=Sq4thMMJReze4/rJZCBTgoxk8esIF6+Ewcd2Tnn+VUQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=mXclO2etESr5Px6jewP3W8aD+c/VmpU3tN+JAXiIqtJ32mJe4hjUwGQ+5wtyDLO8utS9FT8OZ5Sb64DEhq4iP0/l7D4OcplXILtfEatFOIJ+wZjC3T1DwdoDvmEFISgwIxlHLXQ4hgwaj1oPZa3ApE/LT5fqO/YxFxcR/EKaLaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oso7wUSn; arc=none smtp.client-ip=209.85.214.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JV+RvCiw"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67HIVuXH2219740;
-	Mon, 17 Aug 2026 19:41:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=zPCe7A
-	2QtQt6XRLidm5ze7lmVYujpyledUoYcfOY3Bo=; b=JV+RvCiwsNmTDb5Kgq7SUk
-	CmNETO4lZqkvQnxAQ+flz38dMfE7nA0V5koc4Uo34h9I4yZhG268A/wy569fBn4A
-	XPVus+bUtI8mvbYdprLxq41q0PbeW3jg5oYkygy6Sj2UCK8ZycSUutRoIyboz84V
-	y/KPmKRmhPfG2mE1SRHU8/L3XhvkrMrb3C/H8G+FzCxcdlu62RDLKG9R2ex2IDLi
-	IszGBy0srA5Qdg4ICjdi5EGyA8kvPg3gMzX7URvKmyLAxCcD5XhGrwU3+0dGzBJG
-	PZRHXWzRbzK1jBMyrgcBwOFc8QaE4Nqwj2tLByyCBvb88Il8lk8N15uaE5cRaIEw
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2frt3kg5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Aug 2026 19:41:59 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67HJfICN007910;
-	Mon, 17 Aug 2026 19:41:58 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g34ng78e0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Aug 2026 19:41:58 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67HJfuCn33358446
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Aug 2026 19:41:57 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BE5315805D;
-	Mon, 17 Aug 2026 19:41:56 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ADEB958056;
-	Mon, 17 Aug 2026 19:41:55 +0000 (GMT)
-Received: from [9.61.135.106] (unknown [9.61.135.106])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 17 Aug 2026 19:41:55 +0000 (GMT)
-Message-ID: <a60a38fa-8aad-4cb6-ad42-5bdf8d9c132f@linux.ibm.com>
-Date: Mon, 17 Aug 2026 15:41:55 -0400
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oso7wUSn"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2ccd1958e8fso60199815ad.2
+        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 12:47:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786996070; x=1787600870; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dSPjnzAw394pFm0pKxy4emVVRo23Qn3Hi8qinnpBAHg=;
+        b=oso7wUSnVdr5UwP5WQAiINjJUmjyObw0fCXsPxH0ziyP0lUKWgH3TDN18Hp+03W8oL
+         6vA+nGoIf4rAKDztkgc1Pujuxpi6A/1/SpynGvMyKrCVsAsC1TAc5LtT4pOAuhfT9RRO
+         URUXfu9R2EtnfjzPHU7mJi2BY0+DUlf+2wPHjan4ob32VzwfnL3SvGnB2781NsNH81Ur
+         gDzJZhLtDXrJoVrIo4y+Px3XvZmvFS2FvVCKH3oRb/pmtFeufwwoqWVkap8K5llYZgFq
+         ml740n4LqN7T0A2IMDlg6+5Grw4VnV63/PH/j9qKq9+nwRNN2CUH2PfF6i2Izpw1zovc
+         xSvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786996070; x=1787600870;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dSPjnzAw394pFm0pKxy4emVVRo23Qn3Hi8qinnpBAHg=;
+        b=rGnrPhqTjOSFnZ16eC1SP8j3zRl4KtNCm/eOkyIhz7GgupE5CeUg5dUpm0q6233aCr
+         BMOSk1rcdfGYms0ON1fOwcWRTv8KhLonO8XbqWMOjqiKRgU4HiTyCERWbm2VwZNzEOz7
+         3uCmfB7QvEwYKbDjpR49RCv4Xz5+pA6GKMJxqHJskTWJjgZU6sanCC6LDY7RelEHu9I6
+         Z6o02Mn6wPTKnyd1uTRDMnajCz/nMFcKIsRecmpCuVd9fUf0Ja9PNBWMTNoqXsobdFQE
+         RNJ1Qt3T5D8J3I7+9hyUOFd7lh8k/ztbo+xvDG1hiXWLO4yB+iOk2PFrvWv6HTjquOW4
+         MuPA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr9tNLxQ2FFYAiJqSWQzNGgXpfarqV1zZN9w0CkQFVgvxQJmq+RV8frGTFNl9VsizZj/uY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyP92IBhXkRGdQViXVxtoYe74pvk4k5ICblh+8jAY5RGxgqwtNh
+	4+yV0zHODMNkb2TfwpWJobzZk3TATucetypeWdb1XcQr1Jsei6pKO5SP53JtGzuOdackooN07L4
+	O2oTi8w==
+X-Received: from plpo1.prod.google.com ([2002:a17:903:3e01:b0:2d3:c2e:bf01])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:b0b:b0:2cf:9347:f445
+ with SMTP id d9443c01a7336-2d3b0c7ae46mr300300005ad.10.1786996069910; Mon, 17
+ Aug 2026 12:47:49 -0700 (PDT)
+Date: Mon, 17 Aug 2026 12:47:49 -0700
+In-Reply-To: <CAEvNRgFNCDDSeuvbwj7pD_d18o1TBXo4TNR2dXHxpm18KPfR5A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 9/9] s390/vfio-ap: Fix memory leak when queue removed
- from host AP config
-To: Matthew Rosato <mjrosato@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, pasic@linux.ibm.com,
-        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
-        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
-        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
-        stable@vger.kernel.org
-References: <20260812200240.818004-1-akrowiak@linux.ibm.com>
- <20260812200240.818004-10-akrowiak@linux.ibm.com>
- <3f1e1e96-fa32-407a-816a-d884b97b9961@linux.ibm.com>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <3f1e1e96-fa32-407a-816a-d884b97b9961@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=OfaoyBTY c=1 sm=1 tr=0 ts=6a836407 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=-hAh2JgC421wSWjpc-oA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE3MDE0OSBTYWx0ZWRfX76DGHc03uf81
- BmhJaxfYiaMhUA0ev+zWw1mbcT5YrAeeF9kvbVyBvxKBHEWZAJdAu2757tch6PeqF9pFFQLG7IH
- vhohP8heBUkkCe/S9IX1uW8PFwChDG0=
-X-Proofpoint-GUID: aHroIs7fNnMxXA1q6k9Sm_SqqTDBotVM
-X-Proofpoint-ORIG-GUID: aHroIs7fNnMxXA1q6k9Sm_SqqTDBotVM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE3MDE0OSBTYWx0ZWRfX6KGbx+yULaKd
- +J0PGQANLdpKv/m/M3OdZzMANT+cR9HnIyb+vAZVoBLeAfuUCNx1DoHVrfi8eMt9oRMlG6XISTq
- D1jLEUxGfw9NV+YPOMlmc9KaTTCRDGPsVi5S8AOyd+H8ns9hYGh0pd8Dp3a7UdIprS/8Gd52f+G
- VdNdlgllh+C1KwIZYR+dSgA7D8cU9KLxW6LzYvpJmpuitcb/TPr+sQRUt4ojRkv1rLdFWgYWSFo
- 7OoSpagC2j2PXtU27ohVzDgwu8Ghm0nYizRgFpHNbeeSyyTsdXrpTU+3BNLiCpMucwrkPpPzk+G
- KJKjY+NlGzZAYy3xAUBV6oWO4YxAgFbj8RrJII3sjjsbjRph22NdFSAwaJWXC52Gi07Z7o06HGn
- XNL7TzYbG+YVQiJUs+xsvQmnICB+W00abHd4CIRKYUlBxfD2tT9D6YvtqDBZup1L5c86xKQaqE8
- ykNncqftrOsQTG0ylbA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-17_03,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0
- malwarescore=0 bulkscore=0 phishscore=0 priorityscore=1501 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608170149
+Mime-Version: 1.0
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-12-2fc18ee6d3ba@google.com>
+ <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com> <an3o4h-E8mj6CUaM@google.com>
+ <CAEvNRgGpCVCGVjc9jCt9Yr+XypF=71h6eBahkXNkrXhfrtGY+g@mail.gmail.com>
+ <an5AcEG9mqDgnBYk@google.com> <CAEvNRgE+05c9U8C=Zkm1S9hLw3Lw6YMmijZhEe7J4rYQAuNyEw@mail.gmail.com>
+ <an8umm0qisEidt4n@google.com> <CAEvNRgFNCDDSeuvbwj7pD_d18o1TBXo4TNR2dXHxpm18KPfR5A@mail.gmail.com>
+Message-ID: <aoNlZRb5SV7hyNuk@google.com>
+Subject: Re: [PATCH v10 12/41] KVM: guest_memfd: Call arch make_shared
+ callback for to-shared conversion
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Binbin Wu <binbin.wu@linux.intel.com>, aik@amd.com, andrew.jones@linux.dev, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, Fuad Tabba <fuad.tabba@linux.dev>
+Content-Type: text/plain; charset="us-ascii"
 
+On Sun, Aug 16, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> 
+> > On Thu, Aug 13, 2026, Ackerley Tng wrote:
+> >> Sean Christopherson <seanjc@google.com> writes:
+> >> > That's why I think it's worth analyzing the cost: if it's in the
+> >> > noise, leave it alone.  If it's meaningful, figure out a not-too-gross way to skip
+> >> > the entire thing if kvm_arch_gmem_make_shared() is a glorified nop in the end.
+> >>
+> >> Is noise defined relative to the entire conversion process? Would this
+> >> benchmark look like
+> >>
+> >> 1. Convert 4G to shared on TDX with CONFIG_AMD_SEV defined
+> >> 2. Convert 4G to shared on TDX without CONFIG_AMD_SEV defined
+> >>
+> >> and then compare the difference in time taken?
+> >
+> > That'd work, though I was envisioning something even simpler: use rdtsc() to
+> > count the cycles it takes to iterate over various ranges of memory.  Do whatever
+> > is easiest for you though.
+> 
+> I made some changes to add rdtsc() for the conversion process as Sean
+> suggested [1], and exercised conversion like this [2]:
+> 
+> 1. Initialize some memory as private
+> 2. Get the guest to fault them into Secure EPTs
+> 3. Converts the memory to shared <<== this is being benchmarked
+> 4. Converts memory back to private
+> 
+> I made it build the VM once and convert 5 times:
+> 
+> ./gmem_benchmark_tdx_convert --iterations=5 --size=1g
 
+...
 
-On 8/12/26 5:12 PM, Matthew Rosato wrote:
-> On 8/12/26 4:02 PM, Anthony Krowiak wrote:
->> When an adapter or domain is removed from the host's AP configuration, the
->> AP bus invokes vfio_ap_on_cfg_changed() to notify the vfio_ap device
->> driver. For each ap_matrix_mdev object to which the adapter or domain
->> is assigned, vfio_ap_mdev_hot_unplug_cfg() is called and removes the
->> adapter or domain from the matrix_mdev->shadow_apcb (i.e., the guest's AP
->> configuration) and hot unplugs it if a guest is using it. The new host
->> AP configuration (sans adapter or domain) is then stored in
->> matrix_dev->info.
->>
->> When the AP bus subsequently unbinds the physical queue devices associated
->> with the adapter or domain that has been removed, it invokes
->> vfio_ap_mdev_remove_queue() for each queue removed. At this point, the
->> adapter or domain will no longer be assigned to the
->> matrix_mdev->shadow_apcb or the matrix_dev->info object because they would
->> have been removed by vfio_ap_on_cfg_changed(). Consequently,
->> vfio_ap_mdev_reset_queue(q) is bypassed and kfree(q) is called
->> without executing vfio_ap_free_aqic_resources(). This indefinitely pins
->> guest memory (q->saved_iova) and leaks KVM GISC resources (q->saved_isc).
->>
->> Note that resetting the queue would fail with an invalid APQN error due to
->> the fact the queue is not longer in the host's AP configuration; however,
->> it is still necessary to free the AQIC resources. The fix here is to call
->> vfio_ap_free_aqic_resources if the adapter or domain is neither in
->> matrix_mdev->shadow_apcb or matrix_dev->info.
->>
->> Fixes: b9bd10c43456d ("s390/vfio-ap: do not reset queue removed from host config")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
->> Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
->> ---
->>   drivers/s390/crypto/vfio_ap_ops.c | 5 ++++-
->>   1 file changed, 4 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
->> index 1edd0b7a3cce..bd9d239caeba 100644
->> --- a/drivers/s390/crypto/vfio_ap_ops.c
->> +++ b/drivers/s390/crypto/vfio_ap_ops.c
->> @@ -2533,12 +2533,15 @@ void vfio_ap_mdev_remove_queue(struct ap_device *apdev)
->>   	/*
->>   	 * If the queue is not in the host's AP configuration, then resetting
->>   	 * it will fail with response code 01, (APQN not valid); so, let's make
->> -	 * sure it is in the host's config.
->> +	 * sure it is in the host's config. If it is not, then free the KVM GISC
->> +	 * resources.
->>   	 */
->>   	if (test_bit_inv(apid, (unsigned long *)matrix_dev->info.apm) &&
->>   	    test_bit_inv(apqi, (unsigned long *)matrix_dev->info.aqm)) {
->>   		vfio_ap_mdev_reset_queue(q);
->>   		flush_work(&q->reset_work);
->> +	} else {
->> +		vfio_ap_free_aqic_resources(q);
-> Re: the Sashiko finding for this one:
->
-> [Severity: High]
-> Can this still trigger a WARN_ON and leak KVM GISC and pinned memory if
-> a guest shuts down or the mdev is removed before the physical queue is
-> unbound?
->
-> I think Sashiko has a point here...  At first I thought it was a
-> pre-existing issue (just another path that fails to free resources) but
-> I think this patch actually makes the described thread of execution a
-> bit worse:
->
-> Before this patch you would leak resources on the described path.
->
-> After this patch, you will leak the resources on that path, then reach
-> this new else statement and could potentially now WARN about the null
-> pointer(s) in vfio_ap_free_aqic_resources() and still not unregister the
-> gisc and/or unpin the saved_iova due to the null pointers.
+> And here's the above, tabulated:
+> 
+>   nr_pages      make_shared            total    percentage
+> ----------  ---------------  ---------------  ------------
+>          1              930            39278       2.3677%
+>          1              252            28060       0.8981%
+>          1              176            26952       0.6530%
+>          1              176            27038       0.6509%
+>          1              176            26980       0.6523%
+>          1             1072            37236       2.8789%
+>          1              316            28338       1.1151%
+>          1              176            27182       0.6475%
+>          1              176            26972       0.6525%
+>          1              176            26886       0.6546%
+>     262144         15041018       6616067680       0.2273%
+>     262144         14937462       6608542680       0.2260%
+>     262144         15138858       6599494898       0.2294%
+>     262144         15721972       6610219850       0.2378%
+>     262144         15000406       6615114540       0.2268%
+>    1048576         61902982      26400884028       0.2345%
+>    1048576         61746114      26401170984       0.2339%
+>    1048576         61096794      26404409058       0.2314%
+>    1048576         61446290      26447461896       0.2323%
+>    1048576         61774646      26444608360       0.2336%
+> 
+> Looks to me it is within noise.
+> 
+> I also actually tried measuring the conversion time from userspace with
+> CONFIG_AMD_SEV enabled and disabled. Converting a 1G-sized TD was faster
+> by 0.2%, which is in line with the above table. Interestingly, when
+> converting a 4G-sized TD, skipping kvm_gmem_make_shared() was _slower_
+> over 2 runs. I don't have an explanation for that.
 
-This is a legitimate concern. I will fix this via an individual patch since
-this 9/9 patch will not be included in the series for the pull request.
+Might be some cache/memory locality benefits?  Though with a conversion that big,
+it could also be nothing more than bad luck.
 
->
->
+> I think the code was correct. (If it makes a difference, I skipped
+> kvm_gmem_make_shared() using a custom guest_memfd creation time flag and
+> skipped make_shared if the flag was set on the inode.)
+> 
+> I thought adding a kvm_arch_has_gmem_make_shared(), defaulting it to
+
+I would do kvm_arch_has_gmem_convert() for consistency with the Kconfigs, and
+because the cost of the reclaim invocation is a non-issue.
+
+> false for all archs and having x86 override with
+> !!kvm_x86_ops.gmem_make_shared is not too bad either:
+> + doesn't leak anything, since the function being called is
+>   kvm_arch_gmem_make_shared and the accompanying function is
+>   kvm_arch_has_gmem_make_shared. Or maybe just a little, since all the
+>   other ops don't have the accompanying _has_ function
+> + it's a kernel-internal thing
+> + not too many lines of code, not too complex
+
+It also provides a good excuse to kill off the #idfefs in guest_memfd.c.
+Compile tested only, but I'm thinking this?
+
+From: Sean Christopherson <seanjc@google.com>
+Date: Mon, 17 Aug 2026 12:31:50 -0700
+Subject: [PATCH] KVM: guest_memfd: Optimize away conversion overheads via
+ dead-code elimination
+
+Add and use kvm_arch_has_gmem_convert() to guard guest_memfd's invocation
+of arch hooks related to converting memory between private and shared, as
+only one half of the x86 CoCo duo needs the runtime hooks (any pre-work is
+pure overhead for TDX).  At this exact moment, the overhead is negligible,
+but that will change when in-place conversion comes along, at which point
+to-shared conversions will "need" to find all affected folios prior to
+calling into arch code.  In quotes because very technically that work could
+be pushed to arch code, but that would bleed guest_memfd details into arch
+code and would be far worse than adding yet another kvm_arch_has... hook.
+
+Opportunistically provide the kvm_arch_gmem_make_private() declaration, and
+rely on dead-code elimination to eliminate the call to non-existent code
+when CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT=n.
+
+Reported-by: Binbin Wu <binbin.wu@linux.intel.com>
+Closes: https://lore.kernel.org/all/1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com
+Suggested-by: Ackerley Tng <ackerleytng@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/include/asm/kvm_host.h | 3 +++
+ include/linux/kvm_host.h        | 3 ++-
+ virt/kvm/guest_memfd.c          | 5 ++---
+ 3 files changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 283847619ff8..5d5a7723abb6 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1854,6 +1854,9 @@ enum kvm_intr_type {
+ #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+ #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
+ #endif
++#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
++#define kvm_arch_has_gmem_convert() (!!kvm_x86_ops.gmem_make_private)
++#endif
+ 
+ #define kvm_arch_has_readonly_mem(kvm) (!(kvm)->arch.has_protected_state)
+ 
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 03bfc92864b6..e824ba59c60c 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -2599,9 +2599,10 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
+ }
+ #endif /* CONFIG_KVM_GUEST_MEMFD */
+ 
+-#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+ int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+ 			       kvm_pfn_t nr_pages);
++#ifndef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
++#define kvm_arch_has_gmem_convert() false
+ #endif
+ 
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index b596486d184c..39d94938b5f6 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -773,11 +773,10 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 		folio_mark_uptodate(folio);
+ 	}
+ 
+-#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+-	if (kvm_gmem_is_private_mem(file_inode(file), index))
++	if (kvm_arch_has_gmem_convert() &&
++	    kvm_gmem_is_private_mem(file_inode(file), index))
+ 		r = kvm_arch_gmem_make_private(kvm, gfn, *pfn,
+ 					       (kvm_pfn_t)1 << *max_order);
+-#endif
+ 
+ 	folio_unlock(folio);
+ 
+
+base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
+-- 
 
