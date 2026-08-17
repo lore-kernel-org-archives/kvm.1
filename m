@@ -1,86 +1,107 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A666E233944;
-	Mon, 17 Aug 2026 20:21:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48EB535838E;
+	Mon, 17 Aug 2026 20:23:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786998106; cv=fail; b=dRgG1ZG5LZCAPsTzKnacHEmMXGnY6ZqBiZmscXztM5ag7yCEtCG1+l+ThJfFJHZ85bKAUdL4YNBtIUtXRM+szDA6fzWQfIHOhxnrQFmmuvKEMFyxDDMADsG6nppdDq9sAFft/M8nwRaJ4Vyvvf3kGrHpO6Vm+aQaFzlTEMGCOhk=
+	t=1786998198; cv=fail; b=n+Axo9NTCoxedZC4Fl5OqHyWfrTxD40YgdGamj8ljDNUi58C7eCbH7ztAHiDcqDkpGJDQVr4oa+59NKNz7BThIzT7mPsYjHm98WtPp2zrjifKuSiLVirUhRs4kDdIe71ghMkt1cVAxreHtrr5QlW8nvl+Y8vxcW+NLOn2u80PGc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786998106; c=relaxed/simple;
-	bh=y1TNnsqri+/7+/eZTi4dyVEQx7aXMCqMk/B1bN9Fb/Y=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 MIME-Version:Content-Type; b=T9tVEtlAHyICgA88UCe+TkAbBxgDfxpsWzZT6wak8j42pYJmPY/zrWAeyIMrAjXxxDTfoCVnqqbb2LG2Wy1ptF97dRQKM55rHd6LWz/zdL+WyedZSNfke5G1Zd3oSwV7Etvn2DZNPrwU84v9N8+AQUbRZsW3iJiqEWxJJJ+EJpY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=bvspKzHB; dkim=fail (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=skQ5mObt reason="signature verification failed"; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1786998198; c=relaxed/simple;
+	bh=jyYmeEDCq6RJQLE/KxES+Couxz3+y2Lf8aROeXuLR9E=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=jl6c0wo72P9hGAQfabtaPKiVrzB+sV9l4mZ4NJVhBz0EwmbPJWR36h0nmUot+U+Q02/KbtrOEoT1gcQShKGGgzKBK1x+LbndATFyH4eL58mM4nbtfkpHThbDV5o0oa/pC0rQ7QUPGbqmQwweqYXm2w1bg2n/ELE4XIsyGvUpZqA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QNYPHnLq; arc=fail smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="bvspKzHB";
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="skQ5mObt"
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67HFe6As2038427;
-	Mon, 17 Aug 2026 20:21:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=aPs0cU/GaOhrarQJKg9SdpPEo9Zj2NQ8lAxou6O5dtw=; b=
-	bvspKzHBmFbQTfO8vrcz0qZwPBDSefHn8g/5TxLKAqiCmN+bLYmYG3vt89mvo+8L
-	3i7GodUTUYNkDzdk/X23abqmhEJ6fCsGwgBfVXIzc4oCFOiOO71QFcOeV/TbdOKX
-	9tRnCIvA6b+o0B3FpcNnmHlxzZ6hGTFxIqC9CiVMLjfn8/kJEqmu/cQBB0BHaoK6
-	/OxkgqmuHm/spzvY7Yq3JAvbXBV0xuq0w3Z7Drh7SiS9Ovvu+o82sYgaMtWTHoVD
-	FHq/Esk+wybfxcHfjRgkYmZ2PQ4Cs3HRtOfzc7AY8kychTV1mFBvtrzA+UW3lCEW
-	rxpH2NS2EJ2ON67taRZcBg==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4g2g5cb3jj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Aug 2026 20:21:41 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 67HKFfxZ038832;
-	Mon, 17 Aug 2026 20:21:41 GMT
-Received: from sn4pr0501cu005.outbound.protection.outlook.com (mail-southcentralusazon11011047.outbound.protection.outlook.com [40.93.194.47])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4g2ejpuks6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 17 Aug 2026 20:21:40 +0000 (GMT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QNYPHnLq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786998196; x=1818534196;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=jyYmeEDCq6RJQLE/KxES+Couxz3+y2Lf8aROeXuLR9E=;
+  b=QNYPHnLqfpsPfHI2Xk69rjUteBNVx0WV0c7orVbX5Pi6DbAbFAcBKnAX
+   /2lKLFiaa+yIYD4yTa0WHV4jIURxKMjMe6v3JeYTkmhcK+IywsSv10kep
+   YxDx+rm/NeoqGzqbVu+WDQHDwdHsrFSWv68gB8qH2EOIx4aR8KhptxYZD
+   tpXeSExapR80bXkKJB50+qo07fR1zGiiRNQM35Ap46T2+jNZdvPVfUKnu
+   0HgHhitgvCQyz3OLV5GtGytgEbUP4VyXjgN+/ETUkkoKmK+UhH8J5P0j9
+   ZuhY6uorLiWacY+03ShE8N1a+jc2AyC7bx92Ez1ZY6W4lQxuh8vS4pTUt
+   w==;
+X-CSE-ConnectionGUID: z+2Ict0ZSaSCiTN2R0ANpQ==
+X-CSE-MsgGUID: HGBWr6XOTk2hi4tA894mlA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11878"; a="91355102"
+X-IronPort-AV: E=Sophos;i="6.25,229,1779174000"; 
+   d="scan'208";a="91355102"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 13:23:16 -0700
+X-CSE-ConnectionGUID: sGyn76SKRKaS5Fl112byXw==
+X-CSE-MsgGUID: AOjEViIvT2uv8pbB81UGLA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,229,1779174000"; 
+   d="scan'208";a="261742278"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 13:23:15 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 17 Aug 2026 13:23:14 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Mon, 17 Aug 2026 13:23:14 -0700
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.24) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 17 Aug 2026 13:23:14 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZQpvv/Pfd1IJ5lzl/M7KFscH1u5a9TKIX3CQisxLRzUTzykBHcLBeL7RcjCzbXxFkXL4kIR2AZ+cDbZK+B+875AnJz8+o7Z5Z5HTfNM2d5j5gepTQgjzMEL9bVL9OhAjfv6OmwlNYBoPRgUVGbhA7Fg9HWGAcBpYAcrBDdCI9biJW3opEc6rVSVn+fUNtGYqj9j5Y7ksgYwtDTH+O93gU4blefvA5X38V/gLykc83qYuESIgBmlhROP/SMHe4GiaBWWFYPPpwHHPuvO5jnUdo74c04X0/rBKb4CbcsVk+7WpAoVXcHmSovy1LC3aaCo0Rkp5vULmWI+87GZCk1wOAA==
+ b=ST6bKdJoaLR9SF8zvLankTK8W9y0ACiHLNaBMTwONK0PAWiBfBKit3JxGN5vw1pB9I2/E2c7sAalvUu8ViFUUEkJsJJbrNw1RTTmUstjFwvlOqU9HHBdyWRUoTXLfuZIDEfxP9+JATzT1VQozgG6LggMsNvqf55sSl21WPBcsmXv91GIXbFmTj152LtZ1uAm9+aUv+kx6v96kbmitpO672ElnBiEndvWBYui/vhkT8leFmWo1+3UpnUCS8ffXGUVjcVDuwFjTxk/A6YZtpa5OcdXnsoNwo5iEZCnGXXiJ6Fi1b0MsycdyRZiXJg4ciH55UFDoiq5jgv44ToX838r5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q8oBrcZvLqiZlmIWdDqjcyD9E31yMfPnVAW11c5cJTA=;
- b=ITX7Q3Ly0mxWFDK9CiUHYG0cZLLeGvcBsRTybvUPo9zepkoWJQp5A7Qi4tdONTbFeThhlwr7gCJbMAWRzKwhfZcpi9vggffQkE3N4uS4sTjqSZpmRFCbNXdPs483QMFy7kw5BgSSax7KyiF1MSkqhUmCH9VC6cDkYSSwSn8Fc64ezf1jrm3+LbVlB33dtfK6PTqClPR2A5QWdD4/PWeyoJjC4FE4evXkbIjS9McAk/IANPKiQvWsMU/KUqtqdW5yROcdU6UuHwVcGQM1RW0pKpYbULK5fMMDrG8lBOma61JJffopV6d8431uUpu/YrDlHsutxICSdwSDH6VYNP4ccQ==
+ bh=tfCoTGmzF0Khje8ZVwcvICP7z6bgvxk49CYib0j5DyE=;
+ b=MLPrW8dCJCiNSp94z1XBS9zLwtCtN2VZHvPNPBaAJLZ/uRcDEVRsefRF+j4g7a9nmYSz+UejY1KT6cbJSOhH6f+euO4Oz/nHKC9HsqyEP3sDDSlvozvRGxnHnnsxrpOuRg/I+JRDNu245lAQcFHsGgTaWrfI/akpjQt0hh7gsYaHXzWc85HlD82Kw2D4g6X1naUgsy+Pr6BMuBIeYVor1FTmQb7X/C84yqI4mdIR+LCTpDHZ36+8OshiaTDUpTTejRczwp0HVoX/HZwUvlfx6vyTpbHTgwjwX2xkY9KINV2aXlsXp4Db+lXoWguHw0Y75g2lsGROeehnWRBTCaajVw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q8oBrcZvLqiZlmIWdDqjcyD9E31yMfPnVAW11c5cJTA=;
- b=skQ5mObt8lxhaArE1d+AqyQQI2PKKjJYzeygzVnyMGLLztczWKwkNKzogYD2tx9hdcM+vOEkAtAWZIW9cbuHCq2QL1BZDYBLANUOIoi2Pn3qFIfIuDlij1je9VQn2zlq9kPomhIQZwRG2FTNTLtvIG5wsWbombmx98xVl//HXD8=
-Received: from CO1PR10MB5506.namprd10.prod.outlook.com (2603:10b6:303:161::7)
- by LV3PR10MB8179.namprd10.prod.outlook.com (2603:10b6:408:28a::16) with
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8230.namprd11.prod.outlook.com (2603:10b6:8:158::21)
+ by IA1PR11MB8174.namprd11.prod.outlook.com (2603:10b6:208:450::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
- 2026 20:21:38 +0000
-Received: from CO1PR10MB5506.namprd10.prod.outlook.com
- ([fe80::da72:a0a9:5f18:cda4]) by CO1PR10MB5506.namprd10.prod.outlook.com
- ([fe80::da72:a0a9:5f18:cda4%6]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
- 20:21:37 +0000
-Message-ID: <427a5d9c-7641-48c5-8a51-2f78688de4f0@oracle.com>
-Date: Mon, 17 Aug 2026 13:21:36 -0700
+ 2026 20:23:11 +0000
+Received: from DS0PR11MB8230.namprd11.prod.outlook.com
+ ([fe80::2592:f5a9:a751:be40]) by DS0PR11MB8230.namprd11.prod.outlook.com
+ ([fe80::2592:f5a9:a751:be40%5]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
+ 20:23:11 +0000
+Message-ID: <3cce8c2d-3cab-462e-b437-da4edede6077@intel.com>
+Date: Mon, 17 Aug 2026 13:23:08 -0700
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] KVM: x86: Reset last_steal on vCPU pid change
-To: sashiko-reviews@lists.linux.dev
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>,
-        kvm@vger.kernel.org, kvmarm@lists.linux.dev
-References: <20260816053630.527528-1-dongli.zhang@oracle.com>
- <20260816053630.527528-2-dongli.zhang@oracle.com>
- <20260816055525.A41D61F000E9@smtp.kernel.org>
+Subject: Re: [RFC PATCH 0/5] PCI/vfio-pci: Guard resets against active SR-IOV
+ VFs
+To: Bjorn Helgaas <helgaas@kernel.org>, Alex Williamson
+	<alex.williamson@nvidia.com>
+CC: kvm <kvm@vger.kernel.org>, Alex Williamson <alex@shazbot.org>,
+	<skhawaja@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Bjorn Helgaas
+	<bhelgaas@google.com>, Kevin Tian <kevin.tian@intel.com>, linux-kernel
+	<linux-kernel@vger.kernel.org>, linux-pci <linux-pci@vger.kernel.org>,
+	"Andrii Staikov" <andrii.staikov@intel.com>, Mitch Williams
+	<mitch.a.williams@intel.com>, Nick Nunley <nicholas.d.nunley@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, "Czapnik, Lukasz"
+	<lukasz.czapnik@intel.com>, Konrad Knitter <konrad.knitter@intel.com>,
+	"Pepiak, Leszek" <leszek.pepiak@intel.com>, "Tantilov, Emil S"
+	<emil.s.tantilov@intel.com>
+References: <20260812214554.GA1067593@bhelgaas>
 Content-Language: en-US
-From: Dongli Zhang <dongli.zhang@oracle.com>
-In-Reply-To: <20260816055525.A41D61F000E9@smtp.kernel.org>
-X-ClientProxiedBy: PH7P221CA0030.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:32a::35) To CO1PR10MB5506.namprd10.prod.outlook.com
- (2603:10b6:303:161::7)
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+In-Reply-To: <20260812214554.GA1067593@bhelgaas>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR03CA0315.namprd03.prod.outlook.com
+ (2603:10b6:303:dd::20) To DS0PR11MB8230.namprd11.prod.outlook.com
+ (2603:10b6:8:158::21)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -88,230 +109,159 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PR10MB5506:EE_|LV3PR10MB8179:EE_
-X-MS-Office365-Filtering-Correlation-Id: c4fcd485-06ff-4b3b-a5e3-08defc9d23fb
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8230:EE_|IA1PR11MB8174:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2668f51a-2e9f-4bfa-d407-08defc9d5b95
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|22082099003|18002099003|56012099006|4133799003|6133799003|4143699003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	UoxcdSxPnguGia5nBPgrnefHI+5CEH7EhyGD76vGhFUJbMob7XD2u7pyVM8MXshsig1BsSOLIiIk3GQABnvPxX182/g7LGzcrt3wTD7r0goozP5rqfFETCXqjmIKSPB6AH2APJz9XSHCjybh+EvCsMQOF6s+iutzMJueP8YoXnM846KtmF9fwFLegHHAfWUK1EbzM7vu4GgV7flk8GI7CL2BqssY2e6MWaHmCbQyzlm7Bn74xkRGvS1P6twqpehGlyJj0J1Ho179XUNFOtod4djO1PEXdKaZjSBRQKm36OuSdQjrTG4DOXoiuyuGAP1YVjgyvYAIeF4UJgYBlw1IMGAYCrCTewort7cpWDDwr6XRhcs6r+ek38ylYG1gtIit6LaarNfKasUEnP3xOCpPwSQcTI/ED42s1Jp3Rr0oAc+9hAJRyuMMdihqGbNxwl61enBy277BL60ah+v+vEOtS1SG7HJrK6vJZMABVqL5vfK3C95b35g2ijSEn6lRoP1zMtfC+ONHUvQ9JKaQnOw33XcqUcMeLg4WmSz1yWDEkXZBHS9BirsqeJg0xz7dz+zZcphS2kd9uyU/nO6O63mAXNO3yJu5ohYglje/NYgGj8f796XKvxY3hoNBXVat+1oJY7T701WTHesXNcRIJD9wCED212wMlB03/dk5yJ/421U=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR10MB5506.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(22082099003)(18002099003)(56012099006)(4133799003)(6133799003)(4143699003)(10067099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|11063799006|56012099006|10067099003|18002099003|6133799003|22082099003;
+X-Microsoft-Antispam-Message-Info: zjHqbx16svwTNLmpIm3/Qr7o8VXGt6OoeIwsving1vDMpyUf8SEqXzKFl99RZjefOEpF96+bTh0aEBRV15ygUZi7g1qypn6LC5TwefNTCLeKYJwccqHyvYBhzXjs2sRFSpv+COiVv1HnW3APwHzZbqOpe058NhjRY9SRW4HDXvIj7WdDdYW/1P6LQ6A5hwLf3+HOOjsFh3ck032ff7XA67ZsmZ1letninU4depWgIQmUQ9gsImzH+sfIdpM6gLQR18kOc/2yXd8A1hbwjpdmPdfGR4lgFWnnoszrkOIM06Id5Z/zGRxvPDGvx7DPpZ6EwZlqrhXHpHgcqikKhoh6Nd/Xt7CdPiOxbjrlbuFalkNOD5lezP5FcRhnCUCer/rIPhpFsYI75rrKX3BHGfbggJF3ARJMSpOE87kY7xnCPOniMv2HKBAkIT873VvRZHP0VSz5ALAKXIipOebsx3OK9yr/62JDzWcoMYSJcTXy8UhT1jTa79F+dEXVNfup4K9TNfXCz8vLxt/ustdXayVYQfE3lTToymfsLMpLTfVeT4NkDFN8VPW83PgALj2zc7xuOwpWka99IdZVIUhnY4lXmEXkxebvRtI7bXn9+YqSLdKxOhl1QZqe2RbgCM+iiOQlA3fZ11WKIz11mEq3zRUz7MQnhNydkV4fDy08T9zHGbM=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8230.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(11063799006)(56012099006)(10067099003)(18002099003)(6133799003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?L2dKc2xra0I2ZkNiY1V2cXJNWVYxcklkZ1dZQVdheEZJUVY5RllXMm4rRnZU?=
- =?utf-8?B?ODdtL0k5Q25vRDRZenNYcTg1dTFuVEtCMDFYNkFoRVQreUZxMzluQVJMTGZv?=
- =?utf-8?B?enVGOXI4OEVkZjFOaUZrVkwyUTRPWUtsUFRYclZDS3ZpeHhLMmFwbDRNQmJV?=
- =?utf-8?B?eG1uRXhuU2JHTFlqRS82ZWk1Umt0QTZrY0MrOStZQkYrSXNmYjkyY1dheUsx?=
- =?utf-8?B?ZWxpV0tZNVVzZ0lSMzVuUEg5Uk5PRnRuaUFoZHVENWF4clMrOHhpcWtvZHE1?=
- =?utf-8?B?SGxITjRrYkhFbE9jOFFjb0xweklYY1Fyc3pjWWdPdmZzT2lUc1l1MVFvRnNG?=
- =?utf-8?B?VnNoSWlNWS9PMjR3Z2pveEdKY2F4UDlDeGxBNTJEVHJOVVZ3anFIZGttVHRo?=
- =?utf-8?B?V3UrNW9Gc1FmTmVCZXpvNDdheXVBazFDczZBVm9IZ054UlRnek9nS2c4VUxH?=
- =?utf-8?B?dDR3MnR1SWo1OFkxOEVrZlhZd3M3c0kxVVJrWlhPbnlwQmVGUitJOHdyaTlJ?=
- =?utf-8?B?bE9UTDZhK2xIWmhEV0pMWGxSR3FtRGZzSCtxaS9wZVI0aFgyR09UNEZlOWtI?=
- =?utf-8?B?Y2NXZ0NoRjJPMTJlei9GYnNDOVdGSjBjYU16anI3Z2FTMmVyWWtndVJNR1Ns?=
- =?utf-8?B?WVB2QmM4YzRQOG1aaURrMm5IT1FqaUZFakZCSlpuREY0YnJ0UWx1Qno0Tmt5?=
- =?utf-8?B?S2MrVzgvdDJjUk9rSTB1cnRDSnRDV0tTWlkyZUJGbGZKaVVVZWJJL1dVR1Zm?=
- =?utf-8?B?U09VZnJYMHp6OUxqbmJFNEhhM1FyVWN4Y2Z4UVFnUWg4eURONW1vcE42RjhI?=
- =?utf-8?B?NG1nVEFqa1Y1ODdsTjBYNmtRK0xGb1lKZHpPZEErYmsvdDZ0enE3VkowVElk?=
- =?utf-8?B?OElnVyt6WFdMMDhoZkRFbjlaRGdpWjRmZDM2UWxUdGRWek80c0RRUkRleFA4?=
- =?utf-8?B?THpPenExT1Vic3huell4bnNpU0JqQTRLTmFjOUVJTGszaDIvNS95UjF3WDFU?=
- =?utf-8?B?bVZQQ2ZqdGl3YWM5czdVVnp3azRXQTdldEVidVJPOFBYejRrQWFJSDBoNk52?=
- =?utf-8?B?dzQ3TFltV29KUlRPRmJNSUllZGRHa0dFem04UVVETTJNVGczQWJkUmVGUmYy?=
- =?utf-8?B?cEtWVDVjQ1lCU0Y5dkcwYmxocGM5UjdrUXhyODYrWWdnOFhsMGVBMm1GS1lS?=
- =?utf-8?B?TlpsY09hRTJ6dkxWOFpaS3c0bXBIWHlvSWh5b1VneGdLeXN5Y3Mva2wrV3Nu?=
- =?utf-8?B?d3NCc1NsTDhwSzZmaE15elhibGFMV2FXM0RHNVVNWml4ZEFqZVp0VER4Qk54?=
- =?utf-8?B?Y3B0bUp3VWhJcWNNZVltNmdzeWxaUTUyTGdqMHRHdmc3Z0J3RForNDd1KzZK?=
- =?utf-8?B?VkZLK0dSQ3kwUGNtR0QzSU1oREpDcXpsRisyamZrU0I1WG9ad05ML0ZEV0Yw?=
- =?utf-8?B?N2NaNHVDSmRQSTZqaXMreWI1cUR2U3cvQnFvZ2tFTG5IdXRLM1QreTZoRTI2?=
- =?utf-8?B?dGZtNXBOc1JDbTFDb1BjODVWYkJ0SmQxeTFNWTlzVXdOODY4S1dVVGJGWWFo?=
- =?utf-8?B?dkNhUDBtb2QyL0dBRzRKS0NSZTI1TUVMeWhUanMvOXpPeWJqOHR1eFN0SnQw?=
- =?utf-8?B?ZThrR0VhNXlJbXJXOFZjL2kzdi9pRmNFdzkzM2Z1YjlPc1hFOUEzaXhXS0NU?=
- =?utf-8?B?YXpCWUNuTmVhVVNCR2djS25tRlVEeDFvaHpVc1c1akRrcjV6eENEZng1RmZz?=
- =?utf-8?B?UHkvT3lyOGE0WHMwVlNaeTcraDJWRVA5bHVZUFhrK2pyWGZXRUxyWWpka0hO?=
- =?utf-8?B?cFhXNW1QSlZ1c0c3T0JwWFUvdHRCVzhyR2JldzBobUdMTVUwSXhFRThMQ1M1?=
- =?utf-8?B?Y0FwNzBERHdybEZWRHZFWmZRQTF2ekl3OGd5V1B3MWJoZTB4RW1lOWJKQzFC?=
- =?utf-8?B?ZlZaWGEvUThTRGZsMTlBdklneVVRSGRzTmlCRkNyYTJxL1lkQWlYeEtEZmJ6?=
- =?utf-8?B?MXBaVksrV05zZkxXZ1NYRnZ6eXZVSDFYeUY1eG51dHh5MEsvVWM5d1BwMllq?=
- =?utf-8?B?Z28zS05FdWpsTmR0S213NWVoNEEwalYxdExYRHhXSzZ0cDRNSmlCRHVhM1Iw?=
- =?utf-8?B?cjZESnljRjRnREY2L0ZsaDY1SXlxalVvSDRZRDNKclBXRTFMenA1OHpSRVpr?=
- =?utf-8?B?TWVydDNVSjVWQkxESjk2YUIrVzIrZWZWdXhGcnVnSEd5Z2I5dzEwZ3VSZG9u?=
- =?utf-8?B?SGVOV3B6ZkNadkVsdVdkNUZrbXR5VjU1Z0lyYUlmSFhWMHBTc1JDdFlIRzFv?=
- =?utf-8?B?d0lYd1lJMTBSaWM1ZUFTRmszTkVRSHRPK0x6RHZuUjcrbkVxZm5Tdz09?=
-X-Exchange-RoutingPolicyChecked:
-	G68FlZQL7DL0YF5GYbbLXRR/EqMd6L4fUQ57JCLCh4D1VzQyHw7JHKm9a1XZia6ZLQ5/NW6o4vXPmYZfmiW8Pv1Hy+0J4hWs9cEbEMPVYmqi46MZCfaRubtZHmkLBApBUBwday949sMaWZHc4QZiqqtFCMZcwaSBgY373gEiUkmuZNhltXIsVl7GWRSG2Ol4gbkIgxRASAQNKszQEpznj4yoPaixqLc/kn9GWegTyvLVOwcclarsGTZHCSUqfs83Bgc24KXGyM6z6NpQdDQUlJ75qUIxQGYtX6tSmrnn2I788wupv3K6runEsuhdF0nV0pTxHEzne9H67b4CKdDaDw==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	Z/5FiHrHt8giXymRzV06ydkd6d53ReGjWeX82uU4pVfamjh5T+vqzWIjEoJwIbCUheUI9qZsjIfroC3f31kpQnoQviiyKK72C9r8m36xjaqPZgqMQ8N6AivVkPTz1iBUhBLAiXVJbKIOIR6HejoxBDCHDZjzvd9+t+ul4yD7cdAxwNT4CmqLqhH7Qx7gJcl/8bK5aZplq1GNRkquMytaKLUMxKh13wgcNDWObcbJSiwkqgvbqx29bpyyCu9AaehQdbIYpuzRbUeBeALGGo83n/8T7JteGapMECWuSwzjo+WzN6SFIj7olo8Y/FkJS/V47W0BmHQLdG0MFuFxGzZkM8UOb6vnoQEqKi5ndqLBqcB8MUe6OpCt59WXr31sf/IcUEaTWCq6lBpz/JwNLGjIeGXBNG3gutL+lNskEb5AyYrKSOY7vD2AJBSIW3hV7/AffGBwOl7EE1CdgRPSSLLZmjhUJOlE4yx3mtXZisZMawBGIcE6Oq3AlK83SF5egU9ugLzRKJrjTIcy83IZsTm84K5Vphdi96rcRlIzCKtwS/wAanccRXnruUmlpuolLXaCoQEyNq2Vre/e4rx1GHMgM9IXNQntjtg0ppup7iM/YNg=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c4fcd485-06ff-4b3b-a5e3-08defc9d23fb
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR10MB5506.namprd10.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bWpOenBMR0hTdGJZa0Q5S3p5Z1VtQ2dza3lBSldQWmxOQkdxQ2tZUGVZZDhm?=
+ =?utf-8?B?SmZGMUFZdmNLVGloMFBqV1BsWEtYWHB3cXQrZGltUmFka2FQVk9yRjhOZnJV?=
+ =?utf-8?B?UjgzMFkvUGRNSk1oNTRBRzdJYVlaWDRSN0lzSUlVWklGR3NheWZ5STBpL3JN?=
+ =?utf-8?B?UXhNNFQwSHJjaXBjQmhzR1BpUWlrOU9ITDhpbGVEcGZVM1JnV1BidUVWMHA1?=
+ =?utf-8?B?SFV6RGJnT3pCRnB3cWVDQlVVV0pRUHlya01tbmc1dnlVQ055R05US0RmMUlT?=
+ =?utf-8?B?SHk2QWNVUDBSK0ZOR3JJbFV5UlpUZWhIb3VSTkpsNU5FUVFrMFFjYXA1R0E1?=
+ =?utf-8?B?amFHRkRBUjE1MG9JTUdOOHlXbS9aa3lkOG1FZms2aUpzR1hzNlZmVDlKVk40?=
+ =?utf-8?B?Z3p3L25SejZSZ3pBcWEyTEl5Q3EwVGlkVVdPSGxtcVg4bnhtK1F5dU5WWXhJ?=
+ =?utf-8?B?bnlxeEhTRnZhb0RqYkpIM3M0R1JVYUxLdk5MM1dMMXZoN05rSm5xSStxNnRV?=
+ =?utf-8?B?SGgxV016U1BmbWxDRmNybUhKTGtCdnNpQnE1ckZsZHZMZ2lHTnhsc0ZJcTVn?=
+ =?utf-8?B?U0FPaXhNclZDYmovMm5aMDduWkNKUWxnUTN6SkQ0clJEeVYzOHhhUTYvWlRR?=
+ =?utf-8?B?RUlycHlaRndIdy9VVHNyTjN5OHZmbXhxNnJjRVJSYkZUNDVuYWNpSTN2K0xC?=
+ =?utf-8?B?bkVvVUNERUhaOHVMNmZBc2psc2duNXZMS3Bkb3JYeEZlR3phRUZXYmk3c0lX?=
+ =?utf-8?B?Ykg0THA4MGhSbzYrT2JqSEdNalY0dFZKVjg5eDI1enBybk1rSDhyU0VuSFZC?=
+ =?utf-8?B?MWExdVd3dWQ5UkE4OFNFWDYybDh2ZEpJZ29rUzZQc2FrOVJXbWZaUUI0a21Z?=
+ =?utf-8?B?ZW1DODdqUXdSVXlQOXFpM254eXJpcWhPbmNMMmcwRjlxYXNuUVUzU2RoRU1w?=
+ =?utf-8?B?NGxIUUxsTXhHYmI5R3RiR1pZVmUyM0VrejVWVXNBTmdybnQrc3psWnBYcy9C?=
+ =?utf-8?B?VlBiaG16eHA1U05idkFScU9pTlJVMTRXYnAyU0YweVdXUHJKQ0tJcGZqS0lN?=
+ =?utf-8?B?aThLQ0JOZWNsRVhPVHVGYWlFZUJVbkU1REtQbUlYeVRBcDVrREJPd1V4cUlO?=
+ =?utf-8?B?TTdVdUtKRW5SOStkRFZTNGxOWnVDSGc2STA2L3NOd1dsK01acUY4ekcyM01T?=
+ =?utf-8?B?N0ZRN2k3VGVhQ1dOQzRCcHJ2K2VJRFdTRFdsSmJrRllsKzJjWnZRNnBxRUc2?=
+ =?utf-8?B?VDVSZEtCTWJwcmthUCt5TnBzQnAyZGpOdGgwM3Rwbm5CTmp0eWtlQXFKV3Zt?=
+ =?utf-8?B?VGlQWWdTVkg1QzcxakVlVk0va1l3dWFqRmhpMGlpYWh2Zi9uZTJMa3VHdlJs?=
+ =?utf-8?B?a3lZdTFaUUF1bGJMUzBlQzhRa2c5M2E3cnFSNk50Z1FMa3FUL2owWDRIeW5T?=
+ =?utf-8?B?YW14ZlAyMlh1SmJBK0s3MUpwU0VpNnpvZ211VEpWUkdqczJzSk0zV2tsSlor?=
+ =?utf-8?B?T25rTWpBYkhUMnY4Ri9KWmV0a3RtZEJhUit1b25yMTFBaTh6VEhTN1V1a0ZC?=
+ =?utf-8?B?VXAxajRWWitqbGxuRDRYbC9xVDBENFJxTUJBUWkxUmdzeFdoU2plSExSbVBX?=
+ =?utf-8?B?VHhhMHJVbUVIZit2SFlGQTlOaWliNytTNXYyTUcrdjl0MWgrMFQ1OG9mTlND?=
+ =?utf-8?B?d0FiMUxmVFRtc3JyOElMcUhoNUJuUU50NllycjhJY3p5TGkvQVhsNTRMKzNX?=
+ =?utf-8?B?Ym5CVnNrOG9SRWpiVkkwaUwxZE9uWE1QT1c0MkRYYW9XTU41bUNtdnk5TWxs?=
+ =?utf-8?B?VVVxREgxdTQ5ZjRwQTR6SGlNUGQ0K0o1QXFkdFR0UlRvcTJpYkhFZy9HNkFB?=
+ =?utf-8?B?VXhmZmFqTUFpWjFRT1ltaGNjZy9YVmliTTNObGFIOFEzL1JydVBUQ2lxTVkv?=
+ =?utf-8?B?aGFVVTczTDZ2Z08wWThBVTJRSk1QaHJOSVpnd3ROTGNjZlFSVUpUQ0prT3VH?=
+ =?utf-8?B?SUl4RyswVE4rTGlKSE5Tb3llaGcxSWFDQWZUV3F1bEFYNXRVY2xIZzBJVDAz?=
+ =?utf-8?B?bHpXUzRrSUZnUGFSeXdNUUI2RVQ0d09IdGM4VFNtNHVyUUpXTHowMERsWWpS?=
+ =?utf-8?B?RGN0ejN0c0RwUHJncU5ubXBPQnovNi9pUG9OdTcwZXJldUdTLzBoM1FGMDdm?=
+ =?utf-8?B?Y3N4MHV1enRvUVFhUWFvMWFpMGZJWlJ3VDJkVWo3S0xJR29YRkovTW13SkJt?=
+ =?utf-8?B?VTVaTnZxRXJvMTBqclVnckFTak5sUzdUMEprMHVZdzJXR0h5dm1GanNDZy8y?=
+ =?utf-8?B?MW9hVG9aaXNnNUpEa3NTdzZkcmwzZG1nTHlqOFhtQjVUZ3JFUXhBRC82blBu?=
+ =?utf-8?Q?LtXWKMb7Gb+CE3Fw=3D?=
+X-Exchange-RoutingPolicyChecked: Usvt3cX6qPAZGwZnrL+kWVGBdva/ANv/2re2u4JZVR5S06Yv/ClJmLaGanuDn8BCJVamBpSID6/AhHWxPBk+++t9Yyd2NuAaSl3zcPJL2CEToghl4+mm7ZzeJJcgUxkDR6AV8eYNEsh2pKPNPEuk0iEZQ2FlZsHG6FwlwYOb1GDP/eIVZUG7O1CnwWoUC+bSNK9PK1FL/x2Sy8riBB4ysaTwxidQpcUeMB/A9MHdRiSgGSPmT4cMOwsz9jEG5FYAiCpzF3UOyapnt71RwGf4D2XkqanBlirHN5jgHHUs80A7y82w1e1FtbAoSLkrjh15mgIRD12dnqAe5qGmpmV4pQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2668f51a-2e9f-4bfa-d407-08defc9d5b95
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8230.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 20:21:37.9126
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 20:23:11.2876
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PUHoKFli1m33kXkND0VceO9gpvJillfCmpvmPO47V7z+a/Uv/J37pALvS9xSrufQxuS4TkgFK16FERauPqwbtA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR10MB8179
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-17_03,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- bulkscore=0 malwarescore=0 lowpriorityscore=0 mlxscore=0 phishscore=0
- suspectscore=0 mlxlogscore=999 spamscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.19.0-2606160000 definitions=main-2608170155
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Authority-Analysis: v=2.4 cv=INoyzAvG c=1 sm=1 tr=0 ts=6a836d55 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Sv0fKeRqtYgA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=BqU2WV_vvsyTyxaotp0D:22 a=RpNjiQI2AAAA:8
- a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=7zmLKWujpiwBXzZTv4YA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf
- awl=host:12098
-X-Proofpoint-GUID: ERLOP2jP2Yb6UqyWesZ5c1qYlb2HyXDS
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE3MDE1NSBTYWx0ZWRfX3OhOzs8FN2Hf
- /oPC3uS2Yxt2/0su9yLiRv7yXy/RzPpy0PBmtpP/AqSiYmPU9NPT4TTn+E8vIuzGlW9tWpX9ckH
- pA9b6uk5a3960Q6Xj8rsUgiZoP+CwRdj8WwIv8ThBvrS/nRgvWA75k5hvSxLZGTu4HZ59ynTQ7R
- /9LeY/2XaWUOdfcoQIipVX7mIkLaspr8PJRulAbXE5J8TS8zbp1gxsABlQXsuvnvvuY6XPrppf3
- /PF/HAk2nraAPhAmuawnWpzKMD1DUNk+dXs0NESkV3xwFBI2giIREyZYwIgVuc7bqIEkGIRbguU
- Lk5f9ELzWKvWcaQS7g2Tj5vyoR/qcNwBm4RjbdhFFhj2hhAm466hda3ocYl+NfD857lWrgTrpVw
- JgZu/9FOJszYfLcKXv8/WSxfhiHN1nt+5oo0wuZ3ZcFtdkwQnkwZiade9gl9mB4hUtlZW807C/M
- teNj+O4CAImL18ggFNzL9LDCgkBvtNpguvKmdQX8=
-X-Proofpoint-ORIG-GUID: ERLOP2jP2Yb6UqyWesZ5c1qYlb2HyXDS
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE3MDE1NSBTYWx0ZWRfX3NfvwqckIChf
- Rd9QQKyZAfjXUQxinzKJVuoi4kT9myfStK+jdJKahuAxWqEgjWd8PKBEzQEEIk7hhluvXuF/ehI
- +Q2ln60ZYutrFFlD6RA7wDP+tLZwH9ED0c1vHf4rp1P95YUsqQOJ
+X-MS-Exchange-CrossTenant-UserPrincipalName: uDQJ5HS0KfDqmummxzyZPYiTBBeq3mu0pZGpo5bpYEVnGlXBReXEo3+xe4m2p5b0oMiuK6JediVEF7FK7eTJW2J9QyPshi8QZWnC1jd7Xwo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB8174
+X-OriginatorOrg: intel.com
 
 
 
-On Sat, Aug 15, 2026 10:55:25PM -0700, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issu=
-e(s) to
-> consider: Pre-existing issues: - [High] The patch addresses the steal time
-> corruption on vCPU PID change for x86 KVM PV but completely misses the
-> equivalent KVM
->=20
->=20
-> Thank you for your contribution! Sashiko AI review found 2 potential issu=
-e(s) to consider:
->=20
-> Pre-existing issues:
-> - [High] The patch addresses the steal time corruption on vCPU PID change=
- for x86 KVM PV but completely misses the equivalent KVM Xen steal time (`v=
-cpu->arch.xen.last_steal`), leaving it exposed to the identical integer und=
-erflow.
-> - [High] The identical vCPU thread migration bug exists in ARM64, RISC-V,=
- and LoongArch steal time accounting, but the patch only implements the fix=
- for x86.
-> --
->=20
-> --- Patch [1]: [PATCH 1/4] KVM: x86: Reset last_steal on vCPU pid change =
----
-> commit d7367ba78784ba11d9b540abce98359a8e902828
-> Author: Dongli Zhang <dongli.zhang@oracle.com>
->=20
-> KVM: x86: Reset last_steal on vCPU pid change
->=20
-> KVM does not reset last_steal on vCPU re-creation/hotplug, causing a bogus
-> large steal time due to run_delay starting from zero. This patch fixes it=
- by
-> resetting vcpu->arch.st.last_steal in kvm_arch_vcpu_run_pid_change on x86.
->=20
->> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
->> index 801bf9e520db3..b7cb2ceda6d9a 100644
->> --- a/arch/x86/kvm/Kconfig
->> +++ b/arch/x86/kvm/Kconfig
->> @@ -40,6 +40,7 @@ config KVM_X86
->>  	select HAVE_KVM_MSI
->>  	select HAVE_KVM_CPU_RELAX_INTERCEPT
->>  	select HAVE_KVM_NO_POLL
->> +	select HAVE_KVM_VCPU_RUN_PID_CHANGE
->=20
-> [Severity: High]
-> This is a pre-existing issue, but does this same integer underflow bug ex=
-ist
-> on other architectures?
->=20
-> Looking at ARM64, RISC-V, and LoongArch, they all track steal time using
-> current->sched_info.run_delay and subtract the old last_steal value, which
-> appears identically vulnerable to underflow on vCPU thread recreation.
->=20
-> For example, on ARM64:
->=20
-> arch/arm64/kvm/pvtime.c:kvm_update_stolen_time() {
->     ...
->     steal +=3D vcpu->arch.steal.last_steal - last_steal;
->     ...
-> }
->=20
-> (Note that arm64's kvm_arch_vcpu_run_pid_change() returns early if
-> vcpu_has_run_once(vcpu) is true, skipping the opportunity to update last_=
-steal.)
->=20
-> Are there plans to address this on the other architectures?
+On 8/12/2026 2:45 PM, Bjorn Helgaas wrote:
+> [+cc Andrii, Mitch, Nick, Tony, Przemek]
+> 
+> On Tue, Aug 11, 2026 at 10:53:18PM -0600, Alex Williamson wrote:
+>> It's recently been found[1] that vfio-pci doesn't restrict resets on PFs
+>> while SR-IOV is enabled.  This can not only result in an uncoordinated
+>> disruption of the use of the associated VFs, but the ongoing use of and
+>> access to the VF has the potential to result in machine checks.
+> 
+> I suspect this might also be related to the somewhat weird usage of
+> pci_restore_msi_state() to restore VF MSI state in several network
+> drivers:
+> 
+>    https://git.kernel.org/linus/371e576ff3e8 ("i40e: Restore VF MSI-X state during PCI reset")
+>    https://git.kernel.org/linus/7e4dcc13965c ("iavf: restore MSI state on reset")
+>    https://git.kernel.org/linus/a54a0b24f4f5 ("ice: restore VF MSI-X state during PCI reset")
+> 
+> I think these are a little weird because they only run on a PF but
+> call pci_restore_msi_state() on all the VFs.
+> 
+> I guess these paths are recovery after FLR of the PF destroys the VFs,
+> and after the FLR, pci_restore_state() on the PF re-enables the VFs
+> but leaves them uninitialized.  It seems kind of ad hoc to restore VF
+> MSI state but not the rest of VF config space.  This all seems kind of
+> messy and makes me dubious about exporting pci_restore_msi_state()
+> directly to drivers.
 
-Patch 2 addresses the arm64 case.
+Yea, this is situation we were trying to address; it seemed better for 
+the user to try and recover functionality rather than leave the VFs 
+non-operational. I like the idea of not allowing the call, when SR-IOV 
+is enabled, to stop it from occurring in the first place though.
 
-risc-v and loongarch may need similar handling, but I didn't include them in
-this series because I only have x86 and arm64 KVM test environments availab=
-le to
-validate the fix. I don't currently have a risc-v or loongarch setup for KVM
-testing.
+Thanks,
+Tony
 
->=20
->>  	select VIRT_XFER_TO_GUEST_WORK
->>  	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
->>  	select KVM_VFIO
->> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
->> index 47cb9eba113b1..33be45eec32bc 100644
->> --- a/arch/x86/kvm/x86.c
->> +++ b/arch/x86/kvm/x86.c
-> [ ... ]
->> @@ -3717,6 +3717,13 @@ void kvm_service_local_tlb_flush_requests(struct =
-kvm_vcpu *vcpu)
->>  }
->>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_service_local_tlb_flush_requests);
->> =20
->> +int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
->> +{
->> +	vcpu->arch.st.last_steal =3D current->sched_info.run_delay;
->> +
->=20
-> [Severity: High]
-> This isn't a bug introduced by this patch, but should this function also
-> reset vcpu->arch.xen.last_steal?
->=20
-> Looking at kvm_xen_update_runstate() in arch/x86/kvm/xen.c, the stolen ti=
-me
-> for Xen runstate is calculated similarly:
->=20
-> arch/x86/kvm/xen.c:kvm_xen_update_runstate() {
->     ...
->     u64 steal_ns =3D run_delay - vx->last_steal;
->     delta_ns -=3D steal_ns;
->     vx->runstate_times[RUNSTATE_runnable] +=3D steal_ns;
->     ...
->     vx->last_steal =3D run_delay;
-> }
->=20
-> If the thread changes and run_delay resets to 0, wouldn't vx->last_steal
-> also cause an identical integer underflow?
->=20
-As explained in the cover letter, "Although David also suggested doing the =
-same
-for Xen-on-KVM vCPUs, this series does not reset last_steal for Xen vCPUs. =
-That
-change itself would not be difficult, but Xen uses a different mechanism to
-account downtime, including runnable time and offline time when a vCPU is n=
-ot
-running. It may therefore need no additional ioctl, or a smaller ioctl
-extension, to account run_delay left over from the previous PID. For now, t=
-his
-series changes only regular x86 steal time and arm64 PV time."
+>> This series proposes that this gap is largely an oversight of
+>> pci_reset_function() to recognize that a PF reset affecting SR-IOV VFs
+>> violates the scope boundary of the pci_reset_function() API.
+>>
+>> Patch 1 introduces guards in the common wrappers where we can hold
+>> device_lock to prevent .sriov_configure races.  This covers locking
+>> conformant use cases.  __pci_reset_function_locked() can't be gated in
+>> PCI-core; it runs after the potentially destructive .reset_prepare.
+>> Therefore its callers must provide the gating, along with the locking
+>> and state manipulation the interface already demands.  The vfio-pci
+>> change is included as an example and known use case here.
+>>
+>> Patch 2 introduces a callback to pci_reset_bus() which allows a lock
+>> dependent callback to be evaluated after locking the physical hierarchy
+>> and before initiating the actual reset.  This allows use cases such as
+>> in the following patch to evaluate the SR-IOV PF configuration without
+>> racing.
+>>
+>> Patch 3 implements exactly that test in vfio-pci-core, such that the
+>> hot-reset ioctl can be blocked when SR-IOV VFs are present on a bus/slot
+>> affected PF.  This completes the lockdown of resets induced on behalf of
+>> the vfio-pci in-kernel or userspace drivers.
+>>
+>> Patch 4 exports pci_reset_supported, which allows patch 5 to remove the
+>> latched reset_works flag, which already had the potential to become
+>> stale due to reset_method manipulation through sysfs, but now may also
+>> become stale due to the SR-IOV state of the PF.
+>>
+>> This is RFC to capture the discussion of [1] while it's active but
+>> requires testing before formal proposal.  This effectively side-steps
+>> the feasibility and security question of the operating model in use by
+>> the referenced thread by generically gating resets affecting PFs with
+>> active SR-IOV.  Please review and comment.  Thanks,
+>>
+>> Alex
+>>
+>>
+>> [1]https://lore.kernel.org/all/20260805003355.728299-1-skhawaja@google.com/
+>>
+>> Alex Williamson (5):
+>>    PCI: Refuse function reset of an SR-IOV PF with enabled VFs
+>>    PCI: Add pci_reset_bus_cond() for a caller-gated slot or bus reset
+>>    vfio/pci: Refuse to reset an SR-IOV PF with enabled VFs
+>>    PCI: Export pci_reset_supported()
+>>    vfio/pci: Use pci_reset_supported() in place of reset_works
+>>
+>>   drivers/pci/pci.c                | 117 +++++++++++++++++++++++++++----
+>>   drivers/pci/pci.h                |   1 -
+>>   drivers/vfio/pci/vfio_pci_core.c |  28 +++++---
+>>   include/linux/pci.h              |   4 ++
+>>   include/linux/vfio_pci_core.h    |   1 -
+>>   include/uapi/linux/vfio.h        |   3 +
+>>   6 files changed, 129 insertions(+), 25 deletions(-)
+>>
+>> -- 
+>> 2.53.0
+>>
 
-Dongli Zhang
