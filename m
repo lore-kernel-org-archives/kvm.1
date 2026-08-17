@@ -1,172 +1,265 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012034.outbound.protection.outlook.com [40.107.209.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6373F8EBE
-	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 15:29:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786980547; cv=none; b=k7seU0BsAcGH2I38wv3Bm/9Cmvxth58W5XG0pVUn9Ycgk1+XCu7zUUljyCbgWoL4TZUu6T/cLVmCGikgnJiuIYRt/9Egatn2OrqWQKikXvoEqlrMaQCE7qu1CCTjFlzgb1htrL2Cuel83HvMGoud7fUkXs1MYChBsidfkeyGDz0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786980547; c=relaxed/simple;
-	bh=25S+HdZeCYssC6oje9M9lQkHd8C9MJtXMzszlA3X0WQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VWvZcWFR32x2pUFi9c7/XYjTKPJ3JfyP2VT4q+b5kDltJmiJ6qlOrZKf2urFuBNofBgBIXzf0mHh9GvaT5Mb50AJzOBRnwpBO0SO3eDQFmR2JctV+7OpQTg4ac2zRU7yGV1GfOdpkV1NKGAiCpKjUY/Ub5PdJfXcyXcb8fLno3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TLillTno; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444A539A807;
+	Mon, 17 Aug 2026 15:32:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.34
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786980761; cv=fail; b=tETMBNOyiWZ8QY4rPZr941UxD68MrTC5HdFl14wWIC8Sz6ZqYZFayASTLvBYM3USm98oz/2DqlRrftVY6ui595SfU5bDozE+rLWkqNcNeMCAjKVI08x4pwAXYzLEqaaMPNZPuhvbF1ppzxaZD+RsQI8+0GeRzRYe3Xq0SKxzaDc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786980761; c=relaxed/simple;
+	bh=3/Pg/SuzVkREX0hAnqKAhCMNwAWyu5zFvaHy7abrhGE=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r5FfTndQG6BFHXa/dI9c8C2fWalc9vv/KU4W+m8pMMgs1jdzqjrA4hb8b4IiQHH2kFhE9NsEROfMLxKkHhhwaOQRo1HtwOlygu6/mNHMugISGAqixfrA0RJwn9FaJw+R4jigYmjrwXgIigFj/OPg+8Nv0OJVHfk8N1yeYW54IPM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ztENKgJ1; arc=fail smtp.client-ip=40.107.209.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TLillTno"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786980544;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hMWMpqY7U+yBS98kJTZTBwbMYW3Q6uYNAhTdK26I5tU=;
-	b=TLillTnobCRwrnCyYQ04fF3p608MautMSamgQV7WdU5kgxuFHqllhV/e6+KUXF6psXgRlO
-	2btyXXUDHkk0lxGwoQTK5SUkBxwV96q7+jjlQ1nunCoH5umLfI5Efe4N6Kvl2ytunK0Xda
-	GqANEdyIp4tsFdtucfti2CUAEkNMsM0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-349-jRR9KvSKMYK5UjC3WdXpdw-1; Mon,
- 17 Aug 2026 11:28:55 -0400
-X-MC-Unique: jRR9KvSKMYK5UjC3WdXpdw-1
-X-Mimecast-MFC-AGG-ID: jRR9KvSKMYK5UjC3WdXpdw_1786980533
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 462841955DE1;
-	Mon, 17 Aug 2026 15:28:51 +0000 (UTC)
-Received: from [100.90.56.12] (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5367C1956042;
-	Mon, 17 Aug 2026 15:28:46 +0000 (UTC)
-Message-ID: <13c02cbb-79db-4ebd-9fa1-63ffeb0b43f4@redhat.com>
-Date: Mon, 17 Aug 2026 17:28:43 +0200
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ztENKgJ1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CJEXSYmeamhKhsmBXaSBmy71wJCvJC/heJ3qzXoupJGKU0eCIJhxjfWHiUVmdsxL/7MtL3pP6ltef+Dt7sjZ4vlR63wpIN5S/vY5y/IEchkadfpQ8C+8oO+VVXSaosZEaqbbVP9sAXwxXmlqk51Kxwi2WS5oOC2BESzW/0WqiAdnEYWIjyx13eRn2EOwNOzfW38COJiXCqs8l5ZcEcCJkeoCKouGTGbq7HRShxAXz+b+TzAQi6C5q1n0STnzdzs/dfyWE0t8WAzycADOwWZW9cWb3V/m6y4S0ryCeHLKQbU5JGSAoI1GMakZMNYsBw21luFrHsyjO/a2bqRiUlqqJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fkwPX6hf0y/Di6qap4b3rzvaRHjHMdm/bVSQz/qaVDc=;
+ b=JlMDn04uw8PHgUljIPB8kPG9bStBSFAsklqx/HcharvztXK44fjWnG3rstn+UuznUGX4q3faQdGXSPNa68cBL+/WJTWMs82sDxnVVKmQEpFGXjTcUJ/QJNHhMj2dhQpJP0ZyzkPkjkdK/Nn+xmC7JJp0YOIGKa9eaIvMIG5ZiLXw1UCp7yU01FAEVSBakyAutNuM0CcwSn6sf7dZz5rQmFlJZ9WtVGsKYd+1gQLE0SpUz4YHxV4Vxrd3cDqevA747v9kup9kUq2uRX2QzMxqjaCToicETxUFJ+30q3uXKF6jcda3+g113e97H1rz9sthFF2uBlFXMkInqiGC2hsCGA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fkwPX6hf0y/Di6qap4b3rzvaRHjHMdm/bVSQz/qaVDc=;
+ b=ztENKgJ1kM6fzicLek1xsqfj9fpqF3F0VYLQEn4AwVRZZ25Fv6zNkhMrgF8OH2TRXvh3gd5hpc5WEC3ChWboK+fzTHRjXFNKyXpI/Vow6BfjQmiw2ilroJFzHJ2L1LCKSE4/pBlgHoDvK3qbZTX4+0Muv0pHWunhwCG6sEtNVDQ=
+Received: from BN9PR03CA0163.namprd03.prod.outlook.com (2603:10b6:408:f4::18)
+ by CY8PR12MB8267.namprd12.prod.outlook.com (2603:10b6:930:7c::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
+ 2026 15:32:34 +0000
+Received: from BL02EPF0001A0FE.namprd03.prod.outlook.com
+ (2603:10b6:408:f4:cafe::5c) by BN9PR03CA0163.outlook.office365.com
+ (2603:10b6:408:f4::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.17 via Frontend Transport; Mon,
+ 17 Aug 2026 15:32:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL02EPF0001A0FE.mail.protection.outlook.com (10.167.242.105) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.339.3 via Frontend Transport; Mon, 17 Aug 2026 15:32:34 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Mon, 17 Aug
+ 2026 10:32:34 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Mon, 17 Aug
+ 2026 10:32:33 -0500
+Received: from amd.com (10.180.168.240) by satlexmb08.amd.com (10.181.42.217)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45 via Frontend
+ Transport; Mon, 17 Aug 2026 10:32:28 -0500
+Date: Mon, 17 Aug 2026 15:32:25 +0000
+From: Ankit Soni <Ankit.Soni@amd.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+CC: David Woodhouse <dwmw2@infradead.org>, Lu Baolu
+	<baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon
+	<will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy
+	<robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, Alex Williamson
+	<alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, <iommu@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, Pratyush Yadav
+	<pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, "David
+ Matlack" <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+	Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v4 11/18] iommu: Restore and reattach preserved domains
+ to devices
+Message-ID: <b36wgcuhm2wpnpqlbnglo74nu6k4uw3pecfbvzli3fmmtlae66@kh5qvvhb2qjx>
+References: <20260808022723.3893618-1-skhawaja@google.com>
+ <20260808022723.3893618-12-skhawaja@google.com>
+ <xssagtjtc27kxprwyz7exeiotigcr3ksnvr53ap56ialuqlfe4@xql3pr5va6m5>
+ <an9mwcflLcLtwDrn@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/16] cpus: Improve qemu_cpu_kick_self() docstring
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
- qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
- Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
- Mohamed Mediouni <mohamed@unpredictable.fr>, Alexander Graf
- <agraf@csgraf.de>, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
- kvm@vger.kernel.org, Richard Henderson <richard.henderson@linaro.org>,
- qemu-arm@nongnu.org, Magnus Kulke <magnuskulke@linux.microsoft.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>
-References: <20260813181640.6537-1-philmd@oss.qualcomm.com>
- <20260813181640.6537-3-philmd@oss.qualcomm.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
- CxXPkIBTvYY+ZPkoTh5xF9oS1jqI8iRLzouzF8yXs3QjQIZ2SfuCxSVwlV65jotcjD2FTN04
- hVopm9llFijNZpVIOGUTqzM4U55sdsCcZUluWM6x4HSOdw5F5Utxfp1wOjD/v92Lrax0hjiX
- DResHSt48q+8FrZzY+AUbkUS+Jm34qjswdrgsC5uxeVcLkBgWLmov2kMaMROT0YmFY6A3m1S
- P/kXmHDXxhe23gKb3dgwxUTpENDBGcfEzrzilWueOeUWiOcWuFOed/C3SyijBx3Av/lbCsHU
- Vx6pMycNTdzU1BuAroB+Y3mNEuW56Yd44jlInzG2UOwt9XjjdKkJZ1g0P9dwptwLEgTEd3Fo
- UdhAQyRXGYO8oROiuh+RZ1lXp6AQ4ZjoyH8WLfTLf5g1EKCTc4C1sy1vQSdzIRu3rBIjAvnC
- tGZADei1IExLqB3uzXKzZ1BZ+Z8hnt2og9hb7H0y8diYfEk2w3R7wEr+Ehk5NQsT2MPI2QBd
- wEv1/Aj1DgUHZAHzG1QN9S8wNWQ6K9DqHZTBnI1hUlkp22zCSHK/6FwUCuYp1zcAEQEAAc0j
- UGFvbG8gQm9uemluaSA8cGJvbnppbmlAcmVkaGF0LmNvbT7CwU0EEwECACMFAlRCcBICGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRB+FRAMzTZpsbceDp9IIN6BIA0Ol7MoB15E
- 11kRz/ewzryFY54tQlMnd4xxfH8MTQ/mm9I482YoSwPMdcWFAKnUX6Yo30tbLiNB8hzaHeRj
- jx12K+ptqYbg+cevgOtbLAlL9kNgLLcsGqC2829jBCUTVeMSZDrzS97ole/YEez2qFpPnTV0
- VrRWClWVfYh+JfzpXmgyhbkuwUxNFk421s4Ajp3d8nPPFUGgBG5HOxzkAm7xb1cjAuJ+oi/K
- CHfkuN+fLZl/u3E/fw7vvOESApLU5o0icVXeakfSz0LsygEnekDbxPnE5af/9FEkXJD5EoYG
- SEahaEtgNrR4qsyxyAGYgZlS70vkSSYJ+iT2rrwEiDlo31MzRo6Ba2FfHBSJ7lcYdPT7bbk9
- AO3hlNMhNdUhoQv7M5HsnqZ6unvSHOKmReNaS9egAGdRN0/GPDWr9wroyJ65ZNQsHl9nXBqE
- AukZNr5oJO5vxrYiAuuTSd6UI/xFkjtkzltG3mw5ao2bBpk/V/YuePrJsnPFHG7NhizrxttB
- nTuOSCMo45pfHQ+XYd5K1+Cv/NzZFNWscm5htJ0HznY+oOsZvHTyGz3v91pn51dkRYN0otqr
- bQ4tlFFuVjArBZcapSIe6NV8C4cEiSTOwE0EVEJx7gEIAMeHcVzuv2bp9HlWDp6+RkZe+vtl
- KwAHplb/WH59j2wyG8V6i33+6MlSSJMOFnYUCCL77bucx9uImI5nX24PIlqT+zasVEEVGSRF
- m8dgkcJDB7Tps0IkNrUi4yof3B3shR+vMY3i3Ip0e41zKx0CvlAhMOo6otaHmcxr35sWq1Jk
- tLkbn3wG+fPQCVudJJECvVQ//UAthSSEklA50QtD2sBkmQ14ZryEyTHQ+E42K3j2IUmOLriF
- dNr9NvE1QGmGyIcbw2NIVEBOK/GWxkS5+dmxM2iD4Jdaf2nSn3jlHjEXoPwpMs0KZsgdU0pP
- JQzMUMwmB1wM8JxovFlPYrhNT9MAEQEAAcLBMwQYAQIACQUCVEJx7gIbDAAKCRB+FRAMzTZp
- sadRDqCctLmYICZu4GSnie4lKXl+HqlLanpVMOoFNnWs9oRP47MbE2wv8OaYh5pNR9VVgyhD
- OG0AU7oidG36OeUlrFDTfnPYYSF/mPCxHttosyt8O5kabxnIPv2URuAxDByz+iVbL+RjKaGM
- GDph56ZTswlx75nZVtIukqzLAQ5fa8OALSGum0cFi4ptZUOhDNz1onz61klD6z3MODi0sBZN
- Aj6guB2L/+2ZwElZEeRBERRd/uommlYuToAXfNRdUwrwl9gRMiA0WSyTb190zneRRDfpSK5d
- usXnM/O+kr3Dm+Ui+UioPf6wgbn3T0o6I5BhVhs4h4hWmIW7iNhPjX1iybXfmb1gAFfjtHfL
- xRUr64svXpyfJMScIQtBAm0ihWPltXkyITA92ngCmPdHa6M1hMh4RDX+Jf1fiWubzp1voAg0
- JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
- dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
- b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <20260813181640.6537-3-philmd@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <an9mwcflLcLtwDrn@google.com>
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FE:EE_|CY8PR12MB8267:EE_
+X-MS-Office365-Filtering-Correlation-Id: 76ca96c3-133a-49e2-dbfe-08defc74c2ba
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700016|23010399003|1800799024|7416014|376014|6133799003|4143699003|10067099003|5023799004|56012099006|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	wEmZCJEW5070tbktz+jyT5kL9jtHsjAhLDHy/c8tkNCYR5xYVuXcMznka/yNyKOlwum1Vm+JVqQjlvepOzUW+1OWBr23xWx4j2BnkmFeFiBEJL4u3j/0QNR/TmWbmXushnrZ+D/9g3b1lUO+Y2ZpXE7Kpvmz4oqP3fScCbeYIyKAHVXPcvaX2TExIyqEKXW5ca8f1FAmOUyTpT2GlpvXGDY9F4UyRaabY6zJp7wv3MqWfpeYtEbZj6S2AbbKKshZeFfFb8PxuHfCJwuek9+h2SHKwnLa6GNc72cTREE2ayC3iKhTEW0RQOyIgqa13CS8SkHYlBHRQ9QwS1m5Ua7jnbP9GR8XRWYx2TR2uq3o3NskIWq5yWvVIQyhBMbPUQ+ZLAhwVFYF5zly4kkw4DfBekDBP++x8EjhX7xPb7ZtwSLqdl1m7lISDvdlECmFQ5FyHeS7F7QLXUo7R91G74gefi4oKN37/eO3EzdI5yyjCFvCgwHjVCrpAWFOsM05lNNf0M9JM2s5NZ/VEk9QmrlJg3jzYfUIr/4bjs9NSX+F11YOu+SFXnKbvcDIerCQKgD3dZICw8rA1abLxmFZ5lUO6UdDhzj4TfeWVphJ5/xgqbznFARFhB4VbedWZiBHPqR3/0g7Kp87u5t4ds9vQVb21zmQZb1Edo5PfrvoTstHQhQ=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(23010399003)(1800799024)(7416014)(376014)(6133799003)(4143699003)(10067099003)(5023799004)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	H1UJaUdzjttGaOIT0W8Hu45E36R5PtXBwb3mz1O53Ao0MmrbEOkLSxT2SWPMtJmsn81H87PO6yBtoD/3LWDLm3HHUxmNV5mBl+2fPupNv77kmUmBhue8AGqqY2o3hqrGQS90LSYdOVUH/KErZoXwp0VrrWyLX5YFg1UVaoZUUjZ+vmegivhUtQTk1CIm+TiUTvIaJTcVzYJ78bp1ZaMsIpJp1K0Ru4cv+vO07hVeb4CqdeAOXb9UsjCPtRR0vt+ZT1GAXgt4fsiscl+RH7FHqJrJgvfclISaZDNNwLjdrmi2oF+e53L12xbBNQ9Fo0G8WOR6irgtrCIEz5oCIb7R89/tJA7fmCbj8TyBpSduf/7guJAwQXmMPuKjRcZEsB5QIiyMJvVjAEGcp2dS2W/xu56joXHURMbEmazxh1Mh7VztGnJF5Gzt6MgOQSO1kBkp
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 15:32:34.6190
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76ca96c3-133a-49e2-dbfe-08defc74c2ba
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0001A0FE.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8267
 
-On 8/13/26 20:16, Philippe Mathieu-Daudé wrote:
-> Be a bit more descriptive than "Unblock cpu" :)
+On Fri, Aug 14, 2026 at 07:46:01PM +0000, Samiullah Khawaja wrote:
+> On Fri, Aug 14, 2026 at 04:59:50PM +0000, Ankit Soni wrote:
+> > On Sat, Aug 08, 2026 at 02:27:16AM +0000, Samiullah Khawaja wrote:
+> > > During default domain setup, restore the preserved domains by restoring
+> > > the page tables using restore() iommupt op. Associated the restored
+> > > domain with the iommu group of the preserved device, and reattach the
+> > > domain to the device.
+> > > 
+> > > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> > > ---
+> > >  drivers/iommu/iommu.c            |  76 ++++++++++++++++++
+> > >  drivers/iommu/liveupdate.c       | 130 +++++++++++++++++++++++++++++++
+> > >  include/linux/iommu-liveupdate.h |  69 ++++++++++++++++
+> > >  3 files changed, 275 insertions(+)
+> > > 
+> > 
+> > ../..
+> > 
+> > > diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
+> > > index 20acf123b47a..04c0212cd81b 100644
+> > > --- a/drivers/iommu/liveupdate.c
+> > > +++ b/drivers/iommu/liveupdate.c
+> > > @@ -708,3 +708,133 @@ void iommu_unpreserve_device(struct iommu_domain *domain, struct device *dev)
+> > >  	liveupdate_flb_put_outgoing(&iommu_flb);
+> > >  }
+> > >  EXPORT_SYMBOL_GPL(iommu_unpreserve_device);
+> > > +
+> > > +static inline bool match_device_ser(struct iommu_device_ser *match,
+> > > +				    struct pci_dev *pdev)
+> > > +{
+> > > +	return match->devid == pci_dev_id(pdev) && match->pci_domain_nr == pci_domain_nr(pdev->bus);
+> > > +}
+> > > +
+> > > +/**
+> > > + * iommu_init_device_preserved_data() - Initialize preserved state for device
+> > > + * @dev: Target device
+> > > + *
+> > > + * Looks up incoming Live Update state for @dev and attaches it to the device if
+> > > + * found.
+> > > + */
+> > > +void iommu_init_device_preserved_data(struct device *dev)
+> > > +{
+> > > +	struct iommu_device_ser *device_ser = NULL;
+> > > +	struct iommu_device_array_ser *array;
+> > > +	struct iommu_flb_obj *flb_obj;
+> > > +	int ret, idx;
+> > > +
+> > > +	if (!dev_is_pci(dev))
+> > > +		return;
+> > > +
+> > > +	ret = iommu_liveupdate_flb_get_incoming(&flb_obj);
+> > > +	if (ret)
+> > > +		return;
+> > > +
+> > > +	mutex_lock(&flb_obj->lock);
+> > > +	array = phys_to_virt(flb_obj->ser->device_array_phys);
+> > > +	iommu_liveupdate_for_each_arr(array) {
+> > > +		iommu_liveupdate_for_each_obj(array, device_ser, idx) {
+> > > +			if (match_device_ser(device_ser, to_pci_dev(dev))) {
+> > > +				device_ser->hdr.flags |= IOMMU_SER_FLAG_INCOMING;
+> > > +				goto out;
+> > > +			}
+> > > +		}
+> > > +	}
+> > > +
+> > > +	device_ser = NULL;
+> > > +out:
+> > > +	WRITE_ONCE(dev->iommu->device_ser, device_ser);
+> > > +	mutex_unlock(&flb_obj->lock);
+> > > +	liveupdate_flb_put_incoming(&iommu_flb);
+> > > +}
+> > > +EXPORT_SYMBOL(iommu_init_device_preserved_data);
+> > > +
+> > > +/**
+> > > + * iommu_release_restored_device() - Release a restored device
+> > > + * @dev: Target device
+> > > + */
+> > > +void iommu_release_restored_device(struct device *dev)
+> > > +{
+> > > +	/*
+> > > +	 * We do not support releasing the restored devices that are not
+> > > +	 * reclaimed by the device drivers as they can fallback to the default
+> > > +	 * domain.
+> > > +	 */
+> > > +	BUG_ON(dev_iommu_restored_state(dev));
+> > 
+> > Hi,
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@oss.qualcomm.com>
-> ---
->   include/system/cpus.h | 10 +++++++++-
->   1 file changed, 9 insertions(+), 1 deletion(-)
+> Hi,
 > 
-> diff --git a/include/system/cpus.h b/include/system/cpus.h
-> index 508444ccf1c..ade13e068eb 100644
-> --- a/include/system/cpus.h
-> +++ b/include/system/cpus.h
-> @@ -30,7 +30,15 @@ void resume_all_vcpus(void);
->   void pause_all_vcpus(void);
->   void cpu_stop_current(void);
->   
-> -/* Unblock cpu */
-> +/**
-> + * qemu_cpu_kick_self - Force vCPU to re-enter to its inner main loop
-> + *
-> + * Signal the current vCPU thread to exit any blocking operations and
-> + * re-enter its inner execution loop to process pending requests,
-> + * possibly returning to its outer execution loop.
-> + *
-> + * Must be called from within the vCPU thread itself.
-> + */
+> Thanks for looking at this.
+> 
+> > After a successful live update this is one sysfs write away, and nothing in
+> > the series disarms it.
+> > 
+> > At PCI probe, iommu_init_device_preserved_data() matches the incoming FLB on
+> > devid + pci_domain_nr and sets IOMMU_SER_FLAG_INCOMING.
+> > Nothing clears the flag or device_ser afterwards. The group is meanwhile owned
+> > on behalf of iommufd (iommu.c:3229-3231, "will be reclaimed later by the
+> > entity (iommufd) that preserved them"), and iommufd_liveupdate_retrieve() is
+> > -EOPNOTSUPP, so the reclaim that would end the restored state cannot happen
+> > yet. The device is left with the state permanently set.
+> 
+> Yes, these points are valid and this is intentional. The IOMMU
+> persistence support is split into two phases as mentioned in the cover
+> letter. The reclaim logic in iommufd will come later as a phase 2. The
+> preserved devices go to normal state when these are reclaimed through
+> iommufd.
+> 
+> https://lore.kernel.org/all/20260128195943.GY1641016@ziepe.ca/
 
-Neither is correct.  What it does is force the vCPU not to enter the
-accelerator, and immediately exit again to process events.  This is only
-needed because KVM doesn't want you to process events because KVM allows
-you to do so.
+This is pretty much clear, and I wasn't asking for reclaim here -- I described
+the parked state because it is where the BUG_ON is reached. It looks
+independent of the reclaim design: phase-1 code enforces the phase-1 boundary 
+with an unguarded BUG_ON, on a path a plain sysfs remove reaches.
 
-I'd rather have something like:
+> 
+> Regarding the handling of sysfs, my concern is about it coming back and
+> going to default domain as mentioned in the comment. But I will evaluate
+> if we can allow device tear down here and reattach it to the preserved
+> domain.
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 83cbd120a84..e5d068e341f 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -3292,7 +3292,7 @@ static void kvm_cpu_kick_self(void)
-      if (kvm_immediate_exit) {
-          kvm_cpu_kick(current_cpu);
-      } else {
--        qemu_cpu_kick_self();
-+        cpus_kick_thread(current_cpu);
-      }
-  }
-  
-diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
-index 8a1af35ed32..b9b1ee39850 100644
---- a/target/i386/nvmm/nvmm-all.c
-+++ b/target/i386/nvmm/nvmm-all.c
-@@ -753,7 +753,7 @@ nvmm_vcpu_loop(CPUState *cpu)
-  #if NVMM_USER_VERSION >= 2
-              nvmm_vcpu_stop(vcpu);
-  #else
--            qemu_cpu_kick_self();
-+            cpus_kick_thread(current_cpu);
-  #endif
-          }
-  
-and get rid of qemu_cpu_kick_self() completely.
+Agree, that teardown is the right direction. The removal can't be refused there
+in any case: it arrives on a void notifier under device_del(), so the BUG_ON is
+the whole of "we do not support this" -- taken with pci_rescan_remove_lock held.
 
-Paolo
+It also can't distinguish the unreclaimed case the inline comment describes: the
+only caller already gates on dev_iommu_restored_state(dev), so it panics every
+time it is reached. Happy to leave the exact shape of the teardown to you.
 
+
+> 
+> Also please see the patchset breakdown here:
+> https://docs.google.com/document/d/1enDn-uPE9U77U-xHEnzn6HHGKiePSAtMIP8EDU3NO0M
+> 
+> Btw since this phase 1 is relatively stable and I don't expect many
+> changes in it. I have started reviving the Phase 2 patches and will be
+> sending them out as RFC soon if you want to experiment with it.
+> 
+> Sami
+> 
+
+Please do send it, and Cc me. Reclaim is the part I most want to see.
+
+-Ankit
