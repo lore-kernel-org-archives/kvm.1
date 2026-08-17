@@ -1,60 +1,60 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0A7481B1
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 12:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400EB474257
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 12:37:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787056459; cv=none; b=LBU7Nr8AP4UcN6KqlIKW0TcsQ1S4odXmeEiEl191UqpoKp4jZvZIi9hTzF1uauqgXPw2lPPz4FTGyEWTUFMiJBmNrmEuFFYf8MOUPfzZjT0/ylO1AQnCtFWTTUCF/v9Txz9HntphmBxrlboWwt2qXLzGRSLs1Y7+eLKQJlFYi0g=
+	t=1787056654; cv=none; b=k+fzlU3qSHLPrY8DU+rSYPATeDqyLdb5r+ErdhQwuAMJObjgSn1fYYJ9FxIPNzdQpo5zd4/p/D7WuQkBhpnwkZw4rppreYeBB1sTBfQ7ZUdK4Fnke8kl7AqKCEcto+TX09gon7r4StWjbAZkyB6ZrXPIiPnmoJWuXUtrL+ALSCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787056459; c=relaxed/simple;
-	bh=NszodI50ve9a6g+pjtNG/DG1p9tVpz1K9S4rBh4kzc0=;
+	s=arc-20240116; t=1787056654; c=relaxed/simple;
+	bh=TukM0YhOrBAx/cc+1gpLWnmuFodEl4ax1hLuO0oSgUc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MNG/qebLCy7tXtY13H03rK8OTxRrT+hl0B2X1+A0TpjqC4NEk4K65dboQvbKC11Xno3dBY5Zw4zjqTd/XdcPhKjO/zAREOSCv2yuuugGP9Eraly5dTSjSxfhbtLNZspQ8p2VY339XJAjT/7on+UOHtdLrcTyY7jeYLmWo8OQvZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QkqSMCOG; arc=none smtp.client-ip=148.163.158.5
+	 In-Reply-To:Content-Type; b=PRekRyLlI8nwDNbnIPGVJeDxA5n32L3SsI0S8NxxW4ROJZM4DMQb03qDpb62DI1RNJ2RDQY3ko9kkiFyXOMxjp0vbS4wkRtoCEABWt2MVIqVSkbkyL2A39HKEL2qbv32FpH62wRKbEE3FfNOQ1X96qTLqgeF6UACRlwvbg3tn+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=oMT8bJER; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QkqSMCOG"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67IAVemZ069954;
-	Tue, 18 Aug 2026 12:31:36 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="oMT8bJER"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67IAVWUM2355685;
+	Tue, 18 Aug 2026 12:31:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=OVrVAH
-	poCf/BmBSpErJpQ/RLzWgLb76r8JlqJTLkKus=; b=QkqSMCOG3VpgwNIYMnc00Y
-	STZW6sRTh4bjLZD1yyzWsfpPpestmCZVeuwt/vNBiXHuG0H5zzJFooXoIL3Wp2M1
-	hBNgHzI56cJmCj6syQ+JcwL5JZYPWQEfpkI4CSKRTjePP3AoUDkwTLlNYhwO11ks
-	eKyYxBCuegurEiZhAVYwvjyDgXmE9gF5AKwmMF3KPGU9KGVaZrYbQ326TZLRRILZ
-	8eiLFvjWHh9QWAwF0DR3JBpCCDxC2esBFCblzcQhF5EbiiFE6T181MPyZs/wJLx4
-	SOss8KhatLInh/QuxbFlSW9Cp+PSO+7ZFbPGHuNZwVAzz69sB1feu2VQhQuS79BQ
+	:message-id:mime-version:references:subject:to; s=pp1; bh=UL9IFO
+	BfaU/clKhXme8sOAazBEUtsscNml+GIhZ/mjc=; b=oMT8bJEReh0EmAFaP7G9HP
+	e/pj+gHlxR7TUff7uWpiXYx3U+zLTQr2uKoCAAwLfYUP5qXZpXFZXv8X+VOm3MSv
+	IjbE7NjT2UWR52QmJbviFARKyiB+G76mRaH9Kv6JlYOTVYZUKOArW4VolOjz//2P
+	H8D6Xb6Gw7OBcF1N/579Dw0t+u1lkl0DMDr9KzEbnhQIb+UM0zQlgbGDScoRNQ6c
+	c5KsKxoyv4OCZ+tEOmdgW1ynYWz67IUK7ogWIQ/S2j/IuC+zpj0amqTkLTKq03T7
+	LbZchkE1MoH1hl788YRP4ZywydVPfEjpFVhDOIhTSqRB3VneJIT4R7XAunnUqJAg
 	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2frt7m33-1
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2fsqr3va-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Aug 2026 12:31:35 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67ICQJ19022995;
-	Tue, 18 Aug 2026 12:31:34 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g354yaww7-1
+	Tue, 18 Aug 2026 12:31:30 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67ICQKHI005403;
+	Tue, 18 Aug 2026 12:31:29 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g33ek35sp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Aug 2026 12:31:34 +0000 (GMT)
+	Tue, 18 Aug 2026 12:31:29 +0000 (GMT)
 Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67ICUrpU20906588
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67ICVRIC20578988
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Aug 2026 12:30:53 GMT
+	Tue, 18 Aug 2026 12:31:27 GMT
 Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6D5385805D;
-	Tue, 18 Aug 2026 12:31:32 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F19455805C;
+	by IMSVA (Postfix) with ESMTP id 6B03A5805D;
 	Tue, 18 Aug 2026 12:31:27 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 974735805B;
+	Tue, 18 Aug 2026 12:31:21 +0000 (GMT)
 Received: from [9.61.88.99] (unknown [9.61.88.99])
 	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 18 Aug 2026 12:31:27 +0000 (GMT)
-Message-ID: <3c4cc077-ffe4-44af-9bcb-1c0c0a7a0531@linux.ibm.com>
-Date: Mon, 17 Aug 2026 14:11:14 -0400
+	Tue, 18 Aug 2026 12:31:21 +0000 (GMT)
+Message-ID: <77e4a58e-269f-4c90-8a1d-bbf89a889c35@linux.ibm.com>
+Date: Mon, 17 Aug 2026 14:09:33 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,36 +62,43 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 41/49] Guard HMP command implementations with
- CONFIG_HMP
+Subject: Re: [PATCH v3 37/49] monitor: tighten monitor_printf*()
 To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
         qemu-devel@nongnu.org
 Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>,
         =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
         Markus Armbruster <armbru@redhat.com>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+        zhenwei pi
+ <zhenwei.pi@linux.dev>, Kevin Wolf <kwolf@redhat.com>,
+        Hanna Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+        Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
+        Ani Sinha <anisinha@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+        Amit Shah <amit@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+        Brian Cain <brian.cain@oss.qualcomm.com>,
         David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
+        Richard Henderson <richard.henderson@linaro.org>,
         Marcelo Tosatti <mtosatti@redhat.com>,
         Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+        Jiri Pirko <jiri@resnulli.us>, Jason Wang <jasowangio@gmail.com>,
         Halil Pasic <pasic@linux.ibm.com>,
         Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Eric Farman <farman@linux.ibm.com>,
+        Cornelia Huck <cohuck@redhat.com>, Eric Farman <farman@linux.ibm.com>,
         Matthew Rosato <mjrosato@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
+        Ilya Leoshkevich
+ <iii@linux.ibm.com>,
         David Hildenbrand <david@kernel.org>,
-        Cornelia Huck <cohuck@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Anthony PERARD <anthony@xenproject.org>,
+        "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+        "Dr. David Alan Gilbert" <dave@treblig.org>,
         Hyman Huang <infra.ai.cloud@bitdeer.com>, Peter Xu <peterx@redhat.com>,
         Fabiano Rosas <farosas@suse.de>,
-        "Dr. David Alan Gilbert"
- <dave@treblig.org>,
         Samuel Thibault <samuel.thibault@ens-lyon.org>,
-        Jason Wang <jasowangio@gmail.com>,
-        =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>,
-        Zhao Liu <zhao1.liu@intel.com>, Laurent Vivier <laurent@vivier.eu>,
-        Nicholas Piggin <npiggin@gmail.com>,
+        Stefan Berger <stefanb@linux.vnet.ibm.com>,
+        Zhao Liu <zhao1.liu@intel.com>, Nicholas Piggin <npiggin@gmail.com>,
         Chinmay Rath <rathc@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
         Harsh Prateek Bora <harshpb@linux.ibm.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
@@ -103,60 +110,63 @@ Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>,
         Chao Liu <chao.liu@processmission.com>,
         Yoshinori Sato <yoshinori.sato@nifty.com>,
         Artyom Tarasenko <atar4qemu@gmail.com>,
-        Max Filippov <jcmvbkbc@gmail.com>, kvm@vger.kernel.org,
-        qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-riscv@nongnu.org
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
+        kvm@vger.kernel.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
+        xen-devel@lists.xenproject.org, qemu-riscv@nongnu.org
 References: <20260816-qemu-no-hmp-v3-0-e53fc35bc550@redhat.com>
- <20260816-qemu-no-hmp-v3-41-e53fc35bc550@redhat.com>
+ <20260816-qemu-no-hmp-v3-37-e53fc35bc550@redhat.com>
 Content-Language: en-US
 From: "Jason J. Herne" <jjherne@linux.ibm.com>
-In-Reply-To: <20260816-qemu-no-hmp-v3-41-e53fc35bc550@redhat.com>
+In-Reply-To: <20260816-qemu-no-hmp-v3-37-e53fc35bc550@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=OfaoyBTY c=1 sm=1 tr=0 ts=6a8450a7 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDA5MiBTYWx0ZWRfXxeP10mi5nXk+
+ 42JuJ8FBRrSfAYCu/Q4o7d7+QjXR0y0YhLBXkgd3jS+DNmCgivbuDm/ZDSs3n8sSKCYwwSS9DVv
+ NgWoNA0BwgCQpVOd0YlV1AgDl+Yi6+o2mDjLiNhVnCu3Iau7D1S8g+hCEDt2R0SHK58wtGi1/5s
+ RsoSkQaqsfxgejgt67fHbonxC2nqio0fdE54/b3h309WKFkCPv8jczyyFYUmhEuBrox4FrFb7wC
+ PggyxsIl4jVNptZqWdfEykgaHsd7pCNOyBiZc63Zi4tyERkBaOFbTYD+VvrDqVjy3rsEtC+ZxFV
+ syR9AFCpfomtfiYbRemhA1VR8Zb4KVxISW6kyI+L2CNsRt3eFSzkaEXWyNO+sowDrmMC7kBgTR2
+ 5tD9HUyfomfLDqaSHLjYIq6swzt3Ep8j+EJa7WICWbXLEoglP6kNvklJYaBlu+zXSSDds8nl6md
+ PTudAuUQifZz7GHw46A==
+X-Proofpoint-ORIG-GUID: G5eJ90vsRCcNC-bXB9XjB1i4CkNoQiux
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDA5MiBTYWx0ZWRfX/l7XvQu5FXvY
+ 757EDCutzJiMhhtpUOg8veUoUv7xm8vDn4iZni2l2SWZhtMOzb10+wUB8ZZ4Fm+mPM+dyZPA8iu
+ wv2noNska5/BZi3NZrq0a2WXPePTskc=
+X-Authority-Analysis: v=2.4 cv=DJe/JSNb c=1 sm=1 tr=0 ts=6a8450a3 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=20KFwNOVAAAA:8
- a=VnNF1IyMAAAA:8 a=6vjvu8HhQ4Mt8ipGFg0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDA5MiBTYWx0ZWRfX+VhBvebHoSgA
- bdcBt0hUMx2u3qzgtd1xVcohZkWYklfgUPDdgR7rZy7Ov9aplI0vfbF/yFds6jFpAV5jaXsD9r5
- vLFuPnnMgBhpt73IxxiWYe1P/1VypCk=
-X-Proofpoint-GUID: yTn3FZ6qFt7CciM6GCDlfTK-glHalj1s
-X-Proofpoint-ORIG-GUID: _zrDuqqnAULRzyly31YofOxyJFNp9p2i
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDA5MiBTYWx0ZWRfX//3f8rgbsedR
- eR4KjqWFae+GjlIG+s/6t5LB7iABK/UnLTK9tR9eEXE20dEZQTTjuB0Z+99eZR30uLMI+h8XSmQ
- kvaJxl3Pifo7SK5JWjLTmwpnpdQtRFayZLVlXrrOPAuE1HgZxS1/8QtCBqN6WZ54IsMo7SGyqUq
- 1Zt7+tdQ1ntHUm5PQsrP8ZjubIw2Y2vcQKDt3mGYU2Wkt5tDSbKJE2pvJLaqdcA52ZU5tQcSmpS
- Ykin8+uHFX4eIpOPiR4zlPtJ/fg4obtxU8wcEEdMPbUCW6KiBCfTcD8GYsFSkCG7Tk/K7SAU1po
- BxHkDT8u/UqmxAcZNucYkRlf0h71UANwH1sLFnJZjl2apo6S1F/o2GDOzIgzkc3L2nWPfirPpFS
- d2nPgqO7zuGoPx4XS6RU5ZCwSCA7/f2J5JrCGAySZeh3Dd7wAw6RIFCM2G1DN5H6xE/iqWBkIMf
- nrXzrOttlJ1NKrR2tnQ==
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=20KFwNOVAAAA:8
+ a=VnNF1IyMAAAA:8 a=mY-fmJR8b8s-Z9VvxFgA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: WJt7z1CXoN-0E-GSYEQWlRq5_XUQN17s
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-18_01,2026-08-12_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0
- malwarescore=0 bulkscore=0 phishscore=0 priorityscore=1501 spamscore=0
+ priorityscore=1501 impostorscore=0 spamscore=0 clxscore=1011 bulkscore=0
+ suspectscore=0 malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608180092
 
 
 
 On 8/16/26 3:13 PM, Marc-André Lureau wrote:
-> Add #ifdef CONFIG_HMP around all hmp_* function implementations and
-> their HMP-only helpers across subsystems.
+> Rename monitor_printf->monitor_hmp_printf, monitor_vprintf->
+> monitor_hmp_vprintf, and monitor_printc->monitor_hmp_printc, changing
+> the first parameter from Monitor * to MonitorHMP * to enforce type
+> safety. The implementation is also simplified: monitor_hmp_vprintf now
+> directly calls g_strdup_vprintf + monitor_puts, removing the virtual
+> dispatch via moncls->vprintf.
 > 
-> This covers monitor_register_hmp* callers, hmp_info_* handlers, and
-> HMP-only helper functions like slirp_lookup.
+> The dev_print() callbacks are temporarily using the MONITOR_HMP(mon)
+> cast, they are fixed in the following commits.
 > 
-> To link succesfully, use empty cmds tables in hmp-cmds.c (to be removed
-> once meson build-sys is updated with !hmp support later in the series)
-> 
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
 > ...
->   hw/s390x/s390-skeys.c     | 2 ++
->   hw/s390x/s390-stattrib.c  | 4 ++++
+>   hw/pci/pci-stub.c                       |   3 +-
+>   hw/s390x/s390-skeys.c                   |   9 +-
+>   hw/s390x/s390-stattrib.c                |  20 +--
 Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
