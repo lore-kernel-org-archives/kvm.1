@@ -1,287 +1,319 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0BB470E82;
-	Mon, 17 Aug 2026 21:07:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A31470E82
+	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 21:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.171
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787000851; cv=fail; b=H+r90CitkHLhjAP669O53weGXPs5tejqXreQ1aD9SluUNjuft4YVTEHlBRxDb16W5gw1RRfhBMe5b59K84WJ8Szqmfd3lEUC4xFDujpZa2B/6uVkVSjkVrOUcg0dG286/HywBFVb++lfVuonEMFkeFS5fWCh4PzoozR20tHkmN0=
+	t=1787001049; cv=pass; b=DqQwyYlrdxrl4pBV6D83DwgN2Zft7TEFxMNyh0PwqCoBFCZDy4Yc04iufIAvyrQLGcM6eO+JVK8aCifk/Je6DyEvJIm0VjH3dnI10QsKtwQ4y1Ce0WRbidZmtSjsYWCNqDNUiTQ7jdPiCiizb9ob3YWRdoQYiY3Y3ME9UXtsu2I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787000851; c=relaxed/simple;
-	bh=YzIrdnn07FyYkh9olTJXFld2k+3xTLW5APvvpvuqvT4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=sFIN3UwSdlfwTKhyJjjZqty++20SLLoo2woIxYzPGL5Kj6FDYJI+51LZJe0V+fslyLoQ66KuUTr0KS05SQllygR7hLwuGBLgtzos0kBun02xE2V8WEkE7jNg5I3Wz4fACzBFqSwM9lIh0Iy3h3DH37bVKuBofiQd0fMfTZ3FeOE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=o1Fx+D2C; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=rVqyuXJe; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1787001049; c=relaxed/simple;
+	bh=QAx+8stP7eWiwXcVtZ6oQcPc/yneHJUDQ532rBo3tmo=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AsOfuGPSlcfY94AEHIRrJUM5pau5z3+gffeNVABCAwUHf1QitnBMKa5Rpluv/VxLb4+Ot55zMzcBmT6iY+K1gNjfIR7SoagqKqdugUDuSLviA6eNnutm+63DKpavdOFgYk4a9MnZk4Nc/3JfxaRFuHWHYzqjpZyjjOexIXXaCB8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=otx1ybqT; arc=pass smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="o1Fx+D2C";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="rVqyuXJe"
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67HFj85Q814889;
-	Mon, 17 Aug 2026 21:05:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=ODisOdi7DmSDatpk0UHQY57orwxe1KEMS5Nq27CXI9A=; b=
-	o1Fx+D2CoqcWiEi20C/vY0tNfDpLB57fy/9ocQOEnW9t4RLOvanPyafmEg8F3Qkw
-	uiK7IsuIBahbXRwzS/edbHM+JC98v0h3wsXKnFu5etAkPYsuUZbqeZEDinW7owAN
-	LxQxT4yu+oksHzDAycOlrzkzcC5i5dCYqmb0kZPijRXNqPrHFxMaNwQGmtigCCp+
-	0BVmFi9k3yBe5WJRlx4bNm4oE2EXiqMzYToBpJehVHGagBOQm3UGcZJ042PNbhLA
-	JofLnjTiYjEOmsA9M0pu9DwdDlJJRY9LO6t69GbJRBB76bEXAcX0HIHl20vzalrJ
-	XP3wCX8oCtyLEVG3NuVLTw==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4g2epy3brv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Aug 2026 21:05:51 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 67HL5frG024049;
-	Mon, 17 Aug 2026 21:05:50 GMT
-Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazon11011051.outbound.protection.outlook.com [52.101.52.51])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4g32hq137c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 17 Aug 2026 21:05:49 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rNZ7mAjvIYRt+9qrtxAV14qML/7L8QyaGgBJzVPwKLWcz3lxPmu6rpOOzewZ1Mc12GzT8veeLsTthHQpeXg9lgvRYa7JOCM4jxLmO7B4pJazAARjozuzWx4Lxbsavmyef9UJiKFbyWGkGOGEbGwMZpeaolJI8SqY1Lt3yMCDezXHZtzdV1XPAwHeqzVcdsXrBXI9ipvbIb6S0FCXa0xmmyNt/jSU1dHgpqbGfK7FU+Qubivoi21C+PIRCRVRjYuL6bIcV4/nkoOBw9MuqMyFf7FcNupgkgm7Kr/wyYS1B5ZQJqJXqAE2bqBw99q4Hag/ys4Lzsh7BreYhir2fwmZWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ODisOdi7DmSDatpk0UHQY57orwxe1KEMS5Nq27CXI9A=;
- b=LF4YYOe3Ln72znzk+65+s7hqFk08DvISIN9OqzObOyCwZmUN8+Cy3/+f1VMaYL8xa20xnUXzCBWHowRRUGEqTFNr656UyPxwWJDGsLiJOcmTEMBI4r3XD7IbC7GbpEzcpxRRTFS2LkZia/b5rl8WNVq31Kb22hWbHzZxdulD5cfUr+LixSYPE5MxgBMC/utaAK/Ws90VynrtyNrm+nSViKVZ0+fHQIk6dgBA8K46n1JyutkZHX/Vnx5511VXieDmEB3ABE9pii3YftXkqyRIUCRcNdDlQy6eAg3fwCbW1XXTQ4G9UV8qEkAKQvbpaXabQcZfTX8JTXt5biwpX6ap1A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="otx1ybqT"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cc11a30a259so2809183a12.3
+        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 14:10:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787001045; cv=none;
+        d=google.com; s=arc-20260327;
+        b=giKF2PzKZgQ4P0m1I3e9OWu3mjoUtG7CKdXqIta4Loq564E+FChvmzpsqAd39OSD1T
+         FhbyD9IeGUbHfqwsc3zNDF0dUAmBWaMogp5HVosN9EfGq1qT2GvVdrbd7JPV1rtoPIBU
+         Yrb4wdJDGn1qVg7WX/IPr1uBBUnJ3J+JeNJzebixJKbP2yNnmdzKKfJnfTxOJL5zosg9
+         psIR/5xS83Zx30hGf1NUvpw/u5yGDKCJKuh+Kew1k8RaUT6FQj7WsD05HmB8PvWIa0UV
+         r1gC09GznV6aM2zCI4SvvvLDIaXePuujAIUpZqya97PVXBW0xHVxb8WC1Ai3Q/ivnFIH
+         OMbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=fXsAYGWxJyVowLSo+okTw01FCA+GPEAZRUERjwSXi8s=;
+        fh=kqoOTIHTux7ezJ2XMS0BLyGpWCBEYjaECrPDVtyROnk=;
+        b=ATWw0FJjn5+uhI4KvKz2CzZvEjTZnZwP0MygpM/q5Agqn0y7/oULP6hTe+QyWT0uBp
+         SnnEb59F/kEN9jkx6nJJjeGC8wwUGxakQdrwmM+EgJsSjPFnME4FCMyacq91OQORq5h4
+         IsoKXY0iN+Iy6KuE2YPbb5xY7lTkpJCpza/oFszRKmGsuuTvCtauZPd4qDPT9I3KTCPR
+         rLLYZok2+Fg5tK3hAiBW+HxKS3X4qqQcXZ8ibtxJAhY1QpnTuz5J7zITI9TL3ruBRQbV
+         doCyBMxJzqVE6qPNqUg6BLnutZ8HUDg9HspqRj53hFP8crryawb3oGeH6LuCn9DPr0kd
+         xWHQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ODisOdi7DmSDatpk0UHQY57orwxe1KEMS5Nq27CXI9A=;
- b=rVqyuXJeiYY3Og083BJVFle9QaXemDwbbsfGpodDtSbuoHnx5Yb14AzI02WY+5qKyKeY/SjEjg6OTwGIDrA2SUBI4db5N3lgAdLcdRcS9P7kTW8BVKneFFAr9BbJJmMC3jfJAB0Lth8jUaua10DH1ffnrRIOo1Cfvd4tl2vKthY=
-Received: from CO1PR10MB5506.namprd10.prod.outlook.com (2603:10b6:303:161::7)
- by PH7PR10MB6459.namprd10.prod.outlook.com (2603:10b6:510:1ee::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
- 2026 21:05:13 +0000
-Received: from CO1PR10MB5506.namprd10.prod.outlook.com
- ([fe80::da72:a0a9:5f18:cda4]) by CO1PR10MB5506.namprd10.prod.outlook.com
- ([fe80::da72:a0a9:5f18:cda4%6]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
- 21:05:13 +0000
-Message-ID: <d71a5dbd-cabe-476d-8837-9519b88ee5cf@oracle.com>
-Date: Mon, 17 Aug 2026 14:05:10 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] KVM: Reset steal time accounting on vCPU pid change
- (x86 and arm64)
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-        linux-kselftest@vger.kernel.org, seanjc@google.com,
-        pbonzini@redhat.com, oupton@kernel.org, fuad.tabba@linux.dev,
-        joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com,
-        yuzenghui@huawei.com, dwmw2@infradead.org, joe.jin@oracle.com
-References: <20260816053630.527528-1-dongli.zhang@oracle.com>
- <86tsotyxh5.wl-maz@kernel.org>
-Content-Language: en-US
-From: Dongli Zhang <dongli.zhang@oracle.com>
-In-Reply-To: <86tsotyxh5.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PH8PR07CA0033.namprd07.prod.outlook.com
- (2603:10b6:510:2cf::20) To CO1PR10MB5506.namprd10.prod.outlook.com
- (2603:10b6:303:161::7)
+        d=google.com; s=20251104; t=1787001045; x=1787605845; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fXsAYGWxJyVowLSo+okTw01FCA+GPEAZRUERjwSXi8s=;
+        b=otx1ybqTXmds0ypcCwGr28grUwyjC1BDIkhhdWe8vDVALIk+WzbBUG3A2hBmW/vwv8
+         BxaRr+/TpEKZsJr8HjbP7LwTY7oxk6MejbCeKrRBXT7e2Uo7Tq6oy38W3hoKyXeOu7Xg
+         fI7ydFHLmLPw7g0EefQ/3WfJiqCfMyvmBg4u207Jw1Yq663D3BoKx4VxwyN7N51Wz96r
+         O8YhNbWByqwcbBJH1StsiAFJ0oscfO+ykjvPlIWRHKE3TKXHuhUnIjAGUbzrbDtoRcQ0
+         cp9vnZ9Ezj+yn3DD1F+skvwtRQMLUoGny7Dq8qastdwMbRCg/gMNtWMOqcBX7s5o7lJz
+         h9XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787001045; x=1787605845;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fXsAYGWxJyVowLSo+okTw01FCA+GPEAZRUERjwSXi8s=;
+        b=JCII2r2t1Tn6sTIqXZ4Ffvji5shz5Ci3/Jkky+aO+1EG49he2cMw3kZgphzWcDQcGB
+         I5QcYa5jqjFy9g9/a/coliDldjZdTec1zQxKr5xhmMIlzA/jgjiSTWB2DbV/QjGXP35U
+         FOFPBh2vxfhR0B4xwmQfovIde4l8B8T53T/dvXbcrGrtXiVf9Yi53K2v7aO0NgwFnPns
+         SaYzCkSgXaAYrQFd/Fjx2QM2utU4cbyenne4Z4Uvt2Wp6zlcNo8BrUnB+FW2HiRQgqa5
+         ysqT7OsZcS/Uku+92JOxSzoLVXwJadVo9HjHFZvy0F9Msgi2NO5+fPXcI+1LuF5dNRJB
+         0HRA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp8ge2+7bGLv0BIXzB6vOP6qwcctWn0CJ/nlDMS+ulNsAbI815HgSoeHz+D+G1iRtEfiew=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMg8xNXvMGjELEyyedhS41+NOfCFHMFdBsTTrZZCRddkiZnpbA
+	a1pMS+G/SmHH+xg9HG75LNa6wbi8TipOGouWZTdTzCG+VDEHnNxAyXudq+qlmrWDASPrBpk5vhQ
+	U6izlfjLXqSxX09WYhA2IDcnesvV+9LPYix73mYlo
+X-Gm-Gg: AR+sD11qtAeaatd+/L5ntGQqbBfqTijNjVUoO+Bvm7B5D2OF3Z8X177VfuwugAXlWQi
+	oz9Flkeii/3q+3K7/B6kSSjUZTTKxn7LqRMrQj5gIqviJuDVO14c7VCDiZPHcaLrVuwPXjIgt2D
+	JIEBKFkdw18ZwPdL2gig8YcHUxtlMdhFSH7biya5BP++5AKDIU6h4jGyzIqUZRudV+ewAlMeTAu
+	wvMe96mN6T+bzMcWGsp1iZy0WXZdaY1JKxEMWngLlWxI+MJA7kNTOe66Dg0Z8LHPvnJiwCL+RbH
+	fnUalADFThA7nA4z2RoEflb1NlbKHMRxeft6g5Qy50wtTecSffDhCsSXreql7PMQof5jX0KmuQq
+	feA==
+X-Received: by 2002:a05:6a21:3398:b0:3bc:5284:5445 with SMTP id
+ adf61e73a8af0-3cc71d53eacmr29096172637.21.1787001044531; Mon, 17 Aug 2026
+ 14:10:44 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 17 Aug 2026 14:10:42 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 17 Aug 2026 14:10:41 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <aoNlZRb5SV7hyNuk@google.com>
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-12-2fc18ee6d3ba@google.com>
+ <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com> <an3o4h-E8mj6CUaM@google.com>
+ <CAEvNRgGpCVCGVjc9jCt9Yr+XypF=71h6eBahkXNkrXhfrtGY+g@mail.gmail.com>
+ <an5AcEG9mqDgnBYk@google.com> <CAEvNRgE+05c9U8C=Zkm1S9hLw3Lw6YMmijZhEe7J4rYQAuNyEw@mail.gmail.com>
+ <an8umm0qisEidt4n@google.com> <CAEvNRgFNCDDSeuvbwj7pD_d18o1TBXo4TNR2dXHxpm18KPfR5A@mail.gmail.com>
+ <aoNlZRb5SV7hyNuk@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PR10MB5506:EE_|PH7PR10MB6459:EE_
-X-MS-Office365-Filtering-Correlation-Id: d82b7fb1-81de-4b25-956c-08defca33af4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|7416014|376014|56012099006|10067099003|4133799003|22082099003|18002099003|4143699003|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	1YEOwu/oksa+W8JaJlfqr5mo3//xHxKR8ecj3wbgNGNFNi7mB1QK3bH6Pv15rKctfBUxLKByOB76YpM7Sf9PelNpAyOi5FvsfEciI+fvS7Yj8JNtgoSip07mULDckSXb2JUzMZP/W09qpt2No/1GKBIAlrrT6SPmfAAM2yZ4hQv73YZt1YHdiWAY2m6V28CCMvVeJOIMHCezg44t10jdw7J9urkJkgf8QzkgCWf2OOjE04nUkNhwjY/fcaLASSk1AOyGgOYDoKAuR4Nlj/WaMAlxEGiluSX1WiMEKAKaIH6QgDnuoV/MoWjexoiZ5GMmiunuS6q4DRL7v+AlBpR3KYiNNzrShwPpYABwb/Fh6phXPSIkgDlnv3txCN9u4bT9JvcYlEKS7NsjPsvyKnofRffnokhfQCmd4u2B4WMpgOiKViST2EkqeBW7pKCS9usBDsEgQqRpzWI1O6lkfgNiBX0hrVkE9GtfyC0duSXV1SSpjZL4QnuvTrDMvhqigNXlYfhDmvz00nVrUp/y+x7+tZE278MpxGWeNA9O82RBXBZ10SEfSwXrP9zoyoQy9bkfeIaKh4+w3m/QmaVJUED1rcXNQoLD3orb6622Ys+yPhvSJB87eNd+Mx1nBZqhJBmhs0x0ERxrrGFhQ4dzlEQZXh+Lg2ejULSdWGEGgkJkY0Y=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR10MB5506.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(7416014)(376014)(56012099006)(10067099003)(4133799003)(22082099003)(18002099003)(4143699003)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R2w1ZXhOelpEaWRuR0Y5SUFlalo1LzJOdE9JbkFieTlzWGFlL2RtSVZWYmxh?=
- =?utf-8?B?RmlQdnd2dlBjUmFrdkFqeURaM3VTTi9NRDN3dm9MVGtHamQ3VnNDYUhONHlp?=
- =?utf-8?B?dE44NCszdE04V3huRW1tdjgxd1ArQUFOeTNmTFNoTDluMHpocXRXU2YzNjRw?=
- =?utf-8?B?a0VOZDNGT1haeDRmMitmWWU4VmhoQldoa1pkVHVQUzFFYUpUblE5UFpYcWZH?=
- =?utf-8?B?Y3RxK29SZHBNaEpsSWJRckY2a0xLWHl5Z00xRnduSFZOVmk5Q05ySUw5eHA2?=
- =?utf-8?B?dHdNUU9abkFrYmsveWx0aWk2WjJxUERIV3VYZnNDZmpNaWg4dGtxRE1udnAr?=
- =?utf-8?B?VHNmY0hPL3VzMG4rWEdtN3lWVVpzc3l5Q2ZTbUwrLzJyajBUZmZwRi9VR0FO?=
- =?utf-8?B?SGNXYUVUTHljVmRUQjhXMDAxRk0vdjN6ZDhDNXpCVjVFNFltcFBIcjF0OUVo?=
- =?utf-8?B?U1lOSTJZV2pqbWZRbHdmOGNyMlNZSS9XNklQZEkzaithbk05K2p2ZjNYcFIx?=
- =?utf-8?B?NC9wOGxsMU53b0J4eTJtRnFySTFxSUx3N3oxMUpvelpheklmOWxyd1Q5L0R2?=
- =?utf-8?B?bGNHVFZ1YWM3cmNCcDJpSlMzejVRcUZNWjUwK0dobHBlWTZTMVZsTDUyOEhz?=
- =?utf-8?B?SGNSSzdzRGlmQ2hkdGp6TTlxbUtRVmdOMUZiNmZuYk9OZDUxZGhDVXZmNzBt?=
- =?utf-8?B?UlQ5RVpnVFhrS0tnbXZ0dTVlQTZwYzE4cDQvTVJFeXlxdHVMSjFVU0RFbVRZ?=
- =?utf-8?B?aFhaRHBtdzkya2tTb1VHR0M0QVJVSWx2VHptSW5XcXVvVGxFQjRKRkR3Rlkz?=
- =?utf-8?B?QVFQVFpLSkJybUZtNEVrVDJwOUZ4Sk9ROHM4YWp5QW9zb0VVWTNOWHgwRXM4?=
- =?utf-8?B?c1FRVW5RU3lLcWlkUUlyYWFKTWx3SDV2TGU1SDFJb0lBeW5pRnlWUDMyUksy?=
- =?utf-8?B?aXJBd1JnUHlGUVRwazhwODdpUkJ4c3IySEJCWWhMR0ZTOUlFdWMwdXFreHJa?=
- =?utf-8?B?aVFJcm5mQ1dhUHBzblAwUTNMWW9PWjdveWJWSitHbkxiazhQOVAxUGtRWWlT?=
- =?utf-8?B?cFR3K1g1dUlFVSs5UlpuVXFoQnVFdDZQdWprRHRJbnhFUjZjZlFYdDFaZ2tP?=
- =?utf-8?B?bmdPY3lXVjFUeVJieDl6eE5SbXZVWC95QjZFdENpeCtJb0tNSmt1NWQyRTJ2?=
- =?utf-8?B?ejY3czZJK2NtL0h2eHhpODhnZ2N3ZGlOb1QvZHhuRXoxZG5rNXRPdWFQWnh0?=
- =?utf-8?B?Z29pU1l5dlZ0N0RtZVowL252bFcxL1AxQ0hkS1hKQnhENU1hT05GQUR5RVlY?=
- =?utf-8?B?cjdIUGR5cTRKUHdPUnlkamtDM0tGanNEVGpnd0kyN1hReHZLL3FUZndPUk5p?=
- =?utf-8?B?bEswRWYzdm4wQUQyandOeGVWUzBSdXlINzBUN1F1eGNDeTlEZmgzcXQyWkNk?=
- =?utf-8?B?dnNPcWFMaGtPNm1ibFQwa3JzR1h5eWZmZjhWQzNlU0Y2NXVkOXNIUzE4Ymx3?=
- =?utf-8?B?YnorUUVlMUl0L3Jsd1NmbVN0RnNzK3NxeTdUUTFSeEh3cU5naXBzeno0RXhR?=
- =?utf-8?B?dFM1TGJBcW44QVl3ajg0elFBUnJWdEdIZmFocmtZWkhveDJjQjgvbThrN081?=
- =?utf-8?B?Wm5pUHFZN052L0E2dGhuTEIvUlhqQm80cXBhdnlXWUVRSFc2RUEyQ0d4MGRW?=
- =?utf-8?B?WlljQjh1QWI0d2VGaWhVVkN5Nlp1a0xlbXdOdkFIYUJaQytDZXlHekZzai82?=
- =?utf-8?B?RGxoSysxbVYxYVRvSEdyb0dVaXVRcW9tMklsNW1aSG1UOGtoSTVVa1loNWVv?=
- =?utf-8?B?ZUVaT2hVZW9Wb25XMEFselhvYXVFSXF6NzNXR0RjREsvRmc3VEw3SUVjQ1VQ?=
- =?utf-8?B?V3UyT2lGZnoyNkljTms4aHJObEJCd2Z6V3BDZVhJNEI0VERhb3RWaWhIc2dx?=
- =?utf-8?B?WllIcHNkblYyUnlCTHZ4WE5meThyWFo3NTZacEZPYnpCQkNad29VdW83VHBp?=
- =?utf-8?B?YmRPNHhhS2FaWmhTMEp1OWh2SFU3Zi9XY092ME52NXdHb25sbS9yYjN6Qllq?=
- =?utf-8?B?N2JaUTBrT0tVOUhZYkJJTVMvOTdMUWJvell4WW9tZWF5clo4d2Jhak9sL3lV?=
- =?utf-8?B?YUx1ZjNkQkk1MzdvMWxZaFZ0T3huVERUdGlWVDlMNTI5d0hjMmNKVWhMMEJN?=
- =?utf-8?B?LzZWejhVcldnYjdycG9EaVhxeGhzSEVpL1VIemJHeEpIREEyVjJMQ3N4UTBl?=
- =?utf-8?B?cmNDcmMvZmdwcmkzTDN4UkwyUC8rcFNrVS95NnJGN1h1MHRISVhKSyt5ZktM?=
- =?utf-8?B?eGFRM0RzUDd0MGJJamNwdStCYlhuR1FGYm43UEx0Sm0vbnVzYzBMdz09?=
-X-Exchange-RoutingPolicyChecked:
-	h+c9WF35WVzv5UdsT5rhqB9nfZYO2jLTEIuqKbfG922lAgnrAkF2FZ3FUvIyu2+FFfyrKF2PYxUWsLUKLzRG8uqo5zqh0dDALT6oTst2aVBUPEhiCOF0XaXPPhmlovvscJcPpG+WBKoolw8Efa1xHIKrLPyCaJNZEyCK2yqjG6ijHiEyzrv8HQWwiA4aYxXqUUQYUraBiEthA38mt3Q8zNmPQ07DgCf08fdnc+56eRw6EZ2PrfCryY3coXBvI4gbT9ucGCrJr4i7bAiUChhilaBgzIybCz1zBawsqr9qcigB6iHMlLFeKWnDpij0q3KsawKxoi5SBSgpn+Ofvla2Xw==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	LCv6O9xzQfmTApOYhqsh4FnYTcgQXEbOJJF0Lv8gvyOERaVZ544NKyGQzZn3nIOHK052gaO9wx0bFSwpsCkN/F4kDnorgJX02iEYoJ2g4TUAJw7k8NR+4bPuoJ8eaBiTN/1dfZSuMkzuWjyFHY/FiWwpuopP2m4HuPAAMOSIJbRXOSHzJtTbG4YAAuvsiTCwYEdf1WbdrCM+C0YbseWi0RLeg9XcpFWt07oJh37wGFirinax7nc6Oo89i9rD/h8jRRdEHOoaIL+XgsbOTo2hKFAFJgqWRJjquMEATv+QbFsjE3d3ajGUjbyBdsg+qI8OEFl1ecjUmoiIq0MED94DOPNZ+qGsBThYR9fZZRp/sBExwm7abI4s45QPX1NoWAOgOEy2sUYwOZeC8nVmjcsYIt1IGU5Gq2cOkMYEp4UByor9wAxrf449cLaCOkYtQ1ANDdwK4hrZGXqPtEG2qjynJllDKiRYcni2KJyF6RaPDb0/M5J8DMyBdugOl5n5CK6G/xjhe5xL91civ2pGCLgyvwCOmSnfSCLVza0nV7YRlCtfUrUdMzScz8L51z/T6/ebfpz6Lb5UNDUGIWj+Kp4nLPUog+8PM2DWaJBI5iNbGOg=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d82b7fb1-81de-4b25-956c-08defca33af4
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR10MB5506.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 21:05:13.3697
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3gAFJZJlnumj5V0rqxAVcqlcuHo0szLI3tcghTk/qJtKeJz8t+YCdm00siGDm9J+4f7DHKO98hHyqCS0udl5fw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB6459
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-17_03,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- malwarescore=0 adultscore=0 mlxlogscore=999 lowpriorityscore=0 mlxscore=0
- suspectscore=0 phishscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2606160000 definitions=main-2608170161
-X-Proofpoint-GUID: xwAVs9NP192bnzsMCmETGFMi1Iyq5YSH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE3MDE2MSBTYWx0ZWRfX6anAzb/Uc9t7
- TU5spX0woaA9g+1GLTzonPVTzeWWgWkBlepHpAs4rQqPx+ELUl/6jwcKw4tBUSP8T1hscjwZ0US
- HmACngp0AcFewjYnMqOZaxjmYxCAaSTFG3xRX+TRzZb0hjbzbuGOPXvvQ2kscbdHfJdSURCVEdG
- mA8hU9sm8x+cM1o7v7l8ffvBi/It4Bv6kQ0OCKfWGjmYz2qT3SmeniG4VrJZU/yfpbS2Y+N2Ssk
- ZO6Wvak6Zv5k5JxQ+rKLU5rAO6CC2EVkv9SvpZ/02Ny10QbYl2Di6DPIoTqAyMw5Q2xAFNdlgzM
- sUmaSCoF1zmqoR1MD8jfIfN7Lnrazvv7J/d1xFMkbu0vTZ0esUqKriMTht1PZ7D2WU8c6+ngVCx
- 0ufAM75b0HjXlkw7PWsytt53/7xIZXrLSNUE/CGakKsI+vpqv+6B5uBqt+RFvI0+vDWCJw1knV7
- DRg4TuqMSnt53WAPkuVRnZnCQHGsvstu68uJmpR4=
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE3MDE2MSBTYWx0ZWRfX3VmQmOS1xwCR
- fEb+H2IsW9g+me5s77pGyXaQB2uD6kCdWjP6xjQ2kl31xi09ba4dipftXAJJfxe91e+vydFexQ0
- V12K09jq5mpvun/7DPj4SlVcV9jICxgdeR8ipjooH72Vo8V90Ek/
-X-Proofpoint-ORIG-GUID: xwAVs9NP192bnzsMCmETGFMi1Iyq5YSH
-X-Authority-Analysis: v=2.4 cv=EP02FVZC c=1 sm=1 tr=0 ts=6a8377af b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Sv0fKeRqtYgA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=RD47p0oAkeU5bO7t-o6f:22 a=VwQbUJbxAAAA:8
- a=yPCof4ZbAAAA:8 a=cXhUbMmNm04wmYEBA-AA:9 a=QEXdDO2ut3YA:10
- a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf awl=host:12099
+Date: Mon, 17 Aug 2026 14:10:41 -0700
+X-Gm-Features: AcwNN1XkDnEKM5GNqm9LOem-ACT2KBKH21AQXps-0CKMqEJi94nO9ANnicdLg5A
+Message-ID: <CAEvNRgEojt8Kpot9VaFUyVbVH5QVEdW-TgQUbVnpVCNzFtdVag@mail.gmail.com>
+Subject: Re: [PATCH v10 12/41] KVM: guest_memfd: Call arch make_shared
+ callback for to-shared conversion
+To: Sean Christopherson <seanjc@google.com>
+Cc: Binbin Wu <binbin.wu@linux.intel.com>, aik@amd.com, andrew.jones@linux.dev, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, Fuad Tabba <fuad.tabba@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
 
+Sean Christopherson <seanjc@google.com> writes:
 
-
-On Mon, Aug 17, 2026 1:15:02AM -0700, Marc Zyngier wrote:
-> On Sun, 16 Aug 2026 06:33:01 +0100,
-> Dongli Zhang <dongli.zhang@oracle.com> wrote:
-> 
-> [...]
-> 
->> 4. Guest kernel changes are not included. I may send it separately to keep
->> this series limited to the KVM hypervisor.
-> 
-> Hold on. Do you mean you are changing the guest visible behaviour of a
-> PV interface? That's an ABI. It *cannot* change unilaterally.
-
-No, this does not change the ABI.
-
-Taking x86 as an example, the Linux guest currently does not reset the stealtime
-accounting metadata, i.e. rq->prev_steal_time and rq->prev_steal_time_rq, when a
-vCPU is brought online. I meant to reset that metadata before enabling KVM x86
-steal time via MSR_KVM_STEAL_TIME, so that the guest is not affected by a stale
-steal-time value from before the vCPU was offlined.
-
-For example, in the code below, the guest resets rq->prev_steal_time and
-rq->prev_steal_time_rq after enabling KVM steal time via MSR_KVM_STEAL_TIME.
-
-[PATCH 1/5] x86/kvm: Reset prev_steal_time and prev_steal_time_rq when enabling
-steal time
-https://lore.kernel.org/all/20260505003044.78693-2-dongli.zhang@oracle.com
-
-+void sched_steal_time_cpu_init(int cpu, u64 steal)
-+{
-+	struct rq *rq = cpu_rq(cpu);
-+
-+	rq->prev_steal_time = steal;
-+#ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
-+	rq->prev_steal_time_rq = steal;
-+#endif
-+}
-+
- #ifdef CONFIG_HAVE_PV_STEAL_CLOCK_GEN
- static u64 native_steal_clock(int cpu)
- {
-
-
-@@ -337,6 +354,12 @@ static void kvm_register_steal_time(void)
- 		return;
-
- 	wrmsrq(MSR_KVM_STEAL_TIME, (slow_virt_to_phys(st) | KVM_MSR_ENABLED));
-+
-+	/*
-+	 * This CPU is not ready to be scheduled yet.
-+	 */
-+	sched_steal_time_cpu_init(cpu, kvm_steal_clock(cpu));
-+
- 	pr_debug("stealtime: cpu %d, msr %llx\n", cpu,
- 		(unsigned long long) slow_virt_to_phys(st));
- }
-
-> 
+> On Sun, Aug 16, 2026, Ackerley Tng wrote:
+>> Sean Christopherson <seanjc@google.com> writes:
 >>
->> [PATCH 1/5] x86/kvm: Reset prev_steal_time and prev_steal_time_rq when enabling steal time
->> https://urldefense.com/v3/__https://lore.kernel.org/all/20260505003044.78693-2-dongli.zhang@oracle.com__;!!ACWV5N9M2RV99hQ!Kt5J7E63dvSlZsI1Ovt02JMZuh0BwYZZupi0BMQXDxnYkQ6iPNwB7tuWgd7wSVOEVHCF40thrD8Apg$ 
+>> > On Thu, Aug 13, 2026, Ackerley Tng wrote:
+>> >> Sean Christopherson <seanjc@google.com> writes:
+>> >> > That's why I think it's worth analyzing the cost: if it's in the
+>> >> > noise, leave it alone.  If it's meaningful, figure out a not-too-gross way to skip
+>> >> > the entire thing if kvm_arch_gmem_make_shared() is a glorified nop in the end.
+>> >>
+>> >> Is noise defined relative to the entire conversion process? Would this
+>> >> benchmark look like
+>> >>
+>> >> 1. Convert 4G to shared on TDX with CONFIG_AMD_SEV defined
+>> >> 2. Convert 4G to shared on TDX without CONFIG_AMD_SEV defined
+>> >>
+>> >> and then compare the difference in time taken?
+>> >
+>> > That'd work, though I was envisioning something even simpler: use rdtsc() to
+>> > count the cycles it takes to iterate over various ranges of memory.  Do whatever
+>> > is easiest for you though.
 >>
->> 5. There is one remaining corner case: this series resets last_steal when
->> the vCPU run PID changes, but not when steal time is enabled. If additional
->> host run_delay is accumulated after the PID changes but before the guest
->> enables steal time, that delta could be unexpectedly accounted to guest
->> vCPU steal time. In practice, this should not happen for Linux guests.
-> 
-> Why is Linux immune to this? Also, KVM does not cater for Linux guests
-> only.
-I should have explained this more clearly.
+>> I made some changes to add rdtsc() for the conversion process as Sean
+>> suggested [1], and exercised conversion like this [2]:
+>>
+>> 1. Initialize some memory as private
+>> 2. Get the guest to fault them into Secure EPTs
+>> 3. Converts the memory to shared <<== this is being benchmarked
+>> 4. Converts memory back to private
+>>
+>> I made it build the VM once and convert 5 times:
+>>
+>> ./gmem_benchmark_tdx_convert --iterations=5 --size=1g
+>
+> ...
+>
+>> And here's the above, tabulated:
+>>
+>>   nr_pages      make_shared            total    percentage
+>> ----------  ---------------  ---------------  ------------
+>>          1              930            39278       2.3677%
+>>          1              252            28060       0.8981%
+>>          1              176            26952       0.6530%
+>>          1              176            27038       0.6509%
+>>          1              176            26980       0.6523%
+>>          1             1072            37236       2.8789%
+>>          1              316            28338       1.1151%
+>>          1              176            27182       0.6475%
+>>          1              176            26972       0.6525%
+>>          1              176            26886       0.6546%
+>>     262144         15041018       6616067680       0.2273%
+>>     262144         14937462       6608542680       0.2260%
+>>     262144         15138858       6599494898       0.2294%
+>>     262144         15721972       6610219850       0.2378%
+>>     262144         15000406       6615114540       0.2268%
+>>    1048576         61902982      26400884028       0.2345%
+>>    1048576         61746114      26401170984       0.2339%
+>>    1048576         61096794      26404409058       0.2314%
+>>    1048576         61446290      26447461896       0.2323%
+>>    1048576         61774646      26444608360       0.2336%
+>>
+>> Looks to me it is within noise.
+>>
+>> I also actually tried measuring the conversion time from userspace with
+>> CONFIG_AMD_SEV enabled and disabled. Converting a 1G-sized TD was faster
+>> by 0.2%, which is in line with the above table. Interestingly, when
+>> converting a 4G-sized TD, skipping kvm_gmem_make_shared() was _slower_
+>> over 2 runs. I don't have an explanation for that.
+>
+> Might be some cache/memory locality benefits?  Though with a conversion that big,
+> it could also be nothing more than bad luck.
+>
+>> I think the code was correct. (If it makes a difference, I skipped
+>> kvm_gmem_make_shared() using a custom guest_memfd creation time flag and
+>> skipped make_shared if the flag was set on the inode.)
+>>
+>> I thought adding a kvm_arch_has_gmem_make_shared(), defaulting it to
+>
+> I would do kvm_arch_has_gmem_convert() for consistency with the Kconfigs, and
+> because the cost of the reclaim invocation is a non-issue.
+>
+>> false for all archs and having x86 override with
+>> !!kvm_x86_ops.gmem_make_shared is not too bad either:
+>> + doesn't leak anything, since the function being called is
+>>   kvm_arch_gmem_make_shared and the accompanying function is
+>>   kvm_arch_has_gmem_make_shared. Or maybe just a little, since all the
+>>   other ops don't have the accompanying _has_ function
+>> + it's a kernel-internal thing
+>> + not too many lines of code, not too complex
+>
+> It also provides a good excuse to kill off the #idfefs in guest_memfd.c.
+> Compile tested only, but I'm thinking this?
+>
+> From: Sean Christopherson <seanjc@google.com>
+> Date: Mon, 17 Aug 2026 12:31:50 -0700
+> Subject: [PATCH] KVM: guest_memfd: Optimize away conversion overheads via
+>  dead-code elimination
+>
+> Add and use kvm_arch_has_gmem_convert() to guard guest_memfd's invocation
+> of arch hooks related to converting memory between private and shared, as
+> only one half of the x86 CoCo duo needs the runtime hooks (any pre-work is
+> pure overhead for TDX).  At this exact moment, the overhead is negligible,
+> but that will change when in-place conversion comes along, at which point
+> to-shared conversions will "need" to find all affected folios prior to
+> calling into arch code.  In quotes because very technically that work could
+> be pushed to arch code, but that would bleed guest_memfd details into arch
+> code and would be far worse than adding yet another kvm_arch_has... hook.
+>
+> Opportunistically provide the kvm_arch_gmem_make_private() declaration, and
+> rely on dead-code elimination to eliminate the call to non-existent code
+> when CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT=n.
+>
+> Reported-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Closes: https://lore.kernel.org/all/1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com
+> Suggested-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  arch/x86/include/asm/kvm_host.h | 3 +++
+>  include/linux/kvm_host.h        | 3 ++-
+>  virt/kvm/guest_memfd.c          | 5 ++---
+>  3 files changed, 7 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 283847619ff8..5d5a7723abb6 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1854,6 +1854,9 @@ enum kvm_intr_type {
+>  #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+>  #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
+>  #endif
+> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> +#define kvm_arch_has_gmem_convert() (!!kvm_x86_ops.gmem_make_private)
+> +#endif
+>
+>  #define kvm_arch_has_readonly_mem(kvm) (!(kvm)->arch.has_protected_state)
+>
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 03bfc92864b6..e824ba59c60c 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2599,9 +2599,10 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
+>  }
+>  #endif /* CONFIG_KVM_GUEST_MEMFD */
+>
+> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+>  int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+>  			       kvm_pfn_t nr_pages);
+> +#ifndef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> +#define kvm_arch_has_gmem_convert() false
+>  #endif
+>
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index b596486d184c..39d94938b5f6 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -773,11 +773,10 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  		folio_mark_uptodate(folio);
+>  	}
+>
+> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> -	if (kvm_gmem_is_private_mem(file_inode(file), index))
+> +	if (kvm_arch_has_gmem_convert() &&
+> +	    kvm_gmem_is_private_mem(file_inode(file), index))
+>  		r = kvm_arch_gmem_make_private(kvm, gfn, *pfn,
+>  					       (kvm_pfn_t)1 << *max_order);
+> -#endif
+>
+>  	folio_unlock(folio);
+>
+>
+> base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
+> --
 
-I did not mean that Linux is immune in the architectural sense, or that KVM
-should rely on Linux guest behavior. The corner case I had in mind is:
+I'll inserted this as the first patch for v11.
 
-1. The vCPU is run by a new host PID, so KVM resets last_steal to the new PID's
-current run_delay.
+Then, the later patch "Call arch make_shared callback for to-shared
+conversion" is now:
 
-2. The guest has not enabled steal time yet.
+	if (!to_private && kvm_arch_has_gmem_convert())
+		kvm_gmem_make_shared(inode, start, end);
 
-3. The new host task accumulates additional run_delay before the guest enables
-steal time.
-
-4. When steal time is later enabled, that pre-enable run_delay can be included
-in the first stealtime update.
-
-For the Linux guest on QEMU/KVM x86 path, this window should normally be very
-small. For example, on x86, a Linux guest enables KVM steal time immediately
-from the CPU online path.  Also, QEMU does not enter KVM_RUN for an offline
-vCPU, so the normal QEMU/KVM hotplug path leaves little opportunity to
-accumulate run_delay before steal time is enabled.
-
-Thank you very much!
-
-Dongli Zhang
+kvm_gmem_make_shared()'s definition is still guarded by #ifdef
+CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT, and there's still a stub for
+kvm_gmem_make_shared() since kvm_gmem_make_shared() is defined and used
+in the same file and the optimizing out only happens later.
