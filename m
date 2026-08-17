@@ -1,114 +1,128 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0E454788;
-	Mon, 17 Aug 2026 07:04:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339E33AEB39
+	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 07:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786950255; cv=none; b=E7yvU/PCxRWt50i5hrlS0FTcdymvCYQW9Ihaqyph6r9mbhTaQGnu83X1VDL2blFxeT5I5O2xUyQmZ0ewMgECRCfnp7lAnXRrCiZ9OSwEig7Q8mOZi0i2PlyDe/pS4dp36rIOzuWrsd2LJqlRf7Y/uZpBhpXhgNiLLBGHSlRVsRs=
+	t=1786952009; cv=none; b=a3VVf7UmujDOcidPxMeRg6ZGQx4ImGrrKX3dH/QIMgHrqMY5i9W0r2O78kMfRDUBPFPW8JDrYXzgZBRCsQJLb6hnQZI5yj7egRZOWUc09IRMETFncVxXO2FgKUEz+qMFO8Wmr+cOKm5v0m63tvxMMYSf0ttPcOYQJ9SuDdPGzDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786950255; c=relaxed/simple;
-	bh=RA5FgSZVpapWMdUBtU20qvgMdjrHlQepQpZ462xZyQk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qKLSQTTcnEOO0ajQwxU2wsI6ryvjfpd0THO7tjqHISCXy3Fihlg02BG/FvNf6vVt7E/nOvllgWTLzo9dP2VdW5U9qeDN2BR5HsBunGcUPfgs/Tj8gl0TbO3pdpzFnH91AdgxM732/VEYy0wNFKC4lx9gsMW21Cin9mSk3QANK90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HTPNko5b; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786952009; c=relaxed/simple;
+	bh=tM0pTha1/9nfcltCgNGuo/8gpha3J9wIDaj3gZsBSBo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=V93NAHP4UDrYOsSZ3t8WJ4x/QOg/AXpyQqUy5V5zgKDSygAwAwLWe+E96HLcIz9fru02FyNVe/l6shIihBwqy2wMOv38EiE4zgMZ+Jgc+RFKz16raoI6MOPQ0odeLQmPiFqEbTZsqzdojaucLQj3pitdlbLsG+TDcYjU//98PXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=kRPYtlGp; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HTPNko5b"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786950253; x=1818486253;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=RA5FgSZVpapWMdUBtU20qvgMdjrHlQepQpZ462xZyQk=;
-  b=HTPNko5bPVxKGoiV/EWHI6UJluBuiamtSJlXOG2R5wHc8N3A0O3//Gs+
-   JRBtvJ8b3wYyPBRsFWoJ9LzkPp2bViK4qvWjaIF5rdbtxYGUkt+KioqE4
-   B7BQCfnlRSNwV2UON7agDhga9tT2ez37Wrqp+hHAY+r3zL1qr7wQvu+48
-   6hatzVY299W1n3/xnuQiDA2vzS2SgjgCt8a6iSiUc7z2NXJDmu2oeZ0Fn
-   3DRY/PPoYxxW2mKZYS9ZDm38tmtJ7534FA4nhjnAAAP71HEpt1kjToy9m
-   YRHp2EO8tgLzl0GCyJ+bLZ5WQ7n+o/eWS1zpfQySDSwHUBtpM6IEsL9I4
-   Q==;
-X-CSE-ConnectionGUID: IVgF8V/cRXCxr0MKi8UuWw==
-X-CSE-MsgGUID: udm3RtujRva1S9aYL1TaBw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="98782229"
-X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
-   d="scan'208";a="98782229"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 00:04:12 -0700
-X-CSE-ConnectionGUID: Mob2L680SJCTucsB6h2a+Q==
-X-CSE-MsgGUID: fRK5ee3mR6aFCoVoh2DF7Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
-   d="scan'208";a="289654401"
-Received: from unknown (HELO [10.238.208.98]) ([10.238.208.98])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 00:04:07 -0700
-Message-ID: <0a08eab7-e093-46ef-97bc-531766cdbcf2@intel.com>
-Date: Mon, 17 Aug 2026 15:04:04 +0800
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="kRPYtlGp"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c9aea40d799so1685830a12.0
+        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 00:33:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1786952007; x=1787556807; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ctO/918wY9I8dgMN/rNhQAZPgaBP/6EBpuY/G7CkCVE=;
+        b=kRPYtlGp6tjDZO1MoOKwooRhe9o+y77qwcwF+6aR1wNLqQ9Wrehxsh5PiQMu2KWEg6
+         z8RkNRDrZf2G+/ujyyaBfuAjjMZmV2qluBkP6kbvZ+wzWpYySyeOUu1AjH6eLUC0MN+I
+         lTufIYkgF+iALfcuWL7KZXLL5vIwxqWIV1LTsXwILPlGXgZ9eC2NW3zovUWoBIoZ5K47
+         0MRo07D2gfamrBRXwynGF8xR4uWpn5T1tjVmbqlrEe7oAGnjCrYWT3uf+xT9oWoW7JEo
+         k7jL4sVHcnvoWeVSqLi5/6LkaXsZ6gntW1s1d+Sew5ovojzqqb2FN9Q/1kVJ1Ll4m6as
+         svIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786952007; x=1787556807;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=ctO/918wY9I8dgMN/rNhQAZPgaBP/6EBpuY/G7CkCVE=;
+        b=jFrZqB89NTv4usUw+IUecmgrco+AEUlV/oQcxL0Qw7Is0BEbc7rcq32TaLKoNekV18
+         zFNXTlAvaOHUYzCYyhgX5uYqnFWximSLbDSa6S6HwRlaQOBvQ1fDYD3upHu3/WKk+FKM
+         l28VTXQUxfnu+51KgVkbSqIWF5QM775bnSFZv6IeQZK5BOgNycMmdyOAfDU5QjNt0bYn
+         z4aYAYNh/hUC506dEDP0VR6UOpCNr9PkSOpyX38yrt/nglDLEsDRrJVnCpwtddvCeLi4
+         nuiiVAVWuO3eeIyp3dJGRIgwXJr0i6n2eAuSbycl7IigF8Y7z8SObo7xPIlXQ7mRFe7R
+         ggNw==
+X-Forwarded-Encrypted: i=1; AHgh+RoJT6bqMh45ZnGwkx+abdk5gv97lj4JCPS1BOULsBfmxkQh+7py0bNsRNeDoIikhSTtO2o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztV0Y3+nkShvMvPbfs1wn9Ybn+T6fEUv8ovY8RMNDvXDTbUnji
+	yrgH6nKmr58fcLhFSibXTkk8RzgZUnDEn5uEC/TqL/3REm/hDM31jVF9dzM6mEzE9qQ=
+X-Gm-Gg: AR+sD105F5yxthkFapwcNnnkXUHNEMc7kt9s59dNmoXSGKiGSX6nsH0wvjhfy5fVQN9
+	mRColOrNM/Eefi5CJwHNiUnlW9fCR6Lr+ndO9NUzkFaF2CLMEYtAIhzE4Bi0qIhHpHptPrHsk1Y
+	/hFbFTEGwJOv8GKkD0QAcUyiw9uxLADYH4WGPuBxn4pTC0gzIHafWilEkqmI77Eke+R+nJqCwV2
+	qXgxo3pH7czrur2qo+n8nQW/zM+De5nUsARskX/jmP46rYpM8uRYwdZGcbMPtvHtOblHZ2gKZB9
+	79+86xjzx8M66iGJRivxCOvIK9+d6cKxK+5yxwzFmi8dTGarBA+pXMZ7wrzVacnmt75MFBw33QN
+	4y+jUGibrW9fgeRnqAj23bx+tddb7L101jv8CnE8tQKMrC+gf6asI9rSR8OlF+bEnbwZa4MCSSl
+	9pYx1zYOa9jvI+GvAc40sMKbTlBEPpRsLFzANyWvAjd4PbwaTQqcCVHlIicvfx88tjrL4hx+/FJ
+	DbYD+Xl
+X-Received: by 2002:a05:6a21:7702:b0:3b3:d0f:7883 with SMTP id adf61e73a8af0-3cc7196eda5mr27885097637.7.1786952007506;
+        Mon, 17 Aug 2026 00:33:27 -0700 (PDT)
+Received: from sw07.internal.sifive.com ([4.53.31.132])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-326796d646bsm3575972eec.10.2026.08.17.00.33.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2026 00:33:26 -0700 (PDT)
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Date: Mon, 17 Aug 2026 00:32:59 -0700
+Subject: [PATCH] KVM: RISC-V: Clear HSTATUS.HU on hypervisor initialization
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 19/22] KVM: selftests: Finalize TD memory as part of
- kvm_arch_vm_finalize_vcpus
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Binbin Wu
- <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-19-15ad654a50db@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260722-tdx-selftests-v14-19-15ad654a50db@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260817-hstatus_hu-v1-1-28c53cdfb408@sifive.com>
+X-B4-Tracking: v=1; b=H4sIACq5gmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDC0Nz3YziksSS0uL4jFLdRMNEC4tEI/Nk8yRDJaCGgqLUtMwKsGHRsRB
+ +cWlSVmpyCcgEpdpaANvzj4duAAAA
+X-Change-ID: 20260817-hstatus_hu-a1a88a27c7b1
+To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>
+Cc: greentime.hu@sifive.com, vincent.chen@sifive.com, zong.li@sifive.com, 
+ kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Yong-Xuan Wang <yongxuan.wang@sifive.com>, 
+ Samuel Holland <samuel.holland@sifive.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786952006; l=1212;
+ i=yongxuan.wang@sifive.com; s=20260424; h=from:subject:message-id;
+ bh=tM0pTha1/9nfcltCgNGuo/8gpha3J9wIDaj3gZsBSBo=;
+ b=xzAemguTvxKYZkrL488xqh1xU5+sYfHiXmghrUUa42oEqlIaC+MMhYmzECXbY6IRHF230q1PA
+ xRvrYY3gIRDCL/W3d8Js+WjMQhGkDGoZJqmExKFef81IWvX/6NJVnCE
+X-Developer-Key: i=yongxuan.wang@sifive.com; a=ed25519;
+ pk=+8NCHB1ZJvZthQAmZspOAaqjo+/snaW8mFSiDx45HxY=
 
-On 7/23/2026 7:13 AM, Lisa Wang wrote:
-> From: Sagi Shahar <sagis@google.com>
-> 
-> Finalize TDX VM after creation to make it runnable.
+The RISC-V privileged specification does not mandate HSTATUS reset
+values, leaving the HU bit potentially set after hardware reset.
+When HU=1, hypervisor instructions (HLV/HLVX/HSV) can execute in
+U-mode to access guest memory, which may cause unintended behavior
+if not explicitly controlled.
 
-The changelog is too weak.
+Clear HSTATUS.HU during KVM initialization to ensure hypervisor
+instructions are only available in HS-mode, preventing unexpected
+guest memory access from U-mode code.
 
-> 
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-> ---
->   tools/testing/selftests/kvm/lib/x86/processor.c | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-> index 4b97a9a1bb5e..8319ae3d9fe6 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-> @@ -1489,6 +1489,12 @@ bool kvm_arch_has_default_irqchip(void)
->   	return true;
->   }
->   
-> +void kvm_arch_vm_finalize_vcpus(struct kvm_vm *vm)
-> +{
-> +	if (is_tdx_vm(vm))
-> +		tdx_vm_finalize(vm);
-> +}
-> +
->   void setup_smram(struct kvm_vm *vm, struct kvm_vcpu *vcpu, u64 smram_gpa,
->   		 const void *smi_handler, size_t handler_size)
->   {
-> 
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
+---
+ arch/riscv/kvm/main.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
+index 85e772588fad..e80a99e93d56 100644
+--- a/arch/riscv/kvm/main.c
++++ b/arch/riscv/kvm/main.c
+@@ -47,6 +47,9 @@ static void kvm_riscv_csr_init(void)
+ 	csr_write(CSR_HCOUNTEREN, 0x02);
+ 
+ 	csr_write(CSR_HVIP, 0);
++
++	/* clear HSTATUS.HU */
++	csr_clear(CSR_HSTATUS, HSTATUS_HU);
+ }
+ 
+ /* Clear hypervisor CSRs - called during CPU offline and non-retention idle entry */
+
+---
+base-commit: b5060a4aa33d7d78a8c1837ab08ef0c81ea96650
+change-id: 20260817-hstatus_hu-a1a88a27c7b1
 
