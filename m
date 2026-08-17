@@ -1,197 +1,180 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400643C276E;
-	Mon, 17 Aug 2026 08:38:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6454B3C3F44;
+	Mon, 17 Aug 2026 08:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786955941; cv=none; b=GfV7XPWckElJ4lGG2zkT8DMsr1rCasRTCpVyt4bkDthDC/RVGGY42IoWd3x5ItJWwrxA/o3EA2edFl/ryQokOXuutpAg+mgfbGrCjwgJWOEb3B+J9UmoglFVVNexw9Pi4DMpX4PlFbIcitg7qgWDWxXDOkx8ZvhOnpXo5+NNESc=
+	t=1786956145; cv=none; b=WpM3H+l/GPpUK4WY2SJkzkDo42mmzwX/KF0/KnCib32DW3YsV+bm1spIi/9vj49+XAWTzXkkFjcGxdxXe+TRiERSkgpuo7l9BmmfousGphh7bFu+O+tlt9tiFVKKgdzk7Azgw2OkWqwPgIFsS+/6uT7Uw0Q3pMeqyqlSCzh9ssM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786955941; c=relaxed/simple;
-	bh=ROBv2th78MGCFfWabBK1ufzPRFzh9sp/ZCygz4RvuEY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OlCtjWkDB/PALEiRVK1Jrws4pw6gxAEqhtxEgzD+hjubE6Kq1Z3FeFDEXbeleDXrDcaTeIyH+3KYrD8fecXfl8eumMSHAIeY1cuxKLaLNfttFb5/AYYPWgfSwHxPvysSpb1gSjgr7bppNYgskwRSNUXPAHHdSERlafj0Nw7N1ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JrS1p6Bl; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786956145; c=relaxed/simple;
+	bh=JXcv/P1P/ptgEetmIaSkVo4yzDIQhWrmKVx/als6qKU=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=msfj2+4Ikp8nlPXOU859XBBssapJkh1yz5t3M2jyVEAgBS05VXKVAI/TjlYQ73N/7C2f+po8hhbDaXlWR8kvQZAtyU+U/pCtNdsbgv8QBt6bdXS9LX84GDJshKpbHnnwV7Q+DRzC5AKjdrIRx4edCB//Sw1KXfZ07SB208y2seQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WC+M/5Aj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JrS1p6Bl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786955938; x=1818491938;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ROBv2th78MGCFfWabBK1ufzPRFzh9sp/ZCygz4RvuEY=;
-  b=JrS1p6Blp9I02lotbWU7h9IDa6WkIDndvOZCCuQckwqCw61rvn9eIU+u
-   OO4zF1wgVJfqlDHYF5986VZWq3OuNJ5ZmXYGV739oOjS/rkoxvTZPtClt
-   YiUTY35vLrmd8Qk31cFiVXCUNMSRJ+pJoPhPk/bKnSiNXe3HaMLmPsS9W
-   N9ndlo7Ute/lqyh8DQB0KQndiAjP5YnwRk196sz+NMQujdPh5BJY3SGYB
-   o4/PzdnYIKCxllOCGxHdJcOulDhwO5tJ8lRYaykY+VJVED4n1RzXFT43M
-   MvhgriFmkOS5TfCZrlfFnxQgjfQD7pv1EhVBSqTQ9Nr9xABvsB2OGTl3w
-   g==;
-X-CSE-ConnectionGUID: PlcOG5FuQXiHKE3RrizYtA==
-X-CSE-MsgGUID: KzMUfajgRBqq+o1Lu/a18w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="110209901"
-X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
-   d="scan'208";a="110209901"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 01:38:57 -0700
-X-CSE-ConnectionGUID: LxLWBrCVSTatPMboJKUI8Q==
-X-CSE-MsgGUID: 7660VKgXRfmpDn41i44a9Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
-   d="scan'208";a="266832796"
-Received: from unknown (HELO [10.238.208.98]) ([10.238.208.98])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 01:38:52 -0700
-Message-ID: <6f89fc78-0344-4a7e-bbd8-ac201b8f845a@intel.com>
-Date: Mon, 17 Aug 2026 16:38:49 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WC+M/5Aj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A311F000E9;
+	Mon, 17 Aug 2026 08:42:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786956143;
+	bh=xRXB1Ssei46fQ4K1P1EZ3r3DtcRZAu/TuSA+r9hIaZE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=WC+M/5AjjmYZbG+uxsleyKXTtnCd84cUNG2OceY5Pln18LCTgClI0thrgMTTAQi3C
+	 DoakoL1CsRQkUPb2gAPJFULvzqLQ44WLBfvzzkqbFSrBNSDHh6phNh7yHN+YXwAG7d
+	 EpcWk7UFe0R7ZufsfMwGBV+zHP3vggRt3/WijeJ1bnEfrJ59L8f4/TkDXZrQ6kd0RL
+	 3W9QGxC77SDCyiFYF3KwcGclSYY8fG/RTEqL2Fq+lO/lV/EhCGbcMQ/SxYs8Ct9EeJ
+	 GtXY4pc1+sx2VCuAeG2kQcINfGOkzHVtHiUaC4QoMD2FOm44N4QI/qohJ0+Z9+mcEy
+	 HzsOJUmH7kv0A==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wvsvF-0000000GCpR-1smP;
+	Mon, 17 Aug 2026 08:42:21 +0000
+Date: Mon, 17 Aug 2026 09:42:20 +0100
+Message-ID: <86se4dyw7n.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-kselftest@vger.kernel.org,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	oupton@kernel.org,
+	fuad.tabba@linux.dev,
+	joey.gouly@arm.com,
+	seiden@linux.ibm.com,
+	suzuki.poulose@arm.com,
+	yuzenghui@huawei.com,
+	dwmw2@infradead.org,
+	joe.jin@oracle.com
+Subject: Re: [PATCH 2/4] KVM: arm64: Reset last_steal on vCPU pid change
+In-Reply-To: <20260816053630.527528-3-dongli.zhang@oracle.com>
+References: <20260816053630.527528-1-dongli.zhang@oracle.com>
+	<20260816053630.527528-3-dongli.zhang@oracle.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 21/22] KVM: selftests: Add ucall support for TDX
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Binbin Wu
- <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-21-15ad654a50db@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260722-tdx-selftests-v14-21-15ad654a50db@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: dongli.zhang@oracle.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com, oupton@kernel.org, fuad.tabba@linux.dev, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, dwmw2@infradead.org, joe.jin@oracle.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 7/23/2026 7:13 AM, Lisa Wang wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
+On Sun, 16 Aug 2026 06:33:03 +0100,
+Dongli Zhang <dongli.zhang@oracle.com> wrote:
 > 
-> Implement TDX ucall using TDCALL-based MMIO to pass the ucall address
-> from the VM to the host.
+> The previous commit resets x86 steal time accounting when the vCPU PID is
+> changed. Do the same for arm64.
+
+Drop this statement, it really doesn't provide any information.
+
 > 
-> In standard KVM selftests, ucall uses a PIO instruction as a trigger
-> to exit to the host, which then retrieves the ucall address by reading
-> the guest's RDI register. This approach is incompatible with TDX
-> because the host cannot access guest registers.
+> KVM keeps a vCPU fd alive when userspace hot-unplugs a vCPU. If the fd is
+> later reused from a new vCPU thread, vcpu->arch.steal.last_steal still
+> reflects the old task's run_delay, while current->sched_info.run_delay
+> belongs to the new task.
 > 
-> Furthermore, PIO exits only expose 4 bytes of immediate data, which
-> is insufficient for a 8-byte ucall address. By using TDCALL-based MMIO,
-> the VM can share the full 8-byte address in a single exit without
-> refactoring the common ucall framework and other non-x86 architectures.
+> Reset vcpu->arch.steal.last_steal from kvm_arch_vcpu_run_pid_change()
+> unconditionally so the next stolen time update computes its delta against
+> the new task's run_delay.
 > 
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> Co-developed-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Co-developed-by: Lisa Wang <wyihan@google.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
+> Assisted-by: Codex:GPT-5.5
+> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
 > ---
->   tools/testing/selftests/kvm/include/x86/ucall.h |  6 -----
->   tools/testing/selftests/kvm/lib/x86/ucall.c     | 33 +++++++++++++++++++++++++
->   2 files changed, 33 insertions(+), 6 deletions(-)
+>  arch/arm64/include/asm/kvm_host.h | 1 +
+>  arch/arm64/kvm/arm.c              | 2 ++
+>  arch/arm64/kvm/pvtime.c           | 5 +++++
+>  3 files changed, 8 insertions(+)
 > 
-> diff --git a/tools/testing/selftests/kvm/include/x86/ucall.h b/tools/testing/selftests/kvm/include/x86/ucall.h
-> index 0e4950041e3e..7e54ec2c1a45 100644
-> --- a/tools/testing/selftests/kvm/include/x86/ucall.h
-> +++ b/tools/testing/selftests/kvm/include/x86/ucall.h
-> @@ -2,12 +2,6 @@
->   #ifndef SELFTEST_KVM_UCALL_H
->   #define SELFTEST_KVM_UCALL_H
->   
-> -#include "kvm_util.h"
-> -
->   #define UCALL_EXIT_REASON       KVM_EXIT_IO
-
-This seems to leave the potential issue for future since x86 now 
-supports different EXIT_REASON for UCALL.
-
-> -static inline void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
-> -{
-> -}
-> -
->   #endif
-> diff --git a/tools/testing/selftests/kvm/lib/x86/ucall.c b/tools/testing/selftests/kvm/lib/x86/ucall.c
-> index e7dd5791959b..7a954b2d0bdd 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/ucall.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/ucall.c
-> @@ -5,11 +5,35 @@
->    * Copyright (C) 2018, Red Hat, Inc.
->    */
->   #include "kvm_util.h"
-> +#include "tdx/tdx.h"
-> +#include "tdx/tdx_util.h"
->   
->   #define UCALL_PIO_PORT ((u16)0x1000)
->   
-> +/* HPET address is guaranteed to be unused for ucall MMIO */
-> +#define UCALL_MMIO_GPA 0xfed00000
+> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> index bae2c4f92ef5..4607f956e787 100644
+> --- a/arch/arm64/include/asm/kvm_host.h
+> +++ b/arch/arm64/include/asm/kvm_host.h
+> @@ -1339,6 +1339,7 @@ static inline bool kvm_arch_pmi_in_guest(struct kvm_vcpu *vcpu)
+>  long kvm_hypercall_pv_features(struct kvm_vcpu *vcpu);
+>  gpa_t kvm_init_stolen_time(struct kvm_vcpu *vcpu);
+>  void kvm_update_stolen_time(struct kvm_vcpu *vcpu);
+> +void kvm_reset_stolen_time(struct kvm_vcpu *vcpu);
+>  
+>  bool kvm_arm_pvtime_supported(void);
+>  int kvm_arm_pvtime_set_attr(struct kvm_vcpu *vcpu,
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 9a6c72a18672..0f6e63eace21 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -929,6 +929,8 @@ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
+>  	if (!kvm_arm_vcpu_is_finalized(vcpu))
+>  		return -EPERM;
+>  
+> +	kvm_reset_stolen_time(vcpu);
 > +
-> +static u8 vm_type;
-> +static gpa_t ucall_mmio_gpa;
-> +
-> +void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
+>  	if (likely(vcpu_has_run_once(vcpu)))
+>  		return 0;
+>  
+> diff --git a/arch/arm64/kvm/pvtime.c b/arch/arm64/kvm/pvtime.c
+> index 4ceabaa4c30b..000bf49cc0fd 100644
+> --- a/arch/arm64/kvm/pvtime.c
+> +++ b/arch/arm64/kvm/pvtime.c
+> @@ -32,6 +32,11 @@ void kvm_update_stolen_time(struct kvm_vcpu *vcpu)
+>  	srcu_read_unlock(&kvm->srcu, idx);
+>  }
+>  
+> +void kvm_reset_stolen_time(struct kvm_vcpu *vcpu)
 > +{
-> +	vm_type = vm->type;
-> +	sync_global_to_guest(vm, vm_type);
-
-It works and it looks simple. But we have the architectural approach to 
-test if a guest is TD guest, by checking the CPUID 0x21.
-
-Since checking CPUID 0x21 is not complex, and as a bonus it can help 
-test if TDX module behaves correctly for CPUID leaf 0x21, I think we 
-should switch to use CPUID 0x21 to check if it is TDX VM in guest code?
-
-> +	if (is_tdx_vm(vm)) {
-> +		ucall_mmio_gpa = UCALL_MMIO_GPA | vm->arch.s_bit;
-
-So the passed-in @mmio_gpa is not used. Why cannot use the mmio_gpa,
-
-   slot0->region.guest_phys_addr + slot0->region.memory_size
-
-chosen by __vm_create()?
-
-> +		sync_global_to_guest(vm, ucall_mmio_gpa);
-> +	}
+> +	vcpu->arch.steal.last_steal = current->sched_info.run_delay;
 > +}
 > +
->   void ucall_arch_do_ucall(gva_t uc)
->   {
-> +	if (vm_type == KVM_X86_TDX_VM) {
-> +		tdx_mmio_write(ucall_mmio_gpa, sizeof(gva_t), uc);
-> +		return;
-> +	}
-> +
->   	/*
->   	 * FIXME: Revert this hack (the entire commit that added it) once nVMX
->   	 * preserves L2 GPRs across a nested VM-Exit.  If a ucall from L2, e.g.
-> @@ -46,6 +70,15 @@ void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
->   {
->   	struct kvm_run *run = vcpu->run;
->   
-> +	if (vm_type == KVM_X86_TDX_VM) {
-> +		if (run->exit_reason == KVM_EXIT_MMIO &&
-> +		    run->mmio.phys_addr == UCALL_MMIO_GPA &&
-> +		    run->mmio.len == sizeof(gva_t) &&
-> +		    run->mmio.is_write)
-> +			return (void *)(*((gva_t *)run->mmio.data));
-> +		return NULL;
-> +	}
-> +
->   	if (run->exit_reason == KVM_EXIT_IO && run->io.port == UCALL_PIO_PORT) {
->   		struct kvm_regs regs;
->   
-> 
+>  long kvm_hypercall_pv_features(struct kvm_vcpu *vcpu)
+>  {
+>  	u32 feature = smccc_get_arg1(vcpu);
 
+Why isn't this common code? I really don't see the point in making
+this arch-specific code. I'd expect something like this (untested):
+
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index ace5801a592f..3fb77360af01 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -950,6 +950,8 @@ struct kvm_vcpu_arch {
+ 	pid_t pid;
+ };
+ 
++#define kvm_arch_vcpu_last_steal(v)	(v)->arch.steal.last_steal
++
+ /*
+  * Each 'flag' is composed of a comma-separated triplet:
+  *
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 45e784462ec6..117aeb49231a 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -4459,6 +4459,9 @@ static long kvm_vcpu_ioctl(struct file *filp,
+ 			if (r)
+ 				break;
+ 
++			if (IS_ENABLED(CONFIG_HAVE_PV_STEAL_CLOCK_GEN))
++				kvm_arch_vcpu_last_steal(vcpu) = current->sched_info.run_delay;
++
+ 			newpid = get_task_pid(current, PIDTYPE_PID);
+ 			write_lock(&vcpu->pid_lock);
+ 			vcpu->pid = newpid;
+
+where each architecture that implements steal time provides an
+accessor, and the core code is in charge of the adjustment.
+
+It also makes sure that we don't leave any architecture behind.
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
