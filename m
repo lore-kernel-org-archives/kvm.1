@@ -1,110 +1,105 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23BB6439F71;
-	Mon, 17 Aug 2026 14:56:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69CA25C804
+	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 15:01:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786978607; cv=none; b=BsL1ZAodAJR1M+Cg7YcOJb/YwfD30hMn6avQ3ePkEgt4h5hnko+Kj6ireLQ9HM+/AQGaLYV2UT+qQj3IdZyA/0G16BuFj2DXXwh6ADEV9M6KXqc/ddb0H8t+akzc/p9zN3gvKJXHaiczWcegqQyh140unWxzUSQJAIv/PBKMB7A=
+	t=1786978904; cv=none; b=mKLhIKcUKxv2dCEn+bbaNkv1OY+dBQBc1V8EFX6MsKK0P/nHFyh8C9uvY4i+w0PaU/wTScHMBEZqLZAsBGfoYd9Hkse1khOx9qx8bJd9Vj8VG8AnHCJIVHCYjgOBwqWfFgJDDUPma1AEYdme4Sdj6OucR3qSpmAaSfcjB98P16c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786978607; c=relaxed/simple;
-	bh=7dV1b0+NGUpOKXsz67zjTQC+6a3hvUjM7P7OhPtyxIE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BzcucLqv3lSZUH2bs3AwKs+FoS+hP2r0NTfU53Fuzup1JQWe2bsRDJs09hv91agicSrxEwlo7tbQHe2naUi8cTj/0S005JIzD+Qa5DqdYS6zgs7qMshHq2Qdxk1uGtaIj+YtiAhKkhXf5cQl6SnBh+MvAP4RHVCAEu1ToAcQblI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=q5wKL9yY; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1786978904; c=relaxed/simple;
+	bh=4YIjTjZ7aI7k4GD9TxkXUehhYodZrAGMTkj5zCQlt/Y=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ecMOQrAhIdjPIE4DKw46qCKv1uWopr0NexJlFtC9JPBw3vCXC5+GIII6UmkfpfrWxvmsbnjcUdTRnG9agMv0bDKMvtm0o4juPQySpFEl+g2xj86FnfKQbpu5qplCd1BHp77TZ3iIcuT2AyDoEenZ+bzy5j/j7kABy4mb7YKVxcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=El/J3HZ/; arc=none smtp.client-ip=209.85.215.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="q5wKL9yY"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7E4E41655;
-	Mon, 17 Aug 2026 07:56:41 -0700 (PDT)
-Received: from [10.57.6.69] (unknown [10.57.6.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4FE1C3F85F;
-	Mon, 17 Aug 2026 07:56:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786978605; bh=7dV1b0+NGUpOKXsz67zjTQC+6a3hvUjM7P7OhPtyxIE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=q5wKL9yYbuGRY/uGjrp33K0BjcVaRkndDml2ZllOx/okMsecfi5ciq2H+sGKap3oC
-	 NUkS+R6TSobgrDxcCGygOjo5lWeDdxj0chx0YrvZic/n1ZqD/avNmguzL0ZjzkSjin
-	 PlJZPTCryTIf522sTi+GLdO0M4W/LFndBPB9b6bQ=
-Message-ID: <4e0a7f4d-740f-47df-b601-1cfb0b79090e@arm.com>
-Date: Mon, 17 Aug 2026 15:56:35 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="El/J3HZ/"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb6cf425e86so4674246a12.1
+        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 08:01:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786978902; x=1787583702; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=r+lSPZatQ3pM/vR8/ZQqW9J7GM0TSAbsGGNfZFJXeYU=;
+        b=El/J3HZ/emmHW5hbxLD+/7quXxWRmMTMcd3KWplhk6SmrStf4bwtziQeiV+14L8qMF
+         CiCG/BtSu/g9paqAN4WiLwJLY6bBmKjlXAqH7L70zLfYk8FfNl0wvxgiJcLLfcVDo34B
+         MPis60r2Tsg3RiatrI80+9p0q5DleKdVLVOk7gNUn09B6R+Fm+UWumAbyp/epmXKFTJL
+         B67fMVJKtt1Db8XHAuMKhXfPnAp2iBhPzUkFUiQk3vq9YBnZNKd8byKoBJUVN/N+C9mA
+         PVcxpUevBuRlrob8gWcvxWxQACIpqYmlboMUFsTGsUVULLFBXMgfvDyd1epzntBhL9Me
+         Ii8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786978902; x=1787583702;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=r+lSPZatQ3pM/vR8/ZQqW9J7GM0TSAbsGGNfZFJXeYU=;
+        b=rVe8vmd26iaHW4g5qHHBAeO24SjE0uM+Av7Vly12LzurNVfHW03Vwj+dvJmKR9Q6Jf
+         1zH6bWXaL5EY+v4dJQGZkQrmXg8dWyvSieJlvdgT+RekyOLCdLcPR/WAgR8zRmjNyQk0
+         NhbD+w9YwafXPPj81+2gaqcBVP+Ri/VbtBOfupm2hJcy8hbGnO5rFnn2IcGzRxfoJZDM
+         coPSbPW6HMc+UYCoRy0uAuw2KiLbW8+KwXlY5LNLDVC0KnKsnmyjLw93fVpMjcG39tSK
+         nZ/tNBwvYUOqmC240x2XGlCmUaau/+XOLAGUXDZGjTL4h4SteaUvTQC+AWrJU8XHqNfp
+         xEpg==
+X-Forwarded-Encrypted: i=1; AHgh+RpusywK60R0iJ4Uo8mDKTqUCOfWdfXBWFpOht56dW+b6fXtObuFzDZzsB6QFAepEGs0r4Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+iIpt9jNRsycegH6xudod1K7OJObOicxdaqcTUP/ow5L1HKnH
+	zhR1/PQ35PyiSYtSxHkH2OHliKIOEmajxyLxqXRNSmLT4f0wT9Ev0axv/nmKG1tnrIkO3igOqOm
+	5bwhs4w==
+X-Received: from pgdu9.prod.google.com ([2002:a05:6a02:2f49:b0:cb2:563f:d136])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:700d:b0:3c4:46ca:334b
+ with SMTP id adf61e73a8af0-3cc71ca238dmr29637511637.9.1786978901823; Mon, 17
+ Aug 2026 08:01:41 -0700 (PDT)
+Date: Mon, 17 Aug 2026 08:01:41 -0700
+In-Reply-To: <901ee69d-9bd6-45fa-ae0f-0df35d80b94f@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/6] firmware: arm_rmm: Add wrappers for direct RMI calls
-To: Will Deacon <will@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20260715142739.80398-1-steven.price@arm.com>
- <20260715142739.80398-3-steven.price@arm.com>
- <anR1xZrKkrsJhrGe@willie-the-truck>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <anR1xZrKkrsJhrGe@willie-the-truck>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260814161129.2177118-1-seanjc@google.com> <20260814161129.2177118-4-seanjc@google.com>
+ <20260814161950.136041F000E9@smtp.kernel.org> <an9KM3Ye-GX7WggF@google.com> <901ee69d-9bd6-45fa-ae0f-0df35d80b94f@intel.com>
+Message-ID: <aoMiVYebMpxPwg3d@google.com>
+Subject: Re: [PATCH 3/3] KVM: VMX: Rename posted interrupt prefixes from "vmx"
+ to "vt"
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 06/08/2026 12:53, Will Deacon wrote:
-> On Wed, Jul 15, 2026 at 03:27:33PM +0100, Steven Price wrote:
->> The wrappers make the call sites easier to read and deal with the
->> boilerplate of handling the error codes from the RMM.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> Changes from v14:
->>  * Update to RMM v2.0-bet2 spec.
->>  * Move SRO related wrappers to a later patch due to dependencies.
->>  * Common wrappers are split into include/linux/arm-rmi-cmds.h.
->> Changes from v13:
->>  * Update to RMM v2.0-bet1 spec including some SRO support (there still
->>    some FIXMEs where SRO support is incomplete).
->> Changes from v12:
->>  * Update to RMM v2.0 specification
->> Changes from v8:
->>  * Switch from arm_smccc_1_2_smc() to arm_smccc_1_2_invoke() in
->>    rmi_rtt_read_entry() for consistency.
->> Changes from v7:
->>  * Minor renaming of parameters and updated comments
->> Changes from v5:
->>  * Further improve comments
->> Changes from v4:
->>  * Improve comments
->> Changes from v2:
->>  * Make output arguments optional.
->>  * Mask RIPAS value rmi_rtt_read_entry()
->>  * Drop unused rmi_rtt_get_phys()
->> ---
->>  arch/arm64/include/asm/rmi_cmds.h | 67 +++++++++++++++++++++++
+On Mon, Aug 17, 2026, Xiaoyao Li wrote:
+> On 8/15/2026 1:02 AM, Sean Christopherson wrote:
+> > On Fri, Aug 14, 2026,sashiko-bot@kernel.org wrote:
+> > > Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> > > - [Low] The function `vmx_needs_pi_wakeup()` was not renamed to `vt_needs_pi_wakeup()`.
+> > > - [Low] The shared inline API `__vmx_deliver_posted_interrupt()` was not renamed to `__vt_deliver_posted_interrupt()`.
+> > > - [Low] A comment inside `vt_can_use_vtd_pi()` references the old `vmx_pi_start_bypass()` function name.
+> > > --
+> > I also missed vmx_handle_nmi() and __vmx_handle_ept_violation().
 > 
-> This doesn't need to be in the arch code. Please work with Aneesh to put
-> this somewhere else.
+> So for TDX VMDoS series, I need to rename __vmx_handle_notify() to
+> vt_handle_notify() and extract handle_bus_lock_vmexit() from vmx.c to main.c
+> as vt_handle_bus_lock_vmexit() or just inline function in common.h?
 
-v16 moved the bulk of these to include/linux/arm-rmi-cmds.h [1] but left
-the KVM related ones in arch/arm64/include/asm/rmi_cmds.h [2].
+Yes please.  Though I think it probably makes sense to go with __vt_handle_notify()
+to capture that it's an inner helper?  E.g. that's my plan for
+__vt_handle_ept_violation().
 
-Do you want me to move the KVM related ones out of arch code also? It
-seemed sensible to me to leave it in arch code because these RMI
-functions are only used by KVM arch code.
+Regardling handle_bus_lock_vmexit(), put it in main.c.  to_vt() currently lives
+in vmx.h, which means it's impossible to inline vt_handle_bus_lock_vmexit() in
+common.h because it can't get from "struct kvm_vcpu *vcpu" to "struct vcpu_vt *vt"
+to update exit_reason.bus_lock_detected.
 
-Thanks,
-Steve
+v2 of this series will address that (I coded everything up and tested it all last
+week, just need to post it), but (a) juggling those dependencies isn't your
+responsibility and (b) we don't want to take a dependency on the cleanups for a
+fix that is destined for stable@.
 
-[1] https://lore.kernel.org/r/20260803134403.80630-3-steven.price@arm.com
-[2] https://lore.kernel.org/r/20260803134403.80630-11-steven.price@arm.com
+Then I'll do one of three things: post a new version of this series to move
+vt_handle_bus_lock_vmexit() to common.h, post a standalone patch to do the same,
+or simply leave it in main.c (it's going to require a non-inline implementation
+for at VMX since it's wired up to a function table, and it should be a rare path
+so inlining for performance reasons is a non-goal).
+
+Thanks!
