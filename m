@@ -1,138 +1,116 @@
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3FA379966
-	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 17:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95C23F54DD
+	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 18:06:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786989408; cv=none; b=ks/aAuNQzGHplfp4/0kM3FBKf7uwi70w9ceFT54cuF2ycv9dLaIWT4VjqCv2qk9iKloHHWWG0dYQ9SqTj/fWbPDK5ZKStLZnSm+dMyetahXGYT2tLNtvwCm8TqCDCzMBG61TZiqFTmL4shTcTDaW8tla93UIVWWwewapCf0lRu8=
+	t=1786989963; cv=none; b=FOK/h0PafPN1ek6KRrcOzxHaiksy+8R8sbpShHmm4T2zNDxqHrqXBsQzvBRqOgjkQRCnywVUYTjRFHJHsTk8ExTkny8XcP/3PsPUkRief/qwsZMcz2ImtML57o51KztwdWsoU5N10WUTQZ2R/9ju5nl4j2aXbcgr5pMvL29Q6A8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786989408; c=relaxed/simple;
-	bh=9JWIDMRvb6uL0k6LrrHl7ti08cD3k8wEjt9ZJwkEjxg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iASUSaLuq62bbULjtHSzMROXNQeiJTk1Kp75hxc8Oio+wSCsoaUinSwDv08cMbKQpf6zfH+zhpU0UPVfcYnwQXvSStrbnG1lcypKtZ3x6eZm1OKMjlo9uCG3XzTTMXIdakVc905h0+4aNAB2QJo9JifxerynUnvgbimu5FvcFxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZDq3okXP; arc=none smtp.client-ip=209.85.210.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786989963; c=relaxed/simple;
+	bh=FGUMDOgcOkl98gJszN7Sm/3/hHjQkI7CnxUDvMb9QvU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=QARxHYJWDAtxvp7VP/gGhIazvnHdKp36bwp/J0m8IoyTpwC43B230PruUgw5hQ7fKM13uZ7xQLVNCzQXq/67tg7IvBL44R4mkhTOhpVDglAQEFvH8bMOz2xlW3DRYY6nfvmpykjRhW0BkpBMAUsmhfABATBuuVv21udcEfDc5+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ephlr/P2; arc=none smtp.client-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZDq3okXP"
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7e9ecb1e13cso3688897a34.3
-        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 10:56:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ephlr/P2"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8484ba00601so3748514b3a.1
+        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 11:06:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786989404; x=1787594204; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8k1YxolwhVR5S1sB1XwRYtHWGpS7hH+697FP1h9LyqI=;
-        b=ZDq3okXPQY+r8zgNNn8FwMUpvlrpBWVXYnLW7IBDLdtXml5iac3Yq7ddEjkMaCFmzY
-         Oy1Ssq+8g9nXd0t3qCVxqk/Il5GTe078VJdreyXKpLPitm1LGHhcJbybLCo1yMaOBxp0
-         t+Wno63MUWYpsfzFQOfw08oCYeIzlIVoevymMzKV1WmWSl0nBDwGjSx5aQCgTbDI2Dcl
-         Bca/1UDosFjACirz47dp7zhTs1vPL1vCPl+n+kaJZNjJcwa29+lk2/WJnG3EvDampiwT
-         CCUCkhHc4uGJfm6qUC2nEmMDfvuyQ1NcAkNGMNhTKKK+aKcDg7ZMdEeK90wQh8hAPWNt
-         Ca/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786989404; x=1787594204;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1786989961; x=1787594761; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8k1YxolwhVR5S1sB1XwRYtHWGpS7hH+697FP1h9LyqI=;
-        b=WicwYyPYwBO+2dZiOTfHnotUNxJsEBhYFo6Sp1qL9YGkRj5zOklGaArg5Och2qU17Y
-         5xs3wTGSciZVWiPxG22JlALiD8OU400y6ue3cuUvw0Vvjzf9HXSYvOYIwFvn6DDba+J7
-         fIVP9eWa7nXJuzOmc2ord3Pfu7I8pLWFpaugLLvSwNGsH+C+hNjPNkNeIh9o0+on68Zy
-         FCmEGXDL1UJeBjBhayhjV66W5hLFVAnE8+qEM1rAFvswE0+pIpodHvRsOe7e1bIV+txe
-         ZD3xQ4JznfcEQStvDXjgIE4thsfYbN1wpJN6EXCj/dLPFcOYy3kk4t7kZvHYNn5vtjIg
-         IMRA==
-X-Forwarded-Encrypted: i=1; AHgh+RoLLwrlNsyWQQ5dYsZdLUqIq5UcgsSZDRYQuosK9Lp8BU/PN4J3Qysmwwi9ImdQaclCd7o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqbAUnP3eEsPjtfNG2Jt4DUCzH2zeGMPhF+vE10sLp+P7nD+Dt
-	rsyRvzCUMSP6B6Ke7puxDpGwFGX4ljWrgiqCXjRarEIAOOE2Uf30nUao
-X-Gm-Gg: AR+sD12UwvHecuIkz9LAXcl+ci6N7MA4Uop8dm1vSuztMb+eYyDyoAyL1uVJbW736V+
-	cW/p64VpA2++KtH5eBC1VTA7i2152UOtv8xRtClODbqT02+hwzs/lh/mHrS+iRqwnlVMAlqoSYy
-	+XT74A0Ad8FkMXNw9BvD9sNZUdxGR3LrXoZPFt0KTUEvf6gM24iqIuA11SY2EpxV+4+RmFr+UaD
-	tAG982uoA0+boWGyGNtMvC1vUqRnBCTr5lg3IHHhwJoSS21Mpm8oRaQ3oCOqP0O8KcaJPTW/pbj
-	gyssVKh5WR1J6igsP9Hm61wUtsFDE/QO9jLCgY85IrUykBGVUtNbmBTBLFm6iXCP30URKXu6q3K
-	WCWAE+f/4EPLiJyiNzUchX8833NmxzJuY2u13/pVmYd0uY89yRm8UTX5ttzFvDUfr1XO74DNUdf
-	MUHGlxg4T6BvSBas89XdWl/7OqZHVVwcw+KbyDvkKqH+Vnzi7aTMJDKrBFKJQSKBxGZBlr18p5G
-	g3n53B/KA==
-X-Received: by 2002:a05:6830:6809:b0:7e7:5e4:ee11 with SMTP id 46e09a7af769-7f3de809148mr27312808a34.16.1786989404542;
-        Mon, 17 Aug 2026 10:56:44 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:52::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f41c0b935bsm2004457a34.14.2026.08.17.10.56.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 10:56:43 -0700 (PDT)
-Date: Mon, 17 Aug 2026 10:56:38 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: netdev@vger.kernel.org, Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org
-Subject: Re: [PATCH net] vsock/virtio: validate packet source for connected
- sockets
-Message-ID: <aoNLVoPQssG1V6bt@devvm29614.prn0.facebook.com>
-References: <20260813121236.2328599-1-4ncienth@gmail.com>
+        bh=3wgkmOaK7dMi31fjCigxw9/SOFHhN8te1ABKHYJcTbc=;
+        b=Ephlr/P2slPGeOeBRs2MA6piBAKDVsfl/J/8xaKl0iTg/UaHpN64BCnkBTu5UZOdcn
+         4G1lSvtL6YJjmgxCN/OT7cmT1HmTzvQ271JbNX8ZccmniMlw20cjEI5Z9t854Hq+jBN8
+         stfGz9hPP+3Tg44a9v9OZHSoTqVKMaURmVmrAd1Xcqz7tmzTI5koIRxOzyyyaiucBhxS
+         FMdvfhgyjS/kGha3T4CkelPYAFJMlDgMnYJznXrzP37vVMRO94UMJMXX5CmRSmPNGw8q
+         ssb75ppdRspOaYXlWDojd7zAkKXXoiWJmbg5zRl7aH7vBZ9QhAqqG6GEi7nZE5HGgwz9
+         88rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786989961; x=1787594761;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3wgkmOaK7dMi31fjCigxw9/SOFHhN8te1ABKHYJcTbc=;
+        b=Cc/PvFN9HosLGhjC/gMtdfWTmzCfGSRha+rKTOZQ70YjTD/2/SEKkf4JJ+CFacFPnD
+         ++6f+2+prc7tmfHUoeZfXTTYqOQymQ7G6acJIF3oKE/4U3ETVDCUfxegJdazUCvEl8nA
+         wkBfqJoYs8Jffda2y/NaTTlqj6OE4AO2oot1lW5jdY+4ryUJ/v/3PgpJ1KhaXi9Ng0nt
+         tOKy9219um8xa85nbZOW2N+sUwTgSJ0/hDcNp45P2fqOI1c0VxvcGWOZBSYHSHBPQloU
+         Lgks6c+jIEmUh+jP8W2xZmls6gtFSe39n0B+AYDFBbMv7EyGzO8T/61A5vzu+4H7kWTf
+         oR+Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpqhEdylnXUjeI+3H1XfdZwADTQijv6FLFn7U64j+qKLC+ME3rB2mhZTsqrD4G754WX9DU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBFPZebmXnIgEC8ptmOmO/GLkOPWcdYXAWBGWYqT3LSOjk/Kaq
+	v/1ikhQnWoTSgiGhv8qLbVYrb8Xl6iNoBXagok6Jc8pput45oXIGbb/YRdddqTGURHDRLIHIBNP
+	m1W+eKQ==
+X-Received: from pfwz3.prod.google.com ([2002:a05:6a00:1d83:b0:84a:6b32:7768])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:14ca:b0:84e:216d:7e4e
+ with SMTP id d2e1a72fcca58-84fde14ffb3mr21192194b3a.1.1786989960782; Mon, 17
+ Aug 2026 11:06:00 -0700 (PDT)
+Date: Mon, 17 Aug 2026 11:06:00 -0700
+In-Reply-To: <1dcbf1b2-dc89-4624-b98e-d34f40558cfb@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260813121236.2328599-1-4ncienth@gmail.com>
+Mime-Version: 1.0
+References: <20260812080229.2481439-1-xiaoyao.li@intel.com>
+ <20260812080229.2481439-5-xiaoyao.li@intel.com> <868c0d3c792d789347c767031612977c31cc227f.camel@intel.com>
+ <1cf47118-2a19-44d5-ab74-b4c7ffa8890c@intel.com> <an3YFiDbjRs3PUwn@google.com>
+ <77567574-d26c-4d2c-b5ce-5da28a7178d6@intel.com> <an84cenJjf7EqhVM@google.com>
+ <1dcbf1b2-dc89-4624-b98e-d34f40558cfb@intel.com>
+Message-ID: <aoNNiAbZUbkWoZ6t@google.com>
+Subject: Re: [PATCH v3 4/4] KVM: TDX: Enable Bus Lock VM exit
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "kas@kernel.org" <kas@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"nik.borisov@suse.com" <nik.borisov@suse.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Aug 13, 2026 at 09:12:36PM +0900, Daehyeon Ko wrote:
-> virtio_transport_recv_pkt() first looks up a socket using the full source
-> and destination tuple.  If that misses, it falls back to a bound-socket
-> lookup using only the destination address.  The fallback is needed for
-> listening and connecting sockets, but it can also select an established
-> socket that remains in the bound table.
+On Sat, Aug 15, 2026, Xiaoyao Li wrote:
+> On 8/14/2026 11:46 PM, Sean Christopherson wrote:
+> > On Fri, Aug 14, 2026, Xiaoyao Li wrote:
+> > > On 8/13/2026 10:43 PM, Sean Christopherson wrote:
+> > > > On Thu, Aug 13, 2026, Xiaoyao Li wrote:
+> > > > > On 8/13/2026 6:58 AM, Edgecombe, Rick P wrote:
+> > 
+> > ...
+> > 
+> > > > The more I look at this, the more I'm against shoving garbage into vt->exit_reasons.
+> > > > With tdx_is_exit_reason_valid(), this is trivially easy to handle, *and* explicitly
+> > > > captures the logic instead of subtly rerouting KVM away from meaningful handling.
+> > > 
+> > > tdx_is_exit_reason_valid() doesn't work unless we update the vp_enter_ret to
+> > > one that isn't one of the status code with valid Exit Reason. See below.
+> > 
+> > Correct.
+> > 
+> > > About the idea, isn't the purpose of setting the Exit Reason to a synthesized
+> > > one is to avoid the undefined Exit Reason causing false-positives when it
+> > > happens to match one of the existing ones?
+> > 
+> > Yes.  The nuance is that I'm against clobbering the *full* exit reason.  I am
+> > not against setting exit_reason.basic to something like EXIT_REASON_INVALID_STATE.
 > 
-> As a result, a packet from an unrelated source can be dispatched to a
-> non-listening socket.  In TCP_SYN_SENT, a source-blind RESPONSE marks the
-> selected socket established while retaining its original remote address.
-> Subsequent RW packets can likewise be delivered through the
-> destination-only fallback.
-> 
-> This was reproduced with two capless processes under different UIDs.  The
-> attacker discovered the victim tuple through unprivileged AF_VSOCK
-> sock_diag and injected a chosen 16-byte payload into the victim established
-> loopback socket.  The legitimate peer received none of those bytes.
-> 
-> After taking the socket lock, verify that packets for non-listening sockets
-> come from the peer stored in remote_addr.  Listening sockets continue to
-> accept packets from any source.
-> 
-> Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
-> ---
->  net/vmw_vsock/virtio_transport_common.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index 8becad812..f73e0406a 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -1822,11 +1822,15 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
->  
->  	lock_sock(sk);
->  
-> -	/* Check if sk has been closed or assigned to another transport before
-> -	 * lock_sock (note: listener sockets are not assigned to any transport)
-> +	/* Check if sk has been closed, assigned to another transport, or if the
-> +	 * packet is from a different peer than the one connected to sk.  These
-> +	 * properties could have changed before lock_sock.  Listener sockets are
-> +	 * not assigned to any transport and accept packets from any peer.
->  	 */
->  	if (sock_flag(sk, SOCK_DONE) ||
-> -	    (sk->sk_state != TCP_LISTEN && vsk->transport != &t->transport)) {
-> +	    (sk->sk_state != TCP_LISTEN &&
-> +	     (vsk->transport != &t->transport ||
-> +	      !vsock_addr_equals_addr(&src, &vsk->remote_addr)))) {
+> I'm not sure why you are not OK with setting the bit[31:16] to 0 ...
 
-Does this equality work for loopback, when the CID may be
-VMADDR_CID_LOCAL and/or VMADDR_CID_HOST on host or the guest CID in
-guest?
+I'm all for that.  I'm against setting them to 1, which is what using -1u does.
 
-Best,
-Bobby
+Ah, I'm guessing my use of "clobbering" is confusing.  I was mentally viewing
+setting them to '1' as clobbering, versus setting them to '0' as "doing the right
+thing.
+
+E.g. the VM-Exit (that didn't happen) wasn't due to a failed guest consistency
+check; it certainly wasn't an SMI from VMX Root, nor was an MTF pending at the
+time of the SMI that didn't happen; the guest wasn't in enclave mode; there was
+no concident bus lock; all other bits are reserved to zero.
+
+Sorry, I should have clarified that writing the full exit reason is ok, but setting
+arbitrary bits in a way that isn't consistent with reality is not.
