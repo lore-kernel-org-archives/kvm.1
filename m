@@ -1,259 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3122B3B388F;
-	Mon, 17 Aug 2026 12:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA0D427FB9;
+	Mon, 17 Aug 2026 13:22:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786971367; cv=none; b=f+PSKOR2o3nszT7ATMjOwwn1tqTVMPQhlIQkrqOZ+waijT/1wEgGfhOtsiDvzObOpwLMz0envqc6oKjDM2c1Ey+RA/iGjLbT3nACK+Q6txfmgAXI3fKnDp+/Uq9Q6IaOV3roHJnnfLFtU2itN264puWswPScHRwtvc3NoS53C/4=
+	t=1786972972; cv=none; b=PwwJgrrjUYncquWJ9ikU+Uj20OK0yt65P07PUJDhCz/X4tncId56Nx/3q+VPDjkHdDa+K/ilYR/jHn/oKWF/udsktXw4kJg/2JGmpXOfTtZZ9v9kvorFk06hpSk1yx0SO419uG7dBXIZ2ZSpkPgcwwHESVuiiaSIHcBkHo4sn0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786971367; c=relaxed/simple;
-	bh=0YmEdDR8h8yPwui8MHwOHRVyVOQLClg/PfZwZk9/+1E=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K/HKjj4HRpsjZAd171/htV1LEo+B0CLdj/jTho04WIih/o/8pYjCsy2nDPbpjO1zWDJsuRTMVsddsZrCl5fKXEalMCVLFsnWQopwpnT2pTNVGP39QVFwtpftGyMkrp6oVEDqQH3ZOn40CYFp1YWho2x1XHMo1CY9mEHUDRfkapI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XKGMjeXU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786972972; c=relaxed/simple;
+	bh=NwkIJyp62K5Sry63b6U1TrRBI/rESheSoYCNV0kHCNs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hSVUxhZEod7ZI6eiKkLJ6lYi6LUq8gr0+UEE9TxCRlMEMcpDbiVYjXfDGSLovAg8g7CrsqKLs1lnRIeAuy9PaHwh+EpXRPSVtZwbWec7b1n6/toyreffGzOCy6lKaIi/vFw4EjDEszVIYAvpFJ5KsNhgbz/iEESrDA4/sQZboxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rdrIciDb; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XKGMjeXU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45F91F00A3A;
-	Mon, 17 Aug 2026 12:56:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786971366;
-	bh=ky3uveSGPqFh3hdLloFreAs447xB4T1sIUwJzQwy+ZY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=XKGMjeXUthd6X8HmJdoe8HkeMdmWv+F6y3DQwtNQU9v6QBdrdlVN6XUlwycmHnJRh
-	 MINeB1fyexCteUKbHG0bRD1gDjPgD16neP52Uma2MiatHE/LaIQfwEfhkoA9l/sr8B
-	 RGVpg3xRKcpXjl/e5u0Mnx+P3/5Gw47cHpNfdsmill1dv7NqunnBWP62M9Ww5bb9Kb
-	 mgE6PK8+jD7CTVYPLAZLssLpVwg8og4hKXXujhZ6eds2mowBdNOgY7HMJfTqq8HR8L
-	 niAwhS0RcVg5YW0+Rwzt0JSNH0OsN4l9eKEwRkLbmE78RNvhrKMwFWa9aa4vWe/6Rs
-	 JqIk5aIzDwdmw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wvwsl-0000000GHHS-2byO;
-	Mon, 17 Aug 2026 12:56:03 +0000
-Date: Mon, 17 Aug 2026 13:56:03 +0100
-Message-ID: <86pkzgzz18.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Like Xu <like.xu.linux@gmail.com>
-Cc: Jiaqi Yan <jiaqiyan@google.com>,
-	oupton@kernel.org,
-	sebott@redhat.com,
-	gshan@redhat.com,
-	yuzenghui@huawei.com,
-	rananta@google.com,
-	joey.gouly@arm.com,
-	suzuki.poulose@arm.com,
-	pbonzini@redhat.com,
-	shuah@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] KVM: selftests: Improve sea_to_user test
-In-Reply-To: <79ec6855-6764-407f-bf46-add1bdf36b69@gmail.com>
-References: <20260130192837.890688-1-jiaqiyan@google.com>
-	<86y0le9cvz.wl-maz@kernel.org>
-	<79ec6855-6764-407f-bf46-add1bdf36b69@gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rdrIciDb"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67HCVk1X1348197;
+	Mon, 17 Aug 2026 13:22:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=iJCB4a
+	P3cM0QdWlCYmglTLIaMbI9mMvSPOREAYvsEcQ=; b=rdrIciDbrUxmC916enMTdc
+	CZi+kVmRIk/huWvVZR7hWM1wcgwKcrGgTJ3GWgQAikIxyKTRdMUO0r1O3g5MFb9G
+	T6+tL86WncvtVxP9vcYJQ45cfz+ZYtEZBjcejgHY93rMnEYJfWY8BcNctXXlx3ZJ
+	Rav0ZYka3j9ecTYnj/W9rx3alt6y7V6XjuJePFLYJ0seOLuXNvoFXU34BOAzRfJA
+	n4rfRwhW8paq+bJnA6w7YJT8VI4rxc1Td++jKJFi0KfjNT2fvSdErYxLb2CCm1DE
+	5lzLX9tMQ/zZ3lGXDtXNAsj3YyyIH9kftW8vjkY0aDRGT3f1fyAaRlsSMupA0O+g
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2fm3jf1v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Aug 2026 13:22:46 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67HDBJCB030993;
+	Mon, 17 Aug 2026 13:22:46 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g34ng5y8a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Aug 2026 13:22:45 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67HDMg9642009074
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 17 Aug 2026 13:22:42 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3A50F2004B;
+	Mon, 17 Aug 2026 13:22:42 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E80A220040;
+	Mon, 17 Aug 2026 13:22:41 +0000 (GMT)
+Received: from [9.111.33.235] (unknown [9.111.33.235])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 17 Aug 2026 13:22:41 +0000 (GMT)
+Message-ID: <3562788b-150c-4387-a840-60d9e6b6e49d@linux.ibm.com>
+Date: Mon, 17 Aug 2026 15:22:41 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: like.xu.linux@gmail.com, jiaqiyan@google.com, oupton@kernel.org, sebott@redhat.com, gshan@redhat.com, yuzenghui@huawei.com, rananta@google.com, joey.gouly@arm.com, suzuki.poulose@arm.com, pbonzini@redhat.com, shuah@kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] KVM: s390: Improve floating IRQ injection behavior
+To: sashiko-reviews@lists.linux.dev, Janosch Frank <frankja@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>
+References: <20260817121631.159451-1-frankja@linux.ibm.com>
+ <20260817122849.9F8061F00A3A@smtp.kernel.org>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20260817122849.9F8061F00A3A@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ahNw6tuOEfvyQD1zBFTl6SWsOi71RLrN
+X-Proofpoint-ORIG-GUID: ahNw6tuOEfvyQD1zBFTl6SWsOi71RLrN
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE3MDA5OSBTYWx0ZWRfX4NkxVBWRQqYE
+ gPn+Ng4RK1D/MT/wI7QQ8Cjdww3Yxp3viw+W0AMZjwQG6RowdfR3xrTVqxXduuRRsNfA2vMO0D5
+ xZKaBoTjCCGjTDOAHRBnoV41QGIdHkQ=
+X-Authority-Analysis: v=2.4 cv=WtQb99fv c=1 sm=1 tr=0 ts=6a830b26 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=iJzyzStbehPcAwzxuyoA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE3MDA5OSBTYWx0ZWRfX2wML+iM9sy38
+ KU2mfUf+DPBjuvB78DEKIeGCLvxdDCGNbAr1MpY8G9XQYSJ8zG/mqeWFxpNsxZqejEb1chZTRZY
+ +CiUH3GZw1u0TxyymE01Ksug+Igk2dlAd3SD1bSI2jGrecqCKs/6dfpRhuvBGYMNrFQvIsfetEc
+ IDLkB3miETPqci70S6tNIJdvjSS4EJHZDXugqo25S19lj3DRayPYOOosg96eHoux9QskTKHLrTY
+ nj0CscyUfarNPRWbKPgnE1DKMLKUdGzkA7eBM9sXKHoYeoiXiWCNCK0zS+cFPDNBkUJYNFQxGqF
+ bK8UMvGd86RYtcM3BU7dHyAF1gaMHKGUhHFI+EZ2BhvKEoeDtZyTPZ3bQ+dhmB3h/KGI4lehLw1
+ H1iXg3ALd1A88BsLMDKHJ0BC47Zs0oOYZStUf1se8QTq7YvAndpUbLk8XAIFlGUG59aHcpTlyl0
+ vqnwnWIQDYQ1yUsejvg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-17_01,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0 malwarescore=0 suspectscore=0 phishscore=0
+ lowpriorityscore=0 clxscore=1015 adultscore=0 priorityscore=1501
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608170099
 
-On Mon, 17 Aug 2026 13:34:53 +0100,
-Like Xu <like.xu.linux@gmail.com> wrote:
-> 
-> On 1/31/26 8:37 PM, Marc Zyngier wrote:
-> > On Fri, 30 Jan 2026 19:28:37 +0000,
-> > Jiaqi Yan <jiaqiyan@google.com> wrote:
-> >> 
-> >> Several improvments to the test for KVM_EXIT_ARM_SEA:
-> >> 
-> >> - Refactor run_vm to catch GUEST_FAIL, instead of causing confusing
-> >>    unhandled MMIO kvm exit.
-> >> 
-> >> - Sync far_invalid to guest.
-> >> 
-> >> - Exit test with KSFT_SKIP or KSFT_FAIL when should.
-> >> 
-> >> - Add comment about VM backing memory type.
-> >> 
-> >> Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
-> >> ---
-> >>   .../testing/selftests/kvm/arm64/sea_to_user.c | 94 +++++++++++--------
-> >>   1 file changed, 53 insertions(+), 41 deletions(-)
-> > 
-> > Overall, this test is still pretty broken.
-> > 
-> > For example, on my Altra box:
-> > 
-> > maz@filthy-habits:~$ ./sea_to_user
-> > Random seed: 0x6b8b4567
-> > # Mapped 0x40000 pages: gva=0x80000000 to gpa=0xff80000000
-> > # Before EINJect: data=0xbaadcafe
-> > # EINJ_GVA=0x81234bad, einj_gpa=0xff81234bad, einj_hva=0xffff41234bad, einj_hpa=0xbad
-> > ok 1 # SKIP EINJ table not available in firmware
-> > 
-> > Well, not quite. EINJ *is* available, it is just that this test,
-> > contrary to *all* the other tests, requires some insanely high
-> > privileges. But the test is making stupid assumption.
-> > 
-> > But that's not all:
-> > 
-> > maz@filthy-habits:~$ sudo ./sea_to_user
-> > Random seed: 0x6b8b4567
-> > # Mapped 0x40000 pages: gva=0x80000000 to gpa=0xff80000000
-> > # Before EINJect: data=0xbaadcafe
-> > # EINJ_GVA=0x81234bad, einj_gpa=0xff81234bad, einj_hva=0xffff41234bad, einj_hpa=0x80041234bad
-> > # echo 0x10 > /sys/kernel/debug/apei/einj/error_type - done
-> > # echo 0x2 > /sys/kernel/debug/apei/einj/flags - done
-> > # echo 0x80041234bad > /sys/kernel/debug/apei/einj/param1 - done
-> > # echo 0xffffffffffffffff > /sys/kernel/debug/apei/einj/param2 - done
-> > # echo 0x1 > /sys/kernel/debug/apei/einj/notrigger - done
-> > sh: 1: echo: echo: I/O error
-> > Bail out! Failed to write EINJ entry: Success (0)
-> > # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-> > 
-> > Failed? Or Success? Who knows...
-> > 
-> > But frankly, the whole "embedded shell script" is disgusting. What is
-> > wrong with driving the injection from the test itself, rather than
-> > this access()+popen()? popen() itself is a liability (see the man page
-> > for system()), and should never be used for this sort of things.
-> > 
-> >> 
-> >> diff --git a/tools/testing/selftests/kvm/arm64/sea_to_user.c b/tools/testing/selftests/kvm/arm64/sea_to_user.c
-> >> index 573dd790aeb8e..4a3511fa1f940 100644
-> >> --- a/tools/testing/selftests/kvm/arm64/sea_to_user.c
-> >> +++ b/tools/testing/selftests/kvm/arm64/sea_to_user.c
-> >> @@ -12,6 +12,11 @@
-> >>    * including the notrigger feature. Otherwise the test will be skipped.
-> >>    * The under-test platform's APEI should be unable to claim SEA. Otherwise
-> >>    * the test will also be skipped.
-> >> + *
-> >> + * The VM backing memory is tied to HugeTLB 1G hugepage so far. Make sure
-> >> + * there are more than 4 1G hugepage on the system. They can be allocated
-> > 
-> > Why *more than*? Isn't that *at least* instead?
-> > 
-> >> + * at runtime by:
-> >> + *   echo 4 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
-> >>    */
-> > 
-> > Why can't you provide an adequate diagnostic instead of this stuff:
-> > 
-> > maz@filthy-habits:~$ ./sea_to_user
-> > Random seed: 0x6b8b4567
-> > ==== Test Assertion Failure ====
-> >    include/kvm_syscalls.h:58: mem != MAP_FAILED
-> >    pid=887 tid=887 errno=12 - Cannot allocate memory
-> >       1	0x0000000000405b4f: __kvm_mmap at kvm_syscalls.h:58 (discriminator 3)
-> >       2	 (inlined by) kvm_mmap at kvm_syscalls.h:65 (discriminator 3)
-> >       3	 (inlined by) vm_mem_add at kvm_util.c:1036 (discriminator 3)
-> >       4	0x0000000000402373: vm_create_with_sea_handler at sea_to_user.c:290
-> >       5	 (inlined by) main at sea_to_user.c:336
-> >       6	0x0000ffffb0dc229b: ?? ??:0
-> >       7	0x0000ffffb0dc237b: ?? ??:0
-> >       8	0x00000000004027ef: _start at ??:?
-> >    mmap() failed, rc: -1 errno: 12 (Cannot allocate memory)
-> > 
-> > What is preventing you from not requiring huge pages? And not
-> > requiring 4kB as the base page size?
-> > 
-> > Given how broken this is, I'm likely to disable this test until you
-> > fix it for real.
-> 
-> Pls help review the expect output:
-> 
-> # selftests: kvm: sea_to_user
-> # Random seed: 0x6b8b4567
-> # # Mapped 0x40000 pages: gva=0x80000000 to gpa=0xff80000000
-> # # Before EINJect: data=0xbaadcafe
-> # # EINJ_GVA=0x81234bad, einj_gpa=0xff81234bad,
-> einj_hva=0xffff41234bad, einj_hpa=0x2141234bad
-> # 1..0 # SKIP EINJ debugfs interface not available; run as root with
-> CONFIG_ACPI_APEI_EINJ and firmware EINJ support
-> ok 1 selftests: kvm: sea_to_user # SKIP
-> # 1 skipped test(s) detected.  Consider enabling relevant config
-> options to improve coverage.
-> # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:1 error:0
-> 
-> , and the diff behind:
-> 
-> diff --git a/tools/testing/selftests/kvm/arm64/sea_to_user.c
-> b/tools/testing/selftests/kvm/arm64/sea_to_user.c
-> index a23d74ed45035..7e86cbeb55291 100644
-> --- a/tools/testing/selftests/kvm/arm64/sea_to_user.c
-> +++ b/tools/testing/selftests/kvm/arm64/sea_to_user.c
-> @@ -86,25 +86,32 @@ static u64 translate_hva_to_hpa(unsigned long hva)
-> 
->  static void write_einj_entry(const char *einj_path, u64 val)
->  {
-> -	char cmd[256] = {0};
-> -	FILE *cmdfile = NULL;
-> +	char buf[32];
-> +	int fd, len, ret;
-> 
-> -	sprintf(cmd, "echo %#lx > %s", val, einj_path);
-> -	cmdfile = popen(cmd, "r");
-> +	fd = open(einj_path, O_WRONLY);
-> +	if (fd < 0)
-> +		ksft_exit_fail_perror(einj_path);
-> 
-> -	if (pclose(cmdfile) == 0)
-> -		ksft_print_msg("echo %#lx > %s - done\n", val, einj_path);
-> -	else
-> -		ksft_exit_fail_perror("Failed to write EINJ entry");
-> +	len = snprintf(buf, sizeof(buf), "%#lx\n", val);
-> +	ret = write(fd, buf, len);
-> +	if (ret != len)
-> +		ksft_exit_fail_perror(einj_path);
-> +
-> +	close(fd);
-> +	ksft_print_msg("%#lx > %s - done\n", val, einj_path);
->  }
-> 
->  static void inject_uer(u64 hpa)
->  {
-> -	if (access("/sys/firmware/acpi/tables/EINJ", R_OK) == -1)
-> -		ksft_test_result_skip("EINJ table no available in firmware");
-> -
-> +	/*
-> +	 * Reading the ACPI EINJ table requires CAP_SYS_ADMIN, so a plain
-> +	 * access() check gives a false negative for unprivileged runs. Probe
-> +	 * the debugfs EINJ interface instead: it is only present when both
-> +	 * firmware and the kernel EINJ driver support error injection.
-> +	 */
->  	if (access(EINJ_ETYPE, R_OK | W_OK) == -1)
-> -		ksft_test_result_skip("EINJ module probably not loaded?");
-> +		ksft_exit_skip("EINJ debugfs interface not available;
-> run as root with CONFIG_ACPI_APEI_EINJ and firmware EINJ support\n");
-> 
->  	write_einj_entry(EINJ_ETYPE, ERROR_TYPE_MEMORY_UER);
->  	write_einj_entry(EINJ_FLAGS, MASK_MEMORY_UER);
 
-This seems better, although I still think the access() thing is
-wrong. We should catch errno after the open() and work out what when
-wrong. Also, the dependency on debugfs is really horrible.
 
-Anyway, since this is an improvement, please post a standalone patch
-that can be reviewed/merged, and add separate patches to check for the
-huge pages.
+Am 17.08.26 um 14:28 schrieb sashiko-bot@kernel.org:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [Critical] Use-After-Free of `inti` when injecting floating interrupts.
+> - [High] Missed vCPU kick causes lost or delayed floating interrupts when all vCPUs have masks closed.
+> --
+> 
+> --- Patch [1]: [PATCH v2] KVM: s390: Improve floating IRQ injection behavior ---
+> commit e7cb031c2f46e8290e932cd848faad5eec943d11
+> Author: Janosch Frank <frankja@linux.ibm.com>
+> Subject: KVM: s390: Improve floating IRQ injection behavior
+> 
+> Floating IRQs can be handled by any VCPU that opened its masks. The
+> current design does not check if the mask is open when a floating IRQ
+> is injected via the FLIC. It will wakeup the last VCPU that went
+> sleeping hoping it's the correct one.
+> 
+>> diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
+>> index 8f24bcd1a6d36..e67cdedb5aece 100644
+>> --- a/arch/s390/kvm/interrupt.c
+>> +++ b/arch/s390/kvm/interrupt.c
+> 
+> [ ... ]
+> 
+>> @@ -1915,22 +1946,48 @@ static int __inject_io(struct kvm *kvm, struct kvm_s390_interrupt_info *inti)
+> 
+> [ ... ]
+> 
+>>   /*
+>>    * Find a destination VCPU for a floating irq and kick it.
+>>    */
+>> -static void __floating_irq_kick(struct kvm *kvm, u64 type)
+>> +static void __floating_irq_kick(struct kvm *kvm, struct kvm_s390_interrupt_info *inti)
+>>   {
+>>   	struct kvm_vcpu *dst_vcpu;
+>>   	int sigcpu, online_vcpus, nr_tries = 0;
+>> +	u64 type = READ_ONCE(inti->type);
+>> +	u64 irq_pend_mask;
+>>   
+>>   	online_vcpus = atomic_read(&kvm->online_vcpus);
+>>   	if (!online_vcpus)
+>>   		return;
+>>   
+>> +	irq_pend_mask = inti_to_irq_pend_mask(inti);
+>>   	for (sigcpu = kvm->arch.float_int.last_sleep_cpu; ; sigcpu++) {
+>>   		sigcpu %= online_vcpus;
+>>   		dst_vcpu = kvm_get_vcpu(kvm, sigcpu);
+>> -		if (!is_vcpu_stopped(dst_vcpu))
+>> +		if (!is_vcpu_stopped(dst_vcpu) &&
+>> +		    deliverable_irqs(dst_vcpu) & irq_pend_mask)
+>>   			break;
+>>   		/* avoid endless loops if all vcpus are stopped */
+>>   		if (nr_tries++ >= online_vcpus)
+>>   			return;
+> 
+> [Severity: High]
+> Does this code drop the interrupt kick entirely if all vCPUs currently
+> have their interrupt masks closed?
 
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+I think this is a corner case but still a valid finding. We can probably consider this
+slowpath and wakeup/set cpuflags for ALL cpus? maybe after doing 2 rounds instead of one?
