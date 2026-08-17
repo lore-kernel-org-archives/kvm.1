@@ -1,261 +1,255 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AD53AAF74
-	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 21:47:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787003243; cv=pass; b=VX+PgoH/N85bfnR+LcR2M+rOhh8rdePnCohRkRzbO6BLirkwvoNjs3frOC7XiDOWSoqhLNws11qMn2fNhKpvz3cL/pPIsyKramV/r5Wo7P0JYXXh52AIch5XziLnIkSYOfAJubZUPqrYs7HAfnq2XOxSzAj7VECv+NkDjsHKOec=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787003243; c=relaxed/simple;
-	bh=j6Qa8uIPND6iLrLwjaLqK1ckynXO6fLL8sTaD5Q9NIQ=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZwEjuNRPZSw4UWBn63ygcJ1h7r50Voh3J2mFpavMXk4TnaoazL5fhv6+KIhLsDI0xtSFWE2vJoAl0hSPOyM7hyehY8zan/Fjp9pTtar+kYQClU88B6OdkhZyNSjtNUgSUHM6V6IJchz5i8yrTWE0jnHKdiN2iuL5lkYb3F6QU84=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Cr04oULF; arc=pass smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179973CAE84;
+	Mon, 17 Aug 2026 21:55:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787003751; cv=none; b=sYGuo1Gknhy2yBJBryP1GN4YAip1oC0T80OYZW7qtP8EQ6Llet2wxcaPsL8BDGLSxgJz7CF0YpBW+Lqv83HClHBK2MMRaj+Gepiw752yojRh+wxoZWU+Hj9ZvJxGeszvPhccBi3EF604qoVpK/zarSc0XTQrUHq5z6zFgc4hNd8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787003751; c=relaxed/simple;
+	bh=GUwEHBAl27ffmXx5PyN/+Movh1rgLZ1wm2lDxmGZp38=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
+	 MIME-Version; b=IQPu9vBz4R2Nhgjvknbo4KuNeaDjIWhbDugSSgbWHkJLyKUF3DN8OWsGXkqBxJS8cfhLbPTELEPsHqww68KjkmD8CdcK7fmolxWHzPRIQrdg7kSeDVqSOW7trjbfSy1hjZsQEpqSKwsrhgaYJutvB4FGCPSvdjdKe1+o3/nBQTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=A/uFATxr; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Cr04oULF"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38759bcd877so4623507a91.2
-        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 14:47:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787003240; cv=none;
-        d=google.com; s=arc-20260327;
-        b=cGa5145oyl1ZNKZ5dUieDijhCtN9Bk5Y0MPqURgUkOW226LCOxa62RIcRNRCZL4WOJ
-         AWRZwAulCP4F9A4YNSDgSq9PSVPU9dvoLE6l+LUBqTz7KAwAiulJRumpyjj4L99mq75K
-         e5m0CXVVUTpg2yF6eX6QeS5ZDeGiHsTIt1EUoMWsKmiFlt2McKcMd8XzSutNaN9JjL73
-         EgM6sWezorDKTax7Wg/xmnvK4Uo0O8RcBbNaQZ/yGxOZWq/P7VttMm+aD3XXAJS+DEYB
-         7wVYPyd/BHRNsXDZ4p9P1MUCbZoM1ZjAFFITpzTwY0vT05m663TIf8xRI/aPOoBowMtq
-         ngXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=DxYBvhey30XUfJ4ax9nYh/jGztjdRvDgSMhAvB0aQsU=;
-        fh=3vkj+iExnqqFLF0gaRU1/KquixCbu4WZiQiTAz2z8L0=;
-        b=N2cgUIiywdfekdEpHuHGllir92G5sQib5Jowf4SCX4yjWNomLgN9yEbweXUD4gx+gJ
-         EEgIrEX/pFCZDIthlSl5iRnS6ASB/YNQbnXPy8E6JUORBvWDcolNSmGbkBs2fuxH+lS8
-         AetfUWh44UaT/TskEmzo7ESC3WswdX9/6rcwiFBOKhYURHbq5Xp9MUGMrPYWHKQbm9E4
-         GWJMCCY0T2iOrC/TMzf4vfrBY3EUyCDJrCPjsIOAJhbpP3unGWWNnlvAyb9GXSqHa45b
-         +GWBDIqOAmrbp31CTwvV4zkeiW5i1CXbQoNuaDaAAIm8yKu7GQVymBJr0JgxrhBZF1jv
-         UJUw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787003240; x=1787608040; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DxYBvhey30XUfJ4ax9nYh/jGztjdRvDgSMhAvB0aQsU=;
-        b=Cr04oULFAfy7blelK3JLlSkbEF8OCyB+21N3qbrSWGyWxu/INwo0tWauue5OOVUUvh
-         mrzuC+v2h5WeiEyVnxRe46tT2DY9zhxQ3ieYRDoT8pv95OrLlqrr3igIKpod7cH3jGJN
-         VdpMxW2O5or8BultgqnjORT4Y9Wwn8OdverkSdXory3lAKsjT6KDR2LRzE78W0csz43/
-         v+ANYb5ujnXb7pIP9pHBfsXKC5DFlm4vNSqXYSos7DDJY5pUppluaNvcY656yvdTG8jY
-         ndKhr10hDXdOJUpgQ+/FoTvziV+575YQCTujjK6YjDt4GBOPlTqP69gdqriLHGEbS9g5
-         u/EQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787003240; x=1787608040;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DxYBvhey30XUfJ4ax9nYh/jGztjdRvDgSMhAvB0aQsU=;
-        b=dF7yM3Hxo3WSGRGRYC5RnmwdLApDbtaQre2iEWe1WO8PuO3m0m2e6ADyGTH0PxBVJn
-         liEjcg+VpMXV91nT1Oy26n97T/SaO7aiS64hYNLPS+2mT4nRRUj/VIolrK8rBoIsy+tw
-         Z0bprxVrYLV9D178svhoyIciw4GZET4gXL6VIojVQiz2Gr2EhDlrJ1YhxqstddgHTRGw
-         RPLWR/VEldn2dsySQ+3TxpStCD5F2sHqhcIBcyCzBM+RRNZp35Dwc2sp3GU7vfmtZATu
-         UUycHNCHHYgWebqiQjqC+IHYw9e3SgfhTJ6zqnT8HKAwNG93jqD6sC5tEGDDObKAzUO/
-         Kw6A==
-X-Forwarded-Encrypted: i=1; AHgh+RoApojIbLsmoU9TGKrlIKgsg4RM0G+6PcB7B6aAV7UVUfnHo+501uYL0uZn8HVQmEBBJsI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFzdPjVOUC+Fx0YRqNiJneCjdmnfkvxhHmX+fg3GeeCYRN4hd/
-	Be/kwuYNFRUc2D+brb4yr49U1nICGq81O6NqdNdV9Gq8aXeCnfyUJGCjCbrgIQ16WDO4BGOcCCE
-	20hUXQI3ggf/dI6Mee0ggoh90JzRg65YNlyDoiICT
-X-Gm-Gg: AR+sD111yBbG5EA9V2hJDhBdT5MYiB7E3SWzntQ9N06WGfZgLaXChafwxwZqrrkaQkQ
-	a4OllbtmxGfUmz95dKyRjrn6bmYx+hvjf/RpdcOGwlEjsu10lyQvWS8Ma64KbYSP5MFl6wSk18+
-	q7sPVBLvbiShl+wdMgKdRpxMqpoHqgzpkwHacT4u1IlWy8+bVcnsVSPneg/FbqGOyQmgd4k3sKL
-	VMz2Zlisifxo8p7+FHGEdgfjNLTZKCO2ibnuSUQl9yIow1bD9RDV9gu8Vy9kZx51dy+8EWk1x3d
-	OXvnxXG48p3x2uo3NW3JhyQlmkK0JUcQRF+pqYBA0nlTunTEjrdrYsLfpL1z0gusLxA2CdSMGkI
-	YvfT7YcpW400v
-X-Received: by 2002:a17:90b:4cc1:b0:37f:be6c:f3f2 with SMTP id
- 98e67ed59e1d1-3933bd0dd0fmr33755002a91.2.1787003239624; Mon, 17 Aug 2026
- 14:47:19 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 17 Aug 2026 14:47:17 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 17 Aug 2026 14:47:17 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <aoNrFX9yLfsM7KQI@google.com>
-References: <CAEvNRgFzRj_=GVy8T4P8ehhQjYomYxkngzwtKBF0iEL0Cv6fuQ@mail.gmail.com>
- <anp1I64K0KeyQuyo@yzhao56-desk.sh.intel.com> <CAEvNRgFWcndQKJE_q+ZATFZEMYd=6uRLygozLvg7L77bPX0cEQ@mail.gmail.com>
- <anqqKH6kuwpvuwp9@yzhao56-desk.sh.intel.com> <CAEvNRgGWDY_fxbyBM-5sMdYMevMe0HzVP9kbC1cCGLE_dV=_Gw@mail.gmail.com>
- <a71d4fccdffd1f6a12332ddd18fa812542ea2118.camel@intel.com>
- <CAEvNRgHxda6XK_XqWaqqVnA7oW=Fhp_C5gF4vNcL+-HfwfXMqQ@mail.gmail.com>
- <0c80b9b0e13e3ab2cbe4f9eaf4a02ebba25a7001.camel@intel.com>
- <an5RJYTwlYeym--O@google.com> <aoKnmW9St5zCoTD3@yzhao56-desk.sh.intel.com> <aoNrFX9yLfsM7KQI@google.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="A/uFATxr"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
+	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:References;
+	bh=l/vqI+y6Fb6ycxvBl3uKmomcEE1Sal6L16wqcFA2m1A=; b=A/uFATxrCe+zwKgPjxXrnf71EV
+	jNoQzi+1ymwt4+SOE0HuscVBzVfxQ9dFaOHC12uLCxRBH3/JSWVcsaqcwDnosSXxNU9td9FvePDfz
+	JhTxCt/RxjLVy/a+vgNhiGoKgC72sF8IkEUvg5aoKBmTB6R821bHOQ9mCj11lCCbxL0y+InkxguRv
+	5H1PXVdDIVeB7QL97lIQhbhIliWfdH2UhC0megTN+y7fStCNnVm3fYGAHjUyXl9ZdqHkR6oEUaszl
+	ZMERBUhgpxRKSMQnslX35Z2tis0iEoGdKOT/nEg9FDXUq3riGCQbNXBGL70tFIVzSgaKRsner2psK
+	YC7fWv0Q==;
+Received: from [2001:8b0:10b:5:21b4:de29:7387:4faa] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1ww5Iy-0000000ArZF-2N15;
+	Mon, 17 Aug 2026 21:55:40 +0000
+Message-ID: <9a349470088e5f71a136b00dfada97fdb2528d98.camel@infradead.org>
+Subject: Re: [PATCH v4 00/10] KVM: nVMX: Improve performance for unmanaged
+ guest memory
+From: David Woodhouse <dwmw2@infradead.org>
+To: Fred Griffoul <fgriffo@amazon.co.uk>
+Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
+	pbonzini@redhat.com, vkuznets@redhat.com, shuah@kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 17 Aug 2026 22:55:28 +0100
+In-Reply-To: <20260102142429.896101-1-griffoul@gmail.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-ASzYUufqXCvN9Vyz/6kV"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 17 Aug 2026 14:47:17 -0700
-X-Gm-Features: AcwNN1VpUAMbtXtdgh721uPhtQzbHJAxofv-9Na5pJ24kSfJuEcCQlHEnwy5G0c
-Message-ID: <CAEvNRgH_=8YqKHb_OJfT583ZJ346cceRimd9YJ762Vv08uJGHQ@mail.gmail.com>
-Subject: Re: [PATCH v10 11/41] KVM: guest_memfd: Ensure pages are not in use
- before conversion
-To: Sean Christopherson <seanjc@google.com>, Yan Zhao <yan.y.zhao@intel.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, "david@kernel.org" <david@kernel.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "steven.price@arm.com" <steven.price@arm.com>, 
-	"peterx@redhat.com" <peterx@redhat.com>, "forkloop@google.com" <forkloop@google.com>, 
-	"tabba@google.com" <tabba@google.com>, 
-	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	Vishal Annapurve <vannapurve@google.com>, "willy@infradead.org" <willy@infradead.org>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "wyihan@google.com" <wyihan@google.com>, 
-	"pratyush@kernel.org" <pratyush@kernel.org>, "aik@amd.com" <aik@amd.com>, 
-	"jmattson@google.com" <jmattson@google.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "rientjes@google.com" <rientjes@google.com>, 
-	"andrew.jones@linux.dev" <andrew.jones@linux.dev>, 
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "chrisl@kernel.org" <chrisl@kernel.org>, 
-	"shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
-	"mathieu.desnoyers@efficios.com" <mathieu.desnoyers@efficios.com>, "oupton@kernel.org" <oupton@kernel.org>, 
-	"mhiramat@kernel.org" <mhiramat@kernel.org>, "baohua@kernel.org" <baohua@kernel.org>, 
-	"tarunsahu@google.com" <tarunsahu@google.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
-	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jthoughton@google.com" <jthoughton@google.com>, 
-	"yuanchu@google.com" <yuanchu@google.com>, "hpa@zytor.com" <hpa@zytor.com>, 
-	"shikemeng@huaweicloud.com" <shikemeng@huaweicloud.com>, "nphamcs@gmail.com" <nphamcs@gmail.com>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "shivankg@amd.com" <shivankg@amd.com>, 
-	"shuah@kernel.org" <shuah@kernel.org>, "youngjun.park@lge.com" <youngjun.park@lge.com>, 
-	"kasong@tencent.com" <kasong@tencent.com>, "pankaj.gupta@amd.com" <pankaj.gupta@amd.com>, 
-	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
-	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"vbabka@kernel.org" <vbabka@kernel.org>, "weixugc@google.com" <weixugc@google.com>, 
-	"michael.roth@amd.com" <michael.roth@amd.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, 
-	"mingo@redhat.com" <mingo@redhat.com>, "qperret@google.com" <qperret@google.com>, 
-	"brauner@kernel.org" <brauner@kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
-	"baoquan.he@linux.dev" <baoquan.he@linux.dev>, "corbet@lwn.net" <corbet@lwn.net>, 
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "liam@infradead.org" <liam@infradead.org>, 
-	"axelrasmussen@google.com" <axelrasmussen@google.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"qi.zheng@linux.dev" <qi.zheng@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+
+
+--=-ASzYUufqXCvN9Vyz/6kV
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Sean Christopherson <seanjc@google.com> writes:
+On Fri, 2026-01-02 at 14:24 +0000, Fred Griffoul wrote:
+> This patch series introduces performance optimizations for nested
+> VMX workloads with "unmanaged" guest memory.
 
-> On Mon, Aug 17, 2026, Yan Zhao wrote:
->> On Thu, Aug 13, 2026 at 04:20:05PM -0700, Sean Christopherson wrote:
->> > On Thu, Aug 13, 2026, Rick P Edgecombe wrote:
->> > > > > nicely so we actually just run an old branch's TDX selftests against newer
->> > > > > kernels. So the branch is a bit of a pile, and not really suitable for sharing.
->> > > > > We plan to clean it and upstream it when the path clears. So it would really
->> > > > > help to get those basic ones upstream. We remain happy to help, so please let us
->> > > > > know.
->> > > >
->> > > > I guess at this point I'm hoping y'all and Sean are okay that this
->> > > > conversions series merges, and we let this stress test failure be
->> > > > handled later. I'll be around to fix things :)
->> > > >
->> > > > I'd say the line of sight to fixing this would be when the KVM MMU only
->> > > > gets PFNs (and no pages at all) from guest_memfd.
->> > >
->> > > Hmm, I think we shouldn't upstream a uABI that we don't have line of sight to
->> > > making robust. So it would be good to settle this thread at least.
->> >
->> > This isn't uABI.  You're talking about hitting a race condition between one task
->> Hmm. Perhaps it is not a uABI issue, since users are allowed to retry. However,
->> it is hard to convince me that it makes sense to require users to retry a
->> private-to-shared conversion before a GFN has ever been mapped, given that a
->> retry is not required when the GFN is currently in use by the guest.
->>
->> > converting a page and another faulting in the same page.  An NMI, SMI, or IRQ at
->> > just the right/wrong time, especially on a preemptible kernel, could lead to the
->> > same test failures, even if KVM drops the refcount "immediately".
->> Could you elaborate on how an NMI, SMI, or IRQ at just the right/wrong time
->> could lead to the same test failures?
->
-> Ah, sorry, my bad.  I was speed reading and missed that the key to your suggested
-> "*page = NULL" change was that the reference was put _before_
-> filemap_invalidate_unlock_shared(), i.e. before dropping
-> the invalidate lock and thus before __kvm_gmem_set_attributes() will walk the
-> folios to look for outstanding references.  I was thinking that putting the
-> reference right away was just shrinking the timing window, but putting the
-> reference while still holding the invalidate lock closes the window entirely.
->
-> So, I take back what I said about this not being ABI, and about this not blocking
-> in-place conversion.  It most definitely affects ABI, and so needs to be addressed
-> before merging in-place conversion.
+I've reworked the first half of this on top of the GPC SRCU conversion=C2=
+=B9,
+with the guest-mode pinning done as Sean prescribed=C2=B2:
 
-I thought back then when David suggested that conversion can return
--EAGAIN, one of the core ABI benefits is that this leaves the door open
-for things to gradually improve. If we can improve stuff within the
-kernel, then the the kernel would just return fewer errors. This retains
-backward compatibility, since extra userspace code that handles errors
-can continue to exist, it just won't be used.
+> IMO, the least awful way to deal with this is to tag KVM_REQ_GET_NESTED_S=
+TATE_PAGES
+> with KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP, and then pass the specific=
+ request
+> that needs to be made when invalidating a vCPU-mapped gpc as part of
+> __kvm_gpc_init() (though maybe call it vcpu_gpc_init()?).
 
-> The only question is if we want to commit to
-> guaranteeing that conversion will succeed in this scenario, or if we want to take
-> the easy way out and formally document that conversion can fail with EAGAIN at any
-> time, even if userspace has never mmap()'d the memory in question.
->
+  https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Dref=
+s/heads/nvmx-gpc
 
-I don't really think there's a need to commit to this, IIUC in
-principle, ignoring that on many paths of those guest_memfd may be
-excluded, refcounts can be taken even if there are no host userspace
-mappings. For one, memory failure handling doesn't care if there are
-mappings, the refcount will be taken for a short while and could cause
-this conversion failure.
+David Woodhouse (2):
+      KVM: pfncache: Add guest-mode pinning (GUEST_USES_PFN successor)
+      KVM: x86: Post KVM_REQ_GET_NESTED_STATE_PAGES on memslot updates
 
-Here's the relevant part of the documentation added for conversions:
+Fred Griffoul (3):
+      KVM: nVMX: Implement cache for L1 MSR bitmap
+      KVM: nVMX: Use pinned pfncache for L1 APIC virtualization pages
+      KVM: selftests: Add nested VMX APIC cache invalidation test
 
-  If this ioctl returns -EAGAIN, the offset of the page with unexpected
-  refcounts will be returned in `error_offset`. This can occur if there
-  are transient refcounts on the pages, taken by other parts of the
-  kernel.
+The caller of kvm_gpc_init_for_vcpu() gives the specific KVM_REQ to
+use. Invalidation raises that KVM_REQ and forces the vCPU out of guest
+mode with a KVM_REQ_OUTSIDE_GUEST_MODE. Both kvm_gpc_invalid() and
+is_nested_state_invalid() go away, along with the entirety of your
+patch 3. The pending request *is* the thing that signals invalidity,
+and the vCPU entry path checks it after setting IN_GUEST_MODE.
 
-  Userspace is expected to figure out how to remove all known refcounts
-  on the shared pages, such as refcounts taken by get_user_pages(), and
-  try the ioctl again. A possible source of these long term refcounts is
-  if the guest_memfd memory was pinned in IOMMU page tables.
+Testing and review found (and fixed) some issues which are also present
+in your v4 series...
 
-> I'm leaning pretty strongly towards guaranteeing conversion will succeed.  We'll
-> still need to document the EAGAIN behavior, but IMO there's a massive difference
-> between conversion failing if there's a lingering reference acquired via a VMA,
-> conversion failing because a vCPU page fault raced with conversion.  E.g. being
-> able to assert success in a very curated test, as the stress test presumably does,
-> would be extremely valuable for helping detect/prevent edge case bugs.
->
-> The argument against guaranteeing success is that we might make our future lives
-> harder, e.g. if it turns out there are legitimate, hard-to-solve edge cases.  But
-> I'm ok with that risk, as it seems highly unlikely to be problematic in practice,
-> and there is real benefit to guaranteeing success.
->
+ =E2=80=A2 vmx_has_nested_events() can't refresh: it's reachable from the
+   kvm_vcpu_block() loop under set_current_state(TASK_INTERRUPTIBLE),
+   and a refresh sleeps. Claim a pending event instead and let the
+   bounce through vcpu_run do the refresh.
 
-Is there really a need to commit to anything? This is already documented
-as "can fail", and it's orthogonal to whether the memory was mapped. The
-transient nature of refcounts on pages in general makes it hard to
-guarantee, and this stretches outside of KVM. I mean, anything could
-take a refcount on a page in future and we can't be auditing the entire
-kernel for no refcounts on guest_memfd pages ever.
+ =E2=80=A2 vcpu_enter_guest() consumes KVM_REQ_GET_NESTED_STATE_PAGES *befo=
+re*
+   calling the handler. If nested_get_vmcs12_pages() then fails (even
+   the load_pdptrs() early exit) and userspace re-runs the vCPU, it
+   re-enters L2 with the stale address still latched and no request
+   pending. With no page reference held, that's use-after-free. Any
+   failure has to re-post the request.
 
->> > As for in-place conversion, this is not a blocker.
->> Sorry. I didn't intend to block in-place conversion.
->
-> LOL, what we intend and what happens aren't always the same. :-)
->
+ =E2=80=A2 Stripping KVM_REQUEST_WAIT for !may_block is racy:
+   process_mrelease() reaps while vCPUs still run. The wait is safe
+   anyway (it spins, never sleeps), so just don't strip it. (Not to
+   mention the fact that the prohibition on sleeping is bogus anyway,
+   qv=C2=B3).
 
-I don't think we're ready to guarantee conversion success when
-guest_memfd pages are not mapped to userspace without dragging this out
-way further.
+ =E2=80=A2 A memslot move under a running L2 never re-resolves the latched
+   addresses at all (true of the kvm_host_map code too), so the CPU
+   keeps writing guest-influenced vAPIC/PI state into a page the VMM
+   thinks it took back. Arguably userspace which does this gets what
+   it deserves, but posting the request from
+   kvm_arch_memslots_updated() is cheap and makes it converge the
+   same way every other stale-generation user does.
 
-I'm all for KVM not taking any references on guest_memfd, but I think
-eliminating KVM itself as a source of transient refcounts can be a
-series in itself. KVM not taking any references on guest_memfd memory is
-definitely welcome, it'll pave the way to using non-struct-page memory
-in guest_memfd.
+Your selftest is in the branch (thanks =E2=80=94 its madvise mode caught re=
+al
+issues in soak), adjusted for the tdp_map() API churn.
 
-It'll come, can we not block on this please? If we find a way to
-strengthen the guarantee, wouldn't that be an iterative improvement?
+I haven't touched the latter half of your series; didn't either Sean or
+Vitaly suggest it should be a separate series? If not, I'm suggesting
+it now :)
 
->> I encountered this issue during testing, so reported it.
->
-> Thanks for doing so!  I'd *much* rather sort these issues out *before* merging
-> code, even if it means delaying the merge by a bit.
+Kicking off some tests overnight...
+
+=C2=B9 https://lore.kernel.org/all/20260811094829.98794-1-dwmw2@infradead.o=
+rg/
+=C2=B2 https://lore.kernel.org/all/agJnqh7ACEkB-ftx@google.com/
+=C2=B3 https://lore.kernel.org/all/a247c49dd61af1df7ddc4dcb1cccbcb36b04d9d5=
+.camel@infradead.org/
+
+--=-ASzYUufqXCvN9Vyz/6kV
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+L4oScjqv8zL9T0rHreVae1MAAAAAAAA=
+
+
+--=-ASzYUufqXCvN9Vyz/6kV--
