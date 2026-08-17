@@ -1,190 +1,156 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD533C3C08
-	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 13:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786974780; cv=pass; b=iaOw7yFMRSJShhV2tYMu5aTuXI6nCfq6wu4lEgdHpu2K5CvetKjhw2hDHz8U1BMQSFoHF3IWzUCc57DyfCNVqyA2oNfd6SLUWsliog6/g+FwM9yMPhjKW9ZvbrcF4Y9ixJ9vGvpSuqx+pQ6CAODVSmH6k/Z6jqcukki4VbGwZHo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786974780; c=relaxed/simple;
-	bh=/NIweOu34CW2pFg29jrI6uvH5WNUNRSHaH/sZYONA68=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MEBOF9z0F+cKQD2CGe8e5c3Xg3pJWWCldORgtUn5fLfwJt4SB13c8DuxEd9DUpZZrHm6o42awxmS+sOxC0ZuODzjfylsUD/2iudiw88oWzMvo+aFvVmQCfbn/eIZVDdZAsqCJa+mlZp2xqYp2/1QUWnvUatpB9k+l/w/IPaKZJA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sLZSiei/; arc=pass smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BCE3E8C46
+	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 14:08:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786975695; cv=none; b=Q+v8tTyoPghc8fg5BSiE0UhMAbAlwoWWiBEJ4ty1FanAPTNB1nYeoo1E0HDseZA+nMD3EFjrBDC+HQGD3nwkT62Z+8cTzAuo/L+HaKh2xcZQ67/U+Egjjxy4nqJEtNxvnUfA7m+SDYqURcZvR6vOcoi+WVB+oVCDHssg/NKHQzs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786975695; c=relaxed/simple;
+	bh=Z++qbsFvNFaqswUiDPrL5l0cnunUo2XMhKxY3WDiNMc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qqOPh70pgQD+NzVHeOcYCe/e7e0CLvoYo+fGE8EmosKMexC+8FW3ufa8x5XGzFinBp/lTfqa5SmMcrkC49KvdVWCYwyflokg9NyHbXb4+NmVIjU3UIkk15Bh0x+DjYS49uimiQyN0v0DdBjG9aSukxQl6DwCaFn6b1QHs5LQYc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ORdAhtmY; arc=none smtp.client-ip=209.85.215.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sLZSiei/"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38dcbade417so3442862a91.1
-        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 06:52:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786974769; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Njjcl7db67iGzkMpl6D4aIDBtLPUiO36Xo6F6emj2DbJxP1Qk3W74bxtT6aVQJpUyy
-         H/XX1ScAHZjubuQBatjb4v1z0boOvp0liRTy+5qMwV96wZG6KCq5Lb5iK+1S2ilqYWmD
-         efF5F0+yl5CZe2EghOp5HpHNCY1Rp3Xh14R7zu5SBdlq2hNL/5gKy9bEgz+w7o5HntNF
-         zdZzRm8uNCkSnhxD/lTUTLgaW3YtSp/52inriUFLAAebWAVebGYG51dfn0rUyvioXIsV
-         9K6+0y6J1tmQu+S3pa/u/t37X24DR3zTLNSOgu9jpdAN6uJSWsSTXGtW7s0+xZuR27+m
-         6Aow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=IX1KvI43fNPQ1XsnxDVHr/UZAXUksiAOakXpX5TJKNw=;
-        fh=9rKEZ6HOW8pzM4ZVRdQ0EeodmMxHmj3SMC2Vf+D+b08=;
-        b=S/kjD2mNNlmCtH+g0DkQiJHJ6TohmoJjels42kglndLLla+BPv987nnpKVpom06zav
-         JI62dFwGWRX383yrPNCqJeh1bVKi/I5z0T91CJ94iTjDEf/R+ha+GdqVo169dnHEJcOT
-         0yuRAexQb+j6KVVS6j+CYDxwuIIjODUrT2NSPVfwntlqK7Y9UVO0RucgtZQEJmu45j0Q
-         HOmg4yGtchhp5Pd/oUYtLmLsYFx7IhNBuSV1Q8L9HdVrFmZjWl7xQzLnSQ51nJbjpi6P
-         aOvAXFKsWe+B2ZHIcRwaDjDbNPTOOFd7oNIb3OKRJxxyIyWQTWZGyxJbBd/GYggnXDIr
-         dO5A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ORdAhtmY"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cbedfa3898aso3253390a12.3
+        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 07:08:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786974769; x=1787579569; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1786975693; x=1787580493; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=IX1KvI43fNPQ1XsnxDVHr/UZAXUksiAOakXpX5TJKNw=;
-        b=sLZSiei/bJW+t/XpI9PA4AEglb9dDudmjPJCeHSZKuu9Pl8w6khVwpc5u7tIGik3Nc
-         i8yDjdneyHWnqIe2ck5NRkkBS+4oqvL60S+WnHvJjrL4RIPAlKjQYQ20b/sJxdFmBKL7
-         JY9WPe2jLPqUQ7/aq7WZKPQP82D5eh2qechllK+aIePPStGulPHt/hIxl3mfOay7p5Si
-         vPBawvz5C1U2o29hY5d24ylaI9/7Q5xA7CZ+t+RinaAjjHATDm957qPMcyMyus880imb
-         ZbOrY/G/mhGv/1BsF/E/zXKo+Gte7rrD2j8v7KtsxMwOD+1/DDamnDgvvVQS0KW3jbDK
-         jbjA==
+        bh=K+H/tJA5lC7k+sRi7jSoRnwTUnMixNT0suJnv/pAfq4=;
+        b=ORdAhtmYXipveW2Wq7ImBMOKczqKUT8Zf54NTcJ6ItDNklv+kxn7gHyh8QG8bN1wIa
+         1dlfSQ/f2vNhhg+irOPKgavI0iUGPCzwphAgVVk66DxRW4d/3ES/+H97x1MgbzVWUhsJ
+         lnayxiwgYe8+5okMXvV+J3W1eLvPcLjyjo1LSk0ymHqVNyISGOurWyTNv3CFQ8vxW6lt
+         klWCND4OxI9T8um+GKvREcmG5fdBBsuHGxG9DB6Cbkq3aLYuqxn91dX0qbtqZoRuIZCa
+         ksSfT5pbO6Me658txqCAprJcjNAmedX07633yRXJ6NH9+L2kCLtdQfzv7EP/L8FTPl9N
+         gE6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786974769; x=1787579569;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1786975693; x=1787580493;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=IX1KvI43fNPQ1XsnxDVHr/UZAXUksiAOakXpX5TJKNw=;
-        b=psYIsZJc3DMFAAnYxeQhEKXCbOHY6Rl4BHGIDgCO0Kt7RR0OY1MjY1h+m7BvJLK5ko
-         HKKBBT4RV7T1eMTufIsTu3LWlmnE04i+lEbkWhD2jbsgB3375BBey4qbDa7j18Hmd6cw
-         ualSMKc/u4PHeMpnRhDqfUZ9OWprtc0KNCFChV3ClspmXrAZ/5cDOiyp5WQ34nu9pAMC
-         smmQFj8nZ5uzWYsrRZGKUfM0WXY6RuDMj8nM4Zj58oeuPNKwg92Vh+JgOVSVgGA8z/KQ
-         +B+SyygjZoUAeOdltJNXgeVlD7ZZYk4K39onDG19v9Hscr0ifX7BZYkX0sfIBy60+/4f
-         D3Eg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq6ShiOxSM38DAdf7QFSb/MJ2t7PVPMsecI3psHv6ZMJisoH4mGjLpmXUIey7UZ5SPf7ng=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4pcRwbCUBrep/j/49qiuNt8Gkam1fGhrVPEqHLDNsO94u+fgU
-	wRSdI94Fk5Rtrjle2YZujENjzETiY4y7mZwV8rMBHoXmtSygkP8JMmgU+4dxF9RGYbewweuXlWQ
-	JWBocM3qOo6jbvBJMw92370rtyoySROF0+fAiEMiT
-X-Gm-Gg: AR+sD13VYhZAkfygTu88luez+P5uEC4B0FKZO/3aOwMBC9Z08VzJ9uSwfqpCWoJbO0R
-	ya79c3d2tivPfi5+pU3xvWTeLBahKVyI7QXuH9Vkc7bw+dz/c1+EwUKZzK9ac/ZHgaIVex+aHB5
-	Uvk0TFAi3dDuCq8azE4jKiGKNrSVWJa3cTxTxbB0uyfUIWxOkLdk7c5hIkF7bkfaiIFRNy2FuX8
-	LvhYh1XhRbhwHfSkA0H32VLWP/woORscHeQDSEZx+hLQA26WDu1oUOKKpn5rPgzCXrkdb3rMWLm
-	H3xJ9YI/Muq2DL5VrHCMSpCfLuLVjzvVcwA43zXRq7OTeLHQ8VQErNadhzGiQ+GZK2ubKRI4+f8
-	=
-X-Received: by 2002:a17:90b:274e:b0:38d:dfd1:7c1 with SMTP id
- 98e67ed59e1d1-3955a3dd549mr974362a91.2.1786974768174; Mon, 17 Aug 2026
- 06:52:48 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 17 Aug 2026 06:52:47 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 17 Aug 2026 06:52:47 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <befe73e1-3287-440e-90de-6c62f6c19d47@intel.com>
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-18-15ad654a50db@google.com> <befe73e1-3287-440e-90de-6c62f6c19d47@intel.com>
+        bh=K+H/tJA5lC7k+sRi7jSoRnwTUnMixNT0suJnv/pAfq4=;
+        b=JrXi7svPqH46y7oCGp6qA3p6I8Sa+aIhD3xmSda/ghYHdzqJDJ6wIPdXyW4WVMXILE
+         dwOpbxqOh5kRg0EyzFEAKgvP9ZEQylWIOvZibQ2SXmPTtGUBeQlXak7Col9zOonvdblh
+         oXR6Syi2+uyUX7g1wseFJfCaUDAnMPO0pvJMIMa89OEBrjOAesQmVz5WJ4Ftshul9ifG
+         rqSU3gxotczcnV5Q3whF0lrTiFEnrY8X+mx0R0isQwpFNQCYPGqkwU30qEF/RyQS6dJQ
+         exu0eFGUnuUqxrObxu9z7ZVEBkyUZitVeeUO1U/2xgOtCc98FnHbGxIWkEeys212lLxI
+         9jgw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro8DN+nRQfvaRLgClFo7MImFwHNupQVtwwgsP7/SWB0VAUl4iidrZqF4rb2vg8+E7r268E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHIaaPwdvJqfQ43ynKs9et0SfWHraSoz8slY8pwsA1hCH+Zmfq
+	AIiNVZzzb7Kbcf4tqxyWvZSFJBrQtHoz1Ue+x/2cWddkTYVpSOCADx+e6GBT9y8iacTfcRTQk1W
+	7/AjKkg==
+X-Received: from pgcz4.prod.google.com ([2002:a63:7e04:0:b0:c92:29d5:1f29])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:12d2:b0:3c3:9746:1fcb
+ with SMTP id adf61e73a8af0-3cc71dc524bmr27787783637.35.1786975692489; Mon, 17
+ Aug 2026 07:08:12 -0700 (PDT)
+Date: Mon, 17 Aug 2026 07:08:11 -0700
+In-Reply-To: <ef3b56bf-8df0-4a40-82c7-bd2d65eec71e@yandex-team.ru>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Mon, 17 Aug 2026 06:52:47 -0700
-X-Gm-Features: AcwNN1UHGhzK4sYy5HwqSRuK05tzBOG6iD052SVLEabdQ5BbvTOapBvBVGicZOU
-Message-ID: <CAEvNRgH00s3NWUH8EGUZq3WWweboBcUaTZs_0Cye5D=3o0OALQ@mail.gmail.com>
-Subject: Re: [PATCH v14 18/22] KVM: selftests: Add helpers to init TDX memory
- and finalize VM
-To: Xiaoyao Li <xiaoyao.li@intel.com>, Lisa Wang <wyihan@google.com>, 
-	Andrew Jones <ajones@ventanamicro.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Chao Gao <chao.gao@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, 
-	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>, 
-	Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20260806233609.212337-1-seanjc@google.com> <20260806233609.212337-22-seanjc@google.com>
+ <ef3b56bf-8df0-4a40-82c7-bd2d65eec71e@yandex-team.ru>
+Message-ID: <aoMVy4VB1sq4T-ys@google.com>
+Subject: Re: [PATCH v6 21/51] x86/kvm: Obtain TSC frequency from PV CPUID if present
+From: Sean Christopherson <seanjc@google.com>
+To: Maksim Davydov <davydov-max@yandex-team.ru>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
+	Jan Kiszka <jan.kiszka@siemens.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	John Stultz <jstultz@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Miroslav Lichvar <mlichvar@redhat.com>, x86@kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, Michael Kelley <mhklinux@outlook.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, 
+	David Woodhouse <dwmw@amazon.co.uk>, David Woodhouse <dwmw2@infradead.org>, 
+	Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="us-ascii"
 
-Xiaoyao Li <xiaoyao.li@intel.com> writes:
+On Mon, Aug 17, 2026, Maksim Davydov wrote:
+> On 8/7/26 02:35, Sean Christopherson wrote:
+> > diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
+> > index 29ca37e9a3bc..f55d0305d1f3 100644
+> > --- a/arch/x86/kernel/kvmclock.c
+> > +++ b/arch/x86/kernel/kvmclock.c
+> > @@ -342,8 +342,10 @@ void __init kvmclock_init(void)
+> >  	flags = pvclock_read_flags(&hv_clock_boot[0].pvti);
+> >  	kvm_sched_clock_init(flags & PVCLOCK_TSC_STABLE_BIT);
+> >  
+> > -	x86_init.hyper.get_tsc_khz = kvmclock_get_tsc_khz;
+> > -	x86_init.hyper.get_cpu_khz = kvmclock_get_tsc_khz;
+> > +	if (!x86_init.hyper.get_tsc_khz)
+> > +		x86_init.hyper.get_tsc_khz = kvmclock_get_tsc_khz;
+> > +	if (!x86_init.hyper.get_cpu_khz)
+> > +		x86_init.hyper.get_cpu_khz = kvmclock_get_tsc_khz;
+> >  	x86_platform.get_wallclock = kvm_get_wallclock;
+> >  	x86_platform.set_wallclock = kvm_set_wallclock;
+> >  #ifdef CONFIG_X86_LOCAL_APIC
+> 
+> 
+> I cannot test this right now as I lack two servers with different CPU
+> base frequencies, but it seems that this patch might break something in
+> guests:
+> After migrating a VM (QEMU + KVM) from a host with one base frequency to
+> another host with a different base frequency, the value in CPUID leaf
+> 0x40000010 EAX changes and becomes the same as the destination host base
+> frequency instead of remaining the source base frequency.
 
->
-> [...snip...]
->
->> +static void tdx_load_private_memory(struct kvm_vm *vm)
->> +{
->> +	struct userspace_mem_region *region;
->> +	int ctr;
->> +
->> +	hash_for_each(vm->regions.slot_hash, ctr, region, slot_node) {
->> +		const struct sparsebit *protected_pages = region->protected_phy_pages;
->> +		const gpa_t gpa_base = region->region.guest_phys_addr;
->> +		const u64 hva_base = region->region.userspace_addr;
->> +		const sparsebit_idx_t lowest_page_in_region = gpa_base >> vm->page_shift;
->> +		void *source_pages = NULL;
->> +		sparsebit_idx_t i, j;
->> +
->> +		if (!sparsebit_any_set(protected_pages))
->
-> sparebit_any_set() doens't check if the input is NULL. So we need to
-> check it here.
->
->> +			continue;
->> +
->> +		TEST_ASSERT(region->region.guest_memfd != -1,
->> +			    "TD private memory must be backed by guest_memfd");
->> +
->> +		sparsebit_for_each_set_range(protected_pages, i, j) {
->> +			const u64 size_to_load = (j - i + 1) * vm->page_size;
->> +			const u64 offset =
->> +				(i - lowest_page_in_region) * vm->page_size;
->> +			const u64 hva = hva_base + offset;
->> +			const u64 gpa = gpa_base + offset;
->> +
->> +			if (!kvm_has_gmem_attributes)
->> +				source_pages = (void *)hva;
->> +
->
->> +			vm_mem_set_private(vm, gpa, size_to_load);
->
-> So vm_mem_set_private() has to be called at this late stage when run
-> with in-place gmem. But for non in-place gmem, we can actually call
-> vm_mem_set_private() in __vm_phy_pages_alloc().
->
-> Calling vm_mem_set_private() here instead of in __vm_phy_pages_alloc()
-> looks like a trick to me.
+That's a bug in whatever is orchestrating the migration, and/or QEMU if QEMU is
+handing the upper layers a loaded footgun.
 
-I thought this is fine because __vm_phy_pages_alloc() seems to be a
-rather low-level function, where the responsibility of the function is
-just to allocate (for find some physical pages). Calling
-vm_mem_set_private() in there seems to be doing too much.
+> The main reason for this behaviour is that setting the TSC frequency via
+> ioctl(KVM_SET_TSC_KHZ) doesn't change the value in CPUID leaf 0x40000010
+> EAX and these two entities are still not connected.
 
-> That is, we cannot set the page as private
-> when allocating a guest physical page as protected because if doing so,
-> we cannot write the initial content to it.
->
+And they never will be.  It's userspace's responsibility to fill the correct
+values for 0x40000010.
 
-I think calling it here isn't a trick, it's a good way to reuse all the
-existing code that builds up the guest image in place. In-place
-conversion allows you to set stuff up in shared memory and then convert
-everything when you're done and also populate the memory.
+But AFAICT, QEMU does the right thing.  env->tsc_khz is used for both the CPUID
+leaf and for KVM_SET_TSC_KHZ.
 
-> This is the topic about how to implement the infras for in-place gmem,
-> not the issue of this series. Let me go read the selftest patches of
-> gmem in-place series and we can discuss there.
->
->> +			tdx_init_mem_region(vm, source_pages, gpa, size_to_load);
->> +		}
->> +	}
->> +}
->> +
->> +void tdx_vm_finalize(struct kvm_vm *vm)
->> +{
->> +	tdx_load_private_memory(vm);
->> +	tdx_vm_ioctl(vm, KVM_TDX_FINALIZE_VM, 0, NULL);
->> +}
->>
+kvm_arch_init_vcpu():
+
+        c = &cpuid_data.entries[cpuid_i++];
+        c->function = KVM_CPUID_SIGNATURE | 0x10;
+        c->eax = env->tsc_khz;
+        c->ebx = env->apic_bus_freq / 1000; /* Hz to KHz */
+        c->ecx = c->edx = 0;
+
+kvm_arch_set_tsc_khz():
+
+    r = set_ioctl ?
+        kvm_vcpu_ioctl(cs, KVM_SET_TSC_KHZ, env->tsc_khz) :
+        -ENOTSUP;
+
+> I saw this behaviour with QEMU 7, but I've checked the code of the
+> latest version and it seems that the described behaviour still exists.
+> So, in that case, it's possible that with these changes a VM will use
+> the wrong TSC frequency from CPUID leaf 0x40000010 EAX if it's migrated
+> and then rebooted.
+> 
+> Putting it all together, after the previous patch ("KVM: x86: Officially
+> define CPUID 0x40000010 as PV Timing Info (TSC and Bus)") a new way to
+> show the guest that CPUID leaf 0x40000010 is valid should be implemented
+> and only then this leaf can be used to get the TSC frequency.
+
+No, there are already non-Linux kernels that consume 0x40000010, e.g. FreeBSD.
+In my very strong opinion, if this problematic for a deployment, then that
+deployment needs to urgently fix their broken setup.
