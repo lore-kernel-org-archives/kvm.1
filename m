@@ -1,90 +1,110 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8873B3911DC
-	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 14:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23BB6439F71;
+	Mon, 17 Aug 2026 14:56:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786977621; cv=none; b=rsLR9Z64VolNZsm0m5KEi3Eypef1dHx8E0/MMGJbBt+O9VYugfjFQi0iFKvl63cTLWPrGjzkTduw5HrGj8FL2spU0vzYzVEgDI3fn/fMWJY7cl7ZR2n1SrQJ+F/MVTu9L1IhziwOKzBRm6jD+aIFnf8r7AOF0AxtzmlPeJ/qBao=
+	t=1786978607; cv=none; b=BsL1ZAodAJR1M+Cg7YcOJb/YwfD30hMn6avQ3ePkEgt4h5hnko+Kj6ireLQ9HM+/AQGaLYV2UT+qQj3IdZyA/0G16BuFj2DXXwh6ADEV9M6KXqc/ddb0H8t+akzc/p9zN3gvKJXHaiczWcegqQyh140unWxzUSQJAIv/PBKMB7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786977621; c=relaxed/simple;
-	bh=BKbAteaIvoUnCSXoPLUI9QcirR61Y1LXiKKwgIeZhGo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WEKtwwYgua/XqFTxpI0dyAK43vCT/Xn+kPc/OmyiHtTlnB6b/mg4i0lD+aseUItXNcMJsMSGLcUvAcZBAfFtPAmiErFeaPrMHV7tNb23Vimfc2dMxDzlqiA/P7Lm9j7F51jbHcsg2eCOVN6/W/AMXnAKRt8WYq+AQ9bBMjsKI9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eeaFQp2f; arc=none smtp.client-ip=209.85.215.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786978607; c=relaxed/simple;
+	bh=7dV1b0+NGUpOKXsz67zjTQC+6a3hvUjM7P7OhPtyxIE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BzcucLqv3lSZUH2bs3AwKs+FoS+hP2r0NTfU53Fuzup1JQWe2bsRDJs09hv91agicSrxEwlo7tbQHe2naUi8cTj/0S005JIzD+Qa5DqdYS6zgs7qMshHq2Qdxk1uGtaIj+YtiAhKkhXf5cQl6SnBh+MvAP4RHVCAEu1ToAcQblI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=q5wKL9yY; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eeaFQp2f"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cbedc1899f7so2117947a12.2
-        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 07:40:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786977620; x=1787582420; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9IH0lo1bFdHzW2syXivjvclsZvDFjSreF20fjNdSZC4=;
-        b=eeaFQp2fvSKr/oL30f62FC5g9471K3fBmkdv3aRsnexg3BZsnJZ1TqcyI3T7K2bYxE
-         966h8zxHeCqdAD4gF4nXxoeTJ2AE33GWqy/9DLft+S3Nc6fDLHODrlQReNhWFW2wG7k9
-         HDJ31CIm07ZILgi8d1rrLYT57g0uaup3PHG53CAoK4vRUlm1gBlFzNURAE7aGHL6QELe
-         AFOzM26fk+OSS15uQUlKE16jUKaEJW85qCxhIvjB6YsPk+gLpNeAhKTbmE8iEwxg1X1b
-         5G4pTGHeTgEBVOwMcOa0wQg5qJ0rNyoOlJTuDrAAzCYAW+1Px00dfTF1odCkOCNn0+xR
-         lwuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786977620; x=1787582420;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9IH0lo1bFdHzW2syXivjvclsZvDFjSreF20fjNdSZC4=;
-        b=p/VcmHKM1PZ0HWaISrthWrHGiZRROCRkkNHw4i388T/mafdyBfabICtkQjEnKXz6Zh
-         xZJGdnbqEoTCHje8Dp13CSZFPMnz0lcx+bcPXC01fxZ3NfB9FPQEt4dfeNMhqFUB7MNO
-         F0QJ37aukCQ9iOwXqqrbZq/5scxlIKcr/nj7g9YDGuIlAGc7XtFGXc+nwfCX5yLii76j
-         xW61NJPGTENqnGA4PISJKay5rPfcMBFttn+VJttB2UCIP2bXecUksc2vFs2BXW0yOgOK
-         mKmTdklB1kFxbIN5pPsCcEsx7ufA1nh2toHnvlM2cNcOJhrJe5rH2Y2LQgR5AmmboxbG
-         fivA==
-X-Forwarded-Encrypted: i=1; AHgh+RpW1fALyE+7wFs8OkUNEx7Gy0n+NRNBaNupjJ78g/mG9VDklTYidv2LWR1he/iVUc6r6Es=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGarcOfs0N15ilF1yDH0eUodngW9RLrc7jtLOnNWigxfe65MOl
-	/P8+NPOkyMkXMWTqUPa8poHG+7QXpNScB2nDs35foVrXUZ5c4+ZbqDWp1lEbf0B/St9jBsa0SPP
-	6Dq2PKA==
-X-Received: from plri4.prod.google.com ([2002:a17:903:32c4:b0:2bc:838b:f23e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:da84:b0:2c9:b8b7:5d27
- with SMTP id d9443c01a7336-2d3b0d78697mr246855035ad.1.1786977619599; Mon, 17
- Aug 2026 07:40:19 -0700 (PDT)
-Date: Mon, 17 Aug 2026 07:40:18 -0700
-In-Reply-To: <d28ebb09666f7188d0390fb7f877c5584991ef3c.camel@infradead.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="q5wKL9yY"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7E4E41655;
+	Mon, 17 Aug 2026 07:56:41 -0700 (PDT)
+Received: from [10.57.6.69] (unknown [10.57.6.69])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4FE1C3F85F;
+	Mon, 17 Aug 2026 07:56:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786978605; bh=7dV1b0+NGUpOKXsz67zjTQC+6a3hvUjM7P7OhPtyxIE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=q5wKL9yYbuGRY/uGjrp33K0BjcVaRkndDml2ZllOx/okMsecfi5ciq2H+sGKap3oC
+	 NUkS+R6TSobgrDxcCGygOjo5lWeDdxj0chx0YrvZic/n1ZqD/avNmguzL0ZjzkSjin
+	 PlJZPTCryTIf522sTi+GLdO0M4W/LFndBPB9b6bQ=
+Message-ID: <4e0a7f4d-740f-47df-b601-1cfb0b79090e@arm.com>
+Date: Mon, 17 Aug 2026 15:56:35 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260812213206.1564354-1-seanjc@google.com> <2c501584d34eea17016d39c9a5f78ca3d60861b4.camel@infradead.org>
- <CABgObfanoHLfdfNshuLCHkWgtsP5Km9G5WsdwfGBcLsJ_LKD8A@mail.gmail.com> <d28ebb09666f7188d0390fb7f877c5584991ef3c.camel@infradead.org>
-Message-ID: <aoMdUlCCvYqdw91B@google.com>
-Subject: Re: [GIT PULL] KVM: x86 pull requests for 7.3
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm <kvm@vger.kernel.org>, 
-	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] firmware: arm_rmm: Add wrappers for direct RMI calls
+To: Will Deacon <will@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260715142739.80398-1-steven.price@arm.com>
+ <20260715142739.80398-3-steven.price@arm.com>
+ <anR1xZrKkrsJhrGe@willie-the-truck>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <anR1xZrKkrsJhrGe@willie-the-truck>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Aug 15, 2026, David Woodhouse wrote:
-> On Sat, 2026-08-15 at 09:55 +0200, Paolo Bonzini wrote:
-> > Il ven 14 ago 2026, 21:25 David Woodhouse <dwmw2@infradead.org> ha scritto:
-> > > 
-> > > This was intended as the safe stable bugfix part, split out from all
-> > > the RCU and rwlock RT fun that can come later:
-> > > 
-> > > https://lore.kernel.org/all/20260811094829.98794-1-dwmw2@infradead.org/
-> > 
-> > Ok, I will take a look.
+On 06/08/2026 12:53, Will Deacon wrote:
+> On Wed, Jul 15, 2026 at 03:27:33PM +0100, Steven Price wrote:
+>> The wrappers make the call sites easier to read and deal with the
+>> boilerplate of handling the error codes from the RMM.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> Changes from v14:
+>>  * Update to RMM v2.0-bet2 spec.
+>>  * Move SRO related wrappers to a later patch due to dependencies.
+>>  * Common wrappers are split into include/linux/arm-rmi-cmds.h.
+>> Changes from v13:
+>>  * Update to RMM v2.0-bet1 spec including some SRO support (there still
+>>    some FIXMEs where SRO support is incomplete).
+>> Changes from v12:
+>>  * Update to RMM v2.0 specification
+>> Changes from v8:
+>>  * Switch from arm_smccc_1_2_smc() to arm_smccc_1_2_invoke() in
+>>    rmi_rtt_read_entry() for consistency.
+>> Changes from v7:
+>>  * Minor renaming of parameters and updated comments
+>> Changes from v5:
+>>  * Further improve comments
+>> Changes from v4:
+>>  * Improve comments
+>> Changes from v2:
+>>  * Make output arguments optional.
+>>  * Mask RIPAS value rmi_rtt_read_entry()
+>>  * Drop unused rmi_rtt_get_phys()
+>> ---
+>>  arch/arm64/include/asm/rmi_cmds.h | 67 +++++++++++++++++++++++
 > 
-> Thanks. Although that nudge was directed more at Sean than you.
-> 
-> I wouldn't necessarily want it to go forward *without* Sean's ack, but
-> those commits were deliberately split out as the ones I genuinely
-> believe to be simple uncontroversial fixes, with the fun stuff held
-> back for later. A couple of these ones are even actually Sean's.
+> This doesn't need to be in the arch code. Please work with Aneesh to put
+> this somewhere else.
 
-Those changes are very much on my radar, the latest version simply came in too
-late for 7.3.
+v16 moved the bulk of these to include/linux/arm-rmi-cmds.h [1] but left
+the KVM related ones in arch/arm64/include/asm/rmi_cmds.h [2].
+
+Do you want me to move the KVM related ones out of arch code also? It
+seemed sensible to me to leave it in arch code because these RMI
+functions are only used by KVM arch code.
+
+Thanks,
+Steve
+
+[1] https://lore.kernel.org/r/20260803134403.80630-3-steven.price@arm.com
+[2] https://lore.kernel.org/r/20260803134403.80630-11-steven.price@arm.com
