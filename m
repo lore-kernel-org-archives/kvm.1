@@ -1,186 +1,317 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074B1306744
-	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 20:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786997765; cv=none; b=uxMM6zdnZUasl8sPny03a8XtCevA6pgD7j2jKaSsydFANpxtpf6nHfMWukZHK3v7x5ebr/uZecepQAYUcnJs9JJNgMyg4bvrlHkCLGEhdkDyd1ziLZ0yPzAyx90ZDBuUEK5elbdlkmJC+aLase4hUCwmTyIkqtwI4G5oqMlfeXA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786997765; c=relaxed/simple;
-	bh=96dbgiVKcPgmawUI6sGTdHoa9bVbE5/KNwSLUHv2lOM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Za+x5O2v9NKuPcMFSIB8ENNpTWHzlOalZkNOLnC6G9mWwKsUFAU83GGjChWb3gfHBPXhRBQYxCjqGEIEEgpekiRhX6uIBGA2b1JTlVMiX8op546EG+cf6JGija3l1xDwD7ia12bm1C6jCXjiiNkI9I4MRvJSGn1sEFt0lfKfPMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mf+aBOiY; arc=none smtp.client-ip=209.85.210.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A666E233944;
+	Mon, 17 Aug 2026 20:21:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786998106; cv=fail; b=dRgG1ZG5LZCAPsTzKnacHEmMXGnY6ZqBiZmscXztM5ag7yCEtCG1+l+ThJfFJHZ85bKAUdL4YNBtIUtXRM+szDA6fzWQfIHOhxnrQFmmuvKEMFyxDDMADsG6nppdDq9sAFft/M8nwRaJ4Vyvvf3kGrHpO6Vm+aQaFzlTEMGCOhk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786998106; c=relaxed/simple;
+	bh=y1TNnsqri+/7+/eZTi4dyVEQx7aXMCqMk/B1bN9Fb/Y=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 MIME-Version:Content-Type; b=T9tVEtlAHyICgA88UCe+TkAbBxgDfxpsWzZT6wak8j42pYJmPY/zrWAeyIMrAjXxxDTfoCVnqqbb2LG2Wy1ptF97dRQKM55rHd6LWz/zdL+WyedZSNfke5G1Zd3oSwV7Etvn2DZNPrwU84v9N8+AQUbRZsW3iJiqEWxJJJ+EJpY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=bvspKzHB; dkim=fail (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=skQ5mObt reason="signature verification failed"; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mf+aBOiY"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8484b9fb055so8761180b3a.0
-        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 13:16:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="bvspKzHB";
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="skQ5mObt"
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67HFe6As2038427;
+	Mon, 17 Aug 2026 20:21:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=aPs0cU/GaOhrarQJKg9SdpPEo9Zj2NQ8lAxou6O5dtw=; b=
+	bvspKzHBmFbQTfO8vrcz0qZwPBDSefHn8g/5TxLKAqiCmN+bLYmYG3vt89mvo+8L
+	3i7GodUTUYNkDzdk/X23abqmhEJ6fCsGwgBfVXIzc4oCFOiOO71QFcOeV/TbdOKX
+	9tRnCIvA6b+o0B3FpcNnmHlxzZ6hGTFxIqC9CiVMLjfn8/kJEqmu/cQBB0BHaoK6
+	/OxkgqmuHm/spzvY7Yq3JAvbXBV0xuq0w3Z7Drh7SiS9Ovvu+o82sYgaMtWTHoVD
+	FHq/Esk+wybfxcHfjRgkYmZ2PQ4Cs3HRtOfzc7AY8kychTV1mFBvtrzA+UW3lCEW
+	rxpH2NS2EJ2ON67taRZcBg==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4g2g5cb3jj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 17 Aug 2026 20:21:41 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 67HKFfxZ038832;
+	Mon, 17 Aug 2026 20:21:41 GMT
+Received: from sn4pr0501cu005.outbound.protection.outlook.com (mail-southcentralusazon11011047.outbound.protection.outlook.com [40.93.194.47])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4g2ejpuks6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 17 Aug 2026 20:21:40 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZQpvv/Pfd1IJ5lzl/M7KFscH1u5a9TKIX3CQisxLRzUTzykBHcLBeL7RcjCzbXxFkXL4kIR2AZ+cDbZK+B+875AnJz8+o7Z5Z5HTfNM2d5j5gepTQgjzMEL9bVL9OhAjfv6OmwlNYBoPRgUVGbhA7Fg9HWGAcBpYAcrBDdCI9biJW3opEc6rVSVn+fUNtGYqj9j5Y7ksgYwtDTH+O93gU4blefvA5X38V/gLykc83qYuESIgBmlhROP/SMHe4GiaBWWFYPPpwHHPuvO5jnUdo74c04X0/rBKb4CbcsVk+7WpAoVXcHmSovy1LC3aaCo0Rkp5vULmWI+87GZCk1wOAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Q8oBrcZvLqiZlmIWdDqjcyD9E31yMfPnVAW11c5cJTA=;
+ b=ITX7Q3Ly0mxWFDK9CiUHYG0cZLLeGvcBsRTybvUPo9zepkoWJQp5A7Qi4tdONTbFeThhlwr7gCJbMAWRzKwhfZcpi9vggffQkE3N4uS4sTjqSZpmRFCbNXdPs483QMFy7kw5BgSSax7KyiF1MSkqhUmCH9VC6cDkYSSwSn8Fc64ezf1jrm3+LbVlB33dtfK6PTqClPR2A5QWdD4/PWeyoJjC4FE4evXkbIjS9McAk/IANPKiQvWsMU/KUqtqdW5yROcdU6UuHwVcGQM1RW0pKpYbULK5fMMDrG8lBOma61JJffopV6d8431uUpu/YrDlHsutxICSdwSDH6VYNP4ccQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786997763; x=1787602563; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wIaLcIcx0/JCu0rIvBOyaVIEo2fmoa+vo14Zh85W4qc=;
-        b=mf+aBOiYPmmjMltamvf9UoIZifYnOcfy5V4LflDwOdezBFTVSds6OBc65o7bhxkH6j
-         8pjnycolfIxw7n3s+OR+a7hSf5/UjY+xSB5CYUhSXPvLWn4xupRRWexImdIUUXkGQXej
-         Ctpn+sGP63EVGY7tmV/VbU/6w9YgKpXf+28wNoiTYwRYPY2iCwHJrrkQzJfvqiVYQl/M
-         Gmikew0ncjQVrSrYn98gMKyMlMt/wcJvLWz5lZ5ABqVjRbs9YwBIhMJQIM+MZMEce6AH
-         mx4fq6mMrMrMTJfgJXO0RZMM1t0UFMbBnVXC3IssQVReiR0ulQs98SnMglIbrHwLlBmF
-         609w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786997763; x=1787602563;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wIaLcIcx0/JCu0rIvBOyaVIEo2fmoa+vo14Zh85W4qc=;
-        b=n/hy5gezraX8ar2+0JWvafo53HVTw2FoUh37AZOkKOZpZDpgr/nS3aMEa0V9989/pk
-         uoxYXeq2HtNOASMkN4v05BnzuGoGj7dTDUQW2PfObhN+GVzXBoBzg+niu7pgpQTa0gDw
-         Gn8jcNMUIj0AGAnfKAMSN6UOI/yAIhaMIB0UYDY0jtwwMuS9BeVS54ElBgffCyHgOFz4
-         YbMtLeZcKU2M41+C0sYSth+zZCk+flN3db5yxNE+FulAGuCHd/+fIaqI+XzsLE5tl55U
-         jvYcyZPr3vS0ucu37dhhVtjRDTgXM3VZJr7UU8R8GLHfvnc6xqWENNSBgKpCb14rTBzD
-         sRfA==
-X-Forwarded-Encrypted: i=1; AHgh+Rr4lALsKzdXG/QSHnpmO/CxSbEjGrEp2f7YIY85sg8EhIznqFgXtjfb7IZQNMO7CA6tzww=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/zNgbeYaIarxeADzWU7Ihp0ctY3/FJ0psK5p4Fb4VcvbdxTSX
-	FwOM8BaOHCun6iNPjqCJZkIWAYe6s6DCSLxxhkKXkAzTzfgpjIRYjuDT79GzV988t6hSEcQhQuM
-	NmwqoSQ==
-X-Received: from pfh39.prod.google.com ([2002:a05:6a00:12e7:b0:84e:24a3:b91c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3016:b0:848:5540:2377
- with SMTP id d2e1a72fcca58-84fde13600amr27080475b3a.17.1786997762969; Mon, 17
- Aug 2026 13:16:02 -0700 (PDT)
-Date: Mon, 17 Aug 2026 13:16:02 -0700
-In-Reply-To: <aoNlZRb5SV7hyNuk@google.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Q8oBrcZvLqiZlmIWdDqjcyD9E31yMfPnVAW11c5cJTA=;
+ b=skQ5mObt8lxhaArE1d+AqyQQI2PKKjJYzeygzVnyMGLLztczWKwkNKzogYD2tx9hdcM+vOEkAtAWZIW9cbuHCq2QL1BZDYBLANUOIoi2Pn3qFIfIuDlij1je9VQn2zlq9kPomhIQZwRG2FTNTLtvIG5wsWbombmx98xVl//HXD8=
+Received: from CO1PR10MB5506.namprd10.prod.outlook.com (2603:10b6:303:161::7)
+ by LV3PR10MB8179.namprd10.prod.outlook.com (2603:10b6:408:28a::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
+ 2026 20:21:38 +0000
+Received: from CO1PR10MB5506.namprd10.prod.outlook.com
+ ([fe80::da72:a0a9:5f18:cda4]) by CO1PR10MB5506.namprd10.prod.outlook.com
+ ([fe80::da72:a0a9:5f18:cda4%6]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
+ 20:21:37 +0000
+Message-ID: <427a5d9c-7641-48c5-8a51-2f78688de4f0@oracle.com>
+Date: Mon, 17 Aug 2026 13:21:36 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] KVM: x86: Reset last_steal on vCPU pid change
+To: sashiko-reviews@lists.linux.dev
+Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>,
+        kvm@vger.kernel.org, kvmarm@lists.linux.dev
+References: <20260816053630.527528-1-dongli.zhang@oracle.com>
+ <20260816053630.527528-2-dongli.zhang@oracle.com>
+ <20260816055525.A41D61F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Dongli Zhang <dongli.zhang@oracle.com>
+In-Reply-To: <20260816055525.A41D61F000E9@smtp.kernel.org>
+X-ClientProxiedBy: PH7P221CA0030.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:510:32a::35) To CO1PR10MB5506.namprd10.prod.outlook.com
+ (2603:10b6:303:161::7)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-12-2fc18ee6d3ba@google.com>
- <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com> <an3o4h-E8mj6CUaM@google.com>
- <CAEvNRgGpCVCGVjc9jCt9Yr+XypF=71h6eBahkXNkrXhfrtGY+g@mail.gmail.com>
- <an5AcEG9mqDgnBYk@google.com> <CAEvNRgE+05c9U8C=Zkm1S9hLw3Lw6YMmijZhEe7J4rYQAuNyEw@mail.gmail.com>
- <an8umm0qisEidt4n@google.com> <CAEvNRgFNCDDSeuvbwj7pD_d18o1TBXo4TNR2dXHxpm18KPfR5A@mail.gmail.com>
- <aoNlZRb5SV7hyNuk@google.com>
-Message-ID: <aoNsAmLSKCuc4v4A@google.com>
-Subject: Re: [PATCH v10 12/41] KVM: guest_memfd: Call arch make_shared
- callback for to-shared conversion
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Binbin Wu <binbin.wu@linux.intel.com>, aik@amd.com, andrew.jones@linux.dev, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, Fuad Tabba <fuad.tabba@linux.dev>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PR10MB5506:EE_|LV3PR10MB8179:EE_
+X-MS-Office365-Filtering-Correlation-Id: c4fcd485-06ff-4b3b-a5e3-08defc9d23fb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|22082099003|18002099003|56012099006|4133799003|6133799003|4143699003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	UoxcdSxPnguGia5nBPgrnefHI+5CEH7EhyGD76vGhFUJbMob7XD2u7pyVM8MXshsig1BsSOLIiIk3GQABnvPxX182/g7LGzcrt3wTD7r0goozP5rqfFETCXqjmIKSPB6AH2APJz9XSHCjybh+EvCsMQOF6s+iutzMJueP8YoXnM846KtmF9fwFLegHHAfWUK1EbzM7vu4GgV7flk8GI7CL2BqssY2e6MWaHmCbQyzlm7Bn74xkRGvS1P6twqpehGlyJj0J1Ho179XUNFOtod4djO1PEXdKaZjSBRQKm36OuSdQjrTG4DOXoiuyuGAP1YVjgyvYAIeF4UJgYBlw1IMGAYCrCTewort7cpWDDwr6XRhcs6r+ek38ylYG1gtIit6LaarNfKasUEnP3xOCpPwSQcTI/ED42s1Jp3Rr0oAc+9hAJRyuMMdihqGbNxwl61enBy277BL60ah+v+vEOtS1SG7HJrK6vJZMABVqL5vfK3C95b35g2ijSEn6lRoP1zMtfC+ONHUvQ9JKaQnOw33XcqUcMeLg4WmSz1yWDEkXZBHS9BirsqeJg0xz7dz+zZcphS2kd9uyU/nO6O63mAXNO3yJu5ohYglje/NYgGj8f796XKvxY3hoNBXVat+1oJY7T701WTHesXNcRIJD9wCED212wMlB03/dk5yJ/421U=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR10MB5506.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(22082099003)(18002099003)(56012099006)(4133799003)(6133799003)(4143699003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?L2dKc2xra0I2ZkNiY1V2cXJNWVYxcklkZ1dZQVdheEZJUVY5RllXMm4rRnZU?=
+ =?utf-8?B?ODdtL0k5Q25vRDRZenNYcTg1dTFuVEtCMDFYNkFoRVQreUZxMzluQVJMTGZv?=
+ =?utf-8?B?enVGOXI4OEVkZjFOaUZrVkwyUTRPWUtsUFRYclZDS3ZpeHhLMmFwbDRNQmJV?=
+ =?utf-8?B?eG1uRXhuU2JHTFlqRS82ZWk1Umt0QTZrY0MrOStZQkYrSXNmYjkyY1dheUsx?=
+ =?utf-8?B?ZWxpV0tZNVVzZ0lSMzVuUEg5Uk5PRnRuaUFoZHVENWF4clMrOHhpcWtvZHE1?=
+ =?utf-8?B?SGxITjRrYkhFbE9jOFFjb0xweklYY1Fyc3pjWWdPdmZzT2lUc1l1MVFvRnNG?=
+ =?utf-8?B?VnNoSWlNWS9PMjR3Z2pveEdKY2F4UDlDeGxBNTJEVHJOVVZ3anFIZGttVHRo?=
+ =?utf-8?B?V3UrNW9Gc1FmTmVCZXpvNDdheXVBazFDczZBVm9IZ054UlRnek9nS2c4VUxH?=
+ =?utf-8?B?dDR3MnR1SWo1OFkxOEVrZlhZd3M3c0kxVVJrWlhPbnlwQmVGUitJOHdyaTlJ?=
+ =?utf-8?B?bE9UTDZhK2xIWmhEV0pMWGxSR3FtRGZzSCtxaS9wZVI0aFgyR09UNEZlOWtI?=
+ =?utf-8?B?Y2NXZ0NoRjJPMTJlei9GYnNDOVdGSjBjYU16anI3Z2FTMmVyWWtndVJNR1Ns?=
+ =?utf-8?B?WVB2QmM4YzRQOG1aaURrMm5IT1FqaUZFakZCSlpuREY0YnJ0UWx1Qno0Tmt5?=
+ =?utf-8?B?S2MrVzgvdDJjUk9rSTB1cnRDSnRDV0tTWlkyZUJGbGZKaVVVZWJJL1dVR1Zm?=
+ =?utf-8?B?U09VZnJYMHp6OUxqbmJFNEhhM1FyVWN4Y2Z4UVFnUWg4eURONW1vcE42RjhI?=
+ =?utf-8?B?NG1nVEFqa1Y1ODdsTjBYNmtRK0xGb1lKZHpPZEErYmsvdDZ0enE3VkowVElk?=
+ =?utf-8?B?OElnVyt6WFdMMDhoZkRFbjlaRGdpWjRmZDM2UWxUdGRWek80c0RRUkRleFA4?=
+ =?utf-8?B?THpPenExT1Vic3huell4bnNpU0JqQTRLTmFjOUVJTGszaDIvNS95UjF3WDFU?=
+ =?utf-8?B?bVZQQ2ZqdGl3YWM5czdVVnp3azRXQTdldEVidVJPOFBYejRrQWFJSDBoNk52?=
+ =?utf-8?B?dzQ3TFltV29KUlRPRmJNSUllZGRHa0dFem04UVVETTJNVGczQWJkUmVGUmYy?=
+ =?utf-8?B?cEtWVDVjQ1lCU0Y5dkcwYmxocGM5UjdrUXhyODYrWWdnOFhsMGVBMm1GS1lS?=
+ =?utf-8?B?TlpsY09hRTJ6dkxWOFpaS3c0bXBIWHlvSWh5b1VneGdLeXN5Y3Mva2wrV3Nu?=
+ =?utf-8?B?d3NCc1NsTDhwSzZmaE15elhibGFMV2FXM0RHNVVNWml4ZEFqZVp0VER4Qk54?=
+ =?utf-8?B?Y3B0bUp3VWhJcWNNZVltNmdzeWxaUTUyTGdqMHRHdmc3Z0J3RForNDd1KzZK?=
+ =?utf-8?B?VkZLK0dSQ3kwUGNtR0QzSU1oREpDcXpsRisyamZrU0I1WG9ad05ML0ZEV0Yw?=
+ =?utf-8?B?N2NaNHVDSmRQSTZqaXMreWI1cUR2U3cvQnFvZ2tFTG5IdXRLM1QreTZoRTI2?=
+ =?utf-8?B?dGZtNXBOc1JDbTFDb1BjODVWYkJ0SmQxeTFNWTlzVXdOODY4S1dVVGJGWWFo?=
+ =?utf-8?B?dkNhUDBtb2QyL0dBRzRKS0NSZTI1TUVMeWhUanMvOXpPeWJqOHR1eFN0SnQw?=
+ =?utf-8?B?ZThrR0VhNXlJbXJXOFZjL2kzdi9pRmNFdzkzM2Z1YjlPc1hFOUEzaXhXS0NU?=
+ =?utf-8?B?YXpCWUNuTmVhVVNCR2djS25tRlVEeDFvaHpVc1c1akRrcjV6eENEZng1RmZz?=
+ =?utf-8?B?UHkvT3lyOGE0WHMwVlNaeTcraDJWRVA5bHVZUFhrK2pyWGZXRUxyWWpka0hO?=
+ =?utf-8?B?cFhXNW1QSlZ1c0c3T0JwWFUvdHRCVzhyR2JldzBobUdMTVUwSXhFRThMQ1M1?=
+ =?utf-8?B?Y0FwNzBERHdybEZWRHZFWmZRQTF2ekl3OGd5V1B3MWJoZTB4RW1lOWJKQzFC?=
+ =?utf-8?B?ZlZaWGEvUThTRGZsMTlBdklneVVRSGRzTmlCRkNyYTJxL1lkQWlYeEtEZmJ6?=
+ =?utf-8?B?MXBaVksrV05zZkxXZ1NYRnZ6eXZVSDFYeUY1eG51dHh5MEsvVWM5d1BwMllq?=
+ =?utf-8?B?Z28zS05FdWpsTmR0S213NWVoNEEwalYxdExYRHhXSzZ0cDRNSmlCRHVhM1Iw?=
+ =?utf-8?B?cjZESnljRjRnREY2L0ZsaDY1SXlxalVvSDRZRDNKclBXRTFMenA1OHpSRVpr?=
+ =?utf-8?B?TWVydDNVSjVWQkxESjk2YUIrVzIrZWZWdXhGcnVnSEd5Z2I5dzEwZ3VSZG9u?=
+ =?utf-8?B?SGVOV3B6ZkNadkVsdVdkNUZrbXR5VjU1Z0lyYUlmSFhWMHBTc1JDdFlIRzFv?=
+ =?utf-8?B?d0lYd1lJMTBSaWM1ZUFTRmszTkVRSHRPK0x6RHZuUjcrbkVxZm5Tdz09?=
+X-Exchange-RoutingPolicyChecked:
+	G68FlZQL7DL0YF5GYbbLXRR/EqMd6L4fUQ57JCLCh4D1VzQyHw7JHKm9a1XZia6ZLQ5/NW6o4vXPmYZfmiW8Pv1Hy+0J4hWs9cEbEMPVYmqi46MZCfaRubtZHmkLBApBUBwday949sMaWZHc4QZiqqtFCMZcwaSBgY373gEiUkmuZNhltXIsVl7GWRSG2Ol4gbkIgxRASAQNKszQEpznj4yoPaixqLc/kn9GWegTyvLVOwcclarsGTZHCSUqfs83Bgc24KXGyM6z6NpQdDQUlJ75qUIxQGYtX6tSmrnn2I788wupv3K6runEsuhdF0nV0pTxHEzne9H67b4CKdDaDw==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	Z/5FiHrHt8giXymRzV06ydkd6d53ReGjWeX82uU4pVfamjh5T+vqzWIjEoJwIbCUheUI9qZsjIfroC3f31kpQnoQviiyKK72C9r8m36xjaqPZgqMQ8N6AivVkPTz1iBUhBLAiXVJbKIOIR6HejoxBDCHDZjzvd9+t+ul4yD7cdAxwNT4CmqLqhH7Qx7gJcl/8bK5aZplq1GNRkquMytaKLUMxKh13wgcNDWObcbJSiwkqgvbqx29bpyyCu9AaehQdbIYpuzRbUeBeALGGo83n/8T7JteGapMECWuSwzjo+WzN6SFIj7olo8Y/FkJS/V47W0BmHQLdG0MFuFxGzZkM8UOb6vnoQEqKi5ndqLBqcB8MUe6OpCt59WXr31sf/IcUEaTWCq6lBpz/JwNLGjIeGXBNG3gutL+lNskEb5AyYrKSOY7vD2AJBSIW3hV7/AffGBwOl7EE1CdgRPSSLLZmjhUJOlE4yx3mtXZisZMawBGIcE6Oq3AlK83SF5egU9ugLzRKJrjTIcy83IZsTm84K5Vphdi96rcRlIzCKtwS/wAanccRXnruUmlpuolLXaCoQEyNq2Vre/e4rx1GHMgM9IXNQntjtg0ppup7iM/YNg=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c4fcd485-06ff-4b3b-a5e3-08defc9d23fb
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR10MB5506.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 20:21:37.9126
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PUHoKFli1m33kXkND0VceO9gpvJillfCmpvmPO47V7z+a/Uv/J37pALvS9xSrufQxuS4TkgFK16FERauPqwbtA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR10MB8179
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-17_03,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ bulkscore=0 malwarescore=0 lowpriorityscore=0 mlxscore=0 phishscore=0
+ suspectscore=0 mlxlogscore=999 spamscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2606160000 definitions=main-2608170155
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Authority-Analysis: v=2.4 cv=INoyzAvG c=1 sm=1 tr=0 ts=6a836d55 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=Sv0fKeRqtYgA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=BqU2WV_vvsyTyxaotp0D:22 a=RpNjiQI2AAAA:8
+ a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=7zmLKWujpiwBXzZTv4YA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf
+ awl=host:12098
+X-Proofpoint-GUID: ERLOP2jP2Yb6UqyWesZ5c1qYlb2HyXDS
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE3MDE1NSBTYWx0ZWRfX3OhOzs8FN2Hf
+ /oPC3uS2Yxt2/0su9yLiRv7yXy/RzPpy0PBmtpP/AqSiYmPU9NPT4TTn+E8vIuzGlW9tWpX9ckH
+ pA9b6uk5a3960Q6Xj8rsUgiZoP+CwRdj8WwIv8ThBvrS/nRgvWA75k5hvSxLZGTu4HZ59ynTQ7R
+ /9LeY/2XaWUOdfcoQIipVX7mIkLaspr8PJRulAbXE5J8TS8zbp1gxsABlQXsuvnvvuY6XPrppf3
+ /PF/HAk2nraAPhAmuawnWpzKMD1DUNk+dXs0NESkV3xwFBI2giIREyZYwIgVuc7bqIEkGIRbguU
+ Lk5f9ELzWKvWcaQS7g2Tj5vyoR/qcNwBm4RjbdhFFhj2hhAm466hda3ocYl+NfD857lWrgTrpVw
+ JgZu/9FOJszYfLcKXv8/WSxfhiHN1nt+5oo0wuZ3ZcFtdkwQnkwZiade9gl9mB4hUtlZW807C/M
+ teNj+O4CAImL18ggFNzL9LDCgkBvtNpguvKmdQX8=
+X-Proofpoint-ORIG-GUID: ERLOP2jP2Yb6UqyWesZ5c1qYlb2HyXDS
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE3MDE1NSBTYWx0ZWRfX3NfvwqckIChf
+ Rd9QQKyZAfjXUQxinzKJVuoi4kT9myfStK+jdJKahuAxWqEgjWd8PKBEzQEEIk7hhluvXuF/ehI
+ +Q2ln60ZYutrFFlD6RA7wDP+tLZwH9ED0c1vHf4rp1P95YUsqQOJ
 
-On Mon, Aug 17, 2026, Sean Christopherson wrote:
-> On Sun, Aug 16, 2026, Ackerley Tng wrote:
-> > Sean Christopherson <seanjc@google.com> writes:
-> > 
-> > > On Thu, Aug 13, 2026, Ackerley Tng wrote:
-> > >> Sean Christopherson <seanjc@google.com> writes:
-> > >> > That's why I think it's worth analyzing the cost: if it's in the
-> > >> > noise, leave it alone.  If it's meaningful, figure out a not-too-gross way to skip
-> > >> > the entire thing if kvm_arch_gmem_make_shared() is a glorified nop in the end.
-> > >>
-> > >> Is noise defined relative to the entire conversion process? Would this
-> > >> benchmark look like
-> > >>
-> > >> 1. Convert 4G to shared on TDX with CONFIG_AMD_SEV defined
-> > >> 2. Convert 4G to shared on TDX without CONFIG_AMD_SEV defined
-> > >>
-> > >> and then compare the difference in time taken?
-> > >
-> > > That'd work, though I was envisioning something even simpler: use rdtsc() to
-> > > count the cycles it takes to iterate over various ranges of memory.  Do whatever
-> > > is easiest for you though.
-> > 
-> > I made some changes to add rdtsc() for the conversion process as Sean
-> > suggested [1], and exercised conversion like this [2]:
-> > 
-> > 1. Initialize some memory as private
-> > 2. Get the guest to fault them into Secure EPTs
-> > 3. Converts the memory to shared <<== this is being benchmarked
-> > 4. Converts memory back to private
-> > 
-> > I made it build the VM once and convert 5 times:
-> > 
-> > ./gmem_benchmark_tdx_convert --iterations=5 --size=1g
-> 
-> ...
-> 
-> > And here's the above, tabulated:
-> > 
-> >   nr_pages      make_shared            total    percentage
-> > ----------  ---------------  ---------------  ------------
-> >          1              930            39278       2.3677%
-> >          1              252            28060       0.8981%
-> >          1              176            26952       0.6530%
-> >          1              176            27038       0.6509%
-> >          1              176            26980       0.6523%
-> >          1             1072            37236       2.8789%
-> >          1              316            28338       1.1151%
-> >          1              176            27182       0.6475%
-> >          1              176            26972       0.6525%
-> >          1              176            26886       0.6546%
-> >     262144         15041018       6616067680       0.2273%
-> >     262144         14937462       6608542680       0.2260%
-> >     262144         15138858       6599494898       0.2294%
-> >     262144         15721972       6610219850       0.2378%
-> >     262144         15000406       6615114540       0.2268%
-> >    1048576         61902982      26400884028       0.2345%
-> >    1048576         61746114      26401170984       0.2339%
-> >    1048576         61096794      26404409058       0.2314%
-> >    1048576         61446290      26447461896       0.2323%
-> >    1048576         61774646      26444608360       0.2336%
-> > 
-> > Looks to me it is within noise.
-> > 
-> > I also actually tried measuring the conversion time from userspace with
-> > CONFIG_AMD_SEV enabled and disabled. Converting a 1G-sized TD was faster
-> > by 0.2%, which is in line with the above table. Interestingly, when
-> > converting a 4G-sized TD, skipping kvm_gmem_make_shared() was _slower_
-> > over 2 runs. I don't have an explanation for that.
-> 
-> Might be some cache/memory locality benefits?  Though with a conversion that big,
-> it could also be nothing more than bad luck.
-> 
-> > I think the code was correct. (If it makes a difference, I skipped
-> > kvm_gmem_make_shared() using a custom guest_memfd creation time flag and
-> > skipped make_shared if the flag was set on the inode.)
-> > 
-> > I thought adding a kvm_arch_has_gmem_make_shared(), defaulting it to
-> 
-> I would do kvm_arch_has_gmem_convert() for consistency with the Kconfigs, and
-> because the cost of the reclaim invocation is a non-issue.
 
-Forgot to say "why" I think it's worth adding kvm_arch_has_gmem_convert(): it's
-a trivial change in the grand scheme, and I can see the ~1000 cycles of overhead
-being problematic in use cases that do many one-off conversions, e.g. for guests
-whose shared memory is scattered all over.
+
+On Sat, Aug 15, 2026 10:55:25PM -0700, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issu=
+e(s) to
+> consider: Pre-existing issues: - [High] The patch addresses the steal time
+> corruption on vCPU PID change for x86 KVM PV but completely misses the
+> equivalent KVM
+>=20
+>=20
+> Thank you for your contribution! Sashiko AI review found 2 potential issu=
+e(s) to consider:
+>=20
+> Pre-existing issues:
+> - [High] The patch addresses the steal time corruption on vCPU PID change=
+ for x86 KVM PV but completely misses the equivalent KVM Xen steal time (`v=
+cpu->arch.xen.last_steal`), leaving it exposed to the identical integer und=
+erflow.
+> - [High] The identical vCPU thread migration bug exists in ARM64, RISC-V,=
+ and LoongArch steal time accounting, but the patch only implements the fix=
+ for x86.
+> --
+>=20
+> --- Patch [1]: [PATCH 1/4] KVM: x86: Reset last_steal on vCPU pid change =
+---
+> commit d7367ba78784ba11d9b540abce98359a8e902828
+> Author: Dongli Zhang <dongli.zhang@oracle.com>
+>=20
+> KVM: x86: Reset last_steal on vCPU pid change
+>=20
+> KVM does not reset last_steal on vCPU re-creation/hotplug, causing a bogus
+> large steal time due to run_delay starting from zero. This patch fixes it=
+ by
+> resetting vcpu->arch.st.last_steal in kvm_arch_vcpu_run_pid_change on x86.
+>=20
+>> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+>> index 801bf9e520db3..b7cb2ceda6d9a 100644
+>> --- a/arch/x86/kvm/Kconfig
+>> +++ b/arch/x86/kvm/Kconfig
+>> @@ -40,6 +40,7 @@ config KVM_X86
+>>  	select HAVE_KVM_MSI
+>>  	select HAVE_KVM_CPU_RELAX_INTERCEPT
+>>  	select HAVE_KVM_NO_POLL
+>> +	select HAVE_KVM_VCPU_RUN_PID_CHANGE
+>=20
+> [Severity: High]
+> This is a pre-existing issue, but does this same integer underflow bug ex=
+ist
+> on other architectures?
+>=20
+> Looking at ARM64, RISC-V, and LoongArch, they all track steal time using
+> current->sched_info.run_delay and subtract the old last_steal value, which
+> appears identically vulnerable to underflow on vCPU thread recreation.
+>=20
+> For example, on ARM64:
+>=20
+> arch/arm64/kvm/pvtime.c:kvm_update_stolen_time() {
+>     ...
+>     steal +=3D vcpu->arch.steal.last_steal - last_steal;
+>     ...
+> }
+>=20
+> (Note that arm64's kvm_arch_vcpu_run_pid_change() returns early if
+> vcpu_has_run_once(vcpu) is true, skipping the opportunity to update last_=
+steal.)
+>=20
+> Are there plans to address this on the other architectures?
+
+Patch 2 addresses the arm64 case.
+
+risc-v and loongarch may need similar handling, but I didn't include them in
+this series because I only have x86 and arm64 KVM test environments availab=
+le to
+validate the fix. I don't currently have a risc-v or loongarch setup for KVM
+testing.
+
+>=20
+>>  	select VIRT_XFER_TO_GUEST_WORK
+>>  	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
+>>  	select KVM_VFIO
+>> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+>> index 47cb9eba113b1..33be45eec32bc 100644
+>> --- a/arch/x86/kvm/x86.c
+>> +++ b/arch/x86/kvm/x86.c
+> [ ... ]
+>> @@ -3717,6 +3717,13 @@ void kvm_service_local_tlb_flush_requests(struct =
+kvm_vcpu *vcpu)
+>>  }
+>>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_service_local_tlb_flush_requests);
+>> =20
+>> +int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
+>> +{
+>> +	vcpu->arch.st.last_steal =3D current->sched_info.run_delay;
+>> +
+>=20
+> [Severity: High]
+> This isn't a bug introduced by this patch, but should this function also
+> reset vcpu->arch.xen.last_steal?
+>=20
+> Looking at kvm_xen_update_runstate() in arch/x86/kvm/xen.c, the stolen ti=
+me
+> for Xen runstate is calculated similarly:
+>=20
+> arch/x86/kvm/xen.c:kvm_xen_update_runstate() {
+>     ...
+>     u64 steal_ns =3D run_delay - vx->last_steal;
+>     delta_ns -=3D steal_ns;
+>     vx->runstate_times[RUNSTATE_runnable] +=3D steal_ns;
+>     ...
+>     vx->last_steal =3D run_delay;
+> }
+>=20
+> If the thread changes and run_delay resets to 0, wouldn't vx->last_steal
+> also cause an identical integer underflow?
+>=20
+As explained in the cover letter, "Although David also suggested doing the =
+same
+for Xen-on-KVM vCPUs, this series does not reset last_steal for Xen vCPUs. =
+That
+change itself would not be difficult, but Xen uses a different mechanism to
+account downtime, including runnable time and offline time when a vCPU is n=
+ot
+running. It may therefore need no additional ioctl, or a smaller ioctl
+extension, to account run_delay left over from the previous PID. For now, t=
+his
+series changes only regular x86 steal time and arm64 PV time."
+
+Dongli Zhang
