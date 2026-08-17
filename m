@@ -1,160 +1,262 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD553DA7DF;
-	Mon, 17 Aug 2026 12:28:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E245841A500
+	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 12:34:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786969731; cv=none; b=DLtJ1hnzScXA/u0zXq25MYF7tIaSA86CltAZJ6cxj+ZEGAjCugdRr023LTILilG3HcgY/T9Vns2lGxi7EGA+0QNNPR8T0L61cFRTEjuue93k3QhqRYQBOZjXQr/us+nS20+jCYk0IH/jvDm76rFE7x7pXX60URx0d/MC+dk7Q7I=
+	t=1786970101; cv=none; b=cqFglbYY5AElZoFDrfctbN/LLuTZDXGinN7QAlm0ZiPSQv6lM/NdvLLktnn3itsv9O4Ba6wC3yFHg3yfmrpqjiPZUip1EfWPtx0VmxsSOIPXnzNj/fKMiYYfFLsyP1afqnV88zXESQk/yVBYpoOLaNKb+4N1epCbebdxRLvi8bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786969731; c=relaxed/simple;
-	bh=Gyofv3sSO7lYqnHwkCFyoZgbVgblfnpQlRUFfS2Q5bQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rkbBgl0drMgHoh4OZWmAQKX7YRx83LjV4QwabFbpS8aEKLrYBAXdCkOzDIP6VprjApyC+dYgvRDUbtdsVof8e41DQYFvBKbXZxcY3+dYLaNFBJazcYEwL6tveRCIKPM9D5EZ1IUiLITEkDyFMzmFvCbbth2mNzJnzbRPJD4wGgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gh1uzKKy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786970101; c=relaxed/simple;
+	bh=KoMYTngtcOx3C4ujY5d/IqD3JolqZNXmrrbXHPnn7uk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ov1/3F5gufWgDfRH+GODEVtZggm4Q/dxXg8+wBjkgy4mctRZIzJkljCNYaQe39uG/5lhHp0XQxc8y2cyWN4/RmGcOWcaWfpF+j8q78PjIKzVpD3paT2Pskq2LIByJhot4E0XIgub5WC74quKASs93uLI6cC7oxArOgVl8ZX4kII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UC1ExLIn; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gh1uzKKy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8061F00A3A;
-	Mon, 17 Aug 2026 12:28:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786969730;
-	bh=3YD7sKPJXuQc3fWJwZrTJUwueIKAqqSiZgtgDHA80SI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Gh1uzKKyeV0EHOzHR81E4Pim/hvsThT1AiHMBWpBRPVBXv93l1NRUo+0i7bheCwYp
-	 GOq/FNnhoRR1Bx7l3xLBq4GFsAfRkxtpzOOJcmwkQMk6eVGzpmfWbIofvRqesPnZk/
-	 7XoP18bYTFntBmCRwVTSEkOqfBDIC3FX+/wTMD6kti6YrEkxQiu+Uu/8bkw0kCdJ9f
-	 pA4vLLG9HNHqmutrSQ9vrE5GedTa891QTJkKOF4008bzl5Nu0Av0yX/ae2LFc9Wzxe
-	 A6K4eBbGcpeFxXI5m4ZhK5M8SeOrcc2IUrBZfNflVMwpPsnB26jfNhFEHFpOepKxIC
-	 OhimMIStHO6vg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] KVM: s390: Improve floating IRQ injection behavior
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Janosch Frank" <frankja@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, "Christian Borntraeger" <borntraeger@linux.ibm.com>, kvm@vger.kernel.org, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Heiko
- Carstens" <hca@linux.ibm.com>
-In-Reply-To: <20260817121631.159451-1-frankja@linux.ibm.com>
-References: <20260817121631.159451-1-frankja@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 17 Aug 2026 12:28:49 +0000
-Message-Id: <20260817122849.9F8061F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UC1ExLIn"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2d049069377so34045825ad.0
+        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 05:34:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786970099; x=1787574899; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8KjWXP+qZdAduuExhW3Uw0m7asrTX1tGFHFZbEdR7hI=;
+        b=UC1ExLInaldSZdQuIt5H4Gw133eznTnUICAZn0ufJr33S9VUdB4DvH4nB5VnimL6Je
+         Hs2p/MWe+aEAlWBooaAIiLxmt91hjed440egfpshYWLKlxLf+6eb7ggUDGbWF4wGoQ7O
+         YTWlUgdulxzpMoPdcfJUOQ8mCOglwfxzI2SfeC2AMAFRjsZAxLjETW8dT9EiKbyAe0Mn
+         OKa98BbDFHeGOViWR3F0F9Usl5qoiYhKhPiPB19vqSqbiYfeAOKvsjuLaF7OsEIDWcxj
+         0srAx/xGRcUQ247rzA7khkRPkqIn3nqK8HKIipuhiwALPWKwlmahYKf8B3g8c0TLjK4K
+         3TIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786970099; x=1787574899;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8KjWXP+qZdAduuExhW3Uw0m7asrTX1tGFHFZbEdR7hI=;
+        b=PK3lzPRxOJuFkAYCJ/icQyaNpxMQCnR7zbasMsVt5tPS9223WhIa6OW3h3bpnZf+VV
+         6x/VWi6p2bnT7bb56dZIV1QRZyUTosJzrbNLh8dRPWKhu2XAGptSnhwxaPI1dW2ATfoB
+         OwsKzThY0D9IkswwhnK9aBuZe/gnFBSbot/VqTgEXC8od5S4KAoW3f9vCnRw4pjx1zkR
+         bA5dz5ceIeFhdyIipVPGQfPsc/ykPAwVpLPBIDKiz6Oo6q1cUlb1hs6KHbx8c3j0ks9F
+         kVmIWPlEw0tujsSwQtAE6TUwe2CIv7eeFKRf2aU/DWjD7bqZbTeL8eUSzrIOwaCqvgRP
+         zCWw==
+X-Forwarded-Encrypted: i=1; AHgh+Rpoz7/CUrt6iPuBgOStX9M0JB/I+upvs/6OQ90316RdD5ZWixlYqX0vy1V/MVKUiuY5i0w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yywjk41aJz+ezygP7nY9l3H9X4euie6mq9usbL2zfP4gJwWq9EE
+	RcjhqW29vpnntZWV18yEsLfdZ1881iBVJh2PNLwBq8abfTvB+Ak4o20s
+X-Gm-Gg: AR+sD11Z5clUKPVUSIkimjDwPOb7BnCv0Yh4U9v0DPsQY80f4V3wYxc6tBKK4P03DDS
+	gQDpMQpIG4kdFBk3qbjGJDaVzWLFbMBnnyed/1uvMM6ZqjbEJGVbJ3y+LHmjLAGmtFy7R667W72
+	iBoXXgL+BH6Dxor3ApIFIA7mD9+5U3slXozaKHF04Rmm+wAgr2Ju5GB4Gg4Oie6SDED5HxfbSFw
+	/xkrMLyfmVZKXwl5qQ+vU+lf2s/s1KgczcSKdusLyxA8iaWviA5lSu2MXuxMisre5BnKFZNxYNG
+	hhRyYq5q0vMtORwx/fpfsiBX66308KfqsDvm6LeiojOSKGZ0zuy1T38+kesvB7SwEEaQVVuBhS/
+	Ey0Sg0JDQLYIe1e4jw8OncuGAUnyZljylH3L9BpJfO1RMzopS5Fek166l6XkU1dfc0tFanCrxCl
+	defkSZ6eyrokLhh0+z8QseBH55dEPxr6X0eT8jLZcmUfhFkryA9wJr0vKTNkN4rl9cRAckbAfYR
+	5UOFWtWX5DB/vagcQ==
+X-Received: by 2002:a17:902:d4cf:b0:2ca:660:b1d with SMTP id d9443c01a7336-2d3b0d5eccfmr253638745ad.11.1786970098817;
+        Mon, 17 Aug 2026 05:34:58 -0700 (PDT)
+Received: from [10.26.143.42] ([43.132.141.21])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d5bb511b0esm4947915ad.26.2026.08.17.05.34.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Aug 2026 05:34:58 -0700 (PDT)
+Message-ID: <79ec6855-6764-407f-bf46-add1bdf36b69@gmail.com>
+Date: Mon, 17 Aug 2026 20:34:53 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] KVM: selftests: Improve sea_to_user test
+To: Marc Zyngier <maz@kernel.org>, Jiaqi Yan <jiaqiyan@google.com>
+Cc: oupton@kernel.org, sebott@redhat.com, gshan@redhat.com,
+ yuzenghui@huawei.com, rananta@google.com, joey.gouly@arm.com,
+ suzuki.poulose@arm.com, pbonzini@redhat.com, shuah@kernel.org,
+ linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+ kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260130192837.890688-1-jiaqiyan@google.com>
+ <86y0le9cvz.wl-maz@kernel.org>
+Content-Language: en-US
+From: Like Xu <like.xu.linux@gmail.com>
+In-Reply-To: <86y0le9cvz.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Critical] Use-After-Free of `inti` when injecting floating interrupts.
-- [High] Missed vCPU kick causes lost or delayed floating interrupts when a=
-ll vCPUs have masks closed.
---
+On 1/31/26 8:37 PM, Marc Zyngier wrote:
+> On Fri, 30 Jan 2026 19:28:37 +0000,
+> Jiaqi Yan <jiaqiyan@google.com> wrote:
+>>
+>> Several improvments to the test for KVM_EXIT_ARM_SEA:
+>>
+>> - Refactor run_vm to catch GUEST_FAIL, instead of causing confusing
+>>    unhandled MMIO kvm exit.
+>>
+>> - Sync far_invalid to guest.
+>>
+>> - Exit test with KSFT_SKIP or KSFT_FAIL when should.
+>>
+>> - Add comment about VM backing memory type.
+>>
+>> Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
+>> ---
+>>   .../testing/selftests/kvm/arm64/sea_to_user.c | 94 +++++++++++--------
+>>   1 file changed, 53 insertions(+), 41 deletions(-)
+> 
+> Overall, this test is still pretty broken.
+> 
+> For example, on my Altra box:
+> 
+> maz@filthy-habits:~$ ./sea_to_user
+> Random seed: 0x6b8b4567
+> # Mapped 0x40000 pages: gva=0x80000000 to gpa=0xff80000000
+> # Before EINJect: data=0xbaadcafe
+> # EINJ_GVA=0x81234bad, einj_gpa=0xff81234bad, einj_hva=0xffff41234bad, einj_hpa=0xbad
+> ok 1 # SKIP EINJ table not available in firmware
+> 
+> Well, not quite. EINJ *is* available, it is just that this test,
+> contrary to *all* the other tests, requires some insanely high
+> privileges. But the test is making stupid assumption.
+> 
+> But that's not all:
+> 
+> maz@filthy-habits:~$ sudo ./sea_to_user
+> Random seed: 0x6b8b4567
+> # Mapped 0x40000 pages: gva=0x80000000 to gpa=0xff80000000
+> # Before EINJect: data=0xbaadcafe
+> # EINJ_GVA=0x81234bad, einj_gpa=0xff81234bad, einj_hva=0xffff41234bad, einj_hpa=0x80041234bad
+> # echo 0x10 > /sys/kernel/debug/apei/einj/error_type - done
+> # echo 0x2 > /sys/kernel/debug/apei/einj/flags - done
+> # echo 0x80041234bad > /sys/kernel/debug/apei/einj/param1 - done
+> # echo 0xffffffffffffffff > /sys/kernel/debug/apei/einj/param2 - done
+> # echo 0x1 > /sys/kernel/debug/apei/einj/notrigger - done
+> sh: 1: echo: echo: I/O error
+> Bail out! Failed to write EINJ entry: Success (0)
+> # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+> 
+> Failed? Or Success? Who knows...
+> 
+> But frankly, the whole "embedded shell script" is disgusting. What is
+> wrong with driving the injection from the test itself, rather than
+> this access()+popen()? popen() itself is a liability (see the man page
+> for system()), and should never be used for this sort of things.
+> 
+>>
+>> diff --git a/tools/testing/selftests/kvm/arm64/sea_to_user.c b/tools/testing/selftests/kvm/arm64/sea_to_user.c
+>> index 573dd790aeb8e..4a3511fa1f940 100644
+>> --- a/tools/testing/selftests/kvm/arm64/sea_to_user.c
+>> +++ b/tools/testing/selftests/kvm/arm64/sea_to_user.c
+>> @@ -12,6 +12,11 @@
+>>    * including the notrigger feature. Otherwise the test will be skipped.
+>>    * The under-test platform's APEI should be unable to claim SEA. Otherwise
+>>    * the test will also be skipped.
+>> + *
+>> + * The VM backing memory is tied to HugeTLB 1G hugepage so far. Make sure
+>> + * there are more than 4 1G hugepage on the system. They can be allocated
+> 
+> Why *more than*? Isn't that *at least* instead?
+> 
+>> + * at runtime by:
+>> + *   echo 4 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+>>    */
+> 
+> Why can't you provide an adequate diagnostic instead of this stuff:
+> 
+> maz@filthy-habits:~$ ./sea_to_user
+> Random seed: 0x6b8b4567
+> ==== Test Assertion Failure ====
+>    include/kvm_syscalls.h:58: mem != MAP_FAILED
+>    pid=887 tid=887 errno=12 - Cannot allocate memory
+>       1	0x0000000000405b4f: __kvm_mmap at kvm_syscalls.h:58 (discriminator 3)
+>       2	 (inlined by) kvm_mmap at kvm_syscalls.h:65 (discriminator 3)
+>       3	 (inlined by) vm_mem_add at kvm_util.c:1036 (discriminator 3)
+>       4	0x0000000000402373: vm_create_with_sea_handler at sea_to_user.c:290
+>       5	 (inlined by) main at sea_to_user.c:336
+>       6	0x0000ffffb0dc229b: ?? ??:0
+>       7	0x0000ffffb0dc237b: ?? ??:0
+>       8	0x00000000004027ef: _start at ??:?
+>    mmap() failed, rc: -1 errno: 12 (Cannot allocate memory)
+> 
+> What is preventing you from not requiring huge pages? And not
+> requiring 4kB as the base page size?
+> 
+> Given how broken this is, I'm likely to disable this test until you
+> fix it for real.
 
---- Patch [1]: [PATCH v2] KVM: s390: Improve floating IRQ injection behavio=
-r ---
-commit e7cb031c2f46e8290e932cd848faad5eec943d11
-Author: Janosch Frank <frankja@linux.ibm.com>
-Subject: KVM: s390: Improve floating IRQ injection behavior
+Pls help review the expect output:
 
-Floating IRQs can be handled by any VCPU that opened its masks. The
-current design does not check if the mask is open when a floating IRQ
-is injected via the FLIC. It will wakeup the last VCPU that went
-sleeping hoping it's the correct one.
+# selftests: kvm: sea_to_user
+# Random seed: 0x6b8b4567
+# # Mapped 0x40000 pages: gva=0x80000000 to gpa=0xff80000000
+# # Before EINJect: data=0xbaadcafe
+# # EINJ_GVA=0x81234bad, einj_gpa=0xff81234bad, einj_hva=0xffff41234bad, 
+einj_hpa=0x2141234bad
+# 1..0 # SKIP EINJ debugfs interface not available; run as root with 
+CONFIG_ACPI_APEI_EINJ and firmware EINJ support
+ok 1 selftests: kvm: sea_to_user # SKIP
+# 1 skipped test(s) detected.  Consider enabling relevant config options 
+to improve coverage.
+# Totals: pass:0 fail:0 xfail:0 xpass:0 skip:1 error:0
 
-> diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-> index 8f24bcd1a6d36..e67cdedb5aece 100644
-> --- a/arch/s390/kvm/interrupt.c
-> +++ b/arch/s390/kvm/interrupt.c
+, and the diff behind:
 
-[ ... ]
+diff --git a/tools/testing/selftests/kvm/arm64/sea_to_user.c 
+b/tools/testing/selftests/kvm/arm64/sea_to_user.c
+index a23d74ed45035..7e86cbeb55291 100644
+--- a/tools/testing/selftests/kvm/arm64/sea_to_user.c
++++ b/tools/testing/selftests/kvm/arm64/sea_to_user.c
+@@ -86,25 +86,32 @@ static u64 translate_hva_to_hpa(unsigned long hva)
 
-> @@ -1915,22 +1946,48 @@ static int __inject_io(struct kvm *kvm, struct kv=
-m_s390_interrupt_info *inti)
+  static void write_einj_entry(const char *einj_path, u64 val)
+  {
+-	char cmd[256] = {0};
+-	FILE *cmdfile = NULL;
++	char buf[32];
++	int fd, len, ret;
 
-[ ... ]
+-	sprintf(cmd, "echo %#lx > %s", val, einj_path);
+-	cmdfile = popen(cmd, "r");
++	fd = open(einj_path, O_WRONLY);
++	if (fd < 0)
++		ksft_exit_fail_perror(einj_path);
 
->  /*
->   * Find a destination VCPU for a floating irq and kick it.
->   */
-> -static void __floating_irq_kick(struct kvm *kvm, u64 type)
-> +static void __floating_irq_kick(struct kvm *kvm, struct kvm_s390_interru=
-pt_info *inti)
->  {
->  	struct kvm_vcpu *dst_vcpu;
->  	int sigcpu, online_vcpus, nr_tries =3D 0;
-> +	u64 type =3D READ_ONCE(inti->type);
-> +	u64 irq_pend_mask;
-> =20
->  	online_vcpus =3D atomic_read(&kvm->online_vcpus);
->  	if (!online_vcpus)
->  		return;
-> =20
-> +	irq_pend_mask =3D inti_to_irq_pend_mask(inti);
->  	for (sigcpu =3D kvm->arch.float_int.last_sleep_cpu; ; sigcpu++) {
->  		sigcpu %=3D online_vcpus;
->  		dst_vcpu =3D kvm_get_vcpu(kvm, sigcpu);
-> -		if (!is_vcpu_stopped(dst_vcpu))
-> +		if (!is_vcpu_stopped(dst_vcpu) &&
-> +		    deliverable_irqs(dst_vcpu) & irq_pend_mask)
->  			break;
->  		/* avoid endless loops if all vcpus are stopped */
->  		if (nr_tries++ >=3D online_vcpus)
->  			return;
+-	if (pclose(cmdfile) == 0)
+-		ksft_print_msg("echo %#lx > %s - done\n", val, einj_path);
+-	else
+-		ksft_exit_fail_perror("Failed to write EINJ entry");
++	len = snprintf(buf, sizeof(buf), "%#lx\n", val);
++	ret = write(fd, buf, len);
++	if (ret != len)
++		ksft_exit_fail_perror(einj_path);
++
++	close(fd);
++	ksft_print_msg("%#lx > %s - done\n", val, einj_path);
+  }
 
-[Severity: High]
-Does this code drop the interrupt kick entirely if all vCPUs currently
-have their interrupt masks closed?
+  static void inject_uer(u64 hpa)
+  {
+-	if (access("/sys/firmware/acpi/tables/EINJ", R_OK) == -1)
+-		ksft_test_result_skip("EINJ table no available in firmware");
+-
++	/*
++	 * Reading the ACPI EINJ table requires CAP_SYS_ADMIN, so a plain
++	 * access() check gives a false negative for unprivileged runs. Probe
++	 * the debugfs EINJ interface instead: it is only present when both
++	 * firmware and the kernel EINJ driver support error injection.
++	 */
+  	if (access(EINJ_ETYPE, R_OK | W_OK) == -1)
+-		ksft_test_result_skip("EINJ module probably not loaded?");
++		ksft_exit_skip("EINJ debugfs interface not available; run as root 
+with CONFIG_ACPI_APEI_EINJ and firmware EINJ support\n");
 
-If deliverable_irqs(dst_vcpu) & irq_pend_mask evaluates to 0 for all running
-vCPUs, this loop will exit via the nr_tries check and return early.
+  	write_einj_entry(EINJ_ETYPE, ERROR_TYPE_MEMORY_UER);
+  	write_einj_entry(EINJ_FLAGS, MASK_MEMORY_UER);
+> 
+> Thanks,
+> 
+> 	M.
+> 
 
-Because it returns early, kvm_s390_set_cpuflags() and kvm_s390_vcpu_wakeup()
-are never executed, meaning no vCPU drops out of SIE and
-set_intercept_indicators() is not called.=20
-
-If the guest later unmasks the interrupt, could it remain undelivered since
-the hardware intercept was never set up?
-
-[ ... ]
-
-> @@ -1982,7 +2039,7 @@ static int __inject_vm(struct kvm *kvm, struct kvm_=
-s390_interrupt_info *inti)
->  	if (rc)
->  		return rc;
-> =20
-> -	__floating_irq_kick(kvm, type);
-> +	__floating_irq_kick(kvm, inti);
-
-[Severity: Critical]
-Does this cause a use-after-free when injecting GISA I/O adapter interrupts?
-
-When __inject_io() handles a GISA I/O interrupt, it frees the interrupt inf=
-o:
-
-arch/s390/kvm/interrupt.c:__inject_io() {
-    ...
-    if (gi->origin && inti->type & KVM_S390_INT_IO_AI_MASK) {
-        ...
-        kfree(inti);
-        return 0;
-    }
-    ...
-}
-
-Since it returns 0, __inject_vm() will proceed to call __floating_irq_kick()
-with the newly freed inti pointer, which then dereferences it when calling
-inti_to_irq_pend_mask(inti).
-
-Also, for non-GISA interrupts, inti is placed on a shared list where another
-vCPU might deliver and free it before __floating_irq_kick() runs.=20
-
-Should we avoid passing inti to the kick function?
-
->  	return 0;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260817121631.1594=
-51-1-frankja@linux.ibm.com?part=3D1
