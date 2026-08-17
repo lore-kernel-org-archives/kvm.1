@@ -1,110 +1,198 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BFD3ED10F
-	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 22:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9AD3EB10C
+	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 23:44:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787006558; cv=none; b=R3PNZgEulMZsyaUWngbOVjqQSCrPDhSwrol1GMN1R525OlSMQrFfUZN88/x8u/tfAFDlPynN3FkggGWMbMhOhUfcEWD8In/CmNMaQbPTv/GsaTZgQmml9j6Mb5uX40haYCSzbFW+Qq0PVaCigH3xz67Ydh3cYiNil56ebjzak28=
+	t=1787010252; cv=none; b=rrPMYRHH78OP3/LVD/LdD2ES/wGpRdOBebvoK0LAiH3fv4OQInVcFhxzy18FmKMO5TlUUdr5xRjAMVsBu0hqj9DKqjdUJSqgecMAY1KXGhh1CUShTxtNjBNhfSInTr5wy7c+RHjLfogc890kutyriRvfhkj32nIjcsSGjj8qXuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787006558; c=relaxed/simple;
-	bh=FuNV88XNhdg/KCJJbD5nToyPlj9YFC8j4Q/MsHmInqg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z6kE3X38xIH610i4q4IFbuBtcQ8vY6XXKufoX1RABaruFLYGCZRAtPhn0xtwnAmVTFwGmQ7A5cMgbSYYPUpuCOGeB99/Lg1eqbIC0pIGg82WUwA4lTfy+yged9zlq5r+mOZfNOLTOR+/9/KwImnWJSKa7qjdL6L8WgnNeEnyenM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K235GxUR; arc=none smtp.client-ip=209.85.128.46
+	s=arc-20240116; t=1787010252; c=relaxed/simple;
+	bh=rS2eLQ/pZoqQTdIUho4WhV3MopG0mC9jRBdImYwlnjY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i/TkQ5hRkEu18knilZPetqjyWcMCOPX1bdc4MwuBTb7C8ioNvl0Zye+me0MD+anlRy24xaX/Sch3MJSkWJj0dFQJ5OQNNl1LnzPtW2CwI5RobmvYlW/rAwYIqeIKtcfl5jaPufdmCsN9N9y4WQ4rCZiy9L6Ya2wahHyHRXDlr+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fy0dGlCp; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K235GxUR"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-495757ccbc1so35891575e9.2
-        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 15:42:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fy0dGlCp"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2caea3f742bso67325605ad.0
+        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 16:44:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787006555; x=1787611355; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oAmbfwBAAjnfCUkjo5GeRKy1CTOwFpxCxG62IYGXyrg=;
-        b=K235GxURVnm0J3cprUUUi+pRvkRP2RKd8OAmfYWViyOcEE/26gDXKscNOwCySZhaMW
-         Vhhfvs/46tLXwo6zHnzVUPFyXDTJEY3+xyD3c1vORAhw70P7sCAaQT2a0Gb7rmejzG3h
-         0MVYi3Qr+F2qmeqSQZBiEL8fB8gtaUzwhOkpZofwBmtGyH8nrf04m7qwVeLXuP/IKzKE
-         Yyw4odOSHkp/9X2dm+qxhaDRiH374ZXsOkRZSw9pP6L1Ymk/ASwPDNa4FarLhS8A+000
-         qyZdpyaITkjba6H5ETN4NYNVhRkuKWCxaNqqs9AJs0v2H20r+bDpKrKH2XsBKkgJu5mi
-         xcfw==
+        d=gmail.com; s=20251104; t=1787010251; x=1787615051; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SrOBK5cyf8If+OZjZ5TIA8l88FA3SWI+3OzMrqCIVb4=;
+        b=fy0dGlCpAsILQbl3DpXClMicEBAlZahrmFthC0NT4xav8T+4TMcZqVJ1wiAXU1y8HQ
+         QErnb/enx+fekZtExLDcCnUTv9pbfOadzWFjDFU3+u9d6/aaOdZ9/T3joQtyu/WBCOG2
+         vUTarElqZDjhKaQVPhSR+9xElNhU6RMYNPblLb0pnfKZ8P6394Sb4j18aIE+S9zE+gxk
+         dPyW16eP4E5Ea5nVYs58Oicx8uznQfoS0eX0Fr5wGb8DnMGnlaGQ+dQb8zABBuePsJND
+         c8nb6c4t/Dk6/YFB7O9+qgKXPeGr6fH/nzOFZsNGK6wJ0eZa3d4Su0P5pX9paR9u0rDf
+         aIWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787006555; x=1787611355;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1787010251; x=1787615051;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=oAmbfwBAAjnfCUkjo5GeRKy1CTOwFpxCxG62IYGXyrg=;
-        b=a5zyIQStQhl8ZX9QjuSROloqs760gZRQo4VMZXx0FZRX7hk53enruHMcYecoy9H8XC
-         wweVqLrrvXr0C9uvnfHgVqJ7SRDSbzIgAsoQyHKOhRNwv1stgAdKwL5Vt1kqlu3cvk3K
-         SI+QnYnOP8Xojtzh/gRkgDWI/1MpOYPagPf42Ufw++UXXtWLAuIdEYN8UwItyHhGR1Ic
-         Hf8SC22/Lw4jI4yNsR6S8zOG17KW4SARRWt40iGiJGybQvQ53FNLOcrsTYBYTTZD+QFM
-         PADhpRpbuCI0u1mcrx6t1rfQPF/M6IZxFn+2Cbd08oDqT8KIXSgMbs0EGnwuCSXmEEyJ
-         32ig==
-X-Gm-Message-State: AOJu0Ywwa5znKMOiV9leBfkcyWKZr+9GXxRxHsuu6hyZUNUl7QHp6wzq
-	IKwCBmeHK3qI6vAQCVxvsKVTshvbzDBXvF4hmycU8CldOBRyYfrAGbtD
-X-Gm-Gg: AR+sD10ukyxOdEkLY5mJ8t0PPiQ/ZtJIkpH2VMbLIrp4N6Y2RwLaRf5337oiQEc7B/o
-	0k8uFtEITB2rUoeceVgz2YtRCEphKlk9Deo1Ir9fUq2Mqwcw591koXfuCQM1peha3HrjsZNR9wD
-	o9w6YAbgX7LZVDAIGZY1QgW+8m2kqIj9A7aG5qxMLNDi47jjp8YooWjAqeI04mwyP+2EpB+pgdi
-	JkhAQOl+eM56ig0nkxmyXSRUOTtj8fV2wEUCMsCJLf2ZrhcMuvbJRou2QMEG6LnQBBLDKusb/1m
-	2IPON3tZjNJGd/FjiT3Mzq/RNradpqZDl8tYen8BIdWIBsqs3qIkEOUUKKmZtfpPp6VIMlX9MCA
-	grbDE8jb1H/cJu/zoG7Yj3iBPhWkM/MB8Pd7vdD2TnAhmHFxHdL1Iqxfwjqo7lvj1o+HNLoG/sx
-	+d5efpe4KRK5TClEA3RLlHyuorPv9BtM9CqD7SNqCmLJm2VLquuVVbhs6c9QGZ51DduAAAC0Q9l
-	LGqFpKG2wV2YT3KjvsG9gth6gA4P47y/PKfTEjQli38+mrFgZX7lYZE6x1/WJ/ghKU=
-X-Received: by 2002:a05:600c:871b:b0:499:8b00:5261 with SMTP id 5b1f17b1804b1-4998b0052cdmr426941915e9.8.1787006555013;
-        Mon, 17 Aug 2026 15:42:35 -0700 (PDT)
-Received: from ?IPV6:2407:d000:508:2027:2845:c930:d20a:3e10? ([2407:d000:508:2027:2845:c930:d20a:3e10])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482a5a315d3sm7356187f8f.6.2026.08.17.15.42.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Aug 2026 15:42:34 -0700 (PDT)
-Message-ID: <8d069fe1-a5b6-4a86-9604-26aebe2dc243@gmail.com>
-Date: Tue, 18 Aug 2026 03:42:31 +0500
+        bh=SrOBK5cyf8If+OZjZ5TIA8l88FA3SWI+3OzMrqCIVb4=;
+        b=Xjo8EF/ejgYEb9iH6pPNKLF7CuEpDo57WS8sDr8S+qeNYoBrgjlKEq9735Zvh8MicZ
+         f85hy+zxllzIVYmI1JSwFvmlY4DCEE3dR1H37/ZRFKqGYJUiu4GsWmo1SjmuyUMgacCV
+         QfP1De2ZWEnz7qKsX5F62ew/Cn5XtVlp5dnxuFNlK6BW8oIjDl7P8U2LxicqBq92Vn9I
+         X3IBMPGrNxUTGH/kB17RONVqD2c9tERkKhxvj7k9ph50S8jft3qEPCpwc11pVwQ3OQmy
+         mKROs+87oyBTl3YrfARyBsraTGVGgYvpN5X6pgwi9Z6qt95RF4CD62FratTqGd2G/rY/
+         Mjtg==
+X-Forwarded-Encrypted: i=1; AHgh+RogWT2no6cLRSq7KOxCKDKj3SNVDE1R8ojWLwAWLu9fBpMG3DXJx47l/zpWTZBgA4LZSDI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqvGC7aNdjiJ0Wc9of6yQkCb7OL8ohyRCSWHigCTqBGx4xJab5
+	5X/Uuwf4erX1Z436KzUvjQ3tFTvUamh7a3N3V9sF/vXuQwT+O8corxI+
+X-Gm-Gg: AR+sD10bmjSTuoDxkxz2LsnTzDvaeR+2o0HHGf7/pcbFqULH4KpU29bjeK1YsuX+FEk
+	dWD4FdNyb4ItL6MAeq66Y9ooheo7+81sEByxa8WekHqOW0sM0ooCPi9Ra9f8mBf2SjYQUFV482V
+	NSjCSYE3b5Gf8WBPc5t98rThMIqRZA8GWkwB4Ml2bL7Zpo9qy73zBIYqoa9K7hj1qLiGCKxdBvo
+	TTX47yfuyL0f0hw/N4a3SSOUkM0pKDHVwMZIMFg8ckwlxtE6Vao6cN2xI5vDrD3uOJxtAW/P3yT
+	7W/mXk1MU/osyOFYfGNb6RpYdwURAfHeD9v5sxNwsbmZM4lpcZGDFw8GVHBCMx8JVRG9DX/kfob
+	b/EDnoys2p1CAiqzGDa4FpfDF5fR4py5TnGp3S0uT/FGbV05Bp3yF979php3mr0TNNA4ng6Nh+8
+	AQUBqToQxSioA1Wl4a0o8HHjYUZ8YudKWmHIZpQzx6WnyF8rd6wboZclTUSwQtzXhyaL2501mZg
+	mFJYPDm39LlyHWQE7FGlTdIqO4hTj2u6k1sk+mjHitbdoHXs0MYRF0PblHfvj/u
+X-Received: by 2002:a17:902:cf07:b0:2d3:2e86:647a with SMTP id d9443c01a7336-2d5c4f07dd0mr47333325ad.5.1787010250571;
+        Mon, 17 Aug 2026 16:44:10 -0700 (PDT)
+Received: from wirene2.c.googlers.com.com (249.65.83.34.bc.googleusercontent.com. [34.83.65.249])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d5bb499e81sm11077885ad.1.2026.08.17.16.44.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2026 16:44:08 -0700 (PDT)
+From: Irene Wang <yiranirenewang@gmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Cc: Andrew Jones <andrew.jones@linux.dev>,
+	Thomas Huth <thuth@redhat.com>,
+	kvm@vger.kernel.org,
+	Yosry Ahmed <yosry@kernel.org>,
+	David Matlack <dmatlack@google.com>,
+	Jim Mattson <jmattson@google.com>,
+	Irene Wang <yiranirenewang@gmail.com>
+Subject: [kvm-unit-tests PATCH v4] x86: pci: Support unaligned register access in PCI config read/write
+Date: Mon, 17 Aug 2026 23:43:28 +0000
+Message-ID: <20260817234328.196560-1-yiranirenewang@gmail.com>
+X-Mailer: git-send-email 2.55.0.699.gb54405d56f-goog
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] KVM: selftests: Replace ulong with unsigned long
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, pbonzini@redhat.com, shuah@kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20260803170825.925561-4-hisamshar@gmail.com>
- <20260817220457.554823-3-hisamshar@gmail.com> <aoOKMeua-cNeTxXT@google.com>
-Content-Language: en-US
-From: Hisam Mehboob <hisamshar@gmail.com>
-In-Reply-To: <aoOKMeua-cNeTxXT@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 8/18/26 03:24, Sean Christopherson wrote:
-> On Tue, Aug 18, 2026, Hisam Mehboob wrote:
->> Gentle ping on this patch; it has been on the list since Aug 3 without
->> any comments.
-> 
-> Patience, please.  This is on my list of things to grab for 7.4.  You posted right
-> at the end of a cycle, shortly before the merge window, and the code in question
-> has existed for years, i.e. it didn't seem urgent enough to squeeze into 7.3.
-> 
-> If this is the very last thing needed to unblock musl builds of KVM selftests,
-> than that changes things, but IIRC there are other "fix selftests builds with musl"
-> patches floating around.
+Per the PCI Local Bus Specification (Section 3.2.2.3.2, "Configuration
+Mechanism #1"), port 0xCF8 (CONFIG_ADDRESS) requires a DWORD-aligned
+register offset (bits [1:0] = 00b), while byte and word offsets within
+the DWORD must be selected via data port 0xCFC + (reg & 3).
 
-No, this isn't the last blocker. I verified with musl-gcc on x86_64:
-with only this patch applied, the build still fails in steal_time.c on
-pthread_attr_setaffinity_np() -- it also needs your task-pinning fix
-("KVM: selftests: Use KVM's task pinning APIs in steal_time", which I
-resent). With both applied, the musl build passes.
+Previously, PCI_CONF1_ADDRESS did not clear bits [1:0], and 8-bit /
+16-bit helpers always accessed base port 0xCFC directly. This worked
+in QEMU because its PCI host bridge emulation preserves unaligned bits
+in CONFIG_ADDRESS and uses them during CONFIG_DATA accesses. However,
+in strictly spec-compliant VMMs (and potentially real hardware), bits
+[1:0] of 0xCF8 are ignored, causing non-aligned reads/writes at port
+0xCFC to erroneously target byte 0 of the DWORD. In practice, this
+causes pci_find_dev() to read the vendor ID twice instead of reading
+the vendor ID and device ID.
 
-> 
->> The musl build failure it fixes is still present in current trees, and
->> the v1 feedback was addressed in this version. Could it be queued in
->> kvm-next?
->>
->> Thanks,
->> Hisam
+Fix this by masking `reg` with `~3` in PCI_CONF1_ADDRESS and adding
+the `(reg & 3)` offset to the CONFIG_DATA port for 8-bit and 16-bit
+accessors, ensuring compatibility across QEMU and other VMMs.
+Additionally, add an ASSERT_PCI_CONF1_VALID macro to guard against
+illegal accesses that cross DWORD boundaries.
+
+Assisted-by: Gemini:gemini-3.6-flash
+Reviewed-by: Jim Mattson <jmattson@google.com>
+Reviewed-by: David Matlack <dmatlack@google.com>
+Signed-off-by: Irene Wang <yiranirenewang@gmail.com>
+---
+v3 -> v4:
+ - Address comment formatting nits (David)
+
+v2 -> v3:
+ - Add comment in PCI_CONF1_ADDRESS explicitly explaining that clearing
+   bits [1:0] prevents QEMU from double-offsetting accesses (David)
+ - Introduce ASSERT_PCI_CONF1_VALID macro checking that access offset
+   + access size do not read/write past 4-byte window (David)
+
+v1 -> v2:
+ - Enclose macro parameter `dev` in parentheses in PCI_CONF1_ADDRESS
+   (Jim)
+ - Add assert((reg & 3) != 3) in pci_config_readw() and
+   pci_config_writew() to guard against illegal 16-bit accesses
+   crossing DWORD boundaries (Jim)
+
+Link to v3: https://lore.kernel.org/kvm/20260813205742.2752510-2-yiranirenewang@gmail.com/
+Link to v2: https://lore.kernel.org/kvm/20260804232344.2976694-2-yiranirenewang@gmail.com/
+Link to v1: https://lore.kernel.org/kvm/20260730182053.905335-1-yiranirenewang@gmail.com/
+---
+ lib/x86/asm/pci.h | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
+
+diff --git a/lib/x86/asm/pci.h b/lib/x86/asm/pci.h
+index 03e55c27..622d7fd4 100644
+--- a/lib/x86/asm/pci.h
++++ b/lib/x86/asm/pci.h
+@@ -9,22 +9,33 @@
+ #include "pci.h"
+ #include "x86/asm/io.h"
+ 
+-#define PCI_CONF1_ADDRESS(dev, reg)	((0x1 << 31) | (dev << 8) | reg)
++/*
++ * Bits [1:0] offset into data port, not address port. Spec compliant host
++ * bridges ignore them in CONFIG_ADDRESS, but QEMU does not; mask them out here
++ * so QEMU doesn't double-offset the access.
++ */
++#define PCI_CONF1_ADDRESS(dev, reg)	((0x1 << 31) | ((dev) << 8) | ((reg) & ~3))
++
++/* Ensure access offset + size stays within the 4-byte (DWORD) boundary. */
++#define ASSERT_PCI_CONF1_VALID(reg, type) \
++	assert(((reg) & 3) + sizeof(type) <= 4)
+ 
+ static inline uint8_t pci_config_readb(pcidevaddr_t dev, uint8_t reg)
+ {
+     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
+-    return inb(0xCFC);
++    return inb(0xCFC + (reg & 3));
+ }
+ 
+ static inline uint16_t pci_config_readw(pcidevaddr_t dev, uint8_t reg)
+ {
++    ASSERT_PCI_CONF1_VALID(reg, uint16_t);
+     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
+-    return inw(0xCFC);
++    return inw(0xCFC + (reg & 3));
+ }
+ 
+ static inline uint32_t pci_config_readl(pcidevaddr_t dev, uint8_t reg)
+ {
++    ASSERT_PCI_CONF1_VALID(reg, uint32_t);
+     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
+     return inl(0xCFC);
+ }
+@@ -33,19 +44,21 @@ static inline void pci_config_writeb(pcidevaddr_t dev, uint8_t reg,
+                                      uint8_t val)
+ {
+     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
+-    outb(val, 0xCFC);
++    outb(val, 0xCFC + (reg & 3));
+ }
+ 
+ static inline void pci_config_writew(pcidevaddr_t dev, uint8_t reg,
+                                      uint16_t val)
+ {
++    ASSERT_PCI_CONF1_VALID(reg, uint16_t);
+     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
+-    outw(val, 0xCFC);
++    outw(val, 0xCFC + (reg & 3));
+ }
+ 
+ static inline void pci_config_writel(pcidevaddr_t dev, uint8_t reg,
+                                      uint32_t val)
+ {
++    ASSERT_PCI_CONF1_VALID(reg, uint32_t);
+     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
+     outl(val, 0xCFC);
+ }
+-- 
+2.55.0.699.gb54405d56f-goog
 
