@@ -1,60 +1,60 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4186B481A84;
-	Wed, 19 Aug 2026 17:46:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4B5480DC0;
+	Wed, 19 Aug 2026 17:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787161583; cv=none; b=rFZq+wqpn0lsmu8BYGIFuAApbKJ0tdPH3g9+SO/oNejTGYsFKI6D3r1wMuu8yWzfBio2RzDnjHuembmUIxGMOxEkCjuBQO+ekF22cHrcII7Ho5jyNulnLvxUd4lkoOwfRanA1t3zDM0ovcWehVIT2rSvadpGXKoqt2aVQG4hiuY=
+	t=1787161812; cv=none; b=WcDRyf7A6mKlEFJDldPqhAWkdBA6JR51HVW8J5t9IuwlOQ+eT0m43Rqp6loJVUD9J0Yzw6RA8DAp+Mh0Ua3CS1W2iiKfnyOosHE6fXwthl/z5omLiSh/sz5c1O3H/iLqQQ9CitsWbGOQ/zmeFEqhRFYY+drsOYZP5sunKBgq+Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787161583; c=relaxed/simple;
-	bh=ZfKWV65Axutzgai5OyOwaRdkw2AIxVhUViiOjqbc6Dw=;
+	s=arc-20240116; t=1787161812; c=relaxed/simple;
+	bh=1Tv6g9nogzDc21X5QGdGImsg7Sc4DX7Nr4yi0kpvTWc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UzruE0gMp278lnPhCZMIPxZhZHS+XvsEaUrl5OuAIcc64prGwZ5Ey5OkFh5OlkF54FhXCxjM36GL/UvboWIPmDYAEBwtk0YmjMJ0wWHMDMqz4aMiBYYxgkzzPuS5vsDPMzbgcC0yvi6TBlh3ujglV4PSMw3c5DsJVyU+zpKfAzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rBmaRB6s; arc=none smtp.client-ip=148.163.156.1
+	 In-Reply-To:Content-Type; b=QODPl3OwNQ4hDinS5oVSx9fyZBRE+aVS7i2T3/VlwnmIie/3yVl9Jzmiss1Ej1920fxyq5xp1wiiyveshtOaDFvLL1owGGUy14EAL6RsIJhrmhH1BeU5zC/C7O9VfqDRsFn/gxQSZsYht+NM7VC6Utzq4ziplerUSX1S3FRyC/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mKNqMytB; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rBmaRB6s"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67JF1pDj3802082;
-	Wed, 19 Aug 2026 17:46:08 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mKNqMytB"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67JF22vb3697148;
+	Wed, 19 Aug 2026 17:50:02 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=DzqVhy
-	ptumsgVPFBzfP968AfP8hcKmWvp03n9RY0vSs=; b=rBmaRB6sAqonr2fUyG1gp0
-	4+8kKjp/WlUHwDpUXEPKacUR7Iu3F20lwupmku6BJzLBD5qIrjIrcfQ4kpezUNB1
-	IjE6B+8BTcKX7EMp2Liy9Cg+RKlTJs3As3Vg8La2gsSXRGtTpGtfzBh8FVKFUm+z
-	y4/TpJqW+zZpXq60hGms4k1maYXZz7kfzEQ+kO7yqkIb+3aDKauwUAghYLg1V5ID
-	TBwTlKt1IvzLBxZRGE+6GPJpxg09/iJTJt3j+Lsj/L5XAwwRfBKWVTgcFwz5MhsY
-	HBmJ/3aJghxYbkZQ8g2rVAjaYpUbN9B2d+0pPtahWrppEXyAfMzKxfGp/Yb3W+Zg
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ppWGPw
+	CHANCv2S0BY/0ZRVZ9ZgCIzOheO5sTejzcpQQ=; b=mKNqMytB3hRVz1RVbH80AQ
+	woLJmtVguXmc4lBDncz73MufbpA1BZgmW6aLHl+AVa9UwtzwSpWAQSMF5hKxqUk8
+	lhLtXfeNw9NSrOrU0/6bqFXPuks4AS7X0S3VtkiE9jHWBuD04pUwBKNVJXSetc2z
+	8iG7uRjCRF2mNTpJxgpvjU4/UGSlzeN1TDrzIUNa+W3Mnvo+OhByxk5dl8uu2hgW
+	cpeQFTHgTECjW4ueG1CbS3u0QABGplI5EJp3V3SUK7pivI1/icgP2O6NLaOqvRdc
+	ptkQxQWTh8qNQHtiIoqwlmVdTUE3nXImS/HETg+ZHMXvY6PYE9wo0EPWye1gpiLg
 	==
 Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g4yu0dby6-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g4yu458wc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Aug 2026 17:46:08 +0000 (GMT)
+	Wed, 19 Aug 2026 17:50:02 +0000 (GMT)
 Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67JHfNpp029249;
-	Wed, 19 Aug 2026 17:46:07 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g354yhwy4-1
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67JHfHWr029207;
+	Wed, 19 Aug 2026 17:50:01 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g354yhxa8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Aug 2026 17:46:07 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67JHk5P014549618
+	Wed, 19 Aug 2026 17:50:01 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67JHo0AR56164812
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 Aug 2026 17:46:06 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BDE1B5805D;
-	Wed, 19 Aug 2026 17:46:05 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4FC0758057;
-	Wed, 19 Aug 2026 17:46:03 +0000 (GMT)
-Received: from [9.61.252.205] (unknown [9.61.252.205])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 19 Aug 2026 17:46:02 +0000 (GMT)
-Message-ID: <8dd35d81-93b8-412d-81f3-82380f57f68d@linux.ibm.com>
-Date: Wed, 19 Aug 2026 23:16:01 +0530
+	Wed, 19 Aug 2026 17:50:00 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F382C58051;
+	Wed, 19 Aug 2026 17:49:59 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 089F05805C;
+	Wed, 19 Aug 2026 17:49:59 +0000 (GMT)
+Received: from [9.61.88.99] (unknown [9.61.88.99])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 19 Aug 2026 17:49:58 +0000 (GMT)
+Message-ID: <b9f2a8a3-3f0e-440c-a514-638c1ccaff8a@linux.ibm.com>
+Date: Tue, 18 Aug 2026 10:47:25 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,426 +62,58 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] KVM: PPC: Book3S HV: Don't drop pending doorbell
- across L2 entry
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, kvm-ppc@vger.kernel.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-References: <20260812034628.1122115-1-vaibhav@linux.ibm.com>
+Subject: Re: [PATCH v7 08/15] s390/vfio-ap: Transition device migration state
+ from STOP to RESUMING
+To: Anthony Krowiak <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: borntraeger@de.ibm.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
+        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
+        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com
+References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
+ <20260807221834.562851-9-akrowiak@linux.ibm.com>
 Content-Language: en-US
-From: Anushree Mathur <anushree.mathur@linux.ibm.com>
-In-Reply-To: <20260812034628.1122115-1-vaibhav@linux.ibm.com>
+From: "Jason J. Herne" <jjherne@linux.ibm.com>
+In-Reply-To: <20260807221834.562851-9-akrowiak@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=MthiLWae c=1 sm=1 tr=0 ts=6a85ebe0 cx=c_pps
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE5MDEzNiBTYWx0ZWRfXx2iIh4KbMN7k
+ gjqjgHjTtrWcbBBd/F1K+bEfGaQFqCUtDb00ww0T5UCGgEf+tCNjoNamXeDKfwSrn2/slk7kDLs
+ 198JdPW1vYg6JvP5+NuphrttzFWV7u4=
+X-Proofpoint-GUID: FbxmWILMpt8Uc1eBc3Psw9wOkkqIq1yh
+X-Proofpoint-ORIG-GUID: FbxmWILMpt8Uc1eBc3Psw9wOkkqIq1yh
+X-Authority-Analysis: v=2.4 cv=RPmD2Yi+ c=1 sm=1 tr=0 ts=6a85ecca cx=c_pps
  a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
  a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=mXvVHTAJ997E8FGdE58A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 2yjIeJqpd8aRX0-n1dJL3FCXPNMoBL7V
-X-Proofpoint-GUID: 2yjIeJqpd8aRX0-n1dJL3FCXPNMoBL7V
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE5MDEzNiBTYWx0ZWRfXz/xSjLRlzrT/
- MXaxax3DTZUn8tpjWku6CbW3X+H6WYgT04WUVZg1sIrXj+BsTva58iaBAnVGceCIMkvCgTvfxel
- m6Fgb/EeKiQuhhdtiFeavAJHW/G7YPo=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE5MDEzNiBTYWx0ZWRfX4L5EYL2hQXyl
- g9yaJKO5Clsf1aJ/aZon8YNghlADCtBHIGCjioPFrxFegoC2HqkUr+jNsiE+0XJqAvRCmVy+X1f
- 2Al3RY3E8fWfzJzkjTIa6DKDgm3o2hP3jSLkC99iTlaBDlCr2jOr87Q9IEB/gi45/KpTpiYXn5y
- mDmgjw1htcexsRul7Nkn2DS5Xer7PAz37Y6cKlbaqJftZpinibuQTsR5WI6ul4NJ8SvcAZ/oGMf
- CCVmFRDw1GKopPR8XDAsW96eW9s+otFHQp4sQyHTGFHs1tWrrWKQpOyd2g//iSEiUTl5h5pOSAF
- Z64oQRScTYnbe6qi23bHdeQyKR08Mbq7rBGMpr9kPNA8eP/Hfknbj/Ga3hvlc1SgS63cIBi7TKq
- SfUO5WOQ9cv2YdmobdsuaUQYZcpG98X9czYO2bnwtuTPrmHVS9lFZhPWZDrEb9kP9wYPsALNKm4
- 788ltpCqGcFJMthMCuQ==
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=7Uee-v3Jn_Um78p1p_UA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE5MDEzNiBTYWx0ZWRfX/Dyo/ay2r5Hc
+ z2Bwqp6kXxLIXh2rMgzzczFBkuF0gw/LCDr+3yah+JI42gN4Gg3ovWp4Sr5J+/clgADpkVwGySF
+ 6v3Xql8S71KhFm3QUmFPEYlzS8rhRdrTxA4UJcePcZ5O5XibLbrdSWAnSfY7kKsILf2m7CBjXn+
+ wAlxbwSptNLhtC9dIRLnEpDe8f9MHnNIQzasPnoGZhivTs4UTSnyYqlkrUUlwY+xZK2xpbR3qxC
+ CRz4zlyNMzDwTSb/HHslqE3FzkmcRsGzv6l1/ic//4ihAkFgENOR3bc/gpqTGmuT9RJAFgrGw9r
+ 0vB5IfygcpT2E9sGcXZJWbmzfdsDy2Dhsmk/WOqhAUc/25lThIV3HLzTd+9ywg29SJYSINMHpZ3
+ fckoKaYu12ssgBXFiyoYyXV+Xkz1SUA6QcAYZaePpix+9YR9MmV5HHZS41xcq/dTc3jUOJARVUd
+ mC97XATD+6DoW1xcLew==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-19_04,2026-08-19_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 impostorscore=0 bulkscore=0 phishscore=0 clxscore=1015
- spamscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
+ clxscore=1015 phishscore=0 adultscore=0 spamscore=0 priorityscore=1501
+ bulkscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608190136
 
 
 
-On 12/08/26 9:16 AM, Vaibhav Jain wrote:
-> On nestedv2 the L1 converts a pending doorbell into guest DPDES state at
-> the top of kvmhv_vcpu_entry_nestedv2() and immediately forgets about it:
->
-> 	if (vcpu->arch.doorbell_request) {
-> 		vcpu->arch.doorbell_request = 0;
-> 		kvmppc_set_dpdes(vcpu, 1);
-> 	}
->
-> Clearing 'doorbell_request' at this point assumes that handing DPDES to the
-> L0 is equivalent to the L2 having taken the doorbell. That is not true, and
-> the doorbell can be lost in two ways:
->
->    - The block runs before the lazy_irq_pending() check, so the doorbell is
->      consumed even on the path that returns 0 without ever calling
->      H_GUEST_RUN_VCPU.
->
->    - DPDES stays pending in the L2 until it is actually delivered. The L2
->      may exit for an unrelated reason (hcall, page fault, HDEC) with the
->      doorbell still set, typically because it was running with MSR[EE]=0.
->      Nothing reloads DPDES afterwards, so the L1 never learns this.
->
-> Once 'doorbell_request' has been cleared, the L1 has no record of the
-> pending doorbell. kvmppc_doorbell_pending() returns false, so
-> kvmppc_read_dpdes() reports the target thread as idle when a sibling vCPU
-> emulates 'mfspr DPDES', and the vCPU can be treated as having no work
-> pending and blocked. From the L2's point of view the doorbell is silently
-> lost, which shows up as an SMT guest hanging on a doorbell-based IPI.
->
-> Fix this by converting 'doorbell_request' to an atomic to track the L2's
-> DPDES rather than being consumed by entry. This also enables new doorbells
-> to be queued up on a vcpu while and active doorbell request is being
-> handled.
->
-> Since kvm_vcpu_arch 'doorbell_request' is also shared across APIv1 and
-> Bare-Metal KVM infrastructure on PPC64, the patch also updates these
-> paths to use kernel's 'atomic_t' helpers.
->
-> With this following changes to kvmhv_vcpu_entry_nestedv2() code flow are
-> done:
->
->    - inject DPDES after the early-return paths and before
->      kvmhv_nestedv2_flush_vcpu() serializes it into the vcpu run input
->      buffer, and no longer clear 'doorbell_request' there,
->
->    - after H_GUEST_RUN_VCPU, reload DPDES from the L0. The run output only
->      carries the state the L0 chose to return and the 'valids' bitmap is
->      zeroed on exit, so an explicit kvmhv_nestedv2_cached_reload() is
->      needed to see the L2's current value,
->
->    - if DPDES is still set the doorbell was not delivered, so keep
->      'doorbell_request' pending so that it is re-injected on the next
->      entry; otherwise clear it.
->
-> This keeps a pending doorbell visible to the L1 for as long as the L2 has
-> not consumed it, so vCPU wakeup and DPDES emulation on sibling vCPUs stay
-> consistent with the L2's actual state.
->
-> Testing
-> =======
-> This patch has been tested with continuous migration for a APIv2 KVM guest
-> running stress-ng workload with lots of IPIs flying around, top of a
-> PowerVM-LPAR and seems to work. Without the patch the migration loop used
-> to eventually endup in KVM guest reporting lockups, which arent seen
-> anymore with this patch.
->
-> I haven't tested it yet with Bare-Metal nor APIv1 based PPC64 KVM
-> guests. Will be able to share their results (Hopefully) in next version of
-> this patch.
->
-> Fixes: 54ec2bd9e017 ("KVM: PPC: Book3S HV nestedv2: Fix doorbell emulation")
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> Assisted-by: Claude:Opus-5
->
-> ---
-> Change-log:
-> Since V1:
-> https://lore.kernel.org/linuxppc-dev/20260803034426.44249-1-vaibhav@linux.ibm.com/T/#u
-> * Address review comments around a typo [Shashiko]
-> * Address a race condition which Shashiko had pointed to [Shashiko]
-> * Updated the patch description and added test results
-> * Refactored 'doorbell_request' to an 'atomic_t'
-> * Updated code to use atomic_t helpers
-> ---
->   arch/powerpc/include/asm/kvm_host.h   |  2 +-
->   arch/powerpc/kvm/book3s_hv.c          | 39 ++++++++++++++++-----------
->   arch/powerpc/kvm/book3s_hv_builtin.c  |  3 +--
->   arch/powerpc/kvm/book3s_hv_nested.c   |  9 ++++---
->   arch/powerpc/kvm/book3s_hv_p9_entry.c |  7 +++--
->   5 files changed, 34 insertions(+), 26 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-> index 2d139c807577..03fac7422aa2 100644
-> --- a/arch/powerpc/include/asm/kvm_host.h
-> +++ b/arch/powerpc/include/asm/kvm_host.h
-> @@ -775,7 +775,7 @@ struct kvm_vcpu_arch {
->   	unsigned long pending_exceptions;
->   	u8 ceded;
->   	u8 prodded;
-> -	u8 doorbell_request;
-> +	atomic_t doorbell_request;
->   	u8 irq_pending; /* Used by XIVE to signal pending guest irqs */
->   	unsigned long last_inst;
->   
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 61dbeea317f3..fb80c13dbb29 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -15,6 +15,7 @@
->    * by Alexander Graf <agraf@suse.de>.
->    */
->   
-> +#include "asm/guest-state-buffer.h"
->   #include <linux/kvm_host.h>
->   #include <linux/kernel.h>
->   #include <linux/err.h>
-> @@ -881,7 +882,7 @@ static bool kvmppc_doorbell_pending(struct kvm_vcpu *vcpu)
->   	int thr;
->   	struct kvmppc_vcore *vc;
->   
-> -	if (vcpu->arch.doorbell_request)
-> +	if (atomic_read(&vcpu->arch.doorbell_request))
->   		return true;
->   	if (cpu_has_feature(CPU_FTR_ARCH_300))
->   		return false;
-> @@ -1557,17 +1558,16 @@ static int kvmppc_emulate_doorbell_instr(struct kvm_vcpu *vcpu)
->   		tvcpu = kvmppc_find_vcpu(kvm, vcpu->vcpu_id - thr + arg);
->   		if (!tvcpu)
->   			break;
-> -		if (!tvcpu->arch.doorbell_request) {
-> -			tvcpu->arch.doorbell_request = 1;
-> +		if (atomic_inc_return(&tvcpu->arch.doorbell_request) >= 1)
->   			kvmppc_fast_vcpu_kick_hv(tvcpu);
-> -		}
->   		break;
->   	case OP_31_XOP_MSGCLRP:
->   		arg = kvmppc_get_gpr(vcpu, rb);
->   		if (((arg >> 27) & 0x1f) != PPC_DBELL_SERVER)
->   			break;
-> -		vcpu->arch.vcore->dpdes = 0;
-> -		vcpu->arch.doorbell_request = 0;
-> +
-> +		if (atomic_dec_return(&vcpu->arch.doorbell_request) <= 0)
-> +			vcpu->arch.vcore->dpdes = 0;
->   		break;
->   	case OP_31_XOP_MFSPR:
->   		switch (get_sprn(inst)) {
-> @@ -2313,7 +2313,7 @@ static int kvmppc_get_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
->   		 * On POWER8, doorbell_request is 0.
->   		 */
->   		if (cpu_has_feature(CPU_FTR_ARCH_300))
-> -			*val = get_reg_val(id, vcpu->arch.doorbell_request);
-> +			*val = get_reg_val(id, atomic_read(&vcpu->arch.doorbell_request));
->   		else
->   			*val = get_reg_val(id, vcpu->arch.vcore->dpdes);
->   		break;
-> @@ -2565,7 +2565,7 @@ static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
->   		break;
->   	case KVM_REG_PPC_DPDES:
->   		if (cpu_has_feature(CPU_FTR_ARCH_300))
-> -			vcpu->arch.doorbell_request = set_reg_val(id, *val) & 1;
-> +			atomic_inc(&vcpu->arch.doorbell_request);
->   		else
->   			vcpu->arch.vcore->dpdes = set_reg_val(id, *val);
->   		break;
-> @@ -4253,10 +4253,6 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
->   	int trap;
->   	long rc;
->   
-> -	if (vcpu->arch.doorbell_request) {
-> -		vcpu->arch.doorbell_request = 0;
-> -		kvmppc_set_dpdes(vcpu, 1);
-> -	}
->   
->   	io = &vcpu->arch.nestedv2_io;
->   
-> @@ -4265,6 +4261,10 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
->   	if (lazy_irq_pending())
->   		return 0;
->   
-> +	/* Set DPDES if any doorbell is requested */
-> +	if (atomic_read(&vcpu->arch.doorbell_request) > 0)
-> +		kvmppc_set_dpdes(vcpu, 1);
-> +
->   	rc = kvmhv_nestedv2_flush_vcpu(vcpu, time_limit);
->   	if (rc < 0)
->   		return -EINVAL;
-> @@ -4298,6 +4298,17 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
->   
->   	timer_rearm_host_dec(*tb);
->   
-> +	/* Check if privileged door bell was requested and handled */
-> +	if (atomic_read(&vcpu->arch.doorbell_request) > 0) {
-> +		/* In case PHYP doesn't return updated dpdes in output gsb */
-> +		if (vcpu->arch.vcore->dpdes)
-> +			kvmhv_nestedv2_cached_reload(vcpu,
-> +						     KVMPPC_GSID_DPDES);
-> +		/* if dpdes was handled then reduce the doorbell count */
-> +		if (!vcpu->arch.vcore->dpdes)
-> +			atomic_dec(&vcpu->arch.doorbell_request);
-> +	}
-> +
->   	/* Record context switch and guest_run_time data */
->   	if (kvmhv_get_l2_counters_status())
->   		do_trace_nested_cs_time(vcpu);
-> @@ -4356,9 +4367,7 @@ static int kvmhv_vcpu_entry_p9_nested(struct kvm_vcpu *vcpu, u64 time_limit, uns
->   	 * enables us to receive doorbells when H_ENTER_NESTED is
->   	 * in progress for this vCPU
->   	 */
-> -
-> -	if (vcpu->arch.doorbell_request)
-> -		vcpu->arch.doorbell_request = 0;
-> +	atomic_set(&vcpu->arch.doorbell_request, 0);
->   
->   	/*
->   	 * When setting DEC, we must always deal with irq_work_raise
-> diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
-> index fa0e3a22cac0..76bda278cff9 100644
-> --- a/arch/powerpc/kvm/book3s_hv_builtin.c
-> +++ b/arch/powerpc/kvm/book3s_hv_builtin.c
-> @@ -594,11 +594,10 @@ void kvmppc_guest_entry_inject_int(struct kvm_vcpu *vcpu)
->   		}
->   	}
->   
-> -	if (vcpu->arch.doorbell_request) {
-> +	if (atomic_dec_if_positive(&vcpu->arch.doorbell_request) >= 0) {
->   		mtspr(SPRN_DPDES, 1);
->   		vcpu->arch.vcore->dpdes = 1;
->   		smp_wmb();
-> -		vcpu->arch.doorbell_request = 0;
->   	}
->   }
->   
-> diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
-> index 22e616662255..cc81089b2bcd 100644
-> --- a/arch/powerpc/kvm/book3s_hv_nested.c
-> +++ b/arch/powerpc/kvm/book3s_hv_nested.c
-> @@ -32,7 +32,7 @@ void kvmhv_save_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state *hr)
->   	struct kvmppc_vcore *vc = vcpu->arch.vcore;
->   
->   	hr->pcr = vc->pcr | PCR_MASK;
-> -	hr->dpdes = vcpu->arch.doorbell_request;
-> +	hr->dpdes = atomic_read(&vcpu->arch.doorbell_request);
->   	hr->hfscr = vcpu->arch.hfscr;
->   	hr->tb_offset = vc->tb_offset;
->   	hr->dawr0 = vcpu->arch.dawr0;
-> @@ -105,7 +105,7 @@ static void save_hv_return_state(struct kvm_vcpu *vcpu,
->   {
->   	struct kvmppc_vcore *vc = vcpu->arch.vcore;
->   
-> -	hr->dpdes = vcpu->arch.doorbell_request;
-> +	hr->dpdes = atomic_read(&vcpu->arch.doorbell_request);
->   	hr->purr = vcpu->arch.purr;
->   	hr->spurr = vcpu->arch.spurr;
->   	hr->ic = vcpu->arch.ic;
-> @@ -143,7 +143,7 @@ static void restore_hv_regs(struct kvm_vcpu *vcpu, const struct hv_guest_state *
->   	struct kvmppc_vcore *vc = vcpu->arch.vcore;
->   
->   	vc->pcr = hr->pcr | PCR_MASK;
-> -	vcpu->arch.doorbell_request = hr->dpdes;
-> +	atomic_set(&vcpu->arch.doorbell_request, hr->dpdes);
->   	vcpu->arch.hfscr = hr->hfscr;
->   	vcpu->arch.dawr0 = hr->dawr0;
->   	vcpu->arch.dawrx0 = hr->dawrx0;
-> @@ -176,7 +176,8 @@ void kvmhv_restore_hv_return_state(struct kvm_vcpu *vcpu,
->   	 *   a) Sent after H_ENTER_NESTED was called on this vCPU (arch.doorbell_request would be 1)
->   	 *   b) Doorbell was not handled and L2 exited for some other reason (hr->dpdes would be 1)
->   	 */
-> -	vcpu->arch.doorbell_request = vcpu->arch.doorbell_request | hr->dpdes;
-> +	if (hr->dpdes)
-> +		atomic_inc(&vcpu->arch.doorbell_request);
->   	vcpu->arch.hfscr = hr->hfscr;
->   	vcpu->arch.purr = hr->purr;
->   	vcpu->arch.spurr = hr->spurr;
-> diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-> index 34bc0a8a1288..fc44d8aa7a6a 100644
-> --- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
-> +++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-> @@ -610,10 +610,9 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
->   
->   	if (vc->pcr)
->   		mtspr(SPRN_PCR, vc->pcr | PCR_MASK);
-> -	if (vcpu->arch.doorbell_request) {
-> -		vcpu->arch.doorbell_request = 0;
-> +
-> +	if (atomic_dec_if_positive(&vcpu->arch.doorbell_request) >= 0)
->   		mtspr(SPRN_DPDES, 1);
-> -	}
->   
->   	if (dawr_enabled()) {
->   		if (vcpu->arch.dawr0 != host_dawr0)
-> @@ -838,7 +837,7 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
->   
->   	dpdes = mfspr(SPRN_DPDES);
->   	if (dpdes)
-> -		vcpu->arch.doorbell_request = 1;
-> +		atomic_inc(&vcpu->arch.doorbell_request);
->   
->   	vc->vtb = mfspr(SPRN_VTB);
->   
-Hi Vaibhav,
+On 8/7/26 6:18 PM, Anthony Krowiak wrote:
+> Transitioning from VFIO_DEVICE_STATE_STOP to VFIO_DEVICE_STATE_RESUMING
+> starts a process of restoring the device state of the vfio device on the
+> target system. To prepare for restoring the device state, open a file
 
-I have tested this v2 patch and it is still giving me the issue I 
-reported, so here is my analysis:
+destination system is a better word choice here, target is somewhat 
+ambiguous. You can claim to "target" either the source or the destination.
 
-a) Without applying the patch :
+Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
 
-1) Start the guest and run stress-ng as below for sometime
-localhost:~ # stress-ng --cpu 4 --vm 2 --vm-bytes 1G --hdd 2 --hdd-bytes 
-1G --sched other --timeout 3600000s
-stress-ng: info:  [1464] setting to a 41 days, 16 hours, 0 secs run per 
-stressor
-stress-ng: info:  [1464] dispatching hogs: 4 cpu, 2 vm, 2 hdd
-
-
-
-2) Start the migration from H1 to H2:
-
-ltc-lp7:~ # virsh migrate --live --domain sles16_anu 
-qemu+ssh://10.xx.xx.xx/system --verbose --undefinesource --persistent 
---auto-converge --postcopy
-(root@10.xx.xx.xx) Password:
-Migration: [100.00 %]
-
-3) Migration got completed but guest is not getting recovered from 
-continuous softlockups
-
-[ 1336.003836][    C1] watchdog: BUG: soft lockup - CPU#1 stuck for 
-977s! [htxd_monitor:1337]
-[ 1336.006834][    C4] watchdog: BUG: soft lockup - CPU#4 stuck for 
-1002s! [rcu_exp_par_gp_:19]
-[ 1346.015839][    C0] BUG: workqueue lockup - pool cpus=1 node=0 
-flags=0x0 nice=0 stuck for 1090s!
-[ 1346.016355][    C0] BUG: workqueue lockup - pool cpus=3 node=0 
-flags=0x0 nice=0 stuck for 1107s!
-[ 1346.016874][    C0] BUG: workqueue lockup - pool cpus=7 node=0 
-flags=0x0 nice=0 stuck for 1093s!
-[ 1356.007835][    C6] watchdog: BUG: soft lockup - CPU#6 stuck for 
-912s! [systemd:1353]
-[ 1356.008835][    C7] watchdog: BUG: soft lockup - CPU#7 stuck for 
-998s! [systemd-journal:570]
-[ 1360.003836][    C1] watchdog: BUG: soft lockup - CPU#1 stuck for 
-999s! [htxd_monitor:1337]
-[ 1360.006834][    C4] watchdog: BUG: soft lockup - CPU#4 stuck for 
-1024s! [rcu_exp_par_gp_:19]
-[ 1368.933835][    C4] rcu: INFO: rcu_preempt self-detected stall on CPU
-[ 1368.933973][    C4] rcu:     4-....: (1129830 ticks this GP) 
-idle=afc4/1/0x4000000000000002 softirq=3694/428556 fqs=259639
-[ 1368.934106][    C4] rcu:              hardirqs   softirqs  csw/system
-[ 1368.934188][    C4] rcu:      number:        1     444039 0
-[ 1368.934271][    C4] rcu:     cputime:        3          8 1096165  
-  ==> 1110021(ms)
-[ 1368.934373][    C4] rcu:     (t=1140022 jiffies g=6177 q=1684 ncpus=8)
-[ 1376.224839][    C0] BUG: workqueue lockup - pool cpus=1 node=0 
-flags=0x0 nice=0 stuck for 1120s!
-[ 1376.225307][    C0] BUG: workqueue lockup - pool cpus=3 node=0 
-flags=0x0 nice=0 stuck for 1138s!
-[ 1376.225428][    C0] BUG: workqueue lockup - pool cpus=5 node=0 
-flags=0x0 nice=0 stuck for 715s!
-[ 1376.225548][    C0] BUG: workqueue lockup - pool cpus=6 node=0 
-flags=0x0 nice=0 stuck for 1027s!
-[ 1376.225667][    C0] BUG: workqueue lockup - pool cpus=7 node=0 
-flags=0x0 nice=0 stuck for 1123s!
-[ 1444.006835][    C4] watchdog: BUG: soft lockup - CPU#4 stuck for 
-1100s! [rcu_exp_par_gp_:19]
-
-
-b) Even after applying the patch also it is giving same softlockup issue 
-as mentioned above:
-Though I have enough vcpus and memory on the guest (16 vcpus , 13Gi of 
-memory)  and ample amount of memory and cpus
-present on host still these softlockups are happening after applying the 
-patch too. I tried reducing stress also on the guest
-but still this issue is seen.
-
-stress-ng --cpu 4 --vm 2 --vm-bytes 1G --hdd 2 --hdd-bytes 1G --sched 
-other --timeout 3600000s
-
-If you are planning to send next version of this patch,
-Please do add my reported-by:
-Reported-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
