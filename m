@@ -1,57 +1,57 @@
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8EB47DD50
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 16:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035C847F2E1
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 16:33:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787070593; cv=none; b=YNmLyVHbFyP9LP5yddTm8CL54qrllF8aIidYNTMKuHj0HyWuHZtjYFZBLOhFeIt+YhbxiJiUNg8uKaJDDeFig9cAwBJWbjVnFS5AxQN1Z6/LsqwbVJXUtP0BqDGLipiLGDzWGg8jr10muaS+Y9/LJg1eUFNdq4N3NVcEEZaPy7k=
+	t=1787070805; cv=none; b=Vbzi9JP3SQuKmwqHmXHhMDCQTqOaEZQP/C4m8oFEm/AbpYgOlPK2Oot+RYbKLyX3FTuBP+fBOulyKC/+xjBLFWu/js8vEo6UAe/POXy8f3JjfyQB4Ekc5M/8iWWv8u+zXZ9VjZEKZAu9nV74v3jLl9rjcPFEhezZmQuPRhnqez0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787070593; c=relaxed/simple;
-	bh=vC2RlolhkLS2+1s4l2UramjQAZbiE9X0zYRFDEG/2wo=;
+	s=arc-20240116; t=1787070805; c=relaxed/simple;
+	bh=0igr8Zes/VrYG9fBE3Cru4sD9Bym8t8t+dDC8+h+gAE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=cHA1A9H7LOQL1gwT0Vx/U7zsQnpcPWGbFKYDYBvm5NV/QUKy2+ne0yEYR04MgsjHJdt+VYi94OGz03ohlFxigXfvs/cyOxyWJOJ9sDql3tmBNkPJ5E5dY0wKmgLyMwZ9tYQhz4hmUonJqIYEHW4GY6eSVuhxfPu9Vf6g+EhMiZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=alIWfv8o; arc=none smtp.client-ip=209.85.208.70
+	 To:Cc:Content-Type; b=sPep6ohgEeLbX2/Me8fICg/58bgGYVeNDV/SR3ZuOBrbZIB0m/sCPF6WOkWYAN4Sik5o4EMLBfGKSCNaYnl9Yb+fG4egyZ0Hg5uazj/Ud5Mge8bisHuygdxOjHgXfYFrRG7FYYjQSMMsrpP2CT/ISv/JHXuFr4ZRZmczo7xOhzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y2CmzhOQ; arc=none smtp.client-ip=209.85.218.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="alIWfv8o"
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6a0a4a22bf0so43397a12.0
-        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 09:29:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y2CmzhOQ"
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c1686e23b9cso57182866b.0
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 09:33:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787070590; x=1787675390; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1787070802; x=1787675602; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/eyzaZNjJLEyd0fKbeRAuoUQBuqF6sdPIInoyVaJmj0=;
-        b=alIWfv8obtNxF/dFCsPGwQF6yl0IAtic7uyJY45RPXxmzItjOHsoTnLvTOqjQG4lQ1
-         jYLvbizt+0iYvVb7OtsJuO1WN9r4gUc+sBNwhn4D3Aya108cgty6TMhGypazo08HdU6B
-         DILCRbQFLZt+BJZZZC+yAnJrcgQ3lgOyholMTzXb/rqQUeZVC5vCRXAStYO5VOWwrr6w
-         8c1KLdeNVwVwENb5fRr6ohDFZOvaNmdRr2eRsixg6dCl6PZRown8FQpck6Sz2i3jvZ2R
-         fs9W/RGurCKuf5ohfhDwyCvCEnQvnmQhzxbA6VsB4y7URBQNtpxa0beiOdfp8hWnsafN
-         FJYg==
+        bh=NYCxMBx4BOPF4yBl5aKpfQIqd2cMC8x5BNz4F0URw58=;
+        b=Y2CmzhOQUiBpcQdqp7SRGIDAIpVBtJP7x53ivlFZPPvsipZCsIiKakPMi5TtmYUbWB
+         W5dbbG/qcSqKmAewTxQua3qwspuJOOlM34loyMPQAB8YpHdgQh+Fo3Rq4+8tWYti1N+/
+         m0+SSoP6tsy8kpMREm+5HVJ5uYLbMgtX9BKEn9WhzKCs2fEjoQK69q/GACruN2sSdqj0
+         4PLBqlcyC2CtT5XMwPGS3jJ4HdNbwiEp3jT/QLAL6qg5exaRx5rDaIF5wYJRCe2bT+Zx
+         aT/3v4VX657/Cvcr7CHOfi58xcJ9Dw5r2UK1MQF5yqYaDbzJrFylXOp8JLkflQxHm8DE
+         d63A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787070590; x=1787675390;
+        d=1e100.net; s=20251104; t=1787070802; x=1787675602;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/eyzaZNjJLEyd0fKbeRAuoUQBuqF6sdPIInoyVaJmj0=;
-        b=Sek+tY0ziLDkJ3lKZXYtmB4b4KKfcdOBmepzvq7y1ZpTZch9k9JGdySQMxIIomWRFM
-         MftMDZw0UGCFgCJgpdtNFbNK+4zPgqI7lhQXq+FFxJZ3F6U0N/Ywb0VYpAX465m118qO
-         Zoq/L6+7tiNN+/F3d+/vlBrEiSfjlTmD9JFWj4LvhwrS0RGUxP+bmVtIrXqJbEnywCRI
-         U2geHaU47Nj0V1eDTVxYBWxk64qq/aY8FOZZyAhevNBF0S3Vcp4CUeJNzDw3Ia9juS9c
-         V5tKMy8LzPNQjAqKHPNPWQDQ8IE7H4LgXLL4cpsf1Bn04ZSH00nXDscExdBtFuXJVgAS
-         vhjg==
-X-Forwarded-Encrypted: i=1; AHgh+RqeaofrE+VNMWwoEiPirp5oVuVte/yNFjxYIWrC1VlHK5dh9Cyizqm0o3stTtAmpUX0p3Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywv5PvIjDZPAXGMAk8oMgBJvS4yRd03bXyCc1BwIon+tiBi/W6p
-	Lhqy44QVil41KRmRUfpzPJorHCVUyT1Fc2S5gRp5/6xtJqyvh0aMuR6bY6Cn2fm/F0Tk07/Iw2g
-	BJM8lsHn8VPbRbjmAtw==
-X-Received: from edts26.prod.google.com ([2002:aa7:cb1a:0:b0:6a1:f410:2ec5])
+        bh=NYCxMBx4BOPF4yBl5aKpfQIqd2cMC8x5BNz4F0URw58=;
+        b=S3fFFp/hxtcTZZ1DfLV31LDxjCsjIRbUapyNkJCus4/HvWZ9JNDUCmo0874GdJ/XRW
+         h5Ld1ATk0UWqsS8HNGrIcgS6lOgqlGGSz3T/DqgDDtvdsI3J/vWTMue2e+iOcEyJY64G
+         r3l0cdTiVz8G5enRU+Wmis3yzmv+dS6RmQFEWzpekcAkZaQlL28cEEExK7fmxadsX0tx
+         7Br6tJbPU9cNFPXYmxnpaJcgJblAdW5xU232BzS+4TAJotN7yLr5BJxuSjkvTXuQCcYy
+         nZar7ibLzKTsBJX5pmKzUroF+w/ar1u47DYwWKnDmI4TNb/zzPkiml0Z3VOSyIK4xTZC
+         j9DQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqUmKW3+dPQ87+tDQ2U6e0BqNAIP78Q3CMLp2Q651xbGoeoLjI21qb/kSIZ0v3ZLkacoa4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKe3sl8EoC9BFYidombmJYC8IfCBcknjlSj0OfpPZEgt3b8CgA
+	3UY2ZQo305YFPdGNqeh05kkoVuSvhdzUUckQ85MTkAJFFalobmKu5QbKVaP9+clXw7a6ZWzNykp
+	SvJNs4uT99up/0hI+sg==
+X-Received: from edea16.prod.google.com ([2002:a05:6402:a190:b0:697:8356:d9d6])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:e85:b0:6a3:edb6:2228 with SMTP id 4fb4d7f45d1cf-6a3edb6285cmr3681617a12.17.1787070589499;
- Tue, 18 Aug 2026 09:29:49 -0700 (PDT)
-Date: Tue, 18 Aug 2026 16:29:48 +0000
-In-Reply-To: <anpdYD1UaO0ffQgi@google.com>
+ 2002:a05:6938:a091:10b0:c15:a487:3482 with SMTP id a640c23a62f3a-c2188a9df89mr438613166b.21.1787070802257;
+ Tue, 18 Aug 2026 09:33:22 -0700 (PDT)
+Date: Tue, 18 Aug 2026 16:33:21 +0000
+In-Reply-To: <anpieno-RyRl54fp@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -59,9 +59,9 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260728121138.1103610-1-tarunsahu@google.com>
- <20260728121138.1103610-5-tarunsahu@google.com> <anpdYD1UaO0ffQgi@google.com>
-Message-ID: <9huzik57v1c3.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 04/11] KVM: Track weak reference to vm_file in struct kvm
+ <20260728121138.1103610-8-tarunsahu@google.com> <anpieno-RyRl54fp@google.com>
+Message-ID: <9huzfr0bv166.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v4 07/11] KVM: guest_memfd: Add support for freezing mappings
 From: tarunsahu@google.com
 To: Sean Christopherson <seanjc@google.com>
 Cc: ackerleytng@google.com, fuad.tabba@linux.dev, 
@@ -81,38 +81,35 @@ Content-Type: text/plain; charset="UTF-8"
 Sean Christopherson <seanjc@google.com> writes:
 
 > On Tue, Jul 28, 2026, Tarun Sahu wrote:
->> - Add a weak reference 'vm_file' in struct kvm under
+>> +/**
+>> + * kvm_gmem_freeze - Freeze or unfreeze a guest_memfd inode mapping.
+>> + * @inode: The guest_memfd inode.
+>> + * @freeze: True to freeze, false to unfreeze.
+>> + *
+>> + * This API is used strictly during the live update / preservation transition
+>> + * window to prevent host userspace and guest-side faults from making any
+>> + * mapping modifications (such as fallocate or page fault allocation)
+>> + * to the guest_memfd page cache.
+>> + *
+>> + * Synchronization Strategy (Sleepable RCU):
+>> + * To avoid high-contention VFS locks (like inode_lock or
+>> + * filemap_invalidate_lock) on the vCPU page fault hot paths, this subsystem
+>> + * implements a lightweight, system-wide Sleepable RCU (SRCU) mechanism
+>> + * (`kvm_gmem_freeze_srcu`):
+>> + *
+>> + * Global vs. Per-Inode SRCU
+>> + * ======================
+>> + * A single system-wide global static `srcu_struct` is used instead of a
+>> + * per-inode SRCU structure to completely prevent unprivileged users from
+>> + * exhausting the host's per-CPU memory allocator. 
 >
-> "vm_file" is effectively already claimed by vm_area_struct.vm_file.  *If* we go
-> this route, I would very strongly prefer to take a dependency on "vfio: Use
-> file-based reference counting for KVM"[*].  I'll poke that thread, we really
-> should land that one particular patch long before the s390-is-arm64
-> insanity.
+> This argument doesn't hold up given that each kvm structure has two SRCU structs.
 
-[*] Seem interesting way to solve this. So we will also have vm_file
-directly in guest_memfd instead of struct kvm and refcounting on vm_file
-instead struct kvm?
+Ohh okay. I was very skeptic that per-cpu structure are not counted in
+cgroups and liveupdate is once in a while usecase So avoided making it
+per-cpu. But otherwise I am fine with going with per-cpu. Will take care
+of it in next revision.
 
-struct gmem_file {
--	struct kvm *kvm;
-+	struct file *vm_file;
-	struct xarray bindings;
-	struct list_head entry;
-};
+Thanks
+~Tarun
 
->
-> Empashish on "if" because this all feels backwards.
-
-> It's not at all clear to
-> me why liveupdate goes directly to guest_memfd, but then requires a token associated
-> with the VM.
-
-guest_memfd can be recreated without having the struct kvm, Which there
-is no way to pass it on retrieval path. So the function
-kvm_gmem_luo_retrieve() gets this VM token, find the vm_file (hence
-struct kvm) associated with the preserved guest_memfd. Now it create a
-fresh guest_memfd by calling kvm_gmem_create(..., kvm). And populate
-preserved flags and folios to this guest_memfd.
-
->
-> https://lore.kernel.org/all/20260731130902.654679-2-seiden@linux.ibm.com
