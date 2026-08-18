@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6AE47FB01
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 17:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91EDD3AAF65
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 17:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787072626; cv=none; b=gvlFjiW5ycKWzox9RqdqlelLJYp/kprzQVKqDtew0r0krE3ypPnMXcGFYtzOOZ1/MzdXbvit/HuPUMs3ZYvMyJlGhp1dn9Qji0iV9yoT57lbcJRMOBJ2QXQyxuvHhjVwFlvrmxwZ8NcAJB/7ZYmVjIzmi7O10WxrJswAQu9+rB4=
+	t=1787072735; cv=none; b=hdScYn54ffq50ZMwI3E7tqWwV6NVzmzeO2LkjYFhpPOTRsyuzfYzctO43a1SjOgprwMUE5WbtFXBo2m6FwfAp0EzB5nqnmpCLV1UHAWDLzozCbXZLVIOfXa+DGsIdyQOqlkR2jif9cK0ZoH5IlC1YraE/Ae+LL/7OsiiNqlhCnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787072626; c=relaxed/simple;
-	bh=iLms/lfYAhix7MquwNCpGd9VgWe/28m6UfqKVQmh9iM=;
+	s=arc-20240116; t=1787072735; c=relaxed/simple;
+	bh=alJVkv9Zl8Feffwv59ZU+q7P6tNHAmdNsmaRMU05vBc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=aoYsC07zzU4s9uPs9oEDhaPirodkxmuh8cQjpNC1fCHyCgiJtXOvtS+BGmCADJHLkmPfrimlaXpR7IjsfhicFoDIwmtcRRh9ynXeSQkWLzBIaEY3b3vD1USw4mTbDJrL3a3Z01/lJQr7YJOt1CkKx0+HElglt0bVPuDJykJxKSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HgyWMgW+; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=iL38hNo2Yqlx5RdC3akqNGXdaM8Dk9qX8XI07EqBBstSzhwUmA+m1sBJBoZLSLcjTQ8xeHkEf7byzpl55qe705J5TwvGb1piz6T7ErqmRkkH1LEssWCX6ECxoU5I/LdhwQ7rNbrXavjULIgOhjVGfBbh2UYGGO1MEY9g6GbdMak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MUWZmS16; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HgyWMgW+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55481F00A3F;
-	Tue, 18 Aug 2026 17:03:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MUWZmS16"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B561F000E9;
+	Tue, 18 Aug 2026 17:05:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787072624;
-	bh=PUoT81c4fAeXYz+2zaUBt9Gnk1egot2qPXrhePRbnyM=;
+	s=k20260515; t=1787072734;
+	bh=Yt7Lu/Ppn65igfUSxBL6Uyv1oioZW1LiB6mLm9IlaZY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HgyWMgW+9Sf3qtPsMQLUZjTeBsD8A4KL4FTIU1+JI5I4Uw5eFzNE/g9oeR9cZXTEq
-	 gVcHiLDHwXzksZxlUGb419lIESDy1yNswEhxuHtQrUagor097fm0TcG5A/7W6UpW3Z
-	 /2vjd9cHu/aAij5v4VgrGElNUF6nfCZxLePwF5jUOnRAN8dy3VNpNCgkIOb7Ebkbfs
-	 ylo6f8CeXMd1ghX/DvqDZ43sEnL4gODeJxajtAB9yKI13LPo1+Jf9xr4aZKknqptA1
-	 0n71vPOJj9deRuPEJKJWjQ/NZ3ZrYDXJe3hTZed7+fcI0iUsIawqH/UCCeypq0siNe
-	 Kupa/xA/ORN+w==
+	b=MUWZmS16VKOI7PJ3b09flM5NwkV+ZOkJmR3AlhXdVjQfOMcBN3Lazk4vHhCth9Uyv
+	 kRpquLN2bA0C4saLrY9BChimclIfdeOQ/3rOBsZQ6xrjS1ilfBq6JZ7mqsi3UR2Mfs
+	 9XOKtN+kSY37ZFji/ZNad22/inR2Y/3LxrFVXC5InNyRFpt8/3/Bc+sWVk8ImYcAQ7
+	 dmeBSPgmPhHuRbd1Z8YIBeVICY8dq00wGunXmpxWeZ7hqCHcDniqlHB6X4uMP2Rmm6
+	 VakL7822I08slqdFgIUYEFnbrnvSq4Q0YkLvusIcT6wuGu8KZLlS3/PbhIedP693D5
+	 P8IbNsKXM2CuA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/4] KVM: nVMX: Make VMPTRLD result in #UD when eVMCS
- is used
+Subject: Re: [PATCH v2 4/4] KVM: selftests: Check VMPTRLD with active eVMCS
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Vitaly Kuznetsov" <vkuznets@redhat.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260818165258.2613603-2-vkuznets@redhat.com>
+In-Reply-To: <20260818165258.2613603-5-vkuznets@redhat.com>
 References: <20260818165258.2613603-1-vkuznets@redhat.com>
- <20260818165258.2613603-2-vkuznets@redhat.com>
+ <20260818165258.2613603-5-vkuznets@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 18 Aug 2026 17:03:44 +0000
-Message-Id: <20260818170344.A55481F00A3F@smtp.kernel.org>
+Date: Tue, 18 Aug 2026 17:05:33 +0000
+Message-Id: <20260818170534.07B561F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,75 +46,78 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] The patch resolves an infinite VM-exit loop for `VMPTRLD` by injec=
-ting a `#UD` exception when eVMCS is active, but fails to apply the same fi=
-x to `handle_vmptrst`. In `handle_vmptrst`, returning 1 without skipping th=
-e instruction or queuing an exception resumes the guest at the exact same i=
-nstruction, leading to a permanent infinite VM-exit loop (soft lockup) for =
-the vCPU.
+- [Medium] Code relying on CPU flags after `KVM_ASM_SAFE` incorrectly evalu=
+ates them because the macro's cleanup instructions unconditionally clobber =
+the flags.
 --
 
---- Patch [1]: [PATCH v2 1/4] KVM: nVMX: Make VMPTRLD result in #UD when eV=
-MCS is used ---
-commit b2e2c0bdf82798edec492517d5390cf5a8348a25
+--- Patch [4]: [PATCH v2 4/4] KVM: selftests: Check VMPTRLD with active eVM=
+CS ---
+commit d5821824a958c354147206d0cf6cf26eaeb71cc6
 Author: Vitaly Kuznetsov <vkuznets@redhat.com>
 
-KVM: nVMX: Make VMPTRLD result in #UD when eVMCS is used
+KVM: selftests: Check VMPTRLD with active eVMCS
 
-VMPTRLD with active eVMCS is already forbidden, however, returning 1
-without skipping the instruction or queuing an exception will likely
-result in L1 getting stuck. Genuine Hyper-V seems to inject #UD under
-similar circumstances, mimic the behavior in KVM.
+This commit verifies that VMPTRLD triggers a #UD when eVMCS is active.
+It uses the KVM_ASM_SAFE framework to safely handle the expected
+exceptions from VMPTRLD testing.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D221841
-
-> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> index 6957bb6f5cf7e..c78c67525ac9b 100644
-> --- a/arch/x86/kvm/vmx/nested.c
-> +++ b/arch/x86/kvm/vmx/nested.c
-> @@ -5883,6 +5883,12 @@ static int handle_vmptrld(struct kvm_vcpu *vcpu)
->  	if (!nested_vmx_check_permission(vcpu))
->  		return 1;
+> diff --git a/tools/testing/selftests/kvm/include/x86/vmx.h b/tools/testin=
+g/selftests/kvm/include/x86/vmx.h
+> index 047d02aa96889..e6adde3970d4d 100644
+> --- a/tools/testing/selftests/kvm/include/x86/vmx.h
+> +++ b/tools/testing/selftests/kvm/include/x86/vmx.h
+[ ... ]
+> @@ -336,6 +333,22 @@ static inline int vmptrld(u64 vmcs_pa)
+>  	return ret;
+>  }
 > =20
-> +	/* Forbid normal VMPTRLD if Enlightened version was used */
-> +	if (nested_vmx_is_evmptr12_valid(vmx)) {
-> +		kvm_queue_exception(vcpu, UD_VECTOR);
-> +		return 1;
-> +	}
+> +static inline int vmptrld_safe(u64 vmcs_pa)
+> +{
+> +	u64 error_code;
+> +	u8 vector;
+> +	u8 failed;
 > +
->  	if (nested_vmx_get_vmptr(vcpu, &vmptr, &r))
->  		return r;
-> =20
-> @@ -5892,10 +5898,6 @@ static int handle_vmptrld(struct kvm_vcpu *vcpu)
->  	if (vmptr =3D=3D vmx->nested.vmxon_ptr)
->  		return nested_vmx_fail(vcpu, VMXERR_VMPTRLD_VMXON_POINTER);
-> =20
-> -	/* Forbid normal VMPTRLD if Enlightened version was used */
-> -	if (nested_vmx_is_evmptr12_valid(vmx))
-> -		return 1;
-> -
+> +	asm volatile(KVM_ASM_SAFE("vmptrld %[pa]")
+> +		     "\n\tsetna %[failed]"
 
-[Severity: High]
-This isn't a bug introduced by this patch, but does handle_vmptrst() suffer
-from the same issue that this patch fixes in handle_vmptrld()?
+[Severity: Medium]
+Will this setna instruction incorrectly evaluate CPU flags?
 
-Looking at handle_vmptrst():
+The KVM_ASM_SAFE macro executes xor %%r9, %%r9 on its success path, which
+unconditionally clears the Carry Flag (CF=3D0) and sets the Zero Flag (ZF=
+=3D1).
 
-arch/x86/kvm/vmx/nested.c:handle_vmptrst() {
-...
-	if (unlikely(nested_vmx_is_evmptr12_valid(to_vmx(vcpu))))
-		return 1;
-...
-}
+Because setna evaluates flags immediately after KVM_ASM_SAFE finishes its
+cleanup instructions, it captures these clobbered flags and always evaluates
+to true.
 
-Returning 1 here without skipping the instruction or queueing an exception
-seems to resume the guest at the exact same VMPTRST instruction, potentially
-leading to a permanent infinite VM-exit loop (soft lockup) for the vCPU.
+Does this cause vmptrld_safe() to incorrectly return -EINVAL upon successful
+execution?
 
-Could handle_vmptrst() also be updated to inject a #UD exception?
+> +		     : KVM_ASM_SAFE_OUTPUTS(vector, error_code),
+> +		       [failed]"=3Dqm"(failed)
+> +		     : [pa]"m"(vmcs_pa)
+> +		     : "cc", "memory", KVM_ASM_SAFE_CLOBBERS);
+> +
+> +	return vector ? vector : failed ? -EINVAL : 0;
+> +}
+> +
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but is a pre-existing issue in
+guest_execute_fastop_div() located in
+tools/testing/selftests/kvm/x86/fastops_test.c:
+
+Does guest_execute_fastop_div() suffer from a similar flag evaluation issue?
+
+__asm__ __volatile__(fastop(__KVM_ASM_SAFE(insn " %[denom]"))
+
+The fastop macro invokes __KVM_ASM_SAFE, and captures flags via pushfq.
+Does capturing flags after the macro result in saving the clobbered flags
+from the internal xor instruction rather than the actual result of the
+instruction under test?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260818165258.2613=
-603-1-vkuznets@redhat.com?part=3D1
+603-1-vkuznets@redhat.com?part=3D4
