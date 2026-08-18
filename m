@@ -1,60 +1,68 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400EB474257
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 12:37:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3C446D56E
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 12:49:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787056654; cv=none; b=k+fzlU3qSHLPrY8DU+rSYPATeDqyLdb5r+ErdhQwuAMJObjgSn1fYYJ9FxIPNzdQpo5zd4/p/D7WuQkBhpnwkZw4rppreYeBB1sTBfQ7ZUdK4Fnke8kl7AqKCEcto+TX09gon7r4StWjbAZkyB6ZrXPIiPnmoJWuXUtrL+ALSCU=
+	t=1787057366; cv=none; b=hRBD5N3pb/aMw7nKVsN6Bi5bRZ78H8M1nkHjceilACSSfflUV4Q6hmQSZITRMCIjjSx11soKvGvuG7Q0I6y53r/vcP6wgDQBM5gTfbDVOScsHlbRfsC7/OXPAQMgtILd45/ed7YMN4NFMTsmRr1ZwRiOHOalAJHtsQUO5iTkRHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787056654; c=relaxed/simple;
-	bh=TukM0YhOrBAx/cc+1gpLWnmuFodEl4ax1hLuO0oSgUc=;
+	s=arc-20240116; t=1787057366; c=relaxed/simple;
+	bh=cvR0dWZUF4em4CAcfZS1ifgyPX19BMD2dQHLEiiqibQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PRekRyLlI8nwDNbnIPGVJeDxA5n32L3SsI0S8NxxW4ROJZM4DMQb03qDpb62DI1RNJ2RDQY3ko9kkiFyXOMxjp0vbS4wkRtoCEABWt2MVIqVSkbkyL2A39HKEL2qbv32FpH62wRKbEE3FfNOQ1X96qTLqgeF6UACRlwvbg3tn+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=oMT8bJER; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=W8kNyVzaFwY6oaP5RyuD4BVNbsA5JdL1KEdwS16WwUGYiX7wci8AhddIj4UuLPVFy4McJFUNNx1X079CwVHCovM0Jz6hr4at5mOV1J06yBTKhs+UtnWBUZEg8XMi+DV0yXSD6FBX+eNL31ZOhD9TVKwg/hlyAAzpSpqw2Sywt7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pc8f0zPO; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="oMT8bJER"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67IAVWUM2355685;
-	Tue, 18 Aug 2026 12:31:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=UL9IFO
-	BfaU/clKhXme8sOAazBEUtsscNml+GIhZ/mjc=; b=oMT8bJEReh0EmAFaP7G9HP
-	e/pj+gHlxR7TUff7uWpiXYx3U+zLTQr2uKoCAAwLfYUP5qXZpXFZXv8X+VOm3MSv
-	IjbE7NjT2UWR52QmJbviFARKyiB+G76mRaH9Kv6JlYOTVYZUKOArW4VolOjz//2P
-	H8D6Xb6Gw7OBcF1N/579Dw0t+u1lkl0DMDr9KzEbnhQIb+UM0zQlgbGDScoRNQ6c
-	c5KsKxoyv4OCZ+tEOmdgW1ynYWz67IUK7ogWIQ/S2j/IuC+zpj0amqTkLTKq03T7
-	LbZchkE1MoH1hl788YRP4ZywydVPfEjpFVhDOIhTSqRB3VneJIT4R7XAunnUqJAg
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2fsqr3va-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Aug 2026 12:31:30 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67ICQKHI005403;
-	Tue, 18 Aug 2026 12:31:29 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g33ek35sp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Aug 2026 12:31:29 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67ICVRIC20578988
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Aug 2026 12:31:27 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6B03A5805D;
-	Tue, 18 Aug 2026 12:31:27 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 974735805B;
-	Tue, 18 Aug 2026 12:31:21 +0000 (GMT)
-Received: from [9.61.88.99] (unknown [9.61.88.99])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 18 Aug 2026 12:31:21 +0000 (GMT)
-Message-ID: <77e4a58e-269f-4c90-8a1d-bbf89a889c35@linux.ibm.com>
-Date: Mon, 17 Aug 2026 14:09:33 -0400
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pc8f0zPO"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-38dfe7eb825so3531171a91.0
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 05:49:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787057364; x=1787662164; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=g8KO6swaxgVTtcdM/0ToN4cGodRQ27jC6GnsdjaTcjE=;
+        b=Pc8f0zPOJBXasWXc0O1qtpcA1UUmKV3dn3PPze/ztMHdCy0vETenIYgB+wIo5ay6gP
+         gijkZmlzPsvYnFvX5sjqykszHMOh0eFljckkEJBJ0d+niwwfp9KkV5J/xeO4SJaTgAWt
+         UaRfBn27kGPqrh5TDK84aOrx0eomxubW/ssPB9tHsGFWLav7DuHp1ceVWmjKJbg8VFXP
+         p/4Moit0baN7a+onBqvjet53WHAmYTLiTro30+W2XYPE8//BO/cvclvEePZoOFEryuQo
+         jPLHr0CLyJIhTmTx5WxZYuAtaZZ1SxI619vGWQAJY5j7wXPCx27k6HnvhN0KAkoF0YUz
+         HFKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787057364; x=1787662164;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=g8KO6swaxgVTtcdM/0ToN4cGodRQ27jC6GnsdjaTcjE=;
+        b=CM3hniHJrwf4vmH7VrE+CILFy++GA4dnObMDreksLte/rxJYpW7ppuxeW9knTOANUj
+         RnArndVz0fklSvz1cxGU8PjDuvrQlN3fCFXPxk6QV8XrtjReBRt4Xq1JGGOWnCKtYRLt
+         m5PjQSqPMqC1KCwIFemWdyJ2bmGzgkBJjENcmnEhC6WBVOVPWSx+zTj0JTPLmdsbObHO
+         uc6KOU6YlMRuuQQEc4i5Kh0/RLgVszkDwBsJojcrEyb1QBBNqa4J1KNWZEifnJQpvYpe
+         gaaa38WtY9H5eartnzi/+K2Dqt4CDqeQoWvKeq4WyeWthjgMS1kX96Fh6CdjUzCPGvsn
+         LzZw==
+X-Forwarded-Encrypted: i=1; AHgh+RoGpguTNi22CxT/AX3pFQHV8aSRuihEpWpyg7E/EZHio/qRobnZ50cnMDiHfX8gAZ0UCNw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDKs75NHfEO+QLHgBnx7ThYDdPYumM2L9x5tfX5r5g8iL4iVGh
+	7o4TIFgZDFmHDt9K0Ies/OBn0ffE6AFj4SFVirjHBHAyhanSq5DWGrK/
+X-Gm-Gg: AR+sD11J3ay39LfOxZZh7T8zzuGkBMf3SdN0VHysdIVFAmoYgKxo920ZntYUtnoHx+8
+	p3RarifEdeyZfg/57WLliFIlT7kf+rs2Il4zPnn2esTJBr7r+w+pzKjiBLnhLLHS5whuHGfZFwC
+	5xIfiXsfeiAxCHw86G1V5gGmIckw6Jb84G2ONFteYytdUhFboPHaki1XaXGM+y6CB00IPhEe3Ub
+	BUcgQIFQ1VbYC4Po+6BadDCfpELBW5KxTTjtMh6mo+3sJgpH46vJ1SendwTREJMUoVQHqDctdPn
+	1fx2w2RKE9XCOTY8OKLdOoyMCfOWROExVp6I1Brtuhfvf7FerG4V1H1kQ9qsOjLZIZUkaEjc/Hh
+	VYtKoKy9qfnTyPNy+LKnOUZaaaGiCEpgnZnHEekPCQU49eUXQbTEp6pG7FbbPZn526HLHhDlfDD
+	4X4SJyYE3K+f9Bb4cb0fsGeahfw3HXbCdPezvNijEeUluNhLd+yQykYtbVE1z9nJF1pTIOCbgMC
+	JQBUzO2EAU9XF2hGZ1zqhabmjg=
+X-Received: by 2002:a17:90b:264c:b0:38d:ddc2:7ccb with SMTP id 98e67ed59e1d1-3933b714f34mr36446357a91.1.1787057364363;
+        Tue, 18 Aug 2026 05:49:24 -0700 (PDT)
+Received: from [10.26.143.42] ([43.132.141.24])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39339d00eafsm7174764a91.1.2026.08.18.05.49.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Aug 2026 05:49:24 -0700 (PDT)
+Message-ID: <4f7023b4-dd7a-47cb-9754-52e6d41d3aa1@gmail.com>
+Date: Tue, 18 Aug 2026 20:49:21 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,111 +70,150 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 37/49] monitor: tighten monitor_printf*()
-To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
-        qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>,
-        =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
-        Markus Armbruster <armbru@redhat.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        "Gonglei (Arei)" <arei.gonglei@huawei.com>,
-        zhenwei pi
- <zhenwei.pi@linux.dev>, Kevin Wolf <kwolf@redhat.com>,
-        Hanna Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
-        Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-        Ani Sinha <anisinha@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
-        Amit Shah <amit@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
-        Brian Cain <brian.cain@oss.qualcomm.com>,
-        David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Marcelo Tosatti <mtosatti@redhat.com>,
-        Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
-        Jiri Pirko <jiri@resnulli.us>, Jason Wang <jasowangio@gmail.com>,
-        Halil Pasic <pasic@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Cornelia Huck <cohuck@redhat.com>, Eric Farman <farman@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Ilya Leoshkevich
- <iii@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Anthony PERARD <anthony@xenproject.org>,
-        "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
-        "Dr. David Alan Gilbert" <dave@treblig.org>,
-        Hyman Huang <infra.ai.cloud@bitdeer.com>, Peter Xu <peterx@redhat.com>,
-        Fabiano Rosas <farosas@suse.de>,
-        Samuel Thibault <samuel.thibault@ens-lyon.org>,
-        Stefan Berger <stefanb@linux.vnet.ibm.com>,
-        Zhao Liu <zhao1.liu@intel.com>, Nicholas Piggin <npiggin@gmail.com>,
-        Chinmay Rath <rathc@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Alistair Francis <alistair.francis@wdc.com>,
-        Weiwei Li
- <liwei1518@gmail.com>,
-        Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
-        Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-        Chao Liu <chao.liu@processmission.com>,
-        Yoshinori Sato <yoshinori.sato@nifty.com>,
-        Artyom Tarasenko <atar4qemu@gmail.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
-        kvm@vger.kernel.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
-        xen-devel@lists.xenproject.org, qemu-riscv@nongnu.org
-References: <20260816-qemu-no-hmp-v3-0-e53fc35bc550@redhat.com>
- <20260816-qemu-no-hmp-v3-37-e53fc35bc550@redhat.com>
+Subject: Re: [PATCH v2 2/3] KVM: selftests: arm64: Skip sea_to_user without
+ 1GB hugepages
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>,
+ kvm@vger.kernel.org, sashiko-reviews@lists.linux.dev
+References: <20260818112920.26252-1-likexu@tencent.com>
+ <20260818112920.26252-3-likexu@tencent.com>
+ <20260818113615.5CBE01F000E9@smtp.kernel.org>
 Content-Language: en-US
-From: "Jason J. Herne" <jjherne@linux.ibm.com>
-In-Reply-To: <20260816-qemu-no-hmp-v3-37-e53fc35bc550@redhat.com>
+From: Like Xu <like.xu.linux@gmail.com>
+In-Reply-To: <20260818113615.5CBE01F000E9@smtp.kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDA5MiBTYWx0ZWRfXxeP10mi5nXk+
- 42JuJ8FBRrSfAYCu/Q4o7d7+QjXR0y0YhLBXkgd3jS+DNmCgivbuDm/ZDSs3n8sSKCYwwSS9DVv
- NgWoNA0BwgCQpVOd0YlV1AgDl+Yi6+o2mDjLiNhVnCu3Iau7D1S8g+hCEDt2R0SHK58wtGi1/5s
- RsoSkQaqsfxgejgt67fHbonxC2nqio0fdE54/b3h309WKFkCPv8jczyyFYUmhEuBrox4FrFb7wC
- PggyxsIl4jVNptZqWdfEykgaHsd7pCNOyBiZc63Zi4tyERkBaOFbTYD+VvrDqVjy3rsEtC+ZxFV
- syR9AFCpfomtfiYbRemhA1VR8Zb4KVxISW6kyI+L2CNsRt3eFSzkaEXWyNO+sowDrmMC7kBgTR2
- 5tD9HUyfomfLDqaSHLjYIq6swzt3Ep8j+EJa7WICWbXLEoglP6kNvklJYaBlu+zXSSDds8nl6md
- PTudAuUQifZz7GHw46A==
-X-Proofpoint-ORIG-GUID: G5eJ90vsRCcNC-bXB9XjB1i4CkNoQiux
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDA5MiBTYWx0ZWRfX/l7XvQu5FXvY
- 757EDCutzJiMhhtpUOg8veUoUv7xm8vDn4iZni2l2SWZhtMOzb10+wUB8ZZ4Fm+mPM+dyZPA8iu
- wv2noNska5/BZi3NZrq0a2WXPePTskc=
-X-Authority-Analysis: v=2.4 cv=DJe/JSNb c=1 sm=1 tr=0 ts=6a8450a3 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=20KFwNOVAAAA:8
- a=VnNF1IyMAAAA:8 a=mY-fmJR8b8s-Z9VvxFgA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: WJt7z1CXoN-0E-GSYEQWlRq5_XUQN17s
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-18_01,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 spamscore=0 clxscore=1011 bulkscore=0
- suspectscore=0 malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608180092
+Content-Transfer-Encoding: 7bit
 
-
-
-On 8/16/26 3:13 PM, Marc-André Lureau wrote:
-> Rename monitor_printf->monitor_hmp_printf, monitor_vprintf->
-> monitor_hmp_vprintf, and monitor_printc->monitor_hmp_printc, changing
-> the first parameter from Monitor * to MonitorHMP * to enforce type
-> safety. The implementation is also simplified: monitor_hmp_vprintf now
-> directly calls g_strdup_vprintf + monitor_puts, removing the virtual
-> dispatch via moncls->vprintf.
+On 8/18/26 7:36 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] get_free_hugepages() overestimates available hugepages by ignoring reserved pages, which allows the test to proceed and crash with ENOMEM on systems with reserved pools.
+> --
 > 
-> The dev_print() callbacks are temporarily using the MONITOR_HMP(mon)
-> cast, they are fixed in the following commits.
+> --- Patch [2]: [PATCH v2 2/3] KVM: selftests: arm64: Skip sea_to_user without 1GB hugepages ---
+> commit 5fa5666824342b3dd28a5ef6a04bb5ac183257c8
+> Author: Like Xu <like.xu.linux@gmail.com>
 > 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> ---
-> ...
->   hw/pci/pci-stub.c                       |   3 +-
->   hw/s390x/s390-skeys.c                   |   9 +-
->   hw/s390x/s390-stattrib.c                |  20 +--
-Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
+> KVM: selftests: arm64: Skip sea_to_user without 1GB hugepages
+> 
+> This commit adds a check to skip the sea_to_user test if the host does not
+> have enough 1GB hugepages available, preventing a hard failure on systems
+> without an empty pool.
+> 
+> [ ... ]
+>> diff --git a/tools/testing/selftests/kvm/lib/test_util.c b/tools/testing/selftests/kvm/lib/test_util.c
+>> index bab1bd2b775b6..29f9c1d60b1b7 100644
+>> --- a/tools/testing/selftests/kvm/lib/test_util.c
+>> +++ b/tools/testing/selftests/kvm/lib/test_util.c
+>> @@ -222,6 +222,21 @@ size_t get_def_hugetlb_pagesz(void)
+>>   	TEST_FAIL("Error in reading /proc/meminfo");
+>>   }
+>>   
+>> +size_t get_free_hugepages(size_t page_size)
+>> +{
+>> +	char path[128];
+>> +	size_t free;
+>> +
+>> +	snprintf(path, sizeof(path),
+>> +		 "/sys/kernel/mm/hugepages/hugepages-%zukB/free_hugepages",
+>> +		 page_size >> 10);
+>> +	if (!test_sysfs_path(path))
+>> +		return 0;
+>> +
+>> +	free = get_sysfs_val(path);
+>> +	return free * page_size;
+> 
+> [Severity: Medium]
+> Does this calculation overestimate the available hugepages by ignoring the
+> reserved pool?
+> 
+> The sysfs free_hugepages value includes pages that are already committed to
+> other mappings but not yet allocated (which are tracked via resv_hugepages).
+> 
+> If the test runs on a host where free_hugepages meets the VM_MEM_SIZE
+> requirement but some or all of those pages are reserved, the test will
+> incorrectly proceed and still crash with an -ENOMEM abort instead of cleanly
+> skipping.
+> 
+> Could we also read and subtract resv_hugepages to determine the actual
+> allocatable count?
+
+For any human to double check:
+
+diff --git a/tools/testing/selftests/kvm/arm64/sea_to_user.c 
+b/tools/testing/selftests/kvm/arm64/sea_to_user.c
+index 1c2a743ca8e23..7cf95da8e594d 100644
+--- a/tools/testing/selftests/kvm/arm64/sea_to_user.c
++++ b/tools/testing/selftests/kvm/arm64/sea_to_user.c
+@@ -281,6 +281,12 @@ static struct kvm_vm 
+*vm_create_with_sea_handler(struct kvm_vcpu **vcpu)
+  	alignment = max(backing_page_size, guest_page_size);
+  	num_guest_pages = VM_MEM_SIZE / guest_page_size;
+
++	/*
++	 * The region is backed by 1GB hugepages; skip gracefully rather than
++	 * failing with mmap() -ENOMEM if the host has none reserved.
++	 */
++	TEST_REQUIRE(get_free_hugepages(backing_page_size) >= VM_MEM_SIZE);
++
+  	vm = __vm_create_with_one_vcpu(vcpu, num_guest_pages, guest_code);
+  	vm_init_descriptor_tables(vm);
+  	vcpu_init_descriptor_tables(*vcpu);
+diff --git a/tools/testing/selftests/kvm/include/test_util.h 
+b/tools/testing/selftests/kvm/include/test_util.h
+index a56271c237ae9..0624922c2735d 100644
+--- a/tools/testing/selftests/kvm/include/test_util.h
++++ b/tools/testing/selftests/kvm/include/test_util.h
+@@ -168,6 +168,7 @@ struct vm_mem_backing_src_alias {
+  bool thp_configured(void);
+  size_t get_trans_hugepagesz(void);
+  size_t get_def_hugetlb_pagesz(void);
++size_t get_free_hugepages(size_t page_size);
+  const struct vm_mem_backing_src_alias *vm_mem_backing_src_alias(u32 i);
+  size_t get_backing_src_pagesz(u32 i);
+  bool is_backing_src_hugetlb(u32 i);
+diff --git a/tools/testing/selftests/kvm/lib/test_util.c 
+b/tools/testing/selftests/kvm/lib/test_util.c
+index bab1bd2b775b6..3bff9d825e8af 100644
+--- a/tools/testing/selftests/kvm/lib/test_util.c
++++ b/tools/testing/selftests/kvm/lib/test_util.c
+@@ -222,6 +222,32 @@ size_t get_def_hugetlb_pagesz(void)
+  	TEST_FAIL("Error in reading /proc/meminfo");
+  }
+
++size_t get_free_hugepages(size_t page_size)
++{
++	char path[128];
++	size_t free, resv;
++
++	snprintf(path, sizeof(path),
++		 "/sys/kernel/mm/hugepages/hugepages-%zukB/free_hugepages",
++		 page_size >> 10);
++	if (!test_sysfs_path(path))
++		return 0;
++	free = get_sysfs_val(path);
++
++	/*
++	 * free_hugepages still counts pages that are reserved by existing
++	 * mappings but not yet faulted in, so only free minus resv can back a
++	 * new reservation (see available_huge_pages() in mm/hugetlb.c). Ignore
++	 * surplus/overcommit: it does not apply to gigantic pages at runtime.
++	 */
++	snprintf(path, sizeof(path),
++		 "/sys/kernel/mm/hugepages/hugepages-%zukB/resv_hugepages",
++		 page_size >> 10);
++	resv = test_sysfs_path(path) ? get_sysfs_val(path) : 0;
++
++	return free > resv ? (free - resv) * page_size : 0;
++}
++
+  #define ANON_FLAGS	(MAP_PRIVATE | MAP_ANONYMOUS)
+  #define ANON_HUGE_FLAGS	(ANON_FLAGS | MAP_HUGETLB)
+
+> 
+>> +}
+>> +
+>>   #define ANON_FLAGS	(MAP_PRIVATE | MAP_ANONYMOUS)
+>>   #define ANON_HUGE_FLAGS	(ANON_FLAGS | MAP_HUGETLB)
+>>
+> 
+
