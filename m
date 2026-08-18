@@ -1,170 +1,115 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686B7441627;
-	Tue, 18 Aug 2026 13:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672F546E01A
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 14:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787061535; cv=none; b=CBizVbW7ef6fko4pfVFtciNKaWzVUT1fDoidujgoboBtBDepN0frGpHnYF95fNjEfqJleobOGBVyNf0iyitEsUuJtMZ1MW91rZ6bApiX+lXXzYC/hY9gh1ywDQ2qMnOyjgqCLxiisr3XNktT3DzaykmN5HiMBFse2CoZyJpC8QM=
+	t=1787061788; cv=none; b=MtlxMR8uLf0oldz5Cz2iJanLUN1NA4hWNb6vD9Ekbmgpy4qgW4ypszQR72TCm8VrNGYIJEGXZCw1rS6XAeb4OAMqj8iZMOQhMarA+gp8LeNCrb7WsWll2O5gT2GggwCmsErQhNduYkb1FvndtP74Klp4p1BuN5PFm704+qrM6BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787061535; c=relaxed/simple;
-	bh=RJwhCjqrCbt9M0yo9Rvdr5CE4QC1Jf39rkJUI4Tj/mc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sZfi80jFUfr7LYyVQpNP/rt5CZ1tj98r7YrLJI9C58Z4H/g/YzyFh0K37ji6dq2lfLv38rVlLlnzQDI1Jr4F0g9R3Rz1n1Ks1mQIAk2y0aiKWPOtHAp2tNnvAYmuauQx4QUm5lHscRxfQBwFqI5Qn1F7DDH+jc+5NU6b5Me8y4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=VZ/me3C5; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1787061788; c=relaxed/simple;
+	bh=d1B0qUPbS48F641r6kvPXsiO9Yo9EqndQ9Hsq7NAwx0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SSjylF0QcbAFWgRLZ7WnDJ4dEoZUPi+Edd/RPRsdJ6goiT8dTCicG7ARm6u1tLBTrJ7quLBNAnXWQkyCEmwsRCUL2NGHSGSt+YhN/ziyAGcHMUcywqM/l2oZMhNrd66VfyqTivPZtPRWbViTEkX/NkN7Ehr7wBovhFo+UF3RllY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=ok3l7wEY; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="VZ/me3C5"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D574C1516;
-	Tue, 18 Aug 2026 06:58:47 -0700 (PDT)
-Received: from [10.1.39.73] (Suzukis-MBP.cambridge.arm.com [10.1.39.73])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B8FF73F763;
-	Tue, 18 Aug 2026 06:58:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1787061531; bh=RJwhCjqrCbt9M0yo9Rvdr5CE4QC1Jf39rkJUI4Tj/mc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VZ/me3C5HsiMSi4IcYdR6wkzPzScuNdM0BiwGpFpx7oYr20/dwUmFPQyK0L5zpBa1
-	 uS87Q7ewcgQLHL0ctRGHiMdPWVFCmz5aTKuFFTiqaHgmclYMrt4P2017WEy0mPfmon
-	 N/FEFkz4nk/kFB7OqodaQ3dil+5vcHsMGWWRoTgM=
-Message-ID: <cb84c8ed-4279-478e-b9f3-ec137083d839@arm.com>
-Date: Tue, 18 Aug 2026 14:58:46 +0100
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="ok3l7wEY"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-930f4e5eed1so343872685a.2
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 07:03:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1787061786; x=1787666586; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BMpZaW96adLhqubj4u/1vPkdyrNNaeXZwvHJTNsBifw=;
+        b=ok3l7wEYMuwryJeSQd0K+L1sJKMVgsB4dJGooCEgVAj4eIKQ5N4oCh1vte6dMib4+I
+         6clkRMnyBz/oeZa2W7NsKf87mU7P5YV8Le/q2LEZqFJCNp7V3K2yg3pIpyzbj0r05d43
+         04pCjKxaa/W4RXtjFGvdv439wN7WGH+g4Gs6MglmBlKYBHLaE00/eHgqPFKSxcoqK2Cl
+         nQXBoefbUkCDogmhYBzP6st5h9Fgv1y6zYBSPGhQxdx+byu1/u34PdOKEUZTXrEqeOSZ
+         BZjXV2AzN70GwVpowqCDO31vraI4aJWEDM1G+cTXf9rzy/VvMkReS3bi5jKQPkGZZ1iJ
+         wtBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787061786; x=1787666586;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BMpZaW96adLhqubj4u/1vPkdyrNNaeXZwvHJTNsBifw=;
+        b=SC0oqTjW4glH0gao4Q/oW+W1uBgXRG+YI+tidqsumpxgkHEwGJ8Wug2GN3tgy87xKc
+         cYIHaU+mHnJbT8pqJr+2J/75l9saHJO4P769n/N/P/tWSa6R9DUb3rMfORFBoxvoMNg5
+         Wj81vYXyCXc15qKlaFMkMPExfL94OKvuTOUsYY7vvVu948q7PT6DVtF7PRlytJ17T16a
+         IFq4Sakp2gXOddg190s+yqHIwAkI3c5ktvQJLNvHJljZ1l250HKCtOIv5fBhxF9WVPpW
+         xvydrBkMQUUjcFi2r/lzedBktXvjRXW8NgJXNT+6lhvJlMOWINU6hDhQtp4C6gYN56+v
+         AU/A==
+X-Forwarded-Encrypted: i=1; AHgh+Rq2lSo/kW6AAOYCN6vQbY+VFEhgfSerjNyoZbd8cMIv6XGoAeN4kECGFGitZqWuJ3mGJSs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFSRFIdXtRSULE7eup4Ic6cIcVK7CK+saofRse/3JRESmfJBeE
+	iKu7xw8LxkRz1mpit5q9d4omAA48BFaK3GsRNPiV37uhg4TAMIfxj/Rg4NU1PlNyzaI=
+X-Gm-Gg: AR+sD13cx6uxHXrEllESQ/hLsdocOA02aeQwIFtTYJFV6Q/W1FvnT13HAb5EO1plj+h
+	EvQhReHYxItuKfhJy0lvOyyMhVCI7SKphxPOx/JI7gfMxDJ5pJdQFldOG7s367PnsLHPffPCVaX
+	rIo9V/o4PSQioJsnP7FtCtCThN8Kc6CIXTNHTVPARd/XdJj26kbLbiJNxHjOULYhgpBXHV4ZjnW
+	PTxCG3Nn5nxdEVHBazYqsHUpUdVM1tWeXR/MnnBiEzH6IflvUp4AZiF3dy0jeS+bLlCLA0aTg3T
+	wUZDXSYOrscmrahJtfU9TTL5oc7Yvk6eXjmxV6uzaEQEHsyavu6xpPYAbS2DqyZRaFtVq5vS7wN
+	xIGalxsewtfd22wb4DWy7ATpgz5OCtt1pJ0bFDd7+gb+aYZwPYs6JB1QQJkjM0O7nqyuy2u/v7V
+	e7p4PlFeOqyETV2ZMdpSbzdnfmnmLbXJ1VyacVmS/x+vChnndDsqY8QrVJj6sObGvaUC2y3/ygl
+	lKxCVL9oAWdFL+3TG8259J4O7n9V1ZWRWKbmznGSX/dyg==
+X-Received: by 2002:a05:620a:8389:b0:936:e906:e546 with SMTP id af79cd13be357-93704bc63cfmr900778085a.39.1787061786112;
+        Tue, 18 Aug 2026 07:03:06 -0700 (PDT)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-937033cd8a7sm297845385a.28.2026.08.18.07.03.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 07:03:05 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wwKPA-0000000041s-172T;
+	Tue, 18 Aug 2026 11:03:04 -0300
+Date: Tue, 18 Aug 2026 11:03:04 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Tian, Kevin" <kevin.tian@intel.com>
+Cc: Alex Williamson <alex.williamson@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>, kvm <kvm@vger.kernel.org>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	linux-pci <linux-pci@vger.kernel.org>
+Subject: Re: [RFC PATCH 1/5] PCI: Refuse function reset of an SR-IOV PF with
+ enabled VFs
+Message-ID: <20260818140304.GC5482@ziepe.ca>
+References: <20260812045325.2733631-1-alex.williamson@nvidia.com>
+ <20260812045325.2733631-2-alex.williamson@nvidia.com>
+ <an5JbIzz40svS3xe@google.com>
+ <20260814083737.66bb83fb@nvidia.com>
+ <20260817121810.GC933791@ziepe.ca>
+ <CO1PR11MB48354AC2854C4D8E9984FD8E8CA62@CO1PR11MB4835.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] KVM: guest_memfd: Stop returning struct page from
- PFN lookup
-Content-Language: en-GB
-To: Ackerley Tng <ackerleytng@google.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Ashish Kalra <ashish.kalra@amd.com>,
- Michael Roth <michael.roth@amd.com>, Brijesh Singh <brijesh.singh@amd.com>,
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
- Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>,
- Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- David Hildenbrand <david@kernel.org>, Fuad Tabba <tabba@google.com>,
- Yan Zhao <yan.y.zhao@intel.com>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- Vishal Annapurve <vannapurve@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev
-References: <20260818-gmem-no-return-page-v2-0-5298f42d49bb@google.com>
- <20260818-gmem-no-return-page-v2-4-5298f42d49bb@google.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260818-gmem-no-return-page-v2-4-5298f42d49bb@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CO1PR11MB48354AC2854C4D8E9984FD8E8CA62@CO1PR11MB4835.namprd11.prod.outlook.com>
 
-On 18/08/2026 10:15, Ackerley Tng wrote:
-> From: Sean Christopherson <seanjc@google.com>
+On Tue, Aug 18, 2026 at 07:07:20AM +0000, Tian, Kevin wrote:
+> 3) resetting a PF due to ad-hoc FW error
 > 
-> KVM currently expects guest_memfd PFN lookups to return a refcounted
-> struct page, which callers hold across fault handling.
+> e.g. pdsc_check_pci_health() calls pci_reset_function() when FW
+> reports broken PCI. Sounds a similar condition to AER.
 > 
-> Holding a page reference across fault handling is problematic for
-> guest_memfd. In-place memory conversions between confidential
-> computing shared and private states inspect folio refcounts to ensure
-> exclusive ownership by guest_memfd. A concurrent guest page fault
-> taking a reference on the folio causes conversions to fail due to an
-> elevated refcount.
-> 
-> guest_memfd already notifies KVM of page invalidations, so callers
-> within KVM only need to respect the MMU invalidation protocol to safely
-> rely on guest_memfd for page presence.
-> 
-> Furthermore, removing struct page from the guest_memfd PFN lookup moves
-> KVM closer toward supporting memory backends that are not backed by
-> struct page.
-> 
-> Drop the folio reference immediately before returning from the
-> guest_memfd PFN lookup, and stop returning the struct page pointer.
-> 
-> For ARM, initialize the local page pointer to NULL so that the shared
-> cleanup path that releases fault-in pages safely no-ops for guest_memfd.
-> 
-> For x86, no additional changes are required in the MMU fault path
-> because the page fault tracking structure is zero-initialized at the
-> start of page fault handling, ensuring the refcounted page pointer is
-> already NULL.
-> 
-> Reported-by: Yan Zhao <yan.y.zhao@intel.com>
-> Closes: https://lore.kernel.org/all/anZ4W9o5pTWIEgMY@yzhao56-desk.sh.intel.com/
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Co-developed-by: Yan Zhao <yan.y.zhao@intel.com>
-> Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
->   arch/arm64/kvm/mmu.c     | 4 ++--
->   arch/arm64/kvm/nested.c  | 4 ++--
->   arch/x86/kvm/mmu/mmu.c   | 2 +-
->   arch/x86/kvm/svm/sev.c   | 8 ++------
->   include/linux/kvm_host.h | 6 ++----
->   virt/kvm/guest_memfd.c   | 9 ++-------
->   6 files changed, 11 insertions(+), 22 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 6c941aaa10c63..e5d637a5ec558 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -1613,7 +1613,7 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
->   	enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
->   	struct kvm_pgtable *pgt = s2fd->vcpu->arch.hw_mmu->pgt;
->   	unsigned long mmu_seq;
-> -	struct page *page;
-> +	struct page *page = NULL;
->   	struct kvm *kvm = s2fd->vcpu->kvm;
->   	void *memcache = NULL;
->   	kvm_pfn_t pfn;
-> @@ -1641,7 +1641,7 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
->   	/* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
->   	smp_rmb();
->   
-> -	ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, gfn, &pfn, &page, NULL);
-> +	ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, gfn, &pfn, NULL);
->   	if (ret) {
->   		kvm_prepare_memory_fault_exit(s2fd->vcpu, s2fd->fault_ipa, PAGE_SIZE,
->   					      write_fault, exec_fault, false);
+> but as it calls pci_reset_function() this series causes a regression
+> in case of active VFs. Is it desired?
 
-Since this function only deals with the gmem backed aborts, you could 
-remove the variable and the call to kvm_release_faultin_page() below.
+mlx5 does something similar. RAS flows require detecting the PF has
+blown up and resetting it to bring it back.
 
+This has to work while VFs exist and bound to kernel drivers or vfio.
 
-> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> index fb54f6dad995c..43523bb17621a 100644
-> --- a/arch/arm64/kvm/nested.c
-> +++ b/arch/arm64/kvm/nested.c
-> @@ -1360,7 +1360,7 @@ static int kvm_translate_vncr(struct kvm_vcpu *vcpu, bool *is_gmem)
->   	bool write_fault, writable;
->   	unsigned long mmu_seq;
->   	struct vncr_tlb *vt;
-> -	struct page *page;
-> +	struct page *page = NULL;
->   	u64 va, pfn, gfn;
->   	int ret;
->   
-> @@ -1411,7 +1411,7 @@ static int kvm_translate_vncr(struct kvm_vcpu *vcpu, bool *is_gmem)
->   		if (is_error_noslot_pfn(pfn) || (write_fault && !writable))
->   			return -EFAULT;
->   	} else {
-> -		ret = kvm_gmem_get_pfn(vcpu->kvm, memslot, gfn, &pfn, &page, NULL);
-> +		ret = kvm_gmem_get_pfn(vcpu->kvm, memslot, gfn, &pfn, NULL);
->   		if (ret) {
->   			kvm_prepare_memory_fault_exit(vcpu, vt->wr.pa, PAGE_SIZE,
->   					      write_fault, false, false);
+In the VFIO KVM case I would expect the VM to experiance a RAS error
+on its vPCI device and trigger a VF flr
 
-This is safe too, as we only use the page for 
-kvm_release_faultin_page(), and it can tolerate a NULL page. So, this
-looks fine to me.
+But we have to sort all this out through the hypervisor to not crash
+the machine or otherwise :)
 
-With the cleanup above,
-
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-
+Jason
