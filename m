@@ -1,56 +1,56 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AE837DAC2
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 20:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5267537D100
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 20:44:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787085887; cv=none; b=rtH6C393EyOo2MafcvcPOUkGjKTcGieMLCecqCJYdNf0Xhu6IFBaeYmJEqOwxbt65aBsLLUqtMbtJt6IWz+HFht+ELNahP80om5I0J6uePF+qo61u9w81+MNjHFfV8rFBMz6z1tLmuwFTE9g191EOoQqkua2+1o54+Wu28NM1n0=
+	t=1787085888; cv=none; b=fJZQLEQckiPp6nX11O4NL/I/KQPo823I6PZeASlltk8xu7JL1T2kr0Tz8YOM6k+fwz+h+FpBHpJzOdRCvO9zOTX0M98pWOxgKXpMt3AcoYEj969hUIRl5Qn4n4uD2y2vRW3p7c8AhKa6W0iFMktwbKNE2Cg1GLM7smW00im/ENY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787085887; c=relaxed/simple;
-	bh=+deeZZzRZnd2Nph82caalLrn9ey8kc4nJ7X+e+DRFg4=;
+	s=arc-20240116; t=1787085888; c=relaxed/simple;
+	bh=e5ds21oM4zvbuZOpfIjnx0+/N2O1hxYDrHpRAFKnlLY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=d0VV7J2wgcDXIbEkbf1XzgsNkk4KRPt6O2sX5Y06f0AlEJ1TObVyqz+tMJFApCQ7DVgB6k8UdgKMnv14XVK0ksh2DMn3Er6eCtVKhvqUBBYyBSinPepkRJhLVp+txjuzsHLQX1fb0H34JrbRCQYwcGyqWshHmtN2YhMoL7NWzEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackyli.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BJWdEy3w; arc=none smtp.client-ip=209.85.215.197
+	 To:Cc:Content-Type; b=edoopVvMvJwFLRxZf0OfU8jqmfq5fIcxZoRR5zZMgC7VDq7iOdsCw0nJd5RR30MDBkmhaQwsZa+ZOhogAIwOtUhRYUQnKE2LYQAuzt4M/rrzj3kiZN7bmNWcXfusKXSi/sPkgQV/IYyWiLXyfV7H5O5n3fln7TC1KPnXmFzIAgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackyli.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y+fLaYca; arc=none smtp.client-ip=209.85.210.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackyli.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BJWdEy3w"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cab3e9cd922so131497a12.0
-        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 13:44:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y+fLaYca"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8487ed7f7beso326602b3a.0
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 13:44:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787085885; x=1787690685; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1787085887; x=1787690687; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=XSfBO46rQqbTNTbJ8xMsfzE0sjSykEikLSHsdbiM95o=;
-        b=BJWdEy3wg1FqlbK3tJrJ5A2nLtlgcXeepz7SJUdgo9xdxgRewD6JgMcEW/sRpE4OcC
-         lBjSKZ2CPSjZaDRT6TTUgnF+kGawj51RqaxlFBe7odGYEauasKMjAgyF0EbR6amBSIYI
-         TzV32YIvCOK1fXAfyqi0vgVaIVt7mJqrVipjTgU9ZcKfuawYogNj8Or2Tch81Nf19VY9
-         UQ1Ha6f5+IiMkAuehH6xVTRiG4wIZPYnIpFxMZJtaHRDaxB18nPsqFHH9+iGS5Fj3xfc
-         YUwl1fpeBbkr+sJx+qqRzwrxFk7kaC7B87y8dR8ml6vgohVnhxEh+nV7OA4vrIGP7Xzj
-         4ItA==
+        bh=PQq0Bm6wEPPaaVqXBMNHqZK4usIK/j6tgDNzvWv82vs=;
+        b=Y+fLaYcaOGTrTpo7bRSBh4YYhVOk4EnCK64Hljj98NT9I1nx87UPBb9b7l+arROh8I
+         smufEDoNjqP5gZid1ZEjjt1oN5oaQxW5tgJ6af9Jpd9gg3n69TEQTSmDA3dhv8Xl7Gz8
+         m/nwB6lXG+RRGMM++kwakEcUDvCMUVHBcScD5TwbRq/Sg2xuNyOkj0LSR900PqVPkqnK
+         JwB9596rP6KSAlZhEfaHdDbFBQJYuHapF+uYQDAnLd3skeQQBRUyoPnDdEBUEWGaY1YV
+         UEZus3WWRC4a3sEh1A/PRb+73ger/ytXKc6we8EfvMXxAsK4Wxu50zcEiqfI582U5bu/
+         9glQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787085885; x=1787690685;
+        d=1e100.net; s=20251104; t=1787085887; x=1787690687;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=XSfBO46rQqbTNTbJ8xMsfzE0sjSykEikLSHsdbiM95o=;
-        b=cVGF7sumwVW44n/yIjc4z04UiAYlcVC5yvlfqDYLJNL4sVLz/NhxORrbcwvtCo2nNJ
-         jQos1DWBBDoX4g7FfHGOnwlJvO73/qfRacQf72xHsLJBfRahmtTvXE9RXYszrbYSnMdA
-         vEkNQ+F7u38wIVePqhlBtEzXtb+cfRNtKSUJtbx6IrSI7yW1kkgFNArIrMhn+ii9MQIl
-         aNXqwhQpL3DXpIDaEWjVLfPKzWGup+9TtMlqWRhcnu1vNvwnlt+CPRrnTRHFdQPQTHOE
-         pzmgkmCpHypIsfrq7kU6cgXfk3yaYKXDt+vJfiYYqvysz00KGrK7oidO7EMGbp+e1FF5
-         ANsQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpIj4TqdnkQdXtIn99V2g7WRmKehcuHeP4tgqEIpPU9mhiXU0qf8spCyclsvToC/zK4iyk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOA8zZdPIvTd/39I8EfnoPS5jedBXP78jZorElBTqnOoeyxOoi
-	W4mYkvW8klr/3X1w3zbaywl/u36b4zEDyvChMrynkQMZmIG3LglIhgZIVbHXZVjgR3djUAaGx4v
-	M26ReDsT7
-X-Received: from pglg36.prod.google.com ([2002:a63:1124:0:b0:cc1:522f:464c])
- (user=jackyli job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:cd96:b0:3bf:6d96:ac40
- with SMTP id adf61e73a8af0-3ccfef7af73mr837294637.12.1787085885436; Tue, 18
- Aug 2026 13:44:45 -0700 (PDT)
-Date: Tue, 18 Aug 2026 20:44:17 +0000
+        bh=PQq0Bm6wEPPaaVqXBMNHqZK4usIK/j6tgDNzvWv82vs=;
+        b=l/GyNS2Tu3iACADsriuqMUR5Sfo93dNsSFWN9g1srLDXUPpUQROAhianRhDYbpLCSZ
+         hDILQsV1u/WDV6Q1yLfOBV7jflHy0kv9iMe3/B6ZEay4PPbDfNvSKh/Cs0FwfJat2t5Z
+         s66E3/NZko+XJE5nWN4UBnjZ/JauIX1De8z05aFr7QrgP1uo9tHnepvUx3fKhQckbsBC
+         OipvYmmNH6D/oJ7B3jdRFlN4F5B69nQD9MfesTJuJwvgI2LIsnPfyOwgTGWuykU7Ooqn
+         J7Ne1Gxa4OMq+G9OV5QvaX31t4bH9Jy4lIac5fLZ7/Rr59c/KdtsP2WPCOdIfYxCYVlZ
+         L+8A==
+X-Forwarded-Encrypted: i=1; AHgh+RqFXXZ8N03CB+H1+y4sdLR6L6FBgsgtz0qSwpGjJSMHXXQktKX0MwSU1e93y2cTp501y5g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBO3573nDMVALmE87IbmWMB2SIksI59hGOycXKC8wIIyt2L67G
+	LlJrFwEUtpMgSp2Mudq7hdbPLexu0Pe8KgAXF5n/HWCX5hW66Lmu/ChWqUnyeDemwGiNOvXH9Fl
+	0uGzxFR/l
+X-Received: from pfbim15.prod.google.com ([2002:a05:6a00:8d8f:b0:84e:46f:f15e])
+ (user=jackyli job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2e19:b0:847:97a4:d6b3
+ with SMTP id d2e1a72fcca58-851cd8346efmr1708280b3a.16.1787085886501; Tue, 18
+ Aug 2026 13:44:46 -0700 (PDT)
+Date: Tue, 18 Aug 2026 20:44:18 +0000
 In-Reply-To: <20260818-feature-pkey-dev-v1-0-8c0ef96a4da9@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260818-feature-pkey-dev-v1-0-8c0ef96a4da9@google.com>
 X-Mailer: b4 0.14.3
-Message-ID: <20260818-feature-pkey-dev-v1-3-8c0ef96a4da9@google.com>
-Subject: [RFC PATCH 3/6] physmem: Tag guest RAMBlocks with Protection Key
+Message-ID: <20260818-feature-pkey-dev-v1-4-8c0ef96a4da9@google.com>
+Subject: [RFC PATCH 4/6] kvm: Lock guest RAMBlocks via PKRU during host
+ userspace execution
 From: Jacky Li <jackyli@google.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>, 
@@ -72,135 +73,138 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
 	Reiji Watanabe <reijiw@google.com>, Jacky Li <jackyli@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Apply the allocated guest memory protection key to all guest RAMBlocks
-using `pkey_mprotect()` to enforce hardware-assisted access control.
-
-This ensures that guest physical RAM mappings are tagged with our
-dedicated Pkey in the host page tables, allowing the PKRU register to
-dynamically permit or block access to guest memory.
+Protect guest RAMBlocks from host-side speculative execution attacks by
+locking and unlocking the guest memory protection key before and after
+`KVM_RUN`.
 
 Signed-off-by: Jacky Li <jackyli@google.com>
 ---
- include/exec/cpu-common.h |  1 +
- include/qemu/mmap-alloc.h |  5 +++++
- system/physmem.c          | 16 ++++++++++++++--
- util/mmap-alloc.c         |  3 +--
- util/pkey.c               | 16 ++++++++++++++++
- 5 files changed, 37 insertions(+), 4 deletions(-)
+ accel/kvm/kvm-all.c       |  7 ++++++-
+ include/exec/cpu-common.h |  2 ++
+ system/physmem.c          |  6 +++++-
+ util/pkey.c               | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 58 insertions(+), 2 deletions(-)
 
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 83cbd120a8..ae395cd374 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -19,6 +19,7 @@
+ 
+ #include <linux/kvm.h>
+ 
++#include "exec/cpu-common.h"
+ #include "qemu/atomic.h"
+ #include "qemu/option.h"
+ #include "qemu/config-file.h"
+@@ -3666,7 +3667,11 @@ int kvm_vcpu_ioctl(CPUState *cpu, unsigned long type, ...)
+ 
+     trace_kvm_vcpu_ioctl(cpu->cpu_index, type, arg);
+     accel_cpu_ioctl_begin(cpu);
+-    ret = ioctl(cpu->kvm_fd, type, arg);
++    if (type == KVM_RUN) {
++        ret = qemu_pkey_kvm_run(cpu->kvm_fd, arg);
++    } else {
++        ret = ioctl(cpu->kvm_fd, type, arg);
++    }
+     accel_cpu_ioctl_end(cpu);
+     if (ret == -1) {
+         ret = -errno;
 diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 5ede0c65dc..28399088f6 100644
+index 28399088f6..90047128de 100644
 --- a/include/exec/cpu-common.h
 +++ b/include/exec/cpu-common.h
-@@ -113,4 +113,5 @@ static inline CPUState *env_cpu(CPUArchState *env)
- }
+@@ -114,4 +114,6 @@ static inline CPUState *env_cpu(CPUArchState *env)
  
  void qemu_init_guest_memory_pkey(void);
-+int qemu_pkey_mprotect_guest_memory(void *addr, size_t len, int prot);
+ int qemu_pkey_mprotect_guest_memory(void *addr, size_t len, int prot);
++void qemu_reset_pkey_with_ibpb(void);
++int qemu_pkey_kvm_run(int fd, void *arg);
  #endif /* CPU_COMMON_H */
-diff --git a/include/qemu/mmap-alloc.h b/include/qemu/mmap-alloc.h
-index 8344daaa03..82fe7f0c3d 100644
---- a/include/qemu/mmap-alloc.h
-+++ b/include/qemu/mmap-alloc.h
-@@ -63,4 +63,9 @@ void qemu_ram_munmap(int fd, void *ptr, size_t size);
-  */
- #define QEMU_MAP_NORESERVE  (1 << 3)
- 
-+static inline int qemu_map_flags_to_prot(uint32_t qemu_map_flags)
-+{
-+  return PROT_READ | ((qemu_map_flags & QEMU_MAP_READONLY) ? 0 : PROT_WRITE);
-+}
-+
- #endif
 diff --git a/system/physmem.c b/system/physmem.c
-index 362a00f76c..9f5a0f194c 100644
+index 9f5a0f194c..c7101f6841 100644
 --- a/system/physmem.c
 +++ b/system/physmem.c
-@@ -2144,6 +2144,12 @@ static void dirty_memory_extend(ram_addr_t new_ram_size)
-     ram_list.num_dirty_blocks = new_num_blocks;
- }
- 
-+static inline int ramblock_get_prot(const RAMBlock *rb)
-+{
-+  uint32_t map_flags = (rb->flags & RAM_READONLY) ? QEMU_MAP_READONLY : 0;
-+  return qemu_map_flags_to_prot(map_flags);
-+}
-+
- static void ram_block_add(RAMBlock *new_block, Error **errp)
- {
-     const bool noreserve = qemu_ram_is_noreserve(new_block);
-@@ -2282,6 +2288,13 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-         }
-         ram_block_notify_add(new_block->host, new_block->used_length,
-                              new_block->max_length);
-+        int prot = ramblock_get_prot(new_block);
-+        int ret = qemu_pkey_mprotect_guest_memory(new_block->host,
-+                                                  new_block->max_length, prot);
-+        if (ret != 0) {
-+            error_report("qemu_pkey_mprotect failed for guest RAMBlock: %s",
-+                         strerror(errno));
-+        }
+@@ -2755,7 +2755,11 @@ static void *qemu_ram_ptr_length(RAMBlock *block, ram_addr_t addr,
+                                     1, lock, is_write);
      }
-     return;
  
-@@ -2624,8 +2637,7 @@ static int qemu_ram_remap_mmap(RAMBlock *block, uint64_t start, size_t length)
-     flags = MAP_FIXED | MAP_ANONYMOUS;
-     flags |= block->flags & RAM_SHARED ? MAP_SHARED : MAP_PRIVATE;
-     flags |= block->flags & RAM_NORESERVE ? MAP_NORESERVE : 0;
--    prot = PROT_READ;
--    prot |= block->flags & RAM_READONLY ? 0 : PROT_WRITE;
-+    prot = ramblock_get_prot(block);
-     area = mmap(host_startaddr, length, prot, flags, -1, 0);
-     return area != host_startaddr ? -errno : 0;
+-    return ramblock_ptr(block, addr);
++    void *ptr = ramblock_ptr(block, addr);
++    if (ptr) {
++        qemu_reset_pkey_with_ibpb();
++    }
++    return ptr;
  }
-diff --git a/util/mmap-alloc.c b/util/mmap-alloc.c
-index ed14f9c64d..0dc8e8275d 100644
---- a/util/mmap-alloc.c
-+++ b/util/mmap-alloc.c
-@@ -185,10 +185,9 @@ static void *mmap_activate(void *ptr, size_t size, int fd,
-                            uint32_t qemu_map_flags, off_t map_offset)
- {
-     const bool noreserve = qemu_map_flags & QEMU_MAP_NORESERVE;
--    const bool readonly = qemu_map_flags & QEMU_MAP_READONLY;
-     const bool shared = qemu_map_flags & QEMU_MAP_SHARED;
-     const bool sync = qemu_map_flags & QEMU_MAP_SYNC;
--    const int prot = PROT_READ | (readonly ? 0 : PROT_WRITE);
-+    const int prot = qemu_map_flags_to_prot(qemu_map_flags);
-     int map_sync_flags = 0;
-     int flags = MAP_FIXED;
-     void *activated_ptr;
+ 
+ /*
 diff --git a/util/pkey.c b/util/pkey.c
-index 249e36d508..0151714f32 100644
+index 0151714f32..2e42da7d9c 100644
 --- a/util/pkey.c
 +++ b/util/pkey.c
-@@ -106,6 +106,17 @@ __attribute__((target("pku"))) void qemu_init_guest_memory_pkey(void)
-     }
+@@ -117,17 +117,62 @@ __attribute__((target("pku"))) int qemu_pkey_mprotect_guest_memory(void *addr,
+     return pkey_mprotect(addr, len, prot, pkey);
  }
  
-+__attribute__((target("pku"))) int qemu_pkey_mprotect_guest_memory(void *addr,
-+                                                                   size_t len,
-+                                                                   int prot)
++__attribute__((target("pku"))) void qemu_reset_pkey_with_ibpb(void)
 +{
 +    int pkey = guest_memory_pkey;
 +    if (pkey == -1) {
-+        return 0;
++        return;
 +    }
-+    return pkey_mprotect(addr, len, prot, pkey);
++    if (inline_pkey_get(pkey) == 0) {
++        return;
++    }
++
++    /* IBPB */
++    prctl(PR_SET_SPECULATION_CTRL, PR_SPEC_INDIRECT_BRANCH, PR_SPEC_DISABLE, 0,
++                0);
++
++    inline_pkey_set(pkey, 0);
++}
++
++__attribute__((target("pku"))) int qemu_pkey_kvm_run(int fd, void *arg)
++{
++    int pkey = guest_memory_pkey;
++    if (pkey == -1) {
++        return ioctl(fd, KVM_RUN, arg);
++    }
++
++    assert(pkey >= 0 && pkey < KEY_COUNT);
++
++    inline_pkey_set(pkey, 0);
++
++    intptr_t ret = local_syscall3(__NR_ioctl, fd, KVM_RUN, (intptr_t)arg);
++
++    inline_pkey_set(pkey, PKEY_DISABLE_ACCESS);
++
++    if (ret < 0) {
++        errno = -ret;
++        ret = -1;
++    }
++    return (int)ret;
 +}
 +
  #else
  /* Dummy implementations for all other configurations (non-x86_64 Linux, */
  /* Windows, macOS, etc.) */
-@@ -116,4 +127,9 @@ __attribute__((target("pku"))) void qemu_init_guest_memory_pkey(void)
+ #if defined(CONFIG_LINUX)
+ #include <linux/kvm.h>
+ #include <sys/ioctl.h>
++
++int qemu_pkey_kvm_run(int fd, void *arg)
++{ return ioctl(fd, KVM_RUN, arg); }
+ #endif
  
  void qemu_init_guest_memory_pkey(void)
  {}
+ 
++void qemu_reset_pkey_with_ibpb(void)
++{}
 +
-+int qemu_pkey_mprotect_guest_memory(void *addr, size_t len, int prot)
-+{
-+    return 0;
-+}
- #endif
+ int qemu_pkey_mprotect_guest_memory(void *addr, size_t len, int prot)
+ {
+     return 0;
 
 -- 
 2.55.0.737.g08866a6d13-goog
