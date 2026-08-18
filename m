@@ -1,162 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC2D472F7C;
-	Tue, 18 Aug 2026 13:24:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AFB46D540;
+	Tue, 18 Aug 2026 13:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787059484; cv=none; b=kjCa+UOhgX12kOGlry9uVE3wTCkgkPYBm2NWIC550pD/PzQNWBZEg4v0kfUkOzRQXQZ3JQVQJd9M4HMQMnoawANwfjaY/S2jg/ZKAOl68FcLIWPwjta8y0TaaFuMStAp19d2bFUNOI6DIW0IPFjgHLJ3uk9bEaA3PnP1xXYSCRM=
+	t=1787059566; cv=none; b=on6xmj0hX4uw88Ef9rlZY78cjwHe1HpJOmJYoe1l3apHJaL2ARGXPwQnvKvmKackvrhRz+2faAjxaJgEkl/xSifDr8JkiBgpKjcEV2jCGiveqQqbfsk3pETY2fKYBSB9FZB3Rf057iPxIRH0Y+9Ts1PXhEZIcLxiCFTYVsKiJh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787059484; c=relaxed/simple;
-	bh=0qeab45JSjlGLR/DCB210viV8qlg/swbTJ0ATdhPMMQ=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UpgATd7Vz2CCzX5fCavsNgm+dd0ekdwFRJx/sgDzdLCWwNWWJV3renoIL6JnZpZNDO60v/1kP2zi5mGVBTxXTLPkU8yyFrvU3ugX7uGmC/uVtw05N1dMIhs2VT+x8LlyV8epi1RiyBR1+kd+nWNDBkbRMyGOVrleZs9B3eeQs8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IvVZYmEa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787059566; c=relaxed/simple;
+	bh=lXpCTErAQKrJXdI0MEqxQfEh9tHIfoTCO6F6/I9afiA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Cq86TQIlgIrE0iNqbz0TicT8Z/A7LoKrKROJfUJ54LaS2rZgo5iR+n2Dt+TkCVme1/Q+vDomh8w56w1dnyvH4oKAqSin4K6nA2OppSGdmUqXtJrh9QlgHE1UlkIedOkBiMbboOIRrzclj6vDE1fqnKeJ1cSXDi7O09uQxVTbWcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Qw12gdIP; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IvVZYmEa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35DA1F000E9;
-	Tue, 18 Aug 2026 13:24:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787059480;
-	bh=S9IekfwPh1alq+9HUJBgkgWBggDNvqQ7KorXgNc8Ifs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=IvVZYmEaJduqxhOqhcvQD6aUJ5moa6wleRg5iMNiAoqHR0kpyRYwkcmV8O1leHavm
-	 tHo0yzgUIPTgyAIVpWqsHXNG9EZFb4zHvmqhzqdt5beIrh5RM9ApemL/khZQ1K8R3L
-	 f2sOHxoQQU2gaX4cHv6EOcE8V3UvV6H8c/Kzruipq837mNNP4eoeqz3ijsfX0Hnz7t
-	 y0j8Ezkj9DAraCHbOofWu3l3nZQFIrdZCasEitIvw624qqSDw8HnFmRZzK8H2KsOfY
-	 ZzcTZ22iR7zh9TCiBnPo1jrzRK68HOpCUxOkDPLC06dwACN5kBeUUICKJ9XIFofHVb
-	 cybyTXnvLyBhA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wwJny-0000000Gdt3-10V2;
-	Tue, 18 Aug 2026 13:24:38 +0000
-Date: Tue, 18 Aug 2026 14:24:37 +0100
-Message-ID: <86cxvf5zoq.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Dongli Zhang <dongli.zhang@oracle.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-kselftest@vger.kernel.org,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	oupton@kernel.org,
-	fuad.tabba@linux.dev,
-	joey.gouly@arm.com,
-	seiden@linux.ibm.com,
-	suzuki.poulose@arm.com,
-	yuzenghui@huawei.com,
-	dwmw2@infradead.org,
-	joe.jin@oracle.com
-Subject: Re: [PATCH 2/4] KVM: arm64: Reset last_steal on vCPU pid change
-In-Reply-To: <77baeb6c-1efa-45fb-8a86-46a6c76b5873@oracle.com>
-References: <20260816053630.527528-1-dongli.zhang@oracle.com>
-	<20260816053630.527528-3-dongli.zhang@oracle.com>
-	<86se4dyw7n.wl-maz@kernel.org>
-	<77baeb6c-1efa-45fb-8a86-46a6c76b5873@oracle.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Qw12gdIP"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67IAVX072355718;
+	Tue, 18 Aug 2026 13:26:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Cn351H
+	Nbb/2D4FWZ1iLUzJEXYrNfcrRT4RkgY/qT16M=; b=Qw12gdIP3UKF9XWEOvfGy+
+	jJil8QkZIJ1UR/AGTYaIOwHisc+clrPs6BoEVn4owZmww5grbJ2UXmLZZiptdysk
+	wsLH0os2sr5bqogEV9B7CB5EYsO3ehQz5LOoCViCsnlE2RDaBhquP6YXW9UQ1mdS
+	sYIygc4L0u5sz7zZz+uf/VhapDIY+xsd4GnDrO8v2d8MglOh3LEbsa1X+bqKIfmU
+	NlsVVFk863rsr5KcDycPuQdaQqEgVJdSFHPCakMiqQ+emE4RzUDpxlJSFB6fK90p
+	QGsNfgKPrM8BvqAZaoW9T5TqiQhuZFrfXPzzPL3PWNWHwg6PmhCOlvXURcmF5O7w
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2fsqrdab-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Aug 2026 13:26:03 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67ICuIY8025785;
+	Tue, 18 Aug 2026 13:26:02 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g34ngb6df-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Aug 2026 13:26:02 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67IDQ1jn25428496
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 18 Aug 2026 13:26:01 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5C0AB5805C;
+	Tue, 18 Aug 2026 13:26:01 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9E8A358051;
+	Tue, 18 Aug 2026 13:26:00 +0000 (GMT)
+Received: from [9.61.131.241] (unknown [9.61.131.241])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 18 Aug 2026 13:26:00 +0000 (GMT)
+Message-ID: <2bb8cf48-2dcf-4457-86ad-f1424d9ae28b@linux.ibm.com>
+Date: Tue, 18 Aug 2026 09:26:00 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: dongli.zhang@oracle.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com, oupton@kernel.org, fuad.tabba@linux.dev, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, dwmw2@infradead.org, joe.jin@oracle.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/6] KVM: s390: Fix dirty marking in
+ adapter_indicators_set*()
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
+        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com
+References: <20260814163355.227191-1-imbrenda@linux.ibm.com>
+ <20260814163355.227191-2-imbrenda@linux.ibm.com>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <20260814163355.227191-2-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDA5NiBTYWx0ZWRfXyIRMMkiyjn+z
+ H/hy7m+lb8UqyE840lmVz8smtqui9WNvcMTwi8fzdM+gBWzMtPQgIx7xxj+0AwKBsUQM4YL7T+E
+ K31BqwX9nwPlSZsapPtZ8rJtI0javohv4K1+0o2V2jEnwN5S5Y8e3SVLs6BM7z4riQs/V4B/lRW
+ pqCdF+2Tq9fupKmnjHdfzwwM3bQYSLIcAaeyj6py7H5SPYCW8TKNq2EEl0JlSohICKYive+aDve
+ UBuY2u/D45E7rxC78aKYJ80LgecLNwKlLWjdHoTnzy3qJO+g0/KYc8wyL9f7N6K8lfoj3n0+rJb
+ EE8WyGC3tFgMYS5jVQGcqncwIfIaKaTpTllcsRtU/cBRrfjo0kQtf/afhxh61wbJ/kVqMvBeMS0
+ vjwEm+4bqvAJ0xzXjvI1hdOabKrokDZ4oqn0KaE+IoxRy/+jcBbvHll1chOpUS53nckxN3dZy1d
+ pHM9+TOrmVHL9/53TbQ==
+X-Proofpoint-ORIG-GUID: tfpDPVyrPTD5DPUzgc4BCT_cIdpRQWDu
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDA5NiBTYWx0ZWRfXwKXgxSXhZTh7
+ fwvPhskMhvUQQUKUXH+fUtGJVtNZympYoyILdaL2gwBm9WFUtLJdSmepPXZ6aukTQhgVmnLOUOM
+ h6awav4ff8M7F0qHDTKC+rLAJ/Xq5hk=
+X-Authority-Analysis: v=2.4 cv=DJe/JSNb c=1 sm=1 tr=0 ts=6a845d6b cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=ttbNLuTc0CewZQEAKyMA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: tfpDPVyrPTD5DPUzgc4BCT_cIdpRQWDu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-18_01,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 spamscore=0 clxscore=1015 bulkscore=0
+ suspectscore=0 malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608180096
 
-On Mon, 17 Aug 2026 22:29:22 +0100,
-Dongli Zhang <dongli.zhang@oracle.com> wrote:
+On 8/14/26 12:33 PM, Claudio Imbrenda wrote:
+> When the indicator and/or summary bits are set in the guest, the
+> accessed page was only marked dirty in KVM if the access was performed
+> using the slow path; accesses through the new kvm_arch_set_irq_inatomic
+> fast inject path would not mark the page as dirty.
 > 
+> Fix by adding/moving the missing calls to mark_page_dirty(). Note that
+> for the inatomic path set_page_dirty{,_lock}() is not needed as the
+> page stays pinned; the unpin path correctly marks it as dirty.
 > 
+> Opportunistically reorder the local variables to be in reverse
+> Christmas tree order and refactor to use guard().
 > 
-> On Mon, Aug 17, 2026 1:42:20AM -0700, Marc Zyngier wrote:
-> > On Sun, 16 Aug 2026 06:33:03 +0100,
-> > Dongli Zhang <dongli.zhang@oracle.com> wrote:
+> Fixes: 1e95e3bc6b05 ("KVM: s390: Enable adapter_indicators_set to use mapped pages")
 
-[...]
+So I'm not strictly opposed to adding the dirtying on the 'fast path'
+but AFAIU the idea here was to still mark the page as dirty right before
+unpin.
 
-> >> diff --git a/arch/arm64/kvm/pvtime.c b/arch/arm64/kvm/pvtime.c
-> >> index 4ceabaa4c30b..000bf49cc0fd 100644
-> >> --- a/arch/arm64/kvm/pvtime.c
-> >> +++ b/arch/arm64/kvm/pvtime.c
-> >> @@ -32,6 +32,11 @@ void kvm_update_stolen_time(struct kvm_vcpu *vcpu)
-> >>  	srcu_read_unlock(&kvm->srcu, idx);
-> >>  }
-> >>  
-> >> +void kvm_reset_stolen_time(struct kvm_vcpu *vcpu)
-> >> +{
-> >> +	vcpu->arch.steal.last_steal = current->sched_info.run_delay;
-> >> +}
-> >> +
-> >>  long kvm_hypercall_pv_features(struct kvm_vcpu *vcpu)
-> >>  {
-> >>  	u32 feature = smccc_get_arg1(vcpu);
-> > 
-> > Why isn't this common code? I really don't see the point in making
-> > this arch-specific code. I'd expect something like this (untested):
-> > 
-> > diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> > index ace5801a592f..3fb77360af01 100644
-> > --- a/arch/arm64/include/asm/kvm_host.h
-> > +++ b/arch/arm64/include/asm/kvm_host.h
-> > @@ -950,6 +950,8 @@ struct kvm_vcpu_arch {
-> >  	pid_t pid;
-> >  };
-> >  
-> > +#define kvm_arch_vcpu_last_steal(v)	(v)->arch.steal.last_steal
-> > +
-> >  /*
-> >   * Each 'flag' is composed of a comma-separated triplet:
-> >   *
-> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> > index 45e784462ec6..117aeb49231a 100644
-> > --- a/virt/kvm/kvm_main.c
-> > +++ b/virt/kvm/kvm_main.c
-> > @@ -4459,6 +4459,9 @@ static long kvm_vcpu_ioctl(struct file *filp,
-> >  			if (r)
-> >  				break;
-> >  
-> > +			if (IS_ENABLED(CONFIG_HAVE_PV_STEAL_CLOCK_GEN))
-> > +				kvm_arch_vcpu_last_steal(vcpu) = current->sched_info.run_delay;
-> > +
-> >  			newpid = get_task_pid(current, PIDTYPE_PID);
-> >  			write_lock(&vcpu->pid_lock);
-> >  			vcpu->pid = newpid;
-> > 
-> > where each architecture that implements steal time provides an
-> > accessor, and the core code is in charge of the adjustment.
-> > 
-> > It also makes sure that we don't leave any architecture behind.
-> > 
-> Or how about making it something like below?
-> 
-> if (IS_ENABLED(CONFIG_HAVE_PV_STEAL_CLOCK_GEN))
-> 	kvm_arch_vcpu_reset_last_steal(vcpu);
->
-> That would still move the policy to common KVM code, while leaving the exact
-> arch state to the architecture implementation.
+Is it strictly required to dirty the page every time it's touched even
+if it's long-term pinned, so long as we make sure to mark the page dirty
+before we eventually unpin it?
 
-I don't think architectures should have a say in this. Steal time, as
-a PV service, should not involve the architectures at all. After all,
-that's the whole point of a PV service: hypervisor-specific hacks that
-do not fit in the architectural envelope.
+I think the answer to that dictates whether this is a fix or not (or if
+there was a missing path that failed to mark the page dirty)
 
-Bonus points if you move the last_steal field in the main vcpu
-structure instead of some arch-specific one.
+Thanks,
+Matt
 
-> For x86, the hook can reset vcpu->arch.st.last_steal for regular KVM steal time.
-> If we also decide to cover Xen runstate in this series, the same x86 hook can
-> additionally reset vcpu->arch.xen.last_steal.
 
-For arch-specific stuff, there is the pid change hook already.
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
