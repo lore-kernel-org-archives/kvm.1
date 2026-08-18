@@ -1,103 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFF33446A6;
-	Tue, 18 Aug 2026 19:24:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC99353A8A
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 19:28:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787081051; cv=none; b=WbEM/WqE/wXQxualfQzt1rNMnJ7KNYH4D6X9d105xVAeVBCN8flNNlSsizQPY6durWzmUWsY70hu3v+li8NAkSQ+9DgZrDU3FrJsE1sj8o9eMblTicpQ0WScr1lm+WdtsNQd4LzLr1KNn0dIGYbB0QBQHC5tetlrMTUg17L9+yo=
+	t=1787081317; cv=none; b=tc3IPexmqkqbYuZoy0CycEDfhmP6fHJExG5J+1IyUd47wX4yjAQb7aCT3d3+6o4p1uKV/q1zSPkD6YttmDwKKIxu5X6YsWloNUpgoQQd29/8qsexrlS/wWOuo2DNPN/id5wGMhQy6iVIbcW2HFG6Asgwn8rrbizwNGRx0km3mng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787081051; c=relaxed/simple;
-	bh=Wqe6bjZ4BCWh00tUqt4Dhiv2GMKQH+LXUvktvhpzB9c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qyEmg1U+sdGu2dtTo4WzEobmCtqFvJGAs0avnwbXEgMyAN7cFtwITRoZ24AkG1oz7YxeC1PFhH3F+JTdDImUO5K0aT7zuRDE+RYzAAlz7mHo1ep8qt+SaSwY/G6e5pIKmuyPv5X0fdBkFq3DafVLnvD2Pnj03fGYpJ24ZFHOWVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZSmmnKY3; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1787081317; c=relaxed/simple;
+	bh=pGvL+r9yd0UjdhtGaZSmH62uoyKHVNe7h32F5utFz+A=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=h8gow3si1fB/u1xAI5jFEhqUUhSR2bMk6xyzX85Fg5Xl9hmnKcoCAIwngTutnyS+4t+dbEShCY5mgZwZAf7O7IgCE1tVoxjA+mntcN3O020Uo+yhXXzM7xO2/aBc6WMO9qYFtIriwe4uy2p3uxHsmKzQ7nh8O7fh3lBG6TFO4LI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u7LV1wIj; arc=none smtp.client-ip=209.85.210.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZSmmnKY3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787081048; x=1818617048;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Wqe6bjZ4BCWh00tUqt4Dhiv2GMKQH+LXUvktvhpzB9c=;
-  b=ZSmmnKY3DG/7c+QKp6fPLjlDiVfkZRkcEfwDLSDAHBva6awoWIsMf7Z9
-   5NtHVXAlH6D0cdps4yVsTzFZGqIqRoGTAHmjq522wlzHEnlUlsAljWTtO
-   o2/WrxAF4KaakZCPMqszf4DfVe81l3bTp1I4gWmWDD/6gevpP06dYku57
-   heDQixt6NRsa8wFdKEUkx5b+vFWB4zofKPKgOGeU1ndmWEQ1eXTSgzd0c
-   oP3ZFh/j+Tb+4iY1F3vxMu0mt9z3I1vROJssXs3Q0ygv0g6Q8NXWO4ewp
-   bwP37l3WzfALdg6dd9DKlbuu9d2jIR732VGty5Mj0RhyqtUJ4PeRmTXpT
-   g==;
-X-CSE-ConnectionGUID: h+8eaa1KQfWGdAw3HsHnMg==
-X-CSE-MsgGUID: 7catcOPqSkWIsTVZka05iQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11879"; a="87605381"
-X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
-   d="scan'208";a="87605381"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 12:24:07 -0700
-X-CSE-ConnectionGUID: XKrw6z8bQVav+RSspirBKA==
-X-CSE-MsgGUID: Jbbj5kHKTuq3Bievd5UetQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
-   d="scan'208";a="268827229"
-Received: from tassilo.jf.intel.com (HELO tassilo) ([10.54.38.190])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 12:24:07 -0700
-Date: Tue, 18 Aug 2026 12:24:05 -0700
-From: Andi Kleen <ak@linux.intel.com>
-To: "Chen, Zide" <zide.chen@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-	Jim Mattson <jmattson@google.com>, linux-kernel@vger.kernel.org,
-	Mingwei Zhang <mizhang@google.com>,
-	Das Sandipan <Sandipan.Das@amd.com>,
-	Shukla Manali <Manali.Shukla@amd.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Xudong Hao <xudong.hao@intel.com>
-Subject: Re: [PATCH v8 7/8] KVM: x86/pmu: Emulate RDPMC on performance metrics
-Message-ID: <aoSxVRJqjJzQssMJ@tassilo>
-References: <20260817183143.226156-1-zide.chen@intel.com>
- <20260817183143.226156-8-zide.chen@intel.com>
- <aoSZRRDtNxNA0UtK@tassilo>
- <cdd88e7c-abc9-4e49-8947-bb7226f3a385@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u7LV1wIj"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-848568a6f62so345857b3a.0
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 12:28:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787081315; x=1787686115; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=toqDoqaZ7664JCi45UayITxDmXVJU8MQDeCDLsKOJnQ=;
+        b=u7LV1wIjiC283uldP9z9/GabJNzIi2gXAD5b0cnKdPjgaXuVP1U8WS5Mh5UEMowrLM
+         GejRsuAgVggLWPPhzeUDLj/JKqF4+VZI0Burqxv1m6vraCw4HnEWB8/pqCr/iTAFdHoq
+         Aer2EHgsPBvkQ9JwfpfJRakYhhmvJlYoY7b0ma2zAX8Tmxw/Th32HcwbSB1dL/uzDye7
+         Ql4Vj0mehOBx3G30VbidIGXMqeVRyRyrfqjqD098BlAwUyUd8cxbOyomwTAfIzWjyhSM
+         GOA8XddyHLq2O/EpksGZuy4sCTYUC6AV+pbjf+9mfcxXMOXfD/px9ordZHzfTUnS8bin
+         AMdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787081315; x=1787686115;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=toqDoqaZ7664JCi45UayITxDmXVJU8MQDeCDLsKOJnQ=;
+        b=ZLr3f6jgzRYFNBqSKq+2AEHZfPm1CrqxttX24BifWp5mbQAcROq9oXqCg7NzrL1VJN
+         GdXmW5llexp2BMpzlAqP31EgWdSkW0fHVii28xxdZ3BOQoXcU1h9VHHA8J5ZFYm6pAN0
+         9tbhVaHlkuhxWz3pXG8ojaKdhUqssx2Hg+byA9lVY83E0t0yVnda3P8XWVHDhHSIzmT1
+         dESke2I05STSdnfHyCA1wynjuyGvHgu8Yi4Ns7WE8MSFnapHJCJD5SC895CzRhEKY4Aq
+         p0w+fIeecweVfeYo3RZjnFbeombq7YcOPh6oUxAxMeCmBGwaK9UMUQCSbWEwM2lAhkR3
+         U6gQ==
+X-Gm-Message-State: AOJu0YwAmiSiwVUw7mZ4or0V6+WYH67/5RiS24U0cCmajcm+P9mDil15
+	ihWeiMnrg7ITEPxRYcvRqcMRzsIuopqq+DjcV094GoZ+j13eOzlLQyuj7K8H5QdrTYQhQi6Mjy8
+	w2htHFQ==
+X-Received: from pfbko19.prod.google.com ([2002:a05:6a00:4613:b0:847:926b:dc17])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a219:b0:84e:e741:174f
+ with SMTP id d2e1a72fcca58-851cd76efe7mr982877b3a.7.1787081314954; Tue, 18
+ Aug 2026 12:28:34 -0700 (PDT)
+Date: Tue, 18 Aug 2026 12:28:34 -0700
+In-Reply-To: <c2f7e904-2646-4b01-864d-d185221c7f56@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cdd88e7c-abc9-4e49-8947-bb7226f3a385@intel.com>
+Mime-Version: 1.0
+References: <20260803170825.925561-4-hisamshar@gmail.com> <20260817220457.554823-3-hisamshar@gmail.com>
+ <aoOKMeua-cNeTxXT@google.com> <8d069fe1-a5b6-4a86-9604-26aebe2dc243@gmail.com>
+ <aoSIBnFfy4osa6wt@google.com> <c2f7e904-2646-4b01-864d-d185221c7f56@gmail.com>
+Message-ID: <aoSyYtxBpEaoBwGY@google.com>
+Subject: Re: [PATCH v2] KVM: selftests: Replace ulong with unsigned long
+From: Sean Christopherson <seanjc@google.com>
+To: Hisam Mehboob <hisamshar@gmail.com>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com, shuah@kernel.org, 
+	linux-kselftest@vger.kernel.org, David Matlack <dmatlack@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Aug 18, 2026 at 01:30:32PM -0500, Chen, Zide wrote:
++David for the VFIO thing
+
+On Tue, Aug 18, 2026, Hisam Mehboob wrote:
+> On 8/18/26 21:27, Sean Christopherson wrote:
 > 
+> > Oh, so on top of "https://github.com/kvm-x86/linux.git next", this *is* the last
+> > blocker?  If so, then I'll grab this for 7.3.
 > 
-> On 8/18/2026 12:41 PM, Andi Kleen wrote:
-> > On Mon, Aug 17, 2026 at 11:31:41AM -0700, Zide Chen wrote:
-> >> If the host has the PERF_METRICS capability but it's not present on
-> >> the guest, RDPMC interception must be enabled and KVM should inject
-> >> an #GP when the guest attempts a PERF_METRICS RDPMC.
-> >>
-> >> If the guest has PERF_METRICS but RDPMC interception is enabled for
-> >> other reasons, KVM needs to emulate RDPMC with type 0x2000.
-> >>
-> >> For simplicity, Metrics Clear Mode is not supported.
-> > 
-> > But is the bit cleared in PERF_CAPABILITIES? And would 
-> > the enable bit fault?
+> Not quite -- I tested kvm-x86/next + this patch with musl-gcc, and the
+> build still fails. On top of the steal_time fix already in your tree,
+> two more musl blockers remain, both from code that is only in
+> kvm-x86/next so far:
 > 
-> Currently KVM doesn't advertise
-> IA32_PERF_CAPABILITIES.RDPMC_METRICS_CLEAR[19].
-
-Thanks.
-
-How about the fault for the enable bit?
-
-> > It would be better to just support it, metrics clear is actually useful.
+> 1. hardware_disable_test.c, from 496779b54943 ("Pre-set threads affinity
+>    in hardware disable test when possible"):
 > 
-> Sure, I'll add it.
+>      hardware_disable_test.c:75: error: implicit declaration of function
+>      'pthread_attr_setaffinity_np'
+> 
+>    The call sits under #ifdef _GNU_SOURCE, but lib.mk defines _GNU_SOURCE
+>    unconditionally, so the path is always taken and musl (which lacks the
+>    function) breaks.
 
-I guess it could be a follow-on patch, no need to hold up this one.
+Heh, Sashiko flagged that as problematic, and I was trying to figure out which
+macro to key off of[*], but was (obviously) unsuccessful.  I don't suppose you
+know the canonical way for checking for support of glibc-only functionality of
+this nature?
 
--Andi
+[*] https://lore.kernel.org/all/am0KqJOD-FiC9BXs@google.com
+
+> 
+> 2. The libvfio wiring from a262fc49e0aa ("Build and link
+>    selftests/vfio/lib into KVM selftests"):
+> 
+>      vfio_pci_device.c:25: fatal error: uuid/uuid.h: No such file or
+> directory
+>      sysfs.c:31: error: implicit declaration of function 'basename'
+> 
+>    The former adds a hard libuuid dependency (its headers aren't visible
+>    to musl-gcc here);
+
+Can you elaborate on what you mean by "its headers aren't visible to musl-gcc"?
+
+>    the latter because musl declares basename only in
+>    <libgen.h>, while glibc exposes it via <string.h> under _GNU_SOURCE.
+
+IIUC, sysfs.c just needs to explicitly include libgen.h?
+
+> The rseq __GNUC_PREREQ failure is already covered by my patch in
+> linux-next. With the above sorted, the musl build passes.
