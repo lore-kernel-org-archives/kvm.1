@@ -1,87 +1,134 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2CB1F16B;
-	Tue, 18 Aug 2026 17:41:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787074890; cv=none; b=F6HmWAyTtLnvcnW1Zggdqz8ugzO+/qkohA6HCQVVr3CTJ9qJ3AakXXa3J22eU1r0IkxH8Ktv03CWArI43eeeaE7ZNT2RYZ1ivhJ4EOGOYsjLQE3zYIG1xcAqk6AGh8oW2NUaNq4SBiCEZP/Kle5HPYyjvaREGzGvFhZAAobSGBw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787074890; c=relaxed/simple;
-	bh=Tg8UHYuXd31LqWrkSnt/pKJV1BiDMsc5sKEQ47+w8mQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HImvarQb56drjVlelrjm0Xukgo0yW5EJx0+eWfcYb2sC8QXReRdkzJ2vS8nv0gDV7ApR2DZgQlpdjUFfRBSiCWkBhUBZ/2MutcPh2XIEAtmxwTY5g0E7jfdNgu5HCMYUGG07+nWoGcQMLBd+4XhX39kkIcX3BkmoUs10t2GnZUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XUVNg+Yr; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D17440A19
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 17:55:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787075759; cv=pass; b=QREnuNgJ2ICzAFLN0kc2KM0pXogulANnyBwaaKnH/c9877UR9926tFYxXtG4vHF7hpWoWu1VNp1cAHXeViPe6TP7DexfozVYg+0iJpB6h/iTPIVZWYT4HGtORLHiH1KjE6qRxo6/Xu2vU9oEdE5ny4bSO4ZAGW7yHL/cdrWst8A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787075759; c=relaxed/simple;
+	bh=O/48gIa2vUi7FxYUqNtDfgAuIWzA1oYF6+91I1abQAI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=alvWbPd36TVhwQlh9qNMBc1JOHsGG5eFEvqKCU3xQKCKMWkQMmW+bo2vfrJeOwxJwNzF6rHR/zOYS5Bmwpq6wkWcsFwtnPyRG29xBZipQMVgkqReZsNrlfV2BBTAjEX/esH0dxpavFAP3baOHntZr2Z7CEPkiFdzACgsLM4LfmY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PRAb1drG; arc=pass smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XUVNg+Yr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787074888; x=1818610888;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Tg8UHYuXd31LqWrkSnt/pKJV1BiDMsc5sKEQ47+w8mQ=;
-  b=XUVNg+YrOXXrcD/t8NMOkCIbxS0BoTVCduJtzII+vW39xx5YjWRSFRSu
-   siXyizGNAFKam9x4AEGU0d8AOY/ecIpU30vxxqaGxms0FlPFhUEA91Z2w
-   WbYUqOJ6H0OxyE9DaA6vQRMdqg41+tI/gbBeYf/x22RUl6cTp2GUfwkMr
-   g3VoBlDR3z9M7vXuRCWKS2K6TvKoBKWgyUS3W1QwjpeGewN3/TXtX/Q7q
-   jNuNsvrKDHY5qlxk/0SDxrjiofZoMSwJrSYXqGHlrqESseSMCWD+5h8u8
-   KpIUVixsRAF3+yt3jptraSoaSQxgjhyfzTre3AFfifKauCdUhmw/FrSsx
-   g==;
-X-CSE-ConnectionGUID: InrDCGq7Q+eJI92idvW4jg==
-X-CSE-MsgGUID: JtpgXVAbT9ilj1+OpOJbYA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11879"; a="105110342"
-X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
-   d="scan'208";a="105110342"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 10:41:27 -0700
-X-CSE-ConnectionGUID: IhCWEYcAQvWxx+TzgYeovA==
-X-CSE-MsgGUID: zsFWAiZJRfCVFQ7WoWPO4w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
-   d="scan'208";a="262021727"
-Received: from tassilo.jf.intel.com (HELO tassilo) ([10.54.38.190])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 10:41:26 -0700
-Date: Tue, 18 Aug 2026 10:41:25 -0700
-From: Andi Kleen <ak@linux.intel.com>
-To: Zide Chen <zide.chen@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-	Jim Mattson <jmattson@google.com>, linux-kernel@vger.kernel.org,
-	Mingwei Zhang <mizhang@google.com>,
-	Das Sandipan <Sandipan.Das@amd.com>,
-	Shukla Manali <Manali.Shukla@amd.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Xudong Hao <xudong.hao@intel.com>
-Subject: Re: [PATCH v8 7/8] KVM: x86/pmu: Emulate RDPMC on performance metrics
-Message-ID: <aoSZRRDtNxNA0UtK@tassilo>
-References: <20260817183143.226156-1-zide.chen@intel.com>
- <20260817183143.226156-8-zide.chen@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PRAb1drG"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-498012a61f6so61105e9.0
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 10:55:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787075757; cv=none;
+        d=google.com; s=arc-20260327;
+        b=g4Ly29aPiQIUfzeyhuL+lqV3wf53LMTxA8Oy12ZYrbRtWtKWTP+CMvu9JCNwuyY9jr
+         X4AAO1nQukAM87uoEgfl4OAWz+tyk4Zu0+lxRif7Z4JKZT15prIV+mTdsCGovkC8gQUa
+         5ttu17K79c7I6iM4nz+rPt8R3IoQ9pqp2YGtzGU7UiBDam7bfNd9W4zuM9HD3YL9D5hq
+         rtXLq8qFxHincO0XdNj2rgi+vsDYOvav2dzV9JdFlrFRPKn+Jr0cpqjUCb92xFKvOLUT
+         kxf1AGVLlsQxsln2PCgLIAsklHGKX46iafgEU4h7tgZKVnf91sj6D9BRnK+pTltLyeOw
+         v4Ow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xdwPE7pm0zYRhFo3gxRQ7Z14QbNNHShboTJ4Fwvcgk8=;
+        fh=1n7i8XpDozJdmKnkQppUvORMVSA0FUrmBpMjNEv0vwI=;
+        b=KxNK4J4gXtIcRiwmJRBStZG8YLwuqwhJ6klf1qZqRX14GnWF97nTYPpKTxgjt1I516
+         Sah7rnNkAEiY/A1PJleEV/6o40+JX3MEEiZicS+B5WDuKlfWbQD4dlKB1PANLrhgqIvS
+         ihBOHZAxRJqdxhV2q/dJ+C9enZVcK28+pmTJ5LXZLWvxltPhGrS9955BvXtLft+A/aqV
+         6C2XmQFq9+rbBXtF3H/hl5wOToGhblFvQWz6RQghAj8MswwgndZ8bwZH3G53BVxoGyYj
+         3i7RxOp07fAPWYPa6A8F1xDXTvoemQsiI0Pdernk1hMW2fxMY9eWDhULnlNjYxOEO/Cs
+         1MGg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787075757; x=1787680557; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xdwPE7pm0zYRhFo3gxRQ7Z14QbNNHShboTJ4Fwvcgk8=;
+        b=PRAb1drG8c4phefl4H8P5Eg3+1XDJrnN208y9YJ1Qr8wfEwZQvlmWB/x9Hxnmi3va/
+         3H9aTmlpthKY6rzY+kFe1OpIpSptdemZBvNelvCCJXvkJjdCJHWTs+3g0S7tbjD4v1cJ
+         RXXSuoYInZB7ARJ8/UuNu2UF8/YwuZ0Zv3lbe+pvgeLInf4UTCFmBdp6JMHwiy7KgFiF
+         eArkeEhrcRfLRTT4nFkHFKPMxpC/FdttZV1jVibfo9fv5Il54jaMr2ZhQARHx5ehXyoy
+         +0HGrqeYs5HdFN55fqjpn9wEwynmM/n21X/aHm9TpRE5Ivm2qsBcHWuWG+xDpXjc0l6N
+         dWRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787075757; x=1787680557;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xdwPE7pm0zYRhFo3gxRQ7Z14QbNNHShboTJ4Fwvcgk8=;
+        b=WYRbbjDar6QxsKwxWJbeNH1D88jvAsjdIcTYOhL1rcWLObiNW3vGijiudcWwvGW2eS
+         RwxTtpprSHyU/Frufd76Y+lML03hhg1D5cf9dTGhIWMfzUeRwpwUpn6t/vklhIgiSx1L
+         +xnLSLGLGPTp381fmvJBgtUXUGZGAXgjWsLso1A7dd8qEF0kEmSaKhlVB7nJ2jZPNpdJ
+         BhQeqIlUi9GCXSjCXdwM3RppBdO02WIDjhoEa2Y49yUb8gwcoygaC6HqXGPvP1cYWSRx
+         jTZ3U9DrsLleUhFQcRk3eq5YSs8qC+yBk1PMrpuECJppusix+JRo9s6AsDwqsQru+odl
+         5zYg==
+X-Forwarded-Encrypted: i=1; AHgh+RrCHLmCbxCSv8+W0J8ydst66u1aG8MBk358Q4Q/eNtq4/9xYA5xFo0x21VWrrZluJJ7xvQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiHBSzV1OMX2Da0QdmnrOLtJ8tyi5ZoeltIQVzGLyOEjVFDPVx
+	vivlFCQvYf5vDHTPNVgwtkU1Q4/PAYE89jLExLk1QExZWUW2fQOo8pxkm4d/+IUzf+A8Lui6xxa
+	8C/PD7EO/HZGlySHb9hZvTrGmny+OYY+V06KjuoVX
+X-Gm-Gg: AR+sD13sUq/o29AbJuCRVLEPwbjsXLkUGwX5J3v+qll3BUvEKJNrsHT4TUqUHZmq6vj
+	u9pfFHoyBLm7hVE2vhme+hn9aBYDIPYTzhSZiBS4hE9tvzf6lcXeL/h2HIQzxy5Zgbi/zD0xZ2o
+	IO7t0AodyUHws9G42mA2wZy+SynY9xUwyj7WJOyt7EIlHy9mVNuYdYUyuLwUEFgejM2sFXRy0Nq
+	zj9GJUtGTjiEPoXG+QVosT3IoUI19q9ppmYB5t36DOsyBWl5ptPh7UUSKiXVbWslx+LZnuaG/EM
+	LVCcdglS/7W9QKEKBVgCnPHAd22MguG+tc5kew5MJoHCGXB++VclbpJaSKNmjqMfXGV5cREA7Pk
+	Rdg==
+X-Received: by 2002:a05:600d:8445:20b0:495:76cf:3bf2 with SMTP id
+ 5b1f17b1804b1-499a2b6ddd7mr990425e9.5.1787075756253; Tue, 18 Aug 2026
+ 10:55:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260817183143.226156-8-zide.chen@intel.com>
+References: <20260817080759.25601-1-likexu@tencent.com> <86qzjxyvpx.wl-maz@kernel.org>
+In-Reply-To: <86qzjxyvpx.wl-maz@kernel.org>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Tue, 18 Aug 2026 10:55:43 -0700
+X-Gm-Features: AcwNN1Xge_o53aSOcYhkgsrThZL6nmQlGNWnTD1LEZPHs0U-nSXTMj9os8NN8Fw
+Message-ID: <CACw3F53-_kQV34Rtjc_ZLnS8=SNyPzW5PfRbczEAGGF2oRZ5wA@mail.gmail.com>
+Subject: Re: [PATCH] KVM: selftests: arm64: Skip sea_to_user without 1GB hugepages
+To: Marc Zyngier <maz@kernel.org>, Like Xu <like.xu.linux@gmail.com>
+Cc: Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 17, 2026 at 11:31:41AM -0700, Zide Chen wrote:
-> If the host has the PERF_METRICS capability but it's not present on
-> the guest, RDPMC interception must be enabled and KVM should inject
-> an #GP when the guest attempts a PERF_METRICS RDPMC.
-> 
-> If the guest has PERF_METRICS but RDPMC interception is enabled for
-> other reasons, KVM needs to emulate RDPMC with type 0x2000.
-> 
-> For simplicity, Metrics Clear Mode is not supported.
+On Mon, Aug 17, 2026 at 1:53=E2=80=AFAM Marc Zyngier <maz@kernel.org> wrote=
+:
+>
+> + Jiaqi.
+>
+> On Mon, 17 Aug 2026 09:07:59 +0100,
+> Like Xu <like.xu.linux@gmail.com> wrote:
+> >
+> > sea_to_user backs guest memory with 1GB hugepages but never checks any
+> > are reserved, aborting instead of skipping when the host has none:
+> >
+> >   kvm_syscalls.h:68: mem !=3D MAP_FAILED, errno=3D12 (ENOMEM)
+> >   not ok 1 selftests: kvm: sea_to_user # exit=3D254
+> >
+> > Check for enough free hugepages up front so the test skips cleanly.
+>
+> See my comments at [1].
+>
+> This test is totally borked, and Jiaqi stopped replying. It is a
+> liability, and I'd like it *removed*. But if you want to fix it,
+> please go ahead.
 
-But is the bit cleared in PERF_CAPABILITIES? And would 
-the enable bit fault?
+Sorry the test was written in a way that is highly customized to my
+testing environment, and I have been occupied with many other
+work-related tasks.
 
-It would be better to just support it, metrics clear is actually useful.
+Like, I can help review the patches for the test during this weekend,
+if that's not too late for you.
 
-
--Andi
+>
+>         M.
+>
+> [1] https://lore.kernel.org/all/86y0le9cvz.wl-maz@kernel.org/
+>
+> --
+> Without deviation from the norm, progress is not possible.
