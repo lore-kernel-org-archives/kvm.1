@@ -1,234 +1,228 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7CE443F0BF
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 08:48:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787042896; cv=none; b=OdqVVO9Knq84XZUl74keX2QKjLIKex5N/Zhiny1b78OvJkcnsMeot206QfJYA4p3GpB2zQmeHsCV+uokpUHeq0k2KiUcOOWfBv6c1Y1YmYWNOs37ZvCSk5TCLCEzG7YKFHIAwLjjcjiJjp1eQznBpaL/wJ+yF8j093K2a16xV5w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787042896; c=relaxed/simple;
-	bh=m19gOfhgFfrNyx9gN1YI0FaqYSxQy0ynSHm84Udzlbs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f/2l5jJy2tldzlKGLGPpZl0aiq9KxZOZxCRvHqq4LROMSF6g2L37ZZwP5D+DQ0852NKnm0NuXUOW3w9ahI6c3izgFhMyovVsPIQSmPH1ldz2GxXN0mp8tp7rDj/l1P8A7+KEBu2V1HHVlrF7KYhT7Nqfsk7aavHPpQHhMS23Vw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=VW9S/1Pc; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Si+sSUDG; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067643F39EE;
+	Tue, 18 Aug 2026 08:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787043188; cv=fail; b=HaRy7nGKUdff3d9HywFFErwLctRvjJGr1SYDUwoZ4MBtLexHp+70UB5jYK2bjDQdyHqlfbh+H58LnKokxKviYnKicGsH77SKYlktJyw0KIxok6xW0T/pgPbALNjRmQmwlIq/D9/RkATywF8KA16Y2Q+MIqyJ6S01ntUhs+9NQO0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787043188; c=relaxed/simple;
+	bh=LzqhDujbHXcUnOjV300TIOsXQzQ0Jy8fXOcy/4lfSKQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=mEiRDQE+TwSLQt26FSyO6NkL/SnxbHGgkIyHdUjezqkXyY1ds/8NbjYbA0CgZZcjudlo6Lt/oL098fEHmRgj/Iu3jsvgSIcE4TgLetqzFIOkoxo7exImYSaBJ6yPdrgb+F5qXh2spXFlhsPRQrp5sEn54bmJPnBAl6gM8vo0LYM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WIuVnCy2; arc=fail smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="VW9S/1Pc";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Si+sSUDG"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67I8BF0U747614
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 08:48:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	pXwYInvkmu8G0HskQ5AMBGpvs8HO0gTNnQT0ehKDGbE=; b=VW9S/1PcvukBaX1c
-	Drso6g0D/d/vOFaNfI7unjbwudlDiVqY1jVY0RLlu7QgL8br8ozRgN696vQJizBX
-	5ICGX01nLKiY2Awj/FnRiEOoTk7oW/xwcgrKcAa2pMWPuXJuxbJ6LT8yZvHlwXx9
-	1nYAbCfD6Q7JeSC/H3std++KzodM8SG/YXYQ4pm0M+kr6WSOmJDbSqGA+WgTw4cF
-	8Yr5VpudpKtvCZEupt3HWY3DHzsl9DbWbFmUyrrWKEu6434yMSjY2A4n6Lv3eBXa
-	L2N8lKfDi2stJ5z8+S3V4r4PCEMEjEe9/2exGt4mNm5BByleOJhzMs3VOvkRpOBg
-	1dCAjQ==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g48q0ttcd-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 08:48:10 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-934979ee9f1so561175885a.2
-        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 01:48:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1787042889; x=1787647689; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pXwYInvkmu8G0HskQ5AMBGpvs8HO0gTNnQT0ehKDGbE=;
-        b=Si+sSUDGy7mWXV7HWuQt/HrG23RA7Wq+ZgW7+316BTmlixHcgg+sB9cqNFrHE4Fs/v
-         bJuJ3rLrCjz/T2uZUUy0Ab4XkHX6r5X7xxc5U/ewuuvkYax3HaANl2Dx6i0TDEuBm3lX
-         FeExNLOUMA/3rxqzz6GsPBBDfU+z0KfHBn2dbPb0htF4lS363kVzTWX+6fRJscDXSENx
-         b1OCpL2mHVPRTMpSQoAguUCI2HGs3Bvg0Tq5I3Ufdm+bI0QPCyKyRtYwSwJ77Tt597QB
-         3s9RRJ/lwmuBKj/623Rl3tiaD7Z0HnfFwpdgc0xymntoO3GdWDr140MfV7efFKZebyHj
-         dKzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787042889; x=1787647689;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pXwYInvkmu8G0HskQ5AMBGpvs8HO0gTNnQT0ehKDGbE=;
-        b=CsgOb5j3kE7dUoKo9xi3DkWPjTQpR7hmSHwdMCHQgVzgzNCTl9LxO01+RlUNIDvr18
-         hqkk6jx9fvhU6s27FCyl0Od2c9htrfoL8PlDiVJmn2svXKeZr6DG9HqSpllgV3ACMIgc
-         i1dKaUMwB8gfv9X3CleX4pzwaSFBzGt8eN5paH9RFOGt6a4/1Q2Fe3PhvF5HBKo0mQlk
-         TgNEqRSrPLy0qihhykj5+AW1imJh18hOv35P3VXFCrEF7XkMdjwe+rKzZD2/zd08mKI+
-         xQW+IY4fGvkS9uujzRRXsuGTKl2orqBFS8OltYhWhoVPBWQKgn1tnRIby4MHy3ZRVSbH
-         S9KQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoxWaFneTzK2MsRiJi3wLxem/V8RmT9N3egnCSG0BDzmWZ9dPkFIYt144P5llWgQRBeOmQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFqMk626/D/wGcZcYf/eW9mOZ6LwMMtZgpBmbvMbuG7UFjIjBt
-	WRTdl7QDz7UBHnWfRXf6v/PXKQ/n8aIj5CIbR2hGWztUkIYwot4qtFBh9HVZOMqPvLpayMjRlyq
-	hqD0NjkyE1YGH2t7B2GPA+Hlq0lz6sunj5I79NysoM2si9KjvEvsFjJ0=
-X-Gm-Gg: AR+sD137mqaDOiH1qCIVsu4Rm3nAd5y90R7Q7ylvYmjNNd5my7UeIKK5IgjEpUOJ19+
-	YIDwIfDhjk8ina6KFeABsPIzPjmQCEazNpa2iOPwycGYe62Uzfndof20e9iiGF4YC+4ZqTEWmtt
-	2vosewdBsVH43/HxIKSpb1cmV8LAp5reQQiFTwQOe8d2wOaliNtT6enL+dJ6qAqKHOpbp/ZEEVZ
-	gQK3RqdqhtZRJiRDu34jUhPmQxIBnBWAUZ/OcBJ6VrN4ckfaoUVCp3aVB9brbvbVpVVrD0S6ICT
-	Ej9B2yt557BLjrDxvXpjztQYSv3IfQMNxdvGfFwDcJOHltOpmiRImgfcSN2XVpXKlFc9RSEIRzH
-	qprZTZSwoTTuBk7LskQGl4tCRiaQL6D+cy3I=
-X-Received: by 2002:a05:620a:408d:b0:923:45bb:a95c with SMTP id af79cd13be357-936d1fd9bdemr2856006385a.10.1787042889431;
-        Tue, 18 Aug 2026 01:48:09 -0700 (PDT)
-X-Received: by 2002:a05:620a:408d:b0:923:45bb:a95c with SMTP id af79cd13be357-936d1fd9bdemr2856005085a.10.1787042888909;
-        Tue, 18 Aug 2026 01:48:08 -0700 (PDT)
-Received: from [192.168.69.229] (pmd666.hd.free.fr. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4999d078517sm103963505e9.5.2026.08.18.01.48.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Aug 2026 01:48:07 -0700 (PDT)
-Message-ID: <9e83f348-0d27-49a0-babf-789a8817d78b@oss.qualcomm.com>
-Date: Tue, 18 Aug 2026 10:48:06 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WIuVnCy2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787043186; x=1818579186;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=LzqhDujbHXcUnOjV300TIOsXQzQ0Jy8fXOcy/4lfSKQ=;
+  b=WIuVnCy2/mzC53UzzYfDd3t9Al16XTDfp7Znd4MUqMZqdrxlPRVXvZeJ
+   fqiawBVkTcgJV30IRZcp3/PCElWIqLM4S0helraRfOReyV59iSa634/zz
+   gpYXmYfS0jBKM7xMtOGVBTzBW6XfoamUAzxY/M3TLwxe703cWq+tZD2v2
+   b6NliUhJOR60EC4htTCSJhW1nBmL0D2fSUaAnXfry+9pAZD4o69Lkzxu+
+   Ue1C6QsmvH1Z2mU18swTaT+un1GXwF4wXWDidAJV9fdGnDDia5Lpd8DAA
+   4sSRSVsk49XzAV8J9wMgYdv4TQAHi2hIwMrPAqCy55M7gRV2bf6PtsVkU
+   g==;
+X-CSE-ConnectionGUID: 4gwa6zhBRWuNmv8icMtvLA==
+X-CSE-MsgGUID: pd7FbOEHTEaGipSgjBoXwg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11878"; a="87444251"
+X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
+   d="scan'208";a="87444251"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 01:53:05 -0700
+X-CSE-ConnectionGUID: VmXZ4L0JQ6mUU9RtFb/yyg==
+X-CSE-MsgGUID: 6DzZ3h3TR2Km96v1BMZoMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
+   d="scan'208";a="261881077"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 01:53:05 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Tue, 18 Aug 2026 01:53:04 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Tue, 18 Aug 2026 01:53:04 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.66) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Tue, 18 Aug 2026 01:53:04 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ez9ua8bFnHxZSNV5qBmX79n/0GKUELs/0AkFGjgwaYJjLuTTQROy0iJFdjnr2lTLtDyxezVo1cbYoS7QycXWCqjGQJWaYHbHsbrwUayy9JZvZ6p+tzsiYl0XYV4+lbBheP8+XuroKTqQ+kDM4UmeW4BVnwmXjXN8tFZGJuyguuHP1rcGrSe+9Mnym4VtPYKc51KmtdudCJeExyBs5QixWU4lk0cus0z3VbYFMCjHiLQd5Hs10xzeJPUIxO3Tp14SpID0CebmMBIhErGs/+giRQcLlTa11kmILL1+n6JYrz+q6SN9btkooiJoe7crcJhL3aIoK7O2kIpk3WXRU8F0KA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TL0EIE91dYzCGSgq6uon+ZHotXvDkCtCiEVAjFgj8B4=;
+ b=Bpj7SaNWqDhvgriU/7jgpu+aCxMZ3BygMoNNlIsXdulMWJpJQv0JSUbqAWXp87Eo6qkVAJ93YX1dJXrZHLCaTm7i3JU4lAPs0pIaPfVBo4v62drJWCvAZ5yN0bnvarX3Zg9LMJ2424SNEdnVm5aZf7mFvO1WtZzqHBjJDWuk85D8dg2Nq5sV1VoNdZC4d+WtKfaqkzYXeYnNq2qqig7X3pcyHOrWoU5m36NJJ6yoNyNXC4NBtJ1V5h+HaHdbNbGbpVY2fC/rxPfMCGF8JmKAxUCGA3nzWrMHo59gZW28qQ78ZAn1y5m+IxDJwrQRK3pSxaQbBBriYYDrpsevsx5icw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DSVPR11MB9579.namprd11.prod.outlook.com (2603:10b6:8:383::17)
+ by MN0PR11MB6109.namprd11.prod.outlook.com (2603:10b6:208:3cf::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Tue, 18 Aug
+ 2026 08:53:01 +0000
+Received: from DSVPR11MB9579.namprd11.prod.outlook.com
+ ([fe80::ab5f:5d0f:fb90:9d]) by DSVPR11MB9579.namprd11.prod.outlook.com
+ ([fe80::ab5f:5d0f:fb90:9d%3]) with mapi id 15.21.0315.016; Tue, 18 Aug 2026
+ 08:53:00 +0000
+Date: Tue, 18 Aug 2026 16:12:03 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Ackerley Tng <ackerleytng@google.com>
+CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, Ashish Kalra <ashish.kalra@amd.com>, Michael Roth
+	<michael.roth@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, Marc Zyngier
+	<maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly
+	<joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose
+	<suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, David Hildenbrand
+	<david@kernel.org>, Fuad Tabba <tabba@google.com>, "Edgecombe, Rick P"
+	<rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>,
+	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>
+Subject: Re: [PATCH 2/4] KVM: SEV: Drop page refcount early during RMP fault
+ handling
+Message-ID: <aoQT00rN8a5TQ88+@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20260818-gmem-no-return-page-v1-0-4f8d939efdbc@google.com>
+ <20260818-gmem-no-return-page-v1-2-4f8d939efdbc@google.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260818-gmem-no-return-page-v1-2-4f8d939efdbc@google.com>
+X-ClientProxiedBy: TP0P295CA0037.TWNP295.PROD.OUTLOOK.COM (2603:1096:910:4::9)
+ To DSVPR11MB9579.namprd11.prod.outlook.com (2603:10b6:8:383::17)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/16] target/arm/hvf: Lock BQL outside of the vCPU inner
- execution loop
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
-        Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-        Mohamed Mediouni <mohamed@unpredictable.fr>,
-        Alexander Graf
- <agraf@csgraf.de>, qemu-ppc@nongnu.org,
-        qemu-riscv@nongnu.org, kvm@vger.kernel.org,
-        Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
-        Magnus Kulke <magnuskulke@linux.microsoft.com>,
-        Peter Maydell <peter.maydell@linaro.org>,
-        "Scott J. Goldman" <scottjgo@gmail.com>
-References: <20260813181640.6537-1-philmd@oss.qualcomm.com>
- <20260813181640.6537-14-philmd@oss.qualcomm.com>
- <3fa59521-1420-49e3-9d73-652148f946ea@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>
-In-Reply-To: <3fa59521-1420-49e3-9d73-652148f946ea@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDA2NCBTYWx0ZWRfX3my7YDXMg3uw
- IPns7oY7JNE1cJNu6Xh9IByT+dskc3ia7GpsWpjY3PvqgUZ8hP0D84T4fv4xJl7vrJijFuCae+g
- xKRBAs5ppdfUz94hWwTgURluEXH16GI=
-X-Authority-Analysis: v=2.4 cv=VuITxe2n c=1 sm=1 tr=0 ts=6a841c4a cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=4s3hRJSeHn4rkQlkrse1kQ==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=M51BFTxLslgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
- a=EUspDBNiAAAA:8 a=mLG9MJvJpvtZyw53qYgA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=O8hF6Hzn-FEA:10 a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-GUID: 2iw_IuWUwd5l5--btJzZq1NeVLU1Bqyl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDA2NCBTYWx0ZWRfX2cMYci6J0aeU
- SiPHwB4jz3VsJaxaB5jbWcAkLmkmdm/OQ+S2NfmPK4Cyo9+wEE43u8Yh21mZk210OE+w+CCOA4j
- 1qGjO3gK2aR4xM3v/4G8Fl0N9EYQTWMJFRSgKR0lNi9i720TeWDFHoiVV8o3moDwjtQ4jk7Q3eM
- FwF9fEnz1IUBQTO2igUC9ZZoihUR/YkLCyGqXQyTQY5rX2hEKaBAcJinhtSzm6HTqzOSJ5pZNtZ
- I4TbxcY1vElFYyT9CwqPKv7YR7wKcWDqJheL+AhDI2nVRaaFxUx8OpSNOjAw6feD0WGI3NoWvzW
- JkSrik56R2JG7mvUR+6y7zawvve7TxS940zeBUnSsqY4AfyjqQO2rUdKZHsxjzwLcnGq38wH7Pk
- kCr26SP7/pTH3LRIP5vQMElxG3L0ml9pJrLBPgdtLxgo6tcL5xdkiBF3up1DlNWLUDze/PypHxG
- JWw+6gVFeEHskL+I7mA==
-X-Proofpoint-ORIG-GUID: 2iw_IuWUwd5l5--btJzZq1NeVLU1Bqyl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-17_04,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 priorityscore=1501 clxscore=1015 spamscore=0 adultscore=0
- impostorscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608180064
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DSVPR11MB9579:EE_|MN0PR11MB6109:EE_
+X-MS-Office365-Filtering-Correlation-Id: 252bb990-39e1-4059-807a-08defd061b8d
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|18002099003|22082099003|56012099006|11063799006|4143699003|10067099003;
+X-Microsoft-Antispam-Message-Info: BqkkWNpfzdrOdeyoaItaJwEY+VdP2M22dZLu4cChG5OUpjULmlSIfHc7aU7BgayJ8qtjh8HY85wJ5hlo3UA+54xM5rl37hWe2BlSfkiJVbqM4Wkq8ovV7k7PONihWqvcpH++96c7eqir3vXDQSanbot1FBTqVD6+99BigTxLPh27ooa/5O5pm+ILcfKIbEjaTQJVQvTKBp9QEATRY6/UbNcnwhTqVQujx25cTl60U067WILD2JUQL3OlLoMnzQBd5aUQqAF1hcPos65c9OFpDkt/EGP30yKcIbzd3KD1uNiVto2hh7lfqz5qqd0VHgkRNIxjxX5l0LmO5zIO7/5Z6oRGRCu+6TjcPpJ3dvPJF6GwdNGDE5ZFPiEk6CXaq+jiHEOCWl7mm0qPnlI16tkvMvsvjwzNFMXQtOXFmQHbxUJHIRF6uvSfN3e8re6Ml6MxQ9GQwtRtIK2mc1U+nrd1xpjmfR+EVztFAlBTs5ePDDP+gD961beVFwIQRv1FzaYgVX8iZbZw0NRUl9TOwA/nqgItJbhLrXsyoX3pQ7TSB9lzmxYCiFSOx4WvniFFx3C+tEQUiEw7eSZGZERrdIZPrUtCtZ2qc/uadiQqQkuLkVDGjf3UcHAamZWbcsOTZPZo7QfmyPIbHlvZ8A3X8MP4ajTG+I7sX/Ej1ZKkyPe7qLE=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DSVPR11MB9579.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(18002099003)(22082099003)(56012099006)(11063799006)(4143699003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?haKSWRsDkP+Sb4FGDBpyFb0pV/bAvLbODrEwSE7nCS7Ouhm6xoMHhEcBr6Zn?=
+ =?us-ascii?Q?0MbGSNiQw/bShoKnzGi3e5AcZrcttzV8TE5oOC4ZpEh0z4/g31cFplD4Qet+?=
+ =?us-ascii?Q?6NB/MyGqyd0SouKtmILqlDmOwhvEzQ+FspG0j4d/KC3u08iR6P/T5hTHOZ53?=
+ =?us-ascii?Q?zX2L1lYe8KqfnEGQ0N+S+Yd+xfmm4uTw4qn6jGx58sFmGsdntuNk7qa6ynnE?=
+ =?us-ascii?Q?ytn08DEu7cp2Jku+W5xZb8lhyOj+OrVJsfj8OF+rVfH1uRvGVr39UII5eFGu?=
+ =?us-ascii?Q?rv+KU8uNunxHhmuY3s88fsN5Tmaunp85Q1ia7pNzwoGgw9TX+23HIsrwjKnh?=
+ =?us-ascii?Q?zGUMxPJ0D0klowCEkS501ZPtn4SKUl10xI7Tbat9P5SH0/0dypa2WrwpsWCN?=
+ =?us-ascii?Q?6wbQyzrvscxjWbpKN9ge7oFM6BoztlF0MqpNEdj3hkg1FTMwm7EGYZ/+g3v/?=
+ =?us-ascii?Q?nbhrH67wMHRXR6hAy38yCyO1AlsAHCndghrOuFa8XmuZFszzV2pasfNGCpoP?=
+ =?us-ascii?Q?3BSH2KuBjdxCTcNOZcdsNnMN5oPCp6U6WjJhRdyiAp+sdxKh6CdTujqhZ2CT?=
+ =?us-ascii?Q?e+Vsrh8UOYmeRhgk/hZ1kTtcWEcYFa4/iebIpmufJcyTYZx1HZgOYHVRrCEF?=
+ =?us-ascii?Q?NO86gKPyb7ySLux6yum+e1WT0krE1NWqMJu+23iAbVc5ZB7Xg3/MVlcjCNNB?=
+ =?us-ascii?Q?h0TKj6mh1sTb7wYzVcXVxB57cuqcrAJU9iu4xW/Keel5dn6ngTE6WL4/qEo3?=
+ =?us-ascii?Q?6SsJN1hStBPVUiydUhMHJc/64GW0yApfWNYMBouEaL1hCJL00vPOdakIPl7w?=
+ =?us-ascii?Q?OI/SR8W0T/mGzgO+PY5WN7H9XjV2PJFl6uwOVrKHHdv7pBkFd+dUJQPy0ik3?=
+ =?us-ascii?Q?hSnlc+BYI2zF4H6JE1VVYa3AuE2cL+gPt8ZcUDEEiVlv6PWVM8Eo9/QoWAtE?=
+ =?us-ascii?Q?jHqwNicTzf6/ZhHUJyd/UuOeCGGO+K+0yLdXFlsWC+rV49+CYYF0A51ZKo2s?=
+ =?us-ascii?Q?r/3hhbmfgjXUA60LfamG8U3kRYzlCGRBZA4M0P7/zolyvEk1I8P4XNxprFa2?=
+ =?us-ascii?Q?bGMR6Q9kia3Nu3acB0nWdXj9HTNkRddCHLCf1lsE546dqvX+0CJGj3GutHWU?=
+ =?us-ascii?Q?IaL1yUnorUOuquc+a/fTqcFjcdctv22L1ndwtbpfqf5SB1OVoQ2v04sKH1Fh?=
+ =?us-ascii?Q?TitaJeZGhSQGeKMEvZ4Qj7ckUlQ2YTwrVSMqL5q8U+tUjxemw3xN6Gq6fxyV?=
+ =?us-ascii?Q?yet3JXfM3OmyVIPyDsGbYd+0SU3IbfNJBLLBm+sI8d8dVb89UxfxtY4lCOXU?=
+ =?us-ascii?Q?YywjvmZVCi8LJcNez7J3WRvD7e3Awg6dWPnVqZrCEgXemSWTSIeikSjW1afy?=
+ =?us-ascii?Q?rDeRTFlQRUqIBCuyJJTEu+lnfuxn9uajO4eD19i44BIXQ3G/OHih5Y8wy7PF?=
+ =?us-ascii?Q?oF8RAS9O1Epe3s+8bvbF4UAxsdJxA5SUu+UrjLlSsu1vTS/jsRRbyfevlA4j?=
+ =?us-ascii?Q?PQ3hqf+rzx5owfTvnqOiU1ucXWXLzF5gSPDcfveovUUe34bIBNJsmZJAK9y3?=
+ =?us-ascii?Q?65LtUM3tmZGhgprTin9X5azi7/R7NpDx0yezEeRI993i5QoQC1WQ8z94lEGm?=
+ =?us-ascii?Q?hkJHejs8vHxEkj+KUk7510x8aui4+WxCtqIKTXLbERQwbQ8jJTKNJbA2ixhL?=
+ =?us-ascii?Q?i3SnIhq9J+yP1DY25Rzn4ugTSx+0YQv1a/R7jUxRihaQqsWkx/g5pwiLDyEA?=
+ =?us-ascii?Q?Lyfz0kh2KQ=3D=3D?=
+X-Exchange-RoutingPolicyChecked: UXHLWIf4VuBCXWnDDpxFkS7SVNMm0WD9s2lzbw025N5y4j0LIFfBIy+hO9tjWDGy8HgX3iCb2jNLbRMv4bJVdKCFrgfPUiHUq5kyz4uuHqne+6m9F59bhMKW7Nmpzuan0w39az9kobDgMUgeHQshjn/YmbpwmKv8LJnKEzRauIvAkgHpikRHGKZ2AlnIjLKVBCN/omdCtQZfOViwPPu1ncwCWEoT//lo21ivC0AEVP8mixmKJkD62HQQ/CmAyjREhFeGgCOfA/l44KNpF1/9sje5MUZIPTvPPF6yYe2uKUreFDsYeItvpIaxurUQMgtlYkroXQi66xHe6Tvs73UhrA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 252bb990-39e1-4059-807a-08defd061b8d
+X-MS-Exchange-CrossTenant-AuthSource: DSVPR11MB9579.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2026 08:53:00.8122
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: U1jB501Cx6kEwpA2p1UMuZAPolUgfsz9+5jlf0YWiayfJOKTfaEEw/sfsjREVQlHaUF2vqPGTeWGo/6iptkzSg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6109
+X-OriginatorOrg: intel.com
 
-On 17/8/26 18:11, Paolo Bonzini wrote:
-> On 8/13/26 20:16, Philippe Mathieu-Daudé wrote:
->> Reduce lock contention by acquiring / releasing the BQL
->> outside of the entire vCPU inner loop.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@oss.qualcomm.com>
->> ---
->>   target/arm/hvf/hvf.c | 13 ++++++++-----
->>   1 file changed, 8 insertions(+), 5 deletions(-)
->>
->> diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
->> index c14ea54a67f..9c6408d2e25 100644
->> --- a/target/arm/hvf/hvf.c
->> +++ b/target/arm/hvf/hvf.c
->> @@ -2598,20 +2598,20 @@ int hvf_arch_vcpu_exec(CPUState *cpu)
->>           }
->>       }
->> +    bql_unlock();
->> +    cpu_exec_start(cpu);
->> +
->>       /* Inner vCPU loop */
->>       do {
->>           if (!(cpu->singlestep_flags & SSTEP_NOIRQ) &&
->>               hvf_inject_interrupts(cpu)) {
+On Tue, Aug 18, 2026 at 08:12:36AM +0000, Ackerley Tng wrote:
+> When handling an RMP fault, KVM retrieves the PFN for a private GPA from
+> guest_memfd. The page reference taken during PFN lookup is not needed for
+> the remainder of the handler, as checking the RMP entry, splitting the
+> 2MB page via PSMASH, and zapping shadow page tables only operate on PFNs.
 > 
-> It always return zero, so you can make it void and change to
+> Drop the page reference immediately after retrieving the PFN instead of
+> holding it across the entire handler.
 > 
->            if (!(cpu->singlestep_flags & SSTEP_NOIRQ)) {
->                hvf_inject_interrupts(cpu);
->        }
+> A later patch will follow up with completely not returning refcounted pages
+> from kvm_gmem_get_pfn().
 > 
-> However, a bigger question: who calls cpu_reset_interrupt() here:
+> No functional change intended.
 > 
->      if (cpu_test_interrupt(cpu, CPU_INTERRUPT_FIQ)) {
->          trace_hvf_inject_fiq();
->          hv_vcpu_set_pending_interrupt(cpu->accel->fd, 
-> HV_INTERRUPT_TYPE_FIQ,
->                                        true);
->      }
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
+>  arch/x86/kvm/svm/sev.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 > 
->      if (cpu_test_interrupt(cpu, CPU_INTERRUPT_HARD)) {
->          trace_hvf_inject_irq();
->          hv_vcpu_set_pending_interrupt(cpu->accel->fd, 
-> HV_INTERRUPT_TYPE_IRQ,
->                                        true);
->      }
-> 
-> and can this be changed to do something like arm_cpu_kvm_set_irq() instead?
-> Having the function called only with level == true is a bit unsettling...
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index b2738362a928b..19c31fa944e34 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -5036,12 +5036,13 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
+>  				    gpa);
+>  		return;
+>  	}
+> +	kvm_release_page_unused(page);
+>  
+>  	ret = snp_lookup_rmpentry(pfn, &assigned, &rmp_level);
+>  	if (ret || !assigned) {
+>  		pr_warn_ratelimited("SEV: Unexpected RMP fault, no assigned RMP entry found for GPA 0x%llx PFN 0x%llx error %d\n",
+>  				    gpa, pfn, ret);
+> -		goto out_no_trace;
+> +		return;
+>  	}
+Hi Ackerley,                                                                     
+ 
+You missed the parts in [1] which save mmu_seq before invoking kvm_gmem_get_pfn(),
++       mmu_seq = kvm->mmu_invalidate_seq;
++       smp_rmb();
 
-Digging further this other change from a86024eb2df56f looks dubious:
+and check mmu_invalidate_retry_gfn() before snp_rmptable_psmash(pfn):
 
-  int hvf_arch_vcpu_exec(CPUState *cpu)
-  {
-      int ret;
-      hv_return_t r;
++       scoped_guard(read_lock)(&kvm->mmu_lock) {                                
++               if (mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn))                 
+                        goto out;                                                
 
-      if (cpu->halted) {
--        return EXCP_HLT;
-+        if (!cpu_has_work(cpu)) {
-+            return EXCP_HLT;
-+        }
-+        cpu->halted = 0;
-+        if (!hvf_irqchip_in_kernel()) {
-+            timer_del(cpu->accel->wfi_timer);
-+        }
-      }
-
+[1] https://lore.kernel.org/all/an5RJYTwlYeym--O@google.com/    
+>  	/*
+> @@ -5088,8 +5089,6 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
+>  	kvm_zap_gfn_range(kvm, gfn, gfn + PTRS_PER_PMD);
+>  out:
+>  	trace_kvm_rmp_fault(vcpu, gpa, pfn, error_code, rmp_level, ret);
+> -out_no_trace:
+> -	kvm_release_page_unused(page);
+>  }
+>  
+>  static bool is_pfn_range_shared(kvm_pfn_t start, kvm_pfn_t end)
 > 
-> Paolo
+> -- 
+> 2.55.0.699.gb54405d56f-goog
 > 
->> -            return EXCP_INTERRUPT;
->> +            ret = EXCP_INTERRUPT;
->> +            break;
->>           }
->>           flush_cpu_state(cpu);
->> -        bql_unlock();
->> -        cpu_exec_start(cpu);
->>           r = hv_vcpu_run(cpu->accel->fd);
->> -        cpu_exec_end(cpu);
->> -        bql_lock();
->>           switch (r) {
->>           case HV_SUCCESS:
->>               ret = hvf_handle_vmexit(cpu, cpu->accel->exit);
->> @@ -2624,6 +2624,9 @@ int hvf_arch_vcpu_exec(CPUState *cpu)
->>           }
->>       } while (ret == 0);
->> +    cpu_exec_end(cpu);
->> +    bql_lock();
->> +
->>       return ret;
->>   }
-> 
-> 
-
