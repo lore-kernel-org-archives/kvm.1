@@ -1,91 +1,118 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E720847B413
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 16:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8EB47DD50
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 16:29:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787070473; cv=none; b=B9KQ0GRPiD6fbaXDPajhQF7zzkmLcqJyLpzddVr/d7jYc2F/YSr4kevGPtgx2PEQ27AiR50iB6uu+IVmieQc1XQGKKr/vmm+fUTPaU87lI1SGCRDxk70NsEbPPkunHJTx2Qug07I8BAtiE7uKwRc7r9ITg8nqwjWUvLBCJS/gKw=
+	t=1787070593; cv=none; b=YNmLyVHbFyP9LP5yddTm8CL54qrllF8aIidYNTMKuHj0HyWuHZtjYFZBLOhFeIt+YhbxiJiUNg8uKaJDDeFig9cAwBJWbjVnFS5AxQN1Z6/LsqwbVJXUtP0BqDGLipiLGDzWGg8jr10muaS+Y9/LJg1eUFNdq4N3NVcEEZaPy7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787070473; c=relaxed/simple;
-	bh=XiZDdwxdghUmr9SIr01cBJWYzhA9RXek8KYVaap4MN4=;
+	s=arc-20240116; t=1787070593; c=relaxed/simple;
+	bh=vC2RlolhkLS2+1s4l2UramjQAZbiE9X0zYRFDEG/2wo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=uiyoItOwihI61lxb93hunjn9I6O7YDYwhMacuFw0Onkn5GTUIrCZsY18bfCXd1g8h837Uuh7Kya/h/1lTT8NUQ7M6c6rrVJIIYGZPgLokpZ3cLvzRZWrbONvfbrxYkv7vNFc4HzzOiWwnYZkEUM57AyT7Iyqi9TOJE5epZdJRFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pIsd84Po; arc=none smtp.client-ip=209.85.214.199
+	 To:Cc:Content-Type; b=cHA1A9H7LOQL1gwT0Vx/U7zsQnpcPWGbFKYDYBvm5NV/QUKy2+ne0yEYR04MgsjHJdt+VYi94OGz03ohlFxigXfvs/cyOxyWJOJ9sDql3tmBNkPJ5E5dY0wKmgLyMwZ9tYQhz4hmUonJqIYEHW4GY6eSVuhxfPu9Vf6g+EhMiZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=alIWfv8o; arc=none smtp.client-ip=209.85.208.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pIsd84Po"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2ccb6823efcso315075ad.0
-        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 09:27:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="alIWfv8o"
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6a0a4a22bf0so43397a12.0
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 09:29:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787070471; x=1787675271; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1787070590; x=1787675390; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nmr600BUwpqEtuz+Dx2wuthgVpiG96H1E6Ankz5Sdqc=;
-        b=pIsd84PolIAWNBI2+z5NfC+FxoPTPBromw08HbgE5D8RPwqcFadVPQyeXFpuxhHh6t
-         Hno+DdmgbHkN9XHDq7G3FI2IJX4pOIc4g4uhfg7mSNHRXr7pNd5c9j8Qk7hdyDkOm80Z
-         ZCdnzrfWEa1hr4u9CT25zcgOzVO7qHcuCJDj5Dv9riPGwjAY/qjvkkseMhpQTbyvdcqC
-         Ay8w0C9YtBdllhYUbPEAqbP39Q2iZKEsU/GwGEknYQFhfqpEFbnt7WDzqY7maCBWGfiW
-         MUkxouFNpzSmNRA2s/V5x7Zk+0EegLWlCac6iDHf7GHa5RTxmbH27hTAbF2IpnWf90EQ
-         1K2g==
+        bh=/eyzaZNjJLEyd0fKbeRAuoUQBuqF6sdPIInoyVaJmj0=;
+        b=alIWfv8obtNxF/dFCsPGwQF6yl0IAtic7uyJY45RPXxmzItjOHsoTnLvTOqjQG4lQ1
+         jYLvbizt+0iYvVb7OtsJuO1WN9r4gUc+sBNwhn4D3Aya108cgty6TMhGypazo08HdU6B
+         DILCRbQFLZt+BJZZZC+yAnJrcgQ3lgOyholMTzXb/rqQUeZVC5vCRXAStYO5VOWwrr6w
+         8c1KLdeNVwVwENb5fRr6ohDFZOvaNmdRr2eRsixg6dCl6PZRown8FQpck6Sz2i3jvZ2R
+         fs9W/RGurCKuf5ohfhDwyCvCEnQvnmQhzxbA6VsB4y7URBQNtpxa0beiOdfp8hWnsafN
+         FJYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787070471; x=1787675271;
+        d=1e100.net; s=20251104; t=1787070590; x=1787675390;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nmr600BUwpqEtuz+Dx2wuthgVpiG96H1E6Ankz5Sdqc=;
-        b=jG9/HCvidNHUgIHK2hPsDDpEUKIJbn1xdpUOlW8znDcC7s0chMtUe54yRXYA4F6kpY
-         UU2p4uj6tJxVDWrye+GpgrbkiWbo0monecOZxkdGWcubQrOgsxndZ54AsxCGK9mAS2qH
-         vC9Jz2ug0elvJi1dHf7ljCHcWL4k+NphHhzdD/RhsaSCVRTX+ZfM8jioiyUknuvsv9Fp
-         H6qH/Kwsmuh3tPca2xCVDfMZdltGIO5FkIuFxtDkHigxjgLTu4zy08/Y0k+34t4TQqte
-         QZQb6rJmTTjwn5406UnHBpv73CNIjQnNqhviBm7hfEB8PVZ6m4KELVPgXqd55+PM1uQl
-         rHEQ==
-X-Gm-Message-State: AOJu0YyniNvQ+LpPn9IJn5LuIudI/R9iulktjz/3omCvVdjNr2XgPLUz
-	h2bmQ2z0WPI23N5b9oeqyUUNFPFJTtSAtU8VMLvIz47bkzcC2yMilyCMnvR/zsLvhQpGAmE03wu
-	7wnZxRQ==
-X-Received: from pldd1.prod.google.com ([2002:a17:902:c181:b0:2ce:fa2c:7de3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e943:b0:2d5:d9c2:bbe0
- with SMTP id d9443c01a7336-2d5d9c2d7c1mr101010605ad.4.1787070471132; Tue, 18
- Aug 2026 09:27:51 -0700 (PDT)
-Date: Tue, 18 Aug 2026 09:27:50 -0700
-In-Reply-To: <8d069fe1-a5b6-4a86-9604-26aebe2dc243@gmail.com>
+        bh=/eyzaZNjJLEyd0fKbeRAuoUQBuqF6sdPIInoyVaJmj0=;
+        b=Sek+tY0ziLDkJ3lKZXYtmB4b4KKfcdOBmepzvq7y1ZpTZch9k9JGdySQMxIIomWRFM
+         MftMDZw0UGCFgCJgpdtNFbNK+4zPgqI7lhQXq+FFxJZ3F6U0N/Ywb0VYpAX465m118qO
+         Zoq/L6+7tiNN+/F3d+/vlBrEiSfjlTmD9JFWj4LvhwrS0RGUxP+bmVtIrXqJbEnywCRI
+         U2geHaU47Nj0V1eDTVxYBWxk64qq/aY8FOZZyAhevNBF0S3Vcp4CUeJNzDw3Ia9juS9c
+         V5tKMy8LzPNQjAqKHPNPWQDQ8IE7H4LgXLL4cpsf1Bn04ZSH00nXDscExdBtFuXJVgAS
+         vhjg==
+X-Forwarded-Encrypted: i=1; AHgh+RqeaofrE+VNMWwoEiPirp5oVuVte/yNFjxYIWrC1VlHK5dh9Cyizqm0o3stTtAmpUX0p3Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywv5PvIjDZPAXGMAk8oMgBJvS4yRd03bXyCc1BwIon+tiBi/W6p
+	Lhqy44QVil41KRmRUfpzPJorHCVUyT1Fc2S5gRp5/6xtJqyvh0aMuR6bY6Cn2fm/F0Tk07/Iw2g
+	BJM8lsHn8VPbRbjmAtw==
+X-Received: from edts26.prod.google.com ([2002:aa7:cb1a:0:b0:6a1:f410:2ec5])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:e85:b0:6a3:edb6:2228 with SMTP id 4fb4d7f45d1cf-6a3edb6285cmr3681617a12.17.1787070589499;
+ Tue, 18 Aug 2026 09:29:49 -0700 (PDT)
+Date: Tue, 18 Aug 2026 16:29:48 +0000
+In-Reply-To: <anpdYD1UaO0ffQgi@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260803170825.925561-4-hisamshar@gmail.com> <20260817220457.554823-3-hisamshar@gmail.com>
- <aoOKMeua-cNeTxXT@google.com> <8d069fe1-a5b6-4a86-9604-26aebe2dc243@gmail.com>
-Message-ID: <aoSIBnFfy4osa6wt@google.com>
-Subject: Re: [PATCH v2] KVM: selftests: Replace ulong with unsigned long
-From: Sean Christopherson <seanjc@google.com>
-To: Hisam Mehboob <hisamshar@gmail.com>
-Cc: kvm@vger.kernel.org, pbonzini@redhat.com, shuah@kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+References: <20260728121138.1103610-1-tarunsahu@google.com>
+ <20260728121138.1103610-5-tarunsahu@google.com> <anpdYD1UaO0ffQgi@google.com>
+Message-ID: <9huzik57v1c3.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v4 04/11] KVM: Track weak reference to vm_file in struct kvm
+From: tarunsahu@google.com
+To: Sean Christopherson <seanjc@google.com>
+Cc: ackerleytng@google.com, fuad.tabba@linux.dev, 
+	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
+	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
+	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
+	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
+	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
+	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
+	suzuki.poulose@arm.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Aug 18, 2026, Hisam Mehboob wrote:
-> On 8/18/26 03:24, Sean Christopherson wrote:
-> > On Tue, Aug 18, 2026, Hisam Mehboob wrote:
-> > > Gentle ping on this patch; it has been on the list since Aug 3 without
-> > > any comments.
-> > 
-> > Patience, please.  This is on my list of things to grab for 7.4.  You posted right
-> > at the end of a cycle, shortly before the merge window, and the code in question
-> > has existed for years, i.e. it didn't seem urgent enough to squeeze into 7.3.
-> > 
-> > If this is the very last thing needed to unblock musl builds of KVM selftests,
-> > than that changes things, but IIRC there are other "fix selftests builds with musl"
-> > patches floating around.
-> 
-> No, this isn't the last blocker. I verified with musl-gcc on x86_64:
-> with only this patch applied, the build still fails in steal_time.c on
-> pthread_attr_setaffinity_np() -- it also needs your task-pinning fix
-> ("KVM: selftests: Use KVM's task pinning APIs in steal_time", which I
-> resent). With both applied, the musl build passes.
+Sean Christopherson <seanjc@google.com> writes:
 
-Oh, so on top of "https://github.com/kvm-x86/linux.git next", this *is* the last
-blocker?  If so, then I'll grab this for 7.3.
+> On Tue, Jul 28, 2026, Tarun Sahu wrote:
+>> - Add a weak reference 'vm_file' in struct kvm under
+>
+> "vm_file" is effectively already claimed by vm_area_struct.vm_file.  *If* we go
+> this route, I would very strongly prefer to take a dependency on "vfio: Use
+> file-based reference counting for KVM"[*].  I'll poke that thread, we really
+> should land that one particular patch long before the s390-is-arm64
+> insanity.
+
+[*] Seem interesting way to solve this. So we will also have vm_file
+directly in guest_memfd instead of struct kvm and refcounting on vm_file
+instead struct kvm?
+
+struct gmem_file {
+-	struct kvm *kvm;
++	struct file *vm_file;
+	struct xarray bindings;
+	struct list_head entry;
+};
+
+>
+> Empashish on "if" because this all feels backwards.
+
+> It's not at all clear to
+> me why liveupdate goes directly to guest_memfd, but then requires a token associated
+> with the VM.
+
+guest_memfd can be recreated without having the struct kvm, Which there
+is no way to pass it on retrieval path. So the function
+kvm_gmem_luo_retrieve() gets this VM token, find the vm_file (hence
+struct kvm) associated with the preserved guest_memfd. Now it create a
+fresh guest_memfd by calling kvm_gmem_create(..., kvm). And populate
+preserved flags and folios to this guest_memfd.
+
+>
+> https://lore.kernel.org/all/20260731130902.654679-2-seiden@linux.ibm.com
