@@ -1,222 +1,160 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271C93A75B8
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 11:18:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787051890; cv=pass; b=Qww99MmJBnXTY/w5gQEWXrwGc8Mw9tt0+STUj10ML4ig29VwsY34Q0xAO6KcslAqLIXtlb9tgN+wifcAYcyDRWUdQWrKkk7gO9Na9e0IVp3NPUlIzcQQBab1lf6h6XrbWBR19Di0R8YQ8/JHXe8nmqOkv6I4aaH4A8GmVUhDrEg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787051890; c=relaxed/simple;
-	bh=bYhSjLf5WrSoCs/E/8lvKysNkSO2u4ZmPv8HYT3BhVI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S6zCE5T+ePCUb1EH6xOYHfB0/QhbGvi+urEMse7Km9RHEDPS6+Oe8NLjeF62Ex2MU7Dbxt1lO8ZMVpujnibUR46TyXN3w8LrD/PiL+VLCr82R5bJEYKawdUdES7NftEtTb5Ru8qZ/Sr+cyOJnyKto2lXockpJWFFudBoM1zgo0k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SkanmpDx; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sfinb5vs; arc=pass smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C9138F935
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 11:18:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787051939; cv=none; b=tI3OQVjNTHqd/YV7qkUo8793DD0GPRVcQVWQN2yWNEzVwZC85psscdg0au2ox7iVK7suNH8JwbSEx14e41KENu32XyGUC+tsmfhLSzNwSjlGmU33+v4OQzWGDRCMRiKiYX68NiuGbDVKp58Zw2THk4SNxmEua4jVs5lS82n7Tlk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787051939; c=relaxed/simple;
+	bh=nkdSCroCL4rc/fXglavopKUEFdlDWMM9nOCJlhTw/EI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=JRUbeDdjj5lPOp2MYkGDnrHHzuqBCpQYQxQ7bp8n/gDqBfkkxLZpOlA2M1Bp2pvYpLD4Xcfl/kAXNnLmLdPZc9YIJA3KpxwoGfeKl3+lk/D9qRQwFdcOJzYxG5kWMz0xFymbGLa21I/tH/soi58Qn4rmxA2463E0Un6yGvYUvQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z98ZS2SJ; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SkanmpDx";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sfinb5vs"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z98ZS2SJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787051888;
+	s=mimecast20190719; t=1787051937;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pMVr2MEZLG1T0pxhT+eh8Oo5NondvJT+SQtFk5sRheo=;
-	b=SkanmpDxKdj4/A/6fNfZB/FcchTD+YLv7u8QLeigCie1JqY7H/j2eSHk36DzHONGN7rRLH
-	lZMuizFSaLb8qcUf+Ves6ogjbEP2BwaP2QUS8AAh/Xk3LPpTLZE0wPnydGdJkrxcMHV9Op
-	t/IW8g0qHESzzBNhYPqmB0+z4Y8mNlI=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-186-xJQ000D5OJufQVy04xRY5g-1; Tue, 18 Aug 2026 07:18:05 -0400
-X-MC-Unique: xJQ000D5OJufQVy04xRY5g-1
-X-Mimecast-MFC-AGG-ID: xJQ000D5OJufQVy04xRY5g_1787051885
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490a767b782so34245105e9.2
-        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 04:18:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787051884; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YXwfewTPFGqplu4KzD6fVR11r1EmqxQrHgrZtWZqHbfSEan15fsOMo3g6lajONqRYc
-         rtetFDuWY5rI5yJEQNc+IeXPWNa69k4ps8tof41xvl/KiZtzSD17GiFyTTCo8syZwe02
-         esPPz1O6j6YoU8aVJzm5ssWOYhGPXyfcumWJmnELKZD+U4L6TdrSqlvAOJtSc1bdN0ON
-         8GNxefQUyb5G1BQ90oL2S1IXRMjlFArvk5TQOKscP46nbaxPwV4c2ebnbqf31kTtr6J9
-         +axpm8R0fHC+hKMIJhsS/h0pqNE3ZQoSpUwNrvCGU4SN4J1ORbVkg46LV+LsJkAs9gmU
-         2zQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=pMVr2MEZLG1T0pxhT+eh8Oo5NondvJT+SQtFk5sRheo=;
-        fh=qaYm4b6GKYlZ0T3gtLZ7fjEfCEC8jMv5XzYe6fOhw1Y=;
-        b=EyZIFAqAZeB86cQCvtgHfM5BbFfN80+QRUKcJcROtxg81bD2jLy5cBwKz7o8nu+yvJ
-         G3NOI0r5dLToLLjgBKmf7I8CMWKMdrAW1fEw4xuBDFdw6MB8AYFBaq9nb0C3uwNL7dXd
-         MoYPbftMH+Xly8m/dYnnut1KblqPGaLjV6UmSl5Zt9YZu7vbvVlVoss7VwIvrCywjpw+
-         WtwZXATqRjLK8PXa6wnJ4z+JETFuO9Ry6adQhWuFWFmH6T2VkQvjTzwVHiG7HPv/odcl
-         ZoTVw6rNt43NJP+eSIaufM15oPIJwOGrzrVi3f7wf19ri6iskGKxkzU8bTFNB4qqmM7j
-         YHjw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787051884; x=1787656684; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=pMVr2MEZLG1T0pxhT+eh8Oo5NondvJT+SQtFk5sRheo=;
-        b=sfinb5vsWQlhCzVZOhMDvDLJKtbVcSNuoQaYuE0rzH5ovjROHYgC4FOYDQBXdezu9g
-         KHq7g6Hicy24I+9DXhWtnTKLZWb5rCPxw+4JdUrDz5vImq6j7GjUzXRvRk5jmtrpR5v9
-         NPRGqN5RmwlWQynIlQ0ziPWI/AbKPRmAXuX6sUvJBBWzSpSNQvpz2Nrp7fG1Kw+MxKLy
-         JzNk5qqq0xj5fyXSLAD5pODdfykdr7Z7fAn8aBNzhS+kvLpXHrl0fY2L2pLsTgcvZEgX
-         /fev96/F0c1WYSYvgp9kv7p1S96K3jOgscKTSn1X0u4YIPxuiA7qf9/2FPuwSIyqxwtU
-         CrNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787051884; x=1787656684;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pMVr2MEZLG1T0pxhT+eh8Oo5NondvJT+SQtFk5sRheo=;
-        b=AAfhhOTube/Cw85tb4Irin/GLODCLVTCMK0/YmZurQAnsjkTyUkaXX5ISC7Aj7GX7R
-         VamjxYcTHGhoA0FkeZxj10oBgpaC7LseNaYDHDQJGPdBodQ2HpVUyKhiekD88IRW0hxC
-         CE3GBoT31UgI8BieFO8MEBZHATppv9BkOOOW2IJk8Tw2fIm758TnoZ+kdcwYHZIeyD2K
-         0buhO29yVAYilpZM9+rVIj4iyWxgeigpTyb7+cMbo9DgL40k0iNJMUTz3biGGrImPvgp
-         mtYAvW5aEWuLU8BtDJmGVERW6YwIVRouCHLRH3Gr9JXhE6o/YtyFLDtqVP6+UK3ud/Uv
-         zgxw==
-X-Gm-Message-State: AOJu0YwVePMl+IIQ8bgUi+Hy/WDTVNXddpMO9exKtJLcso4DucubN0pg
-	oGQ64mXHOq1W39wq+l/2g9gGq1FEbWR5HiXsuaNbygz2u0YnqGV2RKyLkbwhM2AeLVWJ5/85GIg
-	zHV4cejc8lnTGeu0G1kOAooSGRGioGMjW3unalipfHM8XF68i92WoH20CIeXb5cAOvQZEdnuWOy
-	Z0J+wvGB2x8MvY9WGHMKHLbmjyl2d9
-X-Gm-Gg: AR+sD10AuiDGFAgFUjV0u7cEb74f4f+h3yFVqsyEbZyqIh4K00V5wMgDMI8+5Ep+Pei
-	gWDxq9o6f1QNmOUQKlYggN3pX2Qh6ko89BLbMmfneJJpyd/WNxumFo9QAII9YECR1To2MSfFb5M
-	jwoF80wBvl/3tztK4NfayBSdbPzGNsjtb1GYT+fsa5+/xD4KbvDAZjucWCKHOGHOhfAmh4GtbAc
-	20n+ollnlhS1a1239pBYT5L2LuIVEwW3Lr9v2O03msl4Yu1q4JEAIhAiKs=
-X-Received: by 2002:a05:600c:5307:b0:499:8c68:a3aa with SMTP id 5b1f17b1804b1-4998c68a830mr537492735e9.13.1787051884459;
-        Tue, 18 Aug 2026 04:18:04 -0700 (PDT)
-X-Received: by 2002:a05:600c:5307:b0:499:8c68:a3aa with SMTP id
- 5b1f17b1804b1-4998c68a830mr537491065e9.13.1787051883983; Tue, 18 Aug 2026
- 04:18:03 -0700 (PDT)
+	bh=BsmdlaFnrsY3I+1UFAW3E5SehDcZ9lldQlqYb3G66HE=;
+	b=Z98ZS2SJYOdCa3oTbEmX4uBzqfYCxoQkpFIntwfm9vlVf9O7wU1xv4EqMERo9Ijy01AmLT
+	PCRglMFxYDlMxejLx4HsxVlm0qkJdUSj3t2lcxC32An6m4QgzY9KQg+9OlCbDxk5OlgUQu
+	Y0170ZL6qC8VslHQDBDSPRmw01YXPnE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-142-g4lL4Jx5PtWwzWiWBlHIBg-1; Tue,
+ 18 Aug 2026 07:18:50 -0400
+X-MC-Unique: g4lL4Jx5PtWwzWiWBlHIBg-1
+X-Mimecast-MFC-AGG-ID: g4lL4Jx5PtWwzWiWBlHIBg_1787051929
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 920E61955F3D;
+	Tue, 18 Aug 2026 11:18:49 +0000 (UTC)
+Received: from localhost (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 98A44180049F;
+	Tue, 18 Aug 2026 11:18:48 +0000 (UTC)
+From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+Date: Tue, 18 Aug 2026 15:10:51 +0400
+Subject: [PATCH v3 24/74] sev: convert OnOffAuto legacy-vm-type property to
+ QAPI-aware registration
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260812213206.1564354-1-seanjc@google.com> <20260812213206.1564354-8-seanjc@google.com>
-In-Reply-To: <20260812213206.1564354-8-seanjc@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 18 Aug 2026 13:17:52 +0200
-X-Gm-Features: AcwNN1VqQAePVv83itLSpe1FLCvt4fRq5vI6bOtkcO6v-qRCJZNpNiVaN8tKnOw
-Message-ID: <CABgObfY8vwGngi9SzFcO5=8eiAeQr4D0G5Zwd85mFg23712JBw@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM: Selftests change for 7.3, part 1
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260818-qom-qapi-v3-24-24b8bbbe3d86@redhat.com>
+References: <20260818-qom-qapi-v3-0-24b8bbbe3d86@redhat.com>
+In-Reply-To: <20260818-qom-qapi-v3-0-24b8bbbe3d86@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
+ Michael Roth <michael.roth@amd.com>, 
+ Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>, 
+ Marcelo Tosatti <mtosatti@redhat.com>, Zhao Liu <zhao1.liu@intel.com>, 
+ kvm@vger.kernel.org
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2878;
+ i=marcandre.lureau@redhat.com; h=from:subject:message-id;
+ bh=nkdSCroCL4rc/fXglavopKUEFdlDWMM9nOCJlhTw/EI=;
+ b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBqhD24pvx3ql+ZkehN6RSLvFPXUC4lRQL0xUxPC
+ Wn6w7rAZMaJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCaoQ9uAAKCRDa6OEJdZac
+ 5Uu3EACZbJeifRZ/wBI4hxZp9Pmq1hD/nshXm+OLnCOjvOmtwgiluUSPXlR7CwzA3qIGiYC7kuE
+ GXEZ+9kJ8wZJ+uz53SoLyYRpXz2nYo6t7yux8jSF4W/YP8J1gisT2qhd2OAOpnwldg89SAv+48k
+ ecUim5oFdTsK+PeVHOoWelPilMT8KOuStGcnUYvSVlyK674pekPbWouyDg/Vw9XQRk0+skjaC4c
+ lkZKLX259HbG1EQ+c0o3bRmbEC6Cu4M7Lrs1LHVqH6MqjOSkMPXhbhd5bKiKr+aV1QdjUV2nZ0f
+ B4JdfqVtEMFguc37IzrFTHrzvHp5TwM+aAXcrqS3pauB5Tp4F2zXz+DQxMvs5EagKwqZwYZTPkp
+ E67vg0vakMYvcRZIp9UOUAEJyYm2mrGw+ymRFwGApcqF//VrD7ITpZ7bmiD5U23mRA0gIMHWL7d
+ whkMdZZWYz+eYsEERiGTpS4MMt0QQCvEiiKCICwOUjWgV0+D43ZJvgH+8tKmoAA7N1ur+2QWmMK
+ HdE3NVteRTqgJ7Y4hSaoD+A/PKDVZFMQPue/ajwcn1D/vpHAkcfloD7XRkLL8qUYONKuuzF2ZVe
+ i4YhNibDRiDrTGxq0Ihv1DvzpO1vI5bQaK0LddS+pSOlcXgIPGXF0QJQe2kz1zTjjvwRItYoRLs
+ ytHCUr7G4yLNzIQ==
+X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
+ fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Wed, Aug 12, 2026 at 11:32=E2=80=AFPM Sean Christopherson <seanjc@google=
-.com> wrote:
->
-> This was supposed to be the "main" selftests pull request, but it ended u=
-p being
-> about half the size of the second pull request.  Yosry's work on the nest=
-ed
-> virtualization infrastructure is by far the most notable thing here.
->
-> The following changes since commit a204badd8432f93b7e862e7dac6db0fe3d65f3=
-70:
->
->   Merge branch 'kvm-chainsaw' into HEAD (2026-06-25 11:32:09 +0200)
->
-> are available in the Git repository at:
->
->   https://github.com/kvm-x86/linux.git tags/kvm-x86-selftests-7.3
->
-> for you to fetch changes up to b18ee21055a77eb1fb6070cb3f819cd3372c466e:
->
->   KVM: selftests: Add a test for KVM_CREATE_VM VM type enforcement (2026-=
-07-31 15:47:25 -0700)
+Convert the legacy-vm-type OnOffAuto property from manual
+visitor-based callbacks to property_add_qapi_enum().
 
-Pulled, thanks.
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ target/i386/sev.c | 29 +++++++++++++----------------
+ 1 file changed, 13 insertions(+), 16 deletions(-)
 
-Paolo
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index d7dcefc8ecf5..335a504af4db 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -20,6 +20,7 @@
+ #include <sys/ioctl.h>
+ 
+ #include "qapi/error.h"
++#include "qapi/qapi-type-infos-common.h"
+ #include "qom/object_interfaces.h"
+ #include "qemu/base64.h"
+ #include "qemu/module.h"
+@@ -2880,23 +2881,16 @@ sev_guest_set_session_file(Object *obj, const char *value, Error **errp)
+     SEV_GUEST(obj)->session_file = g_strdup(value);
+ }
+ 
+-static void sev_guest_get_legacy_vm_type(Object *obj, Visitor *v,
+-                                         const char *name, void *opaque,
+-                                         Error **errp)
++static int sev_guest_get_legacy_vm_type(Object *obj, Error **errp)
+ {
+     SevGuestState *sev_guest = SEV_GUEST(obj);
+-    OnOffAuto legacy_vm_type = sev_guest->legacy_vm_type;
+-
+-    visit_type_OnOffAuto(v, name, &legacy_vm_type, errp);
++    return sev_guest->legacy_vm_type;
+ }
+ 
+-static void sev_guest_set_legacy_vm_type(Object *obj, Visitor *v,
+-                                         const char *name, void *opaque,
+-                                         Error **errp)
++static void sev_guest_set_legacy_vm_type(Object *obj, int value, Error **errp)
+ {
+     SevGuestState *sev_guest = SEV_GUEST(obj);
+-
+-    visit_type_OnOffAuto(v, name, &sev_guest->legacy_vm_type, errp);
++    sev_guest->legacy_vm_type = value;
+ }
+ 
+ static void
+@@ -2922,11 +2916,14 @@ sev_guest_class_init(ObjectClass *oc, const void *data)
+                                   sev_guest_set_session_file);
+     object_class_property_set_description(oc, "session-file",
+             "guest owners session parameters (encoded with base64)");
+-    object_class_property_add(oc, "legacy-vm-type", "OnOffAuto",
+-                              sev_guest_get_legacy_vm_type,
+-                              sev_guest_set_legacy_vm_type, NULL, NULL);
+-    object_class_property_set_description(oc, "legacy-vm-type",
+-            "use legacy VM type to maintain measurement compatibility with older QEMU or kernel versions.");
++    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "legacy-vm-type",
++        .description = "use legacy VM type to maintain measurement "
++                       "compatibility with older QEMU or kernel versions.",
++        .qapi_type = &OnOffAuto_type_info,
++        .get = sev_guest_get_legacy_vm_type,
++        .set = sev_guest_set_legacy_vm_type,
++    ));
+ }
+ 
+ static void
 
-> ----------------------------------------------------------------
-> KVM selftests changes for 7.3, part 1
->
->  - Clean up nested SVM's handling of GPRs on L2<=3D>L1 transitions, reuse=
- the
->    functionality for nested VMX, and drop the ucall hack that was fudging
->    around the lack of GPR switching on nVMX.
->
->  - Add a stress test to verify KVM doesn't clobber/drop #PF state, e.g. C=
-R2,
->    across save/restore, including when L2 is active.
->
->  - Add a test to verify KVM_CREATE_VM accepts exactly what is reported by
->    KVM_CAP_VM_TYPES.
->
->  - Misc selftests fixes and cleanups
->
-> ----------------------------------------------------------------
-> Hemanth Selam (1):
->       KVM: selftests: Add a test for KVM_CREATE_VM VM type enforcement
->
-> Sean Christopherson (2):
->       KVM: selftests: Drop superfluous use of pthread_attr_setaffinity_np=
-()
->       KVM: selftests: Randomize pCPU in steal time test
->
-> Shivank Sharma (1):
->       KVM: selftests: Fix typos in x86 and riscv tests
->
-> Wang Yan (1):
->       KVM: selftests: Fix a spelling error in an xapic_ipi_test comment
->
-> Yosry Ahmed (13):
->       KVM: selftests: Use __stringify() instead of custom XSTR() macros
->       KVM: selftests: Fix RAX and RFLAGS VMCB offsets when running L2
->       KVM: selftests: Rework GPR registers switching for SVM (and fix off=
-sets)
->       KVM: selftests: Handle rflags save/restore for SVM in guest_regs
->       KVM: selftests: Reuse GPR switching logic for nVMX
->       KVM: selftests: Drop HORRIFIC_L2_UCALL_CLOBBER_HACK
->       KVM: selftests: Add a blank line before logging assertion failures
->       KVM: selftests: Expose PTE masks to guests as part of an MMU
->       KVM: selftests: Do not intercept #PF by default in nVMX tests
->       KVM: selftests: Add basic stress test for save+restore and #PF hand=
-ling
->       KVM: selftests: Trigger save+restore randomly in the #PF stress tes=
-t
->       KVM: selftests: Support running stress save+restore and #PF test in=
- L2
->       KVM: selftests: Trigger L2->L1 exits stress save+restore and #PF te=
-st
->
->  tools/testing/selftests/kvm/Makefile.kvm           |   2 +
->  tools/testing/selftests/kvm/include/test_util.h    |   1 +
->  tools/testing/selftests/kvm/include/x86/evmcs.h    |  46 ++--
->  .../testing/selftests/kvm/include/x86/processor.h  |  52 +++-
->  tools/testing/selftests/kvm/include/x86/vmx.h      |  69 +++--
->  tools/testing/selftests/kvm/lib/assert.c           |   2 +-
->  tools/testing/selftests/kvm/lib/x86/processor.c    |  14 +
->  tools/testing/selftests/kvm/lib/x86/svm.c          |  62 +++--
->  tools/testing/selftests/kvm/lib/x86/ucall.c        |  32 +--
->  tools/testing/selftests/kvm/lib/x86/vmx.c          |   2 +-
->  tools/testing/selftests/kvm/riscv/sbi_pmu_test.c   |   4 +-
->  tools/testing/selftests/kvm/steal_time.c           |  15 +-
->  tools/testing/selftests/kvm/vm_types_test.c        |  48 ++++
->  .../selftests/kvm/x86/evmcs_smm_controls_test.c    |   5 +-
->  .../testing/selftests/kvm/x86/fix_hypercall_test.c |   1 -
->  tools/testing/selftests/kvm/x86/hyperv_clock.c     |   4 +-
->  tools/testing/selftests/kvm/x86/hyperv_evmcs.c     |   2 +-
->  .../kvm/x86/save_restore_pf_stress_test.c          | 288 +++++++++++++++=
-++++++
->  tools/testing/selftests/kvm/x86/sev_init2_tests.c  |   4 -
->  tools/testing/selftests/kvm/x86/smm_test.c         |   5 +-
->  .../kvm/x86/vmx_invalid_nested_guest_state.c       |   2 +-
->  tools/testing/selftests/kvm/x86/xapic_ipi_test.c   |   2 +-
->  22 files changed, 502 insertions(+), 160 deletions(-)
->  create mode 100644 tools/testing/selftests/kvm/vm_types_test.c
->  create mode 100644 tools/testing/selftests/kvm/x86/save_restore_pf_stres=
-s_test.c
->
+-- 
+2.55.0.543.g5ebe2ebe4ea8
 
