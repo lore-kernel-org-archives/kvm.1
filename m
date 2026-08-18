@@ -1,187 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D2447D44A;
-	Tue, 18 Aug 2026 16:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E720847B413
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 16:27:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787070326; cv=none; b=STpVPakYKqYVZXfua8F5mY/htz2gJdsINb7sgHwoNYhvxD+tbzDSirZroBn3LdE2FsV2n4pHDVKIjVi+1aeYhAPcqaKqcGajYP40h4wQ8dCnJJXBmB8kANaLH//VtNr5ixasV8DO9KPtHWvEDKuvp+imwR12+csxXL66lNm2Vak=
+	t=1787070473; cv=none; b=B9KQ0GRPiD6fbaXDPajhQF7zzkmLcqJyLpzddVr/d7jYc2F/YSr4kevGPtgx2PEQ27AiR50iB6uu+IVmieQc1XQGKKr/vmm+fUTPaU87lI1SGCRDxk70NsEbPPkunHJTx2Qug07I8BAtiE7uKwRc7r9ITg8nqwjWUvLBCJS/gKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787070326; c=relaxed/simple;
-	bh=I4L4uDLHcDem7WX9mfgTUIIEsDETW1137wzmuRDy8sM=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iPmdy9bmgJ2UzpCia0KYuIwkijx317vlLP+Li286efl8WsEHJznXGDBs1+4aX644nisZm1XbKAZFOUOeDNn5jwVJTKt4/4Uq13X8VC9wJXjw4SROY6Awewy0HypxQlJEbcMeexuTxHeNDe1Ef96JUnL0ZXus2ZajbpVQciwpL4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i96ySK8i; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787070473; c=relaxed/simple;
+	bh=XiZDdwxdghUmr9SIr01cBJWYzhA9RXek8KYVaap4MN4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=uiyoItOwihI61lxb93hunjn9I6O7YDYwhMacuFw0Onkn5GTUIrCZsY18bfCXd1g8h837Uuh7Kya/h/1lTT8NUQ7M6c6rrVJIIYGZPgLokpZ3cLvzRZWrbONvfbrxYkv7vNFc4HzzOiWwnYZkEUM57AyT7Iyqi9TOJE5epZdJRFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pIsd84Po; arc=none smtp.client-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i96ySK8i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABCEE1F000E9;
-	Tue, 18 Aug 2026 16:25:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787070324;
-	bh=7Y7qqLPkyUuMi6qyL5GxK2thHtwUGv3GHWTN3DmEezQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=i96ySK8irJGN7kDYSuR6/cyVpTEYRyD3PKF3scrOjjIRHJ+N2kjkfZ6fIZ+bheu/D
-	 ASWOhbis+NFeMN1heh2njYn5ieZr8Y5YihY+SfAoDMBwJK3mU4fd+mLxs78wF1grzb
-	 IEkJeah/FmcJxhBCAWWrPYngt8B9vVtAd+52gzP0iY1lLLhHpNoNmgXq/ZRGoMjGPF
-	 OBEmA8pM4o8B+Ht8nnkZ++bK2iyypb/sJi8eC+sHnRAdte59oB73SURtIdq7XyDynN
-	 aV05OG+tiyBlMPX8TFzSMfvLMBoKKyby+7HP6DQWmOWkSZ3AblzsrzCat/yBwFIiM4
-	 G1SR5rgls4D8w==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wwMcs-0000000GhVj-1n64;
-	Tue, 18 Aug 2026 16:25:22 +0000
-Date: Tue, 18 Aug 2026 17:25:21 +0100
-Message-ID: <867bln5rbi.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Grapentin <gra@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Friedrich Welter <fritz@linux.ibm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Gautam Gala <ggala@linux.ibm.com>,
-	Hariharan Mari <hari55@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-	Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v6 10/33] arm64: Share arm64 headers with s390
-In-Reply-To: <20260818140901.21865-F-seiden@linux.ibm.com>
-References: <20260812153631.3376090-1-seiden@linux.ibm.com>
-	<20260812153631.3376090-11-seiden@linux.ibm.com>
-	<865x1e17kb.wl-maz@kernel.org>
-	<20260818140901.21865-F-seiden@linux.ibm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pIsd84Po"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2ccb6823efcso315075ad.0
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 09:27:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787070471; x=1787675271; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nmr600BUwpqEtuz+Dx2wuthgVpiG96H1E6Ankz5Sdqc=;
+        b=pIsd84PolIAWNBI2+z5NfC+FxoPTPBromw08HbgE5D8RPwqcFadVPQyeXFpuxhHh6t
+         Hno+DdmgbHkN9XHDq7G3FI2IJX4pOIc4g4uhfg7mSNHRXr7pNd5c9j8Qk7hdyDkOm80Z
+         ZCdnzrfWEa1hr4u9CT25zcgOzVO7qHcuCJDj5Dv9riPGwjAY/qjvkkseMhpQTbyvdcqC
+         Ay8w0C9YtBdllhYUbPEAqbP39Q2iZKEsU/GwGEknYQFhfqpEFbnt7WDzqY7maCBWGfiW
+         MUkxouFNpzSmNRA2s/V5x7Zk+0EegLWlCac6iDHf7GHa5RTxmbH27hTAbF2IpnWf90EQ
+         1K2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787070471; x=1787675271;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=nmr600BUwpqEtuz+Dx2wuthgVpiG96H1E6Ankz5Sdqc=;
+        b=jG9/HCvidNHUgIHK2hPsDDpEUKIJbn1xdpUOlW8znDcC7s0chMtUe54yRXYA4F6kpY
+         UU2p4uj6tJxVDWrye+GpgrbkiWbo0monecOZxkdGWcubQrOgsxndZ54AsxCGK9mAS2qH
+         vC9Jz2ug0elvJi1dHf7ljCHcWL4k+NphHhzdD/RhsaSCVRTX+ZfM8jioiyUknuvsv9Fp
+         H6qH/Kwsmuh3tPca2xCVDfMZdltGIO5FkIuFxtDkHigxjgLTu4zy08/Y0k+34t4TQqte
+         QZQb6rJmTTjwn5406UnHBpv73CNIjQnNqhviBm7hfEB8PVZ6m4KELVPgXqd55+PM1uQl
+         rHEQ==
+X-Gm-Message-State: AOJu0YyniNvQ+LpPn9IJn5LuIudI/R9iulktjz/3omCvVdjNr2XgPLUz
+	h2bmQ2z0WPI23N5b9oeqyUUNFPFJTtSAtU8VMLvIz47bkzcC2yMilyCMnvR/zsLvhQpGAmE03wu
+	7wnZxRQ==
+X-Received: from pldd1.prod.google.com ([2002:a17:902:c181:b0:2ce:fa2c:7de3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e943:b0:2d5:d9c2:bbe0
+ with SMTP id d9443c01a7336-2d5d9c2d7c1mr101010605ad.4.1787070471132; Tue, 18
+ Aug 2026 09:27:51 -0700 (PDT)
+Date: Tue, 18 Aug 2026 09:27:50 -0700
+In-Reply-To: <8d069fe1-a5b6-4a86-9604-26aebe2dc243@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, tabba@google.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, seanjc@google.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Mime-Version: 1.0
+References: <20260803170825.925561-4-hisamshar@gmail.com> <20260817220457.554823-3-hisamshar@gmail.com>
+ <aoOKMeua-cNeTxXT@google.com> <8d069fe1-a5b6-4a86-9604-26aebe2dc243@gmail.com>
+Message-ID: <aoSIBnFfy4osa6wt@google.com>
+Subject: Re: [PATCH v2] KVM: selftests: Replace ulong with unsigned long
+From: Sean Christopherson <seanjc@google.com>
+To: Hisam Mehboob <hisamshar@gmail.com>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com, shuah@kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, 18 Aug 2026 15:09:01 +0100,
-Steffen Eiden <seiden@linux.ibm.com> wrote:
-> 
-> On Thu, Aug 13, 2026 at 02:19:48PM +0100, Marc Zyngier wrote:
-> > I'm curious about the reasons for skipping a bunch of architectural
-> > helpers:
+On Tue, Aug 18, 2026, Hisam Mehboob wrote:
+> On 8/18/26 03:24, Sean Christopherson wrote:
+> > On Tue, Aug 18, 2026, Hisam Mehboob wrote:
+> > > Gentle ping on this patch; it has been on the list since Aug 3 without
+> > > any comments.
 > > 
-> > - kvm_vcpu_trap_is_permission_fault()
-> we need the s390 state for this function -> we overload it
-> the only use is in shared arm64 code for is_write_fault
-> > - kvm_vcpu_trap_is_translation_fault()
-> > - kvm_vcpu_trap_get_perm_fault_granule()
-> > - kvm_vcpu_abt_issea()
-> as s390 mm works differntly in comparison to ARMs (suprise :) )
-> we do not need those
-> 
-> 
-> > - kvm_vcpu_sys_get_rt()
-> I'll add using this function in the next series (sysreg enablement)
-> I can do that now - It reduces the churn to the next series.
-> 
+> > Patience, please.  This is on my list of things to grab for 7.4.  You posted right
+> > at the end of a cycle, shortly before the merge window, and the code in question
+> > has existed for years, i.e. it didn't seem urgent enough to squeeze into 7.3.
 > > 
-> > I really think you should include anything that is exclusively derived
-> > from architectural state, specially that these helpers are strictly
-> > dependent on stuff you already include.
-> > 
-> > Any particular reason why this isn't the case?
+> > If this is the very last thing needed to unblock musl builds of KVM selftests,
+> > than that changes things, but IIRC there are other "fix selftests builds with musl"
+> > patches floating around.
 > 
-> These functions operate right at the border where the s390 architectural
-> state (host view) and the arm64 architectural state (guest view) meet.
-> 
-> Especially, for the memory management of the guest we need to use
-> s390 based guest memory management (gmap) as the host only knows s390
-> (+SAE & friends to actually run an arm64 guest)
-> 
-> The s390 host work here is to convert the s390-state into arm64 state
-> for the guest. e.g. convert a s390 translation fault into a data abort (if
-> applicable)
+> No, this isn't the last blocker. I verified with musl-gcc on x86_64:
+> with only this patch applied, the build still fails in steal_time.c on
+> pthread_attr_setaffinity_np() -- it also needs your task-pinning fix
+> ("KVM: selftests: Use KVM's task pinning APIs in steal_time", which I
+> resent). With both applied, the musl build passes.
 
-Exactly. Which is why I was expecting that the s390 code would
-populate the copy of the ESR_EL2 register in the vcpu structure, and
-let the arm64 code do the talking. But evidently, that's not what is
-happening (or at least not that way).
-
-> 
-> The code in the second series should make this more
-> clear. As we now are clear on the code-sharing concept I will sent a
-> respin of the second series using the new sharing approach ASAP.
->
-> 
-> > 
-> > >  static inline bool kvm_is_write_fault(struct kvm_vcpu *vcpu)
-> > >  {
-> > >  	if (kvm_vcpu_abt_iss1tw(vcpu)) {
-> > > @@ -546,6 +556,8 @@ static inline bool kvm_is_write_fault(struct kvm_vcpu *vcpu)
-> > >  	return kvm_vcpu_dabt_iswrite(vcpu);
-> > >  }
-> > >  
-> > > +#endif /* ARM64_S390_COMMON */
-> > > +
-> > >  static inline unsigned long kvm_vcpu_get_mpidr_aff(struct kvm_vcpu *vcpu)
-> > >  {
-> > >  	return __vcpu_sys_reg(vcpu, MPIDR_EL1) & MPIDR_HWID_BITMASK;
-> > > @@ -587,6 +599,7 @@ static inline bool kvm_vcpu_is_be(struct kvm_vcpu *vcpu)
-> > >  	return vcpu_read_sys_reg(vcpu, r) & bit;
-> > >  }
-> > >  
-> > > +#ifdef ARM64_S390_COMMON
-> > 
-> > Similarly, you have dropped
-> > 
-> > - kvm_vcpu_set_be()
-> > 
-> > - kvm_vcpu_is_be()
-> > 
-> > I suspect that your implementation is LE only (it'd better be, as
-> > we're dropping BE support right now), but it would make a lot more
-> > sense if you could rely on the guest architectural state (which must
-> > be accurate) rather than short-cutting things in your own
-> > implementation.
-> 
-> Yes, you are right we are LE only. Therefore, I defined the function to
-> false such that the compiler/linker can optimize-out unreachable code.
-> This is true for a couple of function-shortcuts.
-> 
-> I would like to keep it that way if this is no show stopper for you.
-
-Not a show-stopper, but I think we'll eventually want to work more at
-the architecture level rather than solely at the "code sharing" level.
-
-I expect it would make things a bit simpler to follow.
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+Oh, so on top of "https://github.com/kvm-x86/linux.git next", this *is* the last
+blocker?  If so, then I'll grab this for 7.3.
