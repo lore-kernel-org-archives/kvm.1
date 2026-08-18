@@ -1,134 +1,436 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0A33A5E64;
-	Tue, 18 Aug 2026 15:16:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D92439F160
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 15:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787066212; cv=none; b=U/70KrP250ZvkfJour2yCmzHRPK9WR6HfP5FkVj6hRlZtcSxXi0UwAKf36ejYBBqKr1qw5k1QRmDDMnyQ8cxag/dQrpg5jRJ4QxVGQMJ046NS2HHxWYV6J/TL6RGGmyP4z7aSaYNIHu9Pt9jrrEchOh61zJawx9/u+fehNtpKPM=
+	t=1787066941; cv=none; b=coemE1nfjhODCkhkSaTNR+YrEMPB+Ybruy0E4c+u4QK+ggLafN1xJwcUi0t1dIXNHt1t5gjuZFSY1IgVm4fU9QmbfH86NecuPqrV297ZmCyLyYK/191JNDh07www1g02/gLnf3MhatwwlnivPasCEOHkrS288iRIXa/8B0JO00o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787066212; c=relaxed/simple;
-	bh=8g0lvH1QOKprzicunU21p8hm8PNe7yyXoNXluQRIgu8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bnIyzCd75AgF5mNBlFsO5hu1R0LxPkEcCrZlJ6Tw/OKwTFwfUAnM+Va/jf1QtR/NSOI1zL1gAkHCDSS4o8++FWog900gKHleS8m6GFkQrarDEcWM0LFp0MglX5RkoXEXP/Gs1A+/Ay/LVurjI0+3Jf9nHJYSAPKcICVgCUsx0SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com; spf=pass smtp.mailfrom=de.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=P1RsMlR5; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.ibm.com
+	s=arc-20240116; t=1787066941; c=relaxed/simple;
+	bh=WpotjfIgWZsgcEPpZdpCYdJlrUAim1GcgkLdwoPRpjo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=jqCqpGKGEfFoOuchFjNUShuEqAruD5sO+M2ZGalcebFS3SnR1sRDVfG3YN53jWUu9bk9nQXumyGVmUQKXNeFmpsmJrlCo2UaRKIJkM3+/lPNVP42PU+VyGQpp91q6UYPc7Rrba6ba//I1UUSyLcuc3i5KzvwmeKttvAvlLQyim4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nfhit0xG; arc=none smtp.client-ip=209.85.208.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="P1RsMlR5"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67IE3kB4542674;
-	Tue, 18 Aug 2026 15:16:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=BBTfdl
-	WCh5S0Dlz9uP0L6BD1VyEI2ShB5p8Q7REmr7g=; b=P1RsMlR5uHbNnHekZlffv0
-	3It5wkvSaeYUBsx5UL8+ZO/IsKQIZeOtLVRkYsIalVvUf7p/WbLzBDmF8U31Lk3I
-	piEdvc8SxDETuyk7PnT6ERbF1tZqwoJ9nV6Dcernpmg8TfTxXmzSYq67Q8v2OdYA
-	I0IiSF6hKfa3vqdCDLQkhhhaGrUX7PHDkTsF+cMHDgMQf03L3qSOg6vkLIYlq72h
-	NK9icmDh82UeStfi2rCcIFhh00y+azJWBoe7pnKN8p4xuVD2Tqy0GT1/6DKSsL69
-	Wer7JqOrGVH19OwTRa9EGwrakUk1NEq6UfZtOoJBYtnXYFQI5Pan3P59f+1+9B7Q
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2frt8gvg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Aug 2026 15:16:48 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67IFBM3J012426;
-	Tue, 18 Aug 2026 15:16:47 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g32eq41d0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Aug 2026 15:16:47 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67IFGhZW38863230
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Aug 2026 15:16:43 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5BA452004F;
-	Tue, 18 Aug 2026 15:16:43 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D65F82004B;
-	Tue, 18 Aug 2026 15:16:42 +0000 (GMT)
-Received: from [9.111.45.90] (unknown [9.111.45.90])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 18 Aug 2026 15:16:42 +0000 (GMT)
-Message-ID: <1d874ee9-4ae9-4775-9ec3-99263cf46811@de.ibm.com>
-Date: Tue, 18 Aug 2026 17:16:42 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nfhit0xG"
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6a3ec8718e2so936883a12.0
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 08:28:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787066936; x=1787671736; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MCqv9FjqzX9J6sE+mm4dR8DQFjLQZx0WW3HAG/YPlNE=;
+        b=nfhit0xGgmBwEiMOg5uPcOdMqnRuvyvQl/7a0kI8XWpp56ytyWJXSop//AH+uds05i
+         dvmNVzbcXivVgwqwmuO1G5bACRavC922RrkcwM+362ozLsEv/nKeahhLH8B76yjc2vvq
+         tzof8t3SVYnkmg82e83d+ZhPjSD4ayKfmdxJUcGJ0ewMkIHnwM2l9fyR5CAHfY95WfVx
+         E1ZquHZU007Uj2ckVYDEBebaWsYZMorf9KKs1oP+re+QDN2dvbQkuVGp3RssbvAtPTqz
+         6ilbEvk2I7C/djaQxdUZMnf76dFvTMFYAbKOr0+x+o9aTDjew1GNH9tf9A26+5JOxGMW
+         PjKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787066936; x=1787671736;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MCqv9FjqzX9J6sE+mm4dR8DQFjLQZx0WW3HAG/YPlNE=;
+        b=KFoImWdSBP9k4uD81f/OEdpdpuNTvGbjPSbZ7HtFJuzCVyKYfwPEoLs3YVzgKj/XTW
+         nb8UI8WtpJndmpzL2TAVlWM1DzYMc3Qi97qTRabZgyuGvekPqw4hPizkxnSX4v1K4zbl
+         ThKWemrLpNjNoYHX8cii23TxPgQDVp8+qAhI8aI9HDxuISy+uBjdqTCK1wQLNcamdVTl
+         4OtCr9OCh1WrCKlwiCoU2soRddRaq/k2HeIWUUVNIELAiLXB1Rht+QcdqVQQqN/87EbM
+         s+keGeSHVRKguY8tQVzChW2zNpHN7uvVeycC2Dar447w5m5R1UJuAUdTBWU5XlDf10Q7
+         vOpQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqC35+Q3yqT+xjztEG/XMa6YPqCtKW17WXpn+DDQCzrvY3e8StYWgi6WERoyG4Sz/UeJAw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yytmt9V4D2FQlSi93UuisWjjTBBd+E3Sr1sjK3uHEa8IbT8Pxnq
+	E+fNqe/p1xHSD0dKCeo4bzfdfu0ZEOb/WxOCqrmOrHXQQ5YD8uDVw8MNo1NDcqyfSaoDZInFTpy
+	8SYlpx0ygEwvRRnggAQ==
+X-Received: from edru23.prod.google.com ([2002:aa7:d557:0:b0:6a1:f3cf:4285])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:c1d6:b0:6a3:9e00:8ed2 with SMTP id 4fb4d7f45d1cf-6a39e008fb0mr9583691a12.16.1787066936333;
+ Tue, 18 Aug 2026 08:28:56 -0700 (PDT)
+Date: Tue, 18 Aug 2026 15:28:55 +0000
+In-Reply-To: <2vxzqzjz1x5f.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] KVM: s390: Fix dirty marking in
- adapter_indicators_set*()
-To: Matthew Rosato <mjrosato@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com,
-        david@kernel.org, seiden@linux.ibm.com, nrb@linux.ibm.com,
-        schlameuss@linux.ibm.com, gra@linux.ibm.com
-References: <20260814163355.227191-1-imbrenda@linux.ibm.com>
- <20260814163355.227191-2-imbrenda@linux.ibm.com>
- <2bb8cf48-2dcf-4457-86ad-f1424d9ae28b@linux.ibm.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@de.ibm.com>
-In-Reply-To: <2bb8cf48-2dcf-4457-86ad-f1424d9ae28b@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=OfaoyBTY c=1 sm=1 tr=0 ts=6a847760 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=c7WOuCR92LZp97uU81cA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDExMCBTYWx0ZWRfX0PqqnAnPd5jJ
- LXLTTXF8esBpUxjk/WHXrIgLDTAwHL9R9pAP6OvqNbq8VsQvZDsIuFDkUH4fYlt8ZmmXgNW0pLE
- JQvxFltjhxs12gg3lTeta6slSQ332Kc=
-X-Proofpoint-GUID: 0bqqpeYg11nTtEKOxNmoW11XuCSHrcjc
-X-Proofpoint-ORIG-GUID: 0bqqpeYg11nTtEKOxNmoW11XuCSHrcjc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDExMCBTYWx0ZWRfXyUMHg5qrMaTJ
- jRuy6FZmuV/UNVRSdJyXQ8pvE81MqCJK9E32Ldhc/a/WHFhRLVNzdrHkGPghuCV0S10szM6nWWx
- pZTAnvsCC87opyy2ZEnzR8VbJ/m3CC2VPvBzg0Rk+SXk48ADQFQEsonNsC5ey03ORWqHGYqn+VP
- qqoroEW6upGLGvDSiGYEScbmY/6TidY6ikT90eX1U+sspysYaJNu4H3i0wVef+0JlRXupA1ucMD
- lfLR643ZTDx70Fyw3xbrwHLFX3f3K/dYEYDqUcalKQjKPWkz07pxNyR3mYVlk7IEA29Rdawj74z
- bal9ZKsoh/E2EHS41GuA7GAM7EC+Wybm0c1XENeP62xdpAxf2VxNMReIDkavVMkPuYq4Z3Aw59g
- eLcw4QDfe7BcjJ1H/a8Rc1+7oWxR9htjeYIE3oVZ2I2yxt/q3FoKNr6i1mW/KJuqYRiv7vujXGd
- BxVb7VCu+dQOyOPt/cw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-18_02,2026-08-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0
- malwarescore=0 bulkscore=0 phishscore=0 priorityscore=1501 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608180110
+Mime-Version: 1.0
+References: <20260728121138.1103610-1-tarunsahu@google.com>
+ <20260728121138.1103610-6-tarunsahu@google.com> <anphyjFv3FhF61iB@google.com>
+ <2vxzpkzo51wg.fsf@kernel.org> <anssOQFNZ2LfihbU@google.com>
+ <2vxzik5f311e.fsf@kernel.org> <anyObKiZIhfok5mk@google.com> <2vxzqzjz1x5f.fsf@kernel.org>
+Message-ID: <9huzv797v45k.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v4 05/11] KVM: LUO: Support VM preservation across live updates
+From: tarunsahu@google.com
+To: Pratyush Yadav <pratyush@kernel.org>, Sean Christopherson <seanjc@google.com>, loganodell@google.com
+Cc: Pratyush Yadav <pratyush@kernel.org>, ackerleytng@google.com, fuad.tabba@linux.dev, 
+	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
+	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, sagis@google.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
+	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
+	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
+	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
+	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
+	suzuki.poulose@arm.com
+Content-Type: text/plain; charset="UTF-8"
 
-Am 18.08.26 um 15:26 schrieb Matthew Rosato:
-> On 8/14/26 12:33 PM, Claudio Imbrenda wrote:
->> When the indicator and/or summary bits are set in the guest, the
->> accessed page was only marked dirty in KVM if the access was performed
->> using the slow path; accesses through the new kvm_arch_set_irq_inatomic
->> fast inject path would not mark the page as dirty.
->>
->> Fix by adding/moving the missing calls to mark_page_dirty(). Note that
->> for the inatomic path set_page_dirty{,_lock}() is not needed as the
->> page stays pinned; the unpin path correctly marks it as dirty.
->>
->> Opportunistically reorder the local variables to be in reverse
->> Christmas tree order and refactor to use guard().
->>
->> Fixes: 1e95e3bc6b05 ("KVM: s390: Enable adapter_indicators_set to use mapped pages")
-> 
-> So I'm not strictly opposed to adding the dirtying on the 'fast path'
-> but AFAIU the idea here was to still mark the page as dirty right before
-> unpin.
-> 
-> Is it strictly required to dirty the page every time it's touched even
-> if it's long-term pinned, so long as we make sure to mark the page dirty
-> before we eventually unpin it?
+Pratyush Yadav <pratyush@kernel.org> writes:
 
-Isnt that important for migration?
+> On Wed, Aug 12 2026, Sean Christopherson wrote:
+>
+>> On Wed, Aug 12, 2026, Pratyush Yadav wrote:
+>>> On Tue, Aug 11 2026, Sean Christopherson wrote:
+> [...]
+>> But that's all beside the point.  What I'm saying is that SNP and TDX *must* use
+>> guest_memfd, whereas guest_memfd is optional for all other VM types.  And so adding
+>> LUO support for guest_memfd without even sketching out a plan for CoCo VMs feels
+>> backwards.
+>>
+>> I'm not necessarily opposed to gradual guest_memfd support, but there needs to be
+>> a clear plan of how all of this is going to fit together.  It doesn't need to be
+>> perfect, and I'm sure we'll make mistakes along the way, but I want to at least
+>> try not to paint ourselves into a corner, especially with respect to the ABI.
+>
+> Right. I think landing shared guest_memfd is the first step. It is
+> simple enough and doesn't need to preserve the more complicated
+> architecture specific things like secure EPT, etc. The CoCo support
+> can build on top of this.
+>
+> There is work underway already for an RFC of TDX live update, but Tarun
+> knows the details better than me so I'll let him fill in the details for
+> the next version of this series.
 
+Right, I am keeping things minimal for this version just addressing the
+non-cocovm guest_memfd to be preserved. On top of it, We will buidl
+support for the cocoVM preservation. And Sagi (sagis@google.com) is
+already working on it.
+
+Why not implement both in the same series:
+1. This series focus on finalizing the design, How guest_memfd will be
+preserved, So Any user (Not now) but in future will use guest_memfd in
+non cocoVM case, This alone feature will be used.
+
+2. guest_memfd cocoVM preservation support will be built on top of
+in-place conversion series and I preferred not to complicate two topics
+in single series, Instead to develop gradually.
+
+I agree to your answer for have Borader Roadmap. I tried to answer in
+Cover-letter. Which I am re-stating it here:
+
+This series support guest_memfd preservation for non-COCOVM only. cocoVM
+Support will be built on top of that. Which includes the following
+stages.
+non cocoVM guest_memfd preservation -> TDX preservation -> in-place
+convertable private guest_memfd preservation -> in-place convertable
+private guest_memfd preservation backed by hugetlb.
+
+End Goal is to support guest_memfd preservation on cocoVM backed by
+hugetlb.
+
+The question remains:
+Why we are preserving KVM and only vm_type there.
+
+I will try to answer this on the thread of VM preservation to not loose
+the context.
+
+>
+>>
+>>> >> > E.g. the LUO APIs seem pretty straightforward; I assume the bulk of the complexity
+>>> >> > is going to be in knowing what to save/restore, and how, which is much more about
+>>> >> > KVM than it is about liveupdate.
+>>> >> 
+>>> >> I think it is fine if you want to take these changes through the KVM
+>>> >> tree, but I would like live update maintainers to be listed as reviewers
+>>> >> at least.
+>>> >
+>>> > Why not simply add a file pattern match to the LIVE UPDATE entry?
+>>> >
+>>> > diff --git MAINTAINERS MAINTAINERS
+>>> > index 8014b9f8253e..2eb57b22c37f 100644
+>>> > --- MAINTAINERS
+>>> > +++ MAINTAINERS
+>>> > @@ -15052,8 +15052,8 @@ F:      include/linux/liveupdate.h
+>>> >  F:     include/uapi/linux/liveupdate.h
+>>> >  F:     kernel/liveupdate/
+>>> >  F:     lib/tests/liveupdate.c
+>>> > -F:     mm/memfd_luo.c
+>>> >  F:     tools/testing/selftests/liveupdate/
+>>> > +N:     [^a-z]luo
+>>> >  
+>>> >  LLC (802.2)
+>>> >  L:     netdev@vger.kernel.org
+>>> 
+>>> This would list us as maintainers of kvm_luo.c and the tree as liveupdate.git, 
+>>
+>> It would list both "LIVE UPDATE" and "KERNEL VIRTUAL MACHINE (KVM)", as KVM would
+>> still cover the files via "F:	virt/kvm/*".  And my read of MAINTAINERS is that
+>> N: and K: entries are "secondary" if the files/scope is covered by an F: entry.
+>>
+>> E.g. arch/x86/kvm/vmx/tdx.c is covered by "KERNEL VIRTUAL MACHINE FOR X86 (KVM/x86)"
+>> via "F:	arch/x86/kvm/*/", and also by "X86 TRUST DOMAIN EXTENSIONS (TDX)" via
+>> "N:	tdx" (or maybe "K:	\b(tdx)"?  I haven't bothered to check which one
+>> triggers).  And while I don't think there was ever any formal discussion, AFAIK
+>> everyone reads the situation as KVM still being the primary maintainer/tree for
+>> that code.
+>>
+>>> both of which is something you're saying you _don't_ want.
+>>
+>> No, what I don't want is a dedicated "KVM LIVE UPDATE" entry, because I think most
+>> people would read "F:     virt/kvm/kvm_luo.c" and "F:     virt/kvm/guest_memfd_luo.c"
+>> as being more precise than KVM's "F:   virt/kvm/*" and thus would read things as
+>> "KVM LIVE UPDATE" being the primary maintainer.
+>>
+>> In other words, I'm more than ok with LUO being looped in on KVM LUO changes and
+>> having the authority to object to problematic changes, but I'm not ok with LUO
+>> taking primary ownership of KVM code.
+>
+> Sure, that sounds good to me.
+>
+>>
+>> I realize there's more than a bit of nuance in my interpretation of N: and K:,
+>> but again my experience with TDX is that so long as the maintainers are aligned
+>> on expectations, it's a non-issue in practice.
+>
+> Yep, as long as we agree among ourselves I don't think the red tape
+> around which entry has higher priority matters much.
+
+Agree!
+>
+>>
+>>> >> At the same time, I also keep being (pleasantly)
+>>> >> surprised at preservation being relatively simple. For example, the code
+>>> >> to preserve a shmem file (via memfd) is roughly 600 lines, a big chunk
+>>> >> of which is comments. The code of course has some limitations, but it is
+>>> >> good enough for use in production.
+>>> >> 
+>>> >> For one, we care about ABI breakages and versioning. 
+>>> >
+>>> > Which is amusing to me because that implies KVM does not, and I would hazard to
+>>> 
+>>> No, it doesn't. What I'm saying is I care about changes to the _live
+>>> update ABI_. Just like you probably care about changes to KVM ABI but
+>>> not so much about BPF for example.
+>>> 
+>>> > guess that KVM has the biggest ABI surface of any subsystem in the kernel by a
+>>> > country mile (though I'm probably wildly underestimating the effective ABI surface
+>>> > of filesystems).
+>>> >
+>>> >> The serialized state is a part of live update ABI and changes to it should be
+>>> >> ACKed by us. 
+>>> >
+>>> > Meh, "Don't break userspace" is a universal rule in the kernel, I genuinely don't
+>>> > see why liveupdate needs special treatment.
+>>> 
+>>> Ironically enough, you miss my point. I'm not talking about userspace
+>>> ABI. We all know not to break that. I am talking about live update
+>>> _serialization ABI_. See the stuff under include/linux/kho/abi. This
+>>> series also adds things there.
+>>
+>> No, I understand exactly what ABI you're talking about.
+>>
+>>> This is ABI between kernels. It needs to be stable-ish so you can move
+>>> from one kernel version to another. At the same time, unlike userspace
+>>> ABI, it can change.
+>>
+>> Uh, yeah, so KVM has been managing such immutable ABI for practically its entire
+>> existence.  KVM's save/restore uAPI has exactly what you're describing: serialization
+>> ABI that needs to be backwards and forwards compatible between different kernels
+>> in order to support both upgrade and rollback scenarios via live migration.
+>
+> I think there is a slight difference between KVM's save/resture uAPI and
+> live update's ABI. With KVM's uAPI, you need to maintain strict
+> backwards compatibility because userspace reads what you output. So if
+> you change the layout, userspace will interpret it wrong and might
+> break.
+>
+> With live update, the ABI never gets to userspace. It is used to talk
+> between kernels directly. So if you do break that, your userspace keeps
+> working fine, you just might not be able to live update to the
+> incompatible kernel.
+>
+> So with live update, we don't need to keep backwards compatibility in
+> the ABI forever. Of course, it is good to minimize changes, but we have
+> more freedom to change it.
+>
+> The current idea is we change the ABI whenever needed. This is because
+> live update is still in development so we are likely to see a lot more
+> changes before we settle down into something that mostly works. At some
+> point, we want to start being more strict between incompatible ABI
+> changes. The current idea is that we would like to keep backwards
+> compatibility across LTS kernels. But none of that is set in stone yet.
+>
+
+True, I also understand Sean's Concern. I will try to explain why
+bacward compatibility with padding does not solve the problem here.
+
+Kernel V1                        -> Kernel V2
+guest_memfd_luo ABI v1           -> guest_memfd_luo ABI v2
+
+(No Userspace involvement here: userspace only determine if the upcoming
+kernel V2 can support the V1 preserved files, if return true: liveupdate()
+elif: no_liveupdate())
+
+When Kernel V1, preserve the data, it has preserved based on ABI v1.
+then serializes it to make it transferable to next kernel via fdt.
+
+Now Kernel V2 boots up, and it needs to deserialize the data and restore
+the file which was preserved before. But this kernel V2 expect guest_memfd
+preservation ABI V2. These ABI V2 might be because of multiple reasons,
+for e.g.
+1. A new feature in guest_memfd_luo (preserving more flags, or the
+private/shared state of folios etc)
+
+2. A new feature in guest_memfd itself, guest_memfd kernel APIs
+(guest_memfd_create(..., new_args) or a new init call for guest_memfd after
+guest_memfd_create(), or an older field/flog is dropped). So new kernel
+should be able to retrieve old guest_memfd and populate in new
+guest_memfd for backward compatibility.
+
+Now, What will happen to these new fields or arguments that are needed,
+Kernel V2->guest_memfd_luo V2 will take care of setting them to default.
+
+Is setting them to default acceptable? Not always? So that is where the
+negotiation comes in picture:  Kernel V2 should know if it can support
+retrieving kernel V1 or otherwise userspace must not transition to V2 using
+liveupdate if V2 does not have compatibility with V1.
+
+Now to support this backward compatibility, the retrieval APIs and
+deserialization APIs in V2 kernel should be able to provide the
+deserialization/retrieval for V1 preserved data.
+
+Kernel V1 -> serialize data ---kexec ----> kernel V2 -> deserialization -> retrieve
+
+Now deserialization/retrival is aware of V1/V2 comptatibility then it
+can set the new fields, parse the preserved data of V1 into V2 (or
+directly give it to guest_memfd APIs with setting any new expected
+fields to default.)
+
+Now having a padding fields in kernel guest_memfd_luo ABIs does not help
+here. As support for deserialization and parsing from V1-> V2 in kernel
+V2 will determine if kernel V2 is backward compatible with V1. which can
+also take care of setting the extra needed fields in V2 to default
+value or remove the unwanted flags/fields not needed in kernel V2.
+
+
+Now Questions is, if there isa  need for rollback to previous kernel
+(V2 -> V1)?
+
+There are two options,
+1. kernel V2 is aware that it is going to get kexec to V1. then
+serialization function on preservation will serialize the
+data in guest_memfd_luo ABIs V1 compatible format.
+
+2. kernel V1 guest_memfd_luo ABIs had the padding in their ABIs
+structures which even if kernel V2 will set those field, will be ignored
+by kernel V1. This will not require saperate
+deserialization/preservation mechanism for guest_memfd_luo V1 in kernel
+V2. This will not work in every case, As there might be different
+parsers are in guest_memfd_luo V2 and V1. then serialized data preserved
+by guest_memfd_luo V2 can not be parsed by guest_memfd_luo V1 after kexec.
+
+So,
+
+Kernel V2 _must have_ to support backward compatibility with kernel V1:
+1. guest_memfd_luo V1 context aware deserialization/retrieval mechanism
+2. guest_memfd_luo V1 context aware serialization/preservation mechanism
+
+Kernel V1/V2 may have:
+1. padding (hard to determine, can have heuristically) to ease the job
+of deserialization/retrieval/serialization/preservation apis. But does
+not solve backward compatibility alone.
+
+
+Once we will keep updating the host, There will be a point when we are at
+V15 but we dont want V1 backward compatiblity anymore, So we drop the
+deserialization/retrieval/serialization/preservation for V1 from V15.
+
+Would love to hear your thoughts?
+
+Looping Logan (loganodell@google.com) for his insights on this as well.
+
+~Tarun
+
+
+> That's why I would like to have an explicit ACK from the live update
+> group for ABI changes. I would like to enforce these compatibility
+> windows.
+>
+>>
+>> KVM also has immutable ABI between itself and guest kernels, including implicit
+>> "ABI" in the form of not changing guest-visible behavior.
+>>
+>>> Today we don't have any rules and let you change things freely as long as you
+>>> do a version bump. But at a later point, the plan is to add some stability
+>>> requirements to the ABI so you can actually upgrade the kernel across major
+>>> versions.
+>>> 
+>>> So at least for ABI changes, there should be an explicit ACK from the
+>>> live update group.
+>>
+>> I don't entirely agree.  I get where you're coming from, and I 100% agree that
+>> the more eyeballs on changes that may affect ABI, the better.
+>>
+>> Where I have problems with the above is that it doesn't account for the nuances
+>> of save/restore across different kernels.  The literal format of the serialized
+>> data is the most obvious form of ABI, but it's absolutely possible to change ABI
+>> without changing the data format.
+>>
+>> E.g. say there's a flags field in some serialization structure, and flags X and Y
+>> are mutually exclusive in current kernels.  If a future kernel relaxes that
+>> restriction for whatever reason, then the effective ABI has been broken because
+>> state created and saved on new kernels can't be restored on old kernels.  And
+>> this is not a theoretical concern, KVM has run afoul of this a few times (though
+>> thankfully very rarely).
+>
+> That's a bug, and should be fixed.
+>
+> I am talking here about intentional ABI changes. As I mentioned above we
+> _can_ change the ABI, we just need to be careful about it.
+>
+>>
+>> I don't think it's reasonable to expect LUO maintainers to gain enough expertise
+>> in each subsystem to be able to ensure changes are forwards and backwards
+>> compatible.  The only way I see LUO being successful in the long term is to get
+>> subsystem maintainers/contributors to understand *and buy-in* to the LUO model
+>> and rules, so that each subsystem can largely be self-sustatining.  I.e. setting
+>> yourselves up as literal gatekeepers will help prevent blatant breakage, but it's
+>> less likely to help guard against more subtle breakage, and in my experience,
+>> subtle breakage is by far harder to detect and more painful to deal with.
+>
+> Outside of enforcing the ABI compatibility windows, I think this makes
+> sense.
+>
+> In principle at least, though from my experience the maintainer appetite
+> to care about live update varies. The feeling I've got from MM for
+> example is more along the lines of "you break it, you buy it". Which is
+> also a valid model IMO. The person who wrote the live update code for a
+> subsystem is well equipped to understand these nuances.
+>
+>>
+>> Somewhat of a side topic: in my experience, using monotonically increasing version
+>> numbers is a horrible way to enumerate features/content.  So for me, allowing
+>> KVM's LUO ABI to change with a verson bump is probably a non-starter.  I.e.
+>> whatever gets merged needs to be more future-proof than "we'll deal with it later".
+>
+> As I wrote above, the compatibility model for live update allows
+> breaking ABI with version bumps. Userspace keeps working fine, it only
+> restricts the set of kernels that you can go to. So the "we'll deal with
+> it later" is not as harmful because our choices here are not permanent.
+>
+> Also, there is work underway to allow transitions between versions [0].
+>
+> But still, I am not opposed to a more flexible guest_memfd ABI. I think
+> we can reserve some space for feature flags to let us add things in the
+> future.
+>
+> [0] https://lore.kernel.org/kexec/20260731215224.831696-1-loganodell@google.com/
+>
+> -- 
+> Regards,
+> Pratyush Yadav
