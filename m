@@ -1,124 +1,263 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6413446B0;
-	Tue, 18 Aug 2026 08:18:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787041086; cv=none; b=CGFkU7PjgLGuwqo6PgAHNx+4qoufbxAwm3ecXffULhkDeAEe09B9o6KSpaG/ee2I8vgAClF0srSYNqu1aG7t9QyhjX8YSVJF3afFH9UpT6OoJBcrw+SUsLylCbonHL0tCFIWmiSRT4bVQvBBUCagXGg88ZXhtegqe+lYe62Show=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787041086; c=relaxed/simple;
-	bh=fzBs/v2lX6bjtMxVASfa3Y/bIx0O7kOhrBTzv/t/o9Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AoWKxWu35ZjG1Q4Rw/jTuOfoP8/OOnYwLi7zu5pvrZNWI/Mkta3bELDZbOTgizsLh0b/H1z/4wQJQk3fb/MIbYDrNap4Qwbpbeac64E6lwCmhoEIDyOuuNYUmhJfxS3axhuCKqJ1Src//Vpl7RoPnsLsxOJ/WS1JuGosucQV34Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QUzkCRBh; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9135A395AFA
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 08:22:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787041375; cv=pass; b=QSttLcvOp/UeNIhe3zV+xUuBVXAtV38fgrYRvr3lUMvAQrZi3fK1X3P636FRglq5jrwp8mecYnrY6u3/aKYjOfXmFhsdU3i7g/6TvdxsuvFEu3v/0dhIndFeSicyyJXivmPcmoh33toMfc8nFgFucODelDvsnN5vr8JZ9HV4aaY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787041375; c=relaxed/simple;
+	bh=5J3xUB3/7aisz9iRktEt7o1yC5SHtH7S+wRq998947s=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Gr4RJMUfQmAki0SeQispaiG4cpZB/XBTEpCFe5JIE7LG7tePYUxAUkC+i30JzU+M53qpkpk7SbRjwVyPMN83Gm0LG10ql1rWlUAkNkgqEVQeMZ8/RZxjRqrQ0oCGg7SudNhMHcBHd4AD4L4yNzKJUHdvDF8/4KTiuanGV65PWgY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T826V2Jz; arc=pass smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QUzkCRBh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787041085; x=1818577085;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=fzBs/v2lX6bjtMxVASfa3Y/bIx0O7kOhrBTzv/t/o9Q=;
-  b=QUzkCRBhF+vNSf0pvJ8JMQvRyf2CTA0yzdbo6glYMmNp4slobhqxYJSR
-   1ViOkRxvHz+TjGDennOxn3CRMMk28lc+/CfkxOv9Fji8hQ/XOGB1yTq88
-   QuBimZtk0ahqwN68zQm38VBeUUTqIJgZtRkO6qBNdKex5i31qktufQmnx
-   /46JaDPLjGONYIm5CZ4JqQAr7TGpIxty/yNcolQ/jYMXaBg75pWftD3Y5
-   IL5ryH861o6G9nZQcSG2Vc+1gv4JbSDf/xRdVZUwGiFZryeqbNAzWeosO
-   KOadQh9iS+5uv0oXZp1BUqGrC925flienCYc15GbUnZutmV0VNFRNNueR
-   w==;
-X-CSE-ConnectionGUID: E90ld30xS96aUGEXYOrUeQ==
-X-CSE-MsgGUID: aFR/hc7FSHm/qs+LODiJpg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11878"; a="91208464"
-X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
-   d="scan'208";a="91208464"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 01:18:05 -0700
-X-CSE-ConnectionGUID: GW7Uc7aNSUmptCHDM+hl0Q==
-X-CSE-MsgGUID: I4skbCsrQlWraST++Eojdw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
-   d="scan'208";a="258946082"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.238.208.98]) ([10.238.208.98])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 01:17:59 -0700
-Message-ID: <f7b3a63c-7a1d-445f-b062-4cea5343d266@intel.com>
-Date: Tue, 18 Aug 2026 16:17:55 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T826V2Jz"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so4415045a91.0
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 01:22:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787041373; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GJfKH02LQrPPbfIEdqlHYVYyTOalPcXdjRCeRXTUNBGQ0ej6wJHYbpiZm1RoDR5N8R
+         j/MJIJwoaJe8NDBUN2wUAw/i/KPaJSd0TWIQNAnisxRcPs2l6b4IOj2gumcXTGmp0ory
+         1e2ml0gPeGzs/AgWCu1ihR3EK9kHWzNKfJH+Z1+PWBDrvaoQ0fGcw/C1AMRNty+uQszV
+         PCM+E4bXvdTb5OUCL/FN29x/aEzuWLgu5KpRG52ffOOSubX1NA9Gj9R43JJ2uMq8ivDL
+         rg8LrP/avgcB9Nlfl7EYvALkDprpmk83DU2KqylvS3avomOCXDv9Eb6w9GG6bJL/fYKV
+         tUHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=y79lKilZje+Nl3Rv+2N5vQhP9be8wEt4E0ek84GffA4=;
+        fh=m2S5+vYEghpOpRIvEF0CNpSilKbrFpLiqkzaU4YWQJc=;
+        b=qwoM6x/iaT1GzVFluO4BorhDYr0XzUVkUTlZRvuGz122893sqfpF1AbgYLF7q7fy9q
+         EMarhmY2ePiYTNO5onkIyi1OIdhBoRfRTYYZhYQh9LcuTqGJTpbe+c5tmwnMgZQeDjNo
+         fpLUM54EwZpqdexBD86REDDHY931Fq8fgfYXLHQnwoY++mrsAkq0NbjgaFSIpVKSN0DZ
+         gf0FT6nEXMq/2qYyHlvDaKsAns2DHXqp52rqdQY6eWTt1pYnMahCxn5bgFUDRlkAOlnb
+         o4kwtREo4i58ZMXfOQ3CHyUvwK9d+37XRukGNGxzNDK50tRO8XK5iR2Jk03xjWkGlEHA
+         oUSA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787041373; x=1787646173; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=y79lKilZje+Nl3Rv+2N5vQhP9be8wEt4E0ek84GffA4=;
+        b=T826V2JzQmY0bin515X5csS1JNLlgJ+k5RabIjx8Nf7P7g03ErnJyovgsFXd23Q9Vc
+         z8AQrpDSkqu5btNFUJQ+DwbG49sSIRey6haYFnfXG7fADLiaig6qymiR7wtLstRdfMZZ
+         Hf47/UsUqaozOh0olPd+JMVYoN1k0yKArFcwSNgUOsZbXZIGNV8S8jn8ebaDN+Nqis4D
+         kshDA4GemxSpnAG1A75p227PY8LLhRZhUFG00TbwipJnr1y0LnFlW12gzWrQgdkbnWEr
+         IqclVk5a6tg9N5IhKhpIgj77Jx0w5raAz9uJnCZH4mGjIWvuqjtRXD97grWSZ+ls6bWw
+         m+5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787041373; x=1787646173;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=y79lKilZje+Nl3Rv+2N5vQhP9be8wEt4E0ek84GffA4=;
+        b=dOWY0EAgX9UDzEcz3uNiXVii0QitPS693U5POZaAZkXtKKGAc40PJFaY6BpoaPq2tn
+         rNN3shg9wLSO8UvR4p1v7EcZUj8mgg62JtveK69pE2l9qivE3dbSF8TByc1RAAwWUeL2
+         DYN4O7eFb8EYv9wY0hs+Vp0vUqN7GEP74L29sXiAX/YQh4dnIfM6MVkbutGl5x0Ol6G6
+         u7EUQ8NxmyxPCvzYoe5MnHukfTFIzU5/DMX+Sr5lKzTNzJqKqr+APAsj9EFGUntbbdXh
+         dldsw9rxZMEBUrOvGgG+N7JOI4HKyJdl8m2YliCzMPshRWel7MeXuifl7tHxqQAWyYDQ
+         djQA==
+X-Forwarded-Encrypted: i=1; AHgh+RqxELLte+EWUuLPQenmo14R4oohpJtj9eazGR46EiuYd1GDRZMFmjwVH+Vmio6Fo6p3CIM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5qoqAkVrPQyOwP1TSXI7uvGaqBe6akhJYlhwIMD5T+5dPFBBG
+	LmY+0IgYmQstld/ykZ/P8jrsn7WL2a9t9LYqSfHEkgNsu34jwuHQ/t3g2cEYkXGOaDXmcEHIRsv
+	mhf1IxC+THq02K7YC8NgdXJw5Hbo6nODDpqV3Slxe
+X-Gm-Gg: AR+sD13HJ4w8/ytSZYBgqS3Z+Jt4JL8qqdGAaiHschb+X7lhT0KayYWBFQ+BHhmkitN
+	XY6IBvIPmgV9PAQqZT9iykJAM/Rl54wz93iPsLSHJ5s0mVB4gcuiQHFfSFmEwpYLNzKFsheQVNZ
+	ek+xXg9HNBM1RZEHgH1gIt6bwUAxV3vbkAZXx567eOvHa8yR8Fy7Uby/gAOCToyz3ofl8p8o5Oi
+	z0XJ1NEHTBCjUnBlCH0VzWt9gYB8ANaU7vjUliQaLy7+CIsDXuH28H94E1ooopKA+jnOe8AHyV/
+	TEQ99cvOuqmuYsLgMxTubsyG92lwV2GkKgMXo9mo1QUok/NXiVfBTlpvwe7aWvawN6mssa/K7ht
+	i0JesuhLudg==
+X-Received: by 2002:a17:90b:314a:b0:395:5404:95 with SMTP id
+ 98e67ed59e1d1-3955a79c987mr7608716a91.12.1787041372060; Tue, 18 Aug 2026
+ 01:22:52 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 18 Aug 2026 01:22:50 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 18 Aug 2026 01:22:49 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <aoOJRk5SXBzzT24K@google.com>
+References: <CAEvNRgFWcndQKJE_q+ZATFZEMYd=6uRLygozLvg7L77bPX0cEQ@mail.gmail.com>
+ <anqqKH6kuwpvuwp9@yzhao56-desk.sh.intel.com> <CAEvNRgGWDY_fxbyBM-5sMdYMevMe0HzVP9kbC1cCGLE_dV=_Gw@mail.gmail.com>
+ <a71d4fccdffd1f6a12332ddd18fa812542ea2118.camel@intel.com>
+ <CAEvNRgHxda6XK_XqWaqqVnA7oW=Fhp_C5gF4vNcL+-HfwfXMqQ@mail.gmail.com>
+ <0c80b9b0e13e3ab2cbe4f9eaf4a02ebba25a7001.camel@intel.com>
+ <an5RJYTwlYeym--O@google.com> <aoKnmW9St5zCoTD3@yzhao56-desk.sh.intel.com>
+ <aoNrFX9yLfsM7KQI@google.com> <CAEvNRgH_=8YqKHb_OJfT583ZJ346cceRimd9YJ762Vv08uJGHQ@mail.gmail.com>
+ <aoOJRk5SXBzzT24K@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 13/22] KVM: selftests: Support guest_memfd in-place
- conversion
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Binbin Wu
- <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-13-15ad654a50db@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260722-tdx-selftests-v14-13-15ad654a50db@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Date: Tue, 18 Aug 2026 01:22:49 -0700
+X-Gm-Features: AcwNN1UwBN-I8e5ZL1Wm4VeVuI85_vvgyrgG68xpeG1bFCBW0uOQsMiH1U5tIzU
+Message-ID: <CAEvNRgHXXXBgO2Pw9PcaiaTLXBrm-F++nJKSeHn6m0rnZiT7RQ@mail.gmail.com>
+Subject: Re: [PATCH v10 11/41] KVM: guest_memfd: Ensure pages are not in use
+ before conversion
+To: Sean Christopherson <seanjc@google.com>
+Cc: Yan Zhao <yan.y.zhao@intel.com>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
+	"david@kernel.org" <david@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"steven.price@arm.com" <steven.price@arm.com>, "peterx@redhat.com" <peterx@redhat.com>, 
+	"forkloop@google.com" <forkloop@google.com>, "tabba@google.com" <tabba@google.com>, 
+	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	Vishal Annapurve <vannapurve@google.com>, "willy@infradead.org" <willy@infradead.org>, 
+	"tglx@kernel.org" <tglx@kernel.org>, "wyihan@google.com" <wyihan@google.com>, 
+	"pratyush@kernel.org" <pratyush@kernel.org>, "aik@amd.com" <aik@amd.com>, 
+	"jmattson@google.com" <jmattson@google.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "rientjes@google.com" <rientjes@google.com>, 
+	"andrew.jones@linux.dev" <andrew.jones@linux.dev>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "chrisl@kernel.org" <chrisl@kernel.org>, 
+	"shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
+	"mathieu.desnoyers@efficios.com" <mathieu.desnoyers@efficios.com>, "oupton@kernel.org" <oupton@kernel.org>, 
+	"mhiramat@kernel.org" <mhiramat@kernel.org>, "baohua@kernel.org" <baohua@kernel.org>, 
+	"tarunsahu@google.com" <tarunsahu@google.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
+	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jthoughton@google.com" <jthoughton@google.com>, 
+	"yuanchu@google.com" <yuanchu@google.com>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"shikemeng@huaweicloud.com" <shikemeng@huaweicloud.com>, "nphamcs@gmail.com" <nphamcs@gmail.com>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "shivankg@amd.com" <shivankg@amd.com>, 
+	"shuah@kernel.org" <shuah@kernel.org>, "youngjun.park@lge.com" <youngjun.park@lge.com>, 
+	"kasong@tencent.com" <kasong@tencent.com>, "pankaj.gupta@amd.com" <pankaj.gupta@amd.com>, 
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
+	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"vbabka@kernel.org" <vbabka@kernel.org>, "weixugc@google.com" <weixugc@google.com>, 
+	"michael.roth@amd.com" <michael.roth@amd.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "qperret@google.com" <qperret@google.com>, 
+	"brauner@kernel.org" <brauner@kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
+	"baoquan.he@linux.dev" <baoquan.he@linux.dev>, "corbet@lwn.net" <corbet@lwn.net>, 
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "liam@infradead.org" <liam@infradead.org>, 
+	"axelrasmussen@google.com" <axelrasmussen@google.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"qi.zheng@linux.dev" <qi.zheng@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On 7/23/2026 7:13 AM, Lisa Wang wrote:
-> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-> index 4a48c4b42095..e547ea341ff7 100644
-> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
-> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-> @@ -484,8 +484,10 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
->   	u64 nr_pages = vm_nr_pages_required(shape.mode, nr_runnable_vcpus,
->   						 nr_extra_pages);
->   	struct userspace_mem_region *slot0;
-> +	u64 gmem_flags = 0;
->   	struct kvm_vm *vm;
-> -	int i, flags;
-> +	int flags = 0;
-> +	int i;
->   
->   	kvm_set_files_rlimit(nr_runnable_vcpus);
->   
-> @@ -495,14 +497,20 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
->   	vm = ____vm_create(shape);
->   
->   	/*
-> -	 * Force GUEST_MEMFD for the primary memory region if necessary, e.g.
-> -	 * for CoCo VMs that require GUEST_MEMFD backed private memory.
-> +	 * Force GUEST_MEMFD for the primary memory region if necessary, and
-> +	 * initialize it as shared if in-place conversion is support, so the
-> +	 * selftest framework can populate it exactly like other memory
-> +	 * providers.
->   	 */
-> -	flags = 0;
-> -	if (is_guest_memfd_required(shape))
-> +	if (is_guest_memfd_required(shape)) {
->   		flags |= KVM_MEM_GUEST_MEMFD;
-> +		if (kvm_has_gmem_attributes)
-> +			gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED |
-> +				      GUEST_MEMFD_FLAG_MMAP;
-> +	}
->   
-> -	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags);
-> +	vm_mem_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags,
-> +		   -1, 0, gmem_flags);
->   	for (i = 0; i < NR_MEM_REGIONS; i++)
->   		vm->memslots[i] = 0;
+Sean Christopherson <seanjc@google.com> writes:
 
-IMO, this diff belongs to the gmem in-place series.
+>
+> [...snip...]
+>
+>> > The only question is if we want to commit to
+>> > guaranteeing that conversion will succeed in this scenario, or if we want to take
+>> > the easy way out and formally document that conversion can fail with EAGAIN at any
+>> > time, even if userspace has never mmap()'d the memory in question.
+>>
+>> I don't really think there's a need to commit to this, IIUC in principle,
+>> ignoring that on many paths of those guest_memfd may be excluded, refcounts
+>> can be taken even if there are no host userspace mappings. For one, memory
+>> failure handling doesn't care if there are mappings, the refcount will be
+>> taken for a short while and could cause this conversion failure.
+>>
+>> Here's the relevant part of the documentation added for conversions:
+>>
+>>   If this ioctl returns -EAGAIN, the offset of the page with unexpected
+>>   refcounts will be returned in `error_offset`. This can occur if there
+>>   are transient refcounts on the pages, taken by other parts of the
+>>   kernel.
+>>
+>>   Userspace is expected to figure out how to remove all known refcounts
+>>   on the shared pages, such as refcounts taken by get_user_pages(), and
+>>   try the ioctl again. A possible source of these long term refcounts is
+>>   if the guest_memfd memory was pinned in IOMMU page tables.
+>>
+>> > I'm leaning pretty strongly towards guaranteeing conversion will succeed.  We'll
+>> > still need to document the EAGAIN behavior, but IMO there's a massive difference
+>> > between conversion failing if there's a lingering reference acquired via a VMA,
+>> > conversion failing because a vCPU page fault raced with conversion.  E.g. being
+>> > able to assert success in a very curated test, as the stress test presumably does,
+>> > would be extremely valuable for helping detect/prevent edge case bugs.
+>> >
+>> > The argument against guaranteeing success is that we might make our future lives
+>> > harder, e.g. if it turns out there are legitimate, hard-to-solve edge cases.  But
+>> > I'm ok with that risk, as it seems highly unlikely to be problematic in practice,
+>> > and there is real benefit to guaranteeing success.
+>> >
+>>
+>> Is there really a need to commit to anything? This is already documented
+>> as "can fail", and it's orthogonal to whether the memory was mapped.
+>
+> Yes, but the above docs also say "it's userspace's problem".  Which I generally
+> agree with, but that's not a very good story when it comes to KVM itself taking
+> transient references, because then the answer becomes "Stop running all vCPUs",
+> which I don't like.  E.g. in a very pathological scenario, it's theoretically
+> possible that conversion may never succeed.  That's what gives me pause.
+>
+>> The transient nature of refcounts on pages in general makes it hard to
+>> guarantee, and this stretches outside of KVM. I mean, anything could take a
+>> refcount on a page in future and we can't be auditing the entire kernel for
+>> no refcounts on guest_memfd pages ever.
+>
+> True, but at the same time, if there were never any VMAs then I would expect there
+> to never be transient refcounts, modulo memory failure.  And it'd be easy enough
+> to document the memory failure angle.
+>
+
+I think even modulo memory failure the contract in mm for pages is that
+transient refcounts are allowed to be taken.
+
+>> >> > As for in-place conversion, this is not a blocker.
+>> >> Sorry. I didn't intend to block in-place conversion.
+>> >
+>> > LOL, what we intend and what happens aren't always the same. :-)
+>>
+>> I don't think we're ready to guarantee conversion success when guest_memfd
+>> pages are not mapped to userspace
+>
+> Yeah, that was too strong of wording on my part.  The needle I was trying to
+> thread was "conversion for this specific scenario, in a controlled environment,
+> is guaranteed to succeed".
+>
+
+So I think we can only specifically fix this case Yan reported.
+
+>> without dragging this out way further.
+>>
+>> I'm all for KVM not taking any references on guest_memfd, but I think
+>> eliminating KVM itself as a source of transient refcounts can be a
+>> series in itself.
+>
+> Yes, it would definitely be a separate mini-series.
+>
+>> KVM not taking any references on guest_memfd memory is definitely welcome,
+>> it'll pave the way to using non-struct-page memory in guest_memfd.
+>>
+>> It'll come, can we not block on this please?
+>
+> FWIW, it doesn't have to block initial merge, just the final release.  E.g. even
+> if we decide that this is a blocking issue, we can still land the in-place
+> conversion series, so long as it's not exposed to userspace in the final release
+> of 7.4 (or whatever kernel) without fixing the transient refcount issue.
+>
+>> If we find a way to strengthen the guarantee, wouldn't that be an iterative
+>> improvement?
+>
+> Yes, but we do need to draw a line in the sand.  E.g. if conversion failed 99%
+> of the time because KVM was taking spurious references, I think we'd all agree
+> that needs to be fixed before the code is released.
+>
+> I'm still leaning towards saying this one has to be fixed, because it would give
+> us a solid baseline from which to start, and a way to enforce it going forward
+> (Yan's stress test).  I could certinaly be convinced otherwise, though dropping
+> the transiest reference seems straightforward enough that hopefully it's a moot
+> point, i.e. we land both in 7.4 and don't actually have to make a decision.
+
+Sean seems confident enough that it's a small change to drop the
+transient reference so I went ahead to put together the series [1] so we
+can kick off the reviews.
+
+I'll follow up soon with some testing and report on the other series
+[1]. Yan, if you could provide a Tested-by on either series it'd be
+great :)
+
+Please send your reviews on [1] so we can make it for 7.4! ~7 weeks to
+the soft-close of 7.3-rc5!
+
+[1] https://lore.kernel.org/all/20260818-gmem-no-return-page-v1-0-4f8d939efdbc@google.com/
