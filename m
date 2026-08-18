@@ -1,198 +1,437 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9AD3EB10C
-	for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 23:44:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAE64B04AC
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 00:06:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787010252; cv=none; b=rrPMYRHH78OP3/LVD/LdD2ES/wGpRdOBebvoK0LAiH3fv4OQInVcFhxzy18FmKMO5TlUUdr5xRjAMVsBu0hqj9DKqjdUJSqgecMAY1KXGhh1CUShTxtNjBNhfSInTr5wy7c+RHjLfogc890kutyriRvfhkj32nIjcsSGjj8qXuc=
+	t=1787011562; cv=none; b=dgpYHEnAHDVWwTlETjZK8ycgFqqXoUg7fX8Dm62B1wA5pTixgoxdeuQY5sTdv2zfSXbgTvRWpPrQwirc+yHaFD4crPH+7a3yQjGyIZMzoUBg3B0OBHjeXBHxVSZnDQbSGRvCFTe1cu0Taw6l+qW1b/6uE9oTpdmoBB5KitACLrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787010252; c=relaxed/simple;
-	bh=rS2eLQ/pZoqQTdIUho4WhV3MopG0mC9jRBdImYwlnjY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i/TkQ5hRkEu18knilZPetqjyWcMCOPX1bdc4MwuBTb7C8ioNvl0Zye+me0MD+anlRy24xaX/Sch3MJSkWJj0dFQJ5OQNNl1LnzPtW2CwI5RobmvYlW/rAwYIqeIKtcfl5jaPufdmCsN9N9y4WQ4rCZiy9L6Ya2wahHyHRXDlr+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fy0dGlCp; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787011562; c=relaxed/simple;
+	bh=X/3h1uqrdm8Q8hCgMjyFilmvYHZ2KszoNqQCX1gVvfs=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=r9whi6ir/sqM5FMxSdWLEqqAJ5r8V7iB/PDcWk8WcU/XQQen6GWcqkxe1RJsPy5kbsqsRZt7TRzlj2zeNG0jfy3ioPvvDnXBPgRs1g7nKVx/BzWYxCsgizVSYEh/5CnbayP8JKYW3Xzi30zi6UqtteZc+VA8iR8jMrPlz8D9qkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZF8voH9L; arc=none smtp.client-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fy0dGlCp"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2caea3f742bso67325605ad.0
-        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 16:44:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZF8voH9L"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2ccd1958e8fso63479005ad.2
+        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 17:06:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787010251; x=1787615051; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SrOBK5cyf8If+OZjZ5TIA8l88FA3SWI+3OzMrqCIVb4=;
-        b=fy0dGlCpAsILQbl3DpXClMicEBAlZahrmFthC0NT4xav8T+4TMcZqVJ1wiAXU1y8HQ
-         QErnb/enx+fekZtExLDcCnUTv9pbfOadzWFjDFU3+u9d6/aaOdZ9/T3joQtyu/WBCOG2
-         vUTarElqZDjhKaQVPhSR+9xElNhU6RMYNPblLb0pnfKZ8P6394Sb4j18aIE+S9zE+gxk
-         dPyW16eP4E5Ea5nVYs58Oicx8uznQfoS0eX0Fr5wGb8DnMGnlaGQ+dQb8zABBuePsJND
-         c8nb6c4t/Dk6/YFB7O9+qgKXPeGr6fH/nzOFZsNGK6wJ0eZa3d4Su0P5pX9paR9u0rDf
-         aIWQ==
+        d=google.com; s=20251104; t=1787011560; x=1787616360; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=LhXMOfAUPDNC7eYzeiINh4OShBMXXLHMknnyNosCgwU=;
+        b=ZF8voH9Le7/XdnVNZSVOgLgWsLsLaZzljjpiJAftc2xgxmAcFOeB0uPFDbUTvD9m6W
+         wVLOINJX5C1NY6gtGhEUBjxvaQGnhKKwoAtLfcnNaoSVRzRC3iTIVP/HAJTzsLqfO/zo
+         0Rn2aBkMOSiu4tN41QaEa24ztZVLCA1jqlx/YC2fY6ruIJR1bF3CcISgpi6pVM5qYnWx
+         Kkm/A6vAre72yBxbryPp5iFa5iH1a/lPBOiAF83iprXejL39kikebRE8GCZ2ojlnVOM/
+         BrX77YjHcnFcBYqs60THuxpzWP30BW6kohDfbjKXRcKuPwRMr5CwEkKQz2gBJB4ocvWC
+         OSuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787010251; x=1787615051;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SrOBK5cyf8If+OZjZ5TIA8l88FA3SWI+3OzMrqCIVb4=;
-        b=Xjo8EF/ejgYEb9iH6pPNKLF7CuEpDo57WS8sDr8S+qeNYoBrgjlKEq9735Zvh8MicZ
-         f85hy+zxllzIVYmI1JSwFvmlY4DCEE3dR1H37/ZRFKqGYJUiu4GsWmo1SjmuyUMgacCV
-         QfP1De2ZWEnz7qKsX5F62ew/Cn5XtVlp5dnxuFNlK6BW8oIjDl7P8U2LxicqBq92Vn9I
-         X3IBMPGrNxUTGH/kB17RONVqD2c9tERkKhxvj7k9ph50S8jft3qEPCpwc11pVwQ3OQmy
-         mKROs+87oyBTl3YrfARyBsraTGVGgYvpN5X6pgwi9Z6qt95RF4CD62FratTqGd2G/rY/
-         Mjtg==
-X-Forwarded-Encrypted: i=1; AHgh+RogWT2no6cLRSq7KOxCKDKj3SNVDE1R8ojWLwAWLu9fBpMG3DXJx47l/zpWTZBgA4LZSDI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqvGC7aNdjiJ0Wc9of6yQkCb7OL8ohyRCSWHigCTqBGx4xJab5
-	5X/Uuwf4erX1Z436KzUvjQ3tFTvUamh7a3N3V9sF/vXuQwT+O8corxI+
-X-Gm-Gg: AR+sD10bmjSTuoDxkxz2LsnTzDvaeR+2o0HHGf7/pcbFqULH4KpU29bjeK1YsuX+FEk
-	dWD4FdNyb4ItL6MAeq66Y9ooheo7+81sEByxa8WekHqOW0sM0ooCPi9Ra9f8mBf2SjYQUFV482V
-	NSjCSYE3b5Gf8WBPc5t98rThMIqRZA8GWkwB4Ml2bL7Zpo9qy73zBIYqoa9K7hj1qLiGCKxdBvo
-	TTX47yfuyL0f0hw/N4a3SSOUkM0pKDHVwMZIMFg8ckwlxtE6Vao6cN2xI5vDrD3uOJxtAW/P3yT
-	7W/mXk1MU/osyOFYfGNb6RpYdwURAfHeD9v5sxNwsbmZM4lpcZGDFw8GVHBCMx8JVRG9DX/kfob
-	b/EDnoys2p1CAiqzGDa4FpfDF5fR4py5TnGp3S0uT/FGbV05Bp3yF979php3mr0TNNA4ng6Nh+8
-	AQUBqToQxSioA1Wl4a0o8HHjYUZ8YudKWmHIZpQzx6WnyF8rd6wboZclTUSwQtzXhyaL2501mZg
-	mFJYPDm39LlyHWQE7FGlTdIqO4hTj2u6k1sk+mjHitbdoHXs0MYRF0PblHfvj/u
-X-Received: by 2002:a17:902:cf07:b0:2d3:2e86:647a with SMTP id d9443c01a7336-2d5c4f07dd0mr47333325ad.5.1787010250571;
-        Mon, 17 Aug 2026 16:44:10 -0700 (PDT)
-Received: from wirene2.c.googlers.com.com (249.65.83.34.bc.googleusercontent.com. [34.83.65.249])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d5bb499e81sm11077885ad.1.2026.08.17.16.44.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 16:44:08 -0700 (PDT)
-From: Irene Wang <yiranirenewang@gmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Cc: Andrew Jones <andrew.jones@linux.dev>,
-	Thomas Huth <thuth@redhat.com>,
-	kvm@vger.kernel.org,
-	Yosry Ahmed <yosry@kernel.org>,
-	David Matlack <dmatlack@google.com>,
-	Jim Mattson <jmattson@google.com>,
-	Irene Wang <yiranirenewang@gmail.com>
-Subject: [kvm-unit-tests PATCH v4] x86: pci: Support unaligned register access in PCI config read/write
-Date: Mon, 17 Aug 2026 23:43:28 +0000
-Message-ID: <20260817234328.196560-1-yiranirenewang@gmail.com>
-X-Mailer: git-send-email 2.55.0.699.gb54405d56f-goog
+        d=1e100.net; s=20251104; t=1787011560; x=1787616360;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LhXMOfAUPDNC7eYzeiINh4OShBMXXLHMknnyNosCgwU=;
+        b=SlwXHFtuA7oFq8ngVa1zkATDvNy5QOPcld7cvWIIKNWQsGtNeNnuwXvEctfKoQC3VT
+         40HYOf92GVczoI4XMkoSy0l1aLl66VDIymCDxB4H5hZZHbmX+5ZbEx//H0CJED7pyuns
+         zb5MHU8VB8XKsd9MfbqpPYBljd2WMOxfU5g2nlDJbFaYZmCH72hJ9/MDDNxKGl4vSjld
+         40Rf8HJwxua02UGEu5w5VKovhOKq6sCvzV4Tdk1+/v7HiEPiPDUNKL7/uIb0kTwQ8Hr1
+         jsem1ik0k9F6EBRITQZuZ0BwoS1lCxdx3he1Jt8eSOQBRt47kI/ToijFGL+47+1Xun5Q
+         XwpQ==
+X-Gm-Message-State: AOJu0YxRu2lBOgkbzy/JCmo8d1OmdCEvedgLPSRAQOAxZ6LJANvUSSww
+	fR6HShrUI+oh/QdBoKbBsbYxOOC2t+/hRBCtkqVFIYKAIivz+GNMKLZn3xCpsOOxWIvjMyyJWN7
+	qNRwtHORKYCgtlex03w1PN93GFKbO5C5wvXBsNP5xg3gwAR5Lx8gE97touIoGaZwBcufGsMjdmP
+	bq61d+3epaIQ1e3FrgCiItgMpR9HuFmmG32L01zxo4KgA=
+X-Received: from pgbe29.prod.google.com ([2002:a63:501d:0:b0:c8e:c0e0:e670])
+ (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a21:4584:b0:3cc:36a0:3ff6 with SMTP id adf61e73a8af0-3cc71c9e417mr31176715637.19.1787011559567;
+ Mon, 17 Aug 2026 17:05:59 -0700 (PDT)
+Date: Tue, 18 Aug 2026 00:05:49 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.699.gb54405d56f-goog
+Message-ID: <20260818000550.2526247-1-dmatlack@google.com>
+Subject: [PATCH] vfio: selftests: Add documentation
+From: David Matlack <dmatlack@google.com>
+To: kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Cc: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
+	Sean Christopherson <seanjc@google.com>, Shuah Khan <skhan@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Per the PCI Local Bus Specification (Section 3.2.2.3.2, "Configuration
-Mechanism #1"), port 0xCF8 (CONFIG_ADDRESS) requires a DWORD-aligned
-register offset (bits [1:0] = 00b), while byte and word offsets within
-the DWORD must be selected via data port 0xCFC + (reg & 3).
+Add documentation for VFIO selftests in
+Documentation/driver-api/vfio-selftests.rst, include it in the
+driver-api index, and update MAINTAINERS.
 
-Previously, PCI_CONF1_ADDRESS did not clear bits [1:0], and 8-bit /
-16-bit helpers always accessed base port 0xCFC directly. This worked
-in QEMU because its PCI host bridge emulation preserves unaligned bits
-in CONFIG_ADDRESS and uses them during CONFIG_DATA accesses. However,
-in strictly spec-compliant VMMs (and potentially real hardware), bits
-[1:0] of 0xCF8 are ignored, causing non-aligned reads/writes at port
-0xCFC to erroneously target byte 0 of the DWORD. In practice, this
-causes pci_find_dev() to read the vendor ID twice instead of reading
-the vendor ID and device ID.
+VFIO selftests provide a userspace testing framework built on kselftest
+to exercise VFIO and IOMMUFD APIs with real physical PCI devices. Since
+VFIO selftests was introduced it has expanded to include helper
+libraries (libvfio), driver-level abstractions for triggering hardware
+DMA and interrupts, multiple IOMMU execution modes, dynamic IOVA
+allocation, and native integration into KVM selftests. Dedicated
+documentation should be helpful to guide kernel developers on writing
+tests, setting up devices, running tests, and understanding the helper
+library.
 
-Fix this by masking `reg` with `~3` in PCI_CONF1_ADDRESS and adding
-the `(reg & 3)` offset to the CONFIG_DATA port for 8-bit and 16-bit
-accessors, ensuring compatibility across QEMU and other VMMs.
-Additionally, add an ASSERT_PCI_CONF1_VALID macro to guard against
-illegal accesses that cross DWORD boundaries.
-
-Assisted-by: Gemini:gemini-3.6-flash
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Reviewed-by: David Matlack <dmatlack@google.com>
-Signed-off-by: Irene Wang <yiranirenewang@gmail.com>
+Signed-off-by: David Matlack <dmatlack@google.com>
 ---
-v3 -> v4:
- - Address comment formatting nits (David)
+Note: The integration of libvfio into KVM selftests hasn't landed in
+vfio/next yet but Sean sent out the pull request to include it in 7.3 so
+I am optimistically including it in the documentation here.
 
-v2 -> v3:
- - Add comment in PCI_CONF1_ADDRESS explicitly explaining that clearing
-   bits [1:0] prevents QEMU from double-offsetting accesses (David)
- - Introduce ASSERT_PCI_CONF1_VALID macro checking that access offset
-   + access size do not read/write past 4-byte window (David)
+Cc: Josh Hilke <jrhilke@google.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Alex Williamson <alex@shazbot.org>
 
-v1 -> v2:
- - Enclose macro parameter `dev` in parentheses in PCI_CONF1_ADDRESS
-   (Jim)
- - Add assert((reg & 3) != 3) in pci_config_readw() and
-   pci_config_writew() to guard against illegal 16-bit accesses
-   crossing DWORD boundaries (Jim)
+ Documentation/driver-api/index.rst          |   1 +
+ Documentation/driver-api/vfio-selftests.rst | 243 ++++++++++++++++++++
+ MAINTAINERS                                 |   1 +
+ 3 files changed, 245 insertions(+)
+ create mode 100644 Documentation/driver-api/vfio-selftests.rst
 
-Link to v3: https://lore.kernel.org/kvm/20260813205742.2752510-2-yiranirenewang@gmail.com/
-Link to v2: https://lore.kernel.org/kvm/20260804232344.2976694-2-yiranirenewang@gmail.com/
-Link to v1: https://lore.kernel.org/kvm/20260730182053.905335-1-yiranirenewang@gmail.com/
----
- lib/x86/asm/pci.h | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
-
-diff --git a/lib/x86/asm/pci.h b/lib/x86/asm/pci.h
-index 03e55c27..622d7fd4 100644
---- a/lib/x86/asm/pci.h
-+++ b/lib/x86/asm/pci.h
-@@ -9,22 +9,33 @@
- #include "pci.h"
- #include "x86/asm/io.h"
- 
--#define PCI_CONF1_ADDRESS(dev, reg)	((0x1 << 31) | (dev << 8) | reg)
-+/*
-+ * Bits [1:0] offset into data port, not address port. Spec compliant host
-+ * bridges ignore them in CONFIG_ADDRESS, but QEMU does not; mask them out here
-+ * so QEMU doesn't double-offset the access.
-+ */
-+#define PCI_CONF1_ADDRESS(dev, reg)	((0x1 << 31) | ((dev) << 8) | ((reg) & ~3))
+diff --git a/Documentation/driver-api/index.rst b/Documentation/driver-api/=
+index.rst
+index eaf7161ff957..630f33287bc0 100644
+--- a/Documentation/driver-api/index.rst
++++ b/Documentation/driver-api/index.rst
+@@ -47,6 +47,7 @@ of interest to most developers working on device drivers.
+    vfio-mediated-device
+    vfio
+    vfio-pci-device-specific-driver-acceptance
++   vfio-selftests
+=20
+ Bus-level documentation
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+diff --git a/Documentation/driver-api/vfio-selftests.rst b/Documentation/dr=
+iver-api/vfio-selftests.rst
+new file mode 100644
+index 000000000000..a5616f361dcf
+--- /dev/null
++++ b/Documentation/driver-api/vfio-selftests.rst
+@@ -0,0 +1,243 @@
++.. SPDX-License-Identifier: GPL-2.0
 +
-+/* Ensure access offset + size stays within the 4-byte (DWORD) boundary. */
-+#define ASSERT_PCI_CONF1_VALID(reg, type) \
-+	assert(((reg) & 3) + sizeof(type) <= 4)
- 
- static inline uint8_t pci_config_readb(pcidevaddr_t dev, uint8_t reg)
- {
-     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
--    return inb(0xCFC);
-+    return inb(0xCFC + (reg & 3));
- }
- 
- static inline uint16_t pci_config_readw(pcidevaddr_t dev, uint8_t reg)
- {
-+    ASSERT_PCI_CONF1_VALID(reg, uint16_t);
-     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
--    return inw(0xCFC);
-+    return inw(0xCFC + (reg & 3));
- }
- 
- static inline uint32_t pci_config_readl(pcidevaddr_t dev, uint8_t reg)
- {
-+    ASSERT_PCI_CONF1_VALID(reg, uint32_t);
-     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
-     return inl(0xCFC);
- }
-@@ -33,19 +44,21 @@ static inline void pci_config_writeb(pcidevaddr_t dev, uint8_t reg,
-                                      uint8_t val)
- {
-     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
--    outb(val, 0xCFC);
-+    outb(val, 0xCFC + (reg & 3));
- }
- 
- static inline void pci_config_writew(pcidevaddr_t dev, uint8_t reg,
-                                      uint16_t val)
- {
-+    ASSERT_PCI_CONF1_VALID(reg, uint16_t);
-     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
--    outw(val, 0xCFC);
-+    outw(val, 0xCFC + (reg & 3));
- }
- 
- static inline void pci_config_writel(pcidevaddr_t dev, uint8_t reg,
-                                      uint32_t val)
- {
-+    ASSERT_PCI_CONF1_VALID(reg, uint32_t);
-     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
-     outl(val, 0xCFC);
- }
--- 
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
++VFIO Selftests
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
++
++VFIO selftests are built on top of the kernel's selftests framework and ar=
+e
++located in ``tools/testing/selftests/vfio``.
++
++VFIO selftests enable kernel developers to write and run tests that take t=
+he
++form of userspace programs that interact with VFIO and IOMMUFD uAPIs. VFIO
++selftests can be used to write functional tests for new features, regressi=
+on
++tests for bugs, and performance tests for optimizations.
++
++These tests are designed to interact with real PCI devices, i.e. they do n=
+ot
++rely on mocking out or faking any behavior in the kernel. This allows the =
+tests
++to exercise not only VFIO but also IOMMUFD, the IOMMU driver, interrupt
++remapping, IRQ handling, etc.
++
++Running Tests
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
++
++Running VFIO selftests requires a device bound to the ``vfio-pci``
++driver.  There are scripts in ``tools/testing/selftests/vfio/scripts/`` to=
+ help
++with setting one up.
++
++Picking a Device
++----------------
++
++Some VFIO selftests require a device with a supported driver implementatio=
+n in
++the selftests library (see `Driver Framework`_), while other tests (such a=
+s basic
++PCI configuration space or reset tests) can use any arbitrary PCI device.
++
++This section will be expanded in the future to guide developers on how to =
+find
++a device with a supported driver. In the meantime, the selftests library
++includes driver support for the following devices:
++
++- Intel IGB Gigabit Ethernet controllers
++- Intel IOAT (I/O Acceleration Technology) DMA engines
++- Intel DSA (Data Streaming Accelerator)
++- NVIDIA Falcon engines (found in many NVIDIA GPUs, e.g., GTX 1080 or RTX =
+2080)
++
++Note that using Intel DSA devices requires setting the module parameter
++``vfio_pci.disable_denylist=3DY`` to allow ``vfio-pci`` to bind to DSA dev=
+ices.
++
++Setting up Devices
++------------------
++
++.. code-block:: sh
++
++    tools/testing/selftests/vfio/scripts/setup.sh 0000:01:00.0
++
++The script handles unbinding the device from its current driver and bindin=
+g it
++to ``vfio-pci``. Metadata about this device is stored in
++``/tmp/vfio-selftests-devices`` so that the device can be cleaned up later
++(bound back to its original driver).
++
++Execution
++---------
++
++VFIO selftests expect the PCI device BDF string as their final command-lin=
+e
++argument. e.g.
++
++.. code-block:: sh
++
++    tools/testing/selftests/vfio/vfio_pci_device_test 0000:01:00.0
++
++Alternatively, the PCI device BDF can be passed via the ``VFIO_SELFTESTS_B=
+DF``
++environment variable, which can be useful when running all tests:
++
++.. code-block:: sh
++
++	export VFIO_SELFTESTS_BDF=3D0000:01:00.0
++	make -C tools/testing/selftests TARGETS=3Dvfio install
++	tools/testing/selftests/kselftest_install/run_kselftest.sh -c vfio
++
++Cleanup
++-------
++
++.. code-block:: sh
++
++    tools/testing/selftests/vfio/scripts/cleanup.sh
++
++This script handles unbinding all previously setup devices from ``vfio-pci=
+``
++and binding them back to their original driver. Specific devices can be cl=
+eaned
++up by passing their BDF string to the cleanup script.
++
++Writing Tests
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
++
++VFIO selftests leverage the ``kselftest_harness.h`` macros to structure se=
+tup
++and teardown scenarios. A basic test involves:
++
++1. Declaring a test FIXTURE containing the device and IOMMU state.
++2. Generating test variants that span the different IOMMU modes utilizing
++   ``FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES()``.
++3. Initializing the device and binding the default driver ops.
++
++For a complete example of writing a VFIO selftest, refer to
++``tools/testing/selftests/vfio/vfio_pci_device_test.c``.
++
++
++VFIO Selftests Library (libvfio)
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
++
++The selftests directory contains a helper library compiled from the ``lib/=
+``
++subdirectory. It provides structures and helper functions to handle standa=
+rd
++operations like opening VFIO devices, creating VFIO containers, and intera=
+cting
++with VFIO and IOMMUFD.
++
++All VFIO selftests have libvfio linked in by default. Tests can access the
++library by including ``<libvfio.h>``.
++
++Core Objects
++------------
++
++The VFIO selftests framework revolves around two distinct core objects: ``=
+struct
++iommu`` and ``struct vfio_pci_device``. It is important to understand the
++distinction and relationship between them:
++
++- ``struct iommu`` represents an IOMMU domain and the API used to program =
+it
++  (e.g. legacy VFIO Type1 vs IOMMUFD). It is responsible for managing the =
+I/O
++  address space, handling DMA mappings, and translating between host virtu=
+al
++  addresses (HVA) and IO virtual addresses (IOVA).
++
++- ``struct vfio_pci_device`` represents a single PCI device. It encapsulat=
+es
++  the VFIO device file descriptor, handles access to the PCI configuration
++  space, manages memory-mapped BARs, and drives device interrupts.
++
++A typical test initializes an IOMMU instance first, then passes it when
++initializing one or more PCI devices, linking the devices to the shared IO=
+MMU
++domain.
++
++``struct iommu``
++^^^^^^^^^^^^^^^^
++
++The ``struct iommu`` abstracts away the complexity of managing VFIO contai=
+ners,
++IOMMU groups, and IOMMUFD contexts. A test allocates its IOMMU handle usin=
+g
++``iommu_init()`` passing one of the supported IOMMU modes:
++
++.. code-block:: c
++
++    struct iommu *iommu =3D iommu_init(MODE_IOMMUFD);
++    ...
++    iommu_cleanup(iommu);
++
++The selftest framework is designed to work uniformly across all standard k=
+ernel
++IOMMU APIs. The defined modes (in ``iommu.h``) include:
++
++- ``MODE_VFIO_TYPE1_IOMMU``
++- ``MODE_VFIO_TYPE1V2_IOMMU``
++- ``MODE_IOMMUFD_COMPAT_TYPE1``
++- ``MODE_IOMMUFD_COMPAT_TYPE1V2``
++- ``MODE_IOMMUFD``
++
++VFIO selftests can replicate their test cases across all possible IOMMU mo=
+des
++using FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES() to ensure kernel IOMMU APIs
++remain compatible.
++
++``struct vfio_pci_device``
++^^^^^^^^^^^^^^^^^^^^^^^^^^
++
++A PCI device is represented as a ``struct vfio_pci_device``. The device
++representation is initialized using ``vfio_pci_device_init()``, which take=
+s a
++target BDF string, opens the device in VFIO, and binds it to an existing
++``struct iommu`` instance:
++
++.. code-block:: c
++
++    struct vfio_pci_device *device =3D vfio_pci_device_init(device_bdf, io=
+mmu);
++    ...
++    vfio_pci_device_cleanup(device);
++
++``struct iova_allocator``
++^^^^^^^^^^^^^^^^^^^^^^^^^
++
++To facilitate DMA mappings without hardcoding IOVAs (IO virtual addresses)=
+ that
++might conflict with reserved platform address ranges, the library provides=
+ a
++``struct iova_allocator``.
++
++The IOVA allocator queries the underlying IOMMU (via ``struct iommu``) for=
+ its
++valid target IOVA ranges. Tests can safely carve out unique contiguous chu=
+nks of
++IOVA space for device DMA by repeatedly calling:
++
++.. code-block:: c
++
++    struct iova_allocator *allocator =3D iova_allocator_init(iommu);
++    iova_t addr =3D iova_allocator_alloc(allocator, size);
++
++Driver Framework
++----------------
++
++The primary goal of VFIO selftests is to verify the correctness of the ker=
+nel
++code handling VFIO devices, including VFIO core, IOMMUFD, IOMMU drivers, p=
+age
++pinning, DMA mapping/unmapping, interrupt remapping, and IRQ delivery.
++
++Because different physical devices have vastly different programming inter=
+faces for
++triggering work, the selftests library implements a standard driver framew=
+ork.
++This framework abstracts diverse hardware endpoints (such as Intel IGB, IO=
+AT,
++or DSA) behind a uniform interface, allowing tests to provoke a broad rang=
+e of
++devices to generate DMA operations and interrupts in a standardized manner=
+.
++
++By exercising DMA and interrupts across real, varied endpoints, tests can
++thoroughly stress and validate the underlying kernel paths=E2=80=94such as=
+ IOMMU page
++table management, dirty page tracking, Device TLB and IOTLB invalidations,=
+ and
++interrupt delivery under authentic hardware conditions.
++
++All endpoint driver implementations populate a common set of operations de=
+fined
++in ``struct vfio_pci_driver_ops``:
++
++- ``probe()``: Validate whether the driver supports the current PCI device
++  (e.g. matching vendor/device IDs).
++- ``init()``: Set up specific control registers or ring-buffer data struct=
+ures.
++- ``remove()``: Clean up structures before destruction.
++- ``memcpy_start()``: Initiate DMA copies via the device.
++- ``memcpy_wait()``: Poll and wait until previously initiated copies compl=
+ete
++  safely.
++- ``send_msi()``: Provoke the device to signal an MSI interrupt.
++
++Tests are required to set up a dedicated DMA region for the driver to use
++within ``struct vfio_pci_driver`` to serve as the driver's main memory
++allocation region (e.g. used for in-memory descriptor rings and hardware
++buffers). Tests must provision and map this DMA region before completing d=
+river
++initialization.
++
++For a complete example of interacting with the driver framework from a tes=
+t
++perspective, refer to ``tools/testing/selftests/vfio/vfio_pci_driver_test.=
+c``.
++
++When contributing a new driver implementation to the selftests library, th=
+e primary
++acceptance criteria is that ``vfio_pci_driver_test`` passes using the new =
+driver
++and target device.
++
++Integration with KVM Selftests
++------------------------------
++
++libvfio is not strictly limited to VFIO selftests, it is also leveraged wi=
+thin
++KVM selftests (``tools/testing/selftests/kvm/``). KVM selftests build thei=
+r own
++copy of libvfio and link against it, enabling libvfio to be used in KVM
++selftests.
++
++This integration enables testing the interaction between KVM and VFIO and
++IOMMUFD. For example, testing the end-to-end delivery of device interrupts=
+ into
++running vCPUs.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 806bd2d80d15..ba174dd8ba1b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -28396,6 +28396,7 @@ VFIO SELFTESTS
+ M:	David Matlack <dmatlack@google.com>
+ L:	kvm@vger.kernel.org
+ S:	Maintained
++F:	Documentation/driver-api/vfio-selftests.rst
+ F:	tools/testing/selftests/vfio/
+=20
+ VFIO VIRTIO PCI DRIVER
+
+base-commit: 37ffa24c9d07edcd414d34283e02af3f3866cf12
+--=20
 2.55.0.699.gb54405d56f-goog
 
