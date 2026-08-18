@@ -1,139 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC3A43FD2D;
-	Tue, 18 Aug 2026 12:54:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3482466B5E;
+	Tue, 18 Aug 2026 12:59:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787057651; cv=none; b=pLybEBVvOJAaTiJDqSw5P9VwnQGdQjHTBBoAPhmH3iZAnk8ffKJHqXF8cn3lsmfdsgm3qbwFUsNTH/dOaOVmvDI/3CTYPAiDUlPjBS2bcoyj5pHPijYdng6jUtnLw7r5eQA2zTYkmIqdN06vMc3QLqGklvR2Kzx7rsdu7QPMFec=
+	t=1787057969; cv=none; b=fT4+q+FgnvHhDdJWhFFIexQoP9U7C3fRHGUs4ZL0FmaXziolZf+q4SZVRYjij8mMgRKU6oj5S0vsRcQDNQEeQRTjWZLVetIB+zOvFa0cNUVR0l3ap/XWeqL3uj0Txji/guDYNxAMyYHtz8yHmtkdE7gRHWjkGtCHDoTHf2nsFVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787057651; c=relaxed/simple;
-	bh=jdKJ7l4tcYwzu+kiM4WEnwVINTzLMQUXxUVSK2lRhxM=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s2ES5IFYeGGmdfnrOQ/ZetrSNuhwMOzCZSa6GJ0xg4iI2P9lyiy97e2Wkii6g65wiQVLWaQDa6hIOmzqVEHviNhuHVTKRezxmkISxhsrvfVz4M1Xpmi7d+4Tn6IcfbA/muFRZzkzTYIV5+8lnBsXFaCbW0UuC74aCgWcX9v7JeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jRX/rtRa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787057969; c=relaxed/simple;
+	bh=YE566pDxD3Osti0R5anIe5F+O2CzvECy1KMfZo7/DGE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=CLvy7ta3IwqBovfkl977ajxIZN3U6eCANFlkW24pOUz42bDNcET1hr9qFZfi25tGmxocmD6eJDODAtnHBBPet7xSn8oC0jd/q6XXKIp/6kOug4djSpxzhdNL35fyH8038oUPldS8pgCTpLyTPKA5a6kr2fHbtAoFy4SYUN3x0Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=I+gFwjYW; arc=none smtp.client-ip=115.124.30.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jRX/rtRa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16A01F00A3E;
-	Tue, 18 Aug 2026 12:54:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787057650;
-	bh=cdD4yZiqqbAHnav72Regg2h6gQd/G7CH6/jonpoAHHg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=jRX/rtRaBKwyYlpWyn556jvveH+C9ixh321cFJ2rZqdIVilv0SsZvSG2B+5hH3ba6
-	 XEQ0HnHvRnjFUWy6VFjf401/RjWSX3cKp+ZPh2VbKS6PPxQK3L8fy8vV8iOogtzOrs
-	 HSCTuxDbrUxTriOyelcAvSPqkHqtMX/PD/uVvcZLP4DfN/VQREIb/NK+xkA3Uqy6SW
-	 2bqMWH57ig69ZLoGZdFnWj5/lsB255S+ZcwVpZBvJP8PU97L7eJKSgRCeOjBqCVN8f
-	 2Szq7EE1OK6y6wNJsX4XiEnn/Wq/qoK2sW3pkukBRyaSE+u8YPaREXJkOeOFim7iGk
-	 ZglHvjixJx+7g==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wwJKS-0000000GdEf-0CF5;
-	Tue, 18 Aug 2026 12:54:08 +0000
-Date: Tue, 18 Aug 2026 13:54:07 +0100
-Message-ID: <86ecfv613k.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="I+gFwjYW"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1787057958; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=ES6qoaxH7aDi5DiJCCb446qkTLSYvUQTBdOjpjMPh+M=;
+	b=I+gFwjYWNY2vL4bm8aDQSyI3l+1aT5lczjOf1a6W+oeHfwyjQW8drcy1whWAwq9J/IkadErznMZSugnO5EArpFKskyMyv8i0kBCIyAYkooqqT8Nvsdir9rjxt0GhCyqrn7PFRWbO+zRsIDCgi2PVtMsH8uv37AAi5VZ4uxzbXPE=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=24;SR=0;TI=SMTPD_---0X9DUfkY_1787057955;
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X9DUfkY_1787057955 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 18 Aug 2026 20:59:16 +0800
+From: fangyu.yu@linux.alibaba.com
+To: andrew.jones@oss.qualcomm.com
+Cc: alex@ghiti.fr,
+	anup@brainfault.org,
+	aou@eecs.berkeley.edu,
+	atish.patra@linux.dev,
+	baolu.lu@linux.intel.com,
+	fangyu.yu@linux.alibaba.com,
+	guoren@kernel.org,
+	iommu@lists.linux.dev,
+	jgg@nvidia.com,
+	jgg@ziepe.ca,
+	joro@8bytes.org,
+	kevin.tian@intel.com,
+	kvm-riscv@lists.infradead.org,
+	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Grapentin <gra@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Friedrich Welter <fritz@linux.ibm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Gautam Gala <ggala@linux.ibm.com>,
-	Hariharan Mari <hari55@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-	Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v6 08/33] KVM: arm64: Use accessor functions for core regs
-In-Reply-To: <20260818092924.21865-C-seiden@linux.ibm.com>
-References: <20260812153631.3376090-1-seiden@linux.ibm.com>
-	<20260812153631.3376090-9-seiden@linux.ibm.com>
-	<86a4qq1gyy.wl-maz@kernel.org>
-	<20260818092924.21865-C-seiden@linux.ibm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	linux-riscv@lists.infradead.org,
+	palmer@dabbelt.com,
+	pjw@kernel.org,
+	robin.murphy@arm.com,
+	skhawaja@google.com,
+	tjeznach@rivosinc.com,
+	vasant.hegde@amd.com,
+	will@kernel.org
+Subject: Re: [RFC PATCH v2 01/10] iommupt: Add RISC-V Second-stage (iohgatp) page table support 
+Date: Tue, 18 Aug 2026 20:59:10 +0800
+Message-Id: <20260818125910.39784-1-fangyu.yu@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <lpnxdqyekcczbyxo3n7zxpbj7243gixdzutvngpvr24ozmc4jt@nsoblujgprhe>
+References: <lpnxdqyekcczbyxo3n7zxpbj7243gixdzutvngpvr24ozmc4jt@nsoblujgprhe>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, tabba@google.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, seanjc@google.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, 18 Aug 2026 10:29:24 +0100,
-Steffen Eiden <seiden@linux.ibm.com> wrote:
-> 
-> On Thu, Aug 13, 2026 at 10:56:37AM +0100, Marc Zyngier wrote:
-> > On Wed, 12 Aug 2026 16:36:04 +0100,
-> > Steffen Eiden <seiden@linux.ibm.com> wrote:
-> > >
+>On Thu, May 07, 2026 at 07:36:57PM +0800, fangyu.yu@linux.alibaba.com wrote:
+>...
+>> diff --git a/include/linux/generic_pt/common.h b/include/linux/generic_pt/common.h
+>> index fc5d0b5edadc..59448125159e 100644
+>> --- a/include/linux/generic_pt/common.h
+>> +++ b/include/linux/generic_pt/common.h
+>> @@ -188,7 +188,10 @@ enum {
+>>  	 * Support the 64k contiguous page size following the Svnapot extension.
+>>  	 */
+>>  	PT_FEAT_RISCV_SVNAPOT_64K = PT_FEAT_FMT_START,
+>> -
+>> +	/*
+>> +	 * Using second-stage / iohgatp address translation.
+>> +	 */
+>> +	PT_FEAT_RISCV_S2,
+>
+>Hi Fangyu,
+>
+>I just sent [1], but I actually discovered that issue when testing this
+>patch and finding PT_FEAT_RISCV_S2 was missing from PT_SUPPORTED_FEATURES.
+>So this patch needs the same fix as [1] as well.
+>
 
-[...]
+Hi Andrew,
 
-> > > diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-> > > index b01d6622b872..773f6c8e5026 100644
-> > > --- a/arch/arm64/kvm/guest.c
-> > > +++ b/arch/arm64/kvm/guest.c
-> > > @@ -134,19 +134,19 @@ static void *core_reg_addr(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
-> > >  	     KVM_REG_ARM_CORE_REG(regs.regs[30]):
-> > >  		off -= KVM_REG_ARM_CORE_REG(regs.mregs[0]);
-> > >  		off /= 2;
-> > > -		return &vcpu->arch.ctxt.regs.regs[off];
-> > > +		return &vcpu_gp_regs(vcpu)[off];
-> > 
-> > Doesn't this belong to the previous patch?
-> > 
-> 
-> My thoughts about positioning this change in this patch:
-> 
-> The previous patch changes the semantics of vcpu_gp_regs and just
-> touched the part where the old semantic of the function was used.
-> This is mainly done by not using vcpu_gp_regs where it was used before
-> as it cannot be used to access e.g. pstate anymore.
-> 
-> This patch then introduces and *uses* new accessor functions for
-> abstractions (and uses the vcpu_gp_regs abstraction where it was not
-> used before). 
-> -> The patch changes direct accesses to using accessor functions.
-> 
-> However, I have no strong feelings for this. If you want this in the
-> previous patch, I can do that.
+Thanks for catching this. I'll fix it in the next revision.
 
-I think it'd make more sense. You can capture this in the commit
-message to make it clear.
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+>Thanks,
+>drew
+>
+>[1] https://lore.kernel.org/all/20260818092444.42755-1-andrew.jones@oss.qualcomm.com/
