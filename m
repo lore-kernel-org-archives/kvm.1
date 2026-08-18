@@ -1,99 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0435B5AB;
-	Tue, 18 Aug 2026 18:18:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F765B5AB
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 18:19:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787077114; cv=none; b=RjaI32BAGxueO/gWTYv4C9ZToOihnjh6RmUGeTlihplbihdkFWqD7zhi+vviOSS030WDIPW4JmjwMsjdZsvKsdIlbNbmCYRLhAGx5Zg1bV6utOMGlyCfvHoDrde4kBOClliO0g2cedPQQM4Hp044pHK+iPCIZEHpKe20gyKpPck=
+	t=1787077178; cv=none; b=H2IDQmeSjEj1hub3yeHfig/UHN4vir3TYr+csRfeUboYosSJod+WE6o6A0N3jB1eUllg9iqgx2gQe3igqngzxCPftlTtzIIeT6cnBw3/duxaoTSkPcBUr2L9MCFQoaSkn9qD6ARPETqSk33JgAle7s0kiPnALCw+MX3KdRqplOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787077114; c=relaxed/simple;
-	bh=gcGMQeye1GvDwotHSocWmsR6JGTyv2SiaDfnsW4qsZA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GndS/6TV7dyndJ/ouwkBvj/x+rVakdfgRSMJ2J/orF0UoalEyEysV28Ax+XNRcwaHUFv2OlP9PKFbnQuL6fTV6bL3Mw8UUzTDcD9xL0eMMOj+nkm6cnc9DiMdyU0kTOVcCX1smXWMuqOxe10zeomu6ypjHbKI7ZvJdJJCeED/qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cp8x8hOS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787077178; c=relaxed/simple;
+	bh=pygKv3Wbalj6+MtA5uiU+EmhuvPucvfBv4OUcTcQdoU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ot8zLA04Okb6ruKduiLwfmOp0URIm4lIMsxzD2t0IdRb6Yx2o4vcD4yjbVLHQYEOcVP5kKN2+H10cZ4G561HRl36fyk/3+jXO8Lvhi+pooG8XAz02wxFSusaQjspzsWW4lsep02ILYrW0FfJbBtQ2CGJSrH5+L4c+iH7uWgKWLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GLXkag/H; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cp8x8hOS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EC41F00A3A;
-	Tue, 18 Aug 2026 18:18:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787077112;
-	bh=lHkgO62VARB1BZerT3cLWYX4fEgJZv19mZbLBDUYoks=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=cp8x8hOSSpz/sJye8Q4MMvhA8ZK7QujQ0rrdjr0GbGqZP9y2r+o8cf/WZN6UI7FwI
-	 LnDTGaD0a0TK2lPowDdVJbV4CkSUAEY3Wwrmc9Ok4YvbGbEeypjgWAze154w3sXcY6
-	 lIauGUEX+Qx3BLhY7FBah0nSL1A1t6H+pQgFdf3NmOJ/sNuhAKq5feEH9+4l/KyfVR
-	 z9N31fia2WakSzVInaiahdWihqYxi4ot6SDiryHzxLLliZ4OsEY9J4zHIGwcX4AES3
-	 ml7ldAgZmb8HtZhHkgei9GL4dyogvh/VfeLfJjNcF/p/+PrrObVXvKSrkLK0V32yV0
-	 WOgzv1ynTcyGA==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 2AD17CE1A23; Tue, 18 Aug 2026 11:18:32 -0700 (PDT)
-Date: Tue, 18 Aug 2026 11:18:32 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <49df45c6-4d0e-483a-8acc-0ace7f9a6484@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org>
- <20260812134934.GC662699@ziepe.ca>
- <a48e6e7063122b22a8083bb0792984a204f316e6.camel@infradead.org>
- <fb87f673bf290cad133d113dbb0750a7752b9d30.camel@infradead.org>
- <a94b75e8b9b1d2191f365c0f4275fd5082332df5.camel@infradead.org>
- <d0692500893f303906fba1d7d596eb59a07a806a.camel@infradead.org>
- <anydY25Cl78l1HfU@google.com>
- <932DB129-1794-4855-A61E-F4C2B54B1EE6@infradead.org>
- <b736237c-64ee-4eb2-8201-5685a3853844@paulmck-laptop>
- <5f6a0669f319951462c2aae3a50d595983a42e4c.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GLXkag/H"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-4813ea321cdso889291f8f.1
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 11:19:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787077176; x=1787681976; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ySZ8BacOLTLDA5sq5LcB1+kAXtDZMHEPQalGl0GKu2U=;
+        b=GLXkag/H4Z1qFdXEjOFCPVnW/e+wdhPUAOBvXq9HfcuciNYQ3kuwjVDVJkp1z4tmii
+         EUFidZA8klrm1r06cx46Ay4e3cnFjxJjDDk6FgsSxn9xML3eO/I/HGrHvtfDqDUAmbFE
+         h8J+4dghm17zesiCzK+8ExWTofJqMKUbfViyUZUQmXXuRDFLtWHt21xX3Nik3Vod13Su
+         cPCVzgGU5vRgvc9wmPS2/otrmxHDpJaEAy8kJl/bioxBJwXtpI1edNOvbpMfV0VHRf3C
+         1XQ2kTgPmCnygelo1I/rJcSRZu5lBnqTGsa/cGBAsNCCbhSjPnH7FuVCr50QvfgiYeXD
+         TdRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787077176; x=1787681976;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ySZ8BacOLTLDA5sq5LcB1+kAXtDZMHEPQalGl0GKu2U=;
+        b=sFPexozLry4rpMYgMRXiBc4VtV5SM+jTzhgmoirqDZhwCB5+Wo1SG15u9s879y2wc5
+         Y22QvAQ6NaS1XbaMlvuSwOTleQXx7MitmILGOQrvPLpr9mYsmnNH/vaAABvddLQVh8uJ
+         1Mo2P5j5rDRZeGC6Tl4lNP6ZeeqvpKczEelc8XIUCLdqapqBWkqCWzrjQZN2O713CIns
+         adij7+N7QJfP6JscPJHl8uWOLNBClB9S3e540amYDNhPKHyJYaOQrOpNsqdq20mMPTLU
+         E9qHct/xavodMX4IxRROXyMlVwGljcaYjIyKdJxBpFhLP0Wq3rEJg370w/cW7qdsfI+v
+         3rgA==
+X-Gm-Message-State: AOJu0YyNEgBMTnaNpnXT1S1w1Nb/ssCIQWQaDex0QlSZT6YvDeG35UPs
+	qlII6zsaJoRas7QsClsQME96aYNof6OkJySQ0VaAA8aFPtcs39Aj0G5m
+X-Gm-Gg: AR+sD11N7EFcqdxXw457MN8VLSVu6IA33drqrhKaxyqOXFZqKLECXmc8Ej4zrDEZzrJ
+	skxL0jcQC4KFjXJR9R7XX1ZrokUpYW3cYAi89v/5Tn3uwbLi5YwD3/1KyysG58OA92+w56eY6Oz
+	LF7l/T+HzJltwInj5ShI0GcqbqZOVUDqcahaTRVTX9J8YshQvLUaxlYLm8Yj8sKk3im9kngggMx
+	PvskhIEgJ9tgQYRm8nu1h9rhMcOAVpDjV66sX+DWSBhPZ2fZs4837bqymvchQnXHhWCKBUuVuP4
+	TuzxPl0KSthR64UrOWBxzy+zjfgzZ6WwpVZkTLmZJ3Bod+ZAmnn/M0x3qv5+hYCr/80ITbNspJW
+	VX3v1Ex83dJyVuNniYSCTerZYgmPkUSvD3j8fDLK38e+/nHBgbBABlJBi0sHej3NeSIuak9wXT8
+	f/uHazSXznICXlvJh6N0jltacVqmxsomd5EeSGfJTRSiULw6j5m/sQVPyEH4Lh4gzM5nj8rYUbY
+	GHSebeSeGWhRwy0Ho4E4D9lGpE/ZHwct/MI8TEvImvLIogK3Is389uH1wfSu3c5USo=
+X-Received: by 2002:a05:6000:22c1:b0:46b:70db:2113 with SMTP id ffacd0b85a97d-482a9d5b7d0mr14376721f8f.0.1787077175538;
+        Tue, 18 Aug 2026 11:19:35 -0700 (PDT)
+Received: from ?IPV6:2407:d000:508:2027:311e:5c97:f108:813a? ([2407:d000:508:2027:311e:5c97:f108:813a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482a5b816f7sm12956144f8f.34.2026.08.18.11.19.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Aug 2026 11:19:35 -0700 (PDT)
+Message-ID: <c2f7e904-2646-4b01-864d-d185221c7f56@gmail.com>
+Date: Tue, 18 Aug 2026 23:19:32 +0500
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5f6a0669f319951462c2aae3a50d595983a42e4c.camel@infradead.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] KVM: selftests: Replace ulong with unsigned long
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20260803170825.925561-4-hisamshar@gmail.com>
+ <20260817220457.554823-3-hisamshar@gmail.com> <aoOKMeua-cNeTxXT@google.com>
+ <8d069fe1-a5b6-4a86-9604-26aebe2dc243@gmail.com>
+ <aoSIBnFfy4osa6wt@google.com>
+Content-Language: en-US
+From: Hisam Mehboob <hisamshar@gmail.com>
+In-Reply-To: <aoSIBnFfy4osa6wt@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 13, 2026 at 08:54:44AM +0100, David Woodhouse wrote:
-> On Wed, 2026-08-12 at 14:38 -0700, Paul E. McKenney wrote:
-> > If not, please let me know, and I will put together that does the
-> > job.
-> 
-> If you're working on that, I assume it'd need the readers to be known-
-> atomic. So if any of the read-side SRCU_READ_FLAVOR_ATOMIC thing I
-> already threw together is useful, you can find it in my tree at
-> https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/srcu-atomic
+On 8/18/26 21:27, Sean Christopherson wrote:
 
-Thank you, happy to steal pieces of that with attribution.  ;-)
+> Oh, so on top of "https://github.com/kvm-x86/linux.git next", this *is* the last
+> blocker?  If so, then I'll grab this for 7.3.
 
-My current plan says that if you have an atomic SRCU on which you
-use srcu_read_lock_atomic() and srcu_read_unlock_atomic(), you only
-ever get to use synchronize_srcu_atomic(), never synchronize_srcu(),
-synchronize_srcu_expedited(), or call_srcu().  Does that work for you?
+Not quite -- I tested kvm-x86/next + this patch with musl-gcc, and the
+build still fails. On top of the steal_time fix already in your tree,
+two more musl blockers remain, both from code that is only in
+kvm-x86/next so far:
 
-> Slightly orthogonally, what do you think of making
-> synchronize_srcu{_expedited,}() attempt try_synchronize_srcu() first
-> for an early return?
+1. hardware_disable_test.c, from 496779b54943 ("Pre-set threads affinity
+    in hardware disable test when possible"):
 
-No objections, but one thing at a time.
+      hardware_disable_test.c:75: error: implicit declaration of function
+      'pthread_attr_setaffinity_np'
 
-							Thanx, Paul
+    The call sits under #ifdef _GNU_SOURCE, but lib.mk defines _GNU_SOURCE
+    unconditionally, so the path is always taken and musl (which lacks the
+    function) breaks.
+
+2. The libvfio wiring from a262fc49e0aa ("Build and link
+    selftests/vfio/lib into KVM selftests"):
+
+      vfio_pci_device.c:25: fatal error: uuid/uuid.h: No such file or 
+directory
+      sysfs.c:31: error: implicit declaration of function 'basename'
+
+    The former adds a hard libuuid dependency (its headers aren't visible
+    to musl-gcc here); the latter because musl declares basename only in
+    <libgen.h>, while glibc exposes it via <string.h> under _GNU_SOURCE.
+
+The rseq __GNUC_PREREQ failure is already covered by my patch in
+linux-next. With the above sorted, the musl build passes.
