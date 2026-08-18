@@ -1,148 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18753C584B;
-	Tue, 18 Aug 2026 16:14:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B430478E57
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 16:17:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787069680; cv=none; b=YcUJ8ZOfJsiqyK2bGoO2lS3h3O1W4fD5aGdGac43v0sQzijeLvNvDWs/HXIuUo3X63tapIbkkzT8Dzr6rwIvhbDUhHNNv9w0/B6qDrNv75tJ+Fc1Ef+SjIVvrtqoaUHEXseKkUue8CkbiPdWZsowIFfLOCKzGi+SOYw5vmJxA+I=
+	t=1787069857; cv=none; b=TX9mjlIwEHK0ajbePSVPY/naMYeLZF89BGK+TGSJwK3oVnMt2DGcw3hz/K4/ObxBCd8wpoZGYmr3fEMyD6aeqhDGGqHlFrTvBSc3w1yPIVvsyfVQHMSyvM7TTgqxwMI8lFEeAuQU0ILBKAIbEmiUL6Yv9YyaGb6UbZDF209aYCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787069680; c=relaxed/simple;
-	bh=Cg7/CNiQ3ccF5ixrvDgAh1nZY8fhV+3ahz/NLquQvVI=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hHNH7YJdbMqK9+hq/G1fhquMTSunQv6KTlOAMX8ydVHC9m2UGb295UqiSFAO1YMdH1Yrf1ivvPjXC09RhVjADjzqbeEuWSkuEDDTVuskcqNqAocJXnpynEyQdxZHtrfWp0NdN9A3Cr635IThKr8IVlQtmiBzNoi7OA5/NGL/A9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L2M24O0h; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787069857; c=relaxed/simple;
+	bh=OaMjAIRYRRWnaB4Urk/B3hfxETMkq3K2buSJHt/3KVA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=j7xYsD9+k+FSrCxgSclH+NlFb2K4Bp/KjdB3lL7MuJGtUu6JD/U6OaYP5+qglL0fzcl9wCyDLq4+tf7nhLVlpbsEZF7RKGX59qIb0lW53xZQYDXF7c2GTAHlqgw3SxW7mrB06jk57HnFtcGqVquA2h6uHLuHH+mtLu3hZQIAlmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ciIlflIr; arc=none smtp.client-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L2M24O0h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F941F000E9;
-	Tue, 18 Aug 2026 16:14:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787069679;
-	bh=E0J6en3McpYf9F3IxCn2pxIwSRX4Sv7Jj1OiegFfc7A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=L2M24O0hdXxRP3tm59T84NCNnDVISHqkiqUYrBmFkaK9Zxn+UU6RY+1ibYtLAOP4P
-	 w77I7rJ1UVIqEBvr7OYNHw5Evgs1a61TzJj4bqv/9WtPio7GVIp9AnrUaEgobojg0s
-	 VrRatuspsj24LXb0d1/r/xKxa3dDKh8tAfPFPH+xS4TyZG8rHSOZtshjBxfXaLxY/C
-	 Wbqufj5/2TLQ1fWWwhROhy9xhOS0ZPqvhx5fV5X3QGIyRjObBlI2GNjvxV1mWEUTIc
-	 T2i492GYAQe8+nAxmplV9Q5m8VYXju5lKqUafLRI3HTS5AmBtj701x/aYgzgo2wqgJ
-	 vl/TJGCBio2XA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wwMST-0000000GhFw-37bp;
-	Tue, 18 Aug 2026 16:14:37 +0000
-Date: Tue, 18 Aug 2026 17:14:37 +0100
-Message-ID: <868q635rte.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Grapentin <gra@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Friedrich Welter <fritz@linux.ibm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Gautam Gala <ggala@linux.ibm.com>,
-	Hariharan Mari <hari55@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-	Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v6 08/33] KVM: arm64: Use accessor functions for core regs
-In-Reply-To: <20260818142931.21865-G-seiden@linux.ibm.com>
-References: <20260812153631.3376090-1-seiden@linux.ibm.com>
-	<20260812153631.3376090-9-seiden@linux.ibm.com>
-	<86a4qq1gyy.wl-maz@kernel.org>
-	<20260818092924.21865-C-seiden@linux.ibm.com>
-	<86ecfv613k.wl-maz@kernel.org>
-	<20260818142931.21865-G-seiden@linux.ibm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ciIlflIr"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84857446424so158294b3a.1
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 09:17:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787069856; x=1787674656; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GAGErQQAr795zwyVPFpnw68vb4Hwl1w2+fI9d1XhTw8=;
+        b=ciIlflIrNjs/TY/8vUb70kcrdGnIa8AiWoee7wIqFqoihyiBoJL3pHTRbEu44Ql/zO
+         np3rVgfSObXFDPq9qJRMh/+fQBA3PSql/ZVfp6rNyZ2BEIuTxrU04w2BlCduVeEDDu53
+         xHscwusgJjKJadEfuHbjKYnQsa04cUq/tYJyy/rlRL/tIm7pxW8uvSmYjklNof6rxzlo
+         26snud5zKiUcl/BJNGFctrzcRF/uqumE7N/lgrNzO1Qbl0yHJG4zqTKDh5cPuCMchAbw
+         P1g0/ou3c7A4eOXCGaKZPaTJ18lfuZzElYZUZx1bZU50WEX2wdSvT87UUqaj0R+aFojT
+         OdEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787069856; x=1787674656;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GAGErQQAr795zwyVPFpnw68vb4Hwl1w2+fI9d1XhTw8=;
+        b=aKHbE+Tj5Hkf+mds7s/8yLO8eY5jMrnQZVEJ4xCOnB6zdIY10kzn6SB7r7mhBMxLfP
+         Qdo4yZxkgKt+KnsdfekMux2JSDWIiFH3L9RAEnqJGiVepIjIFx1vWP0PbHxX/rQycQ/T
+         re7yzD3ZeCIhMWCLQy4L7ineYlQ1Okf2CPwTTxeroUGNcP2WzA4aXmJNN3+uCDYL1SQX
+         7gEnZZMbqW3Kx8x9fOHRf/RV0GVCWrAnA+WOOxiI6IK+bwBl+TqgjPGTsBLKtlyLVv6b
+         YV/jhsenK4p6DaLVGOVNyXx1JHWt69O7dOAiLuPn0+Hc9onIDsQKECCChLVs5z69lDMX
+         fPLg==
+X-Forwarded-Encrypted: i=1; AHgh+RoITOVskokWIvrIGLLLWsrq2qMlG6luS4RsGsTkLClUFfEIqfkRPBxC+chmnk/LSDIHoDE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJI7jNMmvfVh7c/RtR1hFgiPttZ9Uzvh7jxldvtSlqqRgaZ+hA
+	LHdYk/WDKJMz3Vu5air1A/Bu6iQhN1a0emFrrfE9HGKzpoKt5QbXW7hcRWA1dg/+gD0qtZutkB6
+	Z4X5D7g==
+X-Received: from pfbkx25.prod.google.com ([2002:a05:6a00:6f19:b0:847:8449:eef1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2e85:b0:842:7296:dba
+ with SMTP id d2e1a72fcca58-84fddfa8508mr34166484b3a.7.1787069855548; Tue, 18
+ Aug 2026 09:17:35 -0700 (PDT)
+Date: Tue, 18 Aug 2026 09:17:34 -0700
+In-Reply-To: <94990aef-8b17-4bc6-a5d5-e7da5107d001@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, tabba@google.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, seanjc@google.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Mime-Version: 1.0
+References: <20260812080229.2481439-1-xiaoyao.li@intel.com>
+ <20260812080229.2481439-5-xiaoyao.li@intel.com> <868c0d3c792d789347c767031612977c31cc227f.camel@intel.com>
+ <1cf47118-2a19-44d5-ab74-b4c7ffa8890c@intel.com> <an3YFiDbjRs3PUwn@google.com>
+ <77567574-d26c-4d2c-b5ce-5da28a7178d6@intel.com> <an84cenJjf7EqhVM@google.com>
+ <1dcbf1b2-dc89-4624-b98e-d34f40558cfb@intel.com> <aoNNiAbZUbkWoZ6t@google.com>
+ <94990aef-8b17-4bc6-a5d5-e7da5107d001@intel.com>
+Message-ID: <aoSFnjABS8HCtWWS@google.com>
+Subject: Re: [PATCH v3 4/4] KVM: TDX: Enable Bus Lock VM exit
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "kas@kernel.org" <kas@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"nik.borisov@suse.com" <nik.borisov@suse.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, 18 Aug 2026 15:29:31 +0100,
-Steffen Eiden <seiden@linux.ibm.com> wrote:
-> 
-> On Tue, Aug 18, 2026 at 01:54:07PM +0100, Marc Zyngier wrote:
-> > On Tue, 18 Aug 2026 10:29:24 +0100,
-> > Steffen Eiden <seiden@linux.ibm.com> wrote:
-> > > 
-> > > On Thu, Aug 13, 2026 at 10:56:37AM +0100, Marc Zyngier wrote:
-> > > > On Wed, 12 Aug 2026 16:36:04 +0100,
-> > > > Steffen Eiden <seiden@linux.ibm.com> wrote:
-> > > > >
-> > 
-> > [...]
-> > 
-> > > > > diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-> > > > > index b01d6622b872..773f6c8e5026 100644
-> > > > > --- a/arch/arm64/kvm/guest.c
-> > > > > +++ b/arch/arm64/kvm/guest.c
-> > > > > @@ -134,19 +134,19 @@ static void *core_reg_addr(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
-> > > > >  	     KVM_REG_ARM_CORE_REG(regs.regs[30]):
-> > > > >  		off -= KVM_REG_ARM_CORE_REG(regs.mregs[0]);
-> > > > >  		off /= 2;
-> > > > > -		return &vcpu->arch.ctxt.regs.regs[off];
-> > > > > +		return &vcpu_gp_regs(vcpu)[off];
+On Tue, Aug 18, 2026, Xiaoyao Li wrote:
+> On 8/18/2026 2:06 AM, Sean Christopherson wrote:
+> > On Sat, Aug 15, 2026, Xiaoyao Li wrote:
+> > > On 8/14/2026 11:46 PM, Sean Christopherson wrote:
+> > > > On Fri, Aug 14, 2026, Xiaoyao Li wrote:
+> > > > > On 8/13/2026 10:43 PM, Sean Christopherson wrote:
+> > > > > > On Thu, Aug 13, 2026, Xiaoyao Li wrote:
+> > > > > > > On 8/13/2026 6:58 AM, Edgecombe, Rick P wrote:
 > > > > 
-> > > > Doesn't this belong to the previous patch?
+> > > > ...
 > > > > 
+> > > > > > The more I look at this, the more I'm against shoving garbage into vt->exit_reasons.
+> > > > > > With tdx_is_exit_reason_valid(), this is trivially easy to handle, *and* explicitly
+> > > > > > captures the logic instead of subtly rerouting KVM away from meaningful handling.
+> > > > > 
+> > > > > tdx_is_exit_reason_valid() doesn't work unless we update the vp_enter_ret to
+> > > > > one that isn't one of the status code with valid Exit Reason. See below.
+> > > > 
+> > > > Correct.
+> > > > 
+> > > > > About the idea, isn't the purpose of setting the Exit Reason to a synthesized
+> > > > > one is to avoid the undefined Exit Reason causing false-positives when it
+> > > > > happens to match one of the existing ones?
+> > > > 
+> > > > Yes.  The nuance is that I'm against clobbering the *full* exit reason.  I am
+> > > > not against setting exit_reason.basic to something like EXIT_REASON_INVALID_STATE.
 > > > 
-> > > My thoughts about positioning this change in this patch:
-> > > 
-> > > The previous patch changes the semantics of vcpu_gp_regs and just
-> > > touched the part where the old semantic of the function was used.
-> > > This is mainly done by not using vcpu_gp_regs where it was used before
-> > > as it cannot be used to access e.g. pstate anymore.
-> > > 
-> > > This patch then introduces and *uses* new accessor functions for
-> > > abstractions (and uses the vcpu_gp_regs abstraction where it was not
-> > > used before). 
-> > > -> The patch changes direct accesses to using accessor functions.
-> > > 
-> > > However, I have no strong feelings for this. If you want this in the
-> > > previous patch, I can do that.
+> > > I'm not sure why you are not OK with setting the bit[31:16] to 0 ...
 > > 
-> > I think it'd make more sense. You can capture this in the commit
-> > message to make it clear.
+> > I'm all for that.  I'm against setting them to 1, which is what using -1u does.
+> > 
+> > Ah, I'm guessing my use of "clobbering" is confusing.  I was mentally viewing
+> > setting them to '1' as clobbering, versus setting them to '0' as "doing the right
+> > thing.
+> > 
+> > E.g. the VM-Exit (that didn't happen) wasn't due to a failed guest consistency
+> > check; it certainly wasn't an SMI from VMX Root, nor was an MTF pending at the
+> > time of the SMI that didn't happen; the guest wasn't in enclave mode; there was
+> > no concident bus lock; all other bits are reserved to zero.
+> > 
+> > Sorry, I should have clarified that writing the full exit reason is ok, but setting
+> > arbitrary bits in a way that isn't consistent with reality is not.
 > 
-> Just that we are on the same page: you want me to move the change to the
-> previous patch?
+> I will add a separate patch in the next version to set
+> 
+>   vt->exit_reasons.full = TDX_INVALID_EXIT_REASON;
+> 
+> where TDX_INVALID_EXIT_REASON is U16_MAX, i.e. 0x0000FFFF.
 
-Yes, please.
+I would rather do:
 
-	M.
+	vt->exit_reason.full = 0;
+	vt->exit_reason.basic = ???;
 
--- 
-Without deviation from the norm, progress is not possible.
+So that it's abundantly clear that bits 31:16 hold *valid* state, i.e. to make it
+more obvious that the value shoved into the basic exit reason is arbitrary, whereas
+clearing bits 31:16 is not.
