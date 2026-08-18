@@ -1,230 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225163F485E;
-	Tue, 18 Aug 2026 12:15:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787055306; cv=none; b=jS/091Lwhrl7EiDC8nyeErYdMv3z9MBbelDnTgdGsXSp20JHutWC27g6yCRQzG5Vnm99eH2QGlT42ejRS5gOHeHyZTeDZ+jttJx7xYVI3fn8jwggH46ENlgbbLsOqtUtM5eYsH6tl+/y2AF57/AdFyYfR11GARrwdS8l6IbMmv8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787055306; c=relaxed/simple;
-	bh=GQcIsAzyqaf/NcpAy02J7ddNw9Thdxu3omG+z9qvVX4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=r512lxBU9Q9cKYBqygNY/Euw6MqVdiIGKgkYCax6lXA5LBatG/RVsO/dBVzYb3AtHkCV+gVqN/T5axlaUwanFtQsTEtaNqa3Xln5xi8lFnuxd7fNlQddbzlCUxBsK2arxdPSKbhCvFqnleWxZG0mlSJbafGpbcyGL7kJvDlWctQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WxW3LFIZ; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A154734C7
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 12:29:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787056160; cv=pass; b=LBFjJe33OkEEc5rgsSaCqkv8drsy/G4OhnFMVyH6mp7HLaEQ7MO/GBXBgtkZE2zlwxNqUgy754vl3Exkx4oP+u2bVPMhmlas5ccE/RmALmiT3xOhINPrNwEXPJCV9r8XxKDxTAe10xIFzdCietj4pFk9Aj7pbtKLXPwJeItCH3Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787056160; c=relaxed/simple;
+	bh=TyA6n1X+YsqsaNocsZd2DWoJKnuiA+PiCuN5vaV37+o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bpdcHch209IFQegyMnbr3hYXpxOJpERVLEABZKl+vkh+D7QEAuPiSfMO/vgePT4I4ngodZ9No6zdMxYrP04vxW8FH51ZjIbFrtZlUjgWca573PqSdGXIPpg8UIAdL7XPtFE92r3lblE27N3TGJD/xFy1xZ2mkAlqGy4wajG0oI4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ba/Wq2Fh; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=EaIcVDtL; arc=pass smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WxW3LFIZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E571F000E9;
-	Tue, 18 Aug 2026 12:15:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787055303;
-	bh=vdfta/89Egg8GgJxFtGw/9GfvDW9gUWBNTIXFxmLI1E=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WxW3LFIZsNM6agXY/unOny5m2+sYleSgRpJ6f/rae2/27wQ6oJcMsWIY0cC6RbX9C
-	 meAHWpCwqCHTbptOWgAnVSvbB6z4NU9YKBSt4WQ0YHLc9oqYJkQs5Ox6bODE+OjPj9
-	 rbHFRvQZJZAUjQFItHFlniFdW8U/Dw5SoFDBAvO9UuXWyKLFj/GmuhwtrQ9jfZ2l5U
-	 WpLvY5XIHwzUbsuVlenNaoJCP3+ql/tosqoUpGgsaUPGtUK+QJiLbS4auWcx4ZEZ7R
-	 WoR922TxSqjFnoHwUszw+RDEp44dSPbdszLtIVdStrd+6cWW8yT0rokbdisWAvlO9H
-	 UzJYolUwr9BWQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] s390/vfio-ap: Fix leak of KVM GISC resources
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
-Cc: "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>, kvm@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>
-In-Reply-To: <20260818115819.1656595-1-akrowiak@linux.ibm.com>
-References: <20260818115819.1656595-1-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 18 Aug 2026 12:15:02 +0000
-Message-Id: <20260818121503.06E571F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ba/Wq2Fh";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="EaIcVDtL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787056156;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TyA6n1X+YsqsaNocsZd2DWoJKnuiA+PiCuN5vaV37+o=;
+	b=Ba/Wq2FhU395NKuYvsax3HgLCRDgLjrfh4lXw8fUkT9iO+9O6iP7Maez5COqpnt/5EJz8l
+	Yn1D3LsCpYiGtxDF9J36Ff7ffNl4pqZsQkwQl42Aj9USpOv846Q1BMX+Y4T9SxiZjgV12P
+	fKLiuPUBFCjva3R4brezGz9PqNRfVkk=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-121-uZZHZgcsO0eMQyB1iP4Q_g-1; Tue, 18 Aug 2026 08:29:14 -0400
+X-MC-Unique: uZZHZgcsO0eMQyB1iP4Q_g-1
+X-Mimecast-MFC-AGG-ID: uZZHZgcsO0eMQyB1iP4Q_g_1787056153
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4814718d124so2729066f8f.1
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 05:29:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787056153; cv=none;
+        d=google.com; s=arc-20260327;
+        b=KFf74xFna41oYB/Xp0MDNxrtY+XdWsjzO/LflmdDrzOgp0JFE575lcXPM7BvFpDzGb
+         x9nbmrYq4wdwiSG96TLFLZaAx3Lb2YVnVvOnY+YD+RBhDWIWDhUjdVjtSQb867vacs6j
+         ycAjHTS0dTLwRx/eEPLpGYKLHWVKuPDh4he6e4s1Wi8KFbpMIbl4dZhOUDCFgdGl5YTY
+         eqcytO46GAibd1xNjnV9l/lvT7OD/xbfDQHjSI92QahsDttDIk3L0FW3POkRrviH/csW
+         dVHdpQ+jINSkvcJBoK9hRjawAQFmBWgTh3OMJC6kaT8h83dUT9dvkjLVTD5PrHhqrvvr
+         yX6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=TyA6n1X+YsqsaNocsZd2DWoJKnuiA+PiCuN5vaV37+o=;
+        fh=oh76THDwip+UQ69qiQo2va1IdHfjw+VXVT36vpPYt0Q=;
+        b=sTayTZJCl+ehfEyzPoQz6P6ZgEqO2vUvY4Qxg5oQJ8WBKbOHFeqIqGSGd6Khqg6+Hp
+         ypz+D1NxnJExEKte7putVVb+o5a3xY6PAIU2zCFMZw9z7O5/eSXkS8hENA7CxSbYK7lx
+         IwSo6wD7xuIxty/Gas3s0VWPspckEvVyyUgJMf9yEGC6L+gIfkDLnu6NGLLB9ybzZ7dz
+         RxBF51P5upEhLzbFbmlzXNrZ2gIqlte1LnvN6aBGWGoIsUDqFjJ+JPdKBfepGdUrg6q0
+         5WLxXBd7gCzs29B6F9oYZ8Vn36e5fXdza1znI3HsLR0/UoPEHrA5uyxvteXWvA+tipiQ
+         ut5g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1787056153; x=1787660953; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=TyA6n1X+YsqsaNocsZd2DWoJKnuiA+PiCuN5vaV37+o=;
+        b=EaIcVDtLniYqiaPMf/JUlGHyNg3RmL7UKSpX0ebc7q6gOKX6fURl9dZQ44YsHmHIbZ
+         PmSSCjmilHMaG0SLU0Ot8wYzF8cKjydye0HHpMHItJTCra+0J943HmsMHg/8jljuW+lA
+         Ed/KfqoRGj6G0YJ2ttN24EvrBRk1RvFYIYRPVbZ9XmeD/mxMgGpZ94JQzP8jzd0ES3fP
+         PCgCOn9BC66PZoHAsec7+TgfEobXxyqdxOcWHJ5oWoLyEcQmBWft525lgSlJkrXhrUrd
+         ouRvZDxFtOTMFpFq/ohDAtPwpw8ohZ0E/uP8+XcdsidSR+v0TjG8xHiFqNNiXoD5rbsB
+         oMug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787056153; x=1787660953;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TyA6n1X+YsqsaNocsZd2DWoJKnuiA+PiCuN5vaV37+o=;
+        b=W0WKgLQ3wMDAlMWPRTAk1FXQo9Pk0+1YgS/yr+gxt5mxMVJteJMNGizpMPibExukH5
+         aPvTltGzJSyx1iXhUUt0Na+rzLVE6lYDnJzYrdqTy+HJPICkyT3K1pU8+/rGJavClVOp
+         APl/jtTgCQRFWFcHjwAnrramSCYex9ASX4r8eyYH7dnxgoO37TPpTMQp1XbeUwJBgUX3
+         Fr+k6IE9h3eNEhRuLX69QTS1i7KaTtU8IRD3N6hjYQXVr5zdyOwVNVlEvp8K1C47FXu2
+         EtdWDo3XPPNItOEmI2VzeygYLDAyAsn+pzh1nxvQovcIILzKmSp5iO/lzK7JGiafcqUb
+         3+vA==
+X-Forwarded-Encrypted: i=1; AHgh+RojEIJ1Ct8sHwFeJQ8UOpHQxU8fpKLC5ggnIb8xbmtlaF0+J0BebeFDYCUzTu3zysr0Lh4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiEzMNLUn5QmTU7uytOS1slDPT+cA1PJWuN0IImrgcGDBLCu8O
+	WaLmV456a05UyC7bRfT0UjDcowH2ZgCFSul8MFtSiF8SYeMjeZftL/h/t4yZFgJ4ffflj+dhoh2
+	7AayN04aqB92LBlkFyVIz3en4mXK1A8AYfemgUYOk0t69AfrgB3erd/RNx+7JMR+Z2yHUiu2qwD
+	z61QIYnMPP9DpjLhjnUvtEHTt6kao2
+X-Gm-Gg: AR+sD13xQf7q1vE1cR356moDU5SLvXl9Vk0rpXIYHDdTnorAB7jLJOXjP4pJlvw7yAL
+	m4ih+kdtXoalcizLpGD/wzXxEwTJmoKPx7fw8jQK79gAM0IdY9MrbfbzSKg1Ry8aP8FMZJ1jDkr
+	3jbbu8efiOSd56qiKkt/ULJGKmmqRlEcv8dVLwEVtDNb3i3IObkEYg1ne6cdtMFV+7Bktan4nu/
+	Kfy+edfBoooK5Y3J1nCvxhTiL4SkGquw7/XEgywHlexTRPxUgarag3x+mY=
+X-Received: by 2002:a05:6000:240c:b0:47f:e9fd:80d8 with SMTP id ffacd0b85a97d-481607947e2mr49347399f8f.21.1787056153048;
+        Tue, 18 Aug 2026 05:29:13 -0700 (PDT)
+X-Received: by 2002:a05:6000:240c:b0:47f:e9fd:80d8 with SMTP id
+ ffacd0b85a97d-481607947e2mr49347316f8f.21.1787056152663; Tue, 18 Aug 2026
+ 05:29:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260812213206.1564354-1-seanjc@google.com> <2c501584d34eea17016d39c9a5f78ca3d60861b4.camel@infradead.org>
+ <CABgObfanoHLfdfNshuLCHkWgtsP5Km9G5WsdwfGBcLsJ_LKD8A@mail.gmail.com>
+ <d28ebb09666f7188d0390fb7f877c5584991ef3c.camel@infradead.org> <aoMdUlCCvYqdw91B@google.com>
+In-Reply-To: <aoMdUlCCvYqdw91B@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 18 Aug 2026 14:29:00 +0200
+X-Gm-Features: AcwNN1W8q5B4FH2qkU1WO0WJlJMlXkCDEvl8fBGL6CUw3dSleLFmrL7CQoWOdhU
+Message-ID: <CABgObfakU5Q5zt4v0Zxpg34US_7OCqfH17gR-v6c-kCWF-muTA@mail.gmail.com>
+Subject: Re: [GIT PULL] KVM: x86 pull requests for 7.3
+To: Sean Christopherson <seanjc@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, kvm <kvm@vger.kernel.org>, 
+	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On Mon, Aug 17, 2026 at 4:40=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Sat, Aug 15, 2026, David Woodhouse wrote:
+> > On Sat, 2026-08-15 at 09:55 +0200, Paolo Bonzini wrote:
+> > > Il ven 14 ago 2026, 21:25 David Woodhouse <dwmw2@infradead.org> ha sc=
+ritto:
+> > > >
+> > > > This was intended as the safe stable bugfix part, split out from al=
+l
+> > > > the RCU and rwlock RT fun that can come later:
+> > > >
+> > > > https://lore.kernel.org/all/20260811094829.98794-1-dwmw2@infradead.=
+org/
+> > >
+> > > Ok, I will take a look.
+> >
+> > Thanks. Although that nudge was directed more at Sean than you.
+> >
+> > I wouldn't necessarily want it to go forward *without* Sean's ack, but
+> > those commits were deliberately split out as the ones I genuinely
+> > believe to be simple uncontroversial fixes, with the fun stuff held
+> > back for later. A couple of these ones are even actually Sean's.
+>
+> Those changes are very much on my radar, the latest version simply came i=
+n too
+> late for 7.3.
 
-Pre-existing issues:
-- [Critical] Use-After-Free of `q->matrix_mdev` due to dangling pointer lef=
-t after unassigning an adapter or domain for a queue not present in shadow_=
-apcb.
-- [High] The patch fixes KVM GISC and NIB page leaks when a queue is synchr=
-onously reset by handling AP_RESPONSE_Q_NOT_AVAIL, but it misses the asynch=
-ronous reset polling path, leading to the same resource leaks.
-- [High] The apq_reset_check workqueue function loops indefinitely without =
-a timeout while waiting for an AP queue reset to complete, causing a KVM pr=
-ocess deadlock if hardware fails.
---
+Since they're mostly cleanups and bugfixes, I think we can add them
+for -rc2? Or if I don't get the Arm changes in time, even for a second
+PR in -rc1.
 
---- Patch [1]: [PATCH] s390/vfio-ap: Fix leak of KVM GISC resources ---
-commit c19d4565d7b440cb8eddb06c5a8a375c867d24ea
-Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+Paolo
 
-s390/vfio-ap: Fix leak of KVM GISC resources
-
-Two related problems exist in the handling of KVM interrupt and page
-resources when a queue is removed from the host's AP configuration
-while assigned to a mediated device (mdev). This patch addresses the
-AP_RESPONSE_Q_NOT_AVAIL response from ap_zapq() and fixes the
-vfio_ap_free_aqic_resources() cleanup.
-
-> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
-_ap_ops.c
-> index 44b3a1dcc1b36..e277062e92bea 100644
-> --- a/drivers/s390/crypto/vfio_ap_ops.c
-> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-[ ... ]
-> @@ -2004,6 +2004,7 @@ static void vfio_ap_mdev_reset_queue(struct vfio_ap=
-_queue *q)
->  		break;
->  	case AP_RESPONSE_DECONFIGURED:
->  	case AP_RESPONSE_CHECKSTOPPED:
-> +	case AP_RESPONSE_Q_NOT_AVAIL:
->  		vfio_ap_free_aqic_resources(q);
->  		break;
->  	default:
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does the same resource leak
-happen when the asynchronous polling path in apq_reset_check() encounters an
-AP_RESPONSE_Q_NOT_AVAIL response?
-
-When an adapter or domain is removed from the host config while a reset is
-asynchronously polling, ap_tapq() can return AP_RESPONSE_Q_NOT_AVAIL. The
-helper apq_status_check() falls through to its default case and returns -EI=
-O:
-
-drivers/s390/crypto/vfio_ap_ops.c:apq_status_check() {
-    ...
-    default:
-        WARN(true,
-             "failed to verify reset of queue %02x.%04x: TAPQ rc=3D%u\n",
-             AP_QID_CARD(apqn), AP_QID_QUEUE(apqn),
-             status->response_code);
-        return -EIO;
-}
-
-This causes apq_reset_check() to exit immediately, skipping the cleanup:
-
-drivers/s390/crypto/vfio_ap_ops.c:apq_reset_check() {
-    ...
-        ret =3D apq_status_check(q->apqn, &status);
-        if (ret =3D=3D -EIO)
-            return;
-    ...
-}
-
-Does the default case in vfio_ap_mdev_reset_queue() also need to call
-vfio_ap_free_aqic_resources() to prevent a leak on an unhandled ZAPQ
-response?
-
->  		WARN(true,
->  		     "PQAP/ZAPQ for %02x.%04x failed with invalid rc=3D%u\n",
->  		     AP_QID_CARD(q->apqn), AP_QID_QUEUE(q->apqn),
->  		     status.response_code);
->  	}
->  }
-[ ... ]
-
-[Severity: Critical]
-This is a pre-existing issue, but is there a use-after-free of q->matrix_md=
-ev
-if an adapter is unassigned that is not passed through to a guest?
-
-If an adapter is unassigned, its bit is cleared from matrix.apm and
-vfio_ap_mdev_unlink_adapter() removes the queue from the mdev's hash table.
-However, if the queue's bit is not set in shadow_apcb, it is skipped from
-qlist:
-
-drivers/s390/crypto/vfio_ap_ops.c:vfio_ap_mdev_unlink_adapter() {
-    ...
-        if (q && qlist) {
-            if (test_bit_inv(apid, matrix_mdev->shadow_apcb.apm) &&
-                test_bit_inv(apqi, matrix_mdev->shadow_apcb.aqm))
-                list_add_tail(&q->reset_qnode, qlist);
-        }
-    ...
-}
-
-Because it is missing from qlist, vfio_ap_mdev_hot_unplug_adapters() skips
-calling vfio_ap_unlink_mdev_fr_queue(q):
-
-drivers/s390/crypto/vfio_ap_ops.c:vfio_ap_mdev_hot_unplug_adapters() {
-    ...
-    list_for_each_entry_safe(q, tmpq, &qlist, reset_qnode) {
-        vfio_ap_unlink_mdev_fr_queue(q);
-        list_del(&q->reset_qnode);
-    }
-}
-
-This leaves q->matrix_mdev dangling. Later, when the AP bus queue device is
-removed, get_update_locks_for_queue() dereferences the freed pointer:
-
-drivers/s390/crypto/vfio_ap_ops.c:get_update_locks_for_queue() {
-    ...
-    if (q->matrix_mdev && q->matrix_mdev->kvm)
-        mutex_lock(&q->matrix_mdev->kvm->lock);
-    ...
-}
-
-Can this lead to a kernel panic during normal operational reconfiguration?
-
-
-[Severity: High]
-This is a pre-existing issue, but will apq_reset_check() poll indefinitely
-without a timeout if the hardware wedges?
-
-drivers/s390/crypto/vfio_ap_ops.c:apq_reset_check() {
-    ...
-    while (true) {
-        msleep(AP_RESET_INTERVAL);
-        elapsed +=3D AP_RESET_INTERVAL;
-        status =3D ap_tapq(q->apqn, NULL);
-        ret =3D apq_status_check(q->apqn, &status);
-        if (ret =3D=3D -EIO)
-            return;
-        if (ret =3D=3D -EBUSY) {
-            pr_notice_ratelimited(...);
-        } else {
-            ...
-            if (q->reset_status.response_code =3D=3D AP_RESPONSE_RESET_IN_P=
-ROGRESS ||
-                ...
-                ret =3D=3D -EAGAIN) {
-                status =3D ap_zapq(q->apqn, 0);
-                ...
-                continue;
-            }
-            ...
-            break;
-        }
-    }
-}
-
-Operations like vfio_ap_mdev_reset_queues() schedule this work and synchron=
-ously
-wait for it while holding global locks:
-
-drivers/s390/crypto/vfio_ap_ops.c:vfio_ap_mdev_reset_queues() {
-    ...
-    hash_for_each(matrix_mdev->qtable.queues, loop_cursor, q, mdev_qnode) {
-        flush_work(&q->reset_work);
-
-        if (q->reset_status.response_code)
-            ret =3D -EIO;
-    }
-    ...
-}
-
-If the queue is stuck in hardware and continuously returns AP_RESPONSE_BUSY=
- or
-AP_RESPONSE_RESET_IN_PROGRESS, will this permanently block the locks and
-deadlock the host driver and KVM process?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260818115819.1656=
-595-1-akrowiak@linux.ibm.com?part=3D1
