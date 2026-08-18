@@ -1,144 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A6D31AA87;
-	Tue, 18 Aug 2026 17:12:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0954A3A3E7A
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 17:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787073180; cv=none; b=tEitc00Gaaoxq0q+vptHadSbgdaVqFTgeprkTr8n4Lx3l3jqwDyIybMkEOhHg1BZshZIO5gVq/7mJlQZPkfVSx0nNepiWqlofDrsgsvHPRbDkjrzxSgoCQQqNuWRcikNIJBsVEAl/kgZADiRHlAX95gkkXWcnab5+0Duu6YBHjA=
+	t=1787073403; cv=none; b=TaUtdivX5ZNZh3G/hgdo2O/NrsBi25oZm3lcKJw3HWiZXVtqFco6NOrUcmjeJPrPLivWwWMaoMD1ye1xShmjirWLunJPApGcsngGDeVS+Kw+hNNo0Tv0bFmg3/fc8MNl6xC3RYXAjhnF9yYsT9uAao7QmHTIifhTAYS23n0piEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787073180; c=relaxed/simple;
-	bh=oPnBE09kFYLskUeMHdT8Nz2BCZkf5TlUgQpxpCQ9GYI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aC6DuXmLEYsTRsVp0sWAWX6MVKkNICStUKALn3WMFWEnRhyI6cbMR6ATSwaoeh+iB9v+f/IiK09y+mMpdg6Akl26ZxJlao+QvTd+2BmMAt98nDcMuNBm6YS99sBGt4AQJjhwcjxDeqb5AETKx48EsmbU3q0Z/ppHDQs11r5kHHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gf39ZLFW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787073403; c=relaxed/simple;
+	bh=joRLrHQ5PciVlyhcB33kf3F6lW7tZpKQ6/AfYULRl5c=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=f3GRz7UG5qByodQgO9p7dOlj5MQ6hlTjZdOr86JB0TGG6A1ZIHmEidR0WwZVw13zGUysnuHbFbY/lGPJLLNI2SokWD/MkgssD/ws3GuTX1E1Ar2q0tMpFdxxNpt04IfEzJ0ED663dY8WTWLQM3p9THYavI+zwsTTqNncKVqaYdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Np5AUfL2; arc=none smtp.client-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gf39ZLFW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF231F000E9;
-	Tue, 18 Aug 2026 17:12:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787073178;
-	bh=QceIwtEwnqPuc1/8yrg4W19JtxBzT1Me8mopB0Vgqxw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gf39ZLFWZwJz5wRac5lAW2GmAjAYoBt5W0nqKwkiWSU//iPNJzFi2NOD3X/zb+i19
-	 rKrceNsFjkGSJ+QZ1FrMDqsQS8rZsHaxgY4U7+sbb1CrRUnq91SRkl86/En/+yex9w
-	 CfYwhoaRTsfXb6mqgtnuGecmc+ddzIet03cpivIw1mJimuqLiKcZPSZJZQRxGXMHr0
-	 f0/xngVVM9vIVSjFoJ/yac3sQU6rNZKwKsrZJuiZhNnuxR2wgfyXIYaM/DspAHWbvd
-	 Nx/+0W5viKRO5b32/oS9YXZlbuGXO3VVoQSDFZjAOJlwdVNX+GAE2B0ziIfNS+gPcL
-	 rVMT5A6YZ+dKA==
-Message-ID: <807b4b9f-b1ca-4b5c-bc9e-22bf0637ba33@kernel.org>
-Date: Tue, 18 Aug 2026 19:12:48 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Np5AUfL2"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cc73f47bdcso858825ad.3
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 10:16:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787073401; x=1787678201; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XT1Rr2HB3t99psvHxumchfGyXnfabp1WpWGCjDa/GZU=;
+        b=Np5AUfL2O4OezMvs3azRdaKaZgofDKBPxJuu0gx4igsxAsunqdbTSIBKTChVeUSHtc
+         b1nID7nGKvn2z7Z768olmyFLz634sw2VP8aXBPBQeABBdRTSoRVHvpiN7Qw7kvZNNg96
+         aM1sezhQFogNBIQalFFSY5Tbxsk0/aN6d/H3ENx515V+7pWKa02VpeJBnHDrZzs5UcLZ
+         F4l0jDAPyqhAJvEVym7GrDZsuQ7MdExkMaqK7PkTqv6Kjfxc8fOrxhizl1bho7fedVVS
+         VygDaGsIgnGu2MkkS3DA2bguOxQg/EAU5ep2qI6aI5w6LA/bzll2zRN5G13Sg3R2PINg
+         GBWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787073401; x=1787678201;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XT1Rr2HB3t99psvHxumchfGyXnfabp1WpWGCjDa/GZU=;
+        b=qm5WH3ZnYbVSA5sq204sHrhl20mpRSEmi1lcC01W2gmqmR7NH+hTeNJNxsFUx05zEH
+         8YzACwB489AafC5xQ/JngmEpni2/rbidSSu+ktsea2ndvrlGn1kMQnWm1nXaMgU8GP3h
+         HoaMOi3gYzHxrKkMiQIQFiq4xw6fuMNkUlkONeVwLR58HbrRsO8kJSf/b+QCJBNEpd9+
+         PLNkCZIHoPJ2EpnfNdlHEnzqrONvWGm5idkoBtDDzeIlzfeB42vaQ4UKJXBUo3ofGm3L
+         ie1//CnGBVrXPTrJRRvl+IUWekx/34506XgYxq+Dw8/zPhu9ng0v22UEObp3Vb/tx8YJ
+         T2EA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr0Tcs+BuZ8vkhmb3E0LWWFCLWQ/3+g/Q4LKE4woCLCEkBmCwf3pH2CqMEG9PYU1K7UmUM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7SBDktDrf0tVtPCQ1+Sv52BeZIG2E02cC9iuXvUBVZOpEBcjz
+	X+EVMO6WOm+UdWx1OZ0HsL339LMajOGxE+SxD6Yh9pa/7kgjNMeoS3By7QEfn4KFs9IGMEBL8fE
+	G/dMNCw==
+X-Received: from plbiy23.prod.google.com ([2002:a17:903:1317:b0:2ce:7984:4347])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1a2e:b0:2ca:9d5a:8b6c
+ with SMTP id d9443c01a7336-2d5c4ee9bf2mr149762845ad.5.1787073401220; Tue, 18
+ Aug 2026 10:16:41 -0700 (PDT)
+Date: Tue, 18 Aug 2026 10:16:40 -0700
+In-Reply-To: <20260818170534.07B561F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/4] Stop returning struct page from guest_memfd PFN
- lookup
-To: Ackerley Tng <ackerleytng@google.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Ashish Kalra <ashish.kalra@amd.com>,
- Michael Roth <michael.roth@amd.com>, Brijesh Singh <brijesh.singh@amd.com>,
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
- Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, Fuad Tabba <tabba@google.com>,
- Yan Zhao <yan.y.zhao@intel.com>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- Vishal Annapurve <vannapurve@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev
-References: <20260818-gmem-no-return-page-v2-0-5298f42d49bb@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260818-gmem-no-return-page-v2-0-5298f42d49bb@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260818165258.2613603-1-vkuznets@redhat.com> <20260818165258.2613603-5-vkuznets@redhat.com>
+ <20260818170534.07B561F000E9@smtp.kernel.org>
+Message-ID: <aoSTeLzhaWohymLf@google.com>
+Subject: Re: [PATCH v2 4/4] KVM: selftests: Check VMPTRLD with active eVMCS
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 8/18/26 11:15, Ackerley Tng wrote:
-> KVM currently expects kvm_gmem_get_pfn() to return a refcounted struct
-> page. Callers (such as x86 TDP MMU, arm64 Stage-2 fault handler, and SEV-SNP
-> VMSA / RMP handlers) hold this refcount across page fault handling.
+On Tue, Aug 18, 2026, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] Code relying on CPU flags after `KVM_ASM_SAFE` incorrectly evaluates them because the macro's cleanup instructions unconditionally clobber the flags.
+> --
 > 
-> Holding a page refcount across fault handling is problematic for guest_memfd.
-> In-place memory conversions between confidential computing shared and private
-> states inspect folio refcounts to ensure exclusive ownership by guest_memfd.  A
-> concurrent guest page fault taking a reference on the folio causes conversions
-> to fail due to an elevated refcount.
-
-Right. Won't we still, at least temporarily, grab a reference while looking up
-the folio in the page cache, or will we be preventing that concurrent race with
-locking?
-
+> --- Patch [4]: [PATCH v2 4/4] KVM: selftests: Check VMPTRLD with active eVMCS ---
+> commit d5821824a958c354147206d0cf6cf26eaeb71cc6
+> Author: Vitaly Kuznetsov <vkuznets@redhat.com>
 > 
-> guest_memfd already notifies KVM of page invalidations, so users of guest_memfd
-> within KVM only need to respect the MMU invalidation protocol to safely rely on
-> guest_memfd to ensure page presence.
+> KVM: selftests: Check VMPTRLD with active eVMCS
+> 
+> This commit verifies that VMPTRLD triggers a #UD when eVMCS is active.
+> It uses the KVM_ASM_SAFE framework to safely handle the expected
+> exceptions from VMPTRLD testing.
+> 
+> > diff --git a/tools/testing/selftests/kvm/include/x86/vmx.h b/tools/testing/selftests/kvm/include/x86/vmx.h
+> > index 047d02aa96889..e6adde3970d4d 100644
+> > --- a/tools/testing/selftests/kvm/include/x86/vmx.h
+> > +++ b/tools/testing/selftests/kvm/include/x86/vmx.h
+> [ ... ]
+> > @@ -336,6 +333,22 @@ static inline int vmptrld(u64 vmcs_pa)
+> >  	return ret;
+> >  }
+> >  
+> > +static inline int vmptrld_safe(u64 vmcs_pa)
+> > +{
+> > +	u64 error_code;
+> > +	u8 vector;
+> > +	u8 failed;
+> > +
+> > +	asm volatile(KVM_ASM_SAFE("vmptrld %[pa]")
+> > +		     "\n\tsetna %[failed]"
+> 
+> [Severity: Medium]
+> Will this setna instruction incorrectly evaluate CPU flags?
+> 
+> The KVM_ASM_SAFE macro executes xor %%r9, %%r9 on its success path, which
+> unconditionally clears the Carry Flag (CF=0) and sets the Zero Flag (ZF=1).
 
-Yes, the invalidation protocol is the crucial part. If we get that wrong, we're
-in holy CVE land.
+Shame on me, I should know better after dealing with ba5ca5e5e6a1 ("x86/retpoline:
+Don't clobber RFLAGS during srso_safe_ret()").
 
-For GUP-fast, there was a similar discussion with MMU notifiers, but to this
-day, KVM actually grabs+drops references.
+Untested, but I think the fix is simply:
 
-[...]
-
-> Removing struct page from kvm_gmem_get_pfn() also moves KVM closer toward
-> supporting memory backends that are not backed by struct page.
-
-Agreed, they should not be messing with the struct page at all.
-
--- 
-Cheers,
-
-David
+diff --git tools/testing/selftests/kvm/include/x86/processor.h tools/testing/selftests/kvm/include/x86/processor.h
+index 6e6f70035508..119715ffe93f 100644
+--- tools/testing/selftests/kvm/include/x86/processor.h
++++ tools/testing/selftests/kvm/include/x86/processor.h
+@@ -1318,7 +1318,7 @@ gva_t vm_alloc_stack(struct kvm_vm *vm, int nr_pages);
+        "lea 1f(%%rip), %%r10\n\t"                              \
+        "lea 2f(%%rip), %%r11\n\t"                              \
+        fep "1: " insn "\n\t"                                   \
+-       "xor %%r9, %%r9\n\t"                                    \
++       "mov $0, %%r9\n\t"                                      \
+        "2:\n\t"                                                \
+        "mov  %%r9b, %[vector]\n\t"                             \
+        "mov  %%r10, %[error_code]\n\t"
