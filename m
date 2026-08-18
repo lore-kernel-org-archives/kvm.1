@@ -1,126 +1,125 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0954A3A3E7A
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 17:16:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992E5226D18;
+	Tue, 18 Aug 2026 17:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787073403; cv=none; b=TaUtdivX5ZNZh3G/hgdo2O/NrsBi25oZm3lcKJw3HWiZXVtqFco6NOrUcmjeJPrPLivWwWMaoMD1ye1xShmjirWLunJPApGcsngGDeVS+Kw+hNNo0Tv0bFmg3/fc8MNl6xC3RYXAjhnF9yYsT9uAao7QmHTIifhTAYS23n0piEY=
+	t=1787074379; cv=none; b=un/YA+Jrti7ah1em47duF82S+79V3f3TPuefIB8ooblA0VyhOpzsdZyWbYQNgYTTlCgT2OArF5UEfmz/br1qAB+0V1FVlO5ACo96QgZvDfNgiGsOXS9timDgMNlzVC0N2xcK3GpYCO/FQznbMu7HSRC/pQrpH5UK/9rZdLaUPhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787073403; c=relaxed/simple;
-	bh=joRLrHQ5PciVlyhcB33kf3F6lW7tZpKQ6/AfYULRl5c=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=f3GRz7UG5qByodQgO9p7dOlj5MQ6hlTjZdOr86JB0TGG6A1ZIHmEidR0WwZVw13zGUysnuHbFbY/lGPJLLNI2SokWD/MkgssD/ws3GuTX1E1Ar2q0tMpFdxxNpt04IfEzJ0ED663dY8WTWLQM3p9THYavI+zwsTTqNncKVqaYdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Np5AUfL2; arc=none smtp.client-ip=209.85.214.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787074379; c=relaxed/simple;
+	bh=IKHg4bFxQPsSA+dLsdA7mgQJFNOKOFcLD82CSEX2eYo=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ICMbdGkQwi0GlzEq7elx8Df9p0fRAJtnAqDEd28MAIrUvC4uJkBWV1TAiSbrSmj8Lhyckb4ooOD6rivsQLUMCKguGxhSuNiJsTrOVOtEebOdfNfxNSKaCbFoYDm2aSS6A75QVHyFLtQYqiQmmxmLR4hzkWiWZbmdHziYOmnsTYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gAnP6k/2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Np5AUfL2"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cc73f47bdcso858825ad.3
-        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 10:16:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787073401; x=1787678201; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XT1Rr2HB3t99psvHxumchfGyXnfabp1WpWGCjDa/GZU=;
-        b=Np5AUfL2O4OezMvs3azRdaKaZgofDKBPxJuu0gx4igsxAsunqdbTSIBKTChVeUSHtc
-         b1nID7nGKvn2z7Z768olmyFLz634sw2VP8aXBPBQeABBdRTSoRVHvpiN7Qw7kvZNNg96
-         aM1sezhQFogNBIQalFFSY5Tbxsk0/aN6d/H3ENx515V+7pWKa02VpeJBnHDrZzs5UcLZ
-         F4l0jDAPyqhAJvEVym7GrDZsuQ7MdExkMaqK7PkTqv6Kjfxc8fOrxhizl1bho7fedVVS
-         VygDaGsIgnGu2MkkS3DA2bguOxQg/EAU5ep2qI6aI5w6LA/bzll2zRN5G13Sg3R2PINg
-         GBWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787073401; x=1787678201;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XT1Rr2HB3t99psvHxumchfGyXnfabp1WpWGCjDa/GZU=;
-        b=qm5WH3ZnYbVSA5sq204sHrhl20mpRSEmi1lcC01W2gmqmR7NH+hTeNJNxsFUx05zEH
-         8YzACwB489AafC5xQ/JngmEpni2/rbidSSu+ktsea2ndvrlGn1kMQnWm1nXaMgU8GP3h
-         HoaMOi3gYzHxrKkMiQIQFiq4xw6fuMNkUlkONeVwLR58HbrRsO8kJSf/b+QCJBNEpd9+
-         PLNkCZIHoPJ2EpnfNdlHEnzqrONvWGm5idkoBtDDzeIlzfeB42vaQ4UKJXBUo3ofGm3L
-         ie1//CnGBVrXPTrJRRvl+IUWekx/34506XgYxq+Dw8/zPhu9ng0v22UEObp3Vb/tx8YJ
-         T2EA==
-X-Forwarded-Encrypted: i=1; AHgh+Rr0Tcs+BuZ8vkhmb3E0LWWFCLWQ/3+g/Q4LKE4woCLCEkBmCwf3pH2CqMEG9PYU1K7UmUM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7SBDktDrf0tVtPCQ1+Sv52BeZIG2E02cC9iuXvUBVZOpEBcjz
-	X+EVMO6WOm+UdWx1OZ0HsL339LMajOGxE+SxD6Yh9pa/7kgjNMeoS3By7QEfn4KFs9IGMEBL8fE
-	G/dMNCw==
-X-Received: from plbiy23.prod.google.com ([2002:a17:903:1317:b0:2ce:7984:4347])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1a2e:b0:2ca:9d5a:8b6c
- with SMTP id d9443c01a7336-2d5c4ee9bf2mr149762845ad.5.1787073401220; Tue, 18
- Aug 2026 10:16:41 -0700 (PDT)
-Date: Tue, 18 Aug 2026 10:16:40 -0700
-In-Reply-To: <20260818170534.07B561F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gAnP6k/2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2207D1F000E9;
+	Tue, 18 Aug 2026 17:32:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787074378;
+	bh=5nP/wCvRpmA8eaUsVAxv07mLl2Q8ttitEOZe6cpCZoE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=gAnP6k/2jMbQY/I7kezd8RsL74I4609BNIB3c4xMMPHLIzlwDOunEfVt/gtsH7152
+	 kU6M7uSj12U1CS3pcEqcNBRrN/wcnO3wwRBhwyLzkCmBzReQPoWkJrfQGthbrBlDIM
+	 bCCsodTb8bEn1cv3Nlwf4C7J4l5q6h9Zqiyj0crPisjjgA6lT9nf2tel2SpeI3ekb+
+	 EPoaUUygI9VoyEjRkW3sJ2/T98EuUl7h2bwKSoIXbINM2u0dT+PMqpC6rGk0SZYhgT
+	 AgFp/sxNtu6TrJJVbbEHnGFomioR/JD6K/wlhw4DzDb+aXhbTIKP1SXQuXL7MAFLZ2
+	 4h2qbegcsmpPQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wwNgG-0000000Gj6v-0DqH;
+	Tue, 18 Aug 2026 17:32:56 +0000
+Date: Tue, 18 Aug 2026 18:32:55 +0100
+Message-ID: <864igr5o6w.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steffen Eiden <seiden@linux.ibm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Grapentin <gra@linux.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Friedrich Welter <fritz@linux.ibm.com>,
+	Fuad Tabba <tabba@google.com>,
+	Gautam Gala <ggala@linux.ibm.com>,
+	Hariharan Mari <hari55@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Nico Boehr <nrb@linux.ibm.com>,
+	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+	Oliver Upton <oupton@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Will Deacon <will@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH v6 33/33] KVM: s390: arm64: Enable KVM_ARM64 config and Kbuild
+In-Reply-To: <20260812153631.3376090-34-seiden@linux.ibm.com>
+References: <20260812153631.3376090-1-seiden@linux.ibm.com>
+	<20260812153631.3376090-34-seiden@linux.ibm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260818165258.2613603-1-vkuznets@redhat.com> <20260818165258.2613603-5-vkuznets@redhat.com>
- <20260818170534.07B561F000E9@smtp.kernel.org>
-Message-ID: <aoSTeLzhaWohymLf@google.com>
-Subject: Re: [PATCH v2 4/4] KVM: selftests: Check VMPTRLD with active eVMCS
-From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, tabba@google.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, seanjc@google.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, Aug 18, 2026, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] Code relying on CPU flags after `KVM_ASM_SAFE` incorrectly evaluates them because the macro's cleanup instructions unconditionally clobber the flags.
-> --
-> 
-> --- Patch [4]: [PATCH v2 4/4] KVM: selftests: Check VMPTRLD with active eVMCS ---
-> commit d5821824a958c354147206d0cf6cf26eaeb71cc6
-> Author: Vitaly Kuznetsov <vkuznets@redhat.com>
-> 
-> KVM: selftests: Check VMPTRLD with active eVMCS
-> 
-> This commit verifies that VMPTRLD triggers a #UD when eVMCS is active.
-> It uses the KVM_ASM_SAFE framework to safely handle the expected
-> exceptions from VMPTRLD testing.
-> 
-> > diff --git a/tools/testing/selftests/kvm/include/x86/vmx.h b/tools/testing/selftests/kvm/include/x86/vmx.h
-> > index 047d02aa96889..e6adde3970d4d 100644
-> > --- a/tools/testing/selftests/kvm/include/x86/vmx.h
-> > +++ b/tools/testing/selftests/kvm/include/x86/vmx.h
-> [ ... ]
-> > @@ -336,6 +333,22 @@ static inline int vmptrld(u64 vmcs_pa)
-> >  	return ret;
-> >  }
-> >  
-> > +static inline int vmptrld_safe(u64 vmcs_pa)
-> > +{
-> > +	u64 error_code;
-> > +	u8 vector;
-> > +	u8 failed;
-> > +
-> > +	asm volatile(KVM_ASM_SAFE("vmptrld %[pa]")
-> > +		     "\n\tsetna %[failed]"
-> 
-> [Severity: Medium]
-> Will this setna instruction incorrectly evaluate CPU flags?
-> 
-> The KVM_ASM_SAFE macro executes xor %%r9, %%r9 on its success path, which
-> unconditionally clears the Carry Flag (CF=0) and sets the Zero Flag (ZF=1).
+On Wed, 12 Aug 2026 16:36:29 +0100,
+Steffen Eiden <seiden@linux.ibm.com> wrote:
 
-Shame on me, I should know better after dealing with ba5ca5e5e6a1 ("x86/retpoline:
-Don't clobber RFLAGS during srso_safe_ret()").
+[...]
 
-Untested, but I think the fix is simply:
+> +config KVM_ARM64
+> +	def_tristate y
+> +	prompt "KVM support for hardware accelerated arm64 guests"
+> +	depends on HAS_IOMEM
+> +	depends on KVM
+> +	select GUEST_PERF_EVENTS if PERF_EVENTS
+> +	select HAVE_KVM_CPU_RELAX_INTERCEPT
+> +	select HAVE_KVM_IRQCHIP
+> +	select HAVE_KVM_VCPU_RUN_PID_CHANGE
+> +	select IRQ_BYPASS_MANAGER
+> +	select KVM_COMMON
+> +	select KVM_MMIO
+> +	select KVM_VFIO
+> +	select SCHED_INFO
+> +	select XARRAY_MULTI
+> +	help
+> +	  Enable support for hosting paravirtualized, hardware-accelerated
 
-diff --git tools/testing/selftests/kvm/include/x86/processor.h tools/testing/selftests/kvm/include/x86/processor.h
-index 6e6f70035508..119715ffe93f 100644
---- tools/testing/selftests/kvm/include/x86/processor.h
-+++ tools/testing/selftests/kvm/include/x86/processor.h
-@@ -1318,7 +1318,7 @@ gva_t vm_alloc_stack(struct kvm_vm *vm, int nr_pages);
-        "lea 1f(%%rip), %%r10\n\t"                              \
-        "lea 2f(%%rip), %%r11\n\t"                              \
-        fep "1: " insn "\n\t"                                   \
--       "xor %%r9, %%r9\n\t"                                    \
-+       "mov $0, %%r9\n\t"                                      \
-        "2:\n\t"                                                \
-        "mov  %%r9b, %[vector]\n\t"                             \
-        "mov  %%r10, %[error_code]\n\t"
+Err... No.
+
+KVM/arm64 is architectural, and doesn't require anything PV. I suspect
+this is a direct copy-paste from the s390 text, but this does not
+represent what KVM/arm64 does, and transitively what KVM/arm64-on-s390
+should do.
+
+Please drop the PV nonsense.
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
