@@ -1,122 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0775347D458;
-	Tue, 18 Aug 2026 16:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301BD47F795
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 16:53:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787071142; cv=none; b=sSu79oxTcoVMzX0Havfd3/RU2ANon17LviKXFtnYWgN7fpSSipAdOZG9CRvnE0NH8Af6JCW9bjZSQmpkSvwbA3cxAqsJWLB2zLq4U5mH4TxgaFNP84CXzxk7KrtXEQNbpt4js2f3H4nN5k3arBJKGfmloGpmpQkRQKoWF6XUds0=
+	t=1787071986; cv=none; b=SYjVNWH4RpB950eIof4NfylzGBrrC8p3ZGNAXl0DABjIMVMGbzC2bDA0k7GPBoK1zhHqbDO0ZD2JnVbEAFlyYG/GrI2yBh+h9jZMT6Q3gZw3eDm32ix2y8a6uijexFecvszT2tC9CMQpfJ60gMA3QJUhy343UFB9r5+nKMdXzOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787071142; c=relaxed/simple;
-	bh=2j8nQBa5xH+2m8seNPtH0y4nI8R/1+Ozw/mrb5mKBGc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Oe8+C/1zSAkkCOZligE/juzSjhlKKDGLENM9GnBJDY38fogcLsJU6FjqpleZeFxGMlnUbGVn/LzfL8p74Wqy3GYo2LNnmclxAOvrT9iKC6Xm1LCq/Jldp+ous5agnRR/OxsUN9pjhfLfi1dBAzdrGxst+YOrc76lOZE579iOoLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N8ExKLho; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787071986; c=relaxed/simple;
+	bh=C1F8MSCXZdw2gSBdeTlrrshuMxPkam/SwwipguxvXO8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=m41hrOfpT3NQGB2+vITLj/UF760vIJHJFe6EoNqs0hSXBymsymbRgJcvorTzcg4jaZZAIhEMz9VK6Zy0o9TcSf5kbM6tMxqGr69WghYGUwKq5569F2fQa21jjHRVNBhDRltudLxNcautbkspvSaTn+aYjQlGNBbC9kdthANw8BA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YpHFNsWV; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N8ExKLho"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041D81F000E9;
-	Tue, 18 Aug 2026 16:39:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787071140;
-	bh=9aY7pWsW2ln4Sq/7zBgi/YnBHwhhaIP7hD5DnJyV+7Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=N8ExKLho+mq9M01Q606g8A7kw043Icah1lXdLeJug9+XeGJbb9uPhl353mpoYLn6D
-	 0n5JqjQaMs1GedUKrITaN/0oEJiy7XauEoZe9PP/VSN46EdfgzKwo+kKVTKSvSLrIo
-	 owvzdXZb6JapHsSbxiYEb+X1nNhYi/3cC+y0fF4Cr2BzQ03Pc8X+ji+rthvN7N+whD
-	 b7TL94nT20hIxAzqlZQg8ZwKT/QVYCvSvyogQg5Wky3t3bHvlMlsRsB7gEL23o9nAR
-	 cjzBHK8Pg9hhb3/dPlrIJ2YUOAt/c8ElXMVLmCCUFwxmi8NanIRs0PJnHIBwT7vFSo
-	 /EvrF9jGQr+3Q==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wwMq1-0000000Ghog-3A91;
-	Tue, 18 Aug 2026 16:38:57 +0000
-Date: Tue, 18 Aug 2026 17:38:57 +0100
-Message-ID: <865x175qou.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: Oliver Upton <oupton@kernel.org>,
-	kvmarm@lists.linux.dev,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Eric Auger <eric.auger@redhat.com>,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [RFC PATCH 1/2] KVM: arm64: vgic-v3: Roll back failed redistributor region setup
-In-Reply-To: <an1cYl928Fue-z3s@gmail.com>
-References: <cover.1786344511.git.kmehltretter@gmail.com>
-	<4e00fc25aa61ec52e6ef033a53588ce3f5550982.1786344511.git.kmehltretter@gmail.com>
-	<86tsp2139b.wl-maz@kernel.org>
-	<anotFcOP0kcQJwrA@gmail.com>
-	<86jypv1lxo.wl-maz@kernel.org>
-	<an1cYl928Fue-z3s@gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YpHFNsWV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787071983;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=qTNLqVgGi39GZ+CQDUB01Lka34UBMintTBhWx9EIAP8=;
+	b=YpHFNsWVrgBGS0pZSnksr4WCW4ZxOLxY7KiDFAviD0iiVnJ/dOmV9UvydPdI0KJRdNCQGK
+	izcvM6hmLaU74chlePxdnM5gLvekAeM5XX1/y9M/JwabstVC6FdHyHhXcvuQ1kbY1qf6sS
+	eWC89rt9lIoDidS8Le7wx7E0yMCMoSc=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-670-wQvz-JH6NWOR6Rxjq3-j8w-1; Tue,
+ 18 Aug 2026 12:53:02 -0400
+X-MC-Unique: wQvz-JH6NWOR6Rxjq3-j8w-1
+X-Mimecast-MFC-AGG-ID: wQvz-JH6NWOR6Rxjq3-j8w_1787071981
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6C00F19560A2;
+	Tue, 18 Aug 2026 16:53:01 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.48.151])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A065B3000239;
+	Tue, 18 Aug 2026 16:52:59 +0000 (UTC)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: kvm@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: f734222792@gmail.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/4] KVM: nVMX: Adjust VMPTRLD/VMPTRST behavior with active eVMCS
+Date: Tue, 18 Aug 2026 18:52:54 +0200
+Message-ID: <20260818165258.2613603-1-vkuznets@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kmehltretter@gmail.com, oupton@kernel.org, kvmarm@lists.linux.dev, fuad.tabba@linux.dev, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, pbonzini@redhat.com, shuah@kernel.org, eric.auger@redhat.com, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Thu, 13 Aug 2026 06:57:48 +0100,
-Karl Mehltretter <kmehltretter@gmail.com> wrote:
-> 
-> On Wed, Aug 12, 2026 at 02:57:07PM +0100, Marc Zyngier wrote:
-> > On Mon, 10 Aug 2026 22:22:37 +0100,
-> > Karl Mehltretter <kmehltretter@gmail.com> wrote:
-> > > Is this closer to what you had in mind?
-> > 
-> > No. I want *all* RDs to be gone on failure, and the next successful
-> > registration to result in all possible RDs to be matched against a
-> > vcpu if there are enough of them. Effectively an atomic behaviour from
-> > the PoV of userspace.
-> > 
-> > See the patch below for what I came up with.
-> > 
-> 
-> Understood. I believe your sketch needs two small adjustments:
-> 
-> free_index must be incremented before kvm_io_bus_register_dev().
-> If registration fails, the current vCPU already has an RD assignment, but
-> there is otherwise no increment for the teardown path to undo.
+Changes since v1:
+- Fix build when !CONFIG_KVM_HYPERV [Sashiko]
+- Drop now-unneeded evmcs_vmptrst() [Sashiko]
+- Avoid hardcoding VMPTRLD insn length in hyperv_evmcs [Sashiko], use
+  KVM_ASM_SAFE framework instead [Sean]
 
-This probably is a separate patch. I don't think it has anything to do
-with the issue at hand.
+It was reported (https://bugzilla.kernel.org/show_bug.cgi?id=221841) that
+KVM's emulation of VMPTRLD/VMPTRST instructions when Enlightened VMCS is
+active is sub-optimal: returning '1' does not make the L1 guest skip the
+instruction so a hang is likely to happen. While TLFS does not really
+specify the expected behavior, genuine Hyper-V seems to return #UD for
+VMPTRLD and eVMCS pointer for VMPTRST. Alter the behavior in KVM and check
+it in selftests.
 
-> 
-> The garbage collection in vgic_v3_free_redist_region() should remain.
-> VM teardown frees the regions before unregistering the RD iodevs, so
-> removing it would leave rdreg pointers referring to freed regions.
+Note: this is not a security issue. Misbehaving L1 can only do self-harm
+by doing VMPTRLD/VMPTRST when it also uses eVMCS.
 
-Why is this more than just an ordering change? Probably also a
-separate patch.
+Vitaly Kuznetsov (4):
+  KVM: nVMX: Make VMPTRLD result in #UD when eVMCS is used
+  KVM: nVMX: Make VMPTRST return eVMCS GPA when it is used
+  KVM: selftests: Adapt to the updated VMPTRST behavior when eVMCS is
+    used
+  KVM: selftests: Check VMPTRLD with active eVMCS
 
-> Does that look OK to you? If so, I could include both in v2.
-> I'll also split the selftest change and have it check only the
-> final state after the retry.
-
-Sure.
-
-Thanks,
-
-	M.
+ arch/x86/kvm/vmx/nested.c                     | 24 +++++++++-----
+ .../testing/selftests/kvm/include/x86/evmcs.h |  8 -----
+ tools/testing/selftests/kvm/include/x86/vmx.h | 22 +++++++++----
+ .../testing/selftests/kvm/x86/hyperv_evmcs.c  | 31 ++++++++++++++-----
+ 4 files changed, 56 insertions(+), 29 deletions(-)
 
 -- 
-Without deviation from the norm, progress is not possible.
+2.55.0
+
