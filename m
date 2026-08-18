@@ -1,384 +1,222 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCEC3BE17B
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 11:17:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787051862; cv=none; b=pRmwREv/elKaf8phGPCHkAXpjmJCycIBIqL9HEARp1PqI0EESJ9pCaWIRxusI/U+JkYa57Arr5v7VjHmwTMcxQ1uIoNlfdKmZLGxBhx/WL08MUMlcswnqkQ7K28SGKwfw/qNaR+VxvGm3SgQXnhRagwF8B69L/2WKOnJN2QIc9o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787051862; c=relaxed/simple;
-	bh=kkDsnTyWfv1u+mGY4BN2EV0C8BxZN84pizHSkLa2WqU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mjb3IA1CJiSHF4ufQdIEnvZDUOzpPXH72Nn55etGtn9iNkSeOKb3T3TsyEGWZGBjOdYEeIm6G1qRcAU75raUjXn58hcg0MZrFHzGp8iUc+ZGZu11xOkMevbKV3Lk1mht/rKQvlzRJ3tC1Pb9WBB8GsfO7nRW53w/u0LcdmJqvOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ham4v7An; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271C93A75B8
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 11:18:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787051890; cv=pass; b=Qww99MmJBnXTY/w5gQEWXrwGc8Mw9tt0+STUj10ML4ig29VwsY34Q0xAO6KcslAqLIXtlb9tgN+wifcAYcyDRWUdQWrKkk7gO9Na9e0IVp3NPUlIzcQQBab1lf6h6XrbWBR19Di0R8YQ8/JHXe8nmqOkv6I4aaH4A8GmVUhDrEg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787051890; c=relaxed/simple;
+	bh=bYhSjLf5WrSoCs/E/8lvKysNkSO2u4ZmPv8HYT3BhVI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S6zCE5T+ePCUb1EH6xOYHfB0/QhbGvi+urEMse7Km9RHEDPS6+Oe8NLjeF62Ex2MU7Dbxt1lO8ZMVpujnibUR46TyXN3w8LrD/PiL+VLCr82R5bJEYKawdUdES7NftEtTb5Ru8qZ/Sr+cyOJnyKto2lXockpJWFFudBoM1zgo0k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SkanmpDx; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sfinb5vs; arc=pass smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ham4v7An"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SkanmpDx";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sfinb5vs"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787051859;
+	s=mimecast20190719; t=1787051888;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=k7sLgcKy46Y8uZwm/mabjfqolsaFuLha8cI618N0WKg=;
-	b=ham4v7Anh07gWAvChhKgmr1Unt5l+Q9dEbNQw0NvFIBU8LUi6xF5JZZi0qyZLysYUXG0QM
-	lsdxUyHuXuOGfUOhEpD2GtpCDQ9qMWx6y1rVxGC7wrVkXPqJUpUx3rQ2EXVD8lQHcDH78z
-	UIjq2+XWv0YgtCD35NHXr03e4KWCwfA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-104-PFydJzvqO2Kquw0fUJmyfw-1; Tue,
- 18 Aug 2026 07:17:29 -0400
-X-MC-Unique: PFydJzvqO2Kquw0fUJmyfw-1
-X-Mimecast-MFC-AGG-ID: PFydJzvqO2Kquw0fUJmyfw_1787051846
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 60EB31955F39;
-	Tue, 18 Aug 2026 11:17:26 +0000 (UTC)
-Received: from localhost (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 942EB1800347;
-	Tue, 18 Aug 2026 11:17:09 +0000 (UTC)
-From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Date: Tue, 18 Aug 2026 15:10:43 +0400
-Subject: [PATCH v3 16/74] qom: convert struct properties to QAPI-aware
- registration
+	bh=pMVr2MEZLG1T0pxhT+eh8Oo5NondvJT+SQtFk5sRheo=;
+	b=SkanmpDxKdj4/A/6fNfZB/FcchTD+YLv7u8QLeigCie1JqY7H/j2eSHk36DzHONGN7rRLH
+	lZMuizFSaLb8qcUf+Ves6ogjbEP2BwaP2QUS8AAh/Xk3LPpTLZE0wPnydGdJkrxcMHV9Op
+	t/IW8g0qHESzzBNhYPqmB0+z4Y8mNlI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-186-xJQ000D5OJufQVy04xRY5g-1; Tue, 18 Aug 2026 07:18:05 -0400
+X-MC-Unique: xJQ000D5OJufQVy04xRY5g-1
+X-Mimecast-MFC-AGG-ID: xJQ000D5OJufQVy04xRY5g_1787051885
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490a767b782so34245105e9.2
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 04:18:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787051884; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YXwfewTPFGqplu4KzD6fVR11r1EmqxQrHgrZtWZqHbfSEan15fsOMo3g6lajONqRYc
+         rtetFDuWY5rI5yJEQNc+IeXPWNa69k4ps8tof41xvl/KiZtzSD17GiFyTTCo8syZwe02
+         esPPz1O6j6YoU8aVJzm5ssWOYhGPXyfcumWJmnELKZD+U4L6TdrSqlvAOJtSc1bdN0ON
+         8GNxefQUyb5G1BQ90oL2S1IXRMjlFArvk5TQOKscP46nbaxPwV4c2ebnbqf31kTtr6J9
+         +axpm8R0fHC+hKMIJhsS/h0pqNE3ZQoSpUwNrvCGU4SN4J1ORbVkg46LV+LsJkAs9gmU
+         2zQQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pMVr2MEZLG1T0pxhT+eh8Oo5NondvJT+SQtFk5sRheo=;
+        fh=qaYm4b6GKYlZ0T3gtLZ7fjEfCEC8jMv5XzYe6fOhw1Y=;
+        b=EyZIFAqAZeB86cQCvtgHfM5BbFfN80+QRUKcJcROtxg81bD2jLy5cBwKz7o8nu+yvJ
+         G3NOI0r5dLToLLjgBKmf7I8CMWKMdrAW1fEw4xuBDFdw6MB8AYFBaq9nb0C3uwNL7dXd
+         MoYPbftMH+Xly8m/dYnnut1KblqPGaLjV6UmSl5Zt9YZu7vbvVlVoss7VwIvrCywjpw+
+         WtwZXATqRjLK8PXa6wnJ4z+JETFuO9Ry6adQhWuFWFmH6T2VkQvjTzwVHiG7HPv/odcl
+         ZoTVw6rNt43NJP+eSIaufM15oPIJwOGrzrVi3f7wf19ri6iskGKxkzU8bTFNB4qqmM7j
+         YHjw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1787051884; x=1787656684; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pMVr2MEZLG1T0pxhT+eh8Oo5NondvJT+SQtFk5sRheo=;
+        b=sfinb5vsWQlhCzVZOhMDvDLJKtbVcSNuoQaYuE0rzH5ovjROHYgC4FOYDQBXdezu9g
+         KHq7g6Hicy24I+9DXhWtnTKLZWb5rCPxw+4JdUrDz5vImq6j7GjUzXRvRk5jmtrpR5v9
+         NPRGqN5RmwlWQynIlQ0ziPWI/AbKPRmAXuX6sUvJBBWzSpSNQvpz2Nrp7fG1Kw+MxKLy
+         JzNk5qqq0xj5fyXSLAD5pODdfykdr7Z7fAn8aBNzhS+kvLpXHrl0fY2L2pLsTgcvZEgX
+         /fev96/F0c1WYSYvgp9kv7p1S96K3jOgscKTSn1X0u4YIPxuiA7qf9/2FPuwSIyqxwtU
+         CrNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787051884; x=1787656684;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pMVr2MEZLG1T0pxhT+eh8Oo5NondvJT+SQtFk5sRheo=;
+        b=AAfhhOTube/Cw85tb4Irin/GLODCLVTCMK0/YmZurQAnsjkTyUkaXX5ISC7Aj7GX7R
+         VamjxYcTHGhoA0FkeZxj10oBgpaC7LseNaYDHDQJGPdBodQ2HpVUyKhiekD88IRW0hxC
+         CE3GBoT31UgI8BieFO8MEBZHATppv9BkOOOW2IJk8Tw2fIm758TnoZ+kdcwYHZIeyD2K
+         0buhO29yVAYilpZM9+rVIj4iyWxgeigpTyb7+cMbo9DgL40k0iNJMUTz3biGGrImPvgp
+         mtYAvW5aEWuLU8BtDJmGVERW6YwIVRouCHLRH3Gr9JXhE6o/YtyFLDtqVP6+UK3ud/Uv
+         zgxw==
+X-Gm-Message-State: AOJu0YwVePMl+IIQ8bgUi+Hy/WDTVNXddpMO9exKtJLcso4DucubN0pg
+	oGQ64mXHOq1W39wq+l/2g9gGq1FEbWR5HiXsuaNbygz2u0YnqGV2RKyLkbwhM2AeLVWJ5/85GIg
+	zHV4cejc8lnTGeu0G1kOAooSGRGioGMjW3unalipfHM8XF68i92WoH20CIeXb5cAOvQZEdnuWOy
+	Z0J+wvGB2x8MvY9WGHMKHLbmjyl2d9
+X-Gm-Gg: AR+sD10AuiDGFAgFUjV0u7cEb74f4f+h3yFVqsyEbZyqIh4K00V5wMgDMI8+5Ep+Pei
+	gWDxq9o6f1QNmOUQKlYggN3pX2Qh6ko89BLbMmfneJJpyd/WNxumFo9QAII9YECR1To2MSfFb5M
+	jwoF80wBvl/3tztK4NfayBSdbPzGNsjtb1GYT+fsa5+/xD4KbvDAZjucWCKHOGHOhfAmh4GtbAc
+	20n+ollnlhS1a1239pBYT5L2LuIVEwW3Lr9v2O03msl4Yu1q4JEAIhAiKs=
+X-Received: by 2002:a05:600c:5307:b0:499:8c68:a3aa with SMTP id 5b1f17b1804b1-4998c68a830mr537492735e9.13.1787051884459;
+        Tue, 18 Aug 2026 04:18:04 -0700 (PDT)
+X-Received: by 2002:a05:600c:5307:b0:499:8c68:a3aa with SMTP id
+ 5b1f17b1804b1-4998c68a830mr537491065e9.13.1787051883983; Tue, 18 Aug 2026
+ 04:18:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260818-qom-qapi-v3-16-24b8bbbe3d86@redhat.com>
-References: <20260818-qom-qapi-v3-0-24b8bbbe3d86@redhat.com>
-In-Reply-To: <20260818-qom-qapi-v3-0-24b8bbbe3d86@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- Michael Roth <michael.roth@amd.com>, 
- Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>, 
- Alberto Garcia <berto@igalia.com>, Kevin Wolf <kwolf@redhat.com>, 
- Hanna Reitz <hreitz@redhat.com>, Zhao Liu <zhao1.liu@intel.com>, 
- Jonathan Cameron <jic23@kernel.org>, 
- Elena Ufimtseva <elena.ufimtseva@oracle.com>, 
- Jagannathan Raman <jag.raman@oracle.com>, 
- John Levon <john.levon@nutanix.com>, 
- Thanos Makatos <thanos.makatos@nutanix.com>, 
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Marcelo Tosatti <mtosatti@redhat.com>, Cornelia Huck <cohuck@redhat.com>, 
- Eric Farman <farman@linux.ibm.com>, Matthew Rosato <mjrosato@linux.ibm.com>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@kernel.org>, 
- qemu-block@nongnu.org, linux-cxl@vger.kernel.org, kvm@vger.kernel.org, 
- qemu-s390x@nongnu.org
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12033;
- i=marcandre.lureau@redhat.com; h=from:subject:message-id;
- bh=kkDsnTyWfv1u+mGY4BN2EV0C8BxZN84pizHSkLa2WqU=;
- b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBqhD24aTxEXASPhT+Osx3ZXljnXs+K5N+lIjrFO
- JZnhfyDCXGJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCaoQ9uAAKCRDa6OEJdZac
- 5fj2D/wOz5pK10GoilZo307skGZSzhYILjrPVsLZlvKfm8i8P4yGV6PUhHEENfTDD0riQcDbsAN
- 6zIJF6vTg8VubfY6yJMdrAvBv6YDePkxKGOJKLywVobZjXGUx39WoSh0NeLBktQ29h8ajtJaZE/
- pE9tLF1LyY22iCvSwLhJ207gi2Mz9JONpJGnvSr+ZPdK7NxRw4pW8FSgvINKDhs42QYKmjt40DS
- iActFKKIHRwKqkcTGgTLmwhCasljLgs5ouAgEYaCPkWEDsHAyIXGwLR2DoM870FjZbgMXRv0zQQ
- iOyCmtQ6+Hc92Cvyqwlmn28X2JmwT3zfCpi1oiVvn7AsxrXO/BrUajqgmeiCGt6l1D0zEi+Wd/6
- 2fLXS5bIwwHy6IuYhwU1JG8W6oxQKFozLdHM5e9B7G5fzMk1CXEKC9HjSMFBj1xG6slzlhCxtO4
- 8CYw5I+kAdYacQBVaGs67lD2kHSgPsQe/w4nP6RYKiKNQ4WuNnT8f7sAsRM93HHuRz9mA5hiB2/
- uQXyX/u5zrnduhg3kBkkj+fQVZRL+rz5RboMiPb/p6ODyLuCLEL+KXIzCWNzb8lRskQQUkmJBzS
- GaPXlail/PBUxFkYwyDtdhPbPmdHhN0cP7UdamvLuLKKpWHLvrzKZdteSywzJVlL0TulwsVgItA
- 9urkE1e0xoDnBgQ==
-X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
- fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+References: <20260812213206.1564354-1-seanjc@google.com> <20260812213206.1564354-8-seanjc@google.com>
+In-Reply-To: <20260812213206.1564354-8-seanjc@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 18 Aug 2026 13:17:52 +0200
+X-Gm-Features: AcwNN1VqQAePVv83itLSpe1FLCvt4fRq5vI6bOtkcO6v-qRCJZNpNiVaN8tKnOw
+Message-ID: <CABgObfY8vwGngi9SzFcO5=8eiAeQr4D0G5Zwd85mFg23712JBw@mail.gmail.com>
+Subject: Re: [GIT PULL] KVM: Selftests change for 7.3, part 1
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Convert all callers of object_property_add() and
-object_class_property_add() that register struct-typed properties with
-QAPI visitor-based getters/setters to use object_property_add_qapi() and
-object_class_property_add_qapi() instead.
+On Wed, Aug 12, 2026 at 11:32=E2=80=AFPM Sean Christopherson <seanjc@google=
+.com> wrote:
+>
+> This was supposed to be the "main" selftests pull request, but it ended u=
+p being
+> about half the size of the second pull request.  Yosry's work on the nest=
+ed
+> virtualization infrastructure is by far the most notable thing here.
+>
+> The following changes since commit a204badd8432f93b7e862e7dac6db0fe3d65f3=
+70:
+>
+>   Merge branch 'kvm-chainsaw' into HEAD (2026-06-25 11:32:09 +0200)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/kvm-x86/linux.git tags/kvm-x86-selftests-7.3
+>
+> for you to fetch changes up to b18ee21055a77eb1fb6070cb3f819cd3372c466e:
+>
+>   KVM: selftests: Add a test for KVM_CREATE_VM VM type enforcement (2026-=
+07-31 15:47:25 -0700)
 
-This replaces the manual string type name with a reference to the
-generated QAPITypeInfo constant, enabling QMP introspection to report
-accurate QAPI type information for struct properties. Existing
-getters/setters are preserved unchanged.
+Pulled, thanks.
 
-The cxl-fmw property type is corrected from "CXLFixedMemoryWindow"
-(not a real QAPI type) to "CXLFixedMemoryWindowOptions".
+Paolo
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- authz/list.c              |  2 +-
- block/throttle-groups.c   |  5 +++--
- chardev/char-socket.c     |  3 ++-
- hw/core/machine.c         | 11 +++++++----
- hw/cxl/cxl-host.c         |  4 +++-
- hw/remote/vfio-user-obj.c |  5 +++--
- hw/vfio-user/pci.c        |  5 +++--
- target/i386/cpu.c         | 11 ++++++++---
- target/i386/kvm/tdx.c     |  4 +++-
- target/s390x/cpu-system.c |  4 +++-
- 10 files changed, 36 insertions(+), 18 deletions(-)
-
-diff --git a/authz/list.c b/authz/list.c
-index 363b2ee12c98..ed3d346004c2 100644
---- a/authz/list.c
-+++ b/authz/list.c
-@@ -128,7 +128,7 @@ qauthz_list_class_init(ObjectClass *oc, const void *data)
-         .set = qauthz_list_prop_set_policy,
-     ));
- 
--    object_class_property_add(oc, "rules", "QAuthZListRule",
-+    object_class_property_add_qapi(oc, "rules", &QAuthZListRule_type_info,
-                               qauthz_list_prop_get_rules,
-                               qauthz_list_prop_set_rules,
-                               NULL, NULL);
-diff --git a/block/throttle-groups.c b/block/throttle-groups.c
-index 805e47270c7e..a9d3aea3b54e 100644
---- a/block/throttle-groups.c
-+++ b/block/throttle-groups.c
-@@ -31,6 +31,7 @@
- #include "qemu/thread.h"
- #include "system/qtest.h"
- #include "qapi/error.h"
-+#include "qapi/qapi-type-infos-block-core.h"
- #include "qapi/qapi-visit-block-core.h"
- #include "qom/object.h"
- #include "qom/object_interfaces.h"
-@@ -991,8 +992,8 @@ static void throttle_group_obj_class_init(ObjectClass *klass,
-     }
- 
-     /* ThrottleLimits */
--    object_class_property_add(klass,
--                              "limits", "ThrottleLimits",
-+    object_class_property_add_qapi(klass,
-+                              "limits", &ThrottleLimits_type_info,
-                               throttle_group_get_limits,
-                               throttle_group_set_limits,
-                               NULL, NULL);
-diff --git a/chardev/char-socket.c b/chardev/char-socket.c
-index b629575fcf80..99173d9f3e6e 100644
---- a/chardev/char-socket.c
-+++ b/chardev/char-socket.c
-@@ -31,6 +31,7 @@
- #include "qemu/option.h"
- #include "qapi/error.h"
- #include "qapi/clone-visitor.h"
-+#include "qapi/qapi-type-infos-sockets.h"
- #include "qapi/qapi-visit-sockets.h"
- #include "qemu/yank.h"
- #include "trace.h"
-@@ -1573,7 +1574,7 @@ static void char_socket_class_init(ObjectClass *oc, const void *data)
-     cc->chr_listener_cleanup = tcp_chr_listener_cleanup;
-     cc->chr_get_filename = tcp_chr_get_filename;
- 
--    object_class_property_add(oc, "addr", "SocketAddress",
-+    object_class_property_add_qapi(oc, "addr", &SocketAddress_type_info,
-                               char_socket_get_addr, NULL,
-                               NULL, NULL);
- 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index e617f7804d4e..cd9636dde6e6 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -18,6 +18,7 @@
- #include "hw/core/loader.h"
- #include "qemu/error-report.h"
- #include "qapi/error.h"
-+#include "qapi/qapi-type-infos-machine.h"
- #include "qapi/qapi-visit-machine.h"
- #include "qapi/qapi-commands-machine.h"
- #include "qemu/madvise.h"
-@@ -1114,19 +1115,20 @@ static void machine_class_init(ObjectClass *oc, const void *data)
-     object_class_property_set_description(oc, "dumpdtb",
-         "Dump current dtb to a file and quit");
- 
--    object_class_property_add(oc, "boot", "BootConfiguration",
-+    object_class_property_add_qapi(oc, "boot", &BootConfiguration_type_info,
-         machine_get_boot, machine_set_boot,
-         NULL, NULL);
-     object_class_property_set_description(oc, "boot",
-         "Boot configuration");
- 
--    object_class_property_add(oc, "smp", "SMPConfiguration",
-+    object_class_property_add_qapi(oc, "smp", &SMPConfiguration_type_info,
-         machine_get_smp, machine_set_smp,
-         NULL, NULL);
-     object_class_property_set_description(oc, "smp",
-         "CPU topology");
- 
--    object_class_property_add(oc, "smp-cache", "SmpCachePropertiesWrapper",
-+    object_class_property_add_qapi(oc, "smp-cache",
-+        &SmpCachePropertiesWrapper_type_info,
-         machine_get_smp_cache, machine_set_smp_cache, NULL, NULL);
-     object_class_property_set_description(oc, "smp-cache",
-         "Cache properties list for SMP machine");
-@@ -1208,7 +1210,8 @@ static void machine_class_init(ObjectClass *oc, const void *data)
-                                           "Set RAM backend"
-                                           "Valid value is ID of hostmem based backend");
- 
--    object_class_property_add(oc, "memory", "MemorySizeConfiguration",
-+    object_class_property_add_qapi(oc, "memory",
-+        &MemorySizeConfiguration_type_info,
-         machine_get_mem, machine_set_mem,
-         NULL, NULL);
-     object_class_property_set_description(oc, "memory",
-diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
-index eba13c9e7cba..7592c4ac6c7b 100644
---- a/hw/cxl/cxl-host.c
-+++ b/hw/cxl/cxl-host.c
-@@ -13,6 +13,7 @@
- #include "system/qtest.h"
- #include "hw/core/boards.h"
- 
-+#include "qapi/qapi-type-infos-machine.h"
- #include "qapi/qapi-visit-machine.h"
- #include "hw/cxl/cxl.h"
- #include "hw/cxl/cxl_host.h"
-@@ -570,7 +571,8 @@ void cxl_machine_init(Object *obj, CXLState *state)
-                                     "Set on/off to enable/disable "
-                                     "CXL instantiation");
- 
--    object_property_add(obj, "cxl-fmw", "CXLFixedMemoryWindow",
-+    object_property_add_qapi(obj, "cxl-fmw",
-+                        &CXLFixedMemoryWindowOptions_type_info,
-                         machine_get_cfmw, machine_set_cfmw,
-                         NULL, state);
-     object_property_set_description(obj, "cxl-fmw",
-diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
-index a0498d218faf..7e6819f670b5 100644
---- a/hw/remote/vfio-user-obj.c
-+++ b/hw/remote/vfio-user-obj.c
-@@ -47,6 +47,7 @@
- #include "hw/core/boards.h"
- #include "hw/remote/machine.h"
- #include "qapi/error.h"
-+#include "qapi/qapi-type-infos-sockets.h"
- #include "qapi/qapi-visit-sockets.h"
- #include "qapi/qapi-events-misc.h"
- #include "qemu/notify.h"
-@@ -931,8 +932,8 @@ static void vfu_object_class_init(ObjectClass *klass, const void *data)
- 
-     k->nr_devs = 0;
- 
--    object_class_property_add(klass, "socket", "SocketAddress", NULL,
--                              vfu_object_set_socket, NULL, NULL);
-+    object_class_property_add_qapi(klass, "socket", &SocketAddress_type_info,
-+                              NULL, vfu_object_set_socket, NULL, NULL);
-     object_class_property_set_description(klass, "socket",
-                                           "SocketAddress "
-                                           "(ex: type=unix,path=/tmp/sock). "
-diff --git a/hw/vfio-user/pci.c b/hw/vfio-user/pci.c
-index e7573d4a9f08..246bd5a90925 100644
---- a/hw/vfio-user/pci.c
-+++ b/hw/vfio-user/pci.c
-@@ -8,6 +8,7 @@
- 
- #include "qemu/osdep.h"
- #include <sys/ioctl.h>
-+#include "qapi/qapi-type-infos-sockets.h"
- #include "qapi-visit-sockets.h"
- #include "qemu/error-report.h"
- 
-@@ -466,8 +467,8 @@ static void vfio_user_pci_class_init(ObjectClass *klass, const void *data)
-     device_class_set_legacy_reset(dc, vfio_user_pci_reset);
-     device_class_set_props(dc, vfio_user_pci_properties);
- 
--    object_class_property_add(klass, "socket", "SocketAddress", NULL,
--                              vfio_user_pci_set_socket, NULL, NULL);
-+    object_class_property_add_qapi(klass, "socket", &SocketAddress_type_info,
-+                              NULL, vfio_user_pci_set_socket, NULL, NULL);
-     object_class_property_set_description(klass, "socket",
-                                           "SocketAddress (UNIX sockets only)");
- 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index e5ffb10d1565..3b30ded0cc02 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -35,6 +35,8 @@
- #include "sev.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
-+#include "qapi/qapi-type-infos-machine.h"
-+#include "qapi/qapi-type-infos-run-state.h"
- #include "qapi/qapi-visit-machine.h"
- #include "standard-headers/asm-x86/kvm_para.h"
- #include "hw/core/qdev-properties.h"
-@@ -10514,10 +10516,12 @@ static void x86_cpu_initfn(Object *obj)
- 
-     x86_cpu_init_default_topo(cpu);
- 
--    object_property_add(obj, "feature-words", "X86CPUFeatureWordInfo",
-+    object_property_add_qapi(obj, "feature-words",
-+                        &X86CPUFeatureWordInfo_type_info,
-                         x86_cpu_get_feature_words,
-                         NULL, NULL, (void *)env->features);
--    object_property_add(obj, "filtered-features", "X86CPUFeatureWordInfo",
-+    object_property_add_qapi(obj, "filtered-features",
-+                        &X86CPUFeatureWordInfo_type_info,
-                         x86_cpu_get_feature_words,
-                         NULL, NULL, (void *)cpu->filtered_features);
- 
-@@ -10977,7 +10981,8 @@ static void x86_cpu_common_class_init(ObjectClass *oc, const void *data)
-                               NULL, NULL);
- 
- #if !defined(CONFIG_USER_ONLY)
--    object_class_property_add(oc, "crash-information", "GuestPanicInformation",
-+    object_class_property_add_qapi(oc, "crash-information",
-+                              &GuestPanicInformation_type_info,
-                               x86_cpu_get_crash_info_qom, NULL, NULL, NULL);
- #endif
- 
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 8294dbde3aa8..81c5ba3a1b54 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -14,6 +14,7 @@
- #include "qemu/base64.h"
- #include "qemu/mmap-alloc.h"
- #include "qapi/error.h"
-+#include "qapi/qapi-type-infos-sockets.h"
- #include "qapi/qapi-visit-sockets.h"
- #include "qom/object_interfaces.h"
- #include "crypto/hash.h"
-@@ -1586,7 +1587,8 @@ static void tdx_guest_init(Object *obj)
-                             tdx_guest_get_mrownerconfig,
-                             tdx_guest_set_mrownerconfig);
- 
--    object_property_add(obj, "quote-generation-socket", "SocketAddress",
-+    object_property_add_qapi(obj, "quote-generation-socket",
-+                            &SocketAddress_type_info,
-                             tdx_guest_get_qgs,
-                             tdx_guest_set_qgs,
-                             NULL, NULL);
-diff --git a/target/s390x/cpu-system.c b/target/s390x/cpu-system.c
-index cc9685221ae8..4c2a91d0ff51 100644
---- a/target/s390x/cpu-system.c
-+++ b/target/s390x/cpu-system.c
-@@ -30,6 +30,7 @@
- #include "system/reset.h"
- #include "qemu/timer.h"
- #include "trace.h"
-+#include "qapi/qapi-type-infos-run-state.h"
- #include "qapi/qapi-visit-run-state.h"
- #include "system/hw_accel.h"
- 
-@@ -130,7 +131,8 @@ void s390_cpu_system_init(Object *obj)
-     S390CPU *cpu = S390_CPU(obj);
- 
-     cs->start_powered_off = true;
--    object_property_add(obj, "crash-information", "GuestPanicInformation",
-+    object_property_add_qapi(obj, "crash-information",
-+                        &GuestPanicInformation_type_info,
-                         s390_cpu_get_crash_info_qom, NULL, NULL, NULL);
-     cpu->env.tod_timer =
-         timer_new_ns(QEMU_CLOCK_VIRTUAL, s390x_tod_timer, cpu);
-
--- 
-2.55.0.543.g5ebe2ebe4ea8
+> ----------------------------------------------------------------
+> KVM selftests changes for 7.3, part 1
+>
+>  - Clean up nested SVM's handling of GPRs on L2<=3D>L1 transitions, reuse=
+ the
+>    functionality for nested VMX, and drop the ucall hack that was fudging
+>    around the lack of GPR switching on nVMX.
+>
+>  - Add a stress test to verify KVM doesn't clobber/drop #PF state, e.g. C=
+R2,
+>    across save/restore, including when L2 is active.
+>
+>  - Add a test to verify KVM_CREATE_VM accepts exactly what is reported by
+>    KVM_CAP_VM_TYPES.
+>
+>  - Misc selftests fixes and cleanups
+>
+> ----------------------------------------------------------------
+> Hemanth Selam (1):
+>       KVM: selftests: Add a test for KVM_CREATE_VM VM type enforcement
+>
+> Sean Christopherson (2):
+>       KVM: selftests: Drop superfluous use of pthread_attr_setaffinity_np=
+()
+>       KVM: selftests: Randomize pCPU in steal time test
+>
+> Shivank Sharma (1):
+>       KVM: selftests: Fix typos in x86 and riscv tests
+>
+> Wang Yan (1):
+>       KVM: selftests: Fix a spelling error in an xapic_ipi_test comment
+>
+> Yosry Ahmed (13):
+>       KVM: selftests: Use __stringify() instead of custom XSTR() macros
+>       KVM: selftests: Fix RAX and RFLAGS VMCB offsets when running L2
+>       KVM: selftests: Rework GPR registers switching for SVM (and fix off=
+sets)
+>       KVM: selftests: Handle rflags save/restore for SVM in guest_regs
+>       KVM: selftests: Reuse GPR switching logic for nVMX
+>       KVM: selftests: Drop HORRIFIC_L2_UCALL_CLOBBER_HACK
+>       KVM: selftests: Add a blank line before logging assertion failures
+>       KVM: selftests: Expose PTE masks to guests as part of an MMU
+>       KVM: selftests: Do not intercept #PF by default in nVMX tests
+>       KVM: selftests: Add basic stress test for save+restore and #PF hand=
+ling
+>       KVM: selftests: Trigger save+restore randomly in the #PF stress tes=
+t
+>       KVM: selftests: Support running stress save+restore and #PF test in=
+ L2
+>       KVM: selftests: Trigger L2->L1 exits stress save+restore and #PF te=
+st
+>
+>  tools/testing/selftests/kvm/Makefile.kvm           |   2 +
+>  tools/testing/selftests/kvm/include/test_util.h    |   1 +
+>  tools/testing/selftests/kvm/include/x86/evmcs.h    |  46 ++--
+>  .../testing/selftests/kvm/include/x86/processor.h  |  52 +++-
+>  tools/testing/selftests/kvm/include/x86/vmx.h      |  69 +++--
+>  tools/testing/selftests/kvm/lib/assert.c           |   2 +-
+>  tools/testing/selftests/kvm/lib/x86/processor.c    |  14 +
+>  tools/testing/selftests/kvm/lib/x86/svm.c          |  62 +++--
+>  tools/testing/selftests/kvm/lib/x86/ucall.c        |  32 +--
+>  tools/testing/selftests/kvm/lib/x86/vmx.c          |   2 +-
+>  tools/testing/selftests/kvm/riscv/sbi_pmu_test.c   |   4 +-
+>  tools/testing/selftests/kvm/steal_time.c           |  15 +-
+>  tools/testing/selftests/kvm/vm_types_test.c        |  48 ++++
+>  .../selftests/kvm/x86/evmcs_smm_controls_test.c    |   5 +-
+>  .../testing/selftests/kvm/x86/fix_hypercall_test.c |   1 -
+>  tools/testing/selftests/kvm/x86/hyperv_clock.c     |   4 +-
+>  tools/testing/selftests/kvm/x86/hyperv_evmcs.c     |   2 +-
+>  .../kvm/x86/save_restore_pf_stress_test.c          | 288 +++++++++++++++=
+++++++
+>  tools/testing/selftests/kvm/x86/sev_init2_tests.c  |   4 -
+>  tools/testing/selftests/kvm/x86/smm_test.c         |   5 +-
+>  .../kvm/x86/vmx_invalid_nested_guest_state.c       |   2 +-
+>  tools/testing/selftests/kvm/x86/xapic_ipi_test.c   |   2 +-
+>  22 files changed, 502 insertions(+), 160 deletions(-)
+>  create mode 100644 tools/testing/selftests/kvm/vm_types_test.c
+>  create mode 100644 tools/testing/selftests/kvm/x86/save_restore_pf_stres=
+s_test.c
+>
 
