@@ -1,128 +1,148 @@
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8376B47CC8D
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 16:11:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18753C584B;
+	Tue, 18 Aug 2026 16:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787069478; cv=none; b=Idnroz1K3zvTMhfIyiU/zyOmgJyktO/BbOKIGNdqqmOXahjDELBwvNoQ5rH1kSnK+d9l0ajU7whbQQH4WacOFAIMEGfy9GgLQC7zymb+uMADam5+W6BOJXxzNJzVHsiW8GRJgkrhpx2dUEc25kPIyOLxpx+H/9/wQpKyuRoVo9A=
+	t=1787069680; cv=none; b=YcUJ8ZOfJsiqyK2bGoO2lS3h3O1W4fD5aGdGac43v0sQzijeLvNvDWs/HXIuUo3X63tapIbkkzT8Dzr6rwIvhbDUhHNNv9w0/B6qDrNv75tJ+Fc1Ef+SjIVvrtqoaUHEXseKkUue8CkbiPdWZsowIFfLOCKzGi+SOYw5vmJxA+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787069478; c=relaxed/simple;
-	bh=wQ68heHkCupu6WSEgt5iLdHD+hbjTh1juZ0Wnx2wjUk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=f+QRD1CvTtk/De84uoWYhz6b4pt3jCFhRtp9oeLJjpDNBR9ecOzOaAHMgD9F43fs98oIjfUzu/jzeeJ9YuJsGWUK+55iZwEAAp2znPXMPaGiCelMmOnYVxaqXr75H17g0NMjX77vUCFKqDf3C1gPxUCfGGpTXW6l1insXB5Fr50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l+LvMm8s; arc=none smtp.client-ip=209.85.218.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
+	s=arc-20240116; t=1787069680; c=relaxed/simple;
+	bh=Cg7/CNiQ3ccF5ixrvDgAh1nZY8fhV+3ahz/NLquQvVI=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hHNH7YJdbMqK9+hq/G1fhquMTSunQv6KTlOAMX8ydVHC9m2UGb295UqiSFAO1YMdH1Yrf1ivvPjXC09RhVjADjzqbeEuWSkuEDDTVuskcqNqAocJXnpynEyQdxZHtrfWp0NdN9A3Cr635IThKr8IVlQtmiBzNoi7OA5/NGL/A9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L2M24O0h; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l+LvMm8s"
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c20e5890680so381563266b.1
-        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 09:11:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787069475; x=1787674275; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gq4c916t8aM4R9/gOTYj07vE672c6Dn+UdOcLkpJL3k=;
-        b=l+LvMm8snBBsWECYIUzFC/FYZKd8BCHWXXdjW86FH+8zen02glu3JguuWDnQPCB2Vj
-         6JSbrezX0QkGQUe7DCHqb7lIHyJ6DreZ5OV5OsgVKckVwYwiQgHUkQRHFDTHjaBxfoEC
-         81KrXCr0adh8evguBiehgNFV4QaRWwogOo4v9jEyImzj+Dm9NH6PftFvkqkJbpNGR4Lf
-         4vM95YMYHA0ePcyiNZ+pPUaR3GMn+U2G+MAN12W0O4Qq9iVjLLpsmaJtp9ntOcZ+ooPg
-         sAJKrJRK09qJKgQtTrADZeeOXEwVc9DcrP4q8zO9K8J/ndw2VAAgoEk+TLA8A1fWS+gD
-         Dj/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787069475; x=1787674275;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gq4c916t8aM4R9/gOTYj07vE672c6Dn+UdOcLkpJL3k=;
-        b=Ht6jKZBHJ4IgqnENj69RLIMN6pmRduQj0LJVo2sar6qufdHiDL8EUri7azkgCQNetO
-         xtjZEtB5lk03NokNbJBsdxT6u2DfXYMXHm+weAtgrHx8mSHu29fzB90dIQ5JAymcgkv5
-         diWHhiNiG+k+GQgTnPaHJbtphgxUDkITEZr1loEcQMUdmpuqenfNG+rhcteVzvjUY5aC
-         dVTFjfNXMcSvnIwVq6NEKB6EzzbByVt714sco6/mDys9JknOgNKTQ51Q4I+Gx/pZitzF
-         nVhsjtsLRjV5aH2GVKdK+eHv0Vt7S+naK+VbTOjdKurkdPfMIhGdv6rnHdy5a/8zTh76
-         xVww==
-X-Forwarded-Encrypted: i=1; AHgh+RrFOMOA9YxyUoKcioYvRRZkHj4m/R01rbgNZ8QN3rmd16RwAJgu95z/ayJkUEm3RUC1bkU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwevYKQvuaY3F4fAy3q76f53Hz1pXUBu6v/q0yMyBaooBXBN/wO
-	eJTxnsYJWaramKuKdV/5VCloq3qIKObINsC212f2CCbtyJeDoGnqlfBgeQJtfeBMs6TU+L8+g3l
-	0mqMio/ZF8f3yMsru8Q==
-X-Received: from edrs9.prod.google.com ([2002:aa7:c549:0:b0:6a3:6b8a:8011])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:434c:b0:69a:928:9405 with SMTP id 4fb4d7f45d1cf-6a38a8dbbefmr17632626a12.1.1787069474414;
- Tue, 18 Aug 2026 09:11:14 -0700 (PDT)
-Date: Tue, 18 Aug 2026 16:11:13 +0000
-In-Reply-To: <ans2Qvo0453cc_DD@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L2M24O0h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F941F000E9;
+	Tue, 18 Aug 2026 16:14:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787069679;
+	bh=E0J6en3McpYf9F3IxCn2pxIwSRX4Sv7Jj1OiegFfc7A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=L2M24O0hdXxRP3tm59T84NCNnDVISHqkiqUYrBmFkaK9Zxn+UU6RY+1ibYtLAOP4P
+	 w77I7rJ1UVIqEBvr7OYNHw5Evgs1a61TzJj4bqv/9WtPio7GVIp9AnrUaEgobojg0s
+	 VrRatuspsj24LXb0d1/r/xKxa3dDKh8tAfPFPH+xS4TyZG8rHSOZtshjBxfXaLxY/C
+	 Wbqufj5/2TLQ1fWWwhROhy9xhOS0ZPqvhx5fV5X3QGIyRjObBlI2GNjvxV1mWEUTIc
+	 T2i492GYAQe8+nAxmplV9Q5m8VYXju5lKqUafLRI3HTS5AmBtj701x/aYgzgo2wqgJ
+	 vl/TJGCBio2XA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wwMST-0000000GhFw-37bp;
+	Tue, 18 Aug 2026 16:14:37 +0000
+Date: Tue, 18 Aug 2026 17:14:37 +0100
+Message-ID: <868q635rte.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steffen Eiden <seiden@linux.ibm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Grapentin <gra@linux.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Friedrich Welter <fritz@linux.ibm.com>,
+	Fuad Tabba <tabba@google.com>,
+	Gautam Gala <ggala@linux.ibm.com>,
+	Hariharan Mari <hari55@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Nico Boehr <nrb@linux.ibm.com>,
+	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+	Oliver Upton <oupton@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Will Deacon <will@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH v6 08/33] KVM: arm64: Use accessor functions for core regs
+In-Reply-To: <20260818142931.21865-G-seiden@linux.ibm.com>
+References: <20260812153631.3376090-1-seiden@linux.ibm.com>
+	<20260812153631.3376090-9-seiden@linux.ibm.com>
+	<86a4qq1gyy.wl-maz@kernel.org>
+	<20260818092924.21865-C-seiden@linux.ibm.com>
+	<86ecfv613k.wl-maz@kernel.org>
+	<20260818142931.21865-G-seiden@linux.ibm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260728121138.1103610-1-tarunsahu@google.com>
- <20260728121138.1103610-2-tarunsahu@google.com> <anpXjM_lg_UTpl0q@google.com>
- <9huzqzk4zt3n.fsf@tarunix.c.googlers.com> <ans2Qvo0453cc_DD@google.com>
-Message-ID: <9huzlda3v272.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 01/11] liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
-From: tarunsahu@google.com
-To: Sean Christopherson <seanjc@google.com>
-Cc: ackerleytng@google.com, fuad.tabba@linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
-	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
-	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
-	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
-	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
-	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
-	suzuki.poulose@arm.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, tabba@google.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, seanjc@google.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Sean Christopherson <seanjc@google.com> writes:
+On Tue, 18 Aug 2026 15:29:31 +0100,
+Steffen Eiden <seiden@linux.ibm.com> wrote:
+> 
+> On Tue, Aug 18, 2026 at 01:54:07PM +0100, Marc Zyngier wrote:
+> > On Tue, 18 Aug 2026 10:29:24 +0100,
+> > Steffen Eiden <seiden@linux.ibm.com> wrote:
+> > > 
+> > > On Thu, Aug 13, 2026 at 10:56:37AM +0100, Marc Zyngier wrote:
+> > > > On Wed, 12 Aug 2026 16:36:04 +0100,
+> > > > Steffen Eiden <seiden@linux.ibm.com> wrote:
+> > > > >
+> > 
+> > [...]
+> > 
+> > > > > diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
+> > > > > index b01d6622b872..773f6c8e5026 100644
+> > > > > --- a/arch/arm64/kvm/guest.c
+> > > > > +++ b/arch/arm64/kvm/guest.c
+> > > > > @@ -134,19 +134,19 @@ static void *core_reg_addr(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
+> > > > >  	     KVM_REG_ARM_CORE_REG(regs.regs[30]):
+> > > > >  		off -= KVM_REG_ARM_CORE_REG(regs.mregs[0]);
+> > > > >  		off /= 2;
+> > > > > -		return &vcpu->arch.ctxt.regs.regs[off];
+> > > > > +		return &vcpu_gp_regs(vcpu)[off];
+> > > > 
+> > > > Doesn't this belong to the previous patch?
+> > > > 
+> > > 
+> > > My thoughts about positioning this change in this patch:
+> > > 
+> > > The previous patch changes the semantics of vcpu_gp_regs and just
+> > > touched the part where the old semantic of the function was used.
+> > > This is mainly done by not using vcpu_gp_regs where it was used before
+> > > as it cannot be used to access e.g. pstate anymore.
+> > > 
+> > > This patch then introduces and *uses* new accessor functions for
+> > > abstractions (and uses the vcpu_gp_regs abstraction where it was not
+> > > used before). 
+> > > -> The patch changes direct accesses to using accessor functions.
+> > > 
+> > > However, I have no strong feelings for this. If you want this in the
+> > > previous patch, I can do that.
+> > 
+> > I think it'd make more sense. You can capture this in the commit
+> > message to make it clear.
+> 
+> Just that we are on the same page: you want me to move the change to the
+> previous patch?
 
-> On Tue, Aug 11, 2026, tarunsahu@google.com wrote:
->> Sean Christopherson <seanjc@google.com> writes:
->> 
->> > On Tue, Jul 28, 2026, Tarun Sahu wrote:
->> >> Introduce the LIVEUPDATE_GUEST_MEMFD Kconfig option. This option
->> >> enables live update support for KVM guest_memfd files, enabling
->> >> guest_memfd-backed memory preservation across kernel upgrades.
->> >> 
->> >> Currently this support only guest_memfd files that are full-shared
->> >> (INIT_SHARED and no support for private_mem).
->> >
->> > Why?  Specifically, why do we need/want a separate Kconfig for guest_memfd
->> > liveupdate versus KVM liveupdate?  I can _maybe_ see a KVM-wide Kconfig, but
->> > even that seems like a stretch given that (AFAIK) hypervisors are the one and
->> > only use-case for liveupdate.
->> 
->> LIVEUPDATE is used in many subsystem. It is possible to enable
->> liveupdate and kvm without enabling KVM_GUEST_MEMFD. So GUEST_MEMFD
->> preservation must depend on CONFIG_LIVEUPDATE and KVM_GUEST_MEMFD both.
->> LIVEUPDATE_GUEST_MEMFD Kconfig is wrapper on both of them. It need not
->> to be visible in menu, So I can make it hidden. WDYT?
->> 
->> Also, KVM VM_FILE preservation and GUEST_MEMFD preservation both depends
->> on LIVEUPDATE_GUEST_MEMFD in this patch series. [PATCH 05/11]*
->> Which is wrong. So I will update KVM VM_FILE preservation to depend only
->> on CONFIG_LIVEUPDATE.
->
-> Or just handle it all in the makefile?  E.g.
->
-> diff --git virt/kvm/Makefile.kvm virt/kvm/Makefile.kvm
-> index d047d4cf58c9..e6f098498795 100644
-> --- virt/kvm/Makefile.kvm
-> +++ virt/kvm/Makefile.kvm
-> @@ -13,3 +13,8 @@ kvm-$(CONFIG_HAVE_KVM_IRQ_ROUTING) += $(KVM)/irqchip.o
->  kvm-$(CONFIG_HAVE_KVM_DIRTY_RING) += $(KVM)/dirty_ring.o
->  kvm-$(CONFIG_HAVE_KVM_PFNCACHE) += $(KVM)/pfncache.o
->  kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd.o
-> +
-> +ifdef CONFIG_LIVEUPDATE
-> +kvm-y += $(KVM)/kvm_luo.o
-> +kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd_luo.o
-> +endif
+Yes, please.
 
-Sounds Good to me. Will take care of it. Thanks.
+	M.
 
+-- 
+Without deviation from the norm, progress is not possible.
