@@ -1,254 +1,155 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B3937D100;
-	Tue, 18 Aug 2026 20:44:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA0337A85A
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 20:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787085847; cv=none; b=RJ2EGNqnYEfLmDidlTdnCBuwRojyh7cMfYG224dl9E3cH1cHOGpX7z2ZjO39cBmYaSjZqB4zhiiqyHcVtKIr+c9qourw/XEb0/0X8n5eUaTEqmSsHR9jRdKV9PwqydRmIDzR9einZqu2pp4ipL2et3dAMPjiayj3wkjPotz5Xfk=
+	t=1787085884; cv=none; b=ofGnCuTHbAphB/XZcWz81RNKlO41bkz/+3nDwpMhpM6FQNZX2VFmrJkn4gzJdc1CAxB9cX+eBDfsEFPz7ctrZKMXmghcYdqoZ1yyb8UsalHXC+7kD+9ewVJMcbtngDjuSX4oQ0h5GTk1Q0p5zQ482HLaLG3QRaP5jiRT5mWWdhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787085847; c=relaxed/simple;
-	bh=Z7ZlvHNN+uT/g3W2zJOSvlcAMzmx2DLJ1ORjKL5kCOU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ph0uoiO81kvOCdQihZgGI/kiJMOWw6iYN/LLWA5C57uvRZgrTjC+mhY2RC1F0gJdpMwsSntfQbf+U/EPtZs4jhMfZ1U3rZe9E2tCTwERMjOp7xAjHjW1euVLWdNynUzjnXKF5eJWXBya43UQmEBbyTiQAYpHka8kgMMITWJ/eYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ktNhVOU9; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1787085884; c=relaxed/simple;
+	bh=EWSo94o+NC9AsqgKot1Osv3Re8bXshk6/su2AINZpnw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=rxdtsx/WZh0l/jGHzjeMiLBRknSGGez8Jmx5v6vZDqY/zmf9XcjUe/zFehgve0uZV+4PFAUycRC6hOqJXnUuXxZKaCfTGIBCSzlYwhRRgbmap5rq6pPPVV1W6sDZS09vk1+rgBo7MzDLPV/hUEdatMwO/Jt3oUIho0jz+5GfWiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackyli.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jgmqMgGC; arc=none smtp.client-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackyli.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ktNhVOU9"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67IJVu0L1210575;
-	Tue, 18 Aug 2026 20:44:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=erZ8hz
-	bT+OBjVmZlnoqX5tGmnaNkahSolE0j2rhpxmw=; b=ktNhVOU9Bsdh2nBqwZqF0L
-	pSCtg2XuL2bWAUdP6yh89tR/GY9uItW/EYdWlK5uKt8LM6vHsLjNnLqxdcanW8mt
-	SRsNL7wGDrNmOTYYXVBEMMGS5PJYkexeEu7RODWBroXA4w1iUi5tHDL4Knv9R5z3
-	JtElQIewmFw8SRSqXbSU8st+VmjVqpGn6NsQzGzZVWfq3IhZy6VEhhYyIax/dkUL
-	5+39FC3tbee7SNcAwq7bg0VTUeuRNNmVrHBToga2VlprdI8r6J/Fzo0Py8+CFt7q
-	Z92GpHHt878nKBWF28k//W6YpluU0Tjop8WBIUSPY1C+36PmmMLZuBCzczl6DKMw
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2fm3tu06-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Aug 2026 20:44:03 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67IKfNDD012492;
-	Tue, 18 Aug 2026 20:44:02 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g33xh5c5b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Aug 2026 20:44:02 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67IKhLtS50463092
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Aug 2026 20:43:21 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 503355805F;
-	Tue, 18 Aug 2026 20:44:00 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7C82C5805A;
-	Tue, 18 Aug 2026 20:43:59 +0000 (GMT)
-Received: from [9.61.131.241] (unknown [9.61.131.241])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 18 Aug 2026 20:43:59 +0000 (GMT)
-Message-ID: <f3fce9e7-f59e-4cdf-861a-83ca44d3bc68@linux.ibm.com>
-Date: Tue, 18 Aug 2026 16:43:59 -0400
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jgmqMgGC"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cb835525b10so227606a12.2
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 13:44:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787085882; x=1787690682; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=zgsgqcz30KQGgMzP9vxq2oYMMooKqJ9S2gmDtPTjvA8=;
+        b=jgmqMgGC6GT5OOxF2KzS71muPUlBj1fyhwxW4BgD0BvjG+C1BPqo5RpfVM8H2qKWND
+         O82XzMydcowD+xYb4NmnlyMqnJlPPZsyrNcCefDpClFGLsXgec/K3KIJr5t+64gO39Nm
+         lwWPwEwD5FMnDVhL2dn0VN9wZjRmVUa8H8LuKOOa7U8hNG7Ua0pOXZKB/FJQcRqfvz7g
+         I+25OK96BYJXSWNeJzDcBalrstJG0GiRF1IZZgL9D+sNO4ByAnGCb7vVE2k7nrj31Llu
+         HEcMqFMIbQNteDGUG95bu4+IISWU9H5afoJBWbGIalpbqBIaMELiw05fF7hQFUc66ppO
+         LBZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787085882; x=1787690682;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zgsgqcz30KQGgMzP9vxq2oYMMooKqJ9S2gmDtPTjvA8=;
+        b=CRFbZJIQ/Irkiv+Vq1KMLgCOJmSHcqwlwK2RMol6oH/M1UXDiBYg87+HUCwrlYU854
+         qNc0oJ2LJtzEp/KmQedW/44lviHucgVfYNfLqwogdn/m3jo5fq2+DBzk7eUn0ju/7pmd
+         pGJHbJ8lEZobD9bNspZ16Wr+Hex7krOR4/OE1AOMHzR2MHOWO4OTZsfuR//4wxJCPy7p
+         XuEnwoF2vhjrAQOFY5kHJ7cTAnzHWuGzC8sHKYyxSjYAp8zixC8degxy9G76XkYljrA5
+         rMj0gqrcuuKzQ598d4TaAORpeTu/4+/OB4I2UKOEfPUA41/07x1/ZJ3h8PAVIX1smuqY
+         ApEg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq3d4dMnFaqMn+bxU7RjMjMidgvl5fvZRPrPfQrpohdQKPt831R+Fg5Eva3ecYgor9NMJU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyF/ZBGldotKU+CyCQcUM8yg80D+myxpeAMbnjoz+Ac1ibWJ5fH
+	tDXYotF/YIyT//ZgLNGgDzV6JgtfeSeNoIKcpJsXuoZvdU98sr3m33/SfgmZFE55h0ZVeTXfIYD
+	niiyQVbTo
+X-Received: from pgbg13.prod.google.com ([2002:a63:520d:0:b0:cbe:9dc7:9efa])
+ (user=jackyli job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:94c8:b0:3c4:1c9f:d81
+ with SMTP id adf61e73a8af0-3ccff3c3fd3mr751374637.7.1787085882100; Tue, 18
+ Aug 2026 13:44:42 -0700 (PDT)
+Date: Tue, 18 Aug 2026 20:44:14 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] KVM: s390: Fix dirty marking in
- adapter_indicators_set*()
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
-        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com,
-        Douglas Freimuth <freimuth@linux.ibm.com>
-References: <20260814163355.227191-1-imbrenda@linux.ibm.com>
- <20260814163355.227191-2-imbrenda@linux.ibm.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <20260814163355.227191-2-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: PyrFmRkyfLPw6O-RdWhFK_UM6cRx4yiM
-X-Proofpoint-ORIG-GUID: PyrFmRkyfLPw6O-RdWhFK_UM6cRx4yiM
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDE1MCBTYWx0ZWRfX40fVJWPjNk+u
- 05agxNXaFIY0yKyKApAFp8jakFi+YLo3tplfsoed4V5JTE6kLMu4sPr3FfNLb6ROVF5dEcogFnJ
- 07KXE4wCP1ZulokhrUdtRKEkN7i/1iY=
-X-Authority-Analysis: v=2.4 cv=WtQb99fv c=1 sm=1 tr=0 ts=6a84c413 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=3qhqli0Z9PzkQMhm4CIA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDE1MCBTYWx0ZWRfXxLDFDT4bBSox
- yifcbJZn2w/45O71PM/o2MG2toNhHjxEzJiSY1PYpjA2Q9oa6i6C0eQKcyr/KviLiVvKEm7E9MA
- lwkFOAoCQHTn2HFh8vSvoEfkHPGVrYlJlYSlQzS9rll40YXcG7LOA3utdZSC4XdooXbuY2UcxAJ
- khOl73r27ySULXfD0yHhGHoqHbA9wgigKkSXe80E0PQqRvPeOteSNtkEH3PLtS9umatixWtcpts
- aLkJSujOLx+u8FN+E7UcJlDR1hSNLXZUilXH+nuffrkSiBZnY66X0Uz6xGXW5kkSe/zN69NPjE5
- lClMfEHmGUyyGWG6jW6MjHhdf3+b2vKV6EbQJsPURg0+0fEQbW5or8821p064veeIdKR+pOdFr5
- SUxlvfXnbZntPrKe4R1d/1sih7/noESKgUv2doG+YBreAKOndI+/O/uJB8qlmDXJ9MjtSc5vXlv
- laYJYHk6AVCOzwrQc6A==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-18_04,2026-08-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0 malwarescore=0 suspectscore=0 phishscore=0
- lowpriorityscore=0 clxscore=1015 adultscore=0 priorityscore=1501
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608180150
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAB7EhGoC/32Nyw6CMBBFf4V07Zg+eBRX/odhUdoBGpWSFhsJ4
+ d8trNzo8tzJObOSgN5iIJdsJR6jDdaNCdgpI3pQY49gTWLCKS9pxWvoUM0vjzDdcQGDEbRU6WZ
+ aWbQ5SdrksbPvI3lrEg82zM4vx4fI9vVPLDKgoIURvFBtVdd47Z3rH3jW7rnHD1My9sOUpkKZF yXjVHybzbZtHzLFcVnrAAAA
+X-Change-Id: 20260729-feature-pkey-dev-c8a026db85b4
+X-Mailer: b4 0.14.3
+Message-ID: <20260818-feature-pkey-dev-v1-0-8c0ef96a4da9@google.com>
+Subject: [RFC PATCH 0/6] Protect VMM from speculative attacks using x86 PKRU
+From: Jacky Li <jackyli@google.com>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>, 
+	Richard Henderson <richard.henderson@linaro.org>, 
+	"=?utf-8?q?Philippe_Mathieu-Daud=C3=A9?=" <philmd@mailo.com>, Peter Xu <peterx@redhat.com>, kvm@vger.kernel.org, 
+	James Houghton <jthoughton@google.com>, Mingwei Zhang <mizhang@google.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Brendan Jackman <jackmanb@google.com>, 
+	Reiji Watanabe <reijiw@google.com>, Jacky Li <jackyli@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/14/26 12:33 PM, Claudio Imbrenda wrote:
-> When the indicator and/or summary bits are set in the guest, the
-> accessed page was only marked dirty in KVM if the access was performed
-> using the slow path; accesses through the new kvm_arch_set_irq_inatomic
-> fast inject path would not mark the page as dirty.
-> 
-> Fix by adding/moving the missing calls to mark_page_dirty(). Note that
-> for the inatomic path set_page_dirty{,_lock}() is not needed as the
-> page stays pinned; the unpin path correctly marks it as dirty.
-> 
-> Opportunistically reorder the local variables to be in reverse
-> Christmas tree order and refactor to use guard().
-> 
-> Fixes: 1e95e3bc6b05 ("KVM: s390: Enable adapter_indicators_set to use mapped pages")
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Hi,
 
-The code itself looks good to me:
+This RFC patch series introduces a hardware-assisted memory protection
+mechanism in QEMU using x86 Protection Keys for Userspace (PKRU / MPK)
+to complete the Address Space Isolation ecosystem by protecting the VMM
+from guest-to-host speculative execution attacks.
 
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+In a guest-to-host speculative side-channel attack against QEMU, a
+malicious guest mistrains the VMM branch predictor to execute a
+speculative gadget in host mode. This gadget speculatively reads a
+host secret and uses that secret as an index to touch guest RAMBlocks,
+leaving an observable microarchitectural footprint in the CPU cache.
+Existing mitigations like issuing IBPB on every VM-exit incur high
+overhead, while guest_memfd cannot protect memory that must stay mapped.
 
-Doug, can you please test (w/ lockdep enabled)?
+To break this covert channel, we protect guest RAMBlocks using a
+dedicated pkey (pkey_mprotect).
 
-Thanks,
-Matt
+- During normal QEMU host userspace execution (I/O handling, timers,
+  event loops), we lock this pkey by setting PKEY_DISABLE_ACCESS in
+  the PKRU register via WRPKRU. Because CPU pipelines natively enforce
+  PKRU restrictions during out-of-order execution, any speculative
+  gadget in host mode attempting to touch guest RAMBlocks is blocked by
+  the MMU at the hardware level, leaving zero footprint in the cache.
 
-> ---
->  arch/s390/kvm/interrupt.c | 40 ++++++++++++++++++++-------------------
->  1 file changed, 21 insertions(+), 19 deletions(-)
-> 
-> diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-> index da740a378a8c..fc4d1f8193d9 100644
-> --- a/arch/s390/kvm/interrupt.c
-> +++ b/arch/s390/kvm/interrupt.c
-> @@ -2984,12 +2984,14 @@ static int adapter_indicators_set(struct kvm *kvm,
->  				  struct s390_io_adapter *adapter,
->  				  struct kvm_s390_adapter_int *adapter_int)
->  {
-> -	unsigned long bit;
-> -	int summary_set, idx;
->  	struct s390_map_info *ind_info, *summary_info;
-> -	void *map;
->  	struct page *ind_page, *summary_page;
->  	unsigned long flags;
-> +	unsigned long bit;
-> +	int summary_set;
-> +	void *map;
-> +
-> +	guard(srcu)(&kvm->srcu);
->  
->  	ind_page = NULL;
->  
-> @@ -3000,14 +3002,11 @@ static int adapter_indicators_set(struct kvm *kvm,
->  		ind_page = pin_map_page(kvm, adapter_int->ind_addr, 0);
->  		if (!ind_page)
->  			return -1;
-> -		idx = srcu_read_lock(&kvm->srcu);
->  		map = page_address(ind_page);
->  		bit = get_ind_bit(adapter_int->ind_addr,
->  				  adapter_int->ind_offset, adapter->swap);
->  		set_bit(bit, map);
-> -		mark_page_dirty(kvm, adapter_int->ind_gaddr >> PAGE_SHIFT);
->  		set_page_dirty_lock(ind_page);
-> -		srcu_read_unlock(&kvm->srcu, idx);
->  		unpin_user_page(ind_page);
->  	} else {
->  		map = page_address(ind_info->page);
-> @@ -3015,6 +3014,7 @@ static int adapter_indicators_set(struct kvm *kvm,
->  		set_bit(bit, map);
->  		spin_unlock_irqrestore(&adapter->maps_lock, flags);
->  	}
-> +	mark_page_dirty(kvm, gpa_to_gfn(adapter_int->ind_gaddr));
->  
->  	spin_lock_irqsave(&adapter->maps_lock, flags);
->  	summary_info = get_map_info(adapter, adapter_int->summary_addr);
-> @@ -3023,14 +3023,11 @@ static int adapter_indicators_set(struct kvm *kvm,
->  		summary_page = pin_map_page(kvm, adapter_int->summary_addr, 0);
->  		if (!summary_page)
->  			return -1;
-> -		idx = srcu_read_lock(&kvm->srcu);
->  		map = page_address(summary_page);
->  		bit = get_ind_bit(adapter_int->summary_addr,
->  				  adapter_int->summary_offset, adapter->swap);
->  		summary_set = test_and_set_bit(bit, map);
-> -		mark_page_dirty(kvm, adapter_int->summary_gaddr >> PAGE_SHIFT);
->  		set_page_dirty_lock(summary_page);
-> -		srcu_read_unlock(&kvm->srcu, idx);
->  		unpin_user_page(summary_page);
->  	} else {
->  		map = page_address(summary_info->page);
-> @@ -3039,6 +3036,7 @@ static int adapter_indicators_set(struct kvm *kvm,
->  		summary_set = test_and_set_bit(bit, map);
->  		spin_unlock_irqrestore(&adapter->maps_lock, flags);
->  	}
-> +	mark_page_dirty(kvm, gpa_to_gfn(adapter_int->summary_gaddr));
->  
->  	return summary_set ? 0 : 1;
->  }
-> @@ -3048,26 +3046,29 @@ static int adapter_indicators_set_fast(struct kvm *kvm,
->  				       struct kvm_s390_adapter_int *adapter_int,
->  				       int setbit)
->  {
-> +	struct s390_map_info *ind_info, *summary_info;
->  	unsigned long bit;
->  	int summary_set;
-> -	struct s390_map_info *ind_info, *summary_info;
->  	void *map;
->  
-> -	spin_lock(&adapter->maps_lock);
-> +	guard(srcu)(&kvm->srcu);
-> +	guard(spinlock)(&adapter->maps_lock);
-> +
->  	ind_info = get_map_info(adapter, adapter_int->ind_addr);
-> -	if (!ind_info) {
-> -		spin_unlock(&adapter->maps_lock);
-> +	if (!ind_info)
->  		return -EWOULDBLOCK;
-> -	}
-> +
->  	map = page_address(ind_info->page);
->  	bit = get_ind_bit(ind_info->addr, adapter_int->ind_offset, adapter->swap);
-> -	if (setbit)
-> +	if (setbit) {
->  		set_bit(bit, map);
-> +		mark_page_dirty(kvm, gpa_to_gfn(adapter_int->ind_gaddr));
-> +	}
-> +
->  	summary_info = get_map_info(adapter, adapter_int->summary_addr);
-> -	if (!summary_info) {
-> -		spin_unlock(&adapter->maps_lock);
-> +	if (!summary_info)
->  		return -EWOULDBLOCK;
-> -	}
-> +
->  	map = page_address(summary_info->page);
->  	bit = get_ind_bit(summary_info->addr, adapter_int->summary_offset,
->  			  adapter->swap);
-> @@ -3077,7 +3078,8 @@ static int adapter_indicators_set_fast(struct kvm *kvm,
->  		summary_set = test_and_set_bit(bit, map);
->  	else
->  		summary_set = test_and_clear_bit(bit, map);
-> -	spin_unlock(&adapter->maps_lock);
-> +	mark_page_dirty(kvm, gpa_to_gfn(adapter_int->summary_gaddr));
-> +
->  	return summary_set ? 0 : 1;
->  }
->  
+- Before entering KVM (KVM_RUN), we temporarily unlock the pkey, and
+  immediately re-lock it upon returning to QEMU userspace.
+
+- To gracefully handle legitimate host accesses to guest RAMBlocks
+  when locked, a SEGV_PKUERR signal handler unlocks the pkey in the
+  interrupted thread's xstate and issues an IBPB (PR_SPEC_INDIRECT_BRANCH)
+  to prevent speculative leakage before resuming execution.
+
+Comments and feedback on this approach are very welcome!
+
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Philippe Mathieu-Daud=C3=A9 <philmd@mailo.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: kvm@vger.kernel.org
+Cc: James Houghton <jthoughton@google.com>
+Cc: Mingwei Zhang <mizhang@google.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Reiji Watanabe <reijiw@google.com>
+Cc: Jacky Li <jackyli@google.com>
+
+Signed-off-by: Jacky Li <jackyli@google.com>
+---
+Jacky Li (6):
+      [RFC PATCH 1/6] x86: Introduce basic PKRU hardware wrappers
+      [RFC PATCH 2/6] kvm: Add guest memory Pkey initialization
+      [RFC PATCH 3/6] physmem: Tag guest RAMBlocks with Protection Key
+      [RFC PATCH 4/6] kvm: Lock guest RAMBlocks via PKRU during host usersp=
+ace execution
+      [RFC PATCH 5/6] x86: Add xstate parsing and PKRU offset detection
+      [RFC PATCH 6/6] kvm: Implement SIGSEGV sentinel for Pkey recovery
+
+ MAINTAINERS               |   1 +
+ accel/kvm/kvm-all.c       |   7 +-
+ include/exec/cpu-common.h |   4 +
+ include/qemu/mmap-alloc.h |   5 +
+ system/physmem.c          |  22 ++-
+ system/vl.c               |   1 +
+ util/meson.build          |   2 +-
+ util/mmap-alloc.c         |   3 +-
+ util/pkey.c               | 386 ++++++++++++++++++++++++++++++++++++++++++=
+++++
+ 9 files changed, 424 insertions(+), 7 deletions(-)
+---
+base-commit: fa19879df1658f96ac07365fca8835b7decd6995
+change-id: 20260729-feature-pkey-dev-c8a026db85b4
+
+Best regards,
+--=20
+Jacky Li <jackyli@google.com>
 
