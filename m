@@ -1,124 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50434028D9;
-	Tue, 18 Aug 2026 09:31:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52B74028D9;
+	Tue, 18 Aug 2026 09:34:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787045463; cv=none; b=M8GCV2upzNGWlFLsQpmX3nvwVRLRFPmTnmzc51SU+yOVT/txSjFT07nkLoicPDxdSMBW3Gb7Ke+5/rRFrWLfRirQ+8XOES9yYtx6UtZ7O4BpmFC0QslvkhNYdfnPTcWKncfCTksvnwSKYTyS8FPsTfhP89mwHWcTXvcMumsfO9c=
+	t=1787045697; cv=none; b=Ha9zqOZ6HcjrV9gXxebpStS2K+15Qkev9QMeIVKzKqtA+joVQ8+1pWdiK9iTlXnnwUnWya4ErASCmuWub9Hmvg7+PoX5Z6YZHS1H6+X9MxWJWOYhYtSkToK97XKurYmaz87wXKAat+Y/Lj0/DkIHWtY2r5xtItoVVtPtz6+OBZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787045463; c=relaxed/simple;
-	bh=zH2XG0yQHbYJo26rLCQlwgP/VDLB2Q5TIZ+mJ+Zp8Eg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=bbeS0Ei4fvkoAz3R3IUFTtaCweNKtKteyEXYvkElbcxWGB9yWYr+pD/ULMHMZBH1hxb1pUl26p0Mg8cC5zXa55XhOjkj5yVjtSeUUIu/4A3FxwnlVQ+U/X4w08x2N3MKTn0IJ8IZENbBrLtwLk5DzSvnak7VxuONYtIZYNgAoCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EsCCpvsJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787045697; c=relaxed/simple;
+	bh=FKBwoi/3Seg99DeFtLUGTV/78i0NNSvtkMa1n1zcOAc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WF4uQS+qvt0qfZxc2OukcPloqfjIr1zIdz51u9jJN7Cep5zAv3BEb0Te4EvFMoZmZmIJAwOGAPiiKrVXf4jRqcNjcNzlf6WDyN+ezQQwcKjDbNXkZDXgkzR+dBuvqXEEHsQhsHXKBqiJQibtlxJFVzWTeUNCW3xq3H6MCn8+MZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bLdi0L4G; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EsCCpvsJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F091F000E9;
-	Tue, 18 Aug 2026 09:31:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787045462;
-	bh=o+vfpjpgOc39vNsTj+Hh22TnoTdBcr4/j23WmKPBFSg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=EsCCpvsJ7RKbl4o2MjoDM5ZDmJUeLvDTrofCAPqmAc3CYYZK8FqHgKeXFLx2zpZux
-	 AfMfu1QM/MtDL/uALdmIntbRpzh34a2E5wevWNNwGQLPubbR2O/WnRKOejMHRmlBgl
-	 3v4/cpDnAUo+HdGIr3q9CE7l0xHoe2cKjh3Rd8bt+kZ6+WLC4P5prCj1olvT9ZAoQv
-	 u/qxMzUGx7RxXBruxLtTHY8hqzPEBoYxXseC9xIvvhWs+rX3Iil0P5iSobI8cC7GU3
-	 hk+iupxE0kR64t5NeEM0Ah+eXssxyXr69tWc2zGSEyW7QujJNNrEFSEj0a8KF7l+3E
-	 FVOFNcLAq/4gA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 4/4] KVM: guest_memfd: Stop returning struct page
- from PFN lookup
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ackerley Tng" <ackerleytng@google.com>
-Cc: kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org, "Marc
- Zyngier" <maz@kernel.org>
-In-Reply-To: <20260818-gmem-no-return-page-v2-4-5298f42d49bb@google.com>
-References: <20260818-gmem-no-return-page-v2-0-5298f42d49bb@google.com>
- <20260818-gmem-no-return-page-v2-4-5298f42d49bb@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 18 Aug 2026 09:31:01 +0000
-Message-Id: <20260818093102.06F091F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bLdi0L4G"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67HM1nw02669356;
+	Tue, 18 Aug 2026 09:29:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=UwOIwqYoIY7QlNJ8U8wOacBdHmLDOz
+	+rxhV0rBc+F/c=; b=bLdi0L4G5+rWnmkDSJy99P9qnm4+AFVIuwiBJCiqF8//af
+	ib49jdGSQSMKEQsJPUBuU/4VuzBqHtue4A7CtKAp4ZC0hGDAIxgJv232AfQSrc3i
+	O22hP8DNRTaPXrDf3xjomg9j/z1OfkjRiYNDJ1ZnXOEZ73CK/cORgDGv4t85pUj7
+	NiSc+NzPl9OPrv5rD91lPpepBgSoc4KqeP8NyvYMfMyxb1s/DXbf4l9OnbRQphX3
+	/rKr4trMlP4g3yIhCeeq/EM1SPKxbe7drSxml0TupEQDz79lqrf50w7Ss9zf4ULy
+	j+MbMqc1QMgfJloetwjfP3OCNg/c0n/xK1XHVCEw==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2frt6ssh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Aug 2026 09:29:30 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67I9QKBM007045;
+	Tue, 18 Aug 2026 09:29:29 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g33ek2f2e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Aug 2026 09:29:29 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67I9TPej35324400
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 18 Aug 2026 09:29:26 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D985320049;
+	Tue, 18 Aug 2026 09:29:25 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 74CE620040;
+	Tue, 18 Aug 2026 09:29:25 +0000 (GMT)
+Received: from osiris (unknown [9.224.76.185])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 18 Aug 2026 09:29:25 +0000 (GMT)
+Date: Tue, 18 Aug 2026 11:29:24 +0200
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>,
+        Gautam Gala <ggala@linux.ibm.com>,
+        Hariharan Mari <hari55@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
+        Nico Boehr <nrb@linux.ibm.com>,
+        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+        Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH v6 08/33] KVM: arm64: Use accessor functions for core regs
+Message-ID: <20260818092924.21865-C-seiden@linux.ibm.com>
+References: <20260812153631.3376090-1-seiden@linux.ibm.com>
+ <20260812153631.3376090-9-seiden@linux.ibm.com>
+ <86a4qq1gyy.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <86a4qq1gyy.wl-maz@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=OfaoyBTY c=1 sm=1 tr=0 ts=6a8425fb cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=gIllJY12jZb-1DfbplwA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDA2NiBTYWx0ZWRfX8/5ZkSFcJu82
+ NuPfXVkoHVCwGRBoEvh882KcFTaoR4D8H7GjYWKEg8nvMxPdGfdH+FI2j2ZpPZvFfVYznXYdfhU
+ 8IaI/zFJuWH/Zuwlg0lK8zw+bUVaSWg=
+X-Proofpoint-GUID: 1FFAv4Y26TX30cefOc3x2JLRTu93s4LN
+X-Proofpoint-ORIG-GUID: hImjYitApJsqmB6QcrKs3tTr7h4jhQ_t
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDA2NiBTYWx0ZWRfX5Ak6vZMWnPP0
+ U+jJMl2cidjQtT1y6WIXisSFE3qMftgmsd32FguB1ShnJnZq2JfoTzTIZS3k+X+bBnk6eJH75dD
+ lQD93lhGWqsIBnPewGo98lyVYFaKsThNzzHeXWFoul8SZK7EgSzmHqD8iX8c+WarkXxJZOU6w1a
+ YHjHG3FdbonH1U/70MSi/xkRYL67MUjSSacXlwz+Opy9ZDvTOIDYLl0teKuirelWw6KMpmVclCt
+ p1+uI+yr05nnO3C/dkCiDS93BaaGaLGE9Wc5GEDifdysZbmImi9k+6R7+oCwGMBm2eywFQhsoWd
+ WkrgnKq3s8udSoMBIwPi3SzaDeInCIjD3e0Fnb5XF5SD6zI2wGfNf/xGloYtx82NaHKlcH96sRB
+ 6etZ2mjDf1N6MMIxdNqJ4tZJJ9Tz9a+lXlqBWxV3iuUv3VXfRunzlEKZ23c2ve9QtNUuYtSmtuG
+ BVSB+gzL5EhvRs02Zow==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-17_04,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0
+ malwarescore=0 bulkscore=0 phishscore=0 priorityscore=1501 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608180066
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Thu, Aug 13, 2026 at 10:56:37AM +0100, Marc Zyngier wrote:
+> On Wed, 12 Aug 2026 16:36:04 +0100,
+> Steffen Eiden <seiden@linux.ibm.com> wrote:
+> > 
+> > Instead of accessing the value directly use assessor function that
+> 
+> s/assessor function/accessors/
+> 
+> > abstract the actual location of the register values. Add a helper
+> > function to reset fpsimd registers. Enable other KVM implementations to
+> > reuse this code.
+> 
+> to reuse this code by overloading the accessors.
+> 
 
-Pre-existing issues:
-- [Critical] Concurrent execution of KVM_SEV_SNP_LAUNCH_UPDATE and a vCPU p=
-age fault triggers a race condition leading to a host kernel panic.
---
+Will change
 
---- Patch [4]: [PATCH v2 4/4] KVM: guest_memfd: Stop returning struct page =
-from PFN lookup ---
-commit 766989bc1910148a83bffa481ae22b1d1eb71f01
-Author: Sean Christopherson <seanjc@google.com>
+...
 
-KVM: guest_memfd: Stop returning struct page from PFN lookup
+> > diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
+> > index b01d6622b872..773f6c8e5026 100644
+> > --- a/arch/arm64/kvm/guest.c
+> > +++ b/arch/arm64/kvm/guest.c
+> > @@ -134,19 +134,19 @@ static void *core_reg_addr(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
+> >  	     KVM_REG_ARM_CORE_REG(regs.regs[30]):
+> >  		off -= KVM_REG_ARM_CORE_REG(regs.mregs[0]);
+> >  		off /= 2;
+> > -		return &vcpu->arch.ctxt.regs.regs[off];
+> > +		return &vcpu_gp_regs(vcpu)[off];
+> 
+> Doesn't this belong to the previous patch?
+> 
 
-This commit stops returning a refcounted struct page from guest_memfd PFN
-lookups, dropping the folio reference immediately instead. This prevents
-concurrent guest page faults from holding elevated refcounts that would
-interfere with in-place memory conversions between shared and private state=
-s.
+My thoughts about positioning this change in this patch:
 
-Link: https://lore.kernel.org/all/anZ4W9o5pTWIEgMY@yzhao56-desk.sh.intel.co=
-m/
+The previous patch changes the semantics of vcpu_gp_regs and just
+touched the part where the old semantic of the function was used.
+This is mainly done by not using vcpu_gp_regs where it was used before
+as it cannot be used to access e.g. pstate anymore.
 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index b596486d184ca..589762140c3ef 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
+This patch then introduces and *uses* new accessor functions for
+abstractions (and uses the vcpu_gp_regs abstraction where it was not
+used before). 
+-> The patch changes direct accesses to using accessor functions.
 
-[ ... ]
+However, I have no strong feelings for this. If you want this in the
+previous patch, I can do that.
 
-> @@ -780,11 +779,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_mem=
-ory_slot *slot,
->  #endif
-> =20
->  	folio_unlock(folio);
-> -
-> -	if (!r)
-> -		*page =3D folio_file_page(folio, index);
-> -	else
-> -		folio_put(folio);
-> +	folio_put(folio);
-> =20
->  	return r;
->  }
+	Steffen
 
-[Severity: Critical]
-This is a pre-existing issue, but is it possible for a concurrent page
-fault to trigger a host kernel panic via a hardware RMP fault here?
-
-Looking at kvm_gmem_get_pfn() in virt/kvm/guest_memfd.c, if the folio is
-not up to date, it zeroes the page and marks it up to date:
-
-    if (!folio_test_uptodate(folio)) {
-        clear_highpage(folio_page(folio, 0));
-        folio_mark_uptodate(folio);
-    }
-
-However, in the KVM_SEV_SNP_LAUNCH_UPDATE path, __kvm_gmem_populate()
-fetches a folio, unlocks it, and calls post_populate() (which maps to
-sev_gmem_post_populate() and calls rmp_make_private()) before finally
-marking the folio up to date.
-
-If a malicious userspace process races a vCPU page fault against
-KVM_SEV_SNP_LAUNCH_UPDATE, could the vCPU thread running kvm_gmem_get_pfn()
-acquire the lock on the not-yet-uptodate folio and call clear_highpage()
-after rmp_make_private() has already executed?
-
-If clear_highpage() writes to the page after it has been made RMP-private,
-this would trigger a fatal hardware RMP fault on the host CPU. If it writes
-just before, it appears it could silently corrupt the encrypted firmware
-payload.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260818-gmem-no-re=
-turn-page-v2-0-5298f42d49bb@google.com?part=3D4
