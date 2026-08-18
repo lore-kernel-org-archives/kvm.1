@@ -1,350 +1,218 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60F2469856
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 11:42:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787053339; cv=pass; b=s4txdQjDbW1LhtQNRVfugcG2Q3EY1m5QKWVW//4s/ufLmpbCRzMCtlm6hVTcU81M2G89KqasaArAeopuqnWA+zDRtaS2qcjj7QF0pIn90MyUKsFgJ3J5DzWlYo9O30SbA9976DSX5Y/DPat1bT4cc0Qpa/yDc7xs68nV59V5mPw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787053339; c=relaxed/simple;
-	bh=atsk0A4MpnEfgD/fMEYLJCSDOsfe+GdRkuDv85F/+k8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K6I3KnJ3Q1HLYHvQvDipUlnTcads2fLWvfw9T3CXR9eguByvknRVVzjjdrtMy9yrLV5Z0yN0YW/w2+LJzeQZURCb1fp2mv6QthSHQKnmYrjciJvZwVO+ZkEo0WLNxxM+39qY9tTnSzRUscpv0weIWhe5LC50Gr+etWxsDX9ldRU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aUbK1qNo; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=D7Q7BVdV; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0B036215F;
+	Tue, 18 Aug 2026 11:58:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787054312; cv=none; b=t34RF9kPZjgRJ9ibDP7yzyTkJofOVZdmBf3eWtR2U3pI4QRogBQvQpmYvoaIoXYMS2uzcTX2MiH7Kih72S0lFrPhkpxnVkInsjr4p3BMy6WArBkjI4nORmfu3OzCnt9XbXWWeijuPxJJm3FXKtL5OW8dRNM66936Gvy1B0cFiko=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787054312; c=relaxed/simple;
+	bh=Q02RgQn+XA7wiYRHbPRhwQ2jPrScPBmVA1mNJjczpBo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iJqdOOB3ciSp0JP327NOcSbaLoOEuzCekkEOJsdtPT9ExJ+eWMoO5Y0IpMesdOr0o6MeK05Wgqno9d3eCKP1sT5+FUPGe8Wv4BeIeYLHuM3U1/yldLP2QKRKWqRg7a0432koGmQAA/6HBnM7xpOsfVJhhGuGgE2aoRrJUGcFJXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ToVn7Rsc; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aUbK1qNo";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="D7Q7BVdV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787053336;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OBuPI2v31MBMjaLiX6dqLNyqJZVl6J1gigUP4es5P/M=;
-	b=aUbK1qNo6KMjHj2cv+lOOoYEHj9c5bytJv07Zlvx2DGPes1e5vzQAc2OjmP/VtGia3tkgS
-	SLJZavBCxM6R+GodxQTotGPV1IwLwY/3TbDrjjj4mHB1HBG5pW7ka6cfDBghQS0AAwcuFt
-	+g3GwtgkqlWS/zR7BNNHiSb41jYzsIk=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-279-EwiXKxw8Oc-b21C4mRDEdw-1; Tue, 18 Aug 2026 07:42:15 -0400
-X-MC-Unique: EwiXKxw8Oc-b21C4mRDEdw-1
-X-Mimecast-MFC-AGG-ID: EwiXKxw8Oc-b21C4mRDEdw_1787053334
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49808ea1b64so10030005e9.1
-        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 04:42:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787053334; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Exma/HZofEzWUIEZc1xp53UlBqUl/MifPj/MSai9PILxipHacguqbZM73PllNB/58q
-         vIX2EYIUIHpRhOJE6vq3cuwNT56WtNDqVmZRygRNHgoNaUfZOohCfU1gk/1OYQSQIu7+
-         kz2qqeCDqJ1OepxJXSETbE/mQIwySbbsJSsvS+rzxX87K4xhhyo8c0KAySbycPB8oR/6
-         UD1Eu6BH/JrSNPtapw5Re1cMtXJzUx+DfOxH8rnvCw0q/8k9fGMyGahQuuB6sAbCx7ja
-         tYmrBO/8ZTL5uDYhfR5/udB5TGz/cdMdeKHx9t7YgLKwHwfJWf29nAlXYqiWbcLZE+qC
-         nRiQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OBuPI2v31MBMjaLiX6dqLNyqJZVl6J1gigUP4es5P/M=;
-        fh=qaYm4b6GKYlZ0T3gtLZ7fjEfCEC8jMv5XzYe6fOhw1Y=;
-        b=k/6ESWmbhyLV0ndKzR74ny2Rcn74+fIRVrVdEgXyeJtDbGhLt+WnYHbeAUVthyQTGx
-         UQEmUZxL0Sb+ViVcORe4irYgyiENRBXOLOlmAvGSiK7ubXPg4J+TLMvRdyX1VmL+wnW0
-         t9R208awp0H4WCq8vIASkW/4v50ba5fZmCi7dSIE/sVBxvLla87nn0sJlqfdAGKOO4lb
-         36pU5AWU3gh5zeoKhZvaJ3RaL1OpE/bkNjLosfdzI9SGF15s0PlKTa25lnqNwCJVYXBN
-         QnuvpgfhmuLZaWgyhyZjt3+1dj4qjy1UaotEt2fR3VmGM7ralKG0BBCddn0DlyzHTk6A
-         6beg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787053334; x=1787658134; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OBuPI2v31MBMjaLiX6dqLNyqJZVl6J1gigUP4es5P/M=;
-        b=D7Q7BVdVO1gfechceijg0ODmwyx/7M0262D+ZSBJPwaz8GsJpayQxHncUnp8QL4eLI
-         qZMXh/wf3SIp0YN3oXZ3/8wFCSkDFdS6ZhgHYLB0TBTR1rZcVntZzpilzF3cNj+zscEH
-         WjA5uMfuqKNh0EpgRCj42lSN7Pr8IVTAailra4KNY+CPIKcvk1UcU0/W3wln55YaNh0Z
-         sCtByG52UNkTD+oHW9sCPI+oPP2BYHtE7dQ17/D44ER4AE7VAFwZo7SaTWZjI4MEEMuz
-         1cTge/QICv10CODzDXmpRYpV/PpCtj+GSm24oyWsao6joC/eyOo9FNMcbTiegXciSDtV
-         pSBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787053334; x=1787658134;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OBuPI2v31MBMjaLiX6dqLNyqJZVl6J1gigUP4es5P/M=;
-        b=O2DsL+Rn9Xd2ObZCxLIiRlq+CH53dx2OIsQA00BDjzWnS3D0HO99VY2bs9Z3dUBd2A
-         gx3OUjwEwatJsRcahujVnqlyb+1KcivYvgbOGZYBlKfTSZ7s0nqlMf0Xjq0G4XJgBsL+
-         wENM577WdUfkWlpGSHh7ZbPpl2qP58auf0vw9r71xNcGAgaohcE1yucmpvKudoE2v2rS
-         0+phpFMtGWQvmd1iPY3QzdcatVZeuNqcf7NqFZelMbVWBn0QSXphYPXEtOkEM1MU3C2S
-         ATeNfXvK3qboPYutj0xgtY26edLdAB0l/t8Eg7UDDFcV+GFMrGzeoS104ONQkcZgANLV
-         /QEg==
-X-Gm-Message-State: AOJu0YyrQl6oeEhVmhI6kqmi66h5TW7+P0n3JwzrxaLnX1s6KtkanV7+
-	sZ+xqrjlzfRDbplOTm/dM43U/v0dOP4gkYcwqmGHSYaEqnRIsbnpE5Iu9ZZkSz2rk294Mf36b4N
-	vLbHx9UaMMEHw7xR/3DUJ4dcj7cZ/p2NRJPbT+aJlJWbGkHEaCBxcUFNUSB+w4gGWGW34fgNt01
-	3wwvkemPYeb7yIzVdaXvyxigrOSk/G8Q9y8SXv
-X-Gm-Gg: AR+sD10sJsD+nd1F1w0uj/rm69zaOS8YrxUgrLV+uiBD4KMDt4lnk0JD4AAEETBqiu1
-	qAxmIEhlgt+tAi79UiFX7oJSRfTPAEcD882HdmrqwhG3Srbkch/jzh8wLqzm6LDS2Anp0M7LdRz
-	WvTtxae0gafELT2q2IGRMEY6KRspn7DOyMNj++Kdrr5KyyDS442WRNQRdiVLzxRivghVEknM///
-	HjQrnEpHENKXQOBRrGaMWxyejqAFb5sI57qwUuq1lTFZVuwza2FI7u4fRo=
-X-Received: by 2002:a05:600c:8b77:b0:493:f783:c46a with SMTP id 5b1f17b1804b1-499a206a553mr79267675e9.6.1787053334048;
-        Tue, 18 Aug 2026 04:42:14 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b77:b0:493:f783:c46a with SMTP id
- 5b1f17b1804b1-499a206a553mr79265105e9.6.1787053333675; Tue, 18 Aug 2026
- 04:42:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ToVn7Rsc"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67IAVu0K3110069;
+	Tue, 18 Aug 2026 11:58:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=/bg8OMISfgohntaYXgzdETmdkQcktffO4dxJe7p60
+	a4=; b=ToVn7RscxFbLHRxxMzn3vKfautY/y8dXVQvwkXCmiSIn0r14cbyfyAjdD
+	seitlsVLAhfnUMDhkbozBDVc2lwbRhnWTISNRslFMnKD5owWGbU2KDOWY8kROX2g
+	smEuVMhsC2yjqBUJruRAuAjot6jyiziZdiwH/BSDraHpbFT0pyHnbegKcIc4Ok0Z
+	drAeaiBSbTgyxf+0Ftmh/fCMRHIKjoJajTpR2cBbyMP/UVjZbEtiGPHflGfH7K1M
+	LMbCdtjLjn+zOfS4QivxnSM8kqhRp/T4sX50Qha5Rr4Z7aIID36Viu7WqmpOGmPx
+	rWqZONlrLmcZYtPnIiCUUszDZIIbw==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2ehe7kyn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Aug 2026 11:58:24 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67IBuHoP017525;
+	Tue, 18 Aug 2026 11:58:23 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g354yasjt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Aug 2026 11:58:23 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67IBwM5Z35455438
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 18 Aug 2026 11:58:22 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F323B5803F;
+	Tue, 18 Aug 2026 11:58:21 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 474325804E;
+	Tue, 18 Aug 2026 11:58:20 +0000 (GMT)
+Received: from li-4c4c4544-004d-4810-8043-b7c04f423534.ibm.com.com (unknown [9.61.26.94])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 18 Aug 2026 11:58:20 +0000 (GMT)
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
+        pasic@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
+        fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, agordeev@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com, stable@vger.kernel.org
+Subject: [PATCH] s390/vfio-ap: Fix leak of KVM GISC resources
+Date: Tue, 18 Aug 2026 07:58:19 -0400
+Message-ID: <20260818115819.1656595-1-akrowiak@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260812213206.1564354-1-seanjc@google.com> <20260812213206.1564354-6-seanjc@google.com>
-In-Reply-To: <20260812213206.1564354-6-seanjc@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 18 Aug 2026 13:42:01 +0200
-X-Gm-Features: AcwNN1VxNZ0hPudHIvtqyhMhgCIaBvsDoUcL8IT9iW86F4llGF9EGu7lzFwlUOU
-Message-ID: <CABgObfa-4Dbi0FjKCy6UvjvmcniCwuhrvZfA9uuBH2QE2HdU1g@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM: x86: Misc changes for 7.3
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDA4NSBTYWx0ZWRfX2EzqcBrKuhvS
+ XpHh5i72HwdU1BJ/mqpMmO+qB9NkzB0hqN8aBEFqSEv9sjzGGRMzDna7i1rhY58+PnZb7B1jWig
+ 9j+UqPV1TAsqkqC161ZtRdq+/ZiGggYDbVpp9DLXyLz2++4KnBnbNNboXFd4701eQkXiHAoA7EC
+ feMbsvNl1MrzEVy1+P7lHpMm4NoCXaJVLKkKLp7I4Ke7nSehkPmV+z3TXMss2OQ3kd9uKsM2+CK
+ BhzopblItr2TEgBBu7bUCQKMWgD5VMyVjsK50KdeRKDB/H0a/efRtRC3vTZy8CNcrhVSQ5H239N
+ XZ52HSGio594Uq/AcpubIpfYDDfpwO3P3l/y3tKhI6o8IzonM/AWm9nCycOf3ymVAJtw2o9PRwo
+ xIT7+Q9mV/3PVHARpQ2fFNLjFR5P30sywVUFCNEukfiidbqWpQoT1OIDq3B1cP5tHclQweAA8Yy
+ CKJhPX/UJfwacZasr5A==
+X-Authority-Analysis: v=2.4 cv=DY8nbPtW c=1 sm=1 tr=0 ts=6a8448e0 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=dWikMghobCptM3iWzFMA:9
+X-Proofpoint-ORIG-GUID: uQ8iEsBcJzv9tCGQe9NG0AzK7yKKN-KG
+X-Proofpoint-GUID: uQ8iEsBcJzv9tCGQe9NG0AzK7yKKN-KG
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDA4NSBTYWx0ZWRfX/XtY6tquMdhO
+ 9TjbThnfm2mEizqO31HblDLwXX9jTYaUXU9kDEPNtjjcLgRUd2L4HSuULve8zVN938ZPMrH5sJ5
+ zw6t7MTh3klDb1GKuIuCLaoxHKSv0H8=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-18_01,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1015 spamscore=0 malwarescore=0 priorityscore=1501
+ impostorscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608180085
 
-On Wed, Aug 12, 2026 at 11:32=E2=80=AFPM Sean Christopherson <seanjc@google=
-.com> wrote:
->
-> The main set of x86 changes for 7.3.  Yosry's INVVPID and EFER validation=
- changes
-> are probably the most interesting.  Almost everything from me falls into =
-the
-> category of "fixes for things that are technically bugs, but that no one =
-cares
-> about in practice".
+s390/vfio-ap: fix KVM GISC and page leak when queue removed from host config
 
-Pulled, thanks.
+Two related problems exist in the handling of KVM interrupt and page
+resources when a queue is removed from the host's AP configuration
+while assigned to a mediated device (mdev).
 
-Paolo
+Problem 1: AP_RESPONSE_Q_NOT_AVAIL not handled in
+vfio_ap_mdev_reset_queue()
 
-> The following changes since commit a204badd8432f93b7e862e7dac6db0fe3d65f3=
-70:
->
->   Merge branch 'kvm-chainsaw' into HEAD (2026-06-25 11:32:09 +0200)
->
-> are available in the Git repository at:
->
->   https://github.com/kvm-x86/linux.git tags/kvm-x86-misc-7.3
->
-> for you to fetch changes up to 66ee8f1556575c8f9ae76932dd3aca65b4b60e59:
->
->   KVM: x86/pmu: Clean up vPMU comments and stray blank lines (2026-08-05 =
-16:42:23 -0700)
->
-> ----------------------------------------------------------------
-> KVM x86 misc changes for 7.3
->
->  - Fix VPID virtualization bugs where KVM would fail to flush hardware TL=
-Bs.
->
->  - Harden the SNP and TDX "populate" ioctls against bad input, and to pre=
-pare
->    for supporting in-place private<=3D>shared conversion.
->
->  - Fix a variety of #DB priority bugs.
->
->  - Fix a class of races related to enabling Hyper-V emulation on a vCPU a=
-fter
->    the vCPU is visible to the rest of KVM.
->
->  - Use static calls for nested virtualization ops.
->
->  - Move more KVM-internal code out of x86's kvm_host.h.
->
->  - Enumerate support for a variety of Zhaoxin instructions that don't req=
-uire
->    explicit virtualization.
->
->  - Fix missing EFER validation bugs, including in the KVM_SET_SREGS* path=
-.
->
->  - Harden kvm_vcpu_map() against double-mapping and thus leaking referenc=
-es.
->
->  - Misc fixes and cleanups, e.g. for largely benign syzkaller splats.
->
-> ----------------------------------------------------------------
-> Binbin Wu (1):
->       KVM: x86: Fix emulated CPUID features being applied to wrong sub-le=
-af
->
-> Carlos L=C3=B3pez (3):
->       KVM: x86: Treat any non-zero return from set_dr() as a faulting con=
-dition
->       KVM: x86: Fix array_index_nospec() protection in kvm_vcpu_ioctl_x86=
-_set_mce()
->       KVM: x86: hyper-v: Clamp stimer deadline to avoid livelock
->
-> Ewan Hai-oc (5):
->       KVM: x86: Expose Zhaoxin SM2 CPUID feature
->       KVM: x86: Expose Zhaoxin CCS (SM3 + SM4) CPUID feature
->       KVM: x86: Expose Zhaoxin RNG2 CPUID feature
->       KVM: x86: Expose Zhaoxin PHE2 CPUID feature
->       KVM: x86: Expose Zhaoxin RSA CPUID feature
->
-> Hao Zhang (1):
->       KVM: selftests: Extend the invalid nVMX guest state test to cover R=
-SM
->
-> Joerg Roedel (1):
->       KVM: SEV: Explicitly disallow NULL user address for SNP_LAUNCH_UPDA=
-TE
->
-> Kai Huang (1):
->       KVM: x86: Use KVM_X86_OP() for the .pi_update_irte() hook
->
-> Like Xu (1):
->       KVM: x86/pmu: Clean up vPMU comments and stray blank lines
->
-> Sean Christopherson (45):
->       KVM: nVMX: Decouple INVVPID operand checks from flushing of vpid02
->       KVM: TDX: Return EINVAL, not EOPNOTSUPP, for NULL INIT_MEM_REGION s=
-ource
->       KVM: x86: Prioritize DR7.GD #DB over #GP due to illegal DR6/7 value
->       KVM: x86: Manually check DR4/5 write values to fix SVM intercept pr=
-iority
->       KVM: x86: Prioritize #UD on MOV DR over #GP due to non-zero CPL
->       KVM: VMX: Prioritize DR7.GD=3D1 #DB over CPL>0 #GP on Intel
->       KVM: x86: Use kvm_dr{6,7}_valid() to check DR{4,5,6,7} write values=
- in emulator
->       KVM: x86: WARN if MOV DR emulation hits a "too late" #GP
->       KVM: x86: Read CR4.DE in emulator if and only if accessing DR4 or D=
-R5
->       KVM: x86/hyperv: Get target FIFO in hv_tlb_flush_enqueue(), not cal=
-ler
->       KVM: x86/hyperv: Check for NULL vCPU Hyper-V object in kvm_hv_get_t=
-lb_flush_fifo()
->       KVM: x86/hyperv: Ensure vCPU's Hyper-V object is initialized on cro=
-ss-vCPU accesses
->       KVM: x86/xen: Always route non-singleshot-timer vCPU hypercalls to =
-userspace
->       KVM: x86/xen: Consolidate checks on Xen vCPU ID for singleshot time=
-r hypercalls
->       KVM: x86/xen: Punt singleshot timer hcalls to userspace if Xen vCPU=
- ID isn't set
->       KVM: Initialize a vCPU's index to '-1' while it's being created
->       KVM: Move nVMX's lockdep logic for vcpu->mutex to a common helper
->       KVM: x86: Treat a vCPU as unreachable if its index is invalid
->       KVM: x86/hyperv: Assert vCPU's mutex is held in to_hv_vcpu()
->       KVM: x86/hyperv: Use {READ,WRITE}_ONCE for cross-task synic->active=
- accesses
->       KVM: x86: Move the "APIC attention" macros from kvm_host.h =3D> lap=
-ic.c
->       KVM: x86/mmu: Annotate tdp_enabled as being read-mostly
->       KVM: x86: Pluralize the macro guard name for msrs.h
->       KVM: x86: Move CR and DR macro definitions from kvm_host.h =3D> reg=
-s.h
->       KVM: x86: Move KVM_GUESTDBG_VALID_MASK from kvm_host.h =3D> x86.c
->       KVM: x86: Add static asserts to document connection b/w TSS structs=
- and macros
->       KVM: x86: Move KVM's arbitrary task switch reason enums to x86.h
->       KVM: x86: Move "struct kvm_apic_map" definition from kvm_host.h =3D=
-> lapic.h
->       KVM: x86: Move "struct kvm_vcpu_hv" and all children from kvm_host.=
-h =3D> hyperv.h
->       KVM: x86: Reject nested CAP enablement if nested virtualization is =
-disabled
->       KVM: x86: Add static calls for nested virtualization ops
->       KVM: x86: Move nested_ops out of kvm_x86_ops, to global kvm_nested_=
-ops
->       KVM: x86: Don't WARN if IRQ disappears because it was cleared from =
-the PIC
->       KVM: x86: Don't WARN if IRQ disappears when Xen emulation is enable=
-d.
->       KVM: nVMX: Ensure KVM_REQ_GET_NESTED_STATE_PAGES is cleared on VM-E=
-xit
->       KVM: nSVM: Add CLASS()es for automagically handling local kvm_vcpu_=
-map() usage
->       KVM: nSVM: Use CLASS(kvm_vcpu_map_local) for SMM VMCB mappings
->       KVM: nVMX: Use CLASS(kvm_vcpu_map_local_readonly) for MSR bitmap me=
-rging
->       KVM: PPC: Use CLASS(kvm_vcpu_map_local) to patch dcbz
->       KVM: Harden kvm_vcpu_map() against double-mapping and thus leaking =
-references
->       KVM: x86: Extract VMX's unhandleable emulation check to common x86
->       KVM: nVMX: Synthesize SHUTDOWN on RSM if L2 requires emulation
->       KVM: x86: Rework kvm_x86_ops.vcpu_pre_run() into .vcpu_needs_initia=
-lization()
->       KVM: selftests: Use port 0x80 in invalid nVMX guest state test
->       KVM: selftests: Refactor invalid nVMX state test to prepare for RSM=
- testcase
->
-> Tim Wiederhake (1):
->       KVM: x86: Replace delivery mode TODO with WARN_ON_ONCE
->
-> Yosry Ahmed (9):
->       KVM: nVMX: Always flush vpid02 on first use
->       KVM: nVM: Ensure INVVPID is emulated on the correct physical CPU
->       KVM: x86: Move enabling EFER.SVME and EFER.LMSLE to generic EFER se=
-tup
->       KVM: x86: Disallow EFER.LME and EFER.LMA if long mode is not suppor=
-ted
->       KVM: x86: Always initialize EFER reserved bits on vendor initializa=
-tion
->       KVM: x86: Reverse the polarity of efer_reserved_bits
->       KVM: x86: Move supported EFER bits to kvm_caps
->       KVM: x86: Check EFER validity on KVM_SET_SREGS*
->       KVM: selftests: Extend set_sregs test to cover EFER
->
-> leixiang (1):
->       KVM: Remove kvm_debugfs_dir on kvm_init() error paths
->
->  arch/powerpc/kvm/book3s_pr.c                       |  11 +-
->  arch/x86/include/asm/cpufeatures.h                 |  10 +
->  arch/x86/include/asm/kvm-x86-nested-ops.h          |  36 ++++
->  arch/x86/include/asm/kvm-x86-ops.h                 |   5 +-
->  arch/x86/include/asm/kvm_host.h                    | 212 ++-------------=
-------
->  arch/x86/kvm/cpuid.c                               |  22 ++-
->  arch/x86/kvm/emulate.c                             |  49 +++--
->  arch/x86/kvm/hyperv.c                              |  95 +++++----
->  arch/x86/kvm/hyperv.h                              | 117 +++++++++++-
->  arch/x86/kvm/irq.h                                 |  20 ++
->  arch/x86/kvm/lapic.c                               |  13 +-
->  arch/x86/kvm/lapic.h                               |  33 ++++
->  arch/x86/kvm/mmu.h                                 |  11 +-
->  arch/x86/kvm/mmu/mmu.c                             |   2 +-
->  arch/x86/kvm/mmu/paging_tmpl.h                     |   2 +-
->  arch/x86/kvm/msrs.c                                |  21 +-
->  arch/x86/kvm/msrs.h                                |   5 +-
->  arch/x86/kvm/pmu.c                                 |  12 +-
->  arch/x86/kvm/pmu.h                                 |   4 +-
->  arch/x86/kvm/regs.c                                |   3 +-
->  arch/x86/kvm/regs.h                                |  38 ++++
->  arch/x86/kvm/smm.c                                 |   4 +
->  arch/x86/kvm/svm/nested.c                          |  20 +-
->  arch/x86/kvm/svm/sev.c                             |  16 +-
->  arch/x86/kvm/svm/svm.c                             |  66 ++-----
->  arch/x86/kvm/svm/svm.h                             |   1 +
->  arch/x86/kvm/tss.h                                 |   7 +
->  arch/x86/kvm/vmx/main.c                            |  24 ++-
->  arch/x86/kvm/vmx/nested.c                          |  81 ++++----
->  arch/x86/kvm/vmx/nested.h                          |   6 +-
->  arch/x86/kvm/vmx/pmu_intel.c                       |   1 -
->  arch/x86/kvm/vmx/tdx.c                             |  16 +-
->  arch/x86/kvm/vmx/vmx.c                             |  19 +-
->  arch/x86/kvm/vmx/x86_ops.h                         |   4 +-
->  arch/x86/kvm/x86.c                                 | 110 ++++++++---
->  arch/x86/kvm/x86.h                                 |   8 +-
->  arch/x86/kvm/xen.c                                 |  43 +++--
->  include/linux/kvm_host.h                           |  26 +++
->  .../testing/selftests/kvm/include/x86/processor.h  |   2 +
->  .../testing/selftests/kvm/x86/pmu_counters_test.c  |   6 +-
->  .../selftests/kvm/x86/pmu_event_filter_test.c      |   4 +-
->  tools/testing/selftests/kvm/x86/set_sregs_test.c   |  81 ++++++--
->  .../kvm/x86/vmx_invalid_nested_guest_state.c       | 118 ++++++++++--
->  virt/kvm/kvm_main.c                                |  12 ++
->  44 files changed, 857 insertions(+), 539 deletions(-)
->  create mode 100644 arch/x86/include/asm/kvm-x86-nested-ops.h
->
+When the AP bus removes a queue device whose adapter or domain has
+been removed from the host's AP configuration,
+vfio_ap_mdev_remove_queue() is called. If the queue is still in the
+host's AP configuration at that point, it calls
+vfio_ap_mdev_reset_queue(), which issues a PQAP(ZAPQ). Since the
+adapter is already gone from the host configuration, ap_zapq() returns
+AP_RESPONSE_Q_NOT_AVAIL (0x01). This response code is not handled in
+vfio_ap_mdev_reset_queue()'s switch statement and falls through to
+the default case, which issues a WARN but does not call
+vfio_ap_free_aqic_resources(). As a result, if IRQ handling was
+enabled for the queue by the guest, the KVM GISC registration and
+the pinned guest page holding the notification indicator byte (NIB)
+are both leaked.
+
+This is fixed by adding AP_RESPONSE_Q_NOT_AVAIL to the same case as
+AP_RESPONSE_DECONFIGURED and AP_RESPONSE_CHECKSTOPPED in
+vfio_ap_mdev_reset_queue(). Like those response codes, Q_NOT_AVAIL
+indicates the queue is not operational and no further reset attempts
+are possible; the correct action is to free the IRQ resources
+immediately.
+
+Problem 2: vfio_ap_free_aqic_resources() leaks saved_isc when
+kvm is NULL
+
+vfio_ap_free_aqic_resources() guards the call to
+kvm_s390_gisc_unregister() with:
+
+    if (q->saved_isc != VFIO_AP_ISC_INVALID &&
+        !WARN_ON(!(q->matrix_mdev && q->matrix_mdev->kvm)))
+
+If matrix_mdev->kvm is NULL -- which can happen when
+vfio_ap_mdev_unset_kvm() has already run and cleared kvm before a
+subsequent cleanup path reaches this function -- the WARN_ON fires
+and the entire block is skipped. This leaves q->saved_isc set to a
+non-invalid value, creating a potential double-free on any subsequent
+call to this function.
+
+When kvm is NULL the KVM guest is already torn down, so
+kvm_s390_gisc_unregister() need not and cannot be called; however,
+q->saved_isc must always be cleared. Fix this by separating the
+kvm_s390_gisc_unregister() call from the q->saved_isc reset. The
+WARN_ON now guards only the genuinely impossible case of matrix_mdev
+being NULL. A NULL kvm is handled gracefully by skipping only the
+unregister call, and q->saved_isc = VFIO_AP_ISC_INVALID is set
+unconditionally whenever saved_isc was not already invalid.
+
+Additionally, add an else clause to the host-config check in
+vfio_ap_mdev_remove_queue() to call vfio_ap_free_aqic_resources()
+directly when the queue is not in the host's AP configuration. This
+serves as a backstop: when the AP bus fires the driver .remove
+callback after an adapter is removed from the host config, the queue
+is by definition no longer addressable, so vfio_ap_mdev_reset_queue()
+would always return Q_NOT_AVAIL. The else clause handles this case
+directly without the unnecessary ap_zapq() call, and ensures cleanup
+occurs even if kvm has already been set to NULL by a prior call to
+vfio_ap_mdev_unset_kvm().
+
+Fixes: b9bd10c43456d ("s390/vfio-ap: do not reset queue removed from host config")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+---
+ drivers/s390/crypto/vfio_ap_ops.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+index 44b3a1dcc1b3..e277062e92be 100644
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -270,9 +270,9 @@ static void vfio_ap_free_aqic_resources(struct vfio_ap_queue *q)
+ {
+ 	if (!q)
+ 		return;
+-	if (q->saved_isc != VFIO_AP_ISC_INVALID &&
+-	    !WARN_ON(!(q->matrix_mdev && q->matrix_mdev->kvm))) {
+-		kvm_s390_gisc_unregister(q->matrix_mdev->kvm, q->saved_isc);
++	if (q->saved_isc != VFIO_AP_ISC_INVALID) {
++		if (!WARN_ON(!q->matrix_mdev) && q->matrix_mdev->kvm)
++			kvm_s390_gisc_unregister(q->matrix_mdev->kvm, q->saved_isc);
+ 		q->saved_isc = VFIO_AP_ISC_INVALID;
+ 	}
+ 	if (q->saved_iova && !WARN_ON(!q->matrix_mdev)) {
+@@ -2004,6 +2004,7 @@ static void vfio_ap_mdev_reset_queue(struct vfio_ap_queue *q)
+ 		break;
+ 	case AP_RESPONSE_DECONFIGURED:
+ 	case AP_RESPONSE_CHECKSTOPPED:
++	case AP_RESPONSE_Q_NOT_AVAIL:
+ 		vfio_ap_free_aqic_resources(q);
+ 		break;
+ 	default:
+@@ -2499,12 +2500,15 @@ void vfio_ap_mdev_remove_queue(struct ap_device *apdev)
+ 	/*
+ 	 * If the queue is not in the host's AP configuration, then resetting
+ 	 * it will fail with response code 01, (APQN not valid); so, let's make
+-	 * sure it is in the host's config.
++	 * sure it is in the host's config. If it is not, free the KVM GISC
++	 * resources.
+ 	 */
+ 	if (test_bit_inv(apid, (unsigned long *)matrix_dev->info.apm) &&
+ 	    test_bit_inv(apqi, (unsigned long *)matrix_dev->info.aqm)) {
+ 		vfio_ap_mdev_reset_queue(q);
+ 		flush_work(&q->reset_work);
++	} else {
++		vfio_ap_free_aqic_resources(q);
+ 	}
+ 
+ done:
+-- 
+2.53.0
 
