@@ -1,127 +1,124 @@
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91EE1F3BA2
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 00:35:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4653D339714
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 04:26:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787013348; cv=none; b=O8WiXelwNIpx2bdvhLm3hyrkBMu+0FB0JfXdlWpfKXDfnFcmIkize1kT62gkPBIAwltS4kZStexHz6rZpS/SHeVCJjkGiYpI8tiqEIA3bk3vO0VNfqOabcD8+s6568CUb65pJn8+QBQ/A9vZEN9XyowAY1rGPflKi/r9O3/rOd4=
+	t=1787027193; cv=none; b=QdDMXliJz6pq3U154baJga9PMl18gbeI7tUOwZ0UzOqXfpJ/xYIUlLkc+j4OvGqOQyrikCSvZ8qOxGrl1sXDz+IZ3MgUY9JbYt6KaWhKGNoVwXFfp/LpB0dmYjQymOqLThKSqeRm77i7KOV46uhzq59EA4oM1TrtABDvftCI8f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787013348; c=relaxed/simple;
-	bh=PRKMKNqDiqU7XvUJ25dwB1nGSTHc3Cg1IYrrAOM9CA0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TUEbSQPw0dUICe0PSYPnJR4tiUk+ZXCu23o31Rp0gaAHdNOBHMtUGOCEZBzJzF8eNVbIlcdsDclnXSGEc5FTOCRPOvjI19XODCsFF29ZCG+OVwl7UheyNsu7kUctJ67rkNXMqT8QyrRp91EFvN30gp0UEZBWzgOUEV9Wyn5EHoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=rm/wTJC7; arc=none smtp.client-ip=115.124.30.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1787027193; c=relaxed/simple;
+	bh=0EL2LR7po/s9DUjjNqlWFSV+gjd+xJ1WILPheMV+JFc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kCgd9c0snDRFDknzgIFhZgXD1TroevYEfSBJC4Bbfa1ctB5KFFwYjs6NLJ7fQQAaAc2SHb5DHgfeQsOwL9hP4HOS4zZDvXgCCquCUHVxmFZdVmVG+b4z4Zh6/TITA0ZPmwW0vXnlMc8lYwRAad0eNX2RSyeJpn5AD+eqIY/aH38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fOqN33aI; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="rm/wTJC7"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1787013343; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=dRIrdJE7elS2L1KDtGdgFM5woE2e5kU/jo/OSTBtFgw=;
-	b=rm/wTJC7W6N13GeXQHM4WHMs7+z4HEmrluTHoxEvZfB4vQ5NbPzz3NSM9nBNz0LgRm70Jwo3t5uoEqAbuTnT6QRVq5wwBG55DYCzTFHGSpj/7Awjfk2St+JBrrn498sFOtXHEAe/1wjfSXmopG0ZCUbnIsuJiCP2SDnDy77Y/uQ=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=yaoyuan@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0X9BJu9y_1787013342;
-Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0X9BJu9y_1787013342 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 18 Aug 2026 08:35:42 +0800
-Date: Tue, 18 Aug 2026 08:35:41 +0800
-From: Yao Yuan <yaoyuan@linux.alibaba.com>
-To: Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: kvm@vger.kernel.org, julien.thierry.kdev@gmail.com, will@kernel.org, 
-	yaoyuan0329os@gmail.com
-Subject: Re: [PATCH kvmtool 0/1] Don't empty CFLAGS in Makefile for static
- building
-Message-ID: <l3jrmqj2jtkgygxrxhh4jolti4pggr7wwbvmdv775ibnbv3hpz@zcvq5pkphpni>
-References: <20260817084534.92780-1-yaoyuan@linux.alibaba.com>
- <aoLXycEYCnJTjQ-D@raptor>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fOqN33aI"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38dc4553f62so5434533a91.0
+        for <kvm@vger.kernel.org>; Mon, 17 Aug 2026 21:26:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787027189; x=1787631989; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=WjmxRYlcS6K8pKZdReOoWwINkSByDyWzsirONrxxVnM=;
+        b=fOqN33aIBXf0FKQDGweWmi5sNbXbXR8vF7juCxZCb8dRSI93aXRZC5muYsJkv/aj5I
+         Ao9PMk2AcVGsfyz2xoEvNdml4OvPQ/Wf5phH/xzl32h/aZedMzbL4wc8zkIA5TGSgYnj
+         rEVUex20XsYevxPckd6iqdI7VBzWLpohEDJmeb7Zu6p60Gcm5hYv4jOFa4GqVHs1j6k8
+         Hf474Tu73CvasonRW3WfH3pmqE/V7FrYBMjHvB69j//IkPjx84md1WOL+Rd7zjh8tSiN
+         bF+y3jkCs6g60NL2OTHGQgy2o7SwAK4KBFJfFlGyqPPS1A5xpEsISfhiuUzXbGQq789n
+         aubw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787027189; x=1787631989;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=WjmxRYlcS6K8pKZdReOoWwINkSByDyWzsirONrxxVnM=;
+        b=bD6fPqeVYekL2jANZBNh7n7l15djNKgbE/wPaSa1NFNrndjk8nJAQEIg9wCRd751Kx
+         XOoRo2yd5okc4nlc3/42sKgLtN1bdwcNcIOD/9hSZZkiZ3IR/mMXeemGkWGO78HMTJts
+         jEvPFXcD3Sy1MK6Ws6AasMkAnNBYsx/jxrwZ6IH+6VM1Pf7pRJNu8utrKgdwgJaiMRIE
+         E2lBQVTx0Jgh96Kx43pIA2up3IUyFO3fgqkPdLuE3/6XNJKiODlbbcLfUX35GQi/UbSr
+         4dKj5Tw+gmARssVYJOY7d7xaRHeqA8Dy7lhhD5Vns1cnf/m7BHQRQTpFuwrUWC2Dkl/u
+         a4Mg==
+X-Forwarded-Encrypted: i=1; AHgh+RpBUNY7YrTWMZKKhzMQas/LppDyJteS5kjk0FN1Q/EO3iyt2MkU6lKZYD9nUkm5txnJGcE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5ePiVbuqNumunZtMhH6oQ+kX5cYnNeTAb1huXHDqKDE9jL+xV
+	kbG2oXMToxhfmyu7HwyFDm4P6sBFzaCnONdK0P+PBeJg6q/M1RweHlgN
+X-Gm-Gg: AR+sD10aZ1RX3h6YKRNxxNZqR0yF1MYZFP8U4dR14dBlwtaoCppWC+s8CSI0HKTyTy5
+	+Tmgl5q/n+HUPbDFeiQX6apVxCwwPIHvgMET1aPHb0YtAOAOs2QHSvLCX4rrSTxgApth+7eMJUa
+	CjgsDH6qi1WbFUto/y9dQ4fo5g8TplDkn/ICvdNt+mZUmjWTA4fVPuo7yRD6UYIYfQy+PXkwZZ6
+	UTyqlicv1JBvHMymPy6/FX6Ov5IjV+MGl71XpIazPxFdwVWgW4pJgs8JJpYKLYnAUyzw9RhCj6J
+	m2ndir+8xDZHdgWT+W1L0e0lhDOn2Kmh18SQMDMWRchCcW2FtWhJ0EJjEQdRbg12GZgU00CahoG
+	ETf7naFNtDk2uwbb52k5VHBmucVaDJsIFXhaZh02eASTDwUjxjNK6M3IYRa+JJCOUIkPXhlINLl
+	70HoLdn1dfNdwCo7A1giBNzcWw2TZigdNo0GB5xATGjtDfkYao1pZ6W3ySWjragab2
+X-Received: by 2002:a17:90b:1801:b0:37f:e1af:df22 with SMTP id 98e67ed59e1d1-3955aa0826emr5406167a91.17.1787027189224;
+        Mon, 17 Aug 2026 21:26:29 -0700 (PDT)
+Received: from jia ([188.253.126.51])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3954d1b0143sm4527762a91.0.2026.08.17.21.26.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2026 21:26:28 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: mst@redhat.com
+Cc: jasowangio@gmail.com,
+	eperezma@redhat.com,
+	stefanha@redhat.com,
+	sgarzare@redhat.com,
+	weiyj.lk@gmail.com,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jia Jia <physicalmtea@gmail.com>
+Subject: [PATCH v6 0/3] vhost: fix device IOTLB feature lifecycle
+Date: Tue, 18 Aug 2026 12:26:10 +0800
+Message-Id: <20260818042613.281125-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aoLXycEYCnJTjQ-D@raptor>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 17, 2026 at 10:43:37AM +0800, Alexandru Elisei wrote:
-> Hi,
->
-> On Mon, Aug 17, 2026 at 04:45:33PM +0800, Yao Yuan wrote:
-> > Don't set the CFLAGS to empty in Makefile for passing more
-> > CFLAGS options from environment variable, e.g -static for
-> > native static building.
->
-> I think the lkvm-static makefile target might be your friend in this case :)
->
-> $ make -j$(getconf _NPROCESSORS_ONLN) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- lkvm-static
->
-> (have a look at the $(PROGRAM)-static target if you want to double check that it
-> fits your needs)
+Both vhost-vsock and vhost-net can leave the device IOTLB attached when
+userspace clears VIRTIO_F_ACCESS_PLATFORM. They can also replace an
+existing IOTLB with a new empty table when a later feature update keeps
+ACCESS_PLATFORM enabled, for example when updating logging.
 
-Hi Alex,
+When the IOTLB mode changes, the vring addresses previously supplied by
+userspace no longer have the same address-space meaning. Leaving those
+addresses installed would allow an old IOVA to be used as a direct
+userspace address after the IOTLB is detached.
 
-Thanks for such nice suggestion!
+This series invalidates the vring access state during IOTLB transitions,
+makes IOTLB initialization idempotent, and uses a common teardown helper
+for vhost-vsock and vhost-net. IOTLB mode changes are applied even while a
+virtqueue backend is attached. The device-wide IOTLB is dropped first, each
+virtqueue then clears its IOTLB pointer and cached ring access under its own
+mutex, and the old table is freed only after every virtqueue has completed
+the handoff.
 
-Yes, it fits my requirement and it works in native building yet.
+A successful live mode change leaves the backend attached but invalidates
+the cached vring addresses. Userspace must configure the vring addresses for
+the new address mode before data processing can resume. When
+ACCESS_PLATFORM is enabled, the usual IOTLB miss/update protocol repopulates
+the new table.
 
-So I think this can be dropped unless it helps in other purposes.
+Changes since v5:
+- invalidate desc, avail, used, logging state, and metadata on IOTLB
+  transitions;
+- apply IOTLB mode changes while a backend is attached, following the
+  per-virtqueue handoff suggested in review;
+- apply the IOTLB teardown to vhost-net as well as vhost-vsock.
 
->
-> Thanks,
-> Alex
->
-> >
-> > One use case of static buidling is using kvmtool for
-> > pre-silicon validation on emulation system, such system has
-> > limited or even no IO part and run w/ small solo ramdisk as
-> > linux userspace instead of full Linux distribution, and run
-> > in slow speed. Thus the self-contained kvmtool static
-> > building is good choice in performance and size for testing
-> > on such system.
-> >
-> > The static building is verified on arm64 host:
-> >
-> > CFLAGS=-static make -j32
-> > ...
-> > LINK     lkvm
-> > LN       vm
-> >
-> > $ldd ./lkvm
-> >         not a dynamic executable
-> >
-> > The funciton is verified w/ below command, boot arm64 guest
-> > to serial successfully:
-> >
-> > cmdline=(
-> > 	ignore_loglevel
-> > 	earlycon=uart8250,mmio,0x1000000,115200n8
-> > 	console=uart8250,mmio,0x1000000,115200n8
-> > 	nokaslr
-> > 	selinux=0
-> > 	audit=0
-> > 	root=/dev/vda3
-> > )
-> >
-> > ./lkvm run \
-> > 	   --name test_kvmtool \
-> > 	   -c 4 -m 1G \
-> > 	   --nodefaults \
-> > 	   --irqchip gicv3-its \
-> > 	   --console serial \
-> > 	   --virtio-transport pci \
-> > 	   --disk /path/to/the/disk/image
-> > 	   --kernel /path/to/the/arm64/boot/image
-> > 	   --param "${cmdline[*]}"
-> >
-> >
-> > Yao Yuan (1):
-> >   Makefile: Don't set -CFLAGS := in Makefile
-> >
-> >  Makefile | 1 -
-> >  1 file changed, 1 deletion(-)
-> >
-> > --
-> > 2.43.5
-> >
+Jia Jia (3):
+  vhost: invalidate vring access on IOTLB transitions
+  vhost/vsock: discard IOTLB when ACCESS_PLATFORM is cleared
+  vhost/net: discard IOTLB when ACCESS_PLATFORM is cleared
+
+ drivers/vhost/net.c   |  8 ++++++--
+ drivers/vhost/vhost.c | 53 ++++++++++++++++++++++++++++++++++++++++-
+ drivers/vhost/vhost.h |  1 +
+ drivers/vhost/vsock.c | 10 ++++++---
+ 4 files changed, 66 insertions(+), 6 deletions(-)
+
