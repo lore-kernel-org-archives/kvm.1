@@ -1,68 +1,68 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3C446D56E
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 12:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE754749E8
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 12:50:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787057366; cv=none; b=hRBD5N3pb/aMw7nKVsN6Bi5bRZ78H8M1nkHjceilACSSfflUV4Q6hmQSZITRMCIjjSx11soKvGvuG7Q0I6y53r/vcP6wgDQBM5gTfbDVOScsHlbRfsC7/OXPAQMgtILd45/ed7YMN4NFMTsmRr1ZwRiOHOalAJHtsQUO5iTkRHs=
+	t=1787057461; cv=none; b=RqRL0xIfvKPJcoU/JcNrq09uF49bKCF7+QW+UK4sof/QvKmrK+yvgyc3qJGzOcjoHkvb2ig7smnx3DSx+OppCVJ3FNilGlS/aqFVpxaiA3Tyx2uCWgySLuzaqUFGcy3UZp7y0gLOswS4EKf4ehyuVS0G5/M3MRLFfDc+DyHPQDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787057366; c=relaxed/simple;
-	bh=cvR0dWZUF4em4CAcfZS1ifgyPX19BMD2dQHLEiiqibQ=;
+	s=arc-20240116; t=1787057461; c=relaxed/simple;
+	bh=yDxDlyqLp5oTixkhjTCkGBUE3dyTpe4DBIToh/U/hNw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W8kNyVzaFwY6oaP5RyuD4BVNbsA5JdL1KEdwS16WwUGYiX7wci8AhddIj4UuLPVFy4McJFUNNx1X079CwVHCovM0Jz6hr4at5mOV1J06yBTKhs+UtnWBUZEg8XMi+DV0yXSD6FBX+eNL31ZOhD9TVKwg/hlyAAzpSpqw2Sywt7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pc8f0zPO; arc=none smtp.client-ip=209.85.216.41
+	 In-Reply-To:Content-Type; b=JNbFyMc1im7/v2y9FX/1YXQwzJEn8IwVEH0vlxvwWm5nM9Lmxg2D2NTLLwY2ds49l0zzw2TcLrD4sn8zKms+9QkZZZ0LLPuOvxAlu80CUQuXFAk91DIsfY8AfEFDkissF6/fwxrSH21waSm53Hgtl17qpjmkINWSjO9m6BDV9do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j8wHlBUK; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pc8f0zPO"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-38dfe7eb825so3531171a91.0
-        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 05:49:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j8wHlBUK"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cf6d65d8a7so58482755ad.0
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 05:50:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787057364; x=1787662164; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1787057455; x=1787662255; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=g8KO6swaxgVTtcdM/0ToN4cGodRQ27jC6GnsdjaTcjE=;
-        b=Pc8f0zPOJBXasWXc0O1qtpcA1UUmKV3dn3PPze/ztMHdCy0vETenIYgB+wIo5ay6gP
-         gijkZmlzPsvYnFvX5sjqykszHMOh0eFljckkEJBJ0d+niwwfp9KkV5J/xeO4SJaTgAWt
-         UaRfBn27kGPqrh5TDK84aOrx0eomxubW/ssPB9tHsGFWLav7DuHp1ceVWmjKJbg8VFXP
-         p/4Moit0baN7a+onBqvjet53WHAmYTLiTro30+W2XYPE8//BO/cvclvEePZoOFEryuQo
-         jPLHr0CLyJIhTmTx5WxZYuAtaZZ1SxI619vGWQAJY5j7wXPCx27k6HnvhN0KAkoF0YUz
-         HFKg==
+        bh=QydW9EfPsAktXSdxMNlPMiQEqHQr57p4gRR6UU4ns3M=;
+        b=j8wHlBUKiJtDpoj/R8/XCZjuUdrvsicpJZfkiv62BeG5Ua49gGDgnRnZo3/7VZU8Kz
+         XzS0bVWoofbz6/kzjYMvrAfUSpZ+1ROPUPqXlEL7UKTUCPjYlD7pnc79vcNtvbLV8BXo
+         WM4DLvESF8bBCPvMWxDpWcZv97qWHBsrBYdo1lSobWq1dMzcI532OOYzcyDrEtiN5vNt
+         /Kv4J9I4URXHYfUhzlLD3C7se0DdRadI1jVWl+FAP4I6YurbP7bAExzXSPOT2y1x9Yxr
+         mq2sheY0DKWRbvK0Mcnv9UI7xcwNDyTcXYQOnEcfEy/XMxmLFTXGJhd+hDL923jsTmaZ
+         GRkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787057364; x=1787662164;
+        d=1e100.net; s=20251104; t=1787057455; x=1787662255;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=g8KO6swaxgVTtcdM/0ToN4cGodRQ27jC6GnsdjaTcjE=;
-        b=CM3hniHJrwf4vmH7VrE+CILFy++GA4dnObMDreksLte/rxJYpW7ppuxeW9knTOANUj
-         RnArndVz0fklSvz1cxGU8PjDuvrQlN3fCFXPxk6QV8XrtjReBRt4Xq1JGGOWnCKtYRLt
-         m5PjQSqPMqC1KCwIFemWdyJ2bmGzgkBJjENcmnEhC6WBVOVPWSx+zTj0JTPLmdsbObHO
-         uc6KOU6YlMRuuQQEc4i5Kh0/RLgVszkDwBsJojcrEyb1QBBNqa4J1KNWZEifnJQpvYpe
-         gaaa38WtY9H5eartnzi/+K2Dqt4CDqeQoWvKeq4WyeWthjgMS1kX96Fh6CdjUzCPGvsn
-         LzZw==
-X-Forwarded-Encrypted: i=1; AHgh+RoGpguTNi22CxT/AX3pFQHV8aSRuihEpWpyg7E/EZHio/qRobnZ50cnMDiHfX8gAZ0UCNw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDKs75NHfEO+QLHgBnx7ThYDdPYumM2L9x5tfX5r5g8iL4iVGh
-	7o4TIFgZDFmHDt9K0Ies/OBn0ffE6AFj4SFVirjHBHAyhanSq5DWGrK/
-X-Gm-Gg: AR+sD11J3ay39LfOxZZh7T8zzuGkBMf3SdN0VHysdIVFAmoYgKxo920ZntYUtnoHx+8
-	p3RarifEdeyZfg/57WLliFIlT7kf+rs2Il4zPnn2esTJBr7r+w+pzKjiBLnhLLHS5whuHGfZFwC
-	5xIfiXsfeiAxCHw86G1V5gGmIckw6Jb84G2ONFteYytdUhFboPHaki1XaXGM+y6CB00IPhEe3Ub
-	BUcgQIFQ1VbYC4Po+6BadDCfpELBW5KxTTjtMh6mo+3sJgpH46vJ1SendwTREJMUoVQHqDctdPn
-	1fx2w2RKE9XCOTY8OKLdOoyMCfOWROExVp6I1Brtuhfvf7FerG4V1H1kQ9qsOjLZIZUkaEjc/Hh
-	VYtKoKy9qfnTyPNy+LKnOUZaaaGiCEpgnZnHEekPCQU49eUXQbTEp6pG7FbbPZn526HLHhDlfDD
-	4X4SJyYE3K+f9Bb4cb0fsGeahfw3HXbCdPezvNijEeUluNhLd+yQykYtbVE1z9nJF1pTIOCbgMC
-	JQBUzO2EAU9XF2hGZ1zqhabmjg=
-X-Received: by 2002:a17:90b:264c:b0:38d:ddc2:7ccb with SMTP id 98e67ed59e1d1-3933b714f34mr36446357a91.1.1787057364363;
-        Tue, 18 Aug 2026 05:49:24 -0700 (PDT)
+        bh=QydW9EfPsAktXSdxMNlPMiQEqHQr57p4gRR6UU4ns3M=;
+        b=pZLb3+a+3rejUiKNCFi3c1SmyjvotQR7jGKauZH5pdpzeU0/haS26IykPTYJ55toGu
+         uTAsf819wZHWPcLGBQBjUqCHcN54vqeC2D5aP3DWBH0WR0YJRcG1k8HpoQ9lekmzvz2f
+         xWa5NGPgOHcpHkMBC0JqCxzRau5Mg1F3AMFyKoY2oegojd84b//da/g3yhwSZDUWoamG
+         8xDD3X9pxVgP0nw11SS6dOfxCcjQKDGz7oi02t7iga8AlQ/AXPXA7oHrntb9Pz0z4xlz
+         CX/LLoBPwvE+aBQll5uHezDpOAfNT8NkZNJEqPr9w+0Yz+zT/YSYqyYLA2y0EATVpJ9N
+         4y4A==
+X-Forwarded-Encrypted: i=1; AHgh+RoN/MrhHRVmpshB5S62VCHPkIQwrouZvj9GoOlUZqEv/u8hXSVzbSBaZXHvmj/UyrMCrUk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuQbRBmWqKtXLyYLADSvecD/HjLZSlalWcpvoUVo44BW81QqCg
+	WzsV6tHjLsd/PQFoJNwycFc+clELuhQdZXZ5bAl40auC16L4c6LmP1kzIo5HOqooRvA=
+X-Gm-Gg: AR+sD13hTMTLgvTogVr2j5ljLC3e8dVxOteDttd4bYodi3+WrP/s+QtIdibf1eR093F
+	HNvEEBvEuz6XOEI2+P9fHlnAeM/mtBbJ8dkBclR8uWU8a+GZaF7+x/p2BdO40W54Ie6VwKsscb0
+	1WsUuCxAsSCjnJ4/IrRd73z6Nq9IAcJYw/Y4EQrRroQQvrkgXPkdM6w6mkq60L0auWU/8K6vMq7
+	1OUajChoCm336wR7AJwyjLkLdW+umE8JZdan9GpBrUT3MS7//usa02/33U81SqYB3nOp9s/bybk
+	X/TboRxoKXeUEhGxkELwgeB0a02GsUGO7r9S6AtWcK+FuPaxlKiKC5B7L9CM95pDLjd25YicJ9r
+	GL7B6X0of7zjwFVGsvPZuBR31PDXH3olUZLgAylH1SsSoC4p8GOi9ALkg61uTyhe/LkltFDveUP
+	WTHkHy6DauNhGtxR1RGVqZYwQ13MQ53XjjzvX3eqazH9wKpH/uYki70YRNXpJiR6EUQWnc6NJpV
+	5Pg0GcG86mxjDww2iUIm1/3UW4=
+X-Received: by 2002:a17:903:1a08:b0:2d3:7887:7e7f with SMTP id d9443c01a7336-2d3b0c5de30mr412838845ad.11.1787057454413;
+        Tue, 18 Aug 2026 05:50:54 -0700 (PDT)
 Received: from [10.26.143.42] ([43.132.141.24])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39339d00eafsm7174764a91.1.2026.08.18.05.49.22
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d5c1ef83d6sm14172995ad.78.2026.08.18.05.50.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Aug 2026 05:49:24 -0700 (PDT)
-Message-ID: <4f7023b4-dd7a-47cb-9754-52e6d41d3aa1@gmail.com>
-Date: Tue, 18 Aug 2026 20:49:21 +0800
+        Tue, 18 Aug 2026 05:50:54 -0700 (PDT)
+Message-ID: <6799252e-d310-442a-87c3-279d0d71ecef@gmail.com>
+Date: Tue, 18 Aug 2026 20:50:51 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,150 +70,165 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] KVM: selftests: arm64: Skip sea_to_user without
- 1GB hugepages
+Subject: Re: [PATCH v2 3/3] KVM: selftests: arm64: Skip sea_to_user when EINJ
+ places no poison
 To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>,
- kvm@vger.kernel.org, sashiko-reviews@lists.linux.dev
+Cc: Oliver Upton <oupton@kernel.org>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev, sashiko-reviews@lists.linux.dev
 References: <20260818112920.26252-1-likexu@tencent.com>
- <20260818112920.26252-3-likexu@tencent.com>
- <20260818113615.5CBE01F000E9@smtp.kernel.org>
+ <20260818112920.26252-4-likexu@tencent.com>
+ <20260818114103.433F01F000E9@smtp.kernel.org>
 Content-Language: en-US
 From: Like Xu <like.xu.linux@gmail.com>
-In-Reply-To: <20260818113615.5CBE01F000E9@smtp.kernel.org>
+In-Reply-To: <20260818114103.433F01F000E9@smtp.kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 8/18/26 7:36 PM, sashiko-bot@kernel.org wrote:
+On 8/18/26 7:41 PM, sashiko-bot@kernel.org wrote:
 > Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] get_free_hugepages() overestimates available hugepages by ignoring reserved pages, which allows the test to proceed and crash with ENOMEM on systems with reserved pools.
+> - [Medium] The check skips the test unconditionally on any guest assertion failure, masking unrelated or future bugs.
 > --
 > 
-> --- Patch [2]: [PATCH v2 2/3] KVM: selftests: arm64: Skip sea_to_user without 1GB hugepages ---
-> commit 5fa5666824342b3dd28a5ef6a04bb5ac183257c8
+> --- Patch [3]: [PATCH v2 3/3] KVM: selftests: arm64: Skip sea_to_user when EINJ places no poison ---
+> commit 3bedaa634d562c6cc85fb3726d30fa40f0ed350d
 > Author: Like Xu <like.xu.linux@gmail.com>
 > 
-> KVM: selftests: arm64: Skip sea_to_user without 1GB hugepages
+> KVM: selftests: arm64: Skip sea_to_user when EINJ places no poison
 > 
-> This commit adds a check to skip the sea_to_user test if the host does not
-> have enough 1GB hugepages available, preventing a hard failure on systems
-> without an empty pool.
+> This commit modifies the sea_to_user selftest to skip rather than fail
+> when the firmware does not leave consumable poison in memory. It detects
+> this condition by checking if the exit reason is not KVM_EXIT_ARM_SEA
+> and a UCALL_ABORT is received from the guest.
 > 
-> [ ... ]
->> diff --git a/tools/testing/selftests/kvm/lib/test_util.c b/tools/testing/selftests/kvm/lib/test_util.c
->> index bab1bd2b775b6..29f9c1d60b1b7 100644
->> --- a/tools/testing/selftests/kvm/lib/test_util.c
->> +++ b/tools/testing/selftests/kvm/lib/test_util.c
->> @@ -222,6 +222,21 @@ size_t get_def_hugetlb_pagesz(void)
->>   	TEST_FAIL("Error in reading /proc/meminfo");
->>   }
+>> diff --git a/tools/testing/selftests/kvm/arm64/sea_to_user.c b/tools/testing/selftests/kvm/arm64/sea_to_user.c
+>> index 7cf95da8e594d..d4af6e0eed288 100644
+>> --- a/tools/testing/selftests/kvm/arm64/sea_to_user.c
+>> +++ b/tools/testing/selftests/kvm/arm64/sea_to_user.c
+>> @@ -215,13 +215,33 @@ static void run_vm(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
 >>   
->> +size_t get_free_hugepages(size_t page_size)
->> +{
->> +	char path[128];
->> +	size_t free;
+>>   	ksft_print_msg("Dump kvm_run info about KVM_EXIT_%s\n",
+>>   		       exit_reason_str(run->exit_reason));
 >> +
->> +	snprintf(path, sizeof(path),
->> +		 "/sys/kernel/mm/hugepages/hugepages-%zukB/free_hugepages",
->> +		 page_size >> 10);
->> +	if (!test_sysfs_path(path))
->> +		return 0;
->> +
->> +	free = get_sysfs_val(path);
->> +	return free * page_size;
+>> +	/*
+>> +	 * The guest's read of the injected location is expected to trap to KVM
+>> +	 * as an SEA. If it does not, the injected error was never placed as
+>> +	 * consumable poison: some firmware honours EINJ's notrigger request by
+>> +	 * arming the poison only as part of the (now skipped) trigger step, so
+>> +	 * nothing is left in memory for the guest to consume. The guest then
+>> +	 * reads back the sentinel value and reports it via GUEST_FAIL, which
+>> +	 * arm64 delivers as a ucall over MMIO (hence a KVM_EXIT_MMIO here).
+>> +	 * Treat that as "this platform cannot host the test" and skip, matching
+>> +	 * the requirement documented at the top of this file, rather than
+>> +	 * failing on a hardware/firmware limitation the test cannot control.
+>> +	 */
+>> +	if (run->exit_reason != KVM_EXIT_ARM_SEA &&
+>> +	    get_ucall(vcpu, &uc) == UCALL_ABORT) {
 > 
 > [Severity: Medium]
-> Does this calculation overestimate the available hugepages by ignoring the
-> reserved pool?
+> Does this unconditionally skip the test on any guest assertion failure,
+> masking unrelated or future bugs?
 > 
-> The sysfs free_hugepages value includes pages that are already committed to
-> other mappings but not yet allocated (which are tracked via resv_hugepages).
+> If KVM fails to exit to userspace and instead incorrectly injects a
+> Data Abort to the guest with an unexpected syndrome, the guest's SEA
+> handler might fail a GUEST_ASSERT_EQ check. This would emit a
+> UCALL_ABORT over MMIO.
 > 
-> If the test runs on a host where free_hugepages meets the VM_MEM_SIZE
-> requirement but some or all of those pages are reserved, the test will
-> incorrectly proceed and still crash with an -ENOMEM abort instead of cleanly
-> skipping.
+> The host loop here interprets any UCALL_ABORT during this phase as a
+> missing EINJ poison limitation, skipping the test instead of reporting
+> the failure.
 > 
-> Could we also read and subtract resv_hugepages to determine the actual
-> allocatable count?
+> Can we check the specific assertion failure reason or uc.buffer string
+> instead of catching all UCALL_ABORTs?
 
 For any human to double check:
 
 diff --git a/tools/testing/selftests/kvm/arm64/sea_to_user.c 
 b/tools/testing/selftests/kvm/arm64/sea_to_user.c
-index 1c2a743ca8e23..7cf95da8e594d 100644
+index 7cf95da8e594d..f1d156d7645cc 100644
 --- a/tools/testing/selftests/kvm/arm64/sea_to_user.c
 +++ b/tools/testing/selftests/kvm/arm64/sea_to_user.c
-@@ -281,6 +281,12 @@ static struct kvm_vm 
-*vm_create_with_sea_handler(struct kvm_vcpu **vcpu)
-  	alignment = max(backing_page_size, guest_page_size);
-  	num_guest_pages = VM_MEM_SIZE / guest_page_size;
+@@ -165,11 +165,16 @@ static void guest_code(void)
+  {
+  	u64 guest_data;
 
+-	/* Consumes error will cause a SEA. */
++	/* Consuming a real poison faults as an SEA and never returns here. */
+  	guest_data = *(u64 *)EINJ_GVA;
+
+-	GUEST_FAIL("Poison not protected by SEA: gva=%#lx, guest_data=%#lx\n",
+-		   EINJ_GVA, guest_data);
 +	/*
-+	 * The region is backed by 1GB hugepages; skip gracefully rather than
-+	 * failing with mmap() -ENOMEM if the host has none reserved.
++	 * The read returned, so this platform placed no consumable poison.
++	 * Report the value read as a positive signal that is distinct from a
++	 * GUEST_ASSERT failure, so the host can skip on this limitation without
++	 * masking a genuine SEA-handling failure.
 +	 */
-+	TEST_REQUIRE(get_free_hugepages(backing_page_size) >= VM_MEM_SIZE);
-+
-  	vm = __vm_create_with_one_vcpu(vcpu, num_guest_pages, guest_code);
-  	vm_init_descriptor_tables(vm);
-  	vcpu_init_descriptor_tables(*vcpu);
-diff --git a/tools/testing/selftests/kvm/include/test_util.h 
-b/tools/testing/selftests/kvm/include/test_util.h
-index a56271c237ae9..0624922c2735d 100644
---- a/tools/testing/selftests/kvm/include/test_util.h
-+++ b/tools/testing/selftests/kvm/include/test_util.h
-@@ -168,6 +168,7 @@ struct vm_mem_backing_src_alias {
-  bool thp_configured(void);
-  size_t get_trans_hugepagesz(void);
-  size_t get_def_hugetlb_pagesz(void);
-+size_t get_free_hugepages(size_t page_size);
-  const struct vm_mem_backing_src_alias *vm_mem_backing_src_alias(u32 i);
-  size_t get_backing_src_pagesz(u32 i);
-  bool is_backing_src_hugetlb(u32 i);
-diff --git a/tools/testing/selftests/kvm/lib/test_util.c 
-b/tools/testing/selftests/kvm/lib/test_util.c
-index bab1bd2b775b6..3bff9d825e8af 100644
---- a/tools/testing/selftests/kvm/lib/test_util.c
-+++ b/tools/testing/selftests/kvm/lib/test_util.c
-@@ -222,6 +222,32 @@ size_t get_def_hugetlb_pagesz(void)
-  	TEST_FAIL("Error in reading /proc/meminfo");
++	GUEST_SYNC1(guest_data);
   }
 
-+size_t get_free_hugepages(size_t page_size)
-+{
-+	char path[128];
-+	size_t free, resv;
-+
-+	snprintf(path, sizeof(path),
-+		 "/sys/kernel/mm/hugepages/hugepages-%zukB/free_hugepages",
-+		 page_size >> 10);
-+	if (!test_sysfs_path(path))
-+		return 0;
-+	free = get_sysfs_val(path);
+  static void expect_sea_handler(struct ex_regs *regs)
+@@ -215,13 +220,46 @@ static void run_vm(struct kvm_vm *vm, struct 
+kvm_vcpu *vcpu)
+
+  	ksft_print_msg("Dump kvm_run info about KVM_EXIT_%s\n",
+  		       exit_reason_str(run->exit_reason));
 +
 +	/*
-+	 * free_hugepages still counts pages that are reserved by existing
-+	 * mappings but not yet faulted in, so only free minus resv can back a
-+	 * new reservation (see available_huge_pages() in mm/hugetlb.c). Ignore
-+	 * surplus/overcommit: it does not apply to gigantic pages at runtime.
++	 * The guest's read of the injected location must trap to KVM as an
++	 * SEA. If the exit is something else, decode what the guest did before
++	 * deciding whether to skip or fail:
++	 *
++	 *  - UCALL_SYNC: the read returned instead of faulting, so no
++	 *    consumable poison was placed. Some firmware only arms EINJ poison
++	 *    as part of the trigger step that notrigger=1 skips, leaving
++	 *    nothing for the guest to consume; arm64 delivers the ucall as an
++	 *    MMIO write (hence KVM_EXIT_MMIO). This platform cannot host the
++	 *    test, so skip, matching the requirement documented at the top.
++	 *  - UCALL_ABORT: the guest took an abort but its SEA handler failed an
++	 *    assertion. That is a genuine problem, so report it rather than
++	 *    masking it as the limitation above.
++	 *  - anything else: fall through to the exit-reason assertion.
 +	 */
-+	snprintf(path, sizeof(path),
-+		 "/sys/kernel/mm/hugepages/hugepages-%zukB/resv_hugepages",
-+		 page_size >> 10);
-+	resv = test_sysfs_path(path) ? get_sysfs_val(path) : 0;
++	if (run->exit_reason != KVM_EXIT_ARM_SEA) {
++		switch (get_ucall(vcpu, &uc)) {
++		case UCALL_SYNC:
++			ksft_print_msg("Guest read back %#lx without an SEA\n",
++				       uc.args[0]);
++			ksft_exit_skip("EINJ notrigger placed no consumable poison on this 
+platform\n");
++			break;
++		case UCALL_ABORT:
++			REPORT_GUEST_ASSERT(uc);
++			break;
++		default:
++			break;
++		}
++	}
 +
-+	return free > resv ? (free - resv) * page_size : 0;
-+}
++	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_ARM_SEA);
 +
-  #define ANON_FLAGS	(MAP_PRIVATE | MAP_ANONYMOUS)
-  #define ANON_HUGE_FLAGS	(ANON_FLAGS | MAP_HUGETLB)
++	/* arm_sea holds valid data only for a KVM_EXIT_ARM_SEA exit. */
+  	ksft_print_msg("kvm_run.arm_sea: esr=%#llx, flags=%#llx\n",
+  		       run->arm_sea.esr, run->arm_sea.flags);
+  	ksft_print_msg("kvm_run.arm_sea: gva=%#llx, gpa=%#llx\n",
+  		       run->arm_sea.gva, run->arm_sea.gpa);
+
+-	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_ARM_SEA);
+-
+  	esr = run->arm_sea.esr;
+  	TEST_ASSERT_EQ(ESR_ELx_EC(esr), ESR_ELx_EC_DABT_LOW);
+  	TEST_ASSERT_EQ(esr & ESR_ELx_FSC_TYPE, ESR_ELx_FSC_EXTABT);
 
 > 
->> +}
+>> +		ksft_print_msg("Guest consumed no SEA: %s", uc.buffer);
+>> +		ksft_exit_skip("EINJ notrigger placed no consumable poison on this platform\n");
+>> +	}
 >> +
->>   #define ANON_FLAGS	(MAP_PRIVATE | MAP_ANONYMOUS)
->>   #define ANON_HUGE_FLAGS	(ANON_FLAGS | MAP_HUGETLB)
->>
+>> +	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_ARM_SEA);
+>> +
+>> +	/* arm_sea holds valid data only for a KVM_EXIT_ARM_SEA exit. */
+>>   	ksft_print_msg("kvm_run.arm_sea: esr=%#llx, flags=%#llx\n",
+>>   		       run->arm_sea.esr, run->arm_sea.flags);
+>>   	ksft_print_msg("kvm_run.arm_sea: gva=%#llx, gpa=%#llx\n",
 > 
 
