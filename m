@@ -1,56 +1,56 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD8947F798
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 16:53:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE3947FAE5
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 16:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787071997; cv=none; b=JQVBK6RV0TLffkYTpQ38cOKYkzIt1lBBlocyt6GdGlMZezUvX7oX2adFyXeguqKtrG4jp5GpmmRxBh13qOpaEtOn9BmwuZVD5PfX+omvcqh8A8EDP9bIlFRkL/pHxg3HR0b2tihDYCI0ZreJ/f0xq/LIEXaLdkZ9oSTp/t56IhU=
+	t=1787072010; cv=none; b=iqoI7S5i3FNVNrRSsiSBRe8fst6bSTOIUYMSlBFEnGJo/sWw5QOxheIQ/8tmZRnHp8byKI/+jbTaICRUPvb1D5HD6mxpgi6ABzo1SZet4YjmoEvXJOZ58APewcr/GOaGZWfM2kZet0jCQdgdPnj9PLviqD7lPBEs9u47d8O2nfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787071997; c=relaxed/simple;
-	bh=5KSvQ0lR3nSV3GQnaya6+8BX26FqdLEUSjUQw/DpadY=;
+	s=arc-20240116; t=1787072010; c=relaxed/simple;
+	bh=Vm9xUDcAS267yA06KGs7MhS8cKAPJEvEmCcnUx5RbRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YDx5A15kzg3uEei9LVnUzsLLX76w7F8U9+vkLEDsx7tIDOzA0k20sOo/2BquSnHeofr9OW4+69jSe/KmXSp166xRxH+I2+SQF2ldr1Y95t/ZFDx0Gas2iR8qpF3wCkmpgohRYxKQuk0zoPbiqObOE4wPnaUw3t2fodc9rAY3w38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XTs3Gp4j; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=ZmYepMPjSvnm17ivvdBWfePnf0tNdXEU1LMuc5XOJF9noon8jVHkShTTCfHXTfJNtRIUlj3VKGzIg6PulDlL8Xjfui7p94QAaiOs0VKJW5GzchllJR7VhCUC4L0y/axTDLzRWPPjWqiz78u9XM5mBzo2UAcLHx1UAJqudg25idY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QE5ocAiM; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XTs3Gp4j"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QE5ocAiM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787071994;
+	s=mimecast20190719; t=1787071998;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XeAlhq82vYxgd3YLN8Csk0DSOJO0EC+fstAN50H0WxM=;
-	b=XTs3Gp4jccJ1Wf7MjLvxPqj+6Bz/kmNTIlVbX2KOz5919FPO8d/pk5FPpcN6ZXi4TIJEu1
-	mhhUasILTrxTU2U7BFL+MUrVbG+nh6sacMDL5svhSmd7KwmzQgGrWzG9RXsHnVZTn5v4jn
-	kEUfTZdGQ4O9tPzTA3kcqUdGGa0rB54=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=gyc4YAR9TNpBO2M57zNok/MGHeJZrHvF82zUYZWDP9o=;
+	b=QE5ocAiMAzFAZ2pOqKRR0hI/vuvMOhK3KZetWGNzgMLEW3f20J+hVDBMLM7/B/X5bLXtFz
+	2CZnKtBTAMswMokr0BLNHkE6Okco9VfA+SowJoJWV6KZJAptY+M4mr8E0UOn7Wb3+ZKwee
+	2qPuK3PgyKILyQ0JLWu007/kFSDB2KM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-301-wKwttiWpOgqbXcMYHsx5Ew-1; Tue,
- 18 Aug 2026 12:53:11 -0400
-X-MC-Unique: wKwttiWpOgqbXcMYHsx5Ew-1
-X-Mimecast-MFC-AGG-ID: wKwttiWpOgqbXcMYHsx5Ew_1787071990
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-390-dIZR2-1qMYCFi9CqqonKOQ-1; Tue,
+ 18 Aug 2026 12:53:09 -0400
+X-MC-Unique: dIZR2-1qMYCFi9CqqonKOQ-1
+X-Mimecast-MFC-AGG-ID: dIZR2-1qMYCFi9CqqonKOQ_1787071988
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4642419560B2;
-	Tue, 18 Aug 2026 16:53:10 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.44.48.151])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7D4753000239;
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 30502195608F;
 	Tue, 18 Aug 2026 16:53:08 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.48.151])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4CDCF30002E9;
+	Tue, 18 Aug 2026 16:53:06 +0000 (UTC)
 From: Vitaly Kuznetsov <vkuznets@redhat.com>
 To: kvm@vger.kernel.org,
 	Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>
 Cc: f734222792@gmail.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 4/4] KVM: selftests: Check VMPTRLD with active eVMCS
-Date: Tue, 18 Aug 2026 18:52:58 +0200
-Message-ID: <20260818165258.2613603-5-vkuznets@redhat.com>
+Subject: [PATCH v2 3/4] KVM: selftests: Adapt to the updated VMPTRST behavior when eVMCS is used
+Date: Tue, 18 Aug 2026 18:52:57 +0200
+Message-ID: <20260818165258.2613603-4-vkuznets@redhat.com>
 In-Reply-To: <20260818165258.2613603-1-vkuznets@redhat.com>
 References: <20260818165258.2613603-1-vkuznets@redhat.com>
 Precedence: bulk
@@ -63,125 +63,74 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Check that VMPTRLD when eVMCS is active results in #UD. This matches
-genuine Hyper-V's behavior.
+Previously, VMPTRST was forbidden with eVMCS and selftests were mocking the
+correct behavior in vmptrst() by returning enlightened vmptr directly.
+Since KVM's behavior has changed to match genuine Hyper-V, adjust evmcs
+test accordingly.
 
-Use KVM_ASM_SAFE framework to handle #UD from VMPTRLD. Unfortunately, the
-same trick cannot be applied to the existing #UD check on VMLAUNCH as
-VMLAUNCH clobbers all registers which KVM_ASM_SAFE depends on. Keep
-VMLAUNCH handling separately.
-
-Assisted-by: Claude:claude-sonnet-4-6
 Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
 ---
- tools/testing/selftests/kvm/include/x86/vmx.h | 19 +++++++++++---
- .../testing/selftests/kvm/x86/hyperv_evmcs.c  | 26 +++++++++++++++----
- 2 files changed, 37 insertions(+), 8 deletions(-)
+ tools/testing/selftests/kvm/include/x86/evmcs.h | 8 --------
+ tools/testing/selftests/kvm/include/x86/vmx.h   | 3 ---
+ tools/testing/selftests/kvm/x86/hyperv_evmcs.c  | 5 ++---
+ 3 files changed, 2 insertions(+), 14 deletions(-)
 
+diff --git a/tools/testing/selftests/kvm/include/x86/evmcs.h b/tools/testing/selftests/kvm/include/x86/evmcs.h
+index be79bda024bf..8b14a5dfa04b 100644
+--- a/tools/testing/selftests/kvm/include/x86/evmcs.h
++++ b/tools/testing/selftests/kvm/include/x86/evmcs.h
+@@ -265,14 +265,6 @@ static inline bool load_evmcs(struct hyperv_test_pages *hv)
+ 	return true;
+ }
+ 
+-static inline int evmcs_vmptrst(u64 *value)
+-{
+-	*value = current_vp_assist->current_nested_vmcs &
+-		~HV_X64_MSR_VP_ASSIST_PAGE_ENABLE;
+-
+-	return 0;
+-}
+-
+ static inline int evmcs_vmread(u64 encoding, u64 *value)
+ {
+ 	switch (encoding) {
 diff --git a/tools/testing/selftests/kvm/include/x86/vmx.h b/tools/testing/selftests/kvm/include/x86/vmx.h
-index 047d02aa9688..e6adde3970d4 100644
+index 90fffaf91595..047d02aa9688 100644
 --- a/tools/testing/selftests/kvm/include/x86/vmx.h
 +++ b/tools/testing/selftests/kvm/include/x86/vmx.h
-@@ -325,9 +325,6 @@ static inline int vmptrld(u64 vmcs_pa)
- {
+@@ -341,9 +341,6 @@ static inline int vmptrst(u64 *value)
+ 	u64 tmp;
  	u8 ret;
  
 -	if (enable_evmcs)
--		return -1;
+-		return evmcs_vmptrst(value);
 -
- 	__asm__ __volatile__ ("vmptrld %[pa]; setna %[ret]"
- 		: [ret]"=rm"(ret)
- 		: [pa]"m"(vmcs_pa)
-@@ -336,6 +333,22 @@ static inline int vmptrld(u64 vmcs_pa)
- 	return ret;
- }
- 
-+static inline int vmptrld_safe(u64 vmcs_pa)
-+{
-+	u64 error_code;
-+	u8 vector;
-+	u8 failed;
-+
-+	asm volatile(KVM_ASM_SAFE("vmptrld %[pa]")
-+		     "\n\tsetna %[failed]"
-+		     : KVM_ASM_SAFE_OUTPUTS(vector, error_code),
-+		       [failed]"=qm"(failed)
-+		     : [pa]"m"(vmcs_pa)
-+		     : "cc", "memory", KVM_ASM_SAFE_CLOBBERS);
-+
-+	return vector ? vector : failed ? -EINVAL : 0;
-+}
-+
- static inline int vmptrst(u64 *value)
- {
- 	u64 tmp;
+ 	__asm__ __volatile__("vmptrst %[value]; setna %[ret]"
+ 		: [value]"=m"(tmp), [ret]"=rm"(ret)
+ 		: : "cc", "memory");
 diff --git a/tools/testing/selftests/kvm/x86/hyperv_evmcs.c b/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
-index 88262ddf7fcb..cff27638834b 100644
+index c7fa114aee20..88262ddf7fcb 100644
 --- a/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
 +++ b/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
-@@ -23,7 +23,11 @@ static int ud_count;
- static void guest_ud_handler(struct ex_regs *regs)
- {
- 	ud_count++;
--	regs->rip += 3; /* VMLAUNCH */
-+	/*
-+	 * VMLAUNCH insn can't be easily covered by KVM_ASM_SAFE framework but
-+	 * luckily the instruction is always three bytes.
-+	 */
-+	regs->rip += 3;
- }
+@@ -95,16 +95,15 @@ void guest_code(struct vmx_pages *vmx_pages, struct hyperv_test_pages *hv_pages,
+ 	GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
+ 	GUEST_SYNC(3);
+ 	GUEST_ASSERT(load_evmcs(hv_pages));
+-	GUEST_ASSERT(vmptrstz() == hv_pages->enlightened_vmcs_gpa);
++	/* VMPTRST returns -1 until VMLAUNCH with eVMCS ptr set */
++	GUEST_ASSERT(vmptrstz() == -1);
  
- static void guest_nmi_handler(struct ex_regs *regs)
-@@ -182,7 +186,15 @@ void guest_code(struct vmx_pages *vmx_pages, struct hyperv_test_pages *hv_pages,
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
- 	GUEST_SYNC(11);
+ 	GUEST_SYNC(4);
+-	GUEST_ASSERT(vmptrstz() == hv_pages->enlightened_vmcs_gpa);
  
--	/* Try enlightened vmptrld with an incorrect GPA */
-+	/* VMPTRLD instruction causes #UD after enlightened VMLAUNCH */
-+	GUEST_ASSERT(vmptrld_safe(hv_pages->enlightened_vmcs_gpa) == UD_VECTOR);
-+
-+	/*
-+	 * Try enlightened vmptrld with an incorrect GPA. GUEST_SYNC(12) signals
-+	 * the host to enable guest_ud_handler() which cannot be enabled beforehand
-+	 * to not override the default fixup handler from KVM_ASM_SAFE().
-+	 */
-+	GUEST_SYNC(12);
- 	evmcs_vmptrld(0xdeadbeef, hv_pages->enlightened_vmcs);
+ 	prepare_vmcs(vmx_pages, l2_guest_code,
+ 		     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
+ 
+ 	GUEST_SYNC(5);
+-	GUEST_ASSERT(vmptrstz() == hv_pages->enlightened_vmcs_gpa);
+ 	current_evmcs->revision_id = -1u;
  	GUEST_ASSERT(vmlaunch());
- 	GUEST_ASSERT(ud_count == 1);
-@@ -256,7 +268,6 @@ int main(int argc, char *argv[])
- 	vcpu_args_set(vcpu, 3, vmx_pages_gva, hv_pages_gva, addr_gva2gpa(vm, hcall_page));
- 	vcpu_set_msr(vcpu, HV_X64_MSR_VP_INDEX, vcpu->id);
- 
--	vm_install_exception_handler(vm, UD_VECTOR, guest_ud_handler);
- 	vm_install_exception_handler(vm, NMI_VECTOR, guest_nmi_handler);
- 
- 	pr_info("Running L1 which uses EVMCS to run L2\n");
-@@ -286,7 +297,7 @@ int main(int argc, char *argv[])
- 
- 		/* Force immediate L2->L1 exit before resuming */
- 		if (stage == 8) {
--			pr_info("Injecting NMI into L1 before L2 had a chance to run after restore\n");
-+			pr_debug("Injecting NMI into L1 before L2 had a chance to run after restore\n");
- 			inject_nmi(vcpu);
- 		}
- 
-@@ -296,9 +307,14 @@ int main(int argc, char *argv[])
- 		 * KVM_STATE_NESTED_EVMCS is not lost.
- 		 */
- 		if (stage == 9) {
--			pr_info("Trying extra KVM_GET_NESTED_STATE/KVM_SET_NESTED_STATE cycle\n");
-+			pr_debug("Trying extra KVM_GET_NESTED_STATE/KVM_SET_NESTED_STATE cycle\n");
- 			vcpu = save_restore_vm(vm, vcpu);
- 		}
-+
-+		if (stage == 12) {
-+			pr_debug("Trying enlightened VMLAUNCH with an invalid PTR\n");
-+			vm_install_exception_handler(vm, UD_VECTOR, guest_ud_handler);
-+		}
- 	}
- 
- done:
+ 	current_evmcs->revision_id = EVMCS_VERSION;
 -- 
 2.55.0
 
