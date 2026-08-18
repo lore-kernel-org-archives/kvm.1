@@ -1,68 +1,67 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA0337A85A
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 20:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D69237C93F
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 20:44:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787085884; cv=none; b=ofGnCuTHbAphB/XZcWz81RNKlO41bkz/+3nDwpMhpM6FQNZX2VFmrJkn4gzJdc1CAxB9cX+eBDfsEFPz7ctrZKMXmghcYdqoZ1yyb8UsalHXC+7kD+9ewVJMcbtngDjuSX4oQ0h5GTk1Q0p5zQ482HLaLG3QRaP5jiRT5mWWdhU=
+	t=1787085885; cv=none; b=p+6QLkIaD+SeeNFVmRjaQOu4ghgb+nLtQi2uJWruY/QHHijGHjAF+V3Dm49ngZ+hw9Om2Ctb6Jip+hgMgUVNaH7FSy8J41s81G28cVsWdIeOHX5kxajpgZRakUAqSDnwCialmsg9ScI0Jn9HepT1ZVfqxX63347lnMQa+X4SluY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787085884; c=relaxed/simple;
-	bh=EWSo94o+NC9AsqgKot1Osv3Re8bXshk6/su2AINZpnw=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=rxdtsx/WZh0l/jGHzjeMiLBRknSGGez8Jmx5v6vZDqY/zmf9XcjUe/zFehgve0uZV+4PFAUycRC6hOqJXnUuXxZKaCfTGIBCSzlYwhRRgbmap5rq6pPPVV1W6sDZS09vk1+rgBo7MzDLPV/hUEdatMwO/Jt3oUIho0jz+5GfWiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackyli.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jgmqMgGC; arc=none smtp.client-ip=209.85.215.200
+	s=arc-20240116; t=1787085885; c=relaxed/simple;
+	bh=1raa8r7p0aYRxu/KirPLwQYDnggKiHKGdcVN4goFT+0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=es5vQtnDK1BMNyRsvUSzEDvjpz7SxCBYqZKknPU0JP1TfQ62qJQ1AHM+fGOocEzzJ1V2IdyobiUtD5Rux2paigtTnWI8FNOFtyt7kLXNcHuAHrfBCunvpaVGFKLlMTJLJzFAbazv5lI6Z3jzpgmNKoOoPEx8UDStCgQkOlV4yUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackyli.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fR5mNxro; arc=none smtp.client-ip=209.85.210.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackyli.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jgmqMgGC"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cb835525b10so227606a12.2
-        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 13:44:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fR5mNxro"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84e048a801dso420676b3a.3
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 13:44:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787085882; x=1787690682; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=zgsgqcz30KQGgMzP9vxq2oYMMooKqJ9S2gmDtPTjvA8=;
-        b=jgmqMgGC6GT5OOxF2KzS71muPUlBj1fyhwxW4BgD0BvjG+C1BPqo5RpfVM8H2qKWND
-         O82XzMydcowD+xYb4NmnlyMqnJlPPZsyrNcCefDpClFGLsXgec/K3KIJr5t+64gO39Nm
-         lwWPwEwD5FMnDVhL2dn0VN9wZjRmVUa8H8LuKOOa7U8hNG7Ua0pOXZKB/FJQcRqfvz7g
-         I+25OK96BYJXSWNeJzDcBalrstJG0GiRF1IZZgL9D+sNO4ByAnGCb7vVE2k7nrj31Llu
-         HEcMqFMIbQNteDGUG95bu4+IISWU9H5afoJBWbGIalpbqBIaMELiw05fF7hQFUc66ppO
-         LBZg==
+        d=google.com; s=20251104; t=1787085883; x=1787690683; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=08nTZ8BlEZVF2fG/KvaQ5nP1tNkYkFgXiPifhkCCDBg=;
+        b=fR5mNxro6sBwOZ9ZcyVtmVzMaUkHdx8PKJXubt4wSiNgxs0/S3vrOcaQ+yim+REfqW
+         B83eStDQcz5cFHBIqWgH8FuEsHWPGwMk4PV6OcUg55IE1QoGW/ZMo/uoA2ncbWEREqGq
+         HwX+1OgLmQt4/Ruc3SyTbJk44niaNUr3+Ba6pE71TpxtZ/ytqDdcGDZ/QDnRxH9JYpSN
+         sy2NVgIW0KUJCNzaTtP9VxhUfuPeQA6AHAI3mcub5iaEhir1lc80niGVgGSCbZPuTS04
+         ia8mScsuuTCWRhIScsz69s12a8TuRp2vLKfkohZkznYw/J25jELQdAGH0eYehHjy0Vc5
+         96JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787085882; x=1787690682;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zgsgqcz30KQGgMzP9vxq2oYMMooKqJ9S2gmDtPTjvA8=;
-        b=CRFbZJIQ/Irkiv+Vq1KMLgCOJmSHcqwlwK2RMol6oH/M1UXDiBYg87+HUCwrlYU854
-         qNc0oJ2LJtzEp/KmQedW/44lviHucgVfYNfLqwogdn/m3jo5fq2+DBzk7eUn0ju/7pmd
-         pGJHbJ8lEZobD9bNspZ16Wr+Hex7krOR4/OE1AOMHzR2MHOWO4OTZsfuR//4wxJCPy7p
-         XuEnwoF2vhjrAQOFY5kHJ7cTAnzHWuGzC8sHKYyxSjYAp8zixC8degxy9G76XkYljrA5
-         rMj0gqrcuuKzQ598d4TaAORpeTu/4+/OB4I2UKOEfPUA41/07x1/ZJ3h8PAVIX1smuqY
-         ApEg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq3d4dMnFaqMn+bxU7RjMjMidgvl5fvZRPrPfQrpohdQKPt831R+Fg5Eva3ecYgor9NMJU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyF/ZBGldotKU+CyCQcUM8yg80D+myxpeAMbnjoz+Ac1ibWJ5fH
-	tDXYotF/YIyT//ZgLNGgDzV6JgtfeSeNoIKcpJsXuoZvdU98sr3m33/SfgmZFE55h0ZVeTXfIYD
-	niiyQVbTo
-X-Received: from pgbg13.prod.google.com ([2002:a63:520d:0:b0:cbe:9dc7:9efa])
- (user=jackyli job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:94c8:b0:3c4:1c9f:d81
- with SMTP id adf61e73a8af0-3ccff3c3fd3mr751374637.7.1787085882100; Tue, 18
- Aug 2026 13:44:42 -0700 (PDT)
-Date: Tue, 18 Aug 2026 20:44:14 +0000
+        d=1e100.net; s=20251104; t=1787085883; x=1787690683;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=08nTZ8BlEZVF2fG/KvaQ5nP1tNkYkFgXiPifhkCCDBg=;
+        b=PMUGHIBYw5JWAF58nuyUYLIuMn4yiQFULtJevRvsbY4PRnqd++e3JmhoV3bP3RgDjZ
+         sYvMRV/j/ZO7JilrTI+QlwWdghOkM9Wehw0SJLMdZ625kiAVZ5GWXjw0b+yn4tkkGa3f
+         ijpZxewOwShLfOdk6Y/svK9K/fD5GML/0YhXI6sLtxWvf4WavBRwfiCUr90HluP6K3d8
+         863k63Ww8Rzi6rvTWb82aNBIVJYe3qNvir2m9EuqGHqPARCxdgduvyE+x4bxSPK9RiE/
+         fTJ6NLsuvM5CF8ksmwUcKG0KYve+qoLMXY74NOGkMdx8/8OvQOSRov5ZWwOxYeuuoAaG
+         q05g==
+X-Forwarded-Encrypted: i=1; AHgh+Rqvkqmun43zlmCoHaQR+MyEPJ2dp2RSlhlXZLNsSsXrn3DC5TQdHly8+pdAwd7X5uu7kpo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQq2702RWafq2ChiRC+A50Of3y3HFpTSeR2bRUWiHzqsXL+0O3
+	usLpNCNCvIDGA9NgpoiBe6nnDj9b0YuuoJBObI85svaOMa6VHOF5KFdOPV79ab9oBVXZLRa0tev
+	veuQMqay/
+X-Received: from pfnv20.prod.google.com ([2002:aa7:8514:0:b0:84b:57b7:60c5])
+ (user=jackyli job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4094:b0:848:4859:a45
+ with SMTP id d2e1a72fcca58-851cd954427mr1821986b3a.2.1787085883244; Tue, 18
+ Aug 2026 13:44:43 -0700 (PDT)
+Date: Tue, 18 Aug 2026 20:44:15 +0000
+In-Reply-To: <20260818-feature-pkey-dev-v1-0-8c0ef96a4da9@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAB7EhGoC/32Nyw6CMBBFf4V07Zg+eBRX/odhUdoBGpWSFhsJ4
- d8trNzo8tzJObOSgN5iIJdsJR6jDdaNCdgpI3pQY49gTWLCKS9pxWvoUM0vjzDdcQGDEbRU6WZ
- aWbQ5SdrksbPvI3lrEg82zM4vx4fI9vVPLDKgoIURvFBtVdd47Z3rH3jW7rnHD1My9sOUpkKZF yXjVHybzbZtHzLFcVnrAAAA
-X-Change-Id: 20260729-feature-pkey-dev-c8a026db85b4
+References: <20260818-feature-pkey-dev-v1-0-8c0ef96a4da9@google.com>
 X-Mailer: b4 0.14.3
-Message-ID: <20260818-feature-pkey-dev-v1-0-8c0ef96a4da9@google.com>
-Subject: [RFC PATCH 0/6] Protect VMM from speculative attacks using x86 PKRU
+Message-ID: <20260818-feature-pkey-dev-v1-1-8c0ef96a4da9@google.com>
+Subject: [RFC PATCH 1/6] x86: Introduce basic PKRU hardware wrappers
 From: Jacky Li <jackyli@google.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>, 
@@ -72,84 +71,131 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>, Brendan Jackman <jackmanb@google.com>, 
 	Reiji Watanabe <reijiw@google.com>, Jacky Li <jackyli@google.com>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
-
-This RFC patch series introduces a hardware-assisted memory protection
-mechanism in QEMU using x86 Protection Keys for Userspace (PKRU / MPK)
-to complete the Address Space Isolation ecosystem by protecting the VMM
-from guest-to-host speculative execution attacks.
-
-In a guest-to-host speculative side-channel attack against QEMU, a
-malicious guest mistrains the VMM branch predictor to execute a
-speculative gadget in host mode. This gadget speculatively reads a
-host secret and uses that secret as an index to touch guest RAMBlocks,
-leaving an observable microarchitectural footprint in the CPU cache.
-Existing mitigations like issuing IBPB on every VM-exit incur high
-overhead, while guest_memfd cannot protect memory that must stay mapped.
-
-To break this covert channel, we protect guest RAMBlocks using a
-dedicated pkey (pkey_mprotect).
-
-- During normal QEMU host userspace execution (I/O handling, timers,
-  event loops), we lock this pkey by setting PKEY_DISABLE_ACCESS in
-  the PKRU register via WRPKRU. Because CPU pipelines natively enforce
-  PKRU restrictions during out-of-order execution, any speculative
-  gadget in host mode attempting to touch guest RAMBlocks is blocked by
-  the MMU at the hardware level, leaving zero footprint in the cache.
-
-- Before entering KVM (KVM_RUN), we temporarily unlock the pkey, and
-  immediately re-lock it upon returning to QEMU userspace.
-
-- To gracefully handle legitimate host accesses to guest RAMBlocks
-  when locked, a SEGV_PKUERR signal handler unlocks the pkey in the
-  interrupted thread's xstate and issues an IBPB (PR_SPEC_INDIRECT_BRANCH)
-  to prevent speculative leakage before resuming execution.
-
-Comments and feedback on this approach are very welcome!
-
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Philippe Mathieu-Daud=C3=A9 <philmd@mailo.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: kvm@vger.kernel.org
-Cc: James Houghton <jthoughton@google.com>
-Cc: Mingwei Zhang <mizhang@google.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Reiji Watanabe <reijiw@google.com>
-Cc: Jacky Li <jackyli@google.com>
+Introduce basic hardware instruction wrappers and helper functions for
+interacting with x86 Protection Keys for Userspace (PKRU / MPK) in QEMU.
 
 Signed-off-by: Jacky Li <jackyli@google.com>
 ---
-Jacky Li (6):
-      [RFC PATCH 1/6] x86: Introduce basic PKRU hardware wrappers
-      [RFC PATCH 2/6] kvm: Add guest memory Pkey initialization
-      [RFC PATCH 3/6] physmem: Tag guest RAMBlocks with Protection Key
-      [RFC PATCH 4/6] kvm: Lock guest RAMBlocks via PKRU during host usersp=
-ace execution
-      [RFC PATCH 5/6] x86: Add xstate parsing and PKRU offset detection
-      [RFC PATCH 6/6] kvm: Implement SIGSEGV sentinel for Pkey recovery
+ MAINTAINERS |  1 +
+ util/pkey.c | 96 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 97 insertions(+)
 
- MAINTAINERS               |   1 +
- accel/kvm/kvm-all.c       |   7 +-
- include/exec/cpu-common.h |   4 +
- include/qemu/mmap-alloc.h |   5 +
- system/physmem.c          |  22 ++-
- system/vl.c               |   1 +
- util/meson.build          |   2 +-
- util/mmap-alloc.c         |   3 +-
- util/pkey.c               | 386 ++++++++++++++++++++++++++++++++++++++++++=
-++++
- 9 files changed, 424 insertions(+), 7 deletions(-)
----
-base-commit: fa19879df1658f96ac07365fca8835b7decd6995
-change-id: 20260729-feature-pkey-dev-c8a026db85b4
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b51f5c3e60..5a31c45963 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -156,6 +156,7 @@ F: target/i386/meson.build
+ F: tools/i386/
+ F: tests/functional/i386/
+ F: tests/functional/x86_64/
++F: util/pkey.c
+ 
+ X86 VM file descriptor change on reset test
+ M: Ani Sinha <anisinha@redhat.com>
+diff --git a/util/pkey.c b/util/pkey.c
+new file mode 100644
+index 0000000000..4f14a72151
+--- /dev/null
++++ b/util/pkey.c
+@@ -0,0 +1,96 @@
++/*
++ * QEMU guest memory protection key helpers
++ *
++ * Copyright (c) 2026 Google LLC
++ *
++ * Author:
++ *  Jacky Li <jackyli@google.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "exec/cpu-common.h"
++#include "qemu/error-report.h"
++
++#if defined(HOST_X86_64) && defined(CONFIG_LINUX)
++#include <asm/unistd.h>
++#include <cpuid.h>
++#include <immintrin.h>
++#include <linux/kvm.h>
++#include <signal.h>
++#include <sys/ioctl.h>
++#include <sys/mman.h>
++#include <sys/prctl.h>
++#include <sys/syscall.h>
++
++#include "qemu/atomic.h"
++
++#ifndef PR_SET_SPECULATION_CTRL
++#define PR_SET_SPECULATION_CTRL 53
++#endif
++#ifndef PR_SPEC_INDIRECT_BRANCH
++#define PR_SPEC_INDIRECT_BRANCH 1
++#endif
++#ifndef PR_SPEC_DISABLE
++#define PR_SPEC_DISABLE (1UL << 2)
++#endif
++
++#ifndef PKEY_DISABLE_ACCESS
++#define PKEY_DISABLE_ACCESS 0x1
++#endif
++
++/* Each protection key occupies exactly 2 bits in the PKRU register. */
++#define BITS_PER_KEY 2
++/* The mask used to extract/write the 2-bit permission flags. */
++#define KEY_MASK 3U
++/* Max protection keys supported on x86_64 */
++#define KEY_COUNT 16
++
++static inline __attribute__((target("pku"), always_inline))
++uint32_t rdpkru(void)
++{
++    return _rdpkru_u32();
++}
++
++static inline __attribute__((target("pku"), always_inline)) void wrpkru(
++        uint32_t pkru)
++{
++    _wrpkru(pkru);
++}
++
++static inline __attribute__((target("pku"), always_inline)) int inline_pkey_get(
++        int pkey)
++{
++    uint32_t pkru = rdpkru();
++    return (pkru >> (pkey * BITS_PER_KEY)) & KEY_MASK;
++}
++
++static inline __attribute__((target("pku"), always_inline)) void
++inline_pkey_set(int pkey, unsigned int access_rights)
++{
++    uint32_t pkru = rdpkru();
++    pkru &= ~(KEY_MASK << (pkey * BITS_PER_KEY));
++    pkru |= ((access_rights & KEY_MASK) << (pkey * BITS_PER_KEY));
++    wrpkru(pkru);
++}
++
++static inline __attribute__((always_inline)) intptr_t local_syscall3(
++        intptr_t num, intptr_t arg1, intptr_t arg2, intptr_t arg3)
++{
++    intptr_t ret = num;
++    asm volatile("syscall\n"
++               : "+a"(ret)
++               : "D"(arg1), "S"(arg2), "d"(arg3)
++               : "rcx", "r11", "memory");
++    return ret;
++}
++
++#else
++/* Dummy implementations for all other configurations (non-x86_64 Linux, */
++/* Windows, macOS, etc.) */
++#if defined(CONFIG_LINUX)
++#include <linux/kvm.h>
++#include <sys/ioctl.h>
++#endif
++#endif
 
-Best regards,
---=20
-Jacky Li <jackyli@google.com>
+-- 
+2.55.0.737.g08866a6d13-goog
 
