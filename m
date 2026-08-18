@@ -1,56 +1,56 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5267537D100
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 20:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B96237DEA9
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 20:44:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787085888; cv=none; b=fJZQLEQckiPp6nX11O4NL/I/KQPo823I6PZeASlltk8xu7JL1T2kr0Tz8YOM6k+fwz+h+FpBHpJzOdRCvO9zOTX0M98pWOxgKXpMt3AcoYEj969hUIRl5Qn4n4uD2y2vRW3p7c8AhKa6W0iFMktwbKNE2Cg1GLM7smW00im/ENY=
+	t=1787085889; cv=none; b=qVk92UvYoaPvIlgW4lKBjQIQRPrTcATheKCfHQDlQSeHON8M9CrpQWCw4NFqIGqr6VmWGwdnDiEole+1AY4EeKjRlVvkvkyFypZPAjIFL2/f3e13iY52/FymOUI+qiuPjIFDozJ04HR3gAe/6YIObT3gqRYDslNJMDB1vFEgwLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787085888; c=relaxed/simple;
-	bh=e5ds21oM4zvbuZOpfIjnx0+/N2O1hxYDrHpRAFKnlLY=;
+	s=arc-20240116; t=1787085889; c=relaxed/simple;
+	bh=ZB6FS7d6rxJm0eRcCioFKxP3aQ+ImQH6EdK/FZ+/OUo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=edoopVvMvJwFLRxZf0OfU8jqmfq5fIcxZoRR5zZMgC7VDq7iOdsCw0nJd5RR30MDBkmhaQwsZa+ZOhogAIwOtUhRYUQnKE2LYQAuzt4M/rrzj3kiZN7bmNWcXfusKXSi/sPkgQV/IYyWiLXyfV7H5O5n3fln7TC1KPnXmFzIAgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackyli.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y+fLaYca; arc=none smtp.client-ip=209.85.210.200
+	 To:Cc:Content-Type; b=YfAVrLT17MJH239Jz75srWh4bly5wM28TdpCfFjORQMyju1Qq5teW/sEA27GmkI3uUkG7YWBXlDQJfLqh7gpUbtAM7jcuCjfO6h+KvgJr7SPtMPcfUkexCKzDKj9R9PUitsmXHjPAu3j0ntjNxEDLKC5HlTbHtrRHOAmPgxV5OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackyli.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mP0IAjWe; arc=none smtp.client-ip=209.85.210.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackyli.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y+fLaYca"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8487ed7f7beso326602b3a.0
-        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 13:44:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mP0IAjWe"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84a3514f912so518233b3a.3
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 13:44:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787085887; x=1787690687; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1787085888; x=1787690688; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=PQq0Bm6wEPPaaVqXBMNHqZK4usIK/j6tgDNzvWv82vs=;
-        b=Y+fLaYcaOGTrTpo7bRSBh4YYhVOk4EnCK64Hljj98NT9I1nx87UPBb9b7l+arROh8I
-         smufEDoNjqP5gZid1ZEjjt1oN5oaQxW5tgJ6af9Jpd9gg3n69TEQTSmDA3dhv8Xl7Gz8
-         m/nwB6lXG+RRGMM++kwakEcUDvCMUVHBcScD5TwbRq/Sg2xuNyOkj0LSR900PqVPkqnK
-         JwB9596rP6KSAlZhEfaHdDbFBQJYuHapF+uYQDAnLd3skeQQBRUyoPnDdEBUEWGaY1YV
-         UEZus3WWRC4a3sEh1A/PRb+73ger/ytXKc6we8EfvMXxAsK4Wxu50zcEiqfI582U5bu/
-         9glQ==
+        bh=rmFVlsgAYCtkRLriUR3Oc/OpxK2wKe12tzMJ0rDrbCg=;
+        b=mP0IAjWeFluqZFu3YPZzSdVpD4PBouHnTQMHeRRLzYznXuUTuXfKZ+jvUeNtkJaNno
+         9bpIY41DumUgtvwjv0c01k77h8+G69JY11ySe4fAQDAYGkfqc3xrfMP/1pRL6y3YBw/E
+         sTULDqnnOv3QhXTArhBiLMF25SgnriOAtMP5yW218b/mrgMlfDGgsKYWjj255MeMNLSM
+         Sp2wBtaZ5iGbOKltkyxMA3PmvkYGeWv+lpyLQbBGmA01XC8//DR4cymnzUjiaDubXxwF
+         lorTQ/o8kohlYLbLORb9D0YxckTEYDpx8zXrtFboclZa7JtY40ewvj5qGfsREzYNYS7C
+         7HwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787085887; x=1787690687;
+        d=1e100.net; s=20251104; t=1787085888; x=1787690688;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=PQq0Bm6wEPPaaVqXBMNHqZK4usIK/j6tgDNzvWv82vs=;
-        b=l/GyNS2Tu3iACADsriuqMUR5Sfo93dNsSFWN9g1srLDXUPpUQROAhianRhDYbpLCSZ
-         hDILQsV1u/WDV6Q1yLfOBV7jflHy0kv9iMe3/B6ZEay4PPbDfNvSKh/Cs0FwfJat2t5Z
-         s66E3/NZko+XJE5nWN4UBnjZ/JauIX1De8z05aFr7QrgP1uo9tHnepvUx3fKhQckbsBC
-         OipvYmmNH6D/oJ7B3jdRFlN4F5B69nQD9MfesTJuJwvgI2LIsnPfyOwgTGWuykU7Ooqn
-         J7Ne1Gxa4OMq+G9OV5QvaX31t4bH9Jy4lIac5fLZ7/Rr59c/KdtsP2WPCOdIfYxCYVlZ
-         L+8A==
-X-Forwarded-Encrypted: i=1; AHgh+RqFXXZ8N03CB+H1+y4sdLR6L6FBgsgtz0qSwpGjJSMHXXQktKX0MwSU1e93y2cTp501y5g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBO3573nDMVALmE87IbmWMB2SIksI59hGOycXKC8wIIyt2L67G
-	LlJrFwEUtpMgSp2Mudq7hdbPLexu0Pe8KgAXF5n/HWCX5hW66Lmu/ChWqUnyeDemwGiNOvXH9Fl
-	0uGzxFR/l
-X-Received: from pfbim15.prod.google.com ([2002:a05:6a00:8d8f:b0:84e:46f:f15e])
- (user=jackyli job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2e19:b0:847:97a4:d6b3
- with SMTP id d2e1a72fcca58-851cd8346efmr1708280b3a.16.1787085886501; Tue, 18
- Aug 2026 13:44:46 -0700 (PDT)
-Date: Tue, 18 Aug 2026 20:44:18 +0000
+        bh=rmFVlsgAYCtkRLriUR3Oc/OpxK2wKe12tzMJ0rDrbCg=;
+        b=KRfkxHcBWxW/iKGnLR7DfszeP0Ve4rP2Z98URT+B/Qetl2nRoSRveLs99ApiYbf1ke
+         FKyNveK8esMqIb3f8efE+3NW6NIO2NeMAm3rOElLSp8ofHYKfSPoT6HYp797Hu5HuA8r
+         PcX/xKC+2L649O2xQlF6NxnAZSz+cEPWYu1mLJBxOZx+xnnetShwP5UUQTS8CfnvrWrN
+         g2SkXh7VUegdB678LZ/dj46Zda9uqs7JWbZVsZgkoTwOCDBI1BLD0PK4ZywnAdTuk7l4
+         CWS5dLPu/o3lbROPHP3i4OeigT0y1AQieVzRYUHGYS1A1KS23SlxntsneQN4AWAp0rCD
+         ND4w==
+X-Forwarded-Encrypted: i=1; AHgh+Ror8Tfe9NOFa4Xq+K1PV+knCq8vDziCG5TlRptaQgo6Ejt6rzRgW9f5D50hTuCB3gPH7Eo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbWIZiDX9cBoO/mrK2jUSmtHMo/a1rVRWTSSA8vGM8/hEAtL+U
+	3UrGOB/8YIlodI0Jwo4OOG5XLg1hPw6fm+hsvKOtMgoreVUW/GWB2v+LU678NlkUkIj0onZf+8Q
+	1VVxNutxq
+X-Received: from pfew19-n2.prod.google.com ([2002:a05:6a00:c1d3:20b0:84f:dde6:e818])
+ (user=jackyli job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:c91:b0:847:9015:e68c
+ with SMTP id d2e1a72fcca58-851cdaad991mr1536495b3a.17.1787085887607; Tue, 18
+ Aug 2026 13:44:47 -0700 (PDT)
+Date: Tue, 18 Aug 2026 20:44:19 +0000
 In-Reply-To: <20260818-feature-pkey-dev-v1-0-8c0ef96a4da9@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260818-feature-pkey-dev-v1-0-8c0ef96a4da9@google.com>
 X-Mailer: b4 0.14.3
-Message-ID: <20260818-feature-pkey-dev-v1-4-8c0ef96a4da9@google.com>
-Subject: [RFC PATCH 4/6] kvm: Lock guest RAMBlocks via PKRU during host
- userspace execution
+Message-ID: <20260818-feature-pkey-dev-v1-5-8c0ef96a4da9@google.com>
+Subject: [RFC PATCH 5/6] x86: Add xstate parsing and PKRU offset detection
 From: Jacky Li <jackyli@google.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>, 
@@ -73,138 +72,78 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
 	Reiji Watanabe <reijiw@google.com>, Jacky Li <jackyli@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Protect guest RAMBlocks from host-side speculative execution attacks by
-locking and unlocking the guest memory protection key before and after
-`KVM_RUN`.
+Add data structures and CPUID detection routines to locate the PKRU
+register inside the Linux x86_64 signal frame extended state (`xstate`).
 
 Signed-off-by: Jacky Li <jackyli@google.com>
 ---
- accel/kvm/kvm-all.c       |  7 ++++++-
- include/exec/cpu-common.h |  2 ++
- system/physmem.c          |  6 +++++-
- util/pkey.c               | 45 +++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 58 insertions(+), 2 deletions(-)
+ util/pkey.c | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 83cbd120a8..ae395cd374 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -19,6 +19,7 @@
- 
- #include <linux/kvm.h>
- 
-+#include "exec/cpu-common.h"
- #include "qemu/atomic.h"
- #include "qemu/option.h"
- #include "qemu/config-file.h"
-@@ -3666,7 +3667,11 @@ int kvm_vcpu_ioctl(CPUState *cpu, unsigned long type, ...)
- 
-     trace_kvm_vcpu_ioctl(cpu->cpu_index, type, arg);
-     accel_cpu_ioctl_begin(cpu);
--    ret = ioctl(cpu->kvm_fd, type, arg);
-+    if (type == KVM_RUN) {
-+        ret = qemu_pkey_kvm_run(cpu->kvm_fd, arg);
-+    } else {
-+        ret = ioctl(cpu->kvm_fd, type, arg);
-+    }
-     accel_cpu_ioctl_end(cpu);
-     if (ret == -1) {
-         ret = -errno;
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 28399088f6..90047128de 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -114,4 +114,6 @@ static inline CPUState *env_cpu(CPUArchState *env)
- 
- void qemu_init_guest_memory_pkey(void);
- int qemu_pkey_mprotect_guest_memory(void *addr, size_t len, int prot);
-+void qemu_reset_pkey_with_ibpb(void);
-+int qemu_pkey_kvm_run(int fd, void *arg);
- #endif /* CPU_COMMON_H */
-diff --git a/system/physmem.c b/system/physmem.c
-index 9f5a0f194c..c7101f6841 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -2755,7 +2755,11 @@ static void *qemu_ram_ptr_length(RAMBlock *block, ram_addr_t addr,
-                                     1, lock, is_write);
-     }
- 
--    return ramblock_ptr(block, addr);
-+    void *ptr = ramblock_ptr(block, addr);
-+    if (ptr) {
-+        qemu_reset_pkey_with_ibpb();
-+    }
-+    return ptr;
- }
- 
- /*
 diff --git a/util/pkey.c b/util/pkey.c
-index 0151714f32..2e42da7d9c 100644
+index 2e42da7d9c..21b41f928e 100644
 --- a/util/pkey.c
 +++ b/util/pkey.c
-@@ -117,17 +117,62 @@ __attribute__((target("pku"))) int qemu_pkey_mprotect_guest_memory(void *addr,
-     return pkey_mprotect(addr, len, prot, pkey);
+@@ -88,6 +88,59 @@ static inline __attribute__((always_inline)) intptr_t local_syscall3(
+     return ret;
  }
  
-+__attribute__((target("pku"))) void qemu_reset_pkey_with_ibpb(void)
++/*
++ * Custom structures to parse FPU xstate and extract the PKRU register.
++ * These match the Linux kernel x86_64 signal frame ABI.
++ */
++struct fpstate_64 {
++    uint16_t cwd;
++    uint16_t swd;
++    uint16_t twd;
++    uint16_t fop;
++    uint64_t rip;
++    uint64_t rdp;
++    uint32_t mxcsr;
++    uint32_t mxcsr_mask;
++    uint32_t st_space[32];  /*  8x  FP registers, 16 bytes each */
++    uint32_t xmm_space[64]; /* 16x XMM registers, 16 bytes each */
++    uint32_t reserved1[12];
++    union {
++        uint32_t reserved2[12];
++        struct {
++            uint32_t magic1;
++            uint32_t extended_size;
++            uint64_t xstate_bv;
++            uint32_t xstate_size;
++            uint32_t padding[7];
++        } sw_reserved; /* Extended state is encoded here */
++    };
++};
++
++#define FP_XSTATE_MAGIC1 0x46505853U
++#define FP_XSTATE_MAGIC2 0x46505845U
++#define XFEATURE_PKRU 9
++#define XSTATE_PKRU (1ULL << XFEATURE_PKRU)
++
++static int pkru_offset = -2; /* -2 means uninitialized */
++
++static int __attribute__((unused)) get_pkru_offset(void)
 +{
-+    int pkey = guest_memory_pkey;
-+    if (pkey == -1) {
-+        return;
++    uint32_t eax, ebx, ecx, edx;
++    __cpuid_count(0xd, XFEATURE_PKRU, eax, ebx, ecx, edx);
++    if (ebx == 0) {
++        return -1;
 +    }
-+    if (inline_pkey_get(pkey) == 0) {
-+        return;
-+    }
-+
-+    /* IBPB */
-+    prctl(PR_SET_SPECULATION_CTRL, PR_SPEC_INDIRECT_BRANCH, PR_SPEC_DISABLE, 0,
-+                0);
-+
-+    inline_pkey_set(pkey, 0);
++    return (int)ebx;
 +}
 +
-+__attribute__((target("pku"))) int qemu_pkey_kvm_run(int fd, void *arg)
++static int __attribute__((unused)) qemu_get_pkru_offset(void)
 +{
-+    int pkey = guest_memory_pkey;
-+    if (pkey == -1) {
-+        return ioctl(fd, KVM_RUN, arg);
++    if (pkru_offset == -2) {
++        pkru_offset = get_pkru_offset();
 +    }
-+
-+    assert(pkey >= 0 && pkey < KEY_COUNT);
-+
-+    inline_pkey_set(pkey, 0);
-+
-+    intptr_t ret = local_syscall3(__NR_ioctl, fd, KVM_RUN, (intptr_t)arg);
-+
-+    inline_pkey_set(pkey, PKEY_DISABLE_ACCESS);
-+
-+    if (ret < 0) {
-+        errno = -ret;
-+        ret = -1;
-+    }
-+    return (int)ret;
++    return pkru_offset;
 +}
 +
- #else
- /* Dummy implementations for all other configurations (non-x86_64 Linux, */
- /* Windows, macOS, etc.) */
- #if defined(CONFIG_LINUX)
- #include <linux/kvm.h>
- #include <sys/ioctl.h>
-+
-+int qemu_pkey_kvm_run(int fd, void *arg)
-+{ return ioctl(fd, KVM_RUN, arg); }
- #endif
- 
- void qemu_init_guest_memory_pkey(void)
- {}
- 
-+void qemu_reset_pkey_with_ibpb(void)
-+{}
-+
- int qemu_pkey_mprotect_guest_memory(void *addr, size_t len, int prot)
+ __attribute__((target("pku"))) void qemu_init_guest_memory_pkey(void)
  {
-     return 0;
+     if (guest_memory_pkey != -1) {
 
 -- 
 2.55.0.737.g08866a6d13-goog
