@@ -1,153 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EA13438AD;
-	Tue, 18 Aug 2026 22:47:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288D637F306;
+	Tue, 18 Aug 2026 23:22:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787093274; cv=none; b=sLB186su8DlBjg7oj6WDvbiiikJeEtslVeShAKk26yo1I6ViZJ1TY0PwqEDQHrQ+dLC4hF0S1ljEJYBYKK8bs/z3hhdyJIWC+Lwyb7jMXhLDm5+ClZ8gpeLd8VpFGT58+OA5pLfVhjBmS7icLTAiiHw5kFRMYRSkD4aBOGq4Jcw=
+	t=1787095361; cv=none; b=KjzNog7UH/ohnP9W/fh6CfbZaZg/0suphK1cwx01uhRGW+YitwDwR+9t5TF2WyndnrpKVTlZMA0tqiGhcfmTWvoSfe210Q9xjDPYJA09sFyml7M6rqxmMlIzfNE/JZbK8tBz/AszeP2PUkwN+25gOmHad5fCTytOD1Wr6s7acXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787093274; c=relaxed/simple;
-	bh=guJ1pV19rraBxwYerL9Vdm+bI7Kt1PmwggEB5Q17GHY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=NXj8mgS/5u+xOjoos4cuj1wGw6HqH8J6R0G6UNFIrvEtyCKY2RJQmYyC2akZkZnHa0H+bCDfJoT6QqRKYrgXzLXid8MeQFTUj0Jc9Gz9ysH8ZClfR4u/ru9dGn+j3CYJry2uMEJBci9JKi/qDPFqz6XQP4CtGWsTp9VCDzvsqTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FRzTWxa8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787095361; c=relaxed/simple;
+	bh=V+RPYf5DW2LkIBuQPf0Ys5M8MaI+39ameaXCm3qXI1Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KdZU49tX0kZZrlkC1+QP3Pl4S8TCxDrK0HuCFm4c+tfx228O31shkS4imt1HbG2ok+7tA/iXx+q/9yGqWnOJ4s4gwJLYxa3Hr9GRU66WRlfsdA4jhUnkVJoqAH9NSmz2zC/ir5zwdMcb3nnQhkqIJ3+V6n0/Z7f9l4Or/b5xVS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=IM3hmMoJ; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FRzTWxa8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB341F000E9;
-	Tue, 18 Aug 2026 22:47:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787093272;
-	bh=eq2OBtSbwU5XSdocYtHikTFoDFIWDe9KhtUazDDOtMg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FRzTWxa8TWht9pvZ2rN5VZ4+DpXLoiPE/Q6vkh+zULjAXkfbuvBLy4Ie4akMueOVl
-	 fq3/D0INut/duEFYQ1IA2o6I0v4TuifDiMAuczOMgo6XcMlFdgfme9yNidOrE1TZgf
-	 MYuqnwM0EnnE2qROgqPHV9eqzNuTVE6ifbN7kWhJv/dD0Y/eHfACf0clEuAy81WXMO
-	 aW7Sh6GRUh+G44HWTtQNo6Uh3dws2UFt6miRnHQBCvL1W343+Ub3m8Z+iIaFqf07un
-	 f0az4IKE0qtsw6MlGXKQ1AiPxreO5w7pPBzTP9LtwVg7WfPlkOFDVQdgv0N3r7v2LN
-	 9t4jBA+vT/n0g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: arm64: vgic-its: Fix O(C*I) loop in
- vgic_its_free_collection_list
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jing Zhang" <jingzhangos@google.com>
-Cc: kvm@vger.kernel.org, "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev, "Oliver
- Upton" <oupton@kernel.org>
-In-Reply-To: <20260818223422.367803-1-jingzhangos@google.com>
-References: <20260818223422.367803-1-jingzhangos@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 18 Aug 2026 22:47:52 +0000
-Message-Id: <20260818224752.9FB341F000E9@smtp.kernel.org>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="IM3hmMoJ"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9E6AD40E0406;
+	Tue, 18 Aug 2026 23:22:36 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id jNIFcsukPwEN; Tue, 18 Aug 2026 23:22:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1787095345; bh=6F9NJ06zTaDaftKmfYqFUJhweqBOh2WtQJJmduFwiHw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IM3hmMoJhIWxLzLwhIkDJYhr2RmSU00H8NvctG1QpC67pHMXvTGjuiVs2yA/0jCrt
+	 51/2BKdh39tXU62eprFSompCdqAykUZM2emCkknaemYsBBoOYlTiSsuktP67sVzVfG
+	 GWNRjPUY8SilF58nQwWBPJ0V76pOoHc4WvVgtrnJI8Xlk6Kr8NmwYEZvlMl3k+v2RS
+	 rFA4KUxE+QC6jHv7UsMuvXhgc1H0D6Wj33Bae5DZGDV/Aov+fYMHgp6mRXZ5jC8T5s
+	 q8Pf+qXcnvjoX5xCQz9tazfHiKk70g8al4Ccmk6D8JuDqynV6HWl3tYg7OigcrZaoL
+	 DpNkVG68X8vM3DPhx+r3OFYQtSmQFdBE1nlufJPsEVdyc4eOQZ6Nz2Ppm+FKHYHyI/
+	 ncYb7zuiOn/gmEKeW3P9y9i5joVOuD2GiU57CTGThqKeQaeFHswwhUJ7xMYH8y6Hlp
+	 q0lS+GTFF+Vfn8UOivSR1azSx4PKBb8NhBAFpkmo3gdcu7C9n45oWQXr7/GAvktoJm
+	 fmZW0UfRXetEpWo9x5CPtGDLK8L48IChW3UHdiG0ewsfHV68edloP6QPO0fvMQMe2N
+	 R5Lp6CUnPjqlZZ53qYN7Dmdg/a0oM23WvO1G3Ag5W+nlQN9KdVQIrIsH64kqYq1tVF
+	 UYK7XFORZhv4BS8ePrKXZMHc=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9C08740E03FF;
+	Tue, 18 Aug 2026 23:22:07 +0000 (UTC)
+Date: Tue, 18 Aug 2026 16:22:04 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Kim Phillips <kim.phillips@amd.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, x86@kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Naveen Rao <naveen.rao@amd.com>,
+	David Kaplan <david.kaplan@amd.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, stable@kernel.org,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v4 02/10] cpu/bugs: Allow forcing Automatic IBRS with SNP
+ active using spectre_v2=eibrs
+Message-ID: <20260818232204.GBaoTpHK8k7wD9mMk4@fat_crate.local>
+References: <20260804235611.4053375-1-kim.phillips@amd.com>
+ <20260804235611.4053375-3-kim.phillips@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260804235611.4053375-3-kim.phillips@amd.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Tue, Aug 04, 2026 at 06:56:03PM -0500, Kim Phillips wrote:
 
-Pre-existing issues:
-- [Critical] Unconditional dereference of `ite->collection` during ITS tabl=
-e save leads to host kernel panic.
-- [High] Unmitigated O(Total ITEs) loops during ITS command processing lead=
- to guest-triggered soft lockups and RCU stalls.
---
+Please fix all your subject prefixes: it should be "x86/bugs:"
 
---- Patch [1]: [PATCH] KVM: arm64: vgic-its: Fix O(C*I) loop in vgic_its_fr=
-ee_collection_list ---
-commit 57034db6ba413048ab15ade32e11d1ba6a290388
-Author: Jing Zhang <jingzhangos@google.com>
+The tip tree preferred format for patch subject prefixes is
+'subsys/component:', e.g. 'x86/apic:', 'x86/mm/fault:', 'sched/fair:',
+'genirq/core:'. Please do not use file names or complete file paths as
+prefix. 'git log path/to/file' should give you a reasonable hint in most
+cases.
 
-KVM: arm64: vgic-its: Fix O(C*I) loop in vgic_its_free_collection_list
+> spectre_v2=eibrs currently enables retpolines when SNP is enabled,
+> instead of AutoIBRS (EIBRS) because the commit that disabled
+> AutoIBRS if SNP is enabled stopped short of enabling
+> X86_FEATURE_IBRS_ENHANCED.
+> 
+> Change the logic to enable X86_FEATURE_IBRS_ENHANCED, and move the
+> decision to switch to retpolines in the default/"auto" case in
+> spectre_v2_select_mitigation().  This allows the existing
+> spectre_v2=eibrs logic to work as intended.
 
-When destroying the vgic-its collection list,
-vgic_its_free_collection_list() iterates over every collection and for
-each, calls vgic_its_free_collection(). This function walks every
-Interrupt Translation Entry (ITE) across all devices via
-for_each_lpi_its() to nullify the collection pointer.
+So this whole hoopla is just to be able to select =eibrs in SNP guests, *and*,
+in doing so, cause a performance loss. I.e., shoot oneself in the foot.
 
-[ ... ]
+Or is there another, better reason which wants this?
 
-> diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-it=
-s.c
-> index 4477f870c7b36..5e907a34226e3 100644
-> --- a/arch/arm64/kvm/vgic/vgic-its.c
-> +++ b/arch/arm64/kvm/vgic/vgic-its.c
-> @@ -1122,9 +1122,21 @@ static void vgic_its_free_device_list(struct kvm *=
-kvm, struct vgic_its *its)
->  static void vgic_its_free_collection_list(struct kvm *kvm, struct vgic_i=
-ts *its)
->  {
->  	struct its_collection *cur, *temp;
-> +	struct its_device *device;
-> +	struct its_ite *ite;
-> =20
-> -	list_for_each_entry_safe(cur, temp, &its->collection_list, coll_list)
-> -		vgic_its_free_collection(its, cur->collection_id);
-> +	/*
-> +	 * Bulk-clear the collection pointers for all ITEs.
-> +	 * This transforms the teardown complexity from O(Collections * ITEs)
-> +	 * to O(Collections + ITEs), avoiding guest-triggered host RCU stalls.
-> +	 */
+> Fixes: acaa4b5c4c85 ("x86/speculation: Do not enable Automatic IBRS if SEV-SNP is enabled")
+> Reported-by: Tom Lendacky <thomas.lendacky@amd.com>
+> Cc: Borislav Petkov (AMD) <bp@alien8.de>
+> Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Sean Christopherson <seanjc@google.com>
+> Cc: stable@kernel.org
 
-[Severity: High]
-This isn't a bug introduced by this patch, but does this fix cover the same=
- RCU
-stall vulnerability in the ITS command ring processing?
+Definitely not stable material. If at all.
 
-A guest can queue up to 32,768 MAPC commands to remap an existing collectio=
-n,
-which vgic_its_process_commands() processes sequentially under cmd_lock
-without yielding. For each command, update_affinity_collection() loops over
-all ITEs:
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202603121136.bc8zNsHS-lkp@intel.com/
 
-arch/arm64/kvm/vgic/vgic-its.c:update_affinity_collection() {
-	for_each_lpi_its(device, ite, its) {
-		if (ite->collection !=3D coll)
-			continue;
+It doesn't close that - that link points to something which is not upstream.
 
-		update_affinity_ite(kvm, ite);
-	}
-}
+-- 
+Regards/Gruss,
+    Boris.
 
-With a large number of ITEs, can this unmitigated loop still cause soft loc=
-kups
-and RCU stalls on the host?
-
-> +	for_each_lpi_its(device, ite, its)
-> +		ite->collection =3D NULL;
-
-[Severity: Critical]
-This is a pre-existing issue, but can setting ite->collection to NULL here
-cause a kernel panic during state saving?
-
-If a guest clears GITS_BASER1 (triggering this teardown) or unmaps a collec=
-tion
-via MAPC with valid=3D0, the ITEs are left in the device list with a NULL
-collection pointer.
-
-Later, if host userspace triggers VM state saving, vgic_its_save_ite() blin=
-dly
-dereferences ite->collection:
-
-arch/arm64/kvm/vgic/vgic-its.c:vgic_its_save_ite() {
-	val =3D ((u64)next_offset << KVM_ITS_ITE_NEXT_SHIFT) |
-	       ((u64)ite->irq->intid << KVM_ITS_ITE_PINTID_SHIFT) |
-		ite->collection->collection_id;
-}
-
-Does vgic_its_save_ite() need to verify ite->collection is non-NULL before
-attempting to access its collection_id?
-
-> +
-> +	list_for_each_entry_safe(cur, temp, &its->collection_list, coll_list) {
-> +		list_del(&cur->coll_list);
-> +		kfree(cur);
-> +	}
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260818223422.3678=
-03-1-jingzhangos@google.com?part=3D1
+https://people.kernel.org/tglx/notes-about-netiquette
