@@ -1,286 +1,203 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE5F42089D
-	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 08:13:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DF841D642
+	for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 08:14:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787040784; cv=none; b=HhL8WwWd95//xKaq5dHEzw9TVpTB17UslPzyPiuoN5uUOdp67nKRxirIYJJjV7ff2IpKK4H3bVPRGsVXhEMI69EWN3LzluJCahEUf1bqybCme8AgblNEggEzaPaxmVkXFpodFnPlcK9oJXQ1KdAbMrgS3cbFh5tUtsWVJzGD7Hs=
+	t=1787040880; cv=none; b=rAUGg2lZf8FIsrTrNROhie4Bxuzpykko/3TLr5r41hs4+I81161XFZGYADb88mgzw2tNvQbkpHwHUOpuPTfLZkDo1xVzti+ZHbhSwHuMqf2faf3+8Ncq5EcAVTGypu7zeOhHg7ivp46o+khUxxJYGv+y2cSb4736InkWJmIYqlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787040784; c=relaxed/simple;
-	bh=jC/FuU3q+aE44Qo/ZCfyDCEiyjg3Sn4iBLXQRXTOxug=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nLJZpBL6LjZfsYa9kxS32datKGRv6FARYX5dxDeBotS7XqMEcVSvGqNCIb0VyqfxOqRfXkwqca2U+fRIVEd/At5V+6XzExdR21BM9of/sKlB7qaap4pCMohHki4zH53NYME+5DGbiQlvSAFo1L6Joycfolbqv1IlxEdLPf5aZaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bpPH35OI; arc=none smtp.client-ip=209.85.215.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
+	s=arc-20240116; t=1787040880; c=relaxed/simple;
+	bh=3qp9RrgaoNAvrju9glZjpW+nVHb1IGbx0SiQ7b7E9BI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FGZhgdui4u/o+ZrI4ifg51NsxIKL2gqLa7Nzx9ZpVQeD5VzgQL4aKqwoyaZpADFYwp3/Bwoa6UwRjJwcLH2mREU7fKH6C27Im5xS0OrZ1cn6OhbswY9XDxCj1XJjvL2Hs4JY7rnI+ZCg2bL67l1V/VS95VlcVPuBEqMDHcfYkJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OgyqW/q1; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bpPH35OI"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cbedf6e8a42so5627399a12.1
-        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 01:13:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787040781; x=1787645581; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sVmR3VY2P/43Xc1WVt4/8Wvg41WzumPQhGva3P6A3c8=;
-        b=bpPH35OIcPK1HX9hGHMQayd3NnbBlDfUfO7bhEFGpCRHcSx+/8wgPTQUwWO0k9wYrh
-         9EQv1tdQu/pS/N6NzlZQCyRX0HR+M9n0WbdolrVT5vNXUHu4ott31N1Ih4ExvykSvCtG
-         goPY1HSA0vFG9LIfCk6o1fmUXmdA5b/v1u2JdiYI4sElMVkYX+JbUoUkv01bXfNWMqSH
-         oluCcfuOCXJbUcFnOrYqxqBkuGd8x0r7ASZvDpee744YCFayBEzKAu6pQRdvLslc9s5L
-         2BQs6LbXmACZaH4puXLErsJ5fyGpCDa5zpm3ZPnO9Ps9vjKbbXXlMMaxYd7uCfdDA8xg
-         BGlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787040781; x=1787645581;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sVmR3VY2P/43Xc1WVt4/8Wvg41WzumPQhGva3P6A3c8=;
-        b=SckQfBHD0EB+ipoSumBMsGs0QASa6WuBcSdtw/yfdXsx4Y5VVDvjN8XRz6IqrYEqL8
-         Q6ODynr6sixrvBCYJV/1YMQR+n63e6LlticsvSTu0MofqjVvXejweLBThUkOTXYvrfhp
-         x1SD0cCWuMbtoOvtfMFs3qG4j2airSnC0swJ92oxGueupMn9gHdXJkm29WocBU15vWLS
-         VDwZ4/P9SjZXqhPtMxeGh40ypYtOIp0NepexHTwGocLewzN17XpX1cYxy/f4tBnCRlRZ
-         xREW+hmU6S7Ooa5jgpdqU1rKcMzjGbanZIB3bAkNHZQdWtjr/uADuLwJ7wbIkoEd1LYh
-         +P+A==
-X-Gm-Message-State: AOJu0YyCUknd34PBW52CnDiIpjCn3EllZbsT44TRB37jIIRBjRy3U+Nf
-	yb032zQiPaOSb/CF82upR6h5VAkHjJ3f3QCO8cptc01ZXoJvOrGdo+5UXIKHZrdvyoux0i/S5XK
-	W/C8M7pxCRxi1xB56khDXuWcXSw==
-X-Received: from pgkc14.prod.google.com ([2002:a63:ef4e:0:b0:c99:3b68:c9e4])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:4685:b0:3c3:875d:705e with SMTP id adf61e73a8af0-3ccda96659cmr9559681637.19.1787040780904;
- Tue, 18 Aug 2026 01:13:00 -0700 (PDT)
-Date: Tue, 18 Aug 2026 08:12:38 +0000
-In-Reply-To: <20260818-gmem-no-return-page-v1-0-4f8d939efdbc@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OgyqW/q1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787040877; x=1818576877;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=3qp9RrgaoNAvrju9glZjpW+nVHb1IGbx0SiQ7b7E9BI=;
+  b=OgyqW/q1tSjfGBr9MsCagLNvYj/VBmCKIhXF9A7CaIy/se9TB2jBH2Hi
+   VusubmcJpHH3eSb2UIa8/oNQNGusj+pD4Xt6xB3Rk7PXFg2M/RwbPy4wD
+   Ow+5VFiBEnb2PgkfPMyeiq5WF2alHzrS9pUZx/nnyp2khF82alSW0uHfQ
+   g7rImeCRu8ZYP7OHGoS89TOksa7L7fPzDy9RuDNumdUQy6nW+8DYJ+avR
+   0trC5WJHNnxm1h/8d4CfdcOpeWTrivtWHBinMo723xNdZaB/zBc6j8GiT
+   A3+9vrdk72jMKYrK9s//WJlWfUv6rL7i2IDjerxQxMrAWfMjuapb9kmbz
+   Q==;
+X-CSE-ConnectionGUID: txBDpiFjSIygFdBdoWrbaw==
+X-CSE-MsgGUID: xw5OQ6UbRVKzHIEOBtnLWA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11878"; a="91208085"
+X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
+   d="scan'208";a="91208085"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 01:14:37 -0700
+X-CSE-ConnectionGUID: yDNeeb3FQYutCqQabKCqwA==
+X-CSE-MsgGUID: KQ5xA7tGSkaww7BeFx6QXw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
+   d="scan'208";a="258945799"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.238.208.98]) ([10.238.208.98])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 01:14:35 -0700
+Message-ID: <8c121997-6673-4d5b-927e-be74b5779059@intel.com>
+Date: Tue, 18 Aug 2026 16:14:33 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260818-gmem-no-return-page-v1-0-4f8d939efdbc@google.com>
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787040773; l=7522;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=oRKeat8XDy9tQquxaI02+cUjLXHoVTmOLq0ZPD46ISw=; b=SInLKT396SW4cghL3FPwB9A8Gfd2ogtUQxrRFWcc/tomMx6uzYdPrHiU4m8hxj+GroqAcqTC1
- zpoSAG5TeFCB8YuMSY8+T1Kxtuwbbc4Yr5CMpCl3wBQ5xKfY6und/Ha
-X-Mailer: b4 0.16.0
-Message-ID: <20260818-gmem-no-return-page-v1-4-4f8d939efdbc@google.com>
-Subject: [PATCH 4/4] KVM: guest_memfd: Stop returning struct page from PFN lookup
-From: Ackerley Tng <ackerleytng@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ashish Kalra <ashish.kalra@amd.com>, 
-	Michael Roth <michael.roth@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, 
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, David Hildenbrand <david@kernel.org>, Fuad Tabba <tabba@google.com>, 
-	Yan Zhao <yan.y.zhao@intel.com>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
-	Vishal Annapurve <vannapurve@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	Ackerley Tng <ackerleytng@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/4] KVM: TDX: Don't assume exit_reason[31:16] as all-0
+ in tdx_to_vmx_exit_reason()
+To: Sean Christopherson <seanjc@google.com>
+Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+ "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+References: <20260812080229.2481439-1-xiaoyao.li@intel.com>
+ <20260812080229.2481439-4-xiaoyao.li@intel.com>
+ <20260812082306.11E8B1F000E9@smtp.kernel.org>
+ <8b05ead1-ef2c-472f-a613-bcd1a65b64e1@intel.com>
+ <138969948dac13369ddebd72bf523dda4dda6b85.camel@intel.com>
+ <an5W5XC97HK229MX@google.com>
+ <eddf28d4-c211-41fb-b0a3-586e5afde030@intel.com>
+ <an8wUfZ9JxvEhtHS@google.com>
+ <d67eb097-1223-4b68-92d4-1510d3d7be7c@intel.com>
+ <aoNQpP-BQKiZL47O@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <aoNQpP-BQKiZL47O@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Sean Christopherson <seanjc@google.com>
+On 8/18/2026 2:19 AM, Sean Christopherson wrote:
+> On Mon, Aug 17, 2026, Xiaoyao Li wrote:
+>> On 8/14/2026 11:12 PM, Sean Christopherson wrote:
+>>> On Fri, Aug 14, 2026, Xiaoyao Li wrote:
+>>>> On 8/14/2026 7:44 AM, Sean Christopherson wrote:
+>>>>> On Wed, Aug 12, 2026, Rick P Edgecombe wrote:
+>>>>>> Side note. I really dislike how tangled this area is for something that seems
+>>>>>> like it should be much more straightforward. Deriving partially I think from the
+>>>>>> overloading of the TDVMCALL leafs with the exit reasons. So we have things like:
+>>>>>> ...
+>>>>>> 	case EXIT_REASON_EPT_VIOLATION:
+>>>>>> 		return EXIT_REASON_EPT_MISCONFIG;
+>>>>>> ...
+>>>>>
+>>>>> I peeked at that code again, and FWIW I still think swizzling the exit_reason for
+>>>>> TDVMCALL is the least awful solution.  If we don't do that, then we'll have to
+>>>>> update every single use of the exit_reason to demux TDVMCALL into the "real" exit
+>>>>> reason, which will be a mess.
+>>>>
+>>>> I'm not sure if you read my idea[1]?
+>>>>
+>>>> I think there is only one place KVM cares about the exit_reason TDVMCALL,
+>>>> just the
+>>>>
+>>>> 	case EXIT_REASON_TDCALL:
+>>>
+>>> No, the massaged exit_reason is also subtley consumed via trace_kvm_exit().
+>>
+>> yeah. This is exactly the one I don't like, it looks like trace_kvm_exit()
+>> is tracing the wrong exit reason, though it is by intentional.
+>>
+>>> It's also consumed by tdx_complete_emulated_msr():
+>>>
+>>> 	if (vmx_get_exit_reason(vcpu).basic == EXIT_REASON_MSR_READ)
+>>>
+>>> and by tdx_interrupt_allowed()
+>>>
+>>> 	return vmx_get_exit_reason(vcpu).basic != EXIT_REASON_HLT ||
+>>> 	       !to_tdx(vcpu)->vp_enter_args.r12;
+>>>
+>>> and by tdx_protected_apic_has_interrupt():
+>>>
+>>> 	if (vmx_get_exit_reason(vcpu).basic != EXIT_REASON_HLT ||
+>>> 	    to_tdx(vcpu)->vp_enter_args.r12)
+>>> 		return false;
+>>
+>> Ah, I really should have checked the code more carefully.
+>>
+>>>> in tdx_handle_exit().
+>>>> [1]
+>>>> https://lore.kernel.org/all/646f9595-459f-4224-b4e5-4ec2eecc0bc6@intel.com/
+>>>>> And once we track the exit_reason separately from vp_enter_ret, IMO it all becomes
+>>>>> more logical and easier to follow.  vp_enter_ret holds the information about why
+>>>>> VP.ENTER returned/exited, while exit_reason holds information about why the _guest_
+>>>>> exited.  Obviously it's imperfect since we're still fudging EXIT_REASON_EPT_MISCONFIG,
+>>>>> but again, I think that's a better alternative than demuxing exit_reason in multiple
+>>>>> locations.
+>>>>
+>>>> The question do we really need to swizzle EXIT_REASON_TDCALL to other exit
+>>>> reasons ahead? why cannot them just be handled in the central handler for
+>>>> EXIT_REASON_TDCALL?
+>>>
+>>> Because as above, it's not as central as you think.  If we want to not swizzle
+>>> the exit_reason, then IMO the only sane way to do that is to not track exit_reason
+>>> for TDX vCPUs, i.e. move vcpu_vt.exit_reason back to vcpu_vmx and force TDX to
+>>> always demux vp_enter_ret every time.
+>>
+>> How about adding a specific field to track the TDVMCALL leaf? Full diff as
+>> below (the EPT MISCONFIG part can be split into a separate one)
+> 
+> I like it even less than demuxing vp_enter_ret on demand.  It has all the same
+> flaws as demuxing vp_enter_ret, because it's effectively just a cache of the
+> result of demuxing vp_enter_ret.  And caching values on entry/exit boundaries
+> adds additional risk;  I can point you at a number of bugs in the past where KVM
+> consumed stale data, e.g. because some chunk of code got moved to run before a
+> cached field was refreshed.  That's unlikekly to be a problem here, but anytime
+> data is cached it introduces risk of consuming stale data.
+> 
+> And the cost of demuxing vp_enter_ret every time doesn't concern me, at all.
+> What I don't like is relying on call sites to know that the exit_reason needs to
+> be demuxed in the first place, because that will be brittle and error prone.
 
-KVM currently expects guest_memfd PFN lookups to return a refcounted
-struct page, which callers hold across fault handling.
+Do you mean that with my diff, the consumers of tdx_is_tdvmcall() rely 
+on handle_tdcall() being called already?
 
-Holding a page reference across fault handling is problematic for
-guest_memfd. In-place memory conversions between confidential
-computing shared and private states inspect folio refcounts to ensure
-exclusive ownership by guest_memfd. A concurrent guest page fault
-taking a reference on the folio causes conversions to fail due to an
-elevated refcount.
+If so, I get your point.
 
-guest_memfd already notifies KVM of page invalidations, so callers
-within KVM only need to respect the MMU invalidation protocol to safely
-rely on guest_memfd for page presence.
+> That's why I'd be ok if vcpu_vt.exit_reason simply didn't exist: it becomes
+> impossible to check the wrong exit field because there's only one such field.
+> 
+> I'm ok caching the fully processed vcpu_vt.exit_reason, i.e. with the code now,
+> because only the TDVMCALL path needs to be aware that it may have undergone
+> processing, *and* KVM can WARN if that processing didn't happen as expected.
+> 
+> Whereas checking the "right" exit reason requires doing so in multiple paths and
+> doesn't have a natural sanity check.
 
-Furthermore, removing struct page from the guest_memfd PFN lookup moves
-KVM closer toward supporting memory backends that are not backed by
-struct page.
+I'm OK with it.
 
-Drop the folio reference immediately before returning from the
-guest_memfd PFN lookup, and stop returning the struct page pointer.
+After changing to use tdx_is_exit_reason_valid() instead of checking 
+(*reason != -1u) in tdx_get_exit_info(), the only issue is 
+trace_kvm_exit() prints 0x0000ffff when real EPT MISCONFIG happens. But 
+it can be resolved by your suggestion below. So current implementation 
+can still work.
 
-For ARM, initialize the local page pointer to NULL so that the shared
-cleanup path that releases fault-in pages safely no-ops for guest_memfd.
+btw, below change will also be in another separate series.
 
-For x86, no additional changes are required in the MMU fault path
-because the page fault tracking structure is zero-initialized at the
-start of page fault handling, ensuring the refcounted page pointer is
-already NULL.
-
-Reported-by: Yan Zhao <yan.y.zhao@intel.com>
-Closes: https://lore.kernel.org/all/anZ4W9o5pTWIEgMY@yzhao56-desk.sh.intel.com/
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Co-developed-by: Yan Zhao <yan.y.zhao@intel.com>
-Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- arch/arm64/kvm/mmu.c     | 4 ++--
- arch/arm64/kvm/nested.c  | 4 ++--
- arch/x86/kvm/mmu/mmu.c   | 2 +-
- arch/x86/kvm/svm/sev.c   | 8 ++------
- include/linux/kvm_host.h | 6 ++----
- virt/kvm/guest_memfd.c   | 9 ++-------
- 6 files changed, 11 insertions(+), 22 deletions(-)
-
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index 6c941aaa10c63..e5d637a5ec558 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -1613,7 +1613,7 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
- 	enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
- 	struct kvm_pgtable *pgt = s2fd->vcpu->arch.hw_mmu->pgt;
- 	unsigned long mmu_seq;
--	struct page *page;
-+	struct page *page = NULL;
- 	struct kvm *kvm = s2fd->vcpu->kvm;
- 	void *memcache = NULL;
- 	kvm_pfn_t pfn;
-@@ -1641,7 +1641,7 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
- 	/* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
- 	smp_rmb();
- 
--	ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, gfn, &pfn, &page, NULL);
-+	ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, gfn, &pfn, NULL);
- 	if (ret) {
- 		kvm_prepare_memory_fault_exit(s2fd->vcpu, s2fd->fault_ipa, PAGE_SIZE,
- 					      write_fault, exec_fault, false);
-diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-index fb54f6dad995c..43523bb17621a 100644
---- a/arch/arm64/kvm/nested.c
-+++ b/arch/arm64/kvm/nested.c
-@@ -1360,7 +1360,7 @@ static int kvm_translate_vncr(struct kvm_vcpu *vcpu, bool *is_gmem)
- 	bool write_fault, writable;
- 	unsigned long mmu_seq;
- 	struct vncr_tlb *vt;
--	struct page *page;
-+	struct page *page = NULL;
- 	u64 va, pfn, gfn;
- 	int ret;
- 
-@@ -1411,7 +1411,7 @@ static int kvm_translate_vncr(struct kvm_vcpu *vcpu, bool *is_gmem)
- 		if (is_error_noslot_pfn(pfn) || (write_fault && !writable))
- 			return -EFAULT;
- 	} else {
--		ret = kvm_gmem_get_pfn(vcpu->kvm, memslot, gfn, &pfn, &page, NULL);
-+		ret = kvm_gmem_get_pfn(vcpu->kvm, memslot, gfn, &pfn, NULL);
- 		if (ret) {
- 			kvm_prepare_memory_fault_exit(vcpu, vt->wr.pa, PAGE_SIZE,
- 					      write_fault, false, false);
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index c519e8e8d646f..129d403308051 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4604,7 +4604,7 @@ static int kvm_mmu_faultin_pfn_gmem(struct kvm_vcpu *vcpu,
- 	}
- 
- 	r = kvm_gmem_get_pfn(vcpu->kvm, fault->slot, fault->gfn, &fault->pfn,
--			     &fault->refcounted_page, &max_order);
-+			     &max_order);
- 	if (r) {
- 		kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
- 		return r;
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 3fc582fa343cc..0a324e5b556b1 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -4016,7 +4016,6 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
- 	struct kvm *kvm = vcpu->kvm;
- 	gfn_t gfn = gpa_to_gfn(gpa);
- 	unsigned long mmu_seq;
--	struct page *page;
- 	kvm_pfn_t pfn;
- 
- 	lockdep_assert_held(&svm->sev_es.snp_vmsa_mutex);
-@@ -4060,9 +4059,8 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
- 	 * The new VMSA will be private memory guest memory, so retrieve the
- 	 * PFN from the gmem backend.
- 	 */
--	if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, &page, NULL))
-+	if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, NULL))
- 		return;
--	kvm_release_page_clean(page);
- 
- 	read_lock(&kvm->mmu_lock);
- 	/*
-@@ -5002,7 +5000,6 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
- 	struct kvm_memory_slot *slot;
- 	struct kvm *kvm = vcpu->kvm;
- 	int order, rmp_level, ret;
--	struct page *page;
- 	bool assigned;
- 	kvm_pfn_t pfn;
- 	gfn_t gfn;
-@@ -5029,13 +5026,12 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
- 		return;
- 	}
- 
--	ret = kvm_gmem_get_pfn(kvm, slot, gfn, &pfn, &page, &order);
-+	ret = kvm_gmem_get_pfn(kvm, slot, gfn, &pfn, &order);
- 	if (ret) {
- 		pr_warn_ratelimited("SEV: Unexpected RMP fault, no backing page for private GPA 0x%llx\n",
- 				    gpa);
- 		return;
- 	}
--	kvm_release_page_unused(page);
- 
- 	ret = snp_lookup_rmpentry(pfn, &assigned, &rmp_level);
- 	if (ret || !assigned) {
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 03bfc92864b6e..502465119ca0c 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2586,13 +2586,11 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
- 
- #ifdef CONFIG_KVM_GUEST_MEMFD
- int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
--		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
--		     int *max_order);
-+		     gfn_t gfn, kvm_pfn_t *pfn, int *max_order);
- #else
- static inline int kvm_gmem_get_pfn(struct kvm *kvm,
- 				   struct kvm_memory_slot *slot, gfn_t gfn,
--				   kvm_pfn_t *pfn, struct page **page,
--				   int *max_order)
-+				   kvm_pfn_t *pfn, int *max_order)
- {
- 	KVM_BUG_ON(1, kvm);
- 	return -EIO;
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index b596486d184ca..589762140c3ef 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -751,8 +751,7 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
- }
- 
- int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
--		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
--		     int *max_order)
-+		     gfn_t gfn, kvm_pfn_t *pfn, int *max_order)
- {
- 	pgoff_t index = kvm_gmem_get_index(slot, gfn);
- 	struct folio *folio;
-@@ -780,11 +779,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- #endif
- 
- 	folio_unlock(folio);
--
--	if (!r)
--		*page = folio_file_page(folio, index);
--	else
--		folio_put(folio);
-+	folio_put(folio);
- 
- 	return r;
- }
-
--- 
-2.55.0.699.gb54405d56f-goog
+@@ -964,10 +968,10 @@ static __always_inline union vmx_exit_reason 
+tdx_to_vmx_exit_reason(struct kvm_v
+                 break;
+         case EXIT_REASON_EPT_MISCONFIG:
+                 /*
+-                * Defer KVM_BUG_ON() until tdx_handle_exit() because 
+this is in
+-                * non-instrumentable code with interrupts disabled.
++                * Actual EPT Misconfigs are KVM/kernel software bugs. 
+Set the
++                * status accordingly to differentiate from emulated 
+MMIO exits.
+                  */
+-               exit_reason.basic = TDX_INVALID_EXIT_REASON;
++               tdx->vp_enter_status = TDX_SW_ERROR;
+                 break;
+         default:
+                 break;
 
