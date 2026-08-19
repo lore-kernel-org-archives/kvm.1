@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B618B44A402;
-	Wed, 19 Aug 2026 09:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144D144E654;
+	Wed, 19 Aug 2026 09:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787133280; cv=none; b=AgAjrbIOGYkfoAsJJ6+gcVtLoeyG5OrajLG6L8MEoXPf5dhAw9/kSHR7ohSoEGaVaaYX5YZ5mmFBG/P3wy9y+91qQhZ0MprWzzxVn+7llIFFfBW4hdS/HWNDvhDXRkyFiC8+s6aGKPWXmuryW7aLWG0wn2L+KOk6o5mk7MTjKi0=
+	t=1787133285; cv=none; b=eJE+fIQKs9BooRkNvE8ldYG4DhFroAMYoDdmmvYzNbIw80dgAnvizLmGvmewHIJro1yFImQnHR/p2INSlAQC5XUq3mTEduOv+T251eY9+seKTCDvoNqeof2G1o59kBb6auU5W2zO/pM/4ZUdKagCn/OynI8PrCBIO5pdhBMuNHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787133280; c=relaxed/simple;
-	bh=pNkqq2dwqlcQDn1HUnduSrLVReavua1ZNSuOBY8FdLM=;
+	s=arc-20240116; t=1787133285; c=relaxed/simple;
+	bh=lrotawLdDfCNHz98+9pbLuuZyH1ENmRJGuWwnKfbDhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NNrxVv/T0Pyq4I3+t3aaXC2k7kE/YFjD/iDz6tpPNJGXvVbBB46gGf3RWNzrOAmGbOTD4fyQHtnSndp/z7qt42ZZMPtYRyjhntZDrXTM/XgH0q9UU8DAv9pEJSf6cJoNB8PQuu0uSi5DY5fW+UaxyBAsx/iocgUlrk3MRJfkw/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VEXleniP; arc=none smtp.client-ip=192.198.163.17
+	 MIME-Version; b=SaSOpp3LLapVFGz6jKOoJJSI1jkdjVRyEFMbhT0D99w0EFZApMuS43y4F64gqGpfZgyKFsfhfgoUjMazyL90DvDmLgpYubPB37Bf5KjuxWOO8N8Gy9yb1KIIlD71NYBP2Tzrxrf/UwSnFBYDYlOiu5qBhihJ2NSFuNkH1aHiv4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dpOi68D1; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VEXleniP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dpOi68D1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787133275; x=1818669275;
+  t=1787133278; x=1818669278;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=pNkqq2dwqlcQDn1HUnduSrLVReavua1ZNSuOBY8FdLM=;
-  b=VEXleniPNcqkXpRGFg4QLQVqtAcNYDstAHCHT1irr3PXZwtynEgefOE1
-   AvcEzOn0ggwDlvWZie25P/cK6OPNHHrFnyfJWPAGPd3AWJP+S5Xd9SI7F
-   jxSzhpZgk8WCpXiClnI5lKVMUwS5e8YsQ335IYcV8QdrmBJVhhfVG/5Ct
-   Kx2voBaFdAGMrDYaG5OnopLiEcD/uMD/OnDoLXuMa5PqN/zoDZO4kUTwJ
-   pPBJrDr9hK2+JdzPxDparIrIGBOdtxvjYoRqbAzQN+A6t64fN3au2gvCN
-   R7R14JIotGdDt4orEaZU6IMBLXNT6whf9W8iz1iVRe/Gh3GauIxyaodGD
-   w==;
-X-CSE-ConnectionGUID: cl5n7Xt9TfyHWPng0du4zQ==
-X-CSE-MsgGUID: NVaOEHzSR6iTY/3QA/I1oA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11879"; a="87514946"
+  bh=lrotawLdDfCNHz98+9pbLuuZyH1ENmRJGuWwnKfbDhU=;
+  b=dpOi68D1Kfd2IPzShbuZ0Mtpqc24LDoGyYRdg/D8ybLHKuQlzFw6DNET
+   VaV5yRHhrQsAVqUIuCo+EvbmX9wb0a+umkx4xB2BerfEzx+IWxshxhMZs
+   6jyXk4o34guLCVWYN6NJlk5jlwNU7m6MpvzuknSU+zdeRq07eEKFDEMYb
+   HmkIR60178ZGPw9/9pYTMjHTbXWC9wHBFCZaQxVE9W2I1f5+fFsrIbzCL
+   6Bk4+1aqwNUpZ1j06rkaqvCnynwlduekUeSxAHZrhN5qyC7MerUn5tVnT
+   /cyqga/A2Lb2Tvm5qKpu/r/FzKj13xvRPCuP7n8+dAisRzb94Iq+AGTbi
+   Q==;
+X-CSE-ConnectionGUID: Y2jgnelxTIWds9zi8iZ7Iw==
+X-CSE-MsgGUID: IXtbE6MWQIKe+R9kMIfjjA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11879"; a="87514950"
 X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
-   d="scan'208";a="87514946"
+   d="scan'208";a="87514950"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 02:54:28 -0700
-X-CSE-ConnectionGUID: oe0TwS+QQ2+rLWoWKduaBw==
-X-CSE-MsgGUID: vjNQwiIKQ3u9GcJt6a6Emw==
+X-CSE-ConnectionGUID: OGsF/snlS6GXIlVQ41GSXQ==
+X-CSE-MsgGUID: ardc860MRKGEeEfldxev3g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
-   d="scan'208";a="303708878"
+   d="scan'208";a="303708883"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.33])
-  by orviesa001.jf.intel.com with ESMTP; 19 Aug 2026 02:54:23 -0700
+  by orviesa001.jf.intel.com with ESMTP; 19 Aug 2026 02:54:26 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>
@@ -53,9 +53,9 @@ Cc: Kiryl Shutsemau <kas@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev,
 	nik.borisov@suse.com
-Subject: [PATCH v4 5/9] KVM: TDX: Update exit_reason on wait_for_sept_zap return
-Date: Wed, 19 Aug 2026 17:48:59 +0800
-Message-ID: <20260819094903.3060020-6-xiaoyao.li@intel.com>
+Subject: [PATCH v4 6/9] KVM: VMX: Preserve negative return value in vmx_handle_exit() with bus lock detected
+Date: Wed, 19 Aug 2026 17:49:00 +0800
+Message-ID: <20260819094903.3060020-7-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260819094903.3060020-1-xiaoyao.li@intel.com>
 References: <20260819094903.3060020-1-xiaoyao.li@intel.com>
@@ -67,48 +67,48 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Update exit_reason to a value with bit[31:16] cleared and bit[15:0]
-set to TDX_INVALID_EXIT_REASON when it needs to return early due to
-wait_for_sept_zap in tdx_vcpu_run().  This avoids the stale exit_reason
-of the previous Exit being consumed twice.
+Preserve the negative return value from __vmx_handle_exit() when a bus
+lock is detected, instead of always overwriting it with 0.
 
-Fixes: 4b2abc49712b ("KVM: TDX: Kick off vCPUs when SEAMCALL is busy during TD page removal")
+The purpose of bus_lock_detected handling is to force a userspace exit to
+inform userspace that a bus lock happened. The negative return value can
+achieve this purpose, and changing the negative value to 0 fails to return
+an error to userspace. So, preserve the negative return value.
+
+Fixes: fe6b6bc802b4 ("KVM: VMX: Enable bus lock VM exit")
 Cc: stable@vger.kernel.org
+Reported-by: sashiko-bot@kernel.org
+Closes: https://lore.kernel.org/all/20260805034602.5B2BB1F000E9@smtp.kernel.org/
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
-Changes in v4:
-- new patch;
----
- arch/x86/kvm/vmx/tdx.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+I'm not sure on the Closes: link, since Sashiko didn't find the VMX
+issue directly.
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 987092283955..014710945e8a 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1088,8 +1088,21 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 	 * allowing vCPU entry to avoid contention with tdh_vp_enter() and
- 	 * TDCALLs.
+Changes in v4
+- grabbed from https://lore.kernel.org/all/20260806111923.1990562-2-xiaoyao.li@intel.com/
+---
+ arch/x86/kvm/vmx/vmx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 35ac9ddffaf4..d302d0ce47f1 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6860,11 +6860,12 @@ int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
+ 	 * a bus lock in guest.
  	 */
--	if (unlikely(READ_ONCE(to_kvm_tdx(vcpu->kvm)->wait_for_sept_zap)))
-+	if (unlikely(READ_ONCE(to_kvm_tdx(vcpu->kvm)->wait_for_sept_zap))) {
-+		/*
-+		 * The vCPU never entered the guest, but this looks like a
-+		 * handled exit to the caller.  Synthesize an invalid exit
-+		 * reason so the previous exit's stale value isn't consumed
-+		 * a second time.
-+		 *
-+		 * Make it super clear that bit[31:16] is cleared to 0 and only
-+		 * basic exit reason (bit[15:0]) is set to the synthesized
-+		 * invalid exit reason.
-+		 */
-+		vt->exit_reason.full = 0;
-+		vt->exit_reason.basic = TDX_INVALID_EXIT_REASON;
- 		return EXIT_FASTPATH_EXIT_HANDLED;
-+	}
+ 	if (vmx_get_exit_reason(vcpu).bus_lock_detected) {
+-		if (ret > 0)
++		if (ret > 0) {
+ 			vcpu->run->exit_reason = KVM_EXIT_X86_BUS_LOCK;
++			ret = 0;
++		}
  
- 	trace_kvm_entry(vcpu, run_flags & KVM_RUN_FORCE_IMMEDIATE_EXIT);
- 
+ 		vcpu->run->flags |= KVM_RUN_X86_BUS_LOCK;
+-		return 0;
+ 	}
+ 	return ret;
+ }
 -- 
 2.43.0
 
