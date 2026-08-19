@@ -1,153 +1,141 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C19339A07E
-	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 00:59:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACB8367B90;
+	Wed, 19 Aug 2026 01:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787101164; cv=none; b=CsZFTaLfAlgOsSJSOpPJGQ2DA0Dbo2+YSXEhMDiTM9qo3wed2ZxQZU3GPtTyUb3TGTsKW5CKjr/GHa3fGCoNaXXFReHQ8cYmsZZR0TO8h0tMGJtqe+n7bkV/bTc9wfvEYzjjTGMLoxO2p9u0x0f+GRq2v8Gd7WJEA6feNuissg8=
+	t=1787102263; cv=none; b=ueNXAYBzK7CNNVaACY+S82sMaxK7lPJA7vkhdYa5TXZWX0xbWTVJgnc2pEiW/kr/iKIXeKTp2F0m1iNbQDXLrYfLpzx+Vl3rhYYFWJQlrJtg0LzcGTi9bHzkEoHh7kfMoUusuL7jQqxlI1QxmcjC+/D6dumfoXXKW4U44Cc9TNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787101164; c=relaxed/simple;
-	bh=GyouiGOmNTQvPktkHcJEUPcHSogtQf7nbTA5ndzWO9g=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QAgaI9SyuynSTntAmf+NrjjC2VSTTw+9OoN/zmHjVPJBUnKAWYBfjEbzPcoO1PbhvFPP7N4m1IYA1uOzg+51LN30jdjG0bA+l59Bb3Cz195UbOw7lrsqOaAqTs5eN5dE/Xx+CqoRUFzE2vrISSQYl8pA31G4aCxGAUjPpAVUGYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OMSE4lk5; arc=none smtp.client-ip=209.85.215.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787102263; c=relaxed/simple;
+	bh=d5Rc786cFuoKZSnoqdp9y2QacazS7qB5JgKD5Q/h11g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XR1kZirTgdZmiYyrl7gnVzxvT8/VZ5trQGlDUqUjpx9sTgeev8wXAEgdQPhaSNk7jOrUxj35yfvzX6dXT4YbYsvfT97Bt8BTETRCkv+lATcKLLerqUl7rDfeUnu8V+zo2pld0vzjOxwTJMo6mwb3O8P4JJCYD+tM32Xupb7mtow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QcTnMslt; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OMSE4lk5"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cbedf6e8a42so471782a12.1
-        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 17:59:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787101163; x=1787705963; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Dhl2eRLiO5/bn/LIPtiBlJ8uhG2VgyTZzI1e3qAyPjI=;
-        b=OMSE4lk5GCFzlK4QK1pN8nB0mrufawuhTLX8xGc6rvzQnArqwmmuLCysbc7jO3eC/Y
-         4G9gy5NkKq3IM2plMigGO/G7N6/hf+53XmiKYbEISG4YHxGfs3fcpt3papcYRtHf3u9+
-         pmZo/qSEWj2FfMAePc8h2ByEqnIVywoPTdajDRGB7XH2zgkwIaXmN96PX41D6NWPBt6N
-         P5pe2Tf2l5JKHerA6huQCm7jqjZfQN7zkAxfP1aEdHZWOydH5xcL0MxMZ557x6JMU9u6
-         HAJoSXEVXH4cHyYJFT/1qlLAcqPGJXbQjCR4d1590rjHK8t1DQ6XOGeTRJuy4I9AnGlY
-         3HNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787101163; x=1787705963;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Dhl2eRLiO5/bn/LIPtiBlJ8uhG2VgyTZzI1e3qAyPjI=;
-        b=hASuDCFHQo6jdVL9zV0NJ5rkCQRGk7w0eR+19pYgbjSlYdound4Vv2JXRb/hPKwFFb
-         0TlMtkcykjLx1Te+iaaobhlOxx7ZXhhJ9AhsH//kAn0FW8eBUh3E7yPhG6zChceKxNvp
-         vuOohfegwmbBlDBfjKk21ggUTAylNhHrgAD66iFIzZj68c4Eqz1A4CigV27Y67U85Pyx
-         gwEPxqCyOr2YfcHC7tXYnsCn5FbpOlOF7V1ZowbOJe3WE099RTQ8XoV1m5W4Mrqkguyz
-         +09mR/jYQGLCBkoo+oNEv06bw4bTCl8wNvw6u4uR1cu5bvxFjUxAqYMERijUFkNCYWAQ
-         /Ghw==
-X-Forwarded-Encrypted: i=1; AHgh+RqbjGhqoe0phJDqeYqcsNJJK9llUDWaK6EdpygnB3Fiuu+VXYTM7HhIqprFKiuA81pTNik=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrOWVV2viPvPTwUYZiiFnqvh0/CKMuAQmwFPWo71h8Pl7wSe2n
-	+EwA4TKo+x04DDr7yH0X1blrDxQXqSaC1NkwOO2cEGmMUwraEJs9FrQoZyqijGVnpyT4DoWLGAk
-	qQwHHDQ==
-X-Received: from pgch28.prod.google.com ([2002:a05:6a02:509c:b0:c8d:62a8:ee35])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d48c:b0:3cc:2552:ddd7
- with SMTP id adf61e73a8af0-3cd00e246aemr2544333637.5.1787101162592; Tue, 18
- Aug 2026 17:59:22 -0700 (PDT)
-Date: Tue, 18 Aug 2026 17:59:21 -0700
-In-Reply-To: <3a622cdb03b553cc9f8ce55b6df3c0091b3b06b9.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QcTnMslt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787102261; x=1818638261;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=d5Rc786cFuoKZSnoqdp9y2QacazS7qB5JgKD5Q/h11g=;
+  b=QcTnMslt0wXYBba2uMA/lWOcrB+QjPriCm7yYyv5RWnU/p8f6sq1nRBF
+   eVUE9AppPuoE1BhG9rOrJL/UGICGeFCYrRw/cWpiavVgd01ClaOtbmXBr
+   i29NJFOX/7KAIS3iw9x3X5HpyhdedrYZBa17/vrEeJs6uy97XWleurEXv
+   k1BPx1aUoggYtZi5LJIE7XAnkhsmsPa+4VAa7thKp/MHxOp+gDJdw2qVc
+   eSnWU87CmNSD+KAHsgtJOqWqlYim/z2mHnTtLc7A+B0ksYZSOE0a3tJTs
+   wKcPPzKe4cdkTOfU4coIRTaZ40q19zFbn8UCpiAvob/n2Q63klYqgqJRg
+   g==;
+X-CSE-ConnectionGUID: XEebc4M7Rjy04tGLWkmMfg==
+X-CSE-MsgGUID: GlEYez8USbiW877qeyoLwg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11879"; a="87460742"
+X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
+   d="scan'208";a="87460742"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 18:17:40 -0700
+X-CSE-ConnectionGUID: mgL6zM8mT/mICwPfZy4gWA==
+X-CSE-MsgGUID: HmayBc+0RiiMy4W5xdCepA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
+   d="scan'208";a="303602377"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 18:17:40 -0700
+Date: Tue, 18 Aug 2026 18:17:30 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Kim Phillips <kim.phillips@amd.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, x86@kernel.org, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, Borislav Petkov <borislav.petkov@amd.com>, 
+	Borislav Petkov <bp@alien8.de>, Naveen Rao <naveen.rao@amd.com>, 
+	David Kaplan <david.kaplan@amd.com>, Dave Hansen <dave.hansen@linux.intel.com>, stable@kernel.org
+Subject: Re: [PATCH v4 04/10] cpu/bugs: Allow spectre_v2=ibrs on x86 vendors
+ other than Intel
+Message-ID: <ga63o6nf7xebndlo66qqasjx7axpopyph7ilkwhvx3enfaqs4w@r4qfr6eo6kcw>
+References: <20260804235611.4053375-1-kim.phillips@amd.com>
+ <20260804235611.4053375-5-kim.phillips@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260814224509.2342760-1-seanjc@google.com> <3a622cdb03b553cc9f8ce55b6df3c0091b3b06b9.camel@intel.com>
-Message-ID: <aoT_6cnARCAYTrYG@google.com>
-Subject: Re: [PATCH] KVM: VMX: Explicitly track TDX VMs' root level instead of
- guessing it from CPUID
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, Kai Huang <kai.huang@intel.com>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Yan Y Zhao <yan.y.zhao@intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260804235611.4053375-5-kim.phillips@amd.com>
 
-On Wed, Aug 19, 2026, Rick P Edgecombe wrote:
-> On Fri, 2026-08-14 at 15:45 -0700, Sean Christopherson wrote:
-> > Explicitly track the root level for TDX VMs instead of trying to infer =
-the
-> > depth of the paging tree based on an individual vCPU's CPUID informatio=
-n.
-> > Applying KVM's existing logic to select the root level to TDX is flawed=
- as
-> > nothing *requires* userspace to fill in the correct guest.MAXPHYADDR fo=
-r a
-> > vCPU's CPUID.=C2=A0 Guessing at the correct root level is also ridiculo=
-us given
-> > that userspace has already told KVM the root level during TD initializa=
-tion.
-> >=20
-> > Relying on userspace to set the expected/correct CPUID lets a misbehavi=
-ng
-> > userspace trip the KVM_BUG_ON() in tdx_load_mmu_pgd() by configuring gu=
-est
-> > CPUID to use an "incorrect" guest.MAXPHYADDR.
->=20
-> Hmm, yea. But to me the text is a little ambiguous what "configuring gues=
-t
-> CPUID" means. There are the two configurations of CPUID that happen and t=
-he goof
-> was due to forgetting that there is no enforcement between the first "dir=
-ectly
-> configurable bits" (where "userspace has already told KVM the root level =
-during
-> TD initialization" happens), and the second that happens via normal SET_C=
-PUID.
->=20
-> Doing a KVM_BUG_ON() if tdx code sees a different level than what was pro=
-cessed
-> in setup_tdparams_eptp_controls() seems good to me.
->=20
-> >=20
-> > Keep gfn_direct_bits even though it can be trivially derived from
-> > mirror_root_level as saving a whole eight bytes per VM is meaningless, =
-and
-> > the value is queried fairly often and in hot paths.
->=20
-> gfn_direct_bits comes directly from the the initial configuration, so why=
- do we
-> need to add mirror_root_level in this patch? The old code calculated shar=
-ed bit
-> with a conditional, so we could easily compute level with an inverted
-> conditional. The mirror_root_level caching is then a separate
-> cleanup/enhancments.
->=20
-> Ohhh, because to calculate it kvm_mmu_get_tdp_level() would embed some TD=
-X
-> specifics there.
->=20
-> Wait, no, this knowledge embeds in kvm_mmu_set_mirror_root_level() anyway=
-. So
-> I'd think to just have the below.=20
+On Tue, Aug 04, 2026 at 06:56:05PM -0500, Kim Phillips wrote:
+...
+> @@ -2297,13 +2299,26 @@ static void __init spectre_v2_apply_mitigation(void)
+>  	if (spectre_v2_enabled == SPECTRE_V2_EIBRS && unprivileged_ebpf_enabled())
+>  		pr_err(SPECTRE_V2_EIBRS_EBPF_MSG);
+>  
+> -	if (spectre_v2_in_ibrs_mode(spectre_v2_enabled)) {
+> -		if (boot_cpu_has(X86_FEATURE_AUTOIBRS)) {
+> +	/*
+> +	 * head_64.S preserves EFER.AUTOIBRS across boot, so a kexec from a
+> +	 * kernel that ran in AutoIBRS mode carries the bit into the new kernel.
+> +	 * Explicitly set or clear it to match the selected mitigation, regardless
+> +	 * of which mode is in effect.  The boot CPU does this before
+> +	 * init_real_mode() snapshots EFER for the AP trampoline, so APs inherit
+> +	 * the correct value too.
+> +	 */
+> +	if (boot_cpu_has(X86_FEATURE_AUTOIBRS)) {
+> +		if (spectre_v2_in_eibrs_mode(spectre_v2_enabled))
+>  			msr_set_bit(MSR_EFER, _EFER_AUTOIBRS);
+> -		} else {
+> -			x86_spec_ctrl_base |= SPEC_CTRL_IBRS;
+> -			update_spec_ctrl(x86_spec_ctrl_base);
+> -		}
+> +		else
+> +			msr_clear_bit(MSR_EFER, _EFER_AUTOIBRS);
 
-I started with that, but I didn't like bleeding that level of detail into t=
-he
-MMU.  Or rather, I didn't like baking in the assumption that there is exact=
-ly
-one "direct bits", that the one bit is a pivot between normal and mirror ro=
-ot,
-and that the pivot bit is the most significant bit of the effective GPA spa=
-ce.
+Clearing the old kernel state should be done well before the mitigation
+selection starts, below already does it for the SPEC_CTRL MSR:
 
-On the other hand, the MMU already knows about mirror roots, and needs to k=
-now
-that mirror roots can have predetermined levels, so explicitly storing that=
- level
-doesn't add new assumptions.
+  void __init cpu_select_mitigations(void)
+  {
+          /*
+           * Read the SPEC_CTRL MSR to account for reserved bits which may
+           * have unknown values. AMD64_LS_CFG MSR is cached in the early AMD
+           * init code as it is not enumerated and depends on the family.
+           */
+          if (cpu_feature_enabled(X86_FEATURE_MSR_SPEC_CTRL)) {
+                  rdmsrq(MSR_IA32_SPEC_CTRL, x86_spec_ctrl_base);
 
-> If comparing gfn_direct_bits to gfn_direct_bits doesn't make sense, then
-> let's just drop the KVM_BUG_ON().
+                  /*
+                   * Previously running kernel (kexec), may have some controls
+                   * turned ON. Clear them and let the mitigations setup below
+                   * rediscover them based on configuration.
+                   */
+                  x86_spec_ctrl_base &= ~SPEC_CTRL_MITIGATIONS_MASK;
+          }
 
-Why?  Defense in depth is often useful.
+> +	}
+> +
+> +	if (spectre_v2_in_ibrs_mode(spectre_v2_enabled) &&
+> +	    !(boot_cpu_has(X86_FEATURE_AUTOIBRS) &&
+> +	      spectre_v2_in_eibrs_mode(spectre_v2_enabled))) {
+> +		x86_spec_ctrl_base |= SPEC_CTRL_IBRS;
+> +		update_spec_ctrl(x86_spec_ctrl_base);
+>  	}
+
+Nit, I find this a bit confusing. IIUC when AutoIBRS is supported, you want
+SPEC_CTRL[IBRS] to be set when legacy IBRS mitigation is deployed. If you
+move MSR write down after legacy IBRS mode is set(KERNEL_IBRS), you can do:
+
+          if (spectre_v2_in_ibrs_mode(spectre_v2_enabled)) {
+                 if (boot_cpu_has(X86_FEATURE_AUTOIBRS) &&
+                     !boot_cpu_has(X86_FEATURE_KERNEL_IBRS)) {    <---- just adding KERNEL_IBRS check to existing code
+                          msr_set_bit(MSR_EFER, _EFER_AUTOIBRS);
+                  } else {
+                          x86_spec_ctrl_base |= SPEC_CTRL_IBRS;
+                          update_spec_ctrl(x86_spec_ctrl_base);
+                  }
+          }
+
+Otherwise, a comment explaining the intent would be helpful.
