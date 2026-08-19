@@ -1,167 +1,124 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76873A83AC
-	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 16:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03AC930100E;
+	Wed, 19 Aug 2026 16:23:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787155204; cv=none; b=Yh/xc0uXOS0plY0muNZeN8slWvneA+2/o1AhxBCOqawtFUT9qVNooAD/iZwl2+tYyjdo7rQ+OGQZjuS+fB3dkasF/9aOLO3b22sGlyR4nDWfey4KDXRJRYtFjEvNibgNp6b34Xl3Nbczp9E2GUQpU3IhQo/cHNvftbMzX1+jtiA=
+	t=1787156604; cv=none; b=CqEU4ctj74d4RISUUpzwSdNSbeLQTzDiD0XTga4XHqpv18i6mjZvnOYJTHiO4VhFHEsxB7xlfixStTKcQGB3+lcGFpNXWwpQqSLwsbsWxFzw88jOnpGTid/l31dS90EsS5mlAwwsKGBfZ2W4CY4sCxsY9bq2cntWAEd0uEdRzoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787155204; c=relaxed/simple;
-	bh=LZz892YH9/xaM8/iTFuxgJlCJs566ZSjCktU3cWjXjI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AdoI2foBK33cxZWy/ZieKdLVK+S3xAgIo7awOF5oysE7RyyTr84+M30iLzJZcbnxZ2IBjkRcNSCGOqWapYKAHdDI9/Rs9Mu2tvBh9jM1KfzIVZvl+WIvX6L4BGaFtskUZKM+sRUg90Npa02rBgebFF0voo1B+OLAiJgWK2SmQSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YOF4IYYx; arc=none smtp.client-ip=209.85.215.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787156604; c=relaxed/simple;
+	bh=LmWMDPpn1fujXT64EdOwJQHmER8QXmfNrW50d6zxeuo=;
+	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=ZsukcOqkRpl4a0RyRQqLaAlPIbSBBKS9FbwsnqCVZRFFQkE2O44YuYQ7gx60Xi2qj+rBEMsgJecQBMHh6cPQNXp/F3TO1C7QNbpadkadbf/tl5/byBVi10Ne4duApUl51/Xf+7hytLO3thb6Z6kttzBye36wbJzj41HgdymGVI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lBP0ue9a; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YOF4IYYx"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-c85798977dcso1578452a12.0
-        for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 09:00:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787155202; x=1787760002; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XaU6PgQH9SUVRtzx3SN8O7eufPpN9+OcuRfvjznD5/4=;
-        b=YOF4IYYxVfrb/CNi1lE7e8iElSvs5ev++E/gve9v4bEq/3Vn/bvXhnGeYIs198QxsR
-         N5fgS+lzGlSraFtQPQ/cdRsiJ9PGBIIghugUBpPEgvhEFa2bDaZk3cY22qZvqIZyjhry
-         yHFviVXYLlC3Lxx7lfn3GyD9blaWbP2Bw1XUp7be0059QkOVM6xQ0MNVe6nuFhZtTgBY
-         kEvdRW8N8n6Tz4nvMsYEx299m8OIespO5KTnYvrdB+P+FvbxJ5kvr9W5+gK18M6bjmk4
-         kfX7CBBhVhHoV8tgwpw1IK/oA8f/h1OpGeIAFRf3E3abdZlH2nh21p5OvvlDIZJFSeeb
-         kaew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787155202; x=1787760002;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XaU6PgQH9SUVRtzx3SN8O7eufPpN9+OcuRfvjznD5/4=;
-        b=JiGPgv0VTha3TpvEi5frhCah6nS6u0AIyc0qDPiqQhsrNXMF15LSZe6fsykDkrJDgx
-         7Vpsm3JeVFKQt5JaxyJrM7K0T58bBWbT2KB5FqxCSO2vuhU6/0tiJrCbjHs5EsKGNYv6
-         CPQp145Gos6oMFemm3Dkn0++NIvuopGjvL6eo/7M7TdbHKZwo+swuzN/z1+ukfwm11ZG
-         BEawK0WJvq9amN9AdncVEYCq2Ma56/u8pXG3/pBfIGJPttKSRdy3Hd3BN6L6oMyheRCt
-         V9Gvv6rOTh2cqKujELy4YAKSbCnGdljKQG2qt24QUI27LanwEBQT2zr4AxnybfxzO5DV
-         +Uww==
-X-Forwarded-Encrypted: i=1; AHgh+RpzhHcyrjG60eQLjdv8GWP2YwCqy206yEHgLAxwyFwYOGSrZDQaatb0/8HrYSQpy2T1stA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyISTIANE0V75SQlATw3zIhpZjQbXb7cDcA+2M4cGIgYcGdrThW
-	BtMgyezwfkGDa33sgwvkppXFqp8hjSHuVRTPrZaMhTUQtMyMFOHD9GnXvehFEZOW1lGx1QblA9H
-	2EwY2NQ==
-X-Received: from pgch14.prod.google.com ([2002:a05:6a02:508e:b0:c9a:53ea:434a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:2285:b0:3bf:49c8:f7b
- with SMTP id adf61e73a8af0-3cd017c44afmr12092360637.13.1787155201847; Wed, 19
- Aug 2026 09:00:01 -0700 (PDT)
-Date: Wed, 19 Aug 2026 09:00:01 -0700
-In-Reply-To: <7f52191f-c6b5-4d27-8e11-2c00bd9de968@arm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lBP0ue9a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E5C1F000E9;
+	Wed, 19 Aug 2026 16:23:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787156602;
+	bh=Ldb5dOInQjpEK8qwvxT9Fxl21ZWTetKva/zFZH6RD8s=;
+	h=Date:From:To:Subject;
+	b=lBP0ue9ah1+okMOcT36Fha7BZdKb2IlP+/SzvGEBaCA0QksCErIjOZj/cy0EMqKPU
+	 FrKt6tsFzlGjsSwMrayIUZxjiIra7KCfqzVpTL/iSX9MC5murtY5Ul7qr8MuS05UPN
+	 18szLcbk6ml9B+yfJAh29inPNBA+X1MMyW8kT38T8Dncb+hM6ps3RHGd3tjSqzGzcX
+	 FLzzEVL6xnZuu662fwfUXe1HglWjI+GtIgliN9l5D/Lxnml1e6G4iHhMv6bbXwGC4H
+	 yS5NnQ0L5IK66XxrVjasds2fArlqvLiQKPxGFwk6RHW5bAiBUAdejr17flNmArXJeJ
+	 agC9bNzFcz3Iw==
+Message-ID: <54d375aa-8362-4e1c-8f76-bae1eb9f4f76@kernel.org>
+Date: Wed, 19 Aug 2026 18:23:09 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <ak_wC4Q-mQe14DI8@google.com> <alDI1b8fC99SG4_a@J2N7QTR9R3>
- <a127176a-1722-460c-aa84-754e1d343f53@arm.com> <an3sEiQlIuGEjUur@raptor>
- <b6080c23-a2a8-4bc5-b3bd-982bd766c648@arm.com> <an5UJ4S_P1LUFmzD@google.com>
- <487aa57c-72ad-453b-971d-ca24a8380429@arm.com> <an8SOvLybeilzCEU@google.com>
- <an9JNUln8dKaidQc@raptor> <7f52191f-c6b5-4d27-8e11-2c00bd9de968@arm.com>
-Message-ID: <aoXTAdnEcKJ8-Ft_@google.com>
-Subject: Re: [RFC PATCH 0/3] KVM: Dirty page logging for guest_memfd-only memslots
-From: Sean Christopherson <seanjc@google.com>
-To: David Hildenbrand <david.hildenbrand@arm.com>
-Cc: Alexandru Elisei <alexandru.elisei@arm.com>, Mark Rutland <mark.rutland@arm.com>, pbonzini@redhat.com, 
-	kvm@vger.kernel.org, maz@kernel.org, oupton@kernel.org, joey.gouly@arm.com, 
-	seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	fuad.tabba@linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-08-19
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 19, 2026, David Hildenbrand wrote:
-> On 8/14/26 18:58, Alexandru Elisei wrote:
-> > Hi,
-> > 
-> > On Fri, Aug 14, 2026 at 06:03:54AM -0700, Sean Christopherson wrote:
-> >> On Fri, Aug 14, 2026, David Hildenbrand wrote:
-> >>> We have a hardware feature that requires pages to always be mapped into S2. Some
-> >>> things I had in mind:
-> >>>
-> >>> 1) Page migration would not be a problem as long as hardware could be paused
-> >>>    while migrating (e.g., kick all vCPUs). I doubt someone would implement that
-> >>>    right now,  but you could consider it an implementation detail that page
-> >>>    migration cannot be supported right now.
-> >>>
-> >>> 2) Newer hardware could mitigate this problem, allowing the feature to support
-> >>>    pages temporarily being unmapped from S2.
-> >>>
-> >>> 3) Disallowing page migration is really just one implication of "pages must
-> >>>    always be mapped into S2".
-> >>>
-> >>> So what we really want is "if feature X is enabled and hardware requires it,
-> >>> always keep pages mapped into S2, which currently implies that page migration
-> >>> cannot be supported."
-> >>>
-> >>> Which isn't all that different to "if a confidential VM is run on current TDX
-> >>> hardware, always keep pages mapped into S2, which currently implies that page
-> >>> migration cannot be supported."
-> >>>
-> >>> So I was wondering whether the flow could be:
-> >>>
-> >>> User space enabled CPU feature for VM -> KVM knows that current hardware
-> >>> requires for that CPU feature to have S2 always mapped -> KVM tells guest_memfd
-> >>> that S2 must be always mapped / disables page migration.
-> >>
-> >> I'm a-ok with adding a flag to guest_memfd to communicate whether or not page
-> >> migration is allowed, because guest_memfd needs to actively support page migration.
-> >>
-> >> I'm not ok adding a flag telling guest_memfd that memory must always be mapped
-> >> in S2, because guest_memfd doesn't care.  E.g. KVM doesn't yet support page
-> >> migration for SNP, but SNP tracks page ownership in an out-of-band table and so
-> >> KVM can map/unmap all guest memory from S2 at will.
-> >>
-> >>> That would be in contrast to user space having to guess that page migration on
-> >>> the current hardware with the current guest_memfd implementation does not
-> >>> support page migration, to then disable exactly that.
-> >>>
-> >>> Does that explanation makes sense? I don't know the exact mechanism to do that,
-> >>> but that's just my high-level thinking.
-> >>
-> >> Yes, I'm supportive of KVM expressing to guest_memfd that page migration isn't
-> >> supported by the VM.  I'm only objecting to expressing that memory must stay
-> >> mapped in S2, because guest_memfd doesn't care *why* page migration is or isn't
-> >> supported/allowed by a particular VM.
-> > 
-> > My naive contribution is this idea I had:
-> > 
-> > 1. Userspace queries support in KVM for feature xyz by checking the
-> > capability KVM_CAP_xyz.
-> > 
-> > 2. Userspace knows that for feature xyz to work correctly, it is required
-> > that memory remains mapped at stage 2.
-> > 
-> > 3. Userspace creates a guest_memfd instance with the right combination of
-> > flags set and _unset_ for feature xyz to work correctly - i.e, to keep
-> > memory mapped at stage 2.
-> > 
-> > For this to work, new guest_memfd features that might lead to memory being
-> > unmapped are enabled via a flag, and KVM keeps memory mapped at stage 2 by
-> > default, to maintain compatibility with an userspace not updated for the
-> > new features/flags.
-> 
-> I was wondering whether KVM could be driving that setting in guest_memfd, with
-> less userspace intervention.
-> 
-> 1. Userspace enables support in KVM for feature xyz through
-> capability KVM_CAP_xyz.
-> 
-> 2. KVM knows that the feature, on the current hardware requires permanent S2
-> mapping, so it instructs guest_memfd to disable any features that could lead to
-> a temporary unmapping (e.g.,migration support).
+Hi,
 
-Yes, that's what I would like to aim for as well[*], with the understanding that
-things may not play out exactly as we want if/when we actually implement all of
-this.
+Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
+2026-08-19 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
- : We might make guest_memfd page migration opt-in, but if all of the incompatible
- : setups can enumerate their existence prior to creating guest_memfd files, we may
- : handle it all automatically, e.g. enable page migration by default, but disable
- : it if a TDX, SNP, pKVM, or SPE-capable VM is detected.
+Note that we will be skipping the meeting in two weeks (2026-09-03) as both
+Ackerley and me will be traveling. So if you have something urgent to discuss,
+please speak up :)
 
-[*] https://lore.kernel.org/all/an9oR3dBVgFs7j7q@google.com
+In this meeting, I think we should sync on the recent developemnts regarding
+in-place conversion. I don't know whether David Woodhouse will make this
+meeting, but if so, we will also talk about guest_memfd+VFIO.
+
+So this meeting could either be extremely short or very long :)
+
+
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
+
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want an google
+calendar invitation that also covers all future meetings, just write me
+or Ackerley a mail.
+
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
+
+[1]
+https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+
+-- 
+Cheers,
+
+David
+
