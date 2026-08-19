@@ -1,222 +1,136 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE09A44C653;
-	Wed, 19 Aug 2026 09:54:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040B33CAA47
+	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 10:16:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787133298; cv=none; b=OlSoIFdQk833oyGX3Do39iDXSoiVsg915VRVlTRmMaNyEK2OlGtsRToMei120Qk9xmf5rFMwQ731jNWMMBB5wQyte7til8MTeMAPLfGOff4VB2WIXKL0ITKdqXHBgpmYClejsybpMndY/KvIT5+CZhRhedPu22JX2NsjgWK+35s=
+	t=1787134570; cv=none; b=Cvbl50SGsH7oP3EHxyzJ8X8GWtiD0YmYvXr0CaMaL+RpShOUyaXk/PR6RcDeaiR+qkp1xVT3zgoaF66MmDmP3SaKIcSGo2ZE5hBMG74XjzltrGt87cRmA3leaydV7I7kXo0V7lrYaanM5Tv5/s/8XfKaNPm6UhIe4MxLbZLAHyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787133298; c=relaxed/simple;
-	bh=H7NeiJ2egnfoOMilwZTkUIIYLGO/1E8OeCkopKoPm3s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K4QGUPnMvt23GBCIGAV/suf+JIVA+5/NKAcnFYwz3qS4EjMLGd/OYk2hwVLcP6l8X38h2Rnre0A8klR6BfOpUKdQ3kKaUIFHmHhlHRwU5PkVu9phS9aKz3VBMh2qOf/ttAe4O2fGa2z3g8vp3WEtEX5uyjCSz+4zVMCRCjfSxEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ey9umI0f; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1787134570; c=relaxed/simple;
+	bh=8YQALuU+YI5p3q5Yk7ylB2IYOoM9NMv0HGrqxpH6mmc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=jUF1+icO5Q4Df0vPF0CjonBit1xHCaQV1+qB6FCFuA5vEIutQxbO75XhVh/jbB+JEohynuhLyhYgBCSnFaufuHTXqSyg9KUp8L61OfJGSOYU26+IuVW7RmUT0ZZDLGQAObxBlcbiLZtCmyiQ1EMi52H7qqacSLg63z+UeVCr7Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hDgFYCS3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ey9umI0f"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787133288; x=1818669288;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=H7NeiJ2egnfoOMilwZTkUIIYLGO/1E8OeCkopKoPm3s=;
-  b=ey9umI0fizXlD4wIzjlZddmaMYwOhSsOavGaqXSmqtgdSBtMhEx7fZog
-   Hh8CIoj9gxf2F5D71kqZL0hlysTIRxThS0GDmlfENHJVievXihg6C3Cni
-   bLPNx5udC2lTINKNeFr69qg/FPGHlZ5Lb9k6JIvW0j0kT4WeBJhW9AdQA
-   R1fFx7oEUaj1o7z2aPv5ZqweGBb0r42wpHn5+eTMECrU124z8+7v+e6cj
-   /3XAY5EbKnNhv7eBw6wYCq7yYkgO6heM0oARwk0y8l1Xovm46Z9RQLnbZ
-   +hxPG3tkUBp1bhX0d9k+NuQEjgTfXJUhKKjiRUXwjLHLlSj3DD6Kr5MOl
-   A==;
-X-CSE-ConnectionGUID: nV6C2rd1Q3y8s7NPPI75ow==
-X-CSE-MsgGUID: nCoqJgJVR7uDRij0TZ79RA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11879"; a="87515019"
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
-   d="scan'208";a="87515019"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 02:54:35 -0700
-X-CSE-ConnectionGUID: Ogc31NEIR1OzIwBDdQCNGg==
-X-CSE-MsgGUID: DEobpRBoTJWyQITWWb8gzA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
-   d="scan'208";a="303708903"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.33])
-  by orviesa001.jf.intel.com with ESMTP; 19 Aug 2026 02:54:33 -0700
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	nik.borisov@suse.com
-Subject: [PATCH v4 9/9] KVM: VMX: Consolidate the exit handler for VMX and TDX
-Date: Wed, 19 Aug 2026 17:49:03 +0800
-Message-ID: <20260819094903.3060020-10-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260819094903.3060020-1-xiaoyao.li@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hDgFYCS3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733DC1F000E9;
+	Wed, 19 Aug 2026 10:16:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787134568;
+	bh=V40fQ4kKNWBKatNMslunLpfK51nG3aYbLJtEzDAtU0I=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=hDgFYCS3BsAuN+WA7Uasuh7mIuX3zN05Idjpp2YpwMtN//ZpuFs00HZdSJxF6l367
+	 VkcmUEYlYxKukJTybdQMp//lUrbQpHgXbnoVsqsmKU5zwl2gwfWYPAvoyjNiJK1fVP
+	 a+jd38WrBK2O7qe0XaHn/xegDBGUkPOUVEUD12ja2ohvvFrXJLKIUGg17JZKw14CYM
+	 klUvj0KdWhBgLdhgooujZOpYWJIQRtjRA9hoPOGA9RiMgFAkwr/sv0FqNL6l1PlBdQ
+	 bK4LrT0vs9k9tMaSM3bTk42H9y0E0VKFWta6AZbOHTmFUqsB+s4uFfNZKoVC9YDmTQ
+	 q9GZwqd89JlQg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 4/9] KVM: TDX: Don't assume exit_reason[31:16] is
+ all-0 in tdx_to_vmx_exit_reason()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Xiaoyao Li" <xiaoyao.li@intel.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260819094903.3060020-5-xiaoyao.li@intel.com>
 References: <20260819094903.3060020-1-xiaoyao.li@intel.com>
+ <20260819094903.3060020-5-xiaoyao.li@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 19 Aug 2026 10:16:08 +0000
+Message-Id: <20260819101608.733DC1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The exit handlers for VMX and TDX have the similar pattern. Consolidate
-them into a single vt_handle_exit() helper.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Changes in v4:
-- new patch.
----
- arch/x86/kvm/vmx/main.c | 38 ++++++++++++++++++++++++++++----------
- arch/x86/kvm/vmx/tdx.c  | 18 +-----------------
- arch/x86/kvm/vmx/vmx.c  | 21 +--------------------
- 3 files changed, 30 insertions(+), 47 deletions(-)
+Pre-existing issues:
+- [Medium] Strict equality checks on the raw 64-bit `vp_enter_ret` fail whe=
+n Bus Lock VM exit sets bit 26, bypassing the intended `KVM_BUG_ON()` and f=
+astpath logic.
+--
 
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index 6a813c49ca8a..10df9667d0c0 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -154,15 +154,6 @@ static fastpath_t vt_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 	return vmx_vcpu_run(vcpu, run_flags);
- }
- 
--static int vt_handle_exit(struct kvm_vcpu *vcpu,
--			  enum exit_fastpath_completion fastpath)
--{
--	if (is_td_vcpu(vcpu))
--		return tdx_handle_exit(vcpu, fastpath);
--
--	return vmx_handle_exit(vcpu, fastpath);
--}
--
- static bool vt_unhandleable_emulation_required(struct kvm_vcpu *vcpu)
- {
- 	if (is_td_vcpu(vcpu)) {
-@@ -887,6 +878,33 @@ int vt_handle_bus_lock_vmexit(struct kvm_vcpu *vcpu)
- 	return 1;
- }
- 
-+static int vt_handle_exit(struct kvm_vcpu *vcpu,
-+			  enum exit_fastpath_completion fastpath)
-+{
-+	int ret;
-+
-+#ifdef CONFIG_KVM_INTEL_TDX
-+	if (is_td_vcpu(vcpu))
-+		ret = tdx_handle_exit(vcpu, fastpath);
-+	else
-+#endif
-+		ret = vmx_handle_exit(vcpu, fastpath);
-+
-+	/*
-+	 * Exit to user space when bus lock detected to inform that there is
-+	 * a bus lock in guest.
-+	 */
-+	if (vmx_get_exit_reason(vcpu).bus_lock_detected) {
-+		if (ret > 0) {
-+			vcpu->run->exit_reason = KVM_EXIT_X86_BUS_LOCK;
-+			ret = 0;
-+		}
-+
-+		vcpu->run->flags |= KVM_RUN_X86_BUS_LOCK;
-+	}
-+	return ret;
-+}
-+
- #define VMX_REQUIRED_APICV_INHIBITS				\
- 	(BIT(APICV_INHIBIT_REASON_DISABLED) |			\
- 	 BIT(APICV_INHIBIT_REASON_ABSENT) |			\
-@@ -960,7 +978,7 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
- 
- 	.vcpu_needs_initialization = vt_op_tdx_only(vcpu_needs_initialization),
- 	.vcpu_run = vt_op(vcpu_run),
--	.handle_exit = vt_op(handle_exit),
-+	.handle_exit = vt_handle_exit,
- 	.skip_emulated_instruction = vmx_skip_emulated_instruction,
- 	.update_emulated_instruction = vmx_update_emulated_instruction,
- 	.unhandleable_emulation_required = vt_op(unhandleable_emulation_required),
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 8db0c67aaadc..364a2322a9f5 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -2058,7 +2058,7 @@ int tdx_complete_emulated_msr(struct kvm_vcpu *vcpu, int err)
- }
- 
- 
--static int __tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
-+int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
- {
- 	struct vcpu_tdx *tdx = to_tdx(vcpu);
- 	u64 vp_enter_ret = tdx->vp_enter_ret;
-@@ -2170,22 +2170,6 @@ static int __tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
- 	return 0;
- }
- 
--int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
--{
--	int ret = __tdx_handle_exit(vcpu, fastpath);
--
--	/* Exit to user space when bus lock was detected */
--	if (vmx_get_exit_reason(vcpu).bus_lock_detected) {
--		if (ret > 0) {
--			vcpu->run->exit_reason = KVM_EXIT_X86_BUS_LOCK;
--			ret = 0;
--		}
--
--		vcpu->run->flags |= KVM_RUN_X86_BUS_LOCK;
--	}
--	return ret;
--}
--
- void tdx_get_exit_info(struct kvm_vcpu *vcpu, u32 *reason,
- 		u64 *info1, u64 *info2, u32 *intr_info, u32 *error_code)
- {
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 58c001b6cbc5..490baae56cf1 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6681,7 +6681,7 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
-  * The guest has exited.  See if we can fix it or if we need userspace
-  * assistance.
-  */
--static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
-+int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 	union vmx_exit_reason exit_reason = vmx_get_exit_reason(vcpu);
-@@ -6840,25 +6840,6 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
- 	return 0;
- }
- 
--int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
--{
--	int ret = __vmx_handle_exit(vcpu, exit_fastpath);
--
--	/*
--	 * Exit to user space when bus lock detected to inform that there is
--	 * a bus lock in guest.
--	 */
--	if (vmx_get_exit_reason(vcpu).bus_lock_detected) {
--		if (ret > 0) {
--			vcpu->run->exit_reason = KVM_EXIT_X86_BUS_LOCK;
--			ret = 0;
--		}
--
--		vcpu->run->flags |= KVM_RUN_X86_BUS_LOCK;
--	}
--	return ret;
--}
--
- void vmx_update_cr8_intercept(struct kvm_vcpu *vcpu, int tpr, int irr)
- {
- 	int tpr_threshold;
--- 
-2.43.0
+--- Patch [4]: [PATCH v4 4/9] KVM: TDX: Don't assume exit_reason[31:16] is =
+all-0 in tdx_to_vmx_exit_reason() ---
+commit 48df7e5971adbfae6378e9f4d893dc4fe8eb125f
+Author: Xiaoyao Li <xiaoyao.li@intel.com>
 
+KVM: TDX: Don't assume exit_reason[31:16] is all-0 in tdx_to_vmx_exit_reaso=
+n()
+
+This commit changes tdx_to_vmx_exit_reason() to handle the upper 16 bits
+of the exit reason instead of assuming they are all zero. It changes the
+return type to union vmx_exit_reason to make manipulating the basic field
+more convenient while preserving the upper bits for when Bus Lock VM exit
+is enabled.
+
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 4e275cb6927ad..9870922839552 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+[ ... ]
+> @@ -949,22 +949,26 @@ static __always_inline u32 tdx_to_vmx_exit_reason(s=
+truct kvm_vcpu *vcpu)
+>  	 * but this is NOT a failed VM-Enter.
+>  	 */
+>  	if (!tdx_is_exit_reason_valid(tdx->vp_enter_ret))
+> -		return TDX_INVALID_EXIT_REASON;
+> +		return (union vmx_exit_reason) {
+> +			.basic =3D TDX_INVALID_EXIT_REASON,
+> +		};
+> =20
+> -	exit_reason =3D tdx->vp_enter_ret;
+> +	exit_reason.full =3D (u32)tdx->vp_enter_ret;
+> =20
+> -	switch (exit_reason) {
+> +	switch (exit_reason.basic) {
+>  	case EXIT_REASON_TDCALL:
+>  		if (tdvmcall_exit_type(vcpu))
+> -			return EXIT_REASON_VMCALL;
+> -
+> -		return tdcall_to_vmx_exit_reason(vcpu);
+> +			exit_reason.basic =3D EXIT_REASON_VMCALL;
+> +		else
+> +			exit_reason.basic =3D tdcall_to_vmx_exit_reason(vcpu);
+> +		break;
+>  	case EXIT_REASON_EPT_MISCONFIG:
+>  		/*
+>  		 * Defer KVM_BUG_ON() until tdx_handle_exit() because this is in
+>  		 * non-instrumentable code with interrupts disabled.
+>  		 */
+> -		return TDX_INVALID_EXIT_REASON;
+> +		exit_reason.basic =3D TDX_INVALID_EXIT_REASON;
+> +		break;
+
+[Severity: Medium]
+This is a pre-existing issue, but since we are preparing for Bus Lock VM ex=
+its
+which can set bit 26 in the exit reason, will the deferred checks in other
+functions still work correctly?
+
+Looking at tdx_handle_exit() in arch/x86/kvm/vmx/tdx.c, it checks the raw
+vp_enter_ret directly against EXIT_REASON_EPT_MISCONFIG:
+
+	if (unlikely(vp_enter_ret =3D=3D EXIT_REASON_EPT_MISCONFIG)) {
+		KVM_BUG_ON(1, vcpu->kvm);
+		return -EIO;
+	}
+
+Similarly, tdx_vcpu_run() also performs a strict equality check:
+
+	if (unlikely(tdx->vp_enter_ret =3D=3D EXIT_REASON_EPT_MISCONFIG))
+		return EXIT_FASTPATH_NONE;
+
+If a bus lock VM exit occurs concurrently with an EPT misconfig, setting bit
+26 in vp_enter_ret, won't these strict equality checks fail and bypass the
+intended bug-handling paths? Should these checks be updated to mask the upp=
+er
+bits or use the basic exit reason before enabling Bus Lock VM exit?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260819094903.3060=
+020-1-xiaoyao.li@intel.com?part=3D4
