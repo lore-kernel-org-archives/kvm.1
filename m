@@ -1,105 +1,139 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43E4427F8D
-	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 08:42:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9650B412C12
+	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 08:43:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787128938; cv=none; b=jORNmLa89IWFMofoBHso0RbS2gbuLdlMiWjsM5sEQnUdBF8nR7V74bhsp1ZS3PM0zevBccqwa0WNchcpHS+y8Aj6Lc86YQ/lrg3Ucc59j52ZNTEZVhHVBgZWc2o5SDn1Xw/sOB0BANy1X44hVTlf0wXFbJ8TlDdTKlZSA0KOaP4=
+	t=1787129038; cv=none; b=lRJ6g2Swxh24rGJ2JAkvxRRw4m8f0d+pA00xqQVHqMNmG7ma9t2sI4RdkoHW2AOY8j/XWiQNwageML37tPFesAwO7wNSFqC43fMkDoVnhFZe1DZLkOwAN6JTGUFXgKZuLz6TJgykVwAnzJXbIfQS07suXpH8W1sBZGgLcU5B0Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787128938; c=relaxed/simple;
-	bh=UmLSjR5vN/pqFUICwJ0uRR2Xb4U0t7SCQgme0ppWNls=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r7VJInamDzfP0iEY+zsIaWFA7p/NIyaWdgV5yLiGeSV/Tr5MmhgUXBwj7Sz9b3xlcoDKEkTLch6gK4q6O91EBq8oBbh5wKHatf0enp59msXSOvZrkrpeaUB6dlE759M8RcsNpSLK8G/DpR7XjE/64HMVREzL8cNUDfjgFbNY47E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fpWA3ep7; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787129038; c=relaxed/simple;
+	bh=Uv1K79NbGpJeNGDWogYsDBbzlPFxjmBAgzsk5++s5E4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=SpmBHEl54Gc80QdkTr4yrmfNSWHGDFnu4wxjD6MB8AZssbp6Ww80fv0LIJO1EXTGqmPLr++Yiii8d7/qkntuLTJJgPRAfARV8p/7oP/uRUs8hEUdwF2AREqufHc30+pUE6bKQe4aCrYb7oDLQOJ5TT46vfSqN30VLBD+BO/UIYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VLIrP2M9; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=H/TStBpW; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fpWA3ep7"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-490cf322ed0so6624695e9.1
-        for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 01:42:16 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VLIrP2M9";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="H/TStBpW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787129034;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MTelDZFss5bzde/fj2VbnN0q0pzXKI8uuhHquLDc6v4=;
+	b=VLIrP2M9EjebXR8lKEiehbnRU6L3FucSl4VeWDrON/66AqclgvesSsugCnENPD9A7UqA3t
+	zl8oZi94x1iUstl7ipQbJnh8UJHA1f281fJB78VXvkkztCHjuYB9jVVkGY98iKuZsZw6Xz
+	oNBM5/v7SiKpn5gibzaIhSZex16/aSQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-127-0YvHk2ErNRy07ypOpVUUdQ-1; Wed, 19 Aug 2026 04:43:52 -0400
+X-MC-Unique: 0YvHk2ErNRy07ypOpVUUdQ-1
+X-Mimecast-MFC-AGG-ID: 0YvHk2ErNRy07ypOpVUUdQ_1787129029
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47eaa4006a1so324832f8f.0
+        for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 01:43:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787128933; x=1787733733; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FCAXhmh1ysx49XvDb1i6Lpx6/sN5RWuZrnkbED6pwZs=;
-        b=fpWA3ep7KVINvy55WUWloy9VljM9oUrDxqO5VvnHaywLrgsxQqderEsZR/mWJTJZuo
-         Phj2Rd02KHOmnceLRxajUjNutns5JFP1w3BHxUNpuUlZIoDn85kar0GjXBMkp9BNVxPE
-         qLoewrmXeKxVVJz3P7ncWgd9EiMnc3xinvkq8jkb49zugV/X6o21bKXlCNilSMHe0Xvo
-         /Xxa7TWA+rErQ54zbiGAjnFnb36B1+hU+DKpIkihDNoPiG62XNIpawKplNFvBQkZV8QQ
-         SdLFLR5/MzK6U1LU7wWUSkC+T5bj2IhiZ6JbU2GBvUPU57sirXe94YEg0Buh1u3Fwbpn
-         zoyA==
+        d=redhat.com; s=google; t=1787129029; x=1787733829; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MTelDZFss5bzde/fj2VbnN0q0pzXKI8uuhHquLDc6v4=;
+        b=H/TStBpWfcE+hrbsErg7X3HcvlwuDrW593vpxlNF6AIYpd84Sbjl9HTP+zKC22vArk
+         AjXGvBpgQzmVuodr13GdF4abIhcAdLW/SjuVdAase8x9UlQemHU5mTQCoFzzYKm1dUBK
+         VVDrgI93BC1I8tIkdWpVVXnWGILpSP+5jiyCrzb/lQKhm3bY8pFoqmbYXgC1ZcqonJs+
+         cduJTmFp9tmqH/gKWaMdSxZsojOifsm8m47PSb6Bpgwqwg7iY+Mp0QBijbFP1eQnetEy
+         ut80bO7+q5kS0EbLjp0719U+hzahgZDjtUzdxAXIemJzN7BBWRR//BwU1qdGDsEOAj6k
+         jjig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787128933; x=1787733733;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FCAXhmh1ysx49XvDb1i6Lpx6/sN5RWuZrnkbED6pwZs=;
-        b=MZ8VinBrUk9Dxschyk4XCL5rRHwhODZuOsIVJV4zHaW+L7dHK70m71rRevL39qrewI
-         s7EvUhF1/ASSWB1bOPKiT+0BcxR8beepMy9VNtTPXhcNXoDWlvDq+QBVPQlvMh5Tt5U5
-         mMZ/Zf4cx21c3qu4uumF9owjSoiSH8IsCoMGBmuck1mmEGY7QKvYSVGd7RB6hkQeNrlC
-         6bO2llVNdmQVjbi/NQAfAp16jbdiQDymOc2h2kQYMlP195YB7UpG9lGX2wYUS5EdN6il
-         KOTZCQO84oZXahXK66g1Gq584M31uji6ZGoYnM2DBZnvRwSWWXPnEYF495p7tlOsKfwu
-         aQ5A==
-X-Gm-Message-State: AOJu0Yyc8NOmOz6/zSfIM7EIHPzWFljkGZPEE+2i0Fh0bazHJ6TM/fHp
-	l56fYU5Vv1wq/p1dhbKmHi45V0QUh2pfrKyaP1Rwgz6VNcqMUUWkYOmf/FJeA07Q
-X-Gm-Gg: AR+sD13ed+nHue7la2PBRZykgM04SRWOASyt9GLGOqXALasC7jvuGy0gxgG2Ka/fvyt
-	due5y82rrzgyV8nPNRQ9qz4gDOtoiEsqf12WDq5AQJftDR/52pLPu5TIls+G6ZZQHfh1H+okEoP
-	YShYI5OjHWEpnhvhaQ4H68S5+Dv0FzV2GX6NAEI1mtXmQpV/opbS9+DuOkqhKd2101K1xoDkIi+
-	TYDDZk/zawo+xhbIl9vDIdRj4/v5nzmcE2M9oo11Y+Y2L26U9GLlCUsN42PjeTHFPHZVqyzev9y
-	YmUGypE+m8SO75t1aoYFFM81Tc6bSNzY3eFpfhmDzJNK9ZLkapX0X5+hmUN1wlF18govtWyYwot
-	HzHd4dNPF6H+0bpVFEVUNhsGWSfBijoslJaoaVKCgSy7xiAzeVQJJQj45RMDPq9DM/L7VsaHues
-	7xaF15z+/HQzZbYUhOxgrNYs3F6iUu4fRGHQ3c5JN0K+5n2daVmVnl7FYPoU6WLzl6NxoADLN1D
-	zcb0oI=
-X-Received: by 2002:a05:600c:37c6:b0:499:87f3:a2a3 with SMTP id 5b1f17b1804b1-499aa1c7bafmr53853455e9.15.1787128932584;
-        Wed, 19 Aug 2026 01:42:12 -0700 (PDT)
-Received: from SurHub.localdomain ([196.188.112.82])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499aa1947c6sm41093775e9.15.2026.08.19.01.42.11
+        d=1e100.net; s=20251104; t=1787129029; x=1787733829;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=MTelDZFss5bzde/fj2VbnN0q0pzXKI8uuhHquLDc6v4=;
+        b=LIfPQC1oI26eihc2p3PtJ4JJH+9ambx3PgrAq0385Rm6OiWXVeIE+o3mRC2/rRFrav
+         4pVvMq4DipV9c7yCu9sNcgqCQJEVL1xQUrzt9QiU7zAfTdGCgWE+rLhT4t3PiM02pLMf
+         BOUzRSlIvcjlb6Rr35ogm5PfnbpTD6o7XjvGV6tGvDpIi4iHhrATjRQnofkrWy1DFXa4
+         lbZsHLkYJcamOVVC6O6sn4gm1O0AtRAdZWkmnqEa3VUTceA9uMbwM38l3YljK/a0CWWl
+         jAkenrXkSJ0/xB/aYbjx5KRSaycB/2YHGL1E6aqt4syIMaIMZUKnBwFci9urGoIqa9vA
+         GMJg==
+X-Gm-Message-State: AOJu0Yz2Wc8Tv5gSScrvx/t0WfOgDiBytOFQ2Bodb/pxBOQcn6ZkMuJO
+	DC3mqUPkX4Hpxd93yV2/Gci62RW28cZQ6TdfES3wBxgXQ6asKnhLirIEMVOdTl33vQuBXmuVvJR
+	DfjVD/VkKg/hEGTFW2LWfOdNiPg8d7NlmhYrzkEjePQJWrdSCBxfzZA==
+X-Gm-Gg: AR+sD1299z//O+gQ98riraT9E9Xg9gGVKZDq0X4/9csACg8i/Gh5pEotjeGYJkb5YhB
+	G5FkisozlCgyRCk+Qc/cqNfOIkW38KoGKwCe3aaV463DMMbnWlp7CLSUW1IhVciFmyDWiR5MVTO
+	NnsOvIqcBBX/zRoHXa19Kixnqlovdjc0H4+J732XaDpy5k2WXxS+aco9Mh+0/l6ATuF3QcX25Pl
+	nG5JVFBhnNrIjN7o+0ud6M+2JqNrhjEJ12HMzbnyElsMutsqnL3y+ne75cdIbZY7gCfNCVZCfrY
+	d4lHbrGdaJFM+Yk7wrrXBb3U+QwDomK5LrILdntTXRsB/3nHcVOmP71Z3DXJksf0trXqRcFXEFb
+	HBQ==
+X-Received: by 2002:a5d:5d10:0:b0:47f:ece1:1eca with SMTP id ffacd0b85a97d-482b0f3c6c9mr5058045f8f.1.1787129029057;
+        Wed, 19 Aug 2026 01:43:49 -0700 (PDT)
+X-Received: by 2002:a5d:5d10:0:b0:47f:ece1:1eca with SMTP id ffacd0b85a97d-482b0f3c6c9mr5057957f8f.1.1787129028515;
+        Wed, 19 Aug 2026 01:43:48 -0700 (PDT)
+Received: from fedora (nat-20.ign.cz. [91.219.240.20])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482b14b7d3asm3982321f8f.23.2026.08.19.01.43.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2026 01:42:12 -0700 (PDT)
-From: Abdifatah Suruur <suruurism@gmail.com>
-To: kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	alex.williamson@redhat.com
-Subject: [PATCH] vfio/fsl-mc: prevent read-only region mappings from becoming writable
-Date: Wed, 19 Aug 2026 11:42:09 +0300
-Message-ID: <20260819084209.1543-1-suruurism@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        Wed, 19 Aug 2026 01:43:48 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, sashiko-reviews@lists.linux.dev
+Subject: Re: [PATCH v2 4/4] KVM: selftests: Check VMPTRLD with active eVMCS
+In-Reply-To: <aoTVAdqoAAuVKi8L@google.com>
+References: <20260818165258.2613603-1-vkuznets@redhat.com>
+ <20260818165258.2613603-5-vkuznets@redhat.com>
+ <20260818170534.07B561F000E9@smtp.kernel.org>
+ <aoSTeLzhaWohymLf@google.com> <aoTVAdqoAAuVKi8L@google.com>
+Date: Wed, 19 Aug 2026 10:43:47 +0200
+Message-ID: <87ecfuxzy4.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-vfio_fsl_mc_mmap() rejects writable mappings of regions without the
-WRITE flag, but leaves VM_MAYWRITE set.  Userspace can map such a region
-read-only and then upgrade the mapping to writable with mprotect(),
-writing to MMIO regions (e.g. response portals) the device marks
-read-only.
+Sean Christopherson <seanjc@google.com> writes:
 
-Clear VM_MAYWRITE for regions without the WRITE flag, as i915 does for
-its read-only objects and as fixed in drm/vc4 (CVE-2026-68445) and
-drm/panthor (CVE-2024-53071) and ptp: vmclock (commit
-a5edadbae57e2298a56cf7a4e774a027905a331f).
+> On Tue, Aug 18, 2026, Sean Christopherson wrote:
+>> On Tue, Aug 18, 2026, sashiko-bot@kernel.org wrote:
+>> > > +	asm volatile(KVM_ASM_SAFE("vmptrld %[pa]")
+>> > > +		     "\n\tsetna %[failed]"
+>> > 
+>> > [Severity: Medium]
+>> > Will this setna instruction incorrectly evaluate CPU flags?
+>> > 
+>> > The KVM_ASM_SAFE macro executes xor %%r9, %%r9 on its success path, which
+>> > unconditionally clears the Carry Flag (CF=0) and sets the Zero Flag (ZF=1).
+>> 
+>> Shame on me, I should know better after dealing with ba5ca5e5e6a1 ("x86/retpoline:
+>> Don't clobber RFLAGS during srso_safe_ret()").
+>> 
+>> Untested, but I think the fix is simply:
+>> 
+>> diff --git tools/testing/selftests/kvm/include/x86/processor.h tools/testing/selftests/kvm/include/x86/processor.h
+>> index 6e6f70035508..119715ffe93f 100644
+>> --- tools/testing/selftests/kvm/include/x86/processor.h
+>> +++ tools/testing/selftests/kvm/include/x86/processor.h
+>> @@ -1318,7 +1318,7 @@ gva_t vm_alloc_stack(struct kvm_vm *vm, int nr_pages);
+>>         "lea 1f(%%rip), %%r10\n\t"                              \
+>>         "lea 2f(%%rip), %%r11\n\t"                              \
+>>         fep "1: " insn "\n\t"                                   \
+>> -       "xor %%r9, %%r9\n\t"                                    \
+>> +       "mov $0, %%r9\n\t"                                      \
+>>         "2:\n\t"                                                \
+>>         "mov  %%r9b, %[vector]\n\t"                             \
+>>         "mov  %%r10, %[error_code]\n\t"
+>
+> Vitaly, I'll send a v3 of this series with a rather large pile of additional
+> selftests changes.  As often seems to be the case, my desire validate a simple
+> fix has snowballed...
 
-Fixes: fb1ff4c194157 ("vfio/fsl-mc: Add VFIO framework skeleton for fsl-mc devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
+Sure,
 
----
---- a/drivers/vfio/fsl-mc/vfio_fsl_mc.c
-+++ b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
-@@ -406,7 +406,11 @@
- 	if (!(vdev->regions[index].flags & VFIO_REGION_INFO_FLAG_WRITE)
- 			&& (vma->vm_flags & VM_WRITE))
- 		return -EINVAL;
+I guess you can start using 'Provoked-by:' tag in such cases :-)
 
-+	/* Prevent read-only region mappings from being upgraded with mprotect() */
-+	if (!(vdev->regions[index].flags & VFIO_REGION_INFO_FLAG_WRITE))
-+		vm_flags_clear(vma, VM_MAYWRITE);
-+
- 	vma->vm_private_data = mc_dev;
+-- 
+Vitaly
 
- 	return vfio_fsl_mc_mmap_mmio(vdev->regions[index], vma);
- }
