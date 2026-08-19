@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022ED423E98
-	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 08:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4B94252AE
+	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 08:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787129600; cv=none; b=Hi41zhOhnCtJ4cWwIH7SEHR25uTMQP9cDflff+eSGMBoySIPS5RffTJPfAveBwmaRQKE/a5VUzqWXTmSFm3VAYn8VOVqM3lHAxdmdpKzKdoueNSBX/fG22eDhn0E/+jJmzSHdAUiqAo3zPfyKvxrQfRAteE3sampyZPuy7TgbOE=
+	t=1787129914; cv=none; b=EtOWabHJ1SKgcWvQNXtrhkCOW41QYVTmW1pMUK6wL6Fay+IJWtRo6vya/UO4Nvp1kQ5PIZBKScMXpEielvyPY//Hd+/mGpp1dBMS9MzAQk4QktUdx6queTpPLRrtRucsL4S3JZONh/QNssIipBYM4vbmQN1sWvmL3KZe4eXbrkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787129600; c=relaxed/simple;
-	bh=8kX2SgTmNGKbBJW+0Na53YgsfOZs0RaiT0Vq63emP/4=;
+	s=arc-20240116; t=1787129914; c=relaxed/simple;
+	bh=NLA0oEIStuijrXkDQ+k3yxoZbOd3WSIefAgzTFybCuA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=NQ2yWSUpg8g71tLaDzDWtG227vANPNMxH1WeS8QEtUMDEz9MU/Lo1YcEMl4oK+BTG2TLX0DRwQouPy60+/xhRGOG9jvwRshWh2lTujyhGeE2k1n0deUZyk4nWJgZvqZYJtycPs7LUhKNAUo58wOXU43GV+zHA6/cVRlsjdXVio4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c44T+8vo; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=MAyDzuDkOnvas8dvpwj2kizPfy4dXbW9m4x916B9EIUGhXqsiKbEaGqRUpUky3L5Jle/8oPSZEz7cfYvOyEub6/NfUOmVMDr2CJBHdBa5svca2dRVeJLqS0xzZJtNLG7z3HefYMgyWU2ME75Bq3g304ySdw1g9zheQ83M5GbvVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oR4J7XiV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c44T+8vo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740D81F000E9;
-	Wed, 19 Aug 2026 08:53:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oR4J7XiV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D5F1F000E9;
+	Wed, 19 Aug 2026 08:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787129598;
-	bh=mn8mt6JopBAtfpDjhAKy8kclygDXR2sSeyxS+1DLpRE=;
+	s=k20260515; t=1787129910;
+	bh=BjLDL62i2Ubj1WiDIz4ErpM8SSGzoZ+TMkij8zP+KL8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=c44T+8voV4nNR1/SFaEiEByCoUtgF2/PSttpV3r/9cssx9+MHMv9l8D/+fvVwW5+I
-	 bYKwdNZee6jGK6r40uz81O24c+47GIeBu/YYMKllLywq3XNyqX+6KC8nodtGmfkmsk
-	 tOFmjtQJ2x9gPPAqYuPUVBZ9KY6iWYusCePiLYKOx33C8FfjdS17AKUVQ2ntgpED06
-	 1OALOdyWDdeHuQV/WXAI4a73tL90yTnSyF8SGk1x5n390aTQV95VzqPohOK8CJ9rTu
-	 cd8XOy3mBtB5bdWnDBugevdE6FlEwAI8rvCTc0djejHk9QZ9f3jqWw9iQtXkW4h1wB
-	 LMgVIVKXmPXmA==
+	b=oR4J7XiVwdlJaLmcERoSDYu4puoanVCe/aloYhfY5w1W7UvlFwaMbupgzdlTzsvdv
+	 oFB0L7GDyMv4eGGlXBHWp+q96zhPaxXyWDOaOY5bK/Nwt1F37dl8FFSfdfX9wr9InU
+	 RAzfBt0JpAyYd61ndMGsdUizUiIefq3R/82DP1mRA6Vj4xk5+My/PrCbL5WAqGQlgb
+	 rZQ9QQobCMZA8m4/yoRYmA8osmecdQggKl2epMF1+vSqdkEFCsUFfIC48Vm4t9Euqz
+	 Q2G1RXzURxAayHaoBleT07FiCvbUztKRdrTHoNL6/ghd5a0njKK0tZD7CNlpFbg3D+
+	 ls2zrJOQGER1A==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] vfio/platform: prevent read-only region mappings from
+Subject: Re: [PATCH] vfio/cdx: prevent read-only region mappings from
  becoming writable
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Abdifatah Suruur" <suruurism@gmail.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260819083940.1374-1-suruurism@gmail.com>
-References: <20260819083940.1374-1-suruurism@gmail.com>
+In-Reply-To: <20260819084203.1526-1-suruurism@gmail.com>
+References: <20260819084203.1526-1-suruurism@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 19 Aug 2026 08:53:17 +0000
-Message-Id: <20260819085318.740D81F000E9@smtp.kernel.org>
+Date: Wed, 19 Aug 2026 08:58:29 +0000
+Message-Id: <20260819085830.21D5F1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -48,34 +48,51 @@ Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [Critical] The patch addresses CVE-2026-68445 for vfio/platform by preven=
-ting read-only mappings from being upgraded to writable, but identically vu=
-lnerable code remains in vfio/cdx and vfio/fsl-mc.
-- [High] Concurrent calls to vfio_platform_read_mmio() or vfio_platform_wri=
-te_mmio() on an unmapped region can leak ioremap allocations due to unprote=
-cted lazy initialization.
+- [High] Missing VM_SHARED check in vfio_cdx_mmap allows COW on device MMIO=
+ memory.
+- [High] Missing VM_MAYWRITE clearing allows read-only VFIO platform and fs=
+l-mc regions to be upgraded to writable via mprotect.
 --
 
---- Patch [1]: [PATCH] vfio/platform: prevent read-only region mappings fro=
-m becoming writable ---
-commit 229b89b6deb9e0fe81d355a6a2b3effcd15a2dd9
+--- Patch [1]: [PATCH] vfio/cdx: prevent read-only region mappings from bec=
+oming writable ---
+commit 83f86639f8fdaf3a6302850a1c0944c947af0f5c
 Author: Abdifatah Suruur <suruurism@gmail.com>
 
-vfio/platform: prevent read-only region mappings from becoming writable
-   =20
-This commit prevents userspace from using mprotect() to upgrade read-only
-VFIO platform region mappings to writable. It achieves this by clearing the
-VM_MAYWRITE flag for regions that lack the VFIO_REGION_INFO_FLAG_WRITE flag.
+vfio/cdx: prevent read-only region mappings from becoming writable
 
-> diff --git a/drivers/vfio/platform/vfio_platform_common.c b/drivers/vfio/=
-platform/vfio_platform_common.c
-> index c72db5a99ebda..20d87c244ca28 100644
-> --- a/drivers/vfio/platform/vfio_platform_common.c
-> +++ b/drivers/vfio/platform/vfio_platform_common.c
-> @@ -595,6 +595,10 @@ int vfio_platform_mmap(struct vfio_device *core_vdev=
-, struct vm_area_struct *vma
->  			&& (vma->vm_flags & VM_WRITE))
->  		return -EINVAL;
+This commit clears the VM_MAYWRITE flag in vfio_cdx_mmap() for regions
+without the WRITE flag. This prevents userspace from upgrading read-only
+mappings to writable using mprotect().
+
+Cc: stable@vger.kernel.org
+
+> diff --git a/drivers/vfio/cdx/main.c b/drivers/vfio/cdx/main.c
+> index b31ed4be7bdc1..b6b17a6a46811 100644
+> --- a/drivers/vfio/cdx/main.c
+> +++ b/drivers/vfio/cdx/main.c
+> @@ -285,6 +285,10 @@ static int vfio_cdx_mmap(struct vfio_device *core_vd=
+ev,
+>  	    (vma->vm_flags & VM_WRITE))
+>  		return -EPERM;
+
+[Severity: High]
+This is a pre-existing issue, but does vfio_cdx_mmap() also need to reject
+mappings that lack VM_SHARED?
+
+If a user maps the region with MAP_PRIVATE, a write fault will trigger a
+Copy-On-Write (COW). The COW reads from the device MMIO using bulk memory
+instructions (via __wp_page_copy_user()), which could cause unsupported bus
+transactions (like SError on ARM64) and crash the system. Additionally,
+writes to the mapping will quietly hit RAM instead of the device, breaking
+MMIO semantics.
+
+Unlike other VFIO bus drivers, this function appears to be missing a
+validation check to reject private mappings. Could the absence of a
+`(vma->vm_flags & VM_SHARED) =3D=3D 0` check here allow users to inadverten=
+tly
+trigger these COW crashes?
+
 > =20
 > +	/* Prevent read-only region mappings from being upgraded with mprotect(=
 ) */
@@ -83,53 +100,24 @@ platform/vfio_platform_common.c
 > +		vm_flags_clear(vma, VM_MAYWRITE);
 > +
 
-[Severity: Critical]
-This is a pre-existing issue, but does this same missing check exist in oth=
-er
-VFIO drivers? Looking at vfio_cdx_mmap() in drivers/vfio/cdx/main.c:
-
-	if (!(vdev->regions[index].flags & VFIO_REGION_INFO_FLAG_WRITE) &&
-	    (vma->vm_flags & VM_WRITE))
-		return -EPERM;
-
-	return vfio_cdx_mmap_mmio(vdev->regions[index], vma);
-
-And similarly in vfio_fsl_mc_mmap() in drivers/vfio/fsl-mc/vfio_fsl_mc.c:
-
-	if (!(vdev->regions[index].flags & VFIO_REGION_INFO_FLAG_WRITE)
-			&& (vma->vm_flags & VM_WRITE))
-		return -EINVAL;
-
-	vma->vm_private_data =3D mc_dev;
-
-Are these mappings also susceptible to being upgraded to writable using
-mprotect() because VM_MAYWRITE is not cleared?
-
 [Severity: High]
-This isn't a bug introduced by this patch, but while reviewing
-vfio_platform_common.c, could concurrent accesses leak ioremap allocations?=
-=20
+This isn't a bug introduced by this patch, but does the same vulnerability
+exist in other vfio drivers?
 
-In vfio_platform_read_mmio() and vfio_platform_write_mmio():
+Looking at vfio_platform_mmap() in drivers/vfio/platform/vfio_platform_comm=
+on.c
+and vfio_fsl_mc_mmap() in drivers/vfio/fsl-mc/vfio_fsl_mc.c, both check for
+VM_WRITE but neither explicitly clears VM_MAYWRITE.
 
-	if (!reg->ioaddr) {
-		reg->ioaddr =3D
-			ioremap(reg->addr, reg->size);
+If those drivers leave VM_MAYWRITE set, could they also allow users to upgr=
+ade
+read-only regions to writable via mprotect() in the same way being fixed he=
+re?
 
-		if (!reg->ioaddr)
-			return -ENOMEM;
-	}
-
-If two threads concurrently execute pread() or pwrite() on the same unmapped
-region, could both observe !reg->ioaddr as true and independently call
-ioremap(), resulting in the slower thread overwriting reg->ioaddr and
-leaking the mapped memory?
-
->  	vma->vm_private_data =3D vdev;
-> =20
->  	if (vdev->regions[index].type & VFIO_PLATFORM_REGION_TYPE_MMIO)
->  		return vfio_platform_mmap_mmio(vdev->regions[index], vma);
+>  	return vfio_cdx_mmap_mmio(vdev->regions[index], vma);
+>  }
+>
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260819083940.1374=
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260819084203.1526=
 -1-suruurism@gmail.com?part=3D1
