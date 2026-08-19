@@ -1,263 +1,195 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F0B486B82
-	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 16:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754263B9931;
+	Wed, 19 Aug 2026 17:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787157975; cv=none; b=DdKURIRS54C5suTFS1cDnNCWSm3rRo5PJVmTZ8GGqvD1GSNQWu2b2fjVHIVgbBU4kkYAx5GS+M9TGRdz828s6wMKTjNMYxfiBk8hNL811t1GYGzU526hB947Q4sSM81wo9E77haQ0hjpIKnUizt8+5a+LZPNZtg/S7wWSXHkzkU=
+	t=1787159039; cv=none; b=YxFUqYJ4PKSkttaxTOKpWpTFVlVUzGJFs57DBaKV0fN1s8/AmeONIBoOtQriyyfzIeSb6AswRJ1YfaC/3VuD5gHZ7c7+E2P3anm+KhWhk+O+L0clF8Smt3wK5k9bZMGw2yMFfAZmAjbuE9mkKdDUlLQTpuh6oLxX59Cqv89o/Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787157975; c=relaxed/simple;
-	bh=IdAftmlo+mRu7lXc9MDZJxVDs0JaB7Zc6ukdt6z39t0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=kLqRahkTPrAR/bWdxz72MnAOxHJJySK/0OvTzIW3wL5gVtVjCPEWzX8mJEp5UrA5UVt2WgWPEleFttDVQWQ2GwfRQcrnP0zlfBx2cbHVEO5qJvYwmx2+ZeNKUGLjZySBTAUaVu8EP4iUYZms5+gsbQHnNy1qZlOqpPqqWbiyr8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dBpg6QZO; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sGi+kDMl; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787159039; c=relaxed/simple;
+	bh=X2JPIRj5Cm1Euel970r+5c+HZVSWkuYLsHyJPoO4csg=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FvMy1Ak6JHjfS+pobWmJ1XLsyIrMR3VizqNHlahQZM8pjBKu11Hy4PKkXxsKvzqGFR3IazYVNy5GPk+gYuoh/fr+kTtbwkfJKrvG6hiedp8kM+EWtGax8JU0jYAPqTtkt+eWK6tvtSh6VKgUyw2c9W2mVresm41kjNgzaoDD0Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qxGLbODb; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dBpg6QZO";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sGi+kDMl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787157973;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kKB6a7tb48I7KIcMKOrkf8BWQaXL7teAC4Q0HqgLOxc=;
-	b=dBpg6QZOPFzx5qXCIn954jsFeVxJHoTi+n27v/UmjTNwgNJttw907NfRF0+Uwp4gzEbUX8
-	496jO3sJOvYzBick9l6hX3Bvfe/9ammqdH99yhpFC2ddcOHQtrOZrVpExFzhntIjH37+fh
-	Y/40bybPLAvVOK08ALYyVrhz9Lt1q5M=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-391-qpR27JV8NIGrLOz_f69WGw-1; Wed, 19 Aug 2026 12:46:10 -0400
-X-MC-Unique: qpR27JV8NIGrLOz_f69WGw-1
-X-Mimecast-MFC-AGG-ID: qpR27JV8NIGrLOz_f69WGw_1787157969
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47f2de3ba47so863071f8f.1
-        for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 09:46:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787157969; x=1787762769; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-disposition:content-type
-         :mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kKB6a7tb48I7KIcMKOrkf8BWQaXL7teAC4Q0HqgLOxc=;
-        b=sGi+kDMlFQVRS/zHCX4A1RpSPfU4AgmiZZhvO8YH6jUH1Oe/J5o7vdZ6ACh10l8dIO
-         BUg6Dm7FxHv3SKMn9u+dMCS/ALMT73Sy30PCXuK9WTenzjeknhxJCuUfNmXgX100sLtj
-         znuAlb04tHh8oVwL4qn+wK16cTbTEJkGqJcLMYa0FNQWfpUzEbP84hukoKQoBr27ZuX9
-         MqIj1AOcVzhcx83FLGQTrBHEasCOWGub4IzWl/3ioHKF0bx2lnN2MTm4KQL862vGhUSA
-         qXKEK754HrgssHclc1qE/0qsKqPBX4oK8W7FoB9iYykgMRePt2oCpSl/mUw1EkU5fhUm
-         l5aA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787157969; x=1787762769;
-        h=content-transfer-encoding:content-disposition:content-type
-         :mime-version:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kKB6a7tb48I7KIcMKOrkf8BWQaXL7teAC4Q0HqgLOxc=;
-        b=D2+Nf9lW4Mduwwlu+rtmh2q1Vlg5kkYXDlATbRqXalW6+Ifln7yqfb/M4ck+jE2cwF
-         jgLe6rac11VBwgu+c177pshMTuaJwG1J7Pe8tW2nlxvhGTn/jfOcbYwQGex5g7skAFMt
-         pOLwoD+DQxhZCrKwAmQzkevvoghU9/qgc7KY+RVqy0DrRF+gwO4CLaGKcFIt+zsgSimm
-         jDT6gQxrLV6G7Jon9EVmIIo5YFgF4SfVUMcgNqUgvX9dgBRcwpgCCuodiDMg84vtxAtF
-         nir3rVIoqiLQ2zT8G+927nMJpdmncBpg9yvU3IzLmbt46UHb1upREWgsPnlDojCSb40q
-         Daiw==
-X-Gm-Message-State: AFuF++ngyC3rRF+8QK5DgIMFwZFI0CDbH5O7VF1R1LZXM1tXQ09hrJML
-	Jbal3Ms91A9ZgyKl52ZHSd+9JKUOYwlaPHjGVE5F4hsvJWZeMCJEYWT56KBibaq141FMPZP4Ezy
-	DW3lXxokD8PAfqNKv3zmo5aet21px47l4aOrsFQesHZkyzKttYUkn0A==
-X-Gm-Gg: AR+sD10yXVCUloT1oUZ8bzRDrsB/Ex5BU/F4+5TZ20fKrgqPAWsNE5vBl2/bXVG6yRv
-	Z6aTiGz83yQv3YpAdhKpuVkqYi85QNploPp9kV9htBPFfihiZNm1QoXFOEgk8+08cn1z68LMnJm
-	CWkx20c3GYE1TRVCDk3Qv41IdXiHU4aFMRVBpGrZcYAyYKwRLxI30NIJ0zdhMfyR+f6q2WKvOCt
-	Zzt45MO7cdPWgKL9wGciNlhSNhqDldRoSCUxjC95rkaIOozDWYEbbUYqXqQNYTPvs9s5njccYM8
-	T0U8OAxqp3vRXsMDxWRdbM3AhF1USLJp+TKc5dKEzGO1icFmlLzss8jpasANzZ7n94c3qUthfYR
-	ib9r1Jsnphc5YVzBcwlwlweFX
-X-Received: by 2002:a05:6000:1445:b0:47f:8b24:ef01 with SMTP id ffacd0b85a97d-482b1e837ddmr10403293f8f.1.1787157968682;
-        Wed, 19 Aug 2026 09:46:08 -0700 (PDT)
-X-Received: by 2002:a05:6000:1445:b0:47f:8b24:ef01 with SMTP id ffacd0b85a97d-482b1e837ddmr10403179f8f.1.1787157968144;
-        Wed, 19 Aug 2026 09:46:08 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-47-107.inter.net.il. [80.230.47.107])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482b14c45f1sm6670328f8f.31.2026.08.19.09.46.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2026 09:46:07 -0700 (PDT)
-Date: Wed, 19 Aug 2026 12:46:04 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	aesteve@redhat.com, ben.dooks@codethink.co.uk,
-	chenyichong@uniontech.com, david@kernel.org, den@openvz.org,
-	eperezma@redhat.com, gsomlo@gmail.com, hexlabsecurity@proton.me,
-	linfeng.sun.dev@gamil.com, lirongqing@baidu.com, me@linux.beauty,
-	mst@redhat.com, panchuang@vivo.com, pankaj.gupta.linux@gmail.com,
-	pengpeng@iscas.ac.cn, peter.hilber@oss.qualcomm.com,
-	sgarzare@redhat.com, stable@vger.kernel.org,
-	syzbot+28e5f3d207b14bae122a@syzkaller.appspotmail.com,
-	tavip@google.com, wangyufeng@kylinos.cn, xiongweimin@kylinos.cn,
-	xiongwm2026@163.com, yangjinqian1@huawei.com, zhaoguohan@kylinos.cn
-Subject: [GIT PULL] vhost,vdpa,virtio: fixes, features
-Message-ID: <20260819124604-mutt-send-email-mst@kernel.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qxGLbODb"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=X2JPIRj5Cm1Euel970r+5c+HZVSWkuYLsHyJPoO4csg=; b=qxGLbODb8bUHyyhOXdEevrYVfl
+	5XJEUjT6wwIsRGsmccW2iTOJi7R09FpY3hdHrc5RiXr35f4iHwBtSqONtB7M7Rtyox6HfF5YMaZke
+	SysRoSWKMjSMlayPg3ml2Quu1Bl3rdeb4udJUa/c3od5lWvz2QTcAk/OADBUIYU1i0FllLWdxP5X/
+	rRngdnodoHOiTtqO4xADnNSCe5F7L3T6wsyzByfyJOyJn4gQSjD6mv3kuxXh1nLsJsSZ/EhcfWoFI
+	C8il7bc/XFtgpVncOeA541aQYow3Clmtg9X1nthQSkJNKRh8OUzlK8Obi6XWz6vNjC9fCP6eL0GAh
+	+UN6Ytng==;
+Received: from [2001:8b0:10b:5:f6c4:be10:4885:f95e] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wwjhg-0000000EA2h-1fOQ;
+	Wed, 19 Aug 2026 17:03:52 +0000
+Message-ID: <caf4476c54f0db4b5de8753749c89e5735886b59.camel@infradead.org>
+Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2026-08-19
+From: David Woodhouse <dwmw2@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, 
+ "linux-coco@lists.linux.dev"	 <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM	 <kvm@vger.kernel.org>
+Date: Wed, 19 Aug 2026 18:03:40 +0100
+In-Reply-To: <54d375aa-8362-4e1c-8f76-bae1eb9f4f76@kernel.org>
+References: <54d375aa-8362-4e1c-8f76-bae1eb9f4f76@kernel.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-B+HdHmc5L0yljg7tDt7J"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Mutt-Fcc: =sent
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-The following changes since commit 8d3ae59288f1e7d58d76558a6ee96d533bc5019f:
 
-  Linux 7.2 (2026-08-16 14:32:26 -0700)
+--=-B+HdHmc5L0yljg7tDt7J
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-are available in the Git repository at:
+On Wed, 2026-08-19 at 18:23 +0200, David Hildenbrand (Arm) wrote:
+> Hi,
+>=20
+> Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
+> 2026-08-19 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+Tomorrow is Thursday 20th?
 
-for you to fetch changes up to b282418bc366194677eafd1dad180d92254586ac:
+> Note that we will be skipping the meeting in two weeks (2026-09-03) as bo=
+th
+> Ackerley and me will be traveling. So if you have something urgent to dis=
+cuss,
+> please speak up :)
+>=20
+> In this meeting, I think we should sync on the recent developemnts regard=
+ing
+> in-place conversion. I don't know whether David Woodhouse will make this
+> meeting, but if so, we will also talk about guest_memfd+VFIO.
 
-  vduse: Add suspend (2026-08-19 06:38:48 -0400)
+I should be.
 
-----------------------------------------------------------------
-vhost,vdpa,virtio: fixes, features
+--=-B+HdHmc5L0yljg7tDt7J
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-- transport v3 support in virtio-mmio
-- suspend support in vduse
-- fixes, cleanups all over the place
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+qrKGjzwL1k0xQK8kF/RxXcgAAAAAAAA=
 
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 
-----------------------------------------------------------------
-Albert Esteve (1):
-      virtio: Add ID for virtio media
-
-Ben Dooks (1):
-      crypto: virtio - fix missing le64_to_cpu() conversions
-
-Bryam Vargas (1):
-      crypto: virtio - bound the akcipher result length
-
-Denis V. Lunev (5):
-      virtio: add virtio_device_shutdown() helper
-      virtio_balloon: factor out virtballoon_quiesce()
-      virtio_balloon: quiesce balloon work before device shutdown
-      virtio_balloon: warn on failed buffer add in tell_host()
-      virtio_balloon: warn on failed buffer add in stats_handle_request()
-
-Eugenio Pérez (6):
-      vduse: store control device pointer
-      vduse: add VDUSE_GET_FEATURES ioctl
-      vduse: add VDUSE_SET_FEATURES ioctl
-      vduse: add F_QUEUE_READY feature
-      vduse: do not take rwsem at reset work flush
-      vduse: Add suspend
-
-Gabriel Somlo (1):
-      MAINTAINERS: remove Gabriel from LiteX and fw-cfg drivers
-
-GuoHan Zhao (3):
-      virtio: rtc: time out alarm requests
-      tools/virtio: Fix userspace typo in vringh test comment
-      tools/virtio: Fix control typo in trace agent comment
-
-Jinqian Yang (1):
-      virtio_ring: fix infinite loop in virtnet_poll_cleantx when device is broken
-
-Li Chen (12):
-      nvdimm: preserve flush callback -ENOMEM
-      nvdimm: pmem: keep PREFLUSH before data writes
-      nvdimm: pmem: guard data loop for dataless bios
-      nvdimm: virtio_pmem: stop allocating child flush bio
-      nvdimm: virtio_pmem: use GFP_NOIO for flush requests
-      nvdimm: virtio_pmem: always wake -ENOSPC waiters
-      nvdimm: virtio_pmem: use READ_ONCE()/WRITE_ONCE() for wait flags
-      nvdimm: virtio_pmem: refcount requests for token lifetime
-      nvdimm: virtio_pmem: publish done with release/acquire
-      nvdimm: virtio_pmem: isolate DMA request buffers
-      nvdimm: virtio_pmem: converge broken virtqueue to -EIO
-      nvdimm: virtio_pmem: drain requests in freeze
-
-Li RongQing (5):
-      virtio_dma_buf: fix typo in kdoc comment: get_uid -> get_uuid
-      virtio_mem: fix hardcoded 'vm' variable in bbm iteration macros
-      virtio_pci: fix wrong queue index for admin vq in intx path
-      vdpa/mlx5: fix wrong list iterated in add_direct_chain error path
-      vdpa/mlx5: fix wrong MLX5_ADDR_OF struct type in alloc_inout()
-
-Linfeng Sun  (1):
-      vdpa_sim: fix cleanup after worker creation failure
-
-Michael S. Tsirkin (1):
-      virtio_balloon: disable indirect descriptors
-
-Octavian Purdila (2):
-      iov_iter: export iov_iter_restore
-      vsock/virtio: restore msg_iter on transmission failure
-
-Pan Chuang (1):
-      vdpa: Remove redundant dev_err()
-
-Pengpeng Hou (2):
-      vdpa: alibaba: add missing MODULE_DEVICE_TABLE()
-      vdpa: octeon_ep: add missing MODULE_DEVICE_TABLE()
-
-Peter Hilber (1):
-      virtio-mmio: add support for transport version 3
-
-Weimin Xiong (1):
-      vdpa/mlx5: roll back MR update after VQ setup failure
-
-Xiong Weimin (2):
-      vdpa_sim: clear pending_kick on device reset
-      vdpa_sim: hold iommu_lock across dma_unmap passthrough transition
-
-Yichong Chen (1):
-      tools/virtio: Remove unsupported --batch option from vhost_net_test
-
-Yufeng Wang (1):
-      vhost/net: fix clear_user start address in VHOST_GET_FEATURES_ARRAY
-
-xiongweimin (5):
-      vhost: fix inaccurate kdoc in iotlb helpers
-      virtio: fix article before virtio in dma-buf comment
-      vdpa/solidrun: fix typos in snet_ctrl comments
-      virtio_mem: fix typo in comment
-      vhost: reject zero-size IOTLB INVALIDATE
-
- MAINTAINERS                                        |   2 -
- .../crypto/virtio/virtio_crypto_akcipher_algs.c    |   6 +-
- .../crypto/virtio/virtio_crypto_skcipher_algs.c    |   3 +-
- drivers/nvdimm/nd_virtio.c                         | 263 ++++++++++++++++----
- drivers/nvdimm/pmem.c                              |  53 +++--
- drivers/nvdimm/region_devs.c                       |   5 +-
- drivers/nvdimm/virtio_pmem.c                       |  65 ++++-
- drivers/nvdimm/virtio_pmem.h                       |  22 +-
- drivers/vdpa/alibaba/eni_vdpa.c                    |   1 +
- drivers/vdpa/mlx5/core/mr.c                        |   2 +-
- drivers/vdpa/mlx5/net/mlx5_vnet.c                  |  27 ++-
- drivers/vdpa/octeon_ep/octep_vdpa_main.c           |   5 +-
- drivers/vdpa/solidrun/snet_ctrl.c                  |   4 +-
- drivers/vdpa/vdpa_sim/vdpa_sim.c                   |  29 ++-
- drivers/vdpa/vdpa_user/vduse_dev.c                 | 265 ++++++++++++++++-----
- drivers/vdpa/virtio_pci/vp_vdpa.c                  |  12 +-
- drivers/vhost/iotlb.c                              |   6 +-
- drivers/vhost/net.c                                |   3 +-
- drivers/vhost/vhost.c                              |   4 +
- drivers/virtio/virtio.c                            |  41 ++--
- drivers/virtio/virtio_balloon.c                    |  51 +++-
- drivers/virtio/virtio_dma_buf.c                    |   2 +-
- drivers/virtio/virtio_mem.c                        |  10 +-
- drivers/virtio/virtio_mmio.c                       |  13 +-
- drivers/virtio/virtio_pci_common.c                 |   2 +-
- drivers/virtio/virtio_ring.c                       |   8 +
- drivers/virtio/virtio_rtc_driver.c                 |  14 +-
- include/linux/libnvdimm.h                          |   9 +
- include/linux/virtio.h                             |   1 +
- include/linux/virtio_dma_buf.h                     |   2 +-
- include/uapi/linux/vduse.h                         |  28 +++
- include/uapi/linux/virtio_ids.h                    |   1 +
- lib/iov_iter.c                                     |   1 +
- net/vmw_vsock/virtio_transport_common.c            |  13 +
- tools/virtio/vhost_net_test.c                      |   5 -
- tools/virtio/virtio-trace/trace-agent-ctl.c        |   2 +-
- tools/virtio/vringh_test.c                         |   2 +-
- 37 files changed, 760 insertions(+), 222 deletions(-)
-
+--=-B+HdHmc5L0yljg7tDt7J--
