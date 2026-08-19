@@ -1,137 +1,263 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A5448097E
-	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 16:41:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F0B486B82
+	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 16:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787157698; cv=none; b=fYZzb/renYASJVcbghSpzjH+TS0BHY3ExxpM20yr58hvyz8EcovL4BDD4RvF9v5uelDgFRHtRiI3/l9BI++WV63WGGKL0SiTCv9MX8K1HaZgPYWtDoz+q/pfWEX6Mk58sSuguCjKg1wsXMOB4NMpH4fhp42n575rsW3my0t5IN4=
+	t=1787157975; cv=none; b=DdKURIRS54C5suTFS1cDnNCWSm3rRo5PJVmTZ8GGqvD1GSNQWu2b2fjVHIVgbBU4kkYAx5GS+M9TGRdz828s6wMKTjNMYxfiBk8hNL811t1GYGzU526hB947Q4sSM81wo9E77haQ0hjpIKnUizt8+5a+LZPNZtg/S7wWSXHkzkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787157698; c=relaxed/simple;
-	bh=Z4w0jhcQvhCI0bosMo9w46ys/yNsvZhp5zSOIajIGvQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JrW0yFBdIETgNM3tOHj0FOeihGWsdPIOkfbESt/7Uw1+W8IK9fXySbctU6Ljkj6IxjbI1Sgcx1ZfY5rRnMMj1RASNvjchWhcaQIt/EIsZtEV0GWo2zKcnu/HFaQppQYzeeNGVggY3ib9M360kdhv2rXOPGgmb3Ve32EDnj6jDw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Xrv05/ql; arc=none smtp.client-ip=209.85.215.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787157975; c=relaxed/simple;
+	bh=IdAftmlo+mRu7lXc9MDZJxVDs0JaB7Zc6ukdt6z39t0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=kLqRahkTPrAR/bWdxz72MnAOxHJJySK/0OvTzIW3wL5gVtVjCPEWzX8mJEp5UrA5UVt2WgWPEleFttDVQWQ2GwfRQcrnP0zlfBx2cbHVEO5qJvYwmx2+ZeNKUGLjZySBTAUaVu8EP4iUYZms5+gsbQHnNy1qZlOqpPqqWbiyr8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dBpg6QZO; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sGi+kDMl; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Xrv05/ql"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cb4cdf95b5aso1614935a12.1
-        for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 09:41:37 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dBpg6QZO";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sGi+kDMl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787157973;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=kKB6a7tb48I7KIcMKOrkf8BWQaXL7teAC4Q0HqgLOxc=;
+	b=dBpg6QZOPFzx5qXCIn954jsFeVxJHoTi+n27v/UmjTNwgNJttw907NfRF0+Uwp4gzEbUX8
+	496jO3sJOvYzBick9l6hX3Bvfe/9ammqdH99yhpFC2ddcOHQtrOZrVpExFzhntIjH37+fh
+	Y/40bybPLAvVOK08ALYyVrhz9Lt1q5M=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-391-qpR27JV8NIGrLOz_f69WGw-1; Wed, 19 Aug 2026 12:46:10 -0400
+X-MC-Unique: qpR27JV8NIGrLOz_f69WGw-1
+X-Mimecast-MFC-AGG-ID: qpR27JV8NIGrLOz_f69WGw_1787157969
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47f2de3ba47so863071f8f.1
+        for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 09:46:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787157697; x=1787762497; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=G2Hz1YJdLVa7+hLxZtMeHXHTsMIJrFof6Tpk0CJAbWU=;
-        b=Xrv05/qlyVVjlIoQe0a0aqODhxhSwJvjZAuAKTtW4AZyFT8nYFDlza7K2zyU08Gsle
-         9tnwX2KpVBe9SIcVctBQ6ij5bc+Ibare0X9VGPjf4lACg6iZo+BVvjE8OzxTEHXoyEBE
-         CXxLCGP5hO+QOdW4ELL+hupXj/5SDf843vm+WyRBO4HBY7le97x2hsG5SxnoMjTsXuii
-         b42LvktGZJSCrdiMIvoFXK5ICmBSZBsibb8OsK8Uej6RNcN8FkhC59Hg0uwOAW4fFVFS
-         0Kz0toVafLfDg/u3zx4/W2RQhnnojZB7+qxHOKlnZD/CANSAG9UKfkvryB78bHEJyPp1
-         hGXg==
+        d=redhat.com; s=google; t=1787157969; x=1787762769; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-disposition:content-type
+         :mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kKB6a7tb48I7KIcMKOrkf8BWQaXL7teAC4Q0HqgLOxc=;
+        b=sGi+kDMlFQVRS/zHCX4A1RpSPfU4AgmiZZhvO8YH6jUH1Oe/J5o7vdZ6ACh10l8dIO
+         BUg6Dm7FxHv3SKMn9u+dMCS/ALMT73Sy30PCXuK9WTenzjeknhxJCuUfNmXgX100sLtj
+         znuAlb04tHh8oVwL4qn+wK16cTbTEJkGqJcLMYa0FNQWfpUzEbP84hukoKQoBr27ZuX9
+         MqIj1AOcVzhcx83FLGQTrBHEasCOWGub4IzWl/3ioHKF0bx2lnN2MTm4KQL862vGhUSA
+         qXKEK754HrgssHclc1qE/0qsKqPBX4oK8W7FoB9iYykgMRePt2oCpSl/mUw1EkU5fhUm
+         l5aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787157697; x=1787762497;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
+        d=1e100.net; s=20251104; t=1787157969; x=1787762769;
+        h=content-transfer-encoding:content-disposition:content-type
+         :mime-version:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=G2Hz1YJdLVa7+hLxZtMeHXHTsMIJrFof6Tpk0CJAbWU=;
-        b=EzlV46hkgmPlxzUumzGppD5R9VVH10GVcZYJxzWjuaev/yPPIe6IH2PMNgB87vn3S1
-         2lIxXIsVovf/N6+03Xbgv2aTJbsA1l6MOHBDyvyCOcimnzsQdYXHi7s6J2Y2bwz2vomb
-         QZLvkWmbeiwlHUHKfb7uXUV98rrFXY6DMXXh7I/gJXJleXOqXRgmHkAVWFxb4fGhH95z
-         qUGc43y5Kgs8k4luhnV9oJM/6WvutUoH6ScUgkhAnhM/7/b0CNcruzzecVTUHtDfE1Bz
-         cc/Hio31WRM0SExhA+xrDghwZDAcntn7dIfHz51Xy/or0/d+a7aHkA0/S2G1oDcxkBgJ
-         MKMw==
-X-Forwarded-Encrypted: i=1; AHgh+RrxnqAoDnGww2dNRDG61SlESIRrrsnumV1ylz5NhRHa3AuJmZFiR8dXpB7HwQJICD+6lyo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywjldcn4xKCCx2Zr4trndM7wJpYxIS28UoEr3D9Gx/GjtfcbEZC
-	Jeig39Efx0VAKr2OFc6rGkwgOvLjhv4TsEVQNyJncM2RJsL6wp/nsw8KRojhnsOagnQ2WX+557l
-	3S6+Wvg==
-X-Received: from pfew13-n2.prod.google.com ([2002:a05:6a00:c1cd:20b0:851:c4fc:fe2b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1c82:b0:851:d12e:389b
- with SMTP id d2e1a72fcca58-851d39598c3mr10615556b3a.14.1787157696399; Wed, 19
- Aug 2026 09:41:36 -0700 (PDT)
-Date: Wed, 19 Aug 2026 09:41:35 -0700
-In-Reply-To: <CAKSQd8UyzWweM15-9ehaCaYYJYw+N8z9pFon2J+3sehqm=Ukbg@mail.gmail.com>
+        bh=kKB6a7tb48I7KIcMKOrkf8BWQaXL7teAC4Q0HqgLOxc=;
+        b=D2+Nf9lW4Mduwwlu+rtmh2q1Vlg5kkYXDlATbRqXalW6+Ifln7yqfb/M4ck+jE2cwF
+         jgLe6rac11VBwgu+c177pshMTuaJwG1J7Pe8tW2nlxvhGTn/jfOcbYwQGex5g7skAFMt
+         pOLwoD+DQxhZCrKwAmQzkevvoghU9/qgc7KY+RVqy0DrRF+gwO4CLaGKcFIt+zsgSimm
+         jDT6gQxrLV6G7Jon9EVmIIo5YFgF4SfVUMcgNqUgvX9dgBRcwpgCCuodiDMg84vtxAtF
+         nir3rVIoqiLQ2zT8G+927nMJpdmncBpg9yvU3IzLmbt46UHb1upREWgsPnlDojCSb40q
+         Daiw==
+X-Gm-Message-State: AFuF++ngyC3rRF+8QK5DgIMFwZFI0CDbH5O7VF1R1LZXM1tXQ09hrJML
+	Jbal3Ms91A9ZgyKl52ZHSd+9JKUOYwlaPHjGVE5F4hsvJWZeMCJEYWT56KBibaq141FMPZP4Ezy
+	DW3lXxokD8PAfqNKv3zmo5aet21px47l4aOrsFQesHZkyzKttYUkn0A==
+X-Gm-Gg: AR+sD10yXVCUloT1oUZ8bzRDrsB/Ex5BU/F4+5TZ20fKrgqPAWsNE5vBl2/bXVG6yRv
+	Z6aTiGz83yQv3YpAdhKpuVkqYi85QNploPp9kV9htBPFfihiZNm1QoXFOEgk8+08cn1z68LMnJm
+	CWkx20c3GYE1TRVCDk3Qv41IdXiHU4aFMRVBpGrZcYAyYKwRLxI30NIJ0zdhMfyR+f6q2WKvOCt
+	Zzt45MO7cdPWgKL9wGciNlhSNhqDldRoSCUxjC95rkaIOozDWYEbbUYqXqQNYTPvs9s5njccYM8
+	T0U8OAxqp3vRXsMDxWRdbM3AhF1USLJp+TKc5dKEzGO1icFmlLzss8jpasANzZ7n94c3qUthfYR
+	ib9r1Jsnphc5YVzBcwlwlweFX
+X-Received: by 2002:a05:6000:1445:b0:47f:8b24:ef01 with SMTP id ffacd0b85a97d-482b1e837ddmr10403293f8f.1.1787157968682;
+        Wed, 19 Aug 2026 09:46:08 -0700 (PDT)
+X-Received: by 2002:a05:6000:1445:b0:47f:8b24:ef01 with SMTP id ffacd0b85a97d-482b1e837ddmr10403179f8f.1.1787157968144;
+        Wed, 19 Aug 2026 09:46:08 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-47-107.inter.net.il. [80.230.47.107])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482b14c45f1sm6670328f8f.31.2026.08.19.09.46.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2026 09:46:07 -0700 (PDT)
+Date: Wed, 19 Aug 2026 12:46:04 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	aesteve@redhat.com, ben.dooks@codethink.co.uk,
+	chenyichong@uniontech.com, david@kernel.org, den@openvz.org,
+	eperezma@redhat.com, gsomlo@gmail.com, hexlabsecurity@proton.me,
+	linfeng.sun.dev@gamil.com, lirongqing@baidu.com, me@linux.beauty,
+	mst@redhat.com, panchuang@vivo.com, pankaj.gupta.linux@gmail.com,
+	pengpeng@iscas.ac.cn, peter.hilber@oss.qualcomm.com,
+	sgarzare@redhat.com, stable@vger.kernel.org,
+	syzbot+28e5f3d207b14bae122a@syzkaller.appspotmail.com,
+	tavip@google.com, wangyufeng@kylinos.cn, xiongweimin@kylinos.cn,
+	xiongwm2026@163.com, yangjinqian1@huawei.com, zhaoguohan@kylinos.cn
+Subject: [GIT PULL] vhost,vdpa,virtio: fixes, features
+Message-ID: <20260819124604-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <CAKSQd8V=wfVrUxeU+fDRgKJBLdiyCkkY2SRY+OoRBNE68LFnCg@mail.gmail.com>
- <abe4535e-c72b-4df2-99be-064479b685ec@intel.com> <CAKSQd8UyzWweM15-9ehaCaYYJYw+N8z9pFon2J+3sehqm=Ukbg@mail.gmail.com>
-Message-ID: <aoXcv795N-xmtTDl@google.com>
-Subject: Re: [PATCH v2] KVM: x86: Remove AMX-TF32 enumeration
-From: Sean Christopherson <seanjc@google.com>
-To: Christian Ludloff <ludloff@gmail.com>
-Cc: Dave Hansen <dave.hansen@intel.com>, "Chang S. Bae" <chang.seok.bae@intel.com>, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, pbonzini@redhat.com, 
-	stable@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Mutt-Fcc: =sent
 
-On Tue, Aug 18, 2026, Christian Ludloff wrote:
-> On Tue, Aug 18, 2026 at 5:55=E2=80=AFPM Dave Hansen <dave.hansen@intel.co=
-m> wrote:
-> > On 7/24/26 08:37, Christian Ludloff wrote:
-> > >> My understanding is that the revert was considered because TF32 neve=
-r
-> > >> reached any implementation. If that's incorrect, I'd certainly welco=
-me a
-> > >> correction.
-> > > Both TF32 and TRANSPOSE made it into a product that shipped.
-> > >
-> > > Not from Intel... but.
-> > >
-> > > So their CPUID feature flags and their opcodes aren't reclaimable
-> > > and efforts to rip out their software support are counterproductive.
-> >
-> > What would folks' preference be on how Intel should document this going
-> > forward? Just leave it as it as enumerating TF32?
-> >
-> > There are notes in the SDM like:
-> >
-> >         Intel=C2=AE MPX has been deprecated and will not be available o=
-n any
-> >         future processors.
-> >
-> > There could be a note like that for the TF32, I would imagine.
->=20
-> Yes, that terse sentence works.
->   Once for AMX-TRANSPOSE.
->   Once for AMX-TF32.
+The following changes since commit 8d3ae59288f1e7d58d76558a6ee96d533bc5019f:
 
-Maybe use a similar approach as is done for the HYPERVISOR bit (0x1.ECX[31)=
-, and
-have the "Field Name" entry say Not Used, and then use the "Description" to=
- explain
-why?  E.g.
+  Linux 7.2 (2026-08-16 14:32:26 -0700)
 
-  Register        Field Name      Description                             D=
-omain
-  EAX[6]          Not Used        Intel processors always return 0.       P=
-latform
-                                  Allocated for backwards compatibility
-                                  with software that expects this to
-                                  enumerate AMX_TF32.
+are available in the Git repository at:
 
-Or Christian's terse version (I kinda like the terse version).
+  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
 
-  Register        Field Name      Description                             D=
-omain
-  EAX[6]          Not Used        Intel processors always return 0.       P=
-latform
-                                  Once for AMX_TF32.
+for you to fetch changes up to b282418bc366194677eafd1dad180d92254586ac:
 
-=20
-> If you want the back references:
->   TRANSPOSE got dropped from ISE #059 and APX #007.
->   TF32 got dropped from ISE #062.
->=20
-> In terms of the opcodes, it is like MPX too: no recycling for
-> a long time. Luckily there is plenty of remaining space.
->=20
-> --
-> C.
+  vduse: Add suspend (2026-08-19 06:38:48 -0400)
+
+----------------------------------------------------------------
+vhost,vdpa,virtio: fixes, features
+
+- transport v3 support in virtio-mmio
+- suspend support in vduse
+- fixes, cleanups all over the place
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+----------------------------------------------------------------
+Albert Esteve (1):
+      virtio: Add ID for virtio media
+
+Ben Dooks (1):
+      crypto: virtio - fix missing le64_to_cpu() conversions
+
+Bryam Vargas (1):
+      crypto: virtio - bound the akcipher result length
+
+Denis V. Lunev (5):
+      virtio: add virtio_device_shutdown() helper
+      virtio_balloon: factor out virtballoon_quiesce()
+      virtio_balloon: quiesce balloon work before device shutdown
+      virtio_balloon: warn on failed buffer add in tell_host()
+      virtio_balloon: warn on failed buffer add in stats_handle_request()
+
+Eugenio Pérez (6):
+      vduse: store control device pointer
+      vduse: add VDUSE_GET_FEATURES ioctl
+      vduse: add VDUSE_SET_FEATURES ioctl
+      vduse: add F_QUEUE_READY feature
+      vduse: do not take rwsem at reset work flush
+      vduse: Add suspend
+
+Gabriel Somlo (1):
+      MAINTAINERS: remove Gabriel from LiteX and fw-cfg drivers
+
+GuoHan Zhao (3):
+      virtio: rtc: time out alarm requests
+      tools/virtio: Fix userspace typo in vringh test comment
+      tools/virtio: Fix control typo in trace agent comment
+
+Jinqian Yang (1):
+      virtio_ring: fix infinite loop in virtnet_poll_cleantx when device is broken
+
+Li Chen (12):
+      nvdimm: preserve flush callback -ENOMEM
+      nvdimm: pmem: keep PREFLUSH before data writes
+      nvdimm: pmem: guard data loop for dataless bios
+      nvdimm: virtio_pmem: stop allocating child flush bio
+      nvdimm: virtio_pmem: use GFP_NOIO for flush requests
+      nvdimm: virtio_pmem: always wake -ENOSPC waiters
+      nvdimm: virtio_pmem: use READ_ONCE()/WRITE_ONCE() for wait flags
+      nvdimm: virtio_pmem: refcount requests for token lifetime
+      nvdimm: virtio_pmem: publish done with release/acquire
+      nvdimm: virtio_pmem: isolate DMA request buffers
+      nvdimm: virtio_pmem: converge broken virtqueue to -EIO
+      nvdimm: virtio_pmem: drain requests in freeze
+
+Li RongQing (5):
+      virtio_dma_buf: fix typo in kdoc comment: get_uid -> get_uuid
+      virtio_mem: fix hardcoded 'vm' variable in bbm iteration macros
+      virtio_pci: fix wrong queue index for admin vq in intx path
+      vdpa/mlx5: fix wrong list iterated in add_direct_chain error path
+      vdpa/mlx5: fix wrong MLX5_ADDR_OF struct type in alloc_inout()
+
+Linfeng Sun  (1):
+      vdpa_sim: fix cleanup after worker creation failure
+
+Michael S. Tsirkin (1):
+      virtio_balloon: disable indirect descriptors
+
+Octavian Purdila (2):
+      iov_iter: export iov_iter_restore
+      vsock/virtio: restore msg_iter on transmission failure
+
+Pan Chuang (1):
+      vdpa: Remove redundant dev_err()
+
+Pengpeng Hou (2):
+      vdpa: alibaba: add missing MODULE_DEVICE_TABLE()
+      vdpa: octeon_ep: add missing MODULE_DEVICE_TABLE()
+
+Peter Hilber (1):
+      virtio-mmio: add support for transport version 3
+
+Weimin Xiong (1):
+      vdpa/mlx5: roll back MR update after VQ setup failure
+
+Xiong Weimin (2):
+      vdpa_sim: clear pending_kick on device reset
+      vdpa_sim: hold iommu_lock across dma_unmap passthrough transition
+
+Yichong Chen (1):
+      tools/virtio: Remove unsupported --batch option from vhost_net_test
+
+Yufeng Wang (1):
+      vhost/net: fix clear_user start address in VHOST_GET_FEATURES_ARRAY
+
+xiongweimin (5):
+      vhost: fix inaccurate kdoc in iotlb helpers
+      virtio: fix article before virtio in dma-buf comment
+      vdpa/solidrun: fix typos in snet_ctrl comments
+      virtio_mem: fix typo in comment
+      vhost: reject zero-size IOTLB INVALIDATE
+
+ MAINTAINERS                                        |   2 -
+ .../crypto/virtio/virtio_crypto_akcipher_algs.c    |   6 +-
+ .../crypto/virtio/virtio_crypto_skcipher_algs.c    |   3 +-
+ drivers/nvdimm/nd_virtio.c                         | 263 ++++++++++++++++----
+ drivers/nvdimm/pmem.c                              |  53 +++--
+ drivers/nvdimm/region_devs.c                       |   5 +-
+ drivers/nvdimm/virtio_pmem.c                       |  65 ++++-
+ drivers/nvdimm/virtio_pmem.h                       |  22 +-
+ drivers/vdpa/alibaba/eni_vdpa.c                    |   1 +
+ drivers/vdpa/mlx5/core/mr.c                        |   2 +-
+ drivers/vdpa/mlx5/net/mlx5_vnet.c                  |  27 ++-
+ drivers/vdpa/octeon_ep/octep_vdpa_main.c           |   5 +-
+ drivers/vdpa/solidrun/snet_ctrl.c                  |   4 +-
+ drivers/vdpa/vdpa_sim/vdpa_sim.c                   |  29 ++-
+ drivers/vdpa/vdpa_user/vduse_dev.c                 | 265 ++++++++++++++++-----
+ drivers/vdpa/virtio_pci/vp_vdpa.c                  |  12 +-
+ drivers/vhost/iotlb.c                              |   6 +-
+ drivers/vhost/net.c                                |   3 +-
+ drivers/vhost/vhost.c                              |   4 +
+ drivers/virtio/virtio.c                            |  41 ++--
+ drivers/virtio/virtio_balloon.c                    |  51 +++-
+ drivers/virtio/virtio_dma_buf.c                    |   2 +-
+ drivers/virtio/virtio_mem.c                        |  10 +-
+ drivers/virtio/virtio_mmio.c                       |  13 +-
+ drivers/virtio/virtio_pci_common.c                 |   2 +-
+ drivers/virtio/virtio_ring.c                       |   8 +
+ drivers/virtio/virtio_rtc_driver.c                 |  14 +-
+ include/linux/libnvdimm.h                          |   9 +
+ include/linux/virtio.h                             |   1 +
+ include/linux/virtio_dma_buf.h                     |   2 +-
+ include/uapi/linux/vduse.h                         |  28 +++
+ include/uapi/linux/virtio_ids.h                    |   1 +
+ lib/iov_iter.c                                     |   1 +
+ net/vmw_vsock/virtio_transport_common.c            |  13 +
+ tools/virtio/vhost_net_test.c                      |   5 -
+ tools/virtio/virtio-trace/trace-agent-ctl.c        |   2 +-
+ tools/virtio/vringh_test.c                         |   2 +-
+ 37 files changed, 760 insertions(+), 222 deletions(-)
+
