@@ -1,135 +1,138 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E4D26A1AC;
-	Wed, 19 Aug 2026 05:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4348537701A;
+	Wed, 19 Aug 2026 05:26:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787116990; cv=none; b=POYaMf5n54Dignb57Hb7sS44Ys3grq3WOtQVeZ0znTzPL6eEPN7r0TO+nkDF7p1jfA5CL6WKCmrwARBj1LMGoYxS5zd+kqK9sZtBdwZzcr8uIz7nyeAIFn4uB6n8gaJqGHdKv18aTLbrN17nIJEVY2/M8ZQpeQCmcb7E/3QDl0I=
+	t=1787117201; cv=none; b=hYyT+GcEFDzw9cbYZHH60P79VncfjO9zF7oN2gPEM3vWCHZgMxzrcIPy3sMliCRELvZNI4vPakioss8tNF/KLzcBuqIutSwlc/h24zlmXEEJ+w//1FAz1oFzEtVEuPuc6ij0VAWlsXCzOG4qIV8OeYeQTKVX1QNb+Ew/IWd1P/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787116990; c=relaxed/simple;
-	bh=PhzYe4H+ADcqvssQG6owupuUWnuD6VXj3nIh0yUaMRY=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=ii6jvN5kguaGNmnB4Y/nx9wmsibqsNM0/rvgmXL7pCJBeRq7h1X4W+ew9IfAth1QRh7cf+aXtI89QSRGQh8m9xJhi8EQSBrbeUZJUSzSSOFokAF/lVA6RGGc2K4FYgNdQrFQKiRs0EtwAKpudhHnN6fdUzjEI1G1iltQxO23DEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=Avb2z3RV; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1787117201; c=relaxed/simple;
+	bh=nG1OMcWZgeqq3fW0JmGc1qN6ZbF+druhOr7eDWj2p8g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V+bGTV1lZJHAE4PlPXrDu3hML+QM9OLxYMOYsQsIzq7SWwCwTnNRQ4h8sHQqWMX3IzQDOlF9TDXlvysQyEb47g1N32+s+UJ0eyhtB8DJNb+xWkDSZrmigab/ved28w5j9cnnpto64cBYxRAVwpPwQzUkHLE6CKvskDajNB1qolg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ujsbn76v; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="Avb2z3RV"
-Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 67J5L91C1131270
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Tue, 18 Aug 2026 22:21:10 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 67J5L91C1131270
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026072801; t=1787116871;
-	bh=C7NV13mMxL9whWk83Do/17kcjOh0WDTLIUqX0IuoHQ0=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=Avb2z3RVjchOe3g7sK6yb6S2+7AYU6Ib1Emjr8I/UNZExgYt/s1r51JjkaWe3s/iJ
-	 zV+M20hOUyKoRYThBIOSk9Fmf9hXZG/2jleaql7IuWbcuipmTOh+kC4LeATiPE7Tkb
-	 fNC2JKwRTZmRl5AGBRWCpAF57SWPe5Mfpd8Y1a5p0gsvVE86GTAnsUPoxflELZmOIN
-	 x7NtAddui3q2GUZpxIpK4lBP5ElVaM11In2RtKkWmskK7zzqCyEZ98t9ARLQRG6xAk
-	 lmSpBcQRxo55u3L2gtUVpWhPNwAumV2tcWJxgJxJ/bpWxz7/DobcUNor32+xfEQXtz
-	 XjeyS2AkFSKEg==
-Date: Tue, 18 Aug 2026 22:21:03 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Sohil Mehta <sohil.mehta@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>
-CC: kvm@vger.kernel.org, x86@kernel.org,
-        Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Shuah Khan <shuah@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
-        "Chang S . Bae" <chang.seok.bae@intel.com>,
-        Kai Huang <kai.huang@intel.com>, Fuad Tabba <fuad.tabba@linux.dev>,
-        Chao Gao <chao.gao@intel.com>, Yosry Ahmed <yosry@kernel.org>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Matlack <dmatlack@google.com>,
-        Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>,
-        Kishen Maloor <kishen.maloor@intel.com>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v4_2/7=5D_KVM=3A_x86=3A_Use_linear=5F?=
- =?US-ASCII?Q?read=5Fsystem=28=29_to_read_the_TSS_I/O_bitmap?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <2f8e907e-1c77-416d-90be-9428ce8242f6@intel.com>
-References: <20260806011536.4172258-1-sohil.mehta@intel.com> <20260806011536.4172258-3-sohil.mehta@intel.com> <41a327bd-cbbd-4530-9f30-9175c5840014@linux.intel.com> <2f8e907e-1c77-416d-90be-9428ce8242f6@intel.com>
-Message-ID: <CF354E4D-FF68-4DEE-A22B-62EDAD5B7B8D@zytor.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ujsbn76v"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787117199; x=1818653199;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=nG1OMcWZgeqq3fW0JmGc1qN6ZbF+druhOr7eDWj2p8g=;
+  b=Ujsbn76vkFiDgqolNelXXcV8RjSselugwDl5g73VdWHVSzhcCvpbvlVt
+   vbsHmf82jPgZDXDnxmzajac3/U/QPEQxAEZNn1c9+9kNWbLpSdeX/D2cj
+   moWC2RZvnMqHx2cANbVGIJYwEiP1X+o7uH1jttrNiFEcf9d+Mr0Pgw1D6
+   cPxz56cI0c6rdPyNmXyK4EJpEyoXKsno0CU5t0vtLwsobirbec9lMUUmS
+   X9hKjbroHhFUvm4zBpBOOy77QQ2HRnmweMo0becIrFY43cGCJw4jpdCYE
+   YPGBLhRitj54dUfxRNZFnwv0/7sGlJpT3ZJ+przQkKjJgIB0XF3ahojlW
+   A==;
+X-CSE-ConnectionGUID: 3VlzJUF2SQOYAwPlFfiTFA==
+X-CSE-MsgGUID: hhRscpZ8Q+aV6MAF9pWslw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11879"; a="87476503"
+X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
+   d="scan'208";a="87476503"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 22:26:33 -0700
+X-CSE-ConnectionGUID: d1KDStYkSe2eR+AwizB0Bw==
+X-CSE-MsgGUID: rqtr/Yp7TziAkjOa64Rq9g==
+X-ExtLoop1: 1
+Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 22:26:28 -0700
+Message-ID: <23707851-e446-4687-9d4f-b01953637db0@linux.intel.com>
+Date: Wed, 19 Aug 2026 13:26:25 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/7] KVM: x86: Use linear_read_system() to read the TSS
+ I/O bitmap
+To: Sohil Mehta <sohil.mehta@intel.com>
+Cc: kvm@vger.kernel.org, x86@kernel.org,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
+ <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "Chang S . Bae" <chang.seok.bae@intel.com>, Kai Huang <kai.huang@intel.com>,
+ Fuad Tabba <fuad.tabba@linux.dev>, Chao Gao <chao.gao@intel.com>,
+ Yosry Ahmed <yosry@kernel.org>, Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ David Matlack <dmatlack@google.com>,
+ Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>,
+ Kishen Maloor <kishen.maloor@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20260806011536.4172258-1-sohil.mehta@intel.com>
+ <20260806011536.4172258-3-sohil.mehta@intel.com>
+ <41a327bd-cbbd-4530-9f30-9175c5840014@linux.intel.com>
+ <2f8e907e-1c77-416d-90be-9428ce8242f6@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <2f8e907e-1c77-416d-90be-9428ce8242f6@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On August 18, 2026 10:03:03 PM PDT, Sohil Mehta <sohil=2Emehta@intel=2Ecom>=
- wrote:
->Thank you for reviewing the patch=2E
->
->On 8/18/2026 8:19 PM, Binbin Wu wrote:
+On 8/19/2026 1:03 PM, Sohil Mehta wrote:
+> Thank you for reviewing the patch.
+> 
+> On 8/18/2026 8:19 PM, Binbin Wu wrote:
 >> On 8/6/2026 9:15 AM, Sohil Mehta wrote:
 >>> TSS I/O permission bitmap reads are implicit supervisor accesses which
->>> are subject to Linear Address Space Separation (LASS) enforcement=2E
->>=20
->> I am not sure about it=2E
->>=20
->> According to SDM vol 3a (253668-089US), Chapter "LINEAR-ADDRESS PRE-PRO=
-CESSING",
->> section "MODE-BASED ACCESSES AND LINEAR-ADDRESS-SPACE PARTITIONING", it=
- defines
->> and limits "implicit supervisor-mode accesses" to the following operati=
-ons:
->
->The way I understand it, this list isn't exhaustive=2E The wording in
->those sections, "Such accesses include the following=2E=2E" and "Examples=
- of
->such accesses include=2E=2E" suggests that this is not limiting=2E
->
->> - accesses to the global descriptor table (GDT) or local descriptor tab=
-le (LDT)
+>>> are subject to Linear Address Space Separation (LASS) enforcement.
+>>
+>> I am not sure about it.
+>>
+>> According to SDM vol 3a (253668-089US), Chapter "LINEAR-ADDRESS PRE-PROCESSING",
+>> section "MODE-BASED ACCESSES AND LINEAR-ADDRESS-SPACE PARTITIONING", it defines
+>> and limits "implicit supervisor-mode accesses" to the following operations:
+> 
+> The way I understand it, this list isn't exhaustive. The wording in
+> those sections, "Such accesses include the following.." and "Examples of
+> such accesses include.." suggests that this is not limiting.
+> 
+>> - accesses to the global descriptor table (GDT) or local descriptor table (LDT)
 >>   to load a segment descriptor
->> - accesses to the interrupt descriptor table (IDT) when delivering an i=
-nterrupt
+>> - accesses to the interrupt descriptor table (IDT) when delivering an interrupt
 >>   or exception
->> - accesses to the task-state segment (TSS) as part of a task switch or =
-change of
+>> - accesses to the task-state segment (TSS) as part of a task switch or change of
 >>   CPL
->> - accesses to a user posted-interrupt descriptor (UPID) during user-int=
-errupt
+>> - accesses to a user posted-interrupt descriptor (UPID) during user-interrupt
 >>   notification processing
->>=20
->
->For example, this doesn't list the SENDUIPI instruction's access to the
->UITT (IA32_UINTR_TT)=2E That one is an implicit supervisor-mode access to
->a kernel address at CPL =3D 3=2E
->
->In section 5=2E6=2E1 (Determination of Access Rights), immediately follow=
-ing
->the above examples the SDM says:  "All these accesses are called
->implicit supervisor-mode accesses regardless of CPL=2E"
->
+>>
+> 
+> For example, this doesn't list the SENDUIPI instruction's access to the
+> UITT (IA32_UINTR_TT). That one is an implicit supervisor-mode access to
+> a kernel address at CPL = 3.
+> 
+> In section 5.6.1 (Determination of Access Rights), immediately following
+> the above examples the SDM says:  "All these accesses are called
+> implicit supervisor-mode accesses regardless of CPL."
+> 
 >> IIUC, the TSS I/O bitmap read during ordinary instruction execution
->> (under CPL =3D 3) rather than during a task switch or CPL transition, I=
- don't
->> think they fall under the classification of implicit supervisor-mode ac=
-cesses=2E
->>=20
->AFAIU, the entire TSS struct (including the I/O bitmap portion) is
->mapped at struct cpu_entry_area using CPU_ENTRY_AREA_BASE with
->PAGE_KERNEL_RO permissions=2E So bit 63 will always be 1 and U/S =3D 0=2E
->
->Yes, the TSS I/O bitmap access happens at CPL =3D 3 but it still has to b=
-e
->an implicit supervisor access=2E If it weren't, any user instruction
->access to the I/O bitmap would always generate a fault (even without
->LASS), right?
->
->
->Sohil
->
+>> (under CPL = 3) rather than during a task switch or CPL transition, I don't
+>> think they fall under the classification of implicit supervisor-mode accesses.
+>>
+> AFAIU, the entire TSS struct (including the I/O bitmap portion) is
+> mapped at struct cpu_entry_area using CPU_ENTRY_AREA_BASE with
+> PAGE_KERNEL_RO permissions. So bit 63 will always be 1 and U/S = 0.
+> 
+> Yes, the TSS I/O bitmap access happens at CPL = 3 but it still has to be
+> an implicit supervisor access. If it weren't, any user instruction
+> access to the I/O bitmap would always generate a fault (even without
+> LASS), right?
+> 
 
-The I/O bitmap is most definitely an implicit supervisor access=2E
+You are right.
+I replied too quickly before fully recalling how these knobs work.
+
+> 
+> Sohil
+> 
+> 
+
