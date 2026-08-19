@@ -1,126 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8643714F70
-	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 00:03:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC36156661;
+	Wed, 19 Aug 2026 00:12:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787097790; cv=none; b=fOYQTHlQOkapsqKlPPM2q0hILtEba4RUlb/Irwi0uywpncbE5UyVAZA1+5r1LfXc87A8Js3RoRrdfl1cnf3rlL9ETrWQ9iUe2NcR/sx36pOwP/eMIiOPNSTQaJlBriK8PXe5t343tOyjYyEga0+8hwh0HLNlLErIQwhKkAL42jg=
+	t=1787098360; cv=none; b=qLYbCvc1786p20gFnnqAiJZW8s1EmIOtT5ZPhu/4HOUIbmMQ8mO95lb8Q2As30/xHUA9tEGjX9z/4sAmSZmOUezlvmQa03VeMWHJp7EolhfBN3KB5uflTMSkf5xe73LSSCE/Lh31EVV1SbIsfFgBzqB4bJr7rZ7CizA/JwH0mP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787097790; c=relaxed/simple;
-	bh=d2+YlxuyI0m04X0gn1WPNC51Lo21iOXPDoMIO1Ga1aE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=dsGkI5efiz03HtMYi3FWRAq9421V4vPZ0k1yNUMvGQTW4hLEyWJ1dUkJoIBM25MBPONJuUAhuY5lFDdhFtgY1W0rBHCIOkFCO1yTZLd/Ovolvh5cW7Bsw8GIJM6Z4AvpTlHABjjAEuitUIfjEHq2UMjmjhSnOXOeb1GfMcsEvwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=irIvT5AZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787098360; c=relaxed/simple;
+	bh=NOtz/KMbFUOZnL2zFwNMJiagHyVuxrIY25pMuh/YSns=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tXO+XSan4WEbUBILzePRdWz4lSfNJDz89LAVK62FOrkkwScz6NNRdFovbMz0pXTccp019bd4cyncA7UPaasDFGXOWFt2EEh+pz78CKrEsI7fgsBnrBhORvKe4Up++pHOD1rolI0QBXMZz7zkHC8/ufoMy/OQ9TpMCDCFPP96tN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TVZCwXLZ; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="irIvT5AZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F30AA1F000E9;
-	Wed, 19 Aug 2026 00:03:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787097789;
-	bh=kQPwYWYuVn2HpKL49NiRj63swGF/mYOH3Z12aQDpVqU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=irIvT5AZ2nvHo4TxvZWHjfD8JbB2ZFjwsgSzqgn8LK9nhJSI9MVM5MKftybPmUQ7C
-	 zd+NxzjPGMoSXzVcTmnKnPR8wbxrGpDoleWV1RrOfZOK51EHvsHYLx5H2A6xIbtKGf
-	 2hW6YyyRvY4B8VXgTVhXyJE6uYsSBTabrQ6UFYjEFhuz0zRTATuIARWlG4+X2h/n6v
-	 PL6NLVgmiQrGigCKKkIt07QNDc9QH3HeAt+2UBNiGBJ+aHR1KgJJbsXnGSCge2cl4H
-	 qupnzh97EQ/6gRyOT9NLMRpooZoftv42kyTQTByI93tiGM3f8S71ey39MUFdZ8DVcz
-	 FSyJwvOnB+N6Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/1] KVM: x86: lapic: update apic_base and APIC ID
- together
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Dongli Zhang" <dongli.zhang@oracle.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260818234238.618158-1-dongli.zhang@oracle.com>
-References: <20260818234238.618158-1-dongli.zhang@oracle.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 19 Aug 2026 00:03:08 +0000
-Message-Id: <20260819000308.F30AA1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TVZCwXLZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787098355; x=1818634355;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NOtz/KMbFUOZnL2zFwNMJiagHyVuxrIY25pMuh/YSns=;
+  b=TVZCwXLZstJ0B4SAj9P7l2WOIc1xIFDG9osx2tKXNj60VofE/ubABXQW
+   tUn9gnkLgDpsjlIZzoH6SUeGTSUThD6MpV2PaQJzw/f1UyipHugUqezdC
+   chd1fJi6gbiHqpVwxVA6geDd+0hJUbhA2WgQm3mXAYVlgzI2mGNLAZU1b
+   Tesev+8qOSC8QMH7xBPcOReHRIytPl8JLu94wLddBexkUlaxnwnqLB5xo
+   gD2YA8di/9XaWLY7sS2SJfmJeyHjYYydT1z5kxTRgkqYYzTEqe0JUSoeq
+   24v0IMsoF8ofFXx5WWpHuLrN/r3ZhZsNZGhkK0tfmR4cQzPtYMTx3DSX7
+   Q==;
+X-CSE-ConnectionGUID: h71kt4UgTlCmnzUcOu+FbQ==
+X-CSE-MsgGUID: NHTQ2foITmS4LZmduCPnxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11879"; a="98964352"
+X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
+   d="scan'208";a="98964352"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 17:12:34 -0700
+X-CSE-ConnectionGUID: NQ5jcHAlSDeAZCVqqcJctw==
+X-CSE-MsgGUID: ST3vxh7OSMa4q2ytbb/zEQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
+   d="scan'208";a="261165807"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 17:12:33 -0700
+Date: Tue, 18 Aug 2026 17:12:26 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Kim Phillips <kim.phillips@amd.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, x86@kernel.org, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, Borislav Petkov <borislav.petkov@amd.com>, 
+	Borislav Petkov <bp@alien8.de>, Naveen Rao <naveen.rao@amd.com>, 
+	David Kaplan <david.kaplan@amd.com>, Dave Hansen <dave.hansen@linux.intel.com>, stable@kernel.org, 
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v4 02/10] cpu/bugs: Allow forcing Automatic IBRS with SNP
+ active using spectre_v2=eibrs
+Message-ID: <lctyimdlenyb5kvfxarzajs2ggzkwn4yehxu233lojynqwa7ej@wjur3lh6szlr>
+References: <20260804235611.4053375-1-kim.phillips@amd.com>
+ <20260804235611.4053375-3-kim.phillips@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260804235611.4053375-3-kim.phillips@amd.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Lock inversion (ABBA deadlock) between `cpus_read_lock()` and `api=
-c_map_lock`.
---
+On Tue, Aug 04, 2026 at 06:56:03PM -0500, Kim Phillips wrote:
+...
+> @@ -2192,7 +2193,12 @@ static void __init spectre_v2_select_mitigation(void)
+>  			break;
+>  		fallthrough;
+>  	case SPECTRE_V2_CMD_FORCE:
+> -		if (boot_cpu_has(X86_FEATURE_IBRS_ENHANCED)) {
+> +		/*
+> +		 * Don't use AutoIBRS when SNP is enabled because it degrades
+> +		 * host userspace indirect branch performance.
+> +		 */
+> +		if (boot_cpu_has(X86_FEATURE_IBRS_ENHANCED) &&
+> +		    !boot_cpu_has(X86_FEATURE_SEV_SNP)) {
+>  			spectre_v2_enabled = SPECTRE_V2_EIBRS;
+>  			break;
+>  		}
 
---- Patch [1]: [PATCH 1/1] KVM: x86: lapic: update apic_base and APIC ID to=
-gether ---
-commit 01695608c13ffe0ad80fe486aaf7e61b96936d9e
-Author: Dongli Zhang <dongli.zhang@oracle.com>
+Can we also account for retpoline availability here? If both SNP and
+retpoline are available, then only avoid AutoIBRS:
 
-KVM: x86: lapic: update apic_base and APIC ID together
+          case SPECTRE_V2_CMD_FORCE:
+                  /*
+                   * Prefer retpoline when SNP is enabled because Auto-IBRS
+                   * degrades host userspace indirect branch performance.
+                   */
+                  if (boot_cpu_has(X86_FEATURE_IBRS_ENHANCED) &&
+                     !(boot_cpu_has(X86_FEATURE_SEV_SNP) &&
+                       IS_ENABLED(CONFIG_MITIGATION_RETPOLINE))) {
+                          spectre_v2_enabled = SPECTRE_V2_EIBRS;
+                          break;
+                  }
 
-This commit aims to resolve a runtime apicv inhibition issue by atomically
-updating apic_base and the APIC ID. It introduces conditional lock protecti=
-on
-using apic_map_lock within __kvm_apic_set_base() to serialize the updates
-with APIC map recalculation.
-
-> --- a/arch/x86/kvm/lapic.c
-> +++ b/arch/x86/kvm/lapic.c
-> @@ -2793,17 +2793,29 @@ static void __kvm_apic_set_base(struct kvm_vcpu *=
-vcpu, u64 value)
->  {
->  	u64 old_value =3D vcpu->arch.apic_base;
->  	struct kvm_lapic *apic =3D vcpu->arch.apic;
-> +	u64 changed =3D old_value ^ value;
-> +	bool apicbase_enable_changed =3D changed & MSR_IA32_APICBASE_ENABLE;
-> +	bool x2apic_enable_changed =3D changed & X2APIC_ENABLE;
-> +	bool apic_mode_changed =3D apicbase_enable_changed || x2apic_enable_cha=
-nged;
-> +	bool need_lock =3D apic && apic_mode_changed;
-> +
-> +	/*
-> +	 * Serialize apic_base and APIC ID updates with APIC map
-> +	 * recalculation.
-> +	 */
-> +	if (need_lock)
-> +		mutex_lock(&vcpu->kvm->arch.apic_map_lock);
-> =20
->  	vcpu->arch.apic_base =3D value;
-> =20
-> [ ... ]
->
->  	/* update jump label if enable bit changes */
-> -	if ((old_value ^ value) & MSR_IA32_APICBASE_ENABLE) {
-> +	if (apicbase_enable_changed) {
->  		if (value & MSR_IA32_APICBASE_ENABLE) {
->  			kvm_apic_set_xapic_id(apic, vcpu->vcpu_id);
->  			static_branch_slow_dec_deferred(&apic_hw_disabled);
->  			/* Check if there are APF page ready requests pending */
->  			kvm_make_request(KVM_REQ_APF_READY, vcpu);
->  		} else {
->  			static_branch_inc(&apic_hw_disabled.key);
-
-[Severity: High]
-Does this introduce a lock inversion between apic_map_lock and
-cpus_read_lock()?
-
-By acquiring apic_map_lock at the beginning of __kvm_apic_set_base() and
-calling static_branch_inc() here, we might be taking the global
-cpus_read_lock() while holding a per-VM lock.
-
-Because static_branch_inc() internally calls static_key_slow_inc(), which
-unconditionally acquires cpus_read_lock(), this establishes a dependency of:
-apic_map_lock -> cpus_read_lock()
-
-However, CPU hotplug operations (like kvm_online_cpu()) take KVM locks under
-cpus_write_lock(). Since KVM commonly acquires vcpu->mutex under kvm_lock,
-and apic_map_lock is nested further inside vcpu->mutex, this appears to
-create a circular dependency:
-
-cpus_read_lock() -> kvm_lock -> vcpu->mutex -> apic_map_lock
-
-Can a guest triggering this path by clearing the APIC enable bit via WRMSR,
-while racing with a host CPU hotplug operation, cause an ABBA deadlock?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260818234238.6181=
-58-1-dongli.zhang@oracle.com?part=3D1
+With this, patch 1 & 3 can be omitted. Also avoids the ping pong: we don't
+want AutoIBRS -> We don't have retpoline -> Lets have AutoIBRS.
