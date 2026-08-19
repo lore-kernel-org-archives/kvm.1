@@ -1,118 +1,130 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9B93C5827
-	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 06:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF5B3C5827
+	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 06:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787119877; cv=none; b=aYcN3mlgTRDhp06zHqfU5msSWveuWwbheXVzrmHTDhbPhM/vfPXzdSwomSsV6m0P2kC8XNMShKuEn792/Z11nSmT4BAJTOeoHeG20LHqsym6rt5NDBqnltMIizdR/33pB//KLePsi5SQegYQJ7ewLEhsbmb3cnFrXUIAo4T1F1g=
+	t=1787119888; cv=none; b=cTWKHb06MC8UDqezySSzOFXih1HYuRHOLn/lNgaaGBdu8fmGHClshJNLTF9OVQAxNNcJ91gKBgt1WDyEIMY8YX9uk59r9w2o+KR8DLg42eoIYeT+ZMoyVWZHJddTCZ0chZ9C9ySlscE20TjCoyqyhHu0IKu+8PsKMozEG4KnSRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787119877; c=relaxed/simple;
-	bh=IIFG5lu0TAt5Fn+VALFlbJHSaKOJQ3/IW+JatxaB1+w=;
+	s=arc-20240116; t=1787119888; c=relaxed/simple;
+	bh=mhxz/hJMvCAjxYYnmTu5pBVMeuXKv3IxzBGJb/lpcKM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JFY3ZXqkxj63oBOCRIRZ6W0zBVL4jwW9x1sLgQJj05SPwun9jXgaxPSZIw2AGmuFWjLaQGRnsg8wqsi1pZHiOwBpB2xs0s8RpjyVZqWEb/fcxDVlwlEXMecA9Yd4RDYhWTsgxXz8ziuDoOgRKU1hzZmAhIAUukVsiFFYCp+Uqzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NvEPWmky; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=nHF2fd7VrGwenngtfn/HYSV0EAXdGuDyRPmiwAR8W0Jyp4P2l3wI+Jo8hjg62XFjrOFVGWTRfkFplxjDqjnx2KuF75PL+WRS8CJQnWbwr2LEbnQfW9+0rIwNYfFjlNqmQNoq6eMyVyWwuUmMkDOGncBxwX8ob8n8Ql21JH6Z6w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gNJ17Jhh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NvEPWmky"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A9FC1F00A3A;
-	Wed, 19 Aug 2026 06:11:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gNJ17Jhh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E84C1F000E9;
+	Wed, 19 Aug 2026 06:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787119876;
-	bh=ZOAdpespVZZ+MZvOIWaGrJyH7noc0RwHNLjXVcBCDgk=;
+	s=k20260515; t=1787119887;
+	bh=Bx4tnsKVcwZsOBJXSkQHw66XyPsT3LZ4+Sc6+gUYc3Q=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NvEPWmkyOMfgQc+nJnq54ZWOBUVjNglf/NPUsKvN1JfkEaK7DRp/ymkkD9wcjFc0W
-	 m4Q1wUtI42MzD76ZV9W0Qg3Q16sY4WbYfOrTRDw6fugw0rgoDvxkhOZWwQLlXYAF92
-	 4AV6d2ZVW59dEpZvK+puKeyR1W16DcJzvyPoNb/g9Qzr8GnJRQzfNNixn9tiB9Rvgl
-	 +CsocEKWavCJtyCaUUVtLwKI5+ThanQFDMIc0HObDLQHQkVcVqVTmNeWc6fO+v7s7Z
-	 R2CItV1/80daYubdTImms+F8L9mwmMVKtwvs6xgBJxWCq1JzkDZxvTVNQhtf3QK9oX
-	 5JUpDwbegJY6Q==
+	b=gNJ17JhhQ5hkH7CqNCcPu7XcQ5qxEhYZ6CyqG4h5f1aW436guSsWht2lN8DDKNgIS
+	 3j9LGYW9Sb8CkgeY3nz82E0xJZVEbhmiMYGoGwGUWZN/5+0jHwhcagUDEEdgT44iaE
+	 2wWj887FZiwOwmzX1pc2JD73g8yCZQtHM5iMJFQHzRAS+jJZsJjxhm6s90QwxCSlAb
+	 9zOxjUinUcezJocsL/JX6G1QhgbO70I7P/+UJn5Mb/uaNQpyq+wcOUdMMBM/POkMYw
+	 s8k+yFj8nCI1bxn4bu1pTn1XTfFUx/U4Fe94EikZUt0C8BgbuSA0mpMU8+OETh5e+2
+	 JhpZGmLBFc4rQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 4/9] KVM: nSVM: Propagate hardware DecodeAssist bytes
- to VMCB12
+Subject: Re: [PATCH v4 5/9] KVM: x86: Track emulator-originated nested #PF
+ VM-Exits
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Tina Zhang" <zhang_wei@open-hieco.net>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <79b5372fbfa85642af81b34f219c30cad45b3728.1787116250.git.zhang_wei@open-hieco.net>
+In-Reply-To: <e1860aaffc3a07d289dd083d2f3dd37b4d4bcc9c.1787116250.git.zhang_wei@open-hieco.net>
 References: <cover.1787116250.git.zhang_wei@open-hieco.net>
- <79b5372fbfa85642af81b34f219c30cad45b3728.1787116250.git.zhang_wei@open-hieco.net>
+ <e1860aaffc3a07d289dd083d2f3dd37b4d4bcc9c.1787116250.git.zhang_wei@open-hieco.net>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 19 Aug 2026 06:11:16 +0000
-Message-Id: <20260819061116.7A9FC1F00A3A@smtp.kernel.org>
+Date: Wed, 19 Aug 2026 06:11:26 +0000
+Message-Id: <20260819061127.0E84C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Missing live migration serialization for DecodeAssist instruction =
-bytes and desynchronization of vmcb02_insn_bytes_fresh flag.
+- [Medium] The newly added `has_emulator_context` field is left uninitializ=
+ed or improperly cleared when queueing non-nested exceptions and restoring =
+state from userspace.
+- [Low] The `has_emulator_context` field is populated but never read anywhe=
+re in the codebase.
 --
 
---- Patch [4]: [PATCH v4 4/9] KVM: nSVM: Propagate hardware DecodeAssist by=
-tes to VMCB12 ---
-commit 84578efc5f5e5753c950d333f88e1748a68f8d8c
+--- Patch [5]: [PATCH v4 5/9] KVM: x86: Track emulator-originated nested #P=
+F VM-Exits ---
+commit 224b6e38736ada4f6f56c322ba1950bffe0ab244
 Author: Tina Zhang <zhang_wei@open-hieco.net>
 
-KVM: nSVM: Propagate hardware DecodeAssist bytes to VMCB12
+KVM: x86: Track emulator-originated nested #PF VM-Exits
 
-DecodeAssists provides instruction bytes for nested page faults and
-intercepted page faults caused by data accesses.  When the feature is
-exposed to L1, copy fresh hardware-provided instruction bytes from VMCB02
-to VMCB12 for these exits.
+Add has_emulator_context to kvm_queued_exception to record whether a
+queued exception VM-Exit originated from the current emulator exception.
 
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index d08c30e9a6f44..d34370b84d5b3 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
+ost.h
+> index 283847619ff88..eb9f1b9afeb7d 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -688,6 +688,7 @@ struct kvm_queued_exception {
+>  	bool pending;
+>  	bool injected;
+>  	bool has_error_code;
+> +	bool has_emulator_context;
+
+[Severity: Low]
+Does this code ever read the newly added has_emulator_context field? It
+looks like it is populated here and throughout the exception queueing paths,
+but is never actually consumed.
+
+>  	u8 vector;
+>  	u32 error_code;
+>  	unsigned long payload;
+
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index d94b59140c452..75d00340c71fa 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
 
 [ ... ]
 
-> +static void nested_svm_update_vmcb12_insn_bytes(struct kvm_vcpu *vcpu,
-> +						struct vmcb *vmcb12,
-> +						const struct vmcb *vmcb02)
-> +{
-> +	struct vcpu_svm *svm =3D to_svm(vcpu);
-> +
-> +	nested_svm_clear_insn_bytes(vmcb12);
-> +
-> +	if (!nested_svm_vmexit_supports_insn_bytes(vcpu, vmcb02))
-> +		goto out;
-> +
-> +	if (svm->nested.vmcb02_insn_bytes_fresh)
-> +		nested_svm_copy_insn_bytes(vmcb12, vmcb02);
+> @@ -473,7 +476,8 @@ static void kvm_multiple_exception(struct kvm_vcpu *v=
+cpu, unsigned int nr,
+>  	if (is_guest_mode(vcpu) &&
+>  	    kvm_nested_call(is_exception_vmexit)(vcpu, nr, error_code)) {
+>  		kvm_queue_exception_vmexit(vcpu, nr, has_error, error_code,
+> -					   has_payload, payload);
+> +					   has_payload, payload,
+> +					   has_emulator_context);
+>  		return;
+>  	}
 
-[Severity: High]
-If a live migration occurs while KVM has a pending hardware #PF VM-exit
-(where exception_vmexit.pending =3D true and vmcb02_insn_bytes_fresh =3D tr=
-ue),
-how does the destination hypervisor know to restore this state?
+[Severity: Medium]
+Is it possible to leave the has_emulator_context field uninitialized here?
 
-It appears svm_get_nested_state() and svm_set_nested_state() aren't updated
-to serialize vmcb02_insn_bytes_fresh or the hardware insn_bytes. Could this
-cause the destination hypervisor to inject a #PF into VMCB12 with an
-insn_len of 0, effectively losing the instruction bytes?
+Looking at the rest of kvm_multiple_exception(), the new has_emulator_conte=
+xt
+parameter is passed in, but it isn't assigned to the vcpu exception state in
+the normal queue path:
 
-Additionally, if userspace calls KVM_SET_VCPU_EVENTS to clear a pending
-exception:
+    if (!vcpu->arch.exception.pending && !vcpu->arch.exception.injected) {
+    queue:
+        vcpu->arch.exception.pending =3D true;
+        ...
+        vcpu->arch.exception.has_payload =3D has_payload;
+        vcpu->arch.exception.payload =3D payload;
+        return;
+    }
 
-arch/x86/kvm/x86.c:kvm_vcpu_ioctl_x86_set_vcpu_events() {
-    ...
-    vcpu->arch.exception_vmexit.pending =3D false;
-    ...
-}
+Could this result in leaking stale state for has_emulator_context?
 
-The vmcb02_insn_bytes_fresh flag is not cleared alongside it. Could a
-subsequent emulator-generated #PF then incorrectly copy these stale
-instruction bytes into VMCB12?
-
-> +
-> +out:
-> +	svm->nested.vmcb02_insn_bytes_fresh =3D false;
-> +}
+Furthermore, does this flag also need to be explicitly cleared in
+kvm_vcpu_ioctl_x86_set_vcpu_events() when restoring exception state from
+userspace?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1787116250.gi=
-t.zhang_wei@open-hieco.net?part=3D4
+t.zhang_wei@open-hieco.net?part=3D5
