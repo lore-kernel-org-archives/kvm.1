@@ -1,69 +1,60 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012069.outbound.protection.outlook.com [52.101.43.69])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A067D472F7C;
-	Wed, 19 Aug 2026 12:08:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787141312; cv=fail; b=A2aqzdXYWpIQgEPpRzVFPMDlzlGMmBWsh6rSexIO0/6S20JbvWvRiQrbtqoUZMGVjL7frrHhgQeC9IjckOaAa/RT0hPeWMt1PQYbPl4vvZfSOh7CzMHeohN/v9h1UPeoDmnGXZAEvgfkC+zklrwUE75u8g2dF1QX1fu/XxRXK2U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787141312; c=relaxed/simple;
-	bh=h9c+ZKvsCXUnXTxAY1u/ICk8nKoNb0ykWBTvhLqjOJc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=QKT3/ZWh4SriEZds3ULSn2hLUmh4uHHBH2Jq0RQBTRmeAeZZorNSyT8ppgnrfw5k3VNkHwfhpPTIuc9Phg6D2UOWh2RrIANe0DefKXn1QVUv592C2hTu9EARO8hqH+GjL/HRGB2cHVrByBrroLEQX7eZSufXTe905V8aDxP2Fsk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=bl4JGGG5; arc=fail smtp.client-ip=52.101.43.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAECE313E0D;
+	Wed, 19 Aug 2026 12:54:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787144056; cv=none; b=a1OPZtme0UPMQHTgMzUcrlRM0mShqD0Amo+jEA+gfaD0L1cZFSuW5v6938Zsz3e3yNkmH9k97UB5kdHhMRKYoVkqP6Da3dgWyABX0X/Ux344za57q1sE9XOkHRRMUPzZ0RDU77G9QloGTiTpHZLb3KEqeirvkkEjo1S2f9rQYsk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787144056; c=relaxed/simple;
+	bh=qoh9CGoqJL9ddLhxEmYa5KQW5jXwOhBfEv/h11lC/nk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=afzZnDZ6fccO6v3Sm1CsUtXa0Ol7kawUvS33XSpIqYGA0xiy9y/r989W8X3vltjB+uDrpvf3vpxx7woLkJLy6Ou7D3mua+KFM2v9Ns5mlzgPp/yTIeDh+FmrsrK5lpF9OpUpYFANU7ydzOW/uWsXniLfFIlERVry5t4wuHErQGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=b05RYFlT; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="bl4JGGG5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=B2K58RvQ5Ki2T2fzjEjhF+Z54h9jgi0bi0BCfnc7p9NnCk2IuvWQFd/zVUwH7gPQkO4vyx4PPnOnxts4oVhqAlFUnXgrMEBvra+lg+/oiggSmTVg/SuPSD/LJBRVWTSwNBpFaQ+0hGsU2FXEnQFGtf5Wc+DzjLCBi4NfNV5z3ll48SQB8jVrlQlsAl+cG1jHhafSrMq6RHt3tcaJwiKLTjfGhjY6ukogUqS77+gRWT7rqU9aiHSTRXaXV8LpLqnpNO8C8y/+3QYgfcMOlULjvYg6+Zw00N24ITRS7ZkaUWRqgrITtK0pBwgdeG5DEkiYcFSgbjOp2B0JIzwGIKVsyA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mvIxacTodszEefkQ86Z0KOY+QRNp/itzoTa/CGO1dtM=;
- b=cZ0UdjVfFu34S90jCQ30NSdw/iKGj1xNm8AXtYLhhObYoNlgBkH2B/em6BAb/g07DOCxK75okujT8KAhQ1YNSb/fZ99vMG2lWmpqmuV8pGm87bQWIilz8C/tUzIwM0LpgiMSgFCB0S4mR4ZfDs9TkmDAe0uFi3wWG3vBAvtsbkgKC1KZt67Jvvks8VVoaiOt9yaB1c8BCpTaQg5xYQeszRnypDqg0aU6l5ft7mHrQlmKkdGR+DMfGaKdPAWPR7NtBfncwCCTL9fOkjpSeQtE3VRbzCn4tAS6StaB5EdALKQpmXqd22Lrw+7v2lY9IHWfe7Cb9KD1Bd+ySNy3JK2U2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mvIxacTodszEefkQ86Z0KOY+QRNp/itzoTa/CGO1dtM=;
- b=bl4JGGG5JkZnObPAYWosWYSmBBWL/YB2XkYzX/ahLwyAbwfDyI9KWsRW4Oz9lMEOQZZEMMbiIKCwHT4OHBGRWSYNJZpn+Olo+Y/MzWp2oAWR7qeNptnAfL04hRoTDgVbklPj/x1VywezZ/UY5T/QA2SxEGLXaCuupVEQxk2VqiI=
-Received: from BY1P220CA0007.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:59d::13)
- by PH0PR12MB7888.namprd12.prod.outlook.com (2603:10b6:510:28b::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
- 2026 12:08:26 +0000
-Received: from BY1PEPF0001AE18.namprd04.prod.outlook.com
- (2603:10b6:a03:59d:cafe::5b) by BY1P220CA0007.outlook.office365.com
- (2603:10b6:a03:59d::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.8 via Frontend Transport; Wed, 19
- Aug 2026 12:08:26 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BY1PEPF0001AE18.mail.protection.outlook.com (10.167.242.100) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.339.3 via Frontend Transport; Wed, 19 Aug 2026 12:08:26 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 19 Aug
- 2026 07:08:23 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 19 Aug
- 2026 07:08:21 -0500
-Received: from [10.85.46.157] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.45 via Frontend
- Transport; Wed, 19 Aug 2026 07:08:17 -0500
-Message-ID: <829b5c18-6ffe-46fe-bfed-03d5ddde92d9@amd.com>
-Date: Wed, 19 Aug 2026 17:38:16 +0530
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="b05RYFlT"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67JAVXu21323346;
+	Wed, 19 Aug 2026 12:54:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=B33aBh
+	T/x5rDeUfzoyZLvQRbhosrjkoNYtdwvyw0JAg=; b=b05RYFlTMtN1UaHJbSpxZ0
+	w+dYKLH31UquTCqIVPPwy3VnLnPiaPOMfN/vtujN2NF3ZCGFloY2KxEAX+Oi80bJ
+	SPXSfjtc3EHfuZujRBa1uPSSVfdeg/78/Vtk9QXFuaHhyVyjAqmdpI4PIpZMQ+Bp
+	wkAgVwmTtGJZTAE1kIvajQxti3gyK75RkxgANC/QkZrxIVU1xMGJ15qugZn4IEgu
+	BS29gOcDYN5tkGhN8zoJn9KB6FtijFeHydWy3GI/TsLoxfbB9GlwqGUtZ+fiIJrX
+	F8xLy75jtbSHmu4H46+NXXgqvBsfj07X/C1bfdRbIaQ1zQUR/qjFxzB1rrJmXcWA
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g4yu03r5t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Aug 2026 12:54:13 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67JCfMKt001940;
+	Wed, 19 Aug 2026 12:54:12 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g33xh8w74-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Aug 2026 12:54:12 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67JCs8Xj49545706
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 19 Aug 2026 12:54:08 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9E8282004B;
+	Wed, 19 Aug 2026 12:54:08 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 406EF20043;
+	Wed, 19 Aug 2026 12:54:08 +0000 (GMT)
+Received: from [9.111.18.61] (unknown [9.111.18.61])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 19 Aug 2026 12:54:08 +0000 (GMT)
+Message-ID: <30016a7a-85e8-4a66-99e1-a1545f7fe323@linux.ibm.com>
+Date: Wed, 19 Aug 2026 14:54:07 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -71,170 +62,171 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/7] KVM: SVM: Enable save/restore of FRED MSRs
-To: Sean Christopherson <seanjc@google.com>, Nikunj A Dadhania
-	<nikunj@amd.com>
-CC: <pbonzini@redhat.com>, <linux-kernel@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-	<hpa@zytor.com>, <xin@zytor.com>, <nikunj.dadhania@amd.com>,
-	<santosh.shukla@amd.com>, Shivansh Dhiman <shivansh.dhiman@amd.com>
-References: <20260129063653.3553076-1-shivansh.dhiman@amd.com>
- <20260129063653.3553076-8-shivansh.dhiman@amd.com>
- <aauJ80pZrw_SfF31@google.com> <db768f80-dfda-42a2-8601-8d0af35c2959@amd.com>
- <an0BbcxUNRKqnUSJ@google.com>
+Subject: Re: [PATCH v2] KVM: s390: Improve floating IRQ injection behavior
+To: Halil Pasic <pasic@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: sashiko-reviews@lists.linux.dev, linux-s390@vger.kernel.org,
+        kvm@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Michael Mueller <mimu@linux.ibm.com>,
+        Eric Farman <farman@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>
+References: <20260817121631.159451-1-frankja@linux.ibm.com>
+ <20260817122849.9F8061F00A3A@smtp.kernel.org>
+ <3562788b-150c-4387-a840-60d9e6b6e49d@linux.ibm.com>
+ <20260818163226.68c6bea4.pasic@linux.ibm.com>
+ <4f233ae1-2a30-4498-bd5d-2a001c96b2d8@linux.ibm.com>
+ <20260818185850.0a522630.pasic@linux.ibm.com>
 Content-Language: en-US
-From: Shivansh Dhiman <shivansh.dhiman@amd.com>
-In-Reply-To: <an0BbcxUNRKqnUSJ@google.com>
-Content-Type: text/plain; charset="UTF-8"
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <20260818185850.0a522630.pasic@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE18:EE_|PH0PR12MB7888:EE_
-X-MS-Office365-Filtering-Correlation-Id: 62977b8a-c002-433a-78fe-08defdea9325
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|23010399003|7416014|376014|36860700016|1800799024|3023799007|56012099006|10067099003|4143699003|5023799004|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	S45QeYzrlBC+PEbjBKcr4WulZ0TaMz+mHyWa0hAQ4xTnZTXLvkmMN9LaPPn3V3hUUyAQLd8E1snLw+YkPij8rR2t6g+WvSxRr5ceBqTnaR9eT4RzFvSYGh7qtGMNA0QdqOPHmT1+9wUBi74LV7UZOsxqiThtu9f5HnBejMavdQqYUWk81hDj7jxx0U/OVidoH6IzUgV/JnpfEdxgLvr5Rc8CeCQvUcu8cHM86q8ufqM6CgrJgayKJPMxnCDzeXxjsUaZUKLscgeUjynLMjVw1vrrpJIJUHU/sSEOtcfwjp+kgzJhHea64MTbsxbaoUrojxkft//XmHTgXMxBSCDuuDZ5tXgO/tAcX+RgSBGQ+vkf6EapuvX64yEvj2H/bTGeHcHpVgn53x0KPsIPum1/fm6xWFQXFJG68rhjl7ON4ZKax5W+IRpSLL/norkLS6XyU/U6siSulCz3LcCZdKmJnzyyImcAzPJ1Rdj4jsO6KjJp0YvVJduca/7NZPAHiq5WIKQPTf23R2eRBDguF6UTMJNZoRNMCLWierv0GixwqYVZPeTs7M53W5aNUCYOrsoD4YANGlpxYbtKxkD30LYGo6Mf9rOqnFtwbN5B0lJAW6KSO7feLkizB56V4fngkv8wB0IkxXHzEMx0VZIdDOUkEB+vVp8MGjLa6rQl4G/iJVUG1Td3RlCswk1vmcIFy+Qv19X93PMNvWdFJY6gNdkhWA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(23010399003)(7416014)(376014)(36860700016)(1800799024)(3023799007)(56012099006)(10067099003)(4143699003)(5023799004)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	WoOlAGsGV+wGHR/HOnGCEgwA1eIPFHDkar7M5ULkgo5ukN0Eg+Rioi4OjFU4KOObdfzipsVFp/0WwCdrF0m5YZWYLt4BoU8WYiszfrVcT1WtB0K3MEB7JPambdEZRj/lQvP4YJ0a7qx8VlcM9Eo1zwf/A/9rDxQpKlckOA8vAGhUaIEGh6M4lkPWbfyPtXPYqlyPv0EML+MSuV9AbX/bL8YpdCkLpS+aSmEFPbdw3BNiaK/eNblF1BHi23LMMLX8caMLwydtU9WMtiqrETOUIzmTaC22CHo16QK9f9t1bPuamCSgaj9BVgqfwQPVuz8vGf4AfkdzfOgfu7oO2q+UW5+r1ivc/fjaQFWo0+uKSo1uOmekEeVbGt/uiLsroHbjiSLTK+id8S/ElQWoeT7qg8nObg3gFYsNBIztfjmr9qI6mhWIrqzbQwu68INKpn8g
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 12:08:26.5247
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 62977b8a-c002-433a-78fe-08defdea9325
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BY1PEPF0001AE18.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7888
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Y0Cg1T7baR8dZzo7yeixy3yVWly7UZbq
+X-Proofpoint-GUID: Y0Cg1T7baR8dZzo7yeixy3yVWly7UZbq
+X-Authority-Analysis: v=2.4 cv=RoX16imK c=1 sm=1 tr=0 ts=6a85a775 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
+ a=LUfT0kCOqNB-ZUmkrjgA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE5MDA5NyBTYWx0ZWRfX8Qch6xn+8lAv
+ KJAaotuNFe0FKeihJfTD+FDIHPko42mLlbtIMNoXvJAKG/kDxJVDZmCbV46GYEOqnasu77HBpV8
+ gH3NzVGU0vDrBotQ20TB+H+CB7OvHlU=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE5MDA5NyBTYWx0ZWRfXyk8hqpFMO/50
+ OOhq+K+u+CO/SJJEv9L0wIUrVX52nVzL3hCJdyejUovSxqy3Z3b1v/SbiC1BtxTgqyDp8CtliGw
+ JcUb2fN0HsYuzGOTaqjedzg+O/pR8yQfGXSfevDwHiD4HzRnprY2vzFROSsrPQVh/xxy0JbYHJY
+ GLXT0JeebZwdYi92Yalzth55BDcn+pw4kSZGLxpKfAhe1fxmpi8rXdrNoNYZZCFC17AQZdY3uLr
+ zd33r2nFTaPOTmmqkbaXZ06I7goag+Lpxo5tTwW9gwGNkd+yUe7RYBBRQYIRBcFdimHjqCqQDGB
+ UlcQbdPFMQlO9kUj9FR1GatExl5bhuF0itK52X0TEdMSHiZ7v6kJJjdpqjtL0ZcnyifiVdEa44W
+ Quk3jzHjkaWVSRPRiCrZX5E2kFQUUqV9fNXq31Pig6c4wwNCqwJ4NPZfCXri9GmltGehX5DEWiL
+ BYuAYtGPJe+4peuUQLw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-19_03,2026-08-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 suspectscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 phishscore=0 spamscore=0 bulkscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608190097
 
-
-
-On 13-08-26 04:57, Sean Christopherson wrote:
-> +Nikunj
+On 8/18/26 6:58 PM, Halil Pasic wrote:
+> On Tue, 18 Aug 2026 17:14:52 +0200
+> Christian Borntraeger <borntraeger@linux.ibm.com> wrote:
 > 
-> On Mon, Aug 10, 2026, Shivansh Dhiman wrote:
->> On 07-03-26 07:44, Sean Christopherson wrote:
->>> On Thu, Jan 29, 2026, Shivansh Dhiman wrote:
->>>> Set the FRED_VIRT_ENABLE bit (bit 4) in the VIRT_EXT field of VMCB to enable
->>>> FRED Virtualization for the guest. This enables automatic save/restore of
->>>> FRED MSRs. Also toggle this bit when setting CPUIDs, to support booting of
->>>> secure guests.
+>> Am 18.08.26 um 16:32 schrieb Halil Pasic:
+>>> On Mon, 17 Aug 2026 15:22:41 +0200
+>>> Christian Borntraeger <borntraeger@linux.ibm.com> wrote:
+>>>    
+>>>>>> +	irq_pend_mask = inti_to_irq_pend_mask(inti);
+>>>>>>     	for (sigcpu = kvm->arch.float_int.last_sleep_cpu; ; sigcpu++) {
+>>>>>>     		sigcpu %= online_vcpus;
+>>>>>>     		dst_vcpu = kvm_get_vcpu(kvm, sigcpu);
+>>>>>> -		if (!is_vcpu_stopped(dst_vcpu))
+>>>>>> +		if (!is_vcpu_stopped(dst_vcpu) &&
+>>>>>> +		    deliverable_irqs(dst_vcpu) & irq_pend_mask)
+>>>>>>     			break;
+>>>>>>     		/* avoid endless loops if all vcpus are stopped */
+>>>>>>     		if (nr_tries++ >= online_vcpus)
+>>>>>>     			return;
+>>>>>
+>>>>> [Severity: High]
+>>>>> Does this code drop the interrupt kick entirely if all vCPUs currently
+>>>>> have their interrupt masks closed?
 >>>>
->>>> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
->>>> ---
->>>>  arch/x86/kvm/svm/svm.c | 6 ++++++
->>>>  1 file changed, 6 insertions(+)
->>>>
->>>> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
->>>> index 954df4eae90e..24579c149937 100644
->>>> --- a/arch/x86/kvm/svm/svm.c
->>>> +++ b/arch/x86/kvm/svm/svm.c
->>>> @@ -1144,6 +1144,9 @@ static void init_vmcb(struct kvm_vcpu *vcpu, bool init_event)
->>>>  	save->fred_ssp3 = 0;
->>>>  	save->fred_config = 0;
->>>>  
->>>> +	if (guest_cpu_cap_has(vcpu, X86_FEATURE_FRED))
->>>> +		svm->vmcb->control.virt_ext |= FRED_VIRT_ENABLE_MASK;
+>>>> I think this is a corner case but still a valid finding. We can probably consider this
+>>>> slowpath and wakeup/set cpuflags for ALL cpus? maybe after doing 2 rounds instead of one?
 >>>
->>> This is completely unnecessary, no?  CPUID is empty at vCPU creation and so FRED
->>> _can't_ be enabled before going through svm_vcpu_after_set_cpuid().
->>
->> Hi Sean,
->>
->> You're right for vCPU creation, CPUID is empty there and the hunk does
->> nothing, so I dropped it in v2. While preparing v3 I hit a case that does
->> need it though, a triple fault:
->>
->>  1. The guest enumerates FRED, so the FRED MSRs are passed through and
->>     FRED_VIRT_ENABLE is set in virt_ext.
->>
->>  2. The guest triple faults and KVM intercepts SHUTDOWN.
->>
->>  3. shutdown_interception() does clear_page(svm->vmcb), which wipes
->>     virt_ext along with the rest of the VMCB, and then INITs the vCPU.
->>
->>  4. init_vmcb() runs, but svm_vcpu_after_set_cpuid() does not.
->>
->>  5. CPUID still enumerates FRED, so the intercept recalc puts the FRED
->>     MSRs back into passthrough.
->>
->>  6. Nothing restores FRED_VIRT_ENABLE, as only svm_vcpu_after_set_cpuid()
->>     ever sets it.
->>
->>
->> So the guest ends up with direct access to the FRED MSRs while hardware is
->> no longer context switching them, i.e. it can clobber the host's FRED state.
->>
->> Setting the bit in init_vmcb() is the smallest fix I came up with, so I'd
->> like to add the hunk back in v3.
->>
->> Would you prefer it handled in svm_recalc_fred_msr_intercepts() instead
->> while setting intercepts? Or is there a better way to deal with this?
+>>> With GISA, I think the FW is supposed to deliver the floating interrupts
+>>> without dropping the vCPU out of SIE. I'm not 100% sure but I think we
+>>> can rely on that mechanism for the CPUs that are in SIE. Without GISA,
+>>> I think, it is reasonable to assume that vCPUs don't keep running for
+>>> ever. It has been a while since I have looked at this code, but I think
+>>> the SIE exit path would catch this. If that is true we would not really
+>>> lose initiative, but just see delayed interrupt delivery.
+>>>
+>>> Sleeping vCPUs on the other hand are not of interest in this context, I
+>>> think.
+>> This is all corner case handling. Imagine one CPU running with IO disabled
+>> and all other CPUs sleeping. If now the "opportunistic" wakeup fails the
+>> GISA IO interrupt will never be delivered unless there is another wakeup.
+>> In reality this is a will not happen, but see the latest kvm unit test
+>> patch from Janosch and it might also create latencies, the "pick one CPU
+>> to deliver and wake it up if normal processing does not work" obviously
+>> has a hole in specific cases.
 > 
-> Take a hard dependency on an upcoming APM update that states the control area
-> is valid after shutdown, and rework KVM to not clobber control fields on shutdown
-> interception.
+> Right, but that is not the "if all vCPUs currently have their interrupt
+> masks closed" case that Sashiko is talking about. Or did I misunderstand
+> that?
+> 
+> Yes, I agree there are holes, and I was hoping to contribute to a better
+> understanding on where the holes actually are and what are the
+> implications of those holes.
+> 
+Yesterday I managed to find the actual problem behind this code for PV 
+guests:
 
-Sure, Sean. I'm thinking something like the diff below. It contains three
-parts:
+Non-ev Service IRQs are not allowed to be injected on re-entry when SCLP 
+emulation has finished. They can only be injected when we receive the 
+instruction notification for SCLP.
 
-1. Clear the save area and offsets 60h, 61h, and 68h of the control area,
-   as per the APM.
+So having wakeups for service IRQs in the flic is useless. At the time 
+they are injected (after SCLP processing and before SIE re-entry) 
+there's no way to make one pending for a PV cpu.
 
-2. Zero the intercepts as well. The APM doesn't require it, but it seemed
-   worthwhile so that the new intercepts are computed on a clean slate
-   rather than on top of whatever survived the triple fault. Is that worth
-   doing?
-
-3. For nested, same fields are copied to vmcb12 when a shutdown is intercepted
-   in L2. Clear them while copying so L1 gets a deterministic value
-   rather than whatever the hardware left behind. Does that seem like right
-   thing to do?
-
-
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 83de3456df708..38843b29b21ec 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1149,6 +1149,11 @@ int nested_svm_vmexit(struct vcpu_svm *svm)
-        vmcb12->control.event_inj         = svm->nested.ctl.event_inj;
-        vmcb12->control.event_inj_err     = svm->nested.ctl.event_inj_err;
-
-+       if (vmcb02->control.exit_code == SVM_EXIT_SHUTDOWN) {
-+               vmcb12->control.int_ctl &= ~GENMASK(15, 0);
-+               vmcb12->control.int_state = 0;
-+       }
-+
-        if (!kvm_pause_in_guest(vcpu->kvm)) {
-                vmcb01->control.pause_filter_count = vmcb02->control.pause_filter_count;
-                vmcb_mark_dirty(vmcb01, VMCB_INTERCEPTS);
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 519249e75420d..62b4feb9c3909 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2090,7 +2090,11 @@ static int shutdown_interception(struct kvm_vcpu *vcpu)
-         * cannot be reinitialized, i.e. synthesizing INIT is futile.
-         */
-        if (!sev_es_guest(vcpu->kvm)) {
--               clear_page(svm->vmcb);
-+               struct vmcb_control_area *control = &svm->vmcb->control;
-+               memset(&svm->vmcb->save, 0, sizeof(svm->vmcb->save));
-+               memset(control->intercepts, 0, sizeof(control->intercepts));
-+               control->int_ctl &= ~GENMASK(15, 0);
-+               control->int_state = 0;
- #ifdef CONFIG_KVM_SMM
-                if (is_smm(vcpu))
-                        kvm_smm_changed(vcpu, false);
+I've since created a patch to kick cpus in the handling of the sclp 
+instruction notification and that "fixes" the problems with the firq test.
 
 
-Cheers,
-Shivansh
 
+For Linux we'll see delayed delivery at most since the masks are open 
+most of the time. My guess is that the IRQ injection actually happens 
+pretty fast. There are other OSs which might benefit though and we 
+should generally ask ourselves if good enough for Linux is the right answer.
+
+The stat counter did actually trigger a couple hundred times on an IPL 
+so we're hitting the redistribution code path. Let's see what insights 
+we can get from the performance measurements.
