@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C5444A3E1;
-	Wed, 19 Aug 2026 09:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A4444E05B;
+	Wed, 19 Aug 2026 09:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787133266; cv=none; b=b2sVKiPXkiL1EyRhY8+CCCdbF0F8abSTU6R2Xumbh1JzqYo1pNn1jyW/ti4WHYRF6MBcyk+uf2zDGiKiltzqIDFFetNV6dBSARMPhYRvw1OzWjaeXrNev6IrB5pogf9v7/FzYARUCvP/xKOSzr+98B9ZmAHAG/eMSlA3Ckz53Gg=
+	t=1787133268; cv=none; b=ri708iJ2ZjcaEd4gsUVisUPEJpfTDhT0Oyo98zFBaw/rw3LxCOax2w+8pbECR2Hlhpv47iUYuV/Xp46G6e0MjFkgQLtGTE/BC48BBoJ9R3RIK52oxdBTSPYIwVqrVnLTfD9EWqSjXgWrvf/FMTzURpJj47gmmBg3bby/p90ZXvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787133266; c=relaxed/simple;
-	bh=qxUBLF2aXio14BNU3z4PahoymutUqnCKnIYScYetdQs=;
+	s=arc-20240116; t=1787133268; c=relaxed/simple;
+	bh=sqS+snPYKVZCRCXS2ZM/sjjsZEp9XzJ8UJLAmcIVFBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tVkxIEbVzkpos4MR19jsK25PEd2uKwfF+Hvh2pEMyn9m31cj8c+m26vWyPGYItIYtV8pzy1xTCGQgChgOeB4FcPZahpeu7zPnNokN9rwFNITyEAVa45z3Xa/AGIgSxdw2Hva5/HyDJZ06rZ+OGI3Tjbed4uINAcF19SKWMP2EwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J5SArvk5; arc=none smtp.client-ip=192.198.163.17
+	 MIME-Version; b=Sk4z8jnaNCOgJ44V5a/5wTCUtTpt0HGRGh2oU7YodetTqvrDKklydOymJfhg7y6xj2Sxb1a4BwBqc16uBVxk1UN+IQNvdqAb0dkgfl6pFcs8VUBibkSoQSYB3SLOO/B5+9J+AofPNn0RQ/PnToi9EZYbxrA3whROTwY5ht5lcHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J0V08n9o; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J5SArvk5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J0V08n9o"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787133261; x=1818669261;
+  t=1787133265; x=1818669265;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=qxUBLF2aXio14BNU3z4PahoymutUqnCKnIYScYetdQs=;
-  b=J5SArvk5Qeg+RaCPICvvPWtr3VbMPrDDKADRyOtNiKwxrLp0XFLm4iXB
-   iiTWHHTMkJw/YB484TCIQE5Jhk8w2oZoGNv9PLLPJdL6UeNoya19h2HNX
-   XB7MEh62G2Dmlw9h68F8ItRHMg1cA8AOMI0pfbw1tIS/Ice5nNktDC8kN
-   iIb5+PFDafdlODSL/EobP0M3bkisovBXRPtj/NNCcU5tPQceNuIQT77Y5
-   1KDVwRmwA6Hiuuqh/M5I8ngFRJunSQgRaPMIho1x8VJ5i0J4cxwESodep
-   NDn5CEBTV/+uO8gjcNZ06+7wYzgFhypAu0qrmf7+E9DIBRxvJNCug0dec
-   w==;
-X-CSE-ConnectionGUID: 3/f9Rt2NRlWkzsb81u+7ZQ==
-X-CSE-MsgGUID: 90jMdCpQRUyw8SPZKNadKg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11879"; a="87514825"
+  bh=sqS+snPYKVZCRCXS2ZM/sjjsZEp9XzJ8UJLAmcIVFBU=;
+  b=J0V08n9oeccDEp+J/hQ27WUNBdy6j/QYRc8yoXEv33/kNEL+Io/fi/JA
+   BZt8c0T3P96tpTNuQUKY9eOnACMdk+q282YXaPRuJOX0y/WxwT0q04W3q
+   zM7PHmgHodeQum0cDtrL4zMKz0a3jDF17hWBT4/Kk9hM2xmkuXYhgZlNF
+   usjxfYWFfdx/ne7C5IWntcboiq3LOxXHuv6aKYmE2LLqZP6Ef2Ll1U/5z
+   /oflpaoaYT3XmyZ+i7g+M3yF/6XNUI1c4VYFBHGDc4r5gL6QAQTtIian6
+   DLTep8D/eQDD7EfgdCn03RmRKLlyM7gHO/uwFeStO71qPhSaLvpBOLlN4
+   Q==;
+X-CSE-ConnectionGUID: 9vQUPra8T+WaFDOYPM62Tg==
+X-CSE-MsgGUID: uTJUbEslR8mPTquCcENIJQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11879"; a="87514854"
 X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
-   d="scan'208";a="87514825"
+   d="scan'208";a="87514854"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 02:54:17 -0700
-X-CSE-ConnectionGUID: PdOQyOaZSwGBNrhuzbzhJg==
-X-CSE-MsgGUID: S2AAHbpuRrqJPmN/OhS0ng==
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 02:54:20 -0700
+X-CSE-ConnectionGUID: DH1I/gUnQgWMN9V6Vw9gBA==
+X-CSE-MsgGUID: Ftx4oFy5TUuDfovSbbISwQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
-   d="scan'208";a="303708840"
+   d="scan'208";a="303708853"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.33])
-  by orviesa001.jf.intel.com with ESMTP; 19 Aug 2026 02:54:15 -0700
+  by orviesa001.jf.intel.com with ESMTP; 19 Aug 2026 02:54:18 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>
@@ -53,9 +53,9 @@ Cc: Kiryl Shutsemau <kas@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev,
 	nik.borisov@suse.com
-Subject: [PATCH v4 2/9] KVM: TDX: Check if there is valid exit infos based on vp_enter_ret
-Date: Wed, 19 Aug 2026 17:48:56 +0800
-Message-ID: <20260819094903.3060020-3-xiaoyao.li@intel.com>
+Subject: [PATCH v4 3/9] KVM: TDX: Set bits 31:16 to 0 for the synthesized Exit Reason
+Date: Wed, 19 Aug 2026 17:48:57 +0800
+Message-ID: <20260819094903.3060020-4-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260819094903.3060020-1-xiaoyao.li@intel.com>
 References: <20260819094903.3060020-1-xiaoyao.li@intel.com>
@@ -67,80 +67,84 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Check if there is valid exit info based on vp_enter_ret instead of relying
-on the clobbered Exit Reason, in tdx_get_exit_info().
+Set bits 31:16 to 0 instead of all-1s for KVM's synthesized Exit Reason.
 
-Current KVM uses "Exit Reason is not equal to the synthesized invalid
-Exit Reason, -1u," as the condition to identify there is a real TD Exit
-and valid exit infos.  However, there is one issue with this approach:
-KVM updates the Exit Reason to the synthesized invalid Exit Reason for
-real EPT MISCONFIG as well.  This is a false positive for real EPT
-MISCONFIG, which has valid exit infos.
+KVM is going to support Bus Lock VM exit for TDX, after which bit 26 of
+the Exit Reason becomes meaningful and indicates that a bus lock happened.
+The existing synthesized Exit Reason, -1u, will cause a false positive in
+that case.  Change the synthesized Exit Reason from -1u to U16_MAX, so that
+bits 31:16 are set to 0.  This also avoids the potential issues when other
+bits in 31:16 become valid in the future.
 
-Though the issue can be addressed by changing the handling for real EPT
-MISCONFIG to not update the Exit Reason to the synthesized one, relying
-on the clobbered Exit Reason itself is brittle.  Instead, check
-vp_enter_ret directly to identify if it is a valid Exit Reason.
+As a bonus, the check for synthesized Exit Reason in tdx_failed_vmentry()
+becomes unnecessary.  Just drop it.
 
-Fixes: da407fe45908 ("KVM: TDX: Handle EPT violation/misconfig exit")
 Cc: stable@vger.kernel.org
-Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
+Note, the checking of tdx_failed_vmentry() looks to miss the case where
+a real EPT_MISCONFIG happens with failed_vmentry being set.  First, in
+practice, EPT_MISCONFIG cannot happen with failed_vmentry being set.
+Second, even if it can, this is a pre-existing issue and the next
+patch can address it.
+
 Changes in v4:
-- new patch.
+- Collect R-b from Rick.
+
+Changes in v3:
+- split from the patch 2 in v2.
+- define a MARCO for the synthesized invalid Exit Reason.
 ---
- arch/x86/kvm/vmx/tdx.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ arch/x86/kvm/vmx/tdx.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index d557840687d2..1dead84e6077 100644
+index 1dead84e6077..4e275cb6927a 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
-@@ -921,21 +921,27 @@ static __always_inline u32 tdcall_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
- 	return EXIT_REASON_TDCALL;
+@@ -935,13 +935,21 @@ static __always_inline bool tdx_is_exit_reason_valid(u64 vp_enter_ret)
+ 	}
  }
  
--static __always_inline u32 tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
-+static __always_inline bool tdx_is_exit_reason_valid(u64 vp_enter_ret)
++/* Synthesized invalid Exit Reason */
++#define TDX_INVALID_EXIT_REASON		U16_MAX
++
+ static __always_inline u32 tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
  {
--	struct vcpu_tdx *tdx = to_tdx(vcpu);
--	u32 exit_reason;
--
--	switch (tdx->vp_enter_ret & TDX_SEAMCALL_STATUS_MASK) {
-+	switch (vp_enter_ret & TDX_SEAMCALL_STATUS_MASK) {
- 	case TDX_SUCCESS:
- 	case TDX_NON_RECOVERABLE_VCPU:
- 	case TDX_NON_RECOVERABLE_TD:
- 	case TDX_NON_RECOVERABLE_TD_NON_ACCESSIBLE:
- 	case TDX_NON_RECOVERABLE_TD_WRONG_APIC_MODE:
--		break;
-+		return true;
- 	default:
+ 	struct vcpu_tdx *tdx = to_tdx(vcpu);
+ 	u32 exit_reason;
+ 
++	/*
++	 * Return the synthesized invalid Exit Reason, as the TDX module
++	 * never attempted to run the vCPU, i.e. the Exit Reason is undefined,
++	 * but this is NOT a failed VM-Enter.
++	 */
+ 	if (!tdx_is_exit_reason_valid(tdx->vp_enter_ret))
 -		return -1u;
-+		return false;
- 	}
-+}
-+
-+static __always_inline u32 tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
-+{
-+	struct vcpu_tdx *tdx = to_tdx(vcpu);
-+	u32 exit_reason;
-+
-+	if (!tdx_is_exit_reason_valid(tdx->vp_enter_ret))
-+		return -1u;
++		return TDX_INVALID_EXIT_REASON;
  
  	exit_reason = tdx->vp_enter_ret;
  
-@@ -2144,7 +2150,7 @@ void tdx_get_exit_info(struct kvm_vcpu *vcpu, u32 *reason,
- 	struct vcpu_tdx *tdx = to_tdx(vcpu);
+@@ -956,7 +964,7 @@ static __always_inline u32 tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
+ 		 * Defer KVM_BUG_ON() until tdx_handle_exit() because this is in
+ 		 * non-instrumentable code with interrupts disabled.
+ 		 */
+-		return -1u;
++		return TDX_INVALID_EXIT_REASON;
+ 	default:
+ 		break;
+ 	}
+@@ -987,8 +995,7 @@ static noinstr void tdx_vcpu_enter_exit(struct kvm_vcpu *vcpu)
  
- 	*reason = tdx->vt.exit_reason.full;
--	if (*reason != -1u) {
-+	if (tdx_is_exit_reason_valid(tdx->vp_enter_ret)) {
- 		*info1 = vmx_get_exit_qual(vcpu);
- 		*info2 = tdx->ext_exit_qualification;
- 		*intr_info = vmx_get_intr_info(vcpu);
+ static bool tdx_failed_vmentry(struct kvm_vcpu *vcpu)
+ {
+-	return vmx_get_exit_reason(vcpu).failed_vmentry &&
+-	       vmx_get_exit_reason(vcpu).full != -1u;
++	return vmx_get_exit_reason(vcpu).failed_vmentry;
+ }
+ 
+ static fastpath_t tdx_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
 -- 
 2.43.0
 
