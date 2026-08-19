@@ -1,232 +1,208 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11022125.outbound.protection.outlook.com [52.101.66.125])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04E4442B06;
-	Wed, 19 Aug 2026 10:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.125
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787136450; cv=fail; b=fpOSsycOtLge+ToubbFVQiCcSCerVHTXlY+NaXsFEc6xIZ9msiSZfTaLuogrECi2uRhwDNasmWVQjqiFa+siPFSVtBpSfDI8TgTonrr+143gNbyaRa3NiDH/MQf2a3Y03EOhaypiuHI8uy1EBbtNJH6cDP85EY+3+28OnSkf0n4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787136450; c=relaxed/simple;
-	bh=UNmIimH+XIT4c83LbKJ5WCnWQXzRFtEQW/YO+e4yYRs=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=o1UlajvuSoWQacNbfAG5GiZv3OKgqRlZqxgWS5gMhCt9wIbmB0IWfoXxX1GouDaaTbUNryH/74xedO4e438HOJCdYUL7i2N2dZ4mDtZzKe+55bS9NKadv7RCEleChPxJDz5ly/2U/NMAgDNpapPWeCmPZYpJbtDu9VSVpEVP8oQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=tCyLcjf/; arc=fail smtp.client-ip=52.101.66.125
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B4B4156D0;
+	Wed, 19 Aug 2026 10:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787136683; cv=none; b=CLd0jfr4hjrlWGkYVtbr60Obd36rjoLVxhOlhArO02QTdRzaN4YP+x1Ugh+8Vy1NL4maFzfJL44jHJzpYKtFNhPfq8EurlZvQi9CCV4OvPlKmL77gOhsfquw1UYzw4lPY1qtJtXt0X4Ob+fHiV0+SHN7/1u0q4y5v+gtIrLOBTs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787136683; c=relaxed/simple;
+	bh=D5fKHW1R7VMi/jLkHPUEwSyTOoM0aD4o25q5NuxdCLM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Y9YeJH65iQg47UfmQQAU3PLkyd+XKkdIxz1tGAnto779UmAOxPGQj30yp5uSz5wzOzHltJj4tLKhxAuyWP1V7bYGD0c2ukT7gIf75jvWCc3pFRjYWw9+tbJqw3+6v9EorbpPBtbkQAki2VusWaWv5EpdsN5WBmnMl5qJi0zE1Nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KN1lK0yb; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="tCyLcjf/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L6YrwUDdeldoH+9EXrtRYrcR999GUo7uQY6StJD7x++Bg3mHS0G0sVo7aSGQZmn5Y7ZaN5bKh8MlwrLUtFtK56RPowm+NwrYP51RXHLQYhENBXDdfNHf2OGYJ70RBNuYXlYtN9spFSTWEUc0MjlIyoWP3Mk/ZYQXWrCCfTIFHPtgp+CwA7+4jovm0No4M8A5fPT+lUDP2qa/rRtytNomMvKLlZn/JJHveC7XkmMHS6tqiT9W9yKQqoEytc/gxX+89zbvpl4uepfjAK3CzaVI8nc0F+WtTbPMFVr2mYlNC+g8NANZWrifxaB0zRmJIfC/dDLPbo525S7raUHn8fP0SA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=espZVcROnoHlq4WzXXqlOdpYL/fHnK+kt59SMgO52DQ=;
- b=BQjl2WboioFOPkdeXVfGQ/bS8zQVGQg25ZuPL/Zs9tP2upUulQqVXlq61qO/KL33Q8PXqcoBxAZ/2fjO9cTK5SwjF5ojgWhidi/uhIJUUpInfAXGkME7LrYRPSRwkvlPKJSAPNOv2eDvEiarJaCeSrqRf6j4d1iZYThRwKiOj1uSh8Wc1f93HcOzuOfHfR+N/NpzFio3Arc6pVVEEmQ1Pr0djHu9Jzb+yM6fWHXbOv3oHvyDfXodwx6Cql1FkgWpp/nXNhuJVXuhhn81gcyoLbaf9pE8YjIq9FtwWzXv6SgTbA7UisyesCr66qpivERPUqltn72PnhNBU3McTpo6aQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=espZVcROnoHlq4WzXXqlOdpYL/fHnK+kt59SMgO52DQ=;
- b=tCyLcjf/uk3COBPMinu5CXepFF1TgYajtq+WcF9jJdHjmXFl4n6QqA0jbOrB9mnZDyMmb5UGUOF0VUMU0x5FOyZ66zDCTuzqdd7D+BY0gcLjdYM1zjYDzev9hHKzxcxSojvuSWC0aat/1I069nbaSi98xGtdoHV+G+X+uDeUPdYvQYtD+FGoik5j1YkKZnjr5mYePJT2++1h8otkQZsuLaQ/xOpQsfdGb6gHo2c58EJWC5EHtyj35FYcRTMlWJf/b7xEg9rkYh9BY8/LYtmF8M8tznOi+iecWBLh9L12MPjrBs+SdkGcRCisMvdFLqtLdAaPjnkfizhksWzGcv8I6Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from DBBPR08MB10650.eurprd08.prod.outlook.com (2603:10a6:10:52d::7)
- by MI9PR08MB999879.eurprd08.prod.outlook.com (2603:10a6:290:ce::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
- 2026 10:47:25 +0000
-Received: from DBBPR08MB10650.eurprd08.prod.outlook.com
- ([fe80::1b2a:832c:d136:a37c]) by DBBPR08MB10650.eurprd08.prod.outlook.com
- ([fe80::1b2a:832c:d136:a37c%5]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
- 10:47:25 +0000
-Message-ID: <4266010b-9581-4e0d-abb5-97084c31e546@virtuozzo.com>
-Date: Wed, 19 Aug 2026 13:47:23 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vhost: clear vq->worker under vq->mutex when freeing
- workers
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com,
- stefanha@redhat.com, jasowangio@gmail.com, eperezma@redhat.com
-References: <20260723153310.745855-1-andrey.drobyshev@virtuozzo.com>
- <anSMBpQJ8x-vXYy2@sgarzare-redhat>
-Content-Language: en-US
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-In-Reply-To: <anSMBpQJ8x-vXYy2@sgarzare-redhat>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR0P281CA0147.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:96::11) To DBBPR08MB10650.eurprd08.prod.outlook.com
- (2603:10a6:10:52d::7)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KN1lK0yb"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67JAVa842072871;
+	Wed, 19 Aug 2026 10:51:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=PSeHHW
+	jZP5CqEtwyk6aeCte5rY3t4OHvEvCgZMVYQ/g=; b=KN1lK0ybKRLnXWmOqbNUnL
+	AG3FWghKkFtD5w1YNyfEFsSr+6LEj4cS2U34G2pq98dJEhMhl57SRUXTInA3YYCJ
+	0tdB0C0fxG+MUWmhYUDZbTQQZLCXyhQKe3zzjNO5fj23+ImJqi1lAOGL7Ty+te9N
+	wHfEsZxxKgt8lgBgwu64PJ34cL2mN8Pzr2YoUuuGs5G+0Xj9e1tjX016CprC7Gbg
+	EL7v8x6RZo3Y59JQUpltTKj6DVb5CERcb/rGZUI6nZ7xogxy2Jis8qkz1HhS1pQI
+	35Wyan4N0Ga8WBAQGQ2VeJ6oM1JEh/rYVQxDdk8tvKYUTU877b+XlyYHsPgIzxlg
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g4yu233uc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Aug 2026 10:51:11 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67JAfHde015261;
+	Wed, 19 Aug 2026 10:51:10 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g34ngg9fn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Aug 2026 10:51:10 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67JAp6O542009080
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 19 Aug 2026 10:51:06 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 747742004E;
+	Wed, 19 Aug 2026 10:51:06 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ADA7020040;
+	Wed, 19 Aug 2026 10:51:05 +0000 (GMT)
+Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown [9.87.134.55])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Wed, 19 Aug 2026 10:51:05 +0000 (GMT)
+Date: Wed, 19 Aug 2026 12:51:03 +0200
+From: Halil Pasic <pasic@linux.ibm.com>
+To: Anthony Krowiak <akrowiak@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, jjherne@linux.ibm.com, borntraeger@de.ibm.com,
+        mjrosato@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
+        fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, agordeev@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com, stable@vger.kernel.org,
+        Halil Pasic
+ <pasic@linux.ibm.com>
+Subject: Re: [PATCH v6 1/1] s390/vfio-ap: fix KVM GISC and page leak when
+ queue removed from host config
+Message-ID: <20260819125103.252dd89b.pasic@linux.ibm.com>
+In-Reply-To: <20260818193349.1877940-2-akrowiak@linux.ibm.com>
+References: <20260818193349.1877940-1-akrowiak@linux.ibm.com>
+	<20260818193349.1877940-2-akrowiak@linux.ibm.com>
+Organization: IBM
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DBBPR08MB10650:EE_|MI9PR08MB999879:EE_
-X-MS-Office365-Filtering-Correlation-Id: 49806322-614b-4b58-66f1-08defddf4169
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|6133799003|10067099003|4143699003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	Ua4JlU9Zb3aOZGWl/skUOpQP/7pW2+X3WB16TlKyXkm6SmcC3ZSbEha3ODL7YFAC+Rb6fBGBQgA07gM8otyr4z81H2Mc5cg04WG6zggRiqjchaTzDsgDsEApAcTkGE/iR6fWjP1R0xZb7hedSYzLVNAkVRto/FWc11Wtu+y3EBxsjEQF5W2WGBF1//3VQYrXZGXA0UUewaBtJyBWARj0BLuMipAw6cZRUhav1yrI5un8B5GqsRecKeYbdkkx5ggfb6O83Q79HedGWpY/BLubZ0qZDIrz2x90NsSdw4p569x32TCKRsnHJzq2Dmuvi9yKKRFo77WWaoNBuqCcGEh0qphQqNWPu1xkg8D4RRmMxjrGhRjwXwYeBimw2uEUceJQWha8KOhciXmFHQfGUD5BTHBtjQQIBbtf8l2NV6ecuJqO7Y8gJgCKalZOkc6Blr3Lb9JTPlQURexQRIUsFQXIj2nvateF6+sCWKP6qAsRiareHUIdjB+5g9GIy5FOcOxSuBEb5IhZmWInjsiWZj/4be0giclAbnRouLBhCb6aA/kDvHmkUYL2IAr0P5sJ1kXa7SqcaSgYSmAUzE8OBeODHRbrv8mLB91cA4/H9dSSYkGCTDvcmvA26QgCvoHAdh1w7n3c/uGi9GkZB5XTVFLu1D5kk7YC99KsVAoNzknALNQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR08MB10650.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(6133799003)(10067099003)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QUNyeWlkeW8xNVI3VjlaVEhHKy9rQzBkRmowUExoL1JyMHVsbnBMcEVCN0NL?=
- =?utf-8?B?NW1kQ1ZHam55cTA3OHVSNjVpK1JCMDg3U1p3OXpMeEdUZlVyT1hKRHNIVm5M?=
- =?utf-8?B?dEI1bXFpakhSQTlpdHFabTBtbWtqbHUrYVFmQS9jR1hNbFVwd1AvRFlkVk9S?=
- =?utf-8?B?Rmp2RWViOWFYb3Q3aDl5Uk5TWk5GOVZrM1ViekJPMlU3a3pvQWpJV2l4b3Ni?=
- =?utf-8?B?cGFCSlo4Q1N4UUVJN1BuSWxiM3Vnb2htQkoxZkNhT0Vyd013R1pYZXA1YUdL?=
- =?utf-8?B?QnVna0NwRDgwWG1jVy9yWVZnOWtzUDVkTTJOeXd2WXBjVHlFVFpxSElheC9O?=
- =?utf-8?B?RjJjeDFISkdDZkJPbjZqRy9qSzY3ZnJRMEMzS1lLcHVBN2ROaitNcjViU0VN?=
- =?utf-8?B?ekVZUkZUL0VTZ2pZM0RFVHZvZFZ0YWx0RzR0MEtxaVRlRTZBbW8xZWVCVENW?=
- =?utf-8?B?TGVtWk4vUlA3NmxIU2VOTWZVUTF4UHVyTXNwZ2dmZFVEcmtGMzhHL3d5QmhO?=
- =?utf-8?B?MWlIVUNhQWhiVHlrZjdjdUNkakcvMzdLMVd3QVhkdHBzTVA0M3hHa3dYbzFH?=
- =?utf-8?B?ejVWd2lHQnpFTkYyTlg5aXJxWVhxVXk3dTdwanhTeUZXK25UU2FlRlk2UFFP?=
- =?utf-8?B?azhlZklzWTJzRlBBM3AxTEdqT01HdVF2d09kOWxWWThBRzA5cHNTZXFJeEY5?=
- =?utf-8?B?Vlhaa2d1TFlZYy8ySE1RUWpBMFVySjVSVGQ3TGFoekRSRkx4ZklKWGRRdm9Z?=
- =?utf-8?B?MVhmbWxJa1RNb1NpY0UvOWVlRXlpMGVrYjZTaHh4djdXWUc2aUpXVjF2Ym5x?=
- =?utf-8?B?MTZvNDdrSVZTSmRqVkV2YUs4cGUvMGVUdURzYm15c3d6Z3RrYXVNNEEwcTRO?=
- =?utf-8?B?QS80YmpYK2FLTnE2Si93d3lwZjVrZXg1YUF3YThmTTQ3QWNrdFNkODlvUzRt?=
- =?utf-8?B?MW54ZzNIVktFYnNOYWZvdTcvR2FteU5MK3p3czEyQk1OTnRyNlpWeVAxdm1t?=
- =?utf-8?B?YmhEMkVkV29ucFNWSWlkMk1mZFJ6ek1SVDlTUnFRbndvWG0vM1VhRSsyaHRt?=
- =?utf-8?B?L2xVOTM1SkV5YysxM2NWUUxqSjhncEpxME5USnhWbkFkWjNtNmFGUnJncjZ4?=
- =?utf-8?B?Qlo5Uk1jeTdmOXc4aHp1Q2k3NE1UekZSd25VVG9UT0Q1OEUzanhwSC8ybk43?=
- =?utf-8?B?Nkdtb1U0aEJHcE1mazQwdG9VVENBS0M1bVpWc1AvZlMwTEVDYzBaOWxseDZ0?=
- =?utf-8?B?Z0NrS1dZd1ZoN3lyWWQvWmh0cW5Hbzh3YW12UlJsN3piMnZqUmJJOUpKdzgx?=
- =?utf-8?B?Zm02YkdQZy9mWEZYcnlOcm9TOFRZUTBSV01YN1hvMWVEd1V5NEZTbVg0M2Yr?=
- =?utf-8?B?VENuNEw4aGZrc3l6a0wrWm4zcVVROU5rRUp5dkhKam9EUE9lK3ZDSmYyYkZk?=
- =?utf-8?B?UXRxaU5pZEVuSXRGYTVJR3htcUhmR0wyOTc0dXZuTC9yYWhGWHhhK3paMGxH?=
- =?utf-8?B?eFZVTHpXdlhvdzhENzZHZDhuTzBiVzlXZXJLWnNmTjY4RFlQUzBjVFdGKy9n?=
- =?utf-8?B?VUR2MWdZZmp4Y25yTlVrSEwyeityWGRmU09QSXo1MHg5bUJUS3NoUGRFRjB6?=
- =?utf-8?B?VTA4bVZsTVBwQmZVbVFkdWt1V0IwQWhNR2RFRitVSXdDRGJMRldEdkVwWGUy?=
- =?utf-8?B?NXg4R0tPUm9qR2NlWTVDdkFmOU9qQzRUcGZsLzVMYmdPVGJMemtPTEdwTGls?=
- =?utf-8?B?QnNPdDFFcTZBMjBSWGZIMmxHQUI5bXF5Y3NKbFRwYzdFeGdTUmZHaERmc2lH?=
- =?utf-8?B?N1FsanlNa0lPcHgrUThiZE1QSHhuL0lEVnJBQ3JBL1hrcTRkSmFWV1ZlWGk2?=
- =?utf-8?B?LzlqbkpUVUpHQ25HZmFjVUZ0c3VLaXdCS3VYamMvdDBFNmgwU1pEYWNKNkt6?=
- =?utf-8?B?eEVpNnlaenBTWW54Ylc4U01IKzRyemx4L2VKeGY1UkNISCsrNC9HUjl0bUE2?=
- =?utf-8?B?MndWZG5PV2dXdWRVT0NYQkZ5NkhKZnJ3VEtzdFlaTTJuR29xUUFiaVlheVRW?=
- =?utf-8?B?Q2dwU3NGZUJDZlVSYTQ4WjFWanJTQ2J1aytJL2tOcG5LaTZqR1NtdkNnZU8v?=
- =?utf-8?B?WWVNRVZRY0N3OHFKbU1YVk4wK1doTytBVmpoNkUvc1BkSEVmQkhGY2UxN3dB?=
- =?utf-8?B?TnJCcHllcWZhR1JleGFaSUtBRFFvcFVEbEVNWHFsc1Y1UmJrZ1lhaXdFYnNs?=
- =?utf-8?B?VFVtNTVNelhKSU45SkFicnNzczRlR3VaQVRPVlI2VjV2NzdJN0gybkxlbmRh?=
- =?utf-8?B?NUpURnhNWnk5cmV5eDB0alVrekRlejM3Y0J4NG1yZHg0c2h0cTlSNFFTTXg4?=
- =?utf-8?Q?ZGjwp1Tw+cq1p0kM=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 49806322-614b-4b58-66f1-08defddf4169
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR08MB10650.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 10:47:25.1160
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lrN956n3mglPTHa/8Nao0HtidJAYWfNGfog7ZaiF0OrDFnCHm5k01gkYFDU8JVDaZagp4bqW0OHbQpnqD7UNcJ5+OaJKh1MbEHaqEqZqkkU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MI9PR08MB999879
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=AdqB2XXG c=1 sm=1 tr=0 ts=6a858a9f cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=VwQbUJbxAAAA:8 a=3vdy5-oN-KzRg_VM1_MA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: WwDsRbYs7LSdJPzSrQq8tAiga5pVr6pq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE5MDA4MCBTYWx0ZWRfX7xLqgHJi4gJ9
+ S7n9xIvvnYdXvrRp775yhjF8a+Ebeqvms46b//kf3wudCJpkdBU1XPcSrCnmO65vjL9Ub7SK0V/
+ w6LyycdKnN708Qnx0hqozcgKEYDXZ7xiuwtjmYYk6vI6Q7IvXWbs+BJMhQgpC9E6B5adiLrEnFS
+ K/gwrE+9G1f0IjjWvo0OECD4piQ0ITJdi9TgGqa1ra4ApVkkzsgC+9wa9yIUBVM9UIYcP2DgC8B
+ 2m+PGm+MQpWvY7GDxAqpXs1kHphe2LN+hfSIu6lbNxHA+05pA0CffrurUzsbSvLc5TZyDI2bsmW
+ AHoCWm69+YLsjpllY+sFn6dIMKY1XFfmXqYhk+ztvVNKOTa+WJLKIhaEbxxZF4yRg5qhZnXTXVu
+ MYv3gisnBGa8aiuIjFBhLPoulVj1VBywWTD36V/Bzd4oFhu1YF4gRdwNRmJZzj0NPKApdH4C2Iw
+ 3U8KfTEMRjE1nmaoO/A==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE5MDA4MCBTYWx0ZWRfX7RoWLnY6rR9Q
+ 3OIkEbbgMznczzlqiS+nM4qEnTaRGa+6u8QvtYUHqs7jfOxPxUgR+fTL70/6+6kcJRwzupGTUHH
+ PhSsVRAbbaShXKocbEYxVbmBbFaT9Ww=
+X-Proofpoint-ORIG-GUID: WwDsRbYs7LSdJPzSrQq8tAiga5pVr6pq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-19_03,2026-08-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 priorityscore=1501 suspectscore=0 malwarescore=0
+ impostorscore=0 adultscore=0 bulkscore=0 lowpriorityscore=0 phishscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608190080
 
-Hello Stefano!
+On Tue, 18 Aug 2026 15:33:49 -0400
+Anthony Krowiak <akrowiak@linux.ibm.com> wrote:
 
-Sorry for the delay on this one.
-
-On 8/6/26 4:35 PM, Stefano Garzarella wrote:
-> On Thu, Jul 23, 2026 at 06:33:10PM +0300, Andrey Drobyshev wrote:
->> Every other update of vq->worker is done under vq->mutex - the worker
->> attach/swap ioctls and vhost_worker_killed().  vhost_workers_free() is
->> the sole exception: it clears vq->worker without holding the lock.
+> Three related problems exist in the handling of KVM interrupt and page
+> resources when a queue is removed from the host's AP configuration
+> while assigned to a mediated device (mdev).
 > 
-> mmm, vhost_dev_cleanup() updates vq->worker without the mutex too IIUC.
+> Problem 1:
+> ~~~~~~~~~
+> AP_RESPONSE_Q_NOT_AVAIL not handled in vfio_ap_mdev_reset_queue()
 > 
->>
->> The effect is harmless in practice, as this only happens while the
->> owning process (and thus the whole device) is dying, but the lockless
->> write is inconsistent with the rest of the code.  Clear vq->worker under
->> vq->mutex, like everyone else, so that all writers of vq->worker follow
->> the same locking rule.
->>
->> This issue was found by Sashiko AI review.
+> When the AP bus removes a queue device whose adapter or domain has
+> been removed from the host's AP configuration,
+> vfio_ap_mdev_remove_queue() is called. If the queue is still in the
+> host's AP configuration at that point, it calls
+> vfio_ap_mdev_reset_queue(), which issues a PQAP(ZAPQ). Since the
+> adapter is already gone from the host configuration, ap_zapq() returns
+> AP_RESPONSE_Q_NOT_AVAIL (0x01). This response code is not handled in
+> vfio_ap_mdev_reset_queue()'s switch statement and falls through to
+> the default case, which issues a WARN but does not call
+> vfio_ap_free_aqic_resources(). As a result, if IRQ handling was
+> enabled for the queue by the guest, the KVM GISC registration and
+> the pinned guest page holding the notification indicator byte (NIB)
+> are both leaked.
 > 
-> Can you share a link to the review?
+> This is fixed by adding AP_RESPONSE_Q_NOT_AVAIL to the same case as
+> AP_RESPONSE_DECONFIGURED and AP_RESPONSE_CHECKSTOPPED in
+> vfio_ap_mdev_reset_queue(). Like those response codes, Q_NOT_AVAIL
+> indicates the queue is not operational and no further reset attempts
+> are possible; the correct action is to free the IRQ resources
+> immediately.
 > 
-> I don't know if it's common or not, but having the link in the commit or 
-> after --- will help the reviewers.
->
-
-Sure, will add the link.
->>
->> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
->> ---
->> drivers/vhost/vhost.c | 10 ++++++++--
->> 1 file changed, 8 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
->> index 4c525b3e16ea..dbb6cb5eccea 100644
->> --- a/drivers/vhost/vhost.c
->> +++ b/drivers/vhost/vhost.c
->> @@ -722,13 +722,19 @@ static void vhost_worker_destroy(struct vhost_dev *dev,
->> static void vhost_workers_free(struct vhost_dev *dev)
->> {
->> 	struct vhost_worker *worker;
->> +	struct vhost_virtqueue *vq;
->> 	unsigned long i;
->>
->> 	if (!dev->use_worker)
->> 		return;
->>
->> -	for (i = 0; i < dev->nvqs; i++)
->> -		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
->> +	for (i = 0; i < dev->nvqs; i++) {
->> +		vq = dev->vqs[i];
->> +
->> +		mutex_lock(&vq->mutex);
->> +		rcu_assign_pointer(vq->worker, NULL);
->> +		mutex_unlock(&vq->mutex);
->> +	}
+> Problem 2:
+> ~~~~~~~~~
+>  AP_RESPONSE_Q_NOT_AVAIL not handled in apq_status_check()
 > 
-> Pre-existing, but IIUC vhost_workers_free() is called only by 
-> vhost_dev_cleanup() at the bottom, after a loop calls vhost_vq_reset() 
-> on each virtqueue (without the mutex) where we already set `vq->worker` 
-> to NULL, so IMO at this point it's already NULL, no?
->
-
-You and Sashiko are right, thanks for pointing out.  Previous workers'
-update in vhost_vq_reset() makes both our update and our locking
-redundant.  I think we should just leave only one of those functions
-updating workers.
-
-I suggest we leave vhost_workers_free() as-is (this patch), while
-dropping rcu_assign_pointer() from vhost_vq_reset().  Two issues with that:
-
-1. vhost_vq_reset() is also called from vhost_dev_init(), as an
-initializer.  But we can simply add workers' initialization to
-vhost_dev_init().
-2. In vhost_dev_cleanup(), we'd have had workers already nullified
-between vhost_vq_reset() and vhost_workers_free() calls.  After
-suggested fix - not anymore.  So that's a behaviour change.  But I don't
-see anybody else touching workers before vhost_workers_free() on cleanup
-path, so AFAICT it looks safe.
-
-Another note: I initially based this patch on master branch, which is
-wrong as it doesn't cleanly apply on top of our previously merged vsock
-patches.  I'll on Michael's mst/linux-next tree and send v2.
-
-Thanks,
-Andrey
-> Thanks,
-> Stefano
+> In vfio_ap_mdev_reset_queue(), there are four cases that indicate a queue
+> reset has not yet completed, in which case apq_reset_check() is queued to
+> a work queue to verify completion of the reset operation. This function
+> uses the PQAP(TAPQ) function to get the queue's status and calls
+> apq_status_check() to verify whether the reset has completed, failed or
+> needs to be executed again. As described in Problem #1 above,
+> apq_reset_check() does not specifically check for AP_RESPONSE_Q_NOT_AVAIL,
+> thereby potentially leaking KVM GISC registration and the pinned guest page
+> holding the NIB.
 > 
->> 	/*
->> 	 * Free the default worker we created and cleanup workers userspace
->> 	 * created but couldn't clean up (it forgot or crashed).
->> -- 
->> 2.47.1
->>
+> This is fixed by adding a case statement for AP_RESPONSE_Q_NOT_AVAIL to
+> apq_status_check() and returning -ENODEV for that case. The caller,
+> apq_reset_check() will then check for this return code and call
+> vfio_ap_free_aqic_resources() to prevent the leak.
 > 
+> Problem 3:
+> ~~~~~~~~~
+> vfio_ap_free_aqic_resources() leaks saved_isc when kvm is NULL
+> 
+> vfio_ap_free_aqic_resources() guards the call to
+> kvm_s390_gisc_unregister() with:
+> 
+>     if (q->saved_isc != VFIO_AP_ISC_INVALID &&
+>         !WARN_ON(!(q->matrix_mdev && q->matrix_mdev->kvm)))
+> 
+> If matrix_mdev->kvm is NULL -- which can happen when
+> vfio_ap_mdev_unset_kvm() has already run and cleared kvm before a
+> subsequent cleanup path reaches this function -- the WARN_ON fires
+> and the entire block is skipped. This leaves q->saved_isc set to a
+> non-invalid value, creating a potential double-free on any subsequent
+> call to this function.
+> 
+> When kvm is NULL the KVM guest is already torn down, so
+> kvm_s390_gisc_unregister() need not and cannot be called; however,
+> q->saved_isc must always be cleared. Fix this by separating the
+> kvm_s390_gisc_unregister() call from the q->saved_isc reset. The
+> WARN_ON now guards only the genuinely impossible case of matrix_mdev
+> being NULL. A NULL kvm is handled gracefully by skipping only the
+> unregister call, and q->saved_isc = VFIO_AP_ISC_INVALID is set
+> unconditionally whenever saved_isc was not already invalid.
+> 
+> Additionally, add an else clause to the host-config check in
+> vfio_ap_mdev_remove_queue() to call vfio_ap_free_aqic_resources()
+> directly when the queue is not in the host's AP configuration. This
+> serves as a backstop: when the AP bus fires the driver .remove
+> callback after an adapter is removed from the host config, the queue
+> is by definition no longer addressable, so vfio_ap_mdev_reset_queue()
+> would always return Q_NOT_AVAIL. The else clause handles this case
+> directly without the unnecessary ap_zapq() call, and ensures cleanup
+> occurs even if kvm has already been set to NULL by a prior call to
+> vfio_ap_mdev_unset_kvm().
+> 
+> Fixes: b9bd10c43456d ("s390/vfio-ap: do not reset queue removed from host config")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+> Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
 
+Acked-by: Halil Pasic <pasic@linux.ibm.com>
+
+Looks good to me functionally. Style-wise there are things we could talk
+about, but we don't have to :)
