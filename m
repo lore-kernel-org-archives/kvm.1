@@ -1,141 +1,140 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACB8367B90;
-	Wed, 19 Aug 2026 01:17:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787102263; cv=none; b=ueNXAYBzK7CNNVaACY+S82sMaxK7lPJA7vkhdYa5TXZWX0xbWTVJgnc2pEiW/kr/iKIXeKTp2F0m1iNbQDXLrYfLpzx+Vl3rhYYFWJQlrJtg0LzcGTi9bHzkEoHh7kfMoUusuL7jQqxlI1QxmcjC+/D6dumfoXXKW4U44Cc9TNI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787102263; c=relaxed/simple;
-	bh=d5Rc786cFuoKZSnoqdp9y2QacazS7qB5JgKD5Q/h11g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XR1kZirTgdZmiYyrl7gnVzxvT8/VZ5trQGlDUqUjpx9sTgeev8wXAEgdQPhaSNk7jOrUxj35yfvzX6dXT4YbYsvfT97Bt8BTETRCkv+lATcKLLerqUl7rDfeUnu8V+zo2pld0vzjOxwTJMo6mwb3O8P4JJCYD+tM32Xupb7mtow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QcTnMslt; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEE429E10F
+	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 01:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787104124; cv=pass; b=P/VfE98vd4yj+Qsw7KxXy5KekdT2uAJK7JS6js71vBb7Ttmyv2P19I8Rs2njaCkZWdiGG6OumODnmrk05cvVem6dM7+il0RxbWSgxC2gYyuaFFvU6qV+S3wvjoL4sZsUAgcrfe2iija6GX26gHhEwKIesJCcUo4stWxj/6+/+Gk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787104124; c=relaxed/simple;
+	bh=0joFlQFKze2VUT6irZ3O1wZRJqUgaSpfC8SHNl1LCZk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iSFzRGNQV2tMCX4FQ72zwTxyFJ3SBp7dV3/fKK0aqxUYc7Gbrsr2ouf+K4Fqkfkz1xv6Fu2AyZ8MhxsuYh2JYifrBGt1O8oz8Udqcg16yMJHpAOEL1SeALINAzRI87R/HZ3lorjhlkrMaIiMedZlhkXJDzMNCyRFcDVB7otzIT0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r8sUS/vw; arc=pass smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QcTnMslt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787102261; x=1818638261;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=d5Rc786cFuoKZSnoqdp9y2QacazS7qB5JgKD5Q/h11g=;
-  b=QcTnMslt0wXYBba2uMA/lWOcrB+QjPriCm7yYyv5RWnU/p8f6sq1nRBF
-   eVUE9AppPuoE1BhG9rOrJL/UGICGeFCYrRw/cWpiavVgd01ClaOtbmXBr
-   i29NJFOX/7KAIS3iw9x3X5HpyhdedrYZBa17/vrEeJs6uy97XWleurEXv
-   k1BPx1aUoggYtZi5LJIE7XAnkhsmsPa+4VAa7thKp/MHxOp+gDJdw2qVc
-   eSnWU87CmNSD+KAHsgtJOqWqlYim/z2mHnTtLc7A+B0ksYZSOE0a3tJTs
-   wKcPPzKe4cdkTOfU4coIRTaZ40q19zFbn8UCpiAvob/n2Q63klYqgqJRg
-   g==;
-X-CSE-ConnectionGUID: XEebc4M7Rjy04tGLWkmMfg==
-X-CSE-MsgGUID: GlEYez8USbiW877qeyoLwg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11879"; a="87460742"
-X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
-   d="scan'208";a="87460742"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 18:17:40 -0700
-X-CSE-ConnectionGUID: mgL6zM8mT/mICwPfZy4gWA==
-X-CSE-MsgGUID: HmayBc+0RiiMy4W5xdCepA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
-   d="scan'208";a="303602377"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 18:17:40 -0700
-Date: Tue, 18 Aug 2026 18:17:30 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Kim Phillips <kim.phillips@amd.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, x86@kernel.org, Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Michael Roth <michael.roth@amd.com>, Borislav Petkov <borislav.petkov@amd.com>, 
-	Borislav Petkov <bp@alien8.de>, Naveen Rao <naveen.rao@amd.com>, 
-	David Kaplan <david.kaplan@amd.com>, Dave Hansen <dave.hansen@linux.intel.com>, stable@kernel.org
-Subject: Re: [PATCH v4 04/10] cpu/bugs: Allow spectre_v2=ibrs on x86 vendors
- other than Intel
-Message-ID: <ga63o6nf7xebndlo66qqasjx7axpopyph7ilkwhvx3enfaqs4w@r4qfr6eo6kcw>
-References: <20260804235611.4053375-1-kim.phillips@amd.com>
- <20260804235611.4053375-5-kim.phillips@amd.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r8sUS/vw"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c169ae1cb26so307001466b.1
+        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 18:48:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787104121; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sJCpML5+6PKr54CeOlhO3LE5BL+iaqQsQHGaUlRd2iKGkzvQ6v3wml82J5BRoMeTzJ
+         4bGUtF/tSwQxIIeh1wSe3K4lpPBsw5bUtw/fKUy0yF5IW5JS9Cv9GpDia+y6YwXBtkjo
+         VZQnRfy5myY1PlofWwkk6IASg8EjYxcmJMbPJQ80+0vmZ9srU5UcaQPNc/D97juo5N26
+         0AY+n5R4fOuS4/fvQHU4gPtNPUmbb62RGGh9sME5/o7Yf6HRKu9xBjnxVCI1Sf1Vgjee
+         PIeltkoVJxgA4kTKkfxdEFrsbmSgS7A01Pz2ny00szvG4J+r00Dm0fFet+eePPb2ex1Q
+         TqNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:dkim-signature;
+        bh=lsCtmvkS36zvX0w2r9pYrglPyEHrvikivJeQKgrGG38=;
+        fh=sIMwNpzIMQn7VBjLAid6rzeAbg4EwMyCSnl8+DdDeRE=;
+        b=SnCD3BQu6rSZpepfMwXsPj2tXFSLl/cAPSb+dKi1JaQrX60MECtyL7aDZfEduNe5oZ
+         a3FD20k4XUkoaTROHxZOCq9vb4Cylo57ButUXDZ1ll4oEJ4Xy6UWASY2Ml8bMrgKWHBh
+         zs32eg64JgKy5dZgeQLx8y8KXqgi+RY09mcvjI3A0j5laVhxi5rlU8q8/fvX+J7NzLhm
+         lVbs3YGWQR+JI1yNM/LSv7XZYXG+WpnTGBvtJ4lSXY+rK4qSdc8TwPOMdyMRdhIJ0cBy
+         rwzhZrOawyT4lVnu0KP7wThNk8QfAwRKmrPhSnM3IOQ8gTen1pXHGAaU44ltzlzyCAlF
+         HmyQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787104121; x=1787708921; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:reply-to:in-reply-to:references:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=lsCtmvkS36zvX0w2r9pYrglPyEHrvikivJeQKgrGG38=;
+        b=r8sUS/vwemYzO8YHnfPCZnxrOz6R+5DUyUucBpcO/Po6JBzwjYqSSVhhgA/ZcaDnRA
+         4pn0ZPmCciXgfhUlTXRzdo88hd/YFQFpE9jmQzcEK0NmARHA3+7Rr3EiZR3JfOkyO9Pw
+         nvowT+715Kex6znGdrKkOHUpwy0wmRc2rFxkCOirFIGw8Z3GYYc//ieJz+18CwjIo2Uc
+         UALOZZJmuwueJj7rV6Af/EUv5D9UR6ypM6YrE/RO67B3kH1O5ZGPwwY3Cq8OzwTQbibw
+         m/aZGk8y09vopjHNjSdQgwEUmOPfS9KCnnaHWghPxjMY+kp4YAgJ0b2ZbLKbG7OE9B7g
+         tdhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787104121; x=1787708921;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:reply-to:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lsCtmvkS36zvX0w2r9pYrglPyEHrvikivJeQKgrGG38=;
+        b=kvt9NatqJKyvSWEOhvuO8BjbujrdKPXdYwQYFXOnSGH9+9ugC6gGgj03aU8it6Kqij
+         nlRHAH1LlkFeRwcxhlsx9cPY80XNElqFGENOLqKVX2UuhWm6G5CEjNoXaQVfzuolwD0E
+         62r1VgwapM9VIzHXJxdiv+AsF5bRr5Aslctv+AHPX14ZEZxoa9tX66H6karUxaFvmoII
+         KLnSuClH12PjvbLlE4g84m4f3g9Shbhu3VctW2Ifv6TR4avl/m1z7/mDc9mnvwD4sqpc
+         4JozGqoogBecWDTkJkXPrpMxD1fQLEEmICRutPe4maD5uZp9ZMwkveVNeq1yLtkA0z5g
+         Nwfg==
+X-Forwarded-Encrypted: i=1; AHgh+RrcIGY7/9qYGrFV1lH9X7N1G7a1q9Fh/rvoHGrq+zhZykYszJanGX9lkVlzMlOUbCuHH9w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmsWTBtIeHsodNnOoMVfiAU2lhqYHSglKsxrexeFt4Pmys4DGn
+	O7ZxYmRtZE2egioCwDF1Pz9c3j512jY5c4AkwANCjFaunsC32Qtzhp0oKQprohmt4rI1XMnFjDZ
+	Ds929Xx/z3dFwzTmVjVkrzapZ5CPNQEU=
+X-Gm-Gg: AR+sD11wDVABboD9KeSgVketFo/0Kr5n0P7yQJiu0/VsUh8mDE6hBeSY1jnUG0iRQkQ
+	YIiNTZSVK82G/qprpDbMwoMtzY7lBtf097ym9qs28lmKxOK+4PqNaHeM/AzyIxlH9WdHdiO3Huu
+	NMa7PLbnFWKNZe1UxOceyZxseYithZjndHClY7bs8uo0xKs8JyaJrkPXg3lCjS+5qNr2hxujF0z
+	2e2JdXV+IPInAQKm/yULNDh5u6HFEhZwYIKd8JPobCDBKDMTBWogDdQFhTiCbTzM48zyJeo9ItF
+	sJhDqvmSx9uMd0laGO4i6WOhsdUsPIrWqdF/9k8YjU9zWnFfpVL1lYa50dCwaao8pLW4ugukNC1
+	kBQ==
+X-Received: by 2002:a17:907:7b9b:b0:c21:4698:ee9e with SMTP id
+ a640c23a62f3a-c238d4350f3mr56079666b.7.1787104120708; Tue, 18 Aug 2026
+ 18:48:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260804235611.4053375-5-kim.phillips@amd.com>
+References: <CAKSQd8V=wfVrUxeU+fDRgKJBLdiyCkkY2SRY+OoRBNE68LFnCg@mail.gmail.com>
+ <abe4535e-c72b-4df2-99be-064479b685ec@intel.com>
+In-Reply-To: <abe4535e-c72b-4df2-99be-064479b685ec@intel.com>
+Reply-To: ludloff@gmail.com
+From: Christian Ludloff <ludloff@gmail.com>
+Date: Tue, 18 Aug 2026 18:48:29 -0700
+X-Gm-Features: AcwNN1WStHFp7p4p1eOrc7FqRDLjsrfvmvwB_O2N-MMedPQitFU8wUiQ0JSfFx8
+Message-ID: <CAKSQd8UyzWweM15-9ehaCaYYJYw+N8z9pFon2J+3sehqm=Ukbg@mail.gmail.com>
+Subject: Re: [PATCH v2] KVM: x86: Remove AMX-TF32 enumeration
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "Chang S. Bae" <chang.seok.bae@intel.com>, Sean Christopherson <seanjc@google.com>, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, pbonzini@redhat.com, 
+	stable@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 04, 2026 at 06:56:05PM -0500, Kim Phillips wrote:
-...
-> @@ -2297,13 +2299,26 @@ static void __init spectre_v2_apply_mitigation(void)
->  	if (spectre_v2_enabled == SPECTRE_V2_EIBRS && unprivileged_ebpf_enabled())
->  		pr_err(SPECTRE_V2_EIBRS_EBPF_MSG);
->  
-> -	if (spectre_v2_in_ibrs_mode(spectre_v2_enabled)) {
-> -		if (boot_cpu_has(X86_FEATURE_AUTOIBRS)) {
-> +	/*
-> +	 * head_64.S preserves EFER.AUTOIBRS across boot, so a kexec from a
-> +	 * kernel that ran in AutoIBRS mode carries the bit into the new kernel.
-> +	 * Explicitly set or clear it to match the selected mitigation, regardless
-> +	 * of which mode is in effect.  The boot CPU does this before
-> +	 * init_real_mode() snapshots EFER for the AP trampoline, so APs inherit
-> +	 * the correct value too.
-> +	 */
-> +	if (boot_cpu_has(X86_FEATURE_AUTOIBRS)) {
-> +		if (spectre_v2_in_eibrs_mode(spectre_v2_enabled))
->  			msr_set_bit(MSR_EFER, _EFER_AUTOIBRS);
-> -		} else {
-> -			x86_spec_ctrl_base |= SPEC_CTRL_IBRS;
-> -			update_spec_ctrl(x86_spec_ctrl_base);
-> -		}
-> +		else
-> +			msr_clear_bit(MSR_EFER, _EFER_AUTOIBRS);
+On Tue, Aug 18, 2026 at 5:55=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
+ wrote:
+> On 7/24/26 08:37, Christian Ludloff wrote:
+> >> My understanding is that the revert was considered because TF32 never
+> >> reached any implementation. If that's incorrect, I'd certainly welcome=
+ a
+> >> correction.
+> > Both TF32 and TRANSPOSE made it into a product that shipped.
+> >
+> > Not from Intel... but.
+> >
+> > So their CPUID feature flags and their opcodes aren't reclaimable
+> > and efforts to rip out their software support are counterproductive.
+>
+> What would folks' preference be on how Intel should document this going
+> forward? Just leave it as it as enumerating TF32?
+>
+> There are notes in the SDM like:
+>
+>         Intel=C2=AE MPX has been deprecated and will not be available on =
+any
+>         future processors.
+>
+> There could be a note like that for the TF32, I would imagine.
 
-Clearing the old kernel state should be done well before the mitigation
-selection starts, below already does it for the SPEC_CTRL MSR:
+Yes, that terse sentence works.
+  Once for AMX-TRANSPOSE.
+  Once for AMX-TF32.
 
-  void __init cpu_select_mitigations(void)
-  {
-          /*
-           * Read the SPEC_CTRL MSR to account for reserved bits which may
-           * have unknown values. AMD64_LS_CFG MSR is cached in the early AMD
-           * init code as it is not enumerated and depends on the family.
-           */
-          if (cpu_feature_enabled(X86_FEATURE_MSR_SPEC_CTRL)) {
-                  rdmsrq(MSR_IA32_SPEC_CTRL, x86_spec_ctrl_base);
+If you want the back references:
+  TRANSPOSE got dropped from ISE #059 and APX #007.
+  TF32 got dropped from ISE #062.
 
-                  /*
-                   * Previously running kernel (kexec), may have some controls
-                   * turned ON. Clear them and let the mitigations setup below
-                   * rediscover them based on configuration.
-                   */
-                  x86_spec_ctrl_base &= ~SPEC_CTRL_MITIGATIONS_MASK;
-          }
+In terms of the opcodes, it is like MPX too: no recycling for
+a long time. Luckily there is plenty of remaining space.
 
-> +	}
-> +
-> +	if (spectre_v2_in_ibrs_mode(spectre_v2_enabled) &&
-> +	    !(boot_cpu_has(X86_FEATURE_AUTOIBRS) &&
-> +	      spectre_v2_in_eibrs_mode(spectre_v2_enabled))) {
-> +		x86_spec_ctrl_base |= SPEC_CTRL_IBRS;
-> +		update_spec_ctrl(x86_spec_ctrl_base);
->  	}
-
-Nit, I find this a bit confusing. IIUC when AutoIBRS is supported, you want
-SPEC_CTRL[IBRS] to be set when legacy IBRS mitigation is deployed. If you
-move MSR write down after legacy IBRS mode is set(KERNEL_IBRS), you can do:
-
-          if (spectre_v2_in_ibrs_mode(spectre_v2_enabled)) {
-                 if (boot_cpu_has(X86_FEATURE_AUTOIBRS) &&
-                     !boot_cpu_has(X86_FEATURE_KERNEL_IBRS)) {    <---- just adding KERNEL_IBRS check to existing code
-                          msr_set_bit(MSR_EFER, _EFER_AUTOIBRS);
-                  } else {
-                          x86_spec_ctrl_base |= SPEC_CTRL_IBRS;
-                          update_spec_ctrl(x86_spec_ctrl_base);
-                  }
-          }
-
-Otherwise, a comment explaining the intent would be helpful.
+--
+C.
