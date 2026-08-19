@@ -1,123 +1,150 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045D23AD529
-	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 14:57:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E645A3BFE4F
+	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 15:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787151471; cv=none; b=iGvnIb5lH4NGPhJvOwXk0gnqfvp1ur/c8Yf9d8+Ybhuv7bikQDrwiB9NqXLRX8b4bV6csygxn5USRl9uA+NUCDQjDTyfd2wyWhzO3buLWKfXIk8qQZzvPXg4a6CXdzmQEgQOc8gmUmP200L59geMoZfw7+8gqCqWCO40yRbMxhc=
+	t=1787152807; cv=none; b=TyCH7pUKHD87AkP+ICxIpNvYWNVxdVXNP7VD7Nfs+yZ3uSCnoy5EbPOl4+BGRbGYeHrdSNRFkld0f5gVY/FcUsBsjfIGRERRTmdJoRepQcd9TwoY9Fq6I2ruaM3WzMfQBu2sgrrMDWLAFnDuR8rr0737eDKkc243nMdtooSlR8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787151471; c=relaxed/simple;
-	bh=zTygHR+bb9tPh+r8pKI2nQZjTF6gmzub3Gf+11ydK2I=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ttCI2wxbYHni1OT2Gwvo5meT2G5+O1qwE/QyDwct88w9tMpeN/F70lg31MxoY/HDqOSpBZlpxvoPCOylsSQXUi61yTvcdtfCP/hqhROuuSl4mbdGjJtRj8T77NEVIW185A/x5sAgvj7OIw6SXQETbX8lHzhL25yeAncvysjmNoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N/TKhCuC; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787152807; c=relaxed/simple;
+	bh=VwLovuvvNg6P60xPTLzzykQ0hYRx+IExxF7jqVLD/aU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=l+05MUThJiObxR2sh7rd/kYgT2SHXr2l9/2w3swKkwp2Skk8zxANRQf/rxfqHIIxyuruNwcKKgD0xT7RR9LuuMXaNUssMs3s+9L8UCev1e1iIL1jy6Me6FpY4PmtcH4O4E8U7aIgUoahqNIwzPAB+Yd8hA/sWejuun45ih5UxVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oWgm7rO3; arc=none smtp.client-ip=209.85.210.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N/TKhCuC"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6a3819e8be8so2146317a12.0
-        for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 07:57:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oWgm7rO3"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-84870e7f498so1074986b3a.3
+        for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 08:20:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787151466; x=1787756266; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=RAsntpzptWfAPjVtkOJehjiQ6tiS2RKLcun7ZiRQNR0=;
-        b=N/TKhCuCt0ZPWPXZ5Nr5H8/yXP4RevD6ThK1NaCqJjXO3marqrWFmTDdFIL/4/wKVc
-         97z2GJyYZf984PWuIkKhA7LttruAhT6ih9wocw548v3Ij9QuiPODJ1OK8A8r1GyeuyOb
-         M8B5O1aIDGn2vH1D0L6tr9vb+PNscDAEtHdlcYl8TO5WtP+MFY60I3X+rtAEfblMpYzQ
-         HbqVTapgZlJKEbGRI3BVqEkCl8uoeKiCd22KYz6KocfaBwMxZgLsz1HJw5kr4mmsYpLg
-         tKFx0ik3lCGStBjyguuyk2eEbFUV3N+NUvtOr0U/IkgE0ekXVQOjDIbbQRUlSsswFhKJ
-         0HZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787151466; x=1787756266;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1787152805; x=1787757605; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=RAsntpzptWfAPjVtkOJehjiQ6tiS2RKLcun7ZiRQNR0=;
-        b=mponzXDVGHFmfsCbQu560k6QkRzOOFvRfoNPr6+ad4BAQBU4+zLJYnCrXpc46caUSn
-         6H5Vzm5cfe0qTkdP17tnINUWyLQnmM3QlVYqgattnrvc3htysfJ9bWR70J5Y3toMuj/s
-         6PxdgTl1mRINevXY5rDgEOSR4RlguaT4Pqhp27xNcVILF10ej2LRkd4kVw4FzYtXil3t
-         ibKc/a7WPav74pkDJEigrmaOZgvkh8WDGrxb5sV0VrjQeCHh0p3MXaCMBJCFBH5PBkxF
-         daPNamUWccMEiRZn2tJ1tQIV0g4BOk4NkcAq2uvEZRQAE39wZScS47Wj9sgcZ9BxSUDN
-         hXmg==
-X-Forwarded-Encrypted: i=1; AHgh+RrKWgSzSDkZGnB+MNSgsMWAvYcP6jFOw7n5VMSGjhKxshLrkN38hd0c0ebvF4DnctGClKY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXi9m9cgY3EOo6iRWcHT4l6Vew2tjwpI3b6R8iXy95B9dN+m7K
-	yx3IRubNQRmnPdRl2rPqDqYu8KXW5hUqdE0M/E4rnu6AlaDWA36zVjUA
-X-Gm-Gg: AR+sD12e2phNakHYtThcrlI39A2GQ9kr0vITLyL7QI6qodmzS91+SzzP6eYyoGf6z6z
-	juhYibbs6jK+2vMLP6pKXxcunVjA7f6ibgV+ICnpvNbcRc5ZqE8+cYb6/txPxuUhaPDecE4EywR
-	DsDdN6Jhqxx4jzGBT+s6BFDPAafGMJrIAK8BiNElyyTRjKkLD5NNNDe9zbmZIqjzijxATDHMK6q
-	97TvIBhyNYMjCQsLXw7o3zasCN9oNcWgKNPgOaoScSQ9pCB2470kvr6sOd2UBy3PjoUVRFS9WEF
-	/sm5Z2vKlxPjIO3YjkSFIZ9/umb5tKcO+nBVXQXlOR+CTRK8nxW3SBYfNTUvtkvTYBnC7oy+VsM
-	VOZZVV0s28qQAcDhTns6o2PJJvXD0zC8XSyq+OS3R/y0S8/0ZFOetxD+8NqVa1aBPRG/2g0MZ/J
-	DRm1TUMirhg9yPxhC+zxHISRq+cFsPzWZEcjDE3+ncTMEjAqYJ5X2uJiGBrWW2h4Hg
-X-Received: by 2002:a05:6402:2383:b0:6a1:1742:ac22 with SMTP id 4fb4d7f45d1cf-6a3ff11a4e4mr1047552a12.2.1787151465623;
-        Wed, 19 Aug 2026 07:57:45 -0700 (PDT)
-Received: from [10.245.244.115] ([192.198.151.47])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a3feec9f4asm1124014a12.3.2026.08.19.07.57.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2026 07:57:45 -0700 (PDT)
-Message-ID: <a4149f528734a5deb03664b802939bfe67921149.camel@gmail.com>
-Subject: Re: [PATCH v3 0/4] tdx-guest: Make Quote buffer size dynamic
-From: Artem Bityutskiy <dedekind1@gmail.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, "kvm@vger.kernel.org"	
- <kvm@vger.kernel.org>, "linux-kernel@vger.kernel.org"	
- <linux-kernel@vger.kernel.org>, "dave.hansen@linux.intel.com"	
- <dave.hansen@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>,
- "kas@kernel.org"	 <kas@kernel.org>, "binbin.wu@linux.intel.com"
- <binbin.wu@linux.intel.com>,  Xiaoyao Li <xiaoyao.li@intel.com>,
- "sathyanarayanan.kuppuswamy@linux.intel.com"	
- <sathyanarayanan.kuppuswamy@linux.intel.com>, "mingo@redhat.com"	
- <mingo@redhat.com>, "hpa@zytor.com" <hpa@zytor.com>, "tglx@kernel.org"	
- <tglx@kernel.org>, Peter Fang <peter.fang@intel.com>, 
- "linux-coco@lists.linux.dev"	 <linux-coco@lists.linux.dev>,
- "x86@kernel.org" <x86@kernel.org>
-Date: Wed, 19 Aug 2026 17:57:41 +0300
-In-Reply-To: <aoTCmJXjQQbXRKqv@google.com>
-References: <80b4ea89ebf17398c3bee21d157c7f97ea32aadf.camel@intel.com>
-	 <anxvwV_Pz4UYaxxt@google.com>
-	 <86d532f33816cd4fa3e29c40079a6003abf89324.camel@intel.com>
-	 <anyiwqi9i0NSv0QW@google.com>
-	 <ed4891a59096c59e43a893910c9f17d0ff6086b8.camel@intel.com>
-	 <20260812223707.GD1013044@pedri>
-	 <6191a69559e58e04c8e3f1efa776e9639796af3d.camel@intel.com>
-	 <anz9b6CDkhr5D5RG@google.com>
-	 <c697ff1d97fe62882eaf3bd86a4213bf2e79fc09.camel@intel.com>
-	 <98dcc8a12f117745a1cb9981dc8f0f1548e9c96f.camel@gmail.com>
-	 <aoTCmJXjQQbXRKqv@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+        bh=treBtxFhVA0yeZTvhfGYc5TmTsmiVdZChsOe1jV9/08=;
+        b=oWgm7rO3Om7uQxndVxv1Chse+/hmS3wP2sih5IpAk4VxYrSMId8oMQ9D0ns+pDp8dA
+         TM/RwTlGnuUsJeUENBKCcxsEG95BvppvIpwzOfcW4CO6Hv0KHluTkDy8dbHG50U7Q7wy
+         sDLRhj+OC40YTX3rkSb9MfcvwEUz/Giq9Bp18aWl3Y2zPR0r0+aoAOcI2P5YvznU8Upn
+         uI0538cPx9c0abDkL8NUiCTk5wbyYq4jE2qf8HeUo6GYfMDAUYs1edEQWIQlTOYUt6Vb
+         jkx+Dr4ASvEinGD0/g/NBQmsGbTuL9tHTlxFI29jiM7gz1uRsuPNaLqqx4cLxJCT7K5/
+         717g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787152805; x=1787757605;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=treBtxFhVA0yeZTvhfGYc5TmTsmiVdZChsOe1jV9/08=;
+        b=rIa1+CiQ9FXDtqGnQ6KXBggfgxpdDNcGSvNqxl9i5Hk2CWipKoWKP/U2j8U8z0xfHo
+         qGoxwvJpSZi9tDnyWfVrl+79eAUy6RtIs1VhoYMpmj5Jqut7Bsiz6etx6whKucs/YjLy
+         Xhf3SQqfD02MyxKC8qYmzI2G1tzm0KlJjCaJYYKJzojxD3mHUGpldYYbpZY3CyEBkShe
+         Eoqi38ZcZ7QEcL0imdP3hJqpQ5WHZiZt8dsvSVn/p4LzwTfTAuZYEYGuz/QF+0o7WdTf
+         rr2U9taCHYXs1fq2nPL1atr4mXWW2y69y1Fz/vf0j4QA0l86y8rX5OL0TKKqp3kfrgC0
+         kuPQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrHDxiXeeQtWEUhqCjaGiFlLBwHVFuUTCsIp5gCDZbSAx5cbh6yhJQw48eWZE3Y1ye3aZk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgzsxJPAMWB9uP/ZtPk0cYUtM7Zri/+0gl8UmgIyDFAFJMfZ5S
+	Lue0csvKUdhzXL6t9J7j2e/iCJ9UdGRYcKewDmb8PVH6MRVLTQSqSGZs/qsPu61yCur1+obilQ/
+	i7jVAZg==
+X-Received: from pfbcg6.prod.google.com ([2002:a05:6a00:2906:b0:848:3f4b:c4da])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2995:b0:847:770f:da4c
+ with SMTP id d2e1a72fcca58-851d39624d5mr9644194b3a.16.1787152805081; Wed, 19
+ Aug 2026 08:20:05 -0700 (PDT)
+Date: Wed, 19 Aug 2026 08:20:04 -0700
+In-Reply-To: <aoW3fOhPuFY7Whia@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20260819034652.98938-1-duankeqiangcym@gmail.com> <aoW3fOhPuFY7Whia@intel.com>
+Message-ID: <aoXJpPDqwu4IlmdX@google.com>
+Subject: Re: [PATCH] KVM: VMX: Clear GUEST_ACTIVITY_STATE when userspace makes
+ a vCPU RUNNABLE
+From: Sean Christopherson <seanjc@google.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: Keqiang Duan <duankeqiangcym@gmail.com>, kvm@vger.kernel.org, pbonzini@redhat.com, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Hi Sean,
+On Wed, Aug 19, 2026, Chao Gao wrote:
+> On Wed, Aug 19, 2026 at 11:46:52AM +0800, Keqiang Duan wrote:
+> >Force a vCPU out of its hardware-tracked halted state when userspace
+> >explicitly declares the vCPU RUNNABLE via KVM_SET_MP_STATE, i.e. clear
+> >VMCS.GUEST_ACTIVITY_STATE if it says the vCPU is halted.  Add an optional
+> >kvm_x86_ops hook to do the clearing, as SVM has no equivalent VMCB field.
+> >
+> >When HLT-exiting is disabled for a VM (KVM_CAP_X86_DISABLE_EXITS with
+> >KVM_X86_DISABLE_EXITS_HLT, e.g. QEMU's "-overcommit cpu-pm=on"), a guest
+> >HLT halts the physical CPU instead of exiting to KVM, and hardware saves
+> >GUEST_ACTIVITY_STATE=HLT into the VMCS on the next VM-Exit.  That field is
+> >sticky: it survives VM-Exit/VM-Enter and is only cleared by vmx_clear_hlt()
+> >on event injection, or by vmx_vcpu_reset() on INIT / vCPU creation.
+> >
+> >Nothing clears it on a userspace-driven state change.  KVM_SET_REGS only
+> >writes the software register cache and KVM_SET_MP_STATE only writes
+> >vcpu->arch.mp_state; kvm_vcpu_running() likewise consults software state
+> >only.  A VMM that emulates a machine reset therefore ends up with a vCPU
+> >that KVM happily VM-Enters while hardware refuses to fetch instructions.
+> >
+> >Reproduce with a Linux guest by triggering a panic/kdump on a non-boot
+> >vCPU: nmi_shootdown_cpus() parks the other vCPUs -- including vCPU0 -- in
+> >crash_nmi_callback(), which does local_irq_disable() followed by a bare
+> >HLT.  The capture kernel then resets the machine via port 0xCF9.  QEMU
+> >rewrites RIP to 0xfff0 and sets mp_state to RUNNABLE, but vCPU0's
+> >GUEST_ACTIVITY_STATE is still HLT, so the BSP never executes the reset
+> >vector, never sends SIPIs, and the entire VM hangs at "reboot: machine
+> >restart" forever.  Only destroying and recreating the VM recovers it.
+> >
+> >Clearing the state is always safe: waking from HLT is architecturally
+> >permitted to be spurious, and every HLT in the kernel is inside a loop.
+> >Hook KVM_SET_MP_STATE rather than the VM-Enter path so that the clearing
+> >is driven by an explicit userspace declaration, and so that no work is
+> >added to vmx_vcpu_run().
+> >
+> >Note, vmx_clear_hlt() loses its "static" qualifier as the kvm_x86_ops table
+> >now lives in vmx/main.c.  TDX cannot disable HLT-exiting and KVM cannot
+> >access a TD's VMCS, so vt_clear_hlt() short-circuits for TD vCPUs,
+> >following the existing vt_*() wrapper pattern.
+> >
+> >Fixes: caa057a2cad6 ("KVM: X86: Provide a capability to disable HLT intercepts")
+> >Cc: stable@vger.kernel.org
+> >Signed-off-by: Keqiang Duan <duankeqiangcym@gmail.com>
+> 
+> There was an earlier attempt to fix this issue:
+> 
+> https://lore.kernel.org/kvm/20230630072612.1106705-1-aiqi.i7@bytedance.com
+> 
+> Sean suggested doing exactly this there, i.e. clearing the activity state in
+> kvm_arch_vcpu_ioctl_set_mpstate() via a new kvm_x86_ops hook:
+> 
+> https://lore.kernel.org/kvm/ZMgIQ5m1jMSAogT4@google.com
 
-This was just discussed off-list, thanks for guidance. I only will
-comment on one thing below.
+Thanks Chao, I knew this sounded familiar!
 
-On Tue, 2026-08-18 at 13:37 -0700, Sean Christopherson wrote:
+As suggested in the above link, the call into vendor code should be gated on
+kvm_hlt_in_guest().  Yes, vmx_clear_hlt() already does that, but it's a cheap
+check and makes the common x86 code easier to understand.
 
-> That's not a TD report.  Call it whatever you want, but it's not a report=
- about
-> a TD.  If the claim is that "TD" can mean something other than a TDX VM, =
-depending
-> on the context, then that needs to stop, because there is no way anyone i=
-s going
-> to be able to follow along.
+The other difference between my suggestion and this patch is clearing HLT if and
+only if the vCPU is being made RUNNABLE, versus clearing HLT if the vCPU is being
+put into any state other than HALTED.  In practice it probably doesn't matter?
 
-Oh, right, Now that you point it out, it seems obvious.
+AP_RESET_HOLD is unsupported for VMX, SIPI_RECEIVED is deprecated and is now just
+a variant off INIT_RECEIVED, and getting out of INIT_RECIEVED and UNINITIALIZED
+requires stuffing RUNNABLE or going through vmx_vcpu_reset(), which explicitly
+sets the activity state to GUEST_ACTIVITY_ACTIVE.
 
-We called it "TD report" because it uses the same data structure as
-the=C2=A0TD report, only without the "TD information" sub-structure.
-But no doubt this is poor terminology.
+But I think my vote would still be to do:
 
-Thanks,
-Artem.
+	mp_state->mp_state != KVM_MP_STATE_HALTED
+
+because I can't think of any reason not to?
+
+Side topic, I think we should officially take an erratum in
+Documentation/virt/kvm/x86/errata.rst to state that KVM doesn't support save/restore
+of HLT state when HLT-exiting is disabled.  AFAIK, there's simply no sane solution
+for SVM, and that would justify why the kvm_x86_ops would be clear_hlt() as opposed
+to set_mp_state(), i.e. why KVM only handles taking vCPUs out of HLT, not putting
+them into HLT.
