@@ -1,71 +1,67 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4C8282F30
-	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 03:48:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B089C347BD7
+	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 04:59:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787111296; cv=none; b=WMN9Qtxn5mQTtahgwwz1HJds96MQ0+WKloBe9elO+sa5NOe5VLsEVUHUSeiBjZT6c3hqxf9MrpYU1TDJmdGg2Fzw186QZd0Y4VKGYRAqz7aG/PTQfF1Kv0o1MATqjie8+Gsz2avuZI+SXuyVlFI2S+/SX4xnbJSeJa/EP1dIv6U=
+	t=1787115588; cv=none; b=NX961hCPSkEYj9m0tTQ39/yIZSKsub75TZP/tlR7y4Zzzk5scrGfoB7XXwHj0rVT1nsGL8Tm1Ow2hzjzmMjNtSKCC7lBf3eCDUQEK8YZLKAFSW700x0XgAQrSgmqiMAqNf0Up0N2jtDvyG20XwXDDDhOrTBnrY4C8z/2fG+ybdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787111296; c=relaxed/simple;
-	bh=s0cOOj4h5pNjkKOsuDdDUCJxMXDpbWuREEibCHORmFQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nsuJGY+OQm68IJyQKv/hMvFY2kHFJGBw4YCcHv295H/5dHrXohgU9u81VXwQ5K8Z/dxOBILjupf6OxqZ/4HkIK6lxa8pEAbSyGkTfPoQUTuSQ/xGKer2msjgX0wqOqSM3HnVzrj2cuXp3+paFHO/i1QdKc0V2nBrcEsl88G6220=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cBIlDPif; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787115588; c=relaxed/simple;
+	bh=8k/Qmmlos1eSgba14budLNWaJJRtVzMlO3ziiY6Ze6Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M1L0CBjQ6HR95EBbLO2PHj9vDQJr/YhRtqVOQpSQ67abKnreZMv2HRwJmqEsKFb7ioQkH9yNE7Namyqa6uJOEofcAKtc9zoS/qjrJaQfmkQXlczEa1PHDXoPdcuw19EOpFxcyOgBV2MajaMvRvqB1YxSdJruNuL5eR5R5oovDOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=RNcMApCu; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cBIlDPif"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2caed617615so5951855ad.3
-        for <kvm@vger.kernel.org>; Tue, 18 Aug 2026 20:48:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787111294; x=1787716094; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PU1yvxIOqoyoxZTo0QwlPy97Mpv8yx+t7SpyCWg2sl4=;
-        b=cBIlDPifm5Knd8FbP3Qoa/hb5/1c0FaNZuJQPG6/OpCRsBGpEe7a9DQ/RzfItsDZZx
-         AC40bRuP2cKqdkUdN6xfZevyyJhHvgw1+NWLkdXYNmEVhOzpWIPHjREV/5HAYATGYDFG
-         BiLMcAX6dBqzJ8BlBevnA6toUsdfaDlQsD3FfYsobFEUZzKvx5ySzNFYlj0J7QcuKfcH
-         I/ZKNDhCruQ10oAVO+D8vtepCMnUr+FewEvPh1mvoUNDy+bv30OdxEdlJscyYuSLBhJ4
-         OCZncGkWPxBEfwYo/wSaBqU6NRiZrLJ5jVc/lLgZVHxQOq1kIdcedArAoQYdDG3em9MZ
-         ejMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787111294; x=1787716094;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PU1yvxIOqoyoxZTo0QwlPy97Mpv8yx+t7SpyCWg2sl4=;
-        b=A39QyJkYKJEk0PH2z3aZv37FmJv9XJBILVL5Ig0nJId9oPY9Yk8iqw7h5vcje0wKAn
-         /Lsk+4gHWQSJevCpF5bblLyvPxWELzEgyrBDaY4cOjW6fGM+CQ1vd1vAGLnIJw8eYVQG
-         qt+R2T2LjCqVdHuFyjpzN+vWZ8lDVezCJS3kcZ+a3agKk8Zi6b0cE6JDDlnRI/XXIZZd
-         JaO1jKvAnKqBDnDram3lt8MHN/e3zxtFt+ThEk3GLuwMoiWUeXrohWPniyufyBn6rKD5
-         bXfdAcIzspg5s9L+9EkbWw2S7gLFN+DB2AcuSj7s2V/y87yic1nBxvMu+0iYG8fYcD60
-         w1gA==
-X-Gm-Message-State: AOJu0YyG31t0xOAW7OOIcDCHJtlq1mqBZD6+4/6Qo4bd8VC2ywqy/T+R
-	M4wdjT/ub14QmQzAbtdqRqG3t5wLWqtFORc1oAJVWkJDu6pI92owdojYWdyd5YwS
-X-Gm-Gg: AR+sD117CfQtphLJzOryQUz4XXo+av6WjoNcpjWm5Ka5rO0YCz3N+DdOiVt0+muKnEZ
-	EHUefZaWYjav0DJhK6uIpOfgNSNdUk85oR4EBMlXXO7v/gFl3wj7Nj9ROyH1tJ0/GLpWBmBZ+xr
-	a545/2zkerXmVmJiizoY0mebwPVRVwLOcdZ5AvTbUT6CsFdIvt3saDHi4Jq1M+/OXNm7OCsp50H
-	F65Ar1C8IhpgnBWL82LCZy8wHUFetozdaB0GQkfof6v/vLkUgZkY+FIdpA66cAzPomhXRbSHzu5
-	0A7kVaQoJhRzdY3Qmz4RbOr9ffOHdokjmn4VPF6H2yQyFi74Z6PN/mYV5WQatmbKrqU4rS+Asuh
-	t0A54/P4mCaegVDpwUlbbyC0ymvFa8mqYKnJE5i/U7LwqwgijJuV9U6irNU1tlxRnunJpKVQ4o0
-	VYDSf9iu89F9z7qwjqtNKPaY/uGTn6MWDSnHraUIDBE3WV4T/nn5iB81dsAeiwnk14zvGD2NFt4
-	UdfxOcflt7bg8yXQYCFug==
-X-Received: by 2002:a05:6a21:7010:b0:3c4:2cf9:28ad with SMTP id adf61e73a8af0-3cd0193b2f8mr3599351637.12.1787111293574;
-        Tue, 18 Aug 2026 20:48:13 -0700 (PDT)
-Received: from localhost.localdomain ([103.167.26.54])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1416ad564bcsm2160318c88.5.2026.08.18.20.48.10
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 18 Aug 2026 20:48:12 -0700 (PDT)
-From: Keqiang Duan <duankeqiangcym@gmail.com>
-To: kvm@vger.kernel.org
-Cc: seanjc@google.com,
-	pbonzini@redhat.com,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] KVM: VMX: Clear GUEST_ACTIVITY_STATE when userspace makes a vCPU RUNNABLE
-Date: Wed, 19 Aug 2026 11:46:52 +0800
-Message-Id: <20260819034652.98938-1-duankeqiangcym@gmail.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="RNcMApCu"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67J31T0n2174981;
+	Wed, 19 Aug 2026 04:59:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=iUmV/PM7Ld9PwfsfRcvm3fEvssMVhV6s8ClnLD1Gz
+	0U=; b=RNcMApCuaUPxKbL5/bFa8bSgTD94smjsV9iAVToOKnmHTofH/LHGJdNMd
+	eDk7/4vWYEnycuIQoSS91CP44bX5kyEtfSmvCGrmAvq0CCTXJavKbSE+Y0xWOcMc
+	/xaFzInLxo2N3CTOzOsxC8EBAQxl6sjuHHfCzqh1s46NxWASx01letySUWCBStAN
+	yGQ4Ks1yutAtRDRnyuVIonlOG7/kozQjYWit6zXjtmIK22sL2MfS85Hy0aMzOsAa
+	hykIAC5OM7cKfhsEbpeig/79wFw8crENt1QNPk1KpOVwZJQhmatMcH9x/H9ZLKT3
+	jM7D3LoQrRiWaROm45o2vC+4mZFtg==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g4yu19kx8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Aug 2026 04:59:37 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67J4uZ1W007445;
+	Wed, 19 Aug 2026 04:59:36 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g32tw7996-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Aug 2026 04:59:36 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67J4xUjv45613374
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 19 Aug 2026 04:59:30 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 25B032004B;
+	Wed, 19 Aug 2026 04:59:30 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3988620040;
+	Wed, 19 Aug 2026 04:59:28 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.39.17.134])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 19 Aug 2026 04:59:27 +0000 (GMT)
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Cornelia Huck <cohuck@redhat.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        Chinmay Rath <rathc@linux.ibm.com>
+Subject: [PATCH] linux-headers: Update to include KVM_CAP_PPC_COMPAT_CAPS
+Date: Wed, 19 Aug 2026 10:29:24 +0530
+Message-ID: <20260819045924.11732-1-amachhiw@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -73,170 +69,337 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=LsCiDHdc c=1 sm=1 tr=0 ts=6a853839 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=FAdeBzD3L_d8WbVtQBUA:9
+X-Proofpoint-GUID: mjM-StOYGVeV43p_KmjF2LAfImHgw8DD
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE5MDAzMSBTYWx0ZWRfXwkKWxlnFSZ5y
+ nRbxYVEmX4g0i1WsfitF1IpwMYPnTAbQOTbcbkqvyfkavIttu3NPN47pAxBbRp1wO80CB1fk90Y
+ jtHE8ms7hmXpgNri6c3PppaLCuxUQrA=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE5MDAzMSBTYWx0ZWRfX7jTOgaseD+Yl
+ vqtoNdGnewpwlwh76xNkQjuwzUQqO55egmzw+wOSel0TuSP+QrAiQELS1JtXg+jyVSM+kHXwA/L
+ SkBe2R85KakrLeKetaMBnbUN8vyd0NqDV4GogFws02x1TIIPmhbc5Z/zDPRyUINzQ+XxNxu8Cza
+ q4pcQJ2rRpIm/Ux320+nI9xoQ4yPhZwDhHOIe2WrrSXhpikebrlZKIoqPhndMe6nJ+YOe3cNZQG
+ x4l5n08dfqdjKdVu1mHhCbynwLjhq27NFVpAQ7XtjhtiMCz52GljvihscJijO5VvVVWHX3oZdpd
+ RReImO5Bj7gJaREUzBqbQPmwPospCzYAn3S2duyV0Ay0kMc97K+ppHGVGVsiVWkDs5Tp8MKM62i
+ QJWpFpGVdTSrICDSmEqiJUgJNnC0DNCgg96xyBgbtBDoDh27ELc6j9BQTkG2k91dOF75mlHiSnE
+ b35w9qZ+qqlQqDSWaRQ==
+X-Proofpoint-ORIG-GUID: mjM-StOYGVeV43p_KmjF2LAfImHgw8DD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-19_01,2026-08-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0
+ adultscore=0 suspectscore=0 impostorscore=0 clxscore=1011 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608190031
 
-Force a vCPU out of its hardware-tracked halted state when userspace
-explicitly declares the vCPU RUNNABLE via KVM_SET_MP_STATE, i.e. clear
-VMCS.GUEST_ACTIVITY_STATE if it says the vCPU is halted.  Add an optional
-kvm_x86_ops hook to do the clearing, as SVM has no equivalent VMCB field.
+Sync linux headers from Linux kernel commit 1200d84f4c0a
+("Merge tag 'powerpc-7.3-1' of git://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux").
 
-When HLT-exiting is disabled for a VM (KVM_CAP_X86_DISABLE_EXITS with
-KVM_X86_DISABLE_EXITS_HLT, e.g. QEMU's "-overcommit cpu-pm=on"), a guest
-HLT halts the physical CPU instead of exiting to KVM, and hardware saves
-GUEST_ACTIVITY_STATE=HLT into the VMCS on the next VM-Exit.  That field is
-sticky: it survives VM-Exit/VM-Enter and is only cleared by vmx_clear_hlt()
-on event injection, or by vmx_vcpu_reset() on INIT / vCPU creation.
+This picks up the new KVM_CAP_PPC_COMPAT_CAPS capability for powerpc,
+which introduces:
+- struct kvm_ppc_compat_caps: reports processor compatibility modes
+  supported by the host (POWER9, POWER10, POWER11)
+- KVM_PPC_GET_COMPAT_CAPS ioctl (KVMIO 0xb8)
+- KVM_CAP_PPC_COMPAT_CAPS (cap #250) in linux/kvm.h
 
-Nothing clears it on a userspace-driven state change.  KVM_SET_REGS only
-writes the software register cache and KVM_SET_MP_STATE only writes
-vcpu->arch.mp_state; kvm_vcpu_running() likewise consults software state
-only.  A VMM that emulates a machine reset therefore ends up with a vCPU
-that KVM happily VM-Enters while hardware refuses to fetch instructions.
+The sync is needed to get the corresponding Qemu series[1] merged.
 
-Reproduce with a Linux guest by triggering a panic/kdump on a non-boot
-vCPU: nmi_shootdown_cpus() parks the other vCPUs -- including vCPU0 -- in
-crash_nmi_callback(), which does local_irq_disable() followed by a bare
-HLT.  The capture kernel then resets the machine via port 0xCF9.  QEMU
-rewrites RIP to 0xfff0 and sets mp_state to RUNNABLE, but vCPU0's
-GUEST_ACTIVITY_STATE is still HLT, so the BSP never executes the reset
-vector, never sends SIPIs, and the entire VM hangs at "reboot: machine
-restart" forever.  Only destroying and recreating the VM recovers it.
+[1]: https://lore.kernel.org/all/20260812170854.58709-1-amachhiw@linux.ibm.com/
 
-Clearing the state is always safe: waking from HLT is architecturally
-permitted to be spurious, and every HLT in the kernel is inside a loop.
-Hook KVM_SET_MP_STATE rather than the VM-Enter path so that the clearing
-is driven by an explicit userspace declaration, and so that no work is
-added to vmx_vcpu_run().
-
-Note, vmx_clear_hlt() loses its "static" qualifier as the kvm_x86_ops table
-now lives in vmx/main.c.  TDX cannot disable HLT-exiting and KVM cannot
-access a TD's VMCS, so vt_clear_hlt() short-circuits for TD vCPUs,
-following the existing vt_*() wrapper pattern.
-
-Fixes: caa057a2cad6 ("KVM: X86: Provide a capability to disable HLT intercepts")
-Cc: stable@vger.kernel.org
-Signed-off-by: Keqiang Duan <duankeqiangcym@gmail.com>
+Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
 ---
- arch/x86/include/asm/kvm-x86-ops.h |  1 +
- arch/x86/include/asm/kvm_host.h    |  7 +++++++
- arch/x86/kvm/vmx/main.c            | 13 +++++++++++++
- arch/x86/kvm/vmx/vmx.c             |  2 +-
- arch/x86/kvm/vmx/x86_ops.h         |  1 +
- arch/x86/kvm/x86.c                 | 13 +++++++++++++
- 6 files changed, 36 insertions(+), 1 deletion(-)
+ include/standard-headers/linux/const.h  |  4 ++--
+ linux-headers/asm-arm64/unistd_64.h     |  1 +
+ linux-headers/asm-generic/unistd.h      |  6 +++++-
+ linux-headers/asm-loongarch/unistd_64.h |  1 +
+ linux-headers/asm-mips/unistd_n32.h     |  1 +
+ linux-headers/asm-mips/unistd_n64.h     |  1 +
+ linux-headers/asm-mips/unistd_o32.h     |  1 +
+ linux-headers/asm-powerpc/kvm.h         | 18 ++++++++++++++++++
+ linux-headers/asm-powerpc/unistd_32.h   |  1 +
+ linux-headers/asm-powerpc/unistd_64.h   |  1 +
+ linux-headers/asm-riscv/unistd_32.h     |  1 +
+ linux-headers/asm-riscv/unistd_64.h     |  1 +
+ linux-headers/asm-s390/unistd_64.h      |  1 +
+ linux-headers/asm-x86/unistd_32.h       |  1 +
+ linux-headers/asm-x86/unistd_64.h       |  1 +
+ linux-headers/asm-x86/unistd_x32.h      |  1 +
+ linux-headers/linux/const.h             |  4 ++--
+ linux-headers/linux/kvm.h               |  3 +++
+ 18 files changed, 43 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index e213c9ae3e30..dd9026c1071c 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -82,6 +82,7 @@ KVM_X86_OP(interrupt_allowed)
- KVM_X86_OP(nmi_allowed)
- KVM_X86_OP(get_nmi_mask)
- KVM_X86_OP(set_nmi_mask)
-+KVM_X86_OP_OPTIONAL(clear_hlt)
- KVM_X86_OP(enable_nmi_window)
- KVM_X86_OP(enable_irq_window)
- KVM_X86_OP_OPTIONAL(update_cr8_intercept)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 283847619ff8..e5a0758536e1 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1607,6 +1607,13 @@ struct kvm_x86_ops {
- 	int (*nmi_allowed)(struct kvm_vcpu *vcpu, bool for_injection);
- 	bool (*get_nmi_mask)(struct kvm_vcpu *vcpu);
- 	void (*set_nmi_mask)(struct kvm_vcpu *vcpu, bool masked);
-+	/*
-+	 * Force the vCPU out of any hardware-tracked halted/inactive state so
-+	 * that it will fetch and execute instructions on the next VM-Enter.
-+	 * Only needed by VMX, where VMCS.GUEST_ACTIVITY_STATE persists across
-+	 * VM-Exit/VM-Enter; SVM has no equivalent VMCB field.
-+	 */
-+	void (*clear_hlt)(struct kvm_vcpu *vcpu);
- 	/* Whether or not a virtual NMI is pending in hardware. */
- 	bool (*is_vnmi_pending)(struct kvm_vcpu *vcpu);
- 	/*
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index 0ff3230fd95e..74ce9dd70419 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -601,6 +601,18 @@ static void vt_set_nmi_mask(struct kvm_vcpu *vcpu, bool masked)
- 	vmx_set_nmi_mask(vcpu, masked);
- }
+diff --git a/include/standard-headers/linux/const.h b/include/standard-headers/linux/const.h
+index c6a9d0c9835c..92635cec4aed 100644
+--- a/include/standard-headers/linux/const.h
++++ b/include/standard-headers/linux/const.h
+@@ -13,7 +13,7 @@
+  * leave it unchanged in asm.
+  */
  
-+static void vt_clear_hlt(struct kvm_vcpu *vcpu)
-+{
-+	/*
-+	 * TDX doesn't support disabling HLT-exiting, and KVM can't access a
-+	 * TD's VMCS, so there is never any hardware halted state to clear.
-+	 */
-+	if (is_td_vcpu(vcpu))
-+		return;
-+
-+	vmx_clear_hlt(vcpu);
-+}
-+
- static void vt_enable_nmi_window(struct kvm_vcpu *vcpu)
- {
- 	/* Refer to the comments in tdx_inject_nmi(). */
-@@ -964,6 +976,7 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
- 	.nmi_allowed = vt_op(nmi_allowed),
- 	.get_nmi_mask = vt_op(get_nmi_mask),
- 	.set_nmi_mask = vt_op(set_nmi_mask),
-+	.clear_hlt = vt_op(clear_hlt),
- 	.enable_nmi_window = vt_op(enable_nmi_window),
- 	.enable_irq_window = vt_op(enable_irq_window),
- 	.update_cr8_intercept = vt_op(update_cr8_intercept),
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index e3bfe6aca1a0..8ad79c60ecc6 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -1909,7 +1909,7 @@ int vmx_skip_emulated_instruction(struct kvm_vcpu *vcpu)
- 	return skip_emulated_instruction(vcpu);
- }
+-#ifdef __ASSEMBLY__
++#ifdef __ASSEMBLER__
+ #define _AC(X,Y)	X
+ #define _AT(T,X)	X
+ #else
+@@ -28,7 +28,7 @@
+ #define _BITUL(x)	(_UL(1) << (x))
+ #define _BITULL(x)	(_ULL(1) << (x))
  
--static void vmx_clear_hlt(struct kvm_vcpu *vcpu)
-+void vmx_clear_hlt(struct kvm_vcpu *vcpu)
- {
- 	/*
- 	 * Ensure that we clear the HLT state in the VMCS.  We don't need to
-diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
-index cdb38d940cfb..45e47f502a37 100644
---- a/arch/x86/kvm/vmx/x86_ops.h
-+++ b/arch/x86/kvm/vmx/x86_ops.h
-@@ -95,6 +95,7 @@ int vmx_interrupt_allowed(struct kvm_vcpu *vcpu, bool for_injection);
- int vmx_nmi_allowed(struct kvm_vcpu *vcpu, bool for_injection);
- bool vmx_get_nmi_mask(struct kvm_vcpu *vcpu);
- void vmx_set_nmi_mask(struct kvm_vcpu *vcpu, bool masked);
-+void vmx_clear_hlt(struct kvm_vcpu *vcpu);
- void vmx_enable_nmi_window(struct kvm_vcpu *vcpu);
- void vmx_enable_irq_window(struct kvm_vcpu *vcpu);
- void vmx_update_cr8_intercept(struct kvm_vcpu *vcpu, int tpr, int irr);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index d94b59140c45..7777cf88a96b 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9058,6 +9058,19 @@ int kvm_arch_vcpu_ioctl_set_mpstate(struct kvm_vcpu *vcpu,
- 	}
+-#if !defined(__ASSEMBLY__)
++#if !defined(__ASSEMBLER__)
+ /*
+  * Missing __asm__ support
+  *
+diff --git a/linux-headers/asm-arm64/unistd_64.h b/linux-headers/asm-arm64/unistd_64.h
+index 70b3754a4247..4329a2ad54c2 100644
+--- a/linux-headers/asm-arm64/unistd_64.h
++++ b/linux-headers/asm-arm64/unistd_64.h
+@@ -328,6 +328,7 @@
+ #define __NR_file_setattr 469
+ #define __NR_listns 470
+ #define __NR_rseq_slice_yield 471
++#define __NR_fchroot 472
  
- 	kvm_set_mp_state(vcpu, mp_state->mp_state);
-+
-+	/*
-+	 * Force the vCPU out of any hardware-tracked inactive state, e.g. VMX's
-+	 * GUEST_ACTIVITY_STATE=HLT.  That state is sticky across VM-Exit and
-+	 * VM-Enter and is not touched by any other ioctl, so a vCPU that halted
-+	 * with HLT-exiting disabled (KVM_X86_DISABLE_EXITS_HLT) stays wedged
-+	 * even after userspace declares it RUNNABLE and rewrites its registers,
-+	 * e.g. when a VMM emulates a machine reset.  Waking from HLT is
-+	 * architecturally allowed to be spurious, so clearing it is always safe.
-+	 */
-+	if (vcpu->arch.mp_state == KVM_MP_STATE_RUNNABLE)
-+		kvm_x86_call(clear_hlt)(vcpu);
-+
- 	kvm_make_request(KVM_REQ_EVENT, vcpu);
  
- 	ret = 0;
+ #endif /* _ASM_UNISTD_64_H */
+diff --git a/linux-headers/asm-generic/unistd.h b/linux-headers/asm-generic/unistd.h
+index a627acc8fb5f..5b7e77a7c736 100644
+--- a/linux-headers/asm-generic/unistd.h
++++ b/linux-headers/asm-generic/unistd.h
+@@ -863,8 +863,12 @@ __SYSCALL(__NR_listns, sys_listns)
+ #define __NR_rseq_slice_yield 471
+ __SYSCALL(__NR_rseq_slice_yield, sys_rseq_slice_yield)
+ 
++/* fs/open.c */
++#define __NR_fchroot 472
++__SYSCALL(__NR_fchroot, sys_fchroot)
++
+ #undef __NR_syscalls
+-#define __NR_syscalls 472
++#define __NR_syscalls 473
+ 
+ /*
+  * 32 bit systems traditionally used different
+diff --git a/linux-headers/asm-loongarch/unistd_64.h b/linux-headers/asm-loongarch/unistd_64.h
+index 3a29d86e1dee..b525f2d7b881 100644
+--- a/linux-headers/asm-loongarch/unistd_64.h
++++ b/linux-headers/asm-loongarch/unistd_64.h
+@@ -325,6 +325,7 @@
+ #define __NR_file_setattr 469
+ #define __NR_listns 470
+ #define __NR_rseq_slice_yield 471
++#define __NR_fchroot 472
+ 
+ 
+ #endif /* _ASM_UNISTD_64_H */
+diff --git a/linux-headers/asm-mips/unistd_n32.h b/linux-headers/asm-mips/unistd_n32.h
+index 5fa1ee0cb465..f883da76c999 100644
+--- a/linux-headers/asm-mips/unistd_n32.h
++++ b/linux-headers/asm-mips/unistd_n32.h
+@@ -400,5 +400,6 @@
+ #define __NR_file_setattr (__NR_Linux + 469)
+ #define __NR_listns (__NR_Linux + 470)
+ #define __NR_rseq_slice_yield (__NR_Linux + 471)
++#define __NR_fchroot (__NR_Linux + 472)
+ 
+ #endif /* _ASM_UNISTD_N32_H */
+diff --git a/linux-headers/asm-mips/unistd_n64.h b/linux-headers/asm-mips/unistd_n64.h
+index e1f873d83a5d..59837eb86628 100644
+--- a/linux-headers/asm-mips/unistd_n64.h
++++ b/linux-headers/asm-mips/unistd_n64.h
+@@ -376,5 +376,6 @@
+ #define __NR_file_setattr (__NR_Linux + 469)
+ #define __NR_listns (__NR_Linux + 470)
+ #define __NR_rseq_slice_yield (__NR_Linux + 471)
++#define __NR_fchroot (__NR_Linux + 472)
+ 
+ #endif /* _ASM_UNISTD_N64_H */
+diff --git a/linux-headers/asm-mips/unistd_o32.h b/linux-headers/asm-mips/unistd_o32.h
+index 8207e9ca4f67..485872076e92 100644
+--- a/linux-headers/asm-mips/unistd_o32.h
++++ b/linux-headers/asm-mips/unistd_o32.h
+@@ -446,5 +446,6 @@
+ #define __NR_file_setattr (__NR_Linux + 469)
+ #define __NR_listns (__NR_Linux + 470)
+ #define __NR_rseq_slice_yield (__NR_Linux + 471)
++#define __NR_fchroot (__NR_Linux + 472)
+ 
+ #endif /* _ASM_UNISTD_O32_H */
+diff --git a/linux-headers/asm-powerpc/kvm.h b/linux-headers/asm-powerpc/kvm.h
+index 077c5437f521..913a64b901a3 100644
+--- a/linux-headers/asm-powerpc/kvm.h
++++ b/linux-headers/asm-powerpc/kvm.h
+@@ -437,6 +437,24 @@ struct kvm_ppc_cpu_char {
+ 	__u64	behaviour_mask;		/* valid bits in behaviour */
+ };
+ 
++/* For KVM_PPC_GET_COMPAT_CAPS */
++struct kvm_ppc_compat_caps {
++	__u64	size;			/* Size of this structure */
++	__u64	flags;			/* Reserved for future use */
++	__u64	compat_capabilities;	/* Capabilities supported by the host */
++};
++#define KVM_PPC_COMPAT_CAPS_SIZE_VER0	24 /* sizeof first published struct */
++
++/*
++ * Capability bits for compat_capabilities field in kvm_ppc_compat_caps.
++ * These bits indicate which processor compatibility modes are supported.
++ */
++#define KVM_PPC_COMPAT_CAP_POWER9	(1ULL << 62)
++#define KVM_PPC_COMPAT_CAP_POWER10	(1ULL << 61)
++#define KVM_PPC_COMPAT_CAP_POWER11	(1ULL << 60)
++#define KVM_PPC_COMPAT_BITMASK		(KVM_PPC_COMPAT_CAP_POWER9 | \
++					 KVM_PPC_COMPAT_CAP_POWER10 | \
++					 KVM_PPC_COMPAT_CAP_POWER11)
+ /*
+  * Values for character and character_mask.
+  * These are identical to the values used by H_GET_CPU_CHARACTERISTICS.
+diff --git a/linux-headers/asm-powerpc/unistd_32.h b/linux-headers/asm-powerpc/unistd_32.h
+index 1f633601201b..2677c54903a4 100644
+--- a/linux-headers/asm-powerpc/unistd_32.h
++++ b/linux-headers/asm-powerpc/unistd_32.h
+@@ -453,6 +453,7 @@
+ #define __NR_file_setattr 469
+ #define __NR_listns 470
+ #define __NR_rseq_slice_yield 471
++#define __NR_fchroot 472
+ 
+ 
+ #endif /* _ASM_UNISTD_32_H */
+diff --git a/linux-headers/asm-powerpc/unistd_64.h b/linux-headers/asm-powerpc/unistd_64.h
+index 87439c53c121..6fc19ccccdb9 100644
+--- a/linux-headers/asm-powerpc/unistd_64.h
++++ b/linux-headers/asm-powerpc/unistd_64.h
+@@ -425,6 +425,7 @@
+ #define __NR_file_setattr 469
+ #define __NR_listns 470
+ #define __NR_rseq_slice_yield 471
++#define __NR_fchroot 472
+ 
+ 
+ #endif /* _ASM_UNISTD_64_H */
+diff --git a/linux-headers/asm-riscv/unistd_32.h b/linux-headers/asm-riscv/unistd_32.h
+index 828f3c2b9de1..1039bdc6cf5b 100644
+--- a/linux-headers/asm-riscv/unistd_32.h
++++ b/linux-headers/asm-riscv/unistd_32.h
+@@ -319,6 +319,7 @@
+ #define __NR_file_setattr 469
+ #define __NR_listns 470
+ #define __NR_rseq_slice_yield 471
++#define __NR_fchroot 472
+ 
+ 
+ #endif /* _ASM_UNISTD_32_H */
+diff --git a/linux-headers/asm-riscv/unistd_64.h b/linux-headers/asm-riscv/unistd_64.h
+index 8fa59835a333..72040a54987a 100644
+--- a/linux-headers/asm-riscv/unistd_64.h
++++ b/linux-headers/asm-riscv/unistd_64.h
+@@ -329,6 +329,7 @@
+ #define __NR_file_setattr 469
+ #define __NR_listns 470
+ #define __NR_rseq_slice_yield 471
++#define __NR_fchroot 472
+ 
+ 
+ #endif /* _ASM_UNISTD_64_H */
+diff --git a/linux-headers/asm-s390/unistd_64.h b/linux-headers/asm-s390/unistd_64.h
+index 01f674c1bcb7..3d3747e3ca1f 100644
+--- a/linux-headers/asm-s390/unistd_64.h
++++ b/linux-headers/asm-s390/unistd_64.h
+@@ -391,6 +391,7 @@
+ #define __NR_file_setattr 469
+ #define __NR_listns 470
+ #define __NR_rseq_slice_yield 471
++#define __NR_fchroot 472
+ 
+ 
+ #endif /* _ASM_UNISTD_64_H */
+diff --git a/linux-headers/asm-x86/unistd_32.h b/linux-headers/asm-x86/unistd_32.h
+index e94546882962..7f298247f805 100644
+--- a/linux-headers/asm-x86/unistd_32.h
++++ b/linux-headers/asm-x86/unistd_32.h
+@@ -462,6 +462,7 @@
+ #define __NR_file_setattr 469
+ #define __NR_listns 470
+ #define __NR_rseq_slice_yield 471
++#define __NR_fchroot 472
+ 
+ 
+ #endif /* _ASM_UNISTD_32_H */
+diff --git a/linux-headers/asm-x86/unistd_64.h b/linux-headers/asm-x86/unistd_64.h
+index 3c49b00ed13c..fbddeb4bc381 100644
+--- a/linux-headers/asm-x86/unistd_64.h
++++ b/linux-headers/asm-x86/unistd_64.h
+@@ -386,6 +386,7 @@
+ #define __NR_file_setattr 469
+ #define __NR_listns 470
+ #define __NR_rseq_slice_yield 471
++#define __NR_fchroot 472
+ 
+ 
+ #endif /* _ASM_UNISTD_64_H */
+diff --git a/linux-headers/asm-x86/unistd_x32.h b/linux-headers/asm-x86/unistd_x32.h
+index bd2af9ad088d..629770ed4baa 100644
+--- a/linux-headers/asm-x86/unistd_x32.h
++++ b/linux-headers/asm-x86/unistd_x32.h
+@@ -339,6 +339,7 @@
+ #define __NR_file_setattr (__X32_SYSCALL_BIT + 469)
+ #define __NR_listns (__X32_SYSCALL_BIT + 470)
+ #define __NR_rseq_slice_yield (__X32_SYSCALL_BIT + 471)
++#define __NR_fchroot (__X32_SYSCALL_BIT + 472)
+ #define __NR_rt_sigaction (__X32_SYSCALL_BIT + 512)
+ #define __NR_rt_sigreturn (__X32_SYSCALL_BIT + 513)
+ #define __NR_ioctl (__X32_SYSCALL_BIT + 514)
+diff --git a/linux-headers/linux/const.h b/linux-headers/linux/const.h
+index c6a9d0c9835c..92635cec4aed 100644
+--- a/linux-headers/linux/const.h
++++ b/linux-headers/linux/const.h
+@@ -13,7 +13,7 @@
+  * leave it unchanged in asm.
+  */
+ 
+-#ifdef __ASSEMBLY__
++#ifdef __ASSEMBLER__
+ #define _AC(X,Y)	X
+ #define _AT(T,X)	X
+ #else
+@@ -28,7 +28,7 @@
+ #define _BITUL(x)	(_UL(1) << (x))
+ #define _BITULL(x)	(_ULL(1) << (x))
+ 
+-#if !defined(__ASSEMBLY__)
++#if !defined(__ASSEMBLER__)
+ /*
+  * Missing __asm__ support
+  *
+diff --git a/linux-headers/linux/kvm.h b/linux-headers/linux/kvm.h
+index dd52e2a65bfd..aea4ab5c6953 100644
+--- a/linux-headers/linux/kvm.h
++++ b/linux-headers/linux/kvm.h
+@@ -986,6 +986,7 @@ struct kvm_enable_cap {
+ #define KVM_CAP_S390_KEYOP 247
+ #define KVM_CAP_S390_VSIE_ESAMODE 248
+ #define KVM_CAP_S390_HPAGE_2G 249
++#define KVM_CAP_PPC_COMPAT_CAPS 250
+ 
+ struct kvm_irq_routing_irqchip {
+ 	__u32 irqchip;
+@@ -1330,6 +1331,8 @@ struct kvm_s390_keyop {
+ /* Available with KVM_CAP_COUNTER_OFFSET */
+ #define KVM_ARM_SET_COUNTER_OFFSET _IOW(KVMIO,  0xb5, struct kvm_arm_counter_offset)
+ #define KVM_ARM_GET_REG_WRITABLE_MASKS _IOR(KVMIO,  0xb6, struct reg_mask_range)
++/* Available with KVM_CAP_PPC_COMPAT_CAPS */
++#define KVM_PPC_GET_COMPAT_CAPS	_IO(KVMIO,  0xb8)
+ 
+ /* ioctl for vm fd */
+ #define KVM_CREATE_DEVICE	  _IOWR(KVMIO,  0xe0, struct kvm_create_device)
 
-base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
+base-commit: fa19879df1658f96ac07365fca8835b7decd6995
 -- 
-2.24.3
-
+2.50.1 (Apple Git-155)
 
