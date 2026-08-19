@@ -1,145 +1,240 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012069.outbound.protection.outlook.com [52.101.43.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66CFB355055;
-	Wed, 19 Aug 2026 11:46:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787140019; cv=none; b=dRf8KqZoliMq+R2EudnFbDiqAKCUpbc9s9s8ykaDs+X7n9Za2weZGbvX+6QXZbwOG7MB0obvbkBxiPHbS711+r3kzfWO17oyEdcENCY4tA8WKAIeLBnNiAi6msiPrc4T0NBpF1MVGVjaOR1ltnPp2eSXoh2z8RJ4gshXMXTkdtk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787140019; c=relaxed/simple;
-	bh=LKUFgZ//3AyxhWtNzenWbhseyKw58RqDy+y6jBhqSLo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:Subject:From:
-	 References:In-Reply-To; b=e6VczYcU/eRyZy9hVj64cvtjtCL00GCF1I3NpfnVHC5iin/LDh0VoXRZ2AqhpSb7GHe1a0hjXeNnfzdmmmYsul/IPyjuKmDemskPy1FKN3f4N0yxZxRzVgh9TOvoE1TTuKnNs8f5g+Vq/KSV8r+L3ZqUBkoG1Aec2rk9lcUZ2m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IG40vREs; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A067D472F7C;
+	Wed, 19 Aug 2026 12:08:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787141312; cv=fail; b=A2aqzdXYWpIQgEPpRzVFPMDlzlGMmBWsh6rSexIO0/6S20JbvWvRiQrbtqoUZMGVjL7frrHhgQeC9IjckOaAa/RT0hPeWMt1PQYbPl4vvZfSOh7CzMHeohN/v9h1UPeoDmnGXZAEvgfkC+zklrwUE75u8g2dF1QX1fu/XxRXK2U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787141312; c=relaxed/simple;
+	bh=h9c+ZKvsCXUnXTxAY1u/ICk8nKoNb0ykWBTvhLqjOJc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=QKT3/ZWh4SriEZds3ULSn2hLUmh4uHHBH2Jq0RQBTRmeAeZZorNSyT8ppgnrfw5k3VNkHwfhpPTIuc9Phg6D2UOWh2RrIANe0DefKXn1QVUv592C2hTu9EARO8hqH+GjL/HRGB2cHVrByBrroLEQX7eZSufXTe905V8aDxP2Fsk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=bl4JGGG5; arc=fail smtp.client-ip=52.101.43.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IG40vREs"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67JAVte43191628;
-	Wed, 19 Aug 2026 11:46:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=53Blfh
-	rnwzDZpmteOKPxIbAjafcFPVlOAwteGAsA6Os=; b=IG40vREst8zHl8/BAREW/d
-	5GG0Rimhi+wbet+OMoQRSTruz4bjqZ4DNfEDnc53dPFrUm6mp1Qe7G3LKX9jfmma
-	lu9la8t/mw5ZnxxCkUaiDFIuvt0dptEirmgYzO3sum1l6SlMD12ovm/iZgYpwbZr
-	nQKmoxDZKa15AMPUMZg6cNAemxiMTxuJBbBz1k3pzzL69uRTyVfj79PHr3AOS5b9
-	FYKQWE4MuZ7TIo9wcnOHuaqnoI06td6LLvkIZMDC53srM1/rgJrbDEdkFrYqsbBj
-	Xh7H8o1m5mmqlVlnXCKSgxx8uQdhzmeSMlvpdxD+98RZk7Ecy9D4Dd78rVtw5JMA
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g4yu0bdf0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Aug 2026 11:46:54 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67JBfKG8025871;
-	Wed, 19 Aug 2026 11:46:52 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g32tw8swr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Aug 2026 11:46:52 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67JBkmvH41746760
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 Aug 2026 11:46:48 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9B88320049;
-	Wed, 19 Aug 2026 11:46:48 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 85F4C20040;
-	Wed, 19 Aug 2026 11:46:48 +0000 (GMT)
-Received: from darkmoore (unknown [9.224.78.25])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 19 Aug 2026 11:46:48 +0000 (GMT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="bl4JGGG5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=B2K58RvQ5Ki2T2fzjEjhF+Z54h9jgi0bi0BCfnc7p9NnCk2IuvWQFd/zVUwH7gPQkO4vyx4PPnOnxts4oVhqAlFUnXgrMEBvra+lg+/oiggSmTVg/SuPSD/LJBRVWTSwNBpFaQ+0hGsU2FXEnQFGtf5Wc+DzjLCBi4NfNV5z3ll48SQB8jVrlQlsAl+cG1jHhafSrMq6RHt3tcaJwiKLTjfGhjY6ukogUqS77+gRWT7rqU9aiHSTRXaXV8LpLqnpNO8C8y/+3QYgfcMOlULjvYg6+Zw00N24ITRS7ZkaUWRqgrITtK0pBwgdeG5DEkiYcFSgbjOp2B0JIzwGIKVsyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mvIxacTodszEefkQ86Z0KOY+QRNp/itzoTa/CGO1dtM=;
+ b=cZ0UdjVfFu34S90jCQ30NSdw/iKGj1xNm8AXtYLhhObYoNlgBkH2B/em6BAb/g07DOCxK75okujT8KAhQ1YNSb/fZ99vMG2lWmpqmuV8pGm87bQWIilz8C/tUzIwM0LpgiMSgFCB0S4mR4ZfDs9TkmDAe0uFi3wWG3vBAvtsbkgKC1KZt67Jvvks8VVoaiOt9yaB1c8BCpTaQg5xYQeszRnypDqg0aU6l5ft7mHrQlmKkdGR+DMfGaKdPAWPR7NtBfncwCCTL9fOkjpSeQtE3VRbzCn4tAS6StaB5EdALKQpmXqd22Lrw+7v2lY9IHWfe7Cb9KD1Bd+ySNy3JK2U2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mvIxacTodszEefkQ86Z0KOY+QRNp/itzoTa/CGO1dtM=;
+ b=bl4JGGG5JkZnObPAYWosWYSmBBWL/YB2XkYzX/ahLwyAbwfDyI9KWsRW4Oz9lMEOQZZEMMbiIKCwHT4OHBGRWSYNJZpn+Olo+Y/MzWp2oAWR7qeNptnAfL04hRoTDgVbklPj/x1VywezZ/UY5T/QA2SxEGLXaCuupVEQxk2VqiI=
+Received: from BY1P220CA0007.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:59d::13)
+ by PH0PR12MB7888.namprd12.prod.outlook.com (2603:10b6:510:28b::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
+ 2026 12:08:26 +0000
+Received: from BY1PEPF0001AE18.namprd04.prod.outlook.com
+ (2603:10b6:a03:59d:cafe::5b) by BY1P220CA0007.outlook.office365.com
+ (2603:10b6:a03:59d::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.8 via Frontend Transport; Wed, 19
+ Aug 2026 12:08:26 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ BY1PEPF0001AE18.mail.protection.outlook.com (10.167.242.100) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.339.3 via Frontend Transport; Wed, 19 Aug 2026 12:08:26 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 19 Aug
+ 2026 07:08:23 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 19 Aug
+ 2026 07:08:21 -0500
+Received: from [10.85.46.157] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.45 via Frontend
+ Transport; Wed, 19 Aug 2026 07:08:17 -0500
+Message-ID: <829b5c18-6ffe-46fe-bfed-03d5ddde92d9@amd.com>
+Date: Wed, 19 Aug 2026 17:38:16 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 19 Aug 2026 13:46:43 +0200
-Message-Id: <DKSW9BIX9YET.24AIJF05T655N@linux.ibm.com>
-Cc: <kvm@vger.kernel.org>, <linux-s390@vger.kernel.org>,
-        <borntraeger@de.ibm.com>, <frankja@linux.ibm.com>, <david@kernel.org>,
-        <seiden@linux.ibm.com>, <nrb@linux.ibm.com>,
-        <schlameuss@linux.ibm.com>, <gra@linux.ibm.com>
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 5/6] KVM: s390: Add missing srcu in
- kvm_s390_set_irq_state()
-From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
-X-Mailer: aerc 0.22.0
-References: <20260814163355.227191-1-imbrenda@linux.ibm.com>
- <20260814163355.227191-6-imbrenda@linux.ibm.com>
-In-Reply-To: <20260814163355.227191-6-imbrenda@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=MthiLWae c=1 sm=1 tr=0 ts=6a8597ae cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=5NMBkYRrUetcHw1iU8IA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: VSkRrdDqIM7RtoTkcVjn9yM2Sxg0nE1-
-X-Proofpoint-GUID: VSkRrdDqIM7RtoTkcVjn9yM2Sxg0nE1-
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE5MDA4OSBTYWx0ZWRfX4glO0fQaLzRd
- qzRTvr7HJzSq+osP4ZkZlJ44l8WdVYDIF4SM15jEiXwwfNIr/E2Y8lbUKPCwNwLcbyBZFGtRd7c
- Idva5TsafzRf+Fd3AAecI8oyWTXOY0E=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE5MDA4OSBTYWx0ZWRfXy+Iv5SzBSVKc
- tj6OTkGHyiiMc7pxRQWyqIWa1srFVOAy/7f4RHOOt6G3tyBSKWAG5aTMXVaa3azJd0/vkWEYsZO
- JVEM535l64aMZ2RYmHjDlh/SB2ooNyhlqiYe79V+jx5F7L0kE6J2EaoXqMxjlkM8N1Jk1BX/GF1
- lz8JXhuo7ODNibUfl2ca70+KoEci9Vxx2KnZ2KQSizG35U055tsBiblTjFczLKW/vrxCKXEaEu+
- LFmDqwFkVAlv+7WP0iHDY9tXO8yiCNAK9r9Sk+czu3/+Gq/0B2uU7DQbR/geYzunL+EdJ6sFkU4
- DZmkhGMwIzJvRT+pIs5ccrZM3WeWqxXmjcEPojs8LuW5DXx2pdL8L+WGMI8/6KqW5Q+SuEL2FOx
- QGPA5A17Dui1+2574EBto6+ZMLZorLHl2lw3245LgGZwd7T4LhyCMH1qKVKyabCAof08B90pqYq
- Ga7WSKkL0r7KXn4vomg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-19_03,2026-08-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 impostorscore=0 bulkscore=0 phishscore=0 clxscore=1015
- spamscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608190089
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7/7] KVM: SVM: Enable save/restore of FRED MSRs
+To: Sean Christopherson <seanjc@google.com>, Nikunj A Dadhania
+	<nikunj@amd.com>
+CC: <pbonzini@redhat.com>, <linux-kernel@vger.kernel.org>,
+	<kvm@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	<hpa@zytor.com>, <xin@zytor.com>, <nikunj.dadhania@amd.com>,
+	<santosh.shukla@amd.com>, Shivansh Dhiman <shivansh.dhiman@amd.com>
+References: <20260129063653.3553076-1-shivansh.dhiman@amd.com>
+ <20260129063653.3553076-8-shivansh.dhiman@amd.com>
+ <aauJ80pZrw_SfF31@google.com> <db768f80-dfda-42a2-8601-8d0af35c2959@amd.com>
+ <an0BbcxUNRKqnUSJ@google.com>
+Content-Language: en-US
+From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+In-Reply-To: <an0BbcxUNRKqnUSJ@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE18:EE_|PH0PR12MB7888:EE_
+X-MS-Office365-Filtering-Correlation-Id: 62977b8a-c002-433a-78fe-08defdea9325
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|23010399003|7416014|376014|36860700016|1800799024|3023799007|56012099006|10067099003|4143699003|5023799004|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	S45QeYzrlBC+PEbjBKcr4WulZ0TaMz+mHyWa0hAQ4xTnZTXLvkmMN9LaPPn3V3hUUyAQLd8E1snLw+YkPij8rR2t6g+WvSxRr5ceBqTnaR9eT4RzFvSYGh7qtGMNA0QdqOPHmT1+9wUBi74LV7UZOsxqiThtu9f5HnBejMavdQqYUWk81hDj7jxx0U/OVidoH6IzUgV/JnpfEdxgLvr5Rc8CeCQvUcu8cHM86q8ufqM6CgrJgayKJPMxnCDzeXxjsUaZUKLscgeUjynLMjVw1vrrpJIJUHU/sSEOtcfwjp+kgzJhHea64MTbsxbaoUrojxkft//XmHTgXMxBSCDuuDZ5tXgO/tAcX+RgSBGQ+vkf6EapuvX64yEvj2H/bTGeHcHpVgn53x0KPsIPum1/fm6xWFQXFJG68rhjl7ON4ZKax5W+IRpSLL/norkLS6XyU/U6siSulCz3LcCZdKmJnzyyImcAzPJ1Rdj4jsO6KjJp0YvVJduca/7NZPAHiq5WIKQPTf23R2eRBDguF6UTMJNZoRNMCLWierv0GixwqYVZPeTs7M53W5aNUCYOrsoD4YANGlpxYbtKxkD30LYGo6Mf9rOqnFtwbN5B0lJAW6KSO7feLkizB56V4fngkv8wB0IkxXHzEMx0VZIdDOUkEB+vVp8MGjLa6rQl4G/iJVUG1Td3RlCswk1vmcIFy+Qv19X93PMNvWdFJY6gNdkhWA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(23010399003)(7416014)(376014)(36860700016)(1800799024)(3023799007)(56012099006)(10067099003)(4143699003)(5023799004)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	WoOlAGsGV+wGHR/HOnGCEgwA1eIPFHDkar7M5ULkgo5ukN0Eg+Rioi4OjFU4KOObdfzipsVFp/0WwCdrF0m5YZWYLt4BoU8WYiszfrVcT1WtB0K3MEB7JPambdEZRj/lQvP4YJ0a7qx8VlcM9Eo1zwf/A/9rDxQpKlckOA8vAGhUaIEGh6M4lkPWbfyPtXPYqlyPv0EML+MSuV9AbX/bL8YpdCkLpS+aSmEFPbdw3BNiaK/eNblF1BHi23LMMLX8caMLwydtU9WMtiqrETOUIzmTaC22CHo16QK9f9t1bPuamCSgaj9BVgqfwQPVuz8vGf4AfkdzfOgfu7oO2q+UW5+r1ivc/fjaQFWo0+uKSo1uOmekEeVbGt/uiLsroHbjiSLTK+id8S/ElQWoeT7qg8nObg3gFYsNBIztfjmr9qI6mhWIrqzbQwu68INKpn8g
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 12:08:26.5247
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62977b8a-c002-433a-78fe-08defdea9325
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BY1PEPF0001AE18.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7888
 
-On Fri Aug 14, 2026 at 6:33 PM CEST, Claudio Imbrenda wrote:
-> Like kvm_s390_inject_vcpu(), kvm_s390_set_irq_state() also needs the
-> kvm->srcu or the slots lock when performing the Store status operation.
->
-> Fix by taking kvm->srcu in kvm_s390_set_irq_state().
->
-> Fixes: ba5c1e9b6cee ("KVM: s390: interrupt subsystem, cpu timer, waitpsw"=
-)
-> Fixes: 062e44a9319f ("KVM: s390: Use srcu in kvm_arch_vcpu_unlocked_ioctl=
-()")
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
 
-> ---
->  arch/s390/kvm/interrupt.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-> index fc4d1f8193d9..8a251f83d323 100644
-> --- a/arch/s390/kvm/interrupt.c
-> +++ b/arch/s390/kvm/interrupt.c
-> @@ -3230,9 +3230,9 @@ int kvm_s390_set_irq_state(struct kvm_vcpu *vcpu, v=
-oid __user *irqstate, int len
->  				break;
->  		}
->  	}
-> -
->  	if (storestatus) {
-> -		n =3D kvm_s390_store_status_unloaded(vcpu, KVM_S390_STORE_STATUS_NOADD=
-R);
-> +		scoped_guard(srcu, &vcpu->kvm->srcu)
-> +			n =3D kvm_s390_store_status_unloaded(vcpu, KVM_S390_STORE_STATUS_NOAD=
-DR);
->  		return r ? r : n;
->  	}
-> =20
+On 13-08-26 04:57, Sean Christopherson wrote:
+> +Nikunj
+> 
+> On Mon, Aug 10, 2026, Shivansh Dhiman wrote:
+>> On 07-03-26 07:44, Sean Christopherson wrote:
+>>> On Thu, Jan 29, 2026, Shivansh Dhiman wrote:
+>>>> Set the FRED_VIRT_ENABLE bit (bit 4) in the VIRT_EXT field of VMCB to enable
+>>>> FRED Virtualization for the guest. This enables automatic save/restore of
+>>>> FRED MSRs. Also toggle this bit when setting CPUIDs, to support booting of
+>>>> secure guests.
+>>>>
+>>>> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+>>>> ---
+>>>>  arch/x86/kvm/svm/svm.c | 6 ++++++
+>>>>  1 file changed, 6 insertions(+)
+>>>>
+>>>> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+>>>> index 954df4eae90e..24579c149937 100644
+>>>> --- a/arch/x86/kvm/svm/svm.c
+>>>> +++ b/arch/x86/kvm/svm/svm.c
+>>>> @@ -1144,6 +1144,9 @@ static void init_vmcb(struct kvm_vcpu *vcpu, bool init_event)
+>>>>  	save->fred_ssp3 = 0;
+>>>>  	save->fred_config = 0;
+>>>>  
+>>>> +	if (guest_cpu_cap_has(vcpu, X86_FEATURE_FRED))
+>>>> +		svm->vmcb->control.virt_ext |= FRED_VIRT_ENABLE_MASK;
+>>>
+>>> This is completely unnecessary, no?  CPUID is empty at vCPU creation and so FRED
+>>> _can't_ be enabled before going through svm_vcpu_after_set_cpuid().
+>>
+>> Hi Sean,
+>>
+>> You're right for vCPU creation, CPUID is empty there and the hunk does
+>> nothing, so I dropped it in v2. While preparing v3 I hit a case that does
+>> need it though, a triple fault:
+>>
+>>  1. The guest enumerates FRED, so the FRED MSRs are passed through and
+>>     FRED_VIRT_ENABLE is set in virt_ext.
+>>
+>>  2. The guest triple faults and KVM intercepts SHUTDOWN.
+>>
+>>  3. shutdown_interception() does clear_page(svm->vmcb), which wipes
+>>     virt_ext along with the rest of the VMCB, and then INITs the vCPU.
+>>
+>>  4. init_vmcb() runs, but svm_vcpu_after_set_cpuid() does not.
+>>
+>>  5. CPUID still enumerates FRED, so the intercept recalc puts the FRED
+>>     MSRs back into passthrough.
+>>
+>>  6. Nothing restores FRED_VIRT_ENABLE, as only svm_vcpu_after_set_cpuid()
+>>     ever sets it.
+>>
+>>
+>> So the guest ends up with direct access to the FRED MSRs while hardware is
+>> no longer context switching them, i.e. it can clobber the host's FRED state.
+>>
+>> Setting the bit in init_vmcb() is the smallest fix I came up with, so I'd
+>> like to add the hunk back in v3.
+>>
+>> Would you prefer it handled in svm_recalc_fred_msr_intercepts() instead
+>> while setting intercepts? Or is there a better way to deal with this?
+> 
+> Take a hard dependency on an upcoming APM update that states the control area
+> is valid after shutdown, and rework KVM to not clobber control fields on shutdown
+> interception.
 
+Sure, Sean. I'm thinking something like the diff below. It contains three
+parts:
+
+1. Clear the save area and offsets 60h, 61h, and 68h of the control area,
+   as per the APM.
+
+2. Zero the intercepts as well. The APM doesn't require it, but it seemed
+   worthwhile so that the new intercepts are computed on a clean slate
+   rather than on top of whatever survived the triple fault. Is that worth
+   doing?
+
+3. For nested, same fields are copied to vmcb12 when a shutdown is intercepted
+   in L2. Clear them while copying so L1 gets a deterministic value
+   rather than whatever the hardware left behind. Does that seem like right
+   thing to do?
+
+
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 83de3456df708..38843b29b21ec 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1149,6 +1149,11 @@ int nested_svm_vmexit(struct vcpu_svm *svm)
+        vmcb12->control.event_inj         = svm->nested.ctl.event_inj;
+        vmcb12->control.event_inj_err     = svm->nested.ctl.event_inj_err;
+
++       if (vmcb02->control.exit_code == SVM_EXIT_SHUTDOWN) {
++               vmcb12->control.int_ctl &= ~GENMASK(15, 0);
++               vmcb12->control.int_state = 0;
++       }
++
+        if (!kvm_pause_in_guest(vcpu->kvm)) {
+                vmcb01->control.pause_filter_count = vmcb02->control.pause_filter_count;
+                vmcb_mark_dirty(vmcb01, VMCB_INTERCEPTS);
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 519249e75420d..62b4feb9c3909 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2090,7 +2090,11 @@ static int shutdown_interception(struct kvm_vcpu *vcpu)
+         * cannot be reinitialized, i.e. synthesizing INIT is futile.
+         */
+        if (!sev_es_guest(vcpu->kvm)) {
+-               clear_page(svm->vmcb);
++               struct vmcb_control_area *control = &svm->vmcb->control;
++               memset(&svm->vmcb->save, 0, sizeof(svm->vmcb->save));
++               memset(control->intercepts, 0, sizeof(control->intercepts));
++               control->int_ctl &= ~GENMASK(15, 0);
++               control->int_state = 0;
+ #ifdef CONFIG_KVM_SMM
+                if (is_smm(vcpu))
+                        kvm_smm_changed(vcpu, false);
+
+
+Cheers,
+Shivansh
 
