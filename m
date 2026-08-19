@@ -1,320 +1,237 @@
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC8336DA18;
-	Wed, 19 Aug 2026 07:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71DF3E2AA1
+	for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 08:09:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787125869; cv=none; b=j35zJn5nzEBJFr02xm8b/AwtvAGTnedKx/szaQM6ZMWgES/YTgEWFP465hBmEsc956GFspAxOjWpqWIfJikv4ejjRjrHiONsevwUBnU5Y0NLZPdeX/avub0WRnTyi1Q+W3IGOirESZy3vOcC7hb05pcTg6ppU9XInI6QledboM4=
+	t=1787126963; cv=none; b=C2cpIbCHiA5kau9UcUWVKUVG6Kxq/32AJe4ZRF7D1GOjYaadPLvnhJAmzWJfQH18wj1GwjRpuRUA8SRGV4c+1goHg696mBPN1rLBBk4KnQ21Je/hgLXLaXchmRpOvrk82nXLC6dWozLt0BaVWoWKSnTi57pGXgeU/wjo6lRr7sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787125869; c=relaxed/simple;
-	bh=Kwxev6z0MnVktUdcHdpVz5PcZKf2yzdG+ZfjSxk1fOk=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=fyXoWiO3KKbS5G8UX4LL+OnYK3pRMTByj8tCYs88mg0mkuBthNBxXPYDybJFFtplGVw6OhpzU23+qDGcGTZ4eakYR8CCTEvY6vbfM/F1kGkq2QUxIMuWpoeZfvp+YLifok39KNbh2CUWBy4d1yQ6wENCke7A36kGrvcVXPHNAto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=jYXuDMEw; arc=none smtp.client-ip=113.46.200.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1787126963; c=relaxed/simple;
+	bh=j+gVWaBheHtgcMbGe74/jYIUWmpVeo4REI3joDdZInY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ewbr9k52l9G7VdCIas+XoC7ko65UAghSkUrsSC/oj1gEFrUy1Uhn1gVbwXknpc5mjLiWkC85LA92KpXiVrgR8+FK669l6BsLs26lvbhqxRiVSy7bTshy2IjA1ZGVyOOApYJMEhIrF3rgFnvOofIy4fqH2E+r7lE8ZoHozv0R36k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XmPUoJ6V; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ocxDZE/j; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="jYXuDMEw"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=Kk1+uMbKKAoPL/ZNsD0Qq2aPQnU9pVRNxpfNMkzQCac=;
-	b=jYXuDMEwbiO+ugCZ6WJHNzx9DBVdrCtUhsWG9k2VOl7zi8D71aLuC//vHVbr3MeDTJrlwmqoG
-	66iEmDsFb3qnnPigC2z+GPXRvPCGhblYfSvRXmo7zT3vsb2tybYHJvBJUP2webCB4Ya+TxLmztn
-	NDWxqaXOCFyHEE+Uytpybyo=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hPz536WlTznTVd;
-	Wed, 19 Aug 2026 15:40:39 +0800 (CST)
-Received: from dggpemf500015.china.huawei.com (unknown [7.185.36.143])
-	by mail.maildlp.com (Postfix) with ESMTPS id 71EEA4048B;
-	Wed, 19 Aug 2026 15:50:58 +0800 (CST)
-Received: from [10.67.121.110] (10.67.121.110) by
- dggpemf500015.china.huawei.com (7.185.36.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 19 Aug 2026 15:50:57 +0800
-Subject: Re: [PATCH 1/2] hisi_acc_vfio_pci: fix live migration enable
- conditions for PF passthrough
-To: Alex Williamson <alex@shazbot.org>
-CC: <alex.williamson@redhat.com>, <jgg@nvidia.com>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260803021857.2370179-1-liulongfang@huawei.com>
- <20260803021857.2370179-2-liulongfang@huawei.com>
- <20260804132805.68023c24@shazbot.org>
- <07d8a508-980b-0974-c793-b355be0a624f@huawei.com>
- <20260804211540.177d9d7d@shazbot.org>
-From: liulongfang <liulongfang@huawei.com>
-Message-ID: <77b1048f-3cb0-0ec1-30ce-39c5b0b68496@huawei.com>
-Date: Wed, 19 Aug 2026 15:50:57 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XmPUoJ6V";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ocxDZE/j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787126960;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nxIGNpX1bEb8ZoU7IALqEmofFiDxquDbYKReTWVCnAw=;
+	b=XmPUoJ6VrC0k6oIlSH9X7MmyPhpIYaPI9OHU06VIvN6V+9WfPHtP0Ab1TSn0OCazfqqZr2
+	jXcvgPxbgFdTREbAbEaOF8cjMQhTFCVKn/1xeuT/bND6KAtw6kOfNfVa0d0L+gnGyf6K+O
+	j+gPrxerxowmEDILkfXG6aJ4J+coDUQ=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-318-meIOtlcqNnGPt9E5F6w7AA-1; Wed, 19 Aug 2026 04:09:07 -0400
+X-MC-Unique: meIOtlcqNnGPt9E5F6w7AA-1
+X-Mimecast-MFC-AGG-ID: meIOtlcqNnGPt9E5F6w7AA_1787126946
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4954b1c6310so6565195e9.0
+        for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 01:09:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1787126946; x=1787731746; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=nxIGNpX1bEb8ZoU7IALqEmofFiDxquDbYKReTWVCnAw=;
+        b=ocxDZE/jBYRUubeT25u82XQO367Fbvu+S+tevEZkn5BP3rMSZqL9fjHQYO+vm/awZ6
+         fTTJQHa5daT98enzMWDntj93FZdzyG6BSvARXUqlauTDfc/937ENssB5fPPl5Uy+d5lk
+         3nP66fVVizQEqfjUtj648sFgQgDiuoWzAgRDhyUWvKMo8WHHrb+tSOha/vxfROrWJ/JY
+         LXTBgP6DrDQK6KXOKjPIu0g/ztyD7oGir0qbaffqPiFCteqbJr6SVJktjlJ6cCIbYBFJ
+         T3/RV7nh1GyxH9c++f+20jz0erPA+J5u7cNiIwWP5HlL0v1neGyd6mghW6KdRVmuGWm4
+         tALw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787126946; x=1787731746;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nxIGNpX1bEb8ZoU7IALqEmofFiDxquDbYKReTWVCnAw=;
+        b=luc+UeLOn8UPkhJNkE6pfBcuJbWk1UD8duEW0AuelbY5J9w3gg7JZUAW+73j3WVpzD
+         SlGZHhgInm6+4sMX6SKyTgqn6559U525ad87Afyf1fBqiw1HYfEPqDYmdVTv7C681yaz
+         6JURV0yr4Fa6CE1nbZZaxIzHGZ1xjb7B3v1aFu1BH90c2VVW9cvOMTK/bbYCpU012oeI
+         oB4p5OwBxa3Gj3hNjwIA1fFNs+FvLAqAF7FqKnssEmlEKOKh8zFNP+rU3jXhcr4Pho0g
+         YRPiFzExXI1cLYs96du7iIXXT9qWCrqpXGJXag3p0ynEHMcysWSwJ46hnujuhhMi2SvS
+         rtqw==
+X-Forwarded-Encrypted: i=1; AHgh+RoWcSztGtpKGZ4FrM8gEIkxjIUUOMx869/jkkAMGg2m1ODt/U+RJI6YtyKTJp2IQuN0LOY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPilQ7YqG2+76QXC0KPBlftvTyTisxdiySxAeFo/BL/w9+0clT
+	oubTqQlQM6OdK8WLFZMeam5gGWfD3IK3RMhUIrtmovFXFt+xJhadjZZSCTFni06Z+J69F/r6eBU
+	BtYO6jjSIF9I1HBcuOEFdBi3AnYFM+W/FAyopfdaKSYsjVywsWBxHQg==
+X-Gm-Gg: AR+sD11FQeTFCcTya05KcwN1m+KodrghARqMuKczkbaKaEQOrhPsn1CTXu7XNCSJo2g
+	PA18Io3RMvAMADOXH3GcZRoKM8ovZKKjE34ofU0lvZXxD0MCfGuESkOjoIHj85+yz9cQ/T6eXIC
+	8FBb93rD/kWsM/t0s1OzlVdMznvCszCVoS+VuqrOPUcOSZTEJ6FvPmuBdrfROh4jqjMX0RFpbH4
+	KEzmfO74loC4UaLjTAZshqmKtWI26SrnXzXKdiJ2pf3ZIWBTIDKoYHwikwtAHR4agC6+CvqcRdC
+	y8pO6/dic9a/wzqHAE2F3XaXfeWXt+uEd27lmwuJQrzJ6bTIq4k6mLCcgUXzBwtPk282RsMb6fp
+	XgAkpsrE98GiUz/ycyaJFbla+4SufMjSevXh6kjA8Z/FrFVvgTBel
+X-Received: by 2002:a05:600c:a42:b0:499:484a:98e7 with SMTP id 5b1f17b1804b1-499aa1ef085mr46678905e9.14.1787126946077;
+        Wed, 19 Aug 2026 01:09:06 -0700 (PDT)
+X-Received: by 2002:a05:600c:a42:b0:499:484a:98e7 with SMTP id 5b1f17b1804b1-499aa1ef085mr46677575e9.14.1787126945570;
+        Wed, 19 Aug 2026 01:09:05 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-154.retail.telecomitalia.it. [82.53.135.154])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499a9e00bddsm36778675e9.3.2026.08.19.01.09.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2026 01:09:05 -0700 (PDT)
+Date: Wed, 19 Aug 2026 10:08:59 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Jia Jia <physicalmtea@gmail.com>
+Cc: mst@redhat.com, jasowangio@gmail.com, eperezma@redhat.com, 
+	stefanha@redhat.com, weiyj.lk@gmail.com, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 1/3] vhost: invalidate vring access on IOTLB
+ transitions
+Message-ID: <aoVkRe_BN6L_5XZn@sgarzare-redhat>
+References: <20260818042613.281125-1-physicalmtea@gmail.com>
+ <20260818042613.281125-2-physicalmtea@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260804211540.177d9d7d@shazbot.org>
-Content-Type: text/plain; charset="gbk"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- dggpemf500015.china.huawei.com (7.185.36.143)
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260818042613.281125-2-physicalmtea@gmail.com>
 
-On 2026/8/5 11:15, Alex Williamson wrote:
-> On Wed, 5 Aug 2026 10:19:35 +0800
-> liulongfang <liulongfang@huawei.com> wrote:
-> 
->> On 2026/8/5 3:28, Alex Williamson wrote:
->>> On Mon, 3 Aug 2026 10:18:56 +0800
->>> Longfang Liu <liulongfang@huawei.com> wrote:
->>>   
->>>>     In the previous implementation of live migration support for
->>>> Hisilicon accelerator devices, there was insufficient consideration
->>>> for the fact that PFs cannot support virtualization live migration.
->>>> If a user unbinds the PF device driver from the host and directly
->>>> passes it through to a VM, then attempts a live migration operation,
->>>> it will trigger a calltrace exception.
->>>>
->>>>     To address this, we conducted a detailed analysis of potential
->>>> failure points. We added checks for all operations that depend on
->>>> PF driver commands and incorporated relevant conditional judgments
->>>> to prevent system calltrace exceptions when users attempt live
->>>> migration after passing PFs through to VMs.  
->>>
->>> I don't understand your core premise here.  hisi_acc_vfio_pci_probe()
->>> sets the default ops to hisi_acc_vfio_pci_ops.  This ops structure uses
->>> vfio-pci-core callbacks for everything except .open_device, for which it
->>> uses hisi_acc_vfio_pci_open_device().  This function has exactly one
->>> migration related branch, which is entered only when core_vdev->mig_ops
->>> is set, but mig_ops is only set in the .init callback of the ops
->>> structure supporting migration.
->>>
->>> In order to get the migration ops structure, hisi_acc_get_pf_qm() must
->>> return a pf_qm, the version of that object must be at least QM_HW_V3,
->>> and the vf_id must be valid.  hisi_acc_get_pf_qm()'s very first action
->>> is:
->>>
->>>         if (!pdev->is_virtfn)
->>>                 return NULL;
->>>
->>> Therefore, how is a PF ever getting associated to the migration ops
->>> structure?
->>>  
->>
->> This Hisilicon live migration driver actually utilizes two hardware-related
->> configuration functions. The first is the PF control function, obtained directly
->> through hisi_acc_get_pf_qm, which handles mailbox command operations, device health
->> status checks, device reset verification, device stop commands, and other device
->> control processes. The second is the VF configuration function, which is passed
->> through via VFIO direct assignment and serves as the main entity for device live
->> migration, responsible for current service device data migration and recovery operations.
->>
->> The aforementioned issue occurs when users incorrectly pass the PF directly to this
->> driver through driver_override. In this scenario, the vf_dev in the driver structure
->> erroneously points to this PF. When the PF attempts to migrate itself, it will directly
->> cause exceptions. Therefore, it's necessary to add pdev checks here.
-> 
-> This doesn't answer the question.  How does binding the PF to the
-> driver pass the existing is_virtfn test in hisi_acc_get_pf_qm() in
-> order to map the migration ops structure to the device rather than the
-> default vfio-pci-core wrapper ops structure?
-> 
-> vf_dev is ONLY set in hisi_acc_vfio_pci_migrn_init_dev(), which is
-> called through the migration ops structure.  If the PF is not mapped to
-> the migration ops structure it CANNOT set vf_dev.
-> 
-> Your own patch below gates the mapping of the migration ops on
-> is_virtfn, so we know this field is correct for the PF.  Therefore
-> hisi_acc_get_pf_qm() already returns NULL for the PF.  Therefore the
-> vfio-pci-core wrapper ops are used for the PF.  Therefore vf_dev is
-> never set and most of the functions being modified in the name of
-> correcting falsely advertised migration support on the PF (which seems
-> untrue) are not reachable.
+On Tue, Aug 18, 2026 at 12:26:11PM +0800, Jia Jia wrote:
+>When ACCESS_PLATFORM changes, the addresses cached in desc, avail, and
+>used change meaning with the address space. Clear the cached vring access
+>state when the device IOTLB is installed or removed so stale IOVAs cannot
+>be reused as direct userspace addresses.
+>
+>Keep device IOTLB initialization idempotent and apply the mode change even
+>when a virtqueue backend is attached. Drop the device-wide IOTLB first,
+>then clear each VQ state under its own mutex, and keep the old table alive
+>until every VQ has completed the handoff.
+>
+>A successful live mode change leaves the backend attached but invalidates
+>the cached vring addresses. Userspace must configure the vring addresses
+>for the new address mode before data processing can resume.
+>
+>Fixes: 6b1e6cc7855b ("vhost: new device IOTLB API")
 >
 
-You are right. With if (!pdev->is_virtfn), the PF is not passed through,
-and those migration-internal functions are indeed unreachable.
-We will remove these redundant internal guard checks in the next revision,
-and keep checks only at the three real entry points:
-probe, the AER/reset callbacks (hisi_acc_vf_pci_reset_prepare / hisi_acc_vf_pci_aer_reset_done),
-and the migration .init (hisi_acc_vfio_pci_migrn_init_dev).
+Please don't leave spaces here!
 
-Thanks.
-Longfang!
+>Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+>---
+> drivers/vhost/vhost.c | 53 ++++++++++++++++++++++++++++++++++++++++++-
+> drivers/vhost/vhost.h |  1 +
+> 2 files changed, 53 insertions(+), 1 deletion(-)
 
-> Alex
-> 
->>>> Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
->>>> Signed-off-by: Longfang Liu <liulongfang@huawei.com>
->>>> ---
->>>>  .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 48 +++++++++++++++----
->>>>  1 file changed, 40 insertions(+), 8 deletions(-)
->>>>
->>>> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
->>>> index 86362ec424a5..36490be7a61a 100644
->>>> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
->>>> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
->>>> @@ -378,6 +378,11 @@ static int vf_qm_check_match(struct hisi_acc_vf_core_device *hisi_acc_vdev,
->>>>  	if (migf->total_length < QM_MATCH_SIZE || hisi_acc_vdev->match_done)
->>>>  		return 0;
->>>>  
->>>> +	if (!pf_qm || !pf_qm->io_base) {
->>>> +		dev_err(dev, "failed to match check for PF QM migration\n");
->>>> +		return -ENODEV;
->>>> +	}
->>>> +  
->>>
->>> This function is called by hisi_acc_vf_resume_write(), which is part of
->>> hisi_acc_vf_resume_fops, which is set as the file ops for the migration file created in hisi_acc_vf_pci_resume().  The call path is:
->>>
->>> hisi_acc_vfio_pci_migrn_state_ops.migration_set_state (hisi_acc_vfio_pci_set_device_state())
->>>   hisi_acc_vf_set_device_state()
->>>     hisi_acc_vf_pci_resume()
->>>
->>> hisi_acc_vfio_pci_migrn_state_ops is mig_ops.  It's never set for a PF!
->>>   
->>>>  	ret = vf_qm_version_check(vf_data, dev);
->>>>  	if (ret) {
->>>>  		dev_err(dev, "failed to match ACC_DEV_MAGIC\n");
->>>> @@ -423,10 +428,15 @@ static int vf_qm_get_match_data(struct hisi_acc_vf_core_device *hisi_acc_vdev,
->>>>  				struct acc_vf_data *vf_data)
->>>>  {
->>>>  	struct hisi_qm *pf_qm = hisi_acc_vdev->pf_qm;
->>>> -	struct device *dev = &pf_qm->pdev->dev;
->>>> +	struct device *dev = &hisi_acc_vdev->vf_dev->dev;
->>>>  	int vf_id = hisi_acc_vdev->vf_id;
->>>>  	int ret;
->>>>  
->>>> +	if (!pf_qm || !pf_qm->io_base) {
->>>> +		dev_err(dev, "failed to check PF QM available!\n");
->>>> +		return -ENODEV;
->>>> +	}
->>>> +
->>>>  	vf_data->acc_magic = ACC_DEV_MAGIC_V2;
->>>>  	vf_data->major_ver = ACC_DRV_MAJOR_VER;
->>>>  	vf_data->minor_ver = ACC_DRV_MINOR_VER;  
->>>
->>> This is called from opening the migration save file.  Prove how a PF
->>> can get here.
->>>
->>>   
->>>> @@ -601,9 +611,14 @@ hisi_acc_check_int_state(struct hisi_acc_vf_core_device *hisi_acc_vdev)
->>>>  	struct hisi_qm *vfqm = &hisi_acc_vdev->vf_qm;
->>>>  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
->>>>  	struct pci_dev *vf_pdev = hisi_acc_vdev->vf_dev;
->>>> -	struct device *dev = &qm->pdev->dev;
->>>> +	struct device *dev = &vf_pdev->dev;
->>>>  	u32 state;
->>>>  
->>>> +	if (!qm || !qm->io_base) {
->>>> +		dev_err(dev, "failed to interrupt state check for PF QM!\n");
->>>> +		return -ENODEV;
->>>> +	}
->>>> +
->>>>  	/* Check RAS state */
->>>>  	state = qm_check_reg_state(qm, QM_ABNORMAL_INT_STATUS);
->>>>  	if (state) {  
->>>
->>> This is called from hisi_acc_vf_stop_device(), the same set_device path
->>> as above.  A PF cannot get here!
->>>   
->>>> @@ -1154,9 +1169,14 @@ static void hisi_acc_vf_pci_reset_prepare(struct pci_dev *pdev)
->>>>  {
->>>>  	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
->>>>  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
->>>> -	struct device *dev = &qm->pdev->dev;
->>>> +	struct device *dev = &pdev->dev;
->>>>  	u32 delay = 0;
->>>>  
->>>> +	if (!qm || !qm->io_base) {
->>>> +		dev_err(dev, "PF QM not available for reset\n");
->>>> +		return;
->>>> +	}
->>>> +
->>>>  	/* All reset requests need to be queued for processing */
->>>>  	while (test_and_set_bit(QM_RESETTING, &qm->misc_ctl)) {
->>>>  		msleep(1);  
->>>
->>> Finally, something that matches the fix this patch claims, a function
->>> reachable by the PF!
->>>
->>> Is this actually the issue you're trying to fix, not a migration
->>> induced fault, migration isn't reachable by a PF, but an error handling
->>> bug?
->>>   
->>>> @@ -1174,8 +1194,12 @@ static void hisi_acc_vf_pci_aer_reset_done(struct pci_dev *pdev)
->>>>  	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
->>>>  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
->>>>  
->>>> -	if (hisi_acc_vdev->set_reset_flag)
->>>> -		clear_bit(QM_RESETTING, &qm->misc_ctl);
->>>> +	if (hisi_acc_vdev->set_reset_flag) {
->>>> +		if (qm && qm->io_base)
->>>> +			clear_bit(QM_RESETTING, &qm->misc_ctl);
->>>> +		else
->>>> +			dev_err(&pdev->dev, "PF QM not available for reset done\n");
->>>> +	}
->>>>  
->>>>  	if (!hisi_acc_vdev->core_device.vdev.mig_ops)
->>>>  		return;  
->>>
->>> Another, but notice you've already accounted for the non-migration case
->>> here.  Can they be combined?
->>>   
->>>> @@ -1193,6 +1217,11 @@ static int hisi_acc_vf_qm_init(struct hisi_acc_vf_core_device *hisi_acc_vdev)
->>>>  	struct pci_dev *vf_dev = vdev->pdev;
->>>>  	u32 val;
->>>>  
->>>> +	if (!pf_qm || !pf_qm->io_base) {
->>>> +		dev_err(&vf_dev->dev, "PF QM not available for init\n");
->>>> +		return -ENODEV;
->>>> +	}
->>>> +
->>>>  	val = readl(pf_qm->io_base + QM_MIG_REGION_SEL);
->>>>  	if (pf_qm->ver > QM_HW_V3 && (val & QM_MIG_REGION_EN))
->>>>  		hisi_acc_vdev->drv_mode = HW_ACC_MIG_PF_CTRL;  
->>>
->>> Unreachable by PF.
->>>   
->>>> @@ -1565,6 +1594,11 @@ static int hisi_acc_vfio_pci_migrn_init_dev(struct vfio_device *core_vdev)
->>>>  	struct pci_dev *pdev = to_pci_dev(core_vdev->dev);
->>>>  	struct hisi_qm *pf_qm = hisi_acc_get_pf_qm(pdev);
->>>>  
->>>> +	if (!pf_qm) {
->>>> +		dev_err(&pdev->dev, "PF driver not loaded, cannot enable migration\n");
->>>> +		return -ENODEV;
->>>> +	}
->>>> +
->>>>  	hisi_acc_vdev->vf_id = pci_iov_vf_id(pdev) + 1;
->>>>  	hisi_acc_vdev->pf_qm = pf_qm;
->>>>  	hisi_acc_vdev->vf_dev = pdev;  
->>>
->>> Unreachable by PF.
->>>   
->>>> @@ -1670,13 +1704,11 @@ static int hisi_acc_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device
->>>>  	struct hisi_acc_vf_core_device *hisi_acc_vdev;
->>>>  	const struct vfio_device_ops *ops = &hisi_acc_vfio_pci_ops;
->>>>  	struct hisi_qm *pf_qm;
->>>> -	int vf_id;
->>>>  	int ret;
->>>>  
->>>>  	pf_qm = hisi_acc_get_pf_qm(pdev);
->>>>  	if (pf_qm && pf_qm->ver >= QM_HW_V3) {
->>>> -		vf_id = pci_iov_vf_id(pdev);
->>>> -		if (vf_id >= 0)
->>>> +		if (pdev->is_virtfn)
->>>>  			ops = &hisi_acc_vfio_pci_migrn_ops;
->>>>  		else
->>>>  			pci_warn(pdev, "migration support failed, continue with generic interface\n");  
->>>
->>> Redundant to the test in hisi_acc_get_pf_pm() which would have returned
->>> NULL, so we can't even get here.
->>>
->>> Please do better.  Thanks,
->>>
->>> Alex
->>> .
->>>   
-> 
-> .
-> 
+
+This patch doesn't apply, I tried vhost tree, net tree, and master.
+On which tree is this based?
+
+Stefano
+
+>
+>diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+>index 4c525b3e16ea..9f74537b1c1c 100644
+>--- a/drivers/vhost/vhost.c
+>+++ b/drivers/vhost/vhost.c
+>@@ -344,6 +344,17 @@ static void __vhost_vq_meta_reset(struct vhost_virtqueue *vq)
+> 		vq->meta_iotlb[j] = NULL;
+> }
+>
+>+/* Caller must hold the virtqueue mutex. */
+>+static void vhost_vq_invalidate_access(struct vhost_virtqueue *vq)
+>+{
+>+	vq->desc = NULL;
+>+	vq->avail = NULL;
+>+	vq->used = NULL;
+>+	vq->log_used = false;
+>+	vq->log_addr = -1ull;
+>+	__vhost_vq_meta_reset(vq);
+>+}
+>+
+> static void vhost_vq_meta_reset(struct vhost_dev *d)
+> {
+> 	int i;
+>@@ -1911,6 +1922,9 @@ int vq_meta_prefetch(struct vhost_virtqueue *vq)
+> {
+> 	unsigned int num = vq->num;
+>
+>+	if (!vq->desc || !vq->avail || !vq->used)
+>+		return 0;
+>+
+> 	if (!vq->iotlb)
+> 		return 1;
+>
+>@@ -2270,11 +2284,48 @@ long vhost_vring_ioctl(struct vhost_dev *d, unsigned int ioctl, void __user *arg
+> }
+> EXPORT_SYMBOL_GPL(vhost_vring_ioctl);
+>
+>+/* Caller must hold the device mutex. */
+>+void vhost_clear_device_iotlb(struct vhost_dev *d)
+>+{
+>+	struct vhost_iotlb *iotlb;
+>+	int i;
+>+
+>+	iotlb = d->iotlb;
+>+	if (!iotlb)
+>+		return;
+>+
+>+	/*
+>+	 * Drop the device-wide view first.  Each VQ then drops its
+>+	 * per-VQ view and its cached ring access under its own mutex.
+>+	 * Keep the old table alive until every VQ has completed this
+>+	 * handoff, since a worker may still be using it while waiting
+>+	 * for its VQ mutex.
+>+	 */
+>+	d->iotlb = NULL;
+>+
+>+	for (i = 0; i < d->nvqs; ++i) {
+>+		struct vhost_virtqueue *vq = d->vqs[i];
+>+
+>+		mutex_lock(&vq->mutex);
+>+		vq->iotlb = NULL;
+>+		vhost_vq_invalidate_access(vq);
+>+		mutex_unlock(&vq->mutex);
+>+	}
+>+
+>+	vhost_clear_msg(d);
+>+	vhost_iotlb_free(iotlb);
+>+	wake_up_interruptible_poll(&d->wait, EPOLLIN | EPOLLRDNORM);
+>+}
+>+EXPORT_SYMBOL_GPL(vhost_clear_device_iotlb);
+>+
+> int vhost_init_device_iotlb(struct vhost_dev *d)
+> {
+> 	struct vhost_iotlb *niotlb, *oiotlb;
+> 	int i;
+>
+>+	if (d->iotlb)
+>+		return 0;
+>+
+> 	niotlb = iotlb_alloc();
+> 	if (!niotlb)
+> 		return -ENOMEM;
+>@@ -2287,7 +2338,7 @@ int vhost_init_device_iotlb(struct vhost_dev *d)
+>
+> 		mutex_lock(&vq->mutex);
+> 		vq->iotlb = niotlb;
+>-		__vhost_vq_meta_reset(vq);
+>+		vhost_vq_invalidate_access(vq);
+> 		mutex_unlock(&vq->mutex);
+> 	}
+>
+>diff --git a/drivers/vhost/vhost.h b/drivers/vhost/vhost.h
+>index 0192ade6e749..3c75e8089373 100644
+>--- a/drivers/vhost/vhost.h
+>+++ b/drivers/vhost/vhost.h
+>@@ -277,6 +277,7 @@ ssize_t vhost_chr_read_iter(struct vhost_dev *dev, struct iov_iter *to,
+> 			    int noblock);
+> ssize_t vhost_chr_write_iter(struct vhost_dev *dev,
+> 			     struct iov_iter *from);
+>+void vhost_clear_device_iotlb(struct vhost_dev *d);
+> int vhost_init_device_iotlb(struct vhost_dev *d);
+>
+> void vhost_iotlb_map_free(struct vhost_iotlb *iotlb,
+>
+
