@@ -1,196 +1,320 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36861395AD8;
-	Wed, 19 Aug 2026 07:44:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787125489; cv=fail; b=Zyshh7eV/DmZpeRUiSEogmKfc7lfy3x3vG+ra2zEBF+oqdYQ4bJqK7051jyyUQPmf7+5XEIRWM3AG7hdk0Rm3CE1feumOAJmIUn2hH5gEF6RkWvR0UZMs40Ai9sJHISTUX51T2UjrmXcHO1u9JNSPMcMl6P3FLY3QiPw4EGTQPw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787125489; c=relaxed/simple;
-	bh=Qnjw0X4iC0Az0GIpuSw9FMMB2DhQdFujzoK2ogA75+w=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=cYogMxnG8P4KsxZ+kZ1tj12jrc7zprtYx+XgPhj4bLwiQXuvJA/MT5K5GWapC5I5TimAzPnftVHiI5ewiahlO51Ox4VtvdR+jL9P9FGB5gdd5MdnDiayXZlp1yXy0kZYkKIbUS+Pk6ee1BXZpg07prk/K7wmQEV/PaAAvI+9na0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JzJM8L1u; arc=fail smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC8336DA18;
+	Wed, 19 Aug 2026 07:51:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787125869; cv=none; b=j35zJn5nzEBJFr02xm8b/AwtvAGTnedKx/szaQM6ZMWgES/YTgEWFP465hBmEsc956GFspAxOjWpqWIfJikv4ejjRjrHiONsevwUBnU5Y0NLZPdeX/avub0WRnTyi1Q+W3IGOirESZy3vOcC7hb05pcTg6ppU9XInI6QledboM4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787125869; c=relaxed/simple;
+	bh=Kwxev6z0MnVktUdcHdpVz5PcZKf2yzdG+ZfjSxk1fOk=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=fyXoWiO3KKbS5G8UX4LL+OnYK3pRMTByj8tCYs88mg0mkuBthNBxXPYDybJFFtplGVw6OhpzU23+qDGcGTZ4eakYR8CCTEvY6vbfM/F1kGkq2QUxIMuWpoeZfvp+YLifok39KNbh2CUWBy4d1yQ6wENCke7A36kGrvcVXPHNAto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=jYXuDMEw; arc=none smtp.client-ip=113.46.200.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JzJM8L1u"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787125486; x=1818661486;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=Qnjw0X4iC0Az0GIpuSw9FMMB2DhQdFujzoK2ogA75+w=;
-  b=JzJM8L1updFDhAx6OjUVPFdEFmlJ8HtbXOcrTZjIP/YJSWmQDomTAm5f
-   Tj6+C1CoopBWJvaOqLK8IHVzmC1dJcaVeYekziV2DemYDjxcvygYkqdjx
-   MT9WdC4T4Q4fVAw91VkHDBnf77anLgITLEMJ4HH9mNLpMrfv/7iI3ShD6
-   hOxiLLvhxaKYDu/cVnBLkpBRhWO93PaQB3uHhlPVVyaZjklOOjsbFZ3Ky
-   FA95A7b8bMY3iNdlHOR8+yizrbn10a30BLN8TDcoBvpLmkGhXQZcpq/HF
-   CsSc6Uf2/wHZwoT29hupuiRHmSSL5GA+Bd2RRd3sp6/l9J1/+F/nY0PLN
-   A==;
-X-CSE-ConnectionGUID: msrm1X0nQcSGYrIC6/RGtQ==
-X-CSE-MsgGUID: u7Xc1NDATFeipyIaCMImuA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11879"; a="105011837"
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
-   d="scan'208";a="105011837"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 00:44:43 -0700
-X-CSE-ConnectionGUID: euOAV78GTIGqOPZXEgBo2g==
-X-CSE-MsgGUID: GuQ/sr+uQOeDt7NZ9H65jQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
-   d="scan'208";a="259277775"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 00:44:42 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="jYXuDMEw"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Kk1+uMbKKAoPL/ZNsD0Qq2aPQnU9pVRNxpfNMkzQCac=;
+	b=jYXuDMEwbiO+ugCZ6WJHNzx9DBVdrCtUhsWG9k2VOl7zi8D71aLuC//vHVbr3MeDTJrlwmqoG
+	66iEmDsFb3qnnPigC2z+GPXRvPCGhblYfSvRXmo7zT3vsb2tybYHJvBJUP2webCB4Ya+TxLmztn
+	NDWxqaXOCFyHEE+Uytpybyo=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hPz536WlTznTVd;
+	Wed, 19 Aug 2026 15:40:39 +0800 (CST)
+Received: from dggpemf500015.china.huawei.com (unknown [7.185.36.143])
+	by mail.maildlp.com (Postfix) with ESMTPS id 71EEA4048B;
+	Wed, 19 Aug 2026 15:50:58 +0800 (CST)
+Received: from [10.67.121.110] (10.67.121.110) by
+ dggpemf500015.china.huawei.com (7.185.36.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 19 Aug 2026 00:44:42 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Wed, 19 Aug 2026 00:44:42 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.62) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 19 Aug 2026 00:44:41 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RxtrxO6g4dIgC+vTIwR6CagAe0QgWQ7WfrefW6CWkcpEu7ANRgEdMr+b+J/4WfTkoxwMEQHqkXZr5/T9DFTzTKHpt9P5Y7CFQ65cJ7Pbo/6Lt0wuGzGW5H3OSeysn3XvN4MneaoNl+IrKnEHkS8UzSo3O8jXoUrY47zKHKQctf1upss5vL03nvd6LmwSxPsrmX6UTbbmAUGRCSVZ8PxXpQwmiYFqclw0nwlNNX0xBbZvMCW2Vw4QlByQSc4bIvKekEv6ZGu5ZdkwKvnQnYlJqa1mDqtMsArKiYHmrHxLKbqog4EC4k1aoVdqchCWyfR11B1qamOkQri3ZyXtOS9yKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VmA84hhwMS/hzw5iXtS9yYlbmf3Arx/bUh8LfrJgcOE=;
- b=V5fAirit/o9eFMRV+T/p0RYQwSS9D4ezgDHH7+K+po8w0yfJqo1jqvYjIoHzIGQYQRrJD/eipv/Mjq6CfGqcsLD4tKHGV3odtq/4bHnJhnDtyQW58inZxEIiJvyT4P1kJxEvjFI8CmgoevR2ZP+9nTBU8pFvnGUHh98UGBYCNJOsX8xTujoLWCq71kWHtG9WbGU4QkHzG5ZmM6a/3aB4RxK+Hn9IxRUIBO7VUz4aRxqdpIfVKJHwSn+R/Hc9SOAzcdC04sz/ex7CCWZoYf6CjrVrWtJnOhDIs1x18s0noTXWNLtAIoJMR2GOGbprUBb4eLBDZfEJCXioyxNWruqbJA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB5645.namprd11.prod.outlook.com (2603:10b6:a03:3b9::19)
- by PH3PPF957B3B2A8.namprd11.prod.outlook.com (2603:10b6:518:1::d39) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
- 2026 07:44:38 +0000
-Received: from SJ0PR11MB5645.namprd11.prod.outlook.com
- ([fe80::fb19:f933:8bb3:b42e]) by SJ0PR11MB5645.namprd11.prod.outlook.com
- ([fe80::fb19:f933:8bb3:b42e%4]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
- 07:44:38 +0000
-Date: Wed, 19 Aug 2026 00:44:33 -0700
-From: Peter Fang <peter.fang@intel.com>
-To: Lisa Wang <wyihan@google.com>
-CC: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng
-	<ackerleytng@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao
-	<chao.gao@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen
-	<dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, Ira Weiny
-	<ira.weiny@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, "Kiryl
- Shutsemau" <kas@kernel.org>, <linux-kselftest@vger.kernel.org>, Paolo Bonzini
-	<pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
-	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe
-	<rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, Ryan Afranji
-	<afranji@google.com>, Sagi Shahar <sagis@google.com>, Sean Christopherson
-	<seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li
-	<xiaoyao.li@intel.com>, Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds
-	<jmcrey@google.com>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <x86@kernel.org>
-Subject: Re: [PATCH v14 01/22] KVM: selftests: Add macros to simplify
- creating VM shapes for non-default types
-Message-ID: <20260819074433.GA3290799@pedri>
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-1-15ad654a50db@google.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260722-tdx-selftests-v14-1-15ad654a50db@google.com>
-X-ClientProxiedBy: SJ0PR05CA0128.namprd05.prod.outlook.com
- (2603:10b6:a03:33d::13) To SJ0PR11MB5645.namprd11.prod.outlook.com
- (2603:10b6:a03:3b9::19)
+ 15.2.1544.11; Wed, 19 Aug 2026 15:50:57 +0800
+Subject: Re: [PATCH 1/2] hisi_acc_vfio_pci: fix live migration enable
+ conditions for PF passthrough
+To: Alex Williamson <alex@shazbot.org>
+CC: <alex.williamson@redhat.com>, <jgg@nvidia.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260803021857.2370179-1-liulongfang@huawei.com>
+ <20260803021857.2370179-2-liulongfang@huawei.com>
+ <20260804132805.68023c24@shazbot.org>
+ <07d8a508-980b-0974-c793-b355be0a624f@huawei.com>
+ <20260804211540.177d9d7d@shazbot.org>
+From: liulongfang <liulongfang@huawei.com>
+Message-ID: <77b1048f-3cb0-0ec1-30ce-39c5b0b68496@huawei.com>
+Date: Wed, 19 Aug 2026 15:50:57 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB5645:EE_|PH3PPF957B3B2A8:EE_
-X-MS-Office365-Filtering-Correlation-Id: 493987dc-1514-4a46-b709-08defdc5b87a
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|6133799003|56012099006|10067099003|4143699003|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: /YW+Y1kFOcNewDwt2uWyo9VW47sLcthenLfK1Iu9Uz/is1s+jJUwTiDkCzif2NW75KqUFppOyawEKPLZKm8Ggk+W6+Z6VPDEZUn45ZOAAjsIFf49AkZZ3r+Q4eA8+4TIpkVpP+Xfn+x70ABmFp1hH4pcCgG1gqxKoPZGC4SacGtlol4LalVl6RpPZsgJKWrrNXTTYd3GArA1byoL/tLqj5E3peLAlf+iAZrcnDK9dMqWGasOHtKNcnKXlYKWyAnvcwbEwUyoNvCug422KxFHtr3HInkS1QvOdlNfS2Q1j4T4ZP2Eg0R49VEANbtQtFp5mWtu52/bjScaInE7Vx7tke1kudrbVz6y3zW9n2Jx9gM7iygqpdoj8Wl5xRxHKnNxDnEF6EL2uHRmdsqckeGgmLbSCv9zQuz7DYW4v8WtI6ZGRZziNB7hEcYd/JVqfnukrWWCwflg1YOxBot6rDeCwb51ROUEKsJ/9NDtO+gbG7Elt/H5sMgfbOFtyYmqHm/KOLti9Cvwhl6z4D5ZEmt+8iriobcNqyH1eBR+k+8ev/9F04b/dsG/GJWxKQKHiz9QS9iNjeFdEkVdfmZ3b2ovY2yDU/aUAgxwUxCcJYiiPsG9KNupthJiiu2jqgnKCOXhgBdg/2epETbjOwoRjPBNLSJd8HLU+DONCqVsIv36g0Q=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5645.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(6133799003)(56012099006)(10067099003)(4143699003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?T+t/j//iTAQF1X/kliuJgJVYKcMLehISYxaQFGrb0GJlBUM1o2jEYzNCw+1j?=
- =?us-ascii?Q?634DoYgN2VTk//eIC1+k+aQ4Z/rD9yVrzykM+A7n5D9qDGp71NhYDg4zL0hZ?=
- =?us-ascii?Q?Wyr2qbGGqM27LYi4h6MLWpeb2NfmihUnE13aKlK3CYXimb4kkR762acKOBEG?=
- =?us-ascii?Q?2AzgR1EvTERIuOlD0nqzSFnnVc4uA8E9+DAnJ5ttVRU9OIPDyCiyboTcOi0M?=
- =?us-ascii?Q?zxZVf5ggk8HFKj7/f92aoLAkBDfu2+BNJx8k6WKaP2DTO/jLuySVArEJXy+D?=
- =?us-ascii?Q?KOYUATBQEivTHLFdjdk6RnYc7M2/FIzEYaWjFlrNGDP5NEo8ujF1J3zohcU5?=
- =?us-ascii?Q?sgK8osMat/JooL4X5bIII7SWw6s5ppubtcZs4S/cEKG5iJlT6Uvd5gr75IsL?=
- =?us-ascii?Q?x8Uy/Po9UMQU2TVqhHQxq/WlRTsmFHY9DpaMx45gqnyusF/gIwIujYp+t348?=
- =?us-ascii?Q?gdEUDN4lv0nbjf1JsOd64l14/TPEWkSUPNvCbs5xf7XemNuOiDibBn2zX5vj?=
- =?us-ascii?Q?+bU50eqSacfNA5ULC3A6VXfXVvvNr7b/Q1Z9BEOyEUJoxMDUuAZ2tPxFGNjR?=
- =?us-ascii?Q?DanzGrEJdiGq94inMvha8w3JgKMcsCjc6PXRD2tRndvlhlddn7gRC6f6ymhI?=
- =?us-ascii?Q?FL9JymfaoR7ZA+fZz2SKTTFu9n3PfaHJ2Wjw14fTVVIO8WFQT28Q8BW0pjT9?=
- =?us-ascii?Q?cslYxiVFXqgCACCJRsPbouRifwM2zXtl7SsVN5X0xpTpJHAMIX08W3KANydf?=
- =?us-ascii?Q?8VCcqmo3kEbKrT5O5r+XVtsIPW0Yw2aPEYzde8USGf8hMURgJ6EPmDVbsqX3?=
- =?us-ascii?Q?x/O44SQ5R3JInF/LwzGAWYhGxu4NjGsfIkkmt/zHSDHW1x4UN5AjvcScs08h?=
- =?us-ascii?Q?tZ+QP9s7oEaSwVLCZ+WDz4ykRk/HcupE+yDT949kBqFeC2HZBfUfaEQVkm5S?=
- =?us-ascii?Q?cv5fxIqEt6/M4wVhd4TSeaCR2dwB3+soNvFAE1LUCVy6HPkahSQi75ViaeI7?=
- =?us-ascii?Q?ro/w/yCyQJX7a4TTQ/fex1WVS8BgXp0qWLUbT7Avu5ggdFThGSyCOAspygUx?=
- =?us-ascii?Q?kzJ3V9BkHwGP9qkaAi/naA0TAUjzr4sQiuqjyKaAS8Y7+aq1xp+YLLWTAigw?=
- =?us-ascii?Q?MdpJp7LAjNur1tTaEVQ2zLmO2a17P1OHS6ffJtCoHAoFN8J+zJBimcMuT2BF?=
- =?us-ascii?Q?6cP5Xk7/L3++EuihhYRk9zkhslRFR5HBcvDvuvBllkEuUXVI8r84KH/EfpB1?=
- =?us-ascii?Q?Yp4AfhS8TLQ7fKoyhNfbilJIh/auvZ0+/ULe9y/2IYMZ3ywZzNFhPheaFrig?=
- =?us-ascii?Q?s1YL4CXxxW14H+kJhidnYAFRWVNXzwHhJk3/OoxQWyGs0HLzbCTvMZg8gbJp?=
- =?us-ascii?Q?HcdMvEhye/hPb3J7lTgIe+CLdIowiFdiAF72hepIMHxdwpqUwNdFdee4xl8Z?=
- =?us-ascii?Q?roI7/WD7M5De0v6LFBGcwgDi1EXHV2gdp+QByj3Fv4F6gKa3X+B3kBge3FrY?=
- =?us-ascii?Q?jPMRjSmu5a+KCJmltzZmg1F2ljrEwfczy7oLIHM1x8yvgDK/0q02v9q16jQX?=
- =?us-ascii?Q?wJnS2Q77QIt5nSCvZmzK4AgjMSkWqGCaJssOnUwBv+4I7f43R9IJjoL0qJ5T?=
- =?us-ascii?Q?K752kbNADaX/xg+ClNQu1wqxINblWl4XfXtNu+DG3oJb228DpFf7CqsCMMbz?=
- =?us-ascii?Q?3BoaSzlLkO/MqpFadsMdE+Y1Zwr3LNPVPu7JyNvvv66HurrhlIDze1G9+gzY?=
- =?us-ascii?Q?Dpdg3KpzYg=3D=3D?=
-X-Exchange-RoutingPolicyChecked: VJcRC1BApz9OpPt3vTyZye4Iucvc2MqIeJYiyqSisvCkW1rYKeqZ5n1O5acFPB7zSNWX/YJCXqcq1ORlPdX/RYZeydctMglNRRtuPLeFVQT9l7UkHjKZMoyH4eKL/AUuVtiGyokimb2W2BqZnmWAphA3OrvB/hPcHoeTHA4NBoTisMCPR/nRCrzDKvQaYqHAVYxjX6baIwRhmXO1IEeVsZlgX7cAEVStmJdshl8ttmHqVMDnAjkZnZqk1/02i6Kq1D6KHObMa7R6NldHJlH8RNXmHczF2aRD6sN9Ftz9V5IIqlkjo4QR7UnfCEsZoawkR07Ehar3YjmsXKWiZhr/ng==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 493987dc-1514-4a46-b709-08defdc5b87a
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5645.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 07:44:38.0203
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nvmc+46ylHURmKonbkd+UC3OVUglKdKFfL5W7VFNGqTXJOt8PDLFZKBTTaDt9BKwusFsu37Oqu/MdKejD9jaDw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPF957B3B2A8
-X-OriginatorOrg: intel.com
+In-Reply-To: <20260804211540.177d9d7d@shazbot.org>
+Content-Type: text/plain; charset="gbk"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ dggpemf500015.china.huawei.com (7.185.36.143)
 
-On Wed, Jul 22, 2026 at 11:13:06PM +0000, Lisa Wang wrote:
-> From: Sean Christopherson <seanjc@google.com>
+On 2026/8/5 11:15, Alex Williamson wrote:
+> On Wed, 5 Aug 2026 10:19:35 +0800
+> liulongfang <liulongfang@huawei.com> wrote:
 > 
-> Add VM_TYPE() and __VM_SHAPE() macros to create a vm_shape structure given
-> a type (and mode), and use the macros to define VM_SHAPE_{SEV,SEV_ES,SNP}
-> shapes for x86's SEV family of VM shapes.  Providing common infrastructure
-> will avoid having to copy+paste vm_sev_create_with_one_vcpu() for TDX.
+>> On 2026/8/5 3:28, Alex Williamson wrote:
+>>> On Mon, 3 Aug 2026 10:18:56 +0800
+>>> Longfang Liu <liulongfang@huawei.com> wrote:
+>>>   
+>>>>     In the previous implementation of live migration support for
+>>>> Hisilicon accelerator devices, there was insufficient consideration
+>>>> for the fact that PFs cannot support virtualization live migration.
+>>>> If a user unbinds the PF device driver from the host and directly
+>>>> passes it through to a VM, then attempts a live migration operation,
+>>>> it will trigger a calltrace exception.
+>>>>
+>>>>     To address this, we conducted a detailed analysis of potential
+>>>> failure points. We added checks for all operations that depend on
+>>>> PF driver commands and incorporated relevant conditional judgments
+>>>> to prevent system calltrace exceptions when users attempt live
+>>>> migration after passing PFs through to VMs.  
+>>>
+>>> I don't understand your core premise here.  hisi_acc_vfio_pci_probe()
+>>> sets the default ops to hisi_acc_vfio_pci_ops.  This ops structure uses
+>>> vfio-pci-core callbacks for everything except .open_device, for which it
+>>> uses hisi_acc_vfio_pci_open_device().  This function has exactly one
+>>> migration related branch, which is entered only when core_vdev->mig_ops
+>>> is set, but mig_ops is only set in the .init callback of the ops
+>>> structure supporting migration.
+>>>
+>>> In order to get the migration ops structure, hisi_acc_get_pf_qm() must
+>>> return a pf_qm, the version of that object must be at least QM_HW_V3,
+>>> and the vf_id must be valid.  hisi_acc_get_pf_qm()'s very first action
+>>> is:
+>>>
+>>>         if (!pdev->is_virtfn)
+>>>                 return NULL;
+>>>
+>>> Therefore, how is a PF ever getting associated to the migration ops
+>>> structure?
+>>>  
+>>
+>> This Hisilicon live migration driver actually utilizes two hardware-related
+>> configuration functions. The first is the PF control function, obtained directly
+>> through hisi_acc_get_pf_qm, which handles mailbox command operations, device health
+>> status checks, device reset verification, device stop commands, and other device
+>> control processes. The second is the VF configuration function, which is passed
+>> through via VFIO direct assignment and serves as the main entity for device live
+>> migration, responsible for current service device data migration and recovery operations.
+>>
+>> The aforementioned issue occurs when users incorrectly pass the PF directly to this
+>> driver through driver_override. In this scenario, the vf_dev in the driver structure
+>> erroneously points to this PF. When the PF attempts to migrate itself, it will directly
+>> cause exceptions. Therefore, it's necessary to add pdev checks here.
 > 
-> Use the new SEV+ shapes and drop vm_sev_create_with_one_vcpu().
+> This doesn't answer the question.  How does binding the PF to the
+> driver pass the existing is_virtfn test in hisi_acc_get_pf_qm() in
+> order to map the migration ops structure to the device rather than the
+> default vfio-pci-core wrapper ops structure?
 > 
-> Opportunistically move the existing VM_SHAPE() (now __VM_SHAPE()) macro
-> below the definitions of VM_MODE_DEFAULT so that all of the SHAPE/TYPE
-> macros are bundled together.
+> vf_dev is ONLY set in hisi_acc_vfio_pci_migrn_init_dev(), which is
+> called through the migration ops structure.  If the PF is not mapped to
+> the migration ops structure it CANNOT set vf_dev.
 > 
-> No functional change intended.
-> 
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Your own patch below gates the mapping of the migration ops on
+> is_virtfn, so we know this field is correct for the PF.  Therefore
+> hisi_acc_get_pf_qm() already returns NULL for the PF.  Therefore the
+> vfio-pci-core wrapper ops are used for the PF.  Therefore vf_dev is
+> never set and most of the functions being modified in the name of
+> correcting falsely advertised migration support on the PF (which seems
+> untrue) are not reachable.
+>
 
-Missing the submitter's SOB?
+You are right. With if (!pdev->is_virtfn), the PF is not passed through,
+and those migration-internal functions are indeed unreachable.
+We will remove these redundant internal guard checks in the next revision,
+and keep checks only at the three real entry points:
+probe, the AER/reset callbacks (hisi_acc_vf_pci_reset_prepare / hisi_acc_vf_pci_aer_reset_done),
+and the migration .init (hisi_acc_vfio_pci_migrn_init_dev).
 
-> ---
->  tools/testing/selftests/kvm/include/kvm_util.h     | 27 ++++++++-------
->  .../testing/selftests/kvm/include/x86/processor.h  |  4 +++
->  tools/testing/selftests/kvm/include/x86/sev.h      |  2 --
->  tools/testing/selftests/kvm/lib/x86/sev.c          | 16 ---------
->  tools/testing/selftests/kvm/x86/sev_smoke_test.c   | 40 +++++++++++-----------
->  5 files changed, 39 insertions(+), 50 deletions(-)
+Thanks.
+Longfang!
+
+> Alex
+> 
+>>>> Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
+>>>> Signed-off-by: Longfang Liu <liulongfang@huawei.com>
+>>>> ---
+>>>>  .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 48 +++++++++++++++----
+>>>>  1 file changed, 40 insertions(+), 8 deletions(-)
+>>>>
+>>>> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+>>>> index 86362ec424a5..36490be7a61a 100644
+>>>> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+>>>> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+>>>> @@ -378,6 +378,11 @@ static int vf_qm_check_match(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+>>>>  	if (migf->total_length < QM_MATCH_SIZE || hisi_acc_vdev->match_done)
+>>>>  		return 0;
+>>>>  
+>>>> +	if (!pf_qm || !pf_qm->io_base) {
+>>>> +		dev_err(dev, "failed to match check for PF QM migration\n");
+>>>> +		return -ENODEV;
+>>>> +	}
+>>>> +  
+>>>
+>>> This function is called by hisi_acc_vf_resume_write(), which is part of
+>>> hisi_acc_vf_resume_fops, which is set as the file ops for the migration file created in hisi_acc_vf_pci_resume().  The call path is:
+>>>
+>>> hisi_acc_vfio_pci_migrn_state_ops.migration_set_state (hisi_acc_vfio_pci_set_device_state())
+>>>   hisi_acc_vf_set_device_state()
+>>>     hisi_acc_vf_pci_resume()
+>>>
+>>> hisi_acc_vfio_pci_migrn_state_ops is mig_ops.  It's never set for a PF!
+>>>   
+>>>>  	ret = vf_qm_version_check(vf_data, dev);
+>>>>  	if (ret) {
+>>>>  		dev_err(dev, "failed to match ACC_DEV_MAGIC\n");
+>>>> @@ -423,10 +428,15 @@ static int vf_qm_get_match_data(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+>>>>  				struct acc_vf_data *vf_data)
+>>>>  {
+>>>>  	struct hisi_qm *pf_qm = hisi_acc_vdev->pf_qm;
+>>>> -	struct device *dev = &pf_qm->pdev->dev;
+>>>> +	struct device *dev = &hisi_acc_vdev->vf_dev->dev;
+>>>>  	int vf_id = hisi_acc_vdev->vf_id;
+>>>>  	int ret;
+>>>>  
+>>>> +	if (!pf_qm || !pf_qm->io_base) {
+>>>> +		dev_err(dev, "failed to check PF QM available!\n");
+>>>> +		return -ENODEV;
+>>>> +	}
+>>>> +
+>>>>  	vf_data->acc_magic = ACC_DEV_MAGIC_V2;
+>>>>  	vf_data->major_ver = ACC_DRV_MAJOR_VER;
+>>>>  	vf_data->minor_ver = ACC_DRV_MINOR_VER;  
+>>>
+>>> This is called from opening the migration save file.  Prove how a PF
+>>> can get here.
+>>>
+>>>   
+>>>> @@ -601,9 +611,14 @@ hisi_acc_check_int_state(struct hisi_acc_vf_core_device *hisi_acc_vdev)
+>>>>  	struct hisi_qm *vfqm = &hisi_acc_vdev->vf_qm;
+>>>>  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
+>>>>  	struct pci_dev *vf_pdev = hisi_acc_vdev->vf_dev;
+>>>> -	struct device *dev = &qm->pdev->dev;
+>>>> +	struct device *dev = &vf_pdev->dev;
+>>>>  	u32 state;
+>>>>  
+>>>> +	if (!qm || !qm->io_base) {
+>>>> +		dev_err(dev, "failed to interrupt state check for PF QM!\n");
+>>>> +		return -ENODEV;
+>>>> +	}
+>>>> +
+>>>>  	/* Check RAS state */
+>>>>  	state = qm_check_reg_state(qm, QM_ABNORMAL_INT_STATUS);
+>>>>  	if (state) {  
+>>>
+>>> This is called from hisi_acc_vf_stop_device(), the same set_device path
+>>> as above.  A PF cannot get here!
+>>>   
+>>>> @@ -1154,9 +1169,14 @@ static void hisi_acc_vf_pci_reset_prepare(struct pci_dev *pdev)
+>>>>  {
+>>>>  	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
+>>>>  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
+>>>> -	struct device *dev = &qm->pdev->dev;
+>>>> +	struct device *dev = &pdev->dev;
+>>>>  	u32 delay = 0;
+>>>>  
+>>>> +	if (!qm || !qm->io_base) {
+>>>> +		dev_err(dev, "PF QM not available for reset\n");
+>>>> +		return;
+>>>> +	}
+>>>> +
+>>>>  	/* All reset requests need to be queued for processing */
+>>>>  	while (test_and_set_bit(QM_RESETTING, &qm->misc_ctl)) {
+>>>>  		msleep(1);  
+>>>
+>>> Finally, something that matches the fix this patch claims, a function
+>>> reachable by the PF!
+>>>
+>>> Is this actually the issue you're trying to fix, not a migration
+>>> induced fault, migration isn't reachable by a PF, but an error handling
+>>> bug?
+>>>   
+>>>> @@ -1174,8 +1194,12 @@ static void hisi_acc_vf_pci_aer_reset_done(struct pci_dev *pdev)
+>>>>  	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
+>>>>  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
+>>>>  
+>>>> -	if (hisi_acc_vdev->set_reset_flag)
+>>>> -		clear_bit(QM_RESETTING, &qm->misc_ctl);
+>>>> +	if (hisi_acc_vdev->set_reset_flag) {
+>>>> +		if (qm && qm->io_base)
+>>>> +			clear_bit(QM_RESETTING, &qm->misc_ctl);
+>>>> +		else
+>>>> +			dev_err(&pdev->dev, "PF QM not available for reset done\n");
+>>>> +	}
+>>>>  
+>>>>  	if (!hisi_acc_vdev->core_device.vdev.mig_ops)
+>>>>  		return;  
+>>>
+>>> Another, but notice you've already accounted for the non-migration case
+>>> here.  Can they be combined?
+>>>   
+>>>> @@ -1193,6 +1217,11 @@ static int hisi_acc_vf_qm_init(struct hisi_acc_vf_core_device *hisi_acc_vdev)
+>>>>  	struct pci_dev *vf_dev = vdev->pdev;
+>>>>  	u32 val;
+>>>>  
+>>>> +	if (!pf_qm || !pf_qm->io_base) {
+>>>> +		dev_err(&vf_dev->dev, "PF QM not available for init\n");
+>>>> +		return -ENODEV;
+>>>> +	}
+>>>> +
+>>>>  	val = readl(pf_qm->io_base + QM_MIG_REGION_SEL);
+>>>>  	if (pf_qm->ver > QM_HW_V3 && (val & QM_MIG_REGION_EN))
+>>>>  		hisi_acc_vdev->drv_mode = HW_ACC_MIG_PF_CTRL;  
+>>>
+>>> Unreachable by PF.
+>>>   
+>>>> @@ -1565,6 +1594,11 @@ static int hisi_acc_vfio_pci_migrn_init_dev(struct vfio_device *core_vdev)
+>>>>  	struct pci_dev *pdev = to_pci_dev(core_vdev->dev);
+>>>>  	struct hisi_qm *pf_qm = hisi_acc_get_pf_qm(pdev);
+>>>>  
+>>>> +	if (!pf_qm) {
+>>>> +		dev_err(&pdev->dev, "PF driver not loaded, cannot enable migration\n");
+>>>> +		return -ENODEV;
+>>>> +	}
+>>>> +
+>>>>  	hisi_acc_vdev->vf_id = pci_iov_vf_id(pdev) + 1;
+>>>>  	hisi_acc_vdev->pf_qm = pf_qm;
+>>>>  	hisi_acc_vdev->vf_dev = pdev;  
+>>>
+>>> Unreachable by PF.
+>>>   
+>>>> @@ -1670,13 +1704,11 @@ static int hisi_acc_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device
+>>>>  	struct hisi_acc_vf_core_device *hisi_acc_vdev;
+>>>>  	const struct vfio_device_ops *ops = &hisi_acc_vfio_pci_ops;
+>>>>  	struct hisi_qm *pf_qm;
+>>>> -	int vf_id;
+>>>>  	int ret;
+>>>>  
+>>>>  	pf_qm = hisi_acc_get_pf_qm(pdev);
+>>>>  	if (pf_qm && pf_qm->ver >= QM_HW_V3) {
+>>>> -		vf_id = pci_iov_vf_id(pdev);
+>>>> -		if (vf_id >= 0)
+>>>> +		if (pdev->is_virtfn)
+>>>>  			ops = &hisi_acc_vfio_pci_migrn_ops;
+>>>>  		else
+>>>>  			pci_warn(pdev, "migration support failed, continue with generic interface\n");  
+>>>
+>>> Redundant to the test in hisi_acc_get_pf_pm() which would have returned
+>>> NULL, so we can't even get here.
+>>>
+>>> Please do better.  Thanks,
+>>>
+>>> Alex
+>>> .
+>>>   
+> 
+> .
 > 
