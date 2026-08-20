@@ -1,50 +1,33 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E363AEB27;
-	Thu, 20 Aug 2026 06:01:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DE73AE6E5;
+	Thu, 20 Aug 2026 06:06:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787205711; cv=none; b=LKMry5uRYs1RzT5vxjVYzAZT1NOQmHn7i7+haSIcW7WsDCQptGEBcKMqd9amQSk2YJPd4bFotBUXmx2dEsOCDgE5HaFLZV8VpUZQExqTdlOUpIKzBZAiyW7utRHc5dDT/boy1XBJ9agOkQpfBCGqP0kNWgGGwYXUveORrix9v4M=
+	t=1787205986; cv=none; b=gw+nKe+YV1MkTZMcldu7LRg1adatU9FscRk+hLbXkjNBKthPEE5oAOj3KYmzmXdP97hTkl9NCaXuxVkxoiJtIfBhoS34zQDBn5sAlkJzBgkFvT6MIVrDxUzieqYk9pAlla1S7lgWcxhC8Ik+szqeHGwk27yasPYO3bsK5DiMt+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787205711; c=relaxed/simple;
-	bh=hlVKKwJa/qsIl0IqakzkZdRDu9fR1X2KEBA/MJTffiE=;
+	s=arc-20240116; t=1787205986; c=relaxed/simple;
+	bh=z7pB0ckMr2OaLmwtRf84WyK35FfiHatfdlZmGKp64pU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P9y2OmpdcUOfFLt/GBei+xK1Bu1iz2lQ7muZ3eFycLp7BMH/VVJhdlEUIet5OSHp4IgjMbDX0wp0y99SdXUqRIlkOYSVNnvTEwBWFNQP90JNTtYb9ci0Wzjz3iFDwwLh+lzpRURTH/wk4/BwtX9bIY7NyFsirAnKYdAvxdFiDcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ksm37Lgx; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=kZH6EITTkhFeqOSGpXQbGY/E+y8qay6sOqnFc7nIKZCI0bjraZxn2VnpYbAyQU9OHxbxdhzq+6CuKsEmjLm7c84hfoQTJHdoMVz+Qe7ptZhK8XV78v8AJmZuUBIRAYIuHrMORhTjfNS5MstiaoelBlJaEWWmheAN3pY8JTs7oE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n7FFTwj8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ksm37Lgx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787205710; x=1818741710;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=hlVKKwJa/qsIl0IqakzkZdRDu9fR1X2KEBA/MJTffiE=;
-  b=Ksm37LgxzLF0L4xQjPNHOvSiwuvlpMEeVh5UTEP0+azfrGSqAXJSWkqL
-   oAQRtoEuDIh7KIgWoBui2ySMnsMprZBpDNrXdEOoginZPyhPLxrI8WH4H
-   ph1NBjT4u5CBZpJc4azaIlfvokDZB1rACehso7/y2+74Kc5awraglELkC
-   TYJA4KLwU3tujMPHosm2p9GRvNH74ZxfjVWkuNe44zjwGW/Za74mpB5sx
-   c+Mk1hASxm0K/KU7UcYlbQzQtNfzVyl9Z35dPc4UeqiWPCvqoqQa4Nsv4
-   otAZz7YtgKVtt6fT50RStIIV/jHrQsnMbw4RRnvf0WzOpBVYaKNVDEeCp
-   g==;
-X-CSE-ConnectionGUID: tOgxSUCESQaptZA39iNS8w==
-X-CSE-MsgGUID: 3P2oHi76TlurAx8iF6i0eA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="105113435"
-X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
-   d="scan'208";a="105113435"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 23:01:49 -0700
-X-CSE-ConnectionGUID: d5rlhjhDROSm58pc3bSzow==
-X-CSE-MsgGUID: 6thpdJTlQCCdMxk2EnlhZw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
-   d="scan'208";a="259689734"
-Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 23:01:43 -0700
-Message-ID: <73ad830f-271d-423f-bd91-628f1011b7b2@linux.intel.com>
-Date: Thu, 20 Aug 2026 14:01:40 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n7FFTwj8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 106F71F000E9;
+	Thu, 20 Aug 2026 06:06:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787205985;
+	bh=8Ul4LcNKNGu0Z584PICkjX7+P+obMk+pMAEdlAEtBLc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=n7FFTwj85oHM8+Z0bncLFNY9/eW5UxEc3LeFSPwVmM/J0yU3NCrZjNz2zCIEYZwLE
+	 VkUDYV1ptH6tax/0F1oXiJjDiE4SC7hgcWjk/xP+EHEssecT4QfZMP4aTD2PVsDkB/
+	 PHZc88roAXGNSFiQUibZJ0cNvxEnz09z/agN4p5AbkwKKXMWc8TIrdxjcPbruKZSKu
+	 3OPsCjNo23WGFwZ6ajg3ye5CpkwpwGndpwB3CJOPi5MYLZRxkxBpTyt0laVyIVRSIA
+	 t9R0jcmDR/EPUk7IXvEelvCevQFSUrNEUzW4iSTQEsCRum1JwmrzWQUfF/uSY/YiLe
+	 LHO1ski2SQNRg==
+Message-ID: <21d31639-4d16-4ee2-8ff3-18877636aa8b@kernel.org>
+Date: Thu, 20 Aug 2026 15:06:10 +0900
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,47 +35,101 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 6/7] KVM: selftests: Add coverage for LASS CPUID and
- CR4 handling
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: kvm@vger.kernel.org, x86@kernel.org,
+Subject: Re: [PATCH v2 12/13] treewide: convert rdmsrq() from a macro to an
+ inline function
+To: Juergen Gross <jgross@suse.com>, linux-kernel@vger.kernel.org,
+ x86@kernel.org, linux-perf-users@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev, linux-edac@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-acpi@vger.kernel.org,
+ linux-ide@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-crypto@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-mtd@lists.infradead.org,
+ platform-driver-x86@vger.kernel.org, linux-fbdev@vger.kernel.org
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, James Clark
+ <james.clark@linaro.org>, "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
  Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
- <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- "Chang S . Bae" <chang.seok.bae@intel.com>, Kai Huang <kai.huang@intel.com>,
- Fuad Tabba <fuad.tabba@linux.dev>, Chao Gao <chao.gao@intel.com>,
- Yosry Ahmed <yosry@kernel.org>, Claudio Imbrenda <imbrenda@linux.ibm.com>,
- David Matlack <dmatlack@google.com>,
- Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>,
- Kishen Maloor <kishen.maloor@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20260806011536.4172258-1-sohil.mehta@intel.com>
- <20260806011536.4172258-7-sohil.mehta@intel.com>
+ <pbonzini@redhat.com>, Ajay Kaher <ajay.kaher@broadcom.com>,
+ Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Josh Poimboeuf
+ <jpoimboe@kernel.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+ Pu Wen <puwen@hygon.cn>, Tony Luck <tony.luck@intel.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
+ Babu Moger <babu.moger@amd.com>, Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Andy Lutomirski <luto@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Len Brown <lenb@kernel.org>, Niklas Cassel <cassel@kernel.org>,
+ David Airlie <airlied@redhat.com>, Olivia Mackall <olivia@selenic.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Viresh Kumar <viresh.kumar@linaro.org>, Huang Rui <ray.huang@amd.com>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Perry Yuan <perry.yuan@amd.com>, K Prateek Nayak <kprateek.nayak@amd.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Yazen Ghannam <yazen.ghannam@amd.com>, Linus Walleij <linusw@kernel.org>,
+ Bartosz Golaszewski <brgl@kernel.org>, Guenter Roeck <linux@roeck-us.net>,
+ Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+ Artem Bityutskiy <dedekind1@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Ashok Raj <ashok.raj.linux@gmail.com>, Hans de Goede <hansg@kernel.org>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+ David E Box <david.e.box@intel.com>,
+ Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+ Lukasz Luba <lukasz.luba@arm.com>, Helge Deller <deller@gmx.de>,
+ xen-devel@lists.xenproject.org, linux-geode@lists.infradead.org
+References: <20260819102314.1499258-1-jgross@suse.com>
+ <20260819102314.1499258-13-jgross@suse.com>
 Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260806011536.4172258-7-sohil.mehta@intel.com>
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20260819102314.1499258-13-jgross@suse.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 8/6/2026 9:15 AM, Sohil Mehta wrote:
-> Add a LASS selftest for KVM's handling of CPUID advertisement and
-> CR4.LASS. Verify that a guest write to CR4.LASS generates #GP, and
-> leaves CR4 unchanged, when LASS isn't enumerated in the guest's CPUID.
+On 8/19/26 19:23, Juergen Gross wrote:
+> Today rdmsrq() is a macro using its second parameter as the target for
+> storing the read MSR value.
 > 
-> Extend set_sregs_test to cover CR4.LASS and verify that KVM_SET_SREGS
-> accepts CR4.LASS when LASS is supported, and rejects it, without
-> modifying sregs, when it isn't.
+> Convert rdmsrq() to an inline function returning the MSR value.
 > 
-> Don't try running with CR4.LASS enabled in the guest or attempt to
-> trigger LASS violations. Selftests run guest code in the lower half of
-> the address space at CPL0, so enabling CR4.LASS would make the next
-> instruction fetch a violation and triple-fault the guest.
+> The users have been converted using the following semantic patch:
 > 
-> Assisted-by: Claude:claude-opus-5
-> Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+>   // Options: --include-headers
+> 
+>   virtual patch
+>   virtual report
+> 
+>   @@
+>   expression msr, val;
+>   @@
+>   (
+>   - rdmsrq(msr,val)
+>   + val = rdmsrq(msr)
+>   )
+> 
+> Signed-off-by: Juergen Gross <jgross@suse.com>
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+For the ata bits,
+
+Acked-by: Damien Le Moal <dlemoal@kernel.org>
+
+-- 
+Damien Le Moal
+Western Digital Research
