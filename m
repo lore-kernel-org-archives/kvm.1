@@ -1,178 +1,125 @@
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B2B3B71D2
-	for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 07:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787212390; cv=pass; b=k2pUUQcV5eGdXipQvqQfoLD7y5CXTw889fbF1HBzQfqd+n7TGnbc+TPTrfh4io69X+tI1FIk8EkK9f24hFQsEG/ISW/V53rssFxMbn0II8gh9RpwQE9a+I7lQulvESOFtMmvdPnKCQ5D1ftTjyGugfzX7hBGj+UlZOHKbrHQPgc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787212390; c=relaxed/simple;
-	bh=3ux/9MYCmRGaVF+WTBt5CVZosKYLKPfKOqqlr1ELLVA=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MAMRnC33UAWVocBNkjF3u/RVTQfLXH83kNuSGZnXUar5DrbZxcoWPxS/ALXz/0uDFwUlLLjvk2PLxDpWzCNI5cWUSGvO1jW1Lbi2+4c9iLOQvArQ85tRe3+fqXyzMlOlbKKgXAnl5erYp8eKFd2JdpLMC3j21+QZ0XmyzmK8XME=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NjN0O+TT; arc=pass smtp.client-ip=209.85.219.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2D03C3F7B
+	for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 08:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787213066; cv=none; b=Q7VGpeos27rhLBO4gQ7Dlk8caNEqely2Vj5Wms0eOfTp2EQxn0bEjERSOVRATfLtd875AwLV3nK4CwB9kiqa+hw5BmcpbSuf6FI1GQMs0BFnjkTm4ERYPP7jv48/1g1/rXTmZqTw4S+jpiDnom50qdbvUJsZXaxvSslqFsgydGU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787213066; c=relaxed/simple;
+	bh=ru4qweuJqGlhKUthy5/6S5+Rr1FUsZoR9Bxo6pxBe84=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WdgvOnQsazeatUFwEG47D4aJfrLh7FfL8lSrwE8YTgQI8i95I6d++tZpROUkBhjyB2tr5qtv7t7EfUSWwvdFbiBbY1n4ZUQCrCEO4Qd7TwDjDxjvO2M+F4QdjHB5TmTwSMUebVqql02O7g7VCfokO01qUKm2Mjm4M3p2N80pmV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dWGuLFLL; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NjN0O+TT"
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8eeadbc5e21so13164366d6.3
-        for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 00:53:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787212388; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Fakc4l1WS38hGIJULI3etYPysi2G7I2bRfcQt7S3H8HRV9SPTtcpazPN4gUhD+Rxzr
-         7SY1bvTngHscDs5bX0ny5uzfJuk9a9blpc9l3SOnyWgDgIz002USzhF6NMguDGGPcUtO
-         2KWst/sOgPI8BvR1kVOZtMnU2V1iDis/0w3Ce0DCZtzNy/JZhbIUo+y4F12mvOu+dpGc
-         WpJgqsfx3Ecv9hxb8IW8idBnCnY+2hu1KiYy1UK/CHdrEl9lJ911K1TysySjUpggIt72
-         2cfXBCrhPGN15VxYJvejoO8OsBQYOT5POcdkyQrNlho1kfEg1pwpEBTGL3UtEj63JyrV
-         DCCQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:dkim-signature;
-        bh=o51BoL0uW8eYgVaNnvAPkhpysbo2+k4CgPomgwBCyNM=;
-        fh=FaR8uonaqQfItsbsoAqPoAk4hogGVantJEjby+kDpjI=;
-        b=FfyyfxDArQHYgoKmPnXDJ2C2GSO7JuUzGdKd7OqnrW27U3GpBJMVTVfMBJBRYFzBy8
-         q/+UlyGxh/ajQvu9b0QaGlKIieHfZepbrvzD+Oa/bBiRvzk2Sx48ld7LeUvP4uGxPrK0
-         gmTaYJNFpyC0uQDEwCo0Nd4BS4ego8kraNRPDG5/tDLNVPQKprXioO2FZTYNqT+1tm4q
-         B6G0GVkdTdivezCwMXaHIHE7bMhg1N1tDi1kz0Ur5VLYul/K3UNsyHyrasA5p8qFpQry
-         s2D5CocM8qr6d4shbThNWTCzBSKLc68dbZYYRjLNz/DqV89cApAtXZHTs/3VNKYuO4ku
-         rzhQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dWGuLFLL"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cab973140bso23473725ad.3
+        for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 01:04:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787212388; x=1787817188; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:mime-version:references:in-reply-to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=o51BoL0uW8eYgVaNnvAPkhpysbo2+k4CgPomgwBCyNM=;
-        b=NjN0O+TTEDTJ0PGGlUZ02xxf+U4Bq6oQJTXELM//aGsLJtUt48wdCJi+TEwLI7syZr
-         +ApzIzptQet6YxOvzJdql7GdDFBSk07z4ssEFKY8uJ+J9L+v5RMyfS45M9k2+rpAEWjY
-         lEhlGubez/kHJcYMgL6T3STkeswGlJDcai26fBRizI1VN52TPdDfdZIl7Gs5RmtXqSQf
-         fbiWmkqVyF0iHGNWQfC/Jb+Cyl6tWklLfzF9tr41fVF3q/ljCdtZFNrk3YYvtDONsYUp
-         RUMPIaW2Y9NAEOBXEUvFpntpWXr3jl3LomvD/9CTfZ60FVzDhsOFLDPueaz2+xgRTflh
-         KcQA==
+        d=gmail.com; s=20251104; t=1787213063; x=1787817863; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=x78ErVeCRHN6nIR5BE2bLaNonVUmCkwh6pqCr+oiUKE=;
+        b=dWGuLFLLZEHINFCmRVl/uuhojokA6rfZWuDUqiyBBNXrK/SzTAQ+59pPbGpdNCCWu9
+         WbQPszq+BbQxq0yUfJGmIKh3VJqlk9DzJkVGWc+cY6xfD0lzQFMM31zkKZW74qEMLmq7
+         mFV+lvRJwUdwZQnStAOgr7j+K5QP6iEnPJpDfcoHu6h/ZKdMAn7bOcrlw2LwLKtHkb4J
+         r+6F+Hqih4v6ZXpImURcasZlGZhbeuHlevRLAY4wwiRfvzt/FSYckTv/C5L8B1cTPrvw
+         oQaZ0dJUheX9x2F3PpQqCYSxT4o4jm3OnTLbU74VFPkvb9XYHOFK+4u/lCRv1OO3G0/v
+         N3/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787212388; x=1787817188;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:mime-version:references:in-reply-to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=o51BoL0uW8eYgVaNnvAPkhpysbo2+k4CgPomgwBCyNM=;
-        b=Gfb/EusQTKqGpkQuanzUky4pMaXSCwrxGd0c7YPYbrb2G0Wfwa5Vitc5Ezbzwios2m
-         nxBtZsk7jMNkXhzHUlETt5PijFAtzGRkKz0dYA4/dB11X/KBMXjYJRNrIXtZXptwTO6d
-         zJwgX1ndqXD/aXCxBbgI+5mnoOA0TVUlNdm5qtgXSv57uYc/9JW7iVFgIuLFE5NuT4fQ
-         ZAe7aUP+oa3+ZX76ySmyeOA29ac50UAcLsmdnOWzRL7cf5kKMHTc04PDnGISmm/OvoDB
-         NOHbBUaCfw1st2v8/J2CDZ44sjak5e/v5LpQ+xA3p1CCltucDVrzv767sCd7YTWUo5de
-         nuCw==
-X-Forwarded-Encrypted: i=1; AHgh+RqLyGLaHjW8jOolewWeDPS4tBcC8NEP/HpZ/ym8toFwwa6C12Wuc2PiR2Hht/JPp8g08+o=@vger.kernel.org
-X-Gm-Message-State: AFuF++lIiKvwmUM8L2Hkys5W1ZHxajUJahSsHgJov977yNbFY2OQVSrg
-	vAuXhrbl51WufpOpn8rzmAvnGE72B7sHuMp+h1bhZsjKvn80muMuJ0IwE5gOy8XN89QOLi2Cqdz
-	aOx5gnOz+PLG6U3xK7oEy3sep2SLjFcIm2iSD7dEp
-X-Gm-Gg: AR+sD11P6UwEVrpZHPJJ6V60D3LBADlRzKqeQRl0+/cWYzRGguqenVv8MBTX5OOyJRy
-	eSpKVgdOK6XLFurGsPfe1ku8iUyLnJmUeJ/uowk8pzqzr4wtXDUWUGRQZO0q5UqL4opivWzchyj
-	7Pulk2nwGC7cHA4MCzYTpwFcZ3Tft4vzVSuZGRly5chHZdsolPGnft1V6QRsoYNVcSgBTtlEikE
-	zrWDjkLXHHzH5jM1yuXb/dCf2KD+L6zplBtQrOfPcDfzvifPTTG9KVBOUSd+/CecdXOiSV2+OXD
-	dSeX27NmsEKIHyAcjHO5nVNa4XGeOxemLh27x05sdBHpGRfoOCiiWjmLYPanFBrA2oXnuCMtS5N
-	56GwDMws35W/V1gF5F2XmiFCSKHUac77Eglp9FW8PmA==
-X-Received: by 2002:a05:6214:4014:b0:90a:804c:325a with SMTP id
- 6a1803df08f44-90c5e984419mr106287766d6.13.1787212386932; Thu, 20 Aug 2026
- 00:53:06 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 20 Aug 2026 00:53:06 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 20 Aug 2026 00:53:06 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260818092909.DBA151F00A3D@smtp.kernel.org>
-References: <20260818-gmem-no-return-page-v2-0-5298f42d49bb@google.com>
- <20260818-gmem-no-return-page-v2-2-5298f42d49bb@google.com> <20260818092909.DBA151F00A3D@smtp.kernel.org>
+        d=1e100.net; s=20251104; t=1787213063; x=1787817863;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=x78ErVeCRHN6nIR5BE2bLaNonVUmCkwh6pqCr+oiUKE=;
+        b=cZFBghXorzlL45SHwQafVBl4NRNiGXQeM84kM0Gnzv71byVVp0AWefxGdKq/SP6cTU
+         FGD/WTm8BcJYKm3OrHR/05EukBQJRXiryzq7hCGHUVTK922RG5HL8wOGQYcALIfGi4QK
+         S1TNn1hvMFtdqMAj71lkCcffqSNXdSHTYp17emDaa8tiwTN/90mSnuyWAtm+sVBamAjD
+         jGhHiU9MKnYEo7GxAPLLmNN65E58p18ijNVj/TnDV45n/n0Q1iVo0DR5+kLbiv5DQnTF
+         pU2Ld3Sau8ygjfMGhUy5CTWluF/9HEu6TZOHKCiZbnK3za4wbXbeBtbZpSdgyltOVmjV
+         FFVg==
+X-Forwarded-Encrypted: i=1; AHgh+RpSXrAQw4zi1RNfht7lIjVuKGOeFlmg6Cc0FSVvgv73gvEdKQmXgaSubL0G3JVBlhdjAKA=@vger.kernel.org
+X-Gm-Message-State: AFuF++ni/rTRXUJL9jPSgnNuQyEY9GmWKAUaC6TebjL01feDbpZpoxUK
+	JkBu+Q2WOIf9zfaBa2NLFlqC2SZvs/abXfhmfX9qQWyuud3KoHomH9N9
+X-Gm-Gg: AR+sD135KHOWKljp7soFVkCJfaPFS3pZso4guDggi8R6BfYUAcKTRS/XthYQ1WCTrOK
+	xa3ndZLYQTp2Z/lsVdDPQ2BFSA6E1cNeAbXCBxSZFzo1HOmUuCvD8RUuwuKcqGYzYh6mr/uZsyA
+	2Vkm+DuPVxk8w9WfCuR2wZRYMwkFu4WI+Kgym7AN2ebJbcQMHqoVGAT5xoQn5/F8bP6xYNDuwv/
+	wKq2mRCJYuWCijdVBTmtJnvXxWZX6f5jPYuQc5G+FluD4JodtKnZqv1UoiByC7rS/5i0BtmmT7E
+	DX7E4zf4O9rkgN/JHVQ5kP6pwa+syFBOUZsawUKL5PtapES2El8lb0SrI9ZHugpg9QCXqzrIeUs
+	fIUHVQ1a6LHQvHpD88LgPhLAtLrZPu4DbfV9ujBZy/yGt1e1xc/+V6Eezz2k2l5PwIcOKRQ5TcS
+	lrtualie62pxZa2rWMNxE/SR507DW3RkeczWIOuHdk3H8QWSIzInDu5pJ4PcdDtk70ukSICQ==
+X-Received: by 2002:a17:903:3887:b0:2d1:1a18:4d0a with SMTP id d9443c01a7336-2d5fd740167mr200442945ad.9.1787213062229;
+        Thu, 20 Aug 2026 01:04:22 -0700 (PDT)
+Received: from [127.0.1.1] ([188.253.126.51])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d62e36e175sm3556075ad.50.2026.08.20.01.04.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2026 01:04:21 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: stefanha@redhat.com,
+	sgarzare@redhat.com,
+	mst@redhat.com,
+	jasowangio@gmail.com
+Cc: eperezma@redhat.com,
+	weiyj.lk@gmail.com,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v7 0/3] vhost: fix device IOTLB feature lifecycle
+Date: Thu, 20 Aug 2026 16:03:29 +0800
+Message-Id: <20260820080332.313933-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 20 Aug 2026 00:53:06 -0700
-X-Gm-Features: AcwNN1WB-tnpCZT-uPr4BO2Hn9hueJ3F68Yv8vagfQAHyYOSy_v0o3BPhF3IvDw
-Message-ID: <CAEvNRgGFy39FmmVQGLc0SZkOGuYg5rXhKd2Ah+FhaSwc13zQVg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] KVM: SEV: Drop page refcount early during RMP
- fault handling
-To: sashiko-reviews@lists.linux.dev
-Cc: kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>, 
-	Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-sashiko-bot@kernel.org writes:
+Both vhost-vsock and vhost-net can leave the device IOTLB attached when
+userspace clears VIRTIO_F_ACCESS_PLATFORM. They can also replace an
+existing IOTLB with a new empty table when a later feature update keeps
+ACCESS_PLATFORM enabled, for example when updating logging.
 
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [Medium] Dropping the page refcount early introduces a race condition w=
-here a concurrent `guest_memfd` invalidation can trigger a false-positive '=
-Unexpected RMP fault' kernel warning.
-> --
->
-> --- Patch [2]: [PATCH v2 2/4] KVM: SEV: Drop page refcount early during R=
-MP fault handling ---
-> commit 7d0f356d8592ce1804052b0fdb61fccf3a11ecaa
-> Author: Sean Christopherson <seanjc@google.com>
->
-> KVM: SEV: Drop page refcount early during RMP fault handling
->
-> When handling an RMP fault, KVM retrieves the PFN for a private GPA from
-> guest_memfd. This patch drops the page reference immediately after retrie=
-ving
-> the PFN instead of holding it across the entire handler, and adopts the M=
-MU
-> invalidation protocol to guard committing anything based on the PFN.
->
->> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
->> index b2738362a928b..b34b11d7f8fad 100644
->> --- a/arch/x86/kvm/svm/sev.c
->> +++ b/arch/x86/kvm/svm/sev.c
->
-> [ ... ]
->
->> @@ -5030,18 +5031,22 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu,=
- gpa_t gpa, u64 error_code)
->>  		return;
->>  	}
->>
->> +	mmu_seq =3D kvm->mmu_invalidate_seq;
->> +	smp_rmb();
->> +
->>  	ret =3D kvm_gmem_get_pfn(kvm, slot, gfn, &pfn, &page, &order);
->>  	if (ret) {
->>  		pr_warn_ratelimited("SEV: Unexpected RMP fault, no backing page for p=
-rivate GPA 0x%llx\n",
->>  				    gpa);
->>  		return;
->>  	}
->> +	kvm_release_page_unused(page);
->>
->>  	ret =3D snp_lookup_rmpentry(pfn, &assigned, &rmp_level);
->>  	if (ret || !assigned) {
->>  		pr_warn_ratelimited("SEV: Unexpected RMP fault, no assigned RMP entry=
- found for GPA 0x%llx PFN 0x%llx error %d\n",
->>  				    gpa, pfn, ret);
->> -		goto out_no_trace;
->> +		return;
->>  	}
->
-> [Severity: Medium]
-> Since the page reference is dropped before this lookup in
-> sev_handle_rmp_fault(), could a concurrent guest_memfd hole-punch drop
-> the file's reference to the page and free it?
->
-> If the page is freed, the RMP entry would transition to shared/unassigned=
-.
-> Could this then cause snp_lookup_rmpentry() to see the page as unassigned
-> and incorrectly emit this warning before the mmu_invalidate_retry_gfn()
-> check happens?
->
+When the IOTLB mode changes, the vring addresses previously supplied by
+userspace no longer have the same address-space meaning. Leaving those
+addresses installed would allow an old IOVA to be used as a direct
+userspace address after the IOTLB is detached.
 
-Yes, this can happen. I'll also check for invalidations before
-warning in the next revision.
+This series invalidates the vring access state during IOTLB transitions,
+makes IOTLB initialization idempotent, and uses a common teardown helper
+for vhost-vsock and vhost-net. IOTLB mode changes are applied even while a
+virtqueue backend is attached. The device-wide IOTLB is dropped first,
+each virtqueue then clears its IOTLB pointer and cached ring access under
+its own mutex, and the old table is freed only after every virtqueue has
+completed the handoff.
 
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260818-gmem-no-=
-return-page-v2-0-5298f42d49bb@google.com?part=3D2
+A successful live mode change leaves the backend attached but invalidates
+the cached vring addresses. Userspace must configure the vring addresses
+for the new address mode before data processing can resume. When
+ACCESS_PLATFORM is enabled, the usual IOTLB miss/update protocol
+repopulates the new table.
+
+Changes since v6:
+- rebase on the current vhost tree;
+- remove blank lines between commit trailers;
+- drop unrelated error propagation changes from the backend patches.
+
+Jia Jia (3):
+  vhost: invalidate vring access on IOTLB transitions
+  vhost/vsock: discard IOTLB when ACCESS_PLATFORM is cleared
+  vhost/net: discard IOTLB when ACCESS_PLATFORM is cleared
+
+ drivers/vhost/net.c   |  2 ++
+ drivers/vhost/vhost.c | 53 ++++++++++++++++++++++++++++++++++++++++++-
+ drivers/vhost/vhost.h |  1 +
+ drivers/vhost/vsock.c |  4 +++-
+ 4 files changed, 58 insertions(+), 2 deletions(-)
+
+
+base-commit: b282418bc366194677eafd1dad180d92254586ac
+-- 
+2.34.1
