@@ -1,138 +1,115 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54ED9399CED
-	for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 23:36:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF5C39CD04
+	for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 23:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787268976; cv=none; b=hHuHhMmwR2+jocaExGin0wSTy7yQCu6KnoWSQYt3lodoFdv0ek3miLHPwuw/AQqnv4VyMl3GIDc+R8IH2jpjMdWwuULU9/gbbMApzs1ejCq0v49xNmMPLisAVzNlW57hO1qo2A46ni4UXhizlmXQEHsdxF7Gb10utU0Jqh1xU84=
+	t=1787269039; cv=none; b=rBoaY4gueHEyEBVTuCIiAHBPde9hQrR+ljU7RM6FAvKMJAhs1DtjsE6Gv4dSXY5ec9gZO1Txtf87+8IWA0J6Mal0YC5ffiW3yRTtQ+aF8+iWTCTvszL0l5I/10np0RlS7wfVK07TmOB4ZGLpEMsiKAlurPL8ek3nBuB6duwmzgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787268976; c=relaxed/simple;
-	bh=mUhbrxi5Wl4bcx3T2WtFkFet1O+S4n63de4seDdAqcw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=O8DJPfoDBEkR6zQ5sxZ8rpd2c4BpzEV+jbY01UPnKIl44hq0l240i/Slnb5JtXa3Gq5wi8Mi//b0oXNAsmoEHQa0CXzDUXA7BCBwvgbdaDd36N5cX4gtJFo+lwV5UORvGlvPLCK1Wtdp6I2CgPaVO9oIC8n07Q2YTttsL4AnfDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X0UcMIeE; arc=none smtp.client-ip=209.85.215.198
+	s=arc-20240116; t=1787269039; c=relaxed/simple;
+	bh=v7O/Xv2cRLoJQi9cE/u6B3o+EIuWA6AO+/EbZpuhtaU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bKJg1qZePphYK4g8OizhVZHVXu6AsbCFDgPMSVBfMCNaYbugm1nQQCZ8Ibzg4fhiQk3nU06o6b+7RYR+PffFg/rQ5xSFX0FWh8/1to+ppou6R7/s4K/9plLowYrwEw5tAsUfRpdltnSytAXjKiUcRyaCVBunKGyV3JSYgGP6j3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ic1PeGh+; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X0UcMIeE"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb11535e6a1so358172a12.0
-        for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 16:36:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ic1PeGh+"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2d3b440b97aso12125ad.1
+        for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 16:37:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787268975; x=1787873775; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7FsF+dC/ofr8sxGFtHAB/t3yjlu1tenoFlMvm24uheM=;
-        b=X0UcMIeEYzE+HvGzuIO4GobeKkhKoDXut+KKSgEe8UWa7rVRTNfqkSUZoPfgUUIBce
-         KIx97fFwd83HKGqulmY4IKmVUwpcznDYPMBH/zBgHzU1qqGsPaJdpLtV1VxqfPlAZgCT
-         /HMxyhCdU9D2kIK3JFOKelctrzrirDzAKlFuRzdVSSn0WmiMhTFEWhYihzfo0AvmAkzB
-         WOCHxq48JgrG0VcxCVA56b/QP7LmM3xhVxDHMsJa7j5x+i9yly2fI7dFsNvugFlcLVsN
-         AmPtYWeFj2pzgzjn2JyKOcyog9iElzRg4e+IkiXtuWWf5gIUST5Nj49Z4iaTPU641qGT
-         Wpxw==
+        d=google.com; s=20251104; t=1787269037; x=1787873837; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=k+xmfX7DA1IMWAYKfjmQ/Aix3ZtqaekUVXRTDYfDjog=;
+        b=Ic1PeGh+RMY0DFo6d4+/PhjhWwLIacIdnZ+R/c7GICAJhy/JFhNhDGHGOxyTvdTWoh
+         75yEt9N0GdGoHMH60f6++AwQavgq8hKgqAShB6SSkU4bsXVtMWXAqN0e+Pk/kJK44AAI
+         jMsOCyyOYuyoKJ3dCh+MF/sPgFXTxZMwlmR1AbYzDy6QY/JSxLjAFRMumRuXbGjvjmYL
+         XVYRJLbnuikPwDLG7TU/LAvexhtPyjETuMk6ZUj7plhVaUclxYkueMjsBm1LAtswbbux
+         hSM8w7oIeGFvh0OJ3XR4Iskjcq9qtNwssoz4UzLvncIz6yZcRszNXCfMJJ/1EluXvl2j
+         6Gig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787268975; x=1787873775;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7FsF+dC/ofr8sxGFtHAB/t3yjlu1tenoFlMvm24uheM=;
-        b=eq6Ea7e2RrF+E7KcnVHMKd+n3Y57rXCwsF8O2KGcXFgY4ebA4AHM8LpDL4H/gvqeX+
-         EQbQ/mfQp6da4/O1Qv40O4mxcg55fTZOrBfURIhBnjPY8ltWY2Y38Jymcr7UOC6q8fW9
-         wqfdKlfmLRxPDlHOi+tPrr/1MQxhdf152Agwi3TWJZF0z6fBuzD3Xqlj4xYxkzTaCLT1
-         /xuDE805o6xjgd3T51W9oflqbi7vy9Nkmv5eNPWqt1RoXyGdfm1PFJRZkMkL6AK2d/QE
-         UwtG2GEvB8BKIMNAtWSnDWvbzbhINdcnyMCOKwmM0KxO2+SlhGFjVPpb+Q5lKqDaDhs3
-         7oqQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqzXr/S2ElI0gjTeea1CJv+u5kIsHWkoqsRsA+IrZ5npTTUBrsmHY9C4rItU/2vbpshegw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnJ1Id8Q3V0lUz+0Vh+qMZOgbnx1Pzig4cZUaaxI6BfDyExmE2
-	j1JC2dxfDAjSd4oEtnebzLNgQZL9ub+psT7838FE3aqYsMmPkZUxKLvBnclO/TiBO4bBOV4Yhuh
-	e9TiaXg==
-X-Received: from pgmj16.prod.google.com ([2002:a63:5950:0:b0:c97:228f:37ae])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6001:b0:3cc:fb7d:a9ab
- with SMTP id adf61e73a8af0-3cd2fd8e99emr4211436637.2.1787268974429; Thu, 20
- Aug 2026 16:36:14 -0700 (PDT)
-Date: Thu, 20 Aug 2026 16:36:13 -0700
-In-Reply-To: <7kapvdum7qk7l4epbeqvrybqxapuhvwltz7axfprxldw2utozh@t4url3mqbpom>
+        d=1e100.net; s=20251104; t=1787269037; x=1787873837;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=k+xmfX7DA1IMWAYKfjmQ/Aix3ZtqaekUVXRTDYfDjog=;
+        b=boI4vxh5oPMwAEflxV0XxxV7cpOnmLotB12bWn7GOjg7N2nq4t83zGLXzL5Q9IEGGt
+         x71+EPh6fvNKoVjBALZQq7mAEKFFcJCAkb2YWa9sSSKOWDK5pcTH1c7K4YH/u7eOdb1D
+         RLM0cMGUeZw14dXfronuCNbeFHxcuiC55ju9mSocm9RIoZGaodsAQvsFufILCcnh7uKA
+         scOpU0P6swqblNgpeP2yZRaXPcf7sXxdiLEKttCpFj24rdqGE8e24933Sh20YrzRYPLE
+         rw4iMM2sNQarEyGGRrF1mnq6n++N+vEdzHdVZt6U9LjKoh8B90MQfh90fwTKghyShdtr
+         Lq+g==
+X-Gm-Message-State: AFuF++nfZmAJOJVOFIW/Do+TLzSMDfZmTwJPkvB6msG/B+aGu60ffTVs
+	WXaKVr3ygsmocjFkRcHRkOImOyda+a6k8X9B9dDO1An22wMoRKZwABrhF0EDBY3zuA==
+X-Gm-Gg: AR+sD13TDJNb6Qpr+Kd+603twTqfujoZ2PbjBQ2pM7fXgYlLUZKU0Grrj1vjnmIPcvY
+	bLwUgbOa34ywVO/kzQx+p+WAR9GVDFP/BdZu7qrL+Fohghvj70m4etuo0kdBN9bUioDNein70GZ
+	0CdVMtbD9Xc1GKdBwaRZ1RnJ+S+nT0xC5v2tvBS+mHCR3+ExXv2cysSzvkH2bt8richnElNnxtN
+	/+S82UQ5T8kNxwioBy9Gt7cNuWJKbgHfTo7IRmZLI2Nggaryt2vJygiqRCcKnYjF/lXleDjkoTy
+	k5u2e5csRPQAvLKZCFlLnEyY4rn8ZsWYGorIl7uNYFiC3iDcGxwgpvfy2sIj5DjLhBXZFmGORJI
+	BOiCiMZE+TAho8XBqFczG59ZpDtu949wbwhFxR7HSQTUWFbMinzw6XoL4lJtcCamdy0mrqrjglD
+	giXBmowDEPGIEO31iln2XBP6kF8VYt0y+iLEt/LeVQ0JGF3KJfFAB2jhHiHcE56CHBRcLhPToYs
+	+JK6oZSo2gJWN/yA/TS/K9cqAJQ4/h4eI/y
+X-Received: by 2002:a17:903:40cf:b0:2d3:153d:acae with SMTP id d9443c01a7336-2d64aaf3497mr3577045ad.0.1787269036513;
+        Thu, 20 Aug 2026 16:37:16 -0700 (PDT)
+Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395c8e2d7e0sm116103a91.0.2026.08.20.16.37.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2026 16:37:15 -0700 (PDT)
+Date: Thu, 20 Aug 2026 16:37:11 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	kvm-riscv@lists.infradead.org, pbonzini@redhat.com, borntraeger@linux.ibm.com, 
+	frankja@linux.ibm.com, imbrenda@linux.ibm.com, anup@brainfault.org, 
+	atish.patra@linux.dev, zhaotianrui@loongson.cn, maobibo@loongson.cn, 
+	chenhuacai@kernel.org, maz@kernel.org, oliver.upton@linux.dev, ajones@ventanamicro.com
+Subject: Re: [PATCH v4 6/9] KVM: selftests: Add various print flags to KVM
+ selftest runner
+Message-ID: <20260820233637.GE618052.vipinsh@google.com>
+References: <20260331194202.1722082-1-vipinsh@google.com>
+ <20260331194202.1722082-7-vipinsh@google.com>
+ <ampREGtEqKh8_-Ua@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260818-gmem-no-return-page-v2-0-5298f42d49bb@google.com>
- <20260818-gmem-no-return-page-v2-2-5298f42d49bb@google.com>
- <j6bfvbzjivlcsu3slbnaoomxxqyypmfl2bupo3k5ipnt6fc5lo@e5ntbx7yd4qw>
- <CAEvNRgEruoa4d_8Y1MpkdzbHg3j1Yv=-Y6w6Yy=v6mJgPajjWw@mail.gmail.com>
- <zb5krzhrg3soslplynegqo52brd53wk3meas45udqpjms6oluk@zecqwzn7zziy>
- <CAEvNRgEHEE67+vjQqJjYD3M4yuwuR+4-36Hw4-sp5caYzmxbkQ@mail.gmail.com> <7kapvdum7qk7l4epbeqvrybqxapuhvwltz7axfprxldw2utozh@t4url3mqbpom>
-Message-ID: <aoePba0sbVFzUl_9@google.com>
-Subject: Re: [PATCH v2 2/4] KVM: SEV: Drop page refcount early during RMP
- fault handling
-From: Sean Christopherson <seanjc@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ashish Kalra <ashish.kalra@amd.com>, 
-	Brijesh Singh <brijesh.singh@amd.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Fuad Tabba <tabba@google.com>, Yan Zhao <yan.y.zhao@intel.com>, 
-	Rick P Edgecombe <rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ampREGtEqKh8_-Ua@google.com>
 
-On Thu, Aug 20, 2026, Michael Roth wrote:
-> On Thu, Aug 20, 2026 at 03:35:31PM -0700, Ackerley Tng wrote:
-> > Michael Roth <michael.roth@amd.com> writes:
-> > Ah I see what you mean. I think we mean the same thing, let me add to
-> > the commit message that I meant after dropping the refcount early. Does
-> > this help?
-> > 
-> >   The filemap_invalidate_lock() is already dropped in kvm_gmem_get_pfn()
-> >   before returning to sev_handle_rmp_fault(). After dropping the
-> >   refcount earlier with kvm_release_page_unused(), these scenarios are
-> >   possible:
-> > 
-> >   1. Since the filemap_invalidate_lock() is dropped, the page can be
-> >      truncated (or in future, converted), and the RMP entry is now
-> >      shared.
-> > 
-> >      In this case, existing RMP table handling (psmash and checking for
-> >      errors) would be sufficient. On finding a shared entry, psmashing
-> >      would fail gracefully and no warning would be emitted.
-> > 
-> >   2. The page is truncated and freed, and then re-allocated to another
-> >      SNP VM. The RMP entry is now assigned, but to another SNP VM.
-> > 
-> >      To address this, adopt the MMU invalidation protocol to guard
-> >      psmashing.
+On Wed, Jul 29, 2026 at 12:14:24PM -0700, Sean Christopherson wrote:
+> On Tue, Mar 31, 2026, Vipin Sharma wrote:
+> > @@ -27,10 +34,14 @@ class TestRunner:
+> >          return test
+> >  
+> >      def _log_result(self, test_result):
+> > -        logger.info("*** stdout ***\n" + test_result.stdout)
+> > -        logger.info("*** stderr ***\n" + test_result.stderr)
+> > -        logger.log(test_result.status,
+> > -                   f"[{test_result.status.name}] {test_result.test_path}")
+> > +        print_level = self.print_stds.get(test_result.status, "full")
+> > +
+> > +        if (print_level == "full" or print_level == "stdout"):
+> > +            logger.info("*** stdout ***\n" + test_result.stdout)
 > 
-> This reads kinda weird to me, as if with #2 we're documenting a "bug" that
-> this patch fixes, but the bug would only exist if we partially applied the
-> bits of this patch the drops the ref counts earlier and left out the
-> bits of the patch that introduce the mmu notifier logic that replaces it.
+> IMO, when the print_level is exactly stdout or stderr, the runner shouldn't spit
+> out the "*** std{out,err} ***" line, as it's pure noise.  E.g.
 > 
-> I think with patch 1 applied (which covers the
-> psmash-a-now-shared-entry case while retaining the original refcount
-> logic), the only thing this patch is doing is replacing the elevated
-> refcount logic with the MMU invalidation logic as prep for dropping
-> reliance of refcounts entirely.
+>         print("\033[2K", end="\r", flush=True)
+>         if (print_level == "full"):
+>             logger.info("*** stdout ***\n" + test_result.stdout)
+>             logger.info("*** stderr ***\n" + test_result.stderr)
+>         elif (print_level == "stdout"):
+>             logger.info(test_result.stdout)
+>         elif (print_level == "stderr"):
+>             logger.info(test_result.stderr)
+> 
 
-(I had already typed this up before I saw Ackerley's response, so dagnabbit I'm
-hitting send).
+I agree.
 
-Agreed.  Less is more in this case, unless you want to explain all of the gory
-details of how KVM handles MMU invalidations.
-
-  Rework KVM's handling of RMP faults to rely on MMU invalidation logic for
-  safety, instead of the current approach of holding onto a folio reference
-  until the RMP operations are complete.  I.e. drop the reference gifted by
-  guest_memfd immediately after getting the PFN, and instead do RMP updates
-  under mmu_lock, after checking for relevant MMU invalidations.
-
-  This will allow dropping guest_memfd's reference gifting entirely, which is
-  ideally how KVM would operate for all "follow PFN" operations (GUP has many
-  more complications, which is why KVM holds a reference across page faults
-  *on top* of the standard MMU invalidation logic).
