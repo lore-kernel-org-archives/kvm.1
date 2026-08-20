@@ -1,55 +1,67 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E495340260;
-	Thu, 20 Aug 2026 14:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5E93368A4;
+	Thu, 20 Aug 2026 14:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787236034; cv=none; b=rGYS77pHjLErDv3BGQVp/ztZebXt2x7UsrKsFg+i+N+NXrv4WuZOePLEik9BBdMxDVWVgsuAPCHgjL4OnTGxe4N9b5avqhRt5PLKzbMmyDoAIzpItwqdOXp276rnVDqL0fQqcXdE6FS/8n3dI/a0eN+G4Nya91155bPKj9gcMMg=
+	t=1787237006; cv=none; b=KVNq4VrfNTbbIUMs2i6bYkIYUc0SY5VQbKh/a4vRPNTGW1B9aw34nJS5dNOv5wMjAHFV0bP/ZG7+045JzDtHogiINxZabsfW6T0XM8I3o9SJRCjg22VYrHjUdQ4T0BQKL5z48MCP47nUb1lo4PM3RvUZDdEXJy803HGKDUL5sbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787236034; c=relaxed/simple;
-	bh=UfCtCVDm8dUsQjjpEwjMkr3dSsc152NGmwe69XwzA9M=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
-	 MIME-Version; b=bQ5vm/u2LfBq81NvAd8HxczKegGyuRoZwqlERqd6RGcO+6RV/JhLpLHY9DM3S3we9oro+DKNgUtCj7SDxZXCj7KYC1/bj2o3D65rwcSkUifKsr7KEJp83m89l4Gw+FNlhCzM4aUDrBm3ZNemNbJOb195X4HAGHyX9zeM020HSQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=rc2mDGGm; arc=none smtp.client-ip=90.155.50.34
+	s=arc-20240116; t=1787237006; c=relaxed/simple;
+	bh=4SDgz10pMi8kGfCeX16I5v/bsZUY/gLL2WdWTUz1FzQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=j4ImZNbrjW5KEkrLxfmyuPdGPufEHM//aO32AiihNFI1ubywNdytsFXI3jaZdTPRRw3VCqVWM+niKLDOeOJSM6DGTk8ha9h7QHfvzYOXGFfvFSnU6qpExSn75i3PMF5UBqzeXfd62yUfOkBs7VylyLPFX8Zb7a3gTz1H6xM0Cz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=i1JnGMfI; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="rc2mDGGm"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="i1JnGMfI"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
-	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=5mAyoRZ1DeCCNtOFnYZquL7XbFPczim4+hkLsgLhzAc=; b=rc2mDGGm3RTIKEcp3fILb6LLOn
-	nt3XhSHTTNO7Kc8ryHKyeVpNJrPQaQ0vZSCpOWg7vvTihpCySjU8Pr/JrVL7LUPAebdGgyx8xW+wz
-	IDSKlkyDgvjM13s0BSXkFo/QBMo2Bic7A3f+pKDfMnv5kFVD40Gdz7NeNB1f0+7HWQ0LR9g1lsnec
-	D15W+nHvnqhAlmG7i4BiLaiLGHCB0k8xV7KFBqIaqkElJr56UJmPy5US/OeYguzMfMP8/mASk/sxf
-	/7c/M3x0WAhtKpj6WhcovgyBcBGAwCzb0uBCiGyEjLgCJaA12rB73MaobiqFPq3gxPrBJFLhuYlnY
-	VYDrsOzw==;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=4SDgz10pMi8kGfCeX16I5v/bsZUY/gLL2WdWTUz1FzQ=; b=i1JnGMfI1mjtg7j0bYX+EscmFR
+	NEOxajAYh5VWGns9iujouK6WsYayTJKWiPKIuTVFd8VX5jrYV7FG7418kynZbX51KgU17PcWW/ZVJ
+	S1Tk2qadeU90OLXTfOLM6jmZBjnL9Wuh+BG3WKGt3IvTao2Gfr4+8kyxBLTFSsgvRzi4UMX0sxLBw
+	mWKiJUvnnhEIVDo+tcZ1qUseVHIeLdSKDPrjQ10hi1tS7+Vn3DN82I1vzSuWgWrVjF0s8e8nBR31I
+	JzWpelu5vO7yXkPgPPhj45qSliFZb6sFgeJXAL6aFR2BdseY5Ar7LUEWgRYW5aHK747hhTAkponHT
+	u1F7Dz4w==;
 Received: from [2001:8b0:10b:5:606e:77cd:9db3:6c5c] (helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wx3jD-0000000Fns7-45VX;
-	Thu, 20 Aug 2026 14:26:48 +0000
-Message-ID: <448c5c0128b08ab98d175ae1099ff4d4874e49b3.camel@infradead.org>
+	id 1wx3z7-0000000FpDx-2nqt;
+	Thu, 20 Aug 2026 14:43:13 +0000
+Message-ID: <a17c8d33102c49c74a64fb62d402b315ba950577.camel@infradead.org>
 Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
  notifier invocation
 From: David Woodhouse <dwmw2@infradead.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
- Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
+To: paulmck@kernel.org
+Cc: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+  Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
  Andrew Morton	 <akpm@linux-foundation.org>, David Hildenbrand
  <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
  <liam@infradead.org>, Vlastimil Babka	 <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan	 <surenb@google.com>, Clark Williams
- <clrkwllms@kernel.org>, Simona Vetter	 <simona.vetter@ffwll.ch>, Jerome
- Glisse <jglisse@redhat.com>, Christian Koenig	 <christian.koenig@amd.com>,
- "Paul E. McKenney" <paulmck@kernel.org>, Sean Christopherson
- <seanjc@google.com>, linux-mm@kvack.org, kvm@vger.kernel.org,
+ <rppt@kernel.org>, Suren Baghdasaryan	 <surenb@google.com>, Sebastian
+ Andrzej Siewior <bigeasy@linutronix.de>,  Clark Williams
+ <clrkwllms@kernel.org>, Simona Vetter <simona.vetter@ffwll.ch>,
+ =?ISO-8859-1?Q?J=E9r=F4me?= Glisse <jglisse@redhat.com>, Christian
+ =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>, linux-mm@kvack.org, kvm@vger.kernel.org,
  linux-rt-devel@lists.linux.dev, 	linux-kernel@vger.kernel.org
-Date: Thu, 20 Aug 2026 15:26:35 +0100
-In-Reply-To: <20260820133020.7ZCRIhwX@linutronix.de>
+Date: Thu, 20 Aug 2026 15:43:01 +0100
+In-Reply-To: <49df45c6-4d0e-483a-8acc-0ace7f9a6484@paulmck-laptop>
+References: <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org>
+	 <20260812134934.GC662699@ziepe.ca>
+	 <a48e6e7063122b22a8083bb0792984a204f316e6.camel@infradead.org>
+	 <fb87f673bf290cad133d113dbb0750a7752b9d30.camel@infradead.org>
+	 <a94b75e8b9b1d2191f365c0f4275fd5082332df5.camel@infradead.org>
+	 <d0692500893f303906fba1d7d596eb59a07a806a.camel@infradead.org>
+	 <anydY25Cl78l1HfU@google.com>
+	 <932DB129-1794-4855-A61E-F4C2B54B1EE6@infradead.org>
+	 <b736237c-64ee-4eb2-8201-5685a3853844@paulmck-laptop>
+	 <5f6a0669f319951462c2aae3a50d595983a42e4c.camel@infradead.org>
+	 <49df45c6-4d0e-483a-8acc-0ace7f9a6484@paulmck-laptop>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-HaviD9OcfWUIvdKhLY5P"
+	boundary="=-1EY2myuxlQvpkMHs1RVA"
 User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,78 +72,48 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-HaviD9OcfWUIvdKhLY5P
+--=-1EY2myuxlQvpkMHs1RVA
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2026-08-20 at 15:30 +0200, Sebastian Andrzej Siewior wrote:
-> So if it is *just* the annoying splat on RT, I could try to teach
-> might_sleep() no to be upset here.
+On Tue, 2026-08-18 at 11:18 -0700, Paul E. McKenney wrote:
+> On Thu, Aug 13, 2026 at 08:54:44AM +0100, David Woodhouse wrote:
+> > On Wed, 2026-08-12 at 14:38 -0700, Paul E. McKenney wrote:
+> > > If not, please let me know, and I will put together that does the
+> > > job.
+> >=20
+> > If you're working on that, I assume it'd need the readers to be known-
+> > atomic. So if any of the read-side SRCU_READ_FLAVOR_ATOMIC thing I
+> > already threw together is useful, you can find it in my tree at
+> > https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Dr=
+efs/heads/srcu-atomic
+>=20
+> Thank you, happy to steal pieces of that with attribution.=C2=A0 ;-)
+>=20
+> My current plan says that if you have an atomic SRCU on which you
+> use srcu_read_lock_atomic() and srcu_read_unlock_atomic(), you only
+> ever get to use synchronize_srcu_atomic(), never synchronize_srcu(),
+> synchronize_srcu_expedited(), or call_srcu().=C2=A0 Does that work for yo=
+u?
 
-It *wasn't* just the splat on RT... but I think it can be reduced to
-that. My full set of reasons were:
+I just said this elsewhere in the thread=C2=B9 but I don't necessarily
+expect you to be following that. So to bring it back here...
 
- =E2=80=A2 RT turns rwlock_t/spinlock_t into sleeping locks.
- =E2=80=A2 We believed a waiting KVM_REQ (IPI + wait for acks) would sleep;
-   it actually spins with preemption disabled=C2=B9.
- =E2=80=A2 synchronize_srcu_expedited() in the invalidation path really doe=
-s
-   sleep on a workqueue completion, even on !RT.
+My mental model for srcu_read_lock_atomic() was that it was always
+atomic, even on RT =E2=80=94 it was basically equivalent to a raw spinlock.
 
-If you deal with the first, the second turns out not to have been
-needed, and that just leaves the third which is the SRCU atomic thing
-(qv).
+In fact I think it would be OK for it to be equivalent to a *plain*
+spinlock =E2=80=94 i.e. atomic on non-RT, but might sleep on RT.
 
-Aside from those selfish technical reasons, the check is actually
-*wrong* because "must not sleep" isn't the real requirement here, as
-discussed. And when I went looking, not only did I have to hack the
-kernel to even make it trigger at all, I also couldn't find any example
-of it finding anything that *wasn't* a false positive. The only
-concrete thing it *did* achieve was making us strip a necessary
-KVM_REQUEST_WAIT to appease it, which opened up a use-after-free.
+When I wrote that previous email I was thinking that might end up being
+additional complexity in your implementation, but as I type this I
+guess it could be as simple as falling back to the normal non-atomic
+case for RT?
 
-So if you fix the might_sleep() and Paul comes through with the atomic
-SRCU thing, I no longer care *much*, but still think the whole thing
-deserves to die.
+=C2=B9 https://lore.kernel.org/all/448c5c0128b08ab98d175ae1099ff4d4874e49b3=
+.camel@infradead.org/
 
-Going back to SRCU atomic (citing your mail in reverse order):
-> In
->    https://lore.kernel.org/all/a94b75e8b9b1d2191f365c0f4275fd5082332df5.c=
-amel@infradead.org
-> there was a suggestion for "srcu: Add an ATOMIC reader flavor and a spinn=
-ing
-> synchronize_srcu_atomic()". This one had preempt_disable() in
-> srcu_read_lock_atomic(). This is bad as not only forbids to acquire any
-> sleeping locks (such as spinlock_t) but it also does not allow any
-> scheduling of any kind within this section.
-
-That was kind of the point :)=C2=A0
-
-My=C2=A0srcu_read_lock_atomic/synchronize_srcu_atomic() were born of the
-"need" to avoid scheduling in OOM (RT or no), but actually I think they
-survive even when that requirement goes away.=C2=A0Even with my
-try_synchronize_srcu() optimisation, we saw higher tail latencies when
-deferring to the workqueue, and Sean was very much in favour of
-eliminating those.
-
-So I think we do want synchronize_srcu_atomic() if Paul can find a way
-to give us that.
-
-To your point about preempt_disable() in srcu_read_lock_atomic() on the
-read side... I don't know if we *need* it to be like that. When I threw
-it together, I was thinking of it as a raw_spinlock, in the "must not
-sleep" mindset.
-
-In fact, as long as the splats are dealt with, it would probably be OK
-for it to be equivalent to a non-raw spinlock: disable preemption on
-non-RT, but not on RT. I think that's perfectly OK for us from the KVM
-point of view. But does heavily depend on how Paul wants to implement
-it, of course.
-
-
-=C2=B9 I wonder if we might want to change that on RT?
-
---=-HaviD9OcfWUIvdKhLY5P
+--=-1EY2myuxlQvpkMHs1RVA
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -229,22 +211,22 @@ vFEOOmuaq7VamuLEPFQtJM4olmipOW6CzrLcFz6J/6yAecEG3P1ZDoy08eSHvM40MAUgpwGa/w6o
 MAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTowOAYDVQQDEzFEaWdpQ2VydCBB
 c3N1cmVkIEcyIFNNSU1FIFJTQTQwOTYgU0hBMzg0IDIwMjQgQ0ExAhADNSi2uzJskfEdOMo4hV0g
 MA0GCWCGSAFlAwQCAQUAoIIBezAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNjA4MjAxNDI2MzVaMC8GCSqGSIb3DQEJBDEiBCDY/IMX5UicW+d3v0vAQqZ1U+55oDVT
-UEkuTSLDDfCZozCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
+BTEPFw0yNjA4MjAxNDQzMDFaMC8GCSqGSIb3DQEJBDEiBCBnlgNk2OVuJb0HrNNM6JuS1pqS7/4b
+DppJqh6oJ5WihTCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
 aUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBT
 SEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAwgYcGCyqGSIb3DQEJEAILMXigdjBiMQsw
 CQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFz
 c3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAw
-DQYJKoZIhvcNAQEBBQAEggIAkxgJddvA0H9+GKFysctiZ/LzuXxvmeAMwlcfwq+SvQN/osN2vD0o
-LlwgKJKDrIF9FCaItNgO5vnGdNKTiUo1SnxEEegMZZS2YlwYjC0r9eHlNZKsv+9P0ZjUrGrk3Up4
-+r9DoXhfDMzSTuHpLne+urE98FyyqIebrGT1qHCdntob9tr3HvFKMujm42nOBud0/dfSn2R9YaiA
-e1aFkdW4aDowfrUdFRMXXdhn7jta3Oh/xib0+7D9xf/xtcagIE6txk/BN79mPn8Z+Svu13kW2VcY
-sUgy2MAb+r4qKbwwdFH1UgL37awKaD4O4UOQLhNIk0ocHJFNRMqU3hE1QR96Py2950bo4cybsncU
-09NEwSeOeyyeU5yF7OFb8SDWTM6zzXVFLQktl5VnLudKeyGssjxWwGnnhjZ33tdvlEaGViR0X9OS
-ssQ8Q3kBd1WLeylavLoiEpAIV5btQNPtzQ+rTNbMj6TwGHxRTGEb8JzjQpYEQAgAsrzcZRymg9WT
-nx0VSyHjSiT+AHmewkimjfOPSjFvnWbb9KQ/xhkIImsMYm2Rvfv7FtMeFnUNvME7s40pV66U5att
-KkTMbpUWaa4ZFBGfola0LhczjOnvcHwyT6+7S5j4IgGMyUic0yPY+fZnE0XKaVJPLoT9KxxDQHup
-GpFLqSOt1i29IUXHTXYpoEYAAAAAAAA=
+DQYJKoZIhvcNAQEBBQAEggIA0cHHkmb3KMdpojyRVKP3BLq5wlMqupfT1WR0KniSne+yg2wnoouR
+UWR3LDsvP5/wCjyrhhh+dUoKWyKt/xYj70PvosaRRAZuG0UwXP4/jOsum7IS6T/PEa9rzH8A1gQw
+PC+7A+nBYpJuWxHLvXfwOCDjZYOBD4SF8RQmMIT9I9uRY6dg+fvhGbVoS7RalozsrpebhYHQp6yo
+AORDrfln1Hi8uMkSfgKBaN4qVao5jD8BmLNdc9M0ziTyYrHfR+n1gfew9yPU+HtCs8wwTqffeTCY
+hqzrdhokHLSDcNNas6fk/Eg4Qh0IG6ojAehPHH3XVw7eu/XpU1S91nv4xUf/bxNMETg+hpz1eo/u
+uI29sIqSssB/upRAAo8t5Iy6dA4MN8FP9pNmGF4XE3Tq8A4voXVkHDGnhQERMHEforn+LLA7K4ck
+xJWb4tu7R7hZ1fFHyaE9qxs40nQ3zEF+cet2rQEGdYK4oqgMgxFXaYJoKeyaB2hOsQE4CigmksVu
+Ix3m2mJEwlS8veJhmAYSOMwlkemtv1uCdzWM6uKvYHVGwunzEq9pCKXHNPfh0iGXgoxnV6E7yZHR
+MQUJpxAUJHRdo30M3gQ+a83H41tXio9ByKwmBSRgKpydRS7n/N6/VeZLxTpxhgvw/PmAnyjR/dic
+j9A0j1Jn5ycWWB0qWmJr7hkAAAAAAAA=
 
 
---=-HaviD9OcfWUIvdKhLY5P--
+--=-1EY2myuxlQvpkMHs1RVA--
