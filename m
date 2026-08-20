@@ -1,232 +1,193 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5E93368A4;
-	Thu, 20 Aug 2026 14:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787237006; cv=none; b=KVNq4VrfNTbbIUMs2i6bYkIYUc0SY5VQbKh/a4vRPNTGW1B9aw34nJS5dNOv5wMjAHFV0bP/ZG7+045JzDtHogiINxZabsfW6T0XM8I3o9SJRCjg22VYrHjUdQ4T0BQKL5z48MCP47nUb1lo4PM3RvUZDdEXJy803HGKDUL5sbs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787237006; c=relaxed/simple;
-	bh=4SDgz10pMi8kGfCeX16I5v/bsZUY/gLL2WdWTUz1FzQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=j4ImZNbrjW5KEkrLxfmyuPdGPufEHM//aO32AiihNFI1ubywNdytsFXI3jaZdTPRRw3VCqVWM+niKLDOeOJSM6DGTk8ha9h7QHfvzYOXGFfvFSnU6qpExSn75i3PMF5UBqzeXfd62yUfOkBs7VylyLPFX8Zb7a3gTz1H6xM0Cz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=i1JnGMfI; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75DA379C28
+	for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 14:47:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787237276; cv=pass; b=EYLxbO7Umt+HHbgaAuFI7wP8YBXbrsv/OyfVsXngUE+AHLc+GcRzNEpaJ8bX3SiBAHcdk7XzXUgkfWSLFv0tz2TZwrTYd9KNhwDO4/cffyQCE1tjMuV6VwDZB4TtlO0hsgepWuhi0uD8vy2U5e9+QyV5wpR90Y5Gw/r9flEk37k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787237276; c=relaxed/simple;
+	bh=r2hCL7XoFnqzQ8NQfsCqgeEbkv/DQ0+Almk3HSia9aY=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hjz4i0CvXJjENJ0we2sjYoUpaHzRmlsdAubgd+moBvTZLpdsGLVMv+eB2xi+y7TzkfR8yd/S2MihwguD8Wr1zt6rrkVYwx+xWwop5WbeoWBBMt8wu+liOtEX11hD6KW8kRkfvf/DDXW5IzkmIbREPJ83+HlpuatqVhs7SpdYe60=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I5S0kC68; arc=pass smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="i1JnGMfI"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=4SDgz10pMi8kGfCeX16I5v/bsZUY/gLL2WdWTUz1FzQ=; b=i1JnGMfI1mjtg7j0bYX+EscmFR
-	NEOxajAYh5VWGns9iujouK6WsYayTJKWiPKIuTVFd8VX5jrYV7FG7418kynZbX51KgU17PcWW/ZVJ
-	S1Tk2qadeU90OLXTfOLM6jmZBjnL9Wuh+BG3WKGt3IvTao2Gfr4+8kyxBLTFSsgvRzi4UMX0sxLBw
-	mWKiJUvnnhEIVDo+tcZ1qUseVHIeLdSKDPrjQ10hi1tS7+Vn3DN82I1vzSuWgWrVjF0s8e8nBR31I
-	JzWpelu5vO7yXkPgPPhj45qSliFZb6sFgeJXAL6aFR2BdseY5Ar7LUEWgRYW5aHK747hhTAkponHT
-	u1F7Dz4w==;
-Received: from [2001:8b0:10b:5:606e:77cd:9db3:6c5c] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wx3z7-0000000FpDx-2nqt;
-	Thu, 20 Aug 2026 14:43:13 +0000
-Message-ID: <a17c8d33102c49c74a64fb62d402b315ba950577.camel@infradead.org>
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-From: David Woodhouse <dwmw2@infradead.org>
-To: paulmck@kernel.org
-Cc: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-  Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
- Andrew Morton	 <akpm@linux-foundation.org>, David Hildenbrand
- <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka	 <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan	 <surenb@google.com>, Sebastian
- Andrzej Siewior <bigeasy@linutronix.de>,  Clark Williams
- <clrkwllms@kernel.org>, Simona Vetter <simona.vetter@ffwll.ch>,
- =?ISO-8859-1?Q?J=E9r=F4me?= Glisse <jglisse@redhat.com>, Christian
- =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,  Paolo Bonzini
- <pbonzini@redhat.com>, linux-mm@kvack.org, kvm@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, 	linux-kernel@vger.kernel.org
-Date: Thu, 20 Aug 2026 15:43:01 +0100
-In-Reply-To: <49df45c6-4d0e-483a-8acc-0ace7f9a6484@paulmck-laptop>
-References: <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org>
-	 <20260812134934.GC662699@ziepe.ca>
-	 <a48e6e7063122b22a8083bb0792984a204f316e6.camel@infradead.org>
-	 <fb87f673bf290cad133d113dbb0750a7752b9d30.camel@infradead.org>
-	 <a94b75e8b9b1d2191f365c0f4275fd5082332df5.camel@infradead.org>
-	 <d0692500893f303906fba1d7d596eb59a07a806a.camel@infradead.org>
-	 <anydY25Cl78l1HfU@google.com>
-	 <932DB129-1794-4855-A61E-F4C2B54B1EE6@infradead.org>
-	 <b736237c-64ee-4eb2-8201-5685a3853844@paulmck-laptop>
-	 <5f6a0669f319951462c2aae3a50d595983a42e4c.camel@infradead.org>
-	 <49df45c6-4d0e-483a-8acc-0ace7f9a6484@paulmck-laptop>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-1EY2myuxlQvpkMHs1RVA"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I5S0kC68"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-90c4e297a01so15601826d6.3
+        for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 07:47:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787237273; cv=none;
+        d=google.com; s=arc-20260327;
+        b=NCVaGBKWdt+LPYSBIhlE3GWKhM3nGv/fxglTQRoHbbPgXV+k1ioqP6nHk841IexN+K
+         DcGd7pORp2p4EAxeGn0ehDSUqzJSzp41sxR3oh+C/QEeHeDafFFZFRII+6sG39hwoMPi
+         CoTOCQX86nfOh/kdS+V41yOOnPNYEpXkA2N2u7GtOnx7Ald9WvYNK91olOK9hHIRoZYA
+         84DxqjZIFS4WjBVCAgpFiwMXk5tuobn7RYuFA8EU43RXWTE1qI2C4+Y24cm7uUTSRSyt
+         mseIJ9fAsZFyWh2YGvLjjzJt6g9D+jDQqo9q4sNUEsPZpjzIt1TBep9LaQW+GOYFSMby
+         arjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=wW5t0G/U8sBPBIi/hy7+eXOaj+vhlsnXo8EJATEvXbc=;
+        fh=w8I//9pCvz02jFTLRDRX8hAZWD2wD4tQutqQccGf17M=;
+        b=pYGJib7X9SAlIxWT2cSd+n+nPFuYAyOmPW12PotyolQtYu/6I0IGUIb68BKj8Bl6DO
+         XXpqjftJvqa8tzvVmDyksEffraX8k10o78aJcL9KuUtrc9PnzS9IKeJYVeCjFGJmXVuz
+         aAA7WFvFKCyTIHbAEkgs2TH3i7RmduazfqhStNeofKIRoxQiVKQ56w2Q4hI6W7An+F31
+         VTypciYTr92+kpBt1LuWCy1V1h2jyudhD7uwzjFlkKA1pMVWQzkJ5xHglI/f12+iFtWC
+         RtGrBMz+WLMDXGcr1qaUPzXKISwPpABmxi9P6fUXFMlIXgeXf3yOJK5L1eo+JdAcv97D
+         2uLA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787237273; x=1787842073; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wW5t0G/U8sBPBIi/hy7+eXOaj+vhlsnXo8EJATEvXbc=;
+        b=I5S0kC68/eRkBV1r15BhDQIWgmW8OTQzTwsA3EOY9WDEqiENCUe38ft1QkTKAxOLyx
+         mONFp7Cfa/FPXwGKoIg6v/SQN9cBFu66vsTtFQr5JITPhA3dYmeLmzDjeuL7EUa/UXU1
+         PENCtb1gxFRgh1gQxJCDFF6Wr86yeCBy5p1iDruIeLPO733w7OsvPzojyLnAEcxdTk0k
+         ubCwt19UANGog6fCov0Jo9YqWycbfwCy72W8DgiK5z0LdEBEgWbtbAIrPsGCQHLvwdHH
+         0qnipBlY4ce1Ihnbdo3c0X+YHhOkoe/gJ3AVsc64EvDSWf/p4MzO94koNETUwZOHUAL1
+         Oipg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787237273; x=1787842073;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wW5t0G/U8sBPBIi/hy7+eXOaj+vhlsnXo8EJATEvXbc=;
+        b=OfrkgyjsNP84JV9k+tNvtEsXhTOoQpI7d72fRCHO0a/tsorsFX/tUAmmdS9pac9c9b
+         gp44Ocpo7ko3GwDr3a3blMYwJg32X4Li70NKRBAZ+3U8QHKZr6Myi/cIV/ur6WM5Tvsj
+         guPJHqPc8RidAQnEHRGtZCpeS4MiF781y8A11qQ08MLvkJKXL6SL0orQ4Ld0/I9WGRlJ
+         Id2Y7PIMZkiLzrAffTcE/abStbnIzL9xOW0b5P7uPCBqfmdkwrSmvOfjuAnUiEwFKCVE
+         mOlDgY4yTg3coJVjGJgcbrQFMnDmX5Kc0xCEi9tN+yNt/80OuylqG+r/gnoEUjxNGikd
+         Pang==
+X-Forwarded-Encrypted: i=1; AHgh+Rrjqhj0b6q8rDfcIPIPgsjAu03yRUS7Ypit6vUZuT/+nypgHUwEkju91RRvQyKj94DETXw=@vger.kernel.org
+X-Gm-Message-State: AFuF++mTET1o8R8BZf7Bg9sGNkKHx5DiqjdpqlsA8XxePuS44VWwdXeL
+	qGosP6fekENCkYRRnkJVwi5vIOMb954k5ROYSHJhX2D7TXyYnb1+2AgQUwuNdw+zkQWc2FHfDV2
+	Ut01TQJjhn2OnCMjetRVoJ1dVHzv1+25zVxRBUzhH
+X-Gm-Gg: AR+sD13x8jqwst85t8MTC9vwyW8uqzStYU55u7rCDAoiby1vzP4tirq9+/ZN4SYwtPd
+	nacmnAo5gzAQCFraTiJ2hn7s6ZTlPioug1vG1/txPx8PG2Tqsv2faVPh6nUFV3pO331X70FudpO
+	hNLgXA5iH8+8qjVRtViJKa+igA90HktoORexE7OIFLZr5vOaa28NATkj+kFL0Difp8vF3zO6N6a
+	WDUyoBfsW43fcvE5orcFm0A5qCU8rdLCH6QMvXv8kgCmh97NnBISuV3Hzg6gAGI5GKeNT1Jo1FK
+	q8sXhZkvhi5YqEJXMp8kaBDQ6RXAdS6b6AQ1oVQdQ26E6fKoS4d+oleapFnTjPmmebwaRBF6SEK
+	JC4U=
+X-Received: by 2002:a05:6214:401:b0:8dc:2c21:32bd with SMTP id
+ 6a1803df08f44-90c5e68b4abmr133956736d6.1.1787237272678; Thu, 20 Aug 2026
+ 07:47:52 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 20 Aug 2026 07:47:51 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 20 Aug 2026 07:47:51 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <aoVut/h1u7HdFxkR@yzhao56-desk.sh.intel.com>
+References: <20260818-gmem-no-return-page-v2-0-5298f42d49bb@google.com>
+ <20260818-gmem-no-return-page-v2-4-5298f42d49bb@google.com> <aoVut/h1u7HdFxkR@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-
-
---=-1EY2myuxlQvpkMHs1RVA
+Date: Thu, 20 Aug 2026 07:47:51 -0700
+X-Gm-Features: AcwNN1WYYXv3T1n5AIJ_TiYtLTY6vDd5CVOeUwq99s4OCRdrQcgzzR3vkPd99ho
+Message-ID: <CAEvNRgFFs2BC7m8YH7RnQSysU+eDqOjQpqAxL09mwJgrT_iYww@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] KVM: guest_memfd: Stop returning struct page from
+ PFN lookup
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Ashish Kalra <ashish.kalra@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, David Hildenbrand <david@kernel.org>, Fuad Tabba <tabba@google.com>, 
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2026-08-18 at 11:18 -0700, Paul E. McKenney wrote:
-> On Thu, Aug 13, 2026 at 08:54:44AM +0100, David Woodhouse wrote:
-> > On Wed, 2026-08-12 at 14:38 -0700, Paul E. McKenney wrote:
-> > > If not, please let me know, and I will put together that does the
-> > > job.
-> >=20
-> > If you're working on that, I assume it'd need the readers to be known-
-> > atomic. So if any of the read-side SRCU_READ_FLAVOR_ATOMIC thing I
-> > already threw together is useful, you can find it in my tree at
-> > https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Dr=
-efs/heads/srcu-atomic
->=20
-> Thank you, happy to steal pieces of that with attribution.=C2=A0 ;-)
->=20
-> My current plan says that if you have an atomic SRCU on which you
-> use srcu_read_lock_atomic() and srcu_read_unlock_atomic(), you only
-> ever get to use synchronize_srcu_atomic(), never synchronize_srcu(),
-> synchronize_srcu_expedited(), or call_srcu().=C2=A0 Does that work for yo=
-u?
+Yan Zhao <yan.y.zhao@intel.com> writes:
 
-I just said this elsewhere in the thread=C2=B9 but I don't necessarily
-expect you to be following that. So to bring it back here...
+> On Tue, Aug 18, 2026 at 09:15:55AM +0000, Ackerley Tng wrote:
+>> From: Sean Christopherson <seanjc@google.com>
+>>
+>> KVM currently expects guest_memfd PFN lookups to return a refcounted
+>> struct page, which callers hold across fault handling.
+>>
+>> Holding a page reference across fault handling is problematic for
+>> guest_memfd. In-place memory conversions between confidential
+>> computing shared and private states inspect folio refcounts to ensure
+>> exclusive ownership by guest_memfd. A concurrent guest page fault
+>> taking a reference on the folio causes conversions to fail due to an
+>> elevated refcount.
+> Nit:
+> As this series is based on kvm-x86/next, where there's no in-place memory
+> conversion yet, kvm_gmem_get_pfn() does not hold shared filemap invalidate lock.
+>
+> However, the benefit of dropping the folio reference immediately before
+> returning from the guest_memfd PFN lookup -- preventing conversion failures due
+> to an elevated refcount -- should be effective only if the reference is dropped
+> before releasing the shared filemap invalidate lock.
+>
+> Do we need to make this info clear, since I think it's important? :)
+>
 
-My mental model for srcu_read_lock_atomic() was that it was always
-atomic, even on RT =E2=80=94 it was basically equivalent to a raw spinlock.
+Is this what you meant?
 
-In fact I think it would be OK for it to be equivalent to a *plain*
-spinlock =E2=80=94 i.e. atomic on non-RT, but might sleep on RT.
+  In-place conversions uses the filemap_invalidate_lock() for
+  synchronization of shared/private state. In kvm_gmem_get_pfn(), the
+  PFN needs to be prepared according to its shared/private state. Hence,
+  the filemap_invalidate_lock() is held while guest_memfd gets a folio
+  and decides to make private before returning a PFN.
 
-When I wrote that previous email I was thinking that might end up being
-additional complexity in your implementation, but as I type this I
-guess it could be as simple as falling back to the normal non-atomic
-case for RT?
+  In kvm_gmem_get_pfn(), the folio refcount is dropped before releasing
+  filemap_invalidate_lock(). This ensures that a competing conversion
+  grabbing the filemap_invalidate_lock() will never see an elevated
+  refcount due to guest_memfd's folio-getting process.
 
-=C2=B9 https://lore.kernel.org/all/448c5c0128b08ab98d175ae1099ff4d4874e49b3=
-.camel@infradead.org/
+It seems a bit weird to fit this into the commit message for this
+patch. I think I could put the above two paragraphs into the patch that
+introduces the filemap_invalidate_lock in kvm_gmem_get_pfn()?
 
---=-1EY2myuxlQvpkMHs1RVA
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+>> guest_memfd already notifies KVM of page invalidations, so callers
+>> within KVM only need to respect the MMU invalidation protocol to safely
+>> rely on guest_memfd for page presence.
+>>
+>> Furthermore, removing struct page from the guest_memfd PFN lookup moves
+>> KVM closer toward supporting memory backends that are not backed by
+>> struct page.
+>
+> Could we also explain why the lack of SetPageDirty() (and mark_page_accessed())
+> for a gmem page, due to NULL being passed to kvm_release_faultin_page(), is
+> harmless?
+>
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-j9A0j1Jn5ycWWB0qWmJr7hkAAAAAAAA=
+Sounds good. What do you think of this, continuing from the paragraph
+beginning "Furthermore":
 
+  Drop the folio reference immediately before returning from the
+  guest_memfd PFN lookup, and stop returning the struct page pointer.
 
---=-1EY2myuxlQvpkMHs1RVA--
+  ARM's gmem_abort() is guest_memfd specific. Since guest_memfd no longer
+  returns a page pointer, there's also no need to do any
+  freeing. kvm_release_faultin_page() originally also serves to set the page
+  dirty and accessed under some conditions. The dirty and accessed flags
+  don't matter for guest_memfd anyway, so it is safe to just drop the call to
+  kvm_release_faultin_page().
+
+  For ARM's kvm_translate_vncr(), initialize the local page pointer to NULL
+  so that the shared cleanup path that releases fault-in pages safely no-ops
+  for guest_memfd.
+
+  For x86, no additional changes are required in the MMU fault path
+  because the page fault tracking structure is zero-initialized at the
+  start of page fault handling, ensuring the refcounted page pointer is
+  already NULL.
+
+>>
+>> [...snip...]
+>>
