@@ -1,171 +1,215 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C313093B2
-	for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 22:38:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712092D8767;
+	Thu, 20 Aug 2026 22:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787265495; cv=none; b=Ka0A2lmzeNdcGnfBTdwbaaYaock0YI8Qlcq/YkZG7aL3BD6ye/BucFPfbSfXS2gW4Qvq82F+NI0N4vI8LRpcyiNMXmqsngfbVW85HPn5WBoMpcjQv4EMvzL4qdKBJMC61jqXouDqhmcl9/b2wXgSVxesAu6/YTP0PI6IghuUkC0=
+	t=1787265951; cv=none; b=tdXHV7hVxVuWRJkPo+kqP0730eK8s59HYEeOaO1U7N5zQqozsc3/Kl0zPxtocOOUUrmZxAx7tutOCC/aO0DXlLAB4854Ybo+n9f3alDGRT7k8MvYM2nYl56/5dH+FPzfLFXsBQYrrmv4YT1u9QmVqVo+pMF1m62baO09GS9KFPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787265495; c=relaxed/simple;
-	bh=yabC/1m9rU3BxLqsOh0lGz3jSO1b8DVmJZcPdMujCH0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DKJQQq77rYhn9M6J+/RnhkemFYaBLRvok3PYdtoEYM2iO18HlKnXp4yHXalEMmUpd5tDKH7WYrmaPM9E/m+R0eJ5BHSnMnA3Rcy4P6w92sVix2wQOp0FjSQmJ6qSMfKQQjQoNHQM2e9TnCA7XY/gZIwQFO2wxFfJmiQBmQ1ankQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UIq1gfkt; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1787265951; c=relaxed/simple;
+	bh=dfhPT3LaXJDKCDZyVloxM6WbVlp5oRl8wZBrc1kjz9c=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
+	 MIME-Version; b=rCe/GGJSxLNRVxJCSLLWiA2TGWC8RJ5BKvN5DKl3fdHUQnEc6FariqZIx69Twr3vIpfxKfnSeru41Y5PY3W+HYUbdN6fTGh31efoAq46gHZuks2mSAWp68bZUJgUpN3A6KA+kyQDxhaTuB88QjTx77JOwuvF6BQH5DuzFvEGLWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Rxl+g9IG; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UIq1gfkt"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cede6375caso37395ad.0
-        for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 15:38:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787265493; x=1787870293; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=q+/PK6LE/htDAQTsaEW8S/zdG4qnwoWFvJEsyzFkeQU=;
-        b=UIq1gfkty0PMbzt8NJ+/6tWhsF7Ieplq8xu5VgRsNn4HW5ScgFTGTSh2QIdVdgM0Qb
-         fE3rz9DEWLEtUgVWZXWTnOnGBdIFYVAL+y/VYPa0HfZl5KOMGhPaAsc8qIG4T+RxMqfi
-         OlzMk3uJuPvmpg4MoQ6mBwabM52g5jcZbo4/nv27XS+4jpEQhCGqIirPax/FrSH0Z4mK
-         IhJF59IPvd4tbv+nvKTM1wu1k7EbE0kBjOybjWbdbpM/WjAb7eCFWU0zfoG3t91Lbcdu
-         oENLZ64qMJCJc/wEzCDt7zurrPQnKkVT7/zuAHs4M8/59psCMQ0OjoOFLT3BuDA4luSr
-         FobQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787265493; x=1787870293;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=q+/PK6LE/htDAQTsaEW8S/zdG4qnwoWFvJEsyzFkeQU=;
-        b=J5spjuPBblX8t2fHm/Xb1hElYw95gy/ziDhPWyVFhKylAaWnnbzUUA6TSCiw7JccvC
-         GK39OesiK9m3gelp3DpPI0JizYVNbR1L2HaYADCRt4DEqyNM11DV3iNIuPFut9ul9fve
-         z8Vtc4rYgbbuuZZzGA5SJwgN1mm/Upq/X2677xuKyRxXfTh/Xqf+3wDxQCWcxXNxQFwm
-         7AjF+6FdLVQCn8qq5I5ZNXQr5QYY3dUP9OnWNySdEiXrlseXyRGEpX50AJ/WWnmSWv3e
-         sVzSovI/WOhGDCIldUf4KmI8ilGvhAYefE6Dl6gqWncs+GkDBf82pwNPqnQlnZGDNNYS
-         YJog==
-X-Forwarded-Encrypted: i=1; AHgh+RpYj44dQ8APUhO9cW49+GMsZuJhNu8Y9eNmwxbj7WaQkHpyBQwzBa/0bjKzUCWztZVhsPI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKlGUcVUlymQ9Vlbg8DFVLY/ql+61N4mLrIqPohcgbPJEpUc2Z
-	ywZS/OllXCwSbLQDolcPkf5AHbeJif5qxI+BmjOZCNvgkBiRKUVHcRQKTdJA1psy+iQFgYrzy6d
-	g6svpJw==
-X-Gm-Gg: AR+sD13L4LqEsCJ3b5VhK7iyar5hNfZrs62D6YnIX3D7c3RWBgwwA0ifaty1Ab4Cur0
-	Btj41X5KQmW229pP3qWuvGhFkkYdtbALk5Z60bgbBLkz9CNM2uitQ9W9loVmkgPEOcsUKqm6oQV
-	QL46zQTi407hgcO83EqzR7/jRNXhD8YdRPxt+EX3hmcpxVYYhrZA0OKDf/KcP8qtX508+F+wqzz
-	PUr48PfnqdiMcxZ6qrR7dmryJzwM63yNHC2zHBp+nJHZStey0Y41MzzBC+bJ+b9vxgnvmwGjfzM
-	HF5QD/CsvD89N8f6Mco6xe5Lnl/PqQcI8QGGBjsltpO1I8kXwtfPOCNFKPbazEWEc4lofW4dkxx
-	8FwAjYvSGt8BpeoKyjRi7kaHCfaAdaAmNYOIe9l5yyzKpXFbg1a0E33MjR/u+Rwkf0EzuSPSFRZ
-	03QET60uNEoGi3iXEpyQe5xo5vs/QqgYS6qSLZX+NDQEIprdTnhSZOt22keN3JhMmApG6HwE/Ub
-	hAEMSrfpzAEVOTp1wt1UBSL+jPy9TNyuEBAKtNej52xTMtW2ZN7uMAid40=
-X-Received: by 2002:a17:902:f552:b0:2c7:f688:f22f with SMTP id d9443c01a7336-2d650dacb5cmr1084755ad.13.1787265492587;
-        Thu, 20 Aug 2026 15:38:12 -0700 (PDT)
-Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d62d555374sm12045265ad.16.2026.08.20.15.38.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 15:38:10 -0700 (PDT)
-Date: Thu, 20 Aug 2026 22:38:07 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Alex Williamson <alex.williamson@nvidia.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, "Tian, Kevin" <kevin.tian@intel.com>, 
-	kvm <kvm@vger.kernel.org>, Alex Williamson <alex@shazbot.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, linux-kernel <linux-kernel@vger.kernel.org>, 
-	linux-pci <linux-pci@vger.kernel.org>, iommu@lists.linux.dev
-Subject: Re: [RFC PATCH 1/5] PCI: Refuse function reset of an SR-IOV PF with
- enabled VFs
-Message-ID: <aod22_H66eUth9av@google.com>
-References: <20260812045325.2733631-1-alex.williamson@nvidia.com>
- <20260812045325.2733631-2-alex.williamson@nvidia.com>
- <an5JbIzz40svS3xe@google.com>
- <20260814083737.66bb83fb@nvidia.com>
- <20260817121810.GC933791@ziepe.ca>
- <CO1PR11MB48354AC2854C4D8E9984FD8E8CA62@CO1PR11MB4835.namprd11.prod.outlook.com>
- <20260818140304.GC5482@ziepe.ca>
- <20260818143906.1f58aecb@nvidia.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Rxl+g9IG"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
+	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:References;
+	bh=ma+puGXlwAFXJ/5re6dRBX/c+rL0Ibt5BTE5FkmmbE0=; b=Rxl+g9IGlSdLsruLkFwBxUBXsw
+	1sIU3bfnS7u5TOBHwdBgWrIMb6OtDV1NWSwn9K++j8QluI4X/aPewleREzJCcCwaEO6aCSjoMax7j
+	zAqz8SzLuTt2X8g0REtLIVdmR+dhNZxd3hfIz4H0RW2+AfidfwL0/WgtMwGrxa5XTeYhqPCwm//lw
+	yGtkX8iLfwFB2+W7i1FE19yyEsfy2h6FYNkHaHCLvI35LShxlK9dK8hR61WC3uOttByr+NrQLS2tW
+	h1VrxTGYFAdRgG3dGFitmF3n0CX0FbXcbRG0w8/4ZVqO3xCcgGC7/Lpt8LW+PRhHBJnLaXFqiuUbP
+	wO+FJj4g==;
+Received: from [2001:8b0:10b:5:1f55:b76d:f266:856d] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wxBW2-0000000GQ0E-2FLx;
+	Thu, 20 Aug 2026 22:45:42 +0000
+Message-ID: <cb2abea3ef93f4240dfd61e69afc2ec2061359a4.camel@infradead.org>
+Subject: Re: [PATCH v4 00/10] KVM: nVMX: Improve performance for unmanaged
+ guest memory
+From: David Woodhouse <dwmw2@infradead.org>
+To: Fred Griffoul <fgriffo@amazon.co.uk>
+Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
+	pbonzini@redhat.com, vkuznets@redhat.com, shuah@kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 20 Aug 2026 23:45:29 +0100
+In-Reply-To: <9a349470088e5f71a136b00dfada97fdb2528d98.camel@infradead.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-/S7kIaGz6jctB7m1mCV/"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260818143906.1f58aecb@nvidia.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On Tue, Aug 18, 2026 at 02:39:06PM -0600, Alex Williamson wrote:
->On Tue, 18 Aug 2026 11:03:04 -0300
->Jason Gunthorpe <jgg@ziepe.ca> wrote:
->
->> On Tue, Aug 18, 2026 at 07:07:20AM +0000, Tian, Kevin wrote:
->> > 3) resetting a PF due to ad-hoc FW error
->> >
->> > e.g. pdsc_check_pci_health() calls pci_reset_function() when FW
->> > reports broken PCI. Sounds a similar condition to AER.
->> >
->> > but as it calls pci_reset_function() this series causes a regression
->> > in case of active VFs. Is it desired?
->>
->> mlx5 does something similar. RAS flows require detecting the PF has
->> blown up and resetting it to bring it back.
->>
->> This has to work while VFs exist and bound to kernel drivers or vfio.
->>
->> In the VFIO KVM case I would expect the VM to experiance a RAS error
->> on its vPCI device and trigger a VF flr
->
->This would need to be a device level RAS flow as we're sorely lacking
->on forwarding reset notification to VF drivers or providing any
->mechanism for recovery from the vfio error eventfd.
->
->> But we have to sort all this out through the hypervisor to not crash
->> the machine or otherwise :)
->
->In general guarding the high level pci_reset_function() family on
->(pci_num_vfs() == 0) seems to have more pros than cons and the
->restriction matches the scoped intent of the interface.
->
->The low level __pci_reset_function_locked() interface remains
->untouched, and as the prefix implies, relies on the caller to do
->necessary verification and preparation.  A "reset the PF regardless of
->VFs" seems like an underscore prefix sort of operation.  We'll need to
->export the pci_dev_save_and_disable() and pci_dev_restore() functions
->to provide handlers the full suite of tools they need to replace the
->existing function and port those we find (maybe also questioning the
->author's intent on VF reset and recovery).
->
->Of course making the guard parameterized with wrappers to expand this
->family of calls is also an option,
->pci_reset_function_locked_with_vfs()...
->
->The mlx5 driver doesn't actually seem to be affected by these changes,
->doing its own link toggle or a PCI bus reset, not a
->pci_reset_function() call.
->
->On the other improvements, triggering a pci_reset_function_locked() on
->unbind after SR-IOV is disabled, when needs_reset is indicated, looks
->pretty trivial.
->
->The blocking domain operation looks like it might be simplest to
->implement in the IOMMU core.  We can set a flag for a default blocking
->domain on the IOMMU group when we take_dma_ownership of the group.  Then
->release_dma_ownership picks the blocking rather than default domain.
->
->This is then unwound in use_default_domain, called via dma_configure,
->attaching the device to the default domain in probe of the next driver.
->Therefore until probe by another driver, a device used by vfio would
->remain in a blocking domain even while unused and unbound.
 
-The devices are expected to be attached to the default_domain even when
-these are unbound and the use_default_domain assumes that, and it only
-checks the ownership and doesn't switch the domain to default_domain. I
-guess we should add a WARN in use_default_domain() if that is not true.
-I will probably send out a patch for that separately.
+--=-/S7kIaGz6jctB7m1mCV/
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I think we can move the device back to default_domain after reset after
-unbind, maybe it can be done in pci_dma_cleanup() based on
-driver_managed_dma?
->
->Does that seem reasonable (Cc +iommu)?  Thanks,
->
->Alex
->
+On Mon, 2026-08-17 at 22:55 +0100, David Woodhouse wrote:
+> I've reworked the first half of this on top of the GPC SRCU
+> conversion, with the guest-mode pinning done as Sean prescribed:
+>=20
+>   https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Dr=
+efs/heads/nvmx-gpc
 
-Thanks,
-Sami
+I did the nested SVM equivalent too, now on top of the same tree:
+
+  https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Dref=
+s/heads/nsvm-gpc
+
+(Those kvm_nested_gpc_lock() helpers have nothing to do with nesting
+and can be renamed and hoisted to somewhere more generic when I go back
+and clean it all up, but I'm keeping it incremental for now.)
+
+SVM doesn't use L1 pages directly from the guest VMCB02 (the merged
+MSRPM and the IOPM are kernel pages). It's only ever direct access from
+the kernel to gpc->khva.
+
+But that covers the VMCB12 page which is mapped and unmapped twice per
+L1=E2=86=90=E2=86=92L2 round trip today, and L1's MSR/IO permission bitmaps
+(kvm_vcpu_read_guest() on each trapped access).
+
+So unlike nVMX, we can even see the win on boring non-PFNMAP memory.
+
+=46rom a cpuid ping-pong between L1 and L2 on EPYC Milan
+(10k iterations, cycles, measured from L1):
+
+                    baseline                nsvm-gpc
+  reflected exit:   p50 47.6k  p99 90.2k    p50 38.6k  p99 81.4k
+  MSR intercept:    p50 49.1k  p99 90.9k    p50 39.9k  p99 81.8k
+
+About 9k cycles (~20%) off every emulated vmexit/vmentry. This is a
+kernel with KASAN+lockdep for correctness torture testing, so the
+measurement might not be indicative of production performance. I'll do
+another run on something more representative now it's actually passed
+the soak tests without catching fire.
+
+
+--=-/S7kIaGz6jctB7m1mCV/
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+UdszEbKbGtI7ajcBHuZBI9kAAAAAAAA=
+
+
+--=-/S7kIaGz6jctB7m1mCV/--
