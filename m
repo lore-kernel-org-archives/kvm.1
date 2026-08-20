@@ -1,215 +1,349 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010036.outbound.protection.outlook.com [52.101.201.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712092D8767;
-	Thu, 20 Aug 2026 22:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787265951; cv=none; b=tdXHV7hVxVuWRJkPo+kqP0730eK8s59HYEeOaO1U7N5zQqozsc3/Kl0zPxtocOOUUrmZxAx7tutOCC/aO0DXlLAB4854Ybo+n9f3alDGRT7k8MvYM2nYl56/5dH+FPzfLFXsBQYrrmv4YT1u9QmVqVo+pMF1m62baO09GS9KFPE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787265951; c=relaxed/simple;
-	bh=dfhPT3LaXJDKCDZyVloxM6WbVlp5oRl8wZBrc1kjz9c=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
-	 MIME-Version; b=rCe/GGJSxLNRVxJCSLLWiA2TGWC8RJ5BKvN5DKl3fdHUQnEc6FariqZIx69Twr3vIpfxKfnSeru41Y5PY3W+HYUbdN6fTGh31efoAq46gHZuks2mSAWp68bZUJgUpN3A6KA+kyQDxhaTuB88QjTx77JOwuvF6BQH5DuzFvEGLWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Rxl+g9IG; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CFD633C18E;
+	Thu, 20 Aug 2026 23:09:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.36
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787267354; cv=fail; b=KTpz1SpVguME2fd5wNu3VPXy4AAQIwsv7iLYZoLBgZzMOf9KrtTV/lyGAPAsxrbBtH3qXTzwA/5k/scjokXtq5Fc4pheG4h/UYA/0KNYcx8QQG9z88AlErQzvdaa+wJDANFka5/zk1z1g/NreGQ+QVKzYWRuB9BQrVc9ZGO1Cuk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787267354; c=relaxed/simple;
+	bh=7/1LxdIb2sFSTAhRKKEj75DK9/a4cKWU5qa837L72dk=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bQsKVVj2u7sXhNpUZd/4Hhoe23A9710GKNZwIc+D1q7vPDh3BnOV6txFlFVPtbWg7B0Ap2G6OWLzmxbHR6jhF3fYEnnjsC1opS86QtasFVTv38v4SKFZCcTXsBr2m+K5TM6GVfyaib/O9ERXeeQODL61A9Yst2e0lchrL6W+C04=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=NsAYFAGB; arc=fail smtp.client-ip=52.101.201.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Rxl+g9IG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
-	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=ma+puGXlwAFXJ/5re6dRBX/c+rL0Ibt5BTE5FkmmbE0=; b=Rxl+g9IGlSdLsruLkFwBxUBXsw
-	1sIU3bfnS7u5TOBHwdBgWrIMb6OtDV1NWSwn9K++j8QluI4X/aPewleREzJCcCwaEO6aCSjoMax7j
-	zAqz8SzLuTt2X8g0REtLIVdmR+dhNZxd3hfIz4H0RW2+AfidfwL0/WgtMwGrxa5XTeYhqPCwm//lw
-	yGtkX8iLfwFB2+W7i1FE19yyEsfy2h6FYNkHaHCLvI35LShxlK9dK8hR61WC3uOttByr+NrQLS2tW
-	h1VrxTGYFAdRgG3dGFitmF3n0CX0FbXcbRG0w8/4ZVqO3xCcgGC7/Lpt8LW+PRhHBJnLaXFqiuUbP
-	wO+FJj4g==;
-Received: from [2001:8b0:10b:5:1f55:b76d:f266:856d] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wxBW2-0000000GQ0E-2FLx;
-	Thu, 20 Aug 2026 22:45:42 +0000
-Message-ID: <cb2abea3ef93f4240dfd61e69afc2ec2061359a4.camel@infradead.org>
-Subject: Re: [PATCH v4 00/10] KVM: nVMX: Improve performance for unmanaged
- guest memory
-From: David Woodhouse <dwmw2@infradead.org>
-To: Fred Griffoul <fgriffo@amazon.co.uk>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
-	pbonzini@redhat.com, vkuznets@redhat.com, shuah@kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 20 Aug 2026 23:45:29 +0100
-In-Reply-To: <9a349470088e5f71a136b00dfada97fdb2528d98.camel@infradead.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-/S7kIaGz6jctB7m1mCV/"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="NsAYFAGB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wN8y2PGlgQrt0XHc+UsU46je6cVR6rxwDDuQW+Gie8frG3HyYCDE0kURv3dSnn8/1+wb+aLF5Njoog/T4x/gjXt54W9WOBgOrhjheUkXkj7M9OdFGFyECe3NwBoCI+q+niygmggOK/qdoNdX0kgrRKW3FLm8bjEWh5AVK1bRQ4hIVGmxVZGdkmpfNe/RpiglpcR9gsXnybyu+oRv5NvQwwoDQcm0qKXhbSNgwTq7ctPSWOAGc3ZX66gmfyil5bsma08bumZcwm3ag4J1bbsYPeuCI8jL7hWCttz+zOTXVWPnw116F9z68Evv+s/60OjB0ZUwok9iBOKdjRSdjAhTbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V+7nzX6CXugCFvhzU1BmsTxY95ud9Z/nyXFzgDBHils=;
+ b=R9VCTi6fjARacfWeECalURtTxfSdeFHsA2RR4osIb9qP4LbWfIIMhCqSNIF1CYli+AzeILHX6+yjQQK5TBn5jpWfw1FNl719zt81J9vr3bLOW9XB1dbnCKf0e/pkjquDZdSZ+pmwG3t0wuVoIbCCJaQL1qouGma8nFqOybyQvD1uCWVg44AwQrmwi3H0fg3dB3/eq/WgYkk/esvspMcPQQvBDEzgIBmDZdmfmxAqYRfOzLccg4WRwkZocAa8nysgEOWiqi42uXzFYqb9LAAlpAxGchnh+bQ+08cPUw/jkVWtncVIHNfVukbZeyZ8dBRx5fttlx1t4qRDPxx1xWPk6g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V+7nzX6CXugCFvhzU1BmsTxY95ud9Z/nyXFzgDBHils=;
+ b=NsAYFAGBwuRVxLTxwd24awWuuvsGQp19vY/FnxvFFiBUCxFCQtqEKpCpEvfL2WuMum+pGMBsyW3weP4pWWAObkyugouAD4ZrTlLKIIngThhKpsyl5BHRXbOXwMoI62Q23EN8i812aiQNA7lQyKq1J4NyXVKbOed6cH6alpdEEas=
+Received: from BN0PR04CA0069.namprd04.prod.outlook.com (2603:10b6:408:ea::14)
+ by DM4PR12MB7526.namprd12.prod.outlook.com (2603:10b6:8:112::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.10; Thu, 20 Aug
+ 2026 23:09:02 +0000
+Received: from BL02EPF00021F6B.namprd02.prod.outlook.com
+ (2603:10b6:408:ea:cafe::42) by BN0PR04CA0069.outlook.office365.com
+ (2603:10b6:408:ea::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.10 via Frontend Transport; Thu,
+ 20 Aug 2026 23:09:02 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL02EPF00021F6B.mail.protection.outlook.com (10.167.249.7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.360.3 via Frontend Transport; Thu, 20 Aug 2026 23:09:02 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 20 Aug
+ 2026 18:09:01 -0500
+Date: Thu, 20 Aug 2026 18:08:47 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Ackerley Tng <ackerleytng@google.com>
+CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, Ashish Kalra <ashish.kalra@amd.com>, Brijesh Singh
+	<brijesh.singh@amd.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton
+	<oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, Steffen Eiden
+	<seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+	<yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, "Will
+ Deacon" <will@kernel.org>, David Hildenbrand <david@kernel.org>, Fuad Tabba
+	<tabba@google.com>, Yan Zhao <yan.y.zhao@intel.com>, "Edgecombe, Rick P"
+	<rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>,
+	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>
+Subject: Re: [PATCH v2 2/4] KVM: SEV: Drop page refcount early during RMP
+ fault handling
+Message-ID: <7kapvdum7qk7l4epbeqvrybqxapuhvwltz7axfprxldw2utozh@t4url3mqbpom>
+References: <20260818-gmem-no-return-page-v2-0-5298f42d49bb@google.com>
+ <20260818-gmem-no-return-page-v2-2-5298f42d49bb@google.com>
+ <j6bfvbzjivlcsu3slbnaoomxxqyypmfl2bupo3k5ipnt6fc5lo@e5ntbx7yd4qw>
+ <CAEvNRgEruoa4d_8Y1MpkdzbHg3j1Yv=-Y6w6Yy=v6mJgPajjWw@mail.gmail.com>
+ <zb5krzhrg3soslplynegqo52brd53wk3meas45udqpjms6oluk@zecqwzn7zziy>
+ <CAEvNRgEHEE67+vjQqJjYD3M4yuwuR+4-36Hw4-sp5caYzmxbkQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CAEvNRgEHEE67+vjQqJjYD3M4yuwuR+4-36Hw4-sp5caYzmxbkQ@mail.gmail.com>
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF00021F6B:EE_|DM4PR12MB7526:EE_
+X-MS-Office365-Filtering-Correlation-Id: 46a30435-df31-49bd-1676-08deff100634
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|7416014|23010399003|376014|36860700016|56012099006|10067099003|3023799007|6133799003|18002099003|22082099003|4143699003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	kfj2fw+Z6GW93OO21yGQqWIh5r5OeObF4E2wsYW0wXcwYSTWGknVQQ2KmFJpGBfnJCZR8w/dr3cQdM/NgF4Y1aiYsa5EFwUafLSbFoEHH4JiuNB5WbbkCGpVP49ZbnGoxXO/bwx5vYjWXm3arvFYpTeBcv4/+hWNl1pUAXN83cQx+sJtrBjEKfZc2m7/Rww7GxoSL3QA521wHuVROcTq+WnEZWXlIN7YkZXCrc+HUyXN/bCiDpGSYPQLUp2WbKI3UkEwGdvJVr4r+iMpXN681Lsc2BMluAWee0OxzCE2sJeUbtRwDmt9TooyMT3pqchVdql+Lwbh7Q+npyPKQTXOypuNZIfFc+8hFxxmiISw+a9YhfqmgAuBVZOAoMBW0AReDPSIGXIFwTBMGWVECQ6O7KjW+VcdBCGBhOYXyXFfpwW+bEy+eTvK3lIqT1tTrb8D5Xberf7Ym8EZxGzZ5LiR6RiP4TXviWPKaawCBQggpAZYpHfEjIDYG2DYPffJuTxXtYXp6qt74gPrfNDIlmeBETHUr0QCtX/RPnHMsOlWTEoVVNXZLcJqqxBrZfNkaDWE8+Lcv+DeOhsftLEHtthgZQLtRvVjQvvEKIKXiTI8itArmqAf5H5dgzerKzyry3reLfhIviJ6F/Um+k1qaC56VS0keJQEgM0S04vP/oKUesdwRaWRQzU5n/H8g+PXABAJztPiUljgb6cniUZRDKmL4Q==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(23010399003)(376014)(36860700016)(56012099006)(10067099003)(3023799007)(6133799003)(18002099003)(22082099003)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	N9HZUAO9v/iq3RBOAzjBWceoQIWLgNPJ5oredt3e+2t0opNRE/xH094Ji0jcU9aUnDZwBQRozHw5BJT9Cx4RLZNgI0VZhjmxsM8aUbrWn9a3vv+3MEqpiP9JERI54PQqt4psfa/K2FJkILsgcSTEiHy2kLvLBu5YoKsNlUlJCB8rjLIZgrPaTVlplqI/x4s6oCVMVQrHjOo6pUTPpYzmRHW/EAPdcvRBVsD/wcdBM7uokd51+FZgUyBFuBJSTl/XN8Fif+xlluDdqFocm2iCczV/N/kculo7Bw1krvuljTbp9N0YJPoWgooO9nvNMJJzGN8TTkTWxDJr5ymf73i1/k9W3oFpqKaha2uyMeMQr2zatqz2r1AOYYPcOmJ95hh/E6zI4BbF/peuZg6UO5+Z0lAJ00PB2gt0nRUlJkuae8Y1S/qRWMfPFG3xxUfmv1ag
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2026 23:09:02.1486
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 46a30435-df31-49bd-1676-08deff100634
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF00021F6B.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7526
 
+On Thu, Aug 20, 2026 at 03:35:31PM -0700, Ackerley Tng wrote:
+> Michael Roth <michael.roth@amd.com> writes:
+> 
+> > On Thu, Aug 20, 2026 at 07:58:19AM -0700, Ackerley Tng wrote:
+> >> Michael Roth <michael.roth@amd.com> writes:
+> >>
+> >> > On Tue, Aug 18, 2026 at 09:15:53AM +0000, Ackerley Tng wrote:
+> >> >> From: Sean Christopherson <seanjc@google.com>
+> >> >>
+> >> >> When handling an RMP fault, KVM retrieves the PFN for a private GPA from
+> >> >> guest_memfd.
+> >> >>
+> >> >> Drop the page reference immediately after retrieving the PFN instead of
+> >> >> holding it across the entire handler so that the later patch can follow up
+> >> >> with completely not returning refcounted pages from kvm_gmem_get_pfn().
+> >> >
+> >> > Regarding this point:
+> >> >
+> >> >>
+> >> >> On a first look, existing RMP table handling (psmash and checking for
+> >> >> errors) might seem like it works fine, since truncation of the page from
+> >> >> guest_memfd would have called rmp_make_shared() and removed the PFN from
+> >> >> the RMP table. However, that is insufficient since a freed page may already
+> >> >> be used in a different SNP VM.
+> >> >
+> >> > In the code this patch is applied on top of, I think the kvm_gmem_get_pfn()
+> >> > ref is enough to avoid the reused-by-another-SNP-VM scenario until after
+> >> > caller releases the ref, so I think the above explanation should be adjusted
+> >> > to also be preparatory for "the later patch".
+> >> >
+> >>
+> >> I think this sequence of events is possible:
+> >>
+> >> CPU 0: sev_handle_rmp_fault()
+> >> CPU 0:   kvm_gmem_get_pfn()
+> >> CPU 0:     filemap_invalidate_lock()
+> >> CPU 0:     refcount++
+> >> CPU 0:     filemap_invalidate_unlock()
+> >> CPU 0:     refcount-- <<== because kvm_release_page_unused(page);
+> >
+> > Prior to this patch, the kvm_release_page_unused() isn't done until
+> > after the snp_lookup_rmpentry()/snp_rmptable_psmash().
+> >
+> > It's possible CPU 1 truncate sequence below can run concurrently
+> > after filemap_invalidate_unlock() above, but even though it calls
+> > free_folio(), which might zap the RMP entry, the filemap code will
+> > only put the refs that it has on the folio so it wouldn't actually
+> > get freed back to the buggy allocator, so it doesn't seem like the
+> > psmash-another-guest scenario is reachable. I could certainly be
+> > misreading things though.
+> >
+> 
+> Ah I see what you mean. I think we mean the same thing, let me add to
+> the commit message that I meant after dropping the refcount early. Does
+> this help?
+> 
+>   The filemap_invalidate_lock() is already dropped in kvm_gmem_get_pfn()
+>   before returning to sev_handle_rmp_fault(). After dropping the
+>   refcount earlier with kvm_release_page_unused(), these scenarios are
+>   possible:
+> 
+>   1. Since the filemap_invalidate_lock() is dropped, the page can be
+>      truncated (or in future, converted), and the RMP entry is now
+>      shared.
+> 
+>      In this case, existing RMP table handling (psmash and checking for
+>      errors) would be sufficient. On finding a shared entry, psmashing
+>      would fail gracefully and no warning would be emitted.
+> 
+>   2. The page is truncated and freed, and then re-allocated to another
+>      SNP VM. The RMP entry is now assigned, but to another SNP VM.
+> 
+>      To address this, adopt the MMU invalidation protocol to guard
+>      psmashing.
 
---=-/S7kIaGz6jctB7m1mCV/
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This reads kinda weird to me, as if with #2 we're documenting a "bug" that
+this patch fixes, but the bug would only exist if we partially applied the
+bits of this patch the drops the ref counts earlier and left out the
+bits of the patch that introduce the mmu notifier logic that replaces it.
 
-On Mon, 2026-08-17 at 22:55 +0100, David Woodhouse wrote:
-> I've reworked the first half of this on top of the GPC SRCU
-> conversion, with the guest-mode pinning done as Sean prescribed:
->=20
->   https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Dr=
-efs/heads/nvmx-gpc
+I think with patch 1 applied (which covers the
+psmash-a-now-shared-entry case while retaining the original refcount
+logic), the only thing this patch is doing is replacing the elevated
+refcount logic with the MMU invalidation logic as prep for dropping
+reliance of refcounts entirely.
 
-I did the nested SVM equivalent too, now on top of the same tree:
+I think if the wording was simplified to just say something to that effect
+it would make it clearer that this and patch #3 are prep for #4, and that
+patch #1 is the only patch here that would make potentially make sense for
+a downstream to backport without the other bits.
 
-  https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Dref=
-s/heads/nsvm-gpc
+-Mike
 
-(Those kvm_nested_gpc_lock() helpers have nothing to do with nesting
-and can be renamed and hoisted to somewhere more generic when I go back
-and clean it all up, but I'm keeping it incremental for now.)
-
-SVM doesn't use L1 pages directly from the guest VMCB02 (the merged
-MSRPM and the IOPM are kernel pages). It's only ever direct access from
-the kernel to gpc->khva.
-
-But that covers the VMCB12 page which is mapped and unmapped twice per
-L1=E2=86=90=E2=86=92L2 round trip today, and L1's MSR/IO permission bitmaps
-(kvm_vcpu_read_guest() on each trapped access).
-
-So unlike nVMX, we can even see the win on boring non-PFNMAP memory.
-
-=46rom a cpuid ping-pong between L1 and L2 on EPYC Milan
-(10k iterations, cycles, measured from L1):
-
-                    baseline                nsvm-gpc
-  reflected exit:   p50 47.6k  p99 90.2k    p50 38.6k  p99 81.4k
-  MSR intercept:    p50 49.1k  p99 90.9k    p50 39.9k  p99 81.8k
-
-About 9k cycles (~20%) off every emulated vmexit/vmentry. This is a
-kernel with KASAN+lockdep for correctness torture testing, so the
-measurement might not be indicative of production performance. I'll do
-another run on something more representative now it's actually passed
-the soak tests without catching fire.
-
-
---=-/S7kIaGz6jctB7m1mCV/
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-UdszEbKbGtI7ajcBHuZBI9kAAAAAAAA=
-
-
---=-/S7kIaGz6jctB7m1mCV/--
+> 
+> > The psmash-a-now-shared-entry scenario because of a race with the
+> > VMM/truncate path seems possible prior to this patch, but that's
+> > pretty similar to the psmash-a-now-shared-entry because of a race
+> > with the guest scenario and which would generate spurious warning
+> > messages to console, and that would be similarly addressed via
+> > patch 1 I think. I'm not sure
+> >
+> 
+> Yup. I like your psmash-another-guest vs psmash-a-now-shared-entry
+> classification.
+> 
+> > -Mike
+> >
+> >>
+> >> CPU 1: truncate()
+> >> CPU 1:   filemap_invalidate_lock()
+> >> CPU 1:   refcount--
+> >> CPU 1:     kvm_gmem_free_folio()
+> >> CPU 1:       sev_gmem_make_shared()
+> >> CPU 1:     folio is freed
+> >> CPU 1:   filemap_invalidate_unlock()
+> >>
+> >> CPU 2: in some other SNP VM,
+> >> CPU 2: kvm_gmem_get_pfn() gets the freed folio
+> >> CPU 2:   sev_gmem_make_private()
+> >>
+> >> CPU 0:   snp_lookup_rmpentry(pfn, &assigned, &rmp_level);
+> >>            <<== it's assigned but to some other SNP VM
+> >> CPU 0:   snp_rmptable_psmash(pfn);
+> >>            <<== this psmash would be smashing in some other SNP VM
+> >>
+> >> And hence I think we do need to check for invalidations using the MMU
+> >> invalidation protocol.
+> >>
+> >> > Other than that:
+> >> >
+> >> > Reviewed-by: Michael Roth <michael.roth@amd.com>
+> >> >
+> >> >>
+> >> >> Hence, adopt the MMU invalidation protocol to guard committing anything
+> >> >> based on the PFN.
+> >> >>
+> >> >> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> >> >> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> >> >> ---
+> >> >>  arch/x86/kvm/svm/sev.c | 39 ++++++++++++++++++++++++---------------
+> >> >>  1 file changed, 24 insertions(+), 15 deletions(-)
+> >> >>
+> >> >> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> >> >> index b2738362a928b..b34b11d7f8fad 100644
+> >> >> --- a/arch/x86/kvm/svm/sev.c
+> >> >> +++ b/arch/x86/kvm/svm/sev.c
+> >> >> @@ -5003,6 +5003,7 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
+> >> >>  	struct kvm_memory_slot *slot;
+> >> >>  	struct kvm *kvm = vcpu->kvm;
+> >> >>  	int order, rmp_level, ret;
+> >> >> +	unsigned long mmu_seq;
+> >> >>  	struct page *page;
+> >> >>  	bool assigned;
+> >> >>  	kvm_pfn_t pfn;
+> >> >> @@ -5030,18 +5031,22 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
+> >> >>  		return;
+> >> >>  	}
+> >> >>
+> >> >> +	mmu_seq = kvm->mmu_invalidate_seq;
+> >> >> +	smp_rmb();
+> >> >> +
+> >> >>  	ret = kvm_gmem_get_pfn(kvm, slot, gfn, &pfn, &page, &order);
+> >> >>  	if (ret) {
+> >> >>  		pr_warn_ratelimited("SEV: Unexpected RMP fault, no backing page for private GPA 0x%llx\n",
+> >> >>  				    gpa);
+> >> >>  		return;
+> >> >>  	}
+> >> >> +	kvm_release_page_unused(page);
+> >> >>
+> >> >>  	ret = snp_lookup_rmpentry(pfn, &assigned, &rmp_level);
+> >> >>  	if (ret || !assigned) {
+> >> >>  		pr_warn_ratelimited("SEV: Unexpected RMP fault, no assigned RMP entry found for GPA 0x%llx PFN 0x%llx error %d\n",
+> >> >>  				    gpa, pfn, ret);
+> >> >> -		goto out_no_trace;
+> >> >> +		return;
+> >> >>  	}
+> >> >>
+> >> >>  	/*
+> >> >> @@ -5069,27 +5074,31 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
+> >> >>  	if (rmp_level == PG_LEVEL_4K)
+> >> >>  		goto out;
+> >> >>
+> >> >> -	ret = snp_rmptable_psmash(pfn);
+> >> >> -	if (ret) {
+> >> >> -		/*
+> >> >> -		 * Look it up again. If it's 4K now then the PSMASH may have
+> >> >> -		 * raced with another process and the issue has already resolved
+> >> >> -		 * itself. If it's not assigned, then this must have raced with
+> >> >> -		 * another process that made this page shared.
+> >> >> -		 */
+> >> >> -		if (!snp_lookup_rmpentry(pfn, &assigned, &rmp_level) &&
+> >> >> -		    ((assigned && rmp_level == PG_LEVEL_4K) || !assigned))
+> >> >> +	scoped_guard(read_lock, &kvm->mmu_lock) {
+> >> >> +		if (mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn))
+> >> >>  			goto out;
+> >> >>
+> >> >> -		pr_warn_ratelimited("SEV: Unable to split RMP entry for GPA 0x%llx PFN 0x%llx ret %d\n",
+> >> >> -				    gpa, pfn, ret);
+> >> >> +		ret = snp_rmptable_psmash(pfn);
+> >> >> +		if (ret) {
+> >> >> +			/*
+> >> >> +			 * Look it up again. If it's 4K now then the PSMASH may
+> >> >> +			 * have raced with another process and the issue has
+> >> >> +			 * already resolved itself. If it's not assigned, then
+> >> >> +			 * this must have raced with another process that made
+> >> >> +			 * this page shared.
+> >> >> +			 */
+> >> >> +			if (!snp_lookup_rmpentry(pfn, &assigned, &rmp_level) &&
+> >> >> +			    ((assigned && rmp_level == PG_LEVEL_4K) || !assigned))
+> >> >> +				goto out;
+> >> >> +
+> >> >> +			pr_warn_ratelimited("SEV: Unable to split RMP entry for GPA 0x%llx PFN 0x%llx ret %d\n",
+> >> >> +					    gpa, pfn, ret);
+> >> >> +		}
+> >> >>  	}
+> >> >>
+> >> >>  	kvm_zap_gfn_range(kvm, gfn, gfn + PTRS_PER_PMD);
+> >> >>  out:
+> >> >>  	trace_kvm_rmp_fault(vcpu, gpa, pfn, error_code, rmp_level, ret);
+> >> >> -out_no_trace:
+> >> >> -	kvm_release_page_unused(page);
+> >> >>  }
+> >> >>
+> >> >>  static bool is_pfn_range_shared(kvm_pfn_t start, kvm_pfn_t end)
+> >> >>
+> >> >> --
+> >> >> 2.55.0.699.gb54405d56f-goog
+> >> >>
