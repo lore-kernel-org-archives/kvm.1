@@ -1,268 +1,269 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E14D442B2E
-	for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 12:35:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787229325; cv=none; b=QC5JPuK/UJ8H57ozWCcX+IRk3fS8cRG8wMEhLGMpvnXVwQrHf+CWOUEQTdNw4bdiW2WceoqtWWBFR8XplQFx9SUNQwYunaNyf0kFhp7TNIfC7gqom3V3xJ7KVIU2038GW6wIoVOfWMQ9Q+TrD7MRfyXunaivBc976DDclfzIm9E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787229325; c=relaxed/simple;
-	bh=UgvFOqMPXUtDaNlIKpnhLmXfV6CYs0hS4/yy/6cRQ6Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L1yXUeTjWvWqebvNbbmqq2qcz+R9QvF9F6IyEno3LJY8HkhGIQEPyR2wPumvv4BAe25q6tOqy/LmzP4vbTUKM56WQ460F5aa8/KJXiHolKIeMf2AYEsQoT0cY2ZpAG6WyU/UGVfl0TqbnABpB9TLR5gHpijAuglA6lVD79Ofnw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I2lDL+/O; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E63542A78B
+	for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 12:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787229574; cv=pass; b=MFkgkIdCaFezCVmacJJw/ZiuVyvws0vYmAZNaV53KBEr4cKjLczs+R3bWQ7xBWhjrQ1GiK/buLJxpApkPlrSUtXDlnRviCa5+D+te/8DVM9G34XqfB5+W/ArILfiIOiJUi1Hq824W7DrK8ZUhB4xGFu10/sQGdWRlMIObTkeqvY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787229574; c=relaxed/simple;
+	bh=aL5TuuMwAaQVwOyXsLkpLSm0ZpL31g9SvuoVklTboFo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qAmUIzOqpwGNh3Cgt3gHEto65ae++wd0b8d3RLMckEw2hM9NI2RpoxYo3QQG9SyVR6TQ3gqpLxj8Y3+BuVdM/I5dTUyA4hfNyehP6VYawmok6cqVc6nLCBr8av/bCDZwpaQ5iPYXoe5SO5veKWs3hq2hEqNlFgtIzMVQg+PIXQE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PHFdxZCm; arc=pass smtp.client-ip=209.85.222.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I2lDL+/O"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so2175602a91.0
-        for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 05:35:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PHFdxZCm"
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-936c02e58dfso151248785a.3
+        for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 05:39:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787229572; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hJm4PzEfURESFZk5WquzZpEVp4hIfIH1WRM0YARXAmmsoVnDgvG8KtVTh8Iwbqac7o
+         eKMfm0497pfAzlr8LqJt0Bf5sgkFLibr3ZrN+0exTWMqhg9Fk3DcIcmxB7Z9M4IW0dDo
+         yQ3HqDfG5AJuX5wylLQFbtGil3/1zh/SUFbTAoBLelMdaJqL+LTa6ud3mHINt2h4FIhn
+         XQB2gf7FiWG7QcjpqJB2/+bDbV6d0BiJ+fyGntCPmAtZ2BRisYk+0kF9QONIqUwQCqFn
+         kIUrRl8q8anPQ9pX0jKrWuaW0TNZ4uoy0LJGPV5mDiFDslHnRqveuq4F8aYkf6s0H5aj
+         yioA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=uohgdUdRgrY842N3nbUM8yhr+cf5Gqn3ftN8ZqqRYvM=;
+        fh=cCmhEmcRdn5dORUt+RnSpe4OtF9Ln4Ia5FuQaHn+JzE=;
+        b=nclDKk6P0vlscmZZdl7TdAaBHA8soQFX1JpMj1W0mAUjr3O9spbP50EtpjMifavu97
+         cqVer4uqbSjBZThC0bSkWcvzhN+64I/wpwZ9OQ7zTlMB9mwHIdkA+2PhyL6X+TI0WuX0
+         IRnxbWXtW54iImTRZCNaJa5K7FL6cmRCsJWepwbTKmzRAhHYNn/8k8CFmYb24GVytI/2
+         Z53d3nm39zxo0uzHqvwmU+rYFSl3Z0ejX8UOH8JlfDZYFgnMRyNbpjEkaXpAS278fYsH
+         MPKbREUk9R/ZyFbNVzrhhF5W2wPRHvHi6Minv8FtDyMRIKTd01SgPFGi6QSzSz5e8xJF
+         6Ahg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787229321; x=1787834121; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uQ1z2i7aFu3x1pkbW0xHXxf+v4OCvUsJU6MHdFftEMo=;
-        b=I2lDL+/OqqRYJYVjYFlYkNx/agw0+o02O8GIZJdtH/Zk1YBya+m5oUI+kY6k0ty5r7
-         2yijfCQVceUVLc9FcFssJ89GjD5xHzkS74j8uPY2ySKUuJZQY93Gl1d2Dm4L4fv5S/N5
-         wG7RuSUUKrKzqJ3KEACPqT2YnuzQ2RaFyo4JvZIF2/WoaFCWHXmtrUlC0G7gop7lSJPU
-         yXRN3LGOhkP3ax/aOZeV9Ip7Ew1pKJYPJF05Rc+aK6dtvk7lcQUnHbnfZOeEgVlCPzmA
-         H1fmEUp0MV1hyyghlT6k6iPx9aRUhW6x0oWoV6xQQ7XQ0+OanuMakQQLRAqvir0S4PgV
-         H6rw==
+        d=gmail.com; s=20251104; t=1787229572; x=1787834372; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uohgdUdRgrY842N3nbUM8yhr+cf5Gqn3ftN8ZqqRYvM=;
+        b=PHFdxZCm2Dmv5fzgK/Y4Z3EnFWqeIPggZptGYjJ77AfC07SRxeVOGct9jYrvS16igd
+         6IYMQ3KzzINLdo0dmGcvUxKDNOxpn50JLaGEG+yqKjWTN2UhtjegyFgu3m/+lnEX6mZN
+         3+mvxoArlHfGc+C8znUTdjf18aQbJASVwG8lE41dwDply2elorcQku9LLaTxd2z1BKuM
+         h/B1B8+HJA8/JTA4x4L1BW3dKH5Xe1/RGVwKWPzZGtQCICe0ngFEn8CXv4yuj/mPPmtN
+         i4huB9c2+i0njLuzgbcSmizhQ/kfTWlb5alZzZotI5mmU13XQy6Dzkye3APyUWG97FM6
+         cWlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787229321; x=1787834121;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uQ1z2i7aFu3x1pkbW0xHXxf+v4OCvUsJU6MHdFftEMo=;
-        b=oUoC8tb6hxU9sIvHnQ49n0xgF/B/YdErGAhPDhtiLh8hqJdwOMdGnYyIG4+RqXlyCX
-         5u8N5Zp5GkIQT01OJ777XC35R6HopGib1v0mi/mvgpGMkC850LjN6FYiHM0ph77UmhTa
-         QtzKT/LITJHJPVAoor4ZKXwJvhN71M/pRNU8XdBjzfXcvccFLFZlqgKwcVWcgM/2WTb8
-         Ep6Z5kHoJ0w+W1bWoWRf0HLUvVL3tgnvAsvDT+m2K06h4WLoEeqCYtgw3VGb874iKaS+
-         diae0btKQmc7UnNyQAoH2NoeQvGSTUnN9ejXfhs+XabA4jTuAjK3C2rFHBgNnUiLR9VY
-         C7hg==
-X-Forwarded-Encrypted: i=1; AHgh+RqO+AvTgsNn9yVjnQojTn8RrslYvzBmOz3k/zTfMjIqhPABcFkkh1RViihcX9MNHqS0KpQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++lOVE/Cs3/ZNfmFzcjc5dlB6wKPhvm0DTC01ry8/KJRCCPSVbOS
-	kKPMdiNtrnPMOwOggoK+fNQ5tQ/YAIgBkyMXZirMNVuLAirnLTjyvPsh
-X-Gm-Gg: AR+sD13EM2tDHVtnRb6vTwNZ3pv5lppoNTQ1ja2zb/kJbWySqbIdVhCzkBfNl0xULZ3
-	DziVdquEX8JmJZ+6GTHVKzdrZw39aT848sUNvcCw99wizz/mKoBeTcWOK7F1/1+hG9SEY0Z1SW0
-	kdUM/jzCqiGqnyCD/4hiAgjhS8qL1yaKW06/5wxAGwBUf92ChHdwf5MAsuXPmG2DW2VcIk79wV2
-	zrmkmlAb7Jl9pOmHCqYKzSeqS/o0Q8qD7rY0QLg7k7a1uC1wDOEyoUnXbQcbefs+DkJuoI7/jP8
-	YkvtJgK91XYZWp/Z3elZKUPBjB6k74ZbddQOJEvU0EXtZm7wGraRb4cG5CGIh9PKc3R7vR2PBWb
-	RXVezIL8tRmXiAeBmwvBv0tQ/fSr5LavBg4paoLJmHF8MqEoFxHka0i3xT9CoNaxZ2kUlc6VTzO
-	qp33dII5VEetmgkBn4lsML4/5CuqMjHnzEQZ6S/grEilkYeyknJWpqsB4SyJd5W2njtLoJm+hSz
-	oPqVrUJaGOt2CXK/+h90g==
-X-Received: by 2002:a17:90b:5250:b0:38e:9eb2:9d43 with SMTP id 98e67ed59e1d1-395810f885amr24651907a91.16.1787229321327;
-        Thu, 20 Aug 2026 05:35:21 -0700 (PDT)
-Received: from localhost.localdomain ([103.167.26.54])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3957faf6849sm6363161a91.10.2026.08.20.05.35.18
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 20 Aug 2026 05:35:20 -0700 (PDT)
-From: Keqiang Duan <duankeqiangcym@gmail.com>
-To: seanjc@google.com
-Cc: pbonzini@redhat.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Qinguang Chen <chenqinguang@kuaishou.com>,
-	Zhiping Du <duzhiping@kuaishou.com>
-Subject: [PATCH v2] KVM: x86: Clear hardware HLT state when userspace makes a vCPU not-halted
-Date: Thu, 20 Aug 2026 20:35:12 +0800
-Message-Id: <20260820123512.87236-1-duankeqiangcym@gmail.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+        d=1e100.net; s=20251104; t=1787229572; x=1787834372;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=uohgdUdRgrY842N3nbUM8yhr+cf5Gqn3ftN8ZqqRYvM=;
+        b=BCzwRQ6SsefO/SVVkoMgdJa9yRDjGGPtbtCvIG462IA3oRKbTGc3cHhhw3uMa6rALR
+         xutwgPEnSthxVccJ7DD3YDMVrk8vsIwTh1LNRjoQDe46wd66Qx4IzoboeBl9yVZxwVj8
+         L0JyHAZdpbC1JTMBGHtxSKyb4AYTfv9QX64RiVnUZOVH71GOC0ps8wbmhQlBT3ISti9A
+         dE51kH5H8Q1Hehb9H34J2RQg2seuuSU27jTqnkUoTtNT+Fc6BlkdwxMDolZTqR9hve5A
+         8vRyZwJSQwN+q6HiXVZ/Ur1pAc65cYHAKNuCBLFawhIlIUx/QSQ/ZktsG+cLWZbv4LZn
+         ONKA==
+X-Forwarded-Encrypted: i=1; AHgh+RqmVZTfCeqLJCHS8//DsEs5/wLH23Q+ncPoZd/YRkIt/zcxAOzUTaIH07s4RslVdP0EO7U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCrfbQc1Xqv7RY1dsLIDO2u8fg//N02OwZmTqBZ2vWPFP99eld
+	KV11uc5crOKN7ECS67lgZWh8Tyuj3q2KUCqqR0O0NYR6D3Xlp9FN09NmVggXtSfBDcoFM2wu4/V
+	zhruVyth0z0eV/frILZ2kD9M1XHtzkuI=
+X-Gm-Gg: AR+sD13i9CIG0CiQQcc6xiP+3/TOE3TN4slLk34uGVFS0U/Kpr3qYw56C5OXB551u6/
+	2xMrXfF/mSgpGMJfnAUWte4RC7P9kG40juSuPYhh+CI4gXcUR3pKjdl5mlvmc4u06cvQp8obXiB
+	o4JMBKVJyzibE9vKABuRdANQ5I0ZiO645vMrIrsjVb5UhxyT5rVddraIMfu15VdBvzAS6RaQLL/
+	4pQWBEYsujIJjikJ97pm1m3lTgmQpPAHykneDmfKfZ/tjx6k1pJu0NpyHkZRRabz6RgYKCbzF+M
+	rkg8zKP0jLUDNG2htXJnI8oGz1uZoSZHFWHe5lnbxhqxExYrLHH04QE=
+X-Received: by 2002:a05:620a:404a:b0:92f:199:b035 with SMTP id
+ af79cd13be357-9371e252a0fmr1102568885a.3.1787229571662; Thu, 20 Aug 2026
+ 05:39:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260820080332.313933-1-physicalmtea@gmail.com>
+ <20260820080332.313933-2-physicalmtea@gmail.com> <aobCds-JDgs3BiSp@sgarzare-redhat>
+In-Reply-To: <aobCds-JDgs3BiSp@sgarzare-redhat>
+From: Jia Jia <physicalmtea@gmail.com>
+Date: Thu, 20 Aug 2026 20:38:55 +0800
+X-Gm-Features: AcwNN1V_ozKiep3YvThC-YsxIdIa8Rks0gJmRuoU636bafPM8R_uE-RRSwSYMDM
+Message-ID: <CAJwVaM+WZhw_GCfqcEkNpe8vsTmW_OSRpiQVBXR8cpuvWiTjmg@mail.gmail.com>
+Subject: Re: [PATCH v7 1/3] vhost: invalidate vring access on IOTLB transitions
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: stefanha@redhat.com, mst@redhat.com, jasowangio@gmail.com, 
+	eperezma@redhat.com, weiyj.lk@gmail.com, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Force a vCPU out of its hardware-tracked halted state when userspace puts
-the vCPU into any state other than HALTED via KVM_SET_MP_STATE, i.e. clear
-VMCS.GUEST_ACTIVITY_STATE if it says the vCPU is halted.  Add an optional
-kvm_x86_ops hook to do the clearing, as SVM has no equivalent VMCB field.
+>
+> On Thu, Aug 20, 2026 at 04:03:30PM +0800, Jia Jia wrote:
+> >When ACCESS_PLATFORM changes, the addresses cached in desc, avail, and
+> >used change meaning with the address space. Clear the cached vring access
+> >state when the device IOTLB is installed or removed so stale IOVAs cannot
+> >be reused as direct userspace addresses.
+> >
+> >Keep device IOTLB initialization idempotent and apply the mode change even
+> >when a virtqueue backend is attached. Drop the device-wide IOTLB first,
+> >then clear each VQ state under its own mutex, and keep the old table alive
+> >until every VQ has completed the handoff.
+> >
+> >A successful live mode change leaves the backend attached but invalidates
+> >the cached vring addresses. Userspace must configure the vring addresses
+> >for the new address mode before data processing can resume.
+> >
+> >Fixes: 6b1e6cc7855b ("vhost: new device IOTLB API")
+> >Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+> >---
+> > drivers/vhost/vhost.c | 53 ++++++++++++++++++++++++++++++++++++++++++-
+> > drivers/vhost/vhost.h |  1 +
+> > 2 files changed, 53 insertions(+), 1 deletion(-)
+> >
+> >diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> >index 14637cff0bd4..31fff9800045 100644
+> >--- a/drivers/vhost/vhost.c
+> >+++ b/drivers/vhost/vhost.c
+> >@@ -344,6 +344,17 @@ static void __vhost_vq_meta_reset(struct vhost_virtqueue *vq)
+> >               vq->meta_iotlb[j] = NULL;
+> > }
+> >
+> >+/* Caller must hold the virtqueue mutex. */
+> >+static void vhost_vq_invalidate_access(struct vhost_virtqueue *vq)
+> >+{
+> >+      vq->desc = NULL;
+> >+      vq->avail = NULL;
+> >+      vq->used = NULL;
+> >+      vq->log_used = false;
+> >+      vq->log_addr = -1ull;
+> >+      __vhost_vq_meta_reset(vq);
+> >+}
+> >+
+> > static void vhost_vq_meta_reset(struct vhost_dev *d)
+> > {
+> >       int i;
+> >@@ -1918,6 +1929,9 @@ int vq_meta_prefetch(struct vhost_virtqueue *vq)
+> > {
+> >       unsigned int num = vq->num;
+> >
+> >+      if (!vq->desc || !vq->avail || !vq->used)
+> >+              return 0;
+> >+
+> >       if (!vq->iotlb)
+> >               return 1;
+> >
+> >@@ -2287,11 +2301,48 @@ long vhost_vring_ioctl(struct vhost_dev *d, unsigned int ioctl, void __user *arg
+> > }
+> > EXPORT_SYMBOL_GPL(vhost_vring_ioctl);
+> >
+> >+/* Caller must hold the device mutex. */
+> >+void vhost_clear_device_iotlb(struct vhost_dev *d)
+>
+> Is this the right patch where introduce this function?
+>
+> IMO should be introduced when we use it.
+>
+> About that I'm not sure if it is better to squash the other 2 patches
+> with this one, otherwise will be this bisectable?
+> I mean with just this patch applied (and without the other 2) who is
+> going to free the old iotlb?
+>
 
-When HLT-exiting is disabled for a VM (KVM_CAP_X86_DISABLE_EXITS with
-KVM_X86_DISABLE_EXITS_HLT, e.g. QEMU's "-overcommit cpu-pm=on"), a guest
-HLT halts the physical CPU instead of exiting to KVM, and hardware saves
-GUEST_ACTIVITY_STATE=HLT into the VMCS on the next VM-Exit.  That field is
-sticky: it survives VM-Exit/VM-Enter and is only cleared by vmx_clear_hlt()
-on event injection, or by vmx_vcpu_reset() on INIT / vCPU creation.
+ I'll rework the series so that the helper is introduced together with
+ the vhost-net and vhost-vsock callers, most likely by squashing the three
+ patches. I'm also reviewing the existing IOTLB replacement semantics
+ before preparing the next revision.
 
-Nothing clears it on a userspace-driven state change.  KVM_SET_REGS only
-writes the software register cache and KVM_SET_MP_STATE only writes
-vcpu->arch.mp_state; kvm_vcpu_running() likewise consults software state
-only.  A VMM that emulates a machine reset therefore ends up with a vCPU
-that KVM happily VM-Enters while hardware refuses to fetch instructions.
+> >+{
+> >+      struct vhost_iotlb *iotlb;
+> >+      int i;
+> >+
+> >+      iotlb = d->iotlb;
+> >+      if (!iotlb)
+> >+              return;
+> >+
+> >+      /*
+> >+       * Drop the device-wide view first.  Each VQ then drops its
+> >+       * per-VQ view and its cached ring access under its own mutex.
+> >+       * Keep the old table alive until every VQ has completed this
+> >+       * handoff, since a worker may still be using it while waiting
+> >+       * for its VQ mutex.
+> >+       */
+> >+      d->iotlb = NULL;
+> >+
+> >+      for (i = 0; i < d->nvqs; ++i) {
+> >+              struct vhost_virtqueue *vq = d->vqs[i];
+> >+
+> >+              mutex_lock(&vq->mutex);
+> >+              vq->iotlb = NULL;
+> >+              vhost_vq_invalidate_access(vq);
+> >+              mutex_unlock(&vq->mutex);
+> >+      }
+> >+
+> >+      vhost_clear_msg(d);
+> >+      vhost_iotlb_free(iotlb);
+> >+      wake_up_interruptible_poll(&d->wait, EPOLLIN | EPOLLRDNORM);
+> >+}
+> >+EXPORT_SYMBOL_GPL(vhost_clear_device_iotlb);
+> >+
+> > int vhost_init_device_iotlb(struct vhost_dev *d)
+> > {
+> >       struct vhost_iotlb *niotlb, *oiotlb;
+> >       int i;
+> >
+> >+      if (d->iotlb)
+> >+              return 0;
+> >+
+>
+> IIUC after this patch `oiotlb` is always NULL, can we remove it?
+>
+> Thanks,
+> Stefano
 
-Reproduce with a Linux guest by triggering a panic/kdump on a non-boot
-vCPU: nmi_shootdown_cpus() parks the other vCPUs -- including vCPU0 -- in
-crash_nmi_callback(), which does local_irq_disable() followed by a bare
-HLT.  The capture kernel then resets the machine via port 0xCF9.  QEMU
-rewrites RIP to 0xfff0 and sets mp_state to RUNNABLE, but vCPU0's
-GUEST_ACTIVITY_STATE is still HLT, so the BSP never executes the reset
-vector, never sends SIPIs, and the entire VM hangs at "reboot: machine
-restart" forever.  Only destroying and recreating the VM recovers it.
+  Thanks, I took another look. I don't think we should simply remove
+  oiotlb while keeping the early return, since the early return itself may
+  be too broad.
 
-Key off "not HALTED" rather than "is RUNNABLE" as HALTED is the only target
-state for which retaining the hardware halted state is meaningful; every
-other transition either can't be reached on VMX, e.g. AP_RESET_HOLD, or
-goes through vmx_vcpu_reset(), which stuffs GUEST_ACTIVITY_ACTIVE anyways.
-This also captures the intent more directly: KVM only ever drops the
-hardware halted state, it never installs it.
+  One case I need to examine more carefully is vhost stop/start. QEMU
+  unregisters the IOMMU listener while vhost is stopped. If an IOVA
+  mapping changes during that interval, preserving the existing kernel
+  IOTLB on the next VHOST_SET_FEATURES may retain an entry pointing to the
+  old HVA. A later lookup could hit that stale entry, so no IOTLB miss
+  would be reported and no replacement update would be triggered through
+  the miss path for that IOVA.
 
-Clearing the state is always safe: waking from HLT is architecturally
-permitted to be spurious, and every HLT in the kernel is inside a loop.
-Hook KVM_SET_MP_STATE rather than the VM-Enter path so that the clearing
-is driven by an explicit userspace declaration, and so that no work is
-added to vmx_vcpu_run().  Gate the call on kvm_hlt_in_guest() even though
-vmx_clear_hlt() checks it as well, as the check is cheap and makes it
-obvious in common code when the hardware state can exist at all.
+  The original replacement path, including oiotlb, installs a new empty
+  table and safely keeps the old table alive until all VQs have switched.
+  I need to review this lifecycle more carefully before deciding whether
+  that replacement semantic can be removed. A logging-only feature update
+  may want to preserve the IOTLB, while a restart boundary may need a new
+  one, and d->iotlb != NULL alone does not distinguish those cases.
 
-Note, vmx_clear_hlt() loses its "static" qualifier as the kvm_x86_ops table
-now lives in vmx/main.c.  TDX cannot disable HLT-exiting and KVM cannot
-access a TD's VMCS, so vt_clear_hlt() short-circuits for TD vCPUs,
-following the existing vt_*() wrapper pattern.
-
-Fixes: caa057a2cad6 ("KVM: X86: Provide a capability to disable HLT intercepts")
-Cc: stable@vger.kernel.org
-Tested-by: Qinguang Chen <chenqinguang@kuaishou.com>
-Signed-off-by: Zhiping Du <duzhiping@kuaishou.com>
-Signed-off-by: Keqiang Duan <duankeqiangcym@gmail.com>
----
-v2:
- - Gate the call into vendor code on kvm_hlt_in_guest(). (Sean)
- - Key off "mp_state->mp_state != KVM_MP_STATE_HALTED" instead of
-   "vcpu->arch.mp_state == KVM_MP_STATE_RUNNABLE". (Sean)
- - Retitle from "KVM: VMX:" to "KVM: x86:" as the change also touches
-   common x86 code.
- - Collect Tested-by and Signed-off-by tags.
-
-v1: https://lore.kernel.org/kvm/20260819034652.98938-1-duankeqiangcym@gmail.com/
-
- arch/x86/include/asm/kvm-x86-ops.h |  1 +
- arch/x86/include/asm/kvm_host.h    |  7 +++++++
- arch/x86/kvm/vmx/main.c            | 13 +++++++++++++
- arch/x86/kvm/vmx/vmx.c             |  2 +-
- arch/x86/kvm/vmx/x86_ops.h         |  1 +
- arch/x86/kvm/x86.c                 | 15 +++++++++++++++
- 6 files changed, 38 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index e213c9ae3e30..dd9026c1071c 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -82,6 +82,7 @@ KVM_X86_OP(interrupt_allowed)
- KVM_X86_OP(nmi_allowed)
- KVM_X86_OP(get_nmi_mask)
- KVM_X86_OP(set_nmi_mask)
-+KVM_X86_OP_OPTIONAL(clear_hlt)
- KVM_X86_OP(enable_nmi_window)
- KVM_X86_OP(enable_irq_window)
- KVM_X86_OP_OPTIONAL(update_cr8_intercept)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 283847619ff8..e5a0758536e1 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1607,6 +1607,13 @@ struct kvm_x86_ops {
- 	int (*nmi_allowed)(struct kvm_vcpu *vcpu, bool for_injection);
- 	bool (*get_nmi_mask)(struct kvm_vcpu *vcpu);
- 	void (*set_nmi_mask)(struct kvm_vcpu *vcpu, bool masked);
-+	/*
-+	 * Force the vCPU out of any hardware-tracked halted/inactive state so
-+	 * that it will fetch and execute instructions on the next VM-Enter.
-+	 * Only needed by VMX, where VMCS.GUEST_ACTIVITY_STATE persists across
-+	 * VM-Exit/VM-Enter; SVM has no equivalent VMCB field.
-+	 */
-+	void (*clear_hlt)(struct kvm_vcpu *vcpu);
- 	/* Whether or not a virtual NMI is pending in hardware. */
- 	bool (*is_vnmi_pending)(struct kvm_vcpu *vcpu);
- 	/*
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index 0ff3230fd95e..74ce9dd70419 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -601,6 +601,18 @@ static void vt_set_nmi_mask(struct kvm_vcpu *vcpu, bool masked)
- 	vmx_set_nmi_mask(vcpu, masked);
- }
- 
-+static void vt_clear_hlt(struct kvm_vcpu *vcpu)
-+{
-+	/*
-+	 * TDX doesn't support disabling HLT-exiting, and KVM can't access a
-+	 * TD's VMCS, so there is never any hardware halted state to clear.
-+	 */
-+	if (is_td_vcpu(vcpu))
-+		return;
-+
-+	vmx_clear_hlt(vcpu);
-+}
-+
- static void vt_enable_nmi_window(struct kvm_vcpu *vcpu)
- {
- 	/* Refer to the comments in tdx_inject_nmi(). */
-@@ -964,6 +976,7 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
- 	.nmi_allowed = vt_op(nmi_allowed),
- 	.get_nmi_mask = vt_op(get_nmi_mask),
- 	.set_nmi_mask = vt_op(set_nmi_mask),
-+	.clear_hlt = vt_op(clear_hlt),
- 	.enable_nmi_window = vt_op(enable_nmi_window),
- 	.enable_irq_window = vt_op(enable_irq_window),
- 	.update_cr8_intercept = vt_op(update_cr8_intercept),
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index e3bfe6aca1a0..8ad79c60ecc6 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -1909,7 +1909,7 @@ int vmx_skip_emulated_instruction(struct kvm_vcpu *vcpu)
- 	return skip_emulated_instruction(vcpu);
- }
- 
--static void vmx_clear_hlt(struct kvm_vcpu *vcpu)
-+void vmx_clear_hlt(struct kvm_vcpu *vcpu)
- {
- 	/*
- 	 * Ensure that we clear the HLT state in the VMCS.  We don't need to
-diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
-index cdb38d940cfb..45e47f502a37 100644
---- a/arch/x86/kvm/vmx/x86_ops.h
-+++ b/arch/x86/kvm/vmx/x86_ops.h
-@@ -95,6 +95,7 @@ int vmx_interrupt_allowed(struct kvm_vcpu *vcpu, bool for_injection);
- int vmx_nmi_allowed(struct kvm_vcpu *vcpu, bool for_injection);
- bool vmx_get_nmi_mask(struct kvm_vcpu *vcpu);
- void vmx_set_nmi_mask(struct kvm_vcpu *vcpu, bool masked);
-+void vmx_clear_hlt(struct kvm_vcpu *vcpu);
- void vmx_enable_nmi_window(struct kvm_vcpu *vcpu);
- void vmx_enable_irq_window(struct kvm_vcpu *vcpu);
- void vmx_update_cr8_intercept(struct kvm_vcpu *vcpu, int tpr, int irr);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index d94b59140c45..3b224c3bbe42 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9058,6 +9058,21 @@ int kvm_arch_vcpu_ioctl_set_mpstate(struct kvm_vcpu *vcpu,
- 	}
- 
- 	kvm_set_mp_state(vcpu, mp_state->mp_state);
-+
-+	/*
-+	 * Force the vCPU out of any hardware-tracked halted state, e.g. VMX's
-+	 * GUEST_ACTIVITY_STATE=HLT, when userspace puts the vCPU into a state
-+	 * other than HALTED.  The hardware state is sticky across VM-Exit and
-+	 * VM-Enter and is not touched by any other ioctl, so a vCPU that halted
-+	 * with HLT-exiting disabled stays wedged even after userspace rewrites
-+	 * its registers, e.g. when a VMM emulates a machine reset.  Waking from
-+	 * HLT is architecturally allowed to be spurious, so clearing it is
-+	 * always safe.
-+	 */
-+	if (kvm_hlt_in_guest(vcpu->kvm) &&
-+	    mp_state->mp_state != KVM_MP_STATE_HALTED)
-+		kvm_x86_call(clear_hlt)(vcpu);
-+
- 	kvm_make_request(KVM_REQ_EVENT, vcpu);
- 
- 	ret = 0;
-
-base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
--- 
-2.24.3
-
-
+>
+> >       if (max_iotlb_entries <= 0)
+> >               return -EINVAL;
+> >
+> >@@ -2307,7 +2358,7 @@ int vhost_init_device_iotlb(struct vhost_dev *d)
+> >
+> >               mutex_lock(&vq->mutex);
+> >               vq->iotlb = niotlb;
+> >-              __vhost_vq_meta_reset(vq);
+> >+              vhost_vq_invalidate_access(vq);
+> >               mutex_unlock(&vq->mutex);
+> >       }
+> >
+> >diff --git a/drivers/vhost/vhost.h b/drivers/vhost/vhost.h
+> >index 0192ade6e749..3c75e8089373 100644
+> >--- a/drivers/vhost/vhost.h
+> >+++ b/drivers/vhost/vhost.h
+> >@@ -277,6 +277,7 @@ ssize_t vhost_chr_read_iter(struct vhost_dev *dev, struct iov_iter *to,
+> >                           int noblock);
+> > ssize_t vhost_chr_write_iter(struct vhost_dev *dev,
+> >                            struct iov_iter *from);
+> >+void vhost_clear_device_iotlb(struct vhost_dev *d);
+> > int vhost_init_device_iotlb(struct vhost_dev *d);
+> >
+> > void vhost_iotlb_map_free(struct vhost_iotlb *iotlb,
+> >--
+> >2.34.1
+> >
+>
