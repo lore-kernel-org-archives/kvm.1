@@ -1,269 +1,216 @@
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E63542A78B
-	for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 12:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787229574; cv=pass; b=MFkgkIdCaFezCVmacJJw/ZiuVyvws0vYmAZNaV53KBEr4cKjLczs+R3bWQ7xBWhjrQ1GiK/buLJxpApkPlrSUtXDlnRviCa5+D+te/8DVM9G34XqfB5+W/ArILfiIOiJUi1Hq824W7DrK8ZUhB4xGFu10/sQGdWRlMIObTkeqvY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787229574; c=relaxed/simple;
-	bh=aL5TuuMwAaQVwOyXsLkpLSm0ZpL31g9SvuoVklTboFo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qAmUIzOqpwGNh3Cgt3gHEto65ae++wd0b8d3RLMckEw2hM9NI2RpoxYo3QQG9SyVR6TQ3gqpLxj8Y3+BuVdM/I5dTUyA4hfNyehP6VYawmok6cqVc6nLCBr8av/bCDZwpaQ5iPYXoe5SO5veKWs3hq2hEqNlFgtIzMVQg+PIXQE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PHFdxZCm; arc=pass smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7DE443ABC;
+	Thu, 20 Aug 2026 12:40:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787229617; cv=none; b=Y9vp7rFanEYoiRbDTmH/YaNE1GNqgzXeUEfrmKOfkm9kOkDSJ7wDALsUGmYEDiN4TmAkgKShTNec5ME1yvH68D0J8oSo1lCsmUkSdwnwrgfIKH96/B7JKF+h5TQZqoalSqCNw9p+EPNu74xkCRBx7719EPOBljI+ZCCYGgf/16Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787229617; c=relaxed/simple;
+	bh=NhsvfGLHd/fhjTxGANUguG71YeC2Afb3/dUOF3wjDC4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XdrX3N56spMcHxoLAxtLix7RERcd9VAlrgbofmk5VoRqP670m88PL/XfNzw+3Zq/+3BO5db4OJUOLZrMe3fD4LK+TlVEE5261ZkYeuRMB2lWR985Bl/dEwJM4mJcoX+KTfI9pk9VUipRJsPAPYz0QNQprGwOOQoeWO2iG3R60p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KJxZlQMq; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PHFdxZCm"
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-936c02e58dfso151248785a.3
-        for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 05:39:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787229572; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hJm4PzEfURESFZk5WquzZpEVp4hIfIH1WRM0YARXAmmsoVnDgvG8KtVTh8Iwbqac7o
-         eKMfm0497pfAzlr8LqJt0Bf5sgkFLibr3ZrN+0exTWMqhg9Fk3DcIcmxB7Z9M4IW0dDo
-         yQ3HqDfG5AJuX5wylLQFbtGil3/1zh/SUFbTAoBLelMdaJqL+LTa6ud3mHINt2h4FIhn
-         XQB2gf7FiWG7QcjpqJB2/+bDbV6d0BiJ+fyGntCPmAtZ2BRisYk+0kF9QONIqUwQCqFn
-         kIUrRl8q8anPQ9pX0jKrWuaW0TNZ4uoy0LJGPV5mDiFDslHnRqveuq4F8aYkf6s0H5aj
-         yioA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=uohgdUdRgrY842N3nbUM8yhr+cf5Gqn3ftN8ZqqRYvM=;
-        fh=cCmhEmcRdn5dORUt+RnSpe4OtF9Ln4Ia5FuQaHn+JzE=;
-        b=nclDKk6P0vlscmZZdl7TdAaBHA8soQFX1JpMj1W0mAUjr3O9spbP50EtpjMifavu97
-         cqVer4uqbSjBZThC0bSkWcvzhN+64I/wpwZ9OQ7zTlMB9mwHIdkA+2PhyL6X+TI0WuX0
-         IRnxbWXtW54iImTRZCNaJa5K7FL6cmRCsJWepwbTKmzRAhHYNn/8k8CFmYb24GVytI/2
-         Z53d3nm39zxo0uzHqvwmU+rYFSl3Z0ejX8UOH8JlfDZYFgnMRyNbpjEkaXpAS278fYsH
-         MPKbREUk9R/ZyFbNVzrhhF5W2wPRHvHi6Minv8FtDyMRIKTd01SgPFGi6QSzSz5e8xJF
-         6Ahg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787229572; x=1787834372; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uohgdUdRgrY842N3nbUM8yhr+cf5Gqn3ftN8ZqqRYvM=;
-        b=PHFdxZCm2Dmv5fzgK/Y4Z3EnFWqeIPggZptGYjJ77AfC07SRxeVOGct9jYrvS16igd
-         6IYMQ3KzzINLdo0dmGcvUxKDNOxpn50JLaGEG+yqKjWTN2UhtjegyFgu3m/+lnEX6mZN
-         3+mvxoArlHfGc+C8znUTdjf18aQbJASVwG8lE41dwDply2elorcQku9LLaTxd2z1BKuM
-         h/B1B8+HJA8/JTA4x4L1BW3dKH5Xe1/RGVwKWPzZGtQCICe0ngFEn8CXv4yuj/mPPmtN
-         i4huB9c2+i0njLuzgbcSmizhQ/kfTWlb5alZzZotI5mmU13XQy6Dzkye3APyUWG97FM6
-         cWlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787229572; x=1787834372;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=uohgdUdRgrY842N3nbUM8yhr+cf5Gqn3ftN8ZqqRYvM=;
-        b=BCzwRQ6SsefO/SVVkoMgdJa9yRDjGGPtbtCvIG462IA3oRKbTGc3cHhhw3uMa6rALR
-         xutwgPEnSthxVccJ7DD3YDMVrk8vsIwTh1LNRjoQDe46wd66Qx4IzoboeBl9yVZxwVj8
-         L0JyHAZdpbC1JTMBGHtxSKyb4AYTfv9QX64RiVnUZOVH71GOC0ps8wbmhQlBT3ISti9A
-         dE51kH5H8Q1Hehb9H34J2RQg2seuuSU27jTqnkUoTtNT+Fc6BlkdwxMDolZTqR9hve5A
-         8vRyZwJSQwN+q6HiXVZ/Ur1pAc65cYHAKNuCBLFawhIlIUx/QSQ/ZktsG+cLWZbv4LZn
-         ONKA==
-X-Forwarded-Encrypted: i=1; AHgh+RqmVZTfCeqLJCHS8//DsEs5/wLH23Q+ncPoZd/YRkIt/zcxAOzUTaIH07s4RslVdP0EO7U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCrfbQc1Xqv7RY1dsLIDO2u8fg//N02OwZmTqBZ2vWPFP99eld
-	KV11uc5crOKN7ECS67lgZWh8Tyuj3q2KUCqqR0O0NYR6D3Xlp9FN09NmVggXtSfBDcoFM2wu4/V
-	zhruVyth0z0eV/frILZ2kD9M1XHtzkuI=
-X-Gm-Gg: AR+sD13i9CIG0CiQQcc6xiP+3/TOE3TN4slLk34uGVFS0U/Kpr3qYw56C5OXB551u6/
-	2xMrXfF/mSgpGMJfnAUWte4RC7P9kG40juSuPYhh+CI4gXcUR3pKjdl5mlvmc4u06cvQp8obXiB
-	o4JMBKVJyzibE9vKABuRdANQ5I0ZiO645vMrIrsjVb5UhxyT5rVddraIMfu15VdBvzAS6RaQLL/
-	4pQWBEYsujIJjikJ97pm1m3lTgmQpPAHykneDmfKfZ/tjx6k1pJu0NpyHkZRRabz6RgYKCbzF+M
-	rkg8zKP0jLUDNG2htXJnI8oGz1uZoSZHFWHe5lnbxhqxExYrLHH04QE=
-X-Received: by 2002:a05:620a:404a:b0:92f:199:b035 with SMTP id
- af79cd13be357-9371e252a0fmr1102568885a.3.1787229571662; Thu, 20 Aug 2026
- 05:39:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KJxZlQMq"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67K8hXUJ503913;
+	Thu, 20 Aug 2026 12:40:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=yCO/+kwGsXaDN4jIraW/e7CegfUev0faDwZ7zdP5D
+	JY=; b=KJxZlQMqoZ0YgVM9cZHL6qXL8y8BtLWQJztsjBorhG0JDvd9scD7MQPPf
+	aGjgVgxc1I5ApzSDgyg0Pw81ODyNmPemyF9UQwdqlPWPes31LFqY5YK/yoa/99vd
+	/G2I21F/X/3tvpFVJ1Ue0QzHTpR9feo42BUmkMvmx3km3OO+pUVj0+E/tIHpQs9s
+	PAezuEyC1NWbbSkQEtrYgmNiyreM5G5C4McXIDJL+cvcXpXTsD0QZqmE8U5pru/U
+	YwTfPy5YlX5sp3yPz4qFOWqblNB9Ak5gcErf1/o6i5lmFeqKfLS/cfAOB/97x9wT
+	dYNQmi8bjJBFZA7yjLH4f6Y98voYQ==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g4yu4a4gr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Aug 2026 12:40:13 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67KCQP9N007840;
+	Thu, 20 Aug 2026 12:40:13 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g33ekehj2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Aug 2026 12:40:13 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67KCe9Yj44630282
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 20 Aug 2026 12:40:09 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0FCE62004E;
+	Thu, 20 Aug 2026 12:40:09 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E7ED62004D;
+	Thu, 20 Aug 2026 12:40:08 +0000 (GMT)
+Received: from b46lp25.lnxne.boe (unknown [9.87.84.240])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 20 Aug 2026 12:40:08 +0000 (GMT)
+From: Janosch Frank <frankja@linux.ibm.com>
+To: kvm@vger.kernel.org
+Cc: imbrenda@linux.ibm.com, linux-s390@vger.kernel.org,
+        borntraeger@linux.ibm.com
+Subject: [PATCH] KVM: s390: selftests: Add IRQ injection selftests
+Date: Thu, 20 Aug 2026 12:20:35 +0000
+Message-ID: <20260820123728.26284-2-frankja@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260820080332.313933-1-physicalmtea@gmail.com>
- <20260820080332.313933-2-physicalmtea@gmail.com> <aobCds-JDgs3BiSp@sgarzare-redhat>
-In-Reply-To: <aobCds-JDgs3BiSp@sgarzare-redhat>
-From: Jia Jia <physicalmtea@gmail.com>
-Date: Thu, 20 Aug 2026 20:38:55 +0800
-X-Gm-Features: AcwNN1V_ozKiep3YvThC-YsxIdIa8Rks0gJmRuoU636bafPM8R_uE-RRSwSYMDM
-Message-ID: <CAJwVaM+WZhw_GCfqcEkNpe8vsTmW_OSRpiQVBXR8cpuvWiTjmg@mail.gmail.com>
-Subject: Re: [PATCH v7 1/3] vhost: invalidate vring access on IOTLB transitions
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: stefanha@redhat.com, mst@redhat.com, jasowangio@gmail.com, 
-	eperezma@redhat.com, weiyj.lk@gmail.com, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=CpuPtH4D c=1 sm=1 tr=0 ts=6a86f5ad cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=HrADI_whcFcx6oX9QEwA:9
+X-Proofpoint-ORIG-GUID: ryzR7hAINnYRaSpS3rY9ULmZjheBqnJK
+X-Proofpoint-GUID: ryzR7hAINnYRaSpS3rY9ULmZjheBqnJK
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODIwMDA5MyBTYWx0ZWRfXzjvuFV3o/qFy
+ +oVCKhkvA/mdb6HEwTZILzu4LhNQEJUIFcx54zmzCksPKyxzEiNB+y3i10fP/yuSB2G5rJ6AfJi
+ R44Ho5+1dTd7XFnOB9ay1rtgMsU26CU=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIwMDA5MyBTYWx0ZWRfX+HyemUoAsSUR
+ ENwrM220xPk+fGUXhY/EypASAQME6A2nefOpMZujBxlAsh65rZFY+SjyXSZp9ZvU9QCRxCHioDW
+ Moj4r3LCh17xn6PPe3E7O2JoQdzILO4iFJa0lLYJlvH76naJUX3gcGQ+MU85RBHtycOQXAaSFZU
+ iTc/ncNTbQbYKj180K7ldRJMKTdY5Yui2ivvhQ0/nTcAqAWkVv8Nnnb/EgoDS+T0aDWPs27H9hH
+ GID/6I2L5t+v8bvb50nBidu4DwFUwrBTT+xYaNrTlEnUwUduo6POIXBXyie/2QLCp6146vmUjTO
+ LtzJHHflMIX12DUq9p/89i1eHQ4kVMZSwlplrjhtBms7x0mkgmA4wJFzXuMoF4uwDzCBXTJtSEr
+ /nUp7EvGXrSK4JZc8Lc/UPCH4GTZZlkgC6VaGZ+fXW21h2VBb1KGCMZ3RhDfw5g60oCV1sqf2Vr
+ rJzDo1H0lbZPGcE+8PQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-19_06,2026-08-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0 bulkscore=0 malwarescore=0 phishscore=0
+ lowpriorityscore=0 spamscore=0 clxscore=1011 priorityscore=1501
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608200093
 
->
-> On Thu, Aug 20, 2026 at 04:03:30PM +0800, Jia Jia wrote:
-> >When ACCESS_PLATFORM changes, the addresses cached in desc, avail, and
-> >used change meaning with the address space. Clear the cached vring access
-> >state when the device IOTLB is installed or removed so stale IOVAs cannot
-> >be reused as direct userspace addresses.
-> >
-> >Keep device IOTLB initialization idempotent and apply the mode change even
-> >when a virtqueue backend is attached. Drop the device-wide IOTLB first,
-> >then clear each VQ state under its own mutex, and keep the old table alive
-> >until every VQ has completed the handoff.
-> >
-> >A successful live mode change leaves the backend attached but invalidates
-> >the cached vring addresses. Userspace must configure the vring addresses
-> >for the new address mode before data processing can resume.
-> >
-> >Fixes: 6b1e6cc7855b ("vhost: new device IOTLB API")
-> >Signed-off-by: Jia Jia <physicalmtea@gmail.com>
-> >---
-> > drivers/vhost/vhost.c | 53 ++++++++++++++++++++++++++++++++++++++++++-
-> > drivers/vhost/vhost.h |  1 +
-> > 2 files changed, 53 insertions(+), 1 deletion(-)
-> >
-> >diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> >index 14637cff0bd4..31fff9800045 100644
-> >--- a/drivers/vhost/vhost.c
-> >+++ b/drivers/vhost/vhost.c
-> >@@ -344,6 +344,17 @@ static void __vhost_vq_meta_reset(struct vhost_virtqueue *vq)
-> >               vq->meta_iotlb[j] = NULL;
-> > }
-> >
-> >+/* Caller must hold the virtqueue mutex. */
-> >+static void vhost_vq_invalidate_access(struct vhost_virtqueue *vq)
-> >+{
-> >+      vq->desc = NULL;
-> >+      vq->avail = NULL;
-> >+      vq->used = NULL;
-> >+      vq->log_used = false;
-> >+      vq->log_addr = -1ull;
-> >+      __vhost_vq_meta_reset(vq);
-> >+}
-> >+
-> > static void vhost_vq_meta_reset(struct vhost_dev *d)
-> > {
-> >       int i;
-> >@@ -1918,6 +1929,9 @@ int vq_meta_prefetch(struct vhost_virtqueue *vq)
-> > {
-> >       unsigned int num = vq->num;
-> >
-> >+      if (!vq->desc || !vq->avail || !vq->used)
-> >+              return 0;
-> >+
-> >       if (!vq->iotlb)
-> >               return 1;
-> >
-> >@@ -2287,11 +2301,48 @@ long vhost_vring_ioctl(struct vhost_dev *d, unsigned int ioctl, void __user *arg
-> > }
-> > EXPORT_SYMBOL_GPL(vhost_vring_ioctl);
-> >
-> >+/* Caller must hold the device mutex. */
-> >+void vhost_clear_device_iotlb(struct vhost_dev *d)
->
-> Is this the right patch where introduce this function?
->
-> IMO should be introduced when we use it.
->
-> About that I'm not sure if it is better to squash the other 2 patches
-> with this one, otherwise will be this bisectable?
-> I mean with just this patch applied (and without the other 2) who is
-> going to free the old iotlb?
->
+From: Gabriella Seifert <gseifert@linux.ibm.com>
 
- I'll rework the series so that the helper is introduced together with
- the vhost-net and vhost-vsock callers, most likely by squashing the three
- patches. I'm also reviewing the existing IOTLB replacement semantics
- before preparing the next revision.
+The IRQ injection selftests haven't been added to the selftests yet so
+let's do that now. We start off with a couple simple error checks for
+invalid data.
 
-> >+{
-> >+      struct vhost_iotlb *iotlb;
-> >+      int i;
-> >+
-> >+      iotlb = d->iotlb;
-> >+      if (!iotlb)
-> >+              return;
-> >+
-> >+      /*
-> >+       * Drop the device-wide view first.  Each VQ then drops its
-> >+       * per-VQ view and its cached ring access under its own mutex.
-> >+       * Keep the old table alive until every VQ has completed this
-> >+       * handoff, since a worker may still be using it while waiting
-> >+       * for its VQ mutex.
-> >+       */
-> >+      d->iotlb = NULL;
-> >+
-> >+      for (i = 0; i < d->nvqs; ++i) {
-> >+              struct vhost_virtqueue *vq = d->vqs[i];
-> >+
-> >+              mutex_lock(&vq->mutex);
-> >+              vq->iotlb = NULL;
-> >+              vhost_vq_invalidate_access(vq);
-> >+              mutex_unlock(&vq->mutex);
-> >+      }
-> >+
-> >+      vhost_clear_msg(d);
-> >+      vhost_iotlb_free(iotlb);
-> >+      wake_up_interruptible_poll(&d->wait, EPOLLIN | EPOLLRDNORM);
-> >+}
-> >+EXPORT_SYMBOL_GPL(vhost_clear_device_iotlb);
-> >+
-> > int vhost_init_device_iotlb(struct vhost_dev *d)
-> > {
-> >       struct vhost_iotlb *niotlb, *oiotlb;
-> >       int i;
-> >
-> >+      if (d->iotlb)
-> >+              return 0;
-> >+
->
-> IIUC after this patch `oiotlb` is always NULL, can we remove it?
->
-> Thanks,
-> Stefano
+Signed-off-by: Gabriella Seifert <gseifert@linux.ibm.com>
+[frankja@linux.ibm.com: Improved formatting and wording]
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+---
 
-  Thanks, I took another look. I don't think we should simply remove
-  oiotlb while keeping the early return, since the early return itself may
-  be too broad.
+Written by Gabriela in her internship as a side project. Unfortunately
+she wasn't able to send it out herself due to a bit of time crunch.
+She did prepare additional code that's more in-depth with guest side
+checks but didn't have the time to fully test and clean it up. We'll
+see if and when that code will be posted.
 
-  One case I need to examine more carefully is vhost stop/start. QEMU
-  unregisters the IOMMU listener while vhost is stopped. If an IOVA
-  mapping changes during that interval, preserving the existing kernel
-  IOTLB on the next VHOST_SET_FEATURES may retain an entry pointing to the
-  old HVA. A later lookup could hit that stale entry, so no IOTLB miss
-  would be reported and no replacement update would be triggered through
-  the miss path for that IOVA.
+I have her permission to fix up review comments and she's in bcc.
 
-  The original replacement path, including oiotlb, installs a new empty
-  table and safely keeps the old table alive until all VQs have switched.
-  I need to review this lifecycle more carefully before deciding whether
-  that replacement semantic can be removed. A logging-only feature update
-  may want to preserve the IOTLB, while a restart boundary may need a new
-  one, and d->iotlb != NULL alone does not distinguish those cases.
+---
+ tools/testing/selftests/kvm/Makefile.kvm      |  1 +
+ .../selftests/kvm/s390/irq_injection.c        | 74 +++++++++++++++++++
+ 2 files changed, 75 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/s390/irq_injection.c
 
->
-> >       if (max_iotlb_entries <= 0)
-> >               return -EINVAL;
-> >
-> >@@ -2307,7 +2358,7 @@ int vhost_init_device_iotlb(struct vhost_dev *d)
-> >
-> >               mutex_lock(&vq->mutex);
-> >               vq->iotlb = niotlb;
-> >-              __vhost_vq_meta_reset(vq);
-> >+              vhost_vq_invalidate_access(vq);
-> >               mutex_unlock(&vq->mutex);
-> >       }
-> >
-> >diff --git a/drivers/vhost/vhost.h b/drivers/vhost/vhost.h
-> >index 0192ade6e749..3c75e8089373 100644
-> >--- a/drivers/vhost/vhost.h
-> >+++ b/drivers/vhost/vhost.h
-> >@@ -277,6 +277,7 @@ ssize_t vhost_chr_read_iter(struct vhost_dev *dev, struct iov_iter *to,
-> >                           int noblock);
-> > ssize_t vhost_chr_write_iter(struct vhost_dev *dev,
-> >                            struct iov_iter *from);
-> >+void vhost_clear_device_iotlb(struct vhost_dev *d);
-> > int vhost_init_device_iotlb(struct vhost_dev *d);
-> >
-> > void vhost_iotlb_map_free(struct vhost_iotlb *iotlb,
-> >--
-> >2.34.1
-> >
->
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 6fc34e9bf8e1..423c0cb6f17d 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -215,6 +215,7 @@ TEST_GEN_PROGS_s390 += rseq_test
+ TEST_GEN_PROGS_s390 += s390/irq_routing
+ TEST_GEN_PROGS_s390 += mmu_stress_test
+ TEST_GEN_PROGS_s390 += pre_fault_memory_test
++TEST_GEN_PROGS_s390 += s390/irq_injection
+ 
+ TEST_GEN_PROGS_riscv = $(TEST_GEN_PROGS_COMMON)
+ TEST_GEN_PROGS_riscv += riscv/sbi_pmu_test
+diff --git a/tools/testing/selftests/kvm/s390/irq_injection.c b/tools/testing/selftests/kvm/s390/irq_injection.c
+new file mode 100644
+index 000000000000..75e0528f9b01
+--- /dev/null
++++ b/tools/testing/selftests/kvm/s390/irq_injection.c
+@@ -0,0 +1,74 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Test for KVM_S390_IRQ - s390x IRQ injection API
++ *
++ * Verifies that VM-level interrupt types are correctly rejected when
++ * injected via the vCPU file descriptor, and that invalid arguments
++ * to vCPU-level interrupts are also rejected.
++ *
++ * Copyright IBM Corp. 2026
++ * Author: Gabriella Seifert <gseifert@linux.ibm.com>
++ */
++#include <errno.h>
++#include <fcntl.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include "kvm_util.h"
++#include "test_util.h"
++#include <linux/kvm.h>
++
++static void test_vm_irq_on_vcpu_fails(struct kvm_vcpu *vcpu, __u64 type)
++{
++	struct kvm_s390_irq irq = { .type = type };
++	int rc;
++
++	rc = __vcpu_ioctl(vcpu, KVM_S390_IRQ, &irq);
++	ksft_test_result(rc == -1 && errno == EINVAL,
++			 "VM on VCPU IRQ type 0x%llx: expected %d, got %d\n",
++			 type, EINVAL, errno);
++}
++
++static void test_vcpu_irq_bad_param_fails(struct kvm_vcpu *vcpu,
++					  struct kvm_s390_irq *irq)
++{
++	int rc;
++
++	rc = __vcpu_ioctl(vcpu, KVM_S390_IRQ, irq);
++	ksft_test_result(rc == -1 && errno == EINVAL,
++			 "VCPU IRQ bad param type 0x%llx: expected %d got %d\n",
++			 irq->type, EINVAL, errno);
++}
++
++int main(void)
++{
++	struct kvm_s390_irq irq;
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++
++	ksft_print_header();
++	ksft_set_plan(6);
++	vm = vm_create_with_one_vcpu(&vcpu, NULL);
++
++	test_vm_irq_on_vcpu_fails(vcpu, KVM_S390_INT_VIRTIO);
++	test_vm_irq_on_vcpu_fails(vcpu, KVM_S390_INT_SERVICE);
++	test_vm_irq_on_vcpu_fails(vcpu, KVM_S390_INT_IO_MIN);
++
++	memset(&irq, 0, sizeof(irq));
++	irq.type = KVM_S390_INT_EMERGENCY;
++	irq.u.emerg.code = 0xffff;
++	test_vcpu_irq_bad_param_fails(vcpu, &irq);
++
++	memset(&irq, 0, sizeof(irq));
++	irq.type = KVM_S390_INT_EXTERNAL_CALL;
++	irq.u.extcall.code = 0xffff;
++	test_vcpu_irq_bad_param_fails(vcpu, &irq);
++
++	memset(&irq, 0, sizeof(irq));
++	irq.type = 0xdeadbeef;
++	test_vcpu_irq_bad_param_fails(vcpu, &irq);
++
++	kvm_vm_free(vm);
++	ksft_finished();
++}
+-- 
+2.53.0
+
