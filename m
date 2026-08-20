@@ -1,229 +1,250 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011013.outbound.protection.outlook.com [40.107.208.13])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91144746D1
-	for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 14:05:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787234756; cv=fail; b=qoN3+wmXMR6Bcn8iR4/WOpS8y/J07dCqkDIirCvEGsSWdKbUZQrqUo8kMwpZ3BAEBIpVneE9bj5scIWIeOx8talQq5Yl5Qz8sVlT3hIjerhGshpQJzTvdfunWpysu1G/nh55oKh2M+bDGmfa2bVgbyjDaIB/3LFoGwcaEmKtyPM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787234756; c=relaxed/simple;
-	bh=kU7pQRgZl9EkFh+KJruAMXJDAOHIfEPutl49d79Pklk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=L7b9C/rPDX0MJL3PRc3Xv1nLeQYIw4TVwnKWMBOFb8LTy1Qui1Gx2k6SljnFiAAA5Caf06qUWEgiG4S62cwHJskI59jlRg9Gfr/iCs+IqoEWhaSDmdvUPR7WJ8QsPO+zSqcEs0SXrH5B+usw+Zz70VTX8+tZMfJIdxz+c4y5lV0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=GzpstucJ; arc=fail smtp.client-ip=40.107.208.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E495340260;
+	Thu, 20 Aug 2026 14:27:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787236034; cv=none; b=rGYS77pHjLErDv3BGQVp/ztZebXt2x7UsrKsFg+i+N+NXrv4WuZOePLEik9BBdMxDVWVgsuAPCHgjL4OnTGxe4N9b5avqhRt5PLKzbMmyDoAIzpItwqdOXp276rnVDqL0fQqcXdE6FS/8n3dI/a0eN+G4Nya91155bPKj9gcMMg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787236034; c=relaxed/simple;
+	bh=UfCtCVDm8dUsQjjpEwjMkr3dSsc152NGmwe69XwzA9M=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
+	 MIME-Version; b=bQ5vm/u2LfBq81NvAd8HxczKegGyuRoZwqlERqd6RGcO+6RV/JhLpLHY9DM3S3we9oro+DKNgUtCj7SDxZXCj7KYC1/bj2o3D65rwcSkUifKsr7KEJp83m89l4Gw+FNlhCzM4aUDrBm3ZNemNbJOb195X4HAGHyX9zeM020HSQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=rc2mDGGm; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="GzpstucJ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aB7k03nAqh84gPLAzXtxDfom9UloXiVNr14YfygIxDHevPW2E1tUCjw+JDrwWKjdDNtEmGc9ZX9IXNg6dbQc4X6J/eDwlScRTVoXO85/Q4Lcaepu9oGOCxOzUXDeUewX8ucH9Q/10nBIdYvoD86ba17Yc/+UyUhnSm+83fRUAHo4tLL97bhAn/Mv18stQlyTRPlKDnHtVqT/9v/kXyAOrMI5KMZFE0OMXOVGdkpkiu7ADUksgNwmvj//bNeB27Rtz9sJm3S+xb75TLwLP0tBp9czGp36EDalZuTk06FhQZT2vd4rq0KLnZq23Cv29eObENTbngXGDuD3ciIcrsllJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UaeRPknB77XpEHGBCc7nG9DN0iW6oXU0kKwUUF6HxqI=;
- b=nbq8uN3srrGsSCpPC0cGpxHVgFAtls1wdQIUHSguE+270sVlqFMKtN0drprUcPUxuPqT3khQQJMtdvADNFnahA6gwOGw731fwlMjy5zkOIU0GM11kRE1EmzsDKMEGKmxdtH04WfpGnjH9+qT46j/TfSvCQ0HA3oLiTxDZvCTbRJzR6KLILvE8NG0Bkd/kNVVGVhbw1PI0bFwBRi/iEPwI19MUR6Y5CNmOg4GeRf4wxIe8GmxYDBdGp0mdFQe2SMxALRcYtZLpro/QSrjVGS/11JnIrauf6NwE3+mo/o9eYO+Gg/i+RrbJG7jrLlC5nuVmCnTvjq9Mzo6adGqSNdItA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UaeRPknB77XpEHGBCc7nG9DN0iW6oXU0kKwUUF6HxqI=;
- b=GzpstucJ2SZHtns4dx5i5yPcFiEv/6mqOOTbVEaS+TVc70xHuqd7b2GA5x7OLD/aPENyTArDKDCGmOGPPu9uTSZrLqufTfjWxXfCjDsjU2IPJO2CKUqrloPHkVWHWJpz/K+Z87aQk7Gbz47jL8Q29x6yuJC/j7+HicZn4EsWGMc=
-Received: from SA0PR12CA0006.namprd12.prod.outlook.com (2603:10b6:806:6f::11)
- by SA3PR12MB7858.namprd12.prod.outlook.com (2603:10b6:806:306::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Thu, 20 Aug
- 2026 14:05:50 +0000
-Received: from SN1PEPF00036F3D.namprd05.prod.outlook.com
- (2603:10b6:806:6f:cafe::54) by SA0PR12CA0006.outlook.office365.com
- (2603:10b6:806:6f::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.8 via Frontend Transport; Thu, 20
- Aug 2026 14:05:49 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SN1PEPF00036F3D.mail.protection.outlook.com (10.167.248.21) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.339.3 via Frontend Transport; Thu, 20 Aug 2026 14:05:49 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 20 Aug
- 2026 09:05:49 -0500
-Received: from [192.168.1.8] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.45 via Frontend
- Transport; Thu, 20 Aug 2026 09:05:47 -0500
-Message-ID: <3a330905-d8de-4176-abca-0e05184f5ea1@amd.com>
-Date: Thu, 20 Aug 2026 19:35:46 +0530
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="rc2mDGGm"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
+	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:References;
+	bh=5mAyoRZ1DeCCNtOFnYZquL7XbFPczim4+hkLsgLhzAc=; b=rc2mDGGm3RTIKEcp3fILb6LLOn
+	nt3XhSHTTNO7Kc8ryHKyeVpNJrPQaQ0vZSCpOWg7vvTihpCySjU8Pr/JrVL7LUPAebdGgyx8xW+wz
+	IDSKlkyDgvjM13s0BSXkFo/QBMo2Bic7A3f+pKDfMnv5kFVD40Gdz7NeNB1f0+7HWQ0LR9g1lsnec
+	D15W+nHvnqhAlmG7i4BiLaiLGHCB0k8xV7KFBqIaqkElJr56UJmPy5US/OeYguzMfMP8/mASk/sxf
+	/7c/M3x0WAhtKpj6WhcovgyBcBGAwCzb0uBCiGyEjLgCJaA12rB73MaobiqFPq3gxPrBJFLhuYlnY
+	VYDrsOzw==;
+Received: from [2001:8b0:10b:5:606e:77cd:9db3:6c5c] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wx3jD-0000000Fns7-45VX;
+	Thu, 20 Aug 2026 14:26:48 +0000
+Message-ID: <448c5c0128b08ab98d175ae1099ff4d4874e49b3.camel@infradead.org>
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Andrew Morton	 <akpm@linux-foundation.org>, David Hildenbrand
+ <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka	 <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan	 <surenb@google.com>, Clark Williams
+ <clrkwllms@kernel.org>, Simona Vetter	 <simona.vetter@ffwll.ch>, Jerome
+ Glisse <jglisse@redhat.com>, Christian Koenig	 <christian.koenig@amd.com>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Sean Christopherson
+ <seanjc@google.com>, linux-mm@kvack.org, kvm@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, 	linux-kernel@vger.kernel.org
+Date: Thu, 20 Aug 2026 15:26:35 +0100
+In-Reply-To: <20260820133020.7ZCRIhwX@linutronix.de>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-HaviD9OcfWUIvdKhLY5P"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/7] KVM: SVM: Emulate guest accesses to LBR v2 MSRs
-To: <sashiko-reviews@lists.linux.dev>
-CC: <kvm@vger.kernel.org>, Shivansh Dhiman <shivansh.dhiman@amd.com>
-References: <20260724195040.630468-1-shivansh.dhiman@amd.com>
- <20260724195040.630468-4-shivansh.dhiman@amd.com>
- <20260724201318.8A4231F000E9@smtp.kernel.org>
-Content-Language: en-US
-From: Shivansh Dhiman <shivansh.dhiman@amd.com>
-In-Reply-To: <20260724201318.8A4231F000E9@smtp.kernel.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+
+
+--=-HaviD9OcfWUIvdKhLY5P
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3D:EE_|SA3PR12MB7858:EE_
-X-MS-Office365-Filtering-Correlation-Id: fda89706-f79f-4f73-d68f-08defec42374
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|82310400026|1800799024|376014|36860700016|4143699003|56012099006|10067099003|11063799006|5023799004|10063799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	Y2wEbBJGIAS599i9SuQ8SOG4vqlwaV2Mnxc/ZxH5MXDzqhsK+hzw7Z2TY/8fzcv1CjWtA+elNyrhdlMWpnS8lxuM0In6C+CWum7d9JY7G1t1o/dXYQfWaD6mD6Bw8KTeJCyBuoLnMcMYonarBmlDc2wlhbs8bsfNgNZ7+iZPP2Jl7BiSQ7uVRE68Tu+f8CSivaerQD0c5o6RRNeVRUuuNtF5mHrr/YSqUBdq7039MvqkRDQfcpYVMpmqjq673Jf9WjkzBISmDQDendiFutHn26XauNqnCtFKgnWV0B17CVDUwgfb9BbQHXeCdMJi+dRayb/pLvOP24KTLYL3vwtbv+Rin5G8v01W3vuOrMgb+RInma2JQwl/rmh2N49WWsdOs4PR2zhbV/nW4IqO7lOG9EM5BlzZQXesqTjMUphyRgC/xKatx+WOMQHt3SwzrsJML6NxwdUeR6Q/R4k61+f8N0qiHKlR9l0ePonq36JsCz5ziSJROwfiX3GqBPYEUbz6ciaC48GduBjm04pK1qWtF4YjAibYyGReZ6rL/WNXZ3XJU8N0op6sQsDcq49Cw8MGlhCPHGil14st7jVW+o+bMbj3YyUH/lb7TnFxqdIaGwU/C8tXNWmHm8CjhUzNxBrFitEoVI+A2NlDtyDqbG7CnjNNcSCS1bypC3wdnG5zvVA5GG4wK7YHRZFQLoMjRl0DeHkrswzqi30hDF5HFHeSYQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(82310400026)(1800799024)(376014)(36860700016)(4143699003)(56012099006)(10067099003)(11063799006)(5023799004)(10063799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	/DlfHbrK0hvfqIdkLOPUPtbuTgS/V6lOM/DETW6SUt5jneiNUi542RtxQNcbgQSaU3LkxPGgGVZjkXkDyyuiZ6DY7u47bCJJztaRWVdY1BXPe2zLsD7Lh+puS+4anY3jSCPdWAal8Ojms1Udq/ljeAZQtVLY+C1SxeNBKlLE1Dz+BIyywhlJFtIAZoX8k1DbtS88R/z4/Vn9nAEtsg/b+4jDQmFfamSShyer7S2bcaQWSqTohe3UxtqXgHrU5zVP8xn/RTdHLkJZWW8uLcBUdU9VzpLWNpSY22JqSm7JQ17gL32DQmJ9RijKaN5mW+c+pgLNHsKht44Mz9DFpkxs1/NQY8opc2e6LrW4+1XL0c1WK+eOwqlAGJYv2c5kP1d75eavwOWffwRrnuQiYJzdruobVi1qjHi1LnnI3/4fp1rbMGU+cXuRUCkR4ukEKjb6
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2026 14:05:49.4682
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fda89706-f79f-4f73-d68f-08defec42374
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF00036F3D.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7858
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, 2026-08-20 at 15:30 +0200, Sebastian Andrzej Siewior wrote:
+> So if it is *just* the annoying splat on RT, I could try to teach
+> might_sleep() no to be upset here.
+
+It *wasn't* just the splat on RT... but I think it can be reduced to
+that. My full set of reasons were:
+
+ =E2=80=A2 RT turns rwlock_t/spinlock_t into sleeping locks.
+ =E2=80=A2 We believed a waiting KVM_REQ (IPI + wait for acks) would sleep;
+   it actually spins with preemption disabled=C2=B9.
+ =E2=80=A2 synchronize_srcu_expedited() in the invalidation path really doe=
+s
+   sleep on a workqueue completion, even on !RT.
+
+If you deal with the first, the second turns out not to have been
+needed, and that just leaves the third which is the SRCU atomic thing
+(qv).
+
+Aside from those selfish technical reasons, the check is actually
+*wrong* because "must not sleep" isn't the real requirement here, as
+discussed. And when I went looking, not only did I have to hack the
+kernel to even make it trigger at all, I also couldn't find any example
+of it finding anything that *wasn't* a false positive. The only
+concrete thing it *did* achieve was making us strip a necessary
+KVM_REQUEST_WAIT to appease it, which opened up a use-after-free.
+
+So if you fix the might_sleep() and Paul comes through with the atomic
+SRCU thing, I no longer care *much*, but still think the whole thing
+deserves to die.
+
+Going back to SRCU atomic (citing your mail in reverse order):
+> In
+>    https://lore.kernel.org/all/a94b75e8b9b1d2191f365c0f4275fd5082332df5.c=
+amel@infradead.org
+> there was a suggestion for "srcu: Add an ATOMIC reader flavor and a spinn=
+ing
+> synchronize_srcu_atomic()". This one had preempt_disable() in
+> srcu_read_lock_atomic(). This is bad as not only forbids to acquire any
+> sleeping locks (such as spinlock_t) but it also does not allow any
+> scheduling of any kind within this section.
+
+That was kind of the point :)=C2=A0
+
+My=C2=A0srcu_read_lock_atomic/synchronize_srcu_atomic() were born of the
+"need" to avoid scheduling in OOM (RT or no), but actually I think they
+survive even when that requirement goes away.=C2=A0Even with my
+try_synchronize_srcu() optimisation, we saw higher tail latencies when
+deferring to the workqueue, and Sean was very much in favour of
+eliminating those.
+
+So I think we do want synchronize_srcu_atomic() if Paul can find a way
+to give us that.
+
+To your point about preempt_disable() in srcu_read_lock_atomic() on the
+read side... I don't know if we *need* it to be like that. When I threw
+it together, I was thinking of it as a raw_spinlock, in the "must not
+sleep" mindset.
+
+In fact, as long as the splats are dealt with, it would probably be OK
+for it to be equivalent to a non-raw spinlock: disable preemption on
+non-RT, but not on RT. I think that's perfectly OK for us from the KVM
+point of view. But does heavily depend on how Paul wants to implement
+it, of course.
 
 
+=C2=B9 I wonder if we might want to change that on RT?
 
-On 25-07-26 01:43, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
-> - [High] LBRv2 emulation ignores the `lbrv` module parameter, allowing guest LBRv2 usage even when LBR Virtualization is globally disabled.
-> - [High] The newly added LBR v2 MSRs are missing from KVM's list of saveable MSRs, causing them to be silently dropped during live migration.
-> - [High] Missing nested SVM state synchronization for LBRv2 fields causes state corruption and cross-tenant information leaks between L2 guests.
-> --
-> 
-> --- Patch [3]: [PATCH 3/7] KVM: SVM: Emulate guest accesses to LBR v2 MSRs ---
-> commit ea17366da9bcd5ccfa5c4c9307a6f68cda7d1255
-> Author: Shivansh Dhiman <shivansh.dhiman@amd.com>
-> 
-> KVM: SVM: Emulate guest accesses to LBR v2 MSRs
->     
-> Back the LBR v2 MSRs with their VMCB save-area fields in
-> svm_{get,set}_msr(). This is required when guest accesses to these
-> MSRs are intercepted. This allows the guest to retain the values
-> of these MSRs on VMRUN/#VMEXIT cycle when vLBR is disabled.
-> 
->> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
->> index ef69a51ab27f9..13ac62604ca05 100644
->> --- a/arch/x86/kvm/svm/svm.c
->> +++ b/arch/x86/kvm/svm/svm.c
-> 
-> [ ... ]
-> 
->> @@ -744,6 +744,12 @@ static void svm_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
->>  	svm->lbr_msrs_intercepted = intercept;
->>  }
->>  
->> +static bool svm_lbrv2_supported(struct kvm_vcpu *vcpu)
->> +{
->> +	return guest_cpu_cap_has(vcpu, X86_FEATURE_AMD_LBR_V2) &&
->> +	       kvm_vcpu_has_mediated_pmu(vcpu);
->> +}
-> 
-> [Severity: High]
-> Does this capability check need to respect the global lbrv module parameter?
-> 
-> Unlike the legacy LBR logic which explicitly checks lbrv, this function only
-> checks the X86_FEATURE_AMD_LBR_V2 capability. 
-> 
-> Could this allow a local guest to bypass the host administrator's explicit
-> disablement of LBR Virtualization (when loaded with lbrv=0) by directly
-> accessing LBRv2 MSRs?
+--=-HaviD9OcfWUIvdKhLY5P
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-The lbrv check is not needed here because that capability is already gated
-on lbrv in svm_set_cpu_caps(), and the guest cannot have LBRv2 if kvm
-capability is clear.
-
-	if (!lbrv || !enable_mediated_pmu ||
-	    !kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2))
-		kvm_cpu_cap_clear(X86_FEATURE_AMD_LBR_V2);
-
-
-> 
-> [ ... ]
-> 
->> @@ -2882,6 +2901,21 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
->>  	case MSR_IA32_LASTINTTOIP:
->>  		msr_info->data = lbrv ? *svm_vmcb_lbr(svm, msr_info->index) : 0;
->>  		break;
->> +	case MSR_AMD_DBG_EXTN_CFG:
->> +		if (!svm_lbrv2_supported(vcpu))
->> +			return KVM_MSR_RET_UNSUPPORTED;
->> +		msr_info->data = svm->vmcb->save.dbg_extn_cfg;
->> +		break;
-> 
-> [Severity: High]
-> Are these new LBR v2 MSRs missing from KVM's list of saveable MSRs?
-> 
-> Because the new LBRv2 MSRs (MSR_AMD_DBG_EXTN_CFG, MSR_AMD64_LBR_SELECT, and
-> the MSR_AMD_SAMP_BR_FROM array) are omitted from msrs_to_save_base in
-> arch/x86/kvm/msrs.c, they won't be returned to the VMM by
-> KVM_GET_MSR_INDEX_LIST.
-> 
-> Will this cause the LBRv2 state to be silently dropped during live migration?
-
-Good catch. I missed adding the MSRs here. Will do that in v2.
-
-> 
-> [ ... ]
-> 
->> @@ -3181,6 +3215,40 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
->>  		*svm_vmcb_lbr(svm, ecx) = data;
->>  		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
->>  		break;
->> +	case MSR_AMD_DBG_EXTN_CFG:
->> +		if (!svm_lbrv2_supported(vcpu))
->> +			return KVM_MSR_RET_UNSUPPORTED;
->> +
->> +		if (data & DBG_EXTN_CFG_RESERVED_BITS)
->> +			return 1;
->> +
->> +		if (svm->vmcb->save.dbg_extn_cfg == data)
->> +			break;
->> +
->> +		svm->vmcb->save.dbg_extn_cfg = data;
->> +		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
->> +		svm_update_lbrv(vcpu);
->> +		break;
-> 
-> [Severity: High]
-> Does nested SVM state synchronization need to be updated for these new LBRv2
-> fields?
-> 
-> Looking at nested virtualization, L2 guest state is synchronized using
-> svm_copy_lbrs() in arch/x86/kvm/svm/svm.h, which is called during
-> nested_vmcb02_prepare_save().
-> 
-> Because svm_copy_lbrs() was not updated to copy the new dbg_extn_cfg,
-> lbr_select, and lbr array fields, vmcb02 can retain a previous L2 guest's
-> branch records. When a new L2 guest reads its MSRs, it could observe the prior
-> L2 guest's execution trace.
-> 
-> Additionally, upon nested_svm_vmexit(), wouldn't L2 modifications be dropped
-> because they aren't copied back to L1's vmcb12?
-
-Nested support isn't part of v1. Will implement it in upcoming versions.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+GpFLqSOt1i29IUXHTXYpoEYAAAAAAAA=
 
 
+--=-HaviD9OcfWUIvdKhLY5P--
