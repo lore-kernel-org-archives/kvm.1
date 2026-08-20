@@ -1,123 +1,214 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA5747A868;
-	Thu, 20 Aug 2026 15:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787240058; cv=none; b=YZetCjYq7jzhD6UOJu7QfiL1qIXpmLfK9eZwU0X1wuZuCXir6XtYYrsHEQcu6Iis0JhzqCr29mfRhO5qOu73yBUt7Pzq/CJvIcPhO3UcXy+zlV9gaX6aoVSVsaA3FB5NnnuI9hqpaRT5jwg5+gsokK/mhzzfucpM0CH82M4lN8s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787240058; c=relaxed/simple;
-	bh=l/Ollc2Gxv9AZOgk9zNP4zB3Y8ps7p00jkEgW36uJcU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WMQ+9+x95XMTTHbEfC6hxtG3Fo02xDgL/+xFI61EDXaAnWzYRvSYeUceShYtt2xIESYTgL30LYY8Ql9VndBKdPMoBw3t9ngjKzjiA2Xl4XY+P6UeDi3vKILo39ykEeIbCl4BGhlmwYBJZ8fpG8zQFrzha+MM1alNZffSB8zgdyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pfcctPuN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SbnMBF3Y; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED32137DE89
+	for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 16:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787242435; cv=pass; b=VM1/08UroIa4hG4xzW7jdpTSj4PXyMbJpeDzAWEAAjRQIvnjT7pbcLtHsT/jWCHHz1tOgkyIanQeo0hRfvtcAUmOySusIsbfAI5Sw0X/cl/0ugCfC0fdFAnTFJj8t6mYnHEgU23fT80nFuryBslZZy6rpEm9kNDHWUb+Nzmve0Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787242435; c=relaxed/simple;
+	bh=R4MPBvVJo4QUrqfGiyzEHUoLl/o6jIbnVOLSKCY5MYk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VNgaAygUYrtJSPLL4ZHrwBmPAbiJPFeCE0fsQobVUm1YdJMPSOPIKfGq5jDaffJkM3bjGgYeKIO/jQoBycjawQ5pLHrSbX6ckqdLAojwll2A4D1tB0xu1NouD4+r5j3Ob/LIFRHv1rAngPOk/pzQoF8RvPI2+V++j6mKoa01qPY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k7LSrBqh; arc=pass smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pfcctPuN";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SbnMBF3Y"
-Date: Thu, 20 Aug 2026 17:34:13 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1787240055;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XnQ07X6Vq1lV2T06V5sf/SOjpM/4n7JqjKjnkaB9qXc=;
-	b=pfcctPuN5/Xbfx3OXgOZDbHxVwzMgOj+0VGDZnd2Tffm0m01fR0cJvlT6tINnj1YogvMNz
-	iycKG7KKK5z+DtNSjyd7I5L6KJ98j+TuHFVAFDDJd4zP65mCNStqEyzp4hNi2FJydFiEeY
-	vOADJVPPv6e+6zQAzax6ShueyhGSokHbl6mAvnppmno6TkgV0JJZPyS3nZV89H8GbFC8sh
-	o2hxXTs4hWMZ1YmtDnYguiGQZHU1mc2Uj8zoEy7IXyPRQFy+Y09tbME7s4CUIiQyvCsAjR
-	RW1eiGVXpyQ/ajFUfUjJo9FY4iixItpjyUtKPZKMmwazIg7lWKwM+KtT4dIwUA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1787240055;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XnQ07X6Vq1lV2T06V5sf/SOjpM/4n7JqjKjnkaB9qXc=;
-	b=SbnMBF3Yj7gzKAbvIHxsY1eMaDbTkPtAdcZdgBYd1G/FlP05ovO/uptZmhdHqzIV3qJjHX
-	vlBOFDr8qv6M7MBA==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Sean Christopherson <seanjc@google.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <20260820153413.1EAmdFht@linutronix.de>
-References: <20260820133020.7ZCRIhwX@linutronix.de>
- <448c5c0128b08ab98d175ae1099ff4d4874e49b3.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k7LSrBqh"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5b14d1f9315so2459026e87.2
+        for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 09:13:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787242432; cv=none;
+        d=google.com; s=arc-20260327;
+        b=l4JX6EA4l0n2omxuR9wfyEn+fTxBZhQq3R5vL0lmQGm3cW/WjlAgNsEiBs60dIRpRa
+         3AwIUpX2PpfqUae9225S9byf1D0x7V6aqNy6he5enLuzecIJI/ij5MvnyH4suFomgh0I
+         GNVPNiBmmYuGvBhH5FZuVSW7L0hem22dcbC69BV+N9llnQ1hrHT6ajT46TiTng99YAUU
+         oG7RkExtxsBcWkTbEJyCUlCDufzCtjzwJqGqtjK5Qn3d2bllACu2FyG58ly9FG3fIbKh
+         q68HHYRxocDdBL1022qUHoBW96M5YWKog5i4dr8KnOIXu/KAi++klwgS1VAD9m0Rpi+t
+         lDyQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ztOfkRWaJIQKbe97d8qKHuDqRSY1ntMmOF6ikBWIndo=;
+        fh=1Bgm8q0cgkBUApdZcI0E8xWUeP9Wp9QTAcN/qv+ZSh8=;
+        b=OwZIrU+l8BQxbpdInzCim6AW5IGcKyaEN0qpztIinPjpuUrvgXiOB1or0yHo66ZtBz
+         qsMC4Z7aD4Qj6FCqOo1wgM1BgDMF7lAi6aCXhL1+GdiiEyfe1cndDtSLB2ghtKDST3Qi
+         moYrV9Vkc6/w5Uqk9+zwCAsS7uF8SGmRJt8JfPWfIiJyW/+uoAto9qbkDoOztKEvDHq8
+         66x1QRV+RQBgBN2awAKlVWv+TfALDff3ga9Yis6RakpmGLjm9jWbUTUh3OW4Xd2uVeMB
+         Ju+kjObEwWzCIgO93+6Iye+kDZZWNGISpnxkanOWbinttEekSWBnMftGlO7eeGHI//eZ
+         lp1g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787242432; x=1787847232; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ztOfkRWaJIQKbe97d8qKHuDqRSY1ntMmOF6ikBWIndo=;
+        b=k7LSrBqhGmZpQB3jf1SzAcJQ9lNIYnvntjR/GnOUdCMePaob0RmpMh3YVMxOyyRD6y
+         GjmpTO8rj53bKy5hMlzsAoNaOJxdPz/YVGetptmUfXRGvlYJG63WSzJil/pdLwkQQP0S
+         xiXDdtZrdgK9QXiubCKHsqmBH7d0j3tbbA+RKXrJyq97gJMDiImq4qTZu9djWDTkCsUp
+         HgglrPNVS9CvtMXl7eXvUZRW3vkIbh0LBhlPnro8biQtkDFOmSiiee/oVzWVaFR/XLKY
+         PDp8cgJvmdLeeHkBSADc4xIQKtr/NMnI8K9ry/hn4I/nUCX0IEKzrjBSHzGbeAnqaLqo
+         YWGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787242432; x=1787847232;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ztOfkRWaJIQKbe97d8qKHuDqRSY1ntMmOF6ikBWIndo=;
+        b=ikga/44DPAQfDoqT+5jn8WUsjNpJt09zSwbi8VhJ0aeaMpmnDHAmImeqZbcrHAFTym
+         9G2026eUOzgC0ECWSCLehRFyXEq02vQ0/TOvOBZQllGGIPKdsuolqvfqCU/ED39BqkN/
+         VH4PKkj2oKTwn9dQs4lRhT69oiZaa8b7/hsv2fWNL1gxN74vDA5mgFEuRKpMRMfrviGw
+         IP8MBNLFZbMXraecBlkAD6GJJ/o0aSvhyXor0RLYX+WHUzO9WfpLQppG/dzH4vbfIqc4
+         ox6cI6bd9AkDUUeM/HHcX+KBifrFw8wDWg+F0+5QbzPiUVKxgH+3uA+7ERq/M/OcSiIX
+         yY9w==
+X-Forwarded-Encrypted: i=1; AHgh+Rrs+ZiemewcqWWLdVJwqvQEOEAIAJwEW5s+paqhTxuv7XieOiUDqPMxPtxBvhyKJCO1vCE=@vger.kernel.org
+X-Gm-Message-State: AFuF++lGCwdSLSh2bdJuNk56h8EKmuUYxtTfIlNqyIoj3wuhOtcCdJrz
+	9Dz+j/idjk1B0fQBqC+T/XqUtqHFD/t9BxtSu+q781gwRvfq/KXrYjkwqtZtYCQX/QgxcgW9zt3
+	HB0ninl41b5wK1HAtYY1YyVKAuLeOghuIm1F8cl54
+X-Gm-Gg: AR+sD10Gt4QZh4A8ZWubeDBTo9H14ljrz5zxD325xNd/v1+zHIe/hAMcxTslVHhholT
+	VEOqNs/vFwK9OjQcIM4WSWJzwWPCHm1jepVW5cXB0IBt4WLYgI4QaS/0C3W/4o3u1zqqy/bpP98
+	qdZ35jBpay0s/CMb13DpnQKBxoo8PpcM0tUvPPfpLYpF7/nJtQrRtZzZlEx7xlx+Ax+qhIXJhz5
+	ZTwO06uaDW2FS8BxwvKvpxEIHIVMEe4df2+BzQeO8Xe7UFfSde5ugtNOHCM12N3eiSl5vUHBW27
+	3d8yFOkmyCaTqkV791q3m2ThR8FmDkMSH+OUrBsNS4VH6Q==
+X-Received: by 2002:a2e:bea4:0:b0:394:5c9a:f315 with SMTP id
+ 38308e7fff4ca-3a189a50d6emr37194921fa.14.1787242431336; Thu, 20 Aug 2026
+ 09:13:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <20260803170825.925561-4-hisamshar@gmail.com> <20260817220457.554823-3-hisamshar@gmail.com>
+ <aoOKMeua-cNeTxXT@google.com> <8d069fe1-a5b6-4a86-9604-26aebe2dc243@gmail.com>
+ <aoSIBnFfy4osa6wt@google.com> <c2f7e904-2646-4b01-864d-d185221c7f56@gmail.com>
+ <aoSyYtxBpEaoBwGY@google.com> <c9ee5f08-81c3-4c91-9189-002b260ea641@gmail.com>
+In-Reply-To: <c9ee5f08-81c3-4c91-9189-002b260ea641@gmail.com>
+From: David Matlack <dmatlack@google.com>
+Date: Thu, 20 Aug 2026 09:13:17 -0700
+X-Gm-Features: AcwNN1XO2VnQdgDq24rSrB6pOvu040FA9J1FBskyMqv9L255R8Q4VMJYArlZmn4
+Message-ID: <CALzav=fs4bqMM7BXNPXqhtbqGzA+LW5fgx2-1Q5=sTN5+krYhw@mail.gmail.com>
+Subject: Re: [PATCH v2] KVM: selftests: Replace ulong with unsigned long
+To: Hisam Mehboob <hisamshar@gmail.com>
+Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, pbonzini@redhat.com, 
+	shuah@kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <448c5c0128b08ab98d175ae1099ff4d4874e49b3.camel@infradead.org>
 
-On 2026-08-20 15:26:35 [+0100], David Woodhouse wrote:
->=20
-> So if you fix the might_sleep() and Paul comes through with the atomic
-> SRCU thing, I no longer care *much*, but still think the whole thing
-> deserves to die.
+On Tue, Aug 18, 2026 at 2:03=E2=80=AFPM Hisam Mehboob <hisamshar@gmail.com>=
+ wrote:
+>
+> On 8/19/26 00:28, Sean Christopherson wrote:
+> > +David for the VFIO thing
+> >
+> > On Tue, Aug 18, 2026, Hisam Mehboob wrote:
+> >> On 8/18/26 21:27, Sean Christopherson wrote:
+> >>
+> >>> Oh, so on top of "https://github.com/kvm-x86/linux.git next", this *i=
+s* the last
+> >>> blocker?  If so, then I'll grab this for 7.3.
+> >>
+> >> Not quite -- I tested kvm-x86/next + this patch with musl-gcc, and the
+> >> build still fails. On top of the steal_time fix already in your tree,
+> >> two more musl blockers remain, both from code that is only in
+> >> kvm-x86/next so far:
+> >>
+> >> 1. hardware_disable_test.c, from 496779b54943 ("Pre-set threads affini=
+ty
+> >>     in hardware disable test when possible"):
+> >>
+> >>       hardware_disable_test.c:75: error: implicit declaration of funct=
+ion
+> >>       'pthread_attr_setaffinity_np'
+> >>
+> >>     The call sits under #ifdef _GNU_SOURCE, but lib.mk defines _GNU_SO=
+URCE
+> >>     unconditionally, so the path is always taken and musl (which lacks=
+ the
+> >>     function) breaks.
+> >
+> > Heh, Sashiko flagged that as problematic, and I was trying to figure ou=
+t which
+> > macro to key off of[*], but was (obviously) unsuccessful.  I don't supp=
+ose you
+> > know the canonical way for checking for support of glibc-only functiona=
+lity of
+> > this nature?
+> >
+> > [*] https://lore.kernel.org/all/am0KqJOD-FiC9BXs@google.com
+> >
+>
+> __GLIBC__ is the pragmatic in-tree answer.
+> _GNU_SOURCE is a request macro (input to the libc headers), not an
+> availability indicator -- lib.mk defines it unconditionally, so it
+> cannot detect anything. __USE_GNU works but is glibc-internal.
+> __GLIBC__ is defined by glibc's <features.h>, which any libc header
+> pulls in, and is the established idiom in selftests already:
+> kvm/lib/assert.c uses "#ifdef __GLIBC__" for execinfo.h, as do
+> bpf/test_progs.c and nolibc. musl deliberately provides no __MUSL__ --
+> its FAQ's stance is "test for properties, don't assume them", which
+> strictly implies a compile test (autoconf-style); with no configure
+> step in selftests, __GLIBC__ is the established in-tree idiom. For
+> hardware_disable_test.c that is s/_GNU_SOURCE/__GLIBC__/ in the three
+> spots; build-tested with musl-gcc, passes.
+>
+> >>
+> >> 2. The libvfio wiring from a262fc49e0aa ("Build and link
+> >>     selftests/vfio/lib into KVM selftests"):
+> >>
+> >>       vfio_pci_device.c:25: fatal error: uuid/uuid.h: No such file or
+> >> directory
+> >>       sysfs.c:31: error: implicit declaration of function 'basename'
+> >>
+> >>     The former adds a hard libuuid dependency (its headers aren't visi=
+ble
+> >>     to musl-gcc here);
+> >
+> > Can you elaborate on what you mean by "its headers aren't visible to mu=
+sl-gcc"?
+>
+> musl-gcc searches only its own include directories
+> (here: /usr/include/x86_64-linux-musl and gcc's internal dir) and
+> deliberately not /usr/include, to avoid mixing glibc-oriented headers
+> with musl. uuid/uuid.h comes from libuuid (util-linux) and is installed
+> at /usr/include/uuid/uuid.h for the glibc toolchain, so glibc builds
+> find it and musl builds cannot. I see 2f0c30d0d1 already limits the
+> libvfio link to x86; the remaining gap on x86 is that libuuid is now a
+> hard dependency of the KVM selftests build (libvfio.mk adds -luuid),
+> and for musl-x86 the header is not visible at all without a
+> musl-targeted libuuid install. A uuid.h compile check to skip the vfio
+> pieces would keep it optional; otherwise the new dependency is probably
+> worth documenting.
 
-Okay. Let me look into it then. But "the whole thing deserves to die" is
-limited to the kvm usage, not in the kernel?
+libuuid is required to build libvfio, which VFIO and KVM selftests
+both depend on.
 
-> Going back to SRCU atomic (citing your mail in reverse order):
-> > In
-> >    https://lore.kernel.org/all/a94b75e8b9b1d2191f365c0f4275fd5082332df5=
-=2Ecamel@infradead.org
-> > there was a suggestion for "srcu: Add an ATOMIC reader flavor and a spi=
-nning
-> > synchronize_srcu_atomic()". This one had preempt_disable() in
-> > srcu_read_lock_atomic(). This is bad as not only forbids to acquire any
-> > sleeping locks (such as spinlock_t) but it also does not allow any
-> > scheduling of any kind within this section.
->=20
-> That was kind of the point :)=C2=A0
->=20
-> My=C2=A0srcu_read_lock_atomic/synchronize_srcu_atomic() were born of the
-> "need" to avoid scheduling in OOM (RT or no), but actually I think they
-> survive even when that requirement goes away.=C2=A0Even with my
-> try_synchronize_srcu() optimisation, we saw higher tail latencies when
-> deferring to the workqueue, and Sean was very much in favour of
-> eliminating those.
->=20
-> So I think we do want synchronize_srcu_atomic() if Paul can find a way
-> to give us that.
->=20
-> To your point about preempt_disable() in srcu_read_lock_atomic() on the
-> read side... I don't know if we *need* it to be like that. When I threw
-> it together, I was thinking of it as a raw_spinlock, in the "must not
-> sleep" mindset.
->=20
-> In fact, as long as the splats are dealt with, it would probably be OK
-> for it to be equivalent to a non-raw spinlock: disable preemption on
-> non-RT, but not on RT. I think that's perfectly OK for us from the KVM
-> point of view. But does heavily depend on how Paul wants to implement
-> it, of course.
+How is this problem solved for other libraries, like -lpthread?
 
-okay.
+> >
+> >>     the latter because musl declares basename only in
+> >>     <libgen.h>, while glibc exposes it via <string.h> under _GNU_SOURC=
+E.
+> >
+> > IIUC, sysfs.c just needs to explicitly include libgen.h?
+>
+> Yes, adding <libgen.h> suffices. One nuance: there are two
+> flavors -- glibc under _GNU_SOURCE provides the GNU variant via
+> <string.h> (char *basename(const char *), non-modifying), while
+> <libgen.h> provides the POSIX variant (char *basename(char *), may
+> modify) and takes precedence on glibc as well. Safe at this call site:
+> rl_path is a writable buffer filled by readlink() (no trailing
+> slashes), used once by sscanf(). Verified with compile tests on both
+> libcs, and with <libgen.h> added, uuid/uuid.h is the only remaining
+> musl failure in the whole build.
 
-Sebastian
+Feel free to send a patch, or I can if you prefer.
+
+
+>
+> >> The rseq __GNUC_PREREQ failure is already covered by my patch in
+> >> linux-next. With the above sorted, the musl build passes.
+>
