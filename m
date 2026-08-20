@@ -1,142 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCFC43DA4E;
-	Thu, 20 Aug 2026 13:08:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE58845FFDC;
+	Thu, 20 Aug 2026 13:30:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787231315; cv=none; b=JWgAuzhg45Z4RFBg6DkuY3/ELJ5rDYAQNezPR1jbNybpyYxoByFQDHeUtuGH5pwT7X+IuZNu2r4RQp/W5qG7EJahxjnnZwx/ySylJqDdkGYFIAPAnYecjOXdjWtxKStKKoZP54tvaFF6TvFnRK556x7aJGGeWqpTLZenUva/ItA=
+	t=1787232631; cv=none; b=bdNnJp7Y8F7JWQiEJ9EcQWmqEc/cn6U2FeHgjf1gUI5W2avW2vvkg6BZpXPa77avIiz8zj0lXW0DHPvGZCQdczbqbPtCJi2XBpz93IumKIvg7nxAva+nx1JWldfAU+6o2+DLR8bRLBpUqPIx3WweXIKBf1u3m75w+ezGGAX6n30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787231315; c=relaxed/simple;
-	bh=jVfrOurrKDlBrnzASNWbi4K5D/6lFMX4BwYQ1jgHHVs=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VqXS6x1AUvN8zBFoyNd/VU4rlSliT54eWZ4MNjulM/iNYhn7yLvnG7hYIcGc/n86TPmEkyiuddyXb+m1zTc6NoEiovnGvePL4t7H2oPiW9QmkqzGVfMJ8nH0cbc05bxXJ7CAzCadSrQmULW/gnkvMlS0OHtFwsQYaALhQtf/bgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UWfKp12C; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787232631; c=relaxed/simple;
+	bh=TkUR3eg84C2wQNgwp6xVpowcFHmodQ5i03LpSgbOSzs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QN/F94kLFzr6+Qs52MnYd8DTijF6D04wfu7HnV5/YNH0nbDjZouPrxd1C7TyGSBSytEZ7C3e2s1cJ3x4lGDlw3X4x5dhmafioy99eHVQ9ZnqJL9kd3bLQET1D8UyXrgUhOM6fIiqMnG5cVEDySRRMRYtaxMfmf6moi/W08NA8C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ElP4FyOS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=j0/TWGAJ; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UWfKp12C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7284D1F000E9;
-	Thu, 20 Aug 2026 13:08:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787231314;
-	bh=8z85GCKW2VxnEzgpf5T45zSF2IELa/F1r2HbWTOGkeY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=UWfKp12CLyyQNRP7nCcCac1/uuXM6QM+ZI9yAJzBHIoL11CaaDUMSp8LkTH20l/q2
-	 C3GVcAb/IkVxYd6MvJuaPbeHA4po2l7YnIOkYlgFoIUjupvluBttyvv7UZhj5Xeh7t
-	 OdURanA89Muz0NskdFFEh6Jcor2EktMX16N/XppS0s1K09mgd2lNkYmLHsddNfOHAF
-	 OnGOO9tUpDT3+gj4Pzq9xyPLm90/4DSR7bJlvglX5vj2CSHwQf6TWZHP6rQRdDqj81
-	 KGNVzDPQVLoqbId8QsKjwABjHagoi+tGezCmp1GHqshk1sVB2cJKMJdalU7m/vAwtS
-	 DDW8hBsnBensQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wx2VU-0000000HIrl-1WJZ;
-	Thu, 20 Aug 2026 13:08:32 +0000
-Date: Thu, 20 Aug 2026 14:11:04 +0100
-Message-ID: <87v795ndhz.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Jing Zhang <jingzhangos@google.com>
-Cc: KVM <kvm@vger.kernel.org>,
-	KVMARM <kvmarm@lists.linux.dev>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Steffen Eiden <seiden@linux.ibm.com>
-Subject: Re: [PATCH] KVM: arm64: vgic-its: Fix O(C*I) loop in vgic_its_free_collection_list
-In-Reply-To: <20260818223422.367803-1-jingzhangos@google.com>
-References: <20260818223422.367803-1-jingzhangos@google.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ElP4FyOS";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="j0/TWGAJ"
+Date: Thu, 20 Aug 2026 15:30:20 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1787232622;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2ASNA2n2ULlXCgF/csvU3xJ+NVPUzckfBtl899VP2uQ=;
+	b=ElP4FyOSCqRqb+Pz69s3P2eYfQne5TxOixt6SdH8S2CopMBSZftuRFoSbGEy++xou/Yghi
+	538wjhY1axt5CUInvKs6ZQ1MRy6ycYWKzB6ZupFgJiMo25KIAm2K7g13UPevbLKjFVzD45
+	pcCNpr0cwpPtzfnRW2H/O29HtPhDYt004+TGnyvA4nIX0TgoLnmTYcQoEw8w7+3+/bru9T
+	QNU5TLPExroibLaHPbe52kdIkgEnUlCPoEuUoBlxf25kD+Bg4x9/jBEHgm9vt3ATMBxi6t
+	YmpdFraagC0M6kKHnxW+8i1Wv/yI6rexAV5dqA1rpNH68Rbme9mH83I8A/smjw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1787232622;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2ASNA2n2ULlXCgF/csvU3xJ+NVPUzckfBtl899VP2uQ=;
+	b=j0/TWGAJFkzJNx7Du3miqrUhSBSiWlaEQe10/wRY+y/76Ymy8VShiRRORIKazfzuJVO2sp
+	lscicN1nOj4GtlCg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Michal Hocko <mhocko@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Sean Christopherson <seanjc@google.com>, linux-mm@kvack.org,
+	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Message-ID: <20260820133020.7ZCRIhwX@linutronix.de>
+References: <anwraNIKJV8zwrNT@tiehlicka>
+ <44c51ace9b0dc44b795f6f48c91cda440eed910b.camel@infradead.org>
+ <20260812122759.GA662699@ziepe.ca>
+ <c41c52f02f033ea980d4b5f9b8239d5e9411a03c.camel@infradead.org>
+ <20260812134934.GC662699@ziepe.ca>
+ <a48e6e7063122b22a8083bb0792984a204f316e6.camel@infradead.org>
+ <fb87f673bf290cad133d113dbb0750a7752b9d30.camel@infradead.org>
+ <a94b75e8b9b1d2191f365c0f4275fd5082332df5.camel@infradead.org>
+ <CABgObfYjdQ13Gd9AH-kck85ZWch7j_E00rajawFuRdt5D=m3Sg@mail.gmail.com>
+ <5364F424-42B7-4D1B-BE55-B6F9E68B0F2B@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: jingzhangos@google.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, pbonzini@redhat.com, fuad.tabba@linux.dev, seiden@linux.ibm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <5364F424-42B7-4D1B-BE55-B6F9E68B0F2B@infradead.org>
 
-[+Fuad, Steffen]
-
-Jing,
-
-Please make sure you add all the relevant reviewers in the Cc: list,
-specially as Fuad is doing a lot of work in that particular area.
-
-On Tue, 18 Aug 2026 23:34:22 +0100,
-Jing Zhang <jingzhangos@google.com> wrote:
+On 2026-08-12 18:49:50 [+0100], David Woodhouse wrote:
+> >Making synchronize_srcu_atomic() spin in CONFIG_PREEMPT_RT is a
+> >slightly tall request - it's basically putting it on the same level as
+> >raw_spinlock. But if the MMU notifier guys really want to make OOM
+> >notifiers atomic, this would be basically the only way to do so.
+> >
+> >If instead it's okay to remove nonblock_start/end under
+> >CONFIG_PREEMPT_RT, for RT kernels I'd rather avoid
+> >preempt_disable/enable and only make synchronize_srcu_atomic() try to
+> >skip the index flip:
+> >
+> >   if (!try_synchronize_srcu(ssp))
+> >      synchronize_srcu_expedited(ssp);
 > 
-> When destroying the vgic-its collection list,
-> vgic_its_free_collection_list() iterates over every collection and for
-> each, calls vgic_its_free_collection(). This function walks every
-> Interrupt Translation Entry (ITE) across all devices via
-> for_each_lpi_its() to nullify the collection pointer.
-> 
-> A guest can allocate up to 65536 collections and hundreds of thousands
-> of ITEs. By clearing GITS_CTLR.Enable and writing Valid=0 to
-> GITS_BASER1, the guest can trigger this teardown path from a single MMIO
-> exit. The resulting O(Collections * ITEs) nested loop executes billions
-> of iterations without a single cond_resched(). This pins a physical CPU
-> and stalls RCU grace periods for seconds or minutes on PREEMPT_NONE
-> kernels.
-> 
-> Fix this by replacing the O(Collections * ITEs) teardown with an
-> O(Collections + ITEs) pass. Since the entire collection list is being
-> freed, we can safely bulk-clear the collection pointers from all ITEs in
-> a single pass, and then free all the collections in a second pass.
-> 
-> Signed-off-by: Jing Zhang <jingzhangos@google.com>
-> ---
->  arch/arm64/kvm/vgic/vgic-its.c | 16 ++++++++++++++--
->  1 file changed, 14 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
-> index 36ab3e4929154..a8e819fe97898 100644
-> --- a/arch/arm64/kvm/vgic/vgic-its.c
-> +++ b/arch/arm64/kvm/vgic/vgic-its.c
-> @@ -1133,9 +1133,21 @@ static void vgic_its_free_device_list(struct kvm *kvm, struct vgic_its *its)
->  static void vgic_its_free_collection_list(struct kvm *kvm, struct vgic_its *its)
->  {
->  	struct its_collection *cur, *temp;
-> +	struct its_device *device;
-> +	struct its_ite *ite;
->
-> -	list_for_each_entry_safe(cur, temp, &its->collection_list, coll_list)
-> -		vgic_its_free_collection(its, cur->collection_id);
-> +	/*
-> +	 * Bulk-clear the collection pointers for all ITEs.
-> +	 * This transforms the teardown complexity from O(Collections * ITEs)
-> +	 * to O(Collections + ITEs), avoiding guest-triggered host RCU stalls.
-> +	 */
+> Yeah, so in the normal case it's truly atomic but in the RT case both
+> readers and grace periods quietly start to sleep again... just like
+> spinlocks in RT. That seems reasonable.
 
-I don't think this comment needs to describe this. You already have
-described it *extremely thoroughly* in the commit message, and that's
-probably enough. I'd rather see a justification of why this is *safe*.
+I just caught up with the thread.
+The task_struct::non_block_count is not properly defined IMHO. It talks
+about sleeping and atomic but it is fine to acquire a spinlock_t which
+is a spinning lock on !RT.
+The other user of non_block_start() is pwm_set_waveform_might_sleep()
+where it is used if the pwmchip's lock is a spinlock_t and not a
+mutex_t. Again, it seems fine to acquire a spinlock_t.
 
-> +	for_each_lpi_its(device, ite, its)
-> +		ite->collection = NULL;
-> +
-> +	list_for_each_entry_safe(cur, temp, &its->collection_list, coll_list) {
-> +		list_del(&cur->coll_list);
-> +		kfree(cur);
-> +	}
+So it seems if a lock is acquired which is spinning on !RT and part that
+these locks are turned into sleeping locks shouldn't lead to a problem.
 
-The other thing that is missing is the invalidation of the translation
-cache. Please see the discussion at [1], and whether this needs to be
-taken care of here or in Fuad's series.
+The splat referenced in
+	https://lore.kernel.org/all/787aa26cf62dfd361eea8ed19f384fc517892501.camel@infradead.org/
 
-Thanks,
+complains only about non_block, the other fields are zero.
+In that case it is just a question of how might_sleep() is implemented
+and we could skip the warning for the few locks that sleep on RT and
+spin on !RT. (FTR: There is also no RCU warning on RT if we sleep
+(schedule()) within a RCU read section while blocking on a spinlock_t
+but there is a warning if we block on a mutex_t).
 
-	M.
+In
+   https://lore.kernel.org/all/a94b75e8b9b1d2191f365c0f4275fd5082332df5.camel@infradead.org
+there was a suggestion for "srcu: Add an ATOMIC reader flavor and a spinning
+synchronize_srcu_atomic()". This one had preempt_disable() in
+srcu_read_lock_atomic(). This is bad as not only forbids to acquire any
+sleeping locks (such as spinlock_t) but it also does not allow any
+scheduling of any kind within this section.
 
-[1] https://lore.kernel.org/r/20260819102809.310708-2-fuad.tabba@linux.dev
+So if it is *just* the annoying splat on RT, I could try to teach
+might_sleep() no to be upset here.
 
--- 
-Jazz isn't dead. It just smells funny.
+Sebastian
