@@ -1,71 +1,75 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15ABC38837A
-	for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 06:14:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D91E3AFB11
+	for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 06:14:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787206445; cv=none; b=UiJymOQV69PvKHpbaZ4cmg7/mER6O6nUD0/XvhBIhRDxU26Zgi/OEPBulNCWM5mdH5isi0MsT8CCCbKaG6gkN8SP3Aap0vej0hgpHdkO83lxKgkgECHxtHDEHTBhUN0JUdOFPL9bjzwu5hm+CZTWZYwSqqNmr2gmiJ5jQwMsSeM=
+	t=1787206449; cv=none; b=UdjangNrpY6LNA5L64aPvPP0hq1OiuZf1Q45++tj4aYnN/DRakFpPNORKUMIJJx750j1yWGw3HF1ho6j2ka8J8Va4RXOQIQJhBEqFqbpszleejuAx4wx4M4YZV02bh16+dXgTC+T2o4EEi2VKGT5VaAh6LAH+m2BSDV2/diHXDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787206445; c=relaxed/simple;
-	bh=Bhgr5dFf6f+Z+unw8HZ3Mt1UgOTUdxwereqdh8u/eaU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SFD8W+aVXq/j+EuTs8IXqWiFOLC6dJf3QNyZhFgFDYvXy2TSkwZlQNCkNoJe9D8BnaVgUaHbTia+BZfsSotHvZ3v/Gr/rypdoSoDno9lOvtcAv3BTyFfP0vJIQp06y92S4/eoj/VBd7ysTt5ySHXS1jyOgANL7jGGW8DNjq6GsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HtDVRO0W; arc=none smtp.client-ip=209.85.210.174
+	s=arc-20240116; t=1787206449; c=relaxed/simple;
+	bh=uLk8iNHfd4NPvrWYw61lAQBRN8fcRiCh0Q/odHDzIeI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RoNp3jyg61O1LlggcUEkr8Jt3TeK5G/YLTixjkDRF8S4aaxqfGVRfbE9gOIz+9SVfeE1jZwC4kFtmrBIJvUmI1LbHvH44EvKyd1kozxfKP8LJGaJ9wKCG1i3BaO51+DAaewLIxb1J0XC3+tDwosyGax1GOzU5oqFkmOWrISGw6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EeP6CM8K; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HtDVRO0W"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-84faf87d19dso1916960b3a.3
-        for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 23:14:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EeP6CM8K"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-84a4d8fd6ecso1795836b3a.1
+        for <kvm@vger.kernel.org>; Wed, 19 Aug 2026 23:14:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787206443; x=1787811243; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+UiePDx8/Tsa6DOmKxJI7ngQHE/W8TglAXbeuopL1H4=;
-        b=HtDVRO0WXXf0Sp5mF0bdwBTMSaTQP8owUpOJqSxogcfLrclxUxodKq4fX/QZk9h9Sl
-         JWqdLWed+awttNIonqq6w+nPrwEk5uoBAGnVUpgUOGsXyzq4zPd6bdC2yyc3MwaoB7OX
-         s5W1HDJ9aS4pbZudUxP6+zvCa9DiqL+M2xOB/m9UL1J4uGJjWxjZnEvnEzInYOcLEKkf
-         xMJNGSPLnxKK6Zg1mFD110ZtGuMQ6EIUWVKT17H4rDU9VeLT1gQdjC4MtAZ9aHK6YMtH
-         KK5lFYRI/l6DV0TxeabBGxpnTtnIlRPIxloBvn1xfkZ/3VZRl0P6uxv0VQodSzC0p9SG
-         snYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787206443; x=1787811243;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1787206446; x=1787811246; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=+UiePDx8/Tsa6DOmKxJI7ngQHE/W8TglAXbeuopL1H4=;
-        b=UCYXdmSKGvbaxr1QnsSLgXFy2RiHpKYIWPTqPi5Rka5RT1glZLukMmEJTyWk7m6x38
-         T4rZnrYfKRmtmX3EorS5kd82BHPGAqgzFuydI/irk/ZWkvwtgXHEnZ0gR4U7kw51JX8F
-         IRsQXuW0VJcim7WGI8J7HbWWcqimQfRwdiysWevs00t2+d4i5J5ubYwIsYBAjt4Uqs5o
-         FiALpFTBmx8rme3LuQOAE11FLY1SCDghTujaWIaQ18cF6CIerbNmBIQWkim4jh1zx644
-         b6ZOQq8Vdl658yw5c4QYG/m8bxt+LbavGEm8E80Veo4+RzdNHZLae7ppvmntYkXZfISs
-         bATA==
-X-Forwarded-Encrypted: i=1; AHgh+RrYqRviuKwDrCSwyk7WN1bqjfYgAVSdAxfqlqjk3RoqmBVZ0k+lgX6iEfUHH5+PVMn6/sU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoAlcSfEFYtnSaXNajkskCozk1Ty5NYFQFOOqC7g2tf1wQ7e1t
-	wG9ltsE1Sv0PeKYaXzPtW6ZgFeWjX/jUZSRnMLOQSVsnc0/MVIc+d9WU3mdz3NSEeT/EbA==
-X-Gm-Gg: AR+sD13nFuUxuo03MdQ6rghsrrmZ7BN4uuq15JQX+semFOyDBmBvjMUtbTgE4zpv5FR
-	9meE4HKFI1DDHW5F7DG53SR+9jVFKNsDAx6urUnRiz5xEOWYinnkXaifcXu4mCSrmKIZLNJVwd5
-	WE7z1+qlVBj66N5mt+kPVGt5Z8k1A4O2KS4B8Rdboi4IBGtrXYtHdyFfxFzUTjfovdDKh32Hc8Q
-	7llDsl6GJE4zH2RXdati0BG70VbFowEZ0FxPZSUP8LJuGygbTI2eWBaRQLCBt3PZv3qt9T0g54B
-	TgFx+ODhUVhDVtmzDQqSbtxOhFK42wqtoTEs/Jcb8NJYS4sU5SyP6k12tj0LcMYXQrdALBvBcsH
-	7sJtj5ViI50glf7g65oW9GpROCF+fE5xtvu5ZA6qRlMfQw5KmSQ47a3YXz6qAXd9Wm6LuLo5M9k
-	WuWC+VAU78tNbwhDhcd7dk4/gtwNQ3vQiM9Qpp6xwLPjlz8OZMLdgA2L1FEjOHXnjeJdk=
-X-Received: by 2002:a05:6a00:9515:b0:84e:24f:2677 with SMTP id d2e1a72fcca58-851d380a098mr17104696b3a.4.1787206442948;
-        Wed, 19 Aug 2026 23:14:02 -0700 (PDT)
+        bh=ge48iWvqQuweSPFBnOAGMpJHsKcBn/Ek99Lc6vdvC7E=;
+        b=EeP6CM8K3RrzC/nxwVQne2LZmBMtqRbyHLUdP1vSlPoCa6yWDA5mi75m1KKewv4PZE
+         LiHG6gPHWCfRjzi6QJnaWMbI+CcujRwQGjr8acmaJ93/rrir5IycsbYASTGKrEqCoLO7
+         lhMAGuipPusF7qSYYsChDBkjsPW3dsD2PAxQYST8QpSsXEF3k4w4YX6LVmyXdb+qqDFm
+         x6SQcHu2oPoeHPELEuZCNTK79mNJwas5c6pD47xzH1ngQ7dEgf7jDCSpxzDz33sn/P1J
+         gALUbu6be9mmkS24Gs91Serfn8p5VFscGrwyOrqjohjkkdJW+rtLfcRKIIB8rLl273VN
+         LrCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787206446; x=1787811246;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ge48iWvqQuweSPFBnOAGMpJHsKcBn/Ek99Lc6vdvC7E=;
+        b=dsjf8tnLBvhuvyGRXwgwtRTNiGJ7crnjNIoE7pGpDfgToT4G/SSjhVztdugo1W5u/d
+         3k+0vwCqUH1CNDSX9EpyempHA9DJPLOgueR7yms9QHuJhxbVV5NJ1A5JvLgxL6WsmDp2
+         5ksKER8NBJclda2sX1RVFrBa7IGJ2obYt5sKxlQF7N9ETh5/Y2wvnWSpAhA9TczAZlul
+         8RSmAFCAsDPQT7Ehoii3psBYFlccfbZCHc1AtGwTlrRnLLqlBksZUZHPYGH6Vr/7j3Ww
+         mcq7LRFhLDoDxdUxmX6E2EqHkOJnnVclpTHWGz9+n4LmNx22loVK4RiULLa6CmQMkRX6
+         e8xQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqzCyTRIdIBo7strnzAz1xh1YoFEJdhSj/zNAMj47CuyJfhSaBqIO3ENNWCpFyTuCoTJUw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3z6JuFRVHQ+i8cXxF3KD7OTXkbXgQCRxPEgpzMUy0uoIKRIRU
+	ev669pcYMmlTepxnDM5nuTeFFpMxMI17BwQjvhRf1pnM2mTbiQvK7JRB
+X-Gm-Gg: AR+sD13f1c2+jIuug9R1ybvvQn3NEjfEMihLSc0E18xh72OSqMgKo2TjT9ogkbzp+dR
+	/r3cAQd+p4j7K66bWiM9oS8ks5nrFK50mWpLWqz3g7lKxVZ0u0xRoGxmWGv2x16Wa6TfKieVc1g
+	xtKFSrQYtPD1XL7vzsiofqZrcmiyo0stICWDv8DCwxkJmpjHe65QPBwqSGTncd73ocyRxllfWe/
+	FoeYTzBJivjJKmsh3Jh5Ozvsmtiqs+OUjdWEyuWlIHy3dVq8+2iAT0DeKSvD3412fiIzqabdKga
+	IGV1XQowSpFSdK5hwiQ2/L/SuuBoKcRN5UeMu3gWE3+juVcT9eZ92/3rkMAPPBq2FafIYriOsLs
+	WY5E/vgAYF79Mq4YzKEkuD6Put2hV+uoi6oUFeiwZrmaqdvuIHLcojDM8RG/I4o1y8184r2aBCD
+	8+LZMqp/648IUveeFfUpkLVtnXp7yjFpjr5CUnKoV6GXvT/nP5zc9jk4IIqi+7Bow=
+X-Received: by 2002:a05:6a00:189c:b0:84f:b01d:3693 with SMTP id d2e1a72fcca58-851d39419a7mr16069430b3a.15.1787206446026;
+        Wed, 19 Aug 2026 23:14:06 -0700 (PDT)
 Received: from 6a8281486e01 ([183.241.215.198])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-851d3640dd4sm1260483b3a.41.2026.08.19.23.14.00
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-851d3640dd4sm1260483b3a.41.2026.08.19.23.14.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2026 23:14:02 -0700 (PDT)
+        Wed, 19 Aug 2026 23:14:05 -0700 (PDT)
 From: Saul Freedman <fre3dm4n@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com,
 	mtosatti@redhat.com,
 	kvm@vger.kernel.org,
 	Saul Freedman <fre3dm4n@gmail.com>
-Subject: [PATCH RFC 0/1] Fix ICEBP handling after KVM debug exits
-Date: Thu, 20 Aug 2026 06:13:54 +0000
-Message-ID: <20260820061355.196465-1-fre3dm4n@gmail.com>
+Subject: [PATCH RFC 1/1] target/i386: skip ICEBP before reinjecting #DB
+Date: Thu, 20 Aug 2026 06:13:55 +0000
+Message-ID: <20260820061355.196465-2-fre3dm4n@gmail.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260820061355.196465-1-fre3dm4n@gmail.com>
+References: <20260820061355.196465-1-fre3dm4n@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -74,41 +78,117 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-    Marcelo Tosatti <mtosatti@redhat.com>,
-    kvm@vger.kernel.org
+KVM handles an ICEBP trap itself when userspace debugging is disabled:
+it advances RIP and queues #DB for delivery to the guest.  When hardware
+breakpoints are enabled, KVM instead reports the #DB to userspace before
+advancing RIP.
 
-KVM normally recognizes ICEBP, advances RIP, and injects #DB itself.
-When userspace enables hardware breakpoints, however, KVM reports the
-pre-skip #DB through KVM_EXIT_DEBUG.  QEMU currently reinjects it at the
-old RIP, causing a debug-exit livelock.
+QEMU currently reinjects that event without advancing RIP, so the guest
+returns to ICEBP and traps again indefinitely.  KVM_EXIT_DEBUG does not
+preserve KVM's exact ICEBP classification, but ICEBP has no mutable DR6
+cause bits and is a one-byte opcode that may be preceded by instruction
+prefixes.  Use those properties to recognize the instruction, advance RIP
+past its complete encoding, and reinject the trap-like #DB.
 
-The patch is marked RFC because KVM_EXIT_DEBUG does not preserve KVM's
-exact ICEBP classification.  The proposed compatibility heuristic accepts
-a causeless #DB whose instruction stream consists only of prefixes and
-0xf1.  A durable long-term ABI might instead let KVM expose its exact
-classification or advance the instruction before exiting; I would like
-feedback from both QEMU and KVM reviewers on that direction.
+Also convert the DR6 value reported by KVM_EXIT_DEBUG to the exception
+payload form expected by KVM_SET_VCPU_EVENTS.  Clearing the active-low
+bits leaves breakpoint, single-step, task-switch and RTM payload bits
+unchanged.
 
-Validation on an Intel VT-x host:
+The fix was tested on Intel VT-x with a real Linux guest executing a
+kernel-mode ICEBP instruction while an unrelated hardware breakpoint was
+installed through QEMU's GDB stub.
 
-- Built x86_64-softmmu from current master (ae4f3443209).
-- checkpatch reports zero errors and warnings.
-- Ran a real Linux guest that executes kernel-mode ICEBP while an
-  unrelated hardware breakpoint is installed through QEMU's GDB stub.
-  Unpatched QEMU stalls after ICEBP_KERNEL_BEFORE; patched QEMU reaches
-  ICEBP_KERNEL_AFTER.
-
-I did not include the hardware reproduction in the patch because it needs
-real VT-x, a matching guest kernel build, and a loadable module.  I can
-turn the fixture into an optional avocado test if reviewers prefer.
-
-Saul Freedman (1):
-  target/i386: skip ICEBP before reinjecting #DB
-
+Signed-off-by: Saul Freedman <fre3dm4n@gmail.com>
+---
  target/i386/kvm/kvm.c | 62 ++++++++++++++++++++++++++++++++++++++++++-
  1 file changed, 61 insertions(+), 1 deletion(-)
 
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 644c45f..c02a155 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -6240,6 +6240,48 @@ void kvm_arch_remove_all_gdbstub_hw_breakpoints(void)
+ 
+ static CPUWatchpoint hw_watchpoint;
+ 
++static int kvm_debug_exit_icebp_len(CPUState *cs, CPUX86State *env,
++                                    const struct kvm_debug_exit_arch *arch_info)
++{
++    int offset;
++
++    if (arch_info->exception != EXCP01_DB ||
++        arch_info->dr6 & ~DR6_FIXED_1) {
++        return 0;
++    }
++
++    /* An x86 instruction is at most fifteen bytes, including prefixes. */
++    for (offset = 0; offset < 15; offset++) {
++        uint8_t opcode;
++
++        if (cpu_memory_rw_debug(cs, arch_info->pc + offset,
++                                &opcode, sizeof(opcode), false) != 0) {
++            break;
++        }
++
++        if (opcode == 0xf1) {
++            return offset + 1;
++        }
++
++        switch (opcode) {
++        case 0x26: case 0x2e: case 0x36: case 0x3e:
++        case 0x64: case 0x65: case 0x66: case 0x67:
++        case 0xf0: case 0xf2: case 0xf3:
++            continue;
++        default:
++            if ((env->hflags & HF_CS64_MASK) &&
++                opcode >= 0x40 && opcode <= 0x4f) {
++                continue;
++            }
++            break;
++        }
++
++        break;
++    }
++
++    return 0;
++}
++
+ static int kvm_handle_debug(X86CPU *cpu,
+                             struct kvm_debug_exit_arch *arch_info)
+ {
+@@ -6280,13 +6322,31 @@ static int kvm_handle_debug(X86CPU *cpu,
+         ret = EXCP_DEBUG;
+     }
+     if (ret == 0) {
++        uint64_t exception_payload = arch_info->dr6;
++
+         cpu_synchronize_state(cs);
++
++        if (arch_info->exception == EXCP01_DB) {
++            int icebp_len;
++
++            icebp_len = kvm_debug_exit_icebp_len(cs, env, arch_info);
++            if (icebp_len != 0) {
++                env->eip += icebp_len;
++            }
++
++            /*
++             * KVM_EXIT_DEBUG reports an architectural DR6 image, while
++             * exception payloads use the VMX pending-debug format.
++             */
++            exception_payload &= ~DR6_FIXED_1;
++        }
++
+         assert(env->exception_nr == -1);
+ 
+         /* pass to guest */
+         kvm_queue_exception(env, arch_info->exception,
+                             arch_info->exception == EXCP01_DB,
+-                            arch_info->dr6);
++                            exception_payload);
+         env->has_error_code = 0;
+     }
+ 
 -- 
 2.55.0
