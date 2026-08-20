@@ -1,169 +1,142 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFD844239E;
-	Thu, 20 Aug 2026 13:08:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCFC43DA4E;
+	Thu, 20 Aug 2026 13:08:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787231296; cv=none; b=cxHOTjXiFoPI8J4ihEV931HSWzLoey1iu110TwqXZcdDxzOfPx/NboxS0j4cjFWN41H7j7n/1rhghLX9ZLGp7N9ny5kFUzl+MEN5Iz0GuD+ceI1+lIcYD5za/IFVPRwbOc+uBAkHaMb8t5wvmX6NxoZBWFyS7ga9NmkQiutx2Sk=
+	t=1787231315; cv=none; b=JWgAuzhg45Z4RFBg6DkuY3/ELJ5rDYAQNezPR1jbNybpyYxoByFQDHeUtuGH5pwT7X+IuZNu2r4RQp/W5qG7EJahxjnnZwx/ySylJqDdkGYFIAPAnYecjOXdjWtxKStKKoZP54tvaFF6TvFnRK556x7aJGGeWqpTLZenUva/ItA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787231296; c=relaxed/simple;
-	bh=SV4ZzdZaM8xOrzVt5VAw2ZwhxBkjTzcrF+ZD33vkc6Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rZZlyNEGljHAzqHJfqziwPM2cOci70wZ0ke8AB2gHnBBK7Ed6Lpcabn2nf8+bxzJHruFOp+OkGAwGBk7zUcl07zoaOhVhohZLFBpirIxCQJsfxKx0E8uIIg2OEDVK6+ph0jx0+zOomQ+E+M3+Mr+9W1qAsHZIWXv+N+FrJvqCOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fwk5J7Xk; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1787231315; c=relaxed/simple;
+	bh=jVfrOurrKDlBrnzASNWbi4K5D/6lFMX4BwYQ1jgHHVs=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VqXS6x1AUvN8zBFoyNd/VU4rlSliT54eWZ4MNjulM/iNYhn7yLvnG7hYIcGc/n86TPmEkyiuddyXb+m1zTc6NoEiovnGvePL4t7H2oPiW9QmkqzGVfMJ8nH0cbc05bxXJ7CAzCadSrQmULW/gnkvMlS0OHtFwsQYaALhQtf/bgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UWfKp12C; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="fwk5J7Xk"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67K8uKDN471804;
-	Thu, 20 Aug 2026 13:08:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=7KxfmD
-	84iWHcsrFL9boIWTrjLIlsWjUOpaKuzR3CQWA=; b=fwk5J7XkErqFtSitL9qnYs
-	cuj7KYMsSmjtAf1j5SeW8EkBaxgXWGkbLaFeVBTzVNXtWtXFMAU+N/TIWiwEXdsI
-	6wGLpbaZ2OIRR9i+nVZTz/Eh3UWiFrEW8J8zpmJOoNK1kBJSAuk3x/4QWCesa0iz
-	eZCW9jpgJ9lndGyLmyYmUzNACXYsciDKrsKBWC4GMdVuU8oS1Fitypx1oniyD90x
-	eUlF2goOceA4Vwoxj4SnjyE8AgV+t79BkvC3+IhQEnyO6TnuvGC4inT8pSC0UwqN
-	jyKVw+Znezu9dtg79SFcnV5CTvowqCGjPg3UY+eQ3MDrX5tG0Hy6s7nmyXzJ4I3w
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g4yu0jgbu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Aug 2026 13:08:08 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67KCuIZN019313;
-	Thu, 20 Aug 2026 13:08:07 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g32twergp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Aug 2026 13:08:07 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67KD861M32309816
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 20 Aug 2026 13:08:06 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 20AC058055;
-	Thu, 20 Aug 2026 13:08:06 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 852275804B;
-	Thu, 20 Aug 2026 13:08:04 +0000 (GMT)
-Received: from [9.61.142.83] (unknown [9.61.142.83])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 20 Aug 2026 13:08:04 +0000 (GMT)
-Message-ID: <8b8dc348-ac31-4dbe-a518-9563d5414f09@linux.ibm.com>
-Date: Thu, 20 Aug 2026 09:01:56 -0400
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UWfKp12C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7284D1F000E9;
+	Thu, 20 Aug 2026 13:08:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787231314;
+	bh=8z85GCKW2VxnEzgpf5T45zSF2IELa/F1r2HbWTOGkeY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=UWfKp12CLyyQNRP7nCcCac1/uuXM6QM+ZI9yAJzBHIoL11CaaDUMSp8LkTH20l/q2
+	 C3GVcAb/IkVxYd6MvJuaPbeHA4po2l7YnIOkYlgFoIUjupvluBttyvv7UZhj5Xeh7t
+	 OdURanA89Muz0NskdFFEh6Jcor2EktMX16N/XppS0s1K09mgd2lNkYmLHsddNfOHAF
+	 OnGOO9tUpDT3+gj4Pzq9xyPLm90/4DSR7bJlvglX5vj2CSHwQf6TWZHP6rQRdDqj81
+	 KGNVzDPQVLoqbId8QsKjwABjHagoi+tGezCmp1GHqshk1sVB2cJKMJdalU7m/vAwtS
+	 DDW8hBsnBensQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wx2VU-0000000HIrl-1WJZ;
+	Thu, 20 Aug 2026 13:08:32 +0000
+Date: Thu, 20 Aug 2026 14:11:04 +0100
+Message-ID: <87v795ndhz.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Jing Zhang <jingzhangos@google.com>
+Cc: KVM <kvm@vger.kernel.org>,
+	KVMARM <kvmarm@lists.linux.dev>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Steffen Eiden <seiden@linux.ibm.com>
+Subject: Re: [PATCH] KVM: arm64: vgic-its: Fix O(C*I) loop in vgic_its_free_collection_list
+In-Reply-To: <20260818223422.367803-1-jingzhangos@google.com>
+References: <20260818223422.367803-1-jingzhangos@google.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 14/15] s390/vfio-ap: Add 'migratable' feature to sysfs
- 'features' attribute
-To: Anthony Krowiak <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: borntraeger@de.ibm.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
-        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
-        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
-        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com
-References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
- <20260807221834.562851-15-akrowiak@linux.ibm.com>
-Content-Language: en-US
-From: "Jason J. Herne" <jjherne@linux.ibm.com>
-In-Reply-To: <20260807221834.562851-15-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=MthiLWae c=1 sm=1 tr=0 ts=6a86fc38 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=z7pE9qEtJ7sZLzaIgg0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: BSHDWtJU5O5LNzWBwGd1A3eSF0-9p3Zk
-X-Proofpoint-GUID: BSHDWtJU5O5LNzWBwGd1A3eSF0-9p3Zk
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODIwMDA5NyBTYWx0ZWRfXwGUbmmWhueSL
- sdfuBUQxrmdpPVBoenkeI9UQM8pkHqzj0Mc8o0lkHehFbnmjsR8ty/H5kGARsosGeuf2GH08Wd1
- s5MASSS9oQWmw7a6m/PrFn4fnr7SW/E=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIwMDA5NyBTYWx0ZWRfX/VKONcVsulRb
- pxMhjrTJoCBI4Ih2THQV9Hx1BNsCdfsQwOKFjvof+j+FsS4ciY4x/b5/WypiZTd2hSfqNtKZb50
- rSMz/FrZptizjzieXPs7WdK+7nM5O2sEKuSo/Rwl4N9qo822GhbLb5JGUvgoR5v/j69mUN9flpS
- Q2BnbJN5QsI6PFCIHVhqJ1a478kyRKrg7kpOWLSr5VgExWtiELafD9wcAakuyltImwICB2SbFUM
- 1TEsuzCl2zk3SR1jT6wLCVNuClcRKhVPix5cqAGaY1jCeNxkn2OnDahvgfYoMEt8ceLbBvxV3WG
- aL4XPkB0/REEwt3A6gaQNI9VRF3e5dkqY7Ji4++ywLpjgj016senEHXDhdROSdAvNyMcUrYr6vJ
- ZgBfzHQ4/havjCrjPmq/C8qY7TTdLwgTkCVOmutmkmr4FdtRS6nonQAw4R5TYKYQ3XxSZRLUAWN
- P13scvWS0cDqMX0hkIg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-19_06,2026-08-19_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 impostorscore=0 bulkscore=0 phishscore=0 clxscore=1015
- spamscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608200097
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: jingzhangos@google.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, pbonzini@redhat.com, fuad.tabba@linux.dev, seiden@linux.ibm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
+[+Fuad, Steffen]
 
+Jing,
 
-On 8/7/26 6:18 PM, Anthony Krowiak wrote:
-> Add the 'migratable' feature to the features provided by the sysfs
-> /sys/devices/vfio_ap/matrix/feature attribute to indicate that migration
-> of vfio devices is supported. Since live guest migration is not supported
-> for SE guests, the 'migratable' feature will not be included when the
-> feature attribute is displayed.
+Please make sure you add all the relevant reviewers in the Cc: list,
+specially as Fuad is doing a lot of work in that particular area.
+
+On Tue, 18 Aug 2026 23:34:22 +0100,
+Jing Zhang <jingzhangos@google.com> wrote:
 > 
-> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+> When destroying the vgic-its collection list,
+> vgic_its_free_collection_list() iterates over every collection and for
+> each, calls vgic_its_free_collection(). This function walks every
+> Interrupt Translation Entry (ITE) across all devices via
+> for_each_lpi_its() to nullify the collection pointer.
+> 
+> A guest can allocate up to 65536 collections and hundreds of thousands
+> of ITEs. By clearing GITS_CTLR.Enable and writing Valid=0 to
+> GITS_BASER1, the guest can trigger this teardown path from a single MMIO
+> exit. The resulting O(Collections * ITEs) nested loop executes billions
+> of iterations without a single cond_resched(). This pins a physical CPU
+> and stalls RCU grace periods for seconds or minutes on PREEMPT_NONE
+> kernels.
+> 
+> Fix this by replacing the O(Collections * ITEs) teardown with an
+> O(Collections + ITEs) pass. Since the entire collection list is being
+> freed, we can safely bulk-clear the collection pointers from all ITEs in
+> a single pass, and then free all the collections in a second pass.
+> 
+> Signed-off-by: Jing Zhang <jingzhangos@google.com>
 > ---
->   drivers/s390/crypto/vfio_ap_drv.c | 14 +++++++++++++-
->   1 file changed, 13 insertions(+), 1 deletion(-)
+>  arch/arm64/kvm/vgic/vgic-its.c | 16 ++++++++++++++--
+>  1 file changed, 14 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/s390/crypto/vfio_ap_drv.c b/drivers/s390/crypto/vfio_ap_drv.c
-> index 8e69ed286bb9..abfb34421d74 100644
-> --- a/drivers/s390/crypto/vfio_ap_drv.c
-> +++ b/drivers/s390/crypto/vfio_ap_drv.c
-> @@ -26,9 +26,21 @@ MODULE_LICENSE("GPL v2");
->   struct ap_matrix_dev *matrix_dev;
->   debug_info_t *vfio_ap_dbf_info;
->   
-> +#define VFIO_AP_DRV_FEATURES	"guest_matrix hotplug ap_config migratable"
-> +#define SE_GUEST_FEATURES	"guest_matrix hotplug ap_config"
-> +
->   static ssize_t features_show(struct device *dev, struct device_attribute *attr, char *buf)
->   {
-> -	return sysfs_emit(buf, "guest_matrix hotplug ap_config\n");
+> diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
+> index 36ab3e4929154..a8e819fe97898 100644
+> --- a/arch/arm64/kvm/vgic/vgic-its.c
+> +++ b/arch/arm64/kvm/vgic/vgic-its.c
+> @@ -1133,9 +1133,21 @@ static void vgic_its_free_device_list(struct kvm *kvm, struct vgic_its *its)
+>  static void vgic_its_free_collection_list(struct kvm *kvm, struct vgic_its *its)
+>  {
+>  	struct its_collection *cur, *temp;
+> +	struct its_device *device;
+> +	struct its_ite *ite;
+>
+> -	list_for_each_entry_safe(cur, temp, &its->collection_list, coll_list)
+> -		vgic_its_free_collection(its, cur->collection_id);
 > +	/*
-> +	 * If the system running is an SE guest, it will support a different
-> +	 * set of features; for example, it will not support live guest
-> +	 * migration
+> +	 * Bulk-clear the collection pointers for all ITEs.
+> +	 * This transforms the teardown complexity from O(Collections * ITEs)
+> +	 * to O(Collections + ITEs), avoiding guest-triggered host RCU stalls.
 > +	 */
-> +	if (ap_is_se_guest())
-> +		return sysfs_emit(buf, "%s\n", SE_GUEST_FEATURES);
 
-ap_is_se_guest() is defined like this:
-is_prot_virt_guest() && ap_sb_available();
+I don't think this comment needs to describe this. You already have
+described it *extremely thoroughly* in the commit message, and that's
+probably enough. I'd rather see a justification of why this is *safe*.
 
-is_prot_virt_guest() makes sense, this tells is this is actually a 
-secured guest.
-
-But ap_sb_available() "Returns 1 if secure binding facility is available".
-
-What do we want to happen here if is_prot_virt_guest() = TRUE while 
-ap_sb_available() = FALSE? Have you considered this scenario?
-
-Also, the code would be a bit more extendible if you emitted the static 
-string of always supported features, and then if(se) emit the string of 
-se support features prepended with a space. Then new feature updates 
-only have a single string to modify, so no risk of accidentally missing one.
-
-Also, I'd consider using "migrate" or "migration" as they match existing 
-feature designations better. We did not use hotpluggable :)
-
+> +	for_each_lpi_its(device, ite, its)
+> +		ite->collection = NULL;
 > +
-> +	/* Return all features supported by the vfio_ap device driver */
-> +	return sysfs_emit(buf, "%s\n", VFIO_AP_DRV_FEATURES);
->   }
->   static DEVICE_ATTR_RO(features);
->   
+> +	list_for_each_entry_safe(cur, temp, &its->collection_list, coll_list) {
+> +		list_del(&cur->coll_list);
+> +		kfree(cur);
+> +	}
 
+The other thing that is missing is the invalidation of the translation
+cache. Please see the discussion at [1], and whether this needs to be
+taken care of here or in Fuad's series.
+
+Thanks,
+
+	M.
+
+[1] https://lore.kernel.org/r/20260819102809.310708-2-fuad.tabba@linux.dev
+
+-- 
+Jazz isn't dead. It just smells funny.
