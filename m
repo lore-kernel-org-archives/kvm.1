@@ -1,119 +1,128 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875C43D1CA7
-	for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 08:05:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5A63DC4BD;
+	Thu, 20 Aug 2026 08:19:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787213150; cv=none; b=aEbU6g1V/XzVdHRupsOyYw3/Ufvu2shXh6J0byKXL4vHGx+zNs2wac49JJ9JgAvi5r9cuGyY3l8filxVxHRNV5eJeV0DrMRhkf8grV3TN58wVM9CPai+xJe0PYITOWxlKgm5dM4Y6RLEwykHcMJLgTOK26OAFOF9cac7vwDwoPo=
+	t=1787213953; cv=none; b=c4Xsjma7I/Z8bMeQpD4SfEEHABYNN4sZSLy+2nznRCZmtTo7rokqDTKZmm2KfzQkN3xlJzlDT8tueuONMeuTaGK74HRIxuEi7Ni/wh8ClL5DRGQfzIUk2AxJINvmL1+AurIZlNNglTnhAWbATX//XfQYNxvLpUNl1JUxOIO0N90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787213150; c=relaxed/simple;
-	bh=qgynlLSlE9GedrgWrdeKiRWEM+qpmwf3VbwiSO5eBQY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=q7qGEpYHd2be6ARMXX6WhvSFX+D59ld2h2Sg7WOtKApxgLriyZIX+oYZz9Qa+9EKTsgak3PGEKdK6CyJZ5K3irssxgrkgs4Oo0B2xepkBtrI6MmcT93G3JYsNlJqkP5lcqJu8GdtST8gvtd0NCj3EAkJkvkLaKeHVLHsortyirc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZMHm7pSb; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787213953; c=relaxed/simple;
+	bh=/YjbCHv1z4/2VUwE34oZMZTb5sZP2ZMa1BBFOIaD9g0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EkbPTxuHDc/olBfMmiLYaIDV7JviHmAIEXY4ojK0wOvjBJ3MGuTL7Kf5kTjJDMOnibk7AXn4cVMYb2BiSbW/ST3+h5oHnVSvuxjnDZnM8IfI8Qa8Tp8pDxu0VYXl1LMINFCI1k3PGJzLGb8yJbi2Wuyq3MUT+wZEFRQDV/A4nVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=oAgg37at; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZMHm7pSb"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8487b7b3fc8so1917316b3a.3
-        for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 01:05:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787213149; x=1787817949; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GNr0zjEJARTG031KsfcMOG4mbwEr/hGSSzyVmooR7Lg=;
-        b=ZMHm7pSb8aVMctA7jgqzIMXhu0MwOYjbBVPhNeDQ6I45ZUTUNU2DErSoiL2krcIvVs
-         8o4yq4YA6BRnXvIf6OoYEO6RMbDJOz8YVzalMP+VkbuYBwXoGwDUymkeq9YpZ3WtMBHC
-         ozIHTbH/iu1aBYdM137yPrakpdTDHBjlKme4mYQGYN7Wrf3VmGm9XIdp+1UIg2di4Hyn
-         mBP1Kqw5VyKwOLmWlUvS5jB2bykQt/w9ahAqnJLX/fwpxdK9nsR4qqRFIAVyE+HOsxCy
-         i3TMvScpOMfyGc0CVcVZEyuJ0WVKmMOssxMuLREgFvlLSkBxKUswcdsvLkHuCA+Y4LGP
-         cwtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787213149; x=1787817949;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GNr0zjEJARTG031KsfcMOG4mbwEr/hGSSzyVmooR7Lg=;
-        b=FY/B56f+SW6B+i3BuatiO8WTEUmPfM+0aWS/EddRi8WWlqvs08YRaJZ6icWTTsMbIh
-         /Hvh93v0i4XO/vbv2WDGSvnOmX8wOyN2CviR5YnJ88PxBcsWMWZqHGRTQsNeRE0KFsfj
-         RFsZ+NNHBkYp5oiP2S680NHbQgT5COdUhuGA4fjaGLOwmrooar2mJm2rnOh5p1Mim8Vu
-         1gWW1C0wqcIgCmc0jQB4R8U1TOffDBNl99sS4vfzJdb54LTFw3GE8LKvudGjXVnLRbdh
-         LYta0HTyhMpDPM5xgnaol9rPI31JWD8KhZxk/0pO1tfjkAgg6U2QWlzUdvUy0jYk9Mwu
-         bFAA==
-X-Forwarded-Encrypted: i=1; AHgh+RrByoI/ixljzuMClsyqPfFc3OlVj6YJzuoFcu2Qk++bt/ujWAPyOgebI/JPx0yoKSRk2Kg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCnh28KIfi+SztpW1fK17DcJhcGiqZ3VSNLPCFLiafYlnTVUCi
-	JnzdbemcyZAy/ZPaCyM2qG9ZKky9pgBBEbzXFThuagFuXjuBOfJC768G
-X-Gm-Gg: AR+sD13qITxREUXSKtHVTHd4A2IoHqDEeGW8KBKtjpKXJ6+bi5iBrXI0eOoOOD/Dqf8
-	+lRHIK97Hgpmng2jeWVTpv8cSb33DXJykMVBGsooLQYvx6zdKqx9jzDVrgcXZHths3vFX3/kg9c
-	Dyf6dZfv73d1vwMnPdlDAEM224Tl5OX0ASObNYYT1B5x+6UtA5/L/MRBPcmJ4JcKShkxWcxwXK0
-	GRB45Z9rTQiU7rdTkoPZ3oLyNz0UDqwuRtilxOcnOYTOcQ2rYfi/+7oR3KqORGExmHermBJURGY
-	4V6aCqyhZ+COMplInlT1ZE8b68wDyiXYy3gMaW2KTD6veptDXo07OzjI17RNO92g8CvpqGBEG7b
-	tFL058rz9jt/Y6ADim4NhZIu6wN4B3pXsfqb18hylyiPtL5ClOiObAeFxZvHJZYfb1jBqE+KpQB
-	PWXSUtEi6d4x3rLvrXkzAjE72NaGj574oxjdl7x+s8cy++k8RZ4Zqk1+oB74AjyOpL
-X-Received: by 2002:a05:6a00:2301:b0:847:7ffd:ce35 with SMTP id d2e1a72fcca58-851d382e720mr17907618b3a.8.1787213148258;
-        Thu, 20 Aug 2026 01:05:48 -0700 (PDT)
-Received: from [127.0.1.1] ([188.253.126.51])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-851d366d65dsm1412020b3a.50.2026.08.20.01.05.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 01:05:47 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: stefanha@redhat.com,
-	sgarzare@redhat.com,
-	mst@redhat.com,
-	jasowangio@gmail.com
-Cc: eperezma@redhat.com,
-	weiyj.lk@gmail.com,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject:
- [PATCH v7 3/3] vhost/net: discard IOTLB when ACCESS_PLATFORM is cleared
-Date: Thu, 20 Aug 2026 16:03:32 +0800
-Message-Id: <20260820080332.313933-4-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260820080332.313933-1-physicalmtea@gmail.com>
-References: <20260820080332.313933-1-physicalmtea@gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="oAgg37at"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67JLW6HE504701;
+	Thu, 20 Aug 2026 08:19:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=AAirpN
+	0qrffHgItZ8eiG0du83ZgLdPSt0/OHp9BOnsg=; b=oAgg37atM2AP7WO0aqmTCD
+	2AhbYOMn8J6uvfUKvXjvX//IkMC/oKTmo0tqpmPO7MlSrO7+QFPmxSrvVV4oNIpr
+	ppn9FBeprfS0Wcvt0sTwquxhdWKfQhIQQ4b+ivyTlkAsZF19SG67Yf4zcmst87KU
+	wz6SOZJqH94MHkngw4TeWeLsh/FR9JmgaBnovsN5EtDCFVAVmWPdaK0QksSxY/yO
+	bCunQjru/9eaV512z2s2Z7OXu2MSyXwFhR1B/bS6G5iSt/uHfN7MvIgeXudxODCK
+	KC+esXW1CrNMZlf/byUhMRqvR/bAFMJ/6Wq2HgnNNSZZAq6vJX/DmF9n0Xo4CVGw
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g4yu48tqv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Aug 2026 08:19:03 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67K8BIkc001107;
+	Thu, 20 Aug 2026 08:19:02 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g32eqdjh0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Aug 2026 08:19:02 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67K8Ix6x30540142
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 20 Aug 2026 08:18:59 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0868120043;
+	Thu, 20 Aug 2026 08:18:59 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DA3F020040;
+	Thu, 20 Aug 2026 08:18:57 +0000 (GMT)
+Received: from [9.123.12.89] (unknown [9.123.12.89])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 20 Aug 2026 08:18:57 +0000 (GMT)
+Message-ID: <b41dd1f4-43d7-4dff-8066-2b38261498ef@linux.ibm.com>
+Date: Thu, 20 Aug 2026 13:48:57 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS : Add myself as reviewer for PPC KVM
+To: Gautam Menghani <gautam@linux.ibm.com>, maddy@linux.ibm.com,
+        npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+References: <20251103094243.57593-1-gautam@linux.ibm.com>
+Content-Language: en-US
+From: Narayana Murty N <nnmlinux@linux.ibm.com>
+In-Reply-To: <20251103094243.57593-1-gautam@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=CpuPtH4D c=1 sm=1 tr=0 ts=6a86b878 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=pGLkceISAAAA:8 a=voM4FWlXAAAA:8 a=VwQbUJbxAAAA:8 a=Yn5BDKwI8ay2HT2g_hIA:9
+ a=QEXdDO2ut3YA:10 a=IC2XNlieTeVoXbcui8wp:22
+X-Proofpoint-ORIG-GUID: IYmNwJTOqnt86Fy4kVZdAQAFpu8cePTW
+X-Proofpoint-GUID: PhKdlGYM84CUX6omwl1QKnIy-1nwkDCU
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODIwMDA1NyBTYWx0ZWRfX7WIvhHdWHHf9
+ OV2PzIUIFXBnaKd669lrkS4k3q6A16NJ/laP/yqvbiT91VKVzLnayvO/bkybhCBAZmt6w9DCny3
+ N6PuWl4sr77Qyxwnq2gFLBEklkiNe6o=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIwMDA1NyBTYWx0ZWRfX9P/zcep+z1EN
+ pA3U/Fa2wPurZiKN7MG+SNRnIvT1652VRiqVLGFWCsHkyzb3c8+Q42nZqGjnJcVgQKA0yi/zMe/
+ 6lTfSkW3hnvl+BOtFcNIX8AuhI+i0NLvdmgVp+FIvweOfEtXNiTsKwYrMrr0TA8KyxCcGWNJyH3
+ xR0H/cHadxIx2dRR1pjLKFq6w4lRdHiQ/pTduRWxqD8rIf9z6J9try6EQj6b1MgY7Lrr25fNDSM
+ YVoy92FCEVoicZDcp9x6CCD4dxcfKM/445TTvCREaaIC6smB9kSqyM3b/7wlgDU5nqnMQ851XYT
+ cVHFu1qQh7+0oftziOl4rcQalJyn52z8vC8gr3XvRw0nH0XTd6w0Y4F1FFUa4SxE6QM3VoSf+SP
+ QeIMjVVT5Dr7CV6gu67Mpzl8VQ4j6Gdof3otY3u0zlZtCcpnwxg4311fP0tcujk6ULngK10ckyv
+ A4SOE6YeWzfsJB0ZG4g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-19_06,2026-08-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0 bulkscore=0 malwarescore=0 phishscore=0
+ lowpriorityscore=0 spamscore=0 clxscore=1015 priorityscore=1501
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608200057
 
-Apply the common device IOTLB teardown when userspace clears
-VIRTIO_F_ACCESS_PLATFORM. This drops stale translations and avoids
-rebuilding an existing IOTLB during feature updates that keep
-ACCESS_PLATFORM enabled.
+On 03/11/25 3:12 PM, Gautam Menghani wrote:
+> I have been contributing to PPC KVM for sometime now and would like to get
+> notified of incoming changes to help with code reviews as well.
+> 
+> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+> ---
+>   MAINTAINERS | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 46bd8e033042..3f2f60486222 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -13701,6 +13701,7 @@ F:	arch/mips/kvm/
+>   KERNEL VIRTUAL MACHINE FOR POWERPC (KVM/powerpc)
+>   M:	Madhavan Srinivasan <maddy@linux.ibm.com>
+>   R:	Nicholas Piggin <npiggin@gmail.com>
+> +R:	Gautam Menghani <gautam@linux.ibm.com>
+>   L:	linuxppc-dev@lists.ozlabs.org
+>   L:	kvm@vger.kernel.org
+>   S:	Maintained (Book3S 64-bit HV)
 
-The transition invalidates cached vring access even with an attached
-backend. The backend remains attached, but userspace must configure the
-vring addresses for the new address mode after a successful live
-transition.
-
-Fixes: 6b1e6cc7855b ("vhost: new device IOTLB API")
-Link: https://lore.kernel.org/all/20260726141158.1652386-1-physicalmtea@gmail.com/
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
----
- drivers/vhost/net.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index 38d9c184082d..4d9d7c2216ed 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -1696,6 +1696,8 @@ static int vhost_net_set_features(struct vhost_net *n, const u64 *features)
- 	if (virtio_features_test_bit(features, VIRTIO_F_ACCESS_PLATFORM)) {
- 		if (vhost_init_device_iotlb(&n->dev))
- 			goto out_unlock;
-+	} else {
-+		vhost_clear_device_iotlb(&n->dev);
- 	}
- 
- 	for (i = 0; i < VHOST_NET_VQ_MAX; ++i) {
--- 
-2.34.1
-
+Reviewed-by: Narayana Murty N <nnmlinux@linux.ibm.com>
