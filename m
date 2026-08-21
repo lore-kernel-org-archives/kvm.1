@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3A237A821;
-	Fri, 21 Aug 2026 22:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1537D38F64D;
+	Fri, 21 Aug 2026 22:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787351456; cv=none; b=XjPVMi+Le2x2+TlwrZg2EtnETB19eYhQfOXrxwqViTO2cm9gLMidNDrqyF6Kvwl4yru5l2rk27q87T8gBw6mLY2Pr8maJYTqiHTE0arwocLtoIw50lr6YWzQLha0miLQCgcirywlVpcuhlOVpayERAxGYRdqLX/SJhoUxO0c/9M=
+	t=1787351457; cv=none; b=lXyjaeEraDTimiJ2jfEbhOtiDve371icmn3TsCcO319dds6MhVxvsSQkHdRzgrEjzrNPJWp3NUVDQwkhG9NP2lT6AzI8nFu++uv6VYHsEnBvOZWLuBn4nxlpiMarbK2Tuth3Hf0Kxp8zzh9LArOgrmu8wH9XRbcHjl6rZlIGk6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787351456; c=relaxed/simple;
-	bh=sIK5WOJyq73wJ97+I2to187trRDx9/2dwqiP/gH5EPc=;
+	s=arc-20240116; t=1787351457; c=relaxed/simple;
+	bh=LTa9pW7gxHW4AAkJXbjhLSTviVTnjlo+6Aj+z1Kv/n8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=boaxSgedGXVe36arGvqB0HaFAk98+lQOgmmdUCxYMxDAKzdzAJ1NZriNZiEN3RQVnXFTUHfXuzpuoREUPkokIeNryNGMg1c6Xe95E6WqmMSk1XGeqUWAdgD0nZiUnWjuu7CMZ1fB3oeEmQ2n/ceaK4Y2yFWFU8GwIwctfXQ4XUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DqD6R8OL; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=ojsGn4pgFYkQucU2TYX0BsAxLuQxM6mCUn08PBTAQqBmmhVeTxkFDLSmdEYDqOeGFi9rqfw25SgqMB/hyUe1nKPuBXgqImaTABVrLWxT/S5kiu4StyVI0859o8ykOXwvthVcrhOpR9KKk/7VAUh2hT+VHH0mP7M3a9H2Y7eM7RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JVA5XfFo; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DqD6R8OL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JVA5XfFo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1787351452; x=1818887452;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=sIK5WOJyq73wJ97+I2to187trRDx9/2dwqiP/gH5EPc=;
-  b=DqD6R8OLRKVWSQtcAioEV6RHvjw9w3yqJxMQI/3EIiPP4/4BthqRsG2j
-   fLuuuu2v6EiwG4T28Kkd+XGrDOjTOIuqXYLhyZfpxlESCdt2bssnHdjJI
-   yd0lQGSPuVVYBCN8DrPjpRJCZ0hofQAwCa4erNC3JSVb3arQhnS9kfbKf
-   CcFyNIQkwZKBAOmJCQRv7DbZ4mNwSv3v4iZdnsswTPm0oK1a2ZFVUKn0M
-   U4UHIck/n4JyWh0I3+SEflSiqFieA2HhzuwvcpWEqCixW5nZEhu+olcRn
-   ngfb6PgsKfvU6VWplCxYPPQ7XvPxHlxwW7z7Jxo70tmeXj2Ltu84Pv4Xe
+  bh=LTa9pW7gxHW4AAkJXbjhLSTviVTnjlo+6Aj+z1Kv/n8=;
+  b=JVA5XfFo0S38KKYlOb9NNDTqIFjnlh1k8MdzfQEafYyEsjZA4wTKH9hW
+   ooHqiEaiEy0BSRhsZmQDs2IXdl2tIeLEhJ7WsuJlxQ42JT1U3xJ2x2t73
+   MHz/83BhqjA0B4b8lAshboZav57grDiWZ5/vK5hrldw7bSlAg5j2qZPj2
+   6w6ILTvYyeTI57qzUv7n3GSRhZLxH0cp2m/Mn0HpasjPKzLNIAcVMjmBa
+   th/4KjJTvzmN6LifF4KSmQU/9LbxC7FxOzocwnjDkqpyrCgmyRzocz/Q3
+   GRXTB4X1sd/HnRZtMxCN8iezx4gK8GIIO01PN1m94iFlkDJ1kGpHjPDkR
    Q==;
-X-CSE-ConnectionGUID: 5Ol7jEAuT4K3PIgWNNHcbw==
-X-CSE-MsgGUID: 9ijpyhA9Tqy8eU4doLds/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="88032600"
+X-CSE-ConnectionGUID: HUzEK5MwTE+5Q5+lPEy/bQ==
+X-CSE-MsgGUID: yWlpocVJSOewaFF+khczKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="88032589"
 X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
-   d="scan'208";a="88032600"
+   d="scan'208";a="88032589"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 15:30:47 -0700
-X-CSE-ConnectionGUID: 03jGNTnESsGiadl0EQYD8Q==
-X-CSE-MsgGUID: sFrO0dBJQ2GwX1rGotKQ7Q==
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 15:30:46 -0700
+X-CSE-ConnectionGUID: BJbvC+99SwWy3WkYgOP4jA==
+X-CSE-MsgGUID: 7gv25SLeRvGZQ4UA5wzoVw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
-   d="scan'208";a="271679756"
+   d="scan'208";a="271679747"
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 15:30:47 -0700
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 15:30:46 -0700
 From: Zide Chen <zide.chen@intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -57,10 +57,11 @@ Cc: kvm@vger.kernel.org,
 	Das Sandipan <Sandipan.Das@amd.com>,
 	Shukla Manali <Manali.Shukla@amd.com>,
 	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Xudong Hao <xudong.hao@intel.com>
-Subject: [PATCH 08/23] perf/x86: Export available PMU counters to sysfs
-Date: Fri, 21 Aug 2026 15:19:47 -0700
-Message-ID: <20260821222002.54907-9-zide.chen@intel.com>
+	Xudong Hao <xudong.hao@intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>
+Subject: [PATCH 06/23] perf/x86: Restrict !exclude_guest events to host-owned counters
+Date: Fri, 21 Aug 2026 15:19:45 -0700
+Message-ID: <20260821222002.54907-7-zide.chen@intel.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260821222002.54907-1-zide.chen@intel.com>
 References: <20260821222002.54907-1-zide.chen@intel.com>
@@ -72,94 +73,106 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-With PMU partitioning support, the set of PMU counters available to a
-PMU can vary from the architectural maximum. While this information is
-available through CPUID, it is not easily consumable from scripts.
+From: Kan Liang <kan.liang@linux.intel.com>
 
-Add two new sysfs ABI files, gp_counters and fixed_counters, under the
-PMU caps group to export the available counters. The fixed_counters
-file is omitted when the PMU does not support fixed-function counters.
+When PMU partitioning is enabled and a guest is running,
+!exclude_guest events must be scheduled only on host-owned counters.
 
-  $ grep . /sys/devices/cpu/caps/*_counters
-  /sys/devices/cpu/caps/fixed_counters:0-3
-  /sys/devices/cpu/caps/gp_counters:0-7
+After guest exit, PMU partition constraints are no longer applied and
+host events may use the full counter set.
 
-Suggested-by: Andi Kleen <ak@linux.intel.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Co-developed-by: Zide Chen <zide.chen@intel.com>
 Signed-off-by: Zide Chen <zide.chen@intel.com>
 ---
- .../sysfs-bus-event_source-devices-caps       |  5 +++
- arch/x86/events/core.c                        | 37 +++++++++++++++++++
- 2 files changed, 42 insertions(+)
+ arch/x86/events/intel/core.c | 45 +++++++++++++++++++++++++++++++++---
+ 1 file changed, 42 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-event_source-devices-caps b/Documentation/ABI/testing/sysfs-bus-event_source-devices-caps
-index a5f506f7d481..385ad7a23dd6 100644
---- a/Documentation/ABI/testing/sysfs-bus-event_source-devices-caps
-+++ b/Documentation/ABI/testing/sysfs-bus-event_source-devices-caps
-@@ -22,3 +22,8 @@ Description:
- 		of PERF_SAMPLE_BRANCH_COUNTERS, while the "branch_counter_width"
- 		exposes the width of each counter. Both of them can be used by
- 		the perf tool to parse the logged counters in each branch.
-+
-+		The "gp_counters" and "fixed_counters" attributes expose the
-+		available general-purpose and fixed-function PMU counters as
-+		a range list, e.g. "0-7". The "fixed_counters" attribute is
-+		omitted if the PMU does not support fixed-function counters.
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 76af9cfaf0ad..282170f7c1e1 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -2814,14 +2814,51 @@ static ssize_t max_precise_show(struct device *cdev,
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 894f98eb871a..7951accfcf2c 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -2814,6 +2814,13 @@ static void __intel_pmu_enable_all(int added, bool pmi)
  
- static DEVICE_ATTR_RO(max_precise);
+ 	if (!x86_pmu_partition_loaded(cpuc))
+ 	       intel_ctrl &= ~cpuc->intel_ctrl_guest_mask;
++	else if (pmi)
++		/*
++		 * Guest-owned bits are excluded here, not because of clobbering
++		 * global ctrl guest bits in non-root mode, but because guest
++		 * counter MSRs have not yet been saved by KVM in NMI context.
++		 */
++		intel_ctrl &= ~x86_pmu_current_partition_mask();
  
-+static ssize_t gp_counters_show(struct device *dev,
-+				struct device_attribute *attr, char *buf)
+ 	wrmsrq(MSR_CORE_PERF_GLOBAL_CTRL, intel_ctrl);
+ 
+@@ -4448,6 +4455,31 @@ dyn_constraint(struct cpu_hw_events *cpuc, struct event_constraint *c, int idx)
+ 	return c;
+ }
+ 
++/*
++ * Mask out guest-owned counters from a constraint when PMU partition has been
++ * entered, so !exclude_guest host events are not scheduled onto them while
++ * the CPU is in non-root mode.
++ */
++static struct event_constraint *
++part_constraint(struct cpu_hw_events *cpuc, int idx,
++		struct perf_event *event, struct event_constraint *c)
 +{
-+	struct pmu *pmu = dev_get_drvdata(dev);
++	/*
++	 * Skip &emptyconstraint: dyn_constraint() would clone it, breaking
++	 * the "c == &emptyconstraint" pointer checks callers rely on.
++	 */
++	if (!c->weight || c == &emptyconstraint)
++		return c;
 +
-+	return sysfs_emit(buf, "%*pbl\n", INTEL_PMC_MAX_GENERIC,
-+			  hybrid(pmu, cntr_mask));
++	if (x86_pmu_partition_loaded(cpuc)) {
++		c = dyn_constraint(cpuc, c, idx);
++		c->idxmsk64 &= ~x86_pmu_current_partition_mask();
++		c->weight = hweight64(c->idxmsk64);
++	}
++
++	return c;
 +}
 +
-+static ssize_t fixed_counters_show(struct device *dev,
-+				   struct device_attribute *attr, char *buf)
-+{
-+	struct pmu *pmu = dev_get_drvdata(dev);
-+
-+	return sysfs_emit(buf, "%*pbl\n", INTEL_PMC_MAX_FIXED,
-+			  hybrid(pmu, fixed_cntr_mask));
-+}
-+
-+static DEVICE_ATTR_RO(gp_counters);
-+static DEVICE_ATTR_RO(fixed_counters);
-+
-+static umode_t x86_pmu_caps_is_visible(struct kobject *kobj,
-+				       struct attribute *attr, int n)
-+{
-+	struct device *dev = kobj_to_dev(kobj);
-+	struct pmu *pmu = dev_get_drvdata(dev);
-+
-+	if (attr == &dev_attr_fixed_counters.attr &&
-+	    !hybrid(pmu, fixed_cntr_mask64))
-+		return 0;
-+
-+	return attr->mode;
-+}
-+
- static struct attribute *x86_pmu_caps_attrs[] = {
- 	&dev_attr_max_precise.attr,
-+	&dev_attr_gp_counters.attr,
-+	&dev_attr_fixed_counters.attr,
- 	NULL
- };
+ static struct event_constraint *
+ intel_get_excl_constraints(struct cpu_hw_events *cpuc, struct perf_event *event,
+ 			   int idx, struct event_constraint *c)
+@@ -4569,8 +4601,14 @@ intel_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
+ 		c2 = c1;
+ 	}
  
- static struct attribute_group x86_pmu_caps_group __ro_after_init = {
- 	.name = "caps",
- 	.attrs = x86_pmu_caps_attrs,
-+	.is_visible = x86_pmu_caps_is_visible,
- };
+-	if (cpuc->excl_cntrs)
++	/*
++	 * No platform supports both PMU_FL_EXCL_CNTRS and PerfMon masking
++	 * simultaneously, so part_constraint() is not needed on this path.
++	 */
++	if (cpuc->excl_cntrs) {
++		WARN_ON_ONCE(x86_pmu_partition_loaded(cpuc));
+ 		return intel_get_excl_constraints(cpuc, event, idx, c2);
++	}
  
- static const struct attribute_group *x86_pmu_attr_groups[] = {
+ 	if (event->hw.dyn_constraint != ~0ULL) {
+ 		c2 = dyn_constraint(cpuc, c2, idx);
+@@ -4578,7 +4616,7 @@ intel_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
+ 		c2->weight = hweight64(c2->idxmsk64);
+ 	}
+ 
+-	return c2;
++	return part_constraint(cpuc, idx, event, c2);
+ }
+ 
+ static void intel_put_excl_constraints(struct cpu_hw_events *cpuc,
+@@ -5948,7 +5986,8 @@ int intel_cpuc_prepare(struct cpu_hw_events *cpuc, int cpu)
+ 			goto err;
+ 	}
+ 
+-	if (x86_pmu.flags & (PMU_FL_EXCL_CNTRS | PMU_FL_TFA | PMU_FL_DYN_CONSTRAINT)) {
++	if (x86_pmu.flags & (PMU_FL_EXCL_CNTRS | PMU_FL_TFA | PMU_FL_DYN_CONSTRAINT) ||
++	    (x86_get_pmu(cpu)->capabilities & PERF_PMU_CAP_MEDIATED_VPMU)) {
+ 		size_t sz = X86_PMC_IDX_MAX * sizeof(struct event_constraint);
+ 
+ 		cpuc->constraint_list = kzalloc_node(sz, GFP_KERNEL, cpu_to_node(cpu));
 -- 
 2.55.0
 
