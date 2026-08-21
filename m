@@ -1,59 +1,96 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA633DDAF4;
-	Fri, 21 Aug 2026 09:35:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA3C429CC6;
+	Fri, 21 Aug 2026 10:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787304925; cv=none; b=YDKOJ7p4eNGyRrDsT0yRSNbjBDWYU4WEZHE/m/qMijeXckITMX+Yn5WHfXdndErUnzSwY2lmBVOqwQnlWyI5Y/FTspkR1QQs/SbcHkYF7U0FRI7D4+H23UNsu+F4syfOddGelvwEjCdMaPkwN6VlpTJdNdpgjNolLuRCq7Jo7/E=
+	t=1787309850; cv=none; b=aSzSK+hD+N1QWOwX5UWU6k2OBnxTZCepR0rwC6YErwPuzcLgYN/kZElhhMH1NGmTjJcKfyzUqS8se5IL9GARpLKDm/1tRxYw9gqXa2BszujzH9OdsapI/ZBgrBT2ykheUwzITneVVop7p60LQPs4CwzNQO94hvEXcB6TU6hWb04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787304925; c=relaxed/simple;
-	bh=Fr0L+bWzaux+VbiP5oEaxO4wV06GUEM1wypYkaQMS6A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XQX1hhLIDE5G1Vdr1KULbVypG7mxCpjrh56VLwt0vYbJVIRh+yjv5J1eoNsqLF8YdUDwQAfy5QIqQZNsda/hL8kSwiNPPSdeFaaFiZf08B8Gf40ptFVogcarmVB+zkTgdOCleiWlP3dFcfllICWoorh3T7afPYdZKxQBcZnXCJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wyo6fqMX; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1787309850; c=relaxed/simple;
+	bh=gL1MluruJ5upKyj95/l/2E+d2fkvh467H6pWxyaLAi4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iSDvTj5yr2Uv2mR0zKHEXz0B1zjIB9F8sV1zOKr4mxdtShr8nxp/1cKZw5zzkOrysR/dVqVnYMUl33bposABLtZYTvStR23aUmlOdvHXXCHObvp3zLmjWutZ8el3jZkhrptp6szU52MpJlhA6hKP8MXewHdGWoMXePiirN+Kwz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=A6JuVBn8; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=BdWa8Ox/; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wyo6fqMX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787304914; x=1818840914;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Fr0L+bWzaux+VbiP5oEaxO4wV06GUEM1wypYkaQMS6A=;
-  b=Wyo6fqMXPgU43BCbNE8o+WgViQIBjxQ4MySl8GCDaSvRnwwYFJK6j5K2
-   fk2XlaEFRhFGE+cD8As1EC7t9niCDJBlMV+J/o5k7NhL9JkbXZ4EWmXzT
-   /f7mJJi6Xw9kVm9dpjvwUlCoCzPnS0bsqN7LADvXB6Ot2y1iBJ5X+IyPN
-   qy4Ybwg3JiHXGM9QrO9zCORRf3tFXcUeWnsslNXaMsJywcWaKsNv+Qhpt
-   Xy3IYx8j9AO5Lkwh5XrVxPvY4v42a7aLdUenJqp0PjICcv18OZnWhG8Hs
-   ABXp+4mAA5pYKCsr2Epg4EZeN5X3/sb7Tv29qCOVrtfOz1+DPa+ePLP42
-   Q==;
-X-CSE-ConnectionGUID: vbdYgwBvRA6dxCrtXTfJVg==
-X-CSE-MsgGUID: NSEQZjR0REKZWYC9kSvZ8A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="99006460"
-X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
-   d="scan'208";a="99006460"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 02:35:10 -0700
-X-CSE-ConnectionGUID: Z64lT8n1S9+8knxitS2Cbg==
-X-CSE-MsgGUID: H5G+fFKdS7edO/3+Z/dhvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
-   d="scan'208";a="268222739"
-Received: from litbin-desktop.sh.intel.com ([10.239.57.15])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 02:35:08 -0700
-From: Binbin Wu <binbin.wu@linux.intel.com>
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="A6JuVBn8";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="BdWa8Ox/"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id BDFAB3EC1;
+	Fri, 21 Aug 2026 10:57:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1787309840; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5T9rrWVYmn/y/C1RYcJS/lb0+erN8NQa2xUIJuUNdRU=;
+	b=A6JuVBn81oQlub3Te8JMGiRRD2jNW8RhKY+/YSLVMayPLRBdRPzWmDUirIN4DMWrQF2yVJ
+	ucpXcgek7VvTUIQTovR2KaIfLCU4z4B4uqxwvOh+ZeVGYmv8BKTCCEC/zWItUi41ju5pGj
+	Z6Iamq06PSBkGn1Yb0CzikS4wEyRirk=
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b="BdWa8Ox/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1787309836; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5T9rrWVYmn/y/C1RYcJS/lb0+erN8NQa2xUIJuUNdRU=;
+	b=BdWa8Ox/1y2upBvtXRobTnrmmlIU3VV3dPW82zT+aQOPvXfhSOB9IDC4dAqMlH2mK0I8pa
+	6pALXOEae/9qiIjyEqQDj/cMQJaCLu7FLpfl63OG7aGJUSvf4tYnxWpks0UwUuEfnr6t0I
+	lvgIaqR2CjLf6/6ufh5QJ1m7wzDB87I=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 113DD26F8;
+	Fri, 21 Aug 2026 10:57:16 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id xAILAwwviGrHAQAAD6G6ig
+	(envelope-from <jgross@suse.com>); Fri, 21 Aug 2026 10:57:16 +0000
+From: Juergen Gross <jgross@suse.com>
 To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: seanjc@google.com,
-	pbonzini@redhat.com,
-	kas@kernel.org,
-	rick.p.edgecombe@intel.com,
-	binbin.wu@linux.intel.com
-Subject: [PATCH] KVM: TDX: Charge misc cgroup before allocating HKID
-Date: Fri, 21 Aug 2026 17:39:57 +0800
-Message-ID: <20260821093957.1722167-1-binbin.wu@linux.intel.com>
-X-Mailer: git-send-email 2.46.0
+	x86@kernel.org,
+	linux-perf-users@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Cc: Juergen Gross <jgross@suse.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Michael Kelley <mhklinux@outlook.com>
+Subject: [PATCH v3 13/13] x86/msr: Simplify some rdmsrq() use cases
+Date: Fri, 21 Aug 2026 12:57:09 +0200
+Message-ID: <20260821105709.1671132-1-jgross@suse.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260819102314.1499258-14-jgross@suse.com>
+References: <20260819102314.1499258-14-jgross@suse.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -61,84 +98,366 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	NEURAL_HAM_SHORT(-0.20)[-0.991];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[31];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FREEMAIL_CC(0.00)[suse.com,infradead.org,redhat.com,kernel.org,arm.com,linux.intel.com,google.com,intel.com,linaro.org,alien8.de,zytor.com,microsoft.com,outlook.com];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_TLS_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,suse.com:email,suse.com:mid,suse.com:dkim];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[outlook.com];
+	FROM_HAS_DN(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	R_RATELIMIT(0.00)[to_ip_from(RLkdkdrsxe9hqhhs5ask8616i6)];
+	DKIM_TRACE(0.00)[suse.com:+]
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Rspamd-Queue-Id: BDFAB3EC1
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
 
-Add a tdx_hkid_alloc() helper that charges the misc cgroup before
-allocating an HKID, and unwind the charge if HKID allocation fails.
+After the conversion of rdmsrq() to an inline function some use cases
+can be simplified by dropping an intermediate variable or by
+eliminating the inline function completely.
 
-__tdx_td_init() currently allocates an HKID before charging the misc
-cgroup. If the charge fails, the error path calls tdx_hkid_free(), which
-uncharges a resource that was never successfully charged. This can make
-the misc-cgroup usage negative.
-
-Charge the cgroup before allocating the HKID.  Wrapping both steps in
-tdx_hkid_alloc() makes it the exact counterpart of tdx_hkid_free(), i.e.
-keeps resource allocation and release symmetric, and lets __tdx_td_init()
-simply bail on failure instead of open coding the unwind.
-
-Reported-by: sashiko-bot@kernel.org
-Closes: https://lore.kernel.org/all/20260710040153.D8EA71F000E9@smtp.kernel.org
-Closes: https://lore.kernel.org/all/20260718020348.3B4221F000E9@smtp.kernel.org
-Fixes: 7c035bea9407 ("KVM: TDX: Register TDX host key IDs to cgroup misc controller")
-Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com> # Hyper-V
 ---
- arch/x86/kvm/vmx/tdx.c | 34 +++++++++++++++++++++++++++-------
- 1 file changed, 27 insertions(+), 7 deletions(-)
+V3:
+- eliminate KVM's read_msr() (Sean Christopherson)
+---
+ arch/x86/events/amd/core.c      |  6 +-----
+ arch/x86/events/amd/lbr.c       | 12 ++----------
+ arch/x86/events/intel/core.c    |  6 +-----
+ arch/x86/events/intel/cstate.c  |  5 +----
+ arch/x86/events/intel/knc.c     |  6 +-----
+ arch/x86/events/intel/lbr.c     | 17 +++--------------
+ arch/x86/events/intel/uncore.c  |  6 +-----
+ arch/x86/events/rapl.c          |  4 +---
+ arch/x86/events/zhaoxin/core.c  |  6 +-----
+ arch/x86/hyperv/hv_apic.c       |  5 +----
+ arch/x86/include/asm/apic.h     |  5 +----
+ arch/x86/include/asm/debugreg.h |  6 +-----
+ arch/x86/include/asm/kvm_host.h | 10 ----------
+ arch/x86/kvm/vmx/tdx.c          |  2 +-
+ arch/x86/kvm/vmx/vmx.c          |  6 +++---
+ 15 files changed, 19 insertions(+), 83 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index b272c20586a7..d1fe279b5bc3 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -260,6 +260,31 @@ static __always_inline void tdvmcall_set_return_val(struct kvm_vcpu *vcpu,
- 	to_tdx(vcpu)->vp_enter_args.r11 = val;
+diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
+index 80ed49dba255..3d0e076c1636 100644
+--- a/arch/x86/events/amd/core.c
++++ b/arch/x86/events/amd/core.c
+@@ -660,12 +660,8 @@ static __always_inline void amd_pmu_set_global_ctl(u64 ctl)
+ 
+ static inline u64 amd_pmu_get_global_status(void)
+ {
+-	u64 status;
+-
+ 	/* PerfCntrGlobalStatus is read-only */
+-	status = rdmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS);
+-
+-	return status;
++	return rdmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS);
  }
  
-+static int tdx_hkid_alloc(struct kvm_tdx *kvm_tdx)
-+{
-+	int ret;
-+
-+	kvm_tdx->misc_cg = get_current_misc_cg();
-+	ret = misc_cg_try_charge(MISC_CG_RES_TDX, kvm_tdx->misc_cg, 1);
-+	if (ret)
-+		goto put_misc_cg;
-+
-+	ret = tdx_guest_keyid_alloc();
-+	if (ret < 0)
-+		goto uncharge_misc_cg;
-+
-+	kvm_tdx->hkid = ret;
-+	return 0;
-+
-+uncharge_misc_cg:
-+	misc_cg_uncharge(MISC_CG_RES_TDX, kvm_tdx->misc_cg, 1);
-+put_misc_cg:
-+	put_misc_cg(kvm_tdx->misc_cg);
-+	kvm_tdx->misc_cg = NULL;
-+
-+	return ret;
-+}
-+
- static inline void tdx_hkid_free(struct kvm_tdx *kvm_tdx)
+ static inline void amd_pmu_ack_global_status(u64 status)
+diff --git a/arch/x86/events/amd/lbr.c b/arch/x86/events/amd/lbr.c
+index 29628af6a023..1b4c0ef81485 100644
+--- a/arch/x86/events/amd/lbr.c
++++ b/arch/x86/events/amd/lbr.c
+@@ -74,20 +74,12 @@ static __always_inline void amd_pmu_lbr_set_to(unsigned int idx, u64 val)
+ 
+ static __always_inline u64 amd_pmu_lbr_get_from(unsigned int idx)
  {
- 	tdx_guest_keyid_free(kvm_tdx->hkid);
-@@ -2445,14 +2470,9 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
- 	u64 err, rcx;
+-	u64 val;
+-
+-	val = rdmsrq(MSR_AMD_SAMP_BR_FROM + idx * 2);
+-
+-	return val;
++	return rdmsrq(MSR_AMD_SAMP_BR_FROM + idx * 2);
+ }
  
- 	*seamcall_err = 0;
--	ret = tdx_guest_keyid_alloc();
--	if (ret < 0)
--		return ret;
--	kvm_tdx->hkid = ret;
--	kvm_tdx->misc_cg = get_current_misc_cg();
--	ret = misc_cg_try_charge(MISC_CG_RES_TDX, kvm_tdx->misc_cg, 1);
-+	ret = tdx_hkid_alloc(kvm_tdx);
- 	if (ret)
--		goto free_hkid;
-+		return ret;
+ static __always_inline u64 amd_pmu_lbr_get_to(unsigned int idx)
+ {
+-	u64 val;
+-
+-	val = rdmsrq(MSR_AMD_SAMP_BR_FROM + idx * 2 + 1);
+-
+-	return val;
++	return rdmsrq(MSR_AMD_SAMP_BR_FROM + idx * 2 + 1);
+ }
  
- 	ret = -ENOMEM;
+ static __always_inline u64 sign_ext_branch_ip(u64 ip)
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 41ae90b6bbdc..d19ac42b6e8c 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -2963,11 +2963,7 @@ static void intel_tfa_pmu_enable_all(int added)
  
-
-base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
+ static inline u64 intel_pmu_get_status(void)
+ {
+-	u64 status;
+-
+-	status = rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS);
+-
+-	return status;
++	return rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS);
+ }
+ 
+ static inline void intel_pmu_ack_status(u64 ack)
+diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
+index 69eb6cf51d3b..c6d9146d8ec8 100644
+--- a/arch/x86/events/intel/cstate.c
++++ b/arch/x86/events/intel/cstate.c
+@@ -322,10 +322,7 @@ static int cstate_pmu_event_init(struct perf_event *event)
+ 
+ static inline u64 cstate_pmu_read_counter(struct perf_event *event)
+ {
+-	u64 val;
+-
+-	val = rdmsrq(event->hw.event_base);
+-	return val;
++	return rdmsrq(event->hw.event_base);
+ }
+ 
+ static void cstate_pmu_event_update(struct perf_event *event)
+diff --git a/arch/x86/events/intel/knc.c b/arch/x86/events/intel/knc.c
+index c4f81215f758..a74caa8280be 100644
+--- a/arch/x86/events/intel/knc.c
++++ b/arch/x86/events/intel/knc.c
+@@ -199,11 +199,7 @@ static void knc_pmu_enable_event(struct perf_event *event)
+ 
+ static inline u64 knc_pmu_get_status(void)
+ {
+-	u64 status;
+-
+-	status = rdmsrq(MSR_KNC_IA32_PERF_GLOBAL_STATUS);
+-
+-	return status;
++	return rdmsrq(MSR_KNC_IA32_PERF_GLOBAL_STATUS);
+ }
+ 
+ static inline void knc_pmu_ack_status(u64 ack)
+diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
+index fc05ec3b9a99..70dae299627a 100644
+--- a/arch/x86/events/intel/lbr.c
++++ b/arch/x86/events/intel/lbr.c
+@@ -209,10 +209,7 @@ void intel_pmu_lbr_reset(void)
+  */
+ static inline u64 intel_pmu_lbr_tos(void)
+ {
+-	u64 tos;
+-
+-	tos = rdmsrq(x86_pmu.lbr_tos);
+-	return tos;
++	return rdmsrq(x86_pmu.lbr_tos);
+ }
+ 
+ enum {
+@@ -311,26 +308,18 @@ static __always_inline u64 rdlbr_from(unsigned int idx, struct lbr_entry *lbr)
+ 
+ static __always_inline u64 rdlbr_to(unsigned int idx, struct lbr_entry *lbr)
+ {
+-	u64 val;
+-
+ 	if (lbr)
+ 		return lbr->to;
+ 
+-	val = rdmsrq(x86_pmu.lbr_to + idx);
+-
+-	return val;
++	return rdmsrq(x86_pmu.lbr_to + idx);
+ }
+ 
+ static __always_inline u64 rdlbr_info(unsigned int idx, struct lbr_entry *lbr)
+ {
+-	u64 val;
+-
+ 	if (lbr)
+ 		return lbr->info;
+ 
+-	val = rdmsrq(x86_pmu.lbr_info + idx);
+-
+-	return val;
++	return rdmsrq(x86_pmu.lbr_info + idx);
+ }
+ 
+ static inline void
+diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
+index ab2c5a962b31..cffbd780a435 100644
+--- a/arch/x86/events/intel/uncore.c
++++ b/arch/x86/events/intel/uncore.c
+@@ -169,11 +169,7 @@ struct intel_uncore_box *uncore_pmu_to_box(struct intel_uncore_pmu *pmu, int cpu
+ 
+ u64 uncore_msr_read_counter(struct intel_uncore_box *box, struct perf_event *event)
+ {
+-	u64 count;
+-
+-	count = rdmsrq(event->hw.event_base);
+-
+-	return count;
++	return rdmsrq(event->hw.event_base);
+ }
+ 
+ void uncore_mmio_exit_box(struct intel_uncore_box *box)
+diff --git a/arch/x86/events/rapl.c b/arch/x86/events/rapl.c
+index 180cc18282ca..2d2376c59816 100644
+--- a/arch/x86/events/rapl.c
++++ b/arch/x86/events/rapl.c
+@@ -192,9 +192,7 @@ static inline unsigned int get_rapl_pmu_idx(int cpu, int scope)
+ 
+ static inline u64 rapl_read_counter(struct perf_event *event)
+ {
+-	u64 raw;
+-	raw = rdmsrq(event->hw.event_base);
+-	return raw;
++	return rdmsrq(event->hw.event_base);
+ }
+ 
+ static inline u64 rapl_scale(u64 v, struct perf_event *event)
+diff --git a/arch/x86/events/zhaoxin/core.c b/arch/x86/events/zhaoxin/core.c
+index 1980e5995e27..9203321c18b4 100644
+--- a/arch/x86/events/zhaoxin/core.c
++++ b/arch/x86/events/zhaoxin/core.c
+@@ -266,11 +266,7 @@ static void zhaoxin_pmu_enable_all(int added)
+ 
+ static inline u64 zhaoxin_pmu_get_status(void)
+ {
+-	u64 status;
+-
+-	status = rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS);
+-
+-	return status;
++	return rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS);
+ }
+ 
+ static inline void zhaoxin_pmu_ack_status(u64 ack)
+diff --git a/arch/x86/hyperv/hv_apic.c b/arch/x86/hyperv/hv_apic.c
+index 4e30f9a11bc4..52ee8c237c2c 100644
+--- a/arch/x86/hyperv/hv_apic.c
++++ b/arch/x86/hyperv/hv_apic.c
+@@ -36,10 +36,7 @@ static struct apic orig_apic;
+ 
+ static u64 hv_apic_icr_read(void)
+ {
+-	u64 reg_val;
+-
+-	reg_val = rdmsrq(HV_X64_MSR_ICR);
+-	return reg_val;
++	return rdmsrq(HV_X64_MSR_ICR);
+ }
+ 
+ static void hv_apic_icr_write(u32 low, u32 id)
+diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
+index e028140fac49..993b52b52625 100644
+--- a/arch/x86/include/asm/apic.h
++++ b/arch/x86/include/asm/apic.h
+@@ -231,10 +231,7 @@ static inline void native_x2apic_icr_write(u32 low, u32 id)
+ 
+ static inline u64 native_x2apic_icr_read(void)
+ {
+-	unsigned long val;
+-
+-	val = rdmsrq(APIC_BASE_MSR + (APIC_ICR >> 4));
+-	return val;
++	return rdmsrq(APIC_BASE_MSR + (APIC_ICR >> 4));
+ }
+ 
+ extern int x2apic_mode;
+diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
+index 60a3df32a4d3..e00251c7eb12 100644
+--- a/arch/x86/include/asm/debugreg.h
++++ b/arch/x86/include/asm/debugreg.h
+@@ -174,15 +174,11 @@ static inline unsigned long amd_get_dr_addr_mask(unsigned int dr)
+ 
+ static inline unsigned long get_debugctlmsr(void)
+ {
+-	unsigned long debugctlmsr = 0;
+-
+ #ifndef CONFIG_X86_DEBUGCTLMSR
+ 	if (boot_cpu_data.x86 < 6)
+ 		return 0;
+ #endif
+-	debugctlmsr = rdmsrq(MSR_IA32_DEBUGCTLMSR);
+-
+-	return debugctlmsr;
++	return rdmsrq(MSR_IA32_DEBUGCTLMSR);
+ }
+ 
+ static inline void update_debugctlmsr(unsigned long debugctlmsr)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 2097602a00a0..74a10e7ffbd6 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -2412,16 +2412,6 @@ static inline void kvm_load_ldt(u16 sel)
+ 	asm("lldt %0" : : "rm"(sel));
+ }
+ 
+-#ifdef CONFIG_X86_64
+-static inline unsigned long read_msr(unsigned long msr)
+-{
+-	u64 value;
+-
+-	value = rdmsrq(msr);
+-	return value;
+-}
+-#endif
+-
+ static inline void kvm_inject_gp(struct kvm_vcpu *vcpu, u32 error_code)
+ {
+ 	kvm_queue_exception_e(vcpu, GP_VECTOR, error_code);
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 545b03d9d10b..88f2e137598b 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -793,7 +793,7 @@ void tdx_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
+ 	if (likely(is_64bit_mm(current->mm)))
+ 		vt->msr_host_kernel_gs_base = current->thread.gsbase;
+ 	else
+-		vt->msr_host_kernel_gs_base = read_msr(MSR_KERNEL_GS_BASE);
++		vt->msr_host_kernel_gs_base = rdmsrq(MSR_KERNEL_GS_BASE);
+ 
+ 	vt->guest_state_loaded = true;
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index bd16bdfc1d61..534e83d857c2 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -1374,8 +1374,8 @@ void vmx_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
+ 	} else {
+ 		savesegment(fs, fs_sel);
+ 		savesegment(gs, gs_sel);
+-		fs_base = read_msr(MSR_FS_BASE);
+-		vt->msr_host_kernel_gs_base = read_msr(MSR_KERNEL_GS_BASE);
++		fs_base = rdmsrq(MSR_FS_BASE);
++		vt->msr_host_kernel_gs_base = rdmsrq(MSR_KERNEL_GS_BASE);
+ 	}
+ 
+ 	wrmsrq(MSR_KERNEL_GS_BASE, vmx->msr_guest_kernel_gs_base);
+@@ -1434,7 +1434,7 @@ static u64 vmx_read_guest_host_msr(struct vcpu_vmx *vmx, u32 msr, u64 *cache)
+ {
+ 	preempt_disable();
+ 	if (vmx->vt.guest_state_loaded)
+-		*cache = read_msr(msr);
++		*cache = rdmsrq(msr);
+ 	preempt_enable();
+ 	return *cache;
+ }
 -- 
-2.46.0
+2.55.0
 
