@@ -1,331 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010013.outbound.protection.outlook.com [52.101.201.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C69490BF7
-	for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 15:44:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787327098; cv=none; b=igOX1j6s0oGCesrwL6ybwmOjfE2RUnFQIw1l4ZgoFpKtgnQuptdtY3ePF+V/TpH21LgdtdU0WrXsDZMsIT9eu5hV6rmVUEClGT+cHs7kX/n9N9RHqONozwjMm4nLNnfGzEYyTZWlx9Ri0dZiRpR5FTYQSCaz3JkLWhR9se437Lk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787327098; c=relaxed/simple;
-	bh=OsoLph1SijqA88dsgWO+jw8WttozWoXak+82IDO6mB8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u7ohU8Ova5fuoOR2QybcEqCMsDuRE6OxPfjSD19kRLUPCEZCNenpWCryNsLXRx4eCifR53ZqfMugFBOX3QALwy+9OgQFgrYI2wrolCL7ZLhEOOh2IUpSDrMPbD8yBFYwG5WBFL0lViJRXrLDgrgB3NwXLMn/z38rlxgMOe8Dlag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Su3TAQCv; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A5E472F81;
+	Fri, 21 Aug 2026 15:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787327766; cv=fail; b=RmgZdv2xbBB0iGxbPE2fpILpqmgZM4B6/dP/7QgtDTgmcpVUGbThvPR0t3LmvHcILO9+dZjnbhS+/YiXQ3CRUGnHCeE7UQJm528KrxIELJxA2pUxcBAOtRm7Pcuc7iyhWfQoXQwwddFt/zVBZsa3C0n1HYlRFXGqzikuG+965y8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787327766; c=relaxed/simple;
+	bh=JKKcVnQTEyVtkqSmWUUKHxwZ+yYd03OUOj1x3vWxuZs=;
+	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=ojDhWCVhdmpTc/zGDHKmuwp/ONJSB3vqp1V+YKoozh7Lx1nbcNZvLGVsgvVf3uQiBU9QXAjVYJgyIXViVAQh/ARMftwSu8Qy4PWPGsiDatiTl7LojMWKyRVRgWG1y4UD8MfDB7yLREBq8Knuac37WdKkrCyfhSJfIvOnbA/qnjQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=1KmQpAlA; arc=fail smtp.client-ip=52.101.201.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Su3TAQCv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3A01F000E9;
-	Fri, 21 Aug 2026 15:44:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787327095;
-	bh=0oH24vlTUI28ao9iU7cZQFNEJUxjn94w+7g2DRUlgUE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Su3TAQCvfiajZNjcH6P8xj/NHwjODW43aex9Q7f8RkGHmtaAGADuAdptHRfBeaaTO
-	 WGBBaOZeHDaLnRgWbMyekcGLTqRKMN3BxQdBjLYOHTcqfthkbYljAKm07fdBNQgXnJ
-	 2JB2/zau509YnDTuLIfiCEgAkXRT5uEUDPIPOS4zghMykDAKrin4aZ+Pzf9uRL8hpn
-	 YiiQkXUCojYg+PU4+sBySKxCHovdXSmE1jc7gw9eYxJKPLT9jYmggvddw/3AqzODCS
-	 iYkSuhRVwJk+QagobriSjSGl4jTm4n0nwJnrRwpfuqdjO/+tfhIzOWfEXVqB6EkGw5
-	 I9tGFsi9He/xg==
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfauth.ams.internal (Postfix) with ESMTP id C0C111980058;
-	Fri, 21 Aug 2026 11:44:50 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Fri, 21 Aug 2026 11:44:53 -0400
-X-ME-Sender: <xms:cnKIavpQZKUhh2d9UmkWVr92DXNdWnq7s_HNxzgpC_n-nm5TTtFshw>
-    <xme:cnKIao63611Bd1vOBAjgB4-IsRfM2FyaVcvK7WZY0W8fM7K5CVe8Mvuv6_j09GnnX
-    27Kz1LDFdjBkpgkxiy7Q2LsBpolYtbnuZraRH18NhzMAgra73Wk86Mr>
-X-ME-Received: <xmr:cnKIaoZQj11Uyc2gnbvUdohc_wQgRcREOyydMnDTnk6SnZ7dhjo7rq4A0PY>
-X-ME-Proxy-Cause: dmFkZTFJCOZq+l9Jwl+NmtE/amVHIo/1yhQySBmIRev8CL343wxTKvuNnWPxevjkYdKloI
-    y9w+Zy5rMdzuA9kIvfHxpnqoq0f96RhwhDKbCK63aGG+zG81f9P3svoES+0SDbc6NIbZjy
-    858XvLuYJeLCHmcOgSdmnyIrblHCYuK7l7CFSs344+Xe9ccZfgdOBe3VbyINydkXyklEEq
-    k6OBmOH/ZBGbKq9ga/BbfZEC06CJiOiNgGCpi5yMco4RYzjSiXvidj8lRWynvvMJ18TsbK
-    tURakxBI5/tMLo35ODGt0lc0vBbvsYzmyErw9oJ+x4iq5EMZG3rM21+bXr3apD9nzR3ubp
-    pdlnt/2sg9xQdm0Rg+qpQHrLPo77VOVb/hrv1VRIWdik0HSqUlNRMNV0GqdTcO702yzrpo
-    6Y/VGihtbJeczAxSRRlaRdTHmrLNwI/QsaEgo2V4Tg/n2S7eL2Ry03xvppF1tJ2kUQpCVY
-    Hrxr2/ozLgNQctarrHfN0X4tG7R1vyv4dgLkFoHY1dPYwXKAQEPTH8axzbppy/XZtFxbFB
-    u2Q2kYm17xPfjCfRzPbz7Th3sW7z/LDs0G47yRi/8dnf7kjzOpumaUSEMBfOjhegCg7Wx4
-    6/iMD6sU5gjb6IIMDC2XGFUQgAD6VyRWWZvBir8nO7fMiyIGzxwjUslx7e8A
-X-ME-Proxy: <xmx:cnKIatrl1qPzWL_ZEZMjTqcmf3AnI10YOycGpDc3_fAjuOhJtZNg_g>
-    <xmx:cnKIah5mPsNMnoUY8Krbw7yKsxG1Bc1ISBsnj3gwRVpDQWtmZkWkzQ>
-    <xmx:cnKIaqSNN3f_hmCuNTpWLb0eck4PqeqGjaQUu-an241qUAufJMyLLw>
-    <xmx:cnKIah2tyaMqDYUzm1SABvkhMtZtr3Mjv1ZLrK2kfCLW648RA2bteg>
-    <xmx:cnKIah4Ljh4G7-Mtuds6X6XF1WC_5A_YZ8hq51Z-79Gtgtpg9c-t1GF0>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 21 Aug 2026 11:44:49 -0400 (EDT)
-Date: Fri, 21 Aug 2026 16:44:48 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, rick.p.edgecombe@intel.com, yilun.xu@intel.com, 
-	xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com, 
-	kishen.maloor@intel.com, tony.lindgren@linux.intel.com, peter.fang@intel.com, 
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, chao.gao@intel.com, 
-	artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org
-Subject: Re: [PATCH 4/6] x86/virt/tdx: Add extra memory to TDX module for the
- extensions
-Message-ID: <aohvlMO7ehqcVW96@thinkstation>
-References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
- <20260821032920.256225-5-yilun.xu@linux.intel.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="1KmQpAlA"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rIqvWCpXun7GsIwHUe+Q029A9GE9X6tgRFYcx72fG3c32uLLl89JIezK5PTLenfKtzlrAPXWQvDJ1nYMjIr004pgSPZyJd72nHKBMr9GEAq4rVbWF6nzQMZQ7o+1t0pqF9gvSvWbAq+M3E85LNsqCKDMD8geMd7OdLHmriaRpPUUv5On98QiTWDO7r6mrC5HH39Mz8rp/B3SxT34xgnBoFWb+6zvyKAhFKfzKJgC04fQoVbG9WtN30jinfOEhEyLbTYS3IZn2uJyxjC8Yg/Tj2mMEN2WxnR1eIR04Xv8ysCKFTDPKWYTc8NvqCiOrADjA9twMFzbGwM6PlagsyTj7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Hyd1GOnhIibbx0nyFeO+EzZMwQ/SQDxiOEboJqsFmxQ=;
+ b=ATq6zj/dvM4pMy72OZYm4sudJIofq1oVGidWIvYAk99/CJCE5u6Lk0W2hpMH6DaU30MV+sHipDCAY05D60PZ1XU7KiuAlFORDIBHeejGshIAIjXFL69G8BLdflWzDndiDnxKT2cI0a1gI45F7ZdyiCvPcA26GWOHssnOjhWYgY73WNUYoZIQtfjnpqzhK/1MOWGAkb+nF2MkcVmmIlaQPuvblKXFyxIIP4xnv/UWDMK1k0dY6R1YuRIWhE0mx9fVek8Aw2d/vr7S/zlB18IUlgpLoqWoA/ZIOOyqmq6kxX6v1zYCALOUxIztCZ6xqYm2WmiJ8JdAfbvECbhJLPfGDQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Hyd1GOnhIibbx0nyFeO+EzZMwQ/SQDxiOEboJqsFmxQ=;
+ b=1KmQpAlAFk8SKF1F8ZAkDySSmMi/HuGwVgDBanwpaDvhgihtpiUS7C4ZK11UWDIQaA6md0LpBV7MDcK3p63ply4NdIYMAq0RJ/javuDzqKQVhxhKvipKA8TyXemLsC/bodjSaxZpfYycAb7y7EIWdWTjx4Vi4wUMDTL+a0hZRgo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL4PR12MB9505.namprd12.prod.outlook.com (2603:10b6:208:591::16)
+ by MW6PR12MB8952.namprd12.prod.outlook.com (2603:10b6:303:246::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.11; Fri, 21 Aug
+ 2026 15:55:56 +0000
+Received: from BL4PR12MB9505.namprd12.prod.outlook.com
+ ([fe80::73aa:eb8c:a86b:5a83]) by BL4PR12MB9505.namprd12.prod.outlook.com
+ ([fe80::73aa:eb8c:a86b:5a83%5]) with mapi id 15.21.0339.010; Fri, 21 Aug 2026
+ 15:55:56 +0000
+Message-ID: <42ae4e2d-3327-432c-a5ce-67b27a45b4ae@amd.com>
+Date: Fri, 21 Aug 2026 21:25:42 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/7] iommu/amd: KVM: SVM: Rename cpu to apicid in IOMMU
+ interface
+To: Sairaj Kodilkar <sarunkod@amd.com>, "Borislav Petkov (AMD)"
+ <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
+ "Joerg Roedel (AMD)" <joro@8bytes.org>, "Paul E. McKenney"
+ <paulmck@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Breno Leitao <leitao@debian.org>, Christian Brauner <brauner@kernel.org>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Eric Biggers
+ <ebiggers@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Jakub Kicinski <kuba@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Kiryl Shutsemau <kas@kernel.org>, Li RongQing <lirongqing@baidu.com>,
+ Marco Elver <elver@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Robin Murphy <robin.murphy@arm.com>, Sean Christopherson
+ <seanjc@google.com>, Shuah Khan <skhan@linuxfoundation.org>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
+ iommu@lists.linux.dev, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org
+References: <20260821055611.27138-1-sarunkod@amd.com>
+ <20260821055611.27138-2-sarunkod@amd.com>
+Content-Language: en-US
+From: Vasant Hegde <vasant.hegde@amd.com>
+In-Reply-To: <20260821055611.27138-2-sarunkod@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5P287CA0109.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b5::14) To BL4PR12MB9505.namprd12.prod.outlook.com
+ (2603:10b6:208:591::16)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260821032920.256225-5-yilun.xu@linux.intel.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL4PR12MB9505:EE_|MW6PR12MB8952:EE_
+X-MS-Office365-Filtering-Correlation-Id: 27254e83-4bbd-4c15-5179-08deff9cafcf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|4143699003|56012099006|11063799006|10067099003|18002099003|22082099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	R1D3SdgcDkfsSaddycQ+ldCHrVsAeRlyTd+riPHAIejFqQ/pF9m1CkUiuVEsebdGF5KFL5YDC7cdUAPDz3xM5mIoB1GGeBB5/ydziIV4pDDB5GaxkWJoOO4oQVCUeGZv7O7izSaiTaUwiMoKh8cjzy+WqZh8eBKj+GZ4KUQZH1rNlXzeF6hP6UQuldNcnOeY+Sn+5X5Zf0tOoUZmYaKQNrfQdjYffSWHQsSZcIWg6KJRQy2TRGfMhTWGw2aeU70ELdSNRaLKkzzVh/J9YRcGJWaINhGgjb8iFNboit++Xe3n2Ras4XBvvZ4J3HftmcnMPvkIdIgJzQm0p4T/FCfP39lsRFqj7oaTK9/h4Sn+rUgO+8n4JAeGMpFO2WHpOpB7/+ZaIDNg3U08v0VTousFGbDQzDI2CYmdeGF6A3l5uKAHnhBZJG82IBIIXCoJoCDPNI5xUFrQMw2WdHFPA3kqa8sIuPUQ/z0tXDGagrmww5w8XSpNOrwpNrJGVMWqzH4UyuWRHh7q38JDJGqzzBQc78vwGSqgaHY5wFKe0kRjMKam4fXunWOLrpbQFEUuOOYR8zMgoc6PP6N2H7zLruWr6exCCcujKuKxe98yq9ghlQkGy1viMod0TTsexNgB5J5MZs1yP/AK8z41lLFidSAIGetSlmSyhW17SvihPXV9EtJMyZXRYlYDe+DFgiysW2p2SGf5sLEGx9rb+e48oRFuMg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR12MB9505.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(4143699003)(56012099006)(11063799006)(10067099003)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NWFIeWszaitlaEtzZk1NVjNVajQ0QWxodmxzcFVraTNZTk50SWpzZHl3RVlM?=
+ =?utf-8?B?RjZXN2taTXBTR0lqaXVRN1BLNjVneFEwR2pRaVBkdHFWaXBrYUdXTzJSTGxj?=
+ =?utf-8?B?SzZHSUFieVV0cDl6TzdpVEFPZlBjVDhFWEdrVHBheDNBMVpHRlJjWW1jaytz?=
+ =?utf-8?B?TStSMFY0aGQ4Q2NEZ09MNW9TY2M0dDVvcWpUd2ZKYTZoMXFjTDhNSExzd1RZ?=
+ =?utf-8?B?Q1oyeEYvdXNpVEsxZk14QmxtZGs2ckZuVWtISFhxd0pJVzEybzhQWHF0YVlr?=
+ =?utf-8?B?eHJkZ3VMMWs1UG9wWWExUVhBd1k4aGVNVFg1VkptWnkxQitNcEZOUzU0T1Bp?=
+ =?utf-8?B?WHpzOExQOWtmUWJnS3V2SFZmMlFKT01Kb1ZTdmh5UTdSU2VaZjkzZkV4eGtk?=
+ =?utf-8?B?Zkc0NW1INXhFaFloeVV5bnR5bU5lMG94eFhSRkZkdjYwL1B0QjIrUXdlODBG?=
+ =?utf-8?B?NGhzOVg1aFFLZU94WDRZUmxORVdpSXFsZ0wwTDVTN2NJN1c1VnNsTU0xMTZH?=
+ =?utf-8?B?c1NzQTFpc0hBMTZiRmkyVTZBM1FQR1kzUXA2WGVzU3Y4ajhBUmpyZjg2QVdD?=
+ =?utf-8?B?QzFQd3FjRjRPUnZlMUdhbTkzLzJ3WXY0UGNsWGd5SEdUUzdtWnRaVUFzSHBB?=
+ =?utf-8?B?Q2NZT3lkdnhUMXEwU3JQZ2JvUjh4eGFaSTdqVG5heXUra0ZQNEt2dVBPM04r?=
+ =?utf-8?B?U1owWjVjQTN0eU9iTUF4dXB4Z1NRUmUwNTcrK0xBY25hUHlIQ21waDg0enVS?=
+ =?utf-8?B?ajlFMlNPeTgxZGQ2bk1vY2I5RUUzcmVuK042cTNGVUUrTGVxd1lUaUZoVVZX?=
+ =?utf-8?B?dUp2cis4bHE3RWlXU2ROUytzd1pUTVhPa0o1YmR0SWRwOGtydkpJUlhFeGk4?=
+ =?utf-8?B?ZGlBRDl1T2tIc3c0OFBCbEFHeVh6aXMrNHRWd3g3VEN5RTM3bHowbUdmb3hJ?=
+ =?utf-8?B?OGF0aWlWZFRaMmIvNG1DZWpyS2tXMnJrbGRRT21na3ZVaWtrMERLeW1BVUVy?=
+ =?utf-8?B?VFhCcFVCL2hnaXVVeGpRUXFneER1bnRKWnZOM09XaXQ5T1Bwb2hxZzhiUkw1?=
+ =?utf-8?B?NDk5YURPbFdSUjMyRm1SZzJ5V2FSRGFOZEZCZzNycGxXS0JvMHd3VEp0ZnNX?=
+ =?utf-8?B?cDNZc09mTlJwMGJyVEE1Qk43RmVvL0NLTXRNUDYwbHdCN3IwOFNXUmh0U0hS?=
+ =?utf-8?B?cm5GRS9ZSFoydjZrNXNpZ2d6UTI4N1ZmTXNOTjBmcFVHR1Q5Sm1rWGk4OHgz?=
+ =?utf-8?B?UXUrdk03U21NZHpoN1Q3RUkvUE01TzdsalNneTdFNmM0YnhHL09FZ29KL3dl?=
+ =?utf-8?B?ejdUcEZuL1dyRm5HcDVHcHBPdWpFSmZnSkFQZklITzVTVzN2Uk5tclRJZUVk?=
+ =?utf-8?B?b1VtMnZIalh0cXVUL1luRWgrZEVNWnJOUm5HTlhiTVdFVFJkZlEzbkg1bjEv?=
+ =?utf-8?B?UDJIaEN5YVBmTGN1WDh0L2p2YlFBR21pU21YWkVMV1F3MUZwUm1MR2FHd2wv?=
+ =?utf-8?B?K2MvN0ZZRFR3ZjlZcTJkbm01SWExWWxRek5ScTlOWDVPa00xTW83b0pwMDlO?=
+ =?utf-8?B?MFZLUkxFK1IrL2R1SVlCYnFsZFBUNCt4dk1HSVlLUFBKL05xUU1NUk8zenpU?=
+ =?utf-8?B?WEV1d2s4cTJ0TWRSdmZSR0V6Wmd6WWNITFdydkFIWVlnWFQ3Z3FDYUx6MzM1?=
+ =?utf-8?B?bmkyaXpYSnUzRUU4RSswdjFacEUwMDY3N3JXNkdnaFcrWnNVVGxGdTZsRHJX?=
+ =?utf-8?B?ak1BRmVwY0VYN1JhUlBaNW1zTXZJRG9EU3BPckg5bkpFZFhwVTZVYVNlTDhn?=
+ =?utf-8?B?YlN0Y0xPVHpEb3FhdUp5SXg1My9maHU2L1BCNHYxcGMxZFFiM2FXVndLbmRU?=
+ =?utf-8?B?NTJsK1hSNUNReENQMDgxQVhqeUZGay8rSmNMYkNDNG5kaHQvVHVqRTcrbU5t?=
+ =?utf-8?B?NDFBTG9BQzJ4VEhNQ0Y5VTJYamJwaU83aEV1MGMwZ21iVmJnMWc5SXhVMjVk?=
+ =?utf-8?B?ZktES1d1dmZJejRSZkFrSFRxeS9uTW9JZ2I2U1lQRThpZjUxWk5GdXhWbjcy?=
+ =?utf-8?B?Y1FUaWdxTVM0cVlWM2FrZ0Qvd29FbXhmWktMK1RhczIybjloRWxiTHZ3OUg5?=
+ =?utf-8?B?ZU5ZdmQ3dTRqQ2tBZUJhTThoc08wM2h3anZLU2Rpb0hoNWJaaUNPcHhUN2FC?=
+ =?utf-8?B?c2tBUXJCOG40NEhlUEJOeDVXem1sRGxSRG1xTEFGZnQzNGJVMDFUWXpSdk92?=
+ =?utf-8?B?UzJ3TUttV3Z5ZHVVSS9Md0xjK2NIcDVIVjhKS0YrK1ZLaU1POEJQNzU4U21l?=
+ =?utf-8?B?K3BLL1RSdUM0Qy9iLzZpOHpEMkZMc3FwVHk3MWxQVDAyd3ZqdUpHdz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27254e83-4bbd-4c15-5179-08deff9cafcf
+X-MS-Exchange-CrossTenant-AuthSource: BL4PR12MB9505.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 15:55:56.4844
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ECxrEpqfkR3/DvHodoWOl/9juL+p9MhQozzayfeU7BPDOLFSccQcBDAS3eY1DZldJ7N8cUyBgs7OkpteIRhTeA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8952
 
-On Fri, Aug 21, 2026 at 11:29:18AM +0800, Xu Yilun wrote:
-> TDX module extensions need memory for their own internal state and data
-> to serve SEAMCALL leaves. The TDX architecture implements the extensions
-> in such a way that they use the memory outside of SEAM range, so the
-> kernel should add the memory upfront at initialization time.
+
+
+On 8/21/2026 11:26 AM, Sairaj Kodilkar wrote:
+> The cpu field passed from SVM to the AMD IOMMU driver does not hold a
+> linux CPU number. It carries the host physical APIC ID used to program
+> the IRTE Destination field when the target vCPU is running
+> (IRTE[IsRun] = 1).
 > 
-> Introduce a new memory adding process backed by a new SEAMCALL leaf
-> TDH.EXT.MEM.ADD. The kernel queries TDX module how much memory needed,
-> allocates it, add it to the module, and never gets it back.
+> Rename the field to apicid everywhere in the IOMMU interface so the
+> name matches the hardware semantics.
 > 
-> The TDX module accepts the memory in the form of a PFN array. This array
-> is passed via a single 64-bit SEAMCALL leaf parameter, which encodes two
-> values: the PFN of the container page holding the array, and the number
-> of entries in the array. Create a helper to encode this format and name
-> it after the TDX module term: HPA_LIST_INFO.
-
-The array entries are physical addresses, not PFNs. HPA_LIST_INFO encodes
-a PFN, the array does not.
-
-> TDX module extensions consume tens of megabytes memory that will never
-> be returned to host. Use contiguous page allocation to isolate these
-> large blocks entirely, avoiding permanent memory fragmentation and buddy
-> allocator efficiency loss. Print the allocation amount on TDX module
-> extensions initialization for visibility.
+> No functional change is intended.
 > 
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> ---
-> v1:
->  - Fix return value for SEAMCALL helpers (Chao)
->  - Print SEAMCALL error code for SEAMCALL helpers (Xiaoyao)
->  - Rename local vars to make the ext memory adding loop clear (Rick)
->  - Remove input parameters for tdx_ext_mem_setup() (Kevin)
->  - Add a Macro for tdh_hpa_list size.
->  - Change the SEAMALL helper parameter type,
->    struct page *hpa_list => struct tdx_hpa_list *hpa_list
->  - changelog & code comments
-> ---
->  arch/x86/include/asm/tdx_global_metadata.h  |   1 +
->  arch/x86/virt/vmx/tdx/tdx.h                 |   1 +
->  arch/x86/virt/vmx/tdx/tdx.c                 | 118 +++++++++++++++++++-
->  arch/x86/virt/vmx/tdx/tdx_global_metadata.c |   6 +
->  4 files changed, 123 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
-> index fe3fe91de71f..43b8761c0854 100644
-> --- a/arch/x86/include/asm/tdx_global_metadata.h
-> +++ b/arch/x86/include/asm/tdx_global_metadata.h
-> @@ -45,6 +45,7 @@ struct tdx_sys_info_handoff {
->  };
->  
->  struct tdx_sys_info_ext {
-> +	u32 memory_pool_required_pages;
->  	bool ext_required;
->  };
->  
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-> index 63e3acfb5d0c..52888424fe7d 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.h
-> +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> @@ -48,6 +48,7 @@
->  #define TDH_SYS_CONFIG			45
->  #define TDH_SYS_SHUTDOWN		52
->  #define TDH_SYS_UPDATE			53
-> +#define TDH_EXT_MEM_ADD			61
->  #define TDH_SYS_DISABLE			69
->  
->  /* TDX page types */
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index a0c370894c0b..8c2fdaf0b8c0 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -1175,6 +1175,120 @@ static __init int init_tdmrs(struct tdmr_info_list *tdmr_list)
->  	return 0;
->  }
->  
-> +#define TDX_HPA_LIST_MAX_NR_PAGES	(PAGE_SIZE / sizeof(u64))
-> +
-> +struct tdx_hpa_list {
-> +	u64 phys[TDX_HPA_LIST_MAX_NR_PAGES];
-> +};
-> +
-> +static_assert(sizeof(struct tdx_hpa_list) == PAGE_SIZE);
-> +
-> +#define HPA_LIST_INFO_FIRST_ENTRY	GENMASK_U64(11, 3)
-> +#define HPA_LIST_INFO_PFN		GENMASK_U64(51, 12)
-> +#define HPA_LIST_INFO_LAST_ENTRY	GENMASK_U64(63, 55)
-> +
-> +static __init u64 to_hpa_list_info(struct tdx_hpa_list *hpa_list,
-> +				   unsigned int nr_pages)
-> +{
-> +	return FIELD_PREP(HPA_LIST_INFO_FIRST_ENTRY, 0) |
-> +	       FIELD_PREP(HPA_LIST_INFO_PFN, PFN_DOWN(__pa(hpa_list))) |
-> +	       FIELD_PREP(HPA_LIST_INFO_LAST_ENTRY, nr_pages - 1);
-> +}
-> +
-> +static __init int tdx_ext_mem_add(struct tdx_hpa_list *hpa_list,
-> +				  unsigned int nr_pages)
-> +{
-> +	struct tdx_module_args args = {
-> +		.rcx = to_hpa_list_info(hpa_list, nr_pages),
-> +	};
-> +	u64 ret;
-> +
-> +	do {
-> +		/*
-> +		 * The TDX module overwrites RCX to track progress when this
-> +		 * SEAMCALL leaf is interrupted. Use seamcall_ret() to save and
-> +		 * pass the updated value back on retry.
-> +		 */
-> +		ret = seamcall_ret(TDH_EXT_MEM_ADD, &args);
-> +	} while (ret == TDX_INTERRUPTED_RESUMABLE);
-> +
-> +	if (ret != TDX_SUCCESS) {
-> +		pr_err("TDH.EXT.MEM.ADD failed: 0x%016llx\n", ret);
-> +		return -EIO;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static __init int tdx_ext_mem_setup(void)
-> +{
-> +	unsigned int required_pages = tdx_sysinfo.ext.memory_pool_required_pages;
-> +	struct tdx_hpa_list *hpa_list;
-> +	unsigned int added_pages;
-> +	struct page *page;
-> +	int ret;
-> +
-> +	/*
-> +	 * TDX module uses the metadata memory_pool_required_pages to indicate
-> +	 * how much memory is still needed. This value decreases each time
-> +	 * memory is added via TDH.EXT.MEM.ADD.
-> +	 *
-> +	 * On first time initialization, a value of 0 before any memory is
-> +	 * added is unusual. But host makes no assumptions. Skip the memory
-> +	 * setup and let subsequent steps catch any actual errors.
-> +	 */
-> +	if (!required_pages)
-> +		return 0;
-> +
-> +	hpa_list = kzalloc_obj(*hpa_list);
-> +	if (!hpa_list)
-> +		return -ENOMEM;
+> Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
 
-to_hpa_list_info() expects hpa_list to be page-aligned. It happens to
-work with kmalloc for PAGE_SIZE allocation.
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
 
-Maybe it is better to allocate it with buddy allocator instead?
-
-> +
-> +	page = alloc_contig_pages(required_pages, GFP_KERNEL, numa_mem_id(),
-> +				  &node_online_map);
-
-Why contiguous? TDH.EXT.MEM.ADD takes a list of page addresses and the loop
-below writes every one of them out separately.
-
-alloc_pages_bulk() fits the chunking that is already here, and a short
-return can be handled per chunk. alloc_contig_pages() isolates and migrates
-to get its range and fails TDX init outright when it cannot find one. PAMT
-needs it because the TDMR ABI describes each PAMT as base+size. This does
-not.
-
-> +	if (!page) {
-> +		ret = -ENOMEM;
-> +		goto out_free_hpa_list;
-> +	}
-> +
-> +	added_pages = 0;
-> +	while (added_pages < required_pages) {
-> +		unsigned int chunk_pages = min(required_pages - added_pages,
-> +					       TDX_HPA_LIST_MAX_NR_PAGES);
-> +		struct page *chunk = page + added_pages;
-> +		unsigned int i;
-> +
-> +		for (i = 0; i < chunk_pages; i++)
-> +			hpa_list->phys[i] = page_to_phys(chunk + i);
-> +
-> +		ret = tdx_ext_mem_add(hpa_list, chunk_pages);
-> +		if (ret) {
-> +			/*
-> +			 * This SEAMCALL leaf shouldn't fail, and if it does,
-> +			 * things are broken enough that complex error handling
-> +			 * isn't worth it. Intentionally leak all pages,
-> +			 * including un-added pages.
-> +			 */
-> +			WARN(1, "Fatal: TDX module rejected memory for extensions, stranded all pages\n");
-> +			break;
-
-It supposed to be
-			goto out_free_hpa_list;
-
-No?
+-Vasant
 
 
-> +		}
-> +
-> +		added_pages += chunk_pages;
-> +	}
-> +
-> +	/*
-> +	 * Memory for TDX module extensions is never reclaimed and can be tens
-> +	 * of megabytes. Print the amount so users know the cost.
-> +	 */
-> +	pr_info("%lu KB consumed for TDX module extensions\n",
-> +		required_pages * PAGE_SIZE / 1024);
-> +
-> +out_free_hpa_list:
-> +	kfree(hpa_list);
-> +
-> +	return ret;
-> +}
-> +
->  static __init int init_tdx_module_extensions(void)
->  {
->  	int ret;
-> @@ -1194,9 +1308,7 @@ static __init int init_tdx_module_extensions(void)
->  	if (!tdx_sysinfo.ext.ext_required)
->  		return 0;
->  
-> -	/* TODO: add the extensions enabling steps here */
-> -
-> -	return 0;
-> +	return tdx_ext_mem_setup();
->  }
->  
->  static __init int init_tdx_module(void)
-> diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-> index b9e1c011a990..720cdaf76492 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-> @@ -137,6 +137,12 @@ static __init int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
->  	int ret;
->  	u64 val;
->  
-> +	ret = read_sys_metadata_field(0x3100000200000000, &val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	sysinfo_ext->memory_pool_required_pages = val;
-> +
-
-Why above ext_required read? Is it even valid to read it in such case?
-
->  	ret = read_sys_metadata_field(0x3100000000000001, &val);
->  	if (ret)
->  		return ret;
-> -- 
-> 2.25.1
-> 
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
