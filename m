@@ -1,99 +1,263 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7324E421233
-	for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 15:22:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435C73624BF
+	for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 15:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787325742; cv=none; b=uN8wxGKaHQlb+NnYP5Rc2qiWyiiBFQriAz4toj6L98RveLapIYajjDQ6Y4kVzHKV6ngtKQnzMUsS7/weGc8Ye9aRt7HH8yYGFbRJIpuKcFMZy1e98zu9tc6KiVmpfjwxd6kyKXhqqjAC3fjSnzf0hwWRKDO3lHbv1QRhE7xaKSc=
+	t=1787326496; cv=none; b=ZAhfzqQT/OjT6DyyL8XdK0ZhgvsQA4KmXiC6jRMkN5LdjEOOe3wnCKYJk7dazCDuHau1C3leVfaret9MOg+bT7zm3j8QLE6CwatL7QZ6WexgEEAeYV+IsF9g7z5IEuedJ6Q8RjINIemcYlPgdflas7o15SLx79AT1avKJ9TinCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787325742; c=relaxed/simple;
-	bh=F/r2zIvbOgN9Q+WhMLhk6PDLDh24dmotCgClSo6W8ls=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CmsFe/KskO+iVOd0s1Y0pn0flVfGQRtAI3ydg/33RURJhGsQ8y283AJ77TJwOUgAwwa5yxo+vkE8VT+brq4wMbnCPJrSu0GuWgiBpG2nC/nbv3UBL81UfkMGRHG3PYAgaezeraAqFvKYc3OsF/0DtTPPc0sy4znToUZSkz4hFoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FWH0hoKa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787326496; c=relaxed/simple;
+	bh=GkJXWIi/YBaGv7wnccaUrCemSFcPpUY5fH1FwbC+Jqc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=txbmTrHFMu9Lg+y0KUImHGb87c2lTrmy9KUk8+Wbal2BHjCmtOa1csDcL/g3UqYALBr4MiY+XraUrUvf5ZiXUMetqg5m+eBbXM2X7nh3xMc+McGGtSzG0JicpH+Rn70xn3qy6ikiTmkvvGz+EF+dCfgRCON+GBtOoPQy0D4aX+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NtJBVYYS; arc=none smtp.client-ip=209.85.210.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FWH0hoKa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47DBD1F00A3D;
-	Fri, 21 Aug 2026 15:22:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787325739;
-	bh=m3Q/uuxqDsORYxRr4gbtOk/5sbmMApPrP1NPH0V0PuU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FWH0hoKahHT9NLtiTtHC/IuQi7JyKmK6ORUtFHS3uXOrpVLM9vhzVV03Um8x/Y7tt
-	 Tv3HVI+d9lUVg/W30Zzw6+GkAy9+X7JyKvIVtSG4HGpUWVrMkBK9WcjFt34+KqkbMm
-	 9/POzmM4Qt0+0G+3XjOHv7lCOPYMBrPyNcbDKk0UZGii0Pu+4BMJ53RLQP5V6y90qF
-	 d6xongVYNjLjNq3+FLSiByRCJGLESedhjp2p8aLtX39Yr0qakGDvywr/c73jHqM3a7
-	 W4xGhIo+ofcoJ1wzGa8Z/IwB1cfyrjMd0GUkxqXRBC2tvEaOFEfRg6yi4dML0UG/Y1
-	 47pzRqk3wAxRg==
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 4B4FB198005C;
-	Fri, 21 Aug 2026 11:22:14 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Fri, 21 Aug 2026 11:22:17 -0400
-X-ME-Sender: <xms:JW2IaguIF_W1vGEPaAhlXNRjJhZTS4Oavi7CnBZVVgOEI6qpFm3zYg>
-    <xme:JW2IastvX9ISEYE599xbQozbqhlL0UAhFCQnPy5l_JGZr7hH96CsAo-1b7kB6IKeh
-    NXm3aprVwxAOXyuMDV2ea1Odizae8uRk-CUCvw94FlHOa285N6F95I>
-X-ME-Received: <xmr:JW2Ian-Ql6gma7nAGpcDxflRNHHo_gAzj8jJrhY4muGTNSxi_-UeOwfJfXc>
-X-ME-Proxy-Cause: dmFkZTEI7xnPoiFK7D2yvFVYe/8dWOV7AHrViby8I79jvd+aJib/EFI9wTm2aOURbionx6
-    YVi1kvqYO+WKazD1VN+FXkqjWGhrAcL5n2eK6u/I2BLXSoHVDtT6ejqLs4MbC1EXMl593M
-    5i0eWSETiBOjfqvGPzGlRnRm7X7JS21hX20GrKz7D/X5LY/PAFIolsgcxE47fR+JUa9bIy
-    5mIUL3pgchALJggwtq1aynRhZqSAAlUSl9u2Vgjgnk4FNOuWoDyV4GSdZtEXUmnSogyS5f
-    dJrJO4GlrXZ0roP1Nsj6gT+r/+K/3RTIiCzjp0FGP31N+namhMk6GLGXX7wt/rJwkYsPTN
-    zlQj5L4PJKD9Wdf4xOTj9HhQqTNz2QVIf+KK2q/+ICmnYFbKgX30Rdv15R+5QRh22CLUpg
-    inXqRt8I3JfVszok6qT+lbs1VG60CaC7C25/qpc+TSUx7Z6CYCBMv5M1qmj2/FcHKDRVvG
-    RMmlu1X9y9kt6Yo5W5C2kpjLyiCJZLqns2tHa2q4x/a468DySntkASIYGIDUYZyO5dKGc1
-    6gvyqBlVIKtcX/0hrEq/vezuL/MOkTc2TGrO99WoMgQVx/jH3IdpOHRzv5o8rO30sRaUDo
-    oQ4cvBrAlYRH3K8CGFMToukxtuljnDX5LZOU7fd8wWsOh8wuwg4+ert2v+9Q
-X-ME-Proxy: <xmx:JW2Iat_YX-fwq2Av--cnwdeXE-mbytNPD68ystEfdOyu5D8e9TuIrw>
-    <xmx:JW2Iaj9dgO2oFfyheW1CX8Cmna04yJCNdkqEz-lFckL583oq3x_ElQ>
-    <xmx:JW2IarFswSnZ0METD-bpk1ZKxidZjxTj00XFjfsFPrmh5JCXh5Vpmw>
-    <xmx:JW2IaqZT32ybUcYYxPMCEot1Q93aLicPO4cTGxZsmtbowuP4wueCfA>
-    <xmx:JW2IanMJsYS52_8SS7m7f1qfCQzmMumRTnayzYtEfTcR9MxjE6BoA98i>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 21 Aug 2026 11:22:13 -0400 (EDT)
-Date: Fri, 21 Aug 2026 16:22:12 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, rick.p.edgecombe@intel.com, yilun.xu@intel.com, 
-	xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com, 
-	kishen.maloor@intel.com, tony.lindgren@linux.intel.com, peter.fang@intel.com, 
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, chao.gao@intel.com, 
-	artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org
-Subject: Re: [PATCH 3/6] x86/virt/tdx: Detect if the extensions
- initialization is required
-Message-ID: <aohsoZbDBZ8ZIYez@thinkstation>
-References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
- <20260821032920.256225-4-yilun.xu@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NtJBVYYS"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-848662cd2a1so1144648b3a.2
+        for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 08:34:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787326492; x=1787931292; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ti5oxrQTNw6Tr45mwB3Y4z0EOV4HeTrBLFVAFF1S+N4=;
+        b=NtJBVYYSIXUR6jqn8dYn7gpsd1oLIHpimk4ag4RI5VOGu2uhXcn033P/47Er4TioUc
+         PgZc4SfHLqhN2A8GEhJHGrUfKenWPMtYISEgjeBrCEfpTPcp/sadFuP1ctKWPt6WvzIZ
+         x4GvqQM4PKfY4ONJ1vb92N54PdMX7ruQy7f/GoJLfwhYfvRdDkWO0wiSnCONMy1A157O
+         y51dt//p0s0XUnfUiUGl/87Q5Yh8o7rCr28pgVA34oG5io5hDcmJ4+N5DJFPn5DmJTox
+         0S8y9zs/lOug1qNS731ZvUgiemliBj4VAOaq17lPVuReeC+fmb3sqmQsV32TsYG0WYDT
+         oG2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787326492; x=1787931292;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ti5oxrQTNw6Tr45mwB3Y4z0EOV4HeTrBLFVAFF1S+N4=;
+        b=KMROc3xqGTN3qcDVpkv3I/nGEbOvicch/A+B+K7KBc0GARAckYQI5jQCJ+BVkae/JY
+         ChC7WgrlZ/Jx2SQbaNsa+u07t0dwDKNuHtcNHgGuIMUHPoA1Wed5EkcfalCH3oviQYt0
+         ZwsZtX+hqunPd1A33EUQa7z3Fks6NYm9JDcKgdUZs4s/10TKoMIHAUN5YWuHq/xgwfVD
+         ELtmVpTmZAQh1iqNBCZ/alg6cvzlYOjgDV3YWDUHWOTWuQyv0Omvl8/Y0HYZ47SGww+d
+         wj00oyMZ2LN4eewAtzrQfC6tbHD8waY2St6ySBTQwFViMDMOGZXDuW3EBzpCqFP5cisg
+         sUWg==
+X-Forwarded-Encrypted: i=1; AHgh+RokNH6Hlaup1225WateeC8zx6eZaqKJjdxpAYZrOVMusIJSl+g1BzjoI1+E3tduDf3TS8c=@vger.kernel.org
+X-Gm-Message-State: AFuF++mOKtedH/IVxg+PJ1A7/nTIAf6ZfaOs63uTkFJYkUqg1zRgXgue
+	WbV7ugiXn7AN+Uh7xE5Z4qFnK2EAH/2NGwCP9bSnsVjCSBONfeDfDO9b9ob4sBOcS3YnargUN8+
+	uMZ5ZIQ==
+X-Received: from pfdc3.prod.google.com ([2002:aa7:8c03:0:b0:84c:2e88:693d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:14d4:b0:84a:2fff:cef9
+ with SMTP id d2e1a72fcca58-851f9f84b8emr10555555b3a.13.1787326491490; Fri, 21
+ Aug 2026 08:34:51 -0700 (PDT)
+Date: Fri, 21 Aug 2026 08:34:50 -0700
+In-Reply-To: <2vxzy0dzy4gn.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260821032920.256225-4-yilun.xu@linux.intel.com>
+Mime-Version: 1.0
+References: <anphyjFv3FhF61iB@google.com> <2vxzpkzo51wg.fsf@kernel.org>
+ <anssOQFNZ2LfihbU@google.com> <2vxzik5f311e.fsf@kernel.org>
+ <anyObKiZIhfok5mk@google.com> <2vxzqzjz1x5f.fsf@kernel.org>
+ <aoMcqp0gr06YXAPU@google.com> <2vxzy0e3zgqz.fsf@kernel.org>
+ <aoSCCTTBn9D5hqzk@google.com> <2vxzy0dzy4gn.fsf@kernel.org>
+Message-ID: <aohwGv6TRqPg9Dwx@google.com>
+Subject: Re: [PATCH v4 05/11] KVM: LUO: Support VM preservation across live updates
+From: Sean Christopherson <seanjc@google.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Tarun Sahu <tarunsahu@google.com>, ackerleytng@google.com, fuad.tabba@linux.dev, 
+	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
+	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, sagis@google.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
+	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
+	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
+	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
+	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
+	suzuki.poulose@arm.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Aug 21, 2026 at 11:29:17AM +0800, Xu Yilun wrote:
->  static __init int init_tdx_module(void)
->  {
->  	int ret;
-> @@ -1229,6 +1253,10 @@ static __init int init_tdx_module(void)
->  	if (ret)
->  		goto err_reset_pamts;
->  
-> +	ret = init_tdx_module_extensions();
-> +	if (ret)
-> +		goto err_reset_pamts;
-> +
+On Fri, Aug 21, 2026, Pratyush Yadav wrote:
+> Hi Sean,
+> 
+> On Tue, Aug 18 2026, Sean Christopherson wrote:
+> >> Does this idea of "backwards compatibility" sound acceptable to you, at
+> >> least at a high level?
+> >
+> > No.
+> >
+> > It's probably fine for Google and other large companies that tightly control their
+> > kernels and use cases, and have the resources to juggle the resulting complexity,
+> > e.g. have kernel engineers on staff to track feature and dependencies, coordinate
+> > and plan kernel upgrades, etc.
+> >
+> > It's not acceptable for upstream, where downstream consumers often run a distro
+> > kernel, have much more varied use cases, and don't always have a horde of kernel
+> > engineers on staff to help them thread the needle you describe above.  And if
+> > supporting live update as a general feature for all users of the kernel isn't
+> > being factored into design considerations, then that needs to change, otherwise
+> > this is all dead in the water.
+> >
+> > I also don't see the point.  Maintaining a rigid save/restore ABI is annoying,
+> > but it's not _hard_ (or at least, not _that_ hard), especially if there's a set
+> > of well-documented best known practices that subsystems can follow, e.g. so that
+> > individual subsystems don't need to learn painful lessons first-hand.  I genuinely
+> > believe that maintaining the version hell you describe above would be more costly
+> > in the long run than simply committing to full backwards compatibility within a
+> > given subsystem.  I can imagine that enumerating what subsystems' information is
+> > in the payload will require a different scheme, but for a given subsystem, I don't
+> > see any reason to aim for anything less than full backwards compatibility.
+> 
+> Let's say for argument's sake that we commit for a fully stable
+> backwards compatible ABI. Even then, you have to deal with multiple ABI
+> versions.
+> 
+> Live update's ABI is more complex compared to KVM's save/restore ABI.
+> For the KVM save/restore uAPI, you are largely describing architectural
+> state like CPU registers, etc. These things don't evolve as fast and
+> more or less stay the same.
 
-Hm. Don't we need TDH.SYS.SHUTDOWN/DISABLE on error?
+Right, because nothing meaningful has changed in any architecture in the 20+
+years since KVM has provided save/restore support, whereas guest_memfd looks
+nothing like it did when it was introduced three years ago.
 
-Once TDMRs are initialized the module is functional. Yanking PAMT from
-under it is not safe AFAICS.
+> Live update needs to describe the state of kernel objects. These are
+> more complex
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+LOL, you might be the first to claim x86 virtualization isn't all that complex.
+
+> and evolve faster.
+
+The speed at which things change doesn't automatically mean we shouldn't strive
+for backwards compatibility.  Yes, providing backwards compatibility requires
+additional care and planning, and over time *might* lead to an ABI that is
+difficult to maintain.  But IMO, that just makes it all the more important to
+get the design right the first time, not that we shouldn't even try because it's
+hard.
+
+> For example, say you merge guest_memfd preservation today. Some time
+> later, someone comes up with a more efficient data structure to track
+> the folios in the file. You _have_ to make a backwards-incompatible ABI
+> change to use this data structure.
+
+Only if those details bleed into the ABI/contract.  I actually have a concrete
+KVM (well, virtualization) example for this.
+
+Intel's VMX architecture disallows direct memory accesses to the VMCS, and instead
+requires software to access the VMCS via dedicated ISA, using architectural encoding
+numbers to reference VMCS fields.  I.e. VMX decouples how data is stored in memory
+(the data structures) from the ABI/contract with software (VMCS field encodings).
+
+This allows Intel to optimize the data structures to be more efficient and performant
+for each microarchitecture based on the features and properties of each uarch, all
+without breaking backwards/forwards compatibility with software.
+
+My favorite esoteric example is AR_BYTES packing.  For Haswell, Intel added an
+optimization in ucode to allow saving/loading segment register state in a single
+uop (IIRC).  The optimization was especially valuable for virtualization as it
+shaved cycles off the VM-Enter/VM-Exit hot paths.  A key piece of the optimization
+was it required the AR_BYTES metadata to be stored in 16 bits, but existing CPUs
+stored AR_BYTES using 32 bits in an "unpacked" format.
+
+Fortunately, because the in-memory representation was decoupled from the contract
+with software, Intel could pack AR_BYTES into 16 bits for Haswell+ and pack/unpack
+the data on VMWRITE/VMREAD, so that the format presented to software remained
+unchanged.
+
+Does VMX's decoupling of the in-memory represntation of a VMCS have downsides?
+Absolutely.  Most notably, it incurs extra complexity (in software and hardware)
+to achieve comparable performance to directly accessible data structures (AMD's
+VMCB and Hyper-V's eVMCS) for nested virtualization.  And I'm sure it has placed
+contraints on Intel's designs, and obviously introduces complexity into the
+overall system by adding a layer of indirection.  But IMO the VMX architecture
+has been a huge win overall for Intel.
+
+> Or say you add a new memory backend (like the HugeTLB patches in
+> flight). That likely will need a different ABI to describe the state of
+> the guest_memfd.
+> 
+> So you will end up with multiple ABI versions that aren't always
+> backwards compatible.
+
+No, you end up with *features* that aren't backwards compatible.  I can't imagine
+anyone will argue that we should never add new features because then we can't
+rollback to an older kernel.
+
+But adding a new feature shouldn't break the existing ABI.  E.g. adding support
+for HugeTLB in guest_memfd shouldn't prevent rolling back to an older kernel when
+the HugeTLB functionality isn't being used.
+
+Using AMD's VMCB and Intel's VMCS as examples, literally every major new AMD/Intel
+uarch extends the VMC{B,S} in some way, but without fail it's always done in a way
+that is backwards compatible with existing software.  I.e. AMD and Intel ship new
+features, but existing software continues to work, and VMs continue to be migratable
+across CPU generations[*], with the obvious restriction that migrating a VM using
+a feature introduced on generation N to a generation N-1 CPU isn't a smart idea.
+
+[*] There are exceptions.  E.g. Intel removed MPX, and so VMs with MPX can't be
+    migrated to newer CPUs.  Migrating between CPUs with different MAXPHYADDR is
+    sketchy (and simply not done by some CSPs) because neither AMD nor Intel
+    virtualizes MAXPHYADDR.  But those exceptions are absolutely Big Deals that
+    undergo significant scrutiny, from all parties involved.
+
+> If you refuse that idea too, then KVM live update will be dead in the
+> water for a different reason. It will be damn near useless because it
+> can't keep up with an evolving subsystem.
+> 
+> Now once you get multiple ABI versions and you can seamlessly go from
+> old to new one, say you have a version that was superseded 5 years ago.
+> It would be completely reasonable to say that this version is old enough
+> and no one should be going from a 5 year old kernel to a modern one.
+
+LOL, Google literally does this.  Granted, the extreme cases only happen for
+stragglers, and I think we do force VMs to bounce through a "middle" kernel in
+those cases, but I doubt Google is the only company that runs frankenkernels
+for an absurd number of years for a variety of reasons.  E.g. 4.4 LTS was officially
+supported for 6 years, and I'll bet dollars to donuts people ran it for much longer
+than that.
+
+> So you deprecate this ABI. Deprecating old unused uAPIs is not unprecedented.
+
+When there are provably no users, or we can convince existing userspace to migrate
+to an alternative.
+
+> I think we are better off formalizing this deprecation period from the
+> get go.
+
+Why?  What does it buy us?  Because all I see is potential abuse and an excuse
+for not spending time getting the designs right.
+
+> A somewhat tangential example is BPF kfuncs. My BPF program that works
+> in kernel X might not work in kernel Y because the kfunc has changed or
+> been removed.
+> 
+> The argument they make in kfuncs.rst is that kfuncs "provide a kernel
+> <-> kernel API, and thus are not bound by any of the strict stability
+> restrictions associated with kernel <-> user UAPIs".
+
+BPF's documentation isn't arguing anything, it's merely reiterating Linux's
+long-standing policy that there is no such thing as a stable kernel ABI (in upstream).
+
+> For LUO as well, this is a kernel -> kernel API.
+
+Stating the obvious, I disagree with this.  As I said before, if this is the
+stance LUO wants to take, then so be it, but my NAK stands.
+
+> Users can also still do a regular kexec or reboot. They just won't get the
+> performance optimization of LUO.
+
+The amount of time, energy, and money poured into minimizing VM downtime on live
+migration suggests the overwhelming majority of LUO's targeted users aren't going
+to take kindly to this stance.
+
+> Regardless of if you agree with the last bit about deprecating old
+> versions, ABIs evolving with the subsystem is a ground reality of live
+> update and it would be foolish to think we can do with only
+> backwards-compatible ABI changes forever.
+
+I never said the ABI is immutable, I said it needs to be backwards/forwards
+compatible.
