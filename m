@@ -1,196 +1,293 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011027.outbound.protection.outlook.com [52.101.57.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7A03515DB;
-	Fri, 21 Aug 2026 21:18:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8DD3C2786;
+	Fri, 21 Aug 2026 21:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.27
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787347139; cv=fail; b=kAMKSJXww635O387MYAuXqe87dcQMx+dPsoKWzq7dPF3LI3N+yRS7FWO/5fTUlqCj/F9+e3sWbgPHrSy/5TYgzwPPwjfPmQU5lUDz9S0X0T6lFNpM8ETBfsdqq+S0cctW7xW0Pyzh5RhmrE3Gi8wGYD29ukQUvGRDriuoBc6oh8=
+	t=1787349046; cv=fail; b=byBkY3cVGd+ivjuC+n3pRV+X4mLdhKfHbgKLWpeWe21GGrcxHENJydX6/lR4vU73Ks9iQ2TAQjN9SjANVKgCT64mZ1kxqYr3xK+rM/zzyBbyMdwg/wlhIF9DWeOZOj5V+Arzo35wsG7YkzY3D5eKoL7cvYVagIEYmdneXH0wuX4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787347139; c=relaxed/simple;
-	bh=I6VS6dC+QteZdXoP6RG6zQT0XqFxsqMkDQW176f69yY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=IQ7tbVOavvkouk6iK9uP8kBfvgcqfkJW5jkygJ+W/s8jPvdVEpVQVSJlxMHE5CWyCckbEPMgtyimrh+O8arzwgmE206tLUUzDaNMb0OarW8/HXbBwX2kjBXxSm0uH0ZuYilrMYKkN5QLx3RZcP9paNqG6d5Lp9keyQCN4JR28s4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JR1WVJjf; arc=fail smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1787349046; c=relaxed/simple;
+	bh=OkZFjnAKpZ5RcGEqLXM6z1djxU8e6LpRPepHTu9eZOs=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FwZ0yTfyexQ/wQAdWfpkSjXN9Bf/Irlq0cGhNtlGUdE1GCaTRhz5vjwJxnRVLdnsphLNRSBxQ9HYxAquk0tblb/N1ys6CFWXjQaJWqZausFl0NQv2Cy96DN57bX9EoFKOp7ICP1sYD2jrpI0cW44/7WWBRLrFDu7yfiO54brD1A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=AVzPWjn3; arc=fail smtp.client-ip=52.101.57.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JR1WVJjf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787347138; x=1818883138;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=I6VS6dC+QteZdXoP6RG6zQT0XqFxsqMkDQW176f69yY=;
-  b=JR1WVJjfyzOuJVGE5ZL49oT+CoGtvQyY/SQE1rFmiAv7pL1L8WVNBlx1
-   h5x1UYTgnOVmYayZ1DwDXkRJfi193JnKyJ/qswda8a4JjWavFImLzCWPy
-   CKJtZYpZN33GziSeb2XoIE2pXomDCe0nbf5PYa6mSlfUsie/rBsOXj7Zx
-   8G1wO6u30bkVvtDq6TnOgztC+ahx55HftOXCduChKmpFq6bbmxIy8tfH4
-   WLUAL1FGD9jQUGLCUXfWryqUuQR3OMWNjq7vDmKAHHNrpU5l0c0sKFjcI
-   j3DigpsyLZ7iHjjv2s56R0bNTf7pcUZVpOllW3lEdHFHxRaWslHCGO3tl
-   g==;
-X-CSE-ConnectionGUID: TVtlaFRoQd28sAisQo5L8A==
-X-CSE-MsgGUID: LVdDJx6qScuZivBSd9pImQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="75439273"
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
-   d="scan'208";a="75439273"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 14:18:57 -0700
-X-CSE-ConnectionGUID: B0tS9N6nR9CZKEBudxwaSQ==
-X-CSE-MsgGUID: S77B46QASzaixa5y0QbwNA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
-   d="scan'208";a="304652435"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 14:18:56 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 21 Aug 2026 14:18:55 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Fri, 21 Aug 2026 14:18:55 -0700
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.50) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 21 Aug 2026 14:18:54 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="AVzPWjn3"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C4LWrIyyjKfGhAbAlBMZUIt/7l1KC8iX6NuZulV2SooqrjZxPq6nu+MMAwBGCpEG6hOuolXENrmn6kdUPEZvJtH0O20Tp0cw43VeSO95UerV5Rx7xO6namF18f3C2Uweh2SKhnSqhZZUpoTiMo0DXhP9SvaKUlLP5r6Ok+qv4GOrENQh17vEfMpI3NGma8L1XD2SuxX0j2zflbizq2c9arFMeOp4hYG/xlFPgWK1ifK3spAyBUluf8YdjWQYvA1HL7ADp3vRq6RW0F6rf4OWZc1nQsYSCjlgcGuHUcYha5AoRON2v10esm3xApb5xM2jczUXjiYS7Y2LcoU0eF2Vgw==
+ b=XQFe++0xoxk3lSKf1jdns4lZ33voWybOOuv4FLB6pLRrX87e5waK/gWls3TjQ11s/v4ubFWEr8BEMRqiovAXnDp5NYi2f9MCrfC0K3mQh8Rm3t6Yn8aK71i4d9p2ohz/uRa4sCGvy1fKiI0NYbarLI7pboB97OMl6adqQnk8BZ+P3HXUaHkxZT+jR+rUqgpm1xV4OxXkdw8L7hoHLyMXyfOfTYACJkxAK+L8CK/n+4eWO/MiCVVsEwQiKIqw6biZWnG9wCxHL9K+aA8HdDfe+I8oIabg4s/QffGcPtk2p09eDfBp9D/cuvDawN3lcg8OjfFr1HB9TlrVMeDk6rqTGA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=I6VS6dC+QteZdXoP6RG6zQT0XqFxsqMkDQW176f69yY=;
- b=W9W+/bkDMchR1cuPXlLOUkhyFifJIlREu58b1zy3ua1i+0sife7Mo4synh8p+85Qfn54RUjMU4hC4zdTVQoF9Yv17wNIj2q8McM/kBn88MQjyLfmR8lYWbicO6fOUCfdjUyjBzYB+oYRA5ZvbjEvgBkRmKX+v0z71w591TM9+Gt4NSR4a6XC7twV9uLZ9twYlAHxwwFcKFly5eGaEZh/L+2DXUxT6dTvgkB7wwXF4ec2G/Mqv65LtqKv5XDkU3eoTe8kMcmD5c4BzGtpRBr92zIGivbeBNpj8kmuh+a/TzjU9oMJ4NGGuOXZgf/mbmjFPGx0OXKsujWlxgUpstzFXA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SN7PR11MB6776.namprd11.prod.outlook.com (2603:10b6:806:263::21)
- by PH8PR11MB8288.namprd11.prod.outlook.com (2603:10b6:510:1c8::17) with
+ bh=AwwgyaD+p0O9U0RzZu7Nlwn2UtQRdAZg7GmEFhAoQ2k=;
+ b=DuAOVkOSsM5DU7ofAL1J5WiMHWJ7yLL5zt40qS+QD6jBt1tbWDdxUw7sG0GB8hWIImTcKP+jjkO0u2Z3Wcx4bqoQfQykB2WAGhcqN4pF953GtuEQyb+oW0y+uCVO1GpCtJh+QyWXcqWmXgb24KdHx4Kk0YmsIiaNzoFdS7Fhn6mdsufuhjFltcP/VJoebOd31LDt2GWd3cIc2GhYn3jiRMt8rLSN75xAyRmGYuXRnfFh/u+4TrUka4hsk5l9HKE7nEAgymPPCG5LBirBe74w/p86QJnJ8p66X0pGouKpp7agCEYjzmrJZ9yB5n8bvAnKplv68C7GeXi7ubcjeHS4vA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AwwgyaD+p0O9U0RzZu7Nlwn2UtQRdAZg7GmEFhAoQ2k=;
+ b=AVzPWjn3UudG1RlL+ff+eIoO2z8JjVqX3ok/5VMVyxIU3I4fjqdH8C9+mczu9GPFBjGugeNNVh+UkPduGdPSucM3BE+9uNe3QBdzhHLR2+WBgC2TfQw7NR43+SnuT7vTn3OWYRvZ21OQkglpHs6CXZrKZM80mLu1VmHVygE02S8=
+Received: from SJ0P220CA0022.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:41b::33)
+ by SA1PR12MB8887.namprd12.prod.outlook.com (2603:10b6:806:386::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Fri, 21 Aug
- 2026 21:18:50 +0000
-Received: from SN7PR11MB6776.namprd11.prod.outlook.com
- ([fe80::9c32:5b6b:3a48:dfa1]) by SN7PR11MB6776.namprd11.prod.outlook.com
- ([fe80::9c32:5b6b:3a48:dfa1%6]) with mapi id 15.21.0315.012; Fri, 21 Aug 2026
- 21:18:48 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Hansen, Dave"
-	<dave.hansen@intel.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "yilun.xu@linux.intel.com"
-	<yilun.xu@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>
-CC: "Gao, Chao" <chao.gao@intel.com>, "Xu, Yilun" <yilun.xu@intel.com>, "Duan,
- Zhenzhong" <zhenzhong.duan@intel.com>, "kas@kernel.org" <kas@kernel.org>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, "Li, Xiaoyao"
-	<xiaoyao.li@intel.com>, "Maloor, Kishen" <kishen.maloor@intel.com>, "Hunter,
- Adrian" <adrian.hunter@intel.com>, "tony.lindgren@linux.intel.com"
-	<tony.lindgren@linux.intel.com>, "Mehta, Sohil" <sohil.mehta@intel.com>,
-	"Fang, Peter" <peter.fang@intel.com>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "artem.bityutskiy@linux.intel.com"
-	<artem.bityutskiy@linux.intel.com>
-Subject: Re: [PATCH 2/6] x86/virt/tdx: Configure add-on features on TDX module
- init and update
-Thread-Topic: [PATCH 2/6] x86/virt/tdx: Configure add-on features on TDX
- module init and update
-Thread-Index: AQHdMR1Pq6sFAWadj0WCNSD1lSPhrLaok0sAgABvyIA=
-Date: Fri, 21 Aug 2026 21:18:48 +0000
-Message-ID: <a8dfa2fc181bba446264fde5f5036778c2fe66da.camel@intel.com>
-References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
-	 <20260821032920.256225-3-yilun.xu@linux.intel.com>
-	 <27321cc1-5428-4590-a88d-b2824659c89a@intel.com>
-In-Reply-To: <27321cc1-5428-4590-a88d-b2824659c89a@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.44.4-0ubuntu2.1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN7PR11MB6776:EE_|PH8PR11MB8288:EE_
-x-ms-office365-filtering-correlation-id: 4b36f011-7201-4617-7186-08deffc9cab2
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|10067099003|4143699003|56012099006|18002099003|22082099003|11063799006|38070700021;
-x-microsoft-antispam-message-info: vd5cXFlvI/0+tlsjmV31Z7DuA6ff4iYpJl+gBgGsfEq/Y19dFNh56VokYqb8BT7rhvhtKAbpsVtiR+PdR41YQ3HbxvcJxuRAPHpkzyRuJQNiLqLTNIcvmobF0VefDfyzBpDbHbDZEJCHHblnyb4APKXEMNPtsTqfjd8j+v6YKZpQyqzN1ImQWN9Gs7TGhCFamrAGPfm4BD1hY5pgDGbrfL16vP5TxOUfCVFSG4O0/LElfbLWfzM+t1bUSQQSVhdB6Wc3ppqGncYy/2adEfIA/jIt/l+8+TJ8zzoCqwgjfHLJE65nmr0WuvtXUCBqpSbdlSaijMCpq6RSO3GkRrFlufgrY2yFjIjL27Kb8OfFuTN1f8AEftfdaAL7IItZRMHmonrRkHy+MELua0ys3pIKoXYjs4QHwLtIYR26W3ECs2RUckODoVh3/jbE0F0X88l/lVq1WnE/SY/DDH+IK24UhL46Kt1WGKESyFM1fZhS7ezCEUWzJ1KiSAe+4efA5ViAvDIajHnBl5QhrxzL/xzMs8uNd/gCFYDJWo1lz2MbVydPKhgXHXPtM0C5OxMxRkY8wwBhOKahVnk05MrajRD/D1QGcLHVFlFM/ufMyoAdO92U/Tp/rX/ug9FEKP9S96DGlxTMpiSzM/clMgUUVBr+BWLGiwOpQdIiPORGyiH94YyNQD/tLxWQYiKCB3K0BOp+NdWB/tcWm8kft2jepZSOX07oUjeYBBUW3iQoWSBzM5g=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB6776.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(10067099003)(4143699003)(56012099006)(18002099003)(22082099003)(11063799006)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dnpmWjBJQ2p1d1dTRXF6YlV1bE0xaFV2dW5vQ2F6RDBDcXlWalVZajRIeERG?=
- =?utf-8?B?b2gzTVgzVHVCdzZQNEVSWkxCRlZUMjBFSGFNL1o3alc4UmZyVURVcnNtN29T?=
- =?utf-8?B?cHRoVTJrUkNISjdzbkFQeGEvSlZQWi9IUHhQRVFMa054L2tmWWo0QUppRHlh?=
- =?utf-8?B?aWR6MVhxRTR2MjZmQkVkeTZDRlZIdnBNd21uZnNMcm1QTVpHQWVYcjNjUnp1?=
- =?utf-8?B?dEcwZXJGYzN2Q2lFa3BXSTB1aGxZTm4xcXRvcWZqL3Rld1BSNkhySU9rdWwr?=
- =?utf-8?B?b014VmNIT3JwUFVTZW4vZ0x6Z3QzNCtXY3pDQTQvTEVEdi9odm9NWmZodDk1?=
- =?utf-8?B?WmkzVlJ6UkZISDY4WHBxYTBEQ3dVWmkwbEg1QjNrWmMxS0RURWFyOW44WnMv?=
- =?utf-8?B?RUJjTk5ZbGd3eHFmenU0TGVWU0hTZk5odjBtVmZFZ2tLaHFoNDB6Q3Z6Zkc0?=
- =?utf-8?B?amhQODlTZlB6aGJhVWdpamdZYUpvWmxWdHROUlMwalBCZDJWSStZbWVkRnA1?=
- =?utf-8?B?UndqK2ppbGV4OWpqZVdGZVg5anN6ZVg3aHVWbWxqQnpPRnBldFhPWDk2WkRl?=
- =?utf-8?B?QzhpR2U2eE1sOS9oaExOMU5hVmdNdkw3eHRHZnMrNlJzT1VxUHdTc1VMblFm?=
- =?utf-8?B?emh6RWRzRjY4ZWZXVXFDcDBRT0krS09LMjBYSStaeUkxY3pPd1NUOTdxdXVE?=
- =?utf-8?B?K0ljSXVWY2I0YzFJZ1BGR2g5NWVtTGgvUzlBeHVnbm5XSFU4MS9wR21scHVI?=
- =?utf-8?B?bDV0K3ovdnFnWHIyR0IyWmVGZzRXZkhQZkZHTFhRVTFyV01SRE9iWGZQU1Y4?=
- =?utf-8?B?QVZueWpiOTNoYXNycDFWVFhpdHlvaFdldWVWU1JtTzZPcU5HN3dub1FIYVJZ?=
- =?utf-8?B?YUwzYU5paG5UeUh0T2tWVVl0Qk5lakZua242Q0h2QVlqdkVzamg2WmlKSWVU?=
- =?utf-8?B?T2tyQWkxZmFMekUwNmdnMTd1YnlFcTE4eWdEUU9EVlhscHJlSmVoWFlMT0k3?=
- =?utf-8?B?ZE1scFQxaXhXQ0QzUU1PSW9uNEFFNXVvdXlmdENpTHRSdkQ0ZlpWYkVGUlFN?=
- =?utf-8?B?cFVndVJhOUdld3VTZlR1OFBSRmxxM25Edit6R1l4ZEpNZTBjcFpWVW50THpT?=
- =?utf-8?B?anFmZHRnUTNzK2w5bFNLQ1Y3ZzI3aVVlNklHdEpIMU80TStCTnN1RWxyZ3or?=
- =?utf-8?B?RlhmdlBzejYzem1VK0RGQ0EzMit4SG81d3J2bXhtQ29BcGpQNy9oS05hQmc3?=
- =?utf-8?B?NWsvSTJPeDRHeGtOS2VVUFprcjM2WVRybFhwQjZuUHV3QjBiRUdpUVV4a2ZJ?=
- =?utf-8?B?QnI5Y2dZOXpFK3p1M0tnekJDTDBnbXllYSt3UmhXVFZ0LzBxMTgwUE43dkov?=
- =?utf-8?B?ODRvRlNzN3lMZk1VeUthWmZNTFBXbElYbks1dnhGTUpvZU9raGhPQ1pDQVBN?=
- =?utf-8?B?V2RwMmNBSXRacHYyS0RJZUc2Qjg2Sk01cERyNksxYnNLbVI2djJIVzU0b0VV?=
- =?utf-8?B?dExHd0ZzbzIzNmwyZVNtOUloVDFFUXhvNzRNUkw2eDFVU0lSWHJvbVhLQXhq?=
- =?utf-8?B?b1hMUnlPMkJGYkp3VTJkSFlhNmhFaXJtSktQWE1QRlA0ZkJQRGs3WDk1WHcy?=
- =?utf-8?B?Y0Q1TEF3MjIwOGIxazVWMHllN3ZtRjBaVGRpbmpNY3kyTk9rRHBoR1N0Lyt2?=
- =?utf-8?B?NHZWYmNSTGMwdUVUeHNDR0xDSlp6eCtBNVdYNFEwd0QveThGazh6dXBwVEVJ?=
- =?utf-8?B?U3JPVXA5VlNTcmtyLzZJODVVVFQ0c3p6N3JIZWI5UEpBeGNIRmJleW5CUWZN?=
- =?utf-8?B?ZEtCbVZaRkl6dUR6ZGtWY3JvWVN6S0dvOHN3RmNONGFJYUd2dkhydVpWbTdW?=
- =?utf-8?B?M3orRm5UMDhsYTgrR2V2UlppVjRtM005SFJOWk1iajBSR3Fvekdhc0I0dlBy?=
- =?utf-8?B?SG9yd1RMUWZMMDRnWWY5OW0xV0l3R1FOdExmblcwcnJoVUJJRjQxZCtQYkZH?=
- =?utf-8?B?b2k4SGVyUDMxMFdQMGxobHc4RGFVTkVqMlJCRmRtZDlQaGlHSFpidllmbU5m?=
- =?utf-8?B?dmo2MGtmdjNVbms1WFRudzFHNEF0T01qa0dvaVRUNHpub1dYRytGWlFjS0ZT?=
- =?utf-8?B?bVhMV3BqR1BLSGRLNmRWRkVYTzFLb0pMcFFXSTk5TWNJSml6WFlEQlozN05D?=
- =?utf-8?B?WHpJRTVaT1JBSW9LLzkwK3BxcG41dk80VGlmbVVwRSswNEZRQ3E0NmtxTWZ3?=
- =?utf-8?B?YUlBVnlTUkdIR3dReW51bEt6c1A4cS81Y25PVlhtQ3dQVFNtSE5ha2p0L0tz?=
- =?utf-8?B?Y2JDRXFsZGhlOUplOTFoUEdzK3huUjk2cU55ZEliYmVkZGdLaHY2c1RINGds?=
- =?utf-8?Q?fY/obOfys7nuG/LY=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <67BE52AC013B014392AE77535C4CB675@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.10; Fri, 21 Aug
+ 2026 21:50:38 +0000
+Received: from SJ5PEPF000001EE.namprd05.prod.outlook.com
+ (2603:10b6:a03:41b:cafe::23) by SJ0P220CA0022.outlook.office365.com
+ (2603:10b6:a03:41b::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.11 via Frontend Transport; Fri,
+ 21 Aug 2026 21:50:38 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ5PEPF000001EE.mail.protection.outlook.com (10.167.242.202) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.360.3 via Frontend Transport; Fri, 21 Aug 2026 21:50:37 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 21 Aug
+ 2026 16:50:36 -0500
+Date: Fri, 21 Aug 2026 16:50:22 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Ackerley Tng <ackerleytng@google.com>
+CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, Ashish Kalra <ashish.kalra@amd.com>, Brijesh Singh
+	<brijesh.singh@amd.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton
+	<oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, Steffen Eiden
+	<seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+	<yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, "Will
+ Deacon" <will@kernel.org>, David Hildenbrand <david@kernel.org>, Fuad Tabba
+	<tabba@google.com>, Yan Zhao <yan.y.zhao@intel.com>, "Edgecombe, Rick P"
+	<rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>,
+	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>
+Subject: Re: [PATCH v3 2/4] KVM: SEV: Drop page refcount early during RMP
+ fault handling
+Message-ID: <45itvwmwd76psskfslolzxjhkd54jy6hvh3kns77wr6ojk3hpl@fnif5jsutefq>
+References: <20260820-gmem-no-return-page-v3-0-3bf8f80a7b4d@google.com>
+ <20260820-gmem-no-return-page-v3-2-3bf8f80a7b4d@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: iCbp+TpI2+6iflTX0es+PaZ52hsz7sM8YRX6QDgQr9KYmdD7aiR1Q9VL+g76ZZRXZXu3YnshO36f2er3Bv3WxksBJcUR9b034LYE0IN8MtyDAdGpUOiA8ao+hdZdJFo8iSdWeVfv3Ht/MyIHJpv4Px7LW+UIjH8Rn9lu4TSTKcrKLoeQv5z5biaSI1FkxV5LcUqk08/MvpcPp3C0s8b+cW5xz+bNiGzCwfdud8w199KzD2xIMHb32DHuQXNHzGPtFFlfOngBzeJhy/2frlnP3nNqML1CnjIqrtLqv3ysVlkWkkEWkBv0+JswPQXFNayiM0a9W196gw+/OG179RiO/A==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB6776.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4b36f011-7201-4617-7186-08deffc9cab2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Aug 2026 21:18:48.6851
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260820-gmem-no-return-page-v3-2-3bf8f80a7b4d@google.com>
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001EE:EE_|SA1PR12MB8887:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9f8e8a95-2b28-404e-2469-08deffce3cb7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|36860700016|7416014|1800799024|82310400026|6133799003|56012099006|3023799007|10067099003|11063799006|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	tykrYSuach+gsY51+qa9WUoDGASS9gCbLe4gdWTlfVOKYQOZZgCOhHgAEQr4V3N+CVJOxYqKCuM7kUPWCKASLb9OZuDpGUYbIzAAic04v4YY3YJruzeZDTVni3om69XsJwQON4RVLby/EuPaXHv7lQza+qjsGn6nFNiNofguLf7Yve43SbmK7LjPQfpVMLjcUFmx0Y1Zr9JDu62HFY/ZwN8L6tNZ8JrD8cIsGaBdJEKrc+WKQOuWi4AQ/wM4N9N5ydhLx/kwKytve44whIb9jL4JqqKHs/Fy/Pw5Z1Yc3SJHhpzXrQzxolIMgLFoJSHu9q/EFF3j7jTKdihkdSC6pQmTZIcm5QCpRCDxvfWZPYVEQlO4Qplll+s3T4V3+8654maYEHxoOaTBZLjgakyfqGTatm9p+HkkpkCDWNaYmo3Z7R31v7W3A9afFyE/Js7L15TZFaqC2+i0fJHQf98x6ot4+hhsGWbHEmh6uyzmRpeOnIqVioUcSwe6/b/Gz+fhCNvcOjpRLqE0u17Qq/zCDXQ+tTufUlt1hGwfmwGUGSCJOYBHWJSU+NdgPZLZMw1JrbNWiS+QiEDnF1S5N6pJ53kemh8n1HXOhtp6RJLyIeqV3nq5D79cyl/MC2yUk7oOyoHfSI0TsyP9AXkNRAIscJhJuT6YRo7vFxyrQWxvh0d7IQQ9Rw+KMvWppR/djNOz2Go6eIyRP6thzfJbLpUndw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(376014)(36860700016)(7416014)(1800799024)(82310400026)(6133799003)(56012099006)(3023799007)(10067099003)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	f773WEbKxCy+6pungF4FPS72ohQiRqnh9CDvTr4J1WNAMMxaWuzmSOpHYaPEF5Pw15lc6agCLuKhUY7X4Dz/PLACeDIUt+ZDDLGD/dARZ0iU/xlXjQ4BW5j+QNWCuUlDfXOkKhAyHbQkYb85+GJtzXo+ht078efCHXkbQWwoB9uMJRKYnsJIiCQNRCv7maaqa2CGjI417m+1Akb4zYiAS6WfcnA2f3+Z5LmPXKVVrSExeIIJhikvKrOsT4rngIEisQrzNgc1WGG4hAKN2GgHSZCqYj1lcprenyYWcqUgZZYEfUb70jQsZM1UcZb/cMtoEssoGUOvFbH8Q495sWN7tOAsvUyZBU5XOT63UvqNw0AgwxUa0y4HOkb8z2F/X8zNGG3x3xcHhyupKEWxKRBsTHSQXtoW/pPiFaqf1a87EPHeJrQ7Uy3d5nccefZte17w
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 21:50:37.4252
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 72Gf3IfakHewECloXM01hX7am0p6/6fep2s8VbiVId7Mwmla2eXTaT8P3mcgd5RJa17ZoLvuwkagi5h4XTxdWGNbDk5WdGk2AJ1PIptmzNw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB8288
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9f8e8a95-2b28-404e-2469-08deffce3cb7
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001EE.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8887
 
-T24gRnJpLCAyMDI2LTA4LTIxIGF0IDA3OjM4IC0wNzAwLCBEYXZlIEhhbnNlbiB3cm90ZToNCj4g
-T24gOC8yMC8yNiAyMDoyOSwgWHUgWWlsdW4gd3JvdGU6DQo+ID4gwqAgc3RhdGljIF9faW5pdCBp
-bnQgdGR4X3N5c19jb25maWcoc3RydWN0IHRkbXJfaW5mb19wYV9hcnJheSAqdGRtcl9wYV9hcnJh
-eSwNCj4gPiAtCQkJCSB1NjQgbnJfdGRtcl9wYSwgdTY0IGdsb2JhbF9rZXlpZCkNCj4gPiArCQkJ
-CSB1NjQgbnJfdGRtcl9wYSwgdTY0IGdsb2JhbF9rZXlpZCwNCj4gPiArCQkJCSB1NjQgYWRkb25f
-ZmVhdHVyZXMwKQ0KPiANCj4gYWRkb25fZmVhdHVyZXMwIGlzIGp1c3QgYSBjb3B5IG9mIHRoZSBn
-bG9iYWwsIHN0YXRpYywgbm90IGNoYW5naW5nDQo+IGdldF90ZHhfYWRkb25fZmVhdHVyZXMwKCkg
-cmV0dXJuIGNvZGUsIHJpZ2h0Pw0KPiANCj4gV2h5IHBhc3MgaXQgYXJvdW5kIGFzIGEgZnVuY3Rp
-b24gYXJndW1lbnQ/DQoNCisxLiBJbiB0aGUgcGFzdCB0aGVyZSB3YXMgY29uZnVzaW9uIGFib3V0
-IGFjY2Vzc2luZyBnbG9iYWwgbWV0YWRhdGEgd2hpbGUgc3RpbGwNCnJlYWRpbmcgdGhlIG1ldGFk
-YXRhLCBhbmQgaXQgd2Fzbid0IGNsZWFyIHdoZXRoZXIgdGhlIGdsb2JhbCByZWZlcmVuY2Ugd2Fz
-DQp1cGRhdGVkIHlldC4gQnV0IGhlcmUgaXQgZG9lc24ndCBzZWVtIGNvbmZ1c2luZyBhcyBsb25n
-IGFzIHdlIGFzc3VtZSB0aGF0IGNvbmZpZw0KaGFwcGVucyBiZWZvcmUgbWV0YWRhdGEgcmVhZGlu
-Zy4NCg0KQW5kIGZvciB0aGUgc2ltaWxhciB1cGRhdGUgY2FzZSBvdXRzaWRlIHRoZSBhYm92ZSBx
-dW90ZSwgd2Ugd291bGQgY2FsbCBhIGNoYW5nZQ0KdG8gdGhhdCBmaWVsZCBhbiBpbmNvbXBhdGli
-bGUgdXBkYXRlIEknZCB0aGluay4NCg==
+On Thu, Aug 20, 2026 at 11:32:35PM +0000, Ackerley Tng wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> When handling an RMP fault, KVM retrieves the PFN for a private GPA from
+> guest_memfd.
+> 
+> Drop the page reference immediately after retrieving the PFN instead of
+> holding it across the entire handler, and adopt the KVM MMU invalidation
+> protocol.
+> 
+> To avoid wrongly warning about not finding an assigned RMP entry if an
+> invalidation had taken place, check for invalidations before warning.
+
+I'm ok either way, but something like the following I think would read a
+bit clearer:
+
+  When handling an RMP fault, KVM retrieves the PFN for a private GPA from
+  guest_memfd as well as a refcounted struct page. This reference is
+  held for the duration of the RMP fault handling to ensure the page isn't
+  reallocated to another guest while processing the RMP fault.
+  
+  A later patch will follow up with completely not returning refcounted pages
+  from kvm_gmem_get_pfn(), so prepare for that by dropping the page reference
+  immediately after retrieving the PFN and, in place of that, implement the
+  stardard KVM MMU invalidation logic to address the above scenario.
+
+  While here, also make use of this KVM MMU invalidation logic to avoid
+  warning about not finding an assigned RMP entry by first checking if an
+  invalidation had taken place since entering the RMP fault handler.
+
+But after writing that I realize the last paragraph is pertaining to a
+new hunk added in v3, which is sort of a bug fix (in the same that patch #1 is
+a fix anyway), since it fixes spurious warnings that were previously
+triggerable via truncate() racing with RMP faults. However, that's exactly the
+same scenario patch #1 is trying to fix, except in this case the race happens
+before this path reaches the PSMASH vs. after the PSMASH like patch #1
+addresses.
+
+However, unlike patch #1 where we only need to check once again
+after-the-fact, it's not possible to reliably check the before case without
+the MMU invalidation logic in place, so I'm okay with squashing that
+additional check in here, but decoupling that change (prep-for-something-else
+vs. bug-fix made possible by prep-for-something-else) and moving it to a
+patch #3 would help with de-tangle things for future git blame's.
+
+(sorry if this seems like nit-picking; this function unfortunately spends a
+lot of time in the spotlight so trying to make life easier for people making
+sense of it)
+
+Thanks,
+
+Mike
+
+> When handling an RMP fault, KVM retrieves the PFN for a private GPA from
+> guest_memfd.
+> 
+> Drop the page reference immediately after retrieving the PFN instead of
+> holding it across the entire handler, and adopt the KVM MMU invalidation
+> protocol.
+> 
+> To avoid wrongly warning about not finding an assigned RMP entry if an
+> invalidation had taken place, check for invalidations before warning.
+> 
+> When the RMP level is 4K, the function exits. That doesn't need checking
+> for invalidations, since if it is 4K and there was an invalidation, not
+> psmashing and not zapping is the right thing to do.
+> 
+> If the RMP level is 2M (the only other option), use the invalidation
+> protocol before attempting to psmash. This ensures that if the page is
+> truncated and freed, and then re-allocated to another SNP VM (the RMP entry
+> is now assigned, but to another SNP VM), psmashing would be correctly
+> skipped.
+> 
+> A later patch will follow up with completely not returning refcounted pages
+> from kvm_gmem_get_pfn().
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Reviewed-by: Michael Roth <michael.roth@amd.com>
+> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
+>  arch/x86/kvm/svm/sev.c | 47 ++++++++++++++++++++++++++++++-----------------
+>  1 file changed, 30 insertions(+), 17 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index b2738362a928b..563870342a2ba 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -5003,6 +5003,7 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
+>  	struct kvm_memory_slot *slot;
+>  	struct kvm *kvm = vcpu->kvm;
+>  	int order, rmp_level, ret;
+> +	unsigned long mmu_seq;
+>  	struct page *page;
+>  	bool assigned;
+>  	kvm_pfn_t pfn;
+> @@ -5030,18 +5031,26 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
+>  		return;
+>  	}
+>  
+> +	mmu_seq = kvm->mmu_invalidate_seq;
+> +	smp_rmb();
+> +
+>  	ret = kvm_gmem_get_pfn(kvm, slot, gfn, &pfn, &page, &order);
+>  	if (ret) {
+>  		pr_warn_ratelimited("SEV: Unexpected RMP fault, no backing page for private GPA 0x%llx\n",
+>  				    gpa);
+>  		return;
+>  	}
+> +	kvm_release_page_unused(page);
+>  
+>  	ret = snp_lookup_rmpentry(pfn, &assigned, &rmp_level);
+>  	if (ret || !assigned) {
+> -		pr_warn_ratelimited("SEV: Unexpected RMP fault, no assigned RMP entry found for GPA 0x%llx PFN 0x%llx error %d\n",
+> -				    gpa, pfn, ret);
+> -		goto out_no_trace;
+> +		guard(read_lock)(&kvm->mmu_lock);
+> +
+> +		if (!mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn))
+> +			pr_warn_ratelimited("SEV: Unexpected RMP fault, no assigned RMP entry found for GPA 0x%llx PFN 0x%llx error %d\n",
+> +					    gpa, pfn, ret);
+> +
+> +		return;
+>  	}
+>  
+>  	/*
+> @@ -5069,27 +5078,31 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
+>  	if (rmp_level == PG_LEVEL_4K)
+>  		goto out;
+>  
+> -	ret = snp_rmptable_psmash(pfn);
+> -	if (ret) {
+> -		/*
+> -		 * Look it up again. If it's 4K now then the PSMASH may have
+> -		 * raced with another process and the issue has already resolved
+> -		 * itself. If it's not assigned, then this must have raced with
+> -		 * another process that made this page shared.
+> -		 */
+> -		if (!snp_lookup_rmpentry(pfn, &assigned, &rmp_level) &&
+> -		    ((assigned && rmp_level == PG_LEVEL_4K) || !assigned))
+> +	scoped_guard(read_lock, &kvm->mmu_lock) {
+> +		if (mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn))
+>  			goto out;
+>  
+> -		pr_warn_ratelimited("SEV: Unable to split RMP entry for GPA 0x%llx PFN 0x%llx ret %d\n",
+> -				    gpa, pfn, ret);
+> +		ret = snp_rmptable_psmash(pfn);
+> +		if (ret) {
+> +			/*
+> +			 * Look it up again. If it's 4K now then the PSMASH may
+> +			 * have raced with another process and the issue has
+> +			 * already resolved itself. If it's not assigned, then
+> +			 * this must have raced with another process that made
+> +			 * this page shared.
+> +			 */
+> +			if (!snp_lookup_rmpentry(pfn, &assigned, &rmp_level) &&
+> +			    ((assigned && rmp_level == PG_LEVEL_4K) || !assigned))
+> +				goto out;
+> +
+> +			pr_warn_ratelimited("SEV: Unable to split RMP entry for GPA 0x%llx PFN 0x%llx ret %d\n",
+> +					    gpa, pfn, ret);
+> +		}
+>  	}
+>  
+>  	kvm_zap_gfn_range(kvm, gfn, gfn + PTRS_PER_PMD);
+>  out:
+>  	trace_kvm_rmp_fault(vcpu, gpa, pfn, error_code, rmp_level, ret);
+> -out_no_trace:
+> -	kvm_release_page_unused(page);
+>  }
+>  
+>  static bool is_pfn_range_shared(kvm_pfn_t start, kvm_pfn_t end)
+> 
+> -- 
+> 2.55.0.766.g2966f0265a-goog
+> 
