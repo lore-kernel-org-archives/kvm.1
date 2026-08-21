@@ -1,119 +1,145 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF1E47ECDB
-	for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 13:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE28F47F791
+	for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 13:28:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787318835; cv=none; b=FvJyD07Dfgun1NvHbSQublMCxYQ0wA+j3W8lbSFmCVidOy+l+mki6A6QVoeMOWR28J1pm1Su+QHslzR/ycgWOZWsQlOcdTaJZWq7oddchD7aTFsSQ/3AhgKA62fsJSJ/FUxypZ/lqKmvdjj0g8UCoMLcywg71ah1hrY+QIl2vm4=
+	t=1787318923; cv=none; b=X0e3XyROSi/krPup0e9YDg9Svc2s34IPDRCYNo6ZS5iR6zPH5JGDc56NXmzJh4WSjXM9AgMXq6fKGkyQ3XR1f09T1cULhiH0HdqI8sb05xU8hCrhqOx6bHtAKgHyPMNBVTj4MmEFfsRZvf4e3GfWHpjgMFPlZxmNURZA9exNJnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787318835; c=relaxed/simple;
-	bh=5klepE7p4Hg1qEAbCF6RZZu8Pu13Alz4PVZPELP3bS0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Nd+81YfudwMd9U3w8lMfqOHtqDkVNtS2hLPv4OrqvrZVzOTV63E7hng5Bwy9Yu4BbzCUb6FVx1sAEQFmoFgVN4hzmfXoY+GKbn9oiBm6r089qS/uHLYie/jKSvmuPPj4w3Bo6jgg+fjN5pFqfizWvbt014Iy2+tn1HmX/qdc+ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uuvg/Hmf; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787318923; c=relaxed/simple;
+	bh=8MXAlRp/lZOVNsZeGJaf8IGjpdU3o5msgIcYcSAxHvA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Wcjd48G4+c3wtcsDMYsjOjETYq9PKPuHhw3Nxg+Jpiahhxv5L2ObT02TZ6qnbTGbMQ53NOmuNRe6LQaD0EYSvhtPAKAN/cjUabIJDHptXNa1pojPIC3I6f0qSbGVE0TND3OiZoy4TxPBo7UwGwcFdE3m/Nnr5ebgJnXbOMZKWu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WLpjHETs; arc=none smtp.client-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uuvg/Hmf"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-47fe2d179e2so681717f8f.1
-        for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 06:27:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WLpjHETs"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38f0fe57470so2314932a91.0
+        for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 06:28:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787318830; x=1787923630; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1787318921; x=1787923721; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=93TKIYVELb3f7XMDYi0bAF+lcotYrliPfpYhNsdjWuM=;
-        b=Uuvg/HmfdhudG2I4OkIcuqi0ihof2HdqZeKDbGqe4K7rtcg/jZuIV+5wtYUtm0VrSH
-         Few3nfouzm529EJIoWKAZkfHTZqnlZMbKqV/0+rsqABiJzOoVNqBeLXHgmY86Hint+xo
-         aRcqJVH2GGtDgvuKIo0xtdXWOM6rA6CBJ+JSOPugVTPwXrXN8CwNstu7nCpwr/O83XcM
-         XMdTD5c4+ruoXBOHgQeS+DZ14vYPUBia9mBAlPrrdJjoWtkbbeuwnU+GbMFukPsoOE/h
-         WElOgELVgPVCokpRqEMCO7y9F1QUYCx8hHaSyNvmDeu7WNquADXA3oF0H9canxnKrYeT
-         QDaw==
+        bh=YX0fQ7Qjdf1AGjRX2lzd8yREGufMUdE4nTQS2ZIadXU=;
+        b=WLpjHETs8XcuwLhsAPERLOAsKOWQWPgjowK+/U9jpiGN2Nlcgl4z0EOnTS/fHmAHZB
+         rXQ9g/3husxTfZGPd1nYv1+ZmpHwiW5x8Xzt/xSNWNoFtKwkU33fmQEkXt4cR2KxDrhe
+         1CJXb87R4xxs6pwioAoLfeILhOIX4ArQEbEdvEZJwDoMed/18Z3B4PMvahSzqz+d270I
+         7axmYKluagCcQNRsubOwjRzGn3D/XlVf1WWuW3XAC6zlcD8NRXHkoxTlfYuKGXJWAUXU
+         oTHiW7hoVYU/end87Vj0LFGy7ZBkFw7oLAv1WwJzEr7jtitEB3NxaAO7OYslGNULpvNh
+         6/sQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787318830; x=1787923630;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1787318921; x=1787923721;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=93TKIYVELb3f7XMDYi0bAF+lcotYrliPfpYhNsdjWuM=;
-        b=nDR2EwAvsNzagnCn1s/IlpMHZmwDu7vTo3OUEvmM2lhkRvN5PdjY4DRMiODE1u2G+R
-         5NwjD5UyqpYnPe2F6bWZJzPH8D2CihmloR6Ni0P8N4c5vpiXUUxqFooG81YM2TG4Iotx
-         odiEOwKESJL2HH5vXdoQcq5WpigcmB0yjepq2w8s9t/2Vvh35cLDvf7d3O9AkJNGEwWe
-         hKMDJVcKpGZXMKO9WojDzenmDqJVefvBqwQ3otrKf5jbf/VRqBE1HYfXd9DmCrZVX1d+
-         C0F3vUQSWD7fSWYGUngQFy4Jkpwkd7n4QgFQqbW7Wwx65hvMtE0hFtWUwrD2IqzsooNS
-         UBRw==
-X-Forwarded-Encrypted: i=1; AHgh+RotCz3yeG/0HONO0rI+4Zk8YeVqrXtdEpsmGA97vlwOPEp5I9dBVqxcSzygY9TuxTQazJM=@vger.kernel.org
-X-Gm-Message-State: AFuF++kYNHE7TcawrLOX8zm0HEcwokjklML1paSUSvoK93Ji6tSTLlnO
-	9k4phDy3bdE6HtX9dpdIZsbNLhV3nVwCdTgubu/+WRbk/ZG0p/kX2pSC
-X-Gm-Gg: AR+sD13xfegSLyqIP0bdyuWwmXCGKmrHCgHfPBLbQm0iq4D2xd0YIr6PA6ke8YDnT9F
-	1C/VM9QQR7Oi0+0eQuRd/WY/JYdonuhVCfgvN5XB+h/Uy8GuPUqXJ4JXclHrXQwXToNBDcI+vVu
-	2bWDffmEWUxoNxKxFNZrW1SBCWirrlXcVN1cDylVYgVs1WVQgSK/ZeBlsBJCKL1uYj/bcUwju9w
-	z3lIpB/fskeb/UVmXbhQSKKaC6ngU7zFot/0dnnip5QY3RZyUABpWQKkVg7UC4Tp5r3nG7f4n40
-	vW2ZT1pktHzpAXxT6znxvJKL4y19kA+lBHQ7ohZIQgmC0BQKF4d6fCnlmm7Z8VNoR90akGa+Es8
-	qlfKODzlhNXl1Q8Ur2SRmbKq16Itcvh4JIIlpNzQMFDzoMhkPjgAs5qFrPejUqcqOTymcel3yhR
-	mbUDJW2ZDZIWI72fxZNWk/nhQq77o9QleOPjeVQTOAt+oqmwaTpMp/vfaWaN24JQ3K21WN1mVoH
-	lFBvw==
-X-Received: by 2002:a05:6000:41dc:b0:482:aa2a:52f6 with SMTP id ffacd0b85a97d-482c0b41f95mr10002245f8f.1.1787318830006;
-        Fri, 21 Aug 2026 06:27:10 -0700 (PDT)
-Received: from [10.45.28.226] ([15.248.2.234])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482bf82594esm3408856f8f.29.2026.08.21.06.27.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Aug 2026 06:27:09 -0700 (PDT)
-Message-ID: <12442106-e756-4902-b9fd-c760da04f849@gmail.com>
-Date: Fri, 21 Aug 2026 14:27:08 +0100
+        bh=YX0fQ7Qjdf1AGjRX2lzd8yREGufMUdE4nTQS2ZIadXU=;
+        b=M7Av9Vn/fbUOtjy6Q7NRL5ejUiv01cKUoL1WtUIjApEO96+oydYj6A3lRfhbqwLUM4
+         NtAzRirG4fY5FL5xWLK5JwTKzIUKT14tO8qvkJWiaohVYPW8Cr0zk/fJTMDkTSr/yg6D
+         nUHD6Mgg7s0CMA1HHJV7YeXnqUr4HOysW5QDvTqQYDDN9cObWU0UssVUlPe3wLNd323O
+         V7no5V9K2asXrHM8/LuFVsPDLCLJh7WLW+ARUk0jOMRJbChp97sNtnazouSzOpv0+Y4z
+         lEZ0FbLBftN4ccD4fxAV9C51Hr6L1u/v6qPdlBNU24wtWYyWUW0m1DbMfgd6X10aMq8o
+         UfRQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoqCiQ5gATVdwyATC6mk8VTWdX5KFYYuOk9+ZTq56QBIqytwvP0iNyu7bSO6pzgucoLbZ4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lQ3YTp/6e/196yNzxFN4P56hiiqwlzfVx7AUnKVGl2pK0PZgQg
+	pAiCvKBzn5rnRjjc4boSyYiTxMc2PJuImO06byfLSpQ6HVj2bIYO5ARK2vDFkO4sr6W7I1VBWDJ
+	DCJzU2A==
+X-Received: from pgg24.prod.google.com ([2002:a05:6a02:4d98:b0:cbe:dc9e:aa41])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:57ef:b0:36d:b12b:f57d
+ with SMTP id 98e67ed59e1d1-395a06363a2mr17704953a91.12.1787318920864; Fri, 21
+ Aug 2026 06:28:40 -0700 (PDT)
+Date: Fri, 21 Aug 2026 06:28:40 -0700
+In-Reply-To: <829b5c18-6ffe-46fe-bfed-03d5ddde92d9@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/5] KVM: arm64: Add pre_fault_memory implementation
-To: Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: maz@kernel.org, oupton@kernel.org, pbonzini@redhat.com,
- joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com,
- yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org,
- shuah@kernel.org, corbet@lwn.net, vladimir.murzin@arm.com,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
- isaku.yamahata@intel.com, Jack Thomson <jackabt@amazon.com>
-References: <20260612162354.73378-1-jackabt.amazon@gmail.com>
- <20260612162354.73378-3-jackabt.amazon@gmail.com> <ak5sAxb3G6hhFmBF@raptor>
- <alEXGmKiXgWPPdhF@raptor>
-Content-Language: en-US
-From: "Thomson, Jack" <jackabt.amazon@gmail.com>
-In-Reply-To: <alEXGmKiXgWPPdhF@raptor>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260129063653.3553076-1-shivansh.dhiman@amd.com>
+ <20260129063653.3553076-8-shivansh.dhiman@amd.com> <aauJ80pZrw_SfF31@google.com>
+ <db768f80-dfda-42a2-8601-8d0af35c2959@amd.com> <an0BbcxUNRKqnUSJ@google.com> <829b5c18-6ffe-46fe-bfed-03d5ddde92d9@amd.com>
+Message-ID: <aohSiFQbfqpKoBX9@google.com>
+Subject: Re: [PATCH 7/7] KVM: SVM: Enable save/restore of FRED MSRs
+From: Sean Christopherson <seanjc@google.com>
+To: Shivansh Dhiman <shivansh.dhiman@amd.com>
+Cc: Nikunj A Dadhania <nikunj@amd.com>, pbonzini@redhat.com, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, xin@zytor.com, 
+	nikunj.dadhania@amd.com, santosh.shukla@amd.com
+Content-Type: text/plain; charset="us-ascii"
 
-
-Hi Alex,
-
-On 10/07/2026 5:00 pm, Alexandru Elisei wrote:
->> Does it guarantee that, after it completes and returns to userspace, the
->> address range [gpa, gpa + size] is mapped in the VM's stage 2 tables? Or
->> does it guarantee that the address range was mapped at stage 2 at some
->> point during the ioctl's execution, but parts, or all of it, might not be
->> mapped after the ioctl completes and returns to userspace?
+On Wed, Aug 19, 2026, Shivansh Dhiman wrote:
+> On 13-08-26 04:57, Sean Christopherson wrote:
+> >> Would you prefer it handled in svm_recalc_fred_msr_intercepts() instead
+> >> while setting intercepts? Or is there a better way to deal with this?
+> > 
+> > Take a hard dependency on an upcoming APM update that states the control area
+> > is valid after shutdown, and rework KVM to not clobber control fields on shutdown
+> > interception.
 > 
-> Nevermind, spend some time thinking about it and it turns out it's
-> impossible for KVM to guarantee that the memory is still mapped after the
-> ioctls returns.  So I answered my own question, thanks.
+> Sure, Sean. I'm thinking something like the diff below. It contains three
+> parts:
 > 
-> Alex
+> 1. Clear the save area and offsets 60h, 61h, and 68h of the control area,
+>    as per the APM.
 > 
+> 2. Zero the intercepts as well. The APM doesn't require it, but it seemed
+>    worthwhile so that the new intercepts are computed on a clean slate
+>    rather than on top of whatever survived the triple fault. Is that worth
+>    doing?
 
-Yeah it's best effort, as if a vCPU had faulted the range itself. This
-could be undone by an invalidation or memslot update. The value is in
-the common cast (for us, post-copy migration) the guest doesn't pay the
-stage-2 fault fault cost at run time.
+My gut reaction is I don't see how this can possibly be safe or correct.  How
+does the guest taking a series of faults have anything to do with what accesses
+KVM needs to intercept?
 
-I think it would be worth me adding a sentence to the documentation
-noting there is no persistance guarentee.
+> 3. For nested, same fields are copied to vmcb12 when a shutdown is intercepted
+>    in L2. Clear them while copying so L1 gets a deterministic value
+>    rather than whatever the hardware left behind. Does that seem like right
+>    thing to do?
 
--- 
-Thanks,
-Jack
+No, because that violates the rule of "don't make stuff up".  It could also be
+actively detrimental to L1's ability to debug issues (e.g. if hardware leaves
+breadcrumbs in the save area), and risks creating guest<=>host ABI that we don't
+want to support.
+
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index 83de3456df708..38843b29b21ec 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -1149,6 +1149,11 @@ int nested_svm_vmexit(struct vcpu_svm *svm)
+>         vmcb12->control.event_inj         = svm->nested.ctl.event_inj;
+>         vmcb12->control.event_inj_err     = svm->nested.ctl.event_inj_err;
+> 
+> +       if (vmcb02->control.exit_code == SVM_EXIT_SHUTDOWN) {
+> +               vmcb12->control.int_ctl &= ~GENMASK(15, 0);
+> +               vmcb12->control.int_state = 0;
+> +       }
+> +
+>         if (!kvm_pause_in_guest(vcpu->kvm)) {
+>                 vmcb01->control.pause_filter_count = vmcb02->control.pause_filter_count;
+>                 vmcb_mark_dirty(vmcb01, VMCB_INTERCEPTS);
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 519249e75420d..62b4feb9c3909 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -2090,7 +2090,11 @@ static int shutdown_interception(struct kvm_vcpu *vcpu)
+>          * cannot be reinitialized, i.e. synthesizing INIT is futile.
+>          */
+>         if (!sev_es_guest(vcpu->kvm)) {
+> -               clear_page(svm->vmcb);
+> +               struct vmcb_control_area *control = &svm->vmcb->control;
+> +               memset(&svm->vmcb->save, 0, sizeof(svm->vmcb->save));
+> +               memset(control->intercepts, 0, sizeof(control->intercepts));
+> +               control->int_ctl &= ~GENMASK(15, 0);
+> +               control->int_state = 0;
+>  #ifdef CONFIG_KVM_SMM
+>                 if (is_smm(vcpu))
+>                         kvm_smm_changed(vcpu, false);
+> 
+> 
+> Cheers,
+> Shivansh
+> 
