@@ -1,76 +1,59 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C3A456E18
-	for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 09:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA633DDAF4;
+	Fri, 21 Aug 2026 09:35:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787304119; cv=none; b=MS3qrfOhCwdwCE6z7EmJrBetXc8r1yan084zexU2Vm2+TSC/SYpa0jKRo9L1bUAGbcMlSw8ljlX2blL1bJ5tBWfvjbNSv5s73oNPdN39HuXMG2GH67X0+KTCORLihyurFGEJldIE3mWsvAz+nOMIN6rL6CMALUVw+gr3wre7xLs=
+	t=1787304925; cv=none; b=YDKOJ7p4eNGyRrDsT0yRSNbjBDWYU4WEZHE/m/qMijeXckITMX+Yn5WHfXdndErUnzSwY2lmBVOqwQnlWyI5Y/FTspkR1QQs/SbcHkYF7U0FRI7D4+H23UNsu+F4syfOddGelvwEjCdMaPkwN6VlpTJdNdpgjNolLuRCq7Jo7/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787304119; c=relaxed/simple;
-	bh=17mRHAcgbScJ010Hr/g1h5u/KKQhxYtSu51f8+ZwMPg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EYY0hotc7HzpClWrbX8/n6OccnxI0OYmhZZWfOM9uSSCH53FPsPJdb1U0LMlctHVvsVA+9bIlA0RJRyfZlBwjF2VDxJXVYyqk0IqXAQ3I9EbUCwZdlX/PADz0fDR6jeM+S2HqAjQyGMeNeifAsrH3QjJEqgC23k9j6BfM+6q+Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cjaoPTK9; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787304925; c=relaxed/simple;
+	bh=Fr0L+bWzaux+VbiP5oEaxO4wV06GUEM1wypYkaQMS6A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XQX1hhLIDE5G1Vdr1KULbVypG7mxCpjrh56VLwt0vYbJVIRh+yjv5J1eoNsqLF8YdUDwQAfy5QIqQZNsda/hL8kSwiNPPSdeFaaFiZf08B8Gf40ptFVogcarmVB+zkTgdOCleiWlP3dFcfllICWoorh3T7afPYdZKxQBcZnXCJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wyo6fqMX; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cjaoPTK9"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2d0407aedd6so8769095ad.0
-        for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 02:21:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787304106; x=1787908906; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rIVxI763y0PXJPtee95zvFxNk/MLc74f2lcS4/k1mxE=;
-        b=cjaoPTK9weSVmEu6YD7jyusl0gpRdpOLrWvnYdmWRmlrPmmLBkYQBL+iUH1+oWl5FG
-         xJ5lwTJv+BwcwQubq5v0ICtHmItIHxSvIq6GQOU3as2sVXm/VSxvx1J2ntfRSLGC9uXX
-         EXk74Q6JjIi5YNyn0Zqaud4/F8+m7WUVkVF2E0wFhDNTeGpsAI123zFyda1XDRwrFa7+
-         y+i28H4nPuQiGc6kbMdwI3YbB4LhLeTEwTbTI11rgvI6spKt+zGsjjQ5VU+p0lu8loCv
-         dgiEppKhAWijAsioLej6wa6gn1WSN6dxZg5IUnofB60hl/INMZsBjjNKJ5NyKOkHyHeX
-         ebMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787304106; x=1787908906;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rIVxI763y0PXJPtee95zvFxNk/MLc74f2lcS4/k1mxE=;
-        b=ZTwOJxCFWyCo5/f2nsGLDvkJuAuBkK79oruCzKh7idaSk9cMkUCGChTPl9ViVf1NMB
-         xG0DZHKfMLnxD/ES6zf2NLXDxy/4GA2kiPVxCJy4SvJPBrwit6OVl5SBNAEuJeNF+YBX
-         Jf1ixBsCdCZFfX8d6QFnPM895Vwf0N4ZY60lwEst5s7sKP0KqxIAXlzf06NwuHkDkTz1
-         6oX5VVGRLV5CFz4CxVEtaI/inYrqh3d/liAyX5OCX52CWKXAjf+xqKmifbnVm5yHta2K
-         lH4PxQKQdXGxxAXDI/VOT0jhhQlXbNnAHQ7CEGaUEGtk+zQ+CRXGFAqg3g14ORSmXP98
-         l2cA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro8oG3wEr4DAs2q59WNrF8g+vdpQip9Qp+updfGNNHP5IHrLMOcdMrm1UqbP+/1OpCmUVc=@vger.kernel.org
-X-Gm-Message-State: AFuF++lBbqiGg7Mu1Z1KbOVR6VnsXeLmZAUhI0aNgQTBs6h3jsipcx/p
-	84gPHaisaBO74kZTC/w+N9Qc0t6jPbNfxspG3BotKl37GLA5yw33UWl7
-X-Gm-Gg: AR+sD13gGHg55h+hWoOcbHWfHeBmRdlEgRgnO2sv6j30zpYIHIZR+gnpZ9S0c20Kzqi
-	0cJ8ZNoFYw/zddTMsFwj9v/lHtdjrP0w+YCj00EzGl9QRaCQ4o2yYnsZIFFEiJ1Lo9fFjO5yhx/
-	6HS07fiY9xMy+BPnerUVyDy0SMeDlPkXsF8hvEa+8QKtQkgtDwFQ+QntY9Khosi1+YIGL4ZAPEA
-	ASr1FL+mfC/593HQEkPEuBCiLbaEPpA+3wB+SBeNMQwuYuoF6zCaDB/LxJhmRA0ohYYzrq1191c
-	f4mByzcCkNT+/NaVHLvG4bDkzvXWPDA482wB8dR+uEKCtoZB8i3FTeViMWCMihgTmZotbJ/L/LB
-	nM+n75XSQnJWmYC6SSCB8Mia6OrvpltbrE1qyh8FaNcdKljsfKok7V4GibaLjzt4LGwZaCYVZ7I
-	orjV4H7OSR5uW0eZ5oRBPuXyW6m+7B35VUcfZyIqEy4mIzy/k1ztlNl8sazcW0BVY=
-X-Received: by 2002:a17:902:d4cc:b0:2c9:aae1:a61a with SMTP id d9443c01a7336-2d64b0c6a16mr88046515ad.14.1787304105197;
-        Fri, 21 Aug 2026 02:21:45 -0700 (PDT)
-Received: from [127.0.1.1] ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327c3fc6675sm36658847eec.13.2026.08.21.02.21.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2026 02:21:44 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: mst@redhat.com,
-	jasowangio@gmail.com,
-	stefanha@redhat.com,
-	sgarzare@redhat.com
-Cc: eperezma@redhat.com,
-	weiyj.lk@gmail.com,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v8] vhost: invalidate vring access on IOTLB transitions
-Date: Fri, 21 Aug 2026 17:21:08 +0800
-Message-Id: <20260821092108.334318-1-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wyo6fqMX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787304914; x=1818840914;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Fr0L+bWzaux+VbiP5oEaxO4wV06GUEM1wypYkaQMS6A=;
+  b=Wyo6fqMXPgU43BCbNE8o+WgViQIBjxQ4MySl8GCDaSvRnwwYFJK6j5K2
+   fk2XlaEFRhFGE+cD8As1EC7t9niCDJBlMV+J/o5k7NhL9JkbXZ4EWmXzT
+   /f7mJJi6Xw9kVm9dpjvwUlCoCzPnS0bsqN7LADvXB6Ot2y1iBJ5X+IyPN
+   qy4Ybwg3JiHXGM9QrO9zCORRf3tFXcUeWnsslNXaMsJywcWaKsNv+Qhpt
+   Xy3IYx8j9AO5Lkwh5XrVxPvY4v42a7aLdUenJqp0PjICcv18OZnWhG8Hs
+   ABXp+4mAA5pYKCsr2Epg4EZeN5X3/sb7Tv29qCOVrtfOz1+DPa+ePLP42
+   Q==;
+X-CSE-ConnectionGUID: vbdYgwBvRA6dxCrtXTfJVg==
+X-CSE-MsgGUID: NSEQZjR0REKZWYC9kSvZ8A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="99006460"
+X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
+   d="scan'208";a="99006460"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 02:35:10 -0700
+X-CSE-ConnectionGUID: Z64lT8n1S9+8knxitS2Cbg==
+X-CSE-MsgGUID: H5G+fFKdS7edO/3+Z/dhvA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
+   d="scan'208";a="268222739"
+Received: from litbin-desktop.sh.intel.com ([10.239.57.15])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 02:35:08 -0700
+From: Binbin Wu <binbin.wu@linux.intel.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: seanjc@google.com,
+	pbonzini@redhat.com,
+	kas@kernel.org,
+	rick.p.edgecombe@intel.com,
+	binbin.wu@linux.intel.com
+Subject: [PATCH] KVM: TDX: Charge misc cgroup before allocating HKID
+Date: Fri, 21 Aug 2026 17:39:57 +0800
+Message-ID: <20260821093957.1722167-1-binbin.wu@linux.intel.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -79,178 +62,83 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When VIRTIO_F_ACCESS_PLATFORM changes, the cached desc, avail, and
-used addresses change meaning with the address space. Invalidate the
-cached vring access state when switching between direct userspace
-addresses and device IOTLB addresses, and discard the device IOTLB when
-userspace clears ACCESS_PLATFORM.
+Add a tdx_hkid_alloc() helper that charges the misc cgroup before
+allocating an HKID, and unwind the charge if HKID allocation fails.
 
-Introduce a common device-IOTLB teardown helper and use it from
-vhost-net and vhost-vsock. The helper drops the device-wide view,
-switches each VQ under its mutex, clears the IOTLB message queues, and
-frees the old table after the VQ handoff.
+__tdx_td_init() currently allocates an HKID before charging the misc
+cgroup. If the charge fails, the error path calls tdx_hkid_free(), which
+uncharges a resource that was never successfully charged. This can make
+the misc-cgroup usage negative.
 
-Preserve the existing IOTLB replacement semantics when ACCESS_PLATFORM
-is set again. On the first direct-to-IOTLB transition, invalidate the
-cached vring addresses. When replacing an existing IOTLB, keep the
-GIOVA ring addresses and reset only the metadata cache, so stale
-metadata pointers cannot be used after the old table is freed.
+Charge the cgroup before allocating the HKID.  Wrapping both steps in
+tdx_hkid_alloc() makes it the exact counterpart of tdx_hkid_free(), i.e.
+keeps resource allocation and release symmetric, and lets __tdx_td_init()
+simply bail on failure instead of open coding the unwind.
 
-A successful live transition leaves the backend attached. Userspace
-must configure the vring addresses for the new address mode after
-ACCESS_PLATFORM is cleared.
-
-vhost_vq_invalidate_access() clears all three vring addresses together.
-Treat the VQ as invalidated only when all three are zero, since an
-individual vring address may legitimately be GIOVA 0 in IOTLB mode.
-
-Fixes: 6b1e6cc7855b ("vhost: new device IOTLB API")
-Fixes: e13a6915a03f ("vhost/vsock: add IOTLB API support")
-Suggested-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+Reported-by: sashiko-bot@kernel.org
+Closes: https://lore.kernel.org/all/20260710040153.D8EA71F000E9@smtp.kernel.org
+Closes: https://lore.kernel.org/all/20260718020348.3B4221F000E9@smtp.kernel.org
+Fixes: 7c035bea9407 ("KVM: TDX: Register TDX host key IDs to cgroup misc controller")
+Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
 ---
-Changes since v7:
-- Squash the three patches so the common helper is introduced together
-  with the vhost-net and vhost-vsock callers.
-- Preserve the existing device-IOTLB replacement semantics.
-- Treat a VQ as invalidated only when all three vring addresses are zero,
-  since an individual vring address may legitimately be GIOVA 0.
-- Keep the original vhost-vsock feature-test formatting.
+ arch/x86/kvm/vmx/tdx.c | 34 +++++++++++++++++++++++++++-------
+ 1 file changed, 27 insertions(+), 7 deletions(-)
 
- drivers/vhost/vhost.c | 57 ++++++++++++++++++++++++++++++++++++++++++-
- drivers/vhost/vhost.h |  1 +
- drivers/vhost/vsock.c |  2 ++
- drivers/vhost/net.c   |  2 ++
- 4 files changed, 61 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 14637cff0bd4..4343b811a838 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -344,6 +344,17 @@ static void __vhost_vq_meta_reset(struct vhost_virtqueue *vq)
- 		vq->meta_iotlb[j] = NULL;
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index b272c20586a7..d1fe279b5bc3 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -260,6 +260,31 @@ static __always_inline void tdvmcall_set_return_val(struct kvm_vcpu *vcpu,
+ 	to_tdx(vcpu)->vp_enter_args.r11 = val;
  }
  
-+/* Caller must hold the virtqueue mutex. */
-+static void vhost_vq_invalidate_access(struct vhost_virtqueue *vq)
++static int tdx_hkid_alloc(struct kvm_tdx *kvm_tdx)
 +{
-+	vq->desc = NULL;
-+	vq->avail = NULL;
-+	vq->used = NULL;
-+	vq->log_used = false;
-+	vq->log_addr = -1ull;
-+	__vhost_vq_meta_reset(vq);
++	int ret;
++
++	kvm_tdx->misc_cg = get_current_misc_cg();
++	ret = misc_cg_try_charge(MISC_CG_RES_TDX, kvm_tdx->misc_cg, 1);
++	if (ret)
++		goto put_misc_cg;
++
++	ret = tdx_guest_keyid_alloc();
++	if (ret < 0)
++		goto uncharge_misc_cg;
++
++	kvm_tdx->hkid = ret;
++	return 0;
++
++uncharge_misc_cg:
++	misc_cg_uncharge(MISC_CG_RES_TDX, kvm_tdx->misc_cg, 1);
++put_misc_cg:
++	put_misc_cg(kvm_tdx->misc_cg);
++	kvm_tdx->misc_cg = NULL;
++
++	return ret;
 +}
 +
- static void vhost_vq_meta_reset(struct vhost_dev *d)
+ static inline void tdx_hkid_free(struct kvm_tdx *kvm_tdx)
  {
- 	int i;
-@@ -1918,6 +1929,13 @@ int vq_meta_prefetch(struct vhost_virtqueue *vq)
- {
- 	unsigned int num = vq->num;
+ 	tdx_guest_keyid_free(kvm_tdx->hkid);
+@@ -2445,14 +2470,9 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
+ 	u64 err, rcx;
  
-+	/*
-+	 * vhost_vq_invalidate_access() clears all three addresses together.
-+	 * A single zero address may be a valid GIOVA in IOTLB mode.
-+	 */
-+	if (!vq->desc && !vq->avail && !vq->used)
-+		return 0;
-+
- 	if (!vq->iotlb)
- 		return 1;
+ 	*seamcall_err = 0;
+-	ret = tdx_guest_keyid_alloc();
+-	if (ret < 0)
+-		return ret;
+-	kvm_tdx->hkid = ret;
+-	kvm_tdx->misc_cg = get_current_misc_cg();
+-	ret = misc_cg_try_charge(MISC_CG_RES_TDX, kvm_tdx->misc_cg, 1);
++	ret = tdx_hkid_alloc(kvm_tdx);
+ 	if (ret)
+-		goto free_hkid;
++		return ret;
  
-@@ -2287,6 +2305,40 @@ long vhost_vring_ioctl(struct vhost_dev *d, unsigned int ioctl, void __user *arg
- }
- EXPORT_SYMBOL_GPL(vhost_vring_ioctl);
+ 	ret = -ENOMEM;
  
-+/* Caller must hold the device mutex. */
-+void vhost_clear_device_iotlb(struct vhost_dev *d)
-+{
-+	struct vhost_iotlb *iotlb;
-+	int i;
-+
-+	iotlb = d->iotlb;
-+	if (!iotlb)
-+		return;
-+
-+	/*
-+	 * Drop the device-wide view first.  Each VQ then drops its
-+	 * per-VQ view and its cached ring access under its own mutex.
-+	 * Keep the old table alive until every VQ has completed this
-+	 * handoff, since a worker may still be using it while waiting
-+	 * for its VQ mutex.
-+	 */
-+	d->iotlb = NULL;
-+
-+	for (i = 0; i < d->nvqs; ++i) {
-+		struct vhost_virtqueue *vq = d->vqs[i];
-+
-+		mutex_lock(&vq->mutex);
-+		vq->iotlb = NULL;
-+		vhost_vq_invalidate_access(vq);
-+		mutex_unlock(&vq->mutex);
-+	}
-+
-+	vhost_clear_msg(d);
-+	vhost_iotlb_free(iotlb);
-+	wake_up_interruptible_poll(&d->wait, EPOLLIN | EPOLLRDNORM);
-+}
-+EXPORT_SYMBOL_GPL(vhost_clear_device_iotlb);
-+
- int vhost_init_device_iotlb(struct vhost_dev *d)
- {
- 	struct vhost_iotlb *niotlb, *oiotlb;
-@@ -2307,7 +2359,10 @@ int vhost_init_device_iotlb(struct vhost_dev *d)
- 
- 		mutex_lock(&vq->mutex);
- 		vq->iotlb = niotlb;
--		__vhost_vq_meta_reset(vq);
-+		if (oiotlb)
-+			__vhost_vq_meta_reset(vq);
-+		else
-+			vhost_vq_invalidate_access(vq);
- 		mutex_unlock(&vq->mutex);
- 	}
- 
-diff --git a/drivers/vhost/vhost.h b/drivers/vhost/vhost.h
-index 0192ade6e749..3c75e8089373 100644
---- a/drivers/vhost/vhost.h
-+++ b/drivers/vhost/vhost.h
-@@ -277,6 +277,7 @@ ssize_t vhost_chr_read_iter(struct vhost_dev *dev, struct iov_iter *to,
- 			    int noblock);
- ssize_t vhost_chr_write_iter(struct vhost_dev *dev,
- 			     struct iov_iter *from);
-+void vhost_clear_device_iotlb(struct vhost_dev *d);
- int vhost_init_device_iotlb(struct vhost_dev *d);
- 
- void vhost_iotlb_map_free(struct vhost_iotlb *iotlb,
-diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index 9aaab6bb8061..abed1fbcf66c 100644
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -868,6 +868,8 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
- 	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM))) {
- 		if (vhost_init_device_iotlb(&vsock->dev))
- 			goto err;
-+	} else {
-+		vhost_clear_device_iotlb(&vsock->dev);
- 	}
- 
- 	vsock->seqpacket_allow = features & (1ULL << VIRTIO_VSOCK_F_SEQPACKET);
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index 38d9c184082d..4d9d7c2216ed 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -1696,6 +1696,8 @@ static int vhost_net_set_features(struct vhost_net *n, const u64 *features)
- 	if (virtio_features_test_bit(features, VIRTIO_F_ACCESS_PLATFORM)) {
- 		if (vhost_init_device_iotlb(&n->dev))
- 			goto out_unlock;
-+	} else {
-+		vhost_clear_device_iotlb(&n->dev);
- 	}
- 
- 	for (i = 0; i < VHOST_NET_VQ_MAX; ++i) {
 
-base-commit: b282418bc366194677eafd1dad180d92254586ac
+base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
 -- 
-2.34.1
+2.46.0
+
