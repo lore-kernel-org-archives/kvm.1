@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1625841D219;
-	Fri, 21 Aug 2026 22:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075EB41F5E6;
+	Fri, 21 Aug 2026 22:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787351467; cv=none; b=abVXEBSXQVOmGQ5RtNSoqkWLEcPntXGntdmUBPsXZ6+oC3VpBLD9oXXwVfC8mWeTa3GhPYaga6/gkbMhAdNjZIGG1IXzI8WKQu1Y3fhD1o5EaSgo5E2WhYQ42CbpTPAz/ITKGzb7TOZO0JdwneBgM6/+h14PHdG29uDspOSVL4M=
+	t=1787351468; cv=none; b=MWFbfvp21gDyXLvGqgVbbohr6No7Zrc9V7a6O2NwPnu36kibwBODx/sZBBTHkwStgF7+1wHJyJFoEN+Xb4bYg/TuAjXWBEdX6BXMWTHclrBEYxULoFWUdn3/IdQtEfQoKW3pINwKC8SvTdXll4/jlrny4icY+upxlMd8v5fzrt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787351467; c=relaxed/simple;
-	bh=haJrgloOrjcg62sSuENdPi0zbwxKNG05E+2aDikoVRg=;
+	s=arc-20240116; t=1787351468; c=relaxed/simple;
+	bh=UZ/4Kh7H7JDkZum6F6HO8FcDjNgzgqfvdwo2qKh24Sg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJcFZ+8PTiPwBJjMp0EmrYroSs8gx72fiBxnq0eY2XmLv1F7jwLdtS/Jv64yrpFGniCbE/wWZFRlcZXHRJWY7M6Gyq9y8RS7Cw8+g5Ax+jap0ScvgGKEWfTsLSyjwoGgeB+0kQXD9VV1kYdjeo/KkkYkenypVLdL1dQLdDA30/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kJtRss75; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=kptHQf3AD/U8zuJwUKCTaQ1LuiAZUhYFkiQBBJ7w5xtuGg5zOsClu+Y/7e3fPV4QkE33YuHua8k5+XnsoK7qkvFZNeSYwcLU24kgc/Is0h3kSq8RVrxzqnKUm4UThr3LRDfU2LpaKDZxhaNfwtAoI5ZPm7HTUH2Y2/MnVAzIgZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FgFjHxg4; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kJtRss75"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FgFjHxg4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787351466; x=1818887466;
+  t=1787351467; x=1818887467;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=haJrgloOrjcg62sSuENdPi0zbwxKNG05E+2aDikoVRg=;
-  b=kJtRss757yKdIrzLI7KDJMDyY/6TajPkQ6+n8frr3gjWkn5oc/A39kwY
-   l59GKaqi5IT3tL0XJ06sspuaYUIK06+DpDXGiwBV79EAa3Jc0T0kacz1c
-   j2Em1cJP5phEyxtvyP+3cpM8K9OyQyDysXjNex0MBaKJARH7mD1mC3j+W
-   YkxRgvaQ2Qq2r2nvgSAojeBmTStFYqApeK/UPA+raazDIy82cUIJBI8Fe
-   0RGuG51FCrnYY5UP0OkgFJWfCmCNQH7hAyiailVxyDCs/jil2BLGl206d
-   pY4nKDyUQeMZSqrCc+MVHReqtZ95vUQ+/6qVZQAU/l2yYnvwhba4VnU8g
-   Q==;
-X-CSE-ConnectionGUID: +OWlMQbQQWWfHzUXDR34NA==
-X-CSE-MsgGUID: sCnaIES4Tue5EG31EvPs5Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="88032640"
+  bh=UZ/4Kh7H7JDkZum6F6HO8FcDjNgzgqfvdwo2qKh24Sg=;
+  b=FgFjHxg4OYMJ8SeQW0q/vBn7np3KDb81oIsVtPH4PxB0ttWPuWqJt6uR
+   7Kl6hF0mww3XoH2CLuMSGsGDJYrzO+wwhbtLwQaYis8crlFz2LQDQeHwa
+   KYC5exEgW35Q6Gc4T9RuToKTntA9qAYJQPguCJxaS9kA2ZHcuZcrZN2oK
+   +Wmysk78MM0NC1wgMBE6Zroj/b2q4p236QJryy/Fv46LtaNZC9x+tGSCo
+   gfwsli5nCfSuleSScCVGBq5TOvJVPciFDpzxRjEsmlodoBTMKLYAUFisi
+   7ISuz96j7OQ0QHvwOUrn5rYV+V5U76jVpKL4gsn3JFDsMTeEBpEYElHPH
+   w==;
+X-CSE-ConnectionGUID: M+I3+Pt7SlShN0YQ+8QmfA==
+X-CSE-MsgGUID: OiS8yfjiQ+ST7AQOZgRkRw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="88032645"
 X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
-   d="scan'208";a="88032640"
+   d="scan'208";a="88032645"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
   by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 15:30:51 -0700
-X-CSE-ConnectionGUID: Z4IbhPezSOe82zt9qZ3ngA==
-X-CSE-MsgGUID: Hx4pE9DkTqu+qGT/KvPSPg==
+X-CSE-ConnectionGUID: O2SqviZTTwyVxIlGJLuSPA==
+X-CSE-MsgGUID: ZaWQ3kc4Q1Se9V13pbqemg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
-   d="scan'208";a="271679791"
+   d="scan'208";a="271679796"
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
   by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 15:30:51 -0700
 From: Zide Chen <zide.chen@intel.com>
@@ -58,9 +58,9 @@ Cc: kvm@vger.kernel.org,
 	Shukla Manali <Manali.Shukla@amd.com>,
 	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Xudong Hao <xudong.hao@intel.com>
-Subject: [PATCH 16/23] KVM: x86/pmu: Handle FIXED_CTR_CTRL under PerfMon masking
-Date: Fri, 21 Aug 2026 15:19:55 -0700
-Message-ID: <20260821222002.54907-17-zide.chen@intel.com>
+Subject: [PATCH 17/23] KVM: x86/pmu: Handle GLOBAL_CTRL under PerfMon masking
+Date: Fri, 21 Aug 2026 15:19:56 -0700
+Message-ID: <20260821222002.54907-18-zide.chen@intel.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260821222002.54907-1-zide.chen@intel.com>
 References: <20260821222002.54907-1-zide.chen@intel.com>
@@ -72,94 +72,132 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-PerfMon masking affects reads from and writes to this MSR. The effective
-mask is defined as bits 4n+3:4n and bits 4n+35:4n+32 being set if and
-only if bit 32+n of the PerfMon mask is set (for 0 <= n <= 7).
+Guest writes must be gated, and guest reads masked, with
+pmu->global_ctrl_rsvd rather than pmu->perfmon_mask, because bits
+63:52 in global_ctrl_rsvd are guaranteed to be cleared, and bits 51:0
+are the complement between the two masks.
 
-KVM doesn't support some fixed-counter features, and
-pmu->fixed_ctr_ctrl_rsvd is a subset of the effective mask above, so the
-existing gating in intel_pmu_set_msr() is sufficient even under PerfMon
-masking.
+Since the host could schedule !exclude_guest events on host-owned
+resources in non-root mode, OR the host-owned bits into
+GUEST_IA32_PERF_GLOBAL_CTRL when loading guest PMU state. The host-
+owned bits are supposed to be set during perf_load_guest_context().
 
-Upon guest PMU context load, OR the guest-owned bits with whatever the
-hardware currently holds for every fixed-counter index the guest does
-not own, before writing the result to the MSR.
+Add a host_global_ctrl parameter to the mediated_load() callback so
+that the host value can be available before the register is cleared.
+This allows intel_mediated_pmu_load() to preserve host-owned bits.
 
-During PMU context put, host-owned fixed counters may still be scheduled
-for system-wide host events, so the host-owned bits should remain
-unchanged.
+When caching pmu->global_ctrl at VM exit, mask the guest value with
+pmu->global_ctrl_rsvd to retain guest-owned bits only.
 
 Signed-off-by: Zide Chen <zide.chen@intel.com>
 ---
- arch/x86/kvm/vmx/pmu_intel.c | 40 +++++++++++++++++++++++++++++++++---
- 1 file changed, 37 insertions(+), 3 deletions(-)
+ arch/x86/kvm/pmu.c           |  7 ++++++-
+ arch/x86/kvm/pmu.h           |  2 +-
+ arch/x86/kvm/svm/pmu.c       |  2 +-
+ arch/x86/kvm/vmx/pmu_intel.c | 13 ++++++++++++-
+ arch/x86/kvm/vmx/vmx.c       |  4 ++++
+ 5 files changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index 19ccc7cd319c..9236bfa15c41 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -920,6 +920,33 @@ static void intel_pmu_write_global_ctrl(u64 global_ctrl)
- 	vmcs_write64(GUEST_IA32_PERF_GLOBAL_CTRL, global_ctrl);
+diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+index 337d2f55a216..b051ba66edce 100644
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -1406,6 +1406,8 @@ static void kvm_pmu_load_guest_pmcs(struct kvm_vcpu *vcpu)
+ 
+ void kvm_mediated_pmu_load(struct kvm_vcpu *vcpu)
+ {
++	u64 host_global_ctrl = 0;
++
+ 	if (!kvm_vcpu_has_mediated_pmu(vcpu) ||
+ 	    KVM_BUG_ON(!lapic_in_kernel(vcpu), vcpu->kvm))
+ 		return;
+@@ -1429,13 +1431,16 @@ void kvm_mediated_pmu_load(struct kvm_vcpu *vcpu)
+ 	 * even for SVM to minimize the damage if a perf event is left enabled,
+ 	 * and to ensure a consistent starting state.
+ 	 */
++	if (kvm_vcpu_has_perfmon_mask(vcpu))
++		rdmsrq(kvm_pmu_ops.PERF_GLOBAL_CTRL, host_global_ctrl);
++
+ 	wrmsrq(kvm_pmu_ops.PERF_GLOBAL_CTRL, 0);
+ 
+ 	perf_load_guest_lvtpc(kvm_lapic_get_reg(vcpu->arch.apic, APIC_LVTPC));
+ 
+ 	kvm_pmu_load_guest_pmcs(vcpu);
+ 
+-	kvm_pmu_call(mediated_load)(vcpu);
++	kvm_pmu_call(mediated_load)(vcpu, host_global_ctrl);
  }
  
-+static u64 intel_fixed_ctrl_host_bits(struct kvm_pmu *pmu)
-+{
-+	unsigned long fixed_mask;
-+	u64 fixed_ctl;
-+	int i;
-+
-+	if (!kvm_vcpu_has_perfmon_mask(pmu_to_vcpu(pmu)))
-+		return 0;
-+
-+	fixed_mask = kvm_fixed_pmc_mask(pmu);
-+
-+	rdmsrq(MSR_CORE_PERF_FIXED_CTR_CTRL, fixed_ctl);
-+
-+	/*
-+	 * Use the full per-counter nibbles (bits 4n+3:4n and 4n+35:4n+32) to
-+	 * strip all bits belonging to guest-owned counters.
-+	 *
-+	 * pmu->fixed_ctr_ctrl_rsvd can't be used here since it can't gate bits
-+	 * that are not supported by KVM.
-+	 */
-+	kvm_for_each_fixed_counter(i, fixed_mask)
-+		fixed_ctl &= ~intel_fixed_bits_by_idx(i, GENMASK_ULL(3, 0) |
-+						      GENMASK_ULL(35, 32));
-+
-+	return fixed_ctl;
-+}
-+
- static void intel_mediated_pmu_load(struct kvm_vcpu *vcpu)
+ static void kvm_pmu_put_guest_pmcs(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
+index c5feeb60bcf6..30e456302c65 100644
+--- a/arch/x86/kvm/pmu.h
++++ b/arch/x86/kvm/pmu.h
+@@ -39,7 +39,7 @@ struct kvm_pmu_ops {
+ 	bool (*pmc_is_disabled_in_current_mode)(struct kvm_pmc *pmc);
+ 
+ 	bool (*is_mediated_pmu_supported)(struct x86_pmu_capability *host_pmu);
+-	void (*mediated_load)(struct kvm_vcpu *vcpu);
++	void (*mediated_load)(struct kvm_vcpu *vcpu, u64 host_global_ctrl);
+ 	void (*mediated_put)(struct kvm_vcpu *vcpu);
+ 	void (*write_global_ctrl)(u64 global_ctrl);
+ 
+diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
+index f81817606baa..d9cd2a5ab411 100644
+--- a/arch/x86/kvm/svm/pmu.c
++++ b/arch/x86/kvm/svm/pmu.c
+@@ -246,7 +246,7 @@ static bool amd_pmu_is_mediated_pmu_supported(struct x86_pmu_capability *host_pm
+ 	return host_pmu->version >= 2;
+ }
+ 
+-static void amd_mediated_pmu_load(struct kvm_vcpu *vcpu)
++static void amd_mediated_pmu_load(struct kvm_vcpu *vcpu, u64 host_global_ctrl)
  {
  	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
-@@ -935,7 +962,8 @@ static void intel_mediated_pmu_load(struct kvm_vcpu *vcpu)
- 	if (pmu->global_status & toggle)
- 		wrmsrq(MSR_CORE_PERF_GLOBAL_STATUS_SET, pmu->global_status & toggle);
- 
--	wrmsrq(MSR_CORE_PERF_FIXED_CTR_CTRL, pmu->fixed_ctr_ctrl_hw);
-+	wrmsrq(MSR_CORE_PERF_FIXED_CTR_CTRL,
-+	       pmu->fixed_ctr_ctrl_hw | intel_fixed_ctrl_host_bits(pmu));
+ 	u64 global_status;
+diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+index 9236bfa15c41..d0373de951d5 100644
+--- a/arch/x86/kvm/vmx/pmu_intel.c
++++ b/arch/x86/kvm/vmx/pmu_intel.c
+@@ -947,11 +947,22 @@ static u64 intel_fixed_ctrl_host_bits(struct kvm_pmu *pmu)
+ 	return fixed_ctl;
  }
  
- static void intel_mediated_pmu_put(struct kvm_vcpu *vcpu)
-@@ -953,9 +981,15 @@ static void intel_mediated_pmu_put(struct kvm_vcpu *vcpu)
- 	 * Clear hardware FIXED_CTR_CTRL MSR to avoid information leakage and
- 	 * also to avoid accidentally enabling fixed counters (based on guest
- 	 * state) while running in the host, e.g. when setting global ctrl.
-+	 *
-+	 * Keep the host-owned counters unchanged.
- 	 */
--	if (pmu->fixed_ctr_ctrl_hw)
--		wrmsrq(MSR_CORE_PERF_FIXED_CTR_CTRL, 0);
-+	if (pmu->fixed_ctr_ctrl_hw) {
-+		u64 fixed_ctl = intel_fixed_ctrl_host_bits(pmu);
-+
-+		fixed_ctl &= ~pmu->fixed_ctr_ctrl_hw;
-+		wrmsrq(MSR_CORE_PERF_FIXED_CTR_CTRL, fixed_ctl);
-+	}
+-static void intel_mediated_pmu_load(struct kvm_vcpu *vcpu)
++static void intel_mediated_pmu_load(struct kvm_vcpu *vcpu, u64 host_global_ctrl)
+ {
+ 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+ 	u64 global_status, toggle;
  
- 	if (kvm_vcpu_has_perf_metrics(vcpu)) {
- 		pmu->perf_metrics = rdpmc(INTEL_PMC_FIXED_RDPMC_METRICS);
++	/*
++	 * Preserve host-owned bits: perf may schedule !exclude_guest events on
++	 * host-owned counters in non-root mode.
++	 * PerfMon masking requires VM_EXIT_SAVE_IA32_PERF_GLOBAL_CTRL, so the
++	 * MSR-store/load path does not apply here.
++	 */
++	if (kvm_vcpu_has_perfmon_mask(vcpu)) {
++		host_global_ctrl &= pmu->global_ctrl_rsvd;
++		intel_pmu_write_global_ctrl(pmu->global_ctrl | host_global_ctrl);
++	}
++
+ 	if (kvm_vcpu_has_perf_metrics(vcpu))
+ 		wrmsrq(MSR_PERF_METRICS, pmu->perf_metrics);
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 1b42c9d6f168..a241efb99b3d 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7467,6 +7467,10 @@ static void vmx_refresh_guest_perf_global_control(struct kvm_vcpu *vcpu)
+ 	}
+ 
+ 	pmu->global_ctrl = vmcs_read64(GUEST_IA32_PERF_GLOBAL_CTRL);
++
++	/* Strip host-owned bits that were ORed into the VMCS on VMX entry. */
++	if (kvm_vcpu_has_perfmon_mask(vcpu))
++		pmu->global_ctrl &= ~pmu->global_ctrl_rsvd;
+ }
+ 
+ void noinstr vmx_update_host_rsp(struct vcpu_vmx *vmx, unsigned long host_rsp)
 -- 
 2.55.0
 
