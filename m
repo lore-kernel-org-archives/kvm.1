@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7F73793DE;
-	Fri, 21 Aug 2026 03:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68895379C5A;
+	Fri, 21 Aug 2026 03:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787282978; cv=none; b=CM/fiL0jKMB53rKgeSxAXsYHAFBBi5SED+K9taplvHh9/gdb9JabEjAkH/jnigy+NsRj/KCwSkpTBOgfL8f9k4qrw9hE1tblAfVKfmKmrx90XrcZ3EVdM4PYdmDq758P+Bt/GPYlmb8o91EQVDu6bUGsMNWmgTf0Wjy9xzu+DXE=
+	t=1787282982; cv=none; b=sLk8SS8synyt8oqdeRAB+KohnNeko8TAYK3Q7BJtHuTUMtNhABIytNcGA85wDJT6aDLzzqM0pqyYLLc/kseZVElaE15juUQFUG23Ie+KVe1ZaIUF9SKiDvUFVWX4c7ac7gyI4uzv22AtAACAlOa2oXOv1YAgr6SYEVBhMD+PHlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787282978; c=relaxed/simple;
-	bh=znetrghf6ys/CPFLpyjpzXAtsRZnYs4HpIExNFpBIac=;
+	s=arc-20240116; t=1787282982; c=relaxed/simple;
+	bh=p6kkjag7sbnyDiWJWN/yPpqzbtkf9ykV8qQAUhwAJd0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=B7k6fjBOnxcACzOD7kh8qdpHqTbIMF80M+mpSpeDubnYfcyEoIX149Xb3MD7u6tsX1VrMMJPPfGecwdmga0tSyGwTbUuSvbd9pReOmdxSiia1jU3KJN6ch4mEDjB06yMVVagBTsYrbk3JqQqgRG3uxWfd/i6gLENgjnzCKPvVKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N2EH4pHS; arc=none smtp.client-ip=192.198.163.12
+	 MIME-Version; b=uif7TuyeV18d8n8nYUYYOhdLn2CrXQQq0jdqgCszqCNaltIq/xHzEpQjJjvoqVwzlVNm3K+siu9fgHsQE7lXN1rJ9ArFZFdxnRlz0j5Egx5aDZNpF+C3vIBjZgU7g9kS+daoHonVO+1S7aWNmzG8a9gb4Nxto2Vkppp9idPohEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mcm0yxAj; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N2EH4pHS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mcm0yxAj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787282976; x=1818818976;
+  t=1787282980; x=1818818980;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=znetrghf6ys/CPFLpyjpzXAtsRZnYs4HpIExNFpBIac=;
-  b=N2EH4pHSqJXiRH4M6vWGVwyYG8Rs3Fmcx5JkZ7vbfIK3T35g5qUTfLAK
-   BdgSHy9zvcgIoH/7y5Jdd2TOwIvFqkaq+7mwYB3eC9I8IbgcThs965O6a
-   SFxrvuUox9sOIrFUYwlJEqs5eVbzYJMR4xMV0MwcFuqxn8BUi9pPD9aJw
-   5VivL+ishBAIOHKZgz/25/Kf5OD8rRaPH854oKXaE/CTTtlhNF66zDFCx
-   hWRDo9Es3N+0hufWuc10QSxHAFWLBG4XIqSiu2QpaROsbbEjQywTznByJ
-   LZEGVGAEdggbYbJdm1E9UsQk0ufVTo9FyeZkmfI+hpRyWUgJ+k5ZzPnKs
-   A==;
-X-CSE-ConnectionGUID: lmllmSy/SfShkistCrH8wQ==
-X-CSE-MsgGUID: uLQXwdo0SPqXJjPIwdx/vw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="91640234"
+  bh=p6kkjag7sbnyDiWJWN/yPpqzbtkf9ykV8qQAUhwAJd0=;
+  b=mcm0yxAjcjqWwqiJaZSGMoCe72geTmb4lVS0QlS9bLEJoRIzVw82VHG1
+   J8Yzm57c4YyCwJv/2vWYtDEON6ZWp0aKXna7hkr0nvZZ961Dqcd3o1N7/
+   r/JRzAcYFY/C+0lVvxI3+ZrqaWwQiIjXjn7BiueUCOCo0Tmf5WnP3ec4W
+   jjhwC0czPfEPkcSxdJ5g3lxdcpejFXTGtl01XdKdRtKIrz8kceWnNGTdp
+   nZWWswEvijiKMeMy/roL1q+Ucs0s7VOXIp12ILfLF/pcZRfh6vNikoCrI
+   8O3Rk6uhi9FspyOl92kMWNWLAL5+VU5HlfDazYLvBUMbxNCgAXEforzu8
+   w==;
+X-CSE-ConnectionGUID: XN/djrIvQ+ucnuOthJTaZQ==
+X-CSE-MsgGUID: RozNxvmNREWLnHpmM6v5AQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="91640238"
 X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
-   d="scan'208";a="91640234"
+   d="scan'208";a="91640238"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:29:36 -0700
-X-CSE-ConnectionGUID: auoBD2X3S5OW0iH1anPlaA==
-X-CSE-MsgGUID: otBEypIySkqAjkcRsgUWTQ==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:29:40 -0700
+X-CSE-ConnectionGUID: E+bUqs3hTbWu2DzFHGdsKQ==
+X-CSE-MsgGUID: E0ZNPXfFQbWI0IHSBLkr1Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
-   d="scan'208";a="264451600"
+   d="scan'208";a="264451605"
 Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.47.46])
-  by orviesa006.jf.intel.com with ESMTP; 20 Aug 2026 20:29:33 -0700
+  by orviesa006.jf.intel.com with ESMTP; 20 Aug 2026 20:29:36 -0700
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: x86@kernel.org,
 	linux-coco@lists.linux.dev,
@@ -62,9 +62,9 @@ Cc: kas@kernel.org,
 	chao.gao@intel.com,
 	artem.bityutskiy@linux.intel.com,
 	kvm@vger.kernel.org
-Subject: [PATCH 3/6] x86/virt/tdx: Detect if the extensions initialization is required
-Date: Fri, 21 Aug 2026 11:29:17 +0800
-Message-Id: <20260821032920.256225-4-yilun.xu@linux.intel.com>
+Subject: [PATCH 4/6] x86/virt/tdx: Add extra memory to TDX module for the extensions
+Date: Fri, 21 Aug 2026 11:29:18 +0800
+Message-Id: <20260821032920.256225-5-yilun.xu@linux.intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260821032920.256225-1-yilun.xu@linux.intel.com>
 References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
@@ -76,140 +76,222 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Some add-on features require TDX module extensions. The TDX module
-provides a metadata field "ext_required" to indicate this requirement.
+TDX module extensions need memory for their own internal state and data
+to serve SEAMCALL leaves. The TDX architecture implements the extensions
+in such a way that they use the memory outside of SEAM range, so the
+kernel should add the memory upfront at initialization time.
 
-Add the first step of TDX module extensions initialization by detecting
-if the extensions are required:
+Introduce a new memory adding process backed by a new SEAMCALL leaf
+TDH.EXT.MEM.ADD. The kernel queries TDX module how much memory needed,
+allocates it, add it to the module, and never gets it back.
 
-  1. Check if the extensions are supported via TDX_FEATURES0_EXT. If
-     not, ext_required is not readable.
-  2. Check if any TDX feature needs the extensions via ext_required.
+The TDX module accepts the memory in the form of a PFN array. This array
+is passed via a single 64-bit SEAMCALL leaf parameter, which encodes two
+values: the PFN of the container page holding the array, and the number
+of entries in the array. Create a helper to encode this format and name
+it after the TDX module term: HPA_LIST_INFO.
 
-Skip the extensions initialization when it is not required.
-
-Currently all metadata fields are read at the very beginning of TDX
-module initialization. However, ext_required is only valid after the
-add-on feature configuration, so it cannot use the existing metadata
-reading method.
-
-Add a dedicated metadata reading interface for the extensions, call it
-after add-on feature configuration.
+TDX module extensions consume tens of megabytes memory that will never
+be returned to host. Use contiguous page allocation to isolate these
+large blocks entirely, avoiding permanent memory fragmentation and buddy
+allocator efficiency loss. Print the allocation amount on TDX module
+extensions initialization for visibility.
 
 Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 ---
 v1:
- - Include struct tdx_sys_info_ext in struct tdx_sys_info.
+ - Fix return value for SEAMCALL helpers (Chao)
+ - Print SEAMCALL error code for SEAMCALL helpers (Xiaoyao)
+ - Rename local vars to make the ext memory adding loop clear (Rick)
+ - Remove input parameters for tdx_ext_mem_setup() (Kevin)
+ - Add a Macro for tdh_hpa_list size.
+ - Change the SEAMALL helper parameter type,
+   struct page *hpa_list => struct tdx_hpa_list *hpa_list
+ - changelog & code comments
 ---
- arch/x86/include/asm/tdx.h                  |  1 +
- arch/x86/include/asm/tdx_global_metadata.h  |  5 ++++
- arch/x86/virt/vmx/tdx/tdx.c                 | 28 +++++++++++++++++++++
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 14 +++++++++++
- 4 files changed, 48 insertions(+)
+ arch/x86/include/asm/tdx_global_metadata.h  |   1 +
+ arch/x86/virt/vmx/tdx/tdx.h                 |   1 +
+ arch/x86/virt/vmx/tdx/tdx.c                 | 118 +++++++++++++++++++-
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c |   6 +
+ 4 files changed, 123 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 89e97d5761d8..6657f2db0330 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -36,6 +36,7 @@
- /* Bit definitions of TDX_FEATURES0 metadata field */
- #define TDX_FEATURES0_TD_PRESERVING	BIT_ULL(1)
- #define TDX_FEATURES0_NO_RBP_MOD	BIT_ULL(18)
-+#define TDX_FEATURES0_EXT		BIT_ULL(39)
- 
- #ifndef __ASSEMBLER__
- 
 diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
-index 41150d546589..fe3fe91de71f 100644
+index fe3fe91de71f..43b8761c0854 100644
 --- a/arch/x86/include/asm/tdx_global_metadata.h
 +++ b/arch/x86/include/asm/tdx_global_metadata.h
-@@ -44,12 +44,17 @@ struct tdx_sys_info_handoff {
- 	u16 module_hv;
+@@ -45,6 +45,7 @@ struct tdx_sys_info_handoff {
  };
  
-+struct tdx_sys_info_ext {
-+	bool ext_required;
-+};
-+
- struct tdx_sys_info {
- 	struct tdx_sys_info_version version;
- 	struct tdx_sys_info_features features;
- 	struct tdx_sys_info_tdmr tdmr;
- 	struct tdx_sys_info_td_ctrl td_ctrl;
- 	struct tdx_sys_info_td_conf td_conf;
-+	struct tdx_sys_info_ext ext;
+ struct tdx_sys_info_ext {
++	u32 memory_pool_required_pages;
+ 	bool ext_required;
  };
  
- #endif
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index 63e3acfb5d0c..52888424fe7d 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -48,6 +48,7 @@
+ #define TDH_SYS_CONFIG			45
+ #define TDH_SYS_SHUTDOWN		52
+ #define TDH_SYS_UPDATE			53
++#define TDH_EXT_MEM_ADD			61
+ #define TDH_SYS_DISABLE			69
+ 
+ /* TDX page types */
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 66b43350c6c3..a0c370894c0b 100644
+index a0c370894c0b..8c2fdaf0b8c0 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1175,6 +1175,30 @@ static __init int init_tdmrs(struct tdmr_info_list *tdmr_list)
+@@ -1175,6 +1175,120 @@ static __init int init_tdmrs(struct tdmr_info_list *tdmr_list)
  	return 0;
  }
  
-+static __init int init_tdx_module_extensions(void)
++#define TDX_HPA_LIST_MAX_NR_PAGES	(PAGE_SIZE / sizeof(u64))
++
++struct tdx_hpa_list {
++	u64 phys[TDX_HPA_LIST_MAX_NR_PAGES];
++};
++
++static_assert(sizeof(struct tdx_hpa_list) == PAGE_SIZE);
++
++#define HPA_LIST_INFO_FIRST_ENTRY	GENMASK_U64(11, 3)
++#define HPA_LIST_INFO_PFN		GENMASK_U64(51, 12)
++#define HPA_LIST_INFO_LAST_ENTRY	GENMASK_U64(63, 55)
++
++static __init u64 to_hpa_list_info(struct tdx_hpa_list *hpa_list,
++				   unsigned int nr_pages)
 +{
++	return FIELD_PREP(HPA_LIST_INFO_FIRST_ENTRY, 0) |
++	       FIELD_PREP(HPA_LIST_INFO_PFN, PFN_DOWN(__pa(hpa_list))) |
++	       FIELD_PREP(HPA_LIST_INFO_LAST_ENTRY, nr_pages - 1);
++}
++
++static __init int tdx_ext_mem_add(struct tdx_hpa_list *hpa_list,
++				  unsigned int nr_pages)
++{
++	struct tdx_module_args args = {
++		.rcx = to_hpa_list_info(hpa_list, nr_pages),
++	};
++	u64 ret;
++
++	do {
++		/*
++		 * The TDX module overwrites RCX to track progress when this
++		 * SEAMCALL leaf is interrupted. Use seamcall_ret() to save and
++		 * pass the updated value back on retry.
++		 */
++		ret = seamcall_ret(TDH_EXT_MEM_ADD, &args);
++	} while (ret == TDX_INTERRUPTED_RESUMABLE);
++
++	if (ret != TDX_SUCCESS) {
++		pr_err("TDH.EXT.MEM.ADD failed: 0x%016llx\n", ret);
++		return -EIO;
++	}
++
++	return 0;
++}
++
++static __init int tdx_ext_mem_setup(void)
++{
++	unsigned int required_pages = tdx_sysinfo.ext.memory_pool_required_pages;
++	struct tdx_hpa_list *hpa_list;
++	unsigned int added_pages;
++	struct page *page;
 +	int ret;
-+
-+	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
-+		return 0;
-+
-+	ret = get_tdx_sys_info_ext(&tdx_sysinfo.ext);
-+	if (ret)
-+		return ret;
 +
 +	/*
-+	 * ext_required indicates if any add-on features requiring TDX module
-+	 * extensions are configured via TDH.SYS.CONFIG. If none, skip the
-+	 * initialization.
++	 * TDX module uses the metadata memory_pool_required_pages to indicate
++	 * how much memory is still needed. This value decreases each time
++	 * memory is added via TDH.EXT.MEM.ADD.
++	 *
++	 * On first time initialization, a value of 0 before any memory is
++	 * added is unusual. But host makes no assumptions. Skip the memory
++	 * setup and let subsequent steps catch any actual errors.
 +	 */
-+	if (!tdx_sysinfo.ext.ext_required)
++	if (!required_pages)
 +		return 0;
 +
-+	/* TODO: add the extensions enabling steps here */
++	hpa_list = kzalloc_obj(*hpa_list);
++	if (!hpa_list)
++		return -ENOMEM;
 +
-+	return 0;
++	page = alloc_contig_pages(required_pages, GFP_KERNEL, numa_mem_id(),
++				  &node_online_map);
++	if (!page) {
++		ret = -ENOMEM;
++		goto out_free_hpa_list;
++	}
++
++	added_pages = 0;
++	while (added_pages < required_pages) {
++		unsigned int chunk_pages = min(required_pages - added_pages,
++					       TDX_HPA_LIST_MAX_NR_PAGES);
++		struct page *chunk = page + added_pages;
++		unsigned int i;
++
++		for (i = 0; i < chunk_pages; i++)
++			hpa_list->phys[i] = page_to_phys(chunk + i);
++
++		ret = tdx_ext_mem_add(hpa_list, chunk_pages);
++		if (ret) {
++			/*
++			 * This SEAMCALL leaf shouldn't fail, and if it does,
++			 * things are broken enough that complex error handling
++			 * isn't worth it. Intentionally leak all pages,
++			 * including un-added pages.
++			 */
++			WARN(1, "Fatal: TDX module rejected memory for extensions, stranded all pages\n");
++			break;
++		}
++
++		added_pages += chunk_pages;
++	}
++
++	/*
++	 * Memory for TDX module extensions is never reclaimed and can be tens
++	 * of megabytes. Print the amount so users know the cost.
++	 */
++	pr_info("%lu KB consumed for TDX module extensions\n",
++		required_pages * PAGE_SIZE / 1024);
++
++out_free_hpa_list:
++	kfree(hpa_list);
++
++	return ret;
 +}
 +
- static __init int init_tdx_module(void)
+ static __init int init_tdx_module_extensions(void)
  {
  	int ret;
-@@ -1229,6 +1253,10 @@ static __init int init_tdx_module(void)
- 	if (ret)
- 		goto err_reset_pamts;
+@@ -1194,9 +1308,7 @@ static __init int init_tdx_module_extensions(void)
+ 	if (!tdx_sysinfo.ext.ext_required)
+ 		return 0;
  
-+	ret = init_tdx_module_extensions();
-+	if (ret)
-+		goto err_reset_pamts;
-+
- 	pr_info("%lu KB allocated for PAMT\n", tdmrs_count_pamt_kb(&tdx_tdmr_list));
+-	/* TODO: add the extensions enabling steps here */
+-
+-	return 0;
++	return tdx_ext_mem_setup();
+ }
  
- out_put_tdxmem:
+ static __init int init_tdx_module(void)
 diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-index e49c300f23d4..b9e1c011a990 100644
+index b9e1c011a990..720cdaf76492 100644
 --- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
 +++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-@@ -131,3 +131,17 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+@@ -137,6 +137,12 @@ static __init int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
+ 	int ret;
+ 	u64 val;
  
- 	return ret;
- }
-+
-+static __init int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
-+{
-+	int ret;
-+	u64 val;
-+
-+	ret = read_sys_metadata_field(0x3100000000000001, &val);
++	ret = read_sys_metadata_field(0x3100000200000000, &val);
 +	if (ret)
 +		return ret;
 +
-+	sysinfo_ext->ext_required = val;
++	sysinfo_ext->memory_pool_required_pages = val;
 +
-+	return 0;
-+}
+ 	ret = read_sys_metadata_field(0x3100000000000001, &val);
+ 	if (ret)
+ 		return ret;
 -- 
 2.25.1
 
