@@ -1,134 +1,119 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C40A48EBD0
-	for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 13:14:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF1E47ECDB
+	for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 13:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787318109; cv=none; b=IbdxG0M9zeGk8+rCjs6Hlh/JUaED7Hfr9eeIX5dj64wZJcKBXLev4tgBrttY6wfU6Ntwet7wMyZT3/ZqIe6nx+0qz1k5ToZ7/Dmss5fAsWQr/C8Ndlkg7Xnh0OAZ4tD9OwJZoRt/kPeSverz+6t6UeQuURKmCyg+nEvHhZiyXcM=
+	t=1787318835; cv=none; b=FvJyD07Dfgun1NvHbSQublMCxYQ0wA+j3W8lbSFmCVidOy+l+mki6A6QVoeMOWR28J1pm1Su+QHslzR/ycgWOZWsQlOcdTaJZWq7oddchD7aTFsSQ/3AhgKA62fsJSJ/FUxypZ/lqKmvdjj0g8UCoMLcywg71ah1hrY+QIl2vm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787318109; c=relaxed/simple;
-	bh=ZgEtJfYhvEx3RUMYzu/QeOmFo1mnqj6uqfkRQxaKdyw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bobJc3r65rYHWqwqVX89KtVCFQpVbxcpLowiR8zcmHNcl4nQtyagZvZf7nOGk5/3j0xCio/wbrZBR1UL6b25+kXWJ3Jg/VaWJ/lhvX3RSa/vOi+XFITLH2LZIo4gffgxVtQS5ff8cFsavtBVf3is4pxXTyiHQ1jY/a1iYRM0oYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c6dvQg6l; arc=none smtp.client-ip=209.85.214.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787318835; c=relaxed/simple;
+	bh=5klepE7p4Hg1qEAbCF6RZZu8Pu13Alz4PVZPELP3bS0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Nd+81YfudwMd9U3w8lMfqOHtqDkVNtS2hLPv4OrqvrZVzOTV63E7hng5Bwy9Yu4BbzCUb6FVx1sAEQFmoFgVN4hzmfXoY+GKbn9oiBm6r089qS/uHLYie/jKSvmuPPj4w3Bo6jgg+fjN5pFqfizWvbt014Iy2+tn1HmX/qdc+ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uuvg/Hmf; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c6dvQg6l"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cfc52ddc55so16600125ad.3
-        for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 06:14:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uuvg/Hmf"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-47fe2d179e2so681717f8f.1
+        for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 06:27:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787318092; x=1787922892; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=xbkxU3KDRFhwwjU3XLpDILLbXwo99XWxcTGCF4UGzgI=;
-        b=c6dvQg6lTgr8WfLyCyDDpuDZqgAEBAZWBpp7fCIezykosTX8xFGBy2loYtaNYVMO2N
-         afquEy5AbPQBlEDIibICb1Ey/1PMtRvea5T8kUdNfB9foRDFJPln+AFYfRazXR2V9o1Y
-         4VIGgVLrfUF2SxWfciCdNr0NRy37DtLHlOJQZhnlC2s0k2k+FZH93vLWnN/Ps4ZtOa3Y
-         VvvuMyjYw4I2qY9VE6DHyii96mwk4wVozgJ7sHZ7X+S7xJHqjm3nE1rTLMDE6kITf3K8
-         GoUHQfbqES90zkGO1AoCnk65OKx4Bb560zghBv7V/utYLU+uCta1aTJk9aVlk6AELbe4
-         cewg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787318092; x=1787922892;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1787318830; x=1787923630; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=xbkxU3KDRFhwwjU3XLpDILLbXwo99XWxcTGCF4UGzgI=;
-        b=C6nLa05sWbtJTP9vFGsPQevDq/0ZG9A+ueVZKwfaF1ggwtJV5jGxQvCWFyL716OIXv
-         GMj3fbpJhAg8jK7PWg/9wRNNUkfGLlBlgDe46MWwtzQuNhLuaLE6+8Lh6CU9439X/QbC
-         cn3RKOHcVV0Qjvr45QRaxJJv+tcd6fC5pPGLrNMnRbNGasjBYYh/WarJsAC88cPOScU2
-         DVdgC/Zc/ie6p1KPXupvC9NYZV+K/nuA69goBjGO3eynLQ0AZ54hD7KSPZccE2s+RDsn
-         Dp/qKPCuAkNlF0sn5xTsCXqoy/of8zXwMgYu4WIsSMuu/g+g/8N8O6uvhqHJBRHc6IjY
-         hK5g==
-X-Forwarded-Encrypted: i=1; AHgh+RoaPRu37oFfS0uBS223eEvsJLnlQRwOBwnKWWl6x5cgx3gcWcMt86Itn8MKBnIsV8xh9Aw=@vger.kernel.org
-X-Gm-Message-State: AFuF++nXPL+3WYH5ejSPwV2DfJRReHrdGoXbRPmC+G8EBElwcPL/eT+g
-	EaqTm/1JB/Kacp7fJQuKnYjJZvPorXVuwccE3uNNgQTWzkX4xgCLaQI7YzVEcwG8PU/kTOsFVA0
-	RMGJhyg==
-X-Received: from plrf23.prod.google.com ([2002:a17:902:ab97:b0:2ca:b907:d842])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2c0c:b0:2d3:78c2:1f19
- with SMTP id d9443c01a7336-2d64b0270b8mr122535495ad.9.1787318092128; Fri, 21
- Aug 2026 06:14:52 -0700 (PDT)
-Date: Fri, 21 Aug 2026 06:14:51 -0700
-In-Reply-To: <8f715ebf5cb0ef70803ca8c6ad462d9de7dfa8be.camel@intel.com>
+        bh=93TKIYVELb3f7XMDYi0bAF+lcotYrliPfpYhNsdjWuM=;
+        b=Uuvg/HmfdhudG2I4OkIcuqi0ihof2HdqZeKDbGqe4K7rtcg/jZuIV+5wtYUtm0VrSH
+         Few3nfouzm529EJIoWKAZkfHTZqnlZMbKqV/0+rsqABiJzOoVNqBeLXHgmY86Hint+xo
+         aRcqJVH2GGtDgvuKIo0xtdXWOM6rA6CBJ+JSOPugVTPwXrXN8CwNstu7nCpwr/O83XcM
+         XMdTD5c4+ruoXBOHgQeS+DZ14vYPUBia9mBAlPrrdJjoWtkbbeuwnU+GbMFukPsoOE/h
+         WElOgELVgPVCokpRqEMCO7y9F1QUYCx8hHaSyNvmDeu7WNquADXA3oF0H9canxnKrYeT
+         QDaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787318830; x=1787923630;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=93TKIYVELb3f7XMDYi0bAF+lcotYrliPfpYhNsdjWuM=;
+        b=nDR2EwAvsNzagnCn1s/IlpMHZmwDu7vTo3OUEvmM2lhkRvN5PdjY4DRMiODE1u2G+R
+         5NwjD5UyqpYnPe2F6bWZJzPH8D2CihmloR6Ni0P8N4c5vpiXUUxqFooG81YM2TG4Iotx
+         odiEOwKESJL2HH5vXdoQcq5WpigcmB0yjepq2w8s9t/2Vvh35cLDvf7d3O9AkJNGEwWe
+         hKMDJVcKpGZXMKO9WojDzenmDqJVefvBqwQ3otrKf5jbf/VRqBE1HYfXd9DmCrZVX1d+
+         C0F3vUQSWD7fSWYGUngQFy4Jkpwkd7n4QgFQqbW7Wwx65hvMtE0hFtWUwrD2IqzsooNS
+         UBRw==
+X-Forwarded-Encrypted: i=1; AHgh+RotCz3yeG/0HONO0rI+4Zk8YeVqrXtdEpsmGA97vlwOPEp5I9dBVqxcSzygY9TuxTQazJM=@vger.kernel.org
+X-Gm-Message-State: AFuF++kYNHE7TcawrLOX8zm0HEcwokjklML1paSUSvoK93Ji6tSTLlnO
+	9k4phDy3bdE6HtX9dpdIZsbNLhV3nVwCdTgubu/+WRbk/ZG0p/kX2pSC
+X-Gm-Gg: AR+sD13xfegSLyqIP0bdyuWwmXCGKmrHCgHfPBLbQm0iq4D2xd0YIr6PA6ke8YDnT9F
+	1C/VM9QQR7Oi0+0eQuRd/WY/JYdonuhVCfgvN5XB+h/Uy8GuPUqXJ4JXclHrXQwXToNBDcI+vVu
+	2bWDffmEWUxoNxKxFNZrW1SBCWirrlXcVN1cDylVYgVs1WVQgSK/ZeBlsBJCKL1uYj/bcUwju9w
+	z3lIpB/fskeb/UVmXbhQSKKaC6ngU7zFot/0dnnip5QY3RZyUABpWQKkVg7UC4Tp5r3nG7f4n40
+	vW2ZT1pktHzpAXxT6znxvJKL4y19kA+lBHQ7ohZIQgmC0BQKF4d6fCnlmm7Z8VNoR90akGa+Es8
+	qlfKODzlhNXl1Q8Ur2SRmbKq16Itcvh4JIIlpNzQMFDzoMhkPjgAs5qFrPejUqcqOTymcel3yhR
+	mbUDJW2ZDZIWI72fxZNWk/nhQq77o9QleOPjeVQTOAt+oqmwaTpMp/vfaWaN24JQ3K21WN1mVoH
+	lFBvw==
+X-Received: by 2002:a05:6000:41dc:b0:482:aa2a:52f6 with SMTP id ffacd0b85a97d-482c0b41f95mr10002245f8f.1.1787318830006;
+        Fri, 21 Aug 2026 06:27:10 -0700 (PDT)
+Received: from [10.45.28.226] ([15.248.2.234])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482bf82594esm3408856f8f.29.2026.08.21.06.27.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Aug 2026 06:27:09 -0700 (PDT)
+Message-ID: <12442106-e756-4902-b9fd-c760da04f849@gmail.com>
+Date: Fri, 21 Aug 2026 14:27:08 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260819094903.3060020-1-xiaoyao.li@intel.com>
- <5799b5d637f6b540c45874120aa37749a7dfb955.camel@intel.com>
- <aoY2N1mpG-IQIUDm@google.com> <8f715ebf5cb0ef70803ca8c6ad462d9de7dfa8be.camel@intel.com>
-Message-ID: <aohPS45Qc7erio4c@google.com>
-Subject: Re: [PATCH v4 0/9] KVM: TDX: Enable VM-DoS Prevention Features for TDX
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "kas@kernel.org" <kas@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"nik.borisov@suse.com" <nik.borisov@suse.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/5] KVM: arm64: Add pre_fault_memory implementation
+To: Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: maz@kernel.org, oupton@kernel.org, pbonzini@redhat.com,
+ joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com,
+ yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org,
+ shuah@kernel.org, corbet@lwn.net, vladimir.murzin@arm.com,
+ linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
+ isaku.yamahata@intel.com, Jack Thomson <jackabt@amazon.com>
+References: <20260612162354.73378-1-jackabt.amazon@gmail.com>
+ <20260612162354.73378-3-jackabt.amazon@gmail.com> <ak5sAxb3G6hhFmBF@raptor>
+ <alEXGmKiXgWPPdhF@raptor>
+Content-Language: en-US
+From: "Thomson, Jack" <jackabt.amazon@gmail.com>
+In-Reply-To: <alEXGmKiXgWPPdhF@raptor>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 19, 2026, Rick P Edgecombe wrote:
-> On Wed, 2026-08-19 at 16:03 -0700, Sean Christopherson wrote:
-> > > To me this is not a valid reason. Sashiko is great, but we can't let =
-false
-> > > positives drive the patches. Given that the series is so big now, I'd=
- think
-> > > it would be better to leave 6 and 9 for follow up, so we can focus on=
- the
-> > > core thing.
-> >=20
-> > Hmm, I disagree.=C2=A0 If the consolidation weren't here, I'd absolutel=
-y ask for
-> > it. This is new feature enabling.=C2=A0 Yeah, it happens to be tagged f=
-or stable,
-> > but at the end of the day, it's new feature enabling.=C2=A0 And it's st=
-andard
-> > operation procedure to do cleanups and dedup code as part of new featur=
-e
-> > enabling.
-> >=20
-> > If anything patch 6 should be patch 1, but that's a minor detail I can =
-sort
-> > out when applying (assuming another version isn't required).
->=20
-> Ok. But you disagree with dropping the patch?
 
-Dropping the patch.
+Hi Alex,
 
-> Or that avoiding sashiko reports of existing issues is an invalid reason =
-to
-> change the series?
->=20
-> I think it's good to discuss a bit how to handle sashiko scenarios.
+On 10/07/2026 5:00 pm, Alexandru Elisei wrote:
+>> Does it guarantee that, after it completes and returns to userspace, the
+>> address range [gpa, gpa + size] is mapped in the VM's stage 2 tables? Or
+>> does it guarantee that the address range was mapped at stage 2 at some
+>> point during the ioctl's execution, but parts, or all of it, might not be
+>> mapped after the ioctl completes and returns to userspace?
+> 
+> Nevermind, spend some time thinking about it and it turns out it's
+> impossible for KVM to guarantee that the memory is still mapped after the
+> ioctls returns.  So I answered my own question, thanks.
+> 
+> Alex
+> 
 
-Like we do any other code review: use common sense and follow established b=
-est
-practices.  If a human reviewer pointed out an existing bug, we would analy=
-ze
-the situation and make a judgment call as to whether it's better to send a
-standalone fix or roll a fix into a new version of the series.  If we decid=
-ed to
-fix the issue separately, and then a human brought up the same pre-existing=
- issue
-in a future revision, we would point them at the fix or the previous discus=
-sion
-(or if it was the same human, (politely?) tell them to go away).
+Yeah it's best effort, as if a vCPU had faulted the range itself. This
+could be undone by an invalidation or memslot update. The value is in
+the common cast (for us, post-copy migration) the guest doesn't pay the
+stage-2 fault fault cost at run time.
 
-The only differences is that Sashiko is noisier because is doesn't (yet?) r=
-emember
-what feedback it gave in the past, often doesn't look at the patches later =
-in the
-series, and doesn't (yet?) respond to emails so telling Sashiko to shut up =
-about a
-particular pre-existing issue isn't effective.
+I think it would be worth me adding a sentence to the documentation
+noting there is no persistance guarentee.
 
-But to be very explicit: don't include a patch *purely* to suppress Sashiko=
-'s
-rediscovery of existing issues.
+-- 
+Thanks,
+Jack
