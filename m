@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B54375ABE;
-	Fri, 21 Aug 2026 03:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7F73793DE;
+	Fri, 21 Aug 2026 03:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787282975; cv=none; b=Wr+tM2H06GR9pP1jPz+bGSh9EXRctN2H0D408Za/WULF5G7U5SdfgFxuG31jqZq37HpAN4eteJs8YjyWOnJjp0FSljPw4K4DA1R9JuA5wpwOxcrca6GcN9tHdlS0RiljrZ3xkRyQiTH3x0ZT0Hg4wwOLtMdbdR5SvhVU72zGtLE=
+	t=1787282978; cv=none; b=CM/fiL0jKMB53rKgeSxAXsYHAFBBi5SED+K9taplvHh9/gdb9JabEjAkH/jnigy+NsRj/KCwSkpTBOgfL8f9k4qrw9hE1tblAfVKfmKmrx90XrcZ3EVdM4PYdmDq758P+Bt/GPYlmb8o91EQVDu6bUGsMNWmgTf0Wjy9xzu+DXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787282975; c=relaxed/simple;
-	bh=6rvVFKxEnernaSvmYoh25XXuJSQ+q6hKX3xaltJL/Wk=;
+	s=arc-20240116; t=1787282978; c=relaxed/simple;
+	bh=znetrghf6ys/CPFLpyjpzXAtsRZnYs4HpIExNFpBIac=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JlyeffI8P6cttXc7TdkGkL9ALS4CO+V9UZuCFQYhroCCsvGPGaflwnRfXuEgMyrmqVeNWbZRkyuTA3z25X7HXREM3tbUstLUA+AOrYPluLV8F7GLWaMpn7ErT0wqtcBTSl3RYRJi/Pw6PUCV2tMO7rOminfXbinb91IVfNUyz60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kyltVBrG; arc=none smtp.client-ip=192.198.163.12
+	 MIME-Version; b=B7k6fjBOnxcACzOD7kh8qdpHqTbIMF80M+mpSpeDubnYfcyEoIX149Xb3MD7u6tsX1VrMMJPPfGecwdmga0tSyGwTbUuSvbd9pReOmdxSiia1jU3KJN6ch4mEDjB06yMVVagBTsYrbk3JqQqgRG3uxWfd/i6gLENgjnzCKPvVKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N2EH4pHS; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kyltVBrG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N2EH4pHS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787282972; x=1818818972;
+  t=1787282976; x=1818818976;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=6rvVFKxEnernaSvmYoh25XXuJSQ+q6hKX3xaltJL/Wk=;
-  b=kyltVBrGSDbUSDsVy+uu+xS0mMvWW6YKgM613TbMDgAPYxpEhEBCMU8q
-   74/khRBqvwlJyzLOgP+cBUqga0iWuSlCK8+GuQs82hkY+2YTtBZNxQiV4
-   5oDgiu++jNejQwAEhtKiL8X59Q1fiO+6T1eNAi2OgiLcKdcmpXXTLTWLM
-   UZg7/gAGrjTU32OHhCpJ5QDCoXSXEJyYHJR3PW7H+a4vpMVuGsWCveEbj
-   rxXcUKkDPXuXu/j+oqpdl9pj8DJzUX+odjafWlccEm12iMV2C4eMJghBG
-   sL57ycFxiHp5CF1YxOBXNbmGWRDuvOc5k5bJrhgPGpc95AUVVMVC1AUNZ
-   Q==;
-X-CSE-ConnectionGUID: 2sVdjlvyQNqTZuzjtgKqUw==
-X-CSE-MsgGUID: ezbatukYQvCnUULJBYUlZQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="91640230"
+  bh=znetrghf6ys/CPFLpyjpzXAtsRZnYs4HpIExNFpBIac=;
+  b=N2EH4pHSqJXiRH4M6vWGVwyYG8Rs3Fmcx5JkZ7vbfIK3T35g5qUTfLAK
+   BdgSHy9zvcgIoH/7y5Jdd2TOwIvFqkaq+7mwYB3eC9I8IbgcThs965O6a
+   SFxrvuUox9sOIrFUYwlJEqs5eVbzYJMR4xMV0MwcFuqxn8BUi9pPD9aJw
+   5VivL+ishBAIOHKZgz/25/Kf5OD8rRaPH854oKXaE/CTTtlhNF66zDFCx
+   hWRDo9Es3N+0hufWuc10QSxHAFWLBG4XIqSiu2QpaROsbbEjQywTznByJ
+   LZEGVGAEdggbYbJdm1E9UsQk0ufVTo9FyeZkmfI+hpRyWUgJ+k5ZzPnKs
+   A==;
+X-CSE-ConnectionGUID: lmllmSy/SfShkistCrH8wQ==
+X-CSE-MsgGUID: uLQXwdo0SPqXJjPIwdx/vw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="91640234"
 X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
-   d="scan'208";a="91640230"
+   d="scan'208";a="91640234"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:29:32 -0700
-X-CSE-ConnectionGUID: ej9bZVR0QWKoAcw3GavhhQ==
-X-CSE-MsgGUID: jargdX2nSzS+DkYr60TYLQ==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:29:36 -0700
+X-CSE-ConnectionGUID: auoBD2X3S5OW0iH1anPlaA==
+X-CSE-MsgGUID: otBEypIySkqAjkcRsgUWTQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
-   d="scan'208";a="264451594"
+   d="scan'208";a="264451600"
 Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.47.46])
-  by orviesa006.jf.intel.com with ESMTP; 20 Aug 2026 20:29:29 -0700
+  by orviesa006.jf.intel.com with ESMTP; 20 Aug 2026 20:29:33 -0700
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: x86@kernel.org,
 	linux-coco@lists.linux.dev,
@@ -62,9 +62,9 @@ Cc: kas@kernel.org,
 	chao.gao@intel.com,
 	artem.bityutskiy@linux.intel.com,
 	kvm@vger.kernel.org
-Subject: [PATCH 2/6] x86/virt/tdx: Configure add-on features on TDX module init and update
-Date: Fri, 21 Aug 2026 11:29:16 +0800
-Message-Id: <20260821032920.256225-3-yilun.xu@linux.intel.com>
+Subject: [PATCH 3/6] x86/virt/tdx: Detect if the extensions initialization is required
+Date: Fri, 21 Aug 2026 11:29:17 +0800
+Message-Id: <20260821032920.256225-4-yilun.xu@linux.intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260821032920.256225-1-yilun.xu@linux.intel.com>
 References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
@@ -76,144 +76,140 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The TDX architecture identifies some features that must be explicitly
-enabled when the kernel supports them. These add-on features affect
-existing TDX systems: they may change existing feature behavior, reserve
-more memory, or impact TDX initialization performance. The kernel must
-enable these add-on features at boot or post-update time.
+Some add-on features require TDX module extensions. The TDX module
+provides a metadata field "ext_required" to indicate this requirement.
 
-TDISP, DICE-based quoting and TD migration are among those add-on
-features, as their SEAMCALL leaves depend on a SEAMCALL execution
-context built by the TDX module extensions. On the other hand, the TDX
-architecture doesn't allow the extensions to be initialized if none of
-these features are enabled. Add support for configuring add-on features,
-as the prerequisite for enabling the extensions.
+Add the first step of TDX module extensions initialization by detecting
+if the extensions are required:
 
-The TDX module extends TDH.SYS.CONFIG and TDH.SYS.UPDATE with new bitmap
-parameters to specify which add-on features to enable. The bitmap
-uses the same feature bits as TDX_FEATURES0. Add a
-get_tdx_addon_features0() helper to return the bitmap of the add-on
-features that the module & kernel both support. Initially, this helper
-returns 0. It will be updated to return specific feature bits as full
-kernel support lands. Pass this extra bitmap to TDH.SYS.CONFIG helper.
+  1. Check if the extensions are supported via TDX_FEATURES0_EXT. If
+     not, ext_required is not readable.
+  2. Check if any TDX feature needs the extensions via ext_required.
 
-The TDX module requires SEAMCALL leaf version 1 for TDH.SYS.CONFIG and
-TDH.SYS.UPDATE when passing the new bitmap parameter. A previous
-change [1] supports the versioned SEAMCALL leaves by adding a "version"
-field in struct tdx_module_args. Set the version field to 1 if any bit
-is set in this bitmap.
+Skip the extensions initialization when it is not required.
 
-Compatible updates keep the reported features unchanged across updates,
-so that existing TDX users can continue to operate without disruption.
-To adhere to this, provide TDH.SYS.UPDATE with the same bitmap returned
-by get_tdx_addon_features0(). This works because the module supported
-feature bits are cached at boot and never refreshed after updates, so
-the returned bitmap always matches the initial TDH.SYS.CONFIG input.
+Currently all metadata fields are read at the very beginning of TDX
+module initialization. However, ext_required is only valid after the
+add-on feature configuration, so it cannot use the existing metadata
+reading method.
+
+Add a dedicated metadata reading interface for the extensions, call it
+after add-on feature configuration.
 
 Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-Link: https://lore.kernel.org/all/20260722084634.131020-1-yilun.xu@linux.intel.com/ # [1]
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 ---
 v1:
- - Use tdx_module_args.version to assign SEAMCALL leaf versions (Dave)
- - Remove DICE specific descriptions (Rick)
- - Remove the global var tdx_addon_features0 (Chao)
- - Add a Macro to collect kernel supported add-on feature bits (Rick)
- - Changelog & code comments change
+ - Include struct tdx_sys_info_ext in struct tdx_sys_info.
 ---
- arch/x86/virt/vmx/tdx/tdx.c | 38 +++++++++++++++++++++++++++++++++----
- 1 file changed, 34 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/tdx.h                  |  1 +
+ arch/x86/include/asm/tdx_global_metadata.h  |  5 ++++
+ arch/x86/virt/vmx/tdx/tdx.c                 | 28 +++++++++++++++++++++
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 14 +++++++++++
+ 4 files changed, 48 insertions(+)
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index e6b664b76141..66b43350c6c3 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -998,12 +998,22 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
- 	return ret;
- }
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 89e97d5761d8..6657f2db0330 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -36,6 +36,7 @@
+ /* Bit definitions of TDX_FEATURES0 metadata field */
+ #define TDX_FEATURES0_TD_PRESERVING	BIT_ULL(1)
+ #define TDX_FEATURES0_NO_RBP_MOD	BIT_ULL(18)
++#define TDX_FEATURES0_EXT		BIT_ULL(39)
  
-+/* List all kernel supported add-on features0 bits here */
-+#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0	(0)
-+
-+static u64 get_tdx_addon_features0(void)
-+{
-+	return tdx_sysinfo.features.tdx_features0 &
-+		TDX_KERNEL_SUPPORTED_ADDON_FEATURES0;
-+}
-+
- struct tdmr_info_pa_array {
- 	DECLARE_FLEX_ARRAY(u64, phys);
+ #ifndef __ASSEMBLER__
+ 
+diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
+index 41150d546589..fe3fe91de71f 100644
+--- a/arch/x86/include/asm/tdx_global_metadata.h
++++ b/arch/x86/include/asm/tdx_global_metadata.h
+@@ -44,12 +44,17 @@ struct tdx_sys_info_handoff {
+ 	u16 module_hv;
  };
  
- static __init int tdx_sys_config(struct tdmr_info_pa_array *tdmr_pa_array,
--				 u64 nr_tdmr_pa, u64 global_keyid)
-+				 u64 nr_tdmr_pa, u64 global_keyid,
-+				 u64 addon_features0)
- {
- 	struct tdx_module_args args = {
- 		.rcx = __pa(tdmr_pa_array),
-@@ -1011,12 +1021,22 @@ static __init int tdx_sys_config(struct tdmr_info_pa_array *tdmr_pa_array,
- 		.r8 = global_keyid,
- 	};
- 
-+	/*
-+	 * Use SEAMCALL version 1 that supports add-on features if any are
-+	 * requested. Use version 0 if none for backward compatibility.
-+	 */
-+	if (addon_features0) {
-+		args.r9 = addon_features0;
-+		args.version = 1;
-+	}
++struct tdx_sys_info_ext {
++	bool ext_required;
++};
 +
- 	return seamcall_prerr(TDH_SYS_CONFIG, &args);
- }
+ struct tdx_sys_info {
+ 	struct tdx_sys_info_version version;
+ 	struct tdx_sys_info_features features;
+ 	struct tdx_sys_info_tdmr tdmr;
+ 	struct tdx_sys_info_td_ctrl td_ctrl;
+ 	struct tdx_sys_info_td_conf td_conf;
++	struct tdx_sys_info_ext ext;
+ };
  
- static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
- 				    u64 global_keyid)
- {
-+	u64 addon_features0 = get_tdx_addon_features0();
- 	struct tdmr_info_pa_array *tdmr_pa_array;
- 	size_t array_sz;
- 	int i, ret;
-@@ -1039,7 +1059,7 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
- 		tdmr_pa_array->phys[i] = __pa(tdmr_entry(tdmr_list, i));
- 
- 	ret = tdx_sys_config(tdmr_pa_array, tdmr_list->nr_consumed_tdmrs,
--			     global_keyid);
-+			     global_keyid, addon_features0);
- 
- 	/* Free the array as it is not required anymore. */
- 	kfree(tdmr_pa_array);
-@@ -1319,18 +1339,28 @@ int tdx_module_shutdown(void)
+ #endif
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 66b43350c6c3..a0c370894c0b 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1175,6 +1175,30 @@ static __init int init_tdmrs(struct tdmr_info_list *tdmr_list)
  	return 0;
  }
  
--static int tdx_sys_update(void)
-+static int tdx_sys_update(u64 addon_features0)
- {
- 	struct tdx_module_args args = {};
- 
-+	/*
-+	 * Use SEAMCALL version 1 that supports add-on features if any are
-+	 * requested. Use version 0 if none for backward compatibility.
-+	 */
-+	if (addon_features0) {
-+		args.r9 = addon_features0;
-+		args.version = 1;
-+	}
++static __init int init_tdx_module_extensions(void)
++{
++	int ret;
 +
- 	return seamcall_prerr(TDH_SYS_UPDATE, &args);
- }
- 
- int tdx_module_run_update(void)
++	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
++		return 0;
++
++	ret = get_tdx_sys_info_ext(&tdx_sysinfo.ext);
++	if (ret)
++		return ret;
++
++	/*
++	 * ext_required indicates if any add-on features requiring TDX module
++	 * extensions are configured via TDH.SYS.CONFIG. If none, skip the
++	 * initialization.
++	 */
++	if (!tdx_sysinfo.ext.ext_required)
++		return 0;
++
++	/* TODO: add the extensions enabling steps here */
++
++	return 0;
++}
++
+ static __init int init_tdx_module(void)
  {
-+	u64 addon_features0 = get_tdx_addon_features0();
  	int ret;
- 
--	ret = tdx_sys_update();
-+	ret = tdx_sys_update(addon_features0);
+@@ -1229,6 +1253,10 @@ static __init int init_tdx_module(void)
  	if (ret)
- 		return ret;
+ 		goto err_reset_pamts;
  
++	ret = init_tdx_module_extensions();
++	if (ret)
++		goto err_reset_pamts;
++
+ 	pr_info("%lu KB allocated for PAMT\n", tdmrs_count_pamt_kb(&tdx_tdmr_list));
+ 
+ out_put_tdxmem:
+diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+index e49c300f23d4..b9e1c011a990 100644
+--- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
++++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+@@ -131,3 +131,17 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+ 
+ 	return ret;
+ }
++
++static __init int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
++{
++	int ret;
++	u64 val;
++
++	ret = read_sys_metadata_field(0x3100000000000001, &val);
++	if (ret)
++		return ret;
++
++	sysinfo_ext->ext_required = val;
++
++	return 0;
++}
 -- 
 2.25.1
 
