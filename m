@@ -1,113 +1,249 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374E336680E;
-	Fri, 21 Aug 2026 03:12:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787281947; cv=none; b=AIUYhn9RV2FuiGixZ2kRwUNPcPJ2K/v2xmLwweFKq6ali60n+Z7YxTPbvRmgUQuqNZk/JUg1b2TEYgc1Ah26tV0DDuQLhXW16DJ9mBS7X7TKVQdYM33AQ4H8Kg/CKt/ElD3c+Oy+g6aCQNgiysVjES5sFatqvSU3OA0mez2eqqE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787281947; c=relaxed/simple;
-	bh=LLdCyUIMvTLvV0Qwwzwy3ePPzmdPaDmUaU/9K8yTvoE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jBazlZrK35CtADQtBV3z36aHBvYDmEdHsLgJVSqh2QVFzzsUht2ckiYWFIMijDY0hLBPYqVBjtdo3TLPKiuSsyxGKDTrkIGTX8qeuMYF3PTiUE3SmvOJBlVEIy8lznEk8Fl1bwO3V2qkL3R2rwZrf3F507exT88lEB0S0EiaLGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AErrDzW8; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F54836AB46;
+	Fri, 21 Aug 2026 03:20:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787282413; cv=fail; b=ThevkiAsm1EWeMbaEr6NXWGE5FezKXaqlk1qX1wK67A00C8BHv1aoqyBPvfih45rfDvbVEVuIcpuFVx3OHR8npLLY46by7YZUO0Iu79ZGPObAb+VRads6gsdGnJOkuYtvmtM92ch6EJQ0dR87EHOdOwbQg1bp9RsLQDlROCtP1Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787282413; c=relaxed/simple;
+	bh=cd2uguk9UB5FLxJUWQFX5NjUl7nw+ci7/CvKCZ/Ty/Q=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Okd2ns3zxBPr405SUMKkjLV48zCu2FLqoT47QkTodE9H8PupHbPOz6/7N3sbImq6Cu4V+YhLeVc4q1oCvp6UXaGfgz+Y47uFCtQ1aiNhAwSj/8QQBTK3obyH4Haykw2rMZZAbYk4RucBxz9WFuMoXJkdQhxlxd/rmQp9cMUBFwY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=djOqvs8Z; arc=fail smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AErrDzW8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="djOqvs8Z"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787281936; x=1818817936;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=LLdCyUIMvTLvV0Qwwzwy3ePPzmdPaDmUaU/9K8yTvoE=;
-  b=AErrDzW8Lrl5OggMZs0wUlBqQT8JGU9lcIhvZi2TX2GPtBnUm/ITBPNp
-   K0JF6fxRz9uyGc7gLJBoA8Dl6i/jVvkgDxkDu6suVACFl8clfHGG8DGS0
-   P9HZHdz/IOqrE9FgxXYPbLkPA827HbamAJTkuSKTbw9TzreU1D0uCf1R+
-   sj+w0rTHpwGawgCEUenRtnWOQu5KCISzptlUHuqDANImrjykhX+mWEclp
-   JCrTm7uwUQXCnH2LRPvVjQYVPfYpOaoeU8Nny7fUZ4X5J160hMOqlCplT
-   o/Vzft3+d3Uht0lq3vX8CLUpfbSnOXfbIi+/63SG3d0EyJ+p7Q8znCL1E
-   g==;
-X-CSE-ConnectionGUID: uSZJSUhnRTuS7aB8Gs0/FQ==
-X-CSE-MsgGUID: hoW+MYjVTmedm2DPYhCJ8A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="91701114"
+  t=1787282410; x=1818818410;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=cd2uguk9UB5FLxJUWQFX5NjUl7nw+ci7/CvKCZ/Ty/Q=;
+  b=djOqvs8ZbR0HNAZs/Ea5l9gn6BpEfa4n3ranmEKPm5raTSyfFJL9MSVP
+   eeBqQoKMbLVj947InCRHHpLiRhc8zwEyNpQyBV2yf5kEwmzLyWeCanAY/
+   JlWt+29l1Ukyvo+3xkRZABA6nPHnQ5GtbXeDEy2un3MMHBuiNHvRI3EFx
+   kX4e+1O6kmNJGPQGQnf6zpSgsKplO+rQT6mzxVCxhbt0iszyKv4LiqGC5
+   EgqBjXJVincrNNsLPEjpM/aMr8B6h7JtoeCEIsuhKJaDM4a0iftaEkf1d
+   OKaFkYN0z6nrqGKXhneT7jgzB/SAm4L4DASSlRmzJ07PU+xiBxXM5ALwD
+   w==;
+X-CSE-ConnectionGUID: HLFsIo3KT1y6Bce6aRrjDQ==
+X-CSE-MsgGUID: VjsneyEmRZqsuY0/c9r0Bw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="87595828"
 X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
-   d="scan'208";a="91701114"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:12:09 -0700
-X-CSE-ConnectionGUID: NOkWPYcAQ6ua/qZWMjhxVQ==
-X-CSE-MsgGUID: OFKp6eRTSFCxoY11hYwwiA==
+   d="scan'208";a="87595828"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:20:06 -0700
+X-CSE-ConnectionGUID: sWcT2JDXQYOoyRRqfGNmbw==
+X-CSE-MsgGUID: cpnxZn47RmKo8apL2bDhOg==
 X-ExtLoop1: 1
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:11:54 -0700
-Message-ID: <fe1c6359-7371-4ccd-9807-1d81c160d12b@intel.com>
-Date: Fri, 21 Aug 2026 11:11:51 +0800
+X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
+   d="scan'208";a="264920506"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:20:07 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 20 Aug 2026 20:20:06 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Thu, 20 Aug 2026 20:20:06 -0700
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.6) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 20 Aug 2026 20:19:53 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ERugc1w1SKbS2ezsevtzYp/3GY9pxAiI5LDG9RNBbLXWrod22JYmniWMjpnFpNnDhplxAzBPcJqRmLD6/U16E3NLBmzk0Cgn9XDFRnQvME/TifJAJNstTYGHK4cava9i8a/1h6ARQIhq5VICk7aKRmvEMuZWwwkFc4vAdDkJJbkYCnNEDiiyYFcJhhlRQlDQ3kkN8RqVv/wPdRCFSnCUkc1zFBBUg+CXRaBjKwsqw/zwvNyTcaAE3CCCRYmEyH/v8gZD8z5WZkdyYhsHT8VqcqWX8ANFceYqcFBsxzuVoJHWc9oEM9CA4iCbIKGbhyV/aezXpYOSg4dqfy110FluxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=H4irVj/n/HZz+b0MFf+2Vf9YnSgv12zYihGNH9HeDDE=;
+ b=Zh2dOu5Y8dfjMOcSEZfZMISUhbT7Wl8iH4lQD1XWvjCUvVnBfXvZBjSNYmyblTwD/0oVZy72ma4hbvk9Dq2obi+KGahX1SZrFLXNxEPKdQHhHkQ0SzXaAcPKly78uQ6xRXMbV26tXum4dJe6iSw1pxU72gnr+e1INwnwr56MkW/vV7gVIOVXnBEHIvm2S41l4MOAEumFreVxUvVQ5vVMjaJ6IGC1OtID+PCIHsMpdsnTw2o65UyRJJH6Y4xOv94czRbzksM0L50fn74xEYcYV82KgpIblclQqSeXmshOr5JlNsG6GToYAOw5qodR6jxz5rdsZHMNKKMsou5wOMOXIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DSVPR11MB9579.namprd11.prod.outlook.com (2603:10b6:8:383::17)
+ by LV8PR11MB8463.namprd11.prod.outlook.com (2603:10b6:408:1ed::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.10; Fri, 21 Aug
+ 2026 03:19:50 +0000
+Received: from DSVPR11MB9579.namprd11.prod.outlook.com
+ ([fe80::ab5f:5d0f:fb90:9d]) by DSVPR11MB9579.namprd11.prod.outlook.com
+ ([fe80::ab5f:5d0f:fb90:9d%3]) with mapi id 15.21.0339.008; Fri, 21 Aug 2026
+ 03:19:48 +0000
+Date: Fri, 21 Aug 2026 11:19:24 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Ackerley Tng <ackerleytng@google.com>
+CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, Ashish Kalra <ashish.kalra@amd.com>, Michael Roth
+	<michael.roth@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, Marc Zyngier
+	<maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly
+	<joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose
+	<suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, David Hildenbrand
+	<david@kernel.org>, Fuad Tabba <tabba@google.com>, "Edgecombe, Rick P"
+	<rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>,
+	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>
+Subject: Re: [PATCH v2 4/4] KVM: guest_memfd: Stop returning struct page from
+ PFN lookup
+Message-ID: <aofDvFeASNE0ihkv@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20260818-gmem-no-return-page-v2-0-5298f42d49bb@google.com>
+ <20260818-gmem-no-return-page-v2-4-5298f42d49bb@google.com>
+ <aoVut/h1u7HdFxkR@yzhao56-desk.sh.intel.com>
+ <CAEvNRgFFs2BC7m8YH7RnQSysU+eDqOjQpqAxL09mwJgrT_iYww@mail.gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CAEvNRgFFs2BC7m8YH7RnQSysU+eDqOjQpqAxL09mwJgrT_iYww@mail.gmail.com>
+X-ClientProxiedBy: TPYP295CA0040.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:7d0:7::12) To DSVPR11MB9579.namprd11.prod.outlook.com
+ (2603:10b6:8:383::17)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 40/41] KVM: selftests: Update
- private_mem_conversions_test to mmap() guest_memfd
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-40-2fc18ee6d3ba@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-40-2fc18ee6d3ba@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DSVPR11MB9579:EE_|LV8PR11MB8463:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1c711a31-29c5-44dd-1e6c-08deff330e85
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|56012099006|4143699003|11063799006|3023799007|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: T3vKudCmMVsl+h7q6ySMf/fZPgWEgYoK9QPNtnGOpEilq+qLcQUBVZv+uwzoRgmaDuyruSI/dcGOODnW3iYCDfU8+6YNKV26wPkmtVqh+IBZGoDqN5IE1rAm+T/44+tU3K+QHa+F5HoY5eHFwaeHS2gsZQdrL/2umuaS9O4EnvtGF3ZdsWkot6ej7JCHZP99xCzRP5daxtlIMLg/ilvGLdyk1+hc4Qwe5879ie2SOFGGd7HkNZzd+lGeS4wMb0nnH5lsyFGNsQ1kFDiPyxL0r/9VG9KhCmMYfSkpf4Yl7PI8X4MXyfAP6eADnyFWWhE+EW4ZFHzPUiNVDki2i9IgVXpXbVmvjZml6hgcrUirUYq0OwRhroTZdjhwL7/5ymZ++12l7UNQ3kA5iyys46W9yC8USd9s5i4IHLZRtQafy7zuhyXtCB34u9w2FN8NW0nPygPCcPcGB8kRMOr55gAb1HqjDAl/5hendvmL9zzTToVJhvfCPKsJXQx5sH9bpcEaN5ssNiyk9aWte2KNe3Xlq9F+V9iJtT0puqhpsWoSn+TENm59VqZ3boClY94znW2t/ck+LIWm78BL2LBAOyz832RxIDTkewHZcVCvmuQoBHF9XmGwY/sTLZmrFqFe6dww9LTmm6H5/WoQq8eRhZE4HLjKjVX30b/Sp4zjyqi0yDQ=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DSVPR11MB9579.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(56012099006)(4143699003)(11063799006)(3023799007)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?mFowjQKV41zrnVOd8vwDI+l1xKrzC7Om/FyN9zGlaX5ptq5QAIs25uGARL10?=
+ =?us-ascii?Q?Xbs+/Ilcx+2jjMwRpU1q1EMr3+f3WNda19mjVIHL3EWpo8TjHx4RRzLnnRnq?=
+ =?us-ascii?Q?dEGRr6sEuAHl4dw7CMQiLvNV1Ai2q6xOAz5nMURfOuM7xSVhb4imsolQmFt8?=
+ =?us-ascii?Q?9RAUPPzFNQSfb1ze6p7cUHFv79XmbYgXowgnX4gA5lVtaKRJBbiku6usbJIk?=
+ =?us-ascii?Q?iJafzWQHzDdMZxF6sUXocTJGkx6xRJMhs45bt/gwv35YbEmpNDULEaklJaeV?=
+ =?us-ascii?Q?gZXFUjps3kVAB6JotN6XoMGAenSrbSDJccyqP4mhWW0TW/ZT33ZSEdaHiehP?=
+ =?us-ascii?Q?IXAgBclFucLPdDttGVNDL4g3n5IkjyGoq+vwUV0o0NVm6I2tLiUI67+NDKCF?=
+ =?us-ascii?Q?D6S5eEivlColf9R+N9XLewOoGdnFmEjHXAv5L9UJran++aIFve5A2030I+JL?=
+ =?us-ascii?Q?h37yTZ4U6fzyrzFKDi2U/xqJI4grvoYtUgngAUEu1HXNYVjrYEMBeg390eKk?=
+ =?us-ascii?Q?Shk/EPs/hNVjxxM+mhD8ZYCSk89rPlKuRmugnGJ628nRBl+qZ7CXzswE1gc0?=
+ =?us-ascii?Q?PVbUvWhjQvRwkQ2/GVESaUPI9Q2bcJ1Q9VMnrUPcAjWQtFcB2i2oorDlLKaP?=
+ =?us-ascii?Q?/4P6Kngc/6XYg2pE6B5M0XyyiCE+TNt86TLuGzjlJjN0/1ds9aNEDy+1PtMs?=
+ =?us-ascii?Q?Xbz6d/p6YUXN/vxmvITEArS9f6P61ki2ony0apNsHcZz/X97uWesMvPyIhpT?=
+ =?us-ascii?Q?SV8cRo0PGq0XeqpYq5jjmruuiMt4pgfAH1caPw6TbLLNqZ//92AnhWLUd+bF?=
+ =?us-ascii?Q?Z0io2eBreTZ3XJaIj26kNHXTgthi4RhUIGf7ig0aezA7JP1ZZVUghw3ucHe7?=
+ =?us-ascii?Q?7YRftOqpB4AEvnG03P06c82UL9Gcjd0oWHsNqAeUZbu9nj9O44rEgKscetTH?=
+ =?us-ascii?Q?xoYo31YTynQuxAHRlZ7dY/U/0j2TOQPKY0ZvdfGAVMJ4lJshx3O9jFZ3sn3L?=
+ =?us-ascii?Q?1EG2Ka8zLgsZh4YaAnlbC2y5c2wftwEwbouoICImLyFZnlveg6VKKIqTCYtw?=
+ =?us-ascii?Q?orum+tI/3SqXOkZQhYYPsfNWNp24+Xf3Fu1cu6n6vISxqXTjBCRHr7JA6FfJ?=
+ =?us-ascii?Q?ToJIlIUTj4CaITEArKId/219q+17u/AuOkBOLFrIIHBdH3y3gCBTf34zu4G9?=
+ =?us-ascii?Q?fFW1gwWIYR95nQTxPE98KD+fAZP8YTDfzF2N5IsQ/ofpVx305bdjvf5Fyary?=
+ =?us-ascii?Q?mkSKBM8Z1K3Fr0l2fW4NScahtQi6A7N4GGxYcZClr/mgOX+NuuguLjYS2K+/?=
+ =?us-ascii?Q?c/Yl+6hfwPnz43BEyRcfhgqo9SoNj9OhPRv6kdl7V26jIgpah0ZC2N6gwsr+?=
+ =?us-ascii?Q?w+G3ovaUwXqDfGHzg3p/b+iHMWpgKyYaHXs1pl1Ir9lK50pUyLv/ImmrZQxb?=
+ =?us-ascii?Q?Xcdg5IGSWE9wUY4tBPJ4bINxZtdp2j6LATs2WQyJZ8aJ6ypnHrXbDe2zvaUq?=
+ =?us-ascii?Q?Qvltn8kUcSYVgKzbni7+NBzl78L+yMrIU4ZIvYRKliQ5Q5M3mRBEMU1N3+2r?=
+ =?us-ascii?Q?SAg4W66rSAPe/hU6lNMGaw7hZy7dFG94t6xWKw75Q1IX2Xe1HvNVOVSrmdCm?=
+ =?us-ascii?Q?vnL5RTuY7LqSHPXH5jt1la97Hqyn0pIcG9As8K2+9xdJx0yk7uTgmWrorN3e?=
+ =?us-ascii?Q?2AfYTOrgocSelAvVjPdmmyXLP2kkCtjKXsvzypfnk90QAKzpFR0K1rNH3Om2?=
+ =?us-ascii?Q?itRIq95Cew=3D=3D?=
+X-Exchange-RoutingPolicyChecked: UrXXsj8/8VA7Pa9ASha1OgBdzqmHp+5ITyiYuGpzz/wnkpUp2bxjUuLAmsj2Hhlk1Kv82YUhG9v/gVE/7+NgGaqa0oHktzMWU/65ixUKnM2YrdNlAxmrvgWqGSvwntLjKSATXYxXgSmmpOEvCQ/iFxXpnfZ5lZkhPBi5TXRumaYX7n0eGhFHlVpqmdAcb5Lnt6Mq1anYdORpfyqRdKBrXO8pzPHhgs0IEUM34aJeSkBBu/qhMC/l0ZhdpyRzjiTWrvxIB2MQ70hsMh4YvE6Pz9fp7vyKj87H/7tvcSXxJ3DGuLTijLAt0iCM+YbZHOczJFD0JDGKepdHgAnpoFulqg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c711a31-29c5-44dd-1e6c-08deff330e85
+X-MS-Exchange-CrossTenant-AuthSource: DSVPR11MB9579.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 03:19:48.6228
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oGiGrhVB7JX8AHIKyB8tKZ2cs3MoYrjKBtbtBf2xukGGjhzmzmB9w+Wgt2kKdwfgvGUGJfLqp+qG5tdziVq1uA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR11MB8463
+X-OriginatorOrg: intel.com
 
-On 8/8/2026 5:53 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng<ackerleytng@google.com>
+On Thu, Aug 20, 2026 at 07:47:51AM -0700, Ackerley Tng wrote:
+> Yan Zhao <yan.y.zhao@intel.com> writes:
 > 
-> Update the private memory conversions selftest to also test conversions
-> that are done "in-place" via per-guest_memfd memory attributes. In-place
-> conversions require the host to be able to mmap() the guest_memfd so that
-> the host and guest can share the same backing physical memory.
+> > On Tue, Aug 18, 2026 at 09:15:55AM +0000, Ackerley Tng wrote:
+> >> From: Sean Christopherson <seanjc@google.com>
+> >>
+> >> KVM currently expects guest_memfd PFN lookups to return a refcounted
+> >> struct page, which callers hold across fault handling.
+> >>
+> >> Holding a page reference across fault handling is problematic for
+> >> guest_memfd. In-place memory conversions between confidential
+> >> computing shared and private states inspect folio refcounts to ensure
+> >> exclusive ownership by guest_memfd. A concurrent guest page fault
+> >> taking a reference on the folio causes conversions to fail due to an
+> >> elevated refcount.
+> > Nit:
+> > As this series is based on kvm-x86/next, where there's no in-place memory
+> > conversion yet, kvm_gmem_get_pfn() does not hold shared filemap invalidate lock.
+> >
+> > However, the benefit of dropping the folio reference immediately before
+> > returning from the guest_memfd PFN lookup -- preventing conversion failures due
+> > to an elevated refcount -- should be effective only if the reference is dropped
+> > before releasing the shared filemap invalidate lock.
+> >
+> > Do we need to make this info clear, since I think it's important? :)
+> >
 > 
-> This includes several updates, that are conditioned on the system
-> supporting per-guest_memfd attributes (kvm_has_gmem_attributes):
+> Is this what you meant?
 > 
-> 1. Set up guest_memfd requesting MMAP and INIT_SHARED.
+>   In-place conversions uses the filemap_invalidate_lock() for
+>   synchronization of shared/private state. In kvm_gmem_get_pfn(), the
+>   PFN needs to be prepared according to its shared/private state. Hence,
+>   the filemap_invalidate_lock() is held while guest_memfd gets a folio
+>   and decides to make private before returning a PFN.
+> 
+>   In kvm_gmem_get_pfn(), the folio refcount is dropped before releasing
+>   filemap_invalidate_lock(). This ensures that a competing conversion
+>   grabbing the filemap_invalidate_lock() will never see an elevated
+>   refcount due to guest_memfd's folio-getting process.
+> 
+> It seems a bit weird to fit this into the commit message for this
+> patch. I think I could put the above two paragraphs into the patch that
+> introduces the filemap_invalidate_lock in kvm_gmem_get_pfn()?
+Ok. Makes sense.
 
-If I understand correctly, even with in-place gmem, the model that 
-shared memory comes from the userspace_addr and private memory comes 
-from gmem can still work without passing GUEST_MEMFD_FLAG_MMAP flag.
+> >> guest_memfd already notifies KVM of page invalidations, so callers
+> >> within KVM only need to respect the MMU invalidation protocol to safely
+> >> rely on guest_memfd for page presence.
+> >>
+> >> Furthermore, removing struct page from the guest_memfd PFN lookup moves
+> >> KVM closer toward supporting memory backends that are not backed by
+> >> struct page.
+> >
+> > Could we also explain why the lack of SetPageDirty() (and mark_page_accessed())
+> > for a gmem page, due to NULL being passed to kvm_release_faultin_page(), is
+> > harmless?
+> >
+> 
+> Sounds good. What do you think of this, continuing from the paragraph
+> beginning "Furthermore":
+> 
+>   Drop the folio reference immediately before returning from the
+>   guest_memfd PFN lookup, and stop returning the struct page pointer.
+> 
+>   ARM's gmem_abort() is guest_memfd specific. Since guest_memfd no longer
+>   returns a page pointer, there's also no need to do any
+>   freeing. kvm_release_faultin_page() originally also serves to set the page
+>   dirty and accessed under some conditions. The dirty and accessed flags
+>   don't matter for guest_memfd anyway, so it is safe to just drop the call to
+>   kvm_release_faultin_page().
+> 
+>   For ARM's kvm_translate_vncr(), initialize the local page pointer to NULL
+>   so that the shared cleanup path that releases fault-in pages safely no-ops
+>   for guest_memfd.
+> 
+>   For x86, no additional changes are required in the MMU fault path
+>   because the page fault tracking structure is zero-initialized at the
+>   start of page fault handling, ensuring the refcounted page pointer is
+>   already NULL.
+LGTM. Thank you!
 
-Since this model is not prohibited by KVM. I think we should keep the 
-testcase for this model to ensure test coverage?
