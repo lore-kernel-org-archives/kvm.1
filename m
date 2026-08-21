@@ -1,249 +1,236 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F54836AB46;
-	Fri, 21 Aug 2026 03:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787282413; cv=fail; b=ThevkiAsm1EWeMbaEr6NXWGE5FezKXaqlk1qX1wK67A00C8BHv1aoqyBPvfih45rfDvbVEVuIcpuFVx3OHR8npLLY46by7YZUO0Iu79ZGPObAb+VRads6gsdGnJOkuYtvmtM92ch6EJQ0dR87EHOdOwbQg1bp9RsLQDlROCtP1Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787282413; c=relaxed/simple;
-	bh=cd2uguk9UB5FLxJUWQFX5NjUl7nw+ci7/CvKCZ/Ty/Q=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Okd2ns3zxBPr405SUMKkjLV48zCu2FLqoT47QkTodE9H8PupHbPOz6/7N3sbImq6Cu4V+YhLeVc4q1oCvp6UXaGfgz+Y47uFCtQ1aiNhAwSj/8QQBTK3obyH4Haykw2rMZZAbYk4RucBxz9WFuMoXJkdQhxlxd/rmQp9cMUBFwY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=djOqvs8Z; arc=fail smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167B9371067
+	for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 03:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787282560; cv=none; b=gLS44nkAbOxMPb6S1UDNadWae7juBGHmh5wthUu7LJsDZEzLcUXFbRRlHpCAEMS8mBIzpzSNKeoNM1xaapbQmM5xify6Lcg7jvsVhSTbMmwi4IsrK2x8i6uG6bzCMot6OmfrPH9iA1Cq4Tp5sArh9zdiGgx9oN8v8IIG+emUg2o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787282560; c=relaxed/simple;
+	bh=tgJloRfeeS7oreM0fNCdGrfk46K+Jnqydc5/4HZLxeo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PWEdClY871j+BuaB6lj5mf+cfOHfu3Ceoeh9heXkpIw1YF9OeRAjaqk/rZOb7r8HV6O6XnBZw+/0hUgWfXFSt7g8bCQgyKsnddITyZPBW2Wp0us3dMomeLdVqFXYx3bLVwAr7piNpHAGF5KlY+E9AdHa+CDfKE9wyqEUR9PGepE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X4p/2bZR; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="djOqvs8Z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787282410; x=1818818410;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=cd2uguk9UB5FLxJUWQFX5NjUl7nw+ci7/CvKCZ/Ty/Q=;
-  b=djOqvs8ZbR0HNAZs/Ea5l9gn6BpEfa4n3ranmEKPm5raTSyfFJL9MSVP
-   eeBqQoKMbLVj947InCRHHpLiRhc8zwEyNpQyBV2yf5kEwmzLyWeCanAY/
-   JlWt+29l1Ukyvo+3xkRZABA6nPHnQ5GtbXeDEy2un3MMHBuiNHvRI3EFx
-   kX4e+1O6kmNJGPQGQnf6zpSgsKplO+rQT6mzxVCxhbt0iszyKv4LiqGC5
-   EgqBjXJVincrNNsLPEjpM/aMr8B6h7JtoeCEIsuhKJaDM4a0iftaEkf1d
-   OKaFkYN0z6nrqGKXhneT7jgzB/SAm4L4DASSlRmzJ07PU+xiBxXM5ALwD
-   w==;
-X-CSE-ConnectionGUID: HLFsIo3KT1y6Bce6aRrjDQ==
-X-CSE-MsgGUID: VjsneyEmRZqsuY0/c9r0Bw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="87595828"
-X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
-   d="scan'208";a="87595828"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:20:06 -0700
-X-CSE-ConnectionGUID: sWcT2JDXQYOoyRRqfGNmbw==
-X-CSE-MsgGUID: cpnxZn47RmKo8apL2bDhOg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
-   d="scan'208";a="264920506"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:20:07 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 20 Aug 2026 20:20:06 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Thu, 20 Aug 2026 20:20:06 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.6) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 20 Aug 2026 20:19:53 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ERugc1w1SKbS2ezsevtzYp/3GY9pxAiI5LDG9RNBbLXWrod22JYmniWMjpnFpNnDhplxAzBPcJqRmLD6/U16E3NLBmzk0Cgn9XDFRnQvME/TifJAJNstTYGHK4cava9i8a/1h6ARQIhq5VICk7aKRmvEMuZWwwkFc4vAdDkJJbkYCnNEDiiyYFcJhhlRQlDQ3kkN8RqVv/wPdRCFSnCUkc1zFBBUg+CXRaBjKwsqw/zwvNyTcaAE3CCCRYmEyH/v8gZD8z5WZkdyYhsHT8VqcqWX8ANFceYqcFBsxzuVoJHWc9oEM9CA4iCbIKGbhyV/aezXpYOSg4dqfy110FluxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H4irVj/n/HZz+b0MFf+2Vf9YnSgv12zYihGNH9HeDDE=;
- b=Zh2dOu5Y8dfjMOcSEZfZMISUhbT7Wl8iH4lQD1XWvjCUvVnBfXvZBjSNYmyblTwD/0oVZy72ma4hbvk9Dq2obi+KGahX1SZrFLXNxEPKdQHhHkQ0SzXaAcPKly78uQ6xRXMbV26tXum4dJe6iSw1pxU72gnr+e1INwnwr56MkW/vV7gVIOVXnBEHIvm2S41l4MOAEumFreVxUvVQ5vVMjaJ6IGC1OtID+PCIHsMpdsnTw2o65UyRJJH6Y4xOv94czRbzksM0L50fn74xEYcYV82KgpIblclQqSeXmshOr5JlNsG6GToYAOw5qodR6jxz5rdsZHMNKKMsou5wOMOXIQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DSVPR11MB9579.namprd11.prod.outlook.com (2603:10b6:8:383::17)
- by LV8PR11MB8463.namprd11.prod.outlook.com (2603:10b6:408:1ed::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.10; Fri, 21 Aug
- 2026 03:19:50 +0000
-Received: from DSVPR11MB9579.namprd11.prod.outlook.com
- ([fe80::ab5f:5d0f:fb90:9d]) by DSVPR11MB9579.namprd11.prod.outlook.com
- ([fe80::ab5f:5d0f:fb90:9d%3]) with mapi id 15.21.0339.008; Fri, 21 Aug 2026
- 03:19:48 +0000
-Date: Fri, 21 Aug 2026 11:19:24 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Ackerley Tng <ackerleytng@google.com>
-CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
-	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
-	<hpa@zytor.com>, Ashish Kalra <ashish.kalra@amd.com>, Michael Roth
-	<michael.roth@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, Marc Zyngier
-	<maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly
-	<joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose
-	<suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas
-	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, David Hildenbrand
-	<david@kernel.org>, Fuad Tabba <tabba@google.com>, "Edgecombe, Rick P"
-	<rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>,
-	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>
-Subject: Re: [PATCH v2 4/4] KVM: guest_memfd: Stop returning struct page from
- PFN lookup
-Message-ID: <aofDvFeASNE0ihkv@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20260818-gmem-no-return-page-v2-0-5298f42d49bb@google.com>
- <20260818-gmem-no-return-page-v2-4-5298f42d49bb@google.com>
- <aoVut/h1u7HdFxkR@yzhao56-desk.sh.intel.com>
- <CAEvNRgFFs2BC7m8YH7RnQSysU+eDqOjQpqAxL09mwJgrT_iYww@mail.gmail.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <CAEvNRgFFs2BC7m8YH7RnQSysU+eDqOjQpqAxL09mwJgrT_iYww@mail.gmail.com>
-X-ClientProxiedBy: TPYP295CA0040.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:7d0:7::12) To DSVPR11MB9579.namprd11.prod.outlook.com
- (2603:10b6:8:383::17)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X4p/2bZR"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38dcbade417so487888a91.1
+        for <kvm@vger.kernel.org>; Thu, 20 Aug 2026 20:22:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787282555; x=1787887355; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FArwaMZX2eiWKPnzPqfz9Xd0f0Z/D0qbA/uRrn33MqI=;
+        b=X4p/2bZRGkRwiBU992cep3/Y217FicN0TNw2aN21xdp+Nted+ls3p0xMhFSXjRxrGo
+         8Px4bPYAP7uA+3pVxrw0KFxrfZUgUHrOwsdSI+5jUYI2LlNht30aN38fpvhrjthTWmj7
+         JRdCqYK2Z+jM5MFkuxq3ClkKl2pj/GMA9W/hpuwCTvlCyb0bP6BZFokc//xiCW2Buyjy
+         DgPJg1iEYG8l7UecFPMWcmK1t244P5ggVoDAYcKDXg4+RHTjAnsZhfL0BHe96QQz0xMs
+         NjwGg0mnJvHWhoLWnJyJ796QCYSteR3tn9bSfpY39Wy6jFIdQMEq9IL8xbTVpaKb609K
+         Mf1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787282555; x=1787887355;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FArwaMZX2eiWKPnzPqfz9Xd0f0Z/D0qbA/uRrn33MqI=;
+        b=nyI+u5GFhCQ4zFY3Mq2pjkhukQKGcfUargQ/mZaoDzOW0QrFO3xhyD0PP8MDiDVi7R
+         1ev2dm8Db2vr4DgvAeEY75Wre2JuAPhUc7tggE0Dw83XwCQmE26Zmo1jG6JyYgJjl9M1
+         fiNaW98HVUHy0DH3FzsgZKyuOQmQdhvL3oXP5Lpk4KGa2LMbBG4aR//0tW7eyBAhQ+yX
+         GF64nyV7AK50haA6dfgx/4oyYwb3zI5JahNiyBfAp8699AIu5RFBDJrU1EKuQY2ie7x2
+         XOl+i3O69IMGMTiurthbduXnXo2zd+tzpXA00mcbPvHLRHkOdtPDGeEct/jpXHFj0k3D
+         If0Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpNE4XDnuwpTIVIw20A0gamo7nVSaqya9ZSDKZ+CoN52WMDR9OINmZp399IDXIy4DLU2cY=@vger.kernel.org
+X-Gm-Message-State: AFuF++kvhoR8aiIROW9IyQYD7V04EcP8Tl7poVhASV+TnWEqHYi4aX+o
+	5PjswKb5EmNOfIxOptgY3LQypvuiuKjBzeWMj8lyZMtC+XhcSrhCwCX0
+X-Gm-Gg: AR+sD10s112hx8/KzfsLOX5fc03irx3CkNHvkrQ286KGc3Sj35v7bA9yKfi/tjVWUyg
+	r0beEicZEz6Av97xK1noF8hbPC/J9aK+7KZbLBGj/QfTV41LDdhhLfi1WgUXe5iH5Exo1rCe3da
+	HQYcqVsq4PcAtllA/AOElzYX3vrWlKNBccDqP2huqlqZ1oP/J1LO7h9Sdpzzo3p5uo+R/bCePCj
+	78vcn9N/RbHPVzTITqeVzoDN6pSUBqgwBNrZTzo+I+pInQdMh08BJczuyMWjcuLIYXDDUQVDNJ3
+	sfDsKubRI1PyiNEmY1uiNBBlFR+wG9OHCJ1fTdSs60PtkClNpYFJ3evir2mK/Q2R1jjy+W2Ri7z
+	ZDqvgKvesI20VORv4lRawVyACXnBdkHTMa/Keu0B/PuDgnVYEeTxb6ToL9vNz/0KSWojWLNWd8H
+	eOrXSN5TBqFd406Yn7ofiJZMLIVQ1AeZXT2oKnxYA62yTGYqA8QULrXwMbBwqycgQaUjPHEdZMo
+	uaI+TM=
+X-Received: by 2002:a17:90b:4484:b0:392:b509:b1a5 with SMTP id 98e67ed59e1d1-395c3552988mr4946396a91.14.1787282546673;
+        Thu, 20 Aug 2026 20:22:26 -0700 (PDT)
+Received: from kernel.tail6741c6.ts.net ([116.128.244.169])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395c45539a1sm1199574a91.3.2026.08.20.20.22.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2026 20:22:26 -0700 (PDT)
+From: Kunwu Chan <kunwu.chan@gmail.com>
+X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Kunwu Chan <kunwu.chan@linux.dev>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Sean Christopherson <seanjc@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	rcu@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] srcu: Add try_synchronize_srcu() for callers which can prove readers absent
+Date: Fri, 21 Aug 2026 11:22:05 +0800
+Message-ID: <20260821032210.792451-1-kunwu.chan@linux.dev>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <0f4dea21bac43685d3286df329401177e4452b36.camel@infradead.org>
+References: 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DSVPR11MB9579:EE_|LV8PR11MB8463:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1c711a31-29c5-44dd-1e6c-08deff330e85
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|56012099006|4143699003|11063799006|3023799007|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: T3vKudCmMVsl+h7q6ySMf/fZPgWEgYoK9QPNtnGOpEilq+qLcQUBVZv+uwzoRgmaDuyruSI/dcGOODnW3iYCDfU8+6YNKV26wPkmtVqh+IBZGoDqN5IE1rAm+T/44+tU3K+QHa+F5HoY5eHFwaeHS2gsZQdrL/2umuaS9O4EnvtGF3ZdsWkot6ej7JCHZP99xCzRP5daxtlIMLg/ilvGLdyk1+hc4Qwe5879ie2SOFGGd7HkNZzd+lGeS4wMb0nnH5lsyFGNsQ1kFDiPyxL0r/9VG9KhCmMYfSkpf4Yl7PI8X4MXyfAP6eADnyFWWhE+EW4ZFHzPUiNVDki2i9IgVXpXbVmvjZml6hgcrUirUYq0OwRhroTZdjhwL7/5ymZ++12l7UNQ3kA5iyys46W9yC8USd9s5i4IHLZRtQafy7zuhyXtCB34u9w2FN8NW0nPygPCcPcGB8kRMOr55gAb1HqjDAl/5hendvmL9zzTToVJhvfCPKsJXQx5sH9bpcEaN5ssNiyk9aWte2KNe3Xlq9F+V9iJtT0puqhpsWoSn+TENm59VqZ3boClY94znW2t/ck+LIWm78BL2LBAOyz832RxIDTkewHZcVCvmuQoBHF9XmGwY/sTLZmrFqFe6dww9LTmm6H5/WoQq8eRhZE4HLjKjVX30b/Sp4zjyqi0yDQ=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DSVPR11MB9579.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(56012099006)(4143699003)(11063799006)(3023799007)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?mFowjQKV41zrnVOd8vwDI+l1xKrzC7Om/FyN9zGlaX5ptq5QAIs25uGARL10?=
- =?us-ascii?Q?Xbs+/Ilcx+2jjMwRpU1q1EMr3+f3WNda19mjVIHL3EWpo8TjHx4RRzLnnRnq?=
- =?us-ascii?Q?dEGRr6sEuAHl4dw7CMQiLvNV1Ai2q6xOAz5nMURfOuM7xSVhb4imsolQmFt8?=
- =?us-ascii?Q?9RAUPPzFNQSfb1ze6p7cUHFv79XmbYgXowgnX4gA5lVtaKRJBbiku6usbJIk?=
- =?us-ascii?Q?iJafzWQHzDdMZxF6sUXocTJGkx6xRJMhs45bt/gwv35YbEmpNDULEaklJaeV?=
- =?us-ascii?Q?gZXFUjps3kVAB6JotN6XoMGAenSrbSDJccyqP4mhWW0TW/ZT33ZSEdaHiehP?=
- =?us-ascii?Q?IXAgBclFucLPdDttGVNDL4g3n5IkjyGoq+vwUV0o0NVm6I2tLiUI67+NDKCF?=
- =?us-ascii?Q?D6S5eEivlColf9R+N9XLewOoGdnFmEjHXAv5L9UJran++aIFve5A2030I+JL?=
- =?us-ascii?Q?h37yTZ4U6fzyrzFKDi2U/xqJI4grvoYtUgngAUEu1HXNYVjrYEMBeg390eKk?=
- =?us-ascii?Q?Shk/EPs/hNVjxxM+mhD8ZYCSk89rPlKuRmugnGJ628nRBl+qZ7CXzswE1gc0?=
- =?us-ascii?Q?PVbUvWhjQvRwkQ2/GVESaUPI9Q2bcJ1Q9VMnrUPcAjWQtFcB2i2oorDlLKaP?=
- =?us-ascii?Q?/4P6Kngc/6XYg2pE6B5M0XyyiCE+TNt86TLuGzjlJjN0/1ds9aNEDy+1PtMs?=
- =?us-ascii?Q?Xbz6d/p6YUXN/vxmvITEArS9f6P61ki2ony0apNsHcZz/X97uWesMvPyIhpT?=
- =?us-ascii?Q?SV8cRo0PGq0XeqpYq5jjmruuiMt4pgfAH1caPw6TbLLNqZ//92AnhWLUd+bF?=
- =?us-ascii?Q?Z0io2eBreTZ3XJaIj26kNHXTgthi4RhUIGf7ig0aezA7JP1ZZVUghw3ucHe7?=
- =?us-ascii?Q?7YRftOqpB4AEvnG03P06c82UL9Gcjd0oWHsNqAeUZbu9nj9O44rEgKscetTH?=
- =?us-ascii?Q?xoYo31YTynQuxAHRlZ7dY/U/0j2TOQPKY0ZvdfGAVMJ4lJshx3O9jFZ3sn3L?=
- =?us-ascii?Q?1EG2Ka8zLgsZh4YaAnlbC2y5c2wftwEwbouoICImLyFZnlveg6VKKIqTCYtw?=
- =?us-ascii?Q?orum+tI/3SqXOkZQhYYPsfNWNp24+Xf3Fu1cu6n6vISxqXTjBCRHr7JA6FfJ?=
- =?us-ascii?Q?ToJIlIUTj4CaITEArKId/219q+17u/AuOkBOLFrIIHBdH3y3gCBTf34zu4G9?=
- =?us-ascii?Q?fFW1gwWIYR95nQTxPE98KD+fAZP8YTDfzF2N5IsQ/ofpVx305bdjvf5Fyary?=
- =?us-ascii?Q?mkSKBM8Z1K3Fr0l2fW4NScahtQi6A7N4GGxYcZClr/mgOX+NuuguLjYS2K+/?=
- =?us-ascii?Q?c/Yl+6hfwPnz43BEyRcfhgqo9SoNj9OhPRv6kdl7V26jIgpah0ZC2N6gwsr+?=
- =?us-ascii?Q?w+G3ovaUwXqDfGHzg3p/b+iHMWpgKyYaHXs1pl1Ir9lK50pUyLv/ImmrZQxb?=
- =?us-ascii?Q?Xcdg5IGSWE9wUY4tBPJ4bINxZtdp2j6LATs2WQyJZ8aJ6ypnHrXbDe2zvaUq?=
- =?us-ascii?Q?Qvltn8kUcSYVgKzbni7+NBzl78L+yMrIU4ZIvYRKliQ5Q5M3mRBEMU1N3+2r?=
- =?us-ascii?Q?SAg4W66rSAPe/hU6lNMGaw7hZy7dFG94t6xWKw75Q1IX2Xe1HvNVOVSrmdCm?=
- =?us-ascii?Q?vnL5RTuY7LqSHPXH5jt1la97Hqyn0pIcG9As8K2+9xdJx0yk7uTgmWrorN3e?=
- =?us-ascii?Q?2AfYTOrgocSelAvVjPdmmyXLP2kkCtjKXsvzypfnk90QAKzpFR0K1rNH3Om2?=
- =?us-ascii?Q?itRIq95Cew=3D=3D?=
-X-Exchange-RoutingPolicyChecked: UrXXsj8/8VA7Pa9ASha1OgBdzqmHp+5ITyiYuGpzz/wnkpUp2bxjUuLAmsj2Hhlk1Kv82YUhG9v/gVE/7+NgGaqa0oHktzMWU/65ixUKnM2YrdNlAxmrvgWqGSvwntLjKSATXYxXgSmmpOEvCQ/iFxXpnfZ5lZkhPBi5TXRumaYX7n0eGhFHlVpqmdAcb5Lnt6Mq1anYdORpfyqRdKBrXO8pzPHhgs0IEUM34aJeSkBBu/qhMC/l0ZhdpyRzjiTWrvxIB2MQ70hsMh4YvE6Pz9fp7vyKj87H/7tvcSXxJ3DGuLTijLAt0iCM+YbZHOczJFD0JDGKepdHgAnpoFulqg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1c711a31-29c5-44dd-1e6c-08deff330e85
-X-MS-Exchange-CrossTenant-AuthSource: DSVPR11MB9579.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 03:19:48.6228
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oGiGrhVB7JX8AHIKyB8tKZ2cs3MoYrjKBtbtBf2xukGGjhzmzmB9w+Wgt2kKdwfgvGUGJfLqp+qG5tdziVq1uA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR11MB8463
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 20, 2026 at 07:47:51AM -0700, Ackerley Tng wrote:
-> Yan Zhao <yan.y.zhao@intel.com> writes:
-> 
-> > On Tue, Aug 18, 2026 at 09:15:55AM +0000, Ackerley Tng wrote:
-> >> From: Sean Christopherson <seanjc@google.com>
-> >>
-> >> KVM currently expects guest_memfd PFN lookups to return a refcounted
-> >> struct page, which callers hold across fault handling.
-> >>
-> >> Holding a page reference across fault handling is problematic for
-> >> guest_memfd. In-place memory conversions between confidential
-> >> computing shared and private states inspect folio refcounts to ensure
-> >> exclusive ownership by guest_memfd. A concurrent guest page fault
-> >> taking a reference on the folio causes conversions to fail due to an
-> >> elevated refcount.
-> > Nit:
-> > As this series is based on kvm-x86/next, where there's no in-place memory
-> > conversion yet, kvm_gmem_get_pfn() does not hold shared filemap invalidate lock.
-> >
-> > However, the benefit of dropping the folio reference immediately before
-> > returning from the guest_memfd PFN lookup -- preventing conversion failures due
-> > to an elevated refcount -- should be effective only if the reference is dropped
-> > before releasing the shared filemap invalidate lock.
-> >
-> > Do we need to make this info clear, since I think it's important? :)
-> >
-> 
-> Is this what you meant?
-> 
->   In-place conversions uses the filemap_invalidate_lock() for
->   synchronization of shared/private state. In kvm_gmem_get_pfn(), the
->   PFN needs to be prepared according to its shared/private state. Hence,
->   the filemap_invalidate_lock() is held while guest_memfd gets a folio
->   and decides to make private before returning a PFN.
-> 
->   In kvm_gmem_get_pfn(), the folio refcount is dropped before releasing
->   filemap_invalidate_lock(). This ensures that a competing conversion
->   grabbing the filemap_invalidate_lock() will never see an elevated
->   refcount due to guest_memfd's folio-getting process.
-> 
-> It seems a bit weird to fit this into the commit message for this
-> patch. I think I could put the above two paragraphs into the patch that
-> introduces the filemap_invalidate_lock in kvm_gmem_get_pfn()?
-Ok. Makes sense.
 
-> >> guest_memfd already notifies KVM of page invalidations, so callers
-> >> within KVM only need to respect the MMU invalidation protocol to safely
-> >> rely on guest_memfd for page presence.
-> >>
-> >> Furthermore, removing struct page from the guest_memfd PFN lookup moves
-> >> KVM closer toward supporting memory backends that are not backed by
-> >> struct page.
-> >
-> > Could we also explain why the lack of SetPageDirty() (and mark_page_accessed())
-> > for a gmem page, due to NULL being passed to kvm_release_faultin_page(), is
-> > harmless?
-> >
-> 
-> Sounds good. What do you think of this, continuing from the paragraph
-> beginning "Furthermore":
-> 
->   Drop the folio reference immediately before returning from the
->   guest_memfd PFN lookup, and stop returning the struct page pointer.
-> 
->   ARM's gmem_abort() is guest_memfd specific. Since guest_memfd no longer
->   returns a page pointer, there's also no need to do any
->   freeing. kvm_release_faultin_page() originally also serves to set the page
->   dirty and accessed under some conditions. The dirty and accessed flags
->   don't matter for guest_memfd anyway, so it is safe to just drop the call to
->   kvm_release_faultin_page().
-> 
->   For ARM's kvm_translate_vncr(), initialize the local page pointer to NULL
->   so that the shared cleanup path that releases fault-in pages safely no-ops
->   for guest_memfd.
-> 
->   For x86, no additional changes are required in the MMU fault path
->   because the page fault tracking structure is zero-initialized at the
->   start of page fault handling, ensuring the refcounted page pointer is
->   already NULL.
-LGTM. Thank you!
+Hi David,
 
+Thanks for the patch.
+
+On Wed, 12 Aug 2026 13:32:48 +0100 David Woodhouse <dwmw2@infradead.org> wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> For a dedicated srcu_struct whose read-side critical sections are
+> short, atomic, and usually absent — such as one converted from a
+> spinning lock — the common case at synchronize time is that there are
+> no readers at all. Even synchronize_srcu_expedited() still costs the
+> caller an unconditional sleep and two trips through the SRCU workqueue
+
+If the common case is that there are no readers and the new fast path
+is intended to avoid the SRCU grace-period machinery, could you explain
+what property of SRCU is still required by the proposed users that
+prevents using ordinary RCU instead?
+
+> And synchronize_srcu()'s auto-expedite heuristic explicitly
+> declines to expedite within exp_holdoff (25µs) of the previous grace
+> period, which is exactly the regime a burst of back-to-back
+> invalidations puts such a domain in.
+> 
+
+Could this use case instead be addressed by making exp_holdoff
+configurable per srcu_struct, or otherwise allowing a dedicated SRCU
+domain to use a more aggressive expedite policy?
+
+If not, what makes the proposed try path preferable to changing the
+expedite policy?
+
+> Provide try_synchronize_srcu(), which proves the no-readers case
+> inline and returns true without sleeping, without the workqueue, and
+> without advancing the grace-period sequence (so cookies from
+> get_state_synchronize_srcu() and queued callbacks are unaffected). If
+
+Could you also clarify why observing no readers during this
+check is sufficient for the reclamation/happens-before guarantee
+required by the proposed callers?
+
+Since a successful try_synchronize_srcu() does not advance srcu_gp_seq, 
+flip the SRCU index, or process callbacks, could we document more 
+explicitly that a successful try provides the required 
+reclamation/happens-before guarantee to the caller, but does not 
+constitute an SRCU grace-period completion for the state/callback APIs?
+
+
+> the proof fails, it returns false and the caller falls back:
+> 
+> 	if (!try_synchronize_srcu(ssp))
+> 		synchronize_srcu_expedited(ssp);
+> 
+> For Tree SRCU the proof sums both epochs' unlock counters, executes a
+> full barrier, then sums both epochs' lock counters. Equality proves a
+
+One question about the barriers: the existing
+srcu_readers_active_idx_check() relies on the barrier between the
+unlock-counter and lock-counter reads to provide the ordering with the
+reader-side barrier; the !did_gp path there has no barrier before the
+unlock-counter read.
+ 
+[...]
+> +	smp_mb();
+> +
+> +	unlocks0 = srcu_readers_unlock_idx(ssp, 0, &rdm0);
+> +	unlocks1 = srcu_readers_unlock_idx(ssp, 1, &rdm1);
+> +
+> +	/*
+> +	 * Reader flavors which elide the read-side smp_mb() that the
+> +	 * pairing above depends on cannot be proven absent this way;
+> +	 * they need a real grace period.
+> +	 */
+> +	if ((rdm0 | rdm1) & SRCU_READ_FLAVOR_SLOWGP)
+> +		return false;
+> +
+> +	/*
+> +	 * As in srcu_readers_active_idx_check(): ensure that a lock is
+> +	 * always counted if the corresponding unlock is counted, so that
+> +	 * a reader racing with these sums can only inflate the lock sum
+> +	 * and force the (safe) fallback. Summing both epochs means no
+> +	 * index flip is needed: a stable equality proves there was a
+> +	 * moment in this function at which no readers existed at all.
+> +	 */
+> +	smp_mb();
+
+And, the middle smp_mb() appears to occupy the same position, while
+the final smp_mb() orders the caller's subsequent accesses after a
+successful proof.
+
+What ordering edge does the first smp_mb() establish that is not
+already provided by the middle and final barriers? I couldn't identify
+a specific execution requiring it from the current comment or code
+structure.
+
+Could you point out the ordering requirement for the first smp_mb(),
+or provide an LKMM argument showing why it is needed?
+
+If there is no additional ordering requirement, could it be removed to
+avoid an extra full memory barrier in this fast path?
+
+> +
+> +	if (!srcu_readers_lock_idx(ssp, 0, false, unlocks0))
+> +		return false;
+> +	if (!srcu_readers_lock_idx(ssp, 1, false, unlocks1))
+> +		return false;
+> +
+> +	/* Order the caller's subsequent accesses after the proof. */
+> +	smp_mb();
+> +	return true;
+> +}
+> +EXPORT_SYMBOL_GPL(try_synchronize_srcu);
+
+One more question about the documented fallback: synchronize_srcu()
+and __synchronize_srcu() use
+RCU_LOCKDEP_WARN(lockdep_is_held(ssp) || ...) to catch invocation from
+within a same-type SRCU read-side critical section.
+
+try_synchronize_srcu() does not appear to perform the corresponding
+check. A caller inside an SRCU read-side critical section would fail
+the fast-path proof and then follow the documented expedited fallback,
+resulting in a self-deadlock without the corresponding lockdep diagnostic.
+
+Would it make sense to perform the same lockdep check in the try path?
+
+When applying this to current rcu/dev, the patch also needs to account
+for the additional bool is_atomic argument to
+check_init_srcu_struct(). Please rebase accordingly.
+
+Thanks,
+KunWu
+> +
+>  /**
+>   * get_state_synchronize_srcu - Provide an end-of-grace-period cookie
+>   * @ssp: srcu_struct to provide cookie for.
+> -- 
+> 2.43.0
+> 
+> 
+
+Sent using hkml (https://github.com/sjp38/hackermail)
