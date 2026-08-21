@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD1E377023;
-	Fri, 21 Aug 2026 22:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EE43769F8;
+	Fri, 21 Aug 2026 22:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787351450; cv=none; b=ThmAS84ZqOLDX3WiXb5z3dHk1WgKTrorQDtMl5WPibFLA7ZkTlpS5I2kE+GGdDOFE+SRc7NQidK7X5Chnt1J3pL1NdYxX6Fm10+DiTXKgGbfMrVpF2gdI4/99FMUb2uoEgu+OEvO20pLIysu28tBRP3hXG9DeezHEJfPL9SJwug=
+	t=1787351452; cv=none; b=gTad9iafTtm9UI7PAlKW8sdbPD6RMKcraJ+IxWXDwgeHT2YrhzeoHIGYxl0lzxQzkOoWUZ5BzqvkjM8B14ZbVSSBzib+0eN5Ldh/zikp1AcunRAah5+xtQMNOLECrmqX63qYso06NeuF80T8XivsjfC3nPMBFsq3b70PdksXj9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787351450; c=relaxed/simple;
-	bh=GJlJniQ0Reto8D5v5MSYGurk8Mcw50akJYMXDVGQBX0=;
+	s=arc-20240116; t=1787351452; c=relaxed/simple;
+	bh=nN5L1YamjWTwnVOneurmy5Txa+koayj2WyZ0y+bPzas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=olvWhbYoCktCtiXXaWdDEwzj13QLvZuqyh7A8G4XwUvhL3Bq2xy88vqIIqW7HAj9wVP7QOkavQTEkp64XSNKfu5fYp6JffgopFsMwOZjr4nRSKDvKjXsK8ajuM/4enlLW7nLXGoeSV4+YWZw0A5ex7FFkDM2HByZl7SoJI4/54E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BcYEpcrS; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=c+G2Tw6JC8TDNavQmtqDcEypARTDlyAgt1/IILcvtP3iFR2P/dZCUwddBbV7kUwZGjeFhP5MEh+0WkN/QqmUVfiZfIdfTnrtoPlcP9n7xHm+1xA7D8w11Jn+VsgC7yZPmSSntiOqV5c/6rWdLwoevAQYjgunK6FVSJYSz7nSUTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AWLmRj8n; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BcYEpcrS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AWLmRj8n"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787351446; x=1818887446;
+  t=1787351447; x=1818887447;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=GJlJniQ0Reto8D5v5MSYGurk8Mcw50akJYMXDVGQBX0=;
-  b=BcYEpcrSrSwJlRaYQMZX8a/qyWLk3JR3iC8lV4EnGoU2r3zyx5RwNGgX
-   FETG+kP71vN1OdJg4GdX9wEQ+z5d57nYRu5g1XAx2sJLgNLrC4wcnOxaE
-   gzG6VPGXln/UtvCSXK2g6mqcqxnD3/DhFX6GF+YuLFDFFq81fr9MQJJCx
-   G4qw7gk0eIoII8OlYVgg0zmYVzRVuxSyH39L1azF0SQORr2nGSl6sZNi1
-   BAwwGP+1GorFKiVHoGvVNW2hx4ie86izWv/ChdHjjPfrGT8VRcw0ENPbi
-   uBbf6D6Z7NnygmtMClCevQNydMd3xzIXuQLvAs2iAaAb6xeq7ZKTCT7vU
-   A==;
-X-CSE-ConnectionGUID: c5iZe+7JTqa0J8MpCB5YTg==
-X-CSE-MsgGUID: ZCQE///bRPact8EidDi5RQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="88032569"
+  bh=nN5L1YamjWTwnVOneurmy5Txa+koayj2WyZ0y+bPzas=;
+  b=AWLmRj8nqMNlKcWHx47tSSbyq3ao0wcNNC+iak2rzqjL1yZYx2uk9qe1
+   T763QIvf8UsdgyJcqQqfOqTkad+h+bAo8QLpwUEPMQX+YE2nQUv14Kd3T
+   m2/21KfCYeHz5Z6/GtaFbrstpaHj+5vKKiqgvCYGtfKD1phWZbIktz3h2
+   XMWQZYvP92dfg/+hPK4/qEkG6eM1sEfTPmSDFhgv5L/A6xuVCfHFoZwJ9
+   yBjrUjTQtUhIx5zSqJQlD9fSV5KbdkTpkjpzgyl6gvAs3Mzp7EGlM9MWO
+   wSnb0e4T695CZGUV60jZ2eaACPSZlliJDflvthZ3ytpXI2sScU2S9vFWu
+   Q==;
+X-CSE-ConnectionGUID: BErBGkTCQH2jNRkaDSLTEQ==
+X-CSE-MsgGUID: L0aiGznbQ5uA+uX/KPYtwg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="88032575"
 X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
-   d="scan'208";a="88032569"
+   d="scan'208";a="88032575"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
   by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 15:30:45 -0700
-X-CSE-ConnectionGUID: t59oE84JRuWDb97B9wfqhQ==
-X-CSE-MsgGUID: pR+mZr7ATNSFEQMgjMNjcw==
+X-CSE-ConnectionGUID: nLwTG8gpRCiunjvwpeywJw==
+X-CSE-MsgGUID: Dr1LY27QQv2kuGoUjpI3yQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
-   d="scan'208";a="271679734"
+   d="scan'208";a="271679739"
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 15:30:44 -0700
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 15:30:45 -0700
 From: Zide Chen <zide.chen@intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -58,9 +58,9 @@ Cc: kvm@vger.kernel.org,
 	Shukla Manali <Manali.Shukla@amd.com>,
 	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Xudong Hao <xudong.hao@intel.com>
-Subject: [PATCH 03/23] perf/x86: Add GUEST_PMU states for PMU partitioning
-Date: Fri, 21 Aug 2026 15:19:42 -0700
-Message-ID: <20260821222002.54907-4-zide.chen@intel.com>
+Subject: [PATCH 04/23] perf/x86: Split host/guest PMI handling under PMU partitioning
+Date: Fri, 21 Aug 2026 15:19:43 -0700
+Message-ID: <20260821222002.54907-5-zide.chen@intel.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260821222002.54907-1-zide.chen@intel.com>
 References: <20260821222002.54907-1-zide.chen@intel.com>
@@ -72,206 +72,235 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently, KVM loads a guest's mediated PMU context in a strict order:
-perf_load_guest_context() runs first (it must execute in host context),
-then PERF_GLOBAL_CTRL is cleared (to avoid spurious PMIs), then
-perf_load_guest_lvtpc() switches the LVTPC hardware vector, and
-finally the guest's PMCs are loaded.
+If PMU partitioning is enabled, LVTPC could route to NMI if any host
+events are scheduled in this CPU. Thus, PMIs that fire in guest context
+can be host- or guest-induced.
 
-Under PMU partitioning, host-owned counters remain available to host
-events. When loading guest context, the perf scheduler must reschedule
-host events off guest-owned counters.
+The host NMI handler processes host-owned PMIs as usual. Guest-induced
+PMIs are marked as handled to avoid unknown NMI warnings, and their
+GLOBAL_STATUS bits deliberately remain untouched in hardware; it's
+KVM's responsibility to inject the corresponding PMIs into the guest.
 
-Add GUEST_PMU_PARTITION_PRELOAD to represent the intermediate state in
-which PMU partitioning constraints are needed for scheduling, but PMU
-partition PMI handling is not yet active. Enter this state through the
-new perf_pmu_partition_preload() helper.
+Other places that write to global MSRs in NMI context also need to
+distinguish host-owned and guest-owned bits, so that they won't clobber
+guest-owned bits. The GLOBAL_CTRL is an exception: its guest value is
+expected to be saved by VMX on VM exit and restored by KVM on VM Entry.
 
-Add GUEST_PMU_PARTITION_NMI for the state after the above _PRELOAD
-state, i.e. the host context transition is complete and guest context
-loading may proceed. LVTPC remains routed to NMI, and the PMU partition
-mask can be applied in the PMI handler.
+Add x86_pmu_partition_nmi_active() to identify when PMU partitioning
+is active and LVTPC is routed to NMI, to help determine when the
+partition mask needs to be applied.
 
-Add GUEST_PMU_MEDIATED to indicate that the LVTPC is set to the fixed
-PERF_GUEST_MEDIATED_PMI_VECTOR, either in the PMU non-partitioned case,
-or the partition setup where no host events are scheduled and no need
-to share NMI with the host.
+The effective mask may differ across guests. Add a per-cpu
+partition_mask field to struct cpu_hw_events, to be updated by KVM
+whenever the effective mask changes on the CPU. This could differ from
+the static x86_pmu.partition_mask, of which the effective mask is a
+subset.
 
 Signed-off-by: Zide Chen <zide.chen@intel.com>
 ---
- arch/x86/events/core.c            | 94 ++++++++++++++++++++++++++++---
- arch/x86/events/perf_event.h      |  2 +
- arch/x86/include/asm/perf_event.h |  1 +
- arch/x86/kvm/pmu.c                |  2 +
- 4 files changed, 91 insertions(+), 8 deletions(-)
+ arch/x86/events/core.c       | 19 +++++++++++-
+ arch/x86/events/intel/core.c | 58 ++++++++++++++++++++++++++++++++++--
+ arch/x86/events/perf_event.h |  8 +++++
+ 3 files changed, 82 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 8032311c0a47..ba441f4d5f3e 100644
+index ba441f4d5f3e..bbae68c49063 100644
 --- a/arch/x86/events/core.c
 +++ b/arch/x86/events/core.c
-@@ -57,7 +57,38 @@ DEFINE_PER_CPU(struct cpu_hw_events, cpu_hw_events) = {
- 	.pmu = &pmu,
- };
- 
--static DEFINE_PER_CPU(bool, guest_lvtpc_loaded);
-+/*
-+ * GUEST_PMU_NONE - No guest mediated PMU context is loaded.
-+ *
-+ * GUEST_PMU_MEDIATED - LVTPC is routed to the dedicated mediated PMI vector
-+ *	instead of NMI, so any PMI in this state can only be guest-induced.
-+ *	This covers both the non-partitioned mediated vPMU model and the PMU
-+ *	partitioning case where the host currently has no events scheduled on
-+ *	this CPU (see perf_load_guest_lvtpc()).
-+ *
-+ * GUEST_PMU_PARTITION_PRELOAD - Entering PMU partitioning guest mode, the host
-+ *	context is still loaded. PMU partitioning constraints must be applied
-+ *	so that host events can be rescheduled onto host-owned counters.
-+ *
-+ * GUEST_PMU_PARTITION_NMI - PMU partitioning is enabled, host event
-+ *	rescheduling is complete, and the host currently has events scheduled
-+ *	on this CPU, so LVTPC is routed to NMI and shared between host- and
-+ *	guest-owned counters: a PMI in this state may be host- or
-+ *	guest-induced.
-+ *
-+ * _PARTITION_PRELOAD and _PARTITION_NMI are distinct because PMU
-+ * partitioning constraints must be visible to the scheduler before host
-+ * events are rescheduled, while PMU partition masking can be applied to PMI
-+ * handling only after the rescheduling completes.
-+ */
-+enum guest_pmu_mode {
-+	GUEST_PMU_NONE,
-+	GUEST_PMU_MEDIATED,
-+	GUEST_PMU_PARTITION_PRELOAD,
-+	GUEST_PMU_PARTITION_NMI,
-+};
-+
-+static DEFINE_PER_CPU(enum guest_pmu_mode, guest_pmu_state);
- 
- DEFINE_STATIC_KEY_FALSE(rdpmc_never_available_key);
- DEFINE_STATIC_KEY_FALSE(rdpmc_always_available_key);
-@@ -1769,21 +1800,63 @@ void perf_events_lapic_init(void)
- 	apic_write(APIC_LVTPC, APIC_DM_NMI);
+@@ -1805,6 +1805,19 @@ bool pmu_partition_configured(void)
+ 	return READ_ONCE(x86_pmu.partition_mask) != 0;
  }
  
-+bool pmu_partition_configured(void)
++bool x86_pmu_partition_nmi_active(void)
 +{
-+	return READ_ONCE(x86_pmu.partition_mask) != 0;
-+}
-+
- #ifdef CONFIG_PERF_GUEST_MEDIATED_PMU
-+/*
-+ * Mark this CPU as running a PMU partitioned guest. Guest PMU partition
-+ * constraints apply from this point, even if host PMU context remains loaded.
-+ */
-+void perf_pmu_partition_preload(void)
-+{
-+	if (pmu_partition_configured())
-+		this_cpu_write(guest_pmu_state, GUEST_PMU_PARTITION_PRELOAD);
-+}
-+EXPORT_SYMBOL_FOR_KVM(perf_pmu_partition_preload);
-+
- void perf_load_guest_lvtpc(u32 guest_lvtpc)
- {
--	u32 masked = guest_lvtpc & APIC_LVT_MASKED;
-+	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+	bool is_pmu_partitioned = pmu_partition_configured();
-+	bool use_nmi;
- 
--	apic_write(APIC_LVTPC,
--		   APIC_DM_FIXED | PERF_GUEST_MEDIATED_PMI_VECTOR | masked);
--	this_cpu_write(guest_lvtpc_loaded, true);
-+	if (is_pmu_partitioned)
-+		WARN_ON_ONCE(this_cpu_read(guest_pmu_state) !=
-+			     GUEST_PMU_PARTITION_PRELOAD);
-+
-+	/*
-+	 * If the host has events scheduled on this CPU, a PMI could be host-
-+	 * or guest-induced, so share NMI with the guest. Otherwise, route
-+	 * LVTPC to the dedicated mediated PMI vector for better
-+	 * performance and simpler handling.
-+	 */
-+	use_nmi = is_pmu_partitioned && cpuc->n_events;
-+	if (!use_nmi)
-+		apic_write(APIC_LVTPC, APIC_DM_FIXED |
-+			   PERF_GUEST_MEDIATED_PMI_VECTOR |
-+			   (guest_lvtpc & APIC_LVT_MASKED));
-+
-+	this_cpu_write(guest_pmu_state,
-+		       use_nmi ? GUEST_PMU_PARTITION_NMI : GUEST_PMU_MEDIATED);
- }
- EXPORT_SYMBOL_FOR_KVM(perf_load_guest_lvtpc);
- 
- void perf_put_guest_lvtpc(void)
- {
--	this_cpu_write(guest_lvtpc_loaded, false);
--	apic_write(APIC_LVTPC, APIC_DM_NMI);
 +	enum guest_pmu_mode state = this_cpu_read(guest_pmu_state);
 +
-+	this_cpu_write(guest_pmu_state, GUEST_PMU_NONE);
++	return pmu_partition_configured() &&
++	       state == GUEST_PMU_PARTITION_NMI;
++}
 +
-+	/*
-+	 * LVTPC needs restoring to NMI unless it's already routed there, i.e.
-+	 * unless LVTPC was left routed to the dedicated mediated PMI vector
-+	 * (see perf_load_guest_lvtpc()).
-+	 */
-+	if (state == GUEST_PMU_MEDIATED)
-+		apic_write(APIC_LVTPC, APIC_DM_NMI);
- }
- EXPORT_SYMBOL_FOR_KVM(perf_put_guest_lvtpc);
- #endif /* CONFIG_PERF_GUEST_MEDIATED_PMU */
-@@ -1802,8 +1875,13 @@ perf_event_nmi_handler(unsigned int cmd, struct pt_regs *regs)
- 	 * loaded will generate false positives and clobber guest state.  Note,
- 	 * the LVTPC is switched to/from the dedicated mediated PMI IRQ vector
- 	 * while host events are quiesced.
++u64 x86_pmu_current_partition_mask(void)
++{
++	return this_cpu_ptr(&cpu_hw_events)->partition_mask;
++}
++
+ #ifdef CONFIG_PERF_GUEST_MEDIATED_PMU
+ /*
+  * Mark this CPU as running a PMU partitioned guest. Guest PMU partition
+@@ -1887,8 +1900,12 @@ perf_event_nmi_handler(unsigned int cmd, struct pt_regs *regs)
+ 	/*
+ 	 * All PMUs/events that share this PMI handler should make sure to
+ 	 * increment active_events for their events.
 +	 *
-+	 * GUEST_PMU_PARTITION_NMI is intentionally excluded here: LVTPC stays
-+	 * routed to NMI in that state, and an NMI there can be host- or
-+	 * guest-induced. GUEST_PMU_PARTITION_PRELOAD is likewise excluded, as
-+	 * PMU is still loaded with host context.
++	 * If PMU partitioning is enabled, guest-induced PMIs need to be marked
++	 * as handled to avoid unknown NMI warnings.
  	 */
--	if (this_cpu_read(guest_lvtpc_loaded))
-+	if (this_cpu_read(guest_pmu_state) == GUEST_PMU_MEDIATED)
+-	if (!atomic_read(&active_events))
++	if (!atomic_read(&active_events) &&
++	    !x86_pmu_partition_nmi_active())
  		return NMI_DONE;
  
- 	/*
-diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-index 19beb16baa8e..29ea11421874 100644
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -1602,6 +1602,8 @@ static inline int is_pebs_pt(struct perf_event *event)
- 	return !!(event->hw.flags & PERF_X86_EVENT_PEBS_VIA_PT);
+ 	start_clock = sched_clock();
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 8b13bcc5259c..c595c86ecf90 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -2774,15 +2774,41 @@ static __always_inline void intel_pmu_disable_all(void)
+ 	intel_pmu_lbr_disable_all();
  }
  
-+bool pmu_partition_configured(void);
++static inline u64 intel_pmu_guest_fixed_ctrl_mask(void)
++{
++	u64 partition_mask = x86_pmu_current_partition_mask();
++	int i = INTEL_PMC_IDX_FIXED;
++	u64 mask = 0;
 +
++	for_each_set_bit_from(i, (unsigned long *)&partition_mask,
++			      INTEL_PMC_IDX_FIXED + INTEL_PMC_MAX_FIXED) {
++		mask |= intel_fixed_bits_by_idx(i - INTEL_PMC_IDX_FIXED,
++						INTEL_FIXED_BITS_MASK);
++	}
++
++	return mask;
++}
++
+ static void __intel_pmu_enable_all(int added, bool pmi)
+ {
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+ 	u64 intel_ctrl = hybrid(cpuc->pmu, intel_ctrl);
++	u64 guest_mask, fixed_ctrl;
+ 
+ 	intel_pmu_lbr_enable_all(pmi);
+ 
+ 	if (cpuc->fixed_ctrl_val != cpuc->active_fixed_ctrl_val) {
+-		wrmsrq(MSR_ARCH_PERFMON_FIXED_CTR_CTRL, cpuc->fixed_ctrl_val);
++		if (x86_pmu_partition_nmi_active() && pmi) {
++			guest_mask = intel_pmu_guest_fixed_ctrl_mask();
++
++			rdmsrq(MSR_ARCH_PERFMON_FIXED_CTR_CTRL, fixed_ctrl);
++			fixed_ctrl = (fixed_ctrl & guest_mask) |
++				     (cpuc->fixed_ctrl_val & ~guest_mask);
++		} else {
++			fixed_ctrl = cpuc->fixed_ctrl_val;
++		}
++
++		wrmsrq(MSR_ARCH_PERFMON_FIXED_CTR_CTRL, fixed_ctrl);
+ 		cpuc->active_fixed_ctrl_val = cpuc->fixed_ctrl_val;
+ 	}
+ 
+@@ -3700,23 +3726,31 @@ static void intel_pmu_reset(void)
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+ 	unsigned long *cntr_mask = hybrid(cpuc->pmu, cntr_mask);
+ 	unsigned long *fixed_cntr_mask = hybrid(cpuc->pmu, fixed_cntr_mask);
++	u64 guest_owned_mask = 0;
+ 	unsigned long flags;
+ 	int idx;
+ 
+ 	if (!*(u64 *)cntr_mask)
+ 		return;
+ 
++	if (x86_pmu_partition_nmi_active())
++		guest_owned_mask = x86_pmu_current_partition_mask();
++
+ 	local_irq_save(flags);
+ 
+ 	pr_info("clearing PMU state on CPU#%d\n", smp_processor_id());
+ 
+ 	for_each_set_bit(idx, cntr_mask, INTEL_PMC_MAX_GENERIC) {
++		if (BIT_ULL(idx) & guest_owned_mask)
++			continue;
+ 		wrmsrq_safe(x86_pmu_config_addr(idx), 0ull);
+ 		wrmsrq_safe(x86_pmu_event_addr(idx),  0ull);
+ 	}
+ 	for_each_set_bit(idx, fixed_cntr_mask, INTEL_PMC_MAX_FIXED) {
+ 		if (fixed_counter_disabled(idx, cpuc->pmu))
+ 			continue;
++		if (BIT_ULL(INTEL_PMC_IDX_FIXED + idx) & guest_owned_mask)
++			continue;
+ 		wrmsrq_safe(x86_pmu_fixed_ctr_addr(idx), 0ull);
+ 	}
+ 
+@@ -3730,7 +3764,7 @@ static void intel_pmu_reset(void)
+ 	}
+ 
+ 	/* Reset LBRs and LBR freezing */
+-	if (x86_pmu.lbr_nr) {
++	if (x86_pmu.lbr_nr && !(guest_owned_mask & GLOBAL_STATUS_LBRS_FROZEN)) {
+ 		update_debugctlmsr(get_debugctlmsr() &
+ 			~(DEBUGCTLMSR_FREEZE_LBRS_ON_PMI|DEBUGCTLMSR_LBR));
+ 	}
+@@ -3944,11 +3978,22 @@ static int intel_pmu_handle_irq(struct pt_regs *regs)
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+ 	bool late_ack = hybrid_bit(cpuc->pmu, late_ack);
+ 	bool mid_ack = hybrid_bit(cpuc->pmu, mid_ack);
++	u64 guest_owned_mask = 0;
+ 	int loops;
+ 	u64 status;
+ 	int handled;
+ 	int pmu_enabled;
+ 
++	/*
++	 * When PMU partitioning is enabled, PMIs fired in non-root mode could
++	 * be either host- or guest-induced.
++	 *
++	 * The host won't clear guest-owned bits from IA32_PERF_GLOBAL_STATUS,
++	 * and leaves them for KVM to inject into the guest.
++	 */
++	if (x86_pmu_partition_nmi_active())
++		guest_owned_mask = x86_pmu_current_partition_mask();
++
+ 	/*
+ 	 * Save the PMU state.
+ 	 * It needs to be restored when leaving the handler.
+@@ -3970,6 +4015,8 @@ static int intel_pmu_handle_irq(struct pt_regs *regs)
+ 	handled = intel_pmu_drain_bts_buffer();
+ 	handled += intel_bts_interrupt();
+ 	status = intel_pmu_get_status();
++	handled += hweight64(status & guest_owned_mask);
++	status &= ~guest_owned_mask;
+ 	if (!status)
+ 		goto done;
+ 
+@@ -3995,6 +4042,13 @@ static int intel_pmu_handle_irq(struct pt_regs *regs)
+ 	 * Repeat if there is more work to be done:
+ 	 */
+ 	status = intel_pmu_get_status();
++
++	/*
++	 * Guest-owned bits were already counted into "handled" on the
++	 * initial read and are never acked, so no hweight64() is needed
++	 * here; just mask them out to avoid an infinite "goto again" loop.
++	 */
++	status &= ~guest_owned_mask;
+ 	if (status)
+ 		goto again;
+ 
+diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
+index 29ea11421874..d9875f3e6c8c 100644
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -300,6 +300,12 @@ struct cpu_hw_events {
+ 	unsigned int		txn_flags;
+ 	int			is_fake;
+ 
++	/*
++	 * The PMU resources owned by the vCPU currently scheduled on this
++	 * CPU, which is a subset of x86_pmu.partition_mask.
++	 */
++	u64			partition_mask;
++
+ 	/*
+ 	 * Intel DebugStore bits
+ 	 */
+@@ -1603,6 +1609,8 @@ static inline int is_pebs_pt(struct perf_event *event)
+ }
+ 
+ bool pmu_partition_configured(void);
++bool x86_pmu_partition_nmi_active(void);
++u64 x86_pmu_current_partition_mask(void);
+ 
  #ifdef CONFIG_CPU_SUP_INTEL
  
- static inline bool intel_pmu_has_bts_period(struct perf_event *event, u64 period)
-diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
-index 17b0bc7dfce7..18f1ac5e008b 100644
---- a/arch/x86/include/asm/perf_event.h
-+++ b/arch/x86/include/asm/perf_event.h
-@@ -790,6 +790,7 @@ static inline void perf_check_microcode(void) { }
- #endif
- 
- #ifdef CONFIG_PERF_GUEST_MEDIATED_PMU
-+extern void perf_pmu_partition_preload(void);
- extern void perf_load_guest_lvtpc(u32 guest_lvtpc);
- extern void perf_put_guest_lvtpc(void);
- #endif
-diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index b5a9fbd415d1..7f619a99a152 100644
---- a/arch/x86/kvm/pmu.c
-+++ b/arch/x86/kvm/pmu.c
-@@ -1388,6 +1388,8 @@ void kvm_mediated_pmu_load(struct kvm_vcpu *vcpu)
- 
- 	lockdep_assert_irqs_disabled();
- 
-+	perf_pmu_partition_preload();
-+
- 	perf_load_guest_context();
- 
- 	/*
 -- 
 2.55.0
 
