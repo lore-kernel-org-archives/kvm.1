@@ -1,107 +1,134 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAAA470E8F
-	for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 12:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C40A48EBD0
+	for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 13:14:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787316341; cv=none; b=PYoTH7pfY+V4wYywV+5BTkVqokH5eVHVOu9lAQtALQRVZxmwItNfA3ZDdmVNp68DYZ4Y+2OaIPVJ3sCsc+KpeAepRRafndSddiKPLEkNo1ruLBxtA9oVWyNma6/KkSl+QmxGr8a8yytE7vaRjVFEmG6j+0oR1dCAHWgiNl8yoI8=
+	t=1787318109; cv=none; b=IbdxG0M9zeGk8+rCjs6Hlh/JUaED7Hfr9eeIX5dj64wZJcKBXLev4tgBrttY6wfU6Ntwet7wMyZT3/ZqIe6nx+0qz1k5ToZ7/Dmss5fAsWQr/C8Ndlkg7Xnh0OAZ4tD9OwJZoRt/kPeSverz+6t6UeQuURKmCyg+nEvHhZiyXcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787316341; c=relaxed/simple;
-	bh=M9TF/2NTcxfeDuxVvVqxdJ3U3H2unaS0+16ygI5y/qs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U8QYZ4JWV8yLvUJlMgRZWfNn+vbUGdQXd9KGkWQBYdkCli9+uv9nLHgyTo56jl9eon+1w7NXUOsCpcJTCeNYT+I4ruVbmAFiX6UbV8q/fXXlYpIwxl5zteUiQs3YExwPUtft/tlY1jEJnpBnAvmR6VR6U1bi4XHNGZSRHgdL9FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TuDwT/F7; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787318109; c=relaxed/simple;
+	bh=ZgEtJfYhvEx3RUMYzu/QeOmFo1mnqj6uqfkRQxaKdyw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=bobJc3r65rYHWqwqVX89KtVCFQpVbxcpLowiR8zcmHNcl4nQtyagZvZf7nOGk5/3j0xCio/wbrZBR1UL6b25+kXWJ3Jg/VaWJ/lhvX3RSa/vOi+XFITLH2LZIo4gffgxVtQS5ff8cFsavtBVf3is4pxXTyiHQ1jY/a1iYRM0oYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c6dvQg6l; arc=none smtp.client-ip=209.85.214.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TuDwT/F7"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4955aa106b1so9033435e9.0
-        for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 05:45:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c6dvQg6l"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cfc52ddc55so16600125ad.3
+        for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 06:14:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787316338; x=1787921138; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ofVVmavq8wtT0bF5YA5bCdNX53D9kSF/gQ+ziezVadc=;
-        b=TuDwT/F7MC5fZXMnl64dcf5Ryd9aXKIHjluO8d5Iv6sWxDTCB8OTftL3l76WvYcICL
-         GNtrESq9MLNam4z2tlE2f6Dy3oQJLyYk4FX9o4sBfh4kCZ0UmtAcEL96ur94T5IIkvA2
-         qpnbyURurfR1s9BG8Ar8Zoq6/YwwE/eAvb0f0YsoUjvUaBd7G9tmXeyGq411cbYULppP
-         9KAZ91nLJYWi/dHbmp3UVGEIPUoepjnTKbQhdM1mhY8mubpRYjvuiwgHkrIHzmbqDNcu
-         DHIDoZ9KSeUMTdcaojQUMNmsX7kvavhPwc7irY/OFMh4fsoH/tCiiEh32T7QPzVqyJjJ
-         D4fg==
+        d=google.com; s=20251104; t=1787318092; x=1787922892; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=xbkxU3KDRFhwwjU3XLpDILLbXwo99XWxcTGCF4UGzgI=;
+        b=c6dvQg6lTgr8WfLyCyDDpuDZqgAEBAZWBpp7fCIezykosTX8xFGBy2loYtaNYVMO2N
+         afquEy5AbPQBlEDIibICb1Ey/1PMtRvea5T8kUdNfB9foRDFJPln+AFYfRazXR2V9o1Y
+         4VIGgVLrfUF2SxWfciCdNr0NRy37DtLHlOJQZhnlC2s0k2k+FZH93vLWnN/Ps4ZtOa3Y
+         VvvuMyjYw4I2qY9VE6DHyii96mwk4wVozgJ7sHZ7X+S7xJHqjm3nE1rTLMDE6kITf3K8
+         GoUHQfbqES90zkGO1AoCnk65OKx4Bb560zghBv7V/utYLU+uCta1aTJk9aVlk6AELbe4
+         cewg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787316338; x=1787921138;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ofVVmavq8wtT0bF5YA5bCdNX53D9kSF/gQ+ziezVadc=;
-        b=DI/cymz9QgGAQuFIPH952r2+DnHJKaVhbvGg68Son8pQpkEw8hTC8119Y2a/HGWv0S
-         l0qbz8j9G4h5wRfeXX7M7fjahbhdpQjxkT0PhvyIqQClawIolz1b28Ij71zHwbth+QrH
-         GAM7DcDtSKgrXBI7qxtt+3uzSPIhC8u/uANbIKBzTpUeKKh80zYagST9e21BKgguZP+7
-         SKY7ZwKp7NZN/qojfL0xRtx1iXZQ2y14vlIPKpiC+38FIAZ7SHhK385uaSzzlRV8lARO
-         hKTrW++1/NdAgtgeysMTrxj9rjqR3dpo49jpCsY6nXlLU0sXDKWp6bqSmjO6A3uAKM9j
-         5BMQ==
-X-Forwarded-Encrypted: i=1; AHgh+RquEw03sW4Yn7dIGtL4eICHZ3wwz8F7xUtatY9cYU7tL4DxcWsANs5izVkgvW/WLJE8TEU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7fzkhkhKqTRU5zSj5SVvDwAxourqJdlciHF8ssXQMJdOh9Ipw
-	zxamw3xK7MQkSYyMNDKyzdCkebt9KVDBuFd0xAJhwxsD8jJXxqV2RoMU
-X-Gm-Gg: AR+sD13oziVtbllMsIQ6G74EoiywzXZnxaKFjbLx9wty92M7rdbpxHLMeGCN4I8qEaF
-	ABUNZpSabnr7cPx7tcDjKKToarNCiIdZaJ0C5KsrtZ6nQLDhwEvjUZCQNqsIR9u3upB0KtB5uyH
-	0ymnTZK8jp73mmpUD/sEpikSM6ap7wuExtH3YJEMAXx+tyZh/QbZIZi0Pp8qE63sWNwemdvNMmA
-	L0cBaQ5vu/Wti+DowjEH1PLAVUkfAzJWeqTfvc0H23vKkFXVy5x45EXFGAwzePuE18/jcuagqGR
-	bubKysUTJ7zjFFmNSSmfahq9U/8n6uOCvDp82rAlPOEOue6WwawXjx+EHRKB8DaS/6pV48Ly0Yk
-	XdqXwuT+TKcQco01nIHKFVWCyHnj02DCKZpZQi+K11/ezyhrus/8tFa/pyVZB/yfQ5mLK6fW8Zj
-	EN2a8d8y43LriXFtsVE3EG5yzqIFseN5WnGSKuQZ00SMp8Qz00JdM2vAF7rZW7ZBweccnz7bKTj
-	eIi3J28wfcKNrk8L0HzVpVasnZoKwZ3l/lKx27D+4n1I/9I90Gh8msOsB0VuDtg
-X-Received: by 2002:a05:600c:8b8c:b0:499:484a:98e7 with SMTP id 5b1f17b1804b1-499b845c9d9mr99624285e9.14.1787316337718;
-        Fri, 21 Aug 2026 05:45:37 -0700 (PDT)
-Received: from ?IPV6:2407:d000:508:2027:f309:cd0f:ed5a:5b9? ([2407:d000:508:2027:f309:cd0f:ed5a:5b9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499b90f746csm27470255e9.7.2026.08.21.05.45.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Aug 2026 05:45:37 -0700 (PDT)
-Message-ID: <94e1dbf0-de6e-44da-9bc2-772fd6654250@gmail.com>
-Date: Fri, 21 Aug 2026 17:45:34 +0500
+        d=1e100.net; s=20251104; t=1787318092; x=1787922892;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xbkxU3KDRFhwwjU3XLpDILLbXwo99XWxcTGCF4UGzgI=;
+        b=C6nLa05sWbtJTP9vFGsPQevDq/0ZG9A+ueVZKwfaF1ggwtJV5jGxQvCWFyL716OIXv
+         GMj3fbpJhAg8jK7PWg/9wRNNUkfGLlBlgDe46MWwtzQuNhLuaLE6+8Lh6CU9439X/QbC
+         cn3RKOHcVV0Qjvr45QRaxJJv+tcd6fC5pPGLrNMnRbNGasjBYYh/WarJsAC88cPOScU2
+         DVdgC/Zc/ie6p1KPXupvC9NYZV+K/nuA69goBjGO3eynLQ0AZ54hD7KSPZccE2s+RDsn
+         Dp/qKPCuAkNlF0sn5xTsCXqoy/of8zXwMgYu4WIsSMuu/g+g/8N8O6uvhqHJBRHc6IjY
+         hK5g==
+X-Forwarded-Encrypted: i=1; AHgh+RoaPRu37oFfS0uBS223eEvsJLnlQRwOBwnKWWl6x5cgx3gcWcMt86Itn8MKBnIsV8xh9Aw=@vger.kernel.org
+X-Gm-Message-State: AFuF++nXPL+3WYH5ejSPwV2DfJRReHrdGoXbRPmC+G8EBElwcPL/eT+g
+	EaqTm/1JB/Kacp7fJQuKnYjJZvPorXVuwccE3uNNgQTWzkX4xgCLaQI7YzVEcwG8PU/kTOsFVA0
+	RMGJhyg==
+X-Received: from plrf23.prod.google.com ([2002:a17:902:ab97:b0:2ca:b907:d842])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2c0c:b0:2d3:78c2:1f19
+ with SMTP id d9443c01a7336-2d64b0270b8mr122535495ad.9.1787318092128; Fri, 21
+ Aug 2026 06:14:52 -0700 (PDT)
+Date: Fri, 21 Aug 2026 06:14:51 -0700
+In-Reply-To: <8f715ebf5cb0ef70803ca8c6ad462d9de7dfa8be.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] KVM: selftests: Replace ulong with unsigned long
-To: David Matlack <dmatlack@google.com>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org,
- pbonzini@redhat.com, shuah@kernel.org, linux-kselftest@vger.kernel.org
-References: <20260803170825.925561-4-hisamshar@gmail.com>
- <20260817220457.554823-3-hisamshar@gmail.com> <aoOKMeua-cNeTxXT@google.com>
- <8d069fe1-a5b6-4a86-9604-26aebe2dc243@gmail.com>
- <aoSIBnFfy4osa6wt@google.com>
- <c2f7e904-2646-4b01-864d-d185221c7f56@gmail.com>
- <aoSyYtxBpEaoBwGY@google.com>
- <c9ee5f08-81c3-4c91-9189-002b260ea641@gmail.com>
- <CALzav=fs4bqMM7BXNPXqhtbqGzA+LW5fgx2-1Q5=sTN5+krYhw@mail.gmail.com>
-Content-Language: en-US
-From: Hisam Mehboob <hisamshar@gmail.com>
-In-Reply-To: <CALzav=fs4bqMM7BXNPXqhtbqGzA+LW5fgx2-1Q5=sTN5+krYhw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260819094903.3060020-1-xiaoyao.li@intel.com>
+ <5799b5d637f6b540c45874120aa37749a7dfb955.camel@intel.com>
+ <aoY2N1mpG-IQIUDm@google.com> <8f715ebf5cb0ef70803ca8c6ad462d9de7dfa8be.camel@intel.com>
+Message-ID: <aohPS45Qc7erio4c@google.com>
+Subject: Re: [PATCH v4 0/9] KVM: TDX: Enable VM-DoS Prevention Features for TDX
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "kas@kernel.org" <kas@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"nik.borisov@suse.com" <nik.borisov@suse.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/20/26 21:13, David Matlack wrote:
-> libuuid is required to build libvfio, which VFIO and KVM selftests
-> both depend on.
-> 
-> How is this problem solved for other libraries, like -lpthread? 
+On Wed, Aug 19, 2026, Rick P Edgecombe wrote:
+> On Wed, 2026-08-19 at 16:03 -0700, Sean Christopherson wrote:
+> > > To me this is not a valid reason. Sashiko is great, but we can't let =
+false
+> > > positives drive the patches. Given that the series is so big now, I'd=
+ think
+> > > it would be better to leave 6 and 9 for follow up, so we can focus on=
+ the
+> > > core thing.
+> >=20
+> > Hmm, I disagree.=C2=A0 If the consolidation weren't here, I'd absolutel=
+y ask for
+> > it. This is new feature enabling.=C2=A0 Yeah, it happens to be tagged f=
+or stable,
+> > but at the end of the day, it's new feature enabling.=C2=A0 And it's st=
+andard
+> > operation procedure to do cleanups and dedup code as part of new featur=
+e
+> > enabling.
+> >=20
+> > If anything patch 6 should be patch 1, but that's a minor detail I can =
+sort
+> > out when applying (assuming another version isn't required).
+>=20
+> Ok. But you disagree with dropping the patch?
 
-musl does not need a separate pthread library. pthread support is part 
-of libc, and libpthread.so is provided as a compatibility stub, so 
--lpthread works without an extra package.
+Dropping the patch.
 
-libuuid is an external library from util-linux. On Alpine, installing 
-util-linux-dev provides the musl-built libuuid and uuid/uuid.h, and the 
-selftests build succeeds. I confirmed this on a fresh Alpine install.
+> Or that avoiding sashiko reports of existing issues is an invalid reason =
+to
+> change the series?
+>=20
+> I think it's good to discuss a bit how to handle sashiko scenarios.
 
-I sent the basename fix as a separate patch:
-https://lore.kernel.org/kvm/20260821122110.902382-2-hisamshar@gmail.com/
+Like we do any other code review: use common sense and follow established b=
+est
+practices.  If a human reviewer pointed out an existing bug, we would analy=
+ze
+the situation and make a judgment call as to whether it's better to send a
+standalone fix or roll a fix into a new version of the series.  If we decid=
+ed to
+fix the issue separately, and then a human brought up the same pre-existing=
+ issue
+in a future revision, we would point them at the fix or the previous discus=
+sion
+(or if it was the same human, (politely?) tell them to go away).
 
+The only differences is that Sashiko is noisier because is doesn't (yet?) r=
+emember
+what feedback it gave in the past, often doesn't look at the patches later =
+in the
+series, and doesn't (yet?) respond to emails so telling Sashiko to shut up =
+about a
+particular pre-existing issue isn't effective.
+
+But to be very explicit: don't include a patch *purely* to suppress Sashiko=
+'s
+rediscovery of existing issues.
