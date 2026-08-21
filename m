@@ -1,237 +1,223 @@
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFDB3C585C
-	for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 08:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787301843; cv=pass; b=IwiD3dJTc3kqMpgeBQ+LvtIH6lryAFV4MCq/R/ZxucziQ23zHRLuN/zK6o3dipPr1+BiwXxUmWETsaJdZTiKgvLxFyF4SJjWG9r4NaEUpZITjw9SfALRtSawfw5QhxtHZ6XRopHML7svLzVf/RohzB3Wa98X/00UCkjfLVKHXJ8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787301843; c=relaxed/simple;
-	bh=Dk3uUFhv3dR/gphHYnJDcqos93iURHifKDqKE2F8I4Q=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IEqsbdkD0bmxQD9YLjTM7f6U93mWHJQvQaW7af/5q6LYUIF490hZcbQ2IOY0vbnmWCPSED4ilQwOv9PyaqHKfS1co9QhRi0RsJDxwSXd+bij376eMIaFSCPeSqBmy6bcUv5FD5ZwgK1gcLPJClT3ne2tS0v2nNusptgCDhEk5+0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pdNrvVM3; arc=pass smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E8B3BCD33
+	for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 08:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787302284; cv=none; b=VGuftX0eY3E5We8L20do+kHk+PT4IKucB1S806Ge9Z9oBgec/cDF+hBCA2MZfZ9qwvx7Mu3ykiyLWGtaxZqzkqFd5ddkYMDMTGtLkDxlDlfbYyVridF4UedGJr0O7ayCdJL3B/sGfwXbOF4AH/wT1ji3cNdsBgATi8ceGuBnPqU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787302284; c=relaxed/simple;
+	bh=1Tod6uMNvMI753P4muUbJppzBeqFN07J+ccstjPlhiI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WsMC9m/H5v7VTuGu52nG+ouaDRPOpQhXd7By6aVZzvfW2J3hrGoVx4W0PaYzO5vC5XwDRJr5fMzVAWsEhZUStzbYdhuQXw1L5wn2VmRWpC8RCR/77I5l4g4Cvkmz8I15Ojjzx0Y/WLezNZ5GZgxaGRpp9soESmTNWoP8I6VXK5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L9t4644a; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qt2mYjhG; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pdNrvVM3"
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8ef1dc934d1so4354106d6.0
-        for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 01:44:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787301840; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Ji150Iw2eemSPkgWn5+J8FSkbr64KGNgsgxNhxBID7nYAzgoWpqi8q9PrAO7rxI0Lm
-         XzYEjb7WnE23WLUaCbWIGWeErcla35SGpJdoBV/wBwe9vhVUZJH2+tXXGj1JuZa+SxAd
-         rwVUZzTRUR61unxHuTaOcM+4HCctzwvIFdIHp/bj15l9JeAwVf7CyFIrpOWtwvkoluec
-         pgB2EtK3TbBsApNcKEYAVyaH3lomOsoinX1H00UDwRfmr130Hi4Tv5eRxtct+qSaZCiF
-         bYy+5jhzHBwegbdpWz0f2PAqfbmnZigU+c7ONXiEFG8f3NTOlRx8dm3FRHybDYq8Io9d
-         Q3FQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:dkim-signature;
-        bh=JndCtY/VWXV/rVe0GCCvV63VgHFnqs0KqY0XSxvfZ0s=;
-        fh=XIDoCNHFdIDeFUwerKSipFQKr87uoZ+GEWpXa9yNbZI=;
-        b=JlRVWE69W8X3yrUkEdudozwKxyPWAFX1TFZj2lYvnl/dT0fU+1hcAhi9STOk716tMF
-         CdV3I7L/DHsUkmnsBKsYk2PPyOz/YH4nSA3UElEe3zsA6nmptUTxV+/BE8WsV8F/fulk
-         7t35zWzZhyXty2mkg2d9MxQ+AmO5v9SEba6rTDnBP1zkZruwrP4+A7YTNqVaU3lWhlZS
-         oxpAk1rIzPt8IbJzwOqJx8a18YAK3C5BTmhGKc0USYRvJ3kJH2MGD7PJiD+JG5JyYnnf
-         Domo1yfVOsDjQep18mgXFO4eGZUssdyXxbogrvG2bh69+87v75ZlNjGFpB0iNsJqVM1w
-         De8A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L9t4644a";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qt2mYjhG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787302281;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dAMfT7dZIDZktTjpF23N4xlIpV3/mfSKrwhJnlOP5bk=;
+	b=L9t4644avHxP4mPu2JbDkgCuBwRaYW2E5Y+dlq+HdgxFkqGFph2bpyQtUyJpj5l073v7QY
+	lrNwUXuXYolOqeLiSSHcfrcEcUP6s02aSQi47X9MUWbgiPKKnQ86Mld4NrcHPv0EXCx+mV
+	z9gisesvs2MtdPcjY/BCR+p6xyao5es=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-299-tnfONbsYPR-V35AEK615qA-1; Fri, 21 Aug 2026 04:51:18 -0400
+X-MC-Unique: tnfONbsYPR-V35AEK615qA-1
+X-Mimecast-MFC-AGG-ID: tnfONbsYPR-V35AEK615qA_1787302278
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c160b9c0676so57841166b.0
+        for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 01:51:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787301840; x=1787906640; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:mime-version:references:in-reply-to:from:from:to:cc:subject
+        d=redhat.com; s=google; t=1787302278; x=1787907078; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=JndCtY/VWXV/rVe0GCCvV63VgHFnqs0KqY0XSxvfZ0s=;
-        b=pdNrvVM3Hx1VxUYvG4gunIhdRPLigK9q1VVrETYZb59nO3m+Cac4Tjf83V5etjS1Ux
-         uo1Z0DGbUkYxgRbALjt7a5CkZRaFd8/5bU3MNtPslMxpkaSK4WtbykZC96EX/3wPE4Oe
-         1tfhet9BvEt0F8RQrIPidCjDpalwTIH2BApNIQ8vAWUgQF7C0U6fs6y6OqeGifu/kN/w
-         OE2Ct14NNdiAVnoTLtYq2nnAtY3ok/TqVhfO9QzXyBYFieIRbsUWrCpd05WoPWjFuFFi
-         Wu8gWgnpXKs8Rfj7u9LgCWkUIgzvh6FunwVrWjghF+uPchYSUzs95MsEkcCCwb0jBMLw
-         5xDQ==
+        bh=dAMfT7dZIDZktTjpF23N4xlIpV3/mfSKrwhJnlOP5bk=;
+        b=Qt2mYjhGxiRGuuGTosQLr3VtvIeDS0/cRiCYOkYq8Y83/lcOL9a8Bsjg78ZTZsW42Y
+         44cmefamm+Lc0O+LCYTHXcXn6W6f+qEgCVF5d+YB4JeN31fv+vv9tmAXHBY4WHeLWMo5
+         2dneAbxUMxt+OFk1Hl3CaTp0g/sgbcAKa3mLzoHazFNQ7zjXOWXFeRg73qs7VaaHvCNw
+         pJTMWl+JDzjUaDB/VhgxrXDoabagELRG+/3DH6SEcuI5ANrjb4oqG+DVa1a6Wvjp0Hzn
+         b8QWQJoLAYVx3T3AGMCQ0oeffwdvnSUFsl6ZKoMhWUFB1asJQd3DhgxYpA2vMBvfHf/R
+         c3uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787301840; x=1787906640;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:mime-version:references:in-reply-to:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1787302278; x=1787907078;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=JndCtY/VWXV/rVe0GCCvV63VgHFnqs0KqY0XSxvfZ0s=;
-        b=Rx0l5Xt8PbOzUuSbn/05zzqBa74wv/c5NC3cgky1s+1Kf+GdbVbf8u9HOq27445eUw
-         yvT6he85EWyfSoU4EkzzuLmS6Jw6JWR5E1fJp8+733eGseHmYO0OQcgoFKP4069cESl0
-         ij+EczsnyLwFPnEBxn/EZYpw5x8nj3iHz6kLs77TBBnkC3rJh337FdCrWLcf+i5CcdDO
-         a4Fz0PLfeitRUcIEN+Amhh7DmbFdUfnn6/81hWcid9Avejkv8QGdgM9af3Mnw/jP2zLF
-         Y4WqT8H/Sa3+aKLbSsWijohA2bXe+H9GY5QWqfttqQH640RNHXKLCdxTH3CkOejbwkha
-         vW8A==
-X-Forwarded-Encrypted: i=1; AHgh+RoB4EKAOzRJy+61OiEF66WDRYK7ztApXw+dhqnE3+hvAwsnVXtR0jJKkx15ewYWyX+rnAA=@vger.kernel.org
-X-Gm-Message-State: AFuF++lLAP6BFv8rMEzb6wbxSOM4CKVBE5qpQsf+rMEJ473KPC1nGVTe
-	06iBFyuJwjqwHcfEYD5VYDhpHdhLDvKxrBqSVZEElbMMFMWxi5+FAjErdDdbYFXH697Z7Jj2rjh
-	xSeCw42SOnoxsBuj6uR47JkYqqRYv0Y46fAkiIiVd89LsLpt0xhrh4NZx
-X-Gm-Gg: AR+sD12ofVctDKjVn6QkSDvYPhetWGQH5J0/OkfJZLeymGJ/w/VG/CHeEWGftlkc+Wr
-	wcWf7a6NQvac6elOyoNnrPmIrmeee4uFADN6NaYWHeHjE4XUNKyaONmzPDkYzkSi+ZNPTSu3qPn
-	Pr55ABtj15bw4uthSp4NB6/7sTYabU9mj23iIJzp9uhPc/MXU+UbB2WkdXVbaUGAOvIfTDHBcyE
-	2WLO+1l+xyiIJ/+5izmtrijabj5uKtNeekmrUVGRQiFLz0iau97tEbWXv++k2Lr8sJYPcP5nwuZ
-	n2EA8RrmjPbPB7KJgJnvUtrOi5NgYNiLE8EXuAj7Ajx+RIPdnSP6Bt8zaPu8pX3r/w4vXPZSFEG
-	atA==
-X-Received: by 2002:a05:6214:390f:b0:8fd:b96d:195b with SMTP id
- 6a1803df08f44-90c6abef274mr145111756d6.15.1787301839792; Fri, 21 Aug 2026
- 01:43:59 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 21 Aug 2026 01:43:59 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 21 Aug 2026 01:43:59 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <CAEvNRgHEVxO+1Mkoc3-c2+qSrKWnD+BDe04NBvuwGU6BL0amzA@mail.gmail.com>
-References: <20260818-gmem-no-return-page-v2-0-5298f42d49bb@google.com>
- <20260818-gmem-no-return-page-v2-3-5298f42d49bb@google.com>
- <20260818092717.3F4871F000E9@smtp.kernel.org> <CAEvNRgHEVxO+1Mkoc3-c2+qSrKWnD+BDe04NBvuwGU6BL0amzA@mail.gmail.com>
+        bh=dAMfT7dZIDZktTjpF23N4xlIpV3/mfSKrwhJnlOP5bk=;
+        b=e9wFEbdYwcqwUD4AdLH94AF8jUAjW/gR5Uq0200n5LLv8uYtt9PeAJNk/k0NKPaYCJ
+         UTZ384FzHKlV5V6XZ/Qku0f/nvITKMZgrekCgMsHoh1f4IdElBTI6zplPmmesjmgwbYf
+         5lsac9N/cT3ywxHb9V+7xg+sTAj/cD3fiSfCsgZKhJXI2fucT420NzRY85wW9S+fuTKH
+         mrrDe4bF+L24kmUu7NY7NJrPxlCDUnVwCmIWNKmw6L7E4PLzF+5rMpayF6h/sVR2ABFx
+         9qjcX3wKlZyAtUrcVSGuPA2AYxNJ31HCUa01sNvJnBYaT4ekDQYMbs0IADX5AxwIKU/v
+         QVtw==
+X-Forwarded-Encrypted: i=1; AHgh+RpBv4TI5CeWfgvkK2aJZRiipUXTxagbRWJIQtL6XWlUb/hIrR8f3BG8H6uO0RbdvyDAT6g=@vger.kernel.org
+X-Gm-Message-State: AFuF++nRnmURHWQ/dhCFguJ9FKPOWqxXOt42nwggWjP9dVpQNm5RWmU5
+	zNfV5zKPojOpajcNt6UBAOdnVA0X6KRZXPSVpQD964DvrZho1pxdfCpYiG1PkuGayUOOGx71YZh
+	7SU0NHwTiKMKkTAmD5wxwdSW13N4dj55m3p3KHOUuUwuGO6qIkXdgursic0kTXQ==
+X-Gm-Gg: AR+sD12RleG2aK85SmJl9dcCOGUiP5NIEARRBe6rYWy0r2MPGGACTIBlWod9UBAM/bd
+	K7apMjS31aQE+06Py0fAF3wXMG400WqVQuDRVoVQUPDsD08vDbp4nA6dmMKmNzwJlU20uHBkOyc
+	kfG66Vc+/ZgM60QgpT31SAsniUmvsmtH7/1ghQm6TOExCNXa9DTZVc4JcGg8xxeMEXV4mhyjI+U
+	I//3NbBcuWhxoTOnXxa9IawVaFAw6gpubcOHQPHyjbcnRd/v3EK5tF0AIOEy72vUY8/2gt6sfgW
+	Aa9on00wMngZXnjr53dBmthqPdo2jnRI8KXjgTHLdO62y7TELHzfjybuubUHRN1YYDOQIIlAfMh
+	LTg==
+X-Received: by 2002:a17:906:6b86:b0:c21:74ad:8b7a with SMTP id a640c23a62f3a-c246a398994mr383580666b.9.1787302277601;
+        Fri, 21 Aug 2026 01:51:17 -0700 (PDT)
+X-Received: by 2002:a17:906:6b86:b0:c21:74ad:8b7a with SMTP id a640c23a62f3a-c246a398994mr383574666b.9.1787302277050;
+        Fri, 21 Aug 2026 01:51:17 -0700 (PDT)
+Received: from sgarzare-redhat ([5.77.88.208])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2458b09349sm360276866b.19.2026.08.21.01.51.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Aug 2026 01:51:16 -0700 (PDT)
+Date: Fri, 21 Aug 2026 10:51:11 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: netdev@vger.kernel.org, Stefan Hajnoczi <stefanha@redhat.com>, 
+	Bobby Eshleman <bobbyeshleman@gmail.com>, virtualization@lists.linux.dev, kvm@vger.kernel.org
+Subject: Re: [PATCH net v2] vsock/virtio: validate packet source for
+ connected sockets
+Message-ID: <aogL1SZD9lsE5qyC@sgarzare-redhat>
+References: <20260820001517.2148196-1-4ncienth@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 21 Aug 2026 01:43:59 -0700
-X-Gm-Features: AcwNN1XQ66q23bW9XbZkGc0EqSHIasNxwr4vfpz_tu-1DEmLtY18ZBr72_AUUzI
-Message-ID: <CAEvNRgHX-NebA7z3twusis35E_grJNTrbse7aUZ6+D=qpQn14A@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] KVM: SEV: Drop page refcount early in VMSA reload
-To: sashiko-reviews@lists.linux.dev
-Cc: Oliver Upton <oupton@kernel.org>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Marc Zyngier <maz@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260820001517.2148196-1-4ncienth@gmail.com>
 
-Ackerley Tng <ackerleytng@google.com> writes:
-
-> sashiko-bot@kernel.org writes:
+On Thu, Aug 20, 2026 at 09:15:17AM +0900, Daehyeon Ko wrote:
+>virtio_transport_recv_pkt() looks up sockets first by the full source and
+>destination tuple, then by destination only in the bound table.  The
+>fallback is needed for listening and connecting sockets, but sockets remain
+>in the bound table after connect(), so it can also return a non-listening
+>socket.
 >
->> Thank you for your contribution! Sashiko AI review found 1 potential iss=
-ue(s) to consider:
->>
->> Pre-existing issues:
->> - [Critical] A preexisting vulnerability in `sev_gmem_make_shared` allow=
-s a malicious SEV-SNP guest to cause a host kernel panic by transitioning a=
- `guest_memfd` page to VMSA state. When the page is subsequently freed, KVM=
- fails to reclaim it and returns the still-firmware-owned page to the host =
-page allocator.
->> --
->>
->> --- Patch [3]: [PATCH v2 3/4] KVM: SEV: Drop page refcount early in VMSA=
- reload ---
->> commit 597ff1c52e82911967f2122ff1d77aa79a4a2d9b
->> Author: Ackerley Tng <ackerleytng@google.com>
->>
->> KVM: SEV: Drop page refcount early in VMSA reload
->>
->> This commit modifies the guest VMSA reload path for SEV-SNP vCPUs to dro=
-p
->> the page reference immediately after retrieving the PFN from guest_memfd=
-.
->> This avoids holding the reference across MMU lock acquisition and prepar=
-es
->> for future changes. The page's presence remains governed by KVM's MMU
->> invalidation protocol.
->>
->>> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
->>> index b34b11d7f8fad..d3d620bc04dce 100644
->>> --- a/arch/x86/kvm/svm/sev.c
->>> +++ b/arch/x86/kvm/svm/sev.c
->>> @@ -4062,6 +4062,7 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu=
- *vcpu, gpa_t gpa)
->>>  	 */
->>>  	if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, &page, NULL))
->>>  		return;
->>> +	kvm_release_page_clean(page);
->>>
->>>  	read_lock(&kvm->mmu_lock);
->>>  	/*
->>> @@ -4076,8 +4077,6 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu=
- *vcpu, gpa_t gpa)
->>>  	else
->>>  		svm->vmcb->control.vmsa_pa =3D pfn_to_hpa(pfn);
->>>  	read_unlock(&kvm->mmu_lock);
->>> -
->>> -	kvm_release_page_clean(page);
->>>  }
->>
->> [Severity: Critical]
->> This is a pre-existing issue, but can this allow a malicious guest to
->> cause a host kernel panic?
->>
->> Looking at sev_gmem_make_shared() in arch/x86/kvm/svm/sev.c:
->>
->> arch/x86/kvm/svm/sev.c:sev_gmem_make_shared() {
->>     ...
->> 		rc =3D rmp_make_shared(pfn, use_2m_update ? PG_LEVEL_2M : PG_LEVEL_4K)=
-;
->> 		if (WARN_ONCE(rc, "SEV: Failed to update RMP entry for PFN 0x%llx erro=
-r %d\n",
->> 			      pfn, rc))
->> 			goto next_pfn;
->>     ...
->> }
->>
->> If an untrusted SEV-SNP guest modifies a guest_memfd page state to VMSA
->> using RMPADJUST, and the page is subsequently freed, rmp_make_shared()
->> will architecturally fail on the VMSA page.
->>
+>The fallback does not validate the source address.  In TCP_SYN_SENT, a
+>RESPONSE from an unrelated source can transition the victim socket to
+>TCP_ESTABLISHED while its stored remote address remains unchanged.
+>Subsequent RW packets from that source are delivered through the same
+>destination-only fallback.
 >
-> I need some help with this one.
+>This was reproduced with capability-empty processes under different UIDs.
+>The attacker discovered the target tuple through unprivileged AF_VSOCK
+>sock_diag and caused the victim socket to read 16 attacker-chosen bytes;
+>the intended peer-side socket read 0 of those 16 bytes.
 >
-> For the initial VMSA page, IIUC snp_safe_alloc_page() gets a
-> non-guest_memfd page. This won't ever go through sev_gmem_make_shared(),
-> so we're good. snp_leak_pages() doesn't actually leak pages, it just
-> tracks leaked pages, but __free_page() is skipped so the page is really
-> leaked.
+>After lock_sock(), reject packets for non-listening sockets unless their
+>source port matches the stored remote port.  Require the CID to match too,
+>except that the loopback transport uses VMADDR_CID_LOCAL as the packet
+>source for connections addressed through its valid CID aliases.
 >
->> Because the error is bypassed without calling snp_leak_pages(), the
->> firmware-owned page is returned to the host page allocator.
->>
+>Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
+>Closes: https://lore.kernel.org/netdev/20260813121236.2328599-1-4ncienth@gmail.com/
+>Cc: stable@vger.kernel.org
+>Assisted-by: Codex:gpt-5.6-sol
+>Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+>---
+>Changes in v2:
+>- Preserve valid loopback CID aliases by matching the source port and
+>  accepting VMADDR_CID_LOCAL only for the loopback transport.
+>- Rewrite the commit message and receive-path comment for clarity.
 >
-> For guest-provided VMSA pages, those can be guest_memfd pages. The
-> refcount taken is the one guest_memfd holds. Without considering
-> conversions, just considering truncation, sev_gmem_make_shared() is
-> called from kvm_gmem_free_folio(). Sashiko is saying that
-> rmp_make_shared() will fail, and the folio is freed.
+>v1: https://lore.kernel.org/netdev/20260813121236.2328599-1-4ncienth@gmail.com/
 >
-> Sounds like this would be a problem if the folio is used elsewhere...?
+> net/vmw_vsock/virtio_transport_common.c | 24 ++++++++++++++++++++++--
+> 1 file changed, 22 insertions(+), 2 deletions(-)
+>
+>diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>index 8becad812..d8990f5f6 100644
+>--- a/net/vmw_vsock/virtio_transport_common.c
+>+++ b/net/vmw_vsock/virtio_transport_common.c
+>@@ -1764,6 +1764,21 @@ static bool virtio_transport_valid_type(u16 type)
+> 	       (type == VIRTIO_VSOCK_TYPE_SEQPACKET);
+> }
+>
+>+static bool virtio_transport_source_matches(const struct virtio_transport *t,
+
+This doesn't seem virtio-specific, so why introducing this function 
+here?
+
+IIRC we agreed that also VMCI has the same issue, so what about adding 
+this function in af_vsock.c?
+
+Also I don't see VMCI changes, why not doing them together in a series 
+since they are strictly related?
+
+>+					    const struct sockaddr_vm *src,
+>+					    const struct sockaddr_vm *remote)
+>+{
+
+What about moving here also the transport check?
+
+So we can have something like this (with some documentation):
+
+bool vsock_check_source(const struct vsock_sock *vsk,
+			const struct vsock_transport *transport,
+			const struct sockaddr_vm *src)
+{
+	if (vsk->transport != transport)
+		return false;
+
+	if (src->svm_port != vsk->remote_addr.svm_port)
+		return false;
+
+etc.
+
+>+	if (src->svm_port != remote->svm_port)
+>+		return false;
+>+
+>+	if (src->svm_cid == remote->svm_cid)
+>+		return true;
+>+
+>+	/* The loopback transport represents its peer as VMADDR_CID_LOCAL. */
+>+	return t->transport.get_local_cid() == VMADDR_CID_LOCAL &&
+>+	       src->svm_cid == VMADDR_CID_LOCAL;
+
+Could this be just `t->transport.get_local_cid() == VMADDR_CID_LOCAL` ?
+
+I guess the source is trusted and if we are in a local transport, it's 
+always set to it, no?
+
+Thanks,
+Stefano
+
+>+}
+>+
+> /* We are under the virtio-vsock's vsock->rx_lock or vhost-vsock's vq->mutex
+>  * lock.
+>  */
+>@@ -1823,10 +1838,15 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+> 	lock_sock(sk);
+>
+> 	/* Check if sk has been closed or assigned to another transport before
+>-	 * lock_sock (note: listener sockets are not assigned to any transport)
+>+	 * lock_sock (note: listener sockets are not assigned to any transport).
+>+	 * The bound-table fallback matches only the destination, so reject packets
+>+	 * from a peer other than the one stored in the socket.
+> 	 */
+> 	if (sock_flag(sk, SOCK_DONE) ||
+>-	    (sk->sk_state != TCP_LISTEN && vsk->transport != &t->transport)) {
+>+	    (sk->sk_state != TCP_LISTEN &&
+>+	     (vsk->transport != &t->transport ||
+>+	      !virtio_transport_source_matches(t, &src,
+>+					       &vsk->remote_addr)))) {
+> 		(void)virtio_transport_reset_no_sock(t, skb, net);
+> 		release_sock(sk);
+> 		sock_put(sk);
+>
+>base-commit: e2466392a0b8496000e12181cb1ee1535eb0da25
+>-- 
+>2.54.0
 >
 
-I looked closer, "15.36.12 Running SNP-Active Virtual Machines" in APM
-Vol2 says "After a successful VMRUN, the VMCB page, as well as any AVIC
-Backing Page and VMSA Page are marked as in-use by hardware, and any
-attempt to modify the RMP entries for these pages via instructions like
-RMPUPDATE will result in a FAIL_INUSE response. The in-use marking is
-automatically cleared by hardware after a #VMEXIT event".
-
-So it's not true that rmp_make_shared() will always fail on a VMSA page,
-it's only true if the guest vCPU is running.
-
-RMPADJUST sets up the VMSA page, and telling the host using
-SVM_VMGEXIT_AP_CREATE is how the VMSA is set up to be usable. Then, the
-other vCPU needs to be started and running, and then:
-
-If the host truncates the VMSA page or host closes the guest_memfd file
-containing some other vCPU's VMSA page, sev_gmem_make_shared() on the
-VMSA page should fail, but the page is released anyway and we have a
-problem.
-
-An unsolicited shared->private conversion is fine since the VMSA page is
-already private.
-
-sev_gmem_make_shared() would fail on an unsolicited private->shared
-conversion. The RMP entry would still indicate private, and guest_memfd
-would track it as shared...? Bad.
-
-I've been trying to write a mini reproducer like a selftest but I've
-still not gotten it to work yet. If someone knows there's no issue here
-please let me know!
-
->> Could this lead to an RMP violation and a host kernel panic when the hos=
-t
->> later attempts to access the freed page?
->>
->> --
->> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260818-gmem-no=
--return-page-v2-0-5298f42d49bb@google.com?part=3D3
