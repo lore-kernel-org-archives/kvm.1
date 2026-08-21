@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE3A377023;
-	Fri, 21 Aug 2026 22:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24F73D3324;
+	Fri, 21 Aug 2026 22:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787351462; cv=none; b=jYkP3x2/YrZ6ujc4GPKlREc8eBDQtMcqHCGRiVZ02ocGRASgrNf+SzBGBVr+LBhohpAtOQN/Dx/XVQOU/wauj0gQ3C2/yjJKqj6Dk96hwP/0LdrL0e9zTEebjbZyDK/w73+MfD8jZFTdkub34ubUYbjpg0cnyXpXKTdWd4ErHsg=
+	t=1787351464; cv=none; b=PHITpjgBfvlp6b8ZZm5GAEsbmXSHtD9eVLiDEgr0/8z+1VzOCT/asepGavImgtPAvcgsMSaZBSWJp0ziUTCXckz9HqmoZmOw5ViPok8A/Yv/r/h8WplALkqV/hLzW20l7344XV9N/XtrlilQvHm7jw1NyqZMlDZ0uDkzffD6y2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787351462; c=relaxed/simple;
-	bh=qoV8JelrcrhQSafwCgpk6TmotTeaLggHi0qKa12KdTY=;
+	s=arc-20240116; t=1787351464; c=relaxed/simple;
+	bh=g1+N+H7xYlbFzwMh2grcA0qO5wUDekwUFo6QTH3dUVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ctvBcVW4+oFLoBrW05QZNKJ6WLibQP8mOWLyZTZyC9oCKCBAsC56PzajeynI3LHOAQLhRKoFNgowIdPiCNV2BfGOC5C3MxHE0oI2WJKhROmKr03qOt6qvE0gNsvydh86rzqGQRuBxLAOiGJEisj6dGqUNFcFad1EmVYqlWOs9+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eaggf1/J; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=AVOp2MlragU8XRJ5Pg/AxwkmzEfncxQjFscA+0QVMCFX6IN07TpjEknHN0zzLdheUpqHY+DgdNe0o1jp11iRvYFhPZMC6KO4x9upEvpjN40Qp2Of7APP6hwBz/W7eLN+5guE+mLQkbGgvskECuczcn5E4M7ZgejeudOLKvoP5hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QhiygJld; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eaggf1/J"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QhiygJld"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1787351457; x=1818887457;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=qoV8JelrcrhQSafwCgpk6TmotTeaLggHi0qKa12KdTY=;
-  b=eaggf1/JEvd5C2BdgGW7No1pVfuW9TOsyM1Wo7NdgiKMvsBIdOkN46LX
-   NdC/LjNP0bSn/aWAmAMd4DlQdOCGoAy5fORX2Gltb1xPXEOxrs75zi7Kb
-   byu7VsQqiuUVFTA3Tnnf+HCr7pozdqvJrOX6ZgMCrayA+dRRSlxTjXlxR
-   4BAv5mRRJmh2BXzq30KRQLeqJ4H0gX+UoCCqL94dfKkFKkVJD5Ewh8sUd
-   9a7YJ6dzVF1jjdPrZ+Sg4dCf7mMFl4sHnAHrZXKgk2Bp81yqU9nuiNO9Z
-   CZUhmCdzCl+xcVqn2GzX4bogH6wVMU75vkG8Nf9uphSv3QBdIDulq7PYz
+  bh=g1+N+H7xYlbFzwMh2grcA0qO5wUDekwUFo6QTH3dUVo=;
+  b=QhiygJldVWi8IJwaJIUyqs5QddASl0E+fw80/ldZ2GqbBVpG+fDUwuBE
+   wycXAtelpCvs1ZTnqK6BTHqq9CVG2QHzYeymXprfGGwYaHuV7rHcvvIsT
+   vLEHTCDXUOzc9ZWOTnnzuI7fPX7qwE5m10Z97XtoYjQiStvdHUpCZzYmz
+   TuhsXGuiCZJ9jZBJiTx+UW4Mp26FexLu1j9i59U85Y8NphzP2YOcqx0Ao
+   VMUL0y63pJTez4+nTNoEnsal74FGqDeKmrVVgU0UhY7BGHldKspqHW0S5
+   /2es5Ej5sm+98UlGPhid45JDycZI98CFOVPCBI2drhkId1swfChmkCDos
    Q==;
-X-CSE-ConnectionGUID: 6MD/X2SVSKK5y5IgkisMhA==
-X-CSE-MsgGUID: VPLVM2rlR6Op4yslZaTVKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="88032605"
+X-CSE-ConnectionGUID: SuKFefixSNOyvucvk/YgDQ==
+X-CSE-MsgGUID: KUfPzSttT+K7fBvuPPhssQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="88032610"
 X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
-   d="scan'208";a="88032605"
+   d="scan'208";a="88032610"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
   by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 15:30:48 -0700
-X-CSE-ConnectionGUID: jJsIaT8+RHawiFftuG4CBQ==
-X-CSE-MsgGUID: A5JPNWIOTauG/Zet8FEd8w==
+X-CSE-ConnectionGUID: HE+B1bhsQ2SESZFhjGRLkg==
+X-CSE-MsgGUID: k9wq6skmT/KXgKuTY87Vtw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
-   d="scan'208";a="271679760"
+   d="scan'208";a="271679766"
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 15:30:47 -0700
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 15:30:48 -0700
 From: Zide Chen <zide.chen@intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -59,9 +59,9 @@ Cc: kvm@vger.kernel.org,
 	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Xudong Hao <xudong.hao@intel.com>,
 	Kan Liang <kan.liang@linux.intel.com>
-Subject: [PATCH 09/23] perf: Skip exclude_guest events on PMU partitioned counters
-Date: Fri, 21 Aug 2026 15:19:48 -0700
-Message-ID: <20260821222002.54907-10-zide.chen@intel.com>
+Subject: [PATCH 10/23] perf: Reschedule events across PMU partition transitions
+Date: Fri, 21 Aug 2026 15:19:49 -0700
+Message-ID: <20260821222002.54907-11-zide.chen@intel.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260821222002.54907-1-zide.chen@intel.com>
 References: <20260821222002.54907-1-zide.chen@intel.com>
@@ -75,73 +75,165 @@ Content-Transfer-Encoding: 8bit
 
 From: Kan Liang <kan.liang@linux.intel.com>
 
-Without PMU partitioning, a PMU with PERF_PMU_CAP_MEDIATED_VPMU blocks
-host event scheduling while the guest PMU context is loaded.
+When entering a guest with PMU partitioning enabled, some counters
+remain available to the host. Similar to the non-partitioning setup,
+schedule out all events because a counter may become guest-owned.
 
-When PMU partitioning is enabled, host-owned counters remain available.
-Skip exclude_guest events, but continue to allow other events to be
-scheduled on the remaining host-owned counters.
+Unlike the non-partitioned case, host events must then be rescheduled
+so that !exclude_guest events can be scheduled onto the remaining
+host-owned counters, while keeping exclude_guest events off. Since
+PMU partitioning shrinks the counters available to host events, add a
+lightweight PMU-context reschedule cpuctx_sched_in_all() instead of
+rebuilding the entire CPU perf scheduling state.
+
+When exiting the guest, schedule out host events so that they can be
+rescheduled against the expanded set of host-owned counters. Similar to
+guest entry, only PMU-level event placement needs to be rebuilt, so add
+ctx_sched_out_all() instead of using the existing full CPU-context
+scheduling API.
+
+These context switches rely on the architectural PMU partition mask
+being configured for the target context. On guest entry, the guest
+PMU partition mask is expected to be active before events are
+rescheduled. On guest exit, it is expected to be disabled so that
+events are rescheduled with host counter constraints.
+
+This differs from the perf core guest context, where guest_ctx_loaded
+is updated at the end of the load/put guest context. As a result,
+guest_ctx_loaded does not yet reflect the target context when the
+rescheduling occurs.
+
+Add pmu_partition_enabled to perf_{load,put}_guest_context(), and
+hardcode to false temporarily until later patches.
 
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Co-developed-by: Zide Chen <zide.chen@intel.com>
 Signed-off-by: Zide Chen <zide.chen@intel.com>
 ---
- kernel/events/core.c | 35 ++++++++++++++++++++++++++++-------
- 1 file changed, 28 insertions(+), 7 deletions(-)
+ arch/x86/kvm/pmu.c         |  4 +--
+ include/linux/perf_event.h |  4 +--
+ kernel/events/core.c       | 52 +++++++++++++++++++++++++++++++++++---
+ 3 files changed, 53 insertions(+), 7 deletions(-)
 
+diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+index 7f619a99a152..c022337d0bec 100644
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -1390,7 +1390,7 @@ void kvm_mediated_pmu_load(struct kvm_vcpu *vcpu)
+ 
+ 	perf_pmu_partition_preload();
+ 
+-	perf_load_guest_context();
++	perf_load_guest_context(false);
+ 
+ 	/*
+ 	 * Explicitly clear PERF_GLOBAL_CTRL, as "loading" the guest's context
+@@ -1463,5 +1463,5 @@ void kvm_mediated_pmu_put(struct kvm_vcpu *vcpu)
+ 
+ 	perf_put_guest_lvtpc();
+ 
+-	perf_put_guest_context();
++	perf_put_guest_context(false);
+ }
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index bd952e09055d..9f66a4c49256 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -1934,8 +1934,8 @@ extern u64 perf_event_pause(struct perf_event *event, bool reset);
+ #ifdef CONFIG_PERF_GUEST_MEDIATED_PMU
+ int perf_create_mediated_pmu(u64 pmu_partition_mask);
+ void perf_release_mediated_pmu(void);
+-void perf_load_guest_context(void);
+-void perf_put_guest_context(void);
++void perf_load_guest_context(bool pmu_partition_enabled);
++void perf_put_guest_context(bool pmu_partition_enabled);
+ int arch_perf_set_pmu_partition_mask(u64 pmu_partition_mask);
+ #endif
+ 
 diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 9ce27cd83e04..23375f8d2261 100644
+index 23375f8d2261..c9e7a2f0edc8 100644
 --- a/kernel/events/core.c
 +++ b/kernel/events/core.c
-@@ -4105,6 +4105,32 @@ struct merge_sched_data {
- 	enum event_type_t event_type;
- };
+@@ -6442,8 +6442,25 @@ void perf_release_mediated_pmu(void)
+ }
+ EXPORT_SYMBOL_FOR_KVM(perf_release_mediated_pmu);
  
-+static bool
-+perf_mediated_pmu_skip_event(struct perf_event *event, enum event_type_t event_type)
+-/* When loading a guest's mediated PMU, schedule out all exclude_guest events. */
+-void perf_load_guest_context(void)
++static void cpuctx_sched_in_all(struct perf_cpu_context *cpuctx,
++				enum event_type_t type)
 +{
-+	if (event->pmu_ctx->pmu->capabilities & PERF_PMU_CAP_PMU_PARTITION) {
-+		/*
-+		 * EVENT_GUEST && !guest_ctx_loaded: perf_load_guest_context()
-+		 * reschedules !exclude_guest events.
-+		 *
-+		 * !EVENT_GUEST && guest_ctx_loaded: Guest context loaded.
-+		 */
-+		if (event->attr.exclude_guest &&
-+		    !!(event_type & EVENT_GUEST) != is_guest_mediated_pmu_loaded())
-+			return true;
-+	} else {
-+		/*
-+		 * Don't schedule in any host events because no counters
-+		 * are available.
-+		 */
-+		if (!(event_type & EVENT_GUEST) &&
-+		    is_guest_mediated_pmu_loaded())
-+			return true;
-+	}
++	struct perf_event_pmu_context *pmu_ctx;
 +
-+	return false;
++	for_each_epc(pmu_ctx, &cpuctx->ctx, NULL, EVENT_GUEST)
++		__pmu_ctx_sched_in(pmu_ctx, type | EVENT_GUEST);
++
++	if (cpuctx->task_ctx) {
++		for_each_epc(pmu_ctx, cpuctx->task_ctx, NULL, EVENT_GUEST)
++			__pmu_ctx_sched_in(pmu_ctx, type | EVENT_GUEST);
++	}
 +}
 +
- static int merge_sched_in(struct perf_event *event, void *data)
++/*
++ * When loading a guest's mediated PMU, schedule out all exclude_guest events.
++ * In PMU partitioning, reschedule host events onto host-owned counters.
++ */
++void perf_load_guest_context(bool pmu_partition_enabled)
  {
- 	struct perf_event_context *ctx = event->ctx;
-@@ -4116,13 +4142,8 @@ static int merge_sched_in(struct perf_event *event, void *data)
- 	if (!event_filter_match(event))
- 		return 0;
+ 	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
  
--	/*
--	 * Don't schedule in any host events from PMU with
--	 * PERF_PMU_CAP_MEDIATED_VPMU, while a guest is running.
--	 */
--	if (is_guest_mediated_pmu_loaded() &&
--	    event->pmu_ctx->pmu->capabilities & PERF_PMU_CAP_MEDIATED_VPMU &&
--	    !(msd->event_type & EVENT_GUEST))
-+	if ((event->pmu_ctx->pmu->capabilities & PERF_PMU_CAP_MEDIATED_VPMU) &&
-+	    perf_mediated_pmu_skip_event(event, msd->event_type))
- 		return 0;
+@@ -6461,6 +6478,12 @@ void perf_load_guest_context(void)
+ 		task_ctx_sched_out(cpuctx->task_ctx, NULL, EVENT_GUEST);
+ 	}
  
- 	if (group_can_go_on(event, msd->can_add_hw)) {
++	/* Reschedule !exclude_guest events onto host-owned counters. */
++	if (pmu_partition_enabled) {
++		cpuctx_sched_in_all(cpuctx, EVENT_PINNED);
++		cpuctx_sched_in_all(cpuctx, EVENT_FLEXIBLE);
++	}
++
+ 	perf_ctx_enable(&cpuctx->ctx, EVENT_GUEST);
+ 	if (cpuctx->task_ctx)
+ 		perf_ctx_enable(cpuctx->task_ctx, EVENT_GUEST);
+@@ -6469,7 +6492,21 @@ void perf_load_guest_context(void)
+ }
+ EXPORT_SYMBOL_GPL(perf_load_guest_context);
+ 
+-void perf_put_guest_context(void)
++static void ctx_sched_out_all(struct perf_event_context *ctx)
++{
++	struct perf_event_pmu_context *pmu_ctx;
++
++	if (!ctx)
++		return;
++
++	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
++		if (perf_skip_pmu_ctx(pmu_ctx, EVENT_GUEST))
++			continue;
++		__pmu_ctx_sched_out(pmu_ctx, EVENT_ALL);
++	}
++}
++
++void perf_put_guest_context(bool pmu_partition_enabled)
+ {
+ 	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
+ 
+@@ -6484,6 +6521,15 @@ void perf_put_guest_context(void)
+ 	if (cpuctx->task_ctx)
+ 		perf_ctx_disable(cpuctx->task_ctx, EVENT_GUEST);
+ 
++	if (pmu_partition_enabled) {
++		ctx_time_update(cpuctx, &cpuctx->ctx);
++		if (cpuctx->task_ctx)
++			ctx_time_update(cpuctx, cpuctx->task_ctx);
++
++		ctx_sched_out_all(&cpuctx->ctx);
++		ctx_sched_out_all(cpuctx->task_ctx);
++	}
++
+ 	perf_event_sched_in(cpuctx, cpuctx->task_ctx, NULL, EVENT_GUEST);
+ 
+ 	if (cpuctx->task_ctx)
 -- 
 2.55.0
 
