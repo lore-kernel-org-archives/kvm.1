@@ -1,68 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0360358389;
-	Fri, 21 Aug 2026 17:38:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9A83B3880
+	for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 19:09:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787333894; cv=none; b=lwwkSbEOFhTm+5DAaOJVuTm5gxkHK42ZdPPjOI5p0f+POVKHw2okYmxMZKcoJo1k5mFJa7PJAYydkayisVbMBQQXyKl3SZl6lmDmkWX82vIAl732Jm6g1Z+/xR8pYER9Suvu3hTpfsFF+854lT3jqpsP4H8m8/LYFlFVJ0odzFo=
+	t=1787339378; cv=none; b=dN1Z5z+g4mxoSXdGDDZU4+PhIuvzAU4/9kqNEXlbg+NDBA3EMa8qGfuUFFe53SaiPD3mi4t+VWQhZvvHcclShzMI7XR+6UE11QIm8L8ncB5EvWyIgJXcfabLgWOMOf9+kTsMsEprOCraZ72NN+wCSXvKkQlgoCiSt1Uw0uaBclY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787333894; c=relaxed/simple;
-	bh=gtLFRmGix5BlLe7iyaTulkKgNY/5kdFtH+HZ3RaDEnA=;
+	s=arc-20240116; t=1787339378; c=relaxed/simple;
+	bh=m4AbHNYOybKycCffk+1NRelRi+xxrvqfKKYJ+6qV4UY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mdvh5/Mp6cTOzSK6OCSznMo/qTlnl+HEySe1VjX0iH3nakE0oNzSbr/U+rKoPAI/rkvUz9SB6GNu7QKnUcZq7x5E4hf9DG1FQ30B8+YHODUsh+aQt+aLq6ab12gmuH+V5QyZSrDoWZ6II7UKkUyiUaUlbJCHhJ7+qQ12iHqahBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NClu/56f; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=e9T8ydLmxuNqNy/lcArbzGty3foRvKhgDqviSzQP50QAWJUJiPXLVbmXIn5QA17NVFky/4Fs/OeL1saCiBEKHTByx1JLSOhJSbFobcDHdqiWjvkBIHxJJ+EOMGHtTVKMpnDD8AowHbEKhgvHWROiuHsPD2m6+dziI28Ss/6x0Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BJ6Z36jb; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NClu/56f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405CE1F00A3A;
-	Fri, 21 Aug 2026 17:38:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787333892;
-	bh=Fq1qopQjiGOPEPv7nYP2HWEyvKAIWD9DM17U/AxQx8w=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=NClu/56frA0h3WA5bKxCjZdnf3aTWlzEWF3yD1soGE14ElWcChnEkVdNaLT3GRkDc
-	 PKlC14Ixf6CvQBeTKsRKC8dvh+oB8yf6lh/YFOndr634PGp/TnTP10ixW1k6PV/o4h
-	 JzXK/SByraA7LRcN+OluR519sEvtOYF6iegKoBiK7+vpUIumPAcUvoQ3+qsYqv2A6n
-	 kDmYjPr/M5hz1H8WOy9rptUsmPN5KiUEAWxbkwHCOsNrxNsM1Qc7wTAnQvh72aV7f1
-	 FngUTTtnoqTRUhPYNMQj4EtKGhqmtjHUtkjD1PzS5Xyu/Z49X41gXFFwEFE7XdFP6M
-	 KzPvSdagV4CIg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id ECABCCE0978; Fri, 21 Aug 2026 10:38:06 -0700 (PDT)
-Date: Fri, 21 Aug 2026 10:38:06 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <333c4cdb-8f34-4e3f-a47f-961f47e089a0@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <a48e6e7063122b22a8083bb0792984a204f316e6.camel@infradead.org>
- <fb87f673bf290cad133d113dbb0750a7752b9d30.camel@infradead.org>
- <a94b75e8b9b1d2191f365c0f4275fd5082332df5.camel@infradead.org>
- <d0692500893f303906fba1d7d596eb59a07a806a.camel@infradead.org>
- <anydY25Cl78l1HfU@google.com>
- <932DB129-1794-4855-A61E-F4C2B54B1EE6@infradead.org>
- <b736237c-64ee-4eb2-8201-5685a3853844@paulmck-laptop>
- <5f6a0669f319951462c2aae3a50d595983a42e4c.camel@infradead.org>
- <49df45c6-4d0e-483a-8acc-0ace7f9a6484@paulmck-laptop>
- <a17c8d33102c49c74a64fb62d402b315ba950577.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BJ6Z36jb"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c15d47266baso162358766b.3
+        for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 12:09:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787339375; x=1787944175; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=m4AbHNYOybKycCffk+1NRelRi+xxrvqfKKYJ+6qV4UY=;
+        b=BJ6Z36jbhziPKplfMzcvHV7AU56iF45AqbBsSpea8A7keRYxV5No/hpR9MIhModTvl
+         czh0CB0pHUnn/hITfDLi0hpREthtEr+rd7joZnZbMvcvf5B+bS6OJPq1JJlyY4L6jXCY
+         ifKWAtTcCeUlfKQHf6Q28G77DHY4x6uiAFzeF1sQM2c+m0bNlvyXYAOyK8Ycu7zHb7nz
+         rsW76UkZFj1QSXCzHm6Dmvx4Pqq1yJ78eVeRuGtSrXv3u33eLMqCfrme+UDXkwngXcYc
+         TmXoJAr5355T+vs+rspd/oDdWMcMAxsZQkeK+xGQCM+XOwzKyrhYg3WhEl75rJ8EesKN
+         6KTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787339375; x=1787944175;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=m4AbHNYOybKycCffk+1NRelRi+xxrvqfKKYJ+6qV4UY=;
+        b=lQcGTFWlu73foYvjotcY7EZuKppHDfpQZ2ZsyL5A3P6kgDIM+nOsZR2MtyCMDYk4gi
+         IOLGdCEKtksXAgG4jf/CFGPSCNxppB6RhuX0aQAVwnWFszCSdLdzqQY6NR1mbuw3R93y
+         BY8+2f2snyiEnBSRPx3909kEnwB/NYS+tv59l+khabl7E/qfLqUpb3v6OWiABHGOx+29
+         F+sAaXjoezKsuHxr87SUKu0i797h8ZE6VfaUXYiQusv542d1yg6mMxXis3oxtHTXn+2u
+         4ZqPatIgeeiZf4owGzNelmNWA6sjgFylbVYxhVaPR7ac+4MdmDyXCYY8DX1flRnekB47
+         Wfaw==
+X-Forwarded-Encrypted: i=1; AHgh+Rps8Wzc+67pyoqwIT+t39xjmHZHBu72AVrY8Nvs9KUns67dnxt7K1XIDv+sQV6xyeS+at4=@vger.kernel.org
+X-Gm-Message-State: AFuF++kZKTCU7QlVeNTGlgJ215abfVqVwHFBH75AIyVhFDRpqxDnBAGA
+	ImpoNYR8m6S+XmlyUu4Yyj5VH+zwiPJoh8Har/bFa5glScT3p8LJ9pgc
+X-Gm-Gg: AR+sD11fSpoC/Psk9goCU/IR3GBwcvlDZr3A3Ff8JLrjP1uvdGBNGPsedA0pB3p2s2g
+	W3D4ySU3ZwH3fJLctDpVPxLd3MgQlyQVACmNCNFl0a4mDsVOnk2oYRNV4K2iOH4AL96iS4dw86k
+	9Z8XfUBTsKLeyJ518er2nLEtiRpwAophyS/kZ0RxKtvXAtzuC2p6gGtbHdxPO1mwNykz9iYT6kX
+	Sl+jHZvVMk0v+AJnjCZbZ7lUcK4hiP1DEyy94ax4+1cO0mv5lTsOz1DDnJ3ry79aqRoISODNpmp
+	yk2uQkTBNgJo1/mpLb4+Uqndoa4/HVS9ey57Q372FO8qMSTNoikbpXGd7/OFN9S7iPIA6AtJ0td
+	B6ReE568jhL4R0z0pZMovo28mPwzgwUAjlmvIwXBUDJQuMT77ubT5YXtdKAoU4Jbhhopedjn928
+	2zwSC7fvzkC8ZkO0sWp6uCmT3OqHpwF0GlkGNKzWh0nb20R+gRZqJcRE/hE1y2ovJrp6q9EChIm
+	v34mjd6mTLZ9y1Wdq9A9dafpIiRH9EArArPNOpZHKR+I5fmdfQadIscyzBevRfjDseKpQ62N8tK
+	PbzbkcrPcZB1STYPU3cONKm3VGJmMlJ5zdcPgSuTz6y+U2svoTDns7MyyTBRHXUbIJ8Upvp9vd2
+	tSA==
+X-Received: by 2002:a17:907:97d5:b0:c20:21be:ea75 with SMTP id a640c23a62f3a-c246a33ea8bmr796814866b.8.1787339375197;
+        Fri, 21 Aug 2026 12:09:35 -0700 (PDT)
+Received: from MBP-von-Karl.localdomain (dynamic-2a02-3100-a103-bf01-4ca5-89c5-9aa3-9754.310.pool.telefonica.de. [2a02:3100:a103:bf01:4ca5:89c5:9aa3:9754])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24589e2ab2sm584196866b.7.2026.08.21.12.09.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Aug 2026 12:09:34 -0700 (PDT)
+Date: Fri, 21 Aug 2026 21:09:32 +0200
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
+	Fuad Tabba <tabba@google.com>, Joey Gouly <joey.gouly@arm.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Eric Auger <eric.auger@redhat.com>, 
+	Christoffer Dall <christoffer.dall@arm.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 3/5] KVM: arm64: vgic-v3: Unregister redistributors
+ before freeing regions
+Message-ID: <aoiiHw4hBHB7C5uL@gmail.com>
+References: <20260819224229.82948-1-kmehltretter@gmail.com>
+ <20260819224229.82948-4-kmehltretter@gmail.com>
+ <874igpp3qm.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -72,59 +88,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a17c8d33102c49c74a64fb62d402b315ba950577.camel@infradead.org>
+In-Reply-To: <874igpp3qm.wl-maz@kernel.org>
 
-On Thu, Aug 20, 2026 at 03:43:01PM +0100, David Woodhouse wrote:
-> On Tue, 2026-08-18 at 11:18 -0700, Paul E. McKenney wrote:
-> > On Thu, Aug 13, 2026 at 08:54:44AM +0100, David Woodhouse wrote:
-> > > On Wed, 2026-08-12 at 14:38 -0700, Paul E. McKenney wrote:
-> > > > If not, please let me know, and I will put together that does the
-> > > > job.
-> > > 
-> > > If you're working on that, I assume it'd need the readers to be known-
-> > > atomic. So if any of the read-side SRCU_READ_FLAVOR_ATOMIC thing I
-> > > already threw together is useful, you can find it in my tree at
-> > > https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/srcu-atomic
-> > 
-> > Thank you, happy to steal pieces of that with attribution.  ;-)
-> > 
-> > My current plan says that if you have an atomic SRCU on which you
-> > use srcu_read_lock_atomic() and srcu_read_unlock_atomic(), you only
-> > ever get to use synchronize_srcu_atomic(), never synchronize_srcu(),
-> > synchronize_srcu_expedited(), or call_srcu().  Does that work for you?
-> 
-> I just said this elsewhere in the thread¹ but I don't necessarily
-> expect you to be following that. So to bring it back here...
-> 
-> My mental model for srcu_read_lock_atomic() was that it was always
-> atomic, even on RT — it was basically equivalent to a raw spinlock.
-> 
-> In fact I think it would be OK for it to be equivalent to a *plain*
-> spinlock — i.e. atomic on non-RT, but might sleep on RT.
-> 
-> When I wrote that previous email I was thinking that might end up being
-> additional complexity in your implementation, but as I type this I
-> guess it could be as simple as falling back to the normal non-atomic
-> case for RT?
-> 
-> ¹ https://lore.kernel.org/all/448c5c0128b08ab98d175ae1099ff4d4874e49b3.camel@infradead.org/
+On Thu, Aug 20, 2026 at 09:58:57AM +0100, Marc Zyngier wrote:
+> The other bit of interest is in __kvm_vgic_vcpu_destroy(), and its
+> conditional removal of the RD iodevs. Can't we just get rid of this
+> whole block altogether now that we have a saner failing path?
 
-The current state is that if you invoke synchronize_srcu_atomic()
-from a given context, then srcu_read_lock_atomic() must be invoked
-from that same context, or a more strict one.
+I tested removing that block.
+It reintroduces the use-after-free fixed by ae8f8b376102
+(“KVM: arm64: Unregister redistributor for failed vCPU creation”).
 
-So, for example, you can disable preemption across your invocation of
-synchronize_srcu_atomic(), but only if you also do so across the entire
-reader, starting before srcu_read_lock_atomic() and ending after the
-matching srcu_read_unlock_atomic().  Or you could instead disable
-interrupts across the entire SRCU reader.
-
-Does that work?
-
-Also, Tiny SRCU atomic turned out to be a bit more complicated than
-we were thinking due to lazy preemption.  ;-)
-
-If you want a sneak preview, please feel free to take a look at
-the first few commits on the "dev" branch of my -rcu tree.
-
-							Thanx, Paul
+Karl
