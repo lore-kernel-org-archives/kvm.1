@@ -1,124 +1,99 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E414C8FFB;
-	Fri, 21 Aug 2026 14:38:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7324E421233
+	for <kvm@vger.kernel.org>; Fri, 21 Aug 2026 15:22:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787323129; cv=none; b=OgF1PWSQ6YVB64Ne6eYYI64SIXl7BBY+0qTcMdqmXLe0Y1xyEpLo1bJkv+ysu2EUaxcLzlWSFkGORAR5Tji5R6cXeynvc9qjv4MqDgF3Pb98s5koAM8MbW1cNm/DPoTyduzXn+sBDpLPenygIfEE+wgGxLwfHBzpj4ALjMFhlzg=
+	t=1787325742; cv=none; b=uN8wxGKaHQlb+NnYP5Rc2qiWyiiBFQriAz4toj6L98RveLapIYajjDQ6Y4kVzHKV6ngtKQnzMUsS7/weGc8Ye9aRt7HH8yYGFbRJIpuKcFMZy1e98zu9tc6KiVmpfjwxd6kyKXhqqjAC3fjSnzf0hwWRKDO3lHbv1QRhE7xaKSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787323129; c=relaxed/simple;
-	bh=scV2H1hjPWVfeAM7ZyMe3jblNMDJ9BzUdy4/UPPMWBM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IFsPtqQFCHwp/edZYft+nsvk7HMH3YABwvhcNI6aGl0wKL6U20it+FAhVvNqGNuTa9g9ADx+FSn4cjqCAAoQqoDyndAjRSUbOG3YWsy4dQs5i4xtNRdpzS5zHWQXSLjB64j24rOInSuxMM2o+WfrDPCpA9kerSiiZbcf2dc54nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k85D7Ksk; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1787325742; c=relaxed/simple;
+	bh=F/r2zIvbOgN9Q+WhMLhk6PDLDh24dmotCgClSo6W8ls=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CmsFe/KskO+iVOd0s1Y0pn0flVfGQRtAI3ydg/33RURJhGsQ8y283AJ77TJwOUgAwwa5yxo+vkE8VT+brq4wMbnCPJrSu0GuWgiBpG2nC/nbv3UBL81UfkMGRHG3PYAgaezeraAqFvKYc3OsF/0DtTPPc0sy4znToUZSkz4hFoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FWH0hoKa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k85D7Ksk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787323126; x=1818859126;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=scV2H1hjPWVfeAM7ZyMe3jblNMDJ9BzUdy4/UPPMWBM=;
-  b=k85D7KskeU0YOkiESYlDEVHBP8XV9ZI63FTPK9/fVCTeCpfjTAbEW8Vf
-   Eg7mBZ9/KbrboJcuXIc2fw0OLw+SDW8qrw/DJjRz2sCXaUs1bQ1pznvs+
-   GjzRk0Nu23ax0axR/X0hK7VW7CYtOegyYOTgZsgfqONqzsHZfWoJ+Flxk
-   AV9k68eJxG1F+LrKjptOhCfndFps+OcsoD5yhxG6CIKWAipnwNRZRy3+8
-   RukzfsyMdvuCNqY7/XtY7y0ARcVEjlckD5OFomTIUIdG6EllfntUL9S15
-   f3QGrBHF6HKSJ/V3e5UPvHP+9YAnkwl5WqrtBDsZQilQ5STUyjzWywnBW
-   g==;
-X-CSE-ConnectionGUID: BlzQqbraSJmA/S+F18umAw==
-X-CSE-MsgGUID: 6TozzAISSfO4oWtK7fLeMA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="88000894"
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
-   d="scan'208";a="88000894"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 07:38:46 -0700
-X-CSE-ConnectionGUID: Prf0xlXOQmWTiR56ixwsrA==
-X-CSE-MsgGUID: 2r+WjCkWSv6BiDa7huKSQA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
-   d="scan'208";a="264604097"
-Received: from jjgreens-desk24.amr.corp.intel.com (HELO [10.125.108.109]) ([10.125.108.109])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 07:38:45 -0700
-Message-ID: <27321cc1-5428-4590-a88d-b2824659c89a@intel.com>
-Date: Fri, 21 Aug 2026 07:38:42 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FWH0hoKa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47DBD1F00A3D;
+	Fri, 21 Aug 2026 15:22:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787325739;
+	bh=m3Q/uuxqDsORYxRr4gbtOk/5sbmMApPrP1NPH0V0PuU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FWH0hoKahHT9NLtiTtHC/IuQi7JyKmK6ORUtFHS3uXOrpVLM9vhzVV03Um8x/Y7tt
+	 Tv3HVI+d9lUVg/W30Zzw6+GkAy9+X7JyKvIVtSG4HGpUWVrMkBK9WcjFt34+KqkbMm
+	 9/POzmM4Qt0+0G+3XjOHv7lCOPYMBrPyNcbDKk0UZGii0Pu+4BMJ53RLQP5V6y90qF
+	 d6xongVYNjLjNq3+FLSiByRCJGLESedhjp2p8aLtX39Yr0qakGDvywr/c73jHqM3a7
+	 W4xGhIo+ofcoJ1wzGa8Z/IwB1cfyrjMd0GUkxqXRBC2tvEaOFEfRg6yi4dML0UG/Y1
+	 47pzRqk3wAxRg==
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 4B4FB198005C;
+	Fri, 21 Aug 2026 11:22:14 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Fri, 21 Aug 2026 11:22:17 -0400
+X-ME-Sender: <xms:JW2IaguIF_W1vGEPaAhlXNRjJhZTS4Oavi7CnBZVVgOEI6qpFm3zYg>
+    <xme:JW2IastvX9ISEYE599xbQozbqhlL0UAhFCQnPy5l_JGZr7hH96CsAo-1b7kB6IKeh
+    NXm3aprVwxAOXyuMDV2ea1Odizae8uRk-CUCvw94FlHOa285N6F95I>
+X-ME-Received: <xmr:JW2Ian-Ql6gma7nAGpcDxflRNHHo_gAzj8jJrhY4muGTNSxi_-UeOwfJfXc>
+X-ME-Proxy-Cause: dmFkZTEI7xnPoiFK7D2yvFVYe/8dWOV7AHrViby8I79jvd+aJib/EFI9wTm2aOURbionx6
+    YVi1kvqYO+WKazD1VN+FXkqjWGhrAcL5n2eK6u/I2BLXSoHVDtT6ejqLs4MbC1EXMl593M
+    5i0eWSETiBOjfqvGPzGlRnRm7X7JS21hX20GrKz7D/X5LY/PAFIolsgcxE47fR+JUa9bIy
+    5mIUL3pgchALJggwtq1aynRhZqSAAlUSl9u2Vgjgnk4FNOuWoDyV4GSdZtEXUmnSogyS5f
+    dJrJO4GlrXZ0roP1Nsj6gT+r/+K/3RTIiCzjp0FGP31N+namhMk6GLGXX7wt/rJwkYsPTN
+    zlQj5L4PJKD9Wdf4xOTj9HhQqTNz2QVIf+KK2q/+ICmnYFbKgX30Rdv15R+5QRh22CLUpg
+    inXqRt8I3JfVszok6qT+lbs1VG60CaC7C25/qpc+TSUx7Z6CYCBMv5M1qmj2/FcHKDRVvG
+    RMmlu1X9y9kt6Yo5W5C2kpjLyiCJZLqns2tHa2q4x/a468DySntkASIYGIDUYZyO5dKGc1
+    6gvyqBlVIKtcX/0hrEq/vezuL/MOkTc2TGrO99WoMgQVx/jH3IdpOHRzv5o8rO30sRaUDo
+    oQ4cvBrAlYRH3K8CGFMToukxtuljnDX5LZOU7fd8wWsOh8wuwg4+ert2v+9Q
+X-ME-Proxy: <xmx:JW2Iat_YX-fwq2Av--cnwdeXE-mbytNPD68ystEfdOyu5D8e9TuIrw>
+    <xmx:JW2Iaj9dgO2oFfyheW1CX8Cmna04yJCNdkqEz-lFckL583oq3x_ElQ>
+    <xmx:JW2IarFswSnZ0METD-bpk1ZKxidZjxTj00XFjfsFPrmh5JCXh5Vpmw>
+    <xmx:JW2IaqZT32ybUcYYxPMCEot1Q93aLicPO4cTGxZsmtbowuP4wueCfA>
+    <xmx:JW2IanMJsYS52_8SS7m7f1qfCQzmMumRTnayzYtEfTcR9MxjE6BoA98i>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 21 Aug 2026 11:22:13 -0400 (EDT)
+Date: Fri, 21 Aug 2026 16:22:12 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, rick.p.edgecombe@intel.com, yilun.xu@intel.com, 
+	xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com, 
+	kishen.maloor@intel.com, tony.lindgren@linux.intel.com, peter.fang@intel.com, 
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, chao.gao@intel.com, 
+	artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org
+Subject: Re: [PATCH 3/6] x86/virt/tdx: Detect if the extensions
+ initialization is required
+Message-ID: <aohsoZbDBZ8ZIYez@thinkstation>
+References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
+ <20260821032920.256225-4-yilun.xu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/6] x86/virt/tdx: Configure add-on features on TDX module
- init and update
-To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: kas@kernel.org, rick.p.edgecombe@intel.com, yilun.xu@intel.com,
- xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com,
- kishen.maloor@intel.com, tony.lindgren@linux.intel.com,
- peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
- chao.gao@intel.com, artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org
-References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
- <20260821032920.256225-3-yilun.xu@linux.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260821032920.256225-3-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260821032920.256225-4-yilun.xu@linux.intel.com>
 
-On 8/20/26 20:29, Xu Yilun wrote:
->  static __init int tdx_sys_config(struct tdmr_info_pa_array *tdmr_pa_array,
-> -				 u64 nr_tdmr_pa, u64 global_keyid)
-> +				 u64 nr_tdmr_pa, u64 global_keyid,
-> +				 u64 addon_features0)
+On Fri, Aug 21, 2026 at 11:29:17AM +0800, Xu Yilun wrote:
+>  static __init int init_tdx_module(void)
+>  {
+>  	int ret;
+> @@ -1229,6 +1253,10 @@ static __init int init_tdx_module(void)
+>  	if (ret)
+>  		goto err_reset_pamts;
+>  
+> +	ret = init_tdx_module_extensions();
+> +	if (ret)
+> +		goto err_reset_pamts;
+> +
 
-addon_features0 is just a copy of the global, static, not changing
-get_tdx_addon_features0() return code, right?
+Hm. Don't we need TDH.SYS.SHUTDOWN/DISABLE on error?
 
-Why pass it around as a function argument?
+Once TDMRs are initialized the module is functional. Yanking PAMT from
+under it is not safe AFAICS.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
