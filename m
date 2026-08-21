@@ -1,75 +1,193 @@
-Received: from ultrarisc.com (unknown [218.76.62.146])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C6337189C;
-	Fri, 21 Aug 2026 03:28:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.76.62.146
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECAB363089;
+	Fri, 21 Aug 2026 03:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787282912; cv=none; b=OuEK5RpP81o/75xkgk7SJd+wfgE27Y9rK3vA1Rpe5FoG7xOPQp81O6xd1q+UzDmEf2QfRGV7C8Ub1Mb3o3sVClWHs8iG4z/QNYZpKV1AJ7cg3Wx/P0NWD/Bce7n/pnqlCDdGQCunmR4N4eeg/Yp4Go6zY4i9PJXAoms9em+TF6I=
+	t=1787282967; cv=none; b=g1vLDQ2OyLJBXeIchq0pZsUYwHd5OqKmmVCxyBBzUofd55h9vhKfzpOH7gXtm2vwPdiDr/+iXaar3NnzbH08l7XvBAUrUNXyTWw2zp/8xufJjXSIXdytuHScAMYOxAz0b3zcMU9OQknY2ei9HQULIo4IOHFPICEJOUPl52WbH0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787282912; c=relaxed/simple;
-	bh=SgIDj/Qoiw9IbD1da5NE7BBzdU3bJqbcJYLHQ4+hgrQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID; b=fXmX8tKfvIY6IYagQesFp69x3uV13pmeu6XnWhzb78mI5baRNfw8/fIHJ75dX32Fa8H4riaZpR6B0PdGrc1rYtN6J+uTftSgjZhJ+dsOfpq7sw1n2ubC/Tk0tjDhYMH+1b4s0yXNOJ/Sn++UKkZ3OBqXiSfo8FLON2BUUJoTjHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=none smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=k4T1yIyy; arc=none smtp.client-ip=218.76.62.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ultrarisc.com
+	s=arc-20240116; t=1787282967; c=relaxed/simple;
+	bh=Tg47wxnZT/EuRtUTQhOxoMkogWxsRxN/pw3SnJqF/w8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WZ2CYg7GtxupfukYsxF9xoG6t/MT40+mtxWUtD4d5sBKTp96TkunYBObFWX2kZrDPOrgZSxiyzOocaPZzX8XWTROXefjI+QitDmfCTpHgkZMdrPAgCS3mdQfzwpzKkjN1Pa5/6o7SeZ4NVNVzYAPaAFGFhMUPm3a9aTs0rgEQTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MJJxEgvg; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="k4T1yIyy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=ultrarisc.com; s=dkim; h=Received:From:To:Cc:Subject:
-	In-Reply-To:References:Date:Message-ID; bh=SgIDj/Qoiw9IbD1da5NE7
-	BBzdU3bJqbcJYLHQ4+hgrQ=; b=k4T1yIyyM+Nje8nZ3tl6IMPNaaK79nwJZAHr9
-	3OP7a2ZBrBJdeoQIA+/ERJajI4BXxuYSZj+bZnmsEdV0iBeDP8ib4t9SRBRv+kIR
-	42aZ2lkeHv7U4PPbUOYK+h47Pkqpo+bFca7erta/oQz6yX2t7xJiLLSAGdpOMjCe
-	Q572EQ=
-Received: from [127.0.1.1] (unknown [192.168.100.1])
-	by localhost.localdomain (Coremail) with SMTP id AQAAfwCXxs3XxYdqA6EAAA--.189S2;
-	Fri, 21 Aug 2026 11:28:23 +0800 (CST)
-From: Xie Bo <xb@ultrarisc.com>
-To: Anup Patel <anup@brainfault.org>
-Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org,
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Xie Bo <xb@ultrarisc.com>
-Subject:
- Re: [PATCH] RISC-V: KVM: Serialize IMSIC attributes with vCPU migration
-In-Reply-To:
- <CAAhSdy3kDmRxcT_+dOpcUVAkvZ-F0kWdQett+mTy93gPDkwS+Q@mail.gmail.com>
-References: <20260721073612.137259-1-xb@ultrarisc.com>
-	<CAAhSdy3kDmRxcT_+dOpcUVAkvZ-F0kWdQett+mTy93gPDkwS+Q@mail.gmail.com>
-Date: Fri, 21 Aug 2026 11:28:08 +0800
-Message-ID: <178728288861.534500.12009100192281293732@ultrarisc.com>
-X-CM-TRANSID:AQAAfwCXxs3XxYdqA6EAAA--.189S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYL7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E
-	6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28Cjx
-	kF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8I
-	cVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r1j6r4UM28EF7xvwVC2z280aV
-	CY1x0267AKxVW8JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE
-	5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeV
-	CFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxG
-	xcIEc7CjxVA2Y2ka0xkIwI1lc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAqzxv26xkF7I
-	0En4kS14v26r1q6r43MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_
-	Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwI
-	xGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWx
-	JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcV
-	C2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbE_M3UUUUU==
-X-CM-SenderInfo: l0e63zxwud2x1vfou0bp/1tbiAQAGB2qGcfoAPQAFsf
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MJJxEgvg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787282965; x=1818818965;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Tg47wxnZT/EuRtUTQhOxoMkogWxsRxN/pw3SnJqF/w8=;
+  b=MJJxEgvgmylujUaYTmTXMZH13zIsQIpNi2FP4w1Jujz4rF9Np1yIs0XD
+   Zzt7HRdNbbGxr2jLU3tW1yGzY5CIpF94VS9foTm+lohKsNJwSp/IzXKlE
+   8ERMNhonvlZFGQ44vVxUq5aN/OXB/OSomChLYlL9W6/FYn+Rnv1ty6s5Z
+   aXe1tWsaEG3gbfqH71xYLFkuo6lT/sHVlnbrRuZMMgi28RHrONQbBYNip
+   sK6FT4sEUy+Zu4ZDVzmQyXY7lKkPl6JNXadwBSgeGkCLPuDrEeju7FY2a
+   LUnNiyT4yNjh1gCxeuo/1kgQYv2Mz3/zKGOa+NR00nG19WIIwauM+jJuP
+   A==;
+X-CSE-ConnectionGUID: NQrNlLbTQyO3M9LZQ0v5vw==
+X-CSE-MsgGUID: ZBmtV7M7SGSvd4Gl4kNSkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="91640223"
+X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
+   d="scan'208";a="91640223"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:29:25 -0700
+X-CSE-ConnectionGUID: jzL0HLMXRDSq4xG3a478bA==
+X-CSE-MsgGUID: 1WRSveMpQpCiMeKYLGT2KA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
+   d="scan'208";a="264451585"
+Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.47.46])
+  by orviesa006.jf.intel.com with ESMTP; 20 Aug 2026 20:29:21 -0700
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: kas@kernel.org,
+	rick.p.edgecombe@intel.com,
+	yilun.xu@linux.intel.com,
+	yilun.xu@intel.com,
+	xiaoyao.li@intel.com,
+	sohil.mehta@intel.com,
+	adrian.hunter@intel.com,
+	kishen.maloor@intel.com,
+	tony.lindgren@linux.intel.com,
+	peter.fang@intel.com,
+	baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com,
+	chao.gao@intel.com,
+	artem.bityutskiy@linux.intel.com,
+	kvm@vger.kernel.org
+Subject: [PATCH 0/6] Enable TDX module extensions
+Date: Fri, 21 Aug 2026 11:29:14 +0800
+Message-Id: <20260821032920.256225-1-yilun.xu@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Anup,
+We are trying to get detailed review and some acks for this series.
 
-The issue reported by Sashiko has been addressed in v2 by using
-mutex_lock_killable() and returning -EINTR when the lock acquisition is
-interrupted.
+Dave please feel free to ignore. Kiryl, Rick and TDX developers, please
+help take a look.
 
-v2:
-https://lore.kernel.org/r/20260810-imsic-attr-race-v2-1-00ed95ad321e@ultrarisc.com
+== Why it's split out ==
 
-Regards,
-Xie Bo
+The extension patches are pre-requisite for several TDX features (DICE,
+TDISP, TD migration). We would appreciate community review and ack so
+that all of the extension-based work can build on it.
+
+Previously this series had been posted along with DICE [1]. But now it
+is split. It was confusing review to have them together and DICE needs
+more time to implement feedback.
+
+The DICE part is in the full branch [2] as an example for extensions.
+But it does not include the other DICE feedbacks.
+
+[1] https://lore.kernel.org/lkml/20260618081355.3253581-1-yilun.xu@linux.intel.com/
+[2] https://github.com/intel-staging/tdx/tree/tdx-module-ext
+
+This series retained Reviewed-by tags collected in DICE series. Please
+let me know if you object.
+
+== Branch stack ==
+
+This is based on v7.2-rc1, the full branch contains:
+
+  Patch 1:   SEAMCALL version patch [3] which is WIP on community review.
+  Patch 2~8: This series, including this cover-letter.
+  Patch 9~N: The old DICE part as an example.
+
+[3] https://lore.kernel.org/all/20260722084634.131020-1-yilun.xu@linux.intel.com/
+
+== Overview ==
+
+To date, SEAMCALL execution must complete quickly to avoid stalling the
+host, or yield quickly at pre-defined interrupt checkpoints. This is
+acceptable for the existing SEAMCALL leaves, which perform simple,
+bounded operations.
+
+However, some new features such as attestation and TD migration require
+higher level security protocols inside the TDX module, which cannot fit
+within that constraint. TDX solves this by making those operations
+inherently preemptible and resumable like OS tasks. TDX provides a
+separate SEAMCALL execution environment - the TDX module extensions -
+for those operations.
+
+This capability allows for higher-level SEAMCALL ABI design - like
+"create a DICE-based quote". Several new features, such as DICE-based
+quoting, TDISP and TD migration, use SEAMCALL leaves backed by the TDX
+module extensions.
+
+The TDX module extensions need memory for their own internal state and
+data to serve these SEAMCALL leaves, so they need extra setup during TDX
+module initialization. At runtime, the host invokes these SEAMCALL
+leaves just as normal ones - if interrupted, simply re-invoke the leaf
+to resume.
+
+For more information on TDX module extensions, please refer to [4].
+
+[4] https://lore.kernel.org/lkml/20260618081355.3253581-1-yilun.xu@linux.intel.com/
+
+== Changes ==
+
+Dave pointed out the SEAMCALL version change could be a separate
+discussion. Split the patch out from this series.
+
+Chao asked if the extensions re-initialization flow could be simplified
+by unconditionally executing TDH.EXT.INIT and leaving the validity check
+to the module. Yilun pointed out that if we don't honor the updated
+metadata, the SEAMCALL leaf may fail then the entire update fails. Rick
+pointed out if an update results in different metadata for the
+extensions, it is an incompatible update so the update failure is
+expected. We agreed on this, so now the simplified re-initialization
+flow is: execute TDH.EXT.INIT unless the extensions were originally not
+required at boot time. This also moves the extensions' metadata back to
+tdx_sys_info, as they now read at boot time and never updated afterward.
+
+Another comment is that Xiaoyao and Rick pointed out the interruptible
+resumable capability provided by the extensions is not new. From the
+host perspective, some existing SEAMCALL leaves can save states, return
+from interrupt and resume. So I no longer emphasize that the new
+SEAMCALL leaves are new type of resumable calls. Instead I explained the
+yielding details in TDX module to justify why TDX module extensions are
+needed.
+
+Rick pointed out the selection of SEAMCALL leaf version for
+TDH.SYS.CONFIG is the TDX ABI detail, mixing the operation with other
+kernel operations makes the version selection logic tenuous. Make a new
+patch which adds SEAMCALL helpers for TDH.SYS.CONFIG/UPDATE.
+
+Quoting v2: https://lore.kernel.org/lkml/20260618081355.3253581-1-yilun.xu@linux.intel.com/
+
+Quoting v1: https://lore.kernel.org/all/20260522034128.3144354-1-yilun.xu@linux.intel.com/
+
+
+Xu Yilun (6):
+  x86/virt/tdx: Wrap TDH.SYS.CONFIG/UPDATE operations in helpers
+  x86/virt/tdx: Configure add-on features on TDX module init and update
+  x86/virt/tdx: Detect if the extensions initialization is required
+  x86/virt/tdx: Add extra memory to TDX module for the extensions
+  x86/virt/tdx: Make TDX module initialize the extensions
+  x86/virt/tdx: Re-initialize the extensions on runtime TDX module
+    update
+
+ arch/x86/include/asm/tdx.h                  |   1 +
+ arch/x86/include/asm/tdx_global_metadata.h  |   6 +
+ arch/x86/virt/vmx/tdx/tdx.h                 |   2 +
+ arch/x86/virt/vmx/tdx/tdx.c                 | 245 +++++++++++++++++++-
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  20 ++
+ 5 files changed, 265 insertions(+), 9 deletions(-)
+
+
+base-commit: d8610a4dbc62cf5ddf24ad10ba7a7324c0abb278
+-- 
+2.25.1
 
