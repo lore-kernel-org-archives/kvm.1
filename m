@@ -1,147 +1,225 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D09630C14A
-	for <kvm@vger.kernel.org>; Sat, 22 Aug 2026 16:46:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787417169; cv=none; b=muCERK3VDWODn0FybDjdhF5oLQ6rdIK+Zmq99EJqE0HZXLHmOis0s0sTIJaydMobcxT9EAhnHEo+LJ2l5s3HHaeC4uXE44sBb7HI8dRN1osBmC6cYJhPg0wOE/6L3te6OgJiHgksP4HdT5h/UQIrUKyCywcQ4g6VMOV55p+oKW0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787417169; c=relaxed/simple;
-	bh=RZnSBXG7H5IfVESK5dV+papTZf4bB2+5pFdMF6y80Cc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NnqKjhaJtWinDnMrWG/GfaYyZ0Ei6MR+9pH1iexnRLcps+AL3OvH/uqB7QglXkInt7co3SLT1segkbMubnBI4R51NyNdXW85TRI+Ni4MeorY2pt54MNQ8fPA1HEZTaqbtu59FIIaT117cGH/BPTReGKld9HoNhWhi/CNdm9OAKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o50PTwrJ; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5AE27EC7C
+	for <kvm@vger.kernel.org>; Sat, 22 Aug 2026 17:58:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787421510; cv=pass; b=vCm0pEU9rUbqndgvmaG3PuN6KwCSPWz4JFr61Ml9OP/VApGrgaqv4+TBU2RB/RI03fAFnf2g3PxZQg3bo5mE4iIvpNc8cUvzSpJm75R0JGn3oBIHWvtDEINn81GvdwCYd6PbEq9mkOtLFgk1mSOvNX7fchZRTlOfD16TlAIZsos=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787421510; c=relaxed/simple;
+	bh=5uVSKut5uWA+O/bl1lu8n1UjU2a74/+vL2uiZFUMZuM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tZ7V8rV7/cEXAeBJs3JVvtxbgXR0kicjH+t5oJCdCMcSaeHk9TqhuazrywkyGt0d+votobux9h1dcXrM8Lo+3C7yyZJPgt4p1OR0RSGnhWmiQN699EuUpEnlMLfk0UhSxeaMiPcFoS3PRmWryo6EoGCSeTJKueYsGZPdvN2czaY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wWiZwmvS; arc=pass smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o50PTwrJ"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cbe4c537ad6so239584a12.0
-        for <kvm@vger.kernel.org>; Sat, 22 Aug 2026 09:46:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wWiZwmvS"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-499add6348fso22365e9.1
+        for <kvm@vger.kernel.org>; Sat, 22 Aug 2026 10:58:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787421507; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sQ6rWKlatIuy8eyuAAg1073o8DQO6Z5UwlNqNp1DyNIkqJiHDQMtncx9EHbcOUsbol
+         HaQH6WiSYDGKxXvu2FZ9eKcOLTUB1Y/k83O5KMp5DsblAyg3FCiFfHqIad56ZaNg/cK3
+         PjgrOtZ9h25dDZkTTPv0nqUk/ClmaWrW4VvYyLc5XIbT+rDYodDu8o5+/waQfN+qR2uJ
+         gwpdF7/rc3hvpUd8427q+3tdiqq/MYUBqwSEIzLRMmM+NSYif7Fg965Epv5TVImZrLm9
+         UPaJCYHwK+JKeUPdR73QWmswSHnImb6SUhZsBXmtTANAnLL3s9TxZKGm8r+Re5FCx7g/
+         N/ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4zS3gK3kbG0uK+a0zea0r7Wu/L46iQSxpvjeCO3tlVk=;
+        fh=DdouM1BaZh+6cVS0txDSksYotphtZjl7Q5QaBbq8Gpo=;
+        b=Rdpw89fQ9XzvItRU2gOAmB6G6PGwO7d6lANGjPvp/AAAdvdxvZdchcMbCU6TnvMrVi
+         Sw9UIs/bOd1ijSUvAK7IQ8l33sRs+Xp3rWcYA30MCRh9xRJJmasE8XvYCFHdYhqzx5pe
+         OE0FLXgHlWl0UgWmZmTuBETW27qnmF20ppf87RNrKTZRyC/TR2iiMctYFz4vfHSkeOd3
+         DSG+YVIQV3FPX5m0jegLvTlfTlsWhfXIyHxq6kA9kiuek59pvrtRDqRQADKR8ESnDVZz
+         zLC14akgCk9EitNT9N4wFFEJ96wltP7mpDQssHSRKlVD5JKPBy9BjJThvXZqYO+sK9WS
+         NNqA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787417165; x=1788021965; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zxjo65j0/PC8LNmS95fdZuou6hT1feMI3IHbQQyBjIE=;
-        b=o50PTwrJBuwau13sNGF5h4O3fMo5o27/5Sy3+pjsyIesNKORDx6wwWGX0kKBL83BrD
-         BsYaVVmDe0VuuL2boO8nOBgHnqTnEdua0MNVB3TzccDP0QAuj+qPb7Xrje2h+HJS0ZLv
-         ofHR9qgWj564C/ap9pb13IqRfveb0K4H+d3xJ0sE1VMiE1y8Xre3g5ObJjvhjac7IqHZ
-         dk240TvBQjk2PUZNlz97PlBdO3qF4kAFNJIGmWLpyeZMkoaxJ5gf2qbX7HaNVEJhiJIu
-         Qot6JYoE6473NJg8I+1091cFGPiL1fDaz/Pt81NyEO0VKIE+zJqapI5Mxis4pT9IJwH4
-         5iCg==
+        d=google.com; s=20251104; t=1787421507; x=1788026307; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4zS3gK3kbG0uK+a0zea0r7Wu/L46iQSxpvjeCO3tlVk=;
+        b=wWiZwmvS8s45RXBFX0RsciQpbpEPC6lt1TTuXUQHlBcy3rTDlTcXiyGckT4sGRwzL4
+         SG+foxXtf0YP/aZO2ibXNt+5YPbKV478dnLsNMDaDbYLqekRdlBTjehrs0e7xDWH7Gv5
+         r6IE/S3XMcGIqEHC93Mh3y+3x9uh6gmMQ/gNiCF4J+wpBQ0nlUXwka1DeyFUxP/sJMi1
+         wY180d05eBBmLPI0kah6ecPHkiSiCKA0ZGpyE5zWBTSGwy0W6lNVNZplDScgovwjK41M
+         kVxSv6yLbxEBtLMKfr3baD34g3VQDcAmsRIAeSOHY6Sn1DCY50pz/eH92iczR3jr+j8P
+         FFOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787417165; x=1788021965;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zxjo65j0/PC8LNmS95fdZuou6hT1feMI3IHbQQyBjIE=;
-        b=HOY2X818LoUdYSDnS7XzUJVGRWOs3q67CWKld9+XWFQg7BHQma+QdQ2ey/pluRj8vd
-         VCn4c70BxUnUOrvTK29dFEkbBnh5SF9jESzJCjC/fOo4uOPH/aWXsqKNDPrPvBUlgRTA
-         LIwSq8YdopI9+PY1eWvun/MyIPA4x25l9Pjkfu6sHEGIgqUz+mdSIk81qjs40nl7Eyzr
-         sx2BTHHnepaD79TZFBoz61Kl5WGJH8VnCQba1uLToEGeSrF1fFgsPex0I9HykZbhj6X4
-         NNWORVgD+Rcyb8mGY3FuIyjrHm/1FAxC/4IHLGAsfXpBLzYvJ+ZPAotqqQul/q8bI7X4
-         zVvA==
-X-Gm-Message-State: AFuF++m4QEVMuirWFGGe9CefjV+HuBf2RIA+QqK2g55DN6jGKV2o2B0o
-	59AokJcDrDXMB85wc7Sf3RW9mZlYJdcrSa/FvNtaWP90u3g79gVv2aT4
-X-Gm-Gg: AR+sD11xAY6ipxxRHMPLs41653PAAYRHnt6vSSVoxArUqVr0Htwp0jJqeji/KYK5LcP
-	NDaXKr45yfSxrOeZG498Mf0J+khOeqsw8Rv2WMqx2x3whxDfFuecB8L/5JzpvhJiwKmdNFJP4jY
-	Ia8ROuIk7HfZEhRIP4IrklKqJpqnCeUpl6Y/dOOvUmsOaOfrOhJDS1mzIDnASFDlKADh2bd1sq9
-	+iCx1pChal29SnZ9znqSyDP0R+TcIcHa8JerCIhnEZqNkLg9TT9jozbNGIu0oCIdSNyxSgWw867
-	mfmD/7XA0zyqoGwaz8xIr4MugURe6MCqWWYpBve2QMaBWlkStuO7wHILBQ6U6g/Lo74+zhEPf5P
-	ZBOVQjREN9RLstmVTXCdC/GO6zaZThu1x+3G47I0PDnvLSjgrgoVFii5I5Fm+gjn4uSstmAbKlP
-	5qoZUvYgBDJpMLH0RaOrzRwPH1Hj/VRBPzp4YBHiDOEuF5+EvkbNuiNIOxUm67zzxCclGaDKsQ5
-	2tujvcGJFseI3XqrLYr2Q7buOyEM9360OnLst2rSAZEO6q3W8INris=
-X-Received: by 2002:a17:903:b43:b0:2d2:a952:2628 with SMTP id d9443c01a7336-2d64b0d7b26mr129424855ad.2.1787417164695;
-        Sat, 22 Aug 2026 09:46:04 -0700 (PDT)
-Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327f9209fafsm15623986eec.23.2026.08.22.09.46.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Aug 2026 09:46:04 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Asias He <asias@redhat.com>
-Cc: kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] vsock/virtio: flush works in dependency order
-Date: Sun, 23 Aug 2026 00:45:56 +0800
-Message-ID: <20260822164556.3750959-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1787421507; x=1788026307;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4zS3gK3kbG0uK+a0zea0r7Wu/L46iQSxpvjeCO3tlVk=;
+        b=atszwni4K4HB3esZkf32dJdDWV0v1NutGZAqk6wm3PIaWJy1IOmarbNKOcpt6620NS
+         RfZGCtQcVexWLd3veMBlNIWmfIIxFToAwiqmq5csdqkxULt/X1ohlY4RXbsfhhjGyefB
+         KlPmBIU/RTMV/c8lK/JOlNwxfapjTnCVOy1YLS2AZNyoNdOTAFIgaG9rj/hEW2+88w7M
+         vmudM+pjNPVKJAbm6CwXrqLwMFxzO0AFTjT44Tr+f6KUhYDtLZWOEuLiiaUYxjLJSUr/
+         8HRgjRhc5CXev2q8HjgdKKLrFrH+MS2Z0yv4Bumq5lNY412jfqzeLwOHkl38R6zD1y4a
+         itCQ==
+X-Forwarded-Encrypted: i=1; AHgh+RozV1ZgIV1cBxqwKB1i+J+eP5xPcXSRcq6GVAGCL1zsSyqD4OMtH+wafWVt9DV0bNT2APU=@vger.kernel.org
+X-Gm-Message-State: AFuF++kLSBL8em3g6kK+ZXfzxVSir+029RfGkLhhWrGpxtB0/ENKyc84
+	o7MMP/thPlEMCNABmbhMPvYqctu9NJoNx3gxrv+2YQaGT0XesWVjlveYtUuMwoFJw6lxHkv0Nvf
+	t+2SacoQcWtaqyVMkkp7RVZk3K+fSRdU/cs31Plho
+X-Gm-Gg: AR+sD13dSL7+xqbSIb2wk2Q6iTe1GHKAu35W9U1OhXhnh9YeNs2F1CLLIpU/ZH87GSk
+	iHJnBVsqomXIjtb1ZLNxv7FMLx+lU8XPZgNBEEwWwWaM6s0qcIOlO3OT/U1oOkTcR7/wMuP4Thi
+	KjbDEG0frPwMSd5is27ZT1Ti7YNKHWdRbVK4xSolAIsR5XIVN3xU1XmpkSYYnQgD08DfxpeDlyw
+	UyHdFqEIuoaLdhu5hd8cgS0eEp16/bxHOwSYZHVkp1RFn9yIc0YfUtqQyek6fUn2gerw/K6xmVo
+	srnLRvB3WSoeImBjinKTkIIAldm1HDSaAPndvDV0uZhZy14J0IbbCp4dIAH+CYZNtwa+NPCcyau
+	t
+X-Received: by 2002:a05:600d:8497:10b0:493:b47f:a24 with SMTP id
+ 5b1f17b1804b1-499c1af1896mr748535e9.6.1787421506423; Sat, 22 Aug 2026
+ 10:58:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260818112920.26252-1-likexu@tencent.com>
+In-Reply-To: <20260818112920.26252-1-likexu@tencent.com>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Sat, 22 Aug 2026 10:58:13 -0700
+X-Gm-Features: AcwNN1X_VXIwrCLgCNcnCbYWNahBq__ZqtblvwVpucn-WDdeu9vmJJAyLXBZxPM
+Message-ID: <CACw3F52CfURHgdAhwQFXagGhijPZY4v1Njg709uHVf-20wRWOg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] KVM: selftests: arm64: Make sea_to_user skip cleanly
+To: Like Xu <like.xu.linux@gmail.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-virtio_vsock_remove() stops the virtqueues and then flushes each work
-item before freeing the enclosing virtio_vsock.  The current order does
-not account for dependencies between those items: tx_work may queue
-send_pkt_work, and send_pkt_work may queue rx_work.
+On Tue, Aug 18, 2026 at 4:29=E2=80=AFAM Like Xu <like.xu.linux@gmail.com> w=
+rote:
+>
+> This series hardens the arm64 sea_to_user selftest so that it reports a
+> clean skip on hosts that cannot actually run it, instead of aborting or
+> silently passing.
+>
+> The test drives a real recoverable memory UER through APEI EINJ and
+> expects the guest to consume the poison and exit to userspace with
+> KVM_EXIT_ARM_SEA. That relies on host and firmware support that is not
+> present everywhere, and each unmet dependency is now turned into a skip:
+>
+>   - EINJ injection is driven directly through debugfs, and an unusable
+>     EINJ (not built, no firmware support, or not running as root) is
+>     classified from errno and skipped rather than mishandled.
+>   - Guest memory is backed by 1GB hugepages; with an empty pool the test
+>     now skips up front instead of failing an mmap() with -ENOMEM.
+>   - Some firmware only arms EINJ poison as part of the trigger step that
+>     notrigger=3D1 skips, so nothing consumable is left for the guest to
+>     read. That case is detected and skipped rather than reported as a
+>     spurious KVM_EXIT_MMIO failure.
 
-In particular, send_pkt_work can set restart_rx and release tx_lock.
-The remove path can then stop the queues and flush rx_work before
-send_pkt_work queues it.  Although the later send_pkt_work flush waits
-for that producer to finish, nothing waits for the newly queued rx_work,
-so kfree(vsock) can race with it.
+Thanks for these fixes. Just wonder, do you mind also integrating two
+previous fix attempts in [*] into this series:
+1. Refactor run_vm to catch GUEST_FAIL, instead of causing confusing
+unhandled MMIO kvm exit.
+2. Sync far_invalid to guest.
 
-KASAN reported:
+, given the high level goal is to harden sea_to_user.c?
 
-  BUG: KASAN: slab-use-after-free in
-  virtio_transport_rx_work+0x487/0x4b0
-  Read of size 8 at addr ffff888114c2b008 by task kworker/1:1/47
-  Workqueue: virtio_vsock virtio_transport_rx_work
-  Call Trace:
-   virtio_transport_rx_work+0x487/0x4b0
-   process_one_work+0x688/0x1120
-   worker_thread+0x45b/0xd10
-  Allocated by task 1:
-   virtio_vsock_probe+0xef/0x6b0
-  Freed by task 84:
-   kfree+0x131/0x3c0
-   virtio_vsock_remove+0xd1/0x100
+The first one will make the test result less confusing for the runner.
+The 2nd one improves readability. You can re-use my code in the patch.
 
-Flush the works in producer-to-consumer order.  virtio_vsock_vqs_del()
-has already disabled the queue callbacks and cleared the run flags, so
-after tx_work and send_pkt_work are drained, no source remains that can
-queue rx_work after its flush.
+[*] https://lore.kernel.org/kvmarm/20260130192837.890688-1-jiaqiyan@google.=
+com
 
-Fixes: 0ea9e1d3a9e3 ("VSOCK: Introduce virtio_transport.ko")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
- net/vmw_vsock/virtio_transport.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index 96c9fe8d357c..4f9aa9c4c3aa 100644
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -872,10 +872,10 @@ static void virtio_vsock_remove(struct virtio_device *vdev)
- 	/* Other works can be queued before 'config->del_vqs()', so we flush
- 	 * all works before to free the vsock object to avoid use after free.
- 	 */
--	flush_work(&vsock->rx_work);
- 	flush_work(&vsock->tx_work);
- 	flush_work(&vsock->event_work);
- 	flush_work(&vsock->send_pkt_work);
-+	flush_work(&vsock->rx_work);
- 
- 	mutex_unlock(&the_virtio_vsock_mutex);
- 
--- 
-2.43.0
-
+>
+> Tested on an arm64 host with CONFIG_ACPI_APEI_EINJ: on a platform whose
+> firmware places no consumable poison under notrigger=3D1 the test now
+> skips cleanly, and the earlier -ENOMEM and abort paths are gone.
+>
+> v1 [1] was a single patch doing only the 1GB hugepage check. Following
+> Marc's review [2], it is expanded into a series that also fixes the EINJ
+> handling the test depends on.
+>
+> Test Results:
+>
+>   Case 1 (echo 0 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepa=
+ges):
+>
+>   # timeout set to 120
+>   # selftests: kvm: sea_to_user
+>   # Random seed: 0x6b8b4567
+>   # 1..0 # SKIP - Requirement not met: get_free_hugepages(backing_page_si=
+ze) >=3D VM_MEM_SIZE
+>   ok 1 selftests: kvm: sea_to_user # SKIP
+>   # 1 skipped test(s) detected.  Consider enabling relevant config option=
+s to improve coverage.
+>   # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:1 error:0
+>
+>   Case 2 (rmmod einj):
+>
+>   # selftests: kvm: sea_to_user
+>   # Random seed: 0x6b8b4567
+>   # # Mapped 0x40000 pages: gva=3D0x80000000 to gpa=3D0xff80000000
+>   # # Before EINJect: data=3D0xbaadcafe
+>   # # EINJ_GVA=3D0x81234bad, einj_gpa=3D0xff81234bad, einj_hva=3D0xffff41=
+234bad, einj_hpa=3D0x42c1234bad
+>   # 1..0 # SKIP need CONFIG_ACPI_APEI_EINJ and firmware EINJ support
+>   ok 1 selftests: kvm: sea_to_user # SKIP
+>   # 1 skipped test(s) detected.  Consider enabling relevant config option=
+s to improve coverage.
+>   # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:1 error:0
+>
+>   Case 3 (modprobe einj):
+>
+>   # selftests: kvm: sea_to_user
+>   # Random seed: 0x6b8b4567
+>   # # Mapped 0x40000 pages: gva=3D0x80000000 to gpa=3D0xff80000000
+>   # # Before EINJect: data=3D0xbaadcafe
+>   # # EINJ_GVA=3D0x81234bad, einj_gpa=3D0xff81234bad, einj_hva=3D0xffff41=
+234bad, einj_hpa=3D0x42c1234bad
+>   # # 0x10 > /sys/kernel/debug/apei/einj/error_type - done
+>   # # 0x2 > /sys/kernel/debug/apei/einj/flags - done
+>   # # 0x42c1234bad > /sys/kernel/debug/apei/einj/param1 - done
+>   # # 0xffffffffffffffff > /sys/kernel/debug/apei/einj/param2 - done
+>   # # 0x1 > /sys/kernel/debug/apei/einj/notrigger - done
+>   # # 0x1 > /sys/kernel/debug/apei/einj/error_inject - done
+>   # # Memory UER EINJected
+>   # # SIGBUS (7) received, dumping siginfo...
+>   # # si_signo=3D7, si_errno=3D0, si_code=3D128, si_addr=3D(nil)
+>   # not ok 1 Exit with signal unhandled
+>   ok 1 selftests: kvm: sea_to_user
+>   # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+>
+> Changes since v1:
+>   - New patch 1: drive EINJ injection directly through debugfs with
+>     open()/write() instead of access()+popen(). Classify the open()
+>     errno so an unprivileged run skips as "requires root" instead of
+>     falsely reporting missing firmware EINJ, and report a genuine write
+>     failure instead of the ambiguous "Failed... Success (0)".
+>   - New patch 3: detect when notrigger=3D1 leaves no consumable poison an=
+d
+>     skip cleanly, instead of exiting with a confusing KVM_EXIT_MMIO.
+>   - Patch 2 is the original v1 change, unchanged.
+>
+> Not yet addressed from [2]: dropping the hard 1GB-hugepage and 4kB
+> base-page requirements. Suggestions on an acceptable backing scheme are
+> welcome.
+>
+> [1] https://lore.kernel.org/kvm/20260817080759.25601-1-likexu@tencent.com=
+/
+> [2] https://lore.kernel.org/all/86y0le9cvz.wl-maz@kernel.org/
+>
+> Like Xu (3):
+>   KVM: selftests: arm64: Fix EINJ handling in sea_to_user
+>   KVM: selftests: arm64: Skip sea_to_user without 1GB hugepages
+>   KVM: selftests: arm64: Skip sea_to_user when EINJ places no poison
+>
+>  .../testing/selftests/kvm/arm64/sea_to_user.c | 75 +++++++++++++++----
+>  .../testing/selftests/kvm/include/test_util.h |  1 +
+>  tools/testing/selftests/kvm/lib/test_util.c   | 15 ++++
+>  3 files changed, 77 insertions(+), 14 deletions(-)
+>
+> --
+> 2.50.1 (Apple Git-155)
+>
