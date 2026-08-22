@@ -1,114 +1,103 @@
-Received: from out28-172.mail.aliyun.com (out28-172.mail.aliyun.com [115.124.28.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C614419EED3
-	for <kvm@vger.kernel.org>; Sat, 22 Aug 2026 01:31:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA45B36B935;
+	Sat, 22 Aug 2026 08:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787362280; cv=none; b=dZ+fWIMXIMejeAnFnihZjIV1bbebsWm2I6XDGev5MBGRD9U21kR9TXhW/+S45oxVciv/rUkLIoVRtTNxlA8PH6Ferkkuufwe2L5IKCQJv1aSU1a3wPuDLH85gZelOA5ozOs/7+XFZWgJOiBBS69TizVtcEk9xNMmJskagFYMTis=
+	t=1787388034; cv=none; b=qQGNR+jIAm8NJZOELpjtIcUT50uvCVTx5iHcECo4OxURhzQJFvqdOhzJ9hIPtflNhXbZICRLTtay+H5F6tWwZxbGj5NhXpCSEWGJ+nvGZjqmQdMeogKvq8YRJSD8ULXxt5MsfC1W0B0np8V1xM1QNy49XWwL7M/AtTOSfATUqK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787362280; c=relaxed/simple;
-	bh=vYPlDcMr5d2zpso1mXpdyR/xos1XLoiM8akov+R0LGE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jg9iXCgVETw9gD/29sg335qMryDzKkBK/EKaN5T+1P0W4gf1hDsd/X2ZFZQyo1aPv6mRLAQQh+pvqiqW23nY5uR7fcGnaEHanFeJsOGmKXaHM26O9FwLJgp27/a5l18XZC7lJdWm5zuXOTSBXKCYEdTw9/SMEUD5UHBqlu/xy70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.08151136|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.420044-0.0159197-0.564036;FP=14298356050519762662|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033032023038;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=3;RT=3;SR=0;TI=SMTPD_---.itzFfVq_1787362271;
-Received: from 192.168.1.4(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.itzFfVq_1787362271 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Sat, 22 Aug 2026 09:31:12 +0800
-Message-ID: <c0fa6713-f428-466a-a847-905c6c079e0a@open-hieco.net>
-Date: Sat, 22 Aug 2026 09:31:11 +0800
+	s=arc-20240116; t=1787388034; c=relaxed/simple;
+	bh=RIGayfiO2+lLMSnzf+4DCjdX0jqyzt4cOKs+zg5dHYs=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JbbJJ3mi9JRNUMNokvYKqVFi+Jk9u60V0U2zOldAyWhPOACcnCd0KTihz7Kzr5vdJkALMzjrnF5PQeSrLAZ0FKFEpzXxhOg2igvYuFnok3iVeQAypoFUTeIeb5SucWCTsKQAIFyrq8h7SousnrEefVLLFKknqxlEqvtz7AJO2rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RCdeEWOl; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RCdeEWOl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D00A1F000E9;
+	Sat, 22 Aug 2026 08:40:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787388030;
+	bh=goS0hO9F9PB7GW9OY4RoUpd4niO++BgWcgqth7XojbQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=RCdeEWOl7vwP1easXifPNcEyw4TI9oZUWFv5A1RU6B3fxLxq9AvRr28vJjMKPpvO6
+	 OubQ97d9U7wPbWvXMmFxbcsaxDsoxlRleDvSeqq/70aPfuTgsgYa4aYB/GJ+Mk49Q+
+	 FO4kXaByqE1uzQ9vufOYXrdw2H9oAlouqVPFbgM0aVe0JEGo9ceAmy4qbk1VHlqSUC
+	 bgHU1ukKRmct/nKHNaYA/+zKxP+xHhkkfD/tWqKNB2VufWYdxm1WPbL9dcwB23chYz
+	 I91SPZ+39OlX3L28S0gNLQLsOa5prphUE8zHyuZKXobdb475E20IU08wi8M7E7FFdg
+	 g3OgOKAN9To4g==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wxhHA-00000000EOp-2Ehu;
+	Sat, 22 Aug 2026 08:40:28 +0000
+Date: Sat, 22 Aug 2026 09:40:28 +0100
+Message-ID: <86tsom4kg3.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Oliver Upton <oupton@kernel.org>,
+	kvmarm@lists.linux.dev,
+	Fuad Tabba <tabba@google.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Eric Auger <eric.auger@redhat.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 3/5] KVM: arm64: vgic-v3: Unregister redistributors before freeing regions
+In-Reply-To: <aoiiHw4hBHB7C5uL@gmail.com>
+References: <20260819224229.82948-1-kmehltretter@gmail.com>
+	<20260819224229.82948-4-kmehltretter@gmail.com>
+	<874igpp3qm.wl-maz@kernel.org>
+	<aoiiHw4hBHB7C5uL@gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/9] KVM: nSVM: Propagate hardware DecodeAssist bytes
- to VMCB12
-To: Jim Mattson <jmattson@google.com>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org
-References: <cover.1787116250.git.zhang_wei@open-hieco.net>
- <79b5372fbfa85642af81b34f219c30cad45b3728.1787116250.git.zhang_wei@open-hieco.net>
- <20260819061116.7A9FC1F00A3A@smtp.kernel.org>
- <b7210521-03a9-47c8-9bb4-997b38a19c4b@open-hieco.net>
- <CALMp9eQYD8BABDY5tAvYAVmYB0D5SPRZLmH4q4qV-kqNPby2Xg@mail.gmail.com>
-Content-Language: en-US
-From: Tina Zhang <zhang_wei@open-hieco.net>
-In-Reply-To: <CALMp9eQYD8BABDY5tAvYAVmYB0D5SPRZLmH4q4qV-kqNPby2Xg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kmehltretter@gmail.com, oupton@kernel.org, kvmarm@lists.linux.dev, tabba@google.com, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, pbonzini@redhat.com, shuah@kernel.org, eric.auger@redhat.com, christoffer.dall@arm.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
+On Fri, 21 Aug 2026 20:09:32 +0100,
+Karl Mehltretter <kmehltretter@gmail.com> wrote:
+>=20
+> On Thu, Aug 20, 2026 at 09:58:57AM +0100, Marc Zyngier wrote:
+> > The other bit of interest is in __kvm_vgic_vcpu_destroy(), and its
+> > conditional removal of the RD iodevs. Can't we just get rid of this
+> > whole block altogether now that we have a saner failing path?
+>=20
+> I tested removing that block.
+> It reintroduces the use-after-free fixed by ae8f8b376102
+> (=E2=80=9CKVM: arm64: Unregister redistributor for failed vCPU creation=
+=E2=80=9D).
 
+At the very least:
 
-On 8/22/2026 1:15 AM, Jim Mattson wrote:
-> On Fri, Aug 21, 2026 at 12:47 AM Tina Zhang <zhang_wei@open-hieco.net> wrote:
->>
->> Hi Sean and Jim,
->>
->> Before posting v5, I'd like to get your opinion on how to track the
->> instruction-byte source for a delayed nested #PF VM-Exit.
->>
->> A hardware #PF may first be handled by KVM and then queued for
->> reflection to L1.  When constructing the nested VM-Exit later, nSVM
->> needs to know whether the queued #PF still corresponds to the
->> DecodeAssist bytes in VMCB02.  Similarly, an emulator-originated #PF
->> needs to retain that provenance so that KVM uses the emulator fetch
->> cache only for the exception that actually came from that emulator context.
->>
->> Keeping this information as independent state in svm_nested_state is
->> fragile.  For example, userspace may clear or replace the pending
->> exception, leaving the SVM state associated with an event that no longer
->> exists.  In v5, I am therefore associating the provenance with the
->> queued exception itself.  Userspace-restored exceptions have neither
->> hardware nor emulator provenance and use the on-demand fetch fallback.
->>
->> The part I am unsure about is how this should be represented.  The
->> minimal implementation adds:
->>
->>             bool has_emulator_context;
->>             bool has_hardware_pf_state;
->>
->> to struct kvm_queued_exception.  However, these fields are meaningful
->> only for vcpu->arch.exception_vmexit, while the same structure is also
->> used for the normal vcpu->arch.exception queue.
->>
->> An alternative would be to introduce a wrapper, for example:
->>
->>             struct kvm_exception_vmexit {
->>                     struct kvm_queued_exception exception;
->>                     bool has_emulator_context;
->>                     bool has_hardware_pf_state;
->>             };
->>
->> This keeps the VM-Exit provenance out of the normal exception structure,
->> but requires mechanical change to the generic x86 and VMX references to
->> exception_vmexit.
->>
->> Do you have a preference between these approaches, or is there another
->> way you would recommend representing this state?
-> 
-> Honestly, I would not even try to optimize #PF VM-exits. KVM only
-> intercepts #PF when TDP is disabled. Since SVM-capable CPUs have
-> always supported TDP, that's a bizarre configuration. I suspect it's
-> equally bizarre for any other L1 hypervisor.
-> 
-> Can we just read the instruction bytes (using our slow fallback) when
-> we synthesize a #PF VM-exit from L2 to L1?
+		vgic_cpu->rd_iodev.base_addr =3D VGIC_ADDR_UNDEF;
 
-Yes, that makes sense. I explored optimizing the #PF VM-Exit path, but 
-the additional state tracking and complexity don't appear justified by 
-the limited benefit. Given that this path is relevant mainly when TDP is 
-disabled, the optimization also doesn't seem worth the ongoing 
-maintenance cost.
+should be removed, as it serves no purpose anymore: all vcpus, valid
+or not, should now go through vgic_unregister_redist_iodev() which
+resets the value. It isn't massively useful on teardown anyway, so you
+might as well kill the extra one.
 
-I'll use the slow fallback to read the instruction bytes when KVM
-synthesizes a #PF VM-Exit from L2 to L1, and drop the extra provenance
-tracking.
+	M.
 
-Thanks,
-Tina
-
+--=20
+Without deviation from the norm, progress is not possible.
