@@ -1,225 +1,169 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5AE27EC7C
-	for <kvm@vger.kernel.org>; Sat, 22 Aug 2026 17:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787421510; cv=pass; b=vCm0pEU9rUbqndgvmaG3PuN6KwCSPWz4JFr61Ml9OP/VApGrgaqv4+TBU2RB/RI03fAFnf2g3PxZQg3bo5mE4iIvpNc8cUvzSpJm75R0JGn3oBIHWvtDEINn81GvdwCYd6PbEq9mkOtLFgk1mSOvNX7fchZRTlOfD16TlAIZsos=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787421510; c=relaxed/simple;
-	bh=5uVSKut5uWA+O/bl1lu8n1UjU2a74/+vL2uiZFUMZuM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tZ7V8rV7/cEXAeBJs3JVvtxbgXR0kicjH+t5oJCdCMcSaeHk9TqhuazrywkyGt0d+votobux9h1dcXrM8Lo+3C7yyZJPgt4p1OR0RSGnhWmiQN699EuUpEnlMLfk0UhSxeaMiPcFoS3PRmWryo6EoGCSeTJKueYsGZPdvN2czaY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wWiZwmvS; arc=pass smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AA7279DAD
+	for <kvm@vger.kernel.org>; Sat, 22 Aug 2026 19:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787425361; cv=none; b=sNfIL/UD3Jc++hN22v3jChHququJhpR957ltfOTAhJ5FMN8PtfkMNq8PAY9CN14/RaAHhiZ6oK/BcNa0w8XlXC249DbA7w9t8yNrD+jB3frTFp0bleJChNsaO1BoyfW+ExQuCzsgvGZKxLEQhj1DtCVx6fnXqdwMovMK9WmAuTg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787425361; c=relaxed/simple;
+	bh=TEVVR+NJeSOM6jhm2KmEJQjEK4pU5ls7LvfbQaqcKFU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qd+TahbJ32JlIhZezfJzkKDxppe1o+1tITQv0kW/fRMs53gEh98MhUvnEUWVWvDT4Zzye5G2UZNQ63zgfVnBh9UlmjKSdHVltiPZa92XC6cnQXghj0oFc3kuJA0/5VYLamTGlIgu20AXRLh6SOciBLDWt39uV4K5OyS1oK5BMrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oV32R1YM; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wWiZwmvS"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-499add6348fso22365e9.1
-        for <kvm@vger.kernel.org>; Sat, 22 Aug 2026 10:58:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787421507; cv=none;
-        d=google.com; s=arc-20260327;
-        b=sQ6rWKlatIuy8eyuAAg1073o8DQO6Z5UwlNqNp1DyNIkqJiHDQMtncx9EHbcOUsbol
-         HaQH6WiSYDGKxXvu2FZ9eKcOLTUB1Y/k83O5KMp5DsblAyg3FCiFfHqIad56ZaNg/cK3
-         PjgrOtZ9h25dDZkTTPv0nqUk/ClmaWrW4VvYyLc5XIbT+rDYodDu8o5+/waQfN+qR2uJ
-         gwpdF7/rc3hvpUd8427q+3tdiqq/MYUBqwSEIzLRMmM+NSYif7Fg965Epv5TVImZrLm9
-         UPaJCYHwK+JKeUPdR73QWmswSHnImb6SUhZsBXmtTANAnLL3s9TxZKGm8r+Re5FCx7g/
-         N/ag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4zS3gK3kbG0uK+a0zea0r7Wu/L46iQSxpvjeCO3tlVk=;
-        fh=DdouM1BaZh+6cVS0txDSksYotphtZjl7Q5QaBbq8Gpo=;
-        b=Rdpw89fQ9XzvItRU2gOAmB6G6PGwO7d6lANGjPvp/AAAdvdxvZdchcMbCU6TnvMrVi
-         Sw9UIs/bOd1ijSUvAK7IQ8l33sRs+Xp3rWcYA30MCRh9xRJJmasE8XvYCFHdYhqzx5pe
-         OE0FLXgHlWl0UgWmZmTuBETW27qnmF20ppf87RNrKTZRyC/TR2iiMctYFz4vfHSkeOd3
-         DSG+YVIQV3FPX5m0jegLvTlfTlsWhfXIyHxq6kA9kiuek59pvrtRDqRQADKR8ESnDVZz
-         zLC14akgCk9EitNT9N4wFFEJ96wltP7mpDQssHSRKlVD5JKPBy9BjJThvXZqYO+sK9WS
-         NNqA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oV32R1YM"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3856d4015e0so211553a91.2
+        for <kvm@vger.kernel.org>; Sat, 22 Aug 2026 12:02:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787421507; x=1788026307; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4zS3gK3kbG0uK+a0zea0r7Wu/L46iQSxpvjeCO3tlVk=;
-        b=wWiZwmvS8s45RXBFX0RsciQpbpEPC6lt1TTuXUQHlBcy3rTDlTcXiyGckT4sGRwzL4
-         SG+foxXtf0YP/aZO2ibXNt+5YPbKV478dnLsNMDaDbYLqekRdlBTjehrs0e7xDWH7Gv5
-         r6IE/S3XMcGIqEHC93Mh3y+3x9uh6gmMQ/gNiCF4J+wpBQ0nlUXwka1DeyFUxP/sJMi1
-         wY180d05eBBmLPI0kah6ecPHkiSiCKA0ZGpyE5zWBTSGwy0W6lNVNZplDScgovwjK41M
-         kVxSv6yLbxEBtLMKfr3baD34g3VQDcAmsRIAeSOHY6Sn1DCY50pz/eH92iczR3jr+j8P
-         FFOA==
+        d=gmail.com; s=20251104; t=1787425360; x=1788030160; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=D0DJujrfDn5dw25P3BnoPNA4Oq1OjRXcOtGPqI8/msc=;
+        b=oV32R1YM56A+DDWB8TLmVIdWhQckn87wnLJS7I2tU8giStxFRs9xig9UyLvsuqITXJ
+         KH8jBUmUMlOsp4TzXPaeFCktbJ4lY53K+amdUsyNb5TOn0q5Vkk3KyOPDLYA00FiaT+7
+         2NrjsadlbRsyy8FRKocgKW163hQcR1ZRQuq0hnJxHh38NS0fPgvoLuDWS5lpm3ldO8Eb
+         pxmxOwNXAUUY6RGZFlBAyouDrT48fiCLoe+NQJ6VWcoiiKJat90wwfjfrr6ZplZ+wI73
+         9Cvz7a83ykcQWGPPaiwhQNDZQRjCqIcdLV5gfmN4SP5pS+3srBkXAtw49dz1px8XHgu1
+         imxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787421507; x=1788026307;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4zS3gK3kbG0uK+a0zea0r7Wu/L46iQSxpvjeCO3tlVk=;
-        b=atszwni4K4HB3esZkf32dJdDWV0v1NutGZAqk6wm3PIaWJy1IOmarbNKOcpt6620NS
-         RfZGCtQcVexWLd3veMBlNIWmfIIxFToAwiqmq5csdqkxULt/X1ohlY4RXbsfhhjGyefB
-         KlPmBIU/RTMV/c8lK/JOlNwxfapjTnCVOy1YLS2AZNyoNdOTAFIgaG9rj/hEW2+88w7M
-         vmudM+pjNPVKJAbm6CwXrqLwMFxzO0AFTjT44Tr+f6KUhYDtLZWOEuLiiaUYxjLJSUr/
-         8HRgjRhc5CXev2q8HjgdKKLrFrH+MS2Z0yv4Bumq5lNY412jfqzeLwOHkl38R6zD1y4a
-         itCQ==
-X-Forwarded-Encrypted: i=1; AHgh+RozV1ZgIV1cBxqwKB1i+J+eP5xPcXSRcq6GVAGCL1zsSyqD4OMtH+wafWVt9DV0bNT2APU=@vger.kernel.org
-X-Gm-Message-State: AFuF++kLSBL8em3g6kK+ZXfzxVSir+029RfGkLhhWrGpxtB0/ENKyc84
-	o7MMP/thPlEMCNABmbhMPvYqctu9NJoNx3gxrv+2YQaGT0XesWVjlveYtUuMwoFJw6lxHkv0Nvf
-	t+2SacoQcWtaqyVMkkp7RVZk3K+fSRdU/cs31Plho
-X-Gm-Gg: AR+sD13dSL7+xqbSIb2wk2Q6iTe1GHKAu35W9U1OhXhnh9YeNs2F1CLLIpU/ZH87GSk
-	iHJnBVsqomXIjtb1ZLNxv7FMLx+lU8XPZgNBEEwWwWaM6s0qcIOlO3OT/U1oOkTcR7/wMuP4Thi
-	KjbDEG0frPwMSd5is27ZT1Ti7YNKHWdRbVK4xSolAIsR5XIVN3xU1XmpkSYYnQgD08DfxpeDlyw
-	UyHdFqEIuoaLdhu5hd8cgS0eEp16/bxHOwSYZHVkp1RFn9yIc0YfUtqQyek6fUn2gerw/K6xmVo
-	srnLRvB3WSoeImBjinKTkIIAldm1HDSaAPndvDV0uZhZy14J0IbbCp4dIAH+CYZNtwa+NPCcyau
-	t
-X-Received: by 2002:a05:600d:8497:10b0:493:b47f:a24 with SMTP id
- 5b1f17b1804b1-499c1af1896mr748535e9.6.1787421506423; Sat, 22 Aug 2026
- 10:58:26 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787425360; x=1788030160;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=D0DJujrfDn5dw25P3BnoPNA4Oq1OjRXcOtGPqI8/msc=;
+        b=chGoKUSetdwwUP6kQzi514O6oju58MPlzZZCN/VcFPS2uHwbTL184j/mGJ8S9bTIND
+         uc3mrCwIvjNtioSiHm0BqvYPDt1oPTDJDz1Ooapcw3+yyfoh29+8hqgjuryHtxg5f4PO
+         puwmdmyy4WnWQWmf3dj4Ax5WdaoQFZKWCEKOkka0ePJYSikfx4VSGmKPM0NdGcX+QGJg
+         by2WlMzrjznimax19Zr4VC1134/uP6mznY4mUgOfy6pzRwzxFsqF9FKN4RDEGcwZ/84n
+         YnycDlTNwM280MsvHZQOc1E11JOARVWcduJq+NMPaMuQ1dg25O3kDPQC+bl29kRcmoM+
+         Jbtg==
+X-Gm-Message-State: AFuF++mJLwL8LapSs0snrwa7UBoqxXEgh1YCDBGaGfqHgWE69XGWR7Jd
+	zdZqAK1IhkzwycOdYCY+/+SpIGzVdis1wsHZ9HmxJr9fpWZGOVmf/tPb
+X-Gm-Gg: AR+sD10fNgE4QjDyGxwGa0AjHUCPX5awryJmdNOBiK/gfqrk6qUx9IigZ4mKcW3FK2+
+	PCt11+WaHdpIlxZY57JhAj/d1GDZsCJA7+N+xaZ4RqyAcY2KtqBD2nTrWK1txvb083WSBp888P3
+	PlwR/hJmx1JE62Wn+KQcncyir+MXPJBn5WYjehhWS6jVFHAmv39Pw5F02DqVekN2lk/daMh1w0w
+	6OgO11U/OARdB7lTjCr0hQxqsuoNbjcX5JddC/m66lYN92GVEKD0YXC+7EU4DOd4FPNHWHjvLrn
+	GEr2k2YrbqQrLnpqD8qK4a5Yl/2MS/SS2T9YoCp6RW32U8tJ9f6AQEsgRCeFJ7VjUCMbl1gCT+R
+	Cqp1OMdwEWp5fYtLcRpG3aBujKvtfprY5lhu0A/sOdqdHu1lpbCB/5pWBPzo0QoAF4krzUkdr8i
+	qOucsF7egXZWZHlOd16TbAt+M0IOM1p3Y7YuMp4+TtScRsnbKmRyGA26cqa1OI9woL0GRM9RIOM
+	VYW8hT8ipJ4s4VN+4lClqgHNB4QsBJtPAoLi/M9rFDkOvLs7IZhsfR+Ef5tjLa+Yw==
+X-Received: by 2002:a17:90b:4f45:b0:38e:91a8:fb85 with SMTP id 98e67ed59e1d1-395c35e7049mr11712009a91.3.1787425359802;
+        Sat, 22 Aug 2026 12:02:39 -0700 (PDT)
+Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141860c6989sm9412297c88.2.2026.08.22.12.02.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Aug 2026 12:02:39 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Yan Zhao <yan.y.zhao@intel.com>
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: x86/mmu: Protect noncoherent DMA zaps with SRCU
+Date: Sun, 23 Aug 2026 03:02:24 +0800
+Message-ID: <20260822190224.3788887-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260818112920.26252-1-likexu@tencent.com>
-In-Reply-To: <20260818112920.26252-1-likexu@tencent.com>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Sat, 22 Aug 2026 10:58:13 -0700
-X-Gm-Features: AcwNN1X_VXIwrCLgCNcnCbYWNahBq__ZqtblvwVpucn-WDdeu9vmJJAyLXBZxPM
-Message-ID: <CACw3F52CfURHgdAhwQFXagGhijPZY4v1Njg709uHVf-20wRWOg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] KVM: selftests: arm64: Make sea_to_user skip cleanly
-To: Like Xu <like.xu.linux@gmail.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 18, 2026 at 4:29=E2=80=AFAM Like Xu <like.xu.linux@gmail.com> w=
-rote:
->
-> This series hardens the arm64 sea_to_user selftest so that it reports a
-> clean skip on hosts that cannot actually run it, instead of aborting or
-> silently passing.
->
-> The test drives a real recoverable memory UER through APEI EINJ and
-> expects the guest to consume the poison and exit to userspace with
-> KVM_EXIT_ARM_SEA. That relies on host and firmware support that is not
-> present everywhere, and each unmet dependency is now turned into a skip:
->
->   - EINJ injection is driven directly through debugfs, and an unusable
->     EINJ (not built, no firmware support, or not running as root) is
->     classified from errno and skipped rather than mishandled.
->   - Guest memory is backed by 1GB hugepages; with an empty pool the test
->     now skips up front instead of failing an mmap() with -ENOMEM.
->   - Some firmware only arms EINJ poison as part of the trigger step that
->     notrigger=3D1 skips, so nothing consumable is left for the guest to
->     read. That case is detected and skipped rather than reported as a
->     spurious KVM_EXIT_MMIO failure.
+Protect the noncoherent DMA zap with KVM's SRCU so that memslots and
+their architecture-specific metadata remain alive if the rmap walk
+drops mmu_lock to reschedule.
 
-Thanks for these fixes. Just wonder, do you mind also integrating two
-previous fix attempts in [*] into this series:
-1. Refactor run_vm to catch GUEST_FAIL, instead of causing confusing
-unhandled MMIO kvm exit.
-2. Sync far_invalid to guest.
+The VFIO noncoherent-DMA path invokes
+kvm_arch_register_noncoherent_dma() without holding slots_lock or an
+SRCU read lock. kvm_zap_gfn_range() can then enter
+__walk_slot_rmaps(), which retains pointers to a memslot and its rmap
+while cond_resched_rwlock_write() temporarily drops mmu_lock.
 
-, given the high level goal is to harden sea_to_user.c?
+The race looks like this:
 
-The first one will make the test result less confusing for the runner.
-The 2nd one improves readability. You can re-use my code in the patch.
+  CPU 0: VFIO coherency update          CPU 1: memslot delete
+  ----------------------------          ---------------------
+  kvm_vfio_set_attr()
+    kvm_arch_register_noncoherent_dma()
+      kvm_zap_gfn_range()
+        __walk_slot_rmaps()
+          iterator.rmap = slot->arch.rmap
+          cond_resched_rwlock_write()
+            drop mmu_lock
 
-[*] https://lore.kernel.org/kvmarm/20260130192837.890688-1-jiaqiyan@google.=
-com
+                                        KVM_SET_USER_MEMORY_REGION(DELETE)
+                                          kvm_arch_flush_shadow_memslot()
+                                            zap SPTEs under mmu_lock
+                                          kvm_swap_active_memslots()
+                                            synchronize_srcu_expedited()
+                                          kvm_free_memslot()
+                                            vfree(slot->arch.rmap[i])
+                                            kfree(slot)
 
->
-> Tested on an arm64 host with CONFIG_ACPI_APEI_EINJ: on a platform whose
-> firmware places no consumable poison under notrigger=3D1 the test now
-> skips cleanly, and the earlier -ENOMEM and abort paths are gone.
->
-> v1 [1] was a single patch doing only the 1GB hugepage check. Following
-> Marc's review [2], it is expanded into a series that also fixes the EINJ
-> handling the test depends on.
->
-> Test Results:
->
->   Case 1 (echo 0 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepa=
-ges):
->
->   # timeout set to 120
->   # selftests: kvm: sea_to_user
->   # Random seed: 0x6b8b4567
->   # 1..0 # SKIP - Requirement not met: get_free_hugepages(backing_page_si=
-ze) >=3D VM_MEM_SIZE
->   ok 1 selftests: kvm: sea_to_user # SKIP
->   # 1 skipped test(s) detected.  Consider enabling relevant config option=
-s to improve coverage.
->   # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:1 error:0
->
->   Case 2 (rmmod einj):
->
->   # selftests: kvm: sea_to_user
->   # Random seed: 0x6b8b4567
->   # # Mapped 0x40000 pages: gva=3D0x80000000 to gpa=3D0xff80000000
->   # # Before EINJect: data=3D0xbaadcafe
->   # # EINJ_GVA=3D0x81234bad, einj_gpa=3D0xff81234bad, einj_hva=3D0xffff41=
-234bad, einj_hpa=3D0x42c1234bad
->   # 1..0 # SKIP need CONFIG_ACPI_APEI_EINJ and firmware EINJ support
->   ok 1 selftests: kvm: sea_to_user # SKIP
->   # 1 skipped test(s) detected.  Consider enabling relevant config option=
-s to improve coverage.
->   # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:1 error:0
->
->   Case 3 (modprobe einj):
->
->   # selftests: kvm: sea_to_user
->   # Random seed: 0x6b8b4567
->   # # Mapped 0x40000 pages: gva=3D0x80000000 to gpa=3D0xff80000000
->   # # Before EINJect: data=3D0xbaadcafe
->   # # EINJ_GVA=3D0x81234bad, einj_gpa=3D0xff81234bad, einj_hva=3D0xffff41=
-234bad, einj_hpa=3D0x42c1234bad
->   # # 0x10 > /sys/kernel/debug/apei/einj/error_type - done
->   # # 0x2 > /sys/kernel/debug/apei/einj/flags - done
->   # # 0x42c1234bad > /sys/kernel/debug/apei/einj/param1 - done
->   # # 0xffffffffffffffff > /sys/kernel/debug/apei/einj/param2 - done
->   # # 0x1 > /sys/kernel/debug/apei/einj/notrigger - done
->   # # 0x1 > /sys/kernel/debug/apei/einj/error_inject - done
->   # # Memory UER EINJected
->   # # SIGBUS (7) received, dumping siginfo...
->   # # si_signo=3D7, si_errno=3D0, si_code=3D128, si_addr=3D(nil)
->   # not ok 1 Exit with signal unhandled
->   ok 1 selftests: kvm: sea_to_user
->   # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
->
-> Changes since v1:
->   - New patch 1: drive EINJ injection directly through debugfs with
->     open()/write() instead of access()+popen(). Classify the open()
->     errno so an unprivileged run skips as "requires root" instead of
->     falsely reporting missing firmware EINJ, and report a genuine write
->     failure instead of the ambiguous "Failed... Success (0)".
->   - New patch 3: detect when notrigger=3D1 leaves no consumable poison an=
-d
->     skip cleanly, instead of exiting with a confusing KVM_EXIT_MMIO.
->   - Patch 2 is the original v1 change, unchanged.
->
-> Not yet addressed from [2]: dropping the hard 1GB-hugepage and 4kB
-> base-page requirements. Suggestions on an acceptable backing scheme are
-> welcome.
->
-> [1] https://lore.kernel.org/kvm/20260817080759.25601-1-likexu@tencent.com=
-/
-> [2] https://lore.kernel.org/all/86y0le9cvz.wl-maz@kernel.org/
->
-> Like Xu (3):
->   KVM: selftests: arm64: Fix EINJ handling in sea_to_user
->   KVM: selftests: arm64: Skip sea_to_user without 1GB hugepages
->   KVM: selftests: arm64: Skip sea_to_user when EINJ places no poison
->
->  .../testing/selftests/kvm/arm64/sea_to_user.c | 75 +++++++++++++++----
->  .../testing/selftests/kvm/include/test_util.h |  1 +
->  tools/testing/selftests/kvm/lib/test_util.c   | 15 ++++
->  3 files changed, 77 insertions(+), 14 deletions(-)
->
-> --
-> 2.50.1 (Apple Git-155)
->
+          reacquire mmu_lock
+          slot_rmap_walk_next()
+            read freed iterator.rmap
+
+The delete path is allowed to free the old memslot because the zap path
+holds no SRCU read lock. synchronize_srcu_expedited() therefore does not
+wait for the rmap walk before kvm_free_memslot() releases the old slot
+and its rmap array. When the zap resumes, slot_rmap_walk_next() reads
+from freed memory.
+
+KASAN reported:
+
+  BUG: KASAN: vmalloc-out-of-bounds in
+  slot_rmap_walk_next+0x82/0x1c0
+  Read of size 8 at addr ffffc900005c1008
+
+  Call Trace:
+   slot_rmap_walk_next+0x82/0x1c0
+   __kvm_rmap_zap_gfn_range+0x17a/0x280
+   kvm_zap_gfn_range+0x2a6/0x6a0
+   kvm_vfio_set_attr+0x576/0x770
+   kvm_device_ioctl+0x1ff/0x3b0
+   __x64_sys_ioctl+0x134/0x1c0
+
+Hold SRCU across the zap so that memslot deletion waits for the walk to
+finish before freeing the old slot, without changing zap behavior.
+
+Fixes: 362ff6dca541 ("KVM: x86/mmu: Zap KVM TDP when noncoherent DMA assignment starts/stops")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+---
+ arch/x86/kvm/x86.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 69469bbdc84a..2114553f3159 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -14092,8 +14092,12 @@ static void kvm_noncoherent_dma_assignment_start_or_stop(struct kvm *kvm)
+ 	 *
+ 	 * If KVM always honors guest PAT, however, there is nothing to do.
+ 	 */
+-	if (kvm_check_has_quirk(kvm, KVM_X86_QUIRK_IGNORE_GUEST_PAT))
++	if (kvm_check_has_quirk(kvm, KVM_X86_QUIRK_IGNORE_GUEST_PAT)) {
++		int idx = srcu_read_lock(&kvm->srcu);
++
+ 		kvm_zap_gfn_range(kvm, gpa_to_gfn(0), gpa_to_gfn(~0ULL));
++		srcu_read_unlock(&kvm->srcu, idx);
++	}
+ }
+ 
+ void kvm_arch_register_noncoherent_dma(struct kvm *kvm)
+-- 
+2.43.0
