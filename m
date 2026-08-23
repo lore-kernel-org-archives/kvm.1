@@ -1,122 +1,134 @@
-Received: from mta1.migadu.com (out-134.mta1.migadu.com [95.215.58.134])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588D918DB26
-	for <kvm@vger.kernel.org>; Sun, 23 Aug 2026 15:39:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C626E369D4F
+	for <kvm@vger.kernel.org>; Sun, 23 Aug 2026 17:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787499592; cv=none; b=hLOpWjY7/IHxYD9KRN7zcZi7AVuBKaUrTp9R4gniAF1npTMSuktDAKK68EY78zQ74xrS/C6GdSb1ssp5mxFaeCFHqu2o3wgD/F52okwFRFpdP0T8FkWCyseY9ZaqHDX+QlXFzXnl74V8YkFdlJKUAGk9C+ORtzYvdzygtC3VHrE=
+	t=1787507981; cv=none; b=BUHmmr6HPg7jbW3xdUCjPjee+pfg8g3ZEatTodnEqXh2wYbpB2UMCGev5JZ2boS3MQOWhbW2FoM4TgKDZ3VBPyTDf51K/QjA4XcYt63WR1u51TZluIERUkf6t95ip498JFZnVrlfHX6b3CaCAylzo2nw0guTghpB885jNsDc3bI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787499592; c=relaxed/simple;
-	bh=W0TlGb6F34q6Kl5UWG4lZXAn8pUN8AHkhRFYqa9i08k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uap4V4ZJ/AduSBAg51/dZAK2haxfhBhs0STtgCduocsPQzS0cSQPXrbb5TNPxigZJYKs2Om11BsWpR/EKa9gSgijwnQo4UlJGh1AhbUr7hF0rA1bBTHqHg1r9qnNuSZMZniYqucl1W2f1IL/3E88VuXWOezy/WR+4pCSIuFc1Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=b/tRiIGP; arc=none smtp.client-ip=95.215.58.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1787507981; c=relaxed/simple;
+	bh=j+GvspEPFMJKw6+StUj0ft/LLbZU8zbHTx8oX1MMKJI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VVsmuLy/kQmD52TfTKFLK34UssxO/CEVY+HMwK8irvJ8H4rb4ygIZaUDkwSvojXDQqkHzv4dMF1509xH7m30pMkcxUq0dnRdgJCLYm0Jz4uD6KrgWtKfjQoSlpAGSiBsFuIJHQd66xPch/PguLD9bwceT5rS8pRwlzCK6Vzx5Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f4oRtADo; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="b/tRiIGP"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=W0TlGb6F34q6Kl5UWG4lZXAn8pUN8AHkhRFYqa9i08k=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787499588; v=1; x=1788104388;
- b=b/tRiIGPdhOV0e2DLocmqNoU8j0p0drjU2CPlRJIZrzTerB20k9WOvIinMsw8wQdXq5vq8IG
- CzdgnLcwL0ha6AdSJL2+WHwsoFhqdt2HW5sJ1KrFUW48YJPOyECthSAOXsl4ag8QjNTlfnsjYJD
- FnYU1Voj6d3HjEZLvzov/oU4=
-X-Envelope-To: kvm@vger.kernel.org
-Received: from mail-lf1-f42.google.com (209.85.167.42)
-	by smtp.migadu.com with ESMTPS id 23100d5ae8228bb9;
-	Sun, 23 Aug 2026 15:39:48 +0000
-X-Mizu-Trace-ID: 23100d5ae8228bb9
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5b2a73da7e1so6964e87.0
-        for <kvm@vger.kernel.org>; Sun, 23 Aug 2026 08:39:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpT7WxJ0ngCxEiH8ByA1csaQBaTAQgfc0JNf4oI3scRAH8W8aVLXL7Npy7Tpf3JaPz4Vxo=@vger.kernel.org
-X-Gm-Message-State: AFuF++nzHXyIsEeNsXISRR/B+4TG9WoMz/mkqMI9RsmnogwLm4lA0ZxQ
-	vC+7fHO5KntgHYLdGlFRUowL7FVeu/+wC5etq43ncElsTh2XmKNQuJOUbm+5shAA9aaCWvJLgRf
-	JBapnJBbqH9uktGZZAWRTpioSaP9Ay4sRpQ4DQonC
-X-Received: by 2002:a05:6512:1093:b0:5b1:571f:715f with SMTP id
- 2adb3069b0e04-5b48c2f784amr130059e87.3.1787499583194; Sun, 23 Aug 2026
- 08:39:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f4oRtADo"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38e07ebd263so1665447a91.1
+        for <kvm@vger.kernel.org>; Sun, 23 Aug 2026 10:59:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787507978; x=1788112778; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oSG6MK2qQTE9wpGTHa2F4jMVfX6350zfMS2a14Bvdsw=;
+        b=f4oRtADoEr14b5rw/5GmI7QM6w8Gw6/ITb4Jd3bc/sYrjzHflzu55LtZE8O00WFNoF
+         NbjGGk/37VnUCCs8SI1FS+5H+YBPL2JzqMFm/oEq1KK/ynyWb6Ji14HVhvazcLThq099
+         azdtDa9V/iIp0RZAettYkrXgaZxWgDjXZbUySBLg80vsUNi6KfQsJNHMRUJH7JlOPm94
+         8DI/BP/QmAX6e/EBxZmyfsoPgHiCx9fa84mDfPvaABF5Kv/XIaOqvUdQiYpVvneGEXu0
+         B20LBI5LmOQ98aEGEvh3l5zQTWlGOY9ojEsxFrym5fPqsqKKZm0GMn7E7i7fmt9EbyuQ
+         Bh6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787507978; x=1788112778;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oSG6MK2qQTE9wpGTHa2F4jMVfX6350zfMS2a14Bvdsw=;
+        b=MDvDqKjpYYDOREnOyKpBq3wsNdTZPDQBEFUBmnIKXuZ4zgGztIDtUCVxXa96UX9w/2
+         yPon+dZ+5s/jTbJ5ijN0FKsZ/e904CeMb7IYNppW9zDgpw95Zban9krqFb7nfr5F7zQP
+         KhgVXefJa911cPFXChcbOQP7Ko83tElS2mj4X/OITaG/yZqkPm5P9sIw2X7mKiiDu9ku
+         8KTnoUJsZVBu2tepVABvpEtnlUNtWzolQf1cVHi0FqkhI8bLIeHbHHmn+knQ87VVAj3G
+         sGmZTLjaiOh+nKpJ4NmeZvEyZoMrlJiwnxwmFvfUdTgmzzdqe1+RcrLkAquvyQSAfs+i
+         KU2w==
+X-Forwarded-Encrypted: i=1; AHgh+RrIjRLP0OhVPpke5oqJ6uz5xTMsQ/0Wo/XQ25MNCXNtx8YMkDp8phcbdOeMhM5MXBETX1w=@vger.kernel.org
+X-Gm-Message-State: AFuF++lr8oxStBCTsX1IzeJMEGrBCqeo4fDmF6wwFEmzxFBdgZw/2fDu
+	yfeF0KENMcXqHttjue9EuqEwvWIlR2F0BJDnaJnsNH+z5nGYSpMPW5l1
+X-Gm-Gg: AR+sD13dyXFfgkqGssSXBc/mWihlKLaXfYyDkoIMJs62ScB8hw33hk2QDo2W4dJ8t62
+	3xVGC9t4JfYQg7k/VABqLVrXjS7DzXNHUZ05wrvkv0d9atKqR9I26rV2SK7BCrzeahmTeon4d9S
+	g4LT+aYTr0Mqj1sHFqN17EosmIL6tmiTAFsWOcRvvfG0c8sIkga64X85dp4YHy0+j6m711U4t5o
+	1X7uECvmnEEZKfGtqdjLu8TiaUfY/LdFsghgR9sZV+gqPRn7Z37XnZZYhWZ9dYv+qhaLXKVefJH
+	jwxQnN7vVF5Yg8r0kAanBfS2MAkqRQdULwN0bvAgG0hOQRzJM8FV62Hbi4owDAqZMIBgpdZWzHF
+	qmtRF/hbB3RGxNT/HX5LURrrRrH9hHPsHtxi/pGXoC8cyMD4xHM30jHZNaDNkVBn9dWsjQl/D+c
+	/m0xtI/4X/iKUw1ORh+GMFDYBFWBOZPBvIBE5o41BQuP9x0Uc8kEJEmjb2wkv2+ptIXCv5S3b/
+X-Received: by 2002:a17:90b:4a0d:b0:38e:5b59:c2ff with SMTP id 98e67ed59e1d1-395c3376963mr33466205a91.3.1787507977903;
+        Sun, 23 Aug 2026 10:59:37 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395c8fd34d9sm3722818a91.1.2026.08.23.10.59.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Aug 2026 10:59:37 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: netdev@vger.kernel.org
+Cc: sgarzare@redhat.com,
+	stefanha@redhat.com,
+	bobbyeshleman@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	mst@redhat.com,
+	jasowangio@gmail.com,
+	xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com,
+	bryan-bt.tan@broadcom.com,
+	vishnu.dasa@broadcom.com,
+	bcm-kernel-feedback-list@broadcom.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v3 0/2] vsock: validate packet sources after bound lookup fallback
+Date: Mon, 24 Aug 2026 02:58:56 +0900
+Message-ID: <20260823175858.351431-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260822095346.53882-1-kmehltretter@gmail.com>
-In-Reply-To: <20260822095346.53882-1-kmehltretter@gmail.com>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Sun, 23 Aug 2026 16:39:06 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTwcJ7zvw5bgqmt2-OiW7q01Vwm3rn1gTFn-39Lu4qDWJg@mail.gmail.com>
-X-Gm-Features: AcwNN1U6KyA3LCwgTCyTTj8u2ge9LgDR8EDiemOl63d62mt3Rz0sod8kkzdxcH4
-Message-ID: <CA+EHjTwcJ7zvw5bgqmt2-OiW7q01Vwm3rn1gTFn-39Lu4qDWJg@mail.gmail.com>
-Subject: Re: [PATCH v3 0/5] KVM: arm64: fix VGICv3 redistributor rollback
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
-	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Eric Auger <eric.auger@redhat.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi Karl,
+Both virtio and VMCI look up connected sockets by the full tuple before
+falling back to a destination-only bound lookup. The fallback can select a
+non-listening socket without validating the packet source.
 
-On Sat, 22 Aug 2026 at 10:53, Karl Mehltretter <kmehltretter@gmail.com> wrote:
-...
-> Testing: built the patched kernel and the arm64 vgic_init selftest with
-> GCC 13.3.0 in an arm64 Linux container. The selftest passed under QEMU
-> 11.0.2 TCG with -machine virt,virtualization=on,gic-version=3 and -cpu max.
+V2 covered only the virtio path. Following Stefano's review, this series
+moves the source and transport validation into a documented AF_VSOCK helper
+and uses it for both virtio and VMCI. The VMCI patch checks both its
+bottom-half and deferred workqueue receive paths.
 
-Applied this on kvmarm/next: protected and non-protected guest boots
-under pKVM, plus VHE and nVHE, and the vgic_init, vgic_irq and
-vgic_lpi_stress selftest. Also built the base with only patches 4-5
-and confirmed the new test fails without patches 1-3.
+The combined series was tested on x86_64 KASAN kernels. The original
+cross-UID virtio injection remained blocked in three boots, CID_LOCAL and
+CID_HOST loopback aliases passed, selected VSOCK selftests passed, and VMCI
+accepted a matched RST while rejecting a mismatched-context RST in three
+boots. All changed objects built without warnings under allmodconfig and
+allyesconfig with W=1.
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
-Tested-by: Fuad Tabba <fuad.tabba@linux.dev>
+The current-tree guest-CID vhost probe could not be rerun because the test
+user lacks access to /dev/vhost-vsock.
 
-Cheers,
-/fuad
+Changes in v3:
+- Move transport and source validation into vsock_check_source().
+- Trust the internally generated source CID for the local transport.
+- Add VMCI validation in the bottom-half and workqueue receive paths.
+- Send the related virtio and VMCI fixes in one series.
+- Do not carry Bobby's v2 Reviewed-by because the helper and loopback logic
+  changed; renewed review is requested.
+
+v2: https://lore.kernel.org/netdev/20260820001517.2148196-1-4ncienth@gmail.com/
+v1: https://lore.kernel.org/netdev/20260813121236.2328599-1-4ncienth@gmail.com/
+
+Daehyeon Ko (2):
+  vsock/virtio: validate packet source for connected sockets
+  vsock/vmci: validate packet source for connected sockets
+
+ include/net/af_vsock.h                  |  3 +++
+ net/vmw_vsock/af_vsock.c                | 32 +++++++++++++++++++++++++
+ net/vmw_vsock/virtio_transport_common.c |  3 ++-
+ net/vmw_vsock/vmci_transport.c          | 29 +++++++++++++++++-----
+ 4 files changed, 60 insertions(+), 7 deletions(-)
 
 
-> ---
-> Changes since v2:
-> - Patch 1: limit free_index rollback to the immediate registration failure
->   under slots_lock instead of generic unregistration. (Sashiko)
-> - Patch 2: reset all assignments and region counters after a failed region
->   update (Marc), and serialize REDIST and REDIST_REGION writes with vCPU
->   creation so rollback cannot miss an unpublished assignment.
-> - Patch 3: add an already-locked unassignment primitive, move failed-vCPU
->   cleanup to kvm_vgic_vcpu_destroy(), and remove the redundant base_addr
->   reset. (Marc)
-> - Patch 4: match vm_create_with_vcpus() by using void * for the guest-code
->   argument. (Sashiko)
-> - Patch 5: document how the first three redistributors span regions 0
->   and 1; no functional change.
->
-> Previous version:
-> v2: https://lore.kernel.org/r/20260819224229.82948-1-kmehltretter@gmail.com
->
-> Karl Mehltretter (5):
->   KVM: arm64: vgic-v3: Undo assignment on iodev registration failure
->   KVM: arm64: vgic-v3: Reset redistributors after failed region setup
->   KVM: arm64: vgic-v3: Separate redistributor teardown from unassignment
->   KVM: arm64: selftests: Pass guest code to vm_gic_create_with_vcpus()
->   KVM: arm64: selftests: Test VGICv3 redistributor region retry
->
->  arch/arm64/kvm/vgic/vgic-init.c               |  46 +++----
->  arch/arm64/kvm/vgic/vgic-kvm-device.c         |  20 +++
->  arch/arm64/kvm/vgic/vgic-mmio-v3.c            |  83 ++++++++-----
->  arch/arm64/kvm/vgic/vgic.h                    |   1 +
->  tools/testing/selftests/kvm/arm64/vgic_init.c | 116 ++++++++++++++++--
->  5 files changed, 200 insertions(+), 66 deletions(-)
->
->
-> base-commit: 57e7cf13ac26bf1a3dba6cfa601f7b2481811575
-> --
-> 2.39.5 (Apple Git-154)
+base-commit: 7cbfb180945ce529608e4d4e24a6d483699fab1e
+-- 
+2.54.0
