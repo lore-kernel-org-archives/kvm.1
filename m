@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A072F8E98
-	for <kvm@vger.kernel.org>; Sun, 23 Aug 2026 08:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852B833ADB9
+	for <kvm@vger.kernel.org>; Sun, 23 Aug 2026 08:51:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787474961; cv=none; b=IiwTrGJjg59D5AKlAzRJxAzWnTlJU9lo5gnFGb2NdNbn1YWTgL2BHZrHeMtLHV+CSLHJ753XU1GQjMd1rgatQdeg+0UzUn0atAHrz1FTO0SWPXvsQkI+dLAI5H27mXwrKdauY07uq4+/rNHW8wg4kjyp33QMEBN0wKhw7ncl60w=
+	t=1787475063; cv=none; b=WJFOocagbR4MsEPIAQeZto+PqT542zB0+fENZW0UKqGOlsqpTsplA1Qm21fvtIYHhnYAiPVLc/1lucLSCgnKsdi6g7/QQ74OwBPkBOupgpVwhZNYwfdSIOEq9gPBJStCG+mEG6jmZ4NoLCz0I1pQUy6neDna4ZmhVGqMsZZ9jp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787474961; c=relaxed/simple;
-	bh=KqpTPPlexMgPtEc3la49a5XlMd291GyM/e41GB3+rBI=;
+	s=arc-20240116; t=1787475063; c=relaxed/simple;
+	bh=kjpxf2sQ1FERHhRTBKUY+6K4RPxRhA/sRW81XFP9zpI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ox/5xyijV+OsOBDnbO9RNlwVTGunDx57y9x9tbfD09zRrftaXVyuKzHKqwBPVpYV73G0wudW/Md8kt8btyWaJS2cH1TimbgBskhqGu9vTv5v0/1GOV0bjBhjNz3LQ3TgXRDQHehA8BWiPamD3TWBmzgEKJIT66T+a22wD8WtyrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZkyZFj02; arc=none smtp.client-ip=192.198.163.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=opUaWYDbBfJXzPeW/BbIuRw6PMpO3d7KFEqIlV41RMUw/Sw7IcjDac36Zv3FPbkW7ZsIMwZN+NV6/QdsiavL0HNqAFuCr9F4MJRMPEKm/eUk82EEZPHLEA8aTDedMAYcjEkNJ4zpNaK6IItfJiXwu13IA7pZ+MCbJMr5/rEdymw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m2KzQBRi; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZkyZFj02"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m2KzQBRi"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787474960; x=1819010960;
+  t=1787475060; x=1819011060;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=KqpTPPlexMgPtEc3la49a5XlMd291GyM/e41GB3+rBI=;
-  b=ZkyZFj02gSUQy9rUGrpZaS352r1NF2giUUaAhkWlfzyutRXq8ikokMIW
-   Pyubii0t2gA44rdqpUHVtpNcBFKlZy44+LJG3pILn9oi9GppDikxvDR4l
-   QD2Zkj7srcYCqzxdIcyr42u60D0bVPIVZ+frfxeBlbUU2bvZDGVnKmHjz
-   ZP1ydEcNWEIxehjqmXgcqCovWOb+WUTmrC1TZz17UHASVppvdAXvXqa/k
-   nWiIbd3vVDS/M5SrmGT9IXPN8e2PXxfnYvkoScgFd2Z7+AxgzXRhORMoH
-   RStR76nK8MpkKmlDgFySnsHbmh4CPnZTp3RUq+t9wLoSJo1LYApPeHZPT
+  bh=kjpxf2sQ1FERHhRTBKUY+6K4RPxRhA/sRW81XFP9zpI=;
+  b=m2KzQBRim2qOLT2zzmqxPwkHcmeApOYJsh1cRlgRRjxaoER2karpcC+4
+   2kqT9gua73bUL5K1WQrdkTXL4Ealijp1oy5BdCtTxEnCZlW6ybl8kwffT
+   edFcWNMghWvdNx/oBPu8JL0+XilT8Khmy1MGMXiy77u7V72bV1TuL+BOW
+   zHjxFUwX6bOggquignr+cfnKW8bGDXdoekM+ADu9MlUgGSRL33Pw7bfYZ
+   3rGxoiF5ovxnqXP084zZwYfgG9LO3szj7o1VXpwRkd6bhTpBt/V9EeCPP
+   nGuctpzTWr5StplLFuwxwOD4CIWIclVRP655x4GCA5ZPGV4ZhDMbuY7BV
    w==;
-X-CSE-ConnectionGUID: o0Aa9YS5RQWngi0Fw0SpDQ==
-X-CSE-MsgGUID: zSykGi5vSXCQVTbsLERKWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11883"; a="75493249"
+X-CSE-ConnectionGUID: DVofRPmTRaqgdghfCdz75w==
+X-CSE-MsgGUID: 6rtAUJgFRRWNWmN7Azxk7Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11883"; a="105492015"
 X-IronPort-AV: E=Sophos;i="6.25,238,1779174000"; 
-   d="scan'208";a="75493249"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2026 01:49:19 -0700
-X-CSE-ConnectionGUID: G+pePID9SfWtrdOLbC2Zxg==
-X-CSE-MsgGUID: C7LzF7nRTdO/SnzMNd3avw==
+   d="scan'208";a="105492015"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2026 01:51:00 -0700
+X-CSE-ConnectionGUID: mDwjNrNuTjanWCTPIivfVA==
+X-CSE-MsgGUID: u6Amo0LdReaPom+XTKMx6w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,238,1779174000"; 
-   d="scan'208";a="271945344"
+   d="scan'208";a="262469051"
 Received: from zhaoliu1-desk.sh.intel.com (HELO localhost) ([10.238.208.118])
-  by fmviesa005.fm.intel.com with ESMTP; 23 Aug 2026 01:49:17 -0700
-Date: Sun, 23 Aug 2026 16:49:16 +0800
+  by fmviesa006.fm.intel.com with ESMTP; 23 Aug 2026 01:50:58 -0700
+Date: Sun, 23 Aug 2026 16:50:57 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Tina Zhang <zhang_wei@open-hieco.net>
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
@@ -51,11 +51,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Marcelo Tosatti <mtosatti@redhat.com>,
 	Yanjing Zhou <zhouyanjing@hygon.cn>
-Subject: Re: [PATCH v2 2/9] target/i386: Hide Intel cache CPUID leaves for
- Hygon
-Message-ID: <aoq0DKEJTYmfUlAe@intel.com>
+Subject: Re: [PATCH v2 3/9] target/i386: Hide ARCH_CAPABILITIES for Hygon
+Message-ID: <aoq0cYPRcUBc88P3@intel.com>
 References: <20260810082956.1768042-1-zhang_wei@open-hieco.net>
- <20260810082956.1768042-3-zhang_wei@open-hieco.net>
+ <20260810082956.1768042-4-zhang_wei@open-hieco.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -64,30 +63,37 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260810082956.1768042-3-zhang_wei@open-hieco.net>
+In-Reply-To: <20260810082956.1768042-4-zhang_wei@open-hieco.net>
 
-On Mon, Aug 10, 2026 at 04:29:49PM +0800, Tina Zhang wrote:
-> Date: Mon, 10 Aug 2026 16:29:49 +0800
+On Mon, Aug 10, 2026 at 04:29:50PM +0800, Tina Zhang wrote:
+> Date: Mon, 10 Aug 2026 16:29:50 +0800
 > From: Tina Zhang <zhang_wei@open-hieco.net>
-> Subject: [PATCH v2 2/9] target/i386: Hide Intel cache CPUID leaves for Hygon
+> Subject: [PATCH v2 3/9] target/i386: Hide ARCH_CAPABILITIES for Hygon
 > X-Mailer: git-send-email 2.43.7
 > 
-> When x-vendor-cpuid-only is enabled, QEMU suppresses CPUID leaves 2
-> and 4 for AuthenticAMD CPUs because those leaves describe Intel cache
-> information.  Hygon Dhyana uses the HygonGenuine vendor string, so it
-> currently skips that filtering and can expose Intel cache leaves together
-> with AMD/Hygon extended cache leaves.
+> IA32_ARCH_CAPABILITIES is an Intel-defined MSR.  KVM can synthesize the
+> CPUID bit and read-only MSR for non-Intel guests, and QEMU already hides
+> that interface for AMD CPU models because Windows may not expect it on
+> AMD-compatible CPUs.
 > 
-> That is inconsistent guest-visible CPUID: Hygon Dhyana provides cache
-> information through the extended cache leaves, so it should not also
-> advertise the Intel cache descriptor and deterministic cache parameter
-> leaves.
+> Hygon Dhyana uses the HygonGenuine vendor string, so it currently skips
+> that AMD filter.  If arch-capabilities=on is requested, QEMU can expose
+> CPUID.7.0.EDX[ARCH_CAPABILITIES] and the associated MSR feature word to
+> a Hygon guest.
 > 
-> Apply the same leaf 2 and leaf 4 filtering to Hygon CPUs when the vendor
-> CPU ABI compat gate is enabled.  The gate keeps the old CPUID output for
-> pc-11.0 and older machine types.
+> That creates a vendor-inconsistent CPU ABI: the guest sees an
+> AMD-compatible vendor and cache/topology interface, but also sees an
+> Intel-specific architectural capabilities MSR.  Guests that choose CPU
+> mitigation or feature paths from the vendor can mis-handle that
+> combination; Windows is known to be sensitive to ARCH_CAPABILITIES on
+> AMD-compatible CPUs.
+> 
+> Apply the same ARCH_CAPABILITIES hiding rule to Hygon CPUs when the vendor
+> CPU ABI compat gate is enabled.  Keep arch_cap_always_on as the migration
+> escape hatch, and keep the old Hygon CPUID/MSR output for pc-11.0 and
+> older machine types via x-hygon-vendor-abi-fixes=false.
 
-nit: pc-11.1?
+Nit: pc-11.1? Same applies to the other commit messages.
 
 Thanks,
 Zhao
