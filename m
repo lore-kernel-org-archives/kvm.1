@@ -1,234 +1,178 @@
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B3134F497
-	for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 04:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787545677; cv=pass; b=tm1TcS+MdQaCVJP5qNv5WbaTko8gBja780Rpj5tI08VkVO4R1ydhV9XAbuU7nLcUoaBJnuS1dbozk1KGxBPKrSiXTdPfrSYC0QAOpHwM5M5E8m44dLh6W69RBR+1cbSYVxom4HqWCvy+6Rb+bRFLU6kIUlEo3stQPCnovUSLrVc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787545677; c=relaxed/simple;
-	bh=hT0QUt5H542PT0X7fGha+PvX663QHj3aTFMv5sI+ia0=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AYUoPoRyiS4/tlXErdgblT8fR0ef93gZEkdC80g6SVwXKl3aC5ZniMkTUZ2r/Z8kpAqjytTFOKAzmv1FhEuraDIr6VK456aLCFNdw94XvsSmnwq8Kw1bwPk6iiySgVhio2ALDmyIB0GJXSawlp2DnnNnjOIJxBPyLAtmL8o9S6M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sWvMQ0Jh; arc=pass smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED8B347532;
+	Mon, 24 Aug 2026 04:52:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787547179; cv=none; b=V1ceV7hS+yPD/kszN9T6LO1QjL4H0uxsWNHAS9+mAV7P2zScnJ7G3xjCLTgo2KC2LhKmW5APcod2yQmKKJH3MTCWM/6s6S8eb73BRUY8NeCl4mvUGTu1vEDMSEFU/wSVgV9BNlkRR4IvpjvuPAMHqZLrCbCKAOegQsNBjxBmAbQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787547179; c=relaxed/simple;
+	bh=GqsVNYIZCfa4dKw2B7PoigOvKOQBjsKQ/Tl8vduZ2vI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AG/hsfENgQ2GWaITno8+83xXJpYarz4hB04wGjuCORVJLgTXQC3MkqaB/aqcBeKLCNghSKeQIWxnoLe9K7E8RSsVEE/roPWCTTXK+OUl3COYtQjdFUyQ0N8yGONX5wt7JbJf4Z3S5yExvidcCSh4CC1vdkH78WbxXjcMOM9ceVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UMLUHDDj; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sWvMQ0Jh"
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-90c776f6c13so28335506d6.1
-        for <kvm@vger.kernel.org>; Sun, 23 Aug 2026 21:27:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787545674; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pxnt8xgXMcFJs9EPzWc8MySkjUhmp5eHqE4n5W6NKTCXphe7FdvEiG1s9GkYMusthf
-         0xPoUH+B9zdwc/ATfZjpm8aHWd9PEMC2ESzjTzu0WTUUMx4TXxfSxm4+hJIN5aJXkpqH
-         Qa2nzLaCx6FSsrtMyzkSvjXVYuliwJGz2FMIqFrPLJ1BVfAzJaAWwHPZbHK7uOjmbOxd
-         rrIzet8hvWQAmFp2oU8dGmEWnjH8pFcbqOC3Jpq4J3RtLqOj+TQKHYRGVO/mN7KZUx4H
-         YmVP1QjCRDb1k4h/YmNTPmnnGTBsxaa7O45GrI1CsesRyyAs8MZ0X+Y5uOApdLWZzZKG
-         9eQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=Ow00I9KGY7fZXYsA63TM5zImzlELrKld0vpQu6AI6z8=;
-        fh=exj7v3etlpXgs+IL8RftPa75npN/b9w8CfrL5umqxbI=;
-        b=B+kVW4Or0x81Q3FvStUURdSwhPu5NAhxIvyyq9b4iER0OUdBvTc6QSa42JrhXFUh39
-         JRNd/rTOyzYhgFjR46shgf7hBU1I9+q0CWe3l7KqCkd6Amga2siLPXn+cJvkegLCkH0G
-         q2kJH64xaaGUzl/KZs29yPcFrq37vkjaSmsZgWd9+YIk/EMPsroO/48CnILHctH6c2nD
-         vDxd6jR3GR51hBy5WB9RQb1xNiefdhjpvgjlCqQwK+JJ8S8XPCfHBYO8ZHPNdmWG1FgW
-         D4HI0ZA3tDeFjILJtBijPX+9S3WV81Sf4NAaM9CoiX/XQbUBFXiQks7WH/RewV189HIC
-         +0IQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787545674; x=1788150474; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ow00I9KGY7fZXYsA63TM5zImzlELrKld0vpQu6AI6z8=;
-        b=sWvMQ0JhKAl7PEAzbZVfdmGaQC/eHGrEeTKPy5qSArDZFrWYs459ZfpYCEiMtE2h+C
-         9Iys7aVjwaUnTKTp9uMyqlf6Bk3H93Ve1uXCp4ISMf/kWzWylkd50XwqqkGk3IYg3mRL
-         Lq5v59z+NgDdQUz7SFU6ZHUoSLhrDpOVI/1KjRfQQpBmWhERUXDNxMWcczmYoHBntTdU
-         mv3JsOn3NVfaNMzaWfvYKPHmF6XhqoQEA+JfnavY88tw6IEDExW7wVa1+TeVK3be3Syr
-         Ji/vtMRPs9sgl6M5o8Qb0EgHgQ18AuF+QiLzuICyzsErewIh5ndVoi9SibWHd3VHxDGZ
-         /KFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787545674; x=1788150474;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ow00I9KGY7fZXYsA63TM5zImzlELrKld0vpQu6AI6z8=;
-        b=ASeGSEvPB6W1QIyuoAtnUad4rnuJqh8yOYubK7cLLVtzBvMOjd0T+VsVzChIopHiyd
-         IqfrtZhbBt8fhvrnkl50Ai2Oumz8AWJcCoNOZiGB1Mmdf9Eb6tCKpER+ghk4DN1MfB+m
-         TE1F3DKSVjKh+AK8PwvQg6eMA6PrlxuwqETqEkrdeNatGivvMJ0ircYWO1+4obMQODWz
-         685La4hki1GkmeoTQ1U1+6G9x7Gfdp2miMmj/k+Ru0kRNchXN3AoAkSWw+hQImA/ObtI
-         geukqjp74OtBIcH6DRbRn6dhaqxsS3x1u+BN/JowKPOOchs5+842yBWXU7j7xu+9Om8h
-         5dCw==
-X-Forwarded-Encrypted: i=1; AHgh+RqYVHMdKScrj76gzBW0Mg03znuT4SP/G6pKNRhnJZaBH3tVdzV5iToGyMAR5rqH83hCbso=@vger.kernel.org
-X-Gm-Message-State: AFuF++nQBYuU165zHJqGn2KGx7AtkM9fS1p4ElWh+Jff81hHiUPCoNHE
-	pj6mUEL5PdMQ+rAZNZreWvK3jltnoDB7ND968Ml8mExrOV7uPABaPAamtJ2l7Uyq8JuWn1x0qE0
-	9fFdRafysnkS837imH9L/xKm+WG0hpksAH1jf1pNqVHM98QrQCMJeAKaQ
-X-Gm-Gg: AR+sD12lS+25ZDES/MaYn2bd3ui2vbCvzkf/U7kelNp7H0O2MPK5Tq2xwj2z0Sc/KHg
-	9+5hfMMlql/0AlR5Js/rl/f4P+jUGkc61VZM2VhayXLyINtvKYPrdUgwNhplkKNiNdvyUPd8IvV
-	rMwybwGsqvQE3AoXnSzja9Hz3GELeZa2OY6rq18eoh201FUZzFZ2g8wRjryGTDhAJJsv4TcItyV
-	dR+U2eNUT7eWKz7NCWgttG+27DhjO45/wDe5RmsxQ32vt1rZ3CcJZLiZqMScBbpUMTJzqDbqFMn
-	9qsJLpFGr52WkQZpTXQqscbkvYXPhtwnxYJSK725l9aLimQqciDTnAsRXuuD+rlyUihm6k9AsrJ
-	6y6C6HxDkQ/b1mp95wJcq/OqiOZwfkDY=
-X-Received: by 2002:a05:6214:3284:b0:8ec:cdb2:5e11 with SMTP id
- 6a1803df08f44-90c80944085mr245242406d6.2.1787545673632; Sun, 23 Aug 2026
- 21:27:53 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 23 Aug 2026 21:27:52 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 23 Aug 2026 21:27:52 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <aohUbUKcvUaoVFEc@google.com>
-References: <20260818-gmem-no-return-page-v2-0-5298f42d49bb@google.com>
- <20260818-gmem-no-return-page-v2-3-5298f42d49bb@google.com>
- <20260818092717.3F4871F000E9@smtp.kernel.org> <CAEvNRgHEVxO+1Mkoc3-c2+qSrKWnD+BDe04NBvuwGU6BL0amzA@mail.gmail.com>
- <CAEvNRgHX-NebA7z3twusis35E_grJNTrbse7aUZ6+D=qpQn14A@mail.gmail.com> <aohUbUKcvUaoVFEc@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UMLUHDDj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787547177; x=1819083177;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GqsVNYIZCfa4dKw2B7PoigOvKOQBjsKQ/Tl8vduZ2vI=;
+  b=UMLUHDDjkwPB3KvOc36BC7tn8J1pONt42sN/HKhXNaPpL7vZYIi3t9Nq
+   bF3+n7BEjeNMbmBZqO6ZGTKBuHegtfHNuHvGb6iEnQAC0bV+J/ElKx8fc
+   OFj441wRNj6au6inQauc4Opm1vHpWjEE2tQfYriISL0sIdIURmSaoijKb
+   3QF9QRv5mnJRow+Dn3zRkr8/R/dLrl9XxRzEUYBSZUU8/q0kyDAjeu50D
+   3gXgugGnOaWNg1WGhGRwWQmYTs7a8LDm+Z8RJoH+IX/7YNlMOkycN1Pjj
+   m/j1p6mEPDyhStuVlxJpMWviTkEcL3oMT/w0EAqyP8/0YMNz47wJ8QBSk
+   g==;
+X-CSE-ConnectionGUID: TBRkzkqjQpeVTZLgwjcU0A==
+X-CSE-MsgGUID: /fxnnmSVSg2tM3nYWKXSVg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11884"; a="99149059"
+X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; 
+   d="scan'208";a="99149059"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2026 21:52:57 -0700
+X-CSE-ConnectionGUID: tYwJo0upRNi8Icv1qrlx6A==
+X-CSE-MsgGUID: vybsLoUqTWSRL/y+CqMpaw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; 
+   d="scan'208";a="266935484"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by orviesa007.jf.intel.com with ESMTP; 23 Aug 2026 21:52:49 -0700
+Date: Mon, 24 Aug 2026 12:52:48 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Maloor, Kishen" <kishen.maloor@intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>
+Subject: Re: [PATCH 1/6] x86/virt/tdx: Wrap TDH.SYS.CONFIG/UPDATE operations
+ in helpers
+Message-ID: <aovOIJ8f7ONZxRw7@yilunxu-OptiPlex-7050>
+References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
+ <20260821032920.256225-2-yilun.xu@linux.intel.com>
+ <8fa5f9faf6ad6d432dcc2cf12f5bff03c17147a9.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sun, 23 Aug 2026 21:27:52 -0700
-X-Gm-Features: AcwNN1WhbH4c-NgfbWkg3bEeOg-8KA8lr3Xwk93Joy7eFGoTTGPATKUswa3gE6A
-Message-ID: <CAEvNRgH5ZQPGYzg+YdtEktZ72DgK9PBbzcmC_QFN6M0_6wuo1w@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] KVM: SEV: Drop page refcount early in VMSA reload
-To: Sean Christopherson <seanjc@google.com>
-Cc: sashiko-reviews@lists.linux.dev, Oliver Upton <oupton@kernel.org>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8fa5f9faf6ad6d432dcc2cf12f5bff03c17147a9.camel@intel.com>
 
-Sean Christopherson <seanjc@google.com> writes:
+On Fri, Aug 21, 2026 at 08:53:57PM +0000, Edgecombe, Rick P wrote:
+> On Fri, 2026-08-21 at 11:29 +0800, Xu Yilun wrote:
+> > As part of the TDX module initialization, the kernel configures the TDX
+> > module with several information
+> > 
+> 
+> The tense is weird here around "several information". Should be "several pieces
+> of information". For curiosity sake, I looked it up and found a new-to-me
+> linguistic term:
+> https://en.wikipedia.org/wiki/Mass_noun
+> 
+> > , such as TDX-usable memory regions
+> > (TDMRs) and the global KeyID for protecting TDX metadata. During the
+> > configuration, the kernel does 2 operations: constructing kernel data
+> > types for the SEAMCALL leaf arguments and turning these data types into
+> > u64's according to TDX ABI.
+> 
+> What do you mean by "constructing kernel data types for the SEAMCALL leaf
+> arguments"? You are splitting the calculation of the pa via offset from setting
+> it in a u64? If that is what you are saying, it makes it seem like a much bigger
+> set of work.
+> 
+> > 
+> > Both operations are implemented in one function - config_tdx_module().
+> 
+> Well I guess my guess above was wrong, because the construction of the pa kernel
+> data type happens in tdmr_entry()
 
-> On Fri, Aug 21, 2026, Ackerley Tng wrote:
->> Ackerley Tng <ackerleytng@google.com> writes:
->> >> This is a pre-existing issue, but can this allow a malicious guest to
->> >> cause a host kernel panic?
->> >>
->> >> Looking at sev_gmem_make_shared() in arch/x86/kvm/svm/sev.c:
->> >>
->> >> arch/x86/kvm/svm/sev.c:sev_gmem_make_shared() {
->> >>     ...
->> >> 		rc = rmp_make_shared(pfn, use_2m_update ? PG_LEVEL_2M : PG_LEVEL_4K);
->> >> 		if (WARN_ONCE(rc, "SEV: Failed to update RMP entry for PFN 0x%llx error %d\n",
->> >> 			      pfn, rc))
->> >> 			goto next_pfn;
->> >>     ...
->> >> }
->> >>
->> >> If an untrusted SEV-SNP guest modifies a guest_memfd page state to VMSA
->> >> using RMPADJUST, and the page is subsequently freed, rmp_make_shared()
->> >> will architecturally fail on the VMSA page.
->> >
->> > I need some help with this one.
->> >
->> > For the initial VMSA page, IIUC snp_safe_alloc_page() gets a
->> > non-guest_memfd page. This won't ever go through sev_gmem_make_shared(),
->> > so we're good. snp_leak_pages() doesn't actually leak pages, it just
->> > tracks leaked pages, but __free_page() is skipped so the page is really
->> > leaked.
->> >
->> >> Because the error is bypassed without calling snp_leak_pages(), the
->> >> firmware-owned page is returned to the host page allocator.
->> >
->> > For guest-provided VMSA pages, those can be guest_memfd pages. The
->> > refcount taken is the one guest_memfd holds. Without considering
->> > conversions, just considering truncation, sev_gmem_make_shared() is
->> > called from kvm_gmem_free_folio(). Sashiko is saying that
->> > rmp_make_shared() will fail, and the folio is freed.
->> >
->> > Sounds like this would be a problem if the folio is used elsewhere...?
->>
->> I looked closer, "15.36.12 Running SNP-Active Virtual Machines" in APM
->> Vol2 says "After a successful VMRUN, the VMCB page, as well as any AVIC
->> Backing Page and VMSA Page are marked as in-use by hardware, and any
->> attempt to modify the RMP entries for these pages via instructions like
->> RMPUPDATE will result in a FAIL_INUSE response. The in-use marking is
->> automatically cleared by hardware after a #VMEXIT event".
->>
->> So it's not true that rmp_make_shared() will always fail on a VMSA page,
->> it's only true if the guest vCPU is running.
->
-> Correct.
->
->> RMPADJUST sets up the VMSA page, and telling the host using
->> SVM_VMGEXIT_AP_CREATE is how the VMSA is set up to be usable. Then, the
->> other vCPU needs to be started and running, and then:
->>
->> If the host truncates the VMSA page or host closes the guest_memfd file
->> containing some other vCPU's VMSA page, sev_gmem_make_shared() on the
->> VMSA page should fail, but the page is released anyway and we have a
->> problem.
->>
+Yeah, the PA array is an in-memory ABI, which is not constructed in the
+newly introduced helper. The construction of an in-memory ABI usually
+involves allocating/freeing memory, I remember there was an objection to
+allocate memory inside the SEAMCALL helpers.
 
-74bdfb2f6d18 ("KVM: SEV: Forcefully invalidate SNP VMSA if its backing
-gmem page is zapped") fixes this :)
+> 
+> > This blurs the boundary between kernel managed structures and TDX ABI
+> > definitions.
+> > 
+> 
+> In the code after this patch it is still setting a u64 in config_tdx_module()...
+> so what is really changed with respect to this?
 
-I didn't follow that full discussion and now I get it. Here's an
-explanation from another angle:
+I think all the confusions come from the differences between "in-memory
+ABI" and "register based ABI". The SEAMCALL leaf invoking is always the
+register-based ABI. But Some registers reference some shared buffer
+which contains the "in-memory ABI".
 
-This VMSA invalidation is interesting in that there isn't really any
-communication to SNP, because the host doesn't really have a direct way
-undo the RMPADJUST.
+This patch introduces a helper to wrap the constructing of the
+register-based ABI, but doesn't wrap the constructing of the in-memory
+ABI, which should be the work of another helper if needed.
 
-What the host can do is to RMPUPDATE the entry to be shared, which is
-what truncation already does. The key thing is that the RMPUPDATE has to
-be done while the vCPU isn't running.
+All helpers should take kernel data type as input. The previous
+"u64 *tdmr_pa_array" is already a kernel data type to represent the
+in-memory ABI that is referenced by the register-based ABI, but it is
+easy to get confused (u64 * vs u64). So we define a named kernel
+structure to clearly describe the in-memory ABI.
 
-Other than invalidating whatever kvm is tracking in
-svm->sev_es.snp_guest_vmsa_gpa and in svm->vmcb->control.vmsa_pa,
-sev_gmem_invalidate_range() has another side effect, which is that if
-there is an ongoing invalidation in another CPU, it keeps requesting
-KVM_REQ_VMSA_PAGE_RELOAD, which stops the vCPU from entering the
-guest. Keeping the vCPU out of the guest is the thing that allows the
-RMPUPDATE (rmp_make_shared()) to work.
+[...]
 
-This loop keeps the vCPU out of the guest. It's kicked off by
-kvm_arch_gmem_invalidate_range(), and loops until
-kvm_gmem_invalidate_end() is called.
+> The change looks good to me, but I'm wondering if it will need a better
+> justification. How about something that hits these points:
+> 
+>    We have SEAMCALL wrappers mainly to not expose broad seamcall access, by
+>    exporting only a selection of seamcalls, but also to abstract the seamcall
+>    register ABIs. The latter improves readability and re-use for seamcalls that
+>    are made multiple times.
+>    
+>    Some seamcalls leafs are not explicitly wrapped because the level of TDX ABI
+>    details needed to perform the call is low enough that it can flow well enough
+>    with the calling code. 
+>    
+>    For some of the currently unwrapped seamcall leafs, future changes will add
+>    seamcall version selection that will adjust the ABI depending on TDX module
+>    version support. This will result in more ABI details to surrounding caller
+>    code and decrease readability of the other logic. To contain this, wrap the
+>    functions that will get version selections in seamcall wrappers.
 
-.free_folio, which does the RMPUPDATE, is called synchronously between
-kvm_gmem_invalidate_start() and kvm_gmem_invalidate_end(), and so we can
-be sure the RMPUPDATE will not happen while the vCPU is running.
+Yes, I'm good to the reason to wrap the register-based ABI.
 
+>    
+>    The cleanest separation would be to have kernel data types for the seamcall
+>    wrapper args, and have them marshaled into SEAMCALL ABI types (often u64s)
+>    inside the wrappers. But to avoid duplicating allocations and copies, don't
+>    do this when creating the wrapper for TDH.SYS.CONFIG. Instead clarify that
 
-A guest-provided VMSA is set up for a given vCPU (identified using
-apic_id) at a lower VMPL. I was also wondering: what if a guest just
-decides to _not_ report SVM_VMGEXIT_AP_CREATION? Is it possible to just
-RMPADJUST and not tell the host, such that sev_gmem_invalidate_range()
-doesn't know about the donated VMSA?
+My reading of this paragraph is that we shouldn't wrap both in-memory ABI and
+register-based ABI constructions in one helper, cause that may duplicate
+allocations and copies. Because otherwise the combined helper should receive
+a kernel managed buffer that represents the in-memory ABI but doesn't conform
+to its layout, resulting in the extra allocation and copies in the helper.
 
-From working on the reproducer I don't think this is possible, since
-without informing the host, there's no way for the guest to use the vCPU
-with the RMPADJUST-ed VMSA. If there's no way to run that vCPU, then
-guest_memfd is always free to RMPUPDATE to make that page shared. The
-host can always RMPUPDATE a VMSA page as long as the VMSA page is not in
-use.
+Do we need to talk about this register-based/in-memory ABI pattern in general?
+Not just for TDH.SYS.CONFIG. We already have exsiting examples and more to come,
+this is not special to TDH.SYS.CONFIG.
 
->> An unsolicited shared->private conversion is fine since the VMSA page is
->> already private.
->>
-
-I need to look at conversions again to take this into account, will
-explain more over on that series.
-
-Meanwhile, there's no issue here because rmp_make_shared() will succeed,
-so the leak won't happen.
-
->> sev_gmem_make_shared() would fail on an unsolicited private->shared
->> conversion. The RMP entry would still indicate private, and guest_memfd
->> would track it as shared...? Bad.
->>
->> I've been trying to write a mini reproducer like a selftest but I've
->> still not gotten it to work yet. If someone knows there's no issue here
->> please let me know!
->
-> I have a reproducer I created to prove and validate 74bdfb2f6d18 ("KVM: SEV:
-> Forcefully invalidate SNP VMSA if its backing gmem page is zapped"), I'll make
-> sure to run it when applying (the final version of) this series.
-
-I got the reproducer working :). I'm guessing sharing the reproducer
-publicly isn't allowed so I won't.
+>    the u64's in the array passed are pa's with explicit naming of the helper
+>    struct.
+>    
+> 
+> It's a bit rough, but as a general argument for the change, does it seem better?
