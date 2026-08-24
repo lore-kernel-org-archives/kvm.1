@@ -1,136 +1,195 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C2346EC67;
-	Mon, 24 Aug 2026 17:04:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60FEC463B61;
+	Mon, 24 Aug 2026 17:14:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787591087; cv=none; b=XlAoQcJ7E6rhlf+WQJDCurgzDh1RsLosZzW4xI47HU3BpYRQt+/4DcC0DS4vIlF03tSHiZ5NZ+wPupagweZB0wTMYGZwCz3tg7uGNxMqtu+uc4b7jDOOgqo6EN/0AK7WGE1s9oI/ctSdLME+cW4QtpFMyJYCpmm7XP+6EXuyldU=
+	t=1787591701; cv=none; b=KrJ8rNS5HSNYuJjZWnULpe5UozljuNBEV+DiZO73Vv1ZIybrnhPBqC7SEXOdU3aixp+bIBsVK/ASk8VuczSudtLAqcA9ryd1/ANCBzT5WWNtx1ao+bvlBh6mKHk/c+Sx/1X+VOwM+KNwVd0iVrBrf7IBeE/c3c3iXb6yOe6sAkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787591087; c=relaxed/simple;
-	bh=ECYIP3GIJ1wMVtFSVnXOqyFzX990OK/6qPACvj0P1B0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iuC2AconEIEpJkYQdtM4J93jN1oNFi7QbwbsNDNI0K9kIPBswBFiH6KFi0jSRCBZuLFTRI3oOc2RsskXbVsURiZtVUSU2rlgJ6ZRlowCF7ETVUr4cjpG19MmwXrtNynMLztNe3lM0Bp+eoCWv0pvrdo4Q0IhJTtPdT9TzhIkTHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=VV9DMLbe; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1787591701; c=relaxed/simple;
+	bh=QmqdTCE6fEYSX638NUEaLqW3WzInBpyiUdRNOMh+8xg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n1pRJtmeMve8z/zpafkO3bdD9akrb/hVV3uD0xE+ePQJfXmCpTiVkjsuKTdsooShYHPbkLJq5JlfkmT3m1KUvoQ/Yqx9L00f2RjhtztOD3N4dAn76xpmepjRqkk8X3QdTUSPqhvuQz/+kRftgBnJLzCrDRfxs3nTyAdBqAS2JA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PkGxaowx; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="VV9DMLbe"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67OG1rtq2418921;
-	Mon, 24 Aug 2026 17:04:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=BdFzGQ
-	tjGO5DKJMc3KFSeCNAapmHOHX+0QSB6RJNwQM=; b=VV9DMLbeMNOPKD+gafwU/F
-	4ygNHiWwmx74vEq2j5/uCrQ+xFETDfXD/MMG/2uwG+4RuG0/lMVrgATMHqsedcrj
-	oyccw+dHA39cAfWTYf4+/KnrNGCC33ZQtU5Wnk/ApMEST/hNm49yheWLgXS53nfZ
-	KqO5sDfUSoJUMJ6ZmJ+7u6HctA6aKLFhbfmb4ik8c9uvc9ScN3OTWLqMMzkxULs/
-	qHum+3AU4uTiN5A3hEaflBcqbhzjGf7SgxH96lTpKsSXFpSLspx/dEY8zfzOMeGe
-	jxM1UzEICdIvEOoAwauPWTcHvrdM7cBAM3OQy5uRehpLyNvO4vt0jmuqIwaGiteQ
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g73dx2pge-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 17:04:39 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67OGuKwO004622;
-	Mon, 24 Aug 2026 17:04:39 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g7qkgy820-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 17:04:39 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67OH4cu430671400
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Aug 2026 17:04:38 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 13FC958063;
-	Mon, 24 Aug 2026 17:04:38 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 10C655805A;
-	Mon, 24 Aug 2026 17:04:37 +0000 (GMT)
-Received: from [9.61.21.147] (unknown [9.61.21.147])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 24 Aug 2026 17:04:36 +0000 (GMT)
-Message-ID: <0a04d793-e20a-4080-834d-eab251214c37@linux.ibm.com>
-Date: Mon, 24 Aug 2026 13:04:36 -0400
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PkGxaowx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787591700; x=1819127700;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=QmqdTCE6fEYSX638NUEaLqW3WzInBpyiUdRNOMh+8xg=;
+  b=PkGxaowxxMSWLVhX+nF4/KFd+t3mHEHX2U80M/uV28hxE9BhBaibD7+0
+   migv3N2S/IM7MJPurL9UQOV6PwO6uWkP4j7cZWoZYqx9cZK0Nwf//ScI8
+   HRB8ssGYws0tpPfkaXJaGGCUslF5jobHvnC2HqqeNT7xxc4SPX5puv3lo
+   3tMTfqQH8eZb6Ae4zt3y2Rx8ngbUvPARF0QZRxkRt86WSRgfN9yUXR61M
+   qzG4QAYYQlZgYBJmeisODIzdb5Z/Josl3MxIeJzHUTtf3pqjL7nPwgRTi
+   tXXvgknFrY86BOTrXOoKiaL95J7ZFVlcUHmG4pwg4ugLkpMuBjpmFynVY
+   Q==;
+X-CSE-ConnectionGUID: u0u0EbTNTteCljsSl1+V+Q==
+X-CSE-MsgGUID: AKrtNL2vQQeX6eV3lIKJQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="98726029"
+X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
+   d="scan'208";a="98726029"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 10:14:59 -0700
+X-CSE-ConnectionGUID: njDjaWqwT6+u91Ef1GhkkQ==
+X-CSE-MsgGUID: RZdMKDE3Roa7WI1mPeuFmA==
+X-ExtLoop1: 1
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa003.fm.intel.com with ESMTP; 24 Aug 2026 10:14:55 -0700
+Date: Tue, 25 Aug 2026 01:14:54 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Maloor, Kishen" <kishen.maloor@intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>
+Subject: Re: [PATCH 5/6] x86/virt/tdx: Make TDX module initialize the
+ extensions
+Message-ID: <aox8DgpnSnhZRfCv@yilunxu-OptiPlex-7050>
+References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
+ <20260821032920.256225-6-yilun.xu@linux.intel.com>
+ <f48b83feb2ee1d3c88b5a1627cf35b4b282d3f90.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] s390/vfio-ap: Use AP_DOMAINS for adm_add bitmap size
- in vfio_ap_mdev_cfg_add()
-To: Anthony Krowiak <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, pasic@linux.ibm.com,
-        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
-        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
-        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com
-References: <20260824135850.503728-1-akrowiak@linux.ibm.com>
- <20260824135850.503728-5-akrowiak@linux.ibm.com>
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <20260824135850.503728-5-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDE0MyBTYWx0ZWRfX6aLrXJjG065a
- OqYYFqKV4Lzetj32F6urd/vhKJwwzgw52ibjDJDiZp5+3zIyAAreYJ/hmGCsWV/iu+gYqnv7aN7
- 7fpQm+N36O8idrsCkRz2fo8SVfDc/WQ=
-X-Authority-Analysis: v=2.4 cv=AYuB2XXG c=1 sm=1 tr=0 ts=6a8c79a8 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=hGDoPG5oOfrUUiHZLL0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 89nJTAKZ3GxyKazUp5ktokNZbAUoSXqS
-X-Proofpoint-GUID: 89nJTAKZ3GxyKazUp5ktokNZbAUoSXqS
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDE0MyBTYWx0ZWRfXydFZvcD7xUkB
- Zg7OvX50wztdhxL3X94a+NI+IW4Te1GAIrFyV3Ec16BtPOz/XX9KY3x6CX1hF3uBewkXH9HsSQ6
- JLdbIG7igOb4wTZI4B9BFc2p97mH8R2RNHTu6gMABEsK7tEua7N9Lfpgl46WleCw/QKt1ATJ4m+
- kA5fWxuetN373uN3wJP7CL0rZO7MGJU/qQTNmShWXIg9+ipGcgqykuICdxm7WCs+L1nDww8491U
- TjoIvJDIUHzM3QnlFYXKsv6pqbKZRlzGf8N6YDKHz+UjtWxB8/kHYc/5gAlT0UyCcyyONHNoPH/
- itJ8BU6xkip9myf1ZvrOxRMmb2NAiKIrFyE1rpC5e7s1e72DxqvrlBrY/+Qy5uD+4Z7yiu0OGh8
- gsP1FnyfoHhJRrR5YlEnREBYt2Roid0OeZz1Ja7SyxVTQkvcfR1aaZmCK0y+lBU3ZLgYA5HJ9ch
- eBeNJ1VHRYYnBEIeSAQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-24_05,2026-08-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 clxscore=1015 adultscore=0 bulkscore=0
- impostorscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608240143
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f48b83feb2ee1d3c88b5a1627cf35b4b282d3f90.camel@intel.com>
 
-On 8/24/26 9:58 AM, Anthony Krowiak wrote:
-> In vfio_ap_mdev_cfg_add(), the bitmap_and() call that computes
-> the intersection of newly added control domains with those
-> assigned to each matrix mdev passes AP_DEVICES as the bitmap
-> size instead of AP_DOMAINS:
+> > After providing all required memory to the TDX module, initialize TDX
+> > module extensions via TDH.EXT.INIT
+> > 
 > 
->     bitmap_and(matrix_mdev->adm_add,
->                matrix_mdev->matrix.adm, adm_add, AP_DEVICES);
+> What exactly does TDH.EXT.INIT actually do,
+
+The SPEC just said it "initializes TDX module extension". My
+understanding is that it builds the SEAMCALL execution context by
+setting up its internal data on the memory added by TDH.EXT.MEM.ADD
+
+> and why can't whatever that is
+> happen during TDH.EXT.MEM.ADD?
+
+Do you mean why can't the extensions initialization happen on last
+TDH.EXT.MEM.ADD? I can think of some case that TDH.EXT.MEM.ADD is not
+needed but the extensions initialization is needed. For example: after
+an compatible TDX module update.
+
+I may ask the TDX module team to get a better understanding.
+
+> Not saying we need to jam anything in awkwardly.
+> Can we say this is analogous to TDH.SYS.CONFIG but for the extensions? It only
+> exists because SYS.CONFIG gives the features to enable before the memory is
+> there to actually do it. So it needs a second call?
+
+I'm not sure I understand the question. But I think extension memory is
+more like PAMT, and TDH.EXT.INIT is more like TDH.SYS.TDMR.INIT, is it?
+
+				PAMT			the extensions
+				====			==============
+add memory			TDH.SYS.CONFIG		TDH.EXT.MEM.ADD
+init memory for functionality	TDH.SYS.TDMR.INIT	TDH.EXT.INIT
+
 > 
-> Control domains are indexed by AP queue index (APQI) and their
-> bitmaps are sized by AP_DOMAINS, not AP_DEVICES. The two
-> constants are both 256 today so there is no functional impact,
-> but the wrong constant is inconsistent with the two bitmap_and()
-> calls immediately above it and with every other operation on
-> adm/aqm bitmaps in the file, all of which correctly use
-> AP_DOMAINS.
 > 
-> Use AP_DOMAINS to keep the code consistent and correct in case
-> the two constants ever diverge.
+> > , then those add-on features can use
+> > their SEAMCALL leaves normally.
 > 
-> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+> Out of curiosity, what happens if you don't complete these steps and call one of
+> the extension seamcalls?
 
-Since this is not a functional bug today (constants are the same value)
-I'm OK with no fixes tag here.
+They return the error code - TDX_EXT_NOT_INITIALIZED.
 
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+> 
+> > 
+> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> > Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> > Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> > Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+> 
+> Code looks good. Except that it leaves me wondering if this could have all been
+> a while loop around tdh_sys_confg() that gives memory on a memory error code.
+> Actually it looks like we have a TDX_EXT_MEMORY_POOL_REQUIRED error code to use.
+> 
+> Consider something like this:
+> 
+> do {
+> 	ret = tdh_sys_init();
+> 	if (ret == TDX_EXT_MEMORY_POOL_REQUIRED)
+> 		tdh_ext_mem_add() //single page
+> while (ret == TDX_EXT_MEMORY_POOL_REQUIRED)
+> 
+> If that could technically work, I guess the benefit of the current approach is
+> that it allows to use contiguous physical allocations. Not sure if you think
+> that simpler snippet would actually be that simple in the real world.
 
+I think there are several simplifications here, let's break down:
 
+ 1. Forget about the 512-page limitation for hpa_list_info, always add 1 page
+    at a time.
+    This can also be applied to current flow. So put it aside.
+
+ 2. The loop strategy:
+    - read total memory size	vs.	- loop on error code
+    - prealloc all memory		  - alloc a page
+    - loop on size			  - memory add
+      - memory add
+
+    The main saving is that we don't read memory_pool_required_pages any more.
+    Others are similar lines of code.
+
+ 3. But we'd better keep reading ext_required. I tested when ext_required == 0:
+      - tdh_sys_init() returns TDX_EXT_MEMORY_POOL_REQUIRED,
+      - tdh_ext_mem_add() returns TDX_EXT_MEMORY_POOL_NOT_PENDING,
+    So we need a weird return code combination to identify "extensions not
+    required" then skip. And I don't know if the combination is stable,
+    it is not specified in SPEC.
+
+ 4. If we still need to read at least one extensions metadata
+    (ext_required), saving a memory_pool_required_pages read is not
+    significant.
+
+So generally I don't think the snippet would be that simple.
+
+> But if we
+> are basically building all this to help fragmentation, we should say it.
+> 
+
+[...]
+
+> > +static __init int tdx_ext_init(void)
+> > +{
+> > +	struct tdx_module_args args = {};
+> > +	u64 ret;
+> > +
+> > +	do {
+> > +		ret = seamcall(TDH_EXT_INIT, &args);
+> 
+> What happens if no init is needed? Does it return success or error? I'm
+
+It returns error - TDX_EXT_MEMORY_POOL_REQUIRED
+
+> wondering if we need to really check ext_required and can just call TDH_EXT_INIT
+> unconditionally. We need to check for TDX_FEATURES0_EXT in any case. But do we
+> need both checks?
+
+As mentioned above, we need a weird return code combination to identify
+ext_required, so I think we should retain ext_required checking.
