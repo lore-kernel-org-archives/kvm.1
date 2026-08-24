@@ -1,44 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9DE25B0AB
-	for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 09:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7559B3F2101;
+	Mon, 24 Aug 2026 09:18:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787562440; cv=none; b=U/akGV0BlsOJd8pyN4iFNIxJHB2zbPrJUHEmohS80xGzxNuYkmBbPVGPc74DB+UjMvBrZXiu4IHgkz+yEy5OGbvAAwjbW2+RrJhiHM45zqEoeFccQGGZLYFwhN4hjDhJe2qUmvmmXoRGgJLvS4YWNw90SEkJld2v3LCeZ89ThTI=
+	t=1787563121; cv=none; b=RnPHsdqYAX+0MHvBXG8Tv14whs/wjxcEFAHyA0LCk2HUYLDRA2N66nZLiUd6NVRA7CZqizTAMAWqoox5oEIAXO95kRr2w+/mc+IbanDqg7RQgXguC0QAGDofqWH8WNSSe3f9Z73R51fOohSpqUWpEwocWU3vUOclhPWbQprBbMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787562440; c=relaxed/simple;
-	bh=yQyyT+WmNojoYCZ4UF7CKS6gquT3xzkK/tGzKVIwoA8=;
+	s=arc-20240116; t=1787563121; c=relaxed/simple;
+	bh=6BmFy5jb3jLUCgM6DtkO/km+Rgo/GycIWhXxFsToEN8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RdaOhranZQdS3qiI3wlqGXI0UKLhN81iqqo+cqSxl6rPodFCPTHMGKnWu/HM4snXm6sjci+SPUbxyv/AfqrI48lpRZjMC0Zu+AJ+loHnGtRS9zCgGPQJvBD9PbvknNAcYiJ+0C+U41KjZ9y41aesH01kFeIvr3F8kaw2reKbwuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AFJf1v+m; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=fkrs0S/r2lKEP+dPFF25MSZUCo9uuDb1SeS6kca/Cah7UcTuV6aK4dSZHT/8IM0roOJvZ8eYlxdsmaswvh/USEzrAF5BGweu31deqf+/TqclV48vf6i/AntaMBWKezele3xVe4EH532HZSABx0llzvgs4h5tacKAEI1aKce7G6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FpsPTujk; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AFJf1v+m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846921F00A3A;
-	Mon, 24 Aug 2026 09:07:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787562438;
-	bh=Gupcxk5JRbY/GWjgh11gUuJuL94pNqxOxmGLSaShLy8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AFJf1v+mvpCMMjPaVPOTCewKz0p8Cw9Dl8w+/nVRmnNMXCiizOa2lFPNIJN7QAKp5
-	 Yblv0OZQBW9nkajLFp7VCDKByxce6Hhmgn/wQgENYaVAHYHKlmRmbxw7X+9V8lQEOO
-	 pkxOrqrhaC48x/HT3LTkIIFk8ZjloTPcOvd8KmpNn8hrkWprR0Z/svUW9PlPJO1+Xm
-	 I01e58yqnbHHCVGN0PMEnqFg2hOPXukx7JeAO2PQjHdsWtT9LhKbBXrpf/9xgP6gQ4
-	 /onG1nUWmkTqU3MeHyFqdNZaoiYqs2zTt1K8eqkYq6q89dgY35mRBatgXrswaKIK+s
-	 zciB6UxAWHZFg==
-Date: Mon, 24 Aug 2026 11:07:12 +0200
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Michael Roth <michael.roth@amd.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
-	berrange@redhat.com, armbru@redhat.com, pankaj.gupta@amd.com,
-	isaku.yamahata@intel.com, xiaoyao.li@intel.com,
-	chao.p.peng@linux.intel.com, david@kernel.org, ashish.kalra@amd.com,
-	ackerleytng@google.com
-Subject: Re: [PATCH RFC 00/12] guest_memfd: support in-place memory conversion
-Message-ID: <aowJwOeI9skIOp-p@lpieralisi>
-References: <20260528000416.8161-1-michael.roth@amd.com>
- <ajkrWSfmODM8NTZ5@lpieralisi>
- <bdg5gb5m4tnm5pmq54vafyykbegefsrz4qupn44ofwfiwkpwk4@zwg7e35l5zps>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FpsPTujk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787563117; x=1819099117;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6BmFy5jb3jLUCgM6DtkO/km+Rgo/GycIWhXxFsToEN8=;
+  b=FpsPTujkrZR2PvqOr94ehv95Q6MfrkhXPwbKH0SLZbHxCm79+K+HxYLB
+   AvU9GO9tSmTy4MzSy8VtrWf5NaqlNlb9kb2pqC5gEeUZGzifvu+G5rqqA
+   UQjKixXVrfuE5v4QMcw0Hz4B43VpCr6mu58cQTUiNUWbmDcSVxnzzmupP
+   MIIdGiS9376mIaOtU2ZAFZJ5OCvwPc9OTCS+X+aHq3EanSXa+jX9nyJ+8
+   g+xmjkvo00TP7vnA6Y7H7wEMcjDQtUgzcKXMH4EUVpRy6qKvfsMW7b5Df
+   SF5ow19bbl8oKgC85bFzBdsucor5IJMfJqL/bks1t+IDUjsxyk+KU5/lZ
+   g==;
+X-CSE-ConnectionGUID: D67xrZXwQGu2celo6t7Vgw==
+X-CSE-MsgGUID: 1NoqaFMMROKAL2BdZTYYmA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11884"; a="88135214"
+X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; 
+   d="scan'208";a="88135214"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 02:18:30 -0700
+X-CSE-ConnectionGUID: tzE7G8ZvQ5CtpN3ASW/G8Q==
+X-CSE-MsgGUID: yoLLhoXySwOwiI6xTI0OMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; 
+   d="scan'208";a="290467966"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa002.fm.intel.com with ESMTP; 24 Aug 2026 02:18:27 -0700
+Date: Mon, 24 Aug 2026 17:18:25 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, rick.p.edgecombe@intel.com,
+	yilun.xu@intel.com, xiaoyao.li@intel.com, sohil.mehta@intel.com,
+	adrian.hunter@intel.com, kishen.maloor@intel.com,
+	tony.lindgren@linux.intel.com, peter.fang@intel.com,
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	chao.gao@intel.com, artem.bityutskiy@linux.intel.com,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH 4/6] x86/virt/tdx: Add extra memory to TDX module for the
+ extensions
+Message-ID: <aowMYbHKK4b0O5P6@yilunxu-OptiPlex-7050>
+References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
+ <20260821032920.256225-5-yilun.xu@linux.intel.com>
+ <aohvlMO7ehqcVW96@thinkstation>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,267 +68,178 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bdg5gb5m4tnm5pmq54vafyykbegefsrz4qupn44ofwfiwkpwk4@zwg7e35l5zps>
+In-Reply-To: <aohvlMO7ehqcVW96@thinkstation>
 
-On Thu, Jun 25, 2026 at 04:21:52PM -0500, Michael Roth wrote:
+> > The TDX module accepts the memory in the form of a PFN array. This array
+> > is passed via a single 64-bit SEAMCALL leaf parameter, which encodes two
+> > values: the PFN of the container page holding the array, and the number
+> > of entries in the array. Create a helper to encode this format and name
+> > it after the TDX module term: HPA_LIST_INFO.
+> 
+> The array entries are physical addresses, not PFNs. HPA_LIST_INFO encodes
+> a PFN, the array does not.
+
+OK. I'll change PFN array => HPA array
 
 [...]
 
-> > When convert-in-place is switched on I think that the post conversion
-> > hook should not trigger discard+hole-punch since now guest-memfd _is_
-> > the memory back-end but it looks like there is no guard in place against
-> > that (I noticed that ram_block_discard_range() triggers a hole-punch in
-> > kvm_post_convert_section() - when the CCA guest first requests a
-> > KVM_EXIT_MEMORY_FAULT to convert to private).
+> > +#define TDX_HPA_LIST_MAX_NR_PAGES	(PAGE_SIZE / sizeof(u64))
+> > +
+> > +struct tdx_hpa_list {
+> > +	u64 phys[TDX_HPA_LIST_MAX_NR_PAGES];
+> > +};
+> > +
+> > +static_assert(sizeof(struct tdx_hpa_list) == PAGE_SIZE);
+
+[...]
+
+> > +	hpa_list = kzalloc_obj(*hpa_list);
+> > +	if (!hpa_list)
+> > +		return -ENOMEM;
+> 
+> to_hpa_list_info() expects hpa_list to be page-aligned. It happens to
+> work with kmalloc for PAGE_SIZE allocation.
+
+The struct tdx_hpa_list definition follows the TDX ABI and is guarenteed
+to be PAGE_SIZE by:
+
+	static_assert(sizeof(struct tdx_hpa_list) == PAGE_SIZE);
+
+and kmalloc guarentees the page alignment.
+
+	59bb47985c1d ("mm, sl[aou]b: guarantee natural alignment for kmalloc(power-of-two)")
+
+So I think it's OK, not "happen to work".
+
+> 
+> Maybe it is better to allocate it with buddy allocator instead?
+
+It can be, but then we need an extra variable to record the
+struct page *, which seems redundant?
+
+> 
+> > +
+> > +	page = alloc_contig_pages(required_pages, GFP_KERNEL, numa_mem_id(),
+> > +				  &node_online_map);
+> 
+> Why contiguous? TDH.EXT.MEM.ADD takes a list of page addresses and the loop
+> below writes every one of them out separately.
+> 
+> alloc_pages_bulk() fits the chunking that is already here, and a short
+> return can be handled per chunk. alloc_contig_pages() isolates and migrates
+> to get its range and fails TDX init outright when it cannot find one. PAMT
+
+Yeah, this is not the ABI requirement, but the kernel's consideration. A
+brief reasoning in the commit log: avoiding permanent memory fragmentation
+and buddy allocator efficiency loss.
+
+Also there is some discussion:
+
+https://lore.kernel.org/all/167d9540-2d9a-4367-bc68-b96494bc4044@intel.com/
+
+TL;DR
+  - The memory will never return to the kernel.
+  - There is chance that this tens of megabytes will fragment tens of
+    gigabytes of memory forever.
+  - The chance of fragmentation is actually low since at boot up, but
+    let the buddy allocator take care of these never-returned memory
+    is not necessary and lowers its efficiency.
+
+> needs it because the TDMR ABI describes each PAMT as base+size. This does
+> not.
+> 
+> > +	if (!page) {
+> > +		ret = -ENOMEM;
+> > +		goto out_free_hpa_list;
+> > +	}
+> > +
+> > +	added_pages = 0;
+> > +	while (added_pages < required_pages) {
+> > +		unsigned int chunk_pages = min(required_pages - added_pages,
+> > +					       TDX_HPA_LIST_MAX_NR_PAGES);
+> > +		struct page *chunk = page + added_pages;
+> > +		unsigned int i;
+> > +
+> > +		for (i = 0; i < chunk_pages; i++)
+> > +			hpa_list->phys[i] = page_to_phys(chunk + i);
+> > +
+> > +		ret = tdx_ext_mem_add(hpa_list, chunk_pages);
+> > +		if (ret) {
+> > +			/*
+> > +			 * This SEAMCALL leaf shouldn't fail, and if it does,
+> > +			 * things are broken enough that complex error handling
+> > +			 * isn't worth it. Intentionally leak all pages,
+> > +			 * including un-added pages.
+> > +			 */
+> > +			WARN(1, "Fatal: TDX module rejected memory for extensions, stranded all pages\n");
+> > +			break;
+> 
+> It supposed to be
+> 			goto out_free_hpa_list;
+> 
+> No?
+
+The difference is to print the memory amount or not. For simple error
+handling, we stranded all pages, we let users know the cost even if the
+initialization fails.
+
+> 
+> 
+> > +		}
+> > +
+> > +		added_pages += chunk_pages;
+> > +	}
+> > +
+> > +	/*
+> > +	 * Memory for TDX module extensions is never reclaimed and can be tens
+> > +	 * of megabytes. Print the amount so users know the cost.
+> > +	 */
+> > +	pr_info("%lu KB consumed for TDX module extensions\n",
+> > +		required_pages * PAGE_SIZE / 1024);
+> > +
+> > +out_free_hpa_list:
+> > +	kfree(hpa_list);
+> > +
+> > +	return ret;
+> > +}
+> > +
+
+[...]
+
+> > --- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+> > +++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+> > @@ -137,6 +137,12 @@ static __init int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
+> >  	int ret;
+> >  	u64 val;
+> >  
+> > +	ret = read_sys_metadata_field(0x3100000200000000, &val);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	sysinfo_ext->memory_pool_required_pages = val;
+> > +
+> 
+> Why above ext_required read?
+
+I want to sort them in ascending order of the field ID, so reviewers can
+seach them more easily.
+
+> Is it even valid to read it in such case?
+
+It is OK. The two ext metadata are both valid after TDX feature
+configurations.
+
+The ext_required == 0 && memory_pool_required_pages > 0 is highly
+suspicious based on our current understanding, but that's more of a
+module BUG, not caused by metadata reading order.
+
+> 
+> >  	ret = read_sys_metadata_field(0x3100000000000001, &val);
+> >  	if (ret)
+> >  		return ret;
+> > -- 
+> > 2.25.1
 > > 
-> > It is a question really.
 > 
-> Yes, I agree that it does not make much sense to try to hole-punch for
-> in-place conversion, it's just uncessary churn on the gmem side. In my
-> internal branches I generally disabled this path but for some reason
-> left that out of this series. I've tested with the below change and it
-> should do the trick though; I'll roll something similar into v2 of the
-> series.
-
-Hi Michael,
-
-have you planned posting a v2 rebased against a more recent codebase ?
-
-Thanks,
-Lorenzo
-
-> 
->   diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
->   index 5840daa7c8..2faec929b5 100644
->   --- a/accel/kvm/kvm-all.c
->   +++ b/accel/kvm/kvm-all.c
->   @@ -3619,17 +3619,19 @@ static int kvm_post_convert_section(MemoryRegionSection *section, bool to_privat
->            }
->        }
->    
->   -    if (to_private) {
->   -        if (rb->page_size != qemu_real_host_page_size()) {
->   -            /*
->   -             * shared memory is backed by hugetlb, which is supposed to be
->   -             * pre-allocated and doesn't need to be discarded
->   -             */
->   -            return 0;
->   +    if (current_machine->cgs && current_machine->cgs->convert_in_place) {
->   +        if (to_private) {
->   +            if (rb->page_size != qemu_real_host_page_size()) {
->   +                /*
->   +                 * shared memory is backed by hugetlb, which is supposed to be
->   +                 * pre-allocated and doesn't need to be discarded
->   +                 */
->   +                return 0;
->   +            }
->   +            ret = ram_block_discard_range(rb, offset, size);
->   +        } else {
->   +            ret = ram_block_discard_guest_memfd_range(rb, offset, size);
->            }
->   -        ret = ram_block_discard_range(rb, offset, size);
->   -    } else {
->   -        ret = ram_block_discard_guest_memfd_range(rb, offset, size);
->        }
->    
->        return 0;
-> 
-> Thanks!
-> 
-> -Mike
-> 
-> > 
-> > Thanks,
-> > Lorenzo
-> > 
-> > > That model works, but has a number of downsides that impact certain
-> > > use-cases:
-> > > 
-> > >   - Each conversion involves discarding pages on one side and faulting
-> > >     them in on the other, which incurs allocation overheads in the
-> > >     host kernel for every conversion.
-> > > 
-> > >   - Some use-cases, like pKVM[3], rely on memory isolation rather than
-> > >     encryption and rely on in-place conversion to pass through things
-> > >     like secured framebuffer memory without needing to bounce data
-> > >     through separate shared/private HPAs, which would introduce
-> > >     unacceptable latency for that sort of workload.
-> > > 
-> > >   - Hugetlb support[4] for guest_memfd will rely on it, since things like
-> > >     1GB hugepages with a mix of shared/private sub-ranges would generally
-> > >     require 2 1GB hugetlb pages to remain available to handle shared vs.
-> > >     private accesses, which quickly causes doubling of guest memory usage.
-> > > 
-> > > Recent kernel work[2] makes guest_memfd mmap()-able and lets the *same*
-> > > physical pages be used for both shared and private states for a given
-> > > GPA range, allowing the above pitfalls to be naturally avoided.
-> > > 
-> > > This series wires that support up in QEMU.
-> > > 
-> > > 
-> > > DESIGN
-> > > ------
-> > > 
-> > > A new dedicated memory backend, memory-backend-guest-memfd, allocates
-> > > its memory via a guest_memfd file descriptor obtained from KVM with
-> > > the GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED flags. The fd
-> > > is mmap()ed so userspace can access pages directly while they are in
-> > > the shared state. For a normal/non-confidential VM, this backend can
-> > > be used in a similar fashion as the existing memory-backend-memfd.
-> > > 
-> > > For confidential VMs, a new 'convert-in-place' flag is added to switch
-> > > on in-place conversion support. When running in this mode, the user
-> > > *MUST* use memory-backend-guest-memfd for backing guest RAM. A new
-> > > RAM_GUEST_MEMFD_SHARED RAMBlock flag is added to track/enforce the
-> > > dependency. Additionally, QEMU is modified to use mmap()-able
-> > > guest_memfd and set this flag for other cases where it allocates RAM
-> > > internally. As a result, block->fd will generally always a guest_memfd,
-> > > and when RAM_GUEST_MEMFD_SHARED is set then that block->fd will be
-> > > qemu_dup()'d as the FD handle for private memory is well (which is
-> > > currently what block->guest_memfd point to). This allows the prior
-> > > non-in-place handling around block->guest_memfd to be kept mostly
-> > > unchanged.
-> > > 
-> > > When running with convert-in-place=true, shared/private conversions
-> > > are no longer handled directly by KVM, but instead by a new guest_memfd
-> > > ioctl, KVM_SET_MEMORY_ATTRIBUTES2, which purposely provides similar
-> > > naming/implementation to the KVM_SET_MEMORY_ATTRIBUTES KVM ioctl that
-> > > it replaces. This series adds handling to route conversion requests to
-> > > the appropriate ioctls based on whether or not in-place conversion is
-> > > enabled.
-> > > 
-> > > Since guest_memfd ioctls need to be called against the specific
-> > > guest_memfd inode associated with each memory slot/region, some
-> > > refactoring is needed to handle conversions on a per-section. Much of
-> > > that is inherited from the bugfix series this patchset is based on top
-> > > of, which adds the initial logic for handling multiple sections within
-> > > a range that gets heavily re-used here.
-> > > 
-> > > 
-> > > USAGE
-> > > -----
-> > > 
-> > > After applying this series against a kernel with the RFC patches above
-> > > present, an SEV-SNP guest can be started with in-place conversion via:
-> > > 
-> > >     qemu-system-x86_64 \
-> > >         -machine q35,confidential-guest-support=sev0,memory-backend=ram0 \
-> > >         -object memory-backend-guest-memfd,id=ram0,size=8G,share=on \
-> > >         -object sev-snp-guest,id=sev0,cbitpos=51,reduced-phys-bits=1,\
-> > >                 convert-in-place=on \
-> > >         ...
-> > > 
-> > > The new memory-backend-guest-memfd can also be used by normal VMs:
-> > > 
-> > >     qemu-system-x86_64 \
-> > >         -machine q35,memory-backend=ram0 \
-> > >         -object memory-backend-guest-memfd,id=ram0,size=8G,share=on \
-> > >         ...
-> > > 
-> > > This is mainly only useful atm for testing, but in the future there may
-> > > be more use-cases around using guest_memfd as a general-purpose backend
-> > > for non-confidential VMs, so it is intended to work in this manner as
-> > > well.
-> > > 
-> > > 
-> > > NOTES/TODO
-> > > ----------
-> > > 
-> > >   - the CPR handling to support resetting of confidential VMs is
-> > >     currently disabled when in-place conversion is enabled.
-> > >   - TDX testing would be great, in theory it can be enabled with this
-> > >     series (similarly to the top patch) but I'm not sure if there are
-> > >     other special requirements before we can switch it on.
-> > >   - kernel patches are still in-flight, but fairly mature at this point
-> > >     and nearing upstream
-> > > 
-> > > 
-> > > REFERENCES
-> > > ----------
-> > > 
-> > > [1] https://lore.kernel.org/kvm/20250729225455.670324-1-seanjc@google.com/
-> > > [2] https://lore.kernel.org/kvm/20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com/
-> > > [3] https://www.youtube.com/watch?v=MMfAGNW9RVg
-> > > [4] 1GB hugetlb v2
-> > > 
-> > > 
-> > > Thoughts, feedback, and testing are very much appreciated.
-> > > 
-> > > Thanks,
-> > > 
-> > > Mike
-> > > 
-> > > 
-> > > ----------------------------------------------------------------
-> > > Michael Roth (12):
-> > >       accel/kvm: Decouple guest_memfd checks from memory attribute checks
-> > >       hostmem: Introduce dedicated memory backend for guest_memfd
-> > >       linux-headers: Update headers for v7 of in-place conversion kernel support
-> > >       accel/kvm: Add CGS option to control in-place conversion support
-> > >       system/memory: Re-use memory-backend-guest-memfd inode for private memory
-> > >       system/memory: Default to guest_memfd for RAM for in-place conversion
-> > >       accel/kvm: Move post-conversion updates to a separate helper
-> > >       accel/kvm: Re-order attribute notifications for in-place conversion
-> > >       accel/kvm: Support shared/private conversions via guest_memfd ioctls
-> > >       accel/kvm: Don't default to private attributes for in-place conversion
-> > >       i386/sev: Update SNP_LAUNCH_UPDATE for in-place conversion
-> > >       i386/sev: Allow in-place conversion for SEV-SNP guests
-> > > 
-> > >  accel/kvm/kvm-all.c                                | 286 +++++++++++--
-> > >  accel/stubs/kvm-stub.c                             |   9 +-
-> > >  backends/confidential-guest-support.c              |  25 ++
-> > >  backends/hostmem-guest-memfd.c                     |  93 +++++
-> > >  backends/meson.build                               |   1 +
-> > >  include/standard-headers/drm/drm_fourcc.h          |  28 +-
-> > >  include/standard-headers/linux/const.h             |  18 +
-> > >  include/standard-headers/linux/ethtool.h           |  28 +-
-> > >  include/standard-headers/linux/input-event-codes.h |  13 +
-> > >  include/standard-headers/linux/pci_regs.h          |  71 +++-
-> > >  include/standard-headers/linux/typelimits.h        |   8 +
-> > >  include/standard-headers/linux/virtio_ring.h       |   5 +-
-> > >  include/standard-headers/linux/virtio_rtc.h        | 237 +++++++++++
-> > >  include/standard-headers/linux/vmclock-abi.h       |  20 +
-> > >  include/system/confidential-guest-support.h        |  14 +
-> > >  include/system/hostmem.h                           |   1 +
-> > >  include/system/kvm.h                               |   3 +-
-> > >  include/system/memory.h                            |   8 +-
-> > >  linux-headers/asm-arm64/kvm.h                      |   1 +
-> > >  linux-headers/asm-arm64/unistd_64.h                |   1 +
-> > >  linux-headers/asm-generic/unistd.h                 |   5 +-
-> > >  linux-headers/asm-loongarch/kvm.h                  |   5 +
-> > >  linux-headers/asm-loongarch/kvm_para.h             |   1 +
-> > >  linux-headers/asm-loongarch/unistd_64.h            |   2 +
-> > >  linux-headers/asm-mips/unistd_n32.h                |   1 +
-> > >  linux-headers/asm-mips/unistd_n64.h                |   1 +
-> > >  linux-headers/asm-mips/unistd_o32.h                |   1 +
-> > >  linux-headers/asm-powerpc/unistd_32.h              |   1 +
-> > >  linux-headers/asm-powerpc/unistd_64.h              |   1 +
-> > >  linux-headers/asm-riscv/kvm.h                      |  11 +-
-> > >  linux-headers/asm-riscv/ptrace.h                   |  37 ++
-> > >  linux-headers/asm-riscv/unistd_32.h                |   1 +
-> > >  linux-headers/asm-riscv/unistd_64.h                |   1 +
-> > >  linux-headers/asm-s390/unistd_32.h                 | 446 ---------------------
-> > >  linux-headers/asm-s390/unistd_64.h                 |   1 +
-> > >  linux-headers/asm-x86/kvm.h                        |  21 +-
-> > >  linux-headers/asm-x86/unistd_32.h                  |   1 +
-> > >  linux-headers/asm-x86/unistd_64.h                  |   1 +
-> > >  linux-headers/asm-x86/unistd_x32.h                 |   1 +
-> > >  linux-headers/linux/const.h                        |  18 +
-> > >  linux-headers/linux/iommufd.h                      |  48 +++
-> > >  linux-headers/linux/kvm.h                          |  62 ++-
-> > >  linux-headers/linux/mshv.h                         |   4 +-
-> > >  linux-headers/linux/psp-sev.h                      |   2 +-
-> > >  linux-headers/linux/stddef.h                       |   4 +
-> > >  linux-headers/linux/vduse.h                        |  85 +++-
-> > >  linux-headers/linux/vfio.h                         |  30 +-
-> > >  qapi/qom.json                                      |  35 +-
-> > >  qemu-options.hx                                    |   5 +
-> > >  system/memory.c                                    |  22 +-
-> > >  system/physmem.c                                   |  50 ++-
-> > >  target/i386/sev.c                                  |  12 +-
-> > >  52 files changed, 1253 insertions(+), 533 deletions(-)
-> > >  create mode 100644 backends/hostmem-guest-memfd.c
-> > >  create mode 100644 include/standard-headers/linux/typelimits.h
-> > >  create mode 100644 include/standard-headers/linux/virtio_rtc.h
-> > >  delete mode 100644 linux-headers/asm-s390/unistd_32.h
-> > > 
+> -- 
+>   Kiryl Shutsemau / Kirill A. Shutemov
