@@ -1,159 +1,152 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE8B41E6DC;
-	Mon, 24 Aug 2026 13:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B30F41DDF2
+	for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 13:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787576460; cv=none; b=ZfrdGTpfBPEV3+7+QQPGYZhnCgg4Q9F5hkIAx/eRcJ6/mlKV8K2hp8U83Y7baKudxTk8quuejAU7E0VYM/FrNZXXL1Lv8ixZYPjdMVkcg6UJ9SzDkgyge0pN2XmBoqep6fXcA+QrQGwP5op60bpqocSaKsoqfBoOe5+4zpI6ABI=
+	t=1787577110; cv=none; b=WX11UCWtpT3WcGEIjbzXP85RGaafXFyXGmX4cb5YduRa3FWQRjbG+lHqGAVW5xIJZrVeOgM5GqERvvlS97fhHg99ghjFpxhonsCG1lXwnr2HGRDHxdB6uby1cW61E3OHCUOClkq1rmZIitCW2O2wDK1TE/KBcioF+ZRDVwtO2dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787576460; c=relaxed/simple;
-	bh=cjZycRPL/V2dbn/KJVAq2IjbBb3ROMdxq79AnwSsbXA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eoNu3chsznUgR7W4WWh2xbbLCytZ8e30t4DWh0Cr7SzcWUzbA/v/YEW9MikwV6I5qv5G+HJS0B4FRYjxtHq2q3MpW0KhZdIElM3lC+5D8RkLKAbIvr7ga54IMva+67EodwS848YG0zSz0MsULL6yfBa66SnbkcLgZY4/FfEIp+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SPaqJoVX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787577110; c=relaxed/simple;
+	bh=Mef4P+6FnDZQMmLjZxhz9PWKeqiaNruzkqUpgusSsTU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=aLWROqyCYJI2JXL/SqsDvnK8u2wIdap6e80g6Wasyxu+3CtkuzPyz4Jaklw7KnSiw9XizGMLEzjAFI5wBaBfI2PQqCzpwEUq3IRqOGRVynrFUG3Jt/bBJVtn5x4wFry+CEWCyej9NNaj106Nxba5iqPsUM79I1UMXcr021Mxsnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h3tMc4Dr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SPaqJoVX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D9D1F00A3D;
-	Mon, 24 Aug 2026 13:00:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h3tMc4Dr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0660C1F000E9;
+	Mon, 24 Aug 2026 13:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787576459;
-	bh=q36gRSoP99ff+fMOz6jfXIaZTDy+JL/ht/1iEGaa99g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SPaqJoVXqsHFY/xMI1dkbMXlu1/Q7FPUphBkZlD/TSukZg6RpW56PgrwFXhUEqcqg
-	 tD7j6Z954yRqGmvT9jzWfXVJuJaHnZYj6t6Qb2/os55Jxdf6IVv39A/6N4w2m5sat1
-	 HWgWW7pF70RVTo9H4gqxwi48p1TjbW9OJpSPFyg1YMkMPPVYsm4AE/Lh6QP1vSV/0B
-	 myp0lvAM2OzHIQi/nNJiBhGvfJEk1gOxfrIc/u5AiHcMz4rP5KR9cGk6sX1elmNz30
-	 Fwg0Q3/UAB0vGaRwA2tpMXmJjmcKy5zZ4DgK+xicCp3KcA97KHLndhx8tf3rkQFzot
-	 CyNbwdqpLIZ/Q==
-Message-ID: <8a99f753-0713-4194-8eb5-90da0724e647@kernel.org>
-Date: Mon, 24 Aug 2026 15:00:47 +0200
+	s=k20260515; t=1787577109;
+	bh=976A5+7qqZxtPvwKnIWF+yrtblBnbXOeAXcjWjiBpC0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=h3tMc4DrKrGXVABqxNCCdg7lLf02ySi77LPVntbChEQsnIALS+3NBQ5KQGUfVhQuJ
+	 1J+aq+eJTTzAKHioBEJI5lMmHd8boDsatw1DXk56gKL33ghtBz8wLuyR5Vr6z/xgI6
+	 /YMM6pk9taHXWl2ae4Xp9/OIBAcp+CBtS8/h9jsfpZgD6X09kOs0Enu2VMTUb1FjWg
+	 FeW5x94H/pwniusIgfM6LBJXiaqxYJjFK0wnre3KLNAjOipb5721WV2yb6PA95mnWq
+	 w777TtMitOpIT8XYqZqRG7ygicfLwXOiyHbF0aC6ohK90+pDaq0BH5s0o/Pct9MZBG
+	 xUYoJWg1Zfbzg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 2/8] KVM: nSVM: Synthesize DecodeAssists EXITINFO for
+ emulated intercepts
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Tina Zhang" <zhang_wei@open-hieco.net>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260824123954.315112-3-zhang_wei@open-hieco.net>
+References: <20260824123954.315112-1-zhang_wei@open-hieco.net>
+ <20260824123954.315112-3-zhang_wei@open-hieco.net>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 24 Aug 2026 13:11:48 +0000
+Message-Id: <20260824131149.0660C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 5/5] mm: selftests: Add shmem into memory failure test
-To: Lisa Wang <wyihan@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org, Andi Kleen <andi@firstfloor.org>,
- Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
- Rik van Riel <riel@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>
-Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
- vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com,
- tabba@google.com, dave.hansen@linux.intel.com,
- Isaku Yamahata <isaku.yamahata@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-References: <20260823-memory-failure-mf-delayed-fix-v5-0-d97a5703e45a@google.com>
- <20260823-memory-failure-mf-delayed-fix-v5-5-d97a5703e45a@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260823-memory-failure-mf-delayed-fix-v5-5-d97a5703e45a@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 8/23/26 21:40, Lisa Wang wrote:
-> Add a shmem memory failure selftest to test the shmem memory failure is
-> correct after modifying shmem return value.
-> 
-> Specifically, test the expected behavior under various scenarios
-> combining page dirtiness (dirty vs clean) and failure types (hard vs
-> soft):
-> + Dirty + Hard: Trigger a SIGBUS on injection, and trigger another
->   SIGBUS when reading the page again.
-> + Dirty + Soft: No SIGBUS is triggered, and the original value can be
->   read successfully.
-> + Clean + Hard: No SIGBUS is triggered on injection, but trigger a
->   SIGBUS when trying to read the page again.
-> + Clean + Soft: No SIGBUS is triggered, and the page can be read
->   successfully.
-> 
-> Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-> ---
->  tools/testing/selftests/mm/memory-failure.c | 118 +++++++++++++++++++++++++++-
->  1 file changed, 115 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
-> index 1a5a32e22cce..5b26f0c44664 100644
-> --- a/tools/testing/selftests/mm/memory-failure.c
-> +++ b/tools/testing/selftests/mm/memory-failure.c
-> @@ -20,6 +20,10 @@
->  
->  #include "vm_util.h"
->  
-> +#ifndef fallthrough
-> +# define fallthrough __attribute__((__fallthrough__))
-> +#endif
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-This doesn't belong into this test.
+New issues:
+- [Medium] Unconditionally setting bit 63 for `MOV CRx` intercepts violates=
+ the AMD specification and causes L1 KVM to spuriously inject a #GP into 32=
+-bit L2 guests.
 
-rseq/rseq.c selftest already uses it.
+Pre-existing issues:
+- [High] Host kernel pointer leak (KASLR bypass) when emulating INVLPG with=
+ a register operand.
+--
 
-I think tools/testing/include/ already provides it.
+--- Patch [2]: [PATCH v5 2/8] KVM: nSVM: Synthesize DecodeAssists EXITINFO =
+for emulated intercepts ---
+commit 8b2926ca93c673e51f89c3e65becdb72f34b66f7
+Author: Tina Zhang <zhang_wei@open-hieco.net>
 
-Maybe
+KVM: nSVM: Synthesize DecodeAssists EXITINFO for emulated intercepts
 
-	#include <linux/compiler.h>
+When the x86 emulator encounters an instruction intercepted by L1,
+svm_check_intercept() synthesizes a nested VM-Exit without fresh hardware
+DecodeAssist state.  Populate the architectural EXITINFO fields when
+DecodeAssists is exposed to L1.
 
-does the trick?
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 9d607b98bd067..c7c1f1527c3cf 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -4810,6 +4810,52 @@ static const struct __x86_intercept {
 
+[ ... ]
 
+> +	switch (info->intercept) {
+> +	case x86_intercept_cr_read:
+> +	case x86_intercept_cr_write:
+> +		/* MOV CRx: bit 63 set, GPR number in bits 3:0. */
+> +		exit_info_1 =3D BIT_ULL(63) | (info->modrm_rm & 0xf);
 
--- 
-Cheers,
+[Severity: Medium]
+Does unconditionally setting bit 63 here violate the AMD specification for
+32-bit L2 guests?
 
-David
+If an L2 guest running in 32-bit mode issues a MOV CRx instruction that gets
+emulated by L0 (e.g. via KVM_FEP), L0 will synthesize a nested VM-Exit to L1
+and unconditionally set bit 63 (CR_VALID) in EXITINFO1.
+
+L1 KVM will see bit 63 set, assume it is a 64-bit operation, read the full
+64-bit GPR (which may contain garbage in the upper 32 bits from 32-bit
+execution), and pass it to kvm_set_cr4(). This would fail the reserved-bit
+check, causing L1 to spuriously inject a #GP into the 32-bit L2 guest.
+
+> +		break;
+> +	case x86_intercept_clts:
+
+[ ... ]
+
+> +	case x86_intercept_intn:
+> +		/* INTn: software interrupt number in bits 7:0. */
+> +		exit_info_1 =3D info->src_val & 0xff;
+> +		break;
+> +	case x86_intercept_invlpg:
+> +		/* INVLPG: linear address of the target page. */
+> +		exit_info_1 =3D info->intercept_linear_addr;
+
+[Severity: High]
+This is a pre-existing issue, but does assigning info->intercept_linear_addr
+here leak a host kernel pointer (KASLR bypass) to the L1 guest?
+
+If an L2 guest places an INVLPG instruction with a register operand
+(e.g. INVLPG %eax) across an MMIO page boundary, KVM is forced to emulate i=
+t.
+
+decode_modrm() correctly identifies it as a register operand and stores a h=
+ost
+kernel pointer in addr.reg.
+
+Later, get_intercept_linear_addr() blindly reads addr.mem.ea (which aliases
+addr.reg), extracting the host kernel pointer:
+
+arch/x86/kvm/emulate.c:get_intercept_linear_addr() {
+    ...
+    la =3D seg_base(ctxt, ctxt->src.addr.mem.seg) + ctxt->src.addr.mem.ea;
+    ...
+}
+
+By writing info->intercept_linear_addr to exit_info_1 here, the host KASLR
+offset is exposed to the L1 guest in the synthesized VM-Exit.
+
+> +		break;
+> +	case x86_intercept_invlpga:
+> +		/* INVLPGA: the address remains available in guest rAX. */
+> +		exit_info_1 =3D 0;
+> +		break;
+> +	default:
+> +		return;
+> +	}
+> +
+> +	vmcb->control.exit_info_1 =3D exit_info_1;
+> +	vmcb->control.exit_info_2 =3D 0;
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260824123954.3151=
+12-1-zhang_wei@open-hieco.net?part=3D2
