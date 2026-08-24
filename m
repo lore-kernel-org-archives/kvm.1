@@ -1,269 +1,183 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D6A38839F;
-	Mon, 24 Aug 2026 19:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787599636; cv=fail; b=jM/R66BoXRHpT3FELtkFR0qhY3L2aB3zgosCuLj6u0Z+J/X39fB8QIWSNMShJodZYPBKLtDIRSrurccO6+WE8a4oATJA0NxdTePP0NmdNpCBlE+qBUxH18A6hox+q3RjNylothH4EYcLPcj4heS/1w6eOuAc+uK5YN01RjLF5VQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787599636; c=relaxed/simple;
-	bh=IId9RZcUACCWzs39spJq1ZC4SDvYSzYofFgotrYUHJ4=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=WH4XwUj96fzhzuUg7OPXVlijh2MTQPxnrbMfs0l0rZCKzBVRCEGAhJ63o5JS7i/nF+nHOvYfonyFQTRdaLEBD6p0fxn8UytDBOLHQ0hoU0YmeWqpaAtlVNTgKZIuhuxo5UaLsF0st+AI49fZdykbT/uUfIelpdio9Ecl0ZtrU4I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XC/HdHDq; arc=fail smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAAD36308E;
+	Mon, 24 Aug 2026 19:39:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787600367; cv=none; b=MXHOvq6ciJcBRo9jtFQYWhvXhaVFCm7Xqijurh9nKbZZRCjdxYfx6hKKHMyq2XVO6x+PnppJmxJ8TpuWwxZsWO/Z7AR/eWa819KkeV+z1fV/TcD4UtQHtUDTKYiTbt8wR8cA5CLiubTTJvPd8F9UX38LHxAUCkw7A/X2TUA3eYs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787600367; c=relaxed/simple;
+	bh=ePef0YIcfKv9kA1goDXyGTRATLgMpyXqvviayrA9k18=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ukdhaJi2GS+6pFrLwxn5fk9vkZUXwHfxnkBktAPO6ZJJkiPxnYPHeOdh8XfJifwLTp0SKZ0vsvK6I/GURsrJ42ILxkzvGKcUJ/OFND7kp5zowyKRhGBijsPiQNZTe1SFDEdEwql4GT0JCaGF6wwSG3TBpykYSmMV7PpTbe4JjuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pGU2YGkY; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XC/HdHDq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787599634; x=1819135634;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=IId9RZcUACCWzs39spJq1ZC4SDvYSzYofFgotrYUHJ4=;
-  b=XC/HdHDqggSP6vqrMyD9RwE55uEAhx6v/Kg3GK/kHmzynmNbbmHNgX9M
-   UspMDwQkWqCgmwX8WuyHq5NfDex81ncnQ2FX1ANI9r0JUyAsTrWRAKgWu
-   /RnBHeigkyVDybfA12MtjCVabkB5D5TntEr9OO+JLewD67hWWM1+TqQ92
-   7wifLcluxx9dPwKXpJYoen4wu5sFCaC9B8Varli/gv7UtjmKN3Z95CJYT
-   ltSUs1KsId6vlB+spwcO/NELUWFyhxC2QtCC0WqTKfF9CpPRKL4fEqnS0
-   23ZE54evhv+BBb/gRNuFKqNiWwgh3AdyyxhsNCamfgdS307bX/noJODcu
-   g==;
-X-CSE-ConnectionGUID: 7pFJ9ZemS+adUBfBSLUbMA==
-X-CSE-MsgGUID: AgVROFi1TxqDXmx9j6/gVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="91931664"
-X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
-   d="scan'208";a="91931664"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 12:27:13 -0700
-X-CSE-ConnectionGUID: LgdjRDnsTxu13BIxzt0jwA==
-X-CSE-MsgGUID: jP4hEXKqQm2Aovh96U4p8Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
-   d="scan'208";a="267667561"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 12:27:14 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 24 Aug 2026 12:27:13 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Mon, 24 Aug 2026 12:27:13 -0700
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.35) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 24 Aug 2026 12:27:12 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=E0/+n4D/WEsk74XmLGahVSUsAcnmq8i1yOqyzQlKYmApeK+zz32sYsamH5xmCGhHlJhVlagjRijkR9OJPLYv+DF+OxwE4/bDc1Og/ledcJd7gnDzsu49stuCxCMGmBXS2Ve4+DwHnD+CC4Me8JLH2Ufvj0pCB/ky08fi0hnkv3M1YxqQCuutUdv7iWt65d1GhSNJrkpeqnLkuZ85SL0oNNG3a7j4W3RjDGISfW+Py88rZgV+4POxmYJb/q+fNe+YdTDtssVyn7n5rfB5wYzXIrm0v2bUoqM5AA/FmKtPzS2z32zv1QVLerkrVLddq7Al7uFYoqn4S74WKDX2g7XrnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YxoMzviAeExp00y3vOQ5gyfCKSSjsNGvZBhpCpra9B8=;
- b=e9m8+k0Xoo6ZdArbq732QisaGumh8L1DBmlWATS2kgh5b1eLJOXQPas+q6YNZQmVyCgu7uDV4RIEQ7ak0oYnpMlrjVBrmVLb8K8mDa2YCtYcZg9NT0P8/jwUyiU1BmJS8/sV32Wy9r3geUqjEmVHLa8xh+CqKcldYKi3ghI1hCwiLAv9TxbfXCEg7hxlN88QRHNd7+CngT5Ei39x0n8+j8jrVd28aiytMMslJGQRBo+hyIkrfWwQHYqxC3aq3eADl8ta7CC+yYzN0/PMjOv9V5z66L3HfYkKX9ncF0pCMfmsWKiStOBQosdYk85oNEejKXNSr2IWsMc6pBDewNbKZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB435924.namprd11.prod.outlook.com
- (2603:10b6:610:34a::8) by CH3PR11MB8137.namprd11.prod.outlook.com
- (2603:10b6:610:15c::8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Mon, 24 Aug
- 2026 19:27:09 +0000
-Received: from CH3PR11MB435924.namprd11.prod.outlook.com
- ([fe80::1696:c90e:60af:a0cd]) by CH3PR11MB435924.namprd11.prod.outlook.com
- ([fe80::1696:c90e:60af:a0cd%6]) with mapi id 15.21.0339.012; Mon, 24 Aug 2026
- 19:27:08 +0000
-Date: Mon, 24 Aug 2026 12:27:02 -0700
-From: Peter Fang <peter.fang@intel.com>
-To: Lisa Wang <wyihan@google.com>
-CC: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng
-	<ackerleytng@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao
-	<chao.gao@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen
-	<dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, Ira Weiny
-	<ira.weiny@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, "Kiryl
- Shutsemau" <kas@kernel.org>, <linux-kselftest@vger.kernel.org>, Paolo Bonzini
-	<pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
-	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe
-	<rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, Ryan Afranji
-	<afranji@google.com>, Sagi Shahar <sagis@google.com>, Sean Christopherson
-	<seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li
-	<xiaoyao.li@intel.com>, Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds
-	<jmcrey@google.com>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <x86@kernel.org>
-Subject: Re: [PATCH v14 10/22] KVM: selftests: Set up TDX boot code region
-Message-ID: <20260824192702.GA3694338@pedri>
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-10-15ad654a50db@google.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260722-tdx-selftests-v14-10-15ad654a50db@google.com>
-X-ClientProxiedBy: BY1P220CA0002.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59d::6) To CH3PR11MB435924.namprd11.prod.outlook.com
- (2603:10b6:610:34a::8)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pGU2YGkY"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67OJVnhg985218;
+	Mon, 24 Aug 2026 19:39:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Wr3upw
+	Lw/dmhJ6s5+p0hiUa2rl+PwOQ8qfF+k7Ypcvc=; b=pGU2YGkYi1wGx49WZQPq4F
+	YLGZg3XE/7mBjeQNksABf+/J4efKSPGZpp3uDZg3AfcccCdbtbL6UNBYAlg1paT5
+	Bt88ZeZZ3B89y1/YT322Kdhmu9As51GYSwOztg9Ydb4IDKfKC9Xocw7cxzTmXfhp
+	ryZ1ODH2ErsiOevGYQxz8zDxE/sFm8d4zexYZZwNU0ctc2+ft5SjVESaw4ntqRSL
+	6FxoYIt/2npQY686NtUruRyQ9sfj2mQlXdYJ0IjNsyAaT6i5+q2EeGx+fVwWch0+
+	WGNohJ3ZGwjyDF1Fa83Xny/HXQ03xbcCZthcFSSPS4sOgeGpAyXdYllwNgzjRnGw
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g73eqkr6e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Aug 2026 19:39:20 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67OJR40C026723;
+	Mon, 24 Aug 2026 19:39:19 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g7rag7xud-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Aug 2026 19:39:19 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67OJcba323593504
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 24 Aug 2026 19:38:38 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 57C525805A;
+	Mon, 24 Aug 2026 19:39:17 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1A9865805F;
+	Mon, 24 Aug 2026 19:39:16 +0000 (GMT)
+Received: from [9.61.96.163] (unknown [9.61.96.163])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 24 Aug 2026 19:39:16 +0000 (GMT)
+Message-ID: <4bc189fa-ade2-46a9-a749-c9c8067f347a@linux.ibm.com>
+Date: Mon, 24 Aug 2026 15:39:15 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB435924:EE_|CH3PR11MB8137:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3d96c996-b17a-4bbb-2cc7-08df0215b072
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|6133799003|3023799007|10067099003|56012099006|11063799006|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: sjw4XcQ4t6mshRKUtFz6KRqVFUx5j/KUlePtiOA9HZ84IU6Qm3hnLCL1DLLzmsxEQpvqY7OqfDsMVO+RHMConJUa8Oo9Hbz2rtPzIAZC9cUqfDIIZc0StUdpBEIhAUlwjdl1mVIjqAWzabOJIowJiqbbYCMdkuYL3C2at4dXHykc91puyWTf90gatPflkWMfKvdJft6S5h6U0zsn2oR78l+38JcE6aQ8PhB01UP1ASk2rWdFYylZQaiy/SRNNyIzaiXddKF8oyEYR5jR/0on6RsQLBoYl1BsswQfT/qTPTZLO8chrLPGNzefTcS9uxmMpN315+clWAA203KsvjvJzS2y00UQqGyqF+ZDhUE9hZe/yhQWTICWi8oqamxjYEgVdYl/BI9nW84m0IccTU6qjl6peIQTCKwFH9BGAQo4ISUSs6Aeo5M8IpMgQRVDKXf/mJMxLX3/YgAZozL8Db+EshyqozGk3ID82MG+QEpSIPC0aLKPZdOcL6u3CxVoe0UMgcL+aRCblXJ0y0sVZi/T+dxaptWj5VtE7zHKH4v5nOZPkeALjt5n0xt/YAnCHo02boxLm+SyGI95wNKnEt3cgr14PtuNl2R7sdBxJRg95vF5tYz8o17UnJU6TkKd0MJEuT1nAGyKSvswIjA13e6fhsJBudpNHx514CDGWp60FHk=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB435924.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(6133799003)(3023799007)(10067099003)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?sjRnrwkEOB84fX2nlvFk4TfTl6Scvs2jQsX+jpz/O2GuC9YjxJAhF/nZxAyw?=
- =?us-ascii?Q?V4C6Zwiz/iqzGVCGySWYEPw36PDbBhjozeosqxZ+vIEhrRApPLzRJs34o+r3?=
- =?us-ascii?Q?xRh2I5dbXu43GqviCZURtibThab+C4ZKhBfr5a8ZzI6SSPagbmwXc+zyXouz?=
- =?us-ascii?Q?oFS373mupzxii3GijrAy3/M1qXvyuHitUkPLoc3Yy8u1rMreANEEn0FSI7tY?=
- =?us-ascii?Q?r9Frw5EVCOMHNK4BYYnx/PytS1hlYUjRdZIv24A682EdI43g10wBdmQHaAI4?=
- =?us-ascii?Q?vR2vha4ZKfxp8w6cW9KlAkeKypnOZILuhG6TgzUjl/sR+zDeitXze7UNDRnd?=
- =?us-ascii?Q?mY34VlPa68Xb+cdSz9AhXJCttxyGaE+4Q06atkCsgQaIupFlBS9d/N8lA24p?=
- =?us-ascii?Q?+gRFqaeotRXRLToI1jP7UurSaDaAt9C8I5rpvupTSTyygWfhOQtUG61VwXg5?=
- =?us-ascii?Q?yhiAd3dBjSNILpPUP9TsD9hVWjRAobQCPstQcM/cKNu+AmO8G9WkhZ5q/7nc?=
- =?us-ascii?Q?xJZDsKjpbByXVjr2ZilFjdMeWCf/cjfgg9usmQEs/TfMoWvaMUTvOIedOYlX?=
- =?us-ascii?Q?M6c8yuzmjQiMAivoq8T8Q3rzW2EiC/+Ci/gRxcjKv3jEPhUAhT/CBP03iAr3?=
- =?us-ascii?Q?WXWGe2WtBnNwS3ThOtssreK7y/3JsRVhMy4/05mv3OnMo3cyHratK3XYEuPD?=
- =?us-ascii?Q?Knu4hACFEwWS/SVw3TOzRrApjJjiIXI2j4BIbxXSa+wHs9t4BZKdGA7tZ9Gl?=
- =?us-ascii?Q?otkr+uONyZFFucv/45eTtK6Bz5WZCJPfX5l7M+IfQwyPQ7UX1VssTl0U+THw?=
- =?us-ascii?Q?lWDh8lpNIqmuwgTUg8l7Qd0lSEEhT+GA6mb5fmiGtqSTK0xpJs7gIzWORLGb?=
- =?us-ascii?Q?tEyTJ9wtVkYczJ6RQa0dXZlgQLeHrazGE5WfofSk4Y7G6NHLplos1JfK6BM4?=
- =?us-ascii?Q?ZefTWS1k9+PGsj1Imk440zS6BW2NIZg6VmsZ5WEjWwSAJrQVVWpaGLP3qp3A?=
- =?us-ascii?Q?hjif56eMTPZPg2r4sFQJU6J3yNxXtYxkznqhLh/aL4dxDMRKGDmGQGdNoCoe?=
- =?us-ascii?Q?7c9QZHRY/9nNN5UWLV6TX6cT8GsipuI9htzKhXPB4vxUx81lhsYbMTCxR2cx?=
- =?us-ascii?Q?mRWGm/FnBf+zfpMURhWUU9JR/ZQ9iZqKa8xbfSXqq2Kj721IceUHdzJ+1yIG?=
- =?us-ascii?Q?CAhK/E4ZfEdQomk/i+t701S2Eytu6+hHW/kGl0t37HZutTGIlgUZEZVGQvd3?=
- =?us-ascii?Q?pMnvqKpjAGTXqAdr5LMXreo1JydvUMqc1FFcEgYH9pyQfobWwlcACP7LTgse?=
- =?us-ascii?Q?yVVqgR4GfTaCgpIqIFCCUb53S/YpqPuRmxRjI5g0g1RTwK68GWPweOUzOmxn?=
- =?us-ascii?Q?6qNMjWiH30EToSFbn7qMwIoXvnPv0lmhiOadntrSzrg3XofjuNqvSth9GqsY?=
- =?us-ascii?Q?NdAnyn6CMKsKYil5agGYA9LU0AnYX4CJQT7J2HCNB4GCIbWBnOJLWzR9y+/P?=
- =?us-ascii?Q?UuDUQKYviivJTU8CjjwClyFnE6dKbVvBsnjK4WZDVOxiz7Ss2P0TDvCOZhep?=
- =?us-ascii?Q?19fMDIEOuJeFn/Kq0r7wINmxKkeMut/d2YZROj5z3Vn3QiwwAsJaEgn+DiES?=
- =?us-ascii?Q?945QamrCEPGthd3VVFkBTCJRHADTTO+4xUfQjwBw2TJmAjNmbtIqATvdPjrr?=
- =?us-ascii?Q?foql6L7ZmSpYDpPueSRuGbVyqed6r8wXm/sXNtGfYcq3cn/fh9Efe2nCAdDz?=
- =?us-ascii?Q?5EYkBJGlYQ=3D=3D?=
-X-Exchange-RoutingPolicyChecked: IeYDURk/iHwyPrSu/ONc0QMmVcNEc4fwIljvc1RFGPefcmBu/gvf9x9KAuKg29mbFDZsYwQT3PTtyhvYLSK6kFKmy2cVBzU9I/kmXJ4tqjZUF7zW7FtDS+1Lgdp2odkc0sF6ChsDBN32a0qIEHjtk52MxFVh3QfQftCmepKyTfnsTeX/KZJ+OSTBplhXrq+TFTuOjcKluWaBZvHX6lA5P6rVpZD1zacenABuPUyI3T/yBGZZ35u4qbaWQK/F7KiaNJfuCLYo98JGG1LQ7TIShleGjYVyaYseqKIt/yDvIroq7x80LJ2VWYhF5iLOJWcno+KfZO6R5UuEkMhtQ34khg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d96c996-b17a-4bbb-2cc7-08df0215b072
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB435924.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2026 19:27:08.8860
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jQyI0/Sc2iT5klVgpgzxlAU3vX3tHOLKchM/uELTzzA0FIQs+joaYYXQE2ZR10rn/qNwt6Om9R3ychnsVJLyUw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8137
-X-OriginatorOrg: intel.com
-
-On Wed, Jul 22, 2026 at 11:13:15PM +0000, Lisa Wang wrote:
-> From: Sagi Shahar <sagis@google.com>
-> 
-> Add memory for TDX boot code in a separate memslot.
-> 
-> Use virt_map() to get identity map in this memory region to allow for
-> seamless transition from paging disabled to paging enabled code.
-> 
-> Copy the boot code into the memory region and set up the reset vector
-> at this point. While it's possible to separate the memory allocation and
-> boot code initialization into separate functions, having all the
-> calculations for memory size and offsets in one place simplifies the
-> code and avoids duplications.
-> 
-> Handcode the reset vector as suggested by Sean Christopherson.
-> 
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Co-developed-by: Erdem Aktas <erdemaktas@google.com>
-> Signed-off-by: Erdem Aktas <erdemaktas@google.com>
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-> ---
->  .../selftests/kvm/include/x86/tdx/tdx_util.h       |  1 +
->  tools/testing/selftests/kvm/lib/x86/processor.c    |  4 +-
->  tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c | 46 ++++++++++++++++++++++
->  3 files changed, 50 insertions(+), 1 deletion(-)
-> 
-
-[ ... ]
-
-> +
-> +void tdx_vm_setup_boot_code_region(struct kvm_vm *vm)
-> +{
-> +	size_t total_code_size = TD_BOOT_CODE_SIZE + X86_RESET_VECTOR_SIZE;
-> +	gpa_t boot_code_gpa = X86_RESET_VECTOR - TD_BOOT_CODE_SIZE;
-> +	gpa_t alloc_gpa = round_down(boot_code_gpa, PAGE_SIZE);
-> +	size_t nr_pages = DIV_ROUND_UP(total_code_size, PAGE_SIZE);
-> +	const u64 gmem_flags = 0;
-> +	gpa_t gpa;
-> +	u8 *hva;
-> +
-> +	vm_mem_add(vm, VM_MEM_SRC_SHMEM, alloc_gpa, TD_BOOT_CODE_SLOT,
-> +		   nr_pages, KVM_MEM_GUEST_MEMFD, -1, 0, gmem_flags);
-> +
-> +	gpa = vm_phy_pages_alloc(vm, nr_pages, alloc_gpa, TD_BOOT_CODE_SLOT);
-> +	TEST_ASSERT(gpa == alloc_gpa, "Failed vm_phy_pages_alloc\n");
-> +
-> +	virt_map(vm, alloc_gpa, alloc_gpa, nr_pages);
-> +	hva = addr_gpa2hva(vm, boot_code_gpa);
-> +	memcpy(hva, td_boot, TD_BOOT_CODE_SIZE);
-> +
-> +	hva += TD_BOOT_CODE_SIZE;
-> +	TEST_ASSERT(hva == addr_gpa2hva(vm, X86_RESET_VECTOR),
-> +		    "Expected RESET vector at hva 0x%lx, got %lx",
-> +		    (unsigned long)addr_gpa2hva(vm, X86_RESET_VECTOR), (unsigned long)hva);
-> +
-> +	/*
-> +	 * Handcode "JMP rel8" at the RESET vector to jump back to the TD boot
-> +	 * code, as there are only 16 bytes at the RESET vector before RIP will
-> +	 * wrap back to zero. Insert a trailing int3 so that the vCPU crashes in
-> +	 * case the JMP somehow falls through. Note! The target address is
-> +	 * relative to the end of the instruction!
-> +	 */
-> +	TEST_ASSERT(TD_BOOT_CODE_SIZE + 2 <= 128,
-> +		    "TD boot code not addressable by 'JMP rel8'");
-> +	hva[0] = 0xeb;
-> +	hva[1] = 256 - 2 - TD_BOOT_CODE_SIZE;
-> +	hva[2] = 0xcc;
-
-This handcoding has persisted for several versions (since v9) so I only
-want to comment gently... The current code looks correct but I think
-this could be simpler. But feel free to keep the current implementation.
-
-I can see handcoding "JMP rel8" generates a jump instruction
-predictably. But having to calculate and sanity check the boot code
-offset by hand seems quite painful. And the math is quite tricky. I was
-thinking the assembler could do a lot more heavy lifting here.
-
-A nice property of this boot code is the fact that it's executed in
-32-bit mode from the get go. So there's no need for 16-bit programming
-and "JMP rel32" is readily available. I.e. a "jmp td_boot" in td_boot.S
-should suffice and the assembler screams if td_boot isn't reachable. And
-the int3's after the jump can probably go away as well since the jump is
-now very, very likely to succeed.
-
-There shouldn't be a need to "pad reset_vector to its full size of 16
-bytes" as stated in v8 [1]. The exported "reset_vector" symbol in v8,
-plus the boot code start & end markers, should be enough to help
-tdx_vm_setup_boot_code_region() put this boot blob in the right place.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] s390/vfio-ap: Fix leak of pinned NIB and registered
+ NISC in vfio_ap_irq_enable()
+To: Matthew Rosato <mjrosato@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
+        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
+        stable@vger.kernel.org
+References: <20260824135850.503728-1-akrowiak@linux.ibm.com>
+ <20260824135850.503728-2-akrowiak@linux.ibm.com>
+ <adecc2df-d2c2-48d6-a80a-c84ab9779322@linux.ibm.com>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <adecc2df-d2c2-48d6-a80a-c84ab9779322@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ATfjQQBdy1L70HFhYHe164-8UVn5C-H1
+X-Proofpoint-ORIG-GUID: ATfjQQBdy1L70HFhYHe164-8UVn5C-H1
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDE2NSBTYWx0ZWRfX6DiF8jXiBZ7v
+ OwW5PxbdObpmzZ4iMncSYoL/GpJwzLEVfLplJIiHzyx0YRv79EnsZWYYUmNTD1k/YxHiYL/4+Eo
+ S/Oq4iLXD/Cn7Pynx+HR70IDuwzlIXwdyQM+bfnMA0iQy5IIFPYnnAMu8NwtNUwZ5A+Lr+UbZx8
+ JzYT6uZi/kAp04ms2qd3MGhdq0LJCoKNwdxX0SI5IHyVU1LXTg46ccMZy9c2qkoLVvNQXJ1upPY
+ VNnBKfme5PcP8pL+oXFznTKsSBojGctrKEJQnzttngvzqz/7pXn4RgPVwtJPlHW3u7pEkoZyHOY
+ nLJtfyA8LxDhXGYfSYdKQDy1vdBorfjB3Kgf4mRxMsmeJBdb3TjqqdDOb2Y7NHNxxMG1Njw+vK4
+ 0kvVELrMb/U/J7Kuug6epvm969XPOcqiRsROZnRnw9sg3XKwCGLLw/8qvuWPpBDrhagrbNccl4Y
+ huJEiSLBFfxRXccXCjA==
+X-Authority-Analysis: v=2.4 cv=QsRuG1yd c=1 sm=1 tr=0 ts=6a8c9de8 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=oJhS4qge3_J52AN1xGYA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDE2NSBTYWx0ZWRfX1avNBySAe4V1
+ Ec291qXlldWQEN9wawEbt0r5D4CwIeZUf0v5kKvafY7HS4yLQ2VxczdFPRMuNsZnXGVkZnQ3Ds4
+ e20oMg6ctXPslEIBdialnc32EgGZVwQ=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-24_06,2026-08-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 suspectscore=0 priorityscore=1501 impostorscore=0
+ spamscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608240165
 
 
-[1] https://lore.kernel.org/all/aJpO_zN3buvaQoAW@google.com/
 
+On 8/24/26 12:57 PM, Matthew Rosato wrote:
+> On 8/24/26 9:58 AM, Anthony Krowiak wrote:
+>> The vfio_ap_irq_enable() function executes the PQAP(AQIC) instruction to
+>> enable interrupts for an AP queue. A switch statement is used to examine
+>> the status response code returned from the instruction to determine
+>> whether it succeeded or failed and react accordingly. For the default case,
+>> the vfio_ap_irq_disable function is invoked to disable interrupts for the
+>> queue and clean up the AQIC resources (i.e., unpin the NIB and unregister
+>> the NISC). There are a number of problems with this:
+>>
+>> 1. Neither the q->saved_iova nor q->saved_isc has been set, so the
+>>     AQIC resources - assuming those values have been previously set - will
+>>     be the NIB and NISC resources from a prior call; the NIB and NISC from
+>>     the current call are therefore leaked.
+>>
+>> 2. Interrupts may never have been enabled. Sending a disable instruction to
+>>     a queue that the hardware just told you is in a bad state (CHECKSTOPPED,
+>>     DECONFIGURED, Q_NOT_AVAIL) is at best wasted work and at worst generates
+>>     a further WARN_ONCE from inside vfio_ap_irq_disable's own default.
+>>
+>> 3. The hardware just rejected the new ap_aqic() enable attempt with an
+>>     unexpected status. Disabling a previously-working IRQ config - assuming
+>>     that is even possible - as a reaction to a failed enable attempt does
+>>     not make sense; it is actively destructive, tearing down something that
+>>     was working for no valid reason.
+>>
+>> The fix is to unregister the NISC and an unpin the NIB in the default case
+>> of the switch statement.
+>>
+>> Fixes: ec89b55e3bce7 ("s390: ap: implement PAPQ AQIC interception in kernel")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+>> ---
+>>   drivers/s390/crypto/vfio_ap_ops.c | 11 ++++++++---
+>>   1 file changed, 8 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+>> index 940c0ff668be..a46bf381ab72 100644
+>> --- a/drivers/s390/crypto/vfio_ap_ops.c
+>> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+>> @@ -503,9 +503,14 @@ static struct ap_queue_status vfio_ap_irq_enable(struct vfio_ap_queue *q,
+>>   		vfio_unpin_pages(&q->matrix_mdev->vdev, nib, 1);
+>>   		break;
+>>   	default:
+>> -		pr_warn("%s: apqn %04x: response: %02x\n", __func__, q->apqn,
+>> -			status.response_code);
+>> -		vfio_ap_irq_disable(q);
+>> +		pr_warn("%s: PQAP(AQIC) failed with response code %02x for apqn %04x\n",
+>> +			__func__, status.response_code, q->apqn);
+> LGTM, except Sashiko mentions the pr_warn here that you are updating has
+> a pre-existing issue.
+>
+> Since you're touching it already, do you think it makes sense to switch
+> to pr_warn_ratelimited with this patch?
 
-> +}
-> +
->  static struct kvm_tdx_capabilities *tdx_read_capabilities(struct kvm_vm *vm)
->  {
->  	static struct kvm_tdx_capabilities *tdx_cap;
-> 
-> -- 
-> 2.55.0.229.g6434b31f56-goog
-> 
-> 
+Since this is a pre-existing problem not introduced with this patch and 
+there is
+likewise another related problem not introduced by this patch, I am 
+going to
+post a separated series with fixes to those two related issues.
+
+>
+>> +		/* We could not modify IRQ settings: clear new configuration */
+>> +		ret = kvm_s390_gisc_unregister(kvm, isc);
+>> +		if (ret)
+>> +			VFIO_AP_DBF_WARN("%s: kvm_s390_gisc_unregister: rc=%d isc=%d, apqn=%#04x\n",
+>> +					 __func__, ret, isc, q->apqn);
+>> +		vfio_unpin_pages(&q->matrix_mdev->vdev, nib, 1);
+>>   		break;
+>>   	}
+>>   
+
