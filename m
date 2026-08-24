@@ -1,23 +1,23 @@
-Received: from out28-169.mail.aliyun.com (out28-169.mail.aliyun.com [115.124.28.169])
+Received: from out28-98.mail.aliyun.com (out28-98.mail.aliyun.com [115.124.28.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304FD4189DD;
-	Mon, 24 Aug 2026 12:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9526F41D106;
+	Mon, 24 Aug 2026 12:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787575233; cv=none; b=rqX0TNTrNtfkBpViuNU7BLc8HdJpHlSRl5PKnK37JfKZvm/UVlAZ5+gz+SJHCqtho4SAAToQpch2MDrjpsO2ahqYg86k9M2mnp0FgKkOWp4/ip2VszcHGuAuXw/ybQC+HvWVqNTJ1Nw7UxT8yLeykXXxLuaufzUo2WYvi/iaWfE=
+	t=1787575237; cv=none; b=gNX/VMSHo+U/lrMzZV4/hD09pYIqhZYf7Ntm00vBqSoXFOwQ2Y/3HQKxfWgygfW6NskoaQylXQVr4CMaigyCkAlO+lZspvQgN9ikfJDTlRZmjTSJi9TZZrHnpST5pzvrPpli88vWJwHabCVMp0MzOi3w5Nu3FFMDifBeVVp1L/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787575233; c=relaxed/simple;
-	bh=VvMNeTl43EAnzwqFM3KAQGlPL31aXcFp7ZMK+ulU33k=;
+	s=arc-20240116; t=1787575237; c=relaxed/simple;
+	bh=wDy/Py089/L7PFM09ZV1p73EN303ObxO58eeY3f9z3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A+mdTQiu+gVx4Ox99Vnh2knw+MloDqOZif+ZwhQtsLwhQqbSPHEa2aBS20PpBJWINP/pTiXlB92qIuOgr8X12NVqehCs6F/PyyORB5hrk1qghJWyEPsl8qOFU2mwyvLwC0p2+eqqyeKI16p2i5ngdgu6ET5tP3xNGufk4wl3bm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.169
+	 MIME-Version; b=ROiY7OcCg5D/RHd3lhqw3UxRHZyt31UTbc9L48MwGiApeWHNE5zFE/VsZ5yRmz5WMtGijkTkulnyUM+BDn/SUDC5jqQ1ND3M92nfuFFqmGMOfMkjT13NKbReQnY8Rv1B76Kg5jABNx3TOCxwDeR6KqAWewgvzGxDOsUlpSzIMGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07653359|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0567326-0.000132363-0.943135;FP=16598417234024275939|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033032062159;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.iw1ggoq_1787575224;
-Received: from localhost.localdomain(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.iw1ggoq_1787575224 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436831|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.00510203-0.00091654-0.993981;FP=13826171909849165819|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033037026024;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.iw1gh3c_1787575230;
+Received: from localhost.localdomain(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.iw1gh3c_1787575230 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Mon, 24 Aug 2026 20:40:25 +0800
+          Mon, 24 Aug 2026 20:40:31 +0800
 From: Tina Zhang <zhang_wei@open-hieco.net>
 To: Sean Christopherson <seanjc@google.com>,
 	Jim Mattson <jmattson@google.com>,
@@ -28,9 +28,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Tina Zhang <zhang_wei@open-hieco.net>
-Subject: [PATCH v5 1/8] KVM: x86: Add helper to provide intercept linear addresses
-Date: Mon, 24 Aug 2026 20:39:47 +0800
-Message-ID: <20260824123954.315112-2-zhang_wei@open-hieco.net>
+Subject: [PATCH v5 4/8] KVM: nSVM: Propagate hardware DecodeAssist bytes to VMCB12
+Date: Mon, 24 Aug 2026 20:39:50 +0800
+Message-ID: <20260824123954.315112-5-zhang_wei@open-hieco.net>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260824123954.315112-1-zhang_wei@open-hieco.net>
 References: <20260824123954.315112-1-zhang_wei@open-hieco.net>
@@ -42,92 +42,80 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add get_intercept_linear_addr() to compute the linear address for
-intercepts that report one, and pass the result through
-x86_instruction_info.
+DecodeAssists provides instruction bytes for nested page faults and
+intercepted page faults caused by data accesses.  When the feature is
+exposed to L1, copy fresh hardware-provided instruction bytes from VMCB02
+to VMCB12 for these exits.
 
-Handle INVLPG as the initial user.  INVLPG's memory operand is decoded
-with NoAccess, and thus src_val does not contain the operand address.
-Compute the address from the decoded segment base and effective address
-in the emulator, where the operand state is available.
-
-This allows intercept handlers to use the linear address directly
-without duplicating the emulator's address calculation.
+Clear the VMCB12 instruction-byte state before rebuilding it, and leave the
+length zero for instruction-fetch page faults, unrelated exits, and exits
+without fresh hardware bytes.
 
 Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
 ---
- arch/x86/kvm/emulate.c     | 29 +++++++++++++++++++++--------
- arch/x86/kvm/kvm_emulate.h |  1 +
- 2 files changed, 22 insertions(+), 8 deletions(-)
+ arch/x86/kvm/svm/nested.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index 8071b372d233..a0e57b64cadd 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -410,6 +410,26 @@ static int em_salc(struct x86_emulate_ctxt *ctxt)
- 	_fault ? X86EMUL_UNHANDLEABLE : X86EMUL_CONTINUE; \
- })
- 
-+static unsigned long seg_base(struct x86_emulate_ctxt *ctxt, int seg)
-+{
-+	if (ctxt->mode == X86EMUL_MODE_PROT64 && seg < VCPU_SREG_FS)
-+		return 0;
-+
-+	return ctxt->ops->get_cached_segment_base(ctxt, seg);
-+}
-+
-+static u64 get_intercept_linear_addr(struct x86_emulate_ctxt *ctxt,
-+				     enum x86_intercept intercept)
-+{
-+	u64 la;
-+
-+	if (intercept != x86_intercept_invlpg)
-+		return 0;
-+
-+	la = seg_base(ctxt, ctxt->src.addr.mem.seg) + ctxt->src.addr.mem.ea;
-+	return ctxt->mode == X86EMUL_MODE_PROT64 ? la : (u32)la;
-+}
-+
- static int emulator_check_intercept(struct x86_emulate_ctxt *ctxt,
- 				    enum x86_intercept intercept,
- 				    enum x86_intercept_stage stage)
-@@ -427,6 +447,7 @@ static int emulator_check_intercept(struct x86_emulate_ctxt *ctxt,
- 		.src_type   = ctxt->src.type,
- 		.dst_type   = ctxt->dst.type,
- 		.ad_bytes   = ctxt->ad_bytes,
-+		.intercept_linear_addr = get_intercept_linear_addr(ctxt, intercept),
- 		.rip	    = ctxt->eip,
- 		.next_rip   = ctxt->_eip,
- 	};
-@@ -520,14 +541,6 @@ static u32 desc_limit_scaled(struct desc_struct *desc)
- 	return desc->g ? (limit << 12) | 0xfff : limit;
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 6770721d4e4c..2db0ec66e8dc 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -42,6 +42,20 @@ static void nested_svm_clear_insn_bytes(struct vmcb *vmcb)
+ 	       sizeof(vmcb->control.insn_bytes));
  }
  
--static unsigned long seg_base(struct x86_emulate_ctxt *ctxt, int seg)
--{
--	if (ctxt->mode == X86EMUL_MODE_PROT64 && seg < VCPU_SREG_FS)
--		return 0;
--
--	return ctxt->ops->get_cached_segment_base(ctxt, seg);
--}
--
- static int emulate_exception(struct x86_emulate_ctxt *ctxt, int vec,
- 			     u32 error, bool valid)
++static void nested_svm_copy_insn_bytes(struct vmcb *to,
++				       const struct vmcb *from)
++{
++	u8 insn_len = from->control.insn_len;
++
++	nested_svm_clear_insn_bytes(to);
++
++	if (WARN_ON_ONCE(insn_len > sizeof(from->control.insn_bytes)))
++		return;
++
++	to->control.insn_len = insn_len;
++	memcpy(to->control.insn_bytes, from->control.insn_bytes, insn_len);
++}
++
+ static bool nested_svm_vmexit_has_insn_bytes(const struct vmcb *vmcb)
  {
-diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
-index 3e375af15c03..9eda648a1314 100644
---- a/arch/x86/kvm/kvm_emulate.h
-+++ b/arch/x86/kvm/kvm_emulate.h
-@@ -51,6 +51,7 @@ struct x86_instruction_info {
- 	u8  src_type;		/* type of source operand		*/
- 	u8  dst_type;		/* type of destination operand		*/
- 	u8  ad_bytes;           /* size of src/dst address              */
-+	u64 intercept_linear_addr;	/* arch-reported linear address, if any */
- 	u64 rip;		/* rip of the instruction		*/
- 	u64 next_rip;           /* rip following the instruction        */
- };
-
-base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
+ 	u64 exit_code = vmcb->control.exit_code;
+@@ -67,6 +81,25 @@ static void nested_svm_clear_vmcb02_insn_bytes(struct vcpu_svm *svm)
+ 	svm->nested.vmcb02_insn_bytes_fresh = false;
+ }
+ 
++static void nested_svm_update_vmcb12_insn_bytes(struct kvm_vcpu *vcpu,
++						struct vmcb *vmcb12,
++						const struct vmcb *vmcb02)
++{
++	struct vcpu_svm *svm = to_svm(vcpu);
++
++	nested_svm_clear_insn_bytes(vmcb12);
++
++	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_DECODEASSISTS) ||
++	    !nested_svm_vmexit_has_insn_bytes(vmcb02))
++		goto out;
++
++	if (svm->nested.vmcb02_insn_bytes_fresh)
++		nested_svm_copy_insn_bytes(vmcb12, vmcb02);
++
++out:
++	svm->nested.vmcb02_insn_bytes_fresh = false;
++}
++
+ static void nested_svm_inject_npf_exit(struct kvm_vcpu *vcpu,
+ 				       struct x86_exception *fault,
+ 				       bool from_hardware)
+@@ -1332,6 +1365,8 @@ static int nested_svm_vmexit_update_vmcb12(struct kvm_vcpu *vcpu)
+ 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+ 		vmcb12->control.next_rip  = vmcb02->control.next_rip;
+ 
++	nested_svm_update_vmcb12_insn_bytes(vcpu, vmcb12, vmcb02);
++
+ 	if (nested_vmcb12_has_lbrv(vcpu))
+ 		svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
+ 
 -- 
 2.43.7
 
