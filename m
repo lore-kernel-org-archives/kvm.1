@@ -1,213 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F375D380FE0
-	for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 17:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3BE381AF9;
+	Mon, 24 Aug 2026 18:34:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787594397; cv=none; b=l/RDt6MC8NcTxwEazkqJlx/59PQUNHAOhnFrDQKJyHQ9LlZ+DXcwlyjAU5FNFtXHJeFXLjhFxKkZ4bI7Z7ycI/r7YQ6tB4A9/GtBQDNrjmMat2cWyZZKqk6QlQqMP7qX0ikeEGMx7Xyo7xMkfdHKdYECyi0P8AT7ubGQFGNUA4c=
+	t=1787596486; cv=none; b=SI+EtFK4mAUZ7lTVi2OnwXbCuPPdQp74o1zdnBVW2FvszQVtbtWP33syPFfHfzXWiZlHeO24+vWNTBgdCAUv0pvt2HZpF8eOiwnyDnmg21vCRqm2EQKkjZzXhEdRbwhR4Q8UZyqB1ymuMkVKXPM9uXi1jKfa8VRzT40bsge92XM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787594397; c=relaxed/simple;
-	bh=az7nKeca0hh/sZDC8X+SYyLtvoGPv1ga7Jxl5xKMUxc=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hgJ0au6WBnNf4VKRRi4xmOGvGsaJqEK5y59Dl0GJWTMompGlrD6OoLEMKEDrxubY3W1EEbNGLj4IdHWgqNXamDv1DCxYdPwCF8h8yxnx7XURCKKFFBTua/Dl4NHhn6lY/jNOe6DUlgkaOZDvNXDsxbm6iBoF48DIY7lnRzYIV2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bbnIkvof; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787596486; c=relaxed/simple;
+	bh=CuZt0Rc9B+EClwRdkLTVpAtCNgLiB4yiFij9GDs5fOQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GT9/d6+yfEDxbr9HrR6wY8KJ4RyqQatzeLHTOcln7ez3gVnriyvXdTzKAwovIcwRINrT5DduqvGid1z8W43yoWZfRQKmxjUCUbsty/R28iipko+Uzn6nQzawDlcfIWnL4FKwISMYXtR137VFd3qegLHhdMyucOB4T1//Bp2LUlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GCog/+TC; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bbnIkvof"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9601F000E9;
-	Mon, 24 Aug 2026 17:59:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787594395;
-	bh=GOlA9rZ3zbn2lSVTXRBrQPmnUYPKUcndoYwniPBKXGM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bbnIkvof9gWgZH0GWxBdWGS/UBDVx2eMxUaQSYvJuPb/vQyDmGqJeg1gDiLEwIcYM
-	 0OGkqJUTcDKiJx9XjjEb+7UaJeUB+sO/xN12KPUZcUeij3UyCNeGANoIJOXwnbx/7r
-	 LsHmWOqHnXSVegk+93b0Qo4T5Ptq7zLMuVhQA76RebbBcw1EAcj5D9fX+roB5VOyrV
-	 6FO0WXcrvoaW+6/KEU6LR+iOnHuNVtrGcOZpvlr6i80OzsUfSBWLUQ+oDs3n324R50
-	 DI0ATqK4yGnoGIk4H9h8u+8E1HAvon/jf5HHTftzMekXJe0NrHPIoHpZFGbfQuEudK
-	 894tdgvfQU87g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net v3 2/2] vsock/vmci: validate packet source for
- connected sockets
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Daehyeon Ko" <4ncienth@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260823175858.351431-3-4ncienth@gmail.com>
-References: <20260823175858.351431-1-4ncienth@gmail.com>
- <20260823175858.351431-3-4ncienth@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 24 Aug 2026 17:59:55 +0000
-Message-Id: <20260824175955.AD9601F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GCog/+TC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787596484; x=1819132484;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=CuZt0Rc9B+EClwRdkLTVpAtCNgLiB4yiFij9GDs5fOQ=;
+  b=GCog/+TCSfJuUy2/OS8K/ZIf8bem3Hj8HHQhX235mtNWoowjAumthjYg
+   ZyLlB/H5iVDXA9VeWKQh2GMNKFzJnKyf/ZhdNyM3xlldbyQ82EouUweEN
+   7a+rt/zatSIBmEw+BEQgicNM67Ej2cjX9l5xvtzpI96BCClpM18+3cV+k
+   PtqFeU7CrRu5JOSTPTw0GLurW5JAyeJKIymlYD32fOF0Q+qdiomfitgJa
+   UC25At825UAIZh82AD/+vjS5j5mjiXBVOYHnj79/Ix4hWHyNwNSvOHXrF
+   YsOL0UFBLQN4BAV/EkdeGE4HUEz6MOmG1epU6o8PPKhzSKsdwMryHo85I
+   g==;
+X-CSE-ConnectionGUID: dnb+S0RHTVOq3Zx9RQKKVg==
+X-CSE-MsgGUID: 7TYlxiO2QkWlqH9EWLRwzQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="87930230"
+X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
+   d="scan'208";a="87930230"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 11:34:44 -0700
+X-CSE-ConnectionGUID: 42OdAisfTsGhwJMmn4G5/A==
+X-CSE-MsgGUID: 4Hozz5qqR/io36bv/Ko0fQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
+   d="scan'208";a="260927713"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa009.fm.intel.com with ESMTP; 24 Aug 2026 11:34:40 -0700
+Date: Tue, 25 Aug 2026 02:34:39 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kas@kernel.org,
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+	xiaoyao.li@intel.com, sohil.mehta@intel.com,
+	adrian.hunter@intel.com, kishen.maloor@intel.com,
+	tony.lindgren@linux.intel.com, peter.fang@intel.com,
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	chao.gao@intel.com, artem.bityutskiy@linux.intel.com,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH 2/6] x86/virt/tdx: Configure add-on features on TDX
+ module init and update
+Message-ID: <aoyOv2mJqUyjdO5R@yilunxu-OptiPlex-7050>
+References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
+ <20260821032920.256225-3-yilun.xu@linux.intel.com>
+ <27321cc1-5428-4590-a88d-b2824659c89a@intel.com>
+ <aovmxjpVFqOR3QXm@yilunxu-OptiPlex-7050>
+ <22bf174e-788b-4038-84e0-c6bea351830d@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <22bf174e-788b-4038-84e0-c6bea351830d@intel.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Mon, Aug 24, 2026 at 08:15:41AM -0700, Dave Hansen wrote:
+> On 8/23/26 23:37, Xu Yilun wrote:
+> > On Fri, Aug 21, 2026 at 07:38:42AM -0700, Dave Hansen wrote:
+> >> On 8/20/26 20:29, Xu Yilun wrote:
+> >>>  static __init int tdx_sys_config(struct tdmr_info_pa_array *tdmr_pa_array,
+> >>> -				 u64 nr_tdmr_pa, u64 global_keyid)
+> >>> +				 u64 nr_tdmr_pa, u64 global_keyid,
+> >>> +				 u64 addon_features0)
+> >>
+> >> addon_features0 is just a copy of the global, static, not changing
+> >> get_tdx_addon_features0() return code, right?
+> >>
+> >> Why pass it around as a function argument?
+> > 
+> > I thought that we need some place to explicitly see the TDX ABI
+> > definition - what are the inputs the host should provide to the module.
+> > 
+> > The addon_features0 is the *option* the host should provide to the
+> > module according to the ABI. The global, static value for addon_features0
+> > is Linux's policy. So if we need to explicit the policy by the code,
+> > this helper and its arguments are good places to show the boundary.
+> > 
+> > But yes it does add boilerplate to the code, I can drop it.
+> 
+> I'm not arguing that the helper should go away.
+> 
+> What I'm seeing is this pattern:
+> 
+> int helper()
+> {
+> 	return something;
+> }
+> 
+> int func_low_level(int arg)
+> {
+> 	// use arg
+> }
+> 
+> int func()
+> {
+> 	int foo = helper();
+> 
+> 	// use foo
+> 
+> 	func_low_level(foo);	
+> }
+> 
+> When it could use this pattern and just call helper() twice instead of
+> obtaining its return value and passing it around:
+> 
+> int helper()
+> {
+> 	return something;
+> }
+> 
+> int func_low_level()
+> {
+> 	int bar = helper();
+> 	// use bar
+> }
+> 
+> int func()
+> {
+> 	int foo = helper();
+> 
+> 	// use foo
+> 
+> 	func_low_level();	
+> }
+> 
+> So that's what I was asking. Why pass the result of helper() around when
+> you can just call helper() twice?
 
-New issues:
-- [High] Legitimate connection requests to bound but non-listening sockets =
-(TCP_CLOSE) or concurrently closing sockets are silently dropped instead of=
- generating a connection reset (RST), causing clients to hang until timeout.
+Because I thought func_low_level() mirrors the TDX ABI. This SEAMCALL ABI
+is defined to get 4 inputs from the host, while helper() is the Linux's
+policy (enable all add-ons) to generate the 4th input. Embed the Linux
+policy in TDX ABI implementation feels a little off to me.
 
-Pre-existing issues:
-- [High] Dynamically allocated `recv_pkt_info` work items are queued to the=
- global `system_wq` but are not flushed or canceled when the module is unlo=
-aded, leading to a kernel panic.
---
-
---- Patch [2]: [PATCH net v3 2/2] vsock/vmci: validate packet source for co=
-nnected sockets ---
-commit 0c47d3fbd6e3da162ec0e88ab935d6073c395e19
-Author: Daehyeon Ko <4ncienth@gmail.com>
-vsock/vmci: validate packet source for connected sockets
-
-This commit adds source validation for connected sockets in the VMCI
-transport to prevent packets from unverified sources from being processed.
-It updates both the bottom-half fast path and the workqueue path to verify
-the packet's source.
-
-Link: https://lore.kernel.org/netdev/20260814121255.6B5001F000E9@smtp.kerne=
-l.org/
-
-> diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transpor=
-t.c
-> index 1c4ee039c1662..b612a9893856a 100644
-> --- a/net/vmw_vsock/vmci_transport.c
-> +++ b/net/vmw_vsock/vmci_transport.c
-
-[ ... ]
-
-> @@ -765,17 +767,26 @@ static int vmci_transport_recv_stream_cb(void *data=
-, struct vmci_datagram *dg)
->  	bh_lock_sock(sk);
-> =20
->  	if (!sock_owned_by_user(sk)) {
-> -		/* The local context ID may be out of date, update it. */
-> -		vsk->local_addr.svm_cid =3D dst.svm_cid;
-> +		if (sk->sk_state !=3D TCP_LISTEN &&
-> +		    !vsock_check_source(vsk, &vmci_transport, &src)) {
-> +			drop_pkt =3D true;
-> +			err =3D VMCI_ERROR_NO_ACCESS;
-> +		} else {
-
-[Severity: High]
-Does this code silently drop connection requests to bound but non-listening
-sockets (TCP_CLOSE)?
-
-If a client attempts to connect to a bound port that isn't listening yet,
-the socket is found in the TCP_CLOSE state. Since the state is not TCP_LIST=
-EN,
-it calls vsock_check_source(), which checks against the socket's remote_add=
-r.
-Because the socket is not connected, the port is 0 and won't match the
-client's ephemeral source port, causing vsock_check_source() to return fals=
-e.
-
-By setting drop_pkt =3D true, the packet is completely dropped. Could this
-prevent the client from receiving the expected connection reset (RST), caus=
-ing
-them to hang indefinitely instead of seeing ECONNREFUSED?
-
-> +			/* The local context ID may be out of date, update it. */
-> +			vsk->local_addr.svm_cid =3D dst.svm_cid;
-> =20
-> -		if (sk->sk_state =3D=3D TCP_ESTABLISHED)
-> -			vmci_trans(vsk)->notify_ops->handle_notify_pkt(
-> -					sk, pkt, true, &dst, &src,
-> -					&bh_process_pkt);
-> +			if (sk->sk_state =3D=3D TCP_ESTABLISHED)
-> +				vmci_trans(vsk)->notify_ops->handle_notify_pkt(sk, pkt, true,
-> +									       &dst, &src,
-> +									       &bh_process_pkt);
-> +		}
->  	}
-> =20
->  	bh_unlock_sock(sk);
-> =20
-> +	if (drop_pkt)
-> +		goto out;
-> +
->  	if (!bh_process_pkt) {
->  		struct vmci_transport_recv_pkt_info *recv_pkt_info;
-
-[Severity: High]
-This is a pre-existing issue, but does queuing these work items to the glob=
-al
-system_wq create a use-after-free risk during module unload?
-
-Looking at vmci_transport_recv_stream_cb(), it dynamically allocates a work
-item and schedules it:
-
-	INIT_WORK(&recv_pkt_info->work, vmci_transport_recv_pkt_work);
-	schedule_work(&recv_pkt_info->work);
-
-However, vmci_transport_exit() cancels a specific cleanup work item but does
-not flush system_wq or track these pending recv_pkt_info items before
-unloading.
-
-If packets arrive for a port bound by a listening socket of a different
-transport (e.g., virtio_transport), this code bypasses vsock_check_source()=
- and
-schedules the work. Since the target socket belongs to a different transpor=
-t,
-the vmci_transport module reference count can remain at zero.
-
-If the module is unloaded while this work is still pending, could the kernel
-worker thread attempt to execute the unmapped vmci_transport_recv_pkt_work
-function and panic?
-
-[ ... ]
-
-> @@ -900,6 +911,7 @@ static void vmci_transport_recv_pkt_work(struct work_=
-struct *work)
->  {
->  	struct vmci_transport_recv_pkt_info *recv_pkt_info;
->  	struct vmci_transport_packet *pkt;
-> +	struct sockaddr_vm src;
->  	struct sock *sk;
-> =20
->  	recv_pkt_info =3D
-> @@ -908,6 +920,10 @@ static void vmci_transport_recv_pkt_work(struct work=
-_struct *work)
->  	pkt =3D &recv_pkt_info->pkt;
-> =20
->  	lock_sock(sk);
-> +	vsock_addr_init(&src, pkt->dg.src.context, pkt->src_port);
-> +	if (sk->sk_state !=3D TCP_LISTEN &&
-> +	    !vsock_check_source(vsock_sk(sk), &vmci_transport, &src))
-> +		goto out;
-
-[Severity: High]
-Similarly, does this early exit bypass the logic meant to send connection
-resets for closed sockets?
-
-The default case in the switch statement below this code was specifically
-designed to send a reset:
-
-	switch (sk->sk_state) {
-        ...
-	default:
-		/* Because this function does not run in the same context as
-		 * vmci_transport_recv_stream_cb it is possible that the
-		 * socket has closed. We need to let the other side know or it
-		 * could be sitting in a connect and hang forever. Send a
-		 * reset to prevent that.
-		 */
-		vmci_transport_send_reset(sk, pkt);
-		break;
-	}
-
-Will jumping to the out label bypass this reset logic when a socket closes
-concurrently?
-
-> =20
->  	/* The local context ID may be out of date. */
->  	vsock_sk(sk)->local_addr.svm_cid =3D pkt->dg.dst.context;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260823175858.3514=
-31-1-4ncienth@gmail.com?part=3D2
+But I don't have strong preference. I can drop the addon_features0
+argument.
