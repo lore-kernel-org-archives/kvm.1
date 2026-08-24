@@ -1,103 +1,140 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EB037E310
-	for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 21:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005CB3939CE;
+	Mon, 24 Aug 2026 21:56:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787608166; cv=none; b=FQEFnoFJrQMTIlWGdsDCvkQAcum0GBpjlzi18pbsGzNKcB+50f5F1Q0dsNyxvWJoN9ULgXHt8ainTnqzm8VWb/5GOtVEN5m11/OUmR7tUAwsPJe4CljpoU3ep7I60XgTNVu7B/4zGbmBpNrFlAddfzVjVGwVBK3na0B1vxnlbao=
+	t=1787608581; cv=none; b=r3i/Nnh1wkyxX0lTKsqtr1FAcHcXDUDfLb3aFXRZx0IrjRgTdpothqfa3C+Zm0tkEVtBK7jdtWh7H+mxTOUv8142nTCsv5EiBiEMq4e97Evm3tLzPkD4Yt+BsCtkLn98ZGcbN+6rVq87ufX5ViYTWcDk3Ze0vVYWQweRZ421XM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787608166; c=relaxed/simple;
-	bh=DdTBAQmYMGrMKj5qeC5Xmn1n4sUZQvGckJhixywAtpQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KTM14SYHd/lCNXJbaymSwLmhi6Bpe3GKja+uS9QC3cbVg7TF41UwzhUyo41yDdP29NpiHM2954+JWYflR7R35bV/XosGvDTLElmC0+ndRPB0uns6DDs1n8+4eUz6Ywty1jTgacYJohIxcYzNu3BgkWPAL74nLp6xdoC+RLecdLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E6kOBltD; arc=none smtp.client-ip=209.85.210.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787608581; c=relaxed/simple;
+	bh=hkz/wFuYIvindBkr6hwhmI9QLpbCBWV1ipyTD84LOXA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=enJDX5YoJ1+56rsKgxJrlWvImE7nO+kXxgX4QWlLQ0DSrAnLtQ0HJthdX64q6lx2e9APJC/NWe5OvkoTKKWD4NhNg101I1BOBxDtwT97ApM3R2AavjjAStzoaiyO/HZbIDSJSzaJRcI17zKGgANJETNccilopZO4u3k7Qu8spQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mVvHZauo; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E6kOBltD"
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8484ba00601so4510584b3a.1
-        for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 14:49:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787608164; x=1788212964; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=fjc9nPW/BJpn6YJpX0n6jTXAEmBsoOmQkD4iHgcEHec=;
-        b=E6kOBltDQCmiTQcXEvf0G2dHqNAi3mv9UWM/IqWJVujzt8idiNgwOUEPjgSLmuJYUB
-         pBaxKSWYO1nqCaEHpT1SjDsztKrmHkUnJfLiT6TOrZARNJgQN9qbv0PyhE50NS4xMjHn
-         nYUIipJiUS6T7GC8YAhAZOATG7dG+yMoOjNkTgF7xoP+HrrcKEiJsScD3i3ferZZOHUt
-         nGtInoZzMASKZyqyfS8uWVP3i8G2ho+vwqgrftZ5CduNW/3ZJhKAhGyrS0FXWNeuSfr3
-         t04gw4BN65O/LLnaTC7q2nY6ur3tq1Ryqbu7v9taEhmocenGRxwnMIlpVvSL3W0winNr
-         bhOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787608164; x=1788212964;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fjc9nPW/BJpn6YJpX0n6jTXAEmBsoOmQkD4iHgcEHec=;
-        b=LUtJA+QR4CP/yFkPkygBnwfB4HsSZSrVt23M6y22j/1yPyG14ZnVbaPaa2pb0pLsim
-         MpG57RsqAAx/HlUdGvw/WaLNtmr9OiWtoyi3u/pljjmdmibLV1K4q0PsCuuam9EfQL8s
-         QtJyzFvuHo1eiqdgTA7XnTMWhz3aveaCPyYFdYzoux6aaGhr3woKvIFd2m9V5w7GFS//
-         UELBF64PWJUVjv6s11d5fqu4dLe5dJ6IXfwIHEaoUhDIxEyFr7Ubjq7bH9cFFvxVzp9+
-         e/QwK47ytGQ499zCRWTApYHXKo8jAyXvNOEoGGyGtiv0a2SNOBPebp41PozCRxttWFmU
-         vK5Q==
-X-Forwarded-Encrypted: i=1; AHgh+RrHw38IeBmTpNxYR8eTq+AM8IDXNCX20VObTAuSe5RIoQOY1QOW1kaAaDspe44FUZU3dng=@vger.kernel.org
-X-Gm-Message-State: AFuF++m3FANY6G1ZEvoK7q/TyrErK9byEhME7oRa612zYiZWxL5X4Ge/
-	4ppWsvvlDgP0Lr0VZqJRN2x0Pl17No9uefrn6rDumupoJzC06RVg2bYSexuJrkCIWaSxYaymtcH
-	cZiSHSA==
-X-Received: from pghp7.prod.google.com ([2002:a63:fe07:0:b0:cc1:507b:e025])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1ca8:b0:84c:1cd2:142b
- with SMTP id d2e1a72fcca58-8523c8f0862mr3243509b3a.9.1787608164138; Mon, 24
- Aug 2026 14:49:24 -0700 (PDT)
-Date: Mon, 24 Aug 2026 14:49:23 -0700
-In-Reply-To: <303eb59af516335e288647c19254928f89fa833a.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mVvHZauo"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67OJVi1k985071;
+	Mon, 24 Aug 2026 21:56:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=nZK9EVo8FUZG4ALWynN0iEX7sYZljAIVEKDSfK9+S
+	S0=; b=mVvHZauoLKPUn2+A2ENSqpEzz73O6Nf4U1KYi/l+MDxbAlI/WXRZQSeau
+	EWASjX3HFrrN95JT2n+0y63cvg3cmC9Z19n609Xta0YItXYXNU97V+LRpk8iCGnw
+	m9Vv+AYi+PXeYh3+6j7xcamCGtLeO2z4EI+11QuX9QM5s+M5Lype+1hrT6S+138+
+	7XE8wtVe9UvuiMHdvE0+JzapOoD5wZ1ct7UdNrIepMHq6VXfGq3qZXkkzRt3EDJj
+	l9Zs/7tHDaxgeX+iL0OUykC+KDFFBiikSQg+ipkZSPdJ1pkzw1jG4NqiibnUlb0O
+	lQlqfvJnrp6NC28HzXTATMBjEPWEA==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g73eqmd3c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Aug 2026 21:56:08 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67OLfG5S001587;
+	Mon, 24 Aug 2026 21:56:08 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g7rag8hn9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Aug 2026 21:56:08 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67OLu6iP37683526
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 24 Aug 2026 21:56:06 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 74FF358053;
+	Mon, 24 Aug 2026 21:56:06 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B5D1E58043;
+	Mon, 24 Aug 2026 21:56:04 +0000 (GMT)
+Received: from li-4c4c4544-004d-4810-8043-b7c04f423534.ibm.com.com (unknown [9.61.96.163])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 24 Aug 2026 21:56:04 +0000 (GMT)
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
+        pasic@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
+        fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, agordeev@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com
+Subject: [PATCH v2 0/4] s390/vfio-ap: Fix pre-existing bugs in vfio_ap device driver
+Date: Mon, 24 Aug 2026 17:55:59 -0400
+Message-ID: <20260824215603.819379-1-akrowiak@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260822190224.3788887-1-nicoyip.dev@gmail.com>
- <aoyEMBz-SYLigbGp@google.com> <303eb59af516335e288647c19254928f89fa833a.camel@intel.com>
-Message-ID: <aoy8Y19RV_Dgm7Te@google.com>
-Subject: Re: [PATCH] KVM: x86/mmu: Protect noncoherent DMA zaps with SRCU
-From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: "nicoyip.dev@gmail.com" <nicoyip.dev@gmail.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
-	"x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>, 
-	Yan Y Zhao <yan.y.zhao@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "tglx@kernel.org" <tglx@kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: rER4i0xnlEWzuRQCqwADM7yBHJtXqihc
+X-Proofpoint-ORIG-GUID: rER4i0xnlEWzuRQCqwADM7yBHJtXqihc
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDE4MiBTYWx0ZWRfX1fjTUvCSzmF/
+ /Uj6MACSfn2rlcqWozRRqDzNheonmq8XbzDjReoRSAEE8+GTRcr0Ik1h6VqqPCKG+yWLzPn/B4M
+ 4Ghfxapgoom2Zi/w3mpUDi6P43MC3oC1ddzedxwqa4+vE9ymn4Nu2uLnDBYKkTle4gdpVvumK2a
+ dJxXkmEkZfg1I6vbIb6vfFT7yLwlCYZrCAwZQ9Khcb/NfU1CMJZb0SGNSmYeOJ8nTTLNbYbTCcG
+ zsZ9GL7mvk7jw3FobTrnU6q0DvAXqxYllOOrshFy3vdZsHfvkIkzgQsfdtREkZ7IyuhO9MqQu0r
+ pt+VYwpcyMWRHIL76QwVkX4yKQXglzOPOlSnflQKERyCJM9RXqi30/WThWiMw07o0LZSROgU73D
+ iQbqFO6r0S05OyJKZj3f10ZBdsK5pa1ova4t7LhimQTkbo4aomE2JvGLcA+rJkDTfgaQPJS/ozq
+ P83WMwiFb92EF09O9IQ==
+X-Authority-Analysis: v=2.4 cv=QsRuG1yd c=1 sm=1 tr=0 ts=6a8cbdf8 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=k-DkGLZXk-_WHkAabbsA:9
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDE4MiBTYWx0ZWRfX+sLekGwLP3oN
+ 7EqYT6sh3fMY1tLJqqaIUUciGmeF4Zc6N+y0GUwykCYBELL8/Oc5/5TVfFgbY0hR94+RuiWbA3q
+ 62z7dEbsI4oXa9ummqst1UBbNnDc8gI=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-24_06,2026-08-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 suspectscore=0 priorityscore=1501 impostorscore=0
+ spamscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608240182
 
-On Mon, Aug 24, 2026, Kai Huang wrote:
-> On Mon, 2026-08-24 at 10:49 -0700, Sean Christopherson wrote:
-> > Alternatively, what if we have kvm_zap_gfn_range() acquire SRCU?=C2=A0 =
-Nesting "locks"
-> > is a-ok, and two of the three users of kvm_zap_gfn_range() have had thi=
-s bug (see
-> > commit 074c00800719 ("KVM: x86: Use SRCU to protect zap in
-> > __kvm_set_or_clear_apicv_inhibit()").
->=20
-> kvm_vcpu_srcu_read_lock() doesn't allow nesting lock of KVM's SRCU.
+The sashiko AI reported several pre-existing bugs in the vfio_ap device
+driver code while reviewing unrelated patches. This series fixes four
+such bugs.
 
-No, kvm_vcpu_srcu_read_lock() doesn't allow nested usage of itself.  Commit
-2031f2876896 ("KVM: Add helpers to wrap vcpu->srcu_idx and yell if it's abu=
-sed")
-added the protection because we had multiple bugs where KVM would clobber
-vcpu->srcu_idx and cause a deadlock by leaking a grace period reference.
+This series is based on the 'next' branch in the 
+https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git
+source tree.
 
-> Doesn't seem to be a problem for this particular case, though, because
-> sev_handle_rmp_fault() calls kvm_zap_gfn_range() after
-> kvm_vcpu_srcu_read_lock() is called.
+Change log v1 => v2:
+~~~~~~~~~~~~~~~~~~~
+Patch 1/4: Fix leak of pinned NIB and registered NISC in 
+           vfio_ap_irq_enable() 
+* Removed call to pr_warn() in vfio_ap_irq_enable() for the default case
+  in the switch statement to avoid flooding of the dmesg log. This was
+  a pre-existing condition detected by sashiko and fixed here since it is
+  in the code block changed by this patch. The VFIO_AP_DBF_WARN that occurs
+  after the switch statement will display the error to the dbf log. 
 
-kvm_vcpu_srcu_read_lock() can nested inside an existing kvm->srcu critical =
-section,
-just so long as the existing critical section isn't tracking its grace peri=
-od via
-vcpu->____srcu_idx.
+Patch 3/4: Fix unbounded loop in apq_reset_check()
+* Removed call to vfio_ap_free_aqic_resources() and provided a doc block
+  explaining the rationale for allowing the leak of resources.
+
+Patch 4/4: Use AP_DOMAINS for adm_add bitmap size in vfio_ap_mdev_cfg_add()
+* Changed subject prefix to Use AP_DOMAINS for aqm/adm bitmap size
+* Fixed two other locations where AP_DEVICES was used for the aqm/adm
+  bitmap size.
+
+Anthony Krowiak (4):
+  s390/vfio-ap: Fix leak of pinned NIB and registered NISC in
+    vfio_ap_irq_enable()
+  s390/vfio-ap: Fix failure to release IRQ notification eventfd contexts
+  s390/vfio-ap: Fix unbounded loop in apq_reset_check()
+  s390/vfio-ap: Use AP_DOMAINS for adm_add bitmap size in
+    vfio_ap_mdev_cfg_add()
+
+ drivers/s390/crypto/vfio_ap_ops.c | 55 +++++++++++++++++++++++++++----
+ 1 file changed, 48 insertions(+), 7 deletions(-)
+
+-- 
+2.53.0
+
