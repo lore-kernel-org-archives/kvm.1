@@ -1,125 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD913A425B
-	for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 08:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B861AAE17
+	for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 08:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787560929; cv=none; b=A3OQ17zBZJKKocIxByiXiDtN91tZMQ2MvYP6zwXQwDefGNBZOEmRSMVatoNYqWwQY49kl9XujDIWgtBOeV1G83IXUodEzE7DpYkVbqnJYyKDwq8w5D21TWL+A9Xq3AkoZFT+VX4L+g5Sm9MQRKilgxYP8lvg+AT4VQGjlmzsPww=
+	t=1787561130; cv=none; b=MH5bkSMWd5G3YusQOSEYSmnQyLlYeqKVSpRV+Kb/jg55uASli92AA5/7Ca6UZVe00NnLJSPMuZ+V/o9RHV81D59w78VkSxNS+RUoclQBfFeMlJ/K93guEpCLBH5JrrTKRCzFVbZ/RfNEjozXsIFPQe8E7daZzZW/vT/81Oan1MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787560929; c=relaxed/simple;
-	bh=SSoatR0Qxr/pJB0d/uWI8boqfK7BphGpzQJx9xDDd2A=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=MiwSKdXgiQJXIzLbk/03Xd1zOSJhIaOkKSYDMu1aSIA70X4nyAAp/UXdvP3y8j12Es5JGwbJcTsY6mTRZyrp0lxKx3zjOzeuLaf8fsYny0IkNfpAH8geb+/82N9ww7AZvf3e8+ECxMCHxT1O5NWL1eLNf7gwgZj1qVNX1DswCtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CFX/bzZD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787561130; c=relaxed/simple;
+	bh=or3Ds+w4AFk7js/HFcyuysiqVOdBlFel4S3+52ocKVw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CV0ElpSi2uG6ZSUMOXORmataDqYL+oU1Mr0v30Lslg8eX2XEn81KRavmeTDp6kse0EFkkcBsswSZ6B222aeEkKBt0ZwtDZ1D+C0vMIe33uGjXdCcNFPwESGjQrpb1WCTUhWV288Gza+NutEB9sO+QluG5KgXzMQj7ePuS1LAnb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a2fNmU6U; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CFX/bzZD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A391F00A3A;
-	Mon, 24 Aug 2026 08:42:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787560928;
-	bh=jfOT573wcz+GsaUlcDuqceb3m7PobcBDSxHllSie8qE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CFX/bzZDL/wYbnPLHKq8hMnT/dUulLTxM35p/9QsvoajT925+DFbjVXEjF1TLcImF
-	 2x3jpaDHcNpgc7mzbd8MAz0NuawXHHt2tH3UgwTgbPxwmmxPN0TM5hIxQ12Hm/bvyZ
-	 6iqWpsUfTN2YTLGkQqSjApZUu8HShZLp/l9Rbc0eDshKlqYnl5jLn5RumGiKoNXJWg
-	 hNkaMFfbc4DMCIAuAhgZ19+QCgvUkSll+GflK7Vwod0/Gr/wcNFtoVoCdtSapQJw7X
-	 1Nlt6MQmtijuxo6U5vzTrX4QjCUzHHquXQLpfeb9vDdciOkF9UCEgu73iTTpxWv+uE
-	 Gq4B2PVcql/8A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/2] hisi_acc_vfio_pci: fix live migration enable
- conditions for PF passthrough
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Longfang Liu" <liulongfang@huawei.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260824082851.1436129-2-liulongfang@huawei.com>
-References: <20260824082851.1436129-1-liulongfang@huawei.com>
- <20260824082851.1436129-2-liulongfang@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 24 Aug 2026 08:42:06 +0000
-Message-Id: <20260824084207.C8A391F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a2fNmU6U"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c15fc4707f5so22084666b.3
+        for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 01:45:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787561127; x=1788165927; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=or3Ds+w4AFk7js/HFcyuysiqVOdBlFel4S3+52ocKVw=;
+        b=a2fNmU6Udpr1tFm1lBh9rITNnQOCROf75cvy/tQQ7R1DMwMHmi0gAhrk5/8mz6iwzi
+         uS9lYxB7pslKrVUcNIxY8h+NIYR/DkiQKk8NzXNJiMFqhmJSfc1pTFNDcS1kmJOiu9r4
+         vIgWSFcHqvA99mfEBt70/WYrH5pze+DgtCSKYiL3KSm0DMDF7FINeJDNm+pycO3rwVVU
+         mVq8PUKEQtL/2PoZM1JFoDbmNt2KkIx7rUnc4q5tgSq19bSpMfqKzzCqLhF7F0VnWf+B
+         QTTXQ5Gk0TGKfi2K1+vXEXc0kW9m7R/eiF/8cPxfmsvpNr0j7aC+U4jylF84wN6DoC5S
+         0cuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787561127; x=1788165927;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=or3Ds+w4AFk7js/HFcyuysiqVOdBlFel4S3+52ocKVw=;
+        b=sMpgQbXABrBLMJwd1ZRL+jZzhQO1zIwlEa+s25+ZsgUyvdRbeDwrYTBiqVTZTBwlWg
+         HY518zJXztO/fTUppkTBjlF97YGvk5sSqU0VSuq7HftIMPOIbJUQ4kufwX9MDoJ138kl
+         AgMTxUODZW/B5hAh9SvlTGV2Qos6xfGCxW90B7gZ099MGZvGSdB9/zUZh9W/Ara7aFEc
+         QZNOoPJrdAXTt3TQN/i4R9vTKEONrYOBLHulj7xYEaTn1WtRD6GlJDTFp8/zf7u8yhRe
+         eTfPlRZzFG4EbCUu/vz61kORLiIB+XgakLS/8LjF3S1GxC/jbqUQXnX0UYSivFepdkxa
+         CtCg==
+X-Forwarded-Encrypted: i=1; AHgh+RpplNBCSp/xjbtHcIZJEzRNvQL/x8v4n2Wtrgx94CFGt5UGunjtVNaRHzE6wl0eZpdfEeA=@vger.kernel.org
+X-Gm-Message-State: AFuF++kpEIrgZasMvgpTwnXBCHnnl1fO7Eld6ruHMkgsUnWkxZgCzLO5
+	YJrQySvsNOzDiPsPojXGWQDVXOH0cuHCsLpKRLlTmhiXGkdcS5JWmCPr
+X-Gm-Gg: AR+sD13Jt3CBDLqlVz9Ufo+Fcen9l/72SoI03OMWpEHE/wX02wzYMBLEYzWi4AIzE9G
+	0q2ax+3Sb9dzt0I+a18CWHfWdVcMT/zEhHfHSy7onPOW5DAkJ6YJMnhLXv3PPM7BojJtfXWyG3Y
+	Hqjv7HLWDsrlg+ijCxvX6/YkdXydLqmQagO1g0nfQ5UUC8h0dZVZHI51OauMLQWmggVLYKjSiPv
+	N3XrtT82H/uYElpvJhfALZ0r5ANE6XbUY7p+iFZZQ3SNoIILIimFlqbTXh4XxVy1ZRKyKBzU5wO
+	ZwBri5GxzlRvFFwwdOt+I9/iIJ7NZ8fJAIgWXcntGP//Uhtefje0dzbigSS1gXDisK+iUl0aFi0
+	9QhELC28zgs8FoBHc+HfGWar5N/SMBZcpnkj7JIKT08oU32cijBg5zPH+0mDGHrwVXDTdFZHtb3
+	KUIx1YTIByrxtlrAWgIccuQz9lKQDhXPL+A668pR2SA44+1TZU6g5gOY8ntX7ja9AzREHXDn23W
+	mSPsi8vw5Y=
+X-Received: by 2002:a17:906:4790:b0:c12:6db4:4bf4 with SMTP id a640c23a62f3a-c2469f9902fmr1554516966b.0.1787561126470;
+        Mon, 24 Aug 2026 01:45:26 -0700 (PDT)
+Received: from lima-kdev.local ([85.100.66.184])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24966f6b48sm1163665466b.33.2026.08.24.01.45.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 01:45:25 -0700 (PDT)
+From: Kayra Cizmeci <kayracizmeci@gmail.com>
+To: kayracizmeci@gmail.com
+Cc: bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	mingo@redhat.com,
+	pbonzini@redhat.com,
+	seanjc@google.com,
+	tglx@kernel.org,
+	x86@kernel.org
+Subject: Re: [PATCH v3 2/2] KVM: x86: Add limit check to IDT in __emulate_int_real()
+Date: Mon, 24 Aug 2026 11:45:23 +0300
+Message-ID: <20260824084523.406940-1-kayracizmeci@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260802134428.69252-2-kayracizmeci@gmail.com>
+References: <20260802134428.69252-2-kayracizmeci@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-
-Pre-existing issues:
-- [High] The `set_reset_flag` lock tracker is never reset to false after a =
-successful lock acquisition, allowing subsequent failed resets to erroneous=
-ly clear the global `QM_RESETTING` lock.
---
-
---- Patch [1]: [PATCH v2 1/2] hisi_acc_vfio_pci: fix live migration enable =
-conditions for PF passthrough ---
-commit e8e63b8a17edd44cc9b69e8ca3472ee6c656873c
-Author: Longfang Liu <liulongfang@huawei.com>
-
-hisi_acc_vfio_pci: fix live migration enable conditions for PF passthrough
-
-This commit fixes a crash in PF passthrough mode by adding validity
-checks for uninitialized PF pointers during device probe, error
-handling, and migration initialization.
-
-> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfi=
-o/pci/hisilicon/hisi_acc_vfio_pci.c
-> index 86362ec424a50..e95d0ab0f11ab 100644
-> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-[ ... ]
-> @@ -1174,8 +1179,12 @@ static void hisi_acc_vf_pci_aer_reset_done(struct =
-pci_dev *pdev)
->  	struct hisi_acc_vf_core_device *hisi_acc_vdev =3D hisi_acc_drvdata(pdev=
-);
->  	struct hisi_qm *qm =3D hisi_acc_vdev->pf_qm;
-> =20
-> -	if (hisi_acc_vdev->set_reset_flag)
-> -		clear_bit(QM_RESETTING, &qm->misc_ctl);
-> +	if (hisi_acc_vdev->set_reset_flag) {
-> +		if (qm && qm->io_base)
-> +			clear_bit(QM_RESETTING, &qm->misc_ctl);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but is it possible that
-hisi_acc_vdev->set_reset_flag is never reset to false after a successful
-lock acquisition?
-
-If a prior reset succeeds, hisi_acc_vdev->set_reset_flag is left as true.
-
-If a subsequent reset attempt times out in hisi_acc_vf_pci_reset_prepare()
-because another agent already holds the QM_RESETTING lock:
-
-hisi_acc_vf_pci_reset_prepare() {
-    ...
-    while (test_and_set_bit(QM_RESETTING, &qm->misc_ctl)) {
-        msleep(1);
-        if (++delay > QM_RESET_WAIT_TIMEOUT) {
-            dev_err(dev, "reset prepare failed\n");
-            return;
-        }
-    }
-    ...
-}
-
-The code returns early and leaves set_reset_flag as true.
-
-When hisi_acc_vf_pci_aer_reset_done() is subsequently invoked by the PCI
-error recovery flow, it observes the stale true flag and unconditionally
-clears QM_RESETTING.
-
-Does this prematurely clear the lock currently owned by the other agent?
-
-> +		else
-> +			dev_err(&pdev->dev, "PF QM not available for reset done\n");
-> +	}
-> =20
->  	if (!hisi_acc_vdev->core_device.vdev.mig_ops)
->  		return;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260824082851.1436=
-129-1-liulongfang@huawei.com?part=3D1
+Gentle Ping.
