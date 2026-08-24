@@ -1,148 +1,173 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384B02264DB
-	for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 11:15:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5566740587A
+	for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 11:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787570161; cv=none; b=mvDAXv+iD2MEFhMNV5bPDmMFM8omnQzdz+vkCw1+yZ51buJvU6xi/EFnI9xtFnA3A6zblZkaNIU9f9nqeS4Oz3bneKrNrjXWMkvzjKheA5Yj8bcAiApWP3MRbU2TQ8suHEX3I4vSk6Ai8RQ/MayMbFHoGWhqzckgwZ5xovjye10=
+	t=1787571799; cv=none; b=XT65RBFOC8mXFoXf9RvApndimZVQtMOJ21gtL2qM+1DaxZH7uTVHLQeXMuNPKT8H6m97QqJ288mJh9NX1V98u9rJ1P6gtDI8wVVL44/r5w6mB9X+xDDF3mtvN0BjcZNqFtuO7ZCGxwgJYu/KZwCq6qgjPsV5bW/1F09G5qqN8j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787570161; c=relaxed/simple;
-	bh=txohIZtN4z74Wh/xOHrmMgrs7LDupQ4cRkcquDgErOw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t6fDGhVbwgHTcoevDOEJQW5zb0irOTa2FWlzegAzmeN7J8RF29peAxTgvq+Ciucfe539WDxl2HHJj8ZbfwMtvXcJ68IxxZaMpE1aJ6qTk1LDUpM0z+oG8k+ua6EHTs/P1VK7lTRT75Z7NrfESsS/3+aouM4//jcBhZjUDmJrqSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=l+yVc8RU; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1787571799; c=relaxed/simple;
+	bh=X0INS0+9ZIi+6B7TKaex45BPys5YvJC4MTr9fnoNny0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qe128zohkqc0zkjVi+EARmJyTT8St8WY81EF2tBR5zftEbStVQk3SIcvqARC9mfaE3VLBNwrGTkcE0Dfhji/QsqT3fhz6Nlf8rEmvJG93RGOgZsmRSbFjVZCP5UOOfefhuntIEZrVhSmEU3fJ3tHb6NG5KN6PLmu+MPJeDYt9so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K4+1CrRh; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="l+yVc8RU"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67O9WBvr1536243;
-	Mon, 24 Aug 2026 11:15:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=7fE0EvgkG89C1fNDvBI0IaQBaDJSj+
-	jQhlRX+ZYlK4M=; b=l+yVc8RUphVULjNgyGNLbmUpNv3ceNL4GRBuCygKFG684D
-	vXpn9ahEvDOfDNlmqQdZwO0pjTIWn9/4qrkRMTdTWRcR0x/Ie+oERlgBOtp+NIXz
-	+tGz0VTDhUtmBvFrqUSdvEYbiZVoIukavt6aryNilFWZtUL9eRBWuFZmcwmI3QCH
-	pYuApX8i7GW/h7LyFz2YFpbMLGkXlObVPA+ZDggfJpX1YyCHNX79lD1c1kyb5+jt
-	qDK3B7+I0ER8UynU6wJiIeqSNfIhb5CT4TqWO1KsTIA056rbXdAmb0FhJm0LHhcC
-	QwVAC3WJ9G+qXcmAgCZoc6165Ez82wUAi4XVOFKA==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g73dx0p7t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 11:15:53 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67OBBIqZ031600;
-	Mon, 24 Aug 2026 11:15:53 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g7qkgwe37-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 11:15:53 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67OBFnat51249426
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Aug 2026 11:15:49 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2202320049;
-	Mon, 24 Aug 2026 11:15:49 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5C2EC20040;
-	Mon, 24 Aug 2026 11:15:46 +0000 (GMT)
-Received: from fedora (unknown [9.5.7.39])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 24 Aug 2026 11:15:46 +0000 (GMT)
-Date: Mon, 24 Aug 2026 16:45:43 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: qemu-devel@nongnu.org, kvm@vger.kernel.org,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Cornelia Huck <cohuck@redhat.com>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        Chinmay Rath <rathc@linux.ibm.com>
-Subject: Re: [PATCH] linux-headers: Update to include KVM_CAP_PPC_COMPAT_CAPS
-Message-ID: <20260824164442.c2943bd9-7e-amachhiw@linux.ibm.com>
-Mail-Followup-To: qemu-devel@nongnu.org, kvm@vger.kernel.org, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>, 
-	Harsh Prateek Bora <harshpb@linux.ibm.com>, Chinmay Rath <rathc@linux.ibm.com>
-References: <20260819045924.11732-1-amachhiw@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K4+1CrRh"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-84a6f026675so233780b3a.0
+        for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 04:43:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787571798; x=1788176598; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=npJ1wlMR/wnROhe9/hNtOlEPg6MBfWz9mLakFDeeZlU=;
+        b=K4+1CrRhTXhuV5QLt4A04p2qjitYFmCit8RfZEX0PUdDuH+m83+AGONxh8T2mxiBWV
+         TdksCCdtLF39UfnqRHBPGkr355jxSDmLypUx6wYAvEeF6P8TyvZ1Sqoka2z9fFjLNUQg
+         7Y11/ODA+jKAQvPH0oQlaDjfhQBSbe51n0PpL31udhiHt9qJXg10p5ydZjL4/BR+pGKP
+         XvE9sjy48A5B882VzLIKyz7rTkrhm6ACFuQcy2IEWuPKlA8u7O4lb1S5ImDlb23Jn5UP
+         MiBpFhRi5FIw22W+sEXzltWoShRCGDi7Kp5xSi9JaUFFi6Nij5W+FXgpkkySUnzmq9/6
+         jYTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787571798; x=1788176598;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=npJ1wlMR/wnROhe9/hNtOlEPg6MBfWz9mLakFDeeZlU=;
+        b=FRZlCtv++LS0PhHBh8WMZa0vBNdHMVZCh6R4gGiindNdT5ulXZhJwPthFGZvLOn5jj
+         lv7zdNNVStCYrlmFzxmeo0bqSYghrpu08I1u1JHqUyjTjgt+NIKY2Zxx+ZGRg1JRHzlr
+         bta4xvm3XigUMukvf1lv+IwCEs0LpUyR0EmHyE/qguAoNn5X9GOK3K7JmZwGcmJgH+Ud
+         qqrWR0wi3aiKEuPpQ0GStpT2VX31AzL+ADHOKNOFpRRa7Lo9LL35cePpoAZI8SMAR9fA
+         Yh2PsQWySkLHXzKxdibvkZlVsVqt+1J6Amr2c8Y6eJdzeeuRWGUKeVAiR6I08sDZnDBR
+         USwg==
+X-Forwarded-Encrypted: i=1; AHgh+RrCS7dOxpPxijL2xFx5blPNY36ZP93ufClIsZqH+6o2GcXHNyktgztQqH+LNcD6wfjD3so=@vger.kernel.org
+X-Gm-Message-State: AFuF++lltE4eTeKJrjHTkTDJi7HSWfeqyyQTQh3+u3hB3bdawFP+dYM8
+	xoopOzOuBU8LK2XDKn04K/7bUBf34TkeUO6n0StONYTHwMMr1J6sfSYv
+X-Gm-Gg: AR+sD10cEDfaRa1V2+YZwtF3f42TpBu83cyTadK8EMf3YWuGpR9t3/ogac33x6mJYPA
+	GOtYw8L+t7Eqkx1GRXgTIjUC1Wo53Ll/Rswfaf/5H2q7bKPyZlmFdlxxuHQQNsxZ8IXeOBMiEWw
+	8p2TcGsCsf+ukB4g3it0ano0g0sbuxtRdegt3/yKZ/KFi0vGh8oY3ZnqTeuTX8mecNW0AcXARGb
+	Op3GCzB8ACyg09p0BHRWJffAVI7EMge9avcUibQquokCro2NVKMhazXOuULLY7KIFK40QU0Qz6r
+	fZIcMZaqUjAG/BT9Ycw4J6/9RkAA/IZ0NKV4Jh5qC4mYpeyiZXbOOVitwHJowyGv1qC42J5yACQ
+	e1iikBGfKNpXuw6O96B3j0OYXpk0Dt5huTvjK32UA9vyRSUyjWIc0Dgti6ppiOfUY//7FKW74c6
+	U7BEo2+699PQ9HyptXd9vkZ9cA4B8ztHtbQHHaENr3QYcLdUUg8nULNLrTxBqrA/Gq8WzCqmhDv
+	E98z2d1lqegLGQU/BURuxuk00AlSFNmyQvn/66sbo2Vvw==
+X-Received: by 2002:a17:903:110e:b0:2d6:3c1a:85ef with SMTP id d9443c01a7336-2d64b2f5865mr218029055ad.4.1787571797589;
+        Mon, 24 Aug 2026 04:43:17 -0700 (PDT)
+Received: from localhost.localdomain ([14.216.85.214])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d67676170fsm16908915ad.6.2026.08.24.04.43.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 04:43:17 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: dwmw2@infradead.org,
+	paul@xen.org,
+	seanjc@google.com,
+	pbonzini@redhat.com
+Cc: tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	boris.ostrovsky@oracle.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>
+Subject: [PATCH] KVM: x86/xen: Fix data race on poll event channel
+Date: Mon, 24 Aug 2026 19:43:05 +0800
+Message-ID: <20260824114305.198732-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260819045924.11732-1-amachhiw@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDA5MiBTYWx0ZWRfX6W1Y27d4MsjJ
- wyJuFjh/locVd9PcLPOt9TiAPl82GmztCgE4JHax/c6XtxGid5AVDOgegRHXZNWNAH/PEBF44Y/
- x969mML+clgnUGRv8vySapgTUMvqB+Y=
-X-Authority-Analysis: v=2.4 cv=AYuB2XXG c=1 sm=1 tr=0 ts=6a8c27e9 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=p0WdMEafAAAA:8 a=7XnC1fpkjExzw9auK74A:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: qcnxhUkGFSfH1SH601jki6madvvgIFXL
-X-Proofpoint-GUID: qcnxhUkGFSfH1SH601jki6madvvgIFXL
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDA5MiBTYWx0ZWRfX/G4bDefC99tC
- 4XUsoRAe44BLdV5LNDe813Gsz3KmCq0x+s3HZ5o2QeTMzsurQbmEiGcly6GtZ7NaLSOvKsf4+jV
- VDQuYqksMvbg2hX6qnGt3JLcJaIdhV4Aih5KE9h8gOhO7xVGdo5ScIaj4pIkVHmSvnn3jqs7ie9
- iCRu0kYr+4DlIHdSjrySXJTAighNrWGdB1Qqa6uCMW/3jbYZ2XoK6fOiv6ppI4gRCa1ILfh4ymA
- Nb23GXvvtPw5uYTF4yThZAeO8tS8okmcoy88i6Pvt2gaD2RikwbNqbRFQQRCVhXRRgHQzt1Nks4
- nR/eL5WMs9h74WOH6HRO//iYkAZvgiXupCAvrzuDenwZy3KGddaEYwhVCmS+7fSSE3GNdWKcNKT
- aptH46WIVOb2kwrT2+arK32XikEZMfGk6gBJjVIz80lxzbi/zhkOTsWteGh++UC334U5WnwqV8p
- SUgTFcFO4NXgVyiFXvA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-24_03,2026-08-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 clxscore=1015 adultscore=0 bulkscore=0
- impostorscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608240092
+Content-Transfer-Encoding: 8bit
 
-On 2026/08/19 10:29 AM, Amit Machhiwal wrote:
-> Sync linux headers from Linux kernel commit 1200d84f4c0a
-> ("Merge tag 'powerpc-7.3-1' of git://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux").
-> 
-> This picks up the new KVM_CAP_PPC_COMPAT_CAPS capability for powerpc,
-> which introduces:
-> - struct kvm_ppc_compat_caps: reports processor compatibility modes
->   supported by the host (POWER9, POWER10, POWER11)
-> - KVM_PPC_GET_COMPAT_CAPS ioctl (KVMIO 0xb8)
-> - KVM_CAP_PPC_COMPAT_CAPS (cap #250) in linux/kvm.h
-> 
-> The sync is needed to get the corresponding Qemu series[1] merged.
-> 
-> [1]: https://lore.kernel.org/all/20260812170854.58709-1-amachhiw@linux.ibm.com/
-> 
-> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> ---
->  include/standard-headers/linux/const.h  |  4 ++--
->  linux-headers/asm-arm64/unistd_64.h     |  1 +
->  linux-headers/asm-generic/unistd.h      |  6 +++++-
->  linux-headers/asm-loongarch/unistd_64.h |  1 +
->  linux-headers/asm-mips/unistd_n32.h     |  1 +
->  linux-headers/asm-mips/unistd_n64.h     |  1 +
->  linux-headers/asm-mips/unistd_o32.h     |  1 +
->  linux-headers/asm-powerpc/kvm.h         | 18 ++++++++++++++++++
->  linux-headers/asm-powerpc/unistd_32.h   |  1 +
->  linux-headers/asm-powerpc/unistd_64.h   |  1 +
->  linux-headers/asm-riscv/unistd_32.h     |  1 +
->  linux-headers/asm-riscv/unistd_64.h     |  1 +
->  linux-headers/asm-s390/unistd_64.h      |  1 +
->  linux-headers/asm-x86/unistd_32.h       |  1 +
->  linux-headers/asm-x86/unistd_64.h       |  1 +
->  linux-headers/asm-x86/unistd_x32.h      |  1 +
->  linux-headers/linux/const.h             |  4 ++--
->  linux-headers/linux/kvm.h               |  3 +++
->  18 files changed, 43 insertions(+), 5 deletions(-)
-> 
+Use READ_ONCE() and WRITE_ONCE() for runtime accesses to poll_evtchn.
+This marks the intentionally concurrent scalar accesses and prevents the
+compiler from splitting, merging, or inventing accesses.
 
-CI link: https://gitlab.com/amachhiw/qemu/-/pipelines/2784536213 (Passed)
+kvm_xen_schedop_poll() publishes the single port, or -1 for multiple
+ports, before setting poll_mask and halting the vCPU.  Event delivery can
+call kvm_xen_check_poller() on another CPU while the vCPU thread publishes
+that value or resets the field to zero after returning from
+kvm_vcpu_halt():
 
-Thanks,
-Amit
+  vCPU thread                         event delivery thread
+  -----------                         ---------------------
+  poll_evtchn = port
+  set_bit(poll_mask)
+  kvm_vcpu_halt()
+                                      poll_evtchn = READ
+  poll_evtchn = 0
+  clear_bit(poll_mask)
+
+The plain read and writes therefore race.  KCSAN reported:
+
+  BUG: KCSAN: data-race in kvm_xen_hypercall / kvm_xen_set_evtchn_fast
+
+  read to 0xffff888112f55af0 of 4 bytes by task 98:
+   kvm_xen_set_evtchn_fast+0x204/0x7c0
+   kvm_xen_hvm_evtchn_send+0xab/0x100
+   kvm_arch_vm_ioctl+0xb31/0xd90
+   kvm_vm_ioctl+0xf42/0x16c0
+
+  write to 0xffff888112f55af0 of 4 bytes by task 96:
+   kvm_xen_hypercall+0xd8d/0xf50
+   kvm_emulate_hypercall+0x157/0x1d0
+   vmx_handle_exit+0x40f/0xae0
+   vcpu_run+0x137f/0x27d0
+   kvm_arch_vcpu_ioctl_run+0x5a5/0x970
+
+The field is an aligned int on x86.  Access annotations preserve the
+existing matching, callback, and poll-mask control flow while making the
+single-copy access requirement explicit.
+
+Fixes: 1a65105a5aba ("KVM: x86/xen: handle PV spinlocks slowpath")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+---
+ arch/x86/kvm/xen.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+index eae17141773a..cd15d2379616 100644
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -1536,9 +1536,9 @@ static bool kvm_xen_schedop_poll(struct kvm_vcpu *vcpu, bool longmode,
+ 	}
+ 
+ 	if (sched_poll.nr_ports == 1)
+-		vcpu->arch.xen.poll_evtchn = port;
++		WRITE_ONCE(vcpu->arch.xen.poll_evtchn, port);
+ 	else
+-		vcpu->arch.xen.poll_evtchn = -1;
++		WRITE_ONCE(vcpu->arch.xen.poll_evtchn, -1);
+ 
+ 	set_bit(vcpu->vcpu_idx, vcpu->kvm->arch.xen.poll_mask);
+ 
+@@ -1557,7 +1557,7 @@ static bool kvm_xen_schedop_poll(struct kvm_vcpu *vcpu, bool longmode,
+ 		kvm_set_mp_state(vcpu, KVM_MP_STATE_RUNNABLE);
+ 	}
+ 
+-	vcpu->arch.xen.poll_evtchn = 0;
++	WRITE_ONCE(vcpu->arch.xen.poll_evtchn, 0);
+ 	*r = 0;
+ out:
+ 	/* Really, this is only needed in case of timeout */
+@@ -1773,7 +1773,7 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
+ 
+ static void kvm_xen_check_poller(struct kvm_vcpu *vcpu, int port)
+ {
+-	int poll_evtchn = vcpu->arch.xen.poll_evtchn;
++	int poll_evtchn = READ_ONCE(vcpu->arch.xen.poll_evtchn);
+ 
+ 	if ((poll_evtchn == port || poll_evtchn == -1) &&
+ 	    test_and_clear_bit(vcpu->vcpu_idx, vcpu->kvm->arch.xen.poll_mask)) {
+
+base-commit: 388b607d107c07aaade04c7f22f344cab6bdccd3
+-- 
+2.43.0
+
