@@ -1,51 +1,49 @@
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC38329C48;
-	Mon, 24 Aug 2026 01:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E690634DB6D;
+	Mon, 24 Aug 2026 01:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787535479; cv=none; b=hvNr7zM67qMUmcq6FHjNVQQJW/Cidtw0zdEKEBujELEFKbKM85JqxFQ9A8Og01GHLf8FmK7VXCHW0dYo0/QbF1/YEuNK3tpTmC/IpCspZV3yEba7bQeU2eiFkGAjg6MfCmJm710AmUc/M7ootQ/uqM8UglqxQVsnQ+3kfJLvkoI=
+	t=1787535482; cv=none; b=Pxp+905NsE+EHED31U88FjzAadb9jNsp7VKoaz8y6yaTXrY1E1qz6QyCi5/Hb8uP1IYMdKlOFgIK0m0I+i52cSGFdHIjmCiEXhk3Hhfjgd0xBJBDgomoCmww0Ni9fnSa0s8ry/xlGa1a8fBBHNlnZGqAU28xj41NolXlV78N9YQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787535479; c=relaxed/simple;
-	bh=BdyXgcqP4UT0Nvy6YZMngGsfc4X0wGM2CB4QODXqVQA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aZ+JB3wA97sMUdYULwULJyQxZ/ojlAYQPoRk8dj3P2qb0OzxapQc9+hhWDgu38fkZC1pbsmv7T/ZFCCxuysABLl9SRNeknpnp0yCx2fSTRlwuZW8EGhDzVeINo8PwalrfO112Hk2yVXSy+E5ciDIhnO0tQ+6R9r7aoScfhMw+pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=ONjs1LZT; arc=none smtp.client-ip=205.220.177.32
+	s=arc-20240116; t=1787535482; c=relaxed/simple;
+	bh=iIn331vZGhp0oq0o4IDXFMzEWNmGmWO7Ouj7xJUPEEE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iUWs2o4cq780bLNwLn9dTwQ0scM08UO6bwKTI4LAWf/E1198NTD/blnSVlNNbv1rKRsS5J0OXm6XCjMPdwkPlJJ2tooz1qWBi2X9RQ9GoC/KSFFHjIm/IuLELSnB0iRJASTx7HTKWxYNTnnapluvw8HET9YSk+0/qvwCc5EbcnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=TNm6vEGB; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="ONjs1LZT"
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67NNVRGC4028287;
-	Mon, 24 Aug 2026 01:32:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=AM1Cf
-	wJ8g05SV7IdUa82tGBN4xGZcLFUEGyyk/09Iqw=; b=ONjs1LZT85rRWpHgCW626
-	v/kPOEcUtsev7KZEQl9pQ8aLewdDGpfwNm9T6KDokGfCZLdSOCigjXi+A31LDOD2
-	iPJ4TM573XQxCyY6V8y6m/bmiM4sZj/nhEcP7H+TSLvgT6lceaT5I0JuEtrz2FaI
-	HBY9mwYMBsQVZhBLAgYPs0YyG5/dHUELiSnjBKIqghxQ1NMwuQ2U3MBElxseyWIe
-	Ods5kXhcWZw/OW7Y8a/+f4kzs9wv7FwCrxFtFDLU12ByEDLm/eIlnFSMt67UP5EJ
-	ru4NDQUyESoYPSRykDvTkZhzJjEf+7SdJdwc4QoipdVbePJ4pakQX0YmNDNxfZrd
-	g==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4g73csscv9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Aug 2026 01:32:45 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 67O1PSb9036711;
-	Mon, 24 Aug 2026 01:32:44 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4g84kh750x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Aug 2026 01:32:44 +0000 (GMT)
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 67O1Wgn3010282;
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="TNm6vEGB"
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67O00bxs1183841;
 	Mon, 24 Aug 2026 01:32:43 GMT
-Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4g84kh7504-2;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=RpxbZ4LtKILLb//aNCTO9zDz+vrjz
+	qBW0Q/7SWfGCE8=; b=TNm6vEGBs80Yzu/sLCMHWJCR6Osie0fRBF5F/lTKnHk9F
+	ALRQqYEFiFl32tLdSyeqXlRJxxLo7hrACwTi0xEzYGRSXVwkBlGyasvzZpCoeNaM
+	wmD9vEjZfYhbPiSifXxCHTBBKHUmgo/zc3qmOTfPelglfySxleLKlq8MfANVul4z
+	+hu2LgPuNe+cKEQM9tcpSTU/qaSK7k/JEh8/vlwv7Jd4dFkmt0k63TonPn/Agv4K
+	S4RPd3jNXAgdEZW2FiSejYCNNsK2Tg7sysx7w2gRGcOwDDjX5Fyr1ML9mPVTvT53
+	6ruVS3mrGkRKxNOFRspQpLNRbQIFCGB2EgSSe6TJg==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4g73tchd8r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
 	Mon, 24 Aug 2026 01:32:43 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 67O1PSwd036746;
+	Mon, 24 Aug 2026 01:32:42 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4g84kh750g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 24 Aug 2026 01:32:42 +0000 (GMT)
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 67O1Wgn1010282;
+	Mon, 24 Aug 2026 01:32:42 GMT
+Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4g84kh7504-1;
+	Mon, 24 Aug 2026 01:32:41 +0000 (GMT)
 From: Dongli Zhang <dongli.zhang@oracle.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
 Cc: seanjc@google.com, pbonzini@redhat.com, peterz@infradead.org,
@@ -53,12 +51,10 @@ Cc: seanjc@google.com, pbonzini@redhat.com, peterz@infradead.org,
         dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
         mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
         dwmw2@infradead.org, joe.jin@oracle.com
-Subject: [PATCH RFC 1/2] KVM: x86: Update stealtime before clearing preempted state
-Date: Sun, 23 Aug 2026 18:26:25 -0700
-Message-ID: <20260824012716.753022-2-dongli.zhang@oracle.com>
+Subject: [PATCH RFC 0/2] Fix KVM guest scheduling accounting issue related to stealtime
+Date: Sun, 23 Aug 2026 18:26:24 -0700
+Message-ID: <20260824012716.753022-1-dongli.zhang@oracle.com>
 X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20260824012716.753022-1-dongli.zhang@oracle.com>
-References: <20260824012716.753022-1-dongli.zhang@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -73,135 +69,221 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
  suspectscore=0 mlxlogscore=999 spamscore=0 adultscore=0 malwarescore=0
  lowpriorityscore=0 mlxscore=0 phishscore=0 classifier=spam adjust=0
  reason=mlx scancount=1 engine=8.19.0-2606160000 definitions=main-2608240010
-X-Authority-Analysis: v=2.4 cv=D+h37PRj c=1 sm=1 tr=0 ts=6a8b9f3d b=1 cx=c_pps
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDAxMiBTYWx0ZWRfXzsfMeyQ66+gA
+ 0drOYdNFmymqmW+7zEIHXOrdVCwHxjI2B9Vp6oXlLOZnVouq5z35hirCicL4a3UDnWBptpBXI5B
+ xIkPwkScEDC/Ayex84KZN3YOom7KlMPP+ijXQftm3m04CGyw9b+G
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDAxMiBTYWx0ZWRfX4nzUHEw/3b8n
+ YynG4s5XOuyR3Lfg/vgoIFYOFjTP9ivcD/cxOLNl0fM74G+odQjP5CEJPST1gS81VqkO2PMK/l3
+ eMENwVJh41KwTOr3pWpaUsxgweIRulL4fbBcj033X2XD/UsjzIhcElp0AGmCpRhXKAw7T7NZUo3
+ bOhWNFZupDLGertkzhyCn+rgVwLrrbkpAEEvbG0aGZenUV3JTirdoyuzi2o2rW6y+8lnUG131J9
+ oNNSuR09SV7PUDndeiIF1ohceTdw9YScWuvH5T+H0Rlh/1Xf3hOv5aO3l/Fwo8WBAznyDzwCpau
+ QxG7i9gBEXpxQgPETOXDUQAO3wcImcpI/GDspmFe2gl8DbknJWXu6PITOBYbaPKqzJpPDlEEMyB
+ dIaRQh3LFtWVzaQIAP2uCYsOcbUG2+In0ncTeHo2eSUrxGfC+k6ztz1znoNO7dr+n/btKa61TDF
+ H0DNzFKkzQvK6Jt6y6nNUNxYXpm+LzzxmUsfjV4k=
+X-Proofpoint-GUID: uOFZl3hrBVsS4pN61HRU0M00UbYcknpg
+X-Proofpoint-ORIG-GUID: uOFZl3hrBVsS4pN61HRU0M00UbYcknpg
+X-Authority-Analysis: v=2.4 cv=bq98wkai c=1 sm=1 tr=0 ts=6a8b9f3b b=1 cx=c_pps
  a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
  a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=3I1J8UUJPc9JN9BFgKH3:22 a=yPCof4ZbAAAA:8 a=cD1_jheChcHno68YmwQA:9
- a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf awl=host:13521
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDAxMiBTYWx0ZWRfXwNovBrfga5r8
- X3Kq2z+IHrjESB55W93H7FgfqkiNIV3kMmFiEoXtX4bVm3ilRULuBErWc/gSflXLjBdiYgpRwHb
- LlYGDpiq4+2aOu8xDCLNgNjVdUeTIxutjOCFTOvWEgDnOfgrVO7i
-X-Proofpoint-ORIG-GUID: mtIS0-21H4It3hCK6_GiUyNTsWsxC7pk
-X-Proofpoint-GUID: mtIS0-21H4It3hCK6_GiUyNTsWsxC7pk
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDAxMiBTYWx0ZWRfX2QYoUwGeTgn1
- axlAnN6F/3lypRbVW4UhX8xCKAStodjKly/BfW8ZBGlEiNFdZlaz2b6zupK3Pmhy26CkSmZ5d5o
- H7GlJDwupzS/6ut/ToY8AfEQVUjTY8dsOq9bwQUqum6jcYjCatVc5AxrLGuFFueZnzv5HRWaDAt
- oJjcmROxZUwuqLSk6N/5ypXEkfFmhgtUzG19+T0R9vpD/D6HUaK0FP5f9qPCwck3bNfKcnrtgEH
- GvIJxiScvM7HbeyYqvtZhKdvrRnKAC2984UyVXSdApNRADt9O+hCIosEwbvOWRrr6OHoi4/sI1s
- 9LLaD+SlrAs/NN1zLQ8ektHPcmOVDvNsbYfcodb/dvsxhIiPWqhhZ2LeOxpznG0/V0yRB/MCKxn
- DPHeOkZ8O727fBRB4ApuT2xl1/UoJrMKAz0G8P7WBGZq8M9QFDY3RpKEcCTYwwCuZMKb20zKOjj
- w7KJpy1STluTmrBdsLizjNAcdcetNHd7/BOMXCWA=
+ a=BqU2WV_vvsyTyxaotp0D:22 a=bTynLD9VKXrF6WClF6AA:9 a=5yU3S35YU4bGjq-dph-N:22
+ a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf awl=host:13521
 
-The guest Linux scheduler may rely on KVM stealtime to determine whether
-elapsed time should be deducted from task runtime.
+This RFC fixes a KVM guest scheduling accounting issue.
 
-However, when vCPU A reads vCPU B's stealtime for scheduler accounting,
-the value may not be up to date. KVM updates stealtime only when the vCPU
-is about to enter the guest.
+The Linux scheduler may allow one CPU to perform accounting for another CPU
+through update_rq_clock_task(). This works well on baremetal.
 
-Update stealtime before clearing the preempted state, so a remote vCPU that
-observes vcpu_is_preempted() as false also observes the new stealtime.
+However, in a KVM guest, stealtime may not be accounted for and deducted
+from runtime correctly.
 
-Otherwise, reading a vCPU's stealtime from another vCPU is not reliable.
-The remote vCPU should wait until vcpu_is_preempted() returns false for the
-target vCPU.
+Suppose vCPU A performs accounting for vCPU B, while vCPU B is preempted
+and stalled by the KVM host for 10 seconds. Unfortunately, the KVM host
+does not update stealtime until vCPU B is about to re-enter the guest. As a
+result, vCPU A cannot observe the increase in vCPU B's stealtime.
 
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
----
- arch/x86/kvm/x86.c | 58 +++++++++++++++++++++++++---------------------
- 1 file changed, 32 insertions(+), 26 deletions(-)
+Consequently, the guest kernel incorrectly considers a task running on
+vCPU B during the stall to have exclusively used the vCPU for an extended
+period. The task may therefore incur an additional scheduling penalty.
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 69469bbdc84a..525a1448195e 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -3751,6 +3751,35 @@ static void record_steal_time(struct kvm_vcpu *vcpu)
- 	}
- 
- 	st = (struct kvm_steal_time __user *)ghc->hva;
-+
-+	if (!user_access_begin(st, sizeof(*st)))
-+		return;
-+
-+	unsafe_get_user(version, &st->version, out);
-+	if (version & 1)
-+		version += 1;  /* first time write, random junk */
-+
-+	version += 1;
-+	unsafe_put_user(version, &st->version, out);
-+
-+	/* Pairs with the guest side virt_rmb() in kvm_steal_clock(). */
-+	smp_wmb();
-+
-+	unsafe_get_user(steal, &st->steal, out);
-+	steal += current->sched_info.run_delay -
-+		vcpu->arch.st.last_steal;
-+	vcpu->arch.st.last_steal = current->sched_info.run_delay;
-+	unsafe_put_user(steal, &st->steal, out);
-+
-+	version += 1;
-+	unsafe_put_user(version, &st->version, out);
-+
-+	/*
-+	 * Publish the stealtime before making the vCPU look runnable to
-+	 * the guest.
-+	 */
-+	smp_wmb();
-+
- 	/*
- 	 * Doing a TLB flush here, on the guest's behalf, can avoid
- 	 * expensive IPIs.
-@@ -3759,9 +3788,6 @@ static void record_steal_time(struct kvm_vcpu *vcpu)
- 		u8 st_preempted = 0;
- 		int err = -EFAULT;
- 
--		if (!user_access_begin(st, sizeof(*st)))
--			return;
--
- 		asm volatile("1: xchgb %0, %2\n"
- 			     "xor %1, %1\n"
- 			     "2:\n"
-@@ -3781,37 +3807,17 @@ static void record_steal_time(struct kvm_vcpu *vcpu)
- 		if (st_preempted & KVM_VCPU_FLUSH_TLB)
- 			kvm_vcpu_flush_tlb_guest(vcpu);
- 
--		if (!user_access_begin(st, sizeof(*st)))
--			goto dirty;
- 	} else {
--		if (!user_access_begin(st, sizeof(*st)))
--			return;
--
- 		unsafe_put_user(0, &st->preempted, out);
- 		vcpu->arch.st.preempted = 0;
-+		user_access_end();
- 	}
- 
--	unsafe_get_user(version, &st->version, out);
--	if (version & 1)
--		version += 1;  /* first time write, random junk */
--
--	version += 1;
--	unsafe_put_user(version, &st->version, out);
--
--	smp_wmb();
--
--	unsafe_get_user(steal, &st->steal, out);
--	steal += current->sched_info.run_delay -
--		vcpu->arch.st.last_steal;
--	vcpu->arch.st.last_steal = current->sched_info.run_delay;
--	unsafe_put_user(steal, &st->steal, out);
--
--	version += 1;
--	unsafe_put_user(version, &st->version, out);
-+	mark_page_dirty_in_slot(vcpu->kvm, ghc->memslot, gpa_to_gfn(ghc->gpa));
-+	return;
- 
-  out:
- 	user_access_end();
-- dirty:
- 	mark_page_dirty_in_slot(vcpu->kvm, ghc->memslot, gpa_to_gfn(ghc->gpa));
- }
- 
--- 
-2.43.5
+Later, when stealtime is updated, it may exceed the elapsed runtime delta,
+preventing all of the stealtime from being deducted.
+
+To fix this issue, update KVM stealtime before clearing the vCPU's
+preempted state. In the guest scheduler, use vcpu_is_preempted() to help
+defer clock_task updates performed by a remote CPU while the owning vCPU is
+reported as preempted.
+
+
+To reproduce, first configure KVM host pCPU 10 so that a vCPU thread pinned to
+it can be stalled.
+
+hv# echo -1 | sudo tee /proc/sys/kernel/sched_rt_runtime_us
+
+hv# echo 0 | sudo tee /sys/kernel/debug/sched/fair_server/cpu10/runtime
+
+hv# cat /sys/kernel/debug/sched/fair_server/cpu10/runtime
+0
+
+hv# cat /sys/kernel/debug/sched/fair_server/cpu10/period
+1000000000
+
+
+Here is the QEMU command line. The guest kernel has below configs.
+
+CONFIG_PARAVIRT=y
+CONFIG_PARAVIRT_SPINLOCKS=y
+CONFIG_PARAVIRT_TIME_ACCOUNTING=y
+CONFIG_PARAVIRT_CLOCK=y
+
+qemu-system-x86_64 \
+-machine q35,kernel_irqchip=split \
+-accel kvm -cpu host \
+-smp 4 -m 8G \
+-hda boot.qcow2 \
+-monitor stdio -vnc :8 \
+-net nic -net user,hostfwd=tcp::5028-:22 \
+-kernel mainline-linux/arch/x86_64/boot/bzImage \
+-append "root=/dev/sda1 init=/sbin/init text loglevel=7 console=ttyS0"
+
+
+Pin vCPU 2 to pCPU 10.
+
+(qemu) info cpus
+* CPU #0: thread_id=12525 model=host
+  CPU #1: thread_id=12526 model=host
+  CPU #2: thread_id=12528 model=host
+  CPU #3: thread_id=12529 model=host
+
+hv$ sudo taskset -pc 10 12528
+
+
+Run runtime_stall_detector_v2.py in the guest VM. It creates five threads
+pinned to vCPU 2. Each thread periodically reads the clocksource and
+detects sudden forward jumps in time, indicating that the thread was
+previously stalled. The source code is appended to the end of this cover
+letter email.
+
+[root@vm ~]# ./runtime_stall_detector_v2.py 2 5
+started 5 tasks on guest cpu 2
+worker pids: 441 442 443 444 445
+trigger host-side vCPU starvation now
+worker=3 pid=443 pinned_cpu=2
+worker=1 pid=441 pinned_cpu=2
+worker=2 pid=442 pinned_cpu=2
+worker=4 pid=444 pinned_cpu=2
+worker=5 pid=445 pinned_cpu=2
+
+Now run the following command on the KVM host to preempt and stall threads
+on pCPU 10. As a result, vCPU 2 and the five threads pinned to it will also
+be stalled for 10 seconds.
+
+hv$ sudo timeout 10s taskset -c 10 chrt -f 90 bash -c 'while :; do :; done'
+
+
+Ideally, we expect each of the five threads to observe a 10-second forward
+jump. However, one thread running on vCPU 2 during the stall will incur an
+additional penalty.
+
+[root@vm ~]# ./runtime_stall_detector_v2.py 2 5
+... ...
+1787476745.895051479: worker=5 pid=445 gap=9.997750 sec
+1787476745.895614147: worker=1 pid=441 gap=10.004634 sec
+1787476745.898544550: worker=2 pid=442 gap=10.005462 sec
+1787476745.901545286: worker=4 pid=444 gap=10.006361 sec
+1787476785.617044926: worker=3 pid=443 gap=49.718478 sec --> additional penalty!
+
+
+The issue is no longer reproducible when the patchset is applied to both
+the KVM guest and host.
+
+1787507053.410693884: worker=4 pid=436 gap=9.995703 sec
+1787507053.411839247: worker=5 pid=437 gap=10.004244 sec
+1787507053.413943768: worker=2 pid=434 gap=10.002146 sec
+1787507053.414848804: worker=1 pid=433 gap=10.005150 sec
+1787507053.419051886: worker=3 pid=435 gap=10.005138 sec
+
+
+Dongli Zhang (2):
+  KVM: x86: Update stealtime before clearing preempted state
+  sched/core: Defer preempted remote vCPU task clock updates
+
+ arch/x86/kvm/x86.c   | 58 ++++++++++++++++++++++++++---------------------
+ kernel/sched/core.c  | 24 ++++++++++++++++++++
+ kernel/sched/sched.h |  1 +
+ 3 files changed, 57 insertions(+), 26 deletions(-)
+
+base-commit: 818bebeb63dd6bf5f4e07e145f6cdbace520a34c
+
+Thank you very much!
+
+Dongli Zhang
+
+
+----------------------
+
+[root@vm ~]# cat runtime_stall_detector_v2.py
+#!/usr/bin/env python3
+import multiprocessing as mp
+import os
+import signal
+import subprocess
+import sys
+import time
+
+
+def worker(cpu, index, done):
+    os.sched_setaffinity(0, {cpu})
+    pid = os.getpid()
+
+    print(f"worker={index} pid={pid} pinned_cpu={cpu}", flush=True)
+
+    prev = time.monotonic_ns()
+    while True:
+        now = time.monotonic_ns()
+        gap = (now - prev) / 1e9
+
+        if gap > 0.5:
+            print(f"{time.time():.9f}: worker={index} pid={pid} gap={gap:.6f} sec", flush=True)
+            if gap > 30:
+                done.set()
+                return
+
+        prev = now
+
+
+def kill_old_detectors():
+    subprocess.run(["pkill", "-f", "runtime_stall_detector.py"], check=False)
+
+
+def main():
+    cpu = int(sys.argv[1]) if len(sys.argv) > 1 else 2
+    nr = int(sys.argv[2]) if len(sys.argv) > 2 else 5
+
+    kill_old_detectors()
+
+    done = mp.Event()
+    procs = [mp.Process(target=worker, args=(cpu, i, done)) for i in range(1, nr + 1)]
+
+    for proc in procs:
+        proc.start()
+
+    print(f"started {nr} tasks on guest cpu {cpu}", flush=True)
+    print("worker pids:", " ".join(str(proc.pid) for proc in procs), flush=True)
+    print("trigger host-side vCPU starvation now", flush=True)
+
+    try:
+        while not done.wait(1):
+            pass
+    except KeyboardInterrupt:
+        pass
+    finally:
+        for proc in procs:
+            if proc.is_alive():
+                os.kill(proc.pid, signal.SIGTERM)
+        for proc in procs:
+            proc.join()
+
+
+if __name__ == "__main__":
+    main()
 
