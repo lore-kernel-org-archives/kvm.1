@@ -1,155 +1,241 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA50E44684C;
-	Mon, 24 Aug 2026 15:31:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787585480; cv=none; b=UA3CBjvKqBWZF9XkNUmsMOJcaqGUchLCVx4RpP7XBoPqB0X5F3nseFFz6ecWxGRBPqGksJTTjq9ry2aS0JbLX3w/uXYq3GLFaA+2K3ezPXEnlzI1PZXF0wR43zkfR8XjSMdxvpVI0ELqBdriWLc9BW4U23KApyDw0b6g1i9t2OA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787585480; c=relaxed/simple;
-	bh=02QD3ZQ96j67yphsUSPOpFX1YraqGBHdzwBA9ggD6tk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p5CIkecYMWo8r5tOi+w4iZdfxWe9aYFiwNrJSR8weIX26s5oe5YQMujamZnZZsMpY7/UL0wYV3vObWsyycjGdTpB6VVcO13qXZvVhvHx462dm8PMi+K+uZnaKmfRrkrvGMYNsDZgTaSijguzYLPtWQ0G8CM7k7B/fUoZ5QWfqac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JNEgl6ih; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440D443CE42
+	for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 15:51:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787586693; cv=pass; b=ACJ101vi0BTD9TN8hcKjs0pwD8El667anVlf8/QC3QiMBKyk3wdaFlfLQcLDdOy71cSvqYfp2zTXmSFnmhumJ5DOLrXh3Y4jeCxowtNES9ydeoqM8aLL3zuSd7cUPHoNXVFwJDgdyufjdlOpNGMO10P88YxKsuFtmN8jLAnZgwk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787586693; c=relaxed/simple;
+	bh=sBSAv4EkTd8DKEcxJQbtwQ6P4wI0iZ+8eiNq8EFTT0A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cy4kSRhJur1YU+oVAS9UBFNV48P3fRzcpMDPiLRubz31OqTr7uGWSvco3t9N4/ulrSZ9gNYAX/f/w41ROJSyey6PoJ3hEohQN0fyCm3lGWZtQN4sco4TFjXRAfKl3obyenYXB3EmGEWX+JLdzm/0oOOYYhIFxY2EWRw70JLIKvA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XS145Y8D; arc=pass smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JNEgl6ih"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67OD1k0A827102;
-	Mon, 24 Aug 2026 15:31:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=g1yEZC
-	LdgevlvdulBqeAYepqJyB3PXTnI3s+iJar6Ic=; b=JNEgl6ihqcSaiztcIkCtbj
-	+B2aaE6QpPb19INAm/Oi+Dwa3G+GvLti6rh1hBS6pYU6XiCtLqeEGk6zxjC9dvN1
-	MngiDifIBLB2G/8zgZZ7/S8trcskGWlFkx/fWybGBzHl/HhemkTGGVkCRFPM3Fo9
-	K3XPhgMYbLXLXacEz7ulwvnKlm/JoXyBGZgs3NTX4LjNKjTsBxFrLcaMEQ6EHMqq
-	V+XQTTYfYRqFTlxnPjETUbW/cJG6D/C7mZWO/1aCB+LMFQXq83UjrwHUzSjeAycw
-	CAUl6BzJxpj1IwvqEVy2MwQqQQ0+KFONVwIt3XsOoJkIeVVcYRCPdjkncthM1U9A
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g726eab4k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 15:31:12 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67OFQKQf011983;
-	Mon, 24 Aug 2026 15:31:12 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g7qkgxr4f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 15:31:12 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67OFVAW47668706
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Aug 2026 15:31:10 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8285058051;
-	Mon, 24 Aug 2026 15:31:10 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 562F25805C;
-	Mon, 24 Aug 2026 15:31:09 +0000 (GMT)
-Received: from [9.61.96.163] (unknown [9.61.96.163])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 24 Aug 2026 15:31:09 +0000 (GMT)
-Message-ID: <3a8470ce-8da8-4b1c-b703-47aac581e33c@linux.ibm.com>
-Date: Mon, 24 Aug 2026 11:31:08 -0400
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XS145Y8D"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c15e592da74so509083966b.1
+        for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 08:51:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787586690; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZgeOQDwClnMAxNc+qDJqoo3RfhE/coX8UsodxRJCttpGTD3C3hsZdqgrmbw2gffSMa
+         1dtK6JjJwWMkMuO0pvc/VE0z/xBSbGrfkEWlBWBxl/s7KZwW3xRXoYp/Ww8FETqR5IpD
+         bdIwOUgtswl5tmb5m2ZllublR3Hi/G2qT3m4ycv/sBIulhhHLcUDGaJZ3qSg47J8+YZs
+         nMOaNZAq0rY7EX7vNDyQDzMOz7px5ws+COPfWLezeE3HpjgAOgRewpKsafQ1C4/PStLn
+         H0CepZ8r/bQKNpfHmj+RVQOZx+0AWTCWR4TwXOh/QEncJhsKPiXw/ilQ63nTqh0EN9Rj
+         FVPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gQiW2ywPDLYfrD3ul9Z5RDPRzs1zZ4Pk+mj/Dzx2uhI=;
+        fh=9kMTQ+H8JrUhSn37/VHu3s6S4L98Q+QPEsJNs78NW+g=;
+        b=C01S0gaVBdt4srrSweeeHQFozS/rs3fRQ2vfgaFCQcwvXvfkR/i7F4v15JSOO74vSj
+         ZIq0pZpKL9Ou8m99OpPC22+5jMwDbhbvWDqyGH94DSDzEvlpoIWqR+5Eq+2V4pRkZiBy
+         XpaHoY7d/amI9EHKsI7qzbDHa7bBaBzLjp4ngZ44kpqm9YnvHLEq3GXrrIWwRhGzBOc0
+         z23nUmGkEXxO2I6oaPc6KIJFpv8J8nU7jE6uiCMUHbePgAHs3uvNdDNCW0IOF1qZLJ/h
+         NHQwfa8NJcKXnj1VNldptKQLr6K3xCkOG/rQbZqnNWhA7aiU7Ry15OS9rvT44NC3lGQa
+         4xIw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787586690; x=1788191490; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gQiW2ywPDLYfrD3ul9Z5RDPRzs1zZ4Pk+mj/Dzx2uhI=;
+        b=XS145Y8DZnVG3rTeNPsmT9IQ4S19bIH1qsYOXItqtvQb4orkKJHWAIhyS400Dmr8Ab
+         oU55Za76UsflALzg0S5j8BZVfrq91bJOoGGo+ohrHbduH0HPNs8WbjS25MAFXW9cjFpB
+         VHrjmka/NKf9HzFitma6tq5n3hqObRBfSF+tNRuAgbFYrfHeT+r+e7bxbz3km0vFV3GN
+         j5zFOa0jk12h+qiWQTD6cZxtoeRzWBimwk24xFdmbDB3m//8wlGIiVpnjmX3IdoJE6oT
+         rbGPcX4M1zgdA2zfJERdyLv7Xfz0/dYgyiBo0Y1YPfo4D6PmGSC6xHaq6LDDOyCseUe5
+         KMyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787586690; x=1788191490;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gQiW2ywPDLYfrD3ul9Z5RDPRzs1zZ4Pk+mj/Dzx2uhI=;
+        b=CTnnQtJ56abTdjHCxwkxY7/nQETSjXCFGgBwJlP6dAIvcUlkKOV9TeryH4lrI+0a3Z
+         XA4sUB2fqSCJZB/jeDaMyOBV0Q4xXXlOAEMatOUVmuU/hnFOj7Ykhx7HTJaW6cwbr8Av
+         gWg38LiMRQ6Fj68RyvD3U1gqXFLRuwbzk56Z82Kenb2WdPRGlYeBBzyFPdZknwa4HVSg
+         6j8r/8fkr/Bg4oLBhcL0VQ8MsLbDLDqstmg+l+XaMK2re8FEEzPrFiWlTTITwa2bQ61N
+         t8PmnEtCx4NT1TXHeIJCPAIQwEVolyggO7lEOqK6QMKCG9Yho37WXrEFFtrk+bnw9k/g
+         /WXw==
+X-Forwarded-Encrypted: i=1; AHgh+RokyX50nng0CdBP40UcavhL4jjozUwFtgrpTiToSapNiVjcHPodmiJGx8gCePP0zwuOm2Q=@vger.kernel.org
+X-Gm-Message-State: AFuF++mdTc7k9mn07OiICIbgA+I+3hhxH1RiXVkHwd8bh/HTJadFGCC3
+	xg8b85Y2o9oU9Mn52AhMbJIxj0OmIB1XFE+2+w5n4MPdYKwegnwAke/XNZ6gp+93afLu0Fzrtgl
+	hrGpvTn2L+NC/SDL0/EdODecTZSYcfZc=
+X-Gm-Gg: AR+sD1136F5C4zOXeCm75jneYS3trpYvvDUMWXr9WaQZYQbkY2S5hbpyqeyBWnIwff5
+	1glf4J6SIZP2Vox7RpomTPi5q74Q2kM3umXwD6IdvLQASNPOF3mjs7dGMtUmxlRbqITctKiIXmQ
+	6Pd94dCmNhveNNhjfIPEqAH0P2tMyXUbKlGBwNoD7N/FWMHqybZPd28UgjteA4Leh29GLLdnm8O
+	9IKYBq8bHHnzRya49cD5i4m70n9hzOTvRZKBGo8VRrcZkCPm57vwHYShH2AprEY170quFZDpxmF
+	7JtGw5iZ/EXk6IF/l5MyJhNwCFHgo4adxTFdLY86DWXIXw==
+X-Received: by 2002:a17:907:9607:b0:c1f:c7f0:b433 with SMTP id
+ a640c23a62f3a-c24924b8575mr2254111866b.9.1787586690042; Mon, 24 Aug 2026
+ 08:51:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 01/15] s390/vfio-ap: Provide function to get the number
- of queues assigned to mdev
-To: "Jason J. Herne" <jjherne@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: borntraeger@de.ibm.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
-        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
-        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
-        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com
-References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
- <20260807221834.562851-2-akrowiak@linux.ibm.com>
- <abb3cf85-52da-4375-accd-287d5df98eb8@linux.ibm.com>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <abb3cf85-52da-4375-accd-287d5df98eb8@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=TfimcxQh c=1 sm=1 tr=0 ts=6a8c63c0 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=XhlgcvxzY8LAHhgN2-0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDEyNiBTYWx0ZWRfX1/LXt3N+tAE8
- iq68IcPnPb+OEH1EXW0kfQ+fRSj7RGOw2ZbNX9MXG4E025cVV+RmaC3mxRiLD0XanWubuPDWTuo
- b0bAg347ulyH8qeS/HW4NzZreE73YCE=
-X-Proofpoint-GUID: JvVwa83mHaIGexUSM2XUEdgZNCy_6DIi
-X-Proofpoint-ORIG-GUID: JvVwa83mHaIGexUSM2XUEdgZNCy_6DIi
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDEyNiBTYWx0ZWRfX8otxMH5rRmDD
- dl8QNi0IP4+UWb92sUlauF3ajPdaepxpG7B8NN8YZshUcC9FTMR7gUN9O4qk8mPLNhuNe/FNemw
- Z6BzkGLeMYv0nlujy/5HLPYpxPcKw+CHeGqdH7doPgPtBG5SNEHdTdSWs12fJZ0tXF5+lcHtBwI
- 6gxtODvrEuHfq+WjO2PLSdV9fOCOup0tDCNBd3oQ64bWSkqAuC26LDtR+PwN9ymJoSXS1HqEYMe
- cSXv1CHlfwAl/5zIoDN3DHcl6RJjnFru1tgKckxm1eRtSM82vp4zxPgd0dPR93aHtK2HZVgES7U
- GWdSILjeJOd8OXAZ6MP70EWp41KpHP4n0vhPhOmerfoBb45ieXBlkP7h3nmVrzo2SEveT/mJ4HU
- Rv4sG4KiNEbTS2qOvAcd7f8cP3RiqDgLjyh8i13CBOXQ/PdJzC6h9bmlXFlQvVwtki0Dki9VRdO
- QPK/htzH1humvotv8WA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-24_04,2026-08-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1015 phishscore=0 impostorscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608240126
+References: <20260821032210.792451-1-kunwu.chan@linux.dev> <d26ec36e92e8f5aa244e2a22de5d167d14b36597.camel@infradead.org>
+In-Reply-To: <d26ec36e92e8f5aa244e2a22de5d167d14b36597.camel@infradead.org>
+From: KunWu Chan <kunwu.chan@gmail.com>
+Date: Mon, 24 Aug 2026 23:51:17 +0800
+X-Gm-Features: AcwNN1Uq-eRgOY9GNoEPoa7dv086UlNsCEHedj9wcGeXWfsWr1sK6Ylb8-nGreE
+Message-ID: <CAN_Opa_osKeScHG1h4L4XZ9CwUGtDkRFLzvJp5KfSAKPz3-iaQ@mail.gmail.com>
+Subject: Re: [PATCH] srcu: Add try_synchronize_srcu() for callers which can
+ prove readers absent
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Kunwu Chan <kunwu.chan@linux.dev>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, Josh Triplett <josh@joshtriplett.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+	Joel Fernandes <joel@joelfernandes.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, rcu@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi David,
 
+Thanks for the detailed explanations and for addressing the review
+comments in v2.
 
-On 8/10/26 9:14 AM, Jason J. Herne wrote:
-> On 8/7/26 6:18 PM, Anthony Krowiak wrote:
->> Provides a function that returns the number of queues that are or 
->> will be
->> passed through to a guest when the mdev is attached to a guest.
->>
->> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
->> ---
->>   drivers/s390/crypto/vfio_ap_ops.c     | 8 ++++++++
->>   drivers/s390/crypto/vfio_ap_private.h | 2 ++
->>   2 files changed, 10 insertions(+)
->>
->> diff --git a/drivers/s390/crypto/vfio_ap_ops.c 
->> b/drivers/s390/crypto/vfio_ap_ops.c
->> index 44b3a1dcc1b3..36786d70a88f 100644
->> --- a/drivers/s390/crypto/vfio_ap_ops.c
->> +++ b/drivers/s390/crypto/vfio_ap_ops.c
->> @@ -2098,6 +2098,14 @@ static void vfio_ap_mdev_request(struct 
->> vfio_device *vdev, unsigned int count)
->>       release_update_locks_for_mdev(matrix_mdev);
->>   }
->>   +int vfio_ap_mdev_get_num_queues(struct ap_matrix *ap_matrix)
->> +{
->> +    lockdep_assert_held(&matrix_dev->mdevs_lock);
->> +
->> +    return bitmap_weight(ap_matrix->apm, AP_DEVICES) *
->> +           bitmap_weight(ap_matrix->aqm, AP_DOMAINS);
->> +}
->> +
-> static inline unsigned int bitmap_weight(const unsigned long *src, 
-> unsigned int nbits)
+On Fri, Aug 21, 2026 at 7:53=E2=80=AFPM David Woodhouse <dwmw2@infradead.or=
+g> wrote:
 >
-> bitmap_weight returns an unsigned int. I think 
-> vfio_ap_mdev_get_num_queues should probably return an unsigned int 
-> too, for maximum typw safety?
+> On Fri, 2026-08-21 at 11:22 +0800, Kunwu Chan wrote:
+> > If the common case is that there are no readers and the new fast path
+> > is intended to avoid the SRCU grace-period machinery, could you explain
+> > what property of SRCU is still required by the proposed users that
+> > prevents using ordinary RCU instead?
+>
+> My original version did use RCU, but Sean asked me to switch to a
+> dedicated per-vm SRCU=C2=B9 because a system-wide grace period doesn't wo=
+rk
+> well on large KVM hosting systems.
 
-I'll make the change, thanks for the review.
+The rationale for the per-VM SRCU and the no-reader fast path is much
+clearer now. In particular, I understand that the per-VM SRCU is mainly
+about having a dedicated synchronization domain, while the try path
+avoids the unnecessary workqueue and scheduling latency in the
+no-reader case.
 
 >
-> Other than that:
-> Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
+> =C2=B9 https://lore.kernel.org/all/anS8C4Cxqy6ehCo3@google.com/
 >
+> > Could this use case instead be addressed by making exp_holdoff
+> > configurable per srcu_struct, or otherwise allowing a dedicated SRCU
+> > domain to use a more aggressive expedite policy?
 >
+> That doesn't help much; the other concern is latency. And the mere act
+> of bouncing to the workqueue only to realise we can wake up again was
+> adding 100=C2=B5s or so every time for nothing. *Plus* once you schedule =
+at
+> all, you start to see really high tail latencies of >20ms too =E2=80=94 w=
+hich
+> is why we've also started looking at synchronize_srcu_atomic() to
+> eliminate that completely. If we get *that*, then maybe I don't
+> personally care as much about try_synchronize_srcu(), although it might
+> be a useful extension to synchronize_srcu_expedited() =E2=80=94 this *wou=
+ld* be
+> the 'more aggressive expedite policy' of which you speak, for the case
+> where there are no readers.
 >
 
+In particular, tuning exp_holdoff would not address the workqueue round-tri=
+p
+and the resulting tail latency.
+
+> > Could you also clarify why observing no readers during this
+> > check is sufficient for the reclamation/happens-before guarantee
+> > required by the proposed callers?
+>
+> Both halves of the grace-period guarantee are provided when it returns
+> true. For any reader, either:
+>
+>    =E2=80=A2 its lock increment was observed by the sums and its unlock w=
+as
+>      too =E2=80=94 the reader's final smp_mb() then orders its whole crit=
+ical
+>      section before the caller's subsequent accesses (that reader has
+>      completed), or
+>
+>    =E2=80=A2 its lock increment was not observed =E2=80=94 in which case =
+the
+>      store-buffering pairing with the smp_mb() in __srcu_read_lock()
+>      guarantees that reader observes every store the caller made
+>      before calling: it is a "new" reader for the purposes of the
+>      grace period, exactly as if it had started after a real
+>      synchronize_srcu() returned, or
+>
+>    =E2=80=A2 its lock increment was observed but its unlock was not =E2=
+=80=94 the one
+>      case where the reader may still be running with no guarantee it
+>      saw anything. But that reader inflates the lock sum above the
+>      unlock sum, so this is precisely the case in which we return
+>      false and the caller takes the real grace period.
+>
+> It's the same argument srcu_readers_active_idx_check() makes; the only
+> novelty is summing both epochs so no flip is needed.
+>
+> > Since a successful try_synchronize_srcu() does not advance srcu_gp_seq,
+> > flip the SRCU index, or process callbacks, could we document more
+> > explicitly that a successful try provides the required
+> > reclamation/happens-before guarantee to the caller, but does not
+> > constitute an SRCU grace-period completion for the state/callback APIs?
+>
+> Yes; done in v2.
+>
+> > What ordering edge does the first smp_mb() establish that is not
+> > already provided by the middle and final barriers?
+>
+> Er.... none? :)
+>
+> We need the caller's prior stores ordered before the *lock*-counter
+> reads, but the middle barrier already does that for us. Dropped in v2,
+> and the comment on the middle barrier updated.
+>
+> > Would it make sense to perform the same lockdep check in the try path?
+>
+> Ack.
+>
+> > When applying this to current rcu/dev, the patch also needs to account
+> > for the additional bool is_atomic argument to
+> > check_init_srcu_struct(). Please rebase accordingly.
+>
+> Ooh, shiny, I hadn't spotted that the atomic thing had landed. Maybe I
+> should retract my 'if we get that' above... but let's see how it
+> survives.
+>
+> I also have more than just this patch to rebase onto rcu/dev =E2=80=94 un=
+like
+> some, I'm not just hacking RCU for the fun of it; I get my jollies
+> elsewhere :)
+>
+> Btw, the current commit c68271c3f83a message says "no index flip, no
+> grace-period sequence update" but that isn't true of the implementation
+> any more, is it? In fact, it *always* does those things, and doesn't
+> take the try-path optimisation by counting both epochs, that I'm doing
+> here?
+>
+
+The v2 changes address the points I raised, including removing the
+redundant leading smp_mb(), adding the lockdep check, and clarifying
+that a successful try does not constitute an SRCU grace-period
+completion for the state/callback APIs.
+
+I'll take another look at v2, in particular the two-epoch counter proof
+and its correspondence with srcu_readers_active_idx_check().
+
+Thanks again for the detailed explanations.
+
+Thanks,
+Kunwu
+
+> Thanks for the careful review.
