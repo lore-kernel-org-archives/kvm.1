@@ -1,154 +1,101 @@
-Received: from out28-171.mail.aliyun.com (out28-171.mail.aliyun.com [115.124.28.171])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63263161A1
-	for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 05:06:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E32237B019
+	for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 05:36:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787547969; cv=none; b=aDHfhOaIrwKSHX/csO7dWGWZ/X2nAzbO/GlusdI2rWQ/5wivBQMwikBOdoE8BQpkEY4LUUfctEIhTOFyOS92Uyhs4CbcykOV1CJSXPO90DKcWSamBFMdizd6H7cWLV29jlIKRceWuVjc8o1iwYTeLpozVHA7bg5c+EZKi2LYiAE=
+	t=1787549808; cv=none; b=cMyN/cOvt1VpIV7/gGGO6jl0ESrHvKEzD38XnwgnwBImduS5OdWc9/E+F+5zRu7M2IeY67ovAeJyaN/roPvJokUrLs/99Q5BAkBHSqNOk24vqtL96cLGqtps8+7xWd6LtscJov8ty2APUawYIoVu28CjOaVQ0yNh28LlMWFydk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787547969; c=relaxed/simple;
-	bh=5rupcJT86YaPtjGryK72kO/Ilfn6bO3Zw9JAE9GUZv4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qlkGJ0StL7r+eDZ3gnBuyjd+p5vs1W9LZYobQb3MYu4NZwcYj45O3i6dGZZlMoHht9R9H/YxvjqBycoUgtL5rvIlMO6J4bF//h57IYBnLAbXVVVeMN3m5TUPHcjGMlFAIjg26EQ6XX21pfYOtPQ82N/YsiAoKNnOP3sT9t8L/ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436267|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_enroll_verification|0.113531-0.015932-0.870537;FP=7205660562698012251|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033040074035;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.ivaIACA_1787547955;
-Received: from 172.18.22.44(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.ivaIACA_1787547955 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Mon, 24 Aug 2026 13:05:55 +0800
-Message-ID: <199e4e38-9942-463a-8edd-b97cf2b32f73@open-hieco.net>
-Date: Mon, 24 Aug 2026 13:05:53 +0800
+	s=arc-20240116; t=1787549808; c=relaxed/simple;
+	bh=OzBmje/LGNWvTvM0XPtRiX5VSU/TrOMTu/DYVMxTT4Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NgZ7ds48HGseEjNXeFRLxf9TvsTR45SXmWKqnoXZC4G6HhC3odFybRk6UnZHy2SVOMq7nzu/3Y/CvvSoD3dbqoQpyl4pfpTA5Ym2Pmn0O+Oz0R/EdwRoKxjYd07GajABlYzSuOV38cEDAPK9n/0fZbW1FC0nG1ihJYwGSpk9g7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=am654Bks; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="am654Bks"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787549806; x=1819085806;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=OzBmje/LGNWvTvM0XPtRiX5VSU/TrOMTu/DYVMxTT4Y=;
+  b=am654BkswPgYkgc7bDgoyVVaSWwPEEwRjP/bIwR0QzNTSTsUVlyxKtzQ
+   BH29rfoZZSyfrb2/nxkkNzL4KpdjfbfVCpn3BxLWjxL9qXzaL2G1leOYv
+   dEhBUaWVBSAaxEM33oZzALb9+SrFGqbBaJQHjwO/koDVzHEXREgPuXh6y
+   paNbDhzrwUpX53uUf9Nv5ifNJgGfutWk/4JgneWXS+d2A27/1YLuesshL
+   p2PKCmcwUhEffOHKDANIJzKprkadNsaWLdozkhTbHjd74lKNOBrX4PlkL
+   XBwwa0o4c/Rc18aC5I9i8928+4pUuq5laLn3VYunZ1S+4/f8lNsaO3V6+
+   g==;
+X-CSE-ConnectionGUID: bshxhuh7Q7qWstbe5NZz1g==
+X-CSE-MsgGUID: aZ58ylPnSaaKk9FTpoS9Og==
+X-IronPort-AV: E=McAfee;i="6800,10657,11884"; a="98581933"
+X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; 
+   d="scan'208";a="98581933"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2026 22:36:46 -0700
+X-CSE-ConnectionGUID: WlY4WI9aQhmHFBNRoZgxyg==
+X-CSE-MsgGUID: +z5jhLCXR2y83XkgdxlNag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; 
+   d="scan'208";a="265119094"
+Received: from zhaoliu1-desk.sh.intel.com (HELO localhost) ([10.238.208.118])
+  by orviesa006.jf.intel.com with ESMTP; 23 Aug 2026 22:36:44 -0700
+Date: Mon, 24 Aug 2026 13:36:43 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Tina Zhang <zhang_wei@open-hieco.net>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org, "Michael S . Tsirkin" <mst@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Yanjing Zhou <zhouyanjing@hygon.cn>,
+	Yongwei Xu <xuyongwei@open-hieco.net>
+Subject: Re: [PATCH v3 01/10] target/i386: Sync AMD CPUID aliases for Hygon
+Message-ID: <aovYayjaps1GBb7H@intel.com>
+References: <20260824045314.162941-1-zhang_wei@open-hieco.net>
+ <20260824045314.162941-2-zhang_wei@open-hieco.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/9] target/i386: Sync AMD CPUID aliases for Hygon
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- "Michael S . Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, Yanjing Zhou <zhouyanjing@hygon.cn>,
- Yongwei Xu <xuyongwei@open-hieco.net>
-References: <20260810082956.1768042-1-zhang_wei@open-hieco.net>
- <20260810082956.1768042-2-zhang_wei@open-hieco.net>
- <aoqzsAC5dBBuLQ8h@intel.com>
-Content-Language: en-US
-From: Tina Zhang <zhang_wei@open-hieco.net>
-In-Reply-To: <aoqzsAC5dBBuLQ8h@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260824045314.162941-2-zhang_wei@open-hieco.net>
 
-Hi Zhao,
+On Mon, Aug 24, 2026 at 12:53:05PM +0800, Tina Zhang wrote:
+> Date: Mon, 24 Aug 2026 12:53:05 +0800
+> From: Tina Zhang <zhang_wei@open-hieco.net>
+> Subject: [PATCH v3 01/10] target/i386: Sync AMD CPUID aliases for Hygon
+> X-Mailer: git-send-email 2.43.7
+> 
+> AMD defines CPUID[0x80000001].EDX bits as aliases for a subset of
+> CPUID[1].EDX.  QEMU currently synchronizes those aliases only when the
+> guest CPU vendor is AuthenticAMD.
+> 
+> Hygon Dhyana uses the HygonGenuine vendor string, but implements the
+> same AMD-compatible extended CPUID feature aliases.  This can leave QEMU
+> advertising a feature in CPUID[1].EDX while the matching extended alias
+> in CPUID[0x80000001].EDX stays clear.  This inconsistent CPUID state can
+> confuse guest OS feature detection.
+> 
+> Apply the alias synchronization to Hygon CPUs as well.  Gate the new
+> behavior with x-hygon-vendor-abi-fixes and disable it for pc-11.1 and
+> older machine types, because the CPUID result is guest-visible ABI and
+> must remain migration-compatible.
+> 
+> Add qtest coverage for the Dhyana model, including the compat property.
+> 
+> Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
+> Tested-by: Yongwei Xu <xuyongwei@open-hieco.net>
+> ---
+>  hw/i386/pc.c                        |  4 +-
+>  target/i386/cpu.c                   | 10 ++--
+>  target/i386/cpu.h                   | 12 +++++
+>  tests/qtest/test-x86-cpuid-compat.c | 76 +++++++++++++++++++++++++++++
+>  4 files changed, 98 insertions(+), 4 deletions(-)
 
-Thank you for the detailed review and helpful suggestions.
-
-I have addressed your comments in v3, including rebasing the series onto 
-the latest master, splitting the PMU changes, updating the IOMMU helper 
-and tests, and fixing the pc-11.1 compatibility descriptions.
-
-The v3 series is available here:
-https://lists.nongnu.org/archive/html/qemu-devel/2026-08/msg05437.html
-
-Thanks,
-Tina
-
-On 8/23/2026 4:47 PM, Zhao Liu wrote:
-> On Mon, Aug 10, 2026 at 04:29:48PM +0800, Tina Zhang wrote:
->> Date: Mon, 10 Aug 2026 16:29:48 +0800
->> From: Tina Zhang <zhang_wei@open-hieco.net>
->> Subject: [PATCH v2 1/9] target/i386: Sync AMD CPUID aliases for Hygon
->> X-Mailer: git-send-email 2.43.7
->>
->> AMD defines CPUID[0x80000001].EDX bits as aliases for a subset of
->> CPUID[1].EDX.  QEMU currently synchronizes those aliases only when the
->> guest CPU vendor is AuthenticAMD.
->>
->> Hygon Dhyana uses the HygonGenuine vendor string, but implements the
->> same AMD-compatible extended CPUID feature aliases.  This can leave QEMU
->> advertising a feature in CPUID[1].EDX while the matching extended alias
->> in CPUID[0x80000001].EDX stays clear.  This inconsistent CPUID state can
->> confuse guest OS feature detection.
->>
->> Apply the alias synchronization to Hygon CPUs as well.  Gate the new
->> behavior with x-hygon-vendor-abi-fixes and disable it for pc-11.0 and
->                                                              ^^^^^^^
-> nit: pc-11.1 ?
-> 
->> older machine types, because the CPUID result is guest-visible ABI and
->> must remain migration-compatible.
->>
->> Add qtest coverage for the Dhyana model, including the compat property.
->>
->> Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
->> Tested-by: Yongwei Xu <xuyongwei@open-hieco.net>
->> ---
->>   hw/i386/pc.c                        |  5 ++
->>   hw/i386/pc_piix.c                   |  1 +
->>   hw/i386/pc_q35.c                    |  1 +
->>   include/hw/i386/pc.h                |  3 ++
->>   target/i386/cpu.c                   | 10 ++--
->>   target/i386/cpu.h                   | 13 +++++
->>   tests/qtest/test-x86-cpuid-compat.c | 76 +++++++++++++++++++++++++++++
->>   7 files changed, 106 insertions(+), 3 deletions(-)
->> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
->> index f064aa2b3e..2b4e322b2f 100644
->> --- a/hw/i386/pc.c
->> +++ b/hw/i386/pc.c
->> @@ -74,6 +74,11 @@
->>   #include "hw/xen/xen-bus.h"
->>   #endif
->>   
->> +GlobalProperty pc_compat_11_1[] = {
->> +    { TYPE_X86_CPU, "x-hygon-vendor-abi-fixes", "false" },
->> +};
->> +const size_t pc_compat_11_1_len = G_N_ELEMENTS(pc_compat_11_1);
->> +
-> 
-> compat machine property is already on the master branch, so this
-> patch need to be rebased.
-> 
->>   GlobalProperty pc_compat_11_0[] = {};
->>   const size_t pc_compat_11_0_len = G_N_ELEMENTS(pc_compat_11_0);
->> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
->> index 82457bdb16..8e58f2a7ee 100644
->> --- a/hw/i386/pc_piix.c
->> +++ b/hw/i386/pc_piix.c
->> @@ -438,6 +438,7 @@ DEFINE_I440FX_MACHINE_AS_LATEST(11, 1);
->>   static void pc_i440fx_machine_11_0_options(MachineClass *m)
->>   {
->>       pc_i440fx_machine_11_1_options(m);
-> 
-> pc_i440fx_machine_11_1_options() has added pc_compat_11_1...
-> 
->> +    compat_props_add(m->compat_props, pc_compat_11_1, pc_compat_11_1_len);
-> 
-> ...so taht now we don't need ao do this again.
-> 
->>       compat_props_add(m->compat_props, hw_compat_11_0, hw_compat_11_0_len);
->>       compat_props_add(m->compat_props, pc_compat_11_0, pc_compat_11_0_len);
->>   }
->> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
->> index 6c1e4eff5f..fd4366f51f 100644
->> --- a/hw/i386/pc_q35.c
->> +++ b/hw/i386/pc_q35.c
->> @@ -393,6 +393,7 @@ DEFINE_Q35_MACHINE_AS_LATEST(11, 1);
->>   static void pc_q35_machine_11_0_options(MachineClass *m)
->>   {
->>       pc_q35_machine_11_1_options(m);
->> +    compat_props_add(m->compat_props, pc_compat_11_1, pc_compat_11_1_len);
-> 
-> ditto.
-> 
->>       compat_props_add(m->compat_props, hw_compat_11_0, hw_compat_11_0_len);
->>       compat_props_add(m->compat_props, pc_compat_11_0, pc_compat_11_0_len);
->>   }
-> 
-> Overall, LGTM except rebasing :).
-> 
-> Regards,
-> Zhao
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
