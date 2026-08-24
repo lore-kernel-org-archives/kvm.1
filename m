@@ -1,287 +1,313 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E419A3EE1C7;
-	Mon, 24 Aug 2026 09:06:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787562377; cv=fail; b=VBRCMZSFxFsposrimaCuKg61Ds1de5C3NgnPLCHCF4bjDhW75+bOmOJGGbFwvQghYlvmkd+P5S8dVuLld+3FLA96OfAa9DoyZ2KRl+kCoqJweLK+EBPGd5CpJSwhNu6++D5iJCSJhBktv/fS73cPhwW5OEj3qbdXmPljpFgrABM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787562377; c=relaxed/simple;
-	bh=2rGITChiqjTVCYTle3vemLDR0BduuUlgb4jcsbW3RQU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=IGE60xm4gQ1bt70eTGl+ZW8xFQqFqi5b72tzA2jdEWoiK5lq3fD5Qgp7cPuTLT/M+wDC8Pp5ZOKaAz8l45/e3UjWpcohPaFKXqzoR3xWgHsCRxXFj+GtGeFunl99CpER8l+Nh/F81LYWgG8215H6mNNaMT6ETx2GevHbY6IfR9g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I47SUvik; arc=fail smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9DE25B0AB
+	for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 09:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787562440; cv=none; b=U/akGV0BlsOJd8pyN4iFNIxJHB2zbPrJUHEmohS80xGzxNuYkmBbPVGPc74DB+UjMvBrZXiu4IHgkz+yEy5OGbvAAwjbW2+RrJhiHM45zqEoeFccQGGZLYFwhN4hjDhJe2qUmvmmXoRGgJLvS4YWNw90SEkJld2v3LCeZ89ThTI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787562440; c=relaxed/simple;
+	bh=yQyyT+WmNojoYCZ4UF7CKS6gquT3xzkK/tGzKVIwoA8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RdaOhranZQdS3qiI3wlqGXI0UKLhN81iqqo+cqSxl6rPodFCPTHMGKnWu/HM4snXm6sjci+SPUbxyv/AfqrI48lpRZjMC0Zu+AJ+loHnGtRS9zCgGPQJvBD9PbvknNAcYiJ+0C+U41KjZ9y41aesH01kFeIvr3F8kaw2reKbwuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AFJf1v+m; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I47SUvik"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787562376; x=1819098376;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=2rGITChiqjTVCYTle3vemLDR0BduuUlgb4jcsbW3RQU=;
-  b=I47SUvikjX5xrwplxyrYUJvZe2uVWxIzDy7/XhwpliAUuUcQ2XV6jH03
-   KL7+Igpa1mp1P2gw9Gl1v2Y+s4gfsri5Sk5zp8/JnVbargaclCccLcBRh
-   RGOULSoHuivjYM9L0P42aheVsprRFu9C4lqMdJzPLlZ9WDjR76H1OTAL9
-   h3weLgM3mZMDNUAInGMtFUGK6d7GuDSa3rqkZ+tLPfqRccmSWlmWrlgkv
-   F+7ST/xf5mUQfLNFjfM8QZbO8CK0blrQgj5ZtHTXyiFIcBAsnm0gl5U58
-   DYIQ45DIG5PX8/LRQpw6PDPzRlUnjgzJAdq6otnelOJYevUfWtlD7ntvb
-   w==;
-X-CSE-ConnectionGUID: Y7CkhbpZS6WHtw3oRumDrg==
-X-CSE-MsgGUID: vP3iP8Y2RdGfAU7jUe601A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11884"; a="87773937"
-X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; 
-   d="scan'208";a="87773937"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 02:06:15 -0700
-X-CSE-ConnectionGUID: 1lnlxijqRAa3GxU6kc/OTg==
-X-CSE-MsgGUID: mQjPLqoWT4O6LtetdrIlFw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; 
-   d="scan'208";a="260799742"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 02:06:13 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 24 Aug 2026 02:06:12 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Mon, 24 Aug 2026 02:06:12 -0700
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.64) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 24 Aug 2026 02:06:12 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n6Hs4smu1Ax69Dq+N4mrcnJhnbBd6CpjRTVBPcn/E2FfkrlOyE4zAsW6UHJdfjxLbF2NROMs76NO6qkGuKbokGbFPKE1n7v2HRU+Eb17PtXOwL6KBJHT+NvpzR14ku/dp7VUAQJikTTCS+JbsE6PCLquv6FmU0KH+8s5rRj3QP/wh19NWuDY653BQ87q+xXK+LWN7Ldf/YVjNfX6ZJVWuWdfa/npSlH5rN9vkdcvKiuggSLgVbY7wmDTlTqacHwqfR1Ef06EKmAFFAoA5fcJmJ/CnqdGT8whU9qICozTyS1xhj+yLSbHJ2cyAyLxB9nhQaUk6mWlgyT8m8yHJgXe5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/2LCvBnHaO9ANKU9V7yoMlHmoFHEgZJgIW+MbscRQtQ=;
- b=LpxduMO51rRhpQ2taOlucTzyItHR+8cqF7qkgr0P0nh8giul/a0Hk3HAVBsXxjn4VeRPnC7Wr0FuiVvdF1vKxB0PIsZqMOBDI3Y3RAngn46PASzlM1zilmc4w+HhY3sDzHSjShIhzHaPfVJKut1Z3nM2Qa5cPQ8M/8rv4wAu168a8IN99RXTWbmR0GmJmNcKGIBacB7YL+m0IQoQDDATzfb+pSZeevMiz62/KAoEq7x4rmgZDKJE9lCLXBTVhjBbLr90LqUakUjkdcDAbOyy0T3q+sNU1Fz9TtR3hc0N+oD7rwVwDNAyYlt9x0DFByfXhICugs3sa/DFLTD3MKehTg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DSVPR11MB9579.namprd11.prod.outlook.com (2603:10b6:8:383::17)
- by SA3PR11MB969295.namprd11.prod.outlook.com (2603:10b6:806:532::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Mon, 24 Aug
- 2026 09:06:09 +0000
-Received: from DSVPR11MB9579.namprd11.prod.outlook.com
- ([fe80::ab5f:5d0f:fb90:9d]) by DSVPR11MB9579.namprd11.prod.outlook.com
- ([fe80::ab5f:5d0f:fb90:9d%3]) with mapi id 15.21.0339.008; Mon, 24 Aug 2026
- 09:06:09 +0000
-Date: Mon, 24 Aug 2026 17:05:34 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: <ackerleytng@google.com>
-CC: <aik@amd.com>, <andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>,
-	<brauner@kernel.org>, <chao.p.peng@linux.intel.com>, <david@kernel.org>,
-	<jmattson@google.com>, <jthoughton@google.com>, <michael.roth@amd.com>,
-	<oupton@kernel.org>, <pankaj.gupta@amd.com>, <qperret@google.com>,
-	<rick.p.edgecombe@intel.com>, <rientjes@google.com>, <shivankg@amd.com>,
-	<steven.price@arm.com>, <tabba@google.com>, <willy@infradead.org>,
-	<wyihan@google.com>, <forkloop@google.com>, <pratyush@kernel.org>,
-	<suzuki.poulose@arm.com>, <aneesh.kumar@kernel.org>, <liam@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Borislav
- Petkov" <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt
-	<rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, "Mathieu
- Desnoyers" <mathieu.desnoyers@efficios.com>, Jonathan Corbet
-	<corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan
-	<shuah@kernel.org>, "Vishal Annapurve" <vannapurve@google.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song
-	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
-	<nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, Axel Rasmussen
-	<axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
-	<weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, Qi Zheng
-	<qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau
-	<kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe
-	<jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu
-	<peterx@redhat.com>, <tarunsahu@google.com>, Vlastimil Babka
-	<vbabka@kernel.org>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-trace-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-coco@lists.linux.dev>
-Subject: Re: [PATCH v10 18/41] KVM: TDX: Make source page optional for
- KVM_TDX_INIT_MEM_REGION
-Message-ID: <aowJXhCdxy9j2qJf@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-18-2fc18ee6d3ba@google.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-18-2fc18ee6d3ba@google.com>
-X-ClientProxiedBy: KU0P306CA0086.MYSP306.PROD.OUTLOOK.COM
- (2603:1096:d10:2b::19) To DSVPR11MB9579.namprd11.prod.outlook.com
- (2603:10b6:8:383::17)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AFJf1v+m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846921F00A3A;
+	Mon, 24 Aug 2026 09:07:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787562438;
+	bh=Gupcxk5JRbY/GWjgh11gUuJuL94pNqxOxmGLSaShLy8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AFJf1v+mvpCMMjPaVPOTCewKz0p8Cw9Dl8w+/nVRmnNMXCiizOa2lFPNIJN7QAKp5
+	 Yblv0OZQBW9nkajLFp7VCDKByxce6Hhmgn/wQgENYaVAHYHKlmRmbxw7X+9V8lQEOO
+	 pkxOrqrhaC48x/HT3LTkIIFk8ZjloTPcOvd8KmpNn8hrkWprR0Z/svUW9PlPJO1+Xm
+	 I01e58yqnbHHCVGN0PMEnqFg2hOPXukx7JeAO2PQjHdsWtT9LhKbBXrpf/9xgP6gQ4
+	 /onG1nUWmkTqU3MeHyFqdNZaoiYqs2zTt1K8eqkYq6q89dgY35mRBatgXrswaKIK+s
+	 zciB6UxAWHZFg==
+Date: Mon, 24 Aug 2026 11:07:12 +0200
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Michael Roth <michael.roth@amd.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
+	berrange@redhat.com, armbru@redhat.com, pankaj.gupta@amd.com,
+	isaku.yamahata@intel.com, xiaoyao.li@intel.com,
+	chao.p.peng@linux.intel.com, david@kernel.org, ashish.kalra@amd.com,
+	ackerleytng@google.com
+Subject: Re: [PATCH RFC 00/12] guest_memfd: support in-place memory conversion
+Message-ID: <aowJwOeI9skIOp-p@lpieralisi>
+References: <20260528000416.8161-1-michael.roth@amd.com>
+ <ajkrWSfmODM8NTZ5@lpieralisi>
+ <bdg5gb5m4tnm5pmq54vafyykbegefsrz4qupn44ofwfiwkpwk4@zwg7e35l5zps>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DSVPR11MB9579:EE_|SA3PR11MB969295:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9b829e63-a8f4-454f-50f5-08df01bef025
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|366016|6133799003|10067099003|56012099006|11063799006|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: r170g3lkWIWBFucUUog1uYF/rF/POjRR1gV7KkTPeCsXWgzMfpwbfERa3txFUGU+jFmtOf5baH2ItDXLWYjSed3UylbeXRJWhbJdnMKKPlwptIolPLrYW60O6CqzH07ucvp5BP2UWpb3yqOvXJ0Q1SW2VYPIcnC8Gs8cDhRHqlO3Hk11+WfN5P9DzX9s8BNg5YcerqNobZjkf0ATgTnurnDe2pfo1XXZcAy17Q6KfDb1tJHmJAZyrGSp0GikNW/xrjsOeNMQBXlJp9O9MAkBgNEu6K8f6pAl/R/nbfW9pt3LlAL0Q4w42adv/04wtKqfs6rcBDSV5G9Uy3fBrdg7pdpXvu27f4s9YHBZ8hznJMLH5moN3NZU/WIcak+iKED0WoYkfCO5Ggs/BKJQyRqGzxJHrWkIhOTpLziAOSCkDDn+MUNo9vfIHzrCynOmoo81EMKl3BzMqbs4M4TTUQ08pU9QxlMOaiWjeRwcmO8dek3EP2gBJ+eSHQRLuWwMJnaX/RKZ/WPp2qyXr3ktxblurMbwnfPTHf3UCgLieaUYjUZJnMOdEDKbGM1AExoK1Tf1wtEnHc2rfWmLj3dc97oqZzO8RHPPuY9JbaPRB924JJd5UhkpdMbQov28YnWri4oJLc3qBMP81F3qyTRqGoMpaohK0V66XKUX/n+XUlcUEs0=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DSVPR11MB9579.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(366016)(6133799003)(10067099003)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9mV0qOnl0DpKQIJS0wefrHaiVSzW30FQR7z6kh+C34dkbIpxQ/aCnS7+B3JU?=
- =?us-ascii?Q?ptrPqK+TF83+V2zORcx3eTxJ+0OCEHtdqcCD+HQs1HcP5fr4gs4BGZMLxY90?=
- =?us-ascii?Q?oZXN28Vhmm7Uh5mBxEEqmfgOGVf/ybu95JOJ1lRpEsE51vWnvebpF+nR3s4S?=
- =?us-ascii?Q?cNi4dFEhimvUqu1YsU/tdaQPYu3fHophoNj+Vq70lQqxMOloxoTBh22+9HiY?=
- =?us-ascii?Q?+iqeVkJqN1gbPnYptW4xUAhLGgh+X3+/sUGe4AI8YqAp1PO1IsUVnTpI4C6E?=
- =?us-ascii?Q?nlWsBgfgbQltcObud7WILR0hSTx4m5BJgQq4bZg6MghdSqjTKnk6FlvuBOBS?=
- =?us-ascii?Q?Cn8xTxWBwXZCAJFYQZhq4543cldSooiLUkba3j9AB7YrRBO6fnewCqTnfknH?=
- =?us-ascii?Q?z7AnLaQj4GJNfeUfeonszmIwp8M7vY4IGDL6uXmThEbwUBkXtpQBpfbQRLqn?=
- =?us-ascii?Q?3DZCLKDwTQTBJjWkaXA6zySxJ+vtDsgavuLjZRLadfRFapRsMNjmGqrw5mhl?=
- =?us-ascii?Q?DXke8h+o7rnfaHKjMgAouSR7vFMx3lkVqcT5OUyVw27yZTek+TTV9BOhudul?=
- =?us-ascii?Q?33paZMomyQgYk7az4d3EuJhkqNL5HEXWHsXd2TrgauukfCxfAkpwURbuFR8T?=
- =?us-ascii?Q?X3nkDjgbS41Qen/U5qPXitGqjfesrTVnoLRWz1y34mJu0FEK0IGupJVziEdd?=
- =?us-ascii?Q?g408eDEd+MNQ+85Otr4oCmsYjSbNCrMGlXKDcFATVdApdwYpr/l8IQ5K6eJU?=
- =?us-ascii?Q?jic+pM6XUMjNlgX4sjeS/KzUUjXvEes2R9C9UX7xLEA42U42cgyBGkjVulq1?=
- =?us-ascii?Q?KZmlkuJ6pl4fxiZk1ApqA97FFc7bq9csoDC8HSttRA6stkSlS4fs84VDuB5k?=
- =?us-ascii?Q?xTOfWMX4FRdCRAgInJSlucQq4xc2i2GkWbxl6jj+OpCs97HQs9DFHo0Ks5wb?=
- =?us-ascii?Q?/7OA2N+j7rvIWLm3ARzldS0NMZ9oYZP3nV/LAu96fhYaxvOQ76Y/U0MhydeO?=
- =?us-ascii?Q?j6YN5ZU1enZldG7OVCEtjkothskpej1zp7f5GjfR4GfByBmFWNY72EjQOM3O?=
- =?us-ascii?Q?yyTNp0TD3ZjEP2R/KPD+U9jEgE75Durf/Y304N2gUw+AaC3W8IWBirP/jcgx?=
- =?us-ascii?Q?s843mdqiET8OM+2nVFoAHQo+U5p/1efFrOXA6/F4fkY6yc01GI6diPcE0y6q?=
- =?us-ascii?Q?Mg5esPheUXk3KtR3I470+EyqPo1TrOLSxD0xwpPp1uhol1WfgRZXWFjkZWqA?=
- =?us-ascii?Q?O/RxwcdaLZ/2axkOMsrL8a0jz6W4XYCVbIV7OwreSrncCvC3ladLoSBIFNnN?=
- =?us-ascii?Q?9cmm9Ou9NHC/OmjKlbe7BO9QnHNx4URIKSBOJaUPyfuJ4A4rJ5XUTiVIK77f?=
- =?us-ascii?Q?Js2FBC8e72Rh9pTEvQZ/RvgzY+jl1aGwEHFvlE8ImtOZ/zh80ItbKxTAU6fI?=
- =?us-ascii?Q?hzWgz5R22A3yG5SRY59F49oW5RVHK4CEvH7lq04VSJ5NdERVjlkrKn1K9fYC?=
- =?us-ascii?Q?Ha6mOvLjz7vtOTPoF+U6F2pefr7nieXAz4/AuZ89/6mai5bCXQzHdUAc3Vz5?=
- =?us-ascii?Q?thUlTe69PtQoXWKvz3s5aJVwSj+2vbfAKSfZ3pJj5cBDNhGC+84nY+eXttUd?=
- =?us-ascii?Q?NM7KQ32v7YBbQ3H+A1H+PmM6jnFgyYraCCOYb20sOiar2dqtYWXEC7zhRL7O?=
- =?us-ascii?Q?7BL2hnM0LJtjzwhgr9HjlM2O0li7pmklA63mat1zbsN6SALYcqvmV7yjDkZs?=
- =?us-ascii?Q?miyDjRQWPA=3D=3D?=
-X-Exchange-RoutingPolicyChecked: I3Uxw5aIhiKjRl6mRa16fYOtCzIejqlFxz1OMmyH+NfwdrSfySdCEVXSclKCXfWd6aPxMOuto9PnGt80Iv6IF5hV2r7mgbE07+9HtlUgCObQXtmC+I1Fsv3uyCcsrm9ZuliKM343psx0C4QnvShuY4Tqr7jufryls7H4gZOJjRLfZ7rztIIPLjU4sT5nw5MnMbmYKdgpBbSzkbsrSSsaPTqdtMpX16lCJNZ7dWvedq35wx1zgnjRPqN0o5TkY7CCn1iHQZmTZ6d7VLykW2dub4ucxZGLUpHyjffrP4cRR8jUXpFdFVOsi48v++wOVGV6l55eagXeaOPFJxn/EHDZ0g==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b829e63-a8f4-454f-50f5-08df01bef025
-X-MS-Exchange-CrossTenant-AuthSource: DSVPR11MB9579.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2026 09:06:09.6117
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4HShhGAl+T1VlVc/Sn5yBkRFT3WMDBPQuXMBb/0K9aQOLgUuSqz3euhFpFIVhjez/t0WsGxMPSPz2/t7BP58SA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB969295
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bdg5gb5m4tnm5pmq54vafyykbegefsrz4qupn44ofwfiwkpwk4@zwg7e35l5zps>
 
-On Fri, Aug 07, 2026 at 02:52:57PM -0700, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
+On Thu, Jun 25, 2026 at 04:21:52PM -0500, Michael Roth wrote:
+
+[...]
+
+> > When convert-in-place is switched on I think that the post conversion
+> > hook should not trigger discard+hole-punch since now guest-memfd _is_
+> > the memory back-end but it looks like there is no guard in place against
+> > that (I noticed that ram_block_discard_range() triggers a hole-punch in
+> > kvm_post_convert_section() - when the CCA guest first requests a
+> > KVM_EXIT_MEMORY_FAULT to convert to private).
+> > 
+> > It is a question really.
 > 
-> Update tdx_gmem_post_populate() to handle cases where userspace requests
-> "no source page". To handle "no source page", populate (perform
-> TDH.MEM.PAGE.ADD) using memory in-place at the target PFN.
+> Yes, I agree that it does not make much sense to try to hole-punch for
+> in-place conversion, it's just uncessary churn on the gmem side. In my
+> internal branches I generally disabled this path but for some reason
+> left that out of this series. I've tested with the below change and it
+> should do the trick though; I'll roll something similar into v2 of the
+> series.
+
+Hi Michael,
+
+have you planned posting a v2 rebased against a more recent codebase ?
+
+Thanks,
+Lorenzo
+
 > 
-> Allow "no source page" only when gmem_in_place_conversion is enabled,
-> because retroactively adding support for out-of-place conversion would mean
-> requiring a userspace update for a feature that's being deprecated.
+>   diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+>   index 5840daa7c8..2faec929b5 100644
+>   --- a/accel/kvm/kvm-all.c
+>   +++ b/accel/kvm/kvm-all.c
+>   @@ -3619,17 +3619,19 @@ static int kvm_post_convert_section(MemoryRegionSection *section, bool to_privat
+>            }
+>        }
+>    
+>   -    if (to_private) {
+>   -        if (rb->page_size != qemu_real_host_page_size()) {
+>   -            /*
+>   -             * shared memory is backed by hugetlb, which is supposed to be
+>   -             * pre-allocated and doesn't need to be discarded
+>   -             */
+>   -            return 0;
+>   +    if (current_machine->cgs && current_machine->cgs->convert_in_place) {
+>   +        if (to_private) {
+>   +            if (rb->page_size != qemu_real_host_page_size()) {
+>   +                /*
+>   +                 * shared memory is backed by hugetlb, which is supposed to be
+>   +                 * pre-allocated and doesn't need to be discarded
+>   +                 */
+>   +                return 0;
+>   +            }
+>   +            ret = ram_block_discard_range(rb, offset, size);
+>   +        } else {
+>   +            ret = ram_block_discard_guest_memfd_range(rb, offset, size);
+>            }
+>   -        ret = ram_block_discard_range(rb, offset, size);
+>   -    } else {
+>   -        ret = ram_block_discard_guest_memfd_range(rb, offset, size);
+>        }
+>    
+>        return 0;
 > 
-> Also, KVM supporting "no source page" without in-place conversion would
-> effectively be an obscure zero-page optimization that relies on the page
-> being zeroed when it is allocated by guest_memfd.
+> Thanks!
 > 
-> Rejecting "no source page" without in-place conversion scenario is valuable
-> for KVM developers since it helps newcomers understand what exactly is and
-> isn't possible.
+> -Mike
 > 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Tested-by: Shivank Garg <shivankg@amd.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
->  Documentation/virt/kvm/x86/intel-tdx.rst | 4 ++++
->  arch/x86/kvm/vmx/tdx.c                   | 8 +++++---
->  2 files changed, 9 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/virt/kvm/x86/intel-tdx.rst b/Documentation/virt/kvm/x86/intel-tdx.rst
-> index 6a222e9d09541..d8d9409120e61 100644
-> --- a/Documentation/virt/kvm/x86/intel-tdx.rst
-> +++ b/Documentation/virt/kvm/x86/intel-tdx.rst
-> @@ -158,6 +158,10 @@ KVM_TDX_INIT_MEM_REGION
->  Initialize @nr_pages TDX guest private memory starting from @gpa with userspace
->  provided data from @source_addr. @source_addr must be PAGE_SIZE-aligned.
->  
-> +If guest_memfd in-place conversion is enabled, pass 0 for @source_addr
-> +to represent "no source page". A source page is required if in-place
-> +conversion is not enabled or not supported.
-> +
->  Note, before calling this sub command, memory attribute of the range
->  [gpa, gpa + nr_pages] needs to be private.  Userspace can use
->  KVM_SET_MEMORY_ATTRIBUTES to set the attribute.
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index b272c20586a74..7654a9f5fa128 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -3189,7 +3189,7 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
->  	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
->  		return -EIO;
->  
-> -	kvm_tdx->page_add_src = src_page;
-> +	kvm_tdx->page_add_src = src_page ?: pfn_to_page(pfn);
->  	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
->  	kvm_tdx->page_add_src = NULL;
->  
-> @@ -3235,7 +3235,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
->  	if (copy_from_user(&region, u64_to_user_ptr(cmd->data), sizeof(region)))
->  		return -EFAULT;
->  
-> -	if (!PAGE_ALIGNED(region.source_addr) || !region.source_addr ||
-> +	if (!PAGE_ALIGNED(region.source_addr) ||
-> +	    (!gmem_in_place_conversion && !region.source_addr) ||
->  	    !PAGE_ALIGNED(region.gpa) || !region.nr_pages ||
->  	    region.gpa + (region.nr_pages << PAGE_SHIFT) <= region.gpa ||
->  	    !vt_is_tdx_private_gpa(kvm, region.gpa) ||
-> @@ -3266,7 +3267,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
->  			break;
->  		}
->  
-> -		region.source_addr += PAGE_SIZE;
-> +		if (region.source_addr)
-> +			region.source_addr += PAGE_SIZE;
->  		region.gpa += PAGE_SIZE;
->  		region.nr_pages--;
-
-Tested the following scenarios:
-1.gmem_in_place_conversion == true,
-  (1) region.source_addr == NULL.
-      ==> TD launched successfully.
-
-  (2) region.source_addr != NULL,
-      region.source_addr is not from mmap() of the guest_memfd (double backends)
-      ==> TD launched successfully.
-
-  (3) region.source_addr != NULL,
-      region.source_addr is from mmap() of the guest_memfd (single backend),
-      GPA is private.
-      ==> Failed (-EFAULT).
-
-  (4) region.source_addr != NULL,
-      region.source_addr is from mmap() of the guest_memfd (single backend),
-      GPA is shared.
-      ==> Failed (-EINVAL).
-
-2. gmem_in_place_conversion == false,
-  (1) region.source_addr == NULL.
-      ==> Failed (-EINVAL).
-
-  (2) region.source_addr is not from mmap() of the guest_memfd.
-      ==> TD launched successfully.
- 
-
-So,
-Tested-by: Yan Zhao <yan.y.zhao@intel.com>
-Reviewed-by:  Yan Zhao <yan.y.zhao@intel.com>
-
+> > 
+> > Thanks,
+> > Lorenzo
+> > 
+> > > That model works, but has a number of downsides that impact certain
+> > > use-cases:
+> > > 
+> > >   - Each conversion involves discarding pages on one side and faulting
+> > >     them in on the other, which incurs allocation overheads in the
+> > >     host kernel for every conversion.
+> > > 
+> > >   - Some use-cases, like pKVM[3], rely on memory isolation rather than
+> > >     encryption and rely on in-place conversion to pass through things
+> > >     like secured framebuffer memory without needing to bounce data
+> > >     through separate shared/private HPAs, which would introduce
+> > >     unacceptable latency for that sort of workload.
+> > > 
+> > >   - Hugetlb support[4] for guest_memfd will rely on it, since things like
+> > >     1GB hugepages with a mix of shared/private sub-ranges would generally
+> > >     require 2 1GB hugetlb pages to remain available to handle shared vs.
+> > >     private accesses, which quickly causes doubling of guest memory usage.
+> > > 
+> > > Recent kernel work[2] makes guest_memfd mmap()-able and lets the *same*
+> > > physical pages be used for both shared and private states for a given
+> > > GPA range, allowing the above pitfalls to be naturally avoided.
+> > > 
+> > > This series wires that support up in QEMU.
+> > > 
+> > > 
+> > > DESIGN
+> > > ------
+> > > 
+> > > A new dedicated memory backend, memory-backend-guest-memfd, allocates
+> > > its memory via a guest_memfd file descriptor obtained from KVM with
+> > > the GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED flags. The fd
+> > > is mmap()ed so userspace can access pages directly while they are in
+> > > the shared state. For a normal/non-confidential VM, this backend can
+> > > be used in a similar fashion as the existing memory-backend-memfd.
+> > > 
+> > > For confidential VMs, a new 'convert-in-place' flag is added to switch
+> > > on in-place conversion support. When running in this mode, the user
+> > > *MUST* use memory-backend-guest-memfd for backing guest RAM. A new
+> > > RAM_GUEST_MEMFD_SHARED RAMBlock flag is added to track/enforce the
+> > > dependency. Additionally, QEMU is modified to use mmap()-able
+> > > guest_memfd and set this flag for other cases where it allocates RAM
+> > > internally. As a result, block->fd will generally always a guest_memfd,
+> > > and when RAM_GUEST_MEMFD_SHARED is set then that block->fd will be
+> > > qemu_dup()'d as the FD handle for private memory is well (which is
+> > > currently what block->guest_memfd point to). This allows the prior
+> > > non-in-place handling around block->guest_memfd to be kept mostly
+> > > unchanged.
+> > > 
+> > > When running with convert-in-place=true, shared/private conversions
+> > > are no longer handled directly by KVM, but instead by a new guest_memfd
+> > > ioctl, KVM_SET_MEMORY_ATTRIBUTES2, which purposely provides similar
+> > > naming/implementation to the KVM_SET_MEMORY_ATTRIBUTES KVM ioctl that
+> > > it replaces. This series adds handling to route conversion requests to
+> > > the appropriate ioctls based on whether or not in-place conversion is
+> > > enabled.
+> > > 
+> > > Since guest_memfd ioctls need to be called against the specific
+> > > guest_memfd inode associated with each memory slot/region, some
+> > > refactoring is needed to handle conversions on a per-section. Much of
+> > > that is inherited from the bugfix series this patchset is based on top
+> > > of, which adds the initial logic for handling multiple sections within
+> > > a range that gets heavily re-used here.
+> > > 
+> > > 
+> > > USAGE
+> > > -----
+> > > 
+> > > After applying this series against a kernel with the RFC patches above
+> > > present, an SEV-SNP guest can be started with in-place conversion via:
+> > > 
+> > >     qemu-system-x86_64 \
+> > >         -machine q35,confidential-guest-support=sev0,memory-backend=ram0 \
+> > >         -object memory-backend-guest-memfd,id=ram0,size=8G,share=on \
+> > >         -object sev-snp-guest,id=sev0,cbitpos=51,reduced-phys-bits=1,\
+> > >                 convert-in-place=on \
+> > >         ...
+> > > 
+> > > The new memory-backend-guest-memfd can also be used by normal VMs:
+> > > 
+> > >     qemu-system-x86_64 \
+> > >         -machine q35,memory-backend=ram0 \
+> > >         -object memory-backend-guest-memfd,id=ram0,size=8G,share=on \
+> > >         ...
+> > > 
+> > > This is mainly only useful atm for testing, but in the future there may
+> > > be more use-cases around using guest_memfd as a general-purpose backend
+> > > for non-confidential VMs, so it is intended to work in this manner as
+> > > well.
+> > > 
+> > > 
+> > > NOTES/TODO
+> > > ----------
+> > > 
+> > >   - the CPR handling to support resetting of confidential VMs is
+> > >     currently disabled when in-place conversion is enabled.
+> > >   - TDX testing would be great, in theory it can be enabled with this
+> > >     series (similarly to the top patch) but I'm not sure if there are
+> > >     other special requirements before we can switch it on.
+> > >   - kernel patches are still in-flight, but fairly mature at this point
+> > >     and nearing upstream
+> > > 
+> > > 
+> > > REFERENCES
+> > > ----------
+> > > 
+> > > [1] https://lore.kernel.org/kvm/20250729225455.670324-1-seanjc@google.com/
+> > > [2] https://lore.kernel.org/kvm/20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com/
+> > > [3] https://www.youtube.com/watch?v=MMfAGNW9RVg
+> > > [4] 1GB hugetlb v2
+> > > 
+> > > 
+> > > Thoughts, feedback, and testing are very much appreciated.
+> > > 
+> > > Thanks,
+> > > 
+> > > Mike
+> > > 
+> > > 
+> > > ----------------------------------------------------------------
+> > > Michael Roth (12):
+> > >       accel/kvm: Decouple guest_memfd checks from memory attribute checks
+> > >       hostmem: Introduce dedicated memory backend for guest_memfd
+> > >       linux-headers: Update headers for v7 of in-place conversion kernel support
+> > >       accel/kvm: Add CGS option to control in-place conversion support
+> > >       system/memory: Re-use memory-backend-guest-memfd inode for private memory
+> > >       system/memory: Default to guest_memfd for RAM for in-place conversion
+> > >       accel/kvm: Move post-conversion updates to a separate helper
+> > >       accel/kvm: Re-order attribute notifications for in-place conversion
+> > >       accel/kvm: Support shared/private conversions via guest_memfd ioctls
+> > >       accel/kvm: Don't default to private attributes for in-place conversion
+> > >       i386/sev: Update SNP_LAUNCH_UPDATE for in-place conversion
+> > >       i386/sev: Allow in-place conversion for SEV-SNP guests
+> > > 
+> > >  accel/kvm/kvm-all.c                                | 286 +++++++++++--
+> > >  accel/stubs/kvm-stub.c                             |   9 +-
+> > >  backends/confidential-guest-support.c              |  25 ++
+> > >  backends/hostmem-guest-memfd.c                     |  93 +++++
+> > >  backends/meson.build                               |   1 +
+> > >  include/standard-headers/drm/drm_fourcc.h          |  28 +-
+> > >  include/standard-headers/linux/const.h             |  18 +
+> > >  include/standard-headers/linux/ethtool.h           |  28 +-
+> > >  include/standard-headers/linux/input-event-codes.h |  13 +
+> > >  include/standard-headers/linux/pci_regs.h          |  71 +++-
+> > >  include/standard-headers/linux/typelimits.h        |   8 +
+> > >  include/standard-headers/linux/virtio_ring.h       |   5 +-
+> > >  include/standard-headers/linux/virtio_rtc.h        | 237 +++++++++++
+> > >  include/standard-headers/linux/vmclock-abi.h       |  20 +
+> > >  include/system/confidential-guest-support.h        |  14 +
+> > >  include/system/hostmem.h                           |   1 +
+> > >  include/system/kvm.h                               |   3 +-
+> > >  include/system/memory.h                            |   8 +-
+> > >  linux-headers/asm-arm64/kvm.h                      |   1 +
+> > >  linux-headers/asm-arm64/unistd_64.h                |   1 +
+> > >  linux-headers/asm-generic/unistd.h                 |   5 +-
+> > >  linux-headers/asm-loongarch/kvm.h                  |   5 +
+> > >  linux-headers/asm-loongarch/kvm_para.h             |   1 +
+> > >  linux-headers/asm-loongarch/unistd_64.h            |   2 +
+> > >  linux-headers/asm-mips/unistd_n32.h                |   1 +
+> > >  linux-headers/asm-mips/unistd_n64.h                |   1 +
+> > >  linux-headers/asm-mips/unistd_o32.h                |   1 +
+> > >  linux-headers/asm-powerpc/unistd_32.h              |   1 +
+> > >  linux-headers/asm-powerpc/unistd_64.h              |   1 +
+> > >  linux-headers/asm-riscv/kvm.h                      |  11 +-
+> > >  linux-headers/asm-riscv/ptrace.h                   |  37 ++
+> > >  linux-headers/asm-riscv/unistd_32.h                |   1 +
+> > >  linux-headers/asm-riscv/unistd_64.h                |   1 +
+> > >  linux-headers/asm-s390/unistd_32.h                 | 446 ---------------------
+> > >  linux-headers/asm-s390/unistd_64.h                 |   1 +
+> > >  linux-headers/asm-x86/kvm.h                        |  21 +-
+> > >  linux-headers/asm-x86/unistd_32.h                  |   1 +
+> > >  linux-headers/asm-x86/unistd_64.h                  |   1 +
+> > >  linux-headers/asm-x86/unistd_x32.h                 |   1 +
+> > >  linux-headers/linux/const.h                        |  18 +
+> > >  linux-headers/linux/iommufd.h                      |  48 +++
+> > >  linux-headers/linux/kvm.h                          |  62 ++-
+> > >  linux-headers/linux/mshv.h                         |   4 +-
+> > >  linux-headers/linux/psp-sev.h                      |   2 +-
+> > >  linux-headers/linux/stddef.h                       |   4 +
+> > >  linux-headers/linux/vduse.h                        |  85 +++-
+> > >  linux-headers/linux/vfio.h                         |  30 +-
+> > >  qapi/qom.json                                      |  35 +-
+> > >  qemu-options.hx                                    |   5 +
+> > >  system/memory.c                                    |  22 +-
+> > >  system/physmem.c                                   |  50 ++-
+> > >  target/i386/sev.c                                  |  12 +-
+> > >  52 files changed, 1253 insertions(+), 533 deletions(-)
+> > >  create mode 100644 backends/hostmem-guest-memfd.c
+> > >  create mode 100644 include/standard-headers/linux/typelimits.h
+> > >  create mode 100644 include/standard-headers/linux/virtio_rtc.h
+> > >  delete mode 100644 linux-headers/asm-s390/unistd_32.h
+> > > 
