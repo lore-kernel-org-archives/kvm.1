@@ -1,277 +1,205 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8EC43C05E;
-	Mon, 24 Aug 2026 14:38:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787582308; cv=none; b=sbsqEKjNZzWz3XgyM5AIZwUj6PqV8LU2LXBLamF+gft4r5yg5t3mwP4VtCzrg/bV5tWFIdc/mUSOCIXX1M7UOb2FH5lkihjjsaOkmjxF+QgiTTnRY5sILrLz/hc4hvhsPEiPwjBvVWZon6LFDD1zaur258O9SRhmBhuKXC2nDVY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787582308; c=relaxed/simple;
-	bh=FMHFWB8GkXN6dRqP3iHRcP/Pq1sGzAbeJ4jPmDt4Ii0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JB43eqg6HPy2gk+m+8T+KmT/FUxtAKE1B2sEPQYGEP5SlGXM6JUX4lOiihwtMELlrAeivfLYY0a0COn3YoBYJNSzHMikXBotbMk35hZkD1PeMUvwEUxhe7hKlD+QPKyr5InLDAOx0R+ktgKKuo3aM7JXBfp4KectFZlO98/qSJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=BY4oTqT3; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D1F36920D
+	for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 14:45:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787582751; cv=pass; b=RScmdODpCpBupC8EuenaQ7UearZ4ZAgraOF2rMgI/QQ7ht1ijdzRohvAWfQwKSDAJnjxJT2VrfnWBuR53btLb8KylLVp1g7pTapV97ydnJmQpLTe0YZGX2O3WwwOI0ci6zsq1aVUQC6d1csJJ72DGDtbV+LWZSYXdEZtaTq7S4E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787582751; c=relaxed/simple;
+	bh=HjYwTd5kWmHq4WzayeX05JXI6uq7QkVWkmVqyAOIZIg=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gzgIuSUPBA0tIdJpVj656ui2g1ta4nt/j/m8VZB8fsPe+fEmYod4+LJkCCDdwiazLtS8UUMF1JoybpjGeakwMz7Q1Us1XdiSBOUXeKLU8RmsYHxFYtRFx/HQBd83taz6eNIkFnMf9Imi+oNLSsPJlKUSG79HIrPLHeKnt+2RcEY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bP0h7Zqh; arc=pass smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="BY4oTqT3"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67OD1Y5D1935890;
-	Mon, 24 Aug 2026 14:38:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=BZVHUYpD3MMuP9+xo
-	o3+zI6z4+yhzl9SNwk5OI2LsEk=; b=BY4oTqT3qUvFpE+Qf+DUmgeXQvcvIOGC3
-	bLoQW4WIPmGR8KBIQx5Fc2x4TU5yJ8PIxt1y4BIWOul3kn/ljUvvYVC1mwGMYR7i
-	TtvSz3IVknQxG8KCyENxUKTtRDsNLyIIV2J/YteOebXLjuFCmvkTFvhNMquuAvme
-	x59bvW69igbeBrfEtOiA8br3ztTOYTDHGzVxDTUsE1MFlFxXcgdphW1qWbnCKj7A
-	TIU2he4o68oPooEmT8aW17J4ZraVfChANI4yiwpHtRTOXcPmMv/mgTk1SQSIMV4X
-	7xBSxMFMI/IGnEYD9USt87XbIDD2uU4Ej2a5gvCovyUZcW6j8ioJA==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g7393t1q0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 14:38:24 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67OEQI7d001403;
-	Mon, 24 Aug 2026 14:38:23 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g7pfvxnqg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 14:38:22 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67OEcHVs37683532
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Aug 2026 14:38:17 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2F4A32004E;
-	Mon, 24 Aug 2026 14:38:17 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0DDB32004D;
-	Mon, 24 Aug 2026 14:38:17 +0000 (GMT)
-Received: from b46lp25.lnxne.boe (unknown [9.87.84.240])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 24 Aug 2026 14:38:17 +0000 (GMT)
-From: Janosch Frank <frankja@linux.ibm.com>
-To: pbonzini@redhat.com
-Cc: kvm@vger.kernel.org, frankja@linux.ibm.com, borntraeger@linux.ibm.com,
-        linux-s390@vger.kernel.org, imbrenda@linux.ibm.com, thuth@redhat.com,
-        Christoph Schlameuss <schlameuss@linux.ibm.com>,
-        Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Subject: [kvm-unit-tests GIT PULL 10/13] s390x: Add test for STFLE interpretive execution (format-2)
-Date: Mon, 24 Aug 2026 14:35:42 +0000
-Message-ID: <20260824143740.291583-11-frankja@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260824143740.291583-1-frankja@linux.ibm.com>
-References: <20260824143740.291583-1-frankja@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bP0h7Zqh"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-9063b380982so41598876d6.0
+        for <kvm@vger.kernel.org>; Mon, 24 Aug 2026 07:45:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787582748; cv=none;
+        d=google.com; s=arc-20260327;
+        b=eRNWQOa1NNB5EuLCZaRFrM0vYQK6M8SuIAIhRmw0SUcluDUe/Eipb/zyS3e6Hpw3k0
+         PgsxEOyRc77PCMXKs7Mqwe39zq6XVVzM9m/Qd+L1oRsBpO2Fxyr7nO6kPtntJHtgdCgg
+         3zCAaP7OZjNnB73pglcW4zWbG16mV6PeVE9SxSspGz5h8kV6Z+dxo+qU9vNlKbSS4rFo
+         FUQ2QiuIhPLdZ4jjfX/UWOrPVWmKVKFDv/n+ShsOKXwRix740tSzEOKGwfy/UJ+tbupH
+         vp6FEwX+O+X88UW8S7ft3hMEBTeiL5DxRZcKQx+8S2GfL0xrVbU5x3QNAthskA4k+kRK
+         ZLqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=skkP3oMbeet6bj4bc4/M8i6L8abYIXvlg1WGbPCJGYM=;
+        fh=hNwR2m50AxDvVMdAhJATosKuHRrkLLhWPQa7fAhYU0w=;
+        b=c8mqKD8yn05gbiuK6G2GtZoSZ1WVbkrRkYF21K4WJBl83IivQ2UKxaLvTyKs9dYVcP
+         FIfYA3UUG9vAxsPTLeVOjJ0KcVCVSs6cPQivZE/2JE8agwM3GVpzsMkZ4B7wkst8HGOx
+         4aAsGzribpKsL6rsDilN5mltJds83T3gI8wrSZVKf2x5HBcNZKhu4OHvBbINdIIm8TY8
+         ld4beK9UAn2WSCIDWU4XFjp0xplHDvECKNd7WW38lNHWZHsYs55VOqQfU6mvGkdztSzz
+         9C0OARi10NudPRR8C7yHDWEGSz0gcaFAM8OtwS3AoKhNOux+68k8lsR2KKlWhUXkr0Fm
+         dnfQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787582748; x=1788187548; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=skkP3oMbeet6bj4bc4/M8i6L8abYIXvlg1WGbPCJGYM=;
+        b=bP0h7ZqhRP2YZvqVZFGgMR0GPc6dwH6/vzBF6W2hb+DmQUHbkyzIIorUyBAK/VYuoS
+         khNXL66K3q3Dbw1lqJVp87tc+5faJbejMLEd5pbky8AHTNu/qv0+CzWTXfiL7NoF1wO9
+         gIn8WMJMzMPTvdevPI06JkZ8qaL+ezt+fkYRBb/RNi/bGHuK7fJ4CkYqnOkRJAP++Tsx
+         vKWmYJtP/phj0tMvhrH/J1pqucckN7zM3HYb/UqD7CkgP3PpFNhPDwou/xc5GuMhJSaC
+         wOBR1ynPpBCfH2eBAWSB3KrKWOSLJGpIpIKTGRRZ2dIawrhmIy8md6FJvyzmo6p9n1wT
+         O06w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787582748; x=1788187548;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=skkP3oMbeet6bj4bc4/M8i6L8abYIXvlg1WGbPCJGYM=;
+        b=J3xcbTeONTf4X0K9x+rELTn0gy/6WjiU0/7f1DVapUCs10QZEcJEtOWWPx1X5oD4e3
+         B55sxyevglZAj/4QSA/alb2+NjacHV7pzYSxotdMrcI8ub3Ag8lnYiVeiIOo9peJY/Ir
+         qz+GPaX/MFbmvdiumhSQIL0bRLDANOervY3ktJXIXOWIizOFXsat1r1GkgyaWHvbGYGg
+         +PAhklzs8uu2Emr9HQ4257eTHwIMN14ojSiYfP9V5A28lkIkb3EWDpLNJD2c6Mt8yzph
+         ntSGCqGf16CFn0BLI+ISHyz+uxGJpDlSr8Yt/G0MR6mGWW5Aj2leWwUSIY+HuqRBERVa
+         zz0w==
+X-Gm-Message-State: AFuF++ksfZn94DFYUvPJ6BEnTGCwvP71PAxauMQ/qRek1NatwLHfXuD3
+	ubfANNXd51ysEggBazjw37S61V9Z+I/i9npbUYnl8SO+AaCMdz8JPjl7/xrqq0ToaOj/YvmRpav
+	zh3to4Qg2FUnaD6sqVrbNpkcJ7aarUXVkZ4woPxF4
+X-Gm-Gg: AR+sD13NI/3mcTMtgcFTVCdNMy98D5DiIRvQlHC05b/L/KHjk8gx6x61B3yV2uW1LbC
+	oAOcetlC4sjQ18wQbXrYmJa2XpTN9PyWSiaCSy1LLfwwp3SVtgWsqVE2ww0HMSNPOTUp9HgJU/3
+	6Uqd74ZRpFvk30zR1On2h8ySJ/c4mc5bjX050pXLB3CKTk74MVTSQ/Og0FZbKxlNMZyVSGaQLoM
+	g+aj0vjYhz9q2H7pBipfkJlLjOgcJwq7dxHv+njnXvDQgWrVUfRNkP0bvNcTDrUmll5tErK3lHQ
+	b6/yD2gOVBOuoHPj125w6cJOcyqzix8HzXrqAbgK8skPIca+GRzuXcaIyNhwiIj+Va2EW0NfxVJ
+	Pt/E=
+X-Received: by 2002:a05:6214:246a:b0:908:2369:df1c with SMTP id
+ 6a1803df08f44-90c8f9f6e2amr182627906d6.20.1787582747578; Mon, 24 Aug 2026
+ 07:45:47 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 24 Aug 2026 07:45:46 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 24 Aug 2026 07:45:46 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <a410cca6-0776-44af-8353-9b7375e2fd4e@intel.com>
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-7-2fc18ee6d3ba@google.com> <a410cca6-0776-44af-8353-9b7375e2fd4e@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 2-G08ZwvXlleweqwit5LrZTM8rhicUCG
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDEyMiBTYWx0ZWRfX98PTc0xG0iJV
- cPZdNAwZXHxIWr9d2Cc0BX0HysTUfTlaENI0Wi0nrxLxDLD/8Mpgi6X17S9tu1rnFJq3EhgTdv8
- wesbyXcs8LrBuMhoZo+q5Vtr6oK5+FrhXe22MLSBoLbEXn4LhXc7vTbRJjeqnW9WMCixQs35POx
- mFhg0g6iDRuzT3StF5Kh5J2+T6n+Ft+ICZOXfZJ6jpb/i6bVjr0ws39wHPVU0GEQNQlaJfXBKyE
- 1DAR54WE/O392epHeMXRTtupv+HXjIvLaX0Ar/iMnAXto9/Lw9D0nMtisnncGEYXJRSHNtrrbk6
- 54PX3whHlnqIrMWsFOtDS+WjnJNvbiMrQ4i+WKLaQZacS6iOvZ7cX9it7Om1iwVNpCJhLzRtzPS
- xIBrrt6Ogo5efTEu53NgZwDyz3jDOx9eak8RRYqtoMoZlJ2hHOWaGV75qfHBbLfG/2utVMinvAO
- tlifWkZm8BFNUo87XXQ==
-X-Authority-Analysis: v=2.4 cv=Y/nIdBeN c=1 sm=1 tr=0 ts=6a8c5760 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=XzANROlTOifqWwnuM_MA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDEyMiBTYWx0ZWRfX1iY2OCuIbtwB
- U51rlJ8PM/Frhwk0iCMSE+F6BR3uDnIsa0uvzs2JGUvl9yIBzTlT0BxvaULSPXdlbKNWlL3zLVr
- SVEhXvI8GGUKIWO3svfaaxckygsFNLU=
-X-Proofpoint-ORIG-GUID: 2-G08ZwvXlleweqwit5LrZTM8rhicUCG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-24_04,2026-08-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- suspectscore=0 malwarescore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608240122
+Date: Mon, 24 Aug 2026 07:45:46 -0700
+X-Gm-Features: AcwNN1X5oDcPBaq55pm-MNepv-y7g9QlVSIhzW239c93dbXJQTRPUD7hBagIvPo
+Message-ID: <CAEvNRgGvxMus6pp=xuDYOumH3Ge4oi0=YKjTaFykFHwXuzRDwg@mail.gmail.com>
+Subject: Re: [PATCH v10 07/41] KVM: guest_memfd: Stub in ability to enable
+ in-place shared<=>private conversion
+To: Xiaoyao Li <xiaoyao.li@intel.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-From: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Xiaoyao Li <xiaoyao.li@intel.com> writes:
 
-The STFLE instruction indicates installed facilities.
-SIE has facilities for the interpretive execution of STFLE.
-There are multiple possible formats for the control block.
-Use a snippet guest executing STFLE to get the result of
-interpretive execution and check the result.
-With the addition of the format-2 control block invalid format
-specifiers are now possible.
-Test for the occurrence of optional validity intercepts.
+> On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
+>> From: Sean Christopherson <seanjc@google.com>
+>>
+>> Stub in global variable to enable in-place guest_memfd private<=>shared
+>> memory conversion, which will eventually be exposed to userspace via a
+>> module param, and wire up the __kvm_mem_is_private() static call to the
+>> guest_memfd version when in-place conversion is enabled, i.e. when gmem is
+>> the sole authority on private vs. shared memory.
+>
+> I find this patch changes the default memory type for a @gfn.
+>
+> - When memory attribute is tracked per-VM, the default memory type is
+> always shared.
+>
+> - when gmem_in_place_conversion is true,
+>    - if the @gfn has no memslot, or the memslot where the @gfn locates
+>      doesn't have gmem bound, the default memory type is shared,
+>    - otherwise, the default memory type is determined by the
+>      GUEST_MEMFD_FLAG_INIT_SHARED flag.
+>
+> I think we should document this change.
+>
 
-Move prefixes into main method to improve the readability of the
-log by having prefixes for reports by tests called from multiple
-places.
+In a way it's not really a "change" since gmem_in_place_conversion is
+set up as false in this patch.
 
-Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
----
- lib/s390x/sie.c   | 11 ++++++++
- lib/s390x/sie.h   |  1 +
- s390x/stfle-sie.c | 72 +++++++++++++++++++++++++++++++++++++++++++----
- 3 files changed, 79 insertions(+), 5 deletions(-)
+When it is enabled in a later patch, another way to see it is that the
+default remains "shared unless defined as private".
 
-diff --git a/lib/s390x/sie.c b/lib/s390x/sie.c
-index ad1f2ade..99089dc3 100644
---- a/lib/s390x/sie.c
-+++ b/lib/s390x/sie.c
-@@ -43,6 +43,17 @@ void sie_check_validity(struct vm *vm, uint16_t vir_exp)
- 	report(vir_exp == vir, "VALIDITY: %x", vir);
- }
- 
-+void sie_check_optional_validity(struct vm *vm, uint16_t vir_exp)
-+{
-+	uint16_t vir = sie_get_validity(vm);
-+
-+	if (vir == 0xffff)
-+		report_pass("optional VALIDITY: no");
-+	else
-+		report(vir_exp == vir, "optional VALIDITY: %x", vir);
-+	vm->validity_expected = false;
-+}
-+
- void sie_handle_validity(struct vm *vm)
- {
- 	if (vm->sblk->icptcode != ICPT_VALIDITY)
-diff --git a/lib/s390x/sie.h b/lib/s390x/sie.h
-index 85d691d5..e5970f36 100644
---- a/lib/s390x/sie.h
-+++ b/lib/s390x/sie.h
-@@ -51,6 +51,7 @@ void sie(struct vm *vm);
- void sie_expect_validity(struct vm *vm);
- uint16_t sie_get_validity(struct vm *vm);
- void sie_check_validity(struct vm *vm, uint16_t vir_exp);
-+void sie_check_optional_validity(struct vm *vm, uint16_t vir_exp);
- void sie_handle_validity(struct vm *vm);
- 
- static inline bool sie_is_pv(struct vm *vm)
-diff --git a/s390x/stfle-sie.c b/s390x/stfle-sie.c
-index 8df1185c..3697e1ae 100644
---- a/s390x/stfle-sie.c
-+++ b/s390x/stfle-sie.c
-@@ -42,6 +42,7 @@ static struct guest_stfle_res run_guest(void)
- 	uint64_t guest_stfle_addr;
- 	uint64_t reg;
- 
-+	reset_guest(&vm);
- 	sie(&vm);
- 	assert(snippet_is_force_exit_value(&vm));
- 	guest_stfle_addr = snippet_get_force_exit_value(&vm);
-@@ -56,7 +57,6 @@ static void test_stfle_format_0(void)
- {
- 	struct guest_stfle_res res;
- 
--	report_prefix_push("format-0");
- 	for (int j = 0; j < stfle_size(); j++)
- 		WRITE_ONCE((*fac)[j], prng64(&prng_s));
- 	vm.sblk->fac = (uint32_t)(uint64_t)fac;
-@@ -64,6 +64,47 @@ static void test_stfle_format_0(void)
- 	report(res.len == stfle_size(), "stfle len correct");
- 	report(!memcmp(*fac, res.mem, res.len * sizeof(uint64_t)),
- 	       "Guest facility list as specified");
-+}
-+
-+static void test_stfle_format_2(void)
-+{
-+	const int max_stfle_len = 8;
-+	int guest_max_stfle_len = 0;
-+	struct guest_stfle_res res;
-+	bool saturated = false;
-+
-+	for (int i = 1; i <= max_stfle_len; i++) {
-+		report_prefix_pushf("max STFLE len %d", i);
-+
-+		WRITE_ONCE((*fac)[0], i - 1);
-+		for (int j = 0; j < i; j++)
-+			WRITE_ONCE((*fac)[j + 1], prng64(&prng_s));
-+		vm.sblk->fac = (uint32_t)(uint64_t)fac | 2;
-+		res = run_guest();
-+		/* len increases up to maximum (machine specific) */
-+		if (res.len < i)
-+			saturated = true;
-+		if (saturated) {
-+			report(res.len == guest_max_stfle_len, "stfle len correct");
-+		} else {
-+			report(res.len == i, "stfle len correct");
-+			guest_max_stfle_len = i;
-+		}
-+		report(!memcmp(&(*fac)[1], res.mem, guest_max_stfle_len * sizeof(uint64_t)),
-+		       "Guest facility list as specified");
-+
-+		report_prefix_pop();
-+	}
-+}
-+
-+static void test_no_stfle_format(int format)
-+{
-+	report_prefix_pushf("no-stfle");
-+	reset_guest(&vm);
-+	vm.sblk->fac = (uint32_t)(uint64_t)fac | format;
-+	sie_expect_validity(&vm);
-+	sie(&vm);
-+	sie_check_optional_validity(&vm, 0x1330);
- 	report_prefix_pop();
- }
- 
-@@ -119,20 +160,41 @@ static struct args parse_args(int argc, char **argv)
- int main(int argc, char **argv)
- {
- 	struct args args = parse_args(argc, argv);
--	bool run_format_0 = test_facility(7);
- 
- 	if (!sclp_facilities.has_sief2) {
- 		report_skip("SIEF2 facility unavailable");
- 		goto out;
- 	}
--	if (!run_format_0)
-+	if (!test_facility(7)) {
- 		report_skip("STFLE facility not available");
-+		goto out;
-+	}
- 
- 	report_info("PRNG seed: 0x%lx", args.seed);
- 	prng_s = prng_init(args.seed);
- 	setup_guest();
--	if (run_format_0)
--		test_stfle_format_0();
-+
-+	report_prefix_pushf("format-0");
-+	test_stfle_format_0();
-+	report_prefix_pop();
-+
-+	report_prefix_pushf("format-1");
-+	if (!sclp_facilities.has_astfleie1)
-+		test_no_stfle_format(1);
-+	report_prefix_pop();
-+
-+	report_prefix_pushf("format-2");
-+	if (!sclp_facilities.has_astfleie2) {
-+		test_no_stfle_format(2);
-+		report_skip("alternate STFLE interpretive-execution facility 2 not available");
-+	} else {
-+		test_stfle_format_2();
-+	}
-+	report_prefix_pop();
-+
-+	report_prefix_pushf("format-3");
-+	test_no_stfle_format(3);
-+	report_prefix_pop();
- 
- 	snippet_destroy_guest(&vm);
- out:
--- 
-2.53.0
+Before:
 
++ no memslot, or memslot not bound to gmem => shared
++ memory is shared unless VM ioctl used to make gfn private.
+
+After:
+
++ no memslot, or memslot not bound to gmem => still shared
++ otherwise, ask gmem about status, which I think is already captured in
+  the module param concept.
+    + The very usage of gmem (without INIT_SHARED) is defining memory as
+      private, I think that is already documented elsewhere when
+      INIT_SHARED was introduced, that now the default is private.
+
+So in summary, I feel that this has already been documented in various
+places. I'll also add the following in v11's "KVM: Let userspace disable
+per-VM mem attributes, enable per-gmem attributes", in
+Documentation/admin-guide/kernel-parameters.txt:
+
+	kvm.gmem_in_place_conversion=
+			[KVM] Controls whether KVM enables in-place conversion
+			support for guest_memfd and tracks the private/shared
+			state of memory per guest_memfd instead of per VM.
+
+			If enabled (the default), KVM enables the
+			KVM_SET_MEMORY_ATTRIBUTES2 ioctl on guest_memfd file
+			descriptors and disables the legacy VM-scoped
+			KVM_SET_MEMORY_ATTRIBUTES ioctl for private memory state
+			tracking. Only the KVM_MEMORY_ATTRIBUTE_PRIVATE
+			attribute moves to per-guest_memfd tracking; other
+			attributes remain per-VM.
+
+			This parameter toggles KVM's in-place conversion
+			capability support. Whether a VMM uses separate backends
+			or out-of-place memory management is determined by
+			userspace VMM design.
+
+			Note, this parameter is only available when
+			CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y. When
+			CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not set, in-place
+			conversion is unconditionally enabled.
+
+			Default is Y (on).
+
+
+>>
+>> [...snip...]
+>>
