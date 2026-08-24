@@ -1,50 +1,60 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F133546F7;
-	Mon, 24 Aug 2026 15:15:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA50E44684C;
+	Mon, 24 Aug 2026 15:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787584544; cv=none; b=pf3PXWV/cCF1M1TjF71RLwuL5iAtn5ythSCCy5u8TNPWYbb3RGwu3mmQKwVdjE3zpkZwQGyUKTECxKdf2aeK3f70RNudfmrWD9XCty7KEyqV4hSZQ9Lz/jNAuvD3/ZOkdD5Q+xPw4sSdhtwK19BKG6A1Bv0H2sRIMHU0lH/sA6k=
+	t=1787585480; cv=none; b=UA3CBjvKqBWZF9XkNUmsMOJcaqGUchLCVx4RpP7XBoPqB0X5F3nseFFz6ecWxGRBPqGksJTTjq9ry2aS0JbLX3w/uXYq3GLFaA+2K3ezPXEnlzI1PZXF0wR43zkfR8XjSMdxvpVI0ELqBdriWLc9BW4U23KApyDw0b6g1i9t2OA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787584544; c=relaxed/simple;
-	bh=blpA8OY4JE5bXReN2tfzd97azjD9+HtkK3+VwPEJQ40=;
+	s=arc-20240116; t=1787585480; c=relaxed/simple;
+	bh=02QD3ZQ96j67yphsUSPOpFX1YraqGBHdzwBA9ggD6tk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wm0XHWbUZQFEn2zPG7pN1xtLSuwwAt36p2RM5H4gYGfUQ+TtatRs/TamdIX8PUD34515weZEmViKzNr8moTnJoodObiAXx96CDxjfS0L6VgaofV3VlK3v94NmY/jEvImzbynbwGdZYYHHHbka3jdX+HXq3oXDVK6tWXBgkURI2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cxKEuq4U; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 In-Reply-To:Content-Type; b=p5CIkecYMWo8r5tOi+w4iZdfxWe9aYFiwNrJSR8weIX26s5oe5YQMujamZnZZsMpY7/UL0wYV3vObWsyycjGdTpB6VVcO13qXZvVhvHx462dm8PMi+K+uZnaKmfRrkrvGMYNsDZgTaSijguzYLPtWQ0G8CM7k7B/fUoZ5QWfqac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JNEgl6ih; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cxKEuq4U"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787584542; x=1819120542;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=blpA8OY4JE5bXReN2tfzd97azjD9+HtkK3+VwPEJQ40=;
-  b=cxKEuq4Ubh6SNxvVogOmuATBUacCs6keBTML1XzcFNuAFO2Yo07Eik2D
-   seBy+++wiKGdUjG/zej4PmG1xfsQELnOn/c1Tf68IZ4svbpe3LZjSq3QK
-   jkJXptvwfEfhm1jZ5gc788T0epRAplrop15SN2Fv5FdTcQ86G2MayJGU+
-   b/E2WPb71uHC0xFmWzQnto7cV8SHpaOFqd93LJJZ5JdOzPJzXJeYNdksa
-   wHbwc3kjDjP6hYh357WZsN3qnTyeLk/NYyDXnVmbks4QiRezb1zP00Uh5
-   E/Ieukd/p1rThK6GLb0KtAuGk5CkfrHHXUCVoYtcmSEa2FFLJDE2lGGlU
-   A==;
-X-CSE-ConnectionGUID: b+goZj2VR/G4GLuxfQsdrA==
-X-CSE-MsgGUID: kZ8W0prGQCKzYd5nCUjdKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="99563286"
-X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; 
-   d="scan'208";a="99563286"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 08:15:41 -0700
-X-CSE-ConnectionGUID: Gy2yMNMKSg2G0I5Z6ZxFKw==
-X-CSE-MsgGUID: GWZXmF2ySiWpFT14r//GXw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; 
-   d="scan'208";a="264411279"
-Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.108.191]) ([10.125.108.191])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 08:15:41 -0700
-Message-ID: <22bf174e-788b-4038-84e0-c6bea351830d@intel.com>
-Date: Mon, 24 Aug 2026 08:15:41 -0700
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JNEgl6ih"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67OD1k0A827102;
+	Mon, 24 Aug 2026 15:31:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=g1yEZC
+	LdgevlvdulBqeAYepqJyB3PXTnI3s+iJar6Ic=; b=JNEgl6ihqcSaiztcIkCtbj
+	+B2aaE6QpPb19INAm/Oi+Dwa3G+GvLti6rh1hBS6pYU6XiCtLqeEGk6zxjC9dvN1
+	MngiDifIBLB2G/8zgZZ7/S8trcskGWlFkx/fWybGBzHl/HhemkTGGVkCRFPM3Fo9
+	K3XPhgMYbLXLXacEz7ulwvnKlm/JoXyBGZgs3NTX4LjNKjTsBxFrLcaMEQ6EHMqq
+	V+XQTTYfYRqFTlxnPjETUbW/cJG6D/C7mZWO/1aCB+LMFQXq83UjrwHUzSjeAycw
+	CAUl6BzJxpj1IwvqEVy2MwQqQQ0+KFONVwIt3XsOoJkIeVVcYRCPdjkncthM1U9A
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g726eab4k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Aug 2026 15:31:12 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67OFQKQf011983;
+	Mon, 24 Aug 2026 15:31:12 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g7qkgxr4f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Aug 2026 15:31:12 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67OFVAW47668706
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 24 Aug 2026 15:31:10 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8285058051;
+	Mon, 24 Aug 2026 15:31:10 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 562F25805C;
+	Mon, 24 Aug 2026 15:31:09 +0000 (GMT)
+Received: from [9.61.96.163] (unknown [9.61.96.163])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 24 Aug 2026 15:31:09 +0000 (GMT)
+Message-ID: <3a8470ce-8da8-4b1c-b703-47aac581e33c@linux.ibm.com>
+Date: Mon, 24 Aug 2026 11:31:08 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,136 +62,94 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/6] x86/virt/tdx: Configure add-on features on TDX module
- init and update
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- kas@kernel.org, rick.p.edgecombe@intel.com, yilun.xu@intel.com,
- xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com,
- kishen.maloor@intel.com, tony.lindgren@linux.intel.com,
- peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
- chao.gao@intel.com, artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org
-References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
- <20260821032920.256225-3-yilun.xu@linux.intel.com>
- <27321cc1-5428-4590-a88d-b2824659c89a@intel.com>
- <aovmxjpVFqOR3QXm@yilunxu-OptiPlex-7050>
-From: Dave Hansen <dave.hansen@intel.com>
+Subject: Re: [PATCH v7 01/15] s390/vfio-ap: Provide function to get the number
+ of queues assigned to mdev
+To: "Jason J. Herne" <jjherne@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: borntraeger@de.ibm.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
+        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
+        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com
+References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
+ <20260807221834.562851-2-akrowiak@linux.ibm.com>
+ <abb3cf85-52da-4375-accd-287d5df98eb8@linux.ibm.com>
 Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aovmxjpVFqOR3QXm@yilunxu-OptiPlex-7050>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <abb3cf85-52da-4375-accd-287d5df98eb8@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=TfimcxQh c=1 sm=1 tr=0 ts=6a8c63c0 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=XhlgcvxzY8LAHhgN2-0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDEyNiBTYWx0ZWRfX1/LXt3N+tAE8
+ iq68IcPnPb+OEH1EXW0kfQ+fRSj7RGOw2ZbNX9MXG4E025cVV+RmaC3mxRiLD0XanWubuPDWTuo
+ b0bAg347ulyH8qeS/HW4NzZreE73YCE=
+X-Proofpoint-GUID: JvVwa83mHaIGexUSM2XUEdgZNCy_6DIi
+X-Proofpoint-ORIG-GUID: JvVwa83mHaIGexUSM2XUEdgZNCy_6DIi
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDEyNiBTYWx0ZWRfX8otxMH5rRmDD
+ dl8QNi0IP4+UWb92sUlauF3ajPdaepxpG7B8NN8YZshUcC9FTMR7gUN9O4qk8mPLNhuNe/FNemw
+ Z6BzkGLeMYv0nlujy/5HLPYpxPcKw+CHeGqdH7doPgPtBG5SNEHdTdSWs12fJZ0tXF5+lcHtBwI
+ 6gxtODvrEuHfq+WjO2PLSdV9fOCOup0tDCNBd3oQ64bWSkqAuC26LDtR+PwN9ymJoSXS1HqEYMe
+ cSXv1CHlfwAl/5zIoDN3DHcl6RJjnFru1tgKckxm1eRtSM82vp4zxPgd0dPR93aHtK2HZVgES7U
+ GWdSILjeJOd8OXAZ6MP70EWp41KpHP4n0vhPhOmerfoBb45ieXBlkP7h3nmVrzo2SEveT/mJ4HU
+ Rv4sG4KiNEbTS2qOvAcd7f8cP3RiqDgLjyh8i13CBOXQ/PdJzC6h9bmlXFlQvVwtki0Dki9VRdO
+ QPK/htzH1humvotv8WA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-24_04,2026-08-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 priorityscore=1501
+ lowpriorityscore=0 clxscore=1015 phishscore=0 impostorscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608240126
 
-On 8/23/26 23:37, Xu Yilun wrote:
-> On Fri, Aug 21, 2026 at 07:38:42AM -0700, Dave Hansen wrote:
->> On 8/20/26 20:29, Xu Yilun wrote:
->>>  static __init int tdx_sys_config(struct tdmr_info_pa_array *tdmr_pa_array,
->>> -				 u64 nr_tdmr_pa, u64 global_keyid)
->>> +				 u64 nr_tdmr_pa, u64 global_keyid,
->>> +				 u64 addon_features0)
+
+
+On 8/10/26 9:14 AM, Jason J. Herne wrote:
+> On 8/7/26 6:18 PM, Anthony Krowiak wrote:
+>> Provides a function that returns the number of queues that are or 
+>> will be
+>> passed through to a guest when the mdev is attached to a guest.
 >>
->> addon_features0 is just a copy of the global, static, not changing
->> get_tdx_addon_features0() return code, right?
+>> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+>> ---
+>>   drivers/s390/crypto/vfio_ap_ops.c     | 8 ++++++++
+>>   drivers/s390/crypto/vfio_ap_private.h | 2 ++
+>>   2 files changed, 10 insertions(+)
 >>
->> Why pass it around as a function argument?
-> 
-> I thought that we need some place to explicitly see the TDX ABI
-> definition - what are the inputs the host should provide to the module.
-> 
-> The addon_features0 is the *option* the host should provide to the
-> module according to the ABI. The global, static value for addon_features0
-> is Linux's policy. So if we need to explicit the policy by the code,
-> this helper and its arguments are good places to show the boundary.
-> 
-> But yes it does add boilerplate to the code, I can drop it.
+>> diff --git a/drivers/s390/crypto/vfio_ap_ops.c 
+>> b/drivers/s390/crypto/vfio_ap_ops.c
+>> index 44b3a1dcc1b3..36786d70a88f 100644
+>> --- a/drivers/s390/crypto/vfio_ap_ops.c
+>> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+>> @@ -2098,6 +2098,14 @@ static void vfio_ap_mdev_request(struct 
+>> vfio_device *vdev, unsigned int count)
+>>       release_update_locks_for_mdev(matrix_mdev);
+>>   }
+>>   +int vfio_ap_mdev_get_num_queues(struct ap_matrix *ap_matrix)
+>> +{
+>> +    lockdep_assert_held(&matrix_dev->mdevs_lock);
+>> +
+>> +    return bitmap_weight(ap_matrix->apm, AP_DEVICES) *
+>> +           bitmap_weight(ap_matrix->aqm, AP_DOMAINS);
+>> +}
+>> +
+> static inline unsigned int bitmap_weight(const unsigned long *src, 
+> unsigned int nbits)
+>
+> bitmap_weight returns an unsigned int. I think 
+> vfio_ap_mdev_get_num_queues should probably return an unsigned int 
+> too, for maximum typw safety?
 
-I'm not arguing that the helper should go away.
+I'll make the change, thanks for the review.
 
-What I'm seeing is this pattern:
+>
+> Other than that:
+> Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
+>
+>
+>
 
-int helper()
-{
-	return something;
-}
-
-int func_low_level(int arg)
-{
-	// use arg
-}
-
-int func()
-{
-	int foo = helper();
-
-	// use foo
-
-	func_low_level(foo);	
-}
-
-When it could use this pattern and just call helper() twice instead of
-obtaining its return value and passing it around:
-
-int helper()
-{
-	return something;
-}
-
-int func_low_level()
-{
-	int bar = helper();
-	// use bar
-}
-
-int func()
-{
-	int foo = helper();
-
-	// use foo
-
-	func_low_level();	
-}
-
-So that's what I was asking. Why pass the result of helper() around when
-you can just call helper() twice?
