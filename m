@@ -1,184 +1,128 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa5.hc1455-7.c3s2.iphmx.com (esa5.hc1455-7.c3s2.iphmx.com [68.232.139.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8993DC4A0
-	for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 21:18:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C6E17A314;
+	Tue, 25 Aug 2026 21:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787692702; cv=none; b=FgwGFWGiudLUVgYjBq0wmThUv/Kb4jMzzu38n/jzWoT83tCIzVRFM5pKAADumPs9B4FSJYabPgCd7AcbaxHWCTDH78WkvkHIsDpIKLOaPzGjPgizZVKtabRRUdEF3C4e2WnfREVMFmrEr0gbkHAbFxe3Kiw8v6xfPLngBq2D9gI=
+	t=1787692797; cv=none; b=SQYVajDXwIP108Uy1Po7+Dyc0NetUKlESoyIR8LXA0YZT8GUVa0ddRBm0/581UISNPSqxzfQyUMVUZqNxoG9wJFFr1AUpH9C5nO++inZRDo/o/ELqUAOSLs0Y5TULxndKifeFK0mTN2zOyw3uw5R01DMQgFo/aORyooClxZCHU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787692702; c=relaxed/simple;
-	bh=5DASDcrdCFVsZOprMrejQ5Q/16NZy+mOibkZO8FKsFA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KpnGkh3hkYIEyc9k/cGWTB9TZEQkR0obVHYxp5ZT4yDIbL+Yjo/YkdcP1JKQcBM//8hR0wGieNJNiZOY+K5Xz/GnPLPd3qicmwqsXf4sTajEaVnxYw00c+Uye98uYlAe8ASZRGphefbsDer/evHrQOmhIkD2odemzc2p4YPgESE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YpNqCqgr; arc=none smtp.client-ip=209.85.215.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787692797; c=relaxed/simple;
+	bh=DCkh7zwFwuSOe5fTMEye2Oh1ZEjE4In2M9Rjx+1yMUE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=V/N+5TVW/TDJBN+VFpdK+ccSEDCZreZyg6X7KsyNeLB+febdWXSEm13n4HSN7GzweOgLDYjR8ncj4pTE0MI+f/fOm0iOotjyVgNu6MkOUlPZrYPOXkBr6F2B16lAb8WUSe7g1LcEyJzsHt2xAKLQGC1DvVOPsQj0bwrxPtSesRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=g0OK3kcr; arc=none smtp.client-ip=68.232.139.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YpNqCqgr"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc1b8088202so188757a12.3
-        for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 14:18:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787692700; x=1788297500; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=96v/IU+xqfPxFBmAPsTHt7ENr2LiLEu2VL8xEjm4RVc=;
-        b=YpNqCqgr9Qi2JfAImSrI6w2yUCiAZ3opY0ZCZHEKI0g5jf7s7bdSxVYDXW/0K01Pmp
-         hzNPSYSvSPpog6sKVZ/BrbDX0xaUMSzkjDKPSqNvYOCAA2WwDd9EZ+qBj5ZAIG4Wvwph
-         +ZyWU9IlZSq4wEJx5BFdPTpaTIpohsaHamQ7tyQqBV4XCkARGvQSEy+2dLVpjEcZT3yk
-         6GxAJzpzlhCjExDTDLydwTuJw0Jm4rIm+otd919wyBypFyDK/Fn5/PFowNFZT4v00zAV
-         WVAYkii0nvMPLICihVmdUeobmjZIJoE7fQGlgXwYOa4UHqfMHUupCM9loroxWL8eG2kA
-         6hWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787692700; x=1788297500;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=96v/IU+xqfPxFBmAPsTHt7ENr2LiLEu2VL8xEjm4RVc=;
-        b=o6OE6l/17lazNKDeErAzjEu3LsVaJr1x+IbRZGzBVOy3HDLjAOWMr9McBYLakQ/Dh0
-         b9fcOnXSAH0QjD7jCJT9eTaH6zFKKjmLOKCGkhNHYoYaFzEPd0WThVECXpX09HQpLd1V
-         hT1/wRiWlZ2L9SYx5ujTbqkIJuDNULczYql5l5dMFLMT61XSnPdlqsgLFEsgtp4/hJeZ
-         P/ccogJOLvVR4MDHSRD1yKIfjeHULL1ekUCBZN3efCg9eJVBORxLKnxke5PUMKjr2ufP
-         BQSmYEzKX1vqOtuAFZ+7aXmSWehujttG8JFQJszNpCxS0jyKL+JPt1uRL9PZytkye9h+
-         OsJQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqW7sNkDjafsfsORmHf1EkTOqLSTDR0qShhI1KKSAbdrs7CA6gx71tSl12Xkzi1X/3CZks=@vger.kernel.org
-X-Gm-Message-State: AFuF++ku5OtJleyCKhcBQBkIcdW1mOr2rJSd8yF2j6OuV6vWIv25HBbF
-	+yqi52NRBYx2NJMbbiqnyLnkkyr55OW9ZOghYnzc4RWvWOOP3/f4GjrXyl1wbZtSl77IcfL0+Lx
-	yeXNTkw==
-X-Received: from pgp16-n2.prod.google.com ([2002:a05:6a02:62d0:20b0:c86:5f41:8c94])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:2290:b0:3cc:3d08:da3e
- with SMTP id adf61e73a8af0-3cf76286186mr2809631637.2.1787692699334; Tue, 25
- Aug 2026 14:18:19 -0700 (PDT)
-Date: Tue, 25 Aug 2026 14:18:18 -0700
-In-Reply-To: <CAEvNRgFhjbgC9Ng1qviPx4oE=qihUwiBcsYOgJG3yOU-nLG1hQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="g0OK3kcr"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1787692795; x=1819228795;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=DCkh7zwFwuSOe5fTMEye2Oh1ZEjE4In2M9Rjx+1yMUE=;
+  b=g0OK3kcr8tsnVbQn6ugdJSCNWBy8giHLO9S259p9J9FN0PC1pUwom983
+   9unZPpKj3xqviAFnZG7JI338bKf4n+ouMt7VzvEgm1cEhVAP43KQcM5Um
+   BFfNm/rJaPAE/MKp9l9Iz5WrannPOxDKxbW0BphYEwdQ2RFNvrl1gkZ2q
+   DAJP4XqQ6of50yn27eVSd508IjhZZNi0EntW69OOJFwjeuSozvWXuUTsv
+   7eK06wImHgTjlfadH6YrBPnxE5CA52sAN01zWX9UGuvtuXSxob2xYhUN9
+   HnrAlxt0bfZh5A9QVRTgxyn1+/CU9uWyj9tBrMtv01z8bhCKKLBQ4VMZo
+   g==;
+X-CSE-ConnectionGUID: 9nxJjbodQOmNVnEORTjmxg==
+X-CSE-MsgGUID: 2tdLVwoiTca3g2vYexeKgg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="250769428"
+X-IronPort-AV: E=Sophos;i="6.25,243,1779116400"; 
+   d="scan'208";a="250769428"
+Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
+  by esa5.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 06:18:44 +0900
+Received: from az2uksmgm3.o.css.fujitsu.com (unknown [10.151.22.200])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id 611C9820C04;
+	Tue, 25 Aug 2026 21:18:44 +0000 (UTC)
+Received: from az2uksmom1.o.css.fujitsu.com (unknown [10.151.22.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmgm3.o.css.fujitsu.com (Postfix) with ESMTPS id 19D0FC02F31;
+	Tue, 25 Aug 2026 21:18:44 +0000 (UTC)
+Received: from [127.0.1.1] (unknown [10.124.178.20])
+	by az2uksmom1.o.css.fujitsu.com (Postfix) with ESMTP id 459B81801C01;
+	Tue, 25 Aug 2026 21:18:39 +0000 (UTC)
+From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Subject: [PATCH 0/2] 52-bit VA guest mode ID support
+Date: Wed, 26 Aug 2026 06:18:33 +0900
+Message-Id: <20260826-arm64-52bit-va-v1-0-14ec98211363@fujitsu.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-7-2fc18ee6d3ba@google.com>
- <a410cca6-0776-44af-8353-9b7375e2fd4e@intel.com> <CAEvNRgGvxMus6pp=xuDYOumH3Ge4oi0=YKjTaFykFHwXuzRDwg@mail.gmail.com>
- <54d1bd0e-c27a-4033-ab97-02cd9579a620@intel.com> <CAEvNRgFhjbgC9Ng1qviPx4oE=qihUwiBcsYOgJG3yOU-nLG1hQ@mail.gmail.com>
-Message-ID: <ao4Gmn5tSZMhl_nX@google.com>
-Subject: Re: [PATCH v10 07/41] KVM: guest_memfd: Stub in ability to enable
- in-place shared<=>private conversion
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKkGjmoC/yXMQQqEMAxA0atI1gZqtCJzlcFFbVONMDq0KoJ4d
+ 6su3+L/AyIH4Qif7IDAm0SZp4Qiz8AOZuoZxSUDKapVQxpN+NUVaupkwc1gSb7wlXVKKwcp+gf
+ 2sj/Db/s6rt3IdrkvcJ4X9NTgIXIAAAA=
+X-Change-ID: 20260825-arm64-52bit-va-32f1f4cd050d
+To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+ Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>, 
+ Steffen Eiden <seiden@linux.ibm.com>, 
+ Suzuki K Poulose <suzuki.poulose@arm.com>, 
+ Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+ kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Itaru Kitayama <itaru.kitayama@fujitsu.com>, 
+ Takayuki Okamoto <tokamoto@fujitsu.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787692718; l=1855;
+ i=itaru.kitayama@fujitsu.com; s=20260825; h=from:subject:message-id;
+ bh=DCkh7zwFwuSOe5fTMEye2Oh1ZEjE4In2M9Rjx+1yMUE=;
+ b=7XNu/jkIySZnSwyMNQ95NlahI1x9xVp4JU7Z8qoAENLXI9Bg2Mlv4Us0xIz4cTk1mLd3wberh
+ apmDZOfqdp8Ag/eP9I4BBkHtOVzEu9B1BccGPvdg0H+ylcLNTr/ecuV
+X-Developer-Key: i=itaru.kitayama@fujitsu.com; a=ed25519;
+ pk=g9bTnr9giRP7JwNSZHy+OMLQZBEUtSE9tUnXso0hH1Y=
 
-On Mon, Aug 24, 2026, Ackerley Tng wrote:
-> Xiaoyao Li <xiaoyao.li@intel.com> writes:
-> >> 			KVM_SET_MEMORY_ATTRIBUTES2 ioctl on guest_memfd file
-> >> 			descriptors and disables the legacy VM-scoped
-> >> 			KVM_SET_MEMORY_ATTRIBUTES ioctl for private memory state
-> >> 			tracking. Only the KVM_MEMORY_ATTRIBUTE_PRIVATE
-> >> 			attribute moves to per-guest_memfd tracking; other
-> >> 			attributes remain per-VM.
-> >>
-> >> 			This parameter toggles KVM's in-place conversion
-> >> 			capability support.
-> >
-> > I start to think that the term "in-place conversion" seems to read
-> > inaccurate. I think it is describing the shared/private conversion of a
-> > gfn, and in-place means when a gfn is converted between shared/private,
-> > the backend comes from the same gmem page, thus in-place. But KVM
-> > doesn't enforce the "in-place".
-> >
-> > If "in-place conversion" describes the shared/private conversion of a
-> > gmem page, then "in-place" is redundant because the conversion a
-> > specific gmem page is always in-place.
-> 
-> Hmm, a few people have raised something related to this
-> gmem_in_place_conversion module param's naming: Xiaoyao, Yan, David, and
-> Sean's response is generally that it is confusing, but can't find a
-> better way out. The main consideration around module param naming is
-> that it should be named for the benefit of the admin. We want some name
-> that admins can understand at a high level (for some definition of "high
-> level") what this does.
+This patch series extends the arm64 KVM selftest framework
+to support 52-bit guest virtual address (VA) modes in addition to
+the existing 52-bit physical address (PA) configurations.
+The motivation is to enable validation of LPA2 guest memory-management
+behaviour in configurations that use a 52-bit VA space.
+While the selftest framework already supports testing 52-bit PA
+configurations, it lacks the ability to exercise guests running with
+52-bit virtual addresses, leaving part of the LPA2 functionality untested.
+To address this, the series introduces new guest modes for 52-bit VA
+operation, adds five-level page table support where required, and
+performs runtime detection of host 52-bit VA capability so that
+LPA2-enabled guest VA tests are executed only on supported systems.
 
-Executive decision: use gmem_in_place_conversion.  I hear (and largely agree with)
-the complaints that it's imperfect, but I don't think it's feasible to find a name
-that can perfectly describe the nuances while still being somewhat succint and
-intuitive.  I.e. gmem_in_place_conversion isn't perfect, but everything else I've
-seen is much worse.
+Testing:
 
-I'll make sure to call out that gmem_in_place_conversion is imperfect in the pull
-request, to give Paolo a chance to veto my executive decision.
+Built and tested on arm64.
+Verified on QEMU with a V52-capable guest configuration.
+Confirmed correct operation of high virtual address mappings by
+exercising guest memory accesses in the 52-bit VA range.
 
-> Do you have a proposal to resolve your concern, considering naming,
-> documentation, comments, code, etc?
-> 
-> >>                       Whether a VMM uses separate backends
-> >> 			or out-of-place memory management is determined by
-> >> 			userspace VMM design.
-> >>
-> >> 			Note, this parameter is only available when
-> >> 			CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y. When
-> >> 			CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not set, in-place
-> >> 			conversion is unconditionally enabled.
-> >>
-> >> 			Default is Y (on).
-> >
-> > I'm looking at the doc of KVM_SET_USER_MEMORY_REGION2, which reads
-> >
-> > # When mapping a gfn into the guest, KVM selects shared vs. private, i.e consumes
-> > # userspace_addr vs. guest_memfd, based on the gfn's KVM_MEMORY_ATTRIBUTE_PRIVATE
-> > # state.  At VM creation time, all memory is shared, i.e. the PRIVATE attribute
-> > # is '0' for all gfns.  Userspace can control whether memory is shared/private by
-> > # toggling KVM_MEMORY_ATTRIBUTE_PRIVATE via KVM_SET_MEMORY_ATTRIBUTES as needed.
-> 
-> I'm not sure how this snippet from the documentation connects with what
-> you'd like changed.
+Signed-off-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Reviewed-by: Takayuki Okamoto <tokamoto@fujitsu.com>
+---
+Itaru Kitayama (2):
+      KVM: selftest: arm64: Support 5-level paging in stage 1 translation table
+      KVM: selftests: arm64: Add 52-bit VA guest modes
 
-It's flat out wrong once in-place conversion lands, because it assumes PRIVATE
-is tracked per-VM.  Something like this?
+ .../selftests/kvm/include/arm64/processor.h        |  2 +
+ tools/testing/selftests/kvm/include/kvm_util.h     |  3 +
+ tools/testing/selftests/kvm/lib/arm64/processor.c  | 87 ++++++++++++++++++++--
+ tools/testing/selftests/kvm/lib/guest_modes.c      |  5 ++
+ tools/testing/selftests/kvm/lib/kvm_util.c         | 11 +++
+ 5 files changed, 103 insertions(+), 5 deletions(-)
+---
+base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
+change-id: 20260825-arm64-52bit-va-32f1f4cd050d
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 4eb7e75a7473..c9769e5e7329 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -6383,9 +6383,12 @@ on-demand.
- 
- When mapping a gfn into the guest, KVM selects shared vs. private, i.e consumes
- userspace_addr vs. guest_memfd, based on the gfn's KVM_MEMORY_ATTRIBUTE_PRIVATE
--state.  At VM creation time, all memory is shared, i.e. the PRIVATE attribute
--is '0' for all gfns.  Userspace can control whether memory is shared/private by
-+state.  If in-place conversion is disabled, i.e. PRIVATE is tracked per-VM,
-+then at VM creation time, all memory is shared, i.e. the PRIVATE attribute is
-+'0' for all gfns.  Userspace can control whether memory is shared/private by
- toggling KVM_MEMORY_ATTRIBUTE_PRIVATE via KVM_SET_MEMORY_ATTRIBUTES as needed.
-+If in-place conversion is enabled, then the starting PRIVATE vs. SHARED state
-+of a gfn is determined by the relevant guest_memfd instance.
- 
- S390:
- ^^^^^
+Best regards,
+--  
+Itaru Kitayama <itaru.kitayama@fujitsu.com>
+
