@@ -1,128 +1,190 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazolkn19013076.outbound.protection.outlook.com [52.103.43.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10A73F483D;
-	Tue, 25 Aug 2026 09:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787651611; cv=none; b=R521s7qd6b5b4LAYWgLaTPBJoAobRKhTj4J3HIa9xRbyb9Aausc7RUPI2ZzD+s4RzcX10ZixY1IVGPW+n9KZ/chb4ArugwEaIv2Rp0H2KRibg4UrJmuVluDR0679d0OxUg7bXBOFhf+ZyIiHlEce4W1mAC73pnt4KLiqfZX9oAU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787651611; c=relaxed/simple;
-	bh=xXFJ2OghgRWnlCERXbp1/tM3INoGRMhXbL7aq8ytv0c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S9o9jTjNDI3+M3ngU75p5GZhU1UWVYWhAaVIUaQoL9hacBZi0zlDlXBBcsqWdBZ/z2gWDiqXS4ljvziomUBXCoKMVeeEd2smHSCwhjfIcl+VJalYF56BtSBy342jECAEM4s8PiT89lAf/UJ7bfxfYvMrTEAnrmOgk4ONNYtUgXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MnlcOzMe; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B36388898;
+	Tue, 25 Aug 2026 09:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.43.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787651932; cv=fail; b=Ex2/5BPiPcdmPqLmdU8fG+HnYSjVk9oaGTZ6I7k9xg8GG60tqSgj9Ow4PSwN1R1jbau1PbOysEjTwP0kESm3MN570Dzti2XKFaX7iFI2Rni3Fe82iw8NoqJrwR3Xrl4acRkkgf1AdJ2dLF8lyC1MnUn8/jARwX5gQDPQjMEElOY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787651932; c=relaxed/simple;
+	bh=VIPbIzQuZEfytmtOWczvl//OkHSYqyYbiyQ/ovCHTb8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=p9sHwOmniK21ef/M0qahGeKugT74BM5dZwPwHHKLM4owUoty8dkE9dYZyBYMo/DZH0wYU80a0SuN12LK/QRMN020zcd4PbX34bPvwfsTePsmQZCb/THq6OLncfUUTLSeMWrGFXIZ02CFNYn4SwzHWL2Yq7GlZUcziDOzcGZisAs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=OMYIDHpK; arc=fail smtp.client-ip=52.103.43.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MnlcOzMe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787651609; x=1819187609;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xXFJ2OghgRWnlCERXbp1/tM3INoGRMhXbL7aq8ytv0c=;
-  b=MnlcOzMeLOsYlr9j+4uGOGnw8qcUDSda4A206EiV2sxdp1ca4LAQZWr4
-   zgFpRcxEYKNHPC+/Yw7vzqXJUI5DJcwvhQvZYGaxcvnapn+OGdCwMrl7f
-   jYmq12OsLj0ZiNka1HkvC5k12ik+nLF+OQkC4pEpz6ArjbUfDh2JbfVeC
-   0PiUUgWQ7LpCeNR9+TMmW34GE2ihHKy3gxFCvQ1z1AQScN/d7YFxdgIh/
-   F4WHvP80KIA+3zz4dSfkPahxiu84f7cZF+TFWcF1KnZyI0jlemrNRrQcr
-   4FRLpaQnYpUbhofE7/jkqvyjpglQiWwN+lVJPUEpsSErKrQweoNCtRzn6
-   Q==;
-X-CSE-ConnectionGUID: u0HiZSk6RSmOMoUlUiZgrA==
-X-CSE-MsgGUID: zCsMazmPSLmWQMYz34pEpg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="91795601"
-X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
-   d="scan'208";a="91795601"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 02:53:28 -0700
-X-CSE-ConnectionGUID: FrocIrwCT6K6K6H8W5Xisw==
-X-CSE-MsgGUID: 1e3zZ4t7RbaV3FJOI0YjsQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
-   d="scan'208";a="266696773"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by orviesa008.jf.intel.com with ESMTP; 25 Aug 2026 02:53:24 -0700
-Date: Tue, 25 Aug 2026 17:53:23 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Hunter, Adrian" <adrian.hunter@intel.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Xu, Yilun" <yilun.xu@intel.com>,
-	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"Mehta, Sohil" <sohil.mehta@intel.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"Gao, Chao" <chao.gao@intel.com>,
-	"Fang, Peter" <peter.fang@intel.com>,
-	"Maloor, Kishen" <kishen.maloor@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH 5/6] x86/virt/tdx: Make TDX module initialize the
- extensions
-Message-ID: <ao1mE3boGj0Tok2y@yilunxu-OptiPlex-7050>
-References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
- <20260821032920.256225-6-yilun.xu@linux.intel.com>
- <f48b83feb2ee1d3c88b5a1627cf35b4b282d3f90.camel@intel.com>
- <aox8DgpnSnhZRfCv@yilunxu-OptiPlex-7050>
- <6ffb491ea0252acd60982330be1e7ca1e8dcb23a.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="OMYIDHpK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sD9B6uvEAH1IUEa4eF889nD8hUKntvUvo6bgR/sUL1rceUvESRoRz5W4Pa1ttlpZeo4I/1C+wv+ZAofuJUyYcv2ODP2ldS0CSNNsgFOiYErYQ11jrGDNl62+V8VcxhCaQ9842a4zia7mDqbYc2xCSrNKo94x+e7qyS9hMp134jfRZaD0oCjeGBfWNGfr0dFBmITLPgpfpUjDwWlu4i4Ra01oN5km703oKUm5Ao/o1NBlo0Hh6gkZTkT3adYQ9k3ohVAJRNo1aT9xDzqLcaouyjffAxBH5SQkxuPcfXgoSvmedYolsOmXcI8yKO7FUcPSuhrxkS+m1Q/iucvrw5eCig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KNMGe7K+HF94mPtfo/J6e4+2MTAZacJNYL6U7UP1zJQ=;
+ b=w+0IOalABw2vy9RESqLXogh/oY8vPp+WtCvtTrfda43qjor4dJKkNOp2pxTYmdHeHDPzphE3+oSd05O53TxliZ0eex76ae4d1CbTVPzQ27KvHj13DJGVwC6kSuAlM6CkjjdxZz6X7J8UtiFKSi0dnN1r0b4fRDIw2dTb7R0ZWlyzDSdGNKp4v3I9J/o7W8hBH4gmljMEKvPYAo1ScShLpw0Kat+Wt43O2ylTwujaa6mHMU+8mcmm94HlJC4FtAZXhOspQuyDfei3/g+ZFYqsRes6rL+teVF6iR7mjd2ZIuwBnC/FcqwPtVAWjChrSXQDwC365tXv2d+xo9nFRDM09g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KNMGe7K+HF94mPtfo/J6e4+2MTAZacJNYL6U7UP1zJQ=;
+ b=OMYIDHpKohNwYl0+SthQTsPOcq2gYV6S7bsWNZ6wQDCVvH1W5KJZ9BOZ3/2WoT/qVn6olOpkiPPLSJBQugv4QGZ74tCJUHv9Ol3J0whYFedtbcU14/SnqpDj9BJbCo2+cqlsYGBkzeTAqytId1felVLKzDSxggjNVGc8YGYGcK7BwRHbjPQT3ThhzQ7y0WlkwgmYstWpLsSyIFpkzSN+hGqMM6To5JQ25hSVk+d5w77M+QmXIZjfWn0VZA340nnB/6zkJyHNeESz7hgdJiG6NTcZEzl9/yBtMlllf72TvnIJPZ21z2Gs1V+7xfZBpnEUbrIuStkT9WjprpXMZgKcyg==
+Received: from SE3PR04MB8922.apcprd04.prod.outlook.com (2603:1096:101:2e9::7)
+ by TYZPR04MB7269.apcprd04.prod.outlook.com (2603:1096:400:45a::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.6; Tue, 25 Aug
+ 2026 09:58:42 +0000
+Received: from SE3PR04MB8922.apcprd04.prod.outlook.com
+ ([fe80::3450:f139:5238:8f58]) by SE3PR04MB8922.apcprd04.prod.outlook.com
+ ([fe80::3450:f139:5238:8f58%5]) with mapi id 15.21.0360.005; Tue, 25 Aug 2026
+ 09:58:41 +0000
+Message-ID:
+ <SE3PR04MB8922E6F977EB1EECF743061DF3AF2@SE3PR04MB8922.apcprd04.prod.outlook.com>
+Date: Tue, 25 Aug 2026 17:58:33 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: riscv: Avoid redundant interrupt check for pending
+ timers
+To: Jinyu Tang <jinyu.tang@linux.dev>, Anup Patel <anup@brainfault.org>,
+ Anup Patel <apatel@ventanamicro.com>, Atish Patra <atish.patra@linux.dev>
+Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Jinyu Tang <tjytimi@163.com>
+References: <20260814123541.593613-1-jinyu.tang@linux.dev>
+Content-Language: en-US
+From: "Nutty.Liu" <nutty.liu@hotmail.com>
+In-Reply-To: <20260814123541.593613-1-jinyu.tang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TP0P295CA0059.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:910:3::12) To SE3PR04MB8922.apcprd04.prod.outlook.com
+ (2603:1096:101:2e9::7)
+X-Microsoft-Original-Message-ID:
+ <6d882342-3f80-46a3-acd2-11104fd43296@hotmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6ffb491ea0252acd60982330be1e7ca1e8dcb23a.camel@intel.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SE3PR04MB8922:EE_|TYZPR04MB7269:EE_
+X-MS-Office365-Filtering-Correlation-Id: f601a071-cfcc-49a2-0636-08df028f711c
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|19101099003|55001999006|15080799012|5072599009|6090799003|12121999013|19110799012|8060799015|41001999006|22091999003|23021999003|24121999003|4140399003|25010399006|52005399003|40105399003|26121999007|2607281247196008|440099028|3412199025;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UzNwSGx6VjI1N3ZnTGJPVjVVQnRJNnJIMVY4bjNtR2tYaGtXVldUWVdyK1py?=
+ =?utf-8?B?SE5PbUVqdGhHT3NiUTJRMjBvcUFNSVdxREJQMnVTZE14ZnlmK2xocDZwbW9m?=
+ =?utf-8?B?ZTZYTVp5RmZIeWNvSHdJZGtIL21CTEJSek1XcWNFY2Q0bTMrNGVZeFhESkFC?=
+ =?utf-8?B?MmoxeEJGc3BBTzhvOTRWNG9iT2ZmWUtvQ0hIL3Jaa1BpdXpWRW5hSDJ6N28z?=
+ =?utf-8?B?d0x1Z2JrSGc0MTFKZkhzV3o5QUZJOFF6dFhsemIvN0VIM2ZDdm1WRExrU1Ur?=
+ =?utf-8?B?ZWU1YnlwL3V6MjZFSXc0NHJqWkFTTkwzbGRtSFQycGgyKzBVVTdKVkZ6UVlx?=
+ =?utf-8?B?UTFVdlE1c3BCYlNyZ2tUbWhRYVVLL3hoeHROTmFuQ2NnWHRZNFU2aE01Qlg3?=
+ =?utf-8?B?RGIwLzBHWTRoMFMxRXcwRTlKVmlaSkc2QnBjajZLY3I2TVgxQ3hDeUxtMDh3?=
+ =?utf-8?B?WnptYmNqUWtTTmtrSklGbmlaOEZtakhNU0pGVWxQL0dKd2hLS1BseWRaZEQ4?=
+ =?utf-8?B?aE9CTWdGbFBnc25zZzdkd2FpVTNHS2QreXB1TDA0ek9zQ2JybFpqcWZOK0hE?=
+ =?utf-8?B?bjFlc2VLa256VVNCWEhzOFV0VG4wZDAveWdVWXpPcmkwL3hseFkveERSWU9x?=
+ =?utf-8?B?Vkk5bmMrUFgwZWtmRFdZSU9yTTdxNW14STVRMzljMmJ3WjdDaFZybS9jUDZK?=
+ =?utf-8?B?TnRGbS81Unh3SGxja1BVOC9jZUN0RThHTUtDTGlOQnd6R29xRHBLUzMxNGtX?=
+ =?utf-8?B?cWhQQUNLQTJBS3BZWDUwOTlkcEpGTUNFNXA5TG1GOGhrQUVVK1hxb1BPQk50?=
+ =?utf-8?B?L0taU25HK25PQjBtMEJUZTQreWFVZzFIK2REY3lXZVNpTGR5bUd6dklzK29C?=
+ =?utf-8?B?LzM4elJWc3ZMb1JTNkQwZG9Hc1pxeWJsV1lSR3BBREpCZ0pjZkhWdVczV2lK?=
+ =?utf-8?B?RjJwMWRYOTZLRWNWN2RqaS9pOHRMWUFuVmI1QjB1NmlMQi8wbjFYVDVKendY?=
+ =?utf-8?B?YXN6UGovZm9Yb2pRb3FQd0NtNitvZit0cDcySEZnemJnVUMwUEFHWENEMW8x?=
+ =?utf-8?B?cGVnMGJOamZKOW1OTWhqNXJqMVpNSlVnczVuQmtONkpON3dzU05zNXRwc0Yv?=
+ =?utf-8?B?Ylc5ZjdhSGNrOURkK3E3L09FcytMVjdZcGJnaGxvMHZOQWVocStGdmNwQWJz?=
+ =?utf-8?B?Qit4SWRxMSs4b2ZleldsdXd3WWlXNCtVbitYUm84amhPM295Ty9FSytCaUNn?=
+ =?utf-8?B?ekFZZzVhWmYzQmZkZGhrVGE2aVE2L2FpNjl0NkE3NU05TENlKzNTRnJ0cmhl?=
+ =?utf-8?B?SSt4dXRMQm95MGRUbHVLeno1Zi9LY0pjYTlHRmFsVGJlM1MrQUcwQS9uZlNE?=
+ =?utf-8?B?UEpzVFR6YVlPdkFoNzVWZUdiT3R6c3JRSWEvSUh5elkzTXZtOWtnLzEyTGYx?=
+ =?utf-8?B?K25NQUthcDQvazNMQS96ejFLcHF6WTBiSWJyeDlYUk5WMTFlK25rUDJaamVT?=
+ =?utf-8?B?WW9Lb0VqVUdBdzhGNGpMbzFiZGVjZXovbExCUERzMHhyRGhJTC9GVSt0eE9U?=
+ =?utf-8?B?azF5UT09?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aWEvSjErS1ZQNTNXVERBcmVhRmFWMXVyQ00vZXQ0KzZlRDNNdkI1dUVBazRF?=
+ =?utf-8?B?bkxrT3FjMTJqaDlsMmhVQ0NqM0JQaG1aSGJhVHgzMzJmQkxkQjU1MDlZWldZ?=
+ =?utf-8?B?SUdMSWdUOFQwbm5qWVRua0UzYXZYZ1FUb2hwSjRML3hrYVRwaGNJaFlwSTZQ?=
+ =?utf-8?B?RitEVDA4d0FmaXN3NXBwNW1PVDVMdjRVL2swUnFONFRWMHlNcC9QYi9DVGN5?=
+ =?utf-8?B?UE9kbTU5OU02cCsrOUc1ekZjVlExR2FmQVBLWC9aUW5kUmpSbjh3SUg1WDVx?=
+ =?utf-8?B?VXErRG13VXlwcFNpVittMjJ5THJHTlBZeUNnTDBvMzk1VEdleks0a0k4V0ow?=
+ =?utf-8?B?dDlYQmdNdFF6QXlJWUdMVW5aMHdjTjFJalVGdld6emVzeHRKaXpxVmQycGNI?=
+ =?utf-8?B?ZThqUDBhR2NZWHIvcmhmVlB6LzV6K2pyeGtJeGpvODE2eHFlNjQ0WlJBeGtv?=
+ =?utf-8?B?dkxUN1FtT1Y3RWZORW9OTnNGRDRzNHJwMlAwNUJYRVhqVUtJSDlpcTA3ellO?=
+ =?utf-8?B?WWhtbVBDZndPNGY4cVFYempjOXNsb2xvbHRKdHE2L3RNTGhJRm1CZUZsQ0xU?=
+ =?utf-8?B?RWxBbU9aMGJHZmUwTWRyUWdNUzFGNTJOd3QvS3QyenpWbUE4MTExQkpmSDNk?=
+ =?utf-8?B?bjdCTm9zQUl6a09DZlc3U1dqR1dCczJpMXo3aTFycTdLTFhvK2hvVjF3UDJF?=
+ =?utf-8?B?NnVWNk80K1dJMHU5TTVyN2hpL054cUNLSFlLMmNDeVFUekZlR2E1V0IrZHNI?=
+ =?utf-8?B?QWdWMUFQUitlQ1hVU094VWhZbVI3WlIvNVJ4Tko0bW9HbDNRVXdha2NGSXRt?=
+ =?utf-8?B?d1RBZWI0aFZuOVhTb3JvVitCUUNiOWR4VlBIQnhCais2QkNwSjJWTm8vL1dN?=
+ =?utf-8?B?V2l4Uk9XTFZMME92emc5Z1FLaGpsaTJUVmNGZ2h4VlpmT0hBdE5RTkNPWGI4?=
+ =?utf-8?B?VlpiOG1DQ2JlbUt4eW5KR1RzV0YyaG1rUWkyS3VkM0FZcnAwdUUrdWNYd1BO?=
+ =?utf-8?B?THVWZi9CQ2ZhSmhaNmxUVThUUitMalR3Q0Ztc2tIMHp6UGdBSDNMZmhFd2tK?=
+ =?utf-8?B?VlhmaFNXT1ZzWUQwTjl3bXJHRDIzNmxPd3g5bjcwS0hpMkJya1FVelMzdW5x?=
+ =?utf-8?B?MEJPUndObC83Rmc3SGdqQ2JXS1dvYmF1dVhKTkl0YzlLY0dpQnlvN2IxYlRa?=
+ =?utf-8?B?OTV0MEdXWmVJVU1OZ1p3MVdZRzMrREpCR29YSzV1NjJ0OUl4SzUxQ0RabGE1?=
+ =?utf-8?B?V1l0dDNjSWE5amJiNkdpcWR2OUYyaFhFWlU2amo4WDNRMGVkV252elI3ODc5?=
+ =?utf-8?B?OXl3NGNsNGd3QXlXT0dOcjdtcThkbW1Ub1htamFReVFSc05TUWtkMmN5VWd0?=
+ =?utf-8?B?QkRpN2NvNHlRNjBrZ2RVQ3huMDZta1M3RENMUHdJZGxmQ2ZyU25oSkpPMlgy?=
+ =?utf-8?B?K2RhMDdOWXhuM3RJYkNlbCt5MGZmQ2dhU25mdHF4WUExR0VGWEZaUEhpMWxh?=
+ =?utf-8?B?RGNsRXJib2pJZU1WTTJRbnNzSytaMllNY1M4Y0tJb0sxSUFvWXppVWZKdEVu?=
+ =?utf-8?B?dTFhU1IwYlhBTFRpdmtYR0l3bjB6NG43V2lxa3o2eFdMNW4wVVUrWm9LQ0x4?=
+ =?utf-8?B?NzdCR2VqakxBVDYvRWNlemJ5SEhWV2VFR0FSc1EzVGdnd1J3NWhzRklsQXZB?=
+ =?utf-8?B?MjNYVnI3Z3hhK2ora1UzTW9JRnBjQ1NyRTlrRUJiWUFYS0RQWFMwMDFnYVlC?=
+ =?utf-8?B?WlhWclZJV2piViszNHNwQ2czRzRlWXZ4YXlCWjE3SGZlOUFTUXBaSmNLOWVv?=
+ =?utf-8?B?bjJRUDdaMzY0cWZYWm1DN1p5M2hzVElSM0VEd2VNR201ZkJuTnlZWnZWNm1N?=
+ =?utf-8?Q?iQ+m4JjugAAPI?=
+X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-c3e7a.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: f601a071-cfcc-49a2-0636-08df028f711c
+X-MS-Exchange-CrossTenant-AuthSource: SE3PR04MB8922.apcprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2026 09:58:41.8971
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR04MB7269
 
-> Not specifically. Just wondering what it is doing. Like is it the big operation
-> to prep the memory, and ADD just hands pages which sit on a list waiting the
-> real work?
 
-Yes, TDH.EXT.INIT is the big operation to prep the memory. ADD just hands
-pages.
+On 8/14/2026 8:35 PM, Jinyu Tang wrote:
+> kvm_vcpu_check_block() calls kvm_arch_vcpu_runnable() before
+> checking whether a timer is pending. On RISC-V, kvm_arch_vcpu_runnable()
+> already checks all pending guest interrupts through
+> kvm_riscv_vcpu_has_interrupts(vcpu, -1UL), including IRQ_VS_TIMER.
+>
+> Drop the repeated IRQ_VS_TIMER pending-interrupt check from
+> kvm_riscv_vcpu_timer_pending() and keep the helper focused on the timer
+> deadline state. If the timer becomes pending after the runnable check,
+> the timer path still injects IRQ_VS_TIMER and kicks the vCPU through the
+> normal wakeup path.
+>
+> Signed-off-by: Jinyu Tang <jinyu.tang@linux.dev>
+Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
 
-
-> Or more like a "we think we are good to go" notification from the
-> VMM?
-> 
-> >  I can think of some case that TDH.EXT.MEM.ADD is not
-> > needed but the extensions initialization is needed. For example: after
-> > an compatible TDX module update.
-> > 
-> > I may ask the TDX module team to get a better understanding.
-> 
-> That this is also called during an update just raises further questions to me.
-> If is doing initing of the memory, then what happens during an update? I'd
-> expect memory would need to be persisted across an update, not initialized. Or
-
-The update of the extensions is just like the basic TDX module update.
-
-			TDX module			The extensions
-			=================		=====================
-execution memory	SEAM range			Added by TDH.EXT.MEM.ADD
-
-binary loading		P-SEAMLDR.INSTALL		TDH.EXT.INIT
-
-initialization		TDH.SYS.INIT/LP.INIT		TDH.EXT.INIT
-
-resuming state		TDH.SYS.UPDATE			TDH.EXT.INIT
-(consume handoff data)
-
-
-The extensions memory is mainly for their own execution context, code &
-data. During update, the execution binary of the extensions must also
-be updated to match the new TDX module binary. That means the execution
-context is re-built, the memory is re-intialized.
-
-> it is doing something different when called after a TDH.SYS.UPDATE? Does it
-> consume the handoff data?
-
-So TDH.EXT.INIT does mostly the same after update, it re-builds the
-execution context from scratch. The difference is that it then
-consumes the handoff data if any.
+Thanks,
+Nutty
+> ---
+>   arch/riscv/kvm/vcpu_timer.c | 6 +-----
+>   1 file changed, 1 insertion(+), 5 deletions(-)
+>
+> diff --git a/arch/riscv/kvm/vcpu_timer.c b/arch/riscv/kvm/vcpu_timer.c
+> index ae53133c7ab0..0e01bd793772 100644
+> --- a/arch/riscv/kvm/vcpu_timer.c
+> +++ b/arch/riscv/kvm/vcpu_timer.c
+> @@ -132,11 +132,7 @@ bool kvm_riscv_vcpu_timer_pending(struct kvm_vcpu *vcpu)
+>   	struct kvm_vcpu_timer *t = &vcpu->arch.timer;
+>   	struct kvm_guest_timer *gt = &vcpu->kvm->arch.timer;
+>   
+> -	if (!kvm_riscv_delta_cycles2ns(t->next_cycles, gt, t) ||
+> -	    kvm_riscv_vcpu_has_interrupts(vcpu, 1UL << IRQ_VS_TIMER))
+> -		return true;
+> -	else
+> -		return false;
+> +	return !kvm_riscv_delta_cycles2ns(t->next_cycles, gt, t);
+>   }
+>   
+>   static void kvm_riscv_vcpu_timer_blocking(struct kvm_vcpu *vcpu)
