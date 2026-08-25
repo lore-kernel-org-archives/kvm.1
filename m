@@ -1,394 +1,295 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1113BE15D
-	for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 19:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A7F35C6AC
+	for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 19:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787684790; cv=none; b=ItS/R1SWvwfAbAUuaqHsHvTVJO3t+occw8NoyCr+9Vyl3Dr8jRJOAcZgb0ZXBcgCcAi1bZHHPYvnjhRDOuyDEhGZtQkUyABMNBDavDgk1ImLLKvdkkVra/9HIIWyf0wNp0Cieb631OBQ3AMUkOl+Qg7BqkSyoYHT0/Vq17o4B2I=
+	t=1787685031; cv=none; b=hzGWsMzA32buZ3ePMClgEJIvDjixhSiVgfnn/7fu7mv5vZsT2YGBYaa1K7t6q5/glhdy86yHugJukTZpo35okH3PkLKrJkDMaH0OV8KoMVG/UOF/OfpsJMqAIngAQ1ZE/FdpFWj9jMqOEp5zUglSZccKNivkWcdmHjEhCDRp2S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787684790; c=relaxed/simple;
-	bh=WBxo+qxQB+oazWupMa1sVuIzijsEHLVSJFnnE70gEeY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XKdHuBZZ3adJ5VxzLc8BY0mSw2+gVIdGJlzO0+syeLnVBfSY8LTI9F8VqjoV8NRUnMdEB5qyqGnOx6+yenqSQkAc7jucpgWVQXbDWrtLMhQqwzPiRRaQf90Y/DFTu2+Hsb7R4p+Sjd6+C0BBhqx6efJ6HERhJVsSQTW4bB5omtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MlBBmjbe; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1787685031; c=relaxed/simple;
+	bh=GETmOiGo2L/g6lLcuBRxR9mY/ci64uyDlTFcOWNAjy0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=SvK2cyr4rVlSQB2JYof8l0aYYfDJO/zhwrGc9cJu/nqBt2xfGFqcc+z+5LKWMzYUsuL1732UNOYM6ew0pl8Gv4yOLttzQL5MhuJBGYDQ/rBGVJuDw5mlTkkxjjIxJP6SFZgYhwWxGGUql84v9szclyLqSVfvvlGOQZFJB5RkoCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WwLD/YYP; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MlBBmjbe"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2d01663d816so2058095ad.1
-        for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 12:06:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787684788; x=1788289588; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=L9OJDooK2zLq4X43we9Ud5DH06s8WHcjJ/xQ521Bg6s=;
-        b=MlBBmjbeQOC9BF5lDRE4KKAhC0TSSspAiXmaw/WmMJAMQDAINmsNSaanqT9k62p36d
-         gRP4di5VTM6GhyyRbXWBcIs5JPkzdPkmDsdda2WE8zkbuiIPMMePHFcUf+zKPuxkrvx1
-         jLjvzLRucHTyrqtteFnmjKX4MTxSpKfP7fk7DeIDzv+3gowtyQ6wqyHCczZRddaIwiWi
-         awirulu5eyanH/rYdeCpiIDx1Bn6cLCaYEU9wIheMZta/w1iruBfmN6K7oLyNi68HDmS
-         p7tMRuGttoiHIaVIsfgbAm1bW9c6clv9kpgD1rF757q7VIboAD7hfo8j32eNQ9cqcgEn
-         Jd9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787684788; x=1788289588;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=L9OJDooK2zLq4X43we9Ud5DH06s8WHcjJ/xQ521Bg6s=;
-        b=cgIvPumDZGmSiDgzoo0ZxxbvpnukopiC70GIpFjVc5QrDFsDT0OMgxeFrxENFGlOJw
-         P+V3OY7Ijmos+BxBHqtsYFINsc55cCBB7F1gyILNhvSj0BK4+5GVYlgMaFPbzYcPiiR0
-         x3Fg4GsWnIeXbjsTdjLCR3rp6GnOfYOX75anJxJwRjGqmBXvta0KxI+Gi1SHPYW9fl77
-         yWny85o/DPYh6CyKB2ZP4ALvo7tuBBxUfHkNfeubmod+GnGdx5NPMpAJ8FSL8nSRbmME
-         NAw4VsRNEFXLMXY2UpqJ+zK3lqTNKEErBI+gdwVqcnjPV/RVg7qoOL+y6mqAKOqWWMeD
-         eYng==
-X-Forwarded-Encrypted: i=1; AHgh+RrA43L2+phDMThAefqEQ4OgWsREYD5kZfh876LGbJ9THGa+HyRCC5Dz6U51v+AtzXS1J0g=@vger.kernel.org
-X-Gm-Message-State: AFuF++lZsJpsvz8H9nsdOXejqMmUNt+gdbc2iwhYZzMfe8CNzmQTwPoA
-	EktIw5SYbLmCke07M/tMevCIE6Sr21E8z8AWazgIEj+747Pl27ZnptsODjKm5Oa28g==
-X-Gm-Gg: AR+sD13lTs4bTGcigi242JWw6942daHM4PUMypqwTks6+0HpIsgDZae/PLigKVmtfP6
-	LUCkOZAU2hsZ3LCIksTMXUM0jqUGnBwr3oTcVcBMLd0Z6M4fEJW28m3V8EzhKICpHkPuBHCFN2n
-	e26HIsjxKigD52T7i3CPfhShX+lPWQ/3ClHv2tl2xOfSMv6BJswah1f85fMBa4wx47uFTdUzMdu
-	eJ1vy9hRg7tUnDZ4iXxgHnHuopG0TuHmIuaHL+u55ZOeRfsRAmQVitFyYGBq4j5lyN8vroOnprM
-	wTbxv5itYfeaauPiHsTV5kg4FR5SmI7GYh26s8i9SlPjVxDiOoditXFVs/EYWj+2PDk9JyxmhQ0
-	g4or7ArAg3AKxmW2jURxriKm1PC9z05ZdS/FjDI1U2zFBILusrG5RIINH7exKW18wEoaDPc8nl2
-	lYSrE6ko0eQMF0T1dcEs7QITnYptooVn0vxmqEdC/YSvgKZB/Jk20t9jN+Yxk0Rkk8gewQvi4Ul
-	vzGpTDISn7aF0XcKYpPapwIPt/aDA==
-X-Received: by 2002:a17:903:2f8f:b0:2d3:78c2:1f19 with SMTP id d9443c01a7336-2d707b94eaemr6381315ad.9.1787684787703;
-        Tue, 25 Aug 2026 12:06:27 -0700 (PDT)
-Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d7049772ffsm1405355ad.20.2026.08.25.12.06.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 12:06:26 -0700 (PDT)
-Date: Tue, 25 Aug 2026 19:06:23 +0000
-From: David Matlack <dmatlack@google.com>
-To: Vipin Sharma <vipinsh@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Joerg Roedel <joro@8bytes.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Nicolin Chen <nicolinc@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Robin Murphy <robin.murphy@arm.com>, jrhilke@google.com,
-	skhawaja@google.com, tatashin@google.com,
-	Will Deacon <will@kernel.org>, kvm@vger.kernel.org,
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/1] vfio: circular locking dependency in
- pci_dev_reset_iommu_prepare()
-Message-ID: <ao3nr1-t0DxANAyC@google.com>
-References: <20260821193502.92431-1-vipinsh@google.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WwLD/YYP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787685028;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8TUtIvfv2gg0aRDhrAhGSbFo8JLrTo92AiN7/f51Xts=;
+	b=WwLD/YYPuGJTxCjvqmzvwCsair/FIkEkd+ZGKA+TBfDi/L3ytaJktxHLUmJwDLEunGfhT7
+	zGGk1S6wM+8Oyp2khxvVXThSh/B3My9fJ7oFJ/P4MgUitiVlqdUR0Zf2RdTRkmVAS6ugvP
+	ezn56dUo/q1lFTe2HiE95X1rMWy+GR8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-403-OvU-n3L3NAu4ASG2Wf-Wcw-1; Tue,
+ 25 Aug 2026 15:10:24 -0400
+X-MC-Unique: OvU-n3L3NAu4ASG2Wf-Wcw-1
+X-Mimecast-MFC-AGG-ID: OvU-n3L3NAu4ASG2Wf-Wcw_1787685023
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 797321921ED5;
+	Tue, 25 Aug 2026 19:10:23 +0000 (UTC)
+Received: from localhost (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 77E2718005B4;
+	Tue, 25 Aug 2026 19:10:21 +0000 (UTC)
+From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+Date: Tue, 25 Aug 2026 23:09:12 +0400
+Subject: [PATCH v4 05/49] target/i386: decouple cpu_x86_inject_mce() from
+ Monitor
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260821193502.92431-1-vipinsh@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260825-qemu-no-hmp-v4-5-af60857c2fbe@redhat.com>
+References: <20260825-qemu-no-hmp-v4-0-af60857c2fbe@redhat.com>
+In-Reply-To: <20260825-qemu-no-hmp-v4-0-af60857c2fbe@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
+ dave@treblig.org, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Zhao Liu <zhao1.liu@intel.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
+ kvm@vger.kernel.org, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7649;
+ i=marcandre.lureau@redhat.com; h=from:subject:message-id;
+ bh=GETmOiGo2L/g6lLcuBRxR9mY/ci64uyDlTFcOWNAjy0=;
+ b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBqjeiGpZoIq2GxbaAKdZbxvMWapR4YLDEC5N0ZX
+ xyDgWtpVamJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCao3ohgAKCRDa6OEJdZac
+ 5YHMD/9AnjS+wCbYmvbrrKYh04k+LlykQJYI7k2MtvZg8vFsUD7THMizAQWdOVKgJr9BwC0iTR0
+ +l5Bt8DK0HwWyfHiQ8+YYfCv0da5Hi3rKzPWNOgnDStNERawkDh3GxNuyBq+MhiQPIni8syT4VE
+ VSqqGIcx2q/eN/NSBqsnOlnXq/jz513Le7D2Pz2GC5hwDUFHQ9NshOBv4i2BMAFf2DOKtJsybAc
+ SmbW+eqf96ASq1AC9xgwpK2ME0yOsoty0HtfQxMqXlhpzVlNsJhWVLnrNIUNVkkehOXPD3qtEYM
+ BDmLRu8PE01ano6NeNYIpVi5Wa/emUbtKqcjLleP9Chw5j7HpoCPd5cbg+veyMs7fbCbtJ9djjW
+ oJYsPZ3Paj2ww9xCJteQMp/F1HJ91UIgPifRkqTIqVbG6pWZDJhHJpmdvSOHAlqU9ymF59CGTWf
+ yc/TkrJVUey6IESAeVoBYv+eZysQwkEfo59i3QtMXDdZ5Q4Zov6xGvnVi3oW1ReKWrcGQw737gD
+ ld076uFEv01fzpzEzPBS/fS8JAd76WWf9/la8tdcI8vLbzO/OdOWRLW+wntqp9Ti+S/XteSwGiE
+ ipzJTUFGBoRUXMvmDXKlsOPl5FUJnrk3Z8es+8m0uxN4R8jtvmtZ5e7H8GyX8BsMzbba/7pMmcR
+ sth3MiqXkjgeTbw==
+X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
+ fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On 2026-08-21 12:35 PM, Vipin Sharma wrote:
+Replace monitor_printf() error reporting with the standard **errp
+pattern. Drop the Monitor *mon parameter and return bool to indicate
+success, improving the function usage from non-HMP contexts. Update the
+KVM MCE injection path and hmp_mce() accordingly.
 
-> ================================================================================
-> Potential Solutions Suggested by AI
-> ================================================================================
-> 
-> 1. Decouple iommu_setup_dma_ops() from group->mutex in drivers/iommu/iommu.c:
->    iommu_setup_dma_ops() only requires struct device * and the domain pointer
->    (group->default_domain); it does not mutate any fields in struct iommu_group.
->    Moving the iommu_setup_dma_ops() calls after mutex_unlock(&group->mutex) in
->    iommu_probe_device(), bus_iommu_probe(), and iommu_group_store_type() breaks
->    the initial &group->mutex -> cpu_hotplug_lock dependency.
+Notes:
+ - we may want to print the error in KVM path too
 
-Are there any other code paths that rely on group->mutex -->
-mm->mmap_lock ordering? If so fixing this one case wouldn't help.
-
-> 2. Avoid holding down_write(&vdev->memory_lock) across pci_try_reset_function()
->    in VFIO:
->    vfio-pci could zap active BAR mappings under memory_lock and set a state
->    flag / disable memory decoding, drop memory_lock before calling
->    pci_try_reset_function(), and then re-acquire memory_lock to re-enable
->    memory. While resetting, any concurrent user fault will see the memory
->    disabled condition and return VM_FAULT_SIGBUS safely.
-
-This would change the userspace-visible behavior of faulting on a VFIO
-device BAR from "block until reset is done and the succeed" to "fail
-with SIGBUS". And it would allow VFIO to access VFIO device BARs during
-the reset through vfio_pci_core_iowrite*().
-
-But I think we can extend this idea to solve those problems by
-introducing a wait queue for tasks to sit on while a device is being
-reset.
-
-e.g. Something like this (completely untested and partially written by AI):
-
-From: David Matlack <dmatlack@google.com>
-Date: Tue, 25 Aug 2026 18:37:52 +0000
-Subject: [PATCH] vfio/pci: Avoid circular locking dependency during device reset
-
-Avoid a circular locking dependency during VFIO device reset by dropping
-vdev->memory_lock prior to calling PCI reset functions
-(pci_try_reset_function() and pci_reset_bus()). Introduce an explicit reset
-state flag (vdev->resetting) and wait queue (vdev->reset_done_wq) to stall
-concurrent BAR page faults and MMIO accesses during reset without holding
-vdev->memory_lock across PCI reset operations.
-
-Export a new helper function vfio_pci_core_try_reset() to consolidate the
-common reset sequence across vfio_pci_ioctl_reset() and PCI config space
-FLR handlers.
-
-Export a new helper function vfio_pci_core_down_read_memory_lock() to
-encapsulate acquiring down_read(&vdev->memory_lock) while waiting on
-vdev->reset_done_wq if a reset is in progress.
-
-Holding vdev->memory_lock across pci_try_reset_function() or pci_reset_bus()
-causes a lock inversion between vdev->memory_lock and the IOMMU group
-mutex (group->mutex). PCI reset functions invoke
-pci_dev_reset_iommu_prepare(), which acquires group->mutex. However,
-vdev->memory_lock is acquired inside page fault context
-(vfio_pci_mmap_huge_fault()), placing vdev->memory_lock below mm->mmap_lock
-in the locking hierarchy. Meanwhile, operations holding group->mutex (such
-as sysfs interactions or IOMMU domain operations) can fault on user memory,
-placing group->mutex above mm->mmap_lock. This establishes the circular
-locking chain:
-
-  group->mutex --> mm->mmap_lock --> vdev->memory_lock --> group->mutex
-
-Simply dropping vdev->memory_lock before calling PCI reset routines would
-alter userspace-visible behavior by causing concurrent BAR page faults
-during reset to fail with VM_FAULT_SIGBUS rather than stalling until reset
-completes.
-
-Preserve the stalling behavior while resolving the deadlock:
-1. In vfio_pci_core_try_reset(), set vdev->resetting = true under
-   vdev->memory_lock, zap BAR mmaps, and drop vdev->memory_lock before
-   calling pci_try_reset_function().
-2. In vfio_pci_core_down_read_memory_lock(), if vdev->resetting is true, drop
-   memory_lock and sleep uninterruptibly on vdev->reset_done_wq via wait_event().
-3. Upon reset completion, clear vdev->resetting = false and wake up the wait
-   queue.
-
-Fixes: f5b16b802174 ("PCI: Suspend iommu function prior to resetting a device")
-Signed-off-by: David Matlack <dmatlack@google.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- drivers/vfio/pci/vfio_pci_config.c | 20 +++---------
- drivers/vfio/pci/vfio_pci_core.c   | 51 ++++++++++++++++++++++++++----
- drivers/vfio/pci/vfio_pci_rdwr.c   |  4 +--
- include/linux/vfio_pci_core.h      |  4 +++
- 4 files changed, 54 insertions(+), 25 deletions(-)
+ target/i386/cpu.h     |  4 ++--
+ target/i386/helper.c  | 49 ++++++++++++++++++++++++++++---------------------
+ target/i386/kvm/kvm.c |  4 ++--
+ target/i386/monitor.c |  6 ++++--
+ 4 files changed, 36 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
-index 9914f3ac69ae..4980f53c21ca 100644
---- a/drivers/vfio/pci/vfio_pci_config.c
-+++ b/drivers/vfio/pci/vfio_pci_config.c
-@@ -907,14 +907,8 @@ static int vfio_exp_config_write(struct vfio_pci_core_device *vdev, int pos,
- 						 pos - offset + PCI_EXP_DEVCAP,
- 						 &cap);
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 641f3ee5c2fd..dc5047cfb25a 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2859,9 +2859,9 @@ void do_cpu_init(X86CPU *cpu);
+ #define MCE_INJECT_BROADCAST    1
+ #define MCE_INJECT_UNCOND_AO    2
  
--		if (!ret && (cap & PCI_EXP_DEVCAP_FLR)) {
--			vfio_pci_zap_and_down_write_memory_lock(vdev);
--			vfio_pci_dma_buf_move(vdev, true);
--			pci_try_reset_function(vdev->pdev);
--			if (__vfio_pci_memory_enabled(vdev))
--				vfio_pci_dma_buf_move(vdev, false);
--			up_write(&vdev->memory_lock);
--		}
-+		if (!ret && (cap & PCI_EXP_DEVCAP_FLR))
-+			vfio_pci_core_try_reset(vdev);
- 	}
+-void cpu_x86_inject_mce(Monitor *mon, X86CPU *cpu, int bank,
++bool cpu_x86_inject_mce(X86CPU *cpu, int bank,
+                         uint64_t status, uint64_t mcg_status, uint64_t addr,
+-                        uint64_t misc, int flags);
++                        uint64_t misc, int flags, Error **errp);
  
- 	/*
-@@ -992,14 +986,8 @@ static int vfio_af_config_write(struct vfio_pci_core_device *vdev, int pos,
- 						pos - offset + PCI_AF_CAP,
- 						&cap);
+ uint32_t cpu_cc_compute_all(CPUX86State *env1);
  
--		if (!ret && (cap & PCI_AF_CAP_FLR) && (cap & PCI_AF_CAP_TP)) {
--			vfio_pci_zap_and_down_write_memory_lock(vdev);
--			vfio_pci_dma_buf_move(vdev, true);
--			pci_try_reset_function(vdev->pdev);
--			if (__vfio_pci_memory_enabled(vdev))
--				vfio_pci_dma_buf_move(vdev, false);
--			up_write(&vdev->memory_lock);
--		}
-+		if (!ret && (cap & PCI_AF_CAP_FLR) && (cap & PCI_AF_CAP_TP))
-+			vfio_pci_core_try_reset(vdev);
- 	}
+diff --git a/target/i386/helper.c b/target/i386/helper.c
+index 683621416213..4133b5f244c6 100644
+--- a/target/i386/helper.c
++++ b/target/i386/helper.c
+@@ -18,6 +18,7 @@
+  */
  
- 	return count;
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 6a184588ff23..ba5405f9980e 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -1315,15 +1315,12 @@ static int vfio_pci_ioctl_set_irqs(struct vfio_pci_core_device *vdev,
- 	return ret;
+ #include "qemu/osdep.h"
++#include "qapi/error.h"
+ #include "qapi/qapi-events-run-state.h"
+ #include "cpu.h"
+ #include "exec/cputlb.h"
+@@ -27,7 +28,6 @@
+ #ifndef CONFIG_USER_ONLY
+ #include "system/hw_accel.h"
+ #include "system/memory.h"
+-#include "monitor/monitor.h"
+ #include "kvm/kvm_i386.h"
+ #endif
+ #include "qemu/log.h"
+@@ -381,7 +381,7 @@ out:
  }
  
--static int vfio_pci_ioctl_reset(struct vfio_pci_core_device *vdev,
--				void __user *arg)
-+int vfio_pci_core_try_reset(struct vfio_pci_core_device *vdev)
+ typedef struct MCEInjectionParams {
+-    Monitor *mon;
++    Error **errp;
+     int bank;
+     uint64_t status;
+     uint64_t mcg_status;
+@@ -428,9 +428,9 @@ static void do_inject_x86_mce(CPUState *cs, run_on_cpu_data data)
+          * reporting is disabled
+          */
+         if ((cenv->mcg_cap & MCG_CTL_P) && cenv->mcg_ctl != ~(uint64_t)0) {
+-            monitor_printf(params->mon,
+-                           "CPU %d: Uncorrected error reporting disabled\n",
+-                           cs->cpu_index);
++            error_setg(params->errp,
++                "CPU %d: Uncorrected error reporting disabled",
++                cs->cpu_index);
+             return;
+         }
+ 
+@@ -439,10 +439,9 @@ static void do_inject_x86_mce(CPUState *cs, run_on_cpu_data data)
+          * reporting is disabled for the bank
+          */
+         if (banks[0] != ~(uint64_t)0) {
+-            monitor_printf(params->mon,
+-                           "CPU %d: Uncorrected error reporting disabled for"
+-                           " bank %d\n",
+-                           cs->cpu_index, params->bank);
++            error_setg(params->errp,
++                "CPU %d: Uncorrected error reporting disabled for bank %d",
++                cs->cpu_index, params->bank);
+             return;
+         }
+ 
+@@ -459,7 +458,7 @@ static void do_inject_x86_mce(CPUState *cs, run_on_cpu_data data)
+         if (need_reset) {
+             emit_guest_memory_failure(MEMORY_FAILURE_ACTION_RESET, ar,
+                                       recursive);
+-            monitor_printf(params->mon, "%s", msg);
++            error_setg(params->errp, "%s", msg);
+             qemu_log_mask(CPU_LOG_RESET, "%s\n", msg);
+             qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
+             return;
+@@ -488,14 +487,15 @@ static void do_inject_x86_mce(CPUState *cs, run_on_cpu_data data)
+     emit_guest_memory_failure(MEMORY_FAILURE_ACTION_INJECT, ar, recursive);
+ }
+ 
+-void cpu_x86_inject_mce(Monitor *mon, X86CPU *cpu, int bank,
++bool cpu_x86_inject_mce(X86CPU *cpu, int bank,
+                         uint64_t status, uint64_t mcg_status, uint64_t addr,
+-                        uint64_t misc, int flags)
++                        uint64_t misc, int flags, Error **errp)
  {
- 	int ret;
++    ERRP_GUARD();
+     CPUState *cs = CPU(cpu);
+     CPUX86State *cenv = &cpu->env;
+     MCEInjectionParams params = {
+-        .mon = mon,
++        .errp = errp,
+         .bank = bank,
+         .status = status,
+         .mcg_status = mcg_status,
+@@ -506,24 +506,27 @@ void cpu_x86_inject_mce(Monitor *mon, X86CPU *cpu, int bank,
+     unsigned bank_num = cenv->mcg_cap & 0xff;
  
--	if (!vdev->reset_works)
--		return -EINVAL;
--
- 	vfio_pci_zap_and_down_write_memory_lock(vdev);
-+	vdev->resetting = true;
+     if (!cenv->mcg_cap) {
+-        monitor_printf(mon, "MCE injection not supported\n");
+-        return;
++        error_setg(errp, "MCE injection not supported");
++        return false;
+     }
+     if (bank >= bank_num) {
+-        monitor_printf(mon, "Invalid MCE bank number\n");
+-        return;
++        error_setg(errp, "Invalid MCE bank number");
++        return false;
+     }
+     if (!(status & MCI_STATUS_VAL)) {
+-        monitor_printf(mon, "Invalid MCE status code\n");
+-        return;
++        error_setg(errp, "Invalid MCE status code");
++        return false;
+     }
+     if ((flags & MCE_INJECT_BROADCAST)
+         && !cpu_x86_support_mca_broadcast(cenv)) {
+-        monitor_printf(mon, "Guest CPU does not support MCA broadcast\n");
+-        return;
++        error_setg(errp, "Guest CPU does not support MCA broadcast");
++        return false;
+     }
  
- 	/*
- 	 * This function can be invoked while the power state is non-D0. If
-@@ -1337,13 +1334,29 @@ static int vfio_pci_ioctl_reset(struct vfio_pci_core_device *vdev,
- 	vfio_pci_set_power_state(vdev, PCI_D0);
+     run_on_cpu(cs, do_inject_x86_mce, RUN_ON_CPU_HOST_PTR(&params));
++    if (*errp) {
++        return false;
++    }
+     if (flags & MCE_INJECT_BROADCAST) {
+         CPUState *other_cs;
  
- 	vfio_pci_dma_buf_move(vdev, true);
-+	up_write(&vdev->memory_lock);
-+
- 	ret = pci_try_reset_function(vdev->pdev);
-+
-+	down_write(&vdev->memory_lock);
-+	vdev->resetting = false;
-+	wake_up_all(&vdev->reset_done_wq);
- 	if (__vfio_pci_memory_enabled(vdev))
- 		vfio_pci_dma_buf_move(vdev, false);
- 	up_write(&vdev->memory_lock);
- 
- 	return ret;
+@@ -537,8 +540,12 @@ void cpu_x86_inject_mce(Monitor *mon, X86CPU *cpu, int bank,
+                 continue;
+             }
+             run_on_cpu(other_cs, do_inject_x86_mce, RUN_ON_CPU_HOST_PTR(&params));
++            if (*errp) {
++                return false;
++            }
+         }
+     }
++    return true;
  }
-+EXPORT_SYMBOL_GPL(vfio_pci_core_try_reset);
-+
-+static int vfio_pci_ioctl_reset(struct vfio_pci_core_device *vdev,
-+				void __user *arg)
-+{
-+	if (!vdev->reset_works)
-+		return -EINVAL;
-+
-+	return vfio_pci_core_try_reset(vdev);
-+}
  
- static int vfio_pci_ioctl_get_pci_hot_reset_info(
- 	struct vfio_pci_core_device *vdev,
-@@ -1742,6 +1755,19 @@ void vfio_pci_memory_unlock_and_restore(struct vfio_pci_core_device *vdev, u16 c
- 	up_write(&vdev->memory_lock);
+ static inline target_ulong get_memio_eip(CPUX86State *env)
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 644c45fb0a02..1eeadb99adac 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -748,8 +748,8 @@ static void kvm_mce_inject(X86CPU *cpu, hwaddr paddr, int code)
+         flags = 0;
+     }
+ 
+-    cpu_x86_inject_mce(NULL, cpu, 9, status, mcg_status, paddr,
+-                       (MCM_ADDR_PHYS << 6) | 0xc, flags);
++    cpu_x86_inject_mce(cpu, 9, status, mcg_status, paddr,
++                       (MCM_ADDR_PHYS << 6) | 0xc, flags, NULL);
  }
  
-+void vfio_pci_core_down_read_memory_lock(struct vfio_pci_core_device *vdev)
-+{
-+	while (1) {
-+		down_read(&vdev->memory_lock);
-+		if (!vdev->resetting)
-+			return;
-+
-+		up_read(&vdev->memory_lock);
-+		wait_event(vdev->reset_done_wq, !vdev->resetting);
-+	}
-+}
-+EXPORT_SYMBOL_GPL(vfio_pci_core_down_read_memory_lock);
-+
- static unsigned long vma_to_pfn(struct vm_area_struct *vma)
- {
- 	struct vfio_pci_core_device *vdev = vma->vm_private_data;
-@@ -1788,8 +1814,9 @@ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
- 	vm_fault_t ret = VM_FAULT_FALLBACK;
+ static void emit_hypervisor_memory_failure(MemoryFailureAction action, bool ar)
+diff --git a/target/i386/monitor.c b/target/i386/monitor.c
+index a536712c755a..785a13dd7107 100644
+--- a/target/i386/monitor.c
++++ b/target/i386/monitor.c
+@@ -580,6 +580,7 @@ void hmp_mce(Monitor *mon, const QDict *qdict)
+     uint64_t addr = qdict_get_int(qdict, "addr");
+     uint64_t misc = qdict_get_int(qdict, "misc");
+     int flags = MCE_INJECT_UNCOND_AO;
++    Error *err = NULL;
  
- 	if (is_aligned_for_order(vma, addr, pfn, order)) {
--		scoped_guard(rwsem_read, &vdev->memory_lock)
--			ret = vfio_pci_vmf_insert_pfn(vdev, vmf, pfn, order);
-+		vfio_pci_core_down_read_memory_lock(vdev);
-+		ret = vfio_pci_vmf_insert_pfn(vdev, vmf, pfn, order);
-+		up_read(&vdev->memory_lock);
- 	}
- 
- 	dev_dbg_ratelimited(&vdev->pdev->dev,
-@@ -2198,6 +2225,7 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
- 		return ret;
- 	INIT_LIST_HEAD(&vdev->dmabufs);
- 	init_rwsem(&vdev->memory_lock);
-+	init_waitqueue_head(&vdev->reset_done_wq);
- 	xa_init(&vdev->ctx);
- 
- 	return 0;
-@@ -2577,6 +2605,7 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
- 			break;
- 		}
- 
-+		vdev->resetting = true;
- 		vfio_pci_dma_buf_move(vdev, true);
- 		vfio_pci_zap_bars(vdev);
- 	}
-@@ -2599,14 +2628,22 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
- 	list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list)
- 		vfio_pci_set_power_state(vdev, PCI_D0);
- 
-+	list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list)
-+		up_write(&vdev->memory_lock);
-+
- 	ret = pci_reset_bus(pdev);
- 
-+	list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list)
-+		down_write(&vdev->memory_lock);
-+
- 	vdev = list_last_entry(&dev_set->device_list,
- 			       struct vfio_pci_core_device, vdev.dev_set_list);
- 
- err_undo:
- 	list_for_each_entry_from_reverse(vdev, &dev_set->device_list,
- 					 vdev.dev_set_list) {
-+		vdev->resetting = false;
-+		wake_up_all(&vdev->reset_done_wq);
- 		if (vdev->vdev.open_count && __vfio_pci_memory_enabled(vdev))
- 			vfio_pci_dma_buf_move(vdev, false);
- 		up_write(&vdev->memory_lock);
-diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
-index 7f14dd46de17..4313972e35ef 100644
---- a/drivers/vfio/pci/vfio_pci_rdwr.c
-+++ b/drivers/vfio/pci/vfio_pci_rdwr.c
-@@ -43,7 +43,7 @@ int vfio_pci_core_iowrite##size(struct vfio_pci_core_device *vdev,	\
- 			bool test_mem, u##size val, void __iomem *io)	\
- {									\
- 	if (test_mem) {							\
--		down_read(&vdev->memory_lock);				\
-+		vfio_pci_core_down_read_memory_lock(vdev);		\
- 		if (!__vfio_pci_memory_enabled(vdev)) {			\
- 			up_read(&vdev->memory_lock);			\
- 			return -EIO;					\
-@@ -69,7 +69,7 @@ int vfio_pci_core_ioread##size(struct vfio_pci_core_device *vdev,	\
- 			bool test_mem, u##size *val, void __iomem *io)	\
- {									\
- 	if (test_mem) {							\
--		down_read(&vdev->memory_lock);				\
-+		vfio_pci_core_down_read_memory_lock(vdev);		\
- 		if (!__vfio_pci_memory_enabled(vdev)) {			\
- 			up_read(&vdev->memory_lock);			\
- 			return -EIO;					\
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index 9a1674c152aa..152662be3795 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -148,6 +148,8 @@ struct vfio_pci_core_device {
- 	struct vfio_pci_core_device	*sriov_pf_core_dev;
- 	struct notifier_block	nb;
- 	struct rw_semaphore	memory_lock;
-+	bool			resetting;
-+	wait_queue_head_t	reset_done_wq;
- 	struct list_head	dmabufs;
- };
- 
-@@ -171,6 +173,8 @@ void vfio_pci_core_unregister_device(struct vfio_pci_core_device *vdev);
- extern const struct pci_error_handlers vfio_pci_core_err_handlers;
- int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
- 				  int nr_virtfn);
-+int vfio_pci_core_try_reset(struct vfio_pci_core_device *vdev);
-+void vfio_pci_core_down_read_memory_lock(struct vfio_pci_core_device *vdev);
- long vfio_pci_core_ioctl(struct vfio_device *core_vdev, unsigned int cmd,
- 		unsigned long arg);
- int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
+     if (qdict_get_try_bool(qdict, "broadcast", false)) {
+         flags |= MCE_INJECT_BROADCAST;
+@@ -587,7 +588,8 @@ void hmp_mce(Monitor *mon, const QDict *qdict)
+     cs = qemu_get_cpu(cpu_index);
+     if (cs != NULL) {
+         cpu = X86_CPU(cs);
+-        cpu_x86_inject_mce(mon, cpu, bank, status, mcg_status, addr, misc,
+-                           flags);
++        cpu_x86_inject_mce(cpu, bank, status, mcg_status, addr, misc,
++                           flags, &err);
++        hmp_handle_error(mon, err);
+     }
+ }
 
-> 
-> 3. Refine synchronization in pci_dev_reset_iommu_prepare():
->    Evaluate if attaching to the blocking domain and pausing ATS during device
->    reset can be protected using more fine-grained locking or atomic state
->    flags without holding the coarse &group->mutex.
+-- 
+2.55.0.543.g5ebe2ebe4ea8
 
-I don't know enough about this part of the kernel to say, but this would
-directly address the new lock ordering dependency vdev->memory_lock -->
-group->mutex introduced by commit f5b16b802174 ("PCI: Suspend iommu function
-prior to resetting a device"), which is what led to this lockdep error.
