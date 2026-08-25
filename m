@@ -1,163 +1,166 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011016.outbound.protection.outlook.com [40.93.194.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE523E3C50
-	for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 08:37:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787647081; cv=none; b=BNnTTCOg+Bo1Uors1EsYQkBa0GzcJT5/p1fWGvg5xxD5QZBZ6MR4UP0/6uKWxmykyMbGcNqkurz8o8uFR3iadIMiZSl33HBY6uFwGDK3NVXpjbD+5uDGmGYTMz7XcxDDg8wiMhv3az9zZiiBBNykxZvaB/vXrLlJcUKNJslFZSc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787647081; c=relaxed/simple;
-	bh=GC6ctnqH49PdSJv4HAShbCKDfdndlZxHBrXCNy37gbo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VkUt5h8QgTXiRGTIX64hWf6O4zNbi5guPuheZkWy2gRFR15PoOOcFpwiITXzl+kRbiWOAwHW/lNz9ziiWsZJ4B1UWJsVaVCJYT7ti3luTxQimeQp3UPjcj/O33ynnILvn6qzGKs9ytQN8w8YNIWiyxDhN9o3cQNGZmVDghMAH+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JarH8Vdu; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D993DF000
+	for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 08:40:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787647220; cv=fail; b=E6MvBwTdRJbIrhJgp2h37uaJlfMBqOYBznX/HkZz5sDksFFK/98mECCQlwdDbW+SGoUXbk5xZeBFzHoAoTclPd+XbxEdoW05ZlHyHql0idkvnHUDKa6TV/Ugxzp0s3cRhhz614nToTxOsmIZKwqljvvSY1fAUHFMqTKU+hR0jao=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787647220; c=relaxed/simple;
+	bh=GmXjqDoPTBgdbfPicOYMHRHM8DC3jLsMGME47VcoHks=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=mGRQFkB8JTrYofoT9dDXGIzSpW0mailceEBEJCOvyMTHqR986Y1buqSB3QT6ir+77RrP6tLrVaiWZ7SPzWrg2euAUKdFC4xLyMK9a03ucAWS4q7vcHlpavBM09RChXKmKWBWsmbrz/M1vnfaU96TxFPRwMxJsy57kPWRzdd41h8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=KTrYcgG7; arc=fail smtp.client-ip=40.93.194.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JarH8Vdu"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cb5b8572b70so5329116a12.2
-        for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 01:37:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787647075; x=1788251875; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hN2Jmy0Yce+ny/9mzHdZVPdF+NxcdzE2Ab9UDeAEcWs=;
-        b=JarH8VduvcjbVEcYX2S0ITjFhtfajhPeRrDVuLtIB/650L5r+3DQOo5cDtVlND42ef
-         LEbi5LecOgQWEme5ku3Xi5OQXJHTPYuoNUnruuZ1yauemORB/20zd8hXG9xNt7eTVxNk
-         JWCaV8skOxZxiRQ2f8qEpeOgjBm/94oAp1mibEABaVvhGFHDMPE3Jix95XxrgUwUqfpA
-         ECyvGAEQ4NyE5c0I9sqCmXwyyvcazggaFOkI8L6Nk/VQ0xhxZbnxgfTGWHDrqLhKlqWM
-         AcYR4h4n6qPWYsh0q0KafEE1mcEKpnINAKPLZr2PeiIgvONRrXttKvvv2QrQgbaGl3xy
-         fu6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787647075; x=1788251875;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hN2Jmy0Yce+ny/9mzHdZVPdF+NxcdzE2Ab9UDeAEcWs=;
-        b=J2yIQ8VoPOS1zv4ctFBSJiaj12LIV0u0ks+PR4LFdOgBX0RPtPxlWA9eaKxXrIfz8a
-         wBBgMwb/tuOLUi51OtAa+aWkCpsHg6A+PD8+12aUwt7E5opo/658xb1Cg2ZuqjhyoNyh
-         A2pTOivRHnFsZpi/i25JXq2briX4p4LywoWRH0RCjz49pMP8q2YjUlVYe5d+1AcMeta+
-         wLse3TA0PmMogDuv1cWIlvHk9EVi3kILjV3ufLc5ipLZ4/cctf2OYSpomuNgwfg1b5Mk
-         ol1wSb5jyQixhUKFCyILI1VU3fuBUiHwNlRSKKHSoRwxgy+/xSBx472PCVMot6NXEaA2
-         8Y8Q==
-X-Forwarded-Encrypted: i=1; AHgh+RpgmbTzo8VnCVmYzykMMRnnI/FipRqa/4RW1MSFezbyAR+d/JOl1ROAFr13T3G/Lfmq2xE=@vger.kernel.org
-X-Gm-Message-State: AFuF++kA7xP/sgo5qTVILOpSRevD4AMvePCIc6sa/Td1pnVWJ8gcaMZe
-	Ep1yZF2XgpUX7f87le9T5W/53AZRbAAeZvugzkZgQsZ5kyshe8SQThft
-X-Gm-Gg: AR+sD12EMSEZpDJBzmFPHKhNM3fDmpTzZbjYyZGRBMOQsvCfKHew/cj9Xg8vYgt5uui
-	gyyRY8oisYWdKE2vSMg8VkNINPeF+PS17L+HDnfa/B0kVvJUcMw9gERJL/o4vcPu73ilpPBmFcd
-	xmbBKYFAQrNOXYtMiftGZlzrl8e0XIQ/h/i4jsVUspkJZzJuuy62aSoZ/pqqW4Qhl3Bq0mBOmii
-	Gh6voxyqEc0+cfs5TXacoAOVDNSAOCTS48QH8BNfwbIfETwRla78/VrPUu4Olp5/jIb/MK8B+Sl
-	Iny/FRpWrW/gS1qFluoUMMeO/ANTI05KIx3YHOuNoDl4coPQTEYJN8rtxwYcLa6+xaDary7J19B
-	Qk6R36SZEb7xKPRKODjvK5LLoDXHykP18tz0QPaYMy8WsNSuh7sQy2vRcBFMnpBkJI4odq5cztI
-	SDy9lHMAPgNGk6z87BP0P3F5hRuZzTV0+2bOoreEj/tQcQkIObUO8BQg96InUsO98/AZ7HKvBhU
-	d/OCFtOA7Zz
-X-Received: by 2002:a05:6a20:c90c:b0:3cc:22bb:8911 with SMTP id adf61e73a8af0-3cd2fe7a2cdmr66070868637.6.1787647074852;
-        Tue, 25 Aug 2026 01:37:54 -0700 (PDT)
-Received: from fedora ([61.74.238.173])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc199e60abbsm1835887a12.23.2026.08.25.01.37.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 01:37:54 -0700 (PDT)
-From: SeungJu Cheon <suunj1331@gmail.com>
-To: Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>
-Cc: Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-kernel-mentees@lists.linux.dev,
-	me@brighamcampbell.com,
-	SeungJu Cheon <suunj1331@gmail.com>
-Subject: [PATCH v1 3/3] RISC-V: KVM: Fix perf-backed counter accounting across stop and read
-Date: Tue, 25 Aug 2026 17:37:19 +0900
-Message-ID: <20260825083719.643970-4-suunj1331@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260825083719.643970-1-suunj1331@gmail.com>
-References: <20260825083719.643970-1-suunj1331@gmail.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="KTrYcgG7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qP1Cs5TI9NpxbPh9W+ILik0Mv2TeWtqTRybFpTPZIcjc1r+0MQCQC8L17ysDSQ+2ymANcg3IbOn/uPQ0EyRbmd4BKDQAEo1CZb6ibTcRa3Cm6qJxShjlGQ+16WE913Zkp6GK2CjXs9CwOzoLbvDvS88PbMSMb/MjUc0DcrzX/v/NAzgvVTv9PkUvY8GwTfOn4Z6hBhohx8p3/spf2UJYk2QiPhueGuoeDyduqbfXM97N37VQsQ45/GOpJHtak7gORFAi5UEQE8HjzCnGhdbvKBOtQyMYTzCZTa/uIm+MjqO76a8+hpOQpnN5e3BSeTZVSt9jfzj2LedVxWdH9NF0wg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VxbTZ0R9PtZ8P942pgh6heQAGMxEIZbQQn9JJKO6FBk=;
+ b=rmfuoR9wdIM04n9sHEP+OEcA7AWBT/yvr7Y7nodAeaDvnqT5ZTUV3pdFTbKU7xgB8ODwE95BmqmXi/8tchuHLUKauXoW7M1Or6wu1WbT5+pGl2yz5CVh6H1CLde1n+nWhUUuYG/QXi9SWwQJawy5tWrIl5aVO5Ewudzdlrk6sfeIZqJuJngv+H3rT9qoSaPJpkvNjstH+C84gKjIZqs22XZ30k8e1yDYLfwnO2M9kYJXrHgdnUYxGm/urAeI0W8uyiJYeItv1mQTOy+PM0zPRvMhOjO5GDeMb21wY8/+OM+Q3/XUHU6uBlnTzr15UfVz3KgMFHJxmSO90xhRhX2jsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
+ is 149.199.90.133) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com;
+ dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VxbTZ0R9PtZ8P942pgh6heQAGMxEIZbQQn9JJKO6FBk=;
+ b=KTrYcgG76C7EGh9Y91kBJfsTKCXRn+54m+3hx5Nxms/0GZ8n06xEBn1oBMMWtB99MqsuLiTwE6vhnr+kB+N6T/+rOR2TFqV8r/xCVjJxLIPO7ROq10vZ8MIPMZf6sgvU6c6gC76+ElAjpxS/PK7jxqgeVVx0ZoH4Gfwpx7SA2iY=
+Received: from PH8PR05CA0024.namprd05.prod.outlook.com (2603:10b6:510:2cc::12)
+ by DS0PR12MB6415.namprd12.prod.outlook.com (2603:10b6:8:cc::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Tue, 25 Aug
+ 2026 08:40:15 +0000
+Received: from SN1PEPF0002529D.namprd05.prod.outlook.com
+ (2603:10b6:510:2cc:cafe::1d) by PH8PR05CA0024.outlook.office365.com
+ (2603:10b6:510:2cc::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.6 via Frontend Transport; Tue, 25
+ Aug 2026 08:40:15 +0000
+X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
+ 149.199.90.133) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=quarantine header.from=amd.com;
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ amd.com discourages use of 149.199.90.133 as permitted sender)
+Received: from satlexmb07.amd.com (149.199.90.133) by
+ SN1PEPF0002529D.mail.protection.outlook.com (10.167.242.4) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.360.3 via Frontend Transport; Tue, 25 Aug 2026 08:40:14 +0000
+Received: from [10.85.33.190] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 25 Aug
+ 2026 03:40:13 -0500
+Message-ID: <327c7769-8ef6-40c3-869a-93c29ec9fa9f@amd.com>
+Date: Tue, 25 Aug 2026 14:10:10 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+CC: <sarunkod@amd.com>, <sashiko-reviews@lists.linux.dev>,
+	<kvm@vger.kernel.org>, Vasant Hegde <vasant.hegde@amd.com>
+Subject: Re: [PATCH v2 1/2] x86/uaccess: Extend CMPXCHG user helpers to
+ 128-bit operands
+Content-Language: en-US
+To: Sean Christopherson <seanjc@google.com>
+References: <20260706063035.1139-1-sarunkod@amd.com>
+ <20260706063035.1139-2-sarunkod@amd.com>
+ <20260706065212.CCD741F000E9@smtp.kernel.org>
+ <84113ba5-ddb8-47aa-abe0-c6968feb3fea@amd.com> <anpsjpCQHjJCH7TU@google.com>
+From: Sairaj Kodilkar <sarunkod@amd.com>
+In-Reply-To: <anpsjpCQHjJCH7TU@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002529D:EE_|DS0PR12MB6415:EE_
+X-MS-Office365-Filtering-Correlation-Id: b18c58e3-cfa0-4c2b-f0b7-08df02847c16
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|82310400026|36860700016|376014|56012099006|10067099003|3023799007|22082099003|11063799006|4143699003|18002099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	W20uM9au7iSFRsxlv4QNk6VXO0HBHRZtDPQhDJc91vOKMgQfkO/ucSRV3PWfXQAtfd9JjW6mat9WxJPLU2nq4hJNtGerksLogAfTFLWI5357YLiKchPqrdZp0fjE+7G5CfiZJC+yHQ8WVQAZJcHZdN1gphIIe34Zvo0wLbD2e0w6gpdgIohlSrOQ88M/Mn6RJLgfZlnNBVv4rBrnUamZCK5Wv/DLzBXvDH9AIpJ+rsiu9DXYgXYamsmKLRqBRG5BzgzXMgk+HZwaY02XmdhJocRtMJ/DJKbvF/jRjp+Lhevt+Al3DThH1HIMluV76xypCDqa8ImdGQ0ooOIQ+SeiD/ZEWRT47kAKTZSIXgexlfPoRRMZFWzrox5C0wrwXWK7m7NIzF7SyH+j2Jz7pgvhV9ItVrQfZgnGMB66eOqQB2ggKFnSvJmSC1hZ+ospVcf5ZCFNbPSUGsLoy50aQyj22dyxKIQrfTIcd5CJmsrHznHI8icYbex6eGOwghTZU7xFw6sxOc18gPZ5bvoiUgVYAmO/ypNEuzF60Zbb4zPIx6jiYcx6t26iyhVYheQSWveHmQnTwlZYNsP1XCSE201WIu1+tnixMJjJ9hl6MNwCpD7kLmXq1uLFTmEE6aPllwQjV3ZjrkXT7PcTNANmhkZ3aA==
+X-Forefront-Antispam-Report:
+	CIP:149.199.90.133;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:unknown-90-133.xilinx.com;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(82310400026)(36860700016)(376014)(56012099006)(10067099003)(3023799007)(22082099003)(11063799006)(4143699003)(18002099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	4ZwRxFa7oZVgn+k6yZXZNuLzwElx0ngVDVf+nkT1iaU8sb3DZ5q8iRe5ODbDYbyLj6luNrP2Czvl4nO8FVcYIkywiTuyXRL6qbn4ZGJsIz6Kh/3/eP4iZqh1EkowVxaZkAtsfVMD+1kqwBqBf/XUGFhbWn6wZC3YnNxi8iqeagAWltTF3eMrBIxPgEw+oCMP7LNmFTf1YVFr3SuyuuO8RhwgfHw+yfGz9m1YbURWm4sXgi3z993RElTUSVmSXDhLo825i2S93aQv684bKX3qUUiMDiX28qKFiuE5decDJapsrOucyAOK+fBu6xuuUVTqHAwI+vNySbm6vkzEuIlf8X9YDD9up2Jm3pNL1eBWnJvKXaooImAk5/KmmpTzfhQBj7yWSf9EHZ9ce3yp7lcCXHY2OiJ1CplL4KEjTWUg9vE733xXboYYRt6RNJ7Fuzlz
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2026 08:40:14.9481
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b18c58e3-cfa0-4c2b-f0b7-08df02847c16
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[149.199.90.133];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF0002529D.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6415
 
-pmu_ctr_read() adds the event count returned by perf_event_read_value()
-to counter_val, which can accumulate the same count repeatedly across
-reads. kvm_riscv_vcpu_pmu_ctr_stop() also leaves counter_val stale by
-not folding the current event count into it.
 
-Make reads of perf-backed counters side-effect free, and use
-perf_event_pause() when stopping a counter to fold the current event
-count into counter_val while resetting it. This preserves the counter
-value across stop/start and lets the snapshot path use counter_val
-directly.
 
-Fixes: 0cb74b65d2e5 ("RISC-V: KVM: Implement perf support without sampling")
-Signed-off-by: SeungJu Cheon <suunj1331@gmail.com>
----
- arch/riscv/kvm/vcpu_pmu.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+On 8/11/2026 5:57 AM, Sean Christopherson wrote:
+> On Mon, Jul 06, 2026, Sairaj Kodilkar wrote:
+>> On 7/6/2026 12:22 PM, sashiko-bot@kernel.org wrote:
+>>>> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+>>>> index 367297b188c39..123755d471099 100644
+>>>> --- a/arch/x86/include/asm/uaccess.h
+>>>> +++ b/arch/x86/include/asm/uaccess.h
+>>> [ ... ]
+>>>
+>>>> @@ -551,11 +594,18 @@ do {                                                                            \
+>>>>
+>>>>   extern void __try_cmpxchg_user_wrong_size(void);
+>>>>
+>>>> -#ifndef CONFIG_X86_32
+>>>> +#ifdef CONFIG_X86_32
+>>>> +/* Always fail on 32 bit arch as it do not support 128 cmpxchg (i.e. cmpxchg16b
+>>>> + * instruction).
+>>>> + */
+>>>> +#define __try_cmpxchg128_user_asm(_ptr, _pold, _new, label) (1)
+>>> [Severity: Medium]
+>>> Does this 32-bit stub correctly signal failure?
+>>>
+>>> Since this macro evaluates to 1, won't the surrounding unsafe_try_cmpxchg_user
+>>> macro treat this as success (true) rather than failure (false)?
+>>>
+>>> This could cause the wrapper to negate the value and return 0 (success) to the
+>>> caller, falsely signaling a successful memory exchange without actually
+>>> updating memory or the old value. Even though there are no current 32-bit
+>>> callers using a 16-byte operand, should this evaluate to 0 instead of 1 to
+>>> ensure theoretical future callers don't encounter a silent atomicity break?
+>>>
+>>> --
+>>> Sashiko AI review · https://sashiko.dev/#/patchset/20260706063035.1139-1-sarunkod@amd.com?part=1
+>> Hi,
+>>
+>> Right, It should return 0 instead of 1, will rectify this in the next patch.
+> 
+> Is it possible to fail the build instead?  Attempting to generate CMPXCHG16B on
+> 32-bit should straigt up fail.
 
-diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
-index 45dd5233340d..7d50490cc622 100644
---- a/arch/riscv/kvm/vcpu_pmu.c
-+++ b/arch/riscv/kvm/vcpu_pmu.c
-@@ -268,12 +268,13 @@ static int pmu_ctr_read(struct kvm_vcpu *vcpu, unsigned long cidx,
- 			return -EINVAL;
- 
- 		pmc->counter_val = kvpmu->fw_event[fevent_code].value;
-+		*out_val = pmc->counter_val;
- 	} else if (pmc->perf_event) {
--		pmc->counter_val += perf_event_read_value(pmc->perf_event, &enabled, &running);
-+		*out_val = pmc->counter_val +
-+			   perf_event_read_value(pmc->perf_event, &enabled, &running);
- 	} else {
- 		return -EINVAL;
- 	}
--	*out_val = pmc->counter_val;
- 
- 	return 0;
- }
-@@ -641,7 +642,6 @@ int kvm_riscv_vcpu_pmu_ctr_stop(struct kvm_vcpu *vcpu, unsigned long ctr_base,
- {
- 	struct kvm_pmu *kvpmu = vcpu_to_pmu(vcpu);
- 	int i, pmc_index, sbiret = 0;
--	u64 enabled, running;
- 	struct kvm_pmc *pmc;
- 	int fevent_code;
- 	bool snap_flag_set = flags & SBI_PMU_STOP_FLAG_TAKE_SNAPSHOT;
-@@ -679,8 +679,11 @@ int kvm_riscv_vcpu_pmu_ctr_stop(struct kvm_vcpu *vcpu, unsigned long ctr_base,
- 			}
- 		} else if (pmc->perf_event) {
- 			if (pmc->started) {
--				/* Stop counting the counter */
--				perf_event_disable(pmc->perf_event);
-+				/*
-+				 * Stop the counter and fold the live count into counter_val.
-+				 * Reset the event value to avoid redundant accumulation.
-+				 */
-+				pmc->counter_val += perf_event_pause(pmc->perf_event, true);
- 				pmc->started = false;
- 			} else {
- 				sbiret = SBI_ERR_ALREADY_STOPPED;
-@@ -694,9 +697,6 @@ int kvm_riscv_vcpu_pmu_ctr_stop(struct kvm_vcpu *vcpu, unsigned long ctr_base,
- 		}
- 
- 		if (snap_flag_set && !sbiret) {
--			if (pmc->perf_event)
--				pmc->counter_val += perf_event_read_value(pmc->perf_event,
--									  &enabled, &running);
- 			/*
- 			 * The counter and overflow indices in the snapshot region are w.r.to
- 			 * cbase. Modify the set bit in the counter mask instead of the pmc_index
--- 
-2.52.0
+Hi Sean,
 
+A compile-time failure in __try_cmpxchg128_user_asm would unfortunately
+break i386 builds even for callers that never use a 16-byte operand.
+
+unsafe_try_cmpxchg_user dispatches on sizeof(*(_ptr)) via a switch, and
+the 128-bit path is one of those cases. As noted in the comment above
+the macro, Clang/LLVM tends to compile all switch arms when expanding
+this macro, and only discards unused paths afterward.
+
+One way to solve this is to create two different macros of
+unsafe_try_cmpxchg_user for 32 and 64 bit, right now I am in favour of
+returning failure. Let me know what do you think about it.
+
+Thanks
+Sairaj
