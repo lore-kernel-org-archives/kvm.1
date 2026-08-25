@@ -1,100 +1,176 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511F9345EC0
-	for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 17:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787680124; cv=none; b=f9sFdgnsZcPaqIlhqLwMKq66fL9ty7O6w3enV7MjFRMSY3/gAcMRAali+BkxGNHCnF1Iy9NK4swzLI6Jki/WWpzEQEvn5e0h2/OVWsogPr95vzUbklbZBBwQGpf8N0IHGhPirmtfxu6SNbBnmCkQDMqP9BGZzLwxn7BSw8ft8Fg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787680124; c=relaxed/simple;
-	bh=c4O1YuM86p+GvK8W1WI4s9QhFG6ZLMMG+9fo6oalN1k=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=rq+M02624VezxNc+VVszr+UN9XCPJQkr/Xmo3KRYUkXCrYABZiuIoY9fgcKRyj6svxp/rcYQLAM/Y2C66eG2w8xXVgQar0fa00UDj49ThiLBBp8AYG1fbeWeVI5Uv4W0YymNghgLbyE/1BXhzRPiTUWdn45N6pNjckJhTnRu7Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kz9chFXI; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7B337E5DE
+	for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 18:06:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787681215; cv=pass; b=SchGMeHB6vmCch6YT2wN6W6IifP4yr32tTjBc9PeBf2gPYQXQD9x5CVy7Ftm3jyaP90dAC+I6jYwFgom+abPjqyHBFieViF6lldlixzKGq1ii9WOJ9uB5mxeuCDafWRCHX1rpJRmfAJEASoceQcoIXMhWgGjncuwP7rXOw5l6TE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787681215; c=relaxed/simple;
+	bh=0uL7MCW0qeeLr8z/9ii/U6tJWU1HTXtjC4HvHqgJAP0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=M0bVNvaFIIi2LoYDJcjvGgfU2RCO/nzfdGQTCO8LdanYTQRjmqIoGc7caB6pfE9sJfQ3pYIyc/WYi4yRp0RHhzH5Q700DR7uu+a8bzqE7t8eXVQou2vZCKonsR3jFAlC0IIUfa+ZuA/8rtmdTIAH60ase8Oh8zr2YHAbnqdq58o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PlRN+cIQ; arc=pass smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kz9chFXI"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1bbd7d6e6so3120a12.3
-        for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 10:48:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PlRN+cIQ"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c197eaaab00so851689566b.0
+        for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 11:06:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787681213; cv=none;
+        d=google.com; s=arc-20260327;
+        b=q5IRAIz4p7idSDCITJMU9qYnTPC2xeOI9fDC3BBclJQ8By3XElZnukWp4VGgJ7GuDE
+         5J++FTdhUcZWCRf67f6JImBDjBEwBmYz8gprnkEKivCKXrxeTGtSU+2A3Xr8PnYf9byt
+         djuNK9V/Ga6HU8hUxHBFqmhOl/aDgZQm8VIpH7QYn/zwYXPV6YOnHZashef7oa6u3lV7
+         CquKMjEiuXaz5gKJ4NZ47PKn2LmXrDiG5w5sa/wCxR7TzX1I1h1myWaNHft+RccDP9AS
+         0uL2JK9BpYVOQQ87QBvRy+IpgI8ZGKlCUrQV3cuWNtbboHexgYbvdYyHbzuTLDpe7I/r
+         avEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hiUjNjrrNe3BB9qnJkoHXwV002FhgZjHOjsfn6vnCus=;
+        fh=tmlnsDBPqRHd7ironJejYQiCBy654TIfDsEHrSAci58=;
+        b=ac86qGbpa+cVHgdT6aCtYQna122UyRXnPhpxiCoqsB8ZObGIu3Iz0vyztjkDF6VPE9
+         WNltCCBfJrh9HKLr9UVnRHDmkA/2sZ4mxljJlwQAUTbZYOPdAIv5SIbr3TWCo4efiOQu
+         I76VYdwNLFDnWY5RvDvdIcvbxByANx9Nxs68O2Wz4SUwCG1xVi7KSb5yrq3etYLdEifk
+         k+bglVrLcDz11csHyE/0lvrqHVRuAU9KDiE0PSYf7LEvjzcPRntV/LDVVsx8tiKicvvz
+         HdeJjfvv/lHzY9P6M3T20TACK5xnXTHd/5CQexnX0WoX7q9DGGpIG0agOfv34jT/L4k8
+         MWww==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787680123; x=1788284923; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LfNdtxjurrpQVrdCO19VGPq2Y4QeRrOBNLADjxjp0d0=;
-        b=kz9chFXIEkGx4Sf851xZV95gl/qyzcgM2yUhzw40rm0opl/ky9EsS0Vj35+hKc1McA
-         LcKNbOLQ8eVJtroCDPp+jmSQr/RYlmfRphjV96BtKXg9W5ptGlGtS+IKWV+a2gOWFRH3
-         rtN2KYQWnsg+8fKbCtn8HGwE4tZQJKHSDxACcW6QUdmiNjl0BB1plEgBEtAcmVRJur7Y
-         cVPWjb4OzVzkxBHuOQVBmZHCtOFu1Dr7jvYm7ZAMze8RTu8IOun1acfEzui9uT9tP6QA
-         YSDQfRMrKNzT8ooALrb/G9Cq8nGLBzQoD4RC0itLx+n924MARGLV/UWuvOtQvQGp7WHk
-         3BTA==
+        d=google.com; s=20251104; t=1787681213; x=1788286013; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hiUjNjrrNe3BB9qnJkoHXwV002FhgZjHOjsfn6vnCus=;
+        b=PlRN+cIQ+qsMeT+jbfQwDPT+qMuFk/IyTB7rxkSKHUceByPUDmKd1t+02Uc18+eZGS
+         vJebICxGuSqE7n2SvKDJwkOUbc1y+5JfJ8eMQsw2HoQCpHFLRqMXrmizjhtN546SyOIl
+         0SuJiQlB5LGSbod+nOMJX588NIvqj0hGtZB4Uf4FA01MwvhMNucmClMH17kOUx2DzVPp
+         FjCNYFyHIPzPGE77CjX5JlXtq0dD4XO0fIB+eb4hsCq7Hr3NuzHpobG8vOgpv6bsIYpg
+         PCU3k5gGf/V3jNUJKVtNzM4R08RCfaT7bEKI8aoIiTTZwuxhcVh36HYnMDiw7cwKlX1T
+         ae/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787680123; x=1788284923;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LfNdtxjurrpQVrdCO19VGPq2Y4QeRrOBNLADjxjp0d0=;
-        b=UzWoItf0TAPjt4Q8AJfrLBBO2O88rUxx6DXWIQsLl8rjJS/hgP+M8rd4Bmt44wgSj9
-         0BqBgYCZRT1Vzxzuuw+mFkF924cNgNNWEp7hvld1C8zDVw323D1+WUdsSfLD8CS3UicB
-         Ib7uMZkB/oGdx7Wi2PEzFNMjfjgEu0yFrSLctxzXCMzuh8bf4XVJLstvotH8qbkw717r
-         nQrujuxM2Lbq69NvHOaTzL+LzqbI2tPE/D/D9YB1XSFmcm7CAUw4I92O1KFcgDnghm6g
-         P4IPehhFfAKYRgUxn0lyP8LwJNrvv01ftE68jrRiHK5ArbftXhcOUxAXeQ4JYUI331eP
-         4j3Q==
-X-Forwarded-Encrypted: i=1; AHgh+RqANRouU4OdosFJVRlb6XjlaDCC4hOFb98P/HEnh5NCJLqrDw5v0lYFH9KLfyzPqkYVePQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++nBd6v7/h+kVHqixj1Ej92ZAYDGow5cYMrRvk3irfRXPqhwosd5
-	yCwQKkOa4jQ3BHVfOpYfcs38ysZ+0Q17bkR8SbScaDIRO22CZ6PZNoXoD3Uh/DU1D2n6eDMyn8w
-	jcIRi0w==
-X-Received: from pgbbh9.prod.google.com ([2002:a05:6a02:209:b0:cc1:b199:ca6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:6ca7:b0:84e:24df:3870
- with SMTP id d2e1a72fcca58-8536ee112damr1011928b3a.0.1787680122302; Tue, 25
- Aug 2026 10:48:42 -0700 (PDT)
-Date: Tue, 25 Aug 2026 10:48:41 -0700
-In-Reply-To: <1f12e12f1d5e7baed6630fd15cea5420c40ada68.camel@intel.com>
+        d=1e100.net; s=20251104; t=1787681213; x=1788286013;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hiUjNjrrNe3BB9qnJkoHXwV002FhgZjHOjsfn6vnCus=;
+        b=Cd8sZ4l2oL0Thk6cZ7Q4G0BSAiu5vo5kW95zULsZ7uzkso2RzeG4f9dkzVX+Y+4FX8
+         nH9oiMWQ1bjm5HcKYELKa6E7Bq8VD3JJWDwtdRzV71NIYgPJm7n/gIHAX8U5cK2xDMYI
+         8kmIE6dLDJXfkGmx3G7wOiboFYRgFqKPZy7u0gb1TiCNiIh+eSft5RBTg0vOKvi9y2eD
+         ZatwxdPygPJsFFKIFLNZcZD04wkmJwmDUKS2I1sL+Y+emlQ8PH75AOCQY0j1J3ucjLmx
+         VuFui1rU5sjuntE4N6JQZG6lWclR62LDvMieeW73xhLClSQD9xOfr5p8XUfqNT2HgtB0
+         6c2g==
+X-Forwarded-Encrypted: i=1; AHgh+RrIhlcjtH0YFDGLG+YQSIMK4bP+Pl1NrSjD87nKLM1F5+stT4PlzFOoIoUOn/qHpehmHSg=@vger.kernel.org
+X-Gm-Message-State: AFuF++knaPUgWTIfTVYi8OmMCwBcwIvJ8Z+yCmO8A75yo8q4AEwmoCie
+	qomnkhVAQeiExGO9IA6xm4k9C+mVNrPhQNDPsZVav1+rMZr4zBOy5ALmf2hVy2aQprtWVMo2GY+
+	KD6dpF25i3xKBbXpQvJsKHIYfefP3to7sVvSJTWQ4
+X-Gm-Gg: AR+sD10CxyR/4hlvg9ZlvyCDrmzcP+W3GcoLu/ijy3rflAZmDIrFgm2CSdkGTFnm73K
+	CDUjjRdSdhhcXRCF8PhUAaJGkuTjwG7UG/+nadG9XuHQwtFoMEnTaRDgUG6AokR+1BAlQpbVegd
+	5Diph5eNHnCKCkfIvjTPyLkWMQ38jvWiOmTJjP+28RxBLqVrZIx1kWN6uURFbvkfEZEYg/HqHcF
+	PdzTf9CSKlAsH7ePouAgc8P/9iRMxKRFq0gybr8Q3sLdAhEuIsfNpVvhGxGcl9YbUiWuP5hfl+i
+	IwpOlFe+sJ+aJ6j40HqWQjSuWpifYrJFUtsKnX8BhHCaGMquFyZQptY8UzvxBX9A/z0m7tlz+WD
+	6hC6BwiDYDux/rQ/SATJF1jlDrwqGu00SdzyGyGU6UAQotFybkJZ8s9974BlelNwC/cf7hwDln4
+	Una6UTG47JFjpi
+X-Received: by 2002:a17:907:1c87:b0:c21:180c:d82d with SMTP id
+ a640c23a62f3a-c250c3bfa5dmr43918066b.20.1787681211947; Tue, 25 Aug 2026
+ 11:06:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260825025533.25663-1-yan.y.zhao@intel.com> <1f12e12f1d5e7baed6630fd15cea5420c40ada68.camel@intel.com>
-Message-ID: <ao3VebUyMVlK_qGA@google.com>
-Subject: Re: [PATCH] x86/virt/tdx: Warn on !4K level in tdh_mem_page_aug()
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "kas@kernel.org" <kas@kernel.org>, Yan Y Zhao <yan.y.zhao@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Kai Huang <kai.huang@intel.com>, 
-	Dave Hansen <dave.hansen@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"ackerleytng@google.com" <ackerleytng@google.com>, "sagis@google.com" <sagis@google.com>, 
-	Vishal Annapurve <vannapurve@google.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <20260825140159.70997-1-mamarang@amazon.com> <CADrL8HUcr5Fei1PX179bkFmMJ_S+eD267SVgc85cm-rpcahwmA@mail.gmail.com>
+ <GV2PR06MB10711C9FE46F33B0613DCB66FB9AF2@GV2PR06MB10711.eurprd06.prod.outlook.com>
+In-Reply-To: <GV2PR06MB10711C9FE46F33B0613DCB66FB9AF2@GV2PR06MB10711.eurprd06.prod.outlook.com>
+From: James Houghton <jthoughton@google.com>
+Date: Tue, 25 Aug 2026 11:06:14 -0700
+X-Gm-Features: AcwNN1W2iTF0mK_fDpcAZFQ3QdOykWwGa_lvxxv8Vq6BgpyorCQO2Nhvfe9GdGY
+Message-ID: <CADrL8HW8br9KuYoELj4id84ib_tGZrBh3zZGbjerHuM8uiN7hA@mail.gmail.com>
+Subject: Re: [RFC] KVM: x86/mmu: Prefetch forward run of pages on TDP page faults
+To: "Marangoni, Marco" <mamarang@amazon.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"H. Peter Anvin" <hpa@zytor.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"kernel-patches@amazon.com" <kernel-patches@amazon.com>, "Mancini, Riccardo" <mancio@amazon.co.uk>, 
+	"Zoumboulakis, Michael" <zoumboul@amazon.com>, Marco Marangoni <marco.marangoni@proton.me>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 25, 2026, Rick P Edgecombe wrote:
-> On Tue, 2026-08-25 at 10:55 +0800, Yan Zhao wrote:
-> > Do not drop the "level" parameter instead, as it will be needed once huge
-> > page support is added.
-> 
-> TDX and coco has so many plans for the future. An abnormal amount of concurrent
-> thinking. I think everyone agrees we need to wrangle it by doing things
-> iteratively, and cheating when it comes to uABI.
-> 
-> Since we have TDX huge pages coming so soon, it seems ok to leave it. But I just
-> wanted to say having the level arg here originally was wrong. So this should not
-> be precedent for pre-enabling of things years in the future.
+On Tue, Aug 25, 2026 at 10:38=E2=80=AFAM Marangoni, Marco <mamarang@amazon.=
+com> wrote:
+>
+> Thanks for the replies!
+>
+> On Tue, Aug 25, 2026, Sean Christopherson <seanjc@google.com> wrote:
+> >
+> > On Tue, Aug 25, 2026, Marco Marangoni wrote:
+> > > It's worth mentioning that I also evaluated using the existing
+> > > KVM_PRE_FAULT_MEMORY ioctl, but this doesn't work well for our use-ca=
+se, as
+> > > it requires the vCPU to be paused.
+> >
+> > What about if/when KVM Userfault[*] comes along?  I.e. pre-fault memory=
+ when the
+> > vCPU exits to userspace.
+>
+> KVM Userfault + KVM_PRE_FAULT_MEMORY is a valid suggestion, however if po=
+ssible we'd like to have _both_ async page faults and prefetching.
+> I haven't tested async PF together with prefetching, but tested separatel=
+y, both improvements yield great results, so it would be a shame to have to=
+ choose.
 
-Eh, I would argue that in this particular case, including @level was ok from a
-process perspective, the main issue is the implementation was buggy.  Which is
-very arguably _because_ there was no user to validate the code, but given all the
-pre-existing KVM MMU code at play, at some point we'd have to insert code to say
-"hugepages aren't supported".  E.g. in this specific case, assuming PG_LEVEL_4K
-could have been just as bad as having a partially-dead @level.
+What if you used KVM_PRE_FAULT_MEMORY without KVM Userfault?
 
-But nitpicking aside, +1 to not building out unused, untestable infrastructure.
+If you want to avoid pausing a vCPU, what if you made another vCPU
+(KVM_CREATE_VCPU) and used that solely for prefaulting guest memory? I
+haven't really looked into that before... I'm guessing there's
+something fundamentally wrong with this approach.
+
+If this doesn't work (and a VM-scoped KVM_PRE_FAULT_MEMORY doesn't
+make sense either), then perhaps the TDP MMU prefetching logic makes
+sense.
+
+> On Tue, Aug 25, 2026, James Houghton <jthoughton@google.com> wrote:
+> > I think part of the problem in this case is that UFFDIO_COPY will
+> > install 4K pages (IIRC), I think a more natural way to fix this
+> > problem is to:
+> >
+> > 1. MADV_COLLAPSE after doing UFFDIO_COPY.
+> > 2. Make UFFDIO_COPY install PMDs when it is able to do so.
+> >
+> > These don't solve the exact same problem, but really userfaultfd
+> > should already try to install PMDs when it can (#2). If we have #2, #1
+> > is mostly a no-op.
+> >
+> > What do you think?
+>
+> Directly installing PMDs after an UFFD_COPY is something I already invest=
+igated. I didn't mention it originally, since it touches exclusively the MM=
+ module.
+> For some context, with that approach, in the same benchmarks, fault laten=
+cy on nested is reduced by 92%, and by 44% on metal, which is significantly=
+ better than my proposal (which "only" improves by 75% and 22% respectively=
+).
+
+Did you or one of your colleagues ever post it on list? I'm curious to
+see it. :)
+
+> However, that approach only works when the copy is done in multiples of 2=
+MiB, and for some Firecracker use-cases, that's a no-go (I can elaborate fu=
+rther if necessary, but the main problem is an explosion in incremental sna=
+pshots size when managing memory in big chunks).
+> I might pursue this proposal in a separate patch, however I'd love to wor=
+k out a solution that can be applied when userfaultfd works with smaller ch=
+unk sizes.
+
+I see. So we really are dealing with 4K mappings.
+
+In which case, prefetching at 2M does seem kind of arbitrary, which
+makes me even more in favor of this being mostly userspace-driven.
