@@ -1,153 +1,107 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410DF37E2F3
-	for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 18:39:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787683179; cv=none; b=nMnVh2j4IsyKGkVFhl8Rn9J+j8mGoSK3biby0q23rH4plnsVFioclNgl4nQasLZqSqmuVTXfI0y4wiAdp/G4D+mjpU+qB4tZ0cCN9Slh0oEZ9UNDOSyQF5kiF3lW6jt8WRa8YK0DYSVgQb6OzyMRMOgD34OfV0BY7KjTiukz0ug=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787683179; c=relaxed/simple;
-	bh=RdeEnUyZxdCR6MrqtuNxlBJrc3Eh5JtCEqB3t4sF5uw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dHnNwDwpuF/hDp1TutxGRQpMkMAEpuGyQDREopOeYSGftvN238/HPErDdll3gx+v7tyLkwjK046axUqToUGgFq2X9NFABWMfQDrr3+WGNoFrFZFzNbBngzoxuJQ+8YIzW8zmATTEp/Q2hP0KRG8PJkAexVBIDv4ormFblTHTmZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ddZpj1LR; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFED37D11F
+	for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 18:40:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787683254; cv=pass; b=Emr9DqBjB2uuxb4I0c3DJ7Olo0yumiHD0TDsyw+99vAa/iMuZH/3XL9qLne3ISAlbOrXN1OjPLDtDfgs+JJkSllSBSlD7AGKh3PaLu4WA2eOLGDuwKYKaSj9nCOGm5TUoVcAZXc73cSWb1VlWBwfQWS9ySOLmDuL+SMmZ+a4hE0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787683254; c=relaxed/simple;
+	bh=IvFl69wt8dBpBxkG539/Xp2+GpHoZasUiTDi4EJNqrQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DXg4SN65GMOcZ2cRPPRRKQrPp5pdOFzeSLIVBXDSBfQrD3or/l33XD9Pl/1N3UzC074jlv5xmpjxcAjWDSA3HtKPB2KyIpY0x1ZM4pae/F/bV2RwFh6QFk52CyZ0BJJJqH112P7Ve0KNy7JcGOYL6VZGrj/i6lydNvqFUDUq/vM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nMHPjQwg; arc=pass smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ddZpj1LR"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-81c7245eebcso12297b3.1
-        for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 11:39:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nMHPjQwg"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-69fdfd98eb8so18151a12.0
+        for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 11:40:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787683251; cv=none;
+        d=google.com; s=arc-20260327;
+        b=UyAKUJ2dAZsaWo8zEA+gfFpUl0sZsIHz0utDudw5D8Uo52jy2fFU01VeT0Dcq+176g
+         mgzmWChBeSp5MNkMewpnDpYwMn5nlA8asmem66sEdDDvWU5zAz8Dyg7BSs4Ty8OEFB8M
+         lzvKQfLHm6mq+UpxdiXBznfnstNT/wPl/JUM7mcUJ3VKxfFKrGJiwFlp9E/zHr3Wh8kC
+         lyyCF8WO2sbyS0Cpi54GGUYNO2EfQ7G3VR7ITArr3hsjRDW5VZKRvpAEgidncBzV8TkU
+         ybX0spJNNVIq7ATECikM3v98PPRL0JFujb3po9smMZMhP2I+ZAhU3lUqZtX7EeEAqL0g
+         e2Pg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=IvFl69wt8dBpBxkG539/Xp2+GpHoZasUiTDi4EJNqrQ=;
+        fh=y/4UvktYApM8PDeARb560BVTeZFkYIvdm8TSNN+gXyE=;
+        b=phA0p5QXMEkZJHVjR3kWALx891eJDuxC10Pl7yl0JYH6zxTh/FAKr2YQWHBA1rTc40
+         g4cCgPfiQ521wR6VbJ9fjCuA2NzqFUwYGfiJrNXelLAFdpx96P+1M4vj78ct7OMVigzr
+         Ogm9xS2XHb2sbn7vtFxIqHS5qAQWmBo2wv7VCqAscBu8qjxNfXb1UVApRH45H4pjGQhr
+         qvLCOhg3+MZJWQm5nwFZ/N59UmVwJMQd8VfI3qt89bI7hRvKVz7NmgL5fqj7SNM8iy0b
+         RFvuO2ZgSuPh0HNk5IvS08ZgdlxnXDqi/KVwbWvxpVCbEZsknVj1mb5x7ZdHuAsr1X8D
+         OuSw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787683177; x=1788287977; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DzDBNQWpaXJItDcAuhVID3lvsOEPud4hU73IGqDCIdQ=;
-        b=ddZpj1LR9AKheN6rsa5JhlqXbXllfuPWAMS/Z+dvYFRz0SmNa6v634DDeD/gWtI2ye
-         Z7rCn5l/ouOtgIwqiL2cl9TmMNbhNdHaoOJsMmrjHui3r4E2OLmKAC3A3ZrqduZpkkyR
-         rFdcRnqrtCjDUFAgIbXDAxx4UCf+/xiqPkihXHaQ5mm0YLiEEPwIzcwlqBZKBU5FVMqV
-         7Ftugo1+DeHdfvPL+yiF/xfyxzQA/6XsqDQoNHbDZroriHwrSLL12bi3GNfOLOAPBGqv
-         LtMs9Zis12hG1fd0un6SrXOZH993JLKjMgc7iOwkdR+vmWuk3QPlDudLpCUyyL37IyOW
-         DRQA==
+        d=gmail.com; s=20251104; t=1787683251; x=1788288051; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IvFl69wt8dBpBxkG539/Xp2+GpHoZasUiTDi4EJNqrQ=;
+        b=nMHPjQwg/Tc9TM1gAtXgxZ9idgVppuae/D++jetwnwuTayc5pTHXuEs3FMkDI3adOF
+         gBvuQnxHTJmBmoGGjB0L1M+6isvZdU5fDAFjOw0Wn4cFMX6meotMP4IaZQreIsn6yfx/
+         6cc2Kf+dRFMTzZ8ZcvUYmP/ZOD2I4BD2sqs9U7WxPWY7U0WEaW9hX6l89clzjjEf+4hP
+         jdkwctf6yYmZhkrPRJtOe/Cg7uijNCNfyxpkvjHVyujwSzuiPjfFbAwj6www2JGccO/4
+         eGF62KRn+pLaFXm+BXRwPjvBXQkWxCCqeh18gWs3cUsCJ1IonNCK3n2+h+DKZ86F2MhZ
+         VJdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787683177; x=1788287977;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DzDBNQWpaXJItDcAuhVID3lvsOEPud4hU73IGqDCIdQ=;
-        b=m77CsogYVQQoCaBB1Octc3MD3Eu2xK792dfKqQcEgehqd5OdZU4K/2s+guNWvYjibv
-         p4LvavomnqTqUnmBzzxAI1zCaV9j7IcLsAM4bq23TeuaiBm6qDHkqw1VL2FXO0rEaZNT
-         lBM6kYozKvBPzBLVIrra26mkz8tiflTsDjBJNDl3bTd0u5nnIx9I9q0leff8ajBD6faS
-         UbUbxtCwJt/XaWX1oNfg/bG19nBiAYsOzu7veG6xiIl336i8PoegMbjrAs2eo8r0gItF
-         yR/0nQqDFEbyvqE/6kXXJNWNYgvFbT3EekzX2YQImfh+78uZpss0dQyw3x1k0cUOQWBU
-         XtYQ==
-X-Gm-Message-State: AFuF++mC8gyTOun/RlG5X2ELCjhJZbliv9yTFMrYGT6gLDZpTtoVj68Y
-	Ke2oyQfwyxKFxz1AIHJzoN2UAq+il09Pu0s5ximwNwU9T56v15AXVeTP
-X-Gm-Gg: AR+sD11u0yE/lVrLxbE2cu4rYDz6umiQjrwSGfLUBv0aXtcsfcSQAs80z8uOMgK0LGG
-	9HkU0IsGaH1t0f9cxD+d5ekkRCkt3WuCgQDmL44LrzwfSG0pUf0ruI8fNtptFaVUwvdWXf1fbl3
-	qWLSea9knmp7kZpu6JWQ3vLmKSbCCAfSUDWOf5P8oYoKl6lcyKVAS0I/02wEFPxd0kQ8aC+0m8n
-	88+sNoWb9waB75AL4snGYbo/yWkC4fXRNIP4Bgne4gNbFDi9FdTdlzRNg1RlxLpm3+7kSRMlbni
-	qH0faa++RX6jKrbDAHDYr/z14uuZZG/MLquHGNIelFNlWLeISBKHSvUIFZuUAIWvU8MzMRxnTEy
-	Bb6BY2dbq3lzRx/MIIfIvelWYrmaj1uEyK+HUP8Se3QPZtLCuLFmfQAmMUO+RplVTPFW8EWkOOj
-	bolhC5B8ANC87AhaN7wyaOi1kJHIaMFHYwR/UThqXvQtb5moYwTgm4uR5nEAF2ZvUbb4dl16IqD
-	7SQqZSb4ZHSBTNQRHuWrTF1Jo8Jh38XqGasjkWRa74amzm2epaeXRBobA==
-X-Received: by 2002:a05:690c:c4e1:b0:820:100e:1abb with SMTP id 00721157ae682-8574105820cmr4191967b3.4.1787683177092;
-        Tue, 25 Aug 2026 11:39:37 -0700 (PDT)
-Received: from localhost.localdomain (45.78.64.189.16clouds.com. [45.78.64.189])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8570d237bf4sm3988007b3.38.2026.08.25.11.39.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 11:39:36 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Yan Zhao <yan.y.zhao@intel.com>
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] KVM: x86: Take SRCU in kvm_zap_gfn_range()
-Date: Wed, 26 Aug 2026 02:39:24 +0800
-Message-ID: <20260825183924.237727-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260822190224.3788887-1-nicoyip.dev@gmail.com>
-References: <20260822190224.3788887-1-nicoyip.dev@gmail.com>
+        d=1e100.net; s=20251104; t=1787683251; x=1788288051;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=IvFl69wt8dBpBxkG539/Xp2+GpHoZasUiTDi4EJNqrQ=;
+        b=ZW8ONzeBFJZ9R9npjGdGo6/96GsK/zG/JGsTRmI8bmJQ1cACJnd1COnNZFm1dlaTdt
+         QtLpbaLzhDwCuH5poYYyrXKUPDuZEn42J/sCwU0O1qCM/G3pnPTWppkY1IGG6SUlnk2i
+         /1W1gro4VetIbyLXm0MIEshtIf8KqtZXaFEgCEqV/QhvysPxk51udf6OgQFUlRusPp6j
+         U6MyeqQlBVdgHScpECvzxE7p6Ud2AxEfMdfTzG8mTtGkU6/M78JIcM0IkkJoxi3tqnVh
+         6aPtbb+0zbzymhsfoPYor4Ei7EjNQVjZyAjker0i6/pXTa7+A7sTF5VBJ1kdYfj4lq4W
+         XAoQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrazHoKjWScMdvUpSuaFJUw/uEKwwHDGiy6HpE5bmnt0Igs5SQsGzn0k0I+jVegyiukU0k=@vger.kernel.org
+X-Gm-Message-State: AFuF++noaQFpMK1QKqTmbE5lCGYXUjDcfJ4Iq3oGjmYqVNl1vyhhg8WM
+	UtrAn3LzzuVIofbor6WCWZxwxp6fhlZceRDAAVqGu1VK4GAw1CV/pUvWxbZxpur80Iv0w2MKPBV
+	EJEnPW7oXtQhnmSsIII9OUofn6hOqZJI=
+X-Gm-Gg: AR+sD112hUfeOsRX+br7vMGeyeb0/RCLPXbzqMfkooE8mk+qvL48ZMfxh/bYGV56jMF
+	ToU1nrDSCvt6ct/8E0gxipfKfOBA12xq2jfwVtVrkHejRmaUf1rtSxIsXQtrDVjuDqzHfRwxcU4
+	H3F5L5G8GgHCNcPO+xEzgGKbGQW9kjzCbUeVcO9IiJlR3WDhj9myXAzY9Tm/5lC2FQtRU891aYw
+	B63QQp6i8ND3yWhwCmk/5d+qhDIeZ5Ae6sXDrhIJ6IvjN7p7h3MAWocP+tj6eB3ObHJH37PVym9
+	ykoYrTSNB71eEhvNlc6kwVYmfQrR0QWdKwvYd4n+tzWsEYxe5vc3UJhNaU06wvUqTv/tgH053ZQ
+	=
+X-Received: by 2002:a05:6402:254f:b0:6a3:fee5:adc8 with SMTP id
+ 4fb4d7f45d1cf-6a5df324b31mr685775a12.0.1787683251228; Tue, 25 Aug 2026
+ 11:40:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260822190224.3788887-1-nicoyip.dev@gmail.com>
+ <aoyEMBz-SYLigbGp@google.com> <303eb59af516335e288647c19254928f89fa833a.camel@intel.com>
+ <aoy8Y19RV_Dgm7Te@google.com> <78e381a95f36b5a9325b1742b8f013e62709fcd5.camel@intel.com>
+In-Reply-To: <78e381a95f36b5a9325b1742b8f013e62709fcd5.camel@intel.com>
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+Date: Wed, 26 Aug 2026 02:40:39 +0800
+X-Gm-Features: AcwNN1VFyaoINwHFhJ9pgQfZFVn3Nk9TtsIN2dFauboqEZrJ71ScNpYuf0vLE4k
+Message-ID: <CAAo+4rUbag3g+w3yK0OzLKPWDttQ_3KzsxAcxhPy7FsGqo+1Og@mail.gmail.com>
+Subject: Re: [PATCH] KVM: x86/mmu: Protect noncoherent DMA zaps with SRCU
+To: "Huang, Kai" <kai.huang@intel.com>
+Cc: "seanjc@google.com" <seanjc@google.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "tglx@kernel.org" <tglx@kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-kvm_zap_gfn_range() walks memslots and rmaps and may drop mmu_lock to
-reschedule. Callers that do not already hold kvm->srcu (or slots_lock)
-can race with memslot deletion: synchronize_srcu_expedited() does not
-wait, kvm_free_memslot() frees the old slot and its rmap, and the zap
-resumes on freed memory.
+Thanks for your review! I have just sent a v2 to fix as the way
+suggested: https://lore.kernel.org/kvm/78e381a95f36b5a9325b1742b8f013e62709fcd5.camel@intel.com/T/#t
 
-The VFIO noncoherent-DMA path hits this by zapping the entire GPA
-space without SRCU. KASAN reported:
-
-  BUG: KASAN: vmalloc-out-of-bounds in slot_rmap_walk_next+0x82/0x1c0
-  Read of size 8 at addr ffffc900005c1008
-  Call Trace:
-   slot_rmap_walk_next+0x82/0x1c0
-   __kvm_rmap_zap_gfn_range+0x17a/0x280
-   kvm_zap_gfn_range+0x2a6/0x6a0
-   kvm_vfio_set_attr+0x576/0x770
-   kvm_device_ioctl+0x1ff/0x3b0
-
-Take SRCU inside kvm_zap_gfn_range() so every caller is covered.
-Nesting with an existing kvm->srcu critical section is fine; the
-helper uses a local index. Drop the now-redundant SRCU pair from
-__kvm_set_or_clear_apicv_inhibit().
-
-Fixes: 362ff6dca541 ("KVM: x86/mmu: Zap KVM TDP when noncoherent DMA assignment starts/stops")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
-v2:
-- Take SRCU inside kvm_zap_gfn_range() with guard(srcu)(), as suggested
-  by Sean Christopherson, instead of wrapping only the noncoherent-DMA
-  caller.
-- Drop the now-redundant SRCU pair from
-  __kvm_set_or_clear_apicv_inhibit(). Nested kvm->srcu is fine; only
-  kvm_vcpu_srcu_read_lock() cannot nest with itself.
-
- arch/x86/kvm/mmu/mmu.c | 2 ++
- arch/x86/kvm/x86.c     | 2 --
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index a61750f8e1e3..ae55a77e5a05 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -7047,6 +7047,8 @@ void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_end)
- 	if (WARN_ON_ONCE(gfn_end <= gfn_start))
- 		return;
- 
-+	guard(srcu)(&kvm->srcu);
-+
- 	write_lock(&kvm->mmu_lock);
- 
- 	kvm_mmu_invalidate_start(kvm);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 69469bbdc84a..adccd4a8e6c1 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10986,10 +10986,8 @@ void __kvm_set_or_clear_apicv_inhibit(struct kvm *kvm,
- 		kvm->arch.apicv_inhibit_reasons = new;
- 		if (new) {
- 			unsigned long gfn = gpa_to_gfn(APIC_DEFAULT_PHYS_BASE);
--			int idx = srcu_read_lock(&kvm->srcu);
- 
- 			kvm_zap_gfn_range(kvm, gfn, gfn+1);
--			srcu_read_unlock(&kvm->srcu, idx);
- 		}
- 	} else {
- 		kvm->arch.apicv_inhibit_reasons = new;
--- 
-2.43.0
-
+Best regards,
+Chengfeng
