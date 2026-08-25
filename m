@@ -1,199 +1,229 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2EF1A680C
-	for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 08:53:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE963D16F0
+	for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 09:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787648038; cv=none; b=cTryjAGbBPGNhBMB9mmgsmYqWcO54QzzlclJJhgYcs5iCSBkgJ63V1uZLewwjJRLFSVeSA5IrrpI4Gksgft411optvvMpH6VTMHWHzBTT7+7ImEbJ8lENdHvh9zXBmrJiEoW6OjtU1bWNMg3VIZP/44LLLkgr4yGgAimpzbU9cc=
+	t=1787649583; cv=none; b=Ngkn3FlAN1Tuv4gAUrc8gwM/3txgGWoxYLYoNqIdvq8CbPePpGTySbsG137NU1GRGE/DtaWdtCXDD5aJ76/7Zfm7uWsC1ZHQlRaP2XGNbrvrLAC/ti5UtUGQKrLfSvaLQv4ADl8uuRuTVrMnRYlfZkcs6hj77BgczJGJTaTVphU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787648038; c=relaxed/simple;
-	bh=OyC4Sg1Ouvvc4Io+csDOSqDHTfHFXBBiC2Pb9BUHyKg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=I7B9Tr0iPB9O6Dkr8hR41FACS0m3sad3+BUJBtQCQSY5fF2/VS9iAJk4rmqKlXx5vlScNWUHSdfRFjxAiasnnJYD0ILVX57UaCxF4VaUUtzKwMP5xNinX2ywJICd+hl0BU/mP9VDsPmg5LardZPOMRniBmnzsH6oRqzlK4ZkLus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CCiQmAHh; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787649583; c=relaxed/simple;
+	bh=Pm4PUWeW2L1To4s2otVLTBJ5/BTIITsknwFytr+zxUA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TK+vjwvgL99hlXnze3d8SgCOq5iDOdYMIVXd0rdg3wAeII5m24tRG7CHr+8zSaoIqWStXfRDgA2IlYUsfnkBIhXh3ZQFeMXmb6E0EFoALJ+Fk1g9ySxk5NQ551l8vduoCmuGiIcMOKnxo983hTq+T/FF5pTLKMVDKSszUPFbOqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XjJrGnm/; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CCiQmAHh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92C41F00A3A;
-	Tue, 25 Aug 2026 08:53:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787648037;
-	bh=9b0mTVLdLZE7sTqBGZbSKiwA9nqaNiCnfuj4Q2QDxu4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CCiQmAHhnlMt5949cXnijyHhxIzfpui/Yyxi96JYRXPoL9NeRIILrtil2BAFPTLql
-	 UaZr/CNbZOOKmRUfbJ2awevjH5u1+TbUfC0fhNr+D2scBWLm+J3XSZ5KMlUfV6Ogqs
-	 7/n82pVsM/Jd8QptIFe05Ro4Kl1r0dJC4pC9lr1FFIGeCD8v2d7DUI2PzhBe4zVPlI
-	 QvUetq5DII+iojC/oBDXbg2EqFOa64kZlWzyqjhGNXxSEP0dAT+cXsEPJIXr3zDMjo
-	 tO1sDK5hH2ufBV52zDys6JIp297rd41dweF+I1hgg/FYGh8gxe7mk9NolqE7WD0kBM
-	 f5/L1vgdSNbJA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 2/3] RISC-V: KVM: Report snapshot write failure to
- the guest
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "SeungJu Cheon" <suunj1331@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260825083719.643970-3-suunj1331@gmail.com>
-References: <20260825083719.643970-1-suunj1331@gmail.com>
- <20260825083719.643970-3-suunj1331@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 25 Aug 2026 08:53:56 +0000
-Message-Id: <20260825085356.E92C41F00A3A@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XjJrGnm/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787649580;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cmi+Rp+tDcGWO2/8+NKpz2hFhBNW78Pt0j3naNDc5pc=;
+	b=XjJrGnm/hq5a7Yu2zyTJpQgiGZZg/A1wG6fcRBvgIry7oXW7fCWbe8qlJU0bzNeFdz4Qq5
+	QgFey213C+udmj0F0eArVbARVeOjpL22gb7mCL14lEgcY/eoF96C8Moyhbxit7RqkSS1MN
+	McYA+rIrDKZntojq4cfg4A0+QystnBs=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-110-M-Aid7pYN-K2AZ7R06Kolw-1; Tue,
+ 25 Aug 2026 05:19:34 -0400
+X-MC-Unique: M-Aid7pYN-K2AZ7R06Kolw-1
+X-Mimecast-MFC-AGG-ID: M-Aid7pYN-K2AZ7R06Kolw_1787649572
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3C9BC195608F;
+	Tue, 25 Aug 2026 09:19:32 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.48.127])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BEEDC195604A;
+	Tue, 25 Aug 2026 09:19:25 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: 4ncienth@gmail.com
+Cc: netdev@vger.kernel.org,
+	sgarzare@redhat.com,
+	stefanha@redhat.com,
+	bobbyeshleman@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	mst@redhat.com,
+	jasowangio@gmail.com,
+	xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com,
+	bryan-bt.tan@broadcom.com,
+	vishnu.dasa@broadcom.com,
+	bcm-kernel-feedback-list@broadcom.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	sashiko-bot@kernel.org
+Subject: Re: [PATCH net v3 2/2] vsock/vmci: validate packet source for connected sockets
+Date: Tue, 25 Aug 2026 11:19:21 +0200
+Message-ID: <20260825091921.105436-1-pabeni@redhat.com>
+In-Reply-To: <20260823175858.351431-3-4ncienth@gmail.com>
+References: <20260823175858.351431-3-4ncienth@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+---
+vsock/vmci: validate packet source for connected sockets
 
-Pre-existing issues:
-- [Critical] Repeated or failed calls to SBI_EXT_PMU_SNAPSHOT_SET_SHMEM cau=
-se a memory leak and lead to a NULL pointer dereference.
-- [Critical] Integer overflow in kvm_riscv_vcpu_pmu_event_info causes a mas=
-sive heap buffer overflow.
-- [High] A failure while stopping one PMU counter prevents snapshot updates=
- for all subsequent successfully stopped counters.
-- [High] Starting an already-started counter silently corrupts its base val=
-ue and violates state atomicity.
---
+This adds a vsock_check_source() test to the VMCI stream receive paths so
+that a non-listening socket found by the destination-only bound-table
+lookup no longer processes packets from a context other than its stored
+peer. The check is applied both under bh_lock_sock() in
+vmci_transport_recv_stream_cb() and after lock_sock() in
+vmci_transport_recv_pkt_work().
 
---- Patch [2]: [PATCH v1 2/3] RISC-V: KVM: Report snapshot write failure to=
- the guest ---
-commit 2b7f150df4c06e5c182586d3b92e176b5a3ac870
-Author: SeungJu Cheon <suunj1331@gmail.com>
+Closes: https://lore.kernel.org/netdev/20260814121255.6B5001F000E9@smtp.kernel.org/
 
-RISC-V: KVM: Report snapshot write failure to the guest
+> diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
+> index 1c4ee039c1662..b612a9893856a 100644
+> --- a/net/vmw_vsock/vmci_transport.c
+> +++ b/net/vmw_vsock/vmci_transport.c
 
-If kvm_vcpu_write_guest() fails while updating the PMU snapshot area
-on counter stop, the guest may receive SBI_SUCCESS without the
-snapshot being updated, leaving stale data in shared memory. This
-commit ensures SBI_ERR_FAILURE is returned when the write fails.
+[ ... ]
 
-> diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
-> index 56dd5b1b2846c..45dd5233340dc 100644
-> --- a/arch/riscv/kvm/vcpu_pmu.c
-> +++ b/arch/riscv/kvm/vcpu_pmu.c
-> @@ -723,9 +723,10 @@ int kvm_riscv_vcpu_pmu_ctr_stop(struct kvm_vcpu *vcp=
-u, unsigned long ctr_base,
->  		}
+> @@ -765,17 +767,26 @@ static int vmci_transport_recv_stream_cb(void *data, struct vmci_datagram *dg)
+>  	bh_lock_sock(sk);
+>  
+>  	if (!sock_owned_by_user(sk)) {
+> -		/* The local context ID may be out of date, update it. */
+> -		vsk->local_addr.svm_cid = dst.svm_cid;
+> +		if (sk->sk_state != TCP_LISTEN &&
+> +		    !vsock_check_source(vsk, &vmci_transport, &src)) {
+> +			drop_pkt = true;
+> +			err = VMCI_ERROR_NO_ACCESS;
+> +		} else {
+> +			/* The local context ID may be out of date, update it. */
+> +			vsk->local_addr.svm_cid = dst.svm_cid;
+>  
+> -		if (sk->sk_state == TCP_ESTABLISHED)
+> -			vmci_trans(vsk)->notify_ops->handle_notify_pkt(
+> -					sk, pkt, true, &dst, &src,
+> -					&bh_process_pkt);
+> +			if (sk->sk_state == TCP_ESTABLISHED)
+> +				vmci_trans(vsk)->notify_ops->handle_notify_pkt(sk, pkt, true,
+> +									       &dst, &src,
+> +									       &bh_process_pkt);
+> +		}
 >  	}
-> =20
-> -	if (shmem_needs_update)
-> -		kvm_vcpu_write_guest(vcpu, kvpmu->snapshot_addr, kvpmu->sdata,
-> -					     sizeof(struct riscv_pmu_snapshot_data));
-> +	if (shmem_needs_update &&
-> +	    kvm_vcpu_write_guest(vcpu, kvpmu->snapshot_addr, kvpmu->sdata,
-> +				 sizeof(struct riscv_pmu_snapshot_data)))
-> +		sbiret =3D SBI_ERR_FAILURE;
-> =20
->  out:
->  	retdata->err_val =3D sbiret;
+>  
+>  	bh_unlock_sock(sk);
+>  
+> +	if (drop_pkt)
+> +		goto out;
+> +
 
-[Severity: High]
-This isn't a bug introduced by this patch, but looking at the loop earlier =
-in
-kvm_riscv_vcpu_pmu_ctr_stop():
+[Severity: Medium]
+Should these two new exits still emit an RST before dropping the packet?
 
-	for_each_set_bit(i, &ctr_mask, BITS_PER_LONG) {
-		/* ... */
-		if (snap_flag_set && !sbiret) {
-			/* ... */
-			kvpmu->sdata->ctr_values[i] =3D pmc->counter_val;
-			shmem_needs_update =3D true;
-		}
+Consider a stream socket that called bind() but never listen().
+__vsock_bind_connectible() puts it in the bound table with sk_state
+TCP_CLOSE, remote_addr left as {VMADDR_CID_ANY, VMADDR_PORT_ANY}, and
+vsk->transport still NULL, because vsock_assign_transport() is only
+called for connectible sockets from vsock_connect() (and at create time
+for SOCK_DGRAM).
 
-Does a failure while stopping one PMU counter prevent snapshot updates for =
-all
-subsequent successfully stopped counters?=20
+A REQUEST from a remote context to that port misses
+vsock_find_connected_socket(), is matched by vsock_find_bound_socket(),
+and then reaches the new check.  vsock_check_source() fails on its very
+first test:
 
-The loop relies on sbiret being zero to update the snapshot, but sbiret acts
-as a global error flag that is never cleared between iterations.
+net/vmw_vsock/af_vsock.c:vsock_check_source() {
+	if (vsk->transport != transport)
+		return false;
+	...
+}
 
+So drop_pkt is set and "goto out" skips the kmalloc/schedule_work()
+handoff entirely.  vmci_transport_send_reset_bh() is only reached on the
+"no socket found" and allocation-failure paths, so nothing is sent back.
 
-[Severity: High]
-This is also a pre-existing issue, but I noticed a potential concern in
-kvm_riscv_vcpu_pmu_ctr_start():
+The same happens on the deferred path below, where the new "goto out"
+jumps over the whole sk_state switch, including the default: arm whose
+in-tree comment says the reset is required:
 
-	for_each_set_bit(i, &ctr_mask, BITS_PER_LONG) {
-		/* ... */
-		pmc =3D &kvpmu->pmc[pmc_index];
-		if (flags & SBI_PMU_START_FLAG_SET_INIT_VALUE) {
-			pmc->counter_val =3D ival;
-		} /* ... */
+> @@ -908,6 +920,10 @@ static void vmci_transport_recv_pkt_work(struct work_struct *work)
+>  	pkt = &recv_pkt_info->pkt;
+>  
+>  	lock_sock(sk);
+> +	vsock_addr_init(&src, pkt->dg.src.context, pkt->src_port);
+> +	if (sk->sk_state != TCP_LISTEN &&
+> +	    !vsock_check_source(vsock_sk(sk), &vmci_transport, &src))
+> +		goto out;
+>  
+>  	/* The local context ID may be out of date. */
+>  	vsock_sk(sk)->local_addr.svm_cid = pkt->dg.dst.context;
 
-		} else if (pmc->perf_event) {
-			if (unlikely(pmc->started)) {
-				sbiret =3D SBI_ERR_ALREADY_STARTED;
-				continue;
-			}
-
-Does starting an already-started counter silently corrupt its base value?
-
-The pmc->counter_val is modified before validating the pmc->started state,
-which could permanently overwrite the active counter base value.
-
-
-[Severity: Critical]
-This is a pre-existing issue, but can repeated or failed calls to
-SBI_EXT_PMU_SNAPSHOT_SET_SHMEM cause a memory leak and lead to a NULL
-pointer dereference?
-
-In kvm_riscv_vcpu_pmu_snapshot_set_shmem():
-
-	kvpmu->sdata =3D kzalloc(snapshot_area_size, GFP_ATOMIC);
-	if (!kvpmu->sdata) {
-		sbiret =3D SBI_ERR_FAILURE;
-		goto out;
+net/vmw_vsock/vmci_transport.c:vmci_transport_recv_pkt_work() {
+	...
+	default:
+		/* Because this function does not run in the same context as
+		 * vmci_transport_recv_stream_cb it is possible that the
+		 * socket has closed. We need to let the other side know or it
+		 * could be sitting in a connect and hang forever. Send a
+		 * reset to prevent that.
+		 */
+		vmci_transport_send_reset(sk, pkt);
+		break;
 	}
 
-	/* No need to check writable slot explicitly as kvm_vcpu_write_guest does =
-it internally */
-	if (kvm_vcpu_write_guest(vcpu, saddr, kvpmu->sdata, snapshot_area_size)) {
-		kfree(kvpmu->sdata);
-		kvpmu->sdata =3D NULL;
-		sbiret =3D SBI_ERR_INVALID_ADDRESS;
-		goto out;
+Before this change that arm did transmit an RST for exactly this case,
+since vmci_transport_send_reset() handles an unbound remote_addr by
+replying to the packet's own source:
+
+net/vmw_vsock/vmci_transport.c:vmci_transport_send_reset() {
+	...
+	if (vsock_addr_bound(&vsk->remote_addr)) {
+		dst_ptr = &vsk->remote_addr;
+	} else {
+		vsock_addr_init(&dst, pkt->dg.src.context,
+				pkt->src_port);
+		dst_ptr = &dst;
 	}
+	...
+}
 
-It unconditionally overwrites kvpmu->sdata without freeing the previous
-allocation. Additionally, upon error, it sets kvpmu->sdata to NULL without
-clearing kvpmu->snapshot_addr.
+With the reply gone, does the remote connect() now block for
+vsk->connect_timeout and return -ETIMEDOUT instead of -ECONNRESET?  The
+same loss of the reply would apply to a socket disconnected via
+connect(AF_UNSPEC), which resets remote_addr to {VMADDR_CID_ANY,
+VMADDR_PORT_ANY}.
 
-Later, in kvm_riscv_vcpu_pmu_ctr_stop():
+Returning VMCI_ERROR_NO_ACCESS from the datagram callback does not turn
+into a protocol reply, so is there anything left that notifies the peer?
 
-		if (snap_flag_set && !sbiret) {
-			/* ... */
-			if (test_bit(pmc_index, kvpmu->pmc_overflown))
-				kvpmu->sdata->ctr_overflow_mask |=3D BIT(i);
-			kvpmu->sdata->ctr_values[i] =3D pmc->counter_val;
+For comparison, the virtio side runs the same source test but resets the
+sender before dropping:
 
-The mismatch between a valid snapshot_addr and a NULL sdata could cause a
-direct NULL pointer dereference here.
+net/vmw_vsock/virtio_transport_common.c:virtio_transport_recv_pkt() {
+	...
+	if (sock_flag(sk, SOCK_DONE) ||
+	    (sk->sk_state != TCP_LISTEN &&
+	     !vsock_check_source(vsk, &t->transport, &src))) {
+		(void)virtio_transport_reset_no_sock(t, skb, net);
+	...
+}
 
+Would it make sense to follow that convention here, and to mention the
+new drop-without-reply semantics in the changelog?
+-- 
+This is an AI-generated review.
 
-[Severity: Critical]
-This isn't a bug introduced by this patch, but does the shmem_size calculat=
-ion
-in kvm_riscv_vcpu_pmu_event_info() overflow?
-
-	struct riscv_pmu_event_info *einfo =3D NULL;
-	int shmem_size =3D num_events * sizeof(*einfo);
-	/* ... */
-	einfo =3D kzalloc(shmem_size, GFP_KERNEL);
-	/* ... */
-	for (int i =3D 0; i < num_events; i++) {
-		/* ... */
-		einfo[i].output =3D (ret > 0) ? 1 : 0;
-	}
-
-The integer truncation of shmem_size results in a small allocation when
-num_events is very large (e.g., 0x10000001), while the loop uses the
-untruncated num_events.=20
-
-Can this cause out-of-bounds heap writes during the loop execution?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260825083719.6439=
-70-1-suunj1331@gmail.com?part=3D2
