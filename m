@@ -1,169 +1,157 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614F148550F
-	for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 15:28:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256C73955F5;
+	Tue, 25 Aug 2026 15:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787671709; cv=none; b=mpuUHbucQv/mpOpnA4ZuRA1dMqH38R2E+U7iNA3WwUDs1NbmtuHYNzGnDiqEnFa3lJUKsJMe6mcNCv18OGPAb4mhCKG1/y1pZRrnPaI69ZrcjQor2ClCE5waGgL6abwqap47v+IKwlPTxj+Q3veGY+xmSpJ5vQURiN0ytG7ISFM=
+	t=1787672377; cv=none; b=GtUDwpagVnPQCsUT+/mnCueEZE1gcP295PwswmdkjoISVGm50u24RrQJsTSgHYI8yUoeTct8+JwB1uDusfFyRoEwTZ3slEj8gT0ZenmfIHWYrs5NgzO+Qkw+xtclRyKOKnFmU+0snNp7/ozcsKJmLP+CO7+vuWd4L3kIsZhjocY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787671709; c=relaxed/simple;
-	bh=loYqtnWXMGjjT8NDFhyil776wzBbOGoJ8kBMmOt6a6E=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=n8GMrZTDstqmPD0giMzSx+g9qAFV0gEr64iit/oWJSjF5eC2P9D6wdRDE0LWKuxdy63TozO2YVtnYLEsjD9VHKATGEdOmq16JSo6nJOy6TYiQBz08yu5dYkV4CbkEeCckYMguxmHZfbx81wmFtKpWTcrfZkc7j0f3PY8gbqmwY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eaIbwYch; arc=none smtp.client-ip=209.85.215.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787672377; c=relaxed/simple;
+	bh=MvjycQF2X0VQ9vlSBp2XajaO6rhcCe+5Hx2UF3SIMqU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t1H/d/nNq7O3ZjkX0s4/vNwAI4VCdDOX2TPhS1D/8rQwQrQZLWUaw0o1KgJsE7tdEMgkmpAtieCxZm5SB5w4RJribS1OwJ2ODfJ+ODK7cUolFRb+thlW++zKi8RNE8gZ8z49Ju8363uIsuQyJCJY/hXlcYloDjuRPVoj95jRIdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h7MjvG9I; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eaIbwYch"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cb835525b10so6310743a12.2
-        for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 08:28:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787671708; x=1788276508; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Z2PSz/zBXLlU1jZmPieSmrOStF8SdBY8YCSvnTzrOXM=;
-        b=eaIbwYche9iRhNwHOLXxc9R6lmXeZxuI1vHYj0X5Bm1Xdf0h1MYFqjDtW3ozdo6A4Z
-         5FZgJSEkecxiwZmozvXlYuBVWAu2YzzPO98Ku8MqA0uV4bxXKFjDWMyrxKCS7bwPxfY8
-         oJw7e1SvMOeZOvlCf8r7RD8G9aCFkl7qp847roWk2/qRhn8fVhs8GMMXQTkcfAq770Dr
-         MNV+VNZtdmrzYWNpsqWnNnNOvsmrbwbuDqe8KqMPZb8X1HG33zw8Ti8kv9Zo+ZFeFaoZ
-         NFdk6ydQb9FwXjA1rYDJn43uKJfHn9qY+g97SApCdHQiNsE1bNeUWZvrO0h9vVe4pOPI
-         6sfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787671708; x=1788276508;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Z2PSz/zBXLlU1jZmPieSmrOStF8SdBY8YCSvnTzrOXM=;
-        b=fgYE+QwjkraNrTDyHOBEILp1hsQvRqZShuCiVkv1AfZaV8dDoApKKRqcDLtKAYA+ui
-         Opvsd/ec7T965Nye4kKTyWktqezRW4/hrNqxiO5kdYjt77/7/vC37fLbH9RJtcbGY5bU
-         zXoJYT0KiE+wz6Hzi9QQ+sks93OWqCkajKNJ1jW+tZsedVrjUrC622ZY0/jZ9MRHKRSq
-         iru8tEwS4PW9L/YfkP01nOntq6Uw94RKcx8Z7NKx7CSmalJHfkUxv5YswpM3CzMXB6m0
-         KBAZ07MZAp8lc05vrCfsGSnalc2swhRLd504gCUZ+qhuQPSJ9g0SirN6s+gWjQ2WBCpv
-         MaMg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro/zD4op5ibSI2GB7+kE8ioqqDSxSa9Tbk52CkCCj1z4MFr/SMhElAUHlHeNAxZLd1gytU=@vger.kernel.org
-X-Gm-Message-State: AFuF++lNSE7qULkanuhDGs2u8EdtKxe28ri5tbWGQn36onjcdKUX5aAM
-	h7plXA6XF8yGczq8zR+EjjlJK5dSOfWW4OpAsIWoumeqChS5UYa98mUA21msme/WXphtWX143t7
-	nzDVJMg==
-X-Received: from pgbd17-n1.prod.google.com ([2002:a05:6a02:64d1:10b0:cc1:8a49:bf91])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7d02:b0:3cd:a1e2:f238
- with SMTP id adf61e73a8af0-3cda1e303bbmr4127115637.16.1787671707506; Tue, 25
- Aug 2026 08:28:27 -0700 (PDT)
-Date: Tue, 25 Aug 2026 08:28:26 -0700
-In-Reply-To: <327c7769-8ef6-40c3-869a-93c29ec9fa9f@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h7MjvG9I"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787672376; x=1819208376;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MvjycQF2X0VQ9vlSBp2XajaO6rhcCe+5Hx2UF3SIMqU=;
+  b=h7MjvG9IjxfSdOnV549NUDmCid+1EFcACCtIvfjDtgtKf6CWdPKchNJz
+   NOXS2/hLQRzRDKo3dZ+eSqfPNHey4tpVf7XLHkra+w2FEzktOaXbiyV3I
+   VXp56vopNbtoSo1TWP5/0ilc3YUQe2n/lJuBBZvwztSLxhyIbvceFV5CT
+   Zp/0Cqp9DmU1FIjtd8sy6Xgl1pZFr1UgwmdjK5anciB/2mmlYs7Y0RAOB
+   swHzHuOLu8m2i50SuCKFaMHvckrkHD6lYnFq+Z1z7ZPhpnawlVhvWdp6h
+   IOpq2Ix7yGLRww1LVWr9S8jgwl1tNfhfGGVtg0Tl25uRYfeteIfbKFNY5
+   Q==;
+X-CSE-ConnectionGUID: 4OgsNKzqSj+6GIKLmBMbVw==
+X-CSE-MsgGUID: Jk53/eWVQXyiWvZWkgEjiw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88272879"
+X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
+   d="scan'208";a="88272879"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 08:39:35 -0700
+X-CSE-ConnectionGUID: zVqpX1gUSsyp9ilI4W+wGg==
+X-CSE-MsgGUID: MFEjIPmOTw6F7Wwt8naJHA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
+   d="scan'208";a="261190001"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa009.fm.intel.com with ESMTP; 25 Aug 2026 08:39:31 -0700
+Date: Tue, 25 Aug 2026 23:39:31 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Maloor, Kishen" <kishen.maloor@intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>
+Subject: Re: [PATCH 6/6] x86/virt/tdx: Re-initialize the extensions on
+ runtime TDX module update
+Message-ID: <ao23M9LG9paVfKsT@yilunxu-OptiPlex-7050>
+References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
+ <20260821032920.256225-7-yilun.xu@linux.intel.com>
+ <2d1d8e9a5fd342583998625ca38776058764d8ac.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260706063035.1139-1-sarunkod@amd.com> <20260706063035.1139-2-sarunkod@amd.com>
- <20260706065212.CCD741F000E9@smtp.kernel.org> <84113ba5-ddb8-47aa-abe0-c6968feb3fea@amd.com>
- <anpsjpCQHjJCH7TU@google.com> <327c7769-8ef6-40c3-869a-93c29ec9fa9f@amd.com>
-Message-ID: <ao20mmzg6dMLukMo@google.com>
-Subject: Re: [PATCH v2 1/2] x86/uaccess: Extend CMPXCHG user helpers to
- 128-bit operands
-From: Sean Christopherson <seanjc@google.com>
-To: Sairaj Kodilkar <sarunkod@amd.com>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, 
-	Vasant Hegde <vasant.hegde@amd.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2d1d8e9a5fd342583998625ca38776058764d8ac.camel@intel.com>
 
-On Tue, Aug 25, 2026, Sairaj Kodilkar wrote:
-> On 8/11/2026 5:57 AM, Sean Christopherson wrote:
-> > On Mon, Jul 06, 2026, Sairaj Kodilkar wrote:
-> >> On 7/6/2026 12:22 PM, sashiko-bot@kernel.org wrote:
-> >>>> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/u=
-access.h
-> >>>> index 367297b188c39..123755d471099 100644
-> >>>> --- a/arch/x86/include/asm/uaccess.h
-> >>>> +++ b/arch/x86/include/asm/uaccess.h
-> >>> [ ... ]
-> >>>
-> >>>> @@ -551,11 +594,18 @@ do {                                          =
-                                  \
-> >>>>
-> >>>>   extern void __try_cmpxchg_user_wrong_size(void);
-> >>>>
-> >>>> -#ifndef CONFIG_X86_32
-> >>>> +#ifdef CONFIG_X86_32
-> >>>> +/* Always fail on 32 bit arch as it do not support 128 cmpxchg (i.e=
-. cmpxchg16b
-> >>>> + * instruction).
-> >>>> + */
-> >>>> +#define __try_cmpxchg128_user_asm(_ptr, _pold, _new, label) (1)
-> >>> [Severity: Medium]
-> >>> Does this 32-bit stub correctly signal failure?
-> >>>
-> >>> Since this macro evaluates to 1, won't the surrounding unsafe_try_cmp=
-xchg_user
-> >>> macro treat this as success (true) rather than failure (false)?
-> >>>
-> >>> This could cause the wrapper to negate the value and return 0 (succes=
-s) to the
-> >>> caller, falsely signaling a successful memory exchange without actual=
-ly
-> >>> updating memory or the old value. Even though there are no current 32=
--bit
-> >>> callers using a 16-byte operand, should this evaluate to 0 instead of=
- 1 to
-> >>> ensure theoretical future callers don't encounter a silent atomicity =
-break?
-> >>>
-> >>> --
-> >>> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/2026070606303=
-5.1139-1-sarunkod@amd.com?part=3D1
-> >> Hi,
-> >>
-> >> Right, It should return 0 instead of 1, will rectify this in the next =
-patch.
-> >=20
-> > Is it possible to fail the build instead?  Attempting to generate CMPXC=
-HG16B on
-> > 32-bit should straigt up fail.
->=20
-> Hi Sean,
->=20
-> A compile-time failure in __try_cmpxchg128_user_asm would unfortunately
-> break i386 builds even for callers that never use a 16-byte operand.
->=20
-> unsafe_try_cmpxchg_user dispatches on sizeof(*(_ptr)) via a switch, and
-> the 128-bit path is one of those cases. As noted in the comment above
-> the macro, Clang/LLVM tends to compile all switch arms when expanding
-> this macro, and only discards unused paths afterward.
+On Sat, Aug 22, 2026 at 12:01:08AM +0000, Edgecombe, Rick P wrote:
+> On Fri, 2026-08-21 at 11:29 +0800, Xu Yilun wrote:
+> > Runtime TDX module update introduces a mechanism to update the module
+> > firmware while preserving and restoring TDX operations. As part of the
+> > restoration process, the host must re-initialize the extensions to
+> > restore their functionality.
+> > 
+> > Linux runs the updates in stop_machine() context, which prevents memory
+> > allocation. This introduces a hard restriction that the updated TDX
+> > environment must not consume more memory for the extensions.
+> > 
+> > The impact of the memory allocation restriction can be mitigated by
+> > another requirement. Runtime updates should keep the add-on features
+> > unchanged across updates, so that existing TDX users can continue to
+> > operate without disruption. This requirement minimizes the chance of
+> > increased memory demand.
+> > 
+> 
+> Above it says it's a "hard restriction that the updated TDX environment must not
+> consume more memory", but here it says if everything is left the same, it only
+> minimizes the chances. Can it be consistent?
 
-If that's actually happening, then this code is already broken, because u12=
-8
-exists only on (some) 64-bit kernels.
+I made a new version:
 
-A straight static_assert() will fail, but BUILD_BUG_ON() (or more precisely=
-,
-__compiletime_assert())  and all of the associated magic exists for these e=
-xact
-scenarios.  Unlike static_assert(), __compiletime_assert() relies on dead-c=
-ode
-elimination, i.e. does exactly what we want.
+  Linux runs the updates in stop_machine() context, which prevents memory
+  allocation. This introduces a hard restriction that the compatible
+  update must not consume more memory for the extensions.
 
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.=
-h
-index a58d50d7a219..710a0b42eeef 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -595,10 +595,7 @@ do {										\
- extern void __try_cmpxchg_user_wrong_size(void);
-=20
- #ifdef CONFIG_X86_32
--/* Always fail on 32 bit arch as it do not support 128 cmpxchg (i.e. cmpxc=
-hg16b
-- * instruction).
-- */
--#define __try_cmpxchg128_user_asm(_ptr, _pold, _new, label) (1)
-+#define __try_cmpxchg128_user_asm(_ptr, _pold, _new, label) ({ BUILD_BUG_O=
-N(1); 1; })
- #else
- #define __try_cmpxchg64_user_asm(_ptr, _oldp, _nval, _label)		\
- 	__try_cmpxchg_user_asm("q", "r", (_ptr), (_oldp), (_nval), _label)
+  This restriction has no additional impact on the kernel. Recall that
+  runtime updates should keep the add-on features unchanged across
+  updates, so that existing TDX users can continue to operate without
+  disruption. This guarantees that the kernel will never introduce
+  additional memory requirement for the extensions.
 
+[...]
+
+> > +static int update_tdx_module_extensions(void)
+> > +{
+> > +	if (!tdx_sysinfo.ext.ext_required)
+> > +		return 0;
+> > +
+> > +	return tdx_ext_init();
+> > +}
+> > +
+> >  static __init int init_tdx_module(void)
+> >  {
+> >  	int ret;
+> > @@ -1532,6 +1545,10 @@ int tdx_module_run_update(void)
+> >  	 */
+> >  	WARN_ON_ONCE(ret);
+> >  
+> > +	ret = update_tdx_module_extensions();
+> > +	if (ret)
+> > +		return ret;
+> > +
+> 
+> Above it has:
+> 	/*
+> 	 * Only fails if there is something unexpected
+> 	 * and severely wrong with the module.
+> 	 */
+> 	WARN_ON_ONCE(ret);
+> 
+> Is the tdx_ext_init() possible to fail here?
+
+Yes. E.g. when more memory is required.
+
+> Otherwise it seems unclear why to
+> only not handle get_tdx_sys_info_version() failure. Maybe at least group it with
+> the other ones that are allowed to fail.
+
+Yes, I can move it right under tdh_sys_update().
+
+> 
+> >  	tdx_module_state.initialized = true;
+> >  	return 0;
+> >  }
+> 
