@@ -1,300 +1,160 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E003F54D3;
-	Tue, 25 Aug 2026 12:16:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E2742AFB7;
+	Tue, 25 Aug 2026 12:29:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787660174; cv=none; b=UmKlOAjPQB2T03mowUWwjakZCBfwJ5U/cj/SedPgjq5V0h6V9ddVCgk4WkCtMysiuRHbzfcZAzNyfE1Ag11bT/CEXHVkfBIBwb4uwKrs+qZpNDxE7s0p+KTbcEaC0WsxI6/rYxvH+AI6DVBWzAiRRb5QzUvl+IlxV7EEdP8LoBg=
+	t=1787660965; cv=none; b=QDz53dKy2VyU63vFjgP/1fGQrJyYW2DNUCWsa3bnr63cmWaCfvuWYzJxh4HCPIgLCwFAbLk8WjpxfOnrzUbEDQ4E7DOpyXpUZDBruT2/jRO9uC0ZycPzJ0LURVLhYCDF7LpVpDL8I5sxuIOcCczcQzSX05it93RNbN4hKYQEN8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787660174; c=relaxed/simple;
-	bh=erJX9/V/Be4uK/JlqLfSaR9nUxj/1j36cQfBRW1nkcM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
-	 MIME-Version; b=fx6+CR5xFcP6p+q2KCrisc4KTu7wp5xBVM0zWgHZ97JZAjn+mCHKJp1gYV8dM8Oqab7Qwrp/IMFTYMSjggulloIhl8ai4L9HWaRWaVu2RQ066VHwmkvaKAZZaIBGbPnsc/hBHRaEKiukl412VNy69g0N7S7jFbKdutzE7beTaJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=AEP41ken; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1787660965; c=relaxed/simple;
+	bh=3zSUF/gW/Zcaed81GwU3l76v2U3K0J3de2dxbI0c5CQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=epYVb+sHfOcJQzdhU9IH9rCicmlufXDkuK0lLHH9E8dsyDRQooWUMpMVUWJJN4RbHUPKq2SFiGI5GzCvmCTsRz2ngjAImy/jJmx2TT2tP7BLIEU9SlwlRJLkPydaTee0wZygc3vr99IFQ1wbq5AqsKOj+YKiSc6xsdgpo553UoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=kB+u9BRn; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="AEP41ken"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
-	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=9p7y+E+D/SjHn25JlvUvrxE/y7pfSxgI5ej15JD3C0g=; b=AEP41kenDSqRjJ7IjFvig7dbaL
-	cKI2XItfCOF6KZGlS2GHsaQ4hAO6FNG7JACji7JSOrPE1NgWtauTVDSMAkDW2H1+CgqovU+4aeLGj
-	m9IZ31O7myNeAToYpcJovEmWXWe1oTHSD9HgRj1LkjdN4nz8iLZwhrP8/pkJDsnpTVh6jywpdDO9M
-	keMDgIUkR2NGoprfFXarucTmNoDEsTHytmwaMCh1xMqPvwFA+7uaNrOyYNzTgFOq4v5vjqEkDln84
-	7qfTMfWV7OvWJqYWVXUf7pK03K+qC35/lzBxw2/RDeuO/cNEW0amyeuB6s06elboSb3yByub6KcH0
-	OGv7y9Qw==;
-Received: from [2001:8b0:10b:5:960:9a50:d6f3:b6b6] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyq4G-000000093zy-2FZN;
-	Tue, 25 Aug 2026 12:15:52 +0000
-Message-ID: <11dcf5a87125451897982f728c1f65a5151987e4.camel@infradead.org>
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-From: David Woodhouse <dwmw2@infradead.org>
-To: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-  Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
- Andrew Morton	 <akpm@linux-foundation.org>, David Hildenbrand
- <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka	 <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan	 <surenb@google.com>, Sebastian
- Andrzej Siewior <bigeasy@linutronix.de>,  Clark Williams
- <clrkwllms@kernel.org>, Simona Vetter <simona.vetter@ffwll.ch>, Jerome
- Glisse <jglisse@redhat.com>,  Christian Koenig <christian.koenig@amd.com>,
- Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, 
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Date: Tue, 25 Aug 2026 13:15:42 +0100
-In-Reply-To: <333c4cdb-8f34-4e3f-a47f-961f47e089a0@paulmck-laptop>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-tQVYW8/OCQIWLSirSMeu"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="kB+u9BRn"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 48CFC176A;
+	Tue, 25 Aug 2026 05:29:16 -0700 (PDT)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 11AED3F7D8;
+	Tue, 25 Aug 2026 05:29:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1787660960; bh=3zSUF/gW/Zcaed81GwU3l76v2U3K0J3de2dxbI0c5CQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kB+u9BRnN8KsWTpqT13jVQynNtsWyseMe8JNZ6YsmTsxaxvtw+rE53ZDlu+LfvLNn
+	 dOfgarmQ0ieJd8oQx8drFWvTVuyKbWAKrYi61e0P/9mauCXK/LnK0dN5zg8rNDiIRA
+	 eGNhtBVKJkJVAENWbmpu3fy0O2xJg+UcmFno6tig=
+Date: Tue, 25 Aug 2026 13:29:14 +0100
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: "Thomson, Jack" <jackabt.amazon@gmail.com>
+Cc: maz@kernel.org, oupton@kernel.org, pbonzini@redhat.com,
+	joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com,
+	yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org,
+	shuah@kernel.org, corbet@lwn.net, vladimir.murzin@arm.com,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
+	isaku.yamahata@intel.com, Jack Thomson <jackabt@amazon.com>
+Subject: Re: [PATCH v5 2/5] KVM: arm64: Add pre_fault_memory implementation
+Message-ID: <ao2KmmUd1lVFUUkp@raptor>
+References: <20260612162354.73378-1-jackabt.amazon@gmail.com>
+ <20260612162354.73378-3-jackabt.amazon@gmail.com>
+ <alEXtW7w-rqlNG09@raptor>
+ <0365d77d-616b-47f7-a5f2-3388bad692a1@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0365d77d-616b-47f7-a5f2-3388bad692a1@gmail.com>
 
+Hi Jack,
 
---=-tQVYW8/OCQIWLSirSMeu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Fri, Aug 21, 2026 at 02:52:17PM +0100, Thomson, Jack wrote:
+> Hi Alex,
+> 
+> On 10/07/2026 5:03 pm, Alexandru Elisei wrote:
+> > > +	unsigned long		*page_size;
+> > 
+> > As far as I know, fault handling was reworked to use struct
+> > kvm_s2_fault_desc to store the fault information that user_mem_abort()
+> > needs to handle the fault.  Adding a 'page_size' field, that represents the
+> > result of the gpa mapping process, might not be desirable.
+> > 
+> 
+> Yeah agreed, Vincent suggested a separate output struct that
+> kvm_s2_fault_map() fills with what was actually mapped. I'll do that in
+> v6 thanks!
+> 
+> > > +	struct kvm_vcpu_fault_info *fault_info = &vcpu->arch.fault;
+> > > +	struct kvm_vcpu_fault_info fault_backup = *fault_info;
+> > 
+> > I'm not sure you need to make a backup here. vcpu->arch.fault is populated
+> > each time the CPU takes a fault.
+> > 
+> 
+> So this was actually flagged up by sashiko when I ran it before
+> submission, it suggested handling this for the case in which the vCPU
+> exited for MMIO, the next KVM_RUN calls kvm_handle_mmio_return which
+> uses the vcu->arch.fault.esr_el2. I'll add some comments to this maybe
+> to explain why this would be needed.
 
-On Fri, 2026-08-21 at 10:38 -0700, Paul E. McKenney wrote:
-> The current state is that if you invoke synchronize_srcu_atomic()
-> from a given context, then srcu_read_lock_atomic() must be invoked
-> from that same context, or a more strict one.
->
-> So, for example, you can disable preemption across your invocation of
-> synchronize_srcu_atomic(), but only if you also do so across the entire
-> reader, starting before srcu_read_lock_atomic() and ending after the
-> matching srcu_read_unlock_atomic().  Or you could instead disable
-> interrupts across the entire SRCU reader.
->
-> Does that work?
+Ok, I see, VCPU exits to userspace due to MMIO, userspace calls
+KVM_PRE_FAULT_MEMORY, userspace resumes VCPU and uses fault_info from
+KVM_PRE_FAULT_MEMORY. Nicely spotted.
 
-Yes, I think that should work; thanks. I don't think we *need* to
-disable interrupts or even preemption for the KVM case, but I played
-with it a bit to look at the tail latencies that Sean was concerned
-about.
+> 
+> > > +	if (memslot->flags & KVM_MEMSLOT_INVALID) {
+> > 
+> > I don't think that's something we should care about, the flag can be set
+> > immediately after the check as the function doesn't take kvm->slots_lock.
+> > kvm_vcpu_prefault_memory() takes the srcu lock in read mode, so the
+> > function is safe to run even if userspace does something silly like
+> > deleting a memslot at the same time that it's prefaulting the guest memory
+> > it represents.
+> 
+> I was there not as much for safety, but rather to pick up that error.
+> This way rather than userspace getting an -EFAULT it can just retry.
+> This is the same way it is handled in x86 as well.
 
-I converted the GPC series to use srcu_read_lock_atomic() and
-synchronize_srcu_atomic()=C2=B9 and redid the same invalidation flood
-testing: 8=C3=97 shinfo + 4=C3=97 vcpu_info reproducers on 128-way Ice Lake=
-.
+My point was that since there's no serialization between memslot changes and
+KVM_PRE_FAULT_MEMORY, the condition can become true immediately after the if
+statement. Doesn't really matter though anyway.
 
-On its own it isn't much of a win for this use case AFAICT, but it does
-work nicely when combined with the try_synchronize_srcu() thing that I
-posted before=C2=B2.
+> 
+> > 
+> > It might not be obvious, but taking kvm->mmu_lock in read mode does not
+> > guarantee that gpa will be mapped when kvm_pgtable_get_leaf() returns.
+> > That's because a concurrent kvm_pgtable_stage2_map() for a different gpa
+> > can destroy the mapping of the current gpa.
+> [ ... ]
+> > The kvm->mmu_lock is dropped here, which means that it is possible for a
+> > MMU notifier callback to have just unmapped the entire stage 2 for the VM.
+> > 
+> 
+> Yeah as we mentioned in the other thread, this is best effort and we
+> can't guarantee that is survives the return. We do this for forward
+> progression, reporting the correct advance size for ranges which are
+> already mapped, instead of repeating the full dance for every page of them.
+> 
+> > 
+> > handle_access_fault() will fail if the mapping is gone. But I guess that's
+> > fine if the ioctl does not guarantee that memory is still mapped after it
+> > completes.
+> 
+> 
+> Yeah I think it's fine and will degrade to a no-op in this case.
+> 
+> > 
+> > Also, the documentation that this patch adds says: 'On arm64, newly created
+> > stage-2 PTEs are marked Accessed'. Does not say anything about marking
+> > **existing** ptes as accessed. Would be useful to explain the code does it.
+> > 
+> 
+> Ack, will do thanks!
 
-I compared three variants: synchronize_srcu_atomic() as in your dev
-branch; the same with try_synchronize_srcu() as an inline fast path
-in front of the GP spin loop; and my previous try_synchronize_srcu()
-+ synchronize_srcu_expedited() fallback for comparison. With
-PREEMPT_DYNAMIC, and without all the KASAN and lockdep debugging I had
-added for correctness checking:
+I think there's a word missing there, I meant to say that it would be useful to
+explain *why* the x86 implementation does not mark new PTEs as accessed, while
+arm64 marks them as accessed, and arm64 also does that for existing PTEs.
 
-                    avg     max
-  atomic spin       8.0=C2=B5s   6.0ms
-  try + atomic      3.6=C2=B5s   326=C2=B5s
-  try + expedited   3.7=C2=B5s   4.4ms
+> 
+> > > +		hva = gfn_to_hva_memslot_prot(memslot, gfn, NULL);
+> > 
+> > There's gfn_to_hva_memslot(memslot, gfn), is that what you are looking for?
+> > 
+> 
+> I think gfn_to_hva_memslot() resolves the hva for write, so would fail
+> on KVM_MEM_READONLY slots, and prefualting is a read. Also this mirrors
+> the guest abort path so matches the way the run path resolves the HVA.
 
-The try fast path more than halves the average =E2=80=94 it skips
-srcu_gp_start() and the flip-driven advance loop entirely for the
-no-readers case, which is >99% of them here. It also seems to fix
-a problem where synchronize_srcu_atomic() calls spend their time
-queued behind *each other* =E2=80=94 atomic alone has no sub-4=C2=B5s drain=
-s at
-all, and 40% of its drains take 8-16=C2=B5s, presumably contending for
-the driver role and waiting out each other's flip cycles. With the
-try in front, only the genuinely-contended calls enter the GP spin
-loop at all.
+Ah, I missed that, thanks for explaining!
 
-I was initially dubious about that 326=C2=B5s max =E2=80=94 the slow path i=
-s still
-just spinning like the atomic variant, just with two orders of
-magnitude fewer entries into it, so perhaps it just didn't hit the same
-p100 in my test runs. So I redid it with the try-failed slow path
-instrumented separately, and it does seem to be real. Of ~5M drains,
-3474 took the real GP slow path: avg 13.7=C2=B5s, max 326=C2=B5s, none over=
- a
-millisecond =E2=80=94 and the *fast* path's max was 282=C2=B5s, so the wors=
-t case is
-something like interrupt noise, not the actual grace period. For
-comparison, the expedited fallback was consistently producing drains
-over 1ms (sleeping and waiting for the workqueue under a saturated
-machine). There were about 100 such >1ms waits in each 300-second test
-window (of about 60k fallbacks).
+I was wondering if you have any plans about posting an updated series.
 
-So the tail win over try+expedited is real, if we care about hundreds
-of =C2=B5s vs single-digit ms. Which I think we do =E2=80=94 that's what br=
-ings the
-p100 to parity with the existing rwlock code (~330=C2=B5s on the same test)
-while also scaling better on the readers and resolving the whole
-PREEMPT_RT issue.
-
-One thing I didn't expect: the try falls through to the slow path about
-10=C3=97 less often in front of the atomic variant (0.07% of drains vs 0.5-
-0.7% falling back to synchronize_srcu_expedited()). I suspected the
-preempt-enabled readers in the latter, but rerunning that test with the
-readers non-preemptible made no difference at all. So it's an effect of
-the wait side itself somehow. It looks like the sleeping variant lets
-the abusive invalidate/refresh cycle churn about twice as fast (11M
-drains per window vs 5M), so the try observes readers in flight more
-often? I'm not sure that higher throughput of the abusive test is the
-metric we're here to measure though.
-
-Could we put try_synchronize_srcu() at the front of
-synchronize_srcu_atomic()? Without it, the atomic version is slower
-than what I had before, across the board.
-
-However...
-
-Testing with my KASAN+lockdep kernels showed the p100 latency going up
-to 200ms for the atomic version, while with try+expedited it was only
-about 25ms (the same order of magnitude as the existing rwlock-based
-implementation in the debug setup):
-
-                    avg      max
-  atomic spin       10.2=C2=B5s   172-212ms
-  try + atomic      10.2=C2=B5s   173ms
-  try + expedited   14.7=C2=B5s   25ms
-
-Pinning the grace period driver with preempt_disable() didn't make a
-difference. A sched_switch-instrumented run showed the >1ms tail is
-bimodal: half the samples ~100% off-CPU (the *waiter* descheduled after
-the wait was already over), and half genuinely on-CPU spinning and
-waiting for readers.
-
-So on a debug kernel under CPU saturation a spinning waiter has a much
-worse worst case than a sleeping one; on a production-like kernel the
-try+spin mode does seem to give a big win in the tail latencies that
-Sean was concerned about. I think that's OK.
-
-=C2=B9 https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=
-=3Drefs/heads/gpc-atomic-dev
-=C2=B2 https://lore.kernel.org/all/05e5a29a95793651062dc5d165661b4d590f08ab=
-.camel@infradead.org/
-
---=-tQVYW8/OCQIWLSirSMeu
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-whEQuAjjcikDEf96EeQgh8gAAAAAAAA=
-
-
---=-tQVYW8/OCQIWLSirSMeu--
+Thanks,
+Alex
