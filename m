@@ -1,284 +1,122 @@
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D4C48F836;
-	Tue, 25 Aug 2026 23:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE331231C91;
+	Tue, 25 Aug 2026 23:49:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787699520; cv=none; b=bCUotl+qUw7kydUK5DFYcIjHS4yw+J3OYu8zQ6TJbJqfajypMPNpdRxJcCoqYzcOmDNSvTEXIZExoWQoSxpxjVmns5XlEJmuYDnbP33zQjm8X50YK+RX+4Zt1LLYvo2Zc5tAQZ5WXjNf/+EaDpqEVWcD7VDwg5yrVx6VVTYUNuc=
+	t=1787701770; cv=none; b=hh2KatWgSm4XP6P2h+VtgZ6TMi5eryTFmJ4bPSe+BfDaGSNCwNz1O3lAfdF9MMR6LTghmXSYAoKm9uyzonL8wtWwSD81cjM5n2IwnBq76lpC2ni4eTZOm4D7qHh0BVDzwHcokj/5hfehGk96bpbND09fhExAYLa5vJEGaZgX/mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787699520; c=relaxed/simple;
-	bh=0C4YVCEjxcLad+BKcLfu8kXX2dWpU1P3toibe4J1y5k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IKQ2RUj28f+tKUYLQkxyY4oKfCK0bzSbfcgMg3oK1wi3vPlBnozwLlhQL7/bh0cWXIbulQJOG8HqWjz8Ub3QXFuAuEJlMkn8KJtsjTmlkrPU52uqdh5PGFMbZNJr8BSgq7d9A08kYNJNgP/QhUX9KtQaLaR1FIOanMlyA8k5+lY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=Ma/SKC1r; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DlRDOIhQ; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1787701770; c=relaxed/simple;
+	bh=l5pyd2WM2wQYKcrMr4ihk4QSifGaotxBoPz4iFY41Lc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pcgU9vMpSwNbvZzxgmxBKg840WQtg0micEqDdSLOz/kP0ik9bKj0MCcNNyIB/RUns+BzCDm0KS0JdlgfSzrLDZwyRCO77sH8DQ1CDbdsQKjQnhTz9WhkHYfLnB6KQYg0VTQV19s6gKoKw/pr2qksva9tFtWA2OqtGOsLNze0HtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nYHdG4E5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="Ma/SKC1r";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DlRDOIhQ"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 4739F140006B;
-	Tue, 25 Aug 2026 19:11:56 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Tue, 25 Aug 2026 19:11:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1787699516;
-	 x=1787785916; bh=s5X5r711sNi76uzB6suJO1vtp6P/krCgOqxtBND7le0=; b=
-	Ma/SKC1rpPa30Xa6WPQLtk6pGQHPQXoodHtqLja/3eANyLHlFpV0PWdn9SBx4FEn
-	A7PvjDgVdnAClY4NLFYUXQ2vCZ48ApjxU/peB1+soNLUXWGO4W6ZtQn/++ZKkmdG
-	R/v5tsCUpXGN4y7zcSv+MgtOD/0pFHbX8T3HwJ92XplPJ6qvmpDaCTsDFkMKLzQ3
-	fWaIbtOEt66ClCkw63il8mRjqx46JLFWQQSpCtj5xt8vDRhI0HVjqvJyqvDEiXZ9
-	0qbAEuskM47q9YUEVxNSX141fXNXNhq2KqEYcff7VjJuzPj17fHGCCQTEVeAnTx5
-	CTIS7jKUaub6zrdC4KnghA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787699516; x=
-	1787785916; bh=s5X5r711sNi76uzB6suJO1vtp6P/krCgOqxtBND7le0=; b=D
-	lRDOIhQh/TfwgHzD/Zh09/8m59q/VAVzL8yS8jEmdP3l7XR41bDA2og/KbIGw9rk
-	qA7+WWtGU3NaWODayQVDDSVVnZW+qOVLYwtaYvwx02nD4nqHUuyRI5sLD1sG/Tej
-	xT49WC2fk+iAJ8ibc/TzP3WZOT8h/Hz3GJ8e+x0t1acqKtiahzy7gANG87Ao2bMK
-	2RclDKa83BS19jtBcTSvMQOXhtHiImAOhsL8RPR+gmCFaNO31ysHAIEMTteyvNGB
-	buWj0YLE98BP4irnG1NIbnB8AkcActomVDRSDyLfgxBCC+XEFeaqNloM3eekCVkN
-	BC1sISMtls7ZFrYRkp4pQ==
-X-ME-Sender: <xms:OyGOaq3FCc4zMnlDKKGyjR23pKByUmeCAke4dXQhBmLiEUspsqV4rw>
-    <xme:OyGOaqtT3hCXXUErl9LaLEcOESN3IiXhyk1pAcfOfrlxSysCX-c9z9M1dxdpy-21A
-    Gd_FVrg3Pk74Ao-yLoSjtSHsmeRMQbL7rOLNRfxsY8hvqGB984hRA>
-X-ME-Received: <xmr:OyGOaqTTsShHyA6fVyYFnDS5tyfYn078_SCzL3J2HfKZEPQqL0ULEy-uF5vFZA>
-X-ME-Proxy-Cause: dmFkZTFZoGsgch79u4aY93SSL6BKHBNgXu/W+inpepofDrQZPSAF4WxXBg4kEq+dw+BHoW
-    +861ZP3bfsY0rJD/xWoRrLWtNui0fe9ILm54nmDjg8Q6vwRes57TxLysC2ja7bqi7XwwRD
-    i1f9D2HOjPUS5QIJrGLotqMxlQGGfvWpvQABxWwvNGAQEEi3mRlL/wjHaepjENE3K2Mr5x
-    ALL3B+ElkR21o4Xm4l52oihFpSfuieDdTyTbDHHZCVKfqL4npNya7SpOOfrbkhS8qxF/Ze
-    sA+uosYNLm9XcD8mSGbf0oFYtyk9c4jQOV8jM9uSPYi/9/zKOfBSEq0kgTvL2edJrh4tK7
-    cXUFiVbdlDelFsCxVLcOa87nb9+a82OlRHvkons6ayKcXrLEZfmQV3uZNeCK4V6VudKLJW
-    8x1N8bNZY+O5Zc3V8AYGqhotTpbvqt4w3rOD/hGwdYxQyrR7Qn4Eb0GO5z6MLQX1gtN0dI
-    ZAVw1kYi2K5R0RBHQ5lvN5W6wMc2tNIdvwmHBhOf2dj/erGdJSy/BzkUrZpBj71PolRx6U
-    0nBZzFrX2juo9MRdIC2icy/UY9BiYO/GlI+N4YeNEJz0ojYwLjPzk3oUbM+rKuFL2ALdg0
-    K5dW05sNK4549X/oDwg1bDBnVqtQdCIXduDf95IdxQlDg9JJPoE/VesGDIUw
-X-ME-Proxy: <xmx:OyGOakBBND2K0X806LL3vcyqvj6Xo7VwsyRjPPgVP_DJtf3BIskYfA>
-    <xmx:OyGOakwAx7IO4048c1qKa29H_lmOOrBCSzgYPP0aHcA94g7WveLo_Q>
-    <xmx:OyGOakvpnvooXh7W-LXH_WCT9Yu08M_BrV0XtGVpeeFLs0r2Rr19Sg>
-    <xmx:OyGOatkBRaF11Vnip9jc7YTRnsLmQxk8GYqAbj1hmTTHxVMr-UzNZA>
-    <xmx:PCGOajAolUVrUz0_O5Ig6NZjPbJ212BqJfByhoOG5jb590fQyI3ht70w>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 25 Aug 2026 19:11:53 -0400 (EDT)
-Date: Tue, 25 Aug 2026 17:11:51 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: <mhonap@nvidia.com>
-Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
- <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
- <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
- <dave@stgolabs.net>, <alison.schofield@intel.com>,
- <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
- <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
- <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
- <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
- alex@shazbot.org
-Subject: Re: [PATCH v4 05/27] cxl: Add a function-scoped reset entry for
- vfio-pci
-Message-ID: <20260825171151.2f707b93@shazbot.org>
-In-Reply-To: <20260813093631.2288172-6-mhonap@nvidia.com>
-References: <20260813093631.2288172-1-mhonap@nvidia.com>
-	<20260813093631.2288172-6-mhonap@nvidia.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nYHdG4E5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F8F1F000E9;
+	Tue, 25 Aug 2026 23:49:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787701769;
+	bh=z86ZOjMz7pOn+iFtN8uyoy3pCBq4SSsx+L3WdFQMPmQ=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=nYHdG4E5I8+6zzv0Y6U9Km8srefuTt0WLpI3TmOoIbWwBcQt+IOzUE2NdMHXS8ULY
+	 93Rhpz0sG9JJ36sqDaEOYidROBca6gcG8vSTGvGAg3TOV4zZVggE/JC7JJclfNQln4
+	 XNe/4t2i17kfIc4EDwY2rqnY0zoiW5mwiaOeM47b+Oqy199m/grRPZ9Szbnk2BoHzf
+	 /OcdgScBSqd7aGLFdD+wZ1m31lFMGbifbmThLBIHD1Crpjb8VnpsN+3PhaVAjPxzF3
+	 GOxUA/J1S5eaJIg4yBMQUT/Vzru7120NpzENhwHcigB9iJGBEkdPKwlVfGlZNEx6VK
+	 aoo61X/tOhCog==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 36586CE1DA2; Tue, 25 Aug 2026 16:49:29 -0700 (PDT)
+Date: Tue, 25 Aug 2026 16:49:29 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Kunwu Chan <kunwu.chan@gmail.com>, Kunwu Chan <kunwu.chan@linux.dev>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, rcu@vger.kernel.org,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] srcu: Add try_synchronize_srcu() for callers which can
+ prove readers absent
+Message-ID: <42ba6de7-3281-42c9-8d7b-f7dc62c10f62@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20260821032210.792451-1-kunwu.chan@linux.dev>
+ <d26ec36e92e8f5aa244e2a22de5d167d14b36597.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d26ec36e92e8f5aa244e2a22de5d167d14b36597.camel@infradead.org>
 
-On Thu, 13 Aug 2026 15:06:09 +0530
-<mhonap@nvidia.com> wrote:
+On Fri, Aug 21, 2026 at 12:53:22PM +0100, David Woodhouse wrote:
+> On Fri, 2026-08-21 at 11:22 +0800, Kunwu Chan wrote:
 
-> From: Manish Honap <mhonap@nvidia.com>
+[ . . . ]
+
+> > When applying this to current rcu/dev, the patch also needs to account
+> > for the additional bool is_atomic argument to
+> > check_init_srcu_struct(). Please rebase accordingly.
 > 
-> vfio-pci needs to run a CXL reset on a passthroughed Type-2 device
-> without the host-memory handling in cxl_reset_function(): the memory
-> behind the decoder belongs to the guest.
+> Ooh, shiny, I hadn't spotted that the atomic thing had landed. Maybe I
+> should retract my 'if we get that' above... but let's see how it
+> survives.
+
+It is starting to shape up.  Here is what is left, that I know of, anyway:
+
+o	A bit more work to get rcutorture to put up with atomic SRCU.
+
+o	Tree synchronize_srcu_atomic() fastpath.
+
+o	Disable preemption.
+
+o	Reorganize commits to fix the Tiny hunks that got applied
+	in Tree commits, and likely other similar issues.
+
+o	More work on error checking for use of banned primitives
+	with atomic SRCU.
+
+o	Update documentation.
+
+Not that it matters, but atomic Tiny SRCU seems to be doing quite well.
+
+> I also have more than just this patch to rebase onto rcu/dev — unlike
+> some, I'm not just hacking RCU for the fun of it; I get my jollies
+> elsewhere :)
 > 
-> Add cxl_reset_dvsec_sequence(), which runs the DVSEC reset and HDM decoder
-> restore under pci_dev_lock and cxl_rwsem, and cxl_reset_capable() to gate
-> it on a function-scoped reset.
-> 
-> Parameterize Memory Clear in cxl_reset_execute() so the guest owns the
-> choice; the host path keeps it disabled.
-> 
-> Signed-off-by: Manish Honap <mhonap@nvidia.com>
-> ---
->  drivers/cxl/core/resource.c | 69 ++++++++++++++++++++++++++++++++++---
->  include/cxl/cxl.h           | 12 +++++++
->  2 files changed, 76 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/cxl/core/resource.c b/drivers/cxl/core/resource.c
-> index 492ffe8e3576..cd15bd9171e6 100644
-> --- a/drivers/cxl/core/resource.c
-> +++ b/drivers/cxl/core/resource.c
-> @@ -1164,7 +1164,7 @@ static int cxl_reset_enable_cache(struct pci_dev *pdev, int dvsec)
->  				     PCI_DVSEC_CXL_DISABLE_CACHING);
->  }
->  
-> -static int cxl_reset_initiate(struct pci_dev *pdev, int dvsec)
-> +static int cxl_reset_initiate(struct pci_dev *pdev, int dvsec, bool mem_clr_en)
->  {
->  	u16 ctrl2;
->  	int rc;
-> @@ -1173,7 +1173,10 @@ static int cxl_reset_initiate(struct pci_dev *pdev, int dvsec)
->  	if (rc)
->  		return rc;
->  
-> -	ctrl2 &= ~PCI_DVSEC_CXL_RST_MEM_CLR_EN;
-> +	if (mem_clr_en)
-> +		ctrl2 |= PCI_DVSEC_CXL_RST_MEM_CLR_EN;
-> +	else
-> +		ctrl2 &= ~PCI_DVSEC_CXL_RST_MEM_CLR_EN;
->  	ctrl2 |= PCI_DVSEC_CXL_INIT_CXL_RST;
->  	return cxl_reset_write_ctrl2(pdev, dvsec, ctrl2);
->  }
+> Btw, the current commit c68271c3f83a message says "no index flip, no
+> grace-period sequence update" but that isn't true of the implementation
+> any more, is it? In fact, it *always* does those things, and doesn't
+> take the try-path optimisation by counting both epochs, that I'm doing
+> here?
 
-I'd again avoid a bool arg here, an enum type might be a better option.
+The current "dev" branch is here:
 
-I see in the spec though that CXL Reset Mem Clr Enable is only
-supported when the DVSEC CXL Capability register reports CXL Reset Mem
-Clr Capable though.  Should this return -ENOTTY if memory clearing is
-requested when the device is not capable?
+dc5bf5c8fb26 ("fixup! srcutree: Add an atomic Tree SRCU").
 
-> @@ -1273,7 +1276,7 @@ static int cxl_reset_wait_done(struct pci_dev *pdev, int dvsec, u16 cap)
->  }
->  
->  static int cxl_reset_execute(struct pci_dev *pdev, bool *target_prepared,
-> -			     int dvsec, u16 cap)
-> +			     int dvsec, u16 cap, bool mem_clr_en)
->  {
->  	int rc, rc2;
->  
-> @@ -1283,7 +1286,7 @@ static int cxl_reset_execute(struct pci_dev *pdev, bool *target_prepared,
->  
->  	rc = cxl_pci_target_reset_prepare(pdev, target_prepared);
->  	if (!rc)
-> -		rc = cxl_reset_initiate(pdev, dvsec);
-> +		rc = cxl_reset_initiate(pdev, dvsec, mem_clr_en);
->  	if (!rc)
->  		rc = cxl_reset_wait_done(pdev, dvsec, cap);
->  
-> @@ -1322,7 +1325,8 @@ int cxl_reset_function(struct pci_dev *pdev, bool probe)
->  	scoped_guard(rwsem_write, &cxl_rwsem.region) {
->  		rc = cxl_hdm_ranges_prepare(&range_ctx, pdev);
->  		if (!rc)
-> -			rc = cxl_reset_execute(pdev, &target_prepared, dvsec, cap);
-> +			rc = cxl_reset_execute(pdev, &target_prepared, dvsec,
-> +					       cap, false);
->  		if (!rc) {
->  			u16 command;
->  
-> @@ -1340,3 +1344,58 @@ int cxl_reset_function(struct pci_dev *pdev, bool probe)
->  	cxl_pci_target_reset_done(pdev, &target_prepared);
->  	return rc;
->  }
-> +
-> +/* True when a function-scoped CXL reset is available for @pdev. */
-> +bool cxl_reset_capable(struct pci_dev *pdev)
-> +{
-> +	u16 cap;
-> +
-> +	if (cxl_reset_dvsec(pdev, &cap) < 0)
-> +		return false;
-> +
-> +	if (pdev->multifunction)
-> +		return false;
-> +
-> +	return cxl_reset_hdm_available(pdev);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_reset_capable, "CXL");
-> +
-> +/*
-> + * Run the DVSEC reset sequence and restore HDM state for a caller that owns
-> + * device quiesce and PCI config save/restore, such as vfio-pci. The HDM range
-> + * collection and CPU cache flush that cxl_reset_function() does for host-owned
-> + * memory are skipped; that memory belongs to the guest here.
+Tree SRCU always does an index flip, though a single index flip can
+serve multiple concurrent calls to synchronze_srcu_atomic().
 
-It's worth noting in the comment that a device memory clear without a
-preceding cache invalidation risks that the cache writes back some of
-the memory we just cleared.  The use case later in the series does that
-cache invalidation, but the requirement is a bit subtle here.  Thanks,
+Tiny SRCU has the fast path, but must advance the index anyway for the
+benefit of get_state_synchronize_srcu() and friends.  It just bumps it
+in one shot.
 
-Alex
+Tree SRCU will also have to bump the index, but will be able to
+do so manually, without doing all the grace-period processing.
 
+> Thanks for the careful review.
 
-> + */
-> +int cxl_reset_dvsec_sequence(struct pci_dev *pdev, bool mem_clr_en)
-> +{
-> +	bool target_prepared = false;
-> +	int dvsec;
-> +	int rc;
-> +	u16 cap;
-> +
-> +	dvsec = cxl_reset_dvsec(pdev, &cap);
-> +	if (dvsec < 0)
-> +		return dvsec;
-> +
-> +	if (pdev->multifunction)
-> +		return -ENOTTY;
-> +
-> +	/*
-> +	 * Trylock rather than block: This follows the trylock convention of
-> +	 * pci_reset_bus().
-> +	 */
-> +	if (!pci_dev_trylock(pdev))
-> +		return -EBUSY;
-> +
-> +	scoped_guard(rwsem_write, &cxl_rwsem.region) {
-> +		rc = cxl_reset_execute(pdev, &target_prepared, dvsec, cap,
-> +				       mem_clr_en);
-> +		if (!rc)
-> +			rc = cxl_restore_hdm_after_pci_reset(pdev);
-> +	}
-> +
-> +	cxl_pci_target_reset_done(pdev, &target_prepared);
-> +	pci_dev_unlock(pdev);
-> +	return rc;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_reset_dvsec_sequence, "CXL");
-> diff --git a/include/cxl/cxl.h b/include/cxl/cxl.h
-> index f8e8fddba152..541ed6de75a6 100644
-> --- a/include/cxl/cxl.h
-> +++ b/include/cxl/cxl.h
-> @@ -164,6 +164,8 @@ void pci_cxl_hdm_init(struct pci_dev *pdev);
->  void pci_cxl_hdm_release(struct pci_dev *pdev);
->  int cxl_restore_hdm_after_pci_reset(struct pci_dev *pdev);
->  int cxl_reset_function(struct pci_dev *pdev, bool probe);
-> +bool cxl_reset_capable(struct pci_dev *pdev);
-> +int cxl_reset_dvsec_sequence(struct pci_dev *pdev, bool mem_clr_en);
->  #else
->  static inline void pci_cxl_hdm_init(struct pci_dev *pdev)
->  {
-> @@ -182,6 +184,16 @@ static inline int cxl_reset_function(struct pci_dev *pdev, bool probe)
->  {
->  	return -ENOTTY;
->  }
-> +
-> +static inline bool cxl_reset_capable(struct pci_dev *pdev)
-> +{
-> +	return false;
-> +}
-> +
-> +static inline int cxl_reset_dvsec_sequence(struct pci_dev *pdev, bool mem_clr_en)
-> +{
-> +	return -ENOTTY;
-> +}
->  #endif
->  
->  struct cxl_reg_map {
+What David said!  ;-)
 
+							Thanx, Paul
