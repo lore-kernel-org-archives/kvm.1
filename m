@@ -1,282 +1,161 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F3E3CC300
-	for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 21:04:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BF73CF02D
+	for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 21:09:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787691886; cv=none; b=I+hQWxeA8Zw6vRpth3vgRDCygHxgKbmhxqBEBkKwAbrL/bju2vFcesgFNQ8NE9PQWDhGLNqaENV415TBlzJyifrb4yuExQ0oeWneoh6Mc94N4L4d/Eg0LVa3ZFnRIohN6eBViR0XRbDHD3m0CqZ7xy9xo0yC1zkc1oGDc3ZhbF0=
+	t=1787692160; cv=none; b=D/CyrI/JWw+6XyikaCUfyGJnzh7w3DwomIxPqrP2eKDFQPBkchpRPAMldvHiA4hD3gyBc+FPlgCVRebdG8JVBtGX7/6Esu2AX1ZKjzwTL5ZGWwkn6dFZdsdycQBScRKmRvQ3Jt73vQcJg/+VrD6JVWIyqLtDV8S59EoQxLZrs0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787691886; c=relaxed/simple;
-	bh=y3JaxVV/ItmvBl2jv06UEW18IWm8frWqmaUiPg1L5gs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=duE+uHLs3gankyP7SQDQwn44GFedrEcic86BOE9qzWJGQR4WHiqsZqz2GmhX3JcDGiVUrOBO/iQfeQyo5Ppy3nZQvLFlq3NpZHqZtJHF3Ted8ZmNRzcpqAKk+2TN+aDZcijf7aEoN2kdiXrQXSe7bchEvw3RcFfu1ymgP6rNxdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FJvIl9YH; arc=none smtp.client-ip=209.85.216.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787692160; c=relaxed/simple;
+	bh=sZh7+Yg1RuvZGwbDoj2Th+jix+X+LlL6xZRNY/QZh9Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PMh/aVjXYnyAkaTvQqU4//Y8f5pd6Sgv/XQoCMiLZRcyGhX/E+GWHs//hwfYfqQm5MN0BGaHkgouW81dtXChyOKSpemUlxrNecEM2Hz6SkLZ6O9gKN9wKJdJDYht6Iw+b6c+S3vU+6cf7Rfz9segByc0T6eRfI6CO6lIIMV0Rgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dZMVzusH; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FJvIl9YH"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3954def0191so534908a91.3
-        for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 14:04:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dZMVzusH"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso492384a91.2
+        for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 14:09:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787691884; x=1788296684; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kdCwpbXCm4diJMO0qCIhObrfaL6xSD7Kcdv0HWKzDdk=;
-        b=FJvIl9YHrrDqcf6WazXNV9GBcqnltCDX++DO6e3rTb6Nl1jmof8rTVaYgtwn8A/9/W
-         8Xbny2Eu7EVhVI67CMUWR0WTIQklvvoi6UyfuTYTV2WTj/kUAQsrkgwgSyRLlUzRaUZL
-         MQPzFC4gjnbvqYRa2sVbdhKXlVLs3J15QDD0+aCS4XV7Acdo1EamFDCQLMZNmKzNtbTS
-         lfXo7BU7jJOgN+x12hhC9dBr+qMK7t0XKb1PCihdujl1ycTykNG/hq+AtsfW5FBG8qkq
-         i7DT7WbVANUgRqOJDtadHEtrTaN6WaIcNVIakXsN/iSVk2iuvhEklY3n6gvf4KDVijRT
-         4Rig==
+        d=linaro.org; s=google; t=1787692158; x=1788296958; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XEWwzwm0+KgrrqKho7ClIK9G3IzWKnm2/x3cuuIS4Ro=;
+        b=dZMVzusH/NqzvXczfq5BdSeTv4B67gXLQoTfnCDcXZ2BO2Y46bNT8vciuOORUiv/sh
+         Swo46lyxPnp615IXxdyIvfAR5tGmql4AvvY2yWxDzHRJFgpyny7GZPIy41N5BQa05oT1
+         3RZRm6ej9tamXWl6y7anP/ptZBNOHFknJduG4Tn8jCSYxKpBXQXpiB0Lmqi+fL+qG/n1
+         q0rjUsTxFCuF3tbZ07DbnEyoSwS86C4IBe4dgvdLqDhBm87U96eXWzBC06XDVk4IiiL5
+         ZMCHjr7ao9uTwn+mOUre//rd5R5ElEUSt2Qxf9FW4jMqN9XAy/k57tMtuEnhBijGLaby
+         0MQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787691884; x=1788296684;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kdCwpbXCm4diJMO0qCIhObrfaL6xSD7Kcdv0HWKzDdk=;
-        b=qGCr9l72xXAf3QzEpv3fyn29Lx19ZsbJi8ikP+BebdT3IOhjPkwXiKlrMPOhAlEQ/+
-         R70GCnwyg7tIFPl8g492PP7eNfdlPbhJ+Q6b6iVEMTND0wbQB6SMx0XLFJrElv19/jb0
-         dTvkGQiVmagG8PRxGuh0ot10GKS4UEApNwR2qHF3+zeDAYBgV9m1AuP3yZIA76tHphL7
-         Lscg+anKQbFoDdnFW3HnWSexnWN9fxrMEUKJ4JzqrDYA6lHXgHm3hzxRvKhzNQ+lX9fg
-         bQX8eKGj6P2g58BUaSItCcU9hk+ot1FeMEC0+KRlKFopR5LVWjOXLjLeCtbXB7IC/q0i
-         ronA==
-X-Forwarded-Encrypted: i=1; AHgh+RoKbsIRjqx8SV9DNVHX7qOZMKFkLtKq84PNfrs0CrMKThiKPpJCdiqmRM13S0iIhq8TgyM=@vger.kernel.org
-X-Gm-Message-State: AFuF++mSg00h96nH3EVoBo4E9I1aKfEDLqjSMzybTHG3depF984cumkd
-	7yxpZpegEKJW9GQL2QD1oSnwL9uecV11s2JFaAaL5dX6XLl+28PJ7o+evYHeUwxiPqqEs3Yldr0
-	wPdTAvw==
-X-Received: from pgjt20.prod.google.com ([2002:a63:f354:0:b0:cc1:2989:9d19])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:cfa8:b0:3cc:8f53:26c0
- with SMTP id adf61e73a8af0-3cf86dd6053mr2583459637.17.1787691883538; Tue, 25
- Aug 2026 14:04:43 -0700 (PDT)
-Date: Tue, 25 Aug 2026 14:04:42 -0700
-In-Reply-To: <ao4CufEI_pRCjbMF@google.com>
+        d=1e100.net; s=20251104; t=1787692158; x=1788296958;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XEWwzwm0+KgrrqKho7ClIK9G3IzWKnm2/x3cuuIS4Ro=;
+        b=D18upMcbJxisilZQ0Q8wIkqdjqth3yKm3TzVmoBNd1GpCoUlXh6ER02TmyOGMqO2yj
+         CAszVdlkU0CWyLoSHWYaQLQujIfJgbQ3fDAptFsuvTrXI630voQ91krisO7vlXNcO6b7
+         9xlFf1QxN12XLTkmJ8kef2Rlg0FGGE8+qU50o2xakhUfmQN1zQE76omA5XBVkwKY36OD
+         rImDGihNeKSskOAKIew51vmVHOqSgjy6uOWxDUERcNFJLeaKXW1FugpK5p6A8LNY3DQB
+         Sal7FtzFE2xLkxArjlGGqjYMCDtIdd77DDSP8iX7WkuDFjz8nRkR+Us8xOKsCA5wkuXw
+         3FJw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr3ZAyoYmIjpTv9Mr2jYcRiNFq2hdibwfW+rmivyOTn0P1bw/EtrTru18bxWJlDvDvB8Y4=@vger.kernel.org
+X-Gm-Message-State: AFuF++k6sKz0yVPpv89lk2haBXYgft3uyJREdlfZgGfThfGjg+69+S0j
+	xbWBY6LQb78eiLR0BoIswm60/avUHcuOl7OPLDLhN9ksyjMaXwCWT8DkKgMqf/bBMsM=
+X-Gm-Gg: AR+sD13QD8D7FldEH4gupK3zm/ZqzTUjpjn0qhh8FSBcIVGxuKcFe/ilkfK/1exEy2Y
+	yIO7E1ekXMLPuf9fMZSsWNgB7YTnn/p5+McEE6R61s7WUaDL3pPjvDG0Gpk3dU7azI73R3F7VOj
+	aB+sazst9orm7PyUB7z3YhCW4A3RNmTNPpRl4JTXbIGcwZEbOdzmX8wyCXYMO3NWPmFtqyjIaEF
+	PJspO64Y7yudcqIIfWRd9TCSqLqmGO9RSWdDhkoRGDvmqw+OdA6KLaMGvHUB0S8rrfgxNF0NDzI
+	WZjeG41Fe4i+t2yogauuWzmYlzGWuXqbKxQaeA1iOcYaXH8/3ftf5HCS6AK+u/X4zkL891xNdHi
+	kjmCGZYcs4T/MpiyIVD/uoYSqYZETrrSjQEJKHXwrxAHmycphIqTgzipL3UT60B6r6p/rD4B1qV
+	bIY2y0pnw3LydZhAtao8RYE2vOeoO210FCbYp9Q9AcGMHF8ppUz3BQvRB9p54Z1vFK
+X-Received: by 2002:a17:90b:2791:b0:395:7fff:a08f with SMTP id 98e67ed59e1d1-3966cffb1c7mr4401126a91.0.1787692158304;
+        Tue, 25 Aug 2026 14:09:18 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:a37a:292f:1363:c0af])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39668a5a55esm1158770a91.16.2026.08.25.14.09.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2026 14:09:17 -0700 (PDT)
+Date: Tue, 25 Aug 2026 15:09:14 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Kohei Enju <enju.kohei@fujitsu.com>
+Cc: berrange@redhat.com, kchamart@redhat.com,
+	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
+	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
+	eblake@redhat.com, armbru@redhat.com, lorenzo.pieralisi@linaro.org,
+	gshan@redhat.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+	kvm@vger.kernel.org
+Subject: Re: [RFC v2 00/24] Add Realm support to QEMU-VMM
+Message-ID: <ao4Eetq7oAAsipo4@p14s>
+References: <20260728192630.240375-1-mathieu.poirier@linaro.org>
+ <amrYWWyWlhnN2Fll@FCCLS0092175.localdomain>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260825140159.70997-1-mamarang@amazon.com> <CADrL8HUcr5Fei1PX179bkFmMJ_S+eD267SVgc85cm-rpcahwmA@mail.gmail.com>
- <GV2PR06MB10711C9FE46F33B0613DCB66FB9AF2@GV2PR06MB10711.eurprd06.prod.outlook.com>
- <CADrL8HW8br9KuYoELj4id84ib_tGZrBh3zZGbjerHuM8uiN7hA@mail.gmail.com> <ao4CufEI_pRCjbMF@google.com>
-Message-ID: <ao4Daj0hnwjP9Lpf@google.com>
-Subject: Re: [RFC] KVM: x86/mmu: Prefetch forward run of pages on TDP page faults
-From: Sean Christopherson <seanjc@google.com>
-To: James Houghton <jthoughton@google.com>
-Cc: Marco Marangoni <mamarang@amazon.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"H. Peter Anvin" <hpa@zytor.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"kernel-patches@amazon.com" <kernel-patches@amazon.com>, Riccardo Mancini <mancio@amazon.co.uk>, 
-	Michael Zoumboulakis <zoumboul@amazon.com>, Marco Marangoni <marco.marangoni@proton.me>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amrYWWyWlhnN2Fll@FCCLS0092175.localdomain>
 
-On Tue, Aug 25, 2026, Sean Christopherson wrote:
-> Somewhat off the cuff and *very* lightly tested, but this seems to do what I want.
-> If it provides comparable performance, I'll write a changelog (or two?  e.g. to
-> have direct MMUs switch in a separate patch), and let Sashiko and other bots rip
-> apart my idea.
+Hi Kohei - apologies for the delayed reply.
+
+On Thu, Jul 30, 2026 at 02:11:57PM +0900, Kohei Enju wrote:
+> On 07/28 13:26, Mathieu Poirier wrote:
+> > This patchset provides minimal functionality to start a Realm VM
+> > from an Arm RME capable host using the following command line:
+> > 
+> > qemu-system-aarch64 \
+> >  -M confidential-guest-support=rme0 -object rme-guest,id=rme0 \
+> >  -cpu host -M virt -enable-kvm -M gic-version=3,its=on -nodefaults ..
+> > 
+> > It is a refactoring of Jean-Philippe Brucker's initial work dating from a while
+> > back.  It is compatible with Steven Price's v14 revision [1] of his work adding
+> > CCA support to KVM.
+> > 
+> > * We are currently working on rebasing the work to v15.
+> > 
+> > It was tested on the QEMU SBSA machine.  For convenience, a repository is hosted
+> > here [2], along with the TF-A [3], RMM [4] and Linux kernel [5] for the SBSA
+> > machine (compatible with Steven's v14 patchset).
+> > 
+> > Instructions to compile and run the entire stack can be found here [6].
+> > 
+> > Device Assignment is not included.
+> > 
+> > Thanks,
+> > Mathieu
 > 
-> Note!  This has a hard dependency on in-flight prefaulting fixes[*].  Without
-> those, prefaulting will hang the vCPU if the root is invalidated.
-> [*] https://lore.kernel.org/all/20260806214050.78058-1-seanjc@google.com
+> Hi Mathieu, thank you for your work on upstreaming CCA support. I've
+> tested this series in QEMU-TCG(x-rme=on) environments and confirmed
+> that the basic functionality works well.
 > 
-> Note #2!  The below deliberately ignores A/D-disabled MMUs.  I can't think of
-> any reason why it matters whether or not KVM can precisely detect accessed SPTEs,
-> all of the aging stuff is already extremely fuzzy.
+> I have a question about a QMP command for querying CCA capabilities.
+> 
+> Jean's tree contains the following commit adding such a QMP command. Was
+> this functionality intentionally omitted from this series?
+> https://git.codelinaro.org/linaro/dcap/qemu/-/commit/41f7852cc8590a38c47299a35a7238da09ff9a12
+>
 
-And of course I posted an untested version (I ripped out the direct MMU prefetching
-as an afterthough, and dropped a printk).  This version should actually compile.
+git.codelinaro.org is no longer accessible to me.  Please see if you can point
+me to the same patch in this repository:
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 79c450d677b4..88b6aa1f840f 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -118,6 +118,9 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(tdp_mmu_enabled);
- bool __read_mostly eager_page_split = true;
- module_param(eager_page_split, bool, 0644);
+https://gitlab.com/Linaro/cca-public/qemu/-/commits/cca/2025-09-12?ref_type=heads
+
  
-+unsigned int __read_mostly auto_prefault_nr_pages = KVM_PAGES_PER_HPAGE(PG_LEVEL_2M);
-+module_param(auto_prefault_nr_pages, uint, 0644);
-+
- static int max_huge_page_level __read_mostly;
- static int tdp_root_level __read_mostly;
- static int max_tdp_level __read_mostly;
-@@ -3205,69 +3208,6 @@ static bool kvm_mmu_prefetch_sptes(struct kvm_vcpu *vcpu, gfn_t gfn, u64 *sptep,
- 	return true;
- }
- 
--static bool direct_pte_prefetch_many(struct kvm_vcpu *vcpu,
--				     struct kvm_mmu_page *sp,
--				     u64 *start, u64 *end)
--{
--	gfn_t gfn = kvm_mmu_page_get_gfn(sp, spte_index(start));
--	unsigned int access = sp->role.access;
--
--	return kvm_mmu_prefetch_sptes(vcpu, gfn, start, end - start, access);
--}
--
--static void __direct_pte_prefetch(struct kvm_vcpu *vcpu,
--				  struct kvm_mmu_page *sp, u64 *sptep)
--{
--	u64 *spte, *start = NULL;
--	int i;
--
--	WARN_ON_ONCE(!sp->role.direct);
--
--	i = spte_index(sptep) & ~(PTE_PREFETCH_NUM - 1);
--	spte = sp->spt + i;
--
--	for (i = 0; i < PTE_PREFETCH_NUM; i++, spte++) {
--		if (is_shadow_present_pte(*spte) || spte == sptep) {
--			if (!start)
--				continue;
--			if (!direct_pte_prefetch_many(vcpu, sp, start, spte))
--				return;
--
--			start = NULL;
--		} else if (!start)
--			start = spte;
--	}
--	if (start)
--		direct_pte_prefetch_many(vcpu, sp, start, spte);
--}
--
--static void direct_pte_prefetch(struct kvm_vcpu *vcpu, u64 *sptep)
--{
--	struct kvm_mmu_page *sp;
--
--	sp = sptep_to_sp(sptep);
--
--	/*
--	 * Without accessed bits, there's no way to distinguish between
--	 * actually accessed translations and prefetched, so disable pte
--	 * prefetch if accessed bits aren't available.
--	 */
--	if (sp_ad_disabled(sp))
--		return;
--
--	if (sp->role.level > PG_LEVEL_4K)
--		return;
--
--	/*
--	 * If addresses are being invalidated, skip prefetching to avoid
--	 * accidentally prefetching those addresses.
--	 */
--	if (unlikely(vcpu->kvm->mmu_invalidate_in_progress))
--		return;
--
--	__direct_pte_prefetch(vcpu, sp, sptep);
--}
--
- /*
-  * Lookup the mapping level for @gfn in the current mm.
-  *
-@@ -3502,8 +3442,8 @@ static int direct_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
- {
- 	struct kvm_shadow_walk_iterator it;
- 	struct kvm_mmu_page *sp;
--	int ret, access;
- 	gfn_t base_gfn = fault->gfn;
-+	int access;
- 
- 	kvm_mmu_hugepage_adjust(vcpu, fault);
- 
-@@ -3534,13 +3474,8 @@ static int direct_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
- 	if (WARN_ON_ONCE(it.level != fault->goal_level))
- 		return -EFAULT;
- 
--	ret = mmu_set_spte(vcpu, fault->slot, it.sptep, access,
--			   base_gfn, fault->pfn, fault);
--	if (ret == RET_PF_SPURIOUS)
--		return ret;
--
--	direct_pte_prefetch(vcpu, it.sptep);
--	return ret;
-+	return mmu_set_spte(vcpu, fault->slot, it.sptep, access, base_gfn,
-+			    fault->pfn, fault);
- }
- 
- static void kvm_send_hwpoison_signal(struct kvm_memory_slot *slot, gfn_t gfn)
-@@ -6580,11 +6515,38 @@ static int kvm_mmu_write_protect_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
- 	return RET_PF_EMULATE;
- }
- 
-+static void kvm_mmu_auto_prefault(struct kvm_vcpu *vcpu, gpa_t start,
-+				  u64 error_code, u8 level)
-+{
-+	gfn_t nr_pages = READ_ONCE(auto_prefault_nr_pages);
-+	int nr_pages_msb;
-+	gfn_t i;
-+
-+	if (unlikely(error_code & PFERR_RSVD_MASK))
-+		return;
-+
-+	nr_pages = min(nr_pages, KVM_PAGES_PER_HPAGE(PG_LEVEL_1G));
-+	nr_pages_msb = find_last_bit((unsigned long *)&nr_pages, sizeof(nr_pages));
-+
-+	start = ALIGN_DOWN(start, gfn_to_gpa(BIT_ULL(nr_pages_msb)));
-+
-+	for (i = KVM_PAGES_PER_HPAGE(level); i < nr_pages; i += KVM_PAGES_PER_HPAGE(level)) {
-+		gpa_t gpa = start + gfn_to_gpa(i);
-+
-+		if (gpa < start || gpa_to_gfn(gpa) > kvm_mmu_max_gfn())
-+			return;
-+
-+		if (kvm_tdp_page_prefault(vcpu, gpa, error_code, &level))
-+			return;
-+	}
-+}
-+
- int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 error_code,
- 		       void *insn, int insn_len)
- {
- 	int r, emulation_type = EMULTYPE_PF;
- 	bool direct = vcpu->arch.mmu->root_role.direct;
-+	u8 level;
- 
- 	if (WARN_ON_ONCE(!VALID_PAGE(vcpu->arch.mmu->root.hpa)))
- 		return RET_PF_RETRY;
-@@ -6617,7 +6579,7 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
- 		vcpu->stat.pf_taken++;
- 
- 		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa, error_code, false,
--					  &emulation_type, NULL);
-+					  &emulation_type, &level);
- 		if (KVM_BUG_ON(r == RET_PF_INVALID, vcpu->kvm))
- 			return -EIO;
- 	}
-@@ -6628,6 +6590,8 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
- 	if (r == RET_PF_WRITE_PROTECTED)
- 		r = kvm_mmu_write_protect_fault(vcpu, cr2_or_gpa, error_code,
- 						&emulation_type);
-+	else if (r == RET_PF_FIXED)
-+		kvm_mmu_auto_prefault(vcpu, cr2_or_gpa, error_code, level);
- 
- 	if (r == RET_PF_FIXED)
- 		vcpu->stat.pf_fixed++;
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index 27427e7f22fa..b41b4b78cc81 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -617,7 +617,7 @@ static void FNAME(pte_prefetch)(struct kvm_vcpu *vcpu, struct guest_walker *gw,
- 
- 	sp = sptep_to_sp(sptep);
- 
--	if (sp->role.level > PG_LEVEL_4K)
-+	if (sp->role.level > PG_LEVEL_4K || sp->role.direct)
- 		return;
- 
- 	/*
-@@ -627,9 +627,6 @@ static void FNAME(pte_prefetch)(struct kvm_vcpu *vcpu, struct guest_walker *gw,
- 	if (unlikely(vcpu->kvm->mmu_invalidate_in_progress))
- 		return;
- 
--	if (sp->role.direct)
--		return __direct_pte_prefetch(vcpu, sp, sptep);
--
- 	i = spte_index(sptep) & ~(PTE_PREFETCH_NUM - 1);
- 	spte = sp->spt + i;
+> We are interested in adding this functionality because we are also
+> planning to upstream CCA support for libvirt, which will need a QMP
+> interface to query the CCA capabilities exposed by QEMU.
+> 
+> Since the Linux kernel dropped some configuration parameters such as the
+> hash algorithm, I need to rework the implementation of that QMP command
+> a bit. If it's okay with you, I'd be happy to send out the reworked
+> patch based on this series.
+> 
+> Thanks,
+> Kohei
+> 
+> > 
+> > [1]. https://lore.kernel.org/kvm/20260513131757.116630-1-steven.price@arm.com/T/#m06dd14216aaf76acab65b0a76fb84653141ea64f
+> > [2]. https://gitlab.com/Linaro/cca-public/qemu/-/tree/upstream-v2?ref_type=heads
+> > [3]. https://gitlab.com/Linaro/cca-public/tf-a/trusted-firmware-a/-/tree/cca/v13?ref_type=heads
+> > [4]. https://gitlab.com/Linaro/cca-public/rmm/-/tree/cca/v14?ref_type=heads
+> > [5]. https://gitlab.com/Linaro/cca-public/linux/-/tree/upstream-v2?ref_type=heads 
+> > [6]. https://gitlab.com/Linaro/cca-public/build-instructions
+> > 
+> > RFC v1:
+> > https://lists.gnu.org/archive/html/qemu-devel/2026-07/msg02307.html
+> > 
+> > Changes for V2:
+> > - Fixed linux headers to include correct bit shift for Realm VM (Gavin).
+> > - Removed obsolete rme-guest options (Markus).
+> > - Set ConfidentialGuestSupportClass::kvm_init() to kvm_arm_rme_init() (Gavin).
+> > - Got rid of kvm_arm_rme_vm_type() (Gavin).
+> > - Used kvm_vm_check_extension() instead of kvm_check_extension() to avoid
+> >   error message when starting a Realm (Gavin).
+> > - Removed obsolete kvm_arm_rme_init_guest_ram() (Gavin).
+> > - Collected A-B and R-B.
