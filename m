@@ -1,190 +1,131 @@
-Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazolkn19013076.outbound.protection.outlook.com [52.103.43.76])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B36388898;
-	Tue, 25 Aug 2026 09:58:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.43.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787651932; cv=fail; b=Ex2/5BPiPcdmPqLmdU8fG+HnYSjVk9oaGTZ6I7k9xg8GG60tqSgj9Ow4PSwN1R1jbau1PbOysEjTwP0kESm3MN570Dzti2XKFaX7iFI2Rni3Fe82iw8NoqJrwR3Xrl4acRkkgf1AdJ2dLF8lyC1MnUn8/jARwX5gQDPQjMEElOY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787651932; c=relaxed/simple;
-	bh=VIPbIzQuZEfytmtOWczvl//OkHSYqyYbiyQ/ovCHTb8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=p9sHwOmniK21ef/M0qahGeKugT74BM5dZwPwHHKLM4owUoty8dkE9dYZyBYMo/DZH0wYU80a0SuN12LK/QRMN020zcd4PbX34bPvwfsTePsmQZCb/THq6OLncfUUTLSeMWrGFXIZ02CFNYn4SwzHWL2Yq7GlZUcziDOzcGZisAs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=OMYIDHpK; arc=fail smtp.client-ip=52.103.43.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55ED53EFFD7;
+	Tue, 25 Aug 2026 10:02:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787652177; cv=none; b=Ho8OeAOX3AUvPchJ6QLulpHuolWdpoE2etN80wvkVGmnJP4QdJKPk4cE4Rft+lSFqu+ZvE/jEsd90p6j3ZUJKNP+RsgzleDNss1FrMHD13V38dhVtMKgReZ9MuoYZTApR7LviwgqTRfFtK0O7QYPwHTNNJSssofZxo0Op5OFuvM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787652177; c=relaxed/simple;
+	bh=umoMD7pUegKRkmbc+H5XgwphilE1QXb0fWCCgjQ9etc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rhhZvuFwGsdw3jQm//6DOrFdETBLHFqLvYYlwhrvYQRV8rZt1CVK4QO1rZ7GAYFY6fmJwjrHOXgXpdScEx3mOZrSc4mvmHYSYwSNFFZ7N6nLHFhW5hbjs86oz/71E4lro8zrA2YRsJBmo/GZM5Om0Vn/0O5BKJ8CsoQ85q1eZWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k8/VEAVs; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="OMYIDHpK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sD9B6uvEAH1IUEa4eF889nD8hUKntvUvo6bgR/sUL1rceUvESRoRz5W4Pa1ttlpZeo4I/1C+wv+ZAofuJUyYcv2ODP2ldS0CSNNsgFOiYErYQ11jrGDNl62+V8VcxhCaQ9842a4zia7mDqbYc2xCSrNKo94x+e7qyS9hMp134jfRZaD0oCjeGBfWNGfr0dFBmITLPgpfpUjDwWlu4i4Ra01oN5km703oKUm5Ao/o1NBlo0Hh6gkZTkT3adYQ9k3ohVAJRNo1aT9xDzqLcaouyjffAxBH5SQkxuPcfXgoSvmedYolsOmXcI8yKO7FUcPSuhrxkS+m1Q/iucvrw5eCig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KNMGe7K+HF94mPtfo/J6e4+2MTAZacJNYL6U7UP1zJQ=;
- b=w+0IOalABw2vy9RESqLXogh/oY8vPp+WtCvtTrfda43qjor4dJKkNOp2pxTYmdHeHDPzphE3+oSd05O53TxliZ0eex76ae4d1CbTVPzQ27KvHj13DJGVwC6kSuAlM6CkjjdxZz6X7J8UtiFKSi0dnN1r0b4fRDIw2dTb7R0ZWlyzDSdGNKp4v3I9J/o7W8hBH4gmljMEKvPYAo1ScShLpw0Kat+Wt43O2ylTwujaa6mHMU+8mcmm94HlJC4FtAZXhOspQuyDfei3/g+ZFYqsRes6rL+teVF6iR7mjd2ZIuwBnC/FcqwPtVAWjChrSXQDwC365tXv2d+xo9nFRDM09g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KNMGe7K+HF94mPtfo/J6e4+2MTAZacJNYL6U7UP1zJQ=;
- b=OMYIDHpKohNwYl0+SthQTsPOcq2gYV6S7bsWNZ6wQDCVvH1W5KJZ9BOZ3/2WoT/qVn6olOpkiPPLSJBQugv4QGZ74tCJUHv9Ol3J0whYFedtbcU14/SnqpDj9BJbCo2+cqlsYGBkzeTAqytId1felVLKzDSxggjNVGc8YGYGcK7BwRHbjPQT3ThhzQ7y0WlkwgmYstWpLsSyIFpkzSN+hGqMM6To5JQ25hSVk+d5w77M+QmXIZjfWn0VZA340nnB/6zkJyHNeESz7hgdJiG6NTcZEzl9/yBtMlllf72TvnIJPZ21z2Gs1V+7xfZBpnEUbrIuStkT9WjprpXMZgKcyg==
-Received: from SE3PR04MB8922.apcprd04.prod.outlook.com (2603:1096:101:2e9::7)
- by TYZPR04MB7269.apcprd04.prod.outlook.com (2603:1096:400:45a::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.6; Tue, 25 Aug
- 2026 09:58:42 +0000
-Received: from SE3PR04MB8922.apcprd04.prod.outlook.com
- ([fe80::3450:f139:5238:8f58]) by SE3PR04MB8922.apcprd04.prod.outlook.com
- ([fe80::3450:f139:5238:8f58%5]) with mapi id 15.21.0360.005; Tue, 25 Aug 2026
- 09:58:41 +0000
-Message-ID:
- <SE3PR04MB8922E6F977EB1EECF743061DF3AF2@SE3PR04MB8922.apcprd04.prod.outlook.com>
-Date: Tue, 25 Aug 2026 17:58:33 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: riscv: Avoid redundant interrupt check for pending
- timers
-To: Jinyu Tang <jinyu.tang@linux.dev>, Anup Patel <anup@brainfault.org>,
- Anup Patel <apatel@ventanamicro.com>, Atish Patra <atish.patra@linux.dev>
-Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Jinyu Tang <tjytimi@163.com>
-References: <20260814123541.593613-1-jinyu.tang@linux.dev>
-Content-Language: en-US
-From: "Nutty.Liu" <nutty.liu@hotmail.com>
-In-Reply-To: <20260814123541.593613-1-jinyu.tang@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TP0P295CA0059.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:910:3::12) To SE3PR04MB8922.apcprd04.prod.outlook.com
- (2603:1096:101:2e9::7)
-X-Microsoft-Original-Message-ID:
- <6d882342-3f80-46a3-acd2-11104fd43296@hotmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k8/VEAVs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787652176; x=1819188176;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=umoMD7pUegKRkmbc+H5XgwphilE1QXb0fWCCgjQ9etc=;
+  b=k8/VEAVsU4LJpqaGOyNDonE017wQtdJENyEotJx0dSUh1ldLvgZ8D+iE
+   3ZxnOxpE/pWxAxzocLnStVbpfuotb2ewIa9s0ifeC0aqIWt6f28b4708B
+   fYqsx5pJWMgizm9Oehte2+uAY6SJC0Ftduq/7ql0O01296Hibnty55Cj6
+   QiqqqCXB17CX0smfVA82OE3iFA2n6bCS1/Mtgnqcaqnjs0xw+Y+KHvWbC
+   H1cDJX3BbPyiS/8CAzjhhuWzWtm9cpxa08nSqiLihFZe36uJjYOe+Ah8g
+   QlZw32MIi7RtTucUZx9C6a27J54RPJXF5AwZzcMb+81oVJoSvrCeGSqWS
+   A==;
+X-CSE-ConnectionGUID: NbOuc/A2TW+dMrxrxsLtLQ==
+X-CSE-MsgGUID: Nof6qemIRhKpLsOeZzLQJA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="88132080"
+X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
+   d="scan'208";a="88132080"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 03:02:56 -0700
+X-CSE-ConnectionGUID: vS29JKjeTXCctD5eeK/0fw==
+X-CSE-MsgGUID: Fvx40Ri2S+Slakyim30eFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
+   d="scan'208";a="261114727"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa009.fm.intel.com with ESMTP; 25 Aug 2026 03:02:52 -0700
+Date: Tue, 25 Aug 2026 18:02:51 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"Gao, Chao" <chao.gao@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"Maloor, Kishen" <kishen.maloor@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH 5/6] x86/virt/tdx: Make TDX module initialize the
+ extensions
+Message-ID: <ao1oS3HPP3mEjou6@yilunxu-OptiPlex-7050>
+References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
+ <20260821032920.256225-6-yilun.xu@linux.intel.com>
+ <f48b83feb2ee1d3c88b5a1627cf35b4b282d3f90.camel@intel.com>
+ <aox8DgpnSnhZRfCv@yilunxu-OptiPlex-7050>
+ <e05f49c28a78de961130655a76f415b01774016e.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SE3PR04MB8922:EE_|TYZPR04MB7269:EE_
-X-MS-Office365-Filtering-Correlation-Id: f601a071-cfcc-49a2-0636-08df028f711c
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|19101099003|55001999006|15080799012|5072599009|6090799003|12121999013|19110799012|8060799015|41001999006|22091999003|23021999003|24121999003|4140399003|25010399006|52005399003|40105399003|26121999007|2607281247196008|440099028|3412199025;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UzNwSGx6VjI1N3ZnTGJPVjVVQnRJNnJIMVY4bjNtR2tYaGtXVldUWVdyK1py?=
- =?utf-8?B?SE5PbUVqdGhHT3NiUTJRMjBvcUFNSVdxREJQMnVTZE14ZnlmK2xocDZwbW9m?=
- =?utf-8?B?ZTZYTVp5RmZIeWNvSHdJZGtIL21CTEJSek1XcWNFY2Q0bTMrNGVZeFhESkFC?=
- =?utf-8?B?MmoxeEJGc3BBTzhvOTRWNG9iT2ZmWUtvQ0hIL3Jaa1BpdXpWRW5hSDJ6N28z?=
- =?utf-8?B?d0x1Z2JrSGc0MTFKZkhzV3o5QUZJOFF6dFhsemIvN0VIM2ZDdm1WRExrU1Ur?=
- =?utf-8?B?ZWU1YnlwL3V6MjZFSXc0NHJqWkFTTkwzbGRtSFQycGgyKzBVVTdKVkZ6UVlx?=
- =?utf-8?B?UTFVdlE1c3BCYlNyZ2tUbWhRYVVLL3hoeHROTmFuQ2NnWHRZNFU2aE01Qlg3?=
- =?utf-8?B?RGIwLzBHWTRoMFMxRXcwRTlKVmlaSkc2QnBjajZLY3I2TVgxQ3hDeUxtMDh3?=
- =?utf-8?B?WnptYmNqUWtTTmtrSklGbmlaOEZtakhNU0pGVWxQL0dKd2hLS1BseWRaZEQ4?=
- =?utf-8?B?aE9CTWdGbFBnc25zZzdkd2FpVTNHS2QreXB1TDA0ek9zQ2JybFpqcWZOK0hE?=
- =?utf-8?B?bjFlc2VLa256VVNCWEhzOFV0VG4wZDAveWdVWXpPcmkwL3hseFkveERSWU9x?=
- =?utf-8?B?Vkk5bmMrUFgwZWtmRFdZSU9yTTdxNW14STVRMzljMmJ3WjdDaFZybS9jUDZK?=
- =?utf-8?B?TnRGbS81Unh3SGxja1BVOC9jZUN0RThHTUtDTGlOQnd6R29xRHBLUzMxNGtX?=
- =?utf-8?B?cWhQQUNLQTJBS3BZWDUwOTlkcEpGTUNFNXA5TG1GOGhrQUVVK1hxb1BPQk50?=
- =?utf-8?B?L0taU25HK25PQjBtMEJUZTQreWFVZzFIK2REY3lXZVNpTGR5bUd6dklzK29C?=
- =?utf-8?B?LzM4elJWc3ZMb1JTNkQwZG9Hc1pxeWJsV1lSR3BBREpCZ0pjZkhWdVczV2lK?=
- =?utf-8?B?RjJwMWRYOTZLRWNWN2RqaS9pOHRMWUFuVmI1QjB1NmlMQi8wbjFYVDVKendY?=
- =?utf-8?B?YXN6UGovZm9Yb2pRb3FQd0NtNitvZit0cDcySEZnemJnVUMwUEFHWENEMW8x?=
- =?utf-8?B?cGVnMGJOamZKOW1OTWhqNXJqMVpNSlVnczVuQmtONkpON3dzU05zNXRwc0Yv?=
- =?utf-8?B?Ylc5ZjdhSGNrOURkK3E3L09FcytMVjdZcGJnaGxvMHZOQWVocStGdmNwQWJz?=
- =?utf-8?B?Qit4SWRxMSs4b2ZleldsdXd3WWlXNCtVbitYUm84amhPM295Ty9FSytCaUNn?=
- =?utf-8?B?ekFZZzVhWmYzQmZkZGhrVGE2aVE2L2FpNjl0NkE3NU05TENlKzNTRnJ0cmhl?=
- =?utf-8?B?SSt4dXRMQm95MGRUbHVLeno1Zi9LY0pjYTlHRmFsVGJlM1MrQUcwQS9uZlNE?=
- =?utf-8?B?UEpzVFR6YVlPdkFoNzVWZUdiT3R6c3JRSWEvSUh5elkzTXZtOWtnLzEyTGYx?=
- =?utf-8?B?K25NQUthcDQvazNMQS96ejFLcHF6WTBiSWJyeDlYUk5WMTFlK25rUDJaamVT?=
- =?utf-8?B?WW9Lb0VqVUdBdzhGNGpMbzFiZGVjZXovbExCUERzMHhyRGhJTC9GVSt0eE9U?=
- =?utf-8?B?azF5UT09?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aWEvSjErS1ZQNTNXVERBcmVhRmFWMXVyQ00vZXQ0KzZlRDNNdkI1dUVBazRF?=
- =?utf-8?B?bkxrT3FjMTJqaDlsMmhVQ0NqM0JQaG1aSGJhVHgzMzJmQkxkQjU1MDlZWldZ?=
- =?utf-8?B?SUdMSWdUOFQwbm5qWVRua0UzYXZYZ1FUb2hwSjRML3hrYVRwaGNJaFlwSTZQ?=
- =?utf-8?B?RitEVDA4d0FmaXN3NXBwNW1PVDVMdjRVL2swUnFONFRWMHlNcC9QYi9DVGN5?=
- =?utf-8?B?UE9kbTU5OU02cCsrOUc1ekZjVlExR2FmQVBLWC9aUW5kUmpSbjh3SUg1WDVx?=
- =?utf-8?B?VXErRG13VXlwcFNpVittMjJ5THJHTlBZeUNnTDBvMzk1VEdleks0a0k4V0ow?=
- =?utf-8?B?dDlYQmdNdFF6QXlJWUdMVW5aMHdjTjFJalVGdld6emVzeHRKaXpxVmQycGNI?=
- =?utf-8?B?ZThqUDBhR2NZWHIvcmhmVlB6LzV6K2pyeGtJeGpvODE2eHFlNjQ0WlJBeGtv?=
- =?utf-8?B?dkxUN1FtT1Y3RWZORW9OTnNGRDRzNHJwMlAwNUJYRVhqVUtJSDlpcTA3ellO?=
- =?utf-8?B?WWhtbVBDZndPNGY4cVFYempjOXNsb2xvbHRKdHE2L3RNTGhJRm1CZUZsQ0xU?=
- =?utf-8?B?RWxBbU9aMGJHZmUwTWRyUWdNUzFGNTJOd3QvS3QyenpWbUE4MTExQkpmSDNk?=
- =?utf-8?B?bjdCTm9zQUl6a09DZlc3U1dqR1dCczJpMXo3aTFycTdLTFhvK2hvVjF3UDJF?=
- =?utf-8?B?NnVWNk80K1dJMHU5TTVyN2hpL054cUNLSFlLMmNDeVFUekZlR2E1V0IrZHNI?=
- =?utf-8?B?QWdWMUFQUitlQ1hVU094VWhZbVI3WlIvNVJ4Tko0bW9HbDNRVXdha2NGSXRt?=
- =?utf-8?B?d1RBZWI0aFZuOVhTb3JvVitCUUNiOWR4VlBIQnhCais2QkNwSjJWTm8vL1dN?=
- =?utf-8?B?V2l4Uk9XTFZMME92emc5Z1FLaGpsaTJUVmNGZ2h4VlpmT0hBdE5RTkNPWGI4?=
- =?utf-8?B?VlpiOG1DQ2JlbUt4eW5KR1RzV0YyaG1rUWkyS3VkM0FZcnAwdUUrdWNYd1BO?=
- =?utf-8?B?THVWZi9CQ2ZhSmhaNmxUVThUUitMalR3Q0Ztc2tIMHp6UGdBSDNMZmhFd2tK?=
- =?utf-8?B?VlhmaFNXT1ZzWUQwTjl3bXJHRDIzNmxPd3g5bjcwS0hpMkJya1FVelMzdW5x?=
- =?utf-8?B?MEJPUndObC83Rmc3SGdqQ2JXS1dvYmF1dVhKTkl0YzlLY0dpQnlvN2IxYlRa?=
- =?utf-8?B?OTV0MEdXWmVJVU1OZ1p3MVdZRzMrREpCR29YSzV1NjJ0OUl4SzUxQ0RabGE1?=
- =?utf-8?B?V1l0dDNjSWE5amJiNkdpcWR2OUYyaFhFWlU2amo4WDNRMGVkV252elI3ODc5?=
- =?utf-8?B?OXl3NGNsNGd3QXlXT0dOcjdtcThkbW1Ub1htamFReVFSc05TUWtkMmN5VWd0?=
- =?utf-8?B?QkRpN2NvNHlRNjBrZ2RVQ3huMDZta1M3RENMUHdJZGxmQ2ZyU25oSkpPMlgy?=
- =?utf-8?B?K2RhMDdOWXhuM3RJYkNlbCt5MGZmQ2dhU25mdHF4WUExR0VGWEZaUEhpMWxh?=
- =?utf-8?B?RGNsRXJib2pJZU1WTTJRbnNzSytaMllNY1M4Y0tJb0sxSUFvWXppVWZKdEVu?=
- =?utf-8?B?dTFhU1IwYlhBTFRpdmtYR0l3bjB6NG43V2lxa3o2eFdMNW4wVVUrWm9LQ0x4?=
- =?utf-8?B?NzdCR2VqakxBVDYvRWNlemJ5SEhWV2VFR0FSc1EzVGdnd1J3NWhzRklsQXZB?=
- =?utf-8?B?MjNYVnI3Z3hhK2ora1UzTW9JRnBjQ1NyRTlrRUJiWUFYS0RQWFMwMDFnYVlC?=
- =?utf-8?B?WlhWclZJV2piViszNHNwQ2czRzRlWXZ4YXlCWjE3SGZlOUFTUXBaSmNLOWVv?=
- =?utf-8?B?bjJRUDdaMzY0cWZYWm1DN1p5M2hzVElSM0VEd2VNR201ZkJuTnlZWnZWNm1N?=
- =?utf-8?Q?iQ+m4JjugAAPI?=
-X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-c3e7a.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: f601a071-cfcc-49a2-0636-08df028f711c
-X-MS-Exchange-CrossTenant-AuthSource: SE3PR04MB8922.apcprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2026 09:58:41.8971
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR04MB7269
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e05f49c28a78de961130655a76f415b01774016e.camel@intel.com>
 
+On Mon, Aug 24, 2026 at 05:58:07PM +0000, Edgecombe, Rick P wrote:
+> On Tue, 2026-08-25 at 01:14 +0800, Xu Yilun wrote:
+> > > If that could technically work, I guess the benefit of the current approach
+> > > is that it allows to use contiguous physical allocations. Not sure if you
+> > > think that simpler snippet would actually be that simple in the real world.
+> > 
+> > I think there are several simplifications here, let's break down:
+> > 
+> >  1. Forget about the 512-page limitation for hpa_list_info, always add 1 page
+> >     at a time.
+> >     This can also be applied to current flow. So put it aside.
+> > 
+> >  2. The loop strategy:
+> >     - read total memory size	vs.	- loop on error code
+> >     - prealloc all memory		  - alloc a page
+> >     - loop on size			  - memory add
+> >       - memory add
+> > 
+> >     The main saving is that we don't read memory_pool_required_pages any more.
+> >     Others are similar lines of code.
+> 
+> If we don't read memory_pool_required_pages, then the only real option is to add
+> 1 page at a time. Or I'd think you end up giving extra memory. Unless
+> memory_pool_required_pages is rounded up to some higher page order? I think no.
+> 
+> But otherwise, if you are going to add pages many at at time, you need to read
+> memory_pool_required_pages to make sure you are not going to give extra memory.
+> At that point doing the allocation upfront (before the error code) is simpler.
+> Hence, the design in this patch.
+> 
+> So I'm not suggesting to change the design in the patch. Just that if 1 and 2
+> are really slightly simpler, it's worth justifying the design in this patch as
+> for the purpose of reducing fragmentation. Otherwise it looks unnecessarily
 
-On 8/14/2026 8:35 PM, Jinyu Tang wrote:
-> kvm_vcpu_check_block() calls kvm_arch_vcpu_runnable() before
-> checking whether a timer is pending. On RISC-V, kvm_arch_vcpu_runnable()
-> already checks all pending guest interrupts through
-> kvm_riscv_vcpu_has_interrupts(vcpu, -1UL), including IRQ_VS_TIMER.
->
-> Drop the repeated IRQ_VS_TIMER pending-interrupt check from
-> kvm_riscv_vcpu_timer_pending() and keep the helper focused on the timer
-> deadline state. If the timer becomes pending after the runnable check,
-> the timer path still injects IRQ_VS_TIMER and kicks the vCPU through the
-> normal wakeup path.
->
-> Signed-off-by: Jinyu Tang <jinyu.tang@linux.dev>
-Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
+Good to me.
 
-Thanks,
-Nutty
-> ---
->   arch/riscv/kvm/vcpu_timer.c | 6 +-----
->   1 file changed, 1 insertion(+), 5 deletions(-)
->
-> diff --git a/arch/riscv/kvm/vcpu_timer.c b/arch/riscv/kvm/vcpu_timer.c
-> index ae53133c7ab0..0e01bd793772 100644
-> --- a/arch/riscv/kvm/vcpu_timer.c
-> +++ b/arch/riscv/kvm/vcpu_timer.c
-> @@ -132,11 +132,7 @@ bool kvm_riscv_vcpu_timer_pending(struct kvm_vcpu *vcpu)
->   	struct kvm_vcpu_timer *t = &vcpu->arch.timer;
->   	struct kvm_guest_timer *gt = &vcpu->kvm->arch.timer;
->   
-> -	if (!kvm_riscv_delta_cycles2ns(t->next_cycles, gt, t) ||
-> -	    kvm_riscv_vcpu_has_interrupts(vcpu, 1UL << IRQ_VS_TIMER))
-> -		return true;
-> -	else
-> -		return false;
-> +	return !kvm_riscv_delta_cycles2ns(t->next_cycles, gt, t);
->   }
->   
->   static void kvm_riscv_vcpu_timer_blocking(struct kvm_vcpu *vcpu)
+> complicated.
+> 
+> > 
+> >  3. But we'd better keep reading ext_required. I tested when ext_required ==
+> > 0:
+> >       - tdh_sys_init() returns TDX_EXT_MEMORY_POOL_REQUIRED,
+> 
+> If we don't config any extensions, tdh_sys_init() returns
+> TDX_EXT_MEMORY_POOL_REQUIRED? Seems like a bug.
+
+Maybe. But it also indicates calling tdh_sys_init() when ext_required == 0
+is not architecturly defined now, we should not rely on that.
