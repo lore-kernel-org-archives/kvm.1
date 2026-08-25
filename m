@@ -1,118 +1,146 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C9144AB70
-	for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 13:04:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D17947141B
+	for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 13:17:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787663099; cv=none; b=MGMhSbtbITLYtquVGEdZx0xHA2ZMzYqkXxuWa9lw9SeRbTfs3NUb9yFm39fCEcKseYfIfFK6IPfpi/QNlw41ptQ+wQCO15Fw5aLkU/FGZ+HwVUOlctZmxhvMIDnKoHQRTuwMW/G5e8jPy1mnE3U23lqhHNKMSy4gsY4HUHQW4w8=
+	t=1787663823; cv=none; b=el5ycIb0sNpnTzamzSHR04qiauRSPh5RM+Ver19wfT6R3uxRTNP6vLVTe97YiWWwMGxvN7lRKAUpjAQEpuf8gOnc/St5HaAu+2pYOzju12yDPqYtJjL5AAVxkYVS/IFde3oV+A4irMLNRGNq+cwr2INXb/n3fm+d+ANw152kR7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787663099; c=relaxed/simple;
-	bh=S7aRfssWDQ2nLsCC53U4z8DSCtzysrcHj28aPhwBZ4U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jcERQBGRpqzbslxy0TDELOhCsO71x8easQOZ9pB9V1cJcCWKZNFzoX/SFhdHabHjwT14zMfgFpT2M7BthEiR8NprpJEqkJ6TnVVdFiAq4viKR4fZAM7L/imjHb+85EJUIH/wn8LEHat8KUG+XCe4hxblMcUNK08qaBtwlAxV3qM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DGp+ZJsH; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787663823; c=relaxed/simple;
+	bh=BSwRnMlp3n1hal7k25J47rSepqHeT4zWv8jN7OwIqO4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=gKHgUNpySBML+TWaat7iupBzPR6EHWcUp/43Sei+XEoml5AlWqmSO5jtlM4KBczAL23eq0Qx31FjaSWZR9MJd8ConBYPuUuHuAHJjw6c7CNsghy2TZxjwTOzg8OjcIhU4RwJ+hBI4q74BwtSma7LFspsS0Ws4bxpXbuCV2eQvNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o8Ehru68; arc=none smtp.client-ip=209.85.215.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DGp+ZJsH"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c15ba3a2b4bso668280466b.1
-        for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 06:04:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o8Ehru68"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc1b6f19bb3so158952a12.2
+        for <kvm@vger.kernel.org>; Tue, 25 Aug 2026 06:17:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787663094; x=1788267894; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1787663821; x=1788268621; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=PQylkDyhUMfAxwzHJuOU6RYKfPVocoG2MM8Zczy9TIY=;
-        b=DGp+ZJsHpOzEwmDDv9uPdMPFecT4Ce+lOqvmEIAuv3ee9xYwWPJSnXDZB5E7J4k2Te
-         y7/3qvMCPNnR8iVLWIB0MT9Z9qgL3VOAR5gr1WyXFhLlTL4nH7Na0bpds6wdX8QgstrR
-         HNNfi986llysKm3M4vHdn/uL0zUY/rsZTGTtbptp1zTL9KdZ18xRqY+iDxCPhZl6VQUp
-         FgXlHHFlgsVGd/GTZU3s656V8gu5rrvCTEGiiWvLZT5iJciOLFVVRgxzfcz7mQ/Lt7AD
-         zL0s6njA33BARbtcW6nR7mupo/jJonZGGl5ECrNnx6sp3V3orF4wWMSuenwpRrf31619
-         WvBw==
+        bh=1TY/LsmF/8fTytR1pzHURVENGerwNjh4wp6cPecJpZ4=;
+        b=o8Ehru68c2UsJBYydcj9Xh1LEgdA9Yi2DYlUpkIviU4wkeZudYK48jTGA0v164iMT0
+         YIE8St4d5qrNNkf+XbSIb+TjiRl/xtufQ1gQvS5TCiXu8coexflMbHQGX6chiwhTb+Ck
+         21yQD6SOS7QiXQv9SQh2ccy0/hOddLL8OVtzPRkzpm88LRHlWRfG532sKF/zS247PRkc
+         i9aZkdqNvkrG88WmSdBII4sMXiuah90cRxrdRr5+KQowFug1TW2V9ky0lWVLr1inXWJv
+         zTKSETfsQrB0OM8diINjDbwLa6JbcFlkLkKw0Cw4ewdrh+If22Zin/+5T4+G9XQOsFeI
+         zIuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787663094; x=1788267894;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1787663821; x=1788268621;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=PQylkDyhUMfAxwzHJuOU6RYKfPVocoG2MM8Zczy9TIY=;
-        b=iSi9A549go+f7ylQNILLQWMTJb49TWGLhpL/pgNybvwzCocZSk3n9S7E/vxAPMIRo/
-         P3FLYJTmyyFRUJ4n3ysDxKIz5vQcw3bXxKyqmoDf+N5BsN25yp2AYZZO/3rNnSr+W70k
-         cYDwLL/vyO6vg6AHsi3tmpApuRKblHKBovk9l8Wt2tusXrCKHmNPH4T5EMvqUUhP+aQX
-         PO+y+HAmf3EF0wJypBbNn+m+4C1W74y4kGnKo3isoCPPQXwFIIYqMzUBsXmQxAp62Zuu
-         ruvM0RvJE81akEnsJjBdWupYQwZd9OcLlieaNaaALYTbhLXnDh5KuMLno2XcwlinWvdj
-         exWw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro/kAX/fmmNPCUmJ0lCQHKKTqvdaLjKBHoAfeN90hO2cIan9j42dLKJXQPMzoaLte2IOGU=@vger.kernel.org
-X-Gm-Message-State: AFuF++kSK7D4JsK35bmkd89LEvNgjLISX9Y3kPi0qnE/JTDZWXzM7wfF
-	ysFykKex/y7I8Nea2aHzc3qABU4BM7ZdSwQOye2CpfotP5pLGvBoAsKJ
-X-Gm-Gg: AR+sD12a9ehZxJ79YA8ZOx+Sph7YBZy16KAjRRucNuITOTceZuNw9r1llj9nTlvdfpq
-	2JmV2KzvD800TiDDszZlwGJVUUIyBLwv2SNBLqwIWNKhskUMhZ6YHKCmf46S3F261gC2bfFFcQ/
-	UQ7W4roEzXvked59Qu2dRnAdKEja+N1Tl1aKvki2Hlgo/4ioLAqpKejHp4ivxuhYAQxyC6mbhFl
-	IlJRhwymznIVi9cV3HS8tDRLHufVqaQKauchfBpFidYwly+9jHbfcGzUxfgEqj2U4rhBZm8i1uk
-	FFO8fMS5DLteqPqGGw/18PE4vr1Fv8IF+DroTlnn1Ne9o32sIEmrvyiBcCOXfbY93JhRrpGC+CR
-	7Vu2vJUJ1zXbvCqi+0syQXRDX/EdAc1Az7CSwPWPZ4QwRZyxhVzbhXGg1uRvBGKTR1zB8if0pET
-	t/BVZDhC03KBXAMHPXQ3+yxTTxbh/Y2P9lRgnad97sTKxXIIlHkLFtK8sieESFSjs/54AFg30X2
-	Kg2
-X-Received: by 2002:a17:906:fd8d:b0:c25:58e:83ff with SMTP id a640c23a62f3a-c25058e8844mr45353566b.10.1787663093845;
-        Tue, 25 Aug 2026 06:04:53 -0700 (PDT)
-Received: from [10.45.28.110] ([15.248.2.30])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c249606b4f1sm1822703566b.3.2026.08.25.06.04.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Aug 2026 06:04:53 -0700 (PDT)
-Message-ID: <f81f8437-57da-4545-9046-28562df3c385@gmail.com>
-Date: Tue, 25 Aug 2026 14:04:52 +0100
+        bh=1TY/LsmF/8fTytR1pzHURVENGerwNjh4wp6cPecJpZ4=;
+        b=FRcL1eO9m4KXBktfDSK58vfPNPTAyk2YpMUTQ2aDqy+DhkAbutEog/a4ojkVi4bAZv
+         KWyJYe/0VmYefyiWUvHs16R3tXXjonXPkKNd2BHBcpN7YzbXsa0Y+/D581u4WUDnutB5
+         HveRmTBoHU0s6vzeLQKt8wwDBlZ0XQo/KjpNt8BPvityuPJcQ35ueU1HW0lJe6hNnjzB
+         jDmfU+w5sQkZXBvPa3/2kKpmiMOPYjwt4pVFhYGqZBEdRPkzK0V5DC/SKaNqkYdDHo3/
+         zk+kxVmcFEqW/pypalDqj30NKQ+njI5aOTWiX0n7nJF1HD/HtT/zI1jbsPc3rabS15TK
+         BgrA==
+X-Forwarded-Encrypted: i=1; AHgh+Roa96CmdcQgU8jY9eJ49NninFzKiE/wYU/yA5YvQk2G8ivl8YZMc48RaJ5GSsIz6Rxnkr4=@vger.kernel.org
+X-Gm-Message-State: AFuF++mWOtQ3ZyYrn0zHmTPutBs9YnoWttjeo+49elVm1lqGor3RaNyu
+	rb54OIwLM+krCT+w7XGuVy5jGcyY9ejQtcNT+UinBhOiOMgQxezG+lBhFSkBPCOr+khXnjKyX6S
+	COA94rA==
+X-Received: from pglx3.prod.google.com ([2002:a63:1703:0:b0:cc1:517a:d25])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:600c:b0:3b4:61f:1fec
+ with SMTP id adf61e73a8af0-3cd2fd8e339mr71904446637.2.1787663820348; Tue, 25
+ Aug 2026 06:17:00 -0700 (PDT)
+Date: Tue, 25 Aug 2026 06:16:58 -0700
+In-Reply-To: <5f7b62a1-957b-4a43-9a16-d06b3f916e84@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/5] KVM: arm64: Add pre_fault_memory implementation
-To: Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: maz@kernel.org, oupton@kernel.org, pbonzini@redhat.com,
- joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com,
- yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org,
- shuah@kernel.org, corbet@lwn.net, vladimir.murzin@arm.com,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
- isaku.yamahata@intel.com, Jack Thomson <jackabt@amazon.com>
-References: <20260612162354.73378-1-jackabt.amazon@gmail.com>
- <20260612162354.73378-3-jackabt.amazon@gmail.com> <alEXtW7w-rqlNG09@raptor>
- <0365d77d-616b-47f7-a5f2-3388bad692a1@gmail.com> <ao2KmmUd1lVFUUkp@raptor>
-Content-Language: en-US
-From: "Thomson, Jack" <jackabt.amazon@gmail.com>
-In-Reply-To: <ao2KmmUd1lVFUUkp@raptor>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-9-2fc18ee6d3ba@google.com>
+ <13ca60c6-e154-4397-8092-09f861e90fe0@kernel.org> <cbf5f7ca-a960-4fb8-a760-2d2794eb6864@arm.com>
+ <CAEvNRgGOyQHnF_b8dk8E0d7_=CcwXtYUdU3ko7Qbep+_O7UC0Q@mail.gmail.com>
+ <aoZZMQ3Uc8yQWPNA@google.com> <5f7b62a1-957b-4a43-9a16-d06b3f916e84@intel.com>
+Message-ID: <ao2Vyjzq9wdYzQPr@google.com>
+Subject: Re: [PATCH v10 09/41] KVM: guest_memfd: Filter both shared and
+ private when invalidating
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-Hi Alex,
+On Tue, Aug 25, 2026, Xiaoyao Li wrote:
+> On 8/20/2026 9:32 AM, Sean Christopherson wrote:
+> > On Mon, Aug 10, 2026, Ackerley Tng wrote:
+> > > Sean, do you know if looking up attributes in gmem to feed the KVM MMU
+> > > the smallest set of pages to zap will improve performance significantly?
+> > > Or if there's any other reason to do this lookup (more complexity in
+> > > gmem)?
+> > 
+> > While working through this with Ackerley, I realized this patch is buggy.  When
+> > in-place conversion is NOT supported, then as evidenced by the current code,
+> > invalidations are guaranteed to only affect one of SHARED vs. PRIVATE.  And if
+> > we change that to zap both, we risk overzapping.  I.e. it's not just the cost of
+> > the extra MMU walk, it could also be a functional bug.
+> > 
+> > Specifically, if KVM zaps both when SHARED vs. PRIVATE is tracked per-VM, then a
+> > PUNCH_HOLE operation on a PRIVATE guest_memfd will incorrectly zap SHARED mappings
+> > that have nothing to do with that gmem instance (because they're mapped via a VMA,
+> > not a gmem fd).  And vice versa, a PUNCH_HOLE on a SHARED gmem (if userspace is
+> > using an INIT_SHARED gmem for the shared branch of a memslot) could invalidate the
+> > PRIVATE mappings (of a different gmem instance).
+> > 
+> > That latter case in particular would be a functional bug, as spuriously zapping
+> > PRIVATE SPTEs is fatal to TDX (destroys the memory contents).
 
-On 25/08/2026 1:29 pm, Alexandru Elisei wrote:
+...
 
-[...]
+> > Opportunistically rename the helper to capture that it returns the a filter
+> > for all gfns in anticipation of zapping only the previous mapping types on
+> > conversion.  
+
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+> > -static enum kvm_gfn_range_filter kvm_gmem_get_invalidate_filter(struct inode *inode)
+> > +static enum kvm_gfn_range_filter kvm_gmem_get_all_gfns_filter(struct inode *inode)
+> >   {
+> > +	if (gmem_in_place_conversion)
+> > +		return KVM_FILTER_SHARED | KVM_FILTER_PRIVATE;
 > 
-> I think there's a word missing there, I meant to say that it would be useful to
-> explain *why* the x86 implementation does not mark new PTEs as accessed, while
-> arm64 marks them as accessed, and arm64 also does that for existing PTEs.
+> If I understand correctly, above diff is dead code and will change according
+> to
 > 
+>   And then in the main in-place conversion patch, have the conversion
+>   flow to only zap tap the "previous" types (with prep work as needed).
 
-Ah got you, I'll update the docs in v6 to explain that. Thanks!
-
-> I was wondering if you have any plans about posting an updated series.
-
-
-Yeah I have v6 almost ready, I've addressed the comments. While testing
-it found an issue on pKVM which would case a hyp panic if we prefaulted
-before it's first run, the EL2 context load blows up. So I've also go a
-fix for that bundled in.
-
-I'm just tidying a few bits up and hopefully have it out within the next
-couple of days.
-
--- 
-Thanks,
-Jack
+No, my thought is to keep the newly named kvm_gmem_get_all_gfns_filter() as-is,
+continue using it flows where KVM needs to zap everything, e.g. PUNCH_HOLE, and
+have the to-PRIVATE conversion flow open code KVM_FILTER_SHARED.
