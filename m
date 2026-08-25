@@ -1,203 +1,142 @@
-Received: from esa3.hc1455-7.c3s2.iphmx.com (esa3.hc1455-7.c3s2.iphmx.com [207.54.90.49])
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D483DDAE2;
-	Tue, 25 Aug 2026 21:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.54.90.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B3E3D649C;
+	Tue, 25 Aug 2026 21:26:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787692806; cv=none; b=Y09O7O0pkhru7H+kXfS0QuUnsuYMNNCUGCwdMOnwnzHGw0fb7tLkKMe4xPVUgys9vuBbLHHgF7aLmYApfsSZUiHS3vfiXgQTD7F0UUE/lA3RQp9nDRicL5nvntYVnS8in+v0UzmL0tvp3JF3ledZjvnVZStTJZVj1CoXU8m3U0E=
+	t=1787693182; cv=none; b=Hso1R/zMB2h2V+6HsJLlMyVn+d5v0xRmXAcZw2bKyKo7CHlrPf6BZqaBzehLnLoGkDUclHOhEgglDR3CCOd2nkfFMoJBg4jFRYdZhx5hOtTKnO67g5ExA6K9fV2JSuPwwvqq7ww+juPhzLYSqXhkgCpFTtX9dj9pJ7lQZM/aw/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787692806; c=relaxed/simple;
-	bh=70JDFubTVkBsDgJS+Q5x0sY6ZqnQo0abv+xo6mjXvqY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Fz9B6n+iRqD/R+Zrt2zkm4veVGXgq58rFwidIkyqrsBYNu9h+w2BgzUL287FTWzlqfEPkjpwTE75HoNaowLFYpkgkJyEywQqBulMZSwLpfz5w7dbc7vcoTNA4A2fnU/ttNO5fZzqfTtcN7093dxHc3iA3XCBpBiYs67kJJegWck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=beO6AAYR; arc=none smtp.client-ip=207.54.90.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	s=arc-20240116; t=1787693182; c=relaxed/simple;
+	bh=fyxOKeBBeK3d6FRXyXiUs1QmsIWUVKH+V6Vz4D3pMZE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CwafAGmeBJQ7YCAnEOMMBU1A+5OEkP0RVlODiU7YEmK94AMNxvPAOsBKVBzpaXRnxydCWXNU++yaCvXn3B0ys/1rAC5+xhLPDBYA4HWOVbnNlkWlyGrlNSa8wvwZs9wsPmHHcpjMI7XRZsYZGjMoahyxwNp+lZqShzmUylUcuV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=gnuBbRks; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=B+TRJWUF; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="beO6AAYR"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1787692808; x=1819228808;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=70JDFubTVkBsDgJS+Q5x0sY6ZqnQo0abv+xo6mjXvqY=;
-  b=beO6AAYRCov8YWqDC+RW9ofg314O8L1K2b8ivxfvMFCCAwCbekwbvb9a
-   +/L/toC7l9z40KTNH0P1/cjLqYYHlJ1JQ6NyLevs6+zNGuekc77SFUkB5
-   XnDDWtKBDiLvOGGxwQGu5Rzti1uEcfKgV4Y5e6tjBWWjP1YTOaesjJx4f
-   5BGnomEQsinm6vX6QNAYkWvjtjtP7n4eOL2nwXdZ3MfwbIwYPJfufY7dP
-   deAz2OKKv7UAVzNel+a+KAvs17C66XJR9kY+W0R6ZDCXK71Oe3zvTPj8Z
-   d5a80znLO5hGEmvRIXx7PVHqQqpWnmDxLZJsacPpGnMPGhjwyVgu2vwar
-   w==;
-X-CSE-ConnectionGUID: rrOaXi9cSk6XiNLyM/fgqw==
-X-CSE-MsgGUID: P7yzCZzmQ4myUPUgsV9Jtw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="252521162"
-X-IronPort-AV: E=Sophos;i="6.25,243,1779116400"; 
-   d="scan'208";a="252521162"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa3.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 06:18:58 +0900
-Received: from az2nlsmgm2.o.css.fujitsu.com (unknown [10.150.26.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 5FE801C000DA;
-	Tue, 25 Aug 2026 21:18:53 +0000 (UTC)
-Received: from az2uksmom1.o.css.fujitsu.com (unknown [10.151.22.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id 10B091C2FB95;
-	Tue, 25 Aug 2026 21:18:53 +0000 (UTC)
-Received: from [127.0.1.1] (unknown [10.124.178.20])
-	by az2uksmom1.o.css.fujitsu.com (Postfix) with ESMTP id 358C51801C03;
-	Tue, 25 Aug 2026 21:18:47 +0000 (UTC)
-From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
-Date: Wed, 26 Aug 2026 06:18:35 +0900
-Subject: [PATCH 2/2] KVM: selftests: arm64: Add 52-bit VA guest modes
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="gnuBbRks";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="B+TRJWUF"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id A882B1400028;
+	Tue, 25 Aug 2026 17:26:17 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 25 Aug 2026 17:26:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1787693177;
+	 x=1787779577; bh=TI3LYYdNPFkkgbQYpNaHoiAiGm3EHWu4t1KyT0USaQg=; b=
+	gnuBbRksEM4IVJKkNrBcekDrkwduiHEBy59k85/ZIMDNBoaXr17k7Hutww0R6KEB
+	bEPfdMJkrQIAqXwMm9KxAbamu4TJq11ir5aToXac1QgF3E9kjN2b643whh5u4o4v
+	kOE1E6fKqxODFreGRtS2jrDFy+UQ4Uvg1UuT46O3g1+j5tqN14bHo/Z5HvXpKPHX
+	XmperEbm2KPqVAFa765egvNzDfTxllWhPxAodO+bLUZ0Ss/oxzu4BNvvXGMVgdRy
+	+DC0CBkiZubnlnFXQiyNVulj2VB2jUrCZFRjQ0DS7p5L1uiUYeSh4l6sGttqla2g
+	6YJVjQjTJOreJwqlgL3JcQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787693177; x=
+	1787779577; bh=TI3LYYdNPFkkgbQYpNaHoiAiGm3EHWu4t1KyT0USaQg=; b=B
+	+TRJWUFMr7kQhUHWTf/KZh914+bi6aFlCMFomNTFT2HBbBUAlhrwxbw8bBatnTyW
+	Y9Ut1551d2miN2PdGgBbJbfYmjM4tpcHlMPOmt/TIJ3apPg8g4KUOCHtYbojv6Kz
+	78ISFzmd30iT5YB5BogrWwQnfgUG0xXErIaGgNlx5wac32gjLrkCzv58vRtKNShw
+	g855wpA+6ttHk4f6qx5hDSVky1cufwqukKyIBfASKQUcbJnZbFjfXoWToW/xDXz3
+	uK/UXO4tTiYEzdm3SQEiMkp7PvSRu0c4V8kjaHpkEC7dMsgHSZ+sHPVd8EDJXI39
+	IUpaeSKqwTBQh9xcz8/XQ==
+X-ME-Sender: <xms:eQiOarI-bJ04mimDcA6hHrNVB_ySrKFWcaQ9ohaGh0BFk6FDlo-QmQ>
+    <xme:eQiOasxYIr32WkH9UDsd79wHHmo5h9Pe_kMou3e4O3OPvI_ZRpOa5MH43wY0uhxwq
+    ijiQyPWGufcC9Ze139FKxvMUZd_yoNguVd-cFeSGFPo6dvusuSJ5_w>
+X-ME-Received: <xmr:eQiOarGor_aqez3tlDVXWfoT2b42s6KnP10PKlNVPaDPMweFd96IOi8fSaeIIg>
+X-ME-Proxy-Cause: dmFkZTFDCnzeDWsxERS9FkI6DBSsnwLXGNSWypdSO0vpo1L1cZ8qp7QTaKQyexIgzTaE7y
+    22Sl/fGmqHlnzDyaWz6mLYf7N1NKWsNS1yWa8h+RMNhmImKeztb0335u58TuenXGTYAuIM
+    EzZrRtRJnbOGSdwAORlEh7eGMi4Q/uY4YeY3hmJjacATb6krK+zMebxYE90E5xPiDyVxe2
+    lpo4XOgv+3AUMv3dwuNSn9S72Z8pgfr4gHzcI3ve+tXB+i4MgABrLXN/b0/D7mGtvP0vYc
+    sQVr8Fby7N+48sEUHUgf4xT3oIUTzbVCPMJfPtVzAI7j1tNMyPPcSuiYenxt6LN++NWQh7
+    IQS3kipUKf2kie4KllVx84HoEoBbHWbfV30SOiEFizWDgc1M0Ki1sDoGzMgDPiEGcW5CCP
+    KzhSgd4oap2TXH3vwCdby1qDPEMXf3MWws1Om9gFLvjxrcEB7jqAh2fQtpRPXEhWOFQ70T
+    7p7Hpcnnx6WUhMB00f4+rkEt65qC7BTtfuI+8u55y6+YGIltZVmq6m92LQ1d87gWe8q1qv
+    LDCTpAC9qcEq8uHJlBp/CEFqwm7WkcrPOAd5Kkx44Ul7MGpzbKoQFhN+AsMiAMYbCaO/VM
+    4M0Nvop9e8XtF/T+lvuQISTXgw3ED4ysLjLbtR8DeqPjk92R1Z1HPq7ITAMw
+X-ME-Proxy: <xmx:eQiOasmlra1DxmP3CFzeMZFlzubXYtJyp_tE9yzs5jcZ-RLKLbjrsg>
+    <xmx:eQiOaqHkFSOihEFH0PRkk1nhlBjxY9tQBY8807526HcEDl3zc5XydA>
+    <xmx:eQiOanx_tuHgMdgbSNNzDqyVxBPZWcLXyXR_e4sMA_nk_PCTPiY6dw>
+    <xmx:eQiOarb6ayr9RwBBqXNYhTVNKVvuiXmGQKxfiIWNmdQRvvvXj5OW8g>
+    <xmx:eQiOaklv75D2NAx4jFmSn2PQW2pK53_lavG9FGwr_V87iKZPc42dCb_L>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 25 Aug 2026 17:26:14 -0400 (EDT)
+Date: Tue, 25 Aug 2026 15:26:12 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: <mhonap@nvidia.com>
+Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
+ <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
+ <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+ <dave@stgolabs.net>, <alison.schofield@intel.com>,
+ <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
+ <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
+ <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+ <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
+ alex@shazbot.org
+Subject: Re: [PATCH v4 02/27] cxl/regs: Skip sub-block region request for
+ BAR-owning drivers
+Message-ID: <20260825152612.5b8452f7@shazbot.org>
+In-Reply-To: <20260813093631.2288172-3-mhonap@nvidia.com>
+References: <20260813093631.2288172-1-mhonap@nvidia.com>
+	<20260813093631.2288172-3-mhonap@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260826-arm64-52bit-va-v1-2-14ec98211363@fujitsu.com>
-References: <20260826-arm64-52bit-va-v1-0-14ec98211363@fujitsu.com>
-In-Reply-To: <20260826-arm64-52bit-va-v1-0-14ec98211363@fujitsu.com>
-To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
- Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>, 
- Steffen Eiden <seiden@linux.ibm.com>, 
- Suzuki K Poulose <suzuki.poulose@arm.com>, 
- Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Shuah Khan <shuah@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
- kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Itaru Kitayama <itaru.kitayama@fujitsu.com>, 
- Takayuki Okamoto <tokamoto@fujitsu.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787692718; l=4987;
- i=itaru.kitayama@fujitsu.com; s=20260825; h=from:subject:message-id;
- bh=70JDFubTVkBsDgJS+Q5x0sY6ZqnQo0abv+xo6mjXvqY=;
- b=ZHsdORZZInAmcydx9m1zTcNgmLZVUmMpigF0GjTpwFoRUApwYAlxNWL1Iyxbgd3+bkTV5CIKA
- TM139YCgkS+Dh7GS1EiU69FwFgnlB+Z4dMFUe3eAH5TfkH6jDxrt9oy
-X-Developer-Key: i=itaru.kitayama@fujitsu.com; a=ed25519;
- pk=g9bTnr9giRP7JwNSZHy+OMLQZBEUtSE9tUnXso0hH1Y=
 
-Add P52V52 guest mode IDs for the 4K, 16K and 64K translation
-granules, along with their mode descriptions and parameters.
+On Thu, 13 Aug 2026 15:06:06 +0530
+<mhonap@nvidia.com> wrote:
 
-Advertise the 4KB and 16KB modes when the corresponding granule supports
-a 52-bit IPA, implying FEAT_LPA2 support. For the 64K mode, also require
-52-bit VA support.
+> From: Manish Honap <mhonap@nvidia.com>
+> 
+> cxl_map_component_regs() claims each mapped sub-block with
+> devm_request_mem_region(). A driver that owns the whole component
+> register BAR, such as vfio-cxl, has already claimed the full BAR, so
+> the per-sub-block claim collides and the mapping fails.
+> 
+> Add a bar_owned parameter to cxl_pci_setup_regs() and record it in
+> skip_sub_bar_request on the register map. When set, cxl-core maps the
+> sub-block without requesting the region and leaves ownership with the
+> upper driver. cxl_pci passes false and keeps its existing claim,
+> preserving /dev/mem tooling access to the rest of the component space.
 
-This makes the 52-bit VA configurations available to KVM selftests now
-that the arm64 page-table code supports 5-level stage-1 translation.
+The bool arg itself is an undesirable shape, but then threading it
+through @bar_owned to @skip_sub_bar_request to @request is difficult to
+follow with limited utility.
 
-Signed-off-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
-Reviewed-by: Takayuki Okamoto <tokamoto@fujitsu.com>
----
- tools/testing/selftests/kvm/include/kvm_util.h    |  3 +++
- tools/testing/selftests/kvm/lib/arm64/processor.c |  2 +-
- tools/testing/selftests/kvm/lib/guest_modes.c     |  5 +++++
- tools/testing/selftests/kvm/lib/kvm_util.c        | 11 +++++++++++
- 4 files changed, 20 insertions(+), 1 deletion(-)
+What if instead cxl allowed drivers to register the resources they've
+already requested into the reg_map, ex:
 
-diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-index 04a910164a29..9040281c0992 100644
---- a/tools/testing/selftests/kvm/include/kvm_util.h
-+++ b/tools/testing/selftests/kvm/include/kvm_util.h
-@@ -184,6 +184,9 @@ enum vm_guest_mode {
- 	VM_MODE_P52V48_4K,
- 	VM_MODE_P52V48_16K,
- 	VM_MODE_P52V48_64K,
-+	VM_MODE_P52V52_4K,
-+	VM_MODE_P52V52_16K,
-+	VM_MODE_P52V52_64K,
- 	VM_MODE_P48V48_4K,
- 	VM_MODE_P48V48_16K,
- 	VM_MODE_P48V48_64K,
-diff --git a/tools/testing/selftests/kvm/lib/arm64/processor.c b/tools/testing/selftests/kvm/lib/arm64/processor.c
-index 9108e14a9b5b..bcdf670c9eb8 100644
---- a/tools/testing/selftests/kvm/lib/arm64/processor.c
-+++ b/tools/testing/selftests/kvm/lib/arm64/processor.c
-@@ -46,7 +46,7 @@ static u64 pud_index(struct kvm_vm *vm, gva_t gva)
- 	u64 mask = (1UL << (vm->page_shift - 3)) - 1;
- 
- 	TEST_ASSERT(vm->mmu.pgtable_levels >= 4,
--		    "Mode %d does not have at least 4 page table levels",
-+		    "Mode %d does not have >= 4 page table levels",
- 		    vm->mode);
- 
- 	return (gva >> shift) & mask;
-diff --git a/tools/testing/selftests/kvm/lib/guest_modes.c b/tools/testing/selftests/kvm/lib/guest_modes.c
-index 7a96c43b5704..4f121e2987e9 100644
---- a/tools/testing/selftests/kvm/lib/guest_modes.c
-+++ b/tools/testing/selftests/kvm/lib/guest_modes.c
-@@ -21,10 +21,15 @@ void guest_modes_append_default(void)
- 	{
- 		unsigned int limit = kvm_check_cap(KVM_CAP_ARM_VM_IPA_SIZE);
- 		u32 ipa4k, ipa16k, ipa64k;
-+		u32 va;
- 		int i;
- 
- 		aarch64_get_supported_page_sizes(limit, &ipa4k, &ipa16k, &ipa64k);
-+		va = aarch64_get_supported_va_size();
- 
-+		guest_mode_append(VM_MODE_P52V52_4K, ipa4k >= 52);
-+		guest_mode_append(VM_MODE_P52V52_16K, ipa16k >= 52);
-+		guest_mode_append(VM_MODE_P52V52_64K, ipa64k >= 52 && va >= 52);
- 		guest_mode_append(VM_MODE_P52V48_4K, ipa4k >= 52);
- 		guest_mode_append(VM_MODE_P52V48_16K, ipa16k >= 52);
- 		guest_mode_append(VM_MODE_P52V48_64K, ipa64k >= 52);
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 195f3fdae1e3..3fbc5b0d75ff 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -195,6 +195,9 @@ const char *vm_guest_mode_string(u32 i)
- 		[VM_MODE_P52V48_4K]	= "PA-bits:52,  VA-bits:48,  4K pages",
- 		[VM_MODE_P52V48_16K]	= "PA-bits:52,  VA-bits:48, 16K pages",
- 		[VM_MODE_P52V48_64K]	= "PA-bits:52,  VA-bits:48, 64K pages",
-+		[VM_MODE_P52V52_4K]	= "PA-bits:52,  VA-bits:52,  4K pages",
-+		[VM_MODE_P52V52_16K]	= "PA-bits:52,  VA-bits:52, 16K pages",
-+		[VM_MODE_P52V52_64K]	= "PA-bits:52,  VA-bits:52, 64K pages",
- 		[VM_MODE_P48V48_4K]	= "PA-bits:48,  VA-bits:48,  4K pages",
- 		[VM_MODE_P48V48_16K]	= "PA-bits:48,  VA-bits:48, 16K pages",
- 		[VM_MODE_P48V48_64K]	= "PA-bits:48,  VA-bits:48, 64K pages",
-@@ -231,6 +234,9 @@ const struct vm_guest_mode_params vm_guest_mode_params[] = {
- 	[VM_MODE_P52V48_4K]	= { 52, 48,  0x1000, 12 },
- 	[VM_MODE_P52V48_16K]	= { 52, 48,  0x4000, 14 },
- 	[VM_MODE_P52V48_64K]	= { 52, 48, 0x10000, 16 },
-+	[VM_MODE_P52V52_4K]	= { 52, 52,  0x1000, 12 },
-+	[VM_MODE_P52V52_16K]	= { 52, 52,  0x4000, 14 },
-+	[VM_MODE_P52V52_64K]	= { 52, 52, 0x10000, 16 },
- 	[VM_MODE_P48V48_4K]	= { 48, 48,  0x1000, 12 },
- 	[VM_MODE_P48V48_16K]	= { 48, 48,  0x4000, 14 },
- 	[VM_MODE_P48V48_64K]	= { 48, 48, 0x10000, 16 },
-@@ -298,10 +304,14 @@ struct kvm_vm *____vm_create(struct vm_shape shape)
- 
- 	/* Setup mode specific traits. */
- 	switch (vm->mode) {
-+	case VM_MODE_P52V52_4K:
-+		vm->mmu.pgtable_levels = 5;
-+		break;
- 	case VM_MODE_P52V48_4K:
- 		vm->mmu.pgtable_levels = 4;
- 		break;
- 	case VM_MODE_P52V48_64K:
-+	case VM_MODE_P52V52_64K:
- 		vm->mmu.pgtable_levels = 3;
- 		break;
- 	case VM_MODE_P48V48_4K:
-@@ -322,6 +332,7 @@ struct kvm_vm *____vm_create(struct vm_shape shape)
- 	case VM_MODE_P48V48_16K:
- 	case VM_MODE_P40V48_16K:
- 	case VM_MODE_P36V48_16K:
-+	case VM_MODE_P52V52_16K:
- 		vm->mmu.pgtable_levels = 4;
- 		break;
- 	case VM_MODE_P47V47_16K:
+int cxl_reg_map_add_owned_resource(struct cxl_register_map *reg_map,
+				   struct resource *res)
 
--- 
-2.43.0
+Then before cxl does any devm_request_mem_region() calls it creates a
+temporary struct resource for the range it wants to request and
+compares it to the resources the driver already reported as owned via
+resource_contains()?
 
+I'm picking reg_map vs cxlds because it seems easier to thread through
+to where we need it.  In this flow, devm_cxl_iomap_block() could be
+split into devm_cxl_request_block() and devm_cxl_ioremap_block(), where
+cxl_map_component_regs() would conditionally call the former when
+resource_contains() finds no matches for driver owned resources, and
+the latter is called unconditionally.  devm_cxl_iomap_block() could
+remain as the unconditional user of both.  Thanks,
+
+Alex
