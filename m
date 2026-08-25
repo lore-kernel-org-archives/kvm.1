@@ -1,131 +1,204 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55ED53EFFD7;
-	Tue, 25 Aug 2026 10:02:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3363F58D6;
+	Tue, 25 Aug 2026 10:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787652177; cv=none; b=Ho8OeAOX3AUvPchJ6QLulpHuolWdpoE2etN80wvkVGmnJP4QdJKPk4cE4Rft+lSFqu+ZvE/jEsd90p6j3ZUJKNP+RsgzleDNss1FrMHD13V38dhVtMKgReZ9MuoYZTApR7LviwgqTRfFtK0O7QYPwHTNNJSssofZxo0Op5OFuvM=
+	t=1787652404; cv=none; b=AdGGRIaNHhOLPtMMlf5MmV2bapKzUSzMUY+UBH26tGURKiJ231vjW2TM1H7Gs1QcZimhkCJVUrydmllN99qb8oKBFi8zc7mGQVZ14Wufx64kBaGpiJZiEhC6rmSPAXw9mMNro0LKnk5P+J2zh8AiqLtVZwxzmLu1wq16DvK+8uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787652177; c=relaxed/simple;
-	bh=umoMD7pUegKRkmbc+H5XgwphilE1QXb0fWCCgjQ9etc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rhhZvuFwGsdw3jQm//6DOrFdETBLHFqLvYYlwhrvYQRV8rZt1CVK4QO1rZ7GAYFY6fmJwjrHOXgXpdScEx3mOZrSc4mvmHYSYwSNFFZ7N6nLHFhW5hbjs86oz/71E4lro8zrA2YRsJBmo/GZM5Om0Vn/0O5BKJ8CsoQ85q1eZWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k8/VEAVs; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1787652404; c=relaxed/simple;
+	bh=M9Fm4+dnvq+XgKw9yfXTQV+zqDAuw6hKxuh72y1d/p4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Rtz7XvCJhPBZgdEt/4V5Ex26dgl+6bxdD2bMMi5XTskvPQyImMMO2RQdnYSr/MPufB/vPXMuWProAHDsa2DkH3tqFt3xCtUDL9CHBVBzQmDjE9+yo4hiiTSpult50rnr8miEC/kDR2gYuXPlTsxaBjkEPGGg1zuJOiDRW4kUx70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C7jilkaT; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k8/VEAVs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C7jilkaT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787652176; x=1819188176;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=umoMD7pUegKRkmbc+H5XgwphilE1QXb0fWCCgjQ9etc=;
-  b=k8/VEAVsU4LJpqaGOyNDonE017wQtdJENyEotJx0dSUh1ldLvgZ8D+iE
-   3ZxnOxpE/pWxAxzocLnStVbpfuotb2ewIa9s0ifeC0aqIWt6f28b4708B
-   fYqsx5pJWMgizm9Oehte2+uAY6SJC0Ftduq/7ql0O01296Hibnty55Cj6
-   QiqqqCXB17CX0smfVA82OE3iFA2n6bCS1/Mtgnqcaqnjs0xw+Y+KHvWbC
-   H1cDJX3BbPyiS/8CAzjhhuWzWtm9cpxa08nSqiLihFZe36uJjYOe+Ah8g
-   QlZw32MIi7RtTucUZx9C6a27J54RPJXF5AwZzcMb+81oVJoSvrCeGSqWS
-   A==;
-X-CSE-ConnectionGUID: NbOuc/A2TW+dMrxrxsLtLQ==
-X-CSE-MsgGUID: Nof6qemIRhKpLsOeZzLQJA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="88132080"
+  t=1787652403; x=1819188403;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=M9Fm4+dnvq+XgKw9yfXTQV+zqDAuw6hKxuh72y1d/p4=;
+  b=C7jilkaT7PA6u27NLvGxTUv9JHE0Gy7tlU4N9LBef0NgcSaY5NGjWIa+
+   pYp3iSH9jbXw4M0h6FcOoNkgXHTk2tKurWV4QifXJBwUiG/EHmrGb0Q54
+   GIJrFKlzgE2fCgiT798ia+78emrjpFPM5weVX1Kwy7o02Yqd0BwIHKAwy
+   ny5oEijdjg87kjv4JAJlAXkLqrYA0VUoPYn46w4uNk32ht2CU5b3/gzjN
+   WdotuPcJAEter5uPjP2jUCmIGfsa3vAbgHwzNq/xOl6qS4EcWWdDYTwud
+   jBwygOUCgwZZI5wlvo5rTvWaQM7fvwgEe4CCkEfA7mHrxXpuKjGCyngIl
+   w==;
+X-CSE-ConnectionGUID: D6BW3+vIQ9iU58LkYucGCw==
+X-CSE-MsgGUID: kx6bG2/dSSy5SN/+eE0MeQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="91797065"
 X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
-   d="scan'208";a="88132080"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 03:02:56 -0700
-X-CSE-ConnectionGUID: vS29JKjeTXCctD5eeK/0fw==
-X-CSE-MsgGUID: Fvx40Ri2S+Slakyim30eFA==
+   d="scan'208";a="91797065"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 03:06:42 -0700
+X-CSE-ConnectionGUID: T+xKrRR4SkK84ruPBSE65Q==
+X-CSE-MsgGUID: shDtClh4RZWx8bZXjoSkTw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
-   d="scan'208";a="261114727"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa009.fm.intel.com with ESMTP; 25 Aug 2026 03:02:52 -0700
-Date: Tue, 25 Aug 2026 18:02:51 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Hunter, Adrian" <adrian.hunter@intel.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Xu, Yilun" <yilun.xu@intel.com>,
-	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"Mehta, Sohil" <sohil.mehta@intel.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"Gao, Chao" <chao.gao@intel.com>,
-	"Fang, Peter" <peter.fang@intel.com>,
-	"Maloor, Kishen" <kishen.maloor@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH 5/6] x86/virt/tdx: Make TDX module initialize the
- extensions
-Message-ID: <ao1oS3HPP3mEjou6@yilunxu-OptiPlex-7050>
-References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
- <20260821032920.256225-6-yilun.xu@linux.intel.com>
- <f48b83feb2ee1d3c88b5a1627cf35b4b282d3f90.camel@intel.com>
- <aox8DgpnSnhZRfCv@yilunxu-OptiPlex-7050>
- <e05f49c28a78de961130655a76f415b01774016e.camel@intel.com>
+   d="scan'208";a="266698413"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 03:06:28 -0700
+Message-ID: <9feadfea-c41c-4105-963a-a3d98421e1c3@intel.com>
+Date: Tue, 25 Aug 2026 18:06:25 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e05f49c28a78de961130655a76f415b01774016e.camel@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 40/41] KVM: selftests: Update
+ private_mem_conversions_test to mmap() guest_memfd
+To: Ackerley Tng <ackerleytng@google.com>,
+ Sean Christopherson <seanjc@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
+ brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org,
+ jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
+ oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com,
+ rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com,
+ steven.price@arm.com, tabba@google.com, willy@infradead.org,
+ wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com,
+ pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org,
+ liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, linux-coco@lists.linux.dev
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-40-2fc18ee6d3ba@google.com>
+ <fe1c6359-7371-4ccd-9807-1d81c160d12b@intel.com>
+ <aohEz_1JFVDtlSnE@google.com>
+ <CAEvNRgF8XE2Xsn-g3qzPxcdfLdvJEc1FZw9LQ+deeXsFpdZsOg@mail.gmail.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <CAEvNRgF8XE2Xsn-g3qzPxcdfLdvJEc1FZw9LQ+deeXsFpdZsOg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 24, 2026 at 05:58:07PM +0000, Edgecombe, Rick P wrote:
-> On Tue, 2026-08-25 at 01:14 +0800, Xu Yilun wrote:
-> > > If that could technically work, I guess the benefit of the current approach
-> > > is that it allows to use contiguous physical allocations. Not sure if you
-> > > think that simpler snippet would actually be that simple in the real world.
-> > 
-> > I think there are several simplifications here, let's break down:
-> > 
-> >  1. Forget about the 512-page limitation for hpa_list_info, always add 1 page
-> >     at a time.
-> >     This can also be applied to current flow. So put it aside.
-> > 
-> >  2. The loop strategy:
-> >     - read total memory size	vs.	- loop on error code
-> >     - prealloc all memory		  - alloc a page
-> >     - loop on size			  - memory add
-> >       - memory add
-> > 
-> >     The main saving is that we don't read memory_pool_required_pages any more.
-> >     Others are similar lines of code.
+On 8/25/2026 5:32 PM, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
 > 
-> If we don't read memory_pool_required_pages, then the only real option is to add
-> 1 page at a time. Or I'd think you end up giving extra memory. Unless
-> memory_pool_required_pages is rounded up to some higher page order? I think no.
+>> On Fri, Aug 21, 2026, Xiaoyao Li wrote:
+>>> On 8/8/2026 5:53 AM, Ackerley Tng via B4 Relay wrote:
+>>>> From: Ackerley Tng<ackerleytng@google.com>
+>>>>
+>>>> Update the private memory conversions selftest to also test conversions
+>>>> that are done "in-place" via per-guest_memfd memory attributes. In-place
+>>>> conversions require the host to be able to mmap() the guest_memfd so that
+>>>> the host and guest can share the same backing physical memory.
+>>>>
+>>>> This includes several updates, that are conditioned on the system
+>>>> supporting per-guest_memfd attributes (kvm_has_gmem_attributes):
+>>>>
+>>>> 1. Set up guest_memfd requesting MMAP and INIT_SHARED.
+>>>
+>>> If I understand correctly, even with in-place gmem, the model that shared
+>>> memory comes from the userspace_addr and private memory comes from gmem can
+>>> still work without passing GUEST_MEMFD_FLAG_MMAP flag.
+>>>
+>>> Since this model is not prohibited by KVM. I think we should keep the
+>>> testcase for this model to ensure test coverage?
+>>
+>> +1.  Deprecated doesn't mean unsupported.
 > 
-> But otherwise, if you are going to add pages many at at time, you need to read
-> memory_pool_required_pages to make sure you are not going to give extra memory.
-> At that point doing the allocation upfront (before the error code) is simpler.
-> Hence, the design in this patch.
-> 
-> So I'm not suggesting to change the design in the patch. Just that if 1 and 2
-> are really slightly simpler, it's worth justifying the design in this patch as
-> for the purpose of reducing fragmentation. Otherwise it looks unnecessarily
+> The original test case was for non-in-place conversion, which wasn't
+> removed, it still passes.
 
-Good to me.
+It only passes when
 
-> complicated.
-> 
-> > 
-> >  3. But we'd better keep reading ext_required. I tested when ext_required ==
-> > 0:
-> >       - tdh_sys_init() returns TDX_EXT_MEMORY_POOL_REQUIRED,
-> 
-> If we don't config any extensions, tdh_sys_init() returns
-> TDX_EXT_MEMORY_POOL_REQUIRED? Seems like a bug.
+   /sys/module/kvm/parameters/gmem_in_place_conversion=n
 
-Maybe. But it also indicates calling tdh_sys_init() when ext_required == 0
-is not architecturly defined now, we should not rely on that.
+It fails as below when gmem_in_place_conversion=y
+
+./tools/testing/selftests/kvm/x86/private_mem_conversions_test
+Random seed: 0x7eace343
+
+==== Test Assertion Failure ====
+   x86/private_mem_conversions_test.c:46: mem[i] == pattern
+   pid=288745 tid=288747 errno=4 - Interrupted system call
+      1	0x000000000040426a: memcmp_h at private_mem_conversions_test.c:46
+      2	 (inlined by) __test_mem_conversions at 
+private_mem_conversions_test.c:356
+      3	0x00007f2ea2c89c01: ?? ??:0
+      4	0x00007f2ea2d0ec3f: ?? ??:0
+   Host expected 0xaa at gpa 0x100000000, got 0x0
+
+> Is the ask to also test, under kvm_has_gmem_attributes aka
+> gmem_in_place_conversion, to have guest_memfd used as purely for private
+> memory and have shared memory taken from somewhere else completely?
+> 
+> I can rephrase the changelog and change the code to clarify that this
+> patch is meant to specifically test in-place conversion with MMAP, the
+> intended usage of in-place conversions.
+> 
+> The ask to test gmem for private and something else for shared seems
+> like a different test that can be added separately, perhaps in a
+> follow-up series?
+
+I see it as the fix for existing testcase, not another new test. And the 
+fix is simple:
+1. change to use vm_mem_set_memory_attributes() to set memory attribute.
+2. pass GUEST_MEMFD_FLAG_INIT_SHARED to create the gmem because this 
+test expects the initial state of the gfn is shared.
+
+---8<----
+diff --git 
+a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c 
+b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
+index cf50e9a332c5..fbd6c63d21cf 100644
+--- a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
++++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
+@@ -307,7 +307,7 @@ static void handle_exit_hypercall(struct kvm_vcpu *vcpu)
+                 vm_guest_mem_fallocate(vm, gpa, size, map_shared);
+
+         if (set_attributes)
+-               vm_set_memory_attributes(vm, gpa, size,
++               vm_mem_set_memory_attributes(vm, gpa, size,
+                                          map_shared ? 0 : 
+KVM_MEMORY_ATTRIBUTE_PRIVATE);
+         run->hypercall.ret = 0;
+  }
+@@ -382,6 +382,7 @@ static void test_mem_conversions(enum 
+vm_mem_backing_src_type src_type, u32 nr_v
+         const size_t slot_size = memfd_size / nr_memslots;
+         struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
+         pthread_t threads[KVM_MAX_VCPUS];
++       u64 gmem_flags = 0;
+         struct kvm_vm *vm;
+         int memfd, i;
+
+@@ -397,7 +398,10 @@ static void test_mem_conversions(enum 
+vm_mem_backing_src_type src_type, u32 nr_v
+
+         vm_enable_cap(vm, KVM_CAP_EXIT_HYPERCALL, (1 << 
+KVM_HC_MAP_GPA_RANGE));
+
+-       memfd = vm_create_guest_memfd(vm, memfd_size, 0);
++       if (kvm_has_gmem_attributes)
++               gmem_flags = GUEST_MEMFD_FLAG_INIT_SHARED;
++
++       memfd = vm_create_guest_memfd(vm, memfd_size, gmem_flags);
+
+         for (i = 0; i < nr_memslots; i++)
+                 vm_mem_add(vm, src_type, BASE_DATA_GPA + slot_size * i,
