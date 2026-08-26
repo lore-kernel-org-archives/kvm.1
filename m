@@ -1,107 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB053AB27F;
-	Wed, 26 Aug 2026 16:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EE0479885
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 16:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787761708; cv=none; b=sdL8BiPrCTyMhfgpEhBX183HAgZ5qOLi8pV3MOvfQaFzLxqSFSrp50J4RjVPm3bx38pQIu3l2qU/mmLX5VGI7fTJmUijd2/a+OWPQ5YmJrdBQE9XDV5UGtUNONQA6amMbRMWgOVmmsNEOiIOCt7JmByPne7ueXHPggrXaXdGL2s=
+	t=1787762552; cv=none; b=ksHjwjh7m9xeB5rYFq0CLtInd0XsQBpQDmRxTnYNS/JjUVzmd2E1yHp/GX6zYkMBmmhwGqFeplRL2G7X/iP/LvgVWUXCPJMtJBeTasi5QfEnaCfQbhXnGPdttx6GbOVQkoIyc6nQUkZ8WFWxscJrTYtRjIUexgpEMP34prD0PIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787761708; c=relaxed/simple;
-	bh=DghoS33QQCzSlWBq7zBVOjwiazniFc4KGHgiqgukrc0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JfgKd+eI/2T5knYBWPphbMEaNfYIhwCj8ChIOd23Y2gTjDE9JdU3IwzU/U0OAVsPIYxEhwI1eBxHfIIlJEWSt3mceZItY0jbmlGB0klMVLHqDXNBTD172HI2xvTbXP1jmUNUdSWE53Z0SWKpFId5EHBxBpogZDoF1oCvSk/t8xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GKQYZxJK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787762552; c=relaxed/simple;
+	bh=BEhe2r+8iU4EkJKKeUDkD+GqT9e+NS4i1MkXdRfLIgA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=i0GXMEIdBSWVoZMbr/6iefbim+oLDY0hG+WgPMAYK1/g6Wa31B9h+9n+ReUH5BXt6rJQZhIfiKxQhMZZLJ4ihQpv79M0Oen8xkeJMP3KhKRD+BWomw1K5Z+QjcgVa3r8lEl/cxiqVMJUa/ZrgLpw/W45u/0CjK1TM6dgkTj5whM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rd1EuFxO; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GKQYZxJK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758081F000E9;
-	Wed, 26 Aug 2026 16:28:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787761707;
-	bh=H+8RJcHYuvgzjE0Wp/aIuWWk301iPXwhRKQVqXWTdEk=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=GKQYZxJKcQmnvwN68lqseYEgoh5n3xMKVr0SKHGlTy/Axf4GEb87KhMzLY2yTiYyD
-	 kNGnShWdpnCJrR3n3EtyhantGf/89bsfc/kndaqZQOCjRCB0lt2cjbfDSUjE63/r7i
-	 9FC7uzMO3wbOYQzVf2qI0SLLBypn+P5UiwdkmPhOBpEuHubCsa1raabO02RT2lur9l
-	 gH3e/uKAqyrLP+R+aqSfo6/ZEl8E5RVCdE1pOXq1CphaYspJLne8c+/8iTvgYvkxM2
-	 VL4deB4phqGtWvPokNdlv++5mXW1OFjCOh7HXxYWLul6N76NpEitBOsbZMxOlUTFku
-	 ryILv6/aPMoiQ==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 332E5CE0505; Wed, 26 Aug 2026 09:28:27 -0700 (PDT)
-Date: Wed, 26 Aug 2026 09:28:27 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Sean Christopherson <seanjc@google.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <98e123c9-3dc4-45fb-815b-881b3346741c@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <69567965-48fd-48c5-abb6-0699d7f5bd16@paulmck-laptop>
- <124af87fb49c267eeb26b8b4d952b9b1a5b3fb68.camel@infradead.org>
- <9427a8e0-3ba6-4f31-a35d-54429bd7e071@paulmck-laptop>
- <3d0463b6099d4fcde9a025a2f9e231d75303b61c.camel@infradead.org>
- <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop>
- <ao3z7Rtw2FROkVpy@google.com>
- <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop>
- <20260826073233.T-KtFXmj@linutronix.de>
- <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org>
- <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rd1EuFxO"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cc640dfde3so17500595ad.1
+        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 09:42:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787762539; x=1788367339; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Ji0mUaDNfVUZXzbmrEerFV372UGViNyfEX1CgVwEdcw=;
+        b=rd1EuFxOE7fMErYv4lq06VO33Ck9hx3jzPxEOU4a4g1wpaCn/h3V73xoT4FzV+PMpP
+         JT2o0Vs2RtD3koE9JX/XUqqby8I7fmHOAXVj1TCwGq9qK3F+lnlcktZv+3llkJIdZ92h
+         2CXp92hb1WOsBwUitGcl0LYdnV65oklSH8GrsVttaT/V5+UqSX4rjLAk8HE3ehoWeFmL
+         j5fwgqeTv113BEOsmVZhTiul5Yqtcra7ieAe/i56gyVTN3fEENxvcpFhvXrcjQv3ISdv
+         K1PB8fQV16r/6I8zrmgVnycc7XEyiLl/svCQGe8VLwdeQC2SrT2mSXJ8V+CeHkEI7BY8
+         heUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787762539; x=1788367339;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Ji0mUaDNfVUZXzbmrEerFV372UGViNyfEX1CgVwEdcw=;
+        b=E/hbCbu2bQhfbEUp9z+vinHoXArZCYa93XZbi+zqhAlBbMK1Kn+Q3p4ufIaCLY8zyR
+         ozNXNAgCX3VcWMf1ImFFqALSz6fQfEtLmMlphLbmXKeZcVoWwCAWkYKFnJYKEQnEblhi
+         F5RftY+65txZbNwTRSwtrMH5hJEh3z6GgzZAmPaExFMznLj2jH/OCVEuyvEdyoA9veNy
+         f7kp6heDib5y1vv1TM9TOTWjU/NPsNtvJQ7uC98RMUI7+LTWLaIJpZ6ITpsu36xmBTzD
+         8POrQfyg0/dPWe/iN16bxBDaNOw/pmH+eLHBxoUUgkt1bJRfqOsUtw7oovT5kEkyBXO6
+         Lg7w==
+X-Gm-Message-State: AFuF++m0ErD4W7+SFSR5yvv4k/L6YLMCXu4Rgp2fzlqKesKwFvjlL/vM
+	YTcMdihPOSGfkOxJBVzwWdzx4UfU0F2VfcCDMFiWh7WZjuLQUooGYZCbsXYMzhlhzmqWo62uS3K
+	MRbQ/6g==
+X-Received: from plef20.prod.google.com ([2002:a17:902:f394:b0:2cc:79e2:e717])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ef50:b0:2d7:1aeb:739
+ with SMTP id d9443c01a7336-2d71aeb1484mr67465065ad.13.1787762538425; Wed, 26
+ Aug 2026 09:42:18 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Wed, 26 Aug 2026 09:42:12 -0700
+In-Reply-To: <20260826164214.756512-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop>
+Mime-Version: 1.0
+References: <20260826164214.756512-1-seanjc@google.com>
+X-Mailer: git-send-email 2.55.0.860.g4b6b3295ed-goog
+Message-ID: <20260826164214.756512-3-seanjc@google.com>
+Subject: [PATCH v2 2/4] KVM: x86/mmu: Harden "map private PFN" against
+ unexpected root invalidation
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Kai Huang <kai.huang@intel.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, Sashiko Bot <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Aug 26, 2026 at 08:05:06AM -0700, Paul E. McKenney wrote:
-> On Wed, Aug 26, 2026 at 08:38:27AM +0100, David Woodhouse wrote:
-> > On Wed, 2026-08-26 at 09:32 +0200, Sebastian Andrzej Siewior wrote:
-> > > On 2026-08-25 13:51:14 [-0700], Paul E. McKenney wrote:
-> > > > Very good, preemption disabling it is!  It is quite possible that the
-> > > > PREEMPT_RT guys will need something else, but one thing at a time.
-> > > 
-> > > This reminds me of classic RCU ;) It might work in this use case but I
-> > > am afraid that other users might come along where it actually hurts.
-> > > With PREEMPT LAZY the preemption within the read-section should
-> > > hopefully be the exception.
-> > 
-> > Given the way that PREEMPT_RT treats other locks like spinlocks and
-> > rwlocks — turning them into sleeping locks — I suspect it makes most
-> > sense, and is consistent, to also turn rcu_read_lock_atomic() and
-> > synchronize_rcu_atomic() into plain rcu_read_lock() and
-> > try_synchronize_srcu()+synchronize_scru_expedited().
-> 
-> That makes a lot of sense to me.
+Move kvm_tdp_mmu_map_private_pfn()'s reload of the MMU into its tight loop
+so that an unexpected root invalidation has a better chance of being
+handled gracefully, even though it should be impossible for the vCPU's root
+to be invalidated after the initial reload.  As is, encountering an invalid
+root is *guaranteed* to put the task into an infinite loop (albeit a
+breakable loop that honors NEED_RESCHED).
 
-Another option is to instead fall back to non-atomic SRCU.
+Add a WARN to try and detect bugs that break KVM's expectations, along with
+a comment to explain why it should be impossible for the root to be
+invalidated.
 
-> For that to work, we will need a wrapper sort of like what we have for
-> synchronize_rcu_tasks_trace(), but one that does SRCU for !PREEMPT_RT
-> and vanilla RCU for PREEMPT_RT.
-> 
-> Sebastian, thoughts?
+Note, the loop in question doesn't actually check for a stale page fault,
+i.e. likely won't detect an invalid loop in the first place.  That bug will
+be addressed shortly.
 
-Everyone, thoughts?  ;-)
+Cc: Kai Huang <kai.huang@intel.com>
+Cc: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/mmu/mmu.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-							Thanx, Paul
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 3220f05387b5..1969c26861e5 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -5209,10 +5209,6 @@ int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
+ 	if (kvm_gfn_is_write_tracked(kvm, fault.slot, fault.gfn))
+ 		return -EPERM;
+ 
+-	r = kvm_mmu_reload(vcpu);
+-	if (r)
+-		return r;
+-
+ 	r = mmu_topup_memory_caches(vcpu, false);
+ 	if (r)
+ 		return r;
+@@ -5224,10 +5220,22 @@ int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
+ 		if (kvm_test_request(KVM_REQ_VM_DEAD, vcpu))
+ 			return -EIO;
+ 
++		r = kvm_mmu_reload(vcpu);
++		if (r)
++			return r;
++
+ 		cond_resched();
+ 
+ 		guard(read_lock)(&kvm->mmu_lock);
+ 
++		/*
++		 * Because slots_lock is held, it should be impossible for *any*
++		 * roots to be invalidated after the initial MMU reload.  WARN,
++		 * but continue on; the above MMU reload will do the right thing
++		 * if the current root is actually invalid.
++		 */
++		WARN_ON_ONCE(kvm_test_request(KVM_REQ_MMU_FREE_OBSOLETE_ROOTS, vcpu));
++
+ 		r = kvm_tdp_mmu_map(vcpu, &fault);
+ 	} while (r == RET_PF_RETRY);
+ 
+-- 
+2.55.0.860.g4b6b3295ed-goog
+
