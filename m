@@ -1,128 +1,164 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1993ACA60;
-	Wed, 26 Aug 2026 13:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787750003; cv=none; b=lKqgJsd7Rj3wgBh9fzEmLmDHR5MYhb2zoK58OpyLtMXcb7C8oK0LRap3NLh9aSJphP1qJUnyVeXwTLpNbolXYHROAkTe78I5e3QU1lucVESc1Ou9GU/2JIRECAAHE9YmzQHNSSBncBsCxgMTW9hNk/Pm5hEbXu/p37LZH+McMWw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787750003; c=relaxed/simple;
-	bh=1b2SVjukbKCo0X3pkEOxobw6ByY3B5DI5lbRmosxgFc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EUWFXX1UIdTVq5tqAFmj4N5r7EMd/Y0FMvZhNa5ancoz6PXVtg47MFXniCpw+vl57dy+Jm3+8qzRxWgWrv4yGOyLIfIoxDcwd/2+F6zMkNIXZRu6OTgCtlSZwHvJsTcho/FdQVFhZqfshstu1FmZ8zn4XlxQofL/sXbFrDjJbdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ELUdfJAu; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C354248D2
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 13:20:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787750418; cv=pass; b=PJQ9x5K1SFutFQ6R64wVwNZhFFixNrlEZWqHvaNKDUPXaGiq8y+TXDseeKMUBvQ1HxWLq2t8OlddWNPcz2o1iOv9QYIBLvkeYPaz1d8seWPmwfRoX++ejNhzGOn1QNJNrK5f61QVIPtFMXaJlU7MNmhwkl9eT5xRfufyepVyZ4o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787750418; c=relaxed/simple;
+	bh=QNKIrN2lFifU3ViEQu+FhMTw527yCyM+xc+9C4IKjvM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y4R9pyNs4j3UezKjIz2DV8syPAvsXb0KEGcJPsC5mj2ykmKn5dBEWrcMote96lAqxz7jU5TwX/H0w0Z3btV2HEdIEY06iuyuth7n8SwMuGiWQGYun8p3KExJxfTbsLbUIfPTrcAOC4sdxvu6KVkdqAcfn/8z9yr4Nelnh22XE1k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T27VMRxD; arc=pass smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ELUdfJAu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787750002; x=1819286002;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=1b2SVjukbKCo0X3pkEOxobw6ByY3B5DI5lbRmosxgFc=;
-  b=ELUdfJAuFqQWsnPqVlU/BCHvcAGI354fjeRtfApjjTSqTk4W78NSgIb2
-   1SgOfrlZYzIDNgZODvWTafw1PjO1eU8+VaIxfqlc3hBlwxXviQ/tAUEoi
-   io+Z3sx0Ge80Ct/uvzyDSYsZQ10a0Yi6qylMlw3KG15Wpnemgk0/DyWsi
-   t5BWeGnRAXKs1hmxZsW2roIUJETuus2c0ZMLDshwfWJ0A8igV6qiPmZXq
-   lzhlraUvoNmR2gA+gSXFnszplex2fTcAQL6bdx6YYNCA0qo48/rVvfnHC
-   x778KXEQEgfUTIFWz16d0CNqUQGu+WwWU/2GFZuTYYKhltcIlWR71eXUI
-   A==;
-X-CSE-ConnectionGUID: WhevcbnHR62qJcpzFk4yPw==
-X-CSE-MsgGUID: G8R3zMOHQsSg2wMbYnHtyQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88286042"
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="88286042"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 06:13:22 -0700
-X-CSE-ConnectionGUID: c6ACN6KzQ46Ocrvx3+W1PA==
-X-CSE-MsgGUID: /jadoocsTGSovJxJo6nrPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="271074998"
-Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.109.37]) ([10.125.109.37])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 06:13:21 -0700
-Message-ID: <1e77b1f6-0491-464b-b79f-ca756a73e7ea@intel.com>
-Date: Wed, 26 Aug 2026 06:13:21 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T27VMRxD"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-3a1f792efd0so8102881fa.0
+        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 06:20:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787750410; cv=none;
+        d=google.com; s=arc-20260327;
+        b=dzBq/+wKf8ueD/jG3JgHl2nbpCifVqqdtpS97bFumBuc/IgGZLm1zotPCksMtg2MMR
+         SmvUmxl2vK6IFDVxWjA8/gWCxmfJvHJlc2afW4q9Y/HYcGCUjrh71CJFHMx3uxk4J+cu
+         voEMOaBgJIzJhuv+FwsuSG0MO3VmfhOj0H9OeIle6ohY21p20l5DMLZE6engG/EtdVKt
+         m7+u5k6aOU1VGFALbv55SQzhUJ6V37DWRwYipH0SzH8HOdgWNfOiJ4yym3RpVR9R0g62
+         Syqyc77XiEH+elpj4a2nvfDQ8umQYhEyx5CAvdDaZ/irHVp3lRTWrPr9GOAJxegfpWSK
+         ffHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pH+dFL7dSS05A0t4Ra0NluTyTZw6F8KQqawmeG8hNcA=;
+        fh=9xAeQuuqDGIg5RnHHzfMjlzJgtPJ2BEwh5HWqgMbcFs=;
+        b=nmSmqjB9H257h8pmhjVzPnt0CytaznvfE747TrV+pq0xQ4XZLLvGqdo5AWJ0XRIpo2
+         D1tDSTmJeL9YEgr8qdGNo+l3HuI+CfTqvpAzEZ+qzQ7s8hheyk5Y2WBFZuQeFsla3XCv
+         Zq0Z+KApPY4CU3UO3MObBHK7djPZIpkLz0Qsd9sSZ8iCWmfcWTeaDS18hXQVDqE+wPht
+         B656gwSXBmQc8zVIkRyLBRaT7GKZHp9tA74iNq29N9Dqz75Krce7rUbIvHk+l3XkXiTM
+         NaSiqkdIYe7TxQCuiSjiIy4bbCF+UgJirR59YU2xUgp78bvg/N9FLYlyswpW0v4wldjT
+         RU5A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787750410; x=1788355210; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pH+dFL7dSS05A0t4Ra0NluTyTZw6F8KQqawmeG8hNcA=;
+        b=T27VMRxDp6KHlcAVyfHlF+VJ6Qj/4bMbdXy3tNzLP089HcmxUEN2k2k77q79sJFc89
+         bAvMw3bj5sSc+j+rVfh6wakexdvTo1+ysxcXiGPoeNX4mRbcXsewsKaqH/IA95HtlM4a
+         VPsEd06cCv5BXBzmLpZ1da+y+lBhyZYWn9QX9w3R2P2KeHQlEArp6BaDK3PLXeKiO2pM
+         uCxfj7JS0pI9HKNh45bU3PxvocNqHA47gj2qZ9AxTchMPKanTToiDjbvfQsAe16bq7h8
+         HIsjLmyApQIsUrqR+HLzAg1dFJQf1mcUsl2Y5C61lyV99Sm53oAlnLpekkW/JUP9DddK
+         0F/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787750410; x=1788355210;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pH+dFL7dSS05A0t4Ra0NluTyTZw6F8KQqawmeG8hNcA=;
+        b=aqIN20lFL/+szzoK5TUkx0zPJAaAHJDiReqcOjKFr82BvAK0oOoNLur9obrlaOVXtA
+         /acBQQtDDFyUNjXkpf3l62t70p6bPLBIjIdKHHUkBnojHhW2YUY4ZHJenAN/rJS+5Qhd
+         CCyZR0k+YXcCh5lAmd04li3Y9BBk2w4HfQqfIrRJtz3/0i/jMKqhY7kM8L7rxTV13kG5
+         xfHPlzogi+r+4Rck8mGV1pe2ajx9VbbE4/hV8xqZTDMJli5p8vZ1wmgY46Fud0O8krOH
+         pgT6tEqLI9/N52YNjliNwPytPg2Wc7AhZboN8n14HQVbKJrqI/vuOVLqUmeWtqcikhDE
+         wB+g==
+X-Forwarded-Encrypted: i=1; AHgh+RoSGP164AN7UrvwF99iKAxctUIzVC70nhRt+RP3UWHFYTTPtJd9aU2jFLK9ZO3yxM6YFWI=@vger.kernel.org
+X-Gm-Message-State: AFuF++lPTZwn6RD1nZNMAzVocmYD4XaHOJLtEPt7vxuo7ltsLb/YjsSc
+	A28XMpVTCtjS1OE1alwLHRhqJtdkD4otVp3uXRXPiRIIHcSE9TFrFoajOr4Dr/nnLGrH5/qM6nZ
+	v5Ejc9hID7t8pqQxKmslqN2eupylL0/s=
+X-Gm-Gg: AR+sD11Xp+TlORiONDkEZmguc+oOzlA6WdrIOD+NaBisApUsG+nKM+vmUI/Lb4oM7X7
+	glF/iXyzx2E0ECYvqnqMvUWfOZ8xLce+B9vf12RZofhCmjSKiD7bDx/HO3eq64rVzYRZv++ruiU
+	HfDNQJVrCAebWMn8K45Mj1b8Zbz6T2lhKDry7h+xUDV3sm3M8YVXBhfT+8mewqeb7tFLdTuIPo7
+	czwSNNcVL6pbWsMZFzvVk1k5fV995IDduLKgkCKr2sSRN1uFb34bsqyfa6BSafE0uegekiDAmoY
+	UKNESg6OhYw54XBWAygzKahfnva1ZTgKt7hiRTdVvFSolkvCX4y8AL5My2IhKhE2MmbAx1IAvbr
+	JcAmOxLSpOjmiEEiVhz6zoqcdp2yeAtcoQxjHf2uSfY44AsA6RTNPlZMPRtqJdX/8furEuE3P
+X-Received: by 2002:a05:651c:31c4:b0:3a1:8dd6:aaf9 with SMTP id
+ 38308e7fff4ca-3a1fd65bda3mr15964281fa.8.1787750409060; Wed, 26 Aug 2026
+ 06:20:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/virt/tdx: Warn on !4K level in tdh_mem_page_aug()
-To: Yan Zhao <yan.y.zhao@intel.com>, Sean Christopherson <seanjc@google.com>
-Cc: kas@kernel.org, dave.hansen@linux.intel.com, x86@kernel.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, rick.p.edgecombe@intel.com, pbonzini@redhat.com,
- tglx@kernel.org, mingo@redhat.com, bp@alien8.de, kai.huang@intel.com,
- yilun.xu@linux.intel.com, vannapurve@google.com, ackerleytng@google.com,
- sagis@google.com, binbin.wu@linux.intel.com, xiaoyao.li@intel.com
-References: <20260825025533.25663-1-yan.y.zhao@intel.com>
- <ao2ZH8dmkPfBDnGv@google.com> <ao6UVdWNbhQaAFsm@yzhao56-desk.sh.intel.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <ao6UVdWNbhQaAFsm@yzhao56-desk.sh.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260826070004.8100-1-sarunkod@amd.com> <20260826070004.8100-2-sarunkod@amd.com>
+ <e32c1437-44ab-45d9-9534-124a9e09f029@intel.com>
+In-Reply-To: <e32c1437-44ab-45d9-9534-124a9e09f029@intel.com>
+From: Uros Bizjak <ubizjak@gmail.com>
+Date: Wed, 26 Aug 2026 15:19:57 +0200
+X-Gm-Features: AcwNN1WbGq5_aFrBjMF8bc11mRGfw3k1WkpRjRJRN2DetDqB2igsmNpygDTr4cc
+Message-ID: <CAFULd4YFphkN4M0a_gC=vxN8Xgh4WWBGPo8dO-o6A3v9RGX4_g@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] x86/uaccess: Extend CMPXCHG user helpers to
+ 128-bit operands
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Sairaj Kodilkar <sarunkod@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, x86@kernel.org, vasant.hegde@amd.com, 
+	suravee.suthikulpanit@amd.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/26/26 00:23, Yan Zhao wrote:
-> Do not extend the CLFLUSH coverage to make tdh_mem_page_aug() work with
-> huge pages. Not only would this scatter huge page related changes across
-> multiple series, but it also makes little sense to have tdh_mem_page_aug()
-> alone work for huge pages without implementing its counterparts in the
-> unmapping and splitting paths.
+On Wed, Aug 26, 2026 at 2:30=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
+ wrote:
+>
+> On 8/26/26 00:00, Sairaj Kodilkar wrote:
+> > Extend the existing user CMPXCHG helpers to support 16-byte operands on
+> > x86-64, using LOCK_PREFIX "cmpxchg16b".  This mirrors the existing
+> > __try_cmpxchg64_user_asm() / cmpxchg8b path provided for 32-bit kernels=
+,
+> > where KVM needs an atomic compare-exchange wider than the generic
+> > cmpxchg helper can provide.
+>
+> Please take a good look at the Sashiko review:
+>
+> https://sashiko.dev/#/patchset/20260826070004.8100-2-sarunkod%40amd.com
+>
+> It looks like the "A" constraint isn't one that you can cleanly mirror
+> from cmpxchg8b =3D> cmpxchg16b.
 
-For me, it's all about simplicity. It's bad to add *complexity* for
-future functionality because it might not ever get used. But in this
-case, the (Sean-suggested) change is pretty simple. It's more
-complicated to *not* fix the bug and *explain* why it's not being fixed
-than to just fix the dang thing.
+Actually, "+A" will work for 64bit targets, as long as the variable is
+128-bit. The comment in asm.h applies to 64-bit values, where on
+32-bit targets they fit in eax *and* edx, while on 64-bit targets, the
+64-bit values fit into rax *or* rdx.
 
-Also, it's just generally a good idea to carry a length along with a
-pointer. <cough>strlen()<cough>
+This is documented in GCC documentation:
+
+     =E2=80=98A=E2=80=99
+          The =E2=80=98a=E2=80=99 and =E2=80=98d=E2=80=99 registers.  This =
+class is used for
+          instructions that return double word results in the =E2=80=98ax:d=
+x=E2=80=99
+          register pair.  Single word values will be allocated either in
+          =E2=80=98ax=E2=80=99 or =E2=80=98dx=E2=80=99.
+
+And can be confirmed with e.g.:
+
+__int128 val;
+
+void foo (void)
+{
+  __int128 _v =3D val;
+  asm volatile ("" : "+A" (_v));
+  val =3D _v;
+}
+
+which will fail compilation with -ffixed-rax or -ffixed-rdx.
+
+That said, the approach with union of two 64-bit halves can lead to
+slightly better code, because the compiler splits the value earlier in
+the compilation pipeline.
+
+> Uros, any chance you can give these a good once-over? This seems to be
+> just the kind of thing you've been fixing up lately. It would be nice to
+> get them right the first time.
+
+Based on the above explanation, these *can* be copied from 32-bit asm
+patterns. Even "q" constraint will include all integer registers on
+64-bit targets.
+
+Uros.
