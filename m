@@ -1,113 +1,102 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6915D439F91
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 13:59:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11EAE184540;
+	Wed, 26 Aug 2026 15:05:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787752797; cv=none; b=DEnBWqklXzy70hp3Sk0/QyWRJsdo0QLrZtXkgh/63aydoSGsDzgTFankqhoRjNvZT905FVnQwdgAuoktx7wncEhq3I+OxapXQ+cRudmcB2VM00FBphAFf8KUpxBIEFRik2ypU6aRb+BOVGbewl04p6vXsbIvMTpqBNOZpRc42ts=
+	t=1787756708; cv=none; b=RRMbef8mXiJwU952SiltkX9EfBDOVEfFJYSAlTUAaoaybZ5yR9+ZXcwYDUx1PdGWt8PJMFgJBBLJYTSy0IMZne2M5fY9A+s0NH5j2jGMhwqGXM8oELpugAGDTu38RujUOm6+TMxciUlaJ+ffDAq+D72hhcODRCd6AtagSuFoFsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787752797; c=relaxed/simple;
-	bh=BmbalL68ZikUuh25rRQGobzDqe2QcSShbOPYwfY2XDo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YD7Lo6k3gLgUOLsMfqCYnw6t0nUhiO8PQ/Fj+L0iT9/nTyuuXVfbvTUyz/JBmQv9hNeMp32+0Q6U87c8RK4kN/CGM81oS/LLR6xz4CTN2yqfK6GH5H+JorXhqxK0ZiEygSRMrVAwZ1wHV4rhIUGbbrI6SNbcN6RBZr7e4p6ieBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uYVD4LYy; arc=none smtp.client-ip=209.85.214.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787756708; c=relaxed/simple;
+	bh=M5vRzFgBWucHQG5a7k2WdFivewH8+vxgM0o5ta5rMgQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gsq2LiXkN7GM2t2k1zs93F2+PTVzryebOccVI4VBOpnxllS8PT5mU2HV3q13GLJkbc73zlFpj9X2eGsRm7R8Lae3iDceVE72gzqx/6EaiMGaW+5C12HwFDsIdcB8X1ekHO+UCOVCaaOrPf/CzVRG8e3NVLMbmlVMCMoSfsTN1tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h8bDSvms; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uYVD4LYy"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d5d00fd19bso20802475ad.1
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 06:59:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787752786; x=1788357586; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=sJ5J4VsXiOuMp2dajzmF8XaYnCQzq6t9gwVoLisuj/k=;
-        b=uYVD4LYylAASE/IEQ6yNnKHWb7Cb8t5qcjtFl1fNefeb2pQ/vQuz8DtJfpQIGwsKAX
-         gysFIdkLGuXC9RNmvnFijMcQKL0lM52bPnjlpDpeecPr19mY2Cm9zT/gOZouzjBUYZx1
-         lT/CK9ke05J+FBHOUVc7g4fwQ2asbm35NNPL7f9xJUHWSBY0/FF9J+cPQpIUyzuOXQ4q
-         90Fhk4dNe7LirQuI5Y9PTF8dagVn2IUaRQJMtBbxZVIH/VlfMijxvPqxaqHQB/miS9VY
-         xlrklIJDzVH/fGbP5MkPGIvYSGeGOtWciiqDRAXYPfEDcsg2Th/5KrDtzlzyzvMudK80
-         J4bQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787752786; x=1788357586;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sJ5J4VsXiOuMp2dajzmF8XaYnCQzq6t9gwVoLisuj/k=;
-        b=R9MhfDRv2GqUDc++z7t76yd3488g8+0OaKZYdg0PmJ1WqWA7qpynZPrCjscl7+zZtj
-         go1lBhe8RTc41kAl2SOzXhAEjyPqCYlWjIJQncesD9oOBl99EZjfCW4XdAdyeiP75XRE
-         ucaR6VzKIuKXfUS0sBNjgw4fH58C1wmhri5E/CYIQXF5rOek83sCXWqb5wlyDqthkql6
-         PIbzVwvH1hy6SpW+Zse67tKTLb4CIbFxBqP2X5C+xL1FPF1ANs0sNZ9uR0dMjOCeac7Q
-         OtO/dBuHTFs01gn/YQpd1Yo5SwemyaB9DnbGTMQ4VuHwPbhoqmNLQ83JnrJ0hgquODVk
-         RSVA==
-X-Forwarded-Encrypted: i=1; AHgh+RpG0Gzqn1moepBdruCCZJt8tGyoB0HOe7lID6JqLk7thq6AATtQWYWYuyzFnnoU8a/apCA=@vger.kernel.org
-X-Gm-Message-State: AFuF++mMAblkXF9yhazilurwdWd7DTA8cegnNMaKX28k7wZunNq6o+Ki
-	bVp9EvzRQ1GNF3+B6nZnZCJrzAm095Tb4Tx37g4nLN3xlA0R9n8jjoc2RVBBTKATVaVGMvyxcDZ
-	FLqgP9g==
-X-Received: from plht13.prod.google.com ([2002:a17:903:2f0d:b0:2c0:a516:2c2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1246:b0:2d1:1f73:3667
- with SMTP id d9443c01a7336-2d707a04385mr106575235ad.1.1787752785793; Wed, 26
- Aug 2026 06:59:45 -0700 (PDT)
-Date: Wed, 26 Aug 2026 06:59:45 -0700
-In-Reply-To: <d9d4264f-eb8f-4407-951b-245d144b3ec8@suse.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h8bDSvms"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A481F000E9;
+	Wed, 26 Aug 2026 15:05:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787756706;
+	bh=P++naScNZowUvRJGvpwZuOXHFESG3Sw1NB7yivdb/jg=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=h8bDSvmsmumTK1wPZfvvnD6Mh7l4lkruuUlW4NmjgzaGmgJ59OW6MHEVHxbpSn93i
+	 nb7BjisVl9X6I5GXUN/85C7ho409ilqX7Mu8P+jxd6Id9mAkDC5Lb4q5ezn3SYXrAF
+	 /yl7HMA7m8r2fWSi22hFgiLA3eKzuUoVYKfc85y4HWs2pU3FEfr4QHQp6uWKoDLNOZ
+	 M7ICBWkKbd6Ypel4vrldLgXEuNM5iTJsfU8yg2YDh+RAVQDiRNAkhtEC8A2cwevHo6
+	 ZorGmhZu4xIbuEvFYl0z7cSprK8zR9wsNpFjMwVVrzjoldxui6KlMckMwAQbuoO1x7
+	 tAN2oODb3bjEg==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 693BECE0484; Wed, 26 Aug 2026 08:05:06 -0700 (PDT)
+Date: Wed, 26 Aug 2026 08:05:06 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Sean Christopherson <seanjc@google.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Jerome Glisse <jglisse@redhat.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
+	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Message-ID: <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <11dcf5a87125451897982f728c1f65a5151987e4.camel@infradead.org>
+ <69567965-48fd-48c5-abb6-0699d7f5bd16@paulmck-laptop>
+ <124af87fb49c267eeb26b8b4d952b9b1a5b3fb68.camel@infradead.org>
+ <9427a8e0-3ba6-4f31-a35d-54429bd7e071@paulmck-laptop>
+ <3d0463b6099d4fcde9a025a2f9e231d75303b61c.camel@infradead.org>
+ <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop>
+ <ao3z7Rtw2FROkVpy@google.com>
+ <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop>
+ <20260826073233.T-KtFXmj@linutronix.de>
+ <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260819094903.3060020-1-xiaoyao.li@intel.com>
- <20260819094903.3060020-10-xiaoyao.li@intel.com> <5426d2f6-3e67-45d3-85d6-d0da67edb486@suse.com>
- <34161383-a382-411b-9278-098dab6587d8@intel.com> <d9d4264f-eb8f-4407-951b-245d144b3ec8@suse.com>
-Message-ID: <ao7xUc88m1fopax7@google.com>
-Subject: Re: [PATCH v4 9/9] KVM: VMX: Consolidate the exit handler for VMX and TDX
-From: Sean Christopherson <seanjc@google.com>
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org>
 
-On Wed, Aug 26, 2026, Nikolay Borisov wrote:
->=20
->=20
-> On 8/26/26 13:43, Xiaoyao Li wrote:
-> > On 8/26/2026 6:03 PM, Nikolay Borisov wrote:
-> > > > @@ -960,7 +978,7 @@ struct kvm_x86_ops vt_x86_ops __initdata =3D {
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .vcpu_needs_initialization =3D
-> > > > vt_op_tdx_only(vcpu_needs_initialization),
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .vcpu_run =3D vt_op(vcpu_run),
-> > > > -=C2=A0=C2=A0=C2=A0 .handle_exit =3D vt_op(handle_exit),
-> > > > +=C2=A0=C2=A0=C2=A0 .handle_exit =3D vt_handle_exit,
-> > >=20
-> > > nit: Why isn't this vt_op() for the sake of consistency and
-> > > introduce needless churn ?
-> >=20
-> > I didn't see how to make vt_op() still work here while dedupping the
-> > code. Do you have a better idea?
->=20
-> Indeed, I saw that vt_op is actually different for the TDX/!TDX case. I
-> guess that function is always bound to have some quirk - i.e it has an
-> #ifdef guard inside even though is_td_vcpu() is defined for the !TDX case
-> but tdx_handle_exit() isn't. It's named VT, even though it's defined  in =
-the
-> "vmx section" ...
+On Wed, Aug 26, 2026 at 08:38:27AM +0100, David Woodhouse wrote:
+> On Wed, 2026-08-26 at 09:32 +0200, Sebastian Andrzej Siewior wrote:
+> > On 2026-08-25 13:51:14 [-0700], Paul E. McKenney wrote:
+> > > Very good, preemption disabling it is!  It is quite possible that the
+> > > PREEMPT_RT guys will need something else, but one thing at a time.
+> > 
+> > This reminds me of classic RCU ;) It might work in this use case but I
+> > am afraid that other users might come along where it actually hurts.
+> > With PREEMPT LAZY the preemption within the read-section should
+> > hopefully be the exception.
+> 
+> Given the way that PREEMPT_RT treats other locks like spinlocks and
+> rwlocks — turning them into sleeping locks — I suspect it makes most
+> sense, and is consistent, to also turn rcu_read_lock_atomic() and
+> synchronize_rcu_atomic() into plain rcu_read_lock() and
+> try_synchronize_srcu()+synchronize_scru_expedited().
 
-Because the name and the implementation are two separate things.  The scope=
- is
-"vt_" to communicate that the operation is common to all flavors of VT, i.e=
-. to
-both VMX and TDX.  But when support for TDX is disabled, there's no need to
-trampoline through the routing code and so the vt_op() implementation wires=
- the
-hooks up directly to the VMX functions.
+That makes a lot of sense to me.
 
-.handle_exit doesn't use vt_op() because the implementation of vt_handle_ex=
-it()
-itself is completely common to VMX and TDX, i.e. there is no routing code a=
-nd
-thus no need to define a wrapper via vt_op().
+For that to work, we will need a wrapper sort of like what we have for
+synchronize_rcu_tasks_trace(), but one that does SRCU for !PREEMPT_RT
+and vanilla RCU for PREEMPT_RT.
+
+Sebastian, thoughts?
+
+							Thanx, Paul
