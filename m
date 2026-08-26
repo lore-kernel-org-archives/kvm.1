@@ -1,134 +1,167 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from YT3PR01CU008.outbound.protection.outlook.com (mail-canadacentralazon11020130.outbound.protection.outlook.com [52.101.189.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7A641F5D1;
-	Wed, 26 Aug 2026 12:30:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787747459; cv=none; b=klgO7yZqktoJ0zgOZ2/BozMs2BEQHI8sl54/N8NmOiR8cSSRJiypatluyCOf9ZDyEx0iRlo5MSWFmQtsOsFVm20iwT2VVpYUHN9guJ2bYBRFIm6xVOvYA0Qz0hi75lRNACjaOMu450wwIUttba7eZpDCu32VHnIoTEuInzIutD4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787747459; c=relaxed/simple;
-	bh=uCUtU4vAL8cHiaW3jHE3SOKJs8T7sIefyPQl9E01ccQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dUZ0Nv6PSfExKNHiLTAYA2k0ax93M7OkP4EfLhUO2k73QcBK0fXmFwadUJeHxh1PFSVRx4wP2ZLkHa9oWKgoz62FCGHmA7FnqINvxJ1xceg/do5gArPLk3NZDKsoBCSWsAdcn92E4w7eWKjpaGiRJF3cnMR/BVz4c1ztGvjaoWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cP3+eb/b; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0113EEAE2;
+	Wed, 26 Aug 2026 12:50:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.189.130
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787748610; cv=fail; b=FF9sKi4owZ844Jpn86LLBZ/zWYOyfcjkfiy1XE6wytaxaPhVxSvhdcGdElRTeyXeLCc/8c3MTcOJRZyEFI4q2xVDmxwRGLTMN+SFSjZAbO/EOqVEFMkK1hqeU9F/lq048caqNRZpS/5qRpBifps32Qj+XAGWxq7shokTPQJ88t0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787748610; c=relaxed/simple;
+	bh=8zHpHdZE8Ui0Cm8HCEdnIIaN6UVhzImOFDHh/IWdjC0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=jM4Rb7asASXL2wX7xkJBSmXJ+GAXpE8BAu6/phrD99LhhYc3iriZ4AO23QJtPNi0qQ5QIPxVFf9YEM+Ek3TLTW9EauwLbcXOEdPcUjfoirlwyvZvInlKRbOgANlJonbrNKYB6MBSF0E8ngN2oLvP1bi/k4JEmeXFqqbPko/oDc4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com; spf=pass smtp.mailfrom=efficios.com; dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b=pAE5tdS+; arc=fail smtp.client-ip=52.101.189.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=efficios.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cP3+eb/b"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787747456; x=1819283456;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=uCUtU4vAL8cHiaW3jHE3SOKJs8T7sIefyPQl9E01ccQ=;
-  b=cP3+eb/bHKGujq82CyRStxdynnQcNRx4IbW7tZ2atRuLAk5+SAzyekL0
-   j/JAWJUvRb77DLduXP9geWkC1001cUKR6eGv039R64B27kyvyOnwSPZVt
-   5QBCpi1F7Ros5aWCAzBKhXUp/GK9Xfu532oWR6CJDDate+MBveDyUa5fM
-   KmvJgc68S/ZNvWEZ8137rjD8qxB2dmrIi5EVsD2KXQgewvYRFNS5u3fRP
-   GfuOgOd5N6QyMH1zUAcqKu0FESlLzMpJPXPhYvGZ3LZXc/Bh24JmV2egR
-   NuK36EsTk7zN6nsrpIMJ0Qql9XxgqVleh9IKWeeeXIPBwbJv53Ph8Ei7D
-   A==;
-X-CSE-ConnectionGUID: vnjzL+pKShOjkT8NAlIQUQ==
-X-CSE-MsgGUID: y6q5g5UHRkGk+/Trn83U3Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88105318"
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="88105318"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 05:30:55 -0700
-X-CSE-ConnectionGUID: RcwJGlfPQR2eR+J1D/K6kw==
-X-CSE-MsgGUID: myBI6HmATMWTrpOgpUAe6A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="263268517"
-Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.109.37]) ([10.125.109.37])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 05:30:54 -0700
-Message-ID: <e32c1437-44ab-45d9-9534-124a9e09f029@intel.com>
-Date: Wed, 26 Aug 2026 05:30:55 -0700
+	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b="pAE5tdS+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pWbk6UGOd9joJlYHgsN9G1NU+QJTtC3yYZeqFzS0l2Hp4qAz5nmp1TmfGyXdyfj4v/pZgzocwCUoB+y7QGiMTv0gxIa6cOGSiu4Fq5x6hIiytzTxoNe/0AVB4ijpWoWS2VKl4MaS1ad+mR+rJrTFgANej2orIQwbOlrjFKefNeEz8CaHQcH5CMF1re2VTSBP5WeEbBpUpuldo0IP1Rk3uKgHYtm5IgJh8iggRmj3dnpogNDQ4u/ks4gT8cCANupsJ997XwK4YjwtZD5lUivvwX0/ZlE6uJaYkYHMD6iIE7Kiao3e4EK25otTnxTt1vg3Wo4scWp3IBgQC9GF5ze3kg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=idXXcZHlOtp9oIv9nqV/3Kzlfw1H1Z/0Sxdw+Vi07gc=;
+ b=Sluj+I5i3g7imktAxOb5v3Fr2pQicjjpOAezPWqFmwm478TPI72teCpGlXNjAr+ZyN+fW+ezkMikYU3b0/QjieBIYmoFjt4pmXeRbpXC+i65x1Nz5gfh6MPDa2zy0PFbA0nMEuB/xIUQF/mLQH6AO0ZIXw978sSbpseBlNxqLbToTCw4J590MxcRcwdHRqRC8vVqaeIRNdwN4mVbsdQbuY8Ae4uy2F7XU7x7QXdbXoICRcVR5pjDcQNxVgawKDoEY7SDCRKlhQaovDjmVFbGHGyC1SoWEjC79ltL23TsB5ngDaP03xkZoYHv8FWmTfPRCLh+hdEykeQ5plN8ZNzR/Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
+ dkim=pass header.d=efficios.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=idXXcZHlOtp9oIv9nqV/3Kzlfw1H1Z/0Sxdw+Vi07gc=;
+ b=pAE5tdS+P7qLPUVaFBpCryiIS/BHlnKaKveqqHTBXxEMov6KKjbr+c5yAMRIj/zj2PacfWdRBsQNvDJJVnhxowV6SxyBKAmKnDVMhe4Dt9JmoMa2EjnLFFsqUbyba+NBiaKeNJgMsSOI11AHKNjSz+sCWMeg1Q9z3nuIRd9HVz8K4Ug9Mz/qAjKaQCkT9unNTCEc3VCNPQKgDsZQ29wEGIbj9QtBQOOXy27l1RfwV5t/KR4eXuTjzNwQ/OeCZBZYo745BAFszJMuHdlQkoiSK7xJZT/9WjvA/CdIy3AvGTDhNiuivEzCMtPRRU3aKtjnKuuVLauHO2EpYcSPpHCVaA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=efficios.com;
+Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:be::5)
+ by YQBPR0101MB6072.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:c01:37::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Wed, 26 Aug
+ 2026 12:50:04 +0000
+Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::6004:a862:d45d:90c1]) by YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::6004:a862:d45d:90c1%4]) with mapi id 15.21.0360.008; Wed, 26 Aug 2026
+ 12:50:03 +0000
+Message-ID: <41b1723f-fd53-40f4-951f-d1736e78abb2@efficios.com>
+Date: Wed, 26 Aug 2026 08:50:01 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] KVM: x86: Add support for cmpxchg16b emulation
+To: Sairaj Kodilkar <sarunkod@amd.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Uros Bizjak <ubizjak@gmail.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, x86@kernel.org
+Cc: vasant.hegde@amd.com, suravee.suthikulpanit@amd.com
+References: <20260826070004.8100-1-sarunkod@amd.com>
+ <20260826070004.8100-3-sarunkod@amd.com>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Content-Language: en-US
+In-Reply-To: <20260826070004.8100-3-sarunkod@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YQBPR0101CA0176.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:f::19) To YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:be::5)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] x86/uaccess: Extend CMPXCHG user helpers to
- 128-bit operands
-To: Sairaj Kodilkar <sarunkod@amd.com>, "H. Peter Anvin" <hpa@zytor.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Uros Bizjak <ubizjak@gmail.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, x86@kernel.org
-Cc: vasant.hegde@amd.com, suravee.suthikulpanit@amd.com
-References: <20260826070004.8100-1-sarunkod@amd.com>
- <20260826070004.8100-2-sarunkod@amd.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260826070004.8100-2-sarunkod@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: YT2PR01MB9175:EE_|YQBPR0101MB6072:EE_
+X-MS-Office365-Filtering-Correlation-Id: beeb4b00-6826-4714-d2a2-08df03708bf8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|23010399003|1800799024|376014|366016|921020|3023799007|10067099003|56012099006|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	nV4UmZe4ma8/al13L93PprG+T7ZM2Dq7akQajY7NwVUy/+6uhOvje67deIrAjRXuo3a4q3imBbAtVurnxN25Top+zFu6q8Y47oUWd77hIUc/xpxI+NyEtMOmPdI26IfQPxw7PSw5CwM835DzWCJCdg8vyhiGRF787pANIKLrUiY469nF3inf+cB8qu6fOxx+8utFeXhQGeK6W+7f7ATeOoNaMSmlyIF+aFOBii2vENdhUfZDULaAdeYXNyX0w5ln3DMNyGjEO9yd4I5Irxy+urmqvFJqsZ4yp2TckO544bikoNAfvoawYGkvC+2UddbFnHKrgyZUobvl+ujSb2yXYda2cPZfjVpk+l3a5z8uZfs0e2G+W4cHXNOqEZednF98gZ90pku1lyIujfJtevNtpuaQP2S7Pyu2IyOcalNVAG/1VgAdtz35jYPwZ4+FiLZlzKrnZl51hrKd4/nMp7sk6ymVn4XfI9cr4BES+iCWwWNRTrM7iJ/Uz2xpFAtmzIyifx6PlDFLukNa6BXnsGlLjEIAOs/vEtUqhO0jdb0jFsaGq2ipk4aT3nMBjgu2vMagCAj6Xu5zlCh3zaigVSCU0qlxnRDn4ZxqfTsUdIswvv/mUX4wGOwgbqTOT9ssiVME7pddxr1vd22nVeXpq3DSlA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(1800799024)(376014)(366016)(921020)(3023799007)(10067099003)(56012099006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MDNLYWI3QjllNzdrV0s1bzNWbzl0VlROWXdnQnIvRVZGSmFuZ0pld205TGpV?=
+ =?utf-8?B?WEZjV2JpRUs2SnlYTkxOTFlBUzVCZEpyUkc2emtKRW9jK2xoQlA0Zi9JWkdt?=
+ =?utf-8?B?ck4yK01kb2gyL2h6TjFRMFZlMkNsd1FFUXNSNnBUQlRQUDV0Q1AwSlczRHU0?=
+ =?utf-8?B?Z1A1RlFMTGl1Y0FKUFUwT3hybDdlRzZWNmJCdjNGaWR6ajhkdTVwNEIvQUZG?=
+ =?utf-8?B?bzVTT0tFWEhRalRkd0gra2I1MWtVK25abittbFlRaTZOTUptcklsZG5UWVFN?=
+ =?utf-8?B?b2tGZ2l5NC9DanpCZHZURWpZZXpuUkxTRjh3RW1OTXhlZ1JNeWxNb2xFN0tr?=
+ =?utf-8?B?WkRlT3NodXkyRTlhQlQzMC8rVzROVUJDeVpkRHF6TGJwMDZwNGpmSTNkMEsz?=
+ =?utf-8?B?RytlN0M2c1lRUzU0eVl4L0RQY1d3NnFIZWhqQy9jYmtKZENUZkJobDQza3hO?=
+ =?utf-8?B?ZjRKMmR2L3Q1OHVwRXRtOWhNVmNMK2VSdnh5c0Z1eE5rNjZKVXovek54Z3Bw?=
+ =?utf-8?B?QWNQM2JoS2IvMi8wZlZQdEhKcGFpWW1HaVdOcFB1ZmRRQ2lWcVB4OXlEdGt3?=
+ =?utf-8?B?RG1wS3lTSjJpLzlhcEt0VUVub3E5cE9Cdk9rTHZvSExwT3Q1NmEyVzBDQjRL?=
+ =?utf-8?B?UTFYSGN4N3NqSU4zZi9wbEZjUmovNndtUS9ZZEU3WjZvOTBKcjk2bXNwN21l?=
+ =?utf-8?B?anc1d081V2grRFZ6MVloelhlcEpwTFFJbkpCWlBJSkJMcE5veXIxV1dCbWNY?=
+ =?utf-8?B?TjBaM2xMTldRanNmaUNrZGhEbFFqc0pSSkdmdTlYdUIvK0l5WmY0blNtNmZF?=
+ =?utf-8?B?SmM2cmFqZlcrWis5Z1lGdWNSUFJmekJVKzB1RUIvelo5cGtLQ3c2d3ExR25u?=
+ =?utf-8?B?Vlh4S01MVUVuM2E3WW1jS3V3L1c2UjBzUVBZMUV1eG9UOVc1UlZCRndXR2R5?=
+ =?utf-8?B?QzErREJEUFo4enVOMmw1ZlBWdERwQ1l3OUNKTzUwcHVNcXRsRHpveHRkaWhF?=
+ =?utf-8?B?dnB1MmdWeDdVZHVXQTl6S1h5ZHpqQTVHWmdCU2g1T050UERIN3BMdE1wVFQz?=
+ =?utf-8?B?WDBqalhYWVhsMjJiMmd0T0dTQ1NuRlhJWDdoZ1h2WS84VnFndm1hbkpzMS9y?=
+ =?utf-8?B?L21rM2NEQklIYlNGbzdHTnU2K1VvQ3JWbXp4YmJVTWJ1M2tTRzlpMm5PUWhv?=
+ =?utf-8?B?NXhOZDUzeHFjK2VqZ3FQdXc1V09Gc3lXZDQyZFZ1OUhZV25hZHIxNGNJVGZv?=
+ =?utf-8?B?SkpvN3VpWUQ2QWhEUE5TNGZJdCtYcUhrT3ZIYUwvZFNGRXZ6RDNRbVJKZWJB?=
+ =?utf-8?B?ZDQveE5wZzVpUDFwbmR2VVlrUHBzaGFoZW9UV3V2RFpNbUpuOG1vQmJabCt3?=
+ =?utf-8?B?T2dYYkZ0NE1ZanFKaTRXODRiYUhveW1MNlo3dWg2U3BTUm9LblJDWitHaVJ3?=
+ =?utf-8?B?MHEzODUwRjVVMHN0ZVh4WjhlWVIyMG9iWGZHNmlVbERLeGZTSHRKNm5HeDlS?=
+ =?utf-8?B?Y2tCM0FlS0Nza2VCOUlFTnR3RERHZHNqOSthSE1TM3BCZ0t2Z0NHaHkwYlJi?=
+ =?utf-8?B?c2lMT1lYV3NtTUw3aU84Wk05bm5vZ1J5Z0M0VGtrK0NnRU5RcmdmTmc5ckhC?=
+ =?utf-8?B?ZGhTWklWS25CdjZ6eUZ2b1lKaVB6M0lGRG1JejJRYmZwc1ozT3k3aVdEOWVF?=
+ =?utf-8?B?KzNxR1lBeFJrWXptNjM3QWQ4ZkJ3Njh1bzBEMjdIWWxmNWhaUVVUV0VHL2tE?=
+ =?utf-8?B?eHBybXpZL3VNWjdSeEJ6TlNzTjMyaFVSdUVYbHVpd1BiSWF3aVRycHQzbThT?=
+ =?utf-8?B?NnlNdFVWZWVBcW9zN0VDS0VodG1uamZUZDM0WGEzWmRoOThnZ0VZcFJJclJG?=
+ =?utf-8?B?cjhUbjFpOGJoVVlHNlNocmRMWmlKRStTTDVMd21yaVRHOCszK3dkaCtiSC94?=
+ =?utf-8?B?NVFnL3U0a2M2YnBWVU5PMnI3ZTRuTG1xcmkwQjJ2c3BNcjgxaEVBU3A2R3lG?=
+ =?utf-8?B?ajRDZE1YZkFScm5UaEtMSE9CZVp5b1Z6QzlpQ2FsbmFQanprS3ZNS0FYRGVs?=
+ =?utf-8?B?RmEvSTEvMmxXNktjZzFmQ1FGY3RkblZTNEMzVHNydkVYMjhUUlVVdDJabFYv?=
+ =?utf-8?B?WE9GRjdEc0V4SDJQSm41UXJjbHhpQTBjbEY4MXRDN3M0MHRVRzNmblBxMk5J?=
+ =?utf-8?B?WGNmaUVjbUpGQ0ZidDc5UmJDOGFxdzNXajIxZ1ZFb015K1Nkci8zS0tORUpG?=
+ =?utf-8?B?TmF0cFdOUFd3RDJkVDU5VEZUTHRGS0d4KzBKMmdIQ2xSZ25FMUk4ek8vUnRG?=
+ =?utf-8?B?Y3dQclgwNmZBbHN1YlVqblBsQnVKTlAwZTl6Ukk5NWZLVCtvWmsvTmxyQ1V1?=
+ =?utf-8?Q?QnZVx8itS+eQvtYlzvKxTa5quOqWZdeghmb6m?=
+X-OriginatorOrg: efficios.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: beeb4b00-6826-4714-d2a2-08df03708bf8
+X-MS-Exchange-CrossTenant-AuthSource: YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 12:50:03.1582
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dFRN/7RaAdHDzttrx2wtu0KgAgh8E1BRqrezGm0lz31ZS177H+cB/uGf8A5kvLQjMjWYGJR99GHlVJaigoBuoaPuJCO4sbWlZgtNOHlY9yE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: YQBPR0101MB6072
 
-On 8/26/26 00:00, Sairaj Kodilkar wrote:
-> Extend the existing user CMPXCHG helpers to support 16-byte operands on
-> x86-64, using LOCK_PREFIX "cmpxchg16b".  This mirrors the existing
-> __try_cmpxchg64_user_asm() / cmpxchg8b path provided for 32-bit kernels,
-> where KVM needs an atomic compare-exchange wider than the generic
-> cmpxchg helper can provide.
+On 2026-08-26 03:00, Sairaj Kodilkar wrote:
+> AMD and Intel both provides support for 128 bit cmpxchg operands using
+> cmpxchg8b/cmpxchg16b instructions (opcode 0FC7). However, kvm does not
+> support emulating cmpxchg16b (i.e when destination memory is 128 bit and
+> REX.W = 1) which causes emulation failure when QEMU guest performs a
+> cmpxchg16b on a memory region setup as a IO.
+> 
+> This failure is seen on the AMD IOMMU driver which writes 256-bit device
+> table entries with two 128-bit cmpxchg operations. For guests using
+> hardware-accelerated vIOMMU, QEMU traps device table accesses to set up
+> nested page tables (see [1]).  Without 128-bit cmpxchg emulation, KVM
+> cannot handle these traps and DTE access emulation fails.
+> 
+> Hence extend cmpxchg8b to perform cmpxchg16b when the destination memory
+> is 128 bit.
+> 
+> [1] https://github.com/AMDESE/qemu-iommu/blob/wip/for_iommufd_hw_queue-v8_amd_viommu_20260106/hw/i386/amd_viommu.c#L517
+> 
 
-Please take a good look at the Sashiko review:
+You may want to test for the X86_FEATURE_CX16 cpu feature and only
+enable this on 64-bit x86 CPUs implementing this instruction.
 
-https://sashiko.dev/#/patchset/20260826070004.8100-2-sarunkod%40amd.com
+Thanks,
 
-It looks like the "A" constraint isn't one that you can cleanly mirror
-from cmpxchg8b => cmpxchg16b.
+Mathieu
 
-Uros, any chance you can give these a good once-over? This seems to be
-just the kind of thing you've been fixing up lately. It would be nice to
-get them right the first time.
+-- 
+Mathieu Desnoyers
+EfficiOS Inc.
+https://www.efficios.com
