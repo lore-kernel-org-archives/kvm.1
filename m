@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CEC3932F7;
-	Wed, 26 Aug 2026 08:05:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE143B71DF;
+	Wed, 26 Aug 2026 08:12:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787731561; cv=none; b=tT4eGa5hFwlMnZOF+D/fS6OVMQiYCoFFW78vIFFd4YAx/7Lu1Bw8piapw25h9ysFwVD9yJBTbETvx8Xr0yJKI2RC0zkoqP1lCie+yQahOGWrsShVDjqOT8OZoEMge/q2trC3UJyK5sbHo0OFt0bKoz4pAHQrKbQeb6eE/AndFHs=
+	t=1787731931; cv=none; b=QAY7avRo1YBdO6xa9mahM5GsVC3TOsY9/yppCXIN+MVkk6uiNLmzFJ/EMh7lbL6VP+cJfLqWADaFyFgNFh3CdjoVQIzUZf2W9PGpwiLYzrsc1pUXrU33lDTWF43bu9mpO3q+B98O3r9yYV7e9FjiKOl47Zg3rOJMlMhEI8GNF9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787731561; c=relaxed/simple;
-	bh=bkjiUmi4q16nO656UkaZfuh/7jbNbfvJjs6cLNisWVs=;
+	s=arc-20240116; t=1787731931; c=relaxed/simple;
+	bh=MFgg6EWXejfiNnyLCgXDeD85zcgPIITSuYZIMF/cOGA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZvJmzpWLuA18/UqzBv7a+OSri8NK6pgl5v6JboU6rNvLQBqmp2XDK57LZcwolQtVAv77kR788YM85FwLEGYj3P5BUBSKbEPKup1grh8zmx5jpBDEYzPDgxfWDC9GmHAlYvuQzvI0o8fMs3+0cgT02T/lV4fk14mljKQpUYkCRwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TrktiOE9; arc=none smtp.client-ip=198.175.65.17
+	 In-Reply-To:Content-Type; b=FA149dHGLiBFy7ThICTkybSKwu7RUpbUS1MRSOB8iKT3yOWX9CqEG4v7GmtvpOfDlb8qN3i7ENUENAO3Q/7fXkOYfY7dT7aFFr5HTpSwtp99MTj07+ARhz9d6O5as/TZ+Yp19p8dR9T0xzg8Oyk2894v+/xMn/RK0oMOlhWxvuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ekWFKbxu; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TrktiOE9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ekWFKbxu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787731559; x=1819267559;
+  t=1787731928; x=1819267928;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=bkjiUmi4q16nO656UkaZfuh/7jbNbfvJjs6cLNisWVs=;
-  b=TrktiOE9lSqtUPveWJbjTMdVL7op0EzZsL405NYLQmQlQxm9bajkWhWG
-   IkUcE7LWwv+ZkfAVSzn9LtAoKxzDc7QadxCTmc+AQOXg/wUMS/qnJQL3t
-   NQPvjXyyN0JCdUIip+xmOzI0MD7PhEpPR0OOYsAqpNO3z+DEpC5E4/zut
-   xwMyg/tT8/mLlySNlGUw0yr8cEqeOdnlP/G/+i7m+U/caFhRpEx5XMWMl
-   V31GQ8i7yytrp8IstHCUVX3+imdnZP5IS7TP9JPSN7NhxpZ0tlwVil0un
-   +t7CO5gKEn8jD0Yv/iuJ39C3P0/G6osvb0uSg7h9o+Bhjue/N8lV8apsr
-   w==;
-X-CSE-ConnectionGUID: 2SlSi3iLQ9W1DPq2ogeKsA==
-X-CSE-MsgGUID: 8TzeKuhXS9S85wen8b6MzQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88235482"
+  bh=MFgg6EWXejfiNnyLCgXDeD85zcgPIITSuYZIMF/cOGA=;
+  b=ekWFKbxuDgp/oNlUPr2e+/XyxejYBeHHaQ0JT453nM6W8O9f4QgxEI0y
+   IE2zbz2FH5B4x/Bfa+ooZTYUOH+gIiZSJO/qt1Him+7zowHyzPCE+R7AG
+   a9oxlH9/BYdqbT+ibWrd7HF8k/GTBc/FjvjwASvNDSLsO0Me4bIudLCPT
+   MTp2zMMOe2pg/xp0MeE3arcB9LGI7BghIyc1x/N3rCAMxMV9BTujlVkXD
+   oNFOQ9W0x/flFzeM02nqNhvI54P7JH1veTVHXVBtCuQHrHGTFudN2cqNR
+   dJ7C0PtH8zAOcZqpdAOUpku+lOaScu8PqcITi34cMmCx24Ms24064uITx
+   A==;
+X-CSE-ConnectionGUID: SGboeRf+TgCQp4EK+rN77A==
+X-CSE-MsgGUID: XrHrunnrSES+741dbXprEQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="90719588"
 X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="88235482"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 01:05:58 -0700
-X-CSE-ConnectionGUID: QDdWVPiFQEyfhCtzESp+3g==
-X-CSE-MsgGUID: IK2Sz66uTFOu21+4qTcFzQ==
+   d="scan'208";a="90719588"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 01:12:06 -0700
+X-CSE-ConnectionGUID: iXehGez/Rxi7BvJEDAZDUw==
+X-CSE-MsgGUID: mXB2Nt+uSPOPIYczbe6bmA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="291037790"
-Received: from blu2-desk.sh.intel.com (HELO [10.239.156.26]) ([10.239.156.26])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 01:05:53 -0700
-Message-ID: <446684d8-44d0-47c5-9301-172c55efd950@linux.intel.com>
-Date: Wed, 26 Aug 2026 16:05:51 +0800
+   d="scan'208";a="269460243"
+Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.239]) ([10.124.241.239])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 01:12:03 -0700
+Message-ID: <09251cc4-c795-411c-a9d9-9133a0d73e03@linux.intel.com>
+Date: Wed, 26 Aug 2026 16:12:00 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,273 +52,160 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 08/18] iommu/vt-d: Clear unpreserved context entries
- during shutdown
-To: Samiullah Khawaja <skhawaja@google.com>,
- David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
-References: <20260808022723.3893618-1-skhawaja@google.com>
- <20260808022723.3893618-9-skhawaja@google.com>
+Subject: Re: [PATCH 07/23] perf/x86: Apply PMU partition mask on static
+ constraints
+To: Zide Chen <zide.chen@intel.com>, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>
+Cc: kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+ Jim Mattson <jmattson@google.com>, Stephane Eranian <eranian@google.com>,
+ linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Xudong Hao <xudong.hao@intel.com>
+References: <20260821222002.54907-1-zide.chen@intel.com>
+ <20260821222002.54907-8-zide.chen@intel.com>
 Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20260808022723.3893618-9-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <20260821222002.54907-8-zide.chen@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 8/8/26 10:27, Samiullah Khawaja wrote:
-> During normal shutdown the iommu translation is disabled. Since the root
-> table is preserved during live update, it needs to be cleaned up and the
-> context entries of the unpreserved devices and root entries for the
-> unpreserved context tables need to be cleared.
+It seems not a good practice for me to modify all the places calling these
+static constraints. We could have to add new get_event_constraints()
+helpers for future platforms, and we have to duplicate these
+part_constraint() code.
 
-The key assumption here seems to be that, during a live-update kexec,
-most devices do not go through the normal iommu release path. Otherwise,
-their context entries should already be torn down in the
-iommu_release_device path.
+Could we leverage the dynamic constraint mechanism?  We can set the
+event->hw.dyn_constraint to be host counters mask, then we don't need any
+specific change for these static constraints.
 
-Could you please confirm this assumption and add some short note in the
-comments or commit message?
+Thanks.
 
-> 
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+On 8/22/2026 6:19 AM, Zide Chen wrote:
+> Static, counter-specific constraints used for attr.precise_ip == 3, or
+> other special cases bypass intel_get_event_constraints(), which is
+> where partition_mask is applied via dyn_constraint().
+>
+> As a result, such a host !exclude_guest event can still be scheduled
+> onto a counter that partition_mask reserves for the guest, causing
+> host and guest to share the same hardware counter.
+>
+> Some of these static constraint paths, e.g. glp or cmt, are currently
+> only reachable on platforms that don't support PerfMon masking. Still,
+> apply part_constraint() to all of them uniformly, so future platforms
+> that combine PerfMon masking with these constraint paths are not
+> silently exposed to this bug.
+>
+> Signed-off-by: Zide Chen <zide.chen@intel.com>
 > ---
->   drivers/iommu/intel/iommu.c      |  15 +++-
->   drivers/iommu/intel/iommu.h      |   5 ++
->   drivers/iommu/intel/liveupdate.c | 140 +++++++++++++++++++++++++++++++
->   3 files changed, 158 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-> index aeae0563dfd0..eca3944d9cf5 100644
-> --- a/drivers/iommu/intel/iommu.c
-> +++ b/drivers/iommu/intel/iommu.c
-> @@ -1832,6 +1832,14 @@ static int iommu_suspend(void *data)
->   
->   	iommu_flush_all();
->   
-> +	/*
-> +	 * Note that IOMMU suspend doesn't affect live update. The state
-> +	 * preserved during live update is not released and remains valid during
-> +	 * suspend and reused during IOMMU resume.
-> +	 *
-> +	 * Also note deployment of suspend/resume and live updated use case
-> +	 * should be mostly mutually exclusive.
-> +	 */
->   	for_each_active_iommu(iommu, drhd) {
->   		iommu_disable_translation(iommu);
->   
-> @@ -2377,8 +2385,11 @@ void intel_iommu_shutdown(void)
->   		/* Disable PMRs explicitly here. */
->   		iommu_disable_protect_mem_regions(iommu);
->   
-> -		/* Make sure the IOMMUs are switched off */
-> -		iommu_disable_translation(iommu);
-> +		/* Make sure the IOMMUs are switched off if not preserved. */
-> +		if (iommu_preserved_state(&iommu->iommu))
-> +			clear_unpreserved_context_entries(iommu);
-> +		else
-> +			iommu_disable_translation(iommu);
->   	}
->   }
->   
-> diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
-> index 4906cce1e66e..6c971f04ead3 100644
-> --- a/drivers/iommu/intel/iommu.h
-> +++ b/drivers/iommu/intel/iommu.h
-> @@ -1306,6 +1306,7 @@ int intel_iommu_preserve(struct iommu_device *iommu,
->   			 struct iommu_hw_ser *iommu_ser);
->   void intel_iommu_unpreserve(struct iommu_device *iommu,
->   			    struct iommu_hw_ser *iommu_ser);
-> +void clear_unpreserved_context_entries(struct intel_iommu *iommu);
->   #else
->   static inline int intel_iommu_preserve_device(struct device *dev,
->   					      struct iommu_device_ser *device_ser)
-> @@ -1328,6 +1329,10 @@ static inline void intel_iommu_unpreserve(struct iommu_device *iommu,
->   					  struct iommu_hw_ser *iommu_ser)
->   {
->   }
-> +
-> +static inline void clear_unpreserved_context_entries(struct intel_iommu *iommu)
-> +{
-> +}
->   #endif
->   
->   #ifdef CONFIG_INTEL_IOMMU_SVM
-> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
-> index ffdcebf2b773..b5aaebeeb5c1 100644
-> --- a/drivers/iommu/intel/liveupdate.c
-> +++ b/drivers/iommu/intel/liveupdate.c
-> @@ -77,6 +77,146 @@ static int preserve_context_table(struct intel_iommu *iommu,
->   	return 0;
->   }
->   
-> +static void clear_unpreserved_context_root_entries(struct intel_iommu *iommu,
-> +						   struct iommu_hw_ser *ser)
-> +{
-> +	struct root_entry *root;
-> +	int i;
-> +
-> +	for (i = 0; i < ROOT_ENTRY_NR; i++) {
-> +		root = &iommu->root_entry[i];
-> +
-> +		if (!is_context_table_preserved(iommu, ser, i, 0) && (root->lo & 1)) {
-> +			root->lo = 0;
-> +			__iommu_flush_cache(iommu,
-> +					    &root->lo,
-> +					    sizeof(root->lo));
-> +		}
-> +
-> +		if (!sm_supported(iommu))
-> +			continue;
-> +
-> +		if (!is_context_table_preserved(iommu, ser, i, 0x80) && (root->hi & 1)) {
-> +			root->hi = 0;
-> +			__iommu_flush_cache(iommu,
-> +					    &root->hi,
-> +					    sizeof(root->hi));
-> +		}
-> +	}
-> +}
-> +
-> +static void clear_unpreserved_context(struct device_domain_info *info, u8 bus, u8 devfn)
-> +{
-> +	struct context_entry *context;
-> +
-> +	/*
-> +	 * This cleanup is done during shutdown, so it should be fine to only
-> +	 * clear the entries here and issue one global invalidation later to
-> +	 * invalidate all cleared entries.
-> +	 *
-> +	 * Note that the device IOTLB invalidation for unpreserved devices is
-> +	 * skipped this way, but that should not be needed as the devices are
-> +	 * quiesced at this point. This should improve the performance of the
-> +	 * cleanup process and avoids any invalidation timeouts because drivers
-> +	 * might have moved devices to D3 state.
-> +	 */
-> +	context = iommu_context_addr(info->iommu, bus, devfn, 0);
-> +	if (context) {
-> +		context_clear_entry(context);
-> +		__iommu_flush_cache(info->iommu, context, sizeof(*context));
-
-For tearing down a present context entry, please follow the VT-d
-recommended sequence:
-
-- clear only the Present bit,
-- flush the updated entry to memory if necessary,
-- issue the required cache invalidations,
-- then clear the remaining fields of the entry.
-
-> +	}
-> +}
-> +
-> +static int clear_unpreserved_alias_cb(struct pci_dev *pdev, u16 alias, void *data)
-> +{
-> +	struct device_domain_info *info = data;
-> +
-> +	clear_unpreserved_context(info, PCI_BUS_NUM(alias), alias & 0xff);
-> +	return 0;
-> +}
-> +
-> +static int clear_unpreserve_context_entry_fn(struct device *dev,
-> +					     struct iommu_device *iommu_dev,
-> +					     void *arg)
-> +{
-> +	struct device_domain_info *info;
-> +	struct context_entry *context;
-> +
-> +	info = dev_iommu_priv_get(dev);
-> +	if (!info)
-> +		return 0;
-> +
-> +	if (!dev_is_pci(dev) || !dev_iommu_preserved_state(dev))
-> +		goto out_unpreserved;
-> +
-> +	/*
-> +	 * PRE use cases are not supported with Live Update and a preservation
-> +	 * attempt on such domains returns an error. But Intel IOMMU driver
-> +	 * enables PRE by default on all devices that support it. For preserved
-> +	 * entries, the PRE needs to be disabled so preserved PCI devices do not
-> +	 * generate PRQs, during kexec, as translations are kept enabled during
-> +	 * live update. There is no need to disable these for DMA aliases.
-> +	 */
-> +	if (sm_supported(info->iommu)) {
-> +		context = iommu_context_addr(info->iommu, info->bus, info->devfn, 0);
-
-Nit: please add a brief comment explaining why locking is not needed at
-this call site.
-
-> +		if (context) {
-> +			context_clear_sm_pre(context);
-
-For cache invalidation considerations when changing the PRE bit in a
-present context entry, please follow the VT-d spec guidance (Table 28,
-“Guidance to Software for Invalidations”).
-
-> +			__iommu_flush_cache(info->iommu, context, sizeof(*context));
- > +		}> +	}
-> +
-> +	return 0;
-> +
-> +out_unpreserved:
-> +	if (dev_is_pci(dev))
-> +		pci_for_each_dma_alias(to_pci_dev(dev),
-> +					clear_unpreserved_alias_cb, info);
-> +	else
-> +		clear_unpreserved_context(info, info->bus, info->devfn);
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * clear_unpreserved_context_entries() - Clear context entries for unpreserved devices
-> + * @iommu: Target IOMMU
+>  arch/x86/events/intel/core.c | 39 +++++++++++++++++++++++-------------
+>  1 file changed, 25 insertions(+), 14 deletions(-)
+>
+> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+> index 7951accfcf2c..0f76e56fd2db 100644
+> --- a/arch/x86/events/intel/core.c
+> +++ b/arch/x86/events/intel/core.c
+> @@ -4459,6 +4459,9 @@ dyn_constraint(struct cpu_hw_events *cpuc, struct event_constraint *c, int idx)
+>   * Mask out guest-owned counters from a constraint when PMU partition has been
+>   * entered, so !exclude_guest host events are not scheduled onto them while
+>   * the CPU is in non-root mode.
 > + *
-> + * Clear the context entries of unpreserved devices during shutdown before kexec.
-> + */
-> +void clear_unpreserved_context_entries(struct intel_iommu *iommu)
-> +{
-> +	struct iommu_dev_iter iter = {
-> +		.fn = clear_unpreserve_context_entry_fn,
-> +		.iommu = &iommu->iommu,
-> +		.arg = NULL,
+> + * This is also used by PMU-specific get_event_constraints() wrappers
+> + * that hard-code a static, counter-specific constraint.
+>   */
+>  static struct event_constraint *
+>  part_constraint(struct cpu_hw_events *cpuc, int idx,
+> @@ -5568,7 +5571,7 @@ hsw_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
+>  	/* Handle special quirk on in_tx_checkpointed only in counter 2 */
+>  	if (event->hw.config & HSW_IN_TX_CHECKPOINTED) {
+>  		if (c->idxmsk64 & (1U << 2))
+> -			return &counter2_constraint;
+> +			return part_constraint(cpuc, idx, event, &counter2_constraint);
+>  		return &emptyconstraint;
+>  	}
+>  
+> @@ -5585,7 +5588,7 @@ icl_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
+>  	 */
+>  	if ((event->attr.precise_ip == 3) &&
+>  	    constraint_match(&fixed0_constraint, event->hw.config))
+> -		return &fixed0_constraint;
+> +		return part_constraint(cpuc, idx, event, &fixed0_constraint);
+>  
+>  	return hsw_get_event_constraints(cpuc, idx, event);
+>  }
+> @@ -5607,7 +5610,7 @@ glc_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
+>  	if ((event->attr.precise_ip == 3) &&
+>  	    !constraint_match(&fixed0_constraint, event->hw.config)) {
+>  		if (c->idxmsk64 & BIT_ULL(0))
+> -			return &counter0_constraint;
+> +			return part_constraint(cpuc, idx, event, &counter0_constraint);
+>  
+>  		return &emptyconstraint;
+>  	}
+> @@ -5623,7 +5626,7 @@ glp_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
+>  
+>  	/* :ppp means to do reduced skid PEBS which is PMC0 only. */
+>  	if (event->attr.precise_ip == 3)
+> -		return &counter0_constraint;
+> +		return part_constraint(cpuc, idx, event, &counter0_constraint);
+>  
+>  	c = intel_get_event_constraints(cpuc, idx, event);
+>  
+> @@ -5645,9 +5648,9 @@ tnt_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
+>  	if (event->attr.precise_ip == 3) {
+>  		/* Force instruction:ppp on PMC0 and Fixed counter 0 */
+>  		if (constraint_match(&fixed0_constraint, event->hw.config))
+> -			return &fixed0_counter0_constraint;
+> +			return part_constraint(cpuc, idx, event, &fixed0_counter0_constraint);
+>  
+> -		return &counter0_constraint;
+> +		return part_constraint(cpuc, idx, event, &counter0_constraint);
+>  	}
+>  
+>  	return c;
+> @@ -5705,22 +5708,30 @@ cmt_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
+>  	if (event->attr.precise_ip == 3) {
+>  		/* Force instruction:ppp on PMC0, 1 and Fixed counter 0 */
+>  		if (constraint_match(&fixed0_constraint, event->hw.config)) {
+> +			c = &fixed0_counter0_1_constraint;
 > +
-> +	};
+>  			/* The fixed counter 0 doesn't support LBR event logging. */
+>  			if (branch_sample_counters(event))
+> -				return &counter0_1_constraint;
+> -			else
+> -				return &fixed0_counter0_1_constraint;
+> +				c = &counter0_1_constraint;
 > +
-> +	/*
-> +	 * Clear context entries for unpreserved devices.
-> +	 *
-> +	 * Note that the error can be ignored as the iterator function does not
-> +	 * fail.
-> +	 */
-> +	iommu_for_each_dev(&iter);
-> +
-> +	/* Clear reference to unpreserved context tables */
-> +	clear_unpreserved_context_root_entries(iommu,
-> +					       iommu_preserved_state(&iommu->iommu));
-> +
-> +	/*
-> +	 * Some devices might not have teardown/detached properly depending on
-> +	 * whether a proper device remove is done before kexec is triggered.
-> +	 * Also unpreserved context tables and entries are removed during
-> +	 * shutdown. So issue global invalidations to remove references to
-> +	 * unpreserved tables and entries.
-> +	 */
-> +	iommu->flush.flush_context(iommu, 0, 0, 0, DMA_CCMD_GLOBAL_INVL);
-> +	if (sm_supported(iommu))
-> +		qi_flush_pasid_cache(iommu, 0, QI_PC_GLOBAL, 0);
-> +	iommu->flush.flush_iotlb(iommu, 0, 0, 0, DMA_TLB_GLOBAL_FLUSH);
-> +}
-> +
->   static void unpreserve_iommu_context_tables(struct intel_iommu *iommu,
->   					    struct iommu_hw_ser *ser)
->   {
-
-Thanks,
-baolu
+> +			return part_constraint(cpuc, idx, event, c);
+>  		}
+>  
+>  		switch (c->idxmsk64 & 0x3ull) {
+>  		case 0x1:
+> -			return &counter0_constraint;
+> +			c = &counter0_constraint;
+> +			break;
+>  		case 0x2:
+> -			return &counter1_constraint;
+> +			c = &counter1_constraint;
+> +			break;
+>  		case 0x3:
+> -			return &counter0_1_constraint;
+> +			c = &counter0_1_constraint;
+> +			break;
+> +		default:
+> +			c = &emptyconstraint;
+> +			break;
+>  		}
+> -		return &emptyconstraint;
+> +		return part_constraint(cpuc, idx, event, c);
+>  	}
+>  
+>  	return c;
+> @@ -5744,7 +5755,7 @@ rwc_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
+>  		 */
+>  		if (event->attr.precise_ip == 3)
+>  			return &emptyconstraint;
+> -		return &counters_1_7_constraint;
+> +		return part_constraint(cpuc, idx, event, &counters_1_7_constraint);
+>  	}
+>  
+>  	return c;
