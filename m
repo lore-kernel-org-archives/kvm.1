@@ -1,126 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7453D43E08D;
-	Wed, 26 Aug 2026 19:59:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC3C3630B2
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 20:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787774374; cv=none; b=Q3gVo/QVGreOvrJ1awnXt0Y/NlEyIaDYKdE7QxO/7wxCauj6qSEywllaeCAS2ge+/y+y+EjGuJAs5pZjfpBVOFHNXs8a67R4TX3EYOb00kT47bAXibBM8/tIaHliz6AuU2jt9fdhM4SMmusG2vUIATvlKzpJhEsYqHhBpVxDKLs=
+	t=1787775433; cv=none; b=ke2J/up1X6qIMb27Hmv3LE6xBOfGFF1AJIP+P0zD0Q+W8ViJJ08YRBKZ0SzeW4JFdubsxd1oq7P7bH7So4nIZMXsBzf/nhpwHU9Y5a7ZHkGUoBUhDV1gKT83+GHXnUQH5Ts3/kr51DZmiDB5Qqz7/A4cfTjsA+asZlUnsy8aqIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787774374; c=relaxed/simple;
-	bh=kqazfdGBSri8PqguxwldlZEhoaZc539YAwgcw0IQaHg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G11YAK1V6tEYnNtECjWM+ZShu/fmfifPp9jQK/oT3AN106JkscQrztEj+/x6OpMvg8j31aawEbMXLN5qfhXM9T/NsSjH2aPd3nhKjVL7oDRA+mjDk2XoRh+O2BtAuoL7FJmZGMpM6T5RzEZa3m+XhLNtQXtDtHVEwmzZUTult+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HpkDQYM3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787775433; c=relaxed/simple;
+	bh=3Pduo1gHVDIUUt5sDBfU654xzH3NpDT0jtFbBzAYHKE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GzEh9kqi7wvfxW9wUQnQANXFilqR62yVSrW3Xgf5kxbxnUnG7Co2cM50uLNMiO5EdGmUORqP7/Z45KVGD+HTC0IiS9YG3y3hChpuDsy18raBFEqXZdAY42Rd73igmv34fa0iNXwcUKFigo/5MZs3n34t34r31r+VhIppwGEunlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=VPWOFY/N; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HpkDQYM3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9BF1F000E9;
-	Wed, 26 Aug 2026 19:59:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787774371;
-	bh=eKPW/iuHg1j2h6dZ9e5C+Ipu3cGJwB9tdZgvrYICRsM=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=HpkDQYM3bLmHle/vutflxN8rq3rytEYtj22NqgqqtG5Bw9X1U05PRmODYavLMAHmV
-	 bg7HR8c2uL88D/2tG+arrf/CDP9QXzfP9z8agK1NSHmO1Hcm8e9LR4iSKg1DnhExIU
-	 rzZHaM8LjDc5/YchWQbldEYz/IWzfZAuUDasVpMPkL6pH4v7gsuaJLDD45JiOE9+N7
-	 NwqIsw41ntp5M5ePHPacE3q3w48FU+egzG2HoOHjcWnouy9v2JN1dsqaZKFuTmXSmW
-	 UfVFLuhUUACyiWv9Qax63v96g6mtcR3iJQ+k2Mh5ExGhlL2N1nIkRF2DHiaMKV2aCI
-	 PLf1bWiXpVOoQ==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 6C907CE086B; Wed, 26 Aug 2026 12:59:31 -0700 (PDT)
-Date: Wed, 26 Aug 2026 12:59:31 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Sean Christopherson <seanjc@google.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <e62a7362-7dd0-4615-8877-6ab675971ab2@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <9427a8e0-3ba6-4f31-a35d-54429bd7e071@paulmck-laptop>
- <3d0463b6099d4fcde9a025a2f9e231d75303b61c.camel@infradead.org>
- <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop>
- <ao3z7Rtw2FROkVpy@google.com>
- <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop>
- <20260826073233.T-KtFXmj@linutronix.de>
- <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org>
- <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop>
- <98e123c9-3dc4-45fb-815b-881b3346741c@paulmck-laptop>
- <ACC45EB6-F881-4EE9-A9F8-D53A2B921FEE@infradead.org>
+	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="VPWOFY/N"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2d5cad1a6baso14518535ad.3
+        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 13:17:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=trailofbits.com; s=google; t=1787775431; x=1788380231; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QhjGgYTatBrHOcQxWsDxDksd7v3LZqmlD+U/i4Av3LE=;
+        b=VPWOFY/Nj1NZ4RktRY0Z3H6xTeuxBcS3n54MAU71fZUSZmwH56ciowhwLmjn9I55W3
+         pKQIwGww7siRGWLsc/y68bd442NQC/KYfF6sPTWKffHodsWjz+RQvuPAj1Pchp8HbxgS
+         bDs7yzVJVO5Z/ncipvOwZB2EFZMTqqYi+jYeklcevgQzkt6QHCnNBUWxN/9XYrr0kyWj
+         cVaDGVU1X/cmC5QP+FmR5zVrHHlPb3IcvgwPmNv1gd2dXCxjf6P+Wb/4I+37IzYhBzQP
+         qFyVewDMDgq7h7pWn0TF/5H5OCXC0C/lMM57s1zsHSzOHZ09nBZ4lTNdXcgdV/egR94y
+         XNuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787775431; x=1788380231;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QhjGgYTatBrHOcQxWsDxDksd7v3LZqmlD+U/i4Av3LE=;
+        b=VYZtFAXzAgkAW8D+PywbrDIllwcZZ/EKSlMLBcwurvWbkeZWqH8bORTZ+JWGvH3GmJ
+         TB1ZavyZYKHe9QlbJqAAAZ95g3hZHp5b9dvr8vK49q+FWCxhRu13kB8lmDPh90cEEl/P
+         HnTL9xjzh6O/nvkiY+hrApezRPq4OxPueMz9XBHJsI46XBUSjPM/br/mYfVfp5UiLWv8
+         uuCsFNrbledBVy5O3g92xgruBbDO930K0iN1KWP+0iLwh3tmqoS5caHISNPw9uuwrX7E
+         qMHeQVCLW2PUIq1PWyEGgnH27TLykGJ7BecEq5cxuEnC///5360jdvgQO/R7W2NvOn6I
+         fNQQ==
+X-Gm-Message-State: AFuF++nJUHoWmWY1lusQ8CjtwwNs0wAawMq9QNXCbfA4dFXKAd1o/fqC
+	A2NmJqq31axuwqBYdSpLCMAJl0n1KHJ/si2xe3QJhQ/xanVgdNqSc3ZEacTwKHzSWmw=
+X-Gm-Gg: AR+sD116vcbTFzmGSpmMDBVHAnxlGq63Hj6af8mELeUbjEqC5gZkrFtuE9LN2a4xX0O
+	AoFIKJ55xgj8U+sicCI7o52Ag3h4v2ktJQgPTmF8PT5WNhOSguf0tWJpKanh3TJKAlEdUsrt1Iz
+	Y/lrQsIw0kYyk7xLopYgOWUq3IlZcZmr/V/A8AxX7tm6d/DHJ8x3ZADVUuP0xPAIr/V+KdTi7Z1
+	0bKbtkClH+xa51LFRhB0myhI17cHipNv5yYXnkL+JcfsWkzUR7FP8v5ks+07MVHEuhVV4dmv7oR
+	PnNoCoSJO4Q9wSLZRMQmtCtWJID31HAikIRavuUme1PVJtmvU4dt66zzYba2c3HRTGCL6NE3LjL
+	Yb/CBTOyivwmYyOvfPrWXXbrot3MfdYJK+DUAXP5Md3xbxv4Bz74pnCuFKv9a+hS5XAbRW2U3wq
+	2Lkj5w2bKG1YArHKHx3CUSVyqcfCrMT1QW8b41CAFdGsdINUPcRopzEFMKk0giHQw7vqjlXhaok
+	iftOqj44rZ/ag+/50fKP5KifuWfpoc4ekrV6/K5oHy9DwxBsXkXgMqINZU=
+X-Received: by 2002:a17:903:1104:b0:2d6:e401:9676 with SMTP id d9443c01a7336-2d707955aa3mr161833925ad.1.1787775431276;
+        Wed, 26 Aug 2026 13:17:11 -0700 (PDT)
+Received: from localhost.localdomain ([2603:8001:5f01:8bab:957:eb3d:7323:2ed])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3283d60b59dsm11179738eec.3.2026.08.26.13.17.10
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 26 Aug 2026 13:17:10 -0700 (PDT)
+From: Artem Dinaburg <artem@trailofbits.com>
+To: stable@vger.kernel.org
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	kimjw04271234@gmail.com,
+	Artem Dinaburg <artem@trailofbits.com>
+Subject: [PATCH 6.6.y+6.1.y 0/2] KVM: x86/mmu: Check write tracking in all address spaces
+Date: Wed, 26 Aug 2026 16:16:53 -0400
+Message-ID: <20260826201655.9198-1-artem@trailofbits.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ACC45EB6-F881-4EE9-A9F8-D53A2B921FEE@infradead.org>
 
-On Wed, Aug 26, 2026 at 07:01:24PM +0100, David Woodhouse wrote:
-> On 26 August 2026 17:28:27 BST, "Paul E. McKenney" <paulmck@kernel.org> wrote:
-> >On Wed, Aug 26, 2026 at 08:05:06AM -0700, Paul E. McKenney wrote:
-> >> On Wed, Aug 26, 2026 at 08:38:27AM +0100, David Woodhouse wrote:
-> >> > On Wed, 2026-08-26 at 09:32 +0200, Sebastian Andrzej Siewior wrote:
-> >> > > On 2026-08-25 13:51:14 [-0700], Paul E. McKenney wrote:
-> >> > > > Very good, preemption disabling it is!  It is quite possible that the
-> >> > > > PREEMPT_RT guys will need something else, but one thing at a time.
-> >> > > 
-> >> > > This reminds me of classic RCU ;) It might work in this use case but I
-> >> > > am afraid that other users might come along where it actually hurts.
-> >> > > With PREEMPT LAZY the preemption within the read-section should
-> >> > > hopefully be the exception.
-> >> > 
-> >> > Given the way that PREEMPT_RT treats other locks like spinlocks and
-> >> > rwlocks — turning them into sleeping locks — I suspect it makes most
-> >> > sense, and is consistent, to also turn rcu_read_lock_atomic() and
-> >> > synchronize_rcu_atomic() into plain rcu_read_lock() and
-> >> > try_synchronize_srcu()+synchronize_scru_expedited().
-> >> 
-> >> That makes a lot of sense to me.
-> >
-> >Another option is to instead fall back to non-atomic SRCU.
-> 
-> That's exactly what I thought I was suggesting; I think I left an 's' out though :)
+Please queue upstream commit 0f38453cdb2e17566ccb7c0f3dabd5bd21caca26
+("KVM: x86/mmu: Check write tracking in all address spaces") for the
+stable trees. It is in mainline as of v7.2-rc6.
 
-Heh!!!
+The fix is absent by code state from 7.1.10, 6.18.46, 6.12.105, 6.6.153
+and 6.1.184.
 
-About 20 years ago, I was shocked to learn of a valid use case involving
-sleeping RCU readers, which resulted in SRCU.  And now it is time
-to be shocked at non-sleeping sleeping RCU readers, and especially a
-non-sleeping grace-period wait.  ;-)
+7.1.y, 6.18.y, 6.12.y: please cherry-pick the upstream commit directly.
+No patch is included for these trees. Commit 0f38453cdb2e applies and
+compiles unmodified on all three, so there is nothing to adapt:
 
-Anyway, easy enough:
+  git cherry-pick -x 0f38453cdb2e17566ccb7c0f3dabd5bd21caca26
 
-#ifdef CONFIG_PREEMPT_RT
-DEFINE_SRCU(whatever);
-#define my_srcu_read_lock() srcu_read_lock(&whatever);
-#define my_srcu_read_unlock(idx) srcu_read_unlock(&whatever, (idx));
-#define my_synchronize_srcu() synchronize_srcu(&whatever);
-#else
-DEFINE_SRCU_ATOMIC(whatever);
-#define my_srcu_read_lock() srcu_read_lock_atomic(&whatever);
-#define my_srcu_read_unlock(idx) srcu_read_unlock_atomic(&whatever, (idx));
-#define my_synchronize_srcu() synchronize_srcu_atomic(&whatever);
-#endif
+6.6.y and 6.1.y need adapted backports; they are patches 1/2 and 2/2 of
+this series. On 6.6 the upstream commit applies but does not build,
+because KVM_MAX_NR_ADDRESS_SPACES and kvm_arch_nr_memslot_as_ids() do
+not exist there. On 6.1 the upstream commit conflicts: the function is
+still kvm_slot_page_track_is_active() and the tracking array is
+mode-indexed gfn_track[].
 
-Or is there a better way?
+5.15.y and 5.10.y are not covered by this submission. Those trees were
+not assessed.
 
-							Thanx, Paul
+Jinu Kim (2):
+  [6.6.y] KVM: x86/mmu: Check write tracking in all address spaces
+  [6.1.y] KVM: x86/mmu: Check write tracking in all address spaces
+
+Each patch touches only arch/x86/kvm/mmu/page_track.c:
+  1/2 (6.6.y): 26 insertions(+), 6 deletions(-)
+  2/2 (6.1.y): 22 insertions(+), 6 deletions(-)
+
+-- 
+2.43.0
