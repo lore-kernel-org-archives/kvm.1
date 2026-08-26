@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3075A312807
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 17:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E683D356779
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 17:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787763923; cv=none; b=W4t8ucx7GWhNq7hexO41DxJAR/eC3WSk6hlsB2r8Jkp5x6UZCm7ufXNkZVbTKo5Qh1bA5BdeTAuOSaJZEicM+COlih/mw62Rt34nDALp70TRfHK2n4pttpGRUf6DQXk8ya+fNH0OZtV8XLrHa+Oivj1j/qqczv5buYm/NxFdPEc=
+	t=1787763965; cv=none; b=QXB5HJATpUAM+r14CESjUhUVH080RdnJKQQ95tTz/Y0/f/u77B8y3WrLYUTJhQRdF5O5/VqMbJ4iOQNY9/fbnqur3zMgACSTDJNLn6mxYaRjX75qEy4MwcqDtmw+G8Yx+Lfz15Wy4AMN51jS1hUlSLyXxRU8gNeud9jAHQPvJsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787763923; c=relaxed/simple;
-	bh=0P/bHukgXc50ijfA/726V9i5lmC/J+7H7yujeQQUgyc=;
+	s=arc-20240116; t=1787763965; c=relaxed/simple;
+	bh=451IMm0BbLRMgjir/Jf5bALUT5bTDtK8PLmPB5Sv7X4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=T+Wv61eEpq1JGSCntiMT9EwmXJqD3a/Z7K4FBZryXnoMBglWWK3Jfq2zRdZnTB1V4lXuOBrNrxUlgJiQ88f+AeZVCTpKAsqyibQMh6I8olA666ixx18m1ytOvOd1CUZqsRHibIA5dRPn4OeZHtI39cKyqCN2ygwFuP+mQfuNua8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JongI0s+; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Dzl/6KFwSb066PLHlVxFBiC/XPPM2RopIKjxBBEmW1neNcmF7neMtvITj2gRbz4g2Hh7w1NKbQ5NxL4IyO+18b5/32SajEFF+iNVs2q3J4IpT+uJFc32LzFxeX5XpYTW640KlAM4r0rV4ipXyrA662o/VshaSTeCZ+amU//+XT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a14+AshQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JongI0s+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012231F000E9;
-	Wed, 26 Aug 2026 17:05:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a14+AshQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF801F000E9;
+	Wed, 26 Aug 2026 17:05:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787763906;
-	bh=xHcJfHfyWPtqr2lgJPCS4E0UlADTlFGCE5Xs1CCufJY=;
+	s=k20260515; t=1787763952;
+	bh=RKysK4sD0IA4VFHSu9Qspaplh308ntc1kCXTV+NUIGw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JongI0s+JtLD3AQ39fkOyD+cb//IZyho+NBaYn/uXLojvqkWaa25v1Vqf9A/6J0dT
-	 0Vecv1tpP7YUPJ5RyYUAjA/wpvIFXaczYqckbByqTW6qRRw9ZziivRxmKew3e2KZ16
-	 02RTXdtpl7vSnjqbtndwUZ4WGow4LM36eYTadera5wz2TPKdmWoRDdDcFoqWGvMwWQ
-	 iiprLAgbB418btXnOUwGgHrWyxw2+WqncTBAKzh0zVsu7thfYWNAcsZKZFkEV5XQJZ
-	 7rB+bGZWq+B3KnH+71JFN3t9dgHBbdMwbHpzY9YJjQVDNkkZAemzJAJ78mNv+LYtnT
-	 5Mzg2dALFNhBw==
+	b=a14+AshQ4mrDtorr5DaqflD0V8EaNPHcg1giq69VCqUVFBBguOqR7LdliW+JSUe4b
+	 wEi+PvdBEoGyphHvAFK+ke+F4Hj8q2mdDcMmn87O3L+58P+L07A3jLGwErV42siYrD
+	 uMPYrKSnMer2oc9vHQWixfjdpQwCo+7T+hay2MY4KfTtiGWJcB9hTDeQqxPJjoRtTc
+	 CPmgJFzA8hzZ45djgHX+An6sgdXqEmEwxm9HwVqqtrJslr5iGGvPcpMvyEdG+4dOXo
+	 Av/JHx42xhmoCbbBD+SswkFFcgjXUuY0Sr3tzV8k9ZwOgiNrIEfM+NRRisqOg+xRX3
+	 3C03SHqbEbeoQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] KVM: guest_memfd: Gracefully handle xarray errors
+Subject: Re: [PATCH 2/2] KVM: guest_memfd: Drop superfluous WRITE_ONCE()
  when binding a memslot
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sean Christopherson" <seanjc@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260826165154.766699-2-seanjc@google.com>
+In-Reply-To: <20260826165154.766699-3-seanjc@google.com>
 References: <20260826165154.766699-1-seanjc@google.com>
- <20260826165154.766699-2-seanjc@google.com>
+ <20260826165154.766699-3-seanjc@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 26 Aug 2026 17:05:05 +0000
-Message-Id: <20260826170506.012231F000E9@smtp.kernel.org>
+Date: Wed, 26 Aug 2026 17:05:51 +0000
+Message-Id: <20260826170551.BEF801F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,80 +47,73 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Partial failure of xa_store_range() leaves dangling pointers to a =
-freed memslot in the guest_memfd bindings xarray, leading to a Use-After-Fr=
-ee when the file is released.
+
+Pre-existing issues:
+- [High] Concurrent guest_memfd hole punch triggers NULL-pointer dereferenc=
+e via uninitialized memslot.
 --
 
-commit 31a2b2a91bb8b7043e1a087271db5def7eb591b8
+commit 2a171d16c640a591ee0f3fb012de05495cd1214e
 Author: Sean Christopherson <seanjc@google.com>
 
-KVM: guest_memfd: Gracefully handle xarray errors when binding a memslot
+KVM: guest_memfd: Drop superfluous WRITE_ONCE() when binding a memslot
 
-This commit updates kvm_gmem_bind() to handle errors returned by
-xa_store_range(). If inserting a memslot into a guest_memfd bindings xarray
-fails, the error is propagated to the caller to abort memslot creation.
-
-Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/all/20260823135031.4F6DC1F000E9%40smtp.kern=
-el.org
+Drop the superfluous WRITE_ONCE() when setting a memslot's guest_memfd file
+during initial binding, as the memslot must be inactive and unreachable.
 
 > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 1ef9e29164237..1d2de9a1bc3f0 100644
 > --- a/virt/kvm/guest_memfd.c
 > +++ b/virt/kvm/guest_memfd.c
-
-[ ... ]
-
-> @@ -654,7 +658,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_=
+> @@ -653,7 +653,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_=
 slot *slot,
->  	if (kvm_gmem_supports_mmap(inode))
->  		slot->flags |=3D KVM_MEMSLOT_GMEM_ONLY;
-> =20
-> -	xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
-> +	xar =3D xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
->  	filemap_invalidate_unlock(inode->i_mapping);
-> =20
->  	/*
-> @@ -662,7 +666,12 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory=
-_slot *slot,
->  	 * not the other way 'round.  Active bindings are invalidated if the
->  	 * file is closed before memslots are destroyed.
+>  	 * kvm_gmem_bind() must occur on a new memslot.  Because the memslot
+>  	 * is not visible yet, kvm_gmem_get_pfn() is guaranteed to see the file.
 >  	 */
-> -	r =3D 0;
-> +	r =3D xa_is_err(xar) ? xa_err(xar) : 0;
-> +	if (r) {
-> +		slot->gmem.file =3D NULL;
-> +		slot->gmem.pgoff =3D 0;
-> +		slot->flags &=3D ~KVM_MEMSLOT_GMEM_ONLY;
-> +	}
 
 [Severity: High]
-If xa_store_range() encounters an error halfway through the range (for
-example, -ENOMEM), can it partially succeed and leave some entries pointing
-to the memslot in the f->bindings xarray?
+This is a pre-existing issue, but is the new memslot actually completely
+invisible here?
 
-If this happens, the error is propagated back to kvm_set_memory_region(),
-which then aborts the operation and frees the memslot structure. Does this
-leave dangling pointers in the f->bindings xarray?
+In virt/kvm/kvm_main.c:kvm_set_memory_region(), the new memslot is bound and
+published to guest_memfd before its architecture metadata is prepared:
 
-Later, when the guest_memfd file is closed, kvm_gmem_release() iterates
-over the xarray:
+	r =3D kvm_gmem_bind(kvm, new, mem->guest_memfd, mem->guest_memfd_offset);
 
-virt/kvm/guest_memfd.c:kvm_gmem_release() {
+When virt/kvm/guest_memfd.c:kvm_gmem_bind() executes, it inserts the partia=
+lly
+initialized memslot into the bindings xarray and drops the lock:
+
+	xar =3D xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
+
+If userspace concurrently issues a FALLOC_FL_PUNCH_HOLE on the guest_memfd =
+with
+an offset greater than the memslot's offset, it can acquire the lock, itera=
+te
+over f->bindings, and find this uninitialized memslot. This triggers an MMU
+invalidation over the uninitialized memslot:
+
+virt/kvm/guest_memfd.c:__kvm_gmem_invalidate_start() {
     ...
-    xa_for_each(&f->bindings, index, slot)
-        WRITE_ONCE(slot->gmem.file, NULL);
+	flush |=3D kvm_mmu_unmap_gfn_range(kvm, &gfn_range);
     ...
 }
 
-Could this trigger a use-after-free when kvm_gmem_release() writes NULL to
-the already freed memslot? Should any partially inserted xarray elements be
-erased from f->bindings before propagating the error?
+On x86 with rmaps, gfn_to_rmap() will perform pointer arithmetic on the
+unallocated slot->arch.rmap (which is NULL), yielding an invalid non-NULL
+pointer. This bypasses the NULL check in slot_rmap_walk_okay() and causes
+a kernel panic in kvm_zap_rmap().
 
->  err:
->  	fput(file);
->  	return r;
+Does this race condition allow a concurrent hole punch to dereference an in=
+valid
+pointer?
+
+> -	WRITE_ONCE(slot->gmem.file, file);
+> +	slot->gmem.file =3D file;
+>  	slot->gmem.pgoff =3D start;
+>  	if (kvm_gmem_supports_mmap(inode))
+>  		slot->flags |=3D KVM_MEMSLOT_GMEM_ONLY;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260826165154.7666=
-99-1-seanjc@google.com?part=3D1
+99-1-seanjc@google.com?part=3D2
