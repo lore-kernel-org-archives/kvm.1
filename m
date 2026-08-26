@@ -1,141 +1,199 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0772C40A937;
-	Wed, 26 Aug 2026 21:04:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775CE175A8A;
+	Wed, 26 Aug 2026 21:12:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787778274; cv=none; b=LYyM6AyXwlsdMY9KZhfOE8KjKF9R46bmMnhU1ksmvSf+RouQ1wGWp6Cib20yDvJMwMh6tSO3WtHvQGVg8qz+MMSB79JCl0AqfXpRI/l+wL2nMWzW9Jumx3ijyLfwG+RkJZR1ddMkhNA8bpaDHHW8E1mBcZISKEjkK7njjWol1Ks=
+	t=1787778723; cv=none; b=Utm6RTtAaBY4JT+wgGgPQUSVShUHD/w8REXcOvhGMCn63fJlX8bnCq6J40PwenqRl10nJG4sgc0QLaLqVEe6OHuYOZrSFdFRXY0Q4g7aWwN9MQQtCoNlbcr/+g7dhqK0gnu46DCpfHx4EyLS9JPPd0jZtiqlkz++ltuUnjwD8oQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787778274; c=relaxed/simple;
-	bh=XM6E9RlD5qF28woF5Bgq2f15LWI0TRuR39pcwDsdGJs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RIuFIZ4Jd5xER4qVr3PcAAV/ZdE2LiY43g08YAKv7PJ8eidYKbr3KySjqJ9C3rsb1ZIGGFJKfqzRyDJ+9GMfmjWfMbVMeeURpyZHF7n6+D+e1hjOt0TuUFkX/8xoiqxkN5yVzY89oxHbSS4ImaXoMOSV+I/Q+mHKY7rXy/mR5Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lhQSVXjd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787778723; c=relaxed/simple;
+	bh=uDpCg2NUdgNPB8vVggZUtXIvlUFPLoHhHi6zPWg7eks=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZCmwwACdEhYn01pM09cQE3JamCzi2/xOeijVz3lVqR55hg75peoOdPrAePWrNEoiKwTqO+V6jNZ2rYRW7N8oGEJbPCUzTiFzE8n4CMMrk9WKnvVWxDQ3UGCrTMAr1PpcMN96eY9ZXUJ9io0uPWPH+/RJ4+M1d6sczCqUWrXFVqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=Wle+fMPp; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jtpsDMzZ; arc=none smtp.client-ip=103.168.172.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lhQSVXjd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9975E1F000E9;
-	Wed, 26 Aug 2026 21:04:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787778272;
-	bh=wd9D8o6DYVa1N38/T0CvGYo4puGoZ+VeLzsnpIr+Xj4=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=lhQSVXjdgZwex5bvjjr7tkNgtCyI0uh3QOi97Mn+cGoo7bug7cBFqPh4Bcvz/TW1M
-	 haTgWlQYOjVnbxfJx3B/DsL6ZSG/kf9n1MrX6q26iIpenqY10g/rg2fzjlgJt14sWG
-	 3dSP5E2srWDX+MEwBm0xlxAYMEf7oC9hyARAxYmEsiZnl61DzYrTeBGqgOlt994U6V
-	 i0JOpFzibPy2UxMEjVA1dC53FAjJ/qrCFVWNaBQqfi9CKA3NMZttw9YiEWBG6oDoC9
-	 G/UCMlmFl1i8BdHtuy/WX37Q/rns6nlG5d9xsX6gn+ww/fTV8ZHmgPc5lTz1AEvnWz
-	 JWfsvLvEd2KUg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 64492CE086B; Wed, 26 Aug 2026 14:04:32 -0700 (PDT)
-Date: Wed, 26 Aug 2026 14:04:32 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Sean Christopherson <seanjc@google.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <4415dbf2-10b0-4cb1-b045-13dbcd69c5d5@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop>
- <ao3z7Rtw2FROkVpy@google.com>
- <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop>
- <20260826073233.T-KtFXmj@linutronix.de>
- <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org>
- <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop>
- <98e123c9-3dc4-45fb-815b-881b3346741c@paulmck-laptop>
- <ACC45EB6-F881-4EE9-A9F8-D53A2B921FEE@infradead.org>
- <e62a7362-7dd0-4615-8877-6ab675971ab2@paulmck-laptop>
- <06F9A0F0-2177-4173-A201-56325A73F89B@infradead.org>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="Wle+fMPp";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jtpsDMzZ"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 6F33814000D7;
+	Wed, 26 Aug 2026 17:11:59 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Wed, 26 Aug 2026 17:11:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1787778719;
+	 x=1787865119; bh=XBtTfHY+WDdkLyh0K0L+xi9uGC1gMRbwPFuNWOJMBXw=; b=
+	Wle+fMPpazMDVaQ9O6e0HHe9V925gAr59VZq3viP6AxzJ8JGNtiZeEkSJ7WYNWvM
+	H9mpchL11d7/J8jWZ9qK92UR78WVrEQ0TT9xKBXagxJQAAlQCooWx+dlEgnuWbIw
+	xiTEcSTpgxR2gj9v6b7z5QQaIdRnVPN/cuUqfraw0gj4o9nxcZz1JJhj7Lky0gW5
+	fgs7nfGzK+Nwyit82tjBb8I1MlOXTu48k3J4dqZbluPTlvbwav9JcCgW0xYAu4tv
+	d70mrJeTiqtkrrc0U38zv3ZpARP+foK//e2scmbwmkoXo1goPjfWHZgm05W8JWMS
+	jMpmgMp5yBnSKESYl/r3SQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787778719; x=
+	1787865119; bh=XBtTfHY+WDdkLyh0K0L+xi9uGC1gMRbwPFuNWOJMBXw=; b=j
+	tpsDMzZ1MNXp4PaxoO0GHqoB703Tqzs78CU1MQROde3JpIwwVHwJ0dgKQ3tSwXZm
+	D3JKr+GZIwdOzVOJ7GA0ihCJcgPnrR8zMNsdtJIGLOYfaW7Fb1wdGMgGW3fa3kSA
+	/JrXxiim5OxWtGr/KfpgQvrhsquTzbuATqk2hRRV2QZJvV+E3JVDmDPLFim7HJi5
+	yubb/q9ZYlJL9ImdWT6/l5oEEgUDJ63QjB09Dyznw1F2iDUNa2/bYEEcVGiIhrWE
+	zTlWng8wm0p4YYouSrPFCq+S5gBm2b6202dwKgL8SLMqysDr8jkpX3ksqUdlQtDy
+	QzI6NBfRsKFTph3xDuhKQ==
+X-ME-Sender: <xms:nlaPapR909DTYcpbfmu_jfu88i5IvPinrTNzswCnOz3MfMT_LjdaEg>
+    <xme:nlaPagYr71aYDkoF96nVdYCiwVmpFhbUg4QMcz6i52mV6quSodqByMDkh3kTqYjFv
+    -IWItd9AoLR_0R0R0DRisv_JklFDDEIIYp24xD8-uq8kdUc0FK8i2A>
+X-ME-Received: <xmr:nlaPamNHPZGQ0v-gixsoGMbKPk6hI5sV9V4abqGugTOsOzXFgPRHb4EIYCwcTA>
+X-ME-Proxy-Cause: dmFkZTEXGJSF0uJGejRe3ioHj/n4Wpef56fXiylaceh+6G7pUZPBVN+LeXmG2tRpI5AMO6
+    0TXJ/tcBYEQg7FjgK1JdTPhiduFRunWkZ9aTN0LMeVrJcLkLARNGqlOTbstprIfK3BOcBH
+    dKwhXjWL26ish5Qap4mvjQO7JVwB7dpLo0iU0B+/GT+LOyGimcRDg4jH/53EZFGOPZkz7t
+    i0EUtLTMy6Sr09by1VooXpOjqqvYf0ahP5HdwEcn8uuvHKJCUa2Lug03KOrNfkEvaBsz/z
+    Gghz1To5woz7Keoiy4nJK0fPY44FpJvSBI/9zfJ2mTmEzBgF2XWZoFJOkAKv0mGZYMRYtf
+    Qru0r/bPxGzepRCJGo4CUvXPxpt9Sdf3YWRO3V9agIYbH/Kj1s3/tmyo7l5wrFUPG8rTuw
+    2mP96umyaMt5h6L8UcDTDDMWp7NZo6li7Hx8zaIWyulK3vbmOFQKaquQgQokqPN4mXcs7h
+    PF2j+/aKNQK1anw0ZvMDb2rkfbomw16zYBT8wvVo4XAytixQLtUeYmoaCmPJFUK8ArLkkE
+    Gs/CtxdSlXDmFMQAyk0BzINzaRmZ59F+dTB2+f94EY7TISdLTLDovmoWHeK8EmUA5wL8GI
+    1/5bVYxtbPxeZJWg2lAzPnga+Wwx7ZE58CZGeRvY7tuagJ96N4EqKhvMHkdw
+X-ME-Proxy: <xmx:nlaPapMjpmCjPUqgsRSylJRG-tB6AUCgD1mGJqeuqllWT5cPrsshrg>
+    <xmx:nlaPaqPvHrrH6Rb0ZxPUTwn2HLeg8appwl54_k9EWevCS1B4nxhm8A>
+    <xmx:nlaPalb7SzKDLrm9JmH11Qie1FbqVg4m6Qu63aer23eG1IUPG-UHqQ>
+    <xmx:nlaPaoiSTwBHAZXPyoUE9gkwjC4Nq3vADfmlN3ue4M48wdY0CvIEag>
+    <xmx:n1aParMtagkqRIMVTzEg7gGMNZ49iaLrQ1TmJTDCUgSI-9KIR0svszrg>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 26 Aug 2026 17:11:56 -0400 (EDT)
+Date: Wed, 26 Aug 2026 15:11:54 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: <mhonap@nvidia.com>
+Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
+ <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
+ <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+ <dave@stgolabs.net>, <alison.schofield@intel.com>,
+ <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
+ <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
+ <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+ <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
+ alex@shazbot.org
+Subject: Re: [PATCH v4 06/27] vfio/pci: Add CXL ops registration interface
+Message-ID: <20260826151154.19486297@shazbot.org>
+In-Reply-To: <20260813093631.2288172-7-mhonap@nvidia.com>
+References: <20260813093631.2288172-1-mhonap@nvidia.com>
+	<20260813093631.2288172-7-mhonap@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <06F9A0F0-2177-4173-A201-56325A73F89B@infradead.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 26, 2026 at 09:30:43PM +0100, David Woodhouse wrote:
-> On 26 August 2026 20:59:31 BST, "Paul E. McKenney" <paulmck@kernel.org> wrote:
-> >On Wed, Aug 26, 2026 at 07:01:24PM +0100, David Woodhouse wrote:
-> >> On 26 August 2026 17:28:27 BST, "Paul E. McKenney" <paulmck@kernel.org> wrote:
-> >> >On Wed, Aug 26, 2026 at 08:05:06AM -0700, Paul E. McKenney wrote:
-> >> >> On Wed, Aug 26, 2026 at 08:38:27AM +0100, David Woodhouse wrote:
-> >> >> > On Wed, 2026-08-26 at 09:32 +0200, Sebastian Andrzej Siewior wrote:
-> >> >> > > On 2026-08-25 13:51:14 [-0700], Paul E. McKenney wrote:
-> >> >> > > > Very good, preemption disabling it is!  It is quite possible that the
-> >> >> > > > PREEMPT_RT guys will need something else, but one thing at a time.
-> >> >> > > 
-> >> >> > > This reminds me of classic RCU ;) It might work in this use case but I
-> >> >> > > am afraid that other users might come along where it actually hurts.
-> >> >> > > With PREEMPT LAZY the preemption within the read-section should
-> >> >> > > hopefully be the exception.
-> >> >> > 
-> >> >> > Given the way that PREEMPT_RT treats other locks like spinlocks and
-> >> >> > rwlocks — turning them into sleeping locks — I suspect it makes most
-> >> >> > sense, and is consistent, to also turn rcu_read_lock_atomic() and
-> >> >> > synchronize_rcu_atomic() into plain rcu_read_lock() and
-> >> >> > try_synchronize_srcu()+synchronize_scru_expedited().
-> >> >> 
-> >> >> That makes a lot of sense to me.
-> >> >
-> >> >Another option is to instead fall back to non-atomic SRCU.
-> >> 
-> >> That's exactly what I thought I was suggesting; I think I left an 's' out though :)
-> >
-> >Heh!!!
-> >
-> >About 20 years ago, I was shocked to learn of a valid use case involving
-> >sleeping RCU readers, which resulted in SRCU.  And now it is time
-> >to be shocked at non-sleeping sleeping RCU readers, and especially a
-> >non-sleeping grace-period wait.  ;-)
-> >
-> >Anyway, easy enough:
-> >
-> >#ifdef CONFIG_PREEMPT_RT
-> >DEFINE_SRCU(whatever);
-> >#define my_srcu_read_lock() srcu_read_lock(&whatever);
-> >#define my_srcu_read_unlock(idx) srcu_read_unlock(&whatever, (idx));
-> >#define my_synchronize_srcu() synchronize_srcu(&whatever);
-> >#else
-> >DEFINE_SRCU_ATOMIC(whatever);
-> >#define my_srcu_read_lock() srcu_read_lock_atomic(&whatever);
-> >#define my_srcu_read_unlock(idx) srcu_read_unlock_atomic(&whatever, (idx));
-> >#define my_synchronize_srcu() synchronize_srcu_atomic(&whatever);
-> >#endif
+On Thu, 13 Aug 2026 15:06:10 +0530
+<mhonap@nvidia.com> wrote:
+
+> From: Manish Honap <mhonap@nvidia.com>
 > 
-> We could do that for the KVM GPC locking, but more consistent would be to change *all* users of the 'atomic' lock under PREEMPT_RT to silently get the sleeping version instead, like PREEMPT_RT does with spinlocks and rwlocks.
+> vfio-pci-core must stay free of any CXL header dependency, so CXL
+> Type-2 handling lives in a separate vfio-cxl module that plugs in a set
+> of callbacks. Add the registration interface: vfio-cxl registers a
+> single struct vfio_cxl_ops at module_init, and vfio-pci-core stores it
+> under a mutex.
 > 
-> So it's srcu_read_lock_atomic() itself (et al) which would get that if/else treatment.
+> The owner field lets a later patch pin vfio-cxl for the lifetime of each
+> bound CXL device. No caller yet; the detection path is added next.
+> 
+> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> ---
+>  drivers/vfio/pci/vfio_pci_core.c | 27 +++++++++++++++++++++++++++
+>  include/linux/vfio_pci_core.h    | 10 ++++++++++
+>  2 files changed, 37 insertions(+)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 3f11a9624b9c..88e68d43af9a 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -2670,6 +2670,33 @@ static void vfio_pci_dev_set_try_reset(struct vfio_device_set *dev_set)
+>  	}
+>  }
+>  
+> +static const struct vfio_cxl_ops *vfio_pci_cxl_ops;
+> +static DEFINE_MUTEX(vfio_pci_cxl_ops_lock);
+> +
+> +int vfio_pci_core_register_cxl_ops(const struct vfio_cxl_ops *ops)
+> +{
+> +	int ret = 0;
+> +
+> +	mutex_lock(&vfio_pci_cxl_ops_lock);
+> +	if (vfio_pci_cxl_ops)
+> +		ret = -EBUSY;
+> +	else
+> +		vfio_pci_cxl_ops = ops;
+> +	mutex_unlock(&vfio_pci_cxl_ops_lock);
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(vfio_pci_core_register_cxl_ops);
+> +
+> +void vfio_pci_core_unregister_cxl_ops(const struct vfio_cxl_ops *ops)
+> +{
+> +	mutex_lock(&vfio_pci_cxl_ops_lock);
+> +	if (vfio_pci_cxl_ops == ops)
+> +		vfio_pci_cxl_ops = NULL;
+> +	mutex_unlock(&vfio_pci_cxl_ops_lock);
+> +}
+> +EXPORT_SYMBOL_GPL(vfio_pci_core_unregister_cxl_ops);
+> +
 
-OK, the traditional approach is that raw_synchronize_srcu_atomic() and
-friends with the raw_ prefix are always atomic, and without the raw_
-prefix it is atomic for !PREEMPT_RT and non-atomic otherwise.  You would
-use the non-_raw primitives.
+Use guards to simplify these, especially the registration path where we
+can then just return -EBUSY.
 
-Easy enough to do.  But does it do the job, both from a PREEMPT_RT
-perspective and a notifier perspective?
+I see the get function stores a per-vdev cxl_ops pointer with module
+reference held for the life of the device, so the serialization on the
+mutex is only per-device at probe time, but it might still be
+worthwhile to preempt that with a rwsem here where both these paths are
+writers and the get is a reader.
 
-And notifiers (though a different type of them) were the first use case
-for SRCU.  ;-)
+>  static void vfio_pci_core_cleanup(void)
+>  {
+>  	vfio_pci_uninit_perm_bits();
+> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> index 9a1674c152aa..14753972e714 100644
+> --- a/include/linux/vfio_pci_core.h
+> +++ b/include/linux/vfio_pci_core.h
+> @@ -66,6 +66,16 @@ struct vfio_pci_device_ops {
+>  			       size_t nr_ranges);
+>  };
+>  
+> +struct vfio_cxl_ops {
+> +	int	(*init_device)(struct vfio_pci_core_device *vdev);
+> +	void	(*release_device)(struct vfio_pci_core_device *vdev);
+> +	/* Pinned per bound CXL device so vfio-cxl cannot unload under usage */
+> +	struct module *owner;
+> +};
 
-							Thanx, Paul
+To mirror vfio_device_ops, should these drop _device and just become
+.init and .release?  I think that better reflects their actual usage
+while the eventual .open_device and .close_device already reflect the
+mapping into vfio_device_ops sequencing.  Thanks,
+
+Alex
+
+> +
+> +int vfio_pci_core_register_cxl_ops(const struct vfio_cxl_ops *ops);
+> +void vfio_pci_core_unregister_cxl_ops(const struct vfio_cxl_ops *ops);
+> +
+>  #if IS_ENABLED(CONFIG_VFIO_PCI_DMABUF)
+>  int vfio_pci_core_fill_phys_vec(struct phys_vec *phys_vec,
+>  				struct vfio_region_dma_range *dma_ranges,
+
