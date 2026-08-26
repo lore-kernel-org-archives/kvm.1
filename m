@@ -1,666 +1,209 @@
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93883603EF;
-	Wed, 26 Aug 2026 07:29:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354DB3B0ADC
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 07:32:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787729350; cv=none; b=LiXS9BB+7TDJxp5jxy7D4kuYgvQTeEV5cKluvQrRQJbh5qmUs2ehEStDHhAYxPY4keCMHf/6seYTvBS55+XWaFrWPz7eenfJBI1wcMKxNFcLRtnpMyIOmr+YH68e/vSlPrr+IZmGQZ/+QGUegkcG23YLvPOJVqyMYKpGypqo1ZM=
+	t=1787729523; cv=none; b=PzwsSr6tX5jLaED3nro+KJMhpeLL5qfybY5QJKFPuylaDh8vGuE+HBqozET4RGMYyx3gU+Q038Kp2bsAHbmPO7lIeqEKkaj14BcFG5Eqrv5uzyAD+9Qjop9euISte+MAXBjhVByEg1be5a2SBFpRSEEG0fybZw+G3vI3oc9zeYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787729350; c=relaxed/simple;
-	bh=BTS7cCx4O4uC0vcXYnOZ04ZyijMCsrCoiK4dOxVeFoA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WG55LdGfn4zSWYglMy00u1DClt6cdjl4UDIbHoRo5fpYbv/DONx7kQjEmjMq85vzu4KqTUXoan0ACYU657K3Ps6b/BtCXN2gzsAxqnWAQ37nrjTJd5rLdJ2eFWDaoId10RU+KH/W4Im5ESbon5Tw54kFQ8Q30NyzIDfbJ5hIh50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=qOcMuhG+; arc=none smtp.client-ip=115.124.30.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1787729523; c=relaxed/simple;
+	bh=y4e9un53IvbiPbaRsKYh/kxSBRxtzdsZG7PDcgijAEE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=ilYvVXX/a/3bwqIXqXz5VXULigzkFhfip264Ko7YGf0fnUgkG5hpBDWkjEbmXyx+e6lcxr2dF/LQECOOmZCB9FX7O1+hAgxn4ftzOgB61BYxTE2Om4LKMvKPw4j11FNBj2XwYfvbH6erhHsnHhAXNGCJeyuRhTCoYcYQww5WaBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DRT2z8ND; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="qOcMuhG+"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1787729342; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=qJJFpSNIIr6zjViebMv+RLyJbu4NfLTUdMxdk3Rub7Q=;
-	b=qOcMuhG+r+9e3dXKYR1/2G55RAiWctIZpwPVeqEbkOmk7DyLIzFLKNPdeI5aTvw9U2IoC0d1Q37kpdt/u0N1Hk6py6HpZ5WY9t0PZQQ8SdNrKOlLpUKVg65tu3lYBxuVS7kjjuUI+wPqD/OXwS5vqFfNGuPduyWX4z93Qg6BpIk=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=33;SR=0;TI=SMTPD_---0X9gBsuz_1787729338;
-Received: from 30.246.160.219(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0X9gBsuz_1787729338 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 26 Aug 2026 15:29:00 +0800
-Message-ID: <8b6a3086-c491-4eff-938f-aecaac53b813@linux.alibaba.com>
-Date: Wed, 26 Aug 2026 15:28:58 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DRT2z8ND"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B37641F000E9;
+	Wed, 26 Aug 2026 07:31:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787729519;
+	bh=nYwyHTdSDgaYCi+yX4YyPwiQKCgyrIt6zMQ5p1MEKHY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=DRT2z8NDngZMh+2zfcwbYPXX6ByE3y9+ZrZnHmuWRQteFUJozroW85Nb2meII6O6o
+	 y1AxceQ/EpOtI0ZwToxkZ1TLYmi2aRqfb/RKbjPnWPV0LAdlShGlPmNBMHi69KygyZ
+	 Gmw2RBld85L5iu5b5SZii0QMolSVxQsGx420YFn+JhOQnujhftqDU0ovhgNr/8Bg21
+	 q43VLZEvpCtaBHRdX836TlwBr20x5465SI6IaPJ8O7nuzHz0m7j94ksBvxcYEITWsb
+	 vxJh1ZJ+XDIkhYlfOIxvgVOFnZ01t2UWVRT8gmfohq3by/N8Lt8XSjnxlHeSw3j7aq
+	 woBBusjp+Y3Vg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 2/2] KVM: x86: Add support for cmpxchg16b emulation
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sairaj Kodilkar" <sarunkod@amd.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260826070004.8100-3-sarunkod@amd.com>
+References: <20260826070004.8100-1-sarunkod@amd.com>
+ <20260826070004.8100-3-sarunkod@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 26 Aug 2026 07:31:59 +0000
+Message-Id: <20260826073159.B37641F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 27/27] selftests/vfio: Add CXL Type-2 passthrough
- corner-case tests
-To: mhonap@nvidia.com, alex@shazbot.org, jgg@ziepe.ca, ankita@nvidia.com,
- jic23@kernel.org, dave.jiang@intel.com, alejandro.lucero-palau@amd.com,
- smadhavan@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org,
- dave@stgolabs.net, alison.schofield@intel.com, vishal.l.verma@intel.com,
- iweiny@kernel.org, ming.li@zohomail.com, yishaih@nvidia.com,
- skolothumtho@nvidia.com, kevin.tian@intel.com, bhelgaas@google.com,
- dmatlack@google.com, kees@kernel.org, gustavoars@kernel.org
-Cc: cjia@nvidia.com, kjaju@nvidia.com, vsethi@nvidia.com, zhiw@nvidia.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <20260813093631.2288172-1-mhonap@nvidia.com>
- <20260813093631.2288172-28-mhonap@nvidia.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20260813093631.2288172-28-mhonap@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
+New issues:
+- [High] Emulation of CMPXCHG16B lacks the mandatory 16-byte alignment chec=
+k, leading to a guest-triggerable VM crash.
+- [Low] The macro `em_cmpxchg8b_16b` incorrectly captures the variable `ctx=
+t` from the surrounding scope instead of solely using its argument `__c`.
 
-On 8/13/26 5:36 PM, mhonap@nvidia.com wrote:
-> From: Manish Honap <mhonap@nvidia.com>
-> 
-> Exercise the vfio-cxl contract on a bound CXL Type-2 device: the two VFIO
-> regions and the geometry capability, the HDM memory mmap (including a 2 MB
-> huge fault), the dword-aligned trapped decoder block, and the
-> lock-on-commit FSM. The decoder writes land in the per-open shadow and
-> each test reopens the device, so the FSM tests repeat cleanly.
-> 
-> Cover the HDM memory two ways: a host-CPU load/store of the mmap, and the
-> path a VMM actually uses, mmap plus a stage-2 IOAS map for the device's
-> ATS access. The mmap flag is required for the IOAS path, so assert it is
-> advertised rather than skipping when it is absent.
-> 
-> Signed-off-by: Manish Honap <mhonap@nvidia.com>
-> ---
->   MAINTAINERS                                   |   1 +
->   tools/testing/selftests/vfio/Makefile         |   1 +
->   .../selftests/vfio/lib/vfio_pci_device.c      |  57 +-
->   .../selftests/vfio/vfio_cxl_type2_test.c      | 799 ++++++++++++++++++
->   4 files changed, 855 insertions(+), 3 deletions(-)
->   create mode 100644 tools/testing/selftests/vfio/vfio_cxl_type2_test.c
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index b9361a8d618e..192b1681b3bd 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -28319,6 +28319,7 @@ L:	linux-cxl@vger.kernel.org
->   S:	Supported
->   F:	Documentation/driver-api/vfio-pci-cxl.rst
->   F:	drivers/vfio/pci/cxl/
-> +F:	tools/testing/selftests/vfio/vfio_cxl_type2_test.c
->   
->   VFIO DRIVER
->   M:	Alex Williamson <alex@shazbot.org>
-> diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-> index 2c32c48db509..08f88e88cb4d 100644
-> --- a/tools/testing/selftests/vfio/Makefile
-> +++ b/tools/testing/selftests/vfio/Makefile
-> @@ -13,6 +13,7 @@ TEST_GEN_PROGS += vfio_pci_device_test
->   TEST_GEN_PROGS += vfio_pci_device_init_perf_test
->   TEST_GEN_PROGS += vfio_pci_driver_test
->   TEST_GEN_PROGS += vfio_pci_sriov_uapi_test
-> +TEST_GEN_PROGS += vfio_cxl_type2_test
->   
->   TEST_FILES += scripts/cleanup.sh
->   TEST_FILES += scripts/lib.sh
-> diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> index 94dc5fcecbeb..ab49b41653c4 100644
-> --- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> +++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> @@ -160,9 +160,31 @@ static void vfio_pci_region_get(struct vfio_pci_device *device, int index,
->   	ioctl_assert(device->fd, VFIO_DEVICE_GET_REGION_INFO, info);
->   }
->   
-> +/* Return the sparse-mmap capability in @info, or NULL if the region has none. */
-> +static struct vfio_region_info_cap_sparse_mmap *
-> +vfio_pci_sparse_mmap_cap(struct vfio_region_info *info)
-> +{
-> +	struct vfio_info_cap_header *hdr;
-> +	u32 offset;
+Pre-existing issues:
+- [Critical] TOCTOU vulnerability in atomic CMPXCHG emulation leads to sile=
+nt data corruption in the guest when a native compare fails.
+--
+
+commit f6a8a67f38b03c4522f119ac54d63d97691e1289
+Author: Sairaj Kodilkar <sarunkod@amd.com>
+
+KVM: x86: Add support for cmpxchg16b emulation
+
+This patch adds support for emulating cmpxchg16b when the destination memory
+is 128-bit and REX.W =3D 1. This prevents QEMU guests from hitting emulation
+failures during 256-bit device table entries accesses on AMD vIOMMU.
+
+> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+> index c1b21282187f3..f38c4f1a99c31 100644
+> --- a/arch/x86/kvm/emulate.c
+> +++ b/arch/x86/kvm/emulate.c
+
+[ ... ]
+
+> @@ -2184,24 +2184,36 @@ static int em_call_near_abs(struct x86_emulate_ct=
+xt *ctxt)
+>  	return rc;
+>  }
+> =20
+> +#define em_cmpxchg8b_16b(__c, rbits, mbits)\
+> +do {												\
+> +	u##mbits old =3D __c->dst.orig_val##mbits;						\
+> +												\
+> +	BUILD_BUG_ON(rbits * 2 !=3D mbits);							\
+> +												\
+> +	if (((u##rbits) (old >> 0) !=3D (u##rbits) reg_read(ctxt, VCPU_REGS_RAX=
+)) ||		\
+
+[Severity: Low]
+Does this macro intentionally reference the unpassed variable ctxt instead =
+of
+the provided argument __c?
+
+This uses ctxt to read registers, which makes the macro rely on the specific
+variable name ctxt in the caller's scope instead of its parameter.
+
+> +	    ((u##rbits) (old >> rbits) !=3D (u##rbits) reg_read(ctxt, VCPU_REGS=
+_RDX))) {		\
+> +		*reg_write(ctxt, VCPU_REGS_RAX) =3D (u##rbits) (old >> 0);			\
+> +		*reg_write(ctxt, VCPU_REGS_RDX) =3D (u##rbits) (old >> rbits);			\
+> +		ctxt->eflags &=3D ~X86_EFLAGS_ZF;							\
+> +	} else {										\
+> +		ctxt->dst.val##mbits =3D ((u##mbits)reg_read(ctxt, VCPU_REGS_RCX) << r=
+bits) |	\
+> +					(u##rbits) reg_read(ctxt, VCPU_REGS_RBX);		\
+> +												\
+> +		ctxt->eflags |=3D X86_EFLAGS_ZF;							\
+> +	}											\
+> +} while(0)
 > +
-> +	if (!(info->flags & VFIO_REGION_INFO_FLAG_CAPS))
-> +		return NULL;
-> +
-> +	for (offset = info->cap_offset; offset; offset = hdr->next) {
-> +		hdr = (void *)info + offset;
-> +		if (hdr->id == VFIO_REGION_INFO_CAP_SPARSE_MMAP)
-> +			return (struct vfio_region_info_cap_sparse_mmap *)hdr;
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
->   static void vfio_pci_bar_map(struct vfio_pci_device *device, int index)
->   {
->   	struct vfio_pci_bar *bar = &device->bars[index];
-> +	struct vfio_region_info_cap_sparse_mmap *sparse;
-> +	u8 infobuf[1024] = {};
-> +	struct vfio_region_info *info = (void *)infobuf;
->   	size_t align, size;
->   	int prot = 0;
->   	void *vaddr;
-> @@ -190,9 +212,38 @@ static void vfio_pci_bar_map(struct vfio_pci_device *device, int index)
->   	align = min_t(size_t, size, SZ_1G);
->   
->   	vaddr = mmap_reserve(size, align, 0);
-> -	bar->vaddr = mmap(vaddr, size, prot, MAP_SHARED | MAP_FIXED,
-> -			  device->fd, bar->info.offset);
-> -	VFIO_ASSERT_NE(bar->vaddr, MAP_FAILED);
-> +
-> +	/*
-> +	 * A BAR that is only partially mmappable, such as a CXL Type-2 component
-> +	 * BAR with the HDM decoder block trapped, advertises the mmappable
-> +	 * ranges through a sparse-mmap capability. Map each area within the
-> +	 * reservation and leave the excluded ranges unmapped; mapping the whole
-> +	 * BAR would be rejected.
-> +	 */
-> +	info->argsz = sizeof(infobuf);
-> +	info->index = index;
-> +	ioctl_assert(device->fd, VFIO_DEVICE_GET_REGION_INFO, info);
-> +	sparse = vfio_pci_sparse_mmap_cap(info);
-> +	if (sparse) {
-> +		u32 i;
-> +
-> +		bar->vaddr = vaddr;
-> +		for (i = 0; i < sparse->nr_areas; i++) {
-> +			void *p;
-> +
-> +			if (!sparse->areas[i].size)
-> +				continue;
-> +			p = mmap(vaddr + sparse->areas[i].offset,
-> +				 sparse->areas[i].size, prot,
-> +				 MAP_SHARED | MAP_FIXED, device->fd,
-> +				 bar->info.offset + sparse->areas[i].offset);
-> +			VFIO_ASSERT_NE(p, MAP_FAILED);
-> +		}
-> +	} else {
-> +		bar->vaddr = mmap(vaddr, size, prot, MAP_SHARED | MAP_FIXED,
-> +				  device->fd, bar->info.offset);
-> +		VFIO_ASSERT_NE(bar->vaddr, MAP_FAILED);
-> +	}
->   
->   	madvise(bar->vaddr, size, MADV_HUGEPAGE);
->   }
-> diff --git a/tools/testing/selftests/vfio/vfio_cxl_type2_test.c b/tools/testing/selftests/vfio/vfio_cxl_type2_test.c
-> new file mode 100644
-> index 000000000000..8c23ddd014ca
-> --- /dev/null
-> +++ b/tools/testing/selftests/vfio/vfio_cxl_type2_test.c
-> @@ -0,0 +1,799 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * vfio_cxl_type2_test - corner-case tests for the vfio-cxl kernel contract.
-> + *
-> + * Exercises the user-visible surface the vfio-cxl module adds to a CXL Type-2
-> + * device: the two VFIO regions (HDM memory and the trapped HDM decoder block),
-> + * the component-register geometry capability, and the lock-on-commit decoder
-> + * FSM the kernel runs on the trapped block.
-> + *
-> + * Unlike a plain vfio-pci device the guest programs its own endpoint decoder,
-> + * so the trapped block enforces the commit handshake and freezes a locked
-> + * decoder. These tests drive that FSM directly. Writes to the decoder block
-> + * land in the per-open kernel shadow only, never on the physical decoder, and
-> + * each test reopens the device (fresh shadow), so the FSM tests are safe to
-> + * repeat and do not leak state between tests.
-> + *
-> + * Usage: ./vfio_cxl_type2_test <BDF>  (or export VFIO_SELFTESTS_BDF=<BDF>).
-> + * The device must be bound to vfio-pci with the vfio-cxl module available.
-> + *
-> + * Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES.
-> + */
-> +
-> +#include <fcntl.h>
-> +#include <stdint.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <unistd.h>
-> +
-> +#include <sys/ioctl.h>
-> +#include <sys/mman.h>
-> +
-> +#include <linux/pci_regs.h>
-> +#include <linux/sizes.h>
-> +#include <linux/vfio.h>
-> +
-> +#include <cxl/cxl_regs.h>
-> +
-> +#include <libvfio.h>
-> +
-> +#include "kselftest_harness.h"
-> +
-> +#define PCI_DVSEC_VENDOR_ID_CXL		0x1e98
-> +#define PCI_DVSEC_ID_CXL_DEVICE		0x0000
-> +
-> +/* CXL r3.1 8.1.9.1: Register Block Identifier for the component registers. */
-> +#define CXL_REGLOC_RBI_COMPONENT	1
-> +
-> +/*
-> + * Register Locator DVSEC block-1 field masks. The uapi pci_regs.h names expand
-> + * to __GENMASK(), which is not a macro in this userspace include path, so use
-> + * explicit values.
-> + */
-> +#define REG_LOCATOR_BIR_MASK		0x00000007
-> +#define REG_LOCATOR_BLOCK_ID_MASK	0x0000ff00
-> +#define REG_LOCATOR_BLOCK_OFF_LOW_MASK	0xffff0000
-> +
-> +/*
-> + * vfio-pci's region-offset packing is kernel-internal (vfio_pci_core.h), not
-> + * UAPI. Define it locally; the guards let a future kernel hoist it to UAPI.
-> + */
-> +#ifndef VFIO_PCI_OFFSET_SHIFT
-> +#define VFIO_PCI_OFFSET_SHIFT		40
+>  static int em_cmpxchg8b(struct x86_emulate_ctxt *ctxt)
+>  {
+> -	u64 old =3D ctxt->dst.orig_val64;
+> -
+> -	if (ctxt->dst.bytes =3D=3D 16)
+> +	if (WARN_ON_ONCE(8 + !!(ctxt->rex_bits & REX_W) * 8 !=3D ctxt->dst.byte=
+s))
+>  		return X86EMUL_UNHANDLEABLE;
+> =20
+> -	if (((u32) (old >> 0) !=3D (u32) reg_read(ctxt, VCPU_REGS_RAX)) ||
+> -	    ((u32) (old >> 32) !=3D (u32) reg_read(ctxt, VCPU_REGS_RDX))) {
+> -		*reg_write(ctxt, VCPU_REGS_RAX) =3D (u32) (old >> 0);
+> -		*reg_write(ctxt, VCPU_REGS_RDX) =3D (u32) (old >> 32);
+> -		ctxt->eflags &=3D ~X86_EFLAGS_ZF;
+> -	} else {
+> -		ctxt->dst.val64 =3D ((u64)reg_read(ctxt, VCPU_REGS_RCX) << 32) |
+> -			(u32) reg_read(ctxt, VCPU_REGS_RBX);
+> -
+> -		ctxt->eflags |=3D X86_EFLAGS_ZF;
+> -	}
+> +	if (!(ctxt->rex_bits & REX_W))
+> +		em_cmpxchg8b_16b(ctxt, 32, 64);
+> +#ifdef CONFIG_X86_64
+> +	else
+> +		em_cmpxchg8b_16b(ctxt, 64, 128);
 > +#endif
-> +#ifndef VFIO_PCI_INDEX_TO_OFFSET
-> +#define VFIO_PCI_INDEX_TO_OFFSET(i)	((uint64_t)(i) << VFIO_PCI_OFFSET_SHIFT)
+
+[Severity: High]
+Are we missing a 16-byte alignment check for the destination memory when
+executing CMPXCHG16B here?
+
+The x86 architecture strictly mandates that the memory operand for CMPXCHG1=
+6B
+must be 16-byte aligned. If it is not, a #GP(0) exception is generated
+unconditionally.
+
+Without this check, KVM will later attempt a native unaligned lock cmpxchg1=
+6b,
+which will raise a host #GP(0). The host exception table catches this and
+returns -EFAULT, translating to X86EMUL_UNHANDLEABLE, which immediately
+crashes the VM via KVM_EXIT_INTERNAL_ERROR. Can this regression be used by a
+guest to trigger a denial of service?
+
+>  	return X86EMUL_CONTINUE;
+>  }
+
+[ ... ]
+
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 79468ddfe4736..60be16f05d794 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+
+[ ... ]
+
+> @@ -5311,6 +5311,11 @@ static int emulator_cmpxchg_emulated(struct x86_em=
+ulate_ctxt *ctxt,
+>  	case 8:
+>  		r =3D emulator_try_cmpxchg_user(u64, hva, old, new);
+>  		break;
+> +#ifdef CONFIG_X86_64
+> +	case 16:
+> +		r =3D emulator_try_cmpxchg_user(u128, hva, old, new);
+> +		break;
 > +#endif
-> +
-> +static const char *device_bdf;
-> +
-> +/* Locate a region-info capability by id inside a GET_REGION_INFO buffer. */
-> +static const struct vfio_info_cap_header *
-> +find_region_cap(const void *buf, size_t bufsz, uint16_t id)
-> +{
-> +	const struct vfio_region_info *ri = buf;
-> +	const struct vfio_info_cap_header *cap;
-> +	size_t off = ri->cap_offset;
-> +
-> +	while (off && off + sizeof(*cap) <= bufsz) {
-> +		cap = (const void *)((const char *)buf + off);
-> +		if (cap->id == id)
-> +			return cap;
-> +		off = cap->next;
-> +	}
-> +	return NULL;
-> +}
-> +
-> +/*
-> + * Find a CXL region by scanning every region's VFIO_REGION_INFO_CAP_TYPE for
-> + * the CXL type and the requested subtype. Returns the region index or -1.
-> + * @buf is a caller scratch buffer left holding the matched region's info
-> + * (with caps).
-> + */
-> +static int find_cxl_region(int fd, uint32_t nregions, uint32_t subtype,
-> +			   void *buf, size_t bufsz)
-> +{
-> +	uint32_t i;
-> +
-> +	for (i = 0; i < nregions; i++) {
-> +		struct vfio_region_info *ri = buf;
-> +		const struct vfio_region_info_cap_type *t;
-> +		const struct vfio_info_cap_header *hdr;
-> +
-> +		memset(buf, 0, bufsz);
-> +		ri->argsz = bufsz;
-> +		ri->index = i;
-> +		if (ioctl(fd, VFIO_DEVICE_GET_REGION_INFO, ri))
-> +			continue;
-> +		if (!(ri->flags & VFIO_REGION_INFO_FLAG_CAPS))
-> +			continue;
-> +
-> +		hdr = find_region_cap(buf, bufsz, VFIO_REGION_INFO_CAP_TYPE);
-> +		if (!hdr)
-> +			continue;
-> +		t = (const void *)hdr;
-> +		if (t->type == VFIO_REGION_TYPE_CXL && t->subtype == subtype)
-> +			return i;
-> +	}
-> +	return -1;
-> +}
-> +
-> +/* Walk the PCI extended capability list for the CXL Device DVSEC. */
-> +static uint16_t find_cxl_dvsec(struct vfio_pci_device *dev)
-> +{
-> +	uint16_t pos = PCI_CFG_SPACE_SIZE;
-> +	int iter = 0;
-> +
-> +	while (pos && iter++ < 64) {
-> +		uint32_t hdr = vfio_pci_config_readl(dev, pos);
-> +		uint16_t cap_id = hdr & 0xffff;
-> +		uint16_t next = (hdr >> 20) & 0xffc;
-> +		uint32_t h1, h2;
-> +
-> +		if (cap_id == PCI_EXT_CAP_ID_DVSEC) {
-> +			h1 = vfio_pci_config_readl(dev, pos + 4);
-> +			h2 = vfio_pci_config_readl(dev, pos + 8);
-> +			if ((h1 & 0xffff) == PCI_DVSEC_VENDOR_ID_CXL &&
-> +			    (h2 & 0xffff) == PCI_DVSEC_ID_CXL_DEVICE)
-> +				return pos;
-> +		}
-> +		pos = next;
-> +	}
-> +	return 0;
-> +}
-> +
-> +FIXTURE(vfio_cxl) {
-> +	struct iommu *iommu;
-> +	struct vfio_pci_device *dev;
-> +
-> +	int mem_idx;
-> +	uint64_t mem_size;
-> +	uint32_t mem_flags;
-> +	int comp_idx;
-> +	uint64_t comp_size;
-> +	uint32_t comp_bar;
-> +	uint64_t comp_offset;	/* HDM block offset within comp_bar */
-> +	uint64_t comp_off;	/* mmap/rw base offset of the comp region */
-> +	uint16_t dvsec;
-> +};
-> +
-> +FIXTURE_SETUP(vfio_cxl)
-> +{
-> +	uint8_t infobuf[512] = {};
-> +	struct vfio_device_info *info = (void *)infobuf;
-> +	const struct vfio_region_info_cap_cxl_comp_regs *geo;
-> +	const struct vfio_info_cap_header *hdr;
-> +	uint8_t rbuf[1024];
-> +
-> +	self->iommu = iommu_init(default_iommu_mode);
-> +	self->dev = vfio_pci_device_init(device_bdf, self->iommu);
-> +
-> +	info->argsz = sizeof(infobuf);
-> +	ASSERT_EQ(0, ioctl(self->dev->fd, VFIO_DEVICE_GET_INFO, info));
-> +
-> +	if (!(info->flags & VFIO_DEVICE_FLAGS_CXL))
-> +		SKIP(return, "not a CXL Type-2 device");
-> +
-> +	self->mem_idx = find_cxl_region(self->dev->fd, info->num_regions,
-> +					VFIO_REGION_SUBTYPE_CXL_MEM,
-> +					rbuf, sizeof(rbuf));
-> +	ASSERT_GE(self->mem_idx, 0);
-> +	self->mem_size = ((struct vfio_region_info *)rbuf)->size;
-> +	self->mem_flags = ((struct vfio_region_info *)rbuf)->flags;
-> +
-> +	self->comp_idx = find_cxl_region(self->dev->fd, info->num_regions,
-> +					 VFIO_REGION_SUBTYPE_CXL_COMP_REGS,
-> +					 rbuf, sizeof(rbuf));
-> +	ASSERT_GE(self->comp_idx, 0);
-> +	self->comp_size = ((struct vfio_region_info *)rbuf)->size;
-> +
-> +	/* The geometry cap rides on the component-register region. */
-> +	hdr = find_region_cap(rbuf, sizeof(rbuf),
-> +			      VFIO_REGION_INFO_CAP_CXL_COMP_REGS);
-> +	ASSERT_NE(NULL, hdr);
-> +	geo = (const void *)hdr;
-> +	self->comp_bar = geo->bar;
-> +	self->comp_offset = geo->offset;
-> +
-> +	self->comp_off = VFIO_PCI_INDEX_TO_OFFSET(self->comp_idx);
-> +	self->dvsec = find_cxl_dvsec(self->dev);
-> +}
-> +
-> +FIXTURE_TEARDOWN(vfio_cxl)
-> +{
-> +	vfio_pci_device_cleanup(self->dev);
-> +	iommu_cleanup(self->iommu);
-> +}
-> +
-> +/* GET_INFO advertises the flag and both CXL regions with a sane geometry cap. */
-> +TEST_F(vfio_cxl, device_is_cxl)
-> +{
-> +	ASSERT_NE(self->mem_idx, self->comp_idx);
-> +	ASSERT_GT(self->mem_size, 0);
-> +	ASSERT_GT(self->comp_size, 0);
-> +	ASSERT_LT(self->comp_bar, PCI_STD_NUM_BARS);
-> +	/* The HDM memory must advertise mmap; a VMM needs it for stage-2. */
-> +	ASSERT_NE(0, self->mem_flags & VFIO_REGION_INFO_FLAG_MMAP);
-> +}
-> +
-> +/*
-> + * The component BAR carries the physical HDM decoder block, which vfio traps
-> + * and excludes from mmap so the guest cannot reprogram it directly. Mapping the
-> + * whole BAR must fail; mapping the ranges around the excluded block, as the
-> + * sparse-mmap capability advertises, must succeed.
-> + */
-> +TEST_F(vfio_cxl, comp_bar_sparse_mmap)
-> +{
-> +	size_t page_size = getpagesize();
-> +	uint8_t rbuf[1024] = {};
-> +	struct vfio_region_info *ri = (void *)rbuf;
-> +	const struct vfio_region_info_cap_sparse_mmap *sm;
-> +	const struct vfio_info_cap_header *hdr;
-> +	uint64_t bar_off, decoder_page;
-> +	void *map;
-> +	uint32_t i;
-> +
-> +	/* Region info for the component BAR, with capabilities. */
-> +	ri->argsz = sizeof(rbuf);
-> +	ri->index = self->comp_bar;
-> +	ASSERT_EQ(0, ioctl(self->dev->fd, VFIO_DEVICE_GET_REGION_INFO, ri));
-> +	ASSERT_NE(0, ri->flags & VFIO_REGION_INFO_FLAG_MMAP);
-> +	bar_off = ri->offset;
-> +
-> +	/* The trapped decoder block splits the BAR, so it must be sparse. */
-> +	hdr = find_region_cap(rbuf, sizeof(rbuf),
-> +			      VFIO_REGION_INFO_CAP_SPARSE_MMAP);
-> +	ASSERT_NE(NULL, hdr);
-> +	sm = (const void *)hdr;
-> +	ASSERT_GT(sm->nr_areas, 0);
-> +
-> +	/* Mapping the whole BAR must fail: it covers the excluded block. */
-> +	map = mmap(NULL, ri->size, PROT_READ | PROT_WRITE, MAP_SHARED,
-> +		   self->dev->fd, bar_off);
-> +	ASSERT_EQ(MAP_FAILED, map);
-> +
-> +	/* Every advertised area is page aligned and must map. */
-> +	for (i = 0; i < sm->nr_areas; i++) {
-> +		uint64_t ao = sm->areas[i].offset;
-> +		uint64_t as = sm->areas[i].size;
-> +
-> +		if (!as)
-> +			continue;
-> +		ASSERT_EQ(0, ao & (page_size - 1));
-> +		ASSERT_EQ(0, as & (page_size - 1));
-> +
-> +		map = mmap(NULL, as, PROT_READ | PROT_WRITE, MAP_SHARED,
-> +			   self->dev->fd, bar_off + ao);
-> +		ASSERT_NE(MAP_FAILED, map);
-> +		ASSERT_EQ(0, munmap(map, as));
-> +	}
-> +
-> +	/* The page holding the decoder block must never be mmappable. */
-> +	decoder_page = self->comp_offset & ~(uint64_t)(page_size - 1);
-> +	map = mmap(NULL, page_size, PROT_READ | PROT_WRITE, MAP_SHARED,
-> +		   self->dev->fd, bar_off + decoder_page);
-> +	ASSERT_EQ(MAP_FAILED, map);
-> +}
-> +
-> +/* mmap one page of the HDM memory, write a pattern, read it back. */
-> +TEST_F(vfio_cxl, hdm_mem_mmap_rw)
-> +{
-> +	uint64_t off = VFIO_PCI_INDEX_TO_OFFSET(self->mem_idx);
-> +	uint32_t pattern = 0xdeadbeefU, readback = 0;
-> +	void *map;
-> +
-> +	if (self->mem_size < SZ_4K)
-> +		SKIP(return, "HDM memory < 4K");
-> +
-> +	map = mmap(NULL, SZ_4K, PROT_READ | PROT_WRITE, MAP_SHARED,
-> +		   self->dev->fd, off);
-> +	ASSERT_NE(MAP_FAILED, map);
-> +
-> +	memcpy(map, &pattern, sizeof(pattern));
-> +	memcpy(&readback, map, sizeof(readback));
-> +	ASSERT_EQ(pattern, readback);
-> +
-> +	ASSERT_EQ(0, munmap(map, SZ_4K));
-> +}
-> +
-> +/*
-> + * A 2 MB-aligned window should map as a huge (PMD) fault. The kernel falls back
-> + * to base pages when it cannot, so only correctness (write/read) is asserted.
-> + */
-> +TEST_F(vfio_cxl, hdm_mem_huge_mmap)
-> +{
-> +	uint64_t off = VFIO_PCI_INDEX_TO_OFFSET(self->mem_idx);
-> +	uint32_t pattern = 0x5a5a5a5aU, readback = 0;
-> +	void *map, *last;
-> +
-> +	if (self->mem_size < SZ_2M)
-> +		SKIP(return, "HDM memory < 2M");
-> +
-> +	map = mmap(NULL, SZ_2M, PROT_READ | PROT_WRITE, MAP_SHARED,
-> +		   self->dev->fd, off);
-> +	ASSERT_NE(MAP_FAILED, map);
-> +
-> +	/* Touch the last dword so a 2 MB PMD fault covers the whole window. */
-> +	last = (char *)map + SZ_2M - sizeof(pattern);
-> +	memcpy(last, &pattern, sizeof(pattern));
-> +	memcpy(&readback, last, sizeof(readback));
-> +	ASSERT_EQ(pattern, readback);
-> +
-> +	ASSERT_EQ(0, munmap(map, SZ_2M));
-> +}
-> +
-> +/*
-> + * A guest driver disables and re-enables PCI Memory-Space during init and
-> + * reset. The committed HDM decoder stays valid across that toggle, so once
-> + * Memory-Space is re-enabled the coherent HDM memory must be reachable again
-> + * without a reset. This is the regression test for the hdm_valid access gate
-> + * being cleared by a Memory-Space disable and never restored, which left a
-> + * later valid mmap fault wrongly SIGBUS-ing.
-> + *
-> + * The region is exercised only through the mmap path (as a VMM does) and only
-> + * while Memory-Space is enabled. An access with Memory-Space disabled aborts
-> + * on the fabric as a fatal host error, so the test never attempts one: the
-> + * toggle in between is pure config-space writes.
-> + */
-> +TEST_F(vfio_cxl, hdm_mem_survives_mem_space_toggle)
-> +{
-> +	uint64_t off = VFIO_PCI_INDEX_TO_OFFSET(self->mem_idx);
-> +	uint32_t pattern = 0x12345678U, readback = 0;
-> +	uint16_t cmd;
-> +	void *map;
-> +
-> +	if (self->mem_size < SZ_4K)
-> +		SKIP(return, "HDM memory < 4K");
-> +
-> +	/* Seed a known pattern through the mmap path with Memory-Space on. */
-> +	cmd = vfio_pci_config_readw(self->dev, PCI_COMMAND);
-> +	vfio_pci_config_writew(self->dev, PCI_COMMAND,
-> +			       cmd | PCI_COMMAND_MEMORY);
-> +	map = mmap(NULL, SZ_4K, PROT_READ | PROT_WRITE, MAP_SHARED,
-> +		   self->dev->fd, off);
-> +	ASSERT_NE(MAP_FAILED, map);
-> +	memcpy(map, &pattern, sizeof(pattern));
-> +	ASSERT_EQ(0, munmap(map, SZ_4K));
-> +
-> +	/*
-> +	 * Toggle Memory-Space off and back on with no HDM access in between,
-> +	 * as a guest driver does during init/reset.
-> +	 */
-> +	vfio_pci_config_writew(self->dev, PCI_COMMAND,
-> +			       cmd & ~PCI_COMMAND_MEMORY);
-> +	vfio_pci_config_writew(self->dev, PCI_COMMAND,
-> +			       cmd | PCI_COMMAND_MEMORY);
-> +
-> +	/*
-> +	 * The committed decoder stayed valid across the toggle, so a fresh mmap
-> +	 * fault succeeds and the seeded pattern reads back, without a reset.
-> +	 * Before the fix the gate was cleared by the disable and never restored,
-> +	 * so the fault wrongly SIGBUS-ed.
-> +	 */
-> +	map = mmap(NULL, SZ_4K, PROT_READ | PROT_WRITE, MAP_SHARED,
-> +		   self->dev->fd, off);
-> +	ASSERT_NE(MAP_FAILED, map);
-> +	memcpy(&readback, map, sizeof(readback));
-> +	ASSERT_EQ(pattern, readback);
-> +	ASSERT_EQ(0, munmap(map, SZ_4K));
-> +
-> +	/* Restore PCI_COMMAND. */
-> +	vfio_pci_config_writew(self->dev, PCI_COMMAND, cmd);
-> +}
-> +
-> +/*
-> + * Mirror how a VMM uses the region: mmap the HDM memory and map it into the
-> + * IOAS (stage-2) so the device can reach it over ATS. The mmap flag is required
-> + * for that path, so its absence is a failure, not a skip. The host CPU does not
-> + * dereference the mapping; the guest reaches it through stage-2.
-> + */
-> +TEST_F(vfio_cxl, hdm_mem_ioas_map)
-> +{
-> +	uint64_t off = VFIO_PCI_INDEX_TO_OFFSET(self->mem_idx);
-> +	struct iova_allocator *iova_alloc;
-> +	struct dma_region region;
-> +	void *map;
-> +
-> +	ASSERT_NE(0, self->mem_flags & VFIO_REGION_INFO_FLAG_MMAP);
-> +
-> +	/* iova_allocator_alloc() requires a power-of-2 size. */
-> +	if (self->mem_size < SZ_2M)
-> +		SKIP(return, "HDM memory < 2M");
-> +
-> +	map = mmap(NULL, SZ_2M, PROT_READ | PROT_WRITE, MAP_SHARED,
-> +		   self->dev->fd, off);
-> +	ASSERT_NE(MAP_FAILED, map);
-> +
-> +	iova_alloc = iova_allocator_init(self->iommu);
-> +	region.vaddr = map;
-> +	region.size = SZ_2M;
-> +	region.iova = iova_allocator_alloc(iova_alloc, SZ_2M);
-> +
-> +	iommu_map(self->iommu, &region);
 
-Hi Manish,
+[Severity: Critical]
+This is a pre-existing issue, but does the emulation of atomic CMPXCHG suff=
+er
+from a TOCTOU race leading to silent data corruption in the guest?
 
-We ran this series' selftests with a QEMU-emulated Type-2 device
-(pxb-cxl host bridge, firmware-committed HDM decoder).  16 of the 17
-tests pass; the one failure is hdm_mem_ioas_map:
+When emulator_try_cmpxchg_user() fails due to concurrent memory modificatio=
+n,
+emulator_cmpxchg_emulated() returns X86EMUL_CMPXCHG_FAILED.
 
- > 	iova_alloc = iova_allocator_init(self->iommu);
- > 	region.vaddr = map;
- > 	region.size = SZ_2M;
- > 	region.iova = iova_allocator_alloc(iova_alloc, SZ_2M);
- >
- > 	iommu_map(self->iommu, &region);
+However, in x86_emulate_insn(), this failure appears to be silently swallow=
+ed:
 
-IOMMU_IOAS_MAP (the vaddr variant) on the mmap of the CXL_MEM region
-fails with -EFAULT.  The path is:
+arch/x86/kvm/emulate.c:x86_emulate_insn() {
+    ...
+    if (rc =3D=3D X86EMUL_CONTINUE)
+        writeback_registers(ctxt);
 
-	iommufd_ioas_map()
-	  iopt_map_user_pages()
-	    pfn_reader_user_pin()
-	      pin_user_pages_fast()
-	        check_vma_flags()		/* mm/gup.c */
-	          if (vm_flags & (VM_IO | VM_PFNMAP))
-	            return -EFAULT;
+    return (rc =3D=3D X86EMUL_UNHANDLEABLE) ? EMULATION_FAILED : EMULATION_=
+OK;
+}
 
-The CXL_MEM region is struct-page-less device memory, so vfio_cxl_core.c
-creates the VMA with VM_IO | VM_PFNMAP.  pin_user_pages() refuses such
-VMAs outright and pfn_reader_user_pin() has no fallback, so with the
-current upstream iommufd the vaddr variant of IOMMU_IOAS_MAP cannot map
-this region at all, and the test's unconditional assertion fails.
+Because rc is not X86EMUL_CONTINUE, writeback_registers() is skipped and the
+guest registers are not updated. Because EMULATION_OK is returned, KVM reti=
+res
+the instruction as successful, advancing RIP and leaving the guest with a
+stale ZF=3D1 flag. Doesn't this cause the guest to mistakenly believe it
+acquired a lock?
 
-The test documents a real part of the contract (the mmap is what lets
-the device reach its DPA through stage-2), so rather than have reviewers
-read this as a series regression, maybe:
-
-   - tolerate the current upstream behavior: skip (or xfail) when
-     IOMMU_IOAS_MAP fails with -EFAULT on the PFNMAP VMA, with a comment
-     that the vaddr path needs iommufd support for PFNMAP device memory;
-     or
-   - note the dependency in the cover letter.
-
-FWIW, the dmabuf variant does not offer a way around this today either:
-VFIO_DEVICE_FEATURE_DMA_BUF only exports BARs, while the CXL_MEM region
-is a vendor region backed by the resolved HPA window, so there is
-currently no upstream path at all to IOAS-map the HDM memory from
-userspace.  If the vaddr path is meant to work eventually, it might be
-worth saying which side owns that (iommufd pin fallback vs. a dmabuf
-export for this region).
-
-Everything else here works nicely, including the guest reset path and
-the HDM shadow/commit FSM tests.
-
-Test setup, in case it helps reproduction:
-
-   - this series applied on an upstream-based tree
-   - QEMU with pxb-cxl and an emulated Type-2 device whose decoder is
-     firmware-committed at boot
-   - result: 16/17 pass, hdm_mem_ioas_map fails with -EFAULT from
-     pin_user_pages_fast()
-
-Thanks,
-Shuai Xue
-
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260826070004.8100=
+-1-sarunkod@amd.com?part=3D2
