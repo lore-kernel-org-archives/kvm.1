@@ -1,55 +1,55 @@
 Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE2F3BBFDB
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 09:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A233BFE5B
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 09:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787735930; cv=none; b=ZewEm/qyLAbNW2+Bg6yB+SMcbdyYD8O6mTrHxUFdqlzYDuA+1ISCn10g/tLvf0M139TCHZP+26DtCZFNR2V8wY7h8Q0IigEgQ1fuqp2+GRVDfBh4GmUzTtGELWcZWwWqKJr+ytllNwfAapTLDTxP8tgQuBthpL9fXilmqsE9g/s=
+	t=1787735926; cv=none; b=A3qaWPBGL7dposP+qo9PTccXBSOoNsf4CtJBNduRNijFNahIOSNymprY5CLhIFcNsCme6s7B5nZbhmkEKOwipDGKYWlDaP1JE20lgv8xdFKbNUmNyeQFqJmBKEFyl6T4l5+zjtdUo2xeS+Vr1Mg43hcuBI1CGQVb+hphqDSzTP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787735930; c=relaxed/simple;
-	bh=dy0yCBXrZoOYao0bizb+pCfviB0m67TSA6YqDM4S6vw=;
+	s=arc-20240116; t=1787735926; c=relaxed/simple;
+	bh=ZTwn4UyMShrGZfEU90otJVup2JEojFMgiToKCnnSVVE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AVTJZYf3z1yJeWNh7hBB+BMQ3FVgNjrjCLvSCjsuUdOgQHVBir+kacucKk7tknp9+pOijpPkToY4OhsA5jmF+F5dfVX2vxfrsJ6JLqkCVsxz1d1i4GQR/u6ueDh6RYMhvRusTAlo5J1lU5fGWtth9P4mYtlzBiUnV9EUy2P2fHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TB8Ld8Fn; arc=none smtp.client-ip=209.85.215.200
+	 To:Cc:Content-Type; b=dOSfNGliHsllhdit428dXLcTPcx5CwroOIInVKa1BRjEKIpq9V1sx5BDboSWrqOR62fcsLhGQq1tHXuZnifPVGdLz+jW5aLyQZxs9Fw3s0vLwnLqDRZVnjbgynPqrjEQ7KpzzjlToLANNHtAHyKiyYLJ97Cfo+IOp9Hx3tQUyoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fdcfcOy6; arc=none smtp.client-ip=209.85.215.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TB8Ld8Fn"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cbb20f82a0eso590001a12.0
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 02:18:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fdcfcOy6"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cbb467e56aaso608915a12.1
+        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 02:18:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787735922; x=1788340722; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1787735919; x=1788340719; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=EKp8H31vpndC0T7+bBVQC7oQPgnms4md5owa5X2MPn8=;
-        b=TB8Ld8Fnq1x2joS1MUsEipBynLBPuDVQefIGCDV6Q/r7vZdiJEvGFDg2aGjrI9oFgN
-         EQdY9UT1ryNO24/+skIgKoG19I1MYzIp5Gxam/ynFzUf7DXaqPFee9OMHV5mr3zTuHdz
-         l/GZ94lkPostpPUmtXDoPOZdFjmRHzxBzVHShr5SJmF/lfuIx+kYhUnS/qXMVc9n5B1H
-         BxqyPI8AqBy4EbGKPUomwJWIs2ZrKvrqdoe1PYQGldwTkxATuU4uNdKxEYYE/mbsMX0o
-         yxZ+0p5ewTT7TVAO8MvQKZMGympfB05W+8xnHf88mVAbLIJboRXFRGtNi2sjUeQgUdlE
-         a89w==
+        bh=S/nf3e4536rn08VcIwbRdla3FrzM9D86FJQTH62XB18=;
+        b=fdcfcOy6HRtOZ73daoZ5zvlxhHTJKMPmTvGcbBfkxdVGLpx3kgm6YEpnNEh81jifWj
+         CidD8pxMoBESJ7UJeWnsesrZF/vzaLA54i2t/Xqfpz2dDw4Kf9vX+RtnCjmeoT8+klXg
+         XshsxVoedZMoxvIP2qqi68MuIUINPr5nkAKdG++Iqq7QH2GGKgbhF7RTE23u8NrjklBp
+         4r55oCaQsEjXKwfMDQmdwEjkuyv9wCe9C8u0yRAcxKAWGLPmz6/AOcz42cyaLv07vgEj
+         pdd779s8A3cF3YCBTuKdRDUyvEw7KS13FAwHSzmqFa+QCIF45BaJo3JDL0cyEERLHrTJ
+         qu8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787735922; x=1788340722;
+        d=1e100.net; s=20251104; t=1787735919; x=1788340719;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=EKp8H31vpndC0T7+bBVQC7oQPgnms4md5owa5X2MPn8=;
-        b=Mf/oFZNhXlRsKzXSCaDJRVqBdwHxo4xB0A/1Tyd4/eaKR5aFT9WSVRKGTtY4cbubS6
-         MmrM75EuzMMfeB6hZAxmQVtXzvrS4lSfj2by/zc+qe7EUtd5NvzRnRpgFv3dLWq+M2w3
-         yWUsqx/wbAyxZGeWEUBj6rOP5+BMwDy6ATjYTZ59mwU+JiiVE2mtqZkkAaqBuSuMJtFS
-         VwRhjZqH2KHIBeqAH5VgaORaJWj3Tnk83Lf5GTPm9oUrdlsBjflz0DdMhi0t64MV1w8w
-         GlU7840wnEX1oAVpviyPtUq13tUNdcpZnVI4/dNxQ505j2uwmN7MeC3k0jx/oNlM2c/7
-         wZ7A==
-X-Gm-Message-State: AFuF++lxOWcn5asOQiW0plnLPcJ9cKjYAoXMLJ9+0PMSi4Rt36LYf/Yd
-	fUN5cGrHn4rV/Z3MbikuPyZlCqxVOxhHmpJ9LjooUhwnI1t0KX9gVpYhFWBH7gbao8hOFsQHhRV
-	j+O0KwqHu2Fh74NvYMMyFD6sFBQ==
-X-Received: from pgbbo19.prod.google.com ([2002:a05:6a02:393:b0:cc1:4e93:a711])
+        bh=S/nf3e4536rn08VcIwbRdla3FrzM9D86FJQTH62XB18=;
+        b=F39SWxZCrDyG41ynbdaCW+QcuIKs2GT6k/AYXAnaKellQD6ZqJL/w9E5KSgoy1DZUE
+         Nl0HqS1RVuO1Z5Zrwra92tdNZ34yVAYvGCuFOWxWG8skeBa+1saCyiOKw8fnrfkkle6f
+         urVafvoI1itJ/9JTxdRCBONkuoiaHpZV2LyiZNaotEshNyzr+7vwWlHJSWJint/9PB8F
+         weSJmSuTYot/iDilUisXN8SYz0sjxgv0C43lxGxXG8313uEHNc7yiRuW4ZIbCqKOkQlP
+         /Kx0CoUGfautYH1iBQ/gm/q6NfLdu3B8M212S+oD+ti5WCY7ghJAsc5KJ4I+f8JbmnEU
+         FUlw==
+X-Gm-Message-State: AFuF++knZ6EXF7n/1tzaM6kUGNZkTbVtSdnve89CaIieCXm60UmXc6ji
+	aDU3k1QHMZYkQkB6TMKCHyM1c0Gt8Q1WRj25vR/sURF1j8FjOVC2hKvIg0/IUj2IiTNtxQtV3mm
+	wJXBf7HiQq7oMSEyHq926mUP7Rw==
+X-Received: from pgig7.prod.google.com ([2002:a63:f407:0:b0:cc1:c7d3:7c7b])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:a03:b0:3c3:9c4e:de3a with SMTP id adf61e73a8af0-3cf82a348a3mr11724369637.6.1787735921564;
- Wed, 26 Aug 2026 02:18:41 -0700 (PDT)
-Date: Wed, 26 Aug 2026 09:18:18 +0000
+ 2002:a05:6a21:a383:b0:3cd:8d15:895e with SMTP id adf61e73a8af0-3cf84b53689mr11572460637.12.1787735918168;
+ Wed, 26 Aug 2026 02:18:38 -0700 (PDT)
+Date: Wed, 26 Aug 2026 09:18:16 +0000
 In-Reply-To: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,13 +59,14 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=5596;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=4708;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=NFa90siDaW2AryA30Q8bJ5Qh7q7W2DqG2XaPe8+kXyo=; b=v0d5C4wkWWesFaHM60cN7REFurl8Oyg0VII9TPxllUT2UaIYDsS6Nac84jjl3ihI71jCYcDgl
- xbEFlslA2w6C5IahaWJaj2wX/VE9nKjbCz3wuE3sGID9S2vKNO9OT1k
+ bh=ZTwn4UyMShrGZfEU90otJVup2JEojFMgiToKCnnSVVE=; b=dDBRMblwUg6UwX2I1hz2Tpxt+EI3WovENt6hqBknKpraB0X285GZYRtS86E6IMk5svSgepv73
+ EfxqI68rjF/CyC9ce+QdXDFmPsPxg8E1UYpFu6gAUyL8f5QVEBtho9j
 X-Mailer: b4 0.16.0
-Message-ID: <20260826-gmem-inplace-conversion-v11-20-0a15d8a799aa@google.com>
-Subject: [PATCH v11 20/46] KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
+Message-ID: <20260826-gmem-inplace-conversion-v11-18-0a15d8a799aa@google.com>
+Subject: [PATCH v11 18/46] KVM: guest_memfd: Handle lru_add fbatch refcounts
+ during conversion safety check
 From: Ackerley Tng <ackerleytng@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -94,122 +95,133 @@ To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
+	linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>
 Content-Type: text/plain; charset="utf-8"
 
-From: Michael Roth <michael.roth@amd.com>
+A guest_memfd folio has no outstanding references if guest_memfd holds the
+only references on it. Any other references on the folio may indicate
+another user, and guest_memfd cannot convert it to private if there may be
+an existing host user.
 
-Make the source page for populating an SNP guest_memfd instance optional
-if in-place conversion/population is enabled.  If KVM can convert the page
-in-place, then it's possible for guest memory to be initialized directly
-from userspace by mmap()'ing the guest_memfd and writing to it while the
-corresponding GPA ranges are in a 'shared' state, before converting them
-to the 'private' state expected by KVM_SEV_SNP_LAUNCH_UPDATE.
+A folio will have outstanding references if it is present in a per-CPU
+lru_add fbatch. guest_memfd does not actually participate in LRU, but
+freshly-allocated folios are still added to the lru_add fbatch for batch
+LRU statistics processing.
 
-Update the handling/documentation for KVM_SEV_SNP_LAUNCH_UPDATE to allow
-for 'uaddr' to be set to NULL when in-place conversion is enabled, which
-SNP_LAUNCH_UPDATE will then use to determine when it should/shouldn't
-copy in data from a separate memory location. Continue to enforce
-non-NULL when PRIVATE is tracked per-VM, not per-guest_memfd.
+A folio may also have extra refcounts if it is on the mlock fbatch.
 
-Signed-off-by: Michael Roth <michael.roth@amd.com>
-[Moved condition to snp_launch_update]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Tested-by: Shivank Garg <shivankg@amd.com>
+These two known "usages" of the folio are handled by calling
+lru_cache_drain_for_folio, which drains both the lru_add and mlock
+fbatches. After draining, if the refcount is still elevated, then there are
+truly outstanding references.
+
+If the page may be dma pinned, DMA is using it and hence there are
+outstanding references. folio_maybe_dma_pinned() can have false positives,
+but that's only with a significant number of refcounts, at which point
+draining LRU is not going to move the needle - it can still be concluded
+that the folio has outstanding references.
+
+If the page is still mapped after guest_memfd tried to unmap it earlier in
+the conversion process, it also has outstanding references.
+
+Return true and exit early to avoid unnecessary draining in these 2 cases.
+
+Provide a drain status to only drain once ever while processing a batch of
+folios.
+
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Suggested-by: David Hildenbrand <david@kernel.org>
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- Documentation/virt/kvm/x86/amd-memory-encryption.rst | 14 ++++++++++----
- arch/x86/kvm/svm/sev.c                               | 11 ++++++-----
- virt/kvm/kvm_main.c                                  |  1 +
- 3 files changed, 17 insertions(+), 9 deletions(-)
+ mm/swap.c              |  2 ++
+ virt/kvm/guest_memfd.c | 30 ++++++++++++++++++++++--------
+ 2 files changed, 24 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-index bd04a908a8dbd..5977fbe33b98c 100644
---- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-+++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-@@ -503,7 +503,8 @@ secrets.
+diff --git a/mm/swap.c b/mm/swap.c
+index 8e965c8ce9aa9..9f511b97ab110 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -37,6 +37,7 @@
+ #include <linux/page_idle.h>
+ #include <linux/local_lock.h>
+ #include <linux/buffer_head.h>
++#include <linux/kvm_types.h>
  
- It is required that the GPA ranges initialized by this command have had the
- KVM_MEMORY_ATTRIBUTE_PRIVATE attribute set in advance. See the documentation
--for KVM_SET_MEMORY_ATTRIBUTES for more details on this aspect.
-+for KVM_SET_MEMORY_ATTRIBUTES/KVM_SET_MEMORY_ATTRIBUTES2 for more details on
-+this aspect.
+ #include "internal.h"
  
- Upon success, this command is not guaranteed to have processed the entire
- range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
-@@ -511,9 +512,14 @@ range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
- remaining range that has yet to be processed. The caller should continue
- calling this command until those fields indicate the entire range has been
- processed, e.g. ``len`` is 0, ``gfn_start`` is equal to the last GFN in the
--range plus 1, and ``uaddr`` is the last byte of the userspace-provided source
--buffer address plus 1. In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO,
--``uaddr`` will be ignored completely.
-+range plus 1, and ``uaddr`` (if specified) is the last byte of the
-+userspace-provided source buffer address plus 1.
+@@ -995,6 +996,7 @@ void lru_cache_drain_for_folio(const struct folio *folio,
+ 			*drained = LRU_CACHE_DRAINED_ALL;
+ 	}
+ }
++EXPORT_SYMBOL_FOR_KVM(lru_cache_drain_for_folio);
+ 
+ atomic_t lru_disable_count = ATOMIC_INIT(0);
+ 
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 6dc199be0eb87..4912f90567fe8 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -8,6 +8,7 @@
+ #include <linux/mempolicy.h>
+ #include <linux/pseudo_fs.h>
+ #include <linux/pagemap.h>
++#include <linux/swap.h>
+ 
+ #include "kvm_mm.h"
+ #include "guest_memfd.h"
+@@ -556,10 +557,28 @@ static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
+ 	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
+ }
+ 
++static bool __folio_has_outstanding_references(struct folio *folio,
++					       enum lru_cache_drained *drained)
++{
++	if (folio_maybe_dma_pinned(folio) || folio_mapped(folio))
++		return true;
 +
-+In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO, ``uaddr`` will be
-+ignored completely. For all other page types, ``uaddr`` is optional if in-place
-+conversion is enabled (i.e. when the data had been written directly to
-+guest_memfd while the page was in the shared state) and is required if in-place
-+conversion is disabled.
++	/* 1 reference held by filemap_get_folios() in the folio batch. */
++	lru_cache_drain_for_folio(folio, 1, drained);
++
++	/*
++	 * Outstanding references are anything other than those from the page
++	 * cache, plus 1 temporary reference held by filemap_get_folios() in the
++	 * folio batch.
++	 */
++	return folio_ref_count(folio) != folio_nr_pages(folio) + 1;
++}
++
+ static bool kvm_gmem_has_outstanding_references(struct inode *inode,
+ 						pgoff_t start, size_t nr_pages,
+ 						pgoff_t *err_index)
+ {
++	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
+ 	struct address_space *mapping = inode->i_mapping;
+ 	pgoff_t last = start + nr_pages - 1;
+ 	bool has_outstanding = false;
+@@ -570,17 +589,12 @@ static bool kvm_gmem_has_outstanding_references(struct inode *inode,
+ 	folio_batch_init(&fbatch);
  
- Parameters (in): struct  kvm_sev_snp_launch_update
+ 	next = start;
+-	while (has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
++	while (!has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
+ 		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+ 			struct folio *folio = fbatch.folios[i];
  
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index dff684b88f153..63e8cfa9bf559 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2400,7 +2400,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 	 */
- 	if (ret && !snp_page_reclaim(kvm, pfn) &&
- 	    sev_populate_args->type == KVM_SEV_SNP_PAGE_TYPE_CPUID &&
--	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM) {
-+	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM && src_page) {
- 		void *src_vaddr = kmap_local_page(src_page);
- 		void *dst_vaddr = kmap_local_pfn(pfn);
- 
-@@ -2433,8 +2433,8 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	if (copy_from_user(&params, u64_to_user_ptr(argp->data), sizeof(params)))
- 		return -EFAULT;
- 
--	pr_debug("%s: GFN start 0x%llx length 0x%llx type %d flags %d\n", __func__,
--		 params.gfn_start, params.len, params.type, params.flags);
-+	pr_debug("%s: GFN start 0x%llx length 0x%llx type %d flags %d src %llx\n", __func__,
-+		 params.gfn_start, params.len, params.type, params.flags, params.uaddr);
- 
- 	if (!params.len || !PAGE_ALIGNED(params.len) || params.flags ||
- 	    (params.type != KVM_SEV_SNP_PAGE_TYPE_NORMAL &&
-@@ -2446,7 +2446,8 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 
- 	if (params.type == KVM_SEV_SNP_PAGE_TYPE_ZERO)
- 		src = NULL;
--	else if (!params.uaddr || !PAGE_ALIGNED(params.uaddr))
-+	else if ((!gmem_in_place_conversion && !params.uaddr) ||
-+		 !PAGE_ALIGNED(params.uaddr))
- 		return -EINVAL;
- 	else
- 		src = u64_to_user_ptr(params.uaddr);
-@@ -2493,7 +2494,7 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 
- 	params.gfn_start += count;
- 	params.len -= count * PAGE_SIZE;
--	if (params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
-+	if (src && params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
- 		params.uaddr += count * PAGE_SIZE;
- 
- 	if (copy_to_user(u64_to_user_ptr(argp->data), &params, sizeof(params)))
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 1ea8198821917..05c518c9b8078 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -104,6 +104,7 @@ module_param(allow_unsafe_mappings, bool, 0444);
- 
- #ifdef kvm_arch_has_private_mem
- bool __ro_after_init gmem_in_place_conversion = false;
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(gmem_in_place_conversion);
- #endif
- 
- /*
+-			/*
+-			 * Outstanding references are anything other than those
+-			 * from the page cache, plus 1 temporary reference held
+-			 * by filemap_get_folios() in the folio batch.
+-			 */
+-			if (folio_ref_count(folio) != folio_nr_pages(folio) + 1) {
+-				has_outstanding = true;
++			has_outstanding = __folio_has_outstanding_references(folio, &drained);
++			if (has_outstanding) {
+ 				*err_index = max(start, folio->index);
+ 				break;
+ 			}
 
 -- 
 2.55.0.887.g758fc8c411-goog
