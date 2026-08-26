@@ -1,295 +1,221 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012008.outbound.protection.outlook.com [40.107.200.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735EA3016E7
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 22:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787783627; cv=none; b=VCEMXhnjv7L8RB1MozFwWix5h+x/fMtPKTSAVpHpJBPx97hvHBllyQq0ar0wXFYUnKNF59+jqqNocedakD4t75nCtnGFXjCB/g8Y9FIyCwqhFnEBCPVLScWlLFUtR+F8fJurpQ5cfJ8gl5OTSjIhWBh76V/YbLdOYWOrzbK1UsI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787783627; c=relaxed/simple;
-	bh=xSXyqUElRzi4ro8cHC0OBS6VEnVwYq1rEqVbqm8HcoA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=W8GeIvrbkLXVYNE53QXFr0DyzH0Bc3fajmUEaIVGZLuSVtEPeCFdCA952s6kJe0/yHha8g0A+9fIoE0R189af8IkrgVXX47vmECeb/iPpERPLrzD8v0hEXpDQmMNLL2ORyupGSSWRZbB+nQagOM/nGvSm2eO4pWxAlwfwRdTH48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AVzTjsCd; arc=none smtp.client-ip=209.85.215.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B68404BFF;
+	Wed, 26 Aug 2026 22:35:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787783735; cv=fail; b=hR8jwUPKWdSLZsQceHnT3iDwjEX0fpx34EgbheoGGOad8AeqUEjBRerBeb6q7+ktJzhif+gbjGe0XyzneHLVRcfIFDA7a//4blBfX1/67Rs+iWccew7X4sTYkgpADQvx5j5w1MKJ48PGJmvO9ardlJX+jKwahsQced0QaZsKi+8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787783735; c=relaxed/simple;
+	bh=dEPlowdhLAcrP7lwc7VCwdX86Gmjqmi4SIzTgvG8Z2k=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lv+hVGjcoSD1QHhhs044PKhf+VZcmoCZAECnyQN1GqmXGjEghXA3NQP3EFVyBqXBscdkyD8nuiaHEwIC16bpyfSVpp02bUaE/aOrZ5Xtzip9ZEFHbBhNi5jyKS3CtxzkEKmaOkZ8tMDc+o0K8OTNuqf/ac2ilpOSoHLNswv7kmM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=EUwtXbZA; arc=fail smtp.client-ip=40.107.200.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AVzTjsCd"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1d85c012dso147103a12.2
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 15:33:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787783625; x=1788388425; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IpUANZHm7Ku5ncYu7RPUYz8NQSkFG4aKOc/nSfGf9bs=;
-        b=AVzTjsCdZ7ZJjFIRsHm+VtHDqmrKHPqZQS2ewLb8BgMhajOAzQ/FguDzxtEQMYnwKc
-         r7anwtQTJFn/ucy+x7VRsdLtrfGJIQDc9OV9NQeOP/i/bY4LcgB+zVGfo76+WslQmHmg
-         hJCjQXt1FA7LdcfRWLzDFjaGF2akzYu+ZhCMdnmqHV21gZO4B9UFyeq2otvTZhPkC2kn
-         aR26dtEXAtPQ54EyKvmVzuKZbFI+Bkv27GlRjza5X583vVfk3fUqpIMjzesvx43gNuph
-         aEd36NIKVaDrhXWu+oRz4/h6ei0nZb1kDjo8vFe+x7GK/4kcoXvlRDWlnl6kxS9VkSiS
-         M11w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787783625; x=1788388425;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IpUANZHm7Ku5ncYu7RPUYz8NQSkFG4aKOc/nSfGf9bs=;
-        b=AV5K7r5jZm5xMqqufDd/FjXHJbMeNAju32U0iGilQQ5hlliBN/BGxJ072VugcGVrhw
-         TgNyyqtdU36MDqkeTVwGHdvhxthjox8b77XszM1B7SmEyQj3O4i8MYfpi3s3uOdmxY/X
-         8rKSUkyqON4CMXZFPWo+iBLu3Es4SuRKoajktKtILSAB71bvvavEopH1hzmTUbrWJbrb
-         Tp/EZ+ezm9q9M7b0YIyZ58Top8LZKJ0t6kPTqHx1KLRcbVLYw6cPrr1KItvjJ04CjNne
-         YfoMVKkqktrhDyF4wo+yPp5hO7V0U7oA1Lb1vqK7SD0zBZ+6Lj8x0mV1tjGMpebjOfqL
-         dvOg==
-X-Forwarded-Encrypted: i=1; AHgh+RqmGSx1SNO+gj5Dr8GlQltmU6IxkS3C3PP4cHi/gLwxSNkHLyX/R073jOdhBGa/mBDPExQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++l7JLOzq3ftUq81vw0G/1rDffJMrPlBKxziNSXWAAU8875vKu+C
-	KEjriiBe7dW7ruITQvWrE1o/yp2SLx9ZtCctBltLhQ9GwHrOl/wLecTlo8OmMIigOxxDPB5iAp5
-	gLxYEYg==
-X-Received: from pgvi12.prod.google.com ([2002:a65:61ac:0:b0:cbe:e0a7:536b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:c786:b0:3c3:b57b:627d
- with SMTP id adf61e73a8af0-3cf84c5a493mr23198540637.12.1787783624481; Wed, 26
- Aug 2026 15:33:44 -0700 (PDT)
-Date: Wed, 26 Aug 2026 15:33:43 -0700
-In-Reply-To: <mtbqvvvpwbzybgy6z47lwui6ag53kyubub3hkczui7u72zxesl@lnwsglrgwl5p>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="EUwtXbZA"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WKPmfD+m0xAk252vZNrUejLAQZxc8vf+G+wy9eP+y+mZxa2MbWDUqGhwXXJItXfQTWbx1LPwDR5sMKxzNKOAOWrxiKdzR6QUgGalthI7E14rqPc57D1iP/g+Rn41dIBGKLBiUrTXoawh4UjtUdACXcrq1NWuEYroR84EcQaL+VTjgQfkuOs2r8S1gYrPlrnI1DbTG+SDEnrIM/7YydO2zG3L/H8Lqkn7+uZKKfRAbkc8O+khDyOpV88Iegdw7ks1iStcEGmeYpC7kAXf6Cz7mwZmwYlex2rMjBGPBNIpydftDHS3tgaYwLbyysB+L8d/LVcM5MYX1qoCUSQvBVQRMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wlMfJf2YEpYx/mgOUx7h00zVJAj4j5CyDNOS1kD1Qf0=;
+ b=irZPoS3Fc4kFZaHDahq+blY89KCj1NLmM2MnPhejGifUsRPhaXk6ZPaQ0Oz37Q9sJmL0vicjMZsfDppMtLP0cPfeRAMopbs/oN8gTYCFz1t07ItjpGcfaftYZFmPCDvguCYVqqH1irQ0YqlLja/nW+Tc5XkryLlny5Pc93qNDaQ+zGwq1XljZZIaYCdLzb4iRRM1gz7FXtu6ISDd5w4Lt4BFSMR2IaChaKMJDbTulYefHGyj+0+dS/pi2IjosHEVp4PgZoLBXBCmKZbrmGcHa7LYtAUlgjVowHUWoQIgNvmoWa4fZOU86xwtwhv5aOyLY19sW0GvSgF3xZtVrAKy2A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
+ is 149.199.90.133) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wlMfJf2YEpYx/mgOUx7h00zVJAj4j5CyDNOS1kD1Qf0=;
+ b=EUwtXbZA2xvJJqOcLoxA3B8RSAEjepw441tcZHS6Choq7ECJdX+X0L+kxJgPT2rsdjxh1IB1CzAeYlCxPmrlggu50OQV0AnctKqbG+vzzkOZkmSYMFOhGuOhNl1bUWr2KoLDwh8VE0pAL2IeJPtiD9C4TUKyczyRW0th4ALxkEY=
+Received: from BN0PR07CA0024.namprd07.prod.outlook.com (2603:10b6:408:141::33)
+ by CY8PR12MB7172.namprd12.prod.outlook.com (2603:10b6:930:5b::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.6; Wed, 26 Aug
+ 2026 22:35:28 +0000
+Received: from BN3PEPF00022BBC.namprd04.prod.outlook.com
+ (2603:10b6:408:141:cafe::96) by BN0PR07CA0024.outlook.office365.com
+ (2603:10b6:408:141::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.10 via Frontend Transport; Wed,
+ 26 Aug 2026 22:35:28 +0000
+X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
+ 149.199.90.133) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=quarantine header.from=amd.com;
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ amd.com discourages use of 149.199.90.133 as permitted sender)
+Received: from satlexmb07.amd.com (149.199.90.133) by
+ BN3PEPF00022BBC.mail.protection.outlook.com (10.167.248.118) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.360.3 via Frontend Transport; Wed, 26 Aug 2026 22:35:27 +0000
+Received: from dryer.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 26 Aug
+ 2026 17:35:26 -0500
+From: Kim Phillips <kim.phillips@amd.com>
+To: <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
+CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, "Nikunj A
+ Dadhania" <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, "Michael
+ Roth" <michael.roth@amd.com>, Borislav Petkov <borislav.petkov@amd.com>,
+	Borislav Petkov <bp@alien8.de>, Naveen Rao <naveen.rao@amd.com>, David Kaplan
+	<david.kaplan@amd.com>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	"Dave Hansen" <dave.hansen@linux.intel.com>, Kim Phillips
+	<kim.phillips@amd.com>, Nathan Fontenot <nathan.fontenot@amd.com>
+Subject: [PATCH v5 0/8] Add SEV-SNP BTB Isolation and IBPB-on-Entry guest features
+Date: Wed, 26 Aug 2026 17:35:02 -0500
+Message-ID: <20260826223510.3669875-1-kim.phillips@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
- <20260826-gmem-inplace-conversion-v11-15-0a15d8a799aa@google.com>
- <ao9CKMXAX-hScRSa@google.com> <mtbqvvvpwbzybgy6z47lwui6ag53kyubub3hkczui7u72zxesl@lnwsglrgwl5p>
-Message-ID: <ao9px1j7CLYXMiGP@google.com>
-Subject: Re: [PATCH v11 15/46] KVM: guest_memfd: Call arch make_shared
- callback for to-shared conversion
-From: Sean Christopherson <seanjc@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Fuad Tabba <fuad.tabba@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF00022BBC:EE_|CY8PR12MB7172:EE_
+X-MS-Office365-Filtering-Correlation-Id: d64a83b3-e0c7-4241-d5a9-08df03c25412
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|36860700016|1800799024|82310400026|18002099003|11063799006|56012099006|5023799004|13003099007|6133799003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	ka+ugnXJMqIDStX7vAZ/2abmu8z8DB8DvCdElduBc6yO5QcOgIP2qXIjv/5YbpIp00Km5zE8OXXucL9GzDm4laClGW0Jw4/MZeVVb02NF1OyZZBvR0BDin0boJjGlGwZS3C7Cs3ZaMAtVCjAZNOhJAtwO/R0oY44Axjnlgi/MnVHwemnt1o84Sz7euULmcqI7QKL08Ksoj56otpTyNDpn6i9Bfz03P7wyYO6V4OaYLRaN6C3W6hazck7WozWr66VikEA+OQXSj8Xr9AxVmipWF7wfTIFItRbdaqYtFg3ohpOhq2FvV9JDa8NYtL2OnJWDEFjE6kmhTIfXDNc/SevhFZNbKVjZwcl2OySxNWRmIzQLfyq+1xVwgFzs1kuZnWwiyQjNhzHTE5AKuK71H9Qt8CXy4I8Ekn2iMEaEnek2guYpQYR3Jfk6b2LYGbdVBBomHe0T6ILjbX0nnhFq0QPqKzHJcsPIwZeBLSPu0IxWpaxAA7D+f6PP3UyEsvM/Y0OOon6S/wfA71Wmxh4LiANy1ARuYv+aC6RaWfsb2DHosir96fTH12nBNC8zyanNprkZ2rVCKVoNHS5ue7/Am3VxrNU57+vZLLI37NnoMeGF7flQgOPrO0YiTVQAUN307z4ts5r6H7RyY/jeOJaKREcEclCkjEra1VNa44Klj5alpBtkjZQpp7NLX/Jm396kLiTJ5VlJ5PXI2u+6fcLPsnNGw==
+X-Forefront-Antispam-Report:
+	CIP:149.199.90.133;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:unknown-90-133.xilinx.com;CAT:NONE;SFS:(13230040)(376014)(23010399003)(36860700016)(1800799024)(82310400026)(18002099003)(11063799006)(56012099006)(5023799004)(13003099007)(6133799003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	Tafv2dsXsag/8vJHtve+mgsi03y9Un8Q0cd0ZOfSdQO01UU3qiH2CeU6zE/oiZdJ9eHDwFug/Kbx2engYAwq69yXy/bsZaD11ibsRNAZVJSb+hAC133bV62D3S1jlMW8B3u2etTJik2lqfa6389hKeYhPk+kftNhGLRSkFJV7uurhuKUE9mUsytIpfUsBNieZsAP0F9TpZrOUgNGMQHm7WNs8jyTeZ88iPaaL7CQzIf0v741dqOfmXqEj9p/DOEB2HRejvfYub+HjnFE92QleGoKjjmvf9zU6u05xHt9fnPlbZStXIXEhulo/MZhMljogJxRw8I7JSWqaS6YnqIW+YUeIT5jFevjGYrJZ4S5z5BuffRPQnksO1JzNNIoWUiDVkqPPcyP5tQeJZDb0nzusr87bSiiQ0GI9QRrVtwQaPAlmuMdKVj+ww7CL4QN7mW9
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 22:35:27.7218
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d64a83b3-e0c7-4241-d5a9-08df03c25412
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[149.199.90.133];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF00022BBC.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7172
 
-On Wed, Aug 26, 2026, Michael Roth wrote:
-> On Wed, Aug 26, 2026 at 12:44:40PM -0700, Sean Christopherson wrote:
-> > On Wed, Aug 26, 2026, Ackerley Tng wrote:
-> > > Omit support for calling the arch hook to make private, since SNP, the only
-> > > implementer of the arch make-private hook today, would actually prefer
-> > > making private only just before faulting memory into the NPTs.
-> > > 
-> > > Calling the make-private arch hook would require iterating both bindings
-> > > and the filemap to find the intersection of bindings and allocated
-> > > folios.
-> > 
-> > Why would KVM need to iterate over the bindings?  Only the RMP needs to be updated,
-> > whether or not the RMP is currently reachable is irrelevant, no?
-> > 
-> > Subsequent calls to kvm_arch_gmem_make_private() from kvm_gmem_get_pfn() would be
-> > superfluous, but that's already possible, e.g. if an NPT mappings is removed for
-> > whatever reason.
-> > 
-> > > On top of that, SNP would need to figure out whether to actually
-> > > make private based on whether the memory is about to be faulted, or
-> > > whether it is a conversion.
-> > 
-> > This is a non-issue, no?  As above, sev_gmem_make_private() already bails early
-> > if the page is already assigned in the RMP.
-> > 
-> > I don't care terribly about how SNP handles this, but I do want accurate reasoning
-> > and justification so that if/when we revisit any of this in the future, we can make
-> > informed decisions.  Because unless I'm missing something, this is an optimization
-> > choice (eager vs. lazy to-private conversions), not a complexity tradeoff, and it's
-> > not clear to me how we decided the lazy approach would provide better performance.
-> 
-> I'm not sure it was discussed in this context, but there was some past
-> discussion around preallocation (i.e. "should we call make-private arch
-> hooks at allocation time to allow for faster boot for prealloc guests"
-> and then that ran into the TDX side of things where that would
-> necessarily entail pre-mapping into the sEPT as well, so
-> KVM_PRE_FAULT_MEMORY ended up being the interface we adopted for this
-> purpose.
-> 
-> Since then, KVM_PRE_FAULT_MEMORY was added on the QEMU side and gets
-> called after all conversions for both SNP/TDX, and even without
-> preallocation it's a decent performance boost to SNP. If we were to
-> switch to pre-calling the make-private arch hook then the
-> KVM_PRE_FAULT_MEMORY call because partly redundant and in practice we'd
-> probably see a small performance loss.
-> 
-> So there's real performance differences here but it's sort of been
-> addressed through a solution that offers additional performance
-> benefits on top so there's no longer as much to be gained here I think.
+This series advertises two SEV-SNP guest-selectable side-channel
+protections through KVM's vmsa_features ABI -- BTB Isolation
+(SEV_FEATURES bit 7) and IBPB-on-Entry (SEV_FEATURES bit 21) -- along
+with SVM_SEV_FEAT_SNP_ACTIVE, and fixes two x86 mitigation-selection
+bugs that stand in the way.
 
-Or another way to look at it, eager conversion would allow QEMU to drop its
-workaround.
+The cpu/bugs patches come first because they are prerequisites, not
+drive-by cleanups:
 
-To be clear, I'm a-ok with the code as-is, I just want to make sure we document
-exactly why we're choosing this implementation.
+  - Patch 1 fixes spectre_v2=eibrs silently selecting retpolines instead
+    of AutoIBRS on SNP hosts.  Commit acaa4b5c4c85 ("x86/speculation: Do
+    not enable Automatic IBRS if SEV-SNP is enabled") suppressed AutoIBRS
+    by never setting X86_FEATURE_IBRS_ENHANCED, which also disabled the
+    explicit spectre_v2=eibrs request.  Set the feature bit and move the
+    SNP-prefers-retpoline decision into the default/auto case, where it
+    belongs.
 
-> But I guess that's a moot point...
-> 
-> > 
-> > > Calling the make-shared arch hook and not the make-private arch hook does
-> > > leak SNP-specific details into guest_memfd (as in, why only make-shared
-> > > during conversions but not make-private?), but the additional complexity is
-> > > not worth taking on until guest_memfd has a user actually requiring an arch
-> > > make-private call.
-> > 
-> > ...
-> > 
-> > > +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> > > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end)
-> > > +{
-> > > +	struct folio_batch fbatch;
-> > > +	pgoff_t next = start;
-> > > +	int i;
-> > > +
-> > > +	folio_batch_init(&fbatch);
-> > > +	while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
-> > > +		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-> > > +			struct folio *folio = fbatch.folios[i];
-> > > +			pgoff_t start_index, end_index;
-> > > +			kvm_pfn_t start_pfn;
-> > > +			kvm_pfn_t nr_pages;
-> > > +
-> > > +			start_index = max(start, folio->index);
-> > > +			end_index = min(end, folio_next_index(folio));
-> > > +			/*
-> > > +			 * end_index is either in folio or points to
-> > > +			 * the first page of the next folio. Hence,
-> > > +			 * all pages in range [start_index, end_index)
-> > > +			 * are contiguous.
-> > > +			 */
-> > > +			start_pfn = folio_file_pfn(folio, start_index);
-> > > +			nr_pages = end_index - start_index;
-> > > +
-> > > +			kvm_arch_gmem_make_shared(start_pfn, nr_pages);
-> > > +		}
-> > > +
-> > > +		folio_batch_release(&fbatch);
-> > > +		cond_resched();
-> > > +	}
-> > > +}
-> > > +#else
-> > > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end) {}
-> > > +#endif
-> > > +
-> > >  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
-> > >  				     size_t nr_pages, uint64_t attrs,
-> > >  				     pgoff_t *err_index)
-> > > @@ -624,7 +661,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
-> > >  
-> > >  	filter = to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
-> > >  	kvm_gmem_invalidate_start(inode, start, end, filter);
-> > > +
-> > > +	if (!to_private && kvm_arch_has_gmem_convert())
-> > > +		kvm_gmem_make_shared(inode, start, end);
-> > > +
-> > >  	mas_store_prealloc(&mas, xa_mk_value(attrs));
-> > > +
-> > >  	kvm_gmem_invalidate_end(inode, start, end);
-> > 
-> > The real reason I responded...
-> > 
-> > Thinking about the Secure AVIC mess made me realize zapping NPTs for SNP VMs isn't
-> > strictly necessary in this path.  The PFN isn't changing, just the attributes, and
-> > that's (obviously) tracked in the RMP.  KVM doesn't need to zap SPTEs to induce a
-> > fault, because the mismatched C-bit vs. RMP status will cause an #NPF(RMP), and
-> > AFAICT kvm_mmu_page_fault() will do the right thing.  A misbehaving guest could
-> > continue to access the shared data (assuming we stick with lazy conversions), but
-> > that should be fine?  E.g. it's not really any different than implicit conversions.
-> 
-> I think this should work in theory...
-> 
-> zapping NPTs means the vCPUs will keep retrying until they get the page first
-> vCPU that faulted is trying to grab from gmem. If we don't zap, then they will
-> instead be racing with the first vCPU, and if they lose they will be
-> generating implicit page faults that trigger conversions back to shared,
+  - Patch 2 allows spectre_v2=ibrs on non-Intel vendors.  BTB Isolation
+    uses legacy SPEC_CTRL.IBRS toggling to optimize the SNP VM
+    exit-to-re-entry path, so AMD needs to be able to select it.  It also
+    makes EFER.AUTOIBRS explicitly track the selected mitigation, which
+    matters across kexec since head_64.S preserves incoming EFER bits.
 
-Why would they trigger conversions back to shared?  Assuming the guest isn't
-being silly and accessing the memory with C-bit=0, the #NPF will be tagged ENC
-and KVM will treat it as a private access.
+Patches 3-6 are small width/ABI cleanups and the SNP_ACTIVE and
+SNP-only-feature-mask groundwork, and patches 7-8 add IBPB-on-Entry and
+BTB Isolation themselves.
 
-	if (is_sev_snp_guest(vcpu) && (error_code & PFERR_GUEST_ENC_MASK))
-		error_code |= PFERR_PRIVATE_ACCESS;
+Note that BTB Isolation is advertised unconditionally on SNP-capable
+parts.  That is deliberate: the APM defines it as architecturally
+present on every SEV-SNP-capable processor, so unlike IBPB-on-Entry
+there is no host enumeration bit to gate on.  Patch 8 spells this out.
 
-kvm_mmu_faultin_pfn() will see "fault->is_private == kvm_is_private_gfn()" as
-true, i.e. won't kick out to userspace.  Same for __kvm_mmu_faultin_pfn(), which
-will call into kvm_mmu_faultin_pfn_gmem() => kvm_gmem_get_pfn(), see that the
-gfn is private, and call kvm_arch_gmem_make_private() as needed.
+Changes since v4:
+  https://lore.kernel.org/all/20260804235611.4053375-1-kim.phillips@amd.com/
 
-I don't see how #NPFs due to the RMP being SHARED would be handled differently
-than !PRESENT #NPFs.
+ - Patch 1 ("x86/bugs: Allow forcing Automatic IBRS with SNP active
+   using spectre_v2=eibrs"): only prefer retpoline over AutoIBRS on SNP
+   hosts when CONFIG_MITIGATION_RETPOLINE is actually built in.  This
+   folds v4's patch 3 into the same condition and avoids the
+   select-then-fall-back ping pong.  Suggested in review:
+   https://lore.kernel.org/all/lctyimdlenyb5kvfxarzajs2ggzkwn4yehxu233lojynqwa7ej@wjur3lh6szlr/
 
-> and most likely the first vCPU will re-trigger an implicit shared->private
-> conversion when it does PVALIDATE. Worst case, the guest fails PVALIDATE
-> due to racing with itself.
-> 
-> It's a bit chaotic, but it shouldn't break anything other than the guest, and
-> it's only something we'd generally expect for buggy/malicious guests anyway.
-> 
-> However...
-> 
-> > 
-> > In other words, couldn't we do this (as an on-top optimization)?  The only wrinkle
-> > I can think of is that it could delay reconstituion of a hugepage, especially if
-> > we opted for eager conversion (because the guest wouldn't hit #NPFs to trigger the
-> > hugepage promotion).
-> > 
-> > diff --git arch/x86/kvm/mmu/mmu.c arch/x86/kvm/mmu/mmu.c
-> > index 62f751952ad8..61f3e270ab61 100644
-> > --- arch/x86/kvm/mmu/mmu.c
-> > +++ arch/x86/kvm/mmu/mmu.c
-> > @@ -1670,6 +1670,7 @@ static bool __kvm_rmap_zap_gfn_range(struct kvm *kvm,
-> >  
-> >  bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
-> >  {
-> > +       unsigned long shared_private =  KVM_FILTER_SHARED | KVM_FILTER_PRIVATE;
-> >         bool flush = false;
-> >  
-> >         /*
-> > @@ -1683,6 +1684,10 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
-> >         lockdep_assert_once(kvm->mmu_invalidate_in_progress ||
-> >                             lockdep_is_held(&kvm->slots_lock));
-> >  
-> > +       if (gmem_in_place_conversion && !kvm_has_mirrored_tdp(kvm) &&
-> > +           ((range->attr_filter & shared_private) != shared_private))
-> > +               return false;
-> > +
-> 
-> This path would also trigger for hole-punching, where we would want to
-> zap the NPT entries. So we might need to adjust the logic for more than
-> just shared vs. private to account for that.
+ - Patch 2 ("x86/bugs: Allow spectre_v2=ibrs on x86 vendors other than
+   Intel"): move the EFER.AUTOIBRS kexec cleanup out of
+   spectre_v2_apply_mitigation() and up to the top of
+   cpu_select_mitigations(), next to the existing SPEC_CTRL kexec
+   cleanup, so stale state is dropped before mitigation selection rather
+   than during it.  spectre_v2_apply_mitigation() now only sets the bit,
+   which keeps it much closer to its original shape.  Suggested in
+   review:
+   https://lore.kernel.org/all/ga63o6nf7xebndlo66qqasjx7axpopyph7ilkwhvx3enfaqs4w@r4qfr6eo6kcw/
 
-No, because PUNCH_HOLE uses kvm_gmem_get_all_gfns_filter(), which does:
+ - Subject prefix fixes, per review:
+   https://lore.kernel.org/all/20260818232204.GBaoTpHK8k7wD9mMk4@fat_crate.local/
+   The two x86 patches go from "cpu/bugs:" to "x86/bugs:" to match the
+   tip tree convention.  Patch 3 goes from "KVM: SEV:" to "KVM: SVM:",
+   since it only touches arch/x86/include/asm/svm.h.
 
-	if (gmem_in_place_conversion)
-		return KVM_FILTER_SHARED | KVM_FILTER_PRIVATE;
+ - Tag cleanup, per review:
+   https://lore.kernel.org/all/20260818232204.GBaoTpHK8k7wD9mMk4@fat_crate.local/
+   Dropped Cc: stable@kernel.org from both x86/bugs patches.  Patch 2
+   drops its Fixes: too -- it enables spectre_v2=ibrs on a vendor that
+   never had a use for the option rather than fixing a bug anyone is
+   hitting, so neither tag was right.  Patch 1 drops the kernel test
+   robot Reported-by:/Closes: pair; that report was against an earlier
+   posting of this patch rather than against upstream, so there was
+   nothing there for it to close.  The part of patch 1 that is genuinely
+   -stable material -- an SNP host with CONFIG_MITIGATION_RETPOLINE=n
+   booting with Spectre v2 unmitigated -- will be sent separately as a
+   minimal backport once this lands.
 
-i.e. won't get short-circuited.  Though I agree with the implication that this
-is super fragile/subtle.
+ - Dropped v4's patch 3 ("cpu/bugs: Fall back to AutoIBRS when retpoline
+   unavailable on SNP CPUs").  Its fallback is now subsumed by the
+   CONFIG_MITIGATION_RETPOLINE test above.
+
+ - Dropped v4's patch 1 ("x86/bugs: Only log missing retpoline when it's
+   actually the missing mitigation").  After the rework above this
+   series no longer needs it, but it still fixes a real spurious
+   "no mitigation available!" on Intel + RETBleed with
+   CONFIG_MITIGATION_IBRS_ENTRY=y, CONFIG_MITIGATION_RETPOLINE=n and
+   spectre_v2=auto, where spectre_v2_update_mitigation() afterwards
+   promotes SPECTRE_V2_NONE to SPECTRE_V2_IBRS.  Being posted separately
+   as a standalone fix:
+   https://lore.kernel.org/lkml/20260826222228.3668418-1-kim.phillips@amd.com/
+
+ - Added Tom's Reviewed-by to patch 8
+
+Kim Phillips (8):
+  x86/bugs: Allow forcing Automatic IBRS with SNP active using
+    spectre_v2=eibrs
+  x86/bugs: Allow spectre_v2=ibrs on x86 vendors other than Intel
+  KVM: SVM: Define SVM_SEV_FEAT_* flags using BIT_ULL()
+  KVM: selftests: sev_init2: Use BIT_ULL for VMSA feature bit definition
+  KVM: SEV: Disallow setting SNP-only features for non-SNP guests via a
+    single mask
+  KVM: SEV: Advertise SVM_SEV_FEAT_SNP_ACTIVE
+  KVM: SEV: Add support for IBPB-on-Entry
+  KVM: SEV: Add support for SNP BTB Isolation
+
+ arch/x86/Kconfig                              |  7 ++-
+ arch/x86/include/asm/cpufeatures.h            |  1 +
+ arch/x86/include/asm/svm.h                    | 17 ++++--
+ arch/x86/kernel/cpu/bugs.c                    | 59 ++++++++++++++-----
+ arch/x86/kernel/cpu/common.c                  |  6 +-
+ arch/x86/kvm/svm/sev.c                        | 21 ++++++-
+ tools/arch/x86/include/asm/cpufeatures.h      |  1 +
+ .../selftests/kvm/x86/sev_init2_tests.c       | 20 +++++--
+ 8 files changed, 96 insertions(+), 36 deletions(-)
+
+
+base-commit: ec8477a492cb24f2c334847c8734ca56c7ffdd29
+-- 
+2.43.0
 
