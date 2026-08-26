@@ -1,153 +1,109 @@
-Received: from mta1.migadu.com (out-240.mta1.migadu.com [95.215.58.240])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20EF3019C8
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 03:26:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B114F322B8F
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 03:35:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787714782; cv=none; b=YoARhykmi8WQBVmrOys2Sh9rtJDKsA2wsuRA8UuUuMUtlFo35mplb0nNlwNQT7qUBKlyXHMDbiC9vaoVZDsAzyOkQebtyAuwgi8qshSgf9SB7xiXh0sXSuXksrjbxgYBPNk4lkpnjpachE3VICikNtm5KpYxS0hgngn77Vtg6CI=
+	t=1787715333; cv=none; b=kzR4c7Ah1NNjf0sbyKDh5IIeyTJ2VkrLgsUdb3wv3chtsuI4gej45rhiYPJzQ7u2/sXIJnj7v7fwenMckMMMXj+HymDkLJxEobF3UWmO0s60tZ3k/MEAiQ+R+alAwGqKe9MJZrX/m1aqEHAb92vw0h3RkpPtWpQRis7XGxmLPbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787714782; c=relaxed/simple;
-	bh=BoOEeC1UgkAdtAXh0gBc2XLf7OBg9w6rgGaafjYXKno=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=HwiGui6Xo5O5EU7FTU8TgR3mtJtNhwncY0OdpybEaIAW2mi/Jgq/6I66qLuf/QFnlRN305e/Px6JrZIS8Qs4671cc2AGrLpAhNFx3lv5SGZwQgwdLkpGiAQ4H9LsulX2OD2i57OllVEfd7q7eoDEKN1mTmQyAWO8yjqsc5+D6oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=OkNMMC5l; arc=none smtp.client-ip=95.215.58.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1787715333; c=relaxed/simple;
+	bh=ULqvLgcf5aolbxdLszytXH1oq+3IAUaBe+G/qeS8EdM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eCLVHOjXOjMiBPW4uOpdFtzngKf1vwY7A3Fl/0mDmc5kMB7f+BIXGPo162FPnrYhqndHypos5n8hsrGEeFWwcdEpM13Dx5nkWLO0uB4r2KmdqIsmclqghZ+cIm0J3WyAGWdhAMran1rNob8GN69Q7DMZtJPIYQWDttqI53ZADCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cY3/3KRO; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="OkNMMC5l"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=BoOEeC1UgkAdtAXh0gBc2XLf7OBg9w6rgGaafjYXKno=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787714778; v=1; x=1788319578;
- b=OkNMMC5lMdXzApYz/qaKAxgtogsGBr8mR75ZkS7c/iDkY+BUUiPvSVRAQGfuYH6freICC5Ic
- 5wcJmg7cO6Actoz/Tm6xDGKTdh9kSTJJMNQJ3FjLn1n8uA5rL0PNOkZ41U8lUuH9jZ9wb0hTHav
- VKzB7x4inGcPzuH48wvbNBXw=
-X-Envelope-To: kvm@vger.kernel.org
-Received: from webmail.migadu.com (2001:41d0:303:fc7a::)
-	by smtp.migadu.com with ESMTPS id 94384c40a50ac1d2;
-	Wed, 26 Aug 2026 03:26:18 +0000
-X-Mizu-Trace-ID: 94384c40a50ac1d2
-X-Migadu-Flow: FLOW_OUT
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cY3/3KRO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787715332; x=1819251332;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ULqvLgcf5aolbxdLszytXH1oq+3IAUaBe+G/qeS8EdM=;
+  b=cY3/3KRO62WPUAjzfjQoQeIE7bA/wYs3NP3DwRDCNv5qDopAkyDrAiav
+   E8dblV4LRXyuQrYQ4peDhVrV9S/mQYGb6ejd+uaPDznHXvaMbx6DDlvtY
+   rxfrozJ3e9zVVI30MLLTVqeHvDLl3jipxRXax11vFEpOCeamszk6ya/hm
+   m6Vn59O+2CRPSrC4QBb20qbQt3Wq+nn/19PFsQMGagDrzc7WA/ucEimQv
+   N1d6U5x3VdenMeXRCvoESpg2zL5b00S7+6qHd3/Kvdfk5iEBn/MAoGQLf
+   /yRAXlrMLlUbgZhZNiCdnSWwB2tPOKJO9xKPPvfRNsBhEAMf8AzdSDi4T
+   A==;
+X-CSE-ConnectionGUID: lQ0cdkmOTi+YMnvEczEAyQ==
+X-CSE-MsgGUID: cC1uY43xTQGfNlhwEEIxNA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="75728370"
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
+   d="scan'208";a="75728370"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 20:35:31 -0700
+X-CSE-ConnectionGUID: nB/r3phlSgKxFBIsXLmKcw==
+X-CSE-MsgGUID: /1JyepAAS26vrUjWpwqhxg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
+   d="scan'208";a="297364009"
+Received: from d404e69c8b80.jf.intel.com ([10.54.34.91])
+  by orviesa002.jf.intel.com with ESMTP; 25 Aug 2026 20:35:31 -0700
+From: Kishen Maloor <kishen.maloor@intel.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com,
+	zhao1.liu@intel.com,
+	kvm@vger.kernel.org,
+	sohil.mehta@intel.com,
+	xiaoyao.li@intel.com,
+	binbin.wu@linux.intel.com,
+	farrah.chen@intel.com,
+	kishen.maloor@intel.com
+Subject: [PATCH 0/5] target/i386: Add support for LASS
+Date: Tue, 25 Aug 2026 20:57:29 -0700
+Message-ID: <20260826035734.114685-1-kishen.maloor@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 26 Aug 2026 03:26:18 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-From: "Kunwu Chan" <kunwu.chan@linux.dev>
-Message-ID: <ef7c880f59eedf0cd2f2b26842016bbbc2b68a06@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH] srcu: Add try_synchronize_srcu() for callers which can
- prove readers absent
-To: paulmck@kernel.org, "David Woodhouse" <dwmw2@infradead.org>
-Cc: "Kunwu Chan" <kunwu.chan@gmail.com>, "Lai Jiangshan"
- <jiangshanlai@gmail.com>, "Josh Triplett" <josh@joshtriplett.org>,
- "Steven Rostedt" <rostedt@goodmis.org>, "Mathieu Desnoyers"
- <mathieu.desnoyers@efficios.com>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Neeraj Upadhyay" <neeraj.upadhyay@kernel.org>, "Joel Fernandes"
- <joel@joelfernandes.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Sean
- Christopherson" <seanjc@google.com>, "Paolo Bonzini"
- <pbonzini@redhat.com>, rcu@vger.kernel.org, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <42ba6de7-3281-42c9-8d7b-f7dc62c10f62@paulmck-laptop>
-References: <20260821032210.792451-1-kunwu.chan@linux.dev>
- <d26ec36e92e8f5aa244e2a22de5d167d14b36597.camel@infradead.org>
- <42ba6de7-3281-42c9-8d7b-f7dc62c10f62@paulmck-laptop>
+Content-Transfer-Encoding: 8bit
 
-Hi Paul,
+This series adds QEMU support for Linear Address Space Separation (LASS) [1],
+an Intel security feature that prevents a class of side-channel attacks
+relying on speculative accesses across the user/kernel boundary. Paging,
+along with SMEP and SMAP, already provides mode-based access protection,
+but enforcing it requires a page walk whose timing can leak the layout of
+kernel memory. LASS applies the equivalent protections during
+linear-address pre-processing: given the usual partitioning of the linear
+address space into a user half (bit 63 clear) and a supervisor half
+(bit 63 set), an access targeting the opposite half is rejected on the
+basis of bit 63 alone, before any page walk.
 
-I'd be interested in helping with one of these. Are there any items
-that are not already being worked on and would be useful for me to
-take on? I'm particularly interested in the Tree
-`synchronize_srcu_atomic()` fastpath, if that part is still open.
+This series enumerates the LASS CPUID bit, recognizes CR4.LASS,
+and exposes LASS on the relevant Intel CPU models via new versioned models.
+LASS is not emulated by TCG.
 
-Thanks,
-Kunwu
+Exposing LASS to a guest also requires KVM support: KVM must validate
+the CPUID bit and CR4.LASS, and enforce LASS violations in its
+instruction emulator. That enabling is currently under review [2].
 
+Tested with a Linux guest on LASS-capable hardware: LASS is enumerated and
+CR4.LASS is set under KVM, and not enumerated under TCG.
 
-August 26, 2026 at 7:49 AM, "Paul E. McKenney" <paulmck@kernel.org mailto=
-:paulmck@kernel.org?to=3D%22Paul%20E.%20McKenney%22%20%3Cpaulmck%40kernel=
-.org%3E > wrote:
+[1] Intel 64 and IA-32 Architectures Software Developer's Manual, Volume 3A,
+    Section 4.3, "Linear-Address-Space Separation (LASS)".
+[2] https://lore.kernel.org/kvm/20260806011536.4172258-1-sohil.mehta@intel.com/
 
+Isaku Yamahata (2):
+  target/i386: Add support for LASS in CPUID enumeration
+  target/i386: Add LASS support in CR4
 
->=20
->=20On Fri, Aug 21, 2026 at 12:53:22PM +0100, David Woodhouse wrote:
->=20
->=20>=20
->=20> On Fri, 2026-08-21 at 11:22 +0800, Kunwu Chan wrote:
-> >=20
->=20[ . . . ]
->=20
->=20>=20
->=20> When applying this to current rcu/dev, the patch also needs to acco=
-unt
-> >  for the additional bool is_atomic argument to
-> >  check_init_srcu_struct(). Please rebase accordingly.
-> >=20=20
->=20>  Ooh, shiny, I hadn't spotted that the atomic thing had landed. May=
-be I
-> >  should retract my 'if we get that' above... but let's see how it
-> >  survives.
-> >=20
->=20It is starting to shape up. Here is what is left, that I know of, any=
-way:
->=20
->=20o A bit more work to get rcutorture to put up with atomic SRCU.
->=20
->=20o Tree synchronize_srcu_atomic() fastpath.
->=20
->=20o Disable preemption.
->=20
->=20o Reorganize commits to fix the Tiny hunks that got applied
->  in Tree commits, and likely other similar issues.
->=20
->=20o More work on error checking for use of banned primitives
->  with atomic SRCU.
->=20
->=20o Update documentation.
->=20
->=20Not that it matters, but atomic Tiny SRCU seems to be doing quite wel=
-l.
->=20
->=20>=20
->=20> I also have more than just this patch to rebase onto rcu/dev =E2=80=
-=94 unlike
-> >  some, I'm not just hacking RCU for the fun of it; I get my jollies
-> >  elsewhere :)
-> >=20=20
->=20>  Btw, the current commit c68271c3f83a message says "no index flip, =
-no
-> >  grace-period sequence update" but that isn't true of the implementat=
-ion
-> >  any more, is it? In fact, it *always* does those things, and doesn't
-> >  take the try-path optimisation by counting both epochs, that I'm doi=
-ng
-> >  here?
-> >=20
->=20The current "dev" branch is here:
->=20
->=20dc5bf5c8fb26 ("fixup! srcutree: Add an atomic Tree SRCU").
->=20
->=20Tree SRCU always does an index flip, though a single index flip can
-> serve multiple concurrent calls to synchronze_srcu_atomic().
->=20
->=20Tiny SRCU has the fast path, but must advance the index anyway for th=
-e
-> benefit of get_state_synchronize_srcu() and friends. It just bumps it
-> in one shot.
->=20
->=20Tree SRCU will also have to bump the index, but will be able to
-> do so manually, without doing all the grace-period processing.
->=20
->=20>=20
->=20> Thanks for the careful review.
-> >=20
->=20What David said! ;-)
->=20
->=20 Thanx, Paul
->
+Kishen Maloor (3):
+  target/i386: Introduce DiamondRapids-v3 to enable LASS
+  target/i386: Introduce SierraForest-v7 to enable LASS
+  target/i386: Introduce ClearwaterForest-v5 to enable LASS
+
+ target/i386/cpu.c    | 26 +++++++++++++++++++++++++-
+ target/i386/cpu.h    |  7 ++++++-
+ target/i386/helper.c |  4 ++++
+ 3 files changed, 35 insertions(+), 2 deletions(-)
+
+-- 
+2.47.1
+
