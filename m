@@ -1,170 +1,189 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5411248425C
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 20:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787775437; cv=none; b=Rk6BgfdAywtzV2wvADmBm4qC4BwwaqymZWd2HqKiAuuW3ROwgrupzeIL2PTrEmpjWQRaz1Ca6xr8aQmTnoASWLrzSeyp+pLF2L5LgmMjfsvclwaBfTfWKw/pIAR4I/mnQdR3lK6M7DJlUHATyvqNaVOIeSMtpEt8QiMDd9ZCnQ0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787775437; c=relaxed/simple;
-	bh=hKpqI0mJBjI5kD/qIVjkPJS+ecEWrrNrfB5JGjhq/dQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDZ+EnN0dYtkPywtMLcYjCPDn0Rci1NirszD6q4Lz4p/Qlq32X3MFI0YNh1env4khn6HfAepk/+hgKLyuReY7k+pJuDlzMjz154WKg0ss7kir5L8ndvk2FBThI0RJNLflmaweamOFEQhyxEeeUvhe5EKgXHVDPyl7LLiQHGJJFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=J+utyxIe; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7714C47CA61
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 20:27:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787776072; cv=pass; b=UWbJNhSwNabkUZAbHnTZc8LznnghA+3Q+XoFcVv1wx8+scI/uGGmHBTEAPd73DeHp/kyIKJIVKlRP9wqYZcPGdYwNsU+Q2vDouaUIIwo7TBvfW/TT5egBlAPr0WGcAfLCdE9FvtxSd1brTlJSkv/W6W3Lig4067iDLxflTxTzBU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787776072; c=relaxed/simple;
+	bh=KB5Dt4NITSpAROcFBDNP6TJCJRL/uGFl7mc5zMZ6rbk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b7/5Of28aDhGcX6nvXpi/x4hYLIQQsb6Mwb4ZQirK3u0qt9Q/qbMIEG38fGJ2lsbJ0BQKppHzi6mFTo4pC8dvjBRH5UCIhkHqnhDX1MhY1zlWMQVC3R+IOHstMTKgw5HiKk8LktqpXMGT6jWjd6foE+mR1e7IcZZaDhET5r8UVs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h6oyIj26; arc=pass smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="J+utyxIe"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso2245374a91.2
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 13:17:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h6oyIj26"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c1677c91969so159736366b.1
+        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 13:27:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787776069; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SKhqw+uq7x5G0vod2RBWw/lf+cYFAl+cXc08Oo0X9C+t2LLllBwMpWGvSWUJzn49Bj
+         bdRNFS07RN4oiNkekh2itEdlM5ZdhCZV9rd1Kc8kaMx3dzuqn/qoEqu7HQtJdteg75nC
+         Rgasy9V0WNk/e+Q2ltHvhl5lWbLugyK8daJJr/OAQCJCxMpzd9xck5Xi/GugsZU9uanl
+         QmMapS4TqgkAs6jeUk77jNmciOxKeE01hDFRDFtupYdExviW1sjbN1FpMlYGnKIsa259
+         0S26Kr64AWV0omCo+ZLFr82W7PxgSoAuuAeLmZ50ouooXGXpvwWp6QPyl2QDLi08dqB+
+         KViw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=PWGOH1354ZX/vY0l9xaAPBv85Hq+rgIf24RYb5RW08c=;
+        fh=xRFR3tC69Cr5lt8zeiI8iSk3500GEnC7Fxb39igeTGc=;
+        b=r9pBjpIxKj7jwIT85GR+nk+UPvsSK+1bHOz4VarJhExSolqt5L0BKtR3PtwP5iQ87O
+         Z6Mh3uzK8IGqzx4Ihr+LSeqAErtjFgFFYxXmT6fWKrssawbeW+P+aiZuv6gHqlbzT5oI
+         4Bh3021nTuGOB2UshcvJaw9U2Elr2aZcfoS+CN5lnBvvL5s+ZuuCvyLCzYbKE4c1KWgO
+         y0MlB2tjO2ZOwGIu5XVeZWyTmIgkySQmT3DtXHSYCXRuNHQIVsNBWCTQntc2cq1n86Hx
+         +3tAXgb5vxo9vfSdm5jogvnuYlXgB5fG7XEjhGqMMp5qtf+z0+3AtD7YEeQ2lhZtjAmu
+         sq+A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1787775436; x=1788380236; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=WthiUzOKvGxpWM8//TLZ/XtLsB2b7m0C7+XlHQIInq0=;
-        b=J+utyxIen6qNIKL5FW3l10kul7EWlMPt0n5nkxVb3ZSJtSwUFKSyru5T+J+Uz/mDw4
-         6UiwYESI/YulhkiQbEyztMqfqF4NsSJmjdTe1EM2YEzAwybtl6/mMOZM+uQYcbevrzK/
-         cC5hhOauz0Qk7YKwlyYehbzn8y/6G6bUN/xjvL2sqdU7qZn6dHLN2fbclIt+t/e3NPhZ
-         t94OvmXZvceMoi1b2dtV6hN8vtMD9HoAZYJs9RYxz6oajFNTO/1WC7+jmB/WYnFDMhSa
-         a1ozDXXqO4jyqZw1D9iLZDs5L2sB3yLBY5h6ewha4DXmPY+iDWmr8XEkTwDoY0iPP+XQ
-         WYkA==
+        d=google.com; s=20251104; t=1787776069; x=1788380869; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PWGOH1354ZX/vY0l9xaAPBv85Hq+rgIf24RYb5RW08c=;
+        b=h6oyIj26GbmIfCQagr/L5fQJb+1DKw/sinD4UuYVLMxXTInVgjycwM4K3xH5RlKdMH
+         eNE+/FsCeFAcHDwdIb49GH6zNKF0wc4zyNYSXpPiwe0HUyhMo/jf5YYPsusQQH0PAh1n
+         P2GIwWcjY/6ZD5UxT5xDVX0P7mexxlYBmlkas7MsHb/nLaTEj/GeBg6P0TM1k354aCr8
+         CALtJv+9zLGAeL/d4ln4a8ipYN1ekmvMVCgGeUQ9j+fqBFFfcSLKXFl8oKxvEnMcD8kX
+         VDw4eK4gQZJq5pOqrqVkVmdSgD0kAE3Y6GDLTf1aKxWk+fk/0hPffS6DfjF52efmj66p
+         2dnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787775436; x=1788380236;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WthiUzOKvGxpWM8//TLZ/XtLsB2b7m0C7+XlHQIInq0=;
-        b=gz9BSJxyNLq7X24rtMZBWHcxsMpUPB7M+Xi1AEzgObWPdeUkjT8LMw34zv3yZtqkIe
-         K/47J9OM/M4HPzj9VYMbFsFqunivHZFOPmLoGM/q4x2k//Wy10RixnoEHW6ZBvewEdX9
-         reO39eYwbV/+nfhh2S9DPBXWReeQ+UugrzObpKh/XAcBNfMm4LoqcUoqp769uqSa0Xtj
-         tsC/PHmnhqe2gUekMk5BmSR/Lx7FjPUIA2zr1hkVLp5gjHpNKytfuxp4AhPg21EUi0KR
-         eUJciX7HagjjoLky5+SqA8DT370wi0KMneiSNIbb1vRJhFCOX9Prx3lrQ63x2sc+dQS6
-         3NrA==
-X-Gm-Message-State: AFuF++l1w7Ymfd63fwRzcSdvSq77kZT8guZEkVFQ2JkKw4NKZx9yKlfS
-	GPa/6Di8Ib/ZsZeu4wdDz+nDnOl847C6DwzypVP3+JrMBzmnp72sozvXvbrD5mesaHk=
-X-Gm-Gg: AR+sD13YqEQOxXZ6IPvsXj+kIAZtvUMBOLr6Jb8c2cMGcVQFpN39vsi1lMSJ/bKy3D8
-	7iftnjzuN2TS5mN/sojPxUP/GxC1up9rYEbtnCkmxrPK907X9KlEsIf3anA4g31z6T1vH6WHbhS
-	/N8EpRUkjeix/4aO9sTL0+6iows+PGrz2VVgjz+ib+IMaKqfdzpdZaTAQYgP84iFCQzOnF5xGSA
-	smvJLM6Hj+5VGQ3E9p0SSgchIxFOH1QvUqGhms0ui42woZLp0QCRU0p32ahXfsy14ipz+LgfIe4
-	47mQmvI82Zcy8KatYFx+GhRV3JwlI2EI59R23HhHdw0TnjRv+JozfQfamK2PIukhERYzC6VAlPM
-	X6LRCq9fX/iIv9OHkohmNwMAgpMxC6K6R81JPQq0nWjpLYe2nibXrEGU4lKZJJ9s87nsXssBBXQ
-	fezdclkxmboZg4f/vhwpMahA97Rr9X+Ktk1sxvsiFa8MGhmNs29vBsRPyE6h+nHTOHPi6RGOsR7
-	s5Hhx0hp3n7sLVykQ7NnlL31cYzUTdoIHmmimgaiZEb68sFbiUC1x6GGJU=
-X-Received: by 2002:a17:90b:520f:b0:38f:26c7:165e with SMTP id 98e67ed59e1d1-3966d5f8f84mr20608038a91.9.1787775435729;
-        Wed, 26 Aug 2026 13:17:15 -0700 (PDT)
-Received: from localhost.localdomain ([2603:8001:5f01:8bab:957:eb3d:7323:2ed])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3283d60b59dsm11179738eec.3.2026.08.26.13.17.14
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 26 Aug 2026 13:17:15 -0700 (PDT)
-From: Artem Dinaburg <artem@trailofbits.com>
-To: stable@vger.kernel.org
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	kimjw04271234@gmail.com,
-	Artem Dinaburg <artem@trailofbits.com>
-Subject: [PATCH 6.1.y 2/2] KVM: x86/mmu: Check write tracking in all address spaces
-Date: Wed, 26 Aug 2026 16:16:55 -0400
-Message-ID: <20260826201655.9198-3-artem@trailofbits.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260826201655.9198-1-artem@trailofbits.com>
-References: <20260826201655.9198-1-artem@trailofbits.com>
+        d=1e100.net; s=20251104; t=1787776069; x=1788380869;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PWGOH1354ZX/vY0l9xaAPBv85Hq+rgIf24RYb5RW08c=;
+        b=U1fGnjWKdzQosvI879DEIVqi9Z5X5WroIpJ33oNkDzCr4Y7/Vr1n6JCGKDngDV9Fgl
+         0RmGaO6Iaf/sM/uCXxfuwZQnz/BfYvoItDMpinXFsaknsjxQc82+Me4eaE9uEE9mi+oh
+         rb1EY3rkGsH97iSvpO1huaQ6lVRiBoplDTRhG9Uamy2vJL7lU5ZnY8jqrDbOz6N8VnOl
+         2No6wKmb2lbH4tFYqdj+AYYPIFOX4iwWLf0VREgz0IMpBHZjd+Vvpd6m+IKtI6mO6WXg
+         PuEjd8SCK3qRV2susvu2remv0IrfG84Rx1kIEQ7p8gew1tmKABXYoc5Yu12TSJEwcBl/
+         lp4Q==
+X-Forwarded-Encrypted: i=1; AHgh+RrZ5IK0j0Sar2w0GSJZ/94tN/2RqJaBw5w4+531EQalINZUMZCB0qAdmrck2q3fqrlEELk=@vger.kernel.org
+X-Gm-Message-State: AFuF++nvR3unXKbz03y4L1QfzXcXArLKriSMWwqlusjcP+NXCjO3MsE7
+	3LbojSu+RpU2kTHAiuG3EheHHB6LA/5RPHCCOrCbfxl68svU/qzbGL1knT370OKlOx7SVT4doBx
+	x9Jf5Fr4ZIs9VyNRghGszADNSeJ3w1b8817/YRaHZBYBvlUc85u8p60l1
+X-Gm-Gg: AR+sD100ulG0lnk0vGnIJsNFnktx9tLKtWlUEyi26qLEbK3Xzom1zG7wP59oOmIR/fR
+	XbbZoeOioyvxkxbm1/ooHiUeK23YryVVSNiYrpItJ6cBSu+HSEIBqTOf09Gjdh4ebXL68jymxCW
+	gyklr20a+708NJgWKDSy5y71vkchuLkYO5HQF5tmGOcg39T8xLChp3AvjLEsy1AdgXNG55KxzsW
+	kz4Qt0XhtI2AK8t0Y++jRJkqv/EEe2MtWNrBsDH598VQToXRRhbMR/50f/su2JZv20RaGo4fQth
+	+eushkpjJyIcLN86s5c0OikYWHDrj5yl0ztNER3J3qdNKg==
+X-Received: by 2002:a17:906:2081:b0:c25:2e93:28a6 with SMTP id
+ a640c23a62f3a-c252e932fe8mr551532366b.3.1787776068231; Wed, 26 Aug 2026
+ 13:27:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260821193502.92431-1-vipinsh@google.com> <ao3nr1-t0DxANAyC@google.com>
+In-Reply-To: <ao3nr1-t0DxANAyC@google.com>
+From: David Matlack <dmatlack@google.com>
+Date: Wed, 26 Aug 2026 13:27:20 -0700
+X-Gm-Features: AcwNN1VJZs9sa1bllRivEAYyBKhodHBefcR6pQ8bKeL_D0Ssy2tWvugwTys94zA
+Message-ID: <CALzav=f5wUUt4mKZn0tvQez6_1iYPcb8eX5q-XjabTNy03JiNg@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/1] vfio: circular locking dependency in pci_dev_reset_iommu_prepare()
+To: Vipin Sharma <vipinsh@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, Joerg Roedel <joro@8bytes.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Nicolin Chen <nicolinc@nvidia.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, Robin Murphy <robin.murphy@arm.com>, 
+	jrhilke@google.com, skhawaja@google.com, tatashin@google.com, 
+	Will Deacon <will@kernel.org>, kvm@vger.kernel.org, iommu@lists.linux.dev, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jinu Kim <kimjw04271234@gmail.com>
+On Tue, Aug 25, 2026 at 12:06=E2=80=AFPM David Matlack <dmatlack@google.com=
+> wrote:
+>
+> On 2026-08-21 12:35 PM, Vipin Sharma wrote:
+>
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+> > Potential Solutions Suggested by AI
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+> >
+> > 1. Decouple iommu_setup_dma_ops() from group->mutex in drivers/iommu/io=
+mmu.c:
+> >    iommu_setup_dma_ops() only requires struct device * and the domain p=
+ointer
+> >    (group->default_domain); it does not mutate any fields in struct iom=
+mu_group.
+> >    Moving the iommu_setup_dma_ops() calls after mutex_unlock(&group->mu=
+tex) in
+> >    iommu_probe_device(), bus_iommu_probe(), and iommu_group_store_type(=
+) breaks
+> >    the initial &group->mutex -> cpu_hotplug_lock dependency.
+>
+> Are there any other code paths that rely on group->mutex -->
+> mm->mmap_lock ordering? If so fixing this one case wouldn't help.
+>
+> > 2. Avoid holding down_write(&vdev->memory_lock) across pci_try_reset_fu=
+nction()
+> >    in VFIO:
+> >    vfio-pci could zap active BAR mappings under memory_lock and set a s=
+tate
+> >    flag / disable memory decoding, drop memory_lock before calling
+> >    pci_try_reset_function(), and then re-acquire memory_lock to re-enab=
+le
+> >    memory. While resetting, any concurrent user fault will see the memo=
+ry
+> >    disabled condition and return VM_FAULT_SIGBUS safely.
+>
+> This would change the userspace-visible behavior of faulting on a VFIO
+> device BAR from "block until reset is done and the succeed" to "fail
+> with SIGBUS". And it would allow VFIO to access VFIO device BARs during
+> the reset through vfio_pci_core_iowrite*().
+>
+> But I think we can extend this idea to solve those problems by
+> introducing a wait queue for tasks to sit on while a device is being
+> reset.
+>
+> e.g. Something like this (completely untested and partially written by AI=
+):
+>
+> From: David Matlack <dmatlack@google.com>
+> Date: Tue, 25 Aug 2026 18:37:52 +0000
+> Subject: [PATCH] vfio/pci: Avoid circular locking dependency during devic=
+e reset
+>
+> Avoid a circular locking dependency during VFIO device reset by dropping
+> vdev->memory_lock prior to calling PCI reset functions
+> (pci_try_reset_function() and pci_reset_bus()). Introduce an explicit res=
+et
+> state flag (vdev->resetting) and wait queue (vdev->reset_done_wq) to stal=
+l
+> concurrent BAR page faults and MMIO accesses during reset without holding
+> vdev->memory_lock across PCI reset operations.
+...
 
-commit 0f38453cdb2e17566ccb7c0f3dabd5bd21caca26 upstream.
+This approach does not look ideal. The implementation has a bug where
+concurrent resets can lead to vdev->resetting being cleared too early.
+And from a maintainability perspective, there are more call sites that
+currently take memory_lock that would probably also have to be updated
+to wait for vdev->resetting to become false.
 
-kvm_gfn_is_write_tracked() checks only the supplied memslot, but page
-tracking is per-address-space and shadow pages are shared across all
-address spaces.  With SMM, a GFN can therefore be write-tracked in one
-address space and appear untracked through the other.
-
-Check the supplied slot first, then the slot for the other address space.
-This ensures all callers honor write tracking regardless of the active
-address space.  In particular, it prevents mmu_try_to_unsync_pages() from
-marking an upper-level shadow page unsync and eventually triggering the
-BUG in pte_list_remove().
-
-Fixes: 699023e23965 ("KVM: x86: add SMM to the MMU role, support SMRAM address space")
-Assisted-by: Codex:GPT-5
-Signed-off-by: Jinu Kim <kimjw04271234@gmail.com>
-Message-ID: <20260721103512.2136240-2-kimjw04271234@gmail.com>
-[invert direction of the conditional. - Paolo]
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[ artem: adapt to 6.1's kvm_slot_page_track_is_active() and mode-indexed
-  gfn_track[]; KVM_ADDRESS_SPACE_NUM is unconditionally 2 on x86 in 6.1,
-  so the peer-slot lookup needs no guard ]
-Signed-off-by: Artem Dinaburg <artem@trailofbits.com>
----
-Target tree: linux-6.1.y (stable).
-
-Verified: applies to v6.1.184; arch/x86/kvm/ builds clean with x86_64
-defconfig plus CONFIG_KVM=m, CONFIG_KVM_INTEL=m and CONFIG_KVM_AMD=m,
-gcc 13.3.0.
-
- arch/x86/kvm/mmu/page_track.c | 28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
-
-diff --git a/arch/x86/kvm/mmu/page_track.c b/arch/x86/kvm/mmu/page_track.c
-index 2e09d1b6249f..51d5a912c553 100644
---- a/arch/x86/kvm/mmu/page_track.c
-+++ b/arch/x86/kvm/mmu/page_track.c
-@@ -171,14 +171,25 @@ void kvm_slot_page_track_remove_page(struct kvm *kvm,
- }
- EXPORT_SYMBOL_GPL(kvm_slot_page_track_remove_page);
- 
--/*
-- * check if the corresponding access on the specified guest page is tracked.
-- */
-+static bool __kvm_slot_page_track_is_active(const struct kvm_memory_slot *slot,
-+					    gfn_t gfn,
-+					    enum kvm_page_track_mode mode)
-+{
-+	int index;
-+
-+	if (!slot)
-+		return false;
-+
-+	index = gfn_to_index(gfn, slot->base_gfn, PG_LEVEL_4K);
-+	return !!READ_ONCE(slot->arch.gfn_track[mode][index]);
-+}
-+
-+/* check if write access is tracked on the specified guest page. */
- bool kvm_slot_page_track_is_active(struct kvm *kvm,
- 				   const struct kvm_memory_slot *slot,
- 				   gfn_t gfn, enum kvm_page_track_mode mode)
- {
--	int index;
-+	const struct kvm_memory_slot *other_slot;
- 
- 	if (WARN_ON(!page_track_mode_is_valid(mode)))
- 		return false;
-@@ -190,8 +201,13 @@ bool kvm_slot_page_track_is_active(struct kvm *kvm,
- 	    !kvm_page_track_write_tracking_enabled(kvm))
- 		return false;
- 
--	index = gfn_to_index(gfn, slot->base_gfn, PG_LEVEL_4K);
--	return !!READ_ONCE(slot->arch.gfn_track[mode][index]);
-+	BUILD_BUG_ON(KVM_ADDRESS_SPACE_NUM > 2);
-+
-+	if (__kvm_slot_page_track_is_active(slot, gfn, mode))
-+		return true;
-+
-+	other_slot = __gfn_to_memslot(__kvm_memslots(kvm, slot->as_id ^ 1), gfn);
-+	return __kvm_slot_page_track_is_active(other_slot, gfn, mode);
- }
- 
- void kvm_page_track_cleanup(struct kvm *kvm)
--- 
-2.43.0
-
+> >
+> > 3. Refine synchronization in pci_dev_reset_iommu_prepare():
+> >    Evaluate if attaching to the blocking domain and pausing ATS during =
+device
+> >    reset can be protected using more fine-grained locking or atomic sta=
+te
+> >    flags without holding the coarse &group->mutex.
+>
+> I don't know enough about this part of the kernel to say, but this would
+> directly address the new lock ordering dependency vdev->memory_lock -->
+> group->mutex introduced by commit f5b16b802174 ("PCI: Suspend iommu funct=
+ion
+> prior to resetting a device"), which is what led to this lockdep error.
