@@ -1,112 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D336E27144B;
-	Wed, 26 Aug 2026 07:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955C33AA195
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 08:02:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787730802; cv=none; b=eFyzR5edr+ot0FlArFbOZQbZ7ebiLZGe22b0ZjfE/tLbaZ7ex1kTG9JlcSzV5zabD/nSlIwDQoKLq9qSLshAp6NkEP/Mej0yldeEAZiWx+OitoeUN5XeYWpdNGW4eJ3bAx5Uqrs1MTnoyhYAcwmlz9GnulJyOClWzCq56dweooc=
+	t=1787731325; cv=none; b=FL2WFqdt/gpMaqYfNIv3J9rk2kf25UGPT2NQv3H68U3jmaAdnbdbJ5dImBoB0oQ+f83X9ytcE1E4lJmjVUHMSOMSVtGXqhnIL3do8+e0dE1MPZKX3mg+K5UcfqgWCPFWTo1VCIiAuDvww6Ytwi9oW4w8hGyR4i64WQUfA8X/LBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787730802; c=relaxed/simple;
-	bh=Z6HoB3ArP+HJHiuwC6X5orzCfydeM4JGAASPrl9zsZE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YMcqsA2qWtFJgH+oLIVf9/jSQwsSu0EQ1h8kDsef0C2utVHasOpXsHj3Xxoal+f1CzjwqBulRbcDT1aMhNTlY3ArpEyAy++IfAekEleXzl9iO9aumfrhUg/JIqjA3UrynzBqX2MLw4yB2NdzpG+jnP51ADDnSqHJKUxs8pU7KgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eNTlomfv; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1787731325; c=relaxed/simple;
+	bh=FZPpQ+6HDmsXv/VsQ3QThQFW8uS0Qsoh7QRVInqqWN0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=hU8c3veFnbiCnrILBRZX61DqqdYDErRyCb9fFKt0WiAlpRqcZgBE0CJ+xQku+8btLOF0rZWfOu36YBUWIqcX30LUIidP+aetUpcwcFH98eQ44tgQXLWMfu35iObTBVhqGoGoFXHu+D+l/Y4NqzYUVxb5XkS0ZhrLWORUKya/kdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kufcpYSk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eNTlomfv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787730801; x=1819266801;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Z6HoB3ArP+HJHiuwC6X5orzCfydeM4JGAASPrl9zsZE=;
-  b=eNTlomfv+rlj04YcDCnSlLoRKVkKSik0WBjhTXUjAryrwvpAXlNbBFBx
-   ho9G9HeISisv2F+cqnEfR64ECJb2xmIqGvgtWNUL7fitv8drumNMsFA4q
-   vmsUEbiQR/80OoNmV0X9dCr6/ifbRr2Pa6qicVyCc8go/hNpzStYbeAh0
-   t71gbFg2iU96W3kPDgcNrSBEloYAzboL9CCsGcbYX9hOrPBNpU3YYM4uT
-   /NNRE9ZR0yg2ph2KQbZeVSNtwktUhfEmyOlvC15rskZgx8V6EBGrh0EQk
-   ffH0SUVsHM3F6l56wXyLzByFgFREbBEi8HkaYfowg8cfjYoxkZGcw3ktV
-   A==;
-X-CSE-ConnectionGUID: gVLjoKP4R6uL8TzDdFc6BA==
-X-CSE-MsgGUID: MSwsjVLvTIqTnzFkkuBKng==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="105731356"
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="105731356"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 00:53:20 -0700
-X-CSE-ConnectionGUID: DC+xIrJ6SqqqIdzAU5YsnQ==
-X-CSE-MsgGUID: Qm3E/VqFQlO6X9hueFekNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="267528830"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.239]) ([10.124.241.239])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 00:53:16 -0700
-Message-ID: <1743f6e6-85b1-4e10-b5bd-141cd513fbd7@linux.intel.com>
-Date: Wed, 26 Aug 2026 15:53:13 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kufcpYSk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A0C1F000E9;
+	Wed, 26 Aug 2026 08:02:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787731324;
+	bh=jF+dx1qioKmf3Na8ovuADPl0HWsxbpfjxJUHXf7nhZY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=kufcpYSkrjm5Tjxkti77KVw0CExtuigPzU2V5PiONddN1ZXOGL26KTsgtmQOW+5/q
+	 NH1yLz9p/bkZJDotjO8F3MB/DvP08BmqfQLxSBsMc3lxNOuXbkKEWI9ZCNKFWGcsUi
+	 vqGQa9s3pZOcGLY2vc8byPL2pujHk01zkVe7Bizp8wAJ8h9KHGGRgDd6kqYSkMbXOf
+	 UoIGRHstNytnPEj4VNSNARy793IpiHlrUg5tBI/Ee8LT/pLA4cIMPCDkVJ/nuu4l/y
+	 6oC8G1pZlp/q04ZKF34NdEw3Rh/YjyWpFLAcwbYFUdZiISAvDduYtfKUJi1ri2j4Vt
+	 R7PNv+LWA1Lzg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] KVM: riscv: Fix NACL hfence entry update order
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zongmin Zhou" <min_halo@163.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260826075009.68952-1-min_halo@163.com>
+References: <20260826075009.68952-1-min_halo@163.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 26 Aug 2026 08:02:03 +0000
+Message-Id: <20260826080204.09A0C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/23] perf/x86/intel: Guard counter masks against zero
- counters
-To: Zide Chen <zide.chen@intel.com>, Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>
-Cc: kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Jim Mattson <jmattson@google.com>, Stephane Eranian <eranian@google.com>,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Xudong Hao <xudong.hao@intel.com>, stable@vger.kernel.org
-References: <20260821222002.54907-1-zide.chen@intel.com>
- <20260821222002.54907-2-zide.chen@intel.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <20260821222002.54907-2-zide.chen@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-On 8/22/2026 6:19 AM, Zide Chen wrote:
-> When running as a guest with a vPMU exposed, the host may expose zero
-> general-purpose counters or zero fixed counters. In that case,
-> GENMASK_ULL() is called with a negative high-bit argument, resulting
-> in an out-of-range shift and undefined behavior.
+New issues:
+- [High] Using `smp_wmb()` instead of `dma_wmb()` or `wmb()` to synchronize=
+ with a hardware device or external agent.
+
+Pre-existing issues:
+- [High] The retry loop in `__kvm_riscv_nacl_hfence` can spin indefinitely =
+because `try_count` is never decremented.
+--
+
+commit 7e01a77077e49fef54c573574fad3624c0817345
+Author: Zongmin Zhou <zhouzongmin@kylinos.cn>
+
+KVM: riscv: Fix NACL hfence entry update order
+
+The commit fixes the order in which nested HFENCE entries are populated
+by writing the page number and count first, then the config word. It uses
+WRITE_ONCE() and smp_wmb() to prevent hardware or firmware from observing
+incomplete entries.
+
+[Severity: High]
+This isn't a bug introduced by this patch, but looking at the retry logic in
+arch/riscv/kvm/nacl.c:__kvm_riscv_nacl_hfence():
+
+    if (ent < 0) {
+        if (try_count) {
+            nacl_sync_hfence(-1UL);
+            goto again;
+        } else {
+            ...
+
+Does this loop run indefinitely? I noticed try_count is initialized to 5
+but doesn't appear to be decremented anywhere in this path. If the NACL
+hardware or SBI implementation stalls and fails to clear pending entries,
+could this cause a host CPU soft lockup?
+
+> diff --git a/arch/riscv/kvm/nacl.c b/arch/riscv/kvm/nacl.c
+> index 08a95ad9ada2c..f922e9f62fee3 100644
+> --- a/arch/riscv/kvm/nacl.c
+> +++ b/arch/riscv/kvm/nacl.c
+[ ... ]
+> @@ -42,12 +42,24 @@ void __kvm_riscv_nacl_hfence(void *shmem,
+>  		}
+>  	}
+> =20
+> -	entp =3D shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_CONFIG(i);
+> -	*entp =3D cpu_to_lelong(control);
+> +	/*
+> +	 * Per SBI v3.0 section 15.1.2, the Page_Number and Page_Count
+> +	 * words must be updated before the Config word with its Pending
+> +	 * bit set. WRITE_ONCE() stops the compiler from reordering the
+> +	 * stores and smp_wmb() makes the parameter words globally
+> +	 * visible to the SBI implementation (or NACL hardware) before
+> +	 * the Pending bit is set.
+> +	 */
+>  	entp =3D shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_PNUM(i);
+> -	*entp =3D cpu_to_lelong(page_num);
+> +	WRITE_ONCE(*entp, cpu_to_lelong(page_num));
+>  	entp =3D shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_PCOUNT(i);
+> -	*entp =3D cpu_to_lelong(page_count);
+> +	WRITE_ONCE(*entp, cpu_to_lelong(page_count));
+> +
+> +	/* Ensure the parameter words are visible before the Pending bit */
+> +	smp_wmb();
+> +
+
+[Severity: High]
+Does smp_wmb() provide the necessary hardware ordering guarantees on all
+configurations?
+
+Looking at arch/riscv/kvm/nacl.c:__kvm_riscv_nacl_hfence(), since the
+memory is coherent and shared with an external agent or NACL hardware, I am
+concerned about non-SMP kernel builds (!CONFIG_SMP) where smp_wmb()
+degrades to a simple compiler barrier (barrier()) and emits no actual
+hardware fence instructions.
+
+Would it be safer to use dma_wmb() or wmb() here to ensure the memory
+ordering is strictly enforced against external hardware, regardless of
+the kernel's SMP configuration?
+
+> +	entp =3D shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_CONFIG(i);
+> +	WRITE_ONCE(*entp, cpu_to_lelong(control));
+>  }
 >
-> On systems with PMU partitioning enabled, this configuration is more
-> likely. Change GENMASK_ULL() to BIT_ULL() to guard mask generation
-> against zero counters.
->
-> Fixes: 722e42e45c2f ("perf/x86: Support counter mask")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zide Chen <zide.chen@intel.com>
-> ---
->  arch/x86/events/intel/core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-> index 2b35483e2b70..8b13bcc5259c 100644
-> --- a/arch/x86/events/intel/core.c
-> +++ b/arch/x86/events/intel/core.c
-> @@ -7905,7 +7905,7 @@ __init int intel_pmu_init(void)
->  		x86_pmu = intel_pmu;
->  
->  	x86_pmu.version			= version;
-> -	x86_pmu.cntr_mask64		= GENMASK_ULL(eax.split.num_counters - 1, 0);
-> +	x86_pmu.cntr_mask64		= BIT_ULL(eax.split.num_counters) - 1;
->  	x86_pmu.cntval_bits		= eax.split.bit_width;
->  	x86_pmu.cntval_mask		= (1ULL << eax.split.bit_width) - 1;
->  
-> @@ -7924,7 +7924,7 @@ __init int intel_pmu_init(void)
->  		int assume = 3 * !boot_cpu_has(X86_FEATURE_HYPERVISOR);
->  
->  		x86_pmu.fixed_cntr_mask64 =
-> -			GENMASK_ULL(max((int)edx.split.num_counters_fixed, assume) - 1, 0);
-> +			BIT_ULL(max((int)edx.split.num_counters_fixed, assume)) - 1;
->  	} else if (version >= 5)
->  		x86_pmu.fixed_cntr_mask64 = fixed_mask;
->  
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260826075009.6895=
+2-1-min_halo@163.com?part=3D1
