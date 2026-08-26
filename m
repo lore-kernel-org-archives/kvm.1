@@ -1,127 +1,134 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9F741DEDF
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 12:30:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7A641F5D1;
+	Wed, 26 Aug 2026 12:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787747451; cv=none; b=uM9KhAyFBonrLEKTm9itvm3B9YQch2tx1z2IuQjK/Q7Tdfw1yDdT+t2QvpR/NUQVrVoR5DueJcCGBaOwb+mSDLDMxk+EZxY9Wt1BHwm2s4K4MkJkdmfGVVdawYCGHSw7UP7f4Wq9Uzw52sfs6TAYX0UQUAoL8wuRFZKyfVtIr/I=
+	t=1787747459; cv=none; b=klgO7yZqktoJ0zgOZ2/BozMs2BEQHI8sl54/N8NmOiR8cSSRJiypatluyCOf9ZDyEx0iRlo5MSWFmQtsOsFVm20iwT2VVpYUHN9guJ2bYBRFIm6xVOvYA0Qz0hi75lRNACjaOMu450wwIUttba7eZpDCu32VHnIoTEuInzIutD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787747451; c=relaxed/simple;
-	bh=8dVVSO4XdHCx4KOZSduD/f39KYIfwpqzYrSSt2RuZ4c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=myTI17oBvh0fZxbxBnrb4aokF4nDV8NLkF1pv9oIZxVHVSnFHOETGUpP0akFizeLvZWD4JSZa5/CqnCeqa4lj4+jeQZu0GoRCJRmMFoEk0w7WwWzaqpuzwiJhITEjlo3dupNlMErwcm5qPLTGBZpPasoaQLMhdF5FDiFBkGVY4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P5zl/SXc; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1787747459; c=relaxed/simple;
+	bh=uCUtU4vAL8cHiaW3jHE3SOKJs8T7sIefyPQl9E01ccQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dUZ0Nv6PSfExKNHiLTAYA2k0ax93M7OkP4EfLhUO2k73QcBK0fXmFwadUJeHxh1PFSVRx4wP2ZLkHa9oWKgoz62FCGHmA7FnqINvxJ1xceg/do5gArPLk3NZDKsoBCSWsAdcn92E4w7eWKjpaGiRJF3cnMR/BVz4c1ztGvjaoWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cP3+eb/b; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P5zl/SXc"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2d3b445a84fso88475ad.1
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 05:30:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787747449; x=1788352249; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OtDyfAId4c9pmXSo6AkYFWKqGY/dpqg4gomEyUaZ1rc=;
-        b=P5zl/SXcD8sz+TC4+hyuwZkqaZPHNXvywNGiQevr461CMvJNkvqiM7hrcaqs2G3gve
-         XAHjRZiNo9XhOiIbDbhtU0OcSHa2HAOIC4Vsmpa5Vy0dxB2C1LrK96yLPgwHzIb2id/5
-         W+3d2EzQ6cIhg/I9ZLzxXb+jutIfQbHBUNAZwboqtgNxkE4s6qEQWz98RkdFhormfg9z
-         QIHP/+0Sjhk6iJKJXOrSEk0XCfu7C2yw/jL3L8uZHWR0MVJozxfj8gJLSHV7HtV3eT/t
-         E15xeyzDIHD41GALpjxUOY3BHkBslYo5TLgZO0RanQEKYe47kjNwW8pElk05X5e1YgOr
-         dqsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787747449; x=1788352249;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OtDyfAId4c9pmXSo6AkYFWKqGY/dpqg4gomEyUaZ1rc=;
-        b=X6caoEq4L5SYUs+oPK3WQ13aKWaX7Q5gvLsMhgaGN4eX2yNI49e5PhrBwUZ+T1/ZdU
-         tAM6qjjVy2c0dEu9zaOtd868t9ItlcH4ghh0+JnFYNTE24rFC0V0F+an+A0v4dbfdgHL
-         35KyV+OGU4I3ZIWNlydhhHYnsV78m3ju+0hWx8sNvDh2X6Ef9OYXyfm0yHcoAuGCtMgg
-         rProq9b92tWNoToz1tO4qg7DHZtE6EHrxA69GeKdbg3/966yE6LOXo+SuRp0peInzZJL
-         82wiDXgLLtl//cU091wtXPXMWHAnTSQT2vhu7uWGsF2iJL0jtwVMJc/8ZaqtBcEj609U
-         /yfw==
-X-Forwarded-Encrypted: i=1; AHgh+Rpa0ex/X4s7j2iSSMMhOYjbyAP/jJ0BxqhhWmb7TTp3HfhljviUnZGmad6KDhyPKtla6Pc=@vger.kernel.org
-X-Gm-Message-State: AFuF++kJsNDEMsgVJFMSRroqzahJOPH0MY4Kp/VQkpyEXR803oLKqHZx
-	IbhF/Z5CwneY6VYXg7k6ie33uE2jDvQc5VxeHIwoNDkhgX7BV95r+Q6MdHxdZhGHdQ==
-X-Gm-Gg: AR+sD12qXoeZ4vixuZ3i/OBvgDcAEqULfNDp6pIpbS+sPjONYEhRmBOFvDmlObJZ6IK
-	MkAJuWkyZjOjpUWCWe+ZzPnsQ0qobLjIwj2dYhsL4NNXxAGb3xjvpn6Cmd6cuR2YhoaNBDbSwWh
-	X/GbwBZ5NOUgR9VKXvPP+tASZSwTX7be5IGyWe/BqOvOkJAb761qPYaSVvy00350cTx7bUV6x6Q
-	iGrSrkjPqpb8o2NN6ZvMufqFFifZJ5/MgClkaWFYbjWV97LBRv7wRVFmLfQl3xYABO3M7C5v/d4
-	0j6v2J9NpSzKRg9Uu6ZYTZDJYR7Y8E063+E8Wy3yQ9lWWx6DDj84PlFj/wLeJXVkLu0mw9jhIj1
-	J+w5QOXej8vOMlJJ5cU6BKqZeKN3k+bsQWspEIogECT04XgNqqEjEdm+d/3wXecPJ1LtOO/2rg7
-	SIEmIrNyOhXbpm3rudecuPsR6ohuQ0cdq5XqCwJRLAy6FLs/CwslBDZHYc9eymcSY4NxByl9ozf
-	fD7D2XtelWsvuCKKRgKVGhB5g==
-X-Received: by 2002:a17:903:22cc:b0:2bd:3bfd:74f1 with SMTP id d9443c01a7336-2d70baa90a8mr5053075ad.2.1787747448020;
-        Wed, 26 Aug 2026 05:30:48 -0700 (PDT)
-Received: from google.com (164.210.142.34.bc.googleusercontent.com. [34.142.210.164])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39645b07394sm7933816a91.4.2026.08.26.05.30.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2026 05:30:47 -0700 (PDT)
-Date: Wed, 26 Aug 2026 12:30:40 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: Samiullah Khawaja <skhawaja@google.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	David Matlack <dmatlack@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v4 08/18] iommu/vt-d: Clear unpreserved context entries
- during shutdown
-Message-ID: <ao7ccBlV9_RXT6Fe@google.com>
-References: <20260808022723.3893618-1-skhawaja@google.com>
- <20260808022723.3893618-9-skhawaja@google.com>
- <446684d8-44d0-47c5-9301-172c55efd950@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cP3+eb/b"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787747456; x=1819283456;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=uCUtU4vAL8cHiaW3jHE3SOKJs8T7sIefyPQl9E01ccQ=;
+  b=cP3+eb/bHKGujq82CyRStxdynnQcNRx4IbW7tZ2atRuLAk5+SAzyekL0
+   j/JAWJUvRb77DLduXP9geWkC1001cUKR6eGv039R64B27kyvyOnwSPZVt
+   5QBCpi1F7Ros5aWCAzBKhXUp/GK9Xfu532oWR6CJDDate+MBveDyUa5fM
+   KmvJgc68S/ZNvWEZ8137rjD8qxB2dmrIi5EVsD2KXQgewvYRFNS5u3fRP
+   GfuOgOd5N6QyMH1zUAcqKu0FESlLzMpJPXPhYvGZ3LZXc/Bh24JmV2egR
+   NuK36EsTk7zN6nsrpIMJ0Qql9XxgqVleh9IKWeeeXIPBwbJv53Ph8Ei7D
+   A==;
+X-CSE-ConnectionGUID: vnjzL+pKShOjkT8NAlIQUQ==
+X-CSE-MsgGUID: y6q5g5UHRkGk+/Trn83U3Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88105318"
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
+   d="scan'208";a="88105318"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 05:30:55 -0700
+X-CSE-ConnectionGUID: RcwJGlfPQR2eR+J1D/K6kw==
+X-CSE-MsgGUID: myBI6HmATMWTrpOgpUAe6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
+   d="scan'208";a="263268517"
+Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.109.37]) ([10.125.109.37])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 05:30:54 -0700
+Message-ID: <e32c1437-44ab-45d9-9534-124a9e09f029@intel.com>
+Date: Wed, 26 Aug 2026 05:30:55 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <446684d8-44d0-47c5-9301-172c55efd950@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] x86/uaccess: Extend CMPXCHG user helpers to
+ 128-bit operands
+To: Sairaj Kodilkar <sarunkod@amd.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Uros Bizjak <ubizjak@gmail.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, x86@kernel.org
+Cc: vasant.hegde@amd.com, suravee.suthikulpanit@amd.com
+References: <20260826070004.8100-1-sarunkod@amd.com>
+ <20260826070004.8100-2-sarunkod@amd.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260826070004.8100-2-sarunkod@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 26, 2026 at 04:05:51PM +0800, Baolu Lu wrote:
-> On 8/8/26 10:27, Samiullah Khawaja wrote:
-> > During normal shutdown the iommu translation is disabled. Since the root
-> > table is preserved during live update, it needs to be cleaned up and the
-> > context entries of the unpreserved devices and root entries for the
-> > unpreserved context tables need to be cleared.
-> 
-> The key assumption here seems to be that, during a live-update kexec,
-> most devices do not go through the normal iommu release path. Otherwise,
-> their context entries should already be torn down in the
-> iommu_release_device path.
-> 
-> Could you please confirm this assumption and add some short note in the
-> comments or commit message?
-> 
+On 8/26/26 00:00, Sairaj Kodilkar wrote:
+> Extend the existing user CMPXCHG helpers to support 16-byte operands on
+> x86-64, using LOCK_PREFIX "cmpxchg16b".  This mirrors the existing
+> __try_cmpxchg64_user_asm() / cmpxchg8b path provided for 32-bit kernels,
+> where KVM needs an atomic compare-exchange wider than the generic
+> cmpxchg helper can provide.
 
-Yes, that's correct
+Please take a good look at the Sashiko review:
 
-During the normal shutdown paths (i.e power-off, normal reboot, & kexec),
-the kernel only calls device_shutdown(). This path bypasses driver 
-unbinding, as a result, devres_release_all() and iommu_release_device()
-are never called. Those devres teardown paths are only triggered when a
-driver is explicitly unloaded / device is unplugged.
+https://sashiko.dev/#/patchset/20260826070004.8100-2-sarunkod%40amd.com
 
-Since live-update piggybacks on the kexec/shutdown path the unpreserved
-devices never have their context entries naturally torn down by the core
-driver's devres model, necessitating this explicit cleanup.
+It looks like the "A" constraint isn't one that you can cleanly mirror
+from cmpxchg8b => cmpxchg16b.
 
-I think we can add a line in the commit msg for this because comments
-might create confusion if similar comments don't exist in other drivers
-performing Live Update. What do you think, Sami?
-
-Thanks,
-Praan
+Uros, any chance you can give these a good once-over? This seems to be
+just the kind of thing you've been fixing up lately. It would be nice to
+get them right the first time.
