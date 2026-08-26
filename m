@@ -1,95 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7382DB7B8
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 17:22:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D3438A70C
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 17:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787764965; cv=none; b=hzpfiGS8Lb45G28qaS6+kU1Sorj6l2kjowY75B0j4Sao5rVGiIq1a58EJlH4y5kF3H4RtjkTh1AlIM8/zNCpnCUAu6JBNvCrTyt/+5MQzNcyasVptK+t2vNHcb9oe7DD3ztygcAmacEeJRKCodM2lO81AI3fO/TC4nxOUYPCE+k=
+	t=1787767071; cv=none; b=eZgb8OXc+wc3Ot/wqegUQxFyuekgdkYjdK/cb7IPkFXA2QWV01GVy3Cae6ucoWddWuxJPfD10F9kT/F88xRCasLvD0vhYWgzggvbKWb84yxHPRaX0AK79GR7GZnnylnUET4mITzYkqquVS+PhR2CbplQ4FBmcl+JP+PEEAiVEBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787764965; c=relaxed/simple;
-	bh=P3NscQmnS3GTd1UUGYGaZo6WjIea98BItxWz/o+D5JE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=RUe8sMj9sFZGIMU8UYYIYS+mxhVHTjV2yWWdEJN8NSf6wTLfvneNOlsUrdtwlByRsqe6wyEs8lxHOEaNwEPl4x+KgTWM1lWwOxhd6ZZDg0Or9V9tgDPLRJGEe2qMGKCIf4DpflWfWC5KCyjue/NGrSlhr3R5ep0NceZO+b9e8zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NGu2bc/4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787767071; c=relaxed/simple;
+	bh=WP3lzz3sPwNr/uWnF1dnEtr6qfIaUelhmsrLvivFud4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=crId5CZzSVlERjn7Ie0uT2Xe5MaRspkXEQCKXPuD45QH9/o7T/3EdHGuHSjOT3AQr/WbT5cBlIYkDPnTAQ0eMNIwTsbYJ7VH8LHKQY2xYQYEhfaJjsU0w69n7Z4zIP6kWgtIfisMpC8XC+sh4LhSTEnLYgzdk4ymJtAcv0i7tfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hquZmByv; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NGu2bc/4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7246A1F000E9;
-	Wed, 26 Aug 2026 17:22:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787764947;
-	bh=6/+I/uw6PELZjA1t24NakGWLCHm55L3Mp3KFZ0ozjms=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NGu2bc/46wI0tS4djQPBaA5+/NIEpc2tK5M2+RDHYvCNl2Yj/07WIqsm+IpErcP6/
-	 nAfed3FxEuKf89bxiIa+fZ/OQM6IGsXqdhHTKNCh9GqBb4rlntKUGX8B5VLU1yc7Z6
-	 DYu+cajglfqP/XRisheuH0pf16wCjmXKUw8N+i2xwMC+dZzvISPGW1nyojC/119jnA
-	 pYVm3sq1XHjqrtiVDMFWzGFNttz4QcoxgDYgd25y5fQbm0x2NWYXcbG3dlJwDKq12i
-	 j99rgVlb89dhtw3q6T5HLh7Tb7d3e9MnnMawvl1IkOUG4TjW8r7P6DLXewF6Ze6yfl
-	 Tp4Y9wPMxEJqg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 4/8] KVM: VMX: Rename posted interrupt prefixes from
- "vmx" to "vt"
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260826171246.777729-5-seanjc@google.com>
-References: <20260826171246.777729-1-seanjc@google.com>
- <20260826171246.777729-5-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 26 Aug 2026 17:22:27 +0000
-Message-Id: <20260826172227.7246A1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hquZmByv"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2d3b440b97aso10665ad.1
+        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 10:57:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787767053; x=1788371853; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mOyt5LoY374Qkpz6cQhUC33i8CoGf2Yn2cDcltrm0Cc=;
+        b=hquZmByvqvONjAlbXKuBbz8QPQjRA5q24l+0d+Wr/FDWY71EaBqGj8IlwKdWAZ/7rN
+         qfhOOD0fECT1ixEw028sq04lhB5Z07hNlWPm6R3OajIctcl5IT/kz9pvApm4OixZ97oz
+         VZxiM4k8JmKXtVKR8jk7Gp9I4YGU5A7Chzn6ygBLmMqOe6Oa3kypdshgeQT3A/tHJtny
+         haMbvbBbdWrldqdotn11ykqbR6cZYMaVgFxEYpU5hbmi6FjSNGAfZNFD30VDJSmHUmlR
+         W7RvcM+aVp9V7cuZCosewrtpuz1dmLCXobqo+V3HFTZhZC6AHrBOyzbhjJdfQJguASa7
+         7CYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787767053; x=1788371853;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mOyt5LoY374Qkpz6cQhUC33i8CoGf2Yn2cDcltrm0Cc=;
+        b=n0Y7G6H8cURFJb9hkQ//CTsB8cBlLSDpQKhfYUNAHmNTMl9I8gi40PvVafN18SCZ3x
+         pxT5uhX/9SRzAabNutRq8f9S+5oFr6NcRJxEU6RzQZGL9B0xACaPatz1ut5PV4pbmRwm
+         9qIj7hsvY6pucInnrjkkF3Lkf/fg0KL1FFoY5cDet4mp6BlqZBQdWoP5C4EK5EMsAFFI
+         H+caGukeWPcZWzDfpbvMkLmjFbPhxhf+5pRvAQcLfDSrb6eQByoXxMt3oKXPmr0GLaBe
+         6Awnr7JG+2x3o8qHfzdN1R34OsSG37ODkqCzLLdPQ7DRngDqeg6JB9C1Y9fBaNixyaDl
+         7O6w==
+X-Forwarded-Encrypted: i=1; AHgh+RpmwvvXVJhGUuRe3CdjdKuJdN218s+uy91BOWBTP+iktMwXqp9DFbNILEN+0Sx3BrdH8YM=@vger.kernel.org
+X-Gm-Message-State: AFuF++mKX4MVAPyPLhc56it0purYPkhmGXhJ0UJuhwszljEjLBFmsWBA
+	PTTqkvienf8I4wzQ+435Yn+1xMTjM/AjzgFfRobxdGa0RftU0aZleGNsV6HxaJuBsw==
+X-Gm-Gg: AR+sD10zrguHfeuqIwFIuEtkMMZQQXWVOsyFOR3xdYuSU43kehnKJ4pxQvV+vHyGr7C
+	qJqQVtzzFrqB6Pi5hUccG731URdGJZrgpdqIydSz7PIeZhC9t/OopOg2ml4KmrZRuRbKcjhFakg
+	TLhEaFiMAt0ij5PEAadhETxr/ZMQJO8Y5KgayV7t+1UA/GOCI4i8pouKp1G4BDgxCVyYTdB+/T7
+	9zidVKpwMW6d3wOzX4/aqWaeyxwPmBkh0N4kPs5CJhOFua8xpHYPOEYsiVFdVdVUJb5z2t29kpG
+	zFokElH7xwg/pavw5HduIdeUUDZR8uDGmYOCRE/k9yA3grlabV7ZLFopXT6wvdJRPHJKRFrzvE5
+	y4jdNIlL6FpEjqdAstbW3D3gttw6R+Dhou3YtPG2pDhI98ggTRcStl7rzNIbMaGkMb/EQciBxH3
+	SVP3nekGNMD3Eq3XgzDMKplesnfB27YA/WSs2Py3y/QQw7LHSdf2bGxlyDZxLGITK5nElMQgy6A
+	a6Yp244qDN4AZZgN9iqyg==
+X-Received: by 2002:a17:902:d4c7:b0:2c9:b404:b55 with SMTP id d9443c01a7336-2d72a6912edmr556605ad.6.1787767052531;
+        Wed, 26 Aug 2026 10:57:32 -0700 (PDT)
+Received: from google.com (195.5.127.34.bc.googleusercontent.com. [34.127.5.195])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39645d31e8csm9002581a91.9.2026.08.26.10.57.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2026 10:57:31 -0700 (PDT)
+Date: Wed, 26 Aug 2026 17:57:28 +0000
+From: Lisa Wang <wyihan@google.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, Andi Kleen <andi@firstfloor.org>,
+	Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
+	Rik van Riel <riel@redhat.com>,
+	Yu Zhang <yu.c.zhang@linux.intel.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>, rientjes@google.com,
+	seanjc@google.com, ackerleytng@google.com, vannapurve@google.com,
+	michael.roth@amd.com, jiaqiyan@google.com, tabba@google.com,
+	dave.hansen@linux.intel.com,
+	Isaku Yamahata <isaku.yamahata@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: Re: [PATCH v5 5/5] mm: selftests: Add shmem into memory failure test
+Message-ID: <ao8pCI3AaUssIO8S@google.com>
+References: <20260823-memory-failure-mf-delayed-fix-v5-0-d97a5703e45a@google.com>
+ <20260823-memory-failure-mf-delayed-fix-v5-5-d97a5703e45a@google.com>
+ <8a99f753-0713-4194-8eb5-90da0724e647@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8a99f753-0713-4194-8eb5-90da0724e647@kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] Incomplete refactoring: The common helper function `vmx_needs_pi_wa=
-keup` was not renamed to `vt_needs_pi_wakeup`.
---
+On Mon, Aug 24, 2026 at 03:00:47PM +0200, David Hildenbrand (Arm) wrote:
+> > +++ b/tools/testing/selftests/mm/memory-failure.c
+> > @@ -20,6 +20,10 @@
+> >  
+> >  #include "vm_util.h"
+> >  
+> > +#ifndef fallthrough
+> > +# define fallthrough __attribute__((__fallthrough__))
+> > +#endif
+> 
+> This doesn't belong into this test.
+> 
+> rseq/rseq.c selftest already uses it.
+> 
+> I think tools/testing/include/ already provides it.
+> 
+> Maybe
+> 
+> 	#include <linux/compiler.h>
+> 
+> does the trick?
 
-commit 3f6ac2d22873c9d6eb23bb3aab8ab0ad05bd4863
-Author: Sean Christopherson <seanjc@google.com>
+Hi David,
+Thank you for replying.
+Would it be better to change it to /* FALLTHROUGH */
+like the rest of the mm selftests?
 
-KVM: VMX: Rename posted interrupt prefixes from "vmx" to "vt"
+If we prefer to include <linux/compiler.h>, we can
+certainly do that, but we would also need to update
+the Makefile and fix a redefinition in pkey-helpers.h.
 
-This commit renames posted interrupt APIs that are shared between VMX and T=
-DX
-to use the "vt" prefix instead of "vmx". This is a non-functional change.
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -37,7 +37,7 @@ endif
+ # LDLIBS.
+ MAKEFLAGS += --no-builtin-rules
 
-> diff --git a/arch/x86/kvm/vmx/posted_intr.c b/arch/x86/kvm/vmx/posted_int=
-r.c
-> index 24221ba553be1..359ef3e6ebbe4 100644
-> --- a/arch/x86/kvm/vmx/posted_intr.c
-> +++ b/arch/x86/kvm/vmx/posted_intr.c
-[ ... ]
-> @@ -219,10 +219,10 @@ static bool vmx_needs_pi_wakeup(struct kvm_vcpu *vc=
-pu)
->  	 * back to the pi_wakeup_handler() function.
->  	 */
->  	return (vmx_can_use_ipiv(vcpu) && !is_td_vcpu(vcpu)) ||
-> -		vmx_can_use_vtd_pi(vcpu->kvm);
-> +		vt_can_use_vtd_pi(vcpu->kvm);
->  }
+-CFLAGS = -Wall -O2 -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
++CFLAGS = -Wall -O2 -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES) -I$(top_srcdir)/tools/include
+ CFLAGS += -Wunreachable-code
+ LDLIBS = -lrt -lpthread -lm
 
-[Severity: Low]
-This isn't a bug, but does vmx_needs_pi_wakeup() also need to be renamed to
-vt_needs_pi_wakeup()?
+--- a/tools/testing/selftests/mm/pkey-helpers.h
++++ b/tools/testing/selftests/mm/pkey-helpers.h
+@@ -22,7 +22,7 @@
+ typedef __u8   u8;
+ typedef __u16  u16;
+ typedef __u32  u32;
+-typedef __u64  u64;
++// typedef __u64       u64;
 
-The "vmx_" prefix is left on a function that is actively shared with TDX
-(it checks is_td_vcpu()) and is used by the common vt_vcpu_pi_put() API
-below, missing the stated goal of the patch to rename all common posted
-interrupt APIs.
 
-> =20
-> -void vmx_vcpu_pi_put(struct kvm_vcpu *vcpu)
-> +void vt_vcpu_pi_put(struct kvm_vcpu *vcpu)
->  {
->  	struct pi_desc *pi_desc =3D vcpu_to_pi_desc(vcpu);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260826171246.7777=
-29-1-seanjc@google.com?part=3D4
+Lisa
