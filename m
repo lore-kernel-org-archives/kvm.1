@@ -1,186 +1,164 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B266439909
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 13:53:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366283F3286
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 13:57:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787752406; cv=none; b=kYcA9hcOy2x+ooOpFL1TlwupvkHPtCsHGEqQUa+dlyqalUF8KFpfEHfOnkWM1QgbAW86j7P5crlgG3lP3RhhjJ2VipixcASvVNxFKVhWBKzoZUsHWQrsNjI8IP9v3+r502QkfzblXgs6bQVr/ckKkhl+l/wCXXokC2Q63rk9XSg=
+	t=1787752634; cv=none; b=ZUpJYYtIO2gcrGfIiDYe1laf/r68WwN/SNtfFINiMOwsr2afknSTbyBHHfxEIu1pCj45KmHTqKNwfAazBE3hF8ajW8JVPNrjIDcEznnLmKMJ+VPswi7IimDyiRe9wOMcAz4qvl00cpfAgeMejthw/xNsnmq1yqFVz2gJvYf6u8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787752406; c=relaxed/simple;
-	bh=aKI/UKGte84OVTfWfIAvvMaWsDxT45eGHGOViohEC78=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GJHluuB6Hx4Pw4hBz9FAe7rfFRX4Cn4Olj7Ff1qzec6hSED4ERZFM3odTHhI1iCagEz7sAuslw7UNyqf+0UVA1/a/3KYwniwoNMnaauYhtFXzf8OcSnH0RMVpHHszlc4iqXV3Sy75lZOh4XXrxt1quis7FKTviu4gDutCuMluWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Fw9M22+/; arc=none smtp.client-ip=209.85.214.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787752634; c=relaxed/simple;
+	bh=t+OEjDwIunpqVOnbDXkVoH6xLQrzgAaRW9ZMUYdvpsk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bSJwAi5iR5CEdlWofM/uUQLKYepakgUOs99lupvq5e3iaUp848kJERpVxumShBbCTAxaXkABUMCIf+rkQi5KDgRbJn0ataiq3HErrdBFxr6we34n25vW5OW+26pvW0C8pvbcuDRf/grAMgPMqmIUZjqSEmLKASuGvS8zSk7Wp+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=IF83l4gs; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fw9M22+/"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d6df0a1e18so14071185ad.1
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 06:53:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="IF83l4gs"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c2020421077so150304366b.3
+        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 06:57:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787752391; x=1788357191; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=njsQrhr1Rw86G3MMqhXpdm0dYelYnqk43kJ0tkWzOHc=;
-        b=Fw9M22+/3+Tuh6ZV/JJEkAFj+RlBK2Q9Is5LYK1aJGSvAYYPdH8byGaD9gmmbxiezq
-         Pws3Ue36HCIptbD8j+oui5RPC+ySOg8GWSwO11fCaJQ++8OhIgiyozKW0Jwj4/bR5ad8
-         15VmAThVs+G8fUQ8R8c/4a4RIqKteUfeRkW1pChn7iLi4mIjVIPbrFZ03L89l+8rNdbF
-         U+sVGh++kCaYC0e0vCVvSoCRsYBYAIEd4Z0mu+N89q/NYltvTvhPE3T7Audf8zSnNxeP
-         7D22SHuL+0zRKUoYVrojsO/83fUXSG5UXu+PgNEFV0uKGVQ8aaEqbMs2mH8eojYT2Dle
-         j6Sw==
+        d=suse.com; s=google; t=1787752628; x=1788357428; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=fOvJ5L5msgiM0CBERBT0U46KkGHdEod8CtevSmc1gXQ=;
+        b=IF83l4gsNR2fnVQjSoF6YcozKGcetBmY1Ec0eQh3ZlHSnEoqpPcE1qJpa4YjXvjM/V
+         +pHbmBChPNjaHYz6ukGEm5KHMluUUjYpczVEOMJHlt6ga0vcalY4+W1PYjrKoC5d9Vlb
+         A8Cw8xDFRc2uce4xPGjjJMeRmZIo/x362+UEk6jIf4Ii8n0zNhuE4JFbOtY2W67oUraz
+         y/hHC4LfRarai0rslC6Q53oVdxBzSSZlQJ5Yj9gf0GNdkFdn5mAVp1e2tSIkHAQPqKRN
+         tuFK7Wvi2KRr5aKlHa3x7+2uKOJJYxwrrKWDAAiIpxSN4EDfHzC3Dvut1KScnHqMp0DJ
+         WVRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787752391; x=1788357191;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=njsQrhr1Rw86G3MMqhXpdm0dYelYnqk43kJ0tkWzOHc=;
-        b=CKzxHYstceEvQWMcy7YD1cnnz3PTUnnk2Tse0divQfrx4P7MRzoMmG0RqYEKiM95qo
-         dkHdprJ3pHvAxmM17u1fvY//o6YQS/zWD5F1KMGs/nT7igkgHrYhYWglmj5Eh/n0b5Xc
-         anjGD7zxQdmQWTcJS5E0cd/GBSS1Vr80KtiMmxEBskiPwf/lsX60P/NDY0XszpFyNKO4
-         Z/YzY1Swt0cMBVYdD0hmBn0iONIdMwGPKNFIXx1FjF8vwGK0xfhcdjr4tbHrL8HqSheV
-         6k9Mew6rNJ9dWgoHVtUtnbxozPmksnUOKYshkPIXvusrPaug2AMphhu7xOJuQzCmwVKi
-         ytrQ==
-X-Forwarded-Encrypted: i=1; AHgh+RotOmgOhYYpsU/FY9VN9JnVo6dGLY9Ucin95mVHEz5qmrlmp6+kEU6k0A32wigrkoxQ3Zs=@vger.kernel.org
-X-Gm-Message-State: AFuF++kWc9dQU+ukqEqLHolhnmr/rahhAPyuQSgHStG7bZzsZVdBOTCr
-	k3Y3JDp3+mrGte/0WOPbNkx+qV2oz7EMoU1ot/6yJRWt81SdHzSGriiY1SyOor/2bTRiSByjcLs
-	RpqIhzQ==
-X-Received: from plnn1.prod.google.com ([2002:a17:902:d0c1:b0:2c8:1ded:d061])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c40a:b0:2d7:1bfd:b240
- with SMTP id d9443c01a7336-2d71bfdb766mr27401015ad.4.1787752388141; Wed, 26
- Aug 2026 06:53:08 -0700 (PDT)
-Date: Wed, 26 Aug 2026 06:53:07 -0700
-In-Reply-To: <CAEvNRgFXJbV78ktsg=b4srFp1OFjtQWQGuNPjr_MmWD-wOvjgw@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1787752628; x=1788357428;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=fOvJ5L5msgiM0CBERBT0U46KkGHdEod8CtevSmc1gXQ=;
+        b=sNiIAyleZAMNqfb/CAiQVF4bd+OB6xZgKOUZxkFHb+2z7tbuUCLmqy/swXxicoJ02f
+         TLdKds4ETjj0HBSPpt5VMuNaJdqz/Z59OSBrxBi/hxbuIx8TJiERkOAeCqTv5Fc4Xkx5
+         XAgw/TU7s0rrFWEC0zQo75t7+iSQTWL6H+A6aQ4uI/09o7ia72/TuyL/al6mOa76CDkE
+         wd40L260FZ/h5Gm6ZTain4dxTjxIsHgKKocWpBjBYvj+L+yyc/rbYPSf+9a45rD5vbdq
+         /xgxw49xHTWY+RobJC5kp+sIoMD6s45U8E/rCMPw1KKGDMXi8rofmdcugdEgvJGi63Fv
+         EtDQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqFexWZmrRQSOekN71FG6Gb6u720heHkksyJAJ+R878NKDhqJH1PFRea9W5/uolo9Is5L4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lTDbnODCtljJ5qFQxao0kJTmBaH4k9n33l778VYq7a9ksQjYXA
+	aGPxKXXhvsMdCEL64YarPoRqiWpzvA/ev2ZmjLTb9Xnn8lOJoVgzy1fukbaz+IFHDA0=
+X-Gm-Gg: AR+sD12oABGXNJ3CsoyrWtoHUw23LmdJS61drisEaEAqlZzCN2ykNpjdqZnk8XP8+zY
+	EYiuC+O8ouyUjbVr1S/96K9qQBigv1r8iV6sljwE65NUhU7EINQiGll11fIRmQfL8+tS+wAnrI7
+	G2BXVGdQ5+mn8DG5UBeZUmCFmdwq1bGU55keawWDckTwvxSgNAOKIl7GhKC67l6BNkpZ4bO8JmJ
+	PV2jb8Pcl+ugCN21e6hOM2hy5TvUQgrW69QN0Q4uoPi27XFD1F+AjcdmzDvnsjXwvHHYpsRUWLw
+	NJBgyIUT3Bvl6QfAB5v3UZF09A70Ysrc77Z7Hl9+linBpzrgv0Un6aEj++EiqR1YJh9UT+gTrWR
+	qjrecYeQM/AtqNZPEib7DWFrNjL0VTbVzoR3noeJh5XtKtrS+bFqL7kco4jh+arof8xTVAjHKQy
+	5hikI3gF2lI+lxff0kmDGEhhfMEKfIPMSeXQOJKkBBi2Q5uPJqBfGWk3CxiPKvCqw=
+X-Received: by 2002:a17:906:628b:b0:c16:66dc:3ab7 with SMTP id a640c23a62f3a-c250c4f025fmr802637466b.10.1787752627642;
+        Wed, 26 Aug 2026 06:57:07 -0700 (PDT)
+Received: from [10.20.4.146] ([149.62.207.128])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c250a7303casm680099266b.25.2026.08.26.06.57.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Aug 2026 06:57:07 -0700 (PDT)
+Message-ID: <1a720dbf-7500-4a35-a069-3561a9f08c0d@suse.com>
+Date: Wed, 26 Aug 2026 16:57:03 +0300
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260807-gmem-inplace-conversion-v10-9-2fc18ee6d3ba@google.com>
- <13ca60c6-e154-4397-8092-09f861e90fe0@kernel.org> <cbf5f7ca-a960-4fb8-a760-2d2794eb6864@arm.com>
- <CAEvNRgGOyQHnF_b8dk8E0d7_=CcwXtYUdU3ko7Qbep+_O7UC0Q@mail.gmail.com>
- <aoZZMQ3Uc8yQWPNA@google.com> <7eba513d-cdae-4832-abac-038dcdd88517@intel.com>
- <meww2a2uf3yeevsfpicyrlg3hch2x4bsdqv2lsv3vfjxg4qzes@co5eogmhkxrk>
- <ao3lOu8-wpGTs2wd@google.com> <ba8d0441-b52f-4357-b2e7-1e352aa385a2@intel.com>
- <CAEvNRgFXJbV78ktsg=b4srFp1OFjtQWQGuNPjr_MmWD-wOvjgw@mail.gmail.com>
-Message-ID: <ao7vwx3nMqCjCHZU@google.com>
-Subject: Re: [PATCH v10 09/41] KVM: guest_memfd: Filter both shared and
- private when invalidating
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Michael Roth <michael.roth@amd.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, 
-	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, jmattson@google.com, jthoughton@google.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] x86/virt/tdx: Wrap TDH.SYS.CONFIG/UPDATE operations
+ in helpers
+To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: kas@kernel.org, rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+ xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com,
+ kishen.maloor@intel.com, tony.lindgren@linux.intel.com,
+ peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+ chao.gao@intel.com, artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org
+References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
+ <20260821032920.256225-2-yilun.xu@linux.intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20260821032920.256225-2-yilun.xu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 26, 2026, Ackerley Tng wrote:
-> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+
+
+On 8/21/26 06:29, Xu Yilun wrote:
+> As part of the TDX module initialization, the kernel configures the TDX
+> module with several information, such as TDX-usable memory regions
+> (TDMRs) and the global KeyID for protecting TDX metadata. During the
+> configuration, the kernel does 2 operations: constructing kernel data
+> types for the SEAMCALL leaf arguments and turning these data types into
+> u64's according to TDX ABI.
 > 
-> > On 8/26/2026 2:55 AM, Sean Christopherson wrote:
-> >> On Tue, Aug 25, 2026, Michael Roth wrote:
-> >>> On Wed, Aug 26, 2026 at 12:13:47AM +0800, Xiaoyao Li wrote:
-> >>>> On 8/20/2026 9:32 AM, Sean Christopherson wrote:
-> >>>>> And vice versa, a PUNCH_HOLE on a SHARED gmem (if userspace is
-> >>>>> using an INIT_SHARED gmem for the shared branch of a memslot) could invalidate the
-> >>>>> PRIVATE mappings (of a different gmem instance).
-> >>>>
-> >>>> I'm wondering now how this could happen.
-> >>>>
-> >>>> the requirement for PUNCH_HOLE on gmem to trigger mapping invalidation is
-> >>>> the gmem is bound with the memslot. But how can a memslot bound with two
-> >>>> gmem instances?
-> >>>
-> >>> I think this is for when userspace uses an mmap'able guest_memfd instance
-> >>> to handle shared memory, and a 'normal' guest_memfd instance for private
-> >>> memory. Each instance is bound to the same memslot/GPA range, and
-> >>> KVM_SET_MEMORY_ATTRIBUTES handles switching between the 2.
-> >
-> > What I didn't figure out is exactly how the two gmem instances are bound
-> > to the same memslot.
-> >
-> > The case I can imagine is
-> >
-> > 1. create gmem1 with GUEST_MEMFD_FLAG_MMAP and
-> > GUEST_MEMFD_FLAG_INIT_SHARED, and get fd1. mmap the returned fd1 to get
-> > a hva.
-> >
-> > 2. create gmem2 to get a fd2.
-> >
-> > 3. call KVM_SET_USER_MEMORY_REGION2 with KVM_MEM_GUEST_MEMFD flag. Pass
-> > the @hva from 1) to 'userspace_addr' field and pass the gmem fd2 to
-> > 'guest_memfd' field.
-> >
-> > However, with this case, only gmem2 is bound to the memslot while gmem1
-> > is not. Following PUNCH_HOLE on gmem1 doesn't invalidate any mappings
-> > because the f->bindings of it is empty.
-> >
-> > Do I miss anything?
+> Both operations are implemented in one function - config_tdx_module().
+> This blurs the boundary between kernel managed structures and TDX ABI
+> definitions. Moreover, future kernel change will need to add more
+> nuances mandated by TDX ABI, such as setting the TDH.SYS.CONFIG leaf
+> version to allow configuring add-on features. Keeping these operations
+> tangled would further clutter the code.
+> 
+> Just like other SEAMCALL leaf helpers, wrap the invocation of
+> TDH.SYS.CONFIG in a helper. Introduce a more descriptive kernel data
+> type for the physical address array of TDMR information. This data type
+> is similar to struct seamldr_params in that it is the container of the
+> PA array layout which is an in-memory ABI. So the previous u64 * type
+> for the array is not wrong, but a named structure provides better type
+> safety and self-documentation. Use the data type as the argument of the
+> TDH.SYS.CONFIG helper.
+> 
+> Future kernel change will also need to set the TDH.SYS.UPDATE leaf
+> version for the same purpose. Add a similar helper to prepare for the
+> change.
+> 
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 
-Oh, I misread your question.  You were specifically asking about a PUNCH_HOLE in
-a SHARED gmem instance over-invalidating PRIVATE mappings.  You're right, that
-wouldn't happen because the invalidations would come in via mmu_notifiers, not
-from KVM.
-
-> I think Xiaoyao is right about this, the "vice versa" part is wrong,
-
-Ya.
-
-> Is this just a case of user error? That with gmem_in_place_conversion,
-> userspace should not use userspace_addr from something other than the
-> gmem for the same memslot?
-
-Yes.  It's not just invalidations that will go sideways, KVM accesses to guest
-memory won't hit the same physical page as actual guest accesses.
-
-Huh.  But that isn't strictly guaranteed, because userspace could bind to a
-memslot that isn't configured with GUEST_MEMFD_FLAG_MMAP, in which case SHARED
-faults will go through the VMA, not kvm_mmu_faultin_pfn_gmem().  It's a bit early
-in the morning, but off the top of my head, I can't think of any reason we need
-to support such a setup.  If userspace really, really wants to use a separate
-mapping, they could DELETE+CREATE an equivalent memslot without the guest_memfd
-file descriptor.
-
-So I think we should do this?
-
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 9c2d52bdf25e..86f53e53a136 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -1013,7 +1013,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
- 	 */
- 	WRITE_ONCE(slot->gmem.file, file);
- 	slot->gmem.pgoff = start;
--	if (kvm_gmem_supports_mmap(inode))
-+	if (gmem_in_place_conversion || kvm_gmem_supports_mmap(inode))
- 		slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
- 
- 	xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
-
-Regardless, the key aspect of all this is that in-place conversion is brand new
-functionality, so we don't have to ensure backwards compatibility.
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
