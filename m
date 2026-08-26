@@ -1,257 +1,166 @@
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012048.outbound.protection.outlook.com [40.93.195.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9110A48A2DF;
-	Wed, 26 Aug 2026 22:50:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787784644; cv=none; b=XoMs/knqhIE1yLnk0Dzi1kgpg3tfCjsSiV/VYcLocktknJawh63HGdoydfF/ix6sgu+w+iBQ04KPJWoJN99CRiB0WXf/Ca+6ot3hhyYmB2I/WQ8xYJaNdnBNwfCkub/owUm92qHjgQSa/0PTa3/wwmnk55QtUitYx+u8p+914LU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787784644; c=relaxed/simple;
-	bh=rwp9r1Nr8znphwZs8a+YFF6d7wcWidDSGZsxf1w3WVI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hk0ZWCy4Kd93z/tEMa+pOTaejDQk6Iva91GaBmp6I3+b5Tm9XlZGK7VrgSKYLZ0KWD9/o983Mt7P6iUnBrA016b90WNP/z1iBqVZWwRMrrnlIxwjntxpCr68oonuR0YLueZmoF0JGMGJoX/Dno/0ZvuCv1RnXeFjdimBy8SFyrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=NZ+xGKK1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=hPpBUpoy; arc=none smtp.client-ip=103.168.172.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BF13B5305;
+	Wed, 26 Aug 2026 22:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787784763; cv=fail; b=J8MfHVKjenOObgaavDsGLNSiN/2gy/BgSDAtwmdqc0do/ff27a/bh8GMfO6Jj2n+Q2EioAThPn4uBImRSg0OW+MCvDG1rb1A6E59Uw0D8FcXBaR9SNFfN+68MtnGV4PjTu1+Z/7Aj1VRbgzOJbIwljwkK9FsMaHj0QS1jpvGzMM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787784763; c=relaxed/simple;
+	bh=ADB4JQxfzU5Dky3RxvOda6q3B3ryFlMj/GCsn3RuJns=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=XMSlnRM+LsYcR+9yi/B9T1q5fDvciC0X9tOClWZwr+8SfX0GsmbHpjK+Jye7PPWBBm//pEE9JUbdDZ68z5qLHqdRTtXp1fSkddhJRYwi73mUIOO244NVCvXb+zWsh3qhFiEt9e3BTuP7UiXUx46E479BNrReFtr9ijjtlQMfYdA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Dms19mh4; arc=fail smtp.client-ip=40.93.195.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="NZ+xGKK1";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="hPpBUpoy"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id A2302EC0277;
-	Wed, 26 Aug 2026 18:50:38 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Wed, 26 Aug 2026 18:50:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1787784638;
-	 x=1787871038; bh=QplW2KxtxglOqcewNzFZRR/OkHVXQZVIXwZYQhVxGak=; b=
-	NZ+xGKK1CDnkI/+Q+3dg9JXY2EpUUV0bwjH0u/z1UZS0DcCepuqqkDxnDyNOJgYr
-	JCDu2T9f6xZlXKfdzQOt7zJXSC3H5cSFAfkTs2TJVslPj0vq3htfWYboswkbaUje
-	kkG0IpLc44JIvs4mVnX9ChBwG/YPZRTPy6YabCQ79FjPCsnYu+USD8Np9k1J640Z
-	oupufBrAPH5bXYMWCFwEQjenEavI81Aw1Lbjw48YIq2UEsvKn0GRbjJhRCOtSSX3
-	Wc4fTFwd3byG4N5i+uqKDGEDkh026MRf9vqhgGQBwNaWyKuhHCsmg4VWTCqp/iqJ
-	vHTPbMwM3oJ2/YJE4+Rx0g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787784638; x=
-	1787871038; bh=QplW2KxtxglOqcewNzFZRR/OkHVXQZVIXwZYQhVxGak=; b=h
-	PpBUpoy7rDfCyo3TpaPczzXGKEuenYj+LAGc4kWJWmdFNWdU5bG2h/D5DVvt68EQ
-	U8/sae8Pn/zNdEl1JOOVylLa1T7gSd9s01W6RLK4nhku5sac2BIXdooaJ7hGkyYx
-	V0o60RftXxj/bb1ftopm5tWn4Gvq46SeQeRdIFqFcICbeY9EVipsN7TGFeOro1ve
-	X4OA4dd2kBm1ddpsRoMUWM6Q+dtnCRfE+4QNSUVoj6h5lLUYByzSQIWbINZ/+WXm
-	LYL/4a9URfBkoyC8BqS0iwkd6tmlIjMIyRo6o64cZoVKF6iYQNiyZZdh07N47m/R
-	hn+JUEIeOPi50ZvUT5WAQ==
-X-ME-Sender: <xms:vW2Pasr7rQ_G5qB6GElMoVev1ckIfQR0Oz0IK7qUZ1FhMCx8WwF5HA>
-    <xme:vW2PagRsI5UzU6N-D9bD1DzNb6hQD0Sy59SMneHVLJ2RIEEAVolE6z9fTsNfii-MI
-    TOjtH8U1CWzueNu6bM-lzrk0Tt6XXK-XTCMnSZp3fe-6_1zJkvY>
-X-ME-Received: <xmr:vW2PaoknCS5K1m_SzqA12SKrf5lB_W97EGRm7woddUIu6LxzYxCH1nQCzdUrig>
-X-ME-Proxy-Cause: dmFkZTF6e4hR1iz/6dIAysFsGCQ71uWDQEuEPYPxGY/BNbu1t2yBp7A8qJ3IBKU8pAioAX
-    kQi2pcgAumZXLtvGdkDjDm8Zb0KsSPzz2VsqnYW42ydMMBwSPS6QnSoQAUAHv07aqMKnRl
-    xelSpx2DhqcMwig8qFnERd46xw36yZ179ft2tapX31kMdCO4EBCDZPMS+OxXASXA0mC8yJ
-    gaTocAtizYKP9ibLshPjnlDekBldB4LL8lduAolpQjZdkKTbOBm7kr4OXXecHyUwbsoYRB
-    yrtxtA8ZLexBsxbJYosZGQLm1U0QGL6Iw3Y3BNRJBkJrhYEGjH1CPTaRnzQ3Hofve2GspD
-    mdCje7Q/C99nzh28J31YfGJkClvIKkECVKoONx3ku5fGohpLpfpVf7hMU8D2ArWaBiu4XT
-    2D2ToyOUiTikWseEXh1BWf1kFEOT+F0em+n/FPKN/CwNo8k6wmSabVSYMfhwRtIuZbaZey
-    C2aaKWIjnz7V2Ica903rgVEmKwvZaAFQwDJWejuL54g0317LPKOKKOnHC6IfoXAi+elSRC
-    cJZiYjoSs/KtHZ69uy7MT8o5sEzJ3UnbXP/gMffJ8o8eVwV3rZKTr6DJjkZQTf1ci1iv5u
-    XkZBZIqLCqdmFI2Hs4FQvLmahoxpdu4sy9AqL05m+bC2lNETs3PiCgTjCxNA
-X-ME-Proxy: <xmx:vW2PasG33uUCS6HXNmERDuuODFOStFcfLQXtMbQKM99NjXMox0Mn2Q>
-    <xmx:vW2Pajlbv8YjV7iD74OwNaKzy_wiEqRehVqyqHNGe_xshYoBKRrbCw>
-    <xmx:vW2PajSOivWBuszMVd4W96Q0Mkf48PT0WgGGGlTBVkEEIt5YzKdPiw>
-    <xmx:vW2Pag6Pj0JHWPDrLEkQqOStYiF1w0zOdUuXYsh-Zfvc9rwYEa81LA>
-    <xmx:vm2PasFQS2R-HHl_00xv3lT8lZ6Xd5hamxoxnBz_Dl2aO4zKala3Jtao>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 26 Aug 2026 18:50:35 -0400 (EDT)
-Date: Wed, 26 Aug 2026 16:50:33 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: <mhonap@nvidia.com>
-Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
- <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
- <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
- <dave@stgolabs.net>, <alison.schofield@intel.com>,
- <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
- <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
- <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
- <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
- alex@shazbot.org
-Subject: Re: [PATCH v4 08/27] vfio/cxl: Add the vfio-cxl module skeleton
-Message-ID: <20260826165033.582735f4@shazbot.org>
-In-Reply-To: <20260813093631.2288172-9-mhonap@nvidia.com>
-References: <20260813093631.2288172-1-mhonap@nvidia.com>
-	<20260813093631.2288172-9-mhonap@nvidia.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Dms19mh4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CQ4dNgnMHBTR5xdf84YIgzd3Gy50mOB+INnpE3GJCmdh8vCXhG5iQaVgLCHahKGc7uwtCgDs/H5H035KNy2HNHsncgUJdg5Ot1HIEgq7NejL4V82/tflxOYwgHUUMLbjEHEzKn2Qq0zzknEwZB6SsGyAdvld4EAPWA+aoEu6G3JpKtl0vBN3aiyDECZgqqHes6U2mapd1SjGJ6Z/qKlhD18/dgFy0pvNRJVrPZQ9oRUKktH/3J/gffY563rl9WomSZHtF2Lth7FBgYTRx56PpsV3NiVafJVwmQtkP79zaw+O0QkQugpIbbb3IPtLiPNxnQEoJvYghiWzrtdnQVDkAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J0sbJO93B4X+/TTz9a/wUcXX6D2HvgNhA+mK6aJegzk=;
+ b=ft3P0F5ZnOS7jWf9CmBNVfl8NvMBCwf6rVegUrlDBI3rwJroMMS9VGaZgnVSGxBZxtFArL5mF+awK1eDPYPjyuVfgCE/rgPJEd3X84wZHkMBtQPpF3SYD653ZpnxhAQd0S0q1UQQxDmzl4onYkvy9aOV+qltLhAYloi0bKIfVOm8PwxlhrRMvEMNnOMYyfDrgmmiN+X1Ru2yqpqzjN52T/l2tTWLt+fHNr7tLITkQUEsFO+a+QW+OED4EQKJYkzGBDLCRlvNvUL3jasJhBZSAgqcHvY+YPlA4h9PvHv4HqgF+1Xc59vzGSzRCaYo9ETBoEx8r9k8sEoZ9ObkmDBPqA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=temperror (sender ip
+ is 149.199.90.133) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com;
+ dmarc=temperror action=none header.from=amd.com; dkim=none (message not
+ signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J0sbJO93B4X+/TTz9a/wUcXX6D2HvgNhA+mK6aJegzk=;
+ b=Dms19mh4FKnFqzCnRgZYAyoQGM2gpr6zuiCxROCTrm/kDCImtMA3Jqx1s2GZzwxnAi08kwFskrvlqdwo6JisIBDMATIH0hAUQRHJmi4MOYcy+nh0Ds8epa+KW1bZH+owrhiO9uxIdYnmQaTfTtBoXowElIxT/TbC/HisCUUC1XA=
+Received: from BN9PR03CA0567.namprd03.prod.outlook.com (2603:10b6:408:138::32)
+ by MW4PR12MB7262.namprd12.prod.outlook.com (2603:10b6:303:228::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.6; Wed, 26 Aug
+ 2026 22:52:36 +0000
+Received: from BN3PEPF00022BDB.namprd03.prod.outlook.com
+ (2603:10b6:408:138:cafe::57) by BN9PR03CA0567.outlook.office365.com
+ (2603:10b6:408:138::32) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.12 via Frontend Transport; Wed,
+ 26 Aug 2026 22:52:34 +0000
+X-MS-Exchange-Authentication-Results: spf=temperror (sender IP is
+ 149.199.90.133) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=temperror action=none header.from=amd.com;
+Received-SPF: TempError (protection.outlook.com: error in processing during
+ lookup of amd.com: DNS Timeout)
+Received: from satlexmb07.amd.com (149.199.90.133) by
+ BN3PEPF00022BDB.mail.protection.outlook.com (10.167.248.106) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.360.3 via Frontend Transport; Wed, 26 Aug 2026 22:52:33 +0000
+Received: from [10.236.30.85] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 26 Aug
+ 2026 17:52:28 -0500
+Message-ID: <ef5e8d6e-f1b3-4fe2-a1ba-a93c240b3f36@amd.com>
+Date: Wed, 26 Aug 2026 17:52:28 -0500
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 02/10] cpu/bugs: Allow forcing Automatic IBRS with SNP
+ active using spectre_v2=eibrs
+To: Borislav Petkov <bp@alien8.de>
+CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <x86@kernel.org>, Sean Christopherson
+	<seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, K Prateek Nayak
+	<kprateek.nayak@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, Naveen Rao
+	<naveen.rao@amd.com>, David Kaplan <david.kaplan@amd.com>, Pawan Gupta
+	<pawan.kumar.gupta@linux.intel.com>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <stable@kernel.org>, kernel test robot
+	<lkp@intel.com>
+References: <20260804235611.4053375-1-kim.phillips@amd.com>
+ <20260804235611.4053375-3-kim.phillips@amd.com>
+ <20260818232204.GBaoTpHK8k7wD9mMk4@fat_crate.local>
+Content-Language: en-US
+From: Kim Phillips <kim.phillips@amd.com>
+In-Reply-To: <20260818232204.GBaoTpHK8k7wD9mMk4@fat_crate.local>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF00022BDB:EE_|MW4PR12MB7262:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c4d81e9-6071-4635-e931-08df03c4b732
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|82310400026|1800799024|23010399003|36860700016|13003099007|6133799003|10067099003|11063799006|5023799004|56012099006|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	/8nU4/W6Xo2d8nseS3F3LB+1LnKjkKVyDptAY/2aL940S1DAtkz26VToBVJ5V997GDiNPXfeGvWcVh5ge9EMGZ5zb2fiOwuumLZsodvPj6ivCeDTzYhA6EZ6iiaLpmqd75CtOCITp2ri59kCk5toQFZKJbwsyi387Q0FQOPHcIDzgvbV+OI/hSTv38S1a3HIhb2OKOTiCSUduMJGzG9r+SYVoolwBMQcQ/Z7qBbBRLcXZ2q+OPUqdLdoplCCJY6IW/hyccTqVvcS7NTeiN/TFpbe7Q2lEBF643J0FwnE+OKpgnaQgDaCUrKi5bLPxfglGLhnPS505N1Xv0dGLs1vStNyPXm8xX0js57mn3KSPyinIVk68PtCcV/Z6B3zElN/d5E/1ft8et/NaUOvPvbXqipw3k98bH5pOneH6tyObMxuxUEL07hWazxO6c7cfS//uSXLlboGnWdt0NF3BMXTUGox+FUmwDFs5+80ZmQd0Mw6iMV1EGlKX7ONU2+pwdlYQa0KS5XDE5ONP+AhIKuQ8bb2MXVOLp14nNEIQLAngx42iGNr8QMxVddEaio+5fe84OoiwrF2c4Dzs5Jm1wTDzb6WT4hXOeQKvXPYeH1bEuaw1uG8T3Ai+COjoQNL4xUg13B4EnEVWM6J3j8G6aWgiUr5E/wfRjSN2JRTK0GqZ+xfkcSqPrULUG3A8hdy3I+6a2rvfu5tZiK0K/abxsxiBg==
+X-Forefront-Antispam-Report:
+	CIP:149.199.90.133;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:unknown-90-133.xilinx.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(1800799024)(23010399003)(36860700016)(13003099007)(6133799003)(10067099003)(11063799006)(5023799004)(56012099006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	8tZ5GS9Bxk8IHON5nNrAlg7rNGh5ukp/AJu/v0HBvbgbKj+qqzD6tJ2wL3N6jRH1V7+Ad3OCQ0kXhHdyv0J9DHi7u4nupbI7vTMCw1Lg9xYsrGsCvnq6AqffhIAvtfgRV1ewl5cKK+ZnKVEuelcNmmjxJIw7K1/A+5cotiZyAU1SnptucEpmdy81W+haCijihSoww4JnngpvVf3UmsB9qi/XlvxVhfp1NXBAMI9+A7TeBo8U/2zXBnObguB/dWhfAbz14xfLsd0r5NIlCGes8IIa4NthfDSKaL9H7wu3t2JUC70gA3mdz0I9W3wI74o8tecWEozFGkNBJ9I+ufWE1PMRD44RSOceNPbX3gnrvptpam2YN2Mlj6aeOJBz8SSft7orQpXO2wYYgkRDoogmhKgf2hc8hzL+FWz+x6v/I4oOr+jNzVqh7rkCUF1XCOBT
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 22:52:33.0155
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c4d81e9-6071-4635-e931-08df03c4b732
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[149.199.90.133];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF00022BDB.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7262
 
-On Thu, 13 Aug 2026 15:06:12 +0530
-<mhonap@nvidia.com> wrote:
+On 8/18/26 6:22 PM, Borislav Petkov wrote:
+> On Tue, Aug 04, 2026 at 06:56:03PM -0500, Kim Phillips wrote:
+>
+> Please fix all your subject prefixes: it should be "x86/bugs:"
+>
+> The tip tree preferred format for patch subject prefixes is
+> 'subsys/component:', e.g. 'x86/apic:', 'x86/mm/fault:', 'sched/fair:',
+> 'genirq/core:'. Please do not use file names or complete file paths as
+> prefix. 'git log path/to/file' should give you a reasonable hint in most
+> cases.
+>
+>> spectre_v2=eibrs currently enables retpolines when SNP is enabled,
+>> instead of AutoIBRS (EIBRS) because the commit that disabled
+>> AutoIBRS if SNP is enabled stopped short of enabling
+>> X86_FEATURE_IBRS_ENHANCED.
+>>
+>> Change the logic to enable X86_FEATURE_IBRS_ENHANCED, and move the
+>> decision to switch to retpolines in the default/"auto" case in
+>> spectre_v2_select_mitigation().  This allows the existing
+>> spectre_v2=eibrs logic to work as intended.
+> So this whole hoopla is just to be able to select =eibrs in SNP guests, *and*,
+> in doing so, cause a performance loss. I.e., shoot oneself in the foot.
+>
+> Or is there another, better reason which wants this?
+It's not in guests, it's in the hypervisor, and in addition to making 
+spectre_v2=eibrs work as advertised, it also fixes emitting the 
+misleading "EIBRS selected but CPU doesn't have Enhanced or Automatic 
+IBRS." on AutoIBRS-capable CPUs.
 
-> From: Manish Honap <mhonap@nvidia.com>
-> 
-> Add the vfio-cxl module that vfio-pci loads on demand for CXL Type-2
-> devices. It registers a set of callbacks with vfio-pci-core at
-> module_init and drops them at exit; the callbacks are stubs here and
-> are filled in by later patches.
-> 
-> VFIO_CXL depends on CXL_BUS and builds as vfio-cxl.ko, which
-> request_module("vfio-cxl") resolves through MODULE_ALIAS.
-> 
-> Signed-off-by: Manish Honap <mhonap@nvidia.com>
-> ---
->  MAINTAINERS                          |  7 +++++
->  drivers/vfio/pci/Kconfig             |  2 ++
->  drivers/vfio/pci/Makefile            |  2 ++
->  drivers/vfio/pci/cxl/Kconfig         | 11 ++++++++
->  drivers/vfio/pci/cxl/Makefile        |  3 ++
->  drivers/vfio/pci/cxl/vfio_cxl_core.c | 41 ++++++++++++++++++++++++++++
->  6 files changed, 66 insertions(+)
->  create mode 100644 drivers/vfio/pci/cxl/Kconfig
->  create mode 100644 drivers/vfio/pci/cxl/Makefile
->  create mode 100644 drivers/vfio/pci/cxl/vfio_cxl_core.c
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c665bf8f1a28..aa8cecbc4cf2 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -28312,6 +28312,13 @@ L:	kvm@vger.kernel.org
->  S:	Maintained
->  F:	drivers/vfio/cdx/*
->  
-> +VFIO CXL DRIVER
-> +M:	Manish Honap <mhonap@nvidia.com>
-> +L:	kvm@vger.kernel.org
-> +L:	linux-cxl@vger.kernel.org
-> +S:	Supported
-> +F:	drivers/vfio/pci/cxl/
-> +
->  VFIO DRIVER
->  M:	Alex Williamson <alex@shazbot.org>
->  L:	kvm@vger.kernel.org
-> diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
-> index 296bf01e185e..c3f54fc8ccc0 100644
-> --- a/drivers/vfio/pci/Kconfig
-> +++ b/drivers/vfio/pci/Kconfig
-> @@ -70,6 +70,8 @@ source "drivers/vfio/pci/virtio/Kconfig"
->  
->  source "drivers/vfio/pci/nvgrace-gpu/Kconfig"
->  
-> +source "drivers/vfio/pci/cxl/Kconfig"
-> +
->  source "drivers/vfio/pci/qat/Kconfig"
->  
->  source "drivers/vfio/pci/xe/Kconfig"
+Shooting oneself in the foot is subjective depending on what performance 
+users want and whether in userspace or not, esp. considering this series 
+also enables spectre_v2=ibrs on SNP hosts.
 
-It seems fair to put this above the variant driver Kconfigs rather than
-bury it among them.
+>> Fixes: acaa4b5c4c85 ("x86/speculation: Do not enable Automatic IBRS if SEV-SNP is enabled")
+>> Reported-by: Tom Lendacky <thomas.lendacky@amd.com>
+>> Cc: Borislav Petkov (AMD) <bp@alien8.de>
+>> Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+>> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+>> Cc: Sean Christopherson <seanjc@google.com>
+>> Cc: stable@kernel.org
+> Definitely not stable material. If at all.
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Closes: https://lore.kernel.org/oe-kbuild-all/202603121136.bc8zNsHS-lkp@intel.com/
+> It doesn't close that - that link points to something which is not upstream.
+>
+These get dropped in v5 - please switch to reviewing v5 now:
 
-> diff --git a/drivers/vfio/pci/Makefile b/drivers/vfio/pci/Makefile
-> index 6138f1bf241d..c3031070a1f3 100644
-> --- a/drivers/vfio/pci/Makefile
-> +++ b/drivers/vfio/pci/Makefile
-> @@ -21,6 +21,8 @@ obj-$(CONFIG_VIRTIO_VFIO_PCI) += virtio/
->  
->  obj-$(CONFIG_NVGRACE_GPU_VFIO_PCI) += nvgrace-gpu/
->  
-> +obj-$(CONFIG_VFIO_CXL) += cxl/
-> +
->  obj-$(CONFIG_QAT_VFIO_PCI) += qat/
->  
->  obj-$(CONFIG_XE_VFIO_PCI) += xe/
+https://lore.kernel.org/lkml/20260826223510.3669875-1-kim.phillips@amd.com/
 
-Here again, cxl is a feature of vfio-pci-core.  I'd promote it to
-between vfio-pci-core and vfio-pci.  The earlier linking also has the
-benefit that in the typical case it will be available before the
-builtin drivers (but keep the deferred loading behavior).  Thanks,
+Thanks,
 
-Alex
-
-> diff --git a/drivers/vfio/pci/cxl/Kconfig b/drivers/vfio/pci/cxl/Kconfig
-> new file mode 100644
-> index 000000000000..1392fa4ed15d
-> --- /dev/null
-> +++ b/drivers/vfio/pci/cxl/Kconfig
-> @@ -0,0 +1,11 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +config VFIO_CXL
-> +	tristate "VFIO support for CXL Type-2 devices"
-> +	depends on CXL_BUS && CXL_MEM
-> +	select VFIO_PCI_CORE
-> +	help
-> +	  Add CXL HDM handling to vfio-pci so a CXL Type-2 device, such as a
-> +	  CXL-attached accelerator, can be assigned to a virtual machine.
-> +	  vfio-pci loads this module on demand when it binds a CXL device.
-> +
-> +	  If you don't know what to do here, say N.
-> diff --git a/drivers/vfio/pci/cxl/Makefile b/drivers/vfio/pci/cxl/Makefile
-> new file mode 100644
-> index 000000000000..8501bf626108
-> --- /dev/null
-> +++ b/drivers/vfio/pci/cxl/Makefile
-> @@ -0,0 +1,3 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +obj-$(CONFIG_VFIO_CXL) += vfio-cxl.o
-> +vfio-cxl-y := vfio_cxl_core.o
-> diff --git a/drivers/vfio/pci/cxl/vfio_cxl_core.c b/drivers/vfio/pci/cxl/vfio_cxl_core.c
-> new file mode 100644
-> index 000000000000..cbec7319452c
-> --- /dev/null
-> +++ b/drivers/vfio/pci/cxl/vfio_cxl_core.c
-> @@ -0,0 +1,41 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * VFIO support for CXL Type-2 devices.
-> + *
-> + * Copyright (c) 2026 NVIDIA Corporation & Affiliates
-> + */
-> +
-> +#include <linux/module.h>
-> +#include <linux/vfio_pci_core.h>
-> +
-> +static int vfio_cxl_init_device(struct vfio_pci_core_device *vdev)
-> +{
-> +	return 0;
-> +}
-> +
-> +static void vfio_cxl_release_device(struct vfio_pci_core_device *vdev)
-> +{
-> +}
-> +
-> +static const struct vfio_cxl_ops vfio_cxl_ops = {
-> +	.init_device	= vfio_cxl_init_device,
-> +	.release_device	= vfio_cxl_release_device,
-> +	.owner		= THIS_MODULE,
-> +};
-> +
-> +static int __init vfio_cxl_init(void)
-> +{
-> +	return vfio_pci_core_register_cxl_ops(&vfio_cxl_ops);
-> +}
-> +
-> +static void __exit vfio_cxl_exit(void)
-> +{
-> +	vfio_pci_core_unregister_cxl_ops(&vfio_cxl_ops);
-> +}
-> +
-> +module_init(vfio_cxl_init);
-> +module_exit(vfio_cxl_exit);
-> +
-> +MODULE_LICENSE("GPL");
-> +MODULE_DESCRIPTION("VFIO support for CXL Type-2 devices");
-> +MODULE_ALIAS("vfio-cxl");
-
+Kim
