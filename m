@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89F048989D
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 21:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DF42E764D
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 21:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787780017; cv=none; b=SFpzTlnQkU+8hEpMSPujuwYvy3/a2KtDHEqoiT816cHZqAJKagEAm/MHQripLcpDHZqQUtXX+thG329FCt5krwOxX/qtY0NILJgRyV32wpDUDQEjo6u7I4MxwgiAz884G0ZSVd0aU1bT1Tk/Vhi0GoyqEj9EvWhOC86jDffMSYA=
+	t=1787780463; cv=none; b=OiRJSaRn6d2bgD2pZhcs4zku/4s0Q4cxPNl/ozSKq3Lt8nJ71X1pGF2wjGqf1CbhWDkwNG++4RWJHz/UFPueSJLJG7xT0qmlqeIZTnmzcsXGINbUgasvtTrgloilTmCsnrWqBjAd78Fg7Egwp1TCrOiwM1nFHihlyrapm7EpXlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787780017; c=relaxed/simple;
-	bh=uY9cS0I6zAzQMoUTO3/Ycze8wv5cMh6WhS1ycRoG2/A=;
+	s=arc-20240116; t=1787780463; c=relaxed/simple;
+	bh=l/Y41Xtu65ZyPRw56BlSQh+ttBMSadQR10yBU8XH7H0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=BhJ+rQSLcfaUNWim4ztfuZha28xK2RLxo0tYrHqRJdvU8lECujdnA8fvGwABTKFLCdOylspgujKUjwH6W7uFw3Z3DMiAcuItmLsUc1d+SYUb7elxz3dDc1uDEkv73CDNom6QtecXqKPs9wjdOU0tMIB85UQUdK6F567zkw5g1bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DWsPH/0h; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=dzT4N2KFKFV65TTqV506axYbOu6CT76wasgM/VSAp80DYmfsyvUH8o7Aha/PkUaHY4PJDXjO+Z8EzvFBv8MgAJir8T1kUuDZTo4LKZlM7PMy9iVn7ZmGo7vtDpM0DcbXB/ZG1Q/p2HxM5dEiSb8nyTqe8m3+NiseNeSMXscBt78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lUkS5+76; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DWsPH/0h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480441F000E9;
-	Wed, 26 Aug 2026 21:33:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lUkS5+76"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1681F000E9;
+	Wed, 26 Aug 2026 21:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787780002;
-	bh=0Blbz231a2qfBh1C+pZvqWulriD5FiWfboK8Lczqb+8=;
+	s=k20260515; t=1787780462;
+	bh=dNxZDWrJOr2c9bXxOo9R4fqEVHEe5euKIF0B8xxs/o0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DWsPH/0hy3qpod0zu9+WIUnEG0JQpmJwWPa8VCfTdZvTaTV3Hg+u2OG/EInkZNV3L
-	 jZBhQQUqO5U7LLPXEdQSUZox+Ib7XSVxeYLk8mi9/HU3rfQWMM95tdhwaUyf3tfen5
-	 ibQ+k5kcgSJVeMOWjjIZeTFxMb36jBUKg2Q2ZEXpqspmYcWIZt/TWcsLvs/C6LvEZ+
-	 9aecbnqHPxPq2L4pciMJ0yKyd7JR+XYMb+esMZ5eve1pKH5c6lCN9+bKgcYATfFYiI
-	 k5jiNkN7CXAMph1YwQd04VJsvMlDkOz9hEHSozAsESfrrTQ7+TnSUryz66z17LYuTP
-	 eWgFxor0x8ZNA==
+	b=lUkS5+76n487P/C8M843GFFA9gHpk6nj9Von6iU1uygd8oi3RTXZWuHem1330xz5H
+	 42+Ms96EgWoPoTxUc3FXiAI3NCw5jZ/AzUR0OUnQUAfMhV3+2ElxS6AxzOWP5lL3Ph
+	 IB74KCt9xowLI1hX7B/hX5pGZMbRqI6Gf1kbXkcfUC9kWDbEp8ahSzGJwFbP+Dgt2h
+	 Favq0NNYuV3M47w5Aqb7domcZeNOSYcr3ILbXDPQXsEou+yLmw0lU7hKKYHSlVKjzS
+	 0pB6wWwNALvx4Ej1xKo14OLVLkUgCYmk3g7TEexWfJNItqu72CZSXxqH8OVw6Yxerr
+	 jCohQ2Sg7t7RQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/4] KVM: nSVM: Reject KVM_SET_NESTED_STATE if L1 has
- EFER.LMA=1 && EFER.LME=0
+Subject: Re: [PATCH 2/4] KVM: x86/mmu: Bug the VM if KVM attempts to walk
+ more levels than the MMU has
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sean Christopherson" <seanjc@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260826211844.884951-2-seanjc@google.com>
+In-Reply-To: <20260826211844.884951-3-seanjc@google.com>
 References: <20260826211844.884951-1-seanjc@google.com>
- <20260826211844.884951-2-seanjc@google.com>
+ <20260826211844.884951-3-seanjc@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 26 Aug 2026 21:33:21 +0000
-Message-Id: <20260826213322.480441F000E9@smtp.kernel.org>
+Date: Wed, 26 Aug 2026 21:41:01 +0000
+Message-Id: <20260826214101.CE1681F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,70 +47,68 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] svm_set_nested_state() leaves the vCPU in an inconsistent nested s=
-tate if nested_svm_load_cr3() fails.
+- [High] The new bounds check falsely triggers KVM_BUG_ON for valid PAE pag=
+e walks on 32-bit KVM hosts.
 --
 
-commit c04793c5ea54cf0af42f1998cd2e7c8148705788
+commit c8c785606f8b5ac435db8c42d576eaf8f88c2fcd
 Author: Sean Christopherson <seanjc@google.com>
 
-KVM: nSVM: Reject KVM_SET_NESTED_STATE if L1 has EFER.LMA=3D1 && EFER.LME=
-=3D0
+KVM: x86/mmu: Bug the VM if KVM attempts to walk more levels than the MMU h=
+as
 
-Reject KVM_SET_NESTED_STATE if the incoming L1 host state has an
-impossible EFER combination of LMA=3D1 but LME=3D0. This prevents KVM from
-consuming the illegal state when constructing the shadow MMU for L2.
+This commit extends the paging levels check to ensure KVM doesn't attempt to
+walk more levels than the MMU template provides, preventing out-of-bounds
+array accesses.
 
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index 73f37b050d0a0..49fb10ad1f9f6 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-> @@ -2028,6 +2028,7 @@ static int svm_set_nested_state(struct kvm_vcpu *vc=
-pu,
->  	if (!(save->cr0 & X86_CR0_PG) ||
->  	    !(save->cr0 & X86_CR0_PE) ||
->  	    (save->rflags & X86_EFLAGS_VM) ||
-> +	    ((save->efer & EFER_LMA) && !(save->efer & EFER_LME)) ||
->  	    !nested_vmcb_check_save(vcpu, &save_cached, false))
->  		goto out_free;
+> diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmp=
+l.h
+> index 27427e7f22fa0..46a0f7796e55a 100644
+> --- a/arch/x86/kvm/mmu/paging_tmpl.h
+> +++ b/arch/x86/kvm/mmu/paging_tmpl.h
+> @@ -368,13 +368,14 @@ static int FNAME(walk_addr_generic)(struct guest_wa=
+lker *walker,
+>  	pte_access =3D ~0;
 > =20
+>  	/*
+> -	 * Queue a page fault for injection if this assertion fails, as callers
+> -	 * assume that walker.fault contains sane info on a walk failure.  I.e.
+> -	 * avoid making the situation worse by inducing even worse badness
+> -	 * between when the assertion fails and when KVM kicks the vCPU out to
+> -	 * userspace (because the VM is bugged).
+> +	 * Queue a page fault for injection if any of the below assertions fail,
+> +	 * as callers assume that walker.fault contains sane info on a walk
+> +	 * failure.  I.e. avoid making the situation worse by inducing even
+> +	 * worse badness between when the assertion fails and when KVM kicks
+> +	 * the vCPU out to userspace (because the VM is bugged).
+>  	 */
+> -	if (KVM_BUG_ON(is_long_mode(vcpu) && !is_pae(vcpu), vcpu->kvm))
+> +	if (KVM_BUG_ON(is_long_mode(vcpu) && !is_pae(vcpu), vcpu->kvm) ||
+> +	    KVM_BUG_ON(w->cpu_role.base.level > PT_MAX_FULL_LEVELS, vcpu->kvm))
 
 [Severity: High]
-This isn't a bug introduced by this patch, but looking further down in
-svm_set_nested_state(), does this code leave the vCPU in an inconsistent
-state if nested_svm_load_cr3() fails?
+Does this new check falsely trigger KVM_BUG_ON for valid PAE page walks on
+32-bit KVM hosts?
 
-arch/x86/kvm/svm/nested.c:svm_set_nested_state() {
-...
-	ret =3D nested_svm_load_cr3(&svm->vcpu, vcpu->arch.cr3,
-				  nested_npt_enabled(svm), false);
-	if (ret)
-		goto out_free;
-...
-}
+When a PAE guest runs on a 32-bit KVM host (!CONFIG_X86_64), KVM assigns
+w->cpu_role.base.level =3D PT32E_ROOT_LEVEL (3). During a page walk,
+walk_addr_generic() is compiled for PTTYPE =3D=3D 64. In this context,
+PT_MAX_FULL_LEVELS is defined as 2.
 
-If nested_svm_load_cr3() fails, the function jumps to out_free and returns
-an error without unwinding the guest mode state transitions that occurred
-earlier in the function.
+The check w->cpu_role.base.level > PT_MAX_FULL_LEVELS evaluates to 3 > 2,
+which unconditionally bugs the VM.
 
-The vCPU is left in guest mode with svm->vmcb pointing to vmcb02, but the
-MMU is not re-initialized for the nested guest because it returns before
-calling kvm_init_mmu().
+The array accesses in the subsequent loop are safe because walker->level is
+explicitly decremented from 3 to 2 in the PAE-specific block earlier in the
+function, ensuring the max_level used for array indexing does not exceed 2.
 
-Will a subsequent KVM_RUN ioctl attempt to execute the vCPU with mismatched
-VMCB and MMU state?
+Should this check use the adjusted walker->max_level instead of the original
+unmodified w->cpu_role.base.level?
 
-Could an unprivileged host userspace process trigger this intentionally to
-corrupt KVM internal state and crash the host?
-
-For example, could userspace call KVM_SET_CPUID to set a high MAXPHYADDR,
-call KVM_SET_SREGS with a CR3 near that limit, and then call KVM_SET_CPUID
-again to lower MAXPHYADDR? This would make the previously set vcpu->arch.cr3
-illegal, causing nested_svm_load_cr3() to fail its kvm_vcpu_is_legal_cr3()
-check and return -EINVAL during KVM_SET_NESTED_STATE.
+>  		goto error;
+> =20
+>  	++walker->level;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260826211844.8849=
-51-1-seanjc@google.com?part=3D1
+51-1-seanjc@google.com?part=3D2
