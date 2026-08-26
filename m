@@ -1,318 +1,132 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1168374E7F
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 20:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B1039A7E7;
+	Wed, 26 Aug 2026 20:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787776228; cv=none; b=Wwip8OFDzCVBh3uFLNeTnrQa1+hUZ/02giG+7Uxe5hZyECJ42/+7zNhsWGBoKBgDJtZrz+WJuCk09CJBoeakuPT9R2veQQTs4IZDKsRXRI3uxC3wMj/KkOTdtefuWGxQ0TZ3boTmE5OfcvNjgBpAdLbIF87K6gks20ECOHhPkOw=
+	t=1787776278; cv=none; b=WpACgI3Qxnln8vvCaCI67QSzppXn64DJBooA41f43z+zDlJmAR3KP2Bf5Y+IL+kCxLGoYOfTnn3CYh8rxZSUq07HRT7GWmybch20GtMujY1MBUmA3uLxSHcqOe5wXqvR3b9dTSzViNot3DDGprkjfaEhBjA5mmVzb9GsvUs1JEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787776228; c=relaxed/simple;
-	bh=0kgi22xNJcVO36+dXKeosv/aiOf0RymZDzU7O1fom8k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KG1cZvJAICDYWwtRq8g4QPymXqY2KiW8zdu0bFe9I+GqasmZaBfpvB+FaSIniTDNHjf82QnxZSLnrlKi5B+B87vxJ0R0WKpWroikn5FvQJd4EMORJeY46CdRn8nkL2pac9gbhbamWuW5yY2R+SajzulXW/U5jDsCGxf3KQ1m2D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T6/oEUK+; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1787776278; c=relaxed/simple;
+	bh=7cdU9DVUgBmZ+eSuN/s0PxtkyqmH1fW62wSh+non1uE=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=btE2nKhtFXKzu/1w4MIGZZUK1ZB2Zjbw91y4b7WG0veuIGDgQBIDWnDN9d6sKd+s60m0eW8uXM0vsW0k8vnXjqGbVSJo5HzBHahwRlfqZ+XZtjK4/LKiTZsVdh7lKfgJWd1h9eo7ArWVYRmPCcISFqj4Wr7zZ4tp+e6423wT2v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=c4kFMpO0; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T6/oEUK+"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2d3b445a84fso7425ad.1
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 13:30:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787776226; x=1788381026; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tviHa9iHC75nfLCPdWJnLGm9+adY8MzlYYxeJUkpU14=;
-        b=T6/oEUK+s3C6+y6eTlV40UEFKemiQ07wosxior7fbZ7e22fWIOdSaKabI9xZIxeTqn
-         7eOexLBdLG9dFyx7/as4bnsGtmR8SHlGbM7iM9dTb6uvveRi3XirKYJG4J5nLcjEbZOk
-         rut1RPoeB2yf+YLXJPsZc0w1gFq8kXqZnslnB4zmcmTJ5qtt+ymmphsD4r7/hA3G1d4T
-         KsDOftPcoC+MuBI3S0cwMNcCLKkQQBuTdxpj+4JeB7D2RBtBnPy+Nbostj1b5WeoZdEh
-         /6VxFOA2cLwJfZtyjnXxu1uNUDg0ay9ziJiQTV5WSTGSzioj1O9ymlYRPyRGDUDUhhy3
-         6q3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787776226; x=1788381026;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=tviHa9iHC75nfLCPdWJnLGm9+adY8MzlYYxeJUkpU14=;
-        b=imXhdcSOtgVhzcJSQM5TmBVbMrNmsYivLUjMdSjHWuq8clrirhERLZNsaWIE5hQo0P
-         z0LHWLutaTBI5Xvl3m/clReT3Qm6S4OiVY9J7d9DUmNqN83s1ABiRch1790c69nBuFQM
-         kLhYER9fyNEqB45KOp9EV3FivXgwFoIYIs9aEsw+DxAbSmSJoaWWUZKuYsWSm0FkQ94u
-         ncPTgpWrPS6ccRvnCxcPvPzyItj7HHnTeafl/oyGOjInAQCF2Dkx2StnFzXIpgtM9KFC
-         fmqrZ+bqoNa1n1i/7/ICKW/qPT95ne2mJDU63qSGjyM6kkFa8TYhLUvXZfyRClezQUqx
-         Txfg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr9Q4TqQuydXeaRSrEN4yWk43O6eBKxzGBVsf5//bAV8v3lr2KTIgkwW1PoJMifjTpZJRI=@vger.kernel.org
-X-Gm-Message-State: AFuF++mvqpwH/VR+Al7iCcfogfwZoePtszBN00etlikwEu5a37neLIA3
-	5Ly4QdmzpOEuf3T7k9ZkCnrCDcEcdy5UlMko+9I/w0r37g0UNquW0wkfWco0X00feg==
-X-Gm-Gg: AR+sD12c3i7V3GwX4UqtSFKAUKGD2JBy77pY+KIjy3/2sexnrCLQPHCYlPep2wQPIJK
-	ssESg6fbekY9xuIF/CKWMo5TORnAL2ItTXQFtYd3jxyqg17Ln1ZOkQDulE2qirZ9WGiqO/dEjFi
-	zBwgS6T6LS6UYN7Ji3+VU89iy6dl9m4qse8n7zgDBlQS6YH2+j8Ll9wcPR7ws9O/84DbPI5dOVZ
-	3qf4yqN8MIc7hwKWZM0IRJ4wfFfAZdZOKWwJcVDU+k6wu7y6mysLzTcKh3zTvBeHj1Q1KGHVFDo
-	9vI+2oZ5rwa9jJJUbeyWIofcHw8tbvWDwd2hWtNpo65kHMbD/Ak/+2NPnD/ttcnJ6Cw8cTdJcWr
-	PBEnmQo4b7a0QIUlcJf3eTalivhPjb7tffYzs5nrG0orzM/8nn3++PK1849PKd3Z5D675pIZt8V
-	ZBPWZT/GIzX9YmaKvv5B34d8T59owrQ8KfXSUWtKVtDQmZJKSnFBLEgIm99EkP5QlupZJLwRiZ0
-	pHKQX+MpzVvVEjUOrygfbpIdnS19OsOfA0UaG8OH0CCr8Ut+eHaKOQAf1k=
-X-Received: by 2002:a17:903:b0e:b0:2bd:3bfd:74f1 with SMTP id d9443c01a7336-2d72a67b81amr2346875ad.2.1787776225466;
-        Wed, 26 Aug 2026 13:30:25 -0700 (PDT)
-Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc1befce3b8sm1387309a12.5.2026.08.26.13.30.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2026 13:30:24 -0700 (PDT)
-Date: Wed, 26 Aug 2026 20:30:19 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
-	Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v4 08/18] iommu/vt-d: Clear unpreserved context entries
- during shutdown
-Message-ID: <ao9ADjoGzgNX4t1M@google.com>
-References: <20260808022723.3893618-1-skhawaja@google.com>
- <20260808022723.3893618-9-skhawaja@google.com>
- <446684d8-44d0-47c5-9301-172c55efd950@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="c4kFMpO0"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=LBG22HuFcKqOwRZzaBQg3Yl2Pqe1f3bp1oSCi5Wuvuo=; b=c4kFMpO07XdDA3nuabyURhNL4n
+	CnmGgGISYBozl+T3Kc+Aluw1/eCEKfqDm8swAtP7ANgxu1NAp4QXcOc8B4lW7TMBnhRzjRxO7+FOD
+	r1vGc/uaTNnV3dbvhifA/sugDLwVPT/z20JeLIYUqrYd0gxSV3eHTG84xAomqL1fAtMy9dCTBOmVi
+	gYTjOHZxv+8SSoqlQUEtZeB3xTijoDODX3O4DY7b2Fp0Lp6u3ynD3EcrEbO5G5h+kKckJsuSYyBAH
+	xzU7uYvIdhz2sbe5+vetodF/3taBUINZCp2zYUrO2GqB/3iU/1s6wpcYeZa5A/H99KsNg63d4GeaP
+	ue5Ye/Ew==;
+Received: from [167.98.59.108] (helo=ehlo.thunderbird.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1wzKGi-000000070A8-33Z7;
+	Wed, 26 Aug 2026 20:30:50 +0000
+Date: Wed, 26 Aug 2026 21:30:43 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: paulmck@kernel.org, "Paul E. McKenney" <paulmck@kernel.org>
+CC: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Clark Williams <clrkwllms@kernel.org>,
+ Simona Vetter <simona.vetter@ffwll.ch>, Jerome Glisse <jglisse@redhat.com>,
+ Christian Koenig <christian.koenig@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, kvm@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_mm/mmu=5Fnotifier=3A_Remove_non=5Fb?=
+ =?US-ASCII?Q?lock=5Fstart/end=28=29_from_notifier_invocation?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <e62a7362-7dd0-4615-8877-6ab675971ab2@paulmck-laptop>
+References: <9427a8e0-3ba6-4f31-a35d-54429bd7e071@paulmck-laptop> <3d0463b6099d4fcde9a025a2f9e231d75303b61c.camel@infradead.org> <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop> <ao3z7Rtw2FROkVpy@google.com> <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop> <20260826073233.T-KtFXmj@linutronix.de> <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org> <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop> <98e123c9-3dc4-45fb-815b-881b3346741c@paulmck-laptop> <ACC45EB6-F881-4EE9-A9F8-D53A2B921FEE@infradead.org> <e62a7362-7dd0-4615-8877-6ab675971ab2@paulmck-laptop>
+Message-ID: <06F9A0F0-2177-4173-A201-56325A73F89B@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <446684d8-44d0-47c5-9301-172c55efd950@linux.intel.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-On Wed, Aug 26, 2026 at 04:05:51PM +0800, Baolu Lu wrote:
->On 8/8/26 10:27, Samiullah Khawaja wrote:
->>During normal shutdown the iommu translation is disabled. Since the root
->>table is preserved during live update, it needs to be cleaned up and the
->>context entries of the unpreserved devices and root entries for the
->>unpreserved context tables need to be cleared.
+On 26 August 2026 20:59:31 BST, "Paul E=2E McKenney" <paulmck@kernel=2Eorg>=
+ wrote:
+>On Wed, Aug 26, 2026 at 07:01:24PM +0100, David Woodhouse wrote:
+>> On 26 August 2026 17:28:27 BST, "Paul E=2E McKenney" <paulmck@kernel=2E=
+org> wrote:
+>> >On Wed, Aug 26, 2026 at 08:05:06AM -0700, Paul E=2E McKenney wrote:
+>> >> On Wed, Aug 26, 2026 at 08:38:27AM +0100, David Woodhouse wrote:
+>> >> > On Wed, 2026-08-26 at 09:32 +0200, Sebastian Andrzej Siewior wrote=
+:
+>> >> > > On 2026-08-25 13:51:14 [-0700], Paul E=2E McKenney wrote:
+>> >> > > > Very good, preemption disabling it is!=C2=A0 It is quite possi=
+ble that the
+>> >> > > > PREEMPT_RT guys will need something else, but one thing at a t=
+ime=2E
+>> >> > >=20
+>> >> > > This reminds me of classic RCU ;) It might work in this use case=
+ but I
+>> >> > > am afraid that other users might come along where it actually hu=
+rts=2E
+>> >> > > With PREEMPT LAZY the preemption within the read-section should
+>> >> > > hopefully be the exception=2E
+>> >> >=20
+>> >> > Given the way that PREEMPT_RT treats other locks like spinlocks an=
+d
+>> >> > rwlocks =E2=80=94 turning them into sleeping locks =E2=80=94 I sus=
+pect it makes most
+>> >> > sense, and is consistent, to also turn rcu_read_lock_atomic() and
+>> >> > synchronize_rcu_atomic() into plain rcu_read_lock() and
+>> >> > try_synchronize_srcu()+synchronize_scru_expedited()=2E
+>> >>=20
+>> >> That makes a lot of sense to me=2E
+>> >
+>> >Another option is to instead fall back to non-atomic SRCU=2E
+>>=20
+>> That's exactly what I thought I was suggesting; I think I left an 's' o=
+ut though :)
 >
->The key assumption here seems to be that, during a live-update kexec,
->most devices do not go through the normal iommu release path. Otherwise,
->their context entries should already be torn down in the
->iommu_release_device path.
-
-Also there is another part that the root table entries of unpreserved
-context tables also need to be removed. So even if the devices went
-through the release path, the context tables used by those devices are
-not removed by the Intel IOMMU driver.
+>Heh!!!
 >
->Could you please confirm this assumption and add some short note in the
->comments or commit message?
-
-Yes, I can add a short note in the comment here and also in the commit
-message.
+>About 20 years ago, I was shocked to learn of a valid use case involving
+>sleeping RCU readers, which resulted in SRCU=2E  And now it is time
+>to be shocked at non-sleeping sleeping RCU readers, and especially a
+>non-sleeping grace-period wait=2E  ;-)
 >
->>
->>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->>---
->>  drivers/iommu/intel/iommu.c      |  15 +++-
->>  drivers/iommu/intel/iommu.h      |   5 ++
->>  drivers/iommu/intel/liveupdate.c | 140 +++++++++++++++++++++++++++++++
->>  3 files changed, 158 insertions(+), 2 deletions(-)
->>
->>+
-
-[snip]
-
->>+static void clear_unpreserved_context(struct device_domain_info *info, u8 bus, u8 devfn)
->>+{
->>+	struct context_entry *context;
->>+
->>+	/*
->>+	 * This cleanup is done during shutdown, so it should be fine to only
->>+	 * clear the entries here and issue one global invalidation later to
->>+	 * invalidate all cleared entries.
->>+	 *
->>+	 * Note that the device IOTLB invalidation for unpreserved devices is
->>+	 * skipped this way, but that should not be needed as the devices are
->>+	 * quiesced at this point. This should improve the performance of the
->>+	 * cleanup process and avoids any invalidation timeouts because drivers
->>+	 * might have moved devices to D3 state.
->>+	 */
->>+	context = iommu_context_addr(info->iommu, bus, devfn, 0);
->>+	if (context) {
->>+		context_clear_entry(context);
->>+		__iommu_flush_cache(info->iommu, context, sizeof(*context));
+>Anyway, easy enough:
 >
->For tearing down a present context entry, please follow the VT-d
->recommended sequence:
->
->- clear only the Present bit,
->- flush the updated entry to memory if necessary,
->- issue the required cache invalidations,
+>#ifdef CONFIG_PREEMPT_RT
+>DEFINE_SRCU(whatever);
+>#define my_srcu_read_lock() srcu_read_lock(&whatever);
+>#define my_srcu_read_unlock(idx) srcu_read_unlock(&whatever, (idx));
+>#define my_synchronize_srcu() synchronize_srcu(&whatever);
+>#else
+>DEFINE_SRCU_ATOMIC(whatever);
+>#define my_srcu_read_lock() srcu_read_lock_atomic(&whatever);
+>#define my_srcu_read_unlock(idx) srcu_read_unlock_atomic(&whatever, (idx)=
+);
+>#define my_synchronize_srcu() synchronize_srcu_atomic(&whatever);
+>#endif
 
-Do we still need the individual cache invalidations if we issue global
-invalidations (context, pasid-cache and iotlb), after clearing all
-entries, as they would be done if a new root table was being setup?
+We could do that for the KVM GPC locking, but more consistent would be to =
+change *all* users of the 'atomic' lock under PREEMPT_RT to silently get th=
+e sleeping version instead, like PREEMPT_RT does with spinlocks and rwlocks=
+=2E
 
-Looking at the VT-d specs (Invalidation of Translation Caches), each
-invalidation type (cache, pasid and iotlb) defines granularity in both
-register and queue based interface. And the granularity indicates that
-Global invalidations clear the cached entries for that specific type.
-For example following text is used for each cache type (in queue
-interface):
+So it's srcu_read_lock_atomic() itself (et al) which would get that if/els=
+e treatment=2E
 
-   Context-cache:
-   Global Invalidation (01b): All context-cache entries cached at the
-   remapping hardware are invalidated.
 
-   Pasid-cache:
-   Global Invalidation (11b): All PASID-cache entries are invalidated.
-
-   Iotlb:
-   Global Invalidation (01b):
-   - All IOTLB entries are invalidated.
-   - All paging-structure-cache entries are invalidated.
-
-A similar note about using Global invalidation is suggested in the specs
-when setting up root table (Set Root Table Pointer Operation).
-
-   ... software must perform a global invalidate of the contextcache,
-   PASID-cache (if applicable), and IOTLB, in that order. This is
-   required to ensure hardware references only the remapping structures
-   referenced by the new root table pointer and not stale cached entries.
-
-Also please note that this is happening during dmar unit teardown and
-system shutdown, and while the context table entries in root table are
-being cleared, the memory is not freed until the global invalidation is
-issued.
-
-Since this is during shutdown, issuing global invalidations instead of
-multiple individual invalidations for devices and aliases is simpler and
-would likely also have shutdown time improvements and reduce the
-blackout time during liveupdate.
-
-Please let me know if my global invalidations and granularity
-understanding is not correct.
-
-I added a comment at the top of this function to explain this, let me
-know if you want me to expand it with more details.
-
->- then clear the remaining fields of the entry.
->
->>+	}
->>+}
->>+
->>+static int clear_unpreserved_alias_cb(struct pci_dev *pdev, u16 alias, void *data)
->>+{
->>+	struct device_domain_info *info = data;
->>+
->>+	clear_unpreserved_context(info, PCI_BUS_NUM(alias), alias & 0xff);
->>+	return 0;
->>+}
->>+
->>+static int clear_unpreserve_context_entry_fn(struct device *dev,
->>+					     struct iommu_device *iommu_dev,
->>+					     void *arg)
->>+{
->>+	struct device_domain_info *info;
->>+	struct context_entry *context;
->>+
->>+	info = dev_iommu_priv_get(dev);
->>+	if (!info)
->>+		return 0;
->>+
->>+	if (!dev_is_pci(dev) || !dev_iommu_preserved_state(dev))
->>+		goto out_unpreserved;
->>+
->>+	/*
->>+	 * PRE use cases are not supported with Live Update and a preservation
->>+	 * attempt on such domains returns an error. But Intel IOMMU driver
->>+	 * enables PRE by default on all devices that support it. For preserved
->>+	 * entries, the PRE needs to be disabled so preserved PCI devices do not
->>+	 * generate PRQs, during kexec, as translations are kept enabled during
->>+	 * live update. There is no need to disable these for DMA aliases.
->>+	 */
->>+	if (sm_supported(info->iommu)) {
->>+		context = iommu_context_addr(info->iommu, info->bus, info->devfn, 0);
->
->Nit: please add a brief comment explaining why locking is not needed at
->this call site.
-
-Will do in next revision.
->
->>+		if (context) {
->>+			context_clear_sm_pre(context);
->
->For cache invalidation considerations when changing the PRE bit in a
->present context entry, please follow the VT-d spec guidance (Table 28,
->“Guidance to Software for Invalidations”).
-
-Please see note above the regarding global invalidations.
->
->>+			__iommu_flush_cache(info->iommu, context, sizeof(*context));
->> +		}> +	}
->>+
->>+	return 0;
->>+
->>+out_unpreserved:
->>+	if (dev_is_pci(dev))
->>+		pci_for_each_dma_alias(to_pci_dev(dev),
->>+					clear_unpreserved_alias_cb, info);
->>+	else
->>+		clear_unpreserved_context(info, info->bus, info->devfn);
->>+
->>+	return 0;
->>+}
->>+
->>+/**
->>+ * clear_unpreserved_context_entries() - Clear context entries for unpreserved devices
->>+ * @iommu: Target IOMMU
->>+ *
->>+ * Clear the context entries of unpreserved devices during shutdown before kexec.
->>+ */
->>+void clear_unpreserved_context_entries(struct intel_iommu *iommu)
->>+{
->>+	struct iommu_dev_iter iter = {
->>+		.fn = clear_unpreserve_context_entry_fn,
->>+		.iommu = &iommu->iommu,
->>+		.arg = NULL,
->>+
->>+	};
->>+
->>+	/*
->>+	 * Clear context entries for unpreserved devices.
->>+	 *
->>+	 * Note that the error can be ignored as the iterator function does not
->>+	 * fail.
->>+	 */
->>+	iommu_for_each_dev(&iter);
->>+
->>+	/* Clear reference to unpreserved context tables */
->>+	clear_unpreserved_context_root_entries(iommu,
->>+					       iommu_preserved_state(&iommu->iommu));
->>+
->>+	/*
->>+	 * Some devices might not have teardown/detached properly depending on
->>+	 * whether a proper device remove is done before kexec is triggered.
->>+	 * Also unpreserved context tables and entries are removed during
->>+	 * shutdown. So issue global invalidations to remove references to
->>+	 * unpreserved tables and entries.
->>+	 */
->>+	iommu->flush.flush_context(iommu, 0, 0, 0, DMA_CCMD_GLOBAL_INVL);
->>+	if (sm_supported(iommu))
->>+		qi_flush_pasid_cache(iommu, 0, QI_PC_GLOBAL, 0);
->>+	iommu->flush.flush_iotlb(iommu, 0, 0, 0, DMA_TLB_GLOBAL_FLUSH);
-
-Global invalidations are issued here after doing all the clear work.
->>+}
->>+
->>  static void unpreserve_iommu_context_tables(struct intel_iommu *iommu,
->>  					    struct iommu_hw_ser *ser)
->>  {
->
->Thanks,
->baolu
-
-Thanks for looking at this.
-
-Sami
