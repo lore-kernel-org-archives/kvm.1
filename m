@@ -1,189 +1,318 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7714C47CA61
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 20:27:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787776072; cv=pass; b=UWbJNhSwNabkUZAbHnTZc8LznnghA+3Q+XoFcVv1wx8+scI/uGGmHBTEAPd73DeHp/kyIKJIVKlRP9wqYZcPGdYwNsU+Q2vDouaUIIwo7TBvfW/TT5egBlAPr0WGcAfLCdE9FvtxSd1brTlJSkv/W6W3Lig4067iDLxflTxTzBU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787776072; c=relaxed/simple;
-	bh=KB5Dt4NITSpAROcFBDNP6TJCJRL/uGFl7mc5zMZ6rbk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b7/5Of28aDhGcX6nvXpi/x4hYLIQQsb6Mwb4ZQirK3u0qt9Q/qbMIEG38fGJ2lsbJ0BQKppHzi6mFTo4pC8dvjBRH5UCIhkHqnhDX1MhY1zlWMQVC3R+IOHstMTKgw5HiKk8LktqpXMGT6jWjd6foE+mR1e7IcZZaDhET5r8UVs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h6oyIj26; arc=pass smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1168374E7F
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 20:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787776228; cv=none; b=Wwip8OFDzCVBh3uFLNeTnrQa1+hUZ/02giG+7Uxe5hZyECJ42/+7zNhsWGBoKBgDJtZrz+WJuCk09CJBoeakuPT9R2veQQTs4IZDKsRXRI3uxC3wMj/KkOTdtefuWGxQ0TZ3boTmE5OfcvNjgBpAdLbIF87K6gks20ECOHhPkOw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787776228; c=relaxed/simple;
+	bh=0kgi22xNJcVO36+dXKeosv/aiOf0RymZDzU7O1fom8k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KG1cZvJAICDYWwtRq8g4QPymXqY2KiW8zdu0bFe9I+GqasmZaBfpvB+FaSIniTDNHjf82QnxZSLnrlKi5B+B87vxJ0R0WKpWroikn5FvQJd4EMORJeY46CdRn8nkL2pac9gbhbamWuW5yY2R+SajzulXW/U5jDsCGxf3KQ1m2D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T6/oEUK+; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h6oyIj26"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c1677c91969so159736366b.1
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 13:27:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787776069; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SKhqw+uq7x5G0vod2RBWw/lf+cYFAl+cXc08Oo0X9C+t2LLllBwMpWGvSWUJzn49Bj
-         bdRNFS07RN4oiNkekh2itEdlM5ZdhCZV9rd1Kc8kaMx3dzuqn/qoEqu7HQtJdteg75nC
-         Rgasy9V0WNk/e+Q2ltHvhl5lWbLugyK8daJJr/OAQCJCxMpzd9xck5Xi/GugsZU9uanl
-         QmMapS4TqgkAs6jeUk77jNmciOxKeE01hDFRDFtupYdExviW1sjbN1FpMlYGnKIsa259
-         0S26Kr64AWV0omCo+ZLFr82W7PxgSoAuuAeLmZ50ouooXGXpvwWp6QPyl2QDLi08dqB+
-         KViw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=PWGOH1354ZX/vY0l9xaAPBv85Hq+rgIf24RYb5RW08c=;
-        fh=xRFR3tC69Cr5lt8zeiI8iSk3500GEnC7Fxb39igeTGc=;
-        b=r9pBjpIxKj7jwIT85GR+nk+UPvsSK+1bHOz4VarJhExSolqt5L0BKtR3PtwP5iQ87O
-         Z6Mh3uzK8IGqzx4Ihr+LSeqAErtjFgFFYxXmT6fWKrssawbeW+P+aiZuv6gHqlbzT5oI
-         4Bh3021nTuGOB2UshcvJaw9U2Elr2aZcfoS+CN5lnBvvL5s+ZuuCvyLCzYbKE4c1KWgO
-         y0MlB2tjO2ZOwGIu5XVeZWyTmIgkySQmT3DtXHSYCXRuNHQIVsNBWCTQntc2cq1n86Hx
-         +3tAXgb5vxo9vfSdm5jogvnuYlXgB5fG7XEjhGqMMp5qtf+z0+3AtD7YEeQ2lhZtjAmu
-         sq+A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T6/oEUK+"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2d3b445a84fso7425ad.1
+        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 13:30:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787776069; x=1788380869; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=PWGOH1354ZX/vY0l9xaAPBv85Hq+rgIf24RYb5RW08c=;
-        b=h6oyIj26GbmIfCQagr/L5fQJb+1DKw/sinD4UuYVLMxXTInVgjycwM4K3xH5RlKdMH
-         eNE+/FsCeFAcHDwdIb49GH6zNKF0wc4zyNYSXpPiwe0HUyhMo/jf5YYPsusQQH0PAh1n
-         P2GIwWcjY/6ZD5UxT5xDVX0P7mexxlYBmlkas7MsHb/nLaTEj/GeBg6P0TM1k354aCr8
-         CALtJv+9zLGAeL/d4ln4a8ipYN1ekmvMVCgGeUQ9j+fqBFFfcSLKXFl8oKxvEnMcD8kX
-         VDw4eK4gQZJq5pOqrqVkVmdSgD0kAE3Y6GDLTf1aKxWk+fk/0hPffS6DfjF52efmj66p
-         2dnw==
+        d=google.com; s=20251104; t=1787776226; x=1788381026; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tviHa9iHC75nfLCPdWJnLGm9+adY8MzlYYxeJUkpU14=;
+        b=T6/oEUK+s3C6+y6eTlV40UEFKemiQ07wosxior7fbZ7e22fWIOdSaKabI9xZIxeTqn
+         7eOexLBdLG9dFyx7/as4bnsGtmR8SHlGbM7iM9dTb6uvveRi3XirKYJG4J5nLcjEbZOk
+         rut1RPoeB2yf+YLXJPsZc0w1gFq8kXqZnslnB4zmcmTJ5qtt+ymmphsD4r7/hA3G1d4T
+         KsDOftPcoC+MuBI3S0cwMNcCLKkQQBuTdxpj+4JeB7D2RBtBnPy+Nbostj1b5WeoZdEh
+         /6VxFOA2cLwJfZtyjnXxu1uNUDg0ay9ziJiQTV5WSTGSzioj1O9ymlYRPyRGDUDUhhy3
+         6q3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787776069; x=1788380869;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PWGOH1354ZX/vY0l9xaAPBv85Hq+rgIf24RYb5RW08c=;
-        b=U1fGnjWKdzQosvI879DEIVqi9Z5X5WroIpJ33oNkDzCr4Y7/Vr1n6JCGKDngDV9Fgl
-         0RmGaO6Iaf/sM/uCXxfuwZQnz/BfYvoItDMpinXFsaknsjxQc82+Me4eaE9uEE9mi+oh
-         rb1EY3rkGsH97iSvpO1huaQ6lVRiBoplDTRhG9Uamy2vJL7lU5ZnY8jqrDbOz6N8VnOl
-         2No6wKmb2lbH4tFYqdj+AYYPIFOX4iwWLf0VREgz0IMpBHZjd+Vvpd6m+IKtI6mO6WXg
-         PuEjd8SCK3qRV2susvu2remv0IrfG84Rx1kIEQ7p8gew1tmKABXYoc5Yu12TSJEwcBl/
-         lp4Q==
-X-Forwarded-Encrypted: i=1; AHgh+RrZ5IK0j0Sar2w0GSJZ/94tN/2RqJaBw5w4+531EQalINZUMZCB0qAdmrck2q3fqrlEELk=@vger.kernel.org
-X-Gm-Message-State: AFuF++nvR3unXKbz03y4L1QfzXcXArLKriSMWwqlusjcP+NXCjO3MsE7
-	3LbojSu+RpU2kTHAiuG3EheHHB6LA/5RPHCCOrCbfxl68svU/qzbGL1knT370OKlOx7SVT4doBx
-	x9Jf5Fr4ZIs9VyNRghGszADNSeJ3w1b8817/YRaHZBYBvlUc85u8p60l1
-X-Gm-Gg: AR+sD100ulG0lnk0vGnIJsNFnktx9tLKtWlUEyi26qLEbK3Xzom1zG7wP59oOmIR/fR
-	XbbZoeOioyvxkxbm1/ooHiUeK23YryVVSNiYrpItJ6cBSu+HSEIBqTOf09Gjdh4ebXL68jymxCW
-	gyklr20a+708NJgWKDSy5y71vkchuLkYO5HQF5tmGOcg39T8xLChp3AvjLEsy1AdgXNG55KxzsW
-	kz4Qt0XhtI2AK8t0Y++jRJkqv/EEe2MtWNrBsDH598VQToXRRhbMR/50f/su2JZv20RaGo4fQth
-	+eushkpjJyIcLN86s5c0OikYWHDrj5yl0ztNER3J3qdNKg==
-X-Received: by 2002:a17:906:2081:b0:c25:2e93:28a6 with SMTP id
- a640c23a62f3a-c252e932fe8mr551532366b.3.1787776068231; Wed, 26 Aug 2026
- 13:27:48 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787776226; x=1788381026;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=tviHa9iHC75nfLCPdWJnLGm9+adY8MzlYYxeJUkpU14=;
+        b=imXhdcSOtgVhzcJSQM5TmBVbMrNmsYivLUjMdSjHWuq8clrirhERLZNsaWIE5hQo0P
+         z0LHWLutaTBI5Xvl3m/clReT3Qm6S4OiVY9J7d9DUmNqN83s1ABiRch1790c69nBuFQM
+         kLhYER9fyNEqB45KOp9EV3FivXgwFoIYIs9aEsw+DxAbSmSJoaWWUZKuYsWSm0FkQ94u
+         ncPTgpWrPS6ccRvnCxcPvPzyItj7HHnTeafl/oyGOjInAQCF2Dkx2StnFzXIpgtM9KFC
+         fmqrZ+bqoNa1n1i/7/ICKW/qPT95ne2mJDU63qSGjyM6kkFa8TYhLUvXZfyRClezQUqx
+         Txfg==
+X-Forwarded-Encrypted: i=1; AHgh+Rr9Q4TqQuydXeaRSrEN4yWk43O6eBKxzGBVsf5//bAV8v3lr2KTIgkwW1PoJMifjTpZJRI=@vger.kernel.org
+X-Gm-Message-State: AFuF++mvqpwH/VR+Al7iCcfogfwZoePtszBN00etlikwEu5a37neLIA3
+	5Ly4QdmzpOEuf3T7k9ZkCnrCDcEcdy5UlMko+9I/w0r37g0UNquW0wkfWco0X00feg==
+X-Gm-Gg: AR+sD12c3i7V3GwX4UqtSFKAUKGD2JBy77pY+KIjy3/2sexnrCLQPHCYlPep2wQPIJK
+	ssESg6fbekY9xuIF/CKWMo5TORnAL2ItTXQFtYd3jxyqg17Ln1ZOkQDulE2qirZ9WGiqO/dEjFi
+	zBwgS6T6LS6UYN7Ji3+VU89iy6dl9m4qse8n7zgDBlQS6YH2+j8Ll9wcPR7ws9O/84DbPI5dOVZ
+	3qf4yqN8MIc7hwKWZM0IRJ4wfFfAZdZOKWwJcVDU+k6wu7y6mysLzTcKh3zTvBeHj1Q1KGHVFDo
+	9vI+2oZ5rwa9jJJUbeyWIofcHw8tbvWDwd2hWtNpo65kHMbD/Ak/+2NPnD/ttcnJ6Cw8cTdJcWr
+	PBEnmQo4b7a0QIUlcJf3eTalivhPjb7tffYzs5nrG0orzM/8nn3++PK1849PKd3Z5D675pIZt8V
+	ZBPWZT/GIzX9YmaKvv5B34d8T59owrQ8KfXSUWtKVtDQmZJKSnFBLEgIm99EkP5QlupZJLwRiZ0
+	pHKQX+MpzVvVEjUOrygfbpIdnS19OsOfA0UaG8OH0CCr8Ut+eHaKOQAf1k=
+X-Received: by 2002:a17:903:b0e:b0:2bd:3bfd:74f1 with SMTP id d9443c01a7336-2d72a67b81amr2346875ad.2.1787776225466;
+        Wed, 26 Aug 2026 13:30:25 -0700 (PDT)
+Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc1befce3b8sm1387309a12.5.2026.08.26.13.30.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2026 13:30:24 -0700 (PDT)
+Date: Wed, 26 Aug 2026 20:30:19 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
+	Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v4 08/18] iommu/vt-d: Clear unpreserved context entries
+ during shutdown
+Message-ID: <ao9ADjoGzgNX4t1M@google.com>
+References: <20260808022723.3893618-1-skhawaja@google.com>
+ <20260808022723.3893618-9-skhawaja@google.com>
+ <446684d8-44d0-47c5-9301-172c55efd950@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260821193502.92431-1-vipinsh@google.com> <ao3nr1-t0DxANAyC@google.com>
-In-Reply-To: <ao3nr1-t0DxANAyC@google.com>
-From: David Matlack <dmatlack@google.com>
-Date: Wed, 26 Aug 2026 13:27:20 -0700
-X-Gm-Features: AcwNN1VJZs9sa1bllRivEAYyBKhodHBefcR6pQ8bKeL_D0Ssy2tWvugwTys94zA
-Message-ID: <CALzav=f5wUUt4mKZn0tvQez6_1iYPcb8eX5q-XjabTNy03JiNg@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/1] vfio: circular locking dependency in pci_dev_reset_iommu_prepare()
-To: Vipin Sharma <vipinsh@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Joerg Roedel <joro@8bytes.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Nicolin Chen <nicolinc@nvidia.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, Robin Murphy <robin.murphy@arm.com>, 
-	jrhilke@google.com, skhawaja@google.com, tatashin@google.com, 
-	Will Deacon <will@kernel.org>, kvm@vger.kernel.org, iommu@lists.linux.dev, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <446684d8-44d0-47c5-9301-172c55efd950@linux.intel.com>
 
-On Tue, Aug 25, 2026 at 12:06=E2=80=AFPM David Matlack <dmatlack@google.com=
-> wrote:
+On Wed, Aug 26, 2026 at 04:05:51PM +0800, Baolu Lu wrote:
+>On 8/8/26 10:27, Samiullah Khawaja wrote:
+>>During normal shutdown the iommu translation is disabled. Since the root
+>>table is preserved during live update, it needs to be cleaned up and the
+>>context entries of the unpreserved devices and root entries for the
+>>unpreserved context tables need to be cleared.
 >
-> On 2026-08-21 12:35 PM, Vipin Sharma wrote:
->
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D
-> > Potential Solutions Suggested by AI
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D
-> >
-> > 1. Decouple iommu_setup_dma_ops() from group->mutex in drivers/iommu/io=
-mmu.c:
-> >    iommu_setup_dma_ops() only requires struct device * and the domain p=
-ointer
-> >    (group->default_domain); it does not mutate any fields in struct iom=
-mu_group.
-> >    Moving the iommu_setup_dma_ops() calls after mutex_unlock(&group->mu=
-tex) in
-> >    iommu_probe_device(), bus_iommu_probe(), and iommu_group_store_type(=
-) breaks
-> >    the initial &group->mutex -> cpu_hotplug_lock dependency.
->
-> Are there any other code paths that rely on group->mutex -->
-> mm->mmap_lock ordering? If so fixing this one case wouldn't help.
->
-> > 2. Avoid holding down_write(&vdev->memory_lock) across pci_try_reset_fu=
-nction()
-> >    in VFIO:
-> >    vfio-pci could zap active BAR mappings under memory_lock and set a s=
-tate
-> >    flag / disable memory decoding, drop memory_lock before calling
-> >    pci_try_reset_function(), and then re-acquire memory_lock to re-enab=
-le
-> >    memory. While resetting, any concurrent user fault will see the memo=
-ry
-> >    disabled condition and return VM_FAULT_SIGBUS safely.
->
-> This would change the userspace-visible behavior of faulting on a VFIO
-> device BAR from "block until reset is done and the succeed" to "fail
-> with SIGBUS". And it would allow VFIO to access VFIO device BARs during
-> the reset through vfio_pci_core_iowrite*().
->
-> But I think we can extend this idea to solve those problems by
-> introducing a wait queue for tasks to sit on while a device is being
-> reset.
->
-> e.g. Something like this (completely untested and partially written by AI=
-):
->
-> From: David Matlack <dmatlack@google.com>
-> Date: Tue, 25 Aug 2026 18:37:52 +0000
-> Subject: [PATCH] vfio/pci: Avoid circular locking dependency during devic=
-e reset
->
-> Avoid a circular locking dependency during VFIO device reset by dropping
-> vdev->memory_lock prior to calling PCI reset functions
-> (pci_try_reset_function() and pci_reset_bus()). Introduce an explicit res=
-et
-> state flag (vdev->resetting) and wait queue (vdev->reset_done_wq) to stal=
-l
-> concurrent BAR page faults and MMIO accesses during reset without holding
-> vdev->memory_lock across PCI reset operations.
-...
+>The key assumption here seems to be that, during a live-update kexec,
+>most devices do not go through the normal iommu release path. Otherwise,
+>their context entries should already be torn down in the
+>iommu_release_device path.
 
-This approach does not look ideal. The implementation has a bug where
-concurrent resets can lead to vdev->resetting being cleared too early.
-And from a maintainability perspective, there are more call sites that
-currently take memory_lock that would probably also have to be updated
-to wait for vdev->resetting to become false.
-
-> >
-> > 3. Refine synchronization in pci_dev_reset_iommu_prepare():
-> >    Evaluate if attaching to the blocking domain and pausing ATS during =
-device
-> >    reset can be protected using more fine-grained locking or atomic sta=
-te
-> >    flags without holding the coarse &group->mutex.
+Also there is another part that the root table entries of unpreserved
+context tables also need to be removed. So even if the devices went
+through the release path, the context tables used by those devices are
+not removed by the Intel IOMMU driver.
 >
-> I don't know enough about this part of the kernel to say, but this would
-> directly address the new lock ordering dependency vdev->memory_lock -->
-> group->mutex introduced by commit f5b16b802174 ("PCI: Suspend iommu funct=
-ion
-> prior to resetting a device"), which is what led to this lockdep error.
+>Could you please confirm this assumption and add some short note in the
+>comments or commit message?
+
+Yes, I can add a short note in the comment here and also in the commit
+message.
+>
+>>
+>>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>>---
+>>  drivers/iommu/intel/iommu.c      |  15 +++-
+>>  drivers/iommu/intel/iommu.h      |   5 ++
+>>  drivers/iommu/intel/liveupdate.c | 140 +++++++++++++++++++++++++++++++
+>>  3 files changed, 158 insertions(+), 2 deletions(-)
+>>
+>>+
+
+[snip]
+
+>>+static void clear_unpreserved_context(struct device_domain_info *info, u8 bus, u8 devfn)
+>>+{
+>>+	struct context_entry *context;
+>>+
+>>+	/*
+>>+	 * This cleanup is done during shutdown, so it should be fine to only
+>>+	 * clear the entries here and issue one global invalidation later to
+>>+	 * invalidate all cleared entries.
+>>+	 *
+>>+	 * Note that the device IOTLB invalidation for unpreserved devices is
+>>+	 * skipped this way, but that should not be needed as the devices are
+>>+	 * quiesced at this point. This should improve the performance of the
+>>+	 * cleanup process and avoids any invalidation timeouts because drivers
+>>+	 * might have moved devices to D3 state.
+>>+	 */
+>>+	context = iommu_context_addr(info->iommu, bus, devfn, 0);
+>>+	if (context) {
+>>+		context_clear_entry(context);
+>>+		__iommu_flush_cache(info->iommu, context, sizeof(*context));
+>
+>For tearing down a present context entry, please follow the VT-d
+>recommended sequence:
+>
+>- clear only the Present bit,
+>- flush the updated entry to memory if necessary,
+>- issue the required cache invalidations,
+
+Do we still need the individual cache invalidations if we issue global
+invalidations (context, pasid-cache and iotlb), after clearing all
+entries, as they would be done if a new root table was being setup?
+
+Looking at the VT-d specs (Invalidation of Translation Caches), each
+invalidation type (cache, pasid and iotlb) defines granularity in both
+register and queue based interface. And the granularity indicates that
+Global invalidations clear the cached entries for that specific type.
+For example following text is used for each cache type (in queue
+interface):
+
+   Context-cache:
+   Global Invalidation (01b): All context-cache entries cached at the
+   remapping hardware are invalidated.
+
+   Pasid-cache:
+   Global Invalidation (11b): All PASID-cache entries are invalidated.
+
+   Iotlb:
+   Global Invalidation (01b):
+   - All IOTLB entries are invalidated.
+   - All paging-structure-cache entries are invalidated.
+
+A similar note about using Global invalidation is suggested in the specs
+when setting up root table (Set Root Table Pointer Operation).
+
+   ... software must perform a global invalidate of the contextcache,
+   PASID-cache (if applicable), and IOTLB, in that order. This is
+   required to ensure hardware references only the remapping structures
+   referenced by the new root table pointer and not stale cached entries.
+
+Also please note that this is happening during dmar unit teardown and
+system shutdown, and while the context table entries in root table are
+being cleared, the memory is not freed until the global invalidation is
+issued.
+
+Since this is during shutdown, issuing global invalidations instead of
+multiple individual invalidations for devices and aliases is simpler and
+would likely also have shutdown time improvements and reduce the
+blackout time during liveupdate.
+
+Please let me know if my global invalidations and granularity
+understanding is not correct.
+
+I added a comment at the top of this function to explain this, let me
+know if you want me to expand it with more details.
+
+>- then clear the remaining fields of the entry.
+>
+>>+	}
+>>+}
+>>+
+>>+static int clear_unpreserved_alias_cb(struct pci_dev *pdev, u16 alias, void *data)
+>>+{
+>>+	struct device_domain_info *info = data;
+>>+
+>>+	clear_unpreserved_context(info, PCI_BUS_NUM(alias), alias & 0xff);
+>>+	return 0;
+>>+}
+>>+
+>>+static int clear_unpreserve_context_entry_fn(struct device *dev,
+>>+					     struct iommu_device *iommu_dev,
+>>+					     void *arg)
+>>+{
+>>+	struct device_domain_info *info;
+>>+	struct context_entry *context;
+>>+
+>>+	info = dev_iommu_priv_get(dev);
+>>+	if (!info)
+>>+		return 0;
+>>+
+>>+	if (!dev_is_pci(dev) || !dev_iommu_preserved_state(dev))
+>>+		goto out_unpreserved;
+>>+
+>>+	/*
+>>+	 * PRE use cases are not supported with Live Update and a preservation
+>>+	 * attempt on such domains returns an error. But Intel IOMMU driver
+>>+	 * enables PRE by default on all devices that support it. For preserved
+>>+	 * entries, the PRE needs to be disabled so preserved PCI devices do not
+>>+	 * generate PRQs, during kexec, as translations are kept enabled during
+>>+	 * live update. There is no need to disable these for DMA aliases.
+>>+	 */
+>>+	if (sm_supported(info->iommu)) {
+>>+		context = iommu_context_addr(info->iommu, info->bus, info->devfn, 0);
+>
+>Nit: please add a brief comment explaining why locking is not needed at
+>this call site.
+
+Will do in next revision.
+>
+>>+		if (context) {
+>>+			context_clear_sm_pre(context);
+>
+>For cache invalidation considerations when changing the PRE bit in a
+>present context entry, please follow the VT-d spec guidance (Table 28,
+>“Guidance to Software for Invalidations”).
+
+Please see note above the regarding global invalidations.
+>
+>>+			__iommu_flush_cache(info->iommu, context, sizeof(*context));
+>> +		}> +	}
+>>+
+>>+	return 0;
+>>+
+>>+out_unpreserved:
+>>+	if (dev_is_pci(dev))
+>>+		pci_for_each_dma_alias(to_pci_dev(dev),
+>>+					clear_unpreserved_alias_cb, info);
+>>+	else
+>>+		clear_unpreserved_context(info, info->bus, info->devfn);
+>>+
+>>+	return 0;
+>>+}
+>>+
+>>+/**
+>>+ * clear_unpreserved_context_entries() - Clear context entries for unpreserved devices
+>>+ * @iommu: Target IOMMU
+>>+ *
+>>+ * Clear the context entries of unpreserved devices during shutdown before kexec.
+>>+ */
+>>+void clear_unpreserved_context_entries(struct intel_iommu *iommu)
+>>+{
+>>+	struct iommu_dev_iter iter = {
+>>+		.fn = clear_unpreserve_context_entry_fn,
+>>+		.iommu = &iommu->iommu,
+>>+		.arg = NULL,
+>>+
+>>+	};
+>>+
+>>+	/*
+>>+	 * Clear context entries for unpreserved devices.
+>>+	 *
+>>+	 * Note that the error can be ignored as the iterator function does not
+>>+	 * fail.
+>>+	 */
+>>+	iommu_for_each_dev(&iter);
+>>+
+>>+	/* Clear reference to unpreserved context tables */
+>>+	clear_unpreserved_context_root_entries(iommu,
+>>+					       iommu_preserved_state(&iommu->iommu));
+>>+
+>>+	/*
+>>+	 * Some devices might not have teardown/detached properly depending on
+>>+	 * whether a proper device remove is done before kexec is triggered.
+>>+	 * Also unpreserved context tables and entries are removed during
+>>+	 * shutdown. So issue global invalidations to remove references to
+>>+	 * unpreserved tables and entries.
+>>+	 */
+>>+	iommu->flush.flush_context(iommu, 0, 0, 0, DMA_CCMD_GLOBAL_INVL);
+>>+	if (sm_supported(iommu))
+>>+		qi_flush_pasid_cache(iommu, 0, QI_PC_GLOBAL, 0);
+>>+	iommu->flush.flush_iotlb(iommu, 0, 0, 0, DMA_TLB_GLOBAL_FLUSH);
+
+Global invalidations are issued here after doing all the clear work.
+>>+}
+>>+
+>>  static void unpreserve_iommu_context_tables(struct intel_iommu *iommu,
+>>  					    struct iommu_hw_ser *ser)
+>>  {
+>
+>Thanks,
+>baolu
+
+Thanks for looking at this.
+
+Sami
