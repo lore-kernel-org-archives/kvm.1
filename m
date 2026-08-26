@@ -1,576 +1,379 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011006.outbound.protection.outlook.com [40.93.194.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6060C3C0635
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 23:39:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787787580; cv=none; b=jVsA8pRELUZtSIS4F76Cu3rUWEvLklGV9VF/2oKYgAaaGmhh3FrPzsi2VsHJo9gOlU+PXN6N38Flfqw+NKPVRYA/AzkK6Dw7czPF5VZI7w2/m6dD1BGMvLfAk9xRmGPe350PS1m9fidiPMDEzcURMNseWivGg0NOlAbeAxx9o5k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787787580; c=relaxed/simple;
-	bh=56WkcvHYOOLJcqXce/e5oIbukPLgodpobwiqUYJ1/bo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=szvZU+5d5Sy3X7hWfwODgEDm/Uyg+60zK7JBYEw1A+BhysW1L7d9A7jZzh+0MI61YLS5sZEJbyQxCsWaHupekHEQLcZfbhLkMTqMlvZeFVHhkfKJgE+6Fh+LXWuoRxBRvom5j700kVP5C4+YTTctbwpcXBaJud/zrvlcOzhFN54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VHGRcblT; arc=none smtp.client-ip=209.85.210.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5D01A3029;
+	Wed, 26 Aug 2026 23:47:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.6
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787788074; cv=fail; b=kk8HENcXhWCEffmt/v93AYC0Y5vGZwCXPN+iYPVsr3hE90Cwiyx0lEePoBGK2o1w3XAqrMHRe3GORlc+sEWKe6ue3ZrUIaPJmakGV6v0Yx54zlJfTbJsTiAxxZqXyJP/q7vJveiTHTp+Qa1qfq0kzP50gB4+rh3jY5dTKMkioCM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787788074; c=relaxed/simple;
+	bh=LWYGXEjxCn5c1wabHZYZl8IN6fQRStpFDOx9yxGPMOw=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mjD19NRPkn54O6uunCKGRn4peAffVGXovMiIFnskvkA3oOvZjaBxyV0VsEXJOuxGQX8g+kYEjDL+Kf/p2GHuGilhGOzovFp6Z5roJZ+0xobDSf87KOqnLMDsyMQca9t7spf+LI9rzS7lXafxy/zcfZRwNOnBE2ompCzUk4MbSYU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=gqgj54Tv; arc=fail smtp.client-ip=40.93.194.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VHGRcblT"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-854f274dd69so268215b3a.1
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 16:39:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787787576; x=1788392376; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=WyWAGvv1+NE8ueluBfmJsOga1MZMSNGNRM9XMLE9kLY=;
-        b=VHGRcblTeC1ZC5aG+yo76KkyJGzf6BiKlEE3ZP+Su8Vp2I6UQKE/U1TUbieKTU6b9O
-         LOCpaZThCm5txzFmHD6w6zP0tppfBCcUGwPyac9/M0QcwP9Pwvjk5oWCfIjzkRSj5beM
-         n+GBDobsrwywL/FB249pgyUIpkRFel9INxphG+1XTjghygRP4nprfxqFSL2AgPwaEyk1
-         j0hc+4ueivi0+/BwqLxuXrpiz271psMzSHk/5kBu95/V/Zh+E8KZsubYs7aY9JHOj3Xp
-         wjbidgmZuZppc5N6e6lLtSNliYF951Bj3YBIoeYB+3iX1/X97NFQdnCulk14vUBGEVWW
-         ud5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787787576; x=1788392376;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WyWAGvv1+NE8ueluBfmJsOga1MZMSNGNRM9XMLE9kLY=;
-        b=Q9wLaQtnwvZ3GTdOc+R9RyPq4WO7qfZGfz7g+Bkn1tOJOj5ikI/grWQ1wdjQwfK8vh
-         B+qlEzrytHZnMrW7veTTmnO+IlnWAwkzViznDrr0pjArxUrKoPXwBuwXItPE2FUVF6Ui
-         ABtVC066I+f8mmQ7zoRF8+Q+Phuvw6qzZWbr6HxbE5VP+wLB9zsfm8ZHWoIbbCp03oP9
-         IONIiOJ8fONxRSee9H631/bZdMMoMHCKCFYQGxtt+0lnjoCo9570r1zcUbJSTsEM68rO
-         PC+YuNKrPrGExv1y3DnNBdB6trlxcLlcSPmWX67/wNpQgvFtrpI+zmOLUPJR3WqIajUJ
-         g5Kg==
-X-Gm-Message-State: AFuF++mFHRPC76oQ3QwLSZ2b9U1VHP7JG2a9hlA4aEaml2FVMoQCsYG5
-	8wg3QEykZLLDp7KdCKo68xGA7u/2meaz5w4bedqnjtmPZJVYOIZhqWS5wmxccGfD+4+ntqN+9zl
-	dZQIzVw==
-X-Received: from pgcu4.prod.google.com ([2002:a63:7904:0:b0:cbe:db49:df90])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:94ee:b0:847:9267:2104
- with SMTP id d2e1a72fcca58-85373fb939amr18131538b3a.12.1787787575780; Wed, 26
- Aug 2026 16:39:35 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 26 Aug 2026 16:39:19 -0700
-In-Reply-To: <20260826233919.998904-1-seanjc@google.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="gqgj54Tv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=k4J/V5gkeGUavS86YJ1T9xiJ51vThv2EwlPenwdDOUVPJiWy++dxjJPLXPcTpZIUMbuQVOHomTR5ytES2x5e0m8RuynY+Fs55UWII38wmPgNJ0mSerAWJIZNJW8o3I45hKbMAqC/8Pbern4R7/Ip0lnfOt++kru87F5ET74aMAqPrkOJfRZH4ETzURU+iXEJ+KMRdrp1a65gqo5fu+AFSojJ06oIPRDBIzRqp6Cjyw2hEWVRhjj0KswFa5L9N918h2vvT1NRgn3Ptsz0ZkMp3bd0QQeHtxDBwmP5cbh3MeQoC0+TRv+v7v4dvfUkPTulQrTqe76u1yOBn8iOifQjVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=w/LB5u9HnbSWzaAtAvaqkHg4Fpr0yIoYgthxH10Y4ko=;
+ b=eC6PAdZ95r0qTEaMap8PXTdlDQCXXnVXWSxQ8XgyLkhgUQ/UU+W4oST9+8O8vCmR6imIK6ik1F9kMWgge817usRt87TKGlC/joVTjktYjsOc+/5NUmBPWBjFvUcYLhfnHrp73RNeUvAH6yXYLvxhb5sd/kC5lP/nxodpI7/otqEEIXhn8cDGvZWhQKcMr1VnsdmP4fWZaHDq6UJuCpdu35/dzCAUEA8t0/9x2SrzRNQfPSgSgdIVH4DTF38s+KVRZNJqVzC+uReUK74ki+zE9Xtpzx08xhX7XJRCRZxToBWSxW6hOthHG7/yeLYGjwcWHNNdOT3pMHirocO5Us8UvA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
+ is 149.199.90.133) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com;
+ dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=w/LB5u9HnbSWzaAtAvaqkHg4Fpr0yIoYgthxH10Y4ko=;
+ b=gqgj54TvCGRRaotBr6UC6bDFWysdMRR/NeuYxSFbuRsslNoslmqlTYrAI6D5O7RoNNmBKf352qJkQP1ATVTrr9ibFYy9GK5jhwsnyw2sxuDQ4HM/3yKnnPl+KVAKzja/5IRIpMhA48Coif6km6Skt7aOMi1QnqO8T1mvSnCQ8Sc=
+Received: from BY1P220CA0003.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:59d::10)
+ by SJ5PPF183341E5B.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::98c) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.8; Wed, 26 Aug
+ 2026 23:47:44 +0000
+Received: from CO1PEPF00012E7F.namprd03.prod.outlook.com
+ (2603:10b6:a03:59d:cafe::a2) by BY1P220CA0003.outlook.office365.com
+ (2603:10b6:a03:59d::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.10 via Frontend Transport; Wed,
+ 26 Aug 2026 23:47:44 +0000
+X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
+ 149.199.90.133) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=quarantine header.from=amd.com;
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ amd.com discourages use of 149.199.90.133 as permitted sender)
+Received: from satlexmb07.amd.com (149.199.90.133) by
+ CO1PEPF00012E7F.mail.protection.outlook.com (10.167.249.54) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.360.3 via Frontend Transport; Wed, 26 Aug 2026 23:47:44 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 26 Aug
+ 2026 18:47:43 -0500
+Date: Wed, 26 Aug 2026 18:47:30 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Ackerley Tng <ackerleytng@google.com>, <aik@amd.com>,
+	<andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>, <brauner@kernel.org>,
+	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <jmattson@google.com>,
+	<jthoughton@google.com>, <oupton@kernel.org>, <pankaj.gupta@amd.com>,
+	<qperret@google.com>, <rick.p.edgecombe@intel.com>, <rientjes@google.com>,
+	<shivankg@amd.com>, <steven.price@arm.com>, <willy@infradead.org>,
+	<wyihan@google.com>, <yan.y.zhao@intel.com>, <forkloop@google.com>,
+	<pratyush@kernel.org>, <suzuki.poulose@arm.com>, <aneesh.kumar@kernel.org>,
+	<liam@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner
+	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, "Vishal
+ Annapurve" <vannapurve@google.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song
+	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
+	<nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, Axel Rasmussen
+	<axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+	<weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, Qi Zheng
+	<qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau
+	<kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe
+	<jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu
+	<peterx@redhat.com>, <tarunsahu@google.com>, Fuad Tabba
+	<fuad.tabba@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-trace-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-coco@lists.linux.dev>
+Subject: Re: [PATCH v11 15/46] KVM: guest_memfd: Call arch make_shared
+ callback for to-shared conversion
+Message-ID: <ztufznh6v5md5cn56t7pvokubvbpc3yki6dhiilgebb5uq3ju3@aa4xc6wwte5r>
+References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
+ <20260826-gmem-inplace-conversion-v11-15-0a15d8a799aa@google.com>
+ <ao9CKMXAX-hScRSa@google.com>
+ <mtbqvvvpwbzybgy6z47lwui6ag53kyubub3hkczui7u72zxesl@lnwsglrgwl5p>
+ <ao9px1j7CLYXMiGP@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260826233919.998904-1-seanjc@google.com>
-X-Mailer: git-send-email 2.55.0.887.g758fc8c411-goog
-Message-ID: <20260826233919.998904-14-seanjc@google.com>
-Subject: [PATCH v3 13/13] KVM: selftests: Add and use double-underscore
- versions of vmlaunch() and vmresume()
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, f734222792@gmail.com, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Sashiko Bot <sashiko-bot@kernel.org>, 
-	Yosry Ahmed <yosry@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ao9px1j7CLYXMiGP@google.com>
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF00012E7F:EE_|SJ5PPF183341E5B:EE_
+X-MS-Office365-Filtering-Correlation-Id: 423b2555-ef3e-4819-d00f-08df03cc6d12
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|7416014|376014|23010399003|36860700016|11063799006|6133799003|4143699003|10067099003|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	8l5FF3LbJE9olur0dvcSTHVeAJf8qAZoDXGPyZtiW3UYkD7Ki+JK6XcEDAefWFgKc2/fYpZEw9tyYhJDLs/lMTSsv2niW61J1rHrhWz8zYPNvO4WaES1+5Td9m9zo+v73i4uj00Of+bRZnBIvVyuxqS7DdfgqeatCPHP00pw4k/fjKDjGG21ESbX0pFETi12ZR3Ky3blMs3oYIIRmJlWjCuXZ5+Eud7ADqw3Au3w3CaEsLcwtgc0+pk075WzAPN5NvbWGyB+2ANgV19uAjWw+NpTo5Ba9zbQrl4+ML7kcJOPB+JmvUyc1KRB925UzMG5XZz+8v79VOzC3dMYAVJWxUouCrpCVdMcC0miD8pP2AjeFGZnQyf83nuRA0xtAzRB8zEbZmsCq26ybEpYOuZxVrA7LM5hSCxiiZYdiO4jszoJvhygcM9cu3Spa3pMGP9XBWKBgprnsdkT8o49tgE+NTtodZ+vZwORSDsMZ1EZSI9MIo5rQ3rP87C8/1NRYfT51v1MRuPzVK3M48jL1E8qvn9Kf9P8Ld5zADajjHq0gKhCEsNsobO0QwdJmv3pqh4+80h598lttp1m5n55w/BJIyhGaSPVuO92sx1B3eRn3UlCZIxUcNNSP2VukkdOfiOul0XQbGfo+AN4Jmgawd0fR0JtYQKRSvMKsfGkv7gWVUGE87rqQF9wB4InWtkZDyojojKohZMaymo2xdOhrg7P2Q==
+X-Forefront-Antispam-Report:
+	CIP:149.199.90.133;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:unknown-90-133.xilinx.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(376014)(23010399003)(36860700016)(11063799006)(6133799003)(4143699003)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	NysA57+XV03ryJZgYUKpVdKgsgr4tDGi4zBHUeNsKl8zF4KHY1X0bMcDzx2K6phhCrUHRzDEerlHkGtGijGGihpe02RKBuqJqqAKuowoT+c1u038Oht59wTzD/rgXfuuaymTIRx314hswzz0idXxVc3gSfdhhn7F53NAqYy7F7muYgYxERbWsYG/21Lu8dt0FXOLrBzqBxwVA67F1UJnEbDmOu8Y7ZPiiEe1h+pMIFUrWs16AOewOE5gqBDfWwKmK/N8cvE58fi90B2XOp7EIYggS+1Y0W+m9D5gQSEfmunf73Rsfjb76YSeLPaBCmKbYVU0OIRUQaUSFVhUM4dD9iaFlscimeVLVSEjXUvZGgtvgWExo7VJ4jlDslrsErV/SyHWYWGtpc4JM40pWusiEXj4jKTYOVS2Bp6WfPiozeTK0SVIK9u3EKSz8MU00HZX
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 23:47:44.6774
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 423b2555-ef3e-4819-d00f-08df03cc6d12
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[149.199.90.133];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF00012E7F.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF183341E5B
 
-Add double-underscore helpers for VMLAUNCH and VMRESUME, and have the
-"outer" APIs assert success, as is common through KVM selftests.  In
-addition to providing more familiar interfaces, this makes it more obvious
-which paths expect VM-Enter *failure*.
+On Wed, Aug 26, 2026 at 03:33:43PM -0700, Sean Christopherson wrote:
+> On Wed, Aug 26, 2026, Michael Roth wrote:
+> > On Wed, Aug 26, 2026 at 12:44:40PM -0700, Sean Christopherson wrote:
+> > > On Wed, Aug 26, 2026, Ackerley Tng wrote:
+> > > > Omit support for calling the arch hook to make private, since SNP, the only
+> > > > implementer of the arch make-private hook today, would actually prefer
+> > > > making private only just before faulting memory into the NPTs.
+> > > > 
+> > > > Calling the make-private arch hook would require iterating both bindings
+> > > > and the filemap to find the intersection of bindings and allocated
+> > > > folios.
+> > > 
+> > > Why would KVM need to iterate over the bindings?  Only the RMP needs to be updated,
+> > > whether or not the RMP is currently reachable is irrelevant, no?
+> > > 
+> > > Subsequent calls to kvm_arch_gmem_make_private() from kvm_gmem_get_pfn() would be
+> > > superfluous, but that's already possible, e.g. if an NPT mappings is removed for
+> > > whatever reason.
+> > > 
+> > > > On top of that, SNP would need to figure out whether to actually
+> > > > make private based on whether the memory is about to be faulted, or
+> > > > whether it is a conversion.
+> > > 
+> > > This is a non-issue, no?  As above, sev_gmem_make_private() already bails early
+> > > if the page is already assigned in the RMP.
+> > > 
+> > > I don't care terribly about how SNP handles this, but I do want accurate reasoning
+> > > and justification so that if/when we revisit any of this in the future, we can make
+> > > informed decisions.  Because unless I'm missing something, this is an optimization
+> > > choice (eager vs. lazy to-private conversions), not a complexity tradeoff, and it's
+> > > not clear to me how we decided the lazy approach would provide better performance.
+> > 
+> > I'm not sure it was discussed in this context, but there was some past
+> > discussion around preallocation (i.e. "should we call make-private arch
+> > hooks at allocation time to allow for faster boot for prealloc guests"
+> > and then that ran into the TDX side of things where that would
+> > necessarily entail pre-mapping into the sEPT as well, so
+> > KVM_PRE_FAULT_MEMORY ended up being the interface we adopted for this
+> > purpose.
+> > 
+> > Since then, KVM_PRE_FAULT_MEMORY was added on the QEMU side and gets
+> > called after all conversions for both SNP/TDX, and even without
+> > preallocation it's a decent performance boost to SNP. If we were to
+> > switch to pre-calling the make-private arch hook then the
+> > KVM_PRE_FAULT_MEMORY call because partly redundant and in practice we'd
+> > probably see a small performance loss.
+> > 
+> > So there's real performance differences here but it's sort of been
+> > addressed through a solution that offers additional performance
+> > benefits on top so there's no longer as much to be gained here I think.
+> 
+> Or another way to look at it, eager conversion would allow QEMU to drop its
+> workaround.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- tools/testing/selftests/kvm/include/x86/vmx.h | 10 +++++++-
- .../testing/selftests/kvm/lib/x86/memstress.c |  2 +-
- .../selftests/kvm/x86/aperfmperf_test.c       |  2 +-
- .../kvm/x86/evmcs_smm_controls_test.c         |  2 +-
- .../testing/selftests/kvm/x86/hyperv_evmcs.c  | 22 ++++++++---------
- .../selftests/kvm/x86/kvm_buslock_test.c      |  2 +-
- .../selftests/kvm/x86/nested_close_kvm_test.c |  2 +-
- .../selftests/kvm/x86/nested_dirty_log_test.c |  2 +-
- .../selftests/kvm/x86/nested_emulation_test.c |  2 +-
- .../kvm/x86/nested_exceptions_test.c          |  2 +-
- .../kvm/x86/nested_invalid_cr3_test.c         |  4 ++--
- .../selftests/kvm/x86/nested_tdp_fault_test.c |  2 +-
- .../kvm/x86/nested_tsc_adjust_test.c          |  2 +-
- .../kvm/x86/nested_tsc_scaling_test.c         |  2 +-
- .../kvm/x86/save_restore_pf_stress_test.c     |  4 ++--
- tools/testing/selftests/kvm/x86/state_test.c  | 24 +++++++++----------
- .../kvm/x86/triple_fault_event_test.c         |  2 +-
- .../selftests/kvm/x86/vmx_apic_access_test.c  |  4 ++--
- .../kvm/x86/vmx_apicv_updates_test.c          |  4 ++--
- .../kvm/x86/vmx_invalid_nested_guest_state.c  |  2 +-
- .../kvm/x86/vmx_nested_la57_state_test.c      |  2 +-
- .../kvm/x86/vmx_preemption_timer_test.c       |  4 ++--
- 22 files changed, 56 insertions(+), 48 deletions(-)
+True, for SNP at least, but pre-map is nice too, and not really gmem's
+place, so most likely KVM_PRE_FAULT_MEMORY would remain regardless.
 
-diff --git a/tools/testing/selftests/kvm/include/x86/vmx.h b/tools/testing/selftests/kvm/include/x86/vmx.h
-index fa01341e22bc..cd82a6be6963 100644
---- a/tools/testing/selftests/kvm/include/x86/vmx.h
-+++ b/tools/testing/selftests/kvm/include/x86/vmx.h
-@@ -360,7 +360,7 @@ static inline u64 vmptrst(void)
- }
- 
- #define BUILD_VMX_VM_ENTRY_HELPERS(insn)				\
--static inline int insn(void)						\
-+static inline int __##insn(void)					\
- {									\
- 	int ret;							\
- 									\
-@@ -383,6 +383,14 @@ static inline int insn(void)						\
- 			       GUEST_REGS_OFFSETS			\
- 			     : "memory", "cc");				\
- 	return ret;							\
-+}									\
-+									\
-+static inline void insn(void)						\
-+{									\
-+	int ret;							\
-+									\
-+	ret = __##insn();						\
-+	__GUEST_ASSERT(!ret, __stringify(insn) " hit VM-Fail");		\
- }
- BUILD_VMX_VM_ENTRY_HELPERS(vmlaunch)
- BUILD_VMX_VM_ENTRY_HELPERS(vmresume)
-diff --git a/tools/testing/selftests/kvm/lib/x86/memstress.c b/tools/testing/selftests/kvm/lib/x86/memstress.c
-index 207350ab6114..6a1815fb97e9 100644
---- a/tools/testing/selftests/kvm/lib/x86/memstress.c
-+++ b/tools/testing/selftests/kvm/lib/x86/memstress.c
-@@ -40,7 +40,7 @@ static void l1_vmx_code(struct vmx_pages *vmx, u64 vcpu_id)
- 	*(u64 *)vmx->stack = vcpu_id;
- 	prepare_vmcs(vmx, memstress_l2_guest_entry);
- 
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- 	GUEST_ASSERT_EQ(vmreadz(VM_EXIT_REASON), EXIT_REASON_VMCALL);
- 	GUEST_DONE();
- }
-diff --git a/tools/testing/selftests/kvm/x86/aperfmperf_test.c b/tools/testing/selftests/kvm/x86/aperfmperf_test.c
-index 11f5894d8ac7..a082658c1e48 100644
---- a/tools/testing/selftests/kvm/x86/aperfmperf_test.c
-+++ b/tools/testing/selftests/kvm/x86/aperfmperf_test.c
-@@ -83,7 +83,7 @@ static void l1_vmx_code(struct vmx_pages *vmx)
- 		vmreadz(CPU_BASED_VM_EXEC_CONTROL) | CPU_BASED_USE_MSR_BITMAPS);
- 
- 	GUEST_ASSERT(!vmwrite(GUEST_RIP, (u64)l2_guest_code));
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- }
- 
- static void guest_code(void *nested_test_data)
-diff --git a/tools/testing/selftests/kvm/x86/evmcs_smm_controls_test.c b/tools/testing/selftests/kvm/x86/evmcs_smm_controls_test.c
-index cafb58a37023..a06f37e0bd06 100644
---- a/tools/testing/selftests/kvm/x86/evmcs_smm_controls_test.c
-+++ b/tools/testing/selftests/kvm/x86/evmcs_smm_controls_test.c
-@@ -59,7 +59,7 @@ static void guest_code(struct vmx_pages *vmx_pages,
- 	GUEST_ASSERT(load_evmcs(hv_pages));
- 	prepare_vmcs(vmx_pages, l2_guest_code);
- 
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- 
- 	/* L2 exits via vmcall if test fails */
- 	sync_with_host(2);
-diff --git a/tools/testing/selftests/kvm/x86/hyperv_evmcs.c b/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
-index d0e857b75a47..b7c2a254291e 100644
---- a/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
-+++ b/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
-@@ -105,7 +105,7 @@ void guest_code(struct vmx_pages *vmx_pages, struct hyperv_test_pages *hv_pages,
- 
- 	GUEST_SYNC(5);
- 	current_evmcs->revision_id = -1u;
--	GUEST_ASSERT(vmlaunch());
-+	GUEST_ASSERT(__vmlaunch());
- 	current_evmcs->revision_id = EVMCS_VERSION;
- 	GUEST_SYNC(6);
- 
-@@ -120,7 +120,7 @@ void guest_code(struct vmx_pages *vmx_pages, struct hyperv_test_pages *hv_pages,
- 	current_vp_assist->nested_control.features.directhypercall = 1;
- 	*(u32 *)(hv_pages->partition_assist) = 0;
- 
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- 	GUEST_ASSERT_EQ(vmreadz(VM_EXIT_REASON), EXIT_REASON_EXCEPTION_NMI);
- 	GUEST_ASSERT_EQ((vmreadz(VM_EXIT_INTR_INFO) & 0xff), NMI_VECTOR);
- 	GUEST_ASSERT(vmptrst() == hv_pages->enlightened_vmcs_gpa);
-@@ -130,7 +130,7 @@ void guest_code(struct vmx_pages *vmx_pages, struct hyperv_test_pages *hv_pages,
- 	 * up-to-date (RIP points where it should and not at the beginning
- 	 * of l2_guest_code(). GUEST_SYNC(9) checks that.
- 	 */
--	GUEST_ASSERT(!vmresume());
-+	vmresume();
- 
- 	GUEST_SYNC(10);
- 
-@@ -141,13 +141,13 @@ void guest_code(struct vmx_pages *vmx_pages, struct hyperv_test_pages *hv_pages,
- 	vmwrite(CPU_BASED_VM_EXEC_CONTROL, vmreadz(CPU_BASED_VM_EXEC_CONTROL) |
- 		CPU_BASED_USE_MSR_BITMAPS);
- 	__set_bit(MSR_FS_BASE & 0x1fff, vmx_pages->msr + 0x400);
--	GUEST_ASSERT(!vmresume());
-+	vmresume();
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_MSR_READ);
- 	current_evmcs->guest_rip += 2; /* rdmsr */
- 
- 	/* Enable enlightened MSR bitmap */
- 	current_evmcs->hv_enlightenments_control.msr_bitmap = 1;
--	GUEST_ASSERT(!vmresume());
-+	vmresume();
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_MSR_READ);
- 	current_evmcs->guest_rip += 2; /* rdmsr */
- 
-@@ -155,14 +155,14 @@ void guest_code(struct vmx_pages *vmx_pages, struct hyperv_test_pages *hv_pages,
- 	__set_bit(MSR_GS_BASE & 0x1fff, vmx_pages->msr + 0x400);
- 	/* Make sure HV_VMX_ENLIGHTENED_CLEAN_FIELD_MSR_BITMAP is set */
- 	current_evmcs->hv_clean_fields |= HV_VMX_ENLIGHTENED_CLEAN_FIELD_MSR_BITMAP;
--	GUEST_ASSERT(!vmresume());
-+	vmresume();
- 	/* Make sure we don't see EXIT_REASON_MSR_READ here so eMSR bitmap works */
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
- 	current_evmcs->guest_rip += 3; /* vmcall */
- 
- 	/* Now tell KVM we've changed MSR-Bitmap */
- 	current_evmcs->hv_clean_fields &= ~HV_VMX_ENLIGHTENED_CLEAN_FIELD_MSR_BITMAP;
--	GUEST_ASSERT(!vmresume());
-+	vmresume();
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_MSR_READ);
- 	current_evmcs->guest_rip += 2; /* rdmsr */
- 
-@@ -170,15 +170,15 @@ void guest_code(struct vmx_pages *vmx_pages, struct hyperv_test_pages *hv_pages,
- 	 * L2 TLB flush test. First VMCALL should be handled directly by L0,
- 	 * no VMCALL exit expected.
- 	 */
--	GUEST_ASSERT(!vmresume());
-+	vmresume();
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_MSR_READ);
- 	current_evmcs->guest_rip += 2; /* rdmsr */
- 	/* Enable synthetic vmexit */
- 	*(u32 *)(hv_pages->partition_assist) = 1;
--	GUEST_ASSERT(!vmresume());
-+	vmresume();
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == HV_VMX_SYNTHETIC_EXIT_REASON_TRAP_AFTER_FLUSH);
- 
--	GUEST_ASSERT(!vmresume());
-+	vmresume();
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
- 	GUEST_SYNC(11);
- 
-@@ -192,7 +192,7 @@ void guest_code(struct vmx_pages *vmx_pages, struct hyperv_test_pages *hv_pages,
- 	 */
- 	GUEST_SYNC(12);
- 	evmcs_vmptrld(0xdeadbeef, hv_pages->enlightened_vmcs);
--	GUEST_ASSERT(vmlaunch());
-+	GUEST_ASSERT(__vmlaunch());
- 	GUEST_ASSERT(ud_count == 1);
- 	GUEST_DONE();
- }
-diff --git a/tools/testing/selftests/kvm/x86/kvm_buslock_test.c b/tools/testing/selftests/kvm/x86/kvm_buslock_test.c
-index 22993ec697fa..337d3c28bc6d 100644
---- a/tools/testing/selftests/kvm/x86/kvm_buslock_test.c
-+++ b/tools/testing/selftests/kvm/x86/kvm_buslock_test.c
-@@ -48,7 +48,7 @@ static void l1_vmx_code(struct vmx_pages *vmx)
- 	prepare_vmcs(vmx, NULL);
- 
- 	GUEST_ASSERT(!vmwrite(GUEST_RIP, (u64)l2_guest_code));
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- }
- 
- static void guest_code(void *test_data)
-diff --git a/tools/testing/selftests/kvm/x86/nested_close_kvm_test.c b/tools/testing/selftests/kvm/x86/nested_close_kvm_test.c
-index 309cab009929..1f4a5e44a6ef 100644
---- a/tools/testing/selftests/kvm/x86/nested_close_kvm_test.c
-+++ b/tools/testing/selftests/kvm/x86/nested_close_kvm_test.c
-@@ -36,7 +36,7 @@ static void l1_vmx_code(struct vmx_pages *vmx_pages)
- 	/* Prepare the VMCS for L2 execution. */
- 	prepare_vmcs(vmx_pages, l2_guest_code);
- 
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- 	GUEST_ASSERT(0);
- }
- 
-diff --git a/tools/testing/selftests/kvm/x86/nested_dirty_log_test.c b/tools/testing/selftests/kvm/x86/nested_dirty_log_test.c
-index dca2bfc8b158..7987ce50c382 100644
---- a/tools/testing/selftests/kvm/x86/nested_dirty_log_test.c
-+++ b/tools/testing/selftests/kvm/x86/nested_dirty_log_test.c
-@@ -104,7 +104,7 @@ void l1_vmx_code(struct vmx_pages *vmx)
- 	prepare_vmcs(vmx, l2_rip);
- 
- 	GUEST_SYNC(TEST_SYNC_NO_FAULT);
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- 	GUEST_SYNC(TEST_SYNC_NO_FAULT);
- 	GUEST_ASSERT_EQ(vmreadz(VM_EXIT_REASON), EXIT_REASON_VMCALL);
- 	GUEST_DONE();
-diff --git a/tools/testing/selftests/kvm/x86/nested_emulation_test.c b/tools/testing/selftests/kvm/x86/nested_emulation_test.c
-index 2b38eff4f516..11fe4a31eda0 100644
---- a/tools/testing/selftests/kvm/x86/nested_emulation_test.c
-+++ b/tools/testing/selftests/kvm/x86/nested_emulation_test.c
-@@ -102,7 +102,7 @@ static void guest_code(void *test_data)
- 			exit_insn_len = vmcb->control.next_rip - vmcb->save.rip;
- 			GUEST_ASSERT_EQ(vmcb->save.rip, (u64)l2_instruction);
- 		} else {
--			GUEST_ASSERT_EQ(i ? vmresume() : vmlaunch(), 0);
-+			i ? vmresume() : vmlaunch();
- 			exit_reason = vmreadz(VM_EXIT_REASON);
- 			exit_insn_len = vmreadz(VM_EXIT_INSTRUCTION_LEN);
- 			GUEST_ASSERT_EQ(vmreadz(GUEST_RIP), (u64)l2_instruction);
-diff --git a/tools/testing/selftests/kvm/x86/nested_exceptions_test.c b/tools/testing/selftests/kvm/x86/nested_exceptions_test.c
-index 50c271a03692..c36c11b5f518 100644
---- a/tools/testing/selftests/kvm/x86/nested_exceptions_test.c
-+++ b/tools/testing/selftests/kvm/x86/nested_exceptions_test.c
-@@ -112,7 +112,7 @@ static void vmx_run_l2(void *l2_code, int vector, u32 error_code)
- {
- 	GUEST_ASSERT(!vmwrite(GUEST_RIP, (u64)l2_code));
- 
--	GUEST_ASSERT_EQ(vector == SS_VECTOR ? vmlaunch() : vmresume(), 0);
-+	vector == SS_VECTOR ? vmlaunch() : vmresume();
- 
- 	if (vector == FAKE_TRIPLE_FAULT_VECTOR)
- 		return;
-diff --git a/tools/testing/selftests/kvm/x86/nested_invalid_cr3_test.c b/tools/testing/selftests/kvm/x86/nested_invalid_cr3_test.c
-index 43deb3b358ea..101c1fe79eeb 100644
---- a/tools/testing/selftests/kvm/x86/nested_invalid_cr3_test.c
-+++ b/tools/testing/selftests/kvm/x86/nested_invalid_cr3_test.c
-@@ -48,13 +48,13 @@ static void l1_vmx_code(struct vmx_pages *vmx_pages)
- 	/* Try to run L2 with invalid CR3 and make sure it fails */
- 	save_cr3 = vmreadz(GUEST_CR3);
- 	vmwrite(GUEST_CR3, -1ull);
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) ==
- 		     (EXIT_REASON_FAILED_VMENTRY | EXIT_REASON_INVALID_STATE));
- 
- 	/* Now restore CR3 and make sure L2 runs successfully */
- 	vmwrite(GUEST_CR3, save_cr3);
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
- 
- 	GUEST_DONE();
-diff --git a/tools/testing/selftests/kvm/x86/nested_tdp_fault_test.c b/tools/testing/selftests/kvm/x86/nested_tdp_fault_test.c
-index 52df467e9c44..d6c443e3d147 100644
---- a/tools/testing/selftests/kvm/x86/nested_tdp_fault_test.c
-+++ b/tools/testing/selftests/kvm/x86/nested_tdp_fault_test.c
-@@ -60,7 +60,7 @@ static void l1_vmx_code(struct vmx_pages *vmx, u64 expected_fault_gpa,
- 
- 	prepare_vmcs(vmx, l2_entry);
- 
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- 
- 	/* Verify we got an EPT violation exit */
- 	__GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_EPT_VIOLATION,
-diff --git a/tools/testing/selftests/kvm/x86/nested_tsc_adjust_test.c b/tools/testing/selftests/kvm/x86/nested_tsc_adjust_test.c
-index 05194762ed33..c60dea899624 100644
---- a/tools/testing/selftests/kvm/x86/nested_tsc_adjust_test.c
-+++ b/tools/testing/selftests/kvm/x86/nested_tsc_adjust_test.c
-@@ -95,7 +95,7 @@ static void l1_guest_code(void *data)
- 		vmwrite(CPU_BASED_VM_EXEC_CONTROL, control);
- 		vmwrite(TSC_OFFSET, TSC_OFFSET_VALUE);
- 
--		GUEST_ASSERT(!vmlaunch());
-+		vmlaunch();
- 		GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
- 	} else {
- 		struct svm_test_data *svm = data;
-diff --git a/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c b/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c
-index b9fae268a9ec..b2fc7f0b5b3c 100644
---- a/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c
-+++ b/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c
-@@ -125,7 +125,7 @@ static void l1_vmx_code(struct vmx_pages *vmx_pages)
- 	vmwrite(TSC_MULTIPLIER_HIGH, TSC_MULTIPLIER_L2 >> 32);
- 
- 	/* launch L2 */
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
- 
- 	/* check that L1's frequency still looks good */
-diff --git a/tools/testing/selftests/kvm/x86/save_restore_pf_stress_test.c b/tools/testing/selftests/kvm/x86/save_restore_pf_stress_test.c
-index c0e4d6e156ad..f88427e925fc 100644
---- a/tools/testing/selftests/kvm/x86/save_restore_pf_stress_test.c
-+++ b/tools/testing/selftests/kvm/x86/save_restore_pf_stress_test.c
-@@ -104,11 +104,11 @@ static void l1_vmx_code(struct vmx_pages *vmx)
- 
- 	GUEST_ASSERT(!vmwrite(EXCEPTION_BITMAP, BIT(UD_VECTOR)));
- 
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- 	while (1) {
- 		GUEST_ASSERT_EQ(vmreadz(VM_EXIT_REASON), EXIT_REASON_EXCEPTION_NMI);
- 		GUEST_ASSERT_EQ(vmreadz(VM_EXIT_INTR_INFO) & 0xff, UD_VECTOR);
--		GUEST_ASSERT(!vmresume());
-+		vmresume();
- 	}
- }
- 
-diff --git a/tools/testing/selftests/kvm/x86/state_test.c b/tools/testing/selftests/kvm/x86/state_test.c
-index bd5e9e36b2c9..38c9689ac601 100644
---- a/tools/testing/selftests/kvm/x86/state_test.c
-+++ b/tools/testing/selftests/kvm/x86/state_test.c
-@@ -87,20 +87,20 @@ static void vmx_l1_guest_code(struct vmx_pages *vmx_pages)
- 
- 	GUEST_SYNC(5);
- 	GUEST_ASSERT(vmptrst() == vmx_pages->vmcs_gpa);
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- 	GUEST_ASSERT(vmptrst() == vmx_pages->vmcs_gpa);
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
- 
- 	/* Check that the launched state is preserved.  */
--	GUEST_ASSERT(vmlaunch());
-+	GUEST_ASSERT(__vmlaunch());
- 
--	GUEST_ASSERT(!vmresume());
-+	vmresume();
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
- 
- 	GUEST_SYNC(7);
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
- 
--	GUEST_ASSERT(!vmresume());
-+	vmresume();
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
- 
- 	vmwrite(GUEST_RIP, vmreadz(GUEST_RIP) + 3);
-@@ -109,27 +109,27 @@ static void vmx_l1_guest_code(struct vmx_pages *vmx_pages)
- 	vmwrite(VMCS_LINK_POINTER, vmx_pages->shadow_vmcs_gpa);
- 
- 	vmptrld(vmx_pages->shadow_vmcs_gpa);
--	GUEST_ASSERT(vmlaunch());
-+	GUEST_ASSERT(__vmlaunch());
- 	GUEST_SYNC(8);
--	GUEST_ASSERT(vmlaunch());
--	GUEST_ASSERT(vmresume());
-+	GUEST_ASSERT(__vmlaunch());
-+	GUEST_ASSERT(__vmresume());
- 
- 	vmwrite(GUEST_RIP, 0xc0ffee);
- 	GUEST_SYNC(9);
- 	GUEST_ASSERT(vmreadz(GUEST_RIP) == 0xc0ffee);
- 
- 	vmptrld(vmx_pages->vmcs_gpa);
--	GUEST_ASSERT(!vmresume());
-+	vmresume();
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
- 
- 	vmptrld(vmx_pages->shadow_vmcs_gpa);
- 	GUEST_ASSERT(vmreadz(GUEST_RIP) == 0xc0ffffee);
--	GUEST_ASSERT(vmlaunch());
--	GUEST_ASSERT(vmresume());
-+	GUEST_ASSERT(__vmlaunch());
-+	GUEST_ASSERT(__vmresume());
- 	GUEST_SYNC(13);
- 	GUEST_ASSERT(vmreadz(GUEST_RIP) == 0xc0ffffee);
--	GUEST_ASSERT(vmlaunch());
--	GUEST_ASSERT(vmresume());
-+	GUEST_ASSERT(__vmlaunch());
-+	GUEST_ASSERT(__vmresume());
- }
- 
- static void __attribute__((__flatten__)) guest_code(void *arg)
-diff --git a/tools/testing/selftests/kvm/x86/triple_fault_event_test.c b/tools/testing/selftests/kvm/x86/triple_fault_event_test.c
-index a9fb7046ea4f..bb31a1ba8932 100644
---- a/tools/testing/selftests/kvm/x86/triple_fault_event_test.c
-+++ b/tools/testing/selftests/kvm/x86/triple_fault_event_test.c
-@@ -30,7 +30,7 @@ void l1_guest_code_vmx(struct vmx_pages *vmx)
- 
- 	prepare_vmcs(vmx, l2_guest_code);
- 
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- 	/* L2 should triple fault after a triple fault event injected. */
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_TRIPLE_FAULT);
- 	GUEST_DONE();
-diff --git a/tools/testing/selftests/kvm/x86/vmx_apic_access_test.c b/tools/testing/selftests/kvm/x86/vmx_apic_access_test.c
-index 1793f7b02219..fe29c869a235 100644
---- a/tools/testing/selftests/kvm/x86/vmx_apic_access_test.c
-+++ b/tools/testing/selftests/kvm/x86/vmx_apic_access_test.c
-@@ -53,14 +53,14 @@ static void l1_guest_code(struct vmx_pages *vmx_pages, unsigned long high_gpa)
- 
- 	/* Try to launch L2 with the memory-backed APIC-access address. */
- 	GUEST_SYNC(vmreadz(APIC_ACCESS_ADDR));
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
- 
- 	vmwrite(APIC_ACCESS_ADDR, high_gpa);
- 
- 	/* Try to resume L2 with the unbacked APIC-access address. */
- 	GUEST_SYNC(vmreadz(APIC_ACCESS_ADDR));
--	GUEST_ASSERT(!vmresume());
-+	vmresume();
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
- 
- 	GUEST_DONE();
-diff --git a/tools/testing/selftests/kvm/x86/vmx_apicv_updates_test.c b/tools/testing/selftests/kvm/x86/vmx_apicv_updates_test.c
-index f7ebc9b15629..e578221da247 100644
---- a/tools/testing/selftests/kvm/x86/vmx_apicv_updates_test.c
-+++ b/tools/testing/selftests/kvm/x86/vmx_apicv_updates_test.c
-@@ -62,7 +62,7 @@ static void l1_guest_code(struct vmx_pages *vmx_pages)
- 	 * Run L2 to switch to x2APIC mode, which in turn will uninhibit APICv,
- 	 * as KVM should force the APIC ID back to its default.
- 	 */
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
- 	vmwrite(GUEST_RIP, vmreadz(GUEST_RIP) + vmreadz(VM_EXIT_INSTRUCTION_LEN));
- 	GUEST_ASSERT(rdmsr(MSR_IA32_APICBASE) & MSR_IA32_APICBASE_EXTD);
-@@ -90,7 +90,7 @@ static void l1_guest_code(struct vmx_pages *vmx_pages)
- 	 * handles the x2APIC => xAPIC transition and inhibits APICv while L2
- 	 * is active.
- 	 */
--	GUEST_ASSERT(!vmresume());
-+	vmresume();
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
- 	GUEST_ASSERT(!(rdmsr(MSR_IA32_APICBASE) & MSR_IA32_APICBASE_EXTD));
- 
-diff --git a/tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_state.c b/tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_state.c
-index 4a6445958cf4..3017938fa993 100644
---- a/tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_state.c
-+++ b/tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_state.c
-@@ -55,7 +55,7 @@ static void l1_guest_code(struct vmx_pages *vmx_pages)
- 	GUEST_ASSERT(!(vmreadz(CPU_BASED_VM_EXEC_CONTROL) & CPU_BASED_ACTIVATE_SECONDARY_CONTROLS) ||
- 		     !(vmreadz(SECONDARY_VM_EXEC_CONTROL) & SECONDARY_EXEC_UNRESTRICTED_GUEST));
- 
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- 
- 	/* L2 should triple fault after main() stuffs invalid guest state. */
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_TRIPLE_FAULT);
-diff --git a/tools/testing/selftests/kvm/x86/vmx_nested_la57_state_test.c b/tools/testing/selftests/kvm/x86/vmx_nested_la57_state_test.c
-index 04c2d5113e84..b3651c5ab138 100644
---- a/tools/testing/selftests/kvm/x86/vmx_nested_la57_state_test.c
-+++ b/tools/testing/selftests/kvm/x86/vmx_nested_la57_state_test.c
-@@ -56,7 +56,7 @@ static void l1_guest_code(struct vmx_pages *vmx_pages)
- 	guest_cr4 &= ~X86_CR4_LA57;
- 	vmwrite(GUEST_CR4, guest_cr4);
- 
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- 
- 	exit_reason = vmreadz(VM_EXIT_REASON);
- 	GUEST_ASSERT(exit_reason == EXIT_REASON_VMCALL);
-diff --git a/tools/testing/selftests/kvm/x86/vmx_preemption_timer_test.c b/tools/testing/selftests/kvm/x86/vmx_preemption_timer_test.c
-index 50fc9309158f..cda53df33888 100644
---- a/tools/testing/selftests/kvm/x86/vmx_preemption_timer_test.c
-+++ b/tools/testing/selftests/kvm/x86/vmx_preemption_timer_test.c
-@@ -90,7 +90,7 @@ void l1_guest_code(struct vmx_pages *vmx_pages)
- 	    !(ctrl_exit_rev.clr & VM_EXIT_SAVE_VMX_PREEMPTION_TIMER))
- 		return;
- 
--	GUEST_ASSERT(!vmlaunch());
-+	vmlaunch();
- 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
- 	vmwrite(GUEST_RIP, vmreadz(GUEST_RIP) + vmreadz(VM_EXIT_INSTRUCTION_LEN));
- 
-@@ -110,7 +110,7 @@ void l1_guest_code(struct vmx_pages *vmx_pages)
- 
- 	l1_vmx_pt_start = (rdtsc() >> vmx_pt_rate) << vmx_pt_rate;
- 
--	GUEST_ASSERT(!vmresume());
-+	vmresume();
- 
- 	l1_vmx_pt_finish = rdtsc();
- 
--- 
-2.55.0.887.g758fc8c411-goog
+> 
+> To be clear, I'm a-ok with the code as-is, I just want to make sure we document
+> exactly why we're choosing this implementation.
 
+Agreed. My understanding of the current design choice is basically that
+it doesn't *need* to happen here, since kvm_gmem_get_pfn() will already
+trigger it on-demand when it is actually needed (or not), and that tends
+to happen at fault time when other platforms like TDX handle it. To handle
+it differently would be to go out of our way to make SNP special in this
+flow in exchange for performance, but KVM_PRE_FAULT_MEMORY already offers
+a robust solution for folks that want to optimize conversion path or
+prealloc host resources prior to guest boot.
+
+> 
+> > But I guess that's a moot point...
+> > 
+> > > 
+> > > > Calling the make-shared arch hook and not the make-private arch hook does
+> > > > leak SNP-specific details into guest_memfd (as in, why only make-shared
+> > > > during conversions but not make-private?), but the additional complexity is
+> > > > not worth taking on until guest_memfd has a user actually requiring an arch
+> > > > make-private call.
+> > > 
+> > > ...
+> > > 
+> > > > +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> > > > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end)
+> > > > +{
+> > > > +	struct folio_batch fbatch;
+> > > > +	pgoff_t next = start;
+> > > > +	int i;
+> > > > +
+> > > > +	folio_batch_init(&fbatch);
+> > > > +	while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
+> > > > +		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+> > > > +			struct folio *folio = fbatch.folios[i];
+> > > > +			pgoff_t start_index, end_index;
+> > > > +			kvm_pfn_t start_pfn;
+> > > > +			kvm_pfn_t nr_pages;
+> > > > +
+> > > > +			start_index = max(start, folio->index);
+> > > > +			end_index = min(end, folio_next_index(folio));
+> > > > +			/*
+> > > > +			 * end_index is either in folio or points to
+> > > > +			 * the first page of the next folio. Hence,
+> > > > +			 * all pages in range [start_index, end_index)
+> > > > +			 * are contiguous.
+> > > > +			 */
+> > > > +			start_pfn = folio_file_pfn(folio, start_index);
+> > > > +			nr_pages = end_index - start_index;
+> > > > +
+> > > > +			kvm_arch_gmem_make_shared(start_pfn, nr_pages);
+> > > > +		}
+> > > > +
+> > > > +		folio_batch_release(&fbatch);
+> > > > +		cond_resched();
+> > > > +	}
+> > > > +}
+> > > > +#else
+> > > > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end) {}
+> > > > +#endif
+> > > > +
+> > > >  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> > > >  				     size_t nr_pages, uint64_t attrs,
+> > > >  				     pgoff_t *err_index)
+> > > > @@ -624,7 +661,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> > > >  
+> > > >  	filter = to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
+> > > >  	kvm_gmem_invalidate_start(inode, start, end, filter);
+> > > > +
+> > > > +	if (!to_private && kvm_arch_has_gmem_convert())
+> > > > +		kvm_gmem_make_shared(inode, start, end);
+> > > > +
+> > > >  	mas_store_prealloc(&mas, xa_mk_value(attrs));
+> > > > +
+> > > >  	kvm_gmem_invalidate_end(inode, start, end);
+> > > 
+> > > The real reason I responded...
+> > > 
+> > > Thinking about the Secure AVIC mess made me realize zapping NPTs for SNP VMs isn't
+> > > strictly necessary in this path.  The PFN isn't changing, just the attributes, and
+> > > that's (obviously) tracked in the RMP.  KVM doesn't need to zap SPTEs to induce a
+> > > fault, because the mismatched C-bit vs. RMP status will cause an #NPF(RMP), and
+> > > AFAICT kvm_mmu_page_fault() will do the right thing.  A misbehaving guest could
+> > > continue to access the shared data (assuming we stick with lazy conversions), but
+> > > that should be fine?  E.g. it's not really any different than implicit conversions.
+> > 
+> > I think this should work in theory...
+> > 
+> > zapping NPTs means the vCPUs will keep retrying until they get the page first
+> > vCPU that faulted is trying to grab from gmem. If we don't zap, then they will
+> > instead be racing with the first vCPU, and if they lose they will be
+> > generating implicit page faults that trigger conversions back to shared,
+> 
+> Why would they trigger conversions back to shared?  Assuming the guest isn't
+> being silly and accessing the memory with C-bit=0, the #NPF will be tagged ENC
+
+I wasn't meaning the normal flow for a well-behaved guest, but when you
+mentioned "mismatched C-bit vs. RMP status will cause an #NPF(RMP)" I
+thought you were considering the case of multiple vCPUs accessing the
+same GPA in various ways (that may or may not make sense) and whether not
+zapping before conversion would cause any issues with the handling of that
+scenario. In that scenario there is potential for any mix of mismatches
+between C-bits and RMP tables.
+
+The silly case with C=0 is the specific scenario I was thinking of. E.g.
+one vCPU is trying to due memory acceptance/PVALIDATE of a GPA that's
+somehow still being used by some other vCPU for some shared memory
+workload.
+
+> and KVM will treat it as a private access.
+> 
+> 	if (is_sev_snp_guest(vcpu) && (error_code & PFERR_GUEST_ENC_MASK))
+> 		error_code |= PFERR_PRIVATE_ACCESS;
+> 
+> kvm_mmu_faultin_pfn() will see "fault->is_private == kvm_is_private_gfn()" as
+> true, i.e. won't kick out to userspace.  Same for __kvm_mmu_faultin_pfn(), which
+> will call into kvm_mmu_faultin_pfn_gmem() => kvm_gmem_get_pfn(), see that the
+> gfn is private, and call kvm_arch_gmem_make_private() as needed.
+
+Yes I don't see any issue with the normal/well-behaved path, it's just
+the funky edge-cases that seem bring about some new considerations, but
+it seems like those would be handled okay.
+
+> 
+> I don't see how #NPFs due to the RMP being SHARED would be handled differently
+> than !PRESENT #NPFs.
+> 
+> > and most likely the first vCPU will re-trigger an implicit shared->private
+> > conversion when it does PVALIDATE. Worst case, the guest fails PVALIDATE
+> > due to racing with itself.
+> > 
+> > It's a bit chaotic, but it shouldn't break anything other than the guest, and
+> > it's only something we'd generally expect for buggy/malicious guests anyway.
+> > 
+> > However...
+> > 
+> > > 
+> > > In other words, couldn't we do this (as an on-top optimization)?  The only wrinkle
+> > > I can think of is that it could delay reconstituion of a hugepage, especially if
+> > > we opted for eager conversion (because the guest wouldn't hit #NPFs to trigger the
+> > > hugepage promotion).
+> > > 
+> > > diff --git arch/x86/kvm/mmu/mmu.c arch/x86/kvm/mmu/mmu.c
+> > > index 62f751952ad8..61f3e270ab61 100644
+> > > --- arch/x86/kvm/mmu/mmu.c
+> > > +++ arch/x86/kvm/mmu/mmu.c
+> > > @@ -1670,6 +1670,7 @@ static bool __kvm_rmap_zap_gfn_range(struct kvm *kvm,
+> > >  
+> > >  bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+> > >  {
+> > > +       unsigned long shared_private =  KVM_FILTER_SHARED | KVM_FILTER_PRIVATE;
+> > >         bool flush = false;
+> > >  
+> > >         /*
+> > > @@ -1683,6 +1684,10 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+> > >         lockdep_assert_once(kvm->mmu_invalidate_in_progress ||
+> > >                             lockdep_is_held(&kvm->slots_lock));
+> > >  
+> > > +       if (gmem_in_place_conversion && !kvm_has_mirrored_tdp(kvm) &&
+> > > +           ((range->attr_filter & shared_private) != shared_private))
+> > > +               return false;
+> > > +
+> > 
+> > This path would also trigger for hole-punching, where we would want to
+> > zap the NPT entries. So we might need to adjust the logic for more than
+> > just shared vs. private to account for that.
+> 
+> No, because PUNCH_HOLE uses kvm_gmem_get_all_gfns_filter(), which does:
+> 
+> 	if (gmem_in_place_conversion)
+> 		return KVM_FILTER_SHARED | KVM_FILTER_PRIVATE;
+
+Doh, helps if I actually have the right branch checkout out when looking at
+code. That does look to be covered.
+
+I'll give this patch a spin on my end as well and report back if I notice
+any crazyness.
+
+Thanks,
+
+Mike
+
+> 
+> i.e. won't get short-circuited.  Though I agree with the implication that this
+> is super fragile/subtle.
+> 
