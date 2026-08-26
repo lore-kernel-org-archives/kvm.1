@@ -1,67 +1,67 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15EF3D524C
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 09:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF16B39280A
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 10:03:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787737903; cv=none; b=VwbUsr7kvyEgkKOXMBMHYJko6J74sms0a4EbIPHkxrNsSI37ccMGp9ClOodwiCx8woivAli1zXgOMgtvxaX4rOWKaCOEZY1mF5oQnB0Ixb7ck36nrnKfCMBZT5U3/MyzIZ7r0VckzA6QPs1BsozxfgDUf02VUqvmurQuOIcN1Aw=
+	t=1787738593; cv=none; b=LYzm5cRQ00TIdGQ2iFGCNh8y89sCMMelAMYRox5kmvtNn9WOINAOnJYHVXVTqBhQR6sk5gvV9/NwlbvtFTmgPvKSUEi9llhHhQJ66hn+/V+latjmkIm4ujeK9G4qmvJSATXwJfwuC6KlFxHI+laS6KBYr/2zT3cuojf6OddMLpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787737903; c=relaxed/simple;
-	bh=v9piU18lZ/lb9fnvVLpa9yM8T1ZB0s+iYSi2lwWzsEo=;
+	s=arc-20240116; t=1787738593; c=relaxed/simple;
+	bh=AlfYlEb6WKoIrIEWU9ApASMS98YxtvLdbBvocivgdhs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OA2J5tPZL0pBJWHB2g/TaHbi2gjEcbTTQsmPwH6HKH+nzTY15mr6VD3qg76ccKd10zlHjZRexK02l8ytfj9bNIjpmn8ZF5fHgD58nRJc5ifoxBCDbNjhxbDmaxyzM36SnAyOCpE0NdgyCYoyEL23Urap1MNTa4fnHLJILHbYTCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=RgBXASq4; arc=none smtp.client-ip=209.85.218.44
+	 In-Reply-To:Content-Type; b=B5jsUNyMDIWbnBigjQzAjtZcSY3BzhqUql2tVV4xcxdDe2VjPQ6VxlGxIQi0Jksx3s42rgB1XZNyxfly2vIlfV/tQNop8YSt9jsTsZan7Zbbm7FIt4e+pHrIxW8J8CG4YogT5mmvWrcSxpphqOrtty4YajHKOatdCG7t267ukSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=UUYQSYG/; arc=none smtp.client-ip=209.85.208.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="RgBXASq4"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c2022323c37so92392566b.0
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 02:51:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="UUYQSYG/"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6a41191c9a9so858591a12.3
+        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 03:03:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787737899; x=1788342699; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1787738590; x=1788343390; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=YHCoJr/FzmfjS/OK2p3bq3ZjrRpL2dhX1kSlnFW6rfk=;
-        b=RgBXASq4Y5ZB/8UITMoDeg9AzTxArB4u87rT2AM7pPClo9WWEgFV4iZ3ef67hXd++R
-         mhkdOlsy4++LSyeNDsbnWom+BAKdHrg+A1ioIdpCtLTT6K98TeypTZcNsMxerD0IXUyG
-         4Q2e4ivrJQ3bh8JcwwtY9qiFfVcQToL+yaWmskYwuNHnRlUbyJBO+Ehu8r8rR6Y971FK
-         658UcqR0Un1ZP1d6fuKIGOhdagCpZKIbZe4GjBW38g4lVpCPYWacg0YCM5KYP1/nCUfY
-         sRNx7yTraQRljquxV8VwRKxFv6Z7euV6YOnvNzfmiwA8FfipW9kX5ZRrDY4L7FZQmdZ+
-         O/9A==
+        bh=bE7U1SVs1nWjk547BlCoF5e3zoAI9ns9idl/rgWUbu4=;
+        b=UUYQSYG/zIb4PqWcw6+yhT0jQQMwiy3ncrxxwUYrphZBYwrgrTC/kLy2CA6JFwDmie
+         UCoGZRLX0/vBXPMenpwHKfv80tl9voGL4wlEXN0MM/l823bkU709bnXZUYf9alQG0rpL
+         sfrCl+pHoOyFc94SXcOkiQIMky9hXNsg2YwSjWxqykdS3lENf2IRI7slfaI1NF2naIBj
+         8hJdx/6DxcCertCRZBBtUp7WP50wvq9JDM5pKz3NnPtgT5tWZKIUHRF0CTNulwHKyJ+J
+         EAes7F/VoQpCKtAPA3SJ9h141VZy8rnqfBOXmeYXrdCqzZRI9IKy4lXK2XttVu6aeTjT
+         6aWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787737899; x=1788342699;
+        d=1e100.net; s=20251104; t=1787738590; x=1788343390;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=YHCoJr/FzmfjS/OK2p3bq3ZjrRpL2dhX1kSlnFW6rfk=;
-        b=XQFzgsF/AHLofV+FTZTuLFuIfhdcs/CeFq1G9YHdZLE4Via3t2+RT7mpnSpbtIw4iu
-         4jjQmsRbD6aAfls9hpoa8g5QuE9C4FTriv4Na1lV8w+HCvBCLPa8/K+e1xHKNgvZAO++
-         DonPlq5W122ELJQzmljcz+xW1t9R6+2Vr/MjAvQXtVMgIq5HUVcDc0+uZcDD5mkRDrYr
-         OMsdMR9s7fUfnwG4EaeMZNurHv8xWa6qG+0d26oga3pVf3ntsm7078cK4bk07BILWfw8
-         Gg7Sa03+pnQKBmlnHcNz1l2v1oEGnAbUpEw2jUYegwSK6WSy2RiKEcOFYlgUe6+4CsbM
-         4/Gg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr66EIB6ZPqFSlkDhYYOcQ7JT1gZiH+6p4ogIMra/sXBqs6OrfD6kufntUPcnzBI/zjkhM=@vger.kernel.org
-X-Gm-Message-State: AFuF++lw1NDvlZregJlmyeHssHHI1OMO+f3gj/+Mji2sWgqO1bqnYLcd
-	D8x6BP1c+vpI+lLB5bwtWq1yzFWaFrCXWjinxIjb1KqoHleMsene4M1AByVOGcHW7zw=
-X-Gm-Gg: AR+sD11Op4gMKKmIsxh8GaRcPED48YrKr7JcVD5uunWA5bSp6cEfHfEehZk+iZa3Osd
-	j7cG7fuYg22Cx71kEpkiTaCAAgaIsGXeGHz7DksPVC8s3CnzNUHYy5ShbUawrthx3v1bAeBtmRf
-	0/sZfhyNVEERz98Cby1uBhRkOjOgtws9BdmRdFrDSHfWNaV9n8fXzHBJKRDgiR085fGdjzcEpCA
-	0mw3M1eygY/zwHt9LJJgcbuKjEGlNvNAMnBsgdDDfH35R4tfJdyVB98p7dEG6jZ7BKWN3bCCv3u
-	D+R6eT0E+VI5tgAeLHhtgJOrHf1w55BfU0vEl/ebh7l53/Tq4zoKFFsmumKRomTksXbmjfJzZP0
-	MDDVhse/XoHDQpwdyB4a/AEfFhp8AYJFgLtOr55NLqFwPzNk3FlG+r86a+tmAHua1Y3fx/OyB9z
-	M6PqTDP5ncYdalAUA68JFtoAkNTavlGegrS7aRnCQyUO77N+mJl8hkrTJ0ZFKz8Lw=
-X-Received: by 2002:a17:906:ef0e:b0:c12:e178:9e68 with SMTP id a640c23a62f3a-c250c3292a1mr623262666b.19.1787737898915;
-        Wed, 26 Aug 2026 02:51:38 -0700 (PDT)
+        bh=bE7U1SVs1nWjk547BlCoF5e3zoAI9ns9idl/rgWUbu4=;
+        b=iPL+o47lLNM35oAAja/V/B7ps4gHuJSBNYdRFCR/bAPOu9ZINH/vLxSlyeZrJ6C7s4
+         2qPjkHMsnB5I0GHPGKtoVgwlKKpi67RkYmmfQb2dAdCq0iKJYZ93Q5mDgQ2diyEennAJ
+         78fg+nHR3M3N+LKAheX7NSwrnAzwUKzRXlwqoQ6QF+gjbu0ZUiyRF/5rCVK816xuFnlX
+         9I5/IKgYTiaLdV/CXDi84UGTp9r+ULhKG/pyjFMSmRRtomKAksWWJf/sMgaRgg9Bw350
+         L3AgWoxDizXJeIxvRFHfWosfwuhknS+Ys8+M38Br5VaFxoMFJTU9fn9pilYNcholYSSE
+         j3zg==
+X-Forwarded-Encrypted: i=1; AHgh+RoFgmmAxB7Bk/+HjZFeY+r3aHVW4+a9AEva6xtKv2RglLuAxukABRji8yJKFgOjGl4jreY=@vger.kernel.org
+X-Gm-Message-State: AFuF++mFrgRZJq728aJObSs3nVLyaWh8Qp2o6IlpSX72LnjoxChaxsnQ
+	BygEBIA8JbIXeE+0t4t7C5XoSwBTjo13r/QH/alxoOM53QRtMODuU12dPpEO858XL3o=
+X-Gm-Gg: AR+sD13gUo3AfTlJPZrWXPN3+7um/wjP8SVyKJng+5zJtFKKwdat0JPcz+7TMX5O6U1
+	eqHMUs1vijLDxduVJ5RjY4KszJ/atFh82ZY2HqQGLIIYKETY2IPJAqolmXdMAepLjh/msZECahq
+	LBi1oZLpJaSK60UgqdYGe/ZMfwdTqdjFD9u8iOMpe2TxO0jhyr00KOebVyzCIGisw+JcXPE41Z+
+	QEn+XDo50QsLWvAPAhS3tKi32zzmDuja5fIbCSAowg6dq0zf48+7i+VmCuggyaZXrp6CXv8xokF
+	9iYu0/NVWhgw4B3ObSl7aAn0kOiBpMAU4COD353EJlgJJk8Bv5B4XEOQy682ZN2tp3LaWbw4Xu2
+	Jx7MMlo3d9b8mSHnD3oKiiYgJM2vxa59NrNpMBc+lzmq9BZzsLko+Y7cu8r3vnjpF25trizxIhd
+	sweoHcviueS8kcwzUmnCal34/5o4Torpr2yfLIPcTlZb1lqvpT3OM/keSU/l9uCZQ=
+X-Received: by 2002:a05:6402:5288:b0:6a1:f95b:8ced with SMTP id 4fb4d7f45d1cf-6a5df5fd41dmr8268122a12.4.1787738589521;
+        Wed, 26 Aug 2026 03:03:09 -0700 (PDT)
 Received: from [10.20.4.146] ([149.62.207.128])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c250a704e55sm387662366b.21.2026.08.26.02.51.37
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a5de5f7bb8sm3723194a12.0.2026.08.26.03.03.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Aug 2026 02:51:38 -0700 (PDT)
-Message-ID: <99dd1836-55ca-4302-a81d-545394673702@suse.com>
-Date: Wed, 26 Aug 2026 12:51:36 +0300
+        Wed, 26 Aug 2026 03:03:07 -0700 (PDT)
+Message-ID: <5426d2f6-3e67-45d3-85d6-d0da67edb486@suse.com>
+Date: Wed, 26 Aug 2026 13:03:01 +0300
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -136,8 +136,74 @@ On 8/19/26 12:49, Xiaoyao Li wrote:
 > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > Changes in v4:
 > - new patch.
+> ---
+>   arch/x86/kvm/vmx/main.c | 38 ++++++++++++++++++++++++++++----------
+>   arch/x86/kvm/vmx/tdx.c  | 18 +-----------------
+>   arch/x86/kvm/vmx/vmx.c  | 21 +--------------------
+>   3 files changed, 30 insertions(+), 47 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
+> index 6a813c49ca8a..10df9667d0c0 100644
+> --- a/arch/x86/kvm/vmx/main.c
+> +++ b/arch/x86/kvm/vmx/main.c
+> @@ -154,15 +154,6 @@ static fastpath_t vt_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+>   	return vmx_vcpu_run(vcpu, run_flags);
+>   }
+>   
+> -static int vt_handle_exit(struct kvm_vcpu *vcpu,
+> -			  enum exit_fastpath_completion fastpath)
+> -{
+> -	if (is_td_vcpu(vcpu))
+> -		return tdx_handle_exit(vcpu, fastpath);
+> -
+> -	return vmx_handle_exit(vcpu, fastpath);
+> -}
+> -
+>   static bool vt_unhandleable_emulation_required(struct kvm_vcpu *vcpu)
+>   {
+>   	if (is_td_vcpu(vcpu)) {
+> @@ -887,6 +878,33 @@ int vt_handle_bus_lock_vmexit(struct kvm_vcpu *vcpu)
+>   	return 1;
+>   }
+>   
+> +static int vt_handle_exit(struct kvm_vcpu *vcpu,
+> +			  enum exit_fastpath_completion fastpath)
+> +{
+> +	int ret;
+> +
+> +#ifdef CONFIG_KVM_INTEL_TDX
+> +	if (is_td_vcpu(vcpu))
+> +		ret = tdx_handle_exit(vcpu, fastpath);
+> +	else
+> +#endif
+> +		ret = vmx_handle_exit(vcpu, fastpath);
+> +
+> +	/*
+> +	 * Exit to user space when bus lock detected to inform that there is
+> +	 * a bus lock in guest.
+> +	 */
+> +	if (vmx_get_exit_reason(vcpu).bus_lock_detected) {
+> +		if (ret > 0) {
+> +			vcpu->run->exit_reason = KVM_EXIT_X86_BUS_LOCK;
+> +			ret = 0;
+> +		}
+> +
+> +		vcpu->run->flags |= KVM_RUN_X86_BUS_LOCK;
+> +	}
+> +	return ret;
+> +}
+> +
+>   #define VMX_REQUIRED_APICV_INHIBITS				\
+>   	(BIT(APICV_INHIBIT_REASON_DISABLED) |			\
+>   	 BIT(APICV_INHIBIT_REASON_ABSENT) |			\
+> @@ -960,7 +978,7 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
+>   
+>   	.vcpu_needs_initialization = vt_op_tdx_only(vcpu_needs_initialization),
+>   	.vcpu_run = vt_op(vcpu_run),
+> -	.handle_exit = vt_op(handle_exit),
+> +	.handle_exit = vt_handle_exit,
 
-I created essentially the the same code locally after I read the 
-previous patch as the code duplication was killing!
+nit: Why isn't this vt_op() for the sake of consistency and introduce 
+needless churn ?
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+<snip>
