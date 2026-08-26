@@ -1,104 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A66B3F86EA
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 12:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9F741DEDF
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 12:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787746324; cv=none; b=tiB8MQU4Wks9buypK9mXXSzb1aCeB5LCnSu3THermswXmmR3WvQD+gUKgw5rvFGCA7a3csPEWj6pq6BPw0/M1Wb4Fnx5GPIj9/pZvK2vNSFgkymVY3nlCZMEYByss7Xmfm8mRuejWWDOjYVkblbZh3ULfqnHAeYc5yc4mVS9N/E=
+	t=1787747451; cv=none; b=uM9KhAyFBonrLEKTm9itvm3B9YQch2tx1z2IuQjK/Q7Tdfw1yDdT+t2QvpR/NUQVrVoR5DueJcCGBaOwb+mSDLDMxk+EZxY9Wt1BHwm2s4K4MkJkdmfGVVdawYCGHSw7UP7f4Wq9Uzw52sfs6TAYX0UQUAoL8wuRFZKyfVtIr/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787746324; c=relaxed/simple;
-	bh=mefwxJrKd2nD3WOkC0USLEM7UfLiJXC9zVnrsZeygko=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=cY2d6NFInAMLroPSkLY8JkyA9CWtt6wgPOpABS+Ah/RlbbxY8KIEBLy8NVt5RwSqAXGU/aJnG/M0llvzcRGUqrXJ0LPCdpTtKhq7vwAtMzB64sAY1MNIFfhy1H791IlbrLyt4Zv4SpgRZAa5ISUmUtfVKVCniQtisAKsR/wJzjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cP1TXJ2N; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787747451; c=relaxed/simple;
+	bh=8dVVSO4XdHCx4KOZSduD/f39KYIfwpqzYrSSt2RuZ4c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=myTI17oBvh0fZxbxBnrb4aokF4nDV8NLkF1pv9oIZxVHVSnFHOETGUpP0akFizeLvZWD4JSZa5/CqnCeqa4lj4+jeQZu0GoRCJRmMFoEk0w7WwWzaqpuzwiJhITEjlo3dupNlMErwcm5qPLTGBZpPasoaQLMhdF5FDiFBkGVY4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P5zl/SXc; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cP1TXJ2N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E7A1F000E9;
-	Wed, 26 Aug 2026 12:12:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787746320;
-	bh=BPpLnkjB70kYtqC9kG8cnVT6ZHKNLmaHQrI7GzxyJfM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=cP1TXJ2NTJbWW/y340uyYYPqKpoSO+KHyvylukdPNYkdYz/sRKQWQSPCOlvmVhQjz
-	 QoGjksqEosxE6j+RNR+NVl8XcQC42B8YKBbnP2uYl1LdF1kVgLdnlc9uM/xMvzrJoL
-	 DCxUsX4ZVOJ4b1WpmbQzN7N8YNntwarsWYz8vO6A60hgiRqj+/pycskS81zWzDZenR
-	 hEbAShsIT1faIkwjTfAWVsPpV3sZH2PEErkTxAYT4d1n89DVTuDyU6/ePwvoBAKp+c
-	 qgItG+hVrFBmeTa8yZsXISBEKAfYPt5EcVPsPu3J24dc+mMfx1Q3qPIb80+5GdAifu
-	 IYejfplQfGZ5w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/2] KVM: selftests: Add a helper to read a vCPU's
- APIC ID
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Hemanth Selam" <hemanth.selam@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260826115915.2882221-2-hemanth.selam@gmail.com>
-References: <20260826115915.2882221-1-hemanth.selam@gmail.com>
- <20260826115915.2882221-2-hemanth.selam@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 26 Aug 2026 12:11:59 +0000
-Message-Id: <20260826121200.79E7A1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P5zl/SXc"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2d3b445a84fso88475ad.1
+        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 05:30:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787747449; x=1788352249; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=OtDyfAId4c9pmXSo6AkYFWKqGY/dpqg4gomEyUaZ1rc=;
+        b=P5zl/SXcD8sz+TC4+hyuwZkqaZPHNXvywNGiQevr461CMvJNkvqiM7hrcaqs2G3gve
+         XAHjRZiNo9XhOiIbDbhtU0OcSHa2HAOIC4Vsmpa5Vy0dxB2C1LrK96yLPgwHzIb2id/5
+         W+3d2EzQ6cIhg/I9ZLzxXb+jutIfQbHBUNAZwboqtgNxkE4s6qEQWz98RkdFhormfg9z
+         QIHP/+0Sjhk6iJKJXOrSEk0XCfu7C2yw/jL3L8uZHWR0MVJozxfj8gJLSHV7HtV3eT/t
+         E15xeyzDIHD41GALpjxUOY3BHkBslYo5TLgZO0RanQEKYe47kjNwW8pElk05X5e1YgOr
+         dqsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787747449; x=1788352249;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OtDyfAId4c9pmXSo6AkYFWKqGY/dpqg4gomEyUaZ1rc=;
+        b=X6caoEq4L5SYUs+oPK3WQ13aKWaX7Q5gvLsMhgaGN4eX2yNI49e5PhrBwUZ+T1/ZdU
+         tAM6qjjVy2c0dEu9zaOtd868t9ItlcH4ghh0+JnFYNTE24rFC0V0F+an+A0v4dbfdgHL
+         35KyV+OGU4I3ZIWNlydhhHYnsV78m3ju+0hWx8sNvDh2X6Ef9OYXyfm0yHcoAuGCtMgg
+         rProq9b92tWNoToz1tO4qg7DHZtE6EHrxA69GeKdbg3/966yE6LOXo+SuRp0peInzZJL
+         82wiDXgLLtl//cU091wtXPXMWHAnTSQT2vhu7uWGsF2iJL0jtwVMJc/8ZaqtBcEj609U
+         /yfw==
+X-Forwarded-Encrypted: i=1; AHgh+Rpa0ex/X4s7j2iSSMMhOYjbyAP/jJ0BxqhhWmb7TTp3HfhljviUnZGmad6KDhyPKtla6Pc=@vger.kernel.org
+X-Gm-Message-State: AFuF++kJsNDEMsgVJFMSRroqzahJOPH0MY4Kp/VQkpyEXR803oLKqHZx
+	IbhF/Z5CwneY6VYXg7k6ie33uE2jDvQc5VxeHIwoNDkhgX7BV95r+Q6MdHxdZhGHdQ==
+X-Gm-Gg: AR+sD12qXoeZ4vixuZ3i/OBvgDcAEqULfNDp6pIpbS+sPjONYEhRmBOFvDmlObJZ6IK
+	MkAJuWkyZjOjpUWCWe+ZzPnsQ0qobLjIwj2dYhsL4NNXxAGb3xjvpn6Cmd6cuR2YhoaNBDbSwWh
+	X/GbwBZ5NOUgR9VKXvPP+tASZSwTX7be5IGyWe/BqOvOkJAb761qPYaSVvy00350cTx7bUV6x6Q
+	iGrSrkjPqpb8o2NN6ZvMufqFFifZJ5/MgClkaWFYbjWV97LBRv7wRVFmLfQl3xYABO3M7C5v/d4
+	0j6v2J9NpSzKRg9Uu6ZYTZDJYR7Y8E063+E8Wy3yQ9lWWx6DDj84PlFj/wLeJXVkLu0mw9jhIj1
+	J+w5QOXej8vOMlJJ5cU6BKqZeKN3k+bsQWspEIogECT04XgNqqEjEdm+d/3wXecPJ1LtOO/2rg7
+	SIEmIrNyOhXbpm3rudecuPsR6ohuQ0cdq5XqCwJRLAy6FLs/CwslBDZHYc9eymcSY4NxByl9ozf
+	fD7D2XtelWsvuCKKRgKVGhB5g==
+X-Received: by 2002:a17:903:22cc:b0:2bd:3bfd:74f1 with SMTP id d9443c01a7336-2d70baa90a8mr5053075ad.2.1787747448020;
+        Wed, 26 Aug 2026 05:30:48 -0700 (PDT)
+Received: from google.com (164.210.142.34.bc.googleusercontent.com. [34.142.210.164])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39645b07394sm7933816a91.4.2026.08.26.05.30.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2026 05:30:47 -0700 (PDT)
+Date: Wed, 26 Aug 2026 12:30:40 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: Samiullah Khawaja <skhawaja@google.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	David Matlack <dmatlack@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v4 08/18] iommu/vt-d: Clear unpreserved context entries
+ during shutdown
+Message-ID: <ao7ccBlV9_RXT6Fe@google.com>
+References: <20260808022723.3893618-1-skhawaja@google.com>
+ <20260808022723.3893618-9-skhawaja@google.com>
+ <446684d8-44d0-47c5-9301-172c55efd950@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <446684d8-44d0-47c5-9301-172c55efd950@linux.intel.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] vcpu_get_apic_id() incorrectly computes the APIC ID for x2APIC v=
-CPUs, particularly when KVM_X2APIC_API_USE_32BIT_IDS is enabled, returning =
-0 for typical APIC IDs and truncating IDs > 255.
---
+On Wed, Aug 26, 2026 at 04:05:51PM +0800, Baolu Lu wrote:
+> On 8/8/26 10:27, Samiullah Khawaja wrote:
+> > During normal shutdown the iommu translation is disabled. Since the root
+> > table is preserved during live update, it needs to be cleaned up and the
+> > context entries of the unpreserved devices and root entries for the
+> > unpreserved context tables need to be cleared.
+> 
+> The key assumption here seems to be that, during a live-update kexec,
+> most devices do not go through the normal iommu release path. Otherwise,
+> their context entries should already be torn down in the
+> iommu_release_device path.
+> 
+> Could you please confirm this assumption and add some short note in the
+> comments or commit message?
+> 
 
-commit dd16ed0d3dc6ed699be3a1e4ae7b88bd360cc286
-Author: Hemanth Selam <hemanth.selam@gmail.com>
+Yes, that's correct
 
-KVM: selftests: Add a helper to read a vCPU's APIC ID
+During the normal shutdown paths (i.e power-off, normal reboot, & kexec),
+the kernel only calls device_shutdown(). This path bypasses driver 
+unbinding, as a result, devres_release_all() and iommu_release_device()
+are never called. Those devres teardown paths are only triggered when a
+driver is explicitly unloaded / device is unplugged.
 
-This commit adds a helper function to read a vCPU's APIC ID directly from
-the host. This prevents tests from having to open code the KVM_GET_LAPIC
-ioctl when targeting a vCPU with an IPI.
+Since live-update piggybacks on the kexec/shutdown path the unpreserved
+devices never have their context entries naturally torn down by the core
+driver's devres model, necessitating this explicit cleanup.
 
-> diff --git a/tools/testing/selftests/kvm/include/x86/apic.h b/tools/testi=
-ng/selftests/kvm/include/x86/apic.h
-> index 31887bdc3d6c4..293044c81228d 100644
-> --- a/tools/testing/selftests/kvm/include/x86/apic.h
-> +++ b/tools/testing/selftests/kvm/include/x86/apic.h
-> @@ -79,6 +79,15 @@ void apic_disable(void);
->  void xapic_enable(void);
->  void x2apic_enable(void);
-> =20
-> +/* Reads the APIC ID of a vCPU from the host, e.g. to target an IPI at i=
-t. */
-> +static inline u32 vcpu_get_apic_id(struct kvm_vcpu *vcpu)
-> +{
-> +	struct kvm_lapic_state lapic;
-> +
-> +	vcpu_ioctl(vcpu, KVM_GET_LAPIC, &lapic);
-> +	return GET_APIC_ID_FIELD(*(u32 *)&lapic.regs[APIC_ID]);
+I think we can add a line in the commit msg for this because comments
+might create confusion if similar comments don't exist in other drivers
+performing Live Update. What do you think, Sami?
 
-[Severity: Medium]
-Does this unconditionally apply xAPIC bitwise extraction, failing to account
-for the x2APIC format where the ID may be stored unshifted or exceed 8 bits?
-
-If a test invokes vcpu_get_apic_id() on an x2APIC vCPU and the VM has
-KVM_X2APIC_API_USE_32BIT_IDS enabled, KVM stores the unshifted 32-bit ID in
-the APIC_ID register, but GET_APIC_ID_FIELD shifts it by 24.
-
-If not enabled, KVM shifts the ID by 24, but GET_APIC_ID_FIELD applies an
-8-bit mask (0xFF), silently truncating any x2APIC ID > 255.
-
-This incorrect APIC ID computation could cause tests that rely on this
-helper for cross-vCPU IPIs to target the wrong vCPU (often ID 0), leading
-to test failures or false passes.
-
-> +}
-> +
->  static inline u32 get_bsp_flag(void)
->  {
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260826115915.2882=
-221-1-hemanth.selam@gmail.com?part=3D1
+Thanks,
+Praan
