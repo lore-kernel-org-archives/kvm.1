@@ -1,224 +1,141 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46063B059C
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 20:46:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0772C40A937;
+	Wed, 26 Aug 2026 21:04:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787777221; cv=none; b=nV1thO2bPI3dQoQjWv0JaO6seX48pnkefoGR9y3b2gzvZrO8LggOcqKnWfK/1UDlmBJzvp6A4gZaxf3r6do7WhXnfk38b+E7b+dpCgWwaMj0HZLZqtIyOuO+x4v2ovxyKi2ZEw0XGzUx+Mi6jvirScFYNK0WJmQ/q2ZPFiR2pQ4=
+	t=1787778274; cv=none; b=LYyM6AyXwlsdMY9KZhfOE8KjKF9R46bmMnhU1ksmvSf+RouQ1wGWp6Cib20yDvJMwMh6tSO3WtHvQGVg8qz+MMSB79JCl0AqfXpRI/l+wL2nMWzW9Jumx3ijyLfwG+RkJZR1ddMkhNA8bpaDHHW8E1mBcZISKEjkK7njjWol1Ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787777221; c=relaxed/simple;
-	bh=8W+6nm1p92cnpBRrsTxdlV28jcWT30IBrjF2fyWBd6Q=;
+	s=arc-20240116; t=1787778274; c=relaxed/simple;
+	bh=XM6E9RlD5qF28woF5Bgq2f15LWI0TRuR39pcwDsdGJs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YDLgU5ktCilvcuTw4zpnfbzXVq+1acmvcjAW+3puZDPDS9vCPjDCznFvk04Wbo7BV0NF51jxCMaFnRMqRec886rCiPXywBN7YZYWrgqkJO4cpJDJN9HdEMplOlTt5ANY1lQOY4GXEE2/t9nNhWLs/tfuoDELIGnuQeSaVmcu5L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h1IwEy9K; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=RIuFIZ4Jd5xER4qVr3PcAAV/ZdE2LiY43g08YAKv7PJ8eidYKbr3KySjqJ9C3rsb1ZIGGFJKfqzRyDJ+9GMfmjWfMbVMeeURpyZHF7n6+D+e1hjOt0TuUFkX/8xoiqxkN5yVzY89oxHbSS4ImaXoMOSV+I/Q+mHKY7rXy/mR5Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lhQSVXjd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h1IwEy9K"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cede6375caso32605ad.0
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 13:46:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787777219; x=1788382019; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tVpNY9AYqp69vRQbsKPPtkBeX+dXdwmZPC7oJAGryqk=;
-        b=h1IwEy9KHj2ttf2q59WCQjTF7hPp2fdzzlfDqr2QUzdy8oRMiZhRi+FNjYNkuD/Viu
-         v9tTCACVz8+QAldAvAEk8Z64K2Pwnl/3XV1NDgpzD2W2TcQPAQazhSLSeMD5KtH+4ZCb
-         Ql2toE9tL9pEM/CA3Qmbp59nBWfMGKaFtSpOQhaUkqc0WZP2LXNd5t0+vU2oINVGsRFG
-         tX61YjdR9Sd5ISQ7vBQlnGSmHY2E8v2YlwuLoFwCFSKmARML9Y1DELaVJh+quYdOZ2R4
-         GosCaS9nJtzvquAX+/rDBNqizdl0dV3BaqzCN64GyFOdpO5kHniTArpSP9z7H352uymL
-         lvZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787777219; x=1788382019;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tVpNY9AYqp69vRQbsKPPtkBeX+dXdwmZPC7oJAGryqk=;
-        b=QOPJha6EYpN0muYRsuj7LIivY6xBGTyBginNyZyWDBaG1Ael0DcGDTdw9Vux/VSqm3
-         xt0Y94zB4FbXiYTEv51sOSyXvvGAlbomtn90FyWFey8TCCbgXvjDzUAO+vbqAV6i1srh
-         sbqQxRyZqtjcPnXQt2amcrG3o7WNTOpolRNrFwQgwROZ6Uc32kZRKL4CEejuv/hMtlTw
-         kxWH8dVHg1EWFb55OLmD21Q62tmXXXolwFkt+7q2hsTSX5RJCj2J8F05SvsEiyyvWSnR
-         wqG09ooFfI/JqTn3fAfj9/d3824rGVdryHC2T3KH5zGG13s1O5SRgW5ZCtIEzAQAuU5V
-         Vkcg==
-X-Forwarded-Encrypted: i=1; AHgh+RpBbQrMnOqihhIqjjqNUuqnmzNWh3mfM0G89apVdhhb4PAz+8tbhNzw/pxe+zRwSReJ0bk=@vger.kernel.org
-X-Gm-Message-State: AFuF++kURDQdwSXKqhQr8PbBi8AEQsVwEQZALnkCXcBK7BsFPgVq6XPa
-	7Gxq8mcoZbmbWvwLU/I2rWjnLz9WPNAwv+0UM5DKz7O9lETRbxxZWFqmRvAokCMGYw==
-X-Gm-Gg: AR+sD12BnmSxhY5qtNJ83UeT6NXlPvC0PtYTkW1xtfNMyxjp5Vn4nGRPj1qbY7zGEqe
-	fnlk+ygtbtEESkGDwbo9vW4NeNZ5gVur+qRG1/h9AY+Zqri44dHFKa4Zekc4amRGPsG4vH/IQFQ
-	SfkQq1Lk0rMI/Fgr8XJJMPEipG07Y0ot7XkRPpZGhMnvH1+YJDDNtyXlN4DBLzycR1MOOKQ3E8n
-	HionvPNqgkj5YPUN/1DrvQM+/5OdfqRMVXK0oPjZzMs3SgQ45sGWC+GqMb7CxwsC4EasZ8G5MZB
-	zhDFerKCx/z0vBamuRoWpm31VGOndk+p80XaQ3k4WppQT7I0LSBHYu18nH9md8MaVmgmLSMn0Fe
-	HC2axDeMc6Yu6gjIeyOXfqYRjtGEswDnjrR7O9DPX8A9IRHprC7Pd+YpcWjwgdeCxtdTRhrOGHn
-	oVDgI9H59D3t2FTvy/zAccfBHFn9098cs7fvINwNDnqQtFkrKic9DuGGeNyU4Lo5b4uT615FJTv
-	YESnfMu+pwXhwPk1rMpVPqQErZOpemlDx03uMQQabn2QJH9mo4CPHsS1tlyTmL13nq3iA==
-X-Received: by 2002:a17:902:e94f:b0:2d5:db3d:1a44 with SMTP id d9443c01a7336-2d73365a24amr151945ad.17.1787777213391;
-        Wed, 26 Aug 2026 13:46:53 -0700 (PDT)
-Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc1befce3b8sm1396240a12.5.2026.08.26.13.46.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2026 13:46:51 -0700 (PDT)
-Date: Wed, 26 Aug 2026 20:46:47 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
-	Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v4 07/18] iommu/vt-d: Implement device and iommu
- preserve/unpreserve ops
-Message-ID: <ao9PE9gdOh3DXNvP@google.com>
-References: <20260808022723.3893618-1-skhawaja@google.com>
- <20260808022723.3893618-8-skhawaja@google.com>
- <065b2be2-2ff1-42a0-99b1-ed81e783dca1@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lhQSVXjd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9975E1F000E9;
+	Wed, 26 Aug 2026 21:04:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787778272;
+	bh=wd9D8o6DYVa1N38/T0CvGYo4puGoZ+VeLzsnpIr+Xj4=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=lhQSVXjdgZwex5bvjjr7tkNgtCyI0uh3QOi97Mn+cGoo7bug7cBFqPh4Bcvz/TW1M
+	 haTgWlQYOjVnbxfJx3B/DsL6ZSG/kf9n1MrX6q26iIpenqY10g/rg2fzjlgJt14sWG
+	 3dSP5E2srWDX+MEwBm0xlxAYMEf7oC9hyARAxYmEsiZnl61DzYrTeBGqgOlt994U6V
+	 i0JOpFzibPy2UxMEjVA1dC53FAjJ/qrCFVWNaBQqfi9CKA3NMZttw9YiEWBG6oDoC9
+	 G/UCMlmFl1i8BdHtuy/WX37Q/rns6nlG5d9xsX6gn+ww/fTV8ZHmgPc5lTz1AEvnWz
+	 JWfsvLvEd2KUg==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 64492CE086B; Wed, 26 Aug 2026 14:04:32 -0700 (PDT)
+Date: Wed, 26 Aug 2026 14:04:32 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Sean Christopherson <seanjc@google.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Jerome Glisse <jglisse@redhat.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
+	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Message-ID: <4415dbf2-10b0-4cb1-b045-13dbcd69c5d5@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop>
+ <ao3z7Rtw2FROkVpy@google.com>
+ <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop>
+ <20260826073233.T-KtFXmj@linutronix.de>
+ <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org>
+ <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop>
+ <98e123c9-3dc4-45fb-815b-881b3346741c@paulmck-laptop>
+ <ACC45EB6-F881-4EE9-A9F8-D53A2B921FEE@infradead.org>
+ <e62a7362-7dd0-4615-8877-6ab675971ab2@paulmck-laptop>
+ <06F9A0F0-2177-4173-A201-56325A73F89B@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <065b2be2-2ff1-42a0-99b1-ed81e783dca1@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <06F9A0F0-2177-4173-A201-56325A73F89B@infradead.org>
 
-On Wed, Aug 26, 2026 at 03:10:31PM +0800, Baolu Lu wrote:
->On 8/8/26 10:27, Samiullah Khawaja wrote:
->>Add implementation of the device and iommu presevation in a separate
->>file. Also set the device and iommu preserve/unpreserve ops in the
->>struct iommu_ops.
->
->This patch, on its own, does not fully implement the preserve operation.
->At this point, the callback preserves all root/context entries used for
->live update, but it does not yet clear non-preserved entries and
->invalidate the related caches; that cleanup is supposed to be done in
->the next patch.
->
->So I think we should either:
->
->- add a brief note here to make this dependency explicit, or
->- merge these two patches into a single patch for completeness.
->
->?
+On Wed, Aug 26, 2026 at 09:30:43PM +0100, David Woodhouse wrote:
+> On 26 August 2026 20:59:31 BST, "Paul E. McKenney" <paulmck@kernel.org> wrote:
+> >On Wed, Aug 26, 2026 at 07:01:24PM +0100, David Woodhouse wrote:
+> >> On 26 August 2026 17:28:27 BST, "Paul E. McKenney" <paulmck@kernel.org> wrote:
+> >> >On Wed, Aug 26, 2026 at 08:05:06AM -0700, Paul E. McKenney wrote:
+> >> >> On Wed, Aug 26, 2026 at 08:38:27AM +0100, David Woodhouse wrote:
+> >> >> > On Wed, 2026-08-26 at 09:32 +0200, Sebastian Andrzej Siewior wrote:
+> >> >> > > On 2026-08-25 13:51:14 [-0700], Paul E. McKenney wrote:
+> >> >> > > > Very good, preemption disabling it is!  It is quite possible that the
+> >> >> > > > PREEMPT_RT guys will need something else, but one thing at a time.
+> >> >> > > 
+> >> >> > > This reminds me of classic RCU ;) It might work in this use case but I
+> >> >> > > am afraid that other users might come along where it actually hurts.
+> >> >> > > With PREEMPT LAZY the preemption within the read-section should
+> >> >> > > hopefully be the exception.
+> >> >> > 
+> >> >> > Given the way that PREEMPT_RT treats other locks like spinlocks and
+> >> >> > rwlocks — turning them into sleeping locks — I suspect it makes most
+> >> >> > sense, and is consistent, to also turn rcu_read_lock_atomic() and
+> >> >> > synchronize_rcu_atomic() into plain rcu_read_lock() and
+> >> >> > try_synchronize_srcu()+synchronize_scru_expedited().
+> >> >> 
+> >> >> That makes a lot of sense to me.
+> >> >
+> >> >Another option is to instead fall back to non-atomic SRCU.
+> >> 
+> >> That's exactly what I thought I was suggesting; I think I left an 's' out though :)
+> >
+> >Heh!!!
+> >
+> >About 20 years ago, I was shocked to learn of a valid use case involving
+> >sleeping RCU readers, which resulted in SRCU.  And now it is time
+> >to be shocked at non-sleeping sleeping RCU readers, and especially a
+> >non-sleeping grace-period wait.  ;-)
+> >
+> >Anyway, easy enough:
+> >
+> >#ifdef CONFIG_PREEMPT_RT
+> >DEFINE_SRCU(whatever);
+> >#define my_srcu_read_lock() srcu_read_lock(&whatever);
+> >#define my_srcu_read_unlock(idx) srcu_read_unlock(&whatever, (idx));
+> >#define my_synchronize_srcu() synchronize_srcu(&whatever);
+> >#else
+> >DEFINE_SRCU_ATOMIC(whatever);
+> >#define my_srcu_read_lock() srcu_read_lock_atomic(&whatever);
+> >#define my_srcu_read_unlock(idx) srcu_read_unlock_atomic(&whatever, (idx));
+> >#define my_synchronize_srcu() synchronize_srcu_atomic(&whatever);
+> >#endif
+> 
+> We could do that for the KVM GPC locking, but more consistent would be to change *all* users of the 'atomic' lock under PREEMPT_RT to silently get the sleeping version instead, like PREEMPT_RT does with spinlocks and rwlocks.
+> 
+> So it's srcu_read_lock_atomic() itself (et al) which would get that if/else treatment.
 
-That is a good point. I kept the cleanup patch separate as it has to do
-with shutdown and basically getting ready to go into kexec. This patch
-mostly focuses on the "preservation of the memory" being used by various
-IOMMU data structures.
+OK, the traditional approach is that raw_synchronize_srcu_atomic() and
+friends with the raw_ prefix are always atomic, and without the raw_
+prefix it is atomic for !PREEMPT_RT and non-atomic otherwise.  You would
+use the non-_raw primitives.
 
-But I agree, we should add a note about the cleanup here. I will do that
-in the next revision.
->
->>
->>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->>---
+Easy enough to do.  But does it do the job, both from a PREEMPT_RT
+perspective and a notifier perspective?
 
-[snip]
+And notifiers (though a different type of them) were the first use case
+for SRCU.  ;-)
 
->>+#else
->>+static inline int intel_iommu_preserve_device(struct device *dev,
->>+					      struct iommu_device_ser *device_ser)
->>+{
->>+	return -EOPNOTSUPP;
->>+}
->>+
->>+static inline void intel_iommu_unpreserve_device(struct device *dev,
->>+						 struct iommu_device_ser *device_ser)
->>+{
->>+}
->>+
->>+static inline int intel_iommu_preserve(struct iommu_device *iommu,
->>+				       struct iommu_hw_ser *iommu_ser)
->>+{
->>+	return -EOPNOTSUPP;
->>+}
->>+
->>+static inline void intel_iommu_unpreserve(struct iommu_device *iommu,
->>+					  struct iommu_hw_ser *iommu_ser)
->>+{
->>+}
->>+#endif
->
->I believe the #else ... #endif stubs are unnecessary and can be removed.
->
->Specially iommu core checks driver support via callback pointer
->presence:
->
->        if (!iommu->iommu_dev->ops->preserve_device ||
->            !iommu->iommu_dev->ops->unpreserve_device ||
->            !iommu->iommu_dev->ops->preserve ||
->            !iommu->iommu_dev->ops->unpreserve)
->                return -EOPNOTSUPP
->
->So when CONFIG_IOMMU_LIVEUPDATE is disabled, simply not wiring these
->callbacks is sufficient.
-
-Agreed. Will remove these.
->
->>+
->>  #ifdef CONFIG_INTEL_IOMMU_SVM
->>  void intel_svm_check(struct intel_iommu *iommu);
->>  struct iommu_domain *intel_svm_domain_alloc(struct device *dev,
->>+
-
-[snip]
-
->>+/**
->>+ * intel_iommu_unpreserve_device() - Intel IOMMU callback to unpreserve device state
->>+ * @dev: Target device
->>+ * @device_ser: Struct containing serialized device state
->>+ */
->>+void intel_iommu_unpreserve_device(struct device *dev,
->>+				   struct iommu_device_ser *device_ser)
->>+{
->>+}
->
->Please add a comment explaining why this callback is intentionally
->empty.
-
-Agreed. Will add in the next revision.
->
->>+
->>+/**
->>+ * intel_iommu_preserve() - Intel IOMMU callback to preserve hardware state
->>+ * @iommu_dev: Generic IOMMU device handle
->>+ * @ser: Struct to populate with serialized hardware state
->>+ *
->>+ * Return: 0 on success, or negative error code.
->>+ */
->>+int intel_iommu_preserve(struct iommu_device *iommu_dev,
->>+			 struct iommu_hw_ser *ser)
->>+{
->>+	struct intel_iommu *iommu;
->>+	int ret;
->>+
-
-[snip]
-
->>  /**
->>   * struct iommu_hw_ser - Serialized state of an IOMMU instance
->>   * @hdr: Common object header
->>   * @token: Unique token for the IOMMU
->>   * @type: IOMMU type serialized state belongs to
->>+ * @intel: Intel specific serialization data
->>   */
->>  struct iommu_hw_ser {
->>  	struct iommu_hdr_ser hdr;
->>  	u64 token;
->>  	u64 type;
->>+	union {
->>+		struct iommu_intel_ser intel;
->>+	};
->>  } __packed;
->>  /**
->
->Thanks,
->baolu
-
-Thanks,
-Sami
+							Thanx, Paul
