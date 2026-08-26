@@ -1,216 +1,257 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010002.outbound.protection.outlook.com [52.101.201.2])
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6B830F526;
-	Wed, 26 Aug 2026 22:37:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787783854; cv=fail; b=LPlFi/PcsFXAJeP8yuV4+DHzNU3xI7elWQw/0np169KErOWBNZkGcDqDoLdD47dLOGxD42qKR3HnSs82WlT+3p0DgcYv3noTn6MV3pySFBzllJqg9RTNcIJqbZfiBGbavZhlieb0+chMvojLYw4DLWMIP/3PfvlIihNDvlKTXRw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787783854; c=relaxed/simple;
-	bh=asezm175rtd01o9eZITQjJI7P91atktw+cHQyRAyrs4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fqfbtreqm/5xX3EOd5L0CvOvR6VP4e5BVAVSG9x9hsVACt7BfdOoFm0KRFuQ2Brgoc5rRb9OHM7C45bGqqXy8oPZ72jRx6kr74NcomWNszg+jePCVNI56RqmO7ez41JtfhiuH8XKOw8p/tec/BZCBgSb+fBuZ8yYsaO2VINqHc8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0N0AMXJq; arc=fail smtp.client-ip=52.101.201.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9110A48A2DF;
+	Wed, 26 Aug 2026 22:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787784644; cv=none; b=XoMs/knqhIE1yLnk0Dzi1kgpg3tfCjsSiV/VYcLocktknJawh63HGdoydfF/ix6sgu+w+iBQ04KPJWoJN99CRiB0WXf/Ca+6ot3hhyYmB2I/WQ8xYJaNdnBNwfCkub/owUm92qHjgQSa/0PTa3/wwmnk55QtUitYx+u8p+914LU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787784644; c=relaxed/simple;
+	bh=rwp9r1Nr8znphwZs8a+YFF6d7wcWidDSGZsxf1w3WVI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Hk0ZWCy4Kd93z/tEMa+pOTaejDQk6Iva91GaBmp6I3+b5Tm9XlZGK7VrgSKYLZ0KWD9/o983Mt7P6iUnBrA016b90WNP/z1iBqVZWwRMrrnlIxwjntxpCr68oonuR0YLueZmoF0JGMGJoX/Dno/0ZvuCv1RnXeFjdimBy8SFyrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=NZ+xGKK1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=hPpBUpoy; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0N0AMXJq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=p/BC3CaVlSmCTfS+B9DUfq/ZmOPtnEHBCCxCcn/nenC+qz5C62d4WxJ58o3hZR25oHxmibEE10eWohNUqIzfPeQVFv0x3zCC8H7Fj5qu3AfqRLWG2O5EbKJlUe8J1vDzQJq9uPxZX8yaAzKfzgt1aOYtnwfWb4b3DOfA+Rc0wrKf0cjB8Sr8nRh30+xg78SDkvjGUOHFcK6IMb4qIBpYIHVFRFlnstDe5x1f+Fc3cPj2zWit9IRthu7rDpuKKojJ1tA1AtEeRaBormvPg/XUWEN58Say/uykpswAB8pcdYiUDJz3OfNxDbUAzoeBCevx1uYTwNFGRGMZpAMH7FzhNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Cy3YV3tMRp0D9ZfksLXoCCJQ9M3ffgSV5ZXq58HbhKc=;
- b=vfDpM6Nxx00ruMcvOVq9hiFAtbLuWf4amT3Za1RkyrgU0ocX1/LKSOolYsh2EUietQnI03YTndenZjOUIjUm1YRlO4RDEEvj1tS6GCliACWbcQbkL84APeChjx8lcOMT+u5S5e73p4SJPd2bqQEJd+sxhdLqUSLZtCWPrTOQL0MMdHm1jyssernhBOqEKRlanHPPB+aAnQCeuvW6dvnL1HN/Mna/dZ8cknmFNVzVycOrkRuNMbEPipREmsI0hvvxjzu2cDjL/zdAxwje92rIU/tlBVjVn19jbkhn19BPdPYf9uZf+20hcZak1ZOMkRaBm1LxCghHpUlzvwUMqShl4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
- is 149.199.90.133) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Cy3YV3tMRp0D9ZfksLXoCCJQ9M3ffgSV5ZXq58HbhKc=;
- b=0N0AMXJqY7v9TcmDdt/VemhsrEJG5ueyHNV7VqzK1LvmfrTsqbjpSjdgTMYN1tH9nGyrQnbII1ANRvd5QGUPupBy5SiO61GAj19MfUwKRSMogxqdUgdwFpurFCYv/A9a82HOBydG0BDa3FQyRq7VarB/c+z/P2wiMM+3fhixbJU=
-Received: from MN2PR22CA0017.namprd22.prod.outlook.com (2603:10b6:208:238::22)
- by SA5PPF7D510B798.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8d0) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.6; Wed, 26 Aug
- 2026 22:37:11 +0000
-Received: from BN3PEPF00022BBA.namprd04.prod.outlook.com
- (2603:10b6:208:238:cafe::c) by MN2PR22CA0017.outlook.office365.com
- (2603:10b6:208:238::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.12 via Frontend Transport; Wed,
- 26 Aug 2026 22:37:10 +0000
-X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
- 149.199.90.133) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=quarantine header.from=amd.com;
-Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
- amd.com discourages use of 149.199.90.133 as permitted sender)
-Received: from satlexmb07.amd.com (149.199.90.133) by
- BN3PEPF00022BBA.mail.protection.outlook.com (10.167.248.116) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.3 via Frontend Transport; Wed, 26 Aug 2026 22:37:10 +0000
-Received: from dryer.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 26 Aug
- 2026 17:37:09 -0500
-From: Kim Phillips <kim.phillips@amd.com>
-To: <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
-	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
-CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, "Nikunj A
- Dadhania" <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, "Michael
- Roth" <michael.roth@amd.com>, Borislav Petkov <borislav.petkov@amd.com>,
-	Borislav Petkov <bp@alien8.de>, Naveen Rao <naveen.rao@amd.com>, David Kaplan
-	<david.kaplan@amd.com>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	"Dave Hansen" <dave.hansen@linux.intel.com>, Kim Phillips
-	<kim.phillips@amd.com>, Nathan Fontenot <nathan.fontenot@amd.com>
-Subject: [PATCH v5 8/8] KVM: SEV: Add support for SNP BTB Isolation
-Date: Wed, 26 Aug 2026 17:35:10 -0500
-Message-ID: <20260826223510.3669875-9-kim.phillips@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260826223510.3669875-1-kim.phillips@amd.com>
-References: <20260826223510.3669875-1-kim.phillips@amd.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="NZ+xGKK1";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="hPpBUpoy"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.phl.internal (Postfix) with ESMTP id A2302EC0277;
+	Wed, 26 Aug 2026 18:50:38 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Wed, 26 Aug 2026 18:50:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1787784638;
+	 x=1787871038; bh=QplW2KxtxglOqcewNzFZRR/OkHVXQZVIXwZYQhVxGak=; b=
+	NZ+xGKK1CDnkI/+Q+3dg9JXY2EpUUV0bwjH0u/z1UZS0DcCepuqqkDxnDyNOJgYr
+	JCDu2T9f6xZlXKfdzQOt7zJXSC3H5cSFAfkTs2TJVslPj0vq3htfWYboswkbaUje
+	kkG0IpLc44JIvs4mVnX9ChBwG/YPZRTPy6YabCQ79FjPCsnYu+USD8Np9k1J640Z
+	oupufBrAPH5bXYMWCFwEQjenEavI81Aw1Lbjw48YIq2UEsvKn0GRbjJhRCOtSSX3
+	Wc4fTFwd3byG4N5i+uqKDGEDkh026MRf9vqhgGQBwNaWyKuhHCsmg4VWTCqp/iqJ
+	vHTPbMwM3oJ2/YJE4+Rx0g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787784638; x=
+	1787871038; bh=QplW2KxtxglOqcewNzFZRR/OkHVXQZVIXwZYQhVxGak=; b=h
+	PpBUpoy7rDfCyo3TpaPczzXGKEuenYj+LAGc4kWJWmdFNWdU5bG2h/D5DVvt68EQ
+	U8/sae8Pn/zNdEl1JOOVylLa1T7gSd9s01W6RLK4nhku5sac2BIXdooaJ7hGkyYx
+	V0o60RftXxj/bb1ftopm5tWn4Gvq46SeQeRdIFqFcICbeY9EVipsN7TGFeOro1ve
+	X4OA4dd2kBm1ddpsRoMUWM6Q+dtnCRfE+4QNSUVoj6h5lLUYByzSQIWbINZ/+WXm
+	LYL/4a9URfBkoyC8BqS0iwkd6tmlIjMIyRo6o64cZoVKF6iYQNiyZZdh07N47m/R
+	hn+JUEIeOPi50ZvUT5WAQ==
+X-ME-Sender: <xms:vW2Pasr7rQ_G5qB6GElMoVev1ckIfQR0Oz0IK7qUZ1FhMCx8WwF5HA>
+    <xme:vW2PagRsI5UzU6N-D9bD1DzNb6hQD0Sy59SMneHVLJ2RIEEAVolE6z9fTsNfii-MI
+    TOjtH8U1CWzueNu6bM-lzrk0Tt6XXK-XTCMnSZp3fe-6_1zJkvY>
+X-ME-Received: <xmr:vW2PaoknCS5K1m_SzqA12SKrf5lB_W97EGRm7woddUIu6LxzYxCH1nQCzdUrig>
+X-ME-Proxy-Cause: dmFkZTF6e4hR1iz/6dIAysFsGCQ71uWDQEuEPYPxGY/BNbu1t2yBp7A8qJ3IBKU8pAioAX
+    kQi2pcgAumZXLtvGdkDjDm8Zb0KsSPzz2VsqnYW42ydMMBwSPS6QnSoQAUAHv07aqMKnRl
+    xelSpx2DhqcMwig8qFnERd46xw36yZ179ft2tapX31kMdCO4EBCDZPMS+OxXASXA0mC8yJ
+    gaTocAtizYKP9ibLshPjnlDekBldB4LL8lduAolpQjZdkKTbOBm7kr4OXXecHyUwbsoYRB
+    yrtxtA8ZLexBsxbJYosZGQLm1U0QGL6Iw3Y3BNRJBkJrhYEGjH1CPTaRnzQ3Hofve2GspD
+    mdCje7Q/C99nzh28J31YfGJkClvIKkECVKoONx3ku5fGohpLpfpVf7hMU8D2ArWaBiu4XT
+    2D2ToyOUiTikWseEXh1BWf1kFEOT+F0em+n/FPKN/CwNo8k6wmSabVSYMfhwRtIuZbaZey
+    C2aaKWIjnz7V2Ica903rgVEmKwvZaAFQwDJWejuL54g0317LPKOKKOnHC6IfoXAi+elSRC
+    cJZiYjoSs/KtHZ69uy7MT8o5sEzJ3UnbXP/gMffJ8o8eVwV3rZKTr6DJjkZQTf1ci1iv5u
+    XkZBZIqLCqdmFI2Hs4FQvLmahoxpdu4sy9AqL05m+bC2lNETs3PiCgTjCxNA
+X-ME-Proxy: <xmx:vW2PasG33uUCS6HXNmERDuuODFOStFcfLQXtMbQKM99NjXMox0Mn2Q>
+    <xmx:vW2Pajlbv8YjV7iD74OwNaKzy_wiEqRehVqyqHNGe_xshYoBKRrbCw>
+    <xmx:vW2PajSOivWBuszMVd4W96Q0Mkf48PT0WgGGGlTBVkEEIt5YzKdPiw>
+    <xmx:vW2Pag6Pj0JHWPDrLEkQqOStYiF1w0zOdUuXYsh-Zfvc9rwYEa81LA>
+    <xmx:vm2PasFQS2R-HHl_00xv3lT8lZ6Xd5hamxoxnBz_Dl2aO4zKala3Jtao>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 26 Aug 2026 18:50:35 -0400 (EDT)
+Date: Wed, 26 Aug 2026 16:50:33 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: <mhonap@nvidia.com>
+Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
+ <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
+ <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+ <dave@stgolabs.net>, <alison.schofield@intel.com>,
+ <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
+ <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
+ <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+ <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
+ alex@shazbot.org
+Subject: Re: [PATCH v4 08/27] vfio/cxl: Add the vfio-cxl module skeleton
+Message-ID: <20260826165033.582735f4@shazbot.org>
+In-Reply-To: <20260813093631.2288172-9-mhonap@nvidia.com>
+References: <20260813093631.2288172-1-mhonap@nvidia.com>
+	<20260813093631.2288172-9-mhonap@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF00022BBA:EE_|SA5PPF7D510B798:EE_
-X-MS-Office365-Filtering-Correlation-Id: 42cb55a5-6f07-463d-99c0-08df03c2916c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|1800799024|23010399003|82310400026|10067099003|56012099006|5023799004|11063799006|6133799003|3023799007|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	owjGQTRPl18prqow93c9lLw3IeUc2ykmYzQuKZti8GSgGs6rHb5oUVnH0OyaVuQ+k32LFYUjE1FzOw+GuyLNud5Tm4Ka5l2kkqr3zj/nh4cxoVGfXgi01vHv8xfvc641srRBVRScBK+CcOGIYS5tsYqpEyZFoUDOtX9XeuK/qwoM6JIN3WDCpvHnwL4Al1R+TzbN/a+UqJ11PwJxFrtnVDTslwYE0ukGZsllBvRxAvokKC3Zr7yM07ZL8CWUs7sDp9T2PmzmkRksVR/gPK568yv8UbzqAOLJ8tt6eHrtqGvxN1S+dBIwnGnQtCJ4rUKt7teRBTMDfO+DpZTkSYWlFhSShj52PeQnNkWyXnU9buBQ3tZzltwkALZDLgGRqRNMxHoWIE/6uB39BcyKK2claIVWSmyN35F/qthfb08tQuDuw3YCLTaWJUS7wsk0PQlnl5COeagRUXpCmI46viXmPo/S9biw9YlsteO+5fJIP3g5D1GqcL97dX4Bkha+uRO/e6Jqgz/qT5/Om7QdGzhHoH9biTR8yYEfNCXbJg3IWLNfOmR20AQuMtiIF94qpdDCCGOnVYamXLaKERzKlaJcPfKg9FPr8Z6+zVFCyoPhhHcISwbWj64ikNyZSo9B0RwCKz2iX9B92WM4qJQb3apuYQ==
-X-Forefront-Antispam-Report:
-	CIP:149.199.90.133;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:unknown-90-133.xilinx.com;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(23010399003)(82310400026)(10067099003)(56012099006)(5023799004)(11063799006)(6133799003)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	0l1i/xHntxIXJYVqc8AWVGpimRD8nft91oSiiDbVXm3Q7i/6pibFhDNtoM21/2ZKZeRt9JY96CfzMSJFKf6QZ5dEOpa119FUdnLV7eVTD7Ug5jSb0990fOMvPfY6vJZUe+wLdq/L0aAv6+PtuW9qP/NnpUPkAusz09qGdeZZ7XrCsogEtJSTaE9sLjLoC8f/f/Ov4cYW8gKlWLXgbI66Qa/kWFOk7wDZJQPgnEDPqcYjPhHkA9CZFTqgEEsQuPGhlDbS9d81arODQHGy5CkelWG+Yvkutluiux6Knfsp1wjZqtHHuUgAa+BqZp5/YmvzentiK+oL5Mt30TRQ+eN5cHHgXtU/jGpUquD+DtFZQdE0EhcJEd0Md6WCdvw3j1sgjFAGfyreCf37ln2+Ixm7uBx7fbswGDRfshHx5wqqoN7y1RoAw0PygRvRNvgPQwFH
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 22:37:10.6482
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 42cb55a5-6f07-463d-99c0-08df03c2916c
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[149.199.90.133];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF00022BBA.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF7D510B798
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Advertise support for BTB Isolation via SEV_VMSA_FEATURES when SNP is
-enabled.  BTB Isolation is an optional feature that can be enabled by the
-guest to ensure its guest Branch Target Buffers (BTBs) are not affected
-by any context outside that guest.
+On Thu, 13 Aug 2026 15:06:12 +0530
+<mhonap@nvidia.com> wrote:
 
-SNP-active guests may choose to enable the Branch Target Buffer
-Isolation mode through SEV_FEATURES bit 7 (BTBIsolation).
+> From: Manish Honap <mhonap@nvidia.com>
+> 
+> Add the vfio-cxl module that vfio-pci loads on demand for CXL Type-2
+> devices. It registers a set of callbacks with vfio-pci-core at
+> module_init and drops them at exit; the callbacks are stubs here and
+> are filled in by later patches.
+> 
+> VFIO_CXL depends on CXL_BUS and builds as vfio-cxl.ko, which
+> request_module("vfio-cxl") resolves through MODULE_ALIAS.
+> 
+> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> ---
+>  MAINTAINERS                          |  7 +++++
+>  drivers/vfio/pci/Kconfig             |  2 ++
+>  drivers/vfio/pci/Makefile            |  2 ++
+>  drivers/vfio/pci/cxl/Kconfig         | 11 ++++++++
+>  drivers/vfio/pci/cxl/Makefile        |  3 ++
+>  drivers/vfio/pci/cxl/vfio_cxl_core.c | 41 ++++++++++++++++++++++++++++
+>  6 files changed, 66 insertions(+)
+>  create mode 100644 drivers/vfio/pci/cxl/Kconfig
+>  create mode 100644 drivers/vfio/pci/cxl/Makefile
+>  create mode 100644 drivers/vfio/pci/cxl/vfio_cxl_core.c
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index c665bf8f1a28..aa8cecbc4cf2 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -28312,6 +28312,13 @@ L:	kvm@vger.kernel.org
+>  S:	Maintained
+>  F:	drivers/vfio/cdx/*
+>  
+> +VFIO CXL DRIVER
+> +M:	Manish Honap <mhonap@nvidia.com>
+> +L:	kvm@vger.kernel.org
+> +L:	linux-cxl@vger.kernel.org
+> +S:	Supported
+> +F:	drivers/vfio/pci/cxl/
+> +
+>  VFIO DRIVER
+>  M:	Alex Williamson <alex@shazbot.org>
+>  L:	kvm@vger.kernel.org
+> diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+> index 296bf01e185e..c3f54fc8ccc0 100644
+> --- a/drivers/vfio/pci/Kconfig
+> +++ b/drivers/vfio/pci/Kconfig
+> @@ -70,6 +70,8 @@ source "drivers/vfio/pci/virtio/Kconfig"
+>  
+>  source "drivers/vfio/pci/nvgrace-gpu/Kconfig"
+>  
+> +source "drivers/vfio/pci/cxl/Kconfig"
+> +
+>  source "drivers/vfio/pci/qat/Kconfig"
+>  
+>  source "drivers/vfio/pci/xe/Kconfig"
 
-Unlike the sibling features advertised here (Secure TSC, IBPB-on-Entry),
-BTB Isolation is advertised unconditionally.  This is deliberate, not an
-oversight: the AMD64 APM (Vol. 2, Section 15.36.17 "Side-Channel
-Protection") defines BTB Isolation as architecturally present on every
-SEV-SNP-capable processor.  There is therefore no host enumeration bit
-for it (no CPUID leaf or MSR capability), by design -- unlike
-IBPB-on-Entry, whose host support is enumerated via
-CPUID Fn8000_001F[IbpbOnEntry] bit 31 precisely because it is not
-universal.  A per-feature host gate is thus neither possible nor
-meaningful; if SNP is supported, BTB Isolation is present.
+It seems fair to put this above the variant driver Kconfigs rather than
+bury it among them.
 
-Nor does the guest have to take the host's word for it.  SEV_FEATURES is
-written into the VMSA by sev_es_sync_vmsa() and measured by
-SNP_LAUNCH_UPDATE with SNP_PAGE_TYPE_VMSA, so bit 7 is covered by the
-launch measurement and appears in the attestation report.  At runtime the
-guest can additionally read the active state from SEV_STATUS bit 9
-(MSR_AMD64_SNP_BTB_ISOLATION, dumped as "BTBIsol" by
-sev_status_feat_names[] in arch/x86/coco/sev/core.c).  A guest requiring
-BTB Isolation can therefore confirm it is active rather than trusting what
-the host advertised.
+> diff --git a/drivers/vfio/pci/Makefile b/drivers/vfio/pci/Makefile
+> index 6138f1bf241d..c3031070a1f3 100644
+> --- a/drivers/vfio/pci/Makefile
+> +++ b/drivers/vfio/pci/Makefile
+> @@ -21,6 +21,8 @@ obj-$(CONFIG_VIRTIO_VFIO_PCI) += virtio/
+>  
+>  obj-$(CONFIG_NVGRACE_GPU_VFIO_PCI) += nvgrace-gpu/
+>  
+> +obj-$(CONFIG_VFIO_CXL) += cxl/
+> +
+>  obj-$(CONFIG_QAT_VFIO_PCI) += qat/
+>  
+>  obj-$(CONFIG_XE_VFIO_PCI) += xe/
 
-Also add SVM_SEV_FEAT_BTB_ISOLATION to the sev_init2 selftest's
-SNP_ONLY_FEATURES and KNOWN_FEATURES to validate it is accepted
-for SNP guests and rejected for SEV-ES.
+Here again, cxl is a feature of vfio-pci-core.  I'd promote it to
+between vfio-pci-core and vfio-pci.  The earlier linking also has the
+benefit that in the typical case it will be available before the
+builtin drivers (but keep the deferred loading behavior).  Thanks,
 
-For more info, refer to page 615, Section 15.36.17 "Side-Channel
-Protection", AMD64 Architecture Programmer's Manual Volume 2: System
-Programming Part 2, Pub. 24593 Rev. 3.42 - March 2024 (see Link).
+Alex
 
-Link: https://bugzilla.kernel.org/attachment.cgi?id=306250
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Kim Phillips <kim.phillips@amd.com>
-Assisted-by: ClaudeCode:claude-opus-4-7
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
----
- arch/x86/include/asm/svm.h                        | 2 ++
- arch/x86/kvm/svm/sev.c                            | 8 ++++++++
- tools/testing/selftests/kvm/x86/sev_init2_tests.c | 2 ++
- 3 files changed, 12 insertions(+)
-
-diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index 9d8107824d10..0da2234b71c6 100644
---- a/arch/x86/include/asm/svm.h
-+++ b/arch/x86/include/asm/svm.h
-@@ -309,10 +309,12 @@ static_assert((X2AVIC_4K_MAX_PHYSICAL_ID & AVIC_PHYSICAL_MAX_INDEX_MASK) == X2AV
- #define SVM_SEV_FEAT_RESTRICTED_INJECTION		BIT_ULL(3)
- #define SVM_SEV_FEAT_ALTERNATE_INJECTION		BIT_ULL(4)
- #define SVM_SEV_FEAT_DEBUG_SWAP				BIT_ULL(5)
-+#define SVM_SEV_FEAT_BTB_ISOLATION			BIT_ULL(7)
- #define SVM_SEV_FEAT_SECURE_TSC				BIT_ULL(9)
- #define SVM_SEV_FEAT_IBPB_ON_ENTRY			BIT_ULL(21)
- 
- #define SVM_SEV_FEAT_SNP_ONLY_MASK	(SVM_SEV_FEAT_SNP_ACTIVE | \
-+					 SVM_SEV_FEAT_BTB_ISOLATION | \
- 					 SVM_SEV_FEAT_SECURE_TSC | \
- 					 SVM_SEV_FEAT_IBPB_ON_ENTRY)
- 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 20a761cf3491..53cc6d043883 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -3260,6 +3260,14 @@ void __init sev_hardware_setup(void)
- 	if (sev_snp_enabled) {
- 		sev_supported_vmsa_features |= SVM_SEV_FEAT_SNP_ACTIVE;
- 
-+		/*
-+		 * Unlike Secure TSC and IBPB-on-Entry below, BTB Isolation has
-+		 * no host enumeration bit to gate on: the APM defines it as
-+		 * architecturally present on every SEV-SNP-capable processor.
-+		 * If SNP is supported, BTB Isolation is available.
-+		 */
-+		sev_supported_vmsa_features |= SVM_SEV_FEAT_BTB_ISOLATION;
-+
- 		if (tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_SECURE_TSC))
- 			sev_supported_vmsa_features |= SVM_SEV_FEAT_SECURE_TSC;
- 
-diff --git a/tools/testing/selftests/kvm/x86/sev_init2_tests.c b/tools/testing/selftests/kvm/x86/sev_init2_tests.c
-index f2f97dca3935..3f592e245a66 100644
---- a/tools/testing/selftests/kvm/x86/sev_init2_tests.c
-+++ b/tools/testing/selftests/kvm/x86/sev_init2_tests.c
-@@ -15,11 +15,13 @@
- 
- #define SVM_SEV_FEAT_SNP_ACTIVE		BIT_ULL(0)
- #define SVM_SEV_FEAT_DEBUG_SWAP		BIT_ULL(5)
-+#define SVM_SEV_FEAT_BTB_ISOLATION	BIT_ULL(7)
- #define SVM_SEV_FEAT_SECURE_TSC		BIT_ULL(9)
- #define SVM_SEV_FEAT_IBPB_ON_ENTRY	BIT_ULL(21)
- 
- /* Features valid only for SNP guests, rejected for SEV-ES and below. */
- #define SNP_ONLY_FEATURES		(SVM_SEV_FEAT_SNP_ACTIVE | \
-+					 SVM_SEV_FEAT_BTB_ISOLATION | \
- 					 SVM_SEV_FEAT_SECURE_TSC | \
- 					 SVM_SEV_FEAT_IBPB_ON_ENTRY)
- 
--- 
-2.43.0
+> diff --git a/drivers/vfio/pci/cxl/Kconfig b/drivers/vfio/pci/cxl/Kconfig
+> new file mode 100644
+> index 000000000000..1392fa4ed15d
+> --- /dev/null
+> +++ b/drivers/vfio/pci/cxl/Kconfig
+> @@ -0,0 +1,11 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +config VFIO_CXL
+> +	tristate "VFIO support for CXL Type-2 devices"
+> +	depends on CXL_BUS && CXL_MEM
+> +	select VFIO_PCI_CORE
+> +	help
+> +	  Add CXL HDM handling to vfio-pci so a CXL Type-2 device, such as a
+> +	  CXL-attached accelerator, can be assigned to a virtual machine.
+> +	  vfio-pci loads this module on demand when it binds a CXL device.
+> +
+> +	  If you don't know what to do here, say N.
+> diff --git a/drivers/vfio/pci/cxl/Makefile b/drivers/vfio/pci/cxl/Makefile
+> new file mode 100644
+> index 000000000000..8501bf626108
+> --- /dev/null
+> +++ b/drivers/vfio/pci/cxl/Makefile
+> @@ -0,0 +1,3 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +obj-$(CONFIG_VFIO_CXL) += vfio-cxl.o
+> +vfio-cxl-y := vfio_cxl_core.o
+> diff --git a/drivers/vfio/pci/cxl/vfio_cxl_core.c b/drivers/vfio/pci/cxl/vfio_cxl_core.c
+> new file mode 100644
+> index 000000000000..cbec7319452c
+> --- /dev/null
+> +++ b/drivers/vfio/pci/cxl/vfio_cxl_core.c
+> @@ -0,0 +1,41 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * VFIO support for CXL Type-2 devices.
+> + *
+> + * Copyright (c) 2026 NVIDIA Corporation & Affiliates
+> + */
+> +
+> +#include <linux/module.h>
+> +#include <linux/vfio_pci_core.h>
+> +
+> +static int vfio_cxl_init_device(struct vfio_pci_core_device *vdev)
+> +{
+> +	return 0;
+> +}
+> +
+> +static void vfio_cxl_release_device(struct vfio_pci_core_device *vdev)
+> +{
+> +}
+> +
+> +static const struct vfio_cxl_ops vfio_cxl_ops = {
+> +	.init_device	= vfio_cxl_init_device,
+> +	.release_device	= vfio_cxl_release_device,
+> +	.owner		= THIS_MODULE,
+> +};
+> +
+> +static int __init vfio_cxl_init(void)
+> +{
+> +	return vfio_pci_core_register_cxl_ops(&vfio_cxl_ops);
+> +}
+> +
+> +static void __exit vfio_cxl_exit(void)
+> +{
+> +	vfio_pci_core_unregister_cxl_ops(&vfio_cxl_ops);
+> +}
+> +
+> +module_init(vfio_cxl_init);
+> +module_exit(vfio_cxl_exit);
+> +
+> +MODULE_LICENSE("GPL");
+> +MODULE_DESCRIPTION("VFIO support for CXL Type-2 devices");
+> +MODULE_ALIAS("vfio-cxl");
 
