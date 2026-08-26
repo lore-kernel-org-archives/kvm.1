@@ -1,124 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B41531E85B
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 21:31:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D783909A2
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 21:33:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787779877; cv=none; b=PsHcxaci3HCZkq2QjjOe+YjyWON9I+Vb/086+wzrzcIWEBkOVT/CtDsWaszx8+Ro/Gohjj7qnO9fZr9T8l3TI9f/G9ITgTwVyh7B6W3Eh51tBIV27rc1DPQft9TQEPZ15CjfUmnStA9ET0ZGkkUExz4qramYaUq7/WinpSQUIxE=
+	t=1787779986; cv=none; b=N2n0cuicU3DRG7riNSWmjPKhvQDNRt9g1MAPg1ge/V8DGGENfGcF3ebqkK7TapLrLWTjKnB/G9Fwp+Yvoie+yGDIdSTuAuYEhllFv1HApIH10BNAG2cCWgEOukVQewSc7CUzQ6ZCMd3ThLzVyM+aJgA5t7jepI7fR+blx9DrNtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787779877; c=relaxed/simple;
-	bh=jsV9GXOK72loCPs7hNMYPKs+jYsan6HiVYX+XcY5L9o=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=lB1Z0FgBLFZR6ULUgh8WxbnACyN4BwdjQLKGiAgGhafca4XHUKYKuBy4bmJ1UA+m3hMMrKHcezgYT1lZytvoAIx5bFJjt9A6LXE2Zr63NpcYAa6SqH0ilS0puspf7IDK3DRk0qKGqtnGaGG8k4FalkG3ZE+zrT/9Hyec848iAPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C4Up/CVl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787779986; c=relaxed/simple;
+	bh=BpaksvF5UiW1hvchMik7kTD9xZb/ra4jb7djNqkMrks=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=QWM+6UIch2iiHjMTlUh1bu5MCEDNB+HzsiafL+WosISMBPWNg+UUN4pgpLaJ6pqiu2TjVBV0eAFJxNOBx8WV2zZQnM39xuW6JqyBBo55srjNU2bQozvpa/eOIQ4dD8ZSZ1aFlsE0jesPPOdQo0azh+arQsH5xRRWrN8k0hSYQzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nQ9ky1aV; arc=none smtp.client-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C4Up/CVl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C25441F00A3A;
-	Wed, 26 Aug 2026 21:31:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787779876;
-	bh=OrMsW8eueiCbjss+pG/bZa/tlsUCWmmsTGTCkkxbqIo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=C4Up/CVl8xyFYs9YBeRM+OW5miLSrx871fX0rbyXXFEP73yucTIjCiGuSY9WsGrEz
-	 veJoHNIugHm0p7gvoQFabuD7aw/MhZxiejVo07qBs57idx224jfl2ec0KwOFYaM98s
-	 g5oaFAsOGn9NV/WBMBUfvq//IrjhO0t/PAmcOxDifdwOi7aAUxWPvp38ZSI+Pdpf2+
-	 luxsSTShQo7uDDoUez0t6va8ZuZedHkHqtUjp/J/g6HKs+xAQJq4x8q82UqWDZYk96
-	 +LWYz/BujDhuf/Q5N1r0ROt8NTMRUlJFLgCp3rNygNuiXPMiR5sp3qTJWvHK+Tx9VA
-	 NkM56NaCtJcvg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/4] KVM: x86/mmu: Bug the VM if KVM calcs a CPU role
- with EFER.LMA=1 && CR4.PAE=0
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260826211844.884951-4-seanjc@google.com>
-References: <20260826211844.884951-1-seanjc@google.com>
- <20260826211844.884951-4-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 26 Aug 2026 21:31:15 +0000
-Message-Id: <20260826213115.C25441F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nQ9ky1aV"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cbbb9c9bfc3so1237982a12.1
+        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 14:33:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787779985; x=1788384785; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4JrZ3+7VrlAoRWfokfGXF58q3ir4/R4tHcE9QWIU5G4=;
+        b=nQ9ky1aVJWyFCarMJgy3yoCfgpEU9QPIZEhiSFSnn2Pl98SFEK+DrozErr7zzqgT0d
+         6ZtEclmeR4yh59GalSOq/iaA+birD067f9BUzh6LVSADxgafciY1olCKGNjF16BFox95
+         zypXppQyw7j6vUHEiRHn4dnnhO/6yjZ8StEuPWceqc3F57mVSlycxFUH+bHjc2oHRykT
+         hNJi/7QdAHwPNjCc85c1um/i8SFXxZ1ErcVKPC73i5NL8vWTNFb3LVhj5W0DIr1wOKtA
+         /TA2ycfNeKJ2WOie0LnxybAgd1yNQQX+TEAQ5Qapp0Vmzm5ZtcGboOBr1Xn2g28zEI+r
+         cMTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787779985; x=1788384785;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=4JrZ3+7VrlAoRWfokfGXF58q3ir4/R4tHcE9QWIU5G4=;
+        b=gKj++NBu2quhZkNPNg47jyVpRbRd54H/HaOgPTe5qKAXTlwbQPPh/WXhZzkz7wQXWP
+         qqe3T6e1kHAsK+17v9+iexh+jX0QcMPCA3TNX0ZFZDyPZLBWTUFGtqOPxg7dxnyLiBmQ
+         9+6PxeJk0Hs2BfAEcNDh5TgpSPyZ0laiENuxpfHSeQi88E6PqutbLhgo+nXxupla42u1
+         t1Hja4sYkLfAu7lNmQfpNi0B8dc00DiIq7uP17NFzbSG5wXRtyRxk/23xNvKr19L+UCN
+         TndjehEK0BR3XYiAfRttdf95E1OSW8dzhOv10eT3SklqUWXTv8gO0LccssR3SdBB0GQs
+         boeA==
+X-Gm-Message-State: AFuF++nuWgNo0pgWrSEsgYtA9bINv2EQ7EPCXEaQtCdCjLcDbHRL3Fa4
+	8yq0EGihTA1eDB4iGbXmL4gNBKoGaPKfDcrwuQ6oVY1leCDCFnMfdEIr5/MUPGbzKnsLmC2QqEr
+	cPEDuGA==
+X-Received: from pgby7-n1.prod.google.com ([2002:a05:6a02:6507:10b0:cbe:9e80:c38b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:e18b:b0:3be:b0b3:3962
+ with SMTP id adf61e73a8af0-3cf83f36b8amr21365562637.9.1787779984471; Wed, 26
+ Aug 2026 14:33:04 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Wed, 26 Aug 2026 14:32:40 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.887.g758fc8c411-goog
+Message-ID: <20260826213303.914988-1-seanjc@google.com>
+Subject: [PATCH v10 00/21] KVM: x86: Cleaning up the KVM clock mess, part 1
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Paul Durrant <paul@xen.org>, David Woodhouse <dwmw@amazon.co.uk>, Dongli Zhang <dongli.zhang@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Modifying a const-qualified structure field via a pointer cast inv=
-okes Undefined Behavior, allowing the compiler to optimize out the mitigati=
-on and leaving KVM vulnerable to processing corrupted MMU states.
---
+Part 1 of David's series to clean up the host-side mess of kvmclock.  The cut
+point in this version is still quite arbitrary, but what's left for "part 2" 
+fits nicely into 2-3 buckets:
 
-commit 398614ee03891692ae2eecdde307edc043d7403e
-Author: Sean Christopherson <seanjc@google.com>
+  1: Masterclock overhaul
+  2. New uAPI and tests
 
-KVM: x86/mmu: Bug the VM if KVM calcs a CPU role with EFER.LMA=3D1 && CR4.P=
-AE=3D0
+v10:
+ - Drop the stale reference to using div_u64() for the now-removed CPUID leaf.
+   [Sashiko]
+ - Don't bother with a enabling the pvclock_gtod notifier on 32-bit, and go
+   straight to ktime_mono_to_any(). [Sashiko]
 
-This commit attempts to mitigate invalid MMU roles by bugging the VM and
-clearing EFER.LMA if long mode is active without PAE paging enabled.
+v9:
+ - https://lore.kernel.org/all/20260810225500.869288-1-seanjc@google.com
+ - Pull in "Compute kvmclock base without pvclock_gtod_data" before "Avoid NTP
+   frequency skew for KVM clock on 32-bit host" to avoid having to provide what
+   is effectively an open-coded version of ktime_mono_to_any() to avoid data
+   races. [Sashiko].
+ - Pull in use of kernel timekeeping snapshots, split in three patches purely
+   to aid review and bisection.
+ - Check and clear KVM_REQ_MASTERCLOCK_UPDATE in kvm_arch_vcpu_postcreate().
+   [me, Sashiko]
+ - Add the missing return value in "Move "no master clock" fallback from...".
+   [Sashiko]
 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index 064ecc33b9267..81c30e2c74f3c 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -5910,6 +5910,9 @@ static union kvm_cpu_role kvm_calc_cpu_role(struct =
-kvm_vcpu *vcpu,
->  		return role;
->  	}
-> =20
-> +	if (KVM_BUG_ON(____is_efer_lma(regs) && !____is_cr4_pae(regs), vcpu->kv=
-m))
-> +		*(u64 *)&regs->efer &=3D ~EFER_LMA;
+v8:
+ - Obviously cut partway through the full series.
+ - Update commit references for 633d7652f80f ("KVM: x86/xen: Do not corrupt
+   KVM clock in kvm_xen_shared_info_init()").
+ - Chunk the "Restructure ..." patches into individual logical changes
+   ("Restructure kvm_guest_time_update() for TSC upscaling" in particular was
+   quite gnarly).
+ - Ensure the TSC+freq pair during guest time updates happens on a single
+   CPU. [Sashiko]
+ - Keep __get_kvmclock() as a masterclock-specific helper to avoid deep
+   indentation and gotos.
+ - Do waaaaay too much spelunking to try piece together the history of some
+   of the many warts.
+ - Ensure preemption is disabled in get_kvmclock() when getting the TSC freq.
 
-[Severity: High]
-Does casting away the const qualifier and modifying regs->efer here invoke
-undefined behavior?
+v7: https://lore.kernel.org/all/20260728144954.355376-1-dwmw2@infradead.org
 
-The regs pointer points to a struct kvm_mmu_role_regs, which defines the
-efer field as const:
+David Woodhouse (14):
+  KVM: x86: Improve accuracy of KVM clock when TSC scaling is in force
+  KVM: x86: Explicitly disable TSC scaling without CONSTANT_TSC
+  KVM: x86: Activate master clock immediately on vCPU creation
+  KVM: x86: Compute kvmclock base without pvclock_gtod_data
+  KVM: x86: Avoid NTP frequency skew for KVM clock on 32-bit host
+  KVM: x86: Wrap all of __get_kvmclock_master_clock() with
+    CONFIG_X86_64=y
+  KVM: x86: Fall back to non-master-clock if clockread fails in
+    get_kvmclock()
+  KVM: x86: Fix KVM clock precision in get_kvmclock() with TSC scaling
+  KVM: x86: Use get_kvmclock() in kvm_get_wall_clock_epoch()
+  KVM: x86: Fix compute_guest_tsc() to handle negative time deltas
+  KVM: x86: Upscale TSC to "now", not master clock when updating PV
+    clocks
+  KVM: x86: Simplify and comment kvm_get_time_scale()
+  KVM: x86: Remove implicit rdtsc() from kvm_compute_l1_tsc_offset()
+  KVM: x86: Use kernel timekeeping snapshots for getting kvmclock time
+    since boot
 
-struct kvm_mmu_role_regs {
-	const unsigned long cr0;
-	const unsigned long cr4;
-	const u64 efer;
-};
+Sean Christopherson (7):
+  KVM: x86: Update "last guest TSC" snapshot prior to enabling
+    IRQs/preemption
+  KVM: x86: Drop unnecessary CPU pinning when computing/getting kvmclock
+  KVM: x86: Move "no master clock" fallback from __get_kvmclock() to
+    get_kvmclock()
+  KVM: x86: Disable preemption, not IRQs, when getting TSC+freq pair
+  KVM: x86: Make master clock logic in guest PV clock updates 64-bit
+    only
+  KVM: x86: Use kernel timekeeping snapshot for monotonic clock
+  KVM: x86: Use kernel timekeeping snapshot to get walltime+TSC
 
-Modifying a const-qualified object invokes undefined behavior per C11 6.7.3=
-p6.
-Because the regs structure is typically allocated locally on the stack, for
-example via vcpu_to_role_regs, and passed to kvm_calc_cpu_role, modern
-compilers have full visibility into the object's definition and can cache t=
-he
-initial const value of regs.efer in a register.
+ arch/x86/include/asm/kvm_host.h |   6 +-
+ arch/x86/kvm/cpuid.c            |   1 +
+ arch/x86/kvm/msrs.c             |   3 +-
+ arch/x86/kvm/svm/svm.c          |   3 +-
+ arch/x86/kvm/vmx/vmx.c          |  10 +
+ arch/x86/kvm/x86.c              | 480 +++++++++++++++-----------------
+ arch/x86/kvm/x86.h              |   3 +-
+ 7 files changed, 240 insertions(+), 266 deletions(-)
 
-If the compiler evaluates subsequent checks like ____is_efer_lma(regs) using
-this cached value, could this completely bypass the sanitization?=20
 
-If an untrusted guest attempts to set its vCPU state with EFER.LMA=3D1 but
-CR4.PAE=3D0, this bypass could cause KVM to compute a corrupted MMU role, s=
-uch
-as configuring 64-bit levels but 32-bit PTE sizes, which then escapes into
-the MMU configuration.
+base-commit: 76671054f9a1ff6abb976583cd8da37650acdc97
+-- 
+2.55.0.887.g758fc8c411-goog
 
-While KVM_BUG_ON flags the VM as bugged, the function continues executing
-with the corrupted role, potentially leading to out-of-bounds accesses befo=
-re
-the VM is fully halted.
-
-This issue defeats the purpose of the security mitigation and is not fixed =
-by
-the subsequent commit "KVM: x86/mmu: Convert MMU walker's bounds check from
-BUG_ON() to KVM_BUG_ON()".
-
-> +
->  	role.base.efer_nx =3D ____is_efer_nx(regs);
->  	role.base.cr0_wp =3D ____is_cr0_wp(regs);
->  	role.base.cr4_smep =3D ____is_cr4_smep(regs);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260826211844.8849=
-51-1-seanjc@google.com?part=3D3
