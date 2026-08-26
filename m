@@ -1,203 +1,124 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270A546EF77;
-	Wed, 26 Aug 2026 21:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787779363; cv=fail; b=Z80sefDotbOBWmLjbfB045IltMyB5ecnPEMyNjHMyOtpSasvJe6kgyVrWqyE6BdhYqDaJ9FxVnilGFShvAA3Kdq1dv9BrdOsdh0zTnUIRkuaUgWrX9N1wH2E1gTAI322o/lO+Q5n3CAVoi7qa0sxFrFCjcxrnlDNvk0nlAYNCdk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787779363; c=relaxed/simple;
-	bh=gaRNPwJ2zqDYX88skkUB6dEAAenIM6wbnffeS4eZSwQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=j58siqSLbeO31atZTgOWTXJB+V0AV17QkRsqu6FYp/1ABHwUd2DfmP7D7cpzJBsVpUpTqBBHHuP5dzm3NS1IjQo3myCpr+llbmQDhnyszQPZbAd11lAhwYmZJM98khE2lDHwLpcmjUwNUcmtudReT+vvzVzN2E+a3QKL+1PEPIU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IZtNCESk; arc=fail smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B41531E85B
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 21:31:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787779877; cv=none; b=PsHcxaci3HCZkq2QjjOe+YjyWON9I+Vb/086+wzrzcIWEBkOVT/CtDsWaszx8+Ro/Gohjj7qnO9fZr9T8l3TI9f/G9ITgTwVyh7B6W3Eh51tBIV27rc1DPQft9TQEPZ15CjfUmnStA9ET0ZGkkUExz4qramYaUq7/WinpSQUIxE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787779877; c=relaxed/simple;
+	bh=jsV9GXOK72loCPs7hNMYPKs+jYsan6HiVYX+XcY5L9o=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=lB1Z0FgBLFZR6ULUgh8WxbnACyN4BwdjQLKGiAgGhafca4XHUKYKuBy4bmJ1UA+m3hMMrKHcezgYT1lZytvoAIx5bFJjt9A6LXE2Zr63NpcYAa6SqH0ilS0puspf7IDK3DRk0qKGqtnGaGG8k4FalkG3ZE+zrT/9Hyec848iAPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C4Up/CVl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IZtNCESk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787779362; x=1819315362;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=gaRNPwJ2zqDYX88skkUB6dEAAenIM6wbnffeS4eZSwQ=;
-  b=IZtNCESkiz8D+e+MN8e6OXqzFaIMz8xkkZjerp+evDRv1+dM4QPjE/fa
-   HWszeva/cIXVgH+8QemWzWRA/353dCH9q5Jvd9UvxE9eWRpFLIEW46lhN
-   gmE3hyOYcQlPekgbNzMxxUlCRG9Exa6fA8y4zA2WgysKIS/b33gfoFDVi
-   zei9avE4ggbKjy5zV8onBr5U8kKQFmbPB55k7gBv7IAtbAos7kIUVQXwC
-   65mYEclyxDdkeS66jjlf6ClDFz6cbvBpIm8RdMe792dD/o7SRb4Dhg04W
-   oEnhFhqY8z1xSdfMBqX2aS4hEJe8ZkEdMmDsvEAkFSN8+6SFmYhElE637
-   A==;
-X-CSE-ConnectionGUID: 8a4RYyHzQTK2S0WC7pISOg==
-X-CSE-MsgGUID: 6CtRsEheRWCvIcfEoRZ2vg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11887"; a="88191763"
-X-IronPort-AV: E=Sophos;i="6.25,245,1779174000"; 
-   d="scan'208";a="88191763"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 14:22:41 -0700
-X-CSE-ConnectionGUID: Kt+pNgcrQ7O1FpAKtaOB3Q==
-X-CSE-MsgGUID: 7XFHKXp7QXq8ooA5vcV1uA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,245,1779174000"; 
-   d="scan'208";a="271484219"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 14:22:41 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 26 Aug 2026 14:22:40 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Wed, 26 Aug 2026 14:22:40 -0700
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.21) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 26 Aug 2026 14:22:39 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TddRWeBskSn7g5fyF24fXnPv6dF+5+sI4ut2X6XGfQRwR7bKQ8MtPQDt6xy+xPy7agCDD6LwK+l6LjZoNiUUVi5YKh5axhuXgh1aQtxy6H1kYNytV+t4KttL93zJBrCaIOaL5fIXcik7kTfmCKTWzYcTJlt12/CQ0afhpcf3h4ZyBUoPqj2SvEZ7Ohxqckd4CQuHBb+ygn1khYGCQwgZqpdzE/slxgywYmteZbC77fOFAGDM/V9BWPepvCVOLE1MjLWJB66COeDD2F+ylSxNe8yDynrfaGCSa/eN4Cv3ppMSEbktlIp4jFMdBO4iI9DT2ix1BATZZnthG0DOcNw51g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kU+JN3TiTi+NActjqkgpp05Juw262G5Bc/qjp9VLfeY=;
- b=bZman0UzrigqzNRPcG5mc050jklOZGXK6/wwj6+ToM5L/bvLqBJD6lFH00y3ocwrUgTWHoEeIjjakr13hFjDSNrOJ70ON3SleGz7NPTTpLgoz/bBIPOHbdlqGh/mvflf6BeUTqOQOH/Ch7Jz0oULkKxrCHarfIivnv9S8RchnLVrUWgdhE6zhgMBX1wnbxXxtvn8EbX9JJg9W7kPUcwoLtBVCn7AcnOmWRZLfYTus3Uh6XzfU7yOa54CTQCC65qAz/dfjgVXYUzi+knPCHcOd1U3HIAmg1UFY55LUrOXD4SnICfJCDpGWFTjtbNpAUV+NLRCcg1gp2QmF7FVCsR2iQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB435924.namprd11.prod.outlook.com
- (2603:10b6:610:34a::8) by PH7PR11MB6796.namprd11.prod.outlook.com
- (2603:10b6:510:1ba::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.7; Wed, 26 Aug
- 2026 21:22:37 +0000
-Received: from CH3PR11MB435924.namprd11.prod.outlook.com
- ([fe80::1696:c90e:60af:a0cd]) by CH3PR11MB435924.namprd11.prod.outlook.com
- ([fe80::1696:c90e:60af:a0cd%6]) with mapi id 15.21.0360.008; Wed, 26 Aug 2026
- 21:22:37 +0000
-Date: Wed, 26 Aug 2026 14:22:30 -0700
-From: Peter Fang <peter.fang@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-CC: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
-	Ackerley Tng <ackerleytng@google.com>, Binbin Wu <binbin.wu@linux.intel.com>,
-	Chao Gao <chao.gao@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>, "Dave
- Hansen" <dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>,
-	Ira Weiny <ira.weiny@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>, <linux-kselftest@vger.kernel.org>, "Paolo
- Bonzini" <pbonzini@redhat.com>, "Pratik R. Sampat"
-	<pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang
-	<runanwang@google.com>, Ryan Afranji <afranji@google.com>, Sagi Shahar
-	<sagis@google.com>, Sean Christopherson <seanjc@google.com>, Shuah Khan
-	<shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds
-	<jmcrey@google.com>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <x86@kernel.org>
-Subject: Re: [PATCH v14 15/22] KVM: selftests: Call KVM_TDX_INIT_VCPU when
- creating a new TDX vcpu
-Message-ID: <20260826212230.GA33657@pedri>
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-15-15ad654a50db@google.com>
- <31ddbd64-eeb4-4008-87fb-ff57de93635d@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <31ddbd64-eeb4-4008-87fb-ff57de93635d@intel.com>
-X-ClientProxiedBy: BY5PR04CA0026.namprd04.prod.outlook.com
- (2603:10b6:a03:1d0::36) To CH3PR11MB435924.namprd11.prod.outlook.com
- (2603:10b6:610:34a::8)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C4Up/CVl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C25441F00A3A;
+	Wed, 26 Aug 2026 21:31:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787779876;
+	bh=OrMsW8eueiCbjss+pG/bZa/tlsUCWmmsTGTCkkxbqIo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=C4Up/CVl8xyFYs9YBeRM+OW5miLSrx871fX0rbyXXFEP73yucTIjCiGuSY9WsGrEz
+	 veJoHNIugHm0p7gvoQFabuD7aw/MhZxiejVo07qBs57idx224jfl2ec0KwOFYaM98s
+	 g5oaFAsOGn9NV/WBMBUfvq//IrjhO0t/PAmcOxDifdwOi7aAUxWPvp38ZSI+Pdpf2+
+	 luxsSTShQo7uDDoUez0t6va8ZuZedHkHqtUjp/J/g6HKs+xAQJq4x8q82UqWDZYk96
+	 +LWYz/BujDhuf/Q5N1r0ROt8NTMRUlJFLgCp3rNygNuiXPMiR5sp3qTJWvHK+Tx9VA
+	 NkM56NaCtJcvg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 3/4] KVM: x86/mmu: Bug the VM if KVM calcs a CPU role
+ with EFER.LMA=1 && CR4.PAE=0
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260826211844.884951-4-seanjc@google.com>
+References: <20260826211844.884951-1-seanjc@google.com>
+ <20260826211844.884951-4-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 26 Aug 2026 21:31:15 +0000
+Message-Id: <20260826213115.C25441F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB435924:EE_|PH7PR11MB6796:EE_
-X-MS-Office365-Filtering-Correlation-Id: 32a0fddc-9369-4680-daee-08df03b826dd
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|22082099003|18002099003|10067099003|11063799006|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info: PO9Ehqm/RIX+St+P1nHHOJXS99jbF1lz+1JQHglnKxO0x7dnp3Uzv2uckBYz2i09fRBdcTWTj8NQIDYUSJVWhH5TVCXnK549d/PbVjtyi0d6xY9zSTls9cNL6UtVyaKXuGHlH3lb5tgEJdpshLodw5Ub4dveHdjyP5/MR7vRRRltWJUKj7HQfUUt7ldDOK/YJ3t+JkTmPfGYi/P4k1OKsWLhLzZg/5LvuT7AMquVkdlDhxBO0yt2fVnnJEWKVZRwZCm6xFyHJOmTRLM6e1jlkpqhTqazwC3OT+edDljli53+PFnptsBaoPYRG9cY9xxcS9PA4plaCT15ecO78dChHj9aepLZ/lz7Npf0lWoIr0LRSDxID6je1H5PuqAMJR8XGwMlVYuKBqpXLj94Wyx/hBMHXhBVWFkrJc9bJdZukUgocmWhlaE0+RuSHdpMtwuH0Zk/8dfO3jy0qtbKvpuAE2wUuOtCOeZAED4MT7CLEQkJZQ20oGmHAH1N5d97CK2gK91dzl5v806Df6KQos+9btXaqBQLhcPfD7C8dNNO/ZLkjXT0a2rmGDRyGVVeeEBaae+yCvHsG7/zvbJCGejSP8cpQjPxyKBue656VqijuO+Ng8dC0luRgDrScuK4YaC54i1sm49/6HUhOBhs65eLvrN+nM45SHHRKumB1WoUj10=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB435924.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(22082099003)(18002099003)(10067099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?unWx4ojFhTGWhty9uAlZMtZ0BVcJovBMG82+otsi0l8XNzZ0GahF2drfOvwi?=
- =?us-ascii?Q?A/wxkxf2owwEEVb1a6yzoF2Gg/I1iW6kX1KCCWfnHo3aykgg934E0RBO4cNn?=
- =?us-ascii?Q?0USxMiE4k40ycqvfn+nGN2owJ7veA5Dz+4eTwPQVMpA+84jv3iGESqesrG5+?=
- =?us-ascii?Q?RzQMEeA8hN9nHC4K5GnqnWMK068v2VjDOS0ROvqILIHuSUpyA9pe5moOhOXK?=
- =?us-ascii?Q?Jj27KWk0GeYz5zIC7BlyAB9Y/KfyVaffG8PQJbdDXoCLva7qreHHrF28DLpj?=
- =?us-ascii?Q?KPGF7x+QS69eRTJVF1XW/QUarRgtdKy4tRSNBSYSrDtoUBlM/ZtLzDcmgnEM?=
- =?us-ascii?Q?cJietiGE4gPb7EKjPUN5gwqZpX2la0j+gyqKCukYXgjZ1hOYLf76QYjw4Rw1?=
- =?us-ascii?Q?PyzjsbgTkCteq/q1NCtXKcPzBQnfbDa5LiiKk4osPlZbo8QCb+n2vevl+osv?=
- =?us-ascii?Q?pcPibs+33zlfALuwmQnlZH9e4ZW4vZvgEOKcdSGW0Y9NgKcrMdNksAXdmnwE?=
- =?us-ascii?Q?k3CsqAjdlX4L8eHQIo3lwsWizSiiU91Zw0cRmJM06YH7AZ4HFwaKeEd7ZjbG?=
- =?us-ascii?Q?wqXAwMF8Bvv+UkqnP/HBE9ZfWR87/wndbC3d0ovZVsx2Su3Uf0D5/5IqPPOw?=
- =?us-ascii?Q?LoYrtRqzvas6irdGJCj3efyO1GcKWK0/5U/nlqW7vg9MXbmsyzjD/B4ktusf?=
- =?us-ascii?Q?eDbZQvMwapG3XPCryf03XAqM5SnKpbofIhG2BLqfBgY+Kcqd0+Z5nI1LEZBG?=
- =?us-ascii?Q?44HaPNBcg/Td1nIC9M4j2EZl06UY0MZVAuVY9aZduFB1dEmo97t1tPZl2WcY?=
- =?us-ascii?Q?u1dbcbylolUqH3qiyzlSEfG/g8sXK0jUryz3hQDu3yZiNtwXTBaSnq/N8rP/?=
- =?us-ascii?Q?+ryA93EiOmP2OjD84Al54N1WULOMCpraa3qY0p2a9KcXgjqNtzD/Cbi0TUYI?=
- =?us-ascii?Q?NXW59R+aT15+fVVaHDbI8JjlbWYNCKaYJoBE9Tg+UTVUaNply/qHgv98+QCR?=
- =?us-ascii?Q?JCGqIzn9BIboKoRiDZV5Scl/BveVw2eXUB5/EzFb7qVsxCrmDQHOKvfg3dGI?=
- =?us-ascii?Q?m78rO1ps2lb6UtJ2ZzxljOOu7iwrPArrEcWMDZ+FelYfJP649I3a3qTDomRw?=
- =?us-ascii?Q?yyQgb7B0h60MGIeSu3x4kTYhVNNyXwTzMJUm4VDmooMtRNvdo1Cfk3C8jucS?=
- =?us-ascii?Q?+dFVDcWsSQq1xXp+dOnixLAKbYAT+9juO0P8E8qaxXZo6L0rvQiG1vZbgHXP?=
- =?us-ascii?Q?h9QR9tugOYNvZSqIoSYMLmTZYk9mSG+ZJ3WTloe/rcEde0NdxpLcDtKPwae+?=
- =?us-ascii?Q?1H2wvxmwVsj0ZALZ4Z3Ynjbfj3iWNKQFqtiR9JT/l57Td2mS3ACaXG4TRTkg?=
- =?us-ascii?Q?sU8LqYzd91A81AO4j6ASd0FqiVkSpPMNK1O6lAl4pVFk7hUGBcpA4EQlDyHI?=
- =?us-ascii?Q?XBAtasWVy4mPouRXf7sDbnnZ0kFOc2m/BgiXhbU+XsQi54Sgt/rd9Dwih6oY?=
- =?us-ascii?Q?SmbPDJPo2iEq/zNm3qXbxEnmug+D5jVIRzMJa1HsIGaizeys14+jI3M0tW2J?=
- =?us-ascii?Q?L+KSvvyrQHVQ8lxa43VHY3lRH7zBLflECHzovmC0jVPci5weAhov/BpFUO2L?=
- =?us-ascii?Q?qoQviLpxaHY6E1ci+2obQ9TR8KpnwA2lCu1klDRIdPDN/2ld2xXj+9NzfEj2?=
- =?us-ascii?Q?zWyjY9rFY0m2z4qQ1MuDt/eXaJ/MTlkVTvPex0Qtn8Dz2+ixL3A27UtEUeV8?=
- =?us-ascii?Q?+rFv8dkYnA=3D=3D?=
-X-Exchange-RoutingPolicyChecked: rdg2K0rShaLIHQ0aPKiUal3q7xppJop/yyn5unYxjK9MQg2KcmJKDqUiadkJ844Agbuj3SDhLPiYI50PoLc62GqBJGPSbXkZvOup0i7XLqzHNn9stWiv7g+bqTbwXeDXVLx5i5Gg7OyS3mMl7iY3GQZ/YJernfsEtgtL0d5h6QZpku+LbxqC9nOT9KIr49VLYrDedGm28+A8ejhbFrJtrl5tEVQCiju/SqcrVbfOYBFCLBtJtSw7RjNL/9oC7VnXPOLgaMxaBVz8lks8ocKO9dVAgB6j42o/ub3byFlaEg/UUhQbxLRxzFkcucuTsuu0YjY1H2dnC7xWCS7oTXfqww==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 32a0fddc-9369-4680-daee-08df03b826dd
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB435924.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 21:22:37.1857
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +5SuIoT1pmGgTz98/HcgtbthNRYmuf+qITOBzz8o0uSk6JVX0zVfbO/xujaUe+5945qbE5BYR260l13PN/YRDQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6796
-X-OriginatorOrg: intel.com
 
-On Fri, Aug 14, 2026 at 04:32:59PM +0800, Xiaoyao Li wrote:
-> >   	}								\
-> >   })
-> > +#define __tdx_vcpu_ioctl(vcpu, cmd, _flags, arg)			\
-> > +({									\
-> > +	union {								\
-> > +		struct kvm_tdx_cmd c;					\
-> > +		unsigned long raw;					\
-> > +	} tdx_cmd = { .c = {						\
-> > +		.id = (cmd),						\
-> > +		.flags = (u32)(_flags),					\
-> > +		.data = (u64)(arg),					\
-> > +	} };								\
-> > +									\
-> > +	__vcpu_ioctl(vcpu, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd.raw);	\
-> > +})
-> > +
-> > +#define tdx_vcpu_ioctl(vcpu, cmd, flags, arg)				\
-> > +({									\
-> > +	int ret = __tdx_vcpu_ioctl(vcpu, cmd, flags, arg);		\
-> > +	TEST_ASSERT(!ret, "%s failed, errno: %d (%s)",			\
-> > +		     #cmd, errno, strerror(errno));			\
-> > +})
-> 
-> It doesn't handle the tdx_cmd.c.hw_error for vcpu ioctl, but handle it for
-> vm ioctl, which looks inconsistent. This at least deserves a justification
-> in the changelog.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Modifying a const-qualified structure field via a pointer cast inv=
+okes Undefined Behavior, allowing the compiler to optimize out the mitigati=
+on and leaving KVM vulnerable to processing corrupted MMU states.
+--
 
-Looks like this assymetry came from a v13 comment [1].
+commit 398614ee03891692ae2eecdde307edc043d7403e
+Author: Sean Christopherson <seanjc@google.com>
 
-tdx_vcpu_ioctl() actually doesn't write back hw_error to userspace like
-tdx_vm_ioctl() does, so hw_error is vCPU-scoped only right now. This is
-a bit subtle so probably deserves to be called out.
+KVM: x86/mmu: Bug the VM if KVM calcs a CPU role with EFER.LMA=3D1 && CR4.P=
+AE=3D0
 
-[1] https://lore.kernel.org/all/bc8b458e-7893-4ad4-89a7-44568c227d32@linux.intel.com/
+This commit attempts to mitigate invalid MMU roles by bugging the VM and
+clearing EFER.LMA if long mode is active without PAE paging enabled.
 
-> 
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index 064ecc33b9267..81c30e2c74f3c 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -5910,6 +5910,9 @@ static union kvm_cpu_role kvm_calc_cpu_role(struct =
+kvm_vcpu *vcpu,
+>  		return role;
+>  	}
+> =20
+> +	if (KVM_BUG_ON(____is_efer_lma(regs) && !____is_cr4_pae(regs), vcpu->kv=
+m))
+> +		*(u64 *)&regs->efer &=3D ~EFER_LMA;
+
+[Severity: High]
+Does casting away the const qualifier and modifying regs->efer here invoke
+undefined behavior?
+
+The regs pointer points to a struct kvm_mmu_role_regs, which defines the
+efer field as const:
+
+struct kvm_mmu_role_regs {
+	const unsigned long cr0;
+	const unsigned long cr4;
+	const u64 efer;
+};
+
+Modifying a const-qualified object invokes undefined behavior per C11 6.7.3=
+p6.
+Because the regs structure is typically allocated locally on the stack, for
+example via vcpu_to_role_regs, and passed to kvm_calc_cpu_role, modern
+compilers have full visibility into the object's definition and can cache t=
+he
+initial const value of regs.efer in a register.
+
+If the compiler evaluates subsequent checks like ____is_efer_lma(regs) using
+this cached value, could this completely bypass the sanitization?=20
+
+If an untrusted guest attempts to set its vCPU state with EFER.LMA=3D1 but
+CR4.PAE=3D0, this bypass could cause KVM to compute a corrupted MMU role, s=
+uch
+as configuring 64-bit levels but 32-bit PTE sizes, which then escapes into
+the MMU configuration.
+
+While KVM_BUG_ON flags the VM as bugged, the function continues executing
+with the corrupted role, potentially leading to out-of-bounds accesses befo=
+re
+the VM is fully halted.
+
+This issue defeats the purpose of the security mitigation and is not fixed =
+by
+the subsequent commit "KVM: x86/mmu: Convert MMU walker's bounds check from
+BUG_ON() to KVM_BUG_ON()".
+
+> +
+>  	role.base.efer_nx =3D ____is_efer_nx(regs);
+>  	role.base.cr0_wp =3D ____is_cr0_wp(regs);
+>  	role.base.cr4_smep =3D ____is_cr4_smep(regs);
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260826211844.8849=
+51-1-seanjc@google.com?part=3D3
