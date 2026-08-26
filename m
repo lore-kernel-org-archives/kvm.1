@@ -1,83 +1,82 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681403B3C01
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 20:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46063B059C
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 20:46:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787776645; cv=none; b=AQd3erbc1bn3iJzJqoqIhzxiKRB6Ed0eUF/Ta3D3DXBxukjEYzkuKRDI5aAGy67+jCZSNLNHaxIUTPUxy2eRuiNjeQyrUv8T4TSQAWqZA+wZ/yC9UpaN/YgUCT1/6VjC+xF6M3qRgOX474KdQlplDhYsZfex8kITVdvP3PtDm/A=
+	t=1787777221; cv=none; b=nV1thO2bPI3dQoQjWv0JaO6seX48pnkefoGR9y3b2gzvZrO8LggOcqKnWfK/1UDlmBJzvp6A4gZaxf3r6do7WhXnfk38b+E7b+dpCgWwaMj0HZLZqtIyOuO+x4v2ovxyKi2ZEw0XGzUx+Mi6jvirScFYNK0WJmQ/q2ZPFiR2pQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787776645; c=relaxed/simple;
-	bh=YBYb28lJo+o6sWxWkJtKpwJvq7b6MSb+mLIbxMdLQwU=;
+	s=arc-20240116; t=1787777221; c=relaxed/simple;
+	bh=8W+6nm1p92cnpBRrsTxdlV28jcWT30IBrjF2fyWBd6Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A3DIN36IUtWEjNBmCATZEuVd4pNaJpFbu9RJ6/m8MHeOa5Y7rNG/KUYYje89nFE0R6YjqLeulxyb0CxvtV+lQNUSEuHWaF4RApfZhCZYjXHcMgn3abtr6qLOm19E5hcFrQtSTBJ5awUzcI51xk3H5ae4F17nJAk7u7ILQp6XIVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UmTA5jyg; arc=none smtp.client-ip=209.85.214.182
+	 Content-Type:Content-Disposition:In-Reply-To; b=YDLgU5ktCilvcuTw4zpnfbzXVq+1acmvcjAW+3puZDPDS9vCPjDCznFvk04Wbo7BV0NF51jxCMaFnRMqRec886rCiPXywBN7YZYWrgqkJO4cpJDJN9HdEMplOlTt5ANY1lQOY4GXEE2/t9nNhWLs/tfuoDELIGnuQeSaVmcu5L8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h1IwEy9K; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UmTA5jyg"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2d3b440b97aso8565ad.1
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 13:37:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h1IwEy9K"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cede6375caso32605ad.0
+        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 13:46:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787776644; x=1788381444; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1787777219; x=1788382019; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=YBYb28lJo+o6sWxWkJtKpwJvq7b6MSb+mLIbxMdLQwU=;
-        b=UmTA5jygbGLVv57VODY1QuVX+2StkJ/6WCNDnZp6KmYiMa2eS2RXD8rr63itsLF/Rk
-         Frv2ILod8FyqJR0kNbMw9lAmU9zefHZm+gi9MSKLKUDXfW9AM2ss+LUqS0YzSdJFbIuf
-         jfSkJSmfeAvfky9JuBJuESoe9VeYya/TOUMn5EN+k6tab9Nnbo9n+4Lc4BMn5v8yavzF
-         HrX5jbrsXj9kC8RDiDM2BKLgfwETb1PWkIJ53c+hFMqCJpOO0RhfEWn6DsXMYxxr1lYD
-         y99fEPa/LKDfqCItGTiM0cnvAQ83ZwEADDBRtGM7qZXN4fPNz//ie5Uw37C3wP7uor3D
-         pyGg==
+        bh=tVpNY9AYqp69vRQbsKPPtkBeX+dXdwmZPC7oJAGryqk=;
+        b=h1IwEy9KHj2ttf2q59WCQjTF7hPp2fdzzlfDqr2QUzdy8oRMiZhRi+FNjYNkuD/Viu
+         v9tTCACVz8+QAldAvAEk8Z64K2Pwnl/3XV1NDgpzD2W2TcQPAQazhSLSeMD5KtH+4ZCb
+         Ql2toE9tL9pEM/CA3Qmbp59nBWfMGKaFtSpOQhaUkqc0WZP2LXNd5t0+vU2oINVGsRFG
+         tX61YjdR9Sd5ISQ7vBQlnGSmHY2E8v2YlwuLoFwCFSKmARML9Y1DELaVJh+quYdOZ2R4
+         GosCaS9nJtzvquAX+/rDBNqizdl0dV3BaqzCN64GyFOdpO5kHniTArpSP9z7H352uymL
+         lvZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787776644; x=1788381444;
+        d=1e100.net; s=20251104; t=1787777219; x=1788382019;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=YBYb28lJo+o6sWxWkJtKpwJvq7b6MSb+mLIbxMdLQwU=;
-        b=sVYTq98V4GiOn/F+meJ1VFhv75hNG+iVmjf3RvhpRU3ag/QoY0AOmlcKwIY/NL6AIu
-         jPdBNULO94Gfs6zGbOSHSxsCO4yqTGIVpNYPLlz1NzB+ijR+wcS5abUTD8kfiLpKPSzZ
-         E60xLhdUjgwvWezcMB/6ALsCjkbl6upvGzZEbNkgoQjb7rl4jHwc0V/en1+Nc5mKXIuY
-         bkKse9e1Kkg5tcaQLHmq3vzYMLT3TGsIArUpMIdBhNKQsh30ubN/A+rSyokCwGBVo0mb
-         iBE/xBVwEmVEpdkAc/JCg0D3HFhZJIFiCPdVfRRsZMhJ9vs94xJUZZMFknCvbsDeIHkP
-         qf6g==
-X-Forwarded-Encrypted: i=1; AHgh+RrWSjnAT/29USf2E3s8HF/PZgpOk8myZcVpkqYQyOLaskIUaXpCoiNY2OWGpAVtiTuI/Cw=@vger.kernel.org
-X-Gm-Message-State: AFuF++nf3I4I+DoXaoDsCXdq1NoKDnetVhHLv67wS2VdMojX1//uE4Ls
-	KXRqBACdjRR7AlHKSD08Hc3kvd39UZnD8ZgZTPoHKyenYlDINepsYMrWRC1VuRRNng==
-X-Gm-Gg: AR+sD13foEeKP6RELxmwO8/zJ8IaGSnAnZMFG/zS+ynAeZOMZa1gujNNa0n2wCxzgpd
-	MvBhmJ9foxV+33XChAWcnA/2u6uIyT21900Md5yKl8PLiXZMRVOGz1dNXj+3gzv5lqGJGtrvQnG
-	3TyVVo6j3WihbVt0szkTFdXHFFcJJR2Rk1dXznto1G47rF8BT6Phsk9sFRJu3qjdsC0XyggwJE4
-	YXfWg0eboFlnwl1pnGVGw2pNh324lkVOhCH7cIaos/+TWj8Vh5hjYAGzMlpz4R1ttHqXK8Ga77R
-	rY8Axm4s+ztm9PwwU5UZd5LgUlJG2VGETKiLejo/7TutNJ31p0c+p/m8f9495rzrPkkNt7w4iDg
-	WZwAlEpaPmkGiCwQ/jle4qwVABFzy6qeWZj70K2ESh2kPh9GyL8bT9M7AZn1T3FtK7MqyaB42Jd
-	MQLdExgcf0toM6xijaurs6YMvF+iEH5cefq1CfI/QKx/oeNYDbgjMFVCljGgfLci3j2eS+yFkKW
-	Cbjh6baHl0za2DeDuBiNLKsthGK8DnmJqd4F2bhiAhqho2z5N+AuY5KOpZT/rwtsV5CyA==
-X-Received: by 2002:a17:902:f545:b0:2d1:1d3d:97c3 with SMTP id d9443c01a7336-2d733662a3fmr39975ad.13.1787776643126;
-        Wed, 26 Aug 2026 13:37:23 -0700 (PDT)
+        bh=tVpNY9AYqp69vRQbsKPPtkBeX+dXdwmZPC7oJAGryqk=;
+        b=QOPJha6EYpN0muYRsuj7LIivY6xBGTyBginNyZyWDBaG1Ael0DcGDTdw9Vux/VSqm3
+         xt0Y94zB4FbXiYTEv51sOSyXvvGAlbomtn90FyWFey8TCCbgXvjDzUAO+vbqAV6i1srh
+         sbqQxRyZqtjcPnXQt2amcrG3o7WNTOpolRNrFwQgwROZ6Uc32kZRKL4CEejuv/hMtlTw
+         kxWH8dVHg1EWFb55OLmD21Q62tmXXXolwFkt+7q2hsTSX5RJCj2J8F05SvsEiyyvWSnR
+         wqG09ooFfI/JqTn3fAfj9/d3824rGVdryHC2T3KH5zGG13s1O5SRgW5ZCtIEzAQAuU5V
+         Vkcg==
+X-Forwarded-Encrypted: i=1; AHgh+RpBbQrMnOqihhIqjjqNUuqnmzNWh3mfM0G89apVdhhb4PAz+8tbhNzw/pxe+zRwSReJ0bk=@vger.kernel.org
+X-Gm-Message-State: AFuF++kURDQdwSXKqhQr8PbBi8AEQsVwEQZALnkCXcBK7BsFPgVq6XPa
+	7Gxq8mcoZbmbWvwLU/I2rWjnLz9WPNAwv+0UM5DKz7O9lETRbxxZWFqmRvAokCMGYw==
+X-Gm-Gg: AR+sD12BnmSxhY5qtNJ83UeT6NXlPvC0PtYTkW1xtfNMyxjp5Vn4nGRPj1qbY7zGEqe
+	fnlk+ygtbtEESkGDwbo9vW4NeNZ5gVur+qRG1/h9AY+Zqri44dHFKa4Zekc4amRGPsG4vH/IQFQ
+	SfkQq1Lk0rMI/Fgr8XJJMPEipG07Y0ot7XkRPpZGhMnvH1+YJDDNtyXlN4DBLzycR1MOOKQ3E8n
+	HionvPNqgkj5YPUN/1DrvQM+/5OdfqRMVXK0oPjZzMs3SgQ45sGWC+GqMb7CxwsC4EasZ8G5MZB
+	zhDFerKCx/z0vBamuRoWpm31VGOndk+p80XaQ3k4WppQT7I0LSBHYu18nH9md8MaVmgmLSMn0Fe
+	HC2axDeMc6Yu6gjIeyOXfqYRjtGEswDnjrR7O9DPX8A9IRHprC7Pd+YpcWjwgdeCxtdTRhrOGHn
+	oVDgI9H59D3t2FTvy/zAccfBHFn9098cs7fvINwNDnqQtFkrKic9DuGGeNyU4Lo5b4uT615FJTv
+	YESnfMu+pwXhwPk1rMpVPqQErZOpemlDx03uMQQabn2QJH9mo4CPHsS1tlyTmL13nq3iA==
+X-Received: by 2002:a17:902:e94f:b0:2d5:db3d:1a44 with SMTP id d9443c01a7336-2d73365a24amr151945ad.17.1787777213391;
+        Wed, 26 Aug 2026 13:46:53 -0700 (PDT)
 Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8535cf3e982sm1302094b3a.54.2026.08.26.13.37.21
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc1befce3b8sm1396240a12.5.2026.08.26.13.46.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2026 13:37:22 -0700 (PDT)
-Date: Wed, 26 Aug 2026 20:37:18 +0000
+        Wed, 26 Aug 2026 13:46:51 -0700 (PDT)
+Date: Wed, 26 Aug 2026 20:46:47 +0000
 From: Samiullah Khawaja <skhawaja@google.com>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: Baolu Lu <baolu.lu@linux.intel.com>, 
-	David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
-	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
 	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v4 08/18] iommu/vt-d: Clear unpreserved context entries
- during shutdown
-Message-ID: <ao9ONwUblaEqIpot@google.com>
+	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
+	Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v4 07/18] iommu/vt-d: Implement device and iommu
+ preserve/unpreserve ops
+Message-ID: <ao9PE9gdOh3DXNvP@google.com>
 References: <20260808022723.3893618-1-skhawaja@google.com>
- <20260808022723.3893618-9-skhawaja@google.com>
- <446684d8-44d0-47c5-9301-172c55efd950@linux.intel.com>
- <ao7ccBlV9_RXT6Fe@google.com>
+ <20260808022723.3893618-8-skhawaja@google.com>
+ <065b2be2-2ff1-42a0-99b1-ed81e783dca1@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -86,42 +85,140 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <ao7ccBlV9_RXT6Fe@google.com>
+In-Reply-To: <065b2be2-2ff1-42a0-99b1-ed81e783dca1@linux.intel.com>
 
-On Wed, Aug 26, 2026 at 12:30:40PM +0000, Pranjal Shrivastava wrote:
->On Wed, Aug 26, 2026 at 04:05:51PM +0800, Baolu Lu wrote:
->> On 8/8/26 10:27, Samiullah Khawaja wrote:
->> > During normal shutdown the iommu translation is disabled. Since the root
->> > table is preserved during live update, it needs to be cleaned up and the
->> > context entries of the unpreserved devices and root entries for the
->> > unpreserved context tables need to be cleared.
->>
->> The key assumption here seems to be that, during a live-update kexec,
->> most devices do not go through the normal iommu release path. Otherwise,
->> their context entries should already be torn down in the
->> iommu_release_device path.
->>
->> Could you please confirm this assumption and add some short note in the
->> comments or commit message?
->>
+On Wed, Aug 26, 2026 at 03:10:31PM +0800, Baolu Lu wrote:
+>On 8/8/26 10:27, Samiullah Khawaja wrote:
+>>Add implementation of the device and iommu presevation in a separate
+>>file. Also set the device and iommu preserve/unpreserve ops in the
+>>struct iommu_ops.
 >
->Yes, that's correct
+>This patch, on its own, does not fully implement the preserve operation.
+>At this point, the callback preserves all root/context entries used for
+>live update, but it does not yet clear non-preserved entries and
+>invalidate the related caches; that cleanup is supposed to be done in
+>the next patch.
 >
->During the normal shutdown paths (i.e power-off, normal reboot, & kexec),
->the kernel only calls device_shutdown(). This path bypasses driver
->unbinding, as a result, devres_release_all() and iommu_release_device()
->are never called. Those devres teardown paths are only triggered when a
->driver is explicitly unloaded / device is unplugged.
+>So I think we should either:
 >
->Since live-update piggybacks on the kexec/shutdown path the unpreserved
->devices never have their context entries naturally torn down by the core
->driver's devres model, necessitating this explicit cleanup.
+>- add a brief note here to make this dependency explicit, or
+>- merge these two patches into a single patch for completeness.
 >
->I think we can add a line in the commit msg for this because comments
->might create confusion if similar comments don't exist in other drivers
->performing Live Update. What do you think, Sami?
+>?
 
-Agreed. I am going to add it both places.
+That is a good point. I kept the cleanup patch separate as it has to do
+with shutdown and basically getting ready to go into kexec. This patch
+mostly focuses on the "preservation of the memory" being used by various
+IOMMU data structures.
+
+But I agree, we should add a note about the cleanup here. I will do that
+in the next revision.
+>
+>>
+>>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>>---
+
+[snip]
+
+>>+#else
+>>+static inline int intel_iommu_preserve_device(struct device *dev,
+>>+					      struct iommu_device_ser *device_ser)
+>>+{
+>>+	return -EOPNOTSUPP;
+>>+}
+>>+
+>>+static inline void intel_iommu_unpreserve_device(struct device *dev,
+>>+						 struct iommu_device_ser *device_ser)
+>>+{
+>>+}
+>>+
+>>+static inline int intel_iommu_preserve(struct iommu_device *iommu,
+>>+				       struct iommu_hw_ser *iommu_ser)
+>>+{
+>>+	return -EOPNOTSUPP;
+>>+}
+>>+
+>>+static inline void intel_iommu_unpreserve(struct iommu_device *iommu,
+>>+					  struct iommu_hw_ser *iommu_ser)
+>>+{
+>>+}
+>>+#endif
+>
+>I believe the #else ... #endif stubs are unnecessary and can be removed.
+>
+>Specially iommu core checks driver support via callback pointer
+>presence:
+>
+>        if (!iommu->iommu_dev->ops->preserve_device ||
+>            !iommu->iommu_dev->ops->unpreserve_device ||
+>            !iommu->iommu_dev->ops->preserve ||
+>            !iommu->iommu_dev->ops->unpreserve)
+>                return -EOPNOTSUPP
+>
+>So when CONFIG_IOMMU_LIVEUPDATE is disabled, simply not wiring these
+>callbacks is sufficient.
+
+Agreed. Will remove these.
+>
+>>+
+>>  #ifdef CONFIG_INTEL_IOMMU_SVM
+>>  void intel_svm_check(struct intel_iommu *iommu);
+>>  struct iommu_domain *intel_svm_domain_alloc(struct device *dev,
+>>+
+
+[snip]
+
+>>+/**
+>>+ * intel_iommu_unpreserve_device() - Intel IOMMU callback to unpreserve device state
+>>+ * @dev: Target device
+>>+ * @device_ser: Struct containing serialized device state
+>>+ */
+>>+void intel_iommu_unpreserve_device(struct device *dev,
+>>+				   struct iommu_device_ser *device_ser)
+>>+{
+>>+}
+>
+>Please add a comment explaining why this callback is intentionally
+>empty.
+
+Agreed. Will add in the next revision.
+>
+>>+
+>>+/**
+>>+ * intel_iommu_preserve() - Intel IOMMU callback to preserve hardware state
+>>+ * @iommu_dev: Generic IOMMU device handle
+>>+ * @ser: Struct to populate with serialized hardware state
+>>+ *
+>>+ * Return: 0 on success, or negative error code.
+>>+ */
+>>+int intel_iommu_preserve(struct iommu_device *iommu_dev,
+>>+			 struct iommu_hw_ser *ser)
+>>+{
+>>+	struct intel_iommu *iommu;
+>>+	int ret;
+>>+
+
+[snip]
+
+>>  /**
+>>   * struct iommu_hw_ser - Serialized state of an IOMMU instance
+>>   * @hdr: Common object header
+>>   * @token: Unique token for the IOMMU
+>>   * @type: IOMMU type serialized state belongs to
+>>+ * @intel: Intel specific serialization data
+>>   */
+>>  struct iommu_hw_ser {
+>>  	struct iommu_hdr_ser hdr;
+>>  	u64 token;
+>>  	u64 type;
+>>+	union {
+>>+		struct iommu_intel_ser intel;
+>>+	};
+>>  } __packed;
+>>  /**
 >
 >Thanks,
->Praan
+>baolu
+
+Thanks,
+Sami
