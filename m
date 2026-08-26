@@ -1,281 +1,194 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010006.outbound.protection.outlook.com [52.101.61.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF4D3CD8A9
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 23:05:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787785551; cv=none; b=hvVAVYL9qjM+t659oQxUCTcDagkyqWVbkPlUd2IO2DnIvftc++EEeaCcJ1vM5WBt10xbwK4Iz3g/U1VCz4T8NR4LI0mLsnn05T+B4DgLXB1RTRK2bYLZjeCDPIYMCKNEPb2JFwC6O6egODgLnVdj4sKAtyJpr7hyS+UMvoEE8IM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787785551; c=relaxed/simple;
-	bh=WOxm4BnKroJLVHQEy0jUAuIZbI6CudiTCoeDUy54eEU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=grGRMErK2aeiS7J8/y6b793rZ7UEXyEsAoNUlvALLI9vxZx0KhrZ5ctj6Fd10hVIQSM4CoE8K5TgA//6ZxHI8YindffsB7UUvA15wyYmYEmsGGntlAzFu1B5A9TSwksj3r1ZrVpTGYN/8G3tgwwYVBkLdVU4VkxvS/twSiDGsu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LyC50cDv; arc=none smtp.client-ip=209.85.216.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CDD03BBFBA;
+	Wed, 26 Aug 2026 23:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.6
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787785572; cv=fail; b=Q7zpF8ZbGgsHQ+VFpPk8TppWlEZA0wWzGrYa0wGMio24HTz7ExFYTYGhJzWe0wLko/LnmqdfBCTd7b7Gn0nJbS3ICH17uPfurWT8A9uzp6X7I5b8pwMdLk8lYpaVS+FojJ8ycIneTkyQCsJ/8LteoaytYbW/uNjgT7aoC7KHdZY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787785572; c=relaxed/simple;
+	bh=lgJB+QsdKyKnaxeZ5yZ9jqDc/9S35hCIqyq7zQcIt84=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=M1CHzLgp4fWdrkQ05NN4okM7tB7VGYxFyhS4+RFmATg5JIj+heeuE5Kr/dd2TwymjSL9yFGg/EuLiJwR8XZuqZkduvsBl/84/mCAIeDy27ZHg0MKgtmEK1U9faKoPu8ry+jlS05bZlUdsSYu+6BNyp6Z6j7rJJRFj9fzodk/bGQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=F7IhGDIE; arc=fail smtp.client-ip=52.101.61.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LyC50cDv"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e4758ab46so2704772a91.0
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 16:05:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787785539; x=1788390339; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=yj/O7Wk77mjZvk8cJgP4GcT6ON8eMhR5OMU86FoPEAo=;
-        b=LyC50cDvtuKuXisKbnG+LKNpg/bZJi4gZlXb+MPvqrY+/TpVCFB0ianflUvkydNOdw
-         Dl7NCSpXGuekqEXpyGmfqA7lgJ2Jf16LJUTDgf7c54gYxIzRXl0cDUnoPhU/2Bqjryjx
-         O1sNMDsoNrxm0h+rxT0n1cF5Jb93jNBNOdtErPf7ZVa3XxybXFO28/VKtXKCABeppXPb
-         KMmDZqTiJlUhwrWIb6PhWZk3zSxNHMl/avoWYASx+JRdV60NN2UKYCF4XG2WA9PV3C+r
-         SBdVrutmzk28nQJdv8QamlO3vi9C7MkxpbxeVlS+zntztOztFRrOFIwQ8Sy1slZTi+UV
-         CJdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787785539; x=1788390339;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yj/O7Wk77mjZvk8cJgP4GcT6ON8eMhR5OMU86FoPEAo=;
-        b=b/iO4G1lQy4qGuqR/Db4pPo9TdlkuZQpN5kMlYUYfFRaVBcDzfNrSKGnOiE3vHvIfW
-         PEGxP0wVwufv0sA50Hs8MUPrGBx4tXrH7/z2aQ5atxwBhYs02sTA4zNZIzIOQjCsD2Yd
-         U6lz0YLSG3JoXnHUxNWIXH+kkgyUXL7L211fl7qDsXW3jd0cPK4jnZ0B/FzK1QtgP3Zc
-         qz+1jIiuFEz4Jm6mMSgV7WFaG6eKnTbCxnCl3/Tvby0EAsLzdilPIgjTfwop3//iqcpS
-         zJRzgqO7O6qtkAYnwSqgS3fOD/ecg4+DV6XLrkz+qop8I3yPTuzEGRHk3BeDkHehKaZY
-         hwFw==
-X-Forwarded-Encrypted: i=1; AHgh+RrhUxKDvftHAGZKRcApfjdEv10ukoEXMMtd/r5FpY5chDFtxds+fOf3GpoQSm5MkiWASFg=@vger.kernel.org
-X-Gm-Message-State: AFuF++ly+hNCRyfBrf9u1A2HEbgdvFrTDmVaLk3Y0ArLS1zjpjgFBART
-	6YhQ2hW+Lylk3BhAqcDFhOztXWHQDkbfwIjWNd375EYc6rsJpMDRH/LvBbY/EnpIaw7x9XVWUS7
-	voqb73w==
-X-Received: from pgak6.prod.google.com ([2002:a05:6a02:6746:b0:cbe:9e80:c394])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:6cce:20b0:3d1:39e9:b267
- with SMTP id adf61e73a8af0-3d139e9b38amr1071680637.3.1787785539181; Wed, 26
- Aug 2026 16:05:39 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 26 Aug 2026 16:05:10 -0700
-In-Reply-To: <20260826230511.972824-1-seanjc@google.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="F7IhGDIE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Wd5fnwt/Ib8v8hmuUni1tutSEoZBgDVB+yQrAsh0BKUiTY3DByvGgpgvSpqi8Asa2Zf5Him3Qb574ZbpKVXsHDfjtI6EmwIb8yeG9yPcb+Pjc2GvP7W9x+8UK67j0xtC+cszXZTpekWC5o6IbcarqPt2Iftmn2mODBVXgn0Gj9BzH04BhbDg+Lc78TGMC3QcNjUkOkVAvYNjH9fiWOX1X1NezdHuBW8BNQ+JVJ9hMMu3adx1EBn1ORc8gHbkeey343CD/ZRLSRYlbXEBQEPHcVqdDS2cx6vwSR9ikzaByVV0AHqPH+taWKbvLDLUZTDHwTqB2/SDXqd3NoJ8GWK6yA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DrPvVN4A7VuHXVQYd1XJkp2aiKcqD7B7jIJWHCkZ3Ng=;
+ b=JVT8dnkJcqNifkfJZTixpvtfA7lyZuw4zVRqprYOz8xxsWiw8cs2Kf74fJpuFcvQLO+19lPSs2TsMyHYWOukqlGX2kS+KFHIPBYObXLqRVuLiGh5zljeaX25a4nsyJuskjHPVmrybafHrWvLXtJzlKRr1s/gQOqKC73vH5zWXTjLA7okvXXqHMTHxjyryjgSgh6NM8iaJd1QhxyuCW/vFTEOKTYJ6WVXxoXJKklIhpN9KMU3KVBq0JFmyLVi0DrJ3dXb9vDzpBUcyJ5h6avrftDjt1rOksUO7UI+zNVnlNibax4p2EbReHS+X2ihOtjfaeOXTI5RXjW8ufoe24jzLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
+ is 149.199.90.133) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
+ dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DrPvVN4A7VuHXVQYd1XJkp2aiKcqD7B7jIJWHCkZ3Ng=;
+ b=F7IhGDIEGe5VCkAxcpsyKJqgDYMLLPyEZXJshEufJhFj+GM8Su5AheRTH6sACzj0UfhzGZwUzMXjuu87+pbtgEzbTY/losvPdwztDYS4fZqmBWuazIUn/K9m79yZHIcPSRwYg4Tk8babnDUKrtbTs0mo+7vcDvOFTyGl3FC6zLA=
+Received: from BL1PR13CA0235.namprd13.prod.outlook.com (2603:10b6:208:2bf::30)
+ by MW3PR12MB4393.namprd12.prod.outlook.com (2603:10b6:303:2c::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.21; Wed, 26 Aug
+ 2026 23:06:06 +0000
+Received: from BN3PEPF00022BC6.namprd05.prod.outlook.com
+ (2603:10b6:208:2bf:cafe::9f) by BL1PR13CA0235.outlook.office365.com
+ (2603:10b6:208:2bf::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.7 via Frontend Transport; Wed, 26
+ Aug 2026 23:06:06 +0000
+X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
+ 149.199.90.133) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=quarantine header.from=amd.com;
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ amd.com discourages use of 149.199.90.133 as permitted sender)
+Received: from satlexmb07.amd.com (149.199.90.133) by
+ BN3PEPF00022BC6.mail.protection.outlook.com (10.167.248.219) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.360.3 via Frontend Transport; Wed, 26 Aug 2026 23:06:06 +0000
+Received: from [10.236.30.85] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 26 Aug
+ 2026 18:06:05 -0500
+Message-ID: <f1d8833d-7c7c-473c-baff-62dd2fe54270@amd.com>
+Date: Wed, 26 Aug 2026 18:06:05 -0500
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260826230511.972824-1-seanjc@google.com>
-X-Mailer: git-send-email 2.55.0.887.g758fc8c411-goog
-Message-ID: <20260826230511.972824-20-seanjc@google.com>
-Subject: [PATCH 19/20] KVM: selftests: Automatically pick min_gpa for
- allocations based on region type
-From: Sean Christopherson <seanjc@google.com>
-To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
-	Huacai Chen <chenhuacai@kernel.org>, Anup Patel <anup@brainfault.org>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Atish Patra <atish.patra@linux.dev>, 
-	Alexandre Ghiti <alex@ghiti.fr>, David Hildenbrand <david@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, 
-	Ritesh Harjani <ritesh.list@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 04/10] cpu/bugs: Allow spectre_v2=ibrs on x86 vendors
+ other than Intel
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <x86@kernel.org>, Sean Christopherson
+	<seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, K Prateek Nayak
+	<kprateek.nayak@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, "Borislav
+ Petkov" <borislav.petkov@amd.com>, Borislav Petkov <bp@alien8.de>, Naveen Rao
+	<naveen.rao@amd.com>, David Kaplan <david.kaplan@amd.com>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <stable@kernel.org>
+References: <20260804235611.4053375-1-kim.phillips@amd.com>
+ <20260804235611.4053375-5-kim.phillips@amd.com>
+ <ga63o6nf7xebndlo66qqasjx7axpopyph7ilkwhvx3enfaqs4w@r4qfr6eo6kcw>
+Content-Language: en-US
+From: Kim Phillips <kim.phillips@amd.com>
+In-Reply-To: <ga63o6nf7xebndlo66qqasjx7axpopyph7ilkwhvx3enfaqs4w@r4qfr6eo6kcw>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF00022BC6:EE_|MW3PR12MB4393:EE_
+X-MS-Office365-Filtering-Correlation-Id: ff2b93cb-c947-4e7c-2071-08df03c69bd7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|36860700016|1800799024|7416014|23010399003|18002099003|11063799006|4143699003|3023799007|22082099003|10067099003|56012099006|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	jpKW6w/XEp5Xu9NduyREaT3dpYDKFz3kmHqjNHKecjIKp27b7A5sVFEvVJz5zheGHg2Wy7QN00EghHWJaN57Mva3OU6OkXsV9im2Lbannp0AgVDc7G3gZXRGtJcZGn+l5UATfqoZSGjWw3fIOVEy8DJJGOPVWxqM1E40qNdSu3qhG+85/GsATO9lTIQ/KqZx3CZqJ3iGZMayzt500Zt1b33KgQfZj4zTntnaIBJD/PequDF6CHvIAhMiEwYsIbgq7ymMNe08NS9RKPPGywlDp3BgcVfiTfLYVuXmlwnNgKoc8BSl4qipMwHuM6RvzuZ1/ZmRJOi/4KA2lfwfRjPErYX4gAcEGtcCzBimaOmkEa3q0dmfq/2eOYYRIOP7kIy1Z/5uxd1Wx6gq145XVyXyx5jIoyTGZ7QWe5NA540WaPJDgGe/xV5MRJyN9H4LQpcBQnUZzgZ4RdLbPF9TFaTvt4dCt5i++BDydJq3L5jdyS/J0lGdHRGc4AZeWjHBa8QKhxeq+q1cGLP6aS01XmY6tjh6M9H52HFFhLj334ZDjBqkuvP9OdSNMYvU9XPRqzguLz70uw4fbCWKBXbSHDG39/KP9zuKQGqfzamSU0jITS7uryX7DrBtrBZ8fE2R0z3T7+iOtB2IAO5jpfqHoQmMXFDJF6S9MUbrLWLYEVEUhm8BdJoScgWhbxpfsDR/j+3e0BbFw5xz44M4qP95cwse6Q==
+X-Forefront-Antispam-Report:
+	CIP:149.199.90.133;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:unknown-90-133.xilinx.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700016)(1800799024)(7416014)(23010399003)(18002099003)(11063799006)(4143699003)(3023799007)(22082099003)(10067099003)(56012099006)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	r1n0xUjvsBHpBtrGIsNrqWDct23onaHxMKqUB+8XQqpkZPrQ7DOtSvcGNyktbfPo79OBjVvOq5EZ8cnxcUuKT8rca3H+b4kLen5QmaagJU9HjHJZbH64Isd/wbkVo/ThuW7nE2Ocb/1WmckxWq5DIrLWn2Gs0ZIWh97CVmUlHGrknquo4pDFK1UwtOQ9DdTngC5z2JzBUJAlg6nPzCmNar6yDQsfO7dRy8xWlmGPIfIKn7xPsAZqv3Wagh7V6lJKG+cprGD0Z7oQrRJPHrvwTQnRNHv/O8kP/LegGqDojD2ZSYiEDAjmU+RlVfIhue0uU01/dqzzcOx/5f7bDwH2mdqkgNdBLvqxkNNFn9YUYpvzImRF+GwM7H9+EqC3aYnA8Jc5ce9lEQ4TfhEY5EObXIdR0lkpVodBNmbTOyG+yFbD/NmeR/aFJPZLgNrcvP1u
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 23:06:06.1154
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff2b93cb-c947-4e7c-2071-08df03c69bd7
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[149.199.90.133];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF00022BC6.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4393
 
-Automatically choose the minimum GPA for physical page allocations based on
-the region type instead of sprinkling the logic over various wrappers and
-tests.  All usage falls into three categories: (a) don't care, just use the
-bare minimum GPA, (b) page tables, use a slightly higher min to keep low
-memory available, (c) custom memslot, use the base of the memslot.  I.e.
-there isn't a strong need to allow completely custom minimums.
+On 8/18/26 8:17 PM, Pawan Gupta wrote:
+> On Tue, Aug 04, 2026 at 06:56:05PM -0500, Kim Phillips wrote:
+> ...
+>> @@ -2297,13 +2299,26 @@ static void __init spectre_v2_apply_mitigation(void)
+>>   	if (spectre_v2_enabled == SPECTRE_V2_EIBRS && unprivileged_ebpf_enabled())
+>>   		pr_err(SPECTRE_V2_EIBRS_EBPF_MSG);
+>>   
+>> -	if (spectre_v2_in_ibrs_mode(spectre_v2_enabled)) {
+>> -		if (boot_cpu_has(X86_FEATURE_AUTOIBRS)) {
+>> +	/*
+>> +	 * head_64.S preserves EFER.AUTOIBRS across boot, so a kexec from a
+>> +	 * kernel that ran in AutoIBRS mode carries the bit into the new kernel.
+>> +	 * Explicitly set or clear it to match the selected mitigation, regardless
+>> +	 * of which mode is in effect.  The boot CPU does this before
+>> +	 * init_real_mode() snapshots EFER for the AP trampoline, so APs inherit
+>> +	 * the correct value too.
+>> +	 */
+>> +	if (boot_cpu_has(X86_FEATURE_AUTOIBRS)) {
+>> +		if (spectre_v2_in_eibrs_mode(spectre_v2_enabled))
+>>   			msr_set_bit(MSR_EFER, _EFER_AUTOIBRS);
+>> -		} else {
+>> -			x86_spec_ctrl_base |= SPEC_CTRL_IBRS;
+>> -			update_spec_ctrl(x86_spec_ctrl_base);
+>> -		}
+>> +		else
+>> +			msr_clear_bit(MSR_EFER, _EFER_AUTOIBRS);
+> Clearing the old kernel state should be done well before the mitigation
+> selection starts, below already does it for the SPEC_CTRL MSR:
+>
+>    void __init cpu_select_mitigations(void)
+>    {
+>            /*
+>             * Read the SPEC_CTRL MSR to account for reserved bits which may
+>             * have unknown values. AMD64_LS_CFG MSR is cached in the early AMD
+>             * init code as it is not enumerated and depends on the family.
+>             */
+>            if (cpu_feature_enabled(X86_FEATURE_MSR_SPEC_CTRL)) {
+>                    rdmsrq(MSR_IA32_SPEC_CTRL, x86_spec_ctrl_base);
+>
+>                    /*
+>                     * Previously running kernel (kexec), may have some controls
+>                     * turned ON. Clear them and let the mitigations setup below
+>                     * rediscover them based on configuration.
+>                     */
+>                    x86_spec_ctrl_base &= ~SPEC_CTRL_MITIGATIONS_MASK;
+>            }
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- .../selftests/kvm/arm64/vgic_lpi_stress.c     | 11 ++----
- .../testing/selftests/kvm/include/kvm_util.h  | 12 +++---
- tools/testing/selftests/kvm/lib/kvm_util.c    | 38 ++++++++++++++++---
- .../testing/selftests/kvm/lib/x86/processor.c |  3 +-
- .../selftests/kvm/set_memory_region_test.c    |  2 +-
- .../x86/smaller_maxphyaddr_emulation_test.c   |  2 +-
- 6 files changed, 44 insertions(+), 24 deletions(-)
+Thanks, I've addressed this in v5.
 
-diff --git a/tools/testing/selftests/kvm/arm64/vgic_lpi_stress.c b/tools/testing/selftests/kvm/arm64/vgic_lpi_stress.c
-index a45c0849a47a..b4c651ea385d 100644
---- a/tools/testing/selftests/kvm/arm64/vgic_lpi_stress.c
-+++ b/tools/testing/selftests/kvm/arm64/vgic_lpi_stress.c
-@@ -191,28 +191,25 @@ static void setup_test_data(void)
- 	gpa_t cmdq_base;
- 
- 	test_data.device_table = vm_phy_pages_alloc(vm, pages_per_64k,
--						    gpa_base,
- 						    MEM_REGION_TEST_EXTRA);
- 
- 	test_data.collection_table = vm_phy_pages_alloc(vm, pages_per_64k,
--							gpa_base,
- 							MEM_REGION_TEST_EXTRA);
- 
--	cmdq_base = vm_phy_pages_alloc(vm, pages_per_64k, gpa_base,
--				       MEM_REGION_TEST_EXTRA);
-+	cmdq_base = vm_phy_pages_alloc(vm, pages_per_64k, MEM_REGION_TEST_EXTRA);
- 	virt_map(vm, cmdq_base, cmdq_base, pages_per_64k);
- 	test_data.cmdq_base = cmdq_base;
- 	test_data.cmdq_base_va = (void *)cmdq_base;
- 
- 	test_data.itt_tables = vm_phy_pages_alloc(vm, pages_per_64k * nr_devices,
--						  gpa_base, MEM_REGION_TEST_EXTRA);
-+						  MEM_REGION_TEST_EXTRA);
- 
- 	test_data.lpi_prop_table = vm_phy_pages_alloc(vm, pages_per_64k,
--						      gpa_base, MEM_REGION_TEST_EXTRA);
-+						      MEM_REGION_TEST_EXTRA);
- 	configure_lpis();
- 
- 	test_data.lpi_pend_tables = vm_phy_pages_alloc(vm, pages_per_64k * nr_cpus,
--						       gpa_base, MEM_REGION_TEST_EXTRA);
-+						       MEM_REGION_TEST_EXTRA);
- 
- 	sync_global_to_guest(vm, test_data);
- }
-diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-index a0cd1b6598d4..1264cd1a343a 100644
---- a/tools/testing/selftests/kvm/include/kvm_util.h
-+++ b/tools/testing/selftests/kvm/include/kvm_util.h
-@@ -1052,11 +1052,10 @@ const char *exit_reason_str(unsigned int exit_reason);
- 
- gpa_t ____vm_phy_pages_alloc(struct kvm_vm *vm, size_t nr_pages, gpa_t min_gpa,
- 			     u32 memslot, bool protected, bool naturally_aligned);
--gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t nr_pages, gpa_t min_gpa,
-+gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t nr_pages,
- 			   enum kvm_mem_region_type type, bool protected);
- 
- static inline gpa_t vm_phy_pages_alloc(struct kvm_vm *vm, size_t nr_pages,
--				       gpa_t min_gpa,
- 				       enum kvm_mem_region_type type)
- {
- 	/*
-@@ -1064,20 +1063,19 @@ static inline gpa_t vm_phy_pages_alloc(struct kvm_vm *vm, size_t nr_pages,
- 	 * protected memory, as the majority of memory for such VMs is
- 	 * protected, i.e. using shared memory is effectively opt-in.
- 	 */
--	return __vm_phy_pages_alloc(vm, nr_pages, min_gpa, type,
-+	return __vm_phy_pages_alloc(vm, nr_pages, type,
- 				    vm_arch_has_protected_memory(vm));
- }
- 
--static inline gpa_t vm_phy_page_alloc(struct kvm_vm *vm, gpa_t min_gpa,
-+static inline gpa_t vm_phy_page_alloc(struct kvm_vm *vm,
- 				      enum kvm_mem_region_type type)
- {
--	return vm_phy_pages_alloc(vm, 1, min_gpa, type);
-+	return vm_phy_pages_alloc(vm, 1, type);
- }
- 
- static inline gpa_t vm_alloc_page_table_pages(struct kvm_vm *vm, size_t nr_pages)
- {
--	return vm_phy_pages_alloc(vm, nr_pages, KVM_GUEST_PAGE_TABLE_MIN_PADDR,
--				  MEM_REGION_PT);
-+	return vm_phy_pages_alloc(vm, nr_pages, MEM_REGION_PT);
- }
- 
- static inline gpa_t vm_alloc_page_table(struct kvm_vm *vm)
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index e500d1799151..8b5b330a5889 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -1473,9 +1473,7 @@ static gva_t ____vm_alloc(struct kvm_vm *vm, size_t sz, gva_t min_gva,
- 	u64 pages = (sz >> vm->page_shift) + ((sz % vm->page_size) != 0);
- 
- 	virt_pgd_alloc(vm);
--	gpa_t gpa = __vm_phy_pages_alloc(vm, pages,
--					   KVM_UTIL_MIN_PFN * vm->page_size,
--					   type, protected);
-+	gpa_t gpa = __vm_phy_pages_alloc(vm, pages, type, protected);
- 
- 	/*
- 	 * Find an unused range of virtual page addresses of at least
-@@ -2087,11 +2085,39 @@ gpa_t ____vm_phy_pages_alloc(struct kvm_vm *vm, size_t nr_pages, gpa_t min_gpa,
- 	__builtin_unreachable();
- }
- 
--gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t nr_pages, gpa_t min_gpa,
-+gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t nr_pages,
- 			   enum kvm_mem_region_type type, bool protected)
- {
--	TEST_ASSERT(type < NR_MEM_REGIONS,
--		    "Invalid memory region type '%u'", type);
-+	struct userspace_mem_region *region = vm_get_mem_region(vm, type);
-+	gpa_t min_gpa;
-+
-+	TEST_ASSERT(region, "No region for type '%u', memslot '%u'",
-+		    type, vm->memslots[type]);
-+
-+	switch (type) {
-+	case MEM_REGION_CODE:
-+	case MEM_REGION_DATA:
-+	case MEM_REGION_TEST_DATA:
-+		/*
-+		 * If the region is backed by the default memslot (id=0), use
-+		 * selftests' hardcoded minimum PFN, otherwise use the base of
-+		 * the custom memory slot that backs the region.
-+		 */
-+		if (!vm->memslots[type])
-+			min_gpa = KVM_UTIL_MIN_PFN * vm->page_size;
-+		else
-+			min_gpa = region->region.guest_phys_addr;
-+		break;
-+	case MEM_REGION_PT:
-+		min_gpa = KVM_GUEST_PAGE_TABLE_MIN_PADDR;
-+		break;
-+	case MEM_REGION_TEST_EXTRA:
-+		min_gpa = region->region.guest_phys_addr;
-+		break;
-+	default:
-+		TEST_FAIL("Invalid memory region type '%u'", type);
-+		break;
-+	}
- 
- 	return ____vm_phy_pages_alloc(vm, nr_pages, min_gpa, vm->memslots[type],
- 				      protected, false);
-diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-index 39d9ca6ceb1d..479e9a481687 100644
---- a/tools/testing/selftests/kvm/lib/x86/processor.c
-+++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-@@ -1474,8 +1474,7 @@ void setup_smram(struct kvm_vm *vm, struct kvm_vcpu *vcpu, gpa_t smram_gpa,
- 	vm_override_mem_region(vm, MEM_REGION_TEST_EXTRA, VM_MEM_SRC_ANONYMOUS,
- 			       smram_gpa, SMRAM_MEMSLOT, SMRAM_PAGES);
- 
--	TEST_ASSERT(vm_phy_pages_alloc(vm, SMRAM_PAGES, smram_gpa,
--				       MEM_REGION_TEST_EXTRA) == smram_gpa,
-+	TEST_ASSERT(vm_phy_pages_alloc(vm, SMRAM_PAGES, MEM_REGION_TEST_EXTRA) == smram_gpa,
- 		    "Could not allocate guest physical addresses for SMRAM");
- 
- 	memset(addr_gpa2hva(vm, smram_gpa), 0x0, SMRAM_SIZE);
-diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/testing/selftests/kvm/set_memory_region_test.c
-index 160bbe3d7203..bfa5ac8ce029 100644
---- a/tools/testing/selftests/kvm/set_memory_region_test.c
-+++ b/tools/testing/selftests/kvm/set_memory_region_test.c
-@@ -124,7 +124,7 @@ static struct kvm_vm *spawn_vm(struct kvm_vcpu **vcpu, pthread_t *vcpu_thread,
- 	 * Allocate and map two pages so that the GPA accessed by guest_code()
- 	 * stays valid across the memslot move.
- 	 */
--	gpa = vm_phy_pages_alloc(vm, 2, MEM_REGION_GPA, MEM_REGION_TEST_EXTRA);
-+	gpa = vm_phy_pages_alloc(vm, 2, MEM_REGION_TEST_EXTRA);
- 	TEST_ASSERT(gpa == MEM_REGION_GPA, "Failed vm_phy_pages_alloc\n");
- 
- 	virt_map(vm, MEM_REGION_GPA, MEM_REGION_GPA, 2);
-diff --git a/tools/testing/selftests/kvm/x86/smaller_maxphyaddr_emulation_test.c b/tools/testing/selftests/kvm/x86/smaller_maxphyaddr_emulation_test.c
-index 4e125eb5e0cf..8d1822717abd 100644
---- a/tools/testing/selftests/kvm/x86/smaller_maxphyaddr_emulation_test.c
-+++ b/tools/testing/selftests/kvm/x86/smaller_maxphyaddr_emulation_test.c
-@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
- 			       MEM_REGION_SIZE / PAGE_SIZE);
- 
- 	gpa = vm_phy_pages_alloc(vm, MEM_REGION_SIZE / PAGE_SIZE,
--				 MEM_REGION_GPA, MEM_REGION_TEST_EXTRA);
-+				 MEM_REGION_TEST_EXTRA);
- 	TEST_ASSERT(gpa == MEM_REGION_GPA, "Failed vm_phy_pages_alloc");
- 	virt_map(vm, MEM_REGION_GVA, MEM_REGION_GPA, 1);
- 	hva = addr_gpa2hva(vm, MEM_REGION_GPA);
--- 
-2.55.0.887.g758fc8c411-goog
+>> +	}
+>> +
+>> +	if (spectre_v2_in_ibrs_mode(spectre_v2_enabled) &&
+>> +	    !(boot_cpu_has(X86_FEATURE_AUTOIBRS) &&
+>> +	      spectre_v2_in_eibrs_mode(spectre_v2_enabled))) {
+>> +		x86_spec_ctrl_base |= SPEC_CTRL_IBRS;
+>> +		update_spec_ctrl(x86_spec_ctrl_base);
+>>   	}
+> Nit, I find this a bit confusing. IIUC when AutoIBRS is supported, you want
+> SPEC_CTRL[IBRS] to be set when legacy IBRS mitigation is deployed. If you
+> move MSR write down after legacy IBRS mode is set(KERNEL_IBRS), you can do:
+>
+>            if (spectre_v2_in_ibrs_mode(spectre_v2_enabled)) {
+>                   if (boot_cpu_has(X86_FEATURE_AUTOIBRS) &&
+>                       !boot_cpu_has(X86_FEATURE_KERNEL_IBRS)) {    <---- just adding KERNEL_IBRS check to existing code
+>                            msr_set_bit(MSR_EFER, _EFER_AUTOIBRS);
+>                    } else {
+>                            x86_spec_ctrl_base |= SPEC_CTRL_IBRS;
+>                            update_spec_ctrl(x86_spec_ctrl_base);
+>                    }
+>            }
+>
+> Otherwise, a comment explaining the intent would be helpful.
+
+Right, also addressed in v5.
+
+Please take another look.
+
+Thanks,
+
+Kim
 
