@@ -1,106 +1,96 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076E543BDA0
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 18:44:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF457377A86;
+	Wed, 26 Aug 2026 19:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787769907; cv=none; b=Ap/ZrSM3ETcc8xgx+Oh5xGFJ9Y6c0RI8rDkUX3NptwJv8S3BmsHIRlaun8hv12klvw4wz4Z2g2bjPuSJc8+zuUP95DrsaVMBfUzikq/HrVTvKDScuxxmTSE5V5rhy2NvqcLGNT+o3J694mEEpmQXutOv+7wVzbeF2rlIiKkZZDw=
+	t=1787771445; cv=none; b=Z2m1Y2nBbvh18BWioUq8TeOOngFv89Ow1QfDGV5kGCe99toXvtkFHaHqgM6r7UygcR6VbETFz0/BkAiGHuI535bETfoOan7+EL1a3HIvkVK/ieXJOmUX3KGh/xidPAt+1tVt9YViXQyRWHSLqpU6eTYKLCiGA5ihFE0FiYDuPS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787769907; c=relaxed/simple;
-	bh=1b8Qr855KYUK73BAwj+crcS6Ne53L5zvJVEQY+vroN0=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=qOEhhOvL7KfSAD3OxysXwipbJl5cW7z329q2/ZE/kYfucfdP48Yp0t54m4u+8oOCkJznC+hrjqcOoHUmnYa29gwkGMoD+v4YByvUXpUggNBHfM++fhSwqt0+hRcPhW2OfjxHTl4XI9ibwBy1YRDOIOu1j0oLRvpJwCjAgT7E6/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P/uMkde3; arc=none smtp.client-ip=209.85.214.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787771445; c=relaxed/simple;
+	bh=3telYjFYiWNOnHqk6Dt2Y5vLbqkVmH61rJgzRfZORkE=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=GKHkH6qGrJySm4sHNL6tLdLT3CdX0WvzNXhu0ikHE3sXNnsCQgeGlBejVnm7j5YKZJd27tT+h9mZGDMGRmp5uECwPijyJj4G1e/4WbLsdHXqgw0pgBKSh2ADlaoXfHS+BmKFjpubggUu4JyigrCRjgoZKoMvrNz0Y66G+tI6Ago=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=c6vy+PSi; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P/uMkde3"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2d001671a54so25907075ad.2
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 11:44:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787769891; x=1788374691; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=loiXTTHQz/zpU95R8TVM392sAaOQqoIrCXBsU2v94TM=;
-        b=P/uMkde37bpsG2Yg3XbYKHdh41VtYUBlahR/9S6TXIlCLXlrxln+lnQh1aRAXX5H3p
-         yq7hTtbOqTFg4NToUq/rUb/0y9BKo3Uu9UYSd4ZHLv8HrgPAOKXNWUoSWunUu3uU2aUN
-         AqUebaC9i5zBM3QgHpq9DGrQ73UhDgi2ykLxUSHmk1a/WjELAyHhJgPlqFV/wkju3WfS
-         GLuChxI4eiZFxaHPvYo4QvAWnYbSEKAUrLFKmUNY5ZO/RCfR9sqwfHvAdtfcrjVGGAAW
-         HdcLWZaslYUfbAmwfA9Cg4tGhvVK0ZHxmNM2z6r9cogGg9VUP1ljrQpUdENxKqyMpyCn
-         RCLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787769891; x=1788374691;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=loiXTTHQz/zpU95R8TVM392sAaOQqoIrCXBsU2v94TM=;
-        b=SEIfv8GjEZbNzZI65KrhEtarymig6Xsqd8wqVYTxZS6alSmFbixXv57MDlYHkbO1nW
-         oD7c7NYT4SLJDK7d/P7RtMxeZ2/m1xmE+Q9bjP8pIVXhZ5j3Ykth2q9LkzAMD3pBzTlE
-         jnmIq3L9McLQmvUgYKrXHDR1XgI78kKY7tdu8ya3C8p3sXthAeGYknetcL8S14box7+T
-         FKt1aR3gf0xNCF67Ya+CBhfokUL77ngNXfGVn4JSDk6rv9KKKbzYF5nTcCGEM8NBu104
-         YO8cbQ8FRRsHK0i3A/n7vA8FVElWfpAyfoytbjkphsWAW+ZNXPoLol9YSR49Czx2Uuj6
-         pPuQ==
-X-Gm-Message-State: AFuF++maOwTaMZfdFCEITVLPo7Z5FrNvpvtoLdqXSWs1YUuXxBIeiGXF
-	uZswBUpjEW6Srj82klTGip3wNhN2ewZ0FIo7LDgqkSbDXZV0uAZZW9gZlK2wv5Ksc4pEbXH2KBw
-	BKWlAnA==
-X-Received: from plho15.prod.google.com ([2002:a17:903:23cf:b0:2cc:2c68:b71b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:40c9:b0:2ce:9c48:22d3
- with SMTP id d9443c01a7336-2d707af8432mr169786675ad.11.1787769891000; Wed, 26
- Aug 2026 11:44:51 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 26 Aug 2026 11:44:49 -0700
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="c6vy+PSi"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=3telYjFYiWNOnHqk6Dt2Y5vLbqkVmH61rJgzRfZORkE=; b=c6vy+PSit0j/le3s0QJFFYImMr
+	IHaddo0nuwaFMQ/MVxza04PgyCm9f0wR/uzkxodvR8a2Fj8SdTkJH4CkiG5KjCWySBoPoGg/YQpGv
+	7XsmN+r7L9z/BhTvpD9T5o42mHwxY2mDN5KDnJ9Tow7hwByKqmATZlWA3ak60eo6H3Go7fP+F3oEf
+	h5onVBx3nbtrWxIOEGzmbNXxvacoWAbeqG5yCr9ZtSKGa25ud2vHSUeeAKmZBuTfNkJBPpMGiQidY
+	+YhpZmPa1ZSobw6Mcq8O2ZVCbOySpe3kZTSvdS2WPrLr4HWhYRXGxTANNvurBMtC3ep+fvl1Etqc+
+	S+3Af6Tw==;
+Received: from [2a00:23ee:1948:28bd:e7b1:3e8e:1bc4:19da] (helo=ehlo.thunderbird.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1wzJ0m-00000006xg1-2wXV;
+	Wed, 26 Aug 2026 19:10:19 +0000
+Date: Wed, 26 Aug 2026 19:01:24 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: paulmck@kernel.org, "Paul E. McKenney" <paulmck@kernel.org>
+CC: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Clark Williams <clrkwllms@kernel.org>,
+ Simona Vetter <simona.vetter@ffwll.ch>, Jerome Glisse <jglisse@redhat.com>,
+ Christian Koenig <christian.koenig@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, kvm@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_mm/mmu=5Fnotifier=3A_Remove_non=5Fb?=
+ =?US-ASCII?Q?lock=5Fstart/end=28=29_from_notifier_invocation?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <98e123c9-3dc4-45fb-815b-881b3346741c@paulmck-laptop>
+References: <69567965-48fd-48c5-abb6-0699d7f5bd16@paulmck-laptop> <124af87fb49c267eeb26b8b4d952b9b1a5b3fb68.camel@infradead.org> <9427a8e0-3ba6-4f31-a35d-54429bd7e071@paulmck-laptop> <3d0463b6099d4fcde9a025a2f9e231d75303b61c.camel@infradead.org> <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop> <ao3z7Rtw2FROkVpy@google.com> <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop> <20260826073233.T-KtFXmj@linutronix.de> <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org> <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop> <98e123c9-3dc4-45fb-815b-881b3346741c@paulmck-laptop>
+Message-ID: <ACC45EB6-F881-4EE9-A9F8-D53A2B921FEE@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.887.g758fc8c411-goog
-Message-ID: <20260826184449.814130-1-seanjc@google.com>
-Subject: [PATCH] KVM: x86: Zero reserved synic flags when delivering message
- to avoid stack leak
-From: Sean Christopherson <seanjc@google.com>
-To: Vitaly Kuznetsov <vkuznets@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Stefan Teodorescu <fane@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-Ensure all reserved flags are zeroed when setting the msg_pending flag as
-part of SynIC message delivery, as setting only msg_pending can leak seven
-bits of kernel stack data to the guest.  E.g. gcc typically uses a
-bitwise-OR to set the msg_pending flag, without initializing the on-stack
-variable.
+On 26 August 2026 17:28:27 BST, "Paul E=2E McKenney" <paulmck@kernel=2Eorg>=
+ wrote:
+>On Wed, Aug 26, 2026 at 08:05:06AM -0700, Paul E=2E McKenney wrote:
+>> On Wed, Aug 26, 2026 at 08:38:27AM +0100, David Woodhouse wrote:
+>> > On Wed, 2026-08-26 at 09:32 +0200, Sebastian Andrzej Siewior wrote:
+>> > > On 2026-08-25 13:51:14 [-0700], Paul E=2E McKenney wrote:
+>> > > > Very good, preemption disabling it is!=C2=A0 It is quite possible=
+ that the
+>> > > > PREEMPT_RT guys will need something else, but one thing at a time=
+=2E
+>> > >=20
+>> > > This reminds me of classic RCU ;) It might work in this use case bu=
+t I
+>> > > am afraid that other users might come along where it actually hurts=
+=2E
+>> > > With PREEMPT LAZY the preemption within the read-section should
+>> > > hopefully be the exception=2E
+>> >=20
+>> > Given the way that PREEMPT_RT treats other locks like spinlocks and
+>> > rwlocks =E2=80=94 turning them into sleeping locks =E2=80=94 I suspec=
+t it makes most
+>> > sense, and is consistent, to also turn rcu_read_lock_atomic() and
+>> > synchronize_rcu_atomic() into plain rcu_read_lock() and
+>> > try_synchronize_srcu()+synchronize_scru_expedited()=2E
+>>=20
+>> That makes a lot of sense to me=2E
+>
+>Another option is to instead fall back to non-atomic SRCU=2E
 
-Precisely zero the flags, e.g. as opposed to zeroing the entire structure,
-to make it somewhat more obvious that the flags *need* to be zeroed.  E.g.
-it would be quite easy to misread the initial read of guest memory and
-think that zeroing the entire structure is completely superfluous.
-
-Fixes: 3a0e7731724f ("x86: kvm: hyperv: simplify SynIC message delivery")
-Cc: stable@vger.kernel.org
-Reported-by: Stefan Teodorescu <fane@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/hyperv.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index 604651cb2739..8d2669d8ef34 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -802,7 +802,9 @@ static int synic_deliver_msg(struct kvm_vcpu_hv_synic *synic, u32 sint,
- 		if (no_retry)
- 			return 0;
- 
-+		hv_hdr.message_flags.asu8 = 0;
- 		hv_hdr.message_flags.msg_pending = 1;
-+
- 		r = kvm_vcpu_write_guest_page(vcpu, msg_page_gfn,
- 					      &hv_hdr.message_flags,
- 					      msg_off +
-
-base-commit: 76671054f9a1ff6abb976583cd8da37650acdc97
--- 
-2.55.0.887.g758fc8c411-goog
+That's exactly what I thought I was suggesting; I think I left an 's' out =
+though :)
 
