@@ -1,59 +1,59 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010028.outbound.protection.outlook.com [52.101.46.28])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013035.outbound.protection.outlook.com [40.93.196.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E86379C37;
-	Wed, 26 Aug 2026 07:01:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADBC37F303;
+	Wed, 26 Aug 2026 07:01:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.35
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787727681; cv=fail; b=UyqcWVgjkBefJJ0nKB5Bs7VlVSDZ3UE9Hmeou69tlb5/GAoUNc9G2wTFC3pmGtzxMytou1QVIEp+XPrBrX5i2tQKqD2IdpxDB8tlY2ixCuy2eIMNXGT+R/CFVdx38h5pWFpMqaP8VH5dtnRMFjzq0txCDIyQuj9wyTyZV8/kz/I=
+	t=1787727703; cv=fail; b=cxtxMTe10HqUas0qrS5LbQgIEFucS8axo9vsVZZ8RWyODdCuxjw2a0oI57m6Fwit2YKeVzE9Yxp/9FgM1OKVSjAx3TSHFH3OgNNF6N+ZClg4Wcn3BNjor7XMSfB5yymz0TjYXExvSu9vY6lH1/sHM8M2xR0NABLemi4TFW2qCVY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787727681; c=relaxed/simple;
-	bh=U9x4GJ52maFAajDMp/1G9zNEFURDlly4TPboFhOM9xc=;
+	s=arc-20240116; t=1787727703; c=relaxed/simple;
+	bh=4dbwfgAhiAlBu7lft9Qm64mYUyGlGQ+IGkZLbS9SkwM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q71UQRGJw8ocfcVW4uhRgyzxtMxEIRuMk0b3KDaHk8660WI33JLcuJPfeEWSWFL7QB3vRv2kVYYBPnWZez4akQR0xbjonqzkx+YEy2M2a388Zb7wGCM8BzAGzF31idR6/W8FQTElF45XWCJP/w9VMxvYteMYPImsPgJd2UHpt3k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=FwI2hwR4; arc=fail smtp.client-ip=52.101.46.28
+	 MIME-Version:Content-Type; b=Z9RJCAdRotEn9aKoVn5dawJPbqyYidJCZbGBLPjEpT1HYt7/FEQEWb/Ci3ZzqWDznmyenhw+5MRQkOAZhAr7nYED9qjijcwFUbfy5BhwXrwxYKakW0DrCfPOcJADGPA4oWB0T0xWcOYBiD5/1StOkA59hfxPugnlJ/oo4EUsh6E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=BF0rG10O; arc=fail smtp.client-ip=40.93.196.35
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="FwI2hwR4"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="BF0rG10O"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=moIznvwFm5WAvvnUQnvk+BHgmwrHVdNJghYXr5E9zkccqUuobYWH07QFIRy2ag8/buv+o+qMylRnJk85K0wwO6t79s/m+/kvZjvI2jzYcRJyQJSNRPKZ5/8iyeiM53kmEO74B3tKJZMSPX7tPyfIdDneAf1fYEgp5th5Jl2A4NqJ3Q1cJ4fc16znQLS7H/4mE0ClVTcK/Tb3YEjzwJGMn7OWfv1R1Yj8wcoHvw4DWZ/uDI+0swjh+qi05ars/w6yE2EhmWg2ps15GbEnzTCKBOTRqgUA+ihAK/ZiOi727LOiRfsTDF6j2eIT76b24b2pd9YAqMkh1t2wD42wBM0/GA==
+ b=CpSgjk1BcBct4rQhFrv+Ub65YmJ65N17LocXXZO9j9Kcd0hBUq3bn7UaqzSbnr1dv2Ym3Vb+gVAJVPT2EZRq73rStaNBrq78WsBhBtQr6Ac9rHe2FyRRK7pYR8Q6BheQhoZ4I5CGuVlQgTM0eRlObKYaOvWLuQsaQLIoj25GtE/4+B0ev28DqkEFwbS6BmXfNT8a0PA6ZClrZcjGk36aFUpR0LuUPOA5HuIje5Buo+SAZLvnf/adhKbashtntbeG7lIPdtjf0nw/IMUXgC2RGf18l/SHPwIcD2XFvE8mfRGlFmJ8PjPBXJZ6T/u7urNY1LtwPRu26QWdMA2IQy/7Ig==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MQ67TuM1C21/3IbK0KQbyrHmJ72zJPw7opvNHDOvi5k=;
- b=UzQFxKxeMJRkZtyWFH66T58p01H5cP3QD6lnTpV50LcXFSz+UFZ5lrv6LDeDD87e8hcaAFnw9yGNDdmT9OjXJ7U5s7xwgDvrjYlTiKdsYNutJh0dHHJ58BbC9TYpUUSj5U9s9juuy0T5EjWgeEHig6w5CN2Yw4MBSxS3YmjCpeV+B1244d4Mc90F6abk0H6SKootl9y8qUH14WIHpS9IUX/DCMUDs+tE/O9qD5trBU6EN89y49lWvT6duCSnY7iYu0Fbl8ozuweFTQ39eUkLAykiPXjlXUg4BVXjOCnKzYJCldh8+YV+2pbBdnZOvHr5MmsOQRIki5q9OIXVnCsuWQ==
+ bh=MSEyORetFbV0PsoszlD00CJWOqUV4itvcCd+aaceyG0=;
+ b=P+hrlAIe2ymbiAee7P819J+wVV+tU76TNxelj7y7BOXe6IipNcMP+nNzoQoG0pnWqf4Q1cflR57T9F7KJJb9XaTO19wKns3eXJgX8E9PQCrVTrrsc8ye8++lUZ100ZVF50s8YpbOM+HZhqRyIZgpt4IPSVmpqLV+SWqME5Om8PQL6bt8KSo4UMw3+g8tfOiCRwJg565073TOK/wIscx6sSE9atrEKT6LsNGv2ibhkVrSPFmjcLUqTImLFMNF906XSyOwQ+ikC9AUtys6JkBNksCB6Rpio64ZWu+GpXa38Ffxw+Sboyy7ye/y8+z5US2I1HQ4SREp6Le/Uf1IT/oXYQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
  is 149.199.90.133) smtp.rcpttodomain=zytor.com smtp.mailfrom=amd.com;
  dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MQ67TuM1C21/3IbK0KQbyrHmJ72zJPw7opvNHDOvi5k=;
- b=FwI2hwR4iMLvsclfFL0a1acmO7A24p3P67PFckGZt+ccFjmpRotgaIO7BuoXaPZBMrz1WM5OrqK73YpFM8XQz1Vs570mmbWoADHb+97Culy8cZfNTB9Uhsgc8sl1sYWAFThwElypEGfNzMCzfhPeaI6+AvATC4EWlZ0jWD5c/Zc=
-Received: from BY1P220CA0040.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:59e::16)
- by SN7PR12MB6690.namprd12.prod.outlook.com (2603:10b6:806:272::6) with
+ bh=MSEyORetFbV0PsoszlD00CJWOqUV4itvcCd+aaceyG0=;
+ b=BF0rG10Omk+TgjVS/jIu+5WpK1g3+bEYjn76WvCwWsdH6UIhf431Y3Mlco0aT9Tb2wBPSAEq2gSGggpE+iQaSRLv1fbXSTmxnttM5zkL7zNKJk9dXohK7o1iYiRT2L2BCCe24Oewz8BDp+iUKfUpQSbcr7Lbus/AoIlyQYL/zyw=
+Received: from SJ2P220CA0006.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:5da::19)
+ by SJ5PPFC41ACEE7B.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::9a0) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.8; Wed, 26 Aug
- 2026 07:01:13 +0000
-Received: from CO1PEPF000066E8.namprd05.prod.outlook.com
- (2603:10b6:a03:59e:cafe::aa) by BY1P220CA0040.outlook.office365.com
- (2603:10b6:a03:59e::16) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 07:01:36 +0000
+Received: from CO1PEPF000066E7.namprd05.prod.outlook.com
+ (2603:10b6:a03:5da:cafe::6c) by SJ2P220CA0006.outlook.office365.com
+ (2603:10b6:a03:5da::19) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.10 via Frontend Transport; Wed,
- 26 Aug 2026 07:01:12 +0000
+ 26 Aug 2026 07:01:35 +0000
 X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
  149.199.90.133) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=fail action=quarantine header.from=amd.com;
 Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
  amd.com discourages use of 149.199.90.133 as permitted sender)
 Received: from satlexmb07.amd.com (149.199.90.133) by
- CO1PEPF000066E8.mail.protection.outlook.com (10.167.249.6) with Microsoft
+ CO1PEPF000066E7.mail.protection.outlook.com (10.167.249.9) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.3 via Frontend Transport; Wed, 26 Aug 2026 07:01:12 +0000
+ 15.21.360.3 via Frontend Transport; Wed, 26 Aug 2026 07:01:35 +0000
 Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 26 Aug
- 2026 02:01:05 -0500
+ 2026 02:01:30 -0500
 From: Sairaj Kodilkar <sarunkod@amd.com>
 To: "H. Peter Anvin" <hpa@zytor.com>, "Peter Zijlstra (Intel)"
 	<peterz@infradead.org>, Borislav Petkov <bp@alien8.de>, Dave Hansen
@@ -64,9 +64,9 @@ To: "H. Peter Anvin" <hpa@zytor.com>, "Peter Zijlstra (Intel)"
  Bizjak" <ubizjak@gmail.com>, <kvm@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <x86@kernel.org>
 CC: <vasant.hegde@amd.com>, <suravee.suthikulpanit@amd.com>
-Subject: [PATCH v3 1/2] x86/uaccess: Extend CMPXCHG user helpers to 128-bit operands
-Date: Wed, 26 Aug 2026 12:30:03 +0530
-Message-ID: <20260826070004.8100-2-sarunkod@amd.com>
+Subject: [PATCH v3 2/2] KVM: x86: Add support for cmpxchg16b emulation
+Date: Wed, 26 Aug 2026 12:30:04 +0530
+Message-ID: <20260826070004.8100-3-sarunkod@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260826070004.8100-1-sarunkod@amd.com>
 References: <20260826070004.8100-1-sarunkod@amd.com>
@@ -82,140 +82,176 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000066E8:EE_|SN7PR12MB6690:EE_
-X-MS-Office365-Filtering-Correlation-Id: ab5914a0-cc61-4fbf-af51-08df033fd093
+X-MS-TrafficTypeDiagnostic: CO1PEPF000066E7:EE_|SJ5PPFC41ACEE7B:EE_
+X-MS-Office365-Filtering-Correlation-Id: ca28e3df-9722-4db0-2cd2-08df033fde51
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|82310400026|36860700016|7416014|376014|10067099003|3023799007|22082099003|18002099003|11063799006|56012099006|921020;
+	BCL:0;ARA:13230040|82310400026|7416014|376014|1800799024|36860700016|23010399003|13003099007|921020|3023799007|56012099006|10067099003|11063799006|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	hrUloijk4C9EX2CVHlWquzU2yjEcmOOGBQKx8p9aDM/73bIblI4meg/SyuGcR6J/2JHrPF21J8jYbsJy1Wv+DWgU7zPfToIp0z40endq4MfHtR9X6QbJwXbteQqAI5RKRdmTz/iy5lJaxM9GQzF4O77woV0s4CyC4cKumudCSF42QHLK1LYhPsFX+cWgqOlH3CsheaOAytEBBopooHS3XOAm48cEWW5wVoA8IWwivGg0I6ngocE7tRsepOqYbqvqSeSG6M9ywsCbRbceuns5rh99cN7px9ThKZK4z4FX20SvkhwynxflM/yCzqbUB6iYz52ihXcLjP/fN5Oo0EKPSWEaYJbwlJZfemZYVFqB962z1cxCaJ8nm1He82osPiq+p5JFe3CiUO5QKBGepaxePShCH/oJFqUiiIgOFciril5Ug9O21YQfGhcHN0K8ku79FRhdDeKglZwzEVMVxIGi64DyUTCH4cZPl57O4EXM7+NPCYiVnsMtt3J2Btaxt1ekPxKfyHYez2Img3BHX2amT6IMTggwkzBKe6pw3gBPgCczwT5mqKQfkNnrACgYN9NgWp6m/sElJ0ed3tyEtztBwWYOV47W4hxcHiyJd5spVEZmgtxCBWjrvVxhgr/9gNFYhA6EPE7e+EMNbLxZvXh/KA+gCFX3b1r0fNsPEe4MG2/DRwesNJo3z/qS+mDRkszRk89WT9kcrMABjb0NTyqVe4NDl4VtuQarrhXCYZHW5MDCcMc6m93CYuLaMlNgNvpl
+	qr6bNgM/GEsYVjBdIg8I41TdlK1lLRdWrSIJEZdkLtL+xajkQokIVMOO7TPftAd472yh6B3Fosk/LtpxidfgmOaf9T68Utq4KwF1NHluLhY3RBA5fk7EQVe+U5hq0Ti74fZB821oRjv+fSB6ojQ6FN0RHWSDJ2c7lYgBPOY5KNyY2Z4+1t1YJ8UGLifTqW7LkCQSuAFSiP2jNL9qAxAPkBWGUEowoJR7EZLrybGmcSs0cFspnDw6ztdq9L3Upbr9KAMELHmwZeh63er3hZ6Y1fKXNAB/PiVBsyPx4dqLkODwlVNfQbPony8cuPJNgqgsA6A3g42dqZ+NCPCYDYrO5XTNLNVbZMRgFvFtCKn1EDBM1JEFs5yHFIr1KS1ynGQVs6lwJJbKiTMI+d9qWDm87pVoD+rFyhxC709rneGLvQZlcsl+jlsV0AkvsKrz5GdjvVEInQW/ChOG+mkEooHw3hhZiq0VoNWJk4f0trpp2jsTkVovvgmWMhNrFzPNPxcJHWHDAXruUK47s8yRZEasXUx6gFFyz2evGE0AVb3MqbrjHkdZguP/WP2OdSl7HahAhutlBwSXkYMW8hVh9CEROkYRZXy2qWAFJ2ybRnYa68vMZFleiLxJofVSVbLQ6mF8uiOSgYzLsfWRA8KOv9oPWzWNmPE11NDxGCJERCLa1FBU+DTODM+WFSPNz5o6QjiqfYaoWIWBEa9mLNTeHI+wOU5tf+sjosL5qZalTrOMGrZ6mb7Km/LnWTDtaDGMGE0Q
 X-Forefront-Antispam-Report:
-	CIP:149.199.90.133;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:unknown-90-133.xilinx.com;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(82310400026)(36860700016)(7416014)(376014)(10067099003)(3023799007)(22082099003)(18002099003)(11063799006)(56012099006)(921020);DIR:OUT;SFP:1101;
+	CIP:149.199.90.133;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:unknown-90-133.xilinx.com;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(1800799024)(36860700016)(23010399003)(13003099007)(921020)(3023799007)(56012099006)(10067099003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	pKEANe7C68pZeaUW0Wk3ro25m1T3FS8CihxQAPUYcXNKdfrZ3fnwj1jod/+bmSOAIwo04IWBSsQmw0/FXNk+6dEgxtc0zfR34tLaLyP6dr1p6Ahws0XakRUCvpAnvOEyXNoaHuuQOuqV3SfbtM43cFH0lqpuG5CrrQ2d/Vv4b13BT25hrM50QUMi3Gl3fId+/mXXf4SusXYMKRYnFQX/hLHZJkZ7179wTSq+mXDBlZxa1cDVcHGdnFGnjKDD2pyXiadbgaS3mpp/CDBAyHJsXEeJolO5RV6x3lMYIE2qyLLlZMWKomr4evAgXpEPHDtYxqRkaUPL+DvJO83x+1n7bltLGpq/s2Is2cfD975E21eO0YXEn/SMbBbBB13j7P1RmMpBUU0lvRPkcydFP7aOo0GIoi95VR/+G6JTahnpRWVzgvxzamAJkDqdpaj8x1UQ
+	BKsP6F2BWZurZcx8PbLy68d8zdH7n+nG2z8YEuL+pbGBuQVaOnRlOKNW6IlIuzarr/6X4CUNGGnCaOoI/7P8iNdzhladYswZaetxulX0ONCQ2k9KCwHgkT+tcxiZpxoB3s5kr0UNzCe0M4azCN7vo3Kc5VN99RSMmmmQgbGbcNKRDgmmGOtMnbPxktSiDLn4lvgyK/N1GREw7PK19+bdJfcDuID3w2BPyUVQZbWdXIncOrZ56fqTc14oEYmu8/H/cXpjY6h9UYmfKSzpsrCKWdtQeUEaZEY21F5YLFcITkczefueDNWcbmsakYRdl4PD7oKKBOeAM/nx4My09OQflomz0rInS2MnhQQsliNPGXkRWEjeCupZBHBGI3sIeebvVm2N7Cb+JSmWQ6QCenGpd4EL0mGbR6Kh8/8aKyMOIW1BBN0GVMOa1Ro6NuZGuUEn
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 07:01:12.5799
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 07:01:35.6844
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab5914a0-cc61-4fbf-af51-08df033fd093
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca28e3df-9722-4db0-2cd2-08df033fde51
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[149.199.90.133];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000066E8.namprd05.prod.outlook.com
+	CO1PEPF000066E7.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6690
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFC41ACEE7B
 
-Extend the existing user CMPXCHG helpers to support 16-byte operands on
-x86-64, using LOCK_PREFIX "cmpxchg16b".  This mirrors the existing
-__try_cmpxchg64_user_asm() / cmpxchg8b path provided for 32-bit kernels,
-where KVM needs an atomic compare-exchange wider than the generic
-cmpxchg helper can provide.
+AMD and Intel both provides support for 128 bit cmpxchg operands using
+cmpxchg8b/cmpxchg16b instructions (opcode 0FC7). However, kvm does not
+support emulating cmpxchg16b (i.e when destination memory is 128 bit and
+REX.W = 1) which causes emulation failure when QEMU guest performs a
+cmpxchg16b on a memory region setup as a IO.
 
-On 32-bit kernels, stub the helper to always return failure because cmpxchg16b
-requires 64-bit GPRs and is not available.
+This failure is seen on the AMD IOMMU driver which writes 256-bit device
+table entries with two 128-bit cmpxchg operations. For guests using
+hardware-accelerated vIOMMU, QEMU traps device table accesses to set up
+nested page tables (see [1]).  Without 128-bit cmpxchg emulation, KVM
+cannot handle these traps and DTE access emulation fails.
 
-KVM uses this to atomically emulate guest cmpxchg16b on guest RAM mapped
-via userspace addresses.
+Hence extend cmpxchg8b to perform cmpxchg16b when the destination memory
+is 128 bit.
+
+[1] https://github.com/AMDESE/qemu-iommu/blob/wip/for_iommufd_hw_queue-v8_amd_viommu_20260106/hw/i386/amd_viommu.c#L517
 
 Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
 ---
- arch/x86/include/asm/uaccess.h | 56 +++++++++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
+ arch/x86/kvm/emulate.c     | 50 ++++++++++++++++++++++++++------------
+ arch/x86/kvm/kvm_emulate.h |  6 +++++
+ arch/x86/kvm/x86.c         |  7 +++++-
+ 3 files changed, 46 insertions(+), 17 deletions(-)
 
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index 3a0dd3c2b233..39bcf327664e 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -407,6 +407,25 @@ do {									\
- 	if (unlikely(!success))						\
- 		*_old = __old;						\
- 	likely(success);					})
-+#else // !CONFIG_X86_32
-+#define __try_cmpxchg128_user_asm(_ptr, _pold, _new, label)	({	\
-+	bool success;							\
-+	__typeof__(_ptr) _old = (__typeof__(_ptr))(_pold);		\
-+	__typeof__(*(_ptr)) __old = *_old;				\
-+	__typeof__(*(_ptr)) __new = (_new);				\
-+	asm_goto_output("\n"						\
-+		     "1: " LOCK_PREFIX "cmpxchg16b %[ptr]\n"		\
-+		     _ASM_EXTABLE_UA(1b, %l[label])			\
-+		     : "=@ccz" (success),				\
-+		       "+A" (__old),					\
-+		       [ptr] "+m" (*_ptr)				\
-+		     : "b" ((u64)__new),				\
-+		       "c" ((u64)((u128)__new >> 64))			\
-+		     : "memory"						\
-+		     : label);						\
-+	if (unlikely(!success))						\
-+		*_old = __old;						\
-+	likely(success);					})
- #endif // CONFIG_X86_32
- #else  // !CONFIG_CC_HAS_ASM_GOTO_TIED_OUTPUT
- #define __try_cmpxchg_user_asm(itype, ltype, _ptr, _pold, _new, label)	({ \
-@@ -463,6 +482,30 @@ do {									\
- 	if (unlikely(!__result))					\
- 		*_old = __old;						\
- 	likely(__result);					})
-+#else //!CONFIG_X86_32
-+#define __try_cmpxchg128_user_asm(_ptr, _pold, _new, label)	({	\
-+	int __result;							\
-+	__typeof__(_ptr) _old = (__typeof__(_ptr))(_pold);		\
-+	__typeof__(*(_ptr)) __old = *_old;				\
-+	__typeof__(*(_ptr)) __new = (_new);				\
-+	asm volatile("\n"						\
-+		     "1: " LOCK_PREFIX "cmpxchg16b %[ptr]\n"		\
-+		     "mov $0, %[result]\n\t"				\
-+		     "setz %b[result]\n"				\
-+		     "2:\n"						\
-+		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
-+					   %[result])			\
-+		     : [result] "=q" (__result),			\
-+		       "+A" (__old),					\
-+		       [ptr] "+m" (*_ptr)				\
-+		     : "b" ((u64)__new),				\
-+		       "c" ((u64)((u128)__new >> 64))			\
-+		     : "memory", "cc");					\
-+	if (unlikely(__result < 0))					\
-+		goto label;						\
-+	if (unlikely(!__result))					\
-+		*_old = __old;						\
-+	likely(__result);					})
- #endif // CONFIG_X86_32
- #endif // CONFIG_CC_HAS_ASM_GOTO_TIED_OUTPUT
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index c1b21282187f..f38c4f1a99c3 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -2184,24 +2184,36 @@ static int em_call_near_abs(struct x86_emulate_ctxt *ctxt)
+ 	return rc;
+ }
  
-@@ -551,11 +594,18 @@ do {										\
- 
- extern void __try_cmpxchg_user_wrong_size(void);
- 
--#ifndef CONFIG_X86_32
-+#ifdef CONFIG_X86_32
-+/* Always fail on 32 bit arch as it do not support 128 cmpxchg (i.e. cmpxchg16b
-+ * instruction).
-+ */
-+#define __try_cmpxchg128_user_asm(_ptr, _pold, _new, label) ({ BUILD_BUG_ON(1); 0; })
-+#else
- #define __try_cmpxchg64_user_asm(_ptr, _oldp, _nval, _label)		\
- 	__try_cmpxchg_user_asm("q", "r", (_ptr), (_oldp), (_nval), _label)
++#define em_cmpxchg8b_16b(__c, rbits, mbits)\
++do {												\
++	u##mbits old = __c->dst.orig_val##mbits;						\
++												\
++	BUILD_BUG_ON(rbits * 2 != mbits);							\
++												\
++	if (((u##rbits) (old >> 0) != (u##rbits) reg_read(ctxt, VCPU_REGS_RAX)) ||		\
++	    ((u##rbits) (old >> rbits) != (u##rbits) reg_read(ctxt, VCPU_REGS_RDX))) {		\
++		*reg_write(ctxt, VCPU_REGS_RAX) = (u##rbits) (old >> 0);			\
++		*reg_write(ctxt, VCPU_REGS_RDX) = (u##rbits) (old >> rbits);			\
++		ctxt->eflags &= ~X86_EFLAGS_ZF;							\
++	} else {										\
++		ctxt->dst.val##mbits = ((u##mbits)reg_read(ctxt, VCPU_REGS_RCX) << rbits) |	\
++					(u##rbits) reg_read(ctxt, VCPU_REGS_RBX);		\
++												\
++		ctxt->eflags |= X86_EFLAGS_ZF;							\
++	}											\
++} while(0)
 +
- #endif
+ static int em_cmpxchg8b(struct x86_emulate_ctxt *ctxt)
+ {
+-	u64 old = ctxt->dst.orig_val64;
+-
+-	if (ctxt->dst.bytes == 16)
++	if (WARN_ON_ONCE(8 + !!(ctxt->rex_bits & REX_W) * 8 != ctxt->dst.bytes))
+ 		return X86EMUL_UNHANDLEABLE;
  
+-	if (((u32) (old >> 0) != (u32) reg_read(ctxt, VCPU_REGS_RAX)) ||
+-	    ((u32) (old >> 32) != (u32) reg_read(ctxt, VCPU_REGS_RDX))) {
+-		*reg_write(ctxt, VCPU_REGS_RAX) = (u32) (old >> 0);
+-		*reg_write(ctxt, VCPU_REGS_RDX) = (u32) (old >> 32);
+-		ctxt->eflags &= ~X86_EFLAGS_ZF;
+-	} else {
+-		ctxt->dst.val64 = ((u64)reg_read(ctxt, VCPU_REGS_RCX) << 32) |
+-			(u32) reg_read(ctxt, VCPU_REGS_RBX);
+-
+-		ctxt->eflags |= X86_EFLAGS_ZF;
+-	}
++	if (!(ctxt->rex_bits & REX_W))
++		em_cmpxchg8b_16b(ctxt, 32, 64);
++#ifdef CONFIG_X86_64
++	else
++		em_cmpxchg8b_16b(ctxt, 64, 128);
++#endif
+ 	return X86EMUL_CONTINUE;
+ }
+ 
+@@ -5414,8 +5426,14 @@ int x86_emulate_insn(struct x86_emulate_ctxt *ctxt, bool check_intercepts)
+ 			goto done;
+ 		}
+ 	}
+-	/* Copy full 64-bit value for CMPXCHG8B.  */
+-	ctxt->dst.orig_val64 = ctxt->dst.val64;
++	/* Copy full 64/128-bit value for CMPXCHG8B.  */
 +
- /*
-  * Force the pointer to u<size> to match the size expected by the asm helper.
-  * clang/LLVM compiles all cases and only discards the unused paths after
-@@ -580,6 +630,10 @@ extern void __try_cmpxchg_user_wrong_size(void);
- 	case 8:	__ret = __try_cmpxchg64_user_asm((__force u64 *)(_ptr), (_oldp),\
- 						 (_nval), _label);		\
- 		break;								\
-+	case 16:								\
-+		__ret = __try_cmpxchg128_user_asm((__force u128 *)(_ptr),	\
-+						  (_oldp), (_nval), _label);	\
-+		break;								\
- 	default: __try_cmpxchg_user_wrong_size();				\
- 	}									\
- 	__ret;						})
++#ifdef CONFIG_X86_64
++	if (ctxt->dst.bytes == 16)
++		ctxt->dst.orig_val128 = ctxt->dst.val128;
++	else
++#endif
++		ctxt->dst.orig_val64 = ctxt->dst.val64;
+ 
+ special_insn:
+ 
+diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
+index 3e375af15c03..89911845233d 100644
+--- a/arch/x86/kvm/kvm_emulate.h
++++ b/arch/x86/kvm/kvm_emulate.h
+@@ -263,6 +263,9 @@ struct operand {
+ 	union {
+ 		unsigned long orig_val;
+ 		u64 orig_val64;
++#ifdef CONFIG_X86_64
++		u128 orig_val128;
++#endif
+ 	};
+ 	union {
+ 		unsigned long *reg;
+@@ -276,6 +279,9 @@ struct operand {
+ 	union {
+ 		unsigned long val;
+ 		u64 val64;
++#ifdef CONFIG_X86_64
++		u128 val128;
++#endif
+ 		char valptr[sizeof(avx256_t)];
+ 		sse128_t vec_val;
+ 		avx256_t vec_val2;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 79468ddfe473..60be16f05d79 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -5271,7 +5271,7 @@ static int emulator_cmpxchg_emulated(struct x86_emulate_ctxt *ctxt,
+ 	int r;
+ 
+ 	/* guests cmpxchg8b have to be emulated atomically */
+-	if (bytes > 8 || (bytes & (bytes - 1)))
++	if (bytes > 2 * sizeof(unsigned long) || (bytes & (bytes - 1)))
+ 		goto emul_write;
+ 
+ 	gpa = kvm_mmu_gva_to_gpa_write(vcpu, addr, NULL);
+@@ -5311,6 +5311,11 @@ static int emulator_cmpxchg_emulated(struct x86_emulate_ctxt *ctxt,
+ 	case 8:
+ 		r = emulator_try_cmpxchg_user(u64, hva, old, new);
+ 		break;
++#ifdef CONFIG_X86_64
++	case 16:
++		r = emulator_try_cmpxchg_user(u128, hva, old, new);
++		break;
++#endif
+ 	default:
+ 		BUG();
+ 	}
 -- 
 2.34.1
 
