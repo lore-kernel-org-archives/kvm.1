@@ -1,135 +1,324 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955C33AA195
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 08:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CEC3932F7;
+	Wed, 26 Aug 2026 08:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787731325; cv=none; b=FL2WFqdt/gpMaqYfNIv3J9rk2kf25UGPT2NQv3H68U3jmaAdnbdbJ5dImBoB0oQ+f83X9ytcE1E4lJmjVUHMSOMSVtGXqhnIL3do8+e0dE1MPZKX3mg+K5UcfqgWCPFWTo1VCIiAuDvww6Ytwi9oW4w8hGyR4i64WQUfA8X/LBg=
+	t=1787731561; cv=none; b=tT4eGa5hFwlMnZOF+D/fS6OVMQiYCoFFW78vIFFd4YAx/7Lu1Bw8piapw25h9ysFwVD9yJBTbETvx8Xr0yJKI2RC0zkoqP1lCie+yQahOGWrsShVDjqOT8OZoEMge/q2trC3UJyK5sbHo0OFt0bKoz4pAHQrKbQeb6eE/AndFHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787731325; c=relaxed/simple;
-	bh=FZPpQ+6HDmsXv/VsQ3QThQFW8uS0Qsoh7QRVInqqWN0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hU8c3veFnbiCnrILBRZX61DqqdYDErRyCb9fFKt0WiAlpRqcZgBE0CJ+xQku+8btLOF0rZWfOu36YBUWIqcX30LUIidP+aetUpcwcFH98eQ44tgQXLWMfu35iObTBVhqGoGoFXHu+D+l/Y4NqzYUVxb5XkS0ZhrLWORUKya/kdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kufcpYSk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787731561; c=relaxed/simple;
+	bh=bkjiUmi4q16nO656UkaZfuh/7jbNbfvJjs6cLNisWVs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZvJmzpWLuA18/UqzBv7a+OSri8NK6pgl5v6JboU6rNvLQBqmp2XDK57LZcwolQtVAv77kR788YM85FwLEGYj3P5BUBSKbEPKup1grh8zmx5jpBDEYzPDgxfWDC9GmHAlYvuQzvI0o8fMs3+0cgT02T/lV4fk14mljKQpUYkCRwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TrktiOE9; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kufcpYSk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A0C1F000E9;
-	Wed, 26 Aug 2026 08:02:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787731324;
-	bh=jF+dx1qioKmf3Na8ovuADPl0HWsxbpfjxJUHXf7nhZY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kufcpYSkrjm5Tjxkti77KVw0CExtuigPzU2V5PiONddN1ZXOGL26KTsgtmQOW+5/q
-	 NH1yLz9p/bkZJDotjO8F3MB/DvP08BmqfQLxSBsMc3lxNOuXbkKEWI9ZCNKFWGcsUi
-	 vqGQa9s3pZOcGLY2vc8byPL2pujHk01zkVe7Bizp8wAJ8h9KHGGRgDd6kqYSkMbXOf
-	 UoIGRHstNytnPEj4VNSNARy793IpiHlrUg5tBI/Ee8LT/pLA4cIMPCDkVJ/nuu4l/y
-	 6oC8G1pZlp/q04ZKF34NdEw3Rh/YjyWpFLAcwbYFUdZiISAvDduYtfKUJi1ri2j4Vt
-	 R7PNv+LWA1Lzg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: riscv: Fix NACL hfence entry update order
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Zongmin Zhou" <min_halo@163.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260826075009.68952-1-min_halo@163.com>
-References: <20260826075009.68952-1-min_halo@163.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 26 Aug 2026 08:02:03 +0000
-Message-Id: <20260826080204.09A0C1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TrktiOE9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787731559; x=1819267559;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=bkjiUmi4q16nO656UkaZfuh/7jbNbfvJjs6cLNisWVs=;
+  b=TrktiOE9lSqtUPveWJbjTMdVL7op0EzZsL405NYLQmQlQxm9bajkWhWG
+   IkUcE7LWwv+ZkfAVSzn9LtAoKxzDc7QadxCTmc+AQOXg/wUMS/qnJQL3t
+   NQPvjXyyN0JCdUIip+xmOzI0MD7PhEpPR0OOYsAqpNO3z+DEpC5E4/zut
+   xwMyg/tT8/mLlySNlGUw0yr8cEqeOdnlP/G/+i7m+U/caFhRpEx5XMWMl
+   V31GQ8i7yytrp8IstHCUVX3+imdnZP5IS7TP9JPSN7NhxpZ0tlwVil0un
+   +t7CO5gKEn8jD0Yv/iuJ39C3P0/G6osvb0uSg7h9o+Bhjue/N8lV8apsr
+   w==;
+X-CSE-ConnectionGUID: 2SlSi3iLQ9W1DPq2ogeKsA==
+X-CSE-MsgGUID: 8TzeKuhXS9S85wen8b6MzQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88235482"
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
+   d="scan'208";a="88235482"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 01:05:58 -0700
+X-CSE-ConnectionGUID: QDdWVPiFQEyfhCtzESp+3g==
+X-CSE-MsgGUID: IK2Sz66uTFOu21+4qTcFzQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
+   d="scan'208";a="291037790"
+Received: from blu2-desk.sh.intel.com (HELO [10.239.156.26]) ([10.239.156.26])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 01:05:53 -0700
+Message-ID: <446684d8-44d0-47c5-9301-172c55efd950@linux.intel.com>
+Date: Wed, 26 Aug 2026 16:05:51 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 08/18] iommu/vt-d: Clear unpreserved context entries
+ during shutdown
+To: Samiullah Khawaja <skhawaja@google.com>,
+ David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
+ Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+ iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Matlack <dmatlack@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
+References: <20260808022723.3893618-1-skhawaja@google.com>
+ <20260808022723.3893618-9-skhawaja@google.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20260808022723.3893618-9-skhawaja@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On 8/8/26 10:27, Samiullah Khawaja wrote:
+> During normal shutdown the iommu translation is disabled. Since the root
+> table is preserved during live update, it needs to be cleaned up and the
+> context entries of the unpreserved devices and root entries for the
+> unpreserved context tables need to be cleared.
 
-New issues:
-- [High] Using `smp_wmb()` instead of `dma_wmb()` or `wmb()` to synchronize=
- with a hardware device or external agent.
+The key assumption here seems to be that, during a live-update kexec,
+most devices do not go through the normal iommu release path. Otherwise,
+their context entries should already be torn down in the
+iommu_release_device path.
 
-Pre-existing issues:
-- [High] The retry loop in `__kvm_riscv_nacl_hfence` can spin indefinitely =
-because `try_count` is never decremented.
---
+Could you please confirm this assumption and add some short note in the
+comments or commit message?
 
-commit 7e01a77077e49fef54c573574fad3624c0817345
-Author: Zongmin Zhou <zhouzongmin@kylinos.cn>
-
-KVM: riscv: Fix NACL hfence entry update order
-
-The commit fixes the order in which nested HFENCE entries are populated
-by writing the page number and count first, then the config word. It uses
-WRITE_ONCE() and smp_wmb() to prevent hardware or firmware from observing
-incomplete entries.
-
-[Severity: High]
-This isn't a bug introduced by this patch, but looking at the retry logic in
-arch/riscv/kvm/nacl.c:__kvm_riscv_nacl_hfence():
-
-    if (ent < 0) {
-        if (try_count) {
-            nacl_sync_hfence(-1UL);
-            goto again;
-        } else {
-            ...
-
-Does this loop run indefinitely? I noticed try_count is initialized to 5
-but doesn't appear to be decremented anywhere in this path. If the NACL
-hardware or SBI implementation stalls and fails to clear pending entries,
-could this cause a host CPU soft lockup?
-
-> diff --git a/arch/riscv/kvm/nacl.c b/arch/riscv/kvm/nacl.c
-> index 08a95ad9ada2c..f922e9f62fee3 100644
-> --- a/arch/riscv/kvm/nacl.c
-> +++ b/arch/riscv/kvm/nacl.c
-[ ... ]
-> @@ -42,12 +42,24 @@ void __kvm_riscv_nacl_hfence(void *shmem,
->  		}
->  	}
-> =20
-> -	entp =3D shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_CONFIG(i);
-> -	*entp =3D cpu_to_lelong(control);
+> 
+> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> ---
+>   drivers/iommu/intel/iommu.c      |  15 +++-
+>   drivers/iommu/intel/iommu.h      |   5 ++
+>   drivers/iommu/intel/liveupdate.c | 140 +++++++++++++++++++++++++++++++
+>   3 files changed, 158 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+> index aeae0563dfd0..eca3944d9cf5 100644
+> --- a/drivers/iommu/intel/iommu.c
+> +++ b/drivers/iommu/intel/iommu.c
+> @@ -1832,6 +1832,14 @@ static int iommu_suspend(void *data)
+>   
+>   	iommu_flush_all();
+>   
 > +	/*
-> +	 * Per SBI v3.0 section 15.1.2, the Page_Number and Page_Count
-> +	 * words must be updated before the Config word with its Pending
-> +	 * bit set. WRITE_ONCE() stops the compiler from reordering the
-> +	 * stores and smp_wmb() makes the parameter words globally
-> +	 * visible to the SBI implementation (or NACL hardware) before
-> +	 * the Pending bit is set.
+> +	 * Note that IOMMU suspend doesn't affect live update. The state
+> +	 * preserved during live update is not released and remains valid during
+> +	 * suspend and reused during IOMMU resume.
+> +	 *
+> +	 * Also note deployment of suspend/resume and live updated use case
+> +	 * should be mostly mutually exclusive.
 > +	 */
->  	entp =3D shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_PNUM(i);
-> -	*entp =3D cpu_to_lelong(page_num);
-> +	WRITE_ONCE(*entp, cpu_to_lelong(page_num));
->  	entp =3D shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_PCOUNT(i);
-> -	*entp =3D cpu_to_lelong(page_count);
-> +	WRITE_ONCE(*entp, cpu_to_lelong(page_count));
+>   	for_each_active_iommu(iommu, drhd) {
+>   		iommu_disable_translation(iommu);
+>   
+> @@ -2377,8 +2385,11 @@ void intel_iommu_shutdown(void)
+>   		/* Disable PMRs explicitly here. */
+>   		iommu_disable_protect_mem_regions(iommu);
+>   
+> -		/* Make sure the IOMMUs are switched off */
+> -		iommu_disable_translation(iommu);
+> +		/* Make sure the IOMMUs are switched off if not preserved. */
+> +		if (iommu_preserved_state(&iommu->iommu))
+> +			clear_unpreserved_context_entries(iommu);
+> +		else
+> +			iommu_disable_translation(iommu);
+>   	}
+>   }
+>   
+> diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+> index 4906cce1e66e..6c971f04ead3 100644
+> --- a/drivers/iommu/intel/iommu.h
+> +++ b/drivers/iommu/intel/iommu.h
+> @@ -1306,6 +1306,7 @@ int intel_iommu_preserve(struct iommu_device *iommu,
+>   			 struct iommu_hw_ser *iommu_ser);
+>   void intel_iommu_unpreserve(struct iommu_device *iommu,
+>   			    struct iommu_hw_ser *iommu_ser);
+> +void clear_unpreserved_context_entries(struct intel_iommu *iommu);
+>   #else
+>   static inline int intel_iommu_preserve_device(struct device *dev,
+>   					      struct iommu_device_ser *device_ser)
+> @@ -1328,6 +1329,10 @@ static inline void intel_iommu_unpreserve(struct iommu_device *iommu,
+>   					  struct iommu_hw_ser *iommu_ser)
+>   {
+>   }
 > +
-> +	/* Ensure the parameter words are visible before the Pending bit */
-> +	smp_wmb();
+> +static inline void clear_unpreserved_context_entries(struct intel_iommu *iommu)
+> +{
+> +}
+>   #endif
+>   
+>   #ifdef CONFIG_INTEL_IOMMU_SVM
+> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
+> index ffdcebf2b773..b5aaebeeb5c1 100644
+> --- a/drivers/iommu/intel/liveupdate.c
+> +++ b/drivers/iommu/intel/liveupdate.c
+> @@ -77,6 +77,146 @@ static int preserve_context_table(struct intel_iommu *iommu,
+>   	return 0;
+>   }
+>   
+> +static void clear_unpreserved_context_root_entries(struct intel_iommu *iommu,
+> +						   struct iommu_hw_ser *ser)
+> +{
+> +	struct root_entry *root;
+> +	int i;
 > +
+> +	for (i = 0; i < ROOT_ENTRY_NR; i++) {
+> +		root = &iommu->root_entry[i];
+> +
+> +		if (!is_context_table_preserved(iommu, ser, i, 0) && (root->lo & 1)) {
+> +			root->lo = 0;
+> +			__iommu_flush_cache(iommu,
+> +					    &root->lo,
+> +					    sizeof(root->lo));
+> +		}
+> +
+> +		if (!sm_supported(iommu))
+> +			continue;
+> +
+> +		if (!is_context_table_preserved(iommu, ser, i, 0x80) && (root->hi & 1)) {
+> +			root->hi = 0;
+> +			__iommu_flush_cache(iommu,
+> +					    &root->hi,
+> +					    sizeof(root->hi));
+> +		}
+> +	}
+> +}
+> +
+> +static void clear_unpreserved_context(struct device_domain_info *info, u8 bus, u8 devfn)
+> +{
+> +	struct context_entry *context;
+> +
+> +	/*
+> +	 * This cleanup is done during shutdown, so it should be fine to only
+> +	 * clear the entries here and issue one global invalidation later to
+> +	 * invalidate all cleared entries.
+> +	 *
+> +	 * Note that the device IOTLB invalidation for unpreserved devices is
+> +	 * skipped this way, but that should not be needed as the devices are
+> +	 * quiesced at this point. This should improve the performance of the
+> +	 * cleanup process and avoids any invalidation timeouts because drivers
+> +	 * might have moved devices to D3 state.
+> +	 */
+> +	context = iommu_context_addr(info->iommu, bus, devfn, 0);
+> +	if (context) {
+> +		context_clear_entry(context);
+> +		__iommu_flush_cache(info->iommu, context, sizeof(*context));
 
-[Severity: High]
-Does smp_wmb() provide the necessary hardware ordering guarantees on all
-configurations?
+For tearing down a present context entry, please follow the VT-d
+recommended sequence:
 
-Looking at arch/riscv/kvm/nacl.c:__kvm_riscv_nacl_hfence(), since the
-memory is coherent and shared with an external agent or NACL hardware, I am
-concerned about non-SMP kernel builds (!CONFIG_SMP) where smp_wmb()
-degrades to a simple compiler barrier (barrier()) and emits no actual
-hardware fence instructions.
+- clear only the Present bit,
+- flush the updated entry to memory if necessary,
+- issue the required cache invalidations,
+- then clear the remaining fields of the entry.
 
-Would it be safer to use dma_wmb() or wmb() here to ensure the memory
-ordering is strictly enforced against external hardware, regardless of
-the kernel's SMP configuration?
+> +	}
+> +}
+> +
+> +static int clear_unpreserved_alias_cb(struct pci_dev *pdev, u16 alias, void *data)
+> +{
+> +	struct device_domain_info *info = data;
+> +
+> +	clear_unpreserved_context(info, PCI_BUS_NUM(alias), alias & 0xff);
+> +	return 0;
+> +}
+> +
+> +static int clear_unpreserve_context_entry_fn(struct device *dev,
+> +					     struct iommu_device *iommu_dev,
+> +					     void *arg)
+> +{
+> +	struct device_domain_info *info;
+> +	struct context_entry *context;
+> +
+> +	info = dev_iommu_priv_get(dev);
+> +	if (!info)
+> +		return 0;
+> +
+> +	if (!dev_is_pci(dev) || !dev_iommu_preserved_state(dev))
+> +		goto out_unpreserved;
+> +
+> +	/*
+> +	 * PRE use cases are not supported with Live Update and a preservation
+> +	 * attempt on such domains returns an error. But Intel IOMMU driver
+> +	 * enables PRE by default on all devices that support it. For preserved
+> +	 * entries, the PRE needs to be disabled so preserved PCI devices do not
+> +	 * generate PRQs, during kexec, as translations are kept enabled during
+> +	 * live update. There is no need to disable these for DMA aliases.
+> +	 */
+> +	if (sm_supported(info->iommu)) {
+> +		context = iommu_context_addr(info->iommu, info->bus, info->devfn, 0);
 
-> +	entp =3D shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_CONFIG(i);
-> +	WRITE_ONCE(*entp, cpu_to_lelong(control));
->  }
->
+Nit: please add a brief comment explaining why locking is not needed at
+this call site.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260826075009.6895=
-2-1-min_halo@163.com?part=3D1
+> +		if (context) {
+> +			context_clear_sm_pre(context);
+
+For cache invalidation considerations when changing the PRE bit in a
+present context entry, please follow the VT-d spec guidance (Table 28,
+“Guidance to Software for Invalidations”).
+
+> +			__iommu_flush_cache(info->iommu, context, sizeof(*context));
+ > +		}> +	}
+> +
+> +	return 0;
+> +
+> +out_unpreserved:
+> +	if (dev_is_pci(dev))
+> +		pci_for_each_dma_alias(to_pci_dev(dev),
+> +					clear_unpreserved_alias_cb, info);
+> +	else
+> +		clear_unpreserved_context(info, info->bus, info->devfn);
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * clear_unpreserved_context_entries() - Clear context entries for unpreserved devices
+> + * @iommu: Target IOMMU
+> + *
+> + * Clear the context entries of unpreserved devices during shutdown before kexec.
+> + */
+> +void clear_unpreserved_context_entries(struct intel_iommu *iommu)
+> +{
+> +	struct iommu_dev_iter iter = {
+> +		.fn = clear_unpreserve_context_entry_fn,
+> +		.iommu = &iommu->iommu,
+> +		.arg = NULL,
+> +
+> +	};
+> +
+> +	/*
+> +	 * Clear context entries for unpreserved devices.
+> +	 *
+> +	 * Note that the error can be ignored as the iterator function does not
+> +	 * fail.
+> +	 */
+> +	iommu_for_each_dev(&iter);
+> +
+> +	/* Clear reference to unpreserved context tables */
+> +	clear_unpreserved_context_root_entries(iommu,
+> +					       iommu_preserved_state(&iommu->iommu));
+> +
+> +	/*
+> +	 * Some devices might not have teardown/detached properly depending on
+> +	 * whether a proper device remove is done before kexec is triggered.
+> +	 * Also unpreserved context tables and entries are removed during
+> +	 * shutdown. So issue global invalidations to remove references to
+> +	 * unpreserved tables and entries.
+> +	 */
+> +	iommu->flush.flush_context(iommu, 0, 0, 0, DMA_CCMD_GLOBAL_INVL);
+> +	if (sm_supported(iommu))
+> +		qi_flush_pasid_cache(iommu, 0, QI_PC_GLOBAL, 0);
+> +	iommu->flush.flush_iotlb(iommu, 0, 0, 0, DMA_TLB_GLOBAL_FLUSH);
+> +}
+> +
+>   static void unpreserve_iommu_context_tables(struct intel_iommu *iommu,
+>   					    struct iommu_hw_ser *ser)
+>   {
+
+Thanks,
+baolu
