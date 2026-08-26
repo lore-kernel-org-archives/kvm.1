@@ -1,55 +1,55 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A233BFE5B
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 09:18:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A303BF68F
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 09:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787735926; cv=none; b=A3qaWPBGL7dposP+qo9PTccXBSOoNsf4CtJBNduRNijFNahIOSNymprY5CLhIFcNsCme6s7B5nZbhmkEKOwipDGKYWlDaP1JE20lgv8xdFKbNUmNyeQFqJmBKEFyl6T4l5+zjtdUo2xeS+Vr1Mg43hcuBI1CGQVb+hphqDSzTP0=
+	t=1787735926; cv=none; b=o10CrP4b7qhf4H0A4nrcwKXbW5fCQAhNgrLjuE+VBo4QJii3wb/v/JXCwxyGG3iVRwPFcybvhJoUnvdUf59WbrZ2sVSe7m+rJXRgzw4Pd2IIm0X48c8jlheXybvHAGN742xAuXBaQWVtRTASqx9TIvYMQWWR54RlnnNqHJtH6vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1787735926; c=relaxed/simple;
-	bh=ZTwn4UyMShrGZfEU90otJVup2JEojFMgiToKCnnSVVE=;
+	bh=e4S0ntw6a4F+aKPymVSCxm2tk+SUEZ6S7wIWlorrhEQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=dOSfNGliHsllhdit428dXLcTPcx5CwroOIInVKa1BRjEKIpq9V1sx5BDboSWrqOR62fcsLhGQq1tHXuZnifPVGdLz+jW5aLyQZxs9Fw3s0vLwnLqDRZVnjbgynPqrjEQ7KpzzjlToLANNHtAHyKiyYLJ97Cfo+IOp9Hx3tQUyoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fdcfcOy6; arc=none smtp.client-ip=209.85.215.200
+	 To:Cc:Content-Type; b=HeDCbPwy6bLWyrU1e+4BfeubJ2fw8nQ5rQJNmTTULXYA/IIfa6J40n/7UkpjqL7j59gZHhlhvR0EIbF8itombXYJzlclqTCFgAJFphrXoLbTvMedMe0wuO/pHs7t1j7kLk7tsfwnDTGedQBmV3yZxDNH6nsrv2c3OzsmEMIlza4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M7bU53If; arc=none smtp.client-ip=209.85.214.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fdcfcOy6"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cbb467e56aaso608915a12.1
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 02:18:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M7bU53If"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2d7151120d6so5785495ad.3
+        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 02:18:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787735919; x=1788340719; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1787735917; x=1788340717; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=S/nf3e4536rn08VcIwbRdla3FrzM9D86FJQTH62XB18=;
-        b=fdcfcOy6HRtOZ73daoZ5zvlxhHTJKMPmTvGcbBfkxdVGLpx3kgm6YEpnNEh81jifWj
-         CidD8pxMoBESJ7UJeWnsesrZF/vzaLA54i2t/Xqfpz2dDw4Kf9vX+RtnCjmeoT8+klXg
-         XshsxVoedZMoxvIP2qqi68MuIUINPr5nkAKdG++Iqq7QH2GGKgbhF7RTE23u8NrjklBp
-         4r55oCaQsEjXKwfMDQmdwEjkuyv9wCe9C8u0yRAcxKAWGLPmz6/AOcz42cyaLv07vgEj
-         pdd779s8A3cF3YCBTuKdRDUyvEw7KS13FAwHSzmqFa+QCIF45BaJo3JDL0cyEERLHrTJ
-         qu8Q==
+        bh=wc3a2+OEtllLGwqS/G4AFzAVkgMCaAbj12kGjFWNwhs=;
+        b=M7bU53Ifhcg7ngsfUQD2TfxhlU5cVpNIzP/dMvkOERauVbNgnvfxuj8zyCU8ZggBSM
+         XTg8mKaqTuSqGQ1kKrbQvXgUyOUGibmUxPOmaf2xNc9T5GpzPs3u2WU/w4Yew8dtYMgi
+         BOMjgzdLH9BJhzUYlJEyKGUTZ8rL/8oVFLymlrobUjDNRoqk9GTegx+c1Qk2VLg7gINk
+         a6eCLBl2x8dkwVb3gsb1u+5hpW7IICt+3CkprckMWjYpq02nck/WXtjI5ELprpz4R4eD
+         z6SvGvTt+v1TdDrKrwA+rXk+MwVM3zeK4uXPMO9AK7hF9Ql92/wIjyqoTxAx155PwNQX
+         WBDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787735919; x=1788340719;
+        d=1e100.net; s=20251104; t=1787735917; x=1788340717;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=S/nf3e4536rn08VcIwbRdla3FrzM9D86FJQTH62XB18=;
-        b=F39SWxZCrDyG41ynbdaCW+QcuIKs2GT6k/AYXAnaKellQD6ZqJL/w9E5KSgoy1DZUE
-         Nl0HqS1RVuO1Z5Zrwra92tdNZ34yVAYvGCuFOWxWG8skeBa+1saCyiOKw8fnrfkkle6f
-         urVafvoI1itJ/9JTxdRCBONkuoiaHpZV2LyiZNaotEshNyzr+7vwWlHJSWJint/9PB8F
-         weSJmSuTYot/iDilUisXN8SYz0sjxgv0C43lxGxXG8313uEHNc7yiRuW4ZIbCqKOkQlP
-         /Kx0CoUGfautYH1iBQ/gm/q6NfLdu3B8M212S+oD+ti5WCY7ghJAsc5KJ4I+f8JbmnEU
-         FUlw==
-X-Gm-Message-State: AFuF++knZ6EXF7n/1tzaM6kUGNZkTbVtSdnve89CaIieCXm60UmXc6ji
-	aDU3k1QHMZYkQkB6TMKCHyM1c0Gt8Q1WRj25vR/sURF1j8FjOVC2hKvIg0/IUj2IiTNtxQtV3mm
-	wJXBf7HiQq7oMSEyHq926mUP7Rw==
-X-Received: from pgig7.prod.google.com ([2002:a63:f407:0:b0:cc1:c7d3:7c7b])
+        bh=wc3a2+OEtllLGwqS/G4AFzAVkgMCaAbj12kGjFWNwhs=;
+        b=IHSG1X46oyhBUSak464U4Rj//MRtiemQCL3JdY10RNOinVweEKLzuiS4BcreDQn1pS
+         NYeatEkPUY8kYDf9SZNvvfUj/6LkLbWcPN4NSBvvpV2oCjau2qdw2TualFbWfyV4nGpT
+         dNOQC/rXsdt3IZHBMTfzrKdOJmH2yqBWMV3wgxtDezMhv397nqGzpoFsYi2JmE2Wfwc6
+         En7W1HM9pvqMKhErcXzk/JVSQXR8bnbQ3RscPq+f/hrOBg5NP6a3VYoKP+FTJrBfSHtX
+         mOL2xybggZfKcWl51+N0AAFedLVyuUImHHsZ+GojB4TUCYHM6AFIG/66A/mE3m7M6FhS
+         rxNA==
+X-Gm-Message-State: AFuF++nWbRrRYTho8bJc7RCPih80bWMHgn+Pubri7UFRH88ZXvjWOBmx
+	XGCqmyX7mlQZoPLbtZ9EJ1wxetCX5IBEwhKGVhZMgfa9JhmweR1QB0R8aBUqE4L23VC+7ZiRezd
+	UgkgIEVJ3wIiuiu0FSWmg8OXxEg==
+X-Received: from plbcp5.prod.google.com ([2002:a17:902:e785:b0:2ca:b48c:5a92])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:a383:b0:3cd:8d15:895e with SMTP id adf61e73a8af0-3cf84b53689mr11572460637.12.1787735918168;
- Wed, 26 Aug 2026 02:18:38 -0700 (PDT)
-Date: Wed, 26 Aug 2026 09:18:16 +0000
+ 2002:a17:903:324f:b0:2cc:f5b8:4c2e with SMTP id d9443c01a7336-2d707b45a87mr94906615ad.9.1787735916498;
+ Wed, 26 Aug 2026 02:18:36 -0700 (PDT)
+Date: Wed, 26 Aug 2026 09:18:15 +0000
 In-Reply-To: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,14 +59,14 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=4708;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=5838;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=ZTwn4UyMShrGZfEU90otJVup2JEojFMgiToKCnnSVVE=; b=dDBRMblwUg6UwX2I1hz2Tpxt+EI3WovENt6hqBknKpraB0X285GZYRtS86E6IMk5svSgepv73
- EfxqI68rjF/CyC9ce+QdXDFmPsPxg8E1UYpFu6gAUyL8f5QVEBtho9j
+ bh=GtZbHtkgKKmD1ykIZ1T+aJT4kkhlUaxT1aZ4xCvFTqw=; b=31p44BxawoGJ9r8IPJTTeLYxIv5u9shr6L2B0Osy/+Cr+0UKzzsl7/FoRJOIg3vjXE6Tkm2yX
+ UgwpvmnCSctDh5OfgPRHQt5miKkx2TMsXdZLvmxNKBAoutH51xOD2oC
 X-Mailer: b4 0.16.0
-Message-ID: <20260826-gmem-inplace-conversion-v11-18-0a15d8a799aa@google.com>
-Subject: [PATCH v11 18/46] KVM: guest_memfd: Handle lru_add fbatch refcounts
- during conversion safety check
+Message-ID: <20260826-gmem-inplace-conversion-v11-17-0a15d8a799aa@google.com>
+Subject: [PATCH v11 17/46] mm/gup: factor out LRU cache draining for folio
+ into lru_cache_drain_for_folio()
 From: Ackerley Tng <ackerleytng@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -95,133 +95,167 @@ To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>
+	linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-A guest_memfd folio has no outstanding references if guest_memfd holds the
-only references on it. Any other references on the folio may indicate
-another user, and guest_memfd cannot convert it to private if there may be
-an existing host user.
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 
-A folio will have outstanding references if it is present in a per-CPU
-lru_add fbatch. guest_memfd does not actually participate in LRU, but
-freshly-allocated folios are still added to the lru_add fbatch for batch
-LRU statistics processing.
+KVM with guest_memfd wants to remove any folio references due to LRU
+caches, as it really must only allow to convert folios from shared to
+private when there are no unexpected folio references (e.g., from GUP
+references).
 
-A folio may also have extra refcounts if it is on the mlock fbatch.
+So, to drive the refcount down, it needs a way to flush the LRU caches.
+Let's factor out what we have in lru_cache_drain_for_folio(). Document
+it, and also mention that concurrent folio (un)mapping might, in theory,
+miss detecting LRU cache references. Keep obtaining the expected refcount
+twice to minimize the possibility. For the current and future user that
+should work, and we don't really have a better alternative: we could
+detect if the mapcount changed, but it would still be racy and add more
+complexity with questionable benefit.
 
-These two known "usages" of the folio are handled by calling
-lru_cache_drain_for_folio, which drains both the lru_add and mlock
-fbatches. After draining, if the refcount is still elevated, then there are
-truly outstanding references.
+Maybe there is a chance to avoid the draining entirely in the future,
+by avoiding extra references from the LRU cache: Hugh thinks there might
+be a way. But for the time being, this handling is unfortunately
+required.
 
-If the page may be dma pinned, DMA is using it and hence there are
-outstanding references. folio_maybe_dma_pinned() can have false positives,
-but that's only with a significant number of refcounts, at which point
-draining LRU is not going to move the needle - it can still be concluded
-that the folio has outstanding references.
+Make folio_may_be_lru_cached() accept a const pointer so
+lru_cache_drain_for_folio() can accept a const pointer as well.
 
-If the page is still mapped after guest_memfd tried to unmap it earlier in
-the conversion process, it also has outstanding references.
-
-Return true and exit early to avoid unnecessary draining in these 2 cases.
-
-Provide a drain status to only drain once ever while processing a batch of
-folios.
-
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Suggested-by: David Hildenbrand <david@kernel.org>
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- mm/swap.c              |  2 ++
- virt/kvm/guest_memfd.c | 30 ++++++++++++++++++++++--------
- 2 files changed, 24 insertions(+), 8 deletions(-)
+ include/linux/swap.h | 11 ++++++++++-
+ mm/gup.c             | 20 +++++++-------------
+ mm/swap.c            | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 63 insertions(+), 14 deletions(-)
 
-diff --git a/mm/swap.c b/mm/swap.c
-index 8e965c8ce9aa9..9f511b97ab110 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -37,6 +37,7 @@
- #include <linux/page_idle.h>
- #include <linux/local_lock.h>
- #include <linux/buffer_head.h>
-+#include <linux/kvm_types.h>
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 8f0f68e245baa..e625d64c9e13d 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -317,7 +317,7 @@ void folio_add_lru_vma(struct folio *, struct vm_area_struct *);
+ void mark_page_accessed(struct page *);
+ void folio_mark_accessed(struct folio *);
  
- #include "internal.h"
- 
-@@ -995,6 +996,7 @@ void lru_cache_drain_for_folio(const struct folio *folio,
- 			*drained = LRU_CACHE_DRAINED_ALL;
- 	}
- }
-+EXPORT_SYMBOL_FOR_KVM(lru_cache_drain_for_folio);
- 
- atomic_t lru_disable_count = ATOMIC_INIT(0);
- 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 6dc199be0eb87..4912f90567fe8 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -8,6 +8,7 @@
- #include <linux/mempolicy.h>
- #include <linux/pseudo_fs.h>
- #include <linux/pagemap.h>
-+#include <linux/swap.h>
- 
- #include "kvm_mm.h"
- #include "guest_memfd.h"
-@@ -556,10 +557,28 @@ static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
- 	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
- }
- 
-+static bool __folio_has_outstanding_references(struct folio *folio,
-+					       enum lru_cache_drained *drained)
-+{
-+	if (folio_maybe_dma_pinned(folio) || folio_mapped(folio))
-+		return true;
+-static inline bool folio_may_be_lru_cached(struct folio *folio)
++static inline bool folio_may_be_lru_cached(const struct folio *folio)
+ {
+ 	/*
+ 	 * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
+@@ -344,6 +344,15 @@ extern void lru_add_drain(void);
+ extern void lru_add_drain_cpu(int cpu);
+ extern void lru_add_drain_cpu_zone(struct zone *zone);
+ extern void lru_add_drain_all(void);
 +
-+	/* 1 reference held by filemap_get_folios() in the folio batch. */
-+	lru_cache_drain_for_folio(folio, 1, drained);
++enum lru_cache_drained {
++	LRU_CACHE_NOT_DRAINED,
++	LRU_CACHE_DRAINED,
++	LRU_CACHE_DRAINED_ALL,
++};
++void lru_cache_drain_for_folio(const struct folio *folio,
++		unsigned int extra_refs, enum lru_cache_drained *drained);
 +
-+	/*
-+	 * Outstanding references are anything other than those from the page
-+	 * cache, plus 1 temporary reference held by filemap_get_folios() in the
-+	 * folio batch.
-+	 */
-+	return folio_ref_count(folio) != folio_nr_pages(folio) + 1;
-+}
-+
- static bool kvm_gmem_has_outstanding_references(struct inode *inode,
- 						pgoff_t start, size_t nr_pages,
- 						pgoff_t *err_index)
+ void folio_deactivate(struct folio *folio);
+ void folio_mark_lazyfree(struct folio *folio);
+ extern void swap_setup(void);
+diff --git a/mm/gup.c b/mm/gup.c
+index 0692119b79043..fb0995dc495fc 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2266,9 +2266,9 @@ static unsigned long collect_longterm_unpinnable_folios(
+ 		struct list_head *movable_folio_list,
+ 		struct pages_or_folios *pofs)
  {
 +	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
- 	struct address_space *mapping = inode->i_mapping;
- 	pgoff_t last = start + nr_pages - 1;
- 	bool has_outstanding = false;
-@@ -570,17 +589,12 @@ static bool kvm_gmem_has_outstanding_references(struct inode *inode,
- 	folio_batch_init(&fbatch);
+ 	unsigned long collected = 0;
+ 	struct folio *folio;
+-	int drained = 0;
+ 	long i = 0;
  
- 	next = start;
--	while (has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
-+	while (!has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
- 		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
- 			struct folio *folio = fbatch.folios[i];
+ 	for (folio = pofs_get_folio(pofs, i); folio;
+@@ -2287,18 +2287,12 @@ static unsigned long collect_longterm_unpinnable_folios(
+ 			continue;
+ 		}
  
--			/*
--			 * Outstanding references are anything other than those
--			 * from the page cache, plus 1 temporary reference held
--			 * by filemap_get_folios() in the folio batch.
--			 */
--			if (folio_ref_count(folio) != folio_nr_pages(folio) + 1) {
--				has_outstanding = true;
-+			has_outstanding = __folio_has_outstanding_references(folio, &drained);
-+			if (has_outstanding) {
- 				*err_index = max(start, folio->index);
- 				break;
- 			}
+-		if (drained == 0 && folio_may_be_lru_cached(folio) &&
+-				folio_ref_count(folio) !=
+-				folio_expected_ref_count(folio) + 1) {
+-			lru_add_drain();
+-			drained = 1;
+-		}
+-		if (drained == 1 && folio_may_be_lru_cached(folio) &&
+-				folio_ref_count(folio) !=
+-				folio_expected_ref_count(folio) + 1) {
+-			lru_add_drain_all();
+-			drained = 2;
+-		}
++		/*
++		 * We drain not only to make the folio_isolate_lru() succeed,
++		 * but also to remove any other folio references from LRU
++		 * caches.
++		 */
++		lru_cache_drain_for_folio(folio, 1, &drained);
+ 
+ 		if (!folio_isolate_lru(folio))
+ 			continue;
+diff --git a/mm/swap.c b/mm/swap.c
+index 588f50d8f1a8c..8e965c8ce9aa9 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -950,6 +950,52 @@ void lru_add_drain_all(void)
+ }
+ #endif /* CONFIG_SMP */
+ 
++/**
++ * lru_cache_drain_for_folio() - drain LRU caches if the caches might hold
++ *				 folio references
++ * @folio: The folio.
++ * @extra_refs: Extra folio references held by the caller.
++ * @drained: Drain status for batch folio processing.
++ *
++ * Drain LRU caches if the caches might hold folio references. Start
++ * with a local LRU cache drain, to then drain LRU caches on all CPUs if
++ * local draining was insufficient.
++ *
++ * This function detects LRU cache references by comparing the folio refcount
++ * with the sum of the expected folio refcount + extra references held by the
++ * caller. Note that we cannot rely on PG_lru to reliably detect all LRU
++ * cache references, and there are rare scenarios (concurrent folio (un)mapping)
++ * where this function might miss detecting LRU cache references.
++ *
++ * If @drained is not NULL, the function will avoid re-draining LRU caches
++ * when processing multiple folios in a row. In that case, the variable
++ * @drained points at must be initialized to LRU_CACHE_NOT_DRAINED before
++ * the first invocation by the caller.
++ */
++void lru_cache_drain_for_folio(const struct folio *folio,
++		unsigned int extra_refs, enum lru_cache_drained *drained)
++{
++	if (!folio_may_be_lru_cached(folio))
++		return;
++
++	if (!drained || *drained == LRU_CACHE_NOT_DRAINED) {
++		if (folio_ref_count(folio) ==
++		    folio_expected_ref_count(folio) + extra_refs)
++			return;
++		lru_add_drain();
++		if (drained)
++			*drained = LRU_CACHE_DRAINED;
++	}
++	if (!drained || *drained == LRU_CACHE_DRAINED) {
++		if (folio_ref_count(folio) ==
++		    folio_expected_ref_count(folio) + extra_refs)
++			return;
++		lru_add_drain_all();
++		if (drained)
++			*drained = LRU_CACHE_DRAINED_ALL;
++	}
++}
++
+ atomic_t lru_disable_count = ATOMIC_INIT(0);
+ 
+ /*
 
 -- 
 2.55.0.887.g758fc8c411-goog
