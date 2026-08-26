@@ -1,113 +1,143 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBE2412C17
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 17:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6942347FCD
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 17:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787764136; cv=none; b=k1jDdszway1S8l3J7Q7ApfkhO9EyKwDidtVuQ2GJfkaUMwhOSjYA7aMkhrMiBpHHg8zcYasDkBexHzUk58Kdyk+1uGtqO7aq0oqKSBTy3DjRFrgNwiPH1+BJIpXq49JkjYWDlkyoMPV9amPTH4lrItvd90++E+TkCqL9SlZd9bQ=
+	t=1787764317; cv=none; b=utZF+/ghKSKuKPaj/d7mVL2qMf6M5F57oTU8x8EcCFd9eGc+eMy/9+n8gJHzb91O0NkCgAWYcGXpA3D/J8P4MCHTqkVbp5LxjGYt/V7tAkz84VYKKzJXBNaRmHP3A6XjikKui1sTpHDc7eROrU5OH/ia3k9rEiedWTXuvlyb+nM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787764136; c=relaxed/simple;
-	bh=5gcZCxVaLoGbFtuUTVs9uf2JJcAHrT7H1feMiJ8kezI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ldVnsJHc8OoHuKWoM16UY/9gN6d05SFCEwTp+4EODBni10TAuCw4iSIHwi2FO+vhGuAuh8gV7AAbUhzvwkBeamh6gO01MljiHFql3rH0iWi8masuMUP8/fFDy1ZStnQUsfceL3Z0X/9pFpyfjFX+hF1aFWC4Wmdt33NaGM8Hjag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cuIbT+zf; arc=none smtp.client-ip=209.85.214.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787764317; c=relaxed/simple;
+	bh=jdEnz3zzOUmmvye/Q1i2qI5er294xxvN7TitmIFPu2U=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=MeZWDOeq0XlW2Ym3I3lorwrb2mw6hXWT9iFDO2JwfJNnWEe8mQS+5L6xoAGDYcrtmaeS2yU/RJjvswxMVUDiFI2X0AW/qndlgCopYXDjsGXhCqr0MGxjvnKGFIufaI5O+elif48+PCIplI9akHzFVgXNgZi9BIQA9b982AH1UVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UCApEwZY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cuIbT+zf"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d5d00fd19bso23952575ad.1
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 10:08:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787764115; x=1788368915; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dR4gFAPNlwUIZIAyQcENnxSzx6A0fm/I/dCW7TyYhXo=;
-        b=cuIbT+zfQloDxXI3T+3/jJObTvm0optSrXBUNt/rgta6Sqqz1gLGjfVqeAAClRusLV
-         t36kczGRC1+4kB1FGdn1uA87gUK9mPS9EB3vcLaNUSUBH5OlnSJpvb7wFA03nK1ghgJr
-         pAqfqQZ/25iDHzWpTsXpJ4K1G6s8ZsY2uVSCjaOJFCn3Geb0hG+GgZf+fJdF5HQEh7+O
-         aiR9onDktq+1AtA0uGPrHvH4xJ5gKKPn3lyd5pv4Y7U+p7bq/iJXRmCyFs22dATHvk8j
-         R4hnoEeLcFLDyPHT+5gVbAxCOMThjikdJANR3Ru9z11465muc+/tm2aDkL1FMBvTzLAI
-         kdLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787764115; x=1788368915;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dR4gFAPNlwUIZIAyQcENnxSzx6A0fm/I/dCW7TyYhXo=;
-        b=FCBpPoJreKMduvUJ0rbSyv5mty2bKvd5F5FKdxPsrFhT1WedP6M1EMkCw1fuE14rvm
-         IhDOYBl3+bdYgtyak0/DTg2bcTR51Q8cks05+nJzbngQiB5yl3tCVldJZnQ32zpM5aAa
-         UW2N/4c7dmMNtMOSJTvAN+x3YA+xgsOHWvq85fvEduFBNcmJRViojMep33UpKgMv48YH
-         kWo6eG0MjcnSz5KQUOzb95fIdugUUrPXQ4DQZLkgcvo0VTaUnpJ0loQnzf9gsBuXBM60
-         ZeOt/GmnTQxXvfbj3QnxVpkeZ3ekimLvM77tJSU3xoy4XQpJt0GEnvl7KBWiMmyElIyK
-         vfwQ==
-X-Gm-Message-State: AFuF++nj7K+QdZREsLN0F+98pZ7yjch6NW+kfgviXiLvlvqbkYCPmiQN
-	6oEewRR5YSjeiJAeYK/3HXc7Q624veTPfUDP8oy35pxwRhf27j0nFXkvGhP9oa3A02924md/Nn/
-	eG36HOA==
-X-Received: from pluq15.prod.google.com ([2002:a17:903:4b4f:b0:2d5:d335:6d96])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:cf08:b0:2d3:104b:1acf
- with SMTP id d9443c01a7336-2d707a8c210mr170794815ad.8.1787764114874; Wed, 26
- Aug 2026 10:08:34 -0700 (PDT)
-Date: Wed, 26 Aug 2026 10:08:34 -0700
-In-Reply-To: <20260826165948.31EBA1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UCApEwZY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 959AC1F000E9;
+	Wed, 26 Aug 2026 17:11:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787764311;
+	bh=PyBoCBkiRYt9crCkRF55sbVWqcHDPdSFh3+GJ7f3gp4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=UCApEwZYWxm88S8VNA0Ou3ArdNPkvtmSdg4qhzOXsNBLE0gfNzRo7etbeZHK9CKlA
+	 fZIWggwUf7ar/33pFxK5ZtgPwP9HKAtdg3EKwAb6lViD7csOyCHJ9C3pbw537TU42+
+	 tTRB4C0DgDRflsVNZwvJ79dTarifSjRmt/ehHxDsIwkLiCXWU4PY8fVnPTgcAsrsv8
+	 ih4d5GFqIKoFo3a5K/pyh26V1MWFwgrQPRjdqL8BqKIMFvwab2QrifvrGc52T86Xlp
+	 NPnHTqCLWPK+9KENPsvGBNi9LDM3zE1EtjWiWXQgDbg9E3X1Hpu2rWu+f/xS1yetpg
+	 JF0Nzu43LT1IQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] KVM: guest_memfd: Elaborate on how release() vs.
+ get_pfn() is safe against UAF
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260826165647.769231-1-seanjc@google.com>
+References: <20260826165647.769231-1-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 26 Aug 2026 17:11:51 +0000
+Message-Id: <20260826171151.959AC1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260826164214.756512-1-seanjc@google.com> <20260826164214.756512-3-seanjc@google.com>
- <20260826165948.31EBA1F000E9@smtp.kernel.org>
-Message-ID: <ao8dkl_JLNLpzSEf@google.com>
-Subject: Re: [PATCH v2 2/4] KVM: x86/mmu: Harden "map private PFN" against
- unexpected root invalidation
-From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Aug 26, 2026, sashiko-bot@kernel.org wrote:
-> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> > index 3220f05387b58..1969c26861e5a 100644
-> > --- a/arch/x86/kvm/mmu/mmu.c
-> > +++ b/arch/x86/kvm/mmu/mmu.c
-> [ ... ]
-> > @@ -5224,10 +5220,22 @@ int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
-> >  		if (kvm_test_request(KVM_REQ_VM_DEAD, vcpu))
-> >  			return -EIO;
-> >  
-> > +		r = kvm_mmu_reload(vcpu);
-> > +		if (r)
-> > +			return r;
-> > +
-> >  		cond_resched();
-> >  
-> >  		guard(read_lock)(&kvm->mmu_lock);
-> >  
-> > +		/*
-> > +		 * Because slots_lock is held, it should be impossible for *any*
-> > +		 * roots to be invalidated after the initial MMU reload.  WARN,
-> > +		 * but continue on; the above MMU reload will do the right thing
-> > +		 * if the current root is actually invalid.
-> > +		 */
-> > +		WARN_ON_ONCE(kvm_test_request(KVM_REQ_MMU_FREE_OBSOLETE_ROOTS, vcpu));
-> 
-> [Severity: Medium]
-> Will this WARN_ON_ONCE ever trigger?
-> 
-> Looking at kvm_mmu_reload(), it calls kvm_check_request() which consumes and
-> clears the request bit:
-> 
-> static inline int kvm_mmu_reload(struct kvm_vcpu *vcpu)
-> {
->         if (kvm_check_request(KVM_REQ_MMU_FREE_OBSOLETE_ROOTS, vcpu))
->                 kvm_mmu_free_obsolete_roots(vcpu);
-> ...
-> 
-> Since kvm_mmu_reload() is called unconditionally just above in the same loop,
-> won't the KVM_REQ_MMU_FREE_OBSOLETE_ROOTS bit always be cleared by the time
-> execution reaches this check in kvm_tdp_mmu_map_private_pfn()?
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-More than likely, but not always since it's a cross-vCPU request.  As stated in
-v1, the goal is more about documentation than about finding bugs.
+Pre-existing issues:
+- [Critical] Bypassing filemap_invalidate_lock in kvm_gmem_unbind when the =
+file is dying allows concurrent xarray modifications, causing Use-After-Fre=
+e and leaked mmu_invalidate_in_progress.
+--
+
+commit 22b749f62017c828a40c33364eefe3474406907f
+Author: Sean Christopherson <seanjc@google.com>
+
+KVM: guest_memfd: Elaborate on how release() vs. get_pfn() is safe against =
+UAF
+
+This commit updates the comment in kvm_gmem_release() to elaborate on the
+synchronization between release() and get_pfn(). It explains why neither
+RCU nor kvm->srcu synchronization is necessary when nullifying memslot
+bindings, detailing the barriers used to prevent a use-after-free.
+
+Link: https://lore.kernel.org/all/CAEvNRgGmyd1yqQXsnz5hWRZpBZUs%3DpiEWbEaqP=
+9%2Bcz9ZqEMQ6g@mail.gmail.com [*]
+
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index b596486d184ca..7f1c6a0f8039d 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+[ ... ]
+> @@ -300,17 +300,55 @@ static int kvm_gmem_release(struct inode *inode, st=
+ruct file *file)
+>  	 * dereferencing the slot for existing bindings needs to be protected
+>  	 * against memslot updates, specifically so that unbind doesn't race
+>  	 * and free the memslot (kvm_gmem_get_file() will return NULL).
+>  	 */
+>  	mutex_lock(&kvm->slots_lock);
+> =20
+>  	filemap_invalidate_lock(inode->i_mapping);
+> =20
+> +	/*
+> +	 * Note!  synchronize_srcu() is _not_ needed after nullifying memslot
+[ ... ]
+> +	 * Obviously KVM would be broken in many places if the synchronization
+> +	 * were omitted, but it's important to note that get_file_active() does
+> +	 * NOT guarantee a reference to the correct file was obtained, only
+> +	 * that the file doesn't point at a reallocated object.
+> +	 */
+>  	xa_for_each(&f->bindings, index, slot)
+>  		WRITE_ONCE(slot->gmem.file, NULL);
+> =20
+
+[Severity: Critical]
+This is a pre-existing issue, but could bypassing filemap_invalidate_lock in
+kvm_gmem_unbind() when the file is dying allow concurrent xarray modificati=
+ons
+that result in a use-after-free?
+
+In kvm_gmem_unbind(), when the file is dying:
+
+	if (!file) {
+		__kvm_gmem_unbind(slot, slot->gmem.file->private_data);
+		return;
+	}
+
+Because kvm_gmem_error_folio() handles memory failure on guest_memfd pages =
+by
+holding filemap_invalidate_lock_shared(mapping) and iterates f->bindings
+without holding kvm->srcu or kvm->slots_lock, it relies entirely on
+filemap_invalidate_lock.
+
+If kvm_gmem_unbind() bypasses filemap_invalidate_lock when the underlying
+file is dying, it can run concurrently with kvm_gmem_error_folio() and
+remove a slot from f->bindings. This allows kvm_set_memory_region() to free
+the memslot while kvm_gmem_error_folio() is still holding a pointer to it.
+
+Could this cause a use-after-free during the iteration:
+
+virt/kvm/guest_memfd.c:__kvm_gmem_invalidate_start() {
+	xa_for_each_range(&f->bindings, index, slot, start, end - 1) {
+		pgoff_t pgoff =3D slot->gmem.pgoff;
+		...
+}
+
+Additionally, if the slot is removed before __kvm_gmem_invalidate_end(),
+xa_find() returns false, which skips kvm_mmu_invalidate_end() and
+permanently leaks mmu_invalidate_in_progress:
+
+virt/kvm/guest_memfd.c:__kvm_gmem_invalidate_end() {
+	if (xa_find(&f->bindings, &start, end - 1, XA_PRESENT)) {
+		KVM_MMU_LOCK(kvm);
+		kvm_mmu_invalidate_end(kvm);
+		KVM_MMU_UNLOCK(kvm);
+	}
+}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260826165647.7692=
+31-1-seanjc@google.com?part=3D1
