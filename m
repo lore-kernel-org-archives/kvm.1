@@ -1,169 +1,116 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F25494811
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 21:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89F048989D
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 21:33:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787780012; cv=none; b=c0DuJVI5xB20Lqxs/JfWtHt4rX/XhAFT1qTcuPgcjFlaQRuc2gzK/QRbYJkjTIa1F1J4o+Sm/i74gepVMpHXpvTM6DK9wUH//Rz24ggELl7GEjVxa992FaE9mZM1ea1JJdXk+tDwKPaoMswflJ/EzdQDuBoP5kiW44Pn70yLqhw=
+	t=1787780017; cv=none; b=SFpzTlnQkU+8hEpMSPujuwYvy3/a2KtDHEqoiT816cHZqAJKagEAm/MHQripLcpDHZqQUtXX+thG329FCt5krwOxX/qtY0NILJgRyV32wpDUDQEjo6u7I4MxwgiAz884G0ZSVd0aU1bT1Tk/Vhi0GoyqEj9EvWhOC86jDffMSYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787780012; c=relaxed/simple;
-	bh=5o1ucxtr3buA18SWRKhpY2bxC7WdEGghBR5g0Rxi3wM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PavVOD6xCnl+YAgdyNwDx4Q61VoeVUqRyVeeNIihjNgAh4dJsOhn8j8e6IIAQgA3wsU2ePYsJr+C7GPaGtqbjXS68TxlsBhHqaKXZBCsaoEY6Gg50s88RC3x3U3codCbH5jU5hxBCyvje29c0Ur3KMp4w1nxCIFTLHkYP8Yy9LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ph21pb/4; arc=none smtp.client-ip=209.85.214.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787780017; c=relaxed/simple;
+	bh=uY9cS0I6zAzQMoUTO3/Ycze8wv5cMh6WhS1ycRoG2/A=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=BhJ+rQSLcfaUNWim4ztfuZha28xK2RLxo0tYrHqRJdvU8lECujdnA8fvGwABTKFLCdOylspgujKUjwH6W7uFw3Z3DMiAcuItmLsUc1d+SYUb7elxz3dDc1uDEkv73CDNom6QtecXqKPs9wjdOU0tMIB85UQUdK6F567zkw5g1bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DWsPH/0h; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ph21pb/4"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d6f75c1219so29573335ad.3
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 14:33:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787780005; x=1788384805; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=UiH12BgSBfe0UjZRWynvrUBvNJGP2GUeAXjWBAJFBLE=;
-        b=Ph21pb/4O1HCECZpP8VXLQV7yUva4/iJFKHjKqL9LjSGMteOsX0LTEFsZeZ2o4uCza
-         DYR5SxD562TOQObS6aHyWN7XL90Uw44bpgCVytwnZ9l7R8nlYDJyAZSogomftgf+hHkP
-         fGBC4fPkgNXBsvx+iN9rfTIPVnyAE0hQ6AKojXrGBV8Ud4wiOiIkz9W5jMa7tdMCLZSx
-         n5Jb6QwpJ+swGhz64/qUmWPlqixIacrccBL+TO2lgiIPYkn/ECuEgzvWVoevPMDIvtLK
-         y8MS5TtqQ43ij0q8ucyikJcQXfJ00PwMuKv85g7E1DUJxW4oS7cpfLEmIR1eHqF+LwUh
-         ps8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787780005; x=1788384805;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UiH12BgSBfe0UjZRWynvrUBvNJGP2GUeAXjWBAJFBLE=;
-        b=gaoVvnUVMq2pO1rXD4s8X3cFv3+VqpKwbpay2jjHZ9jdIqP7rbHYRsB/uM86xvfkZb
-         B2CwDjyEHU+wSG6wC8fBexCoqQIcABpNIdtDTRqpNlYbqhaOiNsuc/LIme2XqDpF+emH
-         KOqBbyK4fw2LvIKblvruzIilIwRdxFNVEDSg92gDQy4DLfmKZ7/QpoDuKc/xcKrE5Jvt
-         CYUIkIrAUzUdf4txIU8ks99ohknuUJm7lxcfEIglmTyrOnpu/Hzjzip9juVqdSOEPVPg
-         ujPpL/xFtsT8VnKTB/RrBMqfxvD8KH2XLhu1rq4KDK+Y9HeXtkx59RHA6LvyfXray8e4
-         Xb0g==
-X-Gm-Message-State: AFuF++k+SRaBmVenRkuCVj4ryrup8SjbUwZJ9vCHzUjqvPnqJYMTMvhi
-	uXL9mSZE8g4TJqHz1vRMWckdLstwa8j0YWg6Ccq6pHVKbC3c0dp7KaPgmWAMgawmPAGxZzdGH74
-	rfq2kCw==
-X-Received: from plbmg8.prod.google.com ([2002:a17:903:3488:b0:2c7:f626:ec80])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3810:b0:2ca:d91d:d3a7
- with SMTP id d9443c01a7336-2d707aea3aamr193928235ad.10.1787780005172; Wed, 26
- Aug 2026 14:33:25 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 26 Aug 2026 14:32:58 -0700
-In-Reply-To: <20260826213303.914988-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DWsPH/0h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480441F000E9;
+	Wed, 26 Aug 2026 21:33:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787780002;
+	bh=0Blbz231a2qfBh1C+pZvqWulriD5FiWfboK8Lczqb+8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=DWsPH/0hy3qpod0zu9+WIUnEG0JQpmJwWPa8VCfTdZvTaTV3Hg+u2OG/EInkZNV3L
+	 jZBhQQUqO5U7LLPXEdQSUZox+Ib7XSVxeYLk8mi9/HU3rfQWMM95tdhwaUyf3tfen5
+	 ibQ+k5kcgSJVeMOWjjIZeTFxMb36jBUKg2Q2ZEXpqspmYcWIZt/TWcsLvs/C6LvEZ+
+	 9aecbnqHPxPq2L4pciMJ0yKyd7JR+XYMb+esMZ5eve1pKH5c6lCN9+bKgcYATfFYiI
+	 k5jiNkN7CXAMph1YwQd04VJsvMlDkOz9hEHSozAsESfrrTQ7+TnSUryz66z17LYuTP
+	 eWgFxor0x8ZNA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/4] KVM: nSVM: Reject KVM_SET_NESTED_STATE if L1 has
+ EFER.LMA=1 && EFER.LME=0
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260826211844.884951-2-seanjc@google.com>
+References: <20260826211844.884951-1-seanjc@google.com>
+ <20260826211844.884951-2-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 26 Aug 2026 21:33:21 +0000
+Message-Id: <20260826213322.480441F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260826213303.914988-1-seanjc@google.com>
-X-Mailer: git-send-email 2.55.0.887.g758fc8c411-goog
-Message-ID: <20260826213303.914988-19-seanjc@google.com>
-Subject: [PATCH v10 18/21] KVM: x86: Remove implicit rdtsc() from kvm_compute_l1_tsc_offset()
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Paul Durrant <paul@xen.org>, David Woodhouse <dwmw@amazon.co.uk>, Dongli Zhang <dongli.zhang@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Let the callers pass the host TSC value in as an explicit parameter.
-This leaves some fairly obviously stupid code, which is using this
-function to compare the guest TSC at some *other* time, with the
-newly-minted TSC value from rdtsc(). Unless it's being used to measure
-*elapsed* time, that isn't very sensible.
+Pre-existing issues:
+- [High] svm_set_nested_state() leaves the vCPU in an inconsistent nested s=
+tate if nested_svm_load_cr3() fails.
+--
 
-In this case, "obviously stupid" is an improvement over being
-non-obviously so.
+commit c04793c5ea54cf0af42f1998cd2e7c8148705788
+Author: Sean Christopherson <seanjc@google.com>
 
-No functional change intended.
+KVM: nSVM: Reject KVM_SET_NESTED_STATE if L1 has EFER.LMA=3D1 && EFER.LME=
+=3D0
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/msrs.c |  3 ++-
- arch/x86/kvm/x86.c  | 11 ++++++-----
- arch/x86/kvm/x86.h  |  3 ++-
- 3 files changed, 10 insertions(+), 7 deletions(-)
+Reject KVM_SET_NESTED_STATE if the incoming L1 host state has an
+impossible EFER combination of LMA=3D1 but LME=3D0. This prevents KVM from
+consuming the illegal state when constructing the shadow MMU for L2.
 
-diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
-index 66fa7140d65d..22ceb39d41f6 100644
---- a/arch/x86/kvm/msrs.c
-+++ b/arch/x86/kvm/msrs.c
-@@ -1631,7 +1631,8 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		if (msr_info->host_initiated) {
- 			kvm_synchronize_tsc(vcpu, &data);
- 		} else if (!vcpu->arch.guest_tsc_protected) {
--			u64 adj = kvm_compute_l1_tsc_offset(vcpu, data) - vcpu->arch.l1_tsc_offset;
-+			u64 adj = kvm_compute_l1_tsc_offset(vcpu, rdtsc(), data) -
-+				  vcpu->arch.l1_tsc_offset;
- 			adjust_tsc_offset_guest(vcpu, adj);
- 			vcpu->arch.ia32_tsc_adjust_msr += adj;
- 		}
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index f7d9dfe6046d..51a8250e758b 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1155,11 +1155,12 @@ u64 kvm_scale_tsc(u64 tsc, u64 ratio)
- 	return _tsc;
- }
- 
--u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 target_tsc)
-+u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 host_tsc,
-+			      u64 target_tsc)
- {
- 	u64 tsc;
- 
--	tsc = kvm_scale_tsc(rdtsc(), vcpu->arch.l1_tsc_scaling_ratio);
-+	tsc = kvm_scale_tsc(host_tsc, vcpu->arch.l1_tsc_scaling_ratio);
- 
- 	return target_tsc - tsc;
- }
-@@ -1321,7 +1322,7 @@ void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
- 	bool synchronizing = false;
- 
- 	raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
--	offset = kvm_compute_l1_tsc_offset(vcpu, data);
-+	offset = kvm_compute_l1_tsc_offset(vcpu, rdtsc(), data);
- 	ns = get_kvmclock_base_ns();
- 	elapsed = ns - kvm->arch.last_tsc_nsec;
- 
-@@ -1370,7 +1371,7 @@ void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
- 		} else {
- 			u64 delta = nsec_to_cycles(vcpu, elapsed);
- 			data += delta;
--			offset = kvm_compute_l1_tsc_offset(vcpu, data);
-+			offset = kvm_compute_l1_tsc_offset(vcpu, rdtsc(), data);
- 		}
- 		matched = true;
- 	}
-@@ -2627,7 +2628,7 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 			mark_tsc_unstable("KVM discovered backwards TSC");
- 
- 		if (kvm_check_tsc_unstable()) {
--			u64 offset = kvm_compute_l1_tsc_offset(vcpu,
-+			u64 offset = kvm_compute_l1_tsc_offset(vcpu, rdtsc(),
- 						vcpu->arch.last_guest_tsc);
- 			kvm_vcpu_write_tsc_offset(vcpu, offset);
- 			if (!vcpu->arch.guest_tsc_protected)
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index 0f5919b092e4..1d9a66048b01 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -335,7 +335,8 @@ u64 kvm_scale_tsc(u64 tsc, u64 ratio);
- u64 kvm_read_l1_tsc(struct kvm_vcpu *vcpu, u64 host_tsc);
- u64 kvm_calc_nested_tsc_offset(u64 l1_offset, u64 l2_offset, u64 l2_multiplier);
- u64 kvm_calc_nested_tsc_multiplier(u64 l1_multiplier, u64 l2_multiplier);
--u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 target_tsc);
-+u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 host_tsc,
-+			      u64 target_tsc);
- void kvm_vcpu_write_tsc_offset(struct kvm_vcpu *vcpu, u64 l1_offset);
- 
- static inline void adjust_tsc_offset_guest(struct kvm_vcpu *vcpu,
--- 
-2.55.0.887.g758fc8c411-goog
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index 73f37b050d0a0..49fb10ad1f9f6 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -2028,6 +2028,7 @@ static int svm_set_nested_state(struct kvm_vcpu *vc=
+pu,
+>  	if (!(save->cr0 & X86_CR0_PG) ||
+>  	    !(save->cr0 & X86_CR0_PE) ||
+>  	    (save->rflags & X86_EFLAGS_VM) ||
+> +	    ((save->efer & EFER_LMA) && !(save->efer & EFER_LME)) ||
+>  	    !nested_vmcb_check_save(vcpu, &save_cached, false))
+>  		goto out_free;
+> =20
 
+[Severity: High]
+This isn't a bug introduced by this patch, but looking further down in
+svm_set_nested_state(), does this code leave the vCPU in an inconsistent
+state if nested_svm_load_cr3() fails?
+
+arch/x86/kvm/svm/nested.c:svm_set_nested_state() {
+...
+	ret =3D nested_svm_load_cr3(&svm->vcpu, vcpu->arch.cr3,
+				  nested_npt_enabled(svm), false);
+	if (ret)
+		goto out_free;
+...
+}
+
+If nested_svm_load_cr3() fails, the function jumps to out_free and returns
+an error without unwinding the guest mode state transitions that occurred
+earlier in the function.
+
+The vCPU is left in guest mode with svm->vmcb pointing to vmcb02, but the
+MMU is not re-initialized for the nested guest because it returns before
+calling kvm_init_mmu().
+
+Will a subsequent KVM_RUN ioctl attempt to execute the vCPU with mismatched
+VMCB and MMU state?
+
+Could an unprivileged host userspace process trigger this intentionally to
+corrupt KVM internal state and crash the host?
+
+For example, could userspace call KVM_SET_CPUID to set a high MAXPHYADDR,
+call KVM_SET_SREGS with a CR3 near that limit, and then call KVM_SET_CPUID
+again to lower MAXPHYADDR? This would make the previously set vcpu->arch.cr3
+illegal, causing nested_svm_load_cr3() to fail its kvm_vcpu_is_legal_cr3()
+check and return -EINVAL during KVM_SET_NESTED_STATE.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260826211844.8849=
+51-1-seanjc@google.com?part=3D1
