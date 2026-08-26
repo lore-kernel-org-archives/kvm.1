@@ -1,63 +1,68 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015EB333730
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 21:53:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EB7404BFF
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 21:53:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787781182; cv=none; b=G6EyOsrdhyg1XUmmDUQuzcxrcHjkHcLcjLBRvZHlGcWSaigMfmBdw5/z394lZBzckMzSSEJmvXDZpxdWUQzZyASj8T+0h0cYrEy7mNbrprmoT1MEdGa1ZHXwdedUsDT5L+wFtAUZ2H/AwgsWf4XLLXmendS+HkIitG0NuILz4ac=
+	t=1787781183; cv=none; b=IPOd7KZ8368YUd7NigHkbfLjeF/Zf/THDiacRCLEFPNjb0pmSQnb6qdNaOww6Pl3jUiwHGJGPK+2pI7fYfO7tzXWerobsotosGREbFTiQWkq/rZrSmhI2b8EIuNTkCwgm7Bb51jLvcwTI6h7IueqyRRyFFNthBYSzkWLKUWBEkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787781182; c=relaxed/simple;
-	bh=bq2jxWAe7qBTX89QBOaVpXg7CVP0SDZeCsAvl4L9dio=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=MR0FBvOYH3dmRjyFAo/fmKT0oLAwkIF6YIUlX6gFuPCB36mbbtjfxTbLso9KAAeJC5OIhviCuZSode/9Xd5utlWeBLmUTHRRhDS6Ebkf4prAFzHCsulZHP5m+ioUII+o/D8bchv33WSAEB3KwczdMfYGhN7PaXkOrZwbvvECaHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BeC10+MB; arc=none smtp.client-ip=209.85.214.200
+	s=arc-20240116; t=1787781183; c=relaxed/simple;
+	bh=feEJpgtivJVJP7w5kGre4uQSFBFA3H1qatw9lf3fB78=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=R53xp4lylgoJmN9mV6TqBLF5rgff/645ue8Cc5clGCOTd8QXvvatDFamTMae4wIyuOPBgLKj817K9SrjNelUp7W/DjF82hd/ECaUwt3BpuoKZ381PPsVzMFxE2WhJmF5GAVJ5hap8robX97F+hdSQtSsh1RD2XLO8adxHhaiUd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NG29VLwr; arc=none smtp.client-ip=209.85.210.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BeC10+MB"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2d52734fc41so29889885ad.1
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 14:53:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NG29VLwr"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84e048a801dso2096653b3a.3
+        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 14:53:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787781180; x=1788385980; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hiEA3cghG/3WKW3wEvJyBXb7QBcUvHPUVDk4NRGPQ24=;
-        b=BeC10+MBACahzUfbRHJMCa8VUH1aA0ZFgNCw0CoLpi/wOW0VVMsp5lvyD7Ot7LteQT
-         +0QsDScO8FQ1oL1VsSOCjATBv32HBBF7N1bN8j3tQ5TrrE51BoVZtCwkTyF3IcjJBb3Y
-         71nQ/F0yChrl4Ay8ddCkBvJd7C1Gr6+/xTK2q4ztY01JRvNcwT3BC8TDUBmO62H3Br3B
-         dNIr2cdMxPoFZW1XtpfggOL2tLHP45U8mS6GnoFQWtFViYXyeBQr41H5iXAeAK13vBhZ
-         W0BanlDeiH6SjTgEHXIMgXnkAp+JIPr2ZcqhL2n6F9olBNI52DC2CE2Lw3G2ZTCd2hD8
-         E1iQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787781180; x=1788385980;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=google.com; s=20251104; t=1787781181; x=1788385981; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=hiEA3cghG/3WKW3wEvJyBXb7QBcUvHPUVDk4NRGPQ24=;
-        b=sI2so8fuO4L3uPL/ZOzxxf4Nll/haZBR9SGUd9MTrTe+1AFW3pUaRI+komwN92U471
-         SNyL8qDSLKTXIeFxuzk+rg0D90nA5UuhB7beuwQeL01yRNEQr8Qr4dQMRCZmSpp2Dw4q
-         g7K3pLCTfLZD5ewakx2FRiqaVqLW9ofGdF5MhjRel4y0/zXN3pBhiGwwslTZMtMFJMj0
-         UsBiu6pMweYLd+mTNcOm7R+VvdOkoawBhsTXZ5udE1TS3Jte8OrvvPbcn/X8ZQS3QJw0
-         eWnK0WkUB9+uTJTdU3h/dtJq2lRFU2dbrVpnSngp6acFHkU+zuvGFc6Nxm1zAUJVQR8r
-         8ltw==
-X-Gm-Message-State: AFuF++mKJOWvJLhCGmHfS8ega3MbhQppDciRTU66+RrWJjlVUKNjqcbq
-	0IqJP7P9hSZp85pBnALs9pUuPxIXdEwvYzmym5tbV2d0OxcG22sxbRKfO6UkS4ZLKtruPOUaQ6Y
-	RtvacAQ==
-X-Received: from plht13.prod.google.com ([2002:a17:903:2f0d:b0:2c0:a516:2c2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1104:b0:2ca:e19c:986
- with SMTP id d9443c01a7336-2d70795797fmr169299385ad.1.1787781180091; Wed, 26
- Aug 2026 14:53:00 -0700 (PDT)
+        bh=zLQgP73u/ANeEtWX1eOrwdDr4xmZAhbySiv3X7r8Dew=;
+        b=NG29VLwrBTgImWDtgsA8j7a5mjDudN65N6WWavFYRlG9HQPw1MO9ofSFzeawNZsNYV
+         UejiAxZQlpAyuoQ5LY5Wu6XbAD78cgX0/3FYN9qzxQp3Wj55PE8LdRSKb2ZU6cVSz1kB
+         0/d4E6uCiFBxNL2vhU/J+4p83JUTaQ1WDF+21rKfON5ei24QwuudcOhNyVNRweyzyu7u
+         hyyOZ/jUG0kZb5AOGvfVTeUfdomuPlKqdf5zrLY1SPoTyulWxceV97Tx8kqRb/PE/ZGl
+         pzU8IuSqtEFmilNY6+mBCjJtbd0NLsKkomd+No3P5uHYXNqfweVRPA+N3Id/STkEHYW8
+         WSbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787781181; x=1788385981;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zLQgP73u/ANeEtWX1eOrwdDr4xmZAhbySiv3X7r8Dew=;
+        b=seJ+2MDo2DWBcGGDwgJ5qgILF2RshlvJDpg2R7PyqhGBjA6ucNJUpOshUmu/UrnhsG
+         jz17Dtuut4+KiYW15xnLyPwQMw4T/YNeWKLRC+FuQwQVwCK4O61Cf1z+qbd7D0sNTGyv
+         y5AV8OgQodL5D9eu0HIS5SywH80atDCSr1y9lQHJa3vkj3MrQE+TaJvZO8wwG4RLTUXV
+         i1L0f7XDpg0e69VmJ4efNsEiZRDX8tZqqHOEWR2E+fIYGXXNoLKxvSjREaAyfs5sFWd3
+         72m+kF/JYZD+T+wPdaativeNL9M44Ef5tpDjDv6F8pcYZNHrBdvJaLNUfGjcRHp5KZDd
+         JzWA==
+X-Gm-Message-State: AFuF++kQP8OXPxsZkooKf5uRkEBPbuE+dWh9RU+tql5O0FvG7EaVehwK
+	Z7OFwDvoKvQAQOd/V/8eSDAp5o2x/40wjqX2LCdVRYIqcTLxRkdMCtq5TwiRnxwobpO6RyfncFg
+	p1GE+iA==
+X-Received: from pfaq15.prod.google.com ([2002:a05:6a00:a88f:b0:853:6b02:51a1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3496:b0:848:77b3:579a
+ with SMTP id d2e1a72fcca58-853755c49b3mr19127323b3a.17.1787781181194; Wed, 26
+ Aug 2026 14:53:01 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 26 Aug 2026 14:52:56 -0700
+Date: Wed, 26 Aug 2026 14:52:57 -0700
+In-Reply-To: <20260826215258.937210-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260826215258.937210-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.887.g758fc8c411-goog
-Message-ID: <20260826215258.937210-1-seanjc@google.com>
-Subject: [PATCH v2 0/2] KVM: VMX: Explicitly track TDX VMs' root level
+Message-ID: <20260826215258.937210-2-seanjc@google.com>
+Subject: [PATCH v2 1/2] KVM: VMX: Explicitly track TDX VMs' root level instead
+ of guessing it from CPUID
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -66,35 +71,174 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Binbin Wu <binbin.wu@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Fix a bug where a misbehaving (or niave?) userspace can configure guest CPUID
-such that KVM will use the "wrong" root level for its mirror EPTs and trip the
-KVM_BUG_ON() in tdx_load_mmu_pgd().
+Explicitly track the root level for TDX VMs instead of trying to infer the
+depth of the paging tree based on an individual vCPU's CPUID information.
+Applying KVM's existing logic to select the root level to TDX is flawed as
+nothing *requires* userspace to fill in the correct guest.MAXPHYADDR for a
+vCPU's CPUID.  Guessing at the correct root level is also ridiculous given
+that userspace has already told KVM the root level during TD initialization.
 
-v2:
- - Rewrite the comment in kvm_mmu_get_tdp_level(). [Rick]
- - Check for kvm_has_mirrored_tdp() in kvm_mmu_get_tdp_level(), and yell if
-   arch.mirror_root_level isn't also set. [Rick]
- - Separate the removal of TDX_SHARED_BIT_PWL_{4,5} from the bug fix. [Rick]
- - Fix a buring => buried typo. [Binbin]
- - Collect Tested/Reviewed-by. [Binbin, Rick, Yan] (I applied 'em only to
-   patch 1, please  holler if that doesn't seem right).
+Relying on userspace to set the expected/correct CPUID lets a misbehaving
+userspace trip the KVM_BUG_ON() in tdx_load_mmu_pgd() by configuring guest
+CPUID to use an "incorrect" guest.MAXPHYADDR.
 
-v1: https://lore.kernel.org/all/20260814224509.2342760-1-seanjc@google.com
+Don't use kvm_gfn_direct_bits() to infer the mirror root level, as the
+connection between TDX's one and only "direct" bit and the predetermined
+root level is a TDX implementation detail.  I.e. avoid baking in the
+assumption that there is exactly one "direct bits", that the one bit is a
+pivot between normal and mirror roots, and that the pivot bit is the most
+significant bit of the effective GPA space.  For the same reason, set the
+root level and direct bits in TDX code, i.e. don't provide a helper in the
+MMU, because from the MMU's perspective, they are two separate concepts.
 
-Sean Christopherson (2):
-  KVM: VMX: Explicitly track TDX VMs' root level instead of guessing it
-    from CPUID
-  KVM: VMX: Drop TDX_SHARED_BIT_PWL_{4,5} and dedup related code
+Keep gfn_direct_bits even though it can be trivially derived from
+mirror_root_level as saving a whole eight bytes per VM is meaningless,
+keeping the TDX details buried in TDX would require a kvm_x86_ops hook, and
+the value is queried fairly often and in hot paths.
 
+And for the moment, keep the S-bit sanity check in tdx_load_mmu_pgd(), even
+though it really only needs to ensure the incoming level matches the
+preconfigured mirror root level.  Because KVM manually configures the
+S-bit location, there's technically a risk that the S-bit location and
+mirror root level could get out of sync.  That can be addressed by more
+programmatically computing the S-bit, but that doesn't need to be done now.
+
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Kai Huang <kai.huang@intel.com>
+Cc: Yan Zhao <yan.y.zhao@intel.com>
+Fixes: 20d913729c11 ("KVM: x86/mmu: Taking guest pa into consideration when calculate tdp level")
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Tested-by: Yan Zhao <yan.y.zhao@intel.com>
+Tested-by: Binbin Wu <binbin.wu@linux.intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
  arch/x86/include/asm/kvm_host.h |  1 +
  arch/x86/kvm/cpuid.c            | 14 --------------
  arch/x86/kvm/cpuid.h            |  1 -
  arch/x86/kvm/mmu/mmu.c          | 19 +++++++++++--------
- arch/x86/kvm/vmx/tdx.c          | 20 +++++++++++---------
- 5 files changed, 23 insertions(+), 32 deletions(-)
+ arch/x86/kvm/vmx/tdx.c          | 14 ++++++++++++--
+ 5 files changed, 24 insertions(+), 25 deletions(-)
 
-
-base-commit: 76671054f9a1ff6abb976583cd8da37650acdc97
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 683bb8bf43a9..edd5ad2e5b52 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1406,6 +1406,7 @@ struct kvm_arch {
+ 	struct kvm_mmu_memory_cache split_desc_cache;
+ 
+ 	gfn_t gfn_direct_bits;
++	int mirror_root_level;
+ 
+ 	/*
+ 	 * Size of the CPU's dirty log buffer, i.e. VMX's PML buffer. A Zero
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index ddb022cb203a..34c609a60eef 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -483,20 +483,6 @@ int cpuid_query_maxphyaddr(struct kvm_vcpu *vcpu)
+ 	return 36;
+ }
+ 
+-int cpuid_query_maxguestphyaddr(struct kvm_vcpu *vcpu)
+-{
+-	struct kvm_cpuid_entry2 *best;
+-
+-	best = kvm_find_cpuid_entry(vcpu, 0x80000000);
+-	if (!best || best->eax < 0x80000008)
+-		goto not_found;
+-	best = kvm_find_cpuid_entry(vcpu, 0x80000008);
+-	if (best)
+-		return (best->eax >> 16) & 0xff;
+-not_found:
+-	return 0;
+-}
+-
+ /*
+  * This "raw" version returns the reserved GPA bits without any adjustments for
+  * encryption technologies that usurp bits.  The raw mask should be used if and
+diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
+index 8d863f45585d..46bfe8699e67 100644
+--- a/arch/x86/kvm/cpuid.h
++++ b/arch/x86/kvm/cpuid.h
+@@ -68,7 +68,6 @@ void __init kvm_init_xstate_sizes(void);
+ u32 xstate_required_size(u64 xstate_bv, bool compacted);
+ 
+ int cpuid_query_maxphyaddr(struct kvm_vcpu *vcpu);
+-int cpuid_query_maxguestphyaddr(struct kvm_vcpu *vcpu);
+ u64 kvm_vcpu_reserved_gpa_bits_raw(struct kvm_vcpu *vcpu);
+ 
+ static inline int cpuid_maxphyaddr(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 064ecc33b926..611c78be8b41 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -5953,19 +5953,22 @@ void __kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
+ 
+ static inline int kvm_mmu_get_tdp_level(struct kvm_vcpu *vcpu)
+ {
+-	int maxpa;
+-
+-	if (vcpu->kvm->arch.vm_type == KVM_X86_TDX_VM)
+-		maxpa = cpuid_query_maxguestphyaddr(vcpu);
+-	else
+-		maxpa = cpuid_maxphyaddr(vcpu);
+-
+ 	/* tdp_root_level is architecture forced level, use it if nonzero */
+ 	if (tdp_root_level)
+ 		return tdp_root_level;
+ 
++	/*
++	 * If the VM has mirror roots, then the root level is predefined as the
++	 * mirror root (and by extension the normal root) needs to match the
++	 * root level that was configured for the external page tables that are
++	 * being mirrored by KVM.
++	 */
++	if (kvm_has_mirrored_tdp(vcpu->kvm) &&
++	    !WARN_ON_ONCE(!vcpu->kvm->arch.mirror_root_level))
++		return vcpu->kvm->arch.mirror_root_level;
++
+ 	/* Use 5-level TDP if and only if it's useful/necessary. */
+-	if (max_tdp_level == 5 && maxpa <= 48)
++	if (max_tdp_level == 5 && cpuid_maxphyaddr(vcpu) <= 48)
+ 		return 4;
+ 
+ 	return max_tdp_level;
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index b272c20586a7..e6b7da616817 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -2760,6 +2760,13 @@ DEFINE_CLASS(tdx_vm_state_guard, tdx_vm_state_guard_t,
+ 	     if (!IS_ERR(_T)) tdx_release_vm_state_locks(_T),
+ 	     tdx_acquire_vm_state_locks(kvm), struct kvm *kvm);
+ 
++static __always_inline void tdx_set_mirror_root_level(struct kvm *kvm, int level)
++{
++	BUILD_BUG_ON(level != 4 && level != 5);
++
++	kvm->arch.mirror_root_level = level;
++}
++
+ static int tdx_td_init(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
+ {
+ 	struct kvm_tdx_init_vm __user *user_data = u64_to_user_ptr(cmd->data);
+@@ -2822,10 +2829,13 @@ static int tdx_td_init(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
+ 	kvm_tdx->attributes = td_params->attributes;
+ 	kvm_tdx->xfam = td_params->xfam;
+ 
+-	if (td_params->config_flags & TDX_CONFIG_FLAGS_MAX_GPAW)
++	if (td_params->config_flags & TDX_CONFIG_FLAGS_MAX_GPAW) {
+ 		kvm->arch.gfn_direct_bits = TDX_SHARED_BIT_PWL_5;
+-	else
++		tdx_set_mirror_root_level(kvm, 5);
++	} else {
+ 		kvm->arch.gfn_direct_bits = TDX_SHARED_BIT_PWL_4;
++		tdx_set_mirror_root_level(kvm, 4);
++	}
+ 
+ 	kvm_tdx->state = TD_STATE_INITIALIZED;
+ out:
 -- 
 2.55.0.887.g758fc8c411-goog
 
