@@ -1,117 +1,83 @@
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDA738D407
-	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 09:18:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787735928; cv=pass; b=qhaUW7bOEUAAN90P7GhUR2e4bVXIUShzPuc1yGpaGaROYpuCmSZLek8/NSN7x+ma2eKUu/FmG/BD2xONsCkp2aoE7G0YaA7zavzaiAJ4hkOCqiors+W74ijTtguvhh1c8j8ssiFaLoTJP99POgug0VVAkILuloSIBHN9eNMGyzY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787735928; c=relaxed/simple;
-	bh=PXd4FJsR6tKMFA56Q6aHGGrl17ypmJp1VW4g24+xHhM=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nx2woJnZdfl8Hqg0f6HOUylx+3gV5j5mBQE2wEX0/rZPsd10a87YsB8QQEHLM8nSG6oGEPfu6SVc4dB9Y/K4GpfEr3YC35WtzfbeK8E2FFPAKTq8zPOiSz5eSqwwUIPhnUa9QJQmyZzKaNsjnJU7Gx5pKZul5a4GNOoqgUmWUms=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wOO38D6J; arc=pass smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0643E3C13E0
+	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 09:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787735929; cv=none; b=oXnzxR4cO2ZmyIBh3KlgCCOetg76YdEh+9/qfh7exqBby2y7jvdOPJKxKFLuD0DPWBipmLpuKEBKbQfdhdVmJy0FUL9bpzJD81mOmDn2Po2SuQvMacpgIr5OWujRVsYbK3MvLAPRQZ8YWCMamjBBm6HvWTZZqUjXfKeSD/Wbkq8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787735929; c=relaxed/simple;
+	bh=rjS7YIkj9IfMwuN6szgnaq7r9mhIQEiYfekeu/by3Vc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=CdoeLLVDf9PnfbAbZtYfrrdDNxWZiDOgQfgv7O0NyAwkEvDfu9jFQi4SAG+yu47IE3xqkN90Rfu54S3U/7OKccMFC/AZtJgliRXZAl+o7SU+eNNzbt2Yo5ct3QXkqajr4QGGkxTjsDc1OKrQxC74PSG2o2mBLIDVITZ0JShP5PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZmSyFhij; arc=none smtp.client-ip=209.85.215.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wOO38D6J"
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-9061a795d76so9250066d6.3
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZmSyFhij"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1c18c775eso741877a12.0
         for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 02:18:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787735919; cv=none;
-        d=google.com; s=arc-20260327;
-        b=K6J2SYPrfKbo1lwq9xlCewEGIy8lxPbjLL20K2LIRgxktybdg7betxh8vObCrBNlCu
-         2VGd1M3PRI8ZhCDZU80OZwte0HP2EvwWhI92SZt3Lruprk+4/rP8hpWn889UnzPgNvPQ
-         N2EBVvkzpAMpWJFIBovzJlUpu507zrZQDRfmBec9zvkWQVBnGJc1UHO3GB9Hg/asBDf3
-         rVv1wS07H29mnyVsDf9POwr3QsHHDbX3LhuDzROgQPWfsWmWEZOhRJRF1eMFu98F1bHK
-         kCPk8iwVEd7TVfOD38FZaHlboFK8QwOEkmNC24DzfNlPb5qUTRdzgsZzaAqJa9+aRWU5
-         uqbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=W29gLyGYJCPLMB1l2BXhwer1rQC/3q6nHb6nCzKL89k=;
-        fh=UngiHxCQOiW9W/AyqPwSpk0E/00AUx8rn8jdeAYuf7k=;
-        b=RcXQFqdvfoa5GgAM4QSJqaknO4+7tb5wo2Gw7VDBSl2Io5doQoHutdVM/eTua1AQFe
-         j86vsG7WfwaDIqOdX7kVlbixHQw0uAiCWSWie0UiY9+IUeGPclF3qygMacovdGds5vS4
-         E0Vyn8a1dguHQFWJiSuyhQD7/F++q4H3Pjy7qfZYOIuh3MwytpSaVpyZeHlpSe21DOXk
-         /aeRQG5IsI183sELucIBxWeRBtsXgYFRes6bERFg/CIFJDY2pydwuHpd6PS0x8aAqExQ
-         T59eA0hdRFGVmCCwDC8l5IfQg8bzKkpxSF+gNoWMEVe3j+5mohGXpWGUf2DSzxPuTHok
-         DWsg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787735919; x=1788340719; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1787735920; x=1788340720; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=W29gLyGYJCPLMB1l2BXhwer1rQC/3q6nHb6nCzKL89k=;
-        b=wOO38D6J17F7wLoGSjmqHJqGG2iU4xH3Jq8NKDeOZpGjR+sQfTPP6zBpKK2jBGlC1j
-         8svNJV413v2Wd0IdofAGVQnbFumK7ur8t3y2kkuqCDIrhGKx1KAGJC0K+bx6R3S+vTYj
-         MRFJ7avLxXwYRHcftf3DQaltYkHgbPExnknklGttUjFNY5hZmVntDLGSjyYIbMF20Y4B
-         WCRcsvq7VhCjvr27pZFDQjdQLyUHQf9zoeNDQ1YvlPEHXvLDKseTM6CjXPL1lS4Fd6Ea
-         9To5K/g2J9vrk81jpZ9/XbG4Y8vLoKo3cYErQD8RbS9ttgqSie2jYkLRzUpzK+w6phWw
-         t8ig==
+        bh=mlxub+uHBO/9tuD+fZ54oP42v4czhWpxNnl1EZnj2VA=;
+        b=ZmSyFhijfR8gmzgf8VtnQJvaMaFQh29uhMB88Zx62ItvJt0cuHJZpDekk3E2dTaPuG
+         ijhIpizYu6mMB7iJurlcwm0nDQbM1IdsCeouBYAPA+fLvzYURj61WZfaWD0WTmYJs3rs
+         2nEBZrfhMTjxTyIsgxD1UkC3i6nQKdeZ/W8o4ZDyZDPOw0NRUlKjAjFElgfK7Y+yKhhV
+         yDYT9EJ37iS42JXiD7uU1thV1sf7tTAcLjOEkVH/t3sUr7AyIEQ8m+Qb3B3WMoG6J7mW
+         cM4QAQ3pQTe737ZzXN2QSvweB73s5PTxE4Dep47AIK4azNHDpQ4fOFOfmH6uGOOaaOy+
+         HQDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787735919; x=1788340719;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1787735920; x=1788340720;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=W29gLyGYJCPLMB1l2BXhwer1rQC/3q6nHb6nCzKL89k=;
-        b=IC9onMhXlFG/asAcAYbrW6kL95xfRMiZnPoNWgWWQxo03FArNi+Lc65yPRT3zYEiAC
-         9OAD3eyxZEodoGd8Al+8NL5HvM1dcnV0IPQ/P8E7rRgl3NE/mMrWZxsTAXJo7+exULcE
-         MoyLFTRyxcWVKsuGsOtxUDs3XIEYWZkJx+Pis54vv+leTJqcIEH6GR5dy2ulVPtZzVdr
-         eo66FpUNWMlKyXf4RqX+ZOe3MXxdUzp8r9HQ+98dd53vBjvqXVeb+Y1IyBvuYQMlo+CF
-         uhMAt7Kf1QrMXv0HmILHI1jsh5h7b6GKIlrQ/G2SMLQW1Q9r487lrAljyGDLPs5FyzSL
-         TFyQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq/tjfvDC0hOIsy1NJuTWprHYtRgDGAqm4dkgifQGrgAmbcogsI1Fp9arocZGkHhGxfQvg=@vger.kernel.org
-X-Gm-Message-State: AFuF++krgQdiheAldajNcRWCq5mWtx8laoOG5QgkamjUNUrGhonuTunq
-	xB0QYzK+8swg74KazxvWeYHZiw9Zzx0RvdeaHpgE5K4hMeI/AaX6a1aSEXcYCPXNXLfPUZcwKGS
-	uTYat+sIdAjQ6C8SHffNQGWGSWAvhUbyTtermDH4a
-X-Gm-Gg: AR+sD113xGcxVWywFqOBu62dr/nbdzY8fj1CVDCITpR2I8gYoBMCGdojpz2sjD1tAMA
-	MMULLF0vY4aLFBAZ2UH41I3caI/yo/l/3A7VHSP7FbQ6WIMDbRSirQrmfR3nzkTv4CM68rrt8mD
-	W8prnWGpn5pIRmWDQtlSZHobTfhBFkBqrrqgDMqwC6pS9WyD46Lmv4mwpL3flNYpmTSBiNZmfPI
-	5YxAmipnkNJVlUCATOi4Y6PGFOCO9jfqUDH8sAsujJ5HXb7JhI1muQEx2l8frJ07BFLIjy0p1wU
-	oZOc1t843ZQZ9LkpECYgJa+eIy1ZZYvYRJUmWWcc4sIDEBE/Xe4kVb8Zu1pdUqvafBul/0QwVel
-	ioCekYCen/XvwNCO+R+6U7+Pkv2LO2g==
-X-Received: by 2002:a05:6214:260d:b0:907:94e6:f8bc with SMTP id
- 6a1803df08f44-90cc79998c3mr49415816d6.15.1787735918598; Wed, 26 Aug 2026
- 02:18:38 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 26 Aug 2026 02:18:37 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 26 Aug 2026 02:18:37 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <ba8d0441-b52f-4357-b2e7-1e352aa385a2@intel.com>
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-9-2fc18ee6d3ba@google.com>
- <13ca60c6-e154-4397-8092-09f861e90fe0@kernel.org> <cbf5f7ca-a960-4fb8-a760-2d2794eb6864@arm.com>
- <CAEvNRgGOyQHnF_b8dk8E0d7_=CcwXtYUdU3ko7Qbep+_O7UC0Q@mail.gmail.com>
- <aoZZMQ3Uc8yQWPNA@google.com> <7eba513d-cdae-4832-abac-038dcdd88517@intel.com>
- <meww2a2uf3yeevsfpicyrlg3hch2x4bsdqv2lsv3vfjxg4qzes@co5eogmhkxrk>
- <ao3lOu8-wpGTs2wd@google.com> <ba8d0441-b52f-4357-b2e7-1e352aa385a2@intel.com>
+        bh=mlxub+uHBO/9tuD+fZ54oP42v4czhWpxNnl1EZnj2VA=;
+        b=si+PARm1tOtjQHkcSSo5xg76hBo/jaTSoUtM8ZwXJNet6bnX0zeGJ8w5zHf0gqD4Ai
+         dF5A8lY0yutIFTKz/61lEzxmuP4WT5qSmFdXVqMvgBHDZH+PP5Fiob6D8FyWAcsDJYS0
+         eJLHG1wlmK0BFYXWBwtV5h+fOZsJYiwT98QpXeqptVvSrdqWSFXM4udGdfh9ZGjTy9Ou
+         vsE/pLjQGS9mA8s6/H4EV2/rbcuAxxEB0ayx3ZZPOrThX692AxQUeRMENuK1PbiVILpd
+         kpGhjMbiV6UWkIqDTRdgTxtDLrKV9MMzZBpJM18ZKnwH21RwU04YVBAq6f5i1HPGBWe/
+         XbIA==
+X-Gm-Message-State: AFuF++lb1m3niIo9p3KlwliPJUcrHEs+jejAUjc7tTcHzHpiy2Hhf4Lb
+	fxpDdf0GQv3ZQyHYruzOkDMEzAf4r7UXMQdBDLVW5SHkjZi1W7z+ElSRF97Ci9vHf0efququAqX
+	F6JdOZWmESwbqg7TNIeEBUZsbDA==
+X-Received: from pgmn1.prod.google.com ([2002:a63:5c41:0:b0:cc1:b785:2d5c])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a21:1398:b0:3bf:8de9:c64e with SMTP id adf61e73a8af0-3ceed381cdcmr7706302637.2.1787735919845;
+ Wed, 26 Aug 2026 02:18:39 -0700 (PDT)
+Date: Wed, 26 Aug 2026 09:18:17 +0000
+In-Reply-To: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Wed, 26 Aug 2026 02:18:37 -0700
-X-Gm-Features: AcwNN1VwWEAXm7Hyp9OqQou024-MyvsmSKreeFDqqoFiEfe8rutDN4-Z7NuYwk0
-Message-ID: <CAEvNRgFXJbV78ktsg=b4srFp1OFjtQWQGuNPjr_MmWD-wOvjgw@mail.gmail.com>
-Subject: Re: [PATCH v10 09/41] KVM: guest_memfd: Filter both shared and
- private when invalidating
-To: Xiaoyao Li <xiaoyao.li@intel.com>, Sean Christopherson <seanjc@google.com>, 
-	Michael Roth <michael.roth@amd.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, 
-	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, jmattson@google.com, jthoughton@google.com, 
+Mime-Version: 1.0
+References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=3028;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=rjS7YIkj9IfMwuN6szgnaq7r9mhIQEiYfekeu/by3Vc=; b=lCUCj1iZvnbvBq8YHDBpqof0pVd2qwZfFFterSX0jRK7/rf6Au2LXCto6eoK3sBAVMPHL3rmu
+ YzrbJeQTET3CW+0To48scfCtCha+gH4+4h5I0KZt9qWeSUgUInKR50f
+X-Mailer: b4 0.16.0
+Message-ID: <20260826-gmem-inplace-conversion-v11-19-0a15d8a799aa@google.com>
+Subject: [PATCH v11 19/46] KVM: guest_memfd: Zero page while getting pfn
+From: Ackerley Tng <ackerleytng@google.com>
+To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
 	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
 	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
 	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
 	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
 	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
@@ -124,137 +90,95 @@ Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, "David Hildenbrand (Arm)" <david@
 	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
 	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
 	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Fuad Tabba <fuad.tabba@linux.dev>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+	linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>
+Content-Type: text/plain; charset="utf-8"
 
-Xiaoyao Li <xiaoyao.li@intel.com> writes:
+Move the folio initialization logic from kvm_gmem_get_pfn() into
+__kvm_gmem_get_pfn() to also zero pages if the page is to be used in
+kvm_gmem_populate().
 
-> On 8/26/2026 2:55 AM, Sean Christopherson wrote:
->> On Tue, Aug 25, 2026, Michael Roth wrote:
->>> On Wed, Aug 26, 2026 at 12:13:47AM +0800, Xiaoyao Li wrote:
->>>> On 8/20/2026 9:32 AM, Sean Christopherson wrote:
->>>>> And vice versa, a PUNCH_HOLE on a SHARED gmem (if userspace is
->>>>> using an INIT_SHARED gmem for the shared branch of a memslot) could invalidate the
->>>>> PRIVATE mappings (of a different gmem instance).
->>>>
->>>> I'm wondering now how this could happen.
->>>>
->>>> the requirement for PUNCH_HOLE on gmem to trigger mapping invalidation is
->>>> the gmem is bound with the memslot. But how can a memslot bound with two
->>>> gmem instances?
->>>
->>> I think this is for when userspace uses an mmap'able guest_memfd instance
->>> to handle shared memory, and a 'normal' guest_memfd instance for private
->>> memory. Each instance is bound to the same memslot/GPA range, and
->>> KVM_SET_MEMORY_ATTRIBUTES handles switching between the 2.
->
-> What I didn't figure out is exactly how the two gmem instances are bound
-> to the same memslot.
->
-> The case I can imagine is
->
-> 1. create gmem1 with GUEST_MEMFD_FLAG_MMAP and
-> GUEST_MEMFD_FLAG_INIT_SHARED, and get fd1. mmap the returned fd1 to get
-> a hva.
->
-> 2. create gmem2 to get a fd2.
->
-> 3. call KVM_SET_USER_MEMORY_REGION2 with KVM_MEM_GUEST_MEMFD flag. Pass
-> the @hva from 1) to 'userspace_addr' field and pass the gmem fd2 to
-> 'guest_memfd' field.
->
-> However, with this case, only gmem2 is bound to the memslot while gmem1
-> is not. Following PUNCH_HOLE on gmem1 doesn't invalidate any mappings
-> because the f->bindings of it is empty.
->
-> Do I miss anything?
+With in-place conversion, the existing data in a guest_memfd page can be
+populated into guest memory through platform-specific ioctls.
 
-I think Xiaoyao is right about this, the "vice versa" part is wrong,
-since gmem1 has no bindings. Even after kvm_gmem_invalidate_start(),
-going via MMU notifiers, that invalidation invalidates only
-KVM_FILTER_SHARED, so only gmem1's mappings will get invalidated.
+Without first zeroing the page obtained using __kvm_gmem_get_pfn(), it
+might contain uninitialized host memory, which would leak to the guest if
+the populate completes.
 
-The earlier sentence about PUNCH_HOLE on the PRIVATE guest_memfd (gmem2)
-is still correct.
+guest_memfd pages are zeroed at most once in the page's entire lifetime
+with guest_memfd, and that is tracked using the uptodate flag.
 
-Here's a repeat of the above in pseudocode. (I wanted to make gmem2's
-flags=0 more explicit.)
+Zeroing the page in __kvm_gmem_get_pfn() is chosen over zeroing in
+kvm_gmem_get_folio() since other flows, such as a future write() syscall,
+can get a page, write to the page and then set page uptodate without
+zeroing.
 
-gmem1 = KVM_CREATE_GUEST_MEMFD(flags=MMAP | INIT_SHARED)
-gmem2 = KVM_CREATE_GUEST_MEMFD(flags=0)
-userspace_addr = mmap(gmem1)
-KVM_SET_USER_MEMORY_REGION2(userspace_addr, gmem2)
+There may be some performance penalty due to redundant zeroing, but this
+would pale in comparison to the cost of actually assigning the page to the
+VM.
 
-gmem2 has no MMAP flag, so that KVM will actually fault from gmem1's
-memory.
+This aligns with the concept of zeroing before first use - the other place
+where zeroing happens is in kvm_gmem_fault_user_mapping().
 
+On populate failure, the page is not re-zeroed, since on SNP, if firmware
+rejects a CPUID page, the expected CPUID values provided by firmware are
+returned to userspace via page contents. More generally, page contents may
+be modified on populate failure.
 
-Walking through PUNCH_HOLE on gmem2 again:
+Don't mark the page uptodate again after populating, since the page would
+already be marked uptodate before the post_populate() call.
 
-gmem_in_place_conversion=n:
-  * conversions go to the VM, shared/private tracked at VM level.
-stage 2 page tables:
-  * private mappings from gmem2
-  * shared mappings from gmem1
+Reviewed-by: Fuad Tabba <tabba@google.com>
+Tested-by: Shivank Garg <shivankg@amd.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
+ virt/kvm/guest_memfd.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-If guest_memfd invalidates KVM_FILTER_PRIVATE | KVM_FILTER_SHARED, then
-gmem1's mappings in the stage2 page tables (which are shared) will be
-invalidated along with gmem2's private mappings. That's not great since
-we only really wanted to invalidate gmem2's mappings.
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 4912f90567fe8..9c2d52bdf25ec 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -1105,6 +1105,11 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
+ 		return ERR_PTR(-EHWPOISON);
+ 	}
+ 
++	if (!folio_test_uptodate(folio)) {
++		clear_highpage(folio_page(folio, 0));
++		folio_mark_uptodate(folio);
++	}
++
+ 	*pfn = folio_file_pfn(folio, index);
+ 	if (max_order)
+ 		*max_order = 0;
+@@ -1133,11 +1138,6 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 		goto out;
+ 	}
+ 
+-	if (!folio_test_uptodate(folio)) {
+-		clear_highpage(folio_page(folio, 0));
+-		folio_mark_uptodate(folio);
+-	}
+-
+ 	if (kvm_arch_has_gmem_convert() &&
+ 	    kvm_gmem_is_private_mem(file_inode(file), index))
+ 		r = kvm_arch_gmem_make_private(kvm, gfn, *pfn,
+@@ -1179,8 +1179,6 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 	}
+ 
+ 	ret = post_populate(kvm, gfn, pfn, src_page, opaque);
+-	if (!ret)
+-		folio_mark_uptodate(folio);
+ 
+ out_put_folio:
+ 	folio_put(folio);
 
-If guest_memfd invalidates only KVM_FILTER_PRIVATE (since gmem2 was
-created with flags=0), so we will always invalidate just the private
-mappings, which is what we expect.
+-- 
+2.55.0.887.g758fc8c411-goog
 
-
-Now I think there's an issue here: with gmem_in_place_conversion=y,
-everything is still the same as above, other than where shared/private
-is tracked.
-
-gmem_in_place_conversion=y:
-  * conversions go to gmem, shared/private tracked in gmem2.
-stage 2 page tables:
-  * private mappings from gmem2
-  * shared mappings from gmem1
-
-This time, the filter lookup will return KVM_FILTER_PRIVATE |
-KVM_FILTER_SHARED and we will still invalidate memory from gmem1.
-
-In conversions, a to-private conversion on gmem2 will invalidate
-KVM_FILTER_SHARED, which also invalidates gmem1's memory.
-
-
-Is this just a case of user error? That with gmem_in_place_conversion,
-userspace should not use userspace_addr from something other than the
-gmem for the same memslot?
-
-We previously discussed that validating userspace_addr belonging to the
-gmem for the same memslot is pointless since userspace can later remap
-userspace_addr to something else.
-
-One option is to say if the gmem doesn't have MMAP set, always only
-invalidate (filter &= KVM_FILTER_PRIVATE). That means a to-private
-conversion on gmem2 will not invalidate the shared mappings from
-gmem1. That would break implicit conversions to shared, since a
-to-shared access sees the shared mappings and doesn't cause an exit.
-
-Perhaps we can iterate the maple tree and present folios and invalidate
-exactly the folios matching the shared/private status and gmem, but this
-is quite complicated and I hope we can avoid this.
-
-What if we say, for gmem_in_place_conversion=y, set
-KVM_MEMSLOT_GMEM_ONLY for all guest_memfd memslots. This way, the host
-can still use gmem1 for userspace_addr (user error).
-
-KVM won't be using userspace_addr at all other than kvm_read_guest /
-kvm_write_guest, and for those, we previously discussed that it is a
-user error.
-
-
-Xiaoyao, any suggestions to solve the problem?
-
-
-Meanwhile, I'll still post v11 to resolve the other comments first.
