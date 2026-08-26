@@ -1,56 +1,56 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EE0479885
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211D147A0A9
 	for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 16:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787762552; cv=none; b=ksHjwjh7m9xeB5rYFq0CLtInd0XsQBpQDmRxTnYNS/JjUVzmd2E1yHp/GX6zYkMBmmhwGqFeplRL2G7X/iP/LvgVWUXCPJMtJBeTasi5QfEnaCfQbhXnGPdttx6GbOVQkoIyc6nQUkZ8WFWxscJrTYtRjIUexgpEMP34prD0PIA=
+	t=1787762557; cv=none; b=Z7y9GjSfdpbPaxz9Z6cgbEGzJy9Xw0JQF2SwS3jgOQaes2YzHzkEQN9xWdmUFzipPTinDXBeNRCCL4Ux1WRcC/VUb4W1R9cKHPFxArfqLx0FQAvwQ6ROxJhiSyQX5khQK+ScwjJF5BADCeK/hE35lojvA9F7u2tgCP9GqSakYhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787762552; c=relaxed/simple;
-	bh=BEhe2r+8iU4EkJKKeUDkD+GqT9e+NS4i1MkXdRfLIgA=;
+	s=arc-20240116; t=1787762557; c=relaxed/simple;
+	bh=i578dgYavrIdohpu+SpEj4jJ+sVyZzrBwA5orlX4/TM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=i0GXMEIdBSWVoZMbr/6iefbim+oLDY0hG+WgPMAYK1/g6Wa31B9h+9n+ReUH5BXt6rJQZhIfiKxQhMZZLJ4ihQpv79M0Oen8xkeJMP3KhKRD+BWomw1K5Z+QjcgVa3r8lEl/cxiqVMJUa/ZrgLpw/W45u/0CjK1TM6dgkTj5whM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rd1EuFxO; arc=none smtp.client-ip=209.85.214.200
+	 To:Cc:Content-Type; b=LmH1hDNcK4FLXe+KTYArf8yfyeTPjkx9xvR7HepSfrIyYw0rQxSq15lXqwe7XfCsaIlbXvU+ufrcXjItXoS1L9IeKBgWTGqnP5ZyKlNOJA3r72yCSzzLKQ8uJz1ZJqm/s68KARBojTOPPQrx0m22IJ1nBQSn5J3b6WwSCBFlrmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dQJ7TW0d; arc=none smtp.client-ip=209.85.215.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rd1EuFxO"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cc640dfde3so17500595ad.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dQJ7TW0d"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc1bbd7d6e6so1345109a12.3
         for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 09:42:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787762539; x=1788367339; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1787762537; x=1788367337; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=Ji0mUaDNfVUZXzbmrEerFV372UGViNyfEX1CgVwEdcw=;
-        b=rd1EuFxOE7fMErYv4lq06VO33Ck9hx3jzPxEOU4a4g1wpaCn/h3V73xoT4FzV+PMpP
-         JT2o0Vs2RtD3koE9JX/XUqqby8I7fmHOAXVj1TCwGq9qK3F+lnlcktZv+3llkJIdZ92h
-         2CXp92hb1WOsBwUitGcl0LYdnV65oklSH8GrsVttaT/V5+UqSX4rjLAk8HE3ehoWeFmL
-         j5fwgqeTv113BEOsmVZhTiul5Yqtcra7ieAe/i56gyVTN3fEENxvcpFhvXrcjQv3ISdv
-         K1PB8fQV16r/6I8zrmgVnycc7XEyiLl/svCQGe8VLwdeQC2SrT2mSXJ8V+CeHkEI7BY8
-         heUQ==
+        bh=t27G+87/xldPf9EXxl/42NH6liZLtdScRqOAABQHwp0=;
+        b=dQJ7TW0dItjw4PhJful09lq7CNsUAg37JXrX5Mv6wAy5X5qo8zYd4swK/euFAo6427
+         HaWktrz6hkFNFi8B8RK/RKq0Zt+eQbZ86iuK5U82yyVCFDZLcC1DH4ZLsnwypzhCB4y1
+         b4bf/dPURgM800Z5k74ji0SNwU+e6ks9yYDUWrHlMLDOXa7RaJHDLu6DstVBobkrJciM
+         9F/RIM2mH0zELbGYWaJrd4kCZZ+R8cWoAB7YlaZKrHsTEeIhqvQ6dtHN/EoSwkYLGw1d
+         jF3uKo1e5qPZy4pptOOVRflIvgJ5dEFtoNt/VFqDiGexxEg/GsaZYXKiSInzFUMhRPu2
+         zb5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787762539; x=1788367339;
+        d=1e100.net; s=20251104; t=1787762538; x=1788367338;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Ji0mUaDNfVUZXzbmrEerFV372UGViNyfEX1CgVwEdcw=;
-        b=E/hbCbu2bQhfbEUp9z+vinHoXArZCYa93XZbi+zqhAlBbMK1Kn+Q3p4ufIaCLY8zyR
-         ozNXNAgCX3VcWMf1ImFFqALSz6fQfEtLmMlphLbmXKeZcVoWwCAWkYKFnJYKEQnEblhi
-         F5RftY+65txZbNwTRSwtrMH5hJEh3z6GgzZAmPaExFMznLj2jH/OCVEuyvEdyoA9veNy
-         f7kp6heDib5y1vv1TM9TOTWjU/NPsNtvJQ7uC98RMUI7+LTWLaIJpZ6ITpsu36xmBTzD
-         8POrQfyg0/dPWe/iN16bxBDaNOw/pmH+eLHBxoUUgkt1bJRfqOsUtw7oovT5kEkyBXO6
-         Lg7w==
-X-Gm-Message-State: AFuF++m0ErD4W7+SFSR5yvv4k/L6YLMCXu4Rgp2fzlqKesKwFvjlL/vM
-	YTcMdihPOSGfkOxJBVzwWdzx4UfU0F2VfcCDMFiWh7WZjuLQUooGYZCbsXYMzhlhzmqWo62uS3K
-	MRbQ/6g==
-X-Received: from plef20.prod.google.com ([2002:a17:902:f394:b0:2cc:79e2:e717])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ef50:b0:2d7:1aeb:739
- with SMTP id d9443c01a7336-2d71aeb1484mr67465065ad.13.1787762538425; Wed, 26
- Aug 2026 09:42:18 -0700 (PDT)
+        bh=t27G+87/xldPf9EXxl/42NH6liZLtdScRqOAABQHwp0=;
+        b=d4a1CZLfzGgjPrwpFlBSoQySeiV5xBuWMFNSPH8yD0FJmtTLysk2QzHP6n0INMXL4X
+         5B34cE6ySg49STsAeta2VN6jRUUCMyB6Ph7XgDtDDt/RkcJi7BUjiYVDKUQbwZz4dTXK
+         K8zNFMGtZVx9wT/3NjnfMDgLxarNmUnDmfhrCiGR+LNNhWORtDHgZOn/ExgjUqv6uAQj
+         wmuEbMI0iaOUXYAXU2fQaWN4VqNGKT7XMvUxXgnSNOarUvH9fkowojHkk3+VeHORf7S4
+         lpNgyLRJZ2KVnAKj+CETxko1VnbiIJnnqoDLdx/dPnNO8hupaC4Bfz8FFn2H2kNI4mvc
+         cCYg==
+X-Gm-Message-State: AFuF++l7jDZEQ2HAwDycv67/wdJ5PU/dbM2MSyUa6Z4BmkefQEARrlj5
+	xg1jvhbPTeFLhW7LuLIcz7FLPD0ub0r23oBE3GlQXRkHkLx/EoXciP8+l2/z20/3C0hx3PYs+IR
+	XsEkYiw==
+X-Received: from pghp20.prod.google.com ([2002:a63:fe14:0:b0:c9a:c533:8316])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4f92:b0:848:2e3c:9955
+ with SMTP id d2e1a72fcca58-85371fa599amr14451999b3a.4.1787762537296; Wed, 26
+ Aug 2026 09:42:17 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 26 Aug 2026 09:42:12 -0700
+Date: Wed, 26 Aug 2026 09:42:11 -0700
 In-Reply-To: <20260826164214.756512-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260826164214.756512-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.860.g4b6b3295ed-goog
-Message-ID: <20260826164214.756512-3-seanjc@google.com>
-Subject: [PATCH v2 2/4] KVM: x86/mmu: Harden "map private PFN" against
- unexpected root invalidation
+Message-ID: <20260826164214.756512-2-seanjc@google.com>
+Subject: [PATCH v2 1/4] KVM: x86/mmu: Reload MMU on *every* page pre-fault attempt/iteration
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -70,46 +69,66 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Yan Zhao <yan.y.zhao@intel.com>, Sashiko Bot <sashiko-bot@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Move kvm_tdp_mmu_map_private_pfn()'s reload of the MMU into its tight loop
-so that an unexpected root invalidation has a better chance of being
-handled gracefully, even though it should be impossible for the vCPU's root
-to be invalidated after the initial reload.  As is, encountering an invalid
-root is *guaranteed* to put the task into an infinite loop (albeit a
-breakable loop that honors NEED_RESCHED).
+Reload the MMU (which is a nop if the MMU doesn't need to be reloaded) on
+every attempt to pre-fault a guest page, i.e. when the page fault path
+signals that the caller should retry.  If the synchronize_srcu_expedited()
+in kvm_invalidate_memslot() completes before kvm_vcpu_pre_fault_memory()
+grabs SRCU, but kvm_mmu_reload() in the pre-fault path completes before
+kvm_invalidate_memslot() triggers x86's "fast zap all", then the pre-fault
+task will reach kvm_tdp_page_prefault() with an invalid root.
 
-Add a WARN to try and detect bugs that break KVM's expectations, along with
-a comment to explain why it should be impossible for the root to be
-invalidated.
+Attempting to fault-in memory with an invalid root ultimately puts
+kvm_tdp_page_prefault() into an infinite (breakable) retry loop, which
+manifests most obviously as a hang in the pre_fault_memory_test selftest,
+but also eventually causes RCU (SRCU?) to complain.
 
-Note, the loop in question doesn't actually check for a stale page fault,
-i.e. likely won't detect an invalid loop in the first place.  That bug will
-be addressed shortly.
+  INFO: rcu_tasks detected stalls on tasks:
+  000000000cda47bd: .. nvcsw: 6/6 holdout: 1 idle_cpu: -1/25
+  task:pre_fault_memor state:R  running task     stack:12696
+  pid:95588 tgid:95588 ppid:95584  task_flags:0x400000 flags:0x00080801
+  Call Trace:
+   <TASK>
+   lock_release+0x4e/0x320
+   __get_user_pages+0x546/0xcd0
+   up_read+0x1b/0x30
+   get_user_pages_unlocked+0xee/0x350
+   hva_to_pfn+0xd3/0x3d0 [kvm]
+   lock_release+0x4e/0x320
+   xa_load+0x5c/0x170
+   xa_load+0x14c/0x170
+   __kvm_faultin_pfn+0xd9/0x130 [kvm]
+   lock_acquire+0x65/0x2b0
+   lock_release+0x4e/0x320
+   kvm_mmu_faultin_pfn+0x1e1/0x690 [kvm]
+   gup_fast_fallback+0x63e/0xdf0
+   kvm_tdp_page_fault+0xeb/0x140 [kvm]
+   kvm_mmu_do_page_fault+0x12e/0x200 [kvm]
+   kvm_arch_vcpu_pre_fault_memory+0x16e/0x200 [kvm]
+   kvm_vcpu_pre_fault_memory+0xc1/0x1f0 [kvm]
+   kvm_vcpu_pre_fault_memory+0x116/0x1f0 [kvm]
+   kvm_vcpu_ioctl+0x3a4/0x6b0 [kvm]
+   clockevents_program_event+0x5d/0x170
+   __se_sys_ioctl+0x6d/0xb0
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+   do_syscall_64+0x10a/0x480
+   __irq_exit_rcu+0x8e/0x140
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+   </TASK>
 
-Cc: Kai Huang <kai.huang@intel.com>
-Cc: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Fixes: 6e01b7601dfe ("KVM: x86: Implement kvm_arch_vcpu_pre_fault_memory()")
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/mmu/mmu.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 3220f05387b5..1969c26861e5 100644
+index 064ecc33b926..3220f05387b5 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5209,10 +5209,6 @@ int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
- 	if (kvm_gfn_is_write_tracked(kvm, fault.slot, fault.gfn))
- 		return -EPERM;
- 
--	r = kvm_mmu_reload(vcpu);
--	if (r)
--		return r;
--
- 	r = mmu_topup_memory_caches(vcpu, false);
- 	if (r)
- 		return r;
-@@ -5224,10 +5220,22 @@ int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
- 		if (kvm_test_request(KVM_REQ_VM_DEAD, vcpu))
+@@ -5061,6 +5061,10 @@ static int kvm_tdp_page_prefault(struct kvm_vcpu *vcpu, gpa_t gpa,
+ 		if (kvm_check_request(KVM_REQ_VM_DEAD, vcpu))
  			return -EIO;
  
 +		r = kvm_mmu_reload(vcpu);
@@ -117,20 +136,23 @@ index 3220f05387b5..1969c26861e5 100644
 +			return r;
 +
  		cond_resched();
- 
- 		guard(read_lock)(&kvm->mmu_lock);
- 
-+		/*
-+		 * Because slots_lock is held, it should be impossible for *any*
-+		 * roots to be invalidated after the initial MMU reload.  WARN,
-+		 * but continue on; the above MMU reload will do the right thing
-+		 * if the current root is actually invalid.
-+		 */
-+		WARN_ON_ONCE(kvm_test_request(KVM_REQ_MMU_FREE_OBSOLETE_ROOTS, vcpu));
-+
- 		r = kvm_tdp_mmu_map(vcpu, &fault);
+ 		r = kvm_mmu_do_page_fault(vcpu, gpa, error_code, true, NULL, level);
  	} while (r == RET_PF_RETRY);
+@@ -5101,14 +5105,6 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
+ 	if (kvm_is_gfn_alias(vcpu->kvm, gpa_to_gfn(range->gpa)))
+ 		return -EINVAL;
  
+-	/*
+-	 * reload is efficient when called repeatedly, so we can do it on
+-	 * every iteration.
+-	 */
+-	r = kvm_mmu_reload(vcpu);
+-	if (r)
+-		return r;
+-
+ 	direct_bits = 0;
+ 	if (kvm_arch_has_private_mem(vcpu->kvm) &&
+ 	    kvm_mem_is_private(vcpu->kvm, gpa_to_gfn(range->gpa)))
 -- 
 2.55.0.860.g4b6b3295ed-goog
 
