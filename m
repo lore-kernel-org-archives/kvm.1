@@ -1,183 +1,330 @@
-Received: from esa9.hc1455-7.c3s2.iphmx.com (esa9.hc1455-7.c3s2.iphmx.com [139.138.36.223])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C099C3AF665;
-	Thu, 27 Aug 2026 08:08:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.36.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229D73C872C;
+	Thu, 27 Aug 2026 08:12:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787818096; cv=none; b=fV/4ooffvCCtIiHtJSX+XjeXICI9ymajXCI066bmrBFgijaJ85XNUqf/N20jLJaKvNk5xhKPENZuT/zXG3KcW3f5oQ8BSrM1tIg1relb5/bTLTkEuOY9yo0sbPGuonwz1AStlbLy8KBHydghjxvZfHBvZV3mRX0n1QPU9bM2Kyg=
+	t=1787818335; cv=none; b=vErw/SHtvFRpEzTd7d/yx4uStDLvWBxAuKjUkKUuDuPZrkY2tIJjR27ciPbGvGrIoSS7C+LgW6jRTGJpRG6NCnlbtQSC3bFSHjgBXht3+OrGF2MTp5rk2oPgCKtVTbzKHFB5ac0wLnm3w0E2TittPV/xB+nSRaFxxgGJq/LNQX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787818096; c=relaxed/simple;
-	bh=HfubrEGF3eKsGUawx1MnfZr959FNLY03HrFmRB8niVo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pAajJXgZZLqOTNuxNTxmeRfVuto9fHc8OF3zCf7uuxilIWQyUC8fHkqOFf0K5Mn2sMaprsT7FpH8sE28rbUCJxZvp0R9j3A0BW2X/qk3C5nnKCZzMuHR8tRv+dmS1436YjmzJyv/9g07ZvpHqnvRY5OMMUbJfxkCnHQPyCREdYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=f6sapdUb; arc=none smtp.client-ip=139.138.36.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	s=arc-20240116; t=1787818335; c=relaxed/simple;
+	bh=xIw5or3RM6YwBPe1jR7j4fTvcYob61G6FjHWuUnrzDs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PH7uB6SV/MrO6Nc8GQS5bqiqnpO3FjgDo3obABL994nMjDljDdw2xUUYgQK4crHll3eCTHEiRKeOofj+zLio7lA5AbidFOIKgoKzgEdRmJXGwgNt/UunO3dqd4bMLWgYpwXJWwJ3Seucl2mRieK74LV0uTbLBbfEpqoHFIhUpH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PHRTWH9s; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="f6sapdUb"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1787818093; x=1819354093;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=HfubrEGF3eKsGUawx1MnfZr959FNLY03HrFmRB8niVo=;
-  b=f6sapdUb5pqkzqKYG7tF/Y3nVHR5o112sf79c9M54tXt2ZoZZZ/N8Tx6
-   /Kb/tD6NSGvrAYxR8Ed2zpcEuoP2+2u91/OiX48mPxt4dqpd86Zsm8VMg
-   mZzj4QC3qMqnzOAPOzwR/eD5UhXoDlIByQB5+rt6bYQybgG5LsupqBHsP
-   98bSP9TGlEHsnsqmNvyPqO2dL2r+Ym52i79LvBwIUjjEfa269huCuaAUN
-   xgGS3LSvzWkk13rzeFt5ogr0s9dt8a5/112DGtvyly9/5kdI5TX0E8pul
-   UKDjJC6+++ERVqVvk2MEQXH5G97YFkKH6k5DeB3QKfLiE5ccAf6PjggcM
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PHRTWH9s"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787818330; x=1819354330;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=xIw5or3RM6YwBPe1jR7j4fTvcYob61G6FjHWuUnrzDs=;
+  b=PHRTWH9sSlNUHfjk96WV6vkqrsyIMkti9W8cke/OyRDlMVr2fZsqBiWc
+   GNhbLjZxmWj4V5n9EF5E5izc6pqVE8a7WNb6JnO4vl4uMimakJah3F5HE
+   rFHvaaT02xwVlag0kGMBtHH1jjImU6a7gvlSLB04i38t4Q4R8TEUC3pUt
+   cn0sbBVgiwi9dezwjfXYEkx0/xH8Am7pzJq83LV11ykNQEUGJ/xMcs0IF
+   mXa8w9Jtmp6eFwDwQLym9xb0GbX0DuCKlpXJYPQ/fXEJne6SNoMPNjP6L
+   Mqzoek/EmjyVOcpa6MAjUvw0vvYa++cbVdlL5xVvM5XNEHvq+8oE0QwE8
    Q==;
-X-CSE-ConnectionGUID: 2rqeFhhEQNCqGlQEF1lAcQ==
-X-CSE-MsgGUID: qwMei9j+S6SBWUdAqUkaDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11887"; a="240335767"
-X-IronPort-AV: E=Sophos;i="6.25,246,1779116400"; 
-   d="scan'208";a="240335767"
-Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
-  by esa9.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 17:07:52 +0900
-Received: from az2uksmgm2.o.css.fujitsu.com (unknown [10.151.22.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id 515001C1C720;
-	Thu, 27 Aug 2026 08:07:52 +0000 (UTC)
-Received: from az2uksmom3.o.css.fujitsu.com (unknown [10.151.22.205])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id 0385418002F0;
-	Thu, 27 Aug 2026 08:07:52 +0000 (UTC)
-Received: from sm-arm-grace07 (unknown [10.124.178.20])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmom3.o.css.fujitsu.com (Postfix) with ESMTPS id 670BD1004B16;
-	Thu, 27 Aug 2026 08:07:43 +0000 (UTC)
-Date: Thu, 27 Aug 2026 17:07:40 +0900
-From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Atish Patra <atish.patra@linux.dev>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	David Hildenbrand <david@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org, loongarch@lists.linux.dev,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
-	Ritesh Harjani <ritesh.list@gmail.com>
-Subject: Re: [PATCH 00/20] KVM: selftests: PPC pre-enabling
-Message-ID: <ao_wTAq6U2bvWzgu@sm-arm-grace07>
-References: <20260826230511.972824-1-seanjc@google.com>
+X-CSE-ConnectionGUID: 6sAgqvEQS3GAtwFLa+9Qng==
+X-CSE-MsgGUID: +HuRqb0xRKSF6DTR6e/PdQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11887"; a="87254975"
+X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; 
+   d="scan'208";a="87254975"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 01:12:07 -0700
+X-CSE-ConnectionGUID: K34+mq1JRQGKND7PRdXgig==
+X-CSE-MsgGUID: qy5v8s5WR5mzCXNHocKrGQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; 
+   d="scan'208";a="264558865"
+Received: from blu2-desk.sh.intel.com (HELO [10.239.156.26]) ([10.239.156.26])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 01:12:03 -0700
+Message-ID: <5b920299-260b-4025-ac4f-e8f83beebf95@linux.intel.com>
+Date: Thu, 27 Aug 2026 16:12:01 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260826230511.972824-1-seanjc@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 12/18] iommu/vt-d: Handle reattach of the restored
+ domain
+To: Samiullah Khawaja <skhawaja@google.com>,
+ David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
+ Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+ iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Matlack <dmatlack@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
+References: <20260808022723.3893618-1-skhawaja@google.com>
+ <20260808022723.3893618-13-skhawaja@google.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20260808022723.3893618-13-skhawaja@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 26, 2026 at 04:04:51PM -0700, Sean Christopherson wrote:
-> This is a big pile of cleanups and refactoring to prepare for PPC support in
-> KVM selftests.  PPC has paging modes that require multi-page page tables, and
-> those page tables need to be naturally aligned.  The original proposal was to
-> plumb in an @align param to the page allocators[*], but I didn't love the idea
-> of adding another rarely used param to the allocators.
+On 8/8/26 10:27, Samiullah Khawaja wrote:
+> Reattach the restored domain to the preserved device using restored
+> domain ID. While reattaching do not setup the context and PASID entries
+> as those are preserved during liveupdate.
 > 
-> Reworking the APIs to take a region type requires a fair bit of churn, and was
-> more painful than expected as I didn't realize just how many one-off tests did
-> weird things, but overall I think it's worth it?  If only to keep cutting down
-> on the use of magic memslot numbers in tests.
+> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> ---
+>   drivers/iommu/intel/iommu.c      |   9 ++-
+>   drivers/iommu/intel/iommu.h      |  10 +++
+>   drivers/iommu/intel/liveupdate.c | 120 +++++++++++++++++++++++++++++++
+>   3 files changed, 136 insertions(+), 3 deletions(-)
 > 
-> This needs explicit testing on s390.  I tested on arm64 and x86, and given the
-> number of failures I had to wade through, I wouldn't be at all suprised if I
-> broke something subtle on s390 as well.
-> 
-> I'm less concerned about RISC-V and LoongArch as they don't have any custom
-> tests that are affected (which is where I got burned).
+> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+> index 42d3ff6db281..5370214629f4 100644
+> --- a/drivers/iommu/intel/iommu.c
+> +++ b/drivers/iommu/intel/iommu.c
+> @@ -864,7 +864,7 @@ static bool dev_needs_extra_dtlb_flush(struct pci_dev *pdev)
+>   	return true;
+>   }
+>   
+> -static void iommu_enable_pci_ats(struct device_domain_info *info)
+> +void intel_iommu_enable_pci_ats(struct device_domain_info *info)
+>   {
+>   	struct pci_dev *pdev;
+>   
+> @@ -1225,7 +1225,7 @@ domain_context_mapping(struct dmar_domain *domain, struct device *dev)
+>   	if (ret)
+>   		return ret;
+>   
+> -	iommu_enable_pci_ats(info);
+> +	intel_iommu_enable_pci_ats(info);
+>   
+>   	return 0;
+>   }
+> @@ -3164,6 +3164,9 @@ static int intel_iommu_attach_device(struct iommu_domain *domain,
+>   {
+>   	int ret;
+>   
+> +	if (dev_iommu_restored_state(dev))
+> +		return intel_iommu_restore_device(domain, dev);
+> +
+>   	device_block_translation(dev);
+>   
+>   	ret = paging_domain_compatible(domain, dev);
+> @@ -3376,7 +3379,7 @@ static void intel_iommu_probe_finalize(struct device *dev)
+>   		info->pasid_enabled = 1;
+>   
+>   	if (sm_supported(iommu) && !dev_is_real_dma_subdevice(dev)) {
+> -		iommu_enable_pci_ats(info);
+> +		intel_iommu_enable_pci_ats(info);
+>   		/* Assign a DEVTLB cache tag to the default domain. */
+>   		if (info->ats_enabled && info->domain) {
+>   			u16 did = domain_id_iommu(info->domain, iommu);
+> diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+> index b33a12528066..1ef3b9309d44 100644
+> --- a/drivers/iommu/intel/iommu.h
+> +++ b/drivers/iommu/intel/iommu.h
+> @@ -1187,6 +1187,8 @@ void domain_detach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu);
+>   void device_block_translation(struct device *dev);
+>   int paging_domain_compatible(struct iommu_domain *domain, struct device *dev);
+>   
+> +void intel_iommu_enable_pci_ats(struct device_domain_info *info);
+> +
+>   struct dev_pasid_info *
+>   domain_add_dev_pasid(struct iommu_domain *domain,
+>   		     struct device *dev, ioasid_t pasid);
+> @@ -1309,6 +1311,8 @@ void intel_iommu_unpreserve(struct iommu_device *iommu,
+>   void clear_unpreserved_context_entries(struct intel_iommu *iommu);
+>   void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
+>   					       struct iommu_hw_ser *iommu_ser);
+> +int intel_iommu_restore_device(struct iommu_domain *domain,
+> +			       struct device *dev);
+>   #else
+>   static inline int intel_iommu_preserve_device(struct device *dev,
+>   					      struct iommu_device_ser *device_ser)
+> @@ -1340,6 +1344,12 @@ static inline void intel_iommu_liveupdate_restore_root_table(struct intel_iommu
+>   							     struct iommu_hw_ser *iommu_ser)
+>   {
+>   }
+> +
+> +static inline int intel_iommu_restore_device(struct iommu_domain *domain,
+> +					     struct device *dev)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+>   #endif
+>   
+>   #ifdef CONFIG_INTEL_IOMMU_SVM
+> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
+> index 480eab2d966b..05dea3893399 100644
+> --- a/drivers/iommu/intel/liveupdate.c
+> +++ b/drivers/iommu/intel/liveupdate.c
+> @@ -12,6 +12,7 @@
+>   #include <linux/iommu-liveupdate.h>
+>   #include <linux/module.h>
+>   #include <linux/pci.h>
+> +#include <linux/pci-ats.h>
+>   
+>   #include "iommu.h"
+>   #include "../iommu-pages.h"
+> @@ -342,6 +343,125 @@ void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
+>   	BUG_ON(iommu_for_each_preserved_device(_restore_used_domain_ids, iommu));
+>   }
+>   
+> +static void domain_detach_reattached_iommu(struct dmar_domain *domain,
+> +					   struct intel_iommu *iommu)
+> +{
+> +	struct iommu_domain_info *info;
+> +
+> +	guard(mutex)(&iommu->did_lock);
+> +	info = xa_load(&domain->iommu_array, iommu->seq_id);
+> +	if (--info->refcnt == 0) {
+> +		xa_erase(&domain->iommu_array, iommu->seq_id);
+> +		kfree(info);
+> +	}
+> +}
+> +
+> +static int domain_reattach_iommu(struct dmar_domain *domain,
+> +				 struct intel_iommu *iommu,
+> +				 struct iommu_device_ser *device_ser)
+> +{
+> +	struct iommu_domain_info *info, *curr;
+> +	int restored_did;
+> +	int ret;
+> +
+> +	if (!iommu_domain_restored_state(&domain->domain))
+> +		return -EINVAL;
+> +
+> +	restored_did = device_ser->domain_iommu_ser.attachment_id;
+> +	if (!ida_exists(&iommu->domain_ida, restored_did))
+> +		return -EINVAL;
 
-I ran kvm_page_table_test with this series applied on Grace CPUs.
+It seems that checking only whether the domain ID is reserved on this
+IOMMU may not be sufficient. It would be safer to also verify that:
 
-Passes across all the arm64 guest modes supported.
+- device_ser->domain_iommu_ser.iommu_phys matches iommu->reg_phys, and
+- device_ser->domain_iommu_ser.domain_phys matches @domain.
 
-Tested-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+?
 
-> 
-> [*] https://lore.kernel.org/all/df86b5ccdbdafc3509d9538bd5e6796737bab2db.1781093720.git.ritesh.list@gmail.com
-> 
-> Nicholas Piggin (1):
->   KVM: selftests: Use goto instead of do-while to retry finding unused
->     physical pages
-> 
-> Sean Christopherson (19):
->   KVM: selftests: Use MEM_REGION_PT memslot instead of '0' for s390
->     regions/segments
->   KVM: selftests: Bump the minimum GPA for page tables to 0x200000
->   KVM: selftests: Use vm_alloc_page_table() to allocate LoongArch page
->     tables
->   KVM: selftests: Rename "num" param to "nr_pages" for physical page
->     allocators
->   KVM: selftests: Extend page allocator to support naturally aligned
->     allocations
->   KVM: selftests: Make the single-page allocator APIs static inline
->   KVM: selftests: Use the innermost page allocator API in the memslot
->     perf test
->   KVM: selftests: Use the innermost page allocator API in s390's IRQ
->     routing test
->   KVM: selftests: Add a wrapper API to allocate multiple page table
->     pages
->   KVM: selftests: Initialize vm->memslots[] with invalid memslots during
->     creation
->   KVM: selftests: Add APIs to override memory region types with custom
->     memslots
->   KVM: selftests: Add TEST_EXTRA memory region type for "special"
->     memslots
->   KVM: selftests: Use TEST_EXTRA region in arm64's vGIC LPI stress test
->   KVM: selftests: Use TEST_EXTRA region in x86's smaller MAXPHYADDR test
->   KVM: selftests: Use TEST_EXTRA region in set memory region test
->   KVM: selftests: Take the memory region type, not memslot, in page
->     allocators
->   KVM: selftests: Use TEST_ASSERT(), not assert(), in
->     vm_get_mem_region()
->   KVM: selftests: Automatically pick min_gpa for allocations based on
->     region type
->   KVM: selftests: Add arch hook to force page tables to be naturally
->     aligned
-> 
->  .../selftests/kvm/arm64/page_fault_test.c     |  18 ++-
->  .../selftests/kvm/arm64/vgic_lpi_stress.c     |  19 ++-
->  .../testing/selftests/kvm/include/kvm_util.h  | 106 +++++++++++++--
->  tools/testing/selftests/kvm/include/x86/smm.h |   2 +-
->  .../selftests/kvm/lib/arm64/processor.c       |   4 +-
->  tools/testing/selftests/kvm/lib/kvm_util.c    | 127 +++++++++++-------
->  .../selftests/kvm/lib/loongarch/processor.c   |   5 +-
->  .../selftests/kvm/lib/riscv/processor.c       |   4 +-
->  .../selftests/kvm/lib/s390/processor.c        |   7 +-
->  .../testing/selftests/kvm/lib/x86/processor.c |  15 ++-
->  .../testing/selftests/kvm/memslot_perf_test.c |   3 +-
->  tools/testing/selftests/kvm/s390/cmma_test.c  |  19 +--
->  .../testing/selftests/kvm/s390/irq_routing.c  |   2 +-
->  .../selftests/kvm/set_memory_region_test.c    |   8 +-
->  .../x86/smaller_maxphyaddr_emulation_test.c   |   9 +-
->  15 files changed, 219 insertions(+), 129 deletions(-)
-> 
-> 
-> base-commit: 76671054f9a1ff6abb976583cd8da37650acdc97
-> -- 
-> 2.55.0.887.g758fc8c411-goog
-> 
+> +
+> +	info = kzalloc_obj(*info);
+> +	if (!info)
+> +		return -ENOMEM;
+> +
+> +	guard(mutex)(&iommu->did_lock);
+> +	curr = xa_load(&domain->iommu_array, iommu->seq_id);
+> +	if (curr) {
+> +		curr->refcnt++;
+> +		kfree(info);
+> +		return 0;
+> +	}
+> +
+> +	info->refcnt	= 1;
+> +	info->did	= restored_did;
+> +	info->iommu	= iommu;
+> +	curr = xa_cmpxchg(&domain->iommu_array, iommu->seq_id,
+> +			  NULL, info, GFP_KERNEL);
+> +	if (curr) {
+> +		ret = xa_err(curr) ? : -EBUSY;
+> +		goto err_unlock;
+> +	}
+> +
+> +	return 0;
+> +
+> +err_unlock:
+> +	kfree(info);
+> +	return ret;
+> +}
+> +
+> +/**
+> + * intel_iommu_restore_device() - Restore device domain attachment after live update
+> + * @domain: Restored domain
+> + * @dev: Restored device
+> + *
+> + * Return: 0 on success, or negative error code.
+> + */
+> +int intel_iommu_restore_device(struct iommu_domain *domain,
+> +			       struct device *dev)
+> +{
+> +	struct iommu_device_ser *device_ser = dev_iommu_restored_state(dev);
+> +	struct device_domain_info *info = dev_iommu_priv_get(dev);
+> +	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
+> +	struct intel_iommu *iommu = info->iommu;
+> +	unsigned long flags;
+> +	int ret;
+> +
+> +	if (!device_ser)
+> +		return -EINVAL;
+> +
+> +	if (dev_is_real_dma_subdevice(dev))
+> +		return -EOPNOTSUPP;
+
+... or, move above check here to ensure the attachment relationship
+between the @device and @domain?
+
+> +
+> +	ret = domain_reattach_iommu(dmar_domain, iommu, device_ser);
+> +	if (ret)
+> +		return ret;
+> +
+> +	info->domain = dmar_domain;
+> +	info->domain_attached = true;
+> +	spin_lock_irqsave(&dmar_domain->lock, flags);
+> +	list_add(&info->link, &dmar_domain->devices);
+> +	spin_unlock_irqrestore(&dmar_domain->lock, flags);
+> +
+> +	if (!sm_supported(iommu))
+> +		intel_iommu_enable_pci_ats(info);
+
+Could you please clarify the PCI ATS behavior across live update?
+
+My understanding is that PCI devices may bypass reset during kexec and
+are then re-initialized by the new kernel (is that correct?). If so, ATS
+state in hardware would depend on its state before kexec in the old
+kernel.
+
+In a normal reboot, ATS is expected to be disabled and the device ATC is
+empty. But that assumption may not hold for live update. If that is
+true, can we still use the same approach to keep hardware ATS state and
+info->ats_enabled in sync?
+
+> +
+> +	ret = cache_tag_assign_domain(dmar_domain, dev, IOMMU_NO_PASID);
+> +	if (ret)
+> +		goto err;
+> +
+> +	ret = iopf_for_domain_set(domain, dev);
+> +	if (ret)
+> +		goto err;
+> +
+> +	return 0;
+> +
+> +err:
+> +	/*
+> +	 * Detach the restored domain from device and iommu on failure, but keep
+> +	 * the hardware state intact.
+> +	 */
+> +	info->domain_attached = false;
+> +	cache_tag_unassign_domain(info->domain, dev, IOMMU_NO_PASID);
+> +	spin_lock_irqsave(&info->domain->lock, flags);
+> +	list_del(&info->link);
+> +	spin_unlock_irqrestore(&info->domain->lock, flags);
+> +
+> +	domain_detach_reattached_iommu(info->domain, iommu);
+> +	info->domain = NULL;
+> +	return ret;
+> +}
+> +
+>   /**
+>    * intel_iommu_preserve_device() - Intel IOMMU callback to preserve device state
+>    * @dev: Target device
+
+Thanks,
+baolu
