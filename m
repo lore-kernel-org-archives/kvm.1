@@ -1,66 +1,66 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED89361947
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 18:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34CA494823
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 18:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787856458; cv=none; b=R2uVxhhp98cJxTIeIbqI5prt3lxyYNbN6X93Hu+c/QcOXpZtyZGMd05RhsC3w6ig/UGvXmmTDYx/a1/8d/InFJGvDjylSEaT0PVdr01XBbFMYjwIA12TywXfNVzBPR4d1q8TGyH9NjrA2JTAwFvcZ1C9EQ2W6fLJspKdxJH/meU=
+	t=1787857064; cv=none; b=QG3zZrWF3oJH1sUiFyB+s3ag1+OERhMBA1/LLmv7YIlWnBDouWa5gjLQCNdp7QYdTacIcaUZREnOIQjmetT1R+RhCTS0JMkR1zLR/TyXRz1Cfcv/p0DhkjIoXYOW+u8NM+RtlQ6HuPxXnEiIq1iH0rXY0Huh1E+/X08xjQmq7KA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787856458; c=relaxed/simple;
-	bh=s6TDNkQ3m5Ifn1QOQ+tRlAhnTRhRVstkHNNtZuESBYc=;
+	s=arc-20240116; t=1787857064; c=relaxed/simple;
+	bh=mAHHUsoZXJKt4PRoppmG4agr4sysisrSRDaStOA5n88=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ky0mQ4IuVn4g3ZldgocGUPQV9NOfK6ZEdRE9X+nJhL7e4Dw1KtldigD9clPSiuIR/ECv/8sHBQARyvUmh3rERnmJhfrWJiENI1poQav9pkd0t3vJ8C+fe6XDXp8AEvTmQv03fq+nJViqSaHJ3tK3zjmaminxlW+rqOnvFn1Vmh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JPuqmhjK; arc=none smtp.client-ip=209.85.214.180
+	 Content-Type:Content-Disposition:In-Reply-To; b=sIfDJU3rM2TqMbTYdm5gWipRw39+6kVtHkvBEMwyRpBUzBXHk+WV+NqQQR7iIUB++7Ov22IadMUdBU7AawoHj8LuIy9QkxcUqIDnxAiJXntIhpgh2L9csCpW1mryCifpvOJDWIcqKLc4ILswpmUIh3F5RSFN7nIirPj+j0ZxMh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dlis0DEG; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JPuqmhjK"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cede6375caso21695ad.0
-        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 11:47:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dlis0DEG"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2d3b445a84fso23235ad.1
+        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 11:57:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787856457; x=1788461257; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1787857054; x=1788461854; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8TWHy0fq0LlmFIRlDT3XzMY9bVByxWoJTpTIiV/A2Vg=;
-        b=JPuqmhjKG7loyaJfYdeMgvjAZlO1mM1YxE/2BrSknH2TZviGHx+bhqtbGxEhLiI7la
-         BfHOj9l0jnCrPr1acbxz1evgzKBuf93Ej8oBNsGM9yFdxy+PUARvFspdFHYHABHlQ8KH
-         n+0HTY6EgFDL2hF3NObjbdKL3F37AWyFOcxUrGqqW1GcRKihGVhciBSdz4qwTPxZLBbT
-         O4mS1+x5jO0ynONu1YRvB1sFLzzghXTeRlQtVDezU2smf9V3MkZhnOPRoDqP1wsf9lVd
-         s/G/Sng6rKFL4Ok+G5KDmuFo7spgwcrzQ/eqdW1+4YbMYgjNnHjSEW573Kmlf7/ByiQu
-         9S2Q==
+        bh=aX0MxhiMRKYlP1maDxCRQnyd/bhRIltclM/n9JE7KG8=;
+        b=dlis0DEGyv2KcKXGzdOrpBOVZpVyJAR8IA4qfkLZvlUZuRUYQ+6IbkaBCEIXsJzCbF
+         3ogn/NdULyT2obZwY19zmLVGEQizjUTxACHzlYRNiRoOp9yXYjjNeo4PuKckwEfBa/uO
+         NVGPLiefio6LKLB1J1cMYpezco3hA/l8KVDQ6fqpwTYHbYE/43/Q3QcfpN6BckTY0LZ7
+         QUWEcQ7QxN/nn07lKabL7gIynJwHJ5+KLvLTuCiCQBNjHQFzxQpYqtor8+DUx1MUD3Tz
+         jnirba/FXTlyp4y6jpAjIrYIKEz3ovx6efmNkel388vSR9XUFg3p0UTzFxvqLLBHPoca
+         293Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787856457; x=1788461257;
+        d=1e100.net; s=20251104; t=1787857054; x=1788461854;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=8TWHy0fq0LlmFIRlDT3XzMY9bVByxWoJTpTIiV/A2Vg=;
-        b=OYlsaXj/SZLxS0in8T8RTR7Nczt467bxejn1nAJgGirwwaTLTOdo4F8wSC83PHzFYB
-         Nwf9kySoxAHTzrwTY0ZwfuAJGwVF6SVFO53R53KLSdjPxaV4/1AoLtIJIky+ygTqcHHK
-         E4vwDf5LDW+fRvb4JuzzVIAcwNBpNhrk5Xh43tSUMA/bbcoxQnFGsPQraYWnw5KOeKyO
-         TDpBEB47kQJZpqUF3+miVw0bnvFxTS/gCg5iDNIzJma7xry1W2y5ASbkvh7eNIKovHFP
-         1s/OQTPlHDbxFoatoGi1svFcLYXrX2gk2O/Z41gPJecrMlZTJ0Eb5Fm/MIASo9CeSoKp
-         Uh9Q==
-X-Forwarded-Encrypted: i=1; AHgh+RpVm/p+NEXBTx68E9tP6DRacuLqlAEa4W5VSxppx9+EYE7iMZl90LRnQXOpukyCdLvKKig=@vger.kernel.org
-X-Gm-Message-State: AFuF++mHx0lG0ez/I5+iClAhUFsgGJnlfIxyflYOvmbEuDZyPdAkakNC
-	gzgzW92ZWmN66sJSjpvRwI6HYDbu/subX4dexFIQR1l3doFz1JC1mcwWwRGAUNKzaA==
-X-Gm-Gg: AR+sD10Go3sRi0fGq8NOJP1HTRHtRakfee6T659CmWLmUYUlcq6DXqNdJtOZSYH++mi
-	x/MyfFQkshNXQkyFBrkxWUpw9awVGq/BcR9+2HQILHFDACcuXdsJdWzjV6K9koizz5Ea28HI4Ln
-	BMExPWt9qNlqcfHMCjUmimLED/Xy/2/ImONrzaqToZ/2lddMSZG3LdhMpS+W8zXKJ+8nTxe8LQi
-	7NVqGhrK28PkiIAEFw2z2QcD3x8FZ7RXV9Ab1TXs2a327pYhspcTmuYA74DuhpisNbyp29iXvcX
-	aLaYjD1G3kRuBWyHjnhFyBT0ASmy0eFBGF0q5BBaC5uB4CZCvobjziPB7Hgva5VYb6Xxw9n3pzP
-	V37h2W6LLh+fvyuH5f2ytOk1oCC9PLDUUXg4XZHK2VWvOMUbTegqJB1dCbRf7CELwl80YxtcdI8
-	8ZS5Ti+1UgT5PBlAPEId5KtbXLbAKF8doszUO9dV0Rq/cgjxP4lWFR/G9dxM/vMADrtxpSco+xW
-	dwgtmHBLow2hYK+36Kitu9SWnwLnYq47vnBMry0N7ggylgHlpnT35wd2wI=
-X-Received: by 2002:a17:903:2c10:b0:2d5:db3d:1a41 with SMTP id d9443c01a7336-2d74f558e45mr1373495ad.14.1787856456011;
-        Thu, 27 Aug 2026 11:47:36 -0700 (PDT)
+        bh=aX0MxhiMRKYlP1maDxCRQnyd/bhRIltclM/n9JE7KG8=;
+        b=E49KrprIGOfWdL8B7BH0GMDjjmyl15GUVgVg4etaYtFOpqEYpS2r7WrZ64g3wTG4ss
+         DSMjKzy9JUIl7G5U6zcYiltPi/B+z0SRvd9ZaFl0zjP+Z1IBvzTSG8uNjhQwx6aLFOgR
+         RMF3u7w5UG3+BSqRefJ6HdnKjfUBCTNqqpfVFx7lJO1FaXcb4QlXC9MZc20M721vKMPh
+         RlYRpynA4aPGf39Zal6A3IwPqMm5Lk/Xf2jD5m8+oGRsL5IOTsWYC39QyTVab9tzR/xG
+         qgl+LdoCNpvgPs16WaLCGpjX2jGiHCW9h++3SKCIT0iGlqx7QLvfdNQ0zmn1laAhD7zU
+         y/3w==
+X-Forwarded-Encrypted: i=1; AHgh+RoRlr3tUN26G/hROHOJKnsx0+A5lMogcxJmVTMF2kUG7CNdJxqlt/+u7/LQjCc7gwEQOcc=@vger.kernel.org
+X-Gm-Message-State: AFuF++nAfofKT42+xQZQD/eyyZwu4GuzF7JwFpP2V7B8Afvr4L3bz42d
+	uakXKxZhGqEAOp1OXOTIrFxUHDGlS/UXPEPD+bnFspAMXWaQbTe5S9cLWqQpUTf+wQ==
+X-Gm-Gg: AR+sD12/CkDlAt7y2o47uobGqCwiPrnt8CVXUpudoVa/ebtbpHr+797EjCgl3WPP1Po
+	zJPs+knYXfXDtkTEOZo1/6/U1/F7m1c1o+dWUL+98GXI3WNFwYIYCxd+uZKsBLD48adjFpvU3y7
+	lIf4CJgarSVD2Oy8kEfLnPfr4RdBemjm+y05LNnI7YhsnYRTqYg97baPA4kpw9EbMhoHzC2KGSJ
+	N7doSk1glxCIuMiLw/GRZEHQ9RAGkipXwDiIP+2aY4klV5O8qI0P9Zfoq2+p+aP/4HXKt0kWd3D
+	a7sE/J2qoGa8RnJOC2fckS9nAd8FRCLpsbuVXzgcW6fcIX9C3DDXSUBklVvwVo47+M4UsIOWdPX
+	64ci+98UcOPnHStanjR82slYVsWb5ys3/QLuBTy1LGK/k4YP7OKhmnhxMmE4Bba1Qd8b4Z42tam
+	de2VEearHppie54Ga40ntTSVd0/ZpHldP4AfWoCBykc2SR2vCrMrm1180DZKCXJ8QlOQVmNp6Lg
+	8Dd9o3AK2WqrBSUB4IfCsnMldzjrooAi0x/xarmFQJz9XlQkSoo6Vszobc=
+X-Received: by 2002:a17:903:2283:b0:2c7:a13a:7fe6 with SMTP id d9443c01a7336-2d74f558e3amr1143855ad.10.1787857053361;
+        Thu, 27 Aug 2026 11:57:33 -0700 (PDT)
 Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85359cd5eb4sm2424811b3a.11.2026.08.27.11.47.34
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396b0d44651sm3782064a91.4.2026.08.27.11.57.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 11:47:35 -0700 (PDT)
-Date: Thu, 27 Aug 2026 18:47:31 +0000
+        Thu, 27 Aug 2026 11:57:32 -0700 (PDT)
+Date: Thu, 27 Aug 2026 18:57:28 +0000
 From: Samiullah Khawaja <skhawaja@google.com>
 To: Baolu Lu <baolu.lu@linux.intel.com>
 Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
@@ -71,12 +71,14 @@ Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
 	Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v4 10/18] iommu/vt-d: Restore IOMMU state and reclaimed
- domain ids
-Message-ID: <apCC3xMkYkEyQRID@google.com>
+Subject: Re: [PATCH v4 08/18] iommu/vt-d: Clear unpreserved context entries
+ during shutdown
+Message-ID: <apCGj7ePWtmpnOzk@google.com>
 References: <20260808022723.3893618-1-skhawaja@google.com>
- <20260808022723.3893618-11-skhawaja@google.com>
- <5f8963c4-f6b1-44b3-ab2c-ed658822efb4@linux.intel.com>
+ <20260808022723.3893618-9-skhawaja@google.com>
+ <446684d8-44d0-47c5-9301-172c55efd950@linux.intel.com>
+ <ao9ADjoGzgNX4t1M@google.com>
+ <5862e3cc-e7e4-43be-a829-8569d12d6bb4@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -86,123 +88,130 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5f8963c4-f6b1-44b3-ab2c-ed658822efb4@linux.intel.com>
+In-Reply-To: <5862e3cc-e7e4-43be-a829-8569d12d6bb4@linux.intel.com>
 
-On Thu, Aug 27, 2026 at 03:22:26PM +0800, Baolu Lu wrote:
->On 8/8/26 10:27, Samiullah Khawaja wrote:
->>During boot fetch the preserved state of IOMMU unit and if found then
->>restore the state.
+On Thu, Aug 27, 2026 at 02:09:26PM +0800, Baolu Lu wrote:
+>On 8/27/26 04:30, Samiullah Khawaja wrote:
 >>
->>- Reuse the root_table that was preserved in the previous kernel.
->>- Reclaim the domain ids of the preserved domains for each preserved
->>   devices so these are not acquired by another domain.
+>>>>+static void clear_unpreserved_context(struct device_domain_info 
+>>>>*info, u8 bus, u8 devfn)
+>>>>+{
+>>>>+    struct context_entry *context;
+>>>>+
+>>>>+    /*
+>>>>+     * This cleanup is done during shutdown, so it should be 
+>>>>fine to only
+>>>>+     * clear the entries here and issue one global invalidation 
+>>>>later to
+>>>>+     * invalidate all cleared entries.
+>>>>+     *
+>>>>+     * Note that the device IOTLB invalidation for unpreserved 
+>>>>devices is
+>>>>+     * skipped this way, but that should not be needed as the 
+>>>>devices are
+>>>>+     * quiesced at this point. This should improve the 
+>>>>performance of the
+>>>>+     * cleanup process and avoids any invalidation timeouts 
+>>>>because drivers
+>>>>+     * might have moved devices to D3 state.
+>>>>+     */
+>>>>+    context = iommu_context_addr(info->iommu, bus, devfn, 0);
+>>>>+    if (context) {
+>>>>+        context_clear_entry(context);
+>>>>+        __iommu_flush_cache(info->iommu, context, sizeof(*context));
+>>>
+>>>For tearing down a present context entry, please follow the VT-d
+>>>recommended sequence:
+>>>
+>>>- clear only the Present bit,
+>>>- flush the updated entry to memory if necessary,
+>>>- issue the required cache invalidations,
 >>
->>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->>---
->>  drivers/iommu/intel/iommu.c      | 111 +++++++++++++++++++------------
->>  drivers/iommu/intel/iommu.h      |   7 ++
->>  drivers/iommu/intel/liveupdate.c |  69 +++++++++++++++++++
->>  3 files changed, 144 insertions(+), 43 deletions(-)
+>>Do we still need the individual cache invalidations if we issue global
+>>invalidations (context, pasid-cache and iotlb), after clearing all
+>>entries, as they would be done if a new root table was being setup?
 >>
+>>Looking at the VT-d specs (Invalidation of Translation Caches), each
+>>invalidation type (cache, pasid and iotlb) defines granularity in both
+>>register and queue based interface. And the granularity indicates that
+>>Global invalidations clear the cached entries for that specific type.
+>>For example following text is used for each cache type (in queue
+>>interface):
+>>
+>>   Context-cache:
+>>   Global Invalidation (01b): All context-cache entries cached at the
+>>   remapping hardware are invalidated.
+>>
+>>   Pasid-cache:
+>>   Global Invalidation (11b): All PASID-cache entries are invalidated.
+>>
+>>   Iotlb:
+>>   Global Invalidation (01b):
+>>   - All IOTLB entries are invalidated.
+>>   - All paging-structure-cache entries are invalidated.
+>>
+>>A similar note about using Global invalidation is suggested in the specs
+>>when setting up root table (Set Root Table Pointer Operation).
+>>
+>>   ... software must perform a global invalidate of the contextcache,
+>>   PASID-cache (if applicable), and IOTLB, in that order. This is
+>>   required to ensure hardware references only the remapping structures
+>>   referenced by the new root table pointer and not stale cached entries.
+>>
+>>Also please note that this is happening during dmar unit teardown and
+>>system shutdown, and while the context table entries in root table are
+>>being cleared, the memory is not freed until the global invalidation is
+>>issued.
+>>
+>>Since this is during shutdown, issuing global invalidations instead of
+>>multiple individual invalidations for devices and aliases is simpler and
+>>would likely also have shutdown time improvements and reduce the
+>>blackout time during liveupdate.
+>>
+>>Please let me know if my global invalidations and granularity
+>>understanding is not correct.
+>
+>The global-invalidation approach (similar to the “set new root table”
+>flow) looks correct to me.
+>
+>On the device side: if ATS is enabled, some translations may still be
+>cached in the device. My understanding is that unpreserved devices are
+>already DMA-quiesced and then go through reset + reprobe (as in a normal
+>reboot), which should flush those device-side caches. Are we aligned on
+>that assumption?
 
-[snip]
+Yes, we are aligned on it. I already added a note about unpreserved
+devices being quiesced at this point, in a comment above in this
+function.
+>
+>>
+>>I added a comment at the top of this function to explain this, let me
+>>know if you want me to expand it with more details.
+>>
+>>>- then clear the remaining fields of the entry.
+>
+>One important point remains: even if cache invalidation is deferred and
+>done globally, we should still clear the Present bit before clearing the
+>rest of a context entry. While Present is set, hardware may fetch the
+>256-bit entry in multiple chunks. Rewriting the full entry is not atomic
+>(it becomes multiple CPU writes), so hardware could observe a torn value
+>(a mix of old and new fields), which may lead to undefined behavior or
+>spurious faults.
 
->>+
->>+static int _restore_used_domain_ids(struct iommu_device_ser *ser, void *arg)
->>+{
->>+	int id = ser->domain_iommu_ser.attachment_id;
->>+	struct iommu_hw_ser *iommu_hw_ser;
->>+	struct intel_iommu *iommu = arg;
->>+
->>+	if (WARN_ON(!ser->domain_iommu_ser.iommu_phys))
->>+		return 0;
->>+
->>+	iommu_hw_ser = phys_to_virt(ser->domain_iommu_ser.iommu_phys);
->>+	if (iommu_hw_ser->type != IOMMU_INTEL)
->>+		return 0;
->>+
->>+	/* Only allocate domain ID from associated IOMMU HW unit */
->>+	if (iommu_hw_ser->intel.phys_addr != iommu->reg_phys)
->>+		return 0;
->>+
->>+	/*
->>+	 * This can fail as multiple preserved devices can share the same domain
->>+	 * ID. Since this is done during DMAR init so these failures can be
->>+	 * ignored.
->>+	 */
->>+	ida_alloc_range(&iommu->domain_ida, id, id, GFP_ATOMIC);
+Ah yes, I wanted to write that in my previous reply but it seems I
+missed that.
 >
->This mixes two different cases:
->
->- another preserved device has already reserved the same DID.
->- the DID is not reserved because ida_alloc_range() failed (for example,
->  memory allocation failure).
->
->Case #1 is expected. Case #2 must not be ignored, because it means
->restore failed. So this should probably be something like (not tested):
->
->	mutex_lock(&iommu->did_lock);
->	if (ida_find_first_range(&iommu->domain_ida, id, id) >= 0)
->		BUG_ON(ida_alloc_range(&iommu->domain_ida, id, id, GFP_KERNEL) < 0)
->	mutex_unlock(&iommu->did_lock);
+>So the recommended sequence is:
+>- clear only the Present bit,
+>- flush the updated entry to memory if necessary,
+>- [add a comment about the delayed global invalidation approach,]
+>- then clear the remaining fields of the entry.
 
-This is a good point, I will update this. Actually, I was thinking of
-adding a new struct in the preserved state that represents the
-association between domain-iommu-device. All the drivers have this, so
-it is better to have a representation of this. Let me evaluate that.
->
->?
->
->By the way, why GFP_ATOMIC here at all?
-
-Will update as you suggested.
->
->>+	return 0;
->>+}
->>+
->>+/**
->>+ * intel_iommu_liveupdate_restore_root_table() - Restore root table and reclaim domain IDs
->>+ * @iommu: Target IOMMU
->>+ * @iommu_ser: Serialized IOMMU hardware state from previous kernel
->>+ *
->>+ * Restores the preserved root table and context tables for the IOMMU hardware
->>+ * instance across Live Update, and reclaims all domain IDs previously allocated
->>+ * to preserved devices so they are not reused.
->>+ */
->>+void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
->>+					       struct iommu_hw_ser *iommu_ser)
->>+{
->>+	if (!iommu_ser->intel.restored)
->>+		iommu_restore_pages(iommu_ser->intel.root_table);
->>+
->>+	iommu->root_entry = __va(iommu_ser->intel.root_table);
->>+
->>+	if (!iommu_ser->intel.restored)
->>+		restore_iommu_context(iommu);
->>+
->>+	iommu_ser->intel.restored = 1;
->
->This uses iommu_ser->intel.restored to prevent restoring the root and
->context tables multiple times. For this to work safely, iommu_ser-
->>intel.restored must be 0 the first time restore runs after kexec.
->
->The problem is: this field is inside struct iommu_hw_ser, and that
->struct is allocated in the old kernel. How to ensure that the previous
->kernel has zeroed this out? Maybe I’m overthinking this.
-
-This is a valid point. However, the old kernel allocates this struct
-with GFP_ZERO and it never touches the restored field prior to kexec.
-So it should be zero in the new kernel.
->
->>+	BUG_ON(iommu_for_each_preserved_device(_restore_used_domain_ids, iommu));
->>+}
->>+
->>  /**
->>   * intel_iommu_preserve_device() - Intel IOMMU callback to preserve device state
->>   * @dev: Target device
+This is exactly my plan for the next revision. We are aligned on it.
 >
 >Thanks,
 >baolu
+>
 
 Thanks,
 Sami
