@@ -1,261 +1,228 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65ABB42123F
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 17:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162074A2E1F
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 17:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787853177; cv=none; b=PN4bmYefUJb8PZGF9DyJv2YQ13G9HZX53i/zLb2WvFY/M5X63J1exoeOztRN/oiPu8oedY2jX0LPn/rzcFT8E+/qehZhZNqHowFM8gEUCudzGUW2KvPDZFRnnPkgf10ZufTKWlVmF55SrSDozL0mI496W1s8L75dwJtQ+sHj9c8=
+	t=1787853335; cv=none; b=eSHAM7PZOCE0mIn836cG5WSCSWb5P0UBgmcUZQKl15fJ3vOW49PhQUDeVfvQxWgycn9KgObm/0+cV17H5ENr3hFr16EI9PsPOxwZchHC9KdX2gYls67KibOXdrGUTieayvXVZrPtk08o0rMfMDKO0D8YYNbddG77+fjpOi2E9f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787853177; c=relaxed/simple;
-	bh=cF6NYXhDGfB74HoBaloQ4sZUldwQ5oUq/5AOtANebOY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B+bcIf8bYn2OINVIqfV+D2Zm3spTZfs2/fv3D3ROw8UCwXLC8eKgYgx56nS+5OaqkQytij6UPkGQfZvm5i0dMLKLy8FAIrgP7P58IpVpbEXHZcAONbNi7LVgMKyA3o4cA24baCiYaBrCJ8+z5gqfMJVGCPozZ2NuSZPdcxbNrUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VlZZMwpX; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1787853335; c=relaxed/simple;
+	bh=JquNSy4x+4LWMK12YHrDgFVH96J4CylpGTzlZ6A+yuk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PPn6A/afFRIyPqDjQTM8UsLF6S7fgQAH7jkTggS4bGI4IDGQylssDuYQYWG6epRZqkOTRuEJ5T9uaZD5T1ngTs8uUVhGnFHtqLDACHfNlvyY5575orfzwOP3yxyLyWjv7lTVVVnU62jWPHJ9pBgSoXlr+tts26GKvqj15uK2oOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GqyCQCh/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VlZZMwpX"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2d3b440b97aso10495ad.1
-        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 10:52:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787853174; x=1788457974; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=P+fTw5/xN6iO4FdPKCmZVQ2MDNmjfRNyCIFQIOLN/Mk=;
-        b=VlZZMwpXKCiWoy34NONdNcg6sYjdoqm7IF4dW4o9Oxm66ZEKgUS4XMkwpSLym1/DSI
-         T/hzRIl91Y172EioNAhfyUWASY5quNyihpImZHoqsGAdmk6sn1eC0UvVU9EVu4JlbTT0
-         MjEKV/TM0lTRgXDaYVfpiPLNOEFdtOGxFCuH5lj3Cnwy7Wtr60TYFTjdP2qDA6GIL1Wx
-         OEmAgzg1oV8R612FqVhYyAKiEvdr+m71JhAj/HugjN1gL4Rh2KxOvFwSMY4/JqST9QZQ
-         eliwAgRA0cXLN3uF66BtG//890PLSthu/0BSBXJShBSpmuGjGC3WJwnrRNPGI1rVg0jv
-         JarQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787853174; x=1788457974;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=P+fTw5/xN6iO4FdPKCmZVQ2MDNmjfRNyCIFQIOLN/Mk=;
-        b=jH8l3dggjk7awSy6I9PE/PDJTMttkjE52+UVIw48e8RODM4Lqm8zuBYn2rAL1fXdpD
-         MSTlbFG1yMwe16SYtJjjHN5ImLQOoVH/NWbEP2Z14ReVlRInC4fcc8cerZsW3jv71o+r
-         HRXLnBSS5KXhNgtFUnoRaiSJewLwc57yFTOXK80oBjiGODIl3r49oqtrmJrC+f4HC9tV
-         TDlaAkKJjvFliAEc987KGddI9TD2THqCadI8OfF0vh/tdPc5kpjGvff92AGEnKEquKyk
-         s+WQRIwWHWa2ml6ElYUK++U8W6O2J61KvlV/SB5WzaOgEcc5f1ifHcPeRIk2n73gXy1H
-         TePw==
-X-Forwarded-Encrypted: i=1; AHgh+RrscFWS1K7Nxq/c6XbK9GRMJ0eRWFXxG6aUryu+Avnu7NVNL8o25OpByA3ABCR818bRrZk=@vger.kernel.org
-X-Gm-Message-State: AFuF++ldzz8M8Wadtkh79DHZevZBVnMY+EV7B15um04VCjIqgMTHcbwk
-	2MEq8CpGM5AsRHgBKNgtwp8wxsFjMIkHSniTVwodpLkYJK9s32Bd1Ndso/9FQnuJ0w==
-X-Gm-Gg: AR+sD10T+h//mqcPsjgOAxIiB5ELy5vG8aqA14uyXMUcRL0Bfq3UIZCWO6q7kGZMuII
-	OKB40/pn1DmdENVAW/gkAcZc/AYbMVRmZhxyOfFLeaXDuR5BspFz4+nEU/MI0XF+hsDCSrROiFw
-	GEdsMtJT5+awzka4lPFIxPXDEeWDG8CBvF9AEZpTODgKrQxgPjCr1PxuY+s7nFdlq4IBki9js5Q
-	SZYFhDoipy/4JZKCejRYTDuTFTbetPHE405wKj9sQXoM8aYRPymnPICD6CP7L8/5JuP3z3Pmj5j
-	s75Rge7S+EB1d7QRxi5UXxPWEhj3oGBhpVZdRW/GLd06XCf2HPbl4DfiuRkqHfraotWd7l3oraX
-	0HYozqmDdhTWZo9gerv0a3ADy2Cxi17BbWlANf5x+CZBem5oRsToCO1AlHM83cZjctOHbe6LSMW
-	yi3DBK1bwQG0EBya+mCKDCtbUxQ5V9hLxs1ibTlMg/PNVQ4GYqT+LwWWxlXzpQ9u9QjEtFopHgs
-	19LaSzv8l7nLXQX6Y7n0N8IpmGSU8RgBh4MBlDS8hK9gpzmqjM1tCx+sf4=
-X-Received: by 2002:a17:903:1b48:b0:2ca:6bf:5bac with SMTP id d9443c01a7336-2d74f53de42mr551995ad.8.1787853173817;
-        Thu, 27 Aug 2026 10:52:53 -0700 (PDT)
-Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396b1123142sm3639572a91.15.2026.08.27.10.52.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 10:52:52 -0700 (PDT)
-Date: Thu, 27 Aug 2026 17:52:49 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
-	Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v4 12/18] iommu/vt-d: Handle reattach of the restored
- domain
-Message-ID: <apBso6So7UqwR3AX@google.com>
-References: <20260808022723.3893618-1-skhawaja@google.com>
- <20260808022723.3893618-13-skhawaja@google.com>
- <5b920299-260b-4025-ac4f-e8f83beebf95@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GqyCQCh/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73561F000E9
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 17:55:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787853328;
+	bh=J0OapQGESg1AGMSebGOFhwIaFUe07bM0WphS89XQMkI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=GqyCQCh/Z0GVCHvMNP3XKvWd4KGH1srRW7ir5f7zgF8+AqP0KCwpcmotAbyASSEeq
+	 AjklrRkNmbXozU0/WBhsS0Dz9cXBkneKvmVsYpLef8V88wk3xAM86MyKqwvV98u5ms
+	 TqhEErKYVCB1uDrSUhB5DJEHy80AgjRt3q2A7ygVMFjVC/PZXF1XPsmqr2huei9ura
+	 +V5FXs7qgnzS/C8kadRVmHMIEGjfr6Mtg62u6z2QCD+0eDOpYPIh59MNLubMvhtdym
+	 ugmo1wbWz5E7KO5cN4oPW3eps237uLivSps+aXZL4YcOQ0Gu3ZZuYzHOG/UkRXsNX4
+	 LZwc+Pggac5xg==
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c255206b4dfso19423166b.1
+        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 10:55:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rpv/H9/MH4NHB6ouQSAUWuIgn2unuwyN6zCtQarcOLpQbOWeIWFbVKuq329Mz7VGvjfPmc=@vger.kernel.org
+X-Gm-Message-State: AFuF++nYrjOl2kwDEdLtSqYgeOlivvdKBsK1p+pnNHRWCFRXocTk0YZu
+	tX2Y9pop/N6zI2jD9bw8UGYOpJ5rh7NVvujGmEK9Fks80g4QsFkumRvZOmMg0/IEUJHkQQW5j+B
+	gPX0KnnVWCPNA6VHGPljpNkhP0jEna2s=
+X-Received: by 2002:a17:907:1988:b0:c25:4cff:5cf5 with SMTP id
+ a640c23a62f3a-c2557181532mr37092066b.14.1787853327732; Thu, 27 Aug 2026
+ 10:55:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <5b920299-260b-4025-ac4f-e8f83beebf95@linux.intel.com>
+References: <20260826211844.884951-1-seanjc@google.com> <20260826211844.884951-2-seanjc@google.com>
+ <CAO9r8zMnPwXVf6wx_gDMzv4j47xWa7idLD+vVm9DUiB=huiLaw@mail.gmail.com>
+ <apA9eLuaMxCLdCmn@google.com> <CAO9r8zNm1QcVh29rTCzAFnYdUCS4y8ZSQOvrs2DD18XASuktoQ@mail.gmail.com>
+ <apB1A5Ln_lGTI4oy@google.com>
+In-Reply-To: <apB1A5Ln_lGTI4oy@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 27 Aug 2026 10:55:14 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPtriVwkVqmvRDv5mQ8HmvOp=NrXdJvjRuog6FY_S1DRQ@mail.gmail.com>
+X-Gm-Features: AcwNN1WqOh8rFfqyGrYERI0p2r1fGiTKetWhpzfBQCuYNbXaxs2qnIWnH_Pl58k
+Message-ID: <CAO9r8zPtriVwkVqmvRDv5mQ8HmvOp=NrXdJvjRuog6FY_S1DRQ@mail.gmail.com>
+Subject: Re: [PATCH 1/4] KVM: nSVM: Reject KVM_SET_NESTED_STATE if L1 has
+ EFER.LMA=1 && EFER.LME=0
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Stefan Teodorescu <fane@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 27, 2026 at 04:12:01PM +0800, Baolu Lu wrote:
->On 8/8/26 10:27, Samiullah Khawaja wrote:
->>Reattach the restored domain to the preserved device using restored
->>domain ID. While reattaching do not setup the context and PASID entries
->>as those are preserved during liveupdate.
->>
->>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->>---
->>  drivers/iommu/intel/iommu.c      |   9 ++-
->>  drivers/iommu/intel/iommu.h      |  10 +++
->>  drivers/iommu/intel/liveupdate.c | 120 +++++++++++++++++++++++++++++++
->>  3 files changed, 136 insertions(+), 3 deletions(-)
->>
+On Thu, Aug 27, 2026 at 10:33=E2=80=AFAM Sean Christopherson <seanjc@google=
+.com> wrote:
+>
+> On Thu, Aug 27, 2026, Yosry Ahmed wrote:
+> > On Thu, Aug 27, 2026 at 6:37=E2=80=AFAM Sean Christopherson <seanjc@goo=
+gle.com> wrote:
+> > >
+> > > On Thu, Aug 27, 2026, Yosry Ahmed wrote:
+> > > > On Wed, Aug 26, 2026 at 2:18=E2=80=AFPM Sean Christopherson <seanjc=
+@google.com> wrote:
+> > > > >
+> > > > > Reject KVM_SET_NESTED_STATE if the incoming L1 host state has wha=
+t is
+> > > > > effectively an impossible EFER combination of LMA=3D1 but LME=3D0=
+, i.e. if the
+> > > > > state says long mode is active but not enabled.  Unlike VMX, SVM =
+doesn't
+> > > > > have an explicit consistent check for the illegal combination; pr=
+esumably
+> > > > > hardware simply ignores EFER.LMA if EFER.LME=3D0.
+> > > > >
+> > > > > Unfortunately, KVM doesn't ignore EFER.LMA in this case and consu=
+mes the
+> > > > > illegal state when constructing the shadow MMU for L2.  E.g. if u=
+serspace
+> > > > > also clears CR4.PAE, then kvm_calc_cpu_role() will compute a role=
+ with 4 or
+> > > > > 5 levels of paging, but shadow_mmu_init_context() will wire up th=
+e MMU to
+> > > > > use the paging32 template, which maxes out its levels at 2.
+> > > >
+> > > > Isn't the "right" thing to do what hardware (presumably) does and
+> > > > ignore EFER.LMA if EFER.LME=3D0?
+> > >
+> > > No, because (a) this is KVM uAPI, not emulation of hardware, and (b) =
+it's a check
+> > > on L1 state, not L2 state.  It should be impossible for L1 state to h=
+ave this
+> > > combination through "natural" means, and so a snapshot provided by KV=
+M should
+> > > never have this combo either, which there's zero reason to allow user=
+space to
+> > > provide garbage.
+> >
+> > Right, I understand that KVM can do whatever it wants here. I was wonde=
+ring
+> > if we wanted to make the uAPI behavior match the  VMRUN behavior, but I=
+ guess
+> > we're free to make it more strict.
+>
+> But again, this *does* match VMRUN behavior, because it's impossible for =
+L1 to
+> have EFER.LMA=3D1, EFER.LME=3D0, and EFER.PAE=3D0 at the time of VMRUN.
+>
+> > > > > Note, the "real badness" is effectively the same as what happened=
+ with the
+> > > > > nVMX bug fixed by commit 112e66017bff ("KVM: nVMX: add missing co=
+nsistency
+> > > > > checks for CR0 and CR4").  Unfortunately, the sanity check added =
+by commit
+> > > > > 72e2fb24a0b0 ("KVM: x86/mmu: Bug the VM if a vCPU ends up in long=
+ mode
+> > > > > without PAE enabled") doesn't work for this case, since L2 state =
+is active
+> > > > > at the time of the page fault, but it's L1 that has the bad state=
+.
+> > > > >
+> > > > > Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE a=
+nd KVM_SET_NESTED_STATE")
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Cc: Yosry Ahmed <yosry@kernel.org>
+> > > > > Reported-by: Stefan Teodorescu <fane@google.com>
+> > > > > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > > > > ---
+> > > > >  arch/x86/kvm/svm/nested.c | 1 +
+> > > > >  1 file changed, 1 insertion(+)
+> > > > >
+> > > > > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.=
+c
+> > > > > index 73f37b050d0a..49fb10ad1f9f 100644
+> > > > > --- a/arch/x86/kvm/svm/nested.c
+> > > > > +++ b/arch/x86/kvm/svm/nested.c
+> > > > > @@ -2028,6 +2028,7 @@ static int svm_set_nested_state(struct kvm_=
+vcpu *vcpu,
+> > > > >         if (!(save->cr0 & X86_CR0_PG) ||
+> > > > >             !(save->cr0 & X86_CR0_PE) ||
+> > > > >             (save->rflags & X86_EFLAGS_VM) ||
+> > > > > +           ((save->efer & EFER_LMA) && !(save->efer & EFER_LME))=
+ ||
+> > > >
+> > > > I just realized I have no idea why we check X86_CR0_PE and
+> > > > X86_EFLAGS_VM here. Commit 6906e06db9b04 ("KVM: nSVM: Add missing
+> > > > checks for reserved bits to svm_set_nested_state()") says it's to d=
+o
+> > > > the same checks as VMRUN, but I don't think that's actually the cas=
+e?
+> > > > The checks here seem arbitrary to me?
+> > >
+> > > Again, this is L1 state when L2 is active (the !KVM_STATE_NESTED_GUES=
+T_MODE path
+> > > has already bailed), and VMRUN "can only be executed in protected mod=
+e with SVM
+> > > enabled".  Amusingly, the APM says #VMEXIT "Forces CR0.PE =3D 1, RFLA=
+GS.VM =3D 0.",
+> > > so I guess it means business.
+> > >
+> > > If anything is wrong, it's the CR0.PG check.  Presumably that got car=
+ried forward
+> > > from commit c0725420cfdc ("KVM: SVM: Add helper functions for nested =
+SVM").  I
+> > > don't see anything in the APM that requires paging to be enabled, and=
+ nothing in
+> > > that ancient series points at concrete documentation either.
+> >
+> > Oh yeah you're right, for some reason I thought it was paging not
+> > protected mode. Well then, it seems like
+> > nested_svm_check_permissions() is also incorrectly checking paging as
+> > well, seems like both checks are incorrect? Also, I don't see anything
+> > in the APM about checking RFLAGS.VM before VMRUN.
+>
+> Presumably it's covered by the !PROTECTED_MODE clause.
+>
+>   IF ((MSR_EFER.SVME =3D=3D 0) || (!PROTECTED_MODE))  // This instruction=
+ can only be executed in protected
+>     EXCEPTION [#UD]                               // mode with SVM enable=
+d
+>
+> Section "1.3.4 Legacy Modes" describes "Protected Mode" and "Virtual-8086=
+ Mode"
+> as separate submodes.  And the tables for most instructions differentiate=
+ between
+> Real, Virtual 8086, and Protected modes when enumerating exceptions.
+>
+> The APM weasels around 64-bit mode by also saying "Before enabling and ac=
+tivating
+> long mode, system software must first enable protected mode".  E.g. the t=
+able for
+> SYSENTER describes the #UD due to "This instruction is not recognized in =
+long mode"
+> as scenario that's unique to Protected Mode.
+>
+> Stating the obvious, it would be lovely if the APM explicitly stated what=
+ the
+> exact checks are, though that's about as likely as AMD gifting me a pony.
+>
+> FWIW, if that reading is wrong (though I'm pretty sure it's not), then th=
+e only
+> issue is that KVM is synthesizing #UD instead of #GP, because Virtual 808=
+6 always
+> runs at CPL=3D3.
+>
+>   IF (CPL !=3D 0)                                   // This instruction i=
+s only allowed at CPL 0
+>     EXCEPTION [#GP]
 
-[snip]
+I see, thanks for digging this up. Either way I think we want to keep
+things consistent between here and nested_svm_check_permissions(). We
+probably want a CPL check here, and it would be a superset of
+X86_EFLAGS_VM as you mentioned. We probably wanna drop the CR0.PG
+check from both places, and add an explicit X86_EFLAGS_VM check in
+nested_svm_check_permissions() to #UD instead of #GP?
 
->>+
->>+static int domain_reattach_iommu(struct dmar_domain *domain,
->>+				 struct intel_iommu *iommu,
->>+				 struct iommu_device_ser *device_ser)
->>+{
->>+	struct iommu_domain_info *info, *curr;
->>+	int restored_did;
->>+	int ret;
->>+
->>+	if (!iommu_domain_restored_state(&domain->domain))
->>+		return -EINVAL;
->>+
->>+	restored_did = device_ser->domain_iommu_ser.attachment_id;
->>+	if (!ida_exists(&iommu->domain_ida, restored_did))
->>+		return -EINVAL;
 >
->It seems that checking only whether the domain ID is reserved on this
->IOMMU may not be sufficient. It would be safer to also verify that:
 >
->- device_ser->domain_iommu_ser.iommu_phys matches iommu->reg_phys, and
->- device_ser->domain_iommu_ser.domain_phys matches @domain.
->
->?
-
-Interesting.. The caller of this attach from core fetches the correct
-domain based on the checks you mentioned. But you are right, adding a
-check here makes sense to prevent anyone else calling attach with a
-mismatch.
->
->>+
->>+	info = kzalloc_obj(*info);
->>+	if (!info)
->>+		return -ENOMEM;
->>+
->>+	guard(mutex)(&iommu->did_lock);
->>+	curr = xa_load(&domain->iommu_array, iommu->seq_id);
->>+	if (curr) {
->>+		curr->refcnt++;
->>+		kfree(info);
->>+		return 0;
->>+	}
->>+
->>+	info->refcnt	= 1;
->>+	info->did	= restored_did;
->>+	info->iommu	= iommu;
->>+	curr = xa_cmpxchg(&domain->iommu_array, iommu->seq_id,
->>+			  NULL, info, GFP_KERNEL);
->>+	if (curr) {
->>+		ret = xa_err(curr) ? : -EBUSY;
->>+		goto err_unlock;
->>+	}
->>+
->>+	return 0;
->>+
->>+err_unlock:
->>+	kfree(info);
->>+	return ret;
->>+}
->>+
->>+/**
->>+ * intel_iommu_restore_device() - Restore device domain attachment after live update
->>+ * @domain: Restored domain
->>+ * @dev: Restored device
->>+ *
->>+ * Return: 0 on success, or negative error code.
->>+ */
->>+int intel_iommu_restore_device(struct iommu_domain *domain,
->>+			       struct device *dev)
->>+{
->>+	struct iommu_device_ser *device_ser = dev_iommu_restored_state(dev);
->>+	struct device_domain_info *info = dev_iommu_priv_get(dev);
->>+	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
->>+	struct intel_iommu *iommu = info->iommu;
->>+	unsigned long flags;
->>+	int ret;
->>+
->>+	if (!device_ser)
->>+		return -EINVAL;
->>+
->>+	if (dev_is_real_dma_subdevice(dev))
->>+		return -EOPNOTSUPP;
->
->... or, move above check here to ensure the attachment relationship
->between the @device and @domain?
-
-I think it is good to keep it in the domain_reattach_iommu() as that
-does the iommu <-> domain association.
->
->>+
->>+	ret = domain_reattach_iommu(dmar_domain, iommu, device_ser);
->>+	if (ret)
->>+		return ret;
->>+
->>+	info->domain = dmar_domain;
->>+	info->domain_attached = true;
->>+	spin_lock_irqsave(&dmar_domain->lock, flags);
->>+	list_add(&info->link, &dmar_domain->devices);
->>+	spin_unlock_irqrestore(&dmar_domain->lock, flags);
->>+
->>+	if (!sm_supported(iommu))
->>+		intel_iommu_enable_pci_ats(info);
->
->Could you please clarify the PCI ATS behavior across live update?
->
->My understanding is that PCI devices may bypass reset during kexec and
->are then re-initialized by the new kernel (is that correct?). If so, ATS
->state in hardware would depend on its state before kexec in the old
->kernel.
->
->In a normal reboot, ATS is expected to be disabled and the device ATC is
->empty. But that assumption may not hold for live update. If that is
->true, can we still use the same approach to keep hardware ATS state and
->info->ats_enabled in sync?
-
-Regarding ATS, it remains enabled in the preserved device during kexec
-and we should keep it in sync with the info->ats_enabled here. We might
-have to disable it in the next kernel if it is unsupported (or disabled
-globally) in the next kernel. I will put those changes here in next
-revision.
->
->>+
->>+	ret = cache_tag_assign_domain(dmar_domain, dev, IOMMU_NO_PASID);
->>+	if (ret)
->>+		goto err;
->>+
->>+	ret = iopf_for_domain_set(domain, dev);
->>+	if (ret)
->>+		goto err;
->>+
->>+	return 0;
->>+
->>+err:
->>+	/*
->>+	 * Detach the restored domain from device and iommu on failure, but keep
->>+	 * the hardware state intact.
->>+	 */
->>+	info->domain_attached = false;
->>+	cache_tag_unassign_domain(info->domain, dev, IOMMU_NO_PASID);
->>+	spin_lock_irqsave(&info->domain->lock, flags);
->>+	list_del(&info->link);
->>+	spin_unlock_irqrestore(&info->domain->lock, flags);
->>+
->>+	domain_detach_reattached_iommu(info->domain, iommu);
->>+	info->domain = NULL;
->>+	return ret;
->>+}
->>+
->>  /**
->>   * intel_iommu_preserve_device() - Intel IOMMU callback to preserve device state
->>   * @dev: Target device
->
->Thanks,
->baolu
-
-Thanks,
-Sami
+> > If the goal here is to keep the checks here consistent with
+> > nested_svm_check_permissions(), aside from the new EFER check, then
+> > maybe we should also check CPL here?
