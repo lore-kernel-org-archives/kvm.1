@@ -1,122 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B1C2F7F14
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 03:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44C127AC57;
+	Thu, 27 Aug 2026 04:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787801090; cv=none; b=OkoUeWX9QcArJ/s+JbiRUCUxtFaVjTxlYrosWaj9KgAeLIZITu0heUwWZJEMEo6iGAQBsrGkC8M/A1jGpq0dM9udSoy2OlZs9rhF7gXBwc3iVrCDsVbN7ODaJg4Ac74ZgFOeRwbOMB1q4dmo5AO5Rf7FvWRtUY9g8uMmjq4QugU=
+	t=1787805160; cv=none; b=OSnHPi+OJuPeY5OYcCFfaLevB4kE9plxEHPKMWMVNkclR4Q2L32WkcqsxgxFYZdEOnUbya5aIvGB1KWAJUMUsBoSJIF3WhfkkJiHDy5aHGHBUdBRTsip5VcZfs/VhedxGQNaMOATWNnqKJj38LGz9RJsRjGxnluojZ8Pm5dSPmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787801090; c=relaxed/simple;
-	bh=VLrs2B1X/GwL5YjSssr72LsRFO+Z2YlHW/jGrKZ2z4c=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=e5n3zv/toI6s74Y7pkCX24W16aelk0vLS7X17c4Cd5g2+wHGBpP9rk+2wB+on03dzrLL7MSjsohbCE3JBR81fMcjKKT0bpTVCBsASOWOpA/dXegZ/yAS2J6wyARcK+VHlGql9B0TFQlpB47wirhJECIsCOgZtN7IW9geDnXCCyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NlwfXHtP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787805160; c=relaxed/simple;
+	bh=5hfhg9q3wLr3F++5GOEFn8FlmrSeQCrLD/p9jYvA+Tc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eTonJJS8RCwJmYpFKaPyR1d2EwuLYS+rCd0RGixvZR5zXNg3xTUMxf5IXJFfp3YgTFIv1om5tTDuXhf/tH27h2ntDIPVBvkNPQILzkhwOICry7N2RCs0At255vRwH5CR5/3WrmtCNR665xP9oO5epGY+lzIkzECjt2EkuHocq70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZyYtU2LR; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NlwfXHtP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489E31F00A3A;
-	Thu, 27 Aug 2026 03:24:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787801089;
-	bh=W0YoMb3M8Y+pAAE5VaM6WlddEkaVGXxrxC5j+o24sPM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NlwfXHtPvze+Yro2j2+CUjNhirr2ot3smqKXbUOot1DvowMAEqV/TC+R8uB16zqpD
-	 R/JuNU5gw/RrQkRRjX0xJVD3RhqFXmBMZXK5HUHqjtGP6OAf2I4qd04b+8SeB0q1Sb
-	 8V361xGi8RqV5ByzKCCfPak/6MoyT6w6DXHnFINNqzMAdWm2PH/dkJDMU4IYB9+zvS
-	 lIZ46Xt/8S7nJqUf/sdQoDGSjPJAcKLGNq5ObDGqF4VY9EnHpHEAi9afdfnfv/dfUV
-	 fcMxCG+JaXWUxcdc/7giIi+YYKBB8jxNHPbJOzDrevCvcPfO4ZYqMj5V3IolvBsqu9
-	 3XMrYykOKXn6Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 4/4] KVM: TDX: Validate userspace CPUID input for
- KVM_TDX_INIT_VM
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Binbin Wu" <binbin.wu@linux.intel.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260827031837.2863609-5-binbin.wu@linux.intel.com>
-References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
- <20260827031837.2863609-5-binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 27 Aug 2026 03:24:48 +0000
-Message-Id: <20260827032449.489E31F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZyYtU2LR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787805159; x=1819341159;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5hfhg9q3wLr3F++5GOEFn8FlmrSeQCrLD/p9jYvA+Tc=;
+  b=ZyYtU2LRbs5dOuHeNCKLsjJxxvruT/eisWhigWuboKnhFvWtrcSm+6fW
+   VvqVwGpj1JRtiYQAWeNxOnLL42gEoPAVftJlDOVKToqIci9Ct1GFA+d2z
+   GR94aL2QOs+6I3BA/0J1WlDslzukEJgNrasvTIQF0dXJvoXerwCuV67ld
+   dFrgFukBSV8TB9mgYeN0iBfPGujV6zribkMeMoVETPe+AGSBK8f+pbiSf
+   6F3YnGf/eR4bFZM/35zB9pn5WtuEyDuSvI1I/YyVUB7oQOOVn3MEn9F0Q
+   UUUBxjz/yoq2k4owfGYvanQhGzD34eq3c9rMqlazLoVqCWqrOt3aoM+/L
+   A==;
+X-CSE-ConnectionGUID: NaFgEe5YTNOb77FkvpnOBA==
+X-CSE-MsgGUID: mk8ZE7dPTBO8QinP1XbNZg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11887"; a="88352856"
+X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; 
+   d="scan'208";a="88352856"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 21:32:38 -0700
+X-CSE-ConnectionGUID: bAH64PyqQvmVyGp2r/Suug==
+X-CSE-MsgGUID: ln06QeogQleILQL+aJHCeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; 
+   d="scan'208";a="271559179"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 21:32:38 -0700
+Date: Wed, 26 Aug 2026 21:32:24 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Kim Phillips <kim.phillips@amd.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, Borislav Petkov <borislav.petkov@amd.com>, 
+	Borislav Petkov <bp@alien8.de>, Naveen Rao <naveen.rao@amd.com>, 
+	David Kaplan <david.kaplan@amd.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Nathan Fontenot <nathan.fontenot@amd.com>
+Subject: Re: [PATCH v5 1/8] x86/bugs: Allow forcing Automatic IBRS with SNP
+ active using spectre_v2=eibrs
+Message-ID: <ffboocv2eruaxnu6nuhpawyqycab2lhxhrl32e5toco6gdql3i@5y5o7ng6t7ow>
+References: <20260826223510.3669875-1-kim.phillips@amd.com>
+ <20260826223510.3669875-2-kim.phillips@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260826223510.3669875-2-kim.phillips@amd.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Wed, Aug 26, 2026 at 05:35:03PM -0500, Kim Phillips wrote:
+> spectre_v2=eibrs currently enables retpolines when SNP is enabled,
+> instead of AutoIBRS (EIBRS) because the commit that disabled
+> AutoIBRS if SNP is enabled stopped short of enabling
+> X86_FEATURE_IBRS_ENHANCED.
+> 
+> Change the logic to enable X86_FEATURE_IBRS_ENHANCED, and move the
+> decision to switch to retpolines in the default/"auto" case in
+> spectre_v2_select_mitigation().  This allows the existing
+> spectre_v2=eibrs logic to work as intended.
+> 
+> Condition that switch on CONFIG_MITIGATION_RETPOLINE being built in.
+> Otherwise spectre_v2_select_retpoline() returns SPECTRE_V2_NONE and an
+> SNP host with AutoIBRS available would be left completely unmitigated
+> against Spectre v2 in the default/auto case, which is worse than the
+> userspace indirect branch performance loss AutoIBRS costs.
+> 
+> Also emit a performance loss warning for using AutoIBRS with SNP
+> enabled.  AutoIBRS is activated for all three eIBRS modes via
+> spectre_v2_in_eibrs_mode(), so use that helper to cover
+> spectre_v2=eibrs, spectre_v2=eibrs,lfence, and
+> spectre_v2=eibrs,retpoline uniformly.  Word the warning in terms of the
+> eIBRS mitigation enabling AutoIBRS, rather than naming AutoIBRS as the
+> selected mitigation, so it reads correctly for the ,lfence and
+> ,retpoline variants where another component is also active.
+> 
+> Fixes: acaa4b5c4c85 ("x86/speculation: Do not enable Automatic IBRS if SEV-SNP is enabled")
+> Reported-by: Tom Lendacky <thomas.lendacky@amd.com>
+> Cc: Borislav Petkov (AMD) <bp@alien8.de>
+> Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Kim Phillips <kim.phillips@amd.com>
 
-Pre-existing issues:
-- [High] Missing bounds check on the hardware-reported `num_cpuid_config` l=
-eads to an out-of-bounds heap write when initializing TD parameters if the =
-TDX module reports more than 48 CPUID configuration leaves.
---
-
-commit 491ef15b15a75d61b2ded06ddb90ff6562206292
-Author: Binbin Wu <binbin.wu@linux.intel.com>
-
-KVM: TDX: Validate userspace CPUID input for KVM_TDX_INIT_VM
-
-This commit validates the CPUID configuration provided by userspace
-through KVM_TDX_INIT_VM against KVM's TDX allowlist. It drops the
-hardcoded denylist-based check and instead rejects entries matching
-unsupported CPUID bits or entries with mismatching subleaf indices.
-
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index e8951353de73c..12dea8775fd4f 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-[ ... ]
-> @@ -2556,7 +2548,16 @@ static int setup_tdparams_cpuids(struct kvm_cpuid2=
- *cpuid,
->  		if (!entry)
->  			continue;
-> =20
-> -		if (tdx_unsupported_cpuid(entry))
-> +		/*
-> +		 * Reject entries whose index does not match the expected one.
-> +		 * This catches userspace passing a CPUID entry with the
-> +		 * KVM_CPUID_FLAG_SIGNIFCANT_INDEX flag cleared when the index
-> +		 * is significant.
-> +		 */
-> +		if (entry->index !=3D tmp.index)
-> +			return -EINVAL;
-> +
-> +		if (tdx_has_unsupported_cfg_cpuid_bit(entry))
->  			return -EINVAL;
-> =20
->  		copy_cnt++;
-
-[Severity: High]
-This is a pre-existing issue, but does this loop in setup_tdparams_cpuids()
-lack a bounds check on the hardware-reported td_conf->num_cpuid_config?
-
-Looking at the loop just below this diff in arch/x86/kvm/vmx/tdx.c:
-
-    for (i =3D 0; i < td_conf->num_cpuid_config; i++) {
-        ...
-        value =3D &td_params->cpuid_values[i];
-        value->eax =3D entry->eax;
-        ...
-
-The target td_params is allocated with a strict 1024-byte size bound
-in tdx_td_init():
-
-    td_params =3D kzalloc_obj(struct td_params);
-
-However, the hardware-reported num_cpuid_config can be up to 128. Because
-struct td_params contains preceding fields and is bounded to 1024 bytes,
-the cpuid_values flex array can safely hold a maximum of 48 entries.
-
-If a TDX module supports more than 48 CPUID configuration leaves, this
-iteration will blindly index past the 48th element, resulting in an
-out-of-bounds heap write with user-controlled CPUID values.
-
-Should num_cpuid_config be validated against the maximum capacity of
-the td_params allocation?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260827031837.2863=
-609-1-binbin.wu@linux.intel.com?part=3D4
+Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
