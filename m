@@ -1,225 +1,201 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D2837F33D
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 17:33:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787852039; cv=none; b=MSAhnEGemKtLJ5fuRbKMPMEDBInJQFkJcHc/SqNC16UqEdw+QneXLXKB7ceDa19b7ZGtZBYlSYBK1wDr+lcg9Y6HVMQRnagrj0O5l+cbTG8DbTUK+iR+N/qIxMTG6o6IRkG3Wy8GRCd1kpGMxhjV4Ocg8cdQjC/CW4cuC3sfoKI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787852039; c=relaxed/simple;
-	bh=B8tgK8pW4r+11XaPxDXT2PpkDA4xldoq70JN/X+J/kQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=K9AIeuGt18mPpSWSnAGXIplVbc48NbX78YOSVUV5qWgz8KnYL3PiuIppH0AlHMb28bQNRGuzqnLuAdBJbTj4MRQ3+ccJNE29lZEQ/y41DaWQURhQy6uTXd01itdXnltGNuAJOx248ye/j2wO+hh4Ssf4GUmaVzKa12oYboy1qpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gqau8kh+; arc=none smtp.client-ip=209.85.216.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C289C471276
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 17:36:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787852217; cv=pass; b=lt3vrxMs+b3j5lS7SQwfu8oWOUL0YWII+Ab+kfGIUjZ6bt3VO4KJCe+LQ6SzI9otdPc70TvpF+Ni/6FDDtLp0jZ0ySDT5Qoag5BzLdhkVwl3mlEVIdLxQumZnpenQA+k+Zf+4pejlECxaMjxFkemevb2eQ13LxKACQVWZfLiinQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787852217; c=relaxed/simple;
+	bh=zx9m3UJWLQKbi0/pNDNNX6lZqJj4z+ajiJa/RVGEIzM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MQRDTf5VB8+g1rWMpWumU/EWhmaflS+RFoBvXuYCoqnpZ6pXmfRrxsOewr84Svohb5U1zE7a0Hbir4DtKbS8nj6sStRi6jUEd7E54yMOibwE0AeQZ6N6kBJk8YHItpAB4NPcVa4VrtLFrt6AOmTBw7Aj4gXvWYuH4SYxYGd3YbA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U+xla7h8; arc=pass smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gqau8kh+"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38f283baf1fso301920a91.3
-        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 10:33:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U+xla7h8"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c1c26d7e951so22980066b.0
+        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 10:36:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787852214; cv=none;
+        d=google.com; s=arc-20260327;
+        b=NnfHtwtZJo4z/1kZVyYdlj7V3rG57gRW1BeTLMQgf7dD+cUZFWVCfwFxH1KlaIec/l
+         WMMwNstMZ0nfD5H8iKw5XfxnDEvhF9T7DDZnBQHqm0AFikfoPpxvQl+YN4Q520+Cr3N2
+         5NWyjE8txxePQtJ83z3S9IuS4gzNzRvWv8IPnTSz/SGBVdzWjS5dBhRivW7Onm2jdDs9
+         8HBunvlfl0ybZzUvNfap8aGxLmNLWKUXD5oPcnorMNRb9UBmfMyuv286IEC95r1QPKsN
+         qVHw4YeebkSr4nxE6G5k0CbyiFCkIk/G3hd1jEooDAs4WcoEk533vCkPuVOHyBD4r006
+         G2Ig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cU2IdGj8HYn85rF2dapXdYr5omVVmX8wN53COGpvOpk=;
+        fh=KRbn5ot5ynLJ6qQ09+Or5aFU0q4RTk0hjtJ20m5NngI=;
+        b=hslE4uSk50iVuu7RZUbpuHI+YOA0l10EiXPK7QjYzLieK0sf4QX/TqhmnwfBXhthxb
+         dGg3PSEvKCmLFQzHA96H/A/pOHlcHPuzSWfcU2WlFG+CD26AOopEUqDUbEmpgPTw2waI
+         ZzIPisdJXlpsjaPNVgD6QwgegoLO8jeXAqvmQmCbNC8b6fSx8SGESCJw9+4bp2TqkOwV
+         op8+D3e1ejBJBqom4diu0sc53O/DCHJD8N9ZVfcj/3weyQKsCSOcQLnF15FFnVw0Vpcf
+         kELAEXYXloOl6kUyhTDZKah7RNplxuqDbjvBtN/0IzMwVagRPhoFOguZuxoGNggWINhJ
+         FTMw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787852036; x=1788456836; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=nG/GCR2tvryuqPdn4NNkujP4GKHt43eWJXqaBb3AB30=;
-        b=Gqau8kh+g2dHvcYIK8wWFg3UAPM/nfqUK/Ybz6RpaHkWPv8enGm1uSx/bIlZBkPqrD
-         QVAR9JjsZFuOR2h3GDZCNz/oqxOG/S24vFhmc+fnpgvHZBk/KBywutZUoW60Wg16fYB3
-         OZcoy7kD/cHnDgbO5jDGz3PhSYcqk4KhXzfzj0K75yHFWQofvT00ww3cr9pg8DG5kWSP
-         y/Fm7sCEJ/mALh2NDefB4UyQJ5vxQCVSVAAKZhrqqi82bV6/R3lFl3iVIN8KDieBM55G
-         S4DHUwn1xExwBrlhMjB724tXKsxX2y2qUk/NDvxaFZiF2U4RkIKdtI9/4ly41g3OBhGS
-         rvZw==
+        d=google.com; s=20251104; t=1787852214; x=1788457014; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cU2IdGj8HYn85rF2dapXdYr5omVVmX8wN53COGpvOpk=;
+        b=U+xla7h8Ps5Awr0Q4pOzTefLwg0sL6LhPl5rt1akFAS1W5K2Mr66/1cW9oZ63whvHF
+         /oFsZbExUUJjfkPTrmY3LjtatTvOBH0B0enpey5hQEkpv++yw4fbLUk7V+Dk3inzOP1w
+         0QX1MjO3ITThr8PJg3SZ9Aoh3kPlnGM11iICYIVu7rDnuGkGQau2mn6Mxp0J1A+t6D0o
+         Vklsj4LR+LqXoTPtJG5nPlGDlmwDDniLu8YfX532ZeS0XlIiiJXicDjHiII5A0G68dU6
+         uqXv0+SDPg2sageLB/Sf3QnMTjfwLV6TTuKBYDC9sw+Qbr48LL5hYMpMJK9SteXlMyjK
+         Hd2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787852036; x=1788456836;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
+        d=1e100.net; s=20251104; t=1787852214; x=1788457014;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nG/GCR2tvryuqPdn4NNkujP4GKHt43eWJXqaBb3AB30=;
-        b=T8BjM/EiUPIgXdksqVCAUqJk9Qm1wb7ChDWNEsOQFagahHsb/tv99RhEPa7LkBPRx2
-         QlwsILgVtA/iv+mIJFHP6IyIbRFg/nlzBlhaYZzK3YnlMhaACRgQ7wXrIptZDPuS8OVm
-         WhY2fDV9Q3sYu8OlllENndoJjVAt67JDM/Ui5sokIQVW42E997IzxbqMGge+0omfkQu/
-         xbQt4458Qh7ixkL9lW7U5lRj02dZHwauUJKL/wb8LWz3VswHNxPYp9Hv95fF59X77QHU
-         uXszr4gBzjob5tr0uKzd8u8ECnq8QuJwHpgdTam/nHldcUyb96xMLtHG/UeJcL/toxVC
-         IAUw==
-X-Forwarded-Encrypted: i=1; AHgh+RocfXjNDDATXQd1dl+8Hr88ctIB29noo1BxsFQFou7JqAXrQ/3W43y+ymKRyVVDOGaalNY=@vger.kernel.org
-X-Gm-Message-State: AFuF++nMdoSz2ZaZpyrcf624C3PQLzIYNAHbrEJrPwaZGd1fd9kX94rD
-	tlb9oXfS+C+Cqc4kAgolFIxE6sQwgcohmzyyRUDCQp3gWv++f2ZsntQl+Sc5EIdhhaD7cX9hXAm
-	VqgVSTw==
-X-Received: from pjj14.prod.google.com ([2002:a17:90b:554e:b0:38d:7b07:893c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e710:b0:381:528a:808c
- with SMTP id 98e67ed59e1d1-396d10085b8mr1544475a91.12.1787852036083; Thu, 27
- Aug 2026 10:33:56 -0700 (PDT)
-Date: Thu, 27 Aug 2026 10:33:55 -0700
-In-Reply-To: <CAO9r8zNm1QcVh29rTCzAFnYdUCS4y8ZSQOvrs2DD18XASuktoQ@mail.gmail.com>
+        bh=cU2IdGj8HYn85rF2dapXdYr5omVVmX8wN53COGpvOpk=;
+        b=Gjw7W9i/6VyGG3z/uSfdqc5bOOxC6MrON9E5JjGi/nlxCNE+/JMhCkceXZV/VsxsuH
+         H9i8mu8GXeoVHwqNirW3ey1An7Pj32UQWN7bKM2Ay/k9Yz0vB3f9xy9/QS3auHfTI0RX
+         kZ9TAyUCrX2m+Di2kh3m67H4gpQZkZjUm25zfDx8yhfH3DfDy+8Np3cbqsk37Qn6X7bt
+         rutAvzIj9xCovTR2kcLONf7r1FDonChXbReZBverSickhICm2BT3WPXHcTh5ElA+4HM8
+         MnlmufR9UZTsiuLn/WVpUt931Rt165Nl9PMY/SlQny08sTSsXgP+/fDvvyzSG/f5Yaie
+         Ay4g==
+X-Forwarded-Encrypted: i=1; AHgh+Rp2NbrCpDQMVxEnPy/038ymh+ZSu4Kchwcr1CoqAnPNmO0g+CWvryY8JuFU2wp5ZjuY8t4=@vger.kernel.org
+X-Gm-Message-State: AFuF++mTrZEnoZ+oa/+hmLG1Dsf+IUt/fEGYCptBnEou6QlK/Ogj00GJ
+	vn3aiwjUgFszBOK4w3M9NEMYXDGFlT6/j51uYdz2HGdRarVYN7FJ/+kppREqnBsOaTm47gwRceM
+	epHVhlVyWvU3ENY3QWZ2rfFPc6tqovgu7WpQIOaSy
+X-Gm-Gg: AR+sD12oRGyckPOCaGIodG1fbx0F8xCbpHCXC2Laydc/FSJI2ipPyGuiHqZpzw/3yNL
+	Ko9Av5pTYayrZ7T0YKcZW2TO8JargFH8I/VhH6r3x86jwNA4OzfqJf3Eexv6e78wnhsOfmpDeWh
+	5sHzf9LtFhUZpOuGwz0zj/ERUSoGxuxTNUHncC3IKHjqydqWeI23NXLuC3rsj1Xp0UG8Z2c/IAZ
+	f7j1LITX+z7iOFDL0r94bKnEY0/RRuDWKYunGAETXF61sGJi9NgGRWRemT9zj6TvUhUZtMEkK64
+	594nS3H/TY3wWf8Y7hinopw+bDpkhNlp86eBvv5q9m5XHg==
+X-Received: by 2002:a17:906:628b:b0:c1f:8021:deef with SMTP id
+ a640c23a62f3a-c2556c61defmr29002166b.10.1787852213404; Thu, 27 Aug 2026
+ 10:36:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260826211844.884951-1-seanjc@google.com> <20260826211844.884951-2-seanjc@google.com>
- <CAO9r8zMnPwXVf6wx_gDMzv4j47xWa7idLD+vVm9DUiB=huiLaw@mail.gmail.com>
- <apA9eLuaMxCLdCmn@google.com> <CAO9r8zNm1QcVh29rTCzAFnYdUCS4y8ZSQOvrs2DD18XASuktoQ@mail.gmail.com>
-Message-ID: <apB1A5Ln_lGTI4oy@google.com>
-Subject: Re: [PATCH 1/4] KVM: nSVM: Reject KVM_SET_NESTED_STATE if L1 has
- EFER.LMA=1 && EFER.LME=0
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Stefan Teodorescu <fane@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20260821193502.92431-1-vipinsh@google.com> <ao3nr1-t0DxANAyC@google.com>
+ <CALzav=f5wUUt4mKZn0tvQez6_1iYPcb8eX5q-XjabTNy03JiNg@mail.gmail.com>
+In-Reply-To: <CALzav=f5wUUt4mKZn0tvQez6_1iYPcb8eX5q-XjabTNy03JiNg@mail.gmail.com>
+From: David Matlack <dmatlack@google.com>
+Date: Thu, 27 Aug 2026 10:36:25 -0700
+X-Gm-Features: AcwNN1XNPft5Ueou-qlSyAtHB2c_Ktuq8wp3SGgI-T0tZ93zrinbZgmtLF9T5Xs
+Message-ID: <CALzav=cEmjnYAZDS8Le_FkaZW1xE+pP1B+mks0Of85YWG-3_vg@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/1] vfio: circular locking dependency in pci_dev_reset_iommu_prepare()
+To: Vipin Sharma <vipinsh@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, Joerg Roedel <joro@8bytes.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Nicolin Chen <nicolinc@nvidia.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, Robin Murphy <robin.murphy@arm.com>, 
+	jrhilke@google.com, skhawaja@google.com, tatashin@google.com, 
+	Will Deacon <will@kernel.org>, kvm@vger.kernel.org, iommu@lists.linux.dev, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 27, 2026, Yosry Ahmed wrote:
-> On Thu, Aug 27, 2026 at 6:37=E2=80=AFAM Sean Christopherson <seanjc@googl=
-e.com> wrote:
+On Wed, Aug 26, 2026 at 1:27=E2=80=AFPM David Matlack <dmatlack@google.com>=
+ wrote:
+>
+> On Tue, Aug 25, 2026 at 12:06=E2=80=AFPM David Matlack <dmatlack@google.c=
+om> wrote:
 > >
-> > On Thu, Aug 27, 2026, Yosry Ahmed wrote:
-> > > On Wed, Aug 26, 2026 at 2:18=E2=80=AFPM Sean Christopherson <seanjc@g=
-oogle.com> wrote:
-> > > >
-> > > > Reject KVM_SET_NESTED_STATE if the incoming L1 host state has what =
-is
-> > > > effectively an impossible EFER combination of LMA=3D1 but LME=3D0, =
-i.e. if the
-> > > > state says long mode is active but not enabled.  Unlike VMX, SVM do=
-esn't
-> > > > have an explicit consistent check for the illegal combination; pres=
-umably
-> > > > hardware simply ignores EFER.LMA if EFER.LME=3D0.
-> > > >
-> > > > Unfortunately, KVM doesn't ignore EFER.LMA in this case and consume=
-s the
-> > > > illegal state when constructing the shadow MMU for L2.  E.g. if use=
-rspace
-> > > > also clears CR4.PAE, then kvm_calc_cpu_role() will compute a role w=
-ith 4 or
-> > > > 5 levels of paging, but shadow_mmu_init_context() will wire up the =
-MMU to
-> > > > use the paging32 template, which maxes out its levels at 2.
+> > On 2026-08-21 12:35 PM, Vipin Sharma wrote:
+> >
+> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+> > > Potential Solutions Suggested by AI
+> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
 > > >
-> > > Isn't the "right" thing to do what hardware (presumably) does and
-> > > ignore EFER.LMA if EFER.LME=3D0?
+> > > 1. Decouple iommu_setup_dma_ops() from group->mutex in drivers/iommu/=
+iommu.c:
+> > >    iommu_setup_dma_ops() only requires struct device * and the domain=
+ pointer
+> > >    (group->default_domain); it does not mutate any fields in struct i=
+ommu_group.
+> > >    Moving the iommu_setup_dma_ops() calls after mutex_unlock(&group->=
+mutex) in
+> > >    iommu_probe_device(), bus_iommu_probe(), and iommu_group_store_typ=
+e() breaks
+> > >    the initial &group->mutex -> cpu_hotplug_lock dependency.
 > >
-> > No, because (a) this is KVM uAPI, not emulation of hardware, and (b) it=
-'s a check
-> > on L1 state, not L2 state.  It should be impossible for L1 state to hav=
-e this
-> > combination through "natural" means, and so a snapshot provided by KVM =
-should
-> > never have this combo either, which there's zero reason to allow usersp=
-ace to
-> > provide garbage.
->=20
-> Right, I understand that KVM can do whatever it wants here. I was wonderi=
+> > Are there any other code paths that rely on group->mutex -->
+> > mm->mmap_lock ordering? If so fixing this one case wouldn't help.
+> >
+> > > 2. Avoid holding down_write(&vdev->memory_lock) across pci_try_reset_=
+function()
+> > >    in VFIO:
+> > >    vfio-pci could zap active BAR mappings under memory_lock and set a=
+ state
+> > >    flag / disable memory decoding, drop memory_lock before calling
+> > >    pci_try_reset_function(), and then re-acquire memory_lock to re-en=
+able
+> > >    memory. While resetting, any concurrent user fault will see the me=
+mory
+> > >    disabled condition and return VM_FAULT_SIGBUS safely.
+> >
+> > This would change the userspace-visible behavior of faulting on a VFIO
+> > device BAR from "block until reset is done and the succeed" to "fail
+> > with SIGBUS". And it would allow VFIO to access VFIO device BARs during
+> > the reset through vfio_pci_core_iowrite*().
+> >
+> > But I think we can extend this idea to solve those problems by
+> > introducing a wait queue for tasks to sit on while a device is being
+> > reset.
+> >
+> > e.g. Something like this (completely untested and partially written by =
+AI):
+> >
+> > From: David Matlack <dmatlack@google.com>
+> > Date: Tue, 25 Aug 2026 18:37:52 +0000
+> > Subject: [PATCH] vfio/pci: Avoid circular locking dependency during dev=
+ice reset
+> >
+> > Avoid a circular locking dependency during VFIO device reset by droppin=
+g
+> > vdev->memory_lock prior to calling PCI reset functions
+> > (pci_try_reset_function() and pci_reset_bus()). Introduce an explicit r=
+eset
+> > state flag (vdev->resetting) and wait queue (vdev->reset_done_wq) to st=
+all
+> > concurrent BAR page faults and MMIO accesses during reset without holdi=
 ng
-> if we wanted to make the uAPI behavior match the  VMRUN behavior, but I g=
-uess
-> we're free to make it more strict.
-
-But again, this *does* match VMRUN behavior, because it's impossible for L1=
- to
-have EFER.LMA=3D1, EFER.LME=3D0, and EFER.PAE=3D0 at the time of VMRUN.
-
-> > > > Note, the "real badness" is effectively the same as what happened w=
-ith the
-> > > > nVMX bug fixed by commit 112e66017bff ("KVM: nVMX: add missing cons=
-istency
-> > > > checks for CR0 and CR4").  Unfortunately, the sanity check added by=
- commit
-> > > > 72e2fb24a0b0 ("KVM: x86/mmu: Bug the VM if a vCPU ends up in long m=
-ode
-> > > > without PAE enabled") doesn't work for this case, since L2 state is=
- active
-> > > > at the time of the page fault, but it's L1 that has the bad state.
-> > > >
-> > > > Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and=
- KVM_SET_NESTED_STATE")
-> > > > Cc: stable@vger.kernel.org
-> > > > Cc: Yosry Ahmed <yosry@kernel.org>
-> > > > Reported-by: Stefan Teodorescu <fane@google.com>
-> > > > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > > > ---
-> > > >  arch/x86/kvm/svm/nested.c | 1 +
-> > > >  1 file changed, 1 insertion(+)
-> > > >
-> > > > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> > > > index 73f37b050d0a..49fb10ad1f9f 100644
-> > > > --- a/arch/x86/kvm/svm/nested.c
-> > > > +++ b/arch/x86/kvm/svm/nested.c
-> > > > @@ -2028,6 +2028,7 @@ static int svm_set_nested_state(struct kvm_vc=
-pu *vcpu,
-> > > >         if (!(save->cr0 & X86_CR0_PG) ||
-> > > >             !(save->cr0 & X86_CR0_PE) ||
-> > > >             (save->rflags & X86_EFLAGS_VM) ||
-> > > > +           ((save->efer & EFER_LMA) && !(save->efer & EFER_LME)) |=
-|
+> > vdev->memory_lock across PCI reset operations.
+> ...
+>
+> This approach does not look ideal. The implementation has a bug where
+> concurrent resets can lead to vdev->resetting being cleared too early.
+> And from a maintainability perspective, there are more call sites that
+> currently take memory_lock that would probably also have to be updated
+> to wait for vdev->resetting to become false.
+>
 > > >
-> > > I just realized I have no idea why we check X86_CR0_PE and
-> > > X86_EFLAGS_VM here. Commit 6906e06db9b04 ("KVM: nSVM: Add missing
-> > > checks for reserved bits to svm_set_nested_state()") says it's to do
-> > > the same checks as VMRUN, but I don't think that's actually the case?
-> > > The checks here seem arbitrary to me?
+> > > 3. Refine synchronization in pci_dev_reset_iommu_prepare():
+> > >    Evaluate if attaching to the blocking domain and pausing ATS durin=
+g device
+> > >    reset can be protected using more fine-grained locking or atomic s=
+tate
+> > >    flags without holding the coarse &group->mutex.
 > >
-> > Again, this is L1 state when L2 is active (the !KVM_STATE_NESTED_GUEST_=
-MODE path
-> > has already bailed), and VMRUN "can only be executed in protected mode =
-with SVM
-> > enabled".  Amusingly, the APM says #VMEXIT "Forces CR0.PE =3D 1, RFLAGS=
-.VM =3D 0.",
-> > so I guess it means business.
-> >
-> > If anything is wrong, it's the CR0.PG check.  Presumably that got carri=
-ed forward
-> > from commit c0725420cfdc ("KVM: SVM: Add helper functions for nested SV=
-M").  I
-> > don't see anything in the APM that requires paging to be enabled, and n=
-othing in
-> > that ancient series points at concrete documentation either.
->=20
-> Oh yeah you're right, for some reason I thought it was paging not
-> protected mode. Well then, it seems like
-> nested_svm_check_permissions() is also incorrectly checking paging as
-> well, seems like both checks are incorrect? Also, I don't see anything
-> in the APM about checking RFLAGS.VM before VMRUN.
+> > I don't know enough about this part of the kernel to say, but this woul=
+d
+> > directly address the new lock ordering dependency vdev->memory_lock -->
+> > group->mutex introduced by commit f5b16b802174 ("PCI: Suspend iommu fun=
+ction
+> > prior to resetting a device"), which is what led to this lockdep error.
 
-Presumably it's covered by the !PROTECTED_MODE clause.
+I sent a proposed fix that takes this approach here:
 
-  IF ((MSR_EFER.SVME =3D=3D 0) || (!PROTECTED_MODE))  // This instruction c=
-an only be executed in protected
-    EXCEPTION [#UD]                               // mode with SVM enabled
-
-Section "1.3.4 Legacy Modes" describes "Protected Mode" and "Virtual-8086 M=
-ode"
-as separate submodes.  And the tables for most instructions differentiate b=
-etween
-Real, Virtual 8086, and Protected modes when enumerating exceptions.
-
-The APM weasels around 64-bit mode by also saying "Before enabling and acti=
-vating
-long mode, system software must first enable protected mode".  E.g. the tab=
-le for
-SYSENTER describes the #UD due to "This instruction is not recognized in lo=
-ng mode"
-as scenario that's unique to Protected Mode.
-
-Stating the obvious, it would be lovely if the APM explicitly stated what t=
-he
-exact checks are, though that's about as likely as AMD gifting me a pony.
-
-FWIW, if that reading is wrong (though I'm pretty sure it's not), then the =
-only
-issue is that KVM is synthesizing #UD instead of #GP, because Virtual 8086 =
-always
-runs at CPL=3D3.
-
-  IF (CPL !=3D 0)                                   // This instruction is =
-only allowed at CPL 0
-    EXCEPTION [#GP]
-
-
-> If the goal here is to keep the checks here consistent with
-> nested_svm_check_permissions(), aside from the new EFER check, then
-> maybe we should also check CPL here?
+  https://lore.kernel.org/linux-iommu/20260827173511.2322549-1-dmatlack@goo=
+gle.com/
