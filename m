@@ -1,163 +1,176 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631831CAA6C
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 00:08:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0791225B082
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 00:11:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787789334; cv=pass; b=qvzoM95rFOI8CRf2iKb2VtwCJmAPoZyYbW3vBr0ZTfjiRr4wyMftHwQSROYm7SU9y1yp/bNQQPxuAmXi4VjsUIILUNM/bw+OB1JQOTqdI8wlHsZzgyx+DoYRLskN065mFO5QrqYwRquHh6Kk2LCrfW4psBq6fyDw95T+3R/JWqM=
+	t=1787789475; cv=pass; b=h7UTyxfmfwknuDqJg69dJKMFR1wGaLUl8YJ24NrIS9yUHPUMeNF/24YbsFj/xkyYLmLDDAlAzzw8VNtxHRYM0R9ErRN7TpXdzrQUqZvN31yA0L7y9YkOeZP8YbwVtkTi3pDIPd9YAlihpEQmnl5/m1Rdmx+bS5K5OP5/lM/JJKI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787789334; c=relaxed/simple;
-	bh=6xPZGjm1Wu5mytRKkg/F0NHC7jcbm8cOuhKBGBc5leo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M7eOvvqUZGOQgctxILWd809SscMJsYEox8aww2f+uMklx7U9o2EC1ZGMCQ1LofF4/1SomFk6GW0Q9nYeN3f55Zg5CB+dBTM9F1wjQLL3Q5GudHCUcezfAub8bq/0AvcxNjuYGbAtoMXceq1DtXSGsgBtmhtDJIc6vm7jWvbjnqU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BNSxvyb8; arc=pass smtp.client-ip=209.85.208.41
+	s=arc-20240116; t=1787789475; c=relaxed/simple;
+	bh=q9fPaqLMvwojY1sDSJE1KOtBByV27/rWMVd0RMgF7LA=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jUc+HVcq84WHVH33wa/1wmAskcFGCN1i/DcTnFprRpouankAtkJJYCdtVvcAyr3PajlN07sg34HgeNHwaHoywiD2mRVSKhRrDHeNh2iq0kNnjWEzE6Wii0f8HqcMbAXxq6T3r7JaTWbtdgDz8MA1kBTJKZ9BgSCSMhL+JTNm03U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DDHytNYH; arc=pass smtp.client-ip=209.85.219.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BNSxvyb8"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6a5f95a879cso587a12.0
-        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 17:08:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787789332; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DDHytNYH"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-90ccbca8bdeso8406686d6.2
+        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 17:11:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787789473; cv=none;
         d=google.com; s=arc-20260327;
-        b=i+RQEYr4OC3ZZI+6ZXKnXjCgNidwX5AfUVzOuDu+nD+2ris2wA/blpLIMQLhpl8hk5
-         i4Gm89L80thzZD97TchKCLtLWHZwemW19ws+/KXd9sc2jTYJ3/41RiIvzxHKh90YGtn2
-         x2ficD2RGzqjMyj+Q9U/wgueif2lQ/Aj1arL7mQhrl9oGwog/Nr0lzkZwAOQrX5xUdfG
-         zIAS+QG2BVd/swftCzD3WXIbRqfRoz7hSmoFlVpKn1epyNQANY3m4GAULweCcvU7t16a
-         Jcxh4a4VHxo8au+hsYEA3rh5PPV8Ig8ij26ZacGdv16H+KLo9rqI6+N4h5dAiERsNEui
-         Q6eQ==
+        b=Q1RtGDXVkgnYY2x8kM4MqPUSNsWP48lainDVUaXLucU2b88PAEUkbj2lzeHg3/aFxF
+         je0xcPaPLmwl/MzlfQYI8ju3551KEUA9mJoY3fNEQvCcC2d7qjivPhvMTar/gpLuS20Z
+         mN+vgZ3pdMinRkmd4+vbj9SU7lja6YQxPt81lcv9pap1CQekYU/bC12GQNcvSSkSvufv
+         rNyPRGpnsIvXCCRg8BNn5xSFTHuzXWxSH3AEM7qGHD0njnIPLzj0BTP5PXxr+Ouw/S7f
+         qPrulJ6YMjKj+GGup2UlJbTRtGI239GevltNyX8ITPo86EwU2Sfc210mDSgIXKy/ViXj
+         pqsA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Ra61REZzO3eiF6dyZGE8JODsfglmTWsuzSdXYZS81DM=;
-        fh=DcK6cmsM5UnqSdhTo432Spt1yeUmbaUTPD6znh4sJ/o=;
-        b=RJVzOUkv+AOpyFtyDDjH/xOhlGpSoyGfODMRnt2LqaNTI5Ll6ZEUdq26glisUVngFT
-         +nsfvA+jzDj8IlqvdrENgtl1l87BvrAtT58whEj+mxfwyvy+tTUhqRRn4Rk/qTa8iPHM
-         aMTa+thThO27A6pxvx1xAVJBikqS+Uav5ZhGDKIT9ZmsVkqzKrWoheWy3Aahw6M/JCwQ
-         OkmkzrDLTj37SsQVTuRiSiK5rocHNAVsARlHUlZ+stiGzFPVoPpIUcqb3RT07Y7Ux19I
-         SrozSdUWigbKnB9ajQfi9Rxa/CIt59bLl8kd51i6AJHdb5/Gi0zTEWdLPlcfhf/vwy5u
-         ymAA==;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=AnLRTMnfrf4Gj+REZ5Itvxt0IiZsf+yGH35mZtX0wjs=;
+        fh=wz2agcRS4m5Xq/aBLicoTg9PeM9OP5G4btxkpBraMX0=;
+        b=MOm2qtfCtLpH5HyYk3udUJKyF3wDaRlD3AAhOheQh9U6q4DFFdVNC+nSrZtLdu15jM
+         BqAqnZxfVfxikncIWnT4tds6WbRVK1OBLCOxVGx6kzFPJXwgHoRYqPS4HN9E3T6DkGIa
+         3P6ZSnzh5Ea/n4HjL+fTwPxram6j+fSX3R+wDxHX+htC6QtI4H7yv18oz+5s0nA5BQaN
+         5xuETQyH4hxLPrMJjwj+Fq905rx0fiJcCNIhZKFI/98eUpz/pROvQdFafMkRdYhxJxuf
+         gnb+5rXvFeu07cTf05ElxC0Gf4frRmCiukoS+HJ76IQ9SBsiEXjehOn9ZuFvrebM++q+
+         Nr2A==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787789332; x=1788394132; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Ra61REZzO3eiF6dyZGE8JODsfglmTWsuzSdXYZS81DM=;
-        b=BNSxvyb8pEW6LUW4ZCoo2ZNGu1mvG4UhJie8j1vC1i1BQPHTrFC/iDKNNnMzYV5cor
-         C9YX4HcN6mwSI2eh9pxBpTe+Ckwk6SsXaGytDvhUegL9rDixRO2svd7Xu/9ENSuEtM1N
-         1NqLqDFjIgNxEu6vIOuONX/m8HRTuZ61ODBN8cFbLLwQVhxm7drCR0ZzlmFgZa5CN12u
-         77IDkmnUroWJpJr9IwScdCi670OdHBMcAbIQ1p+ibijPQx6wbR5hUGGXM6p59LziJ7Vf
-         Dg5pSBszfft7CcboSTYL/wXYLn+qyZIvtNQMbsH9KVhh2E2ZS5m2BGPHi8UOtF51JsHj
-         9Bqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787789332; x=1788394132;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1787789473; x=1788394273; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Ra61REZzO3eiF6dyZGE8JODsfglmTWsuzSdXYZS81DM=;
-        b=q2d/407CA9bj2tpFI1LcOc8kr/xMt2Q+ZGizzlIdkZbbqPHXepIYVHF3Un8yAqzNIn
-         aa0rA38cu/oUon4YOAeCimfmnwdn3KkgmqWdVWmw4G0WpW3+J+U4BbNBfdmcIsMWpYkm
-         FULsj7z3AUi+YSJGSwRYvTBYLzkdHsvTp3w/ydcDSKocUHOSHUK1G2JMJDoAr/LPkkhX
-         HPdXGj2QztofkYa9hYiDSCAzlBcZM+fMm/DeeLNFiV5RgLMBzMKTvMc+RNSrMIt4Sm6p
-         5Zc7mhP6TpNzWj/NIXGU0BUzKJFHe1VQu0ZXpxkl4r7Q6TTYhSuPYYM09UX4O0tkEFAD
-         ygpw==
-X-Forwarded-Encrypted: i=1; AHgh+RpytHGW7iZMpd4kkaVkUgPS+YdJEwNB554E/HDDxAPjCBvQ5tBFHXCDMrFxJ78cUinE7Lo=@vger.kernel.org
-X-Gm-Message-State: AFuF++mGYAWEUasl5Re6s3g/6HzSqJV86Us/eC8fHE2F3xCrlr42MS2z
-	ofswfA0LRCiw/m2YbbMZqkuRTGd4rMFL++D6slK8/2sTHJYgqpghA3m8zG6Jajye6+K5d+uGDLB
-	AdvI+hSeHYQ4JOb/xMqCQzSC6tde0gLJkXd69zBw3
-X-Gm-Gg: AR+sD10aM9mEZTk0LeyXCBh30wzHzKxwe4SEEGkOhaZgJ4TYtoXjTPn4+6BnKHctkBh
-	0min51trLzWPUAREyLrDmcJVr5U3bud9GR6nUH8kf91rkcuhO30tSGAVBslVLk1YuWWga1p1eFn
-	DZsKdZhUZBGNSWnIv9VLJ1yLUNdlKrRL/KtnlzjIcOtX1AW414t/G8R/01MvPwO6aZLwMJMm+oI
-	+T6Oq9AjA/VVZesG1L4X7NLcHCFzNIWrRafDhjXZKh6zg0V9d+AuspmUMxh6LyYfhGhBmLUyAeY
-	pVoccbkvu37AN6Mg1h1AahC8Y56fLe7hdJzobNE24gMR
-X-Received: by 2002:aa7:d411:0:b0:69a:f1cf:4849 with SMTP id
- 4fb4d7f45d1cf-6a5f5487f32mr22583a12.2.1787789331080; Wed, 26 Aug 2026
- 17:08:51 -0700 (PDT)
+        bh=AnLRTMnfrf4Gj+REZ5Itvxt0IiZsf+yGH35mZtX0wjs=;
+        b=DDHytNYHmL8ZZFfUZQMn9dv9i2pHGtixDiXKH9NcxPc4aJG167NL84W4W1eFrg82s6
+         K6FGfBmIu0OB/N4HK5JAFeA1UGR0z5TlKmc3aM+GLZARcczL7zef3x1NOk3gnKVBbErt
+         xi4wq6VzqorqIOe3iRB2OmS6mFTNQfV99usutBR7zO4DRLOWqjr7mfDN5C7fBQb5JJdH
+         p2T/sZgpckboyIVBPJAuAoTIcUqpQdX0fSP1tMUoo2TLb4tdTLhQG1ds/xrwWWn36i8l
+         cCnl653nK2rd+DQLX4EaUe9yQIPUT0c7flfn4QVBnz+eNFPfHNpbIF014eIJsP8Ak4Tx
+         3CoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787789473; x=1788394273;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AnLRTMnfrf4Gj+REZ5Itvxt0IiZsf+yGH35mZtX0wjs=;
+        b=goYW6IgLFO5V/cetNM2Qj1Ke0rWzmosGkCBmuUI2STpIqlRUiaFczEXx4jBnAK767E
+         5pvskqIwDPPqjPqYd8lBkiVKHX0eBru9n6o1eQyWiVNakrlHdfgzz7BxuMV+VdQaDIbY
+         rnpsRGpnirorfg9xMoV5tTEwT9Jd7NTZgV1e49Hiqr3vi1CRGgzBHDDG8twJ3zgmBMOy
+         ieGB5iZF6HB1E8hd+ilrjbAow1UrrICzlhRpABRel1MlBOn0+7S+Qwrf4MGWOPtB2GvP
+         hIZRUxcHVGdxHRl9EZNNqRI2jOmfNgTYZymOyxuh7Z27iIiuW6KFx5BEci1FTfperkbe
+         S5Jg==
+X-Forwarded-Encrypted: i=1; AHgh+Rr4oPErX3QjS6NFKjVlX1Wn7KzM5zwrW/UM5LyhilqwoYKveLd2ZnsDqoQjWBZF6JFz2q4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lSk+UAl08O0beXbNs2asb9RDqDVFeRDIhN+3FtT8Vz4JYt66BU
+	5PJUBZ79MZH/5kDoEuZmoiq4Y9nas+rldM49t89auy8Y3M7gsba4NK468fVMf77L1egCWGueCEY
+	Dn7EQ/d2+1XFR5E4oXNsFj8jwPT9DMwIaKdMeK1g2
+X-Gm-Gg: AR+sD12cHLXejpIv9l7DICP4HNg/9o2rvNcD1hQmWRFL7q8tDR9Axb7O3xKPBrFrCbS
+	NtOl38swNdUUJluQbt+pQ7sUG9CtN1/MvBWxJZt2YJYplnLjrfuuYNj5aSb2BQ6h+YLa5vhVtcU
+	Vw6vbIHq9gFcP7bJD/JM3u4u2r/nQX7tCQNOCSWO1MDSg/vt/ddJawyEXG6K7mmqUZ6KJIyXT6w
+	gtdW7aaVGyb8z2sKCE2vEs2ZYQGRZXbIWUYdelJaEBWdps38spJRNF6QkPl77gUgE8CL6kujpmx
+	AMczMIJjwj0TD2eoxXbu89BVDqTyMcCsz6nb1NioFDb34lb3+EnEaIOnCx1woB0KNouAs+HKsDX
+	AEC8=
+X-Received: by 2002:a05:6214:4602:b0:908:98fa:f374 with SMTP id
+ 6a1803df08f44-90cc7858733mr168107566d6.6.1787789472172; Wed, 26 Aug 2026
+ 17:11:12 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 26 Aug 2026 17:11:11 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 26 Aug 2026 17:11:11 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ao8pCI3AaUssIO8S@google.com>
+References: <20260823-memory-failure-mf-delayed-fix-v5-0-d97a5703e45a@google.com>
+ <20260823-memory-failure-mf-delayed-fix-v5-5-d97a5703e45a@google.com>
+ <8a99f753-0713-4194-8eb5-90da0724e647@kernel.org> <ao8pCI3AaUssIO8S@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAL1mVc0W0oirnpd-im6r+Vewo6yfsWuXQB7UecEenYnE4BOJ4A@mail.gmail.com>
- <ao9y-cJfL-F9K4gV@google.com>
-In-Reply-To: <ao9y-cJfL-F9K4gV@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 26 Aug 2026 17:08:38 -0700
-X-Gm-Features: AcwNN1UM6_sr5sLfgH6qx2xiVGRvK01i7COiWkE_ljyEU0K67uE-spEEemrVR7g
-Message-ID: <CALMp9eTsb+sRbVODN7MKJFZVKPJsq=bNfmrzBzXYZDgxJHESxA@mail.gmail.com>
-Subject: Re: x86/KVM: host reads guest IDT gates after VMexit on Cascade Lake
-To: Sean Christopherson <seanjc@google.com>
-Cc: Yaohui Hu <yhu@digitalocean.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	x86@kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Chao Gao <chao.gao@intel.com>
+Date: Wed, 26 Aug 2026 17:11:11 -0700
+X-Gm-Features: AcwNN1XfQOKyfEIZtdcwN4-zBTAXGB_PV6TdJFFinygb6qNke6evcDePz3wbfQE
+Message-ID: <CAEvNRgHAwAJee6_ra9-zioDh_BqHM9Lbu+TGXxWHbG7za=g5Aw@mail.gmail.com>
+Subject: Re: [PATCH v5 5/5] mm: selftests: Add shmem into memory failure test
+To: Lisa Wang <wyihan@google.com>, "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, Andi Kleen <andi@firstfloor.org>, 
+	Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>, Rik van Riel <riel@redhat.com>, 
+	Yu Zhang <yu.c.zhang@linux.intel.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, rientjes@google.com, seanjc@google.com, 
+	vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com, 
+	tabba@google.com, dave.hansen@linux.intel.com, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 26, 2026 at 4:19=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
+Lisa Wang <wyihan@google.com> writes:
+
+> On Mon, Aug 24, 2026 at 03:00:47PM +0200, David Hildenbrand (Arm) wrote:
+>> > +++ b/tools/testing/selftests/mm/memory-failure.c
+>> > @@ -20,6 +20,10 @@
+>> >
+>> >  #include "vm_util.h"
+>> >
+>> > +#ifndef fallthrough
+>> > +# define fallthrough __attribute__((__fallthrough__))
+>> > +#endif
+>>
+>> This doesn't belong into this test.
+>>
+>> rseq/rseq.c selftest already uses it.
+>>
+>> I think tools/testing/include/ already provides it.
+>>
+>> Maybe
+>>
+>> 	#include <linux/compiler.h>
+>>
+>> does the trick?
 >
-> +Chao, who has helped with errata in the past
+> Hi David,
+> Thank you for replying.
+> Would it be better to change it to /* FALLTHROUGH */
+> like the rest of the mm selftests?
 >
-> On Wed, Aug 26, 2026, Yaohui Hu wrote:
-> > Hi,
-> >
-> > We are chasing a host crash on Intel Cascade Lake that we believe is a
-> > CPU defect, but the exposure changed sharply across a kernel upgrade
-> > and we would like input on the kernel side.
-> >
-> > Symptom: nine hypervisor crashes over ~120 days, all the same shape.
-> > On a KVM vCPU thread, shortly after a VM-exit, the host faults at an
-> > address unmapped in the host, then faults again on every subsequent
-> > exception delivery, recursing until the #DF stack is exhausted.
-> >
-> > The phantom handler addresses are not random. In one dump we located
-> > the IDT they came from: it lives in the tmpfs-backed guest RAM of the
-> > VM running on that CPU. The host read gate descriptors out of the
-> > *guest's* IDT and tried to deliver host exceptions to guest handler
-> > addresses. A second dump shows this in software rather than by
-> > inference, with the oops registers caught in vmx_do_interrupt_irqoff()
-> > having read a garbage gate from host_idt_base.
-> >
-> > Linux maps the IDT through the CPU-entry-area alias at a fixed
-> > virtual address (0xfffffe0000000000) that KASLR never relocates, so a
-> > Linux guest and a Linux host use the same address for their own IDTs.
-> > With VPID enabled the guest's translation survives the VM-exit, and a
-> > host access tagged VPID 0000H must not match the guest-tagged entry.
-> > On these parts it appears to.
-> >
-> > Environment:
-> >
-> >   - Xeon, family 6 model 85 stepping 7 (Cascade Lake-SP), microcode
-> >     0x05003901 (latest public for this stepping) on all nine hosts.
-> >   - Two server vendors, three datacenters, VPID enabled.
-> >   - 6.1.51 ran this fleet without such a crash; 6.12.51 produces
-> >     them. Microcode and hardware are unchanged across the upgrade.
-> >
-> > There is a documented precedent for the failure class on a different
-> > part: Arrow Lake erratum ARL029, "Incorrect Core TLB Entry May be
-> > Retrieved Following VM Exit". Cascade Lake has no public equivalent.
-> >
-> > We diffed the relevant paths between the two versions. The gate read
-> > in handle_external_interrupt_irqoff() is functionally identical, and
-> > the TLB/VPID/EPT invalidation layer is byte-identical
-> > (vmx_flush_tlb_*, allocate_vpid, vmx_vcpu_load_vmcs, and the
-> > INVVPID/INVEPT sites), so we do not believe KVM changed its
-> > invalidation behaviour. The one change we found that plausibly alters
-> > exposure is 97e3d26b5e5f ("x86/mm: Randomize per-cpu entry area",
-> > v6.2), which changes the paging topology of exactly this region. We
-> > can see the effect in our builds, but we have no mechanism that
-> > predicts its sign.
-> >
-> > Questions:
-> >
-> > 1. Has anyone seen this signature? A host faulting after VM-exit at
-> >    an address that turns out to belong to a guest seems distinctive
-> >    enough to be memorable.
+> If we prefer to include <linux/compiler.h>, we can
+> certainly do that, but we would also need to update
+> the Makefile and fix a redefinition in pkey-helpers.h.
 >
-It doesn't ring a bell, but I'm curious if it goes away with
-hyperthreading disabled.
+> --- a/tools/testing/selftests/mm/Makefile
+> +++ b/tools/testing/selftests/mm/Makefile
+> @@ -37,7 +37,7 @@ endif
+>  # LDLIBS.
+>  MAKEFLAGS += --no-builtin-rules
+>
+> -CFLAGS = -Wall -O2 -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
+> +CFLAGS = -Wall -O2 -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES) -I$(top_srcdir)/tools/include
+>  CFLAGS += -Wunreachable-code
+>  LDLIBS = -lrt -lpthread -lm
+>
+> --- a/tools/testing/selftests/mm/pkey-helpers.h
+> +++ b/tools/testing/selftests/mm/pkey-helpers.h
+> @@ -22,7 +22,7 @@
+>  typedef __u8   u8;
+>  typedef __u16  u16;
+>  typedef __u32  u32;
+> -typedef __u64  u64;
+> +// typedef __u64       u64;
+
+Removing this u64 typedef seems to be unrelated, the layers of includes
+probably has some weirdness that needs to be ironed out.
+
+If the weirdness is not too complex to iron out to be in time for 7.4, I
+think we can iron that out, if not perhaps using /* FALLTHROUGH */ is
+fine, to be aligned with the other mm selftests.
+
+>
+>
+> Lisa
