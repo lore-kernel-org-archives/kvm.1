@@ -1,120 +1,178 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48213451D6;
-	Thu, 27 Aug 2026 06:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9C22E7F25
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 06:45:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787813050; cv=none; b=YX4O1dNHSoCs7iah+YatQza12HRLaouO9MTCDwEDaNuQHi717hD8/mcAYJl2il+GdVR2EljPPproW3OnZQS/+e1/I4D29LC2lmRPd1YDNayuzzKDtDaClERRVLbzuvvv4dbeykW6ib00men1doS5B6zZeiW6KQcS0oJmS+ctaZk=
+	t=1787813125; cv=none; b=Kkck8Zk+Hjt/OfHnzErmt9bkuewcfP8J4vnBKAxk8Lm5quftMGJLVyLgI+czZbjCEh/D1V227+jzOVNN/i2gQBwgelm7D09UtOs0G87tM8Y4rjy/KQ8uLGSG2fdhFfDjSexqcpUsOFTPt4XIfz6rAXlMhW5HtVaBB0af2XZuv8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787813050; c=relaxed/simple;
-	bh=gH9GxUtMX3ZyT5grThk9F17Hlp570HWZH/x+4ozovWU=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=aELjbRKcbg9fE1PI5QoK0OPgwCU5/8QgnJ5qBvzjjNN1jUAMaWqD3jaP3HVTioEgAsTygsqhNwK/WBiJgalGqIWTHMb58EqUU8BOCdhM/A4P6fkzlpr0ZQtGyVCxahkzwTDZU2euFZJeZPUCkNUhNdhMngySq7YqUN4P3XZmgVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8AxntK23I9qopgFAA--.15699S3;
-	Thu, 27 Aug 2026 14:44:06 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJBxpMyw3I9qFekTAA--.11563S2;
-	Thu, 27 Aug 2026 14:44:03 +0800 (CST)
-Subject: Re: [PATCH 03/20] KVM: selftests: Use vm_alloc_page_table() to
- allocate LoongArch page tables
-To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
- Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
- Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
- Steffen Eiden <seiden@linux.ibm.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, Atish Patra <atish.patra@linux.dev>,
- Alexandre Ghiti <alex@ghiti.fr>, David Hildenbrand <david@kernel.org>,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- kvm@vger.kernel.org, loongarch@lists.linux.dev,
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- Ritesh Harjani <ritesh.list@gmail.com>
-References: <20260826230511.972824-1-seanjc@google.com>
- <20260826230511.972824-4-seanjc@google.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <9b5244ae-5927-b775-e0c4-deaefa9961e7@loongson.cn>
-Date: Thu, 27 Aug 2026 14:43:47 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1787813125; c=relaxed/simple;
+	bh=XGmwQyzKjcY+aGCfdpW8qhopeg1xgE2lfJukbmXqPak=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ys+65w8jNbYslUhkrYZxQQ06cYjUTn5IsudZhxwDVp1bv1TeU9bPrus666kdWLGgBO/tOll4F2hsFqW7WFIg+mjZnVS3DbG+to8OcTrfkyrOol2lPnVURmygQmQy9t/P0iww8IrZC0E3HpOnJvD+dy8tqY5jEGqNWEELcCaOhsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BVm+zrWG; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BVm+zrWG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B71D1F00A3F
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 06:45:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787813124;
+	bh=w64hbmqoxi4eIucqvvm2p+HldRcaMlL5Ju3HRIh5vUw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=BVm+zrWG4iGcwssAFQ5/m+kc5RSc/Ma4eX1sfjNTKvnzyElMW1z/oufxlueJS6uRJ
+	 OFQDFkVQ35nyez9D9kflNYd04YfXEDZYW+EM0OlBFXNxnFAmWxuBtslqlxyRGPbxE8
+	 C3tFdjy0+cPuj9pJtiPG8lMDaJKg1Qz0xjhQ5XVGTJrwgJmI6h6MN7dYKE21KHFwHl
+	 zSEV6+at05XFh3nPTVMDOzyxvb8T0bXKdfNfkr0NDGthTI0hxPDdcpE06ZrIASli5i
+	 FGginXUvwrshsRRI41XWoBoAsCRdGR3WTHgd1pSTZiHeaY3GnMg+6epVC7jC4+xKHG
+	 KmY87hxOR+SDg==
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c207cb16cf5so53782766b.1
+        for <kvm@vger.kernel.org>; Wed, 26 Aug 2026 23:45:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqeDhVRFKtSoQi18G3vSw2hi7gZxsP6kmRe4kYkK9r45H/vbrT70Qf45GTt80q256dm6HA=@vger.kernel.org
+X-Gm-Message-State: AFuF++nLa41iK6ZYHzjdLsyXd4ZQYITf/Kic4x4Xn8s45flwTcJ0pmzZ
+	rsYOyi0eqcq8RAnW4EHUzS7d96qjCazjb8QBBdw8gTEQJDPTPJRyJMPAj9xYZFLp9qG8HNBBTcm
+	cypuefVXBk2eEgbL+62A9l1X8PvtDYqE=
+X-Received: by 2002:a17:907:3d0f:b0:c1f:983f:d8a with SMTP id
+ a640c23a62f3a-c250c36b68emr1456130366b.24.1787813123043; Wed, 26 Aug 2026
+ 23:45:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260826230511.972824-4-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxpMyw3I9qFekTAA--.11563S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Kr17CrW3XF18AFyUJr4UJrc_yoW8WFy3pa
-	4kCry0kr4rGw17KrZ7Gwn2qFyxKFs7GrWxAF1ftry8ZwnrAryIqrs7KF9rXa45Z3yvv3WS
-	vF1I9r4fZF48Z3XCm3ZEXasCq-sJn29KB7ZKAUJUUUUt529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1ln4kS14v26r1q6r43M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
-	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q
-	6rW5McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
-	1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxG
-	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUtVW8ZwC20s026c02F40E14
-	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkG
-	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
-	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jCMKZUUU
-	UU=
+References: <20260826233919.998904-1-seanjc@google.com> <20260826233919.998904-13-seanjc@google.com>
+In-Reply-To: <20260826233919.998904-13-seanjc@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 26 Aug 2026 23:45:10 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOuD+wU1Q80z077WHHpFBWvKomLk=TaXjH3gVnqj=mqFQ@mail.gmail.com>
+X-Gm-Features: AcwNN1W1K1wcOYFKECCJsH8NB9-j09zWsmaQJT_ycB-dgEdLE37gZ0gCYqumGYo
+Message-ID: <CAO9r8zOuD+wU1Q80z077WHHpFBWvKomLk=TaXjH3gVnqj=mqFQ@mail.gmail.com>
+Subject: Re: [PATCH v3 12/13] KVM: selftests: Dedup assembly code for VMLAUNCH
+ and VMRESUME
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	f734222792@gmail.com, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Sashiko Bot <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Aug 26, 2026 at 4:39=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> Dedup the assembly code from VMLAUNCH vs. VMRESUME, the difference is
+> literally only the actual VM-Enter instruction.
 
+You couldn't resist macrofiying this too.
 
-On 2026/8/27 上午7:04, Sean Christopherson wrote:
-> Now that KVM_GUEST_PAGE_TABLE_MIN_PADDR == LOONGARCH_PAGE_TABLE_PHYS_MIN,
-> use the common vm_alloc_page_table() instead of open coding the same.
-> 
-> Opportunistically drop the assert that the allocation succeeded, as the
-> allocator itself guarantees success.
-> 
-> For all intents and purposes, no functional change intended.
-> 
+>
+> No functional change intended.
+>
+> Cc: Yosry Ahmed <yosry@kernel.org>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
->   tools/testing/selftests/kvm/lib/loongarch/processor.c | 5 +----
->   1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/kvm/lib/loongarch/processor.c b/tools/testing/selftests/kvm/lib/loongarch/processor.c
-> index 47bbde3e205a..fcd41bc6fbda 100644
-> --- a/tools/testing/selftests/kvm/lib/loongarch/processor.c
-> +++ b/tools/testing/selftests/kvm/lib/loongarch/processor.c
-> @@ -9,7 +9,6 @@
->   #include "processor.h"
->   #include "ucall_common.h"
->   
-> -#define LOONGARCH_PAGE_TABLE_PHYS_MIN		0x200000
->   #define LOONGARCH_GUEST_STACK_VADDR_MIN		0x200000
->   
->   static gpa_t invalid_pgtable[4];
-> @@ -57,9 +56,7 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm)
->   	child = table = 0;
->   	for (i = 0; i < vm->mmu.pgtable_levels; i++) {
->   		invalid_pgtable[i] = child;
-> -		table = vm_phy_page_alloc(vm, LOONGARCH_PAGE_TABLE_PHYS_MIN,
-> -				vm->memslots[MEM_REGION_PT]);
-> -		TEST_ASSERT(table, "Fail to allocate page tale at level %d\n", i);
-> +		table = vm_alloc_page_table(vm);
->   		virt_set_pgtable(vm, table, child);
->   		child = table;
->   	}
-> 
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+>  tools/testing/selftests/kvm/include/x86/vmx.h | 74 +++++++------------
+>  1 file changed, 26 insertions(+), 48 deletions(-)
+>
+> diff --git a/tools/testing/selftests/kvm/include/x86/vmx.h b/tools/testin=
+g/selftests/kvm/include/x86/vmx.h
+> index 3def8df902a2..fa01341e22bc 100644
+> --- a/tools/testing/selftests/kvm/include/x86/vmx.h
+> +++ b/tools/testing/selftests/kvm/include/x86/vmx.h
+> @@ -359,55 +359,33 @@ static inline u64 vmptrst(void)
+>         return value;
+>  }
+>
+> -static inline int vmlaunch(void)
+> -{
+> -       int ret;
+> -
+> -       if (enable_evmcs)
+> -               return evmcs_vmlaunch();
+> -
+> -       __asm__ __volatile__("push $0;"
+> -                            "vmwrite %%rsp, %[host_rsp];"
+> -                            "lea 1f(%%rip), %%rax;"
+> -                            "vmwrite %%rax, %[host_rip];"
+> -                            VMX_SWITCH_GPRS_ASM
+> -                            "vmlaunch;"
+> -                            "incq (%%rsp);"
+> -                            "1: ;"
+> -                            VMX_SWITCH_GPRS_ASM
+> -                            "pop %%rax;"
+> -                            : [ret]"=3D&a"(ret)
+> -                            : [host_rsp]"r"((u64)HOST_RSP),
+> -                              [host_rip]"r"((u64)HOST_RIP),
+> -                              GUEST_REGS_OFFSETS
+> -                            : "memory", "cc");
+> -       return ret;
+> -}
+> -
+> -static inline int vmresume(void)
+> -{
+> -       int ret;
+> -
+> -       if (enable_evmcs)
+> -               return evmcs_vmresume();
+> -
+> -       __asm__ __volatile__("push $0;"
+> -                            "vmwrite %%rsp, %[host_rsp];"
+> -                            "lea 1f(%%rip), %%rax;"
+> -                            "vmwrite %%rax, %[host_rip];"
+> -                            VMX_SWITCH_GPRS_ASM
+> -                            "vmresume;"
+> -                            "incq (%%rsp);"
+> -                            "1: ;"
+> -                            VMX_SWITCH_GPRS_ASM
+> -                            "pop %%rax;"
+> -                            : [ret]"=3D&a"(ret)
+> -                            : [host_rsp]"r"((u64)HOST_RSP),
+> -                              [host_rip]"r"((u64)HOST_RIP),
+> -                              GUEST_REGS_OFFSETS
+> -                            : "memory", "cc");
+> -       return ret;
+> +#define BUILD_VMX_VM_ENTRY_HELPERS(insn)                               \
 
+s/HELPERS/HELPER?
+
+or maybe better: DEFINE_VMX_VM_ENTRY_HELPER()?
+
+With the rename:
+
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+
+(Who's f734222792@gmail.com?)
+
+> +static inline int insn(void)                                           \
+> +{                                                                      \
+> +       int ret;                                                        \
+> +                                                                       \
+> +       if (enable_evmcs)                                               \
+> +               return evmcs_##insn();                                  \
+> +                                                                       \
+> +       __asm__ __volatile__("push $0;"                                 \
+> +                            "vmwrite %%rsp, %[host_rsp];"              \
+> +                            "lea 1f(%%rip), %%rax;"                    \
+> +                            "vmwrite %%rax, %[host_rip];"              \
+> +                            VMX_SWITCH_GPRS_ASM                        \
+> +                            __stringify(insn)";"                       \
+> +                            "incq (%%rsp);"                            \
+> +                            "1: ;"                                     \
+> +                            VMX_SWITCH_GPRS_ASM                        \
+> +                            "pop %%rax;"                               \
+> +                            : [ret]"=3D&a"(ret)                         =
+ \
+> +                            : [host_rsp]"r"((u64)HOST_RSP),            \
+> +                              [host_rip]"r"((u64)HOST_RIP),            \
+> +                              GUEST_REGS_OFFSETS                       \
+> +                            : "memory", "cc");                         \
+> +       return ret;                                                     \
+>  }
+> +BUILD_VMX_VM_ENTRY_HELPERS(vmlaunch)
+> +BUILD_VMX_VM_ENTRY_HELPERS(vmresume)
+>
+>  static inline void vmcall(void)
+>  {
+> --
+> 2.55.0.887.g758fc8c411-goog
+>
