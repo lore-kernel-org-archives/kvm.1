@@ -1,36 +1,37 @@
 Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3F22BEFE8
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 05:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEBB2D8376
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 05:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787808968; cv=none; b=Na0/IXk2U10mhQEuApWr9BNF3vQ8m88xBmKH78+gJQcY5IwSpn2lGLp1QU4fw+bMoajEh4Suhemx4Haqt2QuoZWP/LNxB/7FuDeYqsRGev/cQLzaMEEJqOeSXpk9Qor7AudV6YiQOXTeenoj3QPDORpWK0wMKN35rDpAyKKEHMU=
+	t=1787809141; cv=none; b=u+UR4fQl09JMYUJSj+KoDZghlCfw/NnIjrtm8pY25uTP680Tkwqlvh4xucTDIgOGs43CKAyqsLpMpQaoIxpOm1Poe4QkQVzksz/M2lLaeCpDR22Y0XFRu3vbodNuCuS7Fh0DvV+SzkHJfIfYpu/jM5J7sU7EEhOPH3Gdg6SRpz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787808968; c=relaxed/simple;
-	bh=QuSeOhB49u1boRy0wxtSXZ5hFk3JjgNa0yT1RXrusdc=;
+	s=arc-20240116; t=1787809141; c=relaxed/simple;
+	bh=yh/nuBrpJk4pdFX6syyMLd/OT8aOmFZBf6rHIVcFeV8=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=B9VbdzxZJyfve3TVcHo0FLA5SxzSVj4WjHgfAgccPg68UxrlEVajGh2djCxUm0TWDu/XTx9s03pXAWpSUIIscZbp793cf7Wt+h9eQGDf/KTN98lmlOWvOn0toQ4L8I4yd41I8jcZrltoQfWU8ETMjEX/kNbcoKTIT0/5aVkCrgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Jbi61/ao; arc=none smtp.client-ip=220.197.31.3
+	 Content-Disposition:In-Reply-To; b=AJI8ZSe6gmpwu0JZfOgwpdLeNjh+Hm+Hx090U0eydOsnTG5QEaUefYZDdXZfswT0ycsRDuMbfZDu6uWuE/9SYfP2jXdTp5UaGpJpVQDObmSqN6GkjxhXGRaSgG7D76Je1VSsDHBITJfSGOY+9w/Gjw7JrLzRzkZVt6l2zJahz+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=E3cksqud; arc=none smtp.client-ip=220.197.31.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Jbi61/ao"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="E3cksqud"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=x2abyHBH4jYjw8qeNJ17aZnh5T5Nw240VAgfC+VVGak=;
-	b=Jbi61/aox4L8DTG8gvux4gBZ40Dqh8Ow2UAQZEbkr203cMDyO3nwPi1sIHiXmo
-	E49spdxVBJdKBWPpigQtkLYYr0dcIx6ADWPIwRimhs0avqS2qtpD6iVH4Kj6IakI
-	o5oneZkfgQwnaH0Echz2eLC81NjvBOzJnIvkkgq5oYvTs=
+	Content-Type; bh=gtfcjNcZ+6EVpM4Jy2uE/u4yU4hQyET8+6Vy41L/QlU=;
+	b=E3cksqudTqpZYqqgCbjQJyNIbDPmtjLQiNq86J/bAVN3rkWwcDEZmuL1wpKyZU
+	jyGOG7CFQL+rhsreBnjTreXKWOQWaYFGBn/Vth2O6LSKY3GT9FlfLTjMvDbwxqyi
+	SYjdbSth+0TYCXVJ1YBMDg+2d/cNSpu0Dd79CAGiZxyjk=
 Received: from localhost (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3H5GzzI9qJaoXSQ--.42701S2;
-	Thu, 27 Aug 2026 13:35:48 +0800 (CST)
-Date: Thu, 27 Aug 2026 13:35:47 +0800
+	by gzsmtp4 (Coremail) with SMTP id PygvCgC3RCFezY9qMSPdOQ--.50200S2;
+	Thu, 27 Aug 2026 13:38:38 +0800 (CST)
+Date: Thu, 27 Aug 2026 13:38:38 +0800
 From: Hao Zhang <hao_zhang_kdev@163.com>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Subject: [PATCH 1/2] KVM: nSVM: Restore L1's debug registers on nested VM-Exit
-Message-ID: <ao_Ms5alWwKa30U8@192.168.1.215>
+Subject: [PATCH 2/2] selftests: kvm: Add regression test for nSVM debug
+ register state
+Message-ID: <ao_NXhr-3K4tMqpa@192.168.1.215>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -39,46 +40,154 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-CM-TRANSID:_____wD3H5GzzI9qJaoXSQ--.42701S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw1xZw1kWw47tF4UKr1DGFg_yoW8Gr18pa
-	9xAr4vkws29r1SqrykWF15Xa4xua9Ygr18Cry8G3sYqa15K3s3tF1IqFyUXFn8Zr4kXrZ5
-	ZryvvrWrZa4UAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Uqsj8UUUUU=
-X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC+hTe0WqPzLQhFgAA3L
+In-Reply-To: <ao_Ms5alWwKa30U8@192.168.1.215>
+X-CM-TRANSID:PygvCgC3RCFezY9qMSPdOQ--.50200S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZrW7Jr1kXr18Ar4rXFW8JFb_yoWrWw4kp3
+	4I9w1qkr40gr93AF1xG3Z8ZFWSkFykGF18Gryag3srZFs3G3Z7Jr1IgFy5AFn5CrW0qr1r
+	Aa45Ja4Ygw4UJ3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UDb1nUUUUU=
+X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC3h4J+2qPzV4YPAAA3g
 
 From: Hao Zhang <zhanghao1@kylinos.cn>
 
-Restore L1's DR6 and DR7 when emulating a nested VM-Exit from L2 to L1.
-KVM loads L2's debug register state from vmcb12 on nested VMRUN, but
-currently restores DR7 to its reset value and leaves DR6 untouched when
-switching back to vmcb01.  As a result, L1 can observe stale L2 DR6 state
-and lose its DR7 state after an L2 VM-Exit.
+Add a regression test for debug register state restoration when KVM
+emulates a nested SVM VM-Exit from L2 to L1.
 
-Restore both registers from vmcb01, matching the rest of the L1 processor
-state restored on nested VM-Exit.
+Give L1 and L2 distinct DR6 and DR7 values, run L2 until a VMMCALL
+VM-Exit, and then verify that KVM saved L2's debug register state to
+vmcb12 while restoring L1's architectural DR6 and DR7 values.  Without
+the fix, L1 observes stale L2 DR6 state and loses its DR7 state after
+the nested VM-Exit.
 
-Fixes: 4995a3685f1b ("KVM: SVM: Use a separate vmcb for the nested L2 guest")
 Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
 ---
- arch/x86/kvm/svm/nested.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/kvm/Makefile.kvm           |   1 +
+ .../selftests/kvm/x86/svm_nested_debug_regs_test.c | 104 +++++++++++++++++++++
+ 2 files changed, 105 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/x86/svm_nested_debug_regs_test.c
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 73f37b050d0a..e7975ac7bfca 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1427,7 +1427,8 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
- 	kvm_rsp_write(vcpu, vmcb01->save.rsp);
- 	kvm_rip_write(vcpu, vmcb01->save.rip);
- 
--	svm->vcpu.arch.dr7 = DR7_FIXED_1;
-+	svm->vcpu.arch.dr6 = vmcb01->save.dr6;
-+	svm->vcpu.arch.dr7 = vmcb01->save.dr7;
- 	kvm_update_dr7(&svm->vcpu);
- 
- 	nested_svm_transition_tlb_flush(vcpu);
-
-base-commit: 45c13f3f9e3bb15fd89ff2864c6f627a3b4b4229
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 1bde5ab306cf..65ad842eecd4 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -122,6 +122,7 @@ TEST_GEN_PROGS_x86 += x86/svm_nested_clear_efer_svme
+ TEST_GEN_PROGS_x86 += x86/svm_nested_shutdown_test
+ TEST_GEN_PROGS_x86 += x86/svm_nested_soft_inject_test
+ TEST_GEN_PROGS_x86 += x86/svm_nested_vmcb12_gpa
++TEST_GEN_PROGS_x86 += x86/svm_nested_debug_regs_test
+ TEST_GEN_PROGS_x86 += x86/svm_nested_pat_test
+ TEST_GEN_PROGS_x86 += x86/svm_lbr_nested_state
+ TEST_GEN_PROGS_x86 += x86/svm_pmu_host_guest_test
+diff --git a/tools/testing/selftests/kvm/x86/svm_nested_debug_regs_test.c b/tools/testing/selftests/kvm/x86/svm_nested_debug_regs_test.c
+new file mode 100644
+index 000000000000..6ef29cf0a819
+--- /dev/null
++++ b/tools/testing/selftests/kvm/x86/svm_nested_debug_regs_test.c
+@@ -0,0 +1,104 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Nested SVM debug register state test.
++ */
++#include "test_util.h"
++#include "kvm_util.h"
++#include "processor.h"
++#include "svm_util.h"
++
++#define DR6_ACTIVE_LOW	0xffff0ff0
++#define DR6_B0		BIT(0)
++#define DR6_BS		BIT(14)
++#define DR7_FIXED_1	0x400
++#define DR7_GE		BIT(9)
++
++#define L1_DR6		(DR6_ACTIVE_LOW | DR6_BS)
++#define L2_DR6		(DR6_ACTIVE_LOW | DR6_B0)
++#define L1_DR7		(DR7_FIXED_1 | DR7_GE)
++#define L2_DR7		(DR7_FIXED_1)
++
++static inline u64 get_dr6(void)
++{
++	u64 val;
++
++	asm volatile("mov %%dr6, %0" : "=r"(val) : : "memory");
++	return val;
++}
++
++static inline u64 get_dr7(void)
++{
++	u64 val;
++
++	asm volatile("mov %%dr7, %0" : "=r"(val) : : "memory");
++	return val;
++}
++
++static inline void set_dr6(u64 val)
++{
++	asm volatile("mov %0, %%dr6" : : "r"(val) : "memory");
++}
++
++static inline void set_dr7(u64 val)
++{
++	asm volatile("mov %0, %%dr7" : : "r"(val) : "memory");
++}
++
++static void l2_guest_code(void)
++{
++	GUEST_ASSERT_EQ(get_dr6(), L2_DR6);
++	GUEST_ASSERT_EQ(get_dr7(), L2_DR7);
++	vmmcall();
++}
++
++static void l1_guest_code(struct svm_test_data *svm)
++{
++	struct vmcb *vmcb = svm->vmcb;
++
++	set_dr6(L1_DR6);
++	set_dr7(L1_DR7);
++
++	generic_svm_setup(svm, l2_guest_code);
++	vmcb->save.dr6 = L2_DR6;
++	vmcb->save.dr7 = L2_DR7;
++
++	run_guest(vmcb, svm->vmcb_gpa);
++	GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_VMMCALL);
++
++	GUEST_ASSERT_EQ(vmcb->save.dr6, L2_DR6);
++	GUEST_ASSERT_EQ(vmcb->save.dr7, L2_DR7);
++	GUEST_ASSERT_EQ(get_dr6(), L1_DR6);
++	GUEST_ASSERT_EQ(get_dr7(), L1_DR7);
++
++	GUEST_DONE();
++}
++
++int main(int argc, char *argv[])
++{
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++	struct ucall uc;
++	gva_t svm_gva;
++
++	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
++
++	vm = vm_create_with_one_vcpu(&vcpu, l1_guest_code);
++	vcpu_alloc_svm(vm, &svm_gva);
++	vcpu_args_set(vcpu, 1, svm_gva);
++
++	vcpu_run(vcpu);
++	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
++
++	switch (get_ucall(vcpu, &uc)) {
++	case UCALL_ABORT:
++		REPORT_GUEST_ASSERT(uc);
++		break;
++	case UCALL_DONE:
++		break;
++	default:
++		TEST_FAIL("Unknown ucall %lu", uc.cmd);
++	}
++
++	kvm_vm_free(vm);
++	return 0;
++}
 -- 
 2.15.0
 
