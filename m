@@ -1,228 +1,164 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162074A2E1F
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 17:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC6230B529
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 18:03:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787853335; cv=none; b=eSHAM7PZOCE0mIn836cG5WSCSWb5P0UBgmcUZQKl15fJ3vOW49PhQUDeVfvQxWgycn9KgObm/0+cV17H5ENr3hFr16EI9PsPOxwZchHC9KdX2gYls67KibOXdrGUTieayvXVZrPtk08o0rMfMDKO0D8YYNbddG77+fjpOi2E9f8=
+	t=1787853803; cv=none; b=O36GAZPZAz+C92+cNtZeY7n90Yds15e3kMaMzBiAecH3/iMKncoSgQp1sND8JQ5RgNdcm3gaNPxiYKHEKQeYsJiiGZJrmHH/S0ZAABK9GJ6pXXLx36Dg66POGa78MdfVoXahtJuzpJRVnHkkCIlsAkqDAJgUMvxI5T1pSapmJao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787853335; c=relaxed/simple;
-	bh=JquNSy4x+4LWMK12YHrDgFVH96J4CylpGTzlZ6A+yuk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PPn6A/afFRIyPqDjQTM8UsLF6S7fgQAH7jkTggS4bGI4IDGQylssDuYQYWG6epRZqkOTRuEJ5T9uaZD5T1ngTs8uUVhGnFHtqLDACHfNlvyY5575orfzwOP3yxyLyWjv7lTVVVnU62jWPHJ9pBgSoXlr+tts26GKvqj15uK2oOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GqyCQCh/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787853803; c=relaxed/simple;
+	bh=aVJvper34EDrUAZdd4lOfHj1wCc4uQDuLNlXgq1p1YQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XCftx8qJqz5ROBUzXLq9OmauA/jRYEYTSevvjxqS4PZDpgKGtgRG+HGa0I5RtA8rXsJ+YGYXd87R5T7GYX3aLlEEtZpXhaLaBVHYi5J0dQkiyIlgqQrT1TveFwkC69rppbK+sC+1PVZ2Qx2Q50kOAkDpjd4Bttt/HxsxIMi0+Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Bqa79GVU; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GqyCQCh/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73561F000E9
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 17:55:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787853328;
-	bh=J0OapQGESg1AGMSebGOFhwIaFUe07bM0WphS89XQMkI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=GqyCQCh/Z0GVCHvMNP3XKvWd4KGH1srRW7ir5f7zgF8+AqP0KCwpcmotAbyASSEeq
-	 AjklrRkNmbXozU0/WBhsS0Dz9cXBkneKvmVsYpLef8V88wk3xAM86MyKqwvV98u5ms
-	 TqhEErKYVCB1uDrSUhB5DJEHy80AgjRt3q2A7ygVMFjVC/PZXF1XPsmqr2huei9ura
-	 +V5FXs7qgnzS/C8kadRVmHMIEGjfr6Mtg62u6z2QCD+0eDOpYPIh59MNLubMvhtdym
-	 ugmo1wbWz5E7KO5cN4oPW3eps237uLivSps+aXZL4YcOQ0Gu3ZZuYzHOG/UkRXsNX4
-	 LZwc+Pggac5xg==
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c255206b4dfso19423166b.1
-        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 10:55:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rpv/H9/MH4NHB6ouQSAUWuIgn2unuwyN6zCtQarcOLpQbOWeIWFbVKuq329Mz7VGvjfPmc=@vger.kernel.org
-X-Gm-Message-State: AFuF++nYrjOl2kwDEdLtSqYgeOlivvdKBsK1p+pnNHRWCFRXocTk0YZu
-	tX2Y9pop/N6zI2jD9bw8UGYOpJ5rh7NVvujGmEK9Fks80g4QsFkumRvZOmMg0/IEUJHkQQW5j+B
-	gPX0KnnVWCPNA6VHGPljpNkhP0jEna2s=
-X-Received: by 2002:a17:907:1988:b0:c25:4cff:5cf5 with SMTP id
- a640c23a62f3a-c2557181532mr37092066b.14.1787853327732; Thu, 27 Aug 2026
- 10:55:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Bqa79GVU"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2d3b445a84fso14515ad.1
+        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 11:03:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787853801; x=1788458601; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KoGSjfHeCXk5ZMZawIjFrD2nA/EHJWwuQY/vd3YWCZ4=;
+        b=Bqa79GVUVZJc0oroeM3AzdPpJtHhs/mwHewHAduY4gHIDgkKtR2k/3ddHratw1HBEG
+         Vq3zGH2ZX/RVdNd+UnMBwgcXUaiOxYcB9BZ0IyPUoQJ7GZq7vKezITaTgjeUmX5JBgfJ
+         /bP7jDiI005+pXBl05eUtrrxwkzQlje/NUedUcXi81pQfP+vqT8ONA/3RheQ1+7EZlCD
+         rhUvjC7vuox2dgeyODGH/EspWiSnShrEFB5zDdcaUggUVbdLAWAny3OQ6HDXZP/cwW0c
+         gb/pDPsJTjdB02SoN3WKXzbxPD0CFnSEtLzcGgCyUGaEow+9zJc1TmOLaZttfqv6ADuY
+         Z14g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787853801; x=1788458601;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=KoGSjfHeCXk5ZMZawIjFrD2nA/EHJWwuQY/vd3YWCZ4=;
+        b=rTHkIMWnqXYBjfSkRXHSz/OJgplfkg+60DZ4fkh9n/VwH6rgb5EBqxdypKWZL+9V4Z
+         NZgqbDdLDWvkEjJHYE6dGAkfgLeDFCyzF7TP+cpamvssydWO4yX3JG8QNS8HK6KMCwWA
+         95RcfMI09mYk+rDr5nGlqRyve+QdY9hEZyV+qhHznIyEiU7nUI7ktoM/hZ9XiqfHeAZI
+         tIMhfurgUOlAkCSzQIOLNRd6FrAu//Ixyz6eOSrYQtkhP/B2k5+ZZT/kFKxHun0v7swq
+         Z00ZtLXcC1iH1WDOBd4rX5WNtUmlUgRPXlGGUGD9REvMC/Pb3AyiviMCdO3XaCSDbWDZ
+         tFKw==
+X-Forwarded-Encrypted: i=1; AHgh+RqOSKnLNQ80YfNuLcHCNiyA0c4DLwvZkkGEtkxW5qdfBqdUR0m7mJxRIiWDdAeKncbH4so=@vger.kernel.org
+X-Gm-Message-State: AFuF++kwt/Cb6teh9+gQbxC9goB65T93eKBc79ZHBeNOuRs4EzOgqQQx
+	n9kOf5Pr0TDhYjq97HJoAR2SdpSsoJvhNEDfGZs37ngIv6tCqdDRadQYUimQno0uKQ==
+X-Gm-Gg: AR+sD12b0egKmgT5jCqzuX/SCqP4sfguy4hO2FpdeEJpYwfHzxihSKMZRBdtTyU6wEz
+	FA7Umh6YbHxZdTTq/0HOmpM3EXUSyU2HGItFaq/zfYouR/oyJu4+vcR0sD1r6Q8nT61flANFq8u
+	zvhKlCVXFqpmjLmxZ+FL/2h3i/XwHWt1bAr1JiEWrN3hlGcnG5Pv9drMRfkBhsr7FwMB13EwDI0
+	a1GhOuo+OquFMxPjMDK/wIxCNIzz3kFw7uKOdW1a4noDnNA6dXgXJmOBUmn1iyat9k0eYFLYwle
+	JyWoiPoUXxWZFHWdfEdrOLz8OtHda7nghMcs1pB1RgPJdlR8MjYG4xgUhHe/a6DwljnEOtvC9MX
+	m1Jr9lnxk4mXWBVzi4QrHNOC9Sa8YbC8J+S91HD7FiJ0SrFqFVosGmzHapZfcq7Z8kb/wBjD86p
+	Ny7EBo4hRFLPNlX+CQwNNpYlaKSpScziMdYsFFBqBAfti7YVUzxusNLyfUQewlbubdgsYny08XB
+	wMNaC6eL5g1X/iCJy/1IdW+XTDgM6MJzZWoPfT/nJzxfr3L9PjROyd6408=
+X-Received: by 2002:a17:903:8c5:b0:2d5:db3d:1a44 with SMTP id d9443c01a7336-2d74f6efb5bmr432895ad.17.1787853800262;
+        Thu, 27 Aug 2026 11:03:20 -0700 (PDT)
+Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39675867f73sm3108022a91.4.2026.08.27.11.03.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 11:03:19 -0700 (PDT)
+Date: Thu, 27 Aug 2026 18:03:15 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Vipin Sharma <vipinsh@google.com>, Alex Williamson <alex@shazbot.org>, 
+	Joerg Roedel <joro@8bytes.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Nicolin Chen <nicolinc@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Kevin Tian <kevin.tian@intel.com>, Robin Murphy <robin.murphy@arm.com>, jrhilke@google.com, 
+	tatashin@google.com, Will Deacon <will@kernel.org>, kvm@vger.kernel.org, 
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/1] vfio: circular locking dependency in
+ pci_dev_reset_iommu_prepare()
+Message-ID: <apB6tsN6cHz9Iuv3@google.com>
+References: <20260821193502.92431-1-vipinsh@google.com>
+ <ao3nr1-t0DxANAyC@google.com>
+ <CALzav=f5wUUt4mKZn0tvQez6_1iYPcb8eX5q-XjabTNy03JiNg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260826211844.884951-1-seanjc@google.com> <20260826211844.884951-2-seanjc@google.com>
- <CAO9r8zMnPwXVf6wx_gDMzv4j47xWa7idLD+vVm9DUiB=huiLaw@mail.gmail.com>
- <apA9eLuaMxCLdCmn@google.com> <CAO9r8zNm1QcVh29rTCzAFnYdUCS4y8ZSQOvrs2DD18XASuktoQ@mail.gmail.com>
- <apB1A5Ln_lGTI4oy@google.com>
-In-Reply-To: <apB1A5Ln_lGTI4oy@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 27 Aug 2026 10:55:14 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPtriVwkVqmvRDv5mQ8HmvOp=NrXdJvjRuog6FY_S1DRQ@mail.gmail.com>
-X-Gm-Features: AcwNN1WqOh8rFfqyGrYERI0p2r1fGiTKetWhpzfBQCuYNbXaxs2qnIWnH_Pl58k
-Message-ID: <CAO9r8zPtriVwkVqmvRDv5mQ8HmvOp=NrXdJvjRuog6FY_S1DRQ@mail.gmail.com>
-Subject: Re: [PATCH 1/4] KVM: nSVM: Reject KVM_SET_NESTED_STATE if L1 has
- EFER.LMA=1 && EFER.LME=0
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Stefan Teodorescu <fane@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALzav=f5wUUt4mKZn0tvQez6_1iYPcb8eX5q-XjabTNy03JiNg@mail.gmail.com>
 
-On Thu, Aug 27, 2026 at 10:33=E2=80=AFAM Sean Christopherson <seanjc@google=
-.com> wrote:
->
-> On Thu, Aug 27, 2026, Yosry Ahmed wrote:
-> > On Thu, Aug 27, 2026 at 6:37=E2=80=AFAM Sean Christopherson <seanjc@goo=
-gle.com> wrote:
-> > >
-> > > On Thu, Aug 27, 2026, Yosry Ahmed wrote:
-> > > > On Wed, Aug 26, 2026 at 2:18=E2=80=AFPM Sean Christopherson <seanjc=
-@google.com> wrote:
-> > > > >
-> > > > > Reject KVM_SET_NESTED_STATE if the incoming L1 host state has wha=
-t is
-> > > > > effectively an impossible EFER combination of LMA=3D1 but LME=3D0=
-, i.e. if the
-> > > > > state says long mode is active but not enabled.  Unlike VMX, SVM =
-doesn't
-> > > > > have an explicit consistent check for the illegal combination; pr=
-esumably
-> > > > > hardware simply ignores EFER.LMA if EFER.LME=3D0.
-> > > > >
-> > > > > Unfortunately, KVM doesn't ignore EFER.LMA in this case and consu=
-mes the
-> > > > > illegal state when constructing the shadow MMU for L2.  E.g. if u=
-serspace
-> > > > > also clears CR4.PAE, then kvm_calc_cpu_role() will compute a role=
- with 4 or
-> > > > > 5 levels of paging, but shadow_mmu_init_context() will wire up th=
-e MMU to
-> > > > > use the paging32 template, which maxes out its levels at 2.
-> > > >
-> > > > Isn't the "right" thing to do what hardware (presumably) does and
-> > > > ignore EFER.LMA if EFER.LME=3D0?
-> > >
-> > > No, because (a) this is KVM uAPI, not emulation of hardware, and (b) =
-it's a check
-> > > on L1 state, not L2 state.  It should be impossible for L1 state to h=
-ave this
-> > > combination through "natural" means, and so a snapshot provided by KV=
-M should
-> > > never have this combo either, which there's zero reason to allow user=
-space to
-> > > provide garbage.
-> >
-> > Right, I understand that KVM can do whatever it wants here. I was wonde=
-ring
-> > if we wanted to make the uAPI behavior match the  VMRUN behavior, but I=
- guess
-> > we're free to make it more strict.
->
-> But again, this *does* match VMRUN behavior, because it's impossible for =
-L1 to
-> have EFER.LMA=3D1, EFER.LME=3D0, and EFER.PAE=3D0 at the time of VMRUN.
->
-> > > > > Note, the "real badness" is effectively the same as what happened=
- with the
-> > > > > nVMX bug fixed by commit 112e66017bff ("KVM: nVMX: add missing co=
-nsistency
-> > > > > checks for CR0 and CR4").  Unfortunately, the sanity check added =
-by commit
-> > > > > 72e2fb24a0b0 ("KVM: x86/mmu: Bug the VM if a vCPU ends up in long=
- mode
-> > > > > without PAE enabled") doesn't work for this case, since L2 state =
-is active
-> > > > > at the time of the page fault, but it's L1 that has the bad state=
-.
-> > > > >
-> > > > > Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE a=
-nd KVM_SET_NESTED_STATE")
-> > > > > Cc: stable@vger.kernel.org
-> > > > > Cc: Yosry Ahmed <yosry@kernel.org>
-> > > > > Reported-by: Stefan Teodorescu <fane@google.com>
-> > > > > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > > > > ---
-> > > > >  arch/x86/kvm/svm/nested.c | 1 +
-> > > > >  1 file changed, 1 insertion(+)
-> > > > >
-> > > > > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.=
-c
-> > > > > index 73f37b050d0a..49fb10ad1f9f 100644
-> > > > > --- a/arch/x86/kvm/svm/nested.c
-> > > > > +++ b/arch/x86/kvm/svm/nested.c
-> > > > > @@ -2028,6 +2028,7 @@ static int svm_set_nested_state(struct kvm_=
-vcpu *vcpu,
-> > > > >         if (!(save->cr0 & X86_CR0_PG) ||
-> > > > >             !(save->cr0 & X86_CR0_PE) ||
-> > > > >             (save->rflags & X86_EFLAGS_VM) ||
-> > > > > +           ((save->efer & EFER_LMA) && !(save->efer & EFER_LME))=
- ||
-> > > >
-> > > > I just realized I have no idea why we check X86_CR0_PE and
-> > > > X86_EFLAGS_VM here. Commit 6906e06db9b04 ("KVM: nSVM: Add missing
-> > > > checks for reserved bits to svm_set_nested_state()") says it's to d=
-o
-> > > > the same checks as VMRUN, but I don't think that's actually the cas=
-e?
-> > > > The checks here seem arbitrary to me?
-> > >
-> > > Again, this is L1 state when L2 is active (the !KVM_STATE_NESTED_GUES=
-T_MODE path
-> > > has already bailed), and VMRUN "can only be executed in protected mod=
-e with SVM
-> > > enabled".  Amusingly, the APM says #VMEXIT "Forces CR0.PE =3D 1, RFLA=
-GS.VM =3D 0.",
-> > > so I guess it means business.
-> > >
-> > > If anything is wrong, it's the CR0.PG check.  Presumably that got car=
-ried forward
-> > > from commit c0725420cfdc ("KVM: SVM: Add helper functions for nested =
-SVM").  I
-> > > don't see anything in the APM that requires paging to be enabled, and=
- nothing in
-> > > that ancient series points at concrete documentation either.
-> >
-> > Oh yeah you're right, for some reason I thought it was paging not
-> > protected mode. Well then, it seems like
-> > nested_svm_check_permissions() is also incorrectly checking paging as
-> > well, seems like both checks are incorrect? Also, I don't see anything
-> > in the APM about checking RFLAGS.VM before VMRUN.
->
-> Presumably it's covered by the !PROTECTED_MODE clause.
->
->   IF ((MSR_EFER.SVME =3D=3D 0) || (!PROTECTED_MODE))  // This instruction=
- can only be executed in protected
->     EXCEPTION [#UD]                               // mode with SVM enable=
-d
->
-> Section "1.3.4 Legacy Modes" describes "Protected Mode" and "Virtual-8086=
- Mode"
-> as separate submodes.  And the tables for most instructions differentiate=
- between
-> Real, Virtual 8086, and Protected modes when enumerating exceptions.
->
-> The APM weasels around 64-bit mode by also saying "Before enabling and ac=
-tivating
-> long mode, system software must first enable protected mode".  E.g. the t=
-able for
-> SYSENTER describes the #UD due to "This instruction is not recognized in =
-long mode"
-> as scenario that's unique to Protected Mode.
->
-> Stating the obvious, it would be lovely if the APM explicitly stated what=
- the
-> exact checks are, though that's about as likely as AMD gifting me a pony.
->
-> FWIW, if that reading is wrong (though I'm pretty sure it's not), then th=
-e only
-> issue is that KVM is synthesizing #UD instead of #GP, because Virtual 808=
-6 always
-> runs at CPL=3D3.
->
->   IF (CPL !=3D 0)                                   // This instruction i=
-s only allowed at CPL 0
->     EXCEPTION [#GP]
+On Wed, Aug 26, 2026 at 01:27:20PM -0700, David Matlack wrote:
+>On Tue, Aug 25, 2026 at 12:06 PM David Matlack <dmatlack@google.com> wrote:
+>>
+>> On 2026-08-21 12:35 PM, Vipin Sharma wrote:
+>>
+>> > ================================================================================
+>> > Potential Solutions Suggested by AI
+>> > ================================================================================
+>> >
+>> > 1. Decouple iommu_setup_dma_ops() from group->mutex in drivers/iommu/iommu.c:
+>> >    iommu_setup_dma_ops() only requires struct device * and the domain pointer
+>> >    (group->default_domain); it does not mutate any fields in struct iommu_group.
+>> >    Moving the iommu_setup_dma_ops() calls after mutex_unlock(&group->mutex) in
+>> >    iommu_probe_device(), bus_iommu_probe(), and iommu_group_store_type() breaks
+>> >    the initial &group->mutex -> cpu_hotplug_lock dependency.
 
-I see, thanks for digging this up. Either way I think we want to keep
-things consistent between here and nested_svm_check_permissions(). We
-probably want a CPL check here, and it would be a superset of
-X86_EFLAGS_VM as you mentioned. We probably wanna drop the CR0.PG
-check from both places, and add an explicit X86_EFLAGS_VM check in
-nested_svm_check_permissions() to #UD instead of #GP?
+The group->mutex is needed here also since it sets up the dma_ops on the
+default_domain that is currently attached to the device. And those
+attachments are protected with group->mutex.
+>>
+>> Are there any other code paths that rely on group->mutex -->
+>> mm->mmap_lock ordering? If so fixing this one case wouldn't help.
+>>
+>> > 2. Avoid holding down_write(&vdev->memory_lock) across pci_try_reset_function()
+>> >    in VFIO:
+>> >    vfio-pci could zap active BAR mappings under memory_lock and set a state
+>> >    flag / disable memory decoding, drop memory_lock before calling
+>> >    pci_try_reset_function(), and then re-acquire memory_lock to re-enable
+>> >    memory. While resetting, any concurrent user fault will see the memory
+>> >    disabled condition and return VM_FAULT_SIGBUS safely.
+>>
+>> This would change the userspace-visible behavior of faulting on a VFIO
+>> device BAR from "block until reset is done and the succeed" to "fail
+>> with SIGBUS". And it would allow VFIO to access VFIO device BARs during
+>> the reset through vfio_pci_core_iowrite*().
+>>
+>> But I think we can extend this idea to solve those problems by
+>> introducing a wait queue for tasks to sit on while a device is being
+>> reset.
+>>
+>> e.g. Something like this (completely untested and partially written by AI):
+>>
+>> From: David Matlack <dmatlack@google.com>
+>> Date: Tue, 25 Aug 2026 18:37:52 +0000
+>> Subject: [PATCH] vfio/pci: Avoid circular locking dependency during device reset
+>>
+>> Avoid a circular locking dependency during VFIO device reset by dropping
+>> vdev->memory_lock prior to calling PCI reset functions
+>> (pci_try_reset_function() and pci_reset_bus()). Introduce an explicit reset
+>> state flag (vdev->resetting) and wait queue (vdev->reset_done_wq) to stall
+>> concurrent BAR page faults and MMIO accesses during reset without holding
+>> vdev->memory_lock across PCI reset operations.
+>...
+>
+>This approach does not look ideal. The implementation has a bug where
+>concurrent resets can lead to vdev->resetting being cleared too early.
+>And from a maintainability perspective, there are more call sites that
+>currently take memory_lock that would probably also have to be updated
+>to wait for vdev->resetting to become false.
+>
+>> >
+>> > 3. Refine synchronization in pci_dev_reset_iommu_prepare():
+>> >    Evaluate if attaching to the blocking domain and pausing ATS during device
+>> >    reset can be protected using more fine-grained locking or atomic state
+>> >    flags without holding the coarse &group->mutex.
 
->
->
-> > If the goal here is to keep the checks here consistent with
-> > nested_svm_check_permissions(), aside from the new EFER check, then
-> > maybe we should also check CPL here?
+This might not work as reset_iommu_prepare() changes the domain of the
+device being reset and those things protected by the group->mutex.
+>>
+>> I don't know enough about this part of the kernel to say, but this would
+>> directly address the new lock ordering dependency vdev->memory_lock -->
+>> group->mutex introduced by commit f5b16b802174 ("PCI: Suspend iommu function
+>> prior to resetting a device"), which is what led to this lockdep error.
+
+Thanks,
+Sami
