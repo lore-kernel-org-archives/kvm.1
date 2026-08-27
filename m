@@ -1,105 +1,102 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1690442386;
-	Thu, 27 Aug 2026 11:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DEE943A7E9
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 11:17:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787828807; cv=none; b=Vz2j2DFwc94Q9FPidQxMNx1T3J26kFzFwmLLu0ULK0ItQj4KW1YKjgi+IFF736lw0Y1YNWYy9+et0YG1zSqCu673ZROLcdOM3sGkENbkC3KFp9IvRWtSsCg784Q3yiku5808n5MzKXasJkRSKfRHPbTJTnhaE3zXmmWy8/umcBg=
+	t=1787829435; cv=none; b=iESyLU+61+mdY1ux8OlldYLg+4GAvNVXxY/gGWLgzamWAczGQ/p1MeGKCwHPMj3hkgkD9EdouiPOJWLn6w/+w1PPLfeb0SZF9dUD1Sf2HWDOR9gnhjWQEOyznM0Z86Z0qY0k2zw/4/YVaExWLxoJR30FJ1KG8j1DvJ4m4XR3bqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787828807; c=relaxed/simple;
-	bh=Mwok4D6Z97zpbH+7hsrLXnbXIFTqw5arzv1nPOyNruI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PZhGlf97M5dAyXUo+6N8JS0BB4QVOVy6GUxLfnWYqbCWADtQqjCKdIUgeEa6q12n/FiktnWWN4XyoeMOiTSA69TfUjE7dYUGxxbQydWiY/JnuS6Z1LrBz1bgjQ11PxAFTVF4V3diKvupD41sAVlxE2q2ghKcMRsQmh2gIubeF5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=UH+3EmeY; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1787829435; c=relaxed/simple;
+	bh=P+n7t1lgDLepCUh6QK0CJBLUoi/QVnmD37Pp3bbMScU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=oLfH8Xz4wIwkk9TQjEkcnRLAicQD0kwZ8wEc2byGgZW4MvQ/2GqLJ/udq99BjUYCyFpoJ57YsFWdvBkQfzMV/7EogY6ewJfkKes424sYRXGUm5FOiyCsMZiu+CrTF/vUEHgAHbPMEj6chxNNyf4oZKgdJti5IsA8e+7fy2zb33A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VmoPHhsZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="UH+3EmeY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=+c
-	beuehtt3XZHv1/3LwaEWwYrGuUef3m9TDF3qzwGi8=; b=UH+3EmeYazpiL7raB3
-	w2QIi9SCX7ZlDnVVAGy9FuMaJa6CUNl9ue0fNsxEgGwcErNhkL3//qIfXveb+KJm
-	H0slzFNB4+CWUFXiCIea6TVCvWcdc7SJlU3AnWmxDAEegMAYUTIv0EziAQk32dFH
-	sdS3GBTuZvDOmHMPLSzinIJQw=
-Received: from zengchi (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wBXG9EaGpBq3ORxRw--.60880S2;
-	Thu, 27 Aug 2026 19:06:04 +0800 (CST)
-From: Zeng Chi <zeng_chi911@163.com>
-To: pbonzini@redhat.com,
-	seanjc@google.com,
-	chao.p.peng@linux.intel.com
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	zengchi@kylinos.cn
-Subject: [PATCH] KVM: Release reserved xarray entries if reserving memory attributes fails
-Date: Thu, 27 Aug 2026 19:05:58 +0800
-Message-Id: <20260827110558.457891-1-zeng_chi911@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VmoPHhsZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860791F000E9;
+	Thu, 27 Aug 2026 11:17:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787829425;
+	bh=mCgiuu9Tc7EirM0QmHma2GvPOcCRqwf+MFqZ84T4WhE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=VmoPHhsZBbleqko8zyQvhjUus2VexBVdg72lf+Xw5MerOaxveGi2S0WYucRRHUDb3
+	 o7r+CH1Kr/UhXaUteCWLZXicl+nSYBb7TOvAzGbYnGT4kd/za1eZlebiLvfH+krNgu
+	 TG6UJSXRMFvgzIPGA2hebdb+pk5W/acWs8s9RlCQ4D59NfCfrJNh6gIlVmJgMl+nFp
+	 SknYTKHN+BVbQyNS12hONG/ZpRvEGYRICIvBrfblrBru2kJxYv67PaDZpknhAXYmTj
+	 0IreM530LviEMJHSbmA+bWYKLz5ZACrEZwJ8StCSYHfzZa/PlvK9+43vgh34e+IGc0
+	 yxq1gVIngCU7Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] KVM: Release reserved xarray entries if reserving
+ memory attributes fails
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zeng Chi" <zeng_chi911@163.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260827110558.457891-1-zeng_chi911@163.com>
+References: <20260827110558.457891-1-zeng_chi911@163.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 27 Aug 2026 11:17:05 +0000
+Message-Id: <20260827111705.860791F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBXG9EaGpBq3ORxRw--.60880S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJrW7ury5WFW3KFW8WF43GFg_yoW8ZFWUpF
-	yDGrWDGw45Jr12qaykta1Du3W8u3yS9FW7AF15Ka47Zr15Jwn2qryrKr4jvr45ArWvva4j
-	qFyjg347CrWUXrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j8iSdUUUUU=
-X-CM-SenderInfo: 52hqws5fklmiqr6rljoofrz/xtbC6BxMCGqQGhwp-AAA3Z
 
-From: Zeng Chi <zengchi@kylinos.cn>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] The error cleanup loop in `kvm_vm_set_mem_attributes` lacks a `con=
+d_resched()` call, which can cause CPU soft lockups when reverting a massiv=
+e memory range.
+--
 
-kvm_vm_set_mem_attributes() reserves an xarray entry for every gfn in
-the range before modifying any attributes, so that the actual updates
-can't fail partway through.  But if one of the reservations fails, e.g.
-due to -ENOMEM, the entries that were already reserved are left behind,
-as the error path bails without releasing them.
+commit 628b8d791b455e8fdc196cf53b9e1f82e2d7fdb6
+Author: Zeng Chi <zengchi@kylinos.cn>
 
-A reserved entry is XA_ZERO_ENTRY, not NULL.  xa_load() hides the
-difference, but kvm_range_has_memory_attributes() uses xas_find() to
-check whether a range has no attributes at all, and xas_find() returns
-zero entries as-is.  As a result, a leaked reservation makes KVM think
-the range has attributes set even though kvm_get_memory_attributes()
-reports none.  On x86, the next time mixed-attribute tracking is
-recomputed for the range (memslot creation, or a later attribute change
-that straddles the 2MiB page), hugepage_has_attrs() treats a fully
-shared 2MiB range as having mixed attributes and refuses to map it with
-a hugepage, until userspace happens to set attributes on the range
-again.
+KVM: Release reserved xarray entries if reserving memory attributes fails
 
-Release the successfully reserved entries on failure.  xa_release() is
-a nop for entries that hold a real value, so it's safe to blindly
-release all entries in [start, i).
+This commit fixes a memory leak in kvm_vm_set_mem_attributes() where previo=
+usly
+reserved xarray entries were left behind if a subsequent reservation failed=
+. It
+adds a backward loop to release the successfully reserved entries before ba=
+iling
+out on the error path.
 
-Fixes: 5a475554db1e ("KVM: Introduce per-page memory attributes")
-Signed-off-by: Zeng Chi <zengchi@kylinos.cn>
----
- virt/kvm/kvm_main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -2575,8 +2575,11 @@ static int kvm_vm_set_mem_attributes(struct kvm *k=
+vm, gfn_t start, gfn_t end,
+>  	 */
+>  	for (i =3D start; i < end; i++) {
+>  		r =3D xa_reserve(&kvm->mem_attr_array, i, GFP_KERNEL_ACCOUNT);
+> -		if (r)
+> +		if (r) {
+> +			while (i-- > start)
+> +				xa_release(&kvm->mem_attr_array, i);
 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 65eb26a0520d..20031a832c21 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -2575,8 +2575,11 @@ static int kvm_vm_set_mem_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
- 	 */
- 	for (i = start; i < end; i++) {
- 		r = xa_reserve(&kvm->mem_attr_array, i, GFP_KERNEL_ACCOUNT);
--		if (r)
-+		if (r) {
-+			while (i-- > start)
-+				xa_release(&kvm->mem_attr_array, i);
- 			goto out_unlock;
-+		}
- 
- 		cond_resched();
- 	}
--- 
-2.25.1
+[Severity: High]
+Can this backward cleanup loop cause CPU soft lockups if a massive memory
+range was requested?
 
+The forward loop correctly yields the CPU via cond_resched() to handle large
+ranges, but the unwinding error path does not.=20
 
-No virus found
-		Checked by Hillstone Network AntiVirus
+If userspace invokes KVM_SET_MEMORY_ATTRIBUTES on a massive range and
+xa_reserve() eventually fails, this loop will continuously process potentia=
+lly
+millions of entries. On kernels with CONFIG_PREEMPT_VOLUNTARY or
+CONFIG_PREEMPT_NONE, could this block scheduling long enough to trigger the
+soft lockup watchdog?
 
+>  			goto out_unlock;
+> +		}
+> =20
+>  		cond_resched();
+>  	}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260827110558.4578=
+91-1-zeng_chi911@163.com?part=3D1
