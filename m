@@ -1,168 +1,213 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED18370ADC
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 20:37:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8CB361947;
+	Thu, 27 Aug 2026 20:43:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787863085; cv=none; b=czJzLl1IIiUgHY9bXoPW0C8seP6JtG0sbysn3h4pq4/sL9DCYTQPmOLOAGmUo4M+qGMm3Q44Qs2YxZl2ZmJqIxVWgl0DvUBxmDww9AdEe8u6fhoFAdv2ffN0cEBYlXRWmagRtrNBVCqtUDbJzgm0RDEVkqCQAZMA2Omdd5rDhfQ=
+	t=1787863426; cv=none; b=bYV7fgNQYIduHqKgtxBG62FUBO1zKMK/KzoUWzMqbp+Op5vBIZBP6/Q0V/zlW2ZVsn18YNmdcg7e3UQmDFUHZZ+8YoUQeXogJ5zCtVwMJzPyh2oAeFOYOHw1KdZ4au0jhvCzJzW6rjeI9QsYnvYDWbaUEQfDeW62nIvVaTt3dQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787863085; c=relaxed/simple;
-	bh=qAn6HeAQO4Oygk+dnkielaw+I1j97nWbA+S1CcWQLik=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QS1MXWr3wNm8mkcMO3NyB1OKrmQFVeV2AadjJz65xkZTrwULJVSJIUkxmjq0+Mu0EEQSl5cDUlysAO0AfnSEfzoRP0iub/eh3mB6gOoKDA2nAw/pnoIFy+6vEAZUrlulcsrvsBPVN+ATEcrVo9GbbbVrWT1vccbzyS6WzQAsJ7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VxrjdFBl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787863426; c=relaxed/simple;
+	bh=0hY5nRl6me77n06A7F0ptD5VdecxUHVUFq7N2kvYsmU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sWprZyPn8iqBzbjNRvS+1moPa8kZq4uFrAd5npjPM3wM/aSFlXVwoPAz+Vwh/pTlSM88yoebIq24tp/MkS1NiN+Pmvi//HIYOHvUDpBNmRjLEvjQAAuGdaP2jm/o9wi+t9yKGD6lUt9a6jbKbghAsj8Xe99+QpXR1+bfbLanJy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=uIYBXb4M; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=eDof0vCr; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VxrjdFBl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FAB01F00A3A
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 20:37:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787863076;
-	bh=uU0ynFxcIFKopGhYpZ9DKYM749aSjOjKh65yHWXZG8U=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=VxrjdFBlHY60fYBZ63hcmuGF3bKzqKNln0RG6uM/+VEq5+eoGduaFemqWFfcKmQ1c
-	 RiNlWzlvJvb6m71Vt7vWxe3jOF7HnZBex9IN65tQjVJFHiJAg3YYojPH8Nk40Re2wU
-	 RdfAJz9m9K1fRH8HyCUc56K9vU1V4Gwa1b5gYMfHSP8JrW10zGgrZZ467IO+pPCNfi
-	 3eIIyJu1PWxJvev4wAtxiJ4L44LJZtN9APWDj5hZwdaCaZL4dFGCIDGY1ufxMq4VYo
-	 M7MGCKogwPZ/kae09ZalR7n3029/cQkBbEVNgWqKvrxkF79V7Em8MtX7Y16h1W+9K/
-	 k32J1peru8vyQ==
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c1677c91969so10642066b.1
-        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 13:37:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqVUoTjinRoGWRRiZL+Puens2hNcs95GiS2yrR2btMuAamwZEWGFYruoJvakqTqYDjAaSA=@vger.kernel.org
-X-Gm-Message-State: AFuF++nNy3JQHvvjkrEcDa0NHBf7STr2g2h3agVjFzAxf3kohb/BhsAh
-	h+UbpmWSQ27PcohH1kRXEVAhhlQ/yLA87++q0Zhv+R5SxxBm84NqAGsvjmEpYQZX/+lQWO5iX3w
-	fPTkJ9ZtAJJCbRWvVaLfLLOCjctlRFAo=
-X-Received: by 2002:a17:906:ef0d:b0:c20:3679:a2e6 with SMTP id
- a640c23a62f3a-c2556d82939mr91521066b.10.1787863075337; Thu, 27 Aug 2026
- 13:37:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="uIYBXb4M";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="eDof0vCr"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 61A3E7A01C3;
+	Thu, 27 Aug 2026 16:43:38 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Thu, 27 Aug 2026 16:43:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1787863418;
+	 x=1787949818; bh=jk1dP7bSpz8nBG41hKcZ//Y9AAjhpvgTnhyCJgTBhkE=; b=
+	uIYBXb4MFiGf/L1WN7iYhUBdzfqIV2XZLjFCykdD1K18GjZgqgjq3kEMAgR2kHaK
+	sRkeaxL41TI8DJpfgorQDsH94UfEEaYEZEz2a/dQUSwpHa+OXHdgDzRsSM0k7Ctb
+	57hMCQRKGnUbEt8L5yEnPYM1H8RoGLFnxWzF6RWcm8XYSEXK+u/u96feKiQKP4tr
+	LrfuNg0ce/TVZEL2INFL4Pv1E8CsgW+zCCSRDDGFVZ5t09AdSVjS90pJ9UyqDg8R
+	RgdceRPQ0Q7lOy3GP6zfTpAGmKH42rxV5EIIUX0FfDgnu2CYEFTy98Aj2TT0R0xR
+	tFYKw1mv3dUXGANQPTg2NQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787863418; x=
+	1787949818; bh=jk1dP7bSpz8nBG41hKcZ//Y9AAjhpvgTnhyCJgTBhkE=; b=e
+	Dof0vCrlk3EEKrMCeDYCEUgOUo6K9/PRAS7opJ7mlKy5802sf0maPUYt8xeDA01o
+	ujnYTOBeKN7fUY35pYLNZpymtG/Wxm7JWZRmlvGcfB70ck4530RG7q0J0xBwbXe1
+	OWnbh2CmtWgqwFJxXoI2neIGtonhQ/KuhoP0bSgWPAtmKMp+ZF6sYLzbhCBThqsG
+	t/qztRdM6GLzNJyjX8+bUrSzgXuWYbsY6QKsKdyAMZUtuKt/k37QHLQIzvPs8K3x
+	tchAJfPC0/pLPWBPYJelAAXvlWdFdyJ+6Gg7N2YbDj63nVpGgDVRmjLRSHOU24F1
+	DoanXQ8yOHf2ajVVY188Q==
+X-ME-Sender: <xms:eaGQap-HyqqbDYNZQ5tF41MB8X7gI3Xw7j7CYXDZCWLR3VLPJZIT5A>
+    <xme:eaGQarVTSOSTJxn2y3adTUJMhMx6h-mwIgSFflBEyS48F6nSULDzINhJBM6F_5YSI
+    Fe-oUruD8AaF8OHI0VS_iu_xVqIlX11s4f7q7Dobo9Eei0H_PJgWw>
+X-ME-Received: <xmr:eaGQaubTFB54KBrUDYk3RAT7tHhJ3XAgYCUSHv0bBbf3StkgeRtVz56coWZ0Ew>
+X-ME-Proxy-Cause: dmFkZTGhkkL3d5wJkHr+/n8koWe6hN91UvtBGPt+asMVUnYW+CFuGztxykiESGQVt8oQWz
+    SzgoP9EWVb1RGARPgum8C3YktkNVBAwiBpNRiTtJKak7QsxdjUVMIRyW4mcCEF9Ap6kRl9
+    vYa2uyoPlSs3hQGkAsAKU3zutY+9xpb2H0q4b3kCFrBY7JjPclKCxOMjmqtFkR66riqxbe
+    u3j8LaOp8DeTSpvZfSw4+07a0M/V6GWTcwofzTLW8e08AuMtCT3Kiplrmz2uIhougkC9PO
+    801ARfnxLAuyO6iI+Zw4kbmNHZOl1cN4KYIBDMb2zK/TPQFMgOmC40eMuw9BQV3oXhU3CF
+    sGOZHKRyUCyBG8D2G+wzp9YaivkVFnF3aHqk5GuBvC9ipNqotGygdzb0ZkpVkY1wGbRKaN
+    TUIrFiRDbbiXRSL4ER0zba4k18E6/fXSEv4u3n0a+rEc8DA5fG32tR44Z44CVZhh8LQnM3
+    TJ/seaytbLI+X4oCJZTJr8grYv9Q8sbJ0KN4QbYL96DcEX8/+pIDd/HOwnnPkZVNHs7pmR
+    LPZzanVXVAUE2E3umZc3GwbTV46g8g+PGm5UM+/nlyx4XTJ2pdAsI0WJot9AR617k4fAiN
+    tYryZL6H+oO9X0fT7mg7o3JePzWGHO7KraW1kjhkOxNbgvwsrg24XIU50sog
+X-ME-Proxy: <xmx:eaGQalqpbiO2qnnmvbm9d6VBEVeBCd09GLx70JQh4g3BbWp9sFsahA>
+    <xmx:eaGQal6vJLdPyfFBNOJOP-ArErGz8XIQ79zBEf5xb5faHop9qYD68w>
+    <xmx:eaGQavWfZAL8jd_2js0hN9aWCuk7ouxBW1Fjx0fj5_UV4CGQBQP8lA>
+    <xmx:eaGQajuESGMmJkaLP2TZynlOUtkGWE5SYuqTXNzt4wpIk-OO-eOVBQ>
+    <xmx:eqGQauqVG7RLCb7rgbij4f1FQPBpNk7BwNBkuuC6qUMur9rTnSrTVKa1>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 27 Aug 2026 16:43:35 -0400 (EDT)
+Date: Thu, 27 Aug 2026 14:43:33 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: <mhonap@nvidia.com>
+Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
+ <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
+ <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+ <dave@stgolabs.net>, <alison.schofield@intel.com>,
+ <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
+ <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
+ <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+ <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
+ alex@shazbot.org
+Subject: Re: [PATCH v4 09/27] vfio/cxl: Create the CXL memory device at bind
+Message-ID: <20260827144333.222fe7fb@shazbot.org>
+In-Reply-To: <20260813093631.2288172-10-mhonap@nvidia.com>
+References: <20260813093631.2288172-1-mhonap@nvidia.com>
+	<20260813093631.2288172-10-mhonap@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260826233919.998904-1-seanjc@google.com> <20260826233919.998904-14-seanjc@google.com>
- <CAO9r8zOOq05nWk6c1sCnPAimFTuZLxc3BDrZLro-fXPR6ZMmTw@mail.gmail.com> <apCd5RSDYH13g0qR@google.com>
-In-Reply-To: <apCd5RSDYH13g0qR@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 27 Aug 2026 13:37:43 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPF7yPWopSQD=YSLuAxDU5YAacEWwEMbt3s_s9a=niCoQ@mail.gmail.com>
-X-Gm-Features: AcwNN1WuIUJWExKIoWQAGcMNXDikuEI908HWNia6xQh5jw2WY37kSbr_ADCb82A
-Message-ID: <CAO9r8zPF7yPWopSQD=YSLuAxDU5YAacEWwEMbt3s_s9a=niCoQ@mail.gmail.com>
-Subject: Re: [PATCH v3 13/13] KVM: selftests: Add and use double-underscore
- versions of vmlaunch() and vmresume()
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	f734222792@gmail.com, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Sashiko Bot <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 27, 2026 at 1:28=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> On Wed, Aug 26, 2026, Yosry Ahmed wrote:
-> > On Wed, Aug 26, 2026 at 4:39=E2=80=AFPM Sean Christopherson <seanjc@goo=
-gle.com> wrote:
-> > > diff --git a/tools/testing/selftests/kvm/x86/aperfmperf_test.c b/tool=
-s/testing/selftests/kvm/x86/aperfmperf_test.c
-> > > index 11f5894d8ac7..a082658c1e48 100644
-> > > --- a/tools/testing/selftests/kvm/x86/aperfmperf_test.c
-> > > +++ b/tools/testing/selftests/kvm/x86/aperfmperf_test.c
-> > > @@ -83,7 +83,7 @@ static void l1_vmx_code(struct vmx_pages *vmx)
-> > >                 vmreadz(CPU_BASED_VM_EXEC_CONTROL) | CPU_BASED_USE_MS=
-R_BITMAPS);
-> > >
-> > >         GUEST_ASSERT(!vmwrite(GUEST_RIP, (u64)l2_guest_code));
-> >
-> > Do we wanna give the same treatment to vmwrite()?
->
-> Yes, and vmreadz().  Assuming '0' is simultaneously a reasonable failure =
-and "safe"
-> value is so stupid, especially since AFAICT literally none of the users a=
-ctually
-> need to gracefully tolerate failure.
->
-> LOL, and it can't possibly work, because vmread() clobbers the zeroed val=
-ue on
-> VM-Fail.  Hilarious.
->
-> I didn't include those changes purely because I had "#$*@ this code" fati=
-gue. :-)
-> But since this is going to conflict the world over, yeah, it makes sense =
-to just
-> fix everything.
->
-> > > -       GUEST_ASSERT(!vmlaunch());
-> > > +       vmlaunch();
-> > >  }
-> > >
-> > >  static void guest_code(void *nested_test_data)
-> > [..]
-> > > diff --git a/tools/testing/selftests/kvm/x86/nested_emulation_test.c =
-b/tools/testing/selftests/kvm/x86/nested_emulation_test.c
-> > > index 2b38eff4f516..11fe4a31eda0 100644
-> > > --- a/tools/testing/selftests/kvm/x86/nested_emulation_test.c
-> > > +++ b/tools/testing/selftests/kvm/x86/nested_emulation_test.c
-> > > @@ -102,7 +102,7 @@ static void guest_code(void *test_data)
-> > >                         exit_insn_len =3D vmcb->control.next_rip - vm=
-cb->save.rip;
-> > >                         GUEST_ASSERT_EQ(vmcb->save.rip, (u64)l2_instr=
-uction);
-> > >                 } else {
-> > > -                       GUEST_ASSERT_EQ(i ? vmresume() : vmlaunch(), =
-0);
-> > > +                       i ? vmresume() : vmlaunch();
-> >
-> > Ewww
-> >
-> > >                         exit_reason =3D vmreadz(VM_EXIT_REASON);
-> > >                         exit_insn_len =3D vmreadz(VM_EXIT_INSTRUCTION=
-_LEN);
-> > >                         GUEST_ASSERT_EQ(vmreadz(GUEST_RIP), (u64)l2_i=
-nstruction);
-> > > diff --git a/tools/testing/selftests/kvm/x86/nested_exceptions_test.c=
- b/tools/testing/selftests/kvm/x86/nested_exceptions_test.c
-> > > index 50c271a03692..c36c11b5f518 100644
-> > > --- a/tools/testing/selftests/kvm/x86/nested_exceptions_test.c
-> > > +++ b/tools/testing/selftests/kvm/x86/nested_exceptions_test.c
-> > > @@ -112,7 +112,7 @@ static void vmx_run_l2(void *l2_code, int vector,=
- u32 error_code)
-> > >  {
-> > >         GUEST_ASSERT(!vmwrite(GUEST_RIP, (u64)l2_code));
-> > >
-> > > -       GUEST_ASSERT_EQ(vector =3D=3D SS_VECTOR ? vmlaunch() : vmresu=
-me(), 0);
-> > > +       vector =3D=3D SS_VECTOR ? vmlaunch() : vmresume();
-> >
-> > Ewwwww
-> >
-> > Can we make these if/else statements? It was already ugly, but it
-> > looks even more ugly outside of GUEST_ASSERT_EQ().
->
-> Yeah.  Another idea would be:
->
->   void vmenter(bool do_vmlaunch)
->   {
->         if (do_vmlaunch)
->                 vmlaunch();
->         else
->                 vmresume();
->   }
->
-> To yield:
->
->         vmenter(vector =3D=3D SS_VECTOR);
->         vmenter(!i);
->
-> Never mind, that's a terrible idea, the call sites are inscrutable.
+On Thu, 13 Aug 2026 15:06:13 +0530
+<mhonap@nvidia.com> wrote:
 
-Yeah, but I do agree that vmlaunch() vs vmresume() handling in
-selftests is annoying (e.g. see run_l2() in [1]).
+> From: Manish Honap <mhonap@nvidia.com>
+> 
+> Read the HDM region size from decoder 0, cached in pdev->hdm at
+> enumeration, and use it to size the accelerator device state. A Type-2
+> accelerator has no mailbox, so cxl_set_capacity() establishes the
+> capacity that devm_cxl_probe_mem() then uses to join the device to the
+> CXL topology and resolve the host physical range.
+> 
+> Everything here is devm-scoped to the PCI device, so it is unwound when
+> vfio-pci unbinds. If pdev->hdm is not populated yet, defer the bind.
+> 
+> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> ---
+>  drivers/vfio/pci/cxl/vfio_cxl_core.c | 53 ++++++++++++++++++++++++++++
+>  1 file changed, 53 insertions(+)
+> 
+> diff --git a/drivers/vfio/pci/cxl/vfio_cxl_core.c b/drivers/vfio/pci/cxl/vfio_cxl_core.c
+> index cbec7319452c..125e11354a46 100644
+> --- a/drivers/vfio/pci/cxl/vfio_cxl_core.c
+> +++ b/drivers/vfio/pci/cxl/vfio_cxl_core.c
+> @@ -6,15 +6,67 @@
+>   */
+>  
+>  #include <linux/module.h>
+> +#include <linux/pci.h>
+> +#include <linux/range.h>
+>  #include <linux/vfio_pci_core.h>
+> +#include <cxl/cxl.h>
+> +
+> +/**
+> + * struct vfio_cxl_state - per-device state for a vfio-cxl device
+> + * @cxlds: CXL device state; kept first for devm_cxl_dev_state_create()
+> + * @cxlmd: memory device joined to the CXL topology at bind
+> + * @hpa_range: host physical range of the HDM region
+> + */
+> +struct vfio_cxl_state {
+> +	struct cxl_dev_state cxlds;
+> +	struct cxl_memdev *cxlmd;
+> +	struct range hpa_range;
+> +};
+>  
+>  static int vfio_cxl_init_device(struct vfio_pci_core_device *vdev)
+>  {
+> +	struct pci_dev *pdev = vdev->pdev;
+> +	struct vfio_cxl_state *cxl;
+> +	struct cxl_memdev *cxlmd;
+> +	u64 hdm_size, serial;
+> +	u16 dvsec;
+> +	int ret;
+> +
+> +	/* pdev->hdm is populated at PCI enumeration; defer until it is. */
+> +	if (!pdev->hdm)
+> +		return -EPROBE_DEFER;
 
-If you wanna go scorched earth on the nested VMX infra, what if we
-track launch vs resume (e.g. set launch=3Dtrue in prepare_vmcs() and
-lauch=3Dfalse in vmlaunch()), then provide a single vmenter() API for
-tests (with no arguments)?
+How would a device get to a PCI driver probe function without being
+enumerated by the PCI core?  This also looks like an infinite loop; if
+there's an error setting the hdm pointer, this is forever deferred.
 
-[1]https://lore.kernel.org/kvm/20260728003557.1136583-29-yosry@kernel.org/
+> +
+> +	hdm_size = range_len(&pdev->hdm->settings[0].hpa_range);
+
+We don't validate the number of hdm ranges until the next patch.
+
+> +	if (!hdm_size)
+> +		return -ENXIO;
+> +
+> +	dvsec = pci_find_dvsec_capability(pdev, PCI_VENDOR_ID_CXL,
+> +					  PCI_DVSEC_CXL_DEVICE);
+> +	serial = pci_get_dsn(pdev);
+> +
+> +	cxl = devm_cxl_dev_state_create(&pdev->dev, CXL_DEVTYPE_DEVMEM, serial,
+> +					dvsec, struct vfio_cxl_state, cxlds,
+> +					false);
+> +	if (!cxl)
+> +		return -ENOMEM;
+> +
+> +	ret = cxl_set_capacity(&cxl->cxlds, hdm_size);
+> +	if (ret)
+> +		return ret;
+> +
+> +	cxlmd = devm_cxl_probe_mem(&cxl->cxlds, &cxl->hpa_range);
+> +	if (IS_ERR(cxlmd))
+> +		return PTR_ERR(cxlmd);
+> +
+> +	cxl->cxlmd = cxlmd;
+> +	vdev->cxl = cxl;
+> +
+>  	return 0;
+>  }
+>  
+>  static void vfio_cxl_release_device(struct vfio_pci_core_device *vdev)
+>  {
+> +	vdev->cxl = NULL;
+>  }
+>  
+>  static const struct vfio_cxl_ops vfio_cxl_ops = {
+> @@ -39,3 +91,4 @@ module_exit(vfio_cxl_exit);
+>  MODULE_LICENSE("GPL");
+>  MODULE_DESCRIPTION("VFIO support for CXL Type-2 devices");
+>  MODULE_ALIAS("vfio-cxl");
+
+I missed commenting on this in the previous patch, but why do we need to
+declare an alias to the name the module already has?  AIUI this is for
+providing an alternate name for the actual name of the module.  Thanks,
+
+Alex
+
+> +MODULE_IMPORT_NS("CXL");
+
