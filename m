@@ -1,190 +1,258 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF5621CA03
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 03:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787800066; cv=fail; b=e9QYm6iOEX+MJKOqzPLiut5rkOb9orbTeCG6Y5zNaC3w5fF1x9f8FpTJAJ38N2zG/6Xvy6pLj/LwDVoPGpEVbcrFa7V67vzk1kbbFSmuxuYSV4pvZVheQoUSkCq9MHGs3mgQdF8BSsXm2Q9S2rx/dHSQILeQ9cHQgzk93P94BCg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787800066; c=relaxed/simple;
-	bh=cVKXDb2z2A38yNILAhmAJpiHzYHdyOmxFxo/VeatxNI=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=kLOGum2mMs8gf1Gt8Y0iltnUoxE6EtTFyqd2PWA/b8YzqVEhca1lKVgW8nUcus6pz6R80QccMx3u5N30g0lobhvzrnpQn39u8RthJGhvTIr3DUYnVAtltJAQ4hsPAPxdPF8LQ/XWeKObAfAD0EAbO/e5iSGuWzXTUyKFxLfjepQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Cxm/ZPdB; arc=fail smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A187E382F1C;
+	Thu, 27 Aug 2026 03:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787800439; cv=none; b=ZbhcH7z6dsthQQxHvS6x41KoL6yrN2/5mVbRetAB3+Wf6PvHUUaZx4UeikSjyspNWvuR8v2Yu2A21zU8uxAOKVqwJnLowxBCbgNPgTWOmeGd2/S43s31abXhaJXtaF7YhaklnSdWSGtwmD2t3NEJrI90WZKwg2ZPbFYH+5JPEiQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787800439; c=relaxed/simple;
+	bh=nGCSYyo/h9DheITHez6bmG5SD7boChoHdtT6PkMgBZs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MrzFcw1BoZlATg2aq99Ia+qe1AghkNHS+qyZJLf7POLQy3fVfzAmK3E/5bIUTwPhqirQTwuTtVFjN7siPXZYSYGmqaO02X2RP2q5oyNJtzrQ66wna6t3XQJ1WDz2LwdQS3A73YXqXGFYPRGWntgd7ghHEAFjQS0IuTYuPWN7q/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J7YtpG5F; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Cxm/ZPdB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J7YtpG5F"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787800065; x=1819336065;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=cVKXDb2z2A38yNILAhmAJpiHzYHdyOmxFxo/VeatxNI=;
-  b=Cxm/ZPdBk9vRWjMZRGaJIxMrRHtKpivvP+EcwDcCFMCcdvmttg1ftweI
-   w1dPF3/14pTLyNsgWwTbEPANi/BG5V6Z0+0wrSnPB5b3xscXAZhUy086h
-   H3cHuRPnoRn8/hJhsWnATHMxHEENW67L8V272Xh2ngTu/f+N3u6b3gV1R
-   DXNWhNw2Kbm5B3+JAuQrcgXzkXHI8iuAk38PPtp5B3D+T3d+wDWbwRAw3
-   3Whs0owMKxQyfKqQfyU6HKz/N9+9xjRaWs2zdw7t1Fd6GtQrjE+kDjdNv
-   ycdeer6YRfk/7UfC48om0KGl60ThYkP+Sh4gYPJrrtcY8f62IIYUUiYyi
-   A==;
-X-CSE-ConnectionGUID: 8hfSm7x4REicR6YKlAU7PA==
-X-CSE-MsgGUID: d4Wz4bndQL2m3JwP2ghykw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11887"; a="98964105"
+  t=1787800437; x=1819336437;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=nGCSYyo/h9DheITHez6bmG5SD7boChoHdtT6PkMgBZs=;
+  b=J7YtpG5F5UhP1Wpt7V4zucfW4crJs6UcD9m42cNTAZzI8ldQrFgviHQR
+   ku4CVRvmLq9WdkUbrwYYImwvRAU9I1lmuqOVMyZkV4QLeUOhbtL4DsTnH
+   CnZtQJR85g5B8kh8DeKW3WYwSqnlmrtE3ZIHanXn3bqbHgeha2g8sS46B
+   j5M+IWSrT0dyliH7TPSeeikLJZtcoD52plglQAfj6BPskO+wdOsgfX+Du
+   u8EDjBOq+lDDXyEH1TcjldOF+JNhUmO4aOqV+bha/sPd+yu+jdaiNsgrY
+   nQSZJiZJRZPWTWinFpJHxxHUVuwBX/539aGGF80zWxT50Tx163mCodb5K
+   g==;
+X-CSE-ConnectionGUID: UZ90nKu5TLSxl1XdSOQfGQ==
+X-CSE-MsgGUID: NaU94hiIQ/+HS+PYpYFjSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11887"; a="98964526"
 X-IronPort-AV: E=Sophos;i="6.25,245,1779174000"; 
-   d="scan'208";a="98964105"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 20:07:45 -0700
-X-CSE-ConnectionGUID: H5F5ci5IRRiJxjH5EOuLTQ==
-X-CSE-MsgGUID: wR/QkgONRuGUwn05/odP+A==
+   d="scan'208";a="98964526"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 20:13:56 -0700
+X-CSE-ConnectionGUID: MKWGK7m5R+GP2CPJkiA74g==
+X-CSE-MsgGUID: BziuH5qpTr+i69Bxsh3PyA==
 X-ExtLoop1: 1
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 20:07:44 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 26 Aug 2026 20:07:43 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Wed, 26 Aug 2026 20:07:43 -0700
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.29) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 26 Aug 2026 20:07:38 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gen7jY1rOtY3jVtpqTepFqmVE/RfTX42s6kaBV4P9gCa7/j8WMZ18fT+rjk29iIU8K26ltn+1bT4Sq57jH0fIJzz/oYF22m55GAMrnzrthtHV6ehGlMcadhYHSreXqqZmI2054ynDKcP1EXE3kdMkPgduGFnCewMU8PknVHeU7LiTduFCfu+EKp3uWkaTpLROOD5NjDyH4YxPFaIdzU6+atqitd+nbs62ed7glVkGz6FfO/5hB+fqPsGfz2WjwebqhlzEpkX3Omu2UOVNY77PM2lNjg0pC9jwZ6UK9NenhzqJvQM/Gg4LeQPUAoxdN5YfN0LQb9dEuy46lyNEMCMHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jSl7ZHFUsvm3q4xrESYOJv807MeblMXIVBvi0nqvixI=;
- b=tf5ejDxd3mBz2gjaMXN4X8O/cmKkhUG0NN9TTKBHdTkngNz7j46lasq7IBdk/E7/aFFE7koJw7wCQhy/Kr1hUQAwQ+QP3GhOc1U9ug7PEg8Nb1rufP3eZRUexofze0Z2OGx8Cs3UVdA7Vw9j0JfiEeS4sMLPvU6aJ+QcnLqQX83uNl8Ha4gnD5Hd0qGDQpxI79IKl2PaXdQ+3aH85T1JoPTz542jx4/DUr0Av+EPLSatPoHkNh0q9GVMK5tp4DJYxsRnHhR4WzoLmwbhOhPrmW12YrE5GnWDJ6Ncqnnk2IDcnK/+vD8Sk+ooC+2u7z9mP4akN67eIIhXPuIgOeYJLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB7494.namprd11.prod.outlook.com (2603:10b6:510:283::18)
- by SA3PR11MB192006.namprd11.prod.outlook.com (2603:10b6:806:52d::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.7; Thu, 27 Aug
- 2026 03:07:36 +0000
-Received: from PH0PR11MB7494.namprd11.prod.outlook.com
- ([fe80::e642:c73c:6d80:5083]) by PH0PR11MB7494.namprd11.prod.outlook.com
- ([fe80::e642:c73c:6d80:5083%4]) with mapi id 15.21.0360.008; Thu, 27 Aug 2026
- 03:07:35 +0000
-Message-ID: <0a66aeb1-30fd-4223-adae-a01bd77de8e7@intel.com>
-Date: Thu, 27 Aug 2026 11:07:28 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] target/i386: Add support for LASS
-To: Kishen Maloor <kishen.maloor@intel.com>, <qemu-devel@nongnu.org>
-CC: <pbonzini@redhat.com>, <zhao1.liu@intel.com>, <kvm@vger.kernel.org>,
-	<sohil.mehta@intel.com>, <xiaoyao.li@intel.com>, <binbin.wu@linux.intel.com>
-References: <20260826035734.114685-1-kishen.maloor@intel.com>
-Content-Language: en-US
-From: "Chen, Farrah" <farrah.chen@intel.com>
-In-Reply-To: <20260826035734.114685-1-kishen.maloor@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TPYP295CA0006.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:7d0:9::16) To SJ2PR11MB7504.namprd11.prod.outlook.com
- (2603:10b6:a03:4c5::7)
+X-IronPort-AV: E=Sophos;i="6.25,245,1779174000"; 
+   d="scan'208";a="271264005"
+Received: from litbin-desktop.sh.intel.com ([10.239.57.15])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 20:13:53 -0700
+From: Binbin Wu <binbin.wu@linux.intel.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: seanjc@google.com,
+	pbonzini@redhat.com,
+	dave.hansen@linux.intel.com,
+	andrew.cooper3@citrix.com,
+	nik.borisov@suse.com,
+	kas@kernel.org,
+	rick.p.edgecombe@intel.com,
+	xiaoyao.li@intel.com,
+	chao.gao@intel.com,
+	binbin.wu@linux.intel.com
+Subject: [PATCH v3 0/4] KVM: TDX: Validate directly configurable CPUID bits
+Date: Thu, 27 Aug 2026 11:18:33 +0800
+Message-ID: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB7494:EE_|SA3PR11MB192006:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d33aab9-c5f9-48cb-fd0e-08df03e8572b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|23010399003|1800799024|10067099003|56012099006|6133799003|11063799006|3023799007|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: Yw03bbzBvk/c2wijJr54K3CGKlClM/QIo1h5XEmCHKzqEtGtRjZpybx5MIWozSuNfMtYXTZ2QhnkK+bloLAkbngPaglvtVu7IACIBNMkNV4ExXDIFeLOBzegr0jigx1ThEXaNNPMJIgDSVgA/wzi5vfxxvzZACzlf35nENVD/3ShdYlz2HQi04e7K22TudbXlEms2CB8AWs6trXph6NWhv90QxajnkxV6aNpLcqf1jAKy0gXAkMPEqXbTcNObBqB74QW5tW/3kPlNnw1ZDxdW3zM17A5O8xhN7UGqhWIjkf1tg7erUWawdNSzu+WS7gVrLAfp6LPalzy8exv5/Z1tI/SZdXOV+fpU6XSmBaNpHUgY6WvJDkkNzQ25t/97yn1VFU3Hr5Gwwh9hFGyOngNoutq6Gf5505jAqEnGC4trto/gpilfi8YSAxw2d8CtRekHNkUWS2sNWmQGeuPUdWKPYvmxM7/kki6ToYgq+7sG2ljTjpnt/fN47Pm1WLu+gIH2b5OX4WOLuw9gLAPHScYVKZAL9EgIafJkfesFXULxKEfrVE7E99IYKl1zwWl0hAxlU3gQvjdlIHdztfR+5dAJONPjXhNFHT5IFGEGBXEu8t+9y7J06GgbCcYMlI1e1tvdbnZFD7hM6jJGzogRl10zsbc8rR7Ll0g5YCN76rd1Pk=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7494.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(10067099003)(56012099006)(6133799003)(11063799006)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?R0QwMHRrT1dMMGI3bEt3VytsMGh5bmMySUZOaW5RenA2QW5CZ3BqbVZIQm42?=
- =?utf-8?B?TE5YMUJVWDNEdVAxOUJGQzVOM210TkMrYUlGeUZUdWwyRE1VdDZIUVozeWFh?=
- =?utf-8?B?WG54V016dVZidWs4M0V0SHlvbnJhTnhqZHJEYWUrSDJkbDZhbTdES2dlMTJ0?=
- =?utf-8?B?eVVyVUlpdkJtZ3ZZQm5MWi9IcHpuVlVRVmtFbDBlTFNzM3FYajJERGJVOVgy?=
- =?utf-8?B?OHVJdmNyeVg0cVFnL2RFZTNDS0J6Z253dXZPVVl0ck43MEowS1B1UEQwVWdw?=
- =?utf-8?B?ZjM1eU8rQXFURjNzY1dDbFhHTXpjQmFDdUUxcTN5NFAvd3hjT0pMUVBYNnk2?=
- =?utf-8?B?WXRlOFU5RkgzNDROR0lOSUVDd1ZuUitrb3owRVQvc3hjaDNyOWFpN3hxTGxT?=
- =?utf-8?B?NGpaRFVxUXdPOW9nL0dFWit6VjZtSHI1ZHpuZU10SUlnbE5lNTJ5VHBOMEt6?=
- =?utf-8?B?SGI5R1ZVUENLSE9KZWhxb2s3R3FNNFRSZmJHcEtRNnVCV0k3dGZXWmtwY01B?=
- =?utf-8?B?NGtySVB3L0hHVTNyQ0lrYldsRFRTNms4VUVYNWw1M0NGK3pBZ056bDJMTjBB?=
- =?utf-8?B?d3FKbEpFZ3gwSWZyZlNzSHp0a2F1bnk4RC9ZdUkwSVhCMXlXQlhpYnI4K1pk?=
- =?utf-8?B?THNxM1ZKTUlGeUVxcFU3YVBCNUEwdEF4bG0rSlk3NG9jQ2NpbWZqS0hJRFZP?=
- =?utf-8?B?akpUWkJObWVialhwOVhsZm0xVTh1TUR2Vlo2YUpDTTFFZ1ZSSzZsaEJQS2ZY?=
- =?utf-8?B?V2tGMGFVcktuNUpXbCtaNXdRY2tmUjVKSjJqL1JwRmpPbUJXbmI1Vm1GaHhX?=
- =?utf-8?B?bmJMY3FkdlVUdnVaRGdXSWJJMHV2WVZ3RmpMSlpEaTN4ZEM0M2ZuTjh1TVR3?=
- =?utf-8?B?MXREK1Vqc2NncXRpcDVzaFF5eTFuQzBHSEphK2N4anFFaWRCTThra3lKVzNM?=
- =?utf-8?B?NXE5cVZzdUs2MVpIL04ybllwNXF3YVRUZU5sQkNtT1JqbUh4ZU1pOHNxU3Ry?=
- =?utf-8?B?SnlxM3I1b3Rqb29iaHpVY0c2U25kOUhlU08wdnA1aEhxVEVNZjdBSnM3Y1FC?=
- =?utf-8?B?cG5FMnQ4cU5Eb3pyMjd0RWNVc3BXWnRpS3VYQ0g3ZjRBZ1FnQ2JZdjQ3dDcw?=
- =?utf-8?B?WVlTTHB1QjlrK1BXTDlLWDJCbmRXa2JxSGFwbUhtZTRvYXBWMk1kNEdrSEdP?=
- =?utf-8?B?VzZZWjVITUFrRFlRcFdFQlY5TE9IaU53TVlSZktBbDJlVHkvMzVNQUVsKzE0?=
- =?utf-8?B?Z0dOb3Q3VEc0Z1N4VkVqdlFMeHRvNWgvL2Z3WjYyY0tKR0p1Yndtc0Z6Wjl4?=
- =?utf-8?B?Y3haSFJJZGU2U0srblVjZEFJQzVEVk1iaTEwWXBjWVNiUUFUQXFuemVIK2lS?=
- =?utf-8?B?MTVIVkp3R3RUSmpoc2pYMnYycUthVzQvWS8xV0xBWUdITVBrOVlSVzhPM05R?=
- =?utf-8?B?cm9oT3JZMTJ6Q0owdUpUS3pLU3JZTFVKaHNqR0hJcWE3OGVjaU5kZ202N2N5?=
- =?utf-8?B?SUdUSnUveE9keHliUHRZY3VIWU9kK1pqRmMxamV4SnFhRFpWWVV2d0U5TFlm?=
- =?utf-8?B?UTA3NXdLTlNLNytiZ2FvL1prM1ZpVHJrUEZ1MVFWeERsaklzZ1Z3VjdUdDJo?=
- =?utf-8?B?bWRKa0RGQi9QSUsxdUpkb1NnMXY1WVpEanNzMHo5bENoUzBQblRsM1poSnkr?=
- =?utf-8?B?Rk9ZVE9uZ0FETUIvUDB1dzByV1YvZW4wa1pXa2hJY0NObjFyVTlRS0NPQUJW?=
- =?utf-8?B?aHFaQU1XQlJ1dkozbkIvbDN5aFczaTVrYU80TnhpU2lUK2ZQb0dtUDRBS09V?=
- =?utf-8?B?emZoQ0JFcXlsYnFnSC9hQVZWUmZ3dEdaVGJyN3lVaWlOQ3h2MU9pakp6TU9R?=
- =?utf-8?B?SEJxWWhLZjBUdzVqOWIvbFYyTmZBYkFhUlh4dkVSTHI1cnJTNVYrdnJnQVps?=
- =?utf-8?B?azc4aDlEdlpOMWUxaVE4T0s4QVlKSVFUOW11N2MralZSQ0JSNGdUQ2cyb21B?=
- =?utf-8?B?OUdjNlgzOU11Nkh1OStnZUNFeC9RNkJBM3JWSmp2M0VjZjMvWWw2UU82UFVz?=
- =?utf-8?B?NDVsRVMxbnF5N1JvbkRPQk51VVRHRVdFRkIvY3IzdkV3ODVBdU5nNktTbkJM?=
- =?utf-8?B?ZlJPNGIwR2ZSVE5Mbi9vajBBUUJkWmczeDZaQUNoaWhTMEJXUlZtUTFzSlZx?=
- =?utf-8?B?cGxKVG5CMVI1azBkS2R0SVN4a3UwTS9DQWNrOVBMVTVGTnZRaTlSUGhBajY3?=
- =?utf-8?B?c3pNU3NTZnNNNDk1Zi9scGsxV0xCbnBmNGwvOFgxNDlmd3o1aHRLY1RNdTlF?=
- =?utf-8?B?Q0FaYy8vcXJTQkh3WjBTOFhQQVZ0TmhQS1RFWXZqK2ZxUVdSNTJMdz09?=
-X-Exchange-RoutingPolicyChecked: RDE7F6xixh+RlwYhhfcEKudzjRSQmmZz5rJhn+I99b71sGhv+DI5RK8ELSArFgXiZ/aeroRFVICFd//V9okQOTSspaiI5ugA7k4ii9KJJzyi+2SAM88BB5ubWJXHO5Ts6fki6zMuhg6ZLRhjkmjN7PXJAUWsVi8RHFB3Fq9ZNZW7LVsEHc+HE/Ff8OFnwugrL8edTBmR0XHcZAMXdPncaH88+lT9T424wn6LHDIuP5Ybx4WS7Po5Qn+xy6tUVKV5BWBsX3+FJuKFOUJIc3B/OOcKEFQZJw4c11yG6001AFOaVMlygtwTgRwsOcqJW5dDH6xLdz/m766PAZhfwYMbow==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d33aab9-c5f9-48cb-fd0e-08df03e8572b
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB7504.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 03:07:34.9720
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9bWI8WeVf2CrHvrc6rgV0PV70daVSBDlhESuT0aEPWzJj6hlIxtIF5xaUcdUemY9pg63iQY4fqyyHmjzvU5GKw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB192006
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-On 8/26/2026 11:57 AM, Kishen Maloor wrote:
-> This series adds QEMU support for Linear Address Space Separation (LASS) [1],
-> an Intel security feature that prevents a class of side-channel attacks
-> relying on speculative accesses across the user/kernel boundary. Paging,
-> along with SMEP and SMAP, already provides mode-based access protection,
-> but enforcing it requires a page walk whose timing can leak the layout of
-> kernel memory. LASS applies the equivalent protections during
-> linear-address pre-processing: given the usual partitioning of the linear
-> address space into a user half (bit 63 clear) and a supervisor half
-> (bit 63 set), an access targeting the opposite half is rejected on the
-> basis of bit 63 alone, before any page walk.
-> 
-> This series enumerates the LASS CPUID bit, recognizes CR4.LASS,
-> and exposes LASS on the relevant Intel CPU models via new versioned models.
-> LASS is not emulated by TCG.
-> 
-> Exposing LASS to a guest also requires KVM support: KVM must validate
-> the CPUID bit and CR4.LASS, and enforce LASS violations in its
-> instruction emulator. That enabling is currently under review [2].
-> 
-I tested this series on Clearwater Forest (CWF), running a KVM guest 
-with -cpu host. On the host I applied the KVM LASS enabling series 
-referenced as [2] in the cover letter:
+Hi,
 
-https://lore.kernel.org/kvm/20260806011536.4172258-1-sohil.mehta@intel.com/
+The purpose of this patch series is to prevent userspace from enabling
+host state clobbering features that KVM does not support for TDX.  A host
+state clobbering feature exposed on a new TDX module/platform can corrupt
+host state if KVM does not explicitly save and restore the related MSR(s)
+across host/guest transitions.  If such a feature is blindly exposed to
+and used by a TD, the host will behave unexpectedly.
 
-With both series applied, LASS is correctly enumerated in the guest, and 
-the LASS functional tests pass with vsyscall=none/xonly/emulate.
+Except for a few fixed-1 bits required for basic TDX support, host state
+clobbering features are either directly configurable or gated by TD
+ATTRIBUTES/XFAM.  So an allowlist covering only the directly configurable
+CPUID bits, plus the corresponding filtering and validation, is sufficient
+to serve the purpose while keeping the code footprint small.
 
-Tested-by: Farrah Chen <farrah.chen@intel.com>
+Open question for Sean/Paolo
+============================
+This revision comes long after Sean confirmed the overall direction on
+RFC v2 [1], due to internal discussions about a potential backward
+compatibility issue: a CPUID field can change virtualization type to
+directly configurable.  The TDX module can maintain backward
+compatibility in most cases; the problematic case is a single bit that
+was effectively "1" and non-configurable becoming directly configurable.
+The only scenario we can envision for that is an x86 feature deprecation.
+
+In that case the TDX module has to decide how to handle deprecation,
+especially with respect to TD migration compatibility.  That
+pre-existing VMs with the deprecated feature enabled cannot migrate from
+an old platform to a new one is a problem shared by TDX and VMX, but the
+TDX module additionally has to decide:
+- Whether to allow TDs newly created on old platforms to migrate to new
+  platforms.
+- Whether to allow TDs created on new platforms to migrate to old
+  platforms.
+
+There are two options:
+1. Do not offer the VMM the ability to configure the bit, i.e. simply
+   report it as zero on platforms that no longer support the feature.
+   This disallows both migration cases above.
+2. Make the bit directly configurable so the VMM can clear it even on
+   platforms that still support the feature, allowing both migration
+   cases above.  However, since the bit is not in KVM's allowlist,
+   userspace would no longer be able to enable it on old platforms after
+   a TDX module update.
+
+Adding all supported CPUID bits to the allowlist, regardless of their
+virtualization type in the TDX module, would avoid the compatibility
+issue for option 2, at the cost of a significantly larger series.
+
+Given that x86 feature deprecation is expected to be very rare, and that
+Intel will discuss such cases with the community beforehand, does the
+approach taken by this series look acceptable?  If so, the goal for this
+revision is to collect detailed feedback and, where appropriate,
+Reviewed-by tags.
+
+Expected host state clobbering behavior for TDX
+===============================================
+We also want to call for discussions about the expected host state
+clobbering behavior for TDX here for future features.
+
+For a normal VMX guest, VM entry/exit behavior for a given piece of CPU
+state is architecturally defined: state is either switched by hardware via
+VMCS host/guest fields, or left as the guest value on VM exit and managed
+by KVM in software.
+
+For TDs, the host/guest transition goes through TDH.VP.ENTER, and what the
+TDX module does with a given piece of host state is defined by the TDX
+module ABI rather than by the x86 architecture.
+
+What we would like to align on is the expected baseline behavior of
+TDH.VP.ENTER for future features.  The proposal is to have TDX simply
+match VMX behavior, i.e. on return from TDH.VP.ENTER, state that VMX would
+restore from the VMCS host fields is restored, and state that VMX would
+leave as the guest value is clobbered.  That keeps a single model for VMM,
+and means enabling a new feature for TDs requires the same work flow as
+enabling it for VMX.
+
+FRED is a useful concrete example.  Under VMX, the FRED host state in
+IA32_FRED_CONFIG, IA32_FRED_STKLVLS, IA32_FRED_RSP1-3 and
+IA32_FRED_SSP1-3 is covered by the VMCS host-state area, so the TDX module
+is expected to restore these MSRs on TDH.VP.ENTER return.  IA32_FRED_RSP0
+and IA32_PL0_SSP (a.k.a. IA32_FRED_SSP0) are handled by software, so the
+TDX module is expected to clobber them on TDH.VP.ENTER return.
+
+The series
+==========
+
+Starting with v2 [2], the series takes a simpler, TDX-contained approach
+instead of the comprehensive CPUID paranoid verification framework across
+VMX, SVM, and TDX proposed in v1 [3].  It validates only the TDX directly
+configurable CPUID bits, which are reported by the TDX module in
+CPUID_CONFIG fields that the VMM can configure for a TD.  All filtering
+and validation logic is isolated within TDX code.  This is sufficient to
+address the host clobbering issue because:
+- The TDX module will not introduce new host state clobbering features
+  that are fixed-1.
+- Non-directly configurable feature bits (i.e. features controlled by XFAM
+  or ATTRIBUTES) cannot be enabled by userspace without KVM's support.
+
+Specifically, this series builds a KVM-side allowlist of supported TDX
+directly configurable CPUID bits to:
+ - Filter KVM_TDX_CAPABILITIES
+   Replace the hardcoded denylist to only report configurable bits that
+   KVM explicitly supports.
+ - Validate KVM_TDX_INIT_VM
+   Reject any configurable bit that the TDX module allows but KVM does
+   not support, as well as CPUID entries with an unexpected subleaf.
+
+With this allowlist, newly added TDX configurable CPUID bits will not be
+exposed to userspace until KVM explicitly opts in after fulfilling the
+necessary virtualization requirements.
+
+The allowlist consists of two parts:
+- Feature CPUID bits, which are tracked in tdx_cpu_cfg_caps[] following
+  the organization of kvm_cpu_caps[].  It holds KVM's supported masks for
+  the TDX configurable CPUID feature bits.
+- Non-feature multi-bit fields, which are handled at runtime for the CPUID
+  registers holding such fields.
+
+For compatibility with older TDX modules that report CORE_CAPABILITIES as
+fixed-1, report CORE_CAPABILITIES as configurable even though KVM does not
+support guest access to MSR_IA32_CORE_CAPS.  This allows userspace to keep
+enabling CORE_CAPABILITIES when the bit changes from fixed-1 to directly
+configurable, and allows userspace to infer that the bit is no longer
+fixed-1 so it can adjust its expectations.
+
+Known limitation:
+- The series does not check KVM_SET_CPUID2 input for consistency with the
+  CPUID configuration supplied through KVM_TDX_INIT_VM.  This is not
+  required for host safety today because KVM does not use its vCPU CPUID
+  model to decide whether to manage host-clobbering state for TDs.  A
+  consistency check should be added if KVM ever starts relying on the vCPU
+  CPUID model for such decisions.
+
+Changes from v2 [2]:
+- Drop the dedicated data structure introduced in v2; track only feature
+  bits following the organization of kvm_cpu_caps[], and handle
+  non-feature bits at runtime. (Sean)
+- Add AMX_COMPLEX since it has been defined in the CPUID virtualization
+  doc.
+- Add CPUID.0x24.0.EBX[7:0] into allow list. There is a mismatch of the
+  description about CPUID.0x24.0.EBX[7:0], which is listed as
+  "XFAM & CPUID_Enabled & Native" but should be "XFAM & CPUID_Enabled &
+  Configured & Native".
+- Move the patch for CORE_CAPABILITIES earlier in the series to avoid
+  breaking userspace during bisection. (Xiaoyao)
+- Report CORE_CAPABILITIES as a configurable bit to userspace for
+  backward compatibility, but drop the MSR_IA32_CORE_CAPS access code.
+- Use two versions of macros to distinguish whether a supported TDX
+  configurable CPUID bit should be checked against KVM's common CPU
+  capabilities.
+- Validate KVM_TDX_INIT_VM input against the allowlist instead of masking
+  it, and additionally reject entries whose index does not match the
+  TDX sysinfo configuration. (Sashiko)
+
+Changes from v1 [3]:
+ - Drop the overarching CPUID paranoid verification framework across
+   VMX/SVM/TDX and the opt-in interface. (Sean)
+ - Shift focus entirely to isolating and validating TDX directly
+   configurable CPUID bits.
+
+The series follows the CSV version of the CPUID virtualization document
+from "Intel TDX Module ABI Definitions" [4], updated in June 2026.
+
+AI tools were used to:
+- Check the coverage of the directly configurable CPUID bits in the
+  document against the allowlist in this series.
+- Polish the cover letter and commit messages.
+- Do code review.
+
+[1] https://lore.kernel.org/kvm/aj1fqZEcApyd4sxi@google.com
+[2] https://lore.kernel.org/kvm/20260604023314.3907511-1-binbin.wu@linux.intel.com
+[3] https://lore.kernel.org/kvm/20260417073610.3246316-1-binbin.wu@linux.intel.com
+[4] https://cdrdv2.intel.com/v1/dl/getContent/795381
+
+Binbin Wu (4):
+  KVM: TDX: Track configurable CPUID bits allowed by KVM
+  KVM: TDX: Report CORE_CAPABILITIES as configurable
+  KVM: TDX: Filter configurable CPUID bits
+  KVM: TDX: Validate userspace CPUID input for KVM_TDX_INIT_VM
+
+ arch/x86/kvm/vmx/tdx.c | 258 ++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 229 insertions(+), 29 deletions(-)
+
+
+base-commit: 76671054f9a1ff6abb976583cd8da37650acdc97
+-- 
+2.46.0
 
