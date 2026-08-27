@@ -1,117 +1,153 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6C33C3C07;
-	Thu, 27 Aug 2026 08:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1003E49F6
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 09:01:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787818830; cv=none; b=VkFGZP/HBNq46m6WB5q/JOJyejSRYJftbI7D7/CMer1MaA+AMYQEghfxUUeInBFciuj3mJ/2e7Vlvv4App4JK8/gk11W5TqXA3CypMpQ4qkvmCFSnNzYPrUGgf/zpVYX8mAvcDK7lOkYhqSXS74Fbb7v2xVh9ZS/EIZzpwHUf2k=
+	t=1787821316; cv=none; b=qe2lJmJWh+CjXz5TVKLbj3jUPsXWmxiN+SMXd5137Uk1gKv0w4Z8esqtNc1QKcwg/lGQWzGhano+2I6UKS+rMQTkS2ttnZ24+xsHREvfoWggb5xYNaleS3+aexA5JieKrel9H0eX3aOWOMkVzOmwe39/zfwjbP5lQckqJS9Aucc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787818830; c=relaxed/simple;
-	bh=SV/m4iYNW87OXTbwLv7lP42wYFhTHG6yO/9HHGcZArI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fqs+W73VRk3X5h/26MPYbUFnDmfOrFtDLleOFG9cHhUkDE0wzKYDz19QJdDpYeVHWrMqsGDVf64gZsl4cAcMHV8Y5RRXX4PfEoQkGKXeQ1m0CBOQnXepCuj5jrRBx2s8wQad6mfRXx27xNGZkPyl6sPBaKkJgnCvhocdoDsuqEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xEMckJcc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/xHz2Dwu; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1787821316; c=relaxed/simple;
+	bh=wkTjDvro31Z7Cb9CrOFouQ5u3R4WipcefR5jbWng4UI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cqVWirTAZNWv6iPqEt1WUufHlDlcX5lkKAqzFCgrPBiYo19s03aVp6DGQPMQpkWW4CpFH7OXXWk4XDzOveiEEN06VGHeuHFWDepMBltRhiXxBX4eu8CvAqHjas15B/QkM5ShxIn41XRLEwrxdXHIPDNwGn4HzcK0BRzOHCXcbgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o9WAhsox; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xEMckJcc";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/xHz2Dwu"
-Date: Thu, 27 Aug 2026 10:20:19 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1787818821;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dHKgEcpAnFM7pEhWpO1E8wnd+7B5JBIywxZU+obwOD0=;
-	b=xEMckJcctN+XyCF3tP1A7kB3Z9NMqkOr1WP3u9eNx0R1d6VPmDAbkfzv6Dz5L6rc4iPDAL
-	DeTMebaCG9CYd60ZBy6/6oyFrOocGDegnbcEVpSCtOOxRTmp89Tc7fP2j9Jfwx1X3iSEr3
-	vfg3fbcnrSr6VMLGvtRDr7LRYO7vMlHebLP9UMnFoEz3x5z3PqRFdQA/dGiGAceQ7kGREX
-	B3FthaoTCt/827MpvioWnToPzvvNkcrRmQeEzocpdKAI+bB3Zz4jCENu/fNmn4DSRgK5+s
-	gQKshKN67amzT1FdkuYnlf17RNxG4BlGjMnJafxaU6KZGBY2ee5SSXKE7rYqRQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1787818821;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dHKgEcpAnFM7pEhWpO1E8wnd+7B5JBIywxZU+obwOD0=;
-	b=/xHz2DwueZDiGs6En/mm1IcQyzO3s2+iRZ1dFAnSt6ypCR7hibiWxWPyikRCsxBcAbJWib
-	mLu+1zK/ObCQ8jDw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: David Woodhouse <dwmw2@infradead.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <20260827082019.xrNuIfE2@linutronix.de>
-References: <ao3z7Rtw2FROkVpy@google.com>
- <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop>
- <20260826073233.T-KtFXmj@linutronix.de>
- <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org>
- <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop>
- <98e123c9-3dc4-45fb-815b-881b3346741c@paulmck-laptop>
- <ACC45EB6-F881-4EE9-A9F8-D53A2B921FEE@infradead.org>
- <e62a7362-7dd0-4615-8877-6ab675971ab2@paulmck-laptop>
- <06F9A0F0-2177-4173-A201-56325A73F89B@infradead.org>
- <4415dbf2-10b0-4cb1-b045-13dbcd69c5d5@paulmck-laptop>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o9WAhsox"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-49557167508so4851985e9.1
+        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 02:01:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787821312; x=1788426112; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kb/Wi6oNPcoOC248sdfl/gNH6Pq4KEL0EAbb7WYkBJ8=;
+        b=o9WAhsoxAIRld9JGbZIgaeTZNTjm4YB8cYsQPng7L3rrmvV0cZuRc7F4ExpVQqvqoA
+         OrqmekMz5S2Y47NEVTnK2ZHpgyYqbIPGOGe4UZZtprHjw4pExoaVB/J40sZBxaGTj32E
+         IndRmnKlGJf9StqliZqUEZ972uGNNUbwyM0spIKQXnQ2Ww63trGxP4ipOmzyCzmZgkB/
+         feucI8UWIdrtqi1h33hAJfBvbZM+f7LBpAA90RCy4tf8GHQsGKZcXMTc8ZJfebjTMN1X
+         ofBlz5mJuuYEuI+i0H63OuKAGwBcr51wNcOa9gqRX4mMBI4RRlX8wMO7wTmm4jrAumgd
+         2Mhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787821312; x=1788426112;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kb/Wi6oNPcoOC248sdfl/gNH6Pq4KEL0EAbb7WYkBJ8=;
+        b=Pky4VvzuZJ+Q7yhYMHdYWHNwkADyO8Pt6MlGN/p5uRNEB77zfqJ8OOGunN0DdOoVxG
+         figNfd4opFd9lCna/twH15K/A+9wGgB8A5tKo9hzc8mYqlgRjmHdn7qrwCLqp/jLVvCJ
+         eqjrqB0VIxj7Hjqxp0GG5kqvtfXwZyBJfScr6fATInjICc8O6pcjfRbgib9qOk6lsgXR
+         JSnQVzJVYXYlUddpC+nYS8Dj/N+vhsRhPcXTWiakW4865+NjClIFSTmv/fkTT/IAXyJR
+         nin96LYjKa6CLesNNTOZ9O/nqWE+2N1TzLrY4TV7wKkoGSfobEbk0GObIjyYzJteg4DU
+         00qA==
+X-Forwarded-Encrypted: i=1; AHgh+RpEGw3Y5wmbmiwc/ZFkQjuykwgJQeIzcKqnPLusPA/xLO+nuVT8YuP9v5melo+XQvNJGrA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mMDFLfw1DxCqHJs2tGJjfEG3DwwVoxFWvMmqC02BcjO9zPuN9B
+	aaqs8nb0B9Vt7v4Lf6aEDUeVhjb820O99eDhnmD4KV1fTdLOKDrqdYGw
+X-Gm-Gg: AR+sD12jLnx45XSSgbBdETCW2MWVg281e/kcqO4qKceMeXJaj7Atkf2V6hrZisM6ESv
+	SySImAi4ubohJve1nfZGcb7mL5XURrkZ6aBnuTOPCri/3cxjGk4TTPtU6J4/F7f5zt5rwbvV/vx
+	0wfHuDZF1aBlAxEiQR+sFmUTdFcu8BY+CaDbeMTFlEpRB+4+fvY4vk6b2b9qJxUfBEJgw/whAu7
+	RcATOM65B+gbzKWgqlY1b/TH2VFTS4yZ4M4LUV/nCk4g7K8+ljmMH5jandZTGkZdh7KvJ2RiYDC
+	1awI6MYZfJDYKDFkEjBbvd8jtDiv5HulDMFIniWpAdpU7/25ISXZde+T4Na6e87WxKzhKmGGWYO
+	jlAWx3UAvbwCPoKLMAB/vU4Ug0k/D8tNw3za2wLVMCXnFcQ4n6mPZXvJaqv6uNuZKQGNFra8Vm8
+	Fr4EVUH5Ndo7BiNhEFOcQLfxx+oMr7yRYLEeh6HfBbdQXC94jiYUIRGSFtafMWOvJoZBFNoSFtZ
+	aXbhQCOkZD/O7BCYiDOZ0/Lng==
+X-Received: by 2002:a05:600c:c0da:b0:499:83f1:398 with SMTP id 5b1f17b1804b1-499dc820705mr140148765e9.9.1787821311647;
+        Thu, 27 Aug 2026 02:01:51 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b49236515sm53313005e9.1.2026.08.27.02.01.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 02:01:51 -0700 (PDT)
+Date: Thu, 27 Aug 2026 10:01:49 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Uros Bizjak <ubizjak@gmail.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, Sairaj Kodilkar <sarunkod@amd.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, "Peter Zijlstra (Intel)"
+ <peterz@infradead.org>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, Thomas
+ Gleixner <tglx@kernel.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, x86@kernel.org, vasant.hegde@amd.com,
+ suravee.suthikulpanit@amd.com
+Subject: Re: [PATCH v3 1/2] x86/uaccess: Extend CMPXCHG user helpers to
+ 128-bit operands
+Message-ID: <20260827100149.10004212@pumpkin>
+In-Reply-To: <CAFULd4YFphkN4M0a_gC=vxN8Xgh4WWBGPo8dO-o6A3v9RGX4_g@mail.gmail.com>
+References: <20260826070004.8100-1-sarunkod@amd.com>
+	<20260826070004.8100-2-sarunkod@amd.com>
+	<e32c1437-44ab-45d9-9534-124a9e09f029@intel.com>
+	<CAFULd4YFphkN4M0a_gC=vxN8Xgh4WWBGPo8dO-o6A3v9RGX4_g@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <4415dbf2-10b0-4cb1-b045-13dbcd69c5d5@paulmck-laptop>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-08-26 14:04:32 [-0700], Paul E. McKenney wrote:
-> > >Anyway, easy enough:
-> > >
-> > >#ifdef CONFIG_PREEMPT_RT
-> > >DEFINE_SRCU(whatever);
-> > >#define my_srcu_read_lock() srcu_read_lock(&whatever);
-> > >#define my_srcu_read_unlock(idx) srcu_read_unlock(&whatever, (idx));
-> > >#define my_synchronize_srcu() synchronize_srcu(&whatever);
-> > >#else
-> > >DEFINE_SRCU_ATOMIC(whatever);
-> > >#define my_srcu_read_lock() srcu_read_lock_atomic(&whatever);
-> > >#define my_srcu_read_unlock(idx) srcu_read_unlock_atomic(&whatever, (idx));
-> > >#define my_synchronize_srcu() synchronize_srcu_atomic(&whatever);
-> > >#endif
-> > 
-> > We could do that for the KVM GPC locking, but more consistent would be to change *all* users of the 'atomic' lock under PREEMPT_RT to silently get the sleeping version instead, like PREEMPT_RT does with spinlocks and rwlocks.
-> > 
-> > So it's srcu_read_lock_atomic() itself (et al) which would get that if/else treatment.
-> 
-> OK, the traditional approach is that raw_synchronize_srcu_atomic() and
-> friends with the raw_ prefix are always atomic, and without the raw_
-> prefix it is atomic for !PREEMPT_RT and non-atomic otherwise.  You would
-> use the non-_raw primitives.
-> 
-> Easy enough to do.  But does it do the job, both from a PREEMPT_RT
-> perspective and a notifier perspective?
+On Wed, 26 Aug 2026 15:19:57 +0200
+Uros Bizjak <ubizjak@gmail.com> wrote:
 
-It does not lead to any lock violations so that is a plus.
+> On Wed, Aug 26, 2026 at 2:30=E2=80=AFPM Dave Hansen <dave.hansen@intel.co=
+m> wrote:
+> >
+> > On 8/26/26 00:00, Sairaj Kodilkar wrote: =20
+> > > Extend the existing user CMPXCHG helpers to support 16-byte operands =
+on
+> > > x86-64, using LOCK_PREFIX "cmpxchg16b".  This mirrors the existing
+> > > __try_cmpxchg64_user_asm() / cmpxchg8b path provided for 32-bit kerne=
+ls,
+> > > where KVM needs an atomic compare-exchange wider than the generic
+> > > cmpxchg helper can provide. =20
+> >
+> > Please take a good look at the Sashiko review:
+> >
+> > https://sashiko.dev/#/patchset/20260826070004.8100-2-sarunkod%40amd.com
+> >
+> > It looks like the "A" constraint isn't one that you can cleanly mirror
+> > from cmpxchg8b =3D> cmpxchg16b. =20
+>=20
+> Actually, "+A" will work for 64bit targets, as long as the variable is
+> 128-bit. The comment in asm.h applies to 64-bit values, where on
+> 32-bit targets they fit in eax *and* edx, while on 64-bit targets, the
+> 64-bit values fit into rax *or* rdx.
+>=20
+...
+>=20
+> That said, the approach with union of two 64-bit halves can lead to
+> slightly better code, because the compiler splits the value earlier in
+> the compilation pipeline.
 
-> And notifiers (though a different type of them) were the first use case
-> for SRCU.  ;-)
-> 
-> 							Thanx, Paul
+I think I agree...
 
-Sebastian
+=46rom experiments I did with 64bit values on 32bit it is more the case
+that the value never gets assigned to a 64bit (on 32bit) 'virtual'
+register. If that ever happens all the operations are initially done
+with the 'wide' register and then later split (rather than being
+generated as a pair of 32bit ops).
+This causes excessive register pressure and even spilling of constant
+zero values to stack.
+You do seem to 'get away' with returning hi << 32 | lo.
+
+I'd guess the same happens for 128bit values on 64bit.
+(This is gcc, clang does a lot better.)
+
+David
+
+>=20
+> > Uros, any chance you can give these a good once-over? This seems to be
+> > just the kind of thing you've been fixing up lately. It would be nice to
+> > get them right the first time. =20
+>=20
+> Based on the above explanation, these *can* be copied from 32-bit asm
+> patterns. Even "q" constraint will include all integer registers on
+> 64-bit targets.
+>=20
+> Uros.
+>=20
+
