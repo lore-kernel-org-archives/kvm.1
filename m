@@ -1,193 +1,95 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEBB2D8376
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 05:38:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6B63033EB
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 05:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787809141; cv=none; b=u+UR4fQl09JMYUJSj+KoDZghlCfw/NnIjrtm8pY25uTP680Tkwqlvh4xucTDIgOGs43CKAyqsLpMpQaoIxpOm1Poe4QkQVzksz/M2lLaeCpDR22Y0XFRu3vbodNuCuS7Fh0DvV+SzkHJfIfYpu/jM5J7sU7EEhOPH3Gdg6SRpz4=
+	t=1787809960; cv=none; b=qHjmN57AcZzbPT7ToV81OgSWE+icwTV8gW/WA6RyMy1Nl7DQGfe0KhBQBHpRF/rGAJVy6iFDY3f+RYKMuInhKEkq07zqJ4oq8r/bp7EKzwzz7Wuq7O3+pY34cNKYxbLcQfJGBr8ZF0s2gmh3rRXu8EK9XV74wxJTsUnLvWWQg40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787809141; c=relaxed/simple;
-	bh=yh/nuBrpJk4pdFX6syyMLd/OT8aOmFZBf6rHIVcFeV8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=AJI8ZSe6gmpwu0JZfOgwpdLeNjh+Hm+Hx090U0eydOsnTG5QEaUefYZDdXZfswT0ycsRDuMbfZDu6uWuE/9SYfP2jXdTp5UaGpJpVQDObmSqN6GkjxhXGRaSgG7D76Je1VSsDHBITJfSGOY+9w/Gjw7JrLzRzkZVt6l2zJahz+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=E3cksqud; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1787809960; c=relaxed/simple;
+	bh=U8dFj21gmo1wRRnMpmIZTXNP7xQxshNIRI95NyePvgw=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=nhpFNCEKiTrYL517JNrL/d0luVcRztT3G2px3zGqOrJ28JuYw2CbrPtZbB1WYgOXhsIQg2Es+w8Xv2PM0bs7ciPeKmfKWiRNXTJn7/XtUlsfAoCi10SKe4hNpfer7yMObEybbdCth6m7EUQ/TqQUBMPUDWj13HSu75Ptx2WIyvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LJnuvuP6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="E3cksqud"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=gtfcjNcZ+6EVpM4Jy2uE/u4yU4hQyET8+6Vy41L/QlU=;
-	b=E3cksqudTqpZYqqgCbjQJyNIbDPmtjLQiNq86J/bAVN3rkWwcDEZmuL1wpKyZU
-	jyGOG7CFQL+rhsreBnjTreXKWOQWaYFGBn/Vth2O6LSKY3GT9FlfLTjMvDbwxqyi
-	SYjdbSth+0TYCXVJ1YBMDg+2d/cNSpu0Dd79CAGiZxyjk=
-Received: from localhost (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PygvCgC3RCFezY9qMSPdOQ--.50200S2;
-	Thu, 27 Aug 2026 13:38:38 +0800 (CST)
-Date: Thu, 27 Aug 2026 13:38:38 +0800
-From: Hao Zhang <hao_zhang_kdev@163.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Subject: [PATCH 2/2] selftests: kvm: Add regression test for nSVM debug
- register state
-Message-ID: <ao_NXhr-3K4tMqpa@192.168.1.215>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LJnuvuP6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6C31F000E9;
+	Thu, 27 Aug 2026 05:52:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787809959;
+	bh=SRiyOMXH3HhcU4oGn0FPIUry2GWlGd/vS7RZRcJs7gI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=LJnuvuP657v60PgHpPnH5kdpzIXyNQYWNJ5xSWLibIM24m5nWJ4/gCII+FMw58+a1
+	 jAP33AToi5iBUw8hkHQXQ7yA25WES/x6R+cpgw8OaSvaComC7Ctjuu0fTumMJMQtTu
+	 fd70Ohr5i2NlSXZDo8OxIV1Ta5rxnUhR6grj6mF+vwCHS1r4uCwV/I9QsKaODw7PAw
+	 ES4EESFlsIY8MtxVhYf0B3Dkebv6LdbkqzUh/AjO5vS+liXsCFJijEJQvF0BPvDnOI
+	 G7v8p5BYsWAMsZmEJKJEQXTXVmAyrud6TXOwtp4kXZSBdEraP7K0QFAL3QzP4tB7fY
+	 dxygDyRwmV6+w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/2] KVM: nSVM: Restore L1's debug registers on nested
+ VM-Exit
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Hao Zhang" <hao_zhang_kdev@163.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <ao_Ms5alWwKa30U8@192.168.1.215>
+References: <ao_Ms5alWwKa30U8@192.168.1.215>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 27 Aug 2026 05:52:38 +0000
+Message-Id: <20260827055239.5A6C31F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ao_Ms5alWwKa30U8@192.168.1.215>
-X-CM-TRANSID:PygvCgC3RCFezY9qMSPdOQ--.50200S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZrW7Jr1kXr18Ar4rXFW8JFb_yoWrWw4kp3
-	4I9w1qkr40gr93AF1xG3Z8ZFWSkFykGF18Gryag3srZFs3G3Z7Jr1IgFy5AFn5CrW0qr1r
-	Aa45Ja4Ygw4UJ3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UDb1nUUUUU=
-X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC3h4J+2qPzV4YPAAA3g
 
-From: Hao Zhang <zhanghao1@kylinos.cn>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Restoring L1's architectural DR6 and DR7 from the hardware `vmcb01=
+->save` state on nested VM-Exit corrupts L1's debug state and leaks host de=
+bugging information.
+--
 
-Add a regression test for debug register state restoration when KVM
-emulates a nested SVM VM-Exit from L2 to L1.
+commit cba4fc9e5c8bde0943c94c7835fb0e3712e3df8e
+Author: Hao Zhang <zhanghao1@kylinos.cn>
 
-Give L1 and L2 distinct DR6 and DR7 values, run L2 until a VMMCALL
-VM-Exit, and then verify that KVM saved L2's debug register state to
-vmcb12 while restoring L1's architectural DR6 and DR7 values.  Without
-the fix, L1 observes stale L2 DR6 state and loses its DR7 state after
-the nested VM-Exit.
+KVM: nSVM: Restore L1's debug registers on nested VM-Exit
 
-Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
----
- tools/testing/selftests/kvm/Makefile.kvm           |   1 +
- .../selftests/kvm/x86/svm_nested_debug_regs_test.c | 104 +++++++++++++++++++++
- 2 files changed, 105 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86/svm_nested_debug_regs_test.c
+This commit restores L1's DR6 and DR7 when emulating a nested VM-Exit from =
+L2
+to L1. It copies the debug states from vmcb01 to prevent L1 from observing
+stale L2 state or losing its DR7 state.
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 1bde5ab306cf..65ad842eecd4 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -122,6 +122,7 @@ TEST_GEN_PROGS_x86 += x86/svm_nested_clear_efer_svme
- TEST_GEN_PROGS_x86 += x86/svm_nested_shutdown_test
- TEST_GEN_PROGS_x86 += x86/svm_nested_soft_inject_test
- TEST_GEN_PROGS_x86 += x86/svm_nested_vmcb12_gpa
-+TEST_GEN_PROGS_x86 += x86/svm_nested_debug_regs_test
- TEST_GEN_PROGS_x86 += x86/svm_nested_pat_test
- TEST_GEN_PROGS_x86 += x86/svm_lbr_nested_state
- TEST_GEN_PROGS_x86 += x86/svm_pmu_host_guest_test
-diff --git a/tools/testing/selftests/kvm/x86/svm_nested_debug_regs_test.c b/tools/testing/selftests/kvm/x86/svm_nested_debug_regs_test.c
-new file mode 100644
-index 000000000000..6ef29cf0a819
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/svm_nested_debug_regs_test.c
-@@ -0,0 +1,104 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Nested SVM debug register state test.
-+ */
-+#include "test_util.h"
-+#include "kvm_util.h"
-+#include "processor.h"
-+#include "svm_util.h"
-+
-+#define DR6_ACTIVE_LOW	0xffff0ff0
-+#define DR6_B0		BIT(0)
-+#define DR6_BS		BIT(14)
-+#define DR7_FIXED_1	0x400
-+#define DR7_GE		BIT(9)
-+
-+#define L1_DR6		(DR6_ACTIVE_LOW | DR6_BS)
-+#define L2_DR6		(DR6_ACTIVE_LOW | DR6_B0)
-+#define L1_DR7		(DR7_FIXED_1 | DR7_GE)
-+#define L2_DR7		(DR7_FIXED_1)
-+
-+static inline u64 get_dr6(void)
-+{
-+	u64 val;
-+
-+	asm volatile("mov %%dr6, %0" : "=r"(val) : : "memory");
-+	return val;
-+}
-+
-+static inline u64 get_dr7(void)
-+{
-+	u64 val;
-+
-+	asm volatile("mov %%dr7, %0" : "=r"(val) : : "memory");
-+	return val;
-+}
-+
-+static inline void set_dr6(u64 val)
-+{
-+	asm volatile("mov %0, %%dr6" : : "r"(val) : "memory");
-+}
-+
-+static inline void set_dr7(u64 val)
-+{
-+	asm volatile("mov %0, %%dr7" : : "r"(val) : "memory");
-+}
-+
-+static void l2_guest_code(void)
-+{
-+	GUEST_ASSERT_EQ(get_dr6(), L2_DR6);
-+	GUEST_ASSERT_EQ(get_dr7(), L2_DR7);
-+	vmmcall();
-+}
-+
-+static void l1_guest_code(struct svm_test_data *svm)
-+{
-+	struct vmcb *vmcb = svm->vmcb;
-+
-+	set_dr6(L1_DR6);
-+	set_dr7(L1_DR7);
-+
-+	generic_svm_setup(svm, l2_guest_code);
-+	vmcb->save.dr6 = L2_DR6;
-+	vmcb->save.dr7 = L2_DR7;
-+
-+	run_guest(vmcb, svm->vmcb_gpa);
-+	GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_VMMCALL);
-+
-+	GUEST_ASSERT_EQ(vmcb->save.dr6, L2_DR6);
-+	GUEST_ASSERT_EQ(vmcb->save.dr7, L2_DR7);
-+	GUEST_ASSERT_EQ(get_dr6(), L1_DR6);
-+	GUEST_ASSERT_EQ(get_dr7(), L1_DR7);
-+
-+	GUEST_DONE();
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	struct ucall uc;
-+	gva_t svm_gva;
-+
-+	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, l1_guest_code);
-+	vcpu_alloc_svm(vm, &svm_gva);
-+	vcpu_args_set(vcpu, 1, svm_gva);
-+
-+	vcpu_run(vcpu);
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-+
-+	switch (get_ucall(vcpu, &uc)) {
-+	case UCALL_ABORT:
-+		REPORT_GUEST_ASSERT(uc);
-+		break;
-+	case UCALL_DONE:
-+		break;
-+	default:
-+		TEST_FAIL("Unknown ucall %lu", uc.cmd);
-+	}
-+
-+	kvm_vm_free(vm);
-+	return 0;
-+}
--- 
-2.15.0
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index 73f37b050d0a0..e7975ac7bfca2 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -1427,7 +1427,8 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
+>  	kvm_rsp_write(vcpu, vmcb01->save.rsp);
+>  	kvm_rip_write(vcpu, vmcb01->save.rip);
+> =20
+> -	svm->vcpu.arch.dr7 =3D DR7_FIXED_1;
+> +	svm->vcpu.arch.dr6 =3D vmcb01->save.dr6;
+> +	svm->vcpu.arch.dr7 =3D vmcb01->save.dr7;
 
+[Severity: High]
+Does copying the hardware state from vmcb01->save back into the software
+structures here in nested_svm_vmexit() corrupt L1's architectural debug sta=
+te?
+
+If KVM intercepts debug registers (which is the default) or if the host is
+actively debugging the guest, vmcb01->save contains host-controlled values
+like DR6_ACTIVE_LOW or vcpu->arch.guest_debug_dr7.
+
+Overwriting L1's software-tracked DR6 destroys pending L1 debug exceptions,
+while pulling the host-polluted DR7 permanently leaks host-level breakpoints
+to the unprivileged L1 guest.
+
+>  	kvm_update_dr7(&svm->vcpu);
+> =20
+>  	nested_svm_transition_tlb_flush(vcpu);
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/ao_Ms5alWwKa30U8@19=
+2.168.1.215?part=3D1
