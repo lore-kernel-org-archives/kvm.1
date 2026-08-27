@@ -1,157 +1,210 @@
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DED4346AFB;
-	Thu, 27 Aug 2026 21:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA713CB8E6;
+	Thu, 27 Aug 2026 21:13:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787865191; cv=none; b=ODDr2lVyMllf8wtKQxS1N87wJRHk7YtDEvtSPMAjIOCzZPOeQM1kh4UGQQ73fFekMwyhWuOZ7ql+zkNa9u0uzQ+sGXEVZ2ujTheuer9mPpHSd0pGy5cIzcGRgpFlT1AlwobZ8tIgZl3xIUBQblisQglxtoaA13EuoMBWKQ/dNEk=
+	t=1787865215; cv=none; b=kzPagJmqPt/nYqOmmHK1jL6ppoGQfyVFoA0tew/lIPhTG5xlX11cgR36pCGDmF+LVsf504it7UMpB5IOVDAdk8nOZrtZxDSZuMpPoby+6UogmSuzyDUQbzHOk+HOYCFKKFpowDj38/kaobbFv07O9Qd5/IG8FE6gxAsSzg1e3Uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787865191; c=relaxed/simple;
-	bh=S+fgmtzinaMT6PC/6Y/Opgh/LZ0E7mbntIY/+N5AQ+Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fIOv195+M5OZerXTsMgVGvKQqYYE0NzHkz9YSxg/KIUMMwjI6TJgJVeZKAdhvwBN9t5q79V6LzM6EYgndVx/276v1bbO4fL1+bOtSacYW/iBmhCOMzhzUZO8wZ4XGgsWeqR/Qp/UJu5OHAavqx060KB3lQY5CnWZk1Xb+JbU5Ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=u+3DkoIe; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=YYIpjhlR; arc=none smtp.client-ip=202.12.124.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1787865215; c=relaxed/simple;
+	bh=qc6meqLkwn/RpZVWrk960fFTJXh5m01R41bM5J6QIhQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=KyNceuJGT1Km1tFUeLeiT9uCkPxPjGAjS70Co0mD+K+GQ3bITBK768tF16UdYrUnTeb1AkvH/+xrPZ+yntvmvywat+naK1zYx9OKCuOSMW/I30FnKW7UP6bYGO7BPwvODelzgcdtZssraDsJHIbFydchGfimsgmU8GemaIdIByw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ataj7swf; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="u+3DkoIe";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="YYIpjhlR"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id D0C877A016D;
-	Thu, 27 Aug 2026 17:13:07 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 27 Aug 2026 17:13:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1787865187;
-	 x=1787951587; bh=LptqgxJzL5yMM8ZmtUBx2wOHsHw6ZM/5+3kHAKDP8/k=; b=
-	u+3DkoIeRgC5MaDtAVLw1+8rAclL1XUYyhj6gqLmeQOVQV1KcliwG0/nQYTBYQRZ
-	iOpLzi31qFbNevL2+rYwq5ynz1bHvP1yswmNNiIlc3ng4BuBN6B7wGnZJ2RV1cQg
-	+/pu9Kn0rwwg13yRl7bAiB0cZ7Je87vvaDIR9KAw3bz2HdYt1zWi2gCIB3Iu7wiC
-	o+EN590kIFZ3FoGfy8I0peYvV4NoNK97mKmpW3AXR3YuZ9XITeaoBVn7TTxYYdzN
-	3Fn2AQTTJpz0owdxBlQWn37DWTWXvIhT12XAwcVLweylivhDDNoC8lFk5NpP9BRJ
-	3C++ptD1ZT8y+2giMJFnBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787865187; x=
-	1787951587; bh=LptqgxJzL5yMM8ZmtUBx2wOHsHw6ZM/5+3kHAKDP8/k=; b=Y
-	YIpjhlRIf3LWT6a4+s9fu4MABtO1lKEbO3EKcCz2GDthH5PPtiYLGga3xPGI4mib
-	lYH2KK5LrdMmSAeYYXzvrQX5NZR7qlHdkWpdUCku4GqKlby1aFKk327iEkxcoZMO
-	2u+o9/Hzq7eZB9yie1w0I+Q3uEwQJRV+PB2ebgT3ZI1WqfO5N48H/0eoYS6HvA4z
-	flDW4tJbmQW9EDW+L9ymgWGeCTs2sL6m19coT923pI/bv6UQiheWr70d2bb56Z8s
-	vc1EjNnE/5OVEm+m9iBV0h4XsW1/mrEnPNwc9MGcyrXbi+2dKPmg4zEGyTMZiLKx
-	X0wZPCrkZ+a9mpmkS9lkA==
-X-ME-Sender: <xms:Y6iQaps6FCeqHQfwG4KeqhrZ2yrwhaWALVDEKCx5vUA-tkc7hCyDqA>
-    <xme:Y6iQagHxx44NZn4Nw_E9fndcI7becgmARf0Vcp_fQ4BUQ_fcWg2SseWbzklKcwa5q
-    14ofCl2Kky9TqnX4aM6bRjKtStWLN2-Y3hwDrUKOuHBnJenpY198Q>
-X-ME-Received: <xmr:Y6iQakIVzUcHkd-ccRCo8BRi6Lw3G9U-EMCIobgjJolZWacuCoMknearj2zMkQ>
-X-ME-Proxy-Cause: dmFkZTFD7fpP5X+zSXO8wgY+6E+tPLtVbuxfzuaraYC70hiVdeQTS49GSMwpZxKEt3Jxdi
-    MG3tqiD+p58SyXN3LKDuWSHN3lirClEsO8vmSYt5rOqUvdtWCvyFveYmFGn1lrFS8CbeHO
-    0Uuq0cif66UGUwt853Q7AXXNjBN7dHr+3FH63ViK/VogHAWZBiA4oHxPim/bVJITaMSvqz
-    Alyhucf5+06WR+ebrdkwzR96Bvcc/xOz5DeOAUsOOdogDAh7vrHlvoTtwbsR2Ks1Js51sZ
-    J2ab9Zb7x5jIPy8uPMGQ29o+nwJodyUg87mfxK0JDYhbHXB8p3xkFAANyRSJrGtTfqqZEx
-    zDgosAnq0XE2QvLA5INdGP/kJjsAb44yFW3XG0eQtHgM0DVm9Mi5P5zS/sT9/l3Hcb5K/o
-    I0kkepkWmdYAnhgWTvLjZJnggkR2TaSVVbFv6KdMLnQxpDANguFoKh0/bC2yp1X5Je9U+g
-    5KWYX/e9NQmmlosfS3jQ0JmHhmRzTd2U1kvTmI+H5ZI6+Jhm04LvNSGF9kt62EwBMK0X9o
-    0ZYtA03US6m3MMMHYQ07aYVFRD7mI3LyTGZDV0DtQwdIex6b5sW8x9ta+eu4nAzwk/zwmw
-    qwFg8BGBXwjE3TCSuEqFzibT9KUNusKj3hcdoMP8FnlEHWFuJW5pxl+aH8ZA
-X-ME-Proxy: <xmx:Y6iQaoYla3rDBva7p-4FtMiswCRAsmbjz1NePWWD2TZUNl9MWRrYNA>
-    <xmx:Y6iQahoWxTgAysoGz-yyDBjjdwoVrFvvmdR-hl2tlmw1qPiOQh813w>
-    <xmx:Y6iQagFGTQ0lCrf0MM57JC5sC3X1yuqCaKGMr5NpqDPSa3ZHhSe8Wg>
-    <xmx:Y6iQalf_lYhoJpXa8SxturcUDr5aZ_unApHJvyHH3_p_bzMMPrV3NA>
-    <xmx:Y6iQataMyPJWFdAROFggImjPu2BN-NM0fT5oLC1hZCRZn3eUlQP-F7Ll>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 27 Aug 2026 17:13:04 -0400 (EDT)
-Date: Thu, 27 Aug 2026 15:13:03 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: <mhonap@nvidia.com>
-Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
- <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
- <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
- <dave@stgolabs.net>, <alison.schofield@intel.com>,
- <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
- <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
- <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
- <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
- alex@shazbot.org
-Subject: Re: [PATCH v4 11/27] vfio/cxl: Own the whole component register BAR
-Message-ID: <20260827151303.5b34ef3b@shazbot.org>
-In-Reply-To: <20260813093631.2288172-12-mhonap@nvidia.com>
-References: <20260813093631.2288172-1-mhonap@nvidia.com>
-	<20260813093631.2288172-12-mhonap@nvidia.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ataj7swf"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:Date:Cc:To:
+	From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=dGCoesttwCyBaIxRFc3AOCtfE0Au+6gX8ZCr1SIrSi0=; b=ataj7swfJxZ3Wd7z8j1iQSXfLe
+	GUqpxjmNoGCwcXhKWpleFqCdrRw3UuPjihXCKdZCcdbLOuOFFk+UXMtBuyrpxCk0x+xv/PthBdUku
+	aJ6ThkY/cALMYLglna80xG6r8ImCx88ttxBGXaCP+HmhZxOG2aum1t3pEjC806KQE8OYRA5TFWP1c
+	RPlG/W4yQP38Mdgx6ondGL2N/VeC3itY/rYglNm30fC8rLg5YHxp87Bsk1XGX3MtuSE1JonII/+n7
+	t3ASWfh9Q5z/X0iA0v09nsmZ+Slr4hOg4idzzBPkNFBrEX+0zDnB93rwbz33OpVaXG0s6dBFNgFUd
+	zhxv6ldg==;
+Received: from [2001:8b0:10b:5:c5bc:77fb:75d5:ffaf] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wzhPV-0000000DUhO-3YjA;
+	Thu, 27 Aug 2026 21:13:21 +0000
+Message-ID: <8d47b43e1829ac92703723e6a1a4afc7a2eaacb5.camel@infradead.org>
+Subject: KVM: x86/mmu: __kvm_rmap_lock() preemption assert trips on
+ PREEMPT_RT
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>, James Houghton
+	 <jthoughton@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Sebastian Andrzej Siewior	
+ <bigeasy@linutronix.de>, kvm@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, 	linux-kernel@vger.kernel.org
+Date: Thu, 27 Aug 2026 22:13:08 +0100
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-AiCDDY/NTSdHpLrsmclK"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On Thu, 13 Aug 2026 15:06:15 +0530
-<mhonap@nvidia.com> wrote:
 
-> From: Manish Honap <mhonap@nvidia.com>
-> 
-> devm_cxl_probe_mem() maps the component registers through the CXL core.
-> By default the core claims each HDM/RAS sub-block, which then collides
-> with the full-BAR request that vfio-pci makes when the guest opens the
-> device.
-> 
-> Discover the component registers into the device reg_map and pass
-> bar_owned to cxl_pci_setup_regs(), so the core maps the sub-blocks
-> without claiming them and vfio-pci owns the whole BAR.
-> 
-> Signed-off-by: Manish Honap <mhonap@nvidia.com>
-> ---
->  drivers/vfio/pci/cxl/vfio_cxl_core.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/drivers/vfio/pci/cxl/vfio_cxl_core.c b/drivers/vfio/pci/cxl/vfio_cxl_core.c
-> index 7edc53b25576..966b7c22a6ac 100644
-> --- a/drivers/vfio/pci/cxl/vfio_cxl_core.c
-> +++ b/drivers/vfio/pci/cxl/vfio_cxl_core.c
-> @@ -10,6 +10,7 @@
->  #include <linux/range.h>
->  #include <linux/vfio_pci_core.h>
->  #include <cxl/cxl.h>
-> +#include <cxl/pci.h>
->  
->  /**
->   * struct vfio_cxl_state - per-device state for a vfio-cxl device
-> @@ -70,6 +71,16 @@ static int vfio_cxl_init_device(struct vfio_pci_core_device *vdev)
->  	if (!cxl)
->  		return -ENOMEM;
->  
-> +	/*
-> +	 * vfio-pci requests the whole component BAR when the guest opens the
-> +	 * device. Declare the BAR owned so the CXL core maps the HDM/RAS
-> +	 * sub-blocks without claiming them and that request does not collide.
-> +	 */
-> +	ret = cxl_pci_setup_regs(pdev, CXL_REGLOC_RBI_COMPONENT,
-> +				 &cxl->cxlds.reg_map, true);
-> +	if (ret)
-> +		return ret;
-> +
->  	ret = cxl_set_capacity(&cxl->cxlds, hdm_size);
->  	if (ret)
->  		return ret;
+--=-AiCDDY/NTSdHpLrsmclK
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Previous comments on patch 2 suggest a different interface here, but do
-note that cxl_pci_set_regs() can return -EPROBE_DEFER and if we do
-actually want to defer the probe (until when?) we'd need to split this
-errno out as a legitimate probe error case versus the fallback mechanism
-for other errnos.  Thanks,
+While soaking unrelated KVM changes on a PREEMPT_RT + lockdep kernel
+I hit this, which I don't believe has been reported before:
 
-Alex
+  WARNING: arch/x86/kvm/mmu/mmu.c:920 at __kvm_rmap_lock+0x1a7/0x1e0 [kvm],=
+ CPU#16: vmx_apic_update/3708
+  CPU: 16 UID: 0 PID: 3708 Comm: vmx_apic_update Not tainted 7.2.0-rc7 #52 =
+PREEMPT_{RT,LAZY}
+  RIP: 0010:__kvm_rmap_lock+0x1a7/0x1e0 [kvm]
+  Call Trace:
+   pte_list_add+0x67/0x4d0 [kvm]
+   __link_shadow_page+0x249/0x480 [kvm]
+   ept_fetch+0x4d5/0x1220 [kvm]
+   ept_page_fault+0x60b/0x850 [kvm]
+   kvm_mmu_do_page_fault+0x252/0x690 [kvm]
+
+That's the lockdep_assert_preemption_disabled() in __kvm_rmap_lock(),
+from commit 4834eaded91e ("KVM: x86/mmu: Add infrastructure to allow
+walking rmaps outside of mmu_lock").
+
+I don't think this one is just lockdep vs. PREEMPT_RT causing false
+positives =E2=80=94 the rmap lock is a hand-crafted bit-spinlock, and if a =
+lock
+holder is preempted that leaves every other walker of that rmap
+spinning and waiting for it (with no tracked owner for PI to boost).
+
+On PREEMPT_RT we genuinely get here without preemption disabled,
+because kvm->mmu_lock is a sleeping lock now. Any shadow-MMU fault
+on an RT kernel should trip it =E2=80=94 this one is the !TDP nested EPT pa=
+th
+(ept_fetch()), and it fires within seconds of running a nested guest
+with lockdep enabled.
+
+I guess we fix it by turning the assertion into a preempt_disable() of
+its own? Not sufficiently confident in that conclusion to send it in
+'diff -up' form though...
+
+--=-AiCDDY/NTSdHpLrsmclK
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+NDA5NlNIQTM4NDIwMjRDQTEuY3J0MA0GCSqGSIb3DQEBCwUAA4ICAQChxpuuHVw93mze9jmueUFV
+BJNzvOzZlazrt0AiW1H7TlYQutgKVXPNSEyz8s4k+WsRSjjlQMOiZerfwPEV6lo9336I0uNd+ffc
+Rf8gbjiPTiVT+gX9GD1V5AguRgtsJn/H3A6M0dlzhI3J1jsOG9/+xPloHPzy7sPn5rNkntB/VTnv
+Bix4IfUy3ScOu2vnLX0gnwP3EknfdEUvq9+kdkEEBDz7dGqQo3EuhXZoW9CHF2GM0sOpO/cuNQh2
+JzA+to3smTES7sJXYuRrt5GomCRYvtIrRiYGMalFp+z6Jw/843lEIIpNNvpWVfx5Mbawkl+wWG8k
+0IK3rF7FtbNa0it8/s288G/AEHvfsDIQYFmRLlo2LNMxxREkZO/1Qq8GHUsX/602Fi0u88I3uh5w
+bOEIeG32NzBKTKBOjdjpiUrdCA676dyaIFt967CUtnUvFti8bqGA2pe/u7pjIANthqMBAlcnY5B6
+ff2mbdD8BBLItgb4HyUOCVawzy1hc+UR2tglySwYroWeohfoG6afjesGigsl2JmnhaZ9Z0vanF74
+vFEOOmuaq7VamuLEPFQtJM4olmipOW6CzrLcFz6J/6yAecEG3P1ZDoy08eSHvM40MAUgpwGa/w6o
+9ALHQXda/c4TJvAylfHQ6wqArzAuV1pfWldwy7IOBMtKqzQBXQ4dSDGCBCAwggQcAgEBMHYwYjEL
+MAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTowOAYDVQQDEzFEaWdpQ2VydCBB
+c3N1cmVkIEcyIFNNSU1FIFJTQTQwOTYgU0hBMzg0IDIwMjQgQ0ExAhADNSi2uzJskfEdOMo4hV0g
+MA0GCWCGSAFlAwQCAQUAoIIBezAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNjA4MjcyMTEzMDlaMC8GCSqGSIb3DQEJBDEiBCB5rqGVPB973QFbgu6yhHPxpq5gl6kY
+9J2uUhSkuZ1qiDCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
+aUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBT
+SEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAwgYcGCyqGSIb3DQEJEAILMXigdjBiMQsw
+CQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFz
+c3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAw
+DQYJKoZIhvcNAQEBBQAEggIADz5N+h1FlcRG6LQ7T0V1/GqH90HdPOthLyYA7XR42rn1nZTGSQCZ
+kD5CznE2n5t2GCrH0oAxy6yvLtBoFuq+p7FKZXCxrApIcIjtILtwb9xbwGBfST3qzBeAfEkWGkDB
+2Ls1km7DVqOBeC7ly1rY8Wj2xKFAMZO2tq36khS0jDZYZXQE3zQJ89yFUaplaZ5n/Hr+4igv/Ewh
+izds8+7+inXa1p8TKLtwgcg3NKkcvJF4T/W9cKlEe6SULkPml8azmZnFuxVHVYVmdIlVv6nuCMOR
+AM6/wPJCrI4Nxe4W4Or9xyziy7RRrctc2J/Jj0LhDcjnFJiNQ92j9F6qIBoWucyFVUh7P5Symm/f
+GVSTgxPY8eQpia/A7Qc97brjiSHTO6hhfX8KffEfRKUcW6+eKSpHGLOMmD8RfSJpwsI9E/I6l7Z8
+Hyvqy2FmowfwcCCTB/yywV3w93r9diHowC21R+6ncMteqAKlyDDnec43ACuwGBv8RBWwGdCaoPmz
+FHidfrDBudAUOLSs4VUfHdFQsFQ/4P0bRmW3m4NB7OYyTYpx7wn18O+Q/l0FoVKyIAINR33IFsj9
+uBIiMuCEet7haRKhK0wRWjYZFc630ZZHqegsTRb8rVSw7P5AQBAXCsqzq1yeZXbgjrC2Jz66cAYY
+BbPhZPdwKF12eIk8iV2Nh1cAAAAAAAA=
+
+
+--=-AiCDDY/NTSdHpLrsmclK--
