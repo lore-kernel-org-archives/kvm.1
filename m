@@ -1,131 +1,208 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7683337F8A1
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 18:37:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED89361947
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 18:47:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787855839; cv=none; b=GxT+6kwUK35veuKJ958/f+Esx57r5+sEHnFEUos+PRVqGyk2DMRoENShYwsXtPjK6irJaFeCpRJIhJsEnUXB8SMBGcQ6hyyQ4P8pBDX0PDSXylWX9xENA3xjYvjH7UFmRzQulLdea2u1tRJQMS7NoB08Jnn+XCDOZ2IsTQrm2pw=
+	t=1787856458; cv=none; b=R2uVxhhp98cJxTIeIbqI5prt3lxyYNbN6X93Hu+c/QcOXpZtyZGMd05RhsC3w6ig/UGvXmmTDYx/a1/8d/InFJGvDjylSEaT0PVdr01XBbFMYjwIA12TywXfNVzBPR4d1q8TGyH9NjrA2JTAwFvcZ1C9EQ2W6fLJspKdxJH/meU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787855839; c=relaxed/simple;
-	bh=fg6GTljxP+sNZrgLDUd34929OGbtblqfj2IPZjIvfdU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=U8fuP9CCj40o/8WU6C0YmjVV+h4j67BzW+wrrN321rYI9mU8rkiIJjt7a3sqnNhqTjCq7tCIcqXIKO5P4cYBsm2B50Cpmtdv2KpcPlQVBsl6cfeatIJk19WUjAKFeI93Yv7P1bv5eT8HNiJ6YgwRnzZs/VUUvemArhZGLmdKdYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KObc1aSU; arc=none smtp.client-ip=209.85.215.200
+	s=arc-20240116; t=1787856458; c=relaxed/simple;
+	bh=s6TDNkQ3m5Ifn1QOQ+tRlAhnTRhRVstkHNNtZuESBYc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ky0mQ4IuVn4g3ZldgocGUPQV9NOfK6ZEdRE9X+nJhL7e4Dw1KtldigD9clPSiuIR/ECv/8sHBQARyvUmh3rERnmJhfrWJiENI1poQav9pkd0t3vJ8C+fe6XDXp8AEvTmQv03fq+nJViqSaHJ3tK3zjmaminxlW+rqOnvFn1Vmh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JPuqmhjK; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KObc1aSU"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cb6cf425e86so3327a12.1
-        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 11:37:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JPuqmhjK"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cede6375caso21695ad.0
+        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 11:47:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787855838; x=1788460638; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Fau6peshe7Kd3BC89rhl/hcEomF/+4LQ+lryrOtlT9E=;
-        b=KObc1aSU9GON1K9HMRQJPluCdT4esqEm010FGYXVjcIhoAl6gLQJq4IKV46TvfEtOr
-         Fa3Ks27fZGFWBwsm3sj1iZXAO/KkPrQ/ejsU1Ziqp+cNbd1UDLF7jHgbq8+rVCMkrCwN
-         QyB5/lN6KMIq6M5dlRPaydswQtmN6tGWbYI0dYSvDYlEml44cEfwSKQEchgTXMQJrVeq
-         rjk/JuzwmOwzD9ieCGNQKm7pjfi4gSsV+zgGqdvknjEMvePKoF7XQ1j5R/zJl5s6hrFT
-         YjaPN7M4eeav+BC+VY5tOjKhUKINEJIgPH7F0iwBrpUGgqfAn9ezirbXAn8uzcVLVAl7
-         b/iA==
+        d=google.com; s=20251104; t=1787856457; x=1788461257; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8TWHy0fq0LlmFIRlDT3XzMY9bVByxWoJTpTIiV/A2Vg=;
+        b=JPuqmhjKG7loyaJfYdeMgvjAZlO1mM1YxE/2BrSknH2TZviGHx+bhqtbGxEhLiI7la
+         BfHOj9l0jnCrPr1acbxz1evgzKBuf93Ej8oBNsGM9yFdxy+PUARvFspdFHYHABHlQ8KH
+         n+0HTY6EgFDL2hF3NObjbdKL3F37AWyFOcxUrGqqW1GcRKihGVhciBSdz4qwTPxZLBbT
+         O4mS1+x5jO0ynONu1YRvB1sFLzzghXTeRlQtVDezU2smf9V3MkZhnOPRoDqP1wsf9lVd
+         s/G/Sng6rKFL4Ok+G5KDmuFo7spgwcrzQ/eqdW1+4YbMYgjNnHjSEW573Kmlf7/ByiQu
+         9S2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787855838; x=1788460638;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Fau6peshe7Kd3BC89rhl/hcEomF/+4LQ+lryrOtlT9E=;
-        b=Ty6/gVTsrGcq1IYJT9cMRU79DrwqVVLWsf8xeb11gNYZV/gNEnHcNdZEiNPMAtxZzX
-         mfIEFJB+3iXrlY5dJqY3dJHplAxNKizWNJPoV+SPubG8BUFkKS/HL6Hkc+fyXDgIS/9h
-         UBt3xDMax3Y/dvbfJBxMC2qIUs+dlnhNysmPyVJGjJ4Zga6glGsvJBGgoiYNyVNlFyBK
-         K3yU1W1QPhH7gC/RbaUbFTc2VBcKKBXoO84uecr4ooJHUhyCni2wikDYkfeFD0jg93Si
-         Hz3no9wYaR/VHMnKaICgSMuAfgtYy7INW4icJJpZPLZMJUFqSFhzsZ5cb6tUvI7h0Og+
-         HLXQ==
-X-Forwarded-Encrypted: i=1; AHgh+RorL+L5iupUSOlms1rq6b0f5pJ8PnjlVjlF/DOB3z5hIW6Ua+qVTepmiK4iVm/879rMS/c=@vger.kernel.org
-X-Gm-Message-State: AFuF++mHwrjApPcBMYL7zfH9FoZnPfluXcqyRIJxJupzL++N9rk38JQS
-	2E2QzTfRGgieTKursyosgFhZ7kqGiIBBcUvvwp7HSP0LCCHQJ0elJXS3QCQ+DCMQ78mKYvMIujl
-	r55H7ow==
-X-Received: from pgcga11.prod.google.com ([2002:a05:6a02:668b:b0:cbe:e160:452d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:258e:b0:3d1:8876:fb1e
- with SMTP id adf61e73a8af0-3d26298fb6fmr1977514637.0.1787855837632; Thu, 27
- Aug 2026 11:37:17 -0700 (PDT)
-Date: Thu, 27 Aug 2026 11:37:16 -0700
-In-Reply-To: <20260827110558.457891-1-zeng_chi911@163.com>
+        d=1e100.net; s=20251104; t=1787856457; x=1788461257;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=8TWHy0fq0LlmFIRlDT3XzMY9bVByxWoJTpTIiV/A2Vg=;
+        b=OYlsaXj/SZLxS0in8T8RTR7Nczt467bxejn1nAJgGirwwaTLTOdo4F8wSC83PHzFYB
+         Nwf9kySoxAHTzrwTY0ZwfuAJGwVF6SVFO53R53KLSdjPxaV4/1AoLtIJIky+ygTqcHHK
+         E4vwDf5LDW+fRvb4JuzzVIAcwNBpNhrk5Xh43tSUMA/bbcoxQnFGsPQraYWnw5KOeKyO
+         TDpBEB47kQJZpqUF3+miVw0bnvFxTS/gCg5iDNIzJma7xry1W2y5ASbkvh7eNIKovHFP
+         1s/OQTPlHDbxFoatoGi1svFcLYXrX2gk2O/Z41gPJecrMlZTJ0Eb5Fm/MIASo9CeSoKp
+         Uh9Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpVm/p+NEXBTx68E9tP6DRacuLqlAEa4W5VSxppx9+EYE7iMZl90LRnQXOpukyCdLvKKig=@vger.kernel.org
+X-Gm-Message-State: AFuF++mHx0lG0ez/I5+iClAhUFsgGJnlfIxyflYOvmbEuDZyPdAkakNC
+	gzgzW92ZWmN66sJSjpvRwI6HYDbu/subX4dexFIQR1l3doFz1JC1mcwWwRGAUNKzaA==
+X-Gm-Gg: AR+sD10Go3sRi0fGq8NOJP1HTRHtRakfee6T659CmWLmUYUlcq6DXqNdJtOZSYH++mi
+	x/MyfFQkshNXQkyFBrkxWUpw9awVGq/BcR9+2HQILHFDACcuXdsJdWzjV6K9koizz5Ea28HI4Ln
+	BMExPWt9qNlqcfHMCjUmimLED/Xy/2/ImONrzaqToZ/2lddMSZG3LdhMpS+W8zXKJ+8nTxe8LQi
+	7NVqGhrK28PkiIAEFw2z2QcD3x8FZ7RXV9Ab1TXs2a327pYhspcTmuYA74DuhpisNbyp29iXvcX
+	aLaYjD1G3kRuBWyHjnhFyBT0ASmy0eFBGF0q5BBaC5uB4CZCvobjziPB7Hgva5VYb6Xxw9n3pzP
+	V37h2W6LLh+fvyuH5f2ytOk1oCC9PLDUUXg4XZHK2VWvOMUbTegqJB1dCbRf7CELwl80YxtcdI8
+	8ZS5Ti+1UgT5PBlAPEId5KtbXLbAKF8doszUO9dV0Rq/cgjxP4lWFR/G9dxM/vMADrtxpSco+xW
+	dwgtmHBLow2hYK+36Kitu9SWnwLnYq47vnBMry0N7ggylgHlpnT35wd2wI=
+X-Received: by 2002:a17:903:2c10:b0:2d5:db3d:1a41 with SMTP id d9443c01a7336-2d74f558e45mr1373495ad.14.1787856456011;
+        Thu, 27 Aug 2026 11:47:36 -0700 (PDT)
+Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85359cd5eb4sm2424811b3a.11.2026.08.27.11.47.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 11:47:35 -0700 (PDT)
+Date: Thu, 27 Aug 2026 18:47:31 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
+	Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v4 10/18] iommu/vt-d: Restore IOMMU state and reclaimed
+ domain ids
+Message-ID: <apCC3xMkYkEyQRID@google.com>
+References: <20260808022723.3893618-1-skhawaja@google.com>
+ <20260808022723.3893618-11-skhawaja@google.com>
+ <5f8963c4-f6b1-44b3-ab2c-ed658822efb4@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260827110558.457891-1-zeng_chi911@163.com>
-Message-ID: <apCD3F3oOyC6E5oN@google.com>
-Subject: Re: [PATCH] KVM: Release reserved xarray entries if reserving memory
- attributes fails
-From: Sean Christopherson <seanjc@google.com>
-To: Zeng Chi <zeng_chi911@163.com>
-Cc: pbonzini@redhat.com, chao.p.peng@linux.intel.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, zengchi@kylinos.cn
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5f8963c4-f6b1-44b3-ab2c-ed658822efb4@linux.intel.com>
 
-On Thu, Aug 27, 2026, Zeng Chi wrote:
-> From: Zeng Chi <zengchi@kylinos.cn>
-> 
-> kvm_vm_set_mem_attributes() reserves an xarray entry for every gfn in
-> the range before modifying any attributes, so that the actual updates
-> can't fail partway through.  But if one of the reservations fails, e.g.
-> due to -ENOMEM, the entries that were already reserved are left behind,
-> as the error path bails without releasing them.
-> 
-> A reserved entry is XA_ZERO_ENTRY, not NULL.
+On Thu, Aug 27, 2026 at 03:22:26PM +0800, Baolu Lu wrote:
+>On 8/8/26 10:27, Samiullah Khawaja wrote:
+>>During boot fetch the preserved state of IOMMU unit and if found then
+>>restore the state.
+>>
+>>- Reuse the root_table that was preserved in the previous kernel.
+>>- Reclaim the domain ids of the preserved domains for each preserved
+>>   devices so these are not acquired by another domain.
+>>
+>>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>>---
+>>  drivers/iommu/intel/iommu.c      | 111 +++++++++++++++++++------------
+>>  drivers/iommu/intel/iommu.h      |   7 ++
+>>  drivers/iommu/intel/liveupdate.c |  69 +++++++++++++++++++
+>>  3 files changed, 144 insertions(+), 43 deletions(-)
+>>
 
-Lovely.
+[snip]
 
-> xa_load() hides the difference, but kvm_range_has_memory_attributes() uses
-> xas_find() to check whether a range has no attributes at all, and xas_find()
-> returns zero entries as-is.  As a result, a leaked reservation makes KVM
-> think the range has attributes set even though kvm_get_memory_attributes()
-> reports none.  On x86, the next time mixed-attribute tracking is recomputed
-> for the range (memslot creation, or a later attribute change that straddles
-> the 2MiB page), hugepage_has_attrs() treats a fully shared 2MiB range as
-> having mixed attributes and refuses to map it with a hugepage, until
-> userspace happens to set attributes on the range again.
+>>+
+>>+static int _restore_used_domain_ids(struct iommu_device_ser *ser, void *arg)
+>>+{
+>>+	int id = ser->domain_iommu_ser.attachment_id;
+>>+	struct iommu_hw_ser *iommu_hw_ser;
+>>+	struct intel_iommu *iommu = arg;
+>>+
+>>+	if (WARN_ON(!ser->domain_iommu_ser.iommu_phys))
+>>+		return 0;
+>>+
+>>+	iommu_hw_ser = phys_to_virt(ser->domain_iommu_ser.iommu_phys);
+>>+	if (iommu_hw_ser->type != IOMMU_INTEL)
+>>+		return 0;
+>>+
+>>+	/* Only allocate domain ID from associated IOMMU HW unit */
+>>+	if (iommu_hw_ser->intel.phys_addr != iommu->reg_phys)
+>>+		return 0;
+>>+
+>>+	/*
+>>+	 * This can fail as multiple preserved devices can share the same domain
+>>+	 * ID. Since this is done during DMAR init so these failures can be
+>>+	 * ignored.
+>>+	 */
+>>+	ida_alloc_range(&iommu->domain_ida, id, id, GFP_ATOMIC);
+>
+>This mixes two different cases:
+>
+>- another preserved device has already reserved the same DID.
+>- the DID is not reserved because ida_alloc_range() failed (for example,
+>  memory allocation failure).
+>
+>Case #1 is expected. Case #2 must not be ignored, because it means
+>restore failed. So this should probably be something like (not tested):
+>
+>	mutex_lock(&iommu->did_lock);
+>	if (ida_find_first_range(&iommu->domain_ida, id, id) >= 0)
+>		BUG_ON(ida_alloc_range(&iommu->domain_ida, id, id, GFP_KERNEL) < 0)
+>	mutex_unlock(&iommu->did_lock);
 
-I'm inclined to fix kvm_range_has_memory_attributes() instead of unwinding the
-reservation.  Because this isn't a memory leak per se, e.g. if it weren't for
-the false negative in kvm_range_has_memory_attributes(), I would say this is a
-complete non-issue (there's no leak, just a maybe-unused reservation).
-working as intended.
+This is a good point, I will update this. Actually, I was thinking of
+adding a new struct in the preserved state that represents the
+association between domain-iommu-device. All the drivers have this, so
+it is better to have a representation of this. Let me evaluate that.
+>
+>?
+>
+>By the way, why GFP_ATOMIC here at all?
 
-I think it would be this?
+Will update as you suggested.
+>
+>>+	return 0;
+>>+}
+>>+
+>>+/**
+>>+ * intel_iommu_liveupdate_restore_root_table() - Restore root table and reclaim domain IDs
+>>+ * @iommu: Target IOMMU
+>>+ * @iommu_ser: Serialized IOMMU hardware state from previous kernel
+>>+ *
+>>+ * Restores the preserved root table and context tables for the IOMMU hardware
+>>+ * instance across Live Update, and reclaims all domain IDs previously allocated
+>>+ * to preserved devices so they are not reused.
+>>+ */
+>>+void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
+>>+					       struct iommu_hw_ser *iommu_ser)
+>>+{
+>>+	if (!iommu_ser->intel.restored)
+>>+		iommu_restore_pages(iommu_ser->intel.root_table);
+>>+
+>>+	iommu->root_entry = __va(iommu_ser->intel.root_table);
+>>+
+>>+	if (!iommu_ser->intel.restored)
+>>+		restore_iommu_context(iommu);
+>>+
+>>+	iommu_ser->intel.restored = 1;
+>
+>This uses iommu_ser->intel.restored to prevent restoring the root and
+>context tables multiple times. For this to work safely, iommu_ser-
+>>intel.restored must be 0 the first time restore runs after kexec.
+>
+>The problem is: this field is inside struct iommu_hw_ser, and that
+>struct is allocated in the old kernel. How to ensure that the previous
+>kernel has zeroed this out? Maybe I’m overthinking this.
 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 65eb26a0520d..a01b2af1cb17 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -2447,8 +2447,9 @@ bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
- 		return (kvm_get_memory_attributes(kvm, start) & mask) == attrs;
- 
- 	guard(rcu)();
--	if (!attrs)
--		return !xas_find(&xas, end - 1);
-+
-+	if (!attrs && !xas_find(&xas, end - 1))
-+		return true;
- 
- 	for (index = start; index < end; index++) {
- 		do {
+This is a valid point. However, the old kernel allocates this struct
+with GFP_ZERO and it never touches the restored field prior to kexec.
+So it should be zero in the new kernel.
+>
+>>+	BUG_ON(iommu_for_each_preserved_device(_restore_used_domain_ids, iommu));
+>>+}
+>>+
+>>  /**
+>>   * intel_iommu_preserve_device() - Intel IOMMU callback to preserve device state
+>>   * @dev: Target device
+>
+>Thanks,
+>baolu
 
-Side topic, does storing NULL even require an entry?  Based on the above behavior,
-I assume not.  So can't we also do?  This feels like deja vu though...
-
-@@ -2573,7 +2574,7 @@ static int kvm_vm_set_mem_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
- 	 * Reserve memory ahead of time to avoid having to deal with failures
- 	 * partway through setting the new attributes.
- 	 */
--	for (i = start; i < end; i++) {
-+	for (i = start; entry && i < end; i++) {
- 		r = xa_reserve(&kvm->mem_attr_array, i, GFP_KERNEL_ACCOUNT);
- 		if (r)
- 			goto out_unlock;
-
+Thanks,
+Sami
