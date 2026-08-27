@@ -1,147 +1,220 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D82A36E466
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 21:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3070B36923F
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 21:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787866935; cv=none; b=O3BMC+h8iYf1uK6XLe/M4jaWCr7Qr2YO1zy+JR74TPKPv6g/UNPNQbJeH0hVDqMrxG1gC0E8CLbucji6v+yLwS6JXVvG0Ti5TqUKCrcF5tBebCFVi06opr3N1o9En8DYvcZn78KPzAX8W2jujuXJ4mWqG9KgNP2WJkXqPf86IbU=
+	t=1787867227; cv=none; b=hty4VHvGkGqhZGHFg4S//vh93llRjL7uIx3nkDWrbYJZcd6x89Af0RloAHIzH/J41X8GugM0kmPKacK/6tyzgvlUCy0AJQjCdTWFTKFbMdJLHJG3uVIefFZhzdmrYpJomejmQkoMX6c8Eb1+38BiNaiFyHDatt7VqFqqpCtab/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787866935; c=relaxed/simple;
-	bh=9tHK6tvUsgxuqmiU95IJiGTH3iXvv2ChShXtSHUzgrM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ensIDP7mrC5oLzc7bD6Dx/5+duO/k9/MTrNgQaweVXou7mqurFpJEVztOTCv9Sqdksax8cfO27aJfErYlJQ2DIix1XqjMEJbpuUCaO/HpymwhKPfc3DP1bRW0fffagoEPkySzad0OOU8qwaHzc/1LzR0mq2R1j8elaBznX6c3jA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NfWSWZR4; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787867227; c=relaxed/simple;
+	bh=I0VgLOL5Qe8t57bn8Q/qooHVwtH4oXqjs5VOqtZrJoY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=N0g1WLApcTZSMO5RHkREPkfYmngIPZly8ogBw6uZqJhg3SKt4Nt5LzoO3IphMdMTkDaBVtfvcFqwxryUxIq9L+UEBlbG7S0y+DXJ4FXgFrPX4FnEuqsJeZs6mSQeJSO8tIMCFkU5ee8DHNaiQGL6bh6+oJ6Ge0sHFx/25nD4HoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U621Bk1D; arc=none smtp.client-ip=209.85.215.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NfWSWZR4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787866929;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=RCPK14Ec0AqueyxbiRrbVKvWDjNgHHCpXefmqR1aOKA=;
-	b=NfWSWZR4asWlMrhJbNgRrhU8iUkb5TqwFYkQfxmHzBIVD1V/w8gsqDzxl8xk7txIc7SAow
-	ZVry+JXnBDx2t0X7CeUaxARvsNeSrWc5tmpc1LI7xcf7OaKQ9RvZjyg//U60NjhprJIWK5
-	Qp30JIQ0QoaBIjKlS93le17UU4pgc3c=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-404-mmqMtOhQM86VeA_FXXtWdw-1; Thu,
- 27 Aug 2026 17:42:06 -0400
-X-MC-Unique: mmqMtOhQM86VeA_FXXtWdw-1
-X-Mimecast-MFC-AGG-ID: mmqMtOhQM86VeA_FXXtWdw_1787866924
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 87A271955DEA;
-	Thu, 27 Aug 2026 21:42:04 +0000 (UTC)
-Received: from [100.90.56.12] (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C9F4430002EE;
-	Thu, 27 Aug 2026 21:42:01 +0000 (UTC)
-Message-ID: <018f411b-9c7e-4baf-9d55-a153eab64dc4@redhat.com>
-Date: Thu, 27 Aug 2026 23:41:55 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U621Bk1D"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc1a439db36so438451a12.2
+        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 14:47:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787867225; x=1788472025; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=KKVRP5ShTJ66rB1F0RhQ4pfiaW2WP8xldc0sTEsUpIY=;
+        b=U621Bk1Dm3Gy4bJfFU4ziw8DvDYu74exPM8aR74/rBD/hDEUMGslTdu5BTPqCRdQqw
+         YtqNU0eSoa3eVoos/4FJHwuGzHPpvvg638nsNG/grntIbwrwWeh0Ix1xDdcS6Ub4T+oW
+         cTR/iR89ked/wGlvFixsgBH0UobuqWAEqwXZED5btdj+H7xq3GG3MvEBm6H4Oko/bx5a
+         0PBI4aaoBf0pG6dwyHa1mstyxM1xBcVkPa1Js8UoG2avvgzxWY2VMEpkNUPd73+QhXkp
+         dSuUkSlHX613vtNP+krEc6ChQ+XNyPD82S39ITPwv/GoX9egBKwAIRLRc5ByvMayR9cH
+         3Yww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787867225; x=1788472025;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KKVRP5ShTJ66rB1F0RhQ4pfiaW2WP8xldc0sTEsUpIY=;
+        b=hJhxyTBSKwhZeF1XPjjj46JnJ8kplrtBzOhs8YVYTNkDoOB5r/uLe+N298HjCM6/aH
+         DaG1xnzNlNCtmsmTY4HFC7KyM5ZeUnfn7PXA15J+iSyDJr0vFNFUtiNk8Y82jBmdf20Q
+         jtHJ6A1j6eHw+2EVS4UnFVa8gxZyUjBKUTH5cmNH9le5DwAjVjtc6JpBWUD8vSP8D3T0
+         keWn6AC3dae4J5jLFxbZMfp7xQwibzjK5LLDDdheAdkaQ85DsDX8LicbyfCEENyFmc81
+         LX7qWMBslbIk53+eJn8sHvvS/x+FyAH6lYl0i70GRShQQku66gV6NONhaI9O5dW63iPJ
+         nxlA==
+X-Forwarded-Encrypted: i=1; AHgh+Rote2GHwn+bPQ98XnXug2hIFn821nm9plY5WkQ5T2MCLD68IyQvyS2jYdoUs5tzstXDBjw=@vger.kernel.org
+X-Gm-Message-State: AFuF++nRcE9/Hdvo6PJg7oPJJObQpxhmeOTyhu8pzuLZ5D9rF6G8kL1z
+	ZJksmKp61aY+i/aTECo3Vfvj3XJ8gl28YQ8dP0CcvdhDzavCnJEg4px2O8S2eajpPDMnfF2rHNJ
+	cbENeVQ==
+X-Received: from pfqf3.prod.google.com ([2002:aa7:9d83:0:b0:847:9540:3064])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3021:b0:853:2ca8:c42d
+ with SMTP id d2e1a72fcca58-856297300f5mr4357552b3a.2.1787867224460; Thu, 27
+ Aug 2026 14:47:04 -0700 (PDT)
+Date: Thu, 27 Aug 2026 14:47:03 -0700
+In-Reply-To: <8d47b43e1829ac92703723e6a1a4afc7a2eaacb5.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] KVM: nSVM: Reject KVM_SET_NESTED_STATE if L1 has
- EFER.LMA=1 && EFER.LME=0
-To: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Stefan Teodorescu <fane@google.com>
-References: <20260826211844.884951-1-seanjc@google.com>
- <20260826211844.884951-2-seanjc@google.com>
- <CAO9r8zMnPwXVf6wx_gDMzv4j47xWa7idLD+vVm9DUiB=huiLaw@mail.gmail.com>
- <apA9eLuaMxCLdCmn@google.com>
- <CAO9r8zNm1QcVh29rTCzAFnYdUCS4y8ZSQOvrs2DD18XASuktoQ@mail.gmail.com>
- <apB1A5Ln_lGTI4oy@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <apB1A5Ln_lGTI4oy@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Mime-Version: 1.0
+References: <8d47b43e1829ac92703723e6a1a4afc7a2eaacb5.camel@infradead.org>
+Message-ID: <apCwV7xenDh2qmr7@google.com>
+Subject: Re: KVM: x86/mmu: __kvm_rmap_lock() preemption assert trips on PREEMPT_RT
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: James Houghton <jthoughton@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/27/26 19:33, Sean Christopherson wrote:
->>> If anything is wrong, it's the CR0.PG check.  Presumably that got carried forward
->>> from commit c0725420cfdc ("KVM: SVM: Add helper functions for nested SVM").  I
->>> don't see anything in the APM that requires paging to be enabled, and nothing in
->>> that ancient series points at concrete documentation either.
->>
->> Oh yeah you're right, for some reason I thought it was paging not
->> protected mode. Well then, it seems like
->> nested_svm_check_permissions() is also incorrectly checking paging as
->> well, seems like both checks are incorrect? Also, I don't see anything
->> in the APM about checking RFLAGS.VM before VMRUN.
-> 
-> Presumably it's covered by the !PROTECTED_MODE clause.
-> 
->    IF ((MSR_EFER.SVME == 0) || (!PROTECTED_MODE))  // This instruction can only be executed in protected
->      EXCEPTION [#UD]                               // mode with SVM enabled
-> 
-> Section "1.3.4 Legacy Modes" describes "Protected Mode" and "Virtual-8086 Mode"
-> as separate submodes.  And the tables for most instructions differentiate between
-> Real, Virtual 8086, and Protected modes when enumerating exceptions.
+On Thu, Aug 27, 2026, David Woodhouse wrote:
+> While soaking unrelated KVM changes on a PREEMPT_RT + lockdep kernel
+> I hit this, which I don't believe has been reported before:
 
-Right.
+Heh, not on-list.  I've hit it the few times I've run PREEMPT_RT, but I (ob=
+viously)
+haven't cared enough to fix it, especially given the lack of external repor=
+ts.
+Which makes sense; I know people run KVM with PREEMPT_RT, but running neste=
+d,
+memory-overcommitted VMs with PREEMPT_RT seems beyond crazy.
 
-As to CR0.PG it does seem incorrect to check it entirely, however note 
-that there is this too (15.25.3 Enabling Nested Paging):
+>   WARNING: arch/x86/kvm/mmu/mmu.c:920 at __kvm_rmap_lock+0x1a7/0x1e0 [kvm=
+], CPU#16: vmx_apic_update/3708
+>   CPU: 16 UID: 0 PID: 3708 Comm: vmx_apic_update Not tainted 7.2.0-rc7 #5=
+2 PREEMPT_{RT,LAZY}
+>   RIP: 0010:__kvm_rmap_lock+0x1a7/0x1e0 [kvm]
+>   Call Trace:
+>    pte_list_add+0x67/0x4d0 [kvm]
+>    __link_shadow_page+0x249/0x480 [kvm]
+>    ept_fetch+0x4d5/0x1220 [kvm]
+>    ept_page_fault+0x60b/0x850 [kvm]
+>    kvm_mmu_do_page_fault+0x252/0x690 [kvm]
+>=20
+> That's the lockdep_assert_preemption_disabled() in __kvm_rmap_lock(),
+> from commit 4834eaded91e ("KVM: x86/mmu: Add infrastructure to allow
+> walking rmaps outside of mmu_lock").
+>=20
+> I don't think this one is just lockdep vs. PREEMPT_RT causing false
+> positives =E2=80=94 the rmap lock is a hand-crafted bit-spinlock, and if =
+a lock
+> holder is preempted that leaves every other walker of that rmap
+> spinning and waiting for it (with no tracked owner for PI to boost).
+>
+> On PREEMPT_RT we genuinely get here without preemption disabled,
+> because kvm->mmu_lock is a sleeping lock now. Any shadow-MMU fault
+> on an RT kernel should trip it =E2=80=94 this one is the !TDP nested EPT =
+path
+> (ept_fetch()), and it fires within seconds of running a nested guest
+> with lockdep enabled.
 
-	If VMRUN is executed with hCR0.PG cleared to zero and
-	NP_ENABLE set to 1, VMRUN terminates with
-	#VMEXIT(VMEXIT_INVALID)
+Yep.
 
-which would have to be checked in nested_vmcb_check_controls().
+> I guess we fix it by turning the assertion into a preempt_disable() of
+> its own? Not sufficiently confident in that conclusion to send it in
+> 'diff -up' form though...
 
->> If the goal here is to keep the checks here consistent with
->> nested_svm_check_permissions(), aside from the new EFER check, then
->> maybe we should also check CPL here?
-Perhaps, but nested_svm_check_permissions() is not reached with CPL=0 
-because the #GP overrides the interception (table 15-7, instruction 
-intercepts).  The same should be true about EFLAGS.VM=1.
+Or in the spirit of PREEMPT_RT, make the aging code acquire mmu_lock?  As a=
+bove,
+I have a hard time believing anyone cares about aging throughput of nested =
+VMs
+when running PREEMPT_RT, certainly not enough to want to disable preemption=
+ for
+any amount of time.
 
-Paolo
+Not the prettiest code, but it does seem like the right thing to do for PRE=
+EMPT_RT.
+Compile-tested only at this point.  I'll take it for a spin, unless someone=
+ has a
+better idea.
+
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 81c30e2c74f3..31a372d0697c 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -913,11 +913,15 @@ static struct kvm_memory_slot *gfn_to_memslot_dirty_b=
+itmap(struct kvm_vcpu *vcpu
+  */
+ #define KVM_RMAP_LOCKED	BIT(1)
+=20
+-static unsigned long __kvm_rmap_lock(struct kvm_rmap_head *rmap_head)
++static unsigned long __kvm_rmap_lock(struct kvm *kvm,
++				     struct kvm_rmap_head *rmap_head)
+ {
+ 	unsigned long old_val, new_val;
+=20
+-	lockdep_assert_preemption_disabled();
++	if (IS_ENABLED(CONFIG_PREEMPT_RT))
++		lockdep_assert_preemption_disabled();
++	else
++		lockdep_assert_held(&kvm->mmu_lock);
+=20
+ 	/*
+ 	 * Elide the lock if the rmap is empty, as lockless walkers (read-only
+@@ -973,7 +977,7 @@ static unsigned long kvm_rmap_lock(struct kvm *kvm,
+ {
+ 	lockdep_assert_held_write(&kvm->mmu_lock);
+=20
+-	return __kvm_rmap_lock(rmap_head);
++	return __kvm_rmap_lock(kvm, rmap_head);
+ }
+=20
+ static void __kvm_rmap_unlock(struct kvm_rmap_head *rmap_head,
+@@ -1008,14 +1012,17 @@ static unsigned long kvm_rmap_get(struct kvm_rmap_h=
+ead *rmap_head)
+  * actual locking is the same, but the caller is disallowed from modifying=
+ the
+  * rmap, and so the unlock flow is a nop if the rmap is/was empty.
+  */
+-static unsigned long kvm_rmap_lock_readonly(struct kvm_rmap_head *rmap_hea=
+d)
++static unsigned long kvm_rmap_lock_readonly(struct kvm *kvm,
++					    struct kvm_rmap_head *rmap_head)
+ {
+ 	unsigned long rmap_val;
+=20
+-	preempt_disable();
+-	rmap_val =3D __kvm_rmap_lock(rmap_head);
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
++		preempt_disable();
+=20
+-	if (!rmap_val)
++	rmap_val =3D __kvm_rmap_lock(kvm, rmap_head);
++
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && !rmap_val)
+ 		preempt_enable();
+=20
+ 	return rmap_val;
+@@ -1030,7 +1037,9 @@ static void kvm_rmap_unlock_readonly(struct kvm_rmap_=
+head *rmap_head,
+ 	KVM_MMU_WARN_ON(old_val !=3D kvm_rmap_get(rmap_head));
+=20
+ 	__kvm_rmap_unlock(rmap_head, old_val);
+-	preempt_enable();
++
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
++		preempt_enable();
+ }
+=20
+ /*
+@@ -1745,11 +1754,15 @@ static bool kvm_rmap_age_gfn_range(struct kvm *kvm,
+ 	gfn_t gfn;
+ 	int level;
+=20
++#ifdef CONFIG_PREEMPT_RT
++	guard(read_lock)(&kvm->mmu_lock);
++#endif
++
+ 	for (level =3D PG_LEVEL_4K; level <=3D KVM_MAX_HUGEPAGE_LEVEL; level++) {
+ 		for (gfn =3D range->start; gfn < range->end;
+ 		     gfn +=3D KVM_PAGES_PER_HPAGE(level)) {
+ 			rmap_head =3D gfn_to_rmap(gfn, level, range->slot);
+-			rmap_val =3D kvm_rmap_lock_readonly(rmap_head);
++			rmap_val =3D kvm_rmap_lock_readonly(kvm, rmap_head);
+=20
+ 			for_each_rmap_spte_lockless(rmap_val, &iter, sptep, old_spte) {
+ 				if (!is_accessed_spte(old_spte))
 
