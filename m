@@ -1,90 +1,152 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B873515D6
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 13:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F476476068
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 13:44:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787838202; cv=none; b=gL0U5ba2C34Wd2MXDixHYIrFpOSm/ypZgvbjAA7CYP99yRA2GgYqRbF5XLWxnJKW5evfRretEmhyUGnAHv4WFXA7P6Wvfnmrlt0HMtOBuMTl3rBLDgqZFQOimok1WMCE8fD4yto0O6OW7bhOCaKXAEH0mjNA7+IO0nmIub7JF0A=
+	t=1787838302; cv=none; b=n8bgQYSd7HANxGtI/GZJCK4u+nPLI7Y77OVXD+QmAM1alF/XdB3MiFKZmn4hdTS9ZK4lnlFeVwrUTqMkOSB+Bi7NgGZrrAUoqkE50jEHaJB058jcqCbYIViK2qyJEp6eeFRkt5ibcQyI5Z6YOPotp+8sEWUxvhapbGVYlcZmQ6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787838202; c=relaxed/simple;
-	bh=8ONDUDAg2dM8ZoH59YtZArNDROq+JIIjaSpnOUiHVnQ=;
+	s=arc-20240116; t=1787838302; c=relaxed/simple;
+	bh=ilfcpqGhMAw8LbFI4W31+iK74ySKtrAzBZKjNb2ZM+I=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kefWyZ2B0nLZwjP5Xai/OcTkcQfD5zt5jHwngwastNS9UziXBsHadKYsCWVbfgdzPfZddz3Grdnug8MrGO7W929bPRkfJJSFh+EiB7mEytsGnMc63qrS9qzcRw/XTjhcAkGRPNpq7dgZ6MgAoB2cAV28yi+KidiUq8PbGAfeX3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Oo8Kmyqx; arc=none smtp.client-ip=209.85.214.200
+	 To:Cc:Content-Type; b=V+gerOuvrjC62Mxq+mKXnszyDQ9cG9VO6t+W6HLXu9bJ6454xXNP03mzlLHXhF5QtgvYcQTea4n0Hsg6PuhQtIpoQlbqd4OgjJ8G+EdM3ArXdYcU0XaLYSOC1aHJrTy9mTlH/4ykss/OYwuPBDkIc4tfq+P/9jxEiEZXEOSqSTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VLgnEkGh; arc=none smtp.client-ip=209.85.214.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Oo8Kmyqx"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cfc52ddc55so32609165ad.3
-        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 06:43:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VLgnEkGh"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cfca8558d2so29831035ad.2
+        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 06:44:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787838200; x=1788443000; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mYncMrF5RzKjUOnGrPhMmfgObwsKBG4ezJSAsq3PxiI=;
-        b=Oo8KmyqxLCBhU0E05tUBeNjE5TtPZJw5hX0o9yAIU3+aDpM6nWaGtA3NTeAlR4l+5K
-         Rpxng6TmjyFrTJbTDDpazM1Gn6qqQYDaonUbU/lPvjACB7gfo5yfmg/G1kiSv/JoSPm2
-         UiKRUsdnjQ0k/V/rK0WvwTdyFyB+kxLHCNcLtD9C+TAvkQrgnQYsfOCc0KQjofjKAbmw
-         vT4MNSoeX7blDf0yN6ISyW9cGZ8MrNdoWtj0KMUdgD7+7wp00KKQ9y98YsHuviYtYRmd
-         pQNwLO3TMd/7sNzNK9tljiRaTBCe4OvHS5MoawfMexkmUhoqYByMQGIXOXXVsnpiGNoF
-         4oxg==
+        d=google.com; s=20251104; t=1787838295; x=1788443095; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=nNAW6+hrn+16rrcmMbrTH4xe0eQT0GEx+FDl+aEbt18=;
+        b=VLgnEkGhkV8aEkQzouQno4TMd/ba63C5bAQ1/+dXMsDCUDi6Re3VnRCC7AqcAA4WwV
+         BD9ijggjnRIBhu2l1+6ZIf6CkM/a2cqrJMJUgawiRF0ZBrZhqltFtkq6yMd2vb+bQYmC
+         HHvJoT3knVFlPq+BRnxNEBHraCmx8lI3olC00MBmzvBpyNwwalYNqFl3I2GUFGeXTCZ6
+         jmxe0dWh3OLOy7LLD3AogggPlDqnYf89nU7wT8kLOQYSanNbNGkgBz2SzeZWoOb6oqFT
+         9TvtcbzLrS7+TGRFV8s06ell6IQmyE5LKncTgyMrwjIj3nquw6jelli/JcyBzhnHbne9
+         Aq1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787838200; x=1788443000;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mYncMrF5RzKjUOnGrPhMmfgObwsKBG4ezJSAsq3PxiI=;
-        b=MQ6ea/uYDJBOym9YbZQuUEfVByMpzt2xdTgRFJbLkUMvp5r8992+hIAmaYFDwsNt6q
-         EaQ7Q9xFGeEfdQ70G8PslnaFQxB0Y4l6L5e3cnZ4jMk3AjDg0h4NL6N4IsKdLPKbxz2i
-         q7jB1iBvmSRlvOu8Mr4BIzX/cxj/4Iw8mCJX8UC2oWy8hcKuP5os4qiWhp+QEVhRieXV
-         b63x2AufBh9ucxhT7WCFMWKrynMs2rUebGDGma0g008vXvBBSXuuigMSbUgixtBEMIQD
-         QWtuIxQB/HIpSGefhDvUm8CTr7V9eUeWDcxBaLnmRnNEhoHdGtaVT44PKi3wwcWE3Mbk
-         jbCg==
-X-Forwarded-Encrypted: i=1; AHgh+RrJN4GKphshWV6RK1sNe8Gi+nXH2Gugs9PKIT+41nqzV6dkDZrgWktDkMGBfW7HBwq6fgY=@vger.kernel.org
-X-Gm-Message-State: AFuF++lOeMY/Zx1liy6N7VI6KMlJRWZ1h2fpxDTtnMIAkuLAPiPlPjRk
-	cL95+8A+yPj7F+KR65n2IDS4ZjlIGiVQWik4VdBX11eO5JODLkowXfnFvS9DWKLv2eaxObAlkrq
-	fV6RhGw==
-X-Received: from pga9.prod.google.com ([2002:a05:6a02:4f89:b0:cc1:be9e:35ed])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:e290:b0:3d1:66cb:d49
- with SMTP id adf61e73a8af0-3d166cb0e18mr7225133637.4.1787838199681; Thu, 27
- Aug 2026 06:43:19 -0700 (PDT)
-Date: Thu, 27 Aug 2026 06:43:17 -0700
-In-Reply-To: <ao_Ms5alWwKa30U8@192.168.1.215>
+        d=1e100.net; s=20251104; t=1787838295; x=1788443095;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nNAW6+hrn+16rrcmMbrTH4xe0eQT0GEx+FDl+aEbt18=;
+        b=Cu1+Ai3G6eGbT566/06ieuExKKrxxEYCvH1JYWb51ZESGwTQmt+v2HN+Ml2REAYyZc
+         AKbg1es/n3jzNFQB00klOqVQf+KPCTdk47Wdf5GRzYmRUEQmMldwIgBWI4K7trqDOODr
+         RqwUTyU3PGxri7Q5dPN95nafTvxS+Nt86dH0nXaYirYAaAaa0VCh1nzI1TntVN11PtDx
+         2cysaqDoK1h3NrwyGJNGb2ckabrKcz7SmgGIq1XUaP+FIXSZWJtG7ahr0b10q/SpVXOW
+         /4ASDM+yRqgB+LmsQhdR0u4t8IbPM6KWls+DpN+zjmhGIEVpMZR6Y5Z7A2OmmLlmjqxz
+         UWLw==
+X-Forwarded-Encrypted: i=1; AHgh+Rq6A/35zL7aEPYR4MXV5WarC1vvpMUJK07rcNiTaIcKCiSqzH1LeE2QPUpKPDuP3T/NK2A=@vger.kernel.org
+X-Gm-Message-State: AFuF++ldqh5fjnLPbzJouk/duKYLjo0W0Unf1vIJxT9RyBva8DpOkJn2
+	UNqk65EXqc1uR/G1SSqld+imgd1HuUeJ5/MxJEZ1ez6nFUGikyyWhHM36NWa03bfAls6TVQh1iu
+	9657qyQ==
+X-Received: from plq8.prod.google.com ([2002:a17:903:2f88:b0:2cc:611f:4a53])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:cf0f:b0:2cf:ca89:499d
+ with SMTP id d9443c01a7336-2d707ac86ccmr283750715ad.7.1787838293974; Thu, 27
+ Aug 2026 06:44:53 -0700 (PDT)
+Date: Thu, 27 Aug 2026 06:44:53 -0700
+In-Reply-To: <de6deb5a-5ce8-2acf-01b8-9d597b2e3769@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <ao_Ms5alWwKa30U8@192.168.1.215>
-Message-ID: <apA-9UEveHuHhKkV@google.com>
-Subject: Re: [PATCH 1/2] KVM: nSVM: Restore L1's debug registers on nested VM-Exit
+References: <20260826230511.972824-1-seanjc@google.com> <20260826230511.972824-3-seanjc@google.com>
+ <20260826232224.782021F000E9@smtp.kernel.org> <ao946gGsIkSkEwAs@google.com> <de6deb5a-5ce8-2acf-01b8-9d597b2e3769@loongson.cn>
+Message-ID: <apA_Vfl0Rqyk0Ii1@google.com>
+Subject: Re: [PATCH 02/20] KVM: selftests: Bump the minimum GPA for page
+ tables to 0x200000
 From: Sean Christopherson <seanjc@google.com>
-To: Hao Zhang <hao_zhang_kdev@163.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, 
+	Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 27, 2026, Hao Zhang wrote:
-> From: Hao Zhang <zhanghao1@kylinos.cn>
-> 
-> Restore L1's DR6 and DR7 when emulating a nested VM-Exit from L2 to L1.
-> KVM loads L2's debug register state from vmcb12 on nested VMRUN, but
-> currently restores DR7 to its reset value and leaves DR6 untouched when
-> switching back to vmcb01.  As a result, L1 can observe stale L2 DR6 state
-> and lose its DR7 state after an L2 VM-Exit.
+On Thu, Aug 27, 2026, Bibo Mao wrote:
+> On 2026/8/27 =E4=B8=8A=E5=8D=887:38, Sean Christopherson wrote:
+> > +LoongArch folks (question below for you)
+> >=20
+> > On Wed, Aug 26, 2026, sashiko-bot@kernel.org wrote:
+> > > > diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools=
+/testing/selftests/kvm/include/kvm_util.h
+> > > > index 5a7a455b53875..70906a0d1003c 100644
+> > > > --- a/tools/testing/selftests/kvm/include/kvm_util.h
+> > > > +++ b/tools/testing/selftests/kvm/include/kvm_util.h
+> > > > @@ -175,7 +175,7 @@ static inline struct userspace_mem_region *vm_g=
+et_mem_region(struct kvm_vm *vm,
+> > > >   /* Minimum allocated guest virtual and physical addresses */
+> > > >   #define KVM_UTIL_MIN_VADDR		0x2000
+> > > > -#define KVM_GUEST_PAGE_TABLE_MIN_PADDR	0x180000
+> > > > +#define KVM_GUEST_PAGE_TABLE_MIN_PADDR	0x200000
+> > >=20
+> > > [Severity: High]
+> > > Does bumping the minimum GPA to 0x200000 cause the guest page tables =
+to overlap
+> > > with the VGIC redistributor on ARM64?
+> >=20
+> > This is definitely a Marc/Oliver question.  FWIW, I didn't see failures=
+ on arm64,
+> > but I also have no idea if the hardware I was using supports the v3 tes=
+ts, so
+> > it's entirely possible this is a real and obvious problem.
+> >=20
+> > > In tools/testing/selftests/kvm/arm64/vgic_init.c:subtest_v3_redist_re=
+gions(),
+> > > the redistributor is hardcoded to be placed at the same address:
+> > >=20
+> > >      addr =3D REDIST_REGION_ATTR_ADDR(2, 0x200000, 0, 0);
+> > >      kvm_device_attr_set(v->gic_fd, KVM_DEV_ARM_VGIC_GRP_ADDR,
+> > >                          KVM_VGIC_V3_ADDR_TYPE_REDIST_REGION, &addr);
+> > >=20
+> > > Because KVM maps the redistributor over memory, wouldn't the hardware=
+ MMU's
+> > > stage-1 page table walk attempt to read page table entries from an em=
+ulated IO
+> > > region?
+> > >=20
+> > > This seems like it would cause a stage-2 fault that KVM cannot handle=
+ for a
+> > > stage-1 page table walk, leading to an infinite exception loop.
+> > >=20
+> > > Additionally, does starting allocations at 0x200000 severely reduce t=
+he
+> > > available memory in memslot 0?
+> > >=20
+> > > In tools/testing/selftests/kvm/lib/kvm_util.c:vm_nr_pages_required(),=
+ memslot 0
+> > > is sized to be just slightly larger than 2MB:
+> > >=20
+> > >      nr_pages =3D 512;
+> > >      /* Account for the per-vCPU stacks on behalf of the test. */
+> > >      nr_pages +=3D nr_runnable_vcpus * DEFAULT_STACK_PGS;
+> >=20
+> > Ugh, right, because this doesn't change the base of the memslot.
+> >=20
+> > Why does LoongArch use 0x200000 instead of 0x180000 as the base?  I swi=
+tched the
+> > common macro purely because I thought it would be the path of least res=
+istance,
+> > but maybe "fixing" LoongArch to use KVM_GUEST_PAGE_TABLE_MIN_PADDR is e=
+asier?
+> It is no limitation on LoongArch with physical address, the common addres=
+s
+> 0x180000 is ok. Originally it is to add huge page on VM side in future, i=
+t
+> seems that it is VA address macro KVM_UTIL_MIN_VADDR rather than PA addre=
+ss
+> for page table for huge page purpose.
 
-Well, yeah, because the APM says so.  The APM very clearly says:
+Nice!  In that case, I'll replace this with a patch to switch LoongArch to
+KVM_GUEST_PAGE_TABLE_MIN_PADDR.
 
-  Disables all breakpoints in the host DR7 register.
-
-In typical APM fashion, it says nothing about DR6, so it's reasonable to assume
-it's preserved as-is across #VMEXIT, i.e. is L1's responsibility to ignore since
-there's no #DB.
-
-> Restore both registers from vmcb01, matching the rest of the L1 processor
-> state restored on nested VM-Exit.
-
-What happens to other state is irrelevant, what matters is what the architecture
-says happens.
+Thanks!
