@@ -1,220 +1,193 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3070B36923F
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 21:47:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222A5364E84;
+	Thu, 27 Aug 2026 21:59:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787867227; cv=none; b=hty4VHvGkGqhZGHFg4S//vh93llRjL7uIx3nkDWrbYJZcd6x89Af0RloAHIzH/J41X8GugM0kmPKacK/6tyzgvlUCy0AJQjCdTWFTKFbMdJLHJG3uVIefFZhzdmrYpJomejmQkoMX6c8Eb1+38BiNaiFyHDatt7VqFqqpCtab/4=
+	t=1787867954; cv=none; b=VxwWDD9RT1SoOzwFE4Qnctpo46C8SZ+3rpp6KNJw8VFhvREuQQ0Jj2pPtE20YPMMFm/Qzi9qq5GIiy6xKRSBSPDpOM2EW1hL1alTN7XSgZD4FfwK9utRuO6DIY0oSbKWDdCo6z80K8xRtKI5xWs/tIyCCuT7XGL/ClAUquhGTDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787867227; c=relaxed/simple;
-	bh=I0VgLOL5Qe8t57bn8Q/qooHVwtH4oXqjs5VOqtZrJoY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=N0g1WLApcTZSMO5RHkREPkfYmngIPZly8ogBw6uZqJhg3SKt4Nt5LzoO3IphMdMTkDaBVtfvcFqwxryUxIq9L+UEBlbG7S0y+DXJ4FXgFrPX4FnEuqsJeZs6mSQeJSO8tIMCFkU5ee8DHNaiQGL6bh6+oJ6Ge0sHFx/25nD4HoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U621Bk1D; arc=none smtp.client-ip=209.85.215.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787867954; c=relaxed/simple;
+	bh=qzLonAOzoeSO1KaA4hy9xTbUYSnBL2AJcsROKCH76qo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TXP8HfJ0fuRmHcj/sFchSMKyAHxi2Px/2PgYylkDLc/lXn9PJhomP4fmU8j4sXNp6HOjqWWsARDUS9r2f9zdqdde9pgdfdSeA9AsYxT/Q09x19xNiYbaUiIk/lGUFAJDmJ07WETprTY1pHtCaF4hcCQ9ewdAVYPueKzn05/aNxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=mqgmylbH; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U621Bk1D"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc1a439db36so438451a12.2
-        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 14:47:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787867225; x=1788472025; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=KKVRP5ShTJ66rB1F0RhQ4pfiaW2WP8xldc0sTEsUpIY=;
-        b=U621Bk1Dm3Gy4bJfFU4ziw8DvDYu74exPM8aR74/rBD/hDEUMGslTdu5BTPqCRdQqw
-         YtqNU0eSoa3eVoos/4FJHwuGzHPpvvg638nsNG/grntIbwrwWeh0Ix1xDdcS6Ub4T+oW
-         cTR/iR89ked/wGlvFixsgBH0UobuqWAEqwXZED5btdj+H7xq3GG3MvEBm6H4Oko/bx5a
-         0PBI4aaoBf0pG6dwyHa1mstyxM1xBcVkPa1Js8UoG2avvgzxWY2VMEpkNUPd73+QhXkp
-         dSuUkSlHX613vtNP+krEc6ChQ+XNyPD82S39ITPwv/GoX9egBKwAIRLRc5ByvMayR9cH
-         3Yww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787867225; x=1788472025;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KKVRP5ShTJ66rB1F0RhQ4pfiaW2WP8xldc0sTEsUpIY=;
-        b=hJhxyTBSKwhZeF1XPjjj46JnJ8kplrtBzOhs8YVYTNkDoOB5r/uLe+N298HjCM6/aH
-         DaG1xnzNlNCtmsmTY4HFC7KyM5ZeUnfn7PXA15J+iSyDJr0vFNFUtiNk8Y82jBmdf20Q
-         jtHJ6A1j6eHw+2EVS4UnFVa8gxZyUjBKUTH5cmNH9le5DwAjVjtc6JpBWUD8vSP8D3T0
-         keWn6AC3dae4J5jLFxbZMfp7xQwibzjK5LLDDdheAdkaQ85DsDX8LicbyfCEENyFmc81
-         LX7qWMBslbIk53+eJn8sHvvS/x+FyAH6lYl0i70GRShQQku66gV6NONhaI9O5dW63iPJ
-         nxlA==
-X-Forwarded-Encrypted: i=1; AHgh+Rote2GHwn+bPQ98XnXug2hIFn821nm9plY5WkQ5T2MCLD68IyQvyS2jYdoUs5tzstXDBjw=@vger.kernel.org
-X-Gm-Message-State: AFuF++nRcE9/Hdvo6PJg7oPJJObQpxhmeOTyhu8pzuLZ5D9rF6G8kL1z
-	ZJksmKp61aY+i/aTECo3Vfvj3XJ8gl28YQ8dP0CcvdhDzavCnJEg4px2O8S2eajpPDMnfF2rHNJ
-	cbENeVQ==
-X-Received: from pfqf3.prod.google.com ([2002:aa7:9d83:0:b0:847:9540:3064])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3021:b0:853:2ca8:c42d
- with SMTP id d2e1a72fcca58-856297300f5mr4357552b3a.2.1787867224460; Thu, 27
- Aug 2026 14:47:04 -0700 (PDT)
-Date: Thu, 27 Aug 2026 14:47:03 -0700
-In-Reply-To: <8d47b43e1829ac92703723e6a1a4afc7a2eaacb5.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="mqgmylbH"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=2Z9GfRdYNGKAyi4eYFHvynSGXbnxrg/C+pRo3xywQik=; b=mqgmylbHvFWu2TC0svcfBjnUiu
+	lp4tHhY1qKErlAUjYabOkfDtkCxLVK+qUUU6mN2LQK1OdkYtOQQ7qIFd1EbhX/aX3joGNeLEzuHuQ
+	sEZUCXnP69iE3P/jtbc/PMv6u7U7dImz0A3pJH/ADQokzM/uw8nSsaWIumdcr9rJbL7A/gY8suasJ
+	ItrbyzOrxKUDxWOnD3G9SsW3+JNsRJx/uAav+/8kys6IirlShXGK/EZWtkcZqHtytP8bFhuiH+jy9
+	Ms6r5hTJ/LMVyqV7m4IzWniiNiSNUZql71A8gDl7zOCbPGEMNWG75ouPZSQ+AHYeJXrnCK4eMHSFG
+	y7S+1+eA==;
+Received: from [2001:8b0:10b:5:c5bc:77fb:75d5:ffaf] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wzi7o-0000000DXSU-48dh;
+	Thu, 27 Aug 2026 21:59:09 +0000
+Message-ID: <0bab7b4331aab38ee1d174a7b402bcda7684b50f.camel@infradead.org>
+Subject: Re: KVM: x86/mmu: __kvm_rmap_lock() preemption assert trips on
+ PREEMPT_RT
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: James Houghton <jthoughton@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>,  Sebastian Andrzej Siewior	 <bigeasy@linutronix.de>,
+ kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Date: Thu, 27 Aug 2026 22:58:56 +0100
+In-Reply-To: <apCwV7xenDh2qmr7@google.com>
+References: <8d47b43e1829ac92703723e6a1a4afc7a2eaacb5.camel@infradead.org>
+	 <apCwV7xenDh2qmr7@google.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-9aQd3TZV0Yg4gzw9Vc6d"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <8d47b43e1829ac92703723e6a1a4afc7a2eaacb5.camel@infradead.org>
-Message-ID: <apCwV7xenDh2qmr7@google.com>
-Subject: Re: KVM: x86/mmu: __kvm_rmap_lock() preemption assert trips on PREEMPT_RT
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: James Houghton <jthoughton@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+
+
+--=-9aQd3TZV0Yg4gzw9Vc6d
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 27, 2026, David Woodhouse wrote:
-> While soaking unrelated KVM changes on a PREEMPT_RT + lockdep kernel
-> I hit this, which I don't believe has been reported before:
+On Thu, 2026-08-27 at 14:47 -0700, Sean Christopherson wrote:
+> I'll take it for a spin, unless someone has a better idea.
 
-Heh, not on-list.  I've hit it the few times I've run PREEMPT_RT, but I (ob=
-viously)
-haven't cared enough to fix it, especially given the lack of external repor=
-ts.
-Which makes sense; I know people run KVM with PREEMPT_RT, but running neste=
-d,
-memory-overcommitted VMs with PREEMPT_RT seems beyond crazy.
+Heh, no pun intended?
 
->   WARNING: arch/x86/kvm/mmu/mmu.c:920 at __kvm_rmap_lock+0x1a7/0x1e0 [kvm=
-], CPU#16: vmx_apic_update/3708
->   CPU: 16 UID: 0 PID: 3708 Comm: vmx_apic_update Not tainted 7.2.0-rc7 #5=
-2 PREEMPT_{RT,LAZY}
->   RIP: 0010:__kvm_rmap_lock+0x1a7/0x1e0 [kvm]
->   Call Trace:
->    pte_list_add+0x67/0x4d0 [kvm]
->    __link_shadow_page+0x249/0x480 [kvm]
->    ept_fetch+0x4d5/0x1220 [kvm]
->    ept_page_fault+0x60b/0x850 [kvm]
->    kvm_mmu_do_page_fault+0x252/0x690 [kvm]
->=20
-> That's the lockdep_assert_preemption_disabled() in __kvm_rmap_lock(),
-> from commit 4834eaded91e ("KVM: x86/mmu: Add infrastructure to allow
-> walking rmaps outside of mmu_lock").
->=20
-> I don't think this one is just lockdep vs. PREEMPT_RT causing false
-> positives =E2=80=94 the rmap lock is a hand-crafted bit-spinlock, and if =
-a lock
-> holder is preempted that leaves every other walker of that rmap
-> spinning and waiting for it (with no tracked owner for PI to boost).
->
-> On PREEMPT_RT we genuinely get here without preemption disabled,
-> because kvm->mmu_lock is a sleeping lock now. Any shadow-MMU fault
-> on an RT kernel should trip it =E2=80=94 this one is the !TDP nested EPT =
-path
-> (ept_fetch()), and it fires within seconds of running a nested guest
-> with lockdep enabled.
+> -	lockdep_assert_preemption_disabled();
+> +	if (IS_ENABLED(CONFIG_PREEMPT_RT))
+> +		lockdep_assert_preemption_disabled();
+> +	else
+> +		lockdep_assert_held(&kvm->mmu_lock);
 
-Yep.
+Other way round?
 
-> I guess we fix it by turning the assertion into a preempt_disable() of
-> its own? Not sufficiently confident in that conclusion to send it in
-> 'diff -up' form though...
+I'll fix that and throw it on top of my GPC/RT/RCU torture tests.
 
-Or in the spirit of PREEMPT_RT, make the aging code acquire mmu_lock?  As a=
-bove,
-I have a hard time believing anyone cares about aging throughput of nested =
-VMs
-when running PREEMPT_RT, certainly not enough to want to disable preemption=
- for
-any amount of time.
+--=-9aQd3TZV0Yg4gzw9Vc6d
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-Not the prettiest code, but it does seem like the right thing to do for PRE=
-EMPT_RT.
-Compile-tested only at this point.  I'll take it for a spin, unless someone=
- has a
-better idea.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+SvVvszaRboFFjXowK5lX/j8AAAAAAAA=
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 81c30e2c74f3..31a372d0697c 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -913,11 +913,15 @@ static struct kvm_memory_slot *gfn_to_memslot_dirty_b=
-itmap(struct kvm_vcpu *vcpu
-  */
- #define KVM_RMAP_LOCKED	BIT(1)
-=20
--static unsigned long __kvm_rmap_lock(struct kvm_rmap_head *rmap_head)
-+static unsigned long __kvm_rmap_lock(struct kvm *kvm,
-+				     struct kvm_rmap_head *rmap_head)
- {
- 	unsigned long old_val, new_val;
-=20
--	lockdep_assert_preemption_disabled();
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT))
-+		lockdep_assert_preemption_disabled();
-+	else
-+		lockdep_assert_held(&kvm->mmu_lock);
-=20
- 	/*
- 	 * Elide the lock if the rmap is empty, as lockless walkers (read-only
-@@ -973,7 +977,7 @@ static unsigned long kvm_rmap_lock(struct kvm *kvm,
- {
- 	lockdep_assert_held_write(&kvm->mmu_lock);
-=20
--	return __kvm_rmap_lock(rmap_head);
-+	return __kvm_rmap_lock(kvm, rmap_head);
- }
-=20
- static void __kvm_rmap_unlock(struct kvm_rmap_head *rmap_head,
-@@ -1008,14 +1012,17 @@ static unsigned long kvm_rmap_get(struct kvm_rmap_h=
-ead *rmap_head)
-  * actual locking is the same, but the caller is disallowed from modifying=
- the
-  * rmap, and so the unlock flow is a nop if the rmap is/was empty.
-  */
--static unsigned long kvm_rmap_lock_readonly(struct kvm_rmap_head *rmap_hea=
-d)
-+static unsigned long kvm_rmap_lock_readonly(struct kvm *kvm,
-+					    struct kvm_rmap_head *rmap_head)
- {
- 	unsigned long rmap_val;
-=20
--	preempt_disable();
--	rmap_val =3D __kvm_rmap_lock(rmap_head);
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-+		preempt_disable();
-=20
--	if (!rmap_val)
-+	rmap_val =3D __kvm_rmap_lock(kvm, rmap_head);
-+
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && !rmap_val)
- 		preempt_enable();
-=20
- 	return rmap_val;
-@@ -1030,7 +1037,9 @@ static void kvm_rmap_unlock_readonly(struct kvm_rmap_=
-head *rmap_head,
- 	KVM_MMU_WARN_ON(old_val !=3D kvm_rmap_get(rmap_head));
-=20
- 	__kvm_rmap_unlock(rmap_head, old_val);
--	preempt_enable();
-+
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-+		preempt_enable();
- }
-=20
- /*
-@@ -1745,11 +1754,15 @@ static bool kvm_rmap_age_gfn_range(struct kvm *kvm,
- 	gfn_t gfn;
- 	int level;
-=20
-+#ifdef CONFIG_PREEMPT_RT
-+	guard(read_lock)(&kvm->mmu_lock);
-+#endif
-+
- 	for (level =3D PG_LEVEL_4K; level <=3D KVM_MAX_HUGEPAGE_LEVEL; level++) {
- 		for (gfn =3D range->start; gfn < range->end;
- 		     gfn +=3D KVM_PAGES_PER_HPAGE(level)) {
- 			rmap_head =3D gfn_to_rmap(gfn, level, range->slot);
--			rmap_val =3D kvm_rmap_lock_readonly(rmap_head);
-+			rmap_val =3D kvm_rmap_lock_readonly(kvm, rmap_head);
-=20
- 			for_each_rmap_spte_lockless(rmap_val, &iter, sptep, old_spte) {
- 				if (!is_accessed_spte(old_spte))
 
+--=-9aQd3TZV0Yg4gzw9Vc6d--
