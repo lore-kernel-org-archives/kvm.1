@@ -1,330 +1,117 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229D73C872C;
-	Thu, 27 Aug 2026 08:12:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6C33C3C07;
+	Thu, 27 Aug 2026 08:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787818335; cv=none; b=vErw/SHtvFRpEzTd7d/yx4uStDLvWBxAuKjUkKUuDuPZrkY2tIJjR27ciPbGvGrIoSS7C+LgW6jRTGJpRG6NCnlbtQSC3bFSHjgBXht3+OrGF2MTp5rk2oPgCKtVTbzKHFB5ac0wLnm3w0E2TittPV/xB+nSRaFxxgGJq/LNQX4=
+	t=1787818830; cv=none; b=VkFGZP/HBNq46m6WB5q/JOJyejSRYJftbI7D7/CMer1MaA+AMYQEghfxUUeInBFciuj3mJ/2e7Vlvv4App4JK8/gk11W5TqXA3CypMpQ4qkvmCFSnNzYPrUGgf/zpVYX8mAvcDK7lOkYhqSXS74Fbb7v2xVh9ZS/EIZzpwHUf2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787818335; c=relaxed/simple;
-	bh=xIw5or3RM6YwBPe1jR7j4fTvcYob61G6FjHWuUnrzDs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PH7uB6SV/MrO6Nc8GQS5bqiqnpO3FjgDo3obABL994nMjDljDdw2xUUYgQK4crHll3eCTHEiRKeOofj+zLio7lA5AbidFOIKgoKzgEdRmJXGwgNt/UunO3dqd4bMLWgYpwXJWwJ3Seucl2mRieK74LV0uTbLBbfEpqoHFIhUpH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PHRTWH9s; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1787818830; c=relaxed/simple;
+	bh=SV/m4iYNW87OXTbwLv7lP42wYFhTHG6yO/9HHGcZArI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fqs+W73VRk3X5h/26MPYbUFnDmfOrFtDLleOFG9cHhUkDE0wzKYDz19QJdDpYeVHWrMqsGDVf64gZsl4cAcMHV8Y5RRXX4PfEoQkGKXeQ1m0CBOQnXepCuj5jrRBx2s8wQad6mfRXx27xNGZkPyl6sPBaKkJgnCvhocdoDsuqEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xEMckJcc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/xHz2Dwu; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PHRTWH9s"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787818330; x=1819354330;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=xIw5or3RM6YwBPe1jR7j4fTvcYob61G6FjHWuUnrzDs=;
-  b=PHRTWH9sSlNUHfjk96WV6vkqrsyIMkti9W8cke/OyRDlMVr2fZsqBiWc
-   GNhbLjZxmWj4V5n9EF5E5izc6pqVE8a7WNb6JnO4vl4uMimakJah3F5HE
-   rFHvaaT02xwVlag0kGMBtHH1jjImU6a7gvlSLB04i38t4Q4R8TEUC3pUt
-   cn0sbBVgiwi9dezwjfXYEkx0/xH8Am7pzJq83LV11ykNQEUGJ/xMcs0IF
-   mXa8w9Jtmp6eFwDwQLym9xb0GbX0DuCKlpXJYPQ/fXEJne6SNoMPNjP6L
-   Mqzoek/EmjyVOcpa6MAjUvw0vvYa++cbVdlL5xVvM5XNEHvq+8oE0QwE8
-   Q==;
-X-CSE-ConnectionGUID: 6sAgqvEQS3GAtwFLa+9Qng==
-X-CSE-MsgGUID: +HuRqb0xRKSF6DTR6e/PdQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11887"; a="87254975"
-X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; 
-   d="scan'208";a="87254975"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 01:12:07 -0700
-X-CSE-ConnectionGUID: K34+mq1JRQGKND7PRdXgig==
-X-CSE-MsgGUID: qy5v8s5WR5mzCXNHocKrGQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; 
-   d="scan'208";a="264558865"
-Received: from blu2-desk.sh.intel.com (HELO [10.239.156.26]) ([10.239.156.26])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 01:12:03 -0700
-Message-ID: <5b920299-260b-4025-ac4f-e8f83beebf95@linux.intel.com>
-Date: Thu, 27 Aug 2026 16:12:01 +0800
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xEMckJcc";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/xHz2Dwu"
+Date: Thu, 27 Aug 2026 10:20:19 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1787818821;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dHKgEcpAnFM7pEhWpO1E8wnd+7B5JBIywxZU+obwOD0=;
+	b=xEMckJcctN+XyCF3tP1A7kB3Z9NMqkOr1WP3u9eNx0R1d6VPmDAbkfzv6Dz5L6rc4iPDAL
+	DeTMebaCG9CYd60ZBy6/6oyFrOocGDegnbcEVpSCtOOxRTmp89Tc7fP2j9Jfwx1X3iSEr3
+	vfg3fbcnrSr6VMLGvtRDr7LRYO7vMlHebLP9UMnFoEz3x5z3PqRFdQA/dGiGAceQ7kGREX
+	B3FthaoTCt/827MpvioWnToPzvvNkcrRmQeEzocpdKAI+bB3Zz4jCENu/fNmn4DSRgK5+s
+	gQKshKN67amzT1FdkuYnlf17RNxG4BlGjMnJafxaU6KZGBY2ee5SSXKE7rYqRQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1787818821;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dHKgEcpAnFM7pEhWpO1E8wnd+7B5JBIywxZU+obwOD0=;
+	b=/xHz2DwueZDiGs6En/mm1IcQyzO3s2+iRZ1dFAnSt6ypCR7hibiWxWPyikRCsxBcAbJWib
+	mLu+1zK/ObCQ8jDw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Jerome Glisse <jglisse@redhat.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
+	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Message-ID: <20260827082019.xrNuIfE2@linutronix.de>
+References: <ao3z7Rtw2FROkVpy@google.com>
+ <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop>
+ <20260826073233.T-KtFXmj@linutronix.de>
+ <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org>
+ <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop>
+ <98e123c9-3dc4-45fb-815b-881b3346741c@paulmck-laptop>
+ <ACC45EB6-F881-4EE9-A9F8-D53A2B921FEE@infradead.org>
+ <e62a7362-7dd0-4615-8877-6ab675971ab2@paulmck-laptop>
+ <06F9A0F0-2177-4173-A201-56325A73F89B@infradead.org>
+ <4415dbf2-10b0-4cb1-b045-13dbcd69c5d5@paulmck-laptop>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 12/18] iommu/vt-d: Handle reattach of the restored
- domain
-To: Samiullah Khawaja <skhawaja@google.com>,
- David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
-References: <20260808022723.3893618-1-skhawaja@google.com>
- <20260808022723.3893618-13-skhawaja@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20260808022723.3893618-13-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <4415dbf2-10b0-4cb1-b045-13dbcd69c5d5@paulmck-laptop>
 
-On 8/8/26 10:27, Samiullah Khawaja wrote:
-> Reattach the restored domain to the preserved device using restored
-> domain ID. While reattaching do not setup the context and PASID entries
-> as those are preserved during liveupdate.
+On 2026-08-26 14:04:32 [-0700], Paul E. McKenney wrote:
+> > >Anyway, easy enough:
+> > >
+> > >#ifdef CONFIG_PREEMPT_RT
+> > >DEFINE_SRCU(whatever);
+> > >#define my_srcu_read_lock() srcu_read_lock(&whatever);
+> > >#define my_srcu_read_unlock(idx) srcu_read_unlock(&whatever, (idx));
+> > >#define my_synchronize_srcu() synchronize_srcu(&whatever);
+> > >#else
+> > >DEFINE_SRCU_ATOMIC(whatever);
+> > >#define my_srcu_read_lock() srcu_read_lock_atomic(&whatever);
+> > >#define my_srcu_read_unlock(idx) srcu_read_unlock_atomic(&whatever, (idx));
+> > >#define my_synchronize_srcu() synchronize_srcu_atomic(&whatever);
+> > >#endif
+> > 
+> > We could do that for the KVM GPC locking, but more consistent would be to change *all* users of the 'atomic' lock under PREEMPT_RT to silently get the sleeping version instead, like PREEMPT_RT does with spinlocks and rwlocks.
+> > 
+> > So it's srcu_read_lock_atomic() itself (et al) which would get that if/else treatment.
 > 
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> ---
->   drivers/iommu/intel/iommu.c      |   9 ++-
->   drivers/iommu/intel/iommu.h      |  10 +++
->   drivers/iommu/intel/liveupdate.c | 120 +++++++++++++++++++++++++++++++
->   3 files changed, 136 insertions(+), 3 deletions(-)
+> OK, the traditional approach is that raw_synchronize_srcu_atomic() and
+> friends with the raw_ prefix are always atomic, and without the raw_
+> prefix it is atomic for !PREEMPT_RT and non-atomic otherwise.  You would
+> use the non-_raw primitives.
 > 
-> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-> index 42d3ff6db281..5370214629f4 100644
-> --- a/drivers/iommu/intel/iommu.c
-> +++ b/drivers/iommu/intel/iommu.c
-> @@ -864,7 +864,7 @@ static bool dev_needs_extra_dtlb_flush(struct pci_dev *pdev)
->   	return true;
->   }
->   
-> -static void iommu_enable_pci_ats(struct device_domain_info *info)
-> +void intel_iommu_enable_pci_ats(struct device_domain_info *info)
->   {
->   	struct pci_dev *pdev;
->   
-> @@ -1225,7 +1225,7 @@ domain_context_mapping(struct dmar_domain *domain, struct device *dev)
->   	if (ret)
->   		return ret;
->   
-> -	iommu_enable_pci_ats(info);
-> +	intel_iommu_enable_pci_ats(info);
->   
->   	return 0;
->   }
-> @@ -3164,6 +3164,9 @@ static int intel_iommu_attach_device(struct iommu_domain *domain,
->   {
->   	int ret;
->   
-> +	if (dev_iommu_restored_state(dev))
-> +		return intel_iommu_restore_device(domain, dev);
-> +
->   	device_block_translation(dev);
->   
->   	ret = paging_domain_compatible(domain, dev);
-> @@ -3376,7 +3379,7 @@ static void intel_iommu_probe_finalize(struct device *dev)
->   		info->pasid_enabled = 1;
->   
->   	if (sm_supported(iommu) && !dev_is_real_dma_subdevice(dev)) {
-> -		iommu_enable_pci_ats(info);
-> +		intel_iommu_enable_pci_ats(info);
->   		/* Assign a DEVTLB cache tag to the default domain. */
->   		if (info->ats_enabled && info->domain) {
->   			u16 did = domain_id_iommu(info->domain, iommu);
-> diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
-> index b33a12528066..1ef3b9309d44 100644
-> --- a/drivers/iommu/intel/iommu.h
-> +++ b/drivers/iommu/intel/iommu.h
-> @@ -1187,6 +1187,8 @@ void domain_detach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu);
->   void device_block_translation(struct device *dev);
->   int paging_domain_compatible(struct iommu_domain *domain, struct device *dev);
->   
-> +void intel_iommu_enable_pci_ats(struct device_domain_info *info);
-> +
->   struct dev_pasid_info *
->   domain_add_dev_pasid(struct iommu_domain *domain,
->   		     struct device *dev, ioasid_t pasid);
-> @@ -1309,6 +1311,8 @@ void intel_iommu_unpreserve(struct iommu_device *iommu,
->   void clear_unpreserved_context_entries(struct intel_iommu *iommu);
->   void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
->   					       struct iommu_hw_ser *iommu_ser);
-> +int intel_iommu_restore_device(struct iommu_domain *domain,
-> +			       struct device *dev);
->   #else
->   static inline int intel_iommu_preserve_device(struct device *dev,
->   					      struct iommu_device_ser *device_ser)
-> @@ -1340,6 +1344,12 @@ static inline void intel_iommu_liveupdate_restore_root_table(struct intel_iommu
->   							     struct iommu_hw_ser *iommu_ser)
->   {
->   }
-> +
-> +static inline int intel_iommu_restore_device(struct iommu_domain *domain,
-> +					     struct device *dev)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
->   #endif
->   
->   #ifdef CONFIG_INTEL_IOMMU_SVM
-> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
-> index 480eab2d966b..05dea3893399 100644
-> --- a/drivers/iommu/intel/liveupdate.c
-> +++ b/drivers/iommu/intel/liveupdate.c
-> @@ -12,6 +12,7 @@
->   #include <linux/iommu-liveupdate.h>
->   #include <linux/module.h>
->   #include <linux/pci.h>
-> +#include <linux/pci-ats.h>
->   
->   #include "iommu.h"
->   #include "../iommu-pages.h"
-> @@ -342,6 +343,125 @@ void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
->   	BUG_ON(iommu_for_each_preserved_device(_restore_used_domain_ids, iommu));
->   }
->   
-> +static void domain_detach_reattached_iommu(struct dmar_domain *domain,
-> +					   struct intel_iommu *iommu)
-> +{
-> +	struct iommu_domain_info *info;
-> +
-> +	guard(mutex)(&iommu->did_lock);
-> +	info = xa_load(&domain->iommu_array, iommu->seq_id);
-> +	if (--info->refcnt == 0) {
-> +		xa_erase(&domain->iommu_array, iommu->seq_id);
-> +		kfree(info);
-> +	}
-> +}
-> +
-> +static int domain_reattach_iommu(struct dmar_domain *domain,
-> +				 struct intel_iommu *iommu,
-> +				 struct iommu_device_ser *device_ser)
-> +{
-> +	struct iommu_domain_info *info, *curr;
-> +	int restored_did;
-> +	int ret;
-> +
-> +	if (!iommu_domain_restored_state(&domain->domain))
-> +		return -EINVAL;
-> +
-> +	restored_did = device_ser->domain_iommu_ser.attachment_id;
-> +	if (!ida_exists(&iommu->domain_ida, restored_did))
-> +		return -EINVAL;
+> Easy enough to do.  But does it do the job, both from a PREEMPT_RT
+> perspective and a notifier perspective?
 
-It seems that checking only whether the domain ID is reserved on this
-IOMMU may not be sufficient. It would be safer to also verify that:
+It does not lead to any lock violations so that is a plus.
 
-- device_ser->domain_iommu_ser.iommu_phys matches iommu->reg_phys, and
-- device_ser->domain_iommu_ser.domain_phys matches @domain.
+> And notifiers (though a different type of them) were the first use case
+> for SRCU.  ;-)
+> 
+> 							Thanx, Paul
 
-?
-
-> +
-> +	info = kzalloc_obj(*info);
-> +	if (!info)
-> +		return -ENOMEM;
-> +
-> +	guard(mutex)(&iommu->did_lock);
-> +	curr = xa_load(&domain->iommu_array, iommu->seq_id);
-> +	if (curr) {
-> +		curr->refcnt++;
-> +		kfree(info);
-> +		return 0;
-> +	}
-> +
-> +	info->refcnt	= 1;
-> +	info->did	= restored_did;
-> +	info->iommu	= iommu;
-> +	curr = xa_cmpxchg(&domain->iommu_array, iommu->seq_id,
-> +			  NULL, info, GFP_KERNEL);
-> +	if (curr) {
-> +		ret = xa_err(curr) ? : -EBUSY;
-> +		goto err_unlock;
-> +	}
-> +
-> +	return 0;
-> +
-> +err_unlock:
-> +	kfree(info);
-> +	return ret;
-> +}
-> +
-> +/**
-> + * intel_iommu_restore_device() - Restore device domain attachment after live update
-> + * @domain: Restored domain
-> + * @dev: Restored device
-> + *
-> + * Return: 0 on success, or negative error code.
-> + */
-> +int intel_iommu_restore_device(struct iommu_domain *domain,
-> +			       struct device *dev)
-> +{
-> +	struct iommu_device_ser *device_ser = dev_iommu_restored_state(dev);
-> +	struct device_domain_info *info = dev_iommu_priv_get(dev);
-> +	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
-> +	struct intel_iommu *iommu = info->iommu;
-> +	unsigned long flags;
-> +	int ret;
-> +
-> +	if (!device_ser)
-> +		return -EINVAL;
-> +
-> +	if (dev_is_real_dma_subdevice(dev))
-> +		return -EOPNOTSUPP;
-
-... or, move above check here to ensure the attachment relationship
-between the @device and @domain?
-
-> +
-> +	ret = domain_reattach_iommu(dmar_domain, iommu, device_ser);
-> +	if (ret)
-> +		return ret;
-> +
-> +	info->domain = dmar_domain;
-> +	info->domain_attached = true;
-> +	spin_lock_irqsave(&dmar_domain->lock, flags);
-> +	list_add(&info->link, &dmar_domain->devices);
-> +	spin_unlock_irqrestore(&dmar_domain->lock, flags);
-> +
-> +	if (!sm_supported(iommu))
-> +		intel_iommu_enable_pci_ats(info);
-
-Could you please clarify the PCI ATS behavior across live update?
-
-My understanding is that PCI devices may bypass reset during kexec and
-are then re-initialized by the new kernel (is that correct?). If so, ATS
-state in hardware would depend on its state before kexec in the old
-kernel.
-
-In a normal reboot, ATS is expected to be disabled and the device ATC is
-empty. But that assumption may not hold for live update. If that is
-true, can we still use the same approach to keep hardware ATS state and
-info->ats_enabled in sync?
-
-> +
-> +	ret = cache_tag_assign_domain(dmar_domain, dev, IOMMU_NO_PASID);
-> +	if (ret)
-> +		goto err;
-> +
-> +	ret = iopf_for_domain_set(domain, dev);
-> +	if (ret)
-> +		goto err;
-> +
-> +	return 0;
-> +
-> +err:
-> +	/*
-> +	 * Detach the restored domain from device and iommu on failure, but keep
-> +	 * the hardware state intact.
-> +	 */
-> +	info->domain_attached = false;
-> +	cache_tag_unassign_domain(info->domain, dev, IOMMU_NO_PASID);
-> +	spin_lock_irqsave(&info->domain->lock, flags);
-> +	list_del(&info->link);
-> +	spin_unlock_irqrestore(&info->domain->lock, flags);
-> +
-> +	domain_detach_reattached_iommu(info->domain, iommu);
-> +	info->domain = NULL;
-> +	return ret;
-> +}
-> +
->   /**
->    * intel_iommu_preserve_device() - Intel IOMMU callback to preserve device state
->    * @dev: Target device
-
-Thanks,
-baolu
+Sebastian
