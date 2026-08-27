@@ -1,225 +1,258 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82593290A5;
-	Thu, 27 Aug 2026 23:01:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF933911AB;
+	Thu, 27 Aug 2026 23:03:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787871688; cv=none; b=UZmFvEM83LEWtxhKs7PI7oTdmxT2mbRzfOUHgqWRRe7XYVl8OIArUrbBUV3PMn3wCsySLnSiRliiV9iQ/JYKpYYqPtDYV6rVvkdz1E64l4G5MgIpmQ4UFN4UgR35zIRNAFGaMB797iD1n8Sv4dFO60b+cud80fNj/+avYKDcc9U=
+	t=1787871799; cv=none; b=KOvWIwG7uNMnC/pImfxOlI89IR0HerbGP93CdHgjnal5cDBXxQkRzNWdcZedfuXgAA9tR2EgABfjxoVTl97T6teKRsxXJICIF21SxdKJ2/XPlJhKQDlCo2ufprBN1lErB0fRY6DIj/c2KZ1oevYvEBp7w6ETrdqWP0zGy1jqDx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787871688; c=relaxed/simple;
-	bh=fMQcW1aexhi5Ay/MHORDdn9i9uBYSep6pWh9b1WOvVk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EUO9h6opKRc7EgJhs+B/HlxFe5xNX/+4kOrW3xLe9/jsIbIFZkmrMkb0paGeBJXl7OPnwV5XlTHYUfPoH1UoEj/l+HugENzU+pFlcFjVtm7UYKvCszQWpGWn4NS2rHC/Sk1vcEZ8VyuqFpGFGoLtD6G9eXfXxbZvX4b8Z26wyGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eJs0Sql5; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1787871799; c=relaxed/simple;
+	bh=Q3ROe6UZQ2XHI7OM4E4jdPL0s2UiFcYNcRbqBx32qwQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ek0OKlCqm0DR1YhcPDO74zA0s3Lj+vnDkxde0/Pw2X58uZZdBiV/FvEegdfnMCkK7ylFU+08KyLmEcLHtF1v4bTyWhRISAaCYyc4x8qkW+Aw41DSa+4q0wpWOiZd+zyVoogAr4pu+SQC/l+MUVXB7cIX792AI4YwtYWhV7ltAvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=o8DH1P3i; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=aP46dvbF; arc=none smtp.client-ip=202.12.124.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eJs0Sql5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787871687; x=1819407687;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=fMQcW1aexhi5Ay/MHORDdn9i9uBYSep6pWh9b1WOvVk=;
-  b=eJs0Sql5oFkTR6670FaDdxRDeWS44GVcHG+C8bnpVZjhKwa95DeACjBu
-   TxsOkeDJU8p388Zh116n84C/tWhahVbc5VxBo/1XMJJCZ5vTRgI1uUF/0
-   riqXiyo1hWmtvCDy6itI33hGJa48xQtMUa7d2CJWZWXsCSNLO55OGQdsz
-   xCd7Ipjw8YYEvb5Wr77NkA3VXHlfTLi0HuuZ7ShNKBCT7SXnCsciueWZO
-   gcOM2cPfIu3fkynW6QAYdm3ZbKIVZLm3LQv1FQEfy5El7d7gR4I5R3/i2
-   kXvUd6zHn/dqqH80SQh4WuDN7kqSZvASWwKPlQGxeC4i1LIvkWXyclIsT
-   g==;
-X-CSE-ConnectionGUID: qJITEVQOQd+bC6YugjkNKA==
-X-CSE-MsgGUID: yBm4jRkGRLiKnHvCNSPa3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="92196900"
-X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; 
-   d="scan'208";a="92196900"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 16:01:26 -0700
-X-CSE-ConnectionGUID: QTZI9P9xTcWcyTCTN9gbCA==
-X-CSE-MsgGUID: KEFD47NUQrqekknRYndBkQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; 
-   d="scan'208";a="272218861"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.185.5]) ([10.122.185.5])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 16:01:26 -0700
-Message-ID: <efb6f286-97da-4d5f-955b-29310d99d478@intel.com>
-Date: Thu, 27 Aug 2026 18:01:24 -0500
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="o8DH1P3i";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="aP46dvbF"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 5E8497A0016;
+	Thu, 27 Aug 2026 19:03:15 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 27 Aug 2026 19:03:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1787871795;
+	 x=1787958195; bh=oFv5ctN3MoNjwwb47maBRelE0P7dtMhVcUhr1brD2uo=; b=
+	o8DH1P3i++BByFDBl3Ng63n3XOyI1JTo6ZdVar1jXPRoZUTBh90CkxwilIzTFToP
+	zwG0APEdSJabMVhP6k/l+ncVn7uDLMvKpZS/LiF/6hUvO1QFfWAWQIcvAazWyg0c
+	chYAQE/8PKkZvXPtT+du8Sc8UVbut4d/GYdrmiRJBO8tN+P62Mkw9DTwao8yjZti
+	ZCwn7P+vzZWyhFOmj7sLXVbd/HHYV9mlJuMftTQXAu3O/O1xh0j+abta9rQQ6nZV
+	IgnOlPw9PT87mk1T/LtYH9LrRWkNH8MrYrJMV15gZJr9OSBzS8IGidNgoWz9zds7
+	ZNm3F7KJgde0VWDTmpmsSw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787871795; x=
+	1787958195; bh=oFv5ctN3MoNjwwb47maBRelE0P7dtMhVcUhr1brD2uo=; b=a
+	P46dvbFK7CgcCz2EDHL95f1o+wd+QTkThCKhF/tLtsidyz5ZY46zKOTlznAVhisu
+	tzSlV/sqy0fR+zP0/LKbnbkaqimhATs2xLCVjwkn18oQ6g8PJ5W1M6BjyRHXQSqs
+	rbL/fGLRZ+WUi1ov8KiXwojGhyfBvxgOT8R1HbcrADyaAjrW5Oj5v0cxBSe1qW7G
+	DjjzV/APRc1/4KAPgBnQWHME5NiuASOeRzxCZyCqegjCAmfOxlzA07lPAsqCc/8A
+	pumXB0wqm6Xmi972k7t+zAe0XCbsYLGYGBKKcxgdo7vtVDRMEhOnAe5LeWu1jysj
+	Oz6e0o5jwhFuX9lSd1uxQ==
+X-ME-Sender: <xms:MsKQas7jM0ezxp1hoNt-852SsXjp9pVopvzaqR8TY_98zqyK4k7Kkw>
+    <xme:MsKQarjNSuOZZh06bslSIepWZnFXV_cekNxC4gUOlvJCeFpvUOt989eQhoyR_0Rvc
+    6FNLMFAwyMfFyYM2TQQHcG4SLO8o-BOsq-LRr8Fu37dChqgA6TRzQ>
+X-ME-Received: <xmr:MsKQai15hQAsvhgLrmr24jIju9gsYPAZUHhbDhs9QDGNAJdeel6rlOgA0g2RIA>
+X-ME-Proxy-Cause: dmFkZTFGArgfXlP67i3IyLAY/5rqTjvp9/T/Lgmv8ki1utIdaqcZTAAaTB3ID04bAipGG6
+    8QQrsYzPqQMeNFrKXCHs2bL+UkSzosnZAP0EXF9MAAJyZ5sDXi602OtzN1PY08NAK9R/Gj
+    fUIhEYvyjutUilRlMIQv+5ndHX7RPLpVjT2PWpm+6/+f5bN+UdRm1fMbiOwUMft5hmCFvN
+    j3OpENvDBWG8plJUyzagPfh77vC6urBYbaII4w0zPEnXGvUUgPp8VDD6yLMnT/qHR1dN5n
+    aHkJct1yVGS1Sz8xKW0kOa+ss95OxOcyqD0+dup50XYvczrmZ8n77h5PnUhcCft8DLLwAc
+    xnNrunsXWdgWoZ3SGig0lUBfJQnd43r/sY2ecWxj4KQhb52BZbV4heOa7Z2PiF9vmqk3JG
+    0YAR6FyByN+j2UO/XND4/e+Gx4kSApP7+aGrP/GVd5vlnBt3oGXaHcaRk6VcZMOXk9FJs0
+    3Dm9r4dtczGXciWGxR5ZFeYTMHdfd6146CBr0e8tlWi+2G4NTXDyFlN1GNzdxKhWjGJE9P
+    TYAQogm3K+USmeYvT00oL8xwy50pfAaXvKYqiEKCHMjY6bDXPBQ1A7YSmbSHKaH2rwPrVp
+    4Hy+GH4SVNSgfCT0cxPiMxuE1kYTlXIBevsgdjETipM44W/VsMnJLztvPifg
+X-ME-Proxy: <xmx:MsKQapXSVrFp2PbaoJ3-hTE4ZnqxScLUYR0Bzcj3uTRXnh_vO5IXhg>
+    <xmx:MsKQan0_beR7S1gwshkXasQfcdPnx28G5u-x6T6Pz2lOO0xLbRYHHA>
+    <xmx:MsKQaijXWTo3xxKYUEX6k-F0hCfIFp0vqX_nC34XVZsSTx-EWgj__g>
+    <xmx:MsKQavLWTKNRrB9zEdoR-wOqswviXaz-qO7O2UoA8BGHfa3jgkiUeg>
+    <xmx:M8KQatVgAkg9BCsTUMCEPWN6HP7_qOMzjBW1rNaw3l6UDOzJf-TEH3Xz>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 27 Aug 2026 19:03:12 -0400 (EDT)
+Date: Thu, 27 Aug 2026 17:03:10 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: <mhonap@nvidia.com>
+Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
+ <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
+ <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+ <dave@stgolabs.net>, <alison.schofield@intel.com>,
+ <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
+ <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
+ <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+ <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
+ alex@shazbot.org
+Subject: Re: [PATCH v4 15/27] vfio/pci: Call CXL open and close hooks around
+ device use
+Message-ID: <20260827170310.5f49eeda@shazbot.org>
+In-Reply-To: <20260813093631.2288172-16-mhonap@nvidia.com>
+References: <20260813093631.2288172-1-mhonap@nvidia.com>
+	<20260813093631.2288172-16-mhonap@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/23] perf/x86: Apply PMU partition mask on static
- constraints
-To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>
-Cc: kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Jim Mattson <jmattson@google.com>, Stephane Eranian <eranian@google.com>,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Xudong Hao <xudong.hao@intel.com>
-References: <20260821222002.54907-1-zide.chen@intel.com>
- <20260821222002.54907-8-zide.chen@intel.com>
- <09251cc4-c795-411c-a9d9-9133a0d73e03@linux.intel.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <09251cc4-c795-411c-a9d9-9133a0d73e03@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Thu, 13 Aug 2026 15:06:19 +0530
+<mhonap@nvidia.com> wrote:
 
-
-On 8/26/2026 3:12 AM, Mi, Dapeng wrote:
-> It seems not a good practice for me to modify all the places calling these
-> static constraints. We could have to add new get_event_constraints()
-> helpers for future platforms, and we have to duplicate these
-> part_constraint() code.
-> Could we leverage the dynamic constraint mechanism?  We can set the
-> event->hw.dyn_constraint to be host counters mask, then we don't need any
-> specific change for these static constraints.
-
-In all code paths that use these static constraints, for example,
-counter0_constraint, it is assumed that GP counter 0 is available on the
-host. However, with PMU partitioning, any counter may be unavailable,
-even in the model-specific code path, and this assumption is broken.
-
-So, adding a wrapper seems unavoidable.
-
-Additionally, part_constraint() already makes use of dyn_constraint, right?
-
-> Thanks.
+> From: Manish Honap <mhonap@nvidia.com>
 > 
-> On 8/22/2026 6:19 AM, Zide Chen wrote:
->> Static, counter-specific constraints used for attr.precise_ip == 3, or
->> other special cases bypass intel_get_event_constraints(), which is
->> where partition_mask is applied via dyn_constraint().
->>
->> As a result, such a host !exclude_guest event can still be scheduled
->> onto a counter that partition_mask reserves for the guest, causing
->> host and guest to share the same hardware counter.
->>
->> Some of these static constraint paths, e.g. glp or cmt, are currently
->> only reachable on platforms that don't support PerfMon masking. Still,
->> apply part_constraint() to all of them uniformly, so future platforms
->> that combine PerfMon masking with these constraint paths are not
->> silently exposed to this bug.
->>
->> Signed-off-by: Zide Chen <zide.chen@intel.com>
->> ---
->>  arch/x86/events/intel/core.c | 39 +++++++++++++++++++++++-------------
->>  1 file changed, 25 insertions(+), 14 deletions(-)
->>
->> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
->> index 7951accfcf2c..0f76e56fd2db 100644
->> --- a/arch/x86/events/intel/core.c
->> +++ b/arch/x86/events/intel/core.c
->> @@ -4459,6 +4459,9 @@ dyn_constraint(struct cpu_hw_events *cpuc, struct event_constraint *c, int idx)
->>   * Mask out guest-owned counters from a constraint when PMU partition has been
->>   * entered, so !exclude_guest host events are not scheduled onto them while
->>   * the CPU is in non-root mode.
->> + *
->> + * This is also used by PMU-specific get_event_constraints() wrappers
->> + * that hard-code a static, counter-specific constraint.
->>   */
->>  static struct event_constraint *
->>  part_constraint(struct cpu_hw_events *cpuc, int idx,
->> @@ -5568,7 +5571,7 @@ hsw_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
->>  	/* Handle special quirk on in_tx_checkpointed only in counter 2 */
->>  	if (event->hw.config & HSW_IN_TX_CHECKPOINTED) {
->>  		if (c->idxmsk64 & (1U << 2))
->> -			return &counter2_constraint;
->> +			return part_constraint(cpuc, idx, event, &counter2_constraint);
->>  		return &emptyconstraint;
->>  	}
->>  
->> @@ -5585,7 +5588,7 @@ icl_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
->>  	 */
->>  	if ((event->attr.precise_ip == 3) &&
->>  	    constraint_match(&fixed0_constraint, event->hw.config))
->> -		return &fixed0_constraint;
->> +		return part_constraint(cpuc, idx, event, &fixed0_constraint);
->>  
->>  	return hsw_get_event_constraints(cpuc, idx, event);
->>  }
->> @@ -5607,7 +5610,7 @@ glc_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
->>  	if ((event->attr.precise_ip == 3) &&
->>  	    !constraint_match(&fixed0_constraint, event->hw.config)) {
->>  		if (c->idxmsk64 & BIT_ULL(0))
->> -			return &counter0_constraint;
->> +			return part_constraint(cpuc, idx, event, &counter0_constraint);
->>  
->>  		return &emptyconstraint;
->>  	}
->> @@ -5623,7 +5626,7 @@ glp_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
->>  
->>  	/* :ppp means to do reduced skid PEBS which is PMC0 only. */
->>  	if (event->attr.precise_ip == 3)
->> -		return &counter0_constraint;
->> +		return part_constraint(cpuc, idx, event, &counter0_constraint);
->>  
->>  	c = intel_get_event_constraints(cpuc, idx, event);
->>  
->> @@ -5645,9 +5648,9 @@ tnt_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
->>  	if (event->attr.precise_ip == 3) {
->>  		/* Force instruction:ppp on PMC0 and Fixed counter 0 */
->>  		if (constraint_match(&fixed0_constraint, event->hw.config))
->> -			return &fixed0_counter0_constraint;
->> +			return part_constraint(cpuc, idx, event, &fixed0_counter0_constraint);
->>  
->> -		return &counter0_constraint;
->> +		return part_constraint(cpuc, idx, event, &counter0_constraint);
->>  	}
->>  
->>  	return c;
->> @@ -5705,22 +5708,30 @@ cmt_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
->>  	if (event->attr.precise_ip == 3) {
->>  		/* Force instruction:ppp on PMC0, 1 and Fixed counter 0 */
->>  		if (constraint_match(&fixed0_constraint, event->hw.config)) {
->> +			c = &fixed0_counter0_1_constraint;
->> +
->>  			/* The fixed counter 0 doesn't support LBR event logging. */
->>  			if (branch_sample_counters(event))
->> -				return &counter0_1_constraint;
->> -			else
->> -				return &fixed0_counter0_1_constraint;
->> +				c = &counter0_1_constraint;
->> +
->> +			return part_constraint(cpuc, idx, event, c);
->>  		}
->>  
->>  		switch (c->idxmsk64 & 0x3ull) {
->>  		case 0x1:
->> -			return &counter0_constraint;
->> +			c = &counter0_constraint;
->> +			break;
->>  		case 0x2:
->> -			return &counter1_constraint;
->> +			c = &counter1_constraint;
->> +			break;
->>  		case 0x3:
->> -			return &counter0_1_constraint;
->> +			c = &counter0_1_constraint;
->> +			break;
->> +		default:
->> +			c = &emptyconstraint;
->> +			break;
->>  		}
->> -		return &emptyconstraint;
->> +		return part_constraint(cpuc, idx, event, c);
->>  	}
->>  
->>  	return c;
->> @@ -5744,7 +5755,7 @@ rwc_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
->>  		 */
->>  		if (event->attr.precise_ip == 3)
->>  			return &emptyconstraint;
->> -		return &counters_1_7_constraint;
->> +		return part_constraint(cpuc, idx, event, &counters_1_7_constraint);
->>  	}
->>  
->>  	return c;
+> Volatile CXL register state must be sampled from live hardware when the
+> guest opens the device, not at bind, because a low-power transition
+> between bind and open can leave bind-time values stale.
+
+But patch 7 prevented such transitions, without really an explanation
+why.  Accounting for being in full power state at open here further
+diminishes the requirement to restrict idle lower power states in that
+patch.
+ 
+> Add open_device and close_device to the CXL ops and call them from the
+> common enable and close paths. A failed open unwinds the enable like any
+> other error. The callbacks are stubs here and are filled in next.
+> 
+> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> ---
+>  drivers/vfio/pci/cxl/vfio_cxl_core.c | 11 +++++++
+>  drivers/vfio/pci/vfio_pci_core.c     | 44 ++++++++++++++++++++++------
+>  include/linux/vfio_pci_core.h        |  2 ++
+>  3 files changed, 48 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/cxl/vfio_cxl_core.c b/drivers/vfio/pci/cxl/vfio_cxl_core.c
+> index 966b7c22a6ac..d19fd638f538 100644
+> --- a/drivers/vfio/pci/cxl/vfio_cxl_core.c
+> +++ b/drivers/vfio/pci/cxl/vfio_cxl_core.c
+> @@ -100,9 +100,20 @@ static void vfio_cxl_release_device(struct vfio_pci_core_device *vdev)
+>  	vdev->cxl = NULL;
+>  }
+>  
+> +static int vfio_cxl_open_device(struct vfio_pci_core_device *vdev)
+> +{
+> +	return 0;
+> +}
+> +
+> +static void vfio_cxl_close_device(struct vfio_pci_core_device *vdev)
+> +{
+> +}
+> +
+>  static const struct vfio_cxl_ops vfio_cxl_ops = {
+>  	.init_device	= vfio_cxl_init_device,
+>  	.release_device	= vfio_cxl_release_device,
+> +	.open_device	= vfio_cxl_open_device,
+> +	.close_device	= vfio_cxl_close_device,
+>  	.owner		= THIS_MODULE,
+>  };
+>  
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 49dfbdaf3f05..470730cdc88b 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -584,6 +584,21 @@ static const struct dev_pm_ops vfio_pci_core_pm_ops = {
+>  			   NULL)
+>  };
+>  
+> +static void vfio_pci_core_unmap_bars(struct vfio_pci_core_device *vdev)
+> +{
+> +	struct pci_dev *pdev = vdev->pdev;
+> +	int i, bar;
+> +
+> +	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+> +		bar = i + PCI_STD_RESOURCES;
+> +		if (IS_ERR_OR_NULL(vdev->barmap[bar]))
+> +			continue;
+> +		pci_iounmap(pdev, vdev->barmap[bar]);
+> +		pci_release_selected_regions(pdev, 1 << bar);
+> +		vdev->barmap[bar] = NULL;
+> +	}
+> +}
+> +
+>  int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+>  {
+>  	struct pci_dev *pdev = vdev->pdev;
+> @@ -660,8 +675,23 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+>  
+>  	vfio_pci_core_map_bars(vdev);
+>  
+> +	if (vdev->cxl_ops) {
+> +		ret = vdev->cxl_ops->open_device(vdev);
+> +		if (ret)
+> +			goto out_free_config;
+> +	}
+> +
+>  	return 0;
+>  
+> +out_free_config:
+> +	/*
+> +	 * open_device() runs after vfio_config_init() and map_bars() have
+> +	 * succeeded, but a failed first open never reaches vfio_pci_core_disable().
+> +	 * Unwind the common vconfig and BAR state here so the allocations and BAR
+> +	 * requests are not leaked for a later open to overwrite.
+> +	 */
+> +	vfio_config_free(vdev);
+> +	vfio_pci_core_unmap_bars(vdev);
+
+Unwind in the reverse order, this should start with unmap bars.  The
+above comment is rather gratuitous and looks a bit like AI slop.
+Thanks,
+
+Alex
+
+>  out_free_zdev:
+>  	vfio_pci_zdev_close_device(vdev);
+>  out_free_state:
+> @@ -682,7 +712,7 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
+>  	struct pci_dev *pdev = vdev->pdev;
+>  	struct vfio_pci_dummy_resource *dummy_res, *tmp;
+>  	struct vfio_pci_ioeventfd *ioeventfd, *ioeventfd_tmp;
+> -	int i, bar;
+> +	int i;
+>  
+>  	/* For needs_reset */
+>  	lockdep_assert_held(&vdev->vdev.dev_set->lock);
+> @@ -737,14 +767,7 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
+>  
+>  	vfio_config_free(vdev);
+>  
+> -	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+> -		bar = i + PCI_STD_RESOURCES;
+> -		if (IS_ERR_OR_NULL(vdev->barmap[bar]))
+> -			continue;
+> -		pci_iounmap(pdev, vdev->barmap[bar]);
+> -		pci_release_selected_regions(pdev, 1 << bar);
+> -		vdev->barmap[bar] = NULL;
+> -	}
+> +	vfio_pci_core_unmap_bars(vdev);
+>  
+>  	list_for_each_entry_safe(dummy_res, tmp,
+>  				 &vdev->dummy_resources_list, res_next) {
+> @@ -827,6 +850,9 @@ void vfio_pci_core_close_device(struct vfio_device *core_vdev)
+>  #endif
+>  	vfio_pci_dma_buf_cleanup(vdev);
+>  
+> +	if (vdev->cxl_ops)
+> +		vdev->cxl_ops->close_device(vdev);
+> +
+>  	vfio_pci_core_disable(vdev);
+>  
+>  	mutex_lock(&vdev->igate);
+> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> index 43755b91880f..7354dae1dd85 100644
+> --- a/include/linux/vfio_pci_core.h
+> +++ b/include/linux/vfio_pci_core.h
+> @@ -70,6 +70,8 @@ struct vfio_pci_device_ops {
+>  struct vfio_cxl_ops {
+>  	int	(*init_device)(struct vfio_pci_core_device *vdev);
+>  	void	(*release_device)(struct vfio_pci_core_device *vdev);
+> +	int     (*open_device)(struct vfio_pci_core_device *vdev);
+> +	void    (*close_device)(struct vfio_pci_core_device *vdev);
+>  	/* Pinned per bound CXL device so vfio-cxl cannot unload under usage */
+>  	struct module *owner;
+>  };
 
