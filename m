@@ -1,132 +1,261 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE3F345731
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 17:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65ABB42123F
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 17:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787853062; cv=none; b=L2VkIrlj1LBTYfx4kstW9a3scMw30qWYs4denyNh2yMWqu035R/49y6Wbv1nwjm4c295OCYrVz9qLHxKcXyWHR4VblJuGM99u/1pWptOQzxYBqzaTYSj+6gK6ZFhDNjm1phejua+NhhB+eyfk74zr7G3WS0sI/2YDx55wU+LKWQ=
+	t=1787853177; cv=none; b=PN4bmYefUJb8PZGF9DyJv2YQ13G9HZX53i/zLb2WvFY/M5X63J1exoeOztRN/oiPu8oedY2jX0LPn/rzcFT8E+/qehZhZNqHowFM8gEUCudzGUW2KvPDZFRnnPkgf10ZufTKWlVmF55SrSDozL0mI496W1s8L75dwJtQ+sHj9c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787853062; c=relaxed/simple;
-	bh=98xSLCeP/KtjNIE3URT2T3ktkLlRgaR2uDzIK7EVBC8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gJsowWhRMVLGqzuaWnXcclQltAJyQDPomYYE6A8kUGack5vUtcRErTVgq1JnRC/CK2hbYBkrxodPEdFxJt4vjFQsbnhRRR87ejEG/T9Hkscmyajv0MkJcMqgD3ddLseFD5G5af0TT/XzI8sOEtROXuhXbOVzGY6ot3GWrNa6W3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iy4Qqmnw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787853177; c=relaxed/simple;
+	bh=cF6NYXhDGfB74HoBaloQ4sZUldwQ5oUq/5AOtANebOY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B+bcIf8bYn2OINVIqfV+D2Zm3spTZfs2/fv3D3ROw8UCwXLC8eKgYgx56nS+5OaqkQytij6UPkGQfZvm5i0dMLKLy8FAIrgP7P58IpVpbEXHZcAONbNi7LVgMKyA3o4cA24baCiYaBrCJ8+z5gqfMJVGCPozZ2NuSZPdcxbNrUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VlZZMwpX; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iy4Qqmnw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0605B1F00A3A
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 17:51:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787853061;
-	bh=AA9Eg0o6kfycCZiwUGvxKpK3Wz7lkTqnaLYtvXj6bv4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Iy4Qqmnwp1H9ZEqACqVv3bPqMPC0TfxCeWcUT+Z3KorgFGoHmiDaSPtsApnXaPF5i
-	 F+TcgDte0T215Pb4dfTYqMtJaY4QiIYEdzq4uZYdRmqtC8lqzQrEX6IP2OU4LKfOek
-	 +xalo5SpUjoRrIfrf00gXi8soQpQFw7+eSSFaa/GTI34zVpLH3GVfX/ap7IriblyLg
-	 5YgR2wHlbBY1KbOHZyAgH5Oj4L+TyUD0vr8Bhny8DUByDYt6Lpasds8x424JMKVjqW
-	 7Co24JReBCiP5ANVSb85Uw6oACV8bOTGSG7QH/X7y7BePBTL59usXOwaIwEcmL9TZV
-	 o77ah8Q7IfGXA==
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c207cb16cf5so22208566b.1
-        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 10:51:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqX22iAu5epwKth1+H9c9XapDipBKD4TXMwcQRZiCOdOPQ47C20bi4zP7K/y3YwMyt5Obg=@vger.kernel.org
-X-Gm-Message-State: AFuF++lsHLnGicPQs+d58/lorzg0vfqbHCvndbswokGf2j4kmISW+77L
-	f/3T7ElQWXBaV/6Or4BYzlgVyEpeB6cpgs480Yj1vWg+N8O5suoIhP/UkEw2kAmQ2UQil88JcN8
-	GZRNQiGwI+5IrszUShRDTun82eat3/ko=
-X-Received: by 2002:a05:6938:a084:10b0:c1c:64d4:5ba3 with SMTP id
- a640c23a62f3a-c25571a8f9bmr24618066b.20.1787853059996; Thu, 27 Aug 2026
- 10:50:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VlZZMwpX"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2d3b440b97aso10495ad.1
+        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 10:52:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787853174; x=1788457974; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=P+fTw5/xN6iO4FdPKCmZVQ2MDNmjfRNyCIFQIOLN/Mk=;
+        b=VlZZMwpXKCiWoy34NONdNcg6sYjdoqm7IF4dW4o9Oxm66ZEKgUS4XMkwpSLym1/DSI
+         T/hzRIl91Y172EioNAhfyUWASY5quNyihpImZHoqsGAdmk6sn1eC0UvVU9EVu4JlbTT0
+         MjEKV/TM0lTRgXDaYVfpiPLNOEFdtOGxFCuH5lj3Cnwy7Wtr60TYFTjdP2qDA6GIL1Wx
+         OEmAgzg1oV8R612FqVhYyAKiEvdr+m71JhAj/HugjN1gL4Rh2KxOvFwSMY4/JqST9QZQ
+         eliwAgRA0cXLN3uF66BtG//890PLSthu/0BSBXJShBSpmuGjGC3WJwnrRNPGI1rVg0jv
+         JarQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787853174; x=1788457974;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=P+fTw5/xN6iO4FdPKCmZVQ2MDNmjfRNyCIFQIOLN/Mk=;
+        b=jH8l3dggjk7awSy6I9PE/PDJTMttkjE52+UVIw48e8RODM4Lqm8zuBYn2rAL1fXdpD
+         MSTlbFG1yMwe16SYtJjjHN5ImLQOoVH/NWbEP2Z14ReVlRInC4fcc8cerZsW3jv71o+r
+         HRXLnBSS5KXhNgtFUnoRaiSJewLwc57yFTOXK80oBjiGODIl3r49oqtrmJrC+f4HC9tV
+         TDlaAkKJjvFliAEc987KGddI9TD2THqCadI8OfF0vh/tdPc5kpjGvff92AGEnKEquKyk
+         s+WQRIwWHWa2ml6ElYUK++U8W6O2J61KvlV/SB5WzaOgEcc5f1ifHcPeRIk2n73gXy1H
+         TePw==
+X-Forwarded-Encrypted: i=1; AHgh+RrscFWS1K7Nxq/c6XbK9GRMJ0eRWFXxG6aUryu+Avnu7NVNL8o25OpByA3ABCR818bRrZk=@vger.kernel.org
+X-Gm-Message-State: AFuF++ldzz8M8Wadtkh79DHZevZBVnMY+EV7B15um04VCjIqgMTHcbwk
+	2MEq8CpGM5AsRHgBKNgtwp8wxsFjMIkHSniTVwodpLkYJK9s32Bd1Ndso/9FQnuJ0w==
+X-Gm-Gg: AR+sD10T+h//mqcPsjgOAxIiB5ELy5vG8aqA14uyXMUcRL0Bfq3UIZCWO6q7kGZMuII
+	OKB40/pn1DmdENVAW/gkAcZc/AYbMVRmZhxyOfFLeaXDuR5BspFz4+nEU/MI0XF+hsDCSrROiFw
+	GEdsMtJT5+awzka4lPFIxPXDEeWDG8CBvF9AEZpTODgKrQxgPjCr1PxuY+s7nFdlq4IBki9js5Q
+	SZYFhDoipy/4JZKCejRYTDuTFTbetPHE405wKj9sQXoM8aYRPymnPICD6CP7L8/5JuP3z3Pmj5j
+	s75Rge7S+EB1d7QRxi5UXxPWEhj3oGBhpVZdRW/GLd06XCf2HPbl4DfiuRkqHfraotWd7l3oraX
+	0HYozqmDdhTWZo9gerv0a3ADy2Cxi17BbWlANf5x+CZBem5oRsToCO1AlHM83cZjctOHbe6LSMW
+	yi3DBK1bwQG0EBya+mCKDCtbUxQ5V9hLxs1ibTlMg/PNVQ4GYqT+LwWWxlXzpQ9u9QjEtFopHgs
+	19LaSzv8l7nLXQX6Y7n0N8IpmGSU8RgBh4MBlDS8hK9gpzmqjM1tCx+sf4=
+X-Received: by 2002:a17:903:1b48:b0:2ca:6bf:5bac with SMTP id d9443c01a7336-2d74f53de42mr551995ad.8.1787853173817;
+        Thu, 27 Aug 2026 10:52:53 -0700 (PDT)
+Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396b1123142sm3639572a91.15.2026.08.27.10.52.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 10:52:52 -0700 (PDT)
+Date: Thu, 27 Aug 2026 17:52:49 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
+	Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v4 12/18] iommu/vt-d: Handle reattach of the restored
+ domain
+Message-ID: <apBso6So7UqwR3AX@google.com>
+References: <20260808022723.3893618-1-skhawaja@google.com>
+ <20260808022723.3893618-13-skhawaja@google.com>
+ <5b920299-260b-4025-ac4f-e8f83beebf95@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260826233919.998904-1-seanjc@google.com> <20260826233919.998904-13-seanjc@google.com>
- <CAO9r8zOuD+wU1Q80z077WHHpFBWvKomLk=TaXjH3gVnqj=mqFQ@mail.gmail.com>
- <apBomFOn1ZqHEnAQ@google.com> <CAO9r8zP3O_80Lr=4eKL6v-OaM9etMXPsNzADizf6ztB6YBuLHA@mail.gmail.com>
- <apBxMrqEkl_7khix@google.com> <CAO9r8zOLJs_fm9ixxCRV=uz5qwpOS67=oz5ATGtB=w2Yd2vtOw@mail.gmail.com>
- <apB0-xly771CU7m_@google.com>
-In-Reply-To: <apB0-xly771CU7m_@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 27 Aug 2026 10:50:48 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNBpMry1ipXcNcQgZgUkTSb4scDadiMNXN0AwqJiY=8pA@mail.gmail.com>
-X-Gm-Features: AcwNN1Wa9VbVW9ULNjRnPEstsY-Z3ikWYpJe-mFQA5YB7LB5wYWjhCZNky6CCWw
-Message-ID: <CAO9r8zNBpMry1ipXcNcQgZgUkTSb4scDadiMNXN0AwqJiY=8pA@mail.gmail.com>
-Subject: Re: [PATCH v3 12/13] KVM: selftests: Dedup assembly code for VMLAUNCH
- and VMRESUME
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	f734222792@gmail.com, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Sashiko Bot <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <5b920299-260b-4025-ac4f-e8f83beebf95@linux.intel.com>
 
-On Thu, Aug 27, 2026 at 10:33=E2=80=AFAM Sean Christopherson <seanjc@google=
-.com> wrote:
->
-> On Thu, Aug 27, 2026, Yosry Ahmed wrote:
-> > On Thu, Aug 27, 2026 at 10:17=E2=80=AFAM Sean Christopherson <seanjc@go=
-ogle.com> wrote:
-> > > eVMCS is a memory operand, i.e. it's MOV RSP, [evmcs->host_rip].  The=
- existing
-> > > evmcs_{vmresume,vmlaunch}() code is rather stupid and loads the addre=
-ss into a
-> > > register, and then manually encodes MOV RSP, [<reg>].
-> >
-> > Can't we keep it as a register operand just to avoid vmwrite_operand?
-> > Does it actually hurt in any way?
->
-> ...
->
-> > > diff --git tools/testing/selftests/kvm/lib/x86/vmx.c tools/testing/se=
-lftests/kvm/lib/x86/vmx.c
-> > > index 1a8515de42b0..b5efd10950c7 100644
-> > > --- tools/testing/selftests/kvm/lib/x86/vmx.c
-> > > +++ tools/testing/selftests/kvm/lib/x86/vmx.c
-> > > @@ -179,7 +179,10 @@ void load_vmcs(struct vmx_pages *vmx)
-> > >         vmclear(vmx->shadow_vmcs_gpa);
-> > >  }
-> > >
-> > > -#define __BUILD_VMX_VM_ENTRY_HELPER(insn, prefix, vmwrite_insn, vmwr=
-ite_operand,       \
-> > > +const u64 HOST_RSP_ENCODING =3D HOST_RSP;
-> > > +const u64 HOST_RIP_ENCODING =3D HOST_RIP;
-> > > +
-> > > +#define __BUILD_VMX_VM_ENTRY_HELPER(insn, prefix, vmwrite_insn,     =
-   \
-> > >                                     __host_rsp, __host_rip)          =
-                   \
-> > >  static int __##prefix##_##insn(void)                                =
-                   \
-> > >  {                                                                   =
-                   \
-> > > @@ -196,16 +199,17 @@ static int __##prefix##_##insn(void)           =
-                                           \
-> > >                              VMX_SWITCH_GPRS_ASM                     =
-                   \
-> > >                              "pop %%rax;"                            =
-                   \
-> > >                              : [ret]"=3D&a"(ret)                     =
-                     \
-> > > -                            : [host_rsp]__stringify(vmwrite_operand)=
-(__host_rsp),      \
-> > > -                              [host_rip]__stringify(vmwrite_operand)=
-(__host_rip),      \
-> > > +                            : [host_rsp]"m"(__host_rsp),            =
-                   \
-> > > +                              [host_rip]"m"(__host_rip),            =
-                   \
-> >
-> > I suppose we can use "r" here though?
->
-> No, because then the encoding for VMWRITE needs to be:
->
->   vmwrite %%rsp, %[host_rsp]
->
-> but for MOV/eVMCS needs to be:
->
->   mov %%rsp, (%[host_rsp])
->
-> Have fun feeding the '(' and ')' into the asm blob :-)
+On Thu, Aug 27, 2026 at 04:12:01PM +0800, Baolu Lu wrote:
+>On 8/8/26 10:27, Samiullah Khawaja wrote:
+>>Reattach the restored domain to the preserved device using restored
+>>domain ID. While reattaching do not setup the context and PASID entries
+>>as those are preserved during liveupdate.
+>>
+>>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>>---
+>>  drivers/iommu/intel/iommu.c      |   9 ++-
+>>  drivers/iommu/intel/iommu.h      |  10 +++
+>>  drivers/iommu/intel/liveupdate.c | 120 +++++++++++++++++++++++++++++++
+>>  3 files changed, 136 insertions(+), 3 deletions(-)
+>>
 
-Semi-joking, what if we pass in the entire instruction instead?
+[snip]
+
+>>+
+>>+static int domain_reattach_iommu(struct dmar_domain *domain,
+>>+				 struct intel_iommu *iommu,
+>>+				 struct iommu_device_ser *device_ser)
+>>+{
+>>+	struct iommu_domain_info *info, *curr;
+>>+	int restored_did;
+>>+	int ret;
+>>+
+>>+	if (!iommu_domain_restored_state(&domain->domain))
+>>+		return -EINVAL;
+>>+
+>>+	restored_did = device_ser->domain_iommu_ser.attachment_id;
+>>+	if (!ida_exists(&iommu->domain_ida, restored_did))
+>>+		return -EINVAL;
+>
+>It seems that checking only whether the domain ID is reserved on this
+>IOMMU may not be sufficient. It would be safer to also verify that:
+>
+>- device_ser->domain_iommu_ser.iommu_phys matches iommu->reg_phys, and
+>- device_ser->domain_iommu_ser.domain_phys matches @domain.
+>
+>?
+
+Interesting.. The caller of this attach from core fetches the correct
+domain based on the checks you mentioned. But you are right, adding a
+check here makes sense to prevent anyone else calling attach with a
+mismatch.
+>
+>>+
+>>+	info = kzalloc_obj(*info);
+>>+	if (!info)
+>>+		return -ENOMEM;
+>>+
+>>+	guard(mutex)(&iommu->did_lock);
+>>+	curr = xa_load(&domain->iommu_array, iommu->seq_id);
+>>+	if (curr) {
+>>+		curr->refcnt++;
+>>+		kfree(info);
+>>+		return 0;
+>>+	}
+>>+
+>>+	info->refcnt	= 1;
+>>+	info->did	= restored_did;
+>>+	info->iommu	= iommu;
+>>+	curr = xa_cmpxchg(&domain->iommu_array, iommu->seq_id,
+>>+			  NULL, info, GFP_KERNEL);
+>>+	if (curr) {
+>>+		ret = xa_err(curr) ? : -EBUSY;
+>>+		goto err_unlock;
+>>+	}
+>>+
+>>+	return 0;
+>>+
+>>+err_unlock:
+>>+	kfree(info);
+>>+	return ret;
+>>+}
+>>+
+>>+/**
+>>+ * intel_iommu_restore_device() - Restore device domain attachment after live update
+>>+ * @domain: Restored domain
+>>+ * @dev: Restored device
+>>+ *
+>>+ * Return: 0 on success, or negative error code.
+>>+ */
+>>+int intel_iommu_restore_device(struct iommu_domain *domain,
+>>+			       struct device *dev)
+>>+{
+>>+	struct iommu_device_ser *device_ser = dev_iommu_restored_state(dev);
+>>+	struct device_domain_info *info = dev_iommu_priv_get(dev);
+>>+	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
+>>+	struct intel_iommu *iommu = info->iommu;
+>>+	unsigned long flags;
+>>+	int ret;
+>>+
+>>+	if (!device_ser)
+>>+		return -EINVAL;
+>>+
+>>+	if (dev_is_real_dma_subdevice(dev))
+>>+		return -EOPNOTSUPP;
+>
+>... or, move above check here to ensure the attachment relationship
+>between the @device and @domain?
+
+I think it is good to keep it in the domain_reattach_iommu() as that
+does the iommu <-> domain association.
+>
+>>+
+>>+	ret = domain_reattach_iommu(dmar_domain, iommu, device_ser);
+>>+	if (ret)
+>>+		return ret;
+>>+
+>>+	info->domain = dmar_domain;
+>>+	info->domain_attached = true;
+>>+	spin_lock_irqsave(&dmar_domain->lock, flags);
+>>+	list_add(&info->link, &dmar_domain->devices);
+>>+	spin_unlock_irqrestore(&dmar_domain->lock, flags);
+>>+
+>>+	if (!sm_supported(iommu))
+>>+		intel_iommu_enable_pci_ats(info);
+>
+>Could you please clarify the PCI ATS behavior across live update?
+>
+>My understanding is that PCI devices may bypass reset during kexec and
+>are then re-initialized by the new kernel (is that correct?). If so, ATS
+>state in hardware would depend on its state before kexec in the old
+>kernel.
+>
+>In a normal reboot, ATS is expected to be disabled and the device ATC is
+>empty. But that assumption may not hold for live update. If that is
+>true, can we still use the same approach to keep hardware ATS state and
+>info->ats_enabled in sync?
+
+Regarding ATS, it remains enabled in the preserved device during kexec
+and we should keep it in sync with the info->ats_enabled here. We might
+have to disable it in the next kernel if it is unsupported (or disabled
+globally) in the next kernel. I will put those changes here in next
+revision.
+>
+>>+
+>>+	ret = cache_tag_assign_domain(dmar_domain, dev, IOMMU_NO_PASID);
+>>+	if (ret)
+>>+		goto err;
+>>+
+>>+	ret = iopf_for_domain_set(domain, dev);
+>>+	if (ret)
+>>+		goto err;
+>>+
+>>+	return 0;
+>>+
+>>+err:
+>>+	/*
+>>+	 * Detach the restored domain from device and iommu on failure, but keep
+>>+	 * the hardware state intact.
+>>+	 */
+>>+	info->domain_attached = false;
+>>+	cache_tag_unassign_domain(info->domain, dev, IOMMU_NO_PASID);
+>>+	spin_lock_irqsave(&info->domain->lock, flags);
+>>+	list_del(&info->link);
+>>+	spin_unlock_irqrestore(&info->domain->lock, flags);
+>>+
+>>+	domain_detach_reattached_iommu(info->domain, iommu);
+>>+	info->domain = NULL;
+>>+	return ret;
+>>+}
+>>+
+>>  /**
+>>   * intel_iommu_preserve_device() - Intel IOMMU callback to preserve device state
+>>   * @dev: Target device
+>
+>Thanks,
+>baolu
+
+Thanks,
+Sami
