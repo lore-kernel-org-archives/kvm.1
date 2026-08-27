@@ -1,55 +1,55 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4540435C6B9
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 07:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AA435AC2C
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 07:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787814521; cv=none; b=P28OAksfe+CQzs64bTgYYnRbx/ZiwMkFz3Kx4sDz0SNeSB9Cyhi76rPLnQ1ERr/Yui+eXlsGFfhCwZZWD18KEeXTfBuNm07Ha3qIiGVgEcaHDslcmPdl+olIs7M5HffEEewqtYaxwQqr6dZ+EYj0YbHMXOcmyKGVojEpmeqd7Hg=
+	t=1787814675; cv=none; b=gwvc3kWB/lvOuKy9hNPFvBWpyaBaHzcvgnNySzmxCF6B4DSq2g+WauGbN90oXxteTXkWukBkS1lnpIIEdRehQr0menpfyqLpbq1jZil7BmgsrUU/tCKfP1EB+4Yi7iSI+CbDQ9MzEiR/VjBwAYus4R7YrZKYeO/B2vZ8gN2qubo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787814521; c=relaxed/simple;
-	bh=dQf27oAC4dBGe/SyI1+0GsuR50NE5X8GkWKLYmc4X3w=;
+	s=arc-20240116; t=1787814675; c=relaxed/simple;
+	bh=ycV+Iu2I+NY+3NDzkSKAuqVH8KRrVEzQ6FbwTrYHwiE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=serom6w/xuZTiZlIw2fdmyb+IHyeQ+uV9wUa3YplkBx4Iyit8Hi06SVJLkzhWBK5kLhgx40tJl0iuDpfZ9cKaTIKJINjqClf7tpkKOiBPu9iS5zjppQEwM+P2jKvkSQhcX8SMU+6qSlNqX6S9XkySznCq4jA7hZapJ/1e5qqNoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i6zJRpa9; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=CZHCBWbEXsMxcIObS7aVfnRkUUfXR3cQAFlkHF2fJvNENBfnfdiWPDpZM42Lj8jJnmwDjsD+fKOy60xTN09Rm1g+c93pk5Kbn66o1fF/5YEGK2QUGQXY41TfHTgda0h+xHfIi/KHPwfhVse9kTU+uMRIm+YLqq0ho1PsIumIhgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n2cP/iXT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i6zJRpa9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74BE1F00A3D
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 07:08:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n2cP/iXT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653C71F00A3D
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 07:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787814519;
-	bh=hm9FQNMTULRI5PbphxoLf0euP/KXUzuUHsfwhItuw4M=;
+	s=k20260515; t=1787814674;
+	bh=hqj+RfiLDu19gqQ0Qg3YFfBzwNpsf6QkmPJkGL0DbZ8=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=i6zJRpa9ogYypqtYJevNbiYc7OWsqazL2hJ9QrDTTHe9zmwgrw1tWKi3sXXnp9j/Z
-	 38AuDTWqo8RtQ4tnXbVvdt/EGCd/qNuuX3T4E1n+Ba8usPhdUmF42e/s92cAB2L3xW
-	 YMzLKd09nmzXx5bPNNAwaywaaOUXYtBvVZxygPwRxhPltlJs+b0NyCkBZqsvRGeaFl
-	 jox8aoEAWlR6NF/ZnXhZcxxNOLX2FjD3HV5X7q26doOX1TffK7dkhRyQtZA0AeTp6N
-	 HNajv6kVAd0ETtBSRT83pnHvCbQXK1SWmrKPlto9CikynHoINu+mNkkI29ivz8HpAj
-	 JILnKO96vRiag==
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c2544ff970dso30283766b.2
-        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 00:08:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rq/dzYUsDGXx2CcLc2Hy8AIe5PDyX8+t/SGp94s44oT04IvCwuodhGeia1zAaIAgy4u0l4=@vger.kernel.org
-X-Gm-Message-State: AFuF++nsrJsL1NXUpPYQTLjLEoOuCpTg10pVkWvL1geTbamuWhT5jRa5
-	QTFkajGXbuYeyNge3T3hT1OPMk0x8NuM7OpiDcvvFGcRIDS8d2BZ7zvZ4QznLWJMCD1j2Gb4Nlb
-	j9UtqVQni5b3dsbiMCI6hQhsMOclP9Ls=
-X-Received: by 2002:a17:906:2081:b0:c25:2e93:28a6 with SMTP id
- a640c23a62f3a-c252e932fe8mr701170966b.3.1787814518868; Thu, 27 Aug 2026
- 00:08:38 -0700 (PDT)
+	b=n2cP/iXTOjzrpoe1h5HlITt+FOCqeIr53QJUcnkiU73z+qiKnUkA+M62hQi0ubPnG
+	 H4rRDhIBYyUmf5TQCnx5y07iE8F40VGNLPO6BM1ENz6M+jqxGbMpCKgWxQYCNvPsGr
+	 MQ9+vDwNUPlR8XNBQHDizTDk/HpspaJZqdIzDKttNvl16kGNjsGe9ssU9eG1S2p8xN
+	 UT826Mhh0hywfp+btnSNIMUKY6blOrgKwVDt6KBlQawOEkr/MFwtctsRgO7FLvnzxN
+	 52RhKDlL/VolsLnuZp1f15N2y0ztYsJhdoxte+MrIhqb+OTLU/FxZEHO88hd/11uNf
+	 6P91qyEj2vI9w==
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c1c26d7e951so60835966b.0
+        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 00:11:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RoU2DhLrGKmvX+1SZpYnuT72FY9RdFkGB7s0XBJnRDcGmO2qE4Auu7TjRroQERn8KCC4f0=@vger.kernel.org
+X-Gm-Message-State: AFuF++l8TXQDzeHIAKWOujStllwX/ZczsVHVsbE94bc+s56fhcd1VQwm
+	wB9HPHNSU4tfEU5/o8+7csA3xee2RxV2JeuSb8ls8t7lABIWpdXiYPSUTuwFPHjRxysedbsbbXM
+	pAmZOyb8vmDEHAJt8YEmxHddY6JR2SBA=
+X-Received: by 2002:a17:906:6290:b0:c25:32b0:e56c with SMTP id
+ a640c23a62f3a-c2532b0ef77mr658146666b.4.1787814673281; Thu, 27 Aug 2026
+ 00:11:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260826211844.884951-1-seanjc@google.com> <20260826211844.884951-4-seanjc@google.com>
-In-Reply-To: <20260826211844.884951-4-seanjc@google.com>
+References: <20260826211844.884951-1-seanjc@google.com> <20260826211844.884951-5-seanjc@google.com>
+In-Reply-To: <20260826211844.884951-5-seanjc@google.com>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 27 Aug 2026 00:08:27 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zM7KSRX5r-PazJ87QaZze3wkB5WmJL4e6az5akmJLterQ@mail.gmail.com>
-X-Gm-Features: AcwNN1UNE2kyRdaKjw4CnNNb1QW-6POFF94C18u1aNFWrrjITYoTs7pQZcwdWYU
-Message-ID: <CAO9r8zM7KSRX5r-PazJ87QaZze3wkB5WmJL4e6az5akmJLterQ@mail.gmail.com>
-Subject: Re: [PATCH 3/4] KVM: x86/mmu: Bug the VM if KVM calcs a CPU role with
- EFER.LMA=1 && CR4.PAE=0
+Date: Thu, 27 Aug 2026 00:11:02 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMx1W9drF_Uv_6FbBQ_GmL00yXaDNLMazyGQOCF0jTwXg@mail.gmail.com>
+X-Gm-Features: AcwNN1W2Yybhwf5Lly9_JTRJ25B3ZsQ1NkCuFungFPr0X5My8RFs9nziSZ_RcME
+Message-ID: <CAO9r8zMx1W9drF_Uv_6FbBQ_GmL00yXaDNLMazyGQOCF0jTwXg@mail.gmail.com>
+Subject: Re: [PATCH 4/4] KVM: x86/mmu: Convert MMU walker's bounds check from
+ BUG_ON() to KVM_BUG_ON()
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Stefan Teodorescu <fane@google.com>
@@ -59,44 +59,44 @@ Content-Transfer-Encoding: quoted-printable
 On Wed, Aug 26, 2026 at 2:18=E2=80=AFPM Sean Christopherson <seanjc@google.=
 com> wrote:
 >
-> Bug the VM if KVM attempts to construct a CPU role with the should-be-
-> impossible combination of long mode being active without PAE paging being
-> enabled.  KVM's MMU construction assumes that EFER.LMA can be set if and
-> only CR4.PAE is set, and will create a completely invalid MMU if that
-> assumption fails.  FNAME(walk_addr_generic) already has sanity checks to
-> try and mitigate the fallout, but attempt to catch such bugs earlier, as
-> this is (at least) the second time KVM has had bugs that escaped into
-> FNAME(walk_addr_generic), and it's entirely possible the bad state could
-> cause problems elsewhere.
+> Bug the VM, not the host, if KVM's sanity check that walking guest PTEs
+> doesn't underflow the walker's level fires.  Bugging the host while holdi=
+ng
+> mmu_lock is all but guaranteed to panic the host, KVM hasn't _yet_ consum=
+ed
+> the out-of-bounds level (i.e. hasn't corrupted memory), and KVM is alread=
+y
+> committed to bugging the VM and synthesizing a guest page fault if a fata=
+l
+> MMU error occurs while walking guest PTEs.  I.e. there's no reason to kee=
+p
+> the BUG_ON() at this point.
 >
-> Cc: stable@vger.kernel.org
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
+
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+
 > ---
->  arch/x86/kvm/mmu/mmu.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  arch/x86/kvm/mmu/paging_tmpl.h | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 >
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index 064ecc33b926..81c30e2c74f3 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -5910,6 +5910,9 @@ static union kvm_cpu_role kvm_calc_cpu_role(struct =
-kvm_vcpu *vcpu,
->                 return role;
->         }
+> diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmp=
+l.h
+> index 46a0f7796e55..2cf5e733aba4 100644
+> --- a/arch/x86/kvm/mmu/paging_tmpl.h
+> +++ b/arch/x86/kvm/mmu/paging_tmpl.h
+> @@ -392,7 +392,9 @@ static int FNAME(walk_addr_generic)(struct guest_walk=
+er *walker,
+>                 offset    =3D index * sizeof(pt_element_t);
+>                 pte_gpa   =3D gfn_to_gpa(table_gfn) + offset;
 >
-> +       if (KVM_BUG_ON(____is_efer_lma(regs) && !____is_cr4_pae(regs), vc=
-pu->kvm))
-
-Can we shove this into the existing if (____is_efer_lma(regs)) below?
-
-> +               *(u64 *)&regs->efer &=3D ~EFER_LMA;
-
-Why do this if we will crash the VM anyway (and Sashiko doesn't like it)?
-
+> -               BUG_ON(walker->level < 1);
+> +               if (KVM_BUG_ON(walker->level < 1, vcpu->kvm))
+> +                       goto error;
 > +
->         role.base.efer_nx =3D ____is_efer_nx(regs);
->         role.base.cr0_wp =3D ____is_cr0_wp(regs);
->         role.base.cr4_smep =3D ____is_cr4_smep(regs);
+>                 walker->table_gfn[walker->level - 1] =3D table_gfn;
+>                 walker->pte_gpa[walker->level - 1] =3D pte_gpa;
+>
 > --
 > 2.55.0.887.g758fc8c411-goog
 >
