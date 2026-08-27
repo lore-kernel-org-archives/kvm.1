@@ -1,173 +1,131 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE63349550A
-	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 18:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7683337F8A1
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 18:37:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787855066; cv=none; b=VIJ4MOCpzDEVBkjE+awkfGlUISu/i0GdlVhqwi7sO7mTYKS0eEi6McbgRm9h7PM3vlPkAkvVWch/P8e9+EzdOiCs6XYJGf2zu+C4ZtQKOVboZRshBri65qUMYKxnAGptnB9mkAQ+/d2h4pcB1uU6a8+H3oNVKS3oAAbW9vfA120=
+	t=1787855839; cv=none; b=GxT+6kwUK35veuKJ958/f+Esx57r5+sEHnFEUos+PRVqGyk2DMRoENShYwsXtPjK6irJaFeCpRJIhJsEnUXB8SMBGcQ6hyyQ4P8pBDX0PDSXylWX9xENA3xjYvjH7UFmRzQulLdea2u1tRJQMS7NoB08Jnn+XCDOZ2IsTQrm2pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787855066; c=relaxed/simple;
-	bh=N+HME9gmkABqcfsCnfcJksdZdUfnL13kr9cVHm3wFW8=;
+	s=arc-20240116; t=1787855839; c=relaxed/simple;
+	bh=fg6GTljxP+sNZrgLDUd34929OGbtblqfj2IPZjIvfdU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WfaPyPL6P58+xyhFhJVtHjhzqFPx2s16inBWP7Vr30ldMJbJPqpV0lcBXBROwaML/QxAXw2H6b/g6wLJgyvX1qvsoggJNjq3QNgfvjPsDC6emHIdOSFYClP0yiAxkteDjKRTqIfxg6FwUFEgTeCXNxeUKb8QEXwoGiTs5J3nU98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eP0nPvvl; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=U8fuP9CCj40o/8WU6C0YmjVV+h4j67BzW+wrrN321rYI9mU8rkiIJjt7a3sqnNhqTjCq7tCIcqXIKO5P4cYBsm2B50Cpmtdv2KpcPlQVBsl6cfeatIJk19WUjAKFeI93Yv7P1bv5eT8HNiJ6YgwRnzZs/VUUvemArhZGLmdKdYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KObc1aSU; arc=none smtp.client-ip=209.85.215.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eP0nPvvl"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d63bad3d09so1935805ad.3
-        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 11:24:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KObc1aSU"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cb6cf425e86so3327a12.1
+        for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 11:37:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787855064; x=1788459864; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=6/8YxsptArxsqe20APqYOKDcCwiyYD2cPc64l8S4VRw=;
-        b=eP0nPvvlqCaHLN7cnxgcNlC1U2Ev+ZNlP7xDMVpRaCURxUGrQYHtdQ+SX5wnGFvUFH
-         HglBoR3UIYAxcIxbgoNeiM77ZtvkIl5vtKSZRYAy2jpVBUxMXC0B8M8Pewk9d+F/MWRJ
-         eZs3lqjRmSsVOHTjTIb9/W2xYwos82CSWg9MA9+/HJIfmJ6IeaMBwfs8hoJNyxmnc3XU
-         oLUYZO78/4RfBP66TgWVzQXTFJHiYoAxVH0omPjpEwOCSIhq6OPxUqrD9DbBryr5UphS
-         iERQ14bMuhXnw+cdgOpZN1ApDl8y/BlJXmF0MGw4Teci+JGd2/QyhJcf6CNIyM5PguIS
-         5LHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787855064; x=1788459864;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1787855838; x=1788460638; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6/8YxsptArxsqe20APqYOKDcCwiyYD2cPc64l8S4VRw=;
-        b=jW2/k9TfkaxTTbcVbuOIMBNkBix/fTe8oaIyVdDkgrHQKmoLZoEPtfCxsYiouN64JA
-         E0CGy46VSePw1Q7bRqbh3zw5ivD6zbSVi3Vz8sEq2CXpqRIySseQaB92JznPB1kXLLSS
-         7Nr0s2/zJ7CmpmOXfrWUxgBpmaidvCeXHs3+3aoo6oZtGKnO/iBOd6MiOTRXU+rE0I7i
-         wOoxkUHuwymLJOP+RxMF5cYvCyVy7JbluYrjk5eMovZFGXr+58Fm0m699pfaSDw314zv
-         gwMFRyrZUWUdYWxvvCnw27WEvoRldE4QdGWmlmFk2rdUX0rA1NylPxEY02xP9HThVzlu
-         AoYg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq076UAEv2n5x9YOECX7LsUYlrexo+07Pc1uO+A2HzD9K7Ra03m/X9PYiWjUJ1sspJPFX8=@vger.kernel.org
-X-Gm-Message-State: AFuF++kB5GHxQO+vE8lbda3EoquAZStTzHoy4QGBCP/3oQT7BUzLlbB3
-	zPN3UvfSkKAYhyC5kdx7qg19UAxbyP7R01WKZgIH8XQcK4AUz906PMok069N5/swlDqpaiUOFcB
-	cOSnSGQ==
-X-Received: from pgcp11.prod.google.com ([2002:a63:740b:0:b0:cbe:9dc7:9eec])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:939b:b0:3d1:af47:5f80
- with SMTP id adf61e73a8af0-3d26784f3ebmr1963897637.11.1787855063860; Thu, 27
- Aug 2026 11:24:23 -0700 (PDT)
-Date: Thu, 27 Aug 2026 11:24:23 -0700
-In-Reply-To: <CAO9r8zPtriVwkVqmvRDv5mQ8HmvOp=NrXdJvjRuog6FY_S1DRQ@mail.gmail.com>
+        bh=Fau6peshe7Kd3BC89rhl/hcEomF/+4LQ+lryrOtlT9E=;
+        b=KObc1aSU9GON1K9HMRQJPluCdT4esqEm010FGYXVjcIhoAl6gLQJq4IKV46TvfEtOr
+         Fa3Ks27fZGFWBwsm3sj1iZXAO/KkPrQ/ejsU1Ziqp+cNbd1UDLF7jHgbq8+rVCMkrCwN
+         QyB5/lN6KMIq6M5dlRPaydswQtmN6tGWbYI0dYSvDYlEml44cEfwSKQEchgTXMQJrVeq
+         rjk/JuzwmOwzD9ieCGNQKm7pjfi4gSsV+zgGqdvknjEMvePKoF7XQ1j5R/zJl5s6hrFT
+         YjaPN7M4eeav+BC+VY5tOjKhUKINEJIgPH7F0iwBrpUGgqfAn9ezirbXAn8uzcVLVAl7
+         b/iA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787855838; x=1788460638;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Fau6peshe7Kd3BC89rhl/hcEomF/+4LQ+lryrOtlT9E=;
+        b=Ty6/gVTsrGcq1IYJT9cMRU79DrwqVVLWsf8xeb11gNYZV/gNEnHcNdZEiNPMAtxZzX
+         mfIEFJB+3iXrlY5dJqY3dJHplAxNKizWNJPoV+SPubG8BUFkKS/HL6Hkc+fyXDgIS/9h
+         UBt3xDMax3Y/dvbfJBxMC2qIUs+dlnhNysmPyVJGjJ4Zga6glGsvJBGgoiYNyVNlFyBK
+         K3yU1W1QPhH7gC/RbaUbFTc2VBcKKBXoO84uecr4ooJHUhyCni2wikDYkfeFD0jg93Si
+         Hz3no9wYaR/VHMnKaICgSMuAfgtYy7INW4icJJpZPLZMJUFqSFhzsZ5cb6tUvI7h0Og+
+         HLXQ==
+X-Forwarded-Encrypted: i=1; AHgh+RorL+L5iupUSOlms1rq6b0f5pJ8PnjlVjlF/DOB3z5hIW6Ua+qVTepmiK4iVm/879rMS/c=@vger.kernel.org
+X-Gm-Message-State: AFuF++mHwrjApPcBMYL7zfH9FoZnPfluXcqyRIJxJupzL++N9rk38JQS
+	2E2QzTfRGgieTKursyosgFhZ7kqGiIBBcUvvwp7HSP0LCCHQJ0elJXS3QCQ+DCMQ78mKYvMIujl
+	r55H7ow==
+X-Received: from pgcga11.prod.google.com ([2002:a05:6a02:668b:b0:cbe:e160:452d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:258e:b0:3d1:8876:fb1e
+ with SMTP id adf61e73a8af0-3d26298fb6fmr1977514637.0.1787855837632; Thu, 27
+ Aug 2026 11:37:17 -0700 (PDT)
+Date: Thu, 27 Aug 2026 11:37:16 -0700
+In-Reply-To: <20260827110558.457891-1-zeng_chi911@163.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260826211844.884951-1-seanjc@google.com> <20260826211844.884951-2-seanjc@google.com>
- <CAO9r8zMnPwXVf6wx_gDMzv4j47xWa7idLD+vVm9DUiB=huiLaw@mail.gmail.com>
- <apA9eLuaMxCLdCmn@google.com> <CAO9r8zNm1QcVh29rTCzAFnYdUCS4y8ZSQOvrs2DD18XASuktoQ@mail.gmail.com>
- <apB1A5Ln_lGTI4oy@google.com> <CAO9r8zPtriVwkVqmvRDv5mQ8HmvOp=NrXdJvjRuog6FY_S1DRQ@mail.gmail.com>
-Message-ID: <apCA17CwdWTriJxf@google.com>
-Subject: Re: [PATCH 1/4] KVM: nSVM: Reject KVM_SET_NESTED_STATE if L1 has
- EFER.LMA=1 && EFER.LME=0
+References: <20260827110558.457891-1-zeng_chi911@163.com>
+Message-ID: <apCD3F3oOyC6E5oN@google.com>
+Subject: Re: [PATCH] KVM: Release reserved xarray entries if reserving memory
+ attributes fails
 From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Stefan Teodorescu <fane@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Zeng Chi <zeng_chi911@163.com>
+Cc: pbonzini@redhat.com, chao.p.peng@linux.intel.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, zengchi@kylinos.cn
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Aug 27, 2026, Yosry Ahmed wrote:
-> On Thu, Aug 27, 2026 at 10:33=E2=80=AFAM Sean Christopherson <seanjc@goog=
-le.com> wrote:
-> > > Oh yeah you're right, for some reason I thought it was paging not
-> > > protected mode. Well then, it seems like
-> > > nested_svm_check_permissions() is also incorrectly checking paging as
-> > > well, seems like both checks are incorrect? Also, I don't see anythin=
-g
-> > > in the APM about checking RFLAGS.VM before VMRUN.
-> >
-> > Presumably it's covered by the !PROTECTED_MODE clause.
-> >
-> >   IF ((MSR_EFER.SVME =3D=3D 0) || (!PROTECTED_MODE))  // This instructi=
-on can only be executed in protected
-> >     EXCEPTION [#UD]                               // mode with SVM enab=
-led
-> >
-> > Section "1.3.4 Legacy Modes" describes "Protected Mode" and "Virtual-80=
-86 Mode"
-> > as separate submodes.  And the tables for most instructions differentia=
-te between
-> > Real, Virtual 8086, and Protected modes when enumerating exceptions.
-> >
-> > The APM weasels around 64-bit mode by also saying "Before enabling and =
-activating
-> > long mode, system software must first enable protected mode".  E.g. the=
- table for
-> > SYSENTER describes the #UD due to "This instruction is not recognized i=
-n long mode"
-> > as scenario that's unique to Protected Mode.
-> >
-> > Stating the obvious, it would be lovely if the APM explicitly stated wh=
-at the
-> > exact checks are, though that's about as likely as AMD gifting me a pon=
-y.
-> >
-> > FWIW, if that reading is wrong (though I'm pretty sure it's not), then =
-the only
-> > issue is that KVM is synthesizing #UD instead of #GP, because Virtual 8=
-086 always
-> > runs at CPL=3D3.
-> >
-> >   IF (CPL !=3D 0)                                   // This instruction=
- is only allowed at CPL 0
-> >     EXCEPTION [#GP]
->=20
-> I see, thanks for digging this up. Either way I think we want to keep
-> things consistent between here and nested_svm_check_permissions().
+On Thu, Aug 27, 2026, Zeng Chi wrote:
+> From: Zeng Chi <zengchi@kylinos.cn>
+> 
+> kvm_vm_set_mem_attributes() reserves an xarray entry for every gfn in
+> the range before modifying any attributes, so that the actual updates
+> can't fail partway through.  But if one of the reservations fails, e.g.
+> due to -ENOMEM, the entries that were already reserved are left behind,
+> as the error path bails without releasing them.
+> 
+> A reserved entry is XA_ZERO_ENTRY, not NULL.
 
-Yes, for sure.  nested_svm_check_permissions() is... odd.
+Lovely.
 
-> We probably want a CPL check here,
+> xa_load() hides the difference, but kvm_range_has_memory_attributes() uses
+> xas_find() to check whether a range has no attributes at all, and xas_find()
+> returns zero entries as-is.  As a result, a leaked reservation makes KVM
+> think the range has attributes set even though kvm_get_memory_attributes()
+> reports none.  On x86, the next time mixed-attribute tracking is recomputed
+> for the range (memslot creation, or a later attribute change that straddles
+> the 2MiB page), hugepage_has_attrs() treats a fully shared 2MiB range as
+> having mixed attributes and refuses to map it with a hugepage, until
+> userspace happens to set attributes on the range again.
 
-Yes?  Though FWIW, that risks breaking userspace because currently KVM comp=
-letely
-ignores save.cpl and forces it to '0' in svm_copy_vmrun_state().  I mean, t=
-his
-change also risks breaking userspace, but at least in this case there's a v=
-ery
-good reason for doing so.  But I'm certainly not against trying to provide =
-sanity.
+I'm inclined to fix kvm_range_has_memory_attributes() instead of unwinding the
+reservation.  Because this isn't a memory leak per se, e.g. if it weren't for
+the false negative in kvm_range_has_memory_attributes(), I would say this is a
+complete non-issue (there's no leak, just a maybe-unused reservation).
+working as intended.
 
-> and it would be a superset of X86_EFLAGS_VM as you mentioned.=20
+I think it would be this?
 
-It might not be?  Both CPL and VM8086 are bizarre, I wouldn't be surprised =
-if
-save.cpl could be '0' with VM8086 active.  E.g. on Intel, there is no expli=
-cit
-CPL, it's derived from SS.DPL (because CPL isn't actualy its own thing with=
-out
-virtualization, it's indeed a reflection of state).
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 65eb26a0520d..a01b2af1cb17 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -2447,8 +2447,9 @@ bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+ 		return (kvm_get_memory_attributes(kvm, start) & mask) == attrs;
+ 
+ 	guard(rcu)();
+-	if (!attrs)
+-		return !xas_find(&xas, end - 1);
++
++	if (!attrs && !xas_find(&xas, end - 1))
++		return true;
+ 
+ 	for (index = start; index < end; index++) {
+ 		do {
 
-P.S. vmx->rmode.vm86_active doesn't track that the guest is in VM8086, it t=
-racks
-     that KVM has put the vCPU into VM8086 in order to emulate Real Mode, w=
-hich
-     is why __vmx_get_cpl() returns '0', not '3'.
+Side topic, does storing NULL even require an entry?  Based on the above behavior,
+I assume not.  So can't we also do?  This feels like deja vu though...
 
-  static int __vmx_get_cpl(struct kvm_vcpu *vcpu, bool no_cache)
-  {
-	struct vcpu_vmx *vmx =3D to_vmx(vcpu);
-	int ar;
+@@ -2573,7 +2574,7 @@ static int kvm_vm_set_mem_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+ 	 * Reserve memory ahead of time to avoid having to deal with failures
+ 	 * partway through setting the new attributes.
+ 	 */
+-	for (i = start; i < end; i++) {
++	for (i = start; entry && i < end; i++) {
+ 		r = xa_reserve(&kvm->mem_attr_array, i, GFP_KERNEL_ACCOUNT);
+ 		if (r)
+ 			goto out_unlock;
 
-	if (unlikely(vmx->rmode.vm86_active))
-		return 0;
-
-  }
-
-> We probably wanna drop the CR0.PG check from both places, and add an expl=
-icit
-> X86_EFLAGS_VM check in nested_svm_check_permissions() to #UD instead of #=
-GP?
-
-And add a CR0.PE check.  But to get it "right", we'll probably need to chec=
-k
-against real hardware, so practically speaking, I don't expect anyone to ta=
-ckle
-this anytime soon.
