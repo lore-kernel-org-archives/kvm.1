@@ -1,77 +1,60 @@
-Received: from esa12.hc1455-7.c3s2.iphmx.com (esa12.hc1455-7.c3s2.iphmx.com [139.138.37.100])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2895B3B47D7;
-	Thu, 27 Aug 2026 12:45:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.37.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFBE44BC94
+	for <kvm@vger.kernel.org>; Thu, 27 Aug 2026 12:56:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787834750; cv=none; b=NSF9DLfUGHIe/KApg80mssfRE+R+KPa9fZhaCR525NNMB2rlAuF52Ly+g5P4vA4QdHDZdKKHI7mOUIhTM3mYcYAIVaC4iKOKzCeLceBCxehGuNYHMjl1pcomq0XEujH84UJ0YWOGFay6OMf5W+XflP8gqDhxVn1f6/Sp6hdQrAM=
+	t=1787835399; cv=none; b=RudZwIiChmRlWjys/3dkhBpo3vPGCHI3WEfN4i1Z6JmpprvgKL2X19PIHDjSxdWbEraXiejBfw+zLU2bM61IxB4XulJGOrvrI1Y+2VPnN6NHXxP5hmRl0J7b5XveIaQW0lqcoztFLUh5dT4jtpecQQSeUeJlAeCsomTvT6n+WVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787834750; c=relaxed/simple;
-	bh=yhLGac+hnxttD0mvPQYVOBAXrJFS7tYd78dMHRj3ECw=;
+	s=arc-20240116; t=1787835399; c=relaxed/simple;
+	bh=3w9kHwZpHqArYaNgcTmx7Sfp1JDCZZc50UYoEtZC50c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gTz6OP6do5wG8aD35d2MkmX56bxr6kG7Ndz2VB3IK0nHniRCTH6uN7Q/Q7tQ+d5uwXtrbZ+qzyYPOq5dFFj6HQ68H5gxjh5vGwA8xD9Kf3igxq/RHDnJx74wWqGMahxH4G63iQE94veCm7opnM+6jOUQ1W56HgmPpe1SqNJNkhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=cveRfvnq; arc=none smtp.client-ip=139.138.37.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=S+PQYIruz6LOzx0YBTy0hRwg6MdHys4W+ekHuK6Gy1AKZPQ1dphBMS83vL3s3tye4R0RwX8NOuHABfNIL9S8n7ygOyiUhUd8LBfmfZYHXci+Hm7BhOWJzdLPUD7Rt6EOkjjiXxnF7O17HRVVRedm192Yj3PbPonQHag+2pLxyhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f34A1TmS; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="cveRfvnq"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1787834746; x=1819370746;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=yhLGac+hnxttD0mvPQYVOBAXrJFS7tYd78dMHRj3ECw=;
-  b=cveRfvnqxBfgavHgEu3wNk32toYod33nfae7j75Y3OlpSgUXXHsyfPqz
-   GHON1FRdUg4RmaKlHorBwcsp2a/kvkVGnJnaUemj5P8o2QRtWzH+6j1Cl
-   rgxFFPcK3z46ObFKH7HL6VYjTbze+LsK20v8q/r122YYRe/b4lew6LpWD
-   3FyNDYnNwjQDebkeR9FEJ3M28HStGHxT/kTVxln234FbXEP+njdo2iPJr
-   IQWvcNlpFIg+yzIoTtcTQ7r9abkx+aTz6CCGiDH7h0W3uSeVJUpu0Evke
-   tokgBNVdkE7BL3SP3xq1qROQBKfnOct8nbzAguaI2EfbUm5WAko4TOam8
-   A==;
-X-CSE-ConnectionGUID: W/4k+JDfT06YdN/N1UiLpQ==
-X-CSE-MsgGUID: 58RGcrBHT2SqRsdnIivgUQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11887"; a="230605459"
-X-IronPort-AV: E=Sophos;i="6.25,246,1779116400"; 
-   d="scan'208";a="230605459"
-Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
-  by esa12.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 21:45:32 +0900
-Received: from az2uksmgm4.o.css.fujitsu.com (unknown [10.151.22.201])
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f34A1TmS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787835367;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
+	bh=54KayOJzLDH0Va2lz6kNgaPxDQZ+bDW52CI0gZFnU7c=;
+	b=f34A1TmSBLkxeiFBm7GeUCKAE0W00Rcr6YzLiCiNgsgk4vGaF3fIFZ1b9nE+cvRN3JaONO
+	C1NwaL9kRKP4rZZo3QuWc6Ipi0Ul9T04zxb/63NcF2+THgHQM/cHaPrypcR26Zt6+qyXME
+	XerkP4Y9UmDDgzuUEVaYIcvS287Bbus=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-agKZOUFPPv6q_Vq8uTpk-w-1; Thu,
+ 27 Aug 2026 08:56:04 -0400
+X-MC-Unique: agKZOUFPPv6q_Vq8uTpk-w-1
+X-Mimecast-MFC-AGG-ID: agKZOUFPPv6q_Vq8uTpk-w_1787835363
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id 122611002B89;
-	Thu, 27 Aug 2026 12:45:28 +0000 (UTC)
-Received: from az2uksmom3.o.css.fujitsu.com (unknown [10.151.22.205])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmgm4.o.css.fujitsu.com (Postfix) with ESMTPS id B7A451400387;
-	Thu, 27 Aug 2026 12:45:27 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.8.202.6])
-	by az2uksmom3.o.css.fujitsu.com (Postfix) with SMTP id DB97610000B4;
-	Thu, 27 Aug 2026 12:45:19 +0000 (UTC)
-Date: Thu, 27 Aug 2026 21:45:17 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v16 44/45] KVM: arm64: CCA: Require ICH_HCR_EL2.TDIR for
- realms
-Message-ID: <apAwQeTW-JvCISEt@FCCLS0092175.localdomain>
-References: <20260803134403.80630-1-steven.price@arm.com>
- <20260803134403.80630-45-steven.price@arm.com>
- <anlZCIauOq4Lvv0I@FCCLS0092175.localdomain>
- <bdd0cf41-05e8-4d66-930b-5a7a1b3e643a@arm.com>
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E56CF180AEDF;
+	Thu, 27 Aug 2026 12:56:02 +0000 (UTC)
+Received: from redhat.com (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 669ED434;
+	Thu, 27 Aug 2026 12:55:59 +0000 (UTC)
+Date: Thu, 27 Aug 2026 13:55:56 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: kchamart@redhat.com, pierrick.bouvier@oss.qualcomm.com,
+	peter.maydell@linaro.org, mst@redhat.com, cohuck@redhat.com,
+	pbonzini@redhat.com, eblake@redhat.com, armbru@redhat.com,
+	lorenzo.pieralisi@linaro.org, gshan@redhat.com,
+	qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org
+Subject: Re: [RFC v2 18/24] hw/arm/virt: Disable DTB randomness for
+ confidential VMs
+Message-ID: <apAz3Ck1ybM9XntA@redhat.com>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+References: <20260728192630.240375-1-mathieu.poirier@linaro.org>
+ <20260728192630.240375-19-mathieu.poirier@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -80,118 +63,87 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <bdd0cf41-05e8-4d66-930b-5a7a1b3e643a@arm.com>
+In-Reply-To: <20260728192630.240375-19-mathieu.poirier@linaro.org>
+User-Agent: Mutt/2.4.0 (2026-06-19)
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-On 08/24 15:50, Steven Price wrote:
-> On 10/08/2026 05:58, Kohei Enju wrote:
-> > On 08/03 14:44, Steven Price wrote:
-> >> KVM advertises realm support when the RMM is available, and allows
-> >> userspace to create a VM with KVM_VM_TYPE_ARM_REALM on that basis.
-> >>
-> >> On CPUs that lack ICH_HCR_EL2.TDIR, KVM uses ICH_HCR_EL2.TC for
-> >> normal guests so that ICC_DIR_EL1 is still trapped via the common GICv3
-> >> CPU interface trap. Realms cannot rely on the normal hyp-side trap
-> >> handling for that fallback, so advertising RMI support on such systems
-> >> lets userspace create a realm that cannot safely run.
-> >>
-> >> Require the finalized ARM64_HAS_ICH_HCR_EL2_TDIR capability when
-> >> reporting KVM_CAP_ARM_RMI and when accepting KVM_VM_TYPE_ARM_REALM.
-> >> This leaves normal VM creation unchanged on systems that need the TC
-> >> workaround.
-> > 
-> > Hi Steven,
+On Tue, Jul 28, 2026 at 01:26:24PM -0600, Mathieu Poirier wrote:
+> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > 
-> Hi Kohei,
+> The dtb-randomness feature, which adds random seeds to the DTB, isn't
+> really compatible with confidential VMs since it randomizes the Realm
+> Initial Measurement. Enabling it is not an error, but it prevents
+> attestation. It also isn't useful to a Realm, which doesn't trust host
+> input.
 > 
-> Sorry for the slow response.
+> Currently the feature is automatically enabled, unless the user disables
+> it on the command-line. Change it to OnOffAuto, and automatically
+> disable it for confidential VMs, unless the user explicitly enables it.
 > 
-> > Thanks for your work on upstreaming CCA.
-> > 
-> > In the v15 discussion [0], you asked whether the system I was testing was a
-> > "hacked up test system" or closer to "production hardware", and I said I would
-> > share more when the time came. I can now say that this is not a hacked-up test
-> > system. At Fujitsu, we have real hardware (FUJITSU-MONAKA) which implements CCA
-> > (FEAT_RME) but does not implement FEAT_GICv3_TDIR. The hardware details are as
-> > follows:
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> ---
+>  docs/system/arm/virt.rst |  9 +++++----
+>  hw/arm/virt.c            | 41 +++++++++++++++++++++++++---------------
+>  include/hw/arm/virt.h    |  2 +-
+>  3 files changed, 32 insertions(+), 20 deletions(-)
 > 
-> Cool, I suspected that might be the case - it's good to know there's
-> real hardware on it's way.
-> 
-> >   - GICv4.2 compliant implementation
-> >   - Supports FEAT_GICv3, FEAT_GICv3p1, FEAT_GICv4, FEAT_GICv4p1, and FEAT_GICv3_NMI
-> >   - Does not support FEAT_GICv3_LEGACY (deprecated)
-> >   - Does not support FEAT_GICv3_TDIR (ICH_VTR_EL2.TDS == 0)
-> > 
-> > For reference, compared with Arm Neoverse V3, the virtual GIC configuration is
-> > largely equivalent. The only missing non-deprecated architectural feature is
-> > FEAT_GICv3_TDIR.
-> > 
-> > The issue I see is that the CCA KVM code currently does not support a
-> > configuration (non-TDIR/common-trap) that normal KVM already supports. For
-> > normal guests, KVM handles systems without TDIR by using ICH_HCR_EL2.TC and the
-> > existing GICv3 CPU interface emulation path. However, Realm guests currently
-> > fail because the CCA path bypasses that existing emulation path, as Marc also
-> > pointed out in [1].
-> > 
-> > Also, this is not limited to systems that actually lack TDIR. The same failure
-> > can be reproduced on a TDIR-capable system by booting with:
-> >   kvm-arm.vgic_v3_common_trap=1
-> 
-> As Marc says that's a debugging option - handy for those of us who don't
-> have a platform without TDIR to test with.
-> 
-> > So it seems that the current CCA KVM implementation does not yet cover a
-> > configuration that normal KVM already supports today, rather than this being a
-> > limitation of the RMM specification or the underlying hardware.
-> > 
-> > I've included a patch below which reuses the existing GICv3 early emulation
-> > path for Realm sysreg exits. This patch does not add any new vGIC emulation
-> > code, and leaves the existing vGIC emulation code unchanged. So I believe this
-> > is in line with Marc's request in [1]. With this patch, Realm guests can run
-> > when the common CPU interface trap path is enabled.
-> > 
-> > I tested the exact patch both on our real silicon and on QEMU, and
-> > confirmed that all Realm-related tests in kvm-unit-tests-cca passed.
-> > 
-> > I'm not attached to this exact implementation, and I'm happy if the solution is
-> > reworked to better fit into the next revision. 
-> > 
-> > Given that this configuration can be supported by reusing the existing KVM
-> > emulation infrastructure, I think it would be reasonable for CCA to support the
-> > non-TDIR/common-trap configuration rather than requiring ICH_HCR_EL2.TDIR
-> > unconditionally for Realm support. 
-> > 
-> > Supporting this configuration would also allow us to validate the upstream CCA
-> > KVM implementation on real silicon using upstream code paths, and contribute
-> > additional real-hardware testing coverage as the implementation
-> > evolves.
-> > 
-> > I'd be very interested in hearing your thoughts.
-> 
-> So personally I think your patch is a good compromise. It gets the
-> hardware working and I'm keen to enable real-hardware testing. Marc has
-> a very valid point that in terms of performance this could be very bad.
-> Pseudo NMI in particular will be terrible because accesses to GIC
-> registers are used to "emulate" the NMI so the number of traps will be
-> large, and the traps are much more expensive with CCA.
+> diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
+> index 5f6dd1797862..9882b842ddd5 100644
+> --- a/docs/system/arm/virt.rst
+> +++ b/docs/system/arm/virt.rst
+> @@ -238,10 +238,11 @@ dtb-randomness
+>    rng-seed and kaslr-seed nodes (in both "/chosen" and
+>    "/secure-chosen") to use for features like the random number
+>    generator and address space randomisation. The default is
+> -  ``on``. You will want to disable it if your trusted boot chain
+> -  will verify the DTB it is passed, since this option causes the
+> -  DTB to be non-deterministic. It would be the responsibility of
+> -  the firmware to come up with a seed and pass it on if it wants to.
+> +  ``off`` for confidential VMs, and ``on`` otherwise. You will want
+> +  to disable it if your trusted boot chain will verify the DTB it is
+> +  passed, since this option causes the DTB to be non-deterministic.
+> +  It would be the responsibility of the firmware to come up with a
+> +  seed and pass it on if it wants to.
+>  
+>  dtb-kaslr-seed
+>    A deprecated synonym for dtb-randomness.
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index fa6cd62a335c..65ed8573f8b1 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -401,6 +401,7 @@ static int gic_fdt_irq_type_spi(const VirtMachineState *vms)
+>  
+>  static void create_fdt(VirtMachineState *vms)
+>  {
+> +    bool dtb_randomness = true;
+>      MachineState *ms = MACHINE(vms);
+>      int nb_numa_nodes = ms->numa_state->num_nodes;
+>      void *fdt = create_device_tree(&vms->fdt_size);
+> @@ -410,6 +411,16 @@ static void create_fdt(VirtMachineState *vms)
+>          exit(1);
+>      }
+>  
+> +    /*
+> +     * Including random data in the DTB causes random intial measurement on CCA,
+> +     * so disable it for confidential VMs.
+> +     */
+> +    if (vms->dtb_randomness == ON_OFF_AUTO_OFF ||
+> +        (vms->dtb_randomness == ON_OFF_AUTO_AUTO &&
+> +         virt_machine_is_confidential(vms))) {
+> +        dtb_randomness = false;
+> +    }
 
-Yes, in that case ICV_PMR_EL1 would be accessed frequently, and the
-resulting traps would be expensive.
+Is there any valid use case for ON_OFF_AUTO_ON with RME ?
 
-> 
-> So I'll attempt to incorporate the changes in your patch, but obviously
-> you'll have to decide for yourself whether the performance of the
-> product is suitable.
+It feels like a miscnofiguration that ought to result in a fatal
+error message, rather than booting with a VM config that cannot
+be verified due to random measurement
 
-Thanks for the clarification.
+With regards,
+Daniel
+-- 
+|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
+|: https://libvirt.org          ~~          https://entangle-photo.org :|
+|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
 
-I agree with the performance concern, and I'll run some benchmarks on
-our hardware.
-
-Thanks,
-Kohei
-
-> 
-> Thanks,
-> Steve
-> 
