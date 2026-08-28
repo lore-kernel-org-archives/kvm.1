@@ -1,140 +1,204 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1D13B0589
-	for <kvm@vger.kernel.org>; Fri, 28 Aug 2026 22:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787957686; cv=pass; b=H/4WBlfeVFLkIPJDlvb2Gf17MeJOK9Mut6YjexBua3f5SiWIjBqN76IYQo7L98+lAK7OTZtDScvVc36V4YAEaWljN9nomnzp78Sop+0NuFntJnhbv3vihJ+DNQux7bQ3TosVc0WJbdx5rn4jt1nX0mVXP8Ot23e12wsH/t3lJkQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787957686; c=relaxed/simple;
-	bh=4unzX+NMpOtBviw882dRQzRaeXOD1/xti/3UhI1UIHc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SLAV4C/MNCcam0bg6ZZIaVR7JVBWSCsv7dcutYZRRw/KVLnbSqVlnncL40D0TXm0AkdXWqd4WlUiJvSGVpFN0eSk7pSwI9AI4aZ8st8nllyQyxkBSQt7iMQPy8jR64aWvsjzPdNDN5NcVYuY4KX+3ucKa4tL+++uPdV0bmxBgFk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wMHSAsLr; arc=pass smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0033B0584;
+	Fri, 28 Aug 2026 22:56:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787957814; cv=none; b=gpV6H8ncndfbAb8AfewpKQJ+GHO4lRLBcyzL9bGmCeH+vFuF5YJmNCRf7PwdG1Zxz3lmQdZlG4e3R1MvT8gDlTXZUHoCu9jabiEpt17ptgGkONzxDUf10fMYwHibstuLYTuxrMQgMMcVonPL4qz6VYmxuWBRD7CJXh3zIGDUdc4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787957814; c=relaxed/simple;
+	bh=WgSZH6NNpSChURme3PUpCafzgQh7Kg405gcFwErTqaE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OGh3pbv44tOekkBJYvrJg1YugcCrGF5SK6+lM6v3F76zMeTxRIB9CEd2P+yJjFyTRScmDtMRSAwatbIkh+2SrNYCpzggDMIq25EOCAz1CliUJiCFC6imwHhatSI0qUFXdKViEwUN69Ivz9BiYdwvfKEOOjK03Kdk5/DGMjUuaao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=REk4Qh6t; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=L17FW+JX; arc=none smtp.client-ip=202.12.124.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wMHSAsLr"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-52fac937235so45281cf.1
-        for <kvm@vger.kernel.org>; Fri, 28 Aug 2026 15:54:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787957682; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RN6vVg210eHFfDI7O2M1A2MnBCUi8syBILDdin37AZaLu2VuNjOrvwT0lPSTGfeKfE
-         vUX4m0uQC68zNI1+/IAoQek/P4BESXlj8HcNm8naa/FIMaVMWpV+QqOxpLp++vFVjfZC
-         29AlN2gRJqkjaM9/SxZoO7sHEIq1W+DO9i8qmR6AlLWQ4BgOZ4bWCphHCu3D3wP3P0uR
-         RukIaRZM5DZjg40zROGW+7PSBT7q24R1NE007HSJExRCw72TnJhefGjdUrbxOjkCp9cx
-         6Nf9wu8qcuxln1BEFxaVonr+v0nO9WPWM1fz0xpZu5y7od2GFEwnPxuXxjB3Bkbj+IJl
-         e6iQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4unzX+NMpOtBviw882dRQzRaeXOD1/xti/3UhI1UIHc=;
-        fh=Ck+oSQkh7siq1BuYj4MRLFUr/GyF+iRwWVrXMPbIQz4=;
-        b=CCkXiPbC6rag2gp+auSy6tLY13RIW8CGsDYbtdpc7ZiNOY7cIAb3p0mvVkbubYIOzn
-         /cx3d7Gfc8UOEoqYtaFQGNbS9JRGT6HDmleA3qesWrjcNbuiDifoOlIrmYbmHnefC7yO
-         s/PTlKgo2pGgWJgUKVkYy7EtUUUgmGn1xEQOjuCd+SfY/lkomlIIKzvQEnZIlJ6AzHVH
-         fXmhVCoaFRX0Bmea7g5Fg983o+Wi21NNZSHhCglzoiGTZTagEIFh7BPMfQ4TtpDUtO9/
-         6xxOLgOh2eEKtaLjsPCCu42DTqUcMqhUuB7zDKmmNAegdoKRss5C2tN4ajNSOoCXKZTy
-         rqmw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787957682; x=1788562482; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4unzX+NMpOtBviw882dRQzRaeXOD1/xti/3UhI1UIHc=;
-        b=wMHSAsLr+g0oMmhiM9FTgPjkcBiWjxQpgibgbgK7MxAStn/eevCnCH5vGGDmzhS9rm
-         55uH+BvLDT2bkJiJwTEFco74f7YofNpsUnmDTCamqQU8DLfidkX38a6imF/2NQwJa4Bm
-         IwQn0FRGSvZwGKGpNxcsKVeAPB/2/B7gImXQcKsYuT5pF5pUHLRcR8g9n7dij0diornD
-         tXGn0YQzMS0GAqZj5y+kDt0WQ/BLUxeiSKUug2Nj19z0+D4rV9aw0WJrRI9KDUPhl9C0
-         kwK0kKErAqORoU4C+j2X1Q/bGRmvfGWHJv+q/yUwnw0nQp+agxVTbm6sk9EgGKZxihnf
-         w3NQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787957682; x=1788562482;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4unzX+NMpOtBviw882dRQzRaeXOD1/xti/3UhI1UIHc=;
-        b=hjG11STpAsKLEBhUMBNi3SiaL1EdipNWGhb4pHWNr4A+lRavBfrN99tvR82X2Njj0P
-         Kx2AJwtP+UEv0wkkOvSxOUI8RRGOPJXTVozQzcyBhQZYIKmJ/xLLPvnWQ6bHr2+MScY3
-         lbg3m48QtPPbn43zOi8yOTn6R4JmLEu0OWK3VWdmMQD8kb+c+jZAguGnPmpJIjciGXSu
-         mbUaj52WemzeUXuFk5752xSzvAhzoL2rjWULKT3eC3qZGwBeFmLs8v76t0KaJjlhEJIx
-         +04b/YwU6SjK3Tg4EoCZi0GMtF2w82VabcdpNMKCnEFl7g1XPn0r7oEo/7r3N+lpSTgA
-         N3MQ==
-X-Gm-Message-State: AFuF++mVWv6MfsOOQXZosty/h7Eg0TqXBBn5qsBtHUNcZ04J1bKAKwJA
-	3AT5vVlXyNHNV37o+6QpqRflV/f/6Wj/jFyITCC0JbjmWnf/LYm/QYGiM2HtfTZ6625XHUjs19E
-	zYvPNAJGQd0Q8XwykTNGnVZ+/iPh4potZ49VyFfop
-X-Gm-Gg: AR+sD13kdtp2jtV6/Xfiq0vjwEyQLe1GayVKQ9201/LdDkd9nxZg1oDj9jApB07F/Qv
-	H8I9siIn113VrnDzDJFvi9PICBrFrWHwFqvvmSOaT+NdDaJCvyJD0jFVD8VNmrlAvnj4K+2sSU+
-	7O/g3utetL4UgsKKy7FhzA4sPQaPa5iC7Pa0K9zEcBsjt4kRYSZYgdmKmKLaJlX6E+kG39Q2AW7
-	fW6vLqTRZNmf2ay6k6t6QvFfxTa2wcjIz/McYLsH8fsUoNv6srE8U+TwO/yiV7N2322ADueZX5W
-	heb9A9A7ruy3gEgkSDzYqlg1sAIbv02JBdSl/Oc8czpAZn7snphARdWDg5A/V9I1Jeheg/ez1Zl
-	8
-X-Received: by 2002:a05:622a:5a14:b0:51c:6b7:d3de with SMTP id
- d75a77b69052e-52ff716a2admr5298061cf.5.1787957679730; Fri, 28 Aug 2026
- 15:54:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="REk4Qh6t";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="L17FW+JX"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 577017A0135;
+	Fri, 28 Aug 2026 18:56:50 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Fri, 28 Aug 2026 18:56:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1787957810;
+	 x=1788044210; bh=KKLW8cJOO3AnGkQYNhT+Vc3CEkCeTPPhftnLE/+1Ae4=; b=
+	REk4Qh6t0VL0UDQ6osCEp/b1ympUZ+5JyunEW/SJEccB54w1GnrRCfNAGl+4PCEJ
+	k+WBQ2bJMZxK/3OA4Y3uslCEytGfOaNxVbmd3k6E0HyKw9hPTk3XZ/lZwzpf3F+O
+	D4axy6M7gXpArRhkJkC95NLQZhnCbS78zvPxHGWumQge+vpt+fFWBLQxMV0w7T0R
+	I/Dbg6z+ckVNjIXvOwgh1xMLfyv07MpkM0CwjyDiFcj+kjNULKHUqNPFsWWW+Pxv
+	oHsv+E5AJvOTVrUKYpIaTIL8UOzzIXSxHj9n6MsKzR+d6TwR5UrWMKxxlYMzEYON
+	Qqfaidgd4DWZAp95XDwGwQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787957810; x=
+	1788044210; bh=KKLW8cJOO3AnGkQYNhT+Vc3CEkCeTPPhftnLE/+1Ae4=; b=L
+	17FW+JXCrXY/0/cyuPw84RmpsvLF4Ur8MttGunqIhhlpO4OjxlK4aFWnCn0fLQ0a
+	FLpRW6swAij8NBbfH8p/5CNM0zzwu1CdSkWgAn34eQ4UJge87GY3ZW2XGsh2pM4m
+	eVWR600S012cmSHvSz9Hs51s3Y5/zAtfRX9XDSu5RgdNvt+q/q81xS8yZ12vFi9q
+	t8BijnLwG7HxQR+2VS385WVmC9ojhuY1WYYZ+K0roy1OqMMnJel/TA0q/g7y7hm3
+	a4WVYfX1VBU/8egY4XLCMnie3m7obl7nThLnVqSq2RUy5hwr2f3nrt24/xgNONjD
+	/EHW4NcPyEDTrBcWJBziA==
+X-ME-Sender: <xms:MRKSaiRLJjtIu7aIp554sjq6qbwVMJgYWgnGHHO7slaktQ7-afUtvw>
+    <xme:MRKSalYRoGGHEiDHKF-wyXGhe7AjddUQCPW4XkPnpcbyWJwxfZT2N3VYqwgu__nbp
+    08F-3tDTGETyhjjthLHqr7EblBhTIS-eQxuZ9qqLgVhJMZ04-FUmw>
+X-ME-Received: <xmr:MRKSanM3O7-uPhm3W4slpT57VYmGH3iUOOOssF3WzPrCSZhlaDCbCi5klxmWNw>
+X-ME-Proxy-Cause: dmFkZTFLGzvkUr5Q+EZ5kOtLvIKlBrEDdYI9l7Awoc8Gq71l6lia3UAsMpqRe49/uwy36X
+    pf3wEUeGiDxiNcHq0cGhYA8UVaFVPV1RIIx5r4LRjEFvEt2Fnp8nkxEfFQCcRsmyKf97qg
+    KSbXPBAtZt0XIBDEGmoERd4ML1CaCxJpqpoTQ7iQhwZ7YrYoN2WtbcF2BIasXK/3zFgGiJ
+    8UxFE5HpYqDQU+6FjOTEyxGJrC83784v32WttMih1yhylE8rQvu6VBjjEbXKKsff6ahZVE
+    B7woNvalxCjeN91ADtoMGYDwXQUMCnXl+NbM/elK+rTRvNYD7spbuFAkptwbpvAKqwybf1
+    Wcv++3S585yQR3Q2EgcXQBoo6fOBDOkffgdFD5Dl5xJP3iCWiVMmgK1XGhXPDnwQPLNP1e
+    KkZVXXJB8KMUbFvPTiqQimezfF7PrbkBySaoYgHYmDtSD+QPGo//dAXlxJlHmx/u+jJZS0
+    pneTx20onV6Rf8XTSKknYaGCDSRduX4zCoBlGgZ1PJ2c3aNnrNpUukfCMbWW2zW1wG/6VP
+    tk8r1w2MTsWSoFIi4PeexS7xTThLLhNvHOUVypa/3y6TB5IyA6wk7/1h/vgiTDZSdCUlsE
+    TnacV+CulHFIoi4W2Y4tr3FkkIofqWNOVQU/eBAJL4kDWuuhakCByuZPy9Fg
+X-ME-Proxy: <xmx:MRKSamO6M0ok5lrfhM9bgYLSI-8EprUs67HGnb61yswNShX8bNasMg>
+    <xmx:MRKSajMGp8j24Yee7PwzLf4TRe6LnyxQHCu3EwOoqVx_f-XcdbD87g>
+    <xmx:MRKSaqb2QlOcfEFtf1vuIkWDIPxzKM7X0Zv3nQVnBy67ewpnyqlz0g>
+    <xmx:MRKSaphzAv2FklB1swsvOyRPMf4hBeZplxDgVRzi1Out11uvF82kKQ>
+    <xmx:MhKSaiZDDI7HgWr2V4Z9dRI2rFqPC6VQXw4k-nLk6Iwmqu0fJBhST_pa>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 28 Aug 2026 18:56:47 -0400 (EDT)
+Date: Fri, 28 Aug 2026 16:56:45 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: <mhonap@nvidia.com>
+Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
+ <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
+ <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+ <dave@stgolabs.net>, <alison.schofield@intel.com>,
+ <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
+ <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
+ <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+ <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
+ alex@shazbot.org
+Subject: Re: [PATCH v4 25/27] vfio/pci: Provide an opt-out for the CXL
+ Type-2 extensions
+Message-ID: <20260828165645.03aed778@shazbot.org>
+In-Reply-To: <20260813093631.2288172-26-mhonap@nvidia.com>
+References: <20260813093631.2288172-1-mhonap@nvidia.com>
+	<20260813093631.2288172-26-mhonap@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
- <20260806020850.1221381-4-rick.p.edgecombe@intel.com> <CAGtprH9ERb_fFG-4JYR1Bjxyyvnk3Ys4q=9ioQz0Cq6QCXtVBw@mail.gmail.com>
- <9c0048b72834e7e88cb278476ad8d19f57373aa9.camel@intel.com>
-In-Reply-To: <9c0048b72834e7e88cb278476ad8d19f57373aa9.camel@intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Fri, 28 Aug 2026 15:54:28 -0700
-X-Gm-Features: AcwNN1UEyg9LUIjstN53o3MhfwwMAKPLjXkthRuE3vRI8Rovt7_F8Pac_E2pZ8A
-Message-ID: <CAGtprH870raS09USeB=Ec_TAY8Vke6-nV_LcX6dYZVn=wEhjNg@mail.gmail.com>
-Subject: Re: [PATCH v9 03/11] x86/virt/tdx: Add tdx_alloc/free_control_page() helpers
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Huang, Kai" <kai.huang@intel.com>, 
-	"Hansen, Dave" <dave.hansen@intel.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>, 
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>, "Wu, Binbin" <binbin.wu@intel.com>, 
-	"kas@kernel.org" <kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>, 
-	"mingo@redhat.com" <mingo@redhat.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"nik.borisov@suse.com" <nik.borisov@suse.com>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"hongyu.ning@linux.intel.com" <hongyu.ning@linux.intel.com>, "hpa@zytor.com" <hpa@zytor.com>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "Mehta, Sohil" <sohil.mehta@intel.com>, 
-	"Gao, Chao" <chao.gao@intel.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Aug 28, 2026 at 3:23=E2=80=AFPM Edgecombe, Rick P
-<rick.p.edgecombe@intel.com> wrote:
->
-> On Fri, 2026-08-28 at 12:50 -0700, Vishal Annapurve wrote:
-> > Reviewed-by: Vishal Annapurve <vannapurve@google.com> for the
-> > SEAMCALLs and the get/put helpers, assuming your are still thinking to
-> > shift things a bit between the current and the next patch.
->
-> I looked at moving tdx_alloc/free_control_page() to the next patch. But D=
-ave's
-> comment was more along the lines of just commenting the limitations. So r=
-ather
-> than disturb the already reviewed patches at this point, I'm just comment=
-ed the
-> limitations clearly. And then removing the comments when the limitations =
-are
-> fixed.
->
-> So the only only code change here is temporarily prepending the limited
-> functions with __.
+On Thu, 13 Aug 2026 15:06:29 +0530
+<mhonap@nvidia.com> wrote:
 
-Sounds good.
+> From: Manish Honap <mhonap@nvidia.com>
+> 
+> Add an opt-out so users can keep vfio-pci's CXL extensions out of the
+> path for individual devices or for an entire vfio-pci instance. The
+> runtime gates are:
+> 
+>   - Module parameter vfio_pci.disable_cxl (bool, 0444). Setting
+>     disable_cxl=1 at modprobe time makes vfio_pci_probe() set
+>     vdev->disable_cxl on every device it binds.
+> 
+>   - Variant drivers (nvgrace, mlx5, and others) may set vdev->disable_cxl
+>     in their own probe for per-device control without the module
+>     parameter. The bit lives on struct vfio_pci_core_device so it is
+>     reachable from any variant.
+> 
+> vfio_pci_core_init_dev() consults vdev->disable_cxl before it probes for
+> a CXL device, so a device that opts out is driven as plain vfio-pci:
+> vfio-cxl is not loaded, init_device() never runs, and the device gets no
+> VFIO_DEVICE_FLAGS_CXL, no HDM or component-register regions, and no DVSEC
+> virtualization.
+> 
+> The module parameter is built only when CONFIG_VFIO_CXL is enabled; the
+> disable_cxl bit itself is unconditional so a variant driver can set it
+> regardless. This mirrors the long-standing disable_denylist opt-out.
+> 
+> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> ---
+>  drivers/vfio/pci/vfio_pci.c      | 9 +++++++++
+>  drivers/vfio/pci/vfio_pci_core.c | 8 +++++---
+>  include/linux/vfio_pci_core.h    | 1 +
+>  3 files changed, 15 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
+> index 830369ff878d..0ad041fffe48 100644
+> --- a/drivers/vfio/pci/vfio_pci.c
+> +++ b/drivers/vfio/pci/vfio_pci.c
+> @@ -60,6 +60,12 @@ static bool disable_denylist;
+>  module_param(disable_denylist, bool, 0444);
+>  MODULE_PARM_DESC(disable_denylist, "Disable use of device denylist. Disabling the denylist allows binding to devices with known errata that may lead to exploitable stability or security issues when accessed by untrusted users.");
+>  
+> +#if IS_ENABLED(CONFIG_VFIO_CXL)
+> +static bool disable_cxl;
+> +module_param(disable_cxl, bool, 0444);
+> +MODULE_PARM_DESC(disable_cxl, "Disable CXL Type-2 extensions for all devices bound to vfio-pci. A variant driver may instead set vdev->disable_cxl in its own .init callback.");
 
->
-> Do you want to keep your RBs?
+The latter sentence isn't module parameter description material, it's
+aimed at users.  Why does this need to be read-only since it's
+following the latch-at-init flow?  Thanks,
 
-Yeah.
+Alex
 
->
-> Rick
+> +#endif
+> +
+>  static bool vfio_pci_dev_in_denylist(struct pci_dev *pdev)
+>  {
+>  	switch (pdev->vendor) {
+> @@ -142,6 +148,9 @@ static int vfio_pci_init_dev(struct vfio_device *core_vdev)
+>  #ifdef CONFIG_VFIO_PCI_VGA
+>  	vdev->disable_vga = disable_vga;
+>  #endif
+> +#if IS_ENABLED(CONFIG_VFIO_CXL)
+> +	vdev->disable_cxl = disable_cxl;
+> +#endif
+>  
+>  	return vfio_pci_core_init_dev(core_vdev);
+>  }
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 0fed8e00bc1d..4b51a0f1e847 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -2423,10 +2423,12 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
+>  	xa_init(&vdev->ctx);
+>  
+>  	/*
+> -	 * Load vfio-cxl on demand for a CXL device. If it is absent, drive the
+> -	 * device as plain vfio-pci rather than failing the bind.
+> +	 * Load vfio-cxl on demand for a CXL device unless the user opted out.
+> +	 * If it is opted out or absent, drive the device as plain vfio-pci
+> +	 * rather than failing the bind.
+>  	 */
+> -	if (pcie_is_cxl(vdev->pdev) && vfio_pci_is_cxl_type2(vdev->pdev)) {
+> +	if (!vdev->disable_cxl && pcie_is_cxl(vdev->pdev) &&
+> +	    vfio_pci_is_cxl_type2(vdev->pdev)) {
+>  		const struct vfio_cxl_ops *ops;
+>  
+>  		request_module("vfio-cxl");
+> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> index 18e206a35d8c..8e3723a55c17 100644
+> --- a/include/linux/vfio_pci_core.h
+> +++ b/include/linux/vfio_pci_core.h
+> @@ -158,6 +158,7 @@ struct vfio_pci_core_device {
+>  	bool			disable_idle_d3:1;
+>  	bool			nointxmask:1;
+>  	bool			disable_vga:1;
+> +	bool			disable_cxl:1;
+>  	/* Flags modified at runtime - dedicated storage unit */
+>  	bool			needs_reset;
+>  	bool			pm_intx_masked;
+
