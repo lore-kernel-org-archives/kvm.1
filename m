@@ -1,804 +1,668 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D8D75809
-	for <kvm@vger.kernel.org>; Fri, 28 Aug 2026 20:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A758034A791;
+	Fri, 28 Aug 2026 20:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787949884; cv=none; b=EYgnaGDZxPg5lK20d1HUEfbAmnESIFaZdtC7sZMH6V1uXqNuMEnHDHhfTSc6AJf/ePxZUPRi7/p2r6ooNgKx0+ncbEQiAIVaNQKIpgpxiZDMNu14F4XcVWkxj9RDb8Vxo4i9nMebuciVzgQylkqODxLF+VQ1R3Kr+p/c9vxpPO0=
+	t=1787950443; cv=none; b=kFDhhomzTkpk9umJAn+io2ircwEUHLQR8fIkw7AsmnHV4dPEhkhih5dgUUz80e+qPtogsBMi6FiiF/cinBCS+md9GTz/SVPINS5HtZ2e4TmtNcCJGIvKVeTY5yAyz6zMB34zC0ReyBxFIM8ZGICld41G6LxYZYw5KaBV69TTxUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787949884; c=relaxed/simple;
-	bh=VeMRhlxYmz+T9jOYPDTApDrfgg2t6fF/rqpbmuy+YRE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Y9csYV1h6Ah/AQhyWqJxG99tqipsoFiVuKeeLcklWAG3zMv6AnBEQhiYQXLp5eGkM57wIkiuW1moVSB9mTmhOQ1XzqPPm83szCNJgYo0FWztMz1096w2yYEBRaScU71SqtkXtfmZQwPFxuXMUFhG4PZREryaQ/K9Dg7AAG/qCyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SREy8mC4; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787950443; c=relaxed/simple;
+	bh=QF1Ywz4ZH0P6r7aNpTIKietqkusOChLJ7NDBfbqCvCI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=b99s0OieT0rIcxGUUbyUKCXjO5E/2KFiGblqj0GMsEksdSrZGxknRMmjxbMcLIHKIW8eu0ZNOkPiAoWcdQkPz/FW9mTrkQEb9Os2nzkzp6JTPmPl7Las/5d/Kw/WWCWpybh0pyy8W3sojB0LZPWP9g5dFiBhOq7q9vXm6Z9eyT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=MxIe4wDF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TcOy7xXF; arc=none smtp.client-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SREy8mC4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787949881;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1MnlwV9u4hBAhAqG20I2D2aQxHEJi2OE3WLohKT4/Tg=;
-	b=SREy8mC4e+PWcxJzoDGSpfck631uGbixmKF3tqF7q1Shco0txdI6Enflo9Go3dlbTLebrV
-	YB/gI5UbVZCF6KIqKIrpg8TXhacNshhtHgdkaA/RRubugPAxOaxv/A7wBA4Nh6kWcaB0K0
-	pSugXskwQiF/CY1FHBjgJnlxPHex7L0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-675-mv0IbRlvMdS2PtvGq013zQ-1; Fri,
- 28 Aug 2026 16:44:37 -0400
-X-MC-Unique: mv0IbRlvMdS2PtvGq013zQ-1
-X-Mimecast-MFC-AGG-ID: mv0IbRlvMdS2PtvGq013zQ_1787949873
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D235B19541B1;
-	Fri, 28 Aug 2026 20:44:32 +0000 (UTC)
-Received: from localhost (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D34921803A40;
-	Fri, 28 Aug 2026 20:44:30 +0000 (UTC)
-From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Date: Sat, 29 Aug 2026 00:42:20 +0400
-Subject: [GIT PULL 41/50] Guard HMP command implementations with CONFIG_HMP
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="MxIe4wDF";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TcOy7xXF"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id F0C6C1D00120;
+	Fri, 28 Aug 2026 16:53:56 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Fri, 28 Aug 2026 16:53:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1787950436;
+	 x=1788036836; bh=yR/PJZoQUS5Penn7qLrF4kKyqGAOafOk1kzJX1haLYY=; b=
+	MxIe4wDFd9nJYyEd7DrKWSZP2D9IDKncyYM2zztdY8nThnoK9/TnNKLOM5vYPPM9
+	O1sKtKyK70LMXfRFeYHXTHHKchEB9m5TACMgRWVCw16yeBcdIJlnDUeOEGTkM9QB
+	TRmkCVaDI7iwuv1jQjUD0jINxGnAYNSF9TUCUMzhW4Lr4Z2NfB7cQzme1zvWcnKE
+	mVDpqDGL57pfWBuW4rCL9pwShf1uleIAq8Sph3ThG73o1jzwanI2p82wNtjqBapK
+	r14lv39xnuyGilHo8sJzLXiYATjs3we/ke4PC/PukhvsZKNj3olXw3OpNeaxjqDH
+	ocHzWL8vXq7s33AbLzLHGA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787950436; x=
+	1788036836; bh=yR/PJZoQUS5Penn7qLrF4kKyqGAOafOk1kzJX1haLYY=; b=T
+	cOy7xXFXs027QdweDFkelN8cFtB+z2lNQBbixOR2I1CW0XVNRrm+9RTfTxIgkQ0f
+	yN99fwNkP4FjC8kqbmvPY9T6uUgHhKqVCMfNJKm+esQFycsmH6QiLpUSlU08gWUk
+	6oGCXyN46BCfQqdpAJGtN+YpL0djshzZI1oFjeBxiQ1s+PnY8fyXX6dZ4XID+sHV
+	aY0Os2h4sMBTKbIiD+xWwYXeUEdb/1qSzf8lYdM/iD+mOzPSNSWS5XuumMuMhMih
+	qyKd1kG9dUhx3fdYiIVPxJQQWyArAZ2asJen7Wxmf5Xxm38zzLJgxvy8rvUJFJFS
+	i4gaYr8Nih/bBpckMe8SA==
+X-ME-Sender: <xms:ZPWRap7Lh7BEJ7vyxXremXxASow7nvk8OojuBIGoWJSG_Aja-v_p7w>
+    <xme:ZPWRakhhCTKu549v30mWLRJnaDREg21KocJsjBMakj1V17FzUqjG5EZtt8o-ZKG-z
+    PjsTopjEC5_KEV7fMMaWd8ZsEdo4ZsC_FbV2dCq4HHzDLgczbynhGY>
+X-ME-Received: <xmr:ZPWRan2t_agkEC-R7jCC0sGNoLiYS4eWPvP_txULQyvszSNlyWuVE1qVu8NRiA>
+X-ME-Proxy-Cause: dmFkZTGkMfaReZ7++XlaNlSI+OYF9vOw2ug2GvYBlIR0TUkcPnhYg/xcwQ0TrCWMH505RH
+    x5QQcuUhzdBO1q6HkJbO3ecirh89ebFp3WNtFLiQHnnkNw1iIm0Xtqio90VkjoK5uqQeqM
+    6xd7aNsEmHQWa2LLGrj7nkRkj2jA3u84pHbliwngL3NaXo+KOimTrleyUub1LbVtUfnP9+
+    NF+Z6k4JyZHUWysyrh+NX8E1IpuNszsdz7j2P0jSae2nQvGHlcum1Mmm29cxGi9XIO5hVo
+    K6zN5dHb9GmE8af/iav/vG+9xzvTO/H4bImtMqBNFt/iDgg+1KAbxn6ahT0Td6mmL51xjm
+    fHckDfP8ATLNcYMx99pkVu8cIU/BflvITyPhEB7KYpQGjLUQnHIK5J0/l+iG8bklUzNXXb
+    jCVodqIDv8Fxqx9RYmqc97EFpe952lEt/MaGHIxjLcXdutd9NhwW1Bg57uJdnqkgBn/ovT
+    OrOUwQWxtJrL0cb0WZCjye4cqiEjUpZMBovVCBR22vanngfmAeG0ai0crQcOHKtFHetBCK
+    WHOBKb3xVsfOj9FVyWdsPbXDhuV2yzPYMjmrB1DrBKMIOb3rURe0UaZ/ay+gQo4t2N60HS
+    0nQsXTC2vVJR3gxo0qFfN6QbzCaTYrQZrPoypkv9vvKWCoJgfhdA9cPf7rVw
+X-ME-Proxy: <xmx:ZPWRaqX4RAXwqSfUK6GcztODtBVJdLeFLcIZGyBzihxpw5-KoioSVw>
+    <xmx:ZPWRak3UxY2hjIorGy4IbdG6FynlOHpFOYUWZkVFxMOtLzJR92H9oQ>
+    <xmx:ZPWRargThHpdOqnheCotWzKvWC-CgIDExACf0KdXTnwoL24p2dgSPA>
+    <xmx:ZPWRakIAcpyGQ71QBGd4Tu6zhPO17L-2OsIDg123-DaFJZSnZC3bdw>
+    <xmx:ZPWRauWHA_6mUL2YZRbUIfy0q2uncpCtQYUanWkJiP5FPSy3-Jwd-yv1>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 28 Aug 2026 16:53:54 -0400 (EDT)
+Date: Fri, 28 Aug 2026 14:53:51 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: <mhonap@nvidia.com>
+Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
+ <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
+ <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+ <dave@stgolabs.net>, <alison.schofield@intel.com>,
+ <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
+ <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
+ <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+ <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
+ alex@shazbot.org
+Subject: Re: [PATCH v4 18/27] vfio/cxl: Expose the HDM memory and trap the
+ decoder registers
+Message-ID: <20260828145351.56f74a1d@shazbot.org>
+In-Reply-To: <20260813093631.2288172-19-mhonap@nvidia.com>
+References: <20260813093631.2288172-1-mhonap@nvidia.com>
+	<20260813093631.2288172-19-mhonap@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260829-nohmp-v1-41-4dcc2b4b0055@redhat.com>
-References: <20260829-nohmp-v1-0-4dcc2b4b0055@redhat.com>
-In-Reply-To: <20260829-nohmp-v1-0-4dcc2b4b0055@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>, 
- David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Marcelo Tosatti <mtosatti@redhat.com>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- Halil Pasic <pasic@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Jason Herne <jjherne@linux.ibm.com>, Ilya Leoshkevich <iii@linux.ibm.com>, 
- David Hildenbrand <david@kernel.org>, Eric Farman <farman@linux.ibm.com>, 
- Matthew Rosato <mjrosato@linux.ibm.com>, Cornelia Huck <cohuck@redhat.com>, 
- Gerd Hoffmann <kraxel@redhat.com>, Hyman Huang <infra.ai.cloud@bitdeer.com>, 
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
- "Dr. David Alan Gilbert" <dave@treblig.org>, 
- Samuel Thibault <samuel.thibault@ens-lyon.org>, 
- Jason Wang <jasowangio@gmail.com>, 
- =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Zhao Liu <zhao1.liu@intel.com>, Laurent Vivier <laurent@vivier.eu>, 
- Nicholas Piggin <npiggin@gmail.com>, Chinmay Rath <rathc@linux.ibm.com>, 
- Glenn Miles <milesg@linux.ibm.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, 
- Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Chao Liu <chao.liu@processmission.com>, 
- Yoshinori Sato <yoshinori.sato@nifty.com>, 
- Artyom Tarasenko <atar4qemu@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>, 
- kvm@vger.kernel.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, 
- qemu-riscv@nongnu.org
-X-Developer-Signature: v=1; a=openpgp-sha256; l=20762;
- i=marcandre.lureau@redhat.com; h=from:subject:message-id;
- bh=VeMRhlxYmz+T9jOYPDTApDrfgg2t6fF/rqpbmuy+YRE=;
- b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBqkfKVXxzv1ttcI+MHb7bj9caVbDTCB75HeI1/D
- XziqGsanFOJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCapHylQAKCRDa6OEJdZac
- 5bA3EACwxy+ab3IpYr5KQgbpBcyHuuaXS39CuQFmZ0JG1reuVTizhiQECoEIEa8rmPBV6W0G23B
- xLBnrC6wGVt6Id/uClr/rWAvHz1duHKP3Y1/UG1dXTapRb5ouNW71xcm691zGemaoX6A1p3jpei
- YaWwrnJKdvggeg41ZX8ik7odUxn3DlopLqJcVx1KV7UGeoy+C5yowBRvt8WPbpujV+IwvvZ+zet
- mrOShUQ3xKsgRZ3Y58cApr93QKprOGCBHI/scnP6YXkjjRrEDqJqv14N/sGh3TTfWtLLCBtBQW9
- jMLQnIMod2KSTyrbi8R0g+kPt7amg80V9DMfqh9a9kj9lmX/JYqI5xT8Jv9L41MNcm77P0zPYsF
- 2eRmiGVgnFw7pWn7kYLNdiHDJC0xZj12bQsDJPn/hwcGCF9U8aDZMUFWDrnNXX91KI91CKiBCHa
- SCUgeGTmeL0BpMGeOm6XLP7h07+mSaEEoZxpjR97tJEE5rGvmzp2trKOPq296l5SULYK9arYgTp
- SfB+gQMaBdKi/dro0WhbFcyJjtapxROrQGAgS9PHmhx5S7OZDw8dzX4EcCnQgZUY1uzSxc7WE26
- C7D20rIs7xEHW9MuEeW9a0lXbhqNzs/uKcHRUQ4IlcottTzx/9kT5blD0AqEgnF7vkkhQ+sfCLh
- CZxmKFDFDNbJYSQ==
-X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
- fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Add #ifdef CONFIG_HMP around all hmp_* function implementations and
-their HMP-only helpers across subsystems.
+On Thu, 13 Aug 2026 15:06:22 +0530
+<mhonap@nvidia.com> wrote:
 
-This covers monitor_register_hmp* callers, hmp_info_* handlers, and
-HMP-only helper functions like slirp_lookup.
+> From: Manish Honap <mhonap@nvidia.com>
+> 
+> Register the HDM region as a CXL VFIO region so the guest can map
+> the device memory.
 
-To link succesfully, use empty cmds tables in hmp-cmds.c (to be removed
-once meson build-sys is updated with !hmp support later in the series)
+s/VFIO region/VFIO device specific region/
+ 
+> CXL.mem is coherent memory, so the guest and KVM need a write-back
+> mapping. Claim the host physical range exclusively at bind so a
+> firmware-owned cacheable alias cannot fault the host once the range is
+> mapped write-back.
 
-Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <20260828-qemu-no-hmp-v5-41-9227de146347@redhat.com>
----
- accel/accel-system.c      | 2 ++
- accel/tcg/monitor.c       | 2 ++
- hw/i386/kvm/xen-stubs.c   | 2 ++
- hw/i386/kvm/xen_evtchn.c  | 3 +++
- hw/i386/sgx.c             | 2 ++
- hw/misc/mos6522-stub.c    | 2 ++
- hw/misc/mos6522.c         | 2 ++
- hw/pci/pci-stub.c         | 2 ++
- hw/s390x/s390-skeys.c     | 2 ++
- hw/s390x/s390-stattrib.c  | 4 ++++
- hw/uefi/ovmf-log.c        | 2 ++
- hw/usb/host-libusb.c      | 6 ++++++
- migration/dirtyrate.c     | 2 ++
- monitor/hmp-cmds.c        | 5 +++++
- net/slirp.c               | 7 ++++++-
- replay/replay-debugging.c | 8 ++++++++
- replay/stubs-system.c     | 6 ++++++
- system/qdev-monitor.c     | 4 ++++
- target/i386/cpu-apic.c    | 2 ++
- target/i386/monitor.c     | 3 +++
- target/i386/sev.c         | 2 ++
- target/m68k/monitor.c     | 2 ++
- target/ppc/monitor.c      | 2 ++
- target/riscv/monitor.c    | 3 +++
- target/sh4/monitor.c      | 2 ++
- target/sparc/monitor.c    | 2 ++
- target/xtensa/monitor.c   | 2 ++
- 27 files changed, 82 insertions(+), 1 deletion(-)
+I'm not fully following this, claiming it exclusively means no other
+driver can claim it, but is a "firmware-owned cacheable alias"
+generated via another driver or via a side-channel?
+ 
+> The region is advertised mmap-able, so a fd holder can fault its
+> struct-page-less device memory in from the host CPU. A memory error on
+> that range would otherwise escalate to a host SError. Register the range
+> with memory_failure() via register_pfn_address_space() so such an error
+> is contained to unmapping the range and a SIGBUS to the fd holder.
+> register_pfn_address_space() returns -EOPNOTSUPP when
+> CONFIG_MEMORY_FAILURE is off, in which case the region is exposed
+> without containment.
 
-diff --git a/accel/accel-system.c b/accel/accel-system.c
-index 977804c4048a..1325b23864c8 100644
---- a/accel/accel-system.c
-+++ b/accel/accel-system.c
-@@ -109,7 +109,9 @@ void accel_init_ops_interfaces(AccelClass *ac)
- 
- static void accel_ops_class_init(ObjectClass *oc, const void *data)
- {
-+#ifdef CONFIG_HMP
-     monitor_register_hmp_info_hrt("accel", qmp_x_accel_stats);
-+#endif
- }
- 
- static const TypeInfo accel_ops_type_info = {
-diff --git a/accel/tcg/monitor.c b/accel/tcg/monitor.c
-index 74170ddef708..5570d60753d6 100644
---- a/accel/tcg/monitor.c
-+++ b/accel/tcg/monitor.c
-@@ -30,9 +30,11 @@ HumanReadableText *qmp_x_query_jit(Error **errp)
-     return human_readable_text_from_str(buf);
- }
- 
-+#ifdef CONFIG_HMP
- static void hmp_tcg_register(void)
- {
-     monitor_register_hmp_info_hrt("jit", qmp_x_query_jit);
- }
- 
- type_init(hmp_tcg_register);
-+#endif
-diff --git a/hw/i386/kvm/xen-stubs.c b/hw/i386/kvm/xen-stubs.c
-index 5ed71583281a..a68c739a9496 100644
---- a/hw/i386/kvm/xen-stubs.c
-+++ b/hw/i386/kvm/xen-stubs.c
-@@ -40,6 +40,7 @@ void xen_primary_console_set_be_port(uint16_t port)
- {
- }
- 
-+#ifdef CONFIG_HMP
- void hmp_xen_event_list(MonitorHMP *hmp, const QDict *qdict)
- {
-     monitor_hmp_printf(hmp, "XEN emulation is not available in this QEMU\n");
-@@ -49,3 +50,4 @@ void hmp_xen_event_inject(MonitorHMP *hmp, const QDict *qdict)
- {
-     monitor_hmp_printf(hmp, "XEN emulation is not available in this QEMU\n");
- }
-+#endif
-diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-index b2135020f27f..9379383e5325 100644
---- a/hw/i386/kvm/xen_evtchn.c
-+++ b/hw/i386/kvm/xen_evtchn.c
-@@ -2344,6 +2344,7 @@ void qmp_xen_event_inject(uint32_t port, Error **errp)
-     }
- }
- 
-+#ifdef CONFIG_HMP
- void hmp_xen_event_list(MonitorHMP *hmp, const QDict *qdict)
- {
-     EvtchnInfoList *iter, *info_list;
-@@ -2391,3 +2392,5 @@ void hmp_xen_event_inject(MonitorHMP *hmp, const QDict *qdict)
-         monitor_hmp_printf(hmp, "Delivered port %d\n", port);
-     }
- }
-+
-+#endif
-diff --git a/hw/i386/sgx.c b/hw/i386/sgx.c
-index 634e33e819ce..11bcc7ad9a5a 100644
---- a/hw/i386/sgx.c
-+++ b/hw/i386/sgx.c
-@@ -234,6 +234,7 @@ SgxInfo *qmp_query_sgx(Error **errp)
-     return info;
- }
- 
-+#ifdef CONFIG_HMP
- void hmp_info_sgx(MonitorHMP *hmp, const QDict *qdict)
- {
-     Error *err = NULL;
-@@ -265,6 +266,7 @@ void hmp_info_sgx(MonitorHMP *hmp, const QDict *qdict)
-     monitor_hmp_printf(hmp, "total size=%" PRIu64 "\n",
-                        size);
- }
-+#endif
- 
- bool check_sgx_support(void)
- {
-diff --git a/hw/misc/mos6522-stub.c b/hw/misc/mos6522-stub.c
-index 154cd32ed88b..d1c141450e67 100644
---- a/hw/misc/mos6522-stub.c
-+++ b/hw/misc/mos6522-stub.c
-@@ -10,7 +10,9 @@
- #include "monitor/monitor.h"
- #include "monitor/hmp.h"
- 
-+#ifdef CONFIG_HMP
- void hmp_info_via(MonitorHMP *hmp, const QDict *qdict)
- {
-     monitor_hmp_printf(hmp, "MOS6522 VIA is not available in this QEMU\n");
- }
-+#endif
-diff --git a/hw/misc/mos6522.c b/hw/misc/mos6522.c
-index 1c20c7582c34..3135761a0f7b 100644
---- a/hw/misc/mos6522.c
-+++ b/hw/misc/mos6522.c
-@@ -497,6 +497,7 @@ void mos6522_write(void *opaque, hwaddr addr, uint64_t val, unsigned size)
-     }
- }
- 
-+#ifdef CONFIG_HMP
- static int qmp_x_query_via_foreach(Object *obj, void *opaque)
- {
-     GString *buf = opaque;
-@@ -597,6 +598,7 @@ void hmp_info_via(MonitorHMP *hmp, const QDict *qdict)
-     }
-     monitor_puts(mon, info->human_readable_text);
- }
-+#endif /* CONFIG_HMP */
- 
- static const MemoryRegionOps mos6522_ops = {
-     .read = mos6522_read,
-diff --git a/hw/pci/pci-stub.c b/hw/pci/pci-stub.c
-index 7e2797300ba0..5fc3322627e3 100644
---- a/hw/pci/pci-stub.c
-+++ b/hw/pci/pci-stub.c
-@@ -34,6 +34,7 @@ PciInfoList *qmp_query_pci(Error **errp)
-     return NULL;
- }
- 
-+#ifdef CONFIG_HMP
- void hmp_info_pci(MonitorHMP *hmp, const QDict *qdict)
- {
- }
-@@ -42,6 +43,7 @@ void hmp_pcie_aer_inject_error(MonitorHMP *hmp, const QDict *qdict)
- {
-     monitor_hmp_printf(hmp, "PCI devices not supported\n");
- }
-+#endif
- 
- /* kvm-all wants this */
- MSIMessage pci_get_msi_message(PCIDevice *dev, int vector)
-diff --git a/hw/s390x/s390-skeys.c b/hw/s390x/s390-skeys.c
-index b5e56a16cce1..c615c9dbc8a1 100644
---- a/hw/s390x/s390-skeys.c
-+++ b/hw/s390x/s390-skeys.c
-@@ -104,6 +104,7 @@ static void write_keys(FILE *f, uint8_t *keys, uint64_t startgfn,
-     }
- }
- 
-+#ifdef CONFIG_HMP
- void hmp_info_skeys(MonitorHMP *hmp, const QDict *qdict)
- {
-     S390SKeysState *ss = s390_get_skeys_device();
-@@ -144,6 +145,7 @@ void hmp_dump_skeys(MonitorHMP *hmp, const QDict *qdict)
-         error_report_err(err);
-     }
- }
-+#endif
- 
- void s390_qmp_dump_skeys(const char *filename, Error **errp)
- {
-diff --git a/hw/s390x/s390-stattrib.c b/hw/s390x/s390-stattrib.c
-index 644298f7f0b2..e47a8ea36597 100644
---- a/hw/s390x/s390-stattrib.c
-+++ b/hw/s390x/s390-stattrib.c
-@@ -32,6 +32,7 @@
- #define STATTR_FLAG_ERROR   0x04ULL
- #define STATTR_FLAG_DONE    0x08ULL
- 
-+#ifdef CONFIG_HMP
- static S390StAttribState *s390_get_stattrib_device(void)
- {
-     S390StAttribState *sas;
-@@ -40,6 +41,7 @@ static S390StAttribState *s390_get_stattrib_device(void)
-     assert(sas);
-     return sas;
- }
-+#endif
- 
- void s390_stattrib_init(void)
- {
-@@ -59,6 +61,7 @@ void s390_stattrib_init(void)
- 
- /* Console commands: */
- 
-+#ifdef CONFIG_HMP
- void hmp_migrationmode(MonitorHMP *hmp, const QDict *qdict)
- {
-     S390StAttribState *sas = s390_get_stattrib_device();
-@@ -110,6 +113,7 @@ void hmp_info_cmma(MonitorHMP *hmp, const QDict *qdict)
- out:
-     g_free(vals);
- }
-+#endif
- 
- /* Migration support: */
- 
-diff --git a/hw/uefi/ovmf-log.c b/hw/uefi/ovmf-log.c
-index 0249eea2cfe9..c4e6a5064106 100644
---- a/hw/uefi/ovmf-log.c
-+++ b/hw/uefi/ovmf-log.c
-@@ -256,6 +256,7 @@ FirmwareLog *qmp_query_firmware_log(bool have_max_size, uint64_t max_size,
-     return ret;
- }
- 
-+#ifdef CONFIG_HMP
- void hmp_info_firmware_log(MonitorHMP *hmp, const QDict *qdict)
- {
-     g_autofree gchar *log_esc = NULL;
-@@ -284,3 +285,4 @@ void hmp_info_firmware_log(MonitorHMP *hmp, const QDict *qdict)
-     log_esc = g_strescape((gchar *)log_out, "\r\n");
-     monitor_hmp_printf(hmp, "%s\n", log_esc);
- }
-+#endif
-diff --git a/hw/usb/host-libusb.c b/hw/usb/host-libusb.c
-index 9b9f26a1078e..564fe9a54795 100644
---- a/hw/usb/host-libusb.c
-+++ b/hw/usb/host-libusb.c
-@@ -184,6 +184,7 @@ static void usb_host_attach_kernel(USBHostDevice *s);
- # define HAVE_SUPER_PLUS 1
- #endif
- 
-+#ifdef CONFIG_HMP
- static const char *speed_name[] = {
-     [LIBUSB_SPEED_UNKNOWN] = "?",
-     [LIBUSB_SPEED_LOW]     = "1.5",
-@@ -194,6 +195,7 @@ static const char *speed_name[] = {
-     [LIBUSB_SPEED_SUPER_PLUS] = "5000+",
- #endif
- };
-+#endif
- 
- static const unsigned int speed_map[] = {
-     [LIBUSB_SPEED_LOW]     = USB_SPEED_LOW,
-@@ -1815,7 +1817,9 @@ module_kconfig(USB);
- static void usb_host_register_types(void)
- {
-     type_register_static(&usb_host_dev_info);
-+#ifdef CONFIG_HMP
-     monitor_register_hmp("usbhost", true, hmp_info_usbhost);
-+#endif
- }
- 
- type_init(usb_host_register_types)
-@@ -1920,6 +1924,7 @@ static void usb_host_auto_check(void *unused)
-     timer_mod(usb_auto_timer, qemu_clock_get_ms(QEMU_CLOCK_REALTIME) + 2000);
- }
- 
-+#ifdef CONFIG_HMP
- void hmp_info_usbhost(MonitorHMP *hmp, const QDict *qdict)
- {
-     libusb_device **devs = NULL;
-@@ -1963,3 +1968,4 @@ void hmp_info_usbhost(MonitorHMP *hmp, const QDict *qdict)
-     }
-     libusb_free_device_list(devs, 1);
- }
-+#endif
-diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
-index bdbb2aaa99db..776611fef79c 100644
---- a/migration/dirtyrate.c
-+++ b/migration/dirtyrate.c
-@@ -856,6 +856,7 @@ struct DirtyRateInfo *qmp_query_dirty_rate(bool has_calc_time_unit,
-         has_calc_time_unit ? calc_time_unit : TIME_UNIT_SECOND);
- }
- 
-+#ifdef CONFIG_HMP
- void hmp_info_dirty_rate(MonitorHMP *hmp, const QDict *qdict)
- {
-     DirtyRateInfo *info = query_dirty_rate_info(TIME_UNIT_SECOND);
-@@ -932,3 +933,4 @@ void hmp_calc_dirty_rate(MonitorHMP *hmp, const QDict *qdict)
-                        " seconds\n", sec);
-     monitor_hmp_printf(hmp, "[Please use 'info dirty_rate' to check results]\n");
- }
-+#endif
-diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
-index 1834e3c1f697..3ac70c3f1123 100644
---- a/monitor/hmp-cmds.c
-+++ b/monitor/hmp-cmds.c
-@@ -42,6 +42,7 @@
- #include "disas/disas.h"
- 
- /* Please update hmp-commands.hx when adding or changing commands */
-+#ifdef CONFIG_HMP
- static HMPCommand hmp_info_cmds[] = {
- #include "hmp-commands-info.h"
-     { NULL, NULL, },
-@@ -52,6 +53,10 @@ static HMPCommand hmp_cmds[] = {
- #include "hmp-commands.h"
-     { NULL, NULL, },
- };
-+#else
-+static HMPCommand hmp_info_cmds[] = { { NULL, NULL, }, };
-+static HMPCommand hmp_cmds[] = { { NULL, NULL, }, };
-+#endif
- 
- HMPCommand *hmp_cmds_for_target(bool info_command)
- {
-diff --git a/net/slirp.c b/net/slirp.c
-index 6fbefa9ed1d7..451c0fd1ba4a 100644
---- a/net/slirp.c
-+++ b/net/slirp.c
-@@ -711,6 +711,7 @@ error:
-     return -1;
- }
- 
-+#ifdef CONFIG_HMP
- static SlirpState *slirp_lookup(MonitorHMP *hmp, const char *id)
- {
-     if (id) {
-@@ -801,6 +802,7 @@ void hmp_hostfwd_remove(MonitorHMP *hmp, const QDict *qdict)
-  fail_syntax:
-     monitor_hmp_printf(hmp, "invalid format\n");
- }
-+#endif
- 
- static int slirp_hostfwd(SlirpState *s, const char *redir_str, Error **errp)
- {
-@@ -957,6 +959,7 @@ static int slirp_hostfwd(SlirpState *s, const char *redir_str, Error **errp)
-     return -1;
- }
- 
-+#ifdef CONFIG_HMP
- void hmp_hostfwd_add(MonitorHMP *hmp, const QDict *qdict)
- {
-     const char *redir_str;
-@@ -977,8 +980,8 @@ void hmp_hostfwd_add(MonitorHMP *hmp, const QDict *qdict)
-             error_report_err(err);
-         }
-     }
--
- }
-+#endif
- 
- #if defined(CONFIG_SMBD_COMMAND)
- 
-@@ -1224,6 +1227,7 @@ UsernetInfoList *qmp_x_query_usernet(Error **errp)
-     return head;
- }
- 
-+#ifdef CONFIG_HMP
- void hmp_info_usernet(MonitorHMP *hmp, const QDict *qdict)
- {
-     g_autoptr(UsernetInfoList) list = NULL;
-@@ -1237,6 +1241,7 @@ void hmp_info_usernet(MonitorHMP *hmp, const QDict *qdict)
-                            ui->hub_name, ui->info);
-     }
- }
-+#endif
- 
- static void
- net_init_slirp_configs_host(const NetdevUserHostForwardList *fwd)
-diff --git a/replay/replay-debugging.c b/replay/replay-debugging.c
-index 965565715ef2..4b741ea1027b 100644
---- a/replay/replay-debugging.c
-+++ b/replay/replay-debugging.c
-@@ -31,6 +31,7 @@ bool replay_running_debug(void)
-     return replay_is_debugging;
- }
- 
-+#ifdef CONFIG_HMP
- void hmp_info_replay(MonitorHMP *hmp, const QDict *qdict)
- {
-     if (replay_mode == REPLAY_MODE_NONE) {
-@@ -42,6 +43,7 @@ void hmp_info_replay(MonitorHMP *hmp, const QDict *qdict)
-             replay_get_filename(), replay_get_current_icount());
-     }
- }
-+#endif
- 
- ReplayInfo *qmp_query_replay(Error **errp)
- {
-@@ -103,6 +105,7 @@ void qmp_replay_break(int64_t icount, Error **errp)
-     }
- }
- 
-+#ifdef CONFIG_HMP
- void hmp_replay_break(MonitorHMP *hmp, const QDict *qdict)
- {
-     int64_t icount = qdict_get_try_int(qdict, "icount", -1LL);
-@@ -114,6 +117,7 @@ void hmp_replay_break(MonitorHMP *hmp, const QDict *qdict)
-         return;
-     }
- }
-+#endif
- 
- void qmp_replay_delete_break(Error **errp)
- {
-@@ -124,6 +128,7 @@ void qmp_replay_delete_break(Error **errp)
-     }
- }
- 
-+#ifdef CONFIG_HMP
- void hmp_replay_delete_break(MonitorHMP *hmp, const QDict *qdict)
- {
-     Error *err = NULL;
-@@ -134,6 +139,7 @@ void hmp_replay_delete_break(MonitorHMP *hmp, const QDict *qdict)
-         return;
-     }
- }
-+#endif
- 
- static char *replay_find_nearest_snapshot(int64_t icount,
-                                           int64_t *snapshot_icount)
-@@ -209,6 +215,7 @@ void qmp_replay_seek(int64_t icount, Error **errp)
-     replay_seek(icount, replay_stop_vm, errp);
- }
- 
-+#ifdef CONFIG_HMP
- void hmp_replay_seek(MonitorHMP *hmp, const QDict *qdict)
- {
-     int64_t icount = qdict_get_try_int(qdict, "icount", -1LL);
-@@ -220,6 +227,7 @@ void hmp_replay_seek(MonitorHMP *hmp, const QDict *qdict)
-         return;
-     }
- }
-+#endif
- 
- static void replay_stop_vm_debug(void *opaque)
- {
-diff --git a/replay/stubs-system.c b/replay/stubs-system.c
-index 15e7411591ab..70eaf1834032 100644
---- a/replay/stubs-system.c
-+++ b/replay/stubs-system.c
-@@ -63,22 +63,28 @@ void replay_vmstate_init(void)
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- 
-+#ifdef CONFIG_HMP
- void hmp_info_replay(MonitorHMP *hmp, const QDict *qdict)
- {
-     error_report("replay support not available");
- }
-+
- void hmp_replay_break(MonitorHMP *hmp, const QDict *qdict)
- {
-     error_report("replay support not available");
- }
-+
- void hmp_replay_delete_break(MonitorHMP *hmp, const QDict *qdict)
- {
-     error_report("replay support not available");
- }
-+
- void hmp_replay_seek(MonitorHMP *hmp, const QDict *qdict)
- {
-     error_report("replay support not available");
- }
-+#endif
-+
- ReplayInfo *qmp_query_replay(Error **errp)
- {
-     error_set(errp, ERROR_CLASS_COMMAND_NOT_FOUND,
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index 13ac9f8f3be1..5c87fda50939 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -763,6 +763,7 @@ DeviceState *qdev_device_add(QemuOpts *opts, Error **errp)
-     return ret;
- }
- 
-+#ifdef CONFIG_HMP
- #define qdev_printf(fmt, ...) \
-     monitor_hmp_printf(hmp, "%*s" fmt, indent, "", ## __VA_ARGS__)
- 
-@@ -865,6 +866,7 @@ void hmp_info_qdm(MonitorHMP *hmp, const QDict *qdict)
- {
-     qdev_print_devinfos(true);
- }
-+#endif /* CONFIG_HMP */
- 
- void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
- {
-@@ -1002,6 +1004,7 @@ void qmp_device_sync_config(const char *id, Error **errp)
-     qdev_sync_config(dev, errp);
- }
- 
-+#ifdef CONFIG_HMP
- void hmp_device_add(MonitorHMP *hmp, const QDict *qdict)
- {
-     Error *err = NULL;
-@@ -1044,6 +1047,7 @@ void hmp_device_del(MonitorHMP *hmp, const QDict *qdict)
-     qmp_device_del(id, &err);
-     hmp_handle_error(hmp, err);
- }
-+#endif
- 
- void device_add_completion(ReadLineState *rs, int nb_args, const char *str)
- {
-diff --git a/target/i386/cpu-apic.c b/target/i386/cpu-apic.c
-index 96d6ad897275..2e703ae1fd3f 100644
---- a/target/i386/cpu-apic.c
-+++ b/target/i386/cpu-apic.c
-@@ -83,6 +83,7 @@ void x86_cpu_apic_realize(X86CPU *cpu, Error **errp)
-      }
- }
- 
-+#ifdef CONFIG_HMP
- void hmp_info_local_apic(MonitorHMP *hmp, const QDict *qdict)
- {
-     CPUState *cs;
-@@ -105,3 +106,4 @@ void hmp_info_local_apic(MonitorHMP *hmp, const QDict *qdict)
-     }
-     x86_cpu_dump_local_apic_state(cs, CPU_DUMP_FPU);
- }
-+#endif
-diff --git a/target/i386/monitor.c b/target/i386/monitor.c
-index 46762540ba65..ce61132e0f53 100644
---- a/target/i386/monitor.c
-+++ b/target/i386/monitor.c
-@@ -31,6 +31,8 @@
- #include "qapi/qapi-commands-misc.h"
- #include "system/memory.h"
- 
-+#ifdef CONFIG_HMP
-+
- /* Perform linear address sign extension */
- static hwaddr addr_canonical(CPUArchState *env, hwaddr addr)
- {
-@@ -595,3 +597,4 @@ void hmp_mce(MonitorHMP *hmp, const QDict *qdict)
-     }
-     hmp_handle_error(hmp, err);
- }
-+#endif
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 7b2eb75fd480..cc16c6b07123 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -784,6 +784,7 @@ SevInfo *qmp_query_sev(Error **errp)
-     return info;
- }
- 
-+#ifdef CONFIG_HMP
- void hmp_info_sev(MonitorHMP *hmp, const QDict *qdict)
- {
-     SevInfo *info = sev_get_info();
-@@ -817,6 +818,7 @@ void hmp_info_sev(MonitorHMP *hmp, const QDict *qdict)
- out:
-     qapi_free_SevInfo(info);
- }
-+#endif
- 
- static int
- sev_get_pdh_info(int fd, guchar **pdh, size_t *pdh_len, guchar **cert_chain,
-diff --git a/target/m68k/monitor.c b/target/m68k/monitor.c
-index 23c25283b27a..e8b1b25a43c4 100644
---- a/target/m68k/monitor.c
-+++ b/target/m68k/monitor.c
-@@ -10,6 +10,7 @@
- #include "monitor/hmp.h"
- #include "monitor/monitor.h"
- 
-+#ifdef CONFIG_HMP
- void hmp_info_tlb(MonitorHMP *hmp, const QDict *qdict)
- {
-     CPUArchState *env1 = monitor_hmp_get_cpu_env(hmp);
-@@ -21,3 +22,4 @@ void hmp_info_tlb(MonitorHMP *hmp, const QDict *qdict)
- 
-     dump_mmu(env1);
- }
-+#endif
-diff --git a/target/ppc/monitor.c b/target/ppc/monitor.c
-index 6e8a075f5a41..5a21c01593b9 100644
---- a/target/ppc/monitor.c
-+++ b/target/ppc/monitor.c
-@@ -11,6 +11,7 @@
- #include "monitor/hmp.h"
- #include "cpu.h"
- 
-+#ifdef CONFIG_HMP
- void hmp_info_tlb(MonitorHMP *hmp, const QDict *qdict)
- {
-     CPUArchState *env1 = monitor_hmp_get_cpu_env(hmp);
-@@ -21,3 +22,4 @@ void hmp_info_tlb(MonitorHMP *hmp, const QDict *qdict)
-     }
-     dump_mmu(env1);
- }
-+#endif
-diff --git a/target/riscv/monitor.c b/target/riscv/monitor.c
-index 59cc04b3d0fb..7e61ae2a4717 100644
---- a/target/riscv/monitor.c
-+++ b/target/riscv/monitor.c
-@@ -39,6 +39,8 @@
- #define PTE_HEADER_DELIMITER    "-------- ---------------- -------- -------\n"
- #endif
- 
-+#ifdef CONFIG_HMP
-+
- /* Perform linear address sign extension */
- static target_ulong addr_canonical(int va_bits, target_ulong addr)
- {
-@@ -244,6 +246,7 @@ void hmp_info_mem(MonitorHMP *hmp, const QDict *qdict)
- 
-     mem_info_svxx(hmp, env);
- }
-+#endif /* CONFIG_HMP */
- 
- #ifdef CONFIG_TCG
- static bool reg_is_ulong_integer(CPURISCVState *env, const char *name,
-diff --git a/target/sh4/monitor.c b/target/sh4/monitor.c
-index 62998a9a57cb..14261c059706 100644
---- a/target/sh4/monitor.c
-+++ b/target/sh4/monitor.c
-@@ -26,6 +26,7 @@
- #include "monitor/monitor.h"
- #include "monitor/hmp.h"
- 
-+#ifdef CONFIG_HMP
- static void print_tlb(MonitorHMP *hmp, int idx, tlb_t *tlb)
- {
-     monitor_hmp_printf(hmp, " tlb%i:\t"
-@@ -55,3 +56,4 @@ void hmp_info_tlb(MonitorHMP *hmp, const QDict *qdict)
-     for (i = 0 ; i < UTLB_SIZE ; i++)
-         print_tlb(hmp, i, &env->utlb[i]);
- }
-+#endif
-diff --git a/target/sparc/monitor.c b/target/sparc/monitor.c
-index 36f109cbb568..ed1e76fe73f8 100644
---- a/target/sparc/monitor.c
-+++ b/target/sparc/monitor.c
-@@ -27,6 +27,7 @@
- #include "monitor/hmp.h"
- 
- 
-+#ifdef CONFIG_HMP
- void hmp_info_tlb(MonitorHMP *hmp, const QDict *qdict)
- {
-     CPUArchState *env1 = monitor_hmp_get_cpu_env(hmp);
-@@ -37,3 +38,4 @@ void hmp_info_tlb(MonitorHMP *hmp, const QDict *qdict)
-     }
-     dump_mmu(env1);
- }
-+#endif
-diff --git a/target/xtensa/monitor.c b/target/xtensa/monitor.c
-index b9c4089b0fb1..e0fcac8565dc 100644
---- a/target/xtensa/monitor.c
-+++ b/target/xtensa/monitor.c
-@@ -26,6 +26,7 @@
- #include "monitor/monitor.h"
- #include "monitor/hmp.h"
- 
-+#ifdef CONFIG_HMP
- void hmp_info_tlb(MonitorHMP *hmp, const QDict *qdict)
- {
-     CPUArchState *env1 = monitor_hmp_get_cpu_env(hmp);
-@@ -36,3 +37,4 @@ void hmp_info_tlb(MonitorHMP *hmp, const QDict *qdict)
-     }
-     dump_mmu(env1);
- }
-+#endif
+The error containment looks like it could be compartmentalized into
+another patch in the series.
+ 
+> A CXL Type-2 guest also reads the HDM decoder registers to learn the
+> HDM region it was handed. Those registers live in the component BAR that
+> vfio-pci owns, so map the decoder block at bind and copy it into a
+> per-open shadow, then expose a read-only region backed by that shadow.
+> The block location comes from the pdev->hdm enumeration cache rather
+> than the CXL core register map.
 
--- 
-2.55.0.543.g5ebe2ebe4ea8
+This also looks like a separate patch.  Why do we need a static copy of
+it rather than just providing read-only access to the live copy (avoid
+the later refresh, gate on device state)?  Why does it need to be a
+separate device specific region rather than a read-only section of the
+BAR?  Is it just that we don't have a way to express that through the
+vfio uAPI? Could it support read-only mmap?
+ 
+> The guest programs a GPA into the decoder while the host resolves the
+> HPA, so it must never reach the physical registers. Serving reads from
+> the shadow keeps the two apart; write emulation follows in a later
+> change.
+
+This seems to be talking about some virtualization implemented in the
+VMM, nothing here virtualizes decoder programming.  The comp-regs
+region is read-only.
+  
+> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> ---
+>  drivers/vfio/pci/cxl/vfio_cxl_core.c | 347 ++++++++++++++++++++++++++-
+>  drivers/vfio/pci/vfio_pci_core.c     |  17 ++
+>  include/linux/vfio_pci_core.h        |   1 +
+>  include/uapi/linux/vfio.h            |   3 +
+>  4 files changed, 367 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/vfio/pci/cxl/vfio_cxl_core.c b/drivers/vfio/pci/cxl/vfio_cxl_core.c
+> index 9fed909cb9d3..07047646edde 100644
+> --- a/drivers/vfio/pci/cxl/vfio_cxl_core.c
+> +++ b/drivers/vfio/pci/cxl/vfio_cxl_core.c
+> @@ -5,10 +5,14 @@
+>   * Copyright (c) 2026 NVIDIA Corporation & Affiliates
+>   */
+>  
+> +#include <linux/cleanup.h>
+> +#include <linux/memory-failure.h>
+> +#include <linux/mm.h>
+>  #include <linux/module.h>
+>  #include <linux/pci.h>
+>  #include <linux/range.h>
+>  #include <linux/slab.h>
+> +#include <linux/uaccess.h>
+>  #include <linux/vfio_pci_core.h>
+>  #include <cxl/cxl.h>
+>  #include <cxl/pci.h>
+> @@ -18,21 +22,250 @@
+>   * @cxlds: CXL device state; kept first for devm_cxl_dev_state_create()
+>   * @cxlmd: memory device joined to the CXL topology at bind
+>   * @hpa_range: host physical range of the HDM region
+> + * @dpa_pfn_space: HDM-region pfn range registered with memory_failure()
+>   * @dvsec: CXL device DVSEC config-space offset
+>   * @dvsec_len: length of the DVSEC body
+>   * @dvsec_dwords: dword count of @dvsec_shadow
+>   * @dvsec_shadow: guest view of the CXL DVSEC body, sampled at open
+> + * @hdm_regs: mapped HDM decoder registers, source for the open-time snapshot
+> + * @hdm_len: length of the HDM decoder register block
+> + * @hdm_shadow: guest view of the HDM decoder registers, sampled at open
+> + * @hdm_region_idx: vdev->region[] index of the HDM region
+> + * @hdm_valid: true when the decoder is in a known-good restored state and host
+> + *	       CPU access to the HDM range is safe; gated under memory_lock
+>   */
+>  struct vfio_cxl_state {
+>  	struct cxl_dev_state cxlds;
+>  	struct cxl_memdev *cxlmd;
+>  	struct range hpa_range;
+> +	struct pfn_address_space dpa_pfn_space;
+>  	u16 dvsec;
+>  	u32 dvsec_len;
+>  	u32 dvsec_dwords;
+> +
+>  	u32 *dvsec_shadow __counted_by_ptr(dvsec_dwords);
+> +	void __iomem *hdm_regs;
+> +	u32 hdm_len;
+> +	u32 hdm_dwords;
+> +
+> +	__le32 *hdm_shadow __counted_by_ptr(hdm_dwords);
+> +	int hdm_region_idx;
+> +	bool hdm_valid;
+> +};
+> +
+> +static unsigned long vfio_cxl_mem_pgoff(struct vm_area_struct *vma,
+> +					unsigned long addr)
+> +{
+> +	unsigned long mask = (1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1;
+> +
+> +	return (vma->vm_pgoff & mask) + ((addr - vma->vm_start) >> PAGE_SHIFT);
+> +}
+> +
+> +static vm_fault_t vfio_cxl_mem_huge_fault(struct vm_fault *vmf,
+> +					  unsigned int order)
+> +{
+> +	struct vm_area_struct *vma = vmf->vma;
+> +	struct vfio_pci_core_device *vdev = vma->vm_private_data;
+> +	struct vfio_cxl_state *cxl = vdev->cxl;
+> +	unsigned long addr = ALIGN_DOWN(vmf->address, PAGE_SIZE << order);
+> +	unsigned long pfn = PHYS_PFN(cxl->hpa_range.start) +
+> +			    vfio_cxl_mem_pgoff(vma, addr);
+> +	vm_fault_t ret = VM_FAULT_FALLBACK;
+> +
+> +	if (is_aligned_for_order(vma, addr, pfn, order)) {
+> +		scoped_guard(rwsem_read, &vdev->memory_lock) {
+> +			/*
+> +			 * A reset or D3 transition takes memory_lock for write,
+> +			 * revokes this mapping and clears the decoder. Do not
+> +			 * insert a PFN for a decoder that is not in a known-good
+> +			 * state, or the host CPU could reach a disabled decoder.
+> +			 * vfio_pci_vmf_insert_pfn() adds the Memory-Space gate:
+> +			 * an HDM access while the device has Memory-Space disabled
+> +			 * aborts on the fabric as a fatal host SError, so it must
+> +			 * not be faulted in until the guest re-enables it.
+> +			 */
+> +			if (cxl->hdm_valid)
+> +				ret = vfio_pci_vmf_insert_pfn(vdev, vmf, pfn,
+> +							      order);
+> +			else
+> +				ret = VM_FAULT_SIGBUS;
+> +		}
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static vm_fault_t vfio_cxl_mem_fault(struct vm_fault *vmf)
+> +{
+> +	return vfio_cxl_mem_huge_fault(vmf, 0);
+> +}
+> +
+> +static const struct vm_operations_struct vfio_cxl_mem_vm_ops = {
+> +	.fault = vfio_cxl_mem_fault,
+> +#ifdef CONFIG_ARCH_SUPPORTS_HUGE_PFNMAP
+> +	.huge_fault = vfio_cxl_mem_huge_fault,
+> +#endif
+> +};
+> +
+> +static int vfio_cxl_mem_mmap(struct vfio_pci_core_device *vdev,
+> +			     struct vfio_pci_region *region,
+> +			     struct vm_area_struct *vma)
+> +{
+> +	unsigned long mask = (1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1;
+> +	u64 req_start = (vma->vm_pgoff & mask) << PAGE_SHIFT;
+> +	u64 req_len = vma->vm_end - vma->vm_start;
+> +
+> +	if (req_start + req_len > region->size)
+> +		return -EINVAL;
+> +
+> +	/*
+> +	 * CXL.mem is coherent memory, so leave the mapping write-back cacheable;
+> +	 * a device or non-cached mapping would break the coherence the guest and
+> +	 * KVM depend on. The host physical range is claimed exclusively at bind,
+> +	 * so no conflicting cacheable alias remains.
+> +	 */
+> +	vm_flags_set(vma, VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP);
+> +	vma->vm_ops = &vfio_cxl_mem_vm_ops;
+> +	vma->vm_private_data = vdev;
+> +
+> +	return 0;
+> +}
+> +
+> +static ssize_t vfio_cxl_mem_rw(struct vfio_pci_core_device *vdev,
+> +			       char __user *buf, size_t count, loff_t *ppos,
+> +			       bool iswrite)
+> +{
+> +	/*
+> +	 * The HDM region advertises READ and WRITE so a VMM can derive an
+> +	 * accessible mmap protection for it, but fd read/write is not supported.
+> +	 * The only host-side way to reach the range for a copy is a kernel
+> +	 * mapping of the CXL.mem host physical address (memremap, which reuses
+> +	 * the linear map for this RAM-backed range), and a CPU access through
+> +	 * that mapping aborts on the fabric as a fatal host SError, unlike the
+> +	 * guest-facing mmap fault path which maps the pfn directly. Reject the
+> +	 * transfer rather than fault the host; a consumer mmaps the region and
+> +	 * accesses it that way.
+> +	 */
+> +	return -EIO;
+> +}
+
+This would be unprecedented in vfio and we don't actually have a means
+to express that read/write access is not available.  Can you describe
+further how it's possible that we cannot create a host mapping to
+access the HDM memory without risking a host SError fault?  If there's
+a device state issue here, we have mechanisms to guard such accesses.
+
+> +
+> +/*
+> + * The CXL regions carry no per-region state (region->data is the shared,
+> + * devm-managed vfio_cxl_state), so releasing a region is a no-op. The hook is
+> + * still required: vfio_pci_core_disable() calls region->ops->release() for
+> + * every region without a NULL check.
+> + */
+> +static void vfio_cxl_region_release(struct vfio_pci_core_device *vdev,
+> +				    struct vfio_pci_region *region)
+> +{
+> +}
+> +
+> +static const struct vfio_pci_regops vfio_cxl_mem_regops = {
+> +	.rw = vfio_cxl_mem_rw,
+> +	.mmap = vfio_cxl_mem_mmap,
+> +	.release = vfio_cxl_region_release,
+> +};
+> +
+> +/*
+> + * Map a poisoned HDM-region pfn back to the file offset of each user mapping so
+> + * memory_failure() can unmap it and signal the fd holder. The region is a
+> + * single linear range at hpa_range.start; recover the per-vma file offset the
+> + * same way the fault handler derived the pfn.
+> + */
+> +static int vfio_cxl_pfn_to_vma_pgoff(struct vm_area_struct *vma,
+> +				     unsigned long pfn, pgoff_t *pgoff)
+> +{
+> +	struct vfio_pci_core_device *vdev;
+> +	struct vfio_cxl_state *cxl;
+> +	pgoff_t vma_off, pfn_off;
+> +	unsigned long start_pfn;
+> +
+> +	if (vma->vm_ops != &vfio_cxl_mem_vm_ops)
+> +		return -ENOENT;
+> +
+> +	vdev = vma->vm_private_data;
+> +	cxl = vdev->cxl;
+> +
+> +	start_pfn = PHYS_PFN(cxl->hpa_range.start);
+> +	if (pfn < start_pfn ||
+> +	    pfn >= start_pfn + (range_len(&cxl->hpa_range) >> PAGE_SHIFT))
+> +		return -EFAULT;
+> +
+> +	pfn_off = pfn - start_pfn;
+> +	vma_off = vma->vm_pgoff &
+> +		  ((1UL << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
+> +	/* Skip VMAs that do not map the pfn, e.g. a partial mmap of the region. */
+> +	if (pfn_off < vma_off || pfn_off - vma_off >= vma_pages(vma))
+> +		return -EFAULT;
+> +
+> +	*pgoff = vma->vm_pgoff + (pfn_off - vma_off);
+> +	return 0;
+> +}
+> +
+> +/*
+> + * The HDM region is struct-page-less device memory, so a memory error on it
+> + * cannot be routed through the normal page path. Register the range with
+> + * memory_failure() so such an error is contained to unmapping the range and a
+> + * SIGBUS to the fd holder instead of escalating to a host SError.
+> + */
+> +static int vfio_cxl_register_pfn_space(struct vfio_pci_core_device *vdev)
+> +{
+> +	struct vfio_cxl_state *cxl = vdev->cxl;
+> +	unsigned long start_pfn = PHYS_PFN(cxl->hpa_range.start);
+> +
+> +	cxl->dpa_pfn_space.node.start = start_pfn;
+> +	cxl->dpa_pfn_space.node.last =
+> +		start_pfn + (range_len(&cxl->hpa_range) >> PAGE_SHIFT) - 1;
+> +	cxl->dpa_pfn_space.mapping = vdev->vdev.inode->i_mapping;
+> +	cxl->dpa_pfn_space.pfn_to_vma_pgoff = vfio_cxl_pfn_to_vma_pgoff;
+> +
+> +	return register_pfn_address_space(&cxl->dpa_pfn_space);
+> +}
+> +
+> +static ssize_t vfio_cxl_comp_rw(struct vfio_pci_core_device *vdev,
+> +				char __user *buf, size_t count, loff_t *ppos,
+> +				bool iswrite)
+> +{
+> +	struct vfio_cxl_state *cxl = vdev->cxl;
+> +	loff_t pos = *ppos & VFIO_PCI_OFFSET_MASK;
+> +
+> +	/*
+> +	 * The guest programs a GPA into this decoder and the host resolves the
+> +	 * HPA, so the guest never drives the physical decoder. Reads come from
+> +	 * the open-time snapshot; write emulation lands in a later change.
+> +	 */
+
+Is write emulation necessary?  Maybe that's an advantage of exposing
+this as a separate device specific region, userspace can be responsible
+for the write virtualization.
+
+> +	if (iswrite)
+> +		return -EINVAL;
+> +
+> +	if (pos >= cxl->hdm_len)
+> +		return -EINVAL;
+
+hdm_shadow is allocated as hdm_len/sizeof(u32).  Something should make
+sure hdm_len based restrictions don't overreach the shadow.
+
+> +
+> +	count = min_t(size_t, count, cxl->hdm_len - pos);
+> +	/*
+> +	 * The shadow mirrors the physical decoder, so BASE_LOW/HIGH carry the
+> +	 * host HPA. That is visible only to the trusted VMM holding the fd; the
+> +	 * VMM virtualizes the base so the guest sees its own GPA and never the
+> +	 * host address.
+> +	 */
+> +	if (copy_to_user(buf, (u8 *)cxl->hdm_shadow + pos, count))
+> +		return -EFAULT;
+> +
+> +	*ppos += count;
+> +	return count;
+> +}
+> +
+> +static const struct vfio_pci_regops vfio_cxl_comp_regops = {
+> +	.rw = vfio_cxl_comp_rw,
+> +	.release = vfio_cxl_region_release,
+>  };
+>  
+> +static void vfio_cxl_release_hpa(void *data)
+> +{
+> +	struct vfio_cxl_state *cxl = data;
+> +
+> +	release_mem_region(cxl->hpa_range.start, range_len(&cxl->hpa_range));
+> +}
+> +
+>  static int vfio_cxl_init_device(struct vfio_pci_core_device *vdev)
+>  {
+>  	struct pci_dev *pdev = vdev->pdev;
+> @@ -92,6 +325,20 @@ static int vfio_cxl_init_device(struct vfio_pci_core_device *vdev)
+>  	if (ret)
+>  		return ret;
+>  
+> +	/*
+> +	 * Map the HDM decoder registers to sample their programming at open.
+> +	 * The block location comes from the enumeration cache in pdev->hdm, so
+> +	 * this does not reach into the CXL core register map. vfio-pci owns the
+> +	 * BAR, so map without claiming the sub-block.
+> +	 */
+> +	cxl->hdm_regs = devm_ioremap(&pdev->dev,
+> +				     pci_resource_start(pdev, pdev->hdm->hdm_bar) +
+> +				     pdev->hdm->hdm_offset, pdev->hdm->hdm_size);
+> +	if (!cxl->hdm_regs)
+> +		return -ENOMEM;
+> +
+> +	cxl->hdm_len = pdev->hdm->hdm_size;
+> +
+>  	ret = cxl_set_capacity(&cxl->cxlds, hdm_size);
+>  	if (ret)
+>  		return ret;
+> @@ -100,9 +347,30 @@ static int vfio_cxl_init_device(struct vfio_pci_core_device *vdev)
+>  	if (IS_ERR(cxlmd))
+>  		return PTR_ERR(cxlmd);
+>  
+> +	/*
+> +	 * Own the resolved host physical range outright, and exclusively: mark
+> +	 * it IORESOURCE_EXCLUSIVE so /dev/mem cannot map a conflicting alias even
+> +	 * on an IO_STRICT_DEVMEM=n kernel. Firmware that left it as System RAM
+> +	 * would otherwise keep a cacheable alias that faults the host once the
+> +	 * guest maps the range write-back. There is no devm form of the exclusive
+> +	 * request, so pair it with a devm release action.
+> +	 */
+
+Firmware isn't governed by OS resource structures.  It's useful, but I
+don't think it has the full stated scope.
+
+> +	if (!request_mem_region_exclusive(cxl->hpa_range.start,
+> +					  range_len(&cxl->hpa_range),
+> +					  "vfio-cxl-hdm"))
+> +		return -EBUSY;
+> +	ret = devm_add_action_or_reset(&pdev->dev, vfio_cxl_release_hpa, cxl);
+> +	if (ret)
+> +		return ret;
+> +
+>  	cxl->cxlmd = cxlmd;
+>  	vdev->cxl = cxl;
+>  
+> +	/*
+> +	 * The VFIO regions and the poison-containment pfn space are set up in
+> +	 * open_device(): vfio_pci_core_disable() tears down all dynamic regions on
+> +	 * close, so they must be created per open rather than once at bind.
+> +	 */
+>  	return 0;
+>  }
+>  
+> @@ -114,9 +382,11 @@ static void vfio_cxl_release_device(struct vfio_pci_core_device *vdev)
+>  static int vfio_cxl_open_device(struct vfio_pci_core_device *vdev)
+>  {
+>  	struct vfio_cxl_state *cxl = vdev->cxl;
+> +	void __iomem *hdm = cxl->hdm_regs;
+>  	struct pci_dev *pdev = vdev->pdev;
+> +	__le32 *hdm_shadow;
+>  	u32 hdr, *shadow;
+> -	int i, dwords;
+> +	int i, dwords, ret;
+>  
+>  	/*
+>  	 * Sample the DVSEC body now rather than at bind: a low-power
+> @@ -137,13 +407,88 @@ static int vfio_cxl_open_device(struct vfio_pci_core_device *vdev)
+>  	cxl->dvsec_dwords = dwords;
+>  	cxl->dvsec_shadow = shadow;
+>  
+> +	dwords = cxl->hdm_len / sizeof(u32);
+> +	hdm_shadow = kcalloc(dwords, sizeof(__le32), GFP_KERNEL);
+> +	if (!hdm_shadow) {
+> +		kfree(shadow);
+> +		cxl->dvsec_shadow = NULL;
+> +		return -ENOMEM;
+> +	}
+> +
+> +	for (i = 0; i < dwords; i++)
+> +		hdm_shadow[i] = cpu_to_le32(readl(hdm + i * sizeof(u32)));
+> +
+> +	cxl->hdm_dwords = dwords;
+> +	cxl->hdm_shadow = hdm_shadow;
+> +
+> +	/*
+> +	 * vfio_pci_core_disable() frees all dynamic regions on close, so register
+> +	 * them here (per open) rather than at bind. A failed first-open never
+> +	 * reaches close_device(), so unwind on error.
+> +	 *
+> +	 * Advertise READ and WRITE alongside MMAP: a VMM derives the mmap
+> +	 * protection from these flags, so without them the HDM memory is mapped
+> +	 * PROT_NONE and a guest access faults (KVM cannot back the mapping). The
+> +	 * flags describe the mmap protection only; fd read/write returns -EIO,
+> +	 * because a host CPU read through a kernel mapping of the coherent
+> +	 * CXL.mem range aborts on the fabric (see vfio_cxl_mem_rw()).
+> +	 */
+> +	ret = vfio_pci_core_register_dev_region(vdev, VFIO_REGION_TYPE_CXL,
+> +						VFIO_REGION_SUBTYPE_CXL_MEM,
+> +						&vfio_cxl_mem_regops,
+> +						range_len(&cxl->hpa_range),
+> +						VFIO_REGION_INFO_FLAG_READ |
+> +						VFIO_REGION_INFO_FLAG_WRITE |
+> +						VFIO_REGION_INFO_FLAG_MMAP, cxl);
+> +	if (ret)
+> +		goto err_free_shadows;
+> +
+> +	ret = vfio_pci_core_register_dev_region(vdev, VFIO_REGION_TYPE_CXL,
+> +						VFIO_REGION_SUBTYPE_CXL_COMP_REGS,
+> +						&vfio_cxl_comp_regops, cxl->hdm_len,
+> +						VFIO_REGION_INFO_FLAG_READ, cxl);
+> +	if (ret)
+> +		goto err_unregister_hdm;
+> +
+> +	/*
+> +	 * The HDM region is advertised mmap-able, so a fd holder can fault its
+> +	 * struct-page-less device memory in from the host CPU. Register it with
+> +	 * memory_failure() to contain a memory error. -EOPNOTSUPP means
+> +	 * CONFIG_MEMORY_FAILURE is off, so run without containment.
+> +	 */
+> +	ret = vfio_cxl_register_pfn_space(vdev);
+> +	if (ret && ret != -EOPNOTSUPP)
+> +		goto err_unregister_comp;
+> +
+> +	/*
+> +	 * The decoder is firmware-committed and the shadow now mirrors it, so
+> +	 * host access to the HDM range is safe. Open the access gate; reset and
+> +	 * power transitions clear it until the decoder is restored.
+> +	 */
+> +	cxl->hdm_valid = true;
+> +
+>  	return 0;
+> +
+> +err_unregister_comp:
+> +	vfio_pci_core_unregister_dev_region(vdev);
+> +err_unregister_hdm:
+> +	vfio_pci_core_unregister_dev_region(vdev);
+> +err_free_shadows:
+> +	kfree(cxl->hdm_shadow);
+> +	cxl->hdm_shadow = NULL;
+> +	kfree(cxl->dvsec_shadow);
+> +	cxl->dvsec_shadow = NULL;
+> +	return ret;
+>  }
+>  
+>  static void vfio_cxl_close_device(struct vfio_pci_core_device *vdev)
+>  {
+>  	struct vfio_cxl_state *cxl = vdev->cxl;
+>  
+> +	cxl->hdm_valid = false;
+> +	unregister_pfn_address_space(&cxl->dpa_pfn_space);
+> +	kfree(cxl->hdm_shadow);
+> +	cxl->hdm_shadow = NULL;
+
+counted_by_ptr needs to be updated as well.  Thanks,
+
+Alex
+
+>  	kfree(cxl->dvsec_shadow);
+>  	cxl->dvsec_shadow = NULL;
+>  }
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 470730cdc88b..6f6ebcce86a1 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -1123,6 +1123,23 @@ int vfio_pci_core_register_dev_region(struct vfio_pci_core_device *vdev,
+>  }
+>  EXPORT_SYMBOL_GPL(vfio_pci_core_register_dev_region);
+>  
+> +/*
+> + * Unregister the most recently registered dynamic region. Used to unwind a
+> + * partially built region set on an open-time error; regions are otherwise
+> + * released together in vfio_pci_core_disable().
+> + */
+> +void vfio_pci_core_unregister_dev_region(struct vfio_pci_core_device *vdev)
+> +{
+> +	struct vfio_pci_region *region;
+> +
+> +	if (WARN_ON(!vdev->num_regions))
+> +		return;
+> +
+> +	region = &vdev->region[--vdev->num_regions];
+> +	region->ops->release(vdev, region);
+> +}
+> +EXPORT_SYMBOL_GPL(vfio_pci_core_unregister_dev_region);
+> +
+>  static int vfio_pci_info_atomic_cap(struct vfio_pci_core_device *vdev,
+>  				    struct vfio_info_cap *caps)
+>  {
+> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> index b9202cb29d96..294e95b5e881 100644
+> --- a/include/linux/vfio_pci_core.h
+> +++ b/include/linux/vfio_pci_core.h
+> @@ -187,6 +187,7 @@ int vfio_pci_core_register_dev_region(struct vfio_pci_core_device *vdev,
+>  				      unsigned int type, unsigned int subtype,
+>  				      const struct vfio_pci_regops *ops,
+>  				      size_t size, u32 flags, void *data);
+> +void vfio_pci_core_unregister_dev_region(struct vfio_pci_core_device *vdev);
+>  void vfio_pci_core_set_mmap_exclude(struct vfio_pci_core_device *vdev, int bar,
+>  				    u64 start, u64 len);
+>  void vfio_pci_core_close_device(struct vfio_device *core_vdev);
+> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+> index 540e62312671..d5b8106625bf 100644
+> --- a/include/uapi/linux/vfio.h
+> +++ b/include/uapi/linux/vfio.h
+> @@ -377,6 +377,9 @@ struct vfio_region_info_cap_type {
+>  /* sub-types for VFIO_REGION_TYPE_CXL */
+>  /* CXL.mem HDM region of a Type-2 device, mmap-able */
+>  #define VFIO_REGION_SUBTYPE_CXL_MEM		(1)
+> +/* CXL HDM decoder registers, trapped so the guest programs a GPA it never owns */
+> +#define VFIO_REGION_SUBTYPE_CXL_COMP_REGS	(2)
+> +/* Subtypes 3+ are reserved for future trapped CXL surfaces, e.g. RAS. */
+>  
+>  /**
+>   * struct vfio_region_gfx_edid - EDID region layout.
 
