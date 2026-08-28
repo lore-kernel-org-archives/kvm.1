@@ -1,211 +1,237 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095FF370ADB;
-	Fri, 28 Aug 2026 16:58:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787936305; cv=fail; b=Ou73810nNs8vvjLCMDXMKSXXvfpv3cepOQwA9QpBC2mBaXmElBWmiJ9eow/NGdv1+lhzZFz7HcDH+iah9SEhA3GimI1eIwFv5QWwrGFPyci5mw3FgKAI14GVOXiIZ+90W7N2oqRX3uwtEeEyVqj/jOOcR3pS52UXlxJWRoIxujg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787936305; c=relaxed/simple;
-	bh=kfQeKEfTphKpH2A4vvVS1nLgjwMTy2yHr9RDYvBoAnc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=XLJY7aV9bchcYWzpad0eLMfxAe2w9e1Fu9ZGzzrR5XuRkfD0gJy+oHc4pP0ea7t7a5iqdLxlFT2baTXR6mSWaQZtlpRUjOtHIMZIvn+zQoiVVfqvNJh+edV3AYfFcFlG6299vTGKeuTghP8LRKBdcVzfhgLTHCMcZ+FRiv1205A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DqCgcNxi; arc=fail smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230DF39C631
+	for <kvm@vger.kernel.org>; Fri, 28 Aug 2026 17:15:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787937311; cv=none; b=DeysBPKUovALb9puwGu14YQqAmoNrK/Q9dvlMis5mzfG8nWGClxTVwjyVrzW1+zzPcEWDk3GvKhsDUgGSRhK4xkK6nuvhrq/OUpZEtqBt+65f3ZgixXaa8Qd07jaN0SAmiLvGsWZk4G0Czmy1uWLHr4+bn4kMedWj48/IXgbLow=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787937311; c=relaxed/simple;
+	bh=A+XwQ7hx7c/PpoK2zYD8Ti9Cfmu9dIdyNosReE7Z13A=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Jn/724MczI1SpG4Heycd0hFMIKzs311nOjCzEU+4PxSV0y41gf4t54y9N4lyZpeaL3vJ7BfNKQIRjlj9LqOCjA2Bm4QFET6ZbiGALdCGObF+2xuw+AelaLdLD6UcPNPG7Vf4TlQDgzy5CyNVgliWcz0RYm8rGaTZyG7jFw/mQ3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HaPS5SSb; arc=none smtp.client-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DqCgcNxi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787936303; x=1819472303;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=kfQeKEfTphKpH2A4vvVS1nLgjwMTy2yHr9RDYvBoAnc=;
-  b=DqCgcNxiakdb5mBg55vza65QMVXexClTYrP+Q405kMBDGPO086vnoGif
-   CuAQchEH+HtDRgICkRIf5IerWd8IUkwd/+pOzMw2Xwk+lSwvSXRYOcoo+
-   8NHw6noXiRGfUBDkQ9meKXfN/rJN10vC3lze0Sr+2aimKVR6dIoSsyoqp
-   007htF+G9bZIs8/3VxDQ6ak5J4Z2Wd+URB00VkT1RBidvV1T5/fmi1IcI
-   HQwNOyZEzemwdIClQbsH5MoHlkKMCYnUPEGyGDQzi1z5BnQhpJleoro54
-   /bk+zGzYi+zKdustXiOkMbsVf4PbkodITeOhrT7RJvbXuyK9w8iZQa+gk
-   A==;
-X-CSE-ConnectionGUID: PU0kvGHgQ7qw8Jt8F8t0ng==
-X-CSE-MsgGUID: 5+lrn2EURfe//D9ZbiI8gQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11889"; a="99798147"
-X-IronPort-AV: E=Sophos;i="6.25,248,1779174000"; 
-   d="scan'208";a="99798147"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2026 09:58:20 -0700
-X-CSE-ConnectionGUID: mNl3BZg0R2eyWoPNR4qi9g==
-X-CSE-MsgGUID: tG+HaJ4XTFSfdJXhtbjU0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,248,1779174000"; 
-   d="scan'208";a="270155209"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2026 09:58:21 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Fri, 28 Aug 2026 09:58:19 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Fri, 28 Aug 2026 09:58:19 -0700
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.45) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Fri, 28 Aug 2026 09:58:18 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nzv647VrhLI3jNj3wO6f83R359h7W6KmLGdeSvDSlNbrYqB//jub2n7YhRudAh+Qd/LTXAORCeXkG4bbPuZ4K2X1Is69yMPKis9k497TbUpWOVg5ZIQpLil+K6JP8jLlzHLY23ZsOsrVGv8ASKkd0RAc2zFS+qgYbBFIP/yZC17TGPFv+NSsOc6eM7jjKEg6KqbMsny1XT2E+HC/dFqpgbZP2r3fKRuS4zN+5dED+Pm8llXQn0mF/It0fzzn7kvGZ+Ir6YS6xUzBCuBtGeAQt8UjndKe05pskaq1SSHmN3Bqr/sZHSdQC1Ktscf9LMCLTZUVHR2Wsg+GVIG6rbHFxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kfQeKEfTphKpH2A4vvVS1nLgjwMTy2yHr9RDYvBoAnc=;
- b=xRjXkcaAaHsLMdXfjO6OjO6GT/Y477yfWQDXn2V+zrCbhFpzXFRwd4wp7uUTUYnWH173xt2gjDicTNVl4M9Xl92H4ZN1R8ZmO0gORCvOn4PRumBfj0tAGEKh6GR5UeedDlGWoLRiBE/QRRLNReuBdOxGgGajxuSAbtiahL2WJ1BLC4XH3WiPq47xkSnCTAxuPDR0+1Aog+smlfmdGApGU1hphuaidT1/OTzAYU0rRMNvEAl5NUoGcgM1XCnCDc7KKXkKpHwdRIGTa4sjrOr0dxUAyIjzm0NPcZe58iVMIHhFew2ux2pY6+gX0hObw3Z/+mWUp4BRnuPIWwyK5Wk6ug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6771.namprd11.prod.outlook.com (2603:10b6:510:1b5::20)
- by PH7PR11MB6906.namprd11.prod.outlook.com (2603:10b6:510:202::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Fri, 28 Aug
- 2026 16:58:11 +0000
-Received: from PH7PR11MB6771.namprd11.prod.outlook.com
- ([fe80::effa:162e:c9c9:a1b4]) by PH7PR11MB6771.namprd11.prod.outlook.com
- ([fe80::effa:162e:c9c9:a1b4%4]) with mapi id 15.21.0360.006; Fri, 28 Aug 2026
- 16:58:10 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>
-CC: "Gao, Chao" <chao.gao@intel.com>, "seanjc@google.com" <seanjc@google.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org"
-	<kas@kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "andrew.cooper3@citrix.com"
-	<andrew.cooper3@citrix.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>
-Subject: Re: [PATCH v3 0/4] KVM: TDX: Validate directly configurable CPUID
- bits
-Thread-Topic: [PATCH v3 0/4] KVM: TDX: Validate directly configurable CPUID
- bits
-Thread-Index: AQHdNdIhqH6lArRWVEmiaZbi1C7mgLaySiAAgACCPACAAOTNgA==
-Date: Fri, 28 Aug 2026 16:58:10 +0000
-Message-ID: <1deddc78d14326b378ddd62ad99c21d66da401e6.camel@intel.com>
-References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
-	 <e2f8f7976ac6a54e0bbda0e65ed9990940d9fef3.camel@intel.com>
-	 <d2efe512-e4fe-407f-96a8-b274fef23382@linux.intel.com>
-In-Reply-To: <d2efe512-e4fe-407f-96a8-b274fef23382@linux.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.52.3-0ubuntu1.1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6771:EE_|PH7PR11MB6906:EE_
-x-ms-office365-filtering-correlation-id: 9070bfbf-8ddc-4fcc-282d-08df05258ab2
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|23010399003|1800799024|10067099003|18002099003|22082099003|6133799003|4143699003|56012099006|11063799006|38070700021;
-x-microsoft-antispam-message-info: ITI62uvIHRhM1QGs/qUzS3V4SwzqTzqZIP9CdHNEAmMYmt0LrgLFbcqS0bZfA+JkgZFVhYdeKk2d2GVa+XaoWR7NJnOVb36Vj6N/wcdGNPWUEhq0/0+Nx+QGpMrm7338GMYloo0x1si8JMeoD5TvYIKRGm3LKnDXd2LpleeBQcDZ5jEDCwFrmlDWfk1ZAZamv7hzThuCAMGWF0oVeMoBqwiXaqW9czYvsHyV9cCDNVq4vLpMgSGMrMtjkV0Grp7n/rFvRPE+ZAda/8blKvAejtRWbPqv3kFOxGRdIgKRPu4LmqzWkLYKORIe50l7Uuc//Bzec9JkdvnXQn9iu56bzRF1sNLHwAbPB/hunCe6/6aUuNQWdtxsvSnG3H6NZZSoOoLezgcwS5tkxdW8sS/aKsQf2Y20cVXt77wSmt6VqB+NGq2NbuZwsQ+ZgpVjbXsQmVQog0Zf8akptf9704a8KHi/zjqkDm54HgaqDwVGH578K8HZgVatfwQzV5PkJ29exdpqa8DJNNdxCj7B73j0PGLBDsD/Rlqf6703LxSn6GRO+eJG6McXEAvpOHWQVDYeaHpB56kTfaJ5vTG3VixpCFlZ1DFSHsiGGVehoDpqNouNdWNu9Np+a0MoT/LWDevnR8MrMTmLG9l5LhEW4wBphfwxayPqS1EMs7EaGzli/tFNlplM7xazCz0WH76b+KlMYcrxN8ZLkk38bSATt7UH0wLZa/UeH38D+2OB1TciJO8=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6771.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(10067099003)(18002099003)(22082099003)(6133799003)(4143699003)(56012099006)(11063799006)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?KzlYMlJlK3Q2WFA0Mk9HRXlleGo2bVhReitoQlphZEdRRnU5SG9zWVRoaFQy?=
- =?utf-8?B?NFRkdEFzbVhzUjgyMno4K0k3OVRYMS93d0FTM3lnMkRkNFJkRVpKQVM5RC9F?=
- =?utf-8?B?clNpcUVQUjdWVGk1bjltRnRwOTl3Q1lEbGp1c2J5RW5iZ0RranZra0xIZUlE?=
- =?utf-8?B?NExXWjk1N3ZDM0ZLNmZCdWxmZWw1SjdFNlFwOEFTcWJYM0dDS3JCMXRvam1R?=
- =?utf-8?B?QndRQ3RwMDc0dGFoQ2ppcmxqcWtZbUN4UTdldGFOVVFTVUFLTVFFTjVtRzAr?=
- =?utf-8?B?Z2I0S09EU2tnVTJsTUhaZkIraFdKNlB6VitCRWJlT2ZLa2t3T2l6cUw0SG1n?=
- =?utf-8?B?Y0tpTE1WOElyb0V3Z1AydkpnSWduMTU3OGxHTE1XNWVrK3hUbXQ5N0tFOVVQ?=
- =?utf-8?B?V0FCcFNNK0JNbWpXaFI4K0V4REcrR2RsdStGTUZqT2pRdHBQNGI2dFhaaWRu?=
- =?utf-8?B?b2pNNVh4d3IyU3d6eUhqUUJ0bk82dy9TSTZLTEJZNjhrajh0dHlDdi9SOHBp?=
- =?utf-8?B?V2FkRGJZL1lHSHB4MCtXV2F0dWlsYnI2WFBCK2FYdmNNQ0Z2L3Y4NXcrRnNW?=
- =?utf-8?B?K2ZNMVBkbDlXK0tlWStPejIxVWZvK2FWaDFzUE43ZjcyTFFYcSswajVxbW1W?=
- =?utf-8?B?aGVndGZjZWVIV1laYWE0eFl6UHhYdFlvVG1pcVBpbjBUbkpjV3dvOGwrekxM?=
- =?utf-8?B?dU9ud29SRXlLQ256QU8rbXE0dWZrU01TNXlGK1huUWFjRFNuUjZBSE1TanFr?=
- =?utf-8?B?dzYrMnQ2OVhuaFZWcFNPL3NvRll4blNpcEdYcXJLMTdkZXNYa0JoRGkyNkJL?=
- =?utf-8?B?K3l4T1NwaEgybEtHMjM3S1Y0eUc1Y2RZNHA1SXJ3TWdzZTJXdThXWUhPYnFN?=
- =?utf-8?B?L0J4WkhMeCtOOFJtM3RvcWMzNVNPaWZ2b242ZTRSUUIzaWxoUWJvYnNFbDNn?=
- =?utf-8?B?WEh1T3JhT2t4WXI2cUlMeHdFbVJZeWZaTEZHWTM5VzZvSmgweUxvVkxML1Z3?=
- =?utf-8?B?RkJkdmx4dGN1bUxmQmIwd0NqTlU3aElwbjhtejZ2VEhWR1JmKzdwc21la3Vt?=
- =?utf-8?B?LzNrUkd4ZkhjaW0way8wckhMTS9KaFBLL3QxcFVRTjdNaVQwQmZNTXJTMnFE?=
- =?utf-8?B?cUJScDJJazltOVpxOUtEUVpGY28wK2d2dWlZblJzZVExNXpycmVHOU9ZTnJ1?=
- =?utf-8?B?RDZPVjhJSkQ3RUg2REV0bmxNQmFQQnRhL0pvcW9zQmhRTFdvRzAxSXk4aWor?=
- =?utf-8?B?RWRZa3NOcUxPSUJmcExhNGpTWGtTb0lUQVhETFpvdDluZUNuc3BKaXpYTVg5?=
- =?utf-8?B?My9KVGtMUFhQTHNLNjFwUWNoYUEzeVROcXd2S1JrM3ZvaC81em9pZmxCZmZB?=
- =?utf-8?B?OWJJM0ZoakFScEN0dE5pRjJoclh3NFVRZGk0eTRPYjAwN3RoNStleEJpOXM0?=
- =?utf-8?B?dzNwR2Ezdjk4TU12SGs5bHZ1RW9FM004LzdkNFhwb1hyT0tmRXI4VGZHM0Y5?=
- =?utf-8?B?Rm9ZWm9WSHVUOEg1cGNqWnFaZkxaeDVEUEtpRHN5bUVqT0tmaHYwS1Fmb1Aw?=
- =?utf-8?B?NjJKcjZKS25vQ3pRQjVXVGlVWmVlV0t2NkhMTy9Rc0NVNGRaZWJ1YWluSlRy?=
- =?utf-8?B?QThqaVlHQVBFMlBTUkdNdGVMdnlkOXlKY0ZlcFBUdzlsN0N3dThvTUd6TXNk?=
- =?utf-8?B?ZjdUS1g4cWpRZ3gzR1N3ZTY3R0hjRkF6bVNvRkVUckdBRU9CaHY4alhwZHlZ?=
- =?utf-8?B?U1A4Y0lkaXFBK2dycERhVnhpSzdkWk5ScVlTUnlOREVjMk5tTjloNU0rVVg2?=
- =?utf-8?B?RnNxaU5lUmtCK3hYMUdhb1VWR2RreEROanMzMk94U3JHcmkzV1M2V05ONGNx?=
- =?utf-8?B?UEpydGJYN3phNEh2bk1zZWlRNmpFUTNRbm5Ob04wemZXaG5mbzEwV1QvWk5O?=
- =?utf-8?B?bWJxRWJRNHVVTDBnL3M4SjROZGFWR1dKNGRZWHdoWTFMOGFmTXY2M0ZRN1Qx?=
- =?utf-8?B?WGlGeDN4MkNONVVUTDB5blV1dVY0UVpZRkpiaHJvMnlnM0JKY2d5bS83Q1Vu?=
- =?utf-8?B?KzBlRTN5M083dGw3SDRFQVIxRHFDaERGWldvdUFzMk9yaitYK3dvTThPUmFU?=
- =?utf-8?B?QiszbWhlczNPZmNqaXhNaEttZi9uajhoUDdMMnBrNHY3M0gvZS9rKzRYcUEr?=
- =?utf-8?B?aWZ5UVZxaXRwVzk0Zk81NHA0ekJlRkFWNTRtb1g0KzZwMmdlTndLUnZ5TzBU?=
- =?utf-8?B?ZFFZUG5Vb01SZE1rS3Q3ZHovU3JpMFNhNWdjbTA0ZmpkMzg0cURtN2FyRzdo?=
- =?utf-8?B?dHpYUnRZU1p3bVVlOXFHQzFXb0h0aXZZYXJlZmFyZWVhNGZXNEg3TXJDYVpF?=
- =?utf-8?Q?nXxDUcxUUIyMRUdE=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <0D9ABF51800D9849B3334011219D1853@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HaPS5SSb"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84a67b16217so1802899b3a.3
+        for <kvm@vger.kernel.org>; Fri, 28 Aug 2026 10:15:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787937308; x=1788542108; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oz0Aruxc0OsgSYrqyxjcA7Qxw4lkCYaQy9l/Ml6P7S0=;
+        b=HaPS5SSbVhOC2R8m6r91iePwZsMR8G/zsOI1fM+tzH6dG7iEX2eHWx9yQ4dItOMa4D
+         wqbEni/VlTzwG3YAomWS6L4T6lBNwP25PsUPWeQQPw7+hv79OtIgWgIEaqtghRBD+xm7
+         PVSVT/viVMuJX7hKHTvbPKeHO5vfeMcL2+J07EnDLCfGlFxlc9aVyUXZb5QtYwaU26+c
+         KknNfw50ckiQ27Cd9+0Kck1ygFtu7YWUYnuLUpVKCbkZ6ZoODPYyX/jFfGUJ2a14QLDK
+         LzcF/ZKFR17StUQLsElE8afspPU5Ul5cgVmzLSpGtnrVYhLZYCSPK9LazEmYgX4Rp+gh
+         XGuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787937308; x=1788542108;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oz0Aruxc0OsgSYrqyxjcA7Qxw4lkCYaQy9l/Ml6P7S0=;
+        b=K420nCAv9ezTvanWOvyRmaNNPD3P70oFVE4KqW/qlSzCN5Kbm2Bk8FZbvPNJ6duFJa
+         HwQ5ays2jwUGH6zvtNmCAtzoj5e4YxwDQojZb04pDzPn4IJMRcHGvEG1nlQ8SCwGfpwG
+         wRswg5cZMsO/XDvQp/85GRm0R1cjgj6tjjM/ht+xBYHyh3oDsnfP+DG7ZLYuzOcScAgJ
+         ANxLbysBO2Ah8fQ+KHrnsxCdutT86n79ajdW8g6mzv+K98/7YckYKLMrL41nwK7jWS+Q
+         3ECaNAbLcRmJDHl5JEhG/14byw+nIy33geFV8/Y9v0CG3iZ7sXOuxUxPtrhAsG/s0moB
+         icNw==
+X-Forwarded-Encrypted: i=1; AHgh+RpOwBlI/9kAmtJ6TsIKaq5cXMN48VwVLXZm4RtXG4xFBqTzxM8srEueAJZXSTg4Cut6q8o=@vger.kernel.org
+X-Gm-Message-State: AFuF++mdoCSji3RNtm9lJFYGPli6dwCqoxeAuikgW8+aBZUUV1c5iY4W
+	R75iT+/aqWN1udKopiWfyA4ZtLpqCXYxDrb+QyQFAs4Qsj2Qd83fs9GeJq8Tz3KolrJZFx/9ALP
+	7bI6bqA==
+X-Received: from pfbem11.prod.google.com ([2002:a05:6a00:374b:b0:848:4690:d658])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2991:b0:851:92fe:504b
+ with SMTP id d2e1a72fcca58-856274efd7bmr20706200b3a.7.1787937307954; Fri, 28
+ Aug 2026 10:15:07 -0700 (PDT)
+Date: Fri, 28 Aug 2026 10:15:07 -0700
+In-Reply-To: <20260828102728.1308266-1-zeng_chi911@163.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: xlzQXFwE+qRuaiCtA4gx86giznHi9FSnJcBiZ1KN58Y5GNh4TdolFs089vAr4TKlx4YfWHQNmUIWEVpdge37GYMXKVZTVFyJMGuSzUqu8g6pjd+KxnkpY8D5j5zg1mO9d0bF2q+I0tZtRFnGGzXayLNGcHRN5ua4bvWVBLYM/GqJafDQb+qjRsLvxixSgQpXD9wGMs5UIAb74t32t74RBsnbbhUKmpjk5ogpgGyLH3mwFS/77UKKm6upSrto0HzRoBZm5ji+ihBGK0aSqFHQETOFNEQt9z8y3a0ZpjYkSiGVV9D2COywLShBpACRAyCfaC7I+CPH6NgnGokreWADJA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6771.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9070bfbf-8ddc-4fcc-282d-08df05258ab2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Aug 2026 16:58:10.8174
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: XT9TzlgS6/pGkIhYi5DKpDX8O33V36CpF0xcPl2thlWp95HS3af48RhLMgAMAjKglvC3bk1RSDoV1aGuwMZYiWMHxnQAlR2vS0q3Aadt/x0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6906
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+References: <apCD3F3oOyC6E5oN@google.com> <20260828102728.1308266-1-zeng_chi911@163.com>
+Message-ID: <apHCG78KyLuzPrNa@google.com>
+Subject: Re: [PATCH v2] KVM: Don't treat reserved xarray entries as having
+ memory attributes
+From: Sean Christopherson <seanjc@google.com>
+To: Zeng Chi <zeng_chi911@163.com>
+Cc: chao.p.peng@linux.intel.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, pbonzini@redhat.com, zengchi@kylinos.cn
+Content-Type: text/plain; charset="us-ascii"
 
-T24gRnJpLCAyMDI2LTA4LTI4IGF0IDExOjE5ICswODAwLCBCaW5iaW4gV3Ugd3JvdGU6DQo+ID4g
-DQo+ID4gQnV0IGl0IGlzbid0IGEga2VybmVsIGJ1Zywgc28gSSdkIHRoaW5rIHRvIHB1bnQgb24g
-dGhpcyBhbmQgbGV0IFREWCBtb2R1bGUNCj4gPiBmaWd1cmUgb3V0IGEgc29sdXRpb24gaWYvd2hl
-biB0aGUgdGltZSBjb21lcy4gUHJvYmFibHkgdmFyaW91cyBvcHQtaW4ga25vYnMNCj4gPiB0byBh
-bGxvdyBmb3Igd29ya2luZyBhcm91bmQgaXQuDQo+IA0KPiBEbyB5b3UgbWVhbiBvbiB0aGUgb2xk
-IHBsYXRmb3JtcywgdGhlIGFjY29yZGluZyBURFggbW9kdWxlIHZlcnNpb25zIGFkZCBvcHQtaW4N
-Cj4ga25vYnMgdG8gYWxsb3cgdGhlICJlZmZlY3RpdmUgMSAtPiBkaXJlY3RseSBjb25maWd1cmFi
-bGUiIGNoYW5nZT8NCg0KWWVhLiBPciB0aGUgb3RoZXIgd2F5LiBGb3JjaW5nIHRoZSBvbGQgZml4
-ZWQtMSBiaXRzIHRvIDEgYXV0b21hdGljYWxseS4gQ291bGQgYmUNCmxpa2UgYSBxdWlyayBsaWtl
-IGNvbmZpZyB0aGluZy4gVXNlci9hZG1pbiBjYW4gZGVjaWRlIGlmIHRoZXkgd2FudCBtaWdyYXRp
-b24NCmZsZXhpYmxlIGRlc2lnbiwgb3IgYmFja3dhcmRzIGNvbXBhdGliaWxpdHkgZm9yIGV4aXN0
-aW5nIFREcy4gQlVULCB3ZSBjb3VsZCB3b3JrDQpvdXQgdGhlIGRldGFpbHMgbGF0ZXIgaWYgd2Ug
-dGhpbmsgd2UgaGF2ZSBvcHRpb25zLg0KDQpJIHRoaW5rIEkndmUgY29udmluY2VkIG15c2VsZiB3
-ZSBoYXZlIG9wdGlvbnMgYW5kIGNhbiBjbG9zZSB0aGlzIG9uZS4gQWdyZWVkPw0KDQo8c25pcD4N
-Cj4gDQo+IA0KPiBJZiBGUkVEIHN1cHBvcnQgbGFuZHMgaW4gS1ZNIGZvciBub24tVERYIFZNcyBi
-ZWZvcmUgdGhpcw0KPiBmaWx0ZXJpbmcvaW52YWxpZGF0aW9uIGlzIGluIHBsYWNlLCBhZGRpbmcg
-RlJFRCB0byB0aGUgaGFyZGNvZGVkIGRlbnlsaXN0DQo+IHdvdWxkIHdvcmsgYXMgYSB0ZW1wb3Jh
-cnkgc29sdXRpb24uDQoNClRoaXMgY291bGQgZWFzaWx5IGhhcHBlbi4NCg0KPiANCj4gQnV0IHRo
-YXQgb25seSBob2xkcyBmb3IgYSB3ZWxsLWJlaGF2ZWQgdXNlcnNwYWNlIFZNTS4gUUVNVSwgZm9y
-IGV4YW1wbGUsIG9ubHkNCj4gZW5hYmxlcyBmZWF0dXJlcyBzdXBwb3J0ZWQgYnkgYm90aCBLVk0g
-YW5kIFREWCwgc28gaWYgRlJFRCBpc24ndCBzdXBwb3J0ZWQgaW4NCj4gS1ZNIGZvciBub24tVERY
-IFZNcywgUUVNVSB3b24ndCBlbmFibGUgaXQgZm9yIFREWCBlaXRoZXIuDQo+IA0KPiBBIG1hbGlj
-aW91cyB1c2Vyc3BhY2UgVk1NLCBob3dldmVyLCBjYW4gc2V0IGEgZmVhdHVyZSByZWdhcmRsZXNz
-IG9mIEtWTSdzDQo+IHJlcG9ydGVkIENQVSBjYXBhYmlsaXRpZXMsIGFuZCBjb3VsZCBzdGlsbCBj
-YXVzZSB0cm91YmxlLg0KDQpSaWdodC4gSXQgdGhlIHByb2JsZW0gSSB0aG91Z2h0IHdlIHdvdWxk
-IG5lZWQgYW4gb3B0LWluIHRvIGF2b2lkLg0KDQo+IA0KPiA+IERvIHdlIHdhbnQgaXQ/IFdoZXJl
-IHdvdWxkIGl0IGdldCBwbHVnZ2VkIGluPw0KPiANCj4gU28gaWYgdGhlIGFwcHJvYWNoIGluIHRo
-aXMgc2VyaWVzIGlzIHRha2VuLCBJIHRoaW5rIHdlIHN0aWxsIG5lZWQgc3VjaCBhbiBvcHQtDQo+
-IGluIGludGVyZmFjZSB0byB0ZWxsIHRoZSBURFggbW9kdWxlIHRoYXQgdGhlIFZNTSBpcyBub3cg
-ZmlsdGVyaW5nIHRoZSBDUFVJRA0KPiBiaXRzIHNvIHRoYXQgdGhlIFREWCBtb2R1bGUga25vd3Mg
-dGhhdCBpdCdzIHNhZmUgdG8gcmVwb3J0IG5ldyBob3N0IHN0YXRlDQo+IGNsb2JiZXJpbmcgZmVh
-dHVyZXMuDQoNClllcC4gQ2FuIHdlIHRoaW5rIGFib3V0IHdoYXQgaXQgd291bGQgbG9vayBsaWtl
-PyBFYXNpZXN0IHdvdWxkIGJlIGEgYml0IHBhc3NlZA0KaW4gVERIX1NZU19DT05GSUcuIEJ1dCB0
-aGVuIGFyY2gveDg2IGlzIHNheWluZyBob3cgS1ZNIHdpbGwgYmVoYXZlLiBPayB0byBtZSwNCmZv
-ciB0aGUgc2ltcGxpY2l0eS4gQ291bGQgY29tZSB3aXRoIGEgbmljZSBjb21tZW50Lg0KDQo=
+Please don't send a new version of a patch/series while there is active discussion
+on the previous version.  As is the case here, there's often not enough context
+in the new, standalone patch to carry on the discussion.  And even when there is
+enough context, it's annoying to have to read one thread, and then skip over to
+a different thread to respond.
+
+On Fri, Aug 28, 2026, Zeng Chi wrote:
+> From: Zeng Chi <zengchi@kylinos.cn>
+> 
+> kvm_vm_set_mem_attributes() reserves an xarray entry for every gfn in
+> the range before storing the new attributes, so that the store loop
+> can't fail partway through.  If one of the reservations fails, e.g. with
+> -ENOMEM, the entries that were already reserved are left in the array.
+> That is harmless as far as xa_reserve() is concerned, as the reserved
+> entries read back as NULL via xa_load(), but it confuses the "does this
+> range have no attributes at all" check:
+> 
+> 	if (!attrs)
+> 		return !xas_find(&xas, end - 1);
+> 
+> A reserved entry is XA_ZERO_ENTRY, not NULL, and xas_find() returns it
+> as present.  So a leftover reservation makes KVM report that a fully
+> shared range has attributes even though kvm_get_memory_attributes()
+> returns none for every gfn in the range.  On x86, the next time
+> mixed-attribute tracking is recomputed for the range (memslot creation,
+> or a later attribute change that straddles the 2MiB page),
+> hugepage_has_attrs() treats a fully shared 2MiB range as mixed and
+> refuses to map it with a hugepage, until userspace happens to set
+> attributes on the range again.
+> 
+> Walk the range and ignore reserved-but-unset entries when checking for
+> the absence of attributes, so a leftover reservation is treated the same
+> as an empty slot.  Note, the generic loop for the attrs != 0 case
+> already skips zero entries via xas_retry(), i.e. only the !attrs shortcut
+> was affected.
+> 
+> While at it, skip the reservation loop entirely when clearing attributes,
+> as storing NULL only erases the entry and never needs to allocate, so no
+> reservation (and no cleanup of a failed one) is required in that case.
+> 
+> Fixes: 5a475554db1e ("KVM: Introduce per-page memory attributes")
+> Signed-off-by: Zeng Chi <zengchi@kylinos.cn>
+> ---
+>  virt/kvm/kvm_main.c | 21 +++++++++++++++++----
+>  1 file changed, 17 insertions(+), 4 deletions(-)
+> 
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 65eb26a0520d..29534bcc7f02 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -2447,8 +2447,19 @@ bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+>  		return (kvm_get_memory_attributes(kvm, start) & mask) == attrs;
+>  
+>  	guard(rcu)();
+> -	if (!attrs)
+> -		return !xas_find(&xas, end - 1);
+> +	if (!attrs) {
+> +		/*
+> +		 * Reserved but unset entries (XA_ZERO_ENTRY, e.g. left behind by
+> +		 * a failed reservation in kvm_vm_set_mem_attributes()) are
+> +		 * returned as present by xas_find(), but hold no attributes.
+> +		 * Skip them so that the range is correctly reported as having no
+> +		 * attributes.
+> +		 */
+> +		xas_for_each(&xas, entry, end - 1)
+
+Curly braces needed for the outer loop.  And +1 to Sashiko's feedback, both from
+a correctness perspective and from a "make boths paths look similar" perspective.
+
+Though even better, we can use the same core logic.  Pulling in your response from
+v1:
+
+ : > I think it would be this?
+ : >
+ : > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+ : > index 65eb26a0520d..a01b2af1cb17 100644
+ : > --- a/virt/kvm/kvm_main.c
+ : > +++ b/virt/kvm/kvm_main.c
+ : > @@ -2447,8 +2447,9 @@ bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+ : >               return (kvm_get_memory_attributes(kvm, start) & mask) == attrs;
+ : > 
+ : >       guard(rcu)();
+ : > -     if (!attrs)
+ : > -             return !xas_find(&xas, end - 1);
+ : > +
+ : > +     if (!attrs && !xas_find(&xas, end - 1))
+ : > +             return true;
+ : > 
+ : >       for (index = start; index < end; index++) {
+ : >               do {
+ : >
+ : I tried that first, but it doesn't fix the false positive.  Falling through to
+ : the generic loop for the !attrs case still returns false for a range that only
+ : contains reserved (zero) entries: the loop does
+ : 
+ :         do {
+ :                 entry = xas_next(&xas);
+ :         } while (xas_retry(&xas, entry));
+
+The other subtle wrinkle is that the xarray APIs reset the index when no entry is
+found (this wasted a good 30 minutes of my time, argh).  I.e. when on entry is
+found, then KVM *must not* check the index, because it is effectively invalid.
+E.g. I initially wanted to check for xas.xa_index >= end, but that doesn't work.
+
+This code also needs comments, because the xarray APIs have all kinds of sharp
+edges (or maybe a better way of looking at things, xarray isn't a great fit for
+what KVM is doing here).
+
+Yeesh, speaking of which, simply using xas_next_entry(), as I want to do, would
+be slightly suboptimal for non-zero attributes, because xas_next() (confusingly,
+IMO) doesn't return the next non-NULL entry, it returns literally the next entry,
+whereas xas_next_entry() returns the next non-NULL entry, bounded by the max. I
+don't actually care about the performance impact, but I want to document the
+behavior, at which point it's just as easy to use next() vs. next_entry().
+
+So after way, waaay too much fiddling, this?  As a bonus, the changelog can call
+out that xas_next_entry() is essentially an optimized version of xas_find(),
+e.g. to communicate that the effective diff is actually just adding xas_retry().
+
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 65eb26a0520d..cc94d9881582 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -2447,14 +2447,39 @@ bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+ 		return (kvm_get_memory_attributes(kvm, start) & mask) == attrs;
+ 
+ 	guard(rcu)();
+-	if (!attrs)
+-		return !xas_find(&xas, end - 1);
+ 
++	/*
++	 * Lookup the entry for each index instead of iterating over the xarray
++	 * as KVM deletes/nullifies entries to represent "no attributes", and
++	 * the xas index is effectively invalid when no entry is found.  I.e.
++	 * matching non-zero attributes for *every* entry effectively requires
++	 * a manually lookup for each index.
++	 *
++	 * Skip pre-allocated, reserved entries, or restart the lookup if the
++	 * xarray was concurrently modified, via xas_retry() ("retry" means the
++	 * entry holds an internal xarray value, i.e. is either invalid or NULL
++	 * from the caller's perspective.
++	 *
++	 * Use xas_next() when looking for non-zero attributes to optimize for
++	 * the case where the start of the range (or the entire range) doesn't
++	 * have any attributes, as xas_next() returns literally the next entry,
++	 * whereas xas_next_entry() returns the next non-NULL entry (bounded by
++	 * a maximum index).
++	 */
+ 	for (index = start; index < end; index++) {
+ 		do {
+-			entry = xas_next(&xas);
++			entry = attrs ? xas_next(&xas) :
++					xas_next_entry(&xas, end - 1);
+ 		} while (xas_retry(&xas, entry));
+ 
++		/*
++		 * Don't check the index if there's no entry; as above, the xas
++		 * index is invalid (and if no entry was found, then the entire
++		 * range has no attributes).
++		 */
++		if (!entry)
++			return !attrs;
++
+ 		if (xas.xa_index != index ||
+ 		    (xa_to_value(entry) & mask) != attrs)
+ 			return false;
+
