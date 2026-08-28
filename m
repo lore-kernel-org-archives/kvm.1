@@ -1,81 +1,81 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A22F39DBFD
-	for <kvm@vger.kernel.org>; Fri, 28 Aug 2026 22:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1D13B0589
+	for <kvm@vger.kernel.org>; Fri, 28 Aug 2026 22:54:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787957546; cv=pass; b=m7gJ3C52jTVIAf5BQwIFxJgtG8ENov9CCdQY1AmOoIarA4FVER48Y9qNRVsrJ/3dj9cqcRiKvLhxiamrPUF+on6UljNGnFjtJCuD6peBvUmzK5Amr5GijMX9ZgSxMEEpNJKa4AtSTVRIS3JSl7zYTAe6E5646IRxggxzmViYiGI=
+	t=1787957686; cv=pass; b=H/4WBlfeVFLkIPJDlvb2Gf17MeJOK9Mut6YjexBua3f5SiWIjBqN76IYQo7L98+lAK7OTZtDScvVc36V4YAEaWljN9nomnzp78Sop+0NuFntJnhbv3vihJ+DNQux7bQ3TosVc0WJbdx5rn4jt1nX0mVXP8Ot23e12wsH/t3lJkQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787957546; c=relaxed/simple;
-	bh=WrsvomBoIOTykSZbu/ot0FOcIRpwAK7V3umLl1yq6rk=;
+	s=arc-20240116; t=1787957686; c=relaxed/simple;
+	bh=4unzX+NMpOtBviw882dRQzRaeXOD1/xti/3UhI1UIHc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QEGLvxKSitdw/xnMS/zacnd4m4HY7SJ6hj8iKtQF+FWk9QyQ8M7zQjgbEKQEL61341k8FnuevwOtEQE4xb91WZGT9j82HdWi5KTrJ5TW8q7UFf/1jXiI2QxGVb+avst+5x+U6YDeitYuhD7OvjP/+qSwsuxI7K9oT5Znn5CTbbk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dXknUyG9; arc=pass smtp.client-ip=209.85.160.174
+	 To:Cc:Content-Type; b=SLAV4C/MNCcam0bg6ZZIaVR7JVBWSCsv7dcutYZRRw/KVLnbSqVlnncL40D0TXm0AkdXWqd4WlUiJvSGVpFN0eSk7pSwI9AI4aZ8st8nllyQyxkBSQt7iMQPy8jR64aWvsjzPdNDN5NcVYuY4KX+3ucKa4tL+++uPdV0bmxBgFk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wMHSAsLr; arc=pass smtp.client-ip=209.85.160.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dXknUyG9"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-52fac937235so44781cf.1
-        for <kvm@vger.kernel.org>; Fri, 28 Aug 2026 15:52:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787957544; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wMHSAsLr"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-52fac937235so45281cf.1
+        for <kvm@vger.kernel.org>; Fri, 28 Aug 2026 15:54:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787957682; cv=none;
         d=google.com; s=arc-20260327;
-        b=OO9VDPF3EBcXMKXonBCyhXfkVIxxMwnyAhjwVmEe2dww7tSjVRW7X+ArmeMyD5q/Jx
-         3G6Co41qUJ/LNVQ9xlq3F9Qn9a86hNt2vqenCSZe5ssKiSBBpNzHxr8UwOHHziURrCpH
-         Sbup43W9T1dLGzzU9m5PyyF3VExp4kEbHcwGNZLDjISD3BQqr1BudS6P8oUSVyRxbgqk
-         ORKeI0rHQLKiDQdvExIHig1XH7OPtn7RB9VaEK0vAeqSBVNxbxCLG3PJN+NzpODXWYDw
-         vDKumYbB1ERAUv5dNf9tjXtqR6FMIzIKSDOviCuA6GItbt21v+eD8+sYOFkCS4Ff7/+o
-         5g/Q==
+        b=RN6vVg210eHFfDI7O2M1A2MnBCUi8syBILDdin37AZaLu2VuNjOrvwT0lPSTGfeKfE
+         vUX4m0uQC68zNI1+/IAoQek/P4BESXlj8HcNm8naa/FIMaVMWpV+QqOxpLp++vFVjfZC
+         29AlN2gRJqkjaM9/SxZoO7sHEIq1W+DO9i8qmR6AlLWQ4BgOZ4bWCphHCu3D3wP3P0uR
+         RukIaRZM5DZjg40zROGW+7PSBT7q24R1NE007HSJExRCw72TnJhefGjdUrbxOjkCp9cx
+         6Nf9wu8qcuxln1BEFxaVonr+v0nO9WPWM1fz0xpZu5y7od2GFEwnPxuXxjB3Bkbj+IJl
+         e6iQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=Awwf+UFW2ONQrXT/1UuPyCRQCWHRON77Fg6o5pZxO10=;
+        bh=4unzX+NMpOtBviw882dRQzRaeXOD1/xti/3UhI1UIHc=;
         fh=Ck+oSQkh7siq1BuYj4MRLFUr/GyF+iRwWVrXMPbIQz4=;
-        b=K9BV36WvKSiKR/ggSiT3MPZr87qEQPf57HI2RI8jOvNd5ObtXVpUOvGdLPaG80si3L
-         mJgLk7GCkFoUC1KQdZcF9B2zqpLyBqz40iy9B35kOSnFxbBUqF3pGfGfwua8tPBWbWW3
-         qdcp6xn+F6WOTv2Wd+bUfl/QxWgDAX+Jqt3Lo9GGDX6GfdUtBncRliquw45jkltQOvPC
-         p4nsGZIN0m6QAGEU6ETjk7RxJKLsTZ10lVItXCiS4eFgn1Y3jkvzYuM2WGU+kcDkFe7K
-         4BahjkjoULFaHdGxAwxfx+CWZ/EcvSzktBCQTg8wUz4C3pw7mkx6p9PKwlV1hlgwA/ck
-         SnDA==;
+        b=CCkXiPbC6rag2gp+auSy6tLY13RIW8CGsDYbtdpc7ZiNOY7cIAb3p0mvVkbubYIOzn
+         /cx3d7Gfc8UOEoqYtaFQGNbS9JRGT6HDmleA3qesWrjcNbuiDifoOlIrmYbmHnefC7yO
+         s/PTlKgo2pGgWJgUKVkYy7EtUUUgmGn1xEQOjuCd+SfY/lkomlIIKzvQEnZIlJ6AzHVH
+         fXmhVCoaFRX0Bmea7g5Fg983o+Wi21NNZSHhCglzoiGTZTagEIFh7BPMfQ4TtpDUtO9/
+         6xxOLgOh2eEKtaLjsPCCu42DTqUcMqhUuB7zDKmmNAegdoKRss5C2tN4ajNSOoCXKZTy
+         rqmw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787957544; x=1788562344; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1787957682; x=1788562482; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Awwf+UFW2ONQrXT/1UuPyCRQCWHRON77Fg6o5pZxO10=;
-        b=dXknUyG91mtcfBGaWwFNQ5riozqqkSfZCg6+5WAdFl1bWRmMCszAN9PzJVDYz0326D
-         dOrC0TKZQ/8C6nLA1pAMY7U6FWhP1WSa6ipJP1MaTtd2crYDLY+GoHUezzRMGyHaloZa
-         5GHvkk5q1pGD7rysF78hRGA08fM7KfExoKVOjhIfqpVnEqzWGQ58iaA7GNYOwwK6CtHN
-         CWwlYoY+QAn2NSOpLZba2Y3Y/zgV6EeGe32cyYzvYWcbeE8dYHQVzj5e1DNsz7lRhvG6
-         F+rLm+EaCohm30vRM9+Q1g43hfVKdZ3kXOOr+j6PQ+VuLAzEX1gDYDZJz6b4sUVIVucb
-         VPDQ==
+        bh=4unzX+NMpOtBviw882dRQzRaeXOD1/xti/3UhI1UIHc=;
+        b=wMHSAsLr+g0oMmhiM9FTgPjkcBiWjxQpgibgbgK7MxAStn/eevCnCH5vGGDmzhS9rm
+         55uH+BvLDT2bkJiJwTEFco74f7YofNpsUnmDTCamqQU8DLfidkX38a6imF/2NQwJa4Bm
+         IwQn0FRGSvZwGKGpNxcsKVeAPB/2/B7gImXQcKsYuT5pF5pUHLRcR8g9n7dij0diornD
+         tXGn0YQzMS0GAqZj5y+kDt0WQ/BLUxeiSKUug2Nj19z0+D4rV9aw0WJrRI9KDUPhl9C0
+         kwK0kKErAqORoU4C+j2X1Q/bGRmvfGWHJv+q/yUwnw0nQp+agxVTbm6sk9EgGKZxihnf
+         w3NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787957544; x=1788562344;
+        d=1e100.net; s=20251104; t=1787957682; x=1788562482;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Awwf+UFW2ONQrXT/1UuPyCRQCWHRON77Fg6o5pZxO10=;
-        b=brmrKN5FW2+EbxbQQjsoA0qiTeMTL01lIcfCPls0o+vh1ncwHZUUEml9aYHRT/cxoz
-         FE46fmneqn2pV9wtKEW4P7qQasMkr01L+Z404Zb3KEytPHm1a57MMRX5YuyWGBhGkwOk
-         I73PPmUs7w2AoR0na0F+N1Jnj805JtXJziuUe7cxIgFRx3drU2GfeNBSLFQf/oTRBweY
-         Ig7tVZBKTHd8yFVjr2AIdLBmC5YPQqwDeqShNBSgadp2U5xl/0Zbw/Y4Gufd0Lrirlp/
-         vtWvGYGmUS0rT1xfpVZ1X/rwt73h2441nWMP/dFcwF21kCRgLUcpCqYLAG22l1eU7aRi
-         VIWg==
-X-Gm-Message-State: AFuF++lPLORjHy8Wuoq8BGLqzIh/hBHkn78moKm5vGAgiyTSaBWsBMe7
-	Yew/ERtKsAzFtJy/sQYZVC7qs/5f0WINf5BGZ404GnNLGBcH2uQOAotrtuIq4LvSgV2MgeUt1+Y
-	+WltFLQjIWsoDHShnCsjLoy2ZGwbJqBlOfybInza+
-X-Gm-Gg: AR+sD13WgVDQ2YSePGDbTIwjG520urIXT2zSfXg5o+ldBBiGZj9mIdHsSV6HIzAZBPl
-	9tWBgK1wRP28Me0EJddsOdOR6az2LJaLWXBwLuO25iBhlYVrPRjg3pcv0n140lHa0zj4tgoaBIH
-	1iEgyjCylG6ce3QrJg4PPYcYfZD6556eVPH+8s8T+A7xX21bPs1RRS7N9P6caWFFAoteOUJC/Vo
-	gXUzhrlwYnMUUK3TQHKBlFMiGiR9ihCherdaQL4GAQ9RGj4/Srzk1ZnCGijhQM6N34P6B3pUoWa
-	p0Aq/dA5oZrZb67FXy9m8vto/mXRz/3KP4H9Fpv925soPyZJKLSAseUBEKs3OyW2m1cj+sRCWjD
-	t6i2zutfgWg==
-X-Received: by 2002:ac8:6109:0:b0:52f:9ed4:8d74 with SMTP id
- d75a77b69052e-52ff710cdc4mr4682421cf.14.1787957543079; Fri, 28 Aug 2026
- 15:52:23 -0700 (PDT)
+        bh=4unzX+NMpOtBviw882dRQzRaeXOD1/xti/3UhI1UIHc=;
+        b=hjG11STpAsKLEBhUMBNi3SiaL1EdipNWGhb4pHWNr4A+lRavBfrN99tvR82X2Njj0P
+         Kx2AJwtP+UEv0wkkOvSxOUI8RRGOPJXTVozQzcyBhQZYIKmJ/xLLPvnWQ6bHr2+MScY3
+         lbg3m48QtPPbn43zOi8yOTn6R4JmLEu0OWK3VWdmMQD8kb+c+jZAguGnPmpJIjciGXSu
+         mbUaj52WemzeUXuFk5752xSzvAhzoL2rjWULKT3eC3qZGwBeFmLs8v76t0KaJjlhEJIx
+         +04b/YwU6SjK3Tg4EoCZi0GMtF2w82VabcdpNMKCnEFl7g1XPn0r7oEo/7r3N+lpSTgA
+         N3MQ==
+X-Gm-Message-State: AFuF++mVWv6MfsOOQXZosty/h7Eg0TqXBBn5qsBtHUNcZ04J1bKAKwJA
+	3AT5vVlXyNHNV37o+6QpqRflV/f/6Wj/jFyITCC0JbjmWnf/LYm/QYGiM2HtfTZ6625XHUjs19E
+	zYvPNAJGQd0Q8XwykTNGnVZ+/iPh4potZ49VyFfop
+X-Gm-Gg: AR+sD13kdtp2jtV6/Xfiq0vjwEyQLe1GayVKQ9201/LdDkd9nxZg1oDj9jApB07F/Qv
+	H8I9siIn113VrnDzDJFvi9PICBrFrWHwFqvvmSOaT+NdDaJCvyJD0jFVD8VNmrlAvnj4K+2sSU+
+	7O/g3utetL4UgsKKy7FhzA4sPQaPa5iC7Pa0K9zEcBsjt4kRYSZYgdmKmKLaJlX6E+kG39Q2AW7
+	fW6vLqTRZNmf2ay6k6t6QvFfxTa2wcjIz/McYLsH8fsUoNv6srE8U+TwO/yiV7N2322ADueZX5W
+	heb9A9A7ruy3gEgkSDzYqlg1sAIbv02JBdSl/Oc8czpAZn7snphARdWDg5A/V9I1Jeheg/ez1Zl
+	8
+X-Received: by 2002:a05:622a:5a14:b0:51c:6b7:d3de with SMTP id
+ d75a77b69052e-52ff716a2admr5298061cf.5.1787957679730; Fri, 28 Aug 2026
+ 15:54:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -83,15 +83,14 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
- <20260806020850.1221381-8-rick.p.edgecombe@intel.com> <CAGtprH8XJ+SbxQLTowch3DR6N1NSMUKyVnGf0hv5N+iKWT3q7A@mail.gmail.com>
- <74bc9f2695959f335f2f502ded1ae7c944fae13a.camel@intel.com>
-In-Reply-To: <74bc9f2695959f335f2f502ded1ae7c944fae13a.camel@intel.com>
+ <20260806020850.1221381-4-rick.p.edgecombe@intel.com> <CAGtprH9ERb_fFG-4JYR1Bjxyyvnk3Ys4q=9ioQz0Cq6QCXtVBw@mail.gmail.com>
+ <9c0048b72834e7e88cb278476ad8d19f57373aa9.camel@intel.com>
+In-Reply-To: <9c0048b72834e7e88cb278476ad8d19f57373aa9.camel@intel.com>
 From: Vishal Annapurve <vannapurve@google.com>
-Date: Fri, 28 Aug 2026 15:52:12 -0700
-X-Gm-Features: AcwNN1XH7bepxRkIbUoAM3EdldcwR19TvPyf1EHxlXjEwu1TNfCd8rn9aVcKinM
-Message-ID: <CAGtprH-WL9MioyJUwJf7XK8O+UM6d1hUwWMtPj0AWC4FdBxScg@mail.gmail.com>
-Subject: Re: [PATCH v9 07/11] x86/tdx: Add APIs to support Dynamic PAMT ops
- from KVM's fault path
+Date: Fri, 28 Aug 2026 15:54:28 -0700
+X-Gm-Features: AcwNN1UEyg9LUIjstN53o3MhfwwMAKPLjXkthRuE3vRI8Rovt7_F8Pac_E2pZ8A
+Message-ID: <CAGtprH870raS09USeB=Ec_TAY8Vke6-nV_LcX6dYZVn=wEhjNg@mail.gmail.com>
+Subject: Re: [PATCH v9 03/11] x86/virt/tdx: Add tdx_alloc/free_control_page() helpers
 To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
 Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
 	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Huang, Kai" <kai.huang@intel.com>, 
@@ -109,61 +108,33 @@ Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 28, 2026 at 3:40=E2=80=AFPM Edgecombe, Rick P
+On Fri, Aug 28, 2026 at 3:23=E2=80=AFPM Edgecombe, Rick P
 <rick.p.edgecombe@intel.com> wrote:
 >
-> On Fri, 2026-08-28 at 15:18 -0700, Vishal Annapurve wrote:
-> > > +
-> > > +static int alloc_pamt_array(struct page **pamt_pages, struct tdx_pam=
-t_cache
-> > > *cache)
-> > >   {
-> > >          int i, j;
-> > >
-> > >          for (i =3D 0; i < TDX_DPAMT_ENTRY_PAGE_CNT; i++) {
-> > > -               pamt_pages[i] =3D alloc_page(GFP_KERNEL_ACCOUNT);
-> > > +               pamt_pages[i] =3D alloc_dpamt_page(cache);
-> > >                  if (!pamt_pages[i])
-> > >                          goto err;
-> > >          }
-> >
-> > If the alloc_dpamt_page() was able to allocate a single page (not
-> > two), should the partial allocation in the "err" handling return the
-> > allocated page back to the cache?
+> On Fri, 2026-08-28 at 12:50 -0700, Vishal Annapurve wrote:
+> > Reviewed-by: Vishal Annapurve <vannapurve@google.com> for the
+> > SEAMCALLs and the get/put helpers, assuming your are still thinking to
+> > shift things a bit between the current and the next patch.
 >
-> I think no? In the case of the cache not having sufficient pages, it is a=
- bug.
-> And if things go wrong, I don't see a risk of big security issue. So opti=
-mizing
-> for more efficiently handling bug doesn't seem worth it.
+> I looked at moving tdx_alloc/free_control_page() to the next patch. But D=
+ave's
+> comment was more along the lines of just commenting the limitations. So r=
+ather
+> than disturb the already reviewed patches at this point, I'm just comment=
+ed the
+> limitations clearly. And then removing the comments when the limitations =
+are
+> fixed.
+>
+> So the only only code change here is temporarily prepending the limited
+> functions with __.
 
 Sounds good.
 
-There is another allocation in tdx_pamt_get() that consumes the pages
-from the dpamt page cache but returns memory back to the buddy
-allocator. I think it's not particularly harmful, as the default
-top-up should cover the maximum spt's in the fault path. But do you
-have any additional thoughts on that?
+>
+> Do you want to keep your RBs?
+
+Yeah.
 
 >
-> >
-> > We observed similar failures internally with a slightly customized
-> > setup which had retries for pamt cache allocations in the fault path
-> > due to SEMCALL failures with older TDX module functionality.
->
-> The best course of action is of course to fix the TDX module bug. I assum=
-e this
-> already happened. This is the default upstream approach for that kind of =
-thing
-> across both subsystems. But it sounds like this case is even more special=
-,
-> because handling the specific bug would involve other code that is missin=
-g.
->
-> That said, this code can definitely grow in the future if we seem some us=
-er
-> value for something. But can we please just call this basic version good =
-enough,
-> and build on it later?
-
-Sounds reasonable.
+> Rick
