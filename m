@@ -1,104 +1,104 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EBE2222D0
-	for <kvm@vger.kernel.org>; Fri, 28 Aug 2026 09:19:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18EA3B2D18;
+	Fri, 28 Aug 2026 09:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787908773; cv=none; b=H4TlFjjMW1nRiLgqV2SdwWTO3On6H3+gTutaDwoOr/gq3eVo/RoZzwm4rd40bBVlq0klfIFAPtGonPtwzr6CTNph/856QB/z/ArrgEzvcLcItTYuUgLYlyDaKT9MhSj8BtQTgy3yqDL1EQoxkkyno6PXiafY1SphL6nM2gqJgdc=
+	t=1787909810; cv=none; b=PBxqMxlAwBE6UgU9aTOjrDe2aOsK4jQycpF2YiSWqafTosdmAKIFmFeQwVYYupgLL76Pv6hL4hEEGCEnv6BC2kDwDUf1vPjyMZwtxKIjsmK0WGyY2qmYop2qq/FUsoWjvnBHdcsQWlt57/PyZf33EbGDqh8GRs1TV3ZTaELGDBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787908773; c=relaxed/simple;
-	bh=HQAF0TXVQayoSiNpW8Ou8TZDEsJ2+HLI+wcR8LBrGac=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=FZZGHGutvinFegLPIoua6f64d8BnQJkgBH6dvdZq+c13pnaEbRi8ho93I3uHxa6KsOdfEKnY4osM2M4Au22GB9EI2qlosDutABygTgiGnmU4R3PXfzQsSxfLL8KaD9PRx7x/r7vqxGWGluDi6GbuCpxQp43MLN2cpCilPjD0RtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=kCmpSPd3; arc=none smtp.client-ip=220.197.31.5
+	s=arc-20240116; t=1787909810; c=relaxed/simple;
+	bh=CV5337KllrqzoibVYKGVHEwImKxG5nbm4g/avDe9flY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=O2u3v8TpTgcUzUD0HLZGNpFKYt+urtlMdO8XC1vgrvZTtL56zo1iBpV7lC8AXmeork9sOGsZz5sXx2bdHx59+duF/+Jte3WUm/QGk60vqIOlpWd20XbJ8BZGLGGwGcJ3v7MJQ8M29S/sw1FfUfrxknIgvmSmCOo70fXALRVjp80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=G6Up8Fd/; arc=none smtp.client-ip=220.197.31.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="kCmpSPd3"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="G6Up8Fd/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=X2tSQMb5g+pDzxBWNSJVxOAYA14Ll3kCqiuVgRV6WA4=;
-	b=kCmpSPd3GQKdEs5hl430k7sjUZbQT7Y3irfSvgkZg7jPkKI7ozRI5aj8dDS8Gy
-	VKWkkJj5MRq46XHG8J6pRmUYLvXVQxE4Rj3onaI7PU68XuGAgUtC/r8WKAKW7Sic
-	qD6dkoj+FDMFF4yTRQlgNTInjIelIHzzzd85uEqtwY5lA=
-Received: from localhost (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wC39KKTUpFqEosASg--.52362S2;
-	Fri, 28 Aug 2026 17:19:15 +0800 (CST)
-Date: Fri, 28 Aug 2026 17:19:14 +0800
-From: Hao Zhang <hao_zhang_kdev@163.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Subject: [PATCH 2/2] KVM: Return dirty ring reset errors if no entries were
- reset
-Message-ID: <apFSkpRoxhDMJwRr@192.168.1.215>
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=LW
+	o5zQbL1k2n17EXASJEhxs5Bp+/4dt02LXAxbY6d6I=; b=G6Up8Fd/pwGPHmcmAl
+	Px82zVC3pV6/8342SMlatKnZmUZTZA7kRUjQZtWGzJF9H10CItp8iEzCKPnOGxe7
+	OmHU12jZ661RybDqdlBUzeomc6rSPUuC1nBgVKVM047Je9w2krHvLyEwNI20efL5
+	LVbOUgz6DhedC4ZeB0bHE2roo=
+Received: from zengchi (unknown [])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wDXJzaGVpFqVvfGEA--.15969S2;
+	Fri, 28 Aug 2026 17:36:06 +0800 (CST)
+From: Zeng Chi <zeng_chi911@163.com>
+To: zhaotianrui@loongson.cn,
+	maobibo@loongson.cn,
+	chenhuacai@kernel.org
+Cc: yury.norov@gmail.com,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	zengchi@kylinos.cn,
+	stable@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: [PATCH] LoongArch: KVM: Validate MSI data before routing it to EIOINTC
+Date: Fri, 28 Aug 2026 17:36:04 +0800
+Message-Id: <20260828093604.56622-1-zeng_chi911@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <apFQtIs9SLEobo04@192.168.1.215>
-X-CM-TRANSID:_____wC39KKTUpFqEosASg--.52362S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7AF1UCw1kCrW8Ar1DWr15Jwb_yoW8Cw45pF
-	s3K34kKrW5tr18GFWxt3ZYvas0vrZ3Kr4rAFWDKw43JFn8tF95XF18trWjvr9xG3ykZFyS
-	vryjvF1Uuw15uaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UhTmDUUUUU=
-X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC3hO3qmqRUpOc4QAA3X
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDXJzaGVpFqVvfGEA--.15969S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7CF15XFWfJr4kXF4UAry8uFg_yoW8CrW7pF
+	W5uws8tF4rGw17ZFWvg34kW3y5ua1fXFsxWF1a9a43CFn0yF15CryrZFsrX3WYk3yrKrW0
+	gFnIgw1Yva4DJa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jUVysUUUUU=
+X-CM-SenderInfo: 52hqws5fklmiqr6rljoofrz/xtbCwAe1cWqRVoc-hAAA3S
 
-From: Hao Zhang <zhanghao1@kylinos.cn>
+From: Zeng Chi <zengchi@kylinos.cn>
 
-KVM_RESET_DIRTY_RINGS returns the number of entries that were reset.
-Commit 530a8ba71b4c ("KVM: Bound the number of dirty ring entries in a
-single reset at INT_MAX") converted kvm_dirty_ring_reset() to return a
-standard 0/-errno, and commit 49005a2a3d2a ("KVM: Bail from the dirty
-ring reset flow if a signal is pending") introduced an actual -EINTR path
-by bailing out when a signal is pending.
+pch_msi_set_irq() passes e->msi.data straight into eiointc_set_irq() as
+the irq number.  The MSI data comes from userspace, either via a
+KVM_IRQ_ROUTING_MSI entry set with KVM_SET_GSI_ROUTING (used by irqfd
+and KVM_IRQ_LINE) or directly via KVM_SIGNAL_MSI, and is never checked
+against EIOINTC_IRQS.
 
-kvm_vm_ioctl_reset_dirty_pages() currently breaks out of the vCPU loop on
-error, but always returns the number of entries that were reset.  As a
-result, KVM reports success with a return value of 0 if a signal is
-already pending before any entries are reset.
+eiointc_set_irq() uses the value with __set_bit()/__clear_bit() on the
+256-bit isr bitmap, eiointc_update_irq() then indexes sw_coremap[] and
+the per-cpu coreisr/sw_coreisr bitmaps with it.  A data value >= 256
+therefore reads and writes memory past the end of those arrays, i.e.
+any process holding a VM fd can corrupt kernel memory beyond the
+loongarch_eiointc allocation.
 
-Preserve the existing partial-success behavior by returning the number of
-reset entries after forward progress, but propagate the error if no
-entries were reset.
+Reject MSI data that doesn't fit in the EIOINTC irq space.  The DMSINTC
+path is unaffected as it decodes the vector from the address and masks
+it.
 
-Fixes: 49005a2a3d2a ("KVM: Bail from the dirty ring reset flow if a signal is pending")
-Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
+Fixes: 1928254c5ccb ("LoongArch: KVM: Add irqfd support")
+Cc: stable@vger.kernel.org
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/all/20260531140921.1B1181F00893@smtp.kernel.org/
+Signed-off-by: Zeng Chi <zengchi@kylinos.cn>
 ---
- virt/kvm/kvm_main.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/loongarch/kvm/intc/pch_pic.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 65eb26a0520d..ad472c577a7a 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -4999,7 +4999,7 @@ static int kvm_vm_ioctl_reset_dirty_pages(struct kvm *kvm)
- {
- 	unsigned long i;
- 	struct kvm_vcpu *vcpu;
--	int cleared = 0, r;
-+	int cleared = 0, r = 0;
+diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
+index e7b77705c516..81fb534ce8dd 100644
+--- a/arch/loongarch/kvm/intc/pch_pic.c
++++ b/arch/loongarch/kvm/intc/pch_pic.c
+@@ -78,6 +78,9 @@ int pch_msi_set_irq(struct kvm *kvm, struct kvm_kernel_irq_routing_entry *e, int
+ 		return dmsintc_set_irq(kvm, msg_addr, e->msi.data, level);
+ 	}
  
- 	if (!kvm->dirty_ring_size)
- 		return -EINVAL;
-@@ -5017,7 +5017,12 @@ static int kvm_vm_ioctl_reset_dirty_pages(struct kvm *kvm)
- 	if (cleared)
- 		kvm_flush_remote_tlbs(kvm);
++	if (e->msi.data >= EIOINTC_IRQS)
++		return -EINVAL;
++
+ 	eiointc_set_irq(kvm->arch.eiointc, e->msi.data, level);
  
--	return cleared;
-+	/*
-+	 * Preserve partial-success semantics if KVM made forward progress, but
-+	 * don't squash errors when nothing was reset, e.g. if a signal was
-+	 * already pending.
-+	 */
-+	return cleared ? cleared : r;
- }
- 
- int __attribute__((weak)) kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+ 	return 0;
 -- 
-2.15.0
+2.25.1
+
+
+No virus found
+		Checked by Hillstone Network AntiVirus
 
