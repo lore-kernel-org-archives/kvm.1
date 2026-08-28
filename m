@@ -1,62 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069A33191D3;
-	Fri, 28 Aug 2026 01:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4979D3F1074;
+	Fri, 28 Aug 2026 01:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787881598; cv=none; b=a7rnF3oZmlWwnl2BujFmufeTrspfp4KoObh/Grv3E+RoKXSO7xIFWpU69ccq9sZDwDE1YRdK/OHvjberqLS+tAR8aDuBD4fdQyuHr3NwSQJ3RrouCIXAXFw809aEuwQLmTm4aEjqQ9dAjpyK0mvRLP6LgDi5KRIhyu12vur4uyw=
+	t=1787882125; cv=none; b=Pn9Vki1OMQCViOQwFs/9wY9qJG2EH/5Kihete1KUxDwo3kP9HlPyXxUR1CtWMu+Rgc2+h2kGMMe6W1mJ19h4Jm5AVOfVPIyHdAA8gmR/r016Wh3u7PhjTdI5Y4YEH17PUY83WvFgX0aszrpCUoVtU9t7yYl7fbVVZyzaU3CmFqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787881598; c=relaxed/simple;
-	bh=Iev3FFYXi5AYPhW5lBfhhUf0Btit7mD1cuip284qy5I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJHng7PzAWcwV5HIKGLvhJDzoXTAKTLGSfu+WRwY9LZ5JRoSRmvmg1teMJ5glDgrOZ5ydJOMR1VdVoHGS9g4qwobFTdT8W/h+f3khouBDMPF+QIKIdpR1KtYsYv7AT7GVLqEcrtwnDwnzgfjuaJv6f8YyJKuU8lQHB7ngx+4arc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EY+gq8Sc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787882125; c=relaxed/simple;
+	bh=3ItJv2/BgJAJIxN6gLlBx+JbCzAhh2cpkuLbg+YZXHg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pVHHoiyacmYFdIDwkxHmNt7CcgZfSlvBFDi/3HMPYQCyUXDMsEMIvqalxsjuCkr5qYDdNb38SO3lrQRtUn7qzSaDR7o/r4bdEfToh9NdXzK35v96OBhWSut0t9Mwikx+9qkyWPc5vqllIK/uaiV4SDNOWHsU9RhvX5Z8SWN+IlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l/gGhC6j; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EY+gq8Sc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 833D61F00AC4;
-	Fri, 28 Aug 2026 01:46:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787881593;
-	bh=Olh6RMSTsOFHOMphK+mTMik9juqloGkuzkP0GbXEUrA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EY+gq8Sc0EENAFxyEfUjIIdVc2O5HZbJV5BRuKeWEEw6miLFC5UdI2yCJ8oquYm+k
-	 aNvQaZIsctf0Td5fXek7UnbP+2dVNhWPZp+hIj0Xay4shXwk0zPNkvTBkFa3pHFUXj
-	 rHtI7+Lj3h6lZKmf8pOvn3WwgDEA4iYlhijO80X1yAnXuqhMy3OfKLOm3DiOnWv7TY
-	 CfGMvoi/FrIqGP3Gsi0iaYrZs1Em94dnGEyTtwEMCozF61JllBCdQ45t/lPreC+MPp
-	 kwt83C9FpM92qUowfRvVaA+vEVKkYsbmfCVMLdP1s8sxdWkSrdN+wVlsFyIoIdp1Up
-	 6Cf9scWiT6qgQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	kimjw04271234@gmail.com,
-	Artem Dinaburg <artem@trailofbits.com>
-Subject: Re: [PATCH 6.6.y+6.1.y 0/2] KVM: x86/mmu: Check write tracking in all address spaces
-Date: Thu, 27 Aug 2026 21:46:18 -0400
-Message-ID: <20260827-stable-daily-0005-kvm-write-tracking@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260826201655.9198-1-artem@trailofbits.com>
-References: <20260826201655.9198-1-artem@trailofbits.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l/gGhC6j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787882125; x=1819418125;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=3ItJv2/BgJAJIxN6gLlBx+JbCzAhh2cpkuLbg+YZXHg=;
+  b=l/gGhC6jQFX+DwFuupZu7e35Q/qHQJEa2YuaHJUueJF9Zz2YHagr2cWy
+   PXOLF+Vgli/b/Eg+hVzpeWzkneL3ZzrO+EKufH6YBcVtO+GYXd/1JpPhI
+   g6B6oDHg7PY2cfiyZh1yIe4ORDi+jJA3efWEjlHL7fe8FVWwJqaXmMdws
+   eaTwaZnEmiNJWrQ2KZestYGOmi/qqC9be+MLddpoimETa09IqKcBpBiyj
+   jYwhr6oXvXmEu0ndRhzoCxvMbamUZ3ILIgSWvJeVXpdTt0L7q7MDTJ/lU
+   oX6ssK/eFACGcqRfZsUneAKJ+y+HgB/j+U8nR9mOjUsCi3nnR5F50B1RS
+   g==;
+X-CSE-ConnectionGUID: jWcF7PpsTISwQVYH5PlmdA==
+X-CSE-MsgGUID: GHnOqBsQQfG2rUxsZxnCMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="105763893"
+X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; 
+   d="scan'208";a="105763893"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 18:55:24 -0700
+X-CSE-ConnectionGUID: 0a9MWnyBTTinWhFKyQ9mUQ==
+X-CSE-MsgGUID: htKevwVMSUyWlskwe4Lr0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; 
+   d="scan'208";a="291520749"
+Received: from blu2-desk.sh.intel.com (HELO [10.239.156.26]) ([10.239.156.26])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 18:55:20 -0700
+Message-ID: <bb7052d7-51fa-42e0-9eb5-ba4743956688@linux.intel.com>
+Date: Fri, 28 Aug 2026 09:55:18 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 12/18] iommu/vt-d: Handle reattach of the restored
+ domain
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
+ Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+ iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Matlack <dmatlack@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
+References: <20260808022723.3893618-1-skhawaja@google.com>
+ <20260808022723.3893618-13-skhawaja@google.com>
+ <5b920299-260b-4025-ac4f-e8f83beebf95@linux.intel.com>
+ <apBso6So7UqwR3AX@google.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <apBso6So7UqwR3AX@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-> 7.1.y, 6.18.y, 6.12.y: please cherry-pick the upstream commit directly.
-> No patch is included for these trees.
->
-> 6.6.y and 6.1.y need adapted backports; they are patches 1/2 and 2/2 of
-> this series.
+On 8/28/26 01:52, Samiullah Khawaja wrote:
+>>> +    ret = domain_reattach_iommu(dmar_domain, iommu, device_ser);
+>>> +    if (ret)
+>>> +        return ret;
+>>> +
+>>> +    info->domain = dmar_domain;
+>>> +    info->domain_attached = true;
+>>> +    spin_lock_irqsave(&dmar_domain->lock, flags);
+>>> +    list_add(&info->link, &dmar_domain->devices);
+>>> +    spin_unlock_irqrestore(&dmar_domain->lock, flags);
+>>> +
+>>> +    if (!sm_supported(iommu))
+>>> +        intel_iommu_enable_pci_ats(info);
+>>
+>> Could you please clarify the PCI ATS behavior across live update?
+>>
+>> My understanding is that PCI devices may bypass reset during kexec and
+>> are then re-initialized by the new kernel (is that correct?). If so, ATS
+>> state in hardware would depend on its state before kexec in the old
+>> kernel.
+>>
+>> In a normal reboot, ATS is expected to be disabled and the device ATC is
+>> empty. But that assumption may not hold for live update. If that is
+>> true, can we still use the same approach to keep hardware ATS state and
+>> info->ats_enabled in sync?
+> 
+> Regarding ATS, it remains enabled in the preserved device during kexec
+> and we should keep it in sync with the info->ats_enabled here. We might
+> have to disable it in the next kernel if it is unsupported (or disabled
+> globally) in the next kernel. I will put those changes here in next
+> revision.
 
-Queued for 7.1, 6.18, 6.12, 6.6 and 6.1, thanks.
+That looks reasonable to me. I have no concerns about keeping ATS
+enabled on preserved devices across kexec reboot, as long as the
+software state is synchronized in the new kernel.
 
--- 
+By the way, is disabling ATS an option? The current design already
+requires disabling PCI/PRI during kexec, right? If so, nothing
+functionally depends on ATS at that point. Maybe we should apply the
+same policy to ATS as well (i.e., disable ATS and PRI at the same time)?
+
 Thanks,
-Sasha
+baolu
