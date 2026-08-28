@@ -1,156 +1,194 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9843D75B5;
-	Fri, 28 Aug 2026 07:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787903183; cv=none; b=gzky0Wmy0MTcIkDa7UMkDbIlq+3ppC3GAcN10l5zhG7cU09G1WfD/vnbkGCI34joB6QWgmif70urTUnZNG0fca1k9Zimgbx38+gydu1s0G8o6qQeeWADgyj21aK11YRZR/dWjdkLqKXjE+IrWBmmSEPtSkbEO/7cQTSgtbEJQhU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787903183; c=relaxed/simple;
-	bh=FGipmyMz958iY6A+TN8aB96juz7DcHiErilOO3Ic4+Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YH/MLADvHAihaOflxnbKZBKVIv7kHyJakbH5hEUmxncTXDvIBIEu4D8IPda3S5lWdpaclbWyLbT2ztdmLpOB9n2BiCakAyaw1wZJhMhEoleTWMZOzXpcwrvBZKVc03qRlavCKL74L7r3OCWyBszKfhwwqv/Oyc62hF2RQf5A7fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xh9gNG7b; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527B93F1AD7
+	for <kvm@vger.kernel.org>; Fri, 28 Aug 2026 08:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787906752; cv=pass; b=ne9FARlAHPrwKBn8DPXqGgesIGlcqGQ3vgckBIxCxyyR5+47oFZRIjYYPiadT2ufFMuZQaokTfgciTgwPQvtKSmZD0L31qx8VJX0buyz4OlAWJRgi7xZwD9mUFZ+sm4mPbFAzox/Zb8SYf0+7+cqEi1cRwj/7H5PDlPLHni84/w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787906752; c=relaxed/simple;
+	bh=foMYCCJ+aKQqeLr03l4kG5PGTUXTArR/A61o6BzmI+Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=INvRUAnQNpO4EwpoVJZRJpML+qMtoDxp760tRtJAMwqwkW+qRI3KRfYLkspxHjjPNQUuoSYWvtGS+5YtRTSJXCL3QwUQq4RUTzB98L9g8AN0WOakys1LB2+/NiL4jsmtabbs64DNHz43AYel+JPSFxMHL6xCGkBpVTkyssPi0A0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CJ8mQOXk; arc=pass smtp.client-ip=209.85.219.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xh9gNG7b"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787903182; x=1819439182;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FGipmyMz958iY6A+TN8aB96juz7DcHiErilOO3Ic4+Y=;
-  b=Xh9gNG7bLHk1ZuMMCoezwnPrJSkgYAD3c1n9kjUyOQgsa24vCxLtR3oa
-   0D75EDa0ygbj6l5FkoXC8ADoi1E8J11f1RAKcdm6+tMhyj8OSLBYkozkW
-   RV7K0bYATb94lBI17LewzvKNc3arAl+WPdOTtc4co8KwML0xJgczxnUq1
-   YgCeGPf9L8p/bGQDsZR0iuHEaz0S2JZEG+0RXkc2yi45p0kA44PC+rK7n
-   wor2QVTmGdIr6KyH8lp0BtSRLFOS7U4cKSNFXU/9Xvs11L5tZxiYw2jwN
-   v+IcBRr8pkc4BVqG8XspSRUKM450kB2BQxR2D8+7Jkg6BbgaTHO71HJBB
-   A==;
-X-CSE-ConnectionGUID: aZkcx93uSVi3Z6znVeOfCA==
-X-CSE-MsgGUID: duPJhEjXSFKCFUkAhQsRUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="99569637"
-X-IronPort-AV: E=Sophos;i="6.25,248,1779174000"; 
-   d="scan'208";a="99569637"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2026 00:46:21 -0700
-X-CSE-ConnectionGUID: McO27ZScT52UaVA+WBVg0g==
-X-CSE-MsgGUID: O/t3SgKfRBOFjbMLE7p+sA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,248,1779174000"; 
-   d="scan'208";a="267498472"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by orviesa008.jf.intel.com with ESMTP; 28 Aug 2026 00:46:17 -0700
-Date: Fri, 28 Aug 2026 15:46:16 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Kiryl Shutsemau <kas@kernel.org>, david@kernel.org, linux-mm@kvack.org
-Cc: x86@kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, rick.p.edgecombe@intel.com,
-	yilun.xu@intel.com, xiaoyao.li@intel.com, sohil.mehta@intel.com,
-	adrian.hunter@intel.com, kishen.maloor@intel.com,
-	tony.lindgren@linux.intel.com, peter.fang@intel.com,
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	chao.gao@intel.com, artem.bityutskiy@linux.intel.com,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH 4/6] x86/virt/tdx: Add extra memory to TDX module for the
- extensions
-Message-ID: <apE8yHrGx/bfifV9@yilunxu-OptiPlex-7050>
-References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
- <20260821032920.256225-5-yilun.xu@linux.intel.com>
- <aohvlMO7ehqcVW96@thinkstation>
- <aowMYbHKK4b0O5P6@yilunxu-OptiPlex-7050>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CJ8mQOXk"
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8f0e5e36912so5122176d6.2
+        for <kvm@vger.kernel.org>; Fri, 28 Aug 2026 01:45:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787906750; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LgwAUr7tX+JlTKjfXErHVgcCGjpfrEjJ9sNMAGTo5nLHMiWeDM4eENTuVzpAoP+2ZL
+         HiVZ3t8+o+CRjPiS4CAGG63TfkKyRko8GcXEHyS7hM2s6G+MBcc2rPZfuwhchM90a4zF
+         TBNh758LH+z+Lz995kzEc0Mn2FMPvPgXM5ia8VO/VV6rAeVplJWo6i8sSculi+a6aqkb
+         um3ItI0YM8TTj+soPaI9LMTj+XBj9mN1AzLzo8wlDnaLKzNsxRcWEVdPG0/KrsZR/yPS
+         46UPlW0W/V8LZc/nLZEcrUMq8NSJxLLkEUi2OILlgJF+hTF+TU6AENEeUlkoXEuWYas1
+         FPTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=R+vuGpXV32M//EXLT1S4dmLGkLzlqAlnEnpUouWH7fw=;
+        fh=fItrUtV5UsY1KSNx1ZNnzv3miYMbODbRRQWQ18AP5Zc=;
+        b=FsnSX8eRvErG3bYSVNJLAT/z5lgjaTD5YzaC8TSJEnRw2ZHoGuVgmhjGXdwQDEf5px
+         bJyO+Ifh7gBbwEO2vQ1+nUE/xrF7Aj74EbxceGiDxUsnrrfQVPNy/dBrVSmVKw9EBENm
+         6KTjsUuG28zEIztNzJfI3Ddj8pVYO6hjfQsyxhS1Yy8BoMDBIud0dagdtumG3QmTMIMj
+         CxZD3V/S32O2RmtI+rYvDiTU5kzlbvGRo3IGHe8mCplIOjFS9I1/ZfR7t4zWmn8qjx7x
+         2jOzl1j//Je9VlzLcN9Ux39THOxzeXK2HYmYFmv78KLdFuw3o6NSfdRsOMiH+xsWGaic
+         702A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787906750; x=1788511550; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=R+vuGpXV32M//EXLT1S4dmLGkLzlqAlnEnpUouWH7fw=;
+        b=CJ8mQOXk0NSwcQ97UtxpuoiDhOqeIML4KLTTHz1Co4eYu9sTbQdV2NwC7lLARxNR/R
+         KuQIE2E1f0Df/llfvwmP4EgrbNXoOHJQj82uec/HDMbwA2/HDkeltnaLZDxVudhQZ/X4
+         OpYsEB+/I5LdC5QsZBXSxz4v6cyz4KWUvcDwTUs6uamBoTcKLfLsVe9C7C8aobTw0bin
+         c1mvWhcW0SN8QO/lhHWtIclSK60uVUWg4zqoVy/293hqEikbsRO8awLGyzXfg26B9pzH
+         4kbSss4M7SBhoM3ph/uGl7spu3MrARX31nw/l1AdHKL53KU4xbkyiDSs+HsdErnvtCr6
+         ZJ5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787906750; x=1788511550;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=R+vuGpXV32M//EXLT1S4dmLGkLzlqAlnEnpUouWH7fw=;
+        b=lCnbK7JFVq5il3pjjHJOmHTPpYaY4AYF0j5K5kfWzp04Fo13EO4pUZ1qykiqhmMfGJ
+         lU9KyIhZ22qZcf0SUAk6IWiqceQ3vWqzvXDEMrvn6pE7xW8a65Xt/ZtUtLk+cpG0oKpG
+         QegQrmn4JEnRs1oFnRiHYX8mCrLVPSIbh6hCeZShQbU9QhRDXQwdyGjH4JhyOvxdJ+eG
+         fl64ULUxpDmayScLFVvxLp2GKfyp2tfoasqb1ouPPC+OjnlYPxAMSTzZ/HAegdEomJu5
+         E9lpJJRF+QRCuMqrk0RICLVLuVb4/k61+8j/1Lx5n0cc+oGl+CfgPzoL4ELIpQiD/sO7
+         x49g==
+X-Gm-Message-State: AFuF++l8nnCQWIQ674IL6JGiee9ayTaXxVDZ6L+3BJy2oysffoR9m7lb
+	3chqpiSXDVVmAOuWNz0+ajSY4ETQEeeiM/pP21dg28Mk3fjZX5py+otJuyjryzBPhpDcBSmF3KC
+	zABKZ6TPvgrFBRx6vMB++qybY78R/CvQ3t9s9
+X-Gm-Gg: AR+sD12b2eozG4aVyKxwBQJeyctn1rNM0DY6QCiWkO45jZ1GD5ygm/HnIsjC7flEKZY
+	88P83+5EXY90SkM3tCTRgtKhx3vKvUZUSmIMnz0IoSLjgCzKMGN+smQtjOMPxE+6uwN1UFMb8su
+	Um/eUUhu/tNaKBcDUfZyG4SsTT841iqQnNzGVVMMi7Ck8F/vHX1hUv213SCizGBR4FICpA9YmBQ
+	Tujmthjg/6JUcPFeLT5i0wysiyIPzs6dTbj9qiJXbVLPVhXgDJcT/4zzL9ML2mmcnlDT0Rrposb
+	8xD/xInwNwVsV8FXThJGZeahGt8AlRiaCNRlWGlK2oxb
+X-Received: by 2002:a05:6214:4902:b0:8f0:3b98:d6af with SMTP id
+ 6a1803df08f44-90ce0ec4959mr62282336d6.26.1787906749180; Fri, 28 Aug 2026
+ 01:45:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aowMYbHKK4b0O5P6@yilunxu-OptiPlex-7050>
+References: <20260821092108.334318-1-physicalmtea@gmail.com> <20260822092149.B85491F000E9@smtp.kernel.org>
+In-Reply-To: <20260822092149.B85491F000E9@smtp.kernel.org>
+From: Jia Jia <physicalmtea@gmail.com>
+Date: Fri, 28 Aug 2026 16:45:13 +0800
+X-Gm-Features: AcwNN1VO5lrxjn7mKua8z_P2HOL-1Kz6_UW4T9Fp5-7w_bziMTnekXRsXsDA_2I
+Message-ID: <CAJwVaMJqo06tf0XeM84VzZmqh5A1Q_hAHW44gyh2Ni2_FCmkPQ@mail.gmail.com>
+Subject: Re: [PATCH v8] vhost: invalidate vring access on IOTLB transitions
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > > +	page = alloc_contig_pages(required_pages, GFP_KERNEL, numa_mem_id(),
-> > > +				  &node_online_map);
-> > 
-> > Why contiguous? TDH.EXT.MEM.ADD takes a list of page addresses and the loop
-> > below writes every one of them out separately.
-> > 
-> > alloc_pages_bulk() fits the chunking that is already here, and a short
-> > return can be handled per chunk. alloc_contig_pages() isolates and migrates
-> > to get its range and fails TDX init outright when it cannot find one. PAMT
-> 
-> Yeah, this is not the ABI requirement, but the kernel's consideration. A
-> brief reasoning in the commit log: avoiding permanent memory fragmentation
-> and buddy allocator efficiency loss.
-> 
-> Also there is some discussion:
-> 
-> https://lore.kernel.org/all/167d9540-2d9a-4367-bc68-b96494bc4044@intel.com/
-> 
-> TL;DR
->   - The memory will never return to the kernel.
->   - There is chance that this tens of megabytes will fragment tens of
->     gigabytes of memory forever.
->   - The chance of fragmentation is actually low since at boot up, but
->     let the buddy allocator take care of these never-returned memory
->     is not necessary and lowers its efficiency.
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+> - [Critical] Concurrent execution of `vhost_clear_device_iotlb()` and a v=
+host worker thread calling `translate_desc()` results in a NULL pointer der=
+eference or arbitrary host memory access due to lockless clearing of `dev->=
+iotlb`.
+> --
+>
+> --- Patch [1]: [PATCH v8] vhost: invalidate vring access on IOTLB transit=
+ions ---
+> commit 601cfcb65f9457e49ce60311ed18a7ca3496a8ba
+> Author: Jia Jia <physicalmtea@gmail.com>
+>
+> vhost: invalidate vring access on IOTLB transitions
+>
+> This commit introduces a helper to clear the device IOTLB when the
+> VIRTIO_F_ACCESS_PLATFORM feature is cleared. It drops the device-wide
+> view first and then drops the per-VQ views under their respective mutexes=
+.
+>
+> > diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> > --- a/drivers/vhost/vhost.c
+> > +++ b/drivers/vhost/vhost.c
+> >
+> [ ... ]
+> >
+> > +/* Caller must hold the device mutex. */
+> > +void vhost_clear_device_iotlb(struct vhost_dev *d)
+> > +{
+> > +     struct vhost_iotlb *iotlb;
+> > +     int i;
+> > +
+> > +     iotlb =3D d->iotlb;
+> > +     if (!iotlb)
+> > +             return;
+> > +
+> > +     /*
+> > +      * Drop the device-wide view first.  Each VQ then drops its
+> > +      * per-VQ view and its cached ring access under its own mutex.
+> > +      * Keep the old table alive until every VQ has completed this
+> > +      * handoff, since a worker may still be using it while waiting
+> > +      * for its VQ mutex.
+> > +      */
+> > +     d->iotlb =3D NULL;
+>
+> [Severity: Critical]
+> Could setting d->iotlb =3D NULL here race with a running vhost worker thr=
+ead?
+>
+> While this update is protected by dev->mutex, it does not hold vq->mutex.
+> If a worker thread is concurrently calling translate_desc(), it evaluates
+> the device IOTLB locklessly:
+>
+> drivers/vhost/vhost.c:translate_desc() {
+>     ...
+>     struct vhost_iotlb *umem =3D dev->iotlb ? dev->iotlb : dev->umem;
+>     ...
+> }
+>
+> Since dev->iotlb is cleared without vq->mutex, could the worker erroneous=
+ly
+> fall back to dev->umem?
 
-Hi Kiryl & David:
+I was able to reproduce the issue. Although I did not observe the more
+severe symptoms described, repeated resets of ACCESS_PLATFORM showed
+that
+translate_desc() can select dev->umem while the device IOTLB is
+active. This confirms that the race is real.
 
-I see there is another suggestion that the whole memory adding process
-could be a little simpler if we allocate & add pages 4k by 4k [1],
-rather than one-time pre-allocation. The concern of this alternative is,
-as said above, memory fragmentation.
+>
+> If dev->umem is NULL, this looks like it could trigger a NULL pointer
+> dereference when accessing umem->root. If dev->umem is populated, could
+> it map GIOVAs using the GPA table and lead to arbitrary host memory acces=
+s?
+>
 
-[1] https://lore.kernel.org/lkml/f48b83feb2ee1d3c88b5a1627cf35b4b282d3f90.camel@intel.com/
+The reported consequences require several additional preconditions. I
+could not reproduce them; at this point, they remain theoretical.
 
-And I've realized the memory fragmentation discussion is not actually
-closed in previous thread [2]. We need more input.
-
-[2] https://lore.kernel.org/all/167d9540-2d9a-4367-bc68-b96494bc4044@intel.com/
-
-Let me give a brief overview of the problem:
-
-Intel TDX (Trust Domain Extensions) is a feature for confidential
-computing. A secure firmware called "TDX module" runs in an isolated
-environment to provide services about security.
-
-In Linux, the host initializes TDX module at boot up time
-(subsys_initcall()). During the initialization, the host must donate
-tens of mega bytes physical memory (35M ~ 110M in the forseeable
-future) to the TDX module. These memory will *never be revoked* cause
-the TDX Module initialization is a one way path.
-
-The TDX Module doesn't require this memory be physically contiguous. But
-the kernel side concern is if we do PAGE_SIZE allocation, it may
-permanently fragment memory regions, stop them from allocating 2M huge
-pages. In worst case, ~50G (110M * 512) memory regions affacted.
-
-So is the physically contiguous allocation really a better choice here?
-We appreciate inputs from mm folks. Thanks!
-
-Yilun
-
-> 
-> > needs it because the TDMR ABI describes each PAMT as base+size. This does
-> > not.
-> > 
-> > > +	if (!page) {
-> > > +		ret = -ENOMEM;
-> > > +		goto out_free_hpa_list;
-> > > +	}
-> > > +
-> > > +	added_pages = 0;
-> > > +	while (added_pages < required_pages) {
-> > > +		unsigned int chunk_pages = min(required_pages - added_pages,
-> > > +					       TDX_HPA_LIST_MAX_NR_PAGES);
-> > > +		struct page *chunk = page + added_pages;
-> > > +		unsigned int i;
-> > > +
-> > > +		for (i = 0; i < chunk_pages; i++)
-> > > +			hpa_list->phys[i] = page_to_phys(chunk + i);
-> > > +
-> > > +		ret = tdx_ext_mem_add(hpa_list, chunk_pages);
-> > > +		if (ret) {
+> > +
+> > +     for (i =3D 0; i < d->nvqs; ++i) {
+> > +             struct vhost_virtqueue *vq =3D d->vqs[i];
+> > +
+> > +             mutex_lock(&vq->mutex);
+> > +             vq->iotlb =3D NULL;
+> > +             vhost_vq_invalidate_access(vq);
+> > +             mutex_unlock(&vq->mutex);
+> > +     }
+> > +
+> > +     vhost_clear_msg(d);
+> > +     vhost_iotlb_free(iotlb);
+> > +     wake_up_interruptible_poll(&d->wait, EPOLLIN | EPOLLRDNORM);
+> > +}
+> > +EXPORT_SYMBOL_GPL(vhost_clear_device_iotlb);
+>
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260821092108.33=
+4318-1-physicalmtea@gmail.com?part=3D1
