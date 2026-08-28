@@ -1,56 +1,60 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2346D305699;
-	Fri, 28 Aug 2026 23:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC7F370AEB;
+	Fri, 28 Aug 2026 23:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787959118; cv=none; b=L2dnGNhaMxmU6zY9c8dw845qz/Xx6uknD034Kymz2yagXDpGp0U7XCyhxXruAT8gpRCfz9JZmRaVbiAc8wBg7eLBN9e6OtfL0NATSQKh70ImspOEne8uy9AjPmwiuVtF/cIoQ/Hc+cZgynWC+lPxEbl4mVrzcOKzwdTZUrZlflU=
+	t=1787959625; cv=none; b=mur/HwkqhYMW0WNT4fShjH/axzEMy3JhhBUI2IkEuhGNaB0iZ6dJPoMJ4SYsZEZcVBo6L3zM8vByEFEh+ZlbL/8NLnSYHYY6UeovWB5orBusrKY96GPm7YF7VCsWEUrIwp9MPE0NXWpTetDo7SrUbAoUfyed4ITjYDGcG8ZU7rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787959118; c=relaxed/simple;
-	bh=3lzbHTyYKYURPRMcgdAzmnBUABSIdugjqo8pTfXUNUU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
-	 MIME-Version; b=jOHLIGlk/KAFRP9nmCgyfpZH4NVt2X5bI28c420tAL/U/qp75FWlE82tsVkXnLgvyrjVK7ZE3zhnb087A4OkX1XrHuOacqmfoGGYfWEFft7qdOE/yIwW5tJ36qIpwJyuKkgyRviwFRGWHfBSeDaQFFgpb8MUvwKFOSCYnxCYTDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=YevmRlp7; arc=none smtp.client-ip=90.155.50.34
+	s=arc-20240116; t=1787959625; c=relaxed/simple;
+	bh=0tgNniJFKgy7c4X6zhz8g5nDoCwIew+VzfMrf/A7zv8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=i+lRvOymRSRUz0oS+Nlvc2C4F1THX6dwbyd/3nkSi78iZ1Nx96h8szyQaCos7TTQYbQumaiOlhMNQhf6DF8u5Zak9Itrnc4K0vS5PslgyMHQ4fhPKxSlHPYDwLvGtoRcmVJrh1bcauAS6iqBZSsrahwDUrmUBGGILXRaANzqApA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Y1ztMb5f; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="YevmRlp7"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Y1ztMb5f"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
-	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=hihRJ8iuSxuU8eVuGQI8DNgHFaTSUBfjYKtDHb3yM7M=; b=YevmRlp7VX0FvY4gNbWMsFN87s
-	hTDwdqru4k5kHcOuCEY9loRxi83wVn/GGvvL8NukoZcCfgVaWrY2dA9pgi5OmRS6U72JFzsJ+jYFa
-	UFBFdwBUzPqQYcsJsGiyy7oLn+36v0giB0m/dKmekEfZ7IdXwGH6cnQhZl9wS0BrP0OkBJ/eCBDw4
-	zsVaGRYWQE2gW9IFV9mjBdm6+u8TH5z21d+0hXKmApRuXHxK8GqIjX+43Kh0grdPDDsDT+ObIb8KF
-	R8RThyg+nyzTQ2sfCbLKA9esyGEwieltPNPuIBHCb4+7MSJmB0hBToiFs8Ue252AtUR6ewTbM537Q
-	WGQsOPLA==;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0tgNniJFKgy7c4X6zhz8g5nDoCwIew+VzfMrf/A7zv8=; b=Y1ztMb5fee8HrackV7cB8wzPnZ
+	3IK5avP+Fq/dyxz7E9egQaZ9iFJ196cBxbBKz5qLBYKYpXdHmhYF9ib5EP8qVU4QNpq9iLaXC255a
+	1H9BgcGO2/Yo0I1V+eEsp5XOpmmC3/4I2Fi8mLcq4ZLYkelqHm9NAXrxX5l4MGuxlpkq2MGBDCwDa
+	oonR+aOV7TIms7Rxo7kC9t1IRFXK1ZXsRgPppIHAjmYpLFo3qBiqAi/jtZ5K62yBNhICUw8NgXt0k
+	BGTb6WowKoJSl3G5GDTdNWTdulkNLtRuSTZfOQO/3j/QiSYXDUHbaywxeoLTVVB+0wgqEiUzoSPCo
+	3onFVizw==;
 Received: from [2001:8b0:10b:5:d89b:13dc:754b:b035] (helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x05q4-0000000FatN-2J9y;
-	Fri, 28 Aug 2026 23:18:25 +0000
-Message-ID: <f00f921f585e474782a9e3266be686286dceb31b.camel@infradead.org>
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
+	id 1x05y6-0000000FbWS-0Tpk;
+	Fri, 28 Aug 2026 23:26:42 +0000
+Message-ID: <e93c9edb54af426397ca6282e2f75dbfb0facab4.camel@infradead.org>
+Subject: Re: [PATCH v7 31/36] KVM: x86: Add KVM_[GS]ET_CLOCK_GUEST for
+ accurate KVM clock migration
 From: David Woodhouse <dwmw2@infradead.org>
-To: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-  Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
- Andrew Morton	 <akpm@linux-foundation.org>, David Hildenbrand
- <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka	 <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan	 <surenb@google.com>, Sebastian
- Andrzej Siewior <bigeasy@linutronix.de>,  Clark Williams
- <clrkwllms@kernel.org>, Simona Vetter <simona.vetter@ffwll.ch>, Jerome
- Glisse <jglisse@redhat.com>,  Christian Koenig <christian.koenig@amd.com>,
- Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, 
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Date: Sat, 29 Aug 2026 00:18:10 +0100
-In-Reply-To: <c39bda52f4c1573193aed39246f0d705755143fe.camel@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>,  Borislav Petkov	 <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"	
+ <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross	
+ <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul
+ Durrant	 <paul@xen.org>, Jonathan Cameron <jic23@kernel.org>, Sascha
+ Bischoff	 <Sascha.Bischoff@arm.com>, Marc Zyngier <maz@kernel.org>, Joey
+ Gouly	 <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, Dongli
+ Zhang	 <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
+Date: Sat, 29 Aug 2026 00:26:28 +0100
+In-Reply-To: <4420099fedce20021d6cc5aeb1aa270c7951c552.camel@infradead.org>
+References: <20260728144954.355376-1-dwmw2@infradead.org>
+		 <20260728144954.355376-32-dwmw2@infradead.org>
+		 <anuy6QxUVLcSSVCn@google.com>
+	 <4420099fedce20021d6cc5aeb1aa270c7951c552.camel@infradead.org>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-qsebqL35CcBDV7Zxr63X"
+	boundary="=-gZIQ/HFPHjw8QZC7Itn1"
 User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -61,133 +65,29 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-qsebqL35CcBDV7Zxr63X
+--=-gZIQ/HFPHjw8QZC7Itn1
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2026-08-28 at 00:25 +0100, David Woodhouse wrote:
-> It's working; the latency numbers have been looking good in all of
-> my RT/DYNAMIC and debug/prod-like permutations. Redoing on the very
-> latest now...
+On Fri, 2026-08-14 at 08:27 +0100, David Woodhouse wrote:
+>=20
+> Fixup below (not amending commits while you're co-opting the tree, as
+> we'd both go insane). I'll push it to the top of=20
+> https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Dref=
+s/heads/kvmclock9-part2
+> on top of with the offset test which is already there.
 
-Done, and unsurprisingly it didn't suddenly fall apart. I think we're
-close (again, including the try_synchronize_srcu() part as I don't want
-synchronize_srcu_atomic() without that fast path). Thank you for
-working on this.
-
-The GP latency never exceeded 1.6ms even with KASAN+lockdep on
-PREEMPT_RT, and stayed under ~700=C2=B5s on production-like configs =E2=80=
-=94 while
-the rwlock it replaces gets to 3.9ms on RT and 15.7ms with the debug
-options.=C2=A0Not that the grace period is the only thing we're optimising
-for =E2=80=94 the read side also scales a lot better for concurrent access =
-in
-the Xen interrupt delivery case. And the guest-mode pinning fits nicely
-into the RCU model as that's basically what KVM_GUEST_USES_PFN was
-doing in the first place, even when the 'normal' path used the rwlock.
-
-It has also soaked clean for 24h+ across three machines (ICX, GNR,
-Milan; ~20h on PREEMPT_RT), with the syzbot reproducers plus nested VMX
-and SVM guests taking madvise and memslot churn against their pinned
-pages. My earlier tests on nested SVM were giving about a 20%
-performance win on the L2 exit round trips.
-
-I shall wait for the dust to settle on srcu_read_lock_atomic() et al,
-and keep the rest of the conversion in the wings. Sean, do you want me
-to repost it now to review the KVM parts properly?
+Since it looks like you are concentrating on part1, I have actually
+folded that in now, and rebased on top of your v10 of part1:
 
 https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Drefs/=
-heads/gpc-v3
+heads/kvmclock10-part2
 
-    * ee0e24a0041b KVM: x86/mmu: Drop the rmap bit-spinlock entirely on PRE=
-EMPT_RT (gpc-v3)
-    * 51de7a793839 KVM: selftests: Add nested transition benchmark
-    * 37c9400feec3 KVM: nSVM: Cache L1's IO permissions map pages
-    * 1c10fdf9c46d KVM: nSVM: Cache L1's MSR permissions map pages
-    * 7af4264346c2 KVM: nSVM: Use a gfn_to_pfn_cache for the vmcb12 page
-    * de951cadb238 KVM: x86: Move nested GPC lock helpers to x86.h as kvm_g=
-pc_lock_page()
-    * f04543987d9f KVM: selftests: Add nested VMX APIC cache invalidation t=
-est
-    * 1b50353089d4 KVM: nVMX: Use pinned pfncache for L1 APIC virtualizatio=
-n pages
-    * 4ae1202ef919 KVM: nVMX: Implement cache for L1 MSR bitmap
-    * 5102fb3c55fb KVM: x86: Post KVM_REQ_GET_NESTED_STATE_PAGES on memslot=
- updates
-    * 47998916d89f KVM: pfncache: Return -EAGAIN for a lookup which hits an=
- invalid memslot
-    * 2dab55238cd7 KVM: pfncache: Add guest-mode pinning (GUEST_USES_PFN su=
-ccessor)
-    * 9740a75db3d5 KVM: x86: Use gfn_to_pfn_cache for steal time / preempte=
-d status
-    * 3898f98ca5cd KVM: x86: Request the guest TLB flush from record_steal_=
-time()
-    * 0a06af648fa6 KVM: x86/xen: Don't dirty track "vCPU info" page
-    * eef7b09e5b52 KVM: x86/xen: Explicitly tag "shared info" page as never=
- being dirty tracked
-    * 99a7eae0266e KVM: x86/xen: Extract delivery of event to vCPU into a s=
-eparate helper
-    * f0162bb012fb KVM: pfncache: Use atomic SRCU for readers instead of a =
-rwlock
-    * 003716df6605 mm/mmu_notifier: Remove non_block_start/end() from notif=
-ier invocation
-    * 6d484ca99bc9 srcu: Try the inline no-readers proof first in synchroni=
-ze_srcu_atomic()
-    * 23f10e07aba3 srcu: Add try_synchronize_srcu() for callers which can p=
-rove readers absent
-    * 2a55908bb12d srcu: Keep a spare node array so srcu_gp_end() need not =
-block in reclaim
-    * cb117542cb92 srcu: Remove development pr_alert()s from synchronize_sr=
-cu_atomic()
-    *   02738b15e08c Merge remote-tracking branch 'rcu/dev' into gpc-v3
-    |\
-    | * 7b9f3a948136 torture: Allow specifying alternative ssh command to k=
-vm-remote.sh (rcu/dev)
-    | * cd71c7941b25 doc: RCU: Fix s/strategem/stratagem/ typo in Requireme=
-nts.rst
-    | * f1b2e15ef249 rcu: fix shrink budget underflow in lazy_rcu_shrink_sc=
-an
-    | * 8c9be6c76148 rcutorture: Synchronously wait for all rcu_torture_irq=
-() callbacks to complete
-    | * 48b4d9799efe rcu: Use IRQ_WORK_INIT_HARD for srcu's irq_work
-    | * 260d0fdf6ea3 rcutorture: Fix divide-by-zero with fwd_progress_div=
-=3D1
-    | * 5d9c38fbf615 fixup! srcutiny: Add an atomic Tiny SRCU
-    | * 7a263580788e fixup! srcutree: Add an atomic Tree SRCU
-    | * c2225b77b028 srcu_tree: Disable preemption across synchronize_srcu_=
-atomic()
-    | * e56c969b6c7b rcutorture: Add support for testing synchronize_srcu_a=
-tomic()
-    | * 9a2e9996ccec srcutiny: Add an atomic Tiny SRCU
-    | * 6cf65dd4d8fb srcutree: Add an atomic Tree SRCU
-    | =E2=8B=AE  (older rcu/dev elided)
-    * | dc14992a9abe KVM: pfncache: use a dedicated invalidation sequence f=
-or cache refresh (xen-v3)
-    * | a83533b07c67 KVM: x86/xen: Mark poll_evtchn accesses with READ_ONCE=
-()/WRITE_ONCE()
-    * | f578df3dda4e KVM: x86/xen: Take kvm->srcu in __kvm_xen_has_interrup=
-t()
-    * | 0e38de3983e6 KVM: x86/xen: Use atomic*() APIs instead of open coded=
- equivalents
-    * | f6179ff87266 KVM: x86/xen: Use 32-bit atomics if vCPU's evtchn_pend=
-ing_sel isn't aligned
-    * | 9c3243ef9edb KVM: x86/xen: Use 32-bit locked bts for vcpu_info evtc=
-hn_pending_sel
-    * | 113a5ed7489f KVM: x86/xen: Enforce 4-byte alignment of vcpu_info re=
-gistration
-    * | 2505c393701c KVM: x86/xen: Latch shinfo mode in kvm_xen_schedop_pol=
-l()
-    * | 9dfe99cf7b45 KVM: x86/xen: Latch shinfo mode in kvm_xen_set_evtchn_=
-fast()
-    * | 59325fcde6db KVM: x86/xen: Rename max_evtchn_port() to kvm_max_evtc=
-hn_port()
-    * | 2d366afb5114 KVM: x86/xen: Introduce kvm_xen_has_64bit_shinfo() mac=
-ro
-    * | 2e26fc558ac9 KVM: x86/xen: Rename 'longmode' to 'is_64bit' in hyper=
-call handling
-    o |  (kvm/next: 76671054f9a1 Merge tag 'kvmarm-7.3' ...)
+A relatively boring rebase, apart from having to bump a CAP number.
 
---=-qsebqL35CcBDV7Zxr63X
+Testing now...
+
+--=-gZIQ/HFPHjw8QZC7Itn1
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -285,22 +185,22 @@ vFEOOmuaq7VamuLEPFQtJM4olmipOW6CzrLcFz6J/6yAecEG3P1ZDoy08eSHvM40MAUgpwGa/w6o
 MAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTowOAYDVQQDEzFEaWdpQ2VydCBB
 c3N1cmVkIEcyIFNNSU1FIFJTQTQwOTYgU0hBMzg0IDIwMjQgQ0ExAhADNSi2uzJskfEdOMo4hV0g
 MA0GCWCGSAFlAwQCAQUAoIIBezAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNjA4MjgyMzE4MTBaMC8GCSqGSIb3DQEJBDEiBCC2ZSyWpYWaRxeHjnzjZgF20/jh7dEU
-Jbr/YnZ/q3+7aDCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
+BTEPFw0yNjA4MjgyMzI2MjhaMC8GCSqGSIb3DQEJBDEiBCA6bs41Ib/mbbJBP5EayfXWqBaW+crU
+NnLV0oB7dvUrDjCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
 aUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBT
 SEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAwgYcGCyqGSIb3DQEJEAILMXigdjBiMQsw
 CQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFz
 c3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAw
-DQYJKoZIhvcNAQEBBQAEggIAWt/eEf2GL02e3XV0eW6m4VTquI6FwtVOBM14zznJIIgu2R6cLm4+
-amGO+IJ2Uvfb/weR1g5yEkXtQ4YudsMNQpKTJKYedZ3u2p/xHTeGVH1nYrA6SeqsrBdE58ou5oht
-etvKoUvPzghtQV1o59ojAiei2ZtcS7SOjZDVdtiUKCUiEq0v3JPo0wPWtAsz5LGBZRG2a//OvPUJ
-PDOlxLrLDt0RADLZSccU3XXQVc9a5SZfpSX3fvo0eoS9kz4wMs1lcFboDHFWUigVsU8nstSkvGw+
-bF5mKi3yIuKMLPYFYdJToLZJj0tU9WXlqB7siv7XghBYdrwAYD/WiBT++w38QK7DxgUhjmhSg7uA
-hmSQ7B0V9X9v7tM6WD1xxPmVjw1AEWjDuAjTf7LuYGnOtfWivZxTF1b6nmt/M8vWQuMIX/G79OK3
-+WfS8qsOmooDqXKSwRa6Y36xLveZu1PP7XHj8b7OJ5jFaEx+4yOuxW88PQc/a+fyeQFNcYRdxaVp
-96WrxtPfJ6k3WZ/8a34FXRvJqp4o8NGXETv2ucoqR3tlEgThM9U47Hc5ae/pTZ8YV+6DiicxTeJS
-7rwBvw2z570e60FFLxNbHgQ1ni7KDqAh49IWGxS2kXlz74HWvcW9RmZg+0fhIgLYsztDONR1sOrw
-yu2qSIbXYDkp38cFgXVDQAMAAAAAAAA=
+DQYJKoZIhvcNAQEBBQAEggIAqceJaO9Bl1i3IFKWlyLf/Dxq3JkoOh9XTfEb+1TNEFAAl86bswDH
++7de4Tgxp6YgTkhxgstpc01sxinwrHshr2Ss8XFD9L807BvL1JR6FJ311GmWsmVp1kJ4T7+5a63s
+7K2pHEHZPkk3vGo+2RgDY+VgF18E7Za1u5hR2R9SzTzoIBn1pct0PmTvGG/USpkpGC+sQ1zbW+9C
+8833ZKxhAHd3lFfmPu3KanvO+VgFbtY8fRxeSBLzlrRQaDHLDftD7mzkBdgkxzckNUym3aZkkREm
+wN+vX0tjIqQne8Ae+k2tcDs68c0BBiosJSW0LE+ktn3jgiYRXhMT9Ww6FDuNs9sB7UGO32H1/B3Q
+A/tFhq8TBKLmRVfgY4NVd/r4TJTRAQnrS39PAUUp7CImQpNXyfQOzgf9wblQk+ihqf2+CQHCfPRV
+O3PYaZzlGh6A6FvXg/+y/2uOtyhluAj2kxCGe6ovKeN696DMMVwQ4H8SgLAU0dOVukRJl4XvKpoc
+2srGhwIuwere9X7Y1ltM6NuNsMEIghMKKtHJ9TxuCayw43xEkBDlHfun4GT9gsKRbIuQQOsuE2bB
+r+aCzk2H+BJYDP6rQ2Xec3qimm1x2GGmAf2lgH1Z+SYEk3E5hoLqfFLJx221WYOpOpbAVxThqj0B
+/Ri50dTqZ1yRvjmEyxjPdqMAAAAAAAA=
 
 
---=-qsebqL35CcBDV7Zxr63X--
+--=-gZIQ/HFPHjw8QZC7Itn1--
