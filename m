@@ -1,188 +1,139 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309C137F725;
-	Fri, 28 Aug 2026 16:14:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B201C37E5E7
+	for <kvm@vger.kernel.org>; Fri, 28 Aug 2026 16:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787933687; cv=none; b=XLph2Mir0+lrBb3PGQ7nEeUXwN7yM2NxAPBtBxiWDDWvScN5LV85S46hcsYR8Sd/yReTf3SA/URBTfQbe9n83qMyJ3h1GRXjTYrfyVCnBapGFyE4NhaVP+W3/CwwtsXRcBMyA9eAvvkPQHEZALIbyFgUPO79pPTIjbIAPpODFMA=
+	t=1787933771; cv=none; b=d/No0NXRj1NU6X9QenrKCnaHOIv3/4HMGpcVxcGLS4jHJc8TWfUkigGneISEBylF2WwbFrh6uwmhegdItUkSvpdyOXQ5F88CGDQ+zKTBpyro1a58YQVwKk+IFdNlBzu8A9t0wDbmyBOz5nANB3axqLFu+4a+MMo6mW78jo3e2Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787933687; c=relaxed/simple;
-	bh=5cG9Cyj233IkTf95MvgZQ8jdXN+FmLHn5ZuloYzK0CE=;
+	s=arc-20240116; t=1787933771; c=relaxed/simple;
+	bh=B3pqQmJqpWZ8Cb06AdIkKqiDrvfvLs/ppE69ssAKPUM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rqb7XWLIP2i9rn+IJS+ixeO4pMO2tVOPQXxKWLji3dHb8/f9X8Dxsd0JyU/I/O4l755lU3OiEZ/IdFA2qQVMqardbhB0o6rEZr0tn241z3/P3miD2ockbtcTJOfcd1bYZU6cdv4WDdDBy9vDMs5+32ZFo4J4nyNr/PGSsRf/zA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pyD09kTt; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=ioSkHdimA5bu/5fmqmnTQBLoezDj4rmZu57Kx0ZXCSENRD57iqm96B0x5AVr0V5kLooj+MT7qXq87mI1wqVuNBBinLybtthEAtf9q/cVcQM6Pxzy5PnIlieOAy1Lyn38SN4m90It8OvPyiSSWJQkfQ6sQSoZg8PPf3gpu4rnQP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S5oeNHsj; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pyD09kTt"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67SDVV3Q2103053;
-	Fri, 28 Aug 2026 16:14:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=b+ACTBmM0+p0qH4wH4Z9F8ihyRM/CW
-	d6wxi34YiAYmo=; b=pyD09kTt5fLKs/5P8l2r0nS5dpyFwMuDiQWkyIpybnVSML
-	w4vfTtb9UkGjRyzYybgmjpKmwNcA8B0Tj+dcIRA+cu8J3pF0vh28WE6VKkILiwSQ
-	bnFT/CxpHqXF4r0PiZ49/+Utw8NQ3Dx+hSpx0YqSCorybcC2TxT15bRttMIFFqRu
-	DsNcuEC5dEBv8sU1p402fSYNXyVIXev/Su1bLQlowu1X3ceexVd45f5pI39LS0AR
-	C7pWKTGKIHg+zieAg1u47JLY+extopyqphb60Bj3wnx9ONAZObSDrBu9ySO2mtu6
-	9Gj6uXBlVQGw6uzsQXEXNGDf3rq0ORbKEBZBMI0Q==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g7394np8g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Aug 2026 16:14:22 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67SGBGSr006892;
-	Fri, 28 Aug 2026 16:14:22 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g7p3qqnq8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Aug 2026 16:14:21 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67SGEI2T37028136
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 28 Aug 2026 16:14:18 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3763C20043;
-	Fri, 28 Aug 2026 16:14:18 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4763320040;
-	Fri, 28 Aug 2026 16:14:17 +0000 (GMT)
-Received: from osiris (unknown [9.111.68.102])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 28 Aug 2026 16:14:17 +0000 (GMT)
-Date: Fri, 28 Aug 2026 18:14:16 +0200
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Janosch Frank <frankja@linux.ibm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
-        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
-        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v6 31/33] KVM: s390: arm64: Implement vCPU IOCTLs
-Message-ID: <20260828161416.164752-B-seiden@linux.ibm.com>
-References: <20260812153631.3376090-1-seiden@linux.ibm.com>
- <20260812153631.3376090-32-seiden@linux.ibm.com>
- <8b141a3d-1ea7-44ad-9311-2157ef37d59f@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S5oeNHsj"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2d3b440b97aso137455ad.1
+        for <kvm@vger.kernel.org>; Fri, 28 Aug 2026 09:16:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787933769; x=1788538569; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=B3pqQmJqpWZ8Cb06AdIkKqiDrvfvLs/ppE69ssAKPUM=;
+        b=S5oeNHsj7j0+3lkWKVr/tuojxtvByOuel1/pd8QNGnxkXgmPCmGQkBjvzP/MU7ukY6
+         D302RjRxxqXvpprEk/Q1ILjohf0WwqUB5RVKXXAvHA1Jpq+3XMbumIWEtpW0nD4auaWR
+         rb/2pfnuC0B+sbdhxO0pK9rg4y7jTDzpZ6woghl/9pyQ9Mw2p3D695LyjQFuwdZiTuTD
+         cl5a0oa096D4zL0a8ImYTo4/zWGx0VBMcBQ/XEmhVa8R2+EJFFqueR2sc5S5rJDvjBWf
+         9MHzwkQBX0m53B5F8hxSPmrbNrUeTtcr4cYLtMr0fzSU+ObVjyz5Y2z1qLx6sgVhmAqF
+         27Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787933769; x=1788538569;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=B3pqQmJqpWZ8Cb06AdIkKqiDrvfvLs/ppE69ssAKPUM=;
+        b=DwI5gcXkCy0twrW89187BGM4P4PQZbKk3XthsvuECPQVTjSVZbY39yDJUB91HeH+gs
+         ++oxWZP3uShzumfMooNBx2vLUf2zCs/bRx31WHKQXapcrHWuBLcsnMv4+BYq8LwdR6Ji
+         3OEGPdGYTl5Zad2TFHk89BUfCjErCMHrVkyOz3JoM2GbvfHfoXTihss4VEKbLPBYxmGk
+         GCX5cWFv4PeNKpGvk/BjgqVdxei/qxiReoInkmIuE8vD1S9Ied6KWzrMoje9skdEHRGD
+         zxAAH32C1obUyjVjqE/xV7kWYOoWbqOtJfbi3JAD8EBSeybeLglkdNbuqmf5ChejmLAK
+         KJBQ==
+X-Forwarded-Encrypted: i=1; AHgh+RreMRluy0IfqCCJy8htFFhGI4IKurtOoGzJv4u/Uor6gOG/i1nuypl83E97ZGgv73Qb1io=@vger.kernel.org
+X-Gm-Message-State: AFuF++k3XjwWWgqcKMoDIb5PZyNAzSXVDqL9EaVQguL/H1L9/z2y8V+z
+	7KvskWEkcRx4U9dWuV1YfH3hALJq+Nli1dVfmBFZlPVvFk4x/YBYeonf0fdvHGM4EQ==
+X-Gm-Gg: AR+sD10yJ6Fe48kThGwb3qJzKl5ujf1LWsYAFZ0NuBAU1y53VitWahCK0J4aQ6v6ma9
+	rltuYNSsBOIVaflAL+cFGLeBqEWBO+tN6g2E9RigJA/N6ESwX2rcM6ONQaZbLju1u1MjnODlyFt
+	ZESGXL7kf7HGk4g+ChlK7Mplf5raz+S7QoB0WCUojAVyhV0qulID5xmNYDlchHBt4bpPO0rDX7l
+	81Gm2TGFfxXb0puZ14+cDOFafe4KJw+97dd+hb0y9QtTtlBsCycl+Q0Epv6nNqwWCtZm8/Lu7mm
+	a2VgSa5pZ7qg9ZlT7ccb2qwlsDpcsQxyq273JQJqARl81bW+kzeMLg8yVoDCYuP3dI1/T2hzLnb
+	gUWdrLhyGD4DmLS3BPYl2Oqq1dhseTcG74VoMAvSAKc0vUrwzwQSgbFAYab+CJJKy1AmesW0HID
+	OX7A9sbcfwdH5/+zmRvnoq/mvUj/j38VQKmQT3BwvuXBMD/FYIqSnI4jUYtN4V/bY4jOyTQICR3
+	mPlWMca8UnjSshNTBwFVL66B/4isHvLaWr1tnQ3pUN2/GdicxvTvscT6ow=
+X-Received: by 2002:a17:903:1b48:b0:2ca:6bf:5bac with SMTP id d9443c01a7336-2d74f53de42mr7697375ad.8.1787933760261;
+        Fri, 28 Aug 2026 09:16:00 -0700 (PDT)
+Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-856a359515dsm724321b3a.48.2026.08.28.09.15.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Aug 2026 09:15:59 -0700 (PDT)
+Date: Fri, 28 Aug 2026 16:15:56 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Baolu Lu <baolu.lu@linux.intel.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
+	Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v4 12/18] iommu/vt-d: Handle reattach of the restored
+ domain
+Message-ID: <apGpHv8vy4SWIEaV@google.com>
+References: <20260808022723.3893618-1-skhawaja@google.com>
+ <20260808022723.3893618-13-skhawaja@google.com>
+ <5b920299-260b-4025-ac4f-e8f83beebf95@linux.intel.com>
+ <apBso6So7UqwR3AX@google.com>
+ <bb7052d7-51fa-42e0-9eb5-ba4743956688@linux.intel.com>
+ <20260828143546.GC3769797@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <8b141a3d-1ea7-44ad-9311-2157ef37d59f@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: xYV0U-q5HSwRRYNF2YzhHs5akyyE1Ip_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI4MDEzOSBTYWx0ZWRfXxn8wDFUddKvg
- hrpPnu9uLX26z2vCg3K1Gz4/rGFyERafolaJ60pNF38W06tVbEgda3xwjkTeTE06QrPwCOQibgo
- n7cSw/GxJ8co7pwOe/7LZYIzPvymt5Eo9u+3CCG6l5gRI3bXvu/PNK8TI5PAPhpGmZmkwXEdcxI
- Ae7l55Agmphpw6wwL+APxIEzZGUDHBnoKjnXby1MxLoFHE4QDWfm4iYGrvEtlxl0/jYzJMOW+x+
- b1lWZbec3AS/7kc7F/+xc0/tnQMyTP5P0x03iEJ2uzZzaTvYqrK0lY4SKEdRCHZ1uFFYnnGf6es
- hlkOb3qiMTKrcpDLIfCRx3oOHCjnyH15XfvoYTED329wDtOl7g024qlaLbkSKTytF8hoKiUdyEI
- Dlb0ztBAYyEuPeLJ/gMx+Qokls/FbF7wQ05mt/XDLze5ebq8zdJkqgqZz4z5tu0auhy9yHv5hrA
- qildb2f4mwa8/qbO3vg==
-X-Authority-Analysis: v=2.4 cv=Y/nIdBeN c=1 sm=1 tr=0 ts=6a91b3df cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=hdEzL2LqU29Kkz1BBA8A:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI4MDEzOSBTYWx0ZWRfX/dFjPldipt2f
- q6+s/sAKIfSOEpS9+/fpzmP0F/kE4Qj3D93/+VNxsfALbjiN5Kpb0EDJ4Zqzo12oz0w7G1ccqOp
- bQaDv3LUsVuRwhmO72w0lu/IqpHLj/g=
-X-Proofpoint-ORIG-GUID: 3N4ZzIrXz_MlJmBm3joiMUE0Itwzwn8l
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-28_04,2026-08-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- suspectscore=0 malwarescore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608280139
+In-Reply-To: <20260828143546.GC3769797@ziepe.ca>
 
-On Fri, Aug 28, 2026 at 03:34:34PM +0200, Janosch Frank wrote:
-> On 8/12/26 5:36 PM, Steffen Eiden wrote:
-> > Implement all required vCPU IOCTLs.
-> > 
-> > Co-developed-by: Andreas Grapentin <gra@linux.ibm.com>
-> > Signed-off-by: Andreas Grapentin <gra@linux.ibm.com>
-> > Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> > Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> > Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
-> > ---
-> >   arch/s390/kvm/arm64/arm.c         | 392 ++++++++++++++++++++++++++++++
-> >   arch/s390/kvm/arm64/guest.c       |  47 +++-
-> >   arch/s390/kvm/arm64/handle_exit.c |  31 +++
-> >   arch/s390/kvm/arm64/handle_exit.h |   9 +
-> >   arch/s390/kvm/arm64/reset.c       |  73 ++++++
-> >   arch/s390/kvm/arm64/reset.h       |  11 +
-> >   arch/s390/kvm/arm64/trace.h       |   2 +-
-> >   7 files changed, 562 insertions(+), 3 deletions(-)
-> >   create mode 100644 arch/s390/kvm/arm64/handle_exit.h
-> >   create mode 100644 arch/s390/kvm/arm64/reset.c
-> >   create mode 100644 arch/s390/kvm/arm64/reset.h
-> > 
-> 
-> [...]
-> 
-> > +static int kvm_vcpu_initialize(struct kvm_vcpu *vcpu,
-> > +			       const struct kvm_vcpu_init *init)
-> > +{
-> > +	unsigned long features = init->features[0];
-> > +	struct kvm *kvm = vcpu->kvm;
-> > +
-> > +	scoped_guard(mutex, &kvm->arch.config_lock) {
-> > +		if (test_bit(KVM_ARCH_FLAG_VCPU_FEATURES_CONFIGURED,
-> > +			     &kvm->arch.flags) &&
-> 
-> 
-> In this case I'd rather have a long line than having to look at this mess.
-> One of the cases where a normal mutex acquisition would have made the code
-> more readable.
+On Fri, Aug 28, 2026 at 11:35:46AM -0300, Jason Gunthorpe wrote:
+>On Fri, Aug 28, 2026 at 09:55:18AM +0800, Baolu Lu wrote:
+>> That looks reasonable to me. I have no concerns about keeping ATS
+>> enabled on preserved devices across kexec reboot, as long as the
+>> software state is synchronized in the new kernel.
+>
+>The new kernel should issue an ATC flush when it changes away from the
+>inherented domain.
 
-Technically, it would not fit into the 80chars even if I use traditional
-locks.
+Yes, I will make sure this happens when we do the retrieval side. It
+should mostly work well with the existing replace machinery.
+>
+>> By the way, is disabling ATS an option?
+>
+>No, many devices require ATS.
 
-Nontheless, I'll use a guard(mutex) and then go 2 chars over the limit
-for improved reading.
+Agreed on the ATS requirement. I had Nicolin's patch series for CXL
+devices in mind here.
+>
+>It is not that ATS and PRI are coupled, there are good reasons to do
+>ATS to pinned memory too.
+>
+>PRI is a PITA, I continue to think PRI through the iommu was a
+>mistake. Devices that have device-specific PRI handling are fine
+>because that all lives in the VM. Devices relying on SMMU PRI
+>forwarding must also somehow not loose any PRI events across the kexec
+>and must ultimately inject all of them into the VM.
+>
+>> The current design already requires disabling PCI/PRI during kexec,
+>> right?
+>
+>That is also not OK, but there certainly is a useful universe of VMs
+>that might pretend to use PRI but actually only use device specific
+>fault delivery.
+>
+>So ignoring PRI for the moment is possibly OK. Someone using this
+>should understand what VM shapes thay are making and if that
+>limitation is OK.
 
-...
+Agreed. To avoid the massive complexity of handling PRI events across
+the kexec right now, I explicitly evaluated this during v4 development
+and marked PRI as unsupported to limit the scope for now.
+>
+>Jason
 
-> > +
-> > +	ret = 1;
-> > +	do {
-> > +		if (signal_pending(current)) {
-> > +			kvm_run->exit_reason = KVM_EXIT_INTR;
-> > +			ret = -EINTR;
-> > +			continue;
-> 
-> Why not break?
-> With continue we'll jump to the condition which is immediately false since
-> we just set ret to a negative value.
-> 
-
-I'll break
-
-
-	Steffen
+Thanks,
+Sami
