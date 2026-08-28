@@ -1,206 +1,123 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC7F370AEB;
-	Fri, 28 Aug 2026 23:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1F238E12D
+	for <kvm@vger.kernel.org>; Fri, 28 Aug 2026 23:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787959625; cv=none; b=mur/HwkqhYMW0WNT4fShjH/axzEMy3JhhBUI2IkEuhGNaB0iZ6dJPoMJ4SYsZEZcVBo6L3zM8vByEFEh+ZlbL/8NLnSYHYY6UeovWB5orBusrKY96GPm7YF7VCsWEUrIwp9MPE0NXWpTetDo7SrUbAoUfyed4ITjYDGcG8ZU7rs=
+	t=1787961328; cv=none; b=YgxYvB5Dry1CR9z/3oASBQb2MvQlYfG5aiCHqx6qMUoyW7Ff90PTtBkUO5ISTSGMQdjJeBP+w6ZM8QAuRGmE2bqZcAllTWlDczqu763cyP3M0KUJOIHXtHQZ/dcMLBx+rzCHUOyUXF2QUxmVjkrHMXGIEKUo5bxSQuFQFWEbBNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787959625; c=relaxed/simple;
-	bh=0tgNniJFKgy7c4X6zhz8g5nDoCwIew+VzfMrf/A7zv8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=i+lRvOymRSRUz0oS+Nlvc2C4F1THX6dwbyd/3nkSi78iZ1Nx96h8szyQaCos7TTQYbQumaiOlhMNQhf6DF8u5Zak9Itrnc4K0vS5PslgyMHQ4fhPKxSlHPYDwLvGtoRcmVJrh1bcauAS6iqBZSsrahwDUrmUBGGILXRaANzqApA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Y1ztMb5f; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1787961328; c=relaxed/simple;
+	bh=Fc6oU0gFwa5CYL2V35yy8fXUOTX9m4M0XVDoHvMR/B8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=TrMr7SbcCbf7s3J0hpurLKpB5io+43CpNArQQr06sheQwu+HWP4w6hyccW9FNtK6X1P906yN6nmCxHis8LIBp/NStVudzzT9NHV57eOF8lQBYyAT9Lmj96lOiSyYm8SaV7cREcACWp/cDJGtP/ohugjtkZuPTB3vw2XNbKfE2JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wnAX9JiK; arc=none smtp.client-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Y1ztMb5f"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=0tgNniJFKgy7c4X6zhz8g5nDoCwIew+VzfMrf/A7zv8=; b=Y1ztMb5fee8HrackV7cB8wzPnZ
-	3IK5avP+Fq/dyxz7E9egQaZ9iFJ196cBxbBKz5qLBYKYpXdHmhYF9ib5EP8qVU4QNpq9iLaXC255a
-	1H9BgcGO2/Yo0I1V+eEsp5XOpmmC3/4I2Fi8mLcq4ZLYkelqHm9NAXrxX5l4MGuxlpkq2MGBDCwDa
-	oonR+aOV7TIms7Rxo7kC9t1IRFXK1ZXsRgPppIHAjmYpLFo3qBiqAi/jtZ5K62yBNhICUw8NgXt0k
-	BGTb6WowKoJSl3G5GDTdNWTdulkNLtRuSTZfOQO/3j/QiSYXDUHbaywxeoLTVVB+0wgqEiUzoSPCo
-	3onFVizw==;
-Received: from [2001:8b0:10b:5:d89b:13dc:754b:b035] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x05y6-0000000FbWS-0Tpk;
-	Fri, 28 Aug 2026 23:26:42 +0000
-Message-ID: <e93c9edb54af426397ca6282e2f75dbfb0facab4.camel@infradead.org>
-Subject: Re: [PATCH v7 31/36] KVM: x86: Add KVM_[GS]ET_CLOCK_GUEST for
- accurate KVM clock migration
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>,  Borislav Petkov	 <bp@alien8.de>, Dave
- Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"	
- <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross	
- <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul
- Durrant	 <paul@xen.org>, Jonathan Cameron <jic23@kernel.org>, Sascha
- Bischoff	 <Sascha.Bischoff@arm.com>, Marc Zyngier <maz@kernel.org>, Joey
- Gouly	 <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, Dongli
- Zhang	 <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
-Date: Sat, 29 Aug 2026 00:26:28 +0100
-In-Reply-To: <4420099fedce20021d6cc5aeb1aa270c7951c552.camel@infradead.org>
-References: <20260728144954.355376-1-dwmw2@infradead.org>
-		 <20260728144954.355376-32-dwmw2@infradead.org>
-		 <anuy6QxUVLcSSVCn@google.com>
-	 <4420099fedce20021d6cc5aeb1aa270c7951c552.camel@infradead.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-gZIQ/HFPHjw8QZC7Itn1"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wnAX9JiK"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cfca8558d2so20180695ad.2
+        for <kvm@vger.kernel.org>; Fri, 28 Aug 2026 16:55:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787961326; x=1788566126; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Mqr9nHpbkyUzPAQTiIg+XS18DfYCuk6G8Yl7jT5lYuE=;
+        b=wnAX9JiKx3r4nknzhCcbV/qY2w1Gmyt42unbJmbW/C2IuT093ZGpftqq1/m/PoKE4q
+         L2eeOlWlTMoo9xyvvXbFwBPd/w4miWsQbTqq61gSt8aKQIF42TymEddn1V3XIipkD4V8
+         5myEahjkyMbfDCJJbWciHeceqg7NQZrjUSjCkIMHu1QWna4ShC+Lr3qzs/Qvzr4wzDQU
+         1pCFhAfCICXlzqpRBWl28cC54y+ysnQgPn/xy1Sqa7BNw6teNHUwX5KrJ3Eb745bjApz
+         QXpRGqyyxnrHwkaBdgUo06lrWsGeYKbybuo/KND0ea2helsh3xDUdJDx0tlSVnKE9Byk
+         Elaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787961326; x=1788566126;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Mqr9nHpbkyUzPAQTiIg+XS18DfYCuk6G8Yl7jT5lYuE=;
+        b=GruZdqaqd0cMuFD16mlsonSgETa3cKOrQqgKtXYRIYpFhnQ5FEJMkh39niTbIgaVbO
+         1IETYLfEgXLdJk5L8dtM8J7ujEASqwgy22YpiXwytXDPG5s4l4ncdvj0VLUbvLiCfKB2
+         NJtwUmprQzQrk3uE+7xgS1whsqQkP64V6FuP9VEimvHa1jalocma/mWQR7fLoZMQ/bpC
+         nLe05Y/MBnY7UIlmUVBJzMieCIJ3myMNZ278GLFeXZW2D+gmcALi4SsEFUKVWooq5nyv
+         P7jSlw/Y8vQfcIErAylaA6UZxF+FNR6DZgWtAII/UomNHQoE2yutUbph2fmlwDK25ddF
+         OKaQ==
+X-Gm-Message-State: AFuF++kcbXysjGzwGuBqUTBfftBuKUaaB4ho/42UdkNipKvYpG8TZlhh
+	oML6WXhINC+soGdC27RymxOdknNArdS9PLkAWqXHiZLAcEierN3QF6X0Yglc/FjO5pgvPZhITMk
+	o+M13cw==
+X-Received: from plri17.prod.google.com ([2002:a17:903:32d1:b0:2d7:3fb9:889b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1b68:b0:2d8:d4cd:dc92
+ with SMTP id d9443c01a7336-2d8d4cddf49mr47103025ad.21.1787961326405; Fri, 28
+ Aug 2026 16:55:26 -0700 (PDT)
+Date: Fri, 28 Aug 2026 16:55:25 -0700
+In-Reply-To: <56a4bc35ee605588b7cc36c8e45c12b5f3b506cb.camel@guillain.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-
-
---=-gZIQ/HFPHjw8QZC7Itn1
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <56a4bc35ee605588b7cc36c8e45c12b5f3b506cb.camel@guillain.net>
+Message-ID: <apIf7eoMxdfV_7kE@google.com>
+Subject: Re: BUILD_BUG_ON failed for kvm_vmx struct size sanity check in vmx.c
+From: Sean Christopherson <seanjc@google.com>
+To: Jean-Christophe Guillain <jean-christophe@guillain.net>
+Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2026-08-14 at 08:27 +0100, David Woodhouse wrote:
+On Thu, Aug 27, 2026, Jean-Christophe Guillain wrote:
+> Hello,
 >=20
-> Fixup below (not amending commits while you're co-opting the tree, as
-> we'd both go insane). I'll push it to the top of=20
-> https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Dref=
-s/heads/kvmclock9-part2
-> on top of with the offset test which is already there.
+> Since yesterday, my daily compilation of Linus tree fails with this
+> error:
+>=20
+>   CC [M]  arch/x86/kvm/vmx/vmx.o
+> In file included from <command-line>:
+> arch/x86/kvm/vmx/vmx.c: In function =E2=80=98vmx_init=E2=80=99:
+> ././include/linux/compiler_types.h:702:45: error: call to
+> =E2=80=98__compiletime_assert_1411=E2=80=99 declared with attribute error=
+: BUILD_BUG_ON
+> failed: get_order(sizeof(struct kvm_vmx) - SIZE_OF_MEMSLOTS_HASHTABLE)
+> && !IS_ENABLED(CONFIG_DEBUG_KERNEL) && !IS_ENABLED(CONFIG_KASAN)
+>   702 |         _compiletime_assert(condition, msg,
+> __compiletime_assert_, __COUNTER__)
 
-Since it looks like you are concentrating on part1, I have actually
-folded that in now, and rebased on top of your v10 of part1:
+The immediate problem is more than likely commit 97d65b544f48 ("KVM: Check =
+for
+duplicate vcpu_id as early as possible"), which increased the size by 512 b=
+ytes.
 
-https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Drefs/=
-heads/kvmclock10-part2
+But KVM has gotten quite fat in over the last year, because if we can trust=
+ past
+me, the size was then 2KiB when commit ac777fbf064f ("KVM: x86: Use kvzallo=
+c() to
+allocate VM struct") added the assert:
 
-A relatively boring rebase, apart from having to bump a CAP number.
+  but given that the size of the structure (without the memslots hash table=
+s) is
+  below 2KiB after 18+ years of existence, more than doubling the size woul=
+d be
+  quite notable.
 
-Testing now...
+Stupidly, I missed the failed assert because all of my build configs have
+CONFIG_DEBUG_KERNEL=3Dy (which is somewhat frustrating because just enablin=
+g that
+config doesn't actually inflate the size, but checking for all of the confi=
+gs
+gated by DEBUG_KERNEL that do inflate the size would be too much of a maint=
+enance
+burden).
 
---=-gZIQ/HFPHjw8QZC7Itn1
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Given that no bots have complained, it's probably fine to let rc1 get relea=
+sed
+with broken CONFIG_DEBUG_KERNEL=3Dn builds?  If not, I'd just temporarily d=
+isable
+the sanity checks until we can look into this.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-/Ri50dTqZ1yRvjmEyxjPdqMAAAAAAAA=
-
-
---=-gZIQ/HFPHjw8QZC7Itn1--
+I'll dig in next week to try and figure out where all the memory is going (=
+and
+I'll add a CONFIG_DEBUG_KERNEL=3Dn config to my build tests so this doesn't=
+ happen
+again).
