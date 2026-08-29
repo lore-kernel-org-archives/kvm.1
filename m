@@ -1,66 +1,119 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-108.mta1.migadu.com [95.215.58.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FC035C69E;
-	Sat, 29 Aug 2026 09:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC6A39B947
+	for <kvm@vger.kernel.org>; Sat, 29 Aug 2026 15:04:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787995812; cv=none; b=QbKLsdbe/I92i7VzBPNSsrDdqHYKH+zTQRTacT+RlluQJahQR71qOopfqZ7RX1vzFz3DWMQFGNfckQxlIudquOlMQXHo6z+ydscdrooKllxCCrX7FXh+Jc5k3XjL08VFfD44ZZv6tb3jPBwhX7enkLcSdeC2/GvKwkoY/P48Ahw=
+	t=1788015887; cv=none; b=ZY1PuNV5njdAhX3Le+NE+82KhTcvhhYK46qmqzN8lOWNZGQ8u+9NiF8I4eAIiYr/vlxRUgGEcnP4ccOJvJUtSRHMajKGE8RUuujs34nm+QxY6HfNxdZ6dw5UcRDSUK/ZfQc3Mm+ac3nTpC8udXCpWtFCzAWeUM9+QOgl4kKvDQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787995812; c=relaxed/simple;
-	bh=ym0MykUvUjJXX1KCG0YZF7RRDSajs7wCDeaj9AC+BP4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kMk1dAgvwi8WBsMbNWl0ihkQFnzLUBLvz7Bik2SITBCIbaVGwmnEINfjtHyvQwr12u1VSjG3KkwmJX3+AYJtcW1z1QWmhEQoIKCf3Xazrq8sNGYysrO++95y/fNCMk7lpd1QlJtMZZTgbr+53gkd26xoDOEIDhObjxThnba63lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=c+PSepnP; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1788015887; c=relaxed/simple;
+	bh=x/JQhwvlkrIqW5ek4nBfeiZRWKci9ObkZOfoQkBKemw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oY/7oNgBH9AAC7ahwPktPKVZFyHL3VrruVrIBqIYYEgqra0KdnflAMm2dEuiAWVNRh6W7zoBBky+4JChfzASKXoyjotf4WnKqHFdjPLARAInhSGUvoxMBeXFYoTb6RWjk9jGbyCMpVDcrnemxrVsX+wSdcPjfJgzdAkCywz/LLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qi0GQnLW; arc=none smtp.client-ip=95.215.58.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="c+PSepnP"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=kRIBKpBz05QwiPb/yIKNgZo76o/OxYBuBuuTaVtctD0=; b=c+PSepnPm970sIBDHf+LxUavJE
-	Q3qlfpescV66z6N4W0u2bOkIpH8FguGfnVskDQGEBY4QcG0ZZxH0agzy2OEIFWQAdDFcq3ZuJe3xl
-	RWOZdadFDqewYeZpPbYyrVTDbJI5+7z5cY7o8PunLR85d1sXNrzpANrGryu2I9Iq2i1N6UFDAI/aI
-	IO72hGkFUvr30jlJHlYud1o0abTmqRWgoDmk0mZWOFlTtzLcZ4sM9S8pRPzvKZ2mfyfducN5anqmL
-	vicIFboW0I4dlJ8omWpE/FP0WArmQzVrwhG8lWP+3N//3Rz5OLgVqM+FMP8cp6rwvaJ7C6rU2H6ZW
-	harnrQqA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x0FNz-0000000GGpB-1qZt;
-	Sat, 29 Aug 2026 09:30:03 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 5500A300382; Sat, 29 Aug 2026 11:30:02 +0200 (CEST)
-Date: Sat, 29 Aug 2026 11:30:02 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Zide Chen <zide.chen@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-	Andi Kleen <ak@linux.intel.com>, Jim Mattson <jmattson@google.com>,
-	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org,
-	Mingwei Zhang <mizhang@google.com>,
-	Das Sandipan <Sandipan.Das@amd.com>,
-	Shukla Manali <Manali.Shukla@amd.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Xudong Hao <xudong.hao@intel.com>
-Subject: Re: [PATCH] KVM: x86/pmu: Add mediated vPMU PerfMon v5 support
-Message-ID: <20260829093002.GC776954@noisy.programming.kicks-ass.net>
-References: <20260827223755.143247-1-zide.chen@intel.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qi0GQnLW"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=x/JQhwvlkrIqW5ek4nBfeiZRWKci9ObkZOfoQkBKemw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788015882; v=1; x=1788620682;
+ b=qi0GQnLWOBpcQvxMiPN9YKcoVrv+OvuKqyzWbsq/Qd+t87WaMrnNK1xKsTpGVjqKjfIPzLBE
+ ND+OJ0KpPeHwMPR6vNHs12+EoiCnmePT/BvcnZ/mJ65dSWS+qTrFJInpqYIclVB1IqFqEY4ZqWS
+ 5a/Byjj6UXI6dk/RE2rW6ANU=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 483ada4eb59f10dd;
+	Sat, 29 Aug 2026 15:04:42 +0000
+X-Mizu-Trace-ID: 483ada4eb59f10dd
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5b2a73da7e1so4204e87.0
+        for <kvm@vger.kernel.org>; Sat, 29 Aug 2026 08:04:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzoqfkzHebqDnWgyAAABDBRw4PyxlyejC4dDaEXlul0WKKC8etDTV3KV4VzXY4Q5W/JmWc=@vger.kernel.org
+X-Gm-Message-State: AFuF++l8jkQ4jURUz1LYptsoOL5FyhJhtP+cXl0/tLYquayNU6eTlrs+
+	XZGcEYwRamQ37wNxGa6F05s9PxqIychs9W3Idehkg6Wo/UFxl1NagvRAHCS6sGehC1XkGEkX6aD
+	EXtB1uyihiBrCXSCwdTopmKLnrqFhX2YQRGhnIqk+
+X-Received: by 2002:a05:6512:224a:b0:5ae:cf5f:4a88 with SMTP id
+ 2adb3069b0e04-5b5ef1fb727mr121680e87.8.1788015877648; Sat, 29 Aug 2026
+ 08:04:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260827223755.143247-1-zide.chen@intel.com>
+References: <20260829054856.70549-1-kmehltretter@gmail.com> <20260829054856.70549-2-kmehltretter@gmail.com>
+In-Reply-To: <20260829054856.70549-2-kmehltretter@gmail.com>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Sat, 29 Aug 2026 16:04:01 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTzQM0bf1x2X-Y+eMmUHSYUmJXpt_jQ4Csu7JpkjtFT72Q@mail.gmail.com>
+X-Gm-Features: AcwNN1WqEb1cXih1LXw2p4NMTSnPI5p1Ks0puLT5RmXOdUojQc3MhAEKYKD99sE
+Message-ID: <CA+EHjTzQM0bf1x2X-Y+eMmUHSYUmJXpt_jQ4Csu7JpkjtFT72Q@mail.gmail.com>
+Subject: Re: [PATCH 1/2] KVM: arm64: Return -EINVAL for an empty SMCCC filter
+ range at base 0
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
+	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Aug 27, 2026 at 03:37:39PM -0700, Zide Chen wrote:
+On Sat, 29 Aug 2026 at 06:50, Karl Mehltretter <kmehltretter@gmail.com> wrote:
+>
+> kvm_smccc_set_filter() only rejects a range if its inclusive end,
+> base + nr_functions - 1, is below base. That catches an empty range
+> (nr_functions == 0) at every nonzero base, but at base 0 the end wraps
+> to U32_MAX and KVM tries to insert [0, U32_MAX], which overlaps the
+> reserved Arm Architecture Calls ranges. KVM_ARM_VM_SMCCC_FILTER then
+> returns -EEXIST instead of the -EINVAL that the smccc_filter selftest
+> expects for an empty range.
+>
+> Reject a zero function count explicitly.
+>
+> Tested with a userspace reproducer on an arm64 VHE host under QEMU TCG:
+> EEXIST before, EINVAL after.
+>
+> Fixes: 821d935c87bc ("KVM: arm64: Introduce support for userspace SMCCC filtering")
+> Assisted-by: LLM
 
-> Dapeng Mi (6):
->   perf/x86: Plumb counter bitmap from x86_pmu to x86_pmu_cap
->   perf/x86: Remove num_counters_{gp,fixed} from x86_pmu_capability
+nit: this should be `Assisted-by: AGENT_NAME:MODEL_VERSION [TOOL1]
+[TOOL2]` rather than LLM
 
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+
+I think Sashiko is onto something, but that's for another day.
+
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+Tested-by: Fuad Tabba < fuad.tabba@linux.dev>
+
+Cheers,
+/fuad
+
+
+> ---
+>  arch/arm64/kvm/hypercalls.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/arm64/kvm/hypercalls.c b/arch/arm64/kvm/hypercalls.c
+> index b11b8821c9fb..dfa25bb6f25d 100644
+> --- a/arch/arm64/kvm/hypercalls.c
+> +++ b/arch/arm64/kvm/hypercalls.c
+> @@ -185,7 +185,8 @@ static int kvm_smccc_set_filter(struct kvm *kvm, struct kvm_smccc_filter __user
+>         start = filter.base;
+>         end = start + filter.nr_functions - 1;
+>
+> -       if (end < start || filter.action >= NR_SMCCC_FILTER_ACTIONS)
+> +       if (!filter.nr_functions || end < start ||
+> +           filter.action >= NR_SMCCC_FILTER_ACTIONS)
+>                 return -EINVAL;
+>
+>         mutex_lock(&kvm->arch.config_lock);
+> --
+> 2.39.5 (Apple Git-154)
+>
