@@ -1,130 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25CD28F5
-	for <kvm@vger.kernel.org>; Sat, 29 Aug 2026 00:09:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4DBC299959
+	for <kvm@vger.kernel.org>; Sat, 29 Aug 2026 05:50:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787962167; cv=none; b=K796TOwF9hwlq+fW3rCNvrUEGGGa6nmpsB8k2zmdF3hClMB3BnbO1rHiGJi2tF1pysVZQJB+nawekuse2znsfGTGF5JrMdRmARiQZpIhe/VqX6H1xUgCF+/Si/+8bDeb5AtjSjFYcTQBZvqJrSQAFv0E9aLjt62SdpfcvkM9LxY=
+	t=1787982627; cv=none; b=qzeLGt+3K6/VR3Z45+cRUEwpRNwd+beByQONP89gi+lGLoxlP+lNiHzK44EaQONgm5qzk4pBYxvsWOgdlqbp5Q8rtZu8sJJ9eJPyAokXPSBThgy+kDzAcnyAXhvegKfVatt70fsVlvrhD9CaVO6DGr5Ry1Z2LUISjVhPHJh374M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787962167; c=relaxed/simple;
-	bh=TA4JreOBNDQDPNgyMV/ZkHMYb2AiweI3vgU1qQl4o44=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=u6+rasHUlV6yfGhZtfKIqznWEdyCAH4UTc/IvkD3iNhz60BjOm2TR7i4EKt52aB6Kgt0JWgGigavcTjqLO+j+/cV3+/eBplPLl+oKBLw/2pLXFymeTpohIXIucFqUkahETxec5Lz0JjSV0nMCWn1kUqIApbu96yrB3+kNwBb9vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Akd/0dys; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787982627; c=relaxed/simple;
+	bh=aru3gpZckcqhzLmD1P2HSOiefupvneO2iUB5oqNw958=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=nv1FuCKWjV4nz97I4W0MjgLJml3I7BIDvEmRb8Om2Ysbo/Pr7TTi0oYDmdytO/MYn7/sArivk6moRUdGf7CkWhulIGrAxIT7TulCjbtC/IqWzNexUe523C2TsMwrdRNHTmBRmCYs2zueNlut+BoG7TLQiHw8pFjW5aD5OKpP/2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GjAKPDiH; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Akd/0dys"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176E51F000E9;
-	Sat, 29 Aug 2026 00:09:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787962166;
-	bh=g6xU9CltW2KqK7gMpyux/ev9QBqDd0SFFAkvhC84EAY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Akd/0dysM17u88OjVtYAI+9q4aQiz+YEao9l+E/vc4J3tuhwrJn8xZZNRFPpUO2be
-	 R91gH3E8T5dLj3yCt0rHYXrnnjcDhgtPHOZqHMdHJxcL12U+101u5w6AkdbO2Wl3Eh
-	 7AdvOZpwGLBADVluG94wKu7M+W9+bDpvE7QrT8iBBT6B9vgEQq2otKQetB0nH8+Gt1
-	 s9q9RBfBd7jANm04bj6yE8gg1yTGQbSBfFeJJ/LwWnR+aMAIcH6B+00JidqtLw+ODF
-	 QF5KvGzvmPGEj1t/jXKIRv0IftpJElxnfSdjoMk1RAqxefKvr/M+tlcI9cEGyT2GFn
-	 EcF3ewNx0Lmhg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] KVM: x86: Restrict saved GPA writes to hardware
- write faults
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Kyle Zeng" <kylebot@openai.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260828235840.63227-1-kylebot@openai.com>
-References: <20260828235840.63227-1-kylebot@openai.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 29 Aug 2026 00:09:25 +0000
-Message-Id: <20260829000926.176E51F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GjAKPDiH"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-495590dde14so15687465e9.0
+        for <kvm@vger.kernel.org>; Fri, 28 Aug 2026 22:50:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787982623; x=1788587423; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JBWN6j8OnBuuPy0FKZmRrD0AlW+PPdIjJrnUe6crviU=;
+        b=GjAKPDiHLPFArNBvKMyLefBHvLNucNuoYwePhbhaGfb4sQLyCCXC09en94CFYNO1pC
+         eH6fZ565GQSH1oU4WpjLr8tF+Xndp9TpBI49LrxFH2fWKaoRHfIGnH953h/MN26lUCuO
+         Ergud5VSUpWpV+wWQyQJFmYNBqIPtQII/+xcudqKpXSB/Jzodj/0kc9eEkAlpcvlyc3R
+         nR8FGnBuiZAuj/6LH9j/8jR/cj6+1bm8UMLvJDKGhE5w3DccTzdAyeE7OY9K2ebRzxKP
+         zwVUOXuu5QdwZFPyirRxjYh7vSYQ0d721cBj6YGS98j18ct50NB67Vmk08T8F60LKVPW
+         lZ/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787982623; x=1788587423;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JBWN6j8OnBuuPy0FKZmRrD0AlW+PPdIjJrnUe6crviU=;
+        b=K6aMNphCbtp468wj339P4so+orkb3CCrF7BfmbxnVn+zjoSoJE2L6NYID4Q5K2k/Lx
+         50jKF9yWqbMLmrnn/tZOMgU3L4UMHdxqGtqEhyPxDWtcZJOAzrWmTX87EFIXMd1Td4T7
+         dzuiKddxf5Y3WhVrrbQFN22EucbjG6DnHc709FVjLSRqM12F+2zGW8h/+spa/jH3axge
+         1r0AWrrGj4+fuo2A3x/MasMoxvQgCUrfMW/O7tFWG8NjzWarUloYSBCwSpHZZFF6LY7I
+         5z13iczS/JoOHPCVmR+EDoJS7wBHRoquaYzpo8m2SM9xEOVRBJRBoAVn/GnolcOqDQDt
+         nMbg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq6ExlvwcZuQcV5vNKoDC+JaabA0/eHcIvSg6r18ZO7M/vXarqHZqi0Lf5sLHSpv2YUnNA=@vger.kernel.org
+X-Gm-Message-State: AFuF++l49FFJLDzxE3F63C6OiiZXvMN1f3IqN7WHgplAgIlaVSHh0+XB
+	K1pjX2Ul79If09Lc5IWmIDhdeBzaQS2AwZpkfNqmxNZvd73WC9KYYBZR
+X-Gm-Gg: AR+sD108ST+/6tti33QqKF8wt5REx22/d1rvU4UaPyiLrSFXKhFCpjhQ3sTo809hUeu
+	JmgTw5rurowSYA8Rlnj8PF8Dsp8gyQ1e5ckooCHAHyUHRLTh9UNXDkL2QlqVnqN55227IoeraUP
+	3p0lREvhFvrDaLFp8MoQKJpawLhACi+cNehufK0P+2yPEvZHMM72lCpuNwqkBo4SlmN0FxOMbLr
+	LBU185K7XuQbqLemWyPKWhcvRbTA1hTtoqPRy/JItz9YuR2KVnwfUdUlXqxulBW3EKy9rTdOJ11
+	sFtcenjmC6/a2KNMJ+0lu5w7DReAelYbacKFHASu06e9nQPWnPZyKrP0GDdZBDAx5U7w9kS35Wh
+	Ns9/ILPIwT5B14KJxJcEJ+bsG+/MWVq4VrjJzmhuHHTwl8T5uNfvTUYovFagrV5xHnPe6pIbV4d
+	sYqRRk7qGCu0ZcpAPAh0JXnzBQ2p8qvNfsxjLp/cJg5CsWXJgsaWoxKcM1++Ih3woEB7tstLfXW
+	/R9K/cwxHZG/Ni3Qq2Ng4uWw3vCl+CxUT64a1JNyM4fzNJdTp6g88S/SC46Rmw8C2RN/AVWOEYv
+	5MkBRPeHfoaQceAu5+w4
+X-Received: by 2002:a05:600c:a47:b0:499:be9e:49c8 with SMTP id 5b1f17b1804b1-49b91c50957mr150918935e9.13.1787982622515;
+        Fri, 28 Aug 2026 22:50:22 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-077-007-015-136.77.7.pool.telefonica.de. [77.7.15.136])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cca3e642dsm35357485e9.2.2026.08.28.22.50.21
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 28 Aug 2026 22:50:22 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	kvmarm@lists.linux.dev
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH 1/2] KVM: arm64: Return -EINVAL for an empty SMCCC filter range at base 0
+Date: Sat, 29 Aug 2026 07:48:55 +0200
+Message-Id: <20260829054856.70549-2-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20260829054856.70549-1-kmehltretter@gmail.com>
+References: <20260829054856.70549-1-kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Read-modify-write (RMW) instructions on unmapped MMIO pages will c=
-rash SEV guests because the emulated write phase lacks authorization, forci=
-ng an impossible software page table walk.
---
+kvm_smccc_set_filter() only rejects a range if its inclusive end,
+base + nr_functions - 1, is below base. That catches an empty range
+(nr_functions == 0) at every nonzero base, but at base 0 the end wraps
+to U32_MAX and KVM tries to insert [0, U32_MAX], which overlaps the
+reserved Arm Architecture Calls ranges. KVM_ARM_VM_SMCCC_FILTER then
+returns -EEXIST instead of the -EINVAL that the smccc_filter selftest
+expects for an empty range.
 
-commit 2459e3d7bfb5a32b95970716f7650879e8b5d707
-Author: Kyle Zeng <kylebot@openai.com>
+Reject a zero function count explicitly.
 
-KVM: x86: Restrict saved GPA writes to hardware write faults
+Tested with a userspace reproducer on an arm64 VHE host under QEMU TCG:
+EEXIST before, EINVAL after.
 
-This patch modifies KVM's instruction emulator to carry hardware write-fault
-information and restricts the reuse of a saved GPA for writes only when the
-hardware reported a write access. It introduces an access mask to authorize
-writes based on the initial hardware fault or fall back to a full
-translation if unauthorized.
+Fixes: 821d935c87bc ("KVM: arm64: Introduce support for userspace SMCCC filtering")
+Assisted-by: LLM
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+---
+ arch/arm64/kvm/hypercalls.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 79468ddfe4736..aa5deb7c73aa2 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -5088,8 +5088,13 @@ static int emulator_read_write_onepage(unsigned lo=
-ng addr, void *val,
->  	 * Note, this cannot be used on string operations since string
->  	 * operation using rep will only have the initial GPA from the NPF
->  	 * occurred.
-> +	 *
-> +	 * The guest may have changed the instruction since the fault.  Reuse
-> +	 * the GPA for writes only if hardware reported a write access;
-> +	 * otherwise, recheck permissions for the decoded access.
->  	 */
-> -	if (ctxt->gpa_available && emulator_can_use_gpa(ctxt) &&
-> +	if ((ctxt->gpa_access & (write ? ACC_WRITE_MASK : ACC_READ_MASK)) &&
-> +	    emulator_can_use_gpa(ctxt) &&
+diff --git a/arch/arm64/kvm/hypercalls.c b/arch/arm64/kvm/hypercalls.c
+index b11b8821c9fb..dfa25bb6f25d 100644
+--- a/arch/arm64/kvm/hypercalls.c
++++ b/arch/arm64/kvm/hypercalls.c
+@@ -185,7 +185,8 @@ static int kvm_smccc_set_filter(struct kvm *kvm, struct kvm_smccc_filter __user
+ 	start = filter.base;
+ 	end = start + filter.nr_functions - 1;
+ 
+-	if (end < start || filter.action >= NR_SMCCC_FILTER_ACTIONS)
++	if (!filter.nr_functions || end < start ||
++	    filter.action >= NR_SMCCC_FILTER_ACTIONS)
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&kvm->arch.config_lock);
+-- 
+2.39.5 (Apple Git-154)
 
-[Severity: High]
-Will this break the write phase of read-modify-write (RMW) instructions for
-SEV guests?
-
-If a SEV guest executes an RMW instruction (like OR [mem], reg) on an
-unmapped MMIO page, the hardware triggers a Nested Page Fault (NPF) on the
-initial read access. KVM will set gpa_access to ACC_READ_MASK.
-
-When the emulator attempts the write phase, it appears this check will fail
-because ACC_WRITE_MASK is not set. This causes emulator_read_write_onepage()
-to fall back to vcpu_mmio_gva_to_gpa().
-
-Does this fallback attempt a software page table walk that will fail on
-encrypted guest page tables, resulting in a spurious #PF and crashing the
-SEV guest?
-
->  	    (addr & ~PAGE_MASK) =3D=3D (ctxt->gpa_val & ~PAGE_MASK)) {
->  		gpa =3D ctxt->gpa_val;
->  		ret =3D vcpu_is_mmio_gpa(vcpu, addr, gpa, write);
-
-[ ... ]
-
-> @@ -6454,7 +6459,10 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu,=
- gpa_t cr2_or_gpa,
-> =20
->  		/* With shadow page tables, cr2 contains a GVA or nGPA. */
->  		if (vcpu->arch.mmu->root_role.direct) {
-> -			ctxt->gpa_available =3D true;
-> +			/* A write fault can require a read for RMW emulation. */
-> +			ctxt->gpa_access =3D ACC_READ_MASK;
-> +			if (emulation_type & EMULTYPE_PF_WRITE)
-> +				ctxt->gpa_access |=3D ACC_WRITE_MASK;
-
-[Severity: High]
-Does this limit gpa_access too strictly for read faults on RMW instructions?
-
-As mentioned above, if an instruction naturally faults on its first (read)
-access, it will only get ACC_READ_MASK here. This seems to be the root cause
-that later prevents the write phase from reusing the GPA during MMIO
-emulation.
-
->  			ctxt->gpa_val =3D cr2_or_gpa;
->  		}
->  	} else {
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260828235840.6322=
-7-1-kylebot@openai.com?part=3D1
