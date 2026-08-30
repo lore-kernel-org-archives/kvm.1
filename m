@@ -1,154 +1,177 @@
-Received: from out28-51.mail.aliyun.com (out28-51.mail.aliyun.com [115.124.28.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CDA923EAB4
-	for <kvm@vger.kernel.org>; Sun, 30 Aug 2026 02:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DDF1A9F87;
+	Sun, 30 Aug 2026 08:25:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788057778; cv=none; b=UeRtnSP6aFuJDLm8Tt+V/hPExoY7ZDa1U4cBGunznaISdzXxLu5ebnUGwZNnzJek1+SRXMQ91gIuYEtCtuntQunESGmpIc0gXSGnBIQ7X1WeMe2Ahp3g9wZ6up2Bqq1egX7EvAjH4gJDCQIHgzyAwk/O1jMZC4NoueG5eVvg6bM=
+	t=1788078337; cv=none; b=X+clRr80HIyu9LS9i9jmNpSnwFXHJCAEcTq0quVbucrwWrknYZ9W3ExPfCEu0VPcdnlyycwSim5x91siP8ZNAjnyAweCM8Q/1YjX4BnU0EWlqEnpNtR+YxOfyhciuooc6+mucRGJ8J6TuDmS3qQG7Vy52flx8SXci5Y+1ZQee4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788057778; c=relaxed/simple;
-	bh=FGYsF2k1q65N8lxbWDM4vr0Zj16VANo3oMImr4jkcG0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ddnL8QnDd+Fy2beFKKTHyxzpLDn4+gCYKo/JE2RKbgfcAkiQYm59dawo6n6kI3Xd1NNqmaZHdmEDByBBVPDZOP6zCVh6R8tzVCiY8S7dEvQs4q/9YGcDtMBOocU6Leeg6OIVGkjGZFpNeDgXJ/6xyhb4ooT6DFihOEQIYr59q/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.08696488|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.0292237-0.000101892-0.970674;FP=4929523117646727027|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037032089;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=2;RT=2;SR=0;TI=SMTPD_---.j0.ERXi_1788057448;
-Received: from 192.168.1.4(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.j0.ERXi_1788057448 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Sun, 30 Aug 2026 10:37:29 +0800
-Message-ID: <66d1f990-7250-443d-beb5-ac46bd2bfe17@open-hieco.net>
-Date: Sun, 30 Aug 2026 10:37:27 +0800
+	s=arc-20240116; t=1788078337; c=relaxed/simple;
+	bh=enDvrvucjqCB6QorYOu30xPX0Tspl/vdnaZA/OCJVd8=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eHeXT/exlVD9ZTvcoOU9xNKfadBU/JNA8IeA3hCI+ehOxNLxnrW/S6GBPdtKeyKr+0Y3oAR5BsTx7tR6rI8dtSUr6ESP5Rn3r3dTOcmQFgaHE4JpzoP8JzPlo1xUCTAndX8LdXjapFa2ojcBt0Mj+qwNlqOtQRpCYyopOacbs+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kERBUMQh; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kERBUMQh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6500C1F000E9;
+	Sun, 30 Aug 2026 08:25:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788078335;
+	bh=bEUIZ+P1wvBK9wpdoS7CCGcxWQYocPml39xu6l1/88k=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=kERBUMQhAWsGtfPppvbbc5Ow5SVOyx9BzibtFkuYKDdkZKVF/+nExG+oiS5W39jGn
+	 TlfpVFuP300bYoB4ZZm29ZvmOcH5mWtDtO3J3Bn1vjM9ab3rbEjZrH59nooShVKn9F
+	 K2jZ714m8cA7gkqBfpFRTdPH6mbabr0eCD58aHcicTLKLsa7ND6nQPN3bh7bVoxPjM
+	 0pzmG4noJ1tAbDEuR8Wdbs7lv8y86sqkuhHN1y18TCJ1UrSdvqJyODFjIIpTUvjr9C
+	 0V59nsDrZs0y5ZY9GAwEbv8C5k8DFaTlgBDvI6EVpL54T5PuxzIMd3MqG9I4BF2z1y
+	 91Z8nslq4rg6Q==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1x0ar7-00000002Ri4-09sG;
+	Sun, 30 Aug 2026 08:25:33 +0000
+Date: Sun, 30 Aug 2026 09:28:05 +0100
+Message-ID: <87zey4m2qy.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Oliver Upton <oupton@kernel.org>,
+	kvmarm@lists.linux.dev,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Eric Auger <eric.auger@redhat.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 0/5] KVM: arm64: fix VGICv3 redistributor rollback
+In-Reply-To: <20260822095346.53882-1-kmehltretter@gmail.com>
+References: <20260822095346.53882-1-kmehltretter@gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/8] KVM: nSVM: Synthesize DecodeAssists EXITINFO for
- emulated intercepts
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-References: <20260824123954.315112-1-zhang_wei@open-hieco.net>
- <20260824123954.315112-3-zhang_wei@open-hieco.net>
- <20260824131149.0660C1F000E9@smtp.kernel.org>
-Content-Language: en-US
-From: Tina Zhang <zhang_wei@open-hieco.net>
-In-Reply-To: <20260824131149.0660C1F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kmehltretter@gmail.com, oupton@kernel.org, kvmarm@lists.linux.dev, fuad.tabba@linux.dev, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, pbonzini@redhat.com, shuah@kernel.org, eric.auger@redhat.com, christoffer.dall@arm.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Thanks for the review. Both reports appear to be false positives.
+On Sat, 22 Aug 2026 10:53:41 +0100,
+Karl Mehltretter <kmehltretter@gmail.com> wrote:
+> 
+> A failed REDIST_REGION write can remove redistributor iodevs from
+> KVM_MMIO_BUS while leaving their cached vCPU assignments intact. A
+> corrected retry then skips those redistributors.
+> 
+> Userspace should instead see a failed region update atomically: no prior
+> redistributor assignment survives the failure, and the next successful
+> update rebuilds all possible assignments in region-index order.
+> 
+> Patch 1 fixes a separate accounting bug when an individual MMIO-bus
+> registration fails. It reserves the selected region slot before
+> registration and undoes that known-latest assignment if registration fails.
+> 
+> Patch 2 implements the atomic failed-region behavior. It unregisters every
+> redistributor iodev, clears every cached assignment, resets the region
+> counters, and frees the newly inserted region. An in-flight vCPU can have
+> an RD iodev before kvm_for_each_vcpu() can see it, so REDIST and
+> REDIST_REGION writes are serialized with vCPU creation and return -EBUSY
+> while the created_vcpus/online_vcpus counts differ.
+> 
+> Patch 3 is independent teardown cleanup. It separates MMIO-bus teardown
+> from config-locked assignment cleanup, preserves the cleanup required
+> before a late failed vCPU creation frees the vCPU, and removes the special
+> conditional from the common vCPU destructor.
+> 
+> Patch 4 keeps the selftest helper aligned with vm_create_with_vcpus(), and
+> patch 5 adds regression coverage for an overlapping region, retry, and
+> final GICR_TYPER accesses to all four redistributors. The test exercises
+> patch 2's final-state behavior; patch 1's MMIO-bus allocation failure is
+> not fault-injected.
+> 
+> Testing: built the patched kernel and the arm64 vgic_init selftest with
+> GCC 13.3.0 in an arm64 Linux container. The selftest passed under QEMU
+> 11.0.2 TCG with -machine virt,virtualization=on,gic-version=3 and -cpu max.
+> 
+> ---
+> Changes since v2:
+> - Patch 1: limit free_index rollback to the immediate registration failure
+>   under slots_lock instead of generic unregistration. (Sashiko)
+> - Patch 2: reset all assignments and region counters after a failed region
+>   update (Marc), and serialize REDIST and REDIST_REGION writes with vCPU
+>   creation so rollback cannot miss an unpublished assignment.
+> - Patch 3: add an already-locked unassignment primitive, move failed-vCPU
+>   cleanup to kvm_vgic_vcpu_destroy(), and remove the redundant base_addr
+>   reset. (Marc)
+> - Patch 4: match vm_create_with_vcpus() by using void * for the guest-code
+>   argument. (Sashiko)
+> - Patch 5: document how the first three redistributors span regions 0
+>   and 1; no functional change.
 
-For MOV CRx, AMD APM 15.8.1 defines EXITINFO1 bit 63 as the “instruction 
-was MOV CRx” flag. MOV CR instructions set it regardless
-of the guest execution mode; it is not an operand-size or 64-bit-mode
-indicator.
+I really don't understand why this is such a massive departure from
+v2, which was pretty close to what I wanted to see.
 
-For INVLPG, the register-operand path is unreachable. The x86 emulator's
-group7 dual opcode table selects INVLPG only for ModR/M memory forms
-(mod != 3). A mod=3 encoding is dispatched through group7_rm7 and never
-produces x86_intercept_invlpg. Valid register-indirect forms such as
-INVLPG (%eax) are decoded as OP_MEM, so addr.mem.ea does not alias a 
-host register pointer.
+Honestly, you are making things harder for everyone by over-designing
+(or more probably under-filtering) things that should be *fixes*, and
+just that.
 
-Thanks,
-Tina
+If you want to rework all of the vgic init/destroy, fine by me. Do
+that as a separate series. But for fixes that carry a Cc stable and
+require backporting to 6 year old kernels, that's not on.
 
-On 8/24/2026 9:11 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> 
-> New issues:
-> - [Medium] Unconditionally setting bit 63 for `MOV CRx` intercepts violates the AMD specification and causes L1 KVM to spuriously inject a #GP into 32-bit L2 guests.
-> 
-> Pre-existing issues:
-> - [High] Host kernel pointer leak (KASLR bypass) when emulating INVLPG with a register operand.
-> --
-> 
-> --- Patch [2]: [PATCH v5 2/8] KVM: nSVM: Synthesize DecodeAssists EXITINFO for emulated intercepts ---
-> commit 8b2926ca93c673e51f89c3e65becdb72f34b66f7
-> Author: Tina Zhang<zhang_wei@open-hieco.net>
-> 
-> KVM: nSVM: Synthesize DecodeAssists EXITINFO for emulated intercepts
-> 
-> When the x86 emulator encounters an instruction intercepted by L1,
-> svm_check_intercept() synthesizes a nested VM-Exit without fresh hardware
-> DecodeAssist state.  Populate the architectural EXITINFO fields when
-> DecodeAssists is exposed to L1.
-> 
->> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
->> index 9d607b98bd067..c7c1f1527c3cf 100644
->> --- a/arch/x86/kvm/svm/svm.c
->> +++ b/arch/x86/kvm/svm/svm.c
->> @@ -4810,6 +4810,52 @@ static const struct __x86_intercept {
-> [ ... ]
-> 
->> +	switch (info->intercept) {
->> +	case x86_intercept_cr_read:
->> +	case x86_intercept_cr_write:
->> +		/* MOV CRx: bit 63 set, GPR number in bits 3:0. */
->> +		exit_info_1 = BIT_ULL(63) | (info->modrm_rm & 0xf);
-> [Severity: Medium]
-> Does unconditionally setting bit 63 here violate the AMD specification for
-> 32-bit L2 guests?
-> 
-> If an L2 guest running in 32-bit mode issues a MOV CRx instruction that gets
-> emulated by L0 (e.g. via KVM_FEP), L0 will synthesize a nested VM-Exit to L1
-> and unconditionally set bit 63 (CR_VALID) in EXITINFO1.
-> 
-> L1 KVM will see bit 63 set, assume it is a 64-bit operation, read the full
-> 64-bit GPR (which may contain garbage in the upper 32 bits from 32-bit
-> execution), and pass it to kvm_set_cr4(). This would fail the reserved-bit
-> check, causing L1 to spuriously inject a #GP into the 32-bit L2 guest.
-> 
->> +		break;
->> +	case x86_intercept_clts:
-> [ ... ]
-> 
->> +	case x86_intercept_intn:
->> +		/* INTn: software interrupt number in bits 7:0. */
->> +		exit_info_1 = info->src_val & 0xff;
->> +		break;
->> +	case x86_intercept_invlpg:
->> +		/* INVLPG: linear address of the target page. */
->> +		exit_info_1 = info->intercept_linear_addr;
-> [Severity: High]
-> This is a pre-existing issue, but does assigning info->intercept_linear_addr
-> here leak a host kernel pointer (KASLR bypass) to the L1 guest?
-> 
-> If an L2 guest places an INVLPG instruction with a register operand
-> (e.g. INVLPG %eax) across an MMIO page boundary, KVM is forced to emulate it.
-> 
-> decode_modrm() correctly identifies it as a register operand and stores a host
-> kernel pointer in addr.reg.
-> 
-> Later, get_intercept_linear_addr() blindly reads addr.mem.ea (which aliases
-> addr.reg), extracting the host kernel pointer:
-> 
-> arch/x86/kvm/emulate.c:get_intercept_linear_addr() {
->      ...
->      la = seg_base(ctxt, ctxt->src.addr.mem.seg) + ctxt->src.addr.mem.ea;
->      ...
-> }
-> 
-> By writing info->intercept_linear_addr to exit_info_1 here, the host KASLR
-> offset is exposed to the L1 guest in the synthesized VM-Exit.
-> 
->> +		break;
->> +	case x86_intercept_invlpga:
->> +		/* INVLPGA: the address remains available in guest rAX. */
->> +		exit_info_1 = 0;
->> +		break;
->> +	default:
->> +		return;
->> +	}
->> +
->> +	vmcb->control.exit_info_1 = exit_info_1;
->> +	vmcb->control.exit_info_2 = 0;
->> +}
-> -- Sashiko AI review · https://sashiko.dev/#/ 
-> patchset/20260824123954.315112-1-zhang_wei@open-hieco.net?part=2
-> 
+The hack below is what I have against your v2 to make it acceptable.
 
+	M.
+
+diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
+index 84e67c23bedc0..85b00849e6154 100644
+--- a/arch/arm64/kvm/vgic/vgic-init.c
++++ b/arch/arm64/kvm/vgic/vgic-init.c
+@@ -539,8 +539,6 @@ static void __kvm_vgic_vcpu_destroy(struct kvm_vcpu *vcpu)
+ 		 */
+ 		if (kvm_get_vcpu_by_id(vcpu->kvm, vcpu->vcpu_id) != vcpu)
+ 			vgic_unregister_redist_iodev(vcpu);
+-
+-		vgic_cpu->rd_iodev.base_addr = VGIC_ADDR_UNDEF;
+ 	}
+ }
+ 
+@@ -563,14 +561,13 @@ void kvm_vgic_destroy(struct kvm *kvm)
+ 
+ 	vgic_debug_destroy(kvm);
+ 
+-	kvm_for_each_vcpu(i, vcpu, kvm)
++	kvm_for_each_vcpu(i, vcpu, kvm) {
+ 		__kvm_vgic_vcpu_destroy(vcpu);
+-
+-	if (kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3) {
+-		mutex_unlock(&kvm->arch.config_lock);
+-		kvm_for_each_vcpu(i, vcpu, kvm)
+-			vgic_unregister_redist_iodev(vcpu);
+-		mutex_lock(&kvm->arch.config_lock);
++		if (kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3) {
++			kvm_io_bus_unregister_dev(vcpu->kvm, KVM_MMIO_BUS,
++						  &vcpu->arch.vgic_cpu.rd_iodev.dev);
++			__vgic_unassign_redist_iodev(vcpu);
++		}
+ 	}
+ 
+ 	kvm_vgic_dist_destroy(kvm);
+
+-- 
+Jazz isn't dead. It just smells funny.
