@@ -1,86 +1,149 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37CB33AE18A;
-	Mon, 31 Aug 2026 08:33:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EAF3624C9
+	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 08:46:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788165242; cv=none; b=C7KB0ZqNSsZhfmX2t9li7jrqrvHx1RDdo4mOj31I22NKYPNeCAvodxHur6nf1eAoZCJPAqIZDMUjycEmaKhokm1pmjEXiyhlOayVSc2boQnon4YKo3OytmX0Sog1qq+uEIdy/tSmNLC59bNEHqEajXlO3OSwC64pxqQvpOaQwaE=
+	t=1788166006; cv=none; b=GSJgm6MHO87b/AeGt8ZhhpMGOA4styazbhEbpVTDcTLAmh811+4REQyMDK9izuGX+KjvK7LcHamx2FFTRhgtLItwl3zjfkeslX+owHauinbOzA8dVVWp5ynUrz9wo5DgqCuWeMPxFbR6Rw2gsBw04QZOqtLTgrpz/97Y9PobzmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788165242; c=relaxed/simple;
-	bh=fwFFIqVPng0FWB2Lx9Y4U6/a8WISTMZbjmkj3/3M/bo=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=pdtJIBC/3X3PS9d75IESZ4ESigGfMUFjd+FdKa6xqz2voBCOmGzS/5KFXojJOCeOK3Z9/Q+YJmK5sRRWCZjJMZkzybuT6HhxT/9KZsaYnxVDnOE5sCp46zLAwtDOsZcUgDS31TGwd3HODIu5bvr2wiNBiHu/3pQdWaXdXHBola8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=D/LoRkGM; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	s=arc-20240116; t=1788166006; c=relaxed/simple;
+	bh=LtL4dKR17MxcHpQnJgQbUWi7Lxy8UUcxFoB3RAaXA7Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c2TqQtm+Gscn1/V+bazGk8TDNo5N9xLkkSvysvnuBRLBHmeqkcWXCRRYsaxAjZb2MQLCoydydFdvWdwoup0tACxXUdI8Mw9GTY7SDG4/9AY8OJQoRkfirzeCtzyiNoTGWscaoK+1aG89aUfVZ26Jz49jNwfS4tXrZPpgwaEw4xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=MovG2GY2; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="D/LoRkGM"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=fwFFIqVPng0FWB2Lx9Y4U6/a8WISTMZbjmkj3/3M/bo=; b=D/LoRkGMPMWcvC1tfmgmSsxHUl
-	7+eV1p2HvRNRdog29xhoCX7RSM0cYJ5dF6PraNmaZLyZMdgd4smlIoIL/E6YzjQ3J39wCCZOvyiGT
-	pRHdlI8nCo09EGRj1Gty75vHN+hi3KlZ1dx3HTH/foJ6VhuobFEDTCM+dC/1+YHrVCCPGxou8rArY
-	MqQ2Ue1bcIFA9JVdYN8XbUQHdxSBP/IGneOOOG8g9wLBg12IT5/WABmh8QEZiN4cJNY5niz3jnIdV
-	VbB8NtU70JEm6auQoiI4RI7f6zcjlvW6f89YBpox+mKTaaUc8Cw5P3yL5RVOFUCJFY+yZz8x732Px
-	VGcWnh5g==;
-Received: from [172.31.31.139] (helo=ehlo.thunderbird.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1x0xSh-00000009fo0-2qMu;
-	Mon, 31 Aug 2026 08:33:52 +0000
-Date: Mon, 31 Aug 2026 09:33:52 +0100
-From: David Woodhouse <dwmw2@infradead.org>
-To: =?UTF-8?B?RnVya2FuIMOHYWzEscWfa2Fu?= <frn1furkan10@gmail.com>,
- linux-kernel@vger.kernel.org
-CC: kvm@vger.kernel.org, x86@kernel.org, seanjc@google.com, pbonzini@redhat.com,
- tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
- hpa@zytor.com, paul@xen.org, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH] KVM: x86/xen: Convert evtchn_ports from IDR to XArray
-User-Agent: K-9 Mail for Android
-In-Reply-To: <85c66385-7a28-4779-96d4-6b34f53b5994@gmail.com>
-References: <20260706081311.13633-1-frn1furkan10@gmail.com> <efe39d24a2621ce23f9d53471b3b587feaaa8526.camel@infradead.org> <85c66385-7a28-4779-96d4-6b34f53b5994@gmail.com>
-Message-ID: <B9710C21-8127-4DC1-8DFF-D6551EE09AE5@infradead.org>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="MovG2GY2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=VLrNFBb+HkD4+F2K1pz6M+GL9jAEqixZHMEFWb9Etys=;
+	b=MovG2GY2kqGN2SLUCxG5FI4sMlC1of5cbbUzw3iUZJcIy0hndxphkHo8UwTAaW
+	AaJZwMkO5nfRrmqOHPbDl0tvNW0qTdxKlGRsvCUm3f9QHW7XqT023SythxCTIMrW
+	uPVnIx6PF8A+5bKLlQ08ad+x+h1gvbDPAHuYfE3Hxed0Y=
+Received: from [10.42.12.49] (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wCn5Z9kP5VqnHvgTA--.1543S2;
+	Mon, 31 Aug 2026 16:46:28 +0800 (CST)
+Message-ID: <1bb7c920-e891-4cfd-ae47-15056ceecc5a@163.com>
+Date: Mon, 31 Aug 2026 16:46:28 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: riscv: Fix NACL hfence entry update order
+Content-Language: en-US
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+References: <20260826075009.68952-1-min_halo@163.com>
+ <20260826080204.09A0C1F000E9@smtp.kernel.org>
+From: Zongmin Zhou <min_halo@163.com>
+In-Reply-To: <20260826080204.09A0C1F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCn5Z9kP5VqnHvgTA--.1543S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAF13WryfKw18tF45tw1kZrb_yoWrXFyrpF
+	Wftay8KF4rKr1fKwn7Zws7ZrWag3ZYgFy5Gw15ZF1Uuws8ZryFvwnFqFZ8uF95Jw1UWw10
+	yr4jkFyvvFn8Aa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zROeOJUUUUU=
+X-CM-SenderInfo: pplqsxxdorqiywtou0bp/xtbC0QTolGqVP2QyzAAA3z
 
-On 31 August 2026 06:59:50 BST, "Furkan =C3=87al=C4=B1=C5=9Fkan" <frn1furka=
-n10@gmail=2Ecom> wrote:
->
->
->On 7/7/26 12:16, David Woodhouse wrote:
->> On Mon, 2026-07-06 at 11:13 +0300, Furkan Caliskan wrote:
->>> IDR is deprecated in favor of XArray: see
->>> Documentation/core-api/idr=2Erst=2E Convert evtchn_ports accordingly=
-=2E
->>>
->>> kvm_xen_eventfd_assign()'s single-slot idr_alloc() becomes
->>> xa_insert(), since it was really an insert-at-index, not an
->>> allocation: -EBUSY replaces -ENOSPC, still mapped to -EEXIST=2E
->>>
->>> kvm_xen_hcall_evtchn_send() drops its explicit rcu_read_lock(),
->>> since xa_load() takes its own RCU read-side section internally=2E
->>> evtchnfd's lifetime is still guaranteed by kvm->srcu=2E
->>>
->>> xen_lock is left in place: it protects state beyond the map itself=2E
->>>
->>> Signed-off-by: Furkan Caliskan <frn1furkan10@gmail=2Ecom>
->>=20
->> Reviewed-by: David Woodhouse <dwmw@amazon=2Eco=2Euk>
->>=20
->> Thanks=2E
->
->Ping?
 
-I have a pile of Xen cleanups outstanding; I'll tack it on the end of that=
- series so it doesn't get lost=2E Thanks=2E
+在 2026/8/26 16:02, sashiko-bot@kernel.org 写道:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+>
+> New issues:
+> - [High] Using `smp_wmb()` instead of `dma_wmb()` or `wmb()` to synchronize with a hardware device or external agent.
+Agreed. This shared memory is read by an external agent (SBI firmware or 
+NACL hardware), not only host CPUs.
+Since arch/riscv KVM can be built without CONFIG_SMP, `smp_wmb()`
+would fall back to a pure compiler‑only barrier() on !SMP builds,
+without emitting any hardware fence instruction.
+I will replace `smp_wmb()` with `wmb()` in v2, which unconditionally
+provides the required ordering guarantee across all kernel configurations.
+>
+> Pre-existing issues:
+> - [High] The retry loop in `__kvm_riscv_nacl_hfence` can spin indefinitely because `try_count` is never decremented.
+> --
+Already fixed by commit e971f19e4c82 ("KVM: riscv: Fix infinite loop in 
+NACL hfence entry allocation").
+The code snippet referenced in the AI review corresponds to an older 
+version and does not match the current source tree.
+>
+> commit 7e01a77077e49fef54c573574fad3624c0817345
+> Author: Zongmin Zhou <zhouzongmin@kylinos.cn>
+>
+> KVM: riscv: Fix NACL hfence entry update order
+>
+> The commit fixes the order in which nested HFENCE entries are populated
+> by writing the page number and count first, then the config word. It uses
+> WRITE_ONCE() and smp_wmb() to prevent hardware or firmware from observing
+> incomplete entries.
+>
+> [Severity: High]
+> This isn't a bug introduced by this patch, but looking at the retry logic in
+> arch/riscv/kvm/nacl.c:__kvm_riscv_nacl_hfence():
+>
+>      if (ent < 0) {
+>          if (try_count) {
+>              nacl_sync_hfence(-1UL);
+>              goto again;
+>          } else {
+>              ...
+>
+> Does this loop run indefinitely? I noticed try_count is initialized to 5
+> but doesn't appear to be decremented anywhere in this path. If the NACL
+> hardware or SBI implementation stalls and fails to clear pending entries,
+> could this cause a host CPU soft lockup?
+>
+>> diff --git a/arch/riscv/kvm/nacl.c b/arch/riscv/kvm/nacl.c
+>> index 08a95ad9ada2c..f922e9f62fee3 100644
+>> --- a/arch/riscv/kvm/nacl.c
+>> +++ b/arch/riscv/kvm/nacl.c
+> [ ... ]
+>> @@ -42,12 +42,24 @@ void __kvm_riscv_nacl_hfence(void *shmem,
+>>   		}
+>>   	}
+>>   
+>> -	entp = shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_CONFIG(i);
+>> -	*entp = cpu_to_lelong(control);
+>> +	/*
+>> +	 * Per SBI v3.0 section 15.1.2, the Page_Number and Page_Count
+>> +	 * words must be updated before the Config word with its Pending
+>> +	 * bit set. WRITE_ONCE() stops the compiler from reordering the
+>> +	 * stores and smp_wmb() makes the parameter words globally
+>> +	 * visible to the SBI implementation (or NACL hardware) before
+>> +	 * the Pending bit is set.
+>> +	 */
+>>   	entp = shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_PNUM(i);
+>> -	*entp = cpu_to_lelong(page_num);
+>> +	WRITE_ONCE(*entp, cpu_to_lelong(page_num));
+>>   	entp = shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_PCOUNT(i);
+>> -	*entp = cpu_to_lelong(page_count);
+>> +	WRITE_ONCE(*entp, cpu_to_lelong(page_count));
+>> +
+>> +	/* Ensure the parameter words are visible before the Pending bit */
+>> +	smp_wmb();
+>> +
+> [Severity: High]
+> Does smp_wmb() provide the necessary hardware ordering guarantees on all
+> configurations?
+>
+> Looking at arch/riscv/kvm/nacl.c:__kvm_riscv_nacl_hfence(), since the
+> memory is coherent and shared with an external agent or NACL hardware, I am
+> concerned about non-SMP kernel builds (!CONFIG_SMP) where smp_wmb()
+> degrades to a simple compiler barrier (barrier()) and emits no actual
+> hardware fence instructions.
+>
+> Would it be safer to use dma_wmb() or wmb() here to ensure the memory
+> ordering is strictly enforced against external hardware, regardless of
+> the kernel's SMP configuration?
+>
+>> +	entp = shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_CONFIG(i);
+>> +	WRITE_ONCE(*entp, cpu_to_lelong(control));
+>>   }
+>>
 
