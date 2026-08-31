@@ -1,103 +1,126 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3E43C73CC;
-	Mon, 31 Aug 2026 09:54:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A510E2475D0
+	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 10:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788170086; cv=none; b=OkUPITqjurgMa3Myaz05MAL0so1hITHNNGKk6tl3Rr5Hs4eyE3CH2okwzr3MHkYfz2INJAnQiApe4ExdKHBSqy1NWDkHbV+BSUgy9cUADLWs3SPWayZemLu6tx5G0tYWblYm80ZcT7FP35MFMRIK000iL/n1Ys7YBvxbRajj0TU=
+	t=1788170424; cv=none; b=TwOfsaRwLz4xUJ5m/pXIQaHtIMxP56rHzJM0Qio2KZkwWr1Xg8T53HbLX31ttlexsibZ1Tj1JTd9mTnxffOwiEgUKMugKP7uTCJ/G98s0k5e2s+TjaHLiEgpxcWbfAcEcezrVaA7mXFANH06y065rz8ywhmUabU+f6EAPFxs90A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788170086; c=relaxed/simple;
-	bh=afxTLShJ7HbvlaiQDC+SJ5sRlK4jyr+zi2Xy9YGfat4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=E/tk2x2oVZsk1OqMpU7G48n8VnCqIWckhzO8bKK6zIj9yGZJP1mmPFiPgm6aknSgEHOliCX0xF0jfnCURA1+3iBSJExffHTQTgB/NvSZjCzgrcAtLkmrxEpdv0UhoIJoeuXKBt2W+Ekbxmnqeoyqf28Sy1kg5eu1v3OUggq17u0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8Ax29FgT5VqvN0GAA--.19306S3;
-	Mon, 31 Aug 2026 17:54:40 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJBxKs5eT5VqDTYYAA--.20453S2;
-	Mon, 31 Aug 2026 17:54:38 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: WANG Xuerui <kernel@xen0n.name>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Xi Ruoyao <xry111@xry111.site>,
-	kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 0/3]  LoongArch: KVM: Add separate vmid support
-Date: Mon, 31 Aug 2026 17:47:13 +0800
-Message-Id: <20260831094716.4016652-1-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
+	s=arc-20240116; t=1788170424; c=relaxed/simple;
+	bh=OM48rFp00GcDzDPpOaH+UclFgMi7HtgNnaK9R6vwuE4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=cgD5I7dN0qbFTSGlTlESShoCRLzr30z23gHDa0Dzr0D3F0I6aVBMVyQl8BTfJyi7tI9xkF7WC8whyMutPvlswKkbqpt7DLPYWekc8L7bOC5i17rNfe5ZYuttBw534p6EWRURJORJQvSHPzvRVy+DQSGJGy6B5J/dy1PwwQbIH8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fKrmc3zI; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fKrmc3zI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0155B1F000E9;
+	Mon, 31 Aug 2026 10:00:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788170423;
+	bh=/mERWFw6S3wa4CtMSoguppmggIqa26weVsXS6S9ZYMA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=fKrmc3zIM1gcOwzd6t79Ych5fkSF0hpQxCuagifK4dmxL270we0SwYwtLCDB1kq+w
+	 ujY3OI9WCp5XU/D+hGsUtVtB8b7QO/yodzoTx8A5zMwbAopbhUrmmQuF3DggBxJP6G
+	 tOahOb7nWuW33cA82og1SFl4MvGwuFapIYiCeA6Atb4q/agbq9knTxx/HmXWu+JRF1
+	 9SP7nm6wRYibnSe5WC05zkpv3qjhbma0oYEH8hq9Nd9nIS+kYkwGAi58Es9nLUABIp
+	 cHuCPmgC2uyqnz2hw3obxx0U32xC5UHqnlEdA01c3XDobrLJVP2zOWtHIaQ05Oi1al
+	 LXO/mgm1nDxAQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 3/3] hisi_acc_vfio_pci: reject live migration on 64KB
+ page with QM_HW_V3 hardware
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Longfang Liu" <liulongfang@huawei.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260831090951.844569-4-liulongfang@huawei.com>
+References: <20260831090951.844569-1-liulongfang@huawei.com>
+ <20260831090951.844569-4-liulongfang@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 31 Aug 2026 10:00:22 +0000
+Message-Id: <20260831100023.0155B1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxKs5eT5VqDTYYAA--.20453S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
 
-LoongArch KVM hypervisor supports two-level MMU, vpid index is used
-for stage1 MMU and vmid index is used for stage2 MMU.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] The patch completely breaks VFIO passthrough for this device on 64=
+KB page hosts instead of gracefully falling back to generic operations.
+--
 
-On 3A5000, vmid must be the same with vpid. On 3A6000 platform vmid
-may separate from vpid. There are such advantages if separated vmid
-is supported.
-  1. One VM uses one vmid, vCPUs on the same VM can share the same vmid.
-  2. If one vCPU switch between different physical CPUs, old vmid can be
-     still useful if it is not expired.
-  3. For remote tlb flush, it is to flush TLBs which are mapping
-     GPA --> HPA, only vmid need update and vpid need not.
+commit e0bfdb6998df9e209e0b7358693ec17f21c25bfe
+Author: Longfang Liu <liulongfang@huawei.com>
 
-Here add separate vmid feature support, vmid feature detecting method
-comes from CPUCFG8 capability when LVZ is enabled.
----
-v2 ... v3:
-  1. Merge patch 1-2 into one and patch 3-4 into one.
-  2. Return directly and do not update vmid in function __kvm_check_vmid()
-     if feature cpu_has_guestid is disabled by AI agent review.
-  3. In function kvm_arch_disable_virtualization_cpu disable feature
-     CSR_GTLBC_USES2TGID, similiar with enable cpu virtualization,
-     the same from AI agent review.
-  4. Rename USEVMID with USES2TGID, VMID is KVM software word and S2TGID
-     is hardware word.
-  5. Set cpu bit with vcpu->kvm->arch.tlb_flush_pending with
-     KVM_REQ_TLB_FLUSH, similiar with request KVM_REQ_TLB_FLUSH_GPA.
+hisi_acc_vfio_pci: reject live migration on 64KB page with QM_HW_V3 hardware
 
-v1 ... v2:
-  1. Move vmid together with vpid in patch1, rename it with hw_vmid.
-  2. Rename kvm_check_vcpuid() with __kvm_check_vpid(), and function
-     kvm_check_vmid() with __kvm_check_vmid().
-  3. Merge part of patch 2, patch 3/4 together.
-  4. Use bit8 of CPUCFG8 as guestid capability rather than LVZ version,
-     since it is hard to decide whether this feature exists with high LVZ
-     version in future.
-  5. Set cpu bit with vcpu->kvm->arch.tlb_flush_pending rather than
-     using add request KVM_REQ_TLB_FLUSH_GPA, it needs flush TLB on CPU
-     where page fault happens and vCPU maybe migrates to other CPUs.
----
-Bibo Mao (3):
-  LoongArch: KVM: Add vmid support for stage2 MMU
-  LoongArch: KVM: Implement vmid updating logic
-  LoongArch: KVM: Enable separate vmid feature
+This commit aims to prevent security vulnerabilities and guest exceptions w=
+hen
+combining QM_HW_V3 hardware with 64KB pages by disabling live migration. It
+returns -EINVAL during device initialization if the host page size exceeds
+32KB.
 
- arch/loongarch/include/asm/kvm_host.h  | 10 ++++
- arch/loongarch/include/asm/loongarch.h |  5 ++
- arch/loongarch/kernel/asm-offsets.c    |  1 +
- arch/loongarch/kernel/cpu-probe.c      |  6 +++
- arch/loongarch/kvm/main.c              | 71 ++++++++++++++++++++++++--
- arch/loongarch/kvm/mmu.c               | 30 +++++++++--
- arch/loongarch/kvm/switch.S            |  5 +-
- arch/loongarch/kvm/tlb.c               | 19 ++++++-
- 8 files changed, 135 insertions(+), 12 deletions(-)
+> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfi=
+o/pci/hisilicon/hisi_acc_vfio_pci.c
+> index 4abed2e49986f..4f12cab96545e 100644
+> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+> @@ -1210,6 +1210,23 @@ static int hisi_acc_vf_qm_init(struct hisi_acc_vf_=
+core_device *hisi_acc_vdev)
+>  	else
+>  		hisi_acc_vdev->drv_mode =3D HW_ACC_MIG_VF_CTRL;
+> =20
+> +	/*
+> +	 * On VF_CTRL hardware, BAR2 holds 32KB functional + 32KB
+> +	 * migration registers. When the host page exceeds 32KB, the
+> +	 * two share one physical page and cannot be isolated by mmap.
+> +	 * Reject the open so QEMU fails cleanly at startup.
+> +	 */
+> +	if (hisi_acc_vdev->drv_mode =3D=3D HW_ACC_MIG_VF_CTRL) {
+> +		resource_size_t func_len =3D
+> +			pci_resource_len(vf_dev, VFIO_PCI_BAR2_REGION_INDEX) >> 1;
+> +
+> +		if (func_len < PAGE_SIZE) {
+> +			dev_err(&vf_dev->dev,
+> +				"migration not supported on 64KB pages with QM_HW_V3\n");
+> +			return -EINVAL;
 
+[Severity: High]
+Does returning an error here completely break VFIO passthrough for this dev=
+ice
+on 64KB page hosts?
 
-base-commit: 73e3f0710014fe6d4ed98cfc02292f6121db7558
--- 
-2.39.3
+Since hisi_acc_vf_qm_init() is called during device open, returning an error
+causes the entire operation to fail. This results in users completely losing
+passthrough functionality for QM_HW_V3 devices on 64KB page hosts, rather
+than just having migration gracefully disabled.
 
+Could this be handled earlier in hisi_acc_vfio_pci_probe() instead?
+
+The driver currently assigns migration operations unconditionally:
+
+drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c:hisi_acc_vfio_pci_probe() {
+    ...
+    if (pf_qm && pf_qm->ver >=3D QM_HW_V3) {
+        if (pdev->is_virtfn)
+            ops =3D &hisi_acc_vfio_pci_migrn_ops;
+    ...
+}
+
+If the 64KB page limitation was checked during probe and fell back to the
+generic ops instead, normal passthrough would continue to work correctly.
+The generic VFIO implementation safely maps the entire BAR2 region without
+KVM trap-and-emulate issues.
+
+> +		}
+> +	}
+> +
+>  	if (hisi_acc_vdev->drv_mode =3D=3D HW_ACC_MIG_PF_CTRL) {
+>  		/*
+>  		 * On hardware platforms greater than QM_HW_V3, the migration function
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260831090951.8445=
+69-1-liulongfang@huawei.com?part=3D3
