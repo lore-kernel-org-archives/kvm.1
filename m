@@ -1,53 +1,68 @@
-Received: from mta0.migadu.com (out-226.mta0.migadu.com [91.218.175.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B25F4968F6
-	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 16:28:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E394252B1;
+	Mon, 31 Aug 2026 17:14:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788193702; cv=none; b=BOL8EKjckOcKSReh6BPLWnOjldPc4irUCOQXURqenH29lJPOpuSz/XGpxYpjRM+5uECVUXuXD6k9ik62HFvVG8vswlaOzlFQBR7aYaPw95gXwwHMEWCkh4OCuu64RjcxlkdO92Jv2J/i0y2sntms9y28rqofEpNGQp9BRQXvGLk=
+	t=1788196496; cv=none; b=aPY64Qyc83nmjXYriCda2+mPJ5offzbhT1qOtG3GtwCGkwOMziS0fwyCEB5FCpfKbJpdV/lWEduiy4XL9dg1zFAilXGqdR9H73mVb7eY5seaKUWqi3ENK/Ow/XVI8Ofa8x3uP2mquZTN3FGJ7U/5+qC2QNgIIFwmvKJL80XpB6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788193702; c=relaxed/simple;
-	bh=xIutThzYKRk+MmgmvnI6jxLg86YKS37TTQ0Ve9SNoQs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HVzdWuZcRIDE7N32zeBc0g7zi3AG7P9m+snfcGsNlAC8EXlODDpMnuQlkHlZbAD046SmRtGmqpOeu50NBFjGdmDy5x2NPFPNYve2wlNNkxKHiezTOwo4ZxAD8/cejuNCvmU6uBb89EXQ+PjxyCxQHSYmw9f6HdDfeI/IVB+eXG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=eZv0dstr; arc=none smtp.client-ip=91.218.175.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788196496; c=relaxed/simple;
+	bh=LPbMypSF7JhMLbVLvz9qixDWAqBcFNtb0jTY8hd3MOo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H2Elq18kFsvb+MBefY7TH4y9n96guhwa1zMjPTzCm14tIw2wn6hsjoZo7UriaV3+OpDxiBynnowKA1hynkxtnsLQEukx2zlsrXhRIrIVLtNntg2YWW6VEmR55U3qNpRTZbEICUu03h3u0yOev8xa7+nRdg3ZsOlgtbvDSlkeBMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=VryzBJMP; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="eZv0dstr"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=xIutThzYKRk+MmgmvnI6jxLg86YKS37TTQ0Ve9SNoQs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788193696; v=1; x=1788798496;
- b=eZv0dstr7e0JcCExDFQuAwZ2D//Ch5dXmkdHho3oWMIg2+k3zQbQXxY/5knFWLVWncdhsvV9
- ICeBSeSXv41n0ISsMXvcSIbarMq4AURU2NALsg0Mq/AqWA2ZeYBPo2eNWOwkN8AQaaK7+fvhc10
- ybsbw5G3axM5XAZkvOG8bdVQ=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 55f6d3df3ac0595f;
-	Mon, 31 Aug 2026 16:28:16 +0000
-X-Mizu-Trace-ID: 55f6d3df3ac0595f
-X-Migadu-Flow: FLOW_OUT
-From: Fuad Tabba <fuad.tabba@linux.dev>
-To: Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Quentin Perret <qperret@google.com>,
-	Fuad Tabba <tabba@google.com>,
-	kvm@vger.kernel.org
-Subject: [PATCH] KVM: arm64: Fix the KVM_ARM_PREFERRED_TARGET documentation
-Date: Mon, 31 Aug 2026 17:28:15 +0100
-Message-Id: <20260831162815.269851-1-fuad.tabba@linux.dev>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="VryzBJMP"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67VG1amF2749161;
+	Mon, 31 Aug 2026 17:14:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=fZ6PoTCN8CVnMv0ktRWDHC8baSKTJMs7VT3HlD+gW
+	QQ=; b=VryzBJMPfSfjgJlKWEmSNoan8IfBw41By7r+6iCEhb/1YTxm/ohFZSiyx
+	JiEB5EabjaCfUJ4HPxG/Yo9U4CK91gZpuvR+eZ8YKGuvZ61tS+zXuiQoM6tyhNYB
+	xDRvK99IzhZ4q/J+HthBLQdnFBQWvr2f+Ip5ERpetWOQ/RTlw7wNaq21D7k/6+6y
+	76/Q/Xn1KShAwKxOckG9sbEvmrEMDfcZtkR9o0AXnQT+SoCxfFKcIAZp/VAdmZwh
+	61DPZ+UmQP6XWxtFOl2DLlS4mUnJQ4adKuPIxrHVGtSmb41oZCO5a6NwQXfNkh1o
+	6tjhzd3onFg8CFbgqOnL/1v9Ed0qQ==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbpx5at4t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 31 Aug 2026 17:14:47 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67VHBJhK018791;
+	Mon, 31 Aug 2026 17:14:46 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gcb8h72dw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 31 Aug 2026 17:14:46 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67VHEjgC14287482
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 31 Aug 2026 17:14:45 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 77DF75805F;
+	Mon, 31 Aug 2026 17:14:45 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D536A5805A;
+	Mon, 31 Aug 2026 17:14:43 +0000 (GMT)
+Received: from li-4c4c4544-004d-4810-8043-b7c04f423534.ibm.com.com (unknown [9.61.29.117])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 31 Aug 2026 17:14:43 +0000 (GMT)
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
+        pasic@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
+        fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, agordeev@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com
+Subject: [PATCH v5 0/4] s390/vfio-ap: Fix pre-existing bugs in vfio_ap device driver
+Date: Mon, 31 Aug 2026 13:14:39 -0400
+Message-ID: <20260831171443.222225-1-akrowiak@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -55,54 +70,58 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=PPc/P/qC c=1 sm=1 tr=0 ts=6a95b687 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=fuWVWdFGajcpH1A5QwgA:9 a=zZCYzV9kfG8A:10
+X-Proofpoint-GUID: aQ9Ps0GB3wtjcUFBphSpUdHZdJvK74wz
+X-Proofpoint-ORIG-GUID: aQ9Ps0GB3wtjcUFBphSpUdHZdJvK74wz
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDE0NyBTYWx0ZWRfX0ROdQGd8MxYb
+ XzrMSCBlnUsqaEICF8buctKTQ3AYmyNVKAFcAbuxjWcluXDhFonPXkDlKB/A28Em3gBu2GXmnDV
+ tuyO6qxL2mK+brEjg5ksyJWGtaXQyI8=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDE0NyBTYWx0ZWRfX7t/PapOxYDQT
+ YETi+F1ozDVzIWz5tE5WVp3TQaC2Q6VOPNDRI8CZExGAHllFTjKHY9uUKhbycfOaVhSQYm5CKBC
+ AHlTiOuQ2otE7wZOw1TVW3UHcTfED7rviT7Po3vN3OzFQI917+kluPsZE6k7XS9urNe4GHS7DPS
+ mSxQZllVUTdXnsC3NSiKosBnCRroOMlCGE0iZd0hryeOR+YoMkFFcRa5iXrZrfFlDsQHUA0/rMo
+ WI8KCagxA1sA6h4hZMo5ZlMsp2NIVF+6yrBmz5ZuH2ckYQDQWhc7tK56t4/byUG0C/6Yzm0GeOy
+ k+opymO3sVy1ga3NPFS19+aZ7jFidMTFyQRYWebMBPvgf/6r49qApP5rSMtL+4SZ51cos7Uhjvq
+ cAPp4ULN9SZy9u0jNnGPeGIu5qFjrehBnyudtZSMpHS1rYrvc1UTzaT9veIU+Jm1t0dw6UrPOmg
+ c2+yFofmgaDvH+yGdig==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-31_05,2026-08-31_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 phishscore=0 adultscore=0 suspectscore=0 bulkscore=0
+ spamscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608310147
 
-KVM_ARM_PREFERRED_TARGET has never set a feature bit: the original arm64
-implementation zeroed the bitmap, and kvm_vcpu_preferred_target(), which
-only ever zeroed it, was removed by commit 5346f7e13e5e ("KVM: arm64:
-Always return generic v8 as the preferred target"). The ENODEV error had
-gone earlier still, with commit 08e873cb70f3 ("KVM: arm64: Change the
-return type of kvm_vcpu_preferred_target()"). Document what it returns,
-that userspace selects vCPU features itself, and drop the error.
+The sashiko AI reported several pre-existing bugs in the vfio_ap device
+driver code while reviewing unrelated patches. This series fixes four
+such bugs.
 
-No functional change intended.
+Change log v4 => v5:
+~~~~~~~~~~~~~~~~~~~
+Patch 1/4: Fix leak of pinned NIB and registered NISC in vfio_ap_irq_enable
+* Fixed bug in vfio_ap_irq_enable() whereby the AQIC resources are freed
+  when vfio_ap_wait_for_irq_state() returns false.
 
-Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
----
- Documentation/virt/kvm/api.rst | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+Patch 3/4: Fix unbounded loop in apq_reset_check()
+* Refactored apq_status_check() to verify the queue was zeroized.
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index e0430cc750c9e..193f3b0ec77d1 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -3600,20 +3600,14 @@ Possible features:
- :Parameters: struct kvm_vcpu_init (out)
- :Returns: 0 on success; -1 on error
- 
--Errors:
--
--  ======     ==========================================
--  ENODEV     no preferred target available for the host
--  ======     ==========================================
--
- This queries KVM for preferred CPU target type which can be emulated
- by KVM on underlying host.
- 
--The ioctl returns struct kvm_vcpu_init instance containing information
--about preferred CPU target type and recommended features for it.  The
--kvm_vcpu_init->features bitmap returned will have feature bits set if
--the preferred target recommends setting these features, but this is
--not mandatory.
-+The ioctl returns a struct kvm_vcpu_init instance containing the
-+preferred CPU target type. The kvm_vcpu_init->features bitmap is
-+returned empty: userspace selects the vCPU features itself, and their
-+availability is reported by the capabilities listed under
-+KVM_ARM_VCPU_INIT.
- 
- The information returned by this ioctl can be used to prepare an instance
- of struct kvm_vcpu_init for KVM_ARM_VCPU_INIT ioctl which will result in
+Anthony Krowiak (4):
+  s390/vfio-ap: Fix leak of pinned NIB and registered NISC in
+    vfio_ap_irq_enable/disable()
+  s390/vfio-ap: Fix failure to release IRQ notification eventfd contexts
+  s390/vfio-ap: Fix unbounded loop in apq_reset_check()
+  s390/vfio-ap: Use AP_DOMAINS for adm_add bitmap size in
+    vfio_ap_mdev_cfg_add()
 
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+ drivers/s390/crypto/vfio_ap_ops.c | 273 ++++++++++++++++++++++++++----
+ 1 file changed, 243 insertions(+), 30 deletions(-)
+
 -- 
-2.39.5
+2.53.0
 
