@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD43028315D;
-	Mon, 31 Aug 2026 00:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFD435E55D;
+	Mon, 31 Aug 2026 00:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788135923; cv=none; b=f48fHxMNjUPqIUNafKijFikSkph2cbn1hgJSCki5k8m21ti+joGSnBBnbsmH+SJyYA1KoDOs6wufHhkpQfufmbLRIgVZmLd53hmhvFZVLCptJQvTSWEN/zMAWjzizVloq0Xjs+2HhmFGgU+f45E/epW4LIF/nwvhFyRUE9m2PMk=
+	t=1788135924; cv=none; b=Ndojjmgih9PKWmo6m7dkYNswKeLwvbuujm5YHepIBM/Ku9XnkN7ncwn25zHylFtrCYIiXXhuFihQNnEHDxbfRwN93JURt7wsxHAPAgnMIVcP8jsgb1w5p3bPf4fachT7ZwdBH+Pw7GMtx6Svu/h/yMebt2cWtfj9NqUVOg9D43I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788135923; c=relaxed/simple;
-	bh=MBsdJBcO4TQvHjj9pDczibnuw9xpxWQnfVZGWTJVKUg=;
+	s=arc-20240116; t=1788135924; c=relaxed/simple;
+	bh=L1SvzQQsKRUvOZ0fQVdIdVUEFR5k64uVcH/NuUMnWr4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=X6gsvteom7SRq/dr7N9gVZ8mHDhQE2qyT8vFp/LYn0YRvdlQa3lYjocjQ7eNORqC9pmKNbr52dIjpQPNhSn0KH0alLQye5DlPWh//kPXoBuXlg1ZEEAc8Lujz9xQutQVM4O8pG7/bvUwOmbKHBTXsKWZqo9j8I+vfFpKWne38Bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TbZGfcdq; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=PSJZGOyWBOsIYeGMe1uYAVAv74uBRV0r1f/944D538IkhTekWU1AeYa7d8jhFULB20ahwxhwbD8jxLzii0rd7wnPjzNexqr7xkp5KgSl7M8Y840mKm+gialKXvYCyMkBN4gM2aTUBO89dm6uSAR1C0bcVczCCoTBDV+b9dTvD5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O/5NBW6O; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TbZGfcdq"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A56CBC2BD05;
-	Mon, 31 Aug 2026 00:25:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O/5NBW6O"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2CB53C2BCF5;
+	Mon, 31 Aug 2026 00:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788135923;
-	bh=MBsdJBcO4TQvHjj9pDczibnuw9xpxWQnfVZGWTJVKUg=;
+	s=k20201202; t=1788135924;
+	bh=L1SvzQQsKRUvOZ0fQVdIdVUEFR5k64uVcH/NuUMnWr4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=TbZGfcdq7kzK5CCsa3AykZxdq6sTTAfupmtjkchE+NV99+G/oXHy/z32qCaBG7yil
-	 9WrCpttCdJesYEqjoYscTa5LPn6hBJ9lJIvghrBPbP0LTL1lSKIhn0dRgaZ5oPHzlm
-	 NtHTPWAFdbkEyOSvLgkSxbm1/0JEvdxU82qzQ5QaH5WZpr3D34nFvw6VKaSJ4SV2zg
-	 m5V4ti0tiMJM3cLO1P89RafdUv96KHCQ5ZPh3NMtWFGAdGY2VHr1pg6ixUI15GdHoz
-	 lklc7TXC7dPcSjRY38X+LQvhpoUXxXjmwsyauWIyZ+Bj9Ogs5qgKvlcG06xLwK6Mbc
-	 pNF1/5ioaidzA==
+	b=O/5NBW6OI201GlvVp10lsHH14kGYEqgCVacehiFDMnVFB0S/+QISvCCMgW5J7NISs
+	 M5dTwBDLWrF2IAOLExZGYZDrRmzvgcbBow1fEAn+tmL3jrUoRBHQ/+153Pg2ZNkim4
+	 /Gd5RX8JS86jbiXhlEBAy2lPMiv94sYO2BPRXFgWNgyQmX6UPSftMJPq0vI4Ri/fy3
+	 d1CH7KR04eOiQ2yIAsOI6GajGrRt4sNTBv9LiBT06ZbFUuUlG9hfkjVk9F36gKi2e1
+	 CiG3O000yZiN5XrtSasyHBxzLNN6V9QShpqA/7vPvFHbUVtrzveSYCmoJO6RipGyvp
+	 mCYeEvhB/pOJQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84BD6C61DE4;
-	Mon, 31 Aug 2026 00:25:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CF04C61DE4;
+	Mon, 31 Aug 2026 00:25:24 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Sun, 30 Aug 2026 17:25:40 -0700
-Subject: [PATCH v12 39/45] KVM: selftests: Reset shared memory after
- hole-punching
+Date: Sun, 30 Aug 2026 17:25:45 -0700
+Subject: [PATCH v12 44/45] KVM: selftests: Update
+ private_mem_conversions_test for in-place conversions
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260830-gmem-inplace-conversion-v12-39-85e5fd25252a@google.com>
+Message-Id: <20260830-gmem-inplace-conversion-v12-44-85e5fd25252a@google.com>
 References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
 In-Reply-To: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -80,11 +80,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788135916; l=2579;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788135916; l=5680;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=uV08q4RDK3FyngpumGt+e56rGp5WLQvKfEyZx0mVgVY=;
- b=iT+PS0xDjfvKp4QdlflKy+7dtweWMwhTAxNwE8dsJVeEO94OnCnUEaqmPrG+y6GLz0nP34akA
- 1N1NalAM+U6DNWnLRM30OqjSc6w6dw8krqKqAhRtjiHKWDOuBdx1it5
+ bh=1X1DA4tCAHh53esF+mJakIrdUfA/0k+CNqzh025SQ+I=;
+ b=q2PZoPyAMrhu+u+7JvbSLoJN9cFAttmsbb84heBDBlERga8e9Hybf0q4RUT8pEXtUMNU1LnQn
+ xooi06cBSXdCr8UzLSYDo4mk68lH7DL7w3WrvB1d1g3KSsm0AjYYexF
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -94,63 +94,147 @@ Reply-To: ackerleytng@google.com
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-private_mem_conversions_test used to reset the shared memory that was used
-for the test to an initial pattern at the end of each test iteration. Then,
-it would punch out the pages, which would zero memory.
+Update private_mem_conversions_test for in-place conversions. In-place
+conversions support is detected in selftests with kvm_has_gmem_attributes.
 
-Without in-place conversion, the resetting would write shared memory, and
-hole-punching will zero private memory, hence resetting the test to the
-state at the beginning of the for loop.
+With in-place conversions, specifying userspace_addr from some other memory
+provider that is not the guest_memfd associated with the memslot is a user
+error, since KVM will only use both shared and private memory from the
+guest_memfd.
 
-With in-place conversion, resetting writes memory as shared, and
-hole-punching zeroes the same physical memory, hence undoing the reset
-done before the hole punch.
+Hence, when kvm_has_gmem_attributes, only test in-place conversions with
+single backing, where guest_memfd provides both shared and private memory.
 
-Move the resetting after the hole-punching, and reset the entire
-PER_CPU_DATA_SIZE instead of just the tested range.
+For single backing, guest_memfd must be created with
+GUEST_MEMFD_FLAG_MMAP. Initialize the guest_memfd as shared to align with
+how memory would default to shared when shared/private state was tracked at
+the VM level (the test expects this, it was written for
+non-in-place-conversions).
 
-With in-place conversion, this zeroes and then resets the same physical
-memory. Without in-place conversion, the private memory is zeroed, and the
-shared memory is reset to init_p.
+When handling a hypercall to set attributes, use
+vm_mem_set_memory_attributes() to send the ioctl to the guest_memfd instead
+of the VM.
 
-This is sufficient since at each test stage, the memory is assumed to start
-as shared, and private memory is always assumed to start zeroed. Conversion
-zeroes memory, so the future test stages will work as expected.
+When testing in-place conversions (single-backing), don't allow the user to
+configure src_type, since src_type will be ignored. Don't use src_type to
+determine alignment for rounding up per-cpu test memory size, since
+guest_memfd's backing page size is always the system PAGE_SIZE.
 
-Fixes: 43f623f350ce1 ("KVM: selftests: Add x86-only selftest for private memory conversions")
-Reviewed-by: Fuad Tabba <tabba@google.com>
-Tested-by: Shivank Garg <shivankg@amd.com>
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/x86/private_mem_conversions_test.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ .../kvm/x86/private_mem_conversions_test.c         | 57 +++++++++++++++++-----
+ 1 file changed, 44 insertions(+), 13 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-index f3de2a4ab0551..cf50e9a332c5b 100644
+index cf50e9a332c5b..33b610383693b 100644
 --- a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
 +++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-@@ -202,15 +202,18 @@ static void guest_test_explicit_conversion(u64 base_gpa, bool do_fallocate)
- 		guest_sync_shared(gpa, size, p3, p4);
- 		memcmp_g(gpa, p4, size);
+@@ -306,9 +306,12 @@ static void handle_exit_hypercall(struct kvm_vcpu *vcpu)
+ 	if (do_fallocate)
+ 		vm_guest_mem_fallocate(vm, gpa, size, map_shared);
  
--		/* Reset the shared memory back to the initial pattern. */
--		memset((void *)gpa, init_p, size);
--
- 		/*
- 		 * Free (via PUNCH_HOLE) *all* private memory so that the next
- 		 * iteration starts from a clean slate, e.g. with respect to
- 		 * whether or not there are pages/folios in guest_mem.
- 		 */
- 		guest_map_shared(base_gpa, PER_CPU_DATA_SIZE, true);
+-	if (set_attributes)
+-		vm_set_memory_attributes(vm, gpa, size,
+-					 map_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE);
++	if (set_attributes) {
++		u64 attrs = map_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
 +
-+		/*
-+		 * Hole-punching above zeroed private memory. Reset shared
-+		 * memory in preparation for the next GUEST_STAGE.
-+		 */
-+		memset((void *)base_gpa, init_p, PER_CPU_DATA_SIZE);
++		vm_mem_set_memory_attributes(vm, gpa, size, attrs);
++	}
++
+ 	run->hypercall.ret = 0;
+ }
+ 
+@@ -352,8 +355,21 @@ static void *__test_mem_conversions(void *__vcpu)
+ 				size_t nr_bytes = min_t(size_t, vm->page_size, size - i);
+ 				u8 *hva = addr_gpa2hva(vm, gpa + i);
+ 
+-				/* In all cases, the host should observe the shared data. */
+-				memcmp_h(hva, gpa + i, uc.args[3], nr_bytes);
++				if (kvm_has_gmem_attributes &&
++				    uc.args[0] == SYNC_PRIVATE) {
++					TEST_EXPECT_SIGBUS(READ_ONCE(*hva));
++				} else {
++					/*
++					 * If not testing in-place conversion
++					 * (dual backing), the host should
++					 * always observe shared data, since the
++					 * shared memory is a separate page.
++					 *
++					 * For SYNC_SHARED, test that the host
++					 * can see shared memory.
++					 */
++					memcmp_h(hva, gpa + i, uc.args[3], nr_bytes);
++				}
+ 
+ 				/* For shared, write the new pattern to guest memory. */
+ 				if (uc.args[0] == SYNC_SHARED)
+@@ -369,20 +385,29 @@ static void *__test_mem_conversions(void *__vcpu)
  	}
  }
  
++/* Align each vCPU's chunk of memory naturally to the size of the backing store. */
++static size_t compute_per_cpu_size(enum vm_mem_backing_src_type src_type)
++{
++	size_t alignment;
++
++	if (kvm_has_gmem_attributes)
++		alignment = getpagesize();
++	else
++		alignment = get_backing_src_pagesz(src_type);
++
++	return align_up(PER_CPU_DATA_SIZE, max_t(size_t, SZ_2M, alignment));
++}
++
+ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_vcpus,
+ 				 u32 nr_memslots)
+ {
+-	/*
+-	 * Allocate enough memory so that each vCPU's chunk of memory can be
+-	 * naturally aligned with respect to the size of the backing store.
+-	 */
+-	const size_t alignment = max_t(size_t, SZ_2M, get_backing_src_pagesz(src_type));
+-	const size_t per_cpu_size = align_up(PER_CPU_DATA_SIZE, alignment);
++	const size_t per_cpu_size = compute_per_cpu_size(src_type);
+ 	const size_t memfd_size = per_cpu_size * nr_vcpus;
+ 	const size_t slot_size = memfd_size / nr_memslots;
+ 	struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
+ 	pthread_t threads[KVM_MAX_VCPUS];
+ 	struct kvm_vm *vm;
++	u64 gmem_flags;
+ 	int memfd, i;
+ 
+ 	const struct vm_shape shape = {
+@@ -397,12 +422,16 @@ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_v
+ 
+ 	vm_enable_cap(vm, KVM_CAP_EXIT_HYPERCALL, (1 << KVM_HC_MAP_GPA_RANGE));
+ 
+-	memfd = vm_create_guest_memfd(vm, memfd_size, 0);
++	gmem_flags = 0;
++	if (kvm_has_gmem_attributes)
++		gmem_flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED;
++
++	memfd = vm_create_guest_memfd(vm, memfd_size, gmem_flags);
+ 
+ 	for (i = 0; i < nr_memslots; i++)
+ 		vm_mem_add(vm, src_type, BASE_DATA_GPA + slot_size * i,
+ 			   BASE_DATA_SLOT + i, slot_size / vm->page_size,
+-			   KVM_MEM_GUEST_MEMFD, memfd, slot_size * i, 0);
++			   KVM_MEM_GUEST_MEMFD, memfd, slot_size * i, gmem_flags);
+ 
+ 	for (i = 0; i < nr_vcpus; i++) {
+ 		gpa_t gpa =  BASE_DATA_GPA + i * per_cpu_size;
+@@ -462,6 +491,8 @@ int main(int argc, char *argv[])
+ 	while ((opt = getopt(argc, argv, "hm:s:n:")) != -1) {
+ 		switch (opt) {
+ 		case 's':
++			TEST_ASSERT(!kvm_has_gmem_attributes,
++				    "src_type is only configurable when testing without in-place conversion");
+ 			src_type = parse_backing_src_type(optarg);
+ 			break;
+ 		case 'n':
 
 -- 
 2.55.0.897.gb25b4bd76c-goog
