@@ -1,32 +1,40 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EAF3624C9
-	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 08:46:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3A63D75DE
+	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 08:52:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788166006; cv=none; b=GSJgm6MHO87b/AeGt8ZhhpMGOA4styazbhEbpVTDcTLAmh811+4REQyMDK9izuGX+KjvK7LcHamx2FFTRhgtLItwl3zjfkeslX+owHauinbOzA8dVVWp5ynUrz9wo5DgqCuWeMPxFbR6Rw2gsBw04QZOqtLTgrpz/97Y9PobzmI=
+	t=1788166372; cv=none; b=XpIQtxTq6oScbQHUId0kzpeIgJbUP1Uvmbm4/Rv9Rzu1yluF/excd6HX4fNyIzDjmkOKB8hvdQk1nX/iLYGKSx0c5xL1y43KSYObuH/n8Ts9A8UdJ4kK97VdKpVHaInCyK9I46tax5/l9qxIJhF1GyTpA5DRqUjmrXSxWE+6XsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788166006; c=relaxed/simple;
-	bh=LtL4dKR17MxcHpQnJgQbUWi7Lxy8UUcxFoB3RAaXA7Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c2TqQtm+Gscn1/V+bazGk8TDNo5N9xLkkSvysvnuBRLBHmeqkcWXCRRYsaxAjZb2MQLCoydydFdvWdwoup0tACxXUdI8Mw9GTY7SDG4/9AY8OJQoRkfirzeCtzyiNoTGWscaoK+1aG89aUfVZ26Jz49jNwfS4tXrZPpgwaEw4xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=MovG2GY2; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1788166372; c=relaxed/simple;
+	bh=DILvzi0ZIyssodPNfYDLi/EcM7ED/xZz4i72XZcumpY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=peqOmceQX0LNXPqz6Tf80wuI9KzKOjz4X/TMkL2sXr0vwkzghfYHhCGgp0/S0O+Bh3qg+NCovq5iM+CupuJ3RFN4oQ2agSoZ+0tLj98McmZYKRjqKc/CkW8ArbRDq3QB6sGZ49QvF07glFW2BSck3pxAz/rqlKCN3tUafPyCr2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=PvBPJ/vr; arc=none smtp.client-ip=113.46.200.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="MovG2GY2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=VLrNFBb+HkD4+F2K1pz6M+GL9jAEqixZHMEFWb9Etys=;
-	b=MovG2GY2kqGN2SLUCxG5FI4sMlC1of5cbbUzw3iUZJcIy0hndxphkHo8UwTAaW
-	AaJZwMkO5nfRrmqOHPbDl0tvNW0qTdxKlGRsvCUm3f9QHW7XqT023SythxCTIMrW
-	uPVnIx6PF8A+5bKLlQ08ad+x+h1gvbDPAHuYfE3Hxed0Y=
-Received: from [10.42.12.49] (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wCn5Z9kP5VqnHvgTA--.1543S2;
-	Mon, 31 Aug 2026 16:46:28 +0800 (CST)
-Message-ID: <1bb7c920-e891-4cfd-ae47-15056ceecc5a@163.com>
-Date: Mon, 31 Aug 2026 16:46:28 +0800
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="PvBPJ/vr"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=j913auZOQM8vCxWPwi3DTJtC16eIgjjvv2jrOeFm6G4=;
+	b=PvBPJ/vrrzuEuTjEom9riXvAVkbzJuQYeaaUfOxFaI210qy6nlOvACtpVTNdugeR5Ytx9+QbV
+	kq/f8Ltj6qjjJbG5Zpq2FUFfOJ9fqo0qBxkARsKNvBeDFaFzagVHPipofgF77qFUXUoC6cVgIde
+	3C2T8yaH43v2ryHUw0OP+N0=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4hYMt60HJtz1K96b;
+	Mon, 31 Aug 2026 16:41:50 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id E5E50402AB;
+	Mon, 31 Aug 2026 16:52:38 +0800 (CST)
+Received: from [10.67.120.103] (10.67.120.103) by
+ kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 31 Aug 2026 16:52:38 +0800
+Message-ID: <87c231f4-c281-48be-881a-1ed544f4b35a@huawei.com>
+Date: Mon, 31 Aug 2026 16:52:37 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -34,116 +42,94 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: riscv: Fix NACL hfence entry update order
-Content-Language: en-US
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-References: <20260826075009.68952-1-min_halo@163.com>
- <20260826080204.09A0C1F000E9@smtp.kernel.org>
-From: Zongmin Zhou <min_halo@163.com>
-In-Reply-To: <20260826080204.09A0C1F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCn5Z9kP5VqnHvgTA--.1543S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAF13WryfKw18tF45tw1kZrb_yoWrXFyrpF
-	Wftay8KF4rKr1fKwn7Zws7ZrWag3ZYgFy5Gw15ZF1Uuws8ZryFvwnFqFZ8uF95Jw1UWw10
-	yr4jkFyvvFn8Aa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zROeOJUUUUU=
-X-CM-SenderInfo: pplqsxxdorqiywtou0bp/xtbC0QTolGqVP2QyzAAA3z
+Subject: Re: [PATCH v4 1/6] KVM: arm64: Enable eager hugepage splitting if
+ HDBSS is available
+To: <sashiko-reviews@lists.linux.dev>
+CC: <kvm@vger.kernel.org>, Marc Zyngier <maz@kernel.org>,
+	<kvmarm@lists.linux.dev>, Oliver Upton <oupton@kernel.org>
+References: <20260709104026.2612599-1-zhengtian10@huawei.com>
+ <20260709104026.2612599-2-zhengtian10@huawei.com>
+ <20260709110349.4590F1F00A3A@smtp.kernel.org>
+From: Tian Zheng <zhengtian10@huawei.com>
+In-Reply-To: <20260709110349.4590F1F00A3A@smtp.kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
 
-在 2026/8/26 16:02, sashiko-bot@kernel.org 写道:
+
+On 7/9/2026 7:03 PM, sashiko-bot@kernel.org wrote:
 > Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
->
-> New issues:
-> - [High] Using `smp_wmb()` instead of `dma_wmb()` or `wmb()` to synchronize with a hardware device or external agent.
-Agreed. This shared memory is read by an external agent (SBI firmware or 
-NACL hardware), not only host CPUs.
-Since arch/riscv KVM can be built without CONFIG_SMP, `smp_wmb()`
-would fall back to a pure compiler‑only barrier() on !SMP builds,
-without emitting any hardware fence instruction.
-I will replace `smp_wmb()` with `wmb()` in v2, which unconditionally
-provides the required ordering guarantee across all kernel configurations.
->
-> Pre-existing issues:
-> - [High] The retry loop in `__kvm_riscv_nacl_hfence` can spin indefinitely because `try_count` is never decremented.
+> - [High] The default eager page splitting chunk size evaluates to an architecturally invalid block size on 16KB and 64KB page systems and suffers from integer truncation in KVM_CHECK_EXTENSION.
+> - [Medium] The global capability query for eager page splitting chunk size incorrectly reports the default as 0 (disabled) when HDBSS is present.
 > --
-Already fixed by commit e971f19e4c82 ("KVM: riscv: Fix infinite loop in 
-NACL hfence entry allocation").
-The code snippet referenced in the AI review corresponds to an older 
-version and does not match the current source tree.
->
-> commit 7e01a77077e49fef54c573574fad3624c0817345
-> Author: Zongmin Zhou <zhouzongmin@kylinos.cn>
->
-> KVM: riscv: Fix NACL hfence entry update order
->
-> The commit fixes the order in which nested HFENCE entries are populated
-> by writing the page number and count first, then the config word. It uses
-> WRITE_ONCE() and smp_wmb() to prevent hardware or firmware from observing
-> incomplete entries.
->
-> [Severity: High]
-> This isn't a bug introduced by this patch, but looking at the retry logic in
-> arch/riscv/kvm/nacl.c:__kvm_riscv_nacl_hfence():
->
->      if (ent < 0) {
->          if (try_count) {
->              nacl_sync_hfence(-1UL);
->              goto again;
->          } else {
->              ...
->
-> Does this loop run indefinitely? I noticed try_count is initialized to 5
-> but doesn't appear to be decremented anywhere in this path. If the NACL
-> hardware or SBI implementation stalls and fails to clear pending entries,
-> could this cause a host CPU soft lockup?
->
->> diff --git a/arch/riscv/kvm/nacl.c b/arch/riscv/kvm/nacl.c
->> index 08a95ad9ada2c..f922e9f62fee3 100644
->> --- a/arch/riscv/kvm/nacl.c
->> +++ b/arch/riscv/kvm/nacl.c
-> [ ... ]
->> @@ -42,12 +42,24 @@ void __kvm_riscv_nacl_hfence(void *shmem,
->>   		}
->>   	}
+> 
+> --- Patch [1]: [PATCH v4 1/6] KVM: arm64: Enable eager hugepage splitting if HDBSS is available ---
+> commit 382048a591b4a06f749e61447083eb8630f1bad5
+> Author: Leonardo Bras <leo.bras@arm.com>
+> Subject: KVM: arm64: Enable eager hugepage splitting if HDBSS is available
+> 
+> This commit enables eager hugepage splitting by default at stage2
+> initialization when the system supports HDBSS. It sets the chunk size
+> to 256K * PAGE_SIZE.
+> 
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 6c941aaa10c63..e086c01a9325e 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -1027,8 +1027,12 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+>>   	for_each_possible_cpu(cpu)
+>>   		*per_cpu_ptr(mmu->last_vcpu_ran, cpu) = -1;
 >>   
->> -	entp = shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_CONFIG(i);
->> -	*entp = cpu_to_lelong(control);
->> +	/*
->> +	 * Per SBI v3.0 section 15.1.2, the Page_Number and Page_Count
->> +	 * words must be updated before the Config word with its Pending
->> +	 * bit set. WRITE_ONCE() stops the compiler from reordering the
->> +	 * stores and smp_wmb() makes the parameter words globally
->> +	 * visible to the SBI implementation (or NACL hardware) before
->> +	 * the Pending bit is set.
->> +	 */
->>   	entp = shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_PNUM(i);
->> -	*entp = cpu_to_lelong(page_num);
->> +	WRITE_ONCE(*entp, cpu_to_lelong(page_num));
->>   	entp = shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_PCOUNT(i);
->> -	*entp = cpu_to_lelong(page_count);
->> +	WRITE_ONCE(*entp, cpu_to_lelong(page_count));
->> +
->> +	/* Ensure the parameter words are visible before the Pending bit */
->> +	smp_wmb();
->> +
+>> -	 /* The eager page splitting is disabled by default */
+>> -	mmu->split_page_chunk_size = KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT;
+>> +	 /* The eager page splitting is disabled by default if system has no HDBSS */
+>> +	if (system_supports_hdbss())
+>> +		mmu->split_page_chunk_size = 256 * 1024 * PAGE_SIZE;
+> 
 > [Severity: High]
-> Does smp_wmb() provide the necessary hardware ordering guarantees on all
-> configurations?
->
-> Looking at arch/riscv/kvm/nacl.c:__kvm_riscv_nacl_hfence(), since the
-> memory is coherent and shared with an external agent or NACL hardware, I am
-> concerned about non-SMP kernel builds (!CONFIG_SMP) where smp_wmb()
-> degrades to a simple compiler barrier (barrier()) and emits no actual
-> hardware fence instructions.
->
-> Would it be safer to use dma_wmb() or wmb() here to ensure the memory
-> ordering is strictly enforced against external hardware, regardless of
-> the kernel's SMP configuration?
->
->> +	entp = shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_CONFIG(i);
->> +	WRITE_ONCE(*entp, cpu_to_lelong(control));
->>   }
->>
+> Does this chunk size assignment create architecturally invalid block sizes
+> on 16KB and 64KB page systems?
+> 
+> On 16KB and 64KB systems, 256 * 1024 * PAGE_SIZE evaluates to 4GB and
+> 16GB respectively. Since level 1 blocks are not supported for these
+> page sizes on ARM64, this exceeds the valid maximums (32MB and 512MB).
+> If a VMM attempts to restore this configuration, kvm_vm_ioctl_enable_cap()
+> in arch/arm64/kvm/arm.c will reject it via kvm_is_block_size_supported(),
+> which breaks live migration.
+> 
+> Additionally, can this cause integer truncation during capability queries?
+> 
+> In arch/arm64/kvm/arm.c:kvm_vm_ioctl_check_extension(), the 64-bit chunk
+> size is assigned to a 32-bit signed integer. The values 4GB (0x100000000)
+> and 16GB (0x400000000) will truncate to 0. A VMM querying this capability
+> would read 0 and restore 0 on the destination, silently disabling the
+> feature.
+> 
+> [Severity: Medium]
+> Does this new dynamic default desync with the global capability query?
+> 
+> When userspace queries /dev/kvm via KVM_CHECK_EXTENSION for
+> KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE without a VM instance,
+> arch/arm64/kvm/arm.c:kvm_vm_ioctl_check_extension() unconditionally returns
+> KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT (0).
+> 
+> Since this patch changes the default dynamically for new VMs based on
+> system_supports_hdbss(), the global API query now misleads userspace about
+> the default capability.
+> 
+>> +	else
+>> +		mmu->split_page_chunk_size = KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT;
+>> +
+>>   	mmu->split_page_cache.gfp_zero = __GFP_ZERO;
+>>   
+>>   	mmu->pgd_phys = __pa(pgt->pgd);
+> 
+
+In v5 we no longer force-enable eager splitting for HDBSS VMs. So this
+patch is no longer useful.
+
+Thanks!
+Tian
 
