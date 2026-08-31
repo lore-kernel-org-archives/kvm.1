@@ -1,103 +1,70 @@
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35853BED7F
-	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 08:55:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD0D3DB31B;
+	Mon, 31 Aug 2026 09:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788166545; cv=none; b=u0M+2wq0Gz6nTz9qRnfetkTxEXtdSJa7sZJDtj46aOQpjGQgZO/AAwmQbrU2hLAkB1V0zYBwXPHHAMNeMmB7dVBKKBl1KwhHCFdKsnXGon84DORlkFBGX3B5UCSld538os6BW9XP3CbuTm262ELY29CXqTVEnMjB2GL8xDdWC5s=
+	t=1788167407; cv=none; b=P+qQhUDBJT3GGDKw0m7LTLnjMgbK3vZt4P7lxiBSy0jCu9UZ1AqXvE/bg/7jCytWaR2+AmZeL0oKtbO7brFAHiTN0oMhhfZaN4HN07WVQBVCxSXKbUH+4IeZF5n7OBNgFoh/ba1s/H9yJR1spERT3fq3dio+xkBCyyV7N4opF4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788166545; c=relaxed/simple;
-	bh=iJOkSbmAAfKOmDq/IJzHkC2WcreS61heTeFz5ABxmUc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Od6KpBDWV2LsfUaGcO6hprDebFb+a0KOCuPjpQtMNGGiaOkGcwlzX2eJLpsTA3IGDnAwcjZhPrNX0kt8mMbLtQvB7GoJ/GoSZOyU7buHFJkfgmTKc9mCMEPthc81Nrld2AxZPm/vS6v1Glh96AwoHGYvd9izbmo8SH/XKIW+iRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=32YMnCy5; arc=none smtp.client-ip=113.46.200.221
+	s=arc-20240116; t=1788167407; c=relaxed/simple;
+	bh=FIbsewL3Swj5l2EmTvmW8pf9be8oZb9pttPxwoY1wMo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ngU1h8MPpRpzFmiIgifA+yUKyzzGJwiTCt2p7OrdICWgLjg8FSDK3/r3gUhGyJaeZ5PYhwaRtZ5oEmxn+gYtkY33pNth2B58/1/5z4OMAnxYN5xTgmi6Pd42Eh1YtjAEw9pLR40Gz42GPGXqHQn6wKvc3SZpznwsUUTgpD+sDAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=WJc+GNH5; arc=none smtp.client-ip=113.46.200.217
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="32YMnCy5"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="WJc+GNH5"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=bmZ1l/CjeA8Rq7DC7M8mfj8WJ7KyjHcRrdbqAbk1+4M=;
-	b=32YMnCy5/L3hl92k0mypYFLYuKQHnFZDeo69D6FgGDKQ145Kl/g57Ds7tGhrXR9JPScpGRMV+
-	ltoh6i3xTS5GhAPHWoSNCcYBv1xdJpS1cQzgks7D0FT4s6++X3KLdLEFAVmq8c2W/7sLjMCMLK+
-	LNaBCQDybTN5eNZpbCh3dNo=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4hYMxc5RmbzRhQt;
-	Mon, 31 Aug 2026 16:44:52 +0800 (CST)
-Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
-	by mail.maildlp.com (Postfix) with ESMTPS id 720094058C;
-	Mon, 31 Aug 2026 16:55:39 +0800 (CST)
-Received: from [10.67.120.103] (10.67.120.103) by
- kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 31 Aug 2026 16:55:38 +0800
-Message-ID: <44276eb2-bac8-4996-86c8-9275ece425da@huawei.com>
-Date: Mon, 31 Aug 2026 16:55:38 +0800
+	bh=VlXgNXOULHLT6iEyYOwz7SsM49CsAfVi0NYke9687G8=;
+	b=WJc+GNH594SeCjnpGrIe/YHtubCBIHyf/Ya3ZspyPYEehGAkCnSRpSkSqUYhUnKzp3M+3+QNV
+	52kyFWGt4x4+Gsa908Z53yKaGcTVTPyHcW+kaAfBoWXLwrBwjQELQwFL7o/dr3WNkvHz4npLVeM
+	grzX+GlHohLiVXujLwv/ujk=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4hYNG713wHzcbN0;
+	Mon, 31 Aug 2026 16:59:11 +0800 (CST)
+Received: from dggpemf500015.china.huawei.com (unknown [7.185.36.143])
+	by mail.maildlp.com (Postfix) with ESMTPS id 21F954056E;
+	Mon, 31 Aug 2026 17:09:53 +0800 (CST)
+Received: from huawei.com (10.50.163.32) by dggpemf500015.china.huawei.com
+ (7.185.36.143) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 31 Aug
+ 2026 17:09:52 +0800
+From: Longfang Liu <liulongfang@huawei.com>
+To: <alex.williamson@redhat.com>, <jgg@nvidia.com>
+CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<liulongfang@huawei.com>
+Subject: [PATCH v3 0/3] hisi_acc_vfio_pci: fix three driver issues
+Date: Mon, 31 Aug 2026 17:09:48 +0800
+Message-ID: <20260831090951.844569-1-liulongfang@huawei.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/6] KVM: arm64: Add support for FEAT_HDBSS
-To: <sashiko-reviews@lists.linux.dev>
-CC: <kvm@vger.kernel.org>, Oliver Upton <oupton@kernel.org>, Marc Zyngier
-	<maz@kernel.org>, <kvmarm@lists.linux.dev>
-References: <20260709104026.2612599-1-zhengtian10@huawei.com>
- <20260709104026.2612599-3-zhengtian10@huawei.com>
- <20260709110002.D21C51F00A3A@smtp.kernel.org>
-From: Tian Zheng <zhengtian10@huawei.com>
-In-Reply-To: <20260709110002.D21C51F00A3A@smtp.kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemr100010.china.huawei.com (7.202.195.125)
+ dggpemf500015.china.huawei.com (7.185.36.143)
 
+This series of patches fixes three issues discovered in specific scenarios
+within the driver: one caused by PF device passthrough, one sticky-latch
+defect in the reset path, and one triggered by a mismatch between hardware
+version and memory page size (QM_HW_V3 + 64KB pages).
 
+Longfang Liu (3):
+  hisi_acc_vfio_pci: fix live migration enable conditions for PF
+    passthrough
+  hisi_acc_vfio_pci: clear set_reset_flag after reset completed
+  hisi_acc_vfio_pci: reject live migration on 64KB page with QM_HW_V3
+    hardware
 
-On 7/9/2026 7:00 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Low] The parameter name `cope` in `has_vhe_hdbss()` is a typo for `scope`.
-> --
-> 
-> --- Patch [2]: [PATCH v4 2/6] KVM: arm64: Add support for FEAT_HDBSS ---
-> commit fc8e5042a6724701835a3f111b45e733575a4a2e
-> Author: Tian Zheng <zhengtian10@huawei.com>
-> 
-> KVM: arm64: Add support for FEAT_HDBSS
-> 
-> This commit adds CPU capability detection for the Hardware Dirty Bit State
-> Structure (HDBSS) feature introduced in Armv9.5. It provides a helper
-> function to check for hardware support, requiring VHE mode.
-> 
->> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
->> index 9a22df0c5120f..aa327eebaf1ca 100644
->> --- a/arch/arm64/kernel/cpufeature.c
->> +++ b/arch/arm64/kernel/cpufeature.c
-> [ ... ]
->> @@ -2131,6 +2131,11 @@ static bool hvhe_possible(const struct arm64_cpu_capabilities *entry,
->>   	return arm64_test_sw_feature_override(ARM64_SW_FEATURE_OVERRIDE_HVHE);
->>   }
->>   
->> +static bool has_vhe_hdbss(const struct arm64_cpu_capabilities *entry, int cope)
->                                                                               ^^^^
-> 
-> [Severity: Low]
-> This isn't a bug, but is the parameter name "cope" a typo for "scope"?
-> 
->> +{
->> +	return is_kernel_in_hyp_mode() && has_cpuid_feature(entry, cope);
->> +}
->> +
->>   bool cpu_supports_bbml2_noabort(void)
->>   {
-> 
+ .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 43 ++++++++++++++++++++++----
+ 1 file changed, 37 insertions(+), 6 deletions(-)
 
-This has already been fixed in v5, where the parameter is correctly
-named scope.
-
-Thanks!
-Tian
+--
+2.43.0
