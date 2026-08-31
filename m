@@ -1,525 +1,299 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DFC477280;
-	Mon, 31 Aug 2026 13:35:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F383E43C07E
+	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 13:57:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788183341; cv=none; b=ke/PQuJLWPSJq41JHWH7n6tsCOa0eth4PY4Wc5i5Q55L0G3xtufSJCrpYh2DUXNBdrI1Yu0hokQ+0Y/zf0ojTMQTTc55PVJisZRxMc3+VWaMW/qJUIwlqFBcA44Jn/S6wPP49411wVqNM6+71YNVQMrt+mjTj8/VvpLWPvXpoZE=
+	t=1788184644; cv=none; b=Ggw9jnVm3lnGrd1Z8fcN7ZX528fG2AV42OZDCTkOLgvLmXo/S/kWasjtDstSc59yedF7BwZdog4/OaCKp9JUl6cejEEDTiwv5LzUtXtO51W41uVfduCrg6LXt6Vdko5f3rTj1VxtYyHXDr9TgmtABknsyESRQvxZhtTIqau34cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788183341; c=relaxed/simple;
-	bh=zCwVNMWm9AJarhUGZuV8079zSkn5F2Ic6om4TiPHmW8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fUjv8kgBj8xivrv5bC2akJp5RZ6/qBeEE6RgcW4SD/fnPc6QZmnYs5K288M26u8zyurWH5K1JhSXGPy3Wck83wGZcDHjjJlSUAlplHWKkUD9Her+G20dnNuYr9gclv9VMBypoPjc1vqZUM05MbuuJcEOFES6m2yaX61vY+rVxnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JpWI9G5q; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788184644; c=relaxed/simple;
+	bh=DYy7Yh5VuqJ1tPQ5cWpknZiVqRNrR5tqzqmfJyw4ppI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=dKjjmtCFjoHbvsp2PAOTU+Ks8qX/TeHz1DfCS9dlaql03B7fnL9+GIJyaMhg/qxEsjNQxHYQZY4AjZDbobD4YOSV0818iilDxyJWdli1KVoSTJ6jXZWr2JK9ZknegJj0TEvV/ssIFZ0oaBdtD5H8njr6XlJjdI+xl/x3/hknx5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=tmZnaFti; arc=none smtp.client-ip=113.46.200.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JpWI9G5q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1499D1F00A3F;
-	Mon, 31 Aug 2026 13:35:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788183339;
-	bh=kKb26iVImiPGyTnZ71DQ0DY1f9MALfzVnRrVOZzO4mM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JpWI9G5quEyUvQ6URcmYRXV3Hkax89IhAXL2g70duB7A5J6c7Njkrnjm/dfzl4nDb
-	 jDoWcj8tOoVOPjweHX1I0exa2yxfEI9GdMh3I+y2WNVc4//EZr4G6KHQ1wjFXwSF3e
-	 BYwAR/Xsnhbv7ppj+kPKpxBCqOP50SDqCO+2JWlqSkl0nmtuPfLEapnTbnEnIRXalP
-	 u+xWGaRvNc6YqCnnR+3VvIsvdeuLvX8wyRNwsrJ6T2gU+h+AJnNsjeMeJG2sDKrv8t
-	 u6hPE5c10sg9inlGkRFdszMoPI33IUHL0M5+ULDaN/GF1XUO5a32fkTrwMnq1k3aiX
-	 XAy1E8UVtdrFw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Jia Jia <physicalmtea@gmail.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	jasowangio@gmail.com,
-	michael.christie@oracle.com,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] vhost-scsi: flush backend after device ioctls
-Date: Mon, 31 Aug 2026 09:21:57 -0400
-Message-ID: <20260831133314.4125787-89-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
-References: <20260831133314.4125787-1-sashal@kernel.org>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="tmZnaFti"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=yJ/L9x3rTRjFD26y3XQs185XmGwXv5WubIyollA9Msw=;
+	b=tmZnaFtiFCAbBFLgoaXNhmkgyAZn/eVaaDzcPuviyReaeVQ4TD//qtIEmx0GJiwhGW1k2SCyt
+	h8PQASl+cY89VEVoEeuVgvyyp0YRBaHPTBARcK/M0YSRoP6lj4OXBstkdbKE68K+tFgdDzQ8SBr
+	JUY+2lNhfV6cP/l4j100xas=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4hYVdZ5QqnzRhWS;
+	Mon, 31 Aug 2026 21:46:26 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8CB724057D;
+	Mon, 31 Aug 2026 21:57:13 +0800 (CST)
+Received: from [10.67.120.103] (10.67.120.103) by
+ kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 31 Aug 2026 21:57:13 +0800
+Message-ID: <5f750f14-1b80-49d7-96ec-415eb6457224@huawei.com>
+Date: Mon, 31 Aug 2026 21:57:12 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18.48
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 5/6] KVM: arm64: Add HDBSS fault handling and buffer
+ flush
+To: <sashiko-reviews@lists.linux.dev>
+CC: Oliver Upton <oupton@kernel.org>, <kvmarm@lists.linux.dev>,
+	<kvm@vger.kernel.org>, Marc Zyngier <maz@kernel.org>
+References: <20260709104026.2612599-1-zhengtian10@huawei.com>
+ <20260709104026.2612599-6-zhengtian10@huawei.com>
+ <20260709112655.339D91F000E9@smtp.kernel.org>
+From: Tian Zheng <zhengtian10@huawei.com>
+In-Reply-To: <20260709112655.339D91F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-
-From: Jia Jia <physicalmtea@gmail.com>
-
-[ Upstream commit 22598f55a4c2b510b3df5e69e563387a963222ae ]
-
-vhost-scsi translates guest response descriptors into userspace iovecs
-when commands are submitted.  Target-core completes those commands
-asynchronously, so VHOST_SET_MEM_TABLE can replace the memory table while
-an in-flight command still retains response iovecs translated through the
-old table.
-
-If the old mapping is reused after VHOST_SET_MEM_TABLE returns, command
-completion can write the response to an unrelated userspace object.
-
-Flush the vhost-scsi backend after vhost_dev_ioctl() handles a device
-ioctl.  This waits for in-flight commands that can still use the old
-response iovecs before the ioctl returns.
-
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20260724060919.1569170-1-physicalmtea@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-## Phase 1: Commit Message Forensics
-
-**Step 1.1 – Subject line**
-
-Record: `[vhost-scsi] [flush] Flush backend after device ioctls to
-prevent stale response-iovec writes after memory table changes.`
-
-**Step 1.2 – Tags**
-
-Record:
-- **Fixes:** none
-- **Reported-by:** none
-- **Tested-by:** none
-- **Reviewed-by:** none in commit message
-- **Acked-by:** none in commit message
-- **Link:** none
-- **Cc: stable:** none (expected for pipeline candidates)
-- **Signed-off-by:** Jia Jia `<physicalmtea@gmail.com>`, Michael S.
-  Tsirkin `<mst@redhat.com>` (ignore pipeline-added SOBs)
-- **Message-ID:** `<20260724060919.1569170-1-physicalmtea@gmail.com>`
-  (v2 submission)
-
-Notable: Signed-off-by from vhost maintainer (mst) is a strong quality
-signal. No syzbot/fuzzer report; this is a logic/lifetime bug.
-
-**Step 1.3 – Body analysis**
-
-Record:
-- **Bug:** `vhost_scsi_setup_resp_iovs()` copies guest response
-  descriptor addresses (translated userspace HVAs) into per-command
-  `tvc_resp_iovs` at submit time. Target-core completes SCSI commands
-  asynchronously. `VHOST_SET_MEM_TABLE` can replace the memory table
-  while commands still hold iovecs from the old table.
-- **Symptom:** After the ioctl returns and old mappings are reused,
-  async completion via `copy_to_iter()` can write the virtio-scsi
-  response into unrelated userspace memory → **host memory corruption**.
-- **Versions:** Not specified; mechanism has existed since the 2012 TODO
-  was added.
-- **Root cause:** Missing synchronization barrier between device-wide
-  ioctls (especially `VHOST_SET_MEM_TABLE`) and in-flight async
-  completions using stale response iovecs.
-
-**Step 1.4 – Hidden bug fix?**
-
-Record: **Yes.** Although the subject says "flush" rather than "fix",
-this closes a long-standing correctness hole marked by a `/* TODO: flush
-backend after dev ioctl. */` comment since 2012. It is not cosmetic
-cleanup.
-
----
-
-## Phase 2: Diff Analysis
-
-**Step 2.1 – Inventory**
-
-Record:
-- **File:** `drivers/vhost/scsi.c` (+2 / -1 lines net)
-- **Function:** `vhost_scsi_ioctl()` default branch
-- **Scope:** Single-file, surgical fix
-
-**Step 2.2 – Code flow change**
-
-Record:
-- **Before:** After `vhost_dev_ioctl()`, unknown ioctls fall through to
-  `vhost_vring_ioctl()` on `-ENOIOCTLCMD`; no flush for handled device
-  ioctls (`VHOST_SET_MEM_TABLE`, etc.).
-- **After:** On any non-`-ENOIOCTLCMD` result from `vhost_dev_ioctl()`,
-  call `vhost_scsi_flush(vs)` before returning. Vring ioctls still
-  bypass this flush (they return `-ENOIOCTLCMD` and go to
-  `vhost_vring_ioctl()`).
-- **Path affected:** Control-plane ioctl path only; data path unchanged.
-
-**Step 2.3 – Bug mechanism**
-
-Record: **Memory safety / lifetime bug (stale pointer use).**
-- `vhost_get_vq_desc()` → `translate_desc()` builds `vq->iov[]` using
-  current `dev->umem` mappings.
-- `vhost_scsi_setup_resp_iovs()` copies those pointers into
-  `cmd->tvc_resp_iovs`.
-- Completion in `vhost_scsi_complete_cmd_work()` writes via those stored
-  iovecs:
-
-```721:723:drivers/vhost/scsi.c
-                iov_iter_init(&iov_iter, ITER_DEST, cmd->tvc_resp_iovs,
-                              cmd->tvc_resp_iovs_cnt, sizeof(v_rsp));
-                ret = copy_to_iter(&v_rsp, sizeof(v_rsp), &iov_iter);
-```
-
-- `vhost_set_memory()` replaces `d->umem` and frees the old IOTLB
-  without waiting for in-flight completions using old HVAs.
-
-**Step 2.4 – Fix quality**
-
-Record:
-- **Obviously correct:** Matches the established pattern in `vhost-net`
-  and `vhost-vsock`:
-
-```1827:1835:drivers/vhost/net.c
-        default:
-                mutex_lock(&n->dev.mutex);
-                r = vhost_dev_ioctl(&n->dev, ioctl, argp);
-                if (r == -ENOIOCTLCMD)
-                        r = vhost_vring_ioctl(&n->dev, ioctl, argp);
-                else
-                        vhost_net_flush(n);
-                mutex_unlock(&n->dev.mutex);
-                return r;
-```
-
-- **Minimal:** 3-line change; removes TODO, adds `else
-  vhost_scsi_flush(vs)`.
-- **Regression risk:** Low. Flush only on rare device-wide control
-  ioctls; vring hot-path ioctls explicitly excluded.
-  `vhost_scsi_flush()` already used in set/clear endpoint paths and
-  requires `dev.mutex` (held here).
-
----
-
-## Phase 3: Git History Investigation
-
-**Step 3.1 – Blame**
-
-Record: TODO introduced in `935cdee7ee1595` (Dec 2012, Michael S.
-Tsirkin, "vhost: avoid backend flush on vring ops"). Default ioctl
-branch dates to `057cbf49a1f082` (Jul 2012). Buggy gap present ~14
-years.
-
-**Step 3.2 – Fixes: tag**
-
-Record: N/A — no Fixes: tag.
-
-**Step 3.3 – Related file history**
-
-Record:
-- `vhost_scsi_flush()` introduced/evolved through inflight refcount
-  mechanism (commits like `25b98b64e2842`, `31fbea3ab94ea`).
-- `vhost_scsi_setup_resp_iovs()` added in `9d8960672d63d` (2024) — makes
-  explicit per-command storage of response iovecs, but the race predates
-  this.
-- Fix is **standalone**; not part of a multi-patch dependency series for
-  this specific change.
-
-**Step 3.4 – Author context**
-
-Record: Jia Jia submitted v2 (Jul 2026); Michael S. Tsirkin Signed-off-
-by. Author also submitted related vhost-scsi hardening patches in the
-same timeframe.
-
-**Step 3.5 – Prerequisites**
-
-Record: **None required.** `vhost_scsi_flush()` exists in this tree.
-Patch applies to current `vhost_scsi_ioctl()` structure. No new APIs or
-structures.
-
----
-
-## Phase 4: Mailing List and External Research
-
-**Step 4.1 – Original discussion**
-
-Record:
-- Thread found via web search (lore.kernel.org blocked by bot
-  protection):
-  - https://www.spinics.net/lists/netdev/msg1207854.html
-  - https://lists.openwall.net/netdev/2026/07/21/81
-  - v2: Message-ID `<20260724060919.1569170-1-physicalmtea@gmail.com>`
-- Author explains flush is control-plane only; vring ioctls
-  intentionally excluded per 2012 design.
-- Mike Christie reviewed (Jul 22); author responded Jul 23 with detailed
-  lifetime analysis.
-- **b4 dig:** Could not run — commit hash not present in this checkout;
-  `b4 dig -c` requires a commitish.
-
-**Step 4.2 – Reviewers**
-
-Record: CC'd netdev, kvm, virtualization; Paolo Bonzini, Stefan
-Hajnoczi, Eugenio Pérez, Mike Christie, Jason Wang area. mst Signed-off-
-by on committed version.
-
-**Step 4.3 – Bug report**
-
-Record: No external bugzilla/syzbot report. Bug identified through code
-analysis of the 2012 TODO and async completion path.
-
-**Step 4.4 – Related patches**
-
-Record: Author has related vhost-scsi patches (feature-change rejection,
-T10-PI lifecycle) but this flush fix is independent.
-
-**Step 4.5 – Stable list history**
-
-Record: No stable-list discussion found (lore blocked). Not used as
-negative signal.
-
----
-
-## Phase 5: Code Semantic Analysis
-
-**Step 5.1 – Key functions**
-
-Record: `vhost_scsi_ioctl()`, `vhost_scsi_flush()`, `vhost_dev_ioctl()`,
-`vhost_scsi_setup_resp_iovs()`, `vhost_scsi_complete_cmd_work()`,
-`vhost_set_memory()`.
-
-**Step 5.2 – Callers**
-
-Record:
-- `vhost_scsi_ioctl()` — userspace via `/dev/vhost-scsi` ioctl
-  (QEMU/vhost owner process).
-- `vhost_scsi_flush()` — already called from
-  `vhost_scsi_set_endpoint()`, `vhost_scsi_clear_endpoint()`.
-- Trigger ioctl `VHOST_SET_MEM_TABLE` — userspace during guest memory
-  layout changes (hotplug, migration prep).
-
-**Step 5.3 – Callees**
-
-Record: `vhost_scsi_flush()` → `vhost_scsi_init_inflight()`,
-`kref_put()` on old generation, `vhost_dev_flush()`,
-`wait_for_completion()` on old inflight completions.
-
-**Step 5.4 – Reachability**
-
-Record: **Reachable from userspace** with `CONFIG_VHOST_SCSI`. Requires
-active vhost-scsi endpoint with in-flight SCSI I/O concurrent with
-`VHOST_SET_MEM_TABLE`. Realistic in virtualization workloads.
-
-**Step 5.5 – Similar patterns**
-
-Record: `vhost_net_flush()` and `vhost_vsock_flush()` already follow
-identical ioctl pattern. vhost-scsi is the outlier with an unfilled
-TODO.
-
----
-
-## Phase 6: Cross-Reference Against Local Tree (6.18.44)
-
-**Step 6.1 – Buggy code present?**
-
-Record: **YES.** Local tree is `v6.18.44` / `6.18.44`. Current code
-still has the TODO and no flush:
-
-```2431:2438:drivers/vhost/scsi.c
-        default:
-                mutex_lock(&vs->dev.mutex);
-                r = vhost_dev_ioctl(&vs->dev, ioctl, argp);
-                /* TODO: flush backend after dev ioctl. */
-                if (r == -ENOIOCTLCMD)
-                        r = vhost_vring_ioctl(&vs->dev, ioctl, argp);
-                mutex_unlock(&vs->dev.mutex);
-                return r;
-```
-
-Fix not yet applied (`git log --grep='vhost-scsi: flush backend'`
-returned empty).
-
-**Step 6.2 – Backport complications**
-
-Record: **Clean apply expected.** Identical structure to vhost-net fix;
-no refactoring conflicts in recent `drivers/vhost/scsi.c` history.
-
-**Step 6.3 – Related fixes already present?**
-
-Record: **No.** No alternative fix for this race found in this tree.
-
----
-
-## Phase 7: Subsystem and Maintainer Context
-
-**Step 7.1 – Subsystem**
-
-Record: **drivers/vhost** (virtio host backends). Criticality:
-**IMPORTANT** for virtualization (KVM/QEMU with kernel virtio-scsi
-target). Not universal like mm/net core, but data corruption in host
-userspace is serious.
-
-**Step 7.2 – Activity**
-
-Record: vhost-scsi actively maintained in 6.18 (logging, resource
-handling, bug fixes in recent commits).
-
----
-
-## Phase 8: Impact and Risk Assessment
-
-**Step 8.1 – Who is affected**
-
-Record: Users of `CONFIG_VHOST_SCSI` — QEMU/KVM setups using kernel
-vhost-scsi with target-core backend.
-
-**Step 8.2 – Trigger conditions**
-
-Record: `VHOST_SET_MEM_TABLE` (or other `vhost_dev_ioctl()` handlers)
-while SCSI commands are in flight. Moderately rare (control-plane) but
-normal during memory hotplug/migration. Unprivileged users cannot
-directly ioctl vhost-scsi without device access, but VM operators can
-trigger it.
-
-**Step 8.3 – Failure mode severity**
-
-Record: **Stale HVA write on async completion → host userspace memory
-corruption.** Severity: **CRITICAL** (data corruption, potential
-security impact in multi-tenant/host scenarios).
-
-**Step 8.4 – Risk-benefit**
-
-Record:
-- **Benefit:** HIGH — prevents real corruption bug present since 2012.
-- **Risk:** LOW — 3-line change, mirrors proven net/vsock pattern, flush
-  infrastructure already exists and is tested in endpoint paths.
-- **Ratio:** Strongly favors backport.
-
----
-
-## Phase 9: Final Synthesis
-
-**Step 9.1 – Evidence summary**
-
-**FOR backport:**
-- Real memory-corruption bug with clear mechanism
-- Long-standing known gap (TODO since 2012)
-- Surgical 3-line fix, obviously correct
-- Matches existing vhost-net/vhost-vsock behavior
-- vhost maintainer Signed-off-by
-- Reviewed on netdev list with technical discussion
-- All prerequisites (`vhost_scsi_flush`) present in 6.18.44
-- Buggy code confirmed present in this tree
-
-**AGAINST backport:**
-- Affects only `CONFIG_VHOST_SCSI` users (narrower than core subsystems)
-- No fuzzer/user bug report (theoretical until triggered — but mechanism
-  is concrete, not speculative)
-- Flush adds latency on rare control ioctls (acceptable; same as vhost-
-  net)
-
-**Unresolved:** Could not access lore.kernel.org directly; relied on
-spinics/openwall mirrors. Commit hash not in local tree for `b4 dig -c`.
-
-**Step 9.2 – Stable rules checklist**
-
-| Criterion | Result |
-|-----------|--------|
-| 1. Obviously correct and tested? | **PASS** — mirrors net/vsock; mst
-SOB; list review |
-| 2. Fixes real bug affecting users? | **PASS** — stale-iovec corruption
-on mem table update |
-| 3. Important issue? | **PASS** — data corruption, severity CRITICAL |
-| 4. Small and contained? | **PASS** — 3 lines, one function |
-| 5. No new features/APIs? | **PASS** — uses existing
-`vhost_scsi_flush()` |
-| 6. Can apply to local tree? | **PASS** — clean apply to current
-`scsi.c` |
-
-**Step 9.3 – Exception categories**
-
-Record: Not a device-ID/quirk/DT/build/docs exception. Qualifies as a
-**real bug fix** under stable rules.
-
-**Step 9.4 – Decision rationale**
-
-This commit closes a genuine control-plane synchronization hole in
-vhost-scsi that can cause host memory corruption when
-`VHOST_SET_MEM_TABLE` races with asynchronously completing SCSI
-commands. The bug exists in Linux 6.18.44, the fix is minimal and
-follows an established pattern in sibling vhost drivers, and all
-infrastructure is already present in this tree.
-
----
-
-## Verification
-
-- [Phase 1] Parsed subject, tags, body; identified corruption bug and
-  mst SOB
-- [Phase 1] Confirmed no Fixes:/Reported-by:/syzbot tags
-- [Phase 2] Read diff: removes TODO, adds `else vhost_scsi_flush(vs)` in
-  `vhost_scsi_ioctl()` default branch
-- [Phase 2] Traced completion path: `vhost_scsi_setup_resp_iovs()` →
-  `copy_to_iter()` at lines 721-723
-- [Phase 2] Traced mem table update: `vhost_set_memory()` replaces
-  `d->umem`, frees old IOTLB at lines 2021-2032
-- [Phase 2] Confirmed `translate_desc()` builds userspace HVAs from
-  memory table at lines 2646-2688
-- [Phase 3] `git blame -L 2431,2438`: TODO from `935cdee7ee1595` (Dec
-  2012)
-- [Phase 3] `git show 935cdee7ee1595`: original commit added TODO when
-  splitting vring vs dev ioctl flush
-- [Phase 3] `git log --grep='vhost-scsi: flush backend'`: empty — fix
-  not in tree
-- [Phase 3] `git log -S 'vhost_scsi_flush'`: flush infrastructure
-  present since inflight mechanism
-- [Phase 4] Web search found netdev thread (spinics/openwall); author v2
-  Jul 24 2026; Mike Christie review Jul 22
-- [Phase 4] lore.kernel.org fetch: **FAILED** (403/bot protection)
-- [Phase 4] `b4 dig -c`: **NOT RUN** — commit hash unavailable in
-  checkout
-- [Phase 5] Confirmed `vhost_scsi_flush()` at lines 1855-1876 uses
-  inflight generation + `vhost_dev_flush()` + wait
-- [Phase 5] Confirmed inflight refcount on cmd alloc/release (lines 768,
-  454)
-- [Phase 5] Compared with `vhost_net_flush` pattern at net.c:1827-1835
-  and vsock.c:883-891
-- [Phase 6] `git describe HEAD`: v6.18.44
-- [Phase 6] `make -s kernelversion`: 6.18.44
-- [Phase 6] Confirmed buggy TODO still present at scsi.c:2434
-- [Phase 6] Expected clean backport — no conflicting changes in ioctl
-  path
-- [Phase 8] Failure mode: host userspace memory corruption; severity
-  CRITICAL
-- [Phase 8] Affected population: CONFIG_VHOST_SCSI virtualization users
-
-**YES**The background checks finished: `git log --grep='vhost-scsi:
-flush backend'` returned nothing, so this fix is **not** in the local
-**6.18.44** tree yet. The `/* TODO: flush backend after dev ioctl. */`
-comment is still in `drivers/vhost/scsi.c`.
-
-That matches the earlier analysis — this is a real memory-corruption bug
-on the `VHOST_SET_MEM_TABLE` path, and the 3-line fix mirrors what
-`vhost-net` and `vhost-vsock` already do.
-
-**YES** — it should be backported to this tree.
-
- drivers/vhost/scsi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 98e4f68f4e3cb..e369f57ce1679 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -2431,9 +2431,10 @@ vhost_scsi_ioctl(struct file *f,
- 	default:
- 		mutex_lock(&vs->dev.mutex);
- 		r = vhost_dev_ioctl(&vs->dev, ioctl, argp);
--		/* TODO: flush backend after dev ioctl. */
- 		if (r == -ENOIOCTLCMD)
- 			r = vhost_vring_ioctl(&vs->dev, ioctl, argp);
-+		else
-+			vhost_scsi_flush(vs);
- 		mutex_unlock(&vs->dev.mutex);
- 		return r;
- 	}
--- 
-2.53.0
-
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
+
+
+
+On 7/9/2026 7:26 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 6 potential issue(s) to consider:
+> - [Critical] Acquiring `kvm->mmu_lock` inside the preempt notifier (`kvm_sched_out` -> `kvm_arch_vcpu_put`) creates an ABBA deadlock with the runqueue lock.
+> - [High] `kvm_flush_hdbss_buffer` calls `kvm_vcpu_mark_page_dirty` without holding `srcu_read_lock(&kvm->srcu)`, leading to Use-After-Free.
+> - [High] `kvm_arch_sync_dirty_log` silently misses dirty pages for vCPUs outside guest mode due to `KVM_REQUEST_WAIT` semantics.
+> - [High] Flushing the entire HDBSS buffer in a single tight loop can overflow the KVM dirty ring, resulting in dropped dirty pages.
+> - [High] Directly accessing the EL2 register `SYS_HDBSSPROD_EL2` from the host kernel will crash in nVHE mode.
+> - [Medium] Missing immediate Context Synchronization Event (`isb()`) after writing to control-plane system register `SYS_HDBSSPROD_EL2`.
+> --
+> 
+> --- Patch [5]: [PATCH v4 5/6] KVM: arm64: Add HDBSS fault handling and buffer flush ---
+> commit ac61acd739dfa5c2e5304969807c386e60452069
+> Author: eillon <yezhenyu2@huawei.com>
+> Date:   Thu Jul 9 10:40:25 2026 +0000
+> 
+>      KVM: arm64: Add HDBSS fault handling and buffer flush
+> 
+> This patch adds handling for HDBSS (Hardware Dirty Bit State Stream) faults,
+> triggering flush requests when the hardware buffer becomes full. It implements
+> kvm_flush_hdbss_buffer to sync the hardware buffer to the dirty bitmap, which
+> is invoked during vcpu_put, request checks, and dirty log synchronization.
+> 
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>> index bf6688245d83a..566953a4e23a1 100644
+>> --- a/arch/arm64/kvm/arm.c
+>> +++ b/arch/arm64/kvm/arm.c
+>> @@ -755,6 +755,9 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+>>   		kvm_vcpu_put_hw_mmu(vcpu);
+>>   	kvm_arm_vmid_clear_active();
+>>   
+>> +	if (vcpu->kvm->arch.enable_hdbss)
+>> +		kvm_flush_hdbss_buffer(vcpu);
+>> +
+> 
+> [Severity: Critical]
+> Could this create an ABBA deadlock with the runqueue lock?
+> 
+> When the scheduler preempts a vCPU thread, it invokes the KVM preempt
+> notifier kvm_sched_out() with the runqueue lock (rq->lock) held and
+> interrupts disabled. This calls kvm_arch_vcpu_put(), which in turn
+> calls kvm_flush_hdbss_buffer().
+> 
+> The flush function then acquires vcpu->kvm->mmu_lock. Because other
+> standard KVM execution paths acquire mmu_lock and may subsequently
+> wake up tasks (which acquires rq->lock), this establishes an unavoidable
+> locking inversion between rq->lock and mmu_lock.
+> 
+
+v5 uses srcu_read_lock(&kvm->srcu) in the flush path, not mmu_lock. The
+flush is also moved from vcpu_put() to the run-loop exit path, so no
+lock inversion is possible.
+
+> [Severity: High]
+> Is it safe to call kvm_flush_hdbss_buffer() here without holding the
+> KVM SRCU read lock?
+> 
+> The kvm_flush_hdbss_buffer() function calls kvm_vcpu_mark_page_dirty(),
+> which dereferences the KVM memslots array via kvm_vcpu_gfn_to_memslot().
+> 
+> When this flush is invoked from kvm_arch_vcpu_put() during vcpu_put(),
+> kvm->srcu is not held. The mmu_lock does not protect the memslots array
+> structure itself, which could lead to a use-after-free if memslots are
+> concurrently modified.
+> 
+> [ ... ]
+> 
+>> @@ -1971,7 +1977,15 @@ long kvm_arch_vcpu_unlocked_ioctl(struct file *filp, unsigned int ioctl,
+>>   
+>>   void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
+>>   {
+>> +	/*
+>> +	 * Flush all CPUs' dirty log buffers to the dirty_bitmap.  Called
+>> +	 * before reporting dirty_bitmap to userspace. Send a request with
+>> +	 * KVM_REQUEST_WAIT to flush buffer synchronously.
+>> +	 */
+>> +	if (!kvm->arch.enable_hdbss)
+>> +		return;
+>>   
+>> +	kvm_make_all_cpus_request(kvm, KVM_REQ_FLUSH_HDBSS | KVM_REQUEST_WAIT);
+>>   }
+> 
+
+Fixed in v5. kvm_flush_hdbss_buffer() now holds srcu_read_lock(&kvm-
+ >srcu) around memslot lookups.
+
+> [Severity: High]
+> Will this wait for vCPUs that have exited to userspace?
+> 
+> The KVM_REQUEST_WAIT flag causes KVM to wait only for vCPUs that are
+> currently executing in guest mode. If a vCPU has exited the guest to host
+> userspace, it is not in guest mode, but its HDBSS hardware buffer might
+> still contain unflushed dirty pages.
+> 
+> Since the flush request is pended but not waited for, could this return
+> immediately and cause userspace to read an incomplete dirty bitmap during
+> live migration?
+> 
+>> diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
+>> index 6c7a6ef66b5aa..002366337637c 100644
+>> --- a/arch/arm64/kvm/dirty_bit.c
+>> +++ b/arch/arm64/kvm/dirty_bit.c
+>> @@ -50,3 +50,65 @@ void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu)
+> 
+> [ ... ]
+> 
+>> +void kvm_flush_hdbss_buffer(struct kvm_vcpu *vcpu)
+>> +{
+>> +	int idx, curr_idx;
+>> +	u64 *hdbss_buf;
+>> +	struct kvm *kvm = vcpu->kvm;
+>> +
+>> +	if (!kvm->arch.enable_hdbss)
+>> +		return;
+>> +
+>> +	curr_idx = HDBSSPROD_IDX(read_sysreg_s(SYS_HDBSSPROD_EL2));
+> 
+
+The kvm_vcpu_kick() is indeed asynchronous; it only forces vCPUs
+currently in guest mode to exit, where the exit path flushes their HDBSS
+buffer.
+
+vCPUs that have already exited to userspace have already flushed the
+buffer on their way out, and while parked in userspace they cannot
+accumulate new entries. For the racing case where a vCPU is kicked but
+still in userspace, it will flush before re-entering the guest, but not
+immediately.
+
+This is fine by design: the generic KVM dirty-log API explicitly
+documents that concurrent bitmap writes may race with KVM_GET_DIRTY_LOG
+(see the comment above kvm_get_dirty_log_protect() in virt/kvm/
+kvm_main.c). The GET/CLEAR protocol is self-healing — any bit set after
+the snapshot is taken won't be cleared by the matching
+KVM_CLEAR_DIRTY_LOG, so it survives to the next iteration. The migration
+protocol handles this iteratively, and the final snapshot is taken with
+the guest paused, ensuring completeness.
+
+> [Severity: High]
+> Can this safely execute in nVHE mode?
+> 
+> This reads the SYS_HDBSSPROD_EL2 register directly from host context.
+> In KVM nVHE mode, the host kernel executes at EL1. Accessing an EL2
+> register from EL1 will trigger an undefined instruction exception and
+> panic the host.
+> 
+>> +
+>> +	/* Do nothing if HDBSS buffer is empty or br_el2 is NULL */
+>> +	if (curr_idx == 0 || vcpu->arch.hdbss.hdbssbr_el2 == 0)
+>> +		return;
+>> +
+>> +	hdbss_buf = page_address(phys_to_page(vcpu->arch.hdbss.base_phys));
+>> +	if (!hdbss_buf)
+>> +		return;
+>> +
+>> +	guard(write_lock_irqsave)(&vcpu->kvm->mmu_lock);
+>> +	for (idx = 0; idx < curr_idx; idx++) {
+>> +		u64 gpa;
+>> +
+>> +		gpa = hdbss_buf[idx];
+>> +		if (!(gpa & HDBSS_ENTRY_VALID))
+>> +			continue;
+>> +
+>> +		gpa &= HDBSS_ENTRY_IPA;
+>> +		kvm_vcpu_mark_page_dirty(vcpu, gpa >> PAGE_SHIFT);
+> 
+
+Not an issue. HDBSS is VHE-only. system_supports_hdbss() guards all
+register accesses, so nVHE never hits this path.
+
+> [Severity: High]
+> Does this tight loop risk overflowing the dirty ring?
+> 
+> When the KVM dirty ring is enabled, kvm_vcpu_mark_page_dirty() pushes
+> entries to the per-vCPU ring. The dirty ring signals userspace
+> cooperatively when it reaches its soft limit.
+> 
+> Because the entire HDBSS buffer is flushed in one tight loop, the soft
+> limit signal is ignored until the loop finishes. If the number of HDBSS
+> entries exceeds the remaining free slots before the hard limit, could
+> the ring push fail and silently drop the dirty pages?
+> 
+>> +	}
+>> +
+>> +	/* reset HDBSS index */
+>> +	write_sysreg_s(0, SYS_HDBSSPROD_EL2);
+>> +	vcpu->arch.hdbss.hdbssprod_el2 = 0;
+>> +	isb();
+> 
+
+Valid point. It will cause a WARN_ON_ONCE(kvm_dirty_ring_full) during 
+live migration with dirty-ring + HDBSS. Fixed in v5 by two changes:
+
+1. The flush now runs on every VM exit before handle_exit(), so
+check_vcpu_requests() sees the pushed entries on the next loop iteration
+and exits to userspace when soft-full.
+
+2. The dirty ring reservation is wired up via kvm_cpu_dirty_log_size()
+so rsvd = 64 + hdbss_entries, guaranteeing room for a full buffer flush
+— and in dirty-ring mode the HDBSS buffer is fixed at PAGE_SIZE, which 
+maximizes performance by minimizing drain frequency.
+
+> [Severity: Medium]
+> Is the context synchronization event misplaced here?
+> 
+> The architectural rules state that every write to a control-plane system
+> register must be followed by an isb() as the very next instruction.
+> 
+> There is a memory store (vcpu->arch.hdbss.hdbssprod_el2 = 0) placed
+> between the write_sysreg_s() and the isb(). Could this leave the CPU
+> operating under a stale configuration for several cycles?
+> 
+>> +}
+>> +
+>> +int kvm_handle_hdbss_fault(struct kvm_vcpu *vcpu)
+>> +{
+>> +	u64 prod;
+>> +	u64 fsc;
+>> +
+>> +	prod = read_sysreg_s(SYS_HDBSSPROD_EL2);
+> 
+
+Same answer as the ISB comment on patch 4.
+
+> [Severity: High]
+> Like in kvm_flush_hdbss_buffer() above, does reading SYS_HDBSSPROD_EL2
+> from the host kernel risk triggering an undefined instruction exception
+> if the system is running in nVHE mode?
+> 
+>> +	fsc = FIELD_GET(HDBSSPROD_EL2_FSC_MASK, prod);
+> 
+> [ ... ]
+> 
+
+Not an issue. HDBSS is VHE-only. system_supports_hdbss() is false on
+nVHE, so the registers are never accessed there. We note this in the
+cover letter and leave nVHE for future work.
+
+Thanks!
+Tian
