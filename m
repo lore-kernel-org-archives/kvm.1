@@ -1,254 +1,332 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCDE2D781B;
-	Mon, 31 Aug 2026 10:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788172249; cv=none; b=c/GEJ/i4rXx8h54viTlfeGY6XA6NBV0uXKiG6ociicQR5gVA/UhA8vai/a9MXOZMIfM8AarnPctheoeScCF69dp8S8thbPZyux+5EgVkjvJpKI7oF4Q1ZdyowY1gySdo2GYnHLYp+6KcJI49PN0XGnQ7GFKx8M97iSWnr4OZTFc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788172249; c=relaxed/simple;
-	bh=Ue8rScCqsgQwVU9eRcaCG6I8bspucEAE0U9uhwqA8Ns=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dFP/kgbKTEaerR8Ud8jJ8h1E8M9Yk2qwshURm+iZvfqX/+iHsM6R1pK3qdZ66/NeT9QUB+X3GiUqEKAta/DAQpO7lVrsPgKv0KjGC1c1Gs54iU2N5IdvwY0iXyDWorjriV1kRP7qKgubCCHdF/10Qs0/rOwbQNaklawxoRNi6aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Jawdq48k; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B5E33556D
+	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 11:09:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788174586; cv=pass; b=I7Pe3HFyDe9Y7oT/sOuKqqop6dIC+LphVyReqe+GyPD8PHmAcrI+eJv8QgMPA0bOX1eAizdcZD0kfHaXfgeErB97AxznapfdatEoJAf6WLwfoHAABxUkVtp69RX6LlahVHas9nT+c+V+GBNsAbx6A3msSC5pn41+OMi2DIK84Gw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788174586; c=relaxed/simple;
+	bh=eNEEQlIjrSAO0DH2OmgK6lfFH24wmDnCRfFdxuXXBJs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HPTcdxVUJry6lgry59oPegNbrb12fWVkYo9MA00XGwZp15brO1FTUqjng1rPGSKQzT1spmg0afPgEpO9HvMFBNQttcUmcgLnGDXKJe2KO49vYdhLHEjan0SaCjtJ+sQVBCEUrkY9gd+qPF40uJrK0XqmKy0/8hpgi15fC/CS6KQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Amfas3of; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=rJUtAZsX; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Jawdq48k"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67V82GOf1530799;
-	Mon, 31 Aug 2026 10:30:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=evGkbM
-	QEP+5mb1V6gxg3J2QclLIKC91JRKvgKC5iC9A=; b=Jawdq48k6gJ+HX+XljNsUK
-	fwMwYZ+9A5go4Wypiv0IP7xE+OQEE9krNqrOYbD1uGNCEnzZ7Ns+flf4cJs35x1r
-	Wd1AZuRuI29xe0pNw8roqV6tSeB1OcLKMQ/XuDRLuqp5INUCuq3KqQ2s/KtuJ1/n
-	02bgS/XE1hB9xN6aLocwiOMqrD0N5qgHXkbMfUvGG+umlJHG8hjGjghFgxP/SUtO
-	XN2ar0rfPcr2O3NTPRr8pgyfqFy70+181VATZQPrSPBW0XrGSgPHJT69TT0fs6oa
-	YG8xz/QKMgVlNddxMB2VjKBUf5FyHAYiJkv/2aBg1oEkdb/+mhCNEU4/QWOTRwaQ
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbmuhgtkb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Aug 2026 10:30:46 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67VAQGWj028110;
-	Mon, 31 Aug 2026 10:30:46 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gccexw44u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Aug 2026 10:30:46 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67VAUigZ24117888
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 31 Aug 2026 10:30:45 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D8E085804B;
-	Mon, 31 Aug 2026 10:30:44 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1E74F58059;
-	Mon, 31 Aug 2026 10:30:44 +0000 (GMT)
-Received: from [9.61.70.47] (unknown [9.61.70.47])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 31 Aug 2026 10:30:43 +0000 (GMT)
-Message-ID: <e25ef4a2-947e-4caa-94eb-fecaed8b0432@linux.ibm.com>
-Date: Mon, 31 Aug 2026 06:30:43 -0400
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Amfas3of";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="rJUtAZsX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788174583;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gGVDSMHx5ugj+9ChPGD41hmHDHU/4Z3alFYnki4dZYo=;
+	b=Amfas3ofEpPqw32CUCQSXCj4UUhRiWuFML2V5w5gd7YbXLQJJ0SlVl6nXhCdhP0qdNy+mE
+	k08AC2uCNc035xNT2YTfjyvGqpRiaCdnYJWngDG8imYETXzX2vramJSba8lvr0DVSDeAUT
+	snXzN7QqEjIxvo1b+aREQTGZcg806gw=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-558-ZA69fQd6N3GSmOL8MpgSlA-1; Mon, 31 Aug 2026 07:09:42 -0400
+X-MC-Unique: ZA69fQd6N3GSmOL8MpgSlA-1
+X-Mimecast-MFC-AGG-ID: ZA69fQd6N3GSmOL8MpgSlA_1788174582
+Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-836c8fc09cfso52204897b3.1
+        for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 04:09:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788174582; cv=none;
+        d=google.com; s=arc-20260327;
+        b=pLb56KdcwsZ4Tgqiekb6eCar8SIahc9TRjd2flvoWD4X5xUAYwOJm6AzXz5D1izEVU
+         rl3VdTvPA0AMfwrs9DsAlfpqWW4yXFI43X1VZ6v3lu6dvKpJCrbk7JL39827VzT2E9OH
+         MkfPsOrp3YiJfiYhYFSis8hc+Qpt7BAjRQIHKnkl9gXTv/QFiJ0mDuvG1eMtbdwhvey0
+         xWQ6mdhmnK5/r/anGFSgjMYMtSIZv9K/VXNotCzTcR/kEsqj3HgqFlS2wF/AKRnwW8P/
+         +5U5fPPlIpMmnXerW+mpIpEKV717R3PyADnjMU/PZ6xd2RzMZXO1kwPLPkHyNewJmnAh
+         k+8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gGVDSMHx5ugj+9ChPGD41hmHDHU/4Z3alFYnki4dZYo=;
+        fh=OCe38dekcbZ9jpL8sRR8Q/2KBBd4NwZTv6Zanf+n2+M=;
+        b=jaXmzUe4Uy7cYWHLMPvmzZow6JtVoYFKzAMcwUhNUhUcZ2sDkRT/Gzgj2/Lyah941y
+         2ZjCEoXEb6SLZo9cqSXw7sBWoh929M/O8ZG2qClTelcEZgg+WqlBgv1yJkoIaiYVSQwR
+         aMrDVHbQJhYThpeKeysYctAxqyXSNG+jwnhOGAEF94njC0HAYTez8i52YY91kgFtaA8P
+         wsVIW/IpwJ2keAh6Gn3+VHWXWDDuPzwkmrXHFw/sw+VwcRjeZ8mEc8N3K1RSVn82YLq9
+         hrdaEp8uQ8+sEXAVRbuhu9P/U5Pob2X+QNGCcePO0I2KNA6qgzwxQZ/hZxmGW8OzvySC
+         qB+Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788174582; x=1788779382; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gGVDSMHx5ugj+9ChPGD41hmHDHU/4Z3alFYnki4dZYo=;
+        b=rJUtAZsXdtGTgU1G5jIWVW6DLV4vW+VKK0Q7Z7MBVGbXnabO5lLFHSOFdXItHfmSzt
+         3fTiXEymJ4I+WYGLTIBx/dvA9Jqw5YBHahhcbf4n3gDDlbpF6PwYWNyS9vUoZlk9Ye+Y
+         fP708RmOULS++4rsSsyDNVZL+6fqWMNAcLwijnPr5HivmuzMfnJaC1qIru9yD3hXajeH
+         08Pp6/aCrJiknhGldgoev/Ss9Y6XomHk5+T6b/hSOGvaNhDTrSAdLecSSwb1MhjYk6Ei
+         1hqM6kqTxxIgc7t25tT4PQVN5QIRUnR+C35DGm7ClqhCZEVI5Xlfm5nGGFqJUqLJKgwx
+         fH0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788174582; x=1788779382;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gGVDSMHx5ugj+9ChPGD41hmHDHU/4Z3alFYnki4dZYo=;
+        b=NbgaipIDgwHn2UsGbk1x8tnCkiodpwWCSnRrMR8KUQ0pDLPcQdkbYJYZBfaFCMQEc3
+         IB4go4LzLRmhLC18/TGWFJ+hdvCFb9+tkm1A8OX6TEsIhq/7DMiiYeeTV+1nNmjtTfxo
+         URbqrpV3o9mN9655wIWjCmLGbgZXi5cq+4dhElDcLL0hlJQF4909LJD4R/vq3Kh74j8S
+         vcZVT7tfp1qq0U7obZhZMVA2dPKO7llaNwtw1r9uz4EEG0zeT/moNXoGUh8WiIbt9vR0
+         7eq8JiLqK2CeLvJioJA8sdG95CqXzOGXgpI56SBWr79gRWI8g1Cdc0SfFgiH+ukI3ihv
+         QSyw==
+X-Forwarded-Encrypted: i=1; AKwUvBxmzf9lvCBGkWiJsZOWZmi358FkwKypSdSB/Jd8QzRfn1nOLUP12UmMYYRZLswN3A6QC9M=@vger.kernel.org
+X-Gm-Message-State: AFuF++kYkPaRlAAUdp/6Q6799SLvISJUIQRYpCBo+WOxGv+/X7RZ9sof
+	Xt1Ym7h7zQckbtgClcDmguUbtvcv+Z2snCrLCfCwngZFlkbNzuNL/NphFJ1gPq541FNqgWL2d9u
+	GBcqiE3E+rWDyQg88coTA+ZjxpCnPP0YqfbBZgdCI4YKbabnoeHLkNZmTbmS1wkYi6pH4zxNnOb
+	+jzFd1Aq4oDZZUe9QEH+SXMxDDSuE1Ba9TRYtktmU=
+X-Gm-Gg: AYBFou31HqqTQB3bbT24QuQvf0R+hjoOjO6jv4mzcxWKuhWM/JpGMJad5aFEAd4BijF
+	r3dnenDMsEbk29hWTA1EDWiW4uD88nh0eGa1ihv3d4vEe0bUYLLm82NSFd1pOAWTgfbqfwSX32j
+	xqrwxt2gJdP4aTq7mYW54T5m5t/LyL0Q2YrWrT9WbibMs9h6oxkTIyQwDPQOrzr840kp9JJNnbZ
+	elq0dfoNE1Vexo7SQ+/efhbUsKTUOk9nhnbvVYSFLV7o1Em9t3IVzq8LDM=
+X-Received: by 2002:a05:690c:c4f1:b0:81e:7d90:5673 with SMTP id 00721157ae682-85d6b84749cmr86908327b3.26.1788174581594;
+        Mon, 31 Aug 2026 04:09:41 -0700 (PDT)
+X-Received: by 2002:a05:690c:c4f1:b0:81e:7d90:5673 with SMTP id
+ 00721157ae682-85d6b84749cmr86908167b3.26.1788174580953; Mon, 31 Aug 2026
+ 04:09:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/4] s390/vfio-ap: Fix leak of pinned NIB and
- registered NISC in vfio_ap_irq_enable/disable()
-To: sashiko-reviews@lists.linux.dev
-Cc: Heiko Carstens <hca@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>
-References: <20260828214653.1087009-1-akrowiak@linux.ibm.com>
- <20260828214653.1087009-2-akrowiak@linux.ibm.com>
- <20260828215749.5B3EA1F000E9@smtp.kernel.org>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <20260828215749.5B3EA1F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: wUplwUnnJ8ANJYzbiIiBijqP2Wx_ASZn
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDA4NiBTYWx0ZWRfX+UWbXUZC/jnF
- BpFGDuGbC6MMWyOSHeTjGR2UrpgZmM3WO9HureYqpQc399Fy7C6hXl7PmkNtKIVRb6D5TZG1m4K
- 6Jn5Lps3UVwJ7hDeKK2RHENedWaxwNXdLOWrJmP5CuyE4W2mr3bSce9tw7FTh0dSAhDLHRjzCPo
- CoIKgbcMtz7PpecyoA4XfistOZWHktdIdTbQ+PINkG00Plrfs6z4KbYoX7wKoMP4qHbNtjtWDvK
- KRRB4gis1kk/qlc4TRshQhhutPNEfeAujHHlymcZp0INs8sliHH19f3aF0cJzz9UM+wmppXHc8I
- mKWazvXIuxjt8PIyMsIOe1XKk1tPZJYem6J9rxvLSZF9f+uWxwygJ0mfcFOnbq8xvFj5XnMYmdn
- UbIq+YKK3VM6zyqv5Ui1G8/DOT3F1z80rJPEkgsUsQzaBlLtPLD7yhtHG5RYNpkkWW5u1k8adNS
- KljL3oECTleDcOun4dg==
-X-Authority-Analysis: v=2.4 cv=Osl/DS/t c=1 sm=1 tr=0 ts=6a9557d7 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=X6a0j2lC6GQecTCcd7cA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDA4NiBTYWx0ZWRfX5w2Op2MDiq3v
- Ih+LE7L7IAPR7+VnGDeEORN4L/+2xaKEwOgdcVzlo396USGjR7vpO86O+zxzCcYsgihZbO0M7YE
- uYv3qnIMFGhrx/h4uIsiNBvM+i/gT4Q=
-X-Proofpoint-ORIG-GUID: wUplwUnnJ8ANJYzbiIiBijqP2Wx_ASZn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-31_03,2026-08-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0
- adultscore=0 impostorscore=0 phishscore=0 clxscore=1015 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608310086
+References: <20260827055850.26951-1-physicalmtea@gmail.com>
+In-Reply-To: <20260827055850.26951-1-physicalmtea@gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Mon, 31 Aug 2026 13:09:04 +0200
+X-Gm-Features: AcwNN1VgorMGLHjUu2yMfvgBMefLlEZdtOPgiCl06CVBpYpTFVo6Jeh18PCESXs
+Message-ID: <CAJaqyWfjjSe19z4TrPbJfBBQZJXuAzqE4H8bik6UAiSgogzfmQ@mail.gmail.com>
+Subject: Re: [PATCH] vhost/vsock: batch RX used-ring updates
+To: Jia Jia <physicalmtea@gmail.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, 
+	"Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-
-On 8/28/26 5:57 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+On Thu, Aug 27, 2026 at 7:59=E2=80=AFAM Jia Jia <physicalmtea@gmail.com> wr=
+ote:
 >
-> New issues:
-> - [Critical] Prematurely unpinning the new NIB page on a hardware timeout in `vfio_ap_irq_enable` causes a host use-after-free and wild DMA write if the hardware later completes the asynchronous interrupt configuration.
+> vhost_transport_do_send_pkt() calls vhost_add_used() for every Guest RX
+> buffer even though it delays the Guest signal until the worker finishes.
+> Each call publishes one used entry and updates the used index separately.
 >
-> Pre-existing issues:
-> - [High] Guest-reachable `WARN_ONCE` in `vfio_ap_wait_for_irqstate` and `vfio_ap_irq_disable` violates KVM subsystem guidelines and creates a denial of service vector on `panic_on_warn` systems.
+> Collect the completed buffer heads in the arrays already allocated for th=
+e
+> virtqueue and publish them with vhost_add_used_n().  Bound the batch by t=
+he
+> ring size, array capacity, and worker packet budget.  Flush before
+> re-enabling notifications or leaving the worker.
+>
+> Each used entry describes one completed RX buffer and keeps its actual us=
+ed
+> length, so set nheads to 1 for every entry.  This patch does not change
+> negotiated features or compress multiple buffers into one used entry.
+>
+> This patch is limited to the current skb-based vhost-vsock RX path.
+>
+> Performance:
+>
+> Tested with a QEMU/KVM guest on a host with 4 online CPUs, using 2 vCPUs
+> pinned to host CPUs 2 and 3, QEMU 10.2.1, q35, 1536 MiB, and Linux
+> 7.2.0-rc3-next-20260713-next-debug-kasan.  The vhost-vsock source is base=
+d
+> on linux-next master at 49362394dad7df66c274c867a271394c10ca2bb8.
+>
+> Current vhost-vsock does not implement VIRTIO_F_IN_ORDER or
+> VIRTIO_F_RING_PACKED, so both configurations used packed=3Doff and
+> in_order=3Doff:
+>
+>   baseline:                 RX batching=3Doff
+>   vhost-vsock RX batching:  RX batching=3Don
+>
+> The test used vsock_perf.  The Guest receiver was started with:
+>
+>   vsock_perf --port PORT --buf-size 64M --vsk-size 64M --rcvlowat 1
+>
+> The Host sender was started with:
+>
+>   vsock_perf --sender 3 --port PORT --bytes BYTES \
+>       --buf-size SEND_BUF --vsk-size 64M
+>
+> Each workload transferred BYTES=3D1 GiB.  The SEND_BUF values were 256 B
+> (SEND_BUF=3D256), 512 B (SEND_BUF=3D512), 4 KiB (SEND_BUF=3D4K), and 64 K=
+iB
+> (SEND_BUF=3D64K).
+> Each state used a fresh Guest.  Each workload uses 20 paired runs, with 1=
+0
+> runs in each order.  The reported values are
+> Guest RX throughput in Gbits/s.  The baseline and batching columns are th=
+e
+> geometric means over the 20 runs; change is batching / baseline - 1,
+> computed from the unrounded values:
+>
+>   workload   baseline RX    batching RX   change   faster
+>   256 B      0.0795724      0.0831509      +4.497%  20/20
+>   512 B      0.1194885      0.1210297      +1.290%  14/20
+>   4 KiB      0.7208273      0.7242053      +0.469%  11/20
+>   64 KiB     2.1712797      2.1951941      +1.101%  13/20
+>
+> For reference, the table below gives the 95% normal-approximation interva=
+ls
+> obtained from the 20 paired log(batching / baseline) values:
+>
+>   workload   paired 95% interval
+>   256 B      +3.985% to +5.011%
+>   512 B      +0.206% to +2.385%
+>   4 KiB      -1.442% to +2.416%
+>   64 KiB     -1.474% to +3.745%
+>
+> All transfers passed byte-count checks, and no kernel errors were observe=
+d
+> in the logs.  The 256-byte workload improved in every pair.  The 512 B
+> workload was faster in 14 of 20 pairs, with a small gain.  The 4 KiB and
+> 64 KiB workloads showed no material throughput change; the difference
+> between their results may be due to scheduling and execution variation.
+>
+> Link: https://lore.kernel.org/r/20181214082146-mutt-send-email-mst@kernel=
+.org
+> Link: https://lore.kernel.org/r/20220901055434.824-4-qtxuning1999@sjtu.ed=
+u.cn
+> Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+> ---
+>  drivers/vhost/vsock.c | 41 +++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 39 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+> index 9aaab6bb8..d8050cca2 100644
+> --- a/drivers/vhost/vsock.c
+> +++ b/drivers/vhost/vsock.c
+> @@ -103,12 +103,37 @@ static bool vhost_transport_has_remote_cid(struct v=
+sock_sock *vsk, u32 cid)
+>         return found;
+>  }
+>
+> +static bool vhost_vsock_flush_used(struct vhost_virtqueue *vq,
+> +                                  unsigned int *used_count)
+> +{
+> +       if (!*used_count)
+> +               return false;
+> +
+> +       vhost_add_used_n(vq, vq->heads, vq->nheads, *used_count);
+> +       *used_count =3D 0;
+> +       return true;
+> +}
+> +
+
+I think that the used_count should be updated by the caller based on
+the boolean returned by this function.
+
+> +static void vhost_vsock_add_used(struct vhost_virtqueue *vq,
+> +                                unsigned int *used_count,
+> +                                unsigned int head, unsigned int len)
+> +{
+> +       struct vring_used_elem *used =3D &vq->heads[*used_count];
+> +
+> +       used->id =3D cpu_to_vhost32(vq, head);
+> +       used->len =3D cpu_to_vhost32(vq, len);
+> +       vq->nheads[*used_count] =3D 1;
+> +       (*used_count)++;
+> +}
+
+Same here, why pass it as an argument? The caller knows way better.
+
+Other than that, the patch looks good to me,
+
+Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+
+Thanks!
+
+> +
+>  static void
+>  vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+>                             struct vhost_virtqueue *vq)
+>  {
+>         struct vhost_virtqueue *tx_vq =3D &vsock->vqs[VSOCK_VQ_TX];
+>         int pkts =3D 0, total_len =3D 0;
+> +       unsigned int used_count =3D 0;
+> +       unsigned int used_limit;
+>         bool added =3D false;
+>         bool restart_tx =3D false;
+>
+> @@ -120,6 +145,12 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsoc=
+k,
+>         if (!vq_meta_prefetch(vq))
+>                 goto out;
+>
+> +       used_limit =3D min_t(unsigned int, vq->num,
+> +                          min_t(unsigned int, vq->dev->iov_limit,
+> +                                vq->dev->weight));
+> +       if (unlikely(!used_limit))
+> +               goto out;
+> +
+>         /* Avoid further vmexits, we're already processing the virtqueue =
+*/
+>         vhost_disable_notify(&vsock->dev, vq);
+>
+> @@ -134,9 +165,13 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsoc=
+k,
+>                 u32 offset;
+>                 int head;
+>
+> +               if (used_count =3D=3D used_limit)
+> +                       added |=3D vhost_vsock_flush_used(vq, &used_count=
+);
+> +
+>                 skb =3D virtio_vsock_skb_dequeue(&vsock->send_pkt_queue);
+>
+>                 if (!skb) {
+> +                       added |=3D vhost_vsock_flush_used(vq, &used_count=
+);
+>                         vhost_enable_notify(&vsock->dev, vq);
+>                         break;
+>                 }
+> @@ -153,6 +188,7 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock=
+,
+>                         /* We cannot finish yet if more buffers snuck in =
+while
+>                          * re-enabling notify.
+>                          */
+> +                       added |=3D vhost_vsock_flush_used(vq, &used_count=
+);
+>                         if (unlikely(vhost_enable_notify(&vsock->dev, vq)=
+)) {
+>                                 vhost_disable_notify(&vsock->dev, vq);
+>                                 continue;
+> @@ -230,8 +266,8 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock=
+,
+>                  */
+>                 virtio_transport_deliver_tap_pkt(skb);
+>
+> -               vhost_add_used(vq, head, sizeof(*hdr) + payload_len);
+> -               added =3D true;
+> +               vhost_vsock_add_used(vq, &used_count, head,
+> +                                    sizeof(*hdr) + payload_len);
+>
+>                 VIRTIO_VSOCK_SKB_CB(skb)->offset +=3D payload_len;
+>                 total_len +=3D payload_len;
+> @@ -264,6 +300,7 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock=
+,
+>                         virtio_transport_consume_skb_sent(skb, true);
+>                 }
+>         } while(likely(!vhost_exceeds_weight(vq, ++pkts, total_len)));
+> +       added |=3D vhost_vsock_flush_used(vq, &used_count);
+>         if (added)
+>                 vhost_signal(&vsock->dev, vq);
+>
 > --
->
-> commit f514ef27dfc693d5c326ffed4fd1a9985acce1d0
-> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
-> Subject: s390/vfio-ap: Fix leak of pinned NIB and registered NISC in vfio_ap_irq_enable/disable()
->
-> This commit addresses resource leaks by restructuring how the AQIC
-> instruction responses are handled for AP queues. It introduces a polling
-> mechanism to wait and confirm asynchronous hardware transitions before freeing
-> resources.
->
->> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
->> index 940c0ff668bee..24e93fb7f81a2 100644
->> --- a/drivers/s390/crypto/vfio_ap_ops.c
->> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-> [ ... ]
->
->> @@ -245,8 +259,8 @@ static void vfio_ap_wait_for_irqclear(int apqn)
->>   		switch (status.response_code) {
->>   		case AP_RESPONSE_NORMAL:
->>   		case AP_RESPONSE_RESET_IN_PROGRESS:
->> -			if (!status.irq_enabled)
->> -				return;
->> +			if (status.irq_enabled == ir)
->> +				return true;
->>   			fallthrough;
->>   		case AP_RESPONSE_BUSY:
->>   			msleep(20);
->> @@ -257,12 +271,15 @@ static void vfio_ap_wait_for_irqclear(int apqn)
->>   		default:
->>   			WARN_ONCE(1, "%s: tapq rc %02x: %04x\n", __func__,
->>   				  status.response_code, apqn);
->> -			return;
->> +			return true;
->>   		}
->>   	} while (--retry);
->>   
->> -	WARN_ONCE(1, "%s: tapq rc %02x: %04x could not clear IR bit\n",
->> -		  __func__, status.response_code, apqn);
->> +	WARN_ONCE(1, "%s: tapq rc %02x: timed out waiting for interrupts %s for %02x.%04x\n",
->> +		  __func__, status.response_code,
->> +		  ir ? "enabled" : "disabled",
->> +		  AP_QID_CARD(apqn), AP_QID_QUEUE(apqn));
->> +	return false;
->>   }
-> [Severity: High]
-> This isn't a bug introduced by this patch, but does this guest-reachable
-> warning violate KVM subsystem guidelines?
->
-> A malicious guest can intentionally manipulate AP queue states or rapidly
-> spam PQAP instructions to stall the hardware, triggering these warnings on
-> non-operational states or polling timeouts. On systems configured with
-> panic_on_warn, this creates a host denial of service vector.
->
-> Could these be converted to rate-limited debug messages or dropped entirely?
-
-Responded to with v3, not legitimate.
-
->
-> [ ... ]
->
->> @@ -326,18 +365,46 @@ static struct ap_queue_status vfio_ap_irq_disable(struct vfio_ap_queue *q)
->>   		case AP_RESPONSE_Q_NOT_AVAIL:
->>   		case AP_RESPONSE_DECONFIGURED:
->>   		case AP_RESPONSE_CHECKSTOPPED:
->> +			/* AP not operational; no further interrupts possible */
->> +			WARN_ONCE(1, "%s: ap_aqic status %d\n", __func__,
->> +				  status.response_code);
->> +			goto end_free;
->>   		case AP_RESPONSE_INVALID_ADDRESS:
->>   		default:
->> -			/* All cases in default means AP not operational */
->> +			/*
->> +			 * The AQIC disable was rejected; IRQ is still enabled
->> +			 * and the hardware still holds the NIB address. Do not
->> +			 * free resources.
->> +			 */
->>   			WARN_ONCE(1, "%s: ap_aqic status %d\n", __func__,
->>   				  status.response_code);
->> -			goto end_free;
->> +			goto end_fail;
->>   		}
-> [Severity: High]
-> This is also a pre-existing issue, but can this similarly be triggered by
-> an unprivileged guest manipulating the queue into an unavailable state during
-> a disable attempt?
-
-Responded to with v3, not legitimate.
-
-
->
-> [ ... ]
->
->> @@ -489,13 +557,49 @@ static struct ap_queue_status vfio_ap_irq_enable(struct vfio_ap_queue *q,
->>   	status = ap_aqic(q->apqn, aqic_gisa, h_nib);
->>   	switch (status.response_code) {
->>   	case AP_RESPONSE_NORMAL:
->> -		/* See if we did clear older IRQ configuration */
->> +		/*
->> +		 * AQIC initiates an asynchronous process; however, AP_RESPONSE_NORMAL
->> +		 * does not guarantee the IR bit is set yet.  Wait to confirm before
->> +		 * committing the new NIB and freeing the old resources.
->> +		 */
->> +		if (!vfio_ap_wait_for_irqstate(q->apqn, AP_IRQ_ENABLED)) {
->> +			/*
->> +			 * Timed out: the hardware may not have accepted the new
->> +			 * NIB.  Clean up the new resources and return
->> +			 * OTHERWISE_CHANGED to signal the guest to retry.
->> +			 */
->> +			ret = kvm_s390_gisc_unregister(kvm, isc);
->> +			if (ret) {
->> +				msg = "%s: kvm_s390_gisc_unregister: rc=%d isc=%d, apqn=%#04x\n";
->> +				VFIO_AP_DBF_WARN(msg, __func__, ret, isc, q->apqn);
->> +			}
->> +			vfio_unpin_pages(&q->matrix_mdev->vdev, nib, 1);
->> +			memset(&status, 0, sizeof(status));
->> +			status.response_code = AP_RESPONSE_OTHERWISE_CHANGED;
->> +			break;
->> +		}
-> [Severity: Critical]
-> Does unpinning the new NIB page here introduce a race that could lead to a
-> wild DMA write and host memory corruption?
->
-> Because ap_aqic() returned AP_RESPONSE_NORMAL, the hardware accepted the
-> asynchronous request. If the hardware is merely stalled (e.g., due to a
-> malicious guest spamming instructions) and vfio_ap_wait_for_irqstate() times
-> out, the hardware might still eventually complete the transition and write
-> interrupt status bytes to the new NIB.
->
-> If vfio_unpin_pages() is called here, that physical page could be reallocated
-> by the host kernel for a different purpose before the delayed hardware DMA
-> write completes.
-
-Legitimate concern, will be fixed in v5
-
+> 2.53.0
 >
 
