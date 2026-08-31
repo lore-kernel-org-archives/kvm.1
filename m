@@ -1,37 +1,37 @@
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD8E3AB27B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8B93AAF55;
 	Mon, 31 Aug 2026 21:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788212241; cv=none; b=YzShJpEs/88hHGoU4CaFqJ6GM04Wf4wYMGA2Lg2UFYhlrLFbsP5ipCfdfvDKTaP9WR8VbQfr4p1y9Hb9t/8VTseSmY9txyHgyjieBCnp3YXcV5pRfzsMqYIoK9OPAGcY1enA6Xu+/App7fPnNSh3/WX1VR4bIIMU8834WCBbdLQ=
+	t=1788212241; cv=none; b=AtVHhpiCp6PI2zEbDGEypCbXwwURZU6agV814IcpsA+Hkofhr9IIhAO4t+5rJ3edbTT5hhciYW7SupfxX2eF9IpaG2nbYayY6XIn6wveX5UXJyDHIgDpgaopxtYN+4MoYvUThFL6EezAV0cSEM40Yl93xx9BXQ5J0Ini6dbNeRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788212241; c=relaxed/simple;
-	bh=WkxtsC9mpIM9Votob3SUwu+R0cC7gQxOCDTmSyZxyik=;
+	bh=o3Vcdhj6gZcaQyV9f7j7pShyhQmrE6ratqKpxH1np1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qsAukYNd405RdYN5Cs8iYe+xAtlGEU6Y9rDVnBShUEPJUxSDBqgD4ZOpA8gk6JkHqnPCxZTga+IS7ULnha1Nt0aaXYsQ3DcI/22JHppB8e09HlS80AVExVAxwlmGj0jhD6NqxZ9TTS0ZUBkLKGgNE4JZeqtvb87+pQQnrrzO8x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ElRYiePg; arc=none smtp.client-ip=90.155.92.199
+	 MIME-Version; b=SmkKzILNLrymdmMrKzu8uiySDuiH46OoFMnvN135dt2ER/2RdqOiEuOKtgX0zd2Q6Z0VrMchRBRqGXpl0xLBBJkqwXdbW9nfjhC7fbO5cxXXsz1lazbUm4Q0chShmyvzyIDvgo76j4hjAMYs+giCA7g8LfSkEwfVvu2A3p4HhbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=hPUAWa8O; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ElRYiePg"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="hPUAWa8O"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=QA41Nq4s6oAvenfvFVuXon+d1FPu3+c/4DUIsHP6hhQ=; b=ElRYiePg+ELZCD1AKNurjFQdDY
-	Iv9vYok9InzCNCfJ0pofjJOWMSn1btlENGOxC4qMrxXF+Z/xTdoQ/tmgyIOcP9VzHBA1EKWglLsjq
-	Cri+nnm3gpGLLQSglFlnz8dm/bYvS/Xmhu5mhSeZYIyHI15qE7zjzUdUry9Yd88pJ4aevWwjP/2A8
-	NsXdOioQafiSllHHljQA4uf/ypCrEgEBoLh4Y8al1UEtyuRzEAzSSfLUJB9JzZaVWktJYsmWsqhNd
-	FTFPfq3JZ3rRTW8dNbwVYPttpWFuEqARBK0p2EC+QoC3N0xe7ofmT+xbU38FNGsH3I8vNXzXeeMVO
-	SqdHXYVQ==;
+	bh=4cyQJilA745OhAO/Cppku76CMrTmQVko1uOwOBUB5G0=; b=hPUAWa8OCZKVp9jCsbG0DCgjPg
+	som7ZxOcCsLVPlQmUc3EGA9xpiem733s6G6XvBks5P76nsqRCfVWHmaIvMw/hBp94IH8WknhISyIV
+	B5TADY5wSZhGVDeGgvjF0CHAC75fu2u8W+K35BGez3ARPXS3zCXStHwrionMa2yg3Tqz06/xNEfd4
+	S3J6JUM3SOd14kM+dHG8cNylRjimyQNuhJTDQfRS6946ZWJOusztItRw7Y/i8OSv692+ajVYn9Qjp
+	mCGhw1Q2E8+u7BKFlvH9bih9O7Kf6orj1cHGEOyF7g/5ycw0mjOfhRhE9oodlVvFPVDqAmQ5HSZq0
+	Hic3OyNQ==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1x19gG-0000000AKc7-31sh;
+	id 1x19gG-0000000AKcB-324a;
 	Mon, 31 Aug 2026 21:36:41 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
-	id 1x19gD-00000000LCm-49Ca;
+	id 1x19gE-00000000LDS-2XX8;
 	Mon, 31 Aug 2026 22:36:38 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: seanjc@google.com,
@@ -56,9 +56,9 @@ Cc: dwmw2@infradead.org,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	imv4bel@gmail.com
-Subject: [PATCH v3 03/13] KVM: x86/xen: Rename max_evtchn_port() to kvm_max_evtchn_port()
-Date: Mon, 31 Aug 2026 22:26:34 +0100
-Message-ID: <20260831213632.81023-4-dwmw2@infradead.org>
+Subject: [PATCH v3 13/13] KVM: x86/xen: Convert evtchn_ports from IDR to XArray
+Date: Mon, 31 Aug 2026 22:26:44 +0100
+Message-ID: <20260831213632.81023-14-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260831213632.81023-1-dwmw2@infradead.org>
 References: <20260831213632.81023-1-dwmw2@infradead.org>
@@ -72,98 +72,163 @@ Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Furkan Caliskan <frn1furkan10@gmail.com>
 
-Rename in preparation for adding a variant that takes a latched bool
-argument for use in paths that need a consistent snapshot of the
-shinfo mode.
+IDR is deprecated in favor of XArray: see
+Documentation/core-api/idr.rst. Convert evtchn_ports accordingly.
 
-No functional change.
+kvm_xen_eventfd_assign()'s single-slot idr_alloc() becomes
+xa_insert(), since it was really an insert-at-index, not an
+allocation: -EBUSY replaces -ENOSPC, still mapped to -EEXIST.
 
-Assisted-by: Kiro:claude-opus-4.6-1m
+kvm_xen_hcall_evtchn_send() drops its explicit rcu_read_lock(),
+since xa_load() takes its own RCU read-side section internally.
+evtchnfd's lifetime is still guaranteed by kvm->srcu.
+
+xen_lock is left in place: it protects state beyond the map itself.
+
+Signed-off-by: Furkan Caliskan <frn1furkan10@gmail.com>
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- arch/x86/kvm/xen.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  3 ++-
+ arch/x86/kvm/xen.c              | 34 ++++++++++++++++-----------------
+ 2 files changed, 18 insertions(+), 19 deletions(-)
 
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 683bb8bf43a9..3af7395c2430 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -16,6 +16,7 @@
+ #include <linux/irq_work.h>
+ #include <linux/irq.h>
+ #include <linux/workqueue.h>
++#include <linux/xarray.h>
+ 
+ #include <linux/kvm.h>
+ #include <linux/kvm_para.h>
+@@ -1113,7 +1114,7 @@ struct kvm_xen {
+ 	bool runstate_update_flag;
+ 	u8 upcall_vector;
+ 	struct gfn_to_pfn_cache shinfo_cache;
+-	struct idr evtchn_ports;
++	struct xarray evtchn_ports;
+ 	unsigned long poll_mask[BITS_TO_LONGS(KVM_MAX_VCPUS)];
+ 
+ 	struct kvm_xen_hvm_config hvm_config;
 diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index b89c973c2730..be3c4dbee435 100644
+index d15c62ad7932..718396340d3c 100644
 --- a/arch/x86/kvm/xen.c
 +++ b/arch/x86/kvm/xen.c
-@@ -1439,7 +1439,7 @@ static int kvm_xen_hypercall_complete_userspace(struct kvm_vcpu *vcpu)
- 	return kvm_xen_hypercall_set_result(vcpu, run->xen.u.hcall.result);
- }
+@@ -2141,7 +2141,7 @@ static int kvm_xen_eventfd_update(struct kvm *kvm,
  
--static inline int max_evtchn_port(struct kvm *kvm)
-+static inline int kvm_max_evtchn_port(struct kvm *kvm)
+ 	/* Protect writes to evtchnfd as well as the idr lookup.  */
+ 	mutex_lock(&kvm->arch.xen.xen_lock);
+-	evtchnfd = idr_find(&kvm->arch.xen.evtchn_ports, port);
++	evtchnfd = xa_load(&kvm->arch.xen.evtchn_ports, port);
+ 
+ 	ret = -ENOENT;
+ 	if (!evtchnfd)
+@@ -2235,13 +2235,13 @@ static int kvm_xen_eventfd_assign(struct kvm *kvm,
+ 	}
+ 
+ 	mutex_lock(&kvm->arch.xen.xen_lock);
+-	ret = idr_alloc(&kvm->arch.xen.evtchn_ports, evtchnfd, port, port + 1,
++	ret = xa_insert(&kvm->arch.xen.evtchn_ports, port, evtchnfd,
+ 			GFP_KERNEL);
+ 	mutex_unlock(&kvm->arch.xen.xen_lock);
+-	if (ret >= 0)
++	if (!ret)
+ 		return 0;
+ 
+-	if (ret == -ENOSPC)
++	if (ret == -EBUSY)
+ 		ret = -EEXIST;
+ out:
+ 	if (eventfd)
+@@ -2256,7 +2256,7 @@ static int kvm_xen_eventfd_deassign(struct kvm *kvm, u32 port)
+ 	struct evtchnfd *evtchnfd;
+ 
+ 	mutex_lock(&kvm->arch.xen.xen_lock);
+-	evtchnfd = idr_remove(&kvm->arch.xen.evtchn_ports, port);
++	evtchnfd = xa_erase(&kvm->arch.xen.evtchn_ports, port);
+ 	mutex_unlock(&kvm->arch.xen.xen_lock);
+ 
+ 	if (!evtchnfd)
+@@ -2272,7 +2272,7 @@ static int kvm_xen_eventfd_deassign(struct kvm *kvm, u32 port)
+ static int kvm_xen_eventfd_reset(struct kvm *kvm)
  {
- 	if (kvm_xen_has_64bit_shinfo(kvm))
- 		return EVTCHN_2L_NR_CHANNELS;
-@@ -1546,7 +1546,7 @@ static bool kvm_xen_schedop_poll(struct kvm_vcpu *vcpu, bool is_64bit,
+ 	struct evtchnfd *evtchnfd, **all_evtchnfds;
+-	int i;
++	unsigned long i;
+ 	int n = 0;
+ 
+ 	mutex_lock(&kvm->arch.xen.xen_lock);
+@@ -2282,7 +2282,7 @@ static int kvm_xen_eventfd_reset(struct kvm *kvm)
+ 	 * critical section, first collect all the evtchnfd objects
+ 	 * in an array as they are removed from evtchn_ports.
+ 	 */
+-	idr_for_each_entry(&kvm->arch.xen.evtchn_ports, evtchnfd, i)
++	xa_for_each(&kvm->arch.xen.evtchn_ports, i, evtchnfd)
+ 		n++;
+ 
+ 	all_evtchnfds = kmalloc_objs(struct evtchnfd *, n);
+@@ -2292,9 +2292,9 @@ static int kvm_xen_eventfd_reset(struct kvm *kvm)
  	}
  
- 	for (i = 0; i < sched_poll.nr_ports; i++) {
--		if (ports[i] >= max_evtchn_port(vcpu->kvm)) {
-+		if (ports[i] >= kvm_max_evtchn_port(vcpu->kvm)) {
- 			*r = -EINVAL;
- 			goto out;
- 		}
-@@ -1833,7 +1833,7 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
- 		WRITE_ONCE(xe->vcpu_idx, vcpu->vcpu_idx);
+ 	n = 0;
+-	idr_for_each_entry(&kvm->arch.xen.evtchn_ports, evtchnfd, i) {
++	xa_for_each(&kvm->arch.xen.evtchn_ports, i, evtchnfd) {
+ 		all_evtchnfds[n++] = evtchnfd;
+-		idr_remove(&kvm->arch.xen.evtchn_ports, evtchnfd->send_port);
++		xa_erase(&kvm->arch.xen.evtchn_ports, evtchnfd->send_port);
  	}
+ 	mutex_unlock(&kvm->arch.xen.xen_lock);
  
--	if (xe->port >= max_evtchn_port(kvm))
-+	if (xe->port >= kvm_max_evtchn_port(kvm))
- 		return -EINVAL;
- 
- 	rc = -EWOULDBLOCK;
-@@ -1995,7 +1995,7 @@ int kvm_xen_setup_evtchn(struct kvm *kvm,
- 	struct kvm_vcpu *vcpu;
+@@ -2345,12 +2345,10 @@ static bool kvm_xen_hcall_evtchn_send(struct kvm_vcpu *vcpu, u64 param, u64 *r)
+ 	}
  
  	/*
--	 * Don't check for the port being within range of max_evtchn_port().
-+	 * Don't check for the port being within range of kvm_max_evtchn_port().
- 	 * Userspace can configure what ever targets it likes; events just won't
- 	 * be delivered if/while the target is invalid, just like userspace can
- 	 * configure MSIs which target non-existent APICs.
-@@ -2004,8 +2004,8 @@ int kvm_xen_setup_evtchn(struct kvm *kvm,
- 	 * can be restored *independently* of other things like creating vCPUs,
- 	 * without imposing an ordering dependency on userspace.  In this
- 	 * particular case, the problematic ordering would be with setting the
--	 * Xen 'long mode' flag, which changes max_evtchn_port() to allow 4096
--	 * instead of 1024 event channels.
-+	 * Xen 'long mode' flag, which changes kvm_max_evtchn_port() to allow
-+	 * 4096 instead of 1024 event channels.
+-	 * evtchnfd is protected by kvm->srcu; the idr lookup instead
+-	 * is protected by RCU.
++	 * evtchnfd is protected by kvm->srcu; the xa_load is RCU-safe
++	 * internally, no explicit rcu_read_lock() needed.
  	 */
+-	rcu_read_lock();
+-	evtchnfd = idr_find(&vcpu->kvm->arch.xen.evtchn_ports, send.port);
+-	rcu_read_unlock();
++	evtchnfd = xa_load(&vcpu->kvm->arch.xen.evtchn_ports, send.port);
+ 	if (!evtchnfd)
+ 		return false;
  
- 	/* We only support 2 level event channels for now */
-@@ -2042,7 +2042,7 @@ int kvm_xen_hvm_evtchn_send(struct kvm *kvm, struct kvm_irq_routing_xen_evtchn *
- 	struct kvm_xen_evtchn e;
- 	int ret;
+@@ -2397,23 +2395,23 @@ void kvm_xen_destroy_vcpu(struct kvm_vcpu *vcpu)
+ void kvm_xen_init_vm(struct kvm *kvm)
+ {
+ 	mutex_init(&kvm->arch.xen.xen_lock);
+-	idr_init(&kvm->arch.xen.evtchn_ports);
++	xa_init(&kvm->arch.xen.evtchn_ports);
+ 	kvm_gpc_init(&kvm->arch.xen.shinfo_cache, kvm);
+ }
  
--	if (!uxe->port || uxe->port >= max_evtchn_port(kvm))
-+	if (!uxe->port || uxe->port >= kvm_max_evtchn_port(kvm))
- 		return -EINVAL;
+ void kvm_xen_destroy_vm(struct kvm *kvm)
+ {
+ 	struct evtchnfd *evtchnfd;
+-	int i;
++	unsigned long i;
  
- 	/* We only support 2 level event channels for now */
-@@ -2152,7 +2152,7 @@ static int kvm_xen_eventfd_assign(struct kvm *kvm,
+ 	kvm_gpc_deactivate(&kvm->arch.xen.shinfo_cache);
  
- 	case EVTCHNSTAT_interdomain:
- 		if (data->u.evtchn.deliver.port.port) {
--			if (data->u.evtchn.deliver.port.port >= max_evtchn_port(kvm))
-+			if (data->u.evtchn.deliver.port.port >= kvm_max_evtchn_port(kvm))
- 				goto out_noeventfd; /* -EINVAL */
- 		} else {
- 			eventfd = eventfd_ctx_fdget(data->u.evtchn.deliver.eventfd.fd);
-@@ -2270,7 +2270,7 @@ static int kvm_xen_setattr_evtchn(struct kvm *kvm, struct kvm_xen_hvm_attr *data
- 	if (data->u.evtchn.flags == KVM_XEN_EVTCHN_RESET)
- 		return kvm_xen_eventfd_reset(kvm);
+-	idr_for_each_entry(&kvm->arch.xen.evtchn_ports, evtchnfd, i) {
++	xa_for_each(&kvm->arch.xen.evtchn_ports, i, evtchnfd) {
+ 		if (!evtchnfd->deliver.port.port)
+ 			eventfd_ctx_put(evtchnfd->deliver.eventfd.ctx);
+ 		kfree(evtchnfd);
+ 	}
+-	idr_destroy(&kvm->arch.xen.evtchn_ports);
++	xa_destroy(&kvm->arch.xen.evtchn_ports);
  
--	if (!port || port >= max_evtchn_port(kvm))
-+	if (!port || port >= kvm_max_evtchn_port(kvm))
- 		return -EINVAL;
- 
- 	if (data->u.evtchn.flags == KVM_XEN_EVTCHN_DEASSIGN)
+ 	if (kvm->arch.xen.hvm_config.msr)
+ 		static_branch_slow_dec_deferred(&kvm_xen_enabled);
 -- 
 2.55.0
 
