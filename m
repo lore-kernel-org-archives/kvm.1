@@ -1,66 +1,36 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mta1.migadu.com (out-76.mta1.migadu.com [95.215.58.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3812DFA4A
-	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 05:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5E734DCE3
+	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 06:30:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788156000; cv=none; b=oMrMSYy6jaKe/M5tw8oSKqBz2RB+RCxkhDeKp+w4zaqjmJ0r7Ae6bN4Sdp5/PDIpghi/ECK2njURj9p6ycgfmjkrGoT2JAlAI4FA8EdvM56Z/NmbxKZVl2Z7aXfYPCUqZrZEbgTdhVSb5wYLl5rfN66VJ0Bs+5Yh85vVVikdB+I=
+	t=1788157861; cv=none; b=f/ZpYtBEVP5DBW692A6TVIjlfD8dA9y+MI5Co58shimePWxuRZ0pWY7Gtq+huEITvmy8MBs1OpYKdo9f9nVPgK6Rbxs8rfriiFBFO7zGT6VHeKWTWu7PQ10/y8VUGIjZupZFyKzk4G4lxP7miDvGSEe5q4DDqv0Cbmyz+yzx4Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788156000; c=relaxed/simple;
-	bh=bGtlLNHZeXwTDuqeOaNrwGY3uLSH0iJMGMCr95unclU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sGAbdUk27/45rBSzfIky105Wxi2IRjabfqpdSFo86f+2pCUZdaco75RAdzksXQxW3GSMlcYWikkyKhem4QmXBCeAhSahq+RG2rKPs1FW6SNISpqmf/Z4aFc90hpZd42MvAT/CWXnLhE4jxn+1BAzQ4PgFFQLd2ba9yAQRnriRc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n3xj7/IF; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788157861; c=relaxed/simple;
+	bh=8KAnISRXhR5+YkdYI9P7YjmvktPG6VGXMnSy1CkxcSE=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=gfHPy8R+Ppa1FGLEOuCINdt8L0Zh4Oa1bPu6A+TgXNvFBLMtG0+NboTM9ckDuDG4U7AOi+IObYSJXjwxfZoxEx6v1J9PZdudJ+c+5TQ8SKgd7Fl+LXrpkX8U2uV0ULEBpbK8Ua8HFde5W43gwyUI09nEtG/Xm5438p8Ch2ydru8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Bapk2w4H; arc=none smtp.client-ip=95.215.58.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n3xj7/IF"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-482e61a34e5so957280f8f.3
-        for <kvm@vger.kernel.org>; Sun, 30 Aug 2026 22:59:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788155997; x=1788760797; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XfxbA2i+f23qwNxWpVJUWwp2eUr44EFO/Ti3rWFq6J8=;
-        b=n3xj7/IF9PB8BcIKcHffoy+jJQvVaSGxxM1DmK91/CAoTAt2IWkPAyONtCyDsjjWvY
-         6nvN8ngjhfaVpicCW7t7LzfyZr7w5MMarWIWb+D7PCDu0ey4klLCqI3NGwzEOpc8fdDf
-         JgqI/NvF9CAoxossx1sjDnTn0LDVILaLpMG+x/IrsJ6n57QM8rE+heCtmPqWXl+2YpeM
-         zzKdvhWobHPE7lb0LY5Eayb9IbSvepg/RhVywfGf5Rhgy1IJhvPy5ZpN0Y9KnwEDzknh
-         lQ3wNLH6N9fWNeQHPZz/l/cH45yEMJewD5+RdLUuB50bmqUibmJWLpJHoSI/cQhXKTcf
-         KySw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788155997; x=1788760797;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XfxbA2i+f23qwNxWpVJUWwp2eUr44EFO/Ti3rWFq6J8=;
-        b=noIoeIl+1IV6m8+SxMDZRiwmVEMAnJ0pQUUD24+4flIS9JcA2k4QA2iwwYyIUTF8hY
-         ZDggW+ARMU93H0B4LJAjeW/h0OwdmmFb6mjpQGtlQE0wWtlnfHNVFEzJL82e6M6f3/mY
-         w+EQHkImPb0Rm6pCMvMzKpExWvEsXkJK8OxYYSmfYLlqPYII+SrVld0MmGAdN+GRrSTE
-         XtP2b8s0qh6Z8FPWKcX5jszQwjibhEctZ7Yrtmjwiek9OWjq8fNNwFRnmK/iLwKSKFEz
-         D50wgCvmDqIZ526HTHmJgBerchJiACVyKjufwBprrkU6XW9pT5s3jsrF24ApoQhF9Igp
-         /7Nw==
-X-Gm-Message-State: AFuF++mn6AfErdVdxF/CP4CvrRrsAhPS7pt2ckM7zFsaAmrAq9r/pEAj
-	zIr1FPGjkz/CkcFsznjcawi55iX8Hu47o780zuFn8/N9DA9yTiyZVFHQ
-X-Gm-Gg: AYBFou1zXFjEAyaA253xdUwULSgmU2Uczhv/64stDuoPDa0CEG/i68WIXkSoyF98LnO
-	uImVawctVpy2RO9uscbzdneWPMJswpYu9c+EOm9mYNbBWDdr5mPY4A89VwIYKOwKzRJJTwMQhmF
-	xEN778ZarjBdPkOg7TYJ4tIfGkK8szKV7KoHixtvH8v5ukl5eA6hP9QeINJ7kBFAZxGDhijGBFo
-	e8QBcKDunRLSTsJlBrj+C8a1CDeVx2pFxX4f0pXZWzk1Ht0XqpTWtMwmTpsFHtl8B7OzzcYK7/X
-	bXCC/z5+itUlcnbSQtIXiaBQlJ9Q0Om/giU4YqxgXdQLfp4kC2+fd82+X3M5mrIMn+stcIDX9ki
-	Y1v9EtFdkMhnY7YKG4nxumWKQhOsCAFVIyo7ndb7RXozFHRMm3iqBSe1uuk6z4QevV4QmB6PB6U
-	rJkTN4pfKOR4FHWeKb2muqm15kfcfwNfPnMViv0MuPS6WxLxNO3OCehqI9Ls5yk8vYug==
-X-Received: by 2002:a5d:5f8d:0:b0:482:ee81:f0ca with SMTP id ffacd0b85a97d-482f79c94eemr36614562f8f.12.1788155996487;
-        Sun, 30 Aug 2026 22:59:56 -0700 (PDT)
-Received: from [192.168.1.109] ([88.230.40.90])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4843ce8b015sm3251163f8f.13.2026.08.30.22.59.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 30 Aug 2026 22:59:55 -0700 (PDT)
-Message-ID: <85c66385-7a28-4779-96d4-6b34f53b5994@gmail.com>
-Date: Mon, 31 Aug 2026 08:59:50 +0300
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Bapk2w4H"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=8KAnISRXhR5+YkdYI9P7YjmvktPG6VGXMnSy1CkxcSE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788157857; v=1; x=1788762657;
+ b=Bapk2w4HWE2kaQ/junVXJduYJtexc8oKKmeyE6phnadV5Dx60y1t8E5OuoJlBB5ZLjbOn2X1
+ KuXOWzhwsDNsC7fK+uuiN/YH6waflArB7cCg/Z1EARfNK4VJxuc+0RsNT13pMAM3X5ZARuOnNgD
+ OMbi85hxB2aimG/K3vQBeBbM=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 7136dd4160f950d1;
+	Mon, 31 Aug 2026 06:30:57 +0000
+X-Mizu-Trace-ID: 7136dd4160f950d1
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <354b192a-52f4-44fb-9034-5df51a92dd3e@linux.dev>
+Date: Mon, 31 Aug 2026 14:30:48 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -68,41 +38,77 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: x86/xen: Convert evtchn_ports from IDR to XArray
-To: David Woodhouse <dwmw2@infradead.org>, linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, x86@kernel.org, seanjc@google.com,
- pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, hpa@zytor.com, paul@xen.org,
- xen-devel@lists.xenproject.org
-References: <20260706081311.13633-1-frn1furkan10@gmail.com>
- <efe39d24a2621ce23f9d53471b3b587feaaa8526.camel@infradead.org>
-Content-Language: en-US
-From: =?UTF-8?B?RnVya2FuIMOHYWzEscWfa2Fu?= <frn1furkan10@gmail.com>
-In-Reply-To: <efe39d24a2621ce23f9d53471b3b587feaaa8526.camel@infradead.org>
+Cc: cui.tao@linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, zengchi@kylinos.cn, stable@vger.kernel.org
+Subject: Re: [PATCH] LoongArch: KVM: Preserve memslot arch flags on
+ KVM_MR_FLAGS_ONLY
+To: Zeng Chi <zeng_chi911@163.com>, zhaotianrui@loongson.cn,
+ maobibo@loongson.cn, chenhuacai@kernel.org
+References: <20260828094825.357630-1-zeng_chi911@163.com>
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <20260828094825.357630-1-zeng_chi911@163.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 
 
-On 7/7/26 12:16, David Woodhouse wrote:
-> On Mon, 2026-07-06 at 11:13 +0300, Furkan Caliskan wrote:
->> IDR is deprecated in favor of XArray: see
->> Documentation/core-api/idr.rst. Convert evtchn_ports accordingly.
->>
->> kvm_xen_eventfd_assign()'s single-slot idr_alloc() becomes
->> xa_insert(), since it was really an insert-at-index, not an
->> allocation: -EBUSY replaces -ENOSPC, still mapped to -EEXIST.
->>
->> kvm_xen_hcall_evtchn_send() drops its explicit rcu_read_lock(),
->> since xa_load() takes its own RCU read-side section internally.
->> evtchnfd's lifetime is still guaranteed by kvm->srcu.
->>
->> xen_lock is left in place: it protects state beyond the map itself.
->>
->> Signed-off-by: Furkan Caliskan <frn1furkan10@gmail.com>
+在 2026/8/28 17:48, Zeng Chi 写道:
+> From: Zeng Chi <zengchi@kylinos.cn>
 > 
-> Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+> kvm_arch_prepare_memory_region() computes new->arch.flags, i.e. whether
+> a memslot is KVM_MEM_HUGEPAGE_CAPABLE or KVM_MEM_HUGEPAGE_INCAPABLE, only
+> for KVM_MR_CREATE and KVM_MR_MOVE, and returns early for every other
+> change.  But the generic code allocates a zeroed memslot for every
+> change and never copies old->arch, so after a KVM_MR_FLAGS_ONLY update,
+> e.g. toggling KVM_MEM_LOG_DIRTY_PAGES for live migration, the active
+> memslot has arch.flags == 0.
 > 
-> Thanks.
+> With both flags clear, fault_supports_huge_mapping() falls through to
+> the alignment check on the HVA range alone, which no longer verifies
+> that the GPA and HVA have the same offset within a PMD.  A memslot that
+> was marked KVM_MEM_HUGEPAGE_INCAPABLE because of a GPA/HVA offset
+> mismatch can then be mapped with PMD entries on read faults, and since
+> kvm_map_page() aligns the gfn and the pfn independently, the guest ends
+> up accessing the wrong host pages, exactly the "d -> f, e -> g" case
+> described in the comment above the check.
+> 
+> Carry the arch flags over from the old memslot for KVM_MR_FLAGS_ONLY,
+> as the GPA, HVA and size are guaranteed to be unchanged for that case.
+> 
+> Fixes: 7ab6fb505b2a ("LoongArch: KVM: Optimization for memslot hugepage checking")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zeng Chi <zengchi@kylinos.cn>
+> ---
+>  arch/loongarch/kvm/mmu.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/arch/loongarch/kvm/mmu.c b/arch/loongarch/kvm/mmu.c
+> index e104897aa532..4ca7c6ea8f08 100644
+> --- a/arch/loongarch/kvm/mmu.c
+> +++ b/arch/loongarch/kvm/mmu.c
+> @@ -383,6 +383,16 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm, const struct kvm_memory_slot
+>  	hva_t hva_start;
+>  	size_t size, gpa_offset, hva_offset;
+>  
+> +	/*
+> +	 * The generic code allocates a fresh, zeroed memslot for every change,
+> +	 * so the arch flags computed below must be carried over when only the
+> +	 * userspace flags change, e.g. when dirty logging is toggled.
+> +	 */
+> +	if (change == KVM_MR_FLAGS_ONLY) {
+> +		new->arch = old->arch;
+> +		return 0;
+> +	}
+> +
+>  	if ((change != KVM_MR_MOVE) && (change != KVM_MR_CREATE))
+>  		return 0;
+>  	/*
 
-Ping?
+I verified this on a Loongson-3A6000 host with a KVM selftest that uses
+a GPA/HVA offset-mismatched memslot and toggles dirty logging: the
+unpatched kernel maps the wrong host pages into the guest after the
+toggle, and with this patch the mapping stays correct.
+
+Tested-by: Tao Cui <cuitao@kylinos.cn>
+Reviewed-by: Tao Cui <cuitao@kylinos.cn>
+
