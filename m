@@ -1,37 +1,37 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE023AAF54;
-	Mon, 31 Aug 2026 21:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C793A9DA3;
+	Mon, 31 Aug 2026 21:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788212240; cv=none; b=exVXW4Ys/H5/VutAGjkbRVPpveNmStwFwKKc7U4rcfHWUXTiobslcxDj99Ki0AfoRtrKN0fidGnmO6K6H+UtemPTETznP0UMaTtOBLyuBK2+fCN0JbHgqKTBKG9Bsb+3sxaJ61yFR7PeI4UfynTsRqVYwqFgU6caRIKlPkrvL0U=
+	t=1788212241; cv=none; b=CueuN7nl9QYN5WyXzeGHFc4kfW2z0Tjanpo5bK6yYM5w/Uho8XXT25zRkDhOVG0sQmw+ikzH+Os0eNEzKasnYTywKMnNLWf2USmTgsODgmyXidFC2LeRpvXn9EQ5+1Ur39AnKBSb0tSOXREcQG/Xd0Ba7tbJ/4KbB6KSY3WyXsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788212240; c=relaxed/simple;
-	bh=l4Vw9V2R06mxcI33cmd7E+2/nIkTuAYeolBEMyEb71A=;
+	s=arc-20240116; t=1788212241; c=relaxed/simple;
+	bh=SxWTqWJLA4EYv1W/Tnp93hs6EQMLr0AUAl/ERQGIEsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BeycpA2F2whVvtehKdzoCnNy6RJ9qzRccosmKwCl3u24aKDcgNBvQVCLQ/rq4DjbCgYGYI+aKpAFf7ujTjg7ZBy4idoCUrz7G0a0l7xvXQl6RegyqjEBsQbi41znLeQgJ5PZ0QLThBNoYQOd0oF10bnst31tBUEe2iqxXBuryCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=YKseSYvn; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=T3sTQeiGnoSgfkB+Cnm3gOEHZF7w2cLK/9Lv6VOF1TWE+BL49DAVtmdPDB3Qurmnq0nCpQzdDb0yNCKsbd0U4JXBFRZ4FjhA/tuUXsizDeDBlBYB/sCGychezj/4CqXBoYd/yaiirVzFJV5j09uptBLT5j6IMQZEcv6RFV0qSBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=E7QOMc/I; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="YKseSYvn"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="E7QOMc/I"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=OEgd2NwKsxi42P75H3cbNLJJgy0nzXZ44aA+uvUXLJI=; b=YKseSYvn/kQ70PJjIJjLVaGwc9
-	0gq3dpUjQmhDDOENOzrEYQpk2wmYG9oCqtLN1VE2N9iVeXpF2kD+cBoUN35qbvPUHslpBcMkBZgwl
-	p0jEv0BkoKQFP4nG0gMsa2Hh536su2O3wE97aWIkm5ktmIHvEVS/X56tfew0riIeq2RpGcBFJ23QM
-	PYEaCqjdQnB9rOvbGELaCFF9tDWHw9zYp/IB79gfU+5LutQGHqve0xHuC4PlzntNlHhN0QdYYjpEM
-	MEjMlC71xsfcNiCJEZ52bAPsND3bndYPyj9CDiAJoQqKaBSfcyzDvZ6o+2Q9jlZegzkSw/Vi8X+CU
-	ZOqieYlw==;
+	bh=vsoHQOlZpmRNmqcjtCJQ7H8C74QH3xSJ2M5dEfr1dAw=; b=E7QOMc/I4/dzvWhbI9kRJELWZq
+	M+QyKZPrFFagDoc3cBacL+9oWlVpC2TWijm2MU01g1MJXaun59onCPy+A+rteJFT6VeLOuukgEM+0
+	GU4n7P1dXJ8JvG469/jEs2Zgo8IXvbCSF1JCs0KZwuJN9Um+azkhJMOVnX55X6jOOxUSoaj+s3Js/
+	E3ZSSdV7tkuFgcZVts/YBfqDTk0V4L6eV/Kc/KqQ9WyFU1HXwJr/2aDnqUvdQsdDVpR3/RWC81IB9
+	K+dY31ry/WNYg9UVZUmQwxXKxZcuutub7LkRbrokSeQxgAkUk0slTU2ySqSxWDQwrWDBcXBwN6D71
+	ZPWtDFeA==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x19gE-00000003sux-20RT;
+	id 1x19gE-00000003sv8-2uI8;
 	Mon, 31 Aug 2026 21:36:38 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
-	id 1x19gE-00000000LCy-18vL;
+	id 1x19gE-00000000LDF-22ZE;
 	Mon, 31 Aug 2026 22:36:38 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: seanjc@google.com,
@@ -56,9 +56,9 @@ Cc: dwmw2@infradead.org,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	imv4bel@gmail.com
-Subject: [PATCH v3 06/13] KVM: x86/xen: Enforce 4-byte alignment of vcpu_info registration
-Date: Mon, 31 Aug 2026 22:26:37 +0100
-Message-ID: <20260831213632.81023-7-dwmw2@infradead.org>
+Subject: [PATCH v3 10/13] KVM: x86/xen: Take kvm->srcu in __kvm_xen_has_interrupt()
+Date: Mon, 31 Aug 2026 22:26:41 +0100
+Message-ID: <20260831213632.81023-11-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260831213632.81023-1-dwmw2@infradead.org>
 References: <20260831213632.81023-1-dwmw2@infradead.org>
@@ -74,55 +74,66 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Xen's map_guest_area() enforces that vcpu_info is aligned to
-sizeof(xen_ulong_t). KVM has no such check, allowing a guest to
-register vcpu_info at an arbitrary byte alignment.
+kvm_gpc_check() checks the cached memslot generation against the current
+one, which dereferences kvm->memslots and therefore requires kvm->srcu to
+be held. __kvm_xen_has_interrupt() does not take it.
 
-Enforce unconditional 4-byte alignment regardless of the current
-shinfo mode. This is sufficient because subsequent commits ensure
-that all locked atomic operations on vcpu_info fields use at most
-32-bit accesses. Return -ENXIO on failure, matching Xen's
-map_guest_area() behaviour for unaligned requests.
+Most callers do happen to hold kvm->srcu, but not all of them:
 
-Originally observed in review of an unrelated patch:
-https://lore.kernel.org/all/20260604193554.1BA311F00893@smtp.kernel.org/
+ - kvm_emulate_halt() on the VM-Exit path, via kvm_vcpu_has_events() and
+   kvm_cpu_has_extint(). vcpu_enter_guest() drops the vCPU's SRCU lock
+   before entering the guest, so it is not held on the way back out.
 
+ - kvm_vcpu_block() -> kvm_vcpu_check_block() -> kvm_arch_vcpu_runnable(),
+   which is the case the existing comment in this function describes.
+
+On a PROVE_RCU kernel the former produces:
+
+  WARNING: suspicious RCU usage
+  include/linux/kvm_host.h:1092 suspicious rcu_dereference_check() usage!
+  ...
+   kvm_gpc_check+0x344/0x3e0 [kvm]
+   __kvm_xen_has_interrupt+0x83/0x310 [kvm]
+   kvm_cpu_has_extint+0x1ff/0x370 [kvm]
+   kvm_cpu_has_interrupt+0x16/0x100 [kvm]
+   kvm_vcpu_has_events+0x4ce/0x690 [kvm]
+   kvm_emulate_halt+0x52/0x1f0 [kvm]
+   vmx_vcpu_run+0x988/0x2630 [kvm_intel]
+
+Use guard(srcu) so that the three existing early returns don't each need
+an explicit unlock. SRCU read sections nest, so this is harmless on the
+paths which already hold it, and srcu_read_lock() does not sleep, so it
+is also safe in the atomic case which this function already handles.
+
+Fixes: 7caf9571563e ("KVM: x86/xen: Use gfn_to_pfn_cache for vcpu_info")
 Cc: stable@vger.kernel.org
-Fixes: 73e69a86347a ("KVM: x86/xen: register vcpu info")
-Reported-by: sashiko-bot@kernel.org
-Closes: https://lore.kernel.org/all/20260604193554.1BA311F00893@smtp.kernel.org
-Assisted-by: Kiro:claude-opus-4.6-1m
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Assisted-by: Claude:claude-mythos-5
 ---
- arch/x86/kvm/xen.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/x86/kvm/xen.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 5eb23127e74e..941099ed50c9 100644
+index f8730ee48ab8..871cbaf8b68d 100644
 --- a/arch/x86/kvm/xen.c
 +++ b/arch/x86/kvm/xen.c
-@@ -941,6 +941,10 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
- 				break;
- 			}
+@@ -732,6 +732,16 @@ int __kvm_xen_has_interrupt(struct kvm_vcpu *v)
+ 	BUILD_BUG_ON(sizeof(rc) !=
+ 		     sizeof_field(struct compat_vcpu_info, evtchn_upcall_pending));
  
-+			r = -ENXIO;
-+			if (!IS_ALIGNED(data->u.gpa, sizeof(u32)))
-+				break;
++	/*
++	 * kvm_gpc_check() checks the memslot generation, so kvm->srcu must be
++	 * held. Most callers hold it already, but this is also reached from
++	 * kvm_emulate_halt() on the VM-Exit path and from kvm_vcpu_block(),
++	 * where vcpu_enter_guest() has already dropped the vCPU's SRCU lock.
++	 * Taking SRCU does not sleep, so it is safe even in the atomic case
++	 * which is handled below.
++	 */
++	guard(srcu)(&v->kvm->srcu);
 +
- 			r = kvm_gpc_activate(&vcpu->arch.xen.vcpu_info_cache,
- 					     data->u.gpa, sizeof(struct vcpu_info));
- 		} else {
-@@ -950,6 +954,10 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
- 				break;
- 			}
- 
-+			r = -ENXIO;
-+			if (!IS_ALIGNED(data->u.hva, sizeof(u32)))
-+				break;
-+
- 			r = kvm_gpc_activate_hva(&vcpu->arch.xen.vcpu_info_cache,
- 						 data->u.hva, sizeof(struct vcpu_info));
- 		}
+ 	read_lock_irqsave(&gpc->lock, flags);
+ 	while (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
+ 		read_unlock_irqrestore(&gpc->lock, flags);
 -- 
 2.55.0
 
