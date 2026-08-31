@@ -1,107 +1,174 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A09382385
-	for <kvm@vger.kernel.org>; Sun, 30 Aug 2026 18:29:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E912A262FD0;
+	Mon, 31 Aug 2026 00:25:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788114553; cv=none; b=CQUdap5a/I9/Dt2lyQpMgsilTxIvfbthddY5vrrUdiR6ZQEx2cZ4qHFS3hzzjc7Q/Oh4HjAvPAsYm31xu/psnC/9N9moWp/7xf5sQjq4WBTYffO4sdFMJ15XCH9U4JjZbzN78AeJlbcbhYPoXS4Etv1i9k2Q6xifqEqLI/psMdI=
+	t=1788135920; cv=none; b=OI8RbmkskkPwiXQCJQ6dNbHoix6TSYZaoKlTyDmIB3/1edAR7wTgib/M8sa8nb8ih2ML5qrU8cTyVhomRB+GZQgeLeK1tEdphNoRx9vF5ah8W1iCznHE3oH5VpawMng6gN4TMZ+MylOmGC2ZVvSN0WLNflg2JgiJNnIRNHwcJLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788114553; c=relaxed/simple;
-	bh=9NKDnSEWfPvKPtUsA/Wf/uYwNlKYFsZ8Y0VhVrZy9KM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I8CFSCYOfk0NBnlltu5AHtD7BRlWKZnb2ILcrHn6v4brqB3l/X9GMsoCXyh/ZRgu/+cV/9AOEKqHJZK3/TB0f8o7ISPbP6OcDoY1ldN0yDOX0AxSdki8P5+QQTAiHsawiayNlXpAlX9PK5CaBrdfDrJKXedKoIf2ubKQzyIgWDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NYkHBna8; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788135920; c=relaxed/simple;
+	bh=3RDuReZQPdnpDhEdbvLR7X6xqKa7H4GlqlpiAhWp0p8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=KIAV8rR01tGdgChxqaWmB9AwgjQ2Vv7ZSughvaHKGQnDGySTI/iVY9m/uY8fnlWqtZMA6rEfqx62RmnducRXSlPPzvZcPlnd2Urvz0HPB66fzHxz5qxT2OiTD8NbwgChJDP1DGGOlddgX/3d6vcAVpOqTxNLu32Uj47O+MWQEXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g1VwRCOy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NYkHBna8"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-49b0d8bc2aaso26142345e9.0
-        for <kvm@vger.kernel.org>; Sun, 30 Aug 2026 11:29:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788114550; x=1788719350; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3Ptf7lkzRK2cEQa7tXSLbtyDvUDpbM17dkTmOc5wvcM=;
-        b=NYkHBna84dMwXwcWaO6eUatLipedsBp/SSvLivwWHR2urS2QxlcpIo5ptWpFS+ulgX
-         ZeZ/PEnrCltO/iLCv6gP3Amw3B807ZN+kCHB5sbIi5VyzeTKGP3RjL+Ksp9j4zaN0O2D
-         DI71T2BWqdDJzNbFjgHudIytYWLTJphGx9Vrpejd/h/BV1YqV8DF4fBh8NVPWfQTfqZj
-         ajix9JtxC5p/D+61A3txbAEeLsKTwfH1bm9oB9Pa24BxJjmYJpMTkVLmdFFvmsWeo9oa
-         mG6lIIuQ+ii2gckr2FTUjlX178q8EXDejGc/XITj91+9WemyZDdkluIYnylK4s5b5VSJ
-         OWpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788114550; x=1788719350;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=3Ptf7lkzRK2cEQa7tXSLbtyDvUDpbM17dkTmOc5wvcM=;
-        b=oHtyXRzFSXZ+DA+5TndRJbypSc+ILH/GrlWym6OKKOooDh38Rgi0Vt+Pd0FPwWTBuR
-         QhH1SIiqj4brMpT4Ot682r+584m/JVriojeZP9xh78DGt9avUy+FGiZHI0jpLKtKTBiq
-         3xlJICFXoszlxfWfDV14XY77S0/6iFDLZsI+cTaKi4a1KvhEs/gJdRMfxUvgXoHEy5h/
-         JV0uJoYf6z7UKWqQbEwZx2qq69RkayKEbXqZ3pZoYSYSh42tqLyVo9wLUmwmz6b51C5g
-         YCk/TRoeHV8v0Z+PaZpPi57MeUPmH4fBtot4T4k2wQqI2mCbuFWe29+5LoDb2VJ45E/C
-         5nBQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rqr95M//pD/4MINORK9QhBwzJKlZoQWG+mOqCGRzUJtD0+zD+6h8J1s9SArmcrl4rT+RWE=@vger.kernel.org
-X-Gm-Message-State: AFuF++m0ThVlfAjxeE/ZmlShcv/g/s6Kr27KDPXZq80WniZfta/5iQe/
-	TFAmtFU6YxZ1Q5UQyJ/AtR9PzVHvJleO0CIUumi0r4XU89CWzo9scwtP
-X-Gm-Gg: AR+sD10OF15eVm4mugM3e1FAJsoiuvttjvp0uq3Sg0xJTv0VBxprTCuav6bRTJsrPUV
-	sjGkvUNF3n2vtSIhLt/UPvPuNDC/LoYcdGVUt4YemD45/46N7j2AuRu+h+VrjRHwRU4kUCGbupE
-	4+T4p+Ql7IBt4Yc0wdSx/d2husvWovNRaK3WTUI0Cp6/v9wk8zdhvFPwXOG0VTJlVEDUfyNG7Ke
-	DXhqky+KUSAVDIkmQLRtAGPIvBUlaFBCQv1Czg6KkX5yqtG7EThGUgSq8C01YAqQDkfInPC6jh/
-	U0k6SbN9ibysqSk8sypidyxc647ew/1ZMhLP2XpqzIjkjHF0xG+5eBTxniFhUyZs1di6mRxMp3f
-	6BJzXPMRhIfSXwnuI2whkxyg4HLWaDokah40JFOqnOz2SjeWbZJSN7fDkwFKXGAzvwdm1ZOSZtn
-	qJ3igF6koJbKGiiagvM3MCQak/5tQMoKv4Zxxkyknqazj9d2DTZoJgyGImsbBxASRqyAIhEUQgI
-	IaVyhrvn2PL7MOjVv4lkwK4nvW3qrd7EmJn0XQ3A/6EmpKpB7w36xq5gdCsKBF3NRCdJ9uFV+Px
-	xWypCi9m4IPIzPB8QM4c0G0manIrvLAshp2+3x1J4senesDNVCDGQhcCFB9PORXZLV9UN5MZ2Nl
-	l2iTUhy0fJjE=
-X-Received: by 2002:a05:600c:4744:b0:499:8b13:3a98 with SMTP id 5b1f17b1804b1-49b91c2479amr317299235e9.4.1788114549893;
-        Sun, 30 Aug 2026 11:29:09 -0700 (PDT)
-Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-adda-dc01-edc7-8a6f-c6f3-73e0.310.pool.telefonica.de. [2a02:3100:adda:dc01:edc7:8a6f:c6f3:73e0])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b961939ddsm102089915e9.4.2026.08.30.11.29.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Aug 2026 11:29:09 -0700 (PDT)
-Date: Sun, 30 Aug 2026 20:29:07 +0200
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
-	Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, Eric Auger <eric.auger@redhat.com>, 
-	Christoffer Dall <christoffer.dall@arm.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 0/5] KVM: arm64: fix VGICv3 redistributor rollback
-Message-ID: <apR2SFrwBa9tCS5y@gmail.com>
-References: <20260822095346.53882-1-kmehltretter@gmail.com>
- <87zey4m2qy.wl-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g1VwRCOy"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 81A38C2BCFD;
+	Mon, 31 Aug 2026 00:25:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788135919;
+	bh=3RDuReZQPdnpDhEdbvLR7X6xqKa7H4GlqlpiAhWp0p8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=g1VwRCOyedOtGxbdxTdegr8DDWZU6VvjQ3ogxdfRCgtIocveYdghE/0OQCDWp6XZ6
+	 rJaKhYTt3GLN2DGn+6EydXUuVUTpRjIdTePNulx7JT01OmNMIdkH3oo5nLuvMW87Is
+	 t65Y8a9defMIL0Y50tVPo7s+NIamuBk5pTPUd9C4AVX4XaZG9RJqTy0XdfoKk2LEgY
+	 0/89NCMEfqpDZ0EgtTqrfIfuJEfrsPDMVpainkPKbpxxp1eSW3jh4noJIc2WV7R7FD
+	 58/j4PMMkF5Skpcj3CRZRR3q68JjBJJVWJ4AGEApPOUfPVRFGqHTDVPWu67OjBEWfE
+	 FzaA04lPYtGag==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5981FC61DE2;
+	Mon, 31 Aug 2026 00:25:19 +0000 (UTC)
+From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Date: Sun, 30 Aug 2026 17:25:02 -0700
+Subject: [PATCH v12 01/45] KVM: guest_memfd: Optimize away conversion
+ overheads via dead-code elimination
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87zey4m2qy.wl-maz@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260830-gmem-inplace-conversion-v12-1-85e5fd25252a@google.com>
+References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
+In-Reply-To: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
+To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+ brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+ jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+ oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+ rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+ steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+ Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Fuad Tabba <fuad.tabba@linux.dev>, 
+ Vlastimil Babka <vbabka@kernel.org>, Baoquan He <baoquan.he@linux.dev>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+ linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788135915; l=3210;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=KU5lBT3XbWircUdxqmS0fnCYMooY3DNtiddyAdBDhH4=;
+ b=wRmS6WFV25eBLlkWhcNyTW8umJE+UPeg3uo0+Q/XM+JU1xnLi6JSPz7bg3Lq5iuNlI20eGVdN
+ DspTez7dVYLAdbPlQJTf6Vo6/pxxxjuYSdhZdAGOK71ZI1A0hl3fCXc
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
+ pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
+ auth_id=649
+X-Original-From: Ackerley Tng <ackerleytng@google.com>
+Reply-To: ackerleytng@google.com
 
-On Sun, Aug 30, 2026 at 09:28:05AM +0100, Marc Zyngier wrote:
-> I really don't understand why this is such a massive departure from
-> v2, which was pretty close to what I wanted to see.
-> 
-> Honestly, you are making things harder for everyone by over-designing
-> (or more probably under-filtering) things that should be *fixes*, and
-> just that.
-> 
-> If you want to rework all of the vgic init/destroy, fine by me. Do
-> that as a separate series. But for fixes that carry a Cc stable and
-> require backporting to 6 year old kernels, that's not on.
-> 
-> The hack below is what I have against your v2 to make it acceptable.
+From: Sean Christopherson <seanjc@google.com>
 
-Okay, thanks. I’ll adapt your suggestion and send a much more minimal v4.
+Add and use kvm_arch_has_gmem_convert() to guard guest_memfd's invocation
+of arch hooks related to converting memory between private and shared, as
+only one half of the x86 CoCo duo needs the runtime hooks (any pre-work is
+pure overhead for TDX).  At this exact moment, the overhead is negligible,
+but that will change when in-place conversion comes along, at which point
+to-shared conversions will "need" to find all affected folios prior to
+calling into arch code.  In quotes because very technically that work could
+be pushed to arch code, but that would bleed guest_memfd details into arch
+code and would be far worse than adding yet another kvm_arch_has... hook.
 
-Karl
+Opportunistically provide the kvm_arch_gmem_make_private() declaration, and
+rely on dead-code elimination to eliminate the call to non-existent code
+when CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT=n.
+
+Reported-by: Binbin Wu <binbin.wu@linux.intel.com>
+Closes: https://lore.kernel.org/all/1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com
+Suggested-by: Ackerley Tng <ackerleytng@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
+ arch/x86/include/asm/kvm_host.h | 3 +++
+ include/linux/kvm_host.h        | 3 ++-
+ virt/kvm/guest_memfd.c          | 5 ++---
+ 3 files changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 683bb8bf43a94..6beddd8a0c749 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1854,6 +1854,9 @@ enum kvm_intr_type {
+ #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+ #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
+ #endif
++#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
++#define kvm_arch_has_gmem_convert() (!!kvm_x86_ops.gmem_make_private)
++#endif
+ 
+ #define kvm_arch_has_readonly_mem(kvm) (!(kvm)->arch.has_protected_state)
+ 
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 502465119ca0c..b7516e19ef419 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -2597,9 +2597,10 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
+ }
+ #endif /* CONFIG_KVM_GUEST_MEMFD */
+ 
+-#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+ int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+ 			       kvm_pfn_t nr_pages);
++#ifndef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
++#define kvm_arch_has_gmem_convert() false
+ #endif
+ 
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 798d91df69537..2190e4d6b6bea 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -772,11 +772,10 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 		folio_mark_uptodate(folio);
+ 	}
+ 
+-#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+-	if (kvm_gmem_is_private_mem(file_inode(file), index))
++	if (kvm_arch_has_gmem_convert() &&
++	    kvm_gmem_is_private_mem(file_inode(file), index))
+ 		r = kvm_arch_gmem_make_private(kvm, gfn, *pfn,
+ 					       (kvm_pfn_t)1 << *max_order);
+-#endif
+ 
+ 	folio_unlock(folio);
+ 	folio_put(folio);
+
+-- 
+2.55.0.897.gb25b4bd76c-goog
+
+
