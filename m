@@ -1,37 +1,37 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C793A9DA3;
-	Mon, 31 Aug 2026 21:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD8E3AB27B;
+	Mon, 31 Aug 2026 21:37:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788212241; cv=none; b=CueuN7nl9QYN5WyXzeGHFc4kfW2z0Tjanpo5bK6yYM5w/Uho8XXT25zRkDhOVG0sQmw+ikzH+Os0eNEzKasnYTywKMnNLWf2USmTgsODgmyXidFC2LeRpvXn9EQ5+1Ur39AnKBSb0tSOXREcQG/Xd0Ba7tbJ/4KbB6KSY3WyXsE=
+	t=1788212241; cv=none; b=YzShJpEs/88hHGoU4CaFqJ6GM04Wf4wYMGA2Lg2UFYhlrLFbsP5ipCfdfvDKTaP9WR8VbQfr4p1y9Hb9t/8VTseSmY9txyHgyjieBCnp3YXcV5pRfzsMqYIoK9OPAGcY1enA6Xu+/App7fPnNSh3/WX1VR4bIIMU8834WCBbdLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788212241; c=relaxed/simple;
-	bh=SxWTqWJLA4EYv1W/Tnp93hs6EQMLr0AUAl/ERQGIEsQ=;
+	bh=WkxtsC9mpIM9Votob3SUwu+R0cC7gQxOCDTmSyZxyik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3sTQeiGnoSgfkB+Cnm3gOEHZF7w2cLK/9Lv6VOF1TWE+BL49DAVtmdPDB3Qurmnq0nCpQzdDb0yNCKsbd0U4JXBFRZ4FjhA/tuUXsizDeDBlBYB/sCGychezj/4CqXBoYd/yaiirVzFJV5j09uptBLT5j6IMQZEcv6RFV0qSBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=E7QOMc/I; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=qsAukYNd405RdYN5Cs8iYe+xAtlGEU6Y9rDVnBShUEPJUxSDBqgD4ZOpA8gk6JkHqnPCxZTga+IS7ULnha1Nt0aaXYsQ3DcI/22JHppB8e09HlS80AVExVAxwlmGj0jhD6NqxZ9TTS0ZUBkLKGgNE4JZeqtvb87+pQQnrrzO8x0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ElRYiePg; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="E7QOMc/I"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ElRYiePg"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=vsoHQOlZpmRNmqcjtCJQ7H8C74QH3xSJ2M5dEfr1dAw=; b=E7QOMc/I4/dzvWhbI9kRJELWZq
-	M+QyKZPrFFagDoc3cBacL+9oWlVpC2TWijm2MU01g1MJXaun59onCPy+A+rteJFT6VeLOuukgEM+0
-	GU4n7P1dXJ8JvG469/jEs2Zgo8IXvbCSF1JCs0KZwuJN9Um+azkhJMOVnX55X6jOOxUSoaj+s3Js/
-	E3ZSSdV7tkuFgcZVts/YBfqDTk0V4L6eV/Kc/KqQ9WyFU1HXwJr/2aDnqUvdQsdDVpR3/RWC81IB9
-	K+dY31ry/WNYg9UVZUmQwxXKxZcuutub7LkRbrokSeQxgAkUk0slTU2ySqSxWDQwrWDBcXBwN6D71
-	ZPWtDFeA==;
+	bh=QA41Nq4s6oAvenfvFVuXon+d1FPu3+c/4DUIsHP6hhQ=; b=ElRYiePg+ELZCD1AKNurjFQdDY
+	Iv9vYok9InzCNCfJ0pofjJOWMSn1btlENGOxC4qMrxXF+Z/xTdoQ/tmgyIOcP9VzHBA1EKWglLsjq
+	Cri+nnm3gpGLLQSglFlnz8dm/bYvS/Xmhu5mhSeZYIyHI15qE7zjzUdUry9Yd88pJ4aevWwjP/2A8
+	NsXdOioQafiSllHHljQA4uf/ypCrEgEBoLh4Y8al1UEtyuRzEAzSSfLUJB9JzZaVWktJYsmWsqhNd
+	FTFPfq3JZ3rRTW8dNbwVYPttpWFuEqARBK0p2EC+QoC3N0xe7ofmT+xbU38FNGsH3I8vNXzXeeMVO
+	SqdHXYVQ==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x19gE-00000003sv8-2uI8;
-	Mon, 31 Aug 2026 21:36:38 +0000
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1x19gG-0000000AKc7-31sh;
+	Mon, 31 Aug 2026 21:36:41 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
-	id 1x19gE-00000000LDF-22ZE;
+	id 1x19gD-00000000LCm-49Ca;
 	Mon, 31 Aug 2026 22:36:38 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: seanjc@google.com,
@@ -56,9 +56,9 @@ Cc: dwmw2@infradead.org,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	imv4bel@gmail.com
-Subject: [PATCH v3 10/13] KVM: x86/xen: Take kvm->srcu in __kvm_xen_has_interrupt()
-Date: Mon, 31 Aug 2026 22:26:41 +0100
-Message-ID: <20260831213632.81023-11-dwmw2@infradead.org>
+Subject: [PATCH v3 03/13] KVM: x86/xen: Rename max_evtchn_port() to kvm_max_evtchn_port()
+Date: Mon, 31 Aug 2026 22:26:34 +0100
+Message-ID: <20260831213632.81023-4-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260831213632.81023-1-dwmw2@infradead.org>
 References: <20260831213632.81023-1-dwmw2@infradead.org>
@@ -70,70 +70,100 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-kvm_gpc_check() checks the cached memslot generation against the current
-one, which dereferences kvm->memslots and therefore requires kvm->srcu to
-be held. __kvm_xen_has_interrupt() does not take it.
+Rename in preparation for adding a variant that takes a latched bool
+argument for use in paths that need a consistent snapshot of the
+shinfo mode.
 
-Most callers do happen to hold kvm->srcu, but not all of them:
+No functional change.
 
- - kvm_emulate_halt() on the VM-Exit path, via kvm_vcpu_has_events() and
-   kvm_cpu_has_extint(). vcpu_enter_guest() drops the vCPU's SRCU lock
-   before entering the guest, so it is not held on the way back out.
-
- - kvm_vcpu_block() -> kvm_vcpu_check_block() -> kvm_arch_vcpu_runnable(),
-   which is the case the existing comment in this function describes.
-
-On a PROVE_RCU kernel the former produces:
-
-  WARNING: suspicious RCU usage
-  include/linux/kvm_host.h:1092 suspicious rcu_dereference_check() usage!
-  ...
-   kvm_gpc_check+0x344/0x3e0 [kvm]
-   __kvm_xen_has_interrupt+0x83/0x310 [kvm]
-   kvm_cpu_has_extint+0x1ff/0x370 [kvm]
-   kvm_cpu_has_interrupt+0x16/0x100 [kvm]
-   kvm_vcpu_has_events+0x4ce/0x690 [kvm]
-   kvm_emulate_halt+0x52/0x1f0 [kvm]
-   vmx_vcpu_run+0x988/0x2630 [kvm_intel]
-
-Use guard(srcu) so that the three existing early returns don't each need
-an explicit unlock. SRCU read sections nest, so this is harmless on the
-paths which already hold it, and srcu_read_lock() does not sleep, so it
-is also safe in the atomic case which this function already handles.
-
-Fixes: 7caf9571563e ("KVM: x86/xen: Use gfn_to_pfn_cache for vcpu_info")
-Cc: stable@vger.kernel.org
+Assisted-by: Kiro:claude-opus-4.6-1m
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Assisted-by: Claude:claude-mythos-5
 ---
- arch/x86/kvm/xen.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/x86/kvm/xen.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index f8730ee48ab8..871cbaf8b68d 100644
+index b89c973c2730..be3c4dbee435 100644
 --- a/arch/x86/kvm/xen.c
 +++ b/arch/x86/kvm/xen.c
-@@ -732,6 +732,16 @@ int __kvm_xen_has_interrupt(struct kvm_vcpu *v)
- 	BUILD_BUG_ON(sizeof(rc) !=
- 		     sizeof_field(struct compat_vcpu_info, evtchn_upcall_pending));
+@@ -1439,7 +1439,7 @@ static int kvm_xen_hypercall_complete_userspace(struct kvm_vcpu *vcpu)
+ 	return kvm_xen_hypercall_set_result(vcpu, run->xen.u.hcall.result);
+ }
  
-+	/*
-+	 * kvm_gpc_check() checks the memslot generation, so kvm->srcu must be
-+	 * held. Most callers hold it already, but this is also reached from
-+	 * kvm_emulate_halt() on the VM-Exit path and from kvm_vcpu_block(),
-+	 * where vcpu_enter_guest() has already dropped the vCPU's SRCU lock.
-+	 * Taking SRCU does not sleep, so it is safe even in the atomic case
-+	 * which is handled below.
-+	 */
-+	guard(srcu)(&v->kvm->srcu);
-+
- 	read_lock_irqsave(&gpc->lock, flags);
- 	while (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
- 		read_unlock_irqrestore(&gpc->lock, flags);
+-static inline int max_evtchn_port(struct kvm *kvm)
++static inline int kvm_max_evtchn_port(struct kvm *kvm)
+ {
+ 	if (kvm_xen_has_64bit_shinfo(kvm))
+ 		return EVTCHN_2L_NR_CHANNELS;
+@@ -1546,7 +1546,7 @@ static bool kvm_xen_schedop_poll(struct kvm_vcpu *vcpu, bool is_64bit,
+ 	}
+ 
+ 	for (i = 0; i < sched_poll.nr_ports; i++) {
+-		if (ports[i] >= max_evtchn_port(vcpu->kvm)) {
++		if (ports[i] >= kvm_max_evtchn_port(vcpu->kvm)) {
+ 			*r = -EINVAL;
+ 			goto out;
+ 		}
+@@ -1833,7 +1833,7 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 		WRITE_ONCE(xe->vcpu_idx, vcpu->vcpu_idx);
+ 	}
+ 
+-	if (xe->port >= max_evtchn_port(kvm))
++	if (xe->port >= kvm_max_evtchn_port(kvm))
+ 		return -EINVAL;
+ 
+ 	rc = -EWOULDBLOCK;
+@@ -1995,7 +1995,7 @@ int kvm_xen_setup_evtchn(struct kvm *kvm,
+ 	struct kvm_vcpu *vcpu;
+ 
+ 	/*
+-	 * Don't check for the port being within range of max_evtchn_port().
++	 * Don't check for the port being within range of kvm_max_evtchn_port().
+ 	 * Userspace can configure what ever targets it likes; events just won't
+ 	 * be delivered if/while the target is invalid, just like userspace can
+ 	 * configure MSIs which target non-existent APICs.
+@@ -2004,8 +2004,8 @@ int kvm_xen_setup_evtchn(struct kvm *kvm,
+ 	 * can be restored *independently* of other things like creating vCPUs,
+ 	 * without imposing an ordering dependency on userspace.  In this
+ 	 * particular case, the problematic ordering would be with setting the
+-	 * Xen 'long mode' flag, which changes max_evtchn_port() to allow 4096
+-	 * instead of 1024 event channels.
++	 * Xen 'long mode' flag, which changes kvm_max_evtchn_port() to allow
++	 * 4096 instead of 1024 event channels.
+ 	 */
+ 
+ 	/* We only support 2 level event channels for now */
+@@ -2042,7 +2042,7 @@ int kvm_xen_hvm_evtchn_send(struct kvm *kvm, struct kvm_irq_routing_xen_evtchn *
+ 	struct kvm_xen_evtchn e;
+ 	int ret;
+ 
+-	if (!uxe->port || uxe->port >= max_evtchn_port(kvm))
++	if (!uxe->port || uxe->port >= kvm_max_evtchn_port(kvm))
+ 		return -EINVAL;
+ 
+ 	/* We only support 2 level event channels for now */
+@@ -2152,7 +2152,7 @@ static int kvm_xen_eventfd_assign(struct kvm *kvm,
+ 
+ 	case EVTCHNSTAT_interdomain:
+ 		if (data->u.evtchn.deliver.port.port) {
+-			if (data->u.evtchn.deliver.port.port >= max_evtchn_port(kvm))
++			if (data->u.evtchn.deliver.port.port >= kvm_max_evtchn_port(kvm))
+ 				goto out_noeventfd; /* -EINVAL */
+ 		} else {
+ 			eventfd = eventfd_ctx_fdget(data->u.evtchn.deliver.eventfd.fd);
+@@ -2270,7 +2270,7 @@ static int kvm_xen_setattr_evtchn(struct kvm *kvm, struct kvm_xen_hvm_attr *data
+ 	if (data->u.evtchn.flags == KVM_XEN_EVTCHN_RESET)
+ 		return kvm_xen_eventfd_reset(kvm);
+ 
+-	if (!port || port >= max_evtchn_port(kvm))
++	if (!port || port >= kvm_max_evtchn_port(kvm))
+ 		return -EINVAL;
+ 
+ 	if (data->u.evtchn.flags == KVM_XEN_EVTCHN_DEASSIGN)
 -- 
 2.55.0
 
