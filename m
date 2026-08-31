@@ -1,298 +1,132 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B943DE448
-	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 09:50:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B073DB645;
+	Mon, 31 Aug 2026 09:54:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788169838; cv=none; b=BFIVxTTNX2teWvyLQKKAu8ljanJo51p4/KIEIqtVO04Bc5tGRDxahO+whk7Ag1F9Yb0xS3GrB23cRgU3Bf/XGwQEHemgAiVjXsRaNSr3h9Yt/F/isrVfjmucQTKKPCih3zWsyYWhxrtyXBhgfWVBz5HEMzo3jL75HGOZ2LEtZTw=
+	t=1788170084; cv=none; b=sxzb+hXobklP/bNEZZmehn0u5sdoIkHVYtx1MFKvDbHoPdVaFh+cRqIx9JGAmfMOh79opFJWdl70BHlO5mfrsJwBy36ymYYcchrGVHN6v9blumGMjy/QYTrSuko7dTbOHI17AjPMIRNjc/QdVBA7amaDYUAa6yDI7f6LvCQkzuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788169838; c=relaxed/simple;
-	bh=6iqRS8NrkRxUEAo9Fy6sF38iwf00Gdcf5Zv761u3V0E=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=P1jvxIiUSfb8BF4G8RbIwG0IRd43Hig4o5+OBVGQS2+zs5k0wczizKQx3awhm0S2zURsY71jxmXicRrxkTifYgJRM0rR7x0nNRWrVlFUbPB7EuN9+3EPkUTMVhHGENE2WzVz/rt344kswc0r7PSlUshwZv9yNYsbMatNiJ9ZA5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=bUuYQWL/; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="bUuYQWL/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=0xfRL2t6JZRX1O04TLg/PYuth66Qab2+IwifkRuSGu0=;
-	b=bUuYQWL/c6Onr2swck03kCs4zfCVdJjBFp21msxL1m3NcmvoLOhXBp2DvHWDUH
-	J8HQUPPm0HldqqKpt5yw5sAi3ujd5JDXlH4t16WA+vRBo8owYTa7t6REsFyfevY3
-	WoAXkY1TysumnOQjJE24pEQe6RHcdptJAcKGxZXcdYPTg=
-Received: from localhost (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PygvCgAHX69YTpVqPz62PA--.24208S2;
-	Mon, 31 Aug 2026 17:50:16 +0800 (CST)
-Date: Mon, 31 Aug 2026 17:50:15 +0800
-From: Hao Zhang <hao_zhang_kdev@163.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Subject: [RFC PATCH v2 1/1] KVM: x86/mmu: Zap empty TDP leaf page tables
-Message-ID: <apVOV56MX4p4anIM@192.168.1.215>
+	s=arc-20240116; t=1788170084; c=relaxed/simple;
+	bh=NcaRNW8y7jjiWV9pcdQk/a8UC7sWrWckxCmIlEOilbI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=oVX0WodPQjyFnQDkBHFg5Gkyr2QD+7LyIhXcZrFiuo+FhFNE+P2OKevP//GuJD/GN9ovl8/FSoCywiCtYB4htVV9q03dafNh9l7FHjFRtB1D1Us8yHgoemJVk1oql42HSQUqM3wHNNHy/k6hG0oNp6zJJ4Uns17SixQn89aV0u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8AxntJgT5Vqyt0GAA--.19232S3;
+	Mon, 31 Aug 2026 17:54:40 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowJBxKs5eT5VqDTYYAA--.20453S5;
+	Mon, 31 Aug 2026 17:54:40 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Xi Ruoyao <xry111@xry111.site>,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 3/3] LoongArch: KVM: Enable separate vmid feature
+Date: Mon, 31 Aug 2026 17:47:16 +0800
+Message-Id: <20260831094716.4016652-4-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20260831094716.4016652-1-maobibo@loongson.cn>
+References: <20260831094716.4016652-1-maobibo@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <apVNXQMRsW8So53i@192.168.1.215>
-X-CM-TRANSID:PygvCgAHX69YTpVqPz62PA--.24208S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3WryrCry8tr4UKF1fWF1rWFg_yoW3AFW8pF
-	y7ta9IyrWFvw47Wr1rAa1kCw4avw409F48J34rK3yrA3WDtr1vg3W8Ja4SqF98WrySqrWa
-	qw4qywn8urW7AaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRJPEDUUUUU=
-X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC+RipnGqVTlg2WQAA3S
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJBxKs5eT5VqDTYYAA--.20453S5
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-From: Hao Zhang <zhanghao1@kylinos.cn>
+With CSR GTLBC shortname for Guest TLB Control Register, separate vmid
+feature will be enabled if bit 14 CSR_GTLBC_USES2TGID is set. Enable
+this if S2TGID feature is detected from cpucfg8.
 
-KVM's TDP MMU intentionally zaps only leaf SPTEs for some invalidations,
-leaving the page table hierarchy intact so that subsequent faults can reuse
-the existing shadow pages.
-
-That behavior can be pathological if a later invalidation covers a range
-whose retained 4K leaf tables contain only non-present SPTEs.  KVM still
-descends into every retained leaf page table and scans all 512 entries even
-though there is nothing left to zap.
-
-Add an opt-in TDP iterator event that reports when the walk has finished a
-child page table, and use that event in tdp_mmu_zap_leafs() to unlink empty
-4K leaf page tables that are fully covered by the zap.
-
-Do not unlink a leaf page table that had a leaf SPTE zapped in the current
-pass.  Doing so would add allocation/free churn for rolling invalidation
-workloads that refault the same page table.
-
-Because unlinking a shadow page changes the old leaf-only RCU assumption,
-flush any pending remote TLBs before dropping RCU protection if a shadow
-page was removed.
-
-Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- arch/x86/kvm/mmu/tdp_iter.c | 29 +++++++++++++--
- arch/x86/kvm/mmu/tdp_iter.h | 10 ++++++
- arch/x86/kvm/mmu/tdp_mmu.c  | 88 +++++++++++++++++++++++++++++++++++++--------
- 3 files changed, 109 insertions(+), 18 deletions(-)
+ arch/loongarch/include/asm/loongarch.h | 5 +++++
+ arch/loongarch/kernel/cpu-probe.c      | 6 ++++++
+ arch/loongarch/kvm/main.c              | 6 ++++--
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu/tdp_iter.c b/arch/x86/kvm/mmu/tdp_iter.c
-index 9e17bfa80901..d9be4298410d 100644
---- a/arch/x86/kvm/mmu/tdp_iter.c
-+++ b/arch/x86/kvm/mmu/tdp_iter.c
-@@ -132,7 +132,8 @@ static bool try_step_side(struct tdp_iter *iter)
-  * can continue from the next entry in the parent page table. Returns true on a
-  * successful step up, false if already in the root page.
-  */
--static bool try_step_up(struct tdp_iter *iter)
-+static bool try_step_up(struct tdp_iter *iter,
-+			struct tdp_iter_child_event *event)
- {
- 	if (iter->level == iter->root_level)
- 		return false;
-@@ -141,6 +142,14 @@ static bool try_step_up(struct tdp_iter *iter)
- 	iter->gfn = gfn_round_for_level(iter->gfn, iter->level);
- 	tdp_iter_refresh_sptep(iter);
+diff --git a/arch/loongarch/include/asm/loongarch.h b/arch/loongarch/include/asm/loongarch.h
+index 2a6bc99177d8..88e3bdfd4971 100644
+--- a/arch/loongarch/include/asm/loongarch.h
++++ b/arch/loongarch/include/asm/loongarch.h
+@@ -138,6 +138,9 @@
+ #define  CPUCFG6_PMBITS_SHIFT		8
+ #define  CPUCFG6_UPM			BIT(14)
  
-+	if (event && !event->valid) {
-+		event->sptep = iter->sptep;
-+		event->old_spte = iter->old_spte;
-+		event->gfn = iter->gfn;
-+		event->level = iter->level;
-+		event->valid = true;
++#define LOONGARCH_CPUCFG8		0x8
++#define  CPUCFG8_S2TGID			BIT(8)
++
+ #define LOONGARCH_CPUCFG16		0x10
+ #define  CPUCFG16_L1_IUPRE		BIT(0)
+ #define  CPUCFG16_L1_IUUNIFY		BIT(1)
+@@ -350,6 +353,8 @@
+ #define  CSR_GTLBC_TGID_WIDTH		8
+ #define  CSR_GTLBC_TGID_SHIFT_END	(CSR_GTLBC_TGID_SHIFT + CSR_GTLBC_TGID_WIDTH - 1)
+ #define  CSR_GTLBC_TGID			(_ULCAST_(0xff) << CSR_GTLBC_TGID_SHIFT)
++#define  CSR_GTLBC_USES2TGID_SHIFT	14
++#define  CSR_GTLBC_USES2TGID		(_ULCAST_(0x1) << CSR_GTLBC_USES2TGID_SHIFT)
+ #define  CSR_GTLBC_TOTI_SHIFT		13
+ #define  CSR_GTLBC_TOTI			(_ULCAST_(0x1) << CSR_GTLBC_TOTI_SHIFT)
+ #define  CSR_GTLBC_USETGID_SHIFT	12
+diff --git a/arch/loongarch/kernel/cpu-probe.c b/arch/loongarch/kernel/cpu-probe.c
+index 74d31f260dfd..e849ebacd268 100644
+--- a/arch/loongarch/kernel/cpu-probe.c
++++ b/arch/loongarch/kernel/cpu-probe.c
+@@ -241,6 +241,12 @@ static void cpu_probe_common(struct cpuinfo_loongarch *c)
+ 	if (config & CPUCFG6_PMP)
+ 		c->options |= LOONGARCH_CPU_PMP;
+ 
++	if (c->options & LOONGARCH_CPU_LVZ) {
++		config = read_cpucfg(LOONGARCH_CPUCFG8);
++		if (config & CPUCFG8_S2TGID)
++			c->options |= LOONGARCH_CPU_GUESTID;
 +	}
 +
- 	return true;
- }
- 
-@@ -160,8 +169,12 @@ static bool try_step_up(struct tdp_iter *iter)
-  *    SPTE will have already been visited, and so the iterator must also step
-  *    to the side again.
-  */
--void tdp_iter_next(struct tdp_iter *iter)
-+static void __tdp_iter_next(struct tdp_iter *iter,
-+			    struct tdp_iter_child_event *event)
- {
-+	if (event)
-+		event->valid = false;
-+
- 	if (iter->yielded) {
- 		tdp_iter_restart(iter);
- 		return;
-@@ -173,7 +186,17 @@ void tdp_iter_next(struct tdp_iter *iter)
- 	do {
- 		if (try_step_side(iter))
- 			return;
--	} while (try_step_up(iter));
-+	} while (try_step_up(iter, event));
- 	iter->valid = false;
- }
- 
-+void tdp_iter_next(struct tdp_iter *iter)
-+{
-+	__tdp_iter_next(iter, NULL);
-+}
-+
-+void tdp_iter_next_post_order(struct tdp_iter *iter,
-+			      struct tdp_iter_child_event *event)
-+{
-+	__tdp_iter_next(iter, event);
-+}
-diff --git a/arch/x86/kvm/mmu/tdp_iter.h b/arch/x86/kvm/mmu/tdp_iter.h
-index f898d8d0d93c..b7e2605fbf9e 100644
---- a/arch/x86/kvm/mmu/tdp_iter.h
-+++ b/arch/x86/kvm/mmu/tdp_iter.h
-@@ -123,6 +123,14 @@ struct tdp_iter {
- 	bool yielded;
- };
- 
-+struct tdp_iter_child_event {
-+	tdp_ptep_t sptep;
-+	u64 old_spte;
-+	gfn_t gfn;
-+	int level;
-+	bool valid;
-+};
-+
- /*
-  * Iterates over every SPTE mapping the GFN range [start, end) in a
-  * preorder traversal.
-@@ -145,6 +153,8 @@ tdp_ptep_t spte_to_child_pt(u64 pte, int level);
- void tdp_iter_start(struct tdp_iter *iter, struct kvm_mmu_page *root,
- 		    int min_level, gfn_t next_last_level_gfn, gfn_t gfn_bits);
- void tdp_iter_next(struct tdp_iter *iter);
-+void tdp_iter_next_post_order(struct tdp_iter *iter,
-+			      struct tdp_iter_child_event *event);
- void tdp_iter_restart(struct tdp_iter *iter);
- 
- #endif /* __KVM_X86_MMU_TDP_ITER_H */
-diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index 44dad106fad1..82446c4737f7 100644
---- a/arch/x86/kvm/mmu/tdp_mmu.c
-+++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -923,6 +923,38 @@ bool kvm_tdp_mmu_zap_possible_nx_huge_page(struct kvm *kvm,
- 	return true;
- }
- 
-+static bool tdp_mmu_zap_completed_empty_leaf_pt(struct kvm *kvm,
-+						struct tdp_iter_child_event *event,
-+						gfn_t start, gfn_t end,
-+						tdp_ptep_t zapped_leaf_pt)
-+{
-+	struct kvm_mmu_page *child_sp;
-+
-+	if (event->level != PG_LEVEL_2M ||
-+	    !is_shadow_present_pte(event->old_spte) ||
-+	    is_last_spte(event->old_spte, event->level))
-+		return false;
-+
-+	if (event->gfn < start ||
-+	    event->gfn + KVM_PAGES_PER_HPAGE(event->level) > end)
-+		return false;
-+
-+	/* Leave productive leaf tables in place to avoid refault churn. */
-+	if (zapped_leaf_pt == event->sptep)
-+		return false;
-+
-+	child_sp = spte_to_child_sp(event->old_spte);
-+	if (is_mirror_sp(child_sp))
-+		return false;
-+
-+	if (child_sp->role.level != PG_LEVEL_4K)
-+		return false;
-+
-+	tdp_mmu_set_spte(kvm, event->sptep, event->old_spte,
-+			 SHADOW_NONPRESENT_VALUE, event->gfn, event->level);
-+	return true;
-+}
-+
- /*
-  * If can_yield is true, will release the MMU lock and reschedule if the
-  * scheduler needs the CPU or there is contention on the MMU lock. If this
-@@ -933,7 +965,10 @@ bool kvm_tdp_mmu_zap_possible_nx_huge_page(struct kvm *kvm,
- static bool tdp_mmu_zap_leafs(struct kvm *kvm, struct kvm_mmu_page *root,
- 			      gfn_t start, gfn_t end, bool can_yield, bool flush)
- {
-+	struct tdp_iter_child_event event = {};
- 	struct tdp_iter iter;
-+	tdp_ptep_t zapped_leaf_pt = NULL;
-+	bool removed_sp = false;
- 
- 	end = min(end, tdp_mmu_max_gfn_exclusive());
- 
-@@ -941,33 +976,56 @@ static bool tdp_mmu_zap_leafs(struct kvm *kvm, struct kvm_mmu_page *root,
- 
- 	rcu_read_lock();
- 
--	for_each_tdp_pte_min_level(iter, kvm, root, PG_LEVEL_4K, start, end) {
-+	tdp_iter_start(&iter, root, PG_LEVEL_4K, start,
-+		       kvm_gfn_root_bits(kvm, root));
-+	while (iter.valid && iter.gfn < end) {
- 		if (can_yield &&
- 		    tdp_mmu_iter_cond_resched(kvm, &iter, flush, false)) {
- 			flush = false;
-+			tdp_iter_next(&iter);
- 			continue;
- 		}
- 
--		if (!is_shadow_present_pte(iter.old_spte) ||
--		    !is_last_spte(iter.old_spte, iter.level))
--			continue;
-+		if (is_shadow_present_pte(iter.old_spte) &&
-+		    is_last_spte(iter.old_spte, iter.level)) {
-+			if (iter.level == PG_LEVEL_4K) {
-+				struct kvm_mmu_page *sp;
- 
--		tdp_mmu_iter_set_spte(kvm, &iter, SHADOW_NONPRESENT_VALUE);
-+				sp = sptep_to_sp(rcu_dereference(iter.sptep));
-+				zapped_leaf_pt = sp->ptep;
-+			}
- 
--		/*
--		 * Zappings SPTEs in invalid roots doesn't require a TLB flush,
--		 * see kvm_tdp_mmu_zap_invalidated_roots() for details.
--		 */
--		if (!root->role.invalid)
--			flush = true;
--	}
-+			tdp_mmu_iter_set_spte(kvm, &iter,
-+					      SHADOW_NONPRESENT_VALUE);
- 
--	rcu_read_unlock();
-+			/*
-+			 * Zappings SPTEs in invalid roots doesn't require a TLB flush,
-+			 * see kvm_tdp_mmu_zap_invalidated_roots() for details.
-+			 */
-+			if (!root->role.invalid)
-+				flush = true;
-+		}
-+
-+		tdp_iter_next_post_order(&iter, &event);
-+		if (event.valid &&
-+		    tdp_mmu_zap_completed_empty_leaf_pt(kvm, &event, start,
-+							end, zapped_leaf_pt)) {
-+			if (!root->role.invalid)
-+				flush = true;
-+			removed_sp = true;
-+		}
-+	}
+ 	config = csr_read32(LOONGARCH_CSR_ASID);
+ 	config = (config & CSR_ASID_BIT) >> CSR_ASID_BIT_SHIFT;
+ 	asid_mask = GENMASK(config - 1, 0);
+diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+index 0099d0f0b803..e43ed4c11d31 100644
+--- a/arch/loongarch/kvm/main.c
++++ b/arch/loongarch/kvm/main.c
+@@ -358,7 +358,7 @@ int kvm_arch_enable_virtualization_cpu(void)
+ 	write_csr_gcfg(0);
+ 	write_csr_gstat(0);
+ 	write_csr_gintc(0);
+-	clear_csr_gtlbc(CSR_GTLBC_USETGID | CSR_GTLBC_TOTI);
++	clear_csr_gtlbc(CSR_GTLBC_USETGID | CSR_GTLBC_TOTI | CSR_GTLBC_USES2TGID);
  
  	/*
--	 * Because this flow zaps _only_ leaf SPTEs, the caller doesn't need
--	 * to provide RCU protection as no 'struct kvm_mmu_page' will be freed.
-+	 * If any shadow pages were removed, service pending TLB flushes before
-+	 * dropping RCU protection, as required by the TDP MMU iterator.
- 	 */
-+	if (removed_sp && flush) {
-+		kvm_flush_remote_tlbs(kvm);
-+		flush = false;
-+	}
-+
-+	rcu_read_unlock();
- 	return flush;
- }
+ 	 * Enable virtualization features granting guest direct control of
+@@ -381,6 +381,8 @@ int kvm_arch_enable_virtualization_cpu(void)
  
+ 	/* Enable using TGID  */
+ 	set_csr_gtlbc(CSR_GTLBC_USETGID);
++	if (cpu_has_guestid)
++		set_csr_gtlbc(CSR_GTLBC_USES2TGID);
+ 	kvm_debug("GCFG:%lx GSTAT:%lx GINTC:%lx GTLBC:%lx",
+ 		  read_csr_gcfg(), read_csr_gstat(), read_csr_gintc(), read_csr_gtlbc());
+ 
+@@ -399,7 +401,7 @@ void kvm_arch_disable_virtualization_cpu(void)
+ 	write_csr_gcfg(0);
+ 	write_csr_gstat(0);
+ 	write_csr_gintc(0);
+-	clear_csr_gtlbc(CSR_GTLBC_USETGID | CSR_GTLBC_TOTI);
++	clear_csr_gtlbc(CSR_GTLBC_USETGID | CSR_GTLBC_TOTI | CSR_GTLBC_USES2TGID);
+ 
+ 	/* Flush any remaining guest TLB entries */
+ 	kvm_flush_tlb_all();
 -- 
-2.15.0
+2.39.3
 
