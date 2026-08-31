@@ -1,342 +1,142 @@
-Received: from mail-qt1-f226.google.com (mail-qt1-f226.google.com [209.85.160.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1369334751B
-	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 22:33:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2BE3ADBA2;
+	Mon, 31 Aug 2026 22:35:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788215619; cv=none; b=RLw5QBaJaJqDiW0aDBpiaFKXyhYBFWtHYYLTmPRHNq5K6T++o8FeQVXpNJxhomAwK/8YUsnyoCtjMpPy7cP0uPKZbGUigz+hO/+y7G/WYz2vVb+8KBQg1YPO7RDTbx7PnmTZowWGZh0Sh54/8qMuY7+CCC9CJ2Rpta8CsWrhllk=
+	t=1788215751; cv=none; b=DP6CM7iF1szsXSWRDJpu7gjrflA2Dv9oFkFUIHVYiyBUsZjuXtK23xgxFdTh/t1m32lEJ288RC/B4Oft/DfNvS3BFwZFliWXbNfpxoHtPFrgEcePy+Rlryrod1izE9ho41yViWs0c8J+Zo8qoUdu/RY4GG8U5YYGobwnaZjv88c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788215619; c=relaxed/simple;
-	bh=uc/QJmoOkbwrSW9cnMc9+5ltVnBXv/F7tZvJpCeAcqM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mmo2yNwOZFksOcGZFxda82261vej1Am0JYXMEfjIUy/wn4SQGYFmGuQ5R9jOed1I8Q1vSgM8qzisnVa74bCEX4Pw3dBIx2v2YjuIonBxn4s77SkKWrfjEg6O0liZM5ge/sj3EIwIi3LfnSNHT4ciw04RM4HBbhzQLjR0jHVnRYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=fR0Bupne; arc=none smtp.client-ip=209.85.160.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1788215751; c=relaxed/simple;
+	bh=zhmO5QrKKNIlZXqF6UYN1EzpW8J8CkQI1bcVBz70xDo=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=DE4J/rRxh87HwGNNKyRikO3bcGiuf/Y6RTXJRAYKZtnrgybs02AsGPaXv3yCERG7I6x2Nc0rAO9Wda2EACR3UKITfsAKKB91vjuF7RqL8t0jsHuA/zzEUzOOlrATeWmsZjhgZ8GBEuAixM2n1ufGngdkUsPiNr5zlxkLBynCroI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nr7jq5wt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="fR0Bupne"
-Received: by mail-qt1-f226.google.com with SMTP id d75a77b69052e-53024149d40so1622601cf.1
-        for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 15:33:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788215617; x=1788820417;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=E+FD4GBvGZzu/Y3nzVZzc5PrUsxx8VuT92EuWCMYyC8=;
-        b=QkQqlxem6SGDL/JrI54XO+1HD4GNWy0kl5kn3A2knkdyF+E82inhlYHnsQH0Y06lEh
-         o2lqCmrcDVb6rhbLp/uLQJ8dJOKUdGwT+LdfcKu4YlVq1mBKkJr6S6CVET71OOTq2d2x
-         Fdmm/SGQ8kSzmOWatAyQcQ3kc7To2Vx1ntUUMbptu2CWvpKTETCPUTmIknvjvWWL57Jx
-         Qj6MS5lPgpVaWIUWIHcNEX9ZAvAWV+Hr5hm2d53v/k+L6PQg/GXW2D+KhAltM8Fyqfrt
-         xhseb1c2Zx8yQCrgoIc77Rj6ahizfxUuph8uBnl6lT0lK+41O3fahSfJcM2HxSXWLvtb
-         YIJQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpiiLOz1EYRYGDDyLaW+QFsj4+PQh1sPSLZw1mU8Y7YFkQKKrO5Wx1asFexysuD3dsgfMI=@vger.kernel.org
-X-Gm-Message-State: AFuF++l2EWmK/FKrappRGu4t7qGLZ52c4Rr0cmRJWWM7XrvLtWbGu/OM
-	aB804w/WpLtTmcpBQnOBZEee2RlYz4+if7xmDUqzWLmAtiCszxJSKEgJCdw5ZLikE1jeRijNeFk
-	FOg/Cx3TFrg/dM4C4cSs3Lyqxh8yDZK3QNsTo4zorGscIISXD//Jo8yS90xahWzg4qqHuK2IGYZ
-	2NMpDnXfqqjMINS5yTB9CXGmqRGVm0gbus51QBiJ6fX4XVcvdKILXbP2VO8RVTKnNiXicx3JXds
-	wrE
-X-Gm-Gg: AR+sD115ENQcOAKx0HU6Ci4c3kLDS5VnoQ8hZyzdgkMU8WodjzkWuy6pIWg1Fx+cN8X
-	Z9EkYCZJTbV0sdE2KOFcfNb8imuTyYaxphz8svMlFwlGwe3BwxBlvmWUF2EF1lJO83fbtlGQZWe
-	y5f+IId6xFCXlYRuoNXH/q9CSVQd6PuyLSCSwNWsuCiaTCUQDgXB/ot36rGDuXWhIoFyLFKr6HX
-	eS+HkBkM/DoVWVcaXApiyx/q79T2NQg4+G2ijayN9g5QddUadWGQd/J8pgo3lTRS9/S7h8qwmJQ
-	drlHMfgtjDbzt8IOQkcbdhynxOgtgJJUowjSFDsDWx5Mv9BsEdoCR5spfPWv235bSZHCtPfau1p
-	Aw6KznBvAOcKVVmm49fl9Yp+VTKBqkwnc6GLOX56Kj9kiYkBr1JmSiECvW/TOy/wq1U7hxnikNV
-	O02BhSSbtYLVMcqHyEyB8CH5xz1wdnRBK4
-X-Received: by 2002:a05:622a:394:b0:52d:9c11:8937 with SMTP id d75a77b69052e-52fb9640eb4mr300942681cf.26.1788215616533;
-        Mon, 31 Aug 2026 15:33:36 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-20.dlp.protect.broadcom.com. [144.49.247.20])
-        by smtp-relay.gmail.com with ESMTPS id d75a77b69052e-52fbe833fb2sm962451cf.22.2026.08.31.15.33.35
-        for <kvm@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 31 Aug 2026 15:33:36 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c20e5890680so319342366b.1
-        for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 15:33:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1788215614; x=1788820414; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=E+FD4GBvGZzu/Y3nzVZzc5PrUsxx8VuT92EuWCMYyC8=;
-        b=fR0BupnepWdgQZwZdgfHTucX/MAh1eEP9NGOSJG4tpHHeHyokDZ4nZD4k5gS+Bj2JI
-         mJUdgBD8N9NevuD6voUQ86YVWT8NcMeCyx1umyHgxLz41NEM0RHCQJI+zld9Z98brHDj
-         fUptAReYlHhfXBvpxz70JOdhZ2OIuHhZoagHc=
-X-Forwarded-Encrypted: i=1; AHgh+RrbMSx1ry/IfzbzOqLTKxu5tiaBYueXJdCbmy0gC/ZAB7EsI9VHrA7NTceW+yMrp+DsscU=@vger.kernel.org
-X-Received: by 2002:a17:906:4fc8:b0:c25:2e93:28a6 with SMTP id a640c23a62f3a-c2556be5796mr1757004666b.3.1788215614394;
-        Mon, 31 Aug 2026 15:33:34 -0700 (PDT)
-X-Received: by 2002:a17:906:4fc8:b0:c25:2e93:28a6 with SMTP id
- a640c23a62f3a-c2556be5796mr1757002166b.3.1788215613904; Mon, 31 Aug 2026
- 15:33:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nr7jq5wt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953B91F000E9;
+	Mon, 31 Aug 2026 22:35:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788215750;
+	bh=XHscgRXbY+iwWXHAOxPC2HDyEFw2GKGH7pZSYVo8wnk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=nr7jq5wt8+iMlI8BYrOS/QxYFfzplIeGIWf4R9eZ5aEr0iLVQczYCbFFx/smqZxZ6
+	 jn34cDrJVYHjfODRKMr/XRlA/sxwTNCsARKuwT7wv9sXzG0rAStvEGGOXhYHFLh3Nk
+	 589FeuyDM9nvzLhVcO7J/Ys28bxofRF/fAcLlo38qlv/uWGhZev/1wOpE2UA3LU8zB
+	 pRqlApXyFctNt8O/nhS5kqmP70FUo2yugecCpALYvTaKLj9xtGPh0A9qmhaMD3HnHq
+	 EvTFKMHazNLybpg9GYEd/iuYNSQhTI9jRZjhOQS6cEsHV97BMEhXYO3gFif/yS9oY2
+	 Yx25V25N6AX1w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 19/20] KVM: s390: arm64: Promote PTRAUTH capability
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steffen Eiden" <seiden@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>, "Oliver
+ Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev, "Vasily Gorbik" <gor@linux.ibm.com>, "Marc
+ Zyngier" <maz@kernel.org>, kvm@vger.kernel.org
+In-Reply-To: <20260831145536.913567-20-seiden@linux.ibm.com>
+References: <20260831145536.913567-1-seiden@linux.ibm.com>
+ <20260831145536.913567-20-seiden@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 31 Aug 2026 22:35:49 +0000
+Message-Id: <20260831223549.953B91F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260826003929.966160-1-4ncienth@gmail.com> <20260826003929.966160-3-4ncienth@gmail.com>
-In-Reply-To: <20260826003929.966160-3-4ncienth@gmail.com>
-From: Vishnu Dasa <vishnu.dasa@broadcom.com>
-Date: Mon, 31 Aug 2026 15:33:21 -0700
-X-Gm-Features: AcwNN1UohuGEOIEsqdIyo2DNfPV6378dBW_fPaBppWjFWBvMgwOd303g94W5MlI
-Message-ID: <CAF+opq1DfP1d5RBQwcP6ffiUtsUwxGH3a5twyd9Gct2iHZ3CuQ@mail.gmail.com>
-Subject: Re: [PATCH net v4 2/2] vsock/vmci: validate packet source for
- connected sockets
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: netdev@vger.kernel.org, sgarzare@redhat.com, stefanha@redhat.com, 
-	bobbyeshleman@gmail.com, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, mst@redhat.com, 
-	jasowangio@gmail.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com, 
-	bryan-bt.tan@broadcom.com, bcm-kernel-feedback-list@broadcom.com, 
-	virtualization@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, sashiko-bot@kernel.org
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000007e747e065a5f64c7"
 
---0000000000007e747e065a5f64c7
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] Missing PTRAUTH traps configuration causes guest crashes.
+- [Low] Macro redefinition of 'vcpu_has_ptrauth' causes a build failure.
+--
 
-On Tue, Aug 25, 2026 at 5:40=E2=80=AFPM Daehyeon Ko <4ncienth@gmail.com> wr=
-ote:
->
-> vmci_transport_recv_stream_cb() looks up sockets first by the full source
-> and destination tuple, then by destination only in the bound table. The
-> fallback can select a non-listening socket without checking whether the
-> packet came from its stored peer.
->
-> This was reproduced with two VMCI contexts. A RST from the context not
-> stored in a TCP_SYN_SENT socket reset that socket after it was selected b=
-y
-> the destination-only lookup.
->
-> VMCI can process notification packets in bottom-half context when the
-> socket is not owned by user context, or defer packets to a workqueue. Use
-> vsock_check_source() after taking the socket lock in the bottom-half path=
-,
-> and recheck after lock_sock() in the workqueue path. Listening sockets
-> continue to accept packets from any source.
->
-> Reply with a RST addressed from the received packet before dropping a
-> source that fails validation. This preserves the existing reset behavior
-> for bound non-listening and concurrently closed sockets without directing
-> the reset to a connected socket's stored peer.
->
-> Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/netdev/20260814121255.6B5001F000E9@smtp.k=
-ernel.org/
-> Cc: stable@vger.kernel.org
-> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-> Suggested-by: Paolo Abeni <pabeni@redhat.com>
-> Assisted-by: Codex:gpt-5.6-sol
-> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+commit cda854ae1be029b75a496434857cbf27f60d5cc0
+Author: Steffen Eiden <seiden@linux.ibm.com>
 
-Reviewed-by: Vishnu Dasa <vishnu.dasa@broadcom.com>
+KVM: s390: arm64: Promote PTRAUTH capability
+   =20
+Promote the pointer authentication capability if supported by hardware.
 
-Thanks!
+> diff --git a/arch/s390/include/asm/kvm_host_arm64.h b/arch/s390/include/a=
+sm/kvm_host_arm64.h
+> index 73eb09e98848f..32facf0457049 100644
+> --- a/arch/s390/include/asm/kvm_host_arm64.h
+> +++ b/arch/s390/include/asm/kvm_host_arm64.h
+> @@ -32,6 +32,8 @@ bool cpus_have_final_cap(unsigned int num);
+>  #define KVM_HAVE_MMU_RWLOCK
+>  #define KVM_MAX_VCPUS 1
+>  #define KVM_S390_ARM64_IMPL_FEATURES (		\
+> +	 BIT(KVM_ARM_VCPU_PTRAUTH_ADDRESS) |	\
+> +	 BIT(KVM_ARM_VCPU_PTRAUTH_GENERIC) |	\
+>  	 BIT(KVM_ARM_VCPU_SVE)			\
+>  )
 
-> ---
->  net/vmw_vsock/vmci_transport.c | 34 ++++++++++++++++++++++++++++------
->  1 file changed, 28 insertions(+), 6 deletions(-)
->
-> diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transpor=
-t.c
-> index 1c4ee039c..1f186e8f8 100644
-> --- a/net/vmw_vsock/vmci_transport.c
-> +++ b/net/vmw_vsock/vmci_transport.c
-> @@ -680,11 +680,13 @@ static int vmci_transport_recv_stream_cb(void *data=
-, struct vmci_datagram *dg)
->         struct vmci_transport_packet *pkt;
->         struct vsock_sock *vsk;
->         bool bh_process_pkt;
-> +       bool drop_pkt;
->         int err;
->
->         sk =3D NULL;
->         err =3D VMCI_SUCCESS;
->         bh_process_pkt =3D false;
-> +       drop_pkt =3D false;
->
->         /* Ignore incoming packets from resources that aren't vsock
->          * implementations.
-> @@ -765,17 +767,29 @@ static int vmci_transport_recv_stream_cb(void *data=
-, struct vmci_datagram *dg)
->         bh_lock_sock(sk);
->
->         if (!sock_owned_by_user(sk)) {
-> -               /* The local context ID may be out of date, update it. */
-> -               vsk->local_addr.svm_cid =3D dst.svm_cid;
-> +               if (sk->sk_state !=3D TCP_LISTEN &&
-> +                   !vsock_check_source(vsk, &vmci_transport, &src)) {
-> +                       drop_pkt =3D true;
-> +                       err =3D VMCI_ERROR_NO_ACCESS;
-> +               } else {
-> +                       /* The local context ID may be out of date, updat=
-e it. */
-> +                       vsk->local_addr.svm_cid =3D dst.svm_cid;
->
-> -               if (sk->sk_state =3D=3D TCP_ESTABLISHED)
-> -                       vmci_trans(vsk)->notify_ops->handle_notify_pkt(
-> -                                       sk, pkt, true, &dst, &src,
-> -                                       &bh_process_pkt);
-> +                       if (sk->sk_state =3D=3D TCP_ESTABLISHED)
-> +                               vmci_trans(vsk)->notify_ops->handle_notif=
-y_pkt(sk, pkt, true,
-> +                                                                        =
-      &dst, &src,
-> +                                                                        =
-      &bh_process_pkt);
-> +               }
->         }
->
->         bh_unlock_sock(sk);
->
-> +       if (drop_pkt) {
-> +               if (vmci_transport_send_reset_bh(&dst, &src, pkt) < 0)
-> +                       pr_err("unable to send reset\n");
-> +               goto out;
-> +       }
+[Severity: High]
+Does promoting these PTRAUTH capabilities lead to a guest crash?
+
+When a guest executes Pointer Authentication instructions, the hardware che=
+cks
+the Hypervisor Configuration Register (HCR_EL2) bits HCR_API and HCR_APK.
+Because vcpu_reset_hcr() hardcodes vcpu->arch.hcr_elz and omits these bits:
+
+arch/s390/kvm/arm64/reset.c:vcpu_reset_hcr() {
+        vcpu->arch.hcr_elz =3D HCR_EL2_E2H | HCR_EL2_RW | HCR_EL2_AMO |
+                             HCR_EL2_IMO | HCR_EL2_FMO | HCR_EL2_PTW;
+        /* traps */
+        vcpu->arch.hcr_elz |=3D HCR_EL2_TSC | HCR_EL2_TID1 | HCR_EL2_TID2 |
+                              HCR_EL2_TID3 | HCR_EL2_TID4 | HCR_EL2_TID5 |
+                              HCR_EL2_TIDCP | HCR_EL2_TLOR;
+}
+
+PTRAUTH instructions will unconditionally trap to the hypervisor with
+ESR_ELx_EC_PAC. Since arm_exit_handlers[] lacks a handler for ESR_ELx_EC_PA=
+C:
+
+arch/s390/kvm/arm64/handle_exit.c:arm_exit_handlers[] =3D {
+        [0 ... ESR_ELx_EC_MAX]  =3D kvm_handle_unknown_ec,
+        [ESR_ELx_EC_HVC64]      =3D handle_hvc,
+        [ESR_ELx_EC_SYS64]      =3D kvm_handle_sys_reg,
+        [ESR_ELx_EC_IABT_LOW]   =3D kvm_handle_guest_abort,
+        [ESR_ELx_EC_DABT_LOW]   =3D kvm_handle_guest_abort,
+};
+
+It seems the hypervisor will fall back to kvm_handle_unknown_ec(), injecting
+an unexpected undefined instruction exception back to the guest and crashing
+it. Should we configure the traps or add an exit handler before enabling th=
+is?
+
+[ ... ]
+
+> diff --git a/arch/s390/kvm/arm64/feature.h b/arch/s390/kvm/arm64/feature.h
+> index 892cf8bcf3a12..c11ac0daa4287 100644
+> --- a/arch/s390/kvm/arm64/feature.h
+> +++ b/arch/s390/kvm/arm64/feature.h
+> @@ -94,4 +94,9 @@ static inline u64 kvm_sae_irptc(void)
+> =20
+>  bool system_supports_sve(void);
+> =20
+> +#define vcpu_has_ptrauth(vcpu)						\
+> +	 (vcpu_has_feature(vcpu, KVM_ARM_VCPU_PTRAUTH_ADDRESS) ||       \
+> +	  vcpu_has_feature(vcpu, KVM_ARM_VCPU_PTRAUTH_GENERIC))
+
+[Severity: Low]
+Can this macro redefinition cause a build failure on s390?
+
+Because the C files including this header (like arm.c and feature.c) also
+include <linux/kvm_host.h>, they transitively include <arm64/kvm_host.h>.
+Since CONFIG_ARM64_PTR_AUTH is not set on s390, <arm64/kvm_host.h> defines
+vcpu_has_ptrauth(vcpu) as false.
+
+Redefining it here without first using #undef vcpu_has_ptrauth might trigger
+a -Wmacro-redefined warning, which breaks the build if -Werror is used.
+
+> +bool system_has_full_ptr_auth(void);
 > +
->         if (!bh_process_pkt) {
->                 struct vmci_transport_recv_pkt_info *recv_pkt_info;
->
-> @@ -900,6 +914,7 @@ static void vmci_transport_recv_pkt_work(struct work_=
-struct *work)
->  {
->         struct vmci_transport_recv_pkt_info *recv_pkt_info;
->         struct vmci_transport_packet *pkt;
-> +       struct sockaddr_vm src;
->         struct sock *sk;
->
->         recv_pkt_info =3D
-> @@ -908,6 +923,12 @@ static void vmci_transport_recv_pkt_work(struct work=
-_struct *work)
->         pkt =3D &recv_pkt_info->pkt;
->
->         lock_sock(sk);
-> +       vsock_addr_init(&src, pkt->dg.src.context, pkt->src_port);
-> +       if (sk->sk_state !=3D TCP_LISTEN &&
-> +           !vsock_check_source(vsock_sk(sk), &vmci_transport, &src)) {
-> +               vmci_transport_reply_reset(pkt);
-> +               goto out;
-> +       }
->
->         /* The local context ID may be out of date. */
->         vsock_sk(sk)->local_addr.svm_cid =3D pkt->dg.dst.context;
-> @@ -937,6 +958,7 @@ static void vmci_transport_recv_pkt_work(struct work_=
-struct *work)
->                 break;
->         }
->
-> +out:
->         release_sock(sk);
->         kfree(recv_pkt_info);
->         /* Release reference obtained in the stream callback when we fetc=
-hed
+>  #endif /* ARCH_S390_KVM_FEATURE_H */
 
---0000000000007e747e065a5f64c7
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-R/NZ5tTafc0SyuWmEVyFR825FbSoi1HwMkY1/lsU/2Ny0PK1+9WamuvV11QKd2dN0bYDXrT9uWC/
-Cw+IDnr+5S21lWL9xM3S7htf+QjbSezM58DicE0QLGoXIYZ98zGOum91sMMgq2YfQKCVeOcD/7SL
-0tftIn9SftUtPTeRab5qssPI8Aqo18uk3WxLqQRQv57jHWDis/0CAwEAAaOCAdkwggHVMA4GA1Ud
-DwEB/wQEAwIFoDCBkwYIKwYBBQUHAQEEgYYwgYMwRgYIKwYBBQUHMAKGOmh0dHA6Ly9zZWN1cmUu
-Z2xvYmFsc2lnbi5jb20vY2FjZXJ0L2dzZ2NjcjZzbWltZWNhMjAyMy5jcnQwOQYIKwYBBQUHMAGG
-LWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMzBlBgNVHSAEXjBc
-MAkGB2eBDAEFAwEwCwYJKwYBBAGgMgEoMEIGCisGAQQBoDIKAwIwNDAyBggrBgEFBQcCARYmaHR0
-cHM6Ly93d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3NpdG9yeS8wCQYDVR0TBAIwADBBBgNVHR8EOjA4
-MDagNKAyhjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmww
-IwYDVR0RBBwwGoEYdmlzaG51LmRhc2FAYnJvYWRjb20uY29tMBMGA1UdJQQMMAoGCCsGAQUFBwME
-MB8GA1UdIwQYMBaAFAApNp5ceroPry1QLdugI4UYsKCSMB0GA1UdDgQWBBSDkmQlbsGdC/WLbyB/
-f4VlMvD+ozANBgkqhkiG9w0BAQsFAAOCAgEAYv4/sGMrazXrWECSGMFJ6YIDir3jLsYCcD/xTMfS
-bXSiWFQ/ZiFLbxfVV9JJKkkKR29ow0Eo1fBaZMCDhnax7746XJn6qJ0Iz5MyLKFB2DKt3UO2q1PB
-+wh73XKXTx6FDnbFRDjtyam6uKjknIMrZcFVTyFwUiY9zKz5pK40OPx4ZzdWxOCKMnCblGOiqvS+
-gHpKXHRfCd9Ul1teGR1+muz+L7fJfrx9WUBNDFFIhwZEevLSVo7wIoyT2PG0fIk2yjKCFOT3CVVy
-E5LT/kzQHjq7Y36GeUxozu21FbrNYm4Ivlh1OV9suNl/3iN1j9kFAdgg/8QXh9USKmg2zaS/S9lc
-1YYUOS+Epg0WBwhAwWtVym636KWqu4Esgz2XWX1260rHG0sIxkdxzvBwsUYpf3e1axBlOHHr1Jz+
-vDtQVeBUS7fBAVDWnBJrKNn+jseGnpcqBDQSSNq1kB44XhKZFApne6lKSCqYkE3qXnr7Dp0CXm+G
-pPoyxqxotis4l4Dl4A3btCkYLp/dzOS00M71f185BKufW7S/16rj/jVUzgz2AjGvM/OC0SWvGoB2
-tDdyBMmW1/0xK5rKGnmfM07/k8agfS2J6eI1iWB35m1Ni2SoCoLGoLlvUA4OhexyRqMTTjyllKtA
-0Z9TF7kzBYUx8Qa7zfaTaIsVorChiSjphpgxggJXMIICUwIBATBiMFIxCzAJBgNVBAYTAkJFMRkw
-FwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlN
-RSBDQSAyMDIzAgwcY9XKjV0+TQvViOkwDQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIE
-IL0+KEKWDs1IUl1oWfUPGMIoLX2d1z2ft91D4VXOKojPMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
-BwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDgzMTIyMzMzNFowXAYJKoZIhvcNAQkPMU8wTTALBglghkgB
-ZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQcw
-CwYJYIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBAE+6IjpGMo4w2bbYr02StDOjQT8kzAsuPABe
-G9YeMt42e2S+FF2Be1SSU+UCRRinTXAR4yjPxHNmtjpEdHDtou1JJ6YjYnsSAQiWzefA50Pj+Kxo
-7aQ9fCRFO2l2TVTfP9wWyIfvxCe/tDc91u7p5fFkRafsLQZljqydDgpgk7awH3bT0Laxeo5mu2GT
-qNOHSAETwf4Njncw+yi96ueLStpycplvybFu7oAj0eGAFynwF3eiREtjbMh7zy1Qn2F4XXwjmVVz
-Ish9xOUIc9rV8BINcq1IE0W/SS+sd08cMMty+wSbxZPXGN6oNM1MAR3ctyMrA65vGaOjjPwI54GU
-vYY=
---0000000000007e747e065a5f64c7--
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260831145536.9135=
+67-1-seiden@linux.ibm.com?part=3D19
