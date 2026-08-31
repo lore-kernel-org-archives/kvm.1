@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3DC3C2787
-	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 07:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418F63BFAE7
+	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 07:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788160444; cv=none; b=GVgwTAVdtldaRYsQijg65r1l5qUsPEmkxyO8CUr+3efmG3Ogbn8htM+nIqm1n6juLRj8sAfnlfeF4papNxaOMhTdICcTp1Hsz2pZM9JBiNUKqBx/OOvz6fTpeJ1ZBTP1ZMF8pP+5ZfwmOCKxNK7EsEUZzJxE2khGpwk9ccfa/qI=
+	t=1788160451; cv=none; b=XzjUDMeCTnep5aAzopLj8KC0NmKvRsZhv5V/tighKG56HregUrTrzI1adAw4J7Tn8/DzR/1NzolR0LANIM8KXlwpZXxzSDHei94F9lDaoUbiCfhQstLFUyNgTBKEDZMhU/UBbrT6lPXyQqBQMtAOnfxCgH5jgn3HULI2Wuygtms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788160444; c=relaxed/simple;
-	bh=xwDnxx0UeKAHBSyUT+CPixcUtReTWl8pkJFhLY4fKAw=;
+	s=arc-20240116; t=1788160451; c=relaxed/simple;
+	bh=UNILhy75v1+SH1piil4wmLH7svGpwzcx2Ev8M5T+kvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Syp4bK3L4WBLVOjwK3fdWx2P43lOMHzJ0Fx5Z/HYMuTrlUe0ieaZYbOo5M7EtidmgYOYR1xb+0CNf7zOvxNqqEP7v6VptiLCrD3sUobRAUkCe6xDa8GhqoRdQAXRXFikIipNN4EXJ1hTAuoi0vgUqeo+14cFIesPhZIYqLlUA3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jn729bQr; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=UzaXYa/ExjpneOFDb5w+OINI+7wyncHmLE9WzIfDhXs2j3nKe3guUfdPYt4I76EPJxjXHxveJwiGEbum8YWkHHGretNSmSD8rJtRV/zwdHZy7oFDK1avZPTyr3+da5swHUa8uoQ/vE8uDoYbVV+NAfX7Emfi+D1Di5QTuIDtr9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NEtnNllL; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jn729bQr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NEtnNllL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788160442; x=1819696442;
+  t=1788160450; x=1819696450;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=xwDnxx0UeKAHBSyUT+CPixcUtReTWl8pkJFhLY4fKAw=;
-  b=Jn729bQr09IlVgizYjyAZlpyCB1IAg8O+Db1mYI7yAEJV9eoSSFwEcCd
-   K8L/89LqjmL4HhShveZ/9AT4PvgCEPLo4mpj/R5Dtp/84UWH+2wwrXaGL
-   xoaXQy6UpAcSmopW9hAogf1Qs2q5/HmRI8Uy1s3gTKLNLM5WUlXgTC6Hk
-   eTLmTsKMbQ2rh5qdBgKAIxTTae6Gi5rJgHOt4R0VLbVDcCxwJOsKy7xPV
-   k4MzxdgtHRKLnfq7MlIz3bNkFR9YdwgjHmrEecuNu59LAPfSQVg0BWFaH
-   SDuO+aRyi7buLlSBsF1FQU2jkIoFEhbDtAqOc5glRXujeiR2hNhcSAfnL
+  bh=UNILhy75v1+SH1piil4wmLH7svGpwzcx2Ev8M5T+kvE=;
+  b=NEtnNllLu2NjQBWO6GWenXUYpgUW1E3g8Kww8mzOfKK8GYNK+3ZQpPYB
+   J4xx6UzUAV1TJ+UPSMlwmpKW78No5yQubsnHYGPb6d25IITPUONwhK/Gs
+   FUr74V+XjTULmkHayER6yCy27WhVyITeYtfKjCbCXg9FTeoBxhKTCV9IZ
+   xnYcx+KfMmUB1oP57+XmvxbXUtVNYvWpJgt4XPJUg85y+24SdFyYHetgH
+   z06etl8qJ/lTwGhPbOfxqJxKJoU4bUQ20FKW5NaFaJ5CPu+R33te82efQ
+   +coyZTgVFISH3gNFWI4eqoBXqdCkBQaydxquKsIBaZ7MURk7a11f5TNVu
    g==;
-X-CSE-ConnectionGUID: YHdvSNNfRPajew9TEUzAjw==
-X-CSE-MsgGUID: TsvEoCUaTGKZNBdXoON11w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="99911295"
+X-CSE-ConnectionGUID: euerxWYURcq8HD0dYBe57Q==
+X-CSE-MsgGUID: S4817mpDTaiEyP2sCFnYqg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="99911311"
 X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="99911295"
+   d="scan'208";a="99911311"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 00:14:01 -0700
-X-CSE-ConnectionGUID: /cIuLaBBSfqY/v65NF9S8w==
-X-CSE-MsgGUID: 6rG4vz6tScyDi/mSeoFjmQ==
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 00:14:09 -0700
+X-CSE-ConnectionGUID: X4LqqWWrQnKwyU7YvyI/9A==
+X-CSE-MsgGUID: Dk2WV+IgQESdUdyXvwLdIQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="266909711"
+   d="scan'208";a="266909731"
 Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost.localdomain) ([10.245.244.19])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 00:13:54 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 00:14:01 -0700
 From: Tony Lindgren <tony.lindgren@linux.intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>
@@ -69,9 +69,9 @@ Cc: Peter Xu <peterx@redhat.com>,
 	Xiaoyao Li <xiaoyao.li@intel.com>,
 	Xu Yilun <yilun.xu@linux.intel.com>,
 	kvm@vger.kernel.org
-Subject: [RFC PATCH v2 1/4] Documentation: KVM: Add live migration API for confidential guests
-Date: Mon, 31 Aug 2026 10:13:01 +0300
-Message-ID: <20260831071304.762939-2-tony.lindgren@linux.intel.com>
+Subject: [RFC PATCH v2 2/4] KVM: x86: Add optional KVM_CAP_LIVE_MIGRATION and KVM_MIGRATE_CMD
+Date: Mon, 31 Aug 2026 10:13:02 +0300
+Message-ID: <20260831071304.762939-3-tony.lindgren@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
 References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
@@ -83,246 +83,138 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-For CoCo VMs, the guest memory and vCPU states are not accessible to the
-userspace or KVM for live migration. The memory and vCPU states need to be
-extracted into encrypted blobs on the source, and decrypted on the
-destination. Before live migration, an encryption key needs to be
-negotiated between the source and destination.
+Live migration of confidential guests needs the help of KVM at least for
+TDX.
 
-KVM help is needed to talk to the layer exporting and importing the
-encrypted state. Document the KVM live migration API for confidential
-guests.
+Add KVM_CAP_LIVE_MIGRATION for when hardware specific live migration
+functions must be used.
 
-Co-developed-by: Kishen Maloor <kishen.maloor@intel.com>
-Signed-off-by: Kishen Maloor <kishen.maloor@intel.com>
+Add KVM_MIGRATE_CMD to configure the hardware for live migration.
+
+Assisted-by: Claude-Code:claude-opus-5 checkpatch
+[ used AI to review and simplify the code ]
 Signed-off-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 ---
- Documentation/virt/kvm/api.rst | 205 +++++++++++++++++++++++++++++++++
- 1 file changed, 205 insertions(+)
+ arch/x86/include/asm/kvm-x86-ops.h |  2 ++
+ arch/x86/include/asm/kvm_host.h    |  2 ++
+ arch/x86/kvm/x86.c                 | 25 +++++++++++++++++++++++++
+ include/uapi/linux/kvm.h           | 22 ++++++++++++++++++++++
+ 4 files changed, 51 insertions(+)
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index a5f9ee92f43e8..9d546d288af5f 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -6566,6 +6566,200 @@ KVM_S390_KEYOP_SSKE
-   Sets the storage key for the guest address ``guest_addr`` to the key
-   specified in ``key``, returning the previous value in ``key``.
+diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+index 83dc5086138b3..ac080b556b0c8 100644
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -148,6 +148,8 @@ KVM_X86_OP_OPTIONAL(alloc_apic_backing_page)
+ KVM_X86_OP_OPTIONAL_RET0(gmem_prepare)
+ KVM_X86_OP_OPTIONAL_RET0(gmem_max_mapping_level)
+ KVM_X86_OP_OPTIONAL(gmem_invalidate)
++KVM_X86_OP_OPTIONAL_RET0(cap_live_migration)
++KVM_X86_OP_OPTIONAL(migrate_cmd)
+ #endif
  
-+.. _KVM_MIGRATE_CMD:
+ #undef KVM_X86_OP
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 5f6c1ce9673b7..d9291a8a97bb1 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -2010,6 +2010,8 @@ struct kvm_x86_ops {
+ 	int (*gmem_prepare)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
+ 	void (*gmem_invalidate)(kvm_pfn_t start, kvm_pfn_t end);
+ 	int (*gmem_max_mapping_level)(struct kvm *kvm, kvm_pfn_t pfn, bool is_private);
++	bool (*cap_live_migration)(struct kvm *kvm);
++	int (*migrate_cmd)(struct kvm *kvm, struct kvm_migrate_cmd *cmd);
+ };
+ 
+ struct kvm_x86_nested_ops {
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index afcac1042947a..7064fd709e56d 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -4973,6 +4973,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 	case KVM_CAP_READONLY_MEM:
+ 		r = kvm ? kvm_arch_has_readonly_mem(kvm) : 1;
+ 		break;
++	case KVM_CAP_LIVE_MIGRATION:
++		r = kvm ? kvm_x86_call(cap_live_migration)(kvm) : 0;
++		break;
+ 	default:
+ 		break;
+ 	}
+@@ -7614,6 +7617,28 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
+ 		r = kvm_vm_ioctl_set_msr_filter(kvm, &filter);
+ 		break;
+ 	}
++	case KVM_MIGRATE_CMD: {
++		struct kvm_migrate_cmd cmd;
 +
-+4.145 KVM_MIGRATE_CMD
-+---------------------
++		if (!kvm_x86_ops.migrate_cmd ||
++		    !kvm_x86_call(cap_live_migration)(kvm))
++			return -ENOTTY;
 +
-+:Capability: KVM_CAP_LIVE_MIGRATION
-+:Architectures: x86
-+:Type: vm ioctl
-+:Parameters: struct kvm_migrate_cmd (in/out)
-+:Returns: 0 on success, < 0 on error
++		if (copy_from_user(&cmd, argp, sizeof(cmd)))
++			return -EFAULT;
 +
-+Allows userspace to send live migration related commands to KVM for vendor
-+specific handling.
++		if (cmd.reserved || cmd.buf.reserved)
++			return -EINVAL;
 +
-+For confidential computing, live migration related commands may be needed.
-+The commands typically use encrypted data that needs to be passed between the
-+source and destination hosts. The hosts may also require specific coordination
-+steps during migration that must be triggered at precise points in the
-+migration process.
++		r = kvm_x86_call(migrate_cmd)(kvm, &cmd);
++		if (r > 0)
++			r = -EIO;
 +
-+The vendor specific implementation handles locking and checks the valid flags
-+bits. If KVM_CAP_LIVE_MIGRATION is not available for the VM, -ENOTTY is
-+returned.
++		/* Copy back also on an error to report a partially done command */
++		if (copy_to_user(argp, &cmd, sizeof(cmd)))
++			return -EFAULT;
++		break;
++	}
+ 	default:
+ 		r = -ENOTTY;
+ 	}
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 419011097fa8e..e5b227d3a8e40 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -997,6 +997,7 @@ struct kvm_enable_cap {
+ #define KVM_CAP_S390_KEYOP 247
+ #define KVM_CAP_S390_VSIE_ESAMODE 248
+ #define KVM_CAP_S390_HPAGE_2G 249
++#define KVM_CAP_LIVE_MIGRATION 250
+ 
+ struct kvm_irq_routing_irqchip {
+ 	__u32 irqchip;
+@@ -1350,6 +1351,8 @@ struct kvm_s390_keyop {
+ #define KVM_GET_DEVICE_ATTR	  _IOW(KVMIO,  0xe2, struct kvm_device_attr)
+ #define KVM_HAS_DEVICE_ATTR	  _IOW(KVMIO,  0xe3, struct kvm_device_attr)
+ 
++#define KVM_MIGRATE_CMD		  _IOWR(KVMIO, 0xe4, struct kvm_migrate_cmd)
 +
-+The KVM_MIGRATE_CMD subcommand passed in struct kvm_migrate_cmd is one of::
+ /*
+  * ioctls for vcpu fds
+  */
+@@ -1670,4 +1673,23 @@ struct kvm_pre_fault_memory {
+ 	__u64 padding[5];
+ };
+ 
++#define KVM_MIGRATE_SETUP		0
++#define KVM_MIGRATE_ITERATION		1
++#define KVM_MIGRATE_STOP_AND_COPY	2
++#define KVM_MIGRATE_ABORT		3
++#define KVM_MIGRATE_END			4
 +
-+  #define KVM_MIGRATE_SETUP		0
-+  #define KVM_MIGRATE_ITERATION		1
-+  #define KVM_MIGRATE_STOP_AND_COPY	2
-+  #define KVM_MIGRATE_ABORT		3
-+  #define KVM_MIGRATE_END		4
-+
-+The kvm_transfer_buffer is::
-+
-+  /**
-+   * @address: Userspace buffer address
-+   * @size: Size of the userspace buffer
-+   * @reserved: Reserved for future use
-+   */
-+  struct kvm_transfer_buffer {
++struct kvm_transfer_buffer {
 +	__u64 address;
 +	__u32 size;
 +	__u32 reserved;
-+  };
++};
 +
-+The kvm_migrate_cmd is::
-+
-+  /**
-+   * @command: One of the defined KVM_MIGRATE commands
-+   * @flags: Hardware specific flags
-+   * @reserved: Reserved for future use
-+   * @buf: Userspace buffer for hardware specific data
-+   */
-+  struct kvm_migrate_cmd {
++struct kvm_migrate_cmd {
 +	__u16 command;
 +	__u16 flags;
 +	__u32 reserved;
 +	struct kvm_transfer_buffer buf;
-+  };
++};
 +
-+.. _KVM_EXPORT_MEMORY:
-+
-+4.146 KVM_EXPORT_MEMORY
-+-----------------------
-+
-+:Capability: KVM_CAP_LIVE_MIGRATION
-+:Architectures: x86
-+:Type: vm ioctl
-+:Parameters: struct kvm_memory_transfer (in/out)
-+:Returns: 0 on success, < 0 on error
-+
-+Allows userspace to request the host to export an array of memory pages to a
-+userspace buffer.
-+
-+The private memory may not be accessible to KVM because of encryption. For
-+confidential computing, the guest memory is encrypted and only accessible to
-+the guest.
-+
-+If KVM_CAP_LIVE_MIGRATION is not available for the VM, -ENOTTY is returned.
-+
-+The vendor specific ID is used at least for TDX for the migration thread
-+index.
-+
-+The kvm_memory_transfer is::
-+
-+  /**
-+   * @gfns: Userspace address of an array of nr_gfns __u64 GFNs to export
-+   * @nr_gfns: Number of GFNs in the @gfns array
-+   * @id: Optional vendor specific transfer ID
-+   * @flags: Vendor specific flags
-+   * @reserved: Reserved for future use
-+   * @buf: Userspace buffer to export memory to
-+   */
-+  struct kvm_memory_transfer {
-+       __u64 gfns;
-+       __u32 nr_gfns;
-+       __u16 id;
-+       __u16 flags;
-+       __u64 reserved;
-+       struct kvm_transfer_buffer buf;
-+  };
-+
-+The transfer buffer size is vendor specific.
-+
-+For the transfer buffer, seeo :ref:`KVM_MIGRATE_CMD <KVM_MIGRATE_CMD>`.
-+
-+For memory import, see also :ref:`KVM_IMPORT_MEMORY <KVM_IMPORT_MEMORY>`.
-+
-+
-+.. _KVM_IMPORT_MEMORY:
-+
-+4.147 KVM_IMPORT_MEMORY
-+-----------------------
-+
-+:Capability: KVM_CAP_LIVE_MIGRATION
-+:Architectures: x86
-+:Type: vm ioctl
-+:Parameters: struct kvm_memory_transfer (in/out)
-+:Returns: 0 on success, < 0 on error
-+
-+Allows userspace to request the host to import an array of memory pages from a
-+userspace buffer.
-+
-+The private memory may not be accessible to KVM because of encryption. For
-+confidential computing, the guest memory is encrypted and only accessible to
-+the guest.
-+
-+If KVM_CAP_LIVE_MIGRATION is not available for the VM, -ENOTTY is returned.
-+
-+The vendor specific ID is used at least for TDX for the migration thread
-+index.
-+
-+The transfer buffer size is vendor specific.
-+
-+For kvm_memory_transfer, see :ref:`KVM_EXPORT_MEMORY <KVM_EXPORT_MEMORY>`.
-+
-+For the transfer buffer, seeo :ref:`KVM_MIGRATE_CMD <KVM_MIGRATE_CMD>`.
-+
-+.. _KVM_EXPORT_VCPU:
-+
-+4.149 KVM_EXPORT_VCPU
-+---------------------
-+:Capability: KVM_CAP_LIVE_MIGRATION
-+:Architectures: arm64, x86
-+:Type: vcpu ioctl
-+:Parameters: struct kvm_vcpu_transfer (in/out)
-+:Returns: 0 on success, < 0 on error
-+
-+Allows userspace to request the host to export a VCPU state to a userspace
-+buffer.
-+
-+The VCPU state may not be directly accessible to KVM because of encryption. For
-+confidential computing, the VCPU state is encrypted and only accessible to the
-+guest.
-+
-+The vcpu_transfer is::
-+
-+  /**
-+   * @flags: Hardware specific flags
-+   * @reserved: Reserved for future use
-+   * @buf: Userspace buffer to export VCPU state to
-+   */
-+  struct kvm_vcpu_transfer {
-+        __u32 flags;
-+        __u32 reserved;
-+	struct kvm_transfer_buffer buf;
-+  };
-+
-+For the transfer buffer, see :ref:`KVM_MIGRATE_CMD <KVM_MIGRATE_CMD>`.
-+
-+For vCPU import, see also :ref:`KVM_IMPORT_VCPU <KVM_IMPORT_VCPU>`.
-+
-+.. _KVM_IMPORT_VCPU:
-+
-+4.148 KVM_IMPORT_VCPU
-+---------------------
-+
-+:Capability: KVM_CAP_LIVE_MIGRATION
-+:Architectures: arm64, x86
-+:Type: vcpu ioctl
-+:Parameters: struct kvm_vcpu_transfer (in/out)
-+:Returns: 0 on success, < 0 on error
-+
-+Allows userspace to request the host to import a VCPU state from a userspace
-+buffer.
-+
-+The VCPU state may not be directly accessible to KVM because of encryption. For
-+confidential computing, the VCPU state is encrypted and only accessible to the
-+guest.
-+
-+For vcpu_transfer and vCPU import, see :ref:`KVM_IMPORT_VCPU <KVM_IMPORT_VCPU>`.
-+
-+For the transfer buffer, see also :ref:`KVM_MIGRATE_CMD <KVM_MIGRATE_CMD>`.
-+
- .. _kvm_run:
- 
- 5. The kvm_run structure
-@@ -9493,6 +9687,17 @@ take care to differentiate between these cases.
- The presence of this capability indicates that the nested KVM guest can
- start in ESA mode.
- 
-+8.48 KVM_CAP_LIVE_MIGRATION
-+---------------------------
-+
-+:Architectures: x86
-+:Target: VM
-+:Parameters: None
-+
-+Indicates that the VM needs to use KVM calls for live migration, and that the
-+KVM_MIGRATE_CMD ioctl and the KVM_EXPORT_MEMORY, KVM_IMPORT_MEMORY,
-+KVM_EXPORT_VCPU and KVM_IMPORT_VCPU ioctls are available.
-+
- 9. Known KVM API problems
- =========================
- 
+ #endif /* __LINUX_KVM_H */
 -- 
 2.43.0
 
