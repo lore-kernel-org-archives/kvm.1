@@ -1,92 +1,60 @@
-Received: from server2.schools365.in (server2.schools365.in [103.139.75.161])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394D7391E72
-	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 21:31:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.139.75.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9618F385539;
+	Mon, 31 Aug 2026 21:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788211900; cv=none; b=VfgyNJkuOj0ETQ0MF5jBY1P4z06p2DWfwdDR+1fVhMDy4OK/yjsr02mL5DmP//4LLEjWMjj74bJj3bqxMdk0nz8sArEuZUZaLdxJTBSkjMzcq9E6VtdOAPWYnOL4wVA106BNB/mJl7iRT5A11DKnXZ3LBFDXZgcMUkPN8Aq1Xx4=
+	t=1788211938; cv=none; b=YySRRBqePYSbQRPKKuA7r6boGpB3yP2QaLJb633X+d5Y33xPU67/8P6pTV3vbjL1OUW+LsCawOdI/OIPTd9T2mD+fXG5xQFN3ADVfbtUe9OxM0DLtnL0/Oqs+V5hB4L6ApASHEYGzNBJGzh5W619Z699xSHFtESDzeaKuBPbQ+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788211900; c=relaxed/simple;
-	bh=d/s0CYc3aH5WGBxJf8iENbYy+m94cPNyzk84MtDUiOI=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nfLzCdnyjpmaMQAbqQMqy8yEfLWFI4b0mfllQCMxXuUuur2eIN2jmbi1BtzjPSyH6kimv4joIJQ1kCEqEfDCNmeN2ZnXwW8bhpTJVg1x9W6E4un3P1EkXVuGvU9OLz6/+V+w8PLAEVKHbk5de9zrqFNBTm6Qj77DFkZ51C+W/6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pulsesports.in; spf=pass smtp.mailfrom=pulsesports.in; arc=none smtp.client-ip=103.139.75.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pulsesports.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pulsesports.in
-Received: from ip255.ip-213-32-95.eu (ip255.ip-213-32-95.eu [213.32.95.255])
-	by server2.schools365.in (Postfix) with ESMTPSA id 1056E1ACD4D
-	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 21:22:43 +0000 (UTC)
-Reply-To: info@kztoo.xyz
-From: SMIT EVRASIYA - KZ <anish@pulsesports.in>
-To: kvm@vger.kernel.org
-Subject: Products Offer 
-Date: 31 Aug 2026 14:22:42 -0700
-Message-ID: <20260831142241.8111D66B092C9640@pulsesports.in>
+	s=arc-20240116; t=1788211938; c=relaxed/simple;
+	bh=b2Rj24FX4xcOqW6ct0ULU300n1M8X+X6SMlIs5M7oZ0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=b/tDQKZPzjRqzIEMKZFOBXVnz88lgnlQUsiOCQkS4kNN10VM1EmtRjT4NjpME/ox6AvwO9V2Jnu0WlJFebTuVZe85uXkxF/cMCL++EdEFz5eLcDv3JGuOdePPRcV6rGZ7lWRGocIp15VhmaAeXxenQH038m1pI7fEg8Vua5vGPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vqb7IylX; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vqb7IylX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7461F00A3D;
+	Mon, 31 Aug 2026 21:32:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788211937;
+	bh=b2Rj24FX4xcOqW6ct0ULU300n1M8X+X6SMlIs5M7oZ0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Vqb7IylXv01K0JwM8WmXyQN7234/X1vu+ndoeN2yeXnC0HfecDFh+vqQ+ZyGcWa8h
+	 aOwnv5RHLAzGqZgxKZy8vT7tFRxwBAAfDNfY2TvF/n9t0KXt/2dnsWYx7hjaAQlm9k
+	 k/to/w7ry6rrQ4a5iXBJUmWVVCN1/HBG4ku+YTbTqlt4cU9K2PlfglivLqHtpYkLVH
+	 ql1tVAEgk4CXi8HMTeS86xil9t0bFUXoveqFyZ3w1cj2X7juCvP+XQV69e1Q/H1MAG
+	 c3IhThlqnK0FttkmbasBhuvPzrFBh6O6R7jAZ1D8ZNtD3h22Dzfs7oF9IGEWhwES1I
+	 1KdyrQHOjQIoQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 15/20] KVM: s390: arm64: Use QAAF init save area
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steffen Eiden" <seiden@linux.ibm.com>
+Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, "Vasily
+ Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, kvmarm@lists.linux.dev, "Christian
+ Borntraeger" <borntraeger@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>
+In-Reply-To: <20260831145536.913567-16-seiden@linux.ibm.com>
+References: <20260831145536.913567-1-seiden@linux.ibm.com>
+ <20260831145536.913567-16-seiden@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 31 Aug 2026 21:32:16 +0000
+Message-Id: <20260831213216.AD7461F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-    Hello kvm
+> Use the (cached) result of QAAF fc2 (Generate Initial
+> System-Registers-Save Area) to initialize the Save Area.
+>=20
+> Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
 
-    It is our pleasure to make good business with you. Am sure=20
-you
-    understand that this actually is very serious. It is not in=20
-our
-    interest to work with someone who intends to waste our time,=20
-as
-    such creating an unpleasant atmosphere for us. There are=20
-several
-    Oil and Gas Refineries with more than 20 years of plausible
-    records, reliability, and trustworthiness, that we are=20
-connected
-    with. Simply put, we are directly linked to End Sellers. It
-    surely will make deals much more fluid, easy and swift,=20
-without
-    the broker's involvement and interference. We are pleased to
-    present some strong Offers with suitable Procedures and
-    Negotiable prices. Which I am positive will be of interest to
-    you.
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-    The following products are available and all can be supplied
-    mostly on FOB ROTTERDAM/HOUSTON PORT,
-    1. Commodity: JP54 or JP A1
-    2. Commodity: Diesel GAS OIL D2
-    3. Commodity: Mazut M100
-    4. Commodity: D6 Virgin Fuel Oil
-    5. Commodity: Diesel EN590 10ppm / 50ppm
-    6. Commodity: Petcoke
-    7. Commodity: LNG / LPG
-    8. Commodity: Diesel AGO
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260831145536.9135=
+67-1-seiden@linux.ibm.com?part=3D15
 
-    Quotas from our various Refineries/End Seller for our=20
-different
-    buyers who are interested in Spot/Urgent transactions on FOB
-    deliveries to any safe world port (ASWP) are ensured/secured.=20
-Our
-    Refineries have their products both at  Rotterdam port, and
-    Houston Port. If interested and/or have a reliable buyer of=20
-the
-    products mentioned above or similar, with the real intention=20
-for
-    business. Please, indicate the particular Product wanted, the
-    Volumes desired and Destination it should be delivered. We=20
-will
-    immediately send an Official Soft Corporate Offer (SCO). A
-    straightforward proceeding is assured if we agree on terms.
-
-    We look forward to hearing from you.
-
-
-
-
-    REPRESENTATIVE: ORAZALIEV ADILBEK RASHIDUL
-    SMIT EVRASIYA - KZ
-    POSITION: DIRECTOR
-    Email: info@kztoo.xyz
-    Phone: +7 778 395 2331
