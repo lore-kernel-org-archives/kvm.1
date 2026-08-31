@@ -1,40 +1,60 @@
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED334403EA1;
-	Mon, 31 Aug 2026 12:36:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDEB3D412B;
+	Mon, 31 Aug 2026 12:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788179784; cv=none; b=Mz//7SNbMGC9AAbUrxFwUJ1vn7noq+/SE+JbLoK46XrCu9K6CsW0kuaK44RneHBs5D6GCrAGZDKdn1R6Z6jdNQY7Vcw2bA/5icB2vxZ26d9qmietoDLDjrBCiHefhULrUxOpDLN3IWzUybs3q4mHzaqiEWcrGgqbxR43+CLo+uU=
+	t=1788179932; cv=none; b=gfVZc6BrWHsPtBVGoHHH+YJVoQZpW8Vzu6mMdxqatC8snvNCc0NBOkPibUck0pKS+NzeG7t2E6mpYDrHPPRFTHnom/djozR3Ce+zsY2UIYpRq0TRvagoTsYg8c6jRkRx/U0+cmmIYnepXXLvk6d1uA1499x0i/3drWCrhjnrhlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788179784; c=relaxed/simple;
-	bh=X6bfww/+pJM0twYq+d/J9pw6pRny5ywgSjA7kevobzM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=AqL4Oddr65oD4d6VKicLwwODklFJBr9gUc26uMjBzvEshcdLvorTGKcqW6gXlgU1qg7yaWsRb2DGXO0Ee2Jr21Jv1B9Qpx/JFUKns2oGeRbAqWLx2fA/Z+48Sp1UjRFInDGGPjMLc/iih6ldY+nToPdRw8Am68j9zTN07HfUCqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=gr1ay0Q+; arc=none smtp.client-ip=113.46.200.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1788179932; c=relaxed/simple;
+	bh=0hgLm5DHq1vq36c5PXnjohJW19MNVXBX09vpqiKOjEw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eFR2I0/lckLqo3z4MAD3DR8JD8Endp6+u2BCQrpohBD/Hz4I7yssRTwbHShTGANgqc/CjZ24I+TZ+xA/HC9F4jejNujXOxnX37eC3Ufi+3n2S9aOTTJLF1ARKLyIJoGVjXNQgv+fn9b2NqvzFNwGJ2xSFec7Fgk8D6U0AaFQdCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HjHxTfg1; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="gr1ay0Q+"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=dOqlEtvgzGQZuGQxKlLpMGwA1XPefAqU1vuJIwaKDeU=;
-	b=gr1ay0Q+7DCL1Cb35qVV/FeGumopwlrLgebu4AZuBaHZoGJRLF8o0j86Jl0+z+HcgvXZ6wEQq
-	gMN7SDbLBYhBvK5+nQ3+nOqJDNYouN8kD84oTQkMSrmO1jeKTtvvBQjSTJaCX+KeFCDzP9iklfO
-	gP+PyI2em/h/TGeA2/kVVgo=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hYSqV3WGTz12LFw;
-	Mon, 31 Aug 2026 20:24:54 +0800 (CST)
-Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
-	by mail.maildlp.com (Postfix) with ESMTPS id D752440537;
-	Mon, 31 Aug 2026 20:36:11 +0800 (CST)
-Received: from [10.67.120.103] (10.67.120.103) by
- kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 31 Aug 2026 20:36:10 +0800
-Message-ID: <ad48e628-d036-440e-955d-856c2539e568@huawei.com>
-Date: Mon, 31 Aug 2026 20:36:10 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HjHxTfg1"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67VBVed72088347;
+	Mon, 31 Aug 2026 12:38:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=8gzkJJ
+	4zvaruZfp8DKnUZXzCVf3gQ5FSUz4NrgBFc7k=; b=HjHxTfg1VX6Kw1jdMzLb+1
+	Lb+uAR4OHec6S4jhJ+bd5yyUPCEMhT0QaG+/PD7Kx7Ncccwct+oJDUKlnnaF6t1A
+	gxANEswzCO1ia2OCf7+hO6RMdC3MRuu6f/WPkx0TmcblE4Fu3eucjN9tfz3vzjbW
+	YGgCDU8RkIN+PWiLn7BJEUYYiT104dHhtTXuVgmJR4v2SvoqJ/gLTZ+UULNMFKgr
+	VbcHoJlyujzXu5BoO+qT1M9RbTlnD2EzoJN5BTisk+tYBJ1Z242MR3MCyAq6Aj6P
+	OcTR2DnpUF39cq511ctfYQkjl6K6T36sY9Auq1qAhxxYtEqNPYgfaxjCbIBJYPYg
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbpx598vt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 31 Aug 2026 12:38:48 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67VCQFcQ015577;
+	Mon, 31 Aug 2026 12:38:47 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gccexwm8n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 31 Aug 2026 12:38:47 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67VCckWx26280672
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 31 Aug 2026 12:38:47 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E026258056;
+	Mon, 31 Aug 2026 12:38:46 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 44D7A58052;
+	Mon, 31 Aug 2026 12:38:46 +0000 (GMT)
+Received: from [9.61.29.117] (unknown [9.61.29.117])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 31 Aug 2026 12:38:46 +0000 (GMT)
+Message-ID: <8b10d2d5-1039-4165-9e55-9ae09ea4e2ba@linux.ibm.com>
+Date: Mon, 31 Aug 2026 08:38:45 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -42,314 +62,199 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/6] KVM: arm64: Add auto DBM support for hardware
- dirty tracking
-To: Leonardo Bras <leo.bras@arm.com>
-CC: Oliver Upton <oupton@kernel.org>, <maz@kernel.org>,
-	<catalin.marinas@arm.com>, <will@kernel.org>, <yuzenghui@huawei.com>,
-	<wangzhou1@hisilicon.com>, <yangjinqian1@huawei.com>,
-	<caijian11@h-partners.com>, <liuyonglong@huawei.com>, <yezhenyu2@huawei.com>,
-	<yubihong@huawei.com>, <linuxarm@huawei.com>, <joey.gouly@arm.com>,
-	<kvmarm@lists.linux.dev>, <kvm@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<seiden@linux.ibm.com>, <suzuki.poulose@arm.com>
-References: <amoZY8uGLf1PEpjK@LeoBrasDK>
- <8e36e2c8-587f-4228-ab13-d6783927a281@huawei.com>
- <45d76d0d-48e9-46a6-b1f9-691f840eba46@huawei.com>
- <anBrvILpcSFhW7Wg@LeoBrasDK>
- <95f1ebd4-be04-4684-be68-388f752a1379@huawei.com>
- <anDCno9HdVI5UAls@LeoBrasDK>
- <2070002d-94aa-4a5b-8df1-e8e0f0fd265c@huawei.com>
- <anHIa5PDnF7r9EA4@LeoBrasDK>
- <3808f469-5403-4f2e-85f0-8c6ca13068bd@huawei.com>
- <anmvnclRTPS6an8e@LeoBrasDK> <aoh1vw0ZdWJf6T4q@LeoBrasDK>
-From: Tian Zheng <zhengtian10@huawei.com>
-In-Reply-To: <aoh1vw0ZdWJf6T4q@LeoBrasDK>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemr100010.china.huawei.com (7.202.195.125)
+Subject: Re: [PATCH v4 3/4] s390/vfio-ap: Fix unbounded loop in
+ apq_reset_check()
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>, kvm@vger.kernel.org,
+        Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+        Jason Herne <jjherne@linux.ibm.com>,
+        Matthew Rosato
+ <mjrosato@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>
+References: <20260828214653.1087009-1-akrowiak@linux.ibm.com>
+ <20260828214653.1087009-4-akrowiak@linux.ibm.com>
+ <20260828220201.595A81F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20260828220201.595A81F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=PPc/P/qC c=1 sm=1 tr=0 ts=6a9575d8 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=BQq3glUuSdYeObrb-csA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: pO9kvgHlZm3yYpJWGD5EmQElmtNrADqM
+X-Proofpoint-ORIG-GUID: pO9kvgHlZm3yYpJWGD5EmQElmtNrADqM
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDEwOCBTYWx0ZWRfX15MwphLewJlT
+ /2rT9s9WIWMdR1hJKoCeKZOyX7ruNTT+GT/1MkC4HL6n4WTugtnoOeuc1aqGW0I/BPlw7MKYmcj
+ 1FpPtrN72nD5mqjktkQjjBipw9xYpOI=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDEwOCBTYWx0ZWRfX5LZXdSFSNlm0
+ LrP2zWVZOvWaXicyR7sX89dU6QIN6Uldgu6BNe4KBUbmNP6at3MS5e9TOkgMgN1Y/HW/enlQwP8
+ na5jg+yMOXfMG3pKtKWmBfnq9EtT147Hwmz4dBjyXZhiLsRXe5ZcgKZMUSRw7PwhrnXszzPmCvE
+ XN3vvhyaE4T4eM8AgFU8SGJju8zeyWdEaw24bFPB90O6WCGfIWfYcy4/cVoi7lfFxYQ02AE6gDI
+ ERPqHWW+PLbkLEOHys5qvavjM3taWJXcxadoCCaaSWYiUtoXyUiwCoI/MuToHkqWWlnJ3qmAsWz
+ yKgx1or0Ss5db6USYwS12+XRkie9pPYGrSK0UOx3hmFLI7aNKPJJNA+R/dLjjp01ySweQbfMqgH
+ UbNZgPPH/W0zT2uey8BmBseucri4TJgG8p6g3yHPg4WLNkZEuXtoIwtBLtj0vSGb/XgNO0glMtG
+ Dj05MxFvXsv3fLEq8Kg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-31_04,2026-08-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 phishscore=0 adultscore=0 suspectscore=0 bulkscore=0
+ spamscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608310108
 
 
 
-On 8/21/2026 11:58 PM, Leonardo Bras wrote:
-> On Mon, Aug 10, 2026 at 12:01:49PM +0100, Leonardo Bras wrote:
-> [> On Wed, Aug 05, 2026 at 11:41:51AM +0800, Tian Zheng wrote:
->>>
->>>
->>> On 8/4/2026 7:10 PM, Leonardo Bras wrote:
->>>> On Tue, Aug 04, 2026 at 12:54:16PM +0800, Tian Zheng wrote:
->>>>>
->>>>>
->>>>> On 8/4/2026 12:32 AM, Leonardo Bras wrote:
->>>>>> On Mon, Aug 03, 2026 at 09:57:46PM +0800, Tian Zheng wrote:
->>>>>>>
->>>>>>>
->>>>>>> On 8/3/2026 6:21 PM, Leonardo Bras wrote:
->>>>>>>> On Mon, Aug 03, 2026 at 12:04:24PM +0800, Tian Zheng wrote:
->>>>>>>>>
->>>>>>>>>
->>>>>>>>> On 8/3/2026 9:33 AM, Tian Zheng wrote:
->>>>>>>>>>>>>>>> 09, 2026 at 06:40:23PM +0800, Tian Zheng wrote:
->>>>>>>>>>>>>>>>> -    if (prot & KVM_PGTABLE_PROT_W)
->>>>>>>>>>>>>>>>> +    if (prot & KVM_PGTABLE_PROT_W) {
->>>>>>>>>>>>>>>>>                 set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
->>>>>>>>>>>>>>>>>
->>>>>>>>>>>>>>>>> +        /*
->>>>>>>>>>>>>>>>> +         * No DEVICE filter needed here:
->>>>>>>>>>>>>>>>> relax_perms is only called
->>>>>>>>>>>>>>>>> +         * on FSC_PERM faults. Device pages
->>>>>>>>>>>>>>>>> always get full RW from
->>>>>>>>>>>>>>>>> +         * initial mapping and are never write-protected during
->>>>>>>>>>>>>>>>> +         * migration, so they never trigger a permission fault.
->>>>>>>>>>>>>>>>> +         */
->>>>>>>>>>>>>>>>> +        if (pgt->flags & KVM_PGTABLE_S2_DBM)
->>>>>>>>>>>>>>>>> +            set |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
->>>>>>>>>>>>>>>>> +    } else {
->>>>>>>>>>>>>>>>> +        /*
->>>>>>>>>>>>>>>>> +         * Clear DBM on W→RO downgrade to prevent hardware from
->>>>>>>>>>>>>>>>> +         * silently upgrading RO+DBM back to W+dirty, which would
->>>>>>>>>>>>>>>>> +         * bypass KVM's write tracking and cause data corruption.
->>>>>>>>>>>>>>>>> +         */
->>>>>>>>>>>>>>>>> +        clr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
->>>>>>>>>>>>>>>>> +    }
->>>>>>>>>>>>>>>>> +
->>>>>>>>>>>>>>>> This block makes it pretty evident that the DBM bit really *is* the
->>>>>>>>>>>>>>>> write permission bit. I'd much rather we
->>>>>>>>>>>>>>>> introduce the concept of dirty
->>>>>>>>>>>>>>>> state to the page table library and migrate the abstract write
->>>>>>>>>>>>>>>> permission to the DBM field, even if we don't have FEAT_HAFDBS.
->>>>>>>>>>>>>>>>
->>>>>>>>>>>>>>
->>>>>>>>>>>>>> Ohh, that's an amazing idea!
->>>>>>>>>>>>>
->>>>>>>>>>>>> Thinking about that again...
->>>>>>>>>>>>> If we adopt the encoding with DBM being the write-permission
->>>>>>>>>>>>> bit, and all
->>>>>>>>>>>>> PTEs have it since the start, how can we have lazy-splitting happening?
->>>>>>>>>>>>>
->>>>>>>>>>>>> Only way I think of is removing both DBM and S2_S2AP_W bit
->>>>>>>>>>>>> from writable
->>>>>>>>>>>>> PTEs during dirty-track enable, and re-adding them during
->>>>>>>>>>>>> the first write
->>>>>>>>>>>>> fault. If we don't remove the DBM bit, systems with HDBSS
->>>>>>>>>>>>> would just dirty
->>>>>>>>>>>>> it by hardware, without causing a fault.
->>>>>>>>>>>>>
->>>>>>>>>>>>> DBM=0 would need to happen only in the first write-protect (only on
->>>>>>>>>>>>> lazy-splitting). All other write-protecting would just clean
->>>>>>>>>>>>> the S2_S2AP_W
->>>>>>>>>>>>> bit, as everything is already split.
->>>>>>>>>>>>>
->>>>>>>>>>>>> Is that what was intended?
->>>>>>>>>>>>>
->>>>>>>>>>>>> Thanks!
->>>>>>>>>>>>> Leo
->>>>>>>>>>>>>
->>>>>>>>>>>> Hi Leo,
->>>>>>>>>>>>
->>>>>>>>>>>> I think the cleanest way to handle this is to simply avoid setting DBM
->>>>>>>>>>>> on block mappings. If we only set DBM on page-level PTEs, then block
->>>>>>>>>>>> mappings will naturally stay DBM=0 and trigger a write fault on first
->>>>>>>>>>>> access — exactly what we need for lazy splitting.
->>>>>>>>>>>>
->>>>>>>>>>>> When the fault occurs, the block gets split into page-level PTEs, and at
->>>>>>>>>>>> that point we can set DBM=1 on the resulting leaf entries. This way:
->>>>>>>>>>>>
->>>>>>>>>>>> 1. Lazy split works naturally (fault -> split -> set DBM=1)
->>>>>>>>>>>>
->>>>>>>>>>>> 2. No need to clear DBM globally at dirty-track enable
->>>>>>>>>>>>
->>>>>>>>>>>> 3. No special handling for block mappings
->>>>>>>>>>>>
->>>>>>>>>>>> So I think global DBM is still viable — we just need to filter out block
->>>>>>>>>>>> mappings when setting the DBM bit. That way the lazy split path
->>>>>>>>>>>> is preserved
->>>>>>>>>>>> without extra complexity.
->>>>>>>>>>>
->>>>>>>>>>> Hi Tian,
->>>>>>>>>>>
->>>>>>>>>>> Humm, but would not that be contrary to what Oliver suggested:
->>>>>>>>>>> changing the
->>>>>>>>>>> encoding from the PTE for all entries?
->>>>>>>>>>>
->>>>>>>>>>> (Like, if the PTE is writable, it has to have DBM set)
->>>>>>>>>>>
->>>>>>>>>>> IIUC what you said, on first faulting of the page in the VM:
->>>>>>>>>>> - If the entry is a page (level-3 leaf) and writable, add DBM
->>>>>>>>>>> - If it's a block entry (leaf but not a level-3), don't add DBM
->>>>>>>>>>>
->>>>>>>>>>> So after we enable dirty-logging:
->>>>>>>>>>> - a level-3 entry would not fault, using HDBSS, and
->>>>>>>>>>> - a block entry would fault, do the splitting, and add DBM to level-3
->>>>>>>>>>>        entries during the split.
->>>>>>>>>>>
->>>>>>>>>>> If I got that correct, that would be clean indeed.
->>>>>>>>>>>
->>>>>>>>>>> But then we would have a different encoding for block entries and page
->>>>>>>>>>> entries. In page entries, DBM could be used to say if the page is
->>>>>>>>>>> writable,
->>>>>>>>>>> but on block entries one would have to look at the 'dirty-bit'.
->>>>>>>>>>>
->>>>>>>>>>> Would that be ok?
->>>>>>>>>>>
->>>>>>>>>>> Thanks!
->>>>>>>>>>> Leo
->>>>>>>>>>>
->>>>>>>>>> Hi Leo,
->>>>>>>>>>
->>>>>>>>>> My initial concern was that clearing all DBM bits at the start of
->>>>>>>>>> migration would be too expensive, so I thought distinguishing between
->>>>>>>>>> level-3 entries and block entries would be better.
->>>>>>>>>>
->>>>>>>>
->>>>>>>> I think we expect it to be expensive, but since we already clean the
->>>>>>>> dirty-bit (ro/rw) bit, we can have both happening in the same write :)
->>>>>>>>
->>>>>>>> (since we only mark the DBM bit when we fault the memory on lazy-splitting,
->>>>>>>> we are expecting to have the same amount of writes to pagetable as we have
->>>>>>>> before HDBSS, both on faulting and 1st iteration cleaning)
->>>>>>>>
->>>>>>> Hi, Leo
->>>>>>>
->>>>>>> Actually, I have thought about this approach too, but if we clear DBM in
->>>>>>> kvm_pgtable_stage2_wrprotect(), then during the first round of
->>>>>>> migration, we will fault and release RO -> W, and then add DBM.
->>>>>>
->>>>>> Yeah, that's only for lazy-splitting, though.
->>>>>>
->>>>>>>
->>>>>>> But next time, when we migrate the dirty pages in round two, we will run
->>>>>>> kvm_pgtable_stage2_wrprotect() again, which will clear DBM again. And
->>>>>>> finally, HDBSS will be useless during migration.
->>>>>>
->>>>>> Right, on lazy splitting, we have to clean the DBM bit on the
->>>>>> write-protect only if it's a block entry (hugepage).
->>>>>>
->>>>>> Once it faults for the first time, it will lazy-split, and we don't need to
->>>>>> clean the DBM bit.
->>>>>>
->>>>>>>
->>>>>>>>
->>>>>>>>>> However, I ran a quick test on a 400GB VM (4 vCPUs), and the overhead
->>>>>>>>>> turned out to be around 30ns — which I think is acceptable.
->>>>>>>>>
->>>>>>>>> Just a quick correction — I misstated the unit in my previous email. The
->>>>>>>>> overhead for clearing DBM on the 400GB VM (4 vCPUs) was around 32 µs, not 30
->>>>>>>>> ns.
->>>>>>>>>
->>>>>>>>
->>>>>>>> Oh, that seems more likely :)
->>>>>>>>
->>>>>>>> Question: is tha above amount of memory initially in Level-1 blocks,
->>>>>>>> level-2 blocks or level-3 pages? (aka: were you using explicit/transparent
->>>>>>>> hugepages?)
->>>>>>>>
->>>>>>>
->>>>>>> I'm using transparent hugepages. However, if we were to use level-3 stage-2
->>>>>>> pages with -mem-prealloc enabled in QEMU, I believe the time cost would be
->>>>>>> extremely high — potentially out of our control.
->>>>>>>
->>>>>>
->>>>>> Yeah, that's the issue.
->>>>>> For this not to explode like this, we need to mark as RO only when the
->>>>>> entries are blocks AND we are doing lazy splitting.
->>>>>>
->>>>>> We have:
->>>>>> Mode	DBM	Dirty bit
->>>>>> RO	0	X
->>>>>> WC	1	0
->>>>>> WD	1	1
->>>>>>
->>>>>> On write-protect:
->>>>>> - Lazy splitting + block entry (hugepage, level 2-) -> RO
->>>>>> - Otherwise					    -> WC
->>>>>>
->>>>>> On first fault, the block entry will be lazy-splitten, and we can set DBM=1
->>>>>> in every new page.
->>>>>>
->>>>>> That way we guarantee that we are not faulting level-3 pages unecessarily,
->>>>>> nor need to go through the whole tree setting DBM=1 or DBM=0 on level-3
->>>>>> pages.
->>>>>>
->>>>>> How does that sound?
->>>>>>
->>>>>> Thanks!
->>>>>> Leo
->>>>>>
->>>>
->>>>>
->>>>> Hi Leo,
->>>>>
->>>>> I've also been thinking about this approach: clear
->>>>> KVM_PTE_LEAF_ATTR_HI_S2_DBM when kvm_pgtable_stage2_wrprotect() calls
->>>>> stage2_update_leaf_attrs(). And we can check whether a page is a block
->>>>> page during the page walk, right?
->>>>
->>>> Hi Tian,
->>>> That was what I was thinking :)
->>>>
->>>>>
->>>>> So we can check the page level in the walker callback
->>>>> stage2_attr_walker(), filter there, clear DBM for block pages and
->>>>> preserve DBM on level-3 pages. Something like this:
->>>>>
->>>>> ```
->>>>> pte &= ~data->attr_clr;      // wrprotect: clears S2AP_W only
->>>>> pte |= data->attr_set;
->>>>> if (ctx->level < KVM_PGTABLE_LAST_LEVEL)
->>>>
->>>> Only on lazy splitting, right?
->>>>
->>>> Or maybe we get the DBM bit on during eager splitting...
->>>
->>> Hi, Leo
->>>
->>> No, it works for both. Whether eager or lazy split, wrprotect always runs
->>> before split, so the block DBM is cleared first.
->>
->> Hi Tian,
->>
->> On eager splitting, why should we ever strip DBM?
->>
->> Eager splitting means we won't have to fault to do the splitting, so we can
->> have HAFDBS/HDBSS handle every fault, including the first one that we use
->> for lazy-splitting.
->>
->>>
->>> For eager split: wrprotect clears W (W=1->W=0) and strips DBM from the
->>> block. Then the block is split into level-3 pages, but since W=0 and DBM
->>> depends on W, DBM stays 0. DBM is only set back to 1 during the first write
->>> fault (relax_perms: W=0->W=1, which also sets DBM=1).
->>
->> I suggest that, on splitting, set all writable level-3 pages with DBM=1.
->> If lazy-splitting, that will happen naturally on the first fault's split.
->> If eager-splitting that will happen during the split as well.
->>
->> So total solution looks like:
->> - Dirty-logging on, walk the memslot pagetable
->>    - On block: mark as read-only
->>    - On page: mark as writable-clean
->> - On splitting: Mark writable block's new pages as writable-clean
->> - On fault: after the split, mark the faulting page as writable-dirty
->>
->> This should take care of everything, including lazy/eager splitting
->> differences, as well as set the groundwork for HDBSS to work properly.
->>
->> What do you think?
->>
-> 
-> I implemented that down, and will send it soon.
-> Seeing the code will make it easier to understand the idea :)
-> 
-> Thanks!
-> Leo
-> 
+On 8/28/26 6:02 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> - [Critical] The timeout path incorrectly treats an idle queue state as a completed reset, bypassing the necessary zeroize command and causing Use-After-Free.
+> - [High] The reset operation silently reports success to callers when the reset times out, masking the failure and misleading userspace.
+> - [Medium] The `elapsed` timer is not reset when a new reset command is issued, causing subsequent resets to prematurely time out.
+> --
+>
+> commit 3ef072206a03ac06e2b0604371727e31f5cba1a8
+> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+>
+> s390/vfio-ap: Fix unbounded loop in apq_reset_check()
+>
+> This commit introduces a 2000ms timeout for queue reset operations in
+> apq_reset_check() to prevent indefinite blocking in the worker thread.
+> Upon timeout, it skips freeing AQIC resources to avoid a use-after-free,
+> leaking them instead.
+>
+> Fixes: dd174833e44e ("s390/vfio-ap: remove upper limit on wait for queue reset to complete")
+> Cc: stable@vger.kernel.org
+>
+> The commit message states:
+>
+>>     Note that on timeout, q->reset_status will hold the status from the most
+>>     recent reset operation so that callers inspecting
+>>     q->reset_status.response_code after flush_work() will see the value
+>>     and can return an appropriate return code.
+> Is this description accurate?
 
-Hi Leo,
+Yes
 
-v5 already implements this, and I'm about to send it out shortly.
+>
+>> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+>> index 363d9e53e2490..3f5b012be450c 100644
+>> --- a/drivers/s390/crypto/vfio_ap_ops.c
+>> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+>> @@ -2067,6 +2068,37 @@ static void apq_reset_check(struct work_struct *reset_work)
+>>   		ret = apq_status_check(q->apqn, &status);
+>>   		if (ret == -EIO)
+>>   			return;
+>> +		if (elapsed >= AP_RESET_MAX_WAIT) {
+>> +			/*
+>> +			 * If the status check determined that the reset completed
+>> +			 * successfully or the queue is not operational, clean up
+>> +			 * the AQIC resources because queue reset disables
+>> +			 * interrupts, or because interrupts are not possible on a
+>> +			 * non-operational queue.
+>> +			 */
+>> +			if (!ret)
+>> +				goto done;
+> [Severity: Critical]
+> Does this incorrectly treat an idle queue as a successfully reset queue?
+>
+> If the queue is continuously busy for 2000ms, the initial ap_zapq() command
+> is rejected (returning AP_RESPONSE_BUSY). On the exact iteration where
+> elapsed reaches AP_RESET_MAX_WAIT (2000ms), if the queue finally stops being
+> busy, ap_tapq() returns 0.
+>
+> Could this misinterpret the 0 as a completed reset, jump to done, and free
+> the AQIC resources? Since the queue was never actually zeroized, interrupts
+> remain enabled. Can this lead to a host kernel use-after-free if the hardware
+> writes to the freed NIB page?
 
-Thanks,
-Tian
+After further review of the architecture, it can't be assumed that 
+AP_RESPONSE_VALID
+indicates the zeroize is complete because the initial response code only 
+indicates
+that the ZAPQ was successfully initiated, but the zeroizing of the queue 
+is being
+done asynchronously. To verify it has completed, the following bits in 
+the status
+returned from TAPQ must be checked:
+
+queue_empty == 1
+replies_waiting == 0
+irq_enabled == 0
+async == 0
+
+This will be fixed in v5
+
+>
+>> +			/*
+>> +			 * Timed out without being able to verify reset completed.
+>> +			 *
+>> +			 * The AQIC resources associated with this queue - the pinned page
+>> +			 * containing the NIB and the registered guest ISC - cannot be freed
+>> +			 * here. The NIB is the active DMA target for AP interrupt delivery
+>> +			 * until the reset completes; freeing the pinned page while the
+>> +			 * hardware may still write to it would result in a use-after-free
+>> +			 * kernel crash.
+>> +			 *
+>> +			 * If the reset eventually completes, interrupts will be terminated
+>> +			 * and the pinned NIB page and ISC registration will be leaked. This
+>> +			 * is preferable to either a use-after-free or waiting indefinitely:
+>> +			 * the caller of apq_reset_check() holds mdevs_lock while flush_work()
+>> +			 * blocks holds the matrix_dev->mdevs_lock mutex, which
+>> +			 * serializes access to all mdev objects system-wide, so blocking
+>> +			 * here would stall all other guests using AP queues.
+>> +			 */
+>> +
+>> +			return;
+> [Severity: High]
+> Does this return early on timeout without updating q->reset_status to indicate
+> a failure?
+>
+> If the queue reset times out and q->reset_status.response_code was 0 from the
+> initial accepted command, it remains unmodified.
+>
+> Would callers like vfio_ap_mdev_reset_queues() check this unmodified response
+> code, incorrectly assume the reset succeeded, and mislead userspace into
+> believing the VFIO device was successfully reset while the hardware is still
+> operational?
+
+See previous response
+
+>
+> [ ... ]
+>
+>> @@ -2083,11 +2115,13 @@ static void apq_reset_check(struct work_struct *reset_work)
+>>   				memcpy(&q->reset_status, &status, sizeof(status));
+>>   				continue;
+> [Severity: Medium]
+> Is the elapsed timer supposed to be reset when a new reset command is issued
+> here?
+>
+> If the queue is initially busy, takes time (e.g., 1980ms) to become idle, and
+> requires a retry of the ap_zapq() command, the next loop iteration will
+> instantly hit the 2000ms limit because elapsed was not cleared.
+>
+> Could this prematurely time out subsequent legitimate reset operations and
+> result in resource leaks?
+
+This makes sense and will be changed for v5.
+
+>
+>>   			}
+>> -			if (q->saved_isc != VFIO_AP_ISC_INVALID)
+>> -				vfio_ap_free_aqic_resources(q);
+>> -			break;
+>> +			goto done;
+>>   		}
+>>   	}
+>> +
+>> +done:
+>> +	if (q->saved_isc != VFIO_AP_ISC_INVALID)
+>> +		vfio_ap_free_aqic_resources(q);
+>>   }
 
