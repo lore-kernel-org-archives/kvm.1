@@ -1,264 +1,111 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3909423EAB4;
-	Mon, 31 Aug 2026 01:05:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10883279DB6;
+	Mon, 31 Aug 2026 01:25:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788138343; cv=none; b=TQRP+quJzwMW2YjhxAusE4vkDw81r8KsDncQXAL5dVho/Gkxp+q65G7caT5GclwsoJbsm8Grpnz/b1JjtBm5RkziChov35SiwtvBpdlB6/1QWzgaTqq9mjxjWR/DNirpfzhE9CC+M/md/qhas6I0GYBK1jauLW0bM3JbxtyjH/o=
+	t=1788139542; cv=none; b=ge4y5hQbLIkUwGPVhlxCnkmlBHhjYSWz4THomET1Sq9CUgq2owMsy0VIXBFiaKAoJag8/Ti9iqJc1gn4l1V/yjWF00zBFDJlG/geEUYOMrm9myAAwS5XqLFtlfL8w85XdMO5nGI9ANcZVScIZnYJmoXtMeHDkHUxF/t81MZ711I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788138343; c=relaxed/simple;
-	bh=vqPXRdN6OMRNgYyh2KotWMQrAzHg7YAtPwA3HORXZVo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qvN1O0MXnFwSLcpQaLUrs6UkbGG8pVWWup3EWVitniXj5U2xGq1IBzGE0zgA5nJO9HR0SpRfIohNK3V8W+DNkOLCa5AaPgTYj6qYW+mclwPiNia/psMxpgptUqRWLO+qmCA32QZyrf027uWJ3OHsk/C2h4fooYDgTWbZZnyoWz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dqOdJCUr; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dqOdJCUr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788138341; x=1819674341;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=vqPXRdN6OMRNgYyh2KotWMQrAzHg7YAtPwA3HORXZVo=;
-  b=dqOdJCUrfOudz/VEH2M+0pnPZYC2cyM2zSilZCc2I4QiYc57+MxZHSJ3
-   c77kDE9b+/4g6oeaT0VW2T92de5/blanO8Xm94beL4T+JOD6xnT9lREE0
-   FmoT5InC3fV54K6+PuXIjE3T3WJnOlVsH3zIA89wRjgu/ndF7LJv/cJSW
-   UOPStXyMSIEL7s5OO3WW92SPd/qbDPU2rMQVW84c2sEmx68M1p5GQBWh3
-   V8fQk95t9IxuufX1dDV+p8XXS1mxscTyox03REW6Tlf2W4Bj10JWsyWeq
-   3La7q336efMMTAm9S2Sj18yRWcoQdxGLEL1h1eNOPn0Cn+9Lok860rmiz
-   A==;
-X-CSE-ConnectionGUID: PMvB1sCHQY6Wa4GiooNB2g==
-X-CSE-MsgGUID: RKeA0hm0R82/IuL3Url/6g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="88591230"
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="88591230"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2026 18:05:40 -0700
-X-CSE-ConnectionGUID: okL4t64kQgWHxIhcTP4Zdg==
-X-CSE-MsgGUID: HkP4I0ymR+y/Ca5IygRpVg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="270586017"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.239]) ([10.124.241.239])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2026 18:05:36 -0700
-Message-ID: <b0c0fa9e-3f33-4f15-93e5-985ec8d7f87d@linux.intel.com>
-Date: Mon, 31 Aug 2026 09:05:34 +0800
+	s=arc-20240116; t=1788139542; c=relaxed/simple;
+	bh=XaqnCwdhgDmYD/S2No8eMMChvlbE82HANc0N3Le4skM=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=j0GB8+x3yefnvUw1Rp/4iL//ILKL7efInqe8SFhC9sJnsbrA6losZ//zwCqJ4qPo98HQLX2AC2bSdUeZOXvlHXzzqepsTmxFgZ/JRqVlKRDA4nr9iGbZ6yEsdZ9Ppg/i5C3E6KKyAbmxhMOvhyNMp/p/8vNrgD52hgT2bjbePGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8CxvtIM2JRqZLoGAA--.18948S3;
+	Mon, 31 Aug 2026 09:25:32 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJAxX88K2JRq8+4XAA--.50431S2;
+	Mon, 31 Aug 2026 09:25:30 +0800 (CST)
+Subject: Re: [PATCH] LoongArch: KVM: Validate MSI data before routing it to
+ EIOINTC
+To: Zeng Chi <zeng_chi911@163.com>, zhaotianrui@loongson.cn,
+ chenhuacai@kernel.org
+Cc: yury.norov@gmail.com, kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, zengchi@kylinos.cn, stable@vger.kernel.org,
+ Sashiko <sashiko-bot@kernel.org>
+References: <20260828093604.56622-1-zeng_chi911@163.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <4acbeb32-ea18-19c6-5231-636604ab7e86@loongson.cn>
+Date: Mon, 31 Aug 2026 09:25:15 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/23] perf/x86: Apply PMU partition mask on static
- constraints
-To: "Chen, Zide" <zide.chen@intel.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>
-Cc: kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Jim Mattson <jmattson@google.com>, Stephane Eranian <eranian@google.com>,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Xudong Hao <xudong.hao@intel.com>
-References: <20260821222002.54907-1-zide.chen@intel.com>
- <20260821222002.54907-8-zide.chen@intel.com>
- <09251cc4-c795-411c-a9d9-9133a0d73e03@linux.intel.com>
- <efb6f286-97da-4d5f-955b-29310d99d478@intel.com>
+In-Reply-To: <20260828093604.56622-1-zeng_chi911@163.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <efb6f286-97da-4d5f-955b-29310d99d478@intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJAxX88K2JRq8+4XAA--.50431S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7tr1UJr1rGrWfGFW7Aw4rXrc_yoW8Zr1fpF
+	W5uw4DtF1rGr17JrWkW34Ut3y5Aa1fXFsagF1a9a45Crn0yF15CF18ZFsrW3Z0k3y5Kr40
+	qFnIga4Yva4UJacCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWU
+	AwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jepB-UUUUU=
 
 
-On 8/28/2026 7:01 AM, Chen, Zide wrote:
->
-> On 8/26/2026 3:12 AM, Mi, Dapeng wrote:
->> It seems not a good practice for me to modify all the places calling these
->> static constraints. We could have to add new get_event_constraints()
->> helpers for future platforms, and we have to duplicate these
->> part_constraint() code.
->> Could we leverage the dynamic constraint mechanism?  We can set the
->> event->hw.dyn_constraint to be host counters mask, then we don't need any
->> specific change for these static constraints.
-> In all code paths that use these static constraints, for example,
-> counter0_constraint, it is assumed that GP counter 0 is available on the
-> host. However, with PMU partitioning, any counter may be unavailable,
-> even in the model-specific code path, and this assumption is broken.
->
-> So, adding a wrapper seems unavoidable.
->
-> Additionally, part_constraint() already makes use of dyn_constraint, right?
 
-Could we add a wrapper helper like below?
+On 2026/8/28 下午5:36, Zeng Chi wrote:
+> From: Zeng Chi <zengchi@kylinos.cn>
+> 
+> pch_msi_set_irq() passes e->msi.data straight into eiointc_set_irq() as
+> the irq number.  The MSI data comes from userspace, either via a
+> KVM_IRQ_ROUTING_MSI entry set with KVM_SET_GSI_ROUTING (used by irqfd
+> and KVM_IRQ_LINE) or directly via KVM_SIGNAL_MSI, and is never checked
+> against EIOINTC_IRQS.
+> 
+> eiointc_set_irq() uses the value with __set_bit()/__clear_bit() on the
+> 256-bit isr bitmap, eiointc_update_irq() then indexes sw_coremap[] and
+> the per-cpu coreisr/sw_coreisr bitmaps with it.  A data value >= 256
+> therefore reads and writes memory past the end of those arrays, i.e.
+> any process holding a VM fd can corrupt kernel memory beyond the
+> loongarch_eiointc allocation.
+> 
+> Reject MSI data that doesn't fit in the EIOINTC irq space.  The DMSINTC
+> path is unaffected as it decodes the vector from the address and masks
+> it.
+> 
+> Fixes: 1928254c5ccb ("LoongArch: KVM: Add irqfd support")
+> Cc: stable@vger.kernel.org
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/all/20260531140921.1B1181F00893@smtp.kernel.org/
+> Signed-off-by: Zeng Chi <zengchi@kylinos.cn>
+> ---
+>   arch/loongarch/kvm/intc/pch_pic.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
+> index e7b77705c516..81fb534ce8dd 100644
+> --- a/arch/loongarch/kvm/intc/pch_pic.c
+> +++ b/arch/loongarch/kvm/intc/pch_pic.c
+> @@ -78,6 +78,9 @@ int pch_msi_set_irq(struct kvm *kvm, struct kvm_kernel_irq_routing_entry *e, int
+>   		return dmsintc_set_irq(kvm, msg_addr, e->msi.data, level);
+>   	}
+>   
+> +	if (e->msi.data >= EIOINTC_IRQS)
+> +		return -EINVAL;
+> +
+>   	eiointc_set_irq(kvm->arch.eiointc, e->msi.data, level);
+>   
+>   	return 0;
+> 
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index f485f927967a..03b827f59d40 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -1033,6 +1033,17 @@ int perf_assign_events(struct event_constraint
-**constraints, int n,
- }
- EXPORT_SYMBOL_GPL(perf_assign_events);
-
-+static struct event_constraint *
-+x86_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
-+                         struct perf_event *event)
-+{
-+       struct event_constraint *c;
-+
-+       c = static_call(x86_pmu_get_event_constraints)(cpuc, idx, event);
-+
-+       return part_constraint(cpuc, idx, event, c);
-+}
-+
- int x86_schedule_events(struct cpu_hw_events *cpuc, int n, int *assign)
- {
-        struct event_constraint *c;
-@@ -1069,7 +1080,7 @@ int x86_schedule_events(struct cpu_hw_events *cpuc,
-int n, int *assign)
-                 * change due to external factors (sibling state, allow_tfa).
-                 */
-                if (!c || (c->flags & PERF_X86_EVENT_DYNAMIC)) {
--                       c =
-static_call(x86_pmu_get_event_constraints)(cpuc, i, cpuc->event_list[i]);
-+                       c = x86_get_event_constraints(cpuc, i,
-cpuc->event_list[i]);
-                        cpuc->event_constraint[i] = c;
-                }
-
-
->
->> Thanks.
->>
->> On 8/22/2026 6:19 AM, Zide Chen wrote:
->>> Static, counter-specific constraints used for attr.precise_ip == 3, or
->>> other special cases bypass intel_get_event_constraints(), which is
->>> where partition_mask is applied via dyn_constraint().
->>>
->>> As a result, such a host !exclude_guest event can still be scheduled
->>> onto a counter that partition_mask reserves for the guest, causing
->>> host and guest to share the same hardware counter.
->>>
->>> Some of these static constraint paths, e.g. glp or cmt, are currently
->>> only reachable on platforms that don't support PerfMon masking. Still,
->>> apply part_constraint() to all of them uniformly, so future platforms
->>> that combine PerfMon masking with these constraint paths are not
->>> silently exposed to this bug.
->>>
->>> Signed-off-by: Zide Chen <zide.chen@intel.com>
->>> ---
->>>  arch/x86/events/intel/core.c | 39 +++++++++++++++++++++++-------------
->>>  1 file changed, 25 insertions(+), 14 deletions(-)
->>>
->>> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
->>> index 7951accfcf2c..0f76e56fd2db 100644
->>> --- a/arch/x86/events/intel/core.c
->>> +++ b/arch/x86/events/intel/core.c
->>> @@ -4459,6 +4459,9 @@ dyn_constraint(struct cpu_hw_events *cpuc, struct event_constraint *c, int idx)
->>>   * Mask out guest-owned counters from a constraint when PMU partition has been
->>>   * entered, so !exclude_guest host events are not scheduled onto them while
->>>   * the CPU is in non-root mode.
->>> + *
->>> + * This is also used by PMU-specific get_event_constraints() wrappers
->>> + * that hard-code a static, counter-specific constraint.
->>>   */
->>>  static struct event_constraint *
->>>  part_constraint(struct cpu_hw_events *cpuc, int idx,
->>> @@ -5568,7 +5571,7 @@ hsw_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
->>>  	/* Handle special quirk on in_tx_checkpointed only in counter 2 */
->>>  	if (event->hw.config & HSW_IN_TX_CHECKPOINTED) {
->>>  		if (c->idxmsk64 & (1U << 2))
->>> -			return &counter2_constraint;
->>> +			return part_constraint(cpuc, idx, event, &counter2_constraint);
->>>  		return &emptyconstraint;
->>>  	}
->>>  
->>> @@ -5585,7 +5588,7 @@ icl_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
->>>  	 */
->>>  	if ((event->attr.precise_ip == 3) &&
->>>  	    constraint_match(&fixed0_constraint, event->hw.config))
->>> -		return &fixed0_constraint;
->>> +		return part_constraint(cpuc, idx, event, &fixed0_constraint);
->>>  
->>>  	return hsw_get_event_constraints(cpuc, idx, event);
->>>  }
->>> @@ -5607,7 +5610,7 @@ glc_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
->>>  	if ((event->attr.precise_ip == 3) &&
->>>  	    !constraint_match(&fixed0_constraint, event->hw.config)) {
->>>  		if (c->idxmsk64 & BIT_ULL(0))
->>> -			return &counter0_constraint;
->>> +			return part_constraint(cpuc, idx, event, &counter0_constraint);
->>>  
->>>  		return &emptyconstraint;
->>>  	}
->>> @@ -5623,7 +5626,7 @@ glp_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
->>>  
->>>  	/* :ppp means to do reduced skid PEBS which is PMC0 only. */
->>>  	if (event->attr.precise_ip == 3)
->>> -		return &counter0_constraint;
->>> +		return part_constraint(cpuc, idx, event, &counter0_constraint);
->>>  
->>>  	c = intel_get_event_constraints(cpuc, idx, event);
->>>  
->>> @@ -5645,9 +5648,9 @@ tnt_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
->>>  	if (event->attr.precise_ip == 3) {
->>>  		/* Force instruction:ppp on PMC0 and Fixed counter 0 */
->>>  		if (constraint_match(&fixed0_constraint, event->hw.config))
->>> -			return &fixed0_counter0_constraint;
->>> +			return part_constraint(cpuc, idx, event, &fixed0_counter0_constraint);
->>>  
->>> -		return &counter0_constraint;
->>> +		return part_constraint(cpuc, idx, event, &counter0_constraint);
->>>  	}
->>>  
->>>  	return c;
->>> @@ -5705,22 +5708,30 @@ cmt_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
->>>  	if (event->attr.precise_ip == 3) {
->>>  		/* Force instruction:ppp on PMC0, 1 and Fixed counter 0 */
->>>  		if (constraint_match(&fixed0_constraint, event->hw.config)) {
->>> +			c = &fixed0_counter0_1_constraint;
->>> +
->>>  			/* The fixed counter 0 doesn't support LBR event logging. */
->>>  			if (branch_sample_counters(event))
->>> -				return &counter0_1_constraint;
->>> -			else
->>> -				return &fixed0_counter0_1_constraint;
->>> +				c = &counter0_1_constraint;
->>> +
->>> +			return part_constraint(cpuc, idx, event, c);
->>>  		}
->>>  
->>>  		switch (c->idxmsk64 & 0x3ull) {
->>>  		case 0x1:
->>> -			return &counter0_constraint;
->>> +			c = &counter0_constraint;
->>> +			break;
->>>  		case 0x2:
->>> -			return &counter1_constraint;
->>> +			c = &counter1_constraint;
->>> +			break;
->>>  		case 0x3:
->>> -			return &counter0_1_constraint;
->>> +			c = &counter0_1_constraint;
->>> +			break;
->>> +		default:
->>> +			c = &emptyconstraint;
->>> +			break;
->>>  		}
->>> -		return &emptyconstraint;
->>> +		return part_constraint(cpuc, idx, event, c);
->>>  	}
->>>  
->>>  	return c;
->>> @@ -5744,7 +5755,7 @@ rwc_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
->>>  		 */
->>>  		if (event->attr.precise_ip == 3)
->>>  			return &emptyconstraint;
->>> -		return &counters_1_7_constraint;
->>> +		return part_constraint(cpuc, idx, event, &counters_1_7_constraint);
->>>  	}
->>>  
->>>  	return c;
