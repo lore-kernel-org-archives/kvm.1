@@ -1,105 +1,182 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E173D25AD
-	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 09:46:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B1F3DCD85
+	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 09:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788169565; cv=none; b=TyddQ1sFKvQpD4ydy1kcpOeTQnnCVyt3pBw4uWu++a55DkL4ggH/cDjvxSuqgCPHkTzlUHkZmoZJWu5OYe/ixQQQVfvpklbjWznw1JXUVfUPA33mt7JbA9VpW6pl728KiaQS0gi5/W3A+jX9ixi0gqsrb4C2uw3rb/PlJmCQj2o=
+	t=1788169587; cv=none; b=G9Z4e5ae1b5Agw2IkHQkqjrHJoPM/EgqBPZ7CYgeiavz9j3+xdtK1xtDSBUE+Xylxvip80aFpaTkWEim2dBM5kPgUxIwOGFxkpwOPyIG5Xw8RP6cLsrF9JGQs68LaGMFGUPhRJN+XF8cl2Is2qL91Es/QIHWakBp7suK/ltL+54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788169565; c=relaxed/simple;
-	bh=PssIyGRpPn08r/pEnA7EQZ84lgHEHhpJhmPi/e+En0Y=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=S1cJkdrH1QgxV2KxlUW9hr233XJjCjLrM+mtduBt7H0EHuYpMp1PxSLxQbgqtnQyR3gmN7LQ9cylIHdCtc32udep66lILuovI63TqdKBi2U48OQ1F4IAFHIIkw0ELCfJnGj2CKBiwhlcuxyF2i7FIgB4i4Fy9E4pd2/8F9btuHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IXvmDsGm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788169587; c=relaxed/simple;
+	bh=ncMyW+9UQ3P1QWXZS9FXfDU0abVl9k0fWOajYlhjP3M=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Gyz5wzvWcVpn6gGu1VZQFOtzhSJoIWvCGsIfnJp5/DrFlOgcdjUSuhVSoKIDEIKeOL9vwjUrgLrXrG84V67JWnKtmsjrV3myjCeFQ84OQTF2wmqI5dv3BAC6/PLo03vZtD8jdl2+3CklkjW0dgkQ2/F4ovcBRzZN/DbBnK2PGPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=jFLZ0TWY; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IXvmDsGm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC541F00A3E;
-	Mon, 31 Aug 2026 09:46:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788169564;
-	bh=PFGZV6IvMjeTqtbxmnf2aXMui9eTI0Yb+fI5sq0DtMI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IXvmDsGmYJyHIjnPPe/V9DWYTTiPwylePIreW0q9FChSjS+Qsl7Z5LhZO/VLBzKYu
-	 M0YhLLP8IAEUMJNpuD5wlLgJ7RWLnz2XIBjjVkBn9h0TXNA8RFaRbSSkhE4ao2D5I5
-	 E11zDkjzQT3tWSmwJKWx+LxOSA0PF5tZbSrsxL/8Jh3a0Vj93q/M0+vKMFGuj9qi8+
-	 37b6uldozNgLImmkT+6THH43fh0zvZVYp0fEdVWBhUXpWlaXBFqNRDEERew3edgba3
-	 8ayGMnwb0RLqxZLoLIbzW2LKkE45vlCnMOu52lqi81cUJQNswNwyOrPkS3n4n3qZ7T
-	 xekWzfHlgtmkg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 2/3] hisi_acc_vfio_pci: clear set_reset_flag after
- reset completed
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Longfang Liu" <liulongfang@huawei.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260831090951.844569-3-liulongfang@huawei.com>
-References: <20260831090951.844569-1-liulongfang@huawei.com>
- <20260831090951.844569-3-liulongfang@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 31 Aug 2026 09:46:03 +0000
-Message-Id: <20260831094603.CBC541F00A3E@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="jFLZ0TWY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=MDjLZl9NkjSVlu7YfJOkbMd8ttGixc7xK1pWAWE4qjs=;
+	b=jFLZ0TWYG1cO6sw6OHJrRfihB3kvKDy8Hi7c0FDBnf2jQu2ndWoDVlf18KrU13
+	5/ivpDbeN7KVevkTZwK3QYqetFaojQj/52ryaUWEEjFQRuj8DpFUVkdTKQ6F1UDu
+	tfdOa5Usgba7SrhHRPnWAvIw0YwO8aEuk8nWZDw3x7Hbg=
+Received: from localhost (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgD3vQJeTZVqBYmPNw--.11815S2;
+	Mon, 31 Aug 2026 17:46:07 +0800 (CST)
+Date: Mon, 31 Aug 2026 17:46:05 +0800
+From: Hao Zhang <hao_zhang_kdev@163.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Subject: [RFC PATCH v2 0/1] KVM: x86/mmu: Zap empty TDP leaf page tables
+Message-ID: <apVNXQMRsW8So53i@192.168.1.215>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+X-CM-TRANSID:PSgvCgD3vQJeTZVqBYmPNw--.11815S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Gw1rAw1UJFy7Ww4UAryrJFb_yoW7Gw4rpr
+	Z3JFZ3tr4ktas7WwnxAw4vvr1rua95WFs5Jr93Kwn5Aw1Y9ryjyFyxKry8AFy7GFyvyry2
+	vr4Ygwn8ua1UCaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRW7K-UUUUU=
+X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC+h9qXWqVTV80XAAA3X
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Incomplete fix: `set_reset_flag` is not cleared on the error path =
-when `qm` or `qm->io_base` is NULL.
---
+From: Hao Zhang <zhanghao1@kylinos.cn>
 
-commit 20e8953675b36be7d8bfc2a18cb44431bd40084a
-Author: Longfang Liu <liulongfang@huawei.com>
+Hi,
 
-hisi_acc_vfio_pci: clear set_reset_flag after reset completed
+v1 tried to avoid repeated walks of retained empty TDP leaf page
+tables by adding a per-shadow-page hint.  The main v1 feedback was to
+avoid adding more metadata to struct kvm_mmu_page and to look for a more
+generic iterator-based approach.
 
-This patch attempts to make every reset cycle self-contained by clearing
-set_reset_flag during aer_reset_done. It addresses an issue where a stale
-latch could prematurely release a lock owned by another agent during a
-reset timeout.
+Previous RFC:
+https://lore.kernel.org/all/an7J9Gh2DTrtP5vT@192.168.1.215/
 
-> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfi=
-o/pci/hisilicon/hisi_acc_vfio_pci.c
-> index e95d0ab0f11ab..4abed2e49986f 100644
-> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> @@ -1180,10 +1180,12 @@ static void hisi_acc_vf_pci_aer_reset_done(struct=
- pci_dev *pdev)
->  	struct hisi_qm *qm =3D hisi_acc_vdev->pf_qm;
-> =20
->  	if (hisi_acc_vdev->set_reset_flag) {
-> -		if (qm && qm->io_base)
-> +		if (qm && qm->io_base) {
->  			clear_bit(QM_RESETTING, &qm->misc_ctl);
-> -		else
-> +			hisi_acc_vdev->set_reset_flag =3D false;
-> +		} else {
->  			dev_err(&pdev->dev, "PF QM not available for reset done\n");
-> +		}
+This RFC v2 is a metadata-free alternative.  It adds an opt-in TDP
+iterator event that tells the caller when the walk has completed a
+child page table.  tdp_mmu_zap_leafs() uses that event to unlink an
+empty 4K leaf page table after a fully covered 2MiB range has been
+walked.
 
-[Severity: High]
-Does this leave set_reset_flag persistently set if qm or qm->io_base
-evaluates to false?
+The tradeoff is intentional:
 
-If agent A sets set_reset_flag to true and encounters an unavailable PF QM
-during hisi_acc_vf_pci_aer_reset_done(), the flag will remain true.
+  * v1/hint keeps the page-table page linked and remembers that it is
+    empty across later invalidations.
+  * v2/unlink avoids persistent per-MMU-page metadata by making the
+    parent SPTE non-present, so later invalidations naturally stop
+    descending into that empty 4K leaf page table.
 
-Later, if agent B holds the QM_RESETTING lock and agent A attempts another
-reset that times out, could agent A's aer_reset_done() see the stale true
-flag and prematurely clear agent B's lock if the QM has since become
-available?
+That also means v2 can pay allocation/free/refault cost if the same
+leaf page table is repeatedly emptied and repopulated.  To limit that
+cost, v2 does not unlink a leaf page table if a leaf SPTE in that page
+table was zapped in the current pass.
 
-Should set_reset_flag be cleared unconditionally in this function, regardle=
-ss
-of whether the PF QM is currently available?
+When a shadow page is unlinked, tdp_mmu_zap_leafs() also services
+pending TLB invalidations with kvm_flush_remote_tlbs() before dropping
+RCU protection.  The incoming @flush state can reflect earlier zaps in
+the walk, not only the just-completed child range, so this RFC uses the
+existing full flush primitive instead of trying to narrow the flush to
+the child range.
 
->  	}
-> =20
->  	if (!hisi_acc_vdev->core_device.vdev.mig_ops)
+The patch also avoids changing TDX/mirror external page-table lifetime:
+mirror shadow pages are not unlinked by this optimization.  Please
+confirm whether that is the preferred boundary, or whether unlinking
+mirror leaf page tables is safe after the TDX maintainers audit the
+external SPT lifetime.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260831090951.8445=
-69-1-liulongfang@huawei.com?part=3D2
+The main RFC question is whether this metadata-free unlink tradeoff is
+acceptable, or whether KVM should keep retaining empty 4K TDP leaf page
+tables unless there is an explicit per-page-table hint.
+
+Test setup
+==========
+
+All numbers below are from the same x86 host and the same 4-vCPU, 1GiB
+guest workload.  Guest vCPUs continuously fault/write guest memory while
+the host repeatedly invalidates guest memory with MADV_DONTNEED.  The
+reported values are medians from five repetitions.
+
+"sp-only" is the shadow-present-only iterator prototype that skips
+non-present shadow-present SPTEs without unlinking empty page tables.
+
+Measured paths:
+
+  * tdp_mmu_zap_leafs() duration via paired perf probes.
+  * vCPU fault-side mmu_lock wait time via queued_read_lock_slowpath()
+    perf probes.
+
+Scenarios:
+
+  * same16/same4: repeatedly invalidate the same 16MiB or 4MiB range.
+  * c16/c4/c2/c1: rolling 16MiB, 4MiB, 2MiB, and 1MiB chunks across
+    the 1GiB guest.
+
+zap_total_ms_med
+================
+
+  scenario   original   sp-only   v1 hint   v2 unlink
+  --------   --------   -------   -------   ---------
+  same16       330.3     221.8      35.3       61.9
+  same4        341.3     234.2      54.4       52.4
+  c16         1456.2    1696.0    1386.1     1549.9
+  c4          1252.0    1290.6    1243.8     1575.7
+  c2          1197.0    1173.9    1246.2     1501.3
+  c1          1352.8    1198.9    1138.4     1304.2
+
+Relative to the original kernel, v2 reduces repeated same-range zap
+time by 81% for same16 and 85% for same4.  Rolling workloads are mixed:
+c16 is +6%, c4 is +26%, c2 is +25%, and c1 is -4%.
+Compared to the shadow-present-only iterator change, v2 is mixed on
+rolling workloads: better on c16, worse on c4/c2/c1.  Same-range zap
+time remains 3.6x faster for same16 and 4.5x faster for same4.
+
+fwait_p999_us_med
+=================
+
+  scenario   original   sp-only   v1 hint   v2 unlink
+  --------   --------   -------   -------   ---------
+  same16          78       162        61          74
+  same4           62       152        38          57
+  c16             72       242        77         114
+  c4             102       248       105         134
+  c2             108       270       107         148
+  c1              92       266        93          95
+
+An additional no-unlink control on top of v2's iterator changes brought
+same16/same4 back to the original kernel's zap time, while also bringing
+rolling fwait back close to original/v1 levels.  That confirms the
+same-range win and the rolling cost both come from unlinking, not from
+the iterator event itself.
+
+Changes since v1
+================
+
+  * Replace the per-kvm_mmu_page empty-child hint with a metadata-free
+    unlink-based approach.
+  * Add an opt-in TDP iterator event for callers that want notification
+    after completing a child page table.
+  * Do not unlink leaf page tables that had a leaf SPTE zapped in the
+    current pass, to reduce refault churn in rolling invalidations.
+  * Skip mirror shadow pages, so this optimization does not alter TDX
+    external SPT lifetime.
+  * Drop the unused skip-child iterator API from the v1/hint direction.
+  * Move the event-valid fast gate to the caller.
+
+Hao Zhang (1):
+  KVM: x86/mmu: Zap empty TDP leaf page tables
+
+ arch/x86/kvm/mmu/tdp_iter.c | 29 +++++++++++++--
+ arch/x86/kvm/mmu/tdp_iter.h | 10 ++++++
+ arch/x86/kvm/mmu/tdp_mmu.c  | 88 +++++++++++++++++++++++++++++++++++++--------
+ 3 files changed, 109 insertions(+), 18 deletions(-)
+
+base-commit: 45c13f3f9e3bb15fd89ff2864c6f627a3b4b4229
+-- 
+2.15.0
+
