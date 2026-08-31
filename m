@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8DA357A4A;
-	Mon, 31 Aug 2026 00:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A94035C6A3;
+	Mon, 31 Aug 2026 00:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788135923; cv=none; b=XIa2kacywd1BUbyEEGm2mLLceDIz+8clZQLkhtnedwFMHpSugjSdX5BQ98Qoenmsj91Gh0cOkl1HGfMhQ+nQLLesMGLwF5yJ3aKV1ztqQq6+uwGEf5rHjz7uGooIS1/prDoIQ817Qht8ifRUIvMt/GmGhgmApKkVyhY2v0bcO50=
+	t=1788135924; cv=none; b=rdE2LuX7WtBMdISMP+zDR7oVTvdGaBv5c51TQhNk2lq34eVM0j+r+wgsV0yC0/3iZBA2KKRKoRJiEtGYuhHXVkYlI1izTT1Lm4HbUaPlAk6D+gxMSso1FWW01w45p1aniKEox1lBD7HhE7KSU2QZ9fTiJbYbWi+CHcrDPeWkYrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788135923; c=relaxed/simple;
-	bh=tbu5H941T3WFmTkcFYkjGccJoW2TPAMlO8ekt00YDMs=;
+	s=arc-20240116; t=1788135924; c=relaxed/simple;
+	bh=EqWswed0nqsU3A77F7jDzGh2B7dnfbU8JSq2ruxvWuw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=R7UqODSwkaK/1lr+3pbiD42CQ0mZQoekKvm+NvhpKbkYWzNx/Q2ftd/Ub6UlvmsEMcepiILl8ISuuG6FqBKH1mzdHNvQXXMboKSmCjiNX0sa8FOeUb6b+j447speO/DaIgy53cHzdXiQ+nzuEHDdVewy8Ze3QSpotH4Kl9Hs+7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qLdd0WYG; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=YpudwLANymAFvRHj8rVqG6zkelPqD9jW72YAXLCeVrl9sycyauAViAo9KpQYBjOLbclsmdm32l31IR3tiV+NEQVcDteW1Ak8rZWPCWID1cHko3yzbnus6EsOUR/VIX6hP20bfvhWy8T4DiQW0Wy1opcaYB7Z/wuKx+m/4Uiqxr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LklT/8W4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qLdd0WYG"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B5432C2BCFF;
-	Mon, 31 Aug 2026 00:25:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LklT/8W4"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 13FA5C32781;
+	Mon, 31 Aug 2026 00:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788135923;
-	bh=tbu5H941T3WFmTkcFYkjGccJoW2TPAMlO8ekt00YDMs=;
+	s=k20201202; t=1788135924;
+	bh=EqWswed0nqsU3A77F7jDzGh2B7dnfbU8JSq2ruxvWuw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=qLdd0WYG07wxjmoTmvbspYTXLe89JNFssEMi+/rkuZGYIRdzdKg7RubQxPC5eEDUl
-	 xWPTTAwNH4hVWxT3FqNU/Vbec3rXeaie2lyXwjrK+h4G9GHlzAc5jCWlFMnGfzYFP0
-	 xRBQZUgqZqIdMbazPBh5dLiCtF3oFuLW1uPBIX7DgzhRL0FGgCACrjgUBx+J1jrhJU
-	 A5dwzkyx6yZuROIt8d5vl2jcvZdQ0M3L3hgfECB+WmB+Iq6k7EUx2kh2men14JXQEu
-	 Ejed8kqKvgMVxdfNM3soweAU5SAeUNYmfa5/nhl0TN563MUzz87i6EEZf477JX/bMa
-	 c+KgOuJdDlLtQ==
+	b=LklT/8W4BGSEFQwQTMNOCM3QYeAHhZIlYKxDRjT1AhUogmb+ISrsWVpdzhYHqF9R/
+	 JZdXEOb9ngsSnvTE57UJD4kurmIWFMQ8UaUg4Qi8untiWU2PCQ4aFn73MtUirEcVQc
+	 tzGHhA4ZXr3nzKDtB3MYEkQMCrX7uyp0DeGsQ72/7G5diykYW40T1DE1BaArvkpvfx
+	 AfHvxIMRsnCvJlkQ1ZcFJIVACuFUo00qVI/eNOYH0B9wi4x5HCDcykDq56gVYaME3q
+	 Ai+hUCIv4JAFh0Fg3wHBJWmbhlwiykIVeFXF78IBaiaaVy+2zQ+DFfhoPCSob3wBVu
+	 qSDH0FctXaJCg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B894C624C2;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E92C5C61DFD;
 	Mon, 31 Aug 2026 00:25:23 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Sun, 30 Aug 2026 17:25:41 -0700
-Subject: [PATCH v12 40/45] KVM: selftests: Provide function to look up
- guest_memfd details from gpa
+Date: Sun, 30 Aug 2026 17:25:44 -0700
+Subject: [PATCH v12 43/45] KVM: selftests: Set up page size and alignment
+ independently for guest_memfd
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260830-gmem-inplace-conversion-v12-40-85e5fd25252a@google.com>
+Message-Id: <20260830-gmem-inplace-conversion-v12-43-85e5fd25252a@google.com>
 References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
 In-Reply-To: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -80,11 +80,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788135916; l=3994;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788135916; l=5603;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=aODtj3bXiyKjP4uoEZrBjbprOQXjj5kFxo+MyuHmpxU=;
- b=814LT748FADHWK7t5YnPGMVd2fhYxt4cbFtAGUXwoXEic+bZE3wurSvaMhHeph8EyNcGn/JJt
- Y4jxXfT+FFPDaK7q3wrjhxRlMZ2eNvl2G3nr6Qflsl9ATYEbd1JM9x1
+ bh=ue816NztnupM7oJGebeqg3yOQdtD8BkHUYR0RLajx5I=;
+ b=vOOiAnrvKW8tbEziRbwXAwLwCE2Sy8pStAetzWwVfHvGSPc7qrMG14CZg0vFAv9jCJqpGdIAK
+ 11hU6b2VsHpDc3yFixThGKKACuQ1aJl2isX8QdGkIRHSHupBkqI1pAV
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -94,103 +94,140 @@ Reply-To: ackerleytng@google.com
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Introduce a new helper, kvm_gpa_to_guest_memfd(), to find the
-guest_memfd-related details of a memory region that contains a given guest
-physical address (GPA).
+Currently, vm_mem_add derives the backing source page size, alignment
+padding, and mmap size from the backing source type upfront before checking
+if guest_memfd is being mmapped.
 
-The function returns the file descriptor for the memfd, the offset into
-the file that corresponds to the GPA, and the number of bytes remaining
-in the region from that GPA.
+With shared memory also mmap()-ed from guest_memfd, the alignment of the
+mmap-ed address needs to respect guest_memfd's backing page size.
 
-kvm_gpa_to_guest_memfd() was factored out from vm_guest_mem_fallocate();
-refactor vm_guest_mem_fallocate() to use the new helper.
+Refactor the backing store setup to configure the backing source page
+size, alignment, mmap flags, and mmap offset directly for guest_memfd
+when it is mmapped, ignoring the backing source type.
 
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Fuad Tabba <tabba@google.com>
-Tested-by: Shivank Garg <shivankg@amd.com>
+Skip hugepage validation and anonymous memory madvise calls when mmapping
+from guest_memfd, since those are not applicable when mmapping guest_memfd.
+
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/include/kvm_util.h |  3 +++
- tools/testing/selftests/kvm/lib/kvm_util.c     | 37 ++++++++++++++++----------
- 2 files changed, 26 insertions(+), 14 deletions(-)
+ tools/testing/selftests/kvm/lib/kvm_util.c | 74 ++++++++++++++++++------------
+ 1 file changed, 45 insertions(+), 29 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-index 3cfe243d7c8b0..795c9eb311071 100644
---- a/tools/testing/selftests/kvm/include/kvm_util.h
-+++ b/tools/testing/selftests/kvm/include/kvm_util.h
-@@ -428,6 +428,9 @@ static inline void vm_enable_cap(struct kvm_vm *vm, u32 cap, u64 arg0)
- 	vm_ioctl(vm, KVM_ENABLE_CAP, &enable_cap);
- }
- 
-+int kvm_gpa_to_guest_memfd(struct kvm_vm *vm, gpa_t gpa, off_t *fd_offset,
-+			   size_t *nr_bytes);
-+
- /*
-  * KVM_SET_MEMORY_ATTRIBUTES{,2} overwrites _all_ attributes.  These
-  * flows need significant enhancements to support multiple attributes.
 diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index b1456ed76e27e..1188d0a6c0a5f 100644
+index cac5624e99774..3f559f207408f 100644
 --- a/tools/testing/selftests/kvm/lib/kvm_util.c
 +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -1332,27 +1332,20 @@ void vm_guest_mem_fallocate(struct kvm_vm *vm, u64 base, u64 size,
- 			    bool punch_hole)
+@@ -1034,11 +1034,12 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
  {
- 	const int mode = FALLOC_FL_KEEP_SIZE | (punch_hole ? FALLOC_FL_PUNCH_HOLE : 0);
--	struct userspace_mem_region *region;
- 	u64 end = base + size;
--	gpa_t gpa, len;
- 	off_t fd_offset;
--	int ret;
-+	int fd, ret;
-+	size_t len;
-+	gpa_t gpa;
+ 	int ret;
+ 	struct userspace_mem_region *region;
+-	size_t backing_src_pagesz = get_backing_src_pagesz(src_type);
+-	int mmap_flags = vm_mem_backing_src_alias(src_type)->flag;
+ 	size_t mem_size = npages * vm->page_size;
+-	off_t mmap_offset = 0;
+-	size_t alignment = 1;
++	size_t backing_src_pagesz;
++	off_t mmap_offset;
++	bool is_gmem_mmap;
++	size_t alignment;
++	int mmap_flags;
  
- 	for (gpa = base; gpa < end; gpa += len) {
--		u64 offset;
--
--		region = userspace_mem_region_find(vm, gpa, gpa);
--		TEST_ASSERT(region && region->region.flags & KVM_MEM_GUEST_MEMFD,
--			    "Private memory region not found for GPA 0x%lx", gpa);
-+		fd = kvm_gpa_to_guest_memfd(vm, gpa, &fd_offset, &len);
-+		len = min(end - gpa, len);
+ 	TEST_REQUIRE_SET_USER_MEMORY_REGION2();
  
--		offset = gpa - region->region.guest_phys_addr;
--		fd_offset = region->region.guest_memfd_offset + offset;
--		len = min_t(u64, end - gpa, region->region.memory_size - offset);
--
--		ret = fallocate(region->region.guest_memfd, mode, fd_offset, len);
-+		ret = fallocate(fd, mode, fd_offset, len);
- 		TEST_ASSERT(!ret, "fallocate() failed to %s at %lx (len = %lu), fd = %d, mode = %x, offset = %lx",
- 			    punch_hole ? "punch hole" : "allocate", gpa, len,
--			    region->region.guest_memfd, mode, fd_offset);
-+			    fd, mode, fd_offset);
+@@ -1090,19 +1091,31 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+ 	/* Allocate and initialize new mem region structure. */
+ 	region = calloc(1, sizeof(*region));
+ 	TEST_ASSERT(region != NULL, "Insufficient Memory");
+-	region->mmap_size = mem_size;
+ 
+-	/*
+-	 * When using THP mmap is not guaranteed to returned a hugepage aligned
+-	 * address so we have to pad the mmap. Padding is not needed for HugeTLB
+-	 * because mmap will always return an address aligned to the HugeTLB
+-	 * page size.
+-	 */
+-	if (src_type == VM_MEM_SRC_ANONYMOUS_THP)
+-		alignment = max(backing_src_pagesz, alignment);
++	is_gmem_mmap = (flags & KVM_MEM_GUEST_MEMFD) &&
++		       (gmem_flags & GUEST_MEMFD_FLAG_MMAP);
++
++	if (is_gmem_mmap) {
++		backing_src_pagesz = getpagesize();
++		alignment = 1;
++		mmap_flags = MAP_SHARED;
++		mmap_offset = gmem_offset;
++	} else {
++		backing_src_pagesz = get_backing_src_pagesz(src_type);
++		/*
++		 * When using THP mmap is not guaranteed to returned a hugepage aligned
++		 * address so we have to pad the mmap. Padding is not needed for HugeTLB
++		 * because mmap will always return an address aligned to the HugeTLB
++		 * page size.
++		 */
++		alignment = src_type == VM_MEM_SRC_ANONYMOUS_THP ? backing_src_pagesz : 1;
++		mmap_flags = vm_mem_backing_src_alias(src_type)->flag;
++		mmap_offset = 0;
++	}
+ 
+ 	TEST_ASSERT_EQ(gpa, align_up(gpa, backing_src_pagesz));
+ 
++	region->mmap_size = mem_size;
+ 	/* Add enough memory to align up if necessary */
+ 	if (alignment > 1)
+ 		region->mmap_size += alignment;
+@@ -1129,10 +1142,8 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
  	}
- }
  
-@@ -1689,6 +1682,22 @@ void *addr_gpa2alias(struct kvm_vm *vm, gpa_t gpa)
- 	return (void *) ((uintptr_t) region->host_alias + offset);
- }
+ 	region->fd = -1;
+-	if (flags & KVM_MEM_GUEST_MEMFD && gmem_flags & GUEST_MEMFD_FLAG_MMAP) {
++	if (is_gmem_mmap) {
+ 		region->fd = kvm_dup(gmem_fd);
+-		mmap_flags = MAP_SHARED;
+-		mmap_offset = gmem_offset;
+ 	} else if (backing_src_is_shared(src_type)) {
+ 		region->fd = kvm_memfd_alloc(region->mmap_size,
+ 					     src_type == VM_MEM_SRC_SHARED_HUGETLB);
+@@ -1141,22 +1152,27 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+ 	region->mmap_start = __kvm_mmap(region->mmap_size, PROT_READ | PROT_WRITE,
+ 					mmap_flags, region->fd, mmap_offset);
  
-+int kvm_gpa_to_guest_memfd(struct kvm_vm *vm, gpa_t gpa, off_t *fd_offset,
-+			   size_t *nr_bytes)
-+{
-+	struct userspace_mem_region *region;
-+	gpa_t gpa_offset;
+-	TEST_ASSERT(!is_backing_src_hugetlb(src_type) ||
+-		    region->mmap_start == align_ptr_up(region->mmap_start, backing_src_pagesz),
+-		    "mmap_start %p is not aligned to HugeTLB page size 0x%lx",
+-		    region->mmap_start, backing_src_pagesz);
+-
+ 	/* Align host address */
+ 	region->host_mem = align_ptr_up(region->mmap_start, alignment);
+ 
+-	/* As needed perform madvise */
+-	if ((src_type == VM_MEM_SRC_ANONYMOUS ||
+-	     src_type == VM_MEM_SRC_ANONYMOUS_THP) && thp_configured()) {
+-		ret = madvise(region->host_mem, mem_size,
+-			      src_type == VM_MEM_SRC_ANONYMOUS ? MADV_NOHUGEPAGE : MADV_HUGEPAGE);
+-		TEST_ASSERT(ret == 0, "madvise failed, addr: %p length: 0x%lx src_type: %s",
+-			    region->host_mem, mem_size,
+-			    vm_mem_backing_src_alias(src_type)->name);
++	if (!is_gmem_mmap) {
++		TEST_ASSERT(!is_backing_src_hugetlb(src_type) ||
++			    region->mmap_start ==
++			    align_ptr_up(region->mmap_start, backing_src_pagesz),
++			    "mmap_start %p is not aligned to HugeTLB page size 0x%lx",
++			    region->mmap_start, backing_src_pagesz);
 +
-+	region = userspace_mem_region_find(vm, gpa, gpa);
-+	TEST_ASSERT(region && region->region.flags & KVM_MEM_GUEST_MEMFD,
-+		    "guest_memfd memory region not found for GPA 0x%lx", gpa);
++		/* As needed perform madvise */
++		if ((src_type == VM_MEM_SRC_ANONYMOUS ||
++		     src_type == VM_MEM_SRC_ANONYMOUS_THP) && thp_configured()) {
++			int advice = src_type == VM_MEM_SRC_ANONYMOUS ?
++				     MADV_NOHUGEPAGE : MADV_HUGEPAGE;
 +
-+	gpa_offset = gpa - region->region.guest_phys_addr;
-+	*fd_offset = region->region.guest_memfd_offset + gpa_offset;
-+	*nr_bytes = region->region.memory_size - gpa_offset;
-+	return region->region.guest_memfd;
-+}
-+
- /* Create an interrupt controller chip for the specified VM. */
- void vm_create_irqchip(struct kvm_vm *vm)
- {
++			ret = madvise(region->host_mem, mem_size, advice);
++			TEST_ASSERT(ret == 0, "madvise failed, addr: %p length: 0x%lx src_type: %s",
++				    region->host_mem, mem_size,
++				    vm_mem_backing_src_alias(src_type)->name);
++		}
+ 	}
+ 
+ 	region->backing_src_type = src_type;
 
 -- 
 2.55.0.897.gb25b4bd76c-goog
