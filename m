@@ -1,145 +1,136 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9E53AAF57;
-	Mon, 31 Aug 2026 21:37:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20990377AB5;
+	Mon, 31 Aug 2026 21:38:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788212242; cv=none; b=KdTltqBcVX7eGDMtOXccg4MMWP5ii7AtdjdfRaG6zf/OCK2HeTtvs/vgvyMI2bxKtMn3lqjP35G5STWQHYmDlrnTIed39dsJC2L19kuFbe4EuQkTPde1kc2EhZcyhCQQTJ7WvV4iCjKMpWEXkcWvNH8O84Vpl+eRhgXNdVhmkzk=
+	t=1788212320; cv=none; b=ddQqzgA2v5xrHShq8H8Xs1llS/9KBi8qIbtuOqz/3fFYJ+ejHW7IQoDrBp7PRtxgbtzMK6/bpsbawEFCist6S+BRiqNeA7hW7kPOEiWsWrySRtxEBoXx37GcjSe/bclDmaHzu4PfRiT/UvUC0ZBgvPneLx3Iwk3HpsumGlSvXB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788212242; c=relaxed/simple;
-	bh=zyAx8eZ13GDhnrcrqG2fUVmM7Gop0NfU6zbthdEU0A4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RuFlQFuq6tWA2yB841Q6hng4IXxWLkgsgYlsdJWIPE2SJa7ZAFIw50PpgEm9moWEUnLT3TvHXAS/pJK0f8+xlqP0/p/6x51/k4h4Vwx+eKmUvQh1UyX2K3YZVrUQGZa7Hn3JTA7sr8ShPQzFRIZTgb7rex7laKEGI2CpKisEM/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=I/G1/hFg; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	s=arc-20240116; t=1788212320; c=relaxed/simple;
+	bh=stFFlEyKk4HZMcZYL7T2oAtmx8gSEyPrlDJdAKT/vPY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=aVfa73npVvcVsYrJXj/gcWyGf3uLHUC6AvKyzhi3EwV3ZrfuMFyoomMg7V+8RxSHSVheVeToMRKDfyt0VlO16sljdl2QjVDTGRro6sscb5Z48hImk9go4tIwaALF+9zqtXkQskv5fYn7emMeTpsHrcNtTAl7Xd+dtFFNM8J7qY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aXyc6aeS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="I/G1/hFg"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=yLC782TRJZ0oX+soOVc4AY0IvW1m29fq17tbF18Z8kQ=; b=I/G1/hFgHNfB7/TJopLPC11E5t
-	jbf1KP32VFXwqCeJ6yh2lV7Q7WJrO5CJYw3jfRTL8pOSYDsNqK6cN7u8EjgdTEq3vmiUR813QLjwB
-	Upm+PKE6fMxXQi5td13KQ8uFaoxN2JzZ3YBKad/F0NC+Jwys/2077aijMt82/M52kqceXDYuJHmjz
-	gli9zwG/msBeoas7sTrHbpbANd48ud5EvYpANgzbCnLXPBuOCxmygFOXz04HaXAwqS/jwyLgYssmq
-	OsaxqTFeFvGzHRs2nxk4p1oPDBkuUVdYgyG0rEtr2IBd3XQCsou1j1viyfyBNy94E33K0uS5Ft84u
-	2W43YGGQ==;
-Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1x19gG-0000000AKcA-31gn;
-	Mon, 31 Aug 2026 21:36:41 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
-	id 1x19gE-00000000LD6-1Vj5;
-	Mon, 31 Aug 2026 22:36:38 +0100
-From: David Woodhouse <dwmw2@infradead.org>
-To: seanjc@google.com,
-	pbonzini@redhat.com
-Cc: dwmw2@infradead.org,
-	paul@xen.org,
-	joao.m.martins@oracle.com,
-	boris.ostrovsky@oracle.com,
-	ankur.a.arora@oracle.com,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	hpa@zytor.com,
-	x86@kernel.org,
-	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,
-	syzkaller-bugs@googlegroups.com,
-	suryasaimadhu369@gmail.com,
-	lkp@intel.com,
-	nicoyip.dev@gmail.com,
-	frn1furkan10@gmail.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imv4bel@gmail.com
-Subject: [PATCH v3 08/13] KVM: x86/xen: Use 32-bit atomics if vCPU's evtchn_pending_sel isn't aligned
-Date: Mon, 31 Aug 2026 22:26:39 +0100
-Message-ID: <20260831213632.81023-9-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260831213632.81023-1-dwmw2@infradead.org>
-References: <20260831213632.81023-1-dwmw2@infradead.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aXyc6aeS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0AB1F000E9;
+	Mon, 31 Aug 2026 21:38:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788212318;
+	bh=9YBLqnUkuKfBEmHBJlKTgOEfgoP6n0QnIA0cLQk+ooY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=aXyc6aeScE83btIqwXe3rCOkrdbm78QBrdlmwuws4SdSkZE1u/2vA8HqlvR3yJsMs
+	 dsG6Sub3MGdDPRovVLBjsMIthYE2nvLNIIEDCG1W24qXDlsoBEeRnFYLu8Oxp6nmNy
+	 X2w8Fp9Oy2zaEHb7zCpP05+zprhZDznEQo/vFwUhZtKxMKrhEvWIZNJ8hkTZz0izWg
+	 wNwX6pX+f8LTAHBV3DLUMGrcG5kqHpsfR9iI5ZXsH9Vy3yrCbaRy7P8/szzpyCUJrg
+	 8M6miC5z4m3xjsEMuSDSIXwAnGHSbZJ3aNXofDKjhkUpXOVimEusZwHN7KUXoSwHQL
+	 PBdYQ8S3Bdgkw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 16/20] KVM: s390: arm64: Implement exception
+ injection
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steffen Eiden" <seiden@linux.ibm.com>
+Cc: kvmarm@lists.linux.dev, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Oliver Upton" <oupton@kernel.org>, "Christian
+ Borntraeger" <borntraeger@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Marc Zyngier" <maz@kernel.org>
+In-Reply-To: <20260831145536.913567-17-seiden@linux.ibm.com>
+References: <20260831145536.913567-1-seiden@linux.ibm.com>
+ <20260831145536.913567-17-seiden@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 31 Aug 2026 21:38:37 +0000
+Message-Id: <20260831213838.3C0AB1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-From: Sean Christopherson <seanjc@google.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Synthesized ESR_ELx for injected exceptions (Aborts and Unknown ex=
+ceptions) conditionally sets the IL bit, violating architectural requiremen=
+ts.
+--
 
-When propagating pending Xen events from KVM's "cache" to the guest-visible
-structure, use two 32-bit atomic operations to do the bitwise-OR into the
-guest-controlled structure if the structure isn't 64-bit aligned, i.e. if
-the guest registered its vcpu_info in 32-bit mode and then switched to
-64-bit mode, in which case using a 64-bit atomic OR will generate a
-split-lock #AC (if enabled).
+commit 0f2bf8b10fedf69578d14536aed0e0dc39a725b4
+Author: Steffen Eiden <seiden@linux.ibm.com>
 
-Opportunistically isolate the clearing of the bits from KVM's cache, as
-that structure is KVM-controlled, i.e. is guaranteed to be 64-bit aligned.
-This will allow dropping the open-coded inline asm blobs in the future.
+KVM: s390: arm64: Implement exception injection
 
-[dwmw2: Cast to u64 before shifting; evtchn_pending_sel is unsigned long,
-        so >> 32 is undefined on 32-bit even though the branch is
-        unreachable there]
+This commit adds core exception entry and fault injection mechanisms for the
+s390 KVM arm64 architecture, enabling guest exception handling.
 
-Fixes: 14243b387137 ("KVM: x86/xen: Add KVM_IRQ_ROUTING_XEN_EVTCHN and event channel delivery")
-Reported-by: sashiko-bot@kernel.org
-Closes: https://lore.kernel.org/all/20260604193554.1BA311F00893@smtp.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202608071502.rYOi3Pg8-lkp@intel.com/
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- arch/x86/kvm/xen.c | 29 ++++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 7 deletions(-)
+> diff --git a/arch/s390/kvm/arm64/inject_fault.c b/arch/s390/kvm/arm64/inj=
+ect_fault.c
+> index 425dbeaa421c6..7ecf91f86d901 100644
+> --- a/arch/s390/kvm/arm64/inject_fault.c
+> +++ b/arch/s390/kvm/arm64/inject_fault.c
+[ ... ]
+> +static void inject_abt64(struct kvm_vcpu *vcpu, bool is_iabt, unsigned l=
+ong addr)
+> +{
+> +	unsigned long cpsr =3D *vcpu_cpsr(vcpu);
+> +	bool is_aarch32 =3D vcpu_mode_is_32bit(vcpu);
+> +	u64 esr =3D 0;
+> +
+> +	if (kvm_vcpu_abt_iss1tw(vcpu))
+> +		esr |=3D ESR_ELx_FSC_SEA_TTW(kvm_vcpu_abt_gltl(vcpu));
+> +	else
+> +		esr |=3D ESR_ELx_FSC_EXTABT;
+> +
+> +	pend_sync_exception(vcpu);
+> +
+> +	if (kvm_vcpu_trap_il_is32bit(vcpu))
+> +		esr |=3D ESR_ELx_IL;
 
-diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index aa49b45dd8dc..b0fa74f2cbee 100644
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -679,13 +679,28 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
- 	if (kvm_xen_has_64bit_shinfo(v->kvm)) {
- 		struct vcpu_info *vi = gpc->khva;
- 
--		asm volatile(LOCK_PREFIX "orq %0, %1\n"
--			     "notq %0\n"
--			     LOCK_PREFIX "andq %0, %2\n"
--			     : "=r" (evtchn_pending_sel),
--			       "+m" (vi->evtchn_pending_sel),
--			       "+m" (v->arch.xen.evtchn_pending_sel)
--			     : "0" (evtchn_pending_sel));
-+		if (IS_ALIGNED((unsigned long)&vi->evtchn_pending_sel, sizeof(u64)))
-+			asm volatile(LOCK_PREFIX "orq %[src], %[dst]\n"
-+				     : [dst] "+m" (vi->evtchn_pending_sel)
-+				     : [src] "r" (evtchn_pending_sel));
-+		else
-+			/*
-+			 * The cast keeps the shift well-defined on 32-bit,
-+			 * where evtchn_pending_sel is 32 bits wide and this
-+			 * branch is unreachable anyway (this is inside
-+			 * kvm_xen_has_64bit_shinfo(), which is gated on
-+			 * IS_ENABLED(CONFIG_64BIT)).
-+			 */
-+			asm volatile(LOCK_PREFIX "orl %[src_lo], %[dst_lo]\n"
-+				     LOCK_PREFIX "orl %[src_hi], %[dst_hi]\n"
-+				     : [dst_lo] "+m" (vi->evtchn_pending_sel),
-+				       [dst_hi] "+m" (*(((u32 *)&vi->evtchn_pending_sel) + 1))
-+				     : [src_lo] "r" ((u32)evtchn_pending_sel),
-+				       [src_hi] "r" ((u32)((u64)evtchn_pending_sel >> 32)));
-+
-+		asm volatile(LOCK_PREFIX "andq %1, %0\n"
-+			     : "+m" (v->arch.xen.evtchn_pending_sel)
-+			     : "r" (~evtchn_pending_sel));
- 		WRITE_ONCE(vi->evtchn_upcall_pending, 1);
- 	} else {
- 		u32 evtchn_pending_sel32 = evtchn_pending_sel;
--- 
-2.55.0
+[Severity: High]
+Does this code conditionally omit the IL bit for injected aborts when the=20
+trapped instruction is 16-bit?=20
 
+The ARM architecture requires the IL bit in ESR_ELx to be unconditionally s=
+et
+to 1 for injected Instruction and Data Aborts, regardless of the trapping=20
+instruction's length.=20
+
+Could this cause the guest kernel to receive an architecturally incorrect=20
+ESR_ELx value (IL=3D0 instead of IL=3D1) and potentially break guest except=
+ion=20
+handlers if it traps on a 16-bit instruction?
+
+> +
+> +	if (is_aarch32 || (cpsr & PSR_MODE_MASK) =3D=3D PSR_MODE_EL0t)
+> +		esr |=3D (ESR_ELx_EC_IABT_LOW << ESR_ELx_EC_SHIFT);
+> +	else
+> +		esr |=3D (ESR_ELx_EC_IABT_CUR << ESR_ELx_EC_SHIFT);
+[ ... ]
+>  void kvm_inject_undefined(struct kvm_vcpu *vcpu)
+>  {
+> -	/* Stub until s390 supports arm64 sysregs TODO sysregs*/
+> +	u64 esr =3D (ESR_ELx_EC_UNKNOWN << ESR_ELx_EC_SHIFT);
+> +
+> +	/*
+> +	 * Build an unknown exception, depending on the instruction
+> +	 * set.
+> +	 */
+> +	if (kvm_vcpu_trap_il_is32bit(vcpu))
+> +		esr |=3D ESR_ELx_IL;
+
+[Severity: High]
+Similar to the abort injection above, does this code conditionally omit the=
+ IL
+bit for an injected Unknown exception?=20
+
+The architecture also requires the IL bit to be unconditionally set to 1 fo=
+r=20
+Unknown exceptions.
+
+> +
+> +	kvm_inject_sync(vcpu, esr);
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260831145536.9135=
+67-1-seiden@linux.ibm.com?part=3D16
