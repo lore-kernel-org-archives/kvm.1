@@ -1,50 +1,66 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB45207A32;
-	Mon, 31 Aug 2026 05:01:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3812DFA4A
+	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 05:59:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788152494; cv=none; b=b9Ft2zs0qhnIK7GbXUVqQZ93oK7Bs3WQ7bSCVGQjJCyTAPrhSo833gOym0AqTJSp1enU7IfK5014hSx4UcK/bdGAI1VuXinBHh+iEVgYf+eQBspRvzoAH8paveTAsTXcbTZpviMRVX8j8QtMs5AFh7YYP28PNrVcOrqYguRT+p4=
+	t=1788156000; cv=none; b=oMrMSYy6jaKe/M5tw8oSKqBz2RB+RCxkhDeKp+w4zaqjmJ0r7Ae6bN4Sdp5/PDIpghi/ECK2njURj9p6ycgfmjkrGoT2JAlAI4FA8EdvM56Z/NmbxKZVl2Z7aXfYPCUqZrZEbgTdhVSb5wYLl5rfN66VJ0Bs+5Yh85vVVikdB+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788152494; c=relaxed/simple;
-	bh=zMHU9Xj3SzM3xmHQSC2knuRRMmoVMv7BrIS9wMud8Xc=;
+	s=arc-20240116; t=1788156000; c=relaxed/simple;
+	bh=bGtlLNHZeXwTDuqeOaNrwGY3uLSH0iJMGMCr95unclU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LFegoim363N2JtaghSGXHmmki3re72e+adeNyxTY02O9yfKI02iGWw9IctJF3J+3tRYKMj0R4UQFpdxxX97ovHD9fTb89Jkjm0LDBufZukPy6J2m6hXugb3uSF/+dnsy5F0HJfCADROWlX/CaQIYLDmXqGJ6ZcHcdcAZgEHZFC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H+e4mRZq; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=sGAbdUk27/45rBSzfIky105Wxi2IRjabfqpdSFo86f+2pCUZdaco75RAdzksXQxW3GSMlcYWikkyKhem4QmXBCeAhSahq+RG2rKPs1FW6SNISpqmf/Z4aFc90hpZd42MvAT/CWXnLhE4jxn+1BAzQ4PgFFQLd2ba9yAQRnriRc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n3xj7/IF; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H+e4mRZq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788152492; x=1819688492;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=zMHU9Xj3SzM3xmHQSC2knuRRMmoVMv7BrIS9wMud8Xc=;
-  b=H+e4mRZqTsLMbTRl0+icIZysD8wEvhyG7+pIPrYYTXqm6lypbHg9DWQ1
-   yaMm9NJaQxsUxGeeUUyqbk5VQ6APpcpq06XaIBUIJarO8TXRXMAgE/j1L
-   nDGkzeATd+OTGcq6YKMCUyEo4mcO63jwH+CZllot3PzrrPn119dKOIxs8
-   EUB9SnBZBX4PmL7VkbMDjKTAz8eokACU/xqzOn+mh6hxWlSj1LxQjVRLP
-   2J/mj2QGDV8zU5gf3gNwlC2YBReqCE7GQQX832I8fMSK8/DXLiAPLo1w6
-   78A1zdd2pLL18dk+1kXCSkr4KGCzFXmHM9HIaeFaVtNhYJSvLQeDPvfNl
-   g==;
-X-CSE-ConnectionGUID: LEzlPGJWTAq2F9O0g4gj7Q==
-X-CSE-MsgGUID: rl4Q1lJ+T6+xeEPBNxDLkA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="76094675"
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="76094675"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2026 22:01:32 -0700
-X-CSE-ConnectionGUID: QmEgMgowTGSdqlG9xkxmlA==
-X-CSE-MsgGUID: P8+obPsxQ7e1jTK0LYsT9g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="293500149"
-Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2026 22:01:29 -0700
-Message-ID: <f7a3b14b-d31c-4a46-99e0-055761d631a9@linux.intel.com>
-Date: Mon, 31 Aug 2026 13:01:26 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n3xj7/IF"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-482e61a34e5so957280f8f.3
+        for <kvm@vger.kernel.org>; Sun, 30 Aug 2026 22:59:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788155997; x=1788760797; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XfxbA2i+f23qwNxWpVJUWwp2eUr44EFO/Ti3rWFq6J8=;
+        b=n3xj7/IF9PB8BcIKcHffoy+jJQvVaSGxxM1DmK91/CAoTAt2IWkPAyONtCyDsjjWvY
+         6nvN8ngjhfaVpicCW7t7LzfyZr7w5MMarWIWb+D7PCDu0ey4klLCqI3NGwzEOpc8fdDf
+         JgqI/NvF9CAoxossx1sjDnTn0LDVILaLpMG+x/IrsJ6n57QM8rE+heCtmPqWXl+2YpeM
+         zzKdvhWobHPE7lb0LY5Eayb9IbSvepg/RhVywfGf5Rhgy1IJhvPy5ZpN0Y9KnwEDzknh
+         lQ3wNLH6N9fWNeQHPZz/l/cH45yEMJewD5+RdLUuB50bmqUibmJWLpJHoSI/cQhXKTcf
+         KySw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788155997; x=1788760797;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XfxbA2i+f23qwNxWpVJUWwp2eUr44EFO/Ti3rWFq6J8=;
+        b=noIoeIl+1IV6m8+SxMDZRiwmVEMAnJ0pQUUD24+4flIS9JcA2k4QA2iwwYyIUTF8hY
+         ZDggW+ARMU93H0B4LJAjeW/h0OwdmmFb6mjpQGtlQE0wWtlnfHNVFEzJL82e6M6f3/mY
+         w+EQHkImPb0Rm6pCMvMzKpExWvEsXkJK8OxYYSmfYLlqPYII+SrVld0MmGAdN+GRrSTE
+         XtP2b8s0qh6Z8FPWKcX5jszQwjibhEctZ7Yrtmjwiek9OWjq8fNNwFRnmK/iLwKSKFEz
+         D50wgCvmDqIZ526HTHmJgBerchJiACVyKjufwBprrkU6XW9pT5s3jsrF24ApoQhF9Igp
+         /7Nw==
+X-Gm-Message-State: AFuF++mn6AfErdVdxF/CP4CvrRrsAhPS7pt2ckM7zFsaAmrAq9r/pEAj
+	zIr1FPGjkz/CkcFsznjcawi55iX8Hu47o780zuFn8/N9DA9yTiyZVFHQ
+X-Gm-Gg: AYBFou1zXFjEAyaA253xdUwULSgmU2Uczhv/64stDuoPDa0CEG/i68WIXkSoyF98LnO
+	uImVawctVpy2RO9uscbzdneWPMJswpYu9c+EOm9mYNbBWDdr5mPY4A89VwIYKOwKzRJJTwMQhmF
+	xEN778ZarjBdPkOg7TYJ4tIfGkK8szKV7KoHixtvH8v5ukl5eA6hP9QeINJ7kBFAZxGDhijGBFo
+	e8QBcKDunRLSTsJlBrj+C8a1CDeVx2pFxX4f0pXZWzk1Ht0XqpTWtMwmTpsFHtl8B7OzzcYK7/X
+	bXCC/z5+itUlcnbSQtIXiaBQlJ9Q0Om/giU4YqxgXdQLfp4kC2+fd82+X3M5mrIMn+stcIDX9ki
+	Y1v9EtFdkMhnY7YKG4nxumWKQhOsCAFVIyo7ndb7RXozFHRMm3iqBSe1uuk6z4QevV4QmB6PB6U
+	rJkTN4pfKOR4FHWeKb2muqm15kfcfwNfPnMViv0MuPS6WxLxNO3OCehqI9Ls5yk8vYug==
+X-Received: by 2002:a5d:5f8d:0:b0:482:ee81:f0ca with SMTP id ffacd0b85a97d-482f79c94eemr36614562f8f.12.1788155996487;
+        Sun, 30 Aug 2026 22:59:56 -0700 (PDT)
+Received: from [192.168.1.109] ([88.230.40.90])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4843ce8b015sm3251163f8f.13.2026.08.30.22.59.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 30 Aug 2026 22:59:55 -0700 (PDT)
+Message-ID: <85c66385-7a28-4779-96d4-6b34f53b5994@gmail.com>
+Date: Mon, 31 Aug 2026 08:59:50 +0300
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,89 +68,41 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] KVM: TDX: Validate directly configurable CPUID
- bits
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc: "Gao, Chao" <chao.gao@intel.com>, "seanjc@google.com"
- <seanjc@google.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "kas@kernel.org" <kas@kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>
-References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
- <e2f8f7976ac6a54e0bbda0e65ed9990940d9fef3.camel@intel.com>
- <d2efe512-e4fe-407f-96a8-b274fef23382@linux.intel.com>
- <1deddc78d14326b378ddd62ad99c21d66da401e6.camel@intel.com>
+Subject: Re: [PATCH] KVM: x86/xen: Convert evtchn_ports from IDR to XArray
+To: David Woodhouse <dwmw2@infradead.org>, linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, x86@kernel.org, seanjc@google.com,
+ pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, hpa@zytor.com, paul@xen.org,
+ xen-devel@lists.xenproject.org
+References: <20260706081311.13633-1-frn1furkan10@gmail.com>
+ <efe39d24a2621ce23f9d53471b3b587feaaa8526.camel@infradead.org>
 Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <1deddc78d14326b378ddd62ad99c21d66da401e6.camel@intel.com>
+From: =?UTF-8?B?RnVya2FuIMOHYWzEscWfa2Fu?= <frn1furkan10@gmail.com>
+In-Reply-To: <efe39d24a2621ce23f9d53471b3b587feaaa8526.camel@infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 8/29/2026 12:58 AM, Edgecombe, Rick P wrote:
-> On Fri, 2026-08-28 at 11:19 +0800, Binbin Wu wrote:
->>>
->>> But it isn't a kernel bug, so I'd think to punt on this and let TDX module
->>> figure out a solution if/when the time comes. Probably various opt-in knobs
->>> to allow for working around it.
->>
->> Do you mean on the old platforms, the according TDX module versions add opt-in
->> knobs to allow the "effective 1 -> directly configurable" change?
-> 
-> Yea. Or the other way. Forcing the old fixed-1 bits to 1 automatically. Could be
-> like a quirk like config thing. User/admin can decide if they want migration
-> flexible design, or backwards compatibility for existing TDs.
 
-It's all about the new created TDs on the old platforms. For existing TDs, the
-runtime TDX module update should not change the shape of the TDs.
 
-> BUT, we could work
-> out the details later if we think we have options.
+On 7/7/26 12:16, David Woodhouse wrote:
+> On Mon, 2026-07-06 at 11:13 +0300, Furkan Caliskan wrote:
+>> IDR is deprecated in favor of XArray: see
+>> Documentation/core-api/idr.rst. Convert evtchn_ports accordingly.
+>>
+>> kvm_xen_eventfd_assign()'s single-slot idr_alloc() becomes
+>> xa_insert(), since it was really an insert-at-index, not an
+>> allocation: -EBUSY replaces -ENOSPC, still mapped to -EEXIST.
+>>
+>> kvm_xen_hcall_evtchn_send() drops its explicit rcu_read_lock(),
+>> since xa_load() takes its own RCU read-side section internally.
+>> evtchnfd's lifetime is still guaranteed by kvm->srcu.
+>>
+>> xen_lock is left in place: it protects state beyond the map itself.
+>>
+>> Signed-off-by: Furkan Caliskan <frn1furkan10@gmail.com>
 > 
-> I think I've convinced myself we have options and can close this one. Agreed?
+> Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> Thanks.
 
-Agree.
-
-> 
-> <snip>
->>
->>
->> If FRED support lands in KVM for non-TDX VMs before this
->> filtering/invalidation is in place, adding FRED to the hardcoded denylist
->> would work as a temporary solution.
-> 
-> This could easily happen.
-> 
->>
->> But that only holds for a well-behaved userspace VMM. QEMU, for example, only
->> enables features supported by both KVM and TDX, so if FRED isn't supported in
->> KVM for non-TDX VMs, QEMU won't enable it for TDX either.
->>
->> A malicious userspace VMM, however, can set a feature regardless of KVM's
->> reported CPU capabilities, and could still cause trouble.
-> 
-> Right. It the problem I thought we would need an opt-in to avoid.
-> 
->>
->>> Do we want it? Where would it get plugged in?
->>
->> So if the approach in this series is taken, I think we still need such an opt-
->> in interface to tell the TDX module that the VMM is now filtering the CPUID
->> bits so that the TDX module knows that it's safe to report new host state
->> clobbering features.
-> 
-> Yep. Can we think about what it would look like? Easiest would be a bit passed
-> in TDH_SYS_CONFIG. But then arch/x86 is saying how KVM will behave. Ok to me,
-> for the simplicity. Could come with a nice comment.
-
-The TDX module is initialized before KVM is loaded. I guess the upstream kernel
-doesn't support out of tree KVM code, so we can assume if the kernel has the code to
-opt-in the new host state clobbering features, KVM must have implemented the TDX
-CPUID filtering and validation?
-
-Also, do you think it's reasonable to backport this patch series to stable/LTS
-kernels as an alternative?
-
+Ping?
