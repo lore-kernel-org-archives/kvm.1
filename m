@@ -1,37 +1,37 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BE53A9D95;
-	Mon, 31 Aug 2026 21:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BADE3AAF6E;
+	Mon, 31 Aug 2026 21:37:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788212239; cv=none; b=noDKqJQwtyI5QES+VmdJPiUNFH+XU+41lXSIQ+c3d2CPdr0wrE3VaJw92Q8F7xESsyJtQHpIrfDNnvYTtCMvpayiKqXkvm65mCR44ueBOFlfSJA3ceFQcz7XwoO8pry7RjfzLO3078S7viJ9o1oGSN/mSiYXr10dt8k0/GnacjQ=
+	t=1788212240; cv=none; b=NeNEwj7K38peC5jZxxJrpNXN7iereQxIjsP933Hmo3A7cpELD6xYjygCjfab9wMKdLMH5tnsHGPG0/ZxIYdDi9FD+rdjQjJb6MZj3HqUOchEOxuiuIwHu6tNSKATgtReC/+xwitMsPRBnR6YowDNPvNUyt6YJVfMjsGYW7PJF1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788212239; c=relaxed/simple;
-	bh=FyY3uVamnpC8xVLC50YgBZ80X1IUdSfNKvwQfY5h108=;
+	s=arc-20240116; t=1788212240; c=relaxed/simple;
+	bh=VtGPeRJHj77iGie3rS4v4N0TM7vFC5SPtkL/R8GyR+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ceye5oIU8a8fpmMsKd0jj8kaFhFkbNbq4l2LyicrXfm8fHMRvs6sJmOe2UuiufrsFsfUiOaaRIct2Q2hC59YF50QXLZatiwq7+nhSXoiB4mlH+V5PgsKvws6VqybLnUKvZ5Y1rbIfZKbMtts+nBd/Irehnq2Ad9mbds5nMCs62s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ZYtYRckM; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=HzV9WfI+5avvBTtapJcco4wrXeYXdrMw+qbz0CbVPh3PoxggfYPfCjJiXEVBA7RAyO2DZxnakRof1KWmHqWi3pEbNvlb/mtYJTXpUwn9+VL+eP0K1H+RrHC7ILhtmGgz76ZuCgirzm1jvFAC+dUc/v063VrrKyn3sHaDXRNeGSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=JaD83si6; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ZYtYRckM"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="JaD83si6"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=CpmWoYCHdJ/VH3IGPs4UcXurcmngqIaORNYAp84Yflk=; b=ZYtYRckM7nGDTMLHhO7W1JWAEg
-	OmnapDJvvtUv23H6dd4/y+rOpTNy3F+S2FzRlweVGHT95TTUHJyTunZybvMTEKHCAGcxgZzQpupsN
-	i8ZH03fmPoG70bOLLjww2dTfHqREu4PqBfm1m0LBBo1BaZHA7KsTI3ZG28+vhYIQ5IpLWqAj87oVv
-	X2c5RnUOyTNxr2Yjq0vPn+A68u/W2UOyeqUx0BZBtVECgevtbIRvtNsyU2rgTPT5GVUgzfIrjS4sE
-	GVV6VFl1TsJH/d8fAKyKbVeeBBi/BoG1iSQPfXhRi2SJ+4ToY5A4Fa9Pndi97jMKfvFf/blaFyQCY
-	KNXFhaLQ==;
+	bh=bLMwnwhhNu3hIUILI1cfaBcZbIYaqWeXyGCus0br5c4=; b=JaD83si6/1SOa/HfgxInYNkHw2
+	DSjr16KUxYzk7gXojOAilDiqUS/d9mn/WUfWEpXMxMNZmmtFTen+zLPNNgqSVOD0O78At2MLsxc+q
+	0ROHzinfhJQrBEpkGKxT3uTztMXFdHCF+JXPHk6e/CxT7Cwzvfbko4/4fWmWYa6WEYiBIME6JRLW7
+	WL17MyQLa/uWr8vengJwMeu4MR68CBefp+AJTBo28Ss8EUVLLSRNvFDVL7nBP5c8ouQYDi3zh3rtv
+	8QvLuti/n2eKES8AVfrg2aEaTNl+nMn1H11xXciKgIc8vCyAqDodB5W5Q25wupD3g03Hxe7VLJWi+
+	VSJ3586w==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x19gE-00000003sv9-33rE;
-	Mon, 31 Aug 2026 21:36:39 +0000
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1x19gG-0000000AKc9-33hb;
+	Mon, 31 Aug 2026 21:36:41 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
-	id 1x19gE-00000000LDK-2ClL;
+	id 1x19gE-00000000LCu-0n8V;
 	Mon, 31 Aug 2026 22:36:38 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: seanjc@google.com,
@@ -56,9 +56,9 @@ Cc: dwmw2@infradead.org,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	imv4bel@gmail.com
-Subject: [PATCH v3 11/13] KVM: x86/xen: Mark poll_evtchn accesses with READ_ONCE()/WRITE_ONCE()
-Date: Mon, 31 Aug 2026 22:26:42 +0100
-Message-ID: <20260831213632.81023-12-dwmw2@infradead.org>
+Subject: [PATCH v3 05/13] KVM: x86/xen: Latch shinfo mode in kvm_xen_schedop_poll()
+Date: Mon, 31 Aug 2026 22:26:36 +0100
+Message-ID: <20260831213632.81023-6-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260831213632.81023-1-dwmw2@infradead.org>
 References: <20260831213632.81023-1-dwmw2@infradead.org>
@@ -70,91 +70,80 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Use READ_ONCE() and WRITE_ONCE() for runtime accesses to poll_evtchn.
-This marks the intentionally concurrent scalar accesses and prevents the
-compiler from splitting, merging, or inventing accesses.
+kvm_xen_schedop_poll() validates port numbers against
+kvm_max_evtchn_port() and then calls wait_pending_event() which reads
+the shinfo mode again to select the bitmap layout.
 
-kvm_xen_schedop_poll() publishes the single port, or -1 for multiple
-ports, before setting poll_mask and halting the vCPU.  Event delivery can
-call kvm_xen_check_poller() on another CPU while the vCPU thread publishes
-that value or resets the field to zero after returning from
-kvm_vcpu_halt():
+Latch kvm_xen_has_64bit_shinfo() once and pass it to both
+max_evtchn_port() and wait_pending_event().
 
-  vCPU thread                         event delivery thread
-  -----------                         ---------------------
-  poll_evtchn = port
-  set_bit(poll_mask)
-  kvm_vcpu_halt()
-                                      poll_evtchn = READ
-  poll_evtchn = 0
-  clear_bit(poll_mask)
+As with the previous fix to kvm_xen_set_evtchn_fast(), this is
+harmless in practice for the same reasons: the inconsistency can only
+corrupt fields in the guest's own shared_info page, and the same
+corruption can occur anyway if the mode changes immediately after the
+latch.
 
-The plain read and writes therefore race.  KCSAN reported:
-
-  BUG: KCSAN: data-race in kvm_xen_hypercall / kvm_xen_set_evtchn_fast
-
-  read to 0xffff888112f55af0 of 4 bytes by task 98:
-   kvm_xen_set_evtchn_fast+0x204/0x7c0
-   kvm_xen_hvm_evtchn_send+0xab/0x100
-   kvm_arch_vm_ioctl+0xb31/0xd90
-   kvm_vm_ioctl+0xf42/0x16c0
-
-  write to 0xffff888112f55af0 of 4 bytes by task 96:
-   kvm_xen_hypercall+0xd8d/0xf50
-   kvm_emulate_hypercall+0x157/0x1d0
-   vmx_handle_exit+0x40f/0xae0
-   vcpu_run+0x137f/0x27d0
-   kvm_arch_vcpu_ioctl_run+0x5a5/0x970
-
-The field is an aligned int on x86.  Access annotations preserve the
-existing matching, callback, and poll-mask control flow while making the
-single-copy access requirement explicit.
-
-Fixes: 1a65105a5aba ("KVM: x86/xen: handle PV spinlocks slowpath")
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+Fixes: d518b9d0fc80 ("KVM: x86/xen: handle PV spinlocks slowpath")
+Assisted-by: Kiro:claude-opus-4.6-1m
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- arch/x86/kvm/xen.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kvm/xen.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 871cbaf8b68d..d15c62ad7932 100644
+index a528fdbf1b94..5eb23127e74e 100644
 --- a/arch/x86/kvm/xen.c
 +++ b/arch/x86/kvm/xen.c
-@@ -1581,9 +1581,9 @@ static bool kvm_xen_schedop_poll(struct kvm_vcpu *vcpu, bool is_64bit,
+@@ -1452,8 +1452,8 @@ static inline int kvm_max_evtchn_port(struct kvm *kvm)
+ 	return max_evtchn_port(kvm_xen_has_64bit_shinfo(kvm));
+ }
+ 
+-static bool wait_pending_event(struct kvm_vcpu *vcpu, int nr_ports,
+-			       evtchn_port_t *ports)
++static bool wait_pending_event(struct kvm_vcpu *vcpu, bool has_64bit_shinfo,
++			       int nr_ports, evtchn_port_t *ports)
+ {
+ 	struct kvm *kvm = vcpu->kvm;
+ 	struct gfn_to_pfn_cache *gpc = &kvm->arch.xen.shinfo_cache;
+@@ -1468,7 +1468,7 @@ static bool wait_pending_event(struct kvm_vcpu *vcpu, int nr_ports,
+ 		goto out_rcu;
+ 
+ 	ret = false;
+-	if (kvm_xen_has_64bit_shinfo(kvm)) {
++	if (has_64bit_shinfo) {
+ 		struct shared_info *shinfo = gpc->khva;
+ 		pending_bits = (unsigned long *)&shinfo->evtchn_pending;
+ 	} else {
+@@ -1493,6 +1493,7 @@ static bool wait_pending_event(struct kvm_vcpu *vcpu, int nr_ports,
+ static bool kvm_xen_schedop_poll(struct kvm_vcpu *vcpu, bool is_64bit,
+ 				 u64 param, u64 *r)
+ {
++	bool has_64bit_shinfo = kvm_xen_has_64bit_shinfo(vcpu->kvm);
+ 	struct sched_poll sched_poll;
+ 	evtchn_port_t port, *ports;
+ 	struct x86_exception e;
+@@ -1551,7 +1552,7 @@ static bool kvm_xen_schedop_poll(struct kvm_vcpu *vcpu, bool is_64bit,
  	}
  
- 	if (sched_poll.nr_ports == 1)
--		vcpu->arch.xen.poll_evtchn = port;
-+		WRITE_ONCE(vcpu->arch.xen.poll_evtchn, port);
- 	else
--		vcpu->arch.xen.poll_evtchn = -1;
-+		WRITE_ONCE(vcpu->arch.xen.poll_evtchn, -1);
+ 	for (i = 0; i < sched_poll.nr_ports; i++) {
+-		if (ports[i] >= kvm_max_evtchn_port(vcpu->kvm)) {
++		if (ports[i] >= max_evtchn_port(has_64bit_shinfo)) {
+ 			*r = -EINVAL;
+ 			goto out;
+ 		}
+@@ -1564,7 +1565,7 @@ static bool kvm_xen_schedop_poll(struct kvm_vcpu *vcpu, bool is_64bit,
  
  	set_bit(vcpu->vcpu_idx, vcpu->kvm->arch.xen.poll_mask);
  
-@@ -1602,7 +1602,7 @@ static bool kvm_xen_schedop_poll(struct kvm_vcpu *vcpu, bool is_64bit,
- 		kvm_set_mp_state(vcpu, KVM_MP_STATE_RUNNABLE);
- 	}
+-	if (!wait_pending_event(vcpu, sched_poll.nr_ports, ports)) {
++	if (!wait_pending_event(vcpu, has_64bit_shinfo, sched_poll.nr_ports, ports)) {
+ 		kvm_set_mp_state(vcpu, KVM_MP_STATE_HALTED);
  
--	vcpu->arch.xen.poll_evtchn = 0;
-+	WRITE_ONCE(vcpu->arch.xen.poll_evtchn, 0);
- 	*r = 0;
- out:
- 	/* Really, this is only needed in case of timeout */
-@@ -1822,7 +1822,7 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
- 
- static void kvm_xen_check_poller(struct kvm_vcpu *vcpu, int port)
- {
--	int poll_evtchn = vcpu->arch.xen.poll_evtchn;
-+	int poll_evtchn = READ_ONCE(vcpu->arch.xen.poll_evtchn);
- 
- 	if ((poll_evtchn == port || poll_evtchn == -1) &&
- 	    test_and_clear_bit(vcpu->vcpu_idx, vcpu->kvm->arch.xen.poll_mask)) {
+ 		if (sched_poll.timeout)
 -- 
 2.55.0
 
