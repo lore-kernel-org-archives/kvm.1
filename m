@@ -1,257 +1,165 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010006.outbound.protection.outlook.com [52.101.56.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE273C65FD
-	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 08:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788163833; cv=none; b=Wir8cd4a+Nw3gAWvfJUQWDqj79X+AXZg2KkfDEMB0QP4kld/xrzyR4BvhHu2xmiFaDKKczILFVTVTiGUP7DvoMjF8B0mTbgxHoNT88QBUvykApF8awrGMo4s4y2aDN5gL44MtFWUho7jJFSbCKqB/0FBdr+H342XFS+pWy8X7iM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788163833; c=relaxed/simple;
-	bh=viAVRllkrsImHsNb1DnUub6XvU5jvIFJexyLibR+lA0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=b2uKxkiEMhzMbBMCopDqgw58RE2I1clEWtPsZUAbHjizgJ4TjxpehrRE49a8ITY8yMSdRFVJSiSgOwizi95pAAJeOm2GOs0VwwVbO7FxryLSk2/Qw2+iHX3HB3I9ccEjz2r/5iggfwqrUj53Wyjp1gT0We3E9FySnyNfHj1fHOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D5qnKccv; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7B93D9DD8;
+	Mon, 31 Aug 2026 08:24:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.6
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788164673; cv=fail; b=l1vevRRFpDMcPjiosBqvI0l0ZfyEFqHDw5fYCpOcqNOmYw8gLlmZe+PHZzwfsBsbocbz8wVzFsqsKmV/BjyIDgn40m1B5qUF279DovZp0pzSCDhjMfB6G6zRAQjf2+usyKGSSrm4GpWQoloIp9nyvC4f0pnu7/MpG/EcBt6DGm4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788164673; c=relaxed/simple;
+	bh=jc3O4H72jIrtEB/aUnjyu99KCZd0/gom2nfNHdsqFeA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=PEDrIdbbTznZC9lDrzqvWT0B3ffSmJbLcz9KC4yQo+0V2+AMK0Bs8aRw2b9WtNaL1B9tH49SsnBHggBGXvMfsDztuXYykj7OhgBRN7xllnhlI5Tx9LxrA03wuH4O+XtbXJn3Y82/MkafgmiBpmHE5g34Y568nh0zL900MdCWrFA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=e76p3vXL; arc=fail smtp.client-ip=52.101.56.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D5qnKccv"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-49b0d78a801so24040295e9.2
-        for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 01:10:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788163826; x=1788768626; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zgxKhL7A1XKhNVrAX+Ck+KuNZ6TSYMACVM9Vad6BlYI=;
-        b=D5qnKccvlUUEYfq9eCuyuQpE9/ccpM9rz/bAcchhSGdL7mFeocch4miEiUrQDGXQBU
-         enuzFBdIp2aFtm9XoZxB5P0S/a7Vo6Ft4iDdJspNYtq1YU6+/TQ1K4QfaOM6/9FLusuY
-         v/aAqJU1yrN4kolDJBUbUu6idmYeQKFKzHQYzG0bU+9tyOJdgB7hlx5LiiwWxjxjqJj3
-         SY/69/mXTAO5+al0govVYo7pVmVmcxx79MKLpqw494PlG8vXc5DGMKw/PsRxPmu9wfuJ
-         q95yLbHfi1KqpKX58SIH5jGN7H5mnepoULJv6eChf7pBFR7iVf1Wp/8ZlBaUOuT6/yM2
-         fCRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788163826; x=1788768626;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zgxKhL7A1XKhNVrAX+Ck+KuNZ6TSYMACVM9Vad6BlYI=;
-        b=qKQ7SDN+O+WpYznasLaj2CQbYBTX8uI1qRjmmChejQrdzMZznYTAQofAw3d2oYYdZM
-         p+4HTDNCSPANiAKWsBDKMNHyrfPIimLdrMz3lChjBlJz2s07QA4j5wzhNyKkTAE1d/1v
-         maFqt/0MfzgLPVdjHFzQXvUeVTmAXh6kfJGCNWrRGTZQqqsgN7eRoZMjGg9XBmaHfL25
-         5D3//NKD5wDtMfxjP5jimuz/KSUS35D/I6NZkce9GCwwJ4rARvAIRuot8n6WaOTW/rzZ
-         6o+kcuMJdfmHHDz1wStZ18Y5fSd2MfqvvQBtRi/ATCR1kqcGMltCXmNyoVZjC/XP/DtX
-         Jkag==
-X-Forwarded-Encrypted: i=1; AHgh+Ro1bo2q+GprUSQGi9cWcTo4eAofkT31UzbnY0A4hrX5ItakzGDb9eMqxJGWBk+V9Ex1v8c=@vger.kernel.org
-X-Gm-Message-State: AFuF++kHz/oOIQifmggqZ1HiIMbk8eADxaCJ5PkOLLCxT6jqo4hX2yaY
-	08f93Co71EvadOTlN5f7t3zUc9DU/+heyWDJhbbFKrtS7EsEh6tcbj80
-X-Gm-Gg: AR+sD12PYE/JQ1qh/F6rbPaGfEgOoOotnCntA2zq4LQ30kkH2hxhjKMEOHmUBaXSHuT
-	kqoHt2d1lwgMffyYnCRDnXclzvgvyXM9b4liF6DJ914jm8MZN/eYITWqz3gQO3RAirSIUhAzrmX
-	u0oCncWsoF1gvxGuACFv57hKuNvEAbYDt0d25YDX7VEfrefGSZL5V0llU1TIpzB7FSt2KWudWZS
-	+wZOF+n1cuHn38zn23AoBKuAE/ndjErcecYjmygrk6NKKFZvTU7zGwG8RO0OXnRnRURPhIyJ6rR
-	LxB08aql6Y35LvluG0gWvnhgxsnz7noWsRLf8YnkisirZ33NMq2RqW9mLBVL6tv6GbwoYZBAfOq
-	yctr0qO7dRp5ZjfYQndKBwheyMfjPhQ3pT4Qo7ECVlJi/eOUp92ekXb9VIBC8XhvDgSa3/dZshx
-	pTZ6zuScND5ApV5mv6p1Cj051lQzHvACwqQHOql+EbTUMzMMi8sLNApZVOpniBxnTXVKzerGZXG
-	EIn/+hHg+lbJOH0ADu0oHzZEBIbY1ERaWVbluCqSI6c9162ZqJBOXu8YufSZQVknv1sDTKr9ZjP
-	jWv1R7k83fU9Oo0QkGdMEZ3aQHfUmDkQzvJs/izZyYk3hpMJ+pUT0YNZ/DjHz3YB/5TIo4M=
-X-Received: by 2002:a05:600c:3155:b0:49b:910c:7703 with SMTP id 5b1f17b1804b1-49b91c3dcb4mr350375865e9.9.1788163825607;
-        Mon, 31 Aug 2026 01:10:25 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a02-3100-acb9-0201-68d0-34d2-ad1a-175a.310.pool.telefonica.de. [2a02:3100:acb9:201:68d0:34d2:ad1a:175a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b95013d06sm370393515e9.12.2026.08.31.01.10.24
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 31 Aug 2026 01:10:24 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	kvmarm@lists.linux.dev
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Eric Auger <eric.auger@redhat.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH v4 4/4] KVM: arm64: selftests: Test VGICv3 redistributor region retry
-Date: Mon, 31 Aug 2026 10:10:04 +0200
-Message-Id: <20260831081005.41346-5-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20260831081005.41346-1-kmehltretter@gmail.com>
-References: <20260831081005.41346-1-kmehltretter@gmail.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="e76p3vXL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xXzHKNil1neZ2a5ZS2v9jKn2zkVfgzytC20OAlol9G4L4oVB3sFTkmZoAJ8ghs6KotyGXoRsSSDE8aSFe6fR3/5MpBSZ03F632zq2SkjgZi/81rOdMS069ehaQwAdzVFb+Yx9iIA9LPmKV/84vzKko85Co5cKC4+l6yVccPkaBpayGnJ1eAmvdGID3pXdTeOINUYrP2z6TJskGbbzoAaPssks0+16jVxmFDM8GrOV8DLpwhj5asPMZOaaiCbCEB0n6HSzqwqHRh2Oky55f+5+dTSJBwueMFmDLd9+ijhDU8tn4cba9l/pIkcW3qGU653hTl3s3lHBxtxaj5beU9X5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jc3O4H72jIrtEB/aUnjyu99KCZd0/gom2nfNHdsqFeA=;
+ b=VRrCchMyvnR5pjdDsm3g5AgYsY48OT7T+nbyurFQLrp2Nd/eSaEVEWu1oweklBE1JRc5nN/iW8nbUh763dp/16nVNo6cFxiXKomn2High9EtunlnD+lijrSWWJ4WK07vK/RiTHEboCGqWTHsOMgnBXKoXASB4iSHRe9Ea7LVvZStkk+pszdN7Wk209m5D6TXD2Y/JQJwHKamzkTFK9XP4jbJExDr7Ige4CcklNItvuGDQ9ARqoofQm8fFZeyxAXrLmEPPMwQfoLYw/1cpuaJAa9rBVyiCGmZpO878S4ORbkZfXQqpCfHTCuvui+z9bbrlp64DWvqgcLw5O/gTHUljA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jc3O4H72jIrtEB/aUnjyu99KCZd0/gom2nfNHdsqFeA=;
+ b=e76p3vXLI0BQur94KPucji1vdawkEocirPxg+7zUdJiFznc3olGBiPh+7+Yii/nOZVHfG/60oRuBeXKgWwbPKThJUYOyW9iCm3I8b3C0EsbbJPh9oUx3kgmR2xEYC33gDkAb+HoZgKL0GOiYsuxQ1x5XWF0sk1p1IftkcjD1/oA=
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com (2603:10b6:408:100::17)
+ by DS0PR12MB8043.namprd12.prod.outlook.com (2603:10b6:8:14d::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
+ 2026 08:24:27 +0000
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed]) by BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed%2]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
+ 08:24:27 +0000
+From: "Garg, Shivank" <shivankg@amd.com>
+To: "jmattson@google.com" <jmattson@google.com>, "seanjc@google.com"
+	<seanjc@google.com>, "david@kernel.org" <david@kernel.org>,
+	"ackerleytng@google.com" <ackerleytng@google.com>, "pshier@google.com"
+	<pshier@google.com>, "shuah@kernel.org" <shuah@kernel.org>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "ricarkol@google.com"
+	<ricarkol@google.com>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"sashiko-bot@kernel.org" <sashiko-bot@kernel.org>
+Subject: Re: [PATCH 0/5] KVM: guest_memfd: fix unbind race and NUMA selftests
+Thread-Topic: [PATCH 0/5] KVM: guest_memfd: fix unbind race and NUMA selftests
+Thread-Index: AQHdMwR0uLzmsdbaZ0CT4S12Nm25Jra33jqA
+Date: Mon, 31 Aug 2026 08:24:27 +0000
+Message-ID: <b95f21c1cb45673351df50dab208ec8dd3e8ca66.camel@amd.com>
+References: <20260823-shivank-gmem-fix-split-v1-0-512a29fb8e86@amd.com>
+In-Reply-To: <20260823-shivank-gmem-fix-split-v1-0-512a29fb8e86@amd.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN9PR12MB5259:EE_|DS0PR12MB8043:EE_
+x-ms-office365-filtering-correlation-id: 94870aec-7afc-4f99-5f72-08df073945b1
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|38070700021|6133799003|10067099003|56012099006|22082099003|18002099003|11063799006;
+x-microsoft-antispam-message-info:
+ 2sw2ivfqiVNRAyoVpW2r/xuiT1OKEQHtQsTBd7NAU5GvcTFVxFQ2KHYv4c9eW5pLQfoFisrBCtYzEobwlb8YLKL+9CJGaekBkE9JWTGd/8J2N6lP/YlrYwldPCnwngsFF1omLcWUN5FvQCY0g7fQ0P2CX0CX5aR19Guy4RMij/s5wruXfF1nQZcXy089TWeSE+yfhTOBo/36MFim3xVUlsme7eueLhQ3yYxfgjpLLxDnvYBiflSAmwPmI0oEihOV8/A1YHgCkkiE5NKBO7V5aQmh3y5dpfhIM3X19nrGisXrBKF0cW1N91Ekg0TC2qh2BTT8/XPcfn+9v23DeR124/ojXjJvEdgvV5sMjn6bWM8JGmhEAzQLfJt1e4ob5Cd0qm9kOpSdwPBrj36I11DzSVzM6BFj/2oqXgpP+vHf/M2wN6lnvCQqAR2Eq8tU4kEsad4WvhwF48xTJvESGuoC1oInI5/EuZDevEAAteQYNiExa6TiZEzL6QXcFcluWV8pD2XyZEGAk19KdGoRHagi9bG/41CePE6MHSJ0mdyBm16zbMMSX24D2VCroDDVYi56TeTuRMn4C4OmTXr/uMeeLLe1khEa4NMrHUY77Dn5GUJUgbpgtMLrVdR7ZTwhwhK8RHTvwu8Th0rMP98+qtabQujF5PmZFge5WQrAf9N1prPhMRdVUcF1XmZqLiXJnZUtfy184l6mVfYOMizngL0wTKy3Pkp9FP+dYNWzfne0ah0=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5259.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(38070700021)(6133799003)(10067099003)(56012099006)(22082099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?R29QdEJtMFBsMEoxYm1CY2hoQmFXdWtMRDN6OXI2UUZhK3h4N2ZUOUNhelBK?=
+ =?utf-8?B?c0RsNktva3ZIOGRwLzlhdHBkLzgrSUpXbzVVMysxUFFySEg5QjVCSHA4NDBn?=
+ =?utf-8?B?bEVUREpERE5HTHlNcldlMVpZZjFyYkNTZDZaV2JSQTRyVHAzZmd0VzNibnNM?=
+ =?utf-8?B?NlRiQllMY1dBMmhvRXBDcFBEUzl0cU9TbFZ2MlgxZ0IvMDBEUUc3SFpNWDJj?=
+ =?utf-8?B?UDZOdll5NnIzRUkydEgyaTNXMVV1WVd1ZnJaMDNYTDdWWlR2RUp5c3FhUldK?=
+ =?utf-8?B?b1V4QXMwREhOdkpEenQ4anEycS9Nem5sVXI1Q3BFbVFhU2RYREFUcFh0RllP?=
+ =?utf-8?B?ZG4rVk1CZW5XeTFTa2cvcTNtMXFiQU43WUtIUUdzY1RZQkVIYlRsaWJLQkNE?=
+ =?utf-8?B?NnlNRFRwNGVYN2R1OWFZQzNCUVMveDRvVjZBL1ZHQk5rMTUrY0M2b1J0VmtU?=
+ =?utf-8?B?V3A4OS81WTlKREd5Z3ZZTGljT3Zwb3U1a3dHMlFkUDZXNzZVTmxvcWVuVHA5?=
+ =?utf-8?B?bEY5ajJTYmpuWkZnQVBBUDIyK3htWXJTU211UXZLQVFEN0Z3YWxDeHJjdnlD?=
+ =?utf-8?B?QUNNRGlVdEtVaUZld21aMHJIODUxbmFPYUJVRklxN0FjVmxIN3pFclIvTjIw?=
+ =?utf-8?B?a29CSVFTOURtNllpY0xnZFA0akx6REFtVXhKNGpCckR4VE9xVEpZVjFZQ3gw?=
+ =?utf-8?B?NTZsdHlEZVFPSXJjL1hBSXQvdUtNVzZJcDNJK2I4cktSbXRCcFNTZi8zNG5t?=
+ =?utf-8?B?dHJoVCtZVFh5TlJTdnYreXkzRHB4THEwNy91TUFyTGcwdXJZckdPalRZVExG?=
+ =?utf-8?B?UkYxOHVKTXN3d2pWQnZtSUZXZmFyMU1MZWk1UVl3YnN6dStvejEybGdsVGs1?=
+ =?utf-8?B?ZzMrbEsyNlRtVWtld1d0LzdmK0JZSGFkcWErRitsejVGUXBWVlcyTmZFVUxr?=
+ =?utf-8?B?bGh3TDNORVlKT1FLL1pkZW1SZ3Z3aGxTNGF3aW9LY2djMnQxV0JjaDVlVmQv?=
+ =?utf-8?B?UU5YUTFPUWpUYVV6R0xsd2E1eUdpMEh2TGp2NERBKzBLUDYwMGdNcTRpNWVk?=
+ =?utf-8?B?bzIxT3pNNElHaU1YWVNrcXpNODVrd05mYVpOeWRIQzBWbS9TQ0RxcTRWKzVB?=
+ =?utf-8?B?cC90NnErSi94UUh4aXBxODJXMDZMdnZLQW94UmkyRUJoZVNMUjJuWUVqcUhM?=
+ =?utf-8?B?MzN3K01JV2ZmUXhPODE5R0ZscUlqTk01Um9iRmVEMmZIM213Y3RiRERYTWhh?=
+ =?utf-8?B?dHk3RVphWEF4cTR4MU5SZ3prWDZ1UnBpK1N0V2hFWnh1cm9LNDc2QXQ3SEFk?=
+ =?utf-8?B?cEhsTnNsd0tYdFhSNndPdk5sSzhjVTI0bFZHMXBOQTFKNWZDZnBNY0NvVHRQ?=
+ =?utf-8?B?d1Z0THdvM3pJNitDa21YOE00RHYyMXJKRW1EWWl1OWJmZExteXdsVlJYTlJw?=
+ =?utf-8?B?eS9RdFNxV01HTSs0V1hWbDhtUmUzN3d2M2tidE8yNkZWQUNCc1pyWC9tbGlu?=
+ =?utf-8?B?UnBCWlp4WDJwTXEwY3ZUMVh4TWhGUUZJZVZBZG1xNWZTZUl1MGdKamV4MjYr?=
+ =?utf-8?B?UkhaRTJZcExEeUFRRVNBNXp0T21VT0U3QTJORmd5aTFKQ0pUbVJlSmxzelRu?=
+ =?utf-8?B?U29hTGhXWXdESFhBUXJIOEd4c1NoWHcvRmlRYlk1ekR2dTFUcGRWYlduSjFG?=
+ =?utf-8?B?V2tXb09IS3lqcTJsUVVLM0I5OWJtQktNR2FMemhvNzkrT21INGt6Tm9wb1Er?=
+ =?utf-8?B?YXdiUUpGckh6VWdOL0hUMkhXT0ZqT2VHYTVubFVoK2xEbnJBMFFsYTNDZEhH?=
+ =?utf-8?B?eU54VG9rc1FMbUpPV3Q4ajNncWcxQlJ0TDY3eU9pVS9sMDBxVGFnSU9xSTNT?=
+ =?utf-8?B?cjhqSFVwclRNMDVSN0I3T3B5U0M2VGEwVEgvMjFyZURjUkVhYlJYYVdCcURN?=
+ =?utf-8?B?MzZGK2hKeHBObTRYc0lwbzVkOFh3Sk5LYjJVNHV2cWQxcUxhMmwzcFl6SXlS?=
+ =?utf-8?B?TDRIaWRPNzlMZ2kyZ0VzcjZqTFF0VXFPVGJCWXpnaWR1Vm1YeE1TS2IyTEJl?=
+ =?utf-8?B?NWRETVY4VGZ5eTNMWTV2cWExREEzVUhKOTlkdU5Vc09NcmZGN1ljU3hHZ1BF?=
+ =?utf-8?B?V2lTQTQ2QXFBZ1ZEQTlVbk1BNWMwOVJ4RnhXN2R3NXJNa3d4bE1TNmdiSGR5?=
+ =?utf-8?B?TE5CYjVaQU1YbWFFMndYSlRzNWRTa0NGZVQydFZ5WUlrcFl2MXlGRFgzbmVq?=
+ =?utf-8?B?WS9RNk0wRnNKRHNEZzdDdGRtZXNpZzNEWURyWHBEQ3dhRllrQ1pxM0FRQ3M1?=
+ =?utf-8?B?RERsT0kydGxFODJRaTd4REFBbHYzNzFHV1V3OWxBZmorNTh3RmFidz09?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <81683F8790E6EC4696D75AD37D989453@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5259.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 94870aec-7afc-4f99-5f72-08df073945b1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Aug 2026 08:24:27.3501
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: uPZOWxwkqYUhD2bl1WJnQgouh/rrQpW9fG1UBmBqkB/zlqUo9whr/LZVqNtlYunUx2A1aRFP3pvsGhy8lSIsZw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8043
 
-A failed REDIST_REGION write can remove redistributor iodevs without
-clearing their cached vCPU assignments. A retry then skips those
-assignments and leaves the redistributors absent from the MMIO bus.
-
-Create two partial regions, reject a third region that overlaps the
-distributor, and retry at a valid address. After initializing the VGIC,
-have the guest read GICR_TYPER from all four redistributors and check their
-processor numbers. This verifies the final configuration without assuming
-that assignments survive the failed write.
-
-Keep the redistributor IPAs outside the guest RAM memslot and install only
-the stage-1 mappings needed for the MMIO accesses. If an iodev is missing,
-KVM_RUN therefore exits with KVM_EXIT_MMIO. Without the fix, the first
-redistributor access exits at 0x8030008.
-
-Assisted-by: Codex:gpt-5.6-sol
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
----
- tools/testing/selftests/kvm/arm64/vgic_init.c | 92 +++++++++++++++++++
- 1 file changed, 92 insertions(+)
-
-diff --git a/tools/testing/selftests/kvm/arm64/vgic_init.c b/tools/testing/selftests/kvm/arm64/vgic_init.c
-index 84aa97204b7f..5a30f3cb039b 100644
---- a/tools/testing/selftests/kvm/arm64/vgic_init.c
-+++ b/tools/testing/selftests/kvm/arm64/vgic_init.c
-@@ -5,6 +5,7 @@
-  * Copyright (C) 2020, Red Hat, Inc.
-  */
- #include <linux/kernel.h>
-+#include <linux/sizes.h>
- #include <sys/syscall.h>
- #include <asm/kvm.h>
- #include <asm/kvm_para.h>
-@@ -13,12 +14,21 @@
- 
- #include "test_util.h"
- #include "kvm_util.h"
-+#include "gic.h"
- #include "processor.h"
- #include "vgic.h"
- #include "gic_v3.h"
- 
- #define NR_VCPUS		4
- 
-+#define REDIST_RETRY_REGION0_BASE	GICR_BASE_GPA
-+#define REDIST_RETRY_REGION1_BASE	\
-+	(REDIST_RETRY_REGION0_BASE + 2 * KVM_VGIC_V3_REDIST_SIZE)
-+#define REDIST_RETRY_DIST_BASE		\
-+	(REDIST_RETRY_REGION1_BASE + KVM_VGIC_V3_REDIST_SIZE)
-+#define REDIST_RETRY_REGION2_BASE	\
-+	(REDIST_RETRY_DIST_BASE + KVM_VGIC_V3_DIST_SIZE)
-+
- #define REG_OFFSET(vcpu, offset) (((u64)vcpu << 32) | offset)
- 
- #define VGIC_DEV_IS_V2(_d) ((_d) == KVM_DEV_TYPE_ARM_VGIC_V2)
-@@ -65,6 +75,23 @@ static void guest_code(void)
- 	GUEST_DONE();
- }
- 
-+static void guest_check_redist_retry(void)
-+{
-+	unsigned int i;
-+
-+	/* The first three redistributors span adjacent regions 0 and 1. */
-+	for (i = 0; i < NR_VCPUS; i++) {
-+		u64 base = i < 3 ? REDIST_RETRY_REGION0_BASE +
-+				       i * KVM_VGIC_V3_REDIST_SIZE :
-+				       REDIST_RETRY_REGION2_BASE;
-+		u64 typer = readq((void *)(unsigned long)(base + GICR_TYPER));
-+
-+		GUEST_ASSERT_EQ(GICR_TYPER_CPU_NUMBER(typer), i);
-+	}
-+
-+	GUEST_DONE();
-+}
-+
- /* we don't want to assert on run execution, hence that helper */
- static int run_vcpu(struct kvm_vcpu *vcpu)
- {
-@@ -462,6 +489,70 @@ static void test_v3_new_redist_regions(void)
- 	vm_gic_destroy(&v);
- }
- 
-+static void test_v3_redist_region_retry(void)
-+{
-+	struct kvm_vcpu *vcpus[NR_VCPUS];
-+	struct vm_gic v;
-+	struct ucall uc;
-+	u64 addr;
-+	int ret;
-+
-+	v = vm_gic_create_with_vcpus(KVM_DEV_TYPE_ARM_VGIC_V3, NR_VCPUS,
-+				     guest_check_redist_retry, vcpus);
-+
-+	addr = REDIST_REGION_ATTR_ADDR(2, REDIST_RETRY_REGION0_BASE, 0, 0);
-+	kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_ADDR,
-+			    KVM_VGIC_V3_ADDR_TYPE_REDIST_REGION, &addr);
-+
-+	addr = REDIST_REGION_ATTR_ADDR(1, REDIST_RETRY_REGION1_BASE, 0, 1);
-+	kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_ADDR,
-+			    KVM_VGIC_V3_ADDR_TYPE_REDIST_REGION, &addr);
-+
-+	addr = REDIST_RETRY_DIST_BASE;
-+	kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_ADDR,
-+			    KVM_VGIC_V3_ADDR_TYPE_DIST, &addr);
-+
-+	addr = REDIST_REGION_ATTR_ADDR(1, REDIST_RETRY_DIST_BASE, 0, 2);
-+	ret = __kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_ADDR,
-+				    KVM_VGIC_V3_ADDR_TYPE_REDIST_REGION,
-+				    &addr);
-+	TEST_ASSERT(ret && errno == EINVAL,
-+		    "register redist region colliding with dist");
-+
-+	addr = REDIST_REGION_ATTR_ADDR(1, REDIST_RETRY_REGION2_BASE, 0, 2);
-+	kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_ADDR,
-+			    KVM_VGIC_V3_ADDR_TYPE_REDIST_REGION, &addr);
-+
-+	virt_map(v.vm, REDIST_RETRY_REGION0_BASE, REDIST_RETRY_REGION0_BASE,
-+		 vm_calc_num_guest_pages(v.vm->mode,
-+					 3 * KVM_VGIC_V3_REDIST_SIZE));
-+	virt_map(v.vm, REDIST_RETRY_REGION2_BASE, REDIST_RETRY_REGION2_BASE,
-+		 vm_calc_num_guest_pages(v.vm->mode,
-+					 KVM_VGIC_V3_REDIST_SIZE));
-+
-+	kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
-+			    KVM_DEV_ARM_VGIC_CTRL_INIT, NULL);
-+
-+	vcpu_run(vcpus[0]);
-+	switch (get_ucall(vcpus[0], &uc)) {
-+	case UCALL_DONE:
-+		break;
-+	case UCALL_ABORT:
-+		REPORT_GUEST_ASSERT(uc);
-+		break;
-+	case UCALL_NONE:
-+		if (vcpus[0]->run->exit_reason == KVM_EXIT_MMIO)
-+			TEST_FAIL("Unexpected MMIO exit at 0x%llx",
-+				  vcpus[0]->run->mmio.phys_addr);
-+		fallthrough;
-+	default:
-+		TEST_FAIL("Unexpected ucall %lu, exit_reason %u",
-+			  uc.cmd, vcpus[0]->run->exit_reason);
-+	}
-+
-+	vm_gic_destroy(&v);
-+}
-+
- static void test_v3_typer_accesses(void)
- {
- 	struct vm_gic v;
-@@ -986,6 +1077,7 @@ void run_tests(u32 gic_dev_type)
- 
- 	if (VGIC_DEV_IS_V3(gic_dev_type)) {
- 		test_v3_new_redist_regions();
-+		test_v3_redist_region_retry();
- 		test_v3_typer_accesses();
- 		test_v3_last_bit_redist_regions();
- 		test_v3_last_bit_single_rdist();
--- 
-2.39.5 (Apple Git-154)
+T24gU3VuLCAyMDI2LTA4LTIzIGF0IDEzOjM2ICswMDAwLCBTaGl2YW5rIEdhcmcgd3JvdGU6DQo+
+IFNwbGl0IG91dCB0aGUgZ3Vlc3RfbWVtZmQgZm9saW8gbWlncmF0aW9uIHNlcmllcyBbMV0sIHdo
+ZXJlIG1pZ3JhdGlvbiBwYXJ0DQo+IG5lZWRzIG1vcmUgZGlzY3Vzc2lvbi4gVGhlc2UgZml4ZXMs
+IHJlcG9ydGVkIGJ5IFNhc2hpa28gYm90IFsyXVszXSwgYXJlDQo+IGluZGVwZW5kZW50IG9mIGl0
+IGFuZCBjYW4gYmUgcmV2aWV3ZWQgb24gdGhlaXIgb3duLg0KPiANCj4gWzFdIGh0dHBzOi8vbG9y
+ZS5rZXJuZWwub3JnL2FsbC8yMDI2MDgwNS1zaGl2YW5rLWdtZW0tbWlncmF0ZS12My0wLTAwZDhi
+ZGVjNGUxZEBhbWQuY29tIA0KPiBbMl0gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsLzIwMjYw
+NzI4MDkyMDI3LjIyNUNGMUYwMDBFOUBzbXRwLmtlcm5lbC5vcmcNCj4gWzNdIGh0dHBzOi8vbG9y
+ZS5rZXJuZWwub3JnL2FsbC8yMDI2MDcyODA5MTk0NS5FQTZDMzFGMDAwRTlAc210cC5rZXJuZWwu
+b3JnDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBTaGl2YW5rIEdhcmcgPHNoaXZhbmtnQGFtZC5jb20+
+DQo+IC0tLQ0KPiBTaGl2YW5rIEdhcmcgKDUpOg0KPiAgICAgICBLVk06IGd1ZXN0X21lbWZkOiB0
+YWtlIHRoZSBpbnZhbGlkYXRlIGxvY2sgd2hlbiB1bmJpbmRpbmcgYSBkeWluZyBmaWxlDQo+ICAg
+ICAgIEtWTTogc2VsZnRlc3RzOiBmaXggbWF4bm9kZSBhcmd1bWVudHMgaW4geGFwaWNfaXBpX3Rl
+c3QNCj4gICAgICAgS1ZNOiBzZWxmdGVzdHM6IHVzZSBCSVRTX1BFUl9UWVBFKCkgZm9yIE5VTUEg
+bWFza3MNCj4gICAgICAgS1ZNOiBzZWxmdGVzdHM6IGFkZCBnZXRfbnVtYV9tZW1fbm9kZXMoKQ0K
+PiAgICAgICBLVk06IHNlbGZ0ZXN0czogdXNlIGFsbG93ZWQgTlVNQSBub2RlcyBpbiBndWVzdF9t
+ZW1mZF90ZXN0DQo+IA0KPiAgdG9vbHMvdGVzdGluZy9zZWxmdGVzdHMva3ZtL2d1ZXN0X21lbWZk
+X3Rlc3QuYyAgIHwgODYgKysrKysrKysrKysrKysrKy0tLS0tLS0tDQo+ICB0b29scy90ZXN0aW5n
+L3NlbGZ0ZXN0cy9rdm0vaW5jbHVkZS9udW1haWYuaCAgICAgfCA1MiArKy0tLS0tLS0tLS0tLQ0K
+PiAgdG9vbHMvdGVzdGluZy9zZWxmdGVzdHMva3ZtL3g4Ni94YXBpY19pcGlfdGVzdC5jIHwgMTQg
+KystLQ0KPiAgdmlydC9rdm0vZ3Vlc3RfbWVtZmQuYyAgICAgICAgICAgICAgICAgICAgICAgICAg
+IHwgMjMgKysrKy0tLQ0KPiAgNCBmaWxlcyBjaGFuZ2VkLCA4NCBpbnNlcnRpb25zKCspLCA5MSBk
+ZWxldGlvbnMoLSkNCj4gLS0tDQo+IGJhc2UtY29tbWl0OiAyNzA5ZGQ1YWUzMmYwODI4ZjM4NjMy
+N2M3NmJiYTlmMzlmNjNhMWM2DQo+IGNoYW5nZS1pZDogMjAyNjA4MjItc2hpdmFuay1nbWVtLWZp
+eC1zcGxpdC1iOGE5MDU3Y2Y5ODcNCj4gDQo+IEJlc3QgcmVnYXJkcywNCg0KSGkgU2VhbiwgUGFv
+bG8sDQoNCldvdWxkIHlvdSBjb25zaWRlciBxdWV1aW5nIHRoaXMgZm9yIG5leHQgKDcuNCk/DQoN
+ClRoYW5rcywNClNoaXZhbmsNCg==
