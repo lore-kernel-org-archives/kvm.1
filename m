@@ -1,185 +1,264 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640CB35E931;
-	Mon, 31 Aug 2026 00:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3909423EAB4;
+	Mon, 31 Aug 2026 01:05:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788135924; cv=none; b=RjBkRb2dePlFp9eS9qPnk/DByP4ZoHm2UGSbDDLWwPGEuUXkBIGX6KH07NfU/Gds+7oL9dc3bnxYA87WBghZlonXhtgQbAoRXHJNFmAK+RBjyAUCXrvt5gftm8mT8/XwyD78hpkbpO4/yi3JfZUb1wdEpMtDNKmWb0lq/8CLaOk=
+	t=1788138343; cv=none; b=TQRP+quJzwMW2YjhxAusE4vkDw81r8KsDncQXAL5dVho/Gkxp+q65G7caT5GclwsoJbsm8Grpnz/b1JjtBm5RkziChov35SiwtvBpdlB6/1QWzgaTqq9mjxjWR/DNirpfzhE9CC+M/md/qhas6I0GYBK1jauLW0bM3JbxtyjH/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788135924; c=relaxed/simple;
-	bh=lUde8iYPK4GJUXtsVUXDi0w9BjDZRsLdMY2F9VQx/eQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=V7N5FRDWPih9oNux2cdhKDP2kqBI1DjlgQ8ZV0PFSNujDZZwpzJS2pFFAaA2ZZrDQNVHJVjvWS/X9MBMRNgCH6sPJmoPmLLvh6DBRvbrk8h3F04RbnVzmjz6jzSPSHGLUvg17IcPHFiH5NoYQ2xFOSs/50l9cmZo+jQsUFF1ycI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QDL1/U5G; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1788138343; c=relaxed/simple;
+	bh=vqPXRdN6OMRNgYyh2KotWMQrAzHg7YAtPwA3HORXZVo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qvN1O0MXnFwSLcpQaLUrs6UkbGG8pVWWup3EWVitniXj5U2xGq1IBzGE0zgA5nJO9HR0SpRfIohNK3V8W+DNkOLCa5AaPgTYj6qYW+mclwPiNia/psMxpgptUqRWLO+qmCA32QZyrf027uWJ3OHsk/C2h4fooYDgTWbZZnyoWz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dqOdJCUr; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QDL1/U5G"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3E56DC2BCC7;
-	Mon, 31 Aug 2026 00:25:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788135924;
-	bh=lUde8iYPK4GJUXtsVUXDi0w9BjDZRsLdMY2F9VQx/eQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=QDL1/U5Gi2tI2Qsasc8gRi1lHT6KFbEmiOS2zkGQiMMd9NtAzAMilbTUB3CKXz5zx
-	 ttpag6CJtyLtVicvWYq/9LIjc1XNwVhRvwJ5dIyLS8/waaX0jF3F73MpmmyHU6rfbF
-	 q8XZb9UvWYE/5bAWG+W/Wp+5HDew4a4hKCfdXKCcdpuqGecuhW+AM0m39q3uFnO0Nd
-	 884bzQI+Q8B6qJLtlZndcQGLmdG3yNSZTfTWyeGeO9ss5Ck9GV/IY4K4XZHUvFpj2y
-	 wNMuF1AVUEzTEf0r06Ku3D787meq/w8H4jMg9F8FVYbwDGIB4cVNzMjOXu9q9YkydU
-	 DvKIGry0Tt90Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 23D49C61DE2;
-	Mon, 31 Aug 2026 00:25:24 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Sun, 30 Aug 2026 17:25:46 -0700
-Subject: [PATCH v12 45/45] KVM: selftests: Update private memory exits test
- to work with per-gmem attributes
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dqOdJCUr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788138341; x=1819674341;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=vqPXRdN6OMRNgYyh2KotWMQrAzHg7YAtPwA3HORXZVo=;
+  b=dqOdJCUrfOudz/VEH2M+0pnPZYC2cyM2zSilZCc2I4QiYc57+MxZHSJ3
+   c77kDE9b+/4g6oeaT0VW2T92de5/blanO8Xm94beL4T+JOD6xnT9lREE0
+   FmoT5InC3fV54K6+PuXIjE3T3WJnOlVsH3zIA89wRjgu/ndF7LJv/cJSW
+   UOPStXyMSIEL7s5OO3WW92SPd/qbDPU2rMQVW84c2sEmx68M1p5GQBWh3
+   V8fQk95t9IxuufX1dDV+p8XXS1mxscTyox03REW6Tlf2W4Bj10JWsyWeq
+   3La7q336efMMTAm9S2Sj18yRWcoQdxGLEL1h1eNOPn0Cn+9Lok860rmiz
+   A==;
+X-CSE-ConnectionGUID: PMvB1sCHQY6Wa4GiooNB2g==
+X-CSE-MsgGUID: RKeA0hm0R82/IuL3Url/6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="88591230"
+X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
+   d="scan'208";a="88591230"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2026 18:05:40 -0700
+X-CSE-ConnectionGUID: okL4t64kQgWHxIhcTP4Zdg==
+X-CSE-MsgGUID: HkP4I0ymR+y/Ca5IygRpVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
+   d="scan'208";a="270586017"
+Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.239]) ([10.124.241.239])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2026 18:05:36 -0700
+Message-ID: <b0c0fa9e-3f33-4f15-93e5-985ec8d7f87d@linux.intel.com>
+Date: Mon, 31 Aug 2026 09:05:34 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260830-gmem-inplace-conversion-v12-45-85e5fd25252a@google.com>
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
-To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
- brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
- jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
- oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
- rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
- steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
- Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Fuad Tabba <fuad.tabba@linux.dev>, 
- Vlastimil Babka <vbabka@kernel.org>, Baoquan He <baoquan.he@linux.dev>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
- linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788135916; l=3875;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=mmy51FSAm74sXNx3NluUXGdNtIyrfc0yrVpZYstCmaY=;
- b=x1tSYHkMiZA15KG15MvuWidKGKIO9ZIkKkpYPRyas8DXVI2Iq/AGOOCZ5f2nE5+/RixYjQCnq
- p1pUwVfslNYAIHRIX9zYPGrQXJ1fNDZmZcdduy/XQlbcBp8CmqVZs0+
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/23] perf/x86: Apply PMU partition mask on static
+ constraints
+To: "Chen, Zide" <zide.chen@intel.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>
+Cc: kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+ Jim Mattson <jmattson@google.com>, Stephane Eranian <eranian@google.com>,
+ linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Xudong Hao <xudong.hao@intel.com>
+References: <20260821222002.54907-1-zide.chen@intel.com>
+ <20260821222002.54907-8-zide.chen@intel.com>
+ <09251cc4-c795-411c-a9d9-9133a0d73e03@linux.intel.com>
+ <efb6f286-97da-4d5f-955b-29310d99d478@intel.com>
+Content-Language: en-US
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <efb6f286-97da-4d5f-955b-29310d99d478@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Sean Christopherson <seanjc@google.com>
 
-Skip setting memory to private in the private memory exits test when using
-per-gmem memory attributes, as memory is initialized to private by default
-for guest_memfd, and using vm_mem_set_private() on a guest_memfd instance
-requires creating guest_memfd with GUEST_MEMFD_FLAG_MMAP (which is totally
-doable, but would need to be conditional and is ultimately unnecessary).
+On 8/28/2026 7:01 AM, Chen, Zide wrote:
+>
+> On 8/26/2026 3:12 AM, Mi, Dapeng wrote:
+>> It seems not a good practice for me to modify all the places calling these
+>> static constraints. We could have to add new get_event_constraints()
+>> helpers for future platforms, and we have to duplicate these
+>> part_constraint() code.
+>> Could we leverage the dynamic constraint mechanism?  We can set the
+>> event->hw.dyn_constraint to be host counters mask, then we don't need any
+>> specific change for these static constraints.
+> In all code paths that use these static constraints, for example,
+> counter0_constraint, it is assumed that GP counter 0 is available on the
+> host. However, with PMU partitioning, any counter may be unavailable,
+> even in the model-specific code path, and this assumption is broken.
+>
+> So, adding a wrapper seems unavoidable.
+>
+> Additionally, part_constraint() already makes use of dyn_constraint, right?
 
-Expect an emulated MMIO instead of a memory fault exit when attributes are
-per-gmem, as deleting the memslot effectively drops the private status,
-i.e. the GPA becomes shared and thus supports emulated MMIO.
+Could we add a wrapper helper like below?
 
-Skip the "memslot not private" test entirely, as private vs. shared state
-for x86 software-protected VMs comes from the memory attributes themselves,
-and so when doing in-place conversions there can never be a disconnect
-between the expected and actual states.
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index f485f927967a..03b827f59d40 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -1033,6 +1033,17 @@ int perf_assign_events(struct event_constraint
+**constraints, int n,
+ }
+ EXPORT_SYMBOL_GPL(perf_assign_events);
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Fuad Tabba <tabba@google.com>
-Tested-by: Shivank Garg <shivankg@amd.com>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- .../selftests/kvm/x86/private_mem_kvm_exits_test.c | 36 ++++++++++++++++++----
- 1 file changed, 30 insertions(+), 6 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-index e6d16e9d61200..f7228e0f1ac61 100644
---- a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-+++ b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-@@ -62,8 +62,9 @@ static void test_private_access_memslot_deleted(void)
- 
- 	virt_map(vm, EXITS_TEST_GVA, EXITS_TEST_GPA, EXITS_TEST_NPAGES);
- 
--	/* Request to access page privately */
--	vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
-+	/* Request to access page privately. */
-+	if (!kvm_has_gmem_attributes)
-+		vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
- 
- 	kvm_pthread_create(&vm_thread, NULL,
- 			   (pthread_fn_t)run_vcpu_get_exit_reason, (void *)vcpu);
-@@ -73,10 +74,26 @@ static void test_private_access_memslot_deleted(void)
- 	kvm_pthread_join(vm_thread, &thread_return);
- 	exit_reason = (u32)(u64)thread_return;
- 
--	TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+	/*
-+	 * If attributes are tracked per-gmem, deleting the memslot that points
-+	 * at the gmem instance effectively makes the memory shared, and so the
-+	 * read should trigger emulated MMIO.
-+	 *
-+	 * If attributes are tracked per-VM, deleting the memslot shouldn't
-+	 * affect the private attribute, and so KVM should generate a memory
-+	 * fault exit (emulated MMIO on private GPAs is disallowed).
-+	 */
-+	if (kvm_has_gmem_attributes) {
-+		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MMIO);
-+		TEST_ASSERT_EQ(vcpu->run->mmio.phys_addr, EXITS_TEST_GPA);
-+		TEST_ASSERT_EQ(vcpu->run->mmio.len, sizeof(u64));
-+		TEST_ASSERT_EQ(vcpu->run->mmio.is_write, false);
-+	} else {
-+		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+	}
- 
- 	kvm_vm_free(vm);
- }
-@@ -87,6 +104,13 @@ static void test_private_access_memslot_not_private(void)
- 	struct kvm_vcpu *vcpu;
- 	u32 exit_reason;
- 
-+	/*
-+	 * Accessing non-private memory as private with a software-protected VM
-+	 * isn't possible when doing in-place conversions.
-+	 */
-+	if (kvm_has_gmem_attributes)
-+		return;
++static struct event_constraint *
++x86_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
++                         struct perf_event *event)
++{
++       struct event_constraint *c;
 +
- 	vm = vm_create_shape_with_one_vcpu(protected_vm_shape, &vcpu,
- 					   guest_repeatedly_read);
- 
++       c = static_call(x86_pmu_get_event_constraints)(cpuc, idx, event);
++
++       return part_constraint(cpuc, idx, event, c);
++}
++
+ int x86_schedule_events(struct cpu_hw_events *cpuc, int n, int *assign)
+ {
+        struct event_constraint *c;
+@@ -1069,7 +1080,7 @@ int x86_schedule_events(struct cpu_hw_events *cpuc,
+int n, int *assign)
+                 * change due to external factors (sibling state, allow_tfa).
+                 */
+                if (!c || (c->flags & PERF_X86_EVENT_DYNAMIC)) {
+-                       c =
+static_call(x86_pmu_get_event_constraints)(cpuc, i, cpuc->event_list[i]);
++                       c = x86_get_event_constraints(cpuc, i,
+cpuc->event_list[i]);
+                        cpuc->event_constraint[i] = c;
+                }
 
--- 
-2.55.0.897.gb25b4bd76c-goog
 
-
+>
+>> Thanks.
+>>
+>> On 8/22/2026 6:19 AM, Zide Chen wrote:
+>>> Static, counter-specific constraints used for attr.precise_ip == 3, or
+>>> other special cases bypass intel_get_event_constraints(), which is
+>>> where partition_mask is applied via dyn_constraint().
+>>>
+>>> As a result, such a host !exclude_guest event can still be scheduled
+>>> onto a counter that partition_mask reserves for the guest, causing
+>>> host and guest to share the same hardware counter.
+>>>
+>>> Some of these static constraint paths, e.g. glp or cmt, are currently
+>>> only reachable on platforms that don't support PerfMon masking. Still,
+>>> apply part_constraint() to all of them uniformly, so future platforms
+>>> that combine PerfMon masking with these constraint paths are not
+>>> silently exposed to this bug.
+>>>
+>>> Signed-off-by: Zide Chen <zide.chen@intel.com>
+>>> ---
+>>>  arch/x86/events/intel/core.c | 39 +++++++++++++++++++++++-------------
+>>>  1 file changed, 25 insertions(+), 14 deletions(-)
+>>>
+>>> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+>>> index 7951accfcf2c..0f76e56fd2db 100644
+>>> --- a/arch/x86/events/intel/core.c
+>>> +++ b/arch/x86/events/intel/core.c
+>>> @@ -4459,6 +4459,9 @@ dyn_constraint(struct cpu_hw_events *cpuc, struct event_constraint *c, int idx)
+>>>   * Mask out guest-owned counters from a constraint when PMU partition has been
+>>>   * entered, so !exclude_guest host events are not scheduled onto them while
+>>>   * the CPU is in non-root mode.
+>>> + *
+>>> + * This is also used by PMU-specific get_event_constraints() wrappers
+>>> + * that hard-code a static, counter-specific constraint.
+>>>   */
+>>>  static struct event_constraint *
+>>>  part_constraint(struct cpu_hw_events *cpuc, int idx,
+>>> @@ -5568,7 +5571,7 @@ hsw_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
+>>>  	/* Handle special quirk on in_tx_checkpointed only in counter 2 */
+>>>  	if (event->hw.config & HSW_IN_TX_CHECKPOINTED) {
+>>>  		if (c->idxmsk64 & (1U << 2))
+>>> -			return &counter2_constraint;
+>>> +			return part_constraint(cpuc, idx, event, &counter2_constraint);
+>>>  		return &emptyconstraint;
+>>>  	}
+>>>  
+>>> @@ -5585,7 +5588,7 @@ icl_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
+>>>  	 */
+>>>  	if ((event->attr.precise_ip == 3) &&
+>>>  	    constraint_match(&fixed0_constraint, event->hw.config))
+>>> -		return &fixed0_constraint;
+>>> +		return part_constraint(cpuc, idx, event, &fixed0_constraint);
+>>>  
+>>>  	return hsw_get_event_constraints(cpuc, idx, event);
+>>>  }
+>>> @@ -5607,7 +5610,7 @@ glc_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
+>>>  	if ((event->attr.precise_ip == 3) &&
+>>>  	    !constraint_match(&fixed0_constraint, event->hw.config)) {
+>>>  		if (c->idxmsk64 & BIT_ULL(0))
+>>> -			return &counter0_constraint;
+>>> +			return part_constraint(cpuc, idx, event, &counter0_constraint);
+>>>  
+>>>  		return &emptyconstraint;
+>>>  	}
+>>> @@ -5623,7 +5626,7 @@ glp_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
+>>>  
+>>>  	/* :ppp means to do reduced skid PEBS which is PMC0 only. */
+>>>  	if (event->attr.precise_ip == 3)
+>>> -		return &counter0_constraint;
+>>> +		return part_constraint(cpuc, idx, event, &counter0_constraint);
+>>>  
+>>>  	c = intel_get_event_constraints(cpuc, idx, event);
+>>>  
+>>> @@ -5645,9 +5648,9 @@ tnt_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
+>>>  	if (event->attr.precise_ip == 3) {
+>>>  		/* Force instruction:ppp on PMC0 and Fixed counter 0 */
+>>>  		if (constraint_match(&fixed0_constraint, event->hw.config))
+>>> -			return &fixed0_counter0_constraint;
+>>> +			return part_constraint(cpuc, idx, event, &fixed0_counter0_constraint);
+>>>  
+>>> -		return &counter0_constraint;
+>>> +		return part_constraint(cpuc, idx, event, &counter0_constraint);
+>>>  	}
+>>>  
+>>>  	return c;
+>>> @@ -5705,22 +5708,30 @@ cmt_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
+>>>  	if (event->attr.precise_ip == 3) {
+>>>  		/* Force instruction:ppp on PMC0, 1 and Fixed counter 0 */
+>>>  		if (constraint_match(&fixed0_constraint, event->hw.config)) {
+>>> +			c = &fixed0_counter0_1_constraint;
+>>> +
+>>>  			/* The fixed counter 0 doesn't support LBR event logging. */
+>>>  			if (branch_sample_counters(event))
+>>> -				return &counter0_1_constraint;
+>>> -			else
+>>> -				return &fixed0_counter0_1_constraint;
+>>> +				c = &counter0_1_constraint;
+>>> +
+>>> +			return part_constraint(cpuc, idx, event, c);
+>>>  		}
+>>>  
+>>>  		switch (c->idxmsk64 & 0x3ull) {
+>>>  		case 0x1:
+>>> -			return &counter0_constraint;
+>>> +			c = &counter0_constraint;
+>>> +			break;
+>>>  		case 0x2:
+>>> -			return &counter1_constraint;
+>>> +			c = &counter1_constraint;
+>>> +			break;
+>>>  		case 0x3:
+>>> -			return &counter0_1_constraint;
+>>> +			c = &counter0_1_constraint;
+>>> +			break;
+>>> +		default:
+>>> +			c = &emptyconstraint;
+>>> +			break;
+>>>  		}
+>>> -		return &emptyconstraint;
+>>> +		return part_constraint(cpuc, idx, event, c);
+>>>  	}
+>>>  
+>>>  	return c;
+>>> @@ -5744,7 +5755,7 @@ rwc_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
+>>>  		 */
+>>>  		if (event->attr.precise_ip == 3)
+>>>  			return &emptyconstraint;
+>>> -		return &counters_1_7_constraint;
+>>> +		return part_constraint(cpuc, idx, event, &counters_1_7_constraint);
+>>>  	}
+>>>  
+>>>  	return c;
