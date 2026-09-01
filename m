@@ -1,118 +1,272 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D793D9DC0;
-	Tue,  1 Sep 2026 03:08:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8C4433BCE
+	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 03:17:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788232137; cv=none; b=Awf2CQVdZjAm22IZGWxW7J7lFhr2HxgjgngMe7Yn1zw1OLA3PKZSSrN62mL55GHPCo1jwmMH9INbIUrW7u7Sg6Z7hViWqirgEOstwEubyylm8iXn/AvJy+azjCHa1GdIGwTvImoPjb772MdhTdymvYc7Q+uV3scmIlfOHV/tH4o=
+	t=1788232675; cv=none; b=FdmWVViMJbg/lFRDDRAw1csNTFST4rpa+CCO0kMXiPS8lLrCFQB2jliqrgXEr282ETc6yY6BL31wxsynZzbQ/EoMavuAWaYgCQnqKQX4BxPRu0gxElEpgjC+fNPfWLW5uf73ffPRG7Gqp+NOdWmOoVbaPxzRvJiOsdT+dr3oM/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788232137; c=relaxed/simple;
-	bh=iDjZBzHdOIEWE3US+miz1BbbH4gQX386+ehW6sw4idk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nCutf6aJ+aH8eemCMaFjyQ+NMzkFDdeB/Wg8l3LCoQsf5VO4t6FkGLg8xB9A0M4okIDdLdP8UUInlMptmhI8yvBC9jkTXFHq6+6NPoZhJ/qsmVUJsDFJVHpNc6JAHCHIO4qP/mCbp/5lP72AQGEp7zqhvuDKwHfHBYSe35PmpK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oJhgk1ni; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1788232675; c=relaxed/simple;
+	bh=jGwwSAzdsI1x694uTmEB/L0jmbLi7GZ29rqwKsyXlu4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=PU5tMnBkaoXv1m4lKVEY+Cvrgjqmzxf7y/PaneMj6rRGddytkNY3BOJiDOJbdH+px4xUQ5lONdpn4M5RgWG+bnlirxBpv4pArUf5MQH8/mGiKczyS1PVmv7gc5mfsh3jdKkBLkUItUGdN1UqfkO2leTJSx+mU5w0aNM7eUQMRU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pA/+5kX9; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oJhgk1ni"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788232137; x=1819768137;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=iDjZBzHdOIEWE3US+miz1BbbH4gQX386+ehW6sw4idk=;
-  b=oJhgk1nikTOQesOZx3aV4OMPUZoDspbabJZdI97OVInvD2DoIlApYjpe
-   309Tgfoda6b/LWQqCTlb3/SqMWM9r4y0/fLnwBqGF/JI0Z9506Es1y2Qo
-   mcP1vpodlnEFqbS9OkQ/ZJJR1bjb3ARK9iBAjye2JhDBP1pvfpNt6ei9v
-   +syVEfRUAqUs+n78UIXzg/fCkvGFTp6tePCqTDc7KlNaCmhKbm7FkALJZ
-   KesokF1d+q3uRwkJGOeWYciPsW9BGOPXJZBxR52fB/fM2ToWF+xfPrc3r
-   R7G6l/+CqwGOlG+lhv7yNet/tNp/3aELDiqJF2Ra8IXnGbL+WQh1GCjdz
-   w==;
-X-CSE-ConnectionGUID: GFTKTQDSSAGOOVhVUSb55w==
-X-CSE-MsgGUID: +xZdgaPpQmmbRJrDnGj7cA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="88853371"
-X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
-   d="scan'208";a="88853371"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 20:08:56 -0700
-X-CSE-ConnectionGUID: pC+PsqAhR7OgyKYzcQSe6w==
-X-CSE-MsgGUID: 3IEHxcTdSvCew1oNSRrksg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
-   d="scan'208";a="267161422"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.239]) ([10.124.241.239])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 20:08:52 -0700
-Message-ID: <c5471c76-e4bc-43fb-a2f2-b362fb439b05@linux.intel.com>
-Date: Tue, 1 Sep 2026 11:08:50 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pA/+5kX9"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8525efa7274so313785b3a.2
+        for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 20:17:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788232672; x=1788837472; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qVvb9puxMkwSFWKQtCywkwivRBgKsNgnDLb5dUD4vjE=;
+        b=pA/+5kX9teFJ81YcZaAJnDzfP4yKRBlCjT+X2bmgYVnZT6r5IgtMGm/GusqadJDP2S
+         /I/XMn9j2krWMUlG8mLuZEtstVaWPGMHT/uR05NNgMo3XNo/03+lCq1sS3MAr9RbNLv1
+         30vnfgg5Dqf/oGxK7xIKS5m5n2RGlBedvzZI2VitCyQqtSipl1U4wPM87bTBDgSFQ4UW
+         BfVNnFkvwRBZgrxxA+R9nBncR8ocTaWn3Xh9i4pP+6e5Q4cZ2JYuHSz6RTDi4JH8zXEy
+         y5CgPWB7Qee2Meb7ooMbZuEQH8NvQpVIPabOAEModGS2T/qshSwaXHTygsFHESFUFiZK
+         sGjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788232672; x=1788837472;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qVvb9puxMkwSFWKQtCywkwivRBgKsNgnDLb5dUD4vjE=;
+        b=iO7huG+TfktvcLmXvkTUZdGy4iw4iB51T/FbNwqmc/ypVrN1XpCL5/a4Bgn/EcXzPd
+         glifm21fUZf1PidPUw/TLV9p+EyAPTtviRVR1h4YKstL+3ky1tpwBJ2TfKZZI4QhJqSC
+         xtdtESdcteDPXPLZ9S5mmH/aD8TLwBahcY+nHR7HyFYBmldwqP14SIK+Nl3QdTjSVg9i
+         4piophI/wIYAzBg/Pe2Y6fq852HggI1yH3nAAdFLd4P6pDiw3OWCSm7kVYkIjSmbM1gk
+         y7ik1rUj5+g8wRIw089W7W7+D4inRDCXPN5JMAlgpdZQ10eVi/FZIBWKXj+mcbfaqau5
+         dZcQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrUpfLLO6JQPfJRBay02IDiok8BZAeZ9rU4mBqPjwk16lxgDeZU77OFHExY51Q16X5JIF0=@vger.kernel.org
+X-Gm-Message-State: AFuF++my+GCGpkWTVt7m1XXiytHHxJm/o5CuV+8zDmYEzvUnLdagQIiE
+	1V6s/HAJIljYXLNLK3yLBa5cbpbvOGunnF27EdzmRBs0k8IyduaG4dYNPWoGuQ==
+X-Gm-Gg: AR+sD13c+9Gx7nlbsbY3Oi6tAck68l5sZFUx4NbsCTMLDJacwr5h05ze1jZ/3Xcy4X5
+	ZHwl663ftRrosAC1U5WxLaXX2qsKAiEAhydnLykqCJDPkT453GnEftLGsPmkwNsFZSHe138wN0U
+	1l/IlDs86urOfToyupQKDkNqyfGl+vecP/MXCNwjH9tUGxpSEA14M6BWC5R2vAqFzmRhcJn3bF/
+	aPlI5YfWRuqm4RogOgH6RVVvvGFf5XPLpxpMq6q25vw5u/Eh4q7QuHlNfQo+TAOWZASPLRMl2mY
+	NZXUkkR6paNuKYg/LiPr25JtUDRqbFM/ZS4Hshm2CP9jhmgkfbjEEKHxIrjLkVGZydwcl033kgU
+	69xczh3e4ytZGtKs0ikBKTPS0pbAca+5pHUD7ObV7wRvByWpEA75DfNtdxXekusPmJW2U+EsV7v
+	HrSP4k8f5uOYNmWDF7HJxnYxmw83LHK6YNuwxPS1nO+GjI9UYNlvcnuDtUdkcydQ==
+X-Received: by 2002:a05:6a00:148f:b0:857:727c:a1f6 with SMTP id d2e1a72fcca58-857727ca403mr30481781b3a.24.1788232672232;
+        Mon, 31 Aug 2026 20:17:52 -0700 (PDT)
+Received: from gmail.com ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85be93489f0sm332827b3a.40.2026.08.31.20.17.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 20:17:51 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>
+Cc: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] vhost/vsock: batch RX used-ring updates
+Date: Tue,  1 Sep 2026 11:17:37 +0800
+Message-Id: <20260901031737.201896-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/16] KVM: x86/pmu: Expose kvm_host_pmu to vendor
- modules
-To: Zide Chen <zide.chen@intel.com>, Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>
-Cc: kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Jim Mattson <jmattson@google.com>, Stephane Eranian <eranian@google.com>,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Xudong Hao <xudong.hao@intel.com>
-References: <20260827223755.143247-1-zide.chen@intel.com>
- <20260827223755.143247-8-zide.chen@intel.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <20260827223755.143247-8-zide.chen@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+vhost_transport_do_send_pkt() calls vhost_add_used() for every Guest RX
+buffer even though it delays the Guest signal until the worker finishes.
+Each call publishes one used entry and updates the used index separately.
 
-On 8/28/2026 6:37 AM, Zide Chen wrote:
-> kvm_host_pmu holds the unadulterated host PMU capabilities, which
-> can be used to compare against guest capabilities to determine whether
-> certain MSRs should be intercepted by KVM.
->
-> Exposing it directly avoids the need to introduce per-field accessors,
-> which would add boilerplate without hiding any implementation detail
-> worth encapsulating.
->
-> Opportunistically, fix typo "Unadultered" in the comment.
->
-> Signed-off-by: Zide Chen <zide.chen@intel.com>
-> ---
->  arch/x86/kvm/pmu.c | 5 +++--
->  arch/x86/kvm/pmu.h | 1 +
->  2 files changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-> index b0fcd0a538d2..7837e2e1af98 100644
-> --- a/arch/x86/kvm/pmu.c
-> +++ b/arch/x86/kvm/pmu.c
-> @@ -27,8 +27,9 @@
->  /* This is enough to filter the vast majority of currently defined events. */
->  #define KVM_PMU_EVENT_FILTER_MAX_EVENTS 300
->  
-> -/* Unadultered PMU capabilities of the host, i.e. of hardware. */
-> -static struct x86_pmu_capability __read_mostly kvm_host_pmu;
-> +/* Unadulterated PMU capabilities of the host, i.e. of hardware. */
-> +struct x86_pmu_capability __read_mostly kvm_host_pmu;
-> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_host_pmu);
->  
->  /* KVM's PMU capabilities, i.e. the intersection of KVM and hardware support. */
->  struct x86_pmu_capability __read_mostly kvm_pmu_cap;
-> diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
-> index b7a319b1eccc..9a658ae5b268 100644
-> --- a/arch/x86/kvm/pmu.h
-> +++ b/arch/x86/kvm/pmu.h
-> @@ -252,6 +252,7 @@ static inline bool pmc_is_locally_enabled(struct kvm_pmc *pmc)
->  	return !kvm_pmu_call(pmc_is_disabled_in_current_mode)(pmc);
->  }
->  
-> +extern struct x86_pmu_capability kvm_host_pmu;
->  extern struct x86_pmu_capability kvm_pmu_cap;
->  
->  void kvm_init_pmu_capability(struct kvm_pmu_ops *pmu_ops);
+Collect the completed buffer heads in the arrays already allocated for the
+virtqueue and publish them with vhost_add_used_n().  Bound the batch by the
+ring size, array capacity, and worker packet budget.  Flush before
+re-enabling notifications or leaving the worker.
+
+Each used entry describes one completed RX buffer and keeps its actual used
+length, so set nheads to 1 for every entry.  This patch does not change
+negotiated features or compress multiple buffers into one used entry.
+
+This patch is limited to the current skb-based vhost-vsock RX path.
+
+Performance:
+
+Tested with a QEMU/KVM guest on a host with 4 online CPUs, using 2 vCPUs
+pinned to host CPUs 2 and 3, QEMU 10.2.1, q35, 1536 MiB, and Linux
+7.2.0-rc3-next-20260713-next-debug-kasan.  The vhost-vsock source is based
+on linux-next master at 49362394dad7df66c274c867a271394c10ca2bb8.
+
+Current vhost-vsock does not implement VIRTIO_F_IN_ORDER or
+VIRTIO_F_RING_PACKED, so both configurations used packed=off and
+in_order=off:
+
+  baseline:                 RX batching=off
+  vhost-vsock RX batching:  RX batching=on
+
+The test used vsock_perf.  The Guest receiver was started with:
+
+  vsock_perf --port PORT --buf-size 64M --vsk-size 64M --rcvlowat 1
+
+The Host sender was started with:
+
+  vsock_perf --sender 3 --port PORT --bytes BYTES \
+      --buf-size SEND_BUF --vsk-size 64M
+
+Each workload transferred BYTES=1 GiB.  The SEND_BUF values were 256 B
+(SEND_BUF=256), 512 B (SEND_BUF=512), 4 KiB (SEND_BUF=4K), and 64 KiB
+(SEND_BUF=64K).
+Each state used a fresh Guest.  Each workload uses 20 paired runs, with 10
+runs in each order.  The reported values are
+Guest RX throughput in Gbits/s.  The baseline and batching columns are the
+geometric means over the 20 runs; change is batching / baseline - 1,
+computed from the unrounded values:
+
+  workload   baseline RX    batching RX   change   faster
+  256 B      0.0795724      0.0831509      +4.497%  20/20
+  512 B      0.1194885      0.1210297      +1.290%  14/20
+  4 KiB      0.7208273      0.7242053      +0.469%  11/20
+  64 KiB     2.1712797      2.1951941      +1.101%  13/20
+
+For reference, the table below gives the 95% normal-approximation intervals
+obtained from the 20 paired log(batching / baseline) values:
+
+  workload   paired 95% interval
+  256 B      +3.985% to +5.011%
+  512 B      +0.206% to +2.385%
+  4 KiB      -1.442% to +2.416%
+  64 KiB     -1.474% to +3.745%
+
+All transfers passed byte-count checks, and no kernel errors were observed
+in the logs.  The 256-byte workload improved in every pair.  The 512 B
+workload was faster in 14 of 20 pairs, with a small gain.  The 4 KiB and
+64 KiB workloads showed no material throughput change; the difference
+between their results may be due to scheduling and execution variation.
+
+Link: https://lore.kernel.org/r/20181214082146-mutt-send-email-mst@kernel.org
+Link: https://lore.kernel.org/r/20220901055434.824-4-qtxuning1999@sjtu.edu.cn
+Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+---
+Changes in v2:
+- Pass used_count by value to the helper functions and update it in
+  vhost_transport_do_send_pkt().
+---
+ drivers/vhost/vsock.c | 53 +++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 51 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+index 9aaab6bb8061..9e72c67c287f 100644
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -103,12 +103,35 @@ static bool vhost_transport_has_remote_cid(struct vsock_sock *vsk, u32 cid)
+ 	return found;
+ }
+ 
++static bool vhost_vsock_flush_used(struct vhost_virtqueue *vq,
++				   unsigned int used_count)
++{
++	if (!used_count)
++		return false;
++
++	vhost_add_used_n(vq, vq->heads, vq->nheads, used_count);
++	return true;
++}
++
++static void vhost_vsock_add_used(struct vhost_virtqueue *vq,
++				 unsigned int used_count,
++				 unsigned int head, unsigned int len)
++{
++	struct vring_used_elem *used = &vq->heads[used_count];
++
++	used->id = cpu_to_vhost32(vq, head);
++	used->len = cpu_to_vhost32(vq, len);
++	vq->nheads[used_count] = 1;
++}
++
+ static void
+ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+ 			    struct vhost_virtqueue *vq)
+ {
+ 	struct vhost_virtqueue *tx_vq = &vsock->vqs[VSOCK_VQ_TX];
+ 	int pkts = 0, total_len = 0;
++	unsigned int used_count = 0;
++	unsigned int used_limit;
+ 	bool added = false;
+ 	bool restart_tx = false;
+ 
+@@ -120,6 +143,12 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+ 	if (!vq_meta_prefetch(vq))
+ 		goto out;
+ 
++	used_limit = min_t(unsigned int, vq->num,
++			   min_t(unsigned int, vq->dev->iov_limit,
++				 vq->dev->weight));
++	if (unlikely(!used_limit))
++		goto out;
++
+ 	/* Avoid further vmexits, we're already processing the virtqueue */
+ 	vhost_disable_notify(&vsock->dev, vq);
+ 
+@@ -134,9 +163,20 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+ 		u32 offset;
+ 		int head;
+ 
++		if (used_count == used_limit) {
++			if (vhost_vsock_flush_used(vq, used_count)) {
++				added = true;
++				used_count = 0;
++			}
++		}
++
+ 		skb = virtio_vsock_skb_dequeue(&vsock->send_pkt_queue);
+ 
+ 		if (!skb) {
++			if (vhost_vsock_flush_used(vq, used_count)) {
++				added = true;
++				used_count = 0;
++			}
+ 			vhost_enable_notify(&vsock->dev, vq);
+ 			break;
+ 		}
+@@ -153,6 +193,10 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+ 			/* We cannot finish yet if more buffers snuck in while
+ 			 * re-enabling notify.
+ 			 */
++			if (vhost_vsock_flush_used(vq, used_count)) {
++				added = true;
++				used_count = 0;
++			}
+ 			if (unlikely(vhost_enable_notify(&vsock->dev, vq))) {
+ 				vhost_disable_notify(&vsock->dev, vq);
+ 				continue;
+@@ -230,8 +274,9 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+ 		 */
+ 		virtio_transport_deliver_tap_pkt(skb);
+ 
+-		vhost_add_used(vq, head, sizeof(*hdr) + payload_len);
+-		added = true;
++		vhost_vsock_add_used(vq, used_count, head,
++				     sizeof(*hdr) + payload_len);
++		used_count++;
+ 
+ 		VIRTIO_VSOCK_SKB_CB(skb)->offset += payload_len;
+ 		total_len += payload_len;
+@@ -264,6 +309,10 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+ 			virtio_transport_consume_skb_sent(skb, true);
+ 		}
+ 	} while(likely(!vhost_exceeds_weight(vq, ++pkts, total_len)));
++	if (vhost_vsock_flush_used(vq, used_count)) {
++		added = true;
++		used_count = 0;
++	}
+ 	if (added)
+ 		vhost_signal(&vsock->dev, vq);
+ 
+-- 
+2.34.1
