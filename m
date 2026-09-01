@@ -1,145 +1,136 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EEB0471249;
-	Tue,  1 Sep 2026 09:47:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8AE474267;
+	Tue,  1 Sep 2026 09:48:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788256078; cv=none; b=spoaVjUFjQe+56sNjAd8nllLIE439kDgf7pDPBvege85kMYL6Tw42zRIz/KLGH28X2W7s/C6uXPj9LEQoU4+5mjdFG1qly4NKUqNepCXO5del8Inczqe1EaMNKDMDaoid7ptt+lhDo681tTsmjIlguWir4czcpAWdMw/zYxqQbE=
+	t=1788256105; cv=none; b=ehjDz7xv0rIxFZtSJ2zmfqmrQzHRTuk7dIb6wBB5JrY4ZApG+/LBfsD+q7KWgd/+n3rw5Q1VTxj50wQG17KBzI7UG5L5vJfq+zhd7XHiIub4OeaVxX5vmyoa8b8Q6dMIzxeAVw79xHqApZG1Oz5/iAtxxWVXVrxzh9h1DsvGZzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788256078; c=relaxed/simple;
-	bh=PqWpX5qzfJy+A/rydNLTfBbEMaehm3F4tTQxb73Ubm0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GQ+ks+orS6xpm24IBBYzJgli85o/7JIITN2+O5I+k82h2E8GdxCsD+hMaGb/xUzskamtBcBPFuY3fQNpWnhx9wUwTPua+kWSh1rXByj1ki3CeFXD7Bl1X2vRAiOqTDt481wNFta+sXR0i64H0egF19goM59Ylh1AVcrqojjd74c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DppYxOJz; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1788256105; c=relaxed/simple;
+	bh=Wgdy5Zxm9dUoEas0iUUchcWNPxG+/HKGjpt7VQhYtMQ=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=jk2NbDXH5Gy5RYf3HmGGhulCtsa/7d0ColGHepOVmzS2hehdKlQfNPzjVlmRKxTSVr6WLeTjvYvBjxGpLr3IPRojeczXKeXC0p+26mVcHwMDyzILntjWTOYfIBk3z3JPRztLlg8EKl1yAuC7JighrZBfJvF27OlDhp4ikz5HLKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LrYm771C; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DppYxOJz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788256077; x=1819792077;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=PqWpX5qzfJy+A/rydNLTfBbEMaehm3F4tTQxb73Ubm0=;
-  b=DppYxOJz5o2DYe9cb2dpdung0brsnmbiV4ZjXOujHezRluqRnY0WqhKe
-   bCNjpnQBQhh1dMHKQ8GiCdRTf7YWBoz3+mEQbsPdSO9uc4tQ5nKATnp0r
-   n6RQHnyrDEm+NTrKKJDVlX1EXj52PlhkyFnyuUhZqbQJsGFIufYZU7lt2
-   K3erSsvscCfmfMPj8KCyZ76RYlYiMMrvlGKjfVTMoUNEFSMzNK8+miGH0
-   nPkpnHDivbtdBwmAw5ZQsZePxwvm5haN/Nnhgrt90hX+y3Y0iVRW6p4Ay
-   6egSVFVVHmQDWeo/BlPw/94zy7kTw/v/2GuyFvWEPryuDKlBH8zdsS0ua
-   g==;
-X-CSE-ConnectionGUID: I7JeRyJlRT+bgVDoUEdt7Q==
-X-CSE-MsgGUID: PRqjNat+RSSAfyQnnXZV/w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="92546885"
-X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
-   d="scan'208";a="92546885"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 02:47:54 -0700
-X-CSE-ConnectionGUID: fV2Zhz8TSAW2Arb2x6ej0w==
-X-CSE-MsgGUID: 2maLF6D4Rr6e+knV4AZ/ug==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
-   d="scan'208";a="307263818"
-Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 02:47:40 -0700
-Message-ID: <b5b02db8-2bd8-4952-8d35-5c0ecb664206@linux.intel.com>
-Date: Tue, 1 Sep 2026 17:47:37 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LrYm771C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E4DB1F000E9;
+	Tue,  1 Sep 2026 09:48:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788256102;
+	bh=nemcfCXwSQLXWvOg8qJNZTFjpVq1VfSIgsjVScww4M0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=LrYm771Czst7nRElZpjZHYsFR96IyJUAH7Has9z+muULFHtPFzFWlM4fprRH7ofdj
+	 nZOsUIIdCLSCRG/Pj+7bxReUk3ghcaZTFw69PGGJuDWDC/CIha7+78ZCBVIhkFvYP1
+	 yaPBaTMOFxZ44aJcs1UZyRa7ux2tCdDuCfx4tu+1F/4i5MRM4by+XmkCNaw7OXJXE0
+	 PH48QSQ5IWmENvUwAuXPjBBgNnKZe4l/NCoxeeZGD2M74Xiv/BLLCZrezKPGZk92Nb
+	 3x3GAWK7SNLMc3oE6eTPUQlvIJLHZWqX8JIGEMnPEXap+/bAaUUeTmjTebt+m24q6O
+	 3SxD4ET9d959Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 12/19] vfio/pci: Serialize physical device
+ information queries with recovery
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Shameer Kolothum" <skolothumtho@nvidia.com>
+Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
+In-Reply-To: <20260901093217.8539-13-skolothumtho@nvidia.com>
+References: <20260901093217.8539-1-skolothumtho@nvidia.com>
+ <20260901093217.8539-13-skolothumtho@nvidia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 01 Sep 2026 09:48:21 +0000
+Message-Id: <20260901094822.1E4DB1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 09/45] KVM: guest_memfd: Stub in ability to enable
- in-place shared<=>private conversion
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Fuad Tabba <fuad.tabba@linux.dev>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev,
- Xiaoyao Li <xiaoyao.li@intel.com>
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-9-85e5fd25252a@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-9-85e5fd25252a@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 8/31/2026 8:25 AM, Ackerley Tng via B4 Relay wrote:
-> From: Sean Christopherson <seanjc@google.com>
-> 
-> Stub in global variable to enable in-place guest_memfd private<=>shared
-> memory conversion, which will eventually be exposed to userspace via a
-> module param, and wire up the __kvm_is_private_gfn() static call to the
-> guest_memfd version when in-place conversion is enabled, i.e. when gmem is
-> the sole authority on private vs. shared memory.
-> 
-> Cc: Fuad Tabba <tabba@google.com>
-> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+New issues:
+- [High] VFIO_DEVICE_GET_INFO fails completely during device recovery, cont=
+radicting the commit message's intent.
 
-One nit below.
+Pre-existing issues:
+- [High] Concurrent read-modify-write race on the Physical Function's PCI_E=
+XP_DEVCTL2 register when enabling AtomicOps.
+--
 
-> ---
->  Documentation/virt/kvm/api.rst |  7 +++++++
->  include/linux/kvm_host.h       |  6 ++++++
->  virt/kvm/guest_memfd.c         | 26 ++++++++++++++++++++++++++
->  virt/kvm/kvm_main.c            | 12 +++++++++++-
->  4 files changed, 50 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> index e0430cc750c9e..90a29424c54c8 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -6382,6 +6382,11 @@ KVM_SET_USER_MEMORY_REGION2, e.g. shared memory can be lazily mapped/allocated
->  on-demand.
->  
->  When mapping a gfn into the guest, KVM selects shared vs. private, i.e consumes
-> +userspace_addr vs. guest_memfd, based on the state in guest_memfd, which is the
-> +sole authority on private vs. shared memory.  See :ref:`KVM_CREATE_GUEST_MEMFD`
-> +to find out more about the creation-time shared/private status.
-> +
-> +If in-place conversion is disabled, KVM selects shared vs. private, i.e consumes
+commit 7eea0a295d5111634553157702a7e697ec8e62ec
+Author: Shameer Kolothum <skolothumtho@nvidia.com>
 
-Nit: i.e -> i.e.
->  userspace_addr vs. guest_memfd, based on the gfn's KVM_MEMORY_ATTRIBUTE_PRIVATE
->  state.  At VM creation time, all memory is shared, i.e. the PRIVATE attribute
->  is '0' for all gfns.  Userspace can control whether memory is shared/private by
-> @@ -6429,6 +6434,8 @@ the state of a gfn/page as needed.
->  
+vfio/pci: Serialize physical device information queries with recovery
+
+This commit wraps the AtomicOps capability discovery in VFIO_DEVICE_GET_INFO
+with recovery_lock. The lock ensures we do not attempt to read the physical
+device configuration space while a PCI recovery is in progress.
+
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
+_core.c
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -1179,7 +1179,13 @@ static int vfio_pci_ioctl_get_info(struct vfio_pci=
+_core_device *vdev,
+>  		return ret;
+>  	}
+> =20
+> +	ret =3D vfio_pci_core_access_begin(vdev);
+> +	if (ret) {
+> +		kfree(caps.buf);
+> +		return ret;
+
+[Severity: High]
+Does this break the availability of the cached information mentioned in the
+commit message?
+
+The commit message states:
+"The rest of what VFIO_DEVICE_GET_INFO and VFIO_DEVICE_GET_REGION_INFO repo=
+rt
+is cached or software only, and remains available without taking recovery_l=
+ock."
+
+However, if vfio_pci_core_access_begin() fails here (for example, returning
+-EIO when a recovery is in progress and access is blocked), we abort the
+entire ioctl. Doesn't this deprive userspace of the other cached information
+that was supposed to remain available?
+
+Could we skip gathering the atomic capability on access failure rather than
+aborting the entire ioctl?
+
+> +	}
+>  	ret =3D vfio_pci_info_atomic_cap(vdev, &caps);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but can concurrent ioctls on
+multiple Virtual Functions trigger a lockless read-modify-write race on the
+shared Physical Function hardware register?
+
+In vfio_pci_info_atomic_cap(), we call pci_enable_atomic_ops_to_root() on t=
+he
+Physical Function device (retrieved via pci_physfn()). That function modifi=
+es
+the PF's config space:
+
+pci_enable_atomic_ops_to_root()
+    pcie_capability_set_word(dev, PCI_EXP_DEVCTL2, PCI_EXP_DEVCTL2_ATOMIC_R=
+EQ);
+
+This performs a lockless read-modify-write sequence on the shared PF hardwa=
+re
+register. Because down_read(&vdev->recovery_lock) only acquires a read lock
+on the local VF's rw_semaphore, it provides no mutual exclusion across
+different VFs.
+
+If userspace concurrently issues VFIO_DEVICE_GET_INFO ioctls on multiple VFs
+of the same PF, could this clobber concurrent configuration updates like ARI
+or LTR toggles on the PF?
+
+> +	vfio_pci_core_access_end(vdev);
+>  	if (ret && ret !=3D -ENODEV) {
+>  		pci_warn(vdev->pdev,
+>  			 "Failed to setup AtomicOps info capability\n");
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260901093217.8539=
+-1-skolothumtho@nvidia.com?part=3D12
