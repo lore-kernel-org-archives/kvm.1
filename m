@@ -1,113 +1,177 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-161.mta0.migadu.com [91.218.175.161])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF67F390991;
-	Tue,  1 Sep 2026 10:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8142447A88F
+	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 10:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788258073; cv=none; b=sAoKNSsyBdogjTN1lc4z7G1rBo6XavMjkYgB2uniqgvenJznFcKdgnCI7K1rQm/qTJtOpGtGqT+GGIVdsSNqoKOICh3Uz5vU3YpIeNDjHSFzGRrLG3CV1MdO+TC4/fdJVD6TPlrzb9L46hgaGQ+fcu3mD0a1Jvut2rDQ8BUN0JI=
+	t=1788258899; cv=none; b=WKc/7SF2lDzFdthgryxvR7Ce8SbJiRqZEulccW7U69Fk5fma/ktS8yaKESCsebF84Flmh48r7jsis8e/gS7/6532LvTfyqiD7y7mE/yMeV2uJuwAscv0QjdLxmnUgQi7xtjESZ4UFpYVzIoowTkwoSxIpDY+IETvoyYH9d3pXSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788258073; c=relaxed/simple;
-	bh=ATsfCEkVoLTs3EoyAFFd3IqUgjuL78CTgUxpZ+m1Jbc=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=lPZqQDtmdVn8PKn0wIiu0BE43jvKJ9T/+FWC844bneX7xxcqGWkzdWrFV/Mm2+qaz4hrNbcUABPscBk/+z+nciQAJkR2rxQrWySPTHsTjvQCx/P1mbid2evcPQTwjGmzG7LmsTTpgCVYCilCpfSdaXmbHoez4/qaAW+Cp1hftU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fs4cynkT; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1788258899; c=relaxed/simple;
+	bh=hGwrqJibjsI979lLLZMh7q1FzrzRBk6jSe5g0u5F2Qc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oVLPDzn+B3vxMHzpSmsnJAr3uGFqoPji+rDI7voMDueMFf1aW4DhLvknYMJVhYsJ+Rexs29tRCaxQ96bMehcoK9lgiJdsPB1CcY05BM9bTl42mscJQZfzncETMoD5mUKRAkQA5/jMmU0hrhQQ5qNYcIiMQTWcoRuyq60j0cgesI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=mq1f/7Vu; arc=none smtp.client-ip=91.218.175.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fs4cynkT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788258072; x=1819794072;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=ATsfCEkVoLTs3EoyAFFd3IqUgjuL78CTgUxpZ+m1Jbc=;
-  b=Fs4cynkTgv+s9aa+k06TaB7XMpJL0UYUbICquonhWkqwF89ekW++y2u2
-   NRdSG4jYe3b/R57QJZuFociGw+p8GXUUQ2ZZzPLlXWNM3fFlm1qIU+H/w
-   t1/BdleQ1ITLJsSCdGP0Iu8UzhBtQDRppdNVN1MCU3Maotd3sJXVRUPwL
-   tZG7HKIBsnwJTik40pdsytaZOiLA5LSQs3bfijV599pEJWgVPATJpdKeB
-   DB+ewNyjhxALHW8ssTLUWIzKWHt6uVQleSKebp0nY6HiDrdv26Wm6CqUQ
-   aGC6rAnECFXE3VfydNQaFff8JWIsHCbIaGQVL7ELI9PW42FSKA7Nko6bP
-   A==;
-X-CSE-ConnectionGUID: bKx0C3yrR9uiVc7lQg593A==
-X-CSE-MsgGUID: g5usAFx7RT6VE2oDRCc9Ww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="99341303"
-X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
-   d="scan'208";a="99341303"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 03:21:11 -0700
-X-CSE-ConnectionGUID: TkGjgjj4RMeQgJKnWq79lg==
-X-CSE-MsgGUID: 7Oi96cqeQiGMbHNBi0fJ0Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
-   d="scan'208";a="269635423"
-Received: from unknown (HELO [10.238.208.122]) ([10.238.208.122])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 03:21:05 -0700
-Message-ID: <cc98e036-9269-4bf8-91df-d46ca684e6be@intel.com>
-Date: Tue, 1 Sep 2026 18:21:01 +0800
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="mq1f/7Vu"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=hGwrqJibjsI979lLLZMh7q1FzrzRBk6jSe5g0u5F2Qc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788258895; v=1; x=1788863695;
+ b=mq1f/7VuoYejo8kDH2nDeuJWEf7Id2zVtyoyl8edNXahhl/ikdcdIpHhhmivFQq3VauUspxs
+ 8cbDqtUigM/XVxHfnGXirlhX0Q3IyVbX2zqr1qbX6QTiALAXcwUqpnSAPvHda1I8U93b6Uca7tn
+ CpDVe6WLb/IQ7xMlxSL7/pBU=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id f9c5c4b1baf31e62;
+	Tue, 01 Sep 2026 10:34:55 +0000
+X-Mizu-Trace-ID: f9c5c4b1baf31e62
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5b5e5aaf7deso7041e87.0
+        for <kvm@vger.kernel.org>; Tue, 01 Sep 2026 03:34:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwKdVYq+9IORBbllfMi1+5d3B5OSYsRCYfVKUQ9fayfDAfsmKUzHst/cf/fAos/MT/Jo00=@vger.kernel.org
+X-Gm-Message-State: AFuF++lzsAx1c4xxe9xysfIh3loJA44+2Z1jeRYvl60D2f4vVA3HBfJR
+	nwOPEJRzeMNt+opJYpzDVGFW7ijOlgMawTWS+cj/iyEZROUXtHTqLSGHjRz7W2mjC7dUbvshHB0
+	QDFYdPm1/APSf383OZyaEP+xMZbaBvxOFjCXfjGGO
+X-Received: by 2002:a05:6512:ac4:b0:5a8:6646:d7b4 with SMTP id
+ 2adb3069b0e04-5b600a0b6f4mr114181e87.1.1788258889928; Tue, 01 Sep 2026
+ 03:34:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] KVM: TDX: Validate directly configurable CPUID
- bits
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc: "Gao, Chao" <chao.gao@intel.com>, "seanjc@google.com"
- <seanjc@google.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "kas@kernel.org" <kas@kernel.org>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>, "andrew.cooper3@citrix.com"
- <andrew.cooper3@citrix.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>
-References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
- <e2f8f7976ac6a54e0bbda0e65ed9990940d9fef3.camel@intel.com>
- <d2efe512-e4fe-407f-96a8-b274fef23382@linux.intel.com>
- <1deddc78d14326b378ddd62ad99c21d66da401e6.camel@intel.com>
- <f7a3b14b-d31c-4a46-99e0-055761d631a9@linux.intel.com>
- <2f27443d-935e-4486-babf-51d93c391369@intel.com>
-Content-Language: en-US
-In-Reply-To: <2f27443d-935e-4486-babf-51d93c391369@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com> <20260830-gmem-inplace-conversion-v12-13-85e5fd25252a@google.com>
+In-Reply-To: <20260830-gmem-inplace-conversion-v12-13-85e5fd25252a@google.com>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Tue, 1 Sep 2026 11:33:00 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTxdJmjBu8vJqbZks3ANP7QFZzGvp4J7kqxvTNR-fKMmJA@mail.gmail.com>
+X-Gm-Features: AcwNN1W_H4CnVusKniYHLtrTvE9k4_Zq5YT-PzaJWqqbnOmAYps19c1F8GBPWTQ
+Message-ID: <CA+EHjTxdJmjBu8vJqbZks3ANP7QFZzGvp4J7kqxvTNR-fKMmJA@mail.gmail.com>
+Subject: Re: [PATCH v12 13/45] KVM: guest_memfd: Pass mapping type filter to
+ invalidation helper
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 9/1/2026 5:42 PM, Xiaoyao Li wrote:
-> On 8/31/2026 1:01 PM, Binbin Wu wrote:
->>>> So if the approach in this series is taken, I think we still need 
->>>> such an opt-
->>>> in interface to tell the TDX module that the VMM is now filtering 
->>>> the CPUID
->>>> bits so that the TDX module knows that it's safe to report new host 
->>>> state
->>>> clobbering features.
->>> Yep. Can we think about what it would look like? Easiest would be a 
->>> bit passed
->>> in TDH_SYS_CONFIG. But then arch/x86 is saying how KVM will behave. 
->>> Ok to me,
->>> for the simplicity. Could come with a nice comment.
-> 
-> Can you just treat current KVM behavior of allowing userspace to enable 
+On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
+<devnull+ackerleytng.google.com@kernel.org> wrote:
+>
+> From: Ackerley Tng <ackerleytng@google.com>
+>
+> Accept the mapping type filter as a parameter in the invalidation start
+> helper instead of querying it internally. This allows callers to specify
+> which mappings (shared, private, or both) should be invalidated.
+>
+> In the next patch, the conversion process will use this new parameter to
+> invalidate mappings only when they're different from the target state of
+> the conversion, i.e. invalidate only shared mappings on a shared to private
+> conversion and not both.
+>
+> No functional change intended.
+>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-well, I meant "can we"...
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-> any configurable bits as the bug of KVM and backport this series as 
-> Binbin suggested below? Instead of introducing more opt-in knobs.
-> 
->> The TDX module is initialized before KVM is loaded. I guess the 
->> upstream kernel
->> doesn't support out of tree KVM code, so we can assume if the kernel 
->> has the code to
->> opt-in the new host state clobbering features, KVM must have 
->> implemented the TDX
->> CPUID filtering and validation?
->>
->> Also, do you think it's reasonable to backport this patch series to 
->> stable/LTS
->> kernels as an alternative?
-> 
+Cheers,
+/fuad
 
+
+> ---
+>  virt/kvm/guest_memfd.c | 14 +++++++++-----
+>  1 file changed, 9 insertions(+), 5 deletions(-)
+>
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index e41802944756b..e19de803149c2 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -192,13 +192,13 @@ static void __kvm_gmem_invalidate_start(struct gmem_file *f, pgoff_t start,
+>  }
+>
+>  static void kvm_gmem_invalidate_start(struct inode *inode, pgoff_t start,
+> -                                     pgoff_t end)
+> +                                     pgoff_t end,
+> +                                     enum kvm_gfn_range_filter filter)
+>  {
+> -       enum kvm_gfn_range_filter attr_filter = kvm_gmem_get_all_gfns_filter(inode);
+>         struct gmem_file *f;
+>
+>         kvm_gmem_for_each_file(f, inode)
+> -               __kvm_gmem_invalidate_start(f, start, end, attr_filter);
+> +               __kvm_gmem_invalidate_start(f, start, end, filter);
+>  }
+>
+>  static void __kvm_gmem_invalidate_end(struct gmem_file *f, pgoff_t start,
+> @@ -224,6 +224,7 @@ static void kvm_gmem_invalidate_end(struct inode *inode, pgoff_t start,
+>
+>  static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+>  {
+> +       enum kvm_gfn_range_filter filter = kvm_gmem_get_all_gfns_filter(inode);
+>         pgoff_t start = offset >> PAGE_SHIFT;
+>         pgoff_t end = (offset + len) >> PAGE_SHIFT;
+>
+> @@ -233,7 +234,7 @@ static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+>          */
+>         filemap_invalidate_lock(inode->i_mapping);
+>
+> -       kvm_gmem_invalidate_start(inode, start, end);
+> +       kvm_gmem_invalidate_start(inode, start, end, filter);
+>
+>         truncate_inode_pages_range(inode->i_mapping, offset, offset + len - 1);
+>
+> @@ -522,6 +523,8 @@ static int kvm_gmem_migrate_folio(struct address_space *mapping,
+>
+>  static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *folio)
+>  {
+> +       struct inode *inode = mapping->host;
+> +       enum kvm_gfn_range_filter filter;
+>         pgoff_t start, end;
+>
+>         filemap_invalidate_lock_shared(mapping);
+> @@ -529,7 +532,8 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
+>         start = folio->index;
+>         end = start + folio_nr_pages(folio);
+>
+> -       kvm_gmem_invalidate_start(mapping->host, start, end);
+> +       filter = kvm_gmem_get_all_gfns_filter(inode);
+> +       kvm_gmem_invalidate_start(inode, start, end, filter);
+>
+>         /*
+>          * Do not truncate the range, what action is taken in response to the
+>
+> --
+> 2.55.0.897.gb25b4bd76c-goog
+>
+>
