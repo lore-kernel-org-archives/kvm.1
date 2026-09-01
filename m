@@ -1,148 +1,151 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05FB81AA8;
-	Tue,  1 Sep 2026 01:32:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFFD40B11F;
+	Tue,  1 Sep 2026 02:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788226324; cv=none; b=sDjOfqyD6zMaFC13YHdVNpCIXAOemSin4KeIa582WzNpW3lgdBltA1hQQyhGyDp6Hcf0USC7xwWQ+xfjjzkE0zh5Q06Aivn3EP9TDtVyhnPI9OEUiradLRWjgihrMQhMDQW71lhsSIRq4O7d/gZWClGg81aUkSYT+xjQUbz/IvU=
+	t=1788228491; cv=none; b=Ftk14gkQEBG/QvuqntRd6Fo7+Nru01z/9CGtjwcc16dqpeDoSfbJxtvNAD5MTnFmEuw0NxTSLyemTJkzhiNc/6Q3GkyTgnYBd3njT2aDdsjOyLDR2mZKfUYhYKyFOXDftmDQxn046ZqgiIzpWXsK1plnNFkID5Neq89vI+rjyAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788226324; c=relaxed/simple;
-	bh=SReFs3wf1VhykduuIf4GG9P8IgQwlFLj17mCrBt8usc=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=pELM8SUhRTnWQyQWFOg5v33DNHFbAgdoXopfYGnhzMeNzzOvG9NgwBY2FJbSa83YBKiWIgWxHWLrPP3qwpz1FU+S5CfVQe+Zt7e0locNJaPE1edSpC+cwcpmcvne2agy2lWWtwJ8wIliELUYSWiS3FOgUZl/EeywDMwLYxQGwvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Bxb9MQK5ZqEDgHAA--.20308S3;
-	Tue, 01 Sep 2026 09:32:00 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJAx2c0OK5ZqwpUYAA--.51990S2;
-	Tue, 01 Sep 2026 09:31:58 +0800 (CST)
-Subject: Re: [PATCH v3] LoongArch: KVM: Fix TOCTOU race on pv_features
-To: Huacai Chen <chenhuacai@kernel.org>, Tao Cui <cui.tao@linux.dev>
-Cc: zhaotianrui@loongson.cn, kvm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org, Tao Cui <cuitao@kylinos.cn>
-References: <20260814094738.2552440-1-cui.tao@linux.dev>
- <CAAhV-H73i_hH75rNL_eKQWrxu3HTWhMgJpbkYqueoc4qb97TXQ@mail.gmail.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <5a94c1f2-899a-f7b4-1757-615acfc40db0@loongson.cn>
-Date: Tue, 1 Sep 2026 09:31:43 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1788228491; c=relaxed/simple;
+	bh=l/Sq94Fmu7C46abyZSECs6jHm3VumgrPDxeenxZTR0Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CIe5uhemhJ/KI4OoONIblo+rMYmLIeE//vxxlS95WRtm1wqPK1feumojuF54Ro+dRB6picCNu623xKoy5axJWV0mny9EHDMFeW5BZ0CtVivLR05o+9/krWfHUgGpTHXnO3yt0xHwvv8896eCjE5DmFDj53pFgcpYNjKvfEk35Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mmCqe6Ih; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mmCqe6Ih"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788228487; x=1819764487;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=l/Sq94Fmu7C46abyZSECs6jHm3VumgrPDxeenxZTR0Y=;
+  b=mmCqe6Ih9S7iJbjq77afPlMzuZYv5FmLfjr51BKmy4IGB+qGRcPkGdCY
+   aqKtpuOA7vMCIyBoHYKgD0NcMaMaEo786MAos4Ih2yT87ybRK0B8K7Iea
+   vj7KTAIdqsSdzGEcCScLOp1DCuqBbUr6WUZx0GBJXym/PLtzu4F2KVPoR
+   IqcqDLY2LPle2q7FUZc+Io7dC89Rg4j3jBvgw7tYFz0qPkD0JTfiAo34Y
+   dUWWuZK1z/3rwsZRf+P+WPZIogj8acvI5SK2L29Es99AOLvq1vY3vjngN
+   UuiiCJMYTQVT6HyaKkGv9xn/ZPnBqqbF2YmtjAZZAAw3eXO8PuHlmh3jn
+   Q==;
+X-CSE-ConnectionGUID: /kjVW/rMTO6cKbjcU7RApQ==
+X-CSE-MsgGUID: ylHZROxKT1K30sn2oowV/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="88572760"
+X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
+   d="scan'208";a="88572760"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 19:08:04 -0700
+X-CSE-ConnectionGUID: Jp5FjpOZTYqTqwmQQWFBcA==
+X-CSE-MsgGUID: EmvJStCQT8mpVnTECqE+JA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
+   d="scan'208";a="307172084"
+Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.239]) ([10.124.241.239])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 19:08:00 -0700
+Message-ID: <686dc0f2-532e-4338-b7b1-4168a1b15f6a@linux.intel.com>
+Date: Tue, 1 Sep 2026 10:07:57 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H73i_hH75rNL_eKQWrxu3HTWhMgJpbkYqueoc4qb97TXQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/16] KVM: x86/pmu: Remove redundant Perf Global
+ Status MSR bit definitions
+To: Zide Chen <zide.chen@intel.com>, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>
+Cc: kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+ Jim Mattson <jmattson@google.com>, Stephane Eranian <eranian@google.com>,
+ linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Xudong Hao <xudong.hao@intel.com>
+References: <20260827223755.143247-1-zide.chen@intel.com>
+ <20260827223755.143247-2-zide.chen@intel.com>
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAx2c0OK5ZqwpUYAA--.51990S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxXw1kAFWxXFy5Aw1kWFWUZFc_yoW5CF45pr
-	9ruFn5Gr4rKr1IyFyqqwnF9rWjvw48Gr12vF9Iqa4UAF1Y9r9xXr10krZruFyqqw4rWa1v
-	qF1fJas0vF15tacCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUB0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
-	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
-	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
-	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
-	cVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI
-	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v2
-	6r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4AhLUUUUU
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <20260827223755.143247-2-zide.chen@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Thanks for this clean-up. This was what I intended to do for long time. :)
+
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
 
-
-On 2026/8/31 下午10:07, Huacai Chen wrote:
-> Hi, Bibo,
-> 
-> What do you think about this?
-Thanks for your reminder, I forget this in flooding mailing list :(
-It looks good to me.
-
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-> 
-> 
-> Huacai
-> 
-> On Fri, Aug 14, 2026 at 5:47 PM Tao Cui <cui.tao@linux.dev> wrote:
->>
->> From: Tao Cui <cuitao@kylinos.cn>
->>
->> The check-then-set on kvm->arch.pv_features in
->> kvm_loongarch_cpucfg_set_attr() is lockless, so two vCPUs can race
->> past the validation and set different values.  Add a spinlock to
->> serialize it.
->>
->> Reviewed-by: Bibo Mao <maobibo@loongson.cn>
->> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
->> ---
->>
->> Changes in v2: use a spinlock instead of a cmpxchg loop (Bibo Mao).
->> Changes in v3: rename the lock to pv_setting_lock and place it next to
->> phyid_map_lock (Huacai Chen).
->>
->> v1: https://lore.kernel.org/all/20260810081321.157258-1-cui.tao@linux.dev/
->> v2: https://lore.kernel.org/all/20260813232542.2098930-1-cui.tao@linux.dev/
->>
->>   arch/loongarch/include/asm/kvm_host.h | 1 +
->>   arch/loongarch/kvm/vcpu.c             | 6 +++++-
->>   arch/loongarch/kvm/vm.c               | 1 +
->>   3 files changed, 7 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
->> index 23cfbecebbd7..3538a199aac6 100644
->> --- a/arch/loongarch/include/asm/kvm_host.h
->> +++ b/arch/loongarch/include/asm/kvm_host.h
->> @@ -125,6 +125,7 @@ struct kvm_arch {
->>          unsigned int  pte_shifts[MAX_PGTABLE_LEVELS];
->>          unsigned int  root_level;
->>          spinlock_t    phyid_map_lock;
->> +       spinlock_t    pv_setting_lock;
->>          struct kvm_phyid_map  *phyid_map;
->>          /* Enabled PV features */
->>          unsigned long pv_features;
->> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
->> index 20c207d80e31..e47fa463a8be 100644
->> --- a/arch/loongarch/kvm/vcpu.c
->> +++ b/arch/loongarch/kvm/vcpu.c
->> @@ -1165,10 +1165,14 @@ static int kvm_loongarch_cpucfg_set_attr(struct kvm_vcpu *vcpu,
->>                          return -EINVAL;
->>
->>                  /* All vCPUs need set the same PV features */
->> +               spin_lock(&kvm->arch.pv_setting_lock);
->>                  if ((kvm->arch.pv_features & LOONGARCH_PV_FEAT_UPDATED)
->> -                               && ((kvm->arch.pv_features & valid) != val))
->> +                               && ((kvm->arch.pv_features & valid) != val)) {
->> +                       spin_unlock(&kvm->arch.pv_setting_lock);
->>                          return -EINVAL;
->> +               }
->>                  kvm->arch.pv_features = val | LOONGARCH_PV_FEAT_UPDATED;
->> +               spin_unlock(&kvm->arch.pv_setting_lock);
->>                  return 0;
->>          default:
->>                  return -ENXIO;
->> diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
->> index 1317c718f896..86ba7d54e81f 100644
->> --- a/arch/loongarch/kvm/vm.c
->> +++ b/arch/loongarch/kvm/vm.c
->> @@ -76,6 +76,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
->>                  return -ENOMEM;
->>          }
->>          spin_lock_init(&kvm->arch.phyid_map_lock);
->> +       spin_lock_init(&kvm->arch.pv_setting_lock);
->>
->>          kvm_init_vmcs(kvm);
->>          kvm_vm_init_features(kvm);
->> --
->> 2.43.0
->>
-
+On 8/28/2026 6:37 AM, Zide Chen wrote:
+> IA32_PERF_GLOBAL_STATUS and its SET/RESET counterparts share bit
+> definitions with perf_event.h, which is the canonical home for Intel
+> PMU bit definitions (e.g., PERFEVTSEL, FIXED_CTR_CTRL, GLOBAL_STATUS).
+> Drop the duplicate definitions from msr-index.h and update KVM code to
+> use the macros from perf_event.h.
+>
+> Drop the comment as well, since the macros now match the MSR
+> naming.
+>
+> No functional change intended.
+>
+> Signed-off-by: Zide Chen <zide.chen@intel.com>
+> ---
+>  arch/x86/include/asm/msr-index.h |  8 --------
+>  arch/x86/kvm/vmx/pmu_intel.c     | 11 ++---------
+>  arch/x86/kvm/vmx/vmx.c           |  2 +-
+>  3 files changed, 3 insertions(+), 18 deletions(-)
+>
+> diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+> index 18c4be75e927..11b99d237e05 100644
+> --- a/arch/x86/include/asm/msr-index.h
+> +++ b/arch/x86/include/asm/msr-index.h
+> @@ -1243,14 +1243,6 @@
+>  
+>  #define MSR_PERF_METRICS		0x00000329
+>  
+> -/* PERF_GLOBAL_OVF_CTL bits */
+> -#define MSR_CORE_PERF_GLOBAL_OVF_CTRL_TRACE_TOPA_PMI_BIT	55
+> -#define MSR_CORE_PERF_GLOBAL_OVF_CTRL_TRACE_TOPA_PMI		(1ULL << MSR_CORE_PERF_GLOBAL_OVF_CTRL_TRACE_TOPA_PMI_BIT)
+> -#define MSR_CORE_PERF_GLOBAL_OVF_CTRL_OVF_BUF_BIT		62
+> -#define MSR_CORE_PERF_GLOBAL_OVF_CTRL_OVF_BUF			(1ULL <<  MSR_CORE_PERF_GLOBAL_OVF_CTRL_OVF_BUF_BIT)
+> -#define MSR_CORE_PERF_GLOBAL_OVF_CTRL_COND_CHGD_BIT		63
+> -#define MSR_CORE_PERF_GLOBAL_OVF_CTRL_COND_CHGD			(1ULL << MSR_CORE_PERF_GLOBAL_OVF_CTRL_COND_CHGD_BIT)
+> -
+>  /* Geode defined MSRs */
+>  #define MSR_GEODE_BUSCONT_CONF0		0x00001900
+>  
+> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+> index bfa8612fb450..e71ddd51ae56 100644
+> --- a/arch/x86/kvm/vmx/pmu_intel.c
+> +++ b/arch/x86/kvm/vmx/pmu_intel.c
+> @@ -576,17 +576,10 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+>  			 ((BIT_ULL(pmu->nr_arch_fixed_counters) - 1) << KVM_FIXED_PMC_BASE_IDX));
+>  	pmu->global_ctrl_rsvd = counter_rsvd;
+>  
+> -	/*
+> -	 * GLOBAL_STATUS and GLOBAL_OVF_CONTROL (a.k.a. GLOBAL_STATUS_RESET)
+> -	 * share reserved bit definitions.  The kernel just happens to use
+> -	 * OVF_CTRL for the names.
+> -	 */
+>  	pmu->global_status_rsvd = pmu->global_ctrl_rsvd
+> -			& ~(MSR_CORE_PERF_GLOBAL_OVF_CTRL_OVF_BUF |
+> -			    MSR_CORE_PERF_GLOBAL_OVF_CTRL_COND_CHGD);
+> +			& ~(GLOBAL_STATUS_BUFFER_OVF | GLOBAL_STATUS_COND_CHG);
+>  	if (vmx_pt_mode_is_host_guest())
+> -		pmu->global_status_rsvd &=
+> -				~MSR_CORE_PERF_GLOBAL_OVF_CTRL_TRACE_TOPA_PMI;
+> +		pmu->global_status_rsvd &= ~GLOBAL_STATUS_TRACE_TOPAPMI;
+>  
+>  	if (perf_capabilities & PERF_CAP_PEBS_FORMAT) {
+>  		if (perf_capabilities & PERF_CAP_PEBS_BASELINE) {
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index e3bfe6aca1a0..d3789b2ee18e 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -8612,7 +8612,7 @@ static unsigned int vmx_handle_intel_pt_intr(void)
+>  		return 0;
+>  
+>  	kvm_make_request(KVM_REQ_PMI, vcpu);
+> -	__set_bit(MSR_CORE_PERF_GLOBAL_OVF_CTRL_TRACE_TOPA_PMI_BIT,
+> +	__set_bit(GLOBAL_STATUS_TRACE_TOPAPMI_BIT,
+>  		  (unsigned long *)&vcpu->arch.pmu.global_status);
+>  	return 1;
+>  }
