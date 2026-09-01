@@ -1,146 +1,142 @@
-Received: from out28-74.mail.aliyun.com (out28-74.mail.aliyun.com [115.124.28.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA7A43B3F5
-	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 03:41:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA6B442386
+	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 03:57:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788234099; cv=none; b=Sju8ARj7fGDIFT2UDPWvXJudsDJKOP9gqTjQjn5sdSG43Ht3evt164/eXV7UpybNA8jzPP63dP4o3UEx1M8HixyqzTVpg4urZmRoq2PzUJ+mRU90fAzb9VtJYzZ7M4HehAQ/mvOT9onM77qt6cHayWGiJNgKNjc0PxXsGt/oug0=
+	t=1788235065; cv=none; b=gSS9DtPFgpCpASXi6JbdqHqylbau41gMEeubn3V2txcyRVXiauI+iZ05nOVrEBWmdFh1iudfV6cUHvWnWey0tlH7yhnh2upXIc6SmfoQ2gvdSrXZtHrnxZoP67/KdHl6optkxRcVU/WhZo1iFy9AY/St/s+PmzJ6uLZTJaVqQ1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788234099; c=relaxed/simple;
-	bh=KRSLQw+fDiTKXYqWnTYAd9YR8NALH9GDT2Wf/pZdosY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qDY6djryLgxLI+worOWeG4eyWJs5UpOWLs+FOfdZxJ3lfetvDT4xm6Amcd/rZ6G5NFI1RG12W9K0rjVzLF/AgrGG1wcP+Aj9RSUx9xtS2/y8sSRSV7/u70V7QvkvLvZ2dULIGLXrKXfbn4CIFPi+Ad/cYHVii//VnBN0932hvFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.0743627|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00209805-6.34468e-05-0.997838;FP=7163956215470933291|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037006180;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=7;RT=7;SR=0;TI=SMTPD_---.j2.4mKD_1788234082;
-Received: from 172.18.22.44(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.j2.4mKD_1788234082 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 01 Sep 2026 11:41:25 +0800
-Message-ID: <355edd32-2854-45b2-9ea6-5b3e93ade281@open-hieco.net>
-Date: Tue, 1 Sep 2026 11:41:21 +0800
+	s=arc-20240116; t=1788235065; c=relaxed/simple;
+	bh=FIdRcsMOC/DZC1O8y6KtoskjQGfb9qysPZfXHsmxOnA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PYQdNUoBE8YJiolusyRUGqJaoMSTktzEYuOzELFgNb1A31/ls74seniiqoMrmft62PV5dQuHtbxi3QUBAMl0Az++OnOf1ffdUjQLsoAUWnD5dVc84gsOIKBbFISsJTvgO4wwJfaVvmcpDZKoH3ZHss3l2AsVJFaOyVPw09ywYas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=kYAfHdRk; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="kYAfHdRk"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-398b3d66515so3056920a91.0
+        for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 20:57:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1788235062; x=1788839862; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=u6duqbr7qiU1/7HfGsJMzno+Gd8kl8JvVp30ChVEOm4=;
+        b=kYAfHdRkPQsA1qn8mHz48fqqNEyY22sSelAOwc+Wz4FMt2bNVs3WGZ39sFejVfShbb
+         RdyRcNwSAXR1FjwXn1necrZi2YNYZJfnyapN1CNJwZLvS65/UmNxkH/3fnhqugo7FPsK
+         U9AJP1sF5g1tIlpu8Ek/h/aN29YMRurKpo0x9YN/q7f7brq8iXh8Lm9pYcR3YzgdgZeX
+         GPlIQHfJDBls0g8c/ai+zDVGzdBOdXrMDE/p8ejj4YJpdp7U0vD5iayQ2+hpneFkp7yo
+         EN0XhcTH3WbtbxyFUIE7iM1KkJ1RlDHOTp2nBY4TtxjgPr1TWSAyI9QuklUSYTW5p6cz
+         +1GQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788235062; x=1788839862;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=u6duqbr7qiU1/7HfGsJMzno+Gd8kl8JvVp30ChVEOm4=;
+        b=CkF1WJxGKKgwuNpuxNd43xHD0yDpMQC2n0zXYUZ3Ks4aASVMMBs9HHS19NdplUUWGD
+         0FLmuizQ+6n+KGrsAnb+a9fnzhXd2lLrkEsEDr7o4+oBIP6YTEGGxRvj0QZeWeXdwVmD
+         CsLnGZvvoqvBLCXJ/68OesSNTFv8mhheMINmYWJgkvba18BPs2DtOr9IofL//7N4S0Hd
+         PzYE1SQAdSFCORZRQk2IV1gHCQJ76zxnw5tU50PXXVF5Q/LL0UwH/O2szm89JgZJMXC/
+         ctPR3/CBFzTYx+RDtUuxyHScp/rfD5hjU3bIib+uqwjm6EQzBHTuKvfu0lDETKZeNoDG
+         agtA==
+X-Forwarded-Encrypted: i=1; AKwUvByorA2E9SL3tigW96ChW35ndoIeeyphWV91PvnYQgQOh71JfPyEfgaqxalKqM6cwZ0VGD0=@vger.kernel.org
+X-Gm-Message-State: AFuF++mitsC+zqNEUJx80YM08OLoEfESFJ5XRdRRK/28IC1CWWlY9nkm
+	spdeMa6dNnd8J0lcKm9N616+Res9EDxFWzHm29G/QvtugNayZh2BNFoCVZFuxahze1c=
+X-Gm-Gg: AYBFou0RqkmhCcGqJcaXokSXWgcqr84OS3ptxGPBYSZJWhu2Sn9QlljTeGSmI3jAjP2
+	Ra6omIz/pAu+uRBsPn9e07SKkJMT6j4/l9cEn6F133drJOXd/ZMDsR8d9M0Il9MCQMT01QQIQhf
+	csQMskR0FrOGJHHKXUfHxkS522nb5Vl1/wrSNHqaMnXeYtcXpt/CmcmrOSg5Jvx9SrLXb5zcKeA
+	nG8huAEJSX96GPRmOrTBFL3nQo3Ou6JOSkJaMA5kRer1+ZtK8uDKOa/E6zbGsnFi3ll5wDhQmtH
+	t6AaPSPrkDk1/IrvKEbFIds9MGTyvEhHXTAGswn5ocNX+X1e0fJyW6YVlv2ctUpwrAdxLkDy/Ev
+	+1+vOnol+jOTbsreVIVl4JC7nwgj6yTZhnie1t0XKPgjw1D7gDI9Q61lrdG+FRwWqMrJFTzIkgF
+	7Jag3/Z+R0McT7i4JTtClciNDk07xMjFSlv+HoKxz8OBzGi66+3c3I6X+SgAK01qhLjwKrZiyCX
+	5zI6IId
+X-Received: by 2002:a17:90b:28cd:b0:398:9c00:29ee with SMTP id 98e67ed59e1d1-3989c003c08mr33472489a91.22.1788235062279;
+        Mon, 31 Aug 2026 20:57:42 -0700 (PDT)
+Received: from sw07.internal.sifive.com ([4.53.31.132])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e0d1b38esm31120101c88.3.2026.08.31.20.57.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 20:57:41 -0700 (PDT)
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Date: Mon, 31 Aug 2026 20:57:31 -0700
+Subject: [PATCH] KVM: riscv: selftests: Dump sepc/scause/stval on
+ vcpu_arch_dump()
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/10] target/i386: Fix Hygon vendor-specific CPU
- behavior
-To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Cc: kvm@vger.kernel.org, "Michael S . Tsirkin" <mst@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, Yanjing Zhou <zhouyanjing@hygon.cn>
-References: <20260824045314.162941-1-zhang_wei@open-hieco.net>
-Content-Language: en-US
-From: Tina Zhang <zhang_wei@open-hieco.net>
-In-Reply-To: <20260824045314.162941-1-zhang_wei@open-hieco.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260831-kvm_kselftest_dump-v1-1-55b022c6ef8e@sifive.com>
+X-B4-Tracking: v=1; b=H4sIACpNlmoC/yXMSQqEMBBA0atIrTsQR8SrSCOaVLScSUURxLsbd
+ fkW/5/AaAkZiuAEizsxLbNH+AtAdfXcoiDtDZGMMpnHoRj2qRoYR+OQXaW3aRWxyXWia5OqTII
+ PV4uGjnda/j/z1vSo3HOC67oB1Ih2dXYAAAA=
+X-Change-ID: 20260831-kvm_kselftest_dump-3f8d4daf5c60
+To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>
+Cc: greentime.hu@sifive.com, vincent.chen@sifive.com, zong.li@sifive.com, 
+ kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+ linux-riscv@lists.infradead.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Yong-Xuan Wang <yongxuan.wang@sifive.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788235061; l=2028;
+ i=yongxuan.wang@sifive.com; s=20260424; h=from:subject:message-id;
+ bh=FIdRcsMOC/DZC1O8y6KtoskjQGfb9qysPZfXHsmxOnA=;
+ b=LoVteimfcmkAq7Y0uj1TCSBAJ+oQpFiT8+1EsF2q0xDVvaq1Q0lmJLNnHQzUXtKthWFDMufNp
+ H3de3BgwRlvDU5dnQcAf6LZWzBwvT435/qp3cbsvBGQB5/sjYFkbpwA
+X-Developer-Key: i=yongxuan.wang@sifive.com; a=ed25519;
+ pk=+8NCHB1ZJvZthQAmZspOAaqjo+/snaW8mFSiDx45HxY=
 
-Hi Paolo,
+vcpu_arch_dump() omits trap-related CSRs, making it hard to diagnose
+unexpected guest exceptions from the dump output alone.
 
-A gentle ping on this series. Any comments would be appreciated.
+Print sepc, scause, and stval alongside the existing register dump.
 
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+---
+ tools/testing/selftests/kvm/lib/riscv/processor.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Thanks,
-Tina
+diff --git a/tools/testing/selftests/kvm/lib/riscv/processor.c b/tools/testing/selftests/kvm/lib/riscv/processor.c
+index ded5429f3448..bf355afa8486 100644
+--- a/tools/testing/selftests/kvm/lib/riscv/processor.c
++++ b/tools/testing/selftests/kvm/lib/riscv/processor.c
+@@ -235,6 +235,7 @@ void riscv_vcpu_mmu_setup(struct kvm_vcpu *vcpu)
+ void vcpu_arch_dump(FILE *stream, struct kvm_vcpu *vcpu, u8 indent)
+ {
+ 	struct kvm_riscv_core core;
++	struct kvm_riscv_csr general_csr;
+ 
+ 	core.mode = vcpu_get_reg(vcpu, RISCV_CORE_REG(mode));
+ 	core.regs.pc = vcpu_get_reg(vcpu, RISCV_CORE_REG(regs.pc));
+@@ -270,6 +271,10 @@ void vcpu_arch_dump(FILE *stream, struct kvm_vcpu *vcpu, u8 indent)
+ 	core.regs.t5 = vcpu_get_reg(vcpu, RISCV_CORE_REG(regs.t5));
+ 	core.regs.t6 = vcpu_get_reg(vcpu, RISCV_CORE_REG(regs.t6));
+ 
++	general_csr.sepc = vcpu_get_reg(vcpu, RISCV_GENERAL_CSR_REG(sepc));
++	general_csr.scause = vcpu_get_reg(vcpu, RISCV_GENERAL_CSR_REG(scause));
++	general_csr.stval = vcpu_get_reg(vcpu, RISCV_GENERAL_CSR_REG(stval));
++
+ 	fprintf(stream,
+ 		" MODE:  0x%lx\n", core.mode);
+ 	fprintf(stream,
+@@ -296,6 +301,9 @@ void vcpu_arch_dump(FILE *stream, struct kvm_vcpu *vcpu, u8 indent)
+ 	fprintf(stream,
+ 		" T3: 0x%016lx   T4: 0x%016lx T5: 0x%016lx T6: 0x%016lx\n",
+ 		core.regs.t3, core.regs.t4, core.regs.t5, core.regs.t6);
++	fprintf(stream,
++		"SEPC: 0x%016lx SCAUSE: 0x%016lx STVAL: 0x%016lx\n",
++		general_csr.sepc, general_csr.scause, general_csr.stval);
+ }
+ 
+ static void __aligned(16) guest_unexp_trap(void)
 
-On 8/24/2026 12:53 PM, Tina Zhang wrote:
-> Hygon Dhyana uses the HygonGenuine vendor string, but a number of
-> guest-visible and KVM-facing interfaces follow AMD-compatible behavior.
-> QEMU currently keys several of these paths only on AuthenticAMD, so Hygon
-> guests can see vendor-inconsistent CPUID/MSR state or use the wrong KVM
-> PMU/MCE handling paths.
-> 
-> This series makes those checks explicit for Hygon where appropriate.
-> 
-> Guest-visible CPU ABI changes are gated by the new
-> x-hygon-vendor-abi-fixes property.  The property defaults to true for new
-> machine types and is disabled for pc-11.1 and older, so existing machine
-> types keep their previous Hygon ABI for migration compatibility.
-> 
-> The KVM injected-MCE and PMU path changes are not CPUID model table
-> changes.  They make QEMU use the AMD-compatible runtime handling that
-> Linux/KVM already uses for Hygon.
-> 
-> The series covers:
-> 
->    * AMD CPUID[0x80000001].EDX aliases for Hygon
->    * hiding Intel cache CPUID leaves 2 and 4 for Hygon
->    * hiding IA32_ARCH_CAPABILITIES for Hygon unless old ABI requires it
->    * AMD MCE status encoding for Hygon memory-failure injection
->    * AMD PMU MSR setup/save/restore paths for Hygon
->    * disabling Intel-style MCA broadcast for Hygon injected MCEs
->    * AMD IOMMU HT GPA hole layout for Hygon on new machine types
->    * AMD legacy cache fallback for Hygon when legacy-cache=on
->    * AMD-shaped default ucode-rev value for Hygon
-> 
-> Changes in v3:
-> 
->    * Rebased onto QEMU master at v11.1.0-453-geea8fe61b8.  Use the
->      pc_compat_11_1 infrastructure already present upstream and remove the
->      duplicate compatibility wiring from the i440fx and q35 11.0 machine
->      options.  Preserve the old Hygon ABI through pc-11.1 and update the
->      affected commit messages accordingly.  (Zhao)
->    * Split the PMU change into a no-functional-change vendor-family
->      refactoring patch followed by the Hygon-specific change.  (Zhao)
->    * Fold enforce_amd_1tb_hole and x-hygon-vendor-abi-fixes into the IOMMU
->      HT GPA hole helper and update its comment.  Use explicit pc-q35-11.2
->      and pc-q35-11.1 machine versions in the functional tests and include
->      those versions in the test names.  (Zhao)
->    * Remove the redundant vendor-specific comment from the ucode-rev
->      default path.  (Zhao)
->    * Update the hygon_vendor_abi_fixes field comment to follow the style of
->      other machine-type compatibility fields.
->    * Add Reviewed-by tags from Zhao Liu to the Hygon MCE status, MCE
->      broadcast, and ucode-rev patches.
-> 
-> Changes in v2:
-> 
->    * Rebased onto v11.1.0-rc3.  Moved the compatibility property to
->      pc_compat_11_1 and wired it into the i440fx and q35 11.1 machine
->      options.  (Zhao)
->    * Patch 1: removed the single-use CPUID-alias helper and checked Hygon
->      directly at the call site.  Also updated the hygon_vendor_abi_fixes
->      field comment to emphasize that it is a machine-type compatibility
->      option.  (Zhao)
->    * Patch 4: removed the single-use MCE-status helper and checked Hygon
->      directly at the call site.  (Zhao)
->    * Patch 5: reworked the PMU vendor checks around a common PMU vendor-family
->      abstraction, covering host/guest compatibility, PMU initialization,
->      and PMU MSR save/restore.  (Zhao)
->    * Collected Reviewed-by tags for patches 2, 3, and 8.
-> 
-> Tested with:
-> 
->    ninja -C build
-> 
->    build/pyvenv/bin/meson test -C build --print-errorlogs \
->        qemu:qtest-x86_64/test-x86-cpuid-compat \
->        qemu:func-x86_64-mem_addr_space
-> 
-> Tina Zhang (10):
->    target/i386: Sync AMD CPUID aliases for Hygon
->    target/i386: Hide Intel cache CPUID leaves for Hygon
->    target/i386: Hide ARCH_CAPABILITIES for Hygon
->    target/i386/kvm: Use AMD MCE status encoding for Hygon
->    target/i386/kvm: Classify PMU vendor families
->    target/i386/kvm: Use AMD PMU MSR paths for Hygon
->    target/i386: Do not broadcast injected MCEs for Hygon
->    hw/i386: Reserve AMD IOMMU HT GPA range for Hygon
->    target/i386: Use AMD legacy cache fallback for Hygon
->    target/i386: Use AMD ucode-rev default for Hygon
-> 
->   hw/i386/pc.c                                  | 30 ++++--
->   target/i386/cpu.c                             | 68 +++++++++----
->   target/i386/cpu.h                             | 12 +++
->   target/i386/helper.c                          |  2 +-
->   target/i386/kvm/kvm.c                         | 75 +++++++++++----
->   .../functional/x86_64/test_mem_addr_space.py  | 36 +++++++
->   tests/qtest/test-x86-cpuid-compat.c           | 95 +++++++++++++++++++
->   7 files changed, 275 insertions(+), 43 deletions(-)
-> 
+---
+base-commit: b5060a4aa33d7d78a8c1837ab08ef0c81ea96650
+change-id: 20260831-kvm_kselftest_dump-3f8d4daf5c60
 
