@@ -1,180 +1,191 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519F536729C
-	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 16:08:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788278925; cv=fail; b=LuYJVQkIhcKI0APWFrPGto9OcnsLymqUv3lqa74QDVFNkhs/lKh7HXN0tVL5KdjF+X3PiWRTXkPfnR+J27VjM3hZrJ9Uo+TRD/ZjsTFNGxIdaMRBeYaJ44J1OOGo9HcxuQfTooeZte4Fy1FGtTkijH9YTm1+ag9RKjNxFRBhLGw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788278925; c=relaxed/simple;
-	bh=dPH9io6EIifxCf+8z8n6tnkCmBw44x09JDnphT1IQ/E=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=dlNwuLQEND+Njhryjo8muRIFX80K8USP3cCsLKvMI0E3PYUBugzegsBk7Tq4yW6bTC7CBDf8zK8khY8j/4/3+65QWPDSSYw4OzXQCOEWTp/DcHoTe/qu0wH7JZ3esQAR0jiMmd9DH2C4NOy8+0urpWh7xBY7MU9QaVDe4B2Yav0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oLCWydv+; arc=fail smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC2C47ECF2;
+	Tue,  1 Sep 2026 16:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788280620; cv=none; b=qmD/DkWyLv6/hAQOqlYqoqNy5JPCIaZPcVCWlDuHkT3HFoXtrvGrmUJa3weK01TrrPXhvqFuzSSy3PuClJ98E6Xkh7I65OEoM+v2FwgaQ+B+qRneYhWRPGgRYR02/Gf9oL9PyF5rPnfsCsEEGyRP/3RkLVLQyMcBbBUNxBLF/BI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788280620; c=relaxed/simple;
+	bh=PEvc8SXX018fS9mzHoNC3+i0cxEFrJwr2pGmrc+qz1k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=d6ZSn9VdVHR96lhZet2jwdMC2iFrVPtj53kIuN5IiAe0scki7Uri8m3ms+E+khwZTT82S5JA3il4mTQYJPWdr3hvdWXqD6QZ4T3339Ip5wYMcN9SWzP/NU2+4PwIctY11wZd55gwWZAduXauYf/fKE2P3JV/OXPPAmtxByWmFQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=X8icXGKh; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oLCWydv+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788278922; x=1819814922;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=dPH9io6EIifxCf+8z8n6tnkCmBw44x09JDnphT1IQ/E=;
-  b=oLCWydv+zPPLMqlmjsds4QHJTRm8jt5vympnYihr1h6kRw6g95fH6TSS
-   xZJhP/R1JA9x1ONqbn4SOB6YhYuOkbFMvH3aW9gUVz1HztCChFH5pqEUw
-   p+7wU+gMb1ZDyeoe5l+DIfpnZQIQeGUo/Z7EnRki6voDAzkE9gVcYMvZF
-   ClRkDWFbhKQLezaQRoaJQn3lrOV8IIWlALP8x/lvTZjTWICgr7xgDq1Vw
-   Qn0c2+VzbyvwNVijWWa1Z4Brh3zCsCxEs9tVsiB1gfvv6d2/9PBHsNEP9
-   4sAgAUcnF/nI9VBXS7HMKkPJSjILgmfirxGZOFk0CyfXX06h/wWrs00D9
-   w==;
-X-CSE-ConnectionGUID: 8096B7XBRsWh6C1tY6RPvQ==
-X-CSE-MsgGUID: CourJzw1QuinfyZvDitkag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="114256035"
-X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; 
-   d="scan'208";a="114256035"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 09:08:41 -0700
-X-CSE-ConnectionGUID: 3HE0SQnVTe+DttAhwL87xg==
-X-CSE-MsgGUID: fPHYZpjqTh2Wn7zF9MPrYA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; 
-   d="scan'208";a="293970393"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 09:08:41 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Tue, 1 Sep 2026 09:08:40 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Tue, 1 Sep 2026 09:08:40 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.69) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Tue, 1 Sep 2026 09:08:38 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R7d9VxqYEgl3jj4mAHf+v1X2kdWYvlbC9GngDLikxtX1v4whksARPUXX0S4ZhHsLv0jc0zfbtHR6MY2aZddUgSDArZ+dl+PBCT0P2hzMlbRHsi/i/d4agvRBFYD/PNIxstFXumJOFPV22RkEJ+l/zOpbgRK79mZx+iy+/6jF5avCi5WsK3IIkfZc2GI+lfAFx9jG7dqpS6vIgN+xl2dkDmh7Uhekg2ldKCFbwTPsj58/xVFwbgk5P43PNzjy9CxH09jFRo8NdaFzNuLKY1d4E3Bgi6fXMEjtoX73f7DdcfSq7Jwu/VY2XiBowYeRllKFaXGq9NxUh8BmdWWv7lACdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+D2TRZRLWNfgIT/qQ3TD+ELpS8RvWbyOQGkFIJE9t7w=;
- b=N5y3pIBFbxzL8zqfwtqrQ7MUcAcEnzLjc9wC2g+SvsPIMcIyb5CnFp5fg+ex/zITV3V0XmALYKMVrFfiUne3dIjlJ3QmkcCxlcLCwpXYDwhWiNbGZ5cJLM3VmYzS+k6TrWYXD4UnaQdayM5TxMP5IPN9dpKeeZw829GcLBuw1jeFkxCPvOEC8M/JNTYsVGOOas9oKP8Fry7lWQbDJkkK/qyqCBkC+aAccZIdLaBqXqWEtE2HyPy2nWoYxZ55ONEN6H2WqfJ6hIdHvmpuFP3a6OeLn1RMCM0j4mTGDvXA3C1NMyl4doNgAAHQ7KSMEuI7IpZQrkeU2jtLkK6eQkfqkg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7997.namprd11.prod.outlook.com (2603:10b6:8:125::14)
- by MN2PR11MB4696.namprd11.prod.outlook.com (2603:10b6:208:26d::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Tue, 1 Sep
- 2026 16:08:18 +0000
-Received: from DS0PR11MB7997.namprd11.prod.outlook.com
- ([fe80::24fa:827f:6c5b:6246]) by DS0PR11MB7997.namprd11.prod.outlook.com
- ([fe80::24fa:827f:6c5b:6246%5]) with mapi id 15.21.0360.008; Tue, 1 Sep 2026
- 16:08:18 +0000
-Message-ID: <291cee47-c9a7-41ed-9be4-fbdc1a950078@intel.com>
-Date: Tue, 1 Sep 2026 09:08:16 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] target/i386: Add support for LASS
-Content-Language: en-US
-To: Kishen Maloor <kishen.maloor@intel.com>, <qemu-devel@nongnu.org>
-CC: <pbonzini@redhat.com>, <zhao1.liu@intel.com>, <kvm@vger.kernel.org>,
-	<xiaoyao.li@intel.com>, <binbin.wu@linux.intel.com>, <farrah.chen@intel.com>
-References: <20260826035734.114685-1-kishen.maloor@intel.com>
-From: Sohil Mehta <sohil.mehta@intel.com>
-In-Reply-To: <20260826035734.114685-1-kishen.maloor@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0019.namprd03.prod.outlook.com
- (2603:10b6:a03:33a::24) To DS0PR11MB7997.namprd11.prod.outlook.com
- (2603:10b6:8:125::14)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="X8icXGKh"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 681EVeHN1340849;
+	Tue, 1 Sep 2026 16:36:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=+zgrLl
+	1Jg1/788LUVf6lxZA+1xgrpYI+fljhWRtn+qI=; b=X8icXGKhW9Vmjgxcyse4IW
+	VKckBkVd219Uwqx1K/SivAng9DYxwgERiflwbprimWQLq3nC9UWdgRpV5P5SO4wz
+	1GN7ix+qLnkKgt2Eb0p8JRpKIatYKZaBHdZjkOd9LCHU7RVTeEgL32MQaOscp5ss
+	3P0bHHqB7WifkGB7GCiTA7weyfIi6yxI4h71vweHLmqBDkI89cgYmN5XrOPbqHY4
+	ScgN1ks5jN8Fd0ds3SLRH4R2TnNh7FYMLICh+XQ0Lg9mBC8BcTygbXDNzv4AMhP9
+	xUHYLhtdeRR2wmQqMSACsxfJ6NoZaCrA8wemhKgBVURwTI7XaJ4g1lQRClHPH3jA
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbmuhs52e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 01 Sep 2026 16:36:55 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 681GQK5J019988;
+	Tue, 1 Sep 2026 16:36:54 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gca4w4tvw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 01 Sep 2026 16:36:54 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 681Gao5r51249470
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 1 Sep 2026 16:36:50 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B0EB02004D;
+	Tue,  1 Sep 2026 16:36:50 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6BAC62004F;
+	Tue,  1 Sep 2026 16:36:50 +0000 (GMT)
+Received: from [9.111.65.156] (unknown [9.111.65.156])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  1 Sep 2026 16:36:50 +0000 (GMT)
+Message-ID: <b840a492-f8ba-4a43-9b29-3359cfc98fa3@linux.ibm.com>
+Date: Tue, 1 Sep 2026 18:36:50 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7997:EE_|MN2PR11MB4696:EE_
-X-MS-Office365-Filtering-Correlation-Id: 497fc0ac-2f35-4fe3-b663-08df08433c8d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|10067099003|56012099006|22082099003|18002099003|11063799006;
-X-Microsoft-Antispam-Message-Info: jWLk91J1xd92GeL0sSnRfkHAct3TcaEVhJKMKWoCuVhpEP2QAck0VL6lbN86+lR2DRAuqaSGCts6NjhhV5hd6KxR3AhYenOFM9bGKk03ISdEO0G5GBSr73ymTB1WDcsVZJyP7JkJljMwfOIcQ+y9yPH1CfrKSRA+npL3vosMILSJDLtQFECmJV8K9fAM7ivRCgwoPjpfcaRA3lbCan/ivD0vBoWQdUMxZ2Kf+hIRWvBSZ9yKt98e5jeIixfTYcKmWylu/vvSJ60F/EteT1b4q+XwdSv0TaCHmLPym1fI9lyCgn66Sy6B65oK6QHZzQTurz2ftTEFvyeA4qdPdY5YFUYu3Qf6rkOzOZNawRL1JIG7lJcfw8pXJmddDh1HYUdra63cfB57nhCJJ4nWFRfCMYuES6T93z+kQDAF2oruunUgcscrJJpDoRgF+fJIJizuWeWUXZHqKYsNNqSE2eAgWIe9xFr2QEz+e3Jwtni2hB5uFODNO6nzcoc4zNPeP7rTAwwusBm3o+Y1/TrsqrdJWaFPPsxL4wkm29CiupxyGcu82LsgkaPXpi8hhZnE9cq0HGAQnoKPBAdalNxIDNWfI7UfTyG0y6aBQbfzhO2Dj6L8guXbgb9S6UhQy78zZ/VFS0w7mmlAAlFClRr5HdvQmhozqIumDnlrrC/R/CtPDXA=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7997.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(10067099003)(56012099006)(22082099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TEZ4WGdodU94NzRieVZpZ2NjU1FuZGhWc21nVm5Cb0lTSklKaGZWQzlNVHNp?=
- =?utf-8?B?NU9BdXpyMWFWZndJejlvL3pyWVlyMllBeGVvQXUvL2JNSmt0M0tsMkZhek5M?=
- =?utf-8?B?NDFJbysvWUVNZlFtVVVUdEhraHlya1p3dDlhMGZCWnVpSXdNUVFaQmFXLzRT?=
- =?utf-8?B?d0lTOXpUUXJwK2FrSTVPQ3VQbW05ZVoxYTNYMkpSOVhzbmpYbm9WUFkwVnpH?=
- =?utf-8?B?dzNmQy9ZM3ZuRk03N1BweFA0alcrTEZFdk45d0ZnTC9OS0lQRUczNFFxNWYw?=
- =?utf-8?B?VHJHNzJIcWVGOHk0QWUwYmNKSjlkSWtMMVlGL2tpN05aeEV6OG8xOFRZSmVN?=
- =?utf-8?B?OTNxMUtzcXBGQ0Z6UW9WblVIemtZS01scWxSd2NDZEF6ZSsxSFpxSm03aEFF?=
- =?utf-8?B?aHUxZTFlSTdWdk5oVER1akU0YnEvUU9EWHdSUW5sVUdWTXl4Q2VnWFBkYWZK?=
- =?utf-8?B?VXloN0RFdENIcGNaNGt3YjBLRFdrTFJyWE1mcnFnUllBbVZOVW84Kzk3L0Fi?=
- =?utf-8?B?ZEZrYUIwdTkydnRpa3h6Yjk1ZHJvQTNvQVBlRmZLUUhpMHEvUjBSbUx0ZTBx?=
- =?utf-8?B?czFKVzFXVEthRlBWTXdUV2N4UXpRajRLOXBBNk15NzJQaURlVmdCU3M1VVlM?=
- =?utf-8?B?R0dGclBUWC9BQVI2TDlFdzRYL0o5SXJ2bm1pRkMxMk9UWjAyN3g3SjFZeVR2?=
- =?utf-8?B?NDYzNGd5b0MvQm9uZ3RVeFZGRTM5SnExZVVSUm9heVViSEJsdmJQVkZTT0Ft?=
- =?utf-8?B?a3M2ZUhtMTdHV1lSR2w4TVIrZS9HN0VLNDY3bTR4cXczNVlxckdOZjVZcWpZ?=
- =?utf-8?B?TkpzN2NwQkF5d0RvNWFvRGthdVY0VEFIcVZuYjJseE9OWmxmcUtWQ0RhaStU?=
- =?utf-8?B?SzF6Z3hTN1M1MVFpS2F0WXROeVVTSW5KTkRZdDBKQ2xUY1JaaXQ4TXB0YzhE?=
- =?utf-8?B?Rk55S2xscFdWZ1B2VUhMTkxUSGM1ZFcxSk5YdmZkajRBUmNNT0dSdmFobVc0?=
- =?utf-8?B?S25zaWlLdUlDL2JrekZzb1RnZHBLTmFkbWluRXJEdzR4b0gxWENlRTZFbFBk?=
- =?utf-8?B?emV3bjB1azFEN0lDaVBWSEdoZE9rdUlsc0psbXZTSmdyNzBqSDRYNFVjdW1P?=
- =?utf-8?B?R2lxR1NwdzZVWmt4M2NkczdTQVFPQUJncW5mWmZxSXJCc0NXUEgrb1JtQ0l4?=
- =?utf-8?B?bVZ3RWc1OXBOYktoUEdOU1NUeUllNitpRWRWcUY0U01TR0RFMG5WU0cvdUpG?=
- =?utf-8?B?ZExsT29BYmZ6STlzL2tiZTlUT3ZVYnhxT3ROQUdIZjd1SDZwKzdDYk1udFli?=
- =?utf-8?B?MFA2WEttRGZHeHo3MDlsVTJGZlErNURndjB3dUc4cms4RDhqd1NwalVKbnVS?=
- =?utf-8?B?T2J5bXlIb0R4UFJzcjZPSUpaVzRpWWZmM2ZCTitpaWtNZEpSM2R0M056c25I?=
- =?utf-8?B?dzMvbEk2YTZ4dFE4RkRlZlVuZzZaZENDTGx5T3dGcFowRFNGUDcyblhsUUFY?=
- =?utf-8?B?NzR0VXRBTDNMbFdUcnkwZEw3VFF0QlJWUENQYnhlUHZWYSs3YzRTNjgwNVpZ?=
- =?utf-8?B?MUJFLy9sOUpkYWtQVSsyOFVXb0RHd3gxTCtaRGZQaDJRTW9FT1dpajFLRWhL?=
- =?utf-8?B?NDNyLy9DNzlTQ3ZSWGFSTkZRRWM0UmdyTWhNMFU0NE0wTmtZbjJoSlYva1Vj?=
- =?utf-8?B?ME1BbDlnR1V5VDA1S3lSYjBnQThWRnc2VThrb25sdVBrTlY1ZG8rT3kwTDIr?=
- =?utf-8?B?bE5UTkVMQUx4ekJxRlhiY2RNK2ZIWXlROXcybTVpS3k3akYybHdqeXdTeDJH?=
- =?utf-8?B?SEV3ekRadCt6ZnpYamZyY3JTakJ1cTVmUTdxQytMQktObHNVc28ySEorNzhw?=
- =?utf-8?B?MzhGNkF2bXlnMjB3STNvNHhzRGxoSE8vN2xKTVEzK09XaDRUUjRVZEhnbGxY?=
- =?utf-8?B?U3lBbDdvbUR1eDkzN09tSGRXclF0VjJ6UGV6aS85S2dYeGZNWHZGUlptNklI?=
- =?utf-8?B?QVo3K2JlcHFvaDFXeUN2NUh3TXp4TlFGZmlwdUNGT1VmbnVLV2JMcSszcVRS?=
- =?utf-8?B?WjBxK1RPNGRPeXBiallWYVVlcGpUT3hFU1FETXg4MTM1cDUwVUs3TWZTdi90?=
- =?utf-8?B?eGsvNFlmTzlveTRGTHhVSkk1dmNVeDRReVU5Vm5YS1NYVUFxV0dUdkVaT2hp?=
- =?utf-8?B?UEZYSzNDVEZ1RWdVak5SNVBocUxuWmtzU3BycVd4NUc1NWo0c1kxRStpMGhu?=
- =?utf-8?B?Z3pyL0dFeXhFbVlQOVlvWm8weVBua1l1Tzh4OGpQVWdpaTF6dU5IWVBvM2VQ?=
- =?utf-8?B?M0RhS0xBQ1RENC9qV1UvK2lJY0Z0dlFnU1hrTUVBNWtWMmRNWGZvZz09?=
-X-Exchange-RoutingPolicyChecked: FFB6ct0mCR5WNtQK3ocgQULtPznKvcrY+fkSmT4No6xFvryYZ505K5ozTtvEwHfg/JZGkLP5DaxgxxqGFAf/6HphcoL3yCXdq3qfjgWfKFO3Idura/G9yE3WDiAf/ljiot/mN7YaDCGX0oz0XE54Es2oIS3j5jMxlyE1qQwMid6CfFZiJ/ptyt4t/JGsSKGWvs2jk97alqxr0RtA3DE/zxyjy+svTrRQrAIjhnMECKxSciF0hjAjRTVrOoWgsMViifqCMN1sd3Zrj7mVeLEEo5S9P7bNKKfJXMw8wkzmgaecApluJt6UGEDKCYdQjpWuT99nF8E7Sb0+Y6hPBqKHRA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 497fc0ac-2f35-4fe3-b663-08df08433c8d
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7997.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 16:08:18.3701
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ue9QJvYSCQyUqVzVQKvN6EYsBspc/CvynG3eqXmU0NLC2GmmfIVdZvvALTHZ5fnArJ+nFFMobZHkVro4K4iqQg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4696
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 11/20] KVM: s390: arm64: Query Available Arm features
+To: Steffen Eiden <seiden@linux.ibm.com>
+Cc: sashiko-reviews@lists.linux.dev,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Oliver Upton
+ <oupton@kernel.org>, kvmarm@lists.linux.dev,
+        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        Marc Zyngier <maz@kernel.org>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>
+References: <20260831145536.913567-1-seiden@linux.ibm.com>
+ <20260831145536.913567-12-seiden@linux.ibm.com>
+ <20260831194654.39B451F000E9@smtp.kernel.org>
+ <d6fcf081-7613-4d3a-ab62-6c4f9a42816b@linux.ibm.com>
+ <20260901142550.231001-C-seiden@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <20260901142550.231001-C-seiden@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: hlG0lcVX2bCztWFUfNTiH8_GRXfE7goW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAxMDE0NiBTYWx0ZWRfXwAsKvBCUH3xo
+ G0GZ3Du+Wgp4SxfFwkaOTHtmbqV9VxnYhslSDyxbUaXqbewqXinB9HCUqNFIY9w0hy32VNOzfHj
+ tedL3TACDIS5i+/U/OeUJaXnBZeGiPVC15V1TWm2oDJmYhFy6vDYjtDwnpMwfp1RIu8MH6qIdms
+ WgZfuR9zLheJ72n6tcSLF+G/GtlbvrwVyDBXwLWb5oa01z1FYbb1P48d221b1CFMJ7w7b7YzJ0C
+ gtF6MGLmG621f8B9mHu3+lCjb+WUKBCjZ6ZKEM+MRTkKze2ZVfVptj+g7zou2sZzsb8t0ueMful
+ 7KY9MHWaJgYyKlHvnv3O0HJ6SUDuvwXhJrSJXwcrqZ6a7+PHx2XbNSuxnlMoOj5+uD9fmLA2gro
+ QRzVhUoa4ojqkBI2xtIMzI4V+wyPdAEOIfTL0WR6ZBE/3hyIdKfv4/hiB5PV2cW8OnhZccN5Kgk
+ OjlB1dum7Web0JU2JUg==
+X-Authority-Analysis: v=2.4 cv=Osl/DS/t c=1 sm=1 tr=0 ts=6a96ff27 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=KgNF-AsUkJmxFTXnebwA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAxMDE0NiBTYWx0ZWRfXx+2vpM9qnmDB
+ ZMXOLIQN+Ln298hIIGbDt8btcrM+ENguseIBL0K7bqElSM4CKtMKHg0nLBrgBR1LHKpgJzXHVEX
+ DVkUZCJ67d/ZK9S6aWLx4W8AfHTNQTg=
+X-Proofpoint-ORIG-GUID: hlG0lcVX2bCztWFUfNTiH8_GRXfE7goW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-01_04,2026-09-01_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0
+ adultscore=0 impostorscore=0 phishscore=0 clxscore=1015 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609010146
 
-On 8/25/2026 8:57 PM, Kishen Maloor wrote:
-> Isaku Yamahata (2):
->   target/i386: Add support for LASS in CPUID enumeration
->   target/i386: Add LASS support in CR4
-> 
-> Kishen Maloor (3):
->   target/i386: Introduce DiamondRapids-v3 to enable LASS
->   target/i386: Introduce SierraForest-v7 to enable LASS
->   target/i386: Introduce ClearwaterForest-v5 to enable LASS
-> 
+On 9/1/26 4:25 PM, Steffen Eiden wrote:
+> On Tue, Sep 01, 2026 at 01:44:09PM +0200, Janosch Frank wrote:
+>> On 8/31/26 9:46 PM, sashiko-bot@kernel.org wrote:
+>>> Thank you for your contribution! Sashiko AI review found 4 potential issue(s) to consider:
+>>> - [Critical] The EX_TABLE entry in the `qaaf` inline assembly incorrectly places the exception fixup label on the non-faulting `lhi` instruction instead of the potentially faulting `.insn` instruction, which will cause unhandled hardware exceptions to panic the kernel.
+>>> - [High] `aef_sysfs_init()` unconditionally calls `aef_init_save_area()`, failing to skip it when the AEF facility is not present, causing a crash on older hardware.
+>>> - [High] Off-by-two index error when accessing the QAAF registers array in `kvm_qaaf_read_ftr_reg()`, causing KVM to read incorrect memory offsets for all features.
+>>> - [High] If QAAF initialization fails, the global capability flag `info.arm_guest_supp` is not cleared, leading KVM to initialize using uninitialized hardware capability data.
+>>> --
+>>
+>> [...]
+>>
+>>>> diff --git a/arch/s390/kernel/aef.c b/arch/s390/kernel/aef.c
+>>>> new file mode 100644
+>>>> index 0000000000000..825e2643a8921
+>>>> --- /dev/null
+>>>> +++ b/arch/s390/kernel/aef.c
+>>> [ ... ]
+>>>> +static int  __init aef_query_info(void)
+>>>> +{
+>>>> +	int ret;
+>>>> +
+>>>> +	if (IS_ENABLED(CONFIG_KVM_S390_ARM64)) {
+>>>> +		info.sae_avail = sclp.has_aef;
+>>>> +		info.ptff_avail = ptff_query(PTFF_QAGTO) &&
+>>>> +				  ptff_query(PTFF_QAGPT);
+>>>> +		info.arm_guest_supp = info.sae_avail && info.ptff_avail;
+>>>> +	}
 
-Acked-by: Sohil Mehta <sohil.mehta@intel.com>
+Wait, aef_sysfs_init() already early returns if !enabled.
+We'll never end up in this function if !enabled.
 
->  target/i386/cpu.c    | 26 +++++++++++++++++++++++++-
->  target/i386/cpu.h    |  7 ++++++-
->  target/i386/helper.c |  4 ++++
->  3 files changed, 35 insertions(+), 2 deletions(-)
-> 
+Generally I'd like to keep it similar to the kernel UV code.
+If QAAF is available create the sysfs files and provide qaaf data.
 
+KVM support is separate from the QAAF data.
+I'll have a second look tomorrow.
