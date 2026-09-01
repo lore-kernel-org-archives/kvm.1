@@ -1,189 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7657337F327;
-	Tue,  1 Sep 2026 00:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584D53783C3;
+	Tue,  1 Sep 2026 01:15:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788224285; cv=none; b=Sn2350UTUGUsutIAvAgGVcr4Dvj9NTNeEgL8WlQPPB3vTAvisApO6TYu1EWxS2C3pztEaCTd25A1gLC8AgqH0h7pz4rZKI2Dy5FTkWpsmk/rDwM7elpN935fP69X7lmzJg1Bi78kUoqNHrNYsDlJ3mBIeymN3azDwv+B68RY2SQ=
+	t=1788225351; cv=none; b=nyHAUnjDy3l+9Q5n0ve/lrvkM4WuJDChWHZaQrxIbNxjw22dP9HP6QKrZrJmOTIIWHXj7VISgFNfyU8JfWADi3kOI2ARgHaSQ8vgRP6nbjrhdOwl4NPocb9HJpcYh/PZHYv8O2vSOrBTufvqhPqH2EfIQI6vwDC7iChi0NJbIzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788224285; c=relaxed/simple;
-	bh=ZRbDdv3ON6gVaFfFiplD76Nt/U8R1aLF2BKq42LxqEI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kSxLhi81AY4d0mrkqDIEOxliwt0mrF2IOaKOYLjZnDePtGAb76wRyndS2kANk+yirp51nxvbkGdCtOHyHV2p1W+/VU122lkaSh8XGjPw5/uN9djIxIaFoXm5gvAsQq9xwDSxviP8y487tlOBnfbFa+++5J2aSVyG3Fqg4beUQWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KIfHlfBz; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KIfHlfBz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21241F000E9;
-	Tue,  1 Sep 2026 00:58:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788224282;
-	bh=1bp63kcVJIGUXxJRr+a1pHibhDOvZDH0FPxWAxX9Bno=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=KIfHlfBzoIkHss6og+1dX0nGSvHrR69wBOpNZ+4R53mnZPPoJtuPTbat9lz89zYxd
-	 VoFyeKLFUG/RNEBTl/OEAaJvSVIF39P7eiAdlR3Gc5pFIStbqwCLg34Oz8CZtu+iIG
-	 cBME9O+ibShHLNVKaml/GGE4J1zl94NnomECTSbPaDtoWVSCpT3Nmcym62QsfvXJMY
-	 XO1shOHtkB0j/8Ksi1YXKq0MDkuikPzlMGo9Efhk6l8xMd9AQQKvPuIcW2vH2RGEJO
-	 uZr8/sINuVWPqGWlsVcZb6WHqqiDbtIINzWQC9Tu1mEgbGTAwkVhpvY0/iLNuUJtAC
-	 6FQqDmTaNWaJA==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 8E91ECE0B65; Mon, 31 Aug 2026 17:58:02 -0700 (PDT)
-Date: Mon, 31 Aug 2026 17:58:02 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <90d91673-a912-439f-98ee-e43285294486@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <333c4cdb-8f34-4e3f-a47f-961f47e089a0@paulmck-laptop>
- <11dcf5a87125451897982f728c1f65a5151987e4.camel@infradead.org>
- <69567965-48fd-48c5-abb6-0699d7f5bd16@paulmck-laptop>
- <124af87fb49c267eeb26b8b4d952b9b1a5b3fb68.camel@infradead.org>
- <9427a8e0-3ba6-4f31-a35d-54429bd7e071@paulmck-laptop>
- <3d0463b6099d4fcde9a025a2f9e231d75303b61c.camel@infradead.org>
- <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop>
- <c39bda52f4c1573193aed39246f0d705755143fe.camel@infradead.org>
+	s=arc-20240116; t=1788225351; c=relaxed/simple;
+	bh=1K1IOftsUjhFTWQ4EUqxCVyFzZP8AIM7bIw+sa7JFKM=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=ogf6Vgbp7oELWPuexwclCBLxjUe56iCdX5mw9ChSJGqiNy//0Lb2WbUVekynzSfv3ivhtw8yMgKDvsZzviM5qbBVA4miF5DHGL7tjToSqZ7r2TPoc4ymdFOdHbtqKZELrZ23e5tosopYgmymt9QKyDvVt76kbik3Bky1M32rWcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8AxS_A_J5ZqGjcHAA--.20388S3;
+	Tue, 01 Sep 2026 09:15:44 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJDxBc0+J5ZqipQYAA--.24106S2;
+	Tue, 01 Sep 2026 09:15:42 +0800 (CST)
+Subject: Re: [PATCH] LoongArch: KVM: Free init resources if kvm_init() fails
+To: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>,
+ zhaotianrui@loongson.cn, chenhuacai@kernel.org
+Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260817123918.2738447-1-nagachaithanya9911@gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <813b686a-8e79-990f-e7d1-c161c73ebb4a@loongson.cn>
+Date: Tue, 1 Sep 2026 09:15:27 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+In-Reply-To: <20260817123918.2738447-1-nagachaithanya9911@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c39bda52f4c1573193aed39246f0d705755143fe.camel@infradead.org>
+X-CM-TRANSID:qMiowJDxBc0+J5ZqipQYAA--.24106S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7WFy5JF1rArW5Jw48JFyfKrX_yoW8Gw4fpr
+	y7ur4Dtr48GrsrAF9rJw1DWr1DXrZ7Gr12v3WSkay5Aw4jvrW8Jr48Gr9F9FyDA3y8C3WF
+	vF4SqF42v3WDA3cCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
+	twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jeQ6JUUUUU=
 
-On Fri, Aug 28, 2026 at 12:25:01AM +0100, David Woodhouse wrote:
-> On Tue, 2026-08-25 at 11:16 -0700, Paul E. McKenney wrote:
-> >  
-> > > > Suppose that there is only one CPU, or, alternatively, that one of the
-> > > > atomic SRCU readers is pinned to the same CPU occupied by the (higher
-> > > > priority) task running synchronize_srcu_atomic().  In this case, the
-> > > > call to synchronize_srcu_atomic() uselessly burns CPU time until its
-> > > > priority decays, real-time throttling kicks in, or in some configurations,
-> > > > maybe never.
-> > > 
-> > > I certainly have no problem with a blanket preempt_disable() around
-> > > both sides for algorithmic reasons. As long as we aren't *just* doing
-> > > it for the selfish reasons I described. 
-> > 
-> > Suppose I simply disable preemption in srcu_read_lock_atomic(),
-> > enable it in srcu_read_unlock_atomic(), and disable it internally to
-> > synchronize_srcu_atomic()?  It might be against all RCU tradition,
-> > but might also be easier to use.  ;-)
+
+
+On 2026/8/17 下午8:39, Chaithanya Lagisetty wrote:
+> kvm_loongarch_init() calls kvm_loongarch_env_init() to allocate the
+> per-CPU kvm_context (vmcs) and kvm_loongarch_ops and to register the
+> perf callbacks, and then calls kvm_init(). If kvm_init() fails its
+> result is returned directly, but since module_init() does not run
+> module_exit() on failure, kvm_loongarch_env_exit() is never called and
+> those resources are leaked.
 > 
-> Which indeed you have done in commit c2225b77b028 "srcu_tree: Disable
-> preemption across synchronize_srcu_atomic()" so I've dropped that hack
-> from my side. The important RCU patches remaining in my tree are the
-> addition of try_synchronize_srcu() and then using it as the fast path
-> of synchronize_srcu_atomic(). I've stopped bothering to test *without*
-> those.
-
-Understood, and that fastpath is on its way.
-
-> Since it looks like I have successfully nerd-sniped you with the srcu-
-> atomic concept, I've reworked my tree to convert directly to that
-> rather than first converting to SRCU and then to atomic in a later
-> incremental commit.
-
-Now, now, that would be you *and* your friend Claude doing the
-nerd-sniping.  ;-)
-
-> This is what I'm now testing, in 
-> https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/gpc-v3
+> Call kvm_loongarch_env_exit() when kvm_init() fails, matching the
+> teardown-on-failure pattern used by riscv_kvm_init().
 > 
-> It's working; the latency numbers have been looking good in all of my
-> RT/DYNAMIC and debug/prod-like permutations. Redoing on the very latest
-> now...
+> Fixes: 2bd6ac687261 ("LoongArch: KVM: Implement kvm module related interface")
+> Signed-off-by: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+> ---
+>   arch/loongarch/kvm/main.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+> index 3e1005526f4b..b6ddf5827c03 100644
+> --- a/arch/loongarch/kvm/main.c
+> +++ b/arch/loongarch/kvm/main.c
+> @@ -428,7 +428,11 @@ static int kvm_loongarch_init(void)
+>   	if (r)
+>   		return r;
+>   
+> -	return kvm_init(sizeof(struct kvm_vcpu), 0, THIS_MODULE);
+> +	r = kvm_init(sizeof(struct kvm_vcpu), 0, THIS_MODULE);
+> +	if (r)
+> +		kvm_loongarch_env_exit();
+> +
+> +	return r;
+>   }
+>   
+>   static void kvm_loongarch_exit(void)
+> 
+Sorry the the late response.
 
-Very good!
-
->   * 1ccf7ba90f8b KVM: x86/mmu: Take mmu_lock for the lockless aging walk on PREEMPT_RT (gpc-v3)
->   * 51de7a793839 KVM: selftests: Add nested transition benchmark
->   * 37c9400feec3 KVM: nSVM: Cache L1's IO permissions map pages
->   * 1c10fdf9c46d KVM: nSVM: Cache L1's MSR permissions map pages
->   * 7af4264346c2 KVM: nSVM: Use a gfn_to_pfn_cache for the vmcb12 page
->   * de951cadb238 KVM: x86: Move nested GPC lock helpers to x86.h as kvm_gpc_lock_page()
->   * f04543987d9f KVM: selftests: Add nested VMX APIC cache invalidation test
->   * 1b50353089d4 KVM: nVMX: Use pinned pfncache for L1 APIC virtualization pages
->   * 4ae1202ef919 KVM: nVMX: Implement cache for L1 MSR bitmap
->   * 5102fb3c55fb KVM: x86: Post KVM_REQ_GET_NESTED_STATE_PAGES on memslot updates
->   * 47998916d89f KVM: pfncache: Return -EAGAIN for a lookup which hits an invalid memslot
->   * 2dab55238cd7 KVM: pfncache: Add guest-mode pinning (GUEST_USES_PFN successor)
->   * 9740a75db3d5 KVM: x86: Use gfn_to_pfn_cache for steal time / preempted status
->   * 3898f98ca5cd KVM: x86: Request the guest TLB flush from record_steal_time()
->   * 0a06af648fa6 KVM: x86/xen: Don't dirty track "vCPU info" page
->   * eef7b09e5b52 KVM: x86/xen: Explicitly tag "shared info" page as never being dirty tracked
->   * 99a7eae0266e KVM: x86/xen: Extract delivery of event to vCPU into a separate helper
->   * f0162bb012fb KVM: pfncache: Use atomic SRCU for readers instead of a rwlock
->   * 003716df6605 mm/mmu_notifier: Remove non_block_start/end() from notifier invocation
->   * 6d484ca99bc9 srcu: Try the inline no-readers proof first in synchronize_srcu_atomic()
-
-This is in the works.
-
->   * 23f10e07aba3 srcu: Add try_synchronize_srcu() for callers which can prove readers absent
-
-I do not intend to provide a separate API for this given the possibility
-of indefinite postponement.
-
->   * 2a55908bb12d srcu: Keep a spare node array so srcu_gp_end() need not block in reclaim
-
-This should not be necessary given that call_srcu(), synchronize_srcu(),
-synchronize_srcu_expedited(), and start_poll_synchronize_srcu() are all
-ruled out for atomic srcu_struct structures.  Thus, there will never be
-a conversion to big, and thus no memory allocation.
-
-Or am I missing something here?
-
-							Thanx, Paul
-
->   * cb117542cb92 srcu: Remove development pr_alert()s from synchronize_srcu_atomic()
->   *   02738b15e08c Merge remote-tracking branch 'rcu/dev' into gpc-v3
->   |\
->   | * 7b9f3a948136 torture: Allow specifying alternative ssh command to kvm-remote.sh (rcu/dev)
->   | * cd71c7941b25 doc: RCU: Fix s/strategem/stratagem/ typo in Requirements.rst
->   | * f1b2e15ef249 rcu: fix shrink budget underflow in lazy_rcu_shrink_scan
->   | * 8c9be6c76148 rcutorture: Synchronously wait for all rcu_torture_irq() callbacks to complete
->   | * 48b4d9799efe rcu: Use IRQ_WORK_INIT_HARD for srcu's irq_work
->   | * 260d0fdf6ea3 rcutorture: Fix divide-by-zero with fwd_progress_div=1
->   | * 5d9c38fbf615 fixup! srcutiny: Add an atomic Tiny SRCU
->   | * 7a263580788e fixup! srcutree: Add an atomic Tree SRCU
->   | * c2225b77b028 srcu_tree: Disable preemption across synchronize_srcu_atomic()
->   | * e56c969b6c7b rcutorture: Add support for testing synchronize_srcu_atomic()
->   | * 9a2e9996ccec srcutiny: Add an atomic Tiny SRCU
->   | * 6cf65dd4d8fb srcutree: Add an atomic Tree SRCU
->   | ⋮  (older rcu/dev elided)
->   * | dc14992a9abe KVM: pfncache: use a dedicated invalidation sequence for cache refresh (xen-v3)
->   * | a83533b07c67 KVM: x86/xen: Mark poll_evtchn accesses with READ_ONCE()/WRITE_ONCE()
->   * | f578df3dda4e KVM: x86/xen: Take kvm->srcu in __kvm_xen_has_interrupt()
->   * | 0e38de3983e6 KVM: x86/xen: Use atomic*() APIs instead of open coded equivalents
->   * | f6179ff87266 KVM: x86/xen: Use 32-bit atomics if vCPU's evtchn_pending_sel isn't aligned
->   * | 9c3243ef9edb KVM: x86/xen: Use 32-bit locked bts for vcpu_info evtchn_pending_sel
->   * | 113a5ed7489f KVM: x86/xen: Enforce 4-byte alignment of vcpu_info registration
->   * | 2505c393701c KVM: x86/xen: Latch shinfo mode in kvm_xen_schedop_poll()
->   * | 9dfe99cf7b45 KVM: x86/xen: Latch shinfo mode in kvm_xen_set_evtchn_fast()
->   * | 59325fcde6db KVM: x86/xen: Rename max_evtchn_port() to kvm_max_evtchn_port()
->   * | 2d366afb5114 KVM: x86/xen: Introduce kvm_xen_has_64bit_shinfo() macro
->   * | 2e26fc558ac9 KVM: x86/xen: Rename 'longmode' to 'is_64bit' in hypercall handling
->   o |  (kvm/next: 76671054f9a1 Merge tag 'kvmarm-7.3' ...)
-
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
 
