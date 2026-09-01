@@ -1,115 +1,151 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678A937B40E
-	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 09:09:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF9C3D9DA8;
+	Tue,  1 Sep 2026 09:09:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788253751; cv=none; b=IqhYdmXfWVmO3p6a3mB/sM3LVE68jAn9REUmuP4ef8C4Ou/oUWF007iEbgsl6psI35nn51Br8x3k/VW40lXydnDai5HP6a1WZH5LWwIYIjssxEZt5Z2rAtcX0vvX6u3aToWGMG8yhYZiDHfHRushPHCXXNZzK2tlYOQzTRHxzlw=
+	t=1788253757; cv=none; b=LlGZNmXFDK+YDr+1AJPVKgRilfMrtM2X8P2omBoRRBDL65OpJ957uQY4/tSCUqZ4Np19BpqklIZRqrckFk1hJKXV72C3CuEazEK1LchGSQiczmiCC47/tT7vRpzdhfQZQxg78M/e69YJOkTErUENcssIo/F9hb435AfziW5osAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788253751; c=relaxed/simple;
-	bh=t44TDabfynvpRhcL0vlUK37Vp9X/jS2Wp61Uvpjk0tk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IiB5o2hxfQWqT9Kkr85Jpc2R+KFcnzo3lmq7A5VHV2+8vWW1+NisOA69jM0YySq1nmj0FSUzOvyGpATcyCcqsfZSthIIn3ODSlPWF/w2wwY1ZNMt4hKK0HgeVWZ7iP3r8fI1AJE64DlWx5bU3oax+qIBzVSaEb3EuXkAigpJ30o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iZVpImK9; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788253757; c=relaxed/simple;
+	bh=Y4/T1t0/5d6DPMYU2oiJY3HMTFglW1Px3HhcVyu7rSs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A2GwfbDgLCuJqH9V3HCKyCGuqXamceJN1vdZyDnVQEu8pvqx7W3coULU/MZwx+xtQa/lTkhbyWaSM8JpQDbT/IbH6NuAjeB/ZuQBAsnHf7KmFQI3deQkymBvrc+H+592f1RFp+kDyzIsp5RWVtyJDADM4BN0TymIK+e1SdnarTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yu/fLs6z; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iZVpImK9"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2caced6038eso9204975ad.0
-        for <kvm@vger.kernel.org>; Tue, 01 Sep 2026 02:09:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788253746; x=1788858546; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=znJKcoBec7Nt3FmFfze7QZZUuPfc93AsW2GJmhnrwiM=;
-        b=iZVpImK9/OPnjiZTbR/Z5BJqo81BpH5759mHm2t9pJpkwo10GL3Yrqptk2wPZZW9pd
-         MsByZmRnLoco0lUSAV2SBlTBNjab/zsDVbMMhJdzO31gW3OhFbRTEt89qsXbLClXHryR
-         6ApkhsWUa3lqsiiH18RRcpemsy0dOli2km36gJEnu0I8Cu5z6Bh3LuCKsl7UNRqBkze9
-         oYUYhRyLmOxU6Ihr1AUskEQrVKRfTYb6jw1/jG0GsNknSUtmE6niTJDq0m4XDqm2xlSn
-         8ZSsIEGprYuhYVm1Zrrwt+fneB7AUzDkH3T8ILbBV75FE9MNTyyjlSYN1NYXhR4DO/nC
-         xKFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788253746; x=1788858546;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=znJKcoBec7Nt3FmFfze7QZZUuPfc93AsW2GJmhnrwiM=;
-        b=OFEcLQZIX0kS3p3yEMkJI/q0lVh3l26ONGsTf5GKf/bQ1z9MYTSJBGc7ELdNMk8sBu
-         1UbkhP++NhyUjLzK9Lu2qBxDAMIuYkq4X4eG2PnM3FvqR1EsH6oqV7nni840EAeoCte+
-         aHXgYSf8xCPYejmfaSZZYUYW/DxGALc5W40CQpSTuIGyCvBaF+jjoN8sHb2x69g9ug89
-         BhpI2ks0lGlxT1tonzoerZkCIsB6iuW5NxqaBsOc7ycIhPkRzP121oKHCc22bW9Ighst
-         u/hsmD0EGSN0wFXz7fRc5rPVy9GM7/zopvA6THHgW1q52K02dPLt3lLUNinLkNyJtKuk
-         w0iQ==
-X-Forwarded-Encrypted: i=1; AHgh+Roa1m8RBBCWLvOXYnp2qFtQSjbvYvAWGfiJSW7Dhi1COYx8LFLg+u3XQSMU3iksC+dwd18=@vger.kernel.org
-X-Gm-Message-State: AFuF++lwBcKFONjCB5lojn2roQyfNpg6I9GJKjwy0wEBPCFwl9kHGazF
-	mBQw1bOP6xHlr7b5vrRwAJ+QOHkD0Xk4fM2rJLafRPwTfb1/JSEGvbm8
-X-Gm-Gg: AR+sD10ouWlVVbg0nRarKopon1Ee6Zp/y4Z9ItytTo4uesuBKOilMkjXlCL7lg3sCm6
-	zfdI6RL+RbolQMEDy8os2b5GF963t9Jhe/xMYpWGOT0b81BfJ9O7d4rMgwG9AVZE1Dw4c2bEU+c
-	hSvki0+StxVVKt4iUUUxeZvzHtFkoGwzRZ/VS14puWZXzBj8ygrVDuM/mLW03GNyQk3AA80XWze
-	WkEEw5CZuOcCEhAVJijewGQThtV0Em5m/RqqD0bpacSL98roZyKWnnfGDaO2yOs45kOpS7NKICB
-	KiwVcnaqH82OcYLezlpulbC2LffibN4GpUzMuJDiMFqxKgFZCCwnUbpF7xwPpad1eAADRSAFgbv
-	JWH4d7h/K+hL4b2TMjVV8FC6oSOs3VZ2KRCoq0/yhUYDXbdlxlD9EcbuQoUXLL3YZTwNBGqVaHK
-	cG3si0KqtczQ+aGyhYYFE5e1bRsBJtzMIepluxTetmaBwyYn7eKORHo3QZdVdqgHfybBW4+4cIc
-	/4wUB1lsNoxfQ==
-X-Received: by 2002:a17:903:3d10:b0:2d7:5da6:2af4 with SMTP id d9443c01a7336-2d95268a8f7mr40737215ad.4.1788253746178;
-        Tue, 01 Sep 2026 02:09:06 -0700 (PDT)
-Received: from amd.ban-spse ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3286f7bf283sm40042773eec.8.2026.09.01.02.09.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 02:09:05 -0700 (PDT)
-From: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>
-Cc: Ackerley Tng <ackerleytng@google.com>,
-	David Matlack <dmatlack@google.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Josh Hilke <jrhilke@google.com>,
-	Wu Fei <wu.fei9@sanechips.com.cn>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
-Subject: [PATCH] selftests: kvm: Check calloc() return in vcpu_get_reg_list()
-Date: Tue,  1 Sep 2026 09:08:38 +0000
-Message-ID: <20260901090839.3338955-1-nagachaithanya9911@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yu/fLs6z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788253753; x=1819789753;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Y4/T1t0/5d6DPMYU2oiJY3HMTFglW1Px3HhcVyu7rSs=;
+  b=Yu/fLs6zM9o+BIupHyb2n5t1P31MqSfGvho/jCD12mpG1zHZP8SZt0Nf
+   3SvGcp8X1Qnl/u6NoMTRiz6aTvo7NWK5GbGKcfEtMJhuBKyrFuDETFZ80
+   USf6N09liswdhIsBlD+hOPFSuF2GXP6RKnc0GQgj4cC383iLK99UtF4pl
+   Mz49TwuVE+arfKrTQYNXCSu7KI6UKtRprVIGx6KioBugCzjkafn7ydEsw
+   NR4BV17KBk5wQZm5CY+dWjU/ChGchu5lQbjNe7tXjGWWytYXMM1FBxzP4
+   jYP2FZvBAN9hu489u6gL6HjglJn2b6TZNnu/Gz8HC7DYEnLy3OB3Xbn0D
+   Q==;
+X-CSE-ConnectionGUID: tERUTOmzTnix5rB1bos1bA==
+X-CSE-MsgGUID: fvSMTp99STO/HigwlzJVrQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="99334602"
+X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
+   d="scan'208";a="99334602"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 02:09:09 -0700
+X-CSE-ConnectionGUID: HJSldBdbSn29p67N9lRijw==
+X-CSE-MsgGUID: e7mjZsjxRtibTToC8EiwNw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
+   d="scan'208";a="265321379"
+Received: from abityuts-desk1.ger.corp.intel.com (HELO localhost) ([10.245.245.29])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 02:09:05 -0700
+Date: Tue, 1 Sep 2026 12:09:02 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, seanjc@google.com,
+	pbonzini@redhat.com, dave.hansen@linux.intel.com,
+	andrew.cooper3@citrix.com, nik.borisov@suse.com, kas@kernel.org,
+	rick.p.edgecombe@intel.com, xiaoyao.li@intel.com,
+	chao.gao@intel.com
+Subject: Re: [PATCH v3 3/4] KVM: TDX: Filter configurable CPUID bits
+Message-ID: <apaWLqbWq2boIGld@tlindgre-MOBL1>
+References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
+ <20260827031837.2863609-4-binbin.wu@linux.intel.com>
+ <apZ0X8J31bVCoc9E@tlindgre-MOBL1>
+ <09c2f755-d822-4aac-993a-878d58c3b47b@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <09c2f755-d822-4aac-993a-878d58c3b47b@linux.intel.com>
 
-vcpu_get_reg_list() allocates reg_list with calloc() and immediately
-dereferences it via reg_list->n without checking for allocation failure,
-unlike every other allocation in this file which is guarded by
-TEST_ASSERT(). If calloc() returns NULL the test crashes with a NULL
-pointer dereference instead of a clean failure message.
+On Tue, Sep 01, 2026 at 04:42:20PM +0800, Binbin Wu wrote:
+> On 9/1/2026 2:44 PM, Tony Lindgren wrote:
+> > On Thu, Aug 27, 2026 at 11:18:36AM +0800, Binbin Wu wrote:
+> >> --- a/arch/x86/kvm/vmx/tdx.c
+> >> +++ b/arch/x86/kvm/vmx/tdx.c
+> > ...
+> >> +static u32 tdx_cfg_non_feature_mask(u32 function, u32 index, int reg)
+> >>  {
+> >> -	if (has_tsx(entry))
+> >> -		clear_tsx(entry);
+> >> +	/*
+> >> +	 * For a leaf/subleaf/register that will never be repurposed to hold
+> >> +	 * feature bits, it's safe to return TDX_CPUID_ALL_ALLOWED_MASK, i.e.
+> >> +	 * leave the TDX module's CPUID config mask intact.
+> >> +	 */
+> >> +	switch (function) {
+> >> +	case 1:
+> >> +		if (reg == CPUID_EAX || reg == CPUID_EBX)
+> >> +			return TDX_CPUID_ALL_ALLOWED_MASK;
+> >> +		return 0;
+> >> +	case 4:
+> >> +	case 0x18:
+> >> +	case 0x1f:
+> >> +		return TDX_CPUID_ALL_ALLOWED_MASK;
+> >> +	case 0x24:
+> >> +		if (index == 0 && reg == CPUID_EBX)
+> >> +			return GENMASK_U32(7, 0);
+> >> +		return 0;
+> >> +	case 0x80000008:
+> >> +		if (reg == CPUID_EAX)
+> >> +			return TDX_CPUID_ALL_ALLOWED_MASK;
+> >> +		return 0;
+> >> +	default:
+> >> +		return 0;
+> >> +	}
+> >> +}
+> > 
+> > How about rename the above to something simpler like tdx_get_cpuid_bits()?
+> > Sorry I don't have anything better to suggest for naming.
+> > 
+> >> +static u32 tdx_cfg_feature_mask(u32 function, u32 index, int reg)
+> >> +{
+> >> +	for (int i = 0; i < NR_KVM_CPU_CAPS; i++) {
+> >> +		const struct cpuid_reg *cpuid = &reverse_cpuid[i];
+> >> +
+> >> +		if (!cpuid->function)
+> >> +			continue;
+> >> +
+> >> +		if (cpuid->function == function && cpuid->index == index &&
+> >> +		    cpuid->reg == reg)
+> >> +			return tdx_cpu_cfg_caps[i];
+> >> +	}
+> >> +
+> >> +	return 0;
+> >>  }
+> > 
+> > And then the above to tdx_get_cpuid_feature_bits()?
+> >   
+> >> -static bool tdx_unsupported_cpuid(const struct kvm_cpuid_entry2 *entry)
+> >> +static u32 tdx_get_allowed_cfg_cpuid_mask(u32 function, u32 index, int reg)
+> >>  {
+> >> -	return has_tsx(entry) || has_waitpkg(entry);
+> >> +	u32 non_feature_mask = tdx_cfg_non_feature_mask(function, index, reg);
+> >> +
+> >> +	if (non_feature_mask == TDX_CPUID_ALL_ALLOWED_MASK)
+> >> +		return TDX_CPUID_ALL_ALLOWED_MASK;
+> >> +
+> >> +	/*
+> >> +	 * It's possible that a CPUID register contains both feature and
+> >> +	 * non-feature bits.
+> >> +	 */
+> >> +	return non_feature_mask | tdx_cfg_feature_mask(function, index, reg);
+> >>  }
+> > 
+> > And then tdx_get_cpuid_mask()?
+> 
+> How about:
+> tdx_get_cpuid_cfg_non_feature_mask()
+> tdx_get_cpuid_cfg_feature_mask()
+> tdx_get_cpuid_cfg_mask()
 
-Add the missing TEST_ASSERT() check.
-
-Fixes: fd02029a9e01 ("KVM: selftests: Add aarch64 get-reg-list test")
-Signed-off-by: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
----
- tools/testing/selftests/kvm/lib/kvm_util.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 9ddc047d5c27..d15f39900ed7 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -1727,6 +1727,7 @@ struct kvm_reg_list *vcpu_get_reg_list(struct kvm_vcpu *vcpu)
- 	TEST_ASSERT(ret == -1 && errno == E2BIG, "KVM_GET_REG_LIST n=0");
- 
- 	reg_list = calloc(1, sizeof(*reg_list) + reg_list_n.n * sizeof(__u64));
-+	TEST_ASSERT(reg_list, "Failed to allocate reg_list");
- 	reg_list->n = reg_list_n.n;
- 	vcpu_ioctl(vcpu, KVM_GET_REG_LIST, reg_list);
- 	return reg_list;
--- 
-2.43.0
-
+I'd be happy with that.
