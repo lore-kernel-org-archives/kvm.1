@@ -1,338 +1,214 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A413B05A3;
-	Tue,  1 Sep 2026 14:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53C8416870
+	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 15:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788273317; cv=none; b=jtztNMdunGY6Fl2Qvrnwbk4l/uBEMaDRMc0/yvmplYqJqGCXlMC3IyWQCFiVV58Iji3gE8EM4lVcgubz0ePdy/kcayLncQapTxsymysycJfiw007PjpdZORBuk7g8hluSPTOUMeicbBgWu+y0sT7SPJsap8pAHEA4HaPfZsr0Co=
+	t=1788275081; cv=none; b=nwphSpNZVUmyEysNVsB/+ja1CleWda7HyKyXthtpFPXgdOrfhbJXv8ftD++A/wQj5PSCLD7TbSuVnFGL7uUDphhhpwfVSlqsd6dEDmOGkiJ4LMG4cv/FfE+vyJ7hDf/njxPaZRedjE2VXdSv1Xl7pyZp+toNWzYHu0tAT3I8tCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788273317; c=relaxed/simple;
-	bh=10qxOg1MT6XuMAd8B8PCnROxf2oXs4aNMchBl0JpzL8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pht1t7hdHkTQ/CpufhRKuuCj3WuWcGitI08dAQuB8wDojjOIs4LSJsSg8nSc4EQu9Q/bbdUSee+Rd5921jvCnb2FxzW53ZNd3KD1tIsuKo9Ftm6rKuEAPAuzP864lWKU19uYqqRA6EuetB+GTU3vLctNnlvnlh3VLxaLO7p8rhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YAwt93Nr; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1788275081; c=relaxed/simple;
+	bh=tpdO18xICJ5y9qBS7LZamGFxvdeqjw46wDaY+iq0bPI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=mZkk89khZXsL14rgGgJUduA/noxpTB2myNP1Bdmksc2AOavxSgQQpCNzGSzoSBmFdnY0gkyW9j9CJLFySRCJj3jhSz3lEPYMCgl98m7NECZFN+ZGkJp9q+gmsmhXpjHr9FUq6R0Q3kjTwgPh8qu1tsVBuyp3SWqAJ87CvmvT1xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VpMQ1djU; arc=none smtp.client-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YAwt93Nr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788273315; x=1819809315;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=10qxOg1MT6XuMAd8B8PCnROxf2oXs4aNMchBl0JpzL8=;
-  b=YAwt93NrxtQpkRaMUbtPMvUfG9kt/745+xmz3aNSajhJC5xf/23quWFG
-   qW6ZCD+4VvZkvfXCef8poaduxXfr/opzMSQTJonadXN3TPZ3LdAwUeUtM
-   RjmKcGMpgAybtg73IBvl4EQUE8IW8hC74D018bHewcYYSdzuKa1daOKvw
-   WVhrxsNs5Efbp1Co/cU7q24XkmlIvQPlpb6hcqsIqVS0a6x3bMVrioG7t
-   kBpcha/vThJ6pTwRCJ6UT431mbI2fzSKGK6T+6uwIWsvfMEuvxK0Tx8Vn
-   9fQBYAyjCNWbeS9L+9qI/amT6of7uTYjWC7NmKZ0oEIUkksR4Bhu5PNXd
-   w==;
-X-CSE-ConnectionGUID: A+u5yQBNRm24oJtDKvjc+g==
-X-CSE-MsgGUID: 0jkRLcqiS5O/6V/7oVcRcQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="88716023"
-X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; 
-   d="scan'208";a="88716023"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 07:35:14 -0700
-X-CSE-ConnectionGUID: LTvTmytkRR+FrZTs/kY5Vg==
-X-CSE-MsgGUID: LHae2+5OQauLLpV9UyxW1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; 
-   d="scan'208";a="272896245"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 07:35:12 -0700
-Message-ID: <55488b92-66a8-45e5-ad0f-8fed63ce1187@intel.com>
-Date: Tue, 1 Sep 2026 22:35:09 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VpMQ1djU"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc132709c76so7920760a12.3
+        for <kvm@vger.kernel.org>; Tue, 01 Sep 2026 08:04:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788275078; x=1788879878; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UgCARssVX+b4Z43xPlj6rs96AWy4osjZB7qoxt3QrO0=;
+        b=VpMQ1djUopgW/qK8KWR3SFkvRoC6qsf6RnCPqNsBvyJVofjL9RQO0hiRysDCTWI6GE
+         6/JMjQwnUWY39cCeRwcMD0aeAXTnorjw1S2VIXoI4HmcZnAwuxEjILaFedL3ghOENtxD
+         r9zyQ+ywZlvbN7UGfphsSq2ZxR42qLTgngpXjSzztI8LJwMChgRFLtqBr80MquCcwLRc
+         Xo4mPrL4WjbJ3ILa0Suq/hAEH1kF2GNLtJpsuCQVpYOSOd5ag7wmZASnT0BEgjgJyTXY
+         HtZkScNZMoRSn1Z3z4XzV2wKdv1ahsMrwIalS0BXuLjCkHR+l9wxGKsyREKOnLfDlX83
+         TAtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788275078; x=1788879878;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=UgCARssVX+b4Z43xPlj6rs96AWy4osjZB7qoxt3QrO0=;
+        b=oeiIaypL7i0FJVKcV+yOqbEsTnm174Asgx2ujo8XHks7YCzRgfF7gK3HvjIOSIGl+w
+         qkzYb7lfu034LHnlfQOOzRbomUCXpR+PDEKB5MBoupNKX1UninNnl5s5vjYA6qfOfiGw
+         1iLl98EGuhBL7Mv/nPSlT+sjuRK2vSgZOa9Qp0RvH16PFpFYlWmqy2TruouA0mfY+uQ9
+         b+fydCulka24my/RFkUYw/OANgw8NW/WqBETTHwvjG3d8rInxDk6Tmv3jpOvuzwdrieo
+         hPheXDB0DRrepO0qGwAcDaQxvE96SJoKBzv/9dT2Flo/0YpFTFnAmfzvPTHQVBL2nes4
+         5HHA==
+X-Forwarded-Encrypted: i=1; AHgh+RpVMf92uxWeGWNQRVyuUoxdqATzTifPhCNT7JjXe7LDEu+h+XMPEBEdo9cddMRhGCYiohI=@vger.kernel.org
+X-Gm-Message-State: AFuF++k7WG/H9l339ttD7V0LrptZC4ayQvxt0cu0EOrFqelTm7v2O1Q+
+	3qDJeckzJ270MWAI0gpc+/MTK3FvfOsbydc/p1Ptwpu+vB9Yz4cmuRUaiuFMj5I0vq7Pk4V7+P7
+	L6L2UBQ==
+X-Received: from pgcga9.prod.google.com ([2002:a05:6a02:6689:b0:c9e:28e0:16dd])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6017:b0:3b4:61f:1fec
+ with SMTP id adf61e73a8af0-3d7adeb5aa1mr14590054637.2.1788275077870; Tue, 01
+ Sep 2026 08:04:37 -0700 (PDT)
+Date: Tue, 1 Sep 2026 08:04:37 -0700
+In-Reply-To: <20260901-gmem-selftests-fix-v2-1-5a273153354c@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] KVM: TDX: Track configurable CPUID bits allowed by
- KVM
-To: Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org
-Cc: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com,
- andrew.cooper3@citrix.com, nik.borisov@suse.com, kas@kernel.org,
- rick.p.edgecombe@intel.com, chao.gao@intel.com
-References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
- <20260827031837.2863609-2-binbin.wu@linux.intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260827031837.2863609-2-binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260901-gmem-selftests-fix-v2-0-5a273153354c@amd.com> <20260901-gmem-selftests-fix-v2-1-5a273153354c@amd.com>
+Message-ID: <apbphZSNG4KXUNyW@google.com>
+Subject: Re: [PATCH v2 1/4] KVM: selftests: fix maxnode arguments in xapic_ipi_test
+From: Sean Christopherson <seanjc@google.com>
+To: Shivank Garg <shivankg@amd.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	Jim Mattson <jmattson@google.com>, Peter Shier <pshier@google.com>, 
+	Ricardo Koller <ricarkol@google.com>, Ackerley Tng <ackerleytng@google.com>, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 8/27/2026 11:18 AM, Binbin Wu wrote:
-> Add tdx_cpu_cfg_caps[] to track the subset of TDX directly configurable
-> CPUID feature bits that KVM supports, and build the masks during TDX
-> hardware setup via tdx_initialize_cpu_cfg_caps().
+On Tue, Sep 01, 2026, Shivank Garg wrote:
+> migrate_pages() syscall expect maxnode to be one greater than the
+> number of bits in the nodemask. do_migrations() passes the size of
+> nodemask in bytes to migrate_pages(). This sets the maxnode to 8,
+> so kernel only checks node IDs 0-6 even though the nodemask covers
+> node IDs 0-63.
 > 
-> The TDX module reports the CPUID bits that the VMM can directly configure
-> for a TD, but KVM cannot blindly expose all reported bits to userspace.
-> Certain features imply additional architectural state, e.g. one or more
-> MSRs, that KVM must explicitly manage across host/guest transitions to
-> prevent host state corruption.
-> 
-> Today KVM relies on a hardcoded denylist, i.e. it clears a few known
-> problematic bits, e.g. TSX and WAITPKG, and passes everything else through.
-> A denylist is fundamentally fragile while an allowlist inverts the default,
-> i.e. unknown configurable bits are hidden and not allowed to be enabled
-> until KVM explicitly opts in.
-> 
-> Except for a few fixed-1 bits required for basic TDX support, host state
-> clobbering features are either directly configurable or gated by TD
-> ATTRIBUTES/XFAM.  
+> Pass the nodemask size in bits plus one because get_nodes() in
+> mempolicy does --maxnode.
 
-> Tracking only the directly configurable feature bits is
-> therefore sufficient to serve the purpose while keeping the code footprint
-> small.
+Ok, I'm not crazy.  I read all of this multiple times and the manpages seemed
+completely nonsensical.  Looking at QEMU's use of mbind(), it's the kernel that
+sucks:
 
-I'm not clear how it is therefore sufficient. We at least need to 
-explain that ATTRIBUTS/XFAM are validated separately by KVM already?
-> Organize tdx_cpu_cfg_caps[] following kvm_cpu_caps[] so that the masks can
-> be built with the similar feature-name based initializers.  CPUID registers
-> that hold directly configurable non-feature (multi-bit) fields are handled
-> separately.
-> 
-> The allowlist is consumed by later patches to filter KVM_TDX_CAPABILITIES
-> and to reject unsupported CPUID input to KVM_TDX_INIT_VM, so that newly
-> introduced TDX directly configurable CPUID feature bits stay hidden from
-> userspace until KVM explicitly opts in.
-> 
-> Add comments as placeholders for HLE, RTM and WAITPKG, which KVM doesn't
-> support for TDX yet.
-> 
-> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
+    /*
+     * We can have up to MAX_NODES nodes, but we need to pass maxnode+1
+     * as argument to mbind() due to an old Linux bug (feature?) which
+     * cuts off the last specified node. This means backend->host_nodes
+     * must have MAX_NODES+1 bits available.
+     */
+    assert(sizeof(backend->host_nodes) >=
+           BITS_TO_LONGS(MAX_NODES + 1) * sizeof(unsigned long));
+
+
+And from https://lore.kernel.org/all/63ccc890-fd57-118b-5997-e0259f507d28@suse.cz:
+
+ : And this is I think the reason why we can't change this now. I assume
+ : numactl allocates 1024 bits (0 to 1023) and passes 1025 to make sure all
+ : 1024 bits are processed. If we change it now, kernel will process 1025
+ : bits (0 to 1024) and overflow the allocated bitmask. If it happens to be
+ : at the border of mmaped vma, it's a segfault...
+
+This is quite possibly the most confusing syscall interface ever, and IMO the
+manpage is still straight up wrong (well, the kernel is the one that's buggy,
+but the manpage doesn't reflect the kernel's behavior):
+
+ : The maxnode argument is the maximum node number in the bit mask plus one
+
+Beacuse it's not the maximum node number plus one, it's the number of nodes in
+the bitask plus one.
+
+What a confusing mess.
+
+
+> Fixes: 678e90a349a4 ("KVM: selftests: Test IPI to halted vCPU in xAPIC while backing page moves")
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
 > ---
-> v3:
-> - Drop the new data structure in v2 and only track feature bits by
->    following the organization of kvm_cpu_caps[], handle non-feature
->    bits separately. (Sean)
-> - Use two versions of macros (TDX_CFG_F() VS. TDX_CFG_EXTRA_F()) to
->    distinguish whether a supported TDX configurable CPUID bit should be
->    checked against KVM's common cpu capabilities.
-> - Add AMX_COMPLEX since it has been defined in the CPUID virtualization doc.
-> ---
->   arch/x86/kvm/vmx/tdx.c | 145 +++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 145 insertions(+)
+>  tools/testing/selftests/kvm/x86/xapic_ipi_test.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index b272c20586a7..d4a3a42cfd9d 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -52,6 +52,149 @@
->   	__TDX_BUG_ON(__err, #__fn, __kvm, ", " #a1 " 0x%llx, " #a2 ", 0x%llx, " #a3 " 0x%llx", \
->   		     a1, a2, a3)
->   
-> +static u32 tdx_cpu_cfg_caps[NR_KVM_CPU_CAPS] __ro_after_init;
-> +static_assert(ARRAY_SIZE(tdx_cpu_cfg_caps) == ARRAY_SIZE(kvm_cpu_caps));
-> +
-> +#define TDX_VALIDATE_CPU_CAP_USAGE(name)			\
-> +	BUILD_BUG_ON(__feature_leaf(X86_FEATURE_##name) !=	\
-> +		     tdx_cpu_cap_init_in_progress)
-> +
-> +/* For feature bit that KVM advertised through kvm_cpu_caps[]. */
+> diff --git a/tools/testing/selftests/kvm/x86/xapic_ipi_test.c b/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
+> index 469e3ab16460..0f11f4d7cc3d 100644
+> --- a/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
+> +++ b/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
+> @@ -291,7 +291,7 @@ void do_migrations(struct test_data_page *data, int run_secs, int delay_usecs,
+>  		 * KVM_CREATE_VCPU ioctl. If that assumption ever changes this
+>  		 * test may break or give a false positive signal.
+>  		 */
+> -		pages_not_moved = migrate_pages(0, sizeof(nodemasks[from]),
+> +		pages_not_moved = migrate_pages(0, sizeof(nodemasks[from]) * 8 + 1,
 
-I would say it
+BITS_PER_TYPE()
 
-For feature bit that needs to be cap'ed by kvm_cpu_caps[]
+However, given that it's basically impossible for developers to get this right,
+we should add "#define MAXNODE_FOR_MASK(mask) (BITS_PER_TYPE(mask) + 1)" with a
+big comment explain why the code looks wrong.
 
-> +#define TDX_CFG_F(name)					\
-> +({							\
-> +	TDX_VALIDATE_CPU_CAP_USAGE(name);		\
-> +	tdx_cfg_caps |= feature_bit(name);		\
-> +})
-> +
-> +/*
-> + * For feature bit KVM allows for TDX guests even though it is not advertised
-> + * through kvm_cpu_caps[], e.g. MWAIT.
-> + */
-> +#define TDX_CFG_EXTRA_F(name)				\
+E.g. patch 3 gets it wrong in get_numa_mem_nodes():
 
-EXTRA doesn't sound like a fit name, though
+  static inline unsigned long get_numa_mem_nodes(void)
+  {
+       unsigned long nodemask = 0;
 
-> +({							\
-> +	TDX_VALIDATE_CPU_CAP_USAGE(name);		\
-> +	tdx_cfg_extra_caps |= feature_bit(name);	\
-> +})
-> +
-> +#define tdx_cpu_cfg_cap_init(leaf, feature_initializers...)		\
-> +do {									\
-> +	const u32 __maybe_unused tdx_cpu_cap_init_in_progress = leaf;	\
-> +	u32 tdx_cfg_extra_caps = 0;					\
-> +	u32 tdx_cfg_caps = 0;						\
-> +									\
-> +	feature_initializers						\
-> +	tdx_cpu_cfg_caps[leaf] = (tdx_cfg_caps & kvm_cpu_caps[leaf]) |	\
-> +				 tdx_cfg_extra_caps;			\
-> +} while (0)
-> +
-> +/*
-> + * Track only CPUID feature bits that are directly configurable by userspace.
+       /* Get set of first 64 numa nodes available */
+       if (get_mempolicy(NULL, &nodemask, BITS_PER_TYPE(nodemask), NULL,
+                         MPOL_F_MEMS_ALLOWED))
+               return 0;
 
-the "by userspace" is misleading. It's just the directly configurable 
-CPUID bits reported by TDX module.
+       return nodemask;
+  }
 
-> + * Features controlled by XFAM or ATTRIBUTES are excluded; userspace cannot
-> + * enable them until KVM adds support for the corresponding control.
-> + */
+because that will only get the mask for bits 62:0.  Even Sashiko got confused in
+patch 4:
 
-I don't like the comments. How about somthing
+  When maxnode is passed to kvm_get_mempolicy() here, the kernel must write at
+  least 5 bytes to return 33 bits of node status. This rounds up to 8 bytes (two
+  32-bit words).
 
-/*
-  * Intialize tdx_cpu_cfg_caps[], which is list of CPUID features that
-  * KVM supports for TDX. It only covers the directly configurable CPIUD
-  * bits reported by TDX module. Features controlled by XFAM and
-  * ATTRIBUTES are maintained separately.
-  */
+since the disaster of a syscall that is get_mempolicy() and friends will only
+provide 32 bits of node status.
 
-> +static void __init tdx_initialize_cpu_cfg_caps(void)
-> +{
-> +	tdx_cpu_cfg_cap_init(CPUID_1_ECX,
-> +		TDX_CFG_EXTRA_F(MWAIT),
-> +		TDX_CFG_F(TSC_DEADLINE_TIMER),
-> +		TDX_CFG_F(AVX),
-> +		TDX_CFG_F(F16C),
-> +	);
+Looking at the rest of the patches in this series, the main goal of fixing the
+extremely-unlikely-to-happen-in-practice bug in patch 4 needs a lot of work.  To
+move along the other cleanups, I'll send the below plus rebased versions of
+patches 1 and 2.
 
-TDX 1.5.24 on SPR report configurable bits of CPUID_1_ECX as
-0x31044988, which have
-
-- bit 3		MWAIT
-- bit 7		EST
-- bit 8		TM2
-- bit 11	SDBG
-- bit 14	XTPR
-- bit 18	DCA
-- bit 24	TSC_DEADLINE_TIMER
-- bit 28	AVX
-- bit 29	F16C
-
-but EST/TM2/SDBG/XTPR/DCA are not list here. I guess the reason is 
-kvm_cpu_cap[] doesn't support it. If so, it seems to guard twice:
-1. mentally/manually check if it a feature is supported in kvm_cpu_caps[]
-
-2. kvm_cpu_caps guarding in tdx_cpu_cfg_cap_init().
-
-I think 1) is not necessary, we can rely on 2)
-
-BTW, this seems also breaks the current userspace after this series.
-- Before, EST/TM2/SDBG/XTPR/DCA are allowed to be exposed to TD
-- After, they are not.
-
-If we cares CORE_CAPABILITIES in patch 2, why EST/TM2/SDBG/XTPR/DCA 
-don't matter?
-
-(I don't check the following leafs..)
-> +	tdx_cpu_cfg_cap_init(CPUID_1_EDX,
-> +		TDX_CFG_F(MCE),
-> +		TDX_CFG_F(MTRR),
-> +		TDX_CFG_F(MCA),
-> +		TDX_CFG_F(SELFSNOOP),
-> +	);
-> +
-> +	tdx_cpu_cfg_cap_init(CPUID_7_0_EBX,
-> +		TDX_CFG_F(BMI1),
-> +		/* HLE */
-> +		TDX_CFG_F(BMI2),
-> +		TDX_CFG_F(ERMS),
-> +		/* RTM */
-> +		TDX_CFG_F(AVX512F),
-> +		TDX_CFG_F(AVX512DQ),
-> +		TDX_CFG_F(ADX),
-> +		TDX_CFG_F(AVX512IFMA),
-> +		TDX_CFG_F(AVX512PF),
-> +		TDX_CFG_F(AVX512ER),
-> +		TDX_CFG_F(AVX512CD),
-> +		TDX_CFG_F(AVX512BW),
-> +		TDX_CFG_F(AVX512VL),
-> +	);
-> +
-> +	tdx_cpu_cfg_cap_init(CPUID_7_ECX,
-> +		TDX_CFG_F(UMIP),
-> +		/* WAITPKG */
-> +		TDX_CFG_F(AVX512_VBMI2),
-> +		TDX_CFG_F(GFNI),
-> +		TDX_CFG_F(VAES),
-> +		TDX_CFG_F(VPCLMULQDQ),
-> +		TDX_CFG_F(AVX512_VNNI),
-> +		TDX_CFG_F(AVX512_BITALG),
-> +		TDX_CFG_F(AVX512_VPOPCNTDQ),
-> +		TDX_CFG_F(LA57),
-> +		TDX_CFG_F(RDPID),
-> +		TDX_CFG_F(CLDEMOTE),
-> +	);
-> +
-> +	tdx_cpu_cfg_cap_init(CPUID_7_EDX,
-> +		TDX_CFG_F(AVX512_4VNNIW),
-> +		TDX_CFG_F(AVX512_4FMAPS),
-> +		TDX_CFG_F(FSRM),
-> +		TDX_CFG_F(AVX512_VP2INTERSECT),
-> +		TDX_CFG_F(SERIALIZE),
-> +		TDX_CFG_F(TSXLDTRK),
-> +	);
-> +
-> +	tdx_cpu_cfg_cap_init(CPUID_7_1_EAX,
-> +		TDX_CFG_F(SHA512),
-> +		TDX_CFG_F(SM3),
-> +		TDX_CFG_F(SM4),
-> +		TDX_CFG_F(AVX_VNNI),
-> +		TDX_CFG_F(AVX512_BF16),
-> +		TDX_CFG_F(CMPCCXADD),
-> +		TDX_CFG_F(FZRM),
-> +		TDX_CFG_F(FSRS),
-> +		TDX_CFG_F(FSRC),
-> +		TDX_CFG_F(LKGS),
-> +		TDX_CFG_F(WRMSRNS),
-> +		TDX_CFG_F(AMX_FP16),
-> +		TDX_CFG_F(AVX_IFMA),
-> +		TDX_CFG_F(LAM),
-> +		TDX_CFG_F(MOVRS),
-> +	);
-> +
-> +	tdx_cpu_cfg_cap_init(CPUID_7_1_EDX,
-> +		TDX_CFG_F(AVX_VNNI_INT8),
-> +		TDX_CFG_F(AVX_NE_CONVERT),
-> +		TDX_CFG_F(AMX_COMPLEX),
-> +		TDX_CFG_F(AVX_VNNI_INT16),
-> +		TDX_CFG_F(PREFETCHITI),
-> +		TDX_CFG_F(AVX10),
-> +	);
-> +
-> +	tdx_cpu_cfg_cap_init(CPUID_7_2_EDX,
-> +		TDX_CFG_F(DDPD_U),
-> +		TDX_CFG_F(MCDT_NO),
-> +	);
-> +
-> +	tdx_cpu_cfg_cap_init(CPUID_1E_1_EAX,
-> +		TDX_CFG_F(AMX_FP8),
-> +		TDX_CFG_F(AMX_TF32),
-> +		TDX_CFG_F(AMX_AVX512),
-> +		TDX_CFG_F(AMX_MOVRS),
-> +	);
-> +
-> +	tdx_cpu_cfg_cap_init(CPUID_8000_0008_EBX,
-> +		TDX_CFG_F(WBNOINVD),
-> +	);
-> +}
-> +
-> +#undef TDX_CFG_F
-> +#undef TDX_CFG_EXTRA_F
->   
->   bool enable_tdx __ro_after_init;
->   module_param_named(tdx, enable_tdx, bool, 0444);
-> @@ -3481,6 +3624,8 @@ int __init tdx_hardware_setup(void)
->   		return r;
->   	}
->   
-> +	tdx_initialize_cpu_cfg_caps();
-> +
->   	KVM_SANITY_CHECK_VM_STRUCT_SIZE(kvm_tdx);
->   
->   	vt_x86_ops.vm_size = max_t(unsigned int, vt_x86_ops.vm_size, sizeof(struct kvm_tdx));
-
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index 2233d871a38f..cd5df88bc642 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -80,7 +80,7 @@ static void test_mbind(int fd, size_t total_size)
+ {
+ 	const unsigned long nodemask_0 = 1; /* nid: 0 */
+ 	unsigned long nodemask = 0;
+-	unsigned long maxnode = BITS_PER_TYPE(nodemask);
++	unsigned long maxnode = MAXNODE_FOR_MASK(nodemask);
+ 	int policy;
+ 	char *mem;
+ 	int ret;
+diff --git a/tools/testing/selftests/kvm/include/numaif.h b/tools/testing/selftests/kvm/include/numaif.h
+index 29572a6d789c..84e82857f1c5 100644
+--- a/tools/testing/selftests/kvm/include/numaif.h
++++ b/tools/testing/selftests/kvm/include/numaif.h
+@@ -30,6 +30,16 @@ KVM_SYSCALL_DEFINE(mbind, 6, void *, addr, unsigned long, size, int, mode,
+ 		   const unsigned long *, nodemask, unsigned long, maxnode,
+ 		   unsigned int, flags);
+ 
++/*
++ * Caclucate the @maxnode param for the above syscalls given the mask that will
++ * be passed to the kernel, to account for a longstanding off-by-one bug in the
++ * kernel that isn't properly documented in the manpages.  The manpages say
++ * that @maxnode is "the maximum node ID plus one", but the kernel's actual
++ * behavior is "the number of bits in the mask plus one", i.e. "the maximum
++ * node ID plus two".
++ */
++#define MAXNODE_FOR_MASK(mask) (BITS_PER_TYPE(mask) + 1)
++
+ static inline int get_max_numa_node(void)
+ {
+ 	struct dirent *de;
+diff --git a/tools/testing/selftests/kvm/x86/xapic_ipi_test.c b/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
+index 469e3ab16460..1ddcf95d7fe4 100644
+--- a/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
++++ b/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
+@@ -248,7 +248,7 @@ void do_migrations(struct test_data_page *data, int run_secs, int delay_usecs,
+ 		delay_usecs);
+ 
+ 	/* Get set of first 64 numa nodes available */
+-	kvm_get_mempolicy(NULL, &nodemask, sizeof(nodemask) * 8,
++	kvm_get_mempolicy(NULL, &nodemask, MAXNODE_FOR_MASK(nodemask),
+ 			  0, MPOL_F_MEMS_ALLOWED);
+ 
+ 	fprintf(stderr, "Numa nodes found amongst first %lu possible nodes "
