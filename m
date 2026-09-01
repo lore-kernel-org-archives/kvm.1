@@ -1,57 +1,57 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CB7481652
-	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 18:35:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C3049EC4F
+	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 18:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788287719; cv=none; b=R6uFTRF5abB/yPjzizqc6J94BtP+vo/VKLV4W6GNxARsmQgeVrIoMMfJ6BesoSSCatIK1NXiIChEGEEVvKzT7krc4WEuONccUUmsrH2b0UymqfaeqbtDvyBM2H8X5KEGo6LqAlpU4MtWSVdUlo21Cn7gPONXuODs/RPlq8Z9nO4=
+	t=1788288108; cv=none; b=ZpOuFNF/LDx0iCGQMKlNgsB3QFd9OfsQphFGw8dS1fKKTvbL9lo4L9NtogWde4i9MgqgD+KmzdP/VBILhp/hPdQOQD8IMwTY9mqid3vVFcqnJG2lPBN/+BbZP85bAQQJfTRcdgeV1S+Q1gLg9NDrk+pIZMND85sq+3fFNSrrDmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788287719; c=relaxed/simple;
-	bh=d6mWEdAbh3pA6h0kvJxTmQz3sCAdRZUVlyIUylbQoi4=;
+	s=arc-20240116; t=1788288108; c=relaxed/simple;
+	bh=uVDf/Azs+Y2fNINbjdp5g3ddn/BJ/MorxkRf22rpgFo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jBve0MtMjUxA5MfMFkUVXaFKWMOSCCXa7dX0QH1A9oIDU+jO3f1WWgGIreEnKcPRIZtY5tWHw3JkK3OUn8QSu1f8SdJVuOrV97sghNJhkYZwPerbPg9qeEz2FiFOPBE9usOSwiZdh/CdRnZ0kPSnNQ2udlMf9KbzkuZSSZdFUzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aJ/i8hKe; arc=none smtp.client-ip=209.85.215.200
+	 To:Cc:Content-Type; b=c7wMgnjd1nlLMdvplr1k1nkqmGQVxyqrXspotSOa9SWanxTQlt+yPobRPxLVGrboihf3cS43ECETsLp7IOpZxPnAss7uA2oWzfPr6P5403FB2G2O9czoezeyQ+sqIQt84Axm+IJEIypIE2w3HAwj89KO6aZqRXCkCyAYP9F2Yl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tGfaEMjP; arc=none smtp.client-ip=209.85.210.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aJ/i8hKe"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc132709c76so312466a12.3
-        for <kvm@vger.kernel.org>; Tue, 01 Sep 2026 11:35:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tGfaEMjP"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84842381150so165168b3a.3
+        for <kvm@vger.kernel.org>; Tue, 01 Sep 2026 11:41:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788287717; x=1788892517; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788288106; x=1788892906; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LA0MtyhL9+n6pP8AlY+vz7qS2JveEW6zRalGa05+rBs=;
-        b=aJ/i8hKeU2jlhpAWK9sJzuUmkRVeSqRdCS/Lig6QNmblH4MuDa9c+UgAFgPjRbPKDN
-         OPo+yFpDnfV0UDQnzFnUceEivvRvHRFJTqcHPzYHSmQ5POGpEc9kv0OgE/WsYJ6VMccc
-         JwFMDVTiz9gFkUBsnorJqYL9LOlRF0/z9kvG4rylrasCO3J+5I/rlRR5F3ASsMjYSr8U
-         Oi9MO4w1oQIqF7d6NitC9j/W64i55ErnuLaKHk2VYXSL9I1D/EYIYAzDAChBsxWjL9TN
-         Npo8jE1cxufv7fZS2WwJJd9J9wUbrWMhjNxEsI1vRJbFHz3i5W8smZNMS52hIOm0MqqQ
-         AP1Q==
+        bh=T0nDJQnfFlnDLvDCZVuLzJX537jxkgQCnIHPdf7AiK4=;
+        b=tGfaEMjPuDzdeYIuXqDVqbgEHDl/qAa6HamdMl6CjYdq0DFtFXA0q7E14PzIps2cqG
+         wn9kSsxKcAnLVP3msnNDulTXefo5PrzBEnUPQhIP9j0TbSFVYa0gt6fkUXZDSvF2iF8p
+         /58Tz2A45lnIdeJAhRo5H9Sk8J6Qq28CxzUkmth4Usr4U/MZQ2bmOvoS8Hlt/+lR99EY
+         arWGyKTNDimSB17bj3eCuXy5h6hU+ZxwaMs+bbMZgIURj8ue7Sx23m/+Jz/jdivNeJml
+         W3kPJ2UWu6frvWVaYy7CTzxyaPqXiF2rzSxWw4pd194YekDi5RGKogOAiN/G9u4Ueifj
+         c36w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788287717; x=1788892517;
+        d=1e100.net; s=20251104; t=1788288106; x=1788892906;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LA0MtyhL9+n6pP8AlY+vz7qS2JveEW6zRalGa05+rBs=;
-        b=By3e9PIeSw+ZdzcZjoii/h77FrleLP7Sawykpg3l2eUttLj7FWrheVUAQy/gVLVMse
-         jXhh0YLTHfjagj4cK5nClQPoDAMEsTzo4ZA0YJ1ss2xeILbqk9kdagzdTL+NVlg/rCPX
-         Lkl01xx5FZd2GNe9TP2SYRyoKOxDIJ90TS7Zc/rxf+rFQGo+k5LSCTvecCNUB3yPNoy7
-         awKOkFVGRjpwtmBwc9lNkUZiweOSxqGsMyTVxX7bYLNKiieP4y1XTuOW85jCyM9ZAtTi
-         b8mXXvDyo0elt4K44omHdDI2WWwmw6dvzVhy+1gFcYSUNMFotB5gCY6Y2jQnBOIBpNyB
-         F1Qw==
-X-Forwarded-Encrypted: i=1; AHgh+RrybzHuZdnyv7jQpFgdmntP1IMArzkHwNwrvewRnkz+zW6PBQ4JDm5zQaOioSf+hhAKByo=@vger.kernel.org
-X-Gm-Message-State: AFuF++l5PVrizAXsniUEOvFOpgyTUkfqLWbm2SDQhil8FF+AA6GzbgUm
-	5o5KJtQKUXXCDUQ8/cK1ovOzkgFxcUHtb1/ZJorAr9u3A7rR11SgHIHM4s912HBPoe4W+jzrmPU
-	mBc1Jsg==
-X-Received: from pgcv12.prod.google.com ([2002:a05:6a02:530c:b0:c96:acc6:54d6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3944:b0:3d3:aec2:4dcb
- with SMTP id adf61e73a8af0-3d7b075b26bmr19293744637.23.1788287716571; Tue, 01
- Sep 2026 11:35:16 -0700 (PDT)
-Date: Tue, 1 Sep 2026 11:35:15 -0700
-In-Reply-To: <CA+EHjTzJbC=ZvB3Mopw-TLf=13-iqxGw5RfTp6Gt5S1hi8WRRA@mail.gmail.com>
+        bh=T0nDJQnfFlnDLvDCZVuLzJX537jxkgQCnIHPdf7AiK4=;
+        b=YBZ9A+z5bPdBPawoH0nddYO727Dy1ReUNbVi1qhtQVDcZSDdIJ8MigLkB1ClHHlDKT
+         WDdPC/80augVaJqNECLfwJnakyF/gKNZsh3uqq9udc6+5rXDykCz7M+YY/vFa1UhIRLb
+         HBfkO8psVl8IoRiT4g9zUrnVRp+ySEWeU45A9gFymQL5iWkxi2/ePhHZ7WBKoVDDkuIV
+         4vd6dz3TzJWawuh2AcmlNoq40ye/pGUQQpDWGr9SRMahlVo7nJ8OWKB+h7LLbtGhlncB
+         ShfdYrrrE6HPizGtu1IxN7aymENXVfAL/Ao2pQPOF5NdwNAiU2yaBDCp/qWw280VJO+F
+         Nvqw==
+X-Forwarded-Encrypted: i=1; AHgh+RruV8Saficsp2yWv5jTBESpHbRVayRrsXSCcWsLV/JzCu/QbbjTU918S0zJ0xPLF0GKhq0=@vger.kernel.org
+X-Gm-Message-State: AFuF++mWD0Oxwyo5hE4XHueARQQtYIAFlv4KDMhKtpjjdIGQ2cBOxRJD
+	ti1W9bAcbcRQX4YtQWmTY5d/Ki8ort3Kuz807wwksLymlcOCkvdRGLOs9jGkm9gtKFExkA/Ox7r
+	foghhTw==
+X-Received: from pfcy6.prod.google.com ([2002:a05:6a00:93c6:b0:848:49f6:6f5c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:8016:b0:857:4dea:e20e
+ with SMTP id d2e1a72fcca58-85b5693e833mr15207248b3a.0.1788288105188; Tue, 01
+ Sep 2026 11:41:45 -0700 (PDT)
+Date: Tue, 1 Sep 2026 11:41:44 -0700
+In-Reply-To: <apca475JqemLUjlb@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -59,8 +59,9 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-15-85e5fd25252a@google.com> <CA+EHjTzJbC=ZvB3Mopw-TLf=13-iqxGw5RfTp6Gt5S1hi8WRRA@mail.gmail.com>
-Message-ID: <apca475JqemLUjlb@google.com>
+ <20260830-gmem-inplace-conversion-v12-15-85e5fd25252a@google.com>
+ <CA+EHjTzJbC=ZvB3Mopw-TLf=13-iqxGw5RfTp6Gt5S1hi8WRRA@mail.gmail.com> <apca475JqemLUjlb@google.com>
+Message-ID: <apccaNCJ2lH5mbaY@google.com>
 Subject: Re: [PATCH v12 15/45] KVM: guest_memfd: Ensure pages are not in use
  before conversion
 From: Sean Christopherson <seanjc@google.com>
@@ -96,101 +97,111 @@ Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev
 Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Sep 01, 2026, Fuad Tabba wrote:
-> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > index 803c7cdbbe0f6..fe02c47c85fb5 100644
-> > --- a/virt/kvm/guest_memfd.c
-> > +++ b/virt/kvm/guest_memfd.c
-> > @@ -538,8 +538,46 @@ static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
-> >         return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
-> >  }
-> >
-> > +static bool kvm_gmem_has_outstanding_references(struct inode *inode,
-> > +                                               pgoff_t start, size_t nr_pages,
-> > +                                               pgoff_t *err_index)
-> > +{
-> > +       struct address_space *mapping = inode->i_mapping;
-> > +       pgoff_t last = start + nr_pages - 1;
-> > +       bool has_outstanding = false;
-> > +       struct folio_batch fbatch;
-> > +       pgoff_t next;
-> > +       int i;
-> > +
-> > +       folio_batch_init(&fbatch);
-> > +
-> > +       next = start;
-> > +       while (has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
+On Tue, Sep 01, 2026, Sean Christopherson wrote:
+> On Tue, Sep 01, 2026, Fuad Tabba wrote:
+> > > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > > index 803c7cdbbe0f6..fe02c47c85fb5 100644
+> > > --- a/virt/kvm/guest_memfd.c
+> > > +++ b/virt/kvm/guest_memfd.c
+> > > @@ -538,8 +538,46 @@ static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
+> > >         return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
+> > >  }
+> > >
+> > > +static bool kvm_gmem_has_outstanding_references(struct inode *inode,
+> > > +                                               pgoff_t start, size_t nr_pages,
+> > > +                                               pgoff_t *err_index)
+> > > +{
+> > > +       struct address_space *mapping = inode->i_mapping;
+> > > +       pgoff_t last = start + nr_pages - 1;
+> > > +       bool has_outstanding = false;
+> > > +       struct folio_batch fbatch;
+> > > +       pgoff_t next;
+> > > +       int i;
+> > > +
+> > > +       folio_batch_init(&fbatch);
+> > > +
+> > > +       next = start;
+> > > +       while (has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
+> > 
+> > has_outstanding starts as false, so the loop never runs and the function
+> > always returns false. The outstanding-reference check is dead at this
+> > patch, so a to-private conversion would not be rejected even when a page
+> > still has an outstanding reference.
+> > 
+> > It's fixed later in "KVM: guest_memfd: Handle lru_add fbatch refcounts
+> > during conversion safety check", which changes the condition to
+> > !has_outstanding. I think that fix belongs in this patch, so the check
+> > works when it is introduced and the series bisects cleanly.
+
+Wait, why are there even separate patches for this?  For all intents and purposes,
+"Ensure pages are not in use before conversion" introduces a bug and then the bug
+is fixed by "Handle lru_add fbatch refcounts during conversion safety check".
+Just don't introduce the bug.
+
+I also recommend splitting the export of lru_cache_drain_for_folio() to its own
+patch so that it can be more easily Acked by mm/ folks.  If we want to squash it
+with the KVM change, then that's trivial to do when applying.
+
+> Why even bother with has_outstanding?  Avoiding it requires copy+pasting
+> folio_batch_release(), but it's less code and IMO the end result is a lot easier
+> to follow:
 > 
-> has_outstanding starts as false, so the loop never runs and the function
-> always returns false. The outstanding-reference check is dead at this
-> patch, so a to-private conversion would not be rejected even when a page
-> still has an outstanding reference.
+> 	struct address_space *mapping = inode->i_mapping;
+> 	pgoff_t last = start + nr_pages - 1;
+> 	struct folio_batch fbatch;
+> 	pgoff_t next;
+> 	int i;
 > 
-> It's fixed later in "KVM: guest_memfd: Handle lru_add fbatch refcounts
-> during conversion safety check", which changes the condition to
-> !has_outstanding. I think that fix belongs in this patch, so the check
-> works when it is introduced and the series bisects cleanly.
-
-Why even bother with has_outstanding?  Avoiding it requires copy+pasting
-folio_batch_release(), but it's less code and IMO the end result is a lot easier
-to follow:
-
-	struct address_space *mapping = inode->i_mapping;
-	pgoff_t last = start + nr_pages - 1;
-	struct folio_batch fbatch;
-	pgoff_t next;
-	int i;
-
-	folio_batch_init(&fbatch);
-
-	next = start;
-	while (filemap_get_folios(mapping, &next, last, &fbatch)) {
-		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-			struct folio *folio = fbatch.folios[i];
-
-			/*
-			 * Outstanding references are anything other than those
-			 * from the page cache, plus 1 temporary reference held
-			 * by filemap_get_folios() in the folio batch.
-			 */
-			if (folio_ref_count(folio) != folio_nr_pages(folio) + 1) {
-				*err_index = max(start, folio->index);
-				folio_batch_release(&fbatch);
-				return true;
-			}
-		}
-
-		folio_batch_release(&fbatch);
-		cond_resched();
-	}
-
-	return false;
-
-and then we end up with:
-
-	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
-	struct address_space *mapping = inode->i_mapping;
-	pgoff_t last = start + nr_pages - 1;
-	struct folio_batch fbatch;
-	pgoff_t next;
-	int i;
-
-	folio_batch_init(&fbatch);
-
-	next = start;
-	while (filemap_get_folios(mapping, &next, last, &fbatch)) {
-		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-			struct folio *folio = fbatch.folios[i];
-
-			if (__folio_has_outstanding_references(folio, &drained)) {
-				*err_index = max(start, folio->index);
-				folio_batch_release(&fbatch);
-				return true;
-			}
-		}
-
-		folio_batch_release(&fbatch);
-		cond_resched();
-	}
-
-	return false;
+> 	folio_batch_init(&fbatch);
+> 
+> 	next = start;
+> 	while (filemap_get_folios(mapping, &next, last, &fbatch)) {
+> 		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+> 			struct folio *folio = fbatch.folios[i];
+> 
+> 			/*
+> 			 * Outstanding references are anything other than those
+> 			 * from the page cache, plus 1 temporary reference held
+> 			 * by filemap_get_folios() in the folio batch.
+> 			 */
+> 			if (folio_ref_count(folio) != folio_nr_pages(folio) + 1) {
+> 				*err_index = max(start, folio->index);
+> 				folio_batch_release(&fbatch);
+> 				return true;
+> 			}
+> 		}
+> 
+> 		folio_batch_release(&fbatch);
+> 		cond_resched();
+> 	}
+> 
+> 	return false;
+> 
+> and then we end up with:
+> 
+> 	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
+> 	struct address_space *mapping = inode->i_mapping;
+> 	pgoff_t last = start + nr_pages - 1;
+> 	struct folio_batch fbatch;
+> 	pgoff_t next;
+> 	int i;
+> 
+> 	folio_batch_init(&fbatch);
+> 
+> 	next = start;
+> 	while (filemap_get_folios(mapping, &next, last, &fbatch)) {
+> 		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+> 			struct folio *folio = fbatch.folios[i];
+> 
+> 			if (__folio_has_outstanding_references(folio, &drained)) {
+> 				*err_index = max(start, folio->index);
+> 				folio_batch_release(&fbatch);
+> 				return true;
+> 			}
+> 		}
+> 
+> 		folio_batch_release(&fbatch);
+> 		cond_resched();
+> 	}
+> 
+> 	return false;
