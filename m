@@ -1,99 +1,101 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0765649CF22;
-	Tue,  1 Sep 2026 19:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B67367B9C
+	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 19:33:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788290480; cv=none; b=tH2JB+dskSsnPDxdvPIgd5e4mDq2gEB0cBCg/hNEnbmmgOB2S8ah8vP9okzDA/CaTFGHLfTEZcSS0it+qrqhIKsDrSqgAm6nhvcUMrIn4QF832wbbkD31+v3NXWuYjFB9ju3BXMYRebSO4eH+OFexylXOdgmn9+aDVltIINSXUo=
+	t=1788291240; cv=none; b=VNgZYAhn81XC0ZfTFYksIWSF3OWAYodzluy4Ad5stICL7s2cHSTujI2OMskAoGWV3G5QiiS6GwyAvQoBasJ6LAa3OA+oEUaoD6MZADs559fgBH1/B0cBXZERpimbyLJcoW1nZVTsnzz3ndCpunzEXjN6G3xVSH46ymyu3CTKVvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788290480; c=relaxed/simple;
-	bh=rFCR4wvJPqtoOsLRqFRiTraJfKJOCvUH3Vowulw0ArM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pmdLCBQmO7TaUK4sSbym+yx0TJKFQQ10Of4zMvOXW50QpMXlDchrTGN7ufXFkbPizg8dI+3bqo1F1IR2SxWd9qz3OD+wOqN+adVW9okbhrtF3aiuau9wnhbxO9M3CdhPMixmsSI6uUXswQgAyCu4pG35Yw9Uxdwq5XZDLYaTzaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=JOO1+1L2; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1788291240; c=relaxed/simple;
+	bh=QZCoj1cVP7Hqv2C3oAs0XizEvyiKlG+bPfHrCm4CO/E=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=LlZKhsDWgnId8FXXoQi64WPLs+D6+neH0ANpF8/duZxF70NVp24LqwqS+r359r0cPYbZQO40ngY8hw992gmNCqTmbZKz5VAlr4l6GkrZ0qtychJaPC1VB6w7xU6zO4sxHz+zuJHRPEaQJFZfmUvY/mo5HKWETDrQGJzjVgvwQLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e8tmIMTy; arc=none smtp.client-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="JOO1+1L2"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D31DA40E01DD;
-	Tue,  1 Sep 2026 19:21:13 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 42J7P_o6H5Nz; Tue,  1 Sep 2026 19:21:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1788290463; bh=RnB4UBwIEU5ra0mwZ01BUCuLPy+58IVs4ew37pEMoXc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JOO1+1L273NyqfcFGwz2MT94SkwUY+b8uVgDoJa653eT5gtWzVONMMzv+jX3TL0QK
-	 DQnQ1yJgZDcxC2tOpBvs1nRWJ8ymnlElQZruVLAJQm4PazrZPgQepckG7RcltsVl8V
-	 BuZfc5wfOkZ49YdT8GpN69T5jtUrDID6WbiCmzORwtXRAZVd3DjlGCWkoYiZ8dYbYt
-	 llHUv/QtmuDgnr38XOSvF5OazHwO+dq0CEVUc24j5nvvkc2TlugkxKGwWuFe/+GppP
-	 Vq1A5SoJxK7qDyytsvsepZ4Q+MdSgqX2L/xm5sAvDbTjabHYNh0mbtnizA615wYU74
-	 mNnUPQE17VxdwaHDbzEE2ZRPOADmraP7VF/10NsKy5hEZN7FSnTwB78Pxjg4A7PEmg
-	 fk6LBPgj36NvAo3jOYO6HNQ7+sZ1Sph9tEzExKoBfZ0+8IqECTzz/VgMz3F9V28m4L
-	 o+uSE7S0TEU+K9mLOb79Qh7RXIccMC7tKxbewNLSrz0k6JjWM07GACH1vf1H4xBFGF
-	 ha1kCJjMcTGmfm/101WrWNpsG92FTbxQHADRecgAxHi6n5T2H04SM/0I3Nfl6sxBo2
-	 L3TDgOkyJTZS+UmOlYk6CU4GLAwqZdemIvs8It0MMpWW8i0Lf3XEdMfIpeZ3Q4IM8s
-	 g4XXoiThC2RTKS3y5TOVozmc=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CD76340E01E1;
-	Tue,  1 Sep 2026 19:20:28 +0000 (UTC)
-Date: Tue, 1 Sep 2026 12:20:25 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	john.allen@amd.com, darwi@linutronix.de,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v12 4/5] x86/sev: Add support to perform RMP
- optimizations asynchronously
-Message-ID: <20260901192025.GHapcleQABEDuwZc3I@fat_crate.local>
-References: <cover.1786389115.git.ashish.kalra@amd.com>
- <9c9502278f68af9da19f0dd583ba303d0e6d66d2.1786389115.git.ashish.kalra@amd.com>
- <20260829205208.GDapNGeGMOs02IrkGS@fat_crate.local>
- <c699a686-dab2-4e7b-af6e-3ea89cbed202@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e8tmIMTy"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-39906175917so253885a91.2
+        for <kvm@vger.kernel.org>; Tue, 01 Sep 2026 12:33:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788291238; x=1788896038; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vcp2HqC1PIYDI/BW2a9G/QFQNxe/OVU+goHiKCv6lBU=;
+        b=e8tmIMTy5n+PXwVMx7iz4kfOQw2n+BygsGi4uOHFmRBdFvM/pd7Dv4JvokWvm0TEaU
+         91XrITgRvEYJsphtS2X/A7FOV11hdrt2/wH8U1yC1jqA29HxxAqdtVVyEmlVy+IMxXFp
+         eQBE1OG+mDwDlCzeRB118YfN2pucvx1GDvllby6Gl8IyeawIhOH7A4ctu+giL3KHqGuG
+         gc1aVcLuz2Ft9vpnmzWaimbGOjI59/+op5MqMS9d5K+7Wk+IoM9UkbW9+LKEmg56vc70
+         yI3WJpWv8/poiTF9hBfAJzdwln3hs8QYcN/e37Bpghg+/CL7Qj08Cacyzlbzc9Oh58pa
+         CA6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788291238; x=1788896038;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vcp2HqC1PIYDI/BW2a9G/QFQNxe/OVU+goHiKCv6lBU=;
+        b=OEg9XAv4GdSDxn3JnRkuV9JjLakOUPYmXoWpEU1UZy+dgtcJrPKglWmoArkMHGJ2Vz
+         sf+wGuqBvA0J5SWLJfDjsUtul0JiZ/pYduMMCtpSCBgQFn4a0YaNeflA+gTA1MSIC7Tw
+         PRy5OmS6GniWcb1Q13y9nbBq9m81WoSeL8U4g3ACFMjXXNc1NA7F5OyMV1HxEAmVGPs0
+         vwkpufkIt+kmDSH1Fy6fMWQC2O0173QzobhTHHOz4kyO03Msk1JtSIohieFKkMZ5QaOy
+         ZyjmEL9xw7mH7wQW/EHUMMjEYQ/zATGalJgqkoWu7q/oEPCRoq1/Ejey4tw6mPmY+wM3
+         7/ug==
+X-Forwarded-Encrypted: i=1; AKwUvByr8leWlXVozXOg/gKuUJ/Ouw6cRaJ2oN2C1yME1wmTJnTZClvCEQ+p1809if60UGyHq5c=@vger.kernel.org
+X-Gm-Message-State: AFuF++l5dxR+37OZgow17BuEwK3QjWDNXGeAILdDM217Q0od/B+q0MJW
+	OIwrYVaDzZogt8sYun7yLi+V2kj6Apr2hSU/gy5N1TtO8UGp/rCT69Nn3CyuGnM8aWI6YcxNO7e
+	sRAYVWQ==
+X-Received: from pjff15.prod.google.com ([2002:a17:90b:562f:b0:38e:77e2:3e70])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:17cd:b0:398:ba9e:75ff
+ with SMTP id 98e67ed59e1d1-398ba9e7753mr31253638a91.21.1788291237665; Tue, 01
+ Sep 2026 12:33:57 -0700 (PDT)
+Date: Tue, 1 Sep 2026 12:33:50 -0700
+In-Reply-To: <7eedeed241687f3b5f5953bf6717afd2bf5a58d2.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <c699a686-dab2-4e7b-af6e-3ea89cbed202@amd.com>
+Mime-Version: 1.0
+References: <20260826214952.129BB1F000E9@smtp.kernel.org> <7eedeed241687f3b5f5953bf6717afd2bf5a58d2.camel@infradead.org>
+Message-ID: <apconttxYicjmZSd@google.com>
+Subject: Re: [PATCH v10 21/21] KVM: x86: Use kernel timekeeping snapshot to
+ get walltime+TSC
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: pbonzini@redhat.com, Thomas Gleixner <tglx@linutronix.de>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, paul@xen.org, dongli.zhang@oracle.com, 
+	sashiko-reviews@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Aug 31, 2026 at 03:00:25PM -0500, Kalra, Ashish wrote:
-> And we drop the leader/follower bookkeeping, but the warm-up stays.
+On Fri, Aug 28, 2026, David Woodhouse wrote:
+> On Wed, 2026-08-26 at 21:49 +0000, sashiko-bot@kernel.org wrote:
+> > [Severity: High]
+> > Does removing KVM's local TSC clamping expose guests to mismatched time pairs?
+> > 
+> > When establishing the guest's PV clock, KVM provides a master clock
+> > snapshot pairing a host TSC with a system time. The previous read_tsc()
+> > logic explicitly clamped the TSC to cycle_last to maintain mathematical
+> > consistency.
 > 
-> Minor nit with the patch below : with the andnot gone, this_cpu is now unused, so please drop it.
+> I think this is basically the same class of issue I brought up in
+> https://lore.kernel.org/all/87v7beb7s3.ffs@fw13/ and Thomas said the
+> right thing is just to ignore it?
+>
+> If the discrepancy was more than a few cycles, we shouldn't be in
+> masterclock mode anyway, should we?
 
-Ok, these changes mean, the previous patch "x86/sev: Initialize RMPOPT
-configuration MSRs" needs to be redone too so that it doesn't add
-rmpopt_cpumask at all.
+Agreed.  If a host CPU really has a TSC that is observably behind others, KVM
+will mark the TSC unstable when loading a vCPU on that pCPU.
 
-So please take all the cleanups from this thread and send a new revision
-after integrating and testing them.
+		s64 tsc_delta = !vcpu->arch.last_host_tsc ? 0 :
+				rdtsc() - vcpu->arch.last_host_tsc;
+		if (tsc_delta < 0)
+			mark_tsc_unstable("KVM discovered backwards TSC");
 
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+And as Thomas pointed out, the discrepancy will show up at some point.  E.g. even
+if the kernel provided a perfect pair, RDTSC from the guest would read a too-low
+value since KVM has historically required identical offsets to use masterclock,
+i.e. the guest would still be able to observe time going backwards if a vCPU did
+__pvclock_clocksource_read() with a TSC that is behind the masterclock reference.
