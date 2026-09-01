@@ -1,142 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DC63515E9
-	for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 23:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB22C2D7DC6;
+	Tue,  1 Sep 2026 00:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788219383; cv=none; b=apU1Koah8aaSBG6csvKSn1lnr4jEjmpGn2VMcOBng4W9cFBahI/o0/vMK/1jf6TzFQ4j0nvH+gaKjdrr8WsECJg+bZuZrZZuPW9J1CGAq0s0u3h3tYHiIWIFwo/1qxSunvdSmyOKarrX6ob5G9TmW8oxrHQsjICkTq07fPdZ2d8=
+	t=1788220870; cv=none; b=c3pBR6zhfGkWFJ1BANBpn1TTHcac/487W/v5Np/k1SwEydTHkldLrLkmpj9cf7+KFfRmWOOX6bLGF3/d4hYnVEGCtS/kFjKpHExf9IJ32f0ocr9fIAQzCwoehcWsN/Vo5iwuUGyZ1u3hN/0SYIBu7gt2hrrLuW42610aO+p/EiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788219383; c=relaxed/simple;
-	bh=3MXWzcMe+D2OxRizT++iRXLItOMQdOtAg8q0KTC06IU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=qI3hu/C1Dp9uXQyYdz3YPCiBZyaNXrAdewG7UqCKPVAGEh5ls5+FScAOo9GYq8mtKGzJPL9r4GyvsqzmWwweqCXXQYAcZC7yOzmJTbpjve/kDDC7eNU1IodsB54xASx6Mdy//V7N7DK9rpuXmOZFiOrU36sm4wre9R8NleZHwmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d6bD3x9P; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788220870; c=relaxed/simple;
+	bh=TxBoHBmzjXms+2ExTbR2y49kGKuy3NX9DEJYIxgMQrg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=foEmkIiEALyzKcO8YlRm91SSBSTjjTPIGtPm7HvXA8eqT5bQHEM2/iXUI9ASwZmMhU7rqIIhYW0DpnjP+d11UDARctykb41A/Ey31sG4qmFI5wiyCxEqol8S7OkcouY7363rDvcHoSSsIHb/EzTdWggu9L2LsQ/mptfB7A2yHjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iAeFn1dp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d6bD3x9P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136B31F000E9;
-	Mon, 31 Aug 2026 23:36:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iAeFn1dp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA0D1F00A3D;
+	Tue,  1 Sep 2026 00:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788219381;
-	bh=an1XC9THNjfmp/X2Gp/JVDwuWvy1tFoUjcjZAr0fsdo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=d6bD3x9PsxGR+VXhy6KU/QI5tP9rKSdgYYYKINncClZguVtg85fZaWSbdPmLooVMQ
-	 AI7pTS3EYkGfiZQrrBhGCf0TTvHM6Q3nkEDcLu+DppRUy8YjwETYUbBDpMtVeYUVVD
-	 g2AcePT+mLuXHTDSQzn/OmXw0OTs4xC5an51ZWFYFbpLLDbwRwhM9dHmtnEF5d0ZKi
-	 gUqV4wscNEPnvFjY0X9rL4J3nCUb6HrD73soT7icEIeOkSyU8tkwM59ZycBaxEHDh+
-	 +x+UrjjcR+kNYuFDA+HBZah2h+jh0vQxKuESCkD0AKCTivj9rGxq5ZHfVXtFHmislc
-	 xxR/2acJyJkaQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 13/13] KVM: x86/xen: Convert evtchn_ports from IDR to
- XArray
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "David Woodhouse" <dwmw2@infradead.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260831213632.81023-14-dwmw2@infradead.org>
-References: <20260831213632.81023-1-dwmw2@infradead.org>
- <20260831213632.81023-14-dwmw2@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 31 Aug 2026 23:36:20 +0000
-Message-Id: <20260831233621.136B31F000E9@smtp.kernel.org>
+	s=k20260515; t=1788220869;
+	bh=aMHkGXcW+o4pCoVFz76ekLaBwuBKkRIBpyc2q+CcbOw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=iAeFn1dpYZOUMwEXaeCifdY4SUY2dCCA3Niog0alh/FngLqrcmW7GCXO67sAeimBo
+	 Dm+RVb7sZqBgeZ+rgpZtBSea/9NjMHRoaaMasGKuGK3/7GCA7VCS0kpsOfve7jxSpZ
+	 BhOhOrEtKPU/mF7pekokY6P6BRxO3wgOtriARLsK/e1JPFNFsaIZCKdgJvtMRtf7Dl
+	 yrPll77kp/qXL9Ienq7ic4vB+EaqzAKREhN/oM9WNMyGTmmQIBl/2sTxuZd2PcRndH
+	 o/Xd6D3c2PBsgbTlxVUXnGu2y56L7CX6uUniH1rUB5zY/0LlPZyIHN0ThJFJExjxH7
+	 70IziiFwyrqxQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9398E392447E;
+	Tue,  1 Sep 2026 00:00:13 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v4 0/2] vsock: validate packet sources after bound
+ lookup
+ fallback
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178822081213.841883.14927327834085182039.git-patchwork-notify@kernel.org>
+Date: Tue, 01 Sep 2026 00:00:12 +0000
+References: <20260826003929.966160-1-4ncienth@gmail.com>
+In-Reply-To: <20260826003929.966160-1-4ncienth@gmail.com>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: netdev@vger.kernel.org, sgarzare@redhat.com, stefanha@redhat.com,
+ bobbyeshleman@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, mst@redhat.com,
+ jasowangio@gmail.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
+ bryan-bt.tan@broadcom.com, vishnu.dasa@broadcom.com,
+ bcm-kernel-feedback-list@broadcom.com, virtualization@lists.linux.dev,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+Hello:
 
-Pre-existing issues:
-- [Critical] Type confusion in evtchnfd delivery union allows a userspace g=
-uest to crash the host kernel by assigning an EVTCHNSTAT_ipi event channel =
-to port 0.
---
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-commit 365d4c87b9f4941190fe8a9a101dce7853ba1e18
-Author: Furkan Caliskan <frn1furkan10@gmail.com>
+On Wed, 26 Aug 2026 09:39:26 +0900 you wrote:
+> Both virtio and VMCI look up connected sockets by the full tuple before
+> falling back to a destination-only bound lookup. The fallback can select a
+> non-listening socket without validating the packet source.
+> 
+> V2 covered only the virtio path. Following Stefano's review, this series
+> moves the source and transport validation into a documented AF_VSOCK helper
+> and uses it for both virtio and VMCI. The VMCI patch checks both its
+> bottom-half and deferred workqueue receive paths.
+> 
+> [...]
 
-KVM: x86/xen: Convert evtchn_ports from IDR to XArray
-   =20
-This patch converts the deprecated IDR used for evtchn_ports into an XArray.
-It replaces idr_alloc() with xa_insert() and idr_remove() with xa_erase(),
-dropping the explicit rcu_read_lock() in kvm_xen_hcall_evtchn_send() since
-xa_load() is internally RCU-safe.
+Here is the summary with links:
+  - [net,v4,1/2] vsock/virtio: validate packet source for connected sockets
+    https://git.kernel.org/netdev/net/c/dee44f41f206
+  - [net,v4,2/2] vsock/vmci: validate packet source for connected sockets
+    https://git.kernel.org/netdev/net/c/ad9a7da3fa39
 
-> diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-> index b024a09de55a3..b59c6b747c2f6 100644
-> --- a/arch/x86/kvm/xen.c
-> +++ b/arch/x86/kvm/xen.c
-> @@ -2214,13 +2214,13 @@ static int kvm_xen_eventfd_assign(struct kvm *kvm,
->  	}
-> =20
->  	mutex_lock(&kvm->arch.xen.xen_lock);
-> -	ret =3D idr_alloc(&kvm->arch.xen.evtchn_ports, evtchnfd, port, port + 1,
-> +	ret =3D xa_insert(&kvm->arch.xen.evtchn_ports, port, evtchnfd,
->  			GFP_KERNEL);
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-[Severity: Critical]
-This isn't a bug introduced by this patch, but could this union type
-confusion allow a userspace guest to crash the host kernel?
 
-When a userspace process calls the KVM ioctl to assign an event channel with
-type EVTCHNSTAT_ipi and send_port =3D 0, the setup code just prior to this
-insertion does the following in kvm_xen_eventfd_assign():
-
-	evtchnfd->deliver.port.port =3D data->u.evtchn.deliver.port.port;
-	evtchnfd->deliver.port.vcpu_id =3D data->u.evtchn.deliver.port.vcpu;
-	evtchnfd->deliver.port.vcpu_idx =3D -1;
-
-Because of the union layout in the evtchnfd structure, deliver.port overlaps
-with deliver.eventfd. Writing -1 to vcpu_idx corrupts the eventfd_ctx point=
-er.
-
-> [ ... ]
-> @@ -2235,7 +2235,7 @@ static int kvm_xen_eventfd_deassign(struct kvm *kvm=
-, u32 port)
->  	struct evtchnfd *evtchnfd;
-> =20
->  	mutex_lock(&kvm->arch.xen.xen_lock);
-> -	evtchnfd =3D idr_remove(&kvm->arch.xen.evtchn_ports, port);
-> +	evtchnfd =3D xa_erase(&kvm->arch.xen.evtchn_ports, port);
->  	mutex_unlock(&kvm->arch.xen.xen_lock);
-> =20
->  	if (!evtchnfd)
-> @@ -2251,7 +2251,7 @@ static int kvm_xen_eventfd_deassign(struct kvm *kvm=
-, u32 port)
-> [ ... ]
-> @@ -2376,23 +2374,23 @@ void kvm_xen_destroy_vcpu(struct kvm_vcpu *vcpu)
->  void kvm_xen_destroy_vm(struct kvm *kvm)
->  {
->  	struct evtchnfd *evtchnfd;
-> -	int i;
-> +	unsigned long i;
-> =20
->  	kvm_gpc_deactivate(&kvm->arch.xen.shinfo_cache);
-> =20
-> -	idr_for_each_entry(&kvm->arch.xen.evtchn_ports, evtchnfd, i) {
-> +	xa_for_each(&kvm->arch.xen.evtchn_ports, i, evtchnfd) {
->  		if (!evtchnfd->deliver.port.port)
->  			eventfd_ctx_put(evtchnfd->deliver.eventfd.ctx);
-
-[Severity: Critical]
-This is a pre-existing issue, but does this check trigger an invalid pointer
-dereference due to the type confusion mentioned above?
-
-If an IPI was assigned to port 0, evtchnfd->deliver.port.port evaluates to =
-0,
-making the condition true. The kernel will then mistakenly dereference the
-corrupted pointer (overlapping with vcpu_idx =3D -1) by calling
-eventfd_ctx_put().
-
-This exact sequence is present during deassignment in
-kvm_xen_eventfd_deassign(), as well as here during VM destruction, which
-seems like it could lead to a kernel panic and a host denial of service.
-
->  		kfree(evtchnfd);
->  	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260831213632.8102=
-3-1-dwmw2@infradead.org?part=3D13
