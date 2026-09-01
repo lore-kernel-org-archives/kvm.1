@@ -1,106 +1,213 @@
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F8936728D;
-	Tue,  1 Sep 2026 08:06:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1818E35E92B;
+	Tue,  1 Sep 2026 08:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788249992; cv=none; b=f+qdXbU07+95McEGUksFTPzL8kYOpeAUxPvestKs8/hH3ZlNaLLCaTJ1k9NrpTYretRcL8b/Wfke1G6314AqsrYVExQXobBQh482Xel4+cF4zYqZEYJAIx0sZWPKWt4As8hvb2u5ei4GwzVnRXUf3YQvtyO1Y9pN4+Ni6Dr8qNA=
+	t=1788250288; cv=none; b=oejYKuixL61/fmKz21xftJUpKVuzIxN5DqwdtaFt6lcmmMQXohPdkS5Sc5uuDbPd1RGAWRX23YZw3YpelTIBAtmC4NCLrj8jMRs1W94GyRSU3TyJ+yhCP5p+mkqZmxTyB3x9tLYN4HquIt1H881F8HNg4gL5yZCFvluFqL4Qaoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788249992; c=relaxed/simple;
-	bh=u/xYBa5ikGyxoimV8RlW1cCOmvyniqrsnIpXe4Gpqbs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KaHD7zeAMx7DGHfXLOf/682qKzsFqpnRvc35cDfolsm5y7etWbJ+GGIRgeURemq4LkWeFcealxv/m7bYfNcVbzmFFGWBQnev075Ps0EkqSzeNmy2pLTnLkiCHoMLECbcwNOGilyWxY5wSe11kJJHd75jLQoxKIV2NDNmhdnyX3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [111.196.241.250])
-	by APP-01 (Coremail) with SMTP id qwCowADHYPR1h5ZqTaP9Bg--.30584S2;
-	Tue, 01 Sep 2026 16:06:13 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-To: Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>
-Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] RISC-V: KVM: Preserve LCOFIP when checking pending interrupts
-Date: Tue,  1 Sep 2026 16:06:08 +0800
-Message-ID: <20260901080610.91993-1-pengpeng@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1788250288; c=relaxed/simple;
+	bh=G8hLI7gbSXa7//WMLcSR43Vk6mpoTvFK7obJmBM7HvU=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=d7iWRBqIdG/VnIa6skWyECPGQna5BnFvQttRVNMzGb9C8nbTzskU23+tT0/E+kIhLfd/bIa06kcljRodPRnWvz/aqPT0boLj7I8MrR0f4ZIKsD6xouXjUAYVZ22G1ZKAcPZSqSabs18W8/qqw5BhjsVs05MX9A6hc8E75Q73GSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XqlwvypW; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XqlwvypW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FC71F000E9;
+	Tue,  1 Sep 2026 08:11:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788250286;
+	bh=Mffh+xsJ2ZCU31yMautmtE9YEjEsip5NwA60eZbTZ/M=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=XqlwvypWheYSFoa4uTcqlrpd0ImB0sJMQAEPOLerzwmH6wHmvRrzg41eM8cyc8tyg
+	 mko/ggm7eN88UclRZVlY4XIzcApIWbXmC10fW7MTdMwlOU6pe81WSGZ0IcTB9tDVeD
+	 xfFXM3flFzX5qfk3wSTgCUk02rxNjj7tGwxreFEtqWWvkyte0r//saL2H7yI3SZPhK
+	 PjvzCng6d6+EQikN7N+EHskMyi9bT8SPmjVtUMBJDt/bbFqLGU26NlBTD7dDNb+rvR
+	 1tqHpvWBkPaG4fohiDusTOLAGwWxjxLw12436HRhzJKSuD/YT+3fS/AnwENHLXW7qi
+	 swEIhya6rzBwA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1x1JaW-00000003CEo-19GZ;
+	Tue, 01 Sep 2026 08:11:24 +0000
+Date: Tue, 01 Sep 2026 09:13:56 +0100
+Message-ID: <87se3tmlrv.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steffen Eiden <seiden@linux.ibm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Grapentin <gra@linux.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Friedrich Welter <fritz@linux.ibm.com>,
+	Fuad Tabba <tabba@google.com>,
+	Gautam Gala <ggala@linux.ibm.com>,
+	Hariharan Mari <hari55@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Nico Boehr <nrb@linux.ibm.com>,
+	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+	Oliver Upton <oupton@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Will Deacon <will@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH v7 11/23] KVM: arm64: Share arm64 code with s390
+In-Reply-To: <20260831144802.834315-12-seiden@linux.ibm.com>
+References: <20260831144802.834315-1-seiden@linux.ibm.com>
+	<20260831144802.834315-12-seiden@linux.ibm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowADHYPR1h5ZqTaP9Bg--.30584S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7CrW7tF1xWF1xCrWfuw47CFg_yoW8Zry7pr
-	4Ikw1YqrW0qa4Ik342gr40gr1Yg3ykJr43uFZ29a4UJr42qa4ruF4kKa4UAF4rGryF9a4x
-	XryIga45uas8Zw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
-	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
-	VFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, tabba@google.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, seanjc@google.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-KVM injects the guest counter-overflow interrupt into HVIP bit 13 and
-records the same bit in irqs_pending. The guest enables it through VSIE
-LCOFIE, also at bit 13.
+On Mon, 31 Aug 2026 15:47:48 +0100,
+Steffen Eiden <seiden@linux.ibm.com> wrote:
+> 
+> Mark functions that s390 can use to implement arm on s390 as shared
+> functions.
+> 
+> No functional change.
+> 
+> Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+> ---
+>  arch/arm64/kvm/arm.c         | 3 +++
+>  arch/arm64/kvm/guest.c       | 6 ++++++
+>  arch/arm64/kvm/handle_exit.c | 6 ++++++
+>  arch/arm64/kvm/mmio.c        | 2 ++
+>  4 files changed, 17 insertions(+)
+> 
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 8b080804bc90..6b92a3c1d490 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -1603,6 +1603,7 @@ static unsigned long system_supported_vcpu_features(void)
+>  	return features;
+>  }
+>  
+> +#ifdef ARM64_S390_COMMON
+>  static int kvm_vcpu_init_check_features(struct kvm_vcpu *vcpu,
+>  					const struct kvm_vcpu_init *init)
+>  {
+> @@ -1656,6 +1657,8 @@ static bool kvm_vcpu_init_changed(struct kvm_vcpu *vcpu,
+>  			     KVM_VCPU_MAX_FEATURES);
+>  }
+>  
+> +#endif /* ARM64_S390_COMMON */
+> +
+>  static int kvm_setup_vcpu(struct kvm_vcpu *vcpu)
+>  {
+>  	struct kvm *kvm = vcpu->kvm;
+> diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
+> index 773f6c8e5026..6ca5a9f357cd 100644
+> --- a/arch/arm64/kvm/guest.c
+> +++ b/arch/arm64/kvm/guest.c
+> @@ -62,6 +62,7 @@ const struct kvm_stats_header kvm_vcpu_stats_header = {
+>  		       sizeof(kvm_vcpu_stats_desc),
+>  };
+>  
+> +#ifdef ARM64_S390_COMMON
+>  static bool core_reg_offset_is_vreg(u64 off)
+>  {
+>  	return off >= KVM_REG_ARM_CORE_REG(fp_regs.vregs) &&
+> @@ -306,6 +307,8 @@ static int set_core_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
+>  	return err;
+>  }
+>  
+> +#endif /* ARM64_S390_COMMON */
+> +
+>  #define vq_word(vq) (((vq) - SVE_VQ_MIN) / 64)
+>  #define vq_mask(vq) ((u64)1 << ((vq) - SVE_VQ_MIN) % 64)
+>  #define vq_present(vqs, vq) (!!((vqs)[vq_word(vq)] & vq_mask(vq)))
+> @@ -543,6 +546,7 @@ int kvm_arch_vcpu_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
+>  	return -EINVAL;
+>  }
+>  
+> +#ifdef ARM64_S390_COMMON
+>  static int copy_core_reg_indices(const struct kvm_vcpu *vcpu,
+>  				 u64 __user *uindices)
+>  {
+> @@ -591,6 +595,8 @@ static unsigned long num_core_regs(const struct kvm_vcpu *vcpu)
+>  	return copy_core_reg_indices(vcpu, NULL);
+>  }
+>  
+> +#endif /* ARM64_S390_COMMON */
+> +
+>  static unsigned long num_sve_regs(const struct kvm_vcpu *vcpu)
+>  {
+>  	const unsigned int slices = vcpu_sve_slices(vcpu);
+> diff --git a/arch/arm64/kvm/handle_exit.c b/arch/arm64/kvm/handle_exit.c
+> index db37678dcb05..6e59a7b12d40 100644
+> --- a/arch/arm64/kvm/handle_exit.c
+> +++ b/arch/arm64/kvm/handle_exit.c
+> @@ -213,6 +213,7 @@ static int kvm_handle_guest_debug(struct kvm_vcpu *vcpu)
+>  	return 0;
+>  }
+>  
+> +#ifdef ARM64_S390_COMMON
+>  static int kvm_handle_unknown_ec(struct kvm_vcpu *vcpu)
+>  {
+>  	u64 esr = kvm_vcpu_get_esr(vcpu);
+> @@ -224,6 +225,8 @@ static int kvm_handle_unknown_ec(struct kvm_vcpu *vcpu)
+>  	return 1;
+>  }
+>  
+> +#endif /* ARM64_S390_COMMON */
+> +
+>  /*
+>   * Guest access to SVE registers should be routed to this handler only
+>   * when the system doesn't support SVE.
+> @@ -404,6 +407,7 @@ static exit_handle_fn arm_exit_handlers[] = {
+>  	[ESR_ELx_EC_GCS]	= kvm_handle_gcs,
+>  };
+>  
+> +#ifdef ARM64_S390_COMMON
+>  static exit_handle_fn kvm_get_exit_handler(struct kvm_vcpu *vcpu)
+>  {
+>  	u64 esr = kvm_vcpu_get_esr(vcpu);
+> @@ -439,6 +443,8 @@ static int handle_trap_exceptions(struct kvm_vcpu *vcpu)
+>  	return handled;
+>  }
+>  
+> +#endif /* ARM64_S390_COMMON */
 
-kvm_riscv_vcpu_has_interrupts() shifts the complete VSIP valid mask by
-VSIP_TO_HVIP_SHIFT before matching it against irqs_pending. That maps
-SSIP, STIP, and SEIP to VSSIP, VSTIP, and VSEIP, but incorrectly moves
-LCOFIP from bit 13 to bit 14. The following high-interrupt term excludes
-all local interrupt bits, so it cannot recover LCOFIP.
+Why the exit handler, and not the EC handlers aside from the UNKNOWN
+one? Yes, you probably aren't there yet in this series, but I can tell
+you are going to add more and more of these.
 
-As a result, kvm_arch_vcpu_runnable() can report false for a vCPU waiting
-in WFI even though an enabled PMU overflow interrupt is pending.
+But the EC array is absolutely architectural, and there is no good
+reason to maintain your own.
 
-Keep LCOFIP in place while shifting the three interrupt classes that have
-distinct VS-level bit positions. This makes a vCPU halted in WFI runnable
-when its PMU overflow interrupt is pending.
+So instead of this, why not keep the EC array altogether, and
+implement stubs for the ECs you don't support?
 
-Fixes: 16b0bde9a37c ("RISC-V: KVM: Add perf sampling support for guests")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
----
- arch/riscv/kvm/vcpu.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+	M.
 
-diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-index e062ca1..c6eb3bd 100644
---- a/arch/riscv/kvm/vcpu.c
-+++ b/arch/riscv/kvm/vcpu.c
-@@ -487,12 +487,14 @@ int kvm_riscv_vcpu_unset_interrupt(struct kvm_vcpu *vcpu, unsigned int irq)
- bool kvm_riscv_vcpu_has_interrupts(struct kvm_vcpu *vcpu, u64 mask)
- {
- 	unsigned long flags;
--	unsigned long ie;
-+	unsigned long ie, vsie;
- 	bool ret;
- 
- 	raw_spin_lock_irqsave(&vcpu->arch.irqs_pending_lock, flags);
--	ie = ((vcpu->arch.guest_csr.vsie & VSIP_VALID_MASK)
--		<< VSIP_TO_HVIP_SHIFT) & (unsigned long)mask;
-+	vsie = vcpu->arch.guest_csr.vsie & VSIP_VALID_MASK;
-+	ie = ((vsie & ~SIP_LCOFIP) << VSIP_TO_HVIP_SHIFT) |
-+	     (vsie & SIP_LCOFIP);
-+	ie &= (unsigned long)mask;
- 	ie |= vcpu->arch.guest_csr.vsie & ~IRQ_LOCAL_MASK &
- 		(unsigned long)mask;
- 	ret = vcpu->arch.irqs_pending[0] & ie;
-
+-- 
+Jazz isn't dead. It just smells funny.
