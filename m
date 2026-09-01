@@ -1,251 +1,187 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-249.mta1.migadu.com [95.215.58.249])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0173313543
-	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 10:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A0F47A877
+	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 10:13:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788257387; cv=none; b=V+j1qhh+u56Z9fY7rxUVQiMSWc0eW2d/ExODshCQc11D7cE8K4jVmXq7t4PovpJSe9+zfmO2vSrHFv1qmAgM8F1HjYTYZN6gSFbNj50OklxDwV/zBPJKj2ThMRu/0SlsMjUNOEi45+0ZBjpXA/En1tME6449a+Tg7gJeatYsl7E=
+	t=1788257635; cv=none; b=dCFB70iNfGZqqVDXdNyvCJerF77KlNLkL7ISRVsvleTeEVWkqebh90yFIenXEvEJWTdmOoShIDtqhHsToqm9KDZ7vjuXLgdhDDx1I4HDweCGKtAWrFXXGLYcQs3pjFPlABGePiEl4gZZP1nbAGPC9BuVIFWNDYbxYk3fS26sWGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788257387; c=relaxed/simple;
-	bh=yzEz5mFv54Yk5VAa/ub493f5d0Fpz7/uvmECPA9cCdo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UiAI20dwcrYZoNymgsmTiK/La0o6g7G5ud05z9sCygsNr1Y7KoxEzz29eyvnwE3lkBhjmV3Gny4UdwY7fH/VM5aO/A3CNmDOmWz0FoGqcD4d/QsVAT0EGahhgtASXnJfycb54QykPRB9pm6NpjwTaiZpBoI4qyxD3L7dIlzkxU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GCeNYd2r; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ADuoDn7U; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788257635; c=relaxed/simple;
+	bh=AVdE0MD+h6o2Np6u6CwnfB0M91U/Y/LHHzhpZ1Tty+I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lUMpGyX9ITZcta98DZCXlsef0GkRm0wldVI6m2DMIKQgWoRcANdE/+WW5eymq0ZWn102oCPb6hbdySaK6qwhO2pDejkSiBrlxm2/AePRA8z9EXHPsDEfD6dqwSY7r6Qmfa8cnnTLE8uF5ztMYo0OqpWJYy+/U0WO0naAMlJnb00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xjV0nZCb; arc=none smtp.client-ip=95.215.58.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GCeNYd2r";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ADuoDn7U"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788257384;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ppz2K1vLw2zwdYGAd4h8De7d1adqi3oztEYlXl9z9H4=;
-	b=GCeNYd2rJFjY0vSn7wbLxvJKB9zKaw0Iv8vjkWxGC8cxWasXbFIEYpDp7yDMhjI9IJRcv8
-	8lY2MqgmvcYFe4tI3V+4Z/zyGt4xaSIppwW15wtxUgb19/F7cO+1ED94WUPJcpf9XTq5z3
-	LuFwEbEv3t2ezkMririejkDKoJQjK+c=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-240-WqiVW6UHPrW2N7PfBetwUQ-1; Tue, 01 Sept 2026 06:09:33 -0400
-X-MC-Unique: WqiVW6UHPrW2N7PfBetwUQ-1
-X-Mimecast-MFC-AGG-ID: WqiVW6UHPrW2N7PfBetwUQ_1788257372
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-4843d9ab895so772390f8f.0
-        for <kvm@vger.kernel.org>; Tue, 01 Sep 2026 03:09:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788257372; x=1788862172; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ppz2K1vLw2zwdYGAd4h8De7d1adqi3oztEYlXl9z9H4=;
-        b=ADuoDn7UJs/e5Qlegvx1pt1FnV4iAn0P0G6QdJuEfAavNAg2E6SI/dYdW4KDuDCFLK
-         H8DICZawyiE9Qt9WFWI4buW78g2u804art221hPEDoP2nPjWljXDqqhxfaZjyK0vaIh2
-         JQSF6bXmGlHrrZuUT/Lzc178JbPdZxxoU+m9dSN1v7UR+EoEptbMsPYECId2BIQxfMKh
-         z7JMhgdGPzp0N5K9MixnhiS8BFf8Wm+1NjZQ7JqyiER1s7kmELNgzDGwLOp7UBfi5Jo0
-         LCxH2i5hO2dFwf+HG6Mj9989YRco/u95SrBo9AjBPHlx+RAbRBBqubIzvpzC+fgKgKL8
-         jB3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788257372; x=1788862172;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ppz2K1vLw2zwdYGAd4h8De7d1adqi3oztEYlXl9z9H4=;
-        b=lEzWVmfP7iSTzuTCis2hN5jIo2Xxt2ScnTqg+m0wR0IX9fqdiVLZO1S5GfxuKVBHaV
-         sfPaRV8CUMsi13HapBAwWtkDZWLI1HV6Mjt4W59RmTHDah0fgfFVzm/wY4b39CfALElt
-         ziqqdzwuG5RMdmbwcjwyVFdb9zpmfNMRWlOcQ5SC8guF9d+MCNtazDwBmr/7EV3Pu/Be
-         pbJJJD0uWXnE8nY2izl0nUK/FAEdrSCsdugPQ+9BjNX/x9LT8tKlrQbvp42fItmuNJwa
-         WH6gcbjIzt+enyuP9uctNBsP7S5vreN3iQ17StyTLVKAHj6zSdXR2XSrAxQg64sECWQs
-         GCPA==
-X-Forwarded-Encrypted: i=1; AKwUvBxe+iRW2Y0ah0YWvBbQsuw3/XzuVmNlTMf7BhidoBPRftc0QAcIa4Khzs9oZ8zF+Z8LgO8=@vger.kernel.org
-X-Gm-Message-State: AFuF++nF1ZXx7SLXJPKP30Bsz26IBLTww0IacAbKW/hSUvZAj1VB6lzr
-	D7K3LXIQQEQCczzHsn1wnT/XMpznuxeFBBhnehCPbXk82VKKVYu4tgCglgZKPNgShjpSS9KZCM9
-	fLoyGFS+NuYKHkre2ibxg3+g1xd84z9uMalmyEuWYB7KXdfAY4qsXNULnf01sBGeD5lnIkWVKwW
-	Q2DqpRZ9No7TnrcuKtpRUuHzizdbkQFQkb3WyQc6Pt
-X-Gm-Gg: AYBFou0Mf5X1iHX6eo5XMv8f4M3o/aIWhAPzcX0RD6vjggtPOmiRyVAhuLtsDFwJ90G
-	u8He6r3LkIP1N/HKXrfXTwR/oBE9UWafk0UP+hGSMHub8Ua3mSeCehPDCx1srxH46w7aBrbppvs
-	aa/XmyBOOLI4RurCdQde4FYxcNl6KWJaj/hjEBBNZlK63gZuYNj7rP7bPyLhMkZoI7Q0BZ7Stl1
-	UP+zt4KmCPPHUor/VVRei/cN1smYxABJ0nVGSwsuRMThWin46bcS55S6DAkRGJ3KTiWhJ/K9E/E
-	f7U/WE58XO5VysbVZa57s5RRAa6cwfY9cErZTlLo3kfiFlf06I5KTEV98ue6hNQEy80DNf5v50i
-	73fSCrkuya5Uox89aQXO2IAITP+fcvnh3t5J3cOPuFF7Ygbk/1yhicDrc+WAMrAU5khvM
-X-Received: by 2002:a05:6000:2510:b0:483:ca4a:6b9d with SMTP id ffacd0b85a97d-483ca4a6d9cmr36047429f8f.20.1788257371944;
-        Tue, 01 Sep 2026 03:09:31 -0700 (PDT)
-X-Received: by 2002:a05:6000:2510:b0:483:ca4a:6b9d with SMTP id ffacd0b85a97d-483ca4a6d9cmr36047329f8f.20.1788257371394;
-        Tue, 01 Sep 2026 03:09:31 -0700 (PDT)
-Received: from lleonard-thinkpadx1carbongen13.rmtit.csb ([151.29.41.106])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48442d7c1c0sm3941620f8f.32.2026.09.01.03.09.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 03:09:30 -0700 (PDT)
-From: Luigi Leonardi <leonardi@redhat.com>
-Date: Tue, 01 Sep 2026 12:09:19 +0200
-Subject: [PATCH 2/4] igvm: move set_id_block call into the SNP ID block
- directive handler
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xjV0nZCb"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=AVdE0MD+h6o2Np6u6CwnfB0M91U/Y/LHHzhpZ1Tty+I=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788257631; v=1; x=1788862431;
+ b=xjV0nZCb+aMBnKjxaEqb70o7NlUebjCg4N0vhW/SjsK8KjWGuoCLaaU0evnEKU+6NnAd/QSF
+ TSvo662hcjm54U+HygJG0UqT1u+iRSlvP9oS+uNtOY5nHYO/fCh8ZfSfJyIVzea7zC3Jqh+cntn
+ jyAkrotI9/pUhi3Belw9EFFI=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 06fd77acd358796d;
+	Tue, 01 Sep 2026 10:13:51 +0000
+X-Mizu-Trace-ID: 06fd77acd358796d
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5b2a73da7e1so6474e87.0
+        for <kvm@vger.kernel.org>; Tue, 01 Sep 2026 03:13:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxSE15kEXq3WJeDNwjOVsQ7QRk0dxc2TjfqE4QXpC0NBRJMsr+sE21lIeXoYVx4rI7AmdU=@vger.kernel.org
+X-Gm-Message-State: AFuF++nKThHFlnxfbuZAyv4uQXoPmALvWNwYGk5JRg1RcBf9UfcjuLlO
+	TOKB0GG7jCmvFzPQjtJjW6p02r6po6eXVxBNxVzT5AZEbjUKsJ2o6TVi4uVPv1xoAc+xG8lY5bO
+	PQxJy1OjUj7jGLBFDnZySINe5UGqW/9bcmXQ/gkaG
+X-Received: by 2002:a05:6512:3e0c:b0:5b2:a5e9:3aba with SMTP id
+ 2adb3069b0e04-5b5ff28cff6mr137091e87.6.1788257629010; Tue, 01 Sep 2026
+ 03:13:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260901-fix_igvm_policy-v1-2-e93a6cf8c5ac@redhat.com>
-References: <20260901-fix_igvm_policy-v1-0-e93a6cf8c5ac@redhat.com>
-In-Reply-To: <20260901-fix_igvm_policy-v1-0-e93a6cf8c5ac@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>, 
- Stefano Garzarella <sgarzare@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>, 
- Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org, 
- Luigi Leonardi <leonardi@redhat.com>
-X-Mailer: b4 0.14.3
+References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com> <20260830-gmem-inplace-conversion-v12-12-85e5fd25252a@google.com>
+In-Reply-To: <20260830-gmem-inplace-conversion-v12-12-85e5fd25252a@google.com>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Tue, 1 Sep 2026 11:13:00 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTz5phoUdE9W_FY846p9hUSu+dGtnz4JMUFN3eRxpjVQGQ@mail.gmail.com>
+X-Gm-Features: AcwNN1VxSYWT9NZrhIzgE-QIHtarTDbXrfKaWL85aQCa702UGFBp2Nv9VWlrElc
+Message-ID: <CA+EHjTz5phoUdE9W_FY846p9hUSu+dGtnz4JMUFN3eRxpjVQGQ@mail.gmail.com>
+Subject: Re: [PATCH v12 12/45] KVM: guest_memfd: Always fault from guest_memfd
+ if in-place conversion is enabled
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-set_id_block only makes sense when the IGVM file contains an
-IGVM_VHT_SNP_ID_BLOCK directive. Move the call from the removed
-qigvm_handle_policy into qigvm_directive_snp_id_block, where the ID
-block and ID auth are populated. This avoids a no-op call to
-set_id_block when no ID block is present.
+On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
+<devnull+ackerleytng.google.com@kernel.org> wrote:
+>
+> From: Ackerley Tng <ackerleytng@google.com>
+>
+> If a guest_memfd memslot is created but the guest_memfd does not have the
+> GUEST_MEMFD_FLAG_MMAP set, KVM still fulfils guest faults by looking up the
+> memslot's userspace_addr.
+>
+> Set KVM_MEMSLOT_GMEM_ONLY if in-place conversion is enabled so that the
+> guest_memfd's memory will be used for both shared and private memory. With
+> in-place conversion, guest_memfd will be the only backing memory for the
+> memslot.
+>
+> No validation is performed to require userspace_addr to be a mapping from
+> the associated guest_memfd because even after validation, userspace is free
+> to remap something else at the provided userspace_addr.
+>
+> userspace_addr will still be used by functions like kvm_read_guest(), and
+> if userspace_addr does not match up with the corresponding memory in the
+> memslot's guest_memfd (whether userspace_addr points to the wrong offset or
+> some non-guest_memfd memory, etc), that is a user error.
+>
+> Requiring both shared and private memory to come from the only associated
+> guest_memfd simplifies invalidation in stage 2 page tables. On a PUNCH_HOLE
+> operation on a guest_memfd, the invalidation is now guaranteed to be
+> invalidating only memory mapped from the given guest_memfd.
+>
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-The ID block embeds the guest policy, so the policy must be known by the
-time the directive is handled. Process the initialization section (which
-carries the GUEST_POLICY header) before the directive section, and
-copy ctx->sev_policy into the ID block in the directive handler.
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
----
- backends/igvm.c | 81 +++++++++++++++++++++++++++------------------------------
- 1 file changed, 38 insertions(+), 43 deletions(-)
+Cheers,
+/fuad
 
-diff --git a/backends/igvm.c b/backends/igvm.c
-index 85de0d54ec..6545382546 100644
---- a/backends/igvm.c
-+++ b/backends/igvm.c
-@@ -778,6 +778,8 @@ static int qigvm_directive_snp_id_block(QIgvm *ctx, const uint8_t *header_data,
-     ctx->id_block->version = IGVM_SEV_ID_BLOCK_VERSION;
-     memcpy(ctx->id_block->ld, igvm_id->ld, sizeof(ctx->id_block->ld));
- 
-+    ctx->id_block->policy = ctx->sev_policy;
-+
-     ctx->id_auth->id_key_alg = igvm_id->id_key_algorithm;
-     assert(sizeof(igvm_id->id_key_signature) <=
-            sizeof(ctx->id_auth->id_block_sig));
-@@ -805,6 +807,14 @@ static int qigvm_directive_snp_id_block(QIgvm *ctx, const uint8_t *header_data,
-     memcpy(&ctx->id_auth->author_key[76], &igvm_id->author_public_key.qy,
-             72);
- 
-+    if (ctx->cgsc) {
-+        return ctx->cgsc->set_id_block(ctx->id_block,
-+                                       sizeof(struct sev_id_block),
-+                                       ctx->id_auth,
-+                                       sizeof(struct sev_id_authentication),
-+                                       errp);
-+    }
-+
-     return 0;
- }
- 
-@@ -958,23 +968,6 @@ static int qigvm_supported_platform_compat_mask(QIgvm *ctx, Error **errp)
-     return 0;
- }
- 
--static int qigvm_handle_policy(QIgvm *ctx, Error **errp)
--{
--    if (ctx->platform_type == IGVM_PLATFORM_TYPE_SEV_SNP) {
--        int id_block_len = 0;
--        int id_auth_len = 0;
--        if (ctx->id_block) {
--            ctx->id_block->policy = ctx->sev_policy;
--            id_block_len = sizeof(struct sev_id_block);
--            id_auth_len = sizeof(struct sev_id_authentication);
--        }
--
--        return ctx->cgsc->set_id_block(ctx->id_block, id_block_len,
--                                       ctx->id_auth, id_auth_len, errp);
--    }
--    return 0;
--}
--
- IgvmHandle qigvm_file_init(char *filename, Error **errp)
- {
-     IgvmHandle igvm;
-@@ -1032,6 +1025,34 @@ int qigvm_process_file(IgvmCfg *cfg, MachineState *machine_state,
-         goto cleanup;
-     }
- 
-+    /*
-+     * Process the initialization section first so that the guest policy is
-+     * known before the directive section is handled. The SNP ID block
-+     * directive embeds the guest policy into the ID block, so the policy from
-+     * the guest policy initialization header must be available by then.
-+     */
-+    header_count =
-+        igvm_header_count(ctx.cfg->file, IGVM_HEADER_SECTION_INITIALIZATION);
-+    if (header_count < 0) {
-+        error_setg(
-+            errp,
-+            "Invalid initialization header count in IGVM file. Error code: %X",
-+            header_count);
-+        goto cleanup;
-+    }
-+
-+    for (ctx.current_header_index = 0;
-+         ctx.current_header_index < (unsigned)header_count;
-+         ctx.current_header_index++) {
-+        IgvmVariableHeaderType type =
-+            igvm_get_header_type(ctx.cfg->file,
-+                                 IGVM_HEADER_SECTION_INITIALIZATION,
-+                                 ctx.current_header_index);
-+        if (qigvm_handler(&ctx, type, errp) < 0) {
-+            goto cleanup;
-+        }
-+    }
-+
-     header_count = igvm_header_count(ctx.cfg->file,
-                                      IGVM_HEADER_SECTION_DIRECTIVE);
-     if (header_count <= 0) {
-@@ -1065,28 +1086,6 @@ int qigvm_process_file(IgvmCfg *cfg, MachineState *machine_state,
-         goto cleanup_parameters;
-     }
- 
--    header_count =
--        igvm_header_count(ctx.cfg->file, IGVM_HEADER_SECTION_INITIALIZATION);
--    if (header_count < 0) {
--        error_setg(
--            errp,
--            "Invalid initialization header count in IGVM file. Error code: %X",
--            header_count);
--        goto cleanup_parameters;
--    }
--
--    for (ctx.current_header_index = 0;
--         ctx.current_header_index < (unsigned)header_count;
--         ctx.current_header_index++) {
--        IgvmVariableHeaderType type =
--            igvm_get_header_type(ctx.cfg->file,
--                                 IGVM_HEADER_SECTION_INITIALIZATION,
--                                 ctx.current_header_index);
--        if (qigvm_handler(&ctx, type, errp) < 0) {
--            goto cleanup_parameters;
--        }
--    }
--
-     /*
-      * Contiguous pages of data with compatible flags are grouped together in
-      * order to reduce the number of memory regions we create. Make sure the
-@@ -1094,10 +1093,6 @@ int qigvm_process_file(IgvmCfg *cfg, MachineState *machine_state,
-      */
-     retval = qigvm_process_mem_page(&ctx, NULL, errp);
- 
--    if (retval == 0) {
--        retval = qigvm_handle_policy(&ctx, errp);
--    }
--
- cleanup_parameters:
-     QTAILQ_FOREACH(parameter, &ctx.parameter_data, next)
-     {
 
--- 
-2.55.0
-
+> ---
+>  Documentation/virt/kvm/api.rst | 22 ++++++++++++++--------
+>  virt/kvm/guest_memfd.c         |  2 +-
+>  2 files changed, 15 insertions(+), 9 deletions(-)
+>
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> index 90a29424c54c8..668886f50024d 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -6381,10 +6381,16 @@ mapping for userspace_addr is not required to be valid/populated at the time of
+>  KVM_SET_USER_MEMORY_REGION2, e.g. shared memory can be lazily mapped/allocated
+>  on-demand.
+>
+> -When mapping a gfn into the guest, KVM selects shared vs. private, i.e consumes
+> -userspace_addr vs. guest_memfd, based on the state in guest_memfd, which is the
+> -sole authority on private vs. shared memory.  See :ref:`KVM_CREATE_GUEST_MEMFD`
+> -to find out more about the creation-time shared/private status.
+> +When mapping a gfn into the guest, guest faults are always serviced from
+> +guest_memfd regardless of whether memory is shared or private.  KVM determines
+> +shared vs. private based on the state in guest_memfd, which is the sole
+> +authority on private vs. shared memory.  See :ref:`KVM_CREATE_GUEST_MEMFD` to
+> +find out more about the creation-time shared/private status.
+> +
+> +userspace_addr is expected to be the mmap()-ed address corresponding to the
+> +right offset within the guest_memfd. Any mismatch between userspace_addr and
+> +guest_memfd is not validated and is a user error. userspace_addr is only used
+> +for host-side guest accesses such as kvm_read_guest().
+>
+>  If in-place conversion is disabled, KVM selects shared vs. private, i.e consumes
+>  userspace_addr vs. guest_memfd, based on the gfn's KVM_MEMORY_ATTRIBUTE_PRIVATE
+> @@ -6490,10 +6496,10 @@ specified via KVM_CREATE_GUEST_MEMFD.  Currently defined flags:
+>                                 page tables. Private memory cannot.
+>    ============================ ================================================
+>
+> -When the KVM MMU performs a PFN lookup to service a guest fault and the backing
+> -guest_memfd has the GUEST_MEMFD_FLAG_MMAP set, then the fault will always be
+> -consumed from guest_memfd, regardless of whether it is a shared or a private
+> -fault.
+> +When the KVM MMU performs a PFN lookup to service a guest fault, the fault will
+> +always be consumed from guest_memfd, regardless of whether it is a shared or a
+> +private fault (unless in-place conversion is disabled and the backing
+> +guest_memfd does not have the GUEST_MEMFD_FLAG_MMAP flag set).
+>
+>  See KVM_SET_USER_MEMORY_REGION2 for additional details.
+>
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 0afe1468d2d9d..e41802944756b 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -746,7 +746,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+>          */
+>         WRITE_ONCE(slot->gmem.file, file);
+>         slot->gmem.pgoff = start;
+> -       if (kvm_gmem_supports_mmap(inode))
+> +       if (gmem_in_place_conversion || kvm_gmem_supports_mmap(inode))
+>                 slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
+>
+>         xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
+>
+> --
+> 2.55.0.897.gb25b4bd76c-goog
+>
+>
