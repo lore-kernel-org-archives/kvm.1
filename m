@@ -1,58 +1,58 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F5C1F3B85
-	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 06:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB5D2E62B7
+	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 06:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788242609; cv=none; b=ZhEnvxElQcACV2aNgjsGlja0VzJvVqFbJiGGMqiMEE1Z62WoLm7S2qH9OJPiSzDUKNubzPhLq+35XrRB35k63WRm71rVTKMilp+OvvJXxAVomXZ2ME/iNslrJqmDtWvsnuxzvKWXeMGa6XaSAMdoG+i6mgSMkDeqM9A/CDg+3pM=
+	t=1788243024; cv=none; b=qR3WiBTvxYnJtu9W0VbxokE9y+VPkBcGG4vX3dH2RM3BdDawhywNrzkaKZ5kV2tk5K9ws5s8wN8BFraHixW1I0cMKjkrO9HPZlZ8VxoZFmrq8V8Zf5h8f1ytD+20O95BJKPRQKqSQmIJrCB0gmGxtKqncq1Vxu8DGdnmahpiu6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788242609; c=relaxed/simple;
-	bh=ARmgaj61p3kmL6E2cd/ljeeaDDh/EdXOAT3NHk3aN9A=;
+	s=arc-20240116; t=1788243024; c=relaxed/simple;
+	bh=yOvKlDo+S/6i6LoKQQ4Za7PEM2VGUO3xsamj1AZ6pxQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YMBwoL/TzSNlrQcVKExzrJEQvci1zv2kgQNxZBT6G3nhQSY211/U2MvVFz61X2Yh9SnUnknG4SDA5l1fIwBHUYOIw3Y9kZhyiGZDkoOdo3BNdAXnPZlQ4wx6ei4AGzuXULkBvYW7sDa4a77X/xW4B5dltKTma/PBF0FCHAdCuUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SaE3SZiX; arc=none smtp.client-ip=192.198.163.13
+	 Content-Type:Content-Disposition:In-Reply-To; b=pAQTYko441UfbkA/T0gY8F/1wmBbK/wbDtN3dQhOqKO+jFviQwUS+2b8EowC8rj/CxaPAkXgkQtxMxd703P27wr9xLUggQowItHIKuJNRuFOuDv9wYfcdiRBKKn6zVV2HxVcFlQghU+7frMX3LDa0NEiiJzdgs5MridYcqu4eM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XI9jPTwl; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SaE3SZiX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XI9jPTwl"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788242607; x=1819778607;
+  t=1788243023; x=1819779023;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=ARmgaj61p3kmL6E2cd/ljeeaDDh/EdXOAT3NHk3aN9A=;
-  b=SaE3SZiX+aLXn16Who3HmZxFuJBByktUxroayy0Wpho3lgL+JFxmseUa
-   1o2Qr8YkW1w/aX380c6u9/+PoZJt23JFsXlwbe8hmIQ21OfpwVNX7t540
-   n4ueyuGO6P6PcbpBzkxZTwujahq3J6Ba52K+cT+phITgBsK5KQV8yiGKE
-   za62xTdRHsVQ4ZVoe6hP0NQS2+73FxDeavZ9OCbGmabWYMVLht8txHKXu
-   Dj5ImWy6pwOX6tk/Hy5zfzSpxD3i9KdyvFltdlcB47EbYNVpN0UWM/+5d
-   M77oHFB7IGAzuX3/8Bl+D61c2SY3BOPGc+XvVQ+TuHLhvhTAOl/IsRo43
-   Q==;
-X-CSE-ConnectionGUID: 0mD1wBbXQ7yLpEkTTEhIMA==
-X-CSE-MsgGUID: luCCFM6GS0a7GDpp7hGn5A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="91172903"
+  bh=yOvKlDo+S/6i6LoKQQ4Za7PEM2VGUO3xsamj1AZ6pxQ=;
+  b=XI9jPTwlAMMhfTUpMz+cLAVJQnFE4eyd53ieFKpY08b7yhzUW29IJYTD
+   zUB1d2vH1QaOAjDkh76jE6tNc6yRb5uu2cuyOM/tlnzNz9gpi4LYPiTJ+
+   xyU5Fm72d8VJAY/QOQYQUY+9OS4yYqvGjcoPP+MrbWU17Hx9NxgNLn815
+   FKKMQS281nE0ovDHOeqz5xpKtknDrYtMShNDI2Y9lc0qCIwQAj+cQSX1F
+   VFBA4KKot+mad/vyULjAnt+tWVnyYyYPpjAoNEmPwQMuPXXoIFTulYWCI
+   E0VGk/vSRi7sY/LT/YyR4GIJYMfihlPos7phllqXgj25UZgIf1e6ubTDE
+   A==;
+X-CSE-ConnectionGUID: OgtrZGDMQkufyRkaEmZgWw==
+X-CSE-MsgGUID: kGoFxRGWTi6Sq/p5I9w48w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="88586887"
 X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
-   d="scan'208";a="91172903"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 23:03:26 -0700
-X-CSE-ConnectionGUID: bYit0Gl3Riyd4gPOve6x6w==
-X-CSE-MsgGUID: 1yQaa3xhSvmxjr9nZDoJXg==
+   d="scan'208";a="88586887"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 23:10:20 -0700
+X-CSE-ConnectionGUID: HzvmyDXmQP2PgVQikVXoJw==
+X-CSE-MsgGUID: Rg6f09M/QjaO8V7a53B3eA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
-   d="scan'208";a="267675063"
+   d="scan'208";a="298890893"
 Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.192])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 23:03:25 -0700
-Date: Tue, 1 Sep 2026 09:03:22 +0300
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 23:10:18 -0700
+Date: Tue, 1 Sep 2026 09:10:15 +0300
 From: Tony Lindgren <tony.lindgren@linux.intel.com>
 To: sashiko-reviews@lists.linux.dev
 Cc: kvm@vger.kernel.org
-Subject: Re: [RFC PATCH v2 2/4] KVM: x86: Add optional KVM_CAP_LIVE_MIGRATION
- and KVM_MIGRATE_CMD
-Message-ID: <apZqqi0V-CEKgZbC@tlindgre-MOBL1>
+Subject: Re: [RFC PATCH v2 3/4] KVM: x86: Add optional KVM_EXPORT_MEMORY and
+ KVM_IMPORT_MEMORY
+Message-ID: <apZsR8xb-NFQQMFs@tlindgre-MOBL1>
 References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
- <20260831071304.762939-3-tony.lindgren@linux.intel.com>
- <20260831072311.CF2DA1F000E9@smtp.kernel.org>
+ <20260831071304.762939-4-tony.lindgren@linux.intel.com>
+ <20260831072347.8FD2E1F00ADF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -61,63 +61,38 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260831072311.CF2DA1F000E9@smtp.kernel.org>
+In-Reply-To: <20260831072347.8FD2E1F00ADF@smtp.kernel.org>
 
-On Mon, Aug 31, 2026 at 07:23:11AM +0000, sashiko-bot@kernel.org wrote:
+On Mon, Aug 31, 2026 at 07:23:47AM +0000, sashiko-bot@kernel.org wrote:
+> commit b6f49e80a58eebaaa2a6d123950fd36709972a10
 > Author: Tony Lindgren <tony.lindgren@linux.intel.com>
 > > --- a/arch/x86/kvm/x86.c
 > > +++ b/arch/x86/kvm/x86.c
-> > @@ -7614,6 +7617,28 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
-> >  		r = kvm_vm_ioctl_set_msr_filter(kvm, &filter);
-> >  		break;
-> >  	}
-> > +	case KVM_MIGRATE_CMD: {
-> > +		struct kvm_migrate_cmd cmd;
+> [ ... ]
+> > @@ -7258,6 +7258,37 @@ long kvm_arch_vcpu_unlocked_ioctl(struct file *filp, unsigned int ioctl,
+> >  	return -ENOIOCTLCMD;
+> >  }
+> >  
+> > +static int kvm_vm_ioctl_transfer_memory(struct kvm *kvm, bool import,
+> > +					void __user *argp)
+> > +{
+> > +	struct kvm_memory_transfer mem;
+> > +	int r;
 > > +
-> > +		if (!kvm_x86_ops.migrate_cmd ||
-> > +		    !kvm_x86_call(cap_live_migration)(kvm))
-> > +			return -ENOTTY;
+> > +	if (!kvm_x86_call(cap_live_migration)(kvm) ||
+> > +	    (import && !kvm_x86_ops.import_memory) ||
+> > +	    (!import && !kvm_x86_ops.export_memory))
+> > +		return -ENOTTY;
 > > +
-> > +		if (copy_from_user(&cmd, argp, sizeof(cmd)))
-> > +			return -EFAULT;
+> > +	if (copy_from_user(&mem, argp, sizeof(mem)))
+> > +		return -EFAULT;
 > > +
-> > +		if (cmd.reserved || cmd.buf.reserved)
-> > +			return -EINVAL;
+> > +	if (mem.reserved || mem.buf.reserved || !mem.nr_gfns)
+> > +		return -EINVAL;
 > 
-> [Severity: High]
-> Does this code also need to validate that the new flags field is zero?
-> 
-> If uninitialized memory or garbage is passed by userspace in cmd.flags, it
-> will currently be silently ignored. When a future kernel introduces a new
-> flag, old userspace applications passing uninitialized flags will inadvertently
-> enable it, which could permanently break backwards compatibility.
+> [Severity: Medium]
+> Does this input validation for the kvm_memory_transfer UAPI struct miss
+> checking mem.flags == 0 and mem.id == 0?
 
-Could be zero, or we could check for the known flags.
-
-We are currently using the following flags for KVM_MIGRATE_CMD
-sub-commands for TDX:
-
-1. KVM_MIGRATE_SETUP
-====================
-
-TDX_MIGRATE_SETUP_SESSION       exchange the migration keys
-TDX_MIGRATE_IMMUTABLE_STATE     transfer the TDX immutable state
-
-2. KVM_MIGRATE_ITERATION
-========================
-
-TDX_MIGRATE_IN_ORDER_DONE       end the in-order migration
-
-3. KVM_MIGRATE_STOP_AND_COPY
-============================
-
-TDX_MIGRATE_STOP_COPY_PAUSE     pause the TD
-TDX_MIGRATE_STOP_COPY_TD_STATE  transfer the mutable TD state
-
-4. KVM_MIGRATE_END
-==================
-
-TDX_MIGRATE_ABORT               abort migration
-
-Maybe all the above TDX specific flags could be turned into generic
-flags for the sub-commands.
+Yes flags is unused for memory transfers at least for TDX. The id TDX can
+eventually use for the thread index for QEMU multifd transfers.
