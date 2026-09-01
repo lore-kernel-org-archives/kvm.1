@@ -1,176 +1,258 @@
-Received: from mta0.migadu.com (out-192.mta0.migadu.com [91.218.175.192])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57B53839A0
-	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 08:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.192
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A903515CE;
+	Tue,  1 Sep 2026 08:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788251991; cv=none; b=rs2GgAnl1eofU3WrKza2xmZ11kGlXxeAD5jFRG4yt05Lm4iniCQIjOcN8KigxBWopcQsT/Ik1+GjH89jylzmaXEpoDRw9p+RLKg0aTDQBVc0/g7H4nHhbxh5B/hnKkE7HcjYGxC92Ys7vEpMx3sCw19FgyWLdlGc199V52fB3pU=
+	t=1788252066; cv=none; b=BMfHue0qjq1argAZP9bgyjGco+HabbBHRPWIE/jOwF1h4n/Kq95amniVLL+zzxDzPjiVfbCEBGDDb7blXQbVctAytO4WKuRuVHc4WywP9QtN6RZzPdNVuS29A/MaUd93LnX1KXkdxQ49FkGN1vv29l1GgShQO81FgdzlV5OXQGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788251991; c=relaxed/simple;
-	bh=MFd6QQcIiVNo4d+5OnfkjHu0LYEIxCoAHDswhin9sq8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DVlPGsvo8YIL23pZuvaFE3xQCDoc1PmtYMb8R/kzUkW98GysjORSGgPTUXz/ZOYusr/yYU56NXAsyU4aMEhg+CzJkB5KBkccNQA4Kxramtb1lU8YJvufMtu4gy+DwhvB0jyx5bLV6BikVFAEB6YxxMI9YQGSY0QxB0iL/K8slUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=mINlTCzk; arc=none smtp.client-ip=91.218.175.192
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788252066; c=relaxed/simple;
+	bh=g/YicvtwvLRoTHvAudHmKQo2dsia1xbThYOMgqRjf9o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MvKVRrFCw3MWAKmTHySNkEsjp2Rgpi0Hx08y2oCaP/1z8XK7zIkMFiqJtjTYxCjjqGm3zqEANayshQoiDogpmv1rwlhxL3k9yR/HbLqyVMBzDpqiaeBPbPI+xK/umipJYWApT6DFb01Lzam3jdMTT5QUlb1B35m/xCxooiA678E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ggz/p6Pe; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="mINlTCzk"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=MFd6QQcIiVNo4d+5OnfkjHu0LYEIxCoAHDswhin9sq8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788251987; v=1; x=1788856787;
- b=mINlTCzkzRJE09TeorJ64wWbNWvqxkLNNDvyUWUPBtC+x/LkmeHqHdExRzLIRphopLpjnDlo
- QhffBAche/rfJ9yyBqCsIeysSVAgsa/Pixwdg7p+wBY2ee7ouEhwV3ch+t8KKkcOoi2cTck71D3
- 3tpg0pQFgHmx6InF1T5SIfv0=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 17c4dbd2d8eb94a9;
-	Tue, 01 Sep 2026 08:39:47 +0000
-X-Mizu-Trace-ID: 17c4dbd2d8eb94a9
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5aeb688ae83so3731e87.1
-        for <kvm@vger.kernel.org>; Tue, 01 Sep 2026 01:39:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxReLZjY+iQy9liC4OuDU+PSMRO2ndcINDXu1D4Orz4ALGEFOP2fAMHYYtyOgpd3MO+VXs=@vger.kernel.org
-X-Gm-Message-State: AFuF++l4n0L/rpglStQC4s2MUPMeEFuf2qXePuXOflCEB9etKbGUJWY4
-	ITn5eo/YoEfcpzFdhQKBzLgzJi6em3JCXP9yPexjXtlWMxcjJumcIVdknH3zTocpp1jCAgeqIqg
-	pNlfR+ecoC0cPna26NObldnULmL2XVVEWmLjFN/to
-X-Received: by 2002:ac2:5689:0:b0:5b4:4c8a:abef with SMTP id
- 2adb3069b0e04-5b5ff29d7ccmr116639e87.10.1788251981891; Tue, 01 Sep 2026
- 01:39:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ggz/p6Pe"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6817VVKP2892253;
+	Tue, 1 Sep 2026 08:40:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=xxhcAqB8QEZ84GojTYdwOMRzkKgA+w
+	1XZ/nRxWLm/OE=; b=ggz/p6PeqfDDYriTMw42LJo7m/yt0CLpS4lNTFBYlIjG10
+	SV7h0CBlhsG7REXslows6EKVjWkSUSw9/LOCGLt9UODV2PuQRPntFMbmTvLf13St
+	hHRZkjBukmKtlRPMj9K+f8OmuN6KU2YdxOl0Ngo1snLhsKsdaLv9f5XWW8x9wThz
+	yxKzrr0bzgIaTHObEFD2J82td5Mq/J85+OtEZy4sZTyl7B0BawHoyAC3wURaGoJK
+	6nIxbY+o/DSCXv0xC0uG5RDHaHuMk+F5wpkcIRHQNTXb7Ig3I/tySS2rYNE68cIc
+	EpsHqxiRtgFZNcXxn0BUYptH5t7a0ZXh1S5olybg==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbq3r6mwy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 01 Sep 2026 08:40:44 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6818QMdF020562;
+	Tue, 1 Sep 2026 08:40:43 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gca4w2s2j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 01 Sep 2026 08:40:42 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6818echH39518516
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 1 Sep 2026 08:40:38 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8F93A2004B;
+	Tue,  1 Sep 2026 08:40:38 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2F4A920040;
+	Tue,  1 Sep 2026 08:40:38 +0000 (GMT)
+Received: from osiris (unknown [9.224.76.185])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue,  1 Sep 2026 08:40:38 +0000 (GMT)
+Date: Tue, 1 Sep 2026 10:40:37 +0200
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>,
+        Gautam Gala <ggala@linux.ibm.com>,
+        Hariharan Mari <hari55@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
+        Nico Boehr <nrb@linux.ibm.com>,
+        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+        Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH v7 11/23] KVM: arm64: Share arm64 code with s390
+Message-ID: <20260901084037.185345-C-seiden@linux.ibm.com>
+References: <20260831144802.834315-1-seiden@linux.ibm.com>
+ <20260831144802.834315-12-seiden@linux.ibm.com>
+ <87se3tmlrv.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com> <20260830-gmem-inplace-conversion-v12-1-85e5fd25252a@google.com>
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-1-85e5fd25252a@google.com>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Tue, 1 Sep 2026 09:39:05 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTytLWsa9-boURuumSFC8yNWDwvz_+WNN-aEz_cA9OkcdA@mail.gmail.com>
-X-Gm-Features: AcwNN1XCAyPPlQdujvTs-aL1UBkQHfHgNLA1ozg5F-aaAoV8bE_sbTlT0O7ALBU
-Message-ID: <CA+EHjTytLWsa9-boURuumSFC8yNWDwvz_+WNN-aEz_cA9OkcdA@mail.gmail.com>
-Subject: Re: [PATCH v12 01/45] KVM: guest_memfd: Optimize away conversion
- overheads via dead-code elimination
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87se3tmlrv.wl-maz@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=EIc2FVZC c=1 sm=1 tr=0 ts=6a968f8c cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
+ a=o0YXK4FomTIqG83GwfgA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAxMDA3NSBTYWx0ZWRfX3bKHd2onVRQi
+ M1H/ksAUgtv8GUnhaCvKhEAE1bQlLbtyox34SXSGO9hkxC6nXHVvEU7/XhpF7f9hC3a8FxITGnm
+ Rnm8kFH19g2K8SfKTF+QVUudbmFOuIWjnDC8aSjstj8KyWREgwyqdu3u8U/jhXP/ATneT6gNXgf
+ 9f8K9AdXXyAp/68A46zDq7DeVf92+uYuC7Eu6txfWiB895BXHx1MXyQGIaIV0jtyOUZ9zQg9FAy
+ gBMSQA29oPrMz4QBxXBBl+XeJyEjlt5eCxt4H4aJzuPhepWCvo9jeInWbBT8srTGUvOu64SEbAq
+ 0pGCUORdGVPKlHkOlRDT5qgfTZuHMFf9AyPsjKadtfjhBJcPwWP02lJA45wZJba4k93/IOpkZjv
+ oxfLahHfF/0uOaX/pvMd6YeDI6F5ZhC6dKbOBh/zyKHkufGA1Gug3k2zkTVQR6Y73IF0BmFkm+I
+ hlaMP0OC2KpawS1dZYg==
+X-Proofpoint-GUID: 7wKUDKpRsoBqOygV8xzSu0WG5_odBX3U
+X-Proofpoint-ORIG-GUID: GYY_qmqbellrpmBXqM2ldcTkZ8eYLr0D
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAxMDA3NSBTYWx0ZWRfX8lILL3zXjoYz
+ sqUCvOK85NCWZfjNpuA7uLa0uoHm5h7675EBfui2MeNOeNh1Rv4PzpzJRHm0WngGooMQA3GJChR
+ OBMNRlosW5WWUFCYy8uSQ+jr2AOz/hU=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-01_02,2026-08-31_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
+ phishscore=0 spamscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609010075
 
-On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
->
-> From: Sean Christopherson <seanjc@google.com>
->
-> Add and use kvm_arch_has_gmem_convert() to guard guest_memfd's invocation
-> of arch hooks related to converting memory between private and shared, as
-> only one half of the x86 CoCo duo needs the runtime hooks (any pre-work is
-> pure overhead for TDX).  At this exact moment, the overhead is negligible,
-> but that will change when in-place conversion comes along, at which point
-> to-shared conversions will "need" to find all affected folios prior to
-> calling into arch code.  In quotes because very technically that work could
-> be pushed to arch code, but that would bleed guest_memfd details into arch
-> code and would be far worse than adding yet another kvm_arch_has... hook.
->
-> Opportunistically provide the kvm_arch_gmem_make_private() declaration, and
-> rely on dead-code elimination to eliminate the call to non-existent code
-> when CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT=n.
->
-> Reported-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Closes: https://lore.kernel.org/all/1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com
-> Suggested-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+On Tue, Sep 01, 2026 at 09:13:56AM +0100, Marc Zyngier wrote:
+> On Mon, 31 Aug 2026 15:47:48 +0100,
+> Steffen Eiden <seiden@linux.ibm.com> wrote:
+> > 
+> > Mark functions that s390 can use to implement arm on s390 as shared
+> > functions.
+> > 
+> > No functional change.
+> > 
+> > Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+> > ---
+> >  arch/arm64/kvm/arm.c         | 3 +++
+> >  arch/arm64/kvm/guest.c       | 6 ++++++
+> >  arch/arm64/kvm/handle_exit.c | 6 ++++++
+> >  arch/arm64/kvm/mmio.c        | 2 ++
+> >  4 files changed, 17 insertions(+)
+> > 
+> > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> > index 8b080804bc90..6b92a3c1d490 100644
+> > --- a/arch/arm64/kvm/arm.c
+> > +++ b/arch/arm64/kvm/arm.c
+> > @@ -1603,6 +1603,7 @@ static unsigned long system_supported_vcpu_features(void)
+> >  	return features;
+> >  }
+> >  
+> > +#ifdef ARM64_S390_COMMON
+> >  static int kvm_vcpu_init_check_features(struct kvm_vcpu *vcpu,
+> >  					const struct kvm_vcpu_init *init)
+> >  {
+> > @@ -1656,6 +1657,8 @@ static bool kvm_vcpu_init_changed(struct kvm_vcpu *vcpu,
+> >  			     KVM_VCPU_MAX_FEATURES);
+> >  }
+> >  
+> > +#endif /* ARM64_S390_COMMON */
+> > +
+> >  static int kvm_setup_vcpu(struct kvm_vcpu *vcpu)
+> >  {
+> >  	struct kvm *kvm = vcpu->kvm;
+> > diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
+> > index 773f6c8e5026..6ca5a9f357cd 100644
+> > --- a/arch/arm64/kvm/guest.c
+> > +++ b/arch/arm64/kvm/guest.c
+> > @@ -62,6 +62,7 @@ const struct kvm_stats_header kvm_vcpu_stats_header = {
+> >  		       sizeof(kvm_vcpu_stats_desc),
+> >  };
+> >  
+> > +#ifdef ARM64_S390_COMMON
+> >  static bool core_reg_offset_is_vreg(u64 off)
+> >  {
+> >  	return off >= KVM_REG_ARM_CORE_REG(fp_regs.vregs) &&
+> > @@ -306,6 +307,8 @@ static int set_core_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
+> >  	return err;
+> >  }
+> >  
+> > +#endif /* ARM64_S390_COMMON */
+> > +
+> >  #define vq_word(vq) (((vq) - SVE_VQ_MIN) / 64)
+> >  #define vq_mask(vq) ((u64)1 << ((vq) - SVE_VQ_MIN) % 64)
+> >  #define vq_present(vqs, vq) (!!((vqs)[vq_word(vq)] & vq_mask(vq)))
+> > @@ -543,6 +546,7 @@ int kvm_arch_vcpu_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
+> >  	return -EINVAL;
+> >  }
+> >  
+> > +#ifdef ARM64_S390_COMMON
+> >  static int copy_core_reg_indices(const struct kvm_vcpu *vcpu,
+> >  				 u64 __user *uindices)
+> >  {
+> > @@ -591,6 +595,8 @@ static unsigned long num_core_regs(const struct kvm_vcpu *vcpu)
+> >  	return copy_core_reg_indices(vcpu, NULL);
+> >  }
+> >  
+> > +#endif /* ARM64_S390_COMMON */
+> > +
+> >  static unsigned long num_sve_regs(const struct kvm_vcpu *vcpu)
+> >  {
+> >  	const unsigned int slices = vcpu_sve_slices(vcpu);
+> > diff --git a/arch/arm64/kvm/handle_exit.c b/arch/arm64/kvm/handle_exit.c
+> > index db37678dcb05..6e59a7b12d40 100644
+> > --- a/arch/arm64/kvm/handle_exit.c
+> > +++ b/arch/arm64/kvm/handle_exit.c
+> > @@ -213,6 +213,7 @@ static int kvm_handle_guest_debug(struct kvm_vcpu *vcpu)
+> >  	return 0;
+> >  }
+> >  
+> > +#ifdef ARM64_S390_COMMON
+> >  static int kvm_handle_unknown_ec(struct kvm_vcpu *vcpu)
+> >  {
+> >  	u64 esr = kvm_vcpu_get_esr(vcpu);
+> > @@ -224,6 +225,8 @@ static int kvm_handle_unknown_ec(struct kvm_vcpu *vcpu)
+> >  	return 1;
+> >  }
+> >  
+> > +#endif /* ARM64_S390_COMMON */
+> > +
+> >  /*
+> >   * Guest access to SVE registers should be routed to this handler only
+> >   * when the system doesn't support SVE.
+> > @@ -404,6 +407,7 @@ static exit_handle_fn arm_exit_handlers[] = {
+> >  	[ESR_ELx_EC_GCS]	= kvm_handle_gcs,
+> >  };
+> >  
+> > +#ifdef ARM64_S390_COMMON
+> >  static exit_handle_fn kvm_get_exit_handler(struct kvm_vcpu *vcpu)
+> >  {
+> >  	u64 esr = kvm_vcpu_get_esr(vcpu);
+> > @@ -439,6 +443,8 @@ static int handle_trap_exceptions(struct kvm_vcpu *vcpu)
+> >  	return handled;
+> >  }
+> >  
+> > +#endif /* ARM64_S390_COMMON */
+> 
+> Why the exit handler, and not the EC handlers aside from the UNKNOWN
+> one? Yes, you probably aren't there yet in this series, but I can tell
+> you are going to add more and more of these.
+> 
+> But the EC array is absolutely architectural, and there is no good
+> reason to maintain your own.
+> 
+> So instead of this, why not keep the EC array altogether, and
+> implement stubs for the ECs you don't support?
+> 
+> 	M.
+> 
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+There was no specific reasson to define our own EC array as far as I
+remember. I will try reusing the array and find out if there are any
+issues with that. But I do not expect any. 
 
-Cheers,
-/fuad
+I assume the stubs probably just forward to handle_unknown_ec, or do you
+have a different suggestion?
 
-> ---
->  arch/x86/include/asm/kvm_host.h | 3 +++
->  include/linux/kvm_host.h        | 3 ++-
->  virt/kvm/guest_memfd.c          | 5 ++---
->  3 files changed, 7 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 683bb8bf43a94..6beddd8a0c749 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1854,6 +1854,9 @@ enum kvm_intr_type {
->  #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
->  #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
->  #endif
-> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> +#define kvm_arch_has_gmem_convert() (!!kvm_x86_ops.gmem_make_private)
-> +#endif
->
->  #define kvm_arch_has_readonly_mem(kvm) (!(kvm)->arch.has_protected_state)
->
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 502465119ca0c..b7516e19ef419 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -2597,9 +2597,10 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
->  }
->  #endif /* CONFIG_KVM_GUEST_MEMFD */
->
-> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
->  int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
->                                kvm_pfn_t nr_pages);
-> +#ifndef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> +#define kvm_arch_has_gmem_convert() false
->  #endif
->
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 798d91df69537..2190e4d6b6bea 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -772,11 +772,10 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->                 folio_mark_uptodate(folio);
->         }
->
-> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> -       if (kvm_gmem_is_private_mem(file_inode(file), index))
-> +       if (kvm_arch_has_gmem_convert() &&
-> +           kvm_gmem_is_private_mem(file_inode(file), index))
->                 r = kvm_arch_gmem_make_private(kvm, gfn, *pfn,
->                                                (kvm_pfn_t)1 << *max_order);
-> -#endif
->
->         folio_unlock(folio);
->         folio_put(folio);
->
-> --
-> 2.55.0.897.gb25b4bd76c-goog
->
->
+
+	Steffen
+
