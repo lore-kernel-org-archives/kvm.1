@@ -1,187 +1,113 @@
-Received: from mta1.migadu.com (out-249.mta1.migadu.com [95.215.58.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A0F47A877
-	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 10:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF67F390991;
+	Tue,  1 Sep 2026 10:21:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788257635; cv=none; b=dCFB70iNfGZqqVDXdNyvCJerF77KlNLkL7ISRVsvleTeEVWkqebh90yFIenXEvEJWTdmOoShIDtqhHsToqm9KDZ7vjuXLgdhDDx1I4HDweCGKtAWrFXXGLYcQs3pjFPlABGePiEl4gZZP1nbAGPC9BuVIFWNDYbxYk3fS26sWGo=
+	t=1788258073; cv=none; b=sAoKNSsyBdogjTN1lc4z7G1rBo6XavMjkYgB2uniqgvenJznFcKdgnCI7K1rQm/qTJtOpGtGqT+GGIVdsSNqoKOICh3Uz5vU3YpIeNDjHSFzGRrLG3CV1MdO+TC4/fdJVD6TPlrzb9L46hgaGQ+fcu3mD0a1Jvut2rDQ8BUN0JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788257635; c=relaxed/simple;
-	bh=AVdE0MD+h6o2Np6u6CwnfB0M91U/Y/LHHzhpZ1Tty+I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lUMpGyX9ITZcta98DZCXlsef0GkRm0wldVI6m2DMIKQgWoRcANdE/+WW5eymq0ZWn102oCPb6hbdySaK6qwhO2pDejkSiBrlxm2/AePRA8z9EXHPsDEfD6dqwSY7r6Qmfa8cnnTLE8uF5ztMYo0OqpWJYy+/U0WO0naAMlJnb00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xjV0nZCb; arc=none smtp.client-ip=95.215.58.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788258073; c=relaxed/simple;
+	bh=ATsfCEkVoLTs3EoyAFFd3IqUgjuL78CTgUxpZ+m1Jbc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=lPZqQDtmdVn8PKn0wIiu0BE43jvKJ9T/+FWC844bneX7xxcqGWkzdWrFV/Mm2+qaz4hrNbcUABPscBk/+z+nciQAJkR2rxQrWySPTHsTjvQCx/P1mbid2evcPQTwjGmzG7LmsTTpgCVYCilCpfSdaXmbHoez4/qaAW+Cp1hftU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fs4cynkT; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xjV0nZCb"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=AVdE0MD+h6o2Np6u6CwnfB0M91U/Y/LHHzhpZ1Tty+I=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788257631; v=1; x=1788862431;
- b=xjV0nZCb+aMBnKjxaEqb70o7NlUebjCg4N0vhW/SjsK8KjWGuoCLaaU0evnEKU+6NnAd/QSF
- TSvo662hcjm54U+HygJG0UqT1u+iRSlvP9oS+uNtOY5nHYO/fCh8ZfSfJyIVzea7zC3Jqh+cntn
- jyAkrotI9/pUhi3Belw9EFFI=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 06fd77acd358796d;
-	Tue, 01 Sep 2026 10:13:51 +0000
-X-Mizu-Trace-ID: 06fd77acd358796d
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5b2a73da7e1so6474e87.0
-        for <kvm@vger.kernel.org>; Tue, 01 Sep 2026 03:13:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxSE15kEXq3WJeDNwjOVsQ7QRk0dxc2TjfqE4QXpC0NBRJMsr+sE21lIeXoYVx4rI7AmdU=@vger.kernel.org
-X-Gm-Message-State: AFuF++nKThHFlnxfbuZAyv4uQXoPmALvWNwYGk5JRg1RcBf9UfcjuLlO
-	TOKB0GG7jCmvFzPQjtJjW6p02r6po6eXVxBNxVzT5AZEbjUKsJ2o6TVi4uVPv1xoAc+xG8lY5bO
-	PQxJy1OjUj7jGLBFDnZySINe5UGqW/9bcmXQ/gkaG
-X-Received: by 2002:a05:6512:3e0c:b0:5b2:a5e9:3aba with SMTP id
- 2adb3069b0e04-5b5ff28cff6mr137091e87.6.1788257629010; Tue, 01 Sep 2026
- 03:13:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fs4cynkT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788258072; x=1819794072;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=ATsfCEkVoLTs3EoyAFFd3IqUgjuL78CTgUxpZ+m1Jbc=;
+  b=Fs4cynkTgv+s9aa+k06TaB7XMpJL0UYUbICquonhWkqwF89ekW++y2u2
+   NRdSG4jYe3b/R57QJZuFociGw+p8GXUUQ2ZZzPLlXWNM3fFlm1qIU+H/w
+   t1/BdleQ1ITLJsSCdGP0Iu8UzhBtQDRppdNVN1MCU3Maotd3sJXVRUPwL
+   tZG7HKIBsnwJTik40pdsytaZOiLA5LSQs3bfijV599pEJWgVPATJpdKeB
+   DB+ewNyjhxALHW8ssTLUWIzKWHt6uVQleSKebp0nY6HiDrdv26Wm6CqUQ
+   aGC6rAnECFXE3VfydNQaFff8JWIsHCbIaGQVL7ELI9PW42FSKA7Nko6bP
+   A==;
+X-CSE-ConnectionGUID: bKx0C3yrR9uiVc7lQg593A==
+X-CSE-MsgGUID: g5usAFx7RT6VE2oDRCc9Ww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="99341303"
+X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
+   d="scan'208";a="99341303"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 03:21:11 -0700
+X-CSE-ConnectionGUID: TkGjgjj4RMeQgJKnWq79lg==
+X-CSE-MsgGUID: 7Oi96cqeQiGMbHNBi0fJ0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
+   d="scan'208";a="269635423"
+Received: from unknown (HELO [10.238.208.122]) ([10.238.208.122])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 03:21:05 -0700
+Message-ID: <cc98e036-9269-4bf8-91df-d46ca684e6be@intel.com>
+Date: Tue, 1 Sep 2026 18:21:01 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com> <20260830-gmem-inplace-conversion-v12-12-85e5fd25252a@google.com>
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-12-85e5fd25252a@google.com>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Tue, 1 Sep 2026 11:13:00 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTz5phoUdE9W_FY846p9hUSu+dGtnz4JMUFN3eRxpjVQGQ@mail.gmail.com>
-X-Gm-Features: AcwNN1VxSYWT9NZrhIzgE-QIHtarTDbXrfKaWL85aQCa702UGFBp2Nv9VWlrElc
-Message-ID: <CA+EHjTz5phoUdE9W_FY846p9hUSu+dGtnz4JMUFN3eRxpjVQGQ@mail.gmail.com>
-Subject: Re: [PATCH v12 12/45] KVM: guest_memfd: Always fault from guest_memfd
- if in-place conversion is enabled
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] KVM: TDX: Validate directly configurable CPUID
+ bits
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: "Gao, Chao" <chao.gao@intel.com>, "seanjc@google.com"
+ <seanjc@google.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "kas@kernel.org" <kas@kernel.org>, "pbonzini@redhat.com"
+ <pbonzini@redhat.com>, "andrew.cooper3@citrix.com"
+ <andrew.cooper3@citrix.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>
+References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
+ <e2f8f7976ac6a54e0bbda0e65ed9990940d9fef3.camel@intel.com>
+ <d2efe512-e4fe-407f-96a8-b274fef23382@linux.intel.com>
+ <1deddc78d14326b378ddd62ad99c21d66da401e6.camel@intel.com>
+ <f7a3b14b-d31c-4a46-99e0-055761d631a9@linux.intel.com>
+ <2f27443d-935e-4486-babf-51d93c391369@intel.com>
+Content-Language: en-US
+In-Reply-To: <2f27443d-935e-4486-babf-51d93c391369@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
->
-> From: Ackerley Tng <ackerleytng@google.com>
->
-> If a guest_memfd memslot is created but the guest_memfd does not have the
-> GUEST_MEMFD_FLAG_MMAP set, KVM still fulfils guest faults by looking up the
-> memslot's userspace_addr.
->
-> Set KVM_MEMSLOT_GMEM_ONLY if in-place conversion is enabled so that the
-> guest_memfd's memory will be used for both shared and private memory. With
-> in-place conversion, guest_memfd will be the only backing memory for the
-> memslot.
->
-> No validation is performed to require userspace_addr to be a mapping from
-> the associated guest_memfd because even after validation, userspace is free
-> to remap something else at the provided userspace_addr.
->
-> userspace_addr will still be used by functions like kvm_read_guest(), and
-> if userspace_addr does not match up with the corresponding memory in the
-> memslot's guest_memfd (whether userspace_addr points to the wrong offset or
-> some non-guest_memfd memory, etc), that is a user error.
->
-> Requiring both shared and private memory to come from the only associated
-> guest_memfd simplifies invalidation in stage 2 page tables. On a PUNCH_HOLE
-> operation on a guest_memfd, the invalidation is now guaranteed to be
-> invalidating only memory mapped from the given guest_memfd.
->
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+On 9/1/2026 5:42 PM, Xiaoyao Li wrote:
+> On 8/31/2026 1:01 PM, Binbin Wu wrote:
+>>>> So if the approach in this series is taken, I think we still need 
+>>>> such an opt-
+>>>> in interface to tell the TDX module that the VMM is now filtering 
+>>>> the CPUID
+>>>> bits so that the TDX module knows that it's safe to report new host 
+>>>> state
+>>>> clobbering features.
+>>> Yep. Can we think about what it would look like? Easiest would be a 
+>>> bit passed
+>>> in TDH_SYS_CONFIG. But then arch/x86 is saying how KVM will behave. 
+>>> Ok to me,
+>>> for the simplicity. Could come with a nice comment.
+> 
+> Can you just treat current KVM behavior of allowing userspace to enable 
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+well, I meant "can we"...
 
-Cheers,
-/fuad
+> any configurable bits as the bug of KVM and backport this series as 
+> Binbin suggested below? Instead of introducing more opt-in knobs.
+> 
+>> The TDX module is initialized before KVM is loaded. I guess the 
+>> upstream kernel
+>> doesn't support out of tree KVM code, so we can assume if the kernel 
+>> has the code to
+>> opt-in the new host state clobbering features, KVM must have 
+>> implemented the TDX
+>> CPUID filtering and validation?
+>>
+>> Also, do you think it's reasonable to backport this patch series to 
+>> stable/LTS
+>> kernels as an alternative?
+> 
 
-
-> ---
->  Documentation/virt/kvm/api.rst | 22 ++++++++++++++--------
->  virt/kvm/guest_memfd.c         |  2 +-
->  2 files changed, 15 insertions(+), 9 deletions(-)
->
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> index 90a29424c54c8..668886f50024d 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -6381,10 +6381,16 @@ mapping for userspace_addr is not required to be valid/populated at the time of
->  KVM_SET_USER_MEMORY_REGION2, e.g. shared memory can be lazily mapped/allocated
->  on-demand.
->
-> -When mapping a gfn into the guest, KVM selects shared vs. private, i.e consumes
-> -userspace_addr vs. guest_memfd, based on the state in guest_memfd, which is the
-> -sole authority on private vs. shared memory.  See :ref:`KVM_CREATE_GUEST_MEMFD`
-> -to find out more about the creation-time shared/private status.
-> +When mapping a gfn into the guest, guest faults are always serviced from
-> +guest_memfd regardless of whether memory is shared or private.  KVM determines
-> +shared vs. private based on the state in guest_memfd, which is the sole
-> +authority on private vs. shared memory.  See :ref:`KVM_CREATE_GUEST_MEMFD` to
-> +find out more about the creation-time shared/private status.
-> +
-> +userspace_addr is expected to be the mmap()-ed address corresponding to the
-> +right offset within the guest_memfd. Any mismatch between userspace_addr and
-> +guest_memfd is not validated and is a user error. userspace_addr is only used
-> +for host-side guest accesses such as kvm_read_guest().
->
->  If in-place conversion is disabled, KVM selects shared vs. private, i.e consumes
->  userspace_addr vs. guest_memfd, based on the gfn's KVM_MEMORY_ATTRIBUTE_PRIVATE
-> @@ -6490,10 +6496,10 @@ specified via KVM_CREATE_GUEST_MEMFD.  Currently defined flags:
->                                 page tables. Private memory cannot.
->    ============================ ================================================
->
-> -When the KVM MMU performs a PFN lookup to service a guest fault and the backing
-> -guest_memfd has the GUEST_MEMFD_FLAG_MMAP set, then the fault will always be
-> -consumed from guest_memfd, regardless of whether it is a shared or a private
-> -fault.
-> +When the KVM MMU performs a PFN lookup to service a guest fault, the fault will
-> +always be consumed from guest_memfd, regardless of whether it is a shared or a
-> +private fault (unless in-place conversion is disabled and the backing
-> +guest_memfd does not have the GUEST_MEMFD_FLAG_MMAP flag set).
->
->  See KVM_SET_USER_MEMORY_REGION2 for additional details.
->
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 0afe1468d2d9d..e41802944756b 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -746,7 +746,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
->          */
->         WRITE_ONCE(slot->gmem.file, file);
->         slot->gmem.pgoff = start;
-> -       if (kvm_gmem_supports_mmap(inode))
-> +       if (gmem_in_place_conversion || kvm_gmem_supports_mmap(inode))
->                 slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
->
->         xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
->
-> --
-> 2.55.0.897.gb25b4bd76c-goog
->
->
