@@ -1,199 +1,189 @@
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9391DF261
-	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 00:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7657337F327;
+	Tue,  1 Sep 2026 00:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788223971; cv=none; b=jpHV4+Mm28JQ3vZy+pEPD0MB5f45GcuoEFDx2/ae4nAVOd873J9xUoFSILZIBClko+n73i8+IrKZlp944C4XHkEIY0PYyYeDEbQnyqqZc5v1EuHQ+NX9QydE3BFKvZco54LO9BGqMnogLs9ejLVIOZKnqDvRQDZu+6h3YFlhk/Q=
+	t=1788224285; cv=none; b=Sn2350UTUGUsutIAvAgGVcr4Dvj9NTNeEgL8WlQPPB3vTAvisApO6TYu1EWxS2C3pztEaCTd25A1gLC8AgqH0h7pz4rZKI2Dy5FTkWpsmk/rDwM7elpN935fP69X7lmzJg1Bi78kUoqNHrNYsDlJ3mBIeymN3azDwv+B68RY2SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788223971; c=relaxed/simple;
-	bh=MM2F5A0mC2yQl4blcZuiDI52PqLyDNFHHrq3s+npiAQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=R/INaHqI0vY6pBjFELzkJ67ZvC40C6iA/awWT89sbJ4ylkGQdpMLfSvcPiwPzJDnjuhJcAOPWLW4sls9Ns06xmYMlbxUx7pY0BI0EnRLBiCi1zBsh9ki0wSQ70FpXUn5cdKPIL/rLIbIl/SePN1nJDpsmpx07cw0RyUOQZ40D+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=btKOfW01; arc=none smtp.client-ip=209.85.216.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1788224285; c=relaxed/simple;
+	bh=ZRbDdv3ON6gVaFfFiplD76Nt/U8R1aLF2BKq42LxqEI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kSxLhi81AY4d0mrkqDIEOxliwt0mrF2IOaKOYLjZnDePtGAb76wRyndS2kANk+yirp51nxvbkGdCtOHyHV2p1W+/VU122lkaSh8XGjPw5/uN9djIxIaFoXm5gvAsQq9xwDSxviP8y487tlOBnfbFa+++5J2aSVyG3Fqg4beUQWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KIfHlfBz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="btKOfW01"
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3965ba1ba3eso5471713a91.2
-        for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 17:52:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788223969; x=1788828769; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=+gjL0JYfUDhxDrumg1eHLE2TTMOQAAjlB1FcXj6jZVk=;
-        b=btKOfW01LzBYdjZ3EBhg3r0PPf8hjfJvtgNV7Y9S4YQ4l9kx6IuZPZ3Q8xZeBM1vs+
-         VcFSE248jPEp1eSOGdll6iWzghXl/Ns54PJqMxJfIborQaf5VB72K+7ucEbgvaaVbNr/
-         B+K2n9OARttiQUoWSp1BAy1LUOpXhDo+9dDiiTt9OWsPNlbcY0AZ519IML/VJ+D8Odl5
-         84WvtQvcqeTgg4IO7ciXe1ivk3c4DqYqONsjYAdM71wmG/pPlLRXeVAiEn2L4598E5X0
-         3O6BwmvnAzMY/mABNp0qgA/Kv3GiMKC66a3hAHPxYgBD4gj1kpFBvSotkXYyvFyLLjlD
-         xS+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788223969; x=1788828769;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+gjL0JYfUDhxDrumg1eHLE2TTMOQAAjlB1FcXj6jZVk=;
-        b=OrsD/XTqhXDkLMrAkTZ9veLum2okGB/OKhyvkl510VgiNfdbxOlycnaIRNqP6QZLiC
-         ISuK5tVw5FvhVAQLL631/zq//3rq5el8Nmnu45UvBxmQsilTnHbSfx5LrzEvazbG3hZZ
-         qy0SYN0VKs/7CQHWQwdNlJP93ZVl9OaafaL6You5M4iIJN+MXY6Fcn9+d+4UlA5I2GuG
-         xPyAcN+UxpahInl4WGcECE9S+NYZEntka9LN5ANm8xZgpV0I5nBJj/EV53uafBHNOMcC
-         0Hc9eusRfh3ntDoOKaoQ2PSq9hLbg6ctp6yPWdBqgjl3G0UEcrFhhFLORSP+7teKYsW+
-         nn6A==
-X-Gm-Message-State: AFuF++lFJQusMJ9cdVdo7RUxy1S5lhcMl6QfuI5o0+DlivuKuDSfjzl2
-	2jjQqnFYWObNsviG3Rx6Fvi8ZLxuKsetPtT8/lGlNWo2gSsLT8tD1S4gLvQ3isUoeBrNIXaleeQ
-	r8hFFRA==
-X-Received: from pjbrr14.prod.google.com ([2002:a17:90b:2b4e:b0:398:e613:7ab3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:17ca:b0:395:4de5:1054
- with SMTP id 98e67ed59e1d1-39907d65648mr5020588a91.16.1788223969099; Mon, 31
- Aug 2026 17:52:49 -0700 (PDT)
-Date: Mon, 31 Aug 2026 17:52:48 -0700
-In-Reply-To: <apIf7eoMxdfV_7kE@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KIfHlfBz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21241F000E9;
+	Tue,  1 Sep 2026 00:58:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788224282;
+	bh=1bp63kcVJIGUXxJRr+a1pHibhDOvZDH0FPxWAxX9Bno=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=KIfHlfBzoIkHss6og+1dX0nGSvHrR69wBOpNZ+4R53mnZPPoJtuPTbat9lz89zYxd
+	 VoFyeKLFUG/RNEBTl/OEAaJvSVIF39P7eiAdlR3Gc5pFIStbqwCLg34Oz8CZtu+iIG
+	 cBME9O+ibShHLNVKaml/GGE4J1zl94NnomECTSbPaDtoWVSCpT3Nmcym62QsfvXJMY
+	 XO1shOHtkB0j/8Ksi1YXKq0MDkuikPzlMGo9Efhk6l8xMd9AQQKvPuIcW2vH2RGEJO
+	 uZr8/sINuVWPqGWlsVcZb6WHqqiDbtIINzWQC9Tu1mEgbGTAwkVhpvY0/iLNuUJtAC
+	 6FQqDmTaNWaJA==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 8E91ECE0B65; Mon, 31 Aug 2026 17:58:02 -0700 (PDT)
+Date: Mon, 31 Aug 2026 17:58:02 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Michal Hocko <mhocko@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Jerome Glisse <jglisse@redhat.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
+	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Message-ID: <90d91673-a912-439f-98ee-e43285294486@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <333c4cdb-8f34-4e3f-a47f-961f47e089a0@paulmck-laptop>
+ <11dcf5a87125451897982f728c1f65a5151987e4.camel@infradead.org>
+ <69567965-48fd-48c5-abb6-0699d7f5bd16@paulmck-laptop>
+ <124af87fb49c267eeb26b8b4d952b9b1a5b3fb68.camel@infradead.org>
+ <9427a8e0-3ba6-4f31-a35d-54429bd7e071@paulmck-laptop>
+ <3d0463b6099d4fcde9a025a2f9e231d75303b61c.camel@infradead.org>
+ <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop>
+ <c39bda52f4c1573193aed39246f0d705755143fe.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <56a4bc35ee605588b7cc36c8e45c12b5f3b506cb.camel@guillain.net> <apIf7eoMxdfV_7kE@google.com>
-Message-ID: <apYh4GDHD3Tdb8t4@google.com>
-Subject: Re: BUILD_BUG_ON failed for kvm_vmx struct size sanity check in vmx.c
-From: Sean Christopherson <seanjc@google.com>
-To: Jean-Christophe Guillain <jean-christophe@guillain.net>
-Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c39bda52f4c1573193aed39246f0d705755143fe.camel@infradead.org>
 
-On Fri, Aug 28, 2026, Sean Christopherson wrote:
-> On Thu, Aug 27, 2026, Jean-Christophe Guillain wrote:
-> > Hello,
-> >=20
-> > Since yesterday, my daily compilation of Linus tree fails with this
-> > error:
-> >=20
-> >   CC [M]  arch/x86/kvm/vmx/vmx.o
-> > In file included from <command-line>:
-> > arch/x86/kvm/vmx/vmx.c: In function =E2=80=98vmx_init=E2=80=99:
-> > ././include/linux/compiler_types.h:702:45: error: call to
-> > =E2=80=98__compiletime_assert_1411=E2=80=99 declared with attribute err=
-or: BUILD_BUG_ON
-> > failed: get_order(sizeof(struct kvm_vmx) - SIZE_OF_MEMSLOTS_HASHTABLE)
-> > && !IS_ENABLED(CONFIG_DEBUG_KERNEL) && !IS_ENABLED(CONFIG_KASAN)
-> >   702 |         _compiletime_assert(condition, msg,
-> > __compiletime_assert_, __COUNTER__)
->=20
-> The immediate problem is more than likely commit 97d65b544f48 ("KVM: Chec=
-k for
-> duplicate vcpu_id as early as possible"), which increased the size by 512=
- bytes.
+On Fri, Aug 28, 2026 at 12:25:01AM +0100, David Woodhouse wrote:
+> On Tue, 2026-08-25 at 11:16 -0700, Paul E. McKenney wrote:
+> >  
+> > > > Suppose that there is only one CPU, or, alternatively, that one of the
+> > > > atomic SRCU readers is pinned to the same CPU occupied by the (higher
+> > > > priority) task running synchronize_srcu_atomic().  In this case, the
+> > > > call to synchronize_srcu_atomic() uselessly burns CPU time until its
+> > > > priority decays, real-time throttling kicks in, or in some configurations,
+> > > > maybe never.
+> > > 
+> > > I certainly have no problem with a blanket preempt_disable() around
+> > > both sides for algorithmic reasons. As long as we aren't *just* doing
+> > > it for the selfish reasons I described. 
+> > 
+> > Suppose I simply disable preemption in srcu_read_lock_atomic(),
+> > enable it in srcu_read_unlock_atomic(), and disable it internally to
+> > synchronize_srcu_atomic()?  It might be against all RCU tradition,
+> > but might also be easier to use.  ;-)
+> 
+> Which indeed you have done in commit c2225b77b028 "srcu_tree: Disable
+> preemption across synchronize_srcu_atomic()" so I've dropped that hack
+> from my side. The important RCU patches remaining in my tree are the
+> addition of try_synchronize_srcu() and then using it as the fast path
+> of synchronize_srcu_atomic(). I've stopped bothering to test *without*
+> those.
 
-/facepalm
+Understood, and that fastpath is on its way.
 
-Note, my claim wasn't 512 bytes, it was 256 bytes.  From commit 97d65b544f4=
-8
-("KVM: Check for duplicate vcpu_id as early as possible"):
+> Since it looks like I have successfully nerd-sniped you with the srcu-
+> atomic concept, I've reworked my tree to convert directly to that
+> rather than first converting to SRCU and then to atomic in a later
+> incremental commit.
 
-  the worst case scenario is 256 bytes per-VM (on x86, which allows up to 1=
-6KiB vCPU IDs)
+Now, now, that would be you *and* your friend Claude doing the
+nerd-sniping.  ;-)
 
-Dmytro was the author, but that blurb came from me.
+> This is what I'm now testing, in 
+> https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/gpc-v3
+> 
+> It's working; the latency numbers have been looking good in all of my
+> RT/DYNAMIC and debug/prod-like permutations. Redoing on the very latest
+> now...
 
-And I didn't _completely_ fail at math, just mostly failed at math.  I was =
-write
-that it would require 256 somethings, the small problem is that it's 256 "u=
-nsigned
-longs", not 256 bytes (I did the mental math to compute the size of the arr=
-ay in
-number of entries, not in number of bytes).
+Very good!
 
-So it's not 256 bytes, it's 2048 bytes, which is basically just a rounding =
-error,
-right?  Right!?!?.  *sigh*
+>   * 1ccf7ba90f8b KVM: x86/mmu: Take mmu_lock for the lockless aging walk on PREEMPT_RT (gpc-v3)
+>   * 51de7a793839 KVM: selftests: Add nested transition benchmark
+>   * 37c9400feec3 KVM: nSVM: Cache L1's IO permissions map pages
+>   * 1c10fdf9c46d KVM: nSVM: Cache L1's MSR permissions map pages
+>   * 7af4264346c2 KVM: nSVM: Use a gfn_to_pfn_cache for the vmcb12 page
+>   * de951cadb238 KVM: x86: Move nested GPC lock helpers to x86.h as kvm_gpc_lock_page()
+>   * f04543987d9f KVM: selftests: Add nested VMX APIC cache invalidation test
+>   * 1b50353089d4 KVM: nVMX: Use pinned pfncache for L1 APIC virtualization pages
+>   * 4ae1202ef919 KVM: nVMX: Implement cache for L1 MSR bitmap
+>   * 5102fb3c55fb KVM: x86: Post KVM_REQ_GET_NESTED_STATE_PAGES on memslot updates
+>   * 47998916d89f KVM: pfncache: Return -EAGAIN for a lookup which hits an invalid memslot
+>   * 2dab55238cd7 KVM: pfncache: Add guest-mode pinning (GUEST_USES_PFN successor)
+>   * 9740a75db3d5 KVM: x86: Use gfn_to_pfn_cache for steal time / preempted status
+>   * 3898f98ca5cd KVM: x86: Request the guest TLB flush from record_steal_time()
+>   * 0a06af648fa6 KVM: x86/xen: Don't dirty track "vCPU info" page
+>   * eef7b09e5b52 KVM: x86/xen: Explicitly tag "shared info" page as never being dirty tracked
+>   * 99a7eae0266e KVM: x86/xen: Extract delivery of event to vCPU into a separate helper
+>   * f0162bb012fb KVM: pfncache: Use atomic SRCU for readers instead of a rwlock
+>   * 003716df6605 mm/mmu_notifier: Remove non_block_start/end() from notifier invocation
+>   * 6d484ca99bc9 srcu: Try the inline no-readers proof first in synchronize_srcu_atomic()
 
-In other words, the compile-time assertions added by commit ac777fbf064f ("=
-KVM:
-x86: Use kvzalloc() to allocate VM struct") are doing exactly what they're =
-intended
-to do, but I failed at math and at incorporating the sanity check into my t=
-est flow.
+This is in the works.
 
-Looking at my semi-temporary xarray idea, that approach doesn't make much s=
-ense.
-An xarray node is currently 576 bytes, so in practice it would either bleed=
- more
-or less the same number of bytes, or would result in alloc+free on every vC=
-PU
-creation.
+>   * 23f10e07aba3 srcu: Add try_synchronize_srcu() for callers which can prove readers absent
 
-Stepping back, all of this complexity exists purely so that the guts of vCP=
-U
-creation can run without holding kvm->lock.  AFAIK, everyone, myself includ=
-ed,
-has assumed that dropping kvm->lock was a performance optimization, e.g. to=
- allow
-userspace to create vCPUs concurrently for latency purposes.  But I've scra=
-ped
-through all of the VMMs I know about, and several I didn't until now, and u=
-nless
-I'm misreading Rust code, no VMM actually does concurrent vCPU creation.
+I do not intend to provide a separate API for this given the possibility
+of indefinite postponement.
 
-And looking at the history of this code, before commit 11ec28047118 ("KVM: =
-Convert
-vm lock to a mutex"), kvm->lock was a spinlock.  I.e. KVM *had* to drop kvm=
-->lock
-when doing the bulk of vCPU creation, otherwise it couldn't do normal memor=
-y
-allocations.  When kvm->lock got turned into a mutex, no one update vCPU cr=
-eation
-to take advtange of that.  And 19 years later, we all just assumed the comp=
-lexity
-was for performance reasons.
+>   * 2a55908bb12d srcu: Keep a spare node array so srcu_gp_end() need not block in reclaim
 
-Furthermore, naively parallelizing vCPU creation in userspace is likely a n=
-et
-negative due to the overheads of task creation.  Unless a VMM specificaly a=
-voids
-extra overhead related to parallelization, e.g. spawns each vCPU's thread b=
-efore
-creating the vCPU, creating vCPUs concurrently is a net *negative* up until=
- about
-~64 vCPUs, after which the times are a wash.
+This should not be necessary given that call_srcu(), synchronize_srcu(),
+synchronize_srcu_expedited(), and start_poll_synchronize_srcu() are all
+ruled out for atomic srcu_struct structures.  Thus, there will never be
+a conversion to big, and thus no memory allocation.
 
-The speed of light is faster if KVM doesn't hold kvm-lock, but at vCPU coun=
-ts of
-~24 or less, it's probably in the noise when considering total VM creation =
-time.
-E.g. 190us vs. 390us for 8 vCPUs, 1170us vs. 420us for 24 vCPUs.
+Or am I missing something here?
 
-On top of all that, we've had a *lot* of fatal bugs (found by syzkaller) re=
-lated
-to vCPUs being created while trying to do per-VM operations (basically, see=
- every
-flow that locks all vCPUs).  I.e. the parallel vCPU creation "support" is a=
-ctively
-harmful.
+							Thanx, Paul
 
-So, rather than trying to come up with a scheme that is performant without =
-being
-too complex, I'm planning on fixing this by simply holding kvm->lock for th=
-e entire
-duration of vCPU creation, so that KVM doesn't need to do extra tracking an=
-d can
-instead rely purely on the array of online vCPUs.  Then we can revert 97d65=
-b544f48
-and do more cleanups on top.
+>   * cb117542cb92 srcu: Remove development pr_alert()s from synchronize_srcu_atomic()
+>   *   02738b15e08c Merge remote-tracking branch 'rcu/dev' into gpc-v3
+>   |\
+>   | * 7b9f3a948136 torture: Allow specifying alternative ssh command to kvm-remote.sh (rcu/dev)
+>   | * cd71c7941b25 doc: RCU: Fix s/strategem/stratagem/ typo in Requirements.rst
+>   | * f1b2e15ef249 rcu: fix shrink budget underflow in lazy_rcu_shrink_scan
+>   | * 8c9be6c76148 rcutorture: Synchronously wait for all rcu_torture_irq() callbacks to complete
+>   | * 48b4d9799efe rcu: Use IRQ_WORK_INIT_HARD for srcu's irq_work
+>   | * 260d0fdf6ea3 rcutorture: Fix divide-by-zero with fwd_progress_div=1
+>   | * 5d9c38fbf615 fixup! srcutiny: Add an atomic Tiny SRCU
+>   | * 7a263580788e fixup! srcutree: Add an atomic Tree SRCU
+>   | * c2225b77b028 srcu_tree: Disable preemption across synchronize_srcu_atomic()
+>   | * e56c969b6c7b rcutorture: Add support for testing synchronize_srcu_atomic()
+>   | * 9a2e9996ccec srcutiny: Add an atomic Tiny SRCU
+>   | * 6cf65dd4d8fb srcutree: Add an atomic Tree SRCU
+>   | ⋮  (older rcu/dev elided)
+>   * | dc14992a9abe KVM: pfncache: use a dedicated invalidation sequence for cache refresh (xen-v3)
+>   * | a83533b07c67 KVM: x86/xen: Mark poll_evtchn accesses with READ_ONCE()/WRITE_ONCE()
+>   * | f578df3dda4e KVM: x86/xen: Take kvm->srcu in __kvm_xen_has_interrupt()
+>   * | 0e38de3983e6 KVM: x86/xen: Use atomic*() APIs instead of open coded equivalents
+>   * | f6179ff87266 KVM: x86/xen: Use 32-bit atomics if vCPU's evtchn_pending_sel isn't aligned
+>   * | 9c3243ef9edb KVM: x86/xen: Use 32-bit locked bts for vcpu_info evtchn_pending_sel
+>   * | 113a5ed7489f KVM: x86/xen: Enforce 4-byte alignment of vcpu_info registration
+>   * | 2505c393701c KVM: x86/xen: Latch shinfo mode in kvm_xen_schedop_poll()
+>   * | 9dfe99cf7b45 KVM: x86/xen: Latch shinfo mode in kvm_xen_set_evtchn_fast()
+>   * | 59325fcde6db KVM: x86/xen: Rename max_evtchn_port() to kvm_max_evtchn_port()
+>   * | 2d366afb5114 KVM: x86/xen: Introduce kvm_xen_has_64bit_shinfo() macro
+>   * | 2e26fc558ac9 KVM: x86/xen: Rename 'longmode' to 'is_64bit' in hypercall handling
+>   o |  (kvm/next: 76671054f9a1 Merge tag 'kvmarm-7.3' ...)
 
-I'll send a series (hopefully tomorrow) after testing.
 
-P.S. I was also wrong (though nowhere near as badly) in commit ac777fbf064f=
- when
-     I said the size of kvm_{svm,vmx,tdx} was below 2KiB.  That was true, b=
-ut only
-     for a KVM built without Hyper-V or Xen emulation.  With those it was a=
-nd still
-     is about 2.7KiB.  So bigger, but still in the realm of "shouldn't cros=
-s the
-     4KiB boundary anytime soon".
