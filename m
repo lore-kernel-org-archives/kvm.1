@@ -1,194 +1,199 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED66A37107E
-	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 00:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788223725; cv=pass; b=rOycWqFxVkKySpcEqoVaPjN5qe13g4ZnAirEbAT191xE6clET1MCfEL1CttlyX/WYz+E/TfqWuIEABTJXzk+YT3xt3LFTE7CgZMPWNotDpbyIdgLGqqqhbOvge4vTZTTXhN06CNOsydCESqsl7cJ6TuxYkxnJhtjkcOJUDUtWn4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788223725; c=relaxed/simple;
-	bh=jS73Y9Ax+M/4TFI/BHflongxHZ7kkQuWe5CVcgbwi+Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RF7j4XckCszYdUrREcef+4dvvtTjXZ2wDDjfE25Xg7Jh4+mVH6Cw+OQ+flT94cPNKRkorXe3YGDb04zFXbZpz+HhwQT48oxzL+3Ep+QGPNK3l3Kfc/xT9r6QZuQVaQF/r9rgGhef/KJo4z2R0zhbq/bFuO3YQDepGbn8cjM0pz0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CqyRXJGM; arc=pass smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9391DF261
+	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 00:52:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788223971; cv=none; b=jpHV4+Mm28JQ3vZy+pEPD0MB5f45GcuoEFDx2/ae4nAVOd873J9xUoFSILZIBClko+n73i8+IrKZlp944C4XHkEIY0PYyYeDEbQnyqqZc5v1EuHQ+NX9QydE3BFKvZco54LO9BGqMnogLs9ejLVIOZKnqDvRQDZu+6h3YFlhk/Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788223971; c=relaxed/simple;
+	bh=MM2F5A0mC2yQl4blcZuiDI52PqLyDNFHHrq3s+npiAQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=R/INaHqI0vY6pBjFELzkJ67ZvC40C6iA/awWT89sbJ4ylkGQdpMLfSvcPiwPzJDnjuhJcAOPWLW4sls9Ns06xmYMlbxUx7pY0BI0EnRLBiCi1zBsh9ki0wSQ70FpXUn5cdKPIL/rLIbIl/SePN1nJDpsmpx07cw0RyUOQZ40D+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=btKOfW01; arc=none smtp.client-ip=209.85.216.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CqyRXJGM"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cfbbdfa60bso2928995ad.3
-        for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 17:48:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788223723; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QqQKXiiqlArhSis0AgauByBIaTi623MJLYB9VSCDg5sX+Z/2BlaKEXe4SIk2SjC0R0
-         aZ7ixM3H50dwkA5MBkhmztlfyzRtACuIsCQfAqMXwFbDNV+WxkVe/7KwTWQIM1uNEu8R
-         xuJQUK62AbdyeBkeRtITsj094njNMt4UPX71SZ1vpwW24Z0eh+x6jljHJADcuXDtbitf
-         AnhJQat6BeexeRr/DNWUJfWt0mAcNKOEeHGEZdS3Rle1c6/Zjnvltdc2xbODudMU8i75
-         xl7jl4nntV83iZeuyVHlH1ZHxAKliiYYHyJ2UOqGUawe1X7lqM1G2uBJTtAGdYS+zIvi
-         FkDg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bazjSzwMCF+AgN6pYQNjRZEW2QtTTdcfXFPY1xxZKAk=;
-        fh=clmWqNh3m5Le1U/Dd/TOld8q2vazUSvFMPgfPMWuA0M=;
-        b=oXxQ7UWaZe/H0lmmkdAKZal8SfKCN4KpNXaxZk/Ma71k/4Vutey9pvM4x4pPMuPN1G
-         X/AI2VRFxlqp6RWQ6UHWob8U14EndlEBAaMMQ3cU+1xaxbEjx2fYW67DQeSsyRMT1fq3
-         Jcfs8s2ZXJaz1RLjMYupxH931VC5WnYG4Na9kDkd9I1hbl03YuRTr/AAS0Syya3zeEU6
-         Q8DAz90mDgocMV5zuT6XKQH+s12+oQj+NApfjLGUFOjwXySXMeHDZOVepV4KznTtVjGW
-         zaQ3OYnBAr5W2NrLM46qYWwJ3PnKmKCXDWZHjzZtL3NwaGFQay6N/slVyVWACByBUaeX
-         iuHw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="btKOfW01"
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3965ba1ba3eso5471713a91.2
+        for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 17:52:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788223723; x=1788828523; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bazjSzwMCF+AgN6pYQNjRZEW2QtTTdcfXFPY1xxZKAk=;
-        b=CqyRXJGMeB6toUR6dpPVpC9OYYap/7UB5+Tiq0HXTj4yg28ftq6LKvqgf8HWs6rESR
-         DmQN6Vppoqq1Wq1uIi7tXU56txioVwtJenbafsiVW1upUCgq0cbHL/nYQG3NOwVAuHL/
-         kwiOZLcZb2pfnOowwM9cnXm+4bF1KP3yut/hi83fxz+x2pzkEy7IJ8HzQSapXl0V0GKZ
-         AneNu2nM9874T/SbMAxLnuUmYXyraf63HCfC8DUPB2uUM7JRs4lcBledftqjNO0d49Ub
-         4gkYb9GAfvMkfKWaO2/vKzf+aszR58Iq30eIlkLpj7D8HXOEsm0vSMOTOJRCzhzT/uhe
-         vboA==
+        d=google.com; s=20251104; t=1788223969; x=1788828769; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=+gjL0JYfUDhxDrumg1eHLE2TTMOQAAjlB1FcXj6jZVk=;
+        b=btKOfW01LzBYdjZ3EBhg3r0PPf8hjfJvtgNV7Y9S4YQ4l9kx6IuZPZ3Q8xZeBM1vs+
+         VcFSE248jPEp1eSOGdll6iWzghXl/Ns54PJqMxJfIborQaf5VB72K+7ucEbgvaaVbNr/
+         B+K2n9OARttiQUoWSp1BAy1LUOpXhDo+9dDiiTt9OWsPNlbcY0AZ519IML/VJ+D8Odl5
+         84WvtQvcqeTgg4IO7ciXe1ivk3c4DqYqONsjYAdM71wmG/pPlLRXeVAiEn2L4598E5X0
+         3O6BwmvnAzMY/mABNp0qgA/Kv3GiMKC66a3hAHPxYgBD4gj1kpFBvSotkXYyvFyLLjlD
+         xS+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788223723; x=1788828523;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1788223969; x=1788828769;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bazjSzwMCF+AgN6pYQNjRZEW2QtTTdcfXFPY1xxZKAk=;
-        b=VVVoJrUIHyLFTkoE/QmZAGlffi9oi8RRh8ijWMZM1pcFXfaIuMoX8jQfO2ANre6st5
-         yQbD1da17CvaD5/v26T0IAVP9S8K0jOo5Qj2XFTUqQFAhhmpfQMVh+pP11MmdNTJYuwZ
-         23tuR5HnCtEthQccBZMA5C4E21p4rjXhuF3Ed3Dtx5PgIHcOV0cfnZdreK6KPfcZXiRs
-         n8an60A9fuZWX3vvf6VfRIlZT+YF6nd9mT5pcrLnJCME6GqvHhVo/qjLtl21IdXD6C7g
-         QQpsM0dsWT+68jCwemuNWQgAriABOjZoJylyvDdjK5DEPr3Da5neK/ryA80sy24cgbSh
-         0ZNQ==
-X-Gm-Message-State: AFuF++kateWZ/L2U7jLmMgE92GwTAPogEDXiSw5M/naqovbm40HzgOx4
-	FsDaJPCw99aQUfLZVaiHL9FjX66n9kcrGEaGGtaH9UaXrOzzESqEVWXdnHEFzunEig74e0mU0ye
-	xQCmWW5m6Epk5EukpFxn3iCsDfxRoo+61BDK5UqrXUg==
-X-Gm-Gg: AYBFou3KUYfm3aB5tzxtDFNCLePcmgwQ4Z4E22JnKUBnHRLqqtQnQQj8ss7t3d6LIHi
-	yIZuYTKrMxNNhtWCFaHK/MI6UkEvfhemP+NdBpN2B+JUY+mParr4/PUiTICszr1QFsc0revVomq
-	S1XtnIYE2BM7ftR6CPApH6iPSSXrh70zloSJKu1I8WKZpQnW/J1LTldULxWWEZDrGQhCGyMUcPy
-	h+pcNK7HvEZrzvksrQA96NhRgShutead/GHloNrXa9IX0F/UfjdeNhiA3/33iSKdl/Y0zsnoIuS
-	Q7P32dgsmRRGl8u+u9dXHFOP3nwnD5iMjgDKcTIgWIqyaJZUKUZeyyIBECLXtzX4V1Nsl1S9CCd
-	wqQ==
-X-Received: by 2002:a17:903:388e:b0:2d7:44c5:1a13 with SMTP id
- d9443c01a7336-2d74df17b06mr475050065ad.8.1788223723108; Mon, 31 Aug 2026
- 17:48:43 -0700 (PDT)
+        bh=+gjL0JYfUDhxDrumg1eHLE2TTMOQAAjlB1FcXj6jZVk=;
+        b=OrsD/XTqhXDkLMrAkTZ9veLum2okGB/OKhyvkl510VgiNfdbxOlycnaIRNqP6QZLiC
+         ISuK5tVw5FvhVAQLL631/zq//3rq5el8Nmnu45UvBxmQsilTnHbSfx5LrzEvazbG3hZZ
+         qy0SYN0VKs/7CQHWQwdNlJP93ZVl9OaafaL6You5M4iIJN+MXY6Fcn9+d+4UlA5I2GuG
+         xPyAcN+UxpahInl4WGcECE9S+NYZEntka9LN5ANm8xZgpV0I5nBJj/EV53uafBHNOMcC
+         0Hc9eusRfh3ntDoOKaoQ2PSq9hLbg6ctp6yPWdBqgjl3G0UEcrFhhFLORSP+7teKYsW+
+         nn6A==
+X-Gm-Message-State: AFuF++lFJQusMJ9cdVdo7RUxy1S5lhcMl6QfuI5o0+DlivuKuDSfjzl2
+	2jjQqnFYWObNsviG3Rx6Fvi8ZLxuKsetPtT8/lGlNWo2gSsLT8tD1S4gLvQ3isUoeBrNIXaleeQ
+	r8hFFRA==
+X-Received: from pjbrr14.prod.google.com ([2002:a17:90b:2b4e:b0:398:e613:7ab3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:17ca:b0:395:4de5:1054
+ with SMTP id 98e67ed59e1d1-39907d65648mr5020588a91.16.1788223969099; Mon, 31
+ Aug 2026 17:52:49 -0700 (PDT)
+Date: Mon, 31 Aug 2026 17:52:48 -0700
+In-Reply-To: <apIf7eoMxdfV_7kE@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260807112818.958190-1-kimjw04271234@gmail.com>
-In-Reply-To: <20260807112818.958190-1-kimjw04271234@gmail.com>
-From: Jinu Kim <kimjw04271234@gmail.com>
-Date: Tue, 1 Sep 2026 09:48:32 +0900
-X-Gm-Features: AcwNN1Wz291OtiDO0yLKdqxMF1hiX1iPzMyfEM1kmMxlGvIMy0a5OidH_3jkXks
-Message-ID: <CAH+3ta7b7MudRedhFG4xQH6-3ZK9gfkcEPy_aHsAHBwjyK81+w@mail.gmail.com>
-Subject: Re: [PATCH] KVM: x86: Use active memslots for the per-vCPU MMIO cache
-To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, security@kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <56a4bc35ee605588b7cc36c8e45c12b5f3b506cb.camel@guillain.net> <apIf7eoMxdfV_7kE@google.com>
+Message-ID: <apYh4GDHD3Tdb8t4@google.com>
+Subject: Re: BUILD_BUG_ON failed for kvm_vmx struct size sanity check in vmx.c
+From: Sean Christopherson <seanjc@google.com>
+To: Jean-Christophe Guillain <jean-christophe@guillain.net>
+Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Sean, Paolo,
+On Fri, Aug 28, 2026, Sean Christopherson wrote:
+> On Thu, Aug 27, 2026, Jean-Christophe Guillain wrote:
+> > Hello,
+> >=20
+> > Since yesterday, my daily compilation of Linus tree fails with this
+> > error:
+> >=20
+> >   CC [M]  arch/x86/kvm/vmx/vmx.o
+> > In file included from <command-line>:
+> > arch/x86/kvm/vmx/vmx.c: In function =E2=80=98vmx_init=E2=80=99:
+> > ././include/linux/compiler_types.h:702:45: error: call to
+> > =E2=80=98__compiletime_assert_1411=E2=80=99 declared with attribute err=
+or: BUILD_BUG_ON
+> > failed: get_order(sizeof(struct kvm_vmx) - SIZE_OF_MEMSLOTS_HASHTABLE)
+> > && !IS_ENABLED(CONFIG_DEBUG_KERNEL) && !IS_ENABLED(CONFIG_KASAN)
+> >   702 |         _compiletime_assert(condition, msg,
+> > __compiletime_assert_, __COUNTER__)
+>=20
+> The immediate problem is more than likely commit 97d65b544f48 ("KVM: Chec=
+k for
+> duplicate vcpu_id as early as possible"), which increased the size by 512=
+ bytes.
 
-A friendly ping on this patch.
-I originally sent this on August 7, which was fairly late in the 7.2
-release cycle, so I held off on pinging during the remainder of the
-cycle and the 7.3 merge window.
-Now that 7.3-rc1 is out, could you please take a look when you get a chance=
-?
-Please let me know if you'd prefer that I resend or rebase the patch.
+/facepalm
 
-Thanks,
-Jinu
+Note, my claim wasn't 512 bytes, it was 256 bytes.  From commit 97d65b544f4=
+8
+("KVM: Check for duplicate vcpu_id as early as possible"):
 
-2026=EB=85=84 8=EC=9B=94 7=EC=9D=BC (=EA=B8=88) =EC=98=A4=ED=9B=84 8:28, Ji=
-nu Kim <kimjw04271234@gmail.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
->
-> KVM tags the per-vCPU MMIO cache with a memslot generation so that a
-> memslot update invalidates cached MMIO information.  Both the fill and
-> validation paths use kvm_memslots(), which unconditionally selects addres=
-s
-> space 0, even when the vCPU is running in SMM and using address space 1.
->
-> Commit 56f17dd3fbc4 ("kvm: x86: fix stale mmio cache bug") added the
-> memslot generation to the cache key so that a memslot update could not
-> leave a stale entry valid.  When commit 699023e23965 ("KVM: x86: add SMM
-> to the MMU role, support SMRAM address space") added the SMM address spac=
-e,
-> these helpers were not converted to use the active memslots.
->
-> Consequently, an update to the SMM memslots can leave an entry from the o=
-ld
-> SMM address space apparently valid after the vCPU returns to the normal
-> address space.  A guest can then cause an access to valid RAM at the same
-> GFN to be returned to userspace as KVM_EXIT_MMIO.
->
-> Completing that exit through the VMM's RAM address space writes the backi=
-ng
-> page without going through KVM's write-tracking path.  If the page backs =
-a
-> nested EPT table, KVM can continue using shadow translations derived from
-> the old contents.  The WARN_ON_ONCE() in kvm_mmu_write_protect_fault()
-> catches this invalid cache and memslot combination.
->
-> Use the vCPU's active memslots when caching and validating the entry.
-> Memslot generations are unique across address spaces, so the generation
-> also distinguishes the normal and SMM views.  This matches the MMIO SPTE
-> cache, which already uses kvm_vcpu_memslots().
->
-> On an unpatched current-mainline kernel, a regression test that fills the
-> cache in SMM and updates only the SMM memslots fails the intended RAM wri=
-te
-> and triggers the kvm_mmu_write_protect_fault() warning.  With this change=
-,
-> the same test completes the RAM write without a warning.  The x86/smm_tes=
-t,
-> set_memory_region_test, and memslot_modification_stress_test selftests al=
-so
-> pass.
->
-> Fixes: 699023e23965 ("KVM: x86: add SMM to the MMU role, support SMRAM ad=
-dress space")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jinu Kim <kimjw04271234@gmail.com>
-> ---
->  arch/x86/kvm/x86.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-> index 9de577ef9c97..a6d86d3dcff6 100644
-> --- a/arch/x86/kvm/x86.h
-> +++ b/arch/x86/kvm/x86.h
-> @@ -313,7 +313,7 @@ static inline bool is_noncanonical_invlpg_address(u64=
- la, struct kvm_vcpu *vcpu)
->  static inline void vcpu_cache_mmio_info(struct kvm_vcpu *vcpu,
->                                         gva_t gva, gfn_t gfn, unsigned ac=
-cess)
->  {
-> -       u64 gen =3D kvm_memslots(vcpu->kvm)->generation;
-> +       u64 gen =3D kvm_vcpu_memslots(vcpu)->generation;
->
->         if (unlikely(gen & KVM_MEMSLOT_GEN_UPDATE_IN_PROGRESS))
->                 return;
-> @@ -330,7 +330,7 @@ static inline void vcpu_cache_mmio_info(struct kvm_vc=
-pu *vcpu,
->
->  static inline bool vcpu_match_mmio_gen(struct kvm_vcpu *vcpu)
->  {
-> -       return vcpu->arch.mmio_gen =3D=3D kvm_memslots(vcpu->kvm)->genera=
-tion;
-> +       return vcpu->arch.mmio_gen =3D=3D kvm_vcpu_memslots(vcpu)->genera=
-tion;
->  }
->
->  /*
-> --
-> 2.43.0
->
+  the worst case scenario is 256 bytes per-VM (on x86, which allows up to 1=
+6KiB vCPU IDs)
+
+Dmytro was the author, but that blurb came from me.
+
+And I didn't _completely_ fail at math, just mostly failed at math.  I was =
+write
+that it would require 256 somethings, the small problem is that it's 256 "u=
+nsigned
+longs", not 256 bytes (I did the mental math to compute the size of the arr=
+ay in
+number of entries, not in number of bytes).
+
+So it's not 256 bytes, it's 2048 bytes, which is basically just a rounding =
+error,
+right?  Right!?!?.  *sigh*
+
+In other words, the compile-time assertions added by commit ac777fbf064f ("=
+KVM:
+x86: Use kvzalloc() to allocate VM struct") are doing exactly what they're =
+intended
+to do, but I failed at math and at incorporating the sanity check into my t=
+est flow.
+
+Looking at my semi-temporary xarray idea, that approach doesn't make much s=
+ense.
+An xarray node is currently 576 bytes, so in practice it would either bleed=
+ more
+or less the same number of bytes, or would result in alloc+free on every vC=
+PU
+creation.
+
+Stepping back, all of this complexity exists purely so that the guts of vCP=
+U
+creation can run without holding kvm->lock.  AFAIK, everyone, myself includ=
+ed,
+has assumed that dropping kvm->lock was a performance optimization, e.g. to=
+ allow
+userspace to create vCPUs concurrently for latency purposes.  But I've scra=
+ped
+through all of the VMMs I know about, and several I didn't until now, and u=
+nless
+I'm misreading Rust code, no VMM actually does concurrent vCPU creation.
+
+And looking at the history of this code, before commit 11ec28047118 ("KVM: =
+Convert
+vm lock to a mutex"), kvm->lock was a spinlock.  I.e. KVM *had* to drop kvm=
+->lock
+when doing the bulk of vCPU creation, otherwise it couldn't do normal memor=
+y
+allocations.  When kvm->lock got turned into a mutex, no one update vCPU cr=
+eation
+to take advtange of that.  And 19 years later, we all just assumed the comp=
+lexity
+was for performance reasons.
+
+Furthermore, naively parallelizing vCPU creation in userspace is likely a n=
+et
+negative due to the overheads of task creation.  Unless a VMM specificaly a=
+voids
+extra overhead related to parallelization, e.g. spawns each vCPU's thread b=
+efore
+creating the vCPU, creating vCPUs concurrently is a net *negative* up until=
+ about
+~64 vCPUs, after which the times are a wash.
+
+The speed of light is faster if KVM doesn't hold kvm-lock, but at vCPU coun=
+ts of
+~24 or less, it's probably in the noise when considering total VM creation =
+time.
+E.g. 190us vs. 390us for 8 vCPUs, 1170us vs. 420us for 24 vCPUs.
+
+On top of all that, we've had a *lot* of fatal bugs (found by syzkaller) re=
+lated
+to vCPUs being created while trying to do per-VM operations (basically, see=
+ every
+flow that locks all vCPUs).  I.e. the parallel vCPU creation "support" is a=
+ctively
+harmful.
+
+So, rather than trying to come up with a scheme that is performant without =
+being
+too complex, I'm planning on fixing this by simply holding kvm->lock for th=
+e entire
+duration of vCPU creation, so that KVM doesn't need to do extra tracking an=
+d can
+instead rely purely on the array of online vCPUs.  Then we can revert 97d65=
+b544f48
+and do more cleanups on top.
+
+I'll send a series (hopefully tomorrow) after testing.
+
+P.S. I was also wrong (though nowhere near as badly) in commit ac777fbf064f=
+ when
+     I said the size of kvm_{svm,vmx,tdx} was below 2KiB.  That was true, b=
+ut only
+     for a KVM built without Hyper-V or Xen emulation.  With those it was a=
+nd still
+     is about 2.7KiB.  So bigger, but still in the realm of "shouldn't cros=
+s the
+     4KiB boundary anytime soon".
