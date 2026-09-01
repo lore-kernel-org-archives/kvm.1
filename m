@@ -1,363 +1,196 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832F8486B82;
-	Tue,  1 Sep 2026 17:22:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2FE486BA2
+	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 17:28:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788283377; cv=none; b=US7nupsex5ypswhHqm06wcDYOfQV+Jbkjcfv7fE9H7qWzAwf04FB0UrqUz1+Jx6DfSR9WtgeblUdwGC6aBqXYhMlphiOqVXLZKFTFe4BNFAxJMuaM8TH1rI871SjG4V+B9quqe/F1JK5Zus7zefh5drCPpjZoNC7A9q8hn8NwAc=
+	t=1788283711; cv=none; b=NxrdN8X4lptxaLD7Lb/eW3LF5hIKEjaVa6MyyRDyKVD4HtUZ8/opJ/P1NN9mvGl4SYEwIrwrK7hg9n3BomKqAJmi4jzPVOxH90K9ooqqjmKe/CcY53LFJsW81m5a9nzfn5uBB1PtfL+5JNYP239ECgVedAn+rOLNIgGWxpZH6cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788283377; c=relaxed/simple;
-	bh=n2H38iWvZIE+jZsfjoU/6HkPlgh3y6+8xS5AimbIenE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=VjFKI4nyKIdRdp/xhzn1FSG8LOMUF66tYQ+RSBvVHxI2bqcc8CodRftWlQJNo+wYSw7yPuWOd6rmx2YgD7EXtbmzd3kIhp2TkKe+QD4VcgYtifsHXErFrlEj3jZWPKcyguBfEVM0UgugX8HrvDw9e+TO2EoJINjN40a98jruQnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Ej7IEhFH; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1788283711; c=relaxed/simple;
+	bh=/8akLwfs1o3i5XMdCX3/5Zu0HCQoB5fVGW3Pkg2xb8g=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=V9GUS7sCeQsVWeNpV6Ax5xNpTA4uybqoYjUOAgveeruEPQcc97nqitB/Q76f4mYm75nQ9bG/o+UEJbVWGYiWPDodIkQMMgTkOesMb5a5kHAbGoIZpVCGMywabC4NI62mJcS4eRxWrOnevOECY4L06+jdwzIbEUjnymduyPzqlco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VklgPQxN; arc=none smtp.client-ip=209.85.214.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Ej7IEhFH"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 06FCC1756;
-	Tue,  1 Sep 2026 10:22:51 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 185233F7D8;
-	Tue,  1 Sep 2026 10:22:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788283374; bh=n2H38iWvZIE+jZsfjoU/6HkPlgh3y6+8xS5AimbIenE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ej7IEhFHq8mSVYiuKKqLFTWea+V0OFSqyoyGCBQRnSIxZx8CUbcd28q0HSKnQcvna
-	 kcK/7HVLH/O4jvQHpOvlmEmZtKTG0zSW9ZyGHOjLW+25xqK3ZKKrRjeghKwiLl4ovV
-	 NBlxHhtBmS7x7BCz0grhymWtPKmAzigmMkRuzeL4=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Tian Zheng <zhengtian10@huawei.com>
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	maz@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	yuzenghui@huawei.com,
-	wangzhou1@hisilicon.com,
-	yangjinqian1@huawei.com,
-	caijian11@h-partners.com,
-	liuyonglong@huawei.com,
-	yezhenyu2@huawei.com,
-	yubihong@huawei.com,
-	linuxarm@huawei.com,
-	joey.gouly@arm.com,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	seiden@linux.ibm.com,
-	suzuki.poulose@arm.com
-Subject: Re: [PATCH v4 3/6] KVM: arm64: Add auto DBM support for hardware dirty tracking
-Date: Tue,  1 Sep 2026 18:22:49 +0100
-Message-ID: <apcJ6bClZbX4BCpR@LeoBrasDK>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <ad48e628-d036-440e-955d-856c2539e568@huawei.com>
-References: <45d76d0d-48e9-46a6-b1f9-691f840eba46@huawei.com> <anBrvILpcSFhW7Wg@LeoBrasDK> <95f1ebd4-be04-4684-be68-388f752a1379@huawei.com> <anDCno9HdVI5UAls@LeoBrasDK> <2070002d-94aa-4a5b-8df1-e8e0f0fd265c@huawei.com> <anHIa5PDnF7r9EA4@LeoBrasDK> <3808f469-5403-4f2e-85f0-8c6ca13068bd@huawei.com> <anmvnclRTPS6an8e@LeoBrasDK> <aoh1vw0ZdWJf6T4q@LeoBrasDK> <ad48e628-d036-440e-955d-856c2539e568@huawei.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VklgPQxN"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cee1ec30f2so244725ad.3
+        for <kvm@vger.kernel.org>; Tue, 01 Sep 2026 10:28:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788283709; x=1788888509; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pee9EJDo0yrD1zKrHbFb5B2Qg/13RIff1y5Ve46Cj+8=;
+        b=VklgPQxN1CCYtaNNxKMPvJb/zGAbVZeI0uPkNo0gwIhxFYWCEnZEuSOnuN+Uxr6eP1
+         QBkBQeXJki953L2CPfJuos3o9NaOzvT/F8lb2G8HInu0PYgYET9wg6ZYRmFd9vxh7kij
+         Bli/e06iUUbzJMlbojHoo0+EHhpftEORdkGLrvCAoPs2MM+17OJz5D4SAYGlCHWD12Fc
+         SrZ+IA+tHF8QYiq6877neqDvJtK2hFYNJs3CIuUxdZZ8EPJfU25C+oV+kdKqDh99S++u
+         8XnkSQH22PVRBSMo/C6KHlMbGQfnltMOq8EF8a9zMV4lYrHPqJA6mPRwQNBpNo+heoRb
+         cPJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788283709; x=1788888509;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pee9EJDo0yrD1zKrHbFb5B2Qg/13RIff1y5Ve46Cj+8=;
+        b=hAg9FQIwtC88u/dPQ7AH23RgTqOLihU/1AdYZMoiput8ylxGPcXwdjZQHMZ+p3TXpL
+         kYU97PFZ24tPBOamrqbRBO5NsmCDeSQFdL8jdQQljDxlJQ71hov18JWnnqK8Xd/oln7Z
+         MTqLLXPVlxfPj9RiPNKlQrmJYc9tzHjogBwOZVhZPW2uG1G8OyXCG10hS8LM2NA1ZtPS
+         NY1DhXqPnOA7tXy6lmwAoo2L4Cll3q3Is+wtRbXFmrOVAYkhtQPKuXVgFaMkdBEo5J8O
+         ONTINBhLwhUne9ORNfSnRGtz6NVTa0p/ouWPvEhJSBhwOFcPuj9sMe2N8DkO7eca6NEM
+         Bmtg==
+X-Forwarded-Encrypted: i=1; AKwUvBxblyNlxaCIdB+GGhEUs2Om5xKLHekjvfteLc2+0ZM4mjda6mIdGcZf10g2omYAouaPzFY=@vger.kernel.org
+X-Gm-Message-State: AFuF++kkY/eLrzdMXYYY7pUiSnoSTB/Atui4g3C0qdGOD8FqFxsWo/Jz
+	hz41nRkE0kQxUqtxUe/WAGu4Rn+1hpxXWW75C3O+BDT84NWVRpUs59jt8u7llz/v9W6au2Pp+19
+	wguOn1A==
+X-Received: from plgf1.prod.google.com ([2002:a17:902:ce81:b0:2bf:8db:4516])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:cf0d:b0:2cf:ca89:499d
+ with SMTP id d9443c01a7336-2d74def3ffcmr583168435ad.7.1788283708888; Tue, 01
+ Sep 2026 10:28:28 -0700 (PDT)
+Date: Tue, 1 Sep 2026 10:28:28 -0700
+In-Reply-To: <20260901-gmem-selftests-fix-v2-4-5a273153354c@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260901-gmem-selftests-fix-v2-0-5a273153354c@amd.com> <20260901-gmem-selftests-fix-v2-4-5a273153354c@amd.com>
+Message-ID: <apcLPJerTWENV6iD@google.com>
+Subject: Re: [PATCH v2 4/4] KVM: selftests: use allowed NUMA nodes in guest_memfd_test
+From: Sean Christopherson <seanjc@google.com>
+To: Shivank Garg <shivankg@amd.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	Jim Mattson <jmattson@google.com>, Peter Shier <pshier@google.com>, 
+	Ricardo Koller <ricarkol@google.com>, Ackerley Tng <ackerleytng@google.com>, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Aug 31, 2026 at 08:36:10PM +0800, Tian Zheng wrote:
+On Tue, Sep 01, 2026, Shivank Garg wrote:
+> guest_memfd_test assumes that nodes 0 and 1 exist and have memory.
+> is_multi_numa_node_system() only checks that the maximum node ID is
+> nonzero, which is not enough for sparse or memoryless nodes.
 > 
+> Select the required nodes from MPOL_F_MEMS_ALLOWED instead. Use the full
+> nodemask width plus one to mbind(), and let test_mbind() run when only
+> one memory node is available.
+
+Please split this into at least three patches.
+
+  1. Refactor guest_memfd_test.c to prepare for using nodes other than 0 and 1.
+  2. Fix test_mbind().
+  3. Fix test_numa_allocation().
+  4. If necessary, do additional cleanups in numaif.h
+
+As is, this is extremely difficult to review, e.g. without staring intently, I
+can't tell what's refactoring and what's actually a functional change.
+
+Actually, looking at the xAPIC IPI test more, what you proposed in patch 3 is in
+the general direction of what we want, but needs to be more than just a wrapper
+for get_mempolicy() to be useful.  Specificaly, if it fills the mask *and* returns
+the number of nodes found, then it's more generically useful.  And if we also add
+an API to get the next (exclusive) node, then we can cut down on the amount of
+copy+paste without forcing tests to use the "array of one-bit nodemasks" approach
+that the xAPIC test uses.
+
+E.g. the below get_numa_node_ids() is basically just copy+paste from the xAPIC
+test, except that it returns an array of nodes instead of an array of nodemasks.
+The fact that you felt compelled to copy+paste instead of adding an API is quite
+telling: using an array of nodemasks/nodes is inflexible and really only works if
+a test wants to target exactly one node.  It's also annoying to extract to a generic
+API without ending up with a brittle API.  E.g. if the API where to take the a mask
+and an array, it would either have to be a macro or take a struct to ensure the
+array can hold all possible masks.
+
+I'm planning on adding these in the series to also add MAXNODE_FOR_MASK().
+
+static inline int kvm_get_numa_memory_nodes(unsigned long *nodemask)
+{
+	int r;
+
+	*nodemask = 0;
+
+	r = get_mempolicy(NULL, nodemask, MAXNODE_FOR_MASK(*nodemask), 0,
+			  MPOL_F_MEMS_ALLOWED);
+	TEST_ASSERT(!r || errno == ENOSYS || errno == EPERM,
+		    "Unexpected get_mempolicy() failure");
+	return __builtin_popcountl(*nodemask);
+}
+
+/*
+ * Return the node ID of the next NUMA node in the mask, starting at @from+1.
+ * Guarantees a node is found, and that the found node is not @from.  Pass -1
+ * to find the first node in the mask.
+ */
+static inline int kvm_get_next_numa_node(unsigned long nodemask, int from)
+{
+	const unsigned long nr_bits = BITS_PER_TYPE(nodemask);
+	int to;
+
+	to = find_next_bit(&nodemask, nr_bits, from + 1);
+	if (to == nr_bits)
+		to = find_next_bit(&nodemask, nr_bits, 0);
+
+	TEST_ASSERT(to != nr_bits && to != from,
+		    "Unabled to find second NUMA node (from = %d, to = %d)", from, to);
+	return to;
+}
+
+> The sysfs helpers for finding maxnode are no longer needed.
+
+This is an observation, not a proper changelog sentence.
+
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+>  tools/testing/selftests/kvm/guest_memfd_test.c | 86 +++++++++++++++++---------
+>  tools/testing/selftests/kvm/include/numaif.h   | 52 ----------------
+>  2 files changed, 58 insertions(+), 80 deletions(-)
 > 
-> On 8/21/2026 11:58 PM, Leonardo Bras wrote:
-> > On Mon, Aug 10, 2026 at 12:01:49PM +0100, Leonardo Bras wrote:
-> > [> On Wed, Aug 05, 2026 at 11:41:51AM +0800, Tian Zheng wrote:
-> > > > 
-> > > > 
-> > > > On 8/4/2026 7:10 PM, Leonardo Bras wrote:
-> > > > > On Tue, Aug 04, 2026 at 12:54:16PM +0800, Tian Zheng wrote:
-> > > > > > 
-> > > > > > 
-> > > > > > On 8/4/2026 12:32 AM, Leonardo Bras wrote:
-> > > > > > > On Mon, Aug 03, 2026 at 09:57:46PM +0800, Tian Zheng wrote:
-> > > > > > > > 
-> > > > > > > > 
-> > > > > > > > On 8/3/2026 6:21 PM, Leonardo Bras wrote:
-> > > > > > > > > On Mon, Aug 03, 2026 at 12:04:24PM +0800, Tian Zheng wrote:
-> > > > > > > > > > 
-> > > > > > > > > > 
-> > > > > > > > > > On 8/3/2026 9:33 AM, Tian Zheng wrote:
-> > > > > > > > > > > > > > > > > 09, 2026 at 06:40:23PM +0800, Tian Zheng wrote:
-> > > > > > > > > > > > > > > > > > -    if (prot & KVM_PGTABLE_PROT_W)
-> > > > > > > > > > > > > > > > > > +    if (prot & KVM_PGTABLE_PROT_W) {
-> > > > > > > > > > > > > > > > > >                 set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
-> > > > > > > > > > > > > > > > > > 
-> > > > > > > > > > > > > > > > > > +        /*
-> > > > > > > > > > > > > > > > > > +         * No DEVICE filter needed here:
-> > > > > > > > > > > > > > > > > > relax_perms is only called
-> > > > > > > > > > > > > > > > > > +         * on FSC_PERM faults. Device pages
-> > > > > > > > > > > > > > > > > > always get full RW from
-> > > > > > > > > > > > > > > > > > +         * initial mapping and are never write-protected during
-> > > > > > > > > > > > > > > > > > +         * migration, so they never trigger a permission fault.
-> > > > > > > > > > > > > > > > > > +         */
-> > > > > > > > > > > > > > > > > > +        if (pgt->flags & KVM_PGTABLE_S2_DBM)
-> > > > > > > > > > > > > > > > > > +            set |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
-> > > > > > > > > > > > > > > > > > +    } else {
-> > > > > > > > > > > > > > > > > > +        /*
-> > > > > > > > > > > > > > > > > > +         * Clear DBM on W→RO downgrade to prevent hardware from
-> > > > > > > > > > > > > > > > > > +         * silently upgrading RO+DBM back to W+dirty, which would
-> > > > > > > > > > > > > > > > > > +         * bypass KVM's write tracking and cause data corruption.
-> > > > > > > > > > > > > > > > > > +         */
-> > > > > > > > > > > > > > > > > > +        clr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
-> > > > > > > > > > > > > > > > > > +    }
-> > > > > > > > > > > > > > > > > > +
-> > > > > > > > > > > > > > > > > This block makes it pretty evident that the DBM bit really *is* the
-> > > > > > > > > > > > > > > > > write permission bit. I'd much rather we
-> > > > > > > > > > > > > > > > > introduce the concept of dirty
-> > > > > > > > > > > > > > > > > state to the page table library and migrate the abstract write
-> > > > > > > > > > > > > > > > > permission to the DBM field, even if we don't have FEAT_HAFDBS.
-> > > > > > > > > > > > > > > > > 
-> > > > > > > > > > > > > > > 
-> > > > > > > > > > > > > > > Ohh, that's an amazing idea!
-> > > > > > > > > > > > > > 
-> > > > > > > > > > > > > > Thinking about that again...
-> > > > > > > > > > > > > > If we adopt the encoding with DBM being the write-permission
-> > > > > > > > > > > > > > bit, and all
-> > > > > > > > > > > > > > PTEs have it since the start, how can we have lazy-splitting happening?
-> > > > > > > > > > > > > > 
-> > > > > > > > > > > > > > Only way I think of is removing both DBM and S2_S2AP_W bit
-> > > > > > > > > > > > > > from writable
-> > > > > > > > > > > > > > PTEs during dirty-track enable, and re-adding them during
-> > > > > > > > > > > > > > the first write
-> > > > > > > > > > > > > > fault. If we don't remove the DBM bit, systems with HDBSS
-> > > > > > > > > > > > > > would just dirty
-> > > > > > > > > > > > > > it by hardware, without causing a fault.
-> > > > > > > > > > > > > > 
-> > > > > > > > > > > > > > DBM=0 would need to happen only in the first write-protect (only on
-> > > > > > > > > > > > > > lazy-splitting). All other write-protecting would just clean
-> > > > > > > > > > > > > > the S2_S2AP_W
-> > > > > > > > > > > > > > bit, as everything is already split.
-> > > > > > > > > > > > > > 
-> > > > > > > > > > > > > > Is that what was intended?
-> > > > > > > > > > > > > > 
-> > > > > > > > > > > > > > Thanks!
-> > > > > > > > > > > > > > Leo
-> > > > > > > > > > > > > > 
-> > > > > > > > > > > > > Hi Leo,
-> > > > > > > > > > > > > 
-> > > > > > > > > > > > > I think the cleanest way to handle this is to simply avoid setting DBM
-> > > > > > > > > > > > > on block mappings. If we only set DBM on page-level PTEs, then block
-> > > > > > > > > > > > > mappings will naturally stay DBM=0 and trigger a write fault on first
-> > > > > > > > > > > > > access — exactly what we need for lazy splitting.
-> > > > > > > > > > > > > 
-> > > > > > > > > > > > > When the fault occurs, the block gets split into page-level PTEs, and at
-> > > > > > > > > > > > > that point we can set DBM=1 on the resulting leaf entries. This way:
-> > > > > > > > > > > > > 
-> > > > > > > > > > > > > 1. Lazy split works naturally (fault -> split -> set DBM=1)
-> > > > > > > > > > > > > 
-> > > > > > > > > > > > > 2. No need to clear DBM globally at dirty-track enable
-> > > > > > > > > > > > > 
-> > > > > > > > > > > > > 3. No special handling for block mappings
-> > > > > > > > > > > > > 
-> > > > > > > > > > > > > So I think global DBM is still viable — we just need to filter out block
-> > > > > > > > > > > > > mappings when setting the DBM bit. That way the lazy split path
-> > > > > > > > > > > > > is preserved
-> > > > > > > > > > > > > without extra complexity.
-> > > > > > > > > > > > 
-> > > > > > > > > > > > Hi Tian,
-> > > > > > > > > > > > 
-> > > > > > > > > > > > Humm, but would not that be contrary to what Oliver suggested:
-> > > > > > > > > > > > changing the
-> > > > > > > > > > > > encoding from the PTE for all entries?
-> > > > > > > > > > > > 
-> > > > > > > > > > > > (Like, if the PTE is writable, it has to have DBM set)
-> > > > > > > > > > > > 
-> > > > > > > > > > > > IIUC what you said, on first faulting of the page in the VM:
-> > > > > > > > > > > > - If the entry is a page (level-3 leaf) and writable, add DBM
-> > > > > > > > > > > > - If it's a block entry (leaf but not a level-3), don't add DBM
-> > > > > > > > > > > > 
-> > > > > > > > > > > > So after we enable dirty-logging:
-> > > > > > > > > > > > - a level-3 entry would not fault, using HDBSS, and
-> > > > > > > > > > > > - a block entry would fault, do the splitting, and add DBM to level-3
-> > > > > > > > > > > >        entries during the split.
-> > > > > > > > > > > > 
-> > > > > > > > > > > > If I got that correct, that would be clean indeed.
-> > > > > > > > > > > > 
-> > > > > > > > > > > > But then we would have a different encoding for block entries and page
-> > > > > > > > > > > > entries. In page entries, DBM could be used to say if the page is
-> > > > > > > > > > > > writable,
-> > > > > > > > > > > > but on block entries one would have to look at the 'dirty-bit'.
-> > > > > > > > > > > > 
-> > > > > > > > > > > > Would that be ok?
-> > > > > > > > > > > > 
-> > > > > > > > > > > > Thanks!
-> > > > > > > > > > > > Leo
-> > > > > > > > > > > > 
-> > > > > > > > > > > Hi Leo,
-> > > > > > > > > > > 
-> > > > > > > > > > > My initial concern was that clearing all DBM bits at the start of
-> > > > > > > > > > > migration would be too expensive, so I thought distinguishing between
-> > > > > > > > > > > level-3 entries and block entries would be better.
-> > > > > > > > > > > 
-> > > > > > > > > 
-> > > > > > > > > I think we expect it to be expensive, but since we already clean the
-> > > > > > > > > dirty-bit (ro/rw) bit, we can have both happening in the same write :)
-> > > > > > > > > 
-> > > > > > > > > (since we only mark the DBM bit when we fault the memory on lazy-splitting,
-> > > > > > > > > we are expecting to have the same amount of writes to pagetable as we have
-> > > > > > > > > before HDBSS, both on faulting and 1st iteration cleaning)
-> > > > > > > > > 
-> > > > > > > > Hi, Leo
-> > > > > > > > 
-> > > > > > > > Actually, I have thought about this approach too, but if we clear DBM in
-> > > > > > > > kvm_pgtable_stage2_wrprotect(), then during the first round of
-> > > > > > > > migration, we will fault and release RO -> W, and then add DBM.
-> > > > > > > 
-> > > > > > > Yeah, that's only for lazy-splitting, though.
-> > > > > > > 
-> > > > > > > > 
-> > > > > > > > But next time, when we migrate the dirty pages in round two, we will run
-> > > > > > > > kvm_pgtable_stage2_wrprotect() again, which will clear DBM again. And
-> > > > > > > > finally, HDBSS will be useless during migration.
-> > > > > > > 
-> > > > > > > Right, on lazy splitting, we have to clean the DBM bit on the
-> > > > > > > write-protect only if it's a block entry (hugepage).
-> > > > > > > 
-> > > > > > > Once it faults for the first time, it will lazy-split, and we don't need to
-> > > > > > > clean the DBM bit.
-> > > > > > > 
-> > > > > > > > 
-> > > > > > > > > 
-> > > > > > > > > > > However, I ran a quick test on a 400GB VM (4 vCPUs), and the overhead
-> > > > > > > > > > > turned out to be around 30ns — which I think is acceptable.
-> > > > > > > > > > 
-> > > > > > > > > > Just a quick correction — I misstated the unit in my previous email. The
-> > > > > > > > > > overhead for clearing DBM on the 400GB VM (4 vCPUs) was around 32 µs, not 30
-> > > > > > > > > > ns.
-> > > > > > > > > > 
-> > > > > > > > > 
-> > > > > > > > > Oh, that seems more likely :)
-> > > > > > > > > 
-> > > > > > > > > Question: is tha above amount of memory initially in Level-1 blocks,
-> > > > > > > > > level-2 blocks or level-3 pages? (aka: were you using explicit/transparent
-> > > > > > > > > hugepages?)
-> > > > > > > > > 
-> > > > > > > > 
-> > > > > > > > I'm using transparent hugepages. However, if we were to use level-3 stage-2
-> > > > > > > > pages with -mem-prealloc enabled in QEMU, I believe the time cost would be
-> > > > > > > > extremely high — potentially out of our control.
-> > > > > > > > 
-> > > > > > > 
-> > > > > > > Yeah, that's the issue.
-> > > > > > > For this not to explode like this, we need to mark as RO only when the
-> > > > > > > entries are blocks AND we are doing lazy splitting.
-> > > > > > > 
-> > > > > > > We have:
-> > > > > > > Mode	DBM	Dirty bit
-> > > > > > > RO	0	X
-> > > > > > > WC	1	0
-> > > > > > > WD	1	1
-> > > > > > > 
-> > > > > > > On write-protect:
-> > > > > > > - Lazy splitting + block entry (hugepage, level 2-) -> RO
-> > > > > > > - Otherwise					    -> WC
-> > > > > > > 
-> > > > > > > On first fault, the block entry will be lazy-splitten, and we can set DBM=1
-> > > > > > > in every new page.
-> > > > > > > 
-> > > > > > > That way we guarantee that we are not faulting level-3 pages unecessarily,
-> > > > > > > nor need to go through the whole tree setting DBM=1 or DBM=0 on level-3
-> > > > > > > pages.
-> > > > > > > 
-> > > > > > > How does that sound?
-> > > > > > > 
-> > > > > > > Thanks!
-> > > > > > > Leo
-> > > > > > > 
-> > > > > 
-> > > > > > 
-> > > > > > Hi Leo,
-> > > > > > 
-> > > > > > I've also been thinking about this approach: clear
-> > > > > > KVM_PTE_LEAF_ATTR_HI_S2_DBM when kvm_pgtable_stage2_wrprotect() calls
-> > > > > > stage2_update_leaf_attrs(). And we can check whether a page is a block
-> > > > > > page during the page walk, right?
-> > > > > 
-> > > > > Hi Tian,
-> > > > > That was what I was thinking :)
-> > > > > 
-> > > > > > 
-> > > > > > So we can check the page level in the walker callback
-> > > > > > stage2_attr_walker(), filter there, clear DBM for block pages and
-> > > > > > preserve DBM on level-3 pages. Something like this:
-> > > > > > 
-> > > > > > ```
-> > > > > > pte &= ~data->attr_clr;      // wrprotect: clears S2AP_W only
-> > > > > > pte |= data->attr_set;
-> > > > > > if (ctx->level < KVM_PGTABLE_LAST_LEVEL)
-> > > > > 
-> > > > > Only on lazy splitting, right?
-> > > > > 
-> > > > > Or maybe we get the DBM bit on during eager splitting...
-> > > > 
-> > > > Hi, Leo
-> > > > 
-> > > > No, it works for both. Whether eager or lazy split, wrprotect always runs
-> > > > before split, so the block DBM is cleared first.
-> > > 
-> > > Hi Tian,
-> > > 
-> > > On eager splitting, why should we ever strip DBM?
-> > > 
-> > > Eager splitting means we won't have to fault to do the splitting, so we can
-> > > have HAFDBS/HDBSS handle every fault, including the first one that we use
-> > > for lazy-splitting.
-> > > 
-> > > > 
-> > > > For eager split: wrprotect clears W (W=1->W=0) and strips DBM from the
-> > > > block. Then the block is split into level-3 pages, but since W=0 and DBM
-> > > > depends on W, DBM stays 0. DBM is only set back to 1 during the first write
-> > > > fault (relax_perms: W=0->W=1, which also sets DBM=1).
-> > > 
-> > > I suggest that, on splitting, set all writable level-3 pages with DBM=1.
-> > > If lazy-splitting, that will happen naturally on the first fault's split.
-> > > If eager-splitting that will happen during the split as well.
-> > > 
-> > > So total solution looks like:
-> > > - Dirty-logging on, walk the memslot pagetable
-> > >    - On block: mark as read-only
-> > >    - On page: mark as writable-clean
-> > > - On splitting: Mark writable block's new pages as writable-clean
-> > > - On fault: after the split, mark the faulting page as writable-dirty
-> > > 
-> > > This should take care of everything, including lazy/eager splitting
-> > > differences, as well as set the groundwork for HDBSS to work properly.
-> > > 
-> > > What do you think?
-> > > 
-> > 
-> > I implemented that down, and will send it soon.
-> > Seeing the code will make it easier to understand the idea :)
-> > 
-> > Thanks!
-> > Leo
-> > 
-> 
-> Hi Leo,
+> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+> index 2233d871a38f..aee80dda6229 100644
+> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
+> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+> @@ -76,33 +76,53 @@ static void test_mmap_supported(int fd, size_t total_size)
+>  	kvm_munmap(mem, total_size);
+>  }
+>  
+> +/*
+> + * Fill @nids with the first @nr_nids nodes in the allowed mask.
+> + * Return false if the mask contains fewer than @nr_nids nodes.
+> + */
+> +static bool get_numa_node_ids(int *nids, int nr_nids)
+> +{
+> +	unsigned long nodemask = get_numa_mem_nodes();
+> +	unsigned long nid;
+> +	int nr_found = 0;
+> +
+> +	for_each_set_bit(nid, &nodemask, BITS_PER_TYPE(nodemask)) {
+> +		nids[nr_found++] = nid;
+> +		if (nr_found == nr_nids)
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>  static void test_mbind(int fd, size_t total_size)
+>  {
+> -	const unsigned long nodemask_0 = 1; /* nid: 0 */
+> -	unsigned long nodemask = 0;
+> -	unsigned long maxnode = BITS_PER_TYPE(nodemask);
+> +	unsigned long nodemask, bind_nodemask;
+> +	unsigned long maxnode = BITS_PER_TYPE(nodemask) + 1;
+>  	int policy;
+>  	char *mem;
+> +	int nid;
+>  	int ret;
+>  
+> -	if (!is_multi_numa_node_system())
+> +	if (!get_numa_node_ids(&nid, 1))
 
-Hi Tian,
-
-It was already done here, but I got sidetracked and forgot to send before.
-
-https://lore.kernel.org/kvmarm/20260901171558.2674031-1-leo.bras@arm.com/
-
-The relevant parts for the RO/RW -> RO/WC/WD conversion are in patches #1, 
-#2 and #3.
-
-> 
-> v5 already implements this, and I'm about to send it out shortly.
-> 
-
-Oh, awesome! 
-Please verify it against the patchset above, just in case :)
-
-Thanks!
-Leo 
+This is not functionally equivalent.  The existing test requires multiple NUMA
+nodes, whereas this will now succeed if there's exactly one node.  That could be
+totally fine, but it needs to be isolated and explained in its own patch.
