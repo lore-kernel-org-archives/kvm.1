@@ -1,207 +1,124 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C3049EC4F
-	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 18:41:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2309148C41F;
+	Tue,  1 Sep 2026 18:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788288108; cv=none; b=ZpOuFNF/LDx0iCGQMKlNgsB3QFd9OfsQphFGw8dS1fKKTvbL9lo4L9NtogWde4i9MgqgD+KmzdP/VBILhp/hPdQOQD8IMwTY9mqid3vVFcqnJG2lPBN/+BbZP85bAQQJfTRcdgeV1S+Q1gLg9NDrk+pIZMND85sq+3fFNSrrDmk=
+	t=1788288630; cv=none; b=aQ4cuuUS7ezkSv14AL2qIbbm1ke6+bdHtvHSIS2Hyqt1+2ESrEFHs8k7qZrz9euROnrgfrQTjan6XVQ+u6TgOnNd+MJhWynXcw2pUrGtRyMLTRY7H9KOXAnlMQrvLpsPqyJSwAPh8ThRgaGyKT7NwLEvqUQBJz4nGMWsLd8XMfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788288108; c=relaxed/simple;
-	bh=uVDf/Azs+Y2fNINbjdp5g3ddn/BJ/MorxkRf22rpgFo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=c7wMgnjd1nlLMdvplr1k1nkqmGQVxyqrXspotSOa9SWanxTQlt+yPobRPxLVGrboihf3cS43ECETsLp7IOpZxPnAss7uA2oWzfPr6P5403FB2G2O9czoezeyQ+sqIQt84Axm+IJEIypIE2w3HAwj89KO6aZqRXCkCyAYP9F2Yl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tGfaEMjP; arc=none smtp.client-ip=209.85.210.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1788288630; c=relaxed/simple;
+	bh=4OkU9WgvaTBr4fJA+BqdrjhjALCzfWtqREvgXEsfess=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=I2TJyQXn/oOpYG1eK1AWPp+Z3+XKPKZFbS3X2iUKDhgYlW3qluh7d0rMQwi2EByklMw3enCmYV0WnOGY63t/kVIP3zkegx5QSyemPtT1W1iRHgwf7BAXRGtzRml7fKFUeZE4m8pj7z5olAEQuzDuyTF1KyilKqLCgZ2fOu/w708=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MZx6z3KB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tGfaEMjP"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84842381150so165168b3a.3
-        for <kvm@vger.kernel.org>; Tue, 01 Sep 2026 11:41:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788288106; x=1788892906; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=T0nDJQnfFlnDLvDCZVuLzJX537jxkgQCnIHPdf7AiK4=;
-        b=tGfaEMjPuDzdeYIuXqDVqbgEHDl/qAa6HamdMl6CjYdq0DFtFXA0q7E14PzIps2cqG
-         wn9kSsxKcAnLVP3msnNDulTXefo5PrzBEnUPQhIP9j0TbSFVYa0gt6fkUXZDSvF2iF8p
-         /58Tz2A45lnIdeJAhRo5H9Sk8J6Qq28CxzUkmth4Usr4U/MZQ2bmOvoS8Hlt/+lR99EY
-         arWGyKTNDimSB17bj3eCuXy5h6hU+ZxwaMs+bbMZgIURj8ue7Sx23m/+Jz/jdivNeJml
-         W3kPJ2UWu6frvWVaYy7CTzxyaPqXiF2rzSxWw4pd194YekDi5RGKogOAiN/G9u4Ueifj
-         c36w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788288106; x=1788892906;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=T0nDJQnfFlnDLvDCZVuLzJX537jxkgQCnIHPdf7AiK4=;
-        b=YBZ9A+z5bPdBPawoH0nddYO727Dy1ReUNbVi1qhtQVDcZSDdIJ8MigLkB1ClHHlDKT
-         WDdPC/80augVaJqNECLfwJnakyF/gKNZsh3uqq9udc6+5rXDykCz7M+YY/vFa1UhIRLb
-         HBfkO8psVl8IoRiT4g9zUrnVRp+ySEWeU45A9gFymQL5iWkxi2/ePhHZ7WBKoVDDkuIV
-         4vd6dz3TzJWawuh2AcmlNoq40ye/pGUQQpDWGr9SRMahlVo7nJ8OWKB+h7LLbtGhlncB
-         ShfdYrrrE6HPizGtu1IxN7aymENXVfAL/Ao2pQPOF5NdwNAiU2yaBDCp/qWw280VJO+F
-         Nvqw==
-X-Forwarded-Encrypted: i=1; AHgh+RruV8Saficsp2yWv5jTBESpHbRVayRrsXSCcWsLV/JzCu/QbbjTU918S0zJ0xPLF0GKhq0=@vger.kernel.org
-X-Gm-Message-State: AFuF++mWD0Oxwyo5hE4XHueARQQtYIAFlv4KDMhKtpjjdIGQ2cBOxRJD
-	ti1W9bAcbcRQX4YtQWmTY5d/Ki8ort3Kuz807wwksLymlcOCkvdRGLOs9jGkm9gtKFExkA/Ox7r
-	foghhTw==
-X-Received: from pfcy6.prod.google.com ([2002:a05:6a00:93c6:b0:848:49f6:6f5c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:8016:b0:857:4dea:e20e
- with SMTP id d2e1a72fcca58-85b5693e833mr15207248b3a.0.1788288105188; Tue, 01
- Sep 2026 11:41:45 -0700 (PDT)
-Date: Tue, 1 Sep 2026 11:41:44 -0700
-In-Reply-To: <apca475JqemLUjlb@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MZx6z3KB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697711F000E9;
+	Tue,  1 Sep 2026 18:50:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788288628;
+	bh=+EdOCYHdoxuRmz6Krna/WF/yq1BxGZQXedylPxEwU/M=;
+	h=From:Subject:Date:To:Cc;
+	b=MZx6z3KBd0SIH9k4Qs2ZSYsraNF6DTxsHzcDUZkyk1oiwDe9dx3P9ss0DN7CCeSTd
+	 jwS/KxMPkdLYojMKGy9WjO0vECDYeOndYSGTulci4Ms4QJ04K3Y4Hrame6EjIXARRR
+	 I92DzTshe/GDGqF6swsD7/9/FFiyPEn21zo8i8Sjd/eymQfxk3vyVk77ZPnMzBNnPN
+	 NI2wWJ2B2LrA7AKE0SQg6tGVb51S/PI+zOAK4fZwiYvn2TyuOQH46rT1PkfOY4EO5n
+	 nVSrhtLVjSRXJpMsjqufn7QSKkIoRiv9JAFnxGu2ndO3CKkQ8ZP4uDBVsFgZRNnVOk
+	 aE1I4UxI5Vlfg==
+From: Mark Brown <broonie@kernel.org>
+Subject: [PATCH v7 0/3] KVM: selftests: arm64: Improve diagnostics from
+ set_id_regs
+Date: Tue, 01 Sep 2026 19:50:00 +0100
+Message-Id: <20260901-kvm-arm64-set-id-regs-aarch64-v7-0-7b065b0bda9a@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-15-85e5fd25252a@google.com>
- <CA+EHjTzJbC=ZvB3Mopw-TLf=13-iqxGw5RfTp6Gt5S1hi8WRRA@mail.gmail.com> <apca475JqemLUjlb@google.com>
-Message-ID: <apccaNCJ2lH5mbaY@google.com>
-Subject: Re: [PATCH v12 15/45] KVM: guest_memfd: Ensure pages are not in use
- before conversion
-From: Sean Christopherson <seanjc@google.com>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFgel2oC/4XPTWrDMBAF4KsErauiGf3ZXfUepQvJmXFEGrtIw
+ bQE371KaDHFCy3fG/iGdxOFcqIiXg43kWlJJc1TDf7pIIZTmEaS6VizQIUWFHbyvFxkyBdnZKF
+ rPcpMY5Eh5OFUO4rR+971RsEgqvGZidPXw397r/mUynXO3493C9zbX1mrhryAVLJ3TOqIEXxHr
+ 2fKE308z3kUd3rBjQMwLQ4r5zwygmEDkXec3jiEvsXpykUOxhsaNEK348wf5xQo1+JM5QZPbKy
+ FwFHvOLtxGnyLs5ULTjHG3jpC3HFu43x7rKucR4OdZ8ug/o9d1/UHB7ANllYCAAA=
+X-Change-ID: 20251028-kvm-arm64-set-id-regs-aarch64-ebb77969401c
+To: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+ Suzuki K Poulose <suzuki.poulose@arm.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+ Oliver Upton <oupton@kernel.org>
+Cc: Ben Horgan <ben.horgan@arm.com>, linux-arm-kernel@lists.infradead.org, 
+ kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Mark Brown <broonie@kernel.org>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2411; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=4OkU9WgvaTBr4fJA+BqdrjhjALCzfWtqREvgXEsfess=;
+ b=owGbwMvMwMWocq27KDak/QLjabUkhqzpcrmHRNqMLwefaRC9ed7e1FZmbfI5y+i8fb2Vr/0nV
+ D5fWL+wk9GYhYGRi0FWTJFl7bOMVenhElvnP5r/CmYQKxPIFAYuTgGYSP939j+cTl4dZ+ZKFOcl
+ NX7RYY7tSXmfNuVYlJ/BOzNNMX7GpBspd4UXd+o3Xek4I6UWdCxuifXZCXaTdJjeLG8QVFtwdVO
+ DssbrXQb3aw0VNy55klraM9ErYePcY+/e/NzGo3HWYMbxH68NkoI4+rxnPnacybjl20G2Ki7+BN
+ +I47xVvKrZn7/Fl9drVHxz4JQIcO9fpnf6kJ75W8FKSX379LabmlVbTE6w1m4X26f3qfr51FsXg
+ 3hktr1KulYdfHyJthJ/4SLVMKb+UydPJjbXFb/f0BEacXFn8kG5gJ0rzycdOyJ3JPW/btNzPUF2
+ LqWc5DO3G3c2+GWH3Il09Wnoq0g/XG1wxqr7+Dm/h1rlAA==
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Tue, Sep 01, 2026, Sean Christopherson wrote:
-> On Tue, Sep 01, 2026, Fuad Tabba wrote:
-> > > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > > index 803c7cdbbe0f6..fe02c47c85fb5 100644
-> > > --- a/virt/kvm/guest_memfd.c
-> > > +++ b/virt/kvm/guest_memfd.c
-> > > @@ -538,8 +538,46 @@ static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
-> > >         return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
-> > >  }
-> > >
-> > > +static bool kvm_gmem_has_outstanding_references(struct inode *inode,
-> > > +                                               pgoff_t start, size_t nr_pages,
-> > > +                                               pgoff_t *err_index)
-> > > +{
-> > > +       struct address_space *mapping = inode->i_mapping;
-> > > +       pgoff_t last = start + nr_pages - 1;
-> > > +       bool has_outstanding = false;
-> > > +       struct folio_batch fbatch;
-> > > +       pgoff_t next;
-> > > +       int i;
-> > > +
-> > > +       folio_batch_init(&fbatch);
-> > > +
-> > > +       next = start;
-> > > +       while (has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
-> > 
-> > has_outstanding starts as false, so the loop never runs and the function
-> > always returns false. The outstanding-reference check is dead at this
-> > patch, so a to-private conversion would not be rejected even when a page
-> > still has an outstanding reference.
-> > 
-> > It's fixed later in "KVM: guest_memfd: Handle lru_add fbatch refcounts
-> > during conversion safety check", which changes the condition to
-> > !has_outstanding. I think that fix belongs in this patch, so the check
-> > works when it is introduced and the series bisects cleanly.
+While debugging issues related to aarch64 only systems I ran into
+speedbumps due to the lack of detail in the results reported when the
+guest register read and reset value preservation tests were run, they
+generated an immediately fatal assert without indicating which register
+was being tested. Update these tests to non-fatally report a standard
+kselftest result per register, making it much easier to see what the
+problem being reported is.
 
-Wait, why are there even separate patches for this?  For all intents and purposes,
-"Ensure pages are not in use before conversion" introduces a bug and then the bug
-is fixed by "Handle lru_add fbatch refcounts during conversion safety check".
-Just don't introduce the bug.
+A similar issue exists with the validation of the individual bitfields
+in registers due to the use of immediately fatal asserts. Update those
+asserts to be standard kselftest reports.
 
-I also recommend splitting the export of lru_cache_drain_for_folio() to its own
-patch so that it can be more easily Acked by mm/ folks.  If we want to squash it
-with the KVM change, then that's trivial to do when applying.
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+Changes in v7:
+- Rebase onto v7.3-rc1.
+- Link to v6: https://patch.msgid.link/20260719-kvm-arm64-set-id-regs-aarch64-v6-0-724287f5f108@kernel.org
 
-> Why even bother with has_outstanding?  Avoiding it requires copy+pasting
-> folio_batch_release(), but it's less code and IMO the end result is a lot easier
-> to follow:
-> 
-> 	struct address_space *mapping = inode->i_mapping;
-> 	pgoff_t last = start + nr_pages - 1;
-> 	struct folio_batch fbatch;
-> 	pgoff_t next;
-> 	int i;
-> 
-> 	folio_batch_init(&fbatch);
-> 
-> 	next = start;
-> 	while (filemap_get_folios(mapping, &next, last, &fbatch)) {
-> 		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-> 			struct folio *folio = fbatch.folios[i];
-> 
-> 			/*
-> 			 * Outstanding references are anything other than those
-> 			 * from the page cache, plus 1 temporary reference held
-> 			 * by filemap_get_folios() in the folio batch.
-> 			 */
-> 			if (folio_ref_count(folio) != folio_nr_pages(folio) + 1) {
-> 				*err_index = max(start, folio->index);
-> 				folio_batch_release(&fbatch);
-> 				return true;
-> 			}
-> 		}
-> 
-> 		folio_batch_release(&fbatch);
-> 		cond_resched();
-> 	}
-> 
-> 	return false;
-> 
-> and then we end up with:
-> 
-> 	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
-> 	struct address_space *mapping = inode->i_mapping;
-> 	pgoff_t last = start + nr_pages - 1;
-> 	struct folio_batch fbatch;
-> 	pgoff_t next;
-> 	int i;
-> 
-> 	folio_batch_init(&fbatch);
-> 
-> 	next = start;
-> 	while (filemap_get_folios(mapping, &next, last, &fbatch)) {
-> 		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-> 			struct folio *folio = fbatch.folios[i];
-> 
-> 			if (__folio_has_outstanding_references(folio, &drained)) {
-> 				*err_index = max(start, folio->index);
-> 				folio_batch_release(&fbatch);
-> 				return true;
-> 			}
-> 		}
-> 
-> 		folio_batch_release(&fbatch);
-> 		cond_resched();
-> 	}
-> 
-> 	return false;
+Changes in v6:
+- Rebase onto v7.2-rc3.
+- Drop changes to handling of aarch32 related registers on 64 bit only
+  systems, an in kernel solution is preferred for those.
+- Use a define to count the non-test_regs registers.
+- Link to v5: https://patch.msgid.link/20260317-kvm-arm64-set-id-regs-aarch64-v5-0-a60f2b956e22@kernel.org
+
+Changes in v5:
+- Rebase onto v7.0-rc1.
+- Link to v4: https://patch.msgid.link/20260106-kvm-arm64-set-id-regs-aarch64-v4-0-c7ef4551afb3@kernel.org
+
+Changes in v4:
+- Correct check for 32 bit ID registers.
+- Link to v3: https://patch.msgid.link/20251219-kvm-arm64-set-id-regs-aarch64-v3-0-bfa474ec3218@kernel.org
+
+Changes in v3:
+- Rebase onto v6.19-rc1.
+- Link to v2: https://patch.msgid.link/20251114-kvm-arm64-set-id-regs-aarch64-v2-0-672f214f41bf@kernel.org
+
+Changes in v2:
+- Add a fix for spurious failures with 64 bit only guests.
+- Link to v1: https://patch.msgid.link/20251030-kvm-arm64-set-id-regs-aarch64-v1-0-96fe0d2b178e@kernel.org
+
+---
+Mark Brown (3):
+      KVM: selftests: arm64: Report set_id_reg reads of test registers as tests
+      KVM: selftests: arm64: Report register reset tests individually
+      KVM: selftests: arm64: Make set_id_regs bitfield validatity checks non-fatal
+
+ tools/testing/selftests/kvm/arm64/set_id_regs.c | 121 ++++++++++++++++++------
+ 1 file changed, 91 insertions(+), 30 deletions(-)
+---
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+change-id: 20251028-kvm-arm64-set-id-regs-aarch64-ebb77969401c
+
+Best regards,
+--  
+Mark Brown <broonie@kernel.org>
+
