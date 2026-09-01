@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12EC377EB2;
-	Tue,  1 Sep 2026 06:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D1C36A364;
+	Tue,  1 Sep 2026 06:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788244199; cv=none; b=mYCe8hHIp4KJ/yGYmcN3Zjqedn3R/Rngvq1PWxZTCtmu1YaOJvkeFP8KTDFJttXf72zFpD42/pgANRktKa/wBy3Xc9AtApsGKm0jlwYq/iFdyL7eXcpes9qDxcaeF/WSNIOk4+H5hktTg/9lq3UZ8A7NpOBRRxB3bpbo53Z5R7Y=
+	t=1788245096; cv=none; b=l3PgskVSFibA/lPHWQ9SU+nqhqIaRlOgoAJVBR+tpHH6DpRYHAd1AK6736XOB76k2nfjEmHLOm0d9VFFRJSGYHRHRu97EruZcstr0RT44CUWW5dJZ9VToQuI01pd8mRnuwsBetdwn7tz2trhbBz9I2plEGxiyXHfSj4QwRtyWwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788244199; c=relaxed/simple;
-	bh=I85zzhv8ES8KmFM9m5iBsjP7IQ6Oqm69Rq/End2sPks=;
+	s=arc-20240116; t=1788245096; c=relaxed/simple;
+	bh=U8vUq2DpjqqWmIlTz2QJ9BYO790IlZXenRz93ip+T/k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g5IKAemDyBjcR0lrepwEtb8nlCcreNMOjAviNzxLRo9u39+DkRhZ6T/x1kTwOep676tON6mKq6Z3jHLs8dJ0Kv5ejhj8ImUn4Mzl93TvfjJp0/VOtiCZZeDTfzPHeTL5HjJCeOXqAqZWLq4oWnoMvZw7ihPh6NhWZrAVSxtPy0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fHV7Wt8L; arc=none smtp.client-ip=192.198.163.11
+	 Content-Type:Content-Disposition:In-Reply-To; b=pfrEvajG6ezq3ZN/rirs8fIvTeE//w5SpkMXor/MTjUXm7+d+um8VCVNZz+vRdD8SpVl+XTrORKOHs76EqMZqLVgRifBGVQ1g9udmQJBY7nnIBaJhvwhvkoo3IAg0SJ3f+SvqtoqJLuQb39xT3dc3QVf2xkV3jnWXQJUDIu6/Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cnj1ER1C; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fHV7Wt8L"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cnj1ER1C"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788244197; x=1819780197;
+  t=1788245094; x=1819781094;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=I85zzhv8ES8KmFM9m5iBsjP7IQ6Oqm69Rq/End2sPks=;
-  b=fHV7Wt8LnTkV0Egn4xNm9c/72q4qZk8RdH8eoCZRZaETxDjllYTTq8u9
-   tZO7vTPnMzdMc8ZBccgQhmcuXWs3/z/yVAYTrNeSUwdbh2pzK8ryR/uWu
-   e4aLLTJUoV+N3ECzTZaziBX15F9RQhge7Ti8uDVjpLy51fPG5BsdYxvrS
-   fVwfPQO1nlvRxx1s8o0MfB06dezB9tBEXg2Maa+90EyJ4E/vTPmzo1yY3
-   fPbrSynb8kg6UwiO4Xx44LXM19ge7p3r79lTUCyqfqRHNejCDfY1/GTWp
-   4FNpMZnpm8V8dwMG/8tMR4gqqCQcJqmQQT/uqBMdjmvrJH/iwTKlb5Rbk
-   w==;
-X-CSE-ConnectionGUID: GG+RbqKfQiaGnDVN48wXTg==
-X-CSE-MsgGUID: Vmwn6BBXTvOHa8UuuO8BeQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="99261191"
+  bh=U8vUq2DpjqqWmIlTz2QJ9BYO790IlZXenRz93ip+T/k=;
+  b=cnj1ER1CDDvOmtdmDnbNYGxPUfZA5QSBEHO1RkkHnhCtri0/D3P++f8w
+   o1ZCxSppiNZ1YCJlmS5Uc2tcdZP+4LWM2FNkggIbP81XzurBap2uHEaC2
+   GmmKySW4hKPIOEvVTdTEY++AREnVR89K5HeWAHCv8FffH0kdIchJGyfB3
+   1YgMLaAVsFm/RRYoKvBnVTy7n9GhtGIzTEC0CFpw5ao0ByFpQ+uEk0sn5
+   prqFsSUG6Sjl9MNTZWvSbdo83vtRU5cn/VPKHjVJlO3DCi1fG4dieGP8S
+   o2y75owqn4qq+Z0hSEVh/04NtOtfmu1/3Br4iWzBO5V95bY2vpnXDYzDN
+   g==;
+X-CSE-ConnectionGUID: nHzUvP3nQvalTIlLymBmFw==
+X-CSE-MsgGUID: zQB8HpKMT3iC1VHrxAjcKQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="106184655"
 X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
-   d="scan'208";a="99261191"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 23:29:56 -0700
-X-CSE-ConnectionGUID: PS8fOcA0RTWSvHPvyL2RPQ==
-X-CSE-MsgGUID: WSGY10jrTla2gg5y0cCAAQ==
+   d="scan'208";a="106184655"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 23:44:53 -0700
+X-CSE-ConnectionGUID: EFAsMcPARg+CvkwVhzGcYw==
+X-CSE-MsgGUID: wVXZeex5QAqx2e1buA7i+Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
-   d="scan'208";a="274265661"
+   d="scan'208";a="265762163"
 Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.192])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 23:29:52 -0700
-Date: Tue, 1 Sep 2026 09:29:48 +0300
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 23:44:50 -0700
+Date: Tue, 1 Sep 2026 09:44:47 +0300
 From: Tony Lindgren <tony.lindgren@linux.intel.com>
 To: Binbin Wu <binbin.wu@linux.intel.com>
 Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, seanjc@google.com,
@@ -51,11 +51,10 @@ Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, seanjc@google.com,
 	andrew.cooper3@citrix.com, nik.borisov@suse.com, kas@kernel.org,
 	rick.p.edgecombe@intel.com, xiaoyao.li@intel.com,
 	chao.gao@intel.com
-Subject: Re: [PATCH v3 1/4] KVM: TDX: Track configurable CPUID bits allowed
- by KVM
-Message-ID: <apZw3G2volNpLiBD@tlindgre-MOBL1>
+Subject: Re: [PATCH v3 3/4] KVM: TDX: Filter configurable CPUID bits
+Message-ID: <apZ0X8J31bVCoc9E@tlindgre-MOBL1>
 References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
- <20260827031837.2863609-2-binbin.wu@linux.intel.com>
+ <20260827031837.2863609-4-binbin.wu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -64,51 +63,78 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260827031837.2863609-2-binbin.wu@linux.intel.com>
+In-Reply-To: <20260827031837.2863609-4-binbin.wu@linux.intel.com>
 
-On Thu, Aug 27, 2026 at 11:18:34AM +0800, Binbin Wu wrote:
+On Thu, Aug 27, 2026 at 11:18:36AM +0800, Binbin Wu wrote:
 > --- a/arch/x86/kvm/vmx/tdx.c
 > +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -52,6 +52,149 @@
->  	__TDX_BUG_ON(__err, #__fn, __kvm, ", " #a1 " 0x%llx, " #a2 ", 0x%llx, " #a3 " 0x%llx", \
->  		     a1, a2, a3)
->  
-> +static u32 tdx_cpu_cfg_caps[NR_KVM_CPU_CAPS] __ro_after_init;
-> +static_assert(ARRAY_SIZE(tdx_cpu_cfg_caps) == ARRAY_SIZE(kvm_cpu_caps));
-> +
-> +#define TDX_VALIDATE_CPU_CAP_USAGE(name)			\
-> +	BUILD_BUG_ON(__feature_leaf(X86_FEATURE_##name) !=	\
-> +		     tdx_cpu_cap_init_in_progress)
-> +
-> +/* For feature bit that KVM advertised through kvm_cpu_caps[]. */
-> +#define TDX_CFG_F(name)					\
-> +({							\
-> +	TDX_VALIDATE_CPU_CAP_USAGE(name);		\
-> +	tdx_cfg_caps |= feature_bit(name);		\
-> +})
-> +
-> +/*
-> + * For feature bit KVM allows for TDX guests even though it is not advertised
-> + * through kvm_cpu_caps[], e.g. MWAIT.
-> + */
-> +#define TDX_CFG_EXTRA_F(name)				\
-> +({							\
-> +	TDX_VALIDATE_CPU_CAP_USAGE(name);		\
-> +	tdx_cfg_extra_caps |= feature_bit(name);	\
-> +})
-> +
-> +#define tdx_cpu_cfg_cap_init(leaf, feature_initializers...)		\
-> +do {									\
-> +	const u32 __maybe_unused tdx_cpu_cap_init_in_progress = leaf;	\
-> +	u32 tdx_cfg_extra_caps = 0;					\
-> +	u32 tdx_cfg_caps = 0;						\
-> +									\
-> +	feature_initializers						\
-> +	tdx_cpu_cfg_caps[leaf] = (tdx_cfg_caps & kvm_cpu_caps[leaf]) |	\
-> +				 tdx_cfg_extra_caps;			\
-> +} while (0)
+...
+> +static u32 tdx_cfg_non_feature_mask(u32 function, u32 index, int reg)
+>  {
+> -	if (has_tsx(entry))
+> -		clear_tsx(entry);
+> +	/*
+> +	 * For a leaf/subleaf/register that will never be repurposed to hold
+> +	 * feature bits, it's safe to return TDX_CPUID_ALL_ALLOWED_MASK, i.e.
+> +	 * leave the TDX module's CPUID config mask intact.
+> +	 */
+> +	switch (function) {
+> +	case 1:
+> +		if (reg == CPUID_EAX || reg == CPUID_EBX)
+> +			return TDX_CPUID_ALL_ALLOWED_MASK;
+> +		return 0;
+> +	case 4:
+> +	case 0x18:
+> +	case 0x1f:
+> +		return TDX_CPUID_ALL_ALLOWED_MASK;
+> +	case 0x24:
+> +		if (index == 0 && reg == CPUID_EBX)
+> +			return GENMASK_U32(7, 0);
+> +		return 0;
+> +	case 0x80000008:
+> +		if (reg == CPUID_EAX)
+> +			return TDX_CPUID_ALL_ALLOWED_MASK;
+> +		return 0;
+> +	default:
+> +		return 0;
+> +	}
+> +}
 
-How about make some of the above into just static functions for easier
-readabilyt?
+How about rename the above to something simpler like tdx_get_cpuid_bits()?
+Sorry I don't have anything better to suggest for naming.
 
-And then drop the __maybe_unused for tdx_cpu_cap_init_in_progress?
+> +static u32 tdx_cfg_feature_mask(u32 function, u32 index, int reg)
+> +{
+> +	for (int i = 0; i < NR_KVM_CPU_CAPS; i++) {
+> +		const struct cpuid_reg *cpuid = &reverse_cpuid[i];
+> +
+> +		if (!cpuid->function)
+> +			continue;
+> +
+> +		if (cpuid->function == function && cpuid->index == index &&
+> +		    cpuid->reg == reg)
+> +			return tdx_cpu_cfg_caps[i];
+> +	}
+> +
+> +	return 0;
+>  }
+
+And then the above to tdx_get_cpuid_feature_bits()?
+  
+> -static bool tdx_unsupported_cpuid(const struct kvm_cpuid_entry2 *entry)
+> +static u32 tdx_get_allowed_cfg_cpuid_mask(u32 function, u32 index, int reg)
+>  {
+> -	return has_tsx(entry) || has_waitpkg(entry);
+> +	u32 non_feature_mask = tdx_cfg_non_feature_mask(function, index, reg);
+> +
+> +	if (non_feature_mask == TDX_CPUID_ALL_ALLOWED_MASK)
+> +		return TDX_CPUID_ALL_ALLOWED_MASK;
+> +
+> +	/*
+> +	 * It's possible that a CPUID register contains both feature and
+> +	 * non-feature bits.
+> +	 */
+> +	return non_feature_mask | tdx_cfg_feature_mask(function, index, reg);
+>  }
+
+And then tdx_get_cpuid_mask()?
