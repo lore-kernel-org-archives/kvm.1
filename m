@@ -1,210 +1,151 @@
-Received: from mta1.migadu.com (out-74.mta1.migadu.com [95.215.58.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012053.outbound.protection.outlook.com [40.107.209.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0208A38A70A
-	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 08:20:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788250818; cv=none; b=REzQOwhEY2qJ+f6PWKsiKiVdYQa68pUdwR0p8QPdaKeUUupYYPc26DPjz9nxhfeCECwOd4EPCAcK8yJeDJ5+slIPglFyE7v7XqTqofkiv8o5MRVvgwY+SNfE2Nvix2hMi8otdSy9E49u9ClFLLWqJrBljwUFduSCJ7EooH3/EV0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788250818; c=relaxed/simple;
-	bh=dPSr56z5rAs+SkiIx0/dU1tmsjqb2fO0/em7DI52Cpg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=miYpqLJx+PFvd+m2QNoyhFZH9aC4V6ETyo+qoFHlp+a3pqOHWB29ke4xY9A6mg218QAo2JeI8WWf5UB1mkrvLo9myTnxTzfwwXUaej1vWj04TT0VwVUsNb0saOd0uJNQF1pC2KTdJzl9zmCMc1FMPd+bNBD1YRyQmQJiwjTyJjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=paj0EtmS; arc=none smtp.client-ip=95.215.58.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3911C471D16;
+	Tue,  1 Sep 2026 08:22:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788250972; cv=fail; b=laDmmaScKvptBrDetZD5OBlmPaCG5Opin0xW+2DXnofs2hsdwSA/YW/ZEZACVu6qbJtVnyLDMM9/IYkTz+TUW09vmhMZYKQ2YmW4uOLLOdto8Xw91nSKYq+x2t1P83YxG0ml5KzjJRhMGur/lSOfbcCY3eljKKhBURS4ekoWLDQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788250972; c=relaxed/simple;
+	bh=G9AdPpR2bQ438NY4pdK4d0AAgv9aWzr5zxwaXFARs2k=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=LIpCBhqKRXJWR6K8D2MPPj8rqGhdq5I1wcbFEkyPFf16fj2zQl8xL1lbnvkGHkfvGlo7XUQS1RYdcqnPlBBWynnLTVvbrnttw1vN+15Xfv/7dpHIFe0PlNkaYTO4U8/5afGePjzBK7BCZ3GVz8YCxiMDZEoXfjcqAimnu+bV9gU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=5CcntkkY; arc=fail smtp.client-ip=40.107.209.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="paj0EtmS"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=dPSr56z5rAs+SkiIx0/dU1tmsjqb2fO0/em7DI52Cpg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788250813; v=1; x=1788855613;
- b=paj0EtmSVacoEcS3+vfFsYSNX6rTYWIsaTQ3sx1pn5M/sp742MNB0h3wvf3fezicxxvwBTeZ
- MhzerZxd0BeLvg4WClysGROX+wCwsuaYR0o+wXWciRa5TPQcUwy1GcJSIGg37mVxZ3ka0S5ZRg8
- zq1e73xthzGtIB0k4pXJg29w=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id e02925730c77cca4;
-	Tue, 01 Sep 2026 08:20:13 +0000
-X-Mizu-Trace-ID: e02925730c77cca4
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5b2a8173142so3521e87.1
-        for <kvm@vger.kernel.org>; Tue, 01 Sep 2026 01:20:13 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxAyTg81kmqjVPN796IC7VZ1z6QLis3csNR/k7KSTXYj7z7O93NEAYhKnfqiUc568noooU=@vger.kernel.org
-X-Gm-Message-State: AFuF++ngJGQZQoWS47oLKahHOSQM6lrLtAbuF99PUTt6SzISKjiVmvmQ
-	1ZKF+jgLZ+LbchWRgdks9gu/VjfrlRex1zy+kr8fSsvt5Ane70IVoousdShtc645wKl7lwRRKSL
-	yWGL5qTFdbpBXe1bO9ynt24JnScmy7tMOehMhTiu9
-X-Received: by 2002:a05:6512:3416:b0:5b1:5141:9156 with SMTP id
- 2adb3069b0e04-5b600a4e6c1mr82007e87.9.1788250812101; Tue, 01 Sep 2026
- 01:20:12 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="5CcntkkY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HzvL+qAtTWHii3gV6X9IdS+5IZBzmuSlVFQW+ihQojCA04gsznYjkbuBKZnNdFaH7StKZ36M9+xMW2xzOpUA9EP+g003Aqb+KTJNky/Q/Tvtcu3sTaazVHysFShWXuDVTKHYp++v0+jLLsPEgm5dn7KM9SlvAajL15Q4TsDdYIn7U3nYMhghcbATtIqBnqoykAVRPHDNd3AkZ1X0Lb6yu2mlXlelnOOicnD4vxwcjj1ERsl4qwJIwVZuMEj0djQdPzJKgfWcX97DH8hVSOo+el8LrZeK9rg2tzBusksaq2sKa+eTihxGezT61j+jUt+mO/h3ErtC/4vidh4UG8kDhw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Jqiv1j/MS6G9XyOACaeKfRMEGqOMg6w8KShIC2ToeM4=;
+ b=n0B6YUzcNaSl8o5p/B30ov1Wi0/s7Xu+21ov7aAxlg9vTRsJSU7i5u7tviuZdsSWAyHZICcrww3kLyQ+F+FArU5XGGB5IbOSNmUO5u3aFWLCcSVbPwP8cwPq6b1ojDpbHyDPOfS7VnNg8Rbsocq9ez13yOs7j1z7qHibDljYX8DfniipwgYCKvwm4HSa9Hm/ts7bkGkniPPS/sHCgUe52eVUbs+zTT2VLSdKNLf747bNk1zHm9YAbxQr9xIZ8Ex3qA+W+7f//gjRkMsYcR00N3Xfh3RCVIuwAElMCNah9Vq4TeMqICkmYogLBHH5VczL5aq92VKJdkUsv8GgGDsT/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Jqiv1j/MS6G9XyOACaeKfRMEGqOMg6w8KShIC2ToeM4=;
+ b=5CcntkkY3MkYs8RFnYUEhiPj0iIJOPrCttcpjHh4ktPLaJWKBVzyWf1a+1L8pg70arKlY9GoKNQIKquwCF0oxpylv8IpX7AFPEeGdxNfrMh78GODZTOYc9dLOrBfIQEYz4uZ4+7SCmxtjMcLs1vPdR4kwo4EcIdMyr6lcUfI7oA=
+Received: from MW4PR03CA0092.namprd03.prod.outlook.com (2603:10b6:303:b7::7)
+ by CH1PR12MB9623.namprd12.prod.outlook.com (2603:10b6:610:2b3::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.10; Tue, 1 Sep
+ 2026 08:22:48 +0000
+Received: from MWH0EPF000C6187.namprd02.prod.outlook.com
+ (2603:10b6:303:b7:cafe::92) by MW4PR03CA0092.outlook.office365.com
+ (2603:10b6:303:b7::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.17 via Frontend Transport; Tue, 1
+ Sep 2026 08:22:48 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ MWH0EPF000C6187.mail.protection.outlook.com (10.167.249.119) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.382.8 via Frontend Transport; Tue, 1 Sep 2026 08:22:47 +0000
+Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Tue, 1 Sep
+ 2026 03:22:44 -0500
+From: Shivank Garg <shivankg@amd.com>
+Subject: [PATCH v2 0/4] KVM: guest_memfd: fix NUMA selftests
+Date: Tue, 1 Sep 2026 08:22:37 +0000
+Message-ID: <20260901-gmem-selftests-fix-v2-0-5a273153354c@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com> <20260830-gmem-inplace-conversion-v12-23-85e5fd25252a@google.com>
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-23-85e5fd25252a@google.com>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Tue, 1 Sep 2026 09:19:35 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTzALzghuG5J-LFuG5pXJ4WgEfrMHgwkMHnq1U-D6yS7Pg@mail.gmail.com>
-X-Gm-Features: AcwNN1VEd61L_O2SZt1wLXP8U1ZnnNtTHeRYFc82-Kw9mTwcloJaTFPGEc_5sR8
-Message-ID: <CA+EHjTzALzghuG5J-LFuG5pXJ4WgEfrMHgwkMHnq1U-D6yS7Pg@mail.gmail.com>
-Subject: Re: [PATCH v12 23/45] KVM: Let userspace disable per-VM mem
- attributes, enable per-gmem attributes
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev, 
-	Xiaoyao Li <xiaoyao.li@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAE2LlmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
+ vPSU3UzU4B8JSMDIzMDSwND3fTc1Fzd4tSctJLU4pJi3bTMCl2jRNNUSxNDS6M0c0sloMaColS
+ gMNjQ6NjaWgBMdP3bZAAAAA==
+X-Change-ID: 20260901-gmem-selftests-fix-2a5e94192f79
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>, Shuah Khan
+	<shuah@kernel.org>, Jim Mattson <jmattson@google.com>, Peter Shier
+	<pshier@google.com>, Ricardo Koller <ricarkol@google.com>, Ackerley Tng
+	<ackerleytng@google.com>
+CC: <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Shivank Garg <shivankg@amd.com>
+X-Mailer: b4 0.15-dev-47d62
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788250963; l=1372;
+ i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
+ bh=G9AdPpR2bQ438NY4pdK4d0AAgv9aWzr5zxwaXFARs2k=;
+ b=8LbWwJMtmFe/oXl+R9ZoyVohoae6Fx6GSu3Q7mQKG3/NbSvgVykcrgkShskhiqqHflQmwU2Jt
+ FFh2uNSLdAlAyHtD9wbt0RpRv3p+mVhyp6secSNzi3rNCwPlqQLmHSK
+X-Developer-Key: i=shivankg@amd.com; a=ed25519;
+ pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000C6187:EE_|CH1PR12MB9623:EE_
+X-MS-Office365-Filtering-Correlation-Id: 682613ce-85e6-4e83-b9df-08df080234e1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|23010399003|82310400026|1800799024|7416014|376014|13003099007|6133799003|56012099006|11063799006|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	iPss1w1Foml2h3t5oENHDHoutUGLI44aDuG11Spqt2eMKaeNlAnpZ8mLxAqbt5anBbsqg0w1HIsIjdljhkJpyOZNBwWrvdpUFVH4U+H5Bvb13cbCwLepdvSaJlr6r/C+GQl0htEpbYJoRLer1uYDBIROkRfjn6iEwSRWsAnbRqt9INOY+ayX/AA/+kdN0RVFaXoTZVnwZpc2AzHCoNvZktJXky6qEKLJ67YiXQsakFWxrpWHvaGnliSZ11vTF6MLrBLalAnt0v+RfxpYwsrGX55v8Zf1xsZFGLQ38pzb2Gj0H2OXcmmHvtwX6WmTMk0lMfzG0PuY5iWN4YNWmO8VNmDGsHwallO5IzTA+I52bOec6pjTWfTVWg+NqI0YAXbSV2Uy+YR/K07IELMwpxg2N1TZaTCBXKbLFnBJjDyWLpbAL55YMr/iuAhvNdZ1S/zt87O9s2UJHxFtX9XflCGN/psibtYAj7ERIF/OvuahqCfnsWMzneEXpSBIPdNFi0lElU3uvy2bzO+tzR4CpB4mPUsiYP+KSMHklA/mjPetLHkzjoILMFJFlzW/Fp7MgjsuhBfi1N4HhBUfh2BHAIg6goGw7rqIqJvq+t1Hvm6Do0XEWC5PFFQ5P8sbr1B2aAv7anEoJ6Y8/biYDyOMcBAkKXFId9vAESz7e2kOurQXrf0ZtFmDNZLA3kqWsrW+5mePbwu+B6e1YgeUIWBV9dDE0Q==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(82310400026)(1800799024)(7416014)(376014)(13003099007)(6133799003)(56012099006)(11063799006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	vhIGldLQgUuRu9Tam/SgZatR5DdZedpkYU10MO8FkYDuVi9/W7Ui5Z7xJoTcPh9WFdwsWLwAaQT+oIAT/a64pyjKnJ2KJsWNRDT92LBDO7Zt/zW4TyK24cFyu/G7M79QBR1HW8t/laUG/Mxv9572iJ4BCkKfb9wRMf0CYLmSZQs1L5a/xyw0+KnEwTNqIQpbUcuCkhyMI4EG2PLdToWdKz8vbGctDuM/hqFRtmKW0qik980YsFGxU0FKR/sG6sWPNoZto3hJ5Zdkwy7h5S+UuC4JTTvMkT7DMLRC++2d/YgI+V/ebNg7SOy2n650lRqYZvWz3FYspsXtwJajEfNBqsrAPR7MJxDTsvipWjVBRRx1dfKKwb2Vlk+m6DVhUhC5GzAE3/jBobdn01OTM+/NOKCDb80PTMrCEhwbkUpm3cyzAZIZb5CYQMKOWDLfIzZi
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 08:22:47.8727
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 682613ce-85e6-4e83-b9df-08df080234e1
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000C6187.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR12MB9623
 
-Hi Sean, Ackerley,
+NUMA selftests in guest_memfd_test assumes that node 0 and 1 exist and
+have memory. However, nodes can be sparse or memoryless which would
+break this selftest.
 
-On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
-...
-> +       kvm.gmem_in_place_conversion=
-> +                       [KVM] Controls whether KVM enables in-place conversion
-> +                       support for guest_memfd and tracks the private/shared
-> +                       state of memory per guest_memfd instead of per VM.
-> +
-> +                       If enabled, KVM enables the KVM_SET_MEMORY_ATTRIBUTES2
-> +                       ioctl on guest_memfd file descriptors and disables the
-> +                       legacy VM-scoped KVM_SET_MEMORY_ATTRIBUTES ioctl for
-> +                       private memory state tracking. Only the
-> +                       KVM_MEMORY_ATTRIBUTE_PRIVATE attribute moves to
-> +                       per-guest_memfd tracking; other attributes remain
-> +                       per-VM.
-> +
-> +                       This parameter toggles KVM's in-place conversion
-> +                       capability support. Whether a VMM uses separate backends
-> +                       or out-of-place memory management is determined by
-> +                       userspace VMM design.
-> +
-> +                       Note, this parameter is only available when
-> +                       CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y. When
-> +                       CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not set, in-place
-> +                       conversion is unconditionally enabled.
-> +
-> +                       Default is Y (on).
+xapic_ipi_test pass the nodemask size in bytes as maxnode to
+migrate_pages() but the syscall expect the number of bits plus one,
+so the kernel was only looking at node IDs 0-6.
 
-The parameter is only settable when CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y, and
-in that config gmem_in_place_conversion initialises to
-!IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES), i.e. N, not Y. Is the doc line
-wrong, or is N-by-default not what was intended here?
+Tested on a 7.3-rc1, AMD EPYC 7713.
 
-Cheers,
-/fuad
+Changes in V2:
+- Split from unbind race fix. (Sean)
+- Include <linux/bits.h> that defines BITS_PER_TYPE for self-containment. (Sashiko)
+- Link to V1: https://lore.kernel.org/kvm/20260823-shivank-gmem-fix-split-v1-0-512a29fb8e86@amd.com
 
-> +
->         kvm.nx_huge_pages=
->                         [KVM] Controls the software workaround for the
->                         X86_BUG_ITLB_MULTIHIT bug.
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 83e26ce45fb79..e840418427a1d 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1851,7 +1851,9 @@ enum kvm_intr_type {
->         ((vcpu) && (vcpu)->arch.handling_intr_from_guest && \
->          (!!in_nmi() == ((vcpu)->arch.handling_intr_from_guest == KVM_HANDLING_NMI)))
->
-> -#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> +#if defined(CONFIG_KVM_SW_PROTECTED_VM) ||     \
-> +    defined(CONFIG_KVM_INTEL_TDX) ||           \
-> +    defined(CONFIG_KVM_AMD_SEV)
->  #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
->  #endif
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-> index abb108886733a..2c3c22aeafa54 100644
-> --- a/arch/x86/kvm/Kconfig
-> +++ b/arch/x86/kvm/Kconfig
-> @@ -81,13 +81,21 @@ config KVM_WERROR
->           If in doubt, say "N".
->
->  config KVM_VM_MEMORY_ATTRIBUTES
-> -       bool
-> +       bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
-> +       depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
-> +       help
-> +         Enable support for tracking PRIVATE vs. SHARED memory using per-VM
-> +         memory attributes.  Using per-VM attributes is deprecated in favor of
-> +         tracking PRIVATE state in guest_memfd.  Select this if you need to run
-> +         CoCo VMs using a VMM that doesn't support guest_memfd memory
-> +         attributes.
-> +
-> +         If unsure, say N.
->
->  config KVM_SW_PROTECTED_VM
->         bool "Enable support for KVM software-protected VMs"
->         depends on EXPERT
->         depends on KVM_X86 && X86_64
-> -       select KVM_VM_MEMORY_ATTRIBUTES
->         help
->           Enable support for KVM software-protected VMs.  Currently, software-
->           protected VMs are purely a development and testing vehicle for
-> @@ -138,7 +146,6 @@ config KVM_INTEL_TDX
->         bool "Intel Trust Domain Extensions (TDX) support"
->         default y
->         depends on INTEL_TDX_HOST
-> -       select KVM_VM_MEMORY_ATTRIBUTES
->         select HAVE_KVM_ARCH_GMEM_POPULATE
->         help
->           Provides support for launching Intel Trust Domain Extensions (TDX)
-> @@ -162,7 +169,6 @@ config KVM_AMD_SEV
->         depends on KVM_AMD && X86_64
->         depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
->         select ARCH_HAS_CC_PLATFORM
-> -       select KVM_VM_MEMORY_ATTRIBUTES
->         select HAVE_KVM_ARCH_GMEM_CONVERT
->         select HAVE_KVM_ARCH_GMEM_RECLAIM
->         select HAVE_KVM_ARCH_GMEM_INVALIDATE
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 05c518c9b8078..929fd3e1a01e6 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -103,7 +103,10 @@ static bool __ro_after_init allow_unsafe_mappings;
->  module_param(allow_unsafe_mappings, bool, 0444);
->
->  #ifdef kvm_arch_has_private_mem
-> -bool __ro_after_init gmem_in_place_conversion = false;
-> +bool __ro_after_init gmem_in_place_conversion = !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES);
-> +#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> +module_param(gmem_in_place_conversion, bool, 0444);
-> +#endif
->  EXPORT_SYMBOL_FOR_KVM_INTERNAL(gmem_in_place_conversion);
->  #endif
->
->
-> --
-> 2.55.0.897.gb25b4bd76c-goog
->
->
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+---
+Shivank Garg (4):
+      KVM: selftests: fix maxnode arguments in xapic_ipi_test
+      KVM: selftests: use BITS_PER_TYPE() for NUMA masks
+      KVM: selftests: add get_numa_mem_nodes()
+      KVM: selftests: use allowed NUMA nodes in guest_memfd_test
+
+ tools/testing/selftests/kvm/guest_memfd_test.c   | 86 ++++++++++++++++--------
+ tools/testing/selftests/kvm/include/numaif.h     | 53 ++-------------
+ tools/testing/selftests/kvm/x86/xapic_ipi_test.c | 14 ++--
+ 3 files changed, 71 insertions(+), 82 deletions(-)
+---
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+change-id: 20260901-gmem-selftests-fix-2a5e94192f79
+
+Best regards,
+-- 
+Shivank Garg <shivankg@amd.com>
+
