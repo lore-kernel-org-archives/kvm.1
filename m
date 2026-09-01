@@ -1,222 +1,194 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5591DF75A;
-	Tue,  1 Sep 2026 00:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788221270; cv=none; b=XVxm+CaBkL6E1+y/gcLDI5gT9I6ZKGKuo5xZQIRT1T95eoLcV93CC7effeCT/MLcWt2FKYYmzFZzOMZlvDpCVGDyyC1GnZsXbvjGdJFwBURLSd5Ggc2hNFsOS5NnQgjVZvpIYMWRvLHRkit4ZdLWQQ6fRTqIz6lls07JfBV1yrc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788221270; c=relaxed/simple;
-	bh=PIpXEgKCitO4Cf6SmYZVEkyPWZLajeDx8dFoZKiwGsE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jXiFkT9acFvvQMRmqg9qMkYYuKJTg4JDaXspRpdOM8i39XGS572TqKdQRxSjAwBGeb/uWnT8cwHKaP+pIf8ro8k9RRvxVkjY/fMCg2ukYmS5BeN+WspDcJ9KK273WA+FgzL7L/RMi9dpKxfDde8Yqeehr1zJk3Xjt9PkwGVdNOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=odI6lU19; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED66A37107E
+	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 00:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788223725; cv=pass; b=rOycWqFxVkKySpcEqoVaPjN5qe13g4ZnAirEbAT191xE6clET1MCfEL1CttlyX/WYz+E/TfqWuIEABTJXzk+YT3xt3LFTE7CgZMPWNotDpbyIdgLGqqqhbOvge4vTZTTXhN06CNOsydCESqsl7cJ6TuxYkxnJhtjkcOJUDUtWn4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788223725; c=relaxed/simple;
+	bh=jS73Y9Ax+M/4TFI/BHflongxHZ7kkQuWe5CVcgbwi+Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RF7j4XckCszYdUrREcef+4dvvtTjXZ2wDDjfE25Xg7Jh4+mVH6Cw+OQ+flT94cPNKRkorXe3YGDb04zFXbZpz+HhwQT48oxzL+3Ep+QGPNK3l3Kfc/xT9r6QZuQVaQF/r9rgGhef/KJo4z2R0zhbq/bFuO3YQDepGbn8cjM0pz0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CqyRXJGM; arc=pass smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="odI6lU19"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ltw/gAHizV9n5HEgAslJkkit+RolgrtndrhoublQTLo=; b=odI6lU192u4jrySpNdIHixUJIu
-	7vqgp9lYSikh/3CmoQhLUaST+z+TgdFefCzWNuEHB+pPqDmGCjoU0fdFg2XMFo1lRtzJ2wofSnBNp
-	AN1fUfwkbEWXPT43OFHWttdpBFFNcQg5HsbszgdZcc+5A7XdOHBfVInelTVMTU2p5wVY283q4C7Y/
-	RNCpsi11fANQ/HU7hFLkvpwFwMB31lEr/49AyT6hDZTM2VqPdxZ/6rNZ1rt5NRjaYZ1uuZwGA/Qit
-	Puq2rHOHLnO7/03U3quxLFGCd6TZWHy7jsAhCFAcQp8GHqLXr3E2wljC0g5k72L8M/qW7Hs5gvtMa
-	otIyRW9Q==;
-Received: from [2001:8b0:10b:5:c2f5:a84c:7d8:be7b] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x1C2R-000000044pR-3ZSe;
-	Tue, 01 Sep 2026 00:07:44 +0000
-Message-ID: <96351e53d2f804f8b0bf13a81f85715caaf24e55.camel@infradead.org>
-Subject: Re: [PATCH v3 13/13] KVM: x86/xen: Convert evtchn_ports from IDR to
- XArray
-From: David Woodhouse <dwmw2@infradead.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Date: Tue, 01 Sep 2026 01:07:25 +0100
-In-Reply-To: <20260831233621.136B31F000E9@smtp.kernel.org>
-References: <20260831213632.81023-1-dwmw2@infradead.org>
-	 <20260831213632.81023-14-dwmw2@infradead.org>
-	 <20260831233621.136B31F000E9@smtp.kernel.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-MnwB1gAEhYRjD8d6ObhJ"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CqyRXJGM"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cfbbdfa60bso2928995ad.3
+        for <kvm@vger.kernel.org>; Mon, 31 Aug 2026 17:48:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788223723; cv=none;
+        d=google.com; s=arc-20260327;
+        b=QqQKXiiqlArhSis0AgauByBIaTi623MJLYB9VSCDg5sX+Z/2BlaKEXe4SIk2SjC0R0
+         aZ7ixM3H50dwkA5MBkhmztlfyzRtACuIsCQfAqMXwFbDNV+WxkVe/7KwTWQIM1uNEu8R
+         xuJQUK62AbdyeBkeRtITsj094njNMt4UPX71SZ1vpwW24Z0eh+x6jljHJADcuXDtbitf
+         AnhJQat6BeexeRr/DNWUJfWt0mAcNKOEeHGEZdS3Rle1c6/Zjnvltdc2xbODudMU8i75
+         xl7jl4nntV83iZeuyVHlH1ZHxAKliiYYHyJ2UOqGUawe1X7lqM1G2uBJTtAGdYS+zIvi
+         FkDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bazjSzwMCF+AgN6pYQNjRZEW2QtTTdcfXFPY1xxZKAk=;
+        fh=clmWqNh3m5Le1U/Dd/TOld8q2vazUSvFMPgfPMWuA0M=;
+        b=oXxQ7UWaZe/H0lmmkdAKZal8SfKCN4KpNXaxZk/Ma71k/4Vutey9pvM4x4pPMuPN1G
+         X/AI2VRFxlqp6RWQ6UHWob8U14EndlEBAaMMQ3cU+1xaxbEjx2fYW67DQeSsyRMT1fq3
+         Jcfs8s2ZXJaz1RLjMYupxH931VC5WnYG4Na9kDkd9I1hbl03YuRTr/AAS0Syya3zeEU6
+         Q8DAz90mDgocMV5zuT6XKQH+s12+oQj+NApfjLGUFOjwXySXMeHDZOVepV4KznTtVjGW
+         zaQ3OYnBAr5W2NrLM46qYWwJ3PnKmKCXDWZHjzZtL3NwaGFQay6N/slVyVWACByBUaeX
+         iuHw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788223723; x=1788828523; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bazjSzwMCF+AgN6pYQNjRZEW2QtTTdcfXFPY1xxZKAk=;
+        b=CqyRXJGMeB6toUR6dpPVpC9OYYap/7UB5+Tiq0HXTj4yg28ftq6LKvqgf8HWs6rESR
+         DmQN6Vppoqq1Wq1uIi7tXU56txioVwtJenbafsiVW1upUCgq0cbHL/nYQG3NOwVAuHL/
+         kwiOZLcZb2pfnOowwM9cnXm+4bF1KP3yut/hi83fxz+x2pzkEy7IJ8HzQSapXl0V0GKZ
+         AneNu2nM9874T/SbMAxLnuUmYXyraf63HCfC8DUPB2uUM7JRs4lcBledftqjNO0d49Ub
+         4gkYb9GAfvMkfKWaO2/vKzf+aszR58Iq30eIlkLpj7D8HXOEsm0vSMOTOJRCzhzT/uhe
+         vboA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788223723; x=1788828523;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bazjSzwMCF+AgN6pYQNjRZEW2QtTTdcfXFPY1xxZKAk=;
+        b=VVVoJrUIHyLFTkoE/QmZAGlffi9oi8RRh8ijWMZM1pcFXfaIuMoX8jQfO2ANre6st5
+         yQbD1da17CvaD5/v26T0IAVP9S8K0jOo5Qj2XFTUqQFAhhmpfQMVh+pP11MmdNTJYuwZ
+         23tuR5HnCtEthQccBZMA5C4E21p4rjXhuF3Ed3Dtx5PgIHcOV0cfnZdreK6KPfcZXiRs
+         n8an60A9fuZWX3vvf6VfRIlZT+YF6nd9mT5pcrLnJCME6GqvHhVo/qjLtl21IdXD6C7g
+         QQpsM0dsWT+68jCwemuNWQgAriABOjZoJylyvDdjK5DEPr3Da5neK/ryA80sy24cgbSh
+         0ZNQ==
+X-Gm-Message-State: AFuF++kateWZ/L2U7jLmMgE92GwTAPogEDXiSw5M/naqovbm40HzgOx4
+	FsDaJPCw99aQUfLZVaiHL9FjX66n9kcrGEaGGtaH9UaXrOzzESqEVWXdnHEFzunEig74e0mU0ye
+	xQCmWW5m6Epk5EukpFxn3iCsDfxRoo+61BDK5UqrXUg==
+X-Gm-Gg: AYBFou3KUYfm3aB5tzxtDFNCLePcmgwQ4Z4E22JnKUBnHRLqqtQnQQj8ss7t3d6LIHi
+	yIZuYTKrMxNNhtWCFaHK/MI6UkEvfhemP+NdBpN2B+JUY+mParr4/PUiTICszr1QFsc0revVomq
+	S1XtnIYE2BM7ftR6CPApH6iPSSXrh70zloSJKu1I8WKZpQnW/J1LTldULxWWEZDrGQhCGyMUcPy
+	h+pcNK7HvEZrzvksrQA96NhRgShutead/GHloNrXa9IX0F/UfjdeNhiA3/33iSKdl/Y0zsnoIuS
+	Q7P32dgsmRRGl8u+u9dXHFOP3nwnD5iMjgDKcTIgWIqyaJZUKUZeyyIBECLXtzX4V1Nsl1S9CCd
+	wqQ==
+X-Received: by 2002:a17:903:388e:b0:2d7:44c5:1a13 with SMTP id
+ d9443c01a7336-2d74df17b06mr475050065ad.8.1788223723108; Mon, 31 Aug 2026
+ 17:48:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-
-
---=-MnwB1gAEhYRjD8d6ObhJ
+References: <20260807112818.958190-1-kimjw04271234@gmail.com>
+In-Reply-To: <20260807112818.958190-1-kimjw04271234@gmail.com>
+From: Jinu Kim <kimjw04271234@gmail.com>
+Date: Tue, 1 Sep 2026 09:48:32 +0900
+X-Gm-Features: AcwNN1Wz291OtiDO0yLKdqxMF1hiX1iPzMyfEM1kmMxlGvIMy0a5OidH_3jkXks
+Message-ID: <CAH+3ta7b7MudRedhFG4xQH6-3ZK9gfkcEPy_aHsAHBwjyK81+w@mail.gmail.com>
+Subject: Re: [PATCH] KVM: x86: Use active memslots for the per-vCPU MMIO cache
+To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, security@kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2026-08-31 at 23:36 +0000, sashiko-bot@kernel.org wrote:
->=20
-> [Severity: Critical]
-> This isn't a bug introduced by this patch, but could this union type
-> confusion allow a userspace guest to crash the host kernel?
->=20
-> When a userspace process calls the KVM ioctl to assign an event channel w=
-ith
-> type EVTCHNSTAT_ipi and send_port =3D 0, the setup code just prior to thi=
+Hi Sean, Paolo,
+
+A friendly ping on this patch.
+I originally sent this on August 7, which was fairly late in the 7.2
+release cycle, so I held off on pinging during the remainder of the
+cycle and the 7.3 merge window.
+Now that 7.3-rc1 is out, could you please take a look when you get a chance=
+?
+Please let me know if you'd prefer that I resend or rebase the patch.
+
+Thanks,
+Jinu
+
+2026=EB=85=84 8=EC=9B=94 7=EC=9D=BC (=EA=B8=88) =EC=98=A4=ED=9B=84 8:28, Ji=
+nu Kim <kimjw04271234@gmail.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+>
+> KVM tags the per-vCPU MMIO cache with a memslot generation so that a
+> memslot update invalidates cached MMIO information.  Both the fill and
+> validation paths use kvm_memslots(), which unconditionally selects addres=
 s
-> insertion does the following in kvm_xen_eventfd_assign():
->=20
-> 	evtchnfd->deliver.port.port =3D data->u.evtchn.deliver.port.port;
-> 	evtchnfd->deliver.port.vcpu_id =3D data->u.evtchn.deliver.port.vcpu;
-> 	evtchnfd->deliver.port.vcpu_idx =3D -1;
->=20
-> Because of the union layout in the evtchnfd structure, deliver.port overl=
-aps
-> with deliver.eventfd. Writing -1 to vcpu_idx corrupts the eventfd_ctx poi=
-nter.
-
-No, because we can't get into kvm_xen_eventfd_assign() with send_port=3D=3D=
-0.
-
-That's checked in kvm_xen_setattr_evtchn():
-
-	if (!port || port >=3D kvm_max_evtchn_port(kvm))
-		return -EINVAL;
-
-
-This is dealing with events *sent* by the guest itself, accelerating
-the EVTCHNOP_send hypercall. So kvm_xen_eventfd_assign() only handles
-the EVTCHNSTAT_ipi and EVTCHNSTAT_interdomain types, as the guest can't
-send virq/pirq.
-
-The EVTCHNSTAT_interdomain is what the eventfd trigger was designed
-for, when deliver_port.port =3D=3D 0 and the eventfd.fd is provided.
-
-And EVTCHNSTAT_ipi is protected by the validation on *send_port* above,
-coupled with the restriction that send_port=3D=3Ddeliver.port.port for
-IPIs. (Since it's the delivery port being zero that would have
-triggered the hypothetical bug in kvm_xen_destroy_vm(), not send_port).
-
-
-
-
---=-MnwB1gAEhYRjD8d6ObhJ
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-x5FEg7AFDsXxesTIIyJ1UpEAAAAAAAA=
-
-
---=-MnwB1gAEhYRjD8d6ObhJ--
+> space 0, even when the vCPU is running in SMM and using address space 1.
+>
+> Commit 56f17dd3fbc4 ("kvm: x86: fix stale mmio cache bug") added the
+> memslot generation to the cache key so that a memslot update could not
+> leave a stale entry valid.  When commit 699023e23965 ("KVM: x86: add SMM
+> to the MMU role, support SMRAM address space") added the SMM address spac=
+e,
+> these helpers were not converted to use the active memslots.
+>
+> Consequently, an update to the SMM memslots can leave an entry from the o=
+ld
+> SMM address space apparently valid after the vCPU returns to the normal
+> address space.  A guest can then cause an access to valid RAM at the same
+> GFN to be returned to userspace as KVM_EXIT_MMIO.
+>
+> Completing that exit through the VMM's RAM address space writes the backi=
+ng
+> page without going through KVM's write-tracking path.  If the page backs =
+a
+> nested EPT table, KVM can continue using shadow translations derived from
+> the old contents.  The WARN_ON_ONCE() in kvm_mmu_write_protect_fault()
+> catches this invalid cache and memslot combination.
+>
+> Use the vCPU's active memslots when caching and validating the entry.
+> Memslot generations are unique across address spaces, so the generation
+> also distinguishes the normal and SMM views.  This matches the MMIO SPTE
+> cache, which already uses kvm_vcpu_memslots().
+>
+> On an unpatched current-mainline kernel, a regression test that fills the
+> cache in SMM and updates only the SMM memslots fails the intended RAM wri=
+te
+> and triggers the kvm_mmu_write_protect_fault() warning.  With this change=
+,
+> the same test completes the RAM write without a warning.  The x86/smm_tes=
+t,
+> set_memory_region_test, and memslot_modification_stress_test selftests al=
+so
+> pass.
+>
+> Fixes: 699023e23965 ("KVM: x86: add SMM to the MMU role, support SMRAM ad=
+dress space")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jinu Kim <kimjw04271234@gmail.com>
+> ---
+>  arch/x86/kvm/x86.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+> index 9de577ef9c97..a6d86d3dcff6 100644
+> --- a/arch/x86/kvm/x86.h
+> +++ b/arch/x86/kvm/x86.h
+> @@ -313,7 +313,7 @@ static inline bool is_noncanonical_invlpg_address(u64=
+ la, struct kvm_vcpu *vcpu)
+>  static inline void vcpu_cache_mmio_info(struct kvm_vcpu *vcpu,
+>                                         gva_t gva, gfn_t gfn, unsigned ac=
+cess)
+>  {
+> -       u64 gen =3D kvm_memslots(vcpu->kvm)->generation;
+> +       u64 gen =3D kvm_vcpu_memslots(vcpu)->generation;
+>
+>         if (unlikely(gen & KVM_MEMSLOT_GEN_UPDATE_IN_PROGRESS))
+>                 return;
+> @@ -330,7 +330,7 @@ static inline void vcpu_cache_mmio_info(struct kvm_vc=
+pu *vcpu,
+>
+>  static inline bool vcpu_match_mmio_gen(struct kvm_vcpu *vcpu)
+>  {
+> -       return vcpu->arch.mmio_gen =3D=3D kvm_memslots(vcpu->kvm)->genera=
+tion;
+> +       return vcpu->arch.mmio_gen =3D=3D kvm_vcpu_memslots(vcpu)->genera=
+tion;
+>  }
+>
+>  /*
+> --
+> 2.43.0
+>
