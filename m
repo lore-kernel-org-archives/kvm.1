@@ -1,160 +1,135 @@
-Received: from smtp153-141.sina.com.cn (smtp153-141.sina.com.cn [61.135.153.141])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4993839C015
-	for <kvm@vger.kernel.org>; Tue,  1 Sep 2026 07:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.135.153.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F32146AF16;
+	Tue,  1 Sep 2026 07:39:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788248056; cv=none; b=Hfir+A8mtM0eIDVmmYSUKqW0FfLxsBw2IMD5FS+XWLqVS1rsWgVLU1W8MVJAsnHlrFByx543JNPLXk4TuXpPoZDQJbsGYKhq+S/KziZEvubKZ5wK47+V+gOUTYJylK4H8UnN8qUE5zDUC4rA9cxbOsxKiokjAN2O2HwpIceoER8=
+	t=1788248355; cv=none; b=WLDOmvvv/bhrgk4ckE2dm4Q4sPx71/CKtr81pWEk41gY9F7rwl2iQaa0MA+92FKOoMHDvuYScwbCsmUbwHQSkSBIsBns7Jsxu/jfVEGfM6YSrCaWkAXX4+PkaBSQNn7kR81UdTSkIGg1s8XdGeO4KaWqb+PH7RQKtuQgixiQqbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788248056; c=relaxed/simple;
-	bh=AVk2jaYAaxPHdURwWUpd81WgqmUDxFKM81FZdEzAmMY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P+KaoDYmo0JOddbc70wGhb2nzwA66ejARySWTo6jM3fPa/NlTQ5DelT6sWouaTC7KyOoaAEb7XheP/L+pYnwxqozrBAaxnSJvOIuABUrlHTiY2MW1hZWwI/colHsTMHmGo5KzyacpqHGrjDeIlHdAj8ndz2OddtMHii4c8lTCTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=mcFMvOHv; arc=none smtp.client-ip=61.135.153.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+	s=arc-20240116; t=1788248355; c=relaxed/simple;
+	bh=5dZXMTuVIB4/rqwu6qguosRA2gdca0Wy/7vnL6NSoxI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=md1Po3matZ4OW+J+ZEpOdG/J7W9oA9V0DHO991H/2xyCNg2zvZbyOkV4xmusKDTVdUJXrdEq05MmtbbN1dly/E9CugR9w/EG8hVS0AQsbfJN2iE06WpMjz8RDBmApgU6yEMaTOrYqMqkqWBH2kr5vdrR0oyS0bBaivkhv7X7N/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=VtE2Iu6v; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="mcFMvOHv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1788248049;
-	bh=idCKI41xL6eW0IArlfOceSxUfotk8ao1yFL3ygF/FOQ=;
-	h=From:Subject:Date:Message-ID;
-	b=mcFMvOHv4rzC/nfvve9Kfw32NpbHrF4SufncMjBEWOstNr/qOAIIWF6v1lMDs8Ipc
-	 gzf2bNhbmd8ZDKHv5DCunin1jrrdAEZqqmfPbh3xt7wKTyGJkUoP4ZxTHJnjAuhHiU
-	 cHp7omUb65Bfxh45ah/2xQadTKpKatcrcxqrcN2I=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.62.194])
-	by sina.com (10.54.253.31) with ESMTP
-	id 6A967FE100004F60; Tue, 1 Sep 2026 15:33:59 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-Authentication-Results: sina.com;
-	 spf=none smtp.mailfrom=hdanton@sina.com;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=hdanton@sina.com
-X-SMAIL-MID: 5567576815996
-X-SMAIL-UIID: ACF6028F0FBE404389B51991927F13F0-20260901-153359-1
-From: Hillf Danton <hdanton@sina.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: syzbot <syzbot+6895ff73d58c59e653ba@syzkaller.appspotmail.com>,
-	david@kernel.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	pbonzini@redhat.com,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [kvm?] INFO: task hung in kvm_gmem_release
-Date: Tue,  1 Sep 2026 15:33:42 +0800
-Message-ID: <20260901073343.2002-1-hdanton@sina.com>
-In-Reply-To: <apWaoAxpE-fbHG0W@google.com>
-References: 
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="VtE2Iu6v"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6817VmxK458568;
+	Tue, 1 Sep 2026 07:38:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=8fY/Dl2/758QW1rxNPqXXC5GnM3C1m
+	V2NhcBW5N/hzY=; b=VtE2Iu6vRlD48u8PHjVDsTvgegEBr/79jCKiybkRPJe7UN
+	HPVFeHIADAUPsnAIBXkfDFkK25itwdH477EP6Db8l4IVanDDZxPkBZ7PCLYDF7MB
+	ZOMcIljS5r5HKDJWRjEh8VXVaNos15k2cgXKefjBcj4rRdwPkE0yoezdBPIQjcw0
+	JpJSVUESF7fhvHDH91Pss94yKVAadhvE+jQp5yd62iIiS1QwDQRAJGIApP71EFTf
+	wELUrzuebzD+gYbjXDHXw6LOOnCnEYI19o39+SisAobiAY9xkpiqeYLG3EY/CSBn
+	sXmz5WtDwZpY0/r2TS2SyJBHz/Zkc5jf0ktSU6WQ==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbmuhpeew-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 01 Sep 2026 07:38:52 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6817QH1c000869;
+	Tue, 1 Sep 2026 07:38:51 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gcark2f88-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 01 Sep 2026 07:38:51 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6817cnE342140150
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 1 Sep 2026 07:38:49 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3CBD020043;
+	Tue,  1 Sep 2026 07:38:49 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0204420040;
+	Tue,  1 Sep 2026 07:38:49 +0000 (GMT)
+Received: from osiris (unknown [9.224.76.185])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue,  1 Sep 2026 07:38:48 +0000 (GMT)
+Date: Tue, 1 Sep 2026 09:38:59 +0200
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+        kvmarm@lists.linux.dev, Fuad Tabba <fuad.tabba@linux.dev>,
+        Joey Gouly <joey.gouly@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 1/2] KVM: arm64: Return -EINVAL for an empty SMCCC filter
+ range at base 0
+Message-ID: <20260901073859.185345-A-seiden@linux.ibm.com>
+References: <20260829054856.70549-1-kmehltretter@gmail.com>
+ <20260829054856.70549-2-kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260829054856.70549-2-kmehltretter@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: ZCbQ-ZklX7stda1AuCkPQ0Djjt_a0WKY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAxMDA2NiBTYWx0ZWRfX4h+TXCOEI7wH
+ 6eMfhCl9yIVObK3BCrNHD8Dq3qA3ZMS/VYvCRHiJftV4ivux8cMKSQfM92VTBM9XfXw3PmxqFNh
+ 9OTN9SgrFiyzSNKVKBmZQwyaJEU1aJmlrNpYpjbcYTC+RtkDGKeVc9YQb9alJ3jlq/OhHgov1uV
+ JX30A0+5iKSHW0PB6rGEkJGZTI/7vGzNAVe3pr31cENAs+mjp9eQ6qUEJ9EV3ezAHEB79sQ58Y9
+ nJ5YwZGiqaGAWTxYGyWT6R9F6OKuMB9e0fnyZMIEbtUjBbV8UoTAPDcecO6siPiNJ9gBLHbFoDs
+ O7vd0JCz9y8jF5x+LHatF7wO03UuBCd2SnD7m6JEV5zYZD82drlk8SZD8sPtMcGJteuByBxvocw
+ vIArUz59EW6PIbbEWkY4nWUN6wdufOT1SrLKPZWhZx1odnRqyito0KZSb+SkDigDpDaCZsUgAYX
+ WMfgJ6x3bko8mOt7fuw==
+X-Authority-Analysis: v=2.4 cv=Osl/DS/t c=1 sm=1 tr=0 ts=6a96810c cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=pGLkceISAAAA:8
+ a=VnNF1IyMAAAA:8 a=sTVcf0stEawvOQYPuTgA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAxMDA2NiBTYWx0ZWRfXy4lZ/J7YpckL
+ K0SY6MkUpi5sUw7oztTXtF2gTI3R/neK7rxtxiz60RLfyOvT9Nf0r+CbEwZfrLb399CxCRuQ3Y3
+ sM+IqxmBNeFFM3kYX5eDNYok2nAILFA=
+X-Proofpoint-ORIG-GUID: GL9tonZEYnwAQvDdc17GjcJN60W2-KOG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-01_02,2026-08-31_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0
+ adultscore=0 impostorscore=0 phishscore=0 clxscore=1011 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609010066
 
-On Mon, 31 Aug 2026 08:15:44 -0700 Sean Christopherson wrote:
->On Mon, Aug 31, 2026, syzbot wrote:
->> Hello,
->> 
->> syzbot found the following issue on:
->> 
->> HEAD commit:    08dbfad3f504 Merge tag 'for-linus' of git://git.kernel.org..
->> git tree:       upstream
->> console+strace: https://syzkaller.appspot.com/x/log.txt?x=12ee0349580000
->> kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
->> dashboard link: https://syzkaller.appspot.com/bug?extid=6895ff73d58c59e653ba
->> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
->> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1153ee25580000
->> 
->> Downloadable assets:
->> disk image: https://storage.googleapis.com/syzbot-assets/ddff5719ec3b/disk-08dbfad3.raw.xz
->> vmlinux: https://storage.googleapis.com/syzbot-assets/4b5e39b20fa5/vmlinux-08dbfad3.xz
->> kernel image: https://storage.googleapis.com/syzbot-assets/eb1f70eed57f/bzImage-08dbfad3.xz
->> 
->> IMPORTANT: if you fix the issue, please add the following tag to the commit:
->> Reported-by: syzbot+6895ff73d58c59e653ba@syzkaller.appspotmail.com
->> 
->> INFO: task syz.0.17:6104 blocked for more than 143 seconds.
->>       Not tainted syzkaller #0
->> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
->> task:syz.0.17        state:D stack:25544 pid:6104  tgid:6104  ppid:5900   task_flags:0x400040 flags:0x00080003
->> Call Trace:
->>  <TASK>
->>  context_switch kernel/sched/core.c:5520 [inline]
->>  __schedule+0x17d4/0x5820 kernel/sched/core.c:7270
->>  __schedule_loop kernel/sched/core.c:7347 [inline]
->>  schedule+0x164/0x2b0 kernel/sched/core.c:7362
->>  schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7419
->>  __mutex_lock+0
->>  __mutex_lock_common kernel/locking/mutex.c:726 [inline]
->>  __mutex_lock+0x7c1/0x1550 kernel/locking/mutex.c:821
->>  kvm_gmem_release+0xdf/0x3e0 virt/kvm/guest_memfd.c:310
->>  __fput+0x418/0xa50 fs/file_table.c:512
->>  task_work_run+0x1d9/0x270 kernel/task_work.c:233
->>  ptrace_notify+0x27c/0x2b0 kernel/signal.c:2524
->>  ptrace_report_syscall include/linux/ptrace.h:416 [inline]
->>  ptrace_report_syscall_exit+0x2d/0x50 include/linux/ptrace.h:477
->>  arch_ptrace_report_syscall_exit include/linux/entry-common.h:233 [inline]
->>  syscall_exit_work include/linux/entry-common.h:266 [inline]
->>  syscall_exit_to_user_mode_work include/linux/entry-common.h:297 [inline]
->>  syscall_exit_to_user_mode include/linux/entry-common.h:334 [inline]
->>  do_syscall_64+0x4a0/0x520 arch/x86/entry/syscall_64.c:89
->>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
->
->...
->
->> CPU: 1 UID: 0 PID: 16 Comm: pr/ttyS0 Not tainted syzkaller #0 PREEMPT(full) 
->> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
->> RIP: 0010:io_serial_in+0x77/0xc0 drivers/tty/serial/8250/8250_port.c:409
->> Code: e8 4e e8 55 fc 44 89 f9 d3 e3 49 83 c6 40 4c 89 f0 48 c1 e8 03 42 80 3c 20 00 74 08 4c 89 f7 e8 1f b0 c5 fc 41 03 1e 89 da ec <0f> b6 c0 5b 41 5c 41 5e 41 5f e9 5a cc 74 06 cc 44 89 f9 80 e1 07
->> RSP: 0018:ffffc900001578b8 EFLAGS: 00000002
->> RAX: 1ffffffff35a5e00 RBX: 00000000000003fd RCX: 0000000000000000
->> RDX: 00000000000003fd RSI: 0000000000000000 RDI: 0000000000000020
->> RBP: dffffc0000000000 R08: 0000000000000003 R09: 0000000000000004
->> R10: dffffc0000000000 R11: ffffffff8571cb00 R12: dffffc0000000000
->> R13: 0000000000000000 R14: ffffffff9ad2f0c0 R15: 0000000000000000
->> FS:  0000000000000000(0000) GS:ffff888124ddc000(0000) knlGS:0000000000000000
->> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->> CR2: 0000557adc994a38 CR3: 00000000772ec000 CR4: 00000000003526f0
->> Call Trace:
->>  <TASK>
->>  serial_in drivers/tty/serial/8250/8250.h:128 [inline]
->>  serial_lsr_in drivers/tty/serial/8250/8250.h:150 [inline]
->>  wait_for_lsr+0x184/0x2f0 drivers/tty/serial/8250/8250_port.c:2013
->>  serial8250_fifo_wait_for_lsr_thre drivers/tty/serial/8250/8250_port.c:3270 [inline]
->>  __serial8250_console_fifo_write+0xcd/0x3e0 drivers/tty/serial/8250/8250_port.c:3345
->>  serial8250_console_fifo_write drivers/tty/serial/8250/8250_port.c:3378 [inline]
->>  __serial8250_console_write drivers/tty/serial/8250/8250_port.c:3429 [inline]
->>  serial8250_console_write+0xaa1/0x1200 drivers/tty/serial/8250/8250_port.c:3493
->>  nbcon_emit_next_record+0xef5/0x1a90 kernel/printk/nbcon.c:-1
->>  nbcon_emit_one kernel/printk/nbcon.c:1157 [inline]
->>  nbcon_kthread_func+0x679/0x880 kernel/printk/nbcon.c:1271
->>  kthread+0x38b/0x480 kernel/kthread.c:436
->>  ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
->>  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->>  </TASK>
->
-> Marking this invalid, as I'm 99.9% certain guest_memfd is an innocent bystander.
-> CPU1 is stuck on an IN instruction (the actual port I/O), and there are a handful
-> of identical failures in random subsystems that pop up a few times a month[*].
-> My guess is the host side of the serial port is going out to lunch intermittently.
+On Sat, Aug 29, 2026 at 07:48:55AM +0200, Karl Mehltretter wrote:
+> kvm_smccc_set_filter() only rejects a range if its inclusive end,
+> base + nr_functions - 1, is below base. That catches an empty range
+> (nr_functions == 0) at every nonzero base, but at base 0 the end wraps
+> to U32_MAX and KVM tries to insert [0, U32_MAX], which overlaps the
+> reserved Arm Architecture Calls ranges. KVM_ARM_VM_SMCCC_FILTER then
+> returns -EEXIST instead of the -EINVAL that the smccc_filter selftest
+> expects for an empty range.
 > 
-> [*] https://lore.kernel.org/all/?q=%22io_serial_in%22%20syzkaller
+> Reject a zero function count explicitly.
 > 
-> #syz invalid
->
-The 0.1% uncertainty hints this invalid mark is NOT true or at least earlier
-than thought, because a) the IN instruction is not kvm specific [11] and b) the
-i2c hang [11] is i2c specific [12].
+> Tested with a userspace reproducer on an arm64 VHE host under QEMU TCG:
+> EEXIST before, EINVAL after.
+> 
+> Fixes: 821d935c87bc ("KVM: arm64: Introduce support for userspace SMCCC filtering")
+> Assisted-by: LLM
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 
-[11] Subject: [syzbot] [i2c?] [usb?] INFO: task hung in em28xx_i2c_unregister
-https://lore.kernel.org/lkml/6a95ef74.764875ec.b345.0003.GAE@google.com/
+Good catch.
 
-[12] Subject: [syzbot] [i2c?] [usb?] INFO: task hung in em28xx_i2c_unregister
-https://lore.kernel.org/lkml/6a9676c7.764875ec.b345.0007.GAE@google.com/
+Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
 
-That said, extra evidence is needed to prove that the serial port is going out
-to lunch on the host side.
+FWIW: Tested it on my downstream version of arm-on-s390 with hypercalls
+already implemented. 
