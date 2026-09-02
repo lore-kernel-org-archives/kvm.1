@@ -1,63 +1,68 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9AC2443A94
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 23:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2CC440A34
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 23:09:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788390576; cv=none; b=c10TqZu8+edpn5WVcVhIamP7WBibgqv0Dmc0fglvpDN8orOQcFIiQKOTY17sIblZG0iiV+8lX/savyltd44cXnCxDZHJL1bO0BS2TybJc0nZV96WvkueYcUiKM2y/ZGfjPMmRETRSnZWwLQgOLpCKn2+vsz1PzdG6yrLbdljQ3s=
+	t=1788390578; cv=none; b=Nx7BA10Qk7Wc6D6vsqt5q2GfkB6qAeaEV2ZQVcnEgv12gpawN1RFRh7Q3pYRLN9j8knl7QLMwgyuvXwOtjeJsIzynrbNoT9LpzXdUuUiH5y1LTKSxN4zYOdjTJr9YHHVSMKcZQl6bx5ecwCHVW4X0JQtnd3ei7iX8y+1qAiTfAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788390576; c=relaxed/simple;
-	bh=vOLWLIpAOn8agr/fPKKQvzK8HpLJg6z1A2uzVnNX/2o=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=eCVKNAjgtd4RWro4kGTnaW8fZ/7PphVcoaeM1r55ws9zST4/Dad0gwhTFcqV9KJb4mBiKoHu6zU7JKXBSIW86XMTMDV4zcqsXtgQ39R2gHGzOQ9yBtUiwNLJe+sLM0E+d10BkIemYRbADR58Xj7B+bzZs0zNF9XYrMP6/VxL6LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f2oByYTT; arc=none smtp.client-ip=209.85.215.200
+	s=arc-20240116; t=1788390578; c=relaxed/simple;
+	bh=60b++oU64bR3hdczm3nMl9QKb4QsVVNXlpRRHAGyvtE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Ze+ox+VyGWcWz8Yt/FSQogfpDTq8LgEtYQ5VUGXzK/Ah89rQD5jgfOmhRzyWEFKqSuz1H4Ah9QiJTVizvdVnCp1wdl1CvClY3lIa2VT8wZMxmgYHDmcQOPsyictSEnOM5Z9U8UqgFhHTjpsvD2Whn8OzF9P1Y588i1RFWFKhSf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B+LPnc0M; arc=none smtp.client-ip=209.85.216.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f2oByYTT"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc1b8088203so2070095a12.3
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 16:09:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B+LPnc0M"
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38e7ff7b375so2340827a91.1
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 16:09:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788390574; x=1788995374; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9JHq/z+2fcrSIk4Q9ayuvYAiAfDsx8YFl0teuRj6jAk=;
-        b=f2oByYTT07R+eSENiun/o8TqlcycFDcSO47eOIXxUxUXZrjyTMIkcgn07Oc45WrpPx
-         RPiRnZL9XZaxHR4d09BUlBlDbLON0kwIvmiGsPKibV1+jiyqkLQN9XWEAAps9VMwYjCM
-         J4ScAXLx9x+/beya7bU8g0G/bOLTiuSkiu03QTQocpS9SH5mKofkJkScDRoamZLGZ+XD
-         i2OMJWyIIwgjDeza9uisP/wT7S2o3gmKj8eeVw1Gjw2GP5PukHQtPqoXt1EBobzLGiu9
-         KHsQZ1tDjWUAlZB+TtzwBbEX86X1vFdrFcWW3wTko/DkVQqRPP5pplRHTjk8d4V5IyU/
-         iEaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788390574; x=1788995374;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=google.com; s=20251104; t=1788390575; x=1788995375; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=9JHq/z+2fcrSIk4Q9ayuvYAiAfDsx8YFl0teuRj6jAk=;
-        b=TciQK5BPJTT2BnxyBf2Q5infdzk03IsAnhS1OHmZYImHfcQRS5wJfw6fE6B6cinPPR
-         WXhOZU69cYdq0qMu6rX0Rvi1ygsomCN0lyTbdPBDE+2Do3vD9LLaviVs8fXj975J1UmP
-         aWaUZWDqqqTANipiuQWut7/eQqOhR51BLXdlA9mRIJaLd0wLSdFe9zKh/41lSXWupPCd
-         TkJ1AGMU/hME7jLz2uWY9YI5SvHoaDh66ZGqKH5w+SfHgHEEm5WnvO0pzm8zG1w78evu
-         nPe06jg9LB4y0tN4DCotdUQI7R9Nde+Lmc4dHvEPMM6X4Ubw2jy0EbXVdzetfMU+017K
-         mOfw==
-X-Gm-Message-State: AFuF++nQSvyPB30M5gbLDUQAHwXcWVUX5gxL5ZCLIrnR40mTyv4t+UWQ
-	BmEI26UU53Mm/3u2LjaGqG7jb2ZBTMETsSLyIrNwmDkw74sWcJRW2apTZugcSM6WLo72gdZSs4V
-	4qDIpAw==
-X-Received: from pfbkr10.prod.google.com ([2002:a05:6a00:4b4a:b0:848:5480:9ac7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2353:b0:842:2419:6c0b
- with SMTP id d2e1a72fcca58-85ed7d2185cmr11113689b3a.10.1788390573643; Wed, 02
- Sep 2026 16:09:33 -0700 (PDT)
+        bh=qSDddEMP3f6RmPvCgvYdnz8wn2o/zSc7XyEc9xD4eok=;
+        b=B+LPnc0ME/KGFsZDRHIdM/dXiFCiw2HxN9Nwc9VjQRVVqEkLnN2ry/p52AvyG40giz
+         WeXO5zMl6AkBCbxJJcvUcza+/CycXHxMBMbVK2cfCuZr1zZVVTlZht5KNt1lkapvufjk
+         aMlAMErpTV/4tHhOcol3xFb33ou3L6RkwXMcUfxqdgRa7cVL1ajln5g83XtrQh3g4V54
+         JgEw1S5WZRL2NPMLsy8Re/yeALcMc6TrAIAq8Ak2G7gpLgxDxPNrTTUo2H7fMOFfYtRo
+         i4VxEPj33nP/3F8E9+IvT+QzZMwsBcLysqfEI8mfJy5l7S736EeKme8E9HJntdkVFo3n
+         hffQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788390575; x=1788995375;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qSDddEMP3f6RmPvCgvYdnz8wn2o/zSc7XyEc9xD4eok=;
+        b=nIwGFQ9st/WdeNPZLguyilgNkzZ+AKo6QnNlMgbNZnpsjiwda9Skb7YK+qx0yVqPGc
+         uJ4uL+bk+4d0/AaEnmQln9JcNEnriBegm5hLR/3atD+fVa5yN9O7e4WtMlc0E7Hhwlbf
+         w0/EgPCleXHk5VmjosIAlplBvrm5YyhkH6eyLiHqJHJn5CdCZ7XUYeWOcY529Cuc6f3j
+         tL2W1XlASQKp0SMhW4DD0NLc4ucRKJqR3U9bzpkmM+6B5jyp4h5eKoN0h4L0FGk2SUQz
+         KKynqb4uMaMLbxw8A5J9uvcSOz5a2DgdMAl7J9/Y/1BJUW/AjNgQrFF7VC8BuQIZQHv+
+         axGQ==
+X-Gm-Message-State: AFuF++kFkUH5wi95AC466lXCRspNGa5zsTYtAQ6kc2h+7sJbOQMiYpbW
+	KuMlAhUkfKmF6CQ1oQ/bD7jyM7D78grwNypcT6I93xvPQLYVk23m7lsxlqkxpcE+LWgwcXPx1lK
+	Vk5ShPA==
+X-Received: from pjzp12.prod.google.com ([2002:a17:90b:10c:b0:398:df3f:7569])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e7cc:b0:396:b98b:a3c2
+ with SMTP id 98e67ed59e1d1-39aedf1b1ecmr11061480a91.8.1788390574817; Wed, 02
+ Sep 2026 16:09:34 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed,  2 Sep 2026 16:09:29 -0700
+Date: Wed,  2 Sep 2026 16:09:30 -0700
+In-Reply-To: <20260902230932.2760127-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260902230932.2760127-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.970.g62bdec98f9-goog
-Message-ID: <20260902230932.2760127-1-seanjc@google.com>
-Subject: [PATCH v3 0/3] KVM: VMX: Explicitly track TDX VMs' root level
+Message-ID: <20260902230932.2760127-2-seanjc@google.com>
+Subject: [PATCH v3 1/3] KVM: x86/mmu: Use KVM's max TDP level to determine
+ need for 32-bit TDP root
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -66,42 +71,41 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Binbin Wu <binbin.wu@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Fix a bug where a misbehaving (or niave?) userspace can configure guest CPUID
-such that KVM will use the "wrong" root level for its mirror EPTs and trip the
-KVM_BUG_ON() in tdx_load_mmu_pgd().
+When checking to see if KVM needs to allocate a TDP PAE root that's 32-bit
+addressable, query KVM's overall max TDP level, not the vCPU-specific TDP
+level, as the logic is specific to using NPT on 32-bit hosts.  Querying the
+vCPU's alleged TDP level is flawed and confusing, as KVM selects between
+4-level vs. 5-level based on the guest's MAXPHYADDR, and MAXPHYADDR isn't
+yet configured (via CPUID) when the vCPU is being created.
 
-v3:
- - Use kvm_mmu_get_max_tdp_level() in __kvm_mmu_create() to avoid what is
-   effectively a false positive WARN. [Sashiko]
+I.e. as is, it would *appear* that KVM is violating its own rules with
+respect to changing guest CPUID (see kvm_mmu_after_set_cpuid()).  In
+practice, the flaw is benign as the goal is purely to see if KVM needs to
+use PAE-paging; whether KVM will use 4-level vs. 5-level is irrelevant.
 
-v2:
- - https://lore.kernel.org/all/20260826215258.937210-1-seanjc@google.com
- - Rewrite the comment in kvm_mmu_get_tdp_level(). [Rick]
- - Check for kvm_has_mirrored_tdp() in kvm_mmu_get_tdp_level(), and yell if
-   arch.mirror_root_level isn't also set. [Rick]
- - Separate the removal of TDX_SHARED_BIT_PWL_{4,5} from the bug fix. [Rick]
- - Fix a buring => buried typo. [Binbin]
- - Collect Tested/Reviewed-by. [Binbin, Rick, Yan] (I applied 'em only to
-   patch 1, please  holler if that doesn't seem right).
+More importantly, avoiding kvm_mmu_get_tdp_level() during vCPU creation
+will allow hardening KVM's handling of S-EPT mirror root level.
 
-v1: https://lore.kernel.org/all/20260814224509.2342760-1-seanjc@google.com
+For all intents and purposes, no functional change intended.
 
-Sean Christopherson (3):
-  KVM: x86/mmu: Use KVM's max TDP level to determine need for 32-bit TDP
-    root
-  KVM: VMX: Explicitly track TDX VMs' root level instead of guessing it
-    from CPUID
-  KVM: VMX: Drop TDX_SHARED_BIT_PWL_{4,5} and dedup related code
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/mmu/mmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- arch/x86/include/asm/kvm_host.h |  1 +
- arch/x86/kvm/cpuid.c            | 14 --------------
- arch/x86/kvm/cpuid.h            |  1 -
- arch/x86/kvm/mmu/mmu.c          | 21 ++++++++++++---------
- arch/x86/kvm/vmx/tdx.c          | 20 +++++++++++---------
- 5 files changed, 24 insertions(+), 33 deletions(-)
-
-
-base-commit: 76671054f9a1ff6abb976583cd8da37650acdc97
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 064ecc33b926..c9a684151420 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -6834,7 +6834,7 @@ static int __kvm_mmu_create(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu, struct k
+ 	 * other exception is for shadowing L1's 32-bit or PAE NPT on 64-bit
+ 	 * KVM; that horror is handled on-demand by mmu_alloc_special_roots().
+ 	 */
+-	if (tdp_enabled && kvm_mmu_get_tdp_level(vcpu) > PT32E_ROOT_LEVEL)
++	if (tdp_enabled && kvm_mmu_get_max_tdp_level() > PT32E_ROOT_LEVEL)
+ 		return 0;
+ 
+ 	page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_DMA32);
 -- 
 2.55.0.970.g62bdec98f9-goog
 
