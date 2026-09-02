@@ -1,63 +1,63 @@
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88454AA037
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 19:47:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AA7495515
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 19:47:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788378439; cv=none; b=rsrtpBHrqqshoT7BKimApeyJotmbz7IhBrup5ejCB7EF2kJNxStyX8HDx70LAOufYpWWT4yuU7Gs/EV2LZqSBOn6WaKYcfK0EyekrZ+G1hmKc9fSJMxyNLzsPQZc0jfm7pgTNsmVKB5edEFPgnXSgkmC3lrOZK5lWcbQBZWawkM=
+	t=1788378439; cv=none; b=NPOde7Q3xn2s0P7ZvV0xlfQwmLZd3cSTgw6glhiSx/xFas9UuMUt/Uiu7qmZ9lM3btpR4m0SR3OiHtL/35YrC2CMfgMWYoBUOz+1OzoAMArF3pTNk7/PS8wjwPf4bM3nod792m/okhA2sZr+ax4TJ60k62QcwAqJwS1hI0l5gok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788378439; c=relaxed/simple;
-	bh=wOiGSHTvuaGU2hGJD2n9TN+YSN62eWKKXnnL46WXyRo=;
+	bh=X0I+aFHOnDW1nXFeqe9LLIh2Xl92y2wIRvotCjhFCQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZAn10nWrHG7OqAzpyDz+i1ZlLsgrgrl9uHJKCysmTUloVhCbOEvQnGruUne4UzxpeLexoQwjTY2KmGCHlPEdwCn5EOYLnYntCT76sun56HUChzNnw/Yo+FHToOh3GFDGSjC5cgdfvpfESoVEYfc4xkexTseS9csaTplC2TAciSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=TqzEg1GQ; arc=none smtp.client-ip=209.85.219.46
+	 MIME-Version; b=uJWBONxjN3V+rwaWJi2blFqZX1GHluIeD8eOHGjDYpZvUliS9zJTamljsDgV9+bkzTlPRKALzENOv0860JCJT/9SVh4Mwf7m6fzjA1TlGjidPEjDi8XjIjoBmC8PM8AeAfR8NA+KZmyZw/9RPGymyeZtjxioxk5NOZDoXT9tu2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=rTcSqMBt; arc=none smtp.client-ip=209.85.222.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="TqzEg1GQ"
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-90f9f8553e0so11497276d6.1
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 12:47:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="rTcSqMBt"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92e85499ffbso142044085a.0
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 12:47:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1788378423; x=1788983223; darn=vger.kernel.org;
+        d=gourry.net; s=google; t=1788378425; x=1788983225; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=VW5hThLcNiS9B9Y8k40LTfPGZJYf7iWoviGkGwyNijs=;
-        b=TqzEg1GQ0mynWcwNXcKYtfBFIQpz9l41oqKUyll6YjdI/vbPvKurVd3ahcqF5Z+9vC
-         diu/Sc4/gcVQqbwhZKKA/r4yMh+2LIKGsuHPLT0kudAppx86QSYaPVUdEDZV7CimPozC
-         uW0/aBAgRla3TRFKjL13fdzbjOYMSub4btlS7O83eMysyi1D4kPcfCSL9S2qQi6sCZgL
-         57JHb85z4KSV4+Pkg8cKbZ59Of6yO84dqwC5vZw6CG5C2STQ+51C1jBqYLKq7algduMm
-         gNFo8AkMfCOTy0o5iht6PGXA3YaL9R1B4KFl+Ytl2BlSfzAU2mHJ65Q9S/z6tJIOmncc
-         fpiw==
+        bh=CBcqkxQZqwfVczJ4Zyf97FMnYegDKAQ3ju3Ot5Bn64M=;
+        b=rTcSqMBtlRahGp1rVVVaUt/Vpi0CeT61OOyPS99c398F9fqbGdfv2lCtvkhOlLyUCF
+         fWvKm8FzXO4VLEa6cjYLHztENQ7hDfD5lI8KlAMR0A5AtTnwGGHF/9le0tWkdywuKSbw
+         MIQ1XbX3JnZInw7RsvsDYXSHZvY9uLDowG+fKQzQ746sOQwOCDTec0JNh8lOrlqaVEbq
+         Gdq9g6+3yCRnm1rnrUTrSkvZNss5V2bZmgtnuMscmsESGo1neTVTyKralUjDNsnigIXM
+         wYXMdmtZBIq/NpIa39K/2lZGqVfv5XXOJVurvsL/hRV2sUpRyq5BeJm1zd/vYd5XADZ7
+         uebg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788378423; x=1788983223;
+        d=1e100.net; s=20251104; t=1788378425; x=1788983225;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VW5hThLcNiS9B9Y8k40LTfPGZJYf7iWoviGkGwyNijs=;
-        b=RiXB9nXLHXHmW3qAZU3WJmWkgGYyfvJr9QcMDebBVTTYqr3XE9KcCZSoyF91LJku1U
-         a3PVXVYl+uW0AiLPx18OYF+7F+Kl1yGjDT0/zFwWEiHhCPi/MbLgOf4JzQ75lG3Fq605
-         vBwAKaXBvqSp68T48T6TIAKEz0vUCXhilnJGGH2hFnhI617A2KADF6gM+siwTCZeTfE8
-         AKQ5AinzRLy2ZKP43W0fGwy++hkgVDtF2SxwxvNE/NSdaW/+WSexPGymxq0WTR1TebiX
-         w+9BYJlLAmuEgqqRejdujLY2bBv3Bf8aNhBUEMQawk8ZYvOqfyVTbA/vgms1oE3DzZWd
-         QZYA==
-X-Gm-Message-State: AFuF++kelSnFRdhZec6t1ucugbRjat7aBdPm7JcG6STKby443MG4Qzug
-	BTBCMbantzB4R9WMbOG3Bayi5LlbwHAjjiiKPYzMmHbp2hB45IDQvgZ0bDLRJ9oI8sU=
-X-Gm-Gg: AYBFou1w5UuLoxUv6UAV2p/S0Son/3GXjSMQ69TrKWRLTW4lSnBmHpSW8103GAbFzXs
-	44YhIFMWWtZmPEMgeBg9KjnoS11FaHdimAbFLjrVle3SZ1vjzFJJJ9ZJIpYAZ2RxGsXgBmD2wcj
-	UTFiFZlg64VrPwdDzLsawmgA87zg00caVoQA+I78KQeUGvBSp8P+qFaeKLK1Gib6N23kj/tWDtu
-	wUxy0h0ulFlYds4r9/K2JbZvpMdwVyFemrvaTIPlunb0yCPixHT/uArCp8Nhz0fkPBZC/iNF5ye
-	ZEJ6Dyc18JVZSXdbzAg3spmWNfZiFUh3MiDmmeeb365l/u7ZFKmwB87G3BASKhYgtzLv/oVVxDA
-	HzwQNgpFv1RJAZyK0SBTXZWrp33fuOlWm1suQGzoi5cPlGaY13qC3sX3VyZ+P+RmSnii5V4i8ex
-	jjeDnWhtaLO+hy5PIEjLPV78mGv0yh1818jKp0EyTexrDd/hYPCrwuqJuJqN9+Byw6B1ZLOBU2M
-	ZsTIFby392Cpt8tMRqSzrq3nElQD9IaAaBq4qrsUSmMs5HxVg==
-X-Received: by 2002:a05:620a:a40f:20b0:939:191c:cac7 with SMTP id af79cd13be357-93960e19503mr738239685a.13.1788378423217;
-        Wed, 02 Sep 2026 12:47:03 -0700 (PDT)
+        bh=CBcqkxQZqwfVczJ4Zyf97FMnYegDKAQ3ju3Ot5Bn64M=;
+        b=q3zYkoc3lWpZuAoLPAGzWZ5v6qfWU34A1RXte9LjLixHO2nv/ymFWG+Pupgkl0KBa6
+         ceHZ/ruBNLUUWw27q2VoyfPayGqOvxXgQtQqiLulaIy1U7BtT0fQXuUfjsX/cDSiToDb
+         7qNBrgibpJ8ZiY9byt4GHZoC+Kr3blojQqByaIL5H42t3S3z8pf0ChkDG5aUqljFt9kp
+         HaLOe7ukQFy5jc/wU7xbTX7vwazkYnW877kz80yVGuUV8TchPj/SAdyY6yvjZPe5+TWO
+         OWQxUF/eA2sh79RPj5vcPazgRXhFgo1yK51hrpdvkJQr9t1Z2aUlL1v0dmmBqTAy3qwu
+         oukA==
+X-Gm-Message-State: AFuF++nfsAc7cDpEzLPuoKq52VKTI/eNMkDh629YHNh0lYj5P3vycNKX
+	nJWz6XOh3Sul2dLV4ZpEyfGldVP+GVLHnNwoL9ru6mjYFhmGcVp5T0Digh6kvlKosIs=
+X-Gm-Gg: AYBFou1jY5YLxS+C0Du4TMsEzxjllmDrvTQ6Q9if19NEVvsRsSgXTJY6F5jymZWXyBJ
+	4QlVuX2ksfHl3h4e16i9pTUiU9mxarFmyYVNUFlZ8nsuonFK0wTEuEcAMGEg6qCTtZSyL9sUJid
+	RVAFU5T0pKYObkF2sbpZExDTmRFoAhJFP9Ce6tsCqu4carhnNdtY0JqMq7m+MMlsGAjBvhyaeWC
+	A8gtnUUfUuzD53R5RHdDYn339qsFMl2VF7OM4uecPptH0SgrrUYi49cDrFtWnRR5mCogg7jd+n1
+	bs26TngsGLEe6yeY1dwiFe1pXqbXWwRpcDx0QY9HemgCYFu3YeuNO/QOEJ5h8buR8EHIP4M11RV
+	MSkphURyBITvIHO/+z7jqUEFDL/9JfJChEHm0mw+FKqMqyhFa60l3+ReEVSZrc6fc+Iao+HorpA
+	133Ptx0sBtlaR3ZOq6Qpqmhp4iMyWcgMiVMzk0sMDFxuqSfOjuaPAcC3v+WLWYI73Iqqt3cZqZT
+	oky1gRnVHIjFVHofcZ023ktTrE+6rSb/ZfMdfjD+ughXmephNqnexi5HJZq
+X-Received: by 2002:a05:620a:bd4:b0:939:3a8c:28f4 with SMTP id af79cd13be357-93960de25e9mr874489085a.10.1788378425144;
+        Wed, 02 Sep 2026 12:47:05 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9395f18801asm299300585a.16.2026.09.02.12.47.02
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9395f18801asm299300585a.16.2026.09.02.12.47.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 12:47:02 -0700 (PDT)
+        Wed, 02 Sep 2026 12:47:04 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: kvm@vger.kernel.org,
@@ -78,9 +78,9 @@ Cc: kvm@vger.kernel.org,
 	apopple@nvidia.com,
 	shuah@kernel.org,
 	Dave Jiang <dave.jiang@intel.com>
-Subject: [PATCH 2/5] mm/mempolicy: add mpol_set_shared_policy_range()
-Date: Wed,  2 Sep 2026 15:46:54 -0400
-Message-ID: <20260902194657.79075-3-gourry@gourry.net>
+Subject: [PATCH 3/5] KVM: guest_memfd: bind backing memory to a NUMA node at creation
+Date: Wed,  2 Sep 2026 15:46:55 -0400
+Message-ID: <20260902194657.79075-4-gourry@gourry.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260902194657.79075-1-gourry@gourry.net>
 References: <20260902194657.79075-1-gourry@gourry.net>
@@ -92,34 +92,46 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-mpol_set_shared_policy() installs a policy over a VMA's page-offset
-range, which is the only programmatic way to populate an inode's
-shared policy after init.
+guest_memfd presently allocates its page-cache folios through a
+per-inode shared mempolicy (kvm_gmem_get_folio()).
 
-Two limitations make it unusable for binding an entire backing inode
-from in-kernel code:
+Today that policy can only be set after the fact, via mbind() on
+a host mmap of the fd. This requires the fd to be mmap-able and
+cannot reach folios that are only ever guest-faulted (no host VMA).
 
-- It requires a VMA, so it cannot cover unmapped offsets.
-  (e.g. unmapped file folios faulted by pagecache)
+Neither holds for a non-mappable (confidential) guest_memfd.
 
-- mpol_shared_policy_init(), the only no-VMA installer, reconstructs
-  the policy from mpol->w.user_nodemask.  That field is only populated
-  for static/relative or mount-string policies.
+Add GUEST_MEMFD_FLAG_BIND_NODE.
 
-  a policy built programmatically (e.g. by mempolicy_create()) leaves it
-  empty and stores w.cpuset_mems_allowed instead and _init mangles it.
+When set, KVM builds an MPOL_BIND policy for the requested node and
+installs it over the whole inode's shared policy, so every folio
+is allocated on the requested node with no userspace mbind().
 
-Both matter to a caller that wants a whole inode bound at creation.
-guest_memfd is one: it has no VMA at that point and may never gain one
-for a given offset, and it builds its policy in-kernel rather than from
-a mount string, so neither existing installer can express it.
+The flag is advertised through KVM_CAP_GUEST_MEMFD_FLAGS only when
+CONFIG_NUMA is enabled.
 
-Add mpol_set_shared_policy_range(), which installs an already-built,
-fully contextualised policy verbatim over an arbitrary [start, end)
-page range with no VMA.
+Two user-visible behaviors worth noting:
 
-Reimplement mpol_set_shared_policy() as a thin wrapper that derives
-the range from the VMA, so both share a single underlying path.
+- mempolicy_create() constrains the request against the calling task's
+  cpuset. Requesting a node outside the cpuset mems_allowed results
+  in the ioctl failing with -EINVAL. Binding is essentially subject
+  to the same cpuset constraint as mbind().
+
+  This behavior is correct - a task cannot grant a guest_memfd access
+  to a node it cannot access itself.
+
+- The policy hangs off the inode, and nothing rebinds an inode's
+  shared policy on a later cpuset change.
+
+    mpol_rebind_task() walks tsk->mempolicy
+    mpol_rebind_mm() walks vma->vm_policy
+
+  Neither walker reaches a struct shared_policy.
+
+  The binding is therefore fixed for the life of the fd. That matches
+  shmem, whose inode policy behaves the same way, and is the intent
+  here: the node is a property of the guest's backing memory, not of
+  whoever happens to hold the fd.
 
 Suggested-by: Dave Jiang <dave.jiang@intel.com>
 Co-developed-by: Dave Jiang <dave.jiang@intel.com>
@@ -127,81 +139,128 @@ Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Gregory Price <gourry@gourry.net>
 Assisted-by: Claude:claude-opus-4-8
 ---
- include/linux/mempolicy.h |  2 ++
- mm/mempolicy.c            | 35 +++++++++++++++++++++++++++++------
- 2 files changed, 31 insertions(+), 6 deletions(-)
+ include/linux/kvm_host.h |  3 +++
+ include/uapi/linux/kvm.h |  5 ++++-
+ virt/kvm/guest_memfd.c   | 44 ++++++++++++++++++++++++++++++++++++++--
+ 3 files changed, 49 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/mempolicy.h b/include/linux/mempolicy.h
-index aef018ad92317..398318175cec7 100644
---- a/include/linux/mempolicy.h
-+++ b/include/linux/mempolicy.h
-@@ -124,6 +124,8 @@ int vma_dup_policy(struct vm_area_struct *src, struct vm_area_struct *dst);
- void mpol_shared_policy_init(struct shared_policy *sp, struct mempolicy *mpol);
- int mpol_set_shared_policy(struct shared_policy *sp,
- 			   struct vm_area_struct *vma, struct mempolicy *mpol);
-+int mpol_set_shared_policy_range(struct shared_policy *sp, pgoff_t start,
-+				 pgoff_t end, struct mempolicy *mpol);
- void mpol_free_shared_policy(struct shared_policy *sp);
- struct mempolicy *mpol_shared_policy_lookup(struct shared_policy *sp,
- 					    pgoff_t idx);
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index da133ffe0b1c8..ce10ce4374643 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -3312,24 +3312,47 @@ void mpol_shared_policy_init(struct shared_policy *sp, struct mempolicy *mpol)
- }
- EXPORT_SYMBOL_FOR_MODULES(mpol_shared_policy_init, "kvm");
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 03bfc92864b6e..738e276633c1e 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -739,6 +739,9 @@ static inline u64 kvm_gmem_get_supported_flags(struct kvm *kvm)
+ 	if (!kvm || kvm_arch_supports_gmem_init_shared(kvm))
+ 		flags |= GUEST_MEMFD_FLAG_INIT_SHARED;
  
--int mpol_set_shared_policy(struct shared_policy *sp,
--			struct vm_area_struct *vma, struct mempolicy *pol)
-+/**
-+ * mpol_set_shared_policy_range - install @pol over [@start, @end) of @sp
-+ * @sp:    the shared policy tree
-+ * @start: first page offset (inclusive)
-+ * @end:   last page offset (exclusive)
-+ * @pol:   a fully-built, validated policy, or NULL to clear the range
-+ *
-+ * Installs @pol over the given range, replacing any overlapping policy.
-+ * @sp takes its own reference, the caller retains its reference on @pol.
-+ *
-+ * The policy is not reconstructed, so the policy is preserved exactly.
-+ *
-+ * Unlike mpol_set_shared_policy(), no VMA is required, so a range that
-+ * is never mapped into a VMA can be covered, including the whole file.
-+ *
-+ * Return: 0 on success, -ENOMEM on allocation failure.
-+ */
-+int mpol_set_shared_policy_range(struct shared_policy *sp, pgoff_t start,
-+				 pgoff_t end, struct mempolicy *pol)
- {
--	const pgoff_t pgoff = vma_start_pgoff(vma);
--	const pgoff_t pgoff_end = vma_end_pgoff(vma);
- 	struct sp_node *new = NULL;
- 	int err;
- 
- 	if (pol) {
--		new = sp_alloc(pgoff, pgoff_end, pol);
-+		new = sp_alloc(start, end, pol);
- 		if (!new)
- 			return -ENOMEM;
- 	}
--	err = shared_policy_replace(sp, pgoff, pgoff_end, new);
-+	err = shared_policy_replace(sp, start, end, new);
- 	if (err && new)
- 		sp_free(new);
- 	return err;
- }
-+EXPORT_SYMBOL_FOR_MODULES(mpol_set_shared_policy_range, "kvm");
++	if (IS_ENABLED(CONFIG_NUMA))
++		flags |= GUEST_MEMFD_FLAG_BIND_NODE;
 +
-+int mpol_set_shared_policy(struct shared_policy *sp,
-+			struct vm_area_struct *vma, struct mempolicy *pol)
-+{
-+	return mpol_set_shared_policy_range(sp, vma->vm_pgoff,
-+					   vma->vm_pgoff + vma_pages(vma), pol);
-+}
- EXPORT_SYMBOL_FOR_MODULES(mpol_set_shared_policy, "kvm");
+ 	return flags;
+ }
+ #endif
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index ac2d77d149635..8d3ae7e2ead8e 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -1658,11 +1658,14 @@ struct kvm_memory_attributes {
+ #define KVM_CREATE_GUEST_MEMFD	_IOWR(KVMIO,  0xd4, struct kvm_create_guest_memfd)
+ #define GUEST_MEMFD_FLAG_MMAP		(1ULL << 0)
+ #define GUEST_MEMFD_FLAG_INIT_SHARED	(1ULL << 1)
++#define GUEST_MEMFD_FLAG_BIND_NODE	(1ULL << 2)
  
- /* Free a backing policy store on inode delete. */
+ struct kvm_create_guest_memfd {
+ 	__u64 size;
+ 	__u64 flags;
+-	__u64 reserved[6];
++	__u32 node;
++	__u32 pad;
++	__u64 reserved[5];
+ };
+ 
+ #define KVM_PRE_FAULT_MEMORY	_IOWR(KVMIO, 0xd5, struct kvm_pre_fault_memory)
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 625e62e1a0318..dc9f071dd969b 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -423,6 +423,31 @@ static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
+ 	 */
+ 	return mpol_shared_policy_lookup(&GMEM_I(inode)->policy, pgoff);
+ }
++
++static int kvm_gmem_bind_node(struct inode *inode, int node)
++{
++	struct mempolicy *pol;
++	nodemask_t nodes;
++	int err;
++
++	if ((unsigned int)node >= MAX_NUMNODES)
++		return -EINVAL;
++
++	init_nodemask_of_node(&nodes, node);
++	pol = mempolicy_create(MPOL_BIND, 0, &nodes);
++	if (IS_ERR(pol))
++		return PTR_ERR(pol);
++
++	err = mpol_set_shared_policy_range(&GMEM_I(inode)->policy, 0,
++					  MAX_LFS_FILESIZE >> PAGE_SHIFT, pol);
++	mpol_put(pol);
++	return err;
++}
++#else
++static int kvm_gmem_bind_node(struct inode *inode, int node)
++{
++	return -EINVAL;
++}
+ #endif /* CONFIG_NUMA */
+ 
+ static const struct vm_operations_struct kvm_gmem_vm_ops = {
+@@ -520,7 +545,7 @@ bool __weak kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
+ 	return true;
+ }
+ 
+-static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
++static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags, int node)
+ {
+ 	static const char *name = "[kvm-gmem]";
+ 	struct gmem_file *f;
+@@ -561,6 +586,12 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+ 
+ 	GMEM_I(inode)->flags = flags;
+ 
++	if (flags & GUEST_MEMFD_FLAG_BIND_NODE) {
++		err = kvm_gmem_bind_node(inode, node);
++		if (err)
++			goto err_inode;
++	}
++
+ 	file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR, &kvm_gmem_fops);
+ 	if (IS_ERR(file)) {
+ 		err = PTR_ERR(file);
+@@ -593,6 +624,7 @@ int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args)
+ {
+ 	loff_t size = args->size;
+ 	u64 flags = args->flags;
++	int node = NUMA_NO_NODE;
+ 
+ 	if (flags & ~kvm_gmem_get_supported_flags(kvm))
+ 		return -EINVAL;
+@@ -600,7 +632,15 @@ int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args)
+ 	if (size <= 0 || !PAGE_ALIGNED(size))
+ 		return -EINVAL;
+ 
+-	return __kvm_gmem_create(kvm, size, flags);
++	if (flags & GUEST_MEMFD_FLAG_BIND_NODE) {
++		if (args->pad || args->node >= MAX_NUMNODES)
++			return -EINVAL;
++		node = args->node;
++	} else if (args->node || args->pad) {
++		return -EINVAL;
++	}
++
++	return __kvm_gmem_create(kvm, size, flags, node);
+ }
+ 
+ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
 -- 
 2.53.0-Meta
 
