@@ -1,106 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-128.mta0.migadu.com [91.218.175.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A5D33A708;
-	Wed,  2 Sep 2026 13:39:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00FC49F101
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 13:41:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788356357; cv=none; b=KNSb9fxuWQ8u2nnOUt3BvOBN6KAeeXlAfhbbNyqFYDYeuGhL8ck2tmcBAEEAOa07c/PiFFBRnAohu1vruGk7wbh4Oj5KuMQSvJ8bkzIHG/lnLeQiqHiHCLWMtRPxt53YZht036gr5GAyj7KTDoEKQkp6UMeOZD3rp1vmMRoD0/8=
+	t=1788356486; cv=none; b=utEraklI2QTBa1N7bYDjiNl+54fRPRKY/SpF2wn8iV59DZBtI/6pdBGewFF6fMdWm7IHWPIxXcpQCysEyWZGUYIDcYlxHnBha/MpzCzd2PF2oeCHjMDFjoZx/zpAp2NZMnxiiFnO2AYEPK8bbTDyosGamn81BVjH5wVfpE6oV+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788356357; c=relaxed/simple;
-	bh=m2cgfjeYTUH+l5b6BxYg57dZkIziC7id9lu9aHjLSnU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nopV3VWg0fTJOyM9ILr/BKu8JHny6bJ92vrE9L7P7sfmce4JJO9j6Zw0qb8MlSCQMehbLwXQhTcRS4kIwUe4NKZMmA2sY3N1LWvJR+jvrCIO3l+rbFDl2b2qSFmNv8EW6eNTDnNYehfJgkssSAbYKhWGO9PiEYMaeFzvN5KxC44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PI/s/53j; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1788356486; c=relaxed/simple;
+	bh=KMGUCU02nxvEGZQa8eku/iJ+RwAWXlAohhC96/fQmBE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YiEzEn2vDxmC1SXAbZt26SF/N0c96gFbMOl8zPVUJ+dgsYs4+2PghAkXq7vhNKVZ35k+ZLC3SnVxbe0zG3zf202DEn2sympPdl7Q6l93ip9Ugml+uyxqNMr6UlH7GLY3Eo3itTLp4EBsCYMXo+yTjF6woRi5FcM6Qp+28sWgL1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EeKGC8tZ; arc=none smtp.client-ip=91.218.175.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PI/s/53j"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788356356; x=1819892356;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=m2cgfjeYTUH+l5b6BxYg57dZkIziC7id9lu9aHjLSnU=;
-  b=PI/s/53j/eK1kshMgvdfrml4la9LXMmbE4Da60la0dbZ2+Z/RpQ/BVmt
-   eBgaUtBbT2kw1a78Q+uR2GvFDhiIH5UImc3Oa9IlnILQyXaFKEQ8qEVht
-   fPOn9lgHszMn25aeOCKXzPPzgVn5N3M2rIo0KUxk3Lkze8mbfA3A7046L
-   TVUqNAEJE1wNT0jE4hw3HpMmXnZBrpXPwFnICDFOKydDgWnww47dFTbXQ
-   mAvo3soi1nvVoPlpLWxSG3f7J2PdxL79FU4n8nwMBx8hjuh0KPFhyKW38
-   GEtOVmyMSL/8kYs90Z/9j5pKuM0CjpTm2xwM3gOu5g18AvZjRzQ8uKk/S
-   w==;
-X-CSE-ConnectionGUID: pazSwE6oRkC7KRgdMcGGYw==
-X-CSE-MsgGUID: RAB4LDSIRKuubPSCAm8jrw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="88692121"
-X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
-   d="scan'208";a="88692121"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 06:39:16 -0700
-X-CSE-ConnectionGUID: DTXngitjSJWVIXQsNv0A4g==
-X-CSE-MsgGUID: JWtBVwRQTwarpY5bWk0ctg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
-   d="scan'208";a="263249547"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 06:39:12 -0700
-Message-ID: <f4594d40-cc15-41c8-99f1-2db590bba2ef@intel.com>
-Date: Wed, 2 Sep 2026 21:39:10 +0800
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EeKGC8tZ"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=KMGUCU02nxvEGZQa8eku/iJ+RwAWXlAohhC96/fQmBE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788356481; v=1; x=1788961281;
+ b=EeKGC8tZQs3FUBBzoU+ocKZ3OZDKZts4tPbvvD9OF8JonKVCNs/M0MC3Slx2jjrW8eIQ8IpN
+ /OXpZbGizgLXQpRHsAzRaclJVW0xBJqFapj5VZOnvPC4KV7hK3z8zXQKHX5XIDEdjQ1uFSXpjhn
+ LhfUd21F2YHOMenlUrA2X97E=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id ce0b63c89f984c47;
+	Wed, 02 Sep 2026 13:41:21 +0000
+X-Mizu-Trace-ID: ce0b63c89f984c47
+X-Migadu-Flow: FLOW_OUT
+From: Fuad Tabba <fuad.tabba@linux.dev>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Oliver Upton <oupton@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Fuad Tabba <tabba@google.com>,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: selftests: Fix arm64 sysreg header dependencies
+Date: Wed,  2 Sep 2026 14:41:18 +0100
+Message-Id: <20260902134118.2718200-1-fuad.tabba@linux.dev>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] KVM: TDX: Validate directly configurable CPUID
- bits
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>
-Cc: "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>,
- "kas@kernel.org" <kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
- "Gao, Chao" <chao.gao@intel.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
-References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
- <e2f8f7976ac6a54e0bbda0e65ed9990940d9fef3.camel@intel.com>
- <d2efe512-e4fe-407f-96a8-b274fef23382@linux.intel.com>
- <6f8f2c59-3336-4ed8-837f-57cb706ece30@intel.com>
- <69c42183261acb4150961cabf6318b92765b6562.camel@intel.com>
- <91c9e314-6b92-4f90-a2df-ed21104f84bc@intel.com>
- <e4b9509c4e4b91277a30f88cb7ca76c8ba016997.camel@intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <e4b9509c4e4b91277a30f88cb7ca76c8ba016997.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/2/2026 9:13 PM, Edgecombe, Rick P wrote:
-> On Wed, 2026-09-02 at 18:29 +0800, Xiaoyao Li wrote:
->> So the proposal is making TDX behave as if the relevant VMCS save/load 
->> controls (if any) are set around TDH.VP.ENTER.
->>
->> In fact, what matters for host vmm is just the VM_EXIT_LOAD_XXX control. 
->> So the proposal becomes "If there is VM_EXIT_LOAD_XXX control for a 
->> state, TDX needs to restore the host state after TDH.VP.ENTER. If no 
->> such contorl, TDX sets the state to INIT state after TDH.VP.ENTER".
->>
->> It's a fancy idea. And it provides a clear rule of how TDX handles 
->> states of a feature so that host VMM developers don't need to read the 
->> TDX module API to figure out what's the value of a state after TDH.VP.ENTER.
->>
->> It's helpful for host VMM developers, though I'm not sure on TDX module 
->> developers.
-> 
-> I don't think they have agreed to it yet (Binbin?), but I think it mostly works
-> this way already. Why do you think it is a burden on TDX module developers?
+The rule generating the arm64 sysreg header targets the generated
+directory, and its only prerequisites are tools/arch/arm64/tools/*,
+which is the inner Makefile. An existing directory looks up to date,
+so an incremental build never regenerates sysreg-defs.h. A selftest
+referencing a register added to the table since then fails with
+undeclared SYS_* identifiers. Clean builds are unaffected.
 
-Because it can bring confusion to TDX module developers. VM_EXIT_LOAD_XXX control
-is used by SEAM VMCS to load states for TDX module execution context. And I think
-for most features SEAM VMCS doesn't set it (I don't check it though).
+Depend on the generator's inputs, and target the header rather than its
+directory, whose mtime does not change when the header is rewritten.
 
-SEAMCALL is kind of a VM exit, and SEAMRET is kind of a VM entry. To automatically
-save and restore the host state, what TDX needs are VM_EXIT_SAVE_XXX, VM_ENTRY_LOAD_XXX,
-and vmcs guest state for XXX.
+Fixes: 70c7b704ca725 ("KVM: selftests: Avoid using forced target for generating arm64 headers")
+Assisted-by: LLM
+Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
+---
+Unlike the two existing sysreg-defs.h rules, this one's recipe is a recursive
+make, so its prerequisites are not the recipe's arguments. They only decide
+whether to recurse, which is a question tools/arch/arm64/tools/Makefile already
+answers. An alternative is therefore to drop the two explicit inputs in favour
+of:
+
+	$(GEN_SYSREG_DEFS): FORCE
+
+leaving that Makefile as the only place naming the generator's inputs. Both
+forms regenerate the header and rebuild the dependents in the same invocation,
+and neither rebuilds anything when nothing changed. I kept the explicit
+prerequisites so that the recursion stays conditional, but I am happy to respin
+with FORCE if you would rather.
+
+ tools/testing/selftests/kvm/Makefile.kvm | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 96bab7002d39e..4a1f1bfcff0e3 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -303,9 +303,14 @@ arm64_hdr_outdir := $(tools_dir)/
+ endif
+ 
+ GEN_HDRS := $(arm64_hdr_outdir)arch/arm64/include/generated/
++GEN_SYSREG_DEFS := $(GEN_HDRS)asm/sysreg-defs.h
+ CFLAGS += -I$(GEN_HDRS)
+ 
+-$(GEN_HDRS): $(wildcard $(arm64_tools_dir)/*)
++# A directory's mtime does not track the header inside it.
++# Sysreg inputs duplicated from tools/arch/arm64/tools/Makefile, keep in sync.
++$(GEN_SYSREG_DEFS): $(top_srcdir)/arch/arm64/tools/sysreg \
++		    $(top_srcdir)/arch/arm64/tools/gen-sysreg.awk \
++		    $(wildcard $(arm64_tools_dir)/*)
+ 	$(MAKE) -C $(arm64_tools_dir) OUTPUT=$(arm64_hdr_outdir)
+ endif
+ 
+@@ -359,10 +364,10 @@ EXTRA_CLEAN += $(GEN_HDRS) \
+ 	       $(TEST_GEN_OBJ) \
+ 	       cscope.*
+ 
+-$(LIBKVM_C_OBJ): $(OUTPUT)/%.o: %.c $(GEN_HDRS)
++$(LIBKVM_C_OBJ): $(OUTPUT)/%.o: %.c $(GEN_SYSREG_DEFS)
+ 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+ 
+-$(LIBKVM_S_OBJ): $(OUTPUT)/%.o: %.S $(GEN_HDRS)
++$(LIBKVM_S_OBJ): $(OUTPUT)/%.o: %.S $(GEN_SYSREG_DEFS)
+ 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+ 
+ # Compile the string overrides as freestanding to prevent the compiler from
+@@ -372,10 +377,10 @@ $(LIBKVM_STRING_OBJ): $(OUTPUT)/%.o: %.c
+ 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c -ffreestanding $< -o $@
+ 
+ $(shell mkdir -p $(sort $(dir $(TEST_GEN_PROGS))))
+-$(SPLIT_TEST_GEN_OBJ): $(GEN_HDRS)
++$(SPLIT_TEST_GEN_OBJ): $(GEN_SYSREG_DEFS)
+ $(TEST_GEN_PROGS): $(LIBKVM_OBJS)
+ $(TEST_GEN_PROGS_EXTENDED): $(LIBKVM_OBJS)
+-$(TEST_GEN_OBJ): $(GEN_HDRS)
++$(TEST_GEN_OBJ): $(GEN_SYSREG_DEFS)
+ 
+ cscope: include_paths = $(LINUX_TOOL_INCLUDE) $(LINUX_HDR_PATH) include lib ..
+ cscope:
+
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+-- 
+2.39.5
+
