@@ -1,172 +1,140 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD79648820D;
-	Wed,  2 Sep 2026 14:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E44372EDB;
+	Wed,  2 Sep 2026 15:09:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788360810; cv=none; b=FDUR5Q6HDlImKgnW0cpTQoCK3zWSeNr4zfa49uxcGHOqZYk2KQpZYWm3kEiKqjbnhEuwcX8IJmKUpak4fsXYIie370xRqTPqX3SBVD+UAl/yjPmfHzp4uZ3P2LoxRIX3+5xxrSB043GvIxMQgsatEagZ48L7R3eE8XIIhImDLLs=
+	t=1788361765; cv=none; b=VCj4l5RH6LjNePik6007g6hYsOl9O2F3rUWkbtvzYSQAwmfqdQPOvIR5HMRrL/L/smMc9TyGqaub3nm0bKL7Sd+I0iPdGokhlTC5CJ02V7xIZZj9a0olzjPdulwU5tVEt/DXXE/0fHukmtQS0PBp2ma/rO4zdkpFfrPAOkanLkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788360810; c=relaxed/simple;
-	bh=QZNlpbHzqGu67GTCDPymcI6jZrf5t3k7ROAW5RILhNQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SrjKMG9W32XexygUnXGVfrPff/RVR9GJP2IwoD+sURfd5H2RXhW9vhR8BeSe9PI3ojXBSO8l0/XIPyMJtMqvkw1xS4tONCeYgf2XgJ/rfBCNEeWiHZ59oJJWEDtYNoA+OV6BxWzh0W3GuHv8yRCsw2XvIiYxUbpMjJiKAVlsX1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=LyN2hMe/; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1788361765; c=relaxed/simple;
+	bh=H3j5nF4TmlSYPKfTyb8977B5+QpR60ZF5BUApcbj1sM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CD3xR3433IQXIMFJp3iKAYSbKG3pcSDIUzk4qlyLNgpEbLhmWPWnCzhZrzzqmquEUY7AGSx3h2sognjVOmr5CfZw77QYhLzD4w3mUWnQeTse94icXqL7cXClDsw+SJ8B2Cl+OIsfrmR4x3T0bdhQxpqxjq7qQCX8dBLzB92w4oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EyUJ31hh; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="LyN2hMe/"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 682CVtfI046984;
-	Wed, 2 Sep 2026 14:53:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=5Xs7Mu
-	6jnbGPV8UltG0ZSUs2j/TcJCLYMEpH07v+Iqg=; b=LyN2hMe/qpHb7dbgo09vaj
-	SlxO3cdJTT7yP2mv5NsUrAjIozgf5npqbpuUgh+oxFUJU9HLQ9LNI+IZpMJiFOKr
-	aX8ThXG7vof+Ek2qbKODtAfzH0Bo1AI2hJk7UNFLX+tiIgMeCM4ZS3xHpRIUJKvd
-	jhGg/ThNd7hKooVJUQ3MzaxSQZzkQnK8NlF63wKMR16Ssx+6kf7RKUMpC34BgcHN
-	RkDkGXWx5SyRRmaCU1AXQYfG2+I/YZSTi5YlCLCdB/2luX9HKEC0pZ1/sFSjJT4S
-	GT0aRB6qlapVWLb2ZcBbkQ2IbjhpeKy/soejKhXo074OFxwGo5nimWbgjsAOSstQ
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbq2tevgj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 02 Sep 2026 14:53:22 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 682EfIQS020342;
-	Wed, 2 Sep 2026 14:53:22 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gcb8hjcgm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 02 Sep 2026 14:53:22 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 682ErIgo42729956
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 2 Sep 2026 14:53:18 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0FF3520043;
-	Wed,  2 Sep 2026 14:53:18 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CABF720040;
-	Wed,  2 Sep 2026 14:53:17 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.224.75.30])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Wed,  2 Sep 2026 14:53:17 +0000 (GMT)
-Date: Wed, 2 Sep 2026 16:53:15 +0200
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank
- <frankja@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        David
- Hildenbrand <david@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Sven
- Schnelle <svens@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Vlastimil Babka <vbabka@kernel.org>,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-s390@vger.kernel.org
-Subject: Re: [PATCH 0/4] KVM: s390: replace page allocator calls with
- kzalloc()
-Message-ID: <20260902165315.06996af6@p-imbrenda>
-In-Reply-To: <apghz4XAgv0ro15t@kernel.org>
-References: <20260902-s390-kvm-v1-0-3bc0986550b1@kernel.org>
-	<20260902130612.41500808@p-imbrenda>
-	<apghz4XAgv0ro15t@kernel.org>
-Organization: IBM
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EyUJ31hh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788361762; x=1819897762;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=H3j5nF4TmlSYPKfTyb8977B5+QpR60ZF5BUApcbj1sM=;
+  b=EyUJ31hh4TTD1hzT8fqgzHt9U0RWF3duT52m72Ul/CXRuLU3qbInZ9RT
+   PkrjI75kQvssG05mESeqMy6XroGCYDdh35QlEzxiul2Ef146uAlnJd7DY
+   EdcL/QQJ0QNfiSzW7RSGDjMEayR2EPmlWaU2V52iWgpiR8MY2JR1SKs4Y
+   l4lodLC4YQd1j0MqnDOWRi+uFqyD/hM1KKles82gXJ4rNBAmLaVH+fLyJ
+   rsUsPykvI5PcTKmKDLkJdHUgq2/6gb9HyIXQ6ANFisl3N93LXdKC+Bqk2
+   WMN28Z2FgkEBMAOonlD0C1gRk1faR0N248F5Dw+TEXQ0tVhkVFPTSRkHo
+   w==;
+X-CSE-ConnectionGUID: Cfo6eOtRQFqIlvY6tFZSxA==
+X-CSE-MsgGUID: 708ce3DeTruDD8oiVLgsqw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="92643064"
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="92643064"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 08:09:18 -0700
+X-CSE-ConnectionGUID: 1CdeLdG3TSurM6JZ1pKiag==
+X-CSE-MsgGUID: 648WL4ejRxe8j5LURuOVUA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="266839021"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 08:09:12 -0700
+Message-ID: <6b565572-b316-4e86-906d-f150c896fe21@intel.com>
+Date: Wed, 2 Sep 2026 23:09:09 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=bc1bluPB c=1 sm=1 tr=0 ts=6a983862 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=iT-jVQeAxx133_sytAwA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAyMDEyOCBTYWx0ZWRfX3r5DrU+hPIcW
- +R/pcZv/kteCuUDX2LkaT6ApUjlBhLWtyovKwsaAQQoCGwbvcZDWmqnSSXphaVBMLn8tgVmCh0y
- RJBe5VAU3V5bEOioIpfs67jwI44Qu2A=
-X-Proofpoint-ORIG-GUID: MZWJC2roP1BPdcqri1p0hvQ2eJSxf6mS
-X-Proofpoint-GUID: MZWJC2roP1BPdcqri1p0hvQ2eJSxf6mS
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAyMDEyOCBTYWx0ZWRfX1jzB8OFQsNHP
- mjQXWPCaYr4kLevRUJ8A0C4QPOmEvs9DcOwbiDUAF0tIAMgGJnPR2eEmVCRJxzJBTsTBr7wyr95
- 7s7iCuKdY4BcRNmF4dGL/yskgrL3qLP9Q5e5TjuiXzmleig4QBjQYjALbQer+FpVG/7uC6tc/ku
- UWodck2j3oE5uQ2t9eDlyw6guvf1fwL0H055vP1eV+PEc+vR/bvnS3ZEgqGiRn9ijCL4Xb226Sv
- ohoO/C6W5QBjLbf2e008GPpsDo7+y7A53ldHa+e5tiaFJSDdy6YwvR7nvYzJr4SsfFw8SUXC14+
- Pc3z3rM4FttqIc42CCCQWiV/XYeQ8+VBYa5ATVkR1z/HOy+xmhYacFkQB80BpTeyMO5qyaEzYtg
- w2rKsi85ctxTEqGCCi6jlMgo4XoWg6AF5PZq8VgJ4dKBYrbUCm/qqWkq3fiKoIkFgIetVSx55cm
- e5ua7KLfza1fnn7nOJA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-02_03,2026-09-01_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 suspectscore=0 adultscore=0 malwarescore=0 spamscore=0
- lowpriorityscore=0 phishscore=0 clxscore=1015 priorityscore=1501
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2609020128
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/4] KVM: TDX: Track configurable CPUID bits allowed by
+ KVM
+To: Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org
+Cc: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com,
+ andrew.cooper3@citrix.com, nik.borisov@suse.com, kas@kernel.org,
+ rick.p.edgecombe@intel.com, chao.gao@intel.com
+References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
+ <20260827031837.2863609-2-binbin.wu@linux.intel.com>
+ <55488b92-66a8-45e5-ad0f-8fed63ce1187@intel.com>
+ <a30741f8-b99b-4f36-80a5-4688c2578d99@linux.intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <a30741f8-b99b-4f36-80a5-4688c2578d99@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, 2 Sep 2026 16:17:03 +0300
-Mike Rapoport <rppt@kernel.org> wrote:
+On 9/2/2026 8:33 AM, Binbin Wu wrote:
+>>> +static void __init tdx_initialize_cpu_cfg_caps(void)
+>>> +{
+>>> +    tdx_cpu_cfg_cap_init(CPUID_1_ECX,
+>>> +        TDX_CFG_EXTRA_F(MWAIT),
+>>> +        TDX_CFG_F(TSC_DEADLINE_TIMER),
+>>> +        TDX_CFG_F(AVX),
+>>> +        TDX_CFG_F(F16C),
+>>> +    );
+>> TDX 1.5.24 on SPR report configurable bits of CPUID_1_ECX as
+>> 0x31044988, which have
+>>
+>> - bit 3        MWAIT
+>> - bit 7        EST
+>> - bit 8        TM2
+>> - bit 11    SDBG
+>> - bit 14    XTPR
+>> - bit 18    DCA
+>> - bit 24    TSC_DEADLINE_TIMER
+>> - bit 28    AVX
+>> - bit 29    F16C
+>>
+>> but EST/TM2/SDBG/XTPR/DCA are not list here. I guess the reason is kvm_cpu_cap[] doesn't support it. If so, it seems to guard twice:
+>> 1. mentally/manually check if it a feature is supported in kvm_cpu_caps[]
+>>
+>> 2. kvm_cpu_caps guarding in tdx_cpu_cfg_cap_init().
+>>
+>> I think 1) is not necessary, we can rely on 2)
+> In general, if a feature is not supported by the common KVM CPU caps, 
 
-> On Wed, Sep 02, 2026 at 01:06:12PM +0200, Claudio Imbrenda wrote:
-> > On Wed, 02 Sep 2026 09:15:12 +0300
-> > "Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
-> >   
-> > > This is a (small) part of larger work of replacing page allocator calls
-> > > with kmalloc.
-> > > 
-> > > My initial intention a few month ago was to remove ugly casts [1], but then
-> > > willy pointed out that Linus objected to something like this [2] and it
-> > > looks like more than a decade old technical debt.
-> > > 
-> > > Largely, anything that doesn't need struct page (or a memdesc in the
-> > > future) should just use kmalloc() or kvmalloc() to allocate memory.
-> > > kmalloc() guarantees alignment, physical contiguity and working
-> > > virt_to_phys() and beside nicer API that returns void * on alloc and
-> > > doesn't require to know the allocation size on free, kmalloc() provides
-> > > better debugging capabilities than page allocator.
-> > > 
-> > > Another thing is that touching these allocation sites gives the reviewers
-> > > opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
-> > > another size is appropriate.
-> > > 
-> > > For larger allocations that don't need physically contiguous memory
-> > > kvmalloc() can be a better option that __get_free_pages() because under
-> > > memory pressure it's is easier to allocate several order-0 pages than a
-> > > physically contiguous chunk with the same number of pages.
-> > > 
-> > > And last, but not least, removing needless calls to page allocator should
-> > > help with memdesc (aka project folio) conversion. There will be way less
-> > > places to audit to see if the user was actually using struct page.  
-> > 
-> > I have some objections to this series, but not because of what you are
-> > trying to do (which is actually nice).
-> > 
-> > I understand that you probably wanted to touch as little code as
-> > possible,  
-> 
-> Yep :)
-> 
-> > but now since you're rewriting the allocations to use
-> > kmalloc.... I'd like them to be converted to use the __free(kvmalloc)  
-> 
-> You mean __free(kfree)? Sure, I can look into it.
+For kvm-intel.ko, kvm_cpu_caps[] just means the supported CPUID features
+for VMX VMs. Treat it as the common KVM CPU caps is a bit arguable.
 
-yep :)
+> I prefer not
+> to add it to the list to save a few lines of code, which probably is dead code,
 
-> 
-> > system. It will make the code smaller, easier to read and understand,
-> > less prone to future errors, etc.
-> > 
-> > In some places the whole code flow can be simplified a lot.  
-> 
+I don't think it's dead code. It shows that these features are
+virtualizable to TDs from the POV. of TDX.
 
+In the end, they might be disallowed to be configured to TDs because KVM
+doesn't allow them for VMX VMs. This is also the point I want to discuss.
+Do we really want to make such restriction that KVM cannot enable/allow a
+feature for TDs unless KVM first enables/allows it for VMX VMs? What's
+reason behind it?
+
+> unless people find it too confusing.
+> I can add a comment to clarify this.
+> 
+>> BTW, this seems also breaks the current userspace after this series.
+>> - Before, EST/TM2/SDBG/XTPR/DCA are allowed to be exposed to TD
+>> - After, they are not.
+> This does change the values returned by KVM_TDX_CAPABILITIES. However, my
+> understanding is that userspace is generally expected to only configure
+> features supported by both KVM and TDX, i.e. except for the features initialized
+> via TDX_CFG_EXTRA_F(), userspace is not expected to configure features not advertised
+> by kvm_cpu_caps[].
+> I can call this out in the changelog, and maybe also the doc for KVM_TDX_CAPABILITIES.
+
+yeah. This changes KVM's behavior and we definitely need to call it out,
+and provide justification.
+
+>> If we cares CORE_CAPABILITIES in patch 2, why EST/TM2/SDBG/XTPR/DCA don't matter?
+> Because CORE_CAPABILITIES was previously defined as fixed-1 in some old spec and
+> the QEMU marks it as fixed1. EST/TM2/SDBG/XTPR/DCA are not the case.
+
+I see. You added patch 2 because without it QEMU breaks. While for
+EST/TM2/SDBG/XTPR/DCA, QEMU doesn't break after they are turned to
+non-configurable. QEMU cannot represent all the userspace VMM. It still has
+the potential to breaks other userspace VMMs.
