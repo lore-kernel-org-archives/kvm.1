@@ -1,63 +1,63 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85763C1F46
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 19:47:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55403BE620
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 19:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788378430; cv=none; b=Pnx32A/v2hMbWEnXUu0GWUS3DOE9ptk95EYyFzh1szLC6n78GvoHSKZWgLqs9a1B2j8s8XWnIwyk5nSaTHREvavMoykWO5xNM7C84JPrWKRlLCzd6VOmjOAGCE1Og+ITKuqFKlL+E6Tfwu8d8GRizyhtBxUuqwjo2n+5u2yDq14=
+	t=1788378439; cv=none; b=Z7Ga6sHUV5in8q1Dow9USBlJiw9iXNcFEt8Kp/KL/Cy0BDpryvRU74xF09FnHHCh1QS3WmkJhuojXVvCx13/hHdxjpiA/L8ktR57yEFx3FXin8qqsNCZhBlB2Rmfb7WaDg0E8zx5ctYuYVdd3/uMlnk1o/voAcA2+44iSLGE5+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788378430; c=relaxed/simple;
-	bh=0nDpyHAZVWDLsoBhhy63Ifby8fFRcSPcb4Ws9onqaLg=;
+	s=arc-20240116; t=1788378439; c=relaxed/simple;
+	bh=3roPg4ZfXvCu9H2QE9Rl5CyrdVkiobJpwL6O2Q76emc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cb+TB7GvsW3cbiz8hum34bmWGcRlMG7HlKSog19THjBJra+rFcouyaPVK/uUPVVGwxYtZAe7zK7ss6eM5gJ02s8ElJyTxqvaNxWV41DQ2JJ25CJ0tdkLF7WPF9lIVNlNtF+z+Hofjo4CCkmqZNm6mn9k3oVCAenDafeBJC2FQdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=FX5lvnqF; arc=none smtp.client-ip=209.85.222.174
+	 MIME-Version; b=ROHLYm5SbV8p+/kG1JHfQ4xJX2+IleOX/H1xShBckBKfuwdFZyvAJywJNYIC9Mo6JgWIuVjQrzcCL6TQqCkL09lKVNmKvCvl8v1beXOv6CKNdGwPTRb3GQcjqjp9/sfUnB6nRq80f6Czw01FSTyybu0TsiqkomxW9t7haL4m3pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=RqW2ef64; arc=none smtp.client-ip=209.85.219.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="FX5lvnqF"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-939309d02d6so141300085a.3
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 12:47:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="RqW2ef64"
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-90e7d9c747eso18414816d6.2
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 12:47:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1788378422; x=1788983222; darn=vger.kernel.org;
+        d=gourry.net; s=google; t=1788378427; x=1788983227; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=kwKfYOaniBtFKBvRoVSK69Bg/ErimmVxxQRLm+ngzMY=;
-        b=FX5lvnqFShYmBHLU90fDe7NqbwVu6vFPjuEsl4uNiisD/EYI0o308OLv+3OxIueOi6
-         iqsXFyjNk2mH0BJqLNcR5V+3VXGn+rDLE4+9aot7i96ogfWQHO856zIe7D6qXv6hInrR
-         oXyofk4o11G3pisIFIkbBbb6yGKc4RJB5IneWaZ6blnT6YA5hvYWCMMD/ExSqSolrsjt
-         nC5q90WycEMzWrzRn3+KIDkCbcbkgBGgpsstozusLOBWB9b0knQznES0P1N5ItKxF86k
-         kROKiiixbkDX3jyroXdWbPullQkQi7AgZP5/8wotjmFkGqzLnPbEQRQJQg63IAHUUkyD
-         jCkw==
+        bh=jK2MmrU5PHerjBBjkrNgI0UI4L0yhiHtWM989h7yfSE=;
+        b=RqW2ef64Dc/9ZRfrHgRDo90wDTDKIu9w78a73wauD9AG7v8UkzkHNEhej8zt2y1ben
+         S34SCE/9Ww4KgV7MmtL9YljeZ/UlvtKXcMqFf8OG7uE3/Xt4Z4jKh1RfZIKHFUET11GS
+         XSWsIijEmmWLnx+Ccl2AYR8XNBqzxYEQz2YkBaFqsjQOTSaQ/SRmCGZn7taedg4FVFgH
+         QoW3oVS0EoawlLIGaZQHooI8lFXwao0pSSxwvbvS9mwA/bPz0JVnJ6iZ2j+bDl3wArJL
+         9vANN+zk0eTfF0zh+lWRJMnfGqWXPNSlUwA8zGpqcW9ZrX4Y2rfndyJu/yFtJhVPf4I7
+         SXiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788378422; x=1788983222;
+        d=1e100.net; s=20251104; t=1788378427; x=1788983227;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kwKfYOaniBtFKBvRoVSK69Bg/ErimmVxxQRLm+ngzMY=;
-        b=CB6OROKs45eZEL3uYNOYHNGNEjTNDU/ttakkNdV340mB/ZUNByzDgIFdrxDx5RR7k+
-         PJQjNPVjxO11VXNnOLvwdk3wlI/GfigRrIbJ5pIX2Eid1pfDTEVxwiyhD3LlNu7DLjgT
-         FcHfRMEoJDsn+zeqPsv66lTvhvqh3G45CM8g+CtppJnu43+mqvAgmbnj+v321SRzMOxP
-         OfFfIvqW6L0btkuupjeLc8K01bSsg1PpNkwTpKO6FZHuiDDNFMIqFxMoG4hXYnt/ItZv
-         n5GS5x4OCHpWlrBusr/KjLXBJDpJBjfK4bjm94tryAOgbirLh05CxGThUOpwJy53zNJD
-         6Q9g==
-X-Gm-Message-State: AFuF++kcIyxPaWayIKxDKb6f7drpolWWOtJJqJ5G35+8up1/lXov4l6x
-	l0AcMDdQFYYa5LYkhmAl/JdsHihja/J67t+APVkETnNTLpEkl8wW3Fn4669UivYixTw=
-X-Gm-Gg: AYBFou2VNSwBn5v78Nxey1SDqXiiboeB+kbgUn3ZZQ8cH/I24c8JSfct1qQtfSyHP7y
-	tjhI/i7isjSJZL0EWDbjTKbgUZaExNth61nTb/ioQ0Gx0GD52EhCeR1b+4Vpr8II0zrSPubeWiS
-	9eoFBIJqGeqrEgpgDa4OKUViV5+okxzdbMQ6EwER/64ONENU8jV5eD7x9JceMh4PBkoFEPzv0SR
-	R2Y8ahvnV38GkwM5iUZJ00K8CtkOOzo4QLI+e9MxXsm/lTnlvLCk4Ha6ptGj5c47uFXYuPlU4UR
-	sVidoiioYCcpzqbhA1JBNZKSxhaFVEu2NlyTQ3LF+rjhtaNOc7Qx7X+NHdzk/IWV5ttjHlhIWNe
-	q7zfd/1P1N+Qv0NX+NR8GP8qHDVLUsZTbdcu9DisFkVdOAWeqrQvS7JmrA+J1+s0wsnZKFdzXSu
-	GU77jhs+ZWQUDsUD45FdE07trVi0LpZKPhqpZdKPkw+NlQCS4OFOIvA641BfBs/ohbv5hNHPZ9c
-	uCZnddNv38WUvkxnfeKf+LNdZ1RvsJwO+RIwdQdT450yH6grw==
-X-Received: by 2002:a05:620a:4586:b0:930:9585:e08e with SMTP id af79cd13be357-9396f83aa9cmr61071585a.10.1788378421813;
-        Wed, 02 Sep 2026 12:47:01 -0700 (PDT)
+        bh=jK2MmrU5PHerjBBjkrNgI0UI4L0yhiHtWM989h7yfSE=;
+        b=GbdQhUrQcT4OngO9C1tJizWdvpO4XpFrcqYe6RPZ2SXzajRWYpDgCgt/PE09dfVBfb
+         +7w9aAElOvkPwOHYwWORtuZogV2uXhBhorle6IW9b4oWlhRmE6NZmfqwf+6BApq4lJRO
+         MiRSvAo2U6v74QPMYQjjl4Nyh1BTxztpVKJtQD24ZFsTR3oZzK4Ku5ovwfekzusoFthr
+         tHPuW0+E5T4qmsH+oGD8TQg8tpdruy7YDUhx36oFYm6lD9YK6fnbebUjbFeZtZRkCNPY
+         Iei/GAdDi/B8xSlLafj+QJe2aydL2cG6Omx7rFlxrtdltMMr3pDvZDDu5rgqj9DmH2sK
+         by3w==
+X-Gm-Message-State: AFuF++kOhXNt5YgqwOHhvVZu392qzMKwWASCSCREEZAhpNpvvc/Opfl/
+	y0bdZ6cNopaG5oJjNxkCRg/HE4mczXdyqiun5X0fy8+iRuGuQqlET6X10kSEUV04jI0=
+X-Gm-Gg: AYBFou2c9v2QBPu1pNoOFZyzX1jCBn7eFVMq8LgOeLPzG9ZyoLV4AN35V0ELh4ibJVx
+	oDFs1C0pYYjcA3QBSiZTp8G03zpjGxAXD1maiy/c16Cm11q8BcU7IutdcXH1XO9EGrWA81YgVkm
+	bdUlSe2gubre/wZpHPDMTCxfTz8pP2chVDFVRgd7jSFiJbO2bmKWacizFXxR+qYPs3jBvNVKC0m
+	qIuzaXt812qodFWcWSiClynmixA7fxDGFfQW5SM1D5Gl2M2TGUcE8SMC1RIBQPATy9rfRy9/y5o
+	S5jT6J2+HyDrfxlXPvgpmc+U4Sahu7VR78t4TOiOcKkBef2IKXGId7XAi+HnClduVCdw8zVfThj
+	bXhjI1NskdHWBN4mBDAgwunaEDPT0FJoVV2NwauHPUMWnRqlwemUfJH6cBgxU2W4nuNksV7wDxe
+	7y9aJnfLODeuYvMwkEXH3hEu6TQ6tKdTCrEBevoh1NcftaZHgxki+FkdyGI+E1PrlvldxtLEFWO
+	xCzJGsKYWF0ICFqZ9M1M7Irj/B84j21cVFVBf6uZRxFeInq7UBSr3W4ZJ7n
+X-Received: by 2002:a05:620a:3192:b0:936:ea3d:9313 with SMTP id af79cd13be357-9396ef7c45bmr114112385a.20.1788378426620;
+        Wed, 02 Sep 2026 12:47:06 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9395f18801asm299300585a.16.2026.09.02.12.47.01
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9395f18801asm299300585a.16.2026.09.02.12.47.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 12:47:01 -0700 (PDT)
+        Wed, 02 Sep 2026 12:47:06 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: kvm@vger.kernel.org,
@@ -77,9 +77,9 @@ Cc: kvm@vger.kernel.org,
 	ying.huang@linux.alibaba.com,
 	apopple@nvidia.com,
 	shuah@kernel.org
-Subject: [PATCH 1/5] mm/mempolicy: add mempolicy_create()
-Date: Wed,  2 Sep 2026 15:46:53 -0400
-Message-ID: <20260902194657.79075-2-gourry@gourry.net>
+Subject: [PATCH 4/5] selftests: KVM: guest_memfd: let the gmem_test() harness bind a node
+Date: Wed,  2 Sep 2026 15:46:56 -0400
+Message-ID: <20260902194657.79075-5-gourry@gourry.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260902194657.79075-1-gourry@gourry.net>
 References: <20260902194657.79075-1-gourry@gourry.net>
@@ -91,93 +91,97 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-do_set_mempolicy() builds a validated policy and installs it into
-the current running task.
+To test GUEST_MEMFD_FLAG_BIND_NODE - extend create_guest_memfd() to
+accept a node.
 
-An in-kernel user that wants to construct a mempolicy wants the same
-validation without the install step.
-
-Add mempolicy_create(mode, flags, nodes): it allocates the policy and
-contextualises it against the calling task's cpuset, and returns the
-mempolicy to the caller (or ERR_PTR on error).
-
-do_set_mempolicy() is deliberately left alone rather than reimplemented
-on top of it.  For syscall users, mpol_set_nodemask() and the current
-task policy swap must run under the task_lock(current) acquisition.
-
-Export the symbol to kvm for use in guest_memfd integration.
+Ignore the node argument if the BIND_NODE flag is not provided.
 
 Signed-off-by: Gregory Price <gourry@gourry.net>
+Assisted-by: Claude:claude-opus-5
 ---
- include/linux/mempolicy.h |  3 +++
- mm/mempolicy.c            | 40 ++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 42 insertions(+), 1 deletion(-)
+ .../testing/selftests/kvm/guest_memfd_test.c  | 50 ++++++++++++++++---
+ 1 file changed, 42 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/mempolicy.h b/include/linux/mempolicy.h
-index 65c732d440d2f..aef018ad92317 100644
---- a/include/linux/mempolicy.h
-+++ b/include/linux/mempolicy.h
-@@ -128,6 +128,9 @@ void mpol_free_shared_policy(struct shared_policy *sp);
- struct mempolicy *mpol_shared_policy_lookup(struct shared_policy *sp,
- 					    pgoff_t idx);
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index 2233d871a38f4..1818e0fea5690 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -25,6 +25,31 @@
  
-+struct mempolicy *mempolicy_create(unsigned short mode, unsigned short flags,
-+				   nodemask_t *nodes);
+ static size_t page_size;
+ 
++static int __create_guest_memfd_node(struct kvm_vm *vm, u64 size, u64 flags,
++				     u32 node, u32 pad)
++{
++	struct kvm_create_guest_memfd guest_memfd = {
++		.size = size,
++		.flags = flags,
++		.node = node,
++		.pad = pad,
++	};
 +
- struct mempolicy *get_task_policy(struct task_struct *p);
- struct mempolicy *__get_vma_policy(struct vm_area_struct *vma,
- 		unsigned long addr, pgoff_t *ilx);
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 2ad0a5f18280a..da133ffe0b1c8 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -1085,7 +1085,45 @@ static int mbind_range(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	return vma_replace_policy(vma, new_pol);
++	return __vm_ioctl(vm, KVM_CREATE_GUEST_MEMFD, &guest_memfd);
++}
++
++static int create_guest_memfd(struct kvm_vm *vm, u64 size, u64 flags, u32 node)
++{
++	int fd;
++
++	if (!(flags & GUEST_MEMFD_FLAG_BIND_NODE))
++		return vm_create_guest_memfd(vm, size, flags);
++
++	fd = __create_guest_memfd_node(vm, size, flags, node, 0);
++	TEST_ASSERT(fd >= 0, KVM_IOCTL_ERROR(KVM_CREATE_GUEST_MEMFD, fd));
++	return fd;
++}
++
+ static void test_file_read_write(int fd, size_t total_size)
+ {
+ 	char buf[64];
+@@ -418,26 +443,35 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
+ 	}
  }
  
--/* Set the process memory policy */
-+/**
-+ * mempolicy_create - build a validated, cpuset-contextualised mempolicy
-+ * @mode: MPOL_* mode
-+ * @flags: MPOL_F_* flags
-+ * @nodes: target nodemask, or NULL (interpreted per @mode; see mpol_new())
-+ *
-+ * Creates a new policy and constrains it to the task's cpuset.
-+ *
-+ * The caller owns the returned reference and frees it with mpol_put().
-+ *
-+ * Return: the policy (NULL for a default policy), or an ERR_PTR on failure.
-+ */
-+struct mempolicy *mempolicy_create(unsigned short mode, unsigned short flags,
-+		nodemask_t *nodes)
-+{
-+	struct mempolicy *pol;
-+	NODEMASK_SCRATCH(scratch);
-+	int err;
+-#define ____gmem_test(__test, __vm, __flags, __gmem_size, args...)	\
+-do {									\
+-	int fd = vm_create_guest_memfd(__vm, __gmem_size, __flags);	\
+-									\
+-	test_##__test(args);						\
+-	close(fd);							\
++#define ____gmem_test(__test, __vm, __flags, __gmem_size, __node, args...) \
++do {									   \
++	int fd = create_guest_memfd(__vm, __gmem_size, __flags, __node);   \
++									   \
++	test_##__test(args);						   \
++	close(fd);							   \
+ } while (0)
+ 
+ #define __gmem_test(__test, __vm, __flags, __gmem_size)			\
+-	____gmem_test(__test, __vm, __flags, __gmem_size, fd, __gmem_size)
++	____gmem_test(__test, __vm, __flags, __gmem_size, 0, fd, __gmem_size)
+ 
+ #define gmem_test(__test, __vm, __flags)				\
+ 	__gmem_test(__test, __vm, __flags, page_size * 4)
+ 
+ #define __gmem_test_vm(__test, __vm, __flags, __gmem_size)		\
+-	____gmem_test(__test, __vm, __flags, __gmem_size, __vm, fd, __gmem_size)
++	____gmem_test(__test, __vm, __flags, __gmem_size, 0,		\
++		      __vm, fd, __gmem_size)
+ 
+ #define gmem_test_vm(__test, __vm, __flags)				\
+ 	__gmem_test_vm(__test, __vm, __flags, page_size * 4)
+ 
++#define __gmem_test_node(__test, __vm, __flags, __gmem_size, __node)	\
++	____gmem_test(__test, __vm,					\
++		      (__flags) | GUEST_MEMFD_FLAG_BIND_NODE,		\
++		      __gmem_size, __node, fd, __gmem_size, __node)
 +
-+	if (!scratch)
-+		return ERR_PTR(-ENOMEM);
++#define gmem_test_node(__test, __vm, __flags, __node)			\
++	__gmem_test_node(__test, __vm, __flags, page_size * 4, __node)
 +
-+	pol = mpol_new(mode, flags, nodes);
-+	if (IS_ERR(pol))
-+		goto out;
-+
-+	task_lock(current);
-+	err = mpol_set_nodemask(pol, nodes, scratch);
-+	task_unlock(current);
-+	if (err) {
-+		mpol_put(pol);
-+		pol = ERR_PTR(err);
-+	}
-+out:
-+	NODEMASK_SCRATCH_FREE(scratch);
-+	return pol;
-+}
-+EXPORT_SYMBOL_FOR_MODULES(mempolicy_create, "kvm");
-+
- static long do_set_mempolicy(unsigned short mode, unsigned short flags,
- 			     nodemask_t *nodes)
+ static void __test_guest_memfd(struct kvm_vm *vm, u64 flags)
  {
+ 	test_create_guest_memfd_multiple(vm);
 -- 
 2.53.0-Meta
 
