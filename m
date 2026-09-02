@@ -1,56 +1,56 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E8A45DF7A
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 23:20:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45826463B73
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 23:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788391237; cv=none; b=ivy7Gyjng2DaxZ45+fmOjjR2WkIZid/i0kRb1LMIZNRyclTc3jxvuBuPwLIPY4HlUOf3bAAI2FkPaaVQG99XmJYogfpBXu8gH/hxMJTn9Gm2a+UCTicSWZj7yZE0SNEQmLkdzCSaa/ns1chrxp4P1hu//mdOkWxwYhoNYlp8ajw=
+	t=1788391238; cv=none; b=QFICCqUSDXCzbeS36IfElhsJVdxwLRQAbbX1TmXKgnmO1I7EqLMdVCt+N6XcGLNZOdgxM99qpJvuHwM32WMyPG7ePYg3XYXDipje4tLiyFxtuexmpkrBIWA6rNOZr/VQxyK29PYI/pI1YsHuMg1J4kI4+CagtdPrWED+JgS0f8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788391237; c=relaxed/simple;
-	bh=Yn7iZwfRL+iBGbAsuRhs7RQpTQvIvY4V0qX2H0NjNCk=;
+	s=arc-20240116; t=1788391238; c=relaxed/simple;
+	bh=FSGBRuEwSzDJ3Vm1ryh1BmDfkHN4mR10cVRnM1E5HAA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=e39l0PRXa98yV1o9ujjAuJ/yeWXcGCjicG2K0zNJrttPZR6UJycjgaD8eDBquy4+NlvOb7KFRySxh++8/ZhDqm/bhDoni47FI2pvNR88/A0muOLOUIkFODBqkxKBc9w7G4yBGeACr5F9TTPWPxW1rByGdcaLDyw1bubNX1O0HSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U3k+AhfZ; arc=none smtp.client-ip=209.85.214.199
+	 To:Cc:Content-Type; b=CLuTRl+EzZWOeeLghFIQO6QpsLxn0QF4zPSfpVBWToWqk3C3AIyYFq2fphr/0VCLfBLAWY+7dfcg53dPEWv516eGg0ALdbcHPTnyZk4615L169K71FWxB7Vw1WWv3NEQftdQExYmIUf3SRdKXtsXnBxPiYDSUvq0Z56SzAaLpV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hyJwR4ig; arc=none smtp.client-ip=209.85.216.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U3k+AhfZ"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cfe48ca1efso20822385ad.0
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 16:20:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hyJwR4ig"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e7ff7b375so2354598a91.1
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 16:20:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788391234; x=1788996034; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788391236; x=1788996036; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=o8QpYFg7hPmqiVoT4t2j3x9pF7hOUnJyzFfssLlOpVU=;
-        b=U3k+AhfZ9OUsxBw0/VmiToPIoCWwwkyNZgX7/4NISk0OpCjfYLXby7cZcd5txFyuue
-         OhZTiLPTnS6zaJX0AER4BLzOS5/c2qBKIYULjb5Vtozs0ncBJUJwwvsRfKObSPxewpKN
-         kgQF+5IfqPx5/Dh6M0nNw51qcCPUgVcPiTLzg3Tc3dXfiqCNoUEvxatz26faO890Y8zO
-         SJdB9QHY3+NNTqHTHEvuOJ5Uvuh8B5GQiqbiNlJDz5LZ0Oyft172CDerHTDDTaXdIWOB
-         UA8cXVOP9lUNqlST9YodGteV+9XfHoquRX/MCCD4FNZhGNeagglRqB99XjFHvN5Vf3Zw
-         tD8Q==
+        bh=0Np7Ag6FWXRYQphBkLQrwzv96GttQT1QLppJ7Rhn8bg=;
+        b=hyJwR4igCP4n6dYUEf3Ar4mb7hdQinNbHG1dZIMfaUmuJ+F5RN514QTV1jQn6Xw97L
+         L4FYkLDqMVXYcIGe4zBqeIY3m5O9F4EfuKe5bNeHBRLlSYfFAqNsITScToPjIyM7+NgV
+         Cu3vSr0E2BsM3FeM3WEFVRFrJT0hmlSYOKSGd+2Z5xS5pXeQNCuIOh9Nu0hHNmcuhXg7
+         zArJfclzAXVltR8x7O23+EEkmhhhmYgVwMcQ7HUCaKp20154PWS+LOh72STp42qhAIjU
+         ODNuD+3YT7Sn0t4sJc9UKVB+B/DpXDfMc4CFihHI7YugtU/ayaJadV1XldCqsf3/ZYJi
+         GPzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788391234; x=1788996034;
+        d=1e100.net; s=20251104; t=1788391236; x=1788996036;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=o8QpYFg7hPmqiVoT4t2j3x9pF7hOUnJyzFfssLlOpVU=;
-        b=fTsUFDBjetdg9wiXzMVpw+goW/C+OgWI/IplKS5skyD5iyP6FNZT1qXPUifn1NKynf
-         GuShl5iffsGN4BsTkBUIkJTTQIRz8W2qWnWJ6ohBnwkDFeLEjUD+Yq7N1iTmjRylO5fh
-         m9khrdAKmdqVUQc1aRyXdr1+gYl+f9zw+u6IY7a2TMAgXW02f4FypI6qyWld2CZIzU2L
-         Puz5tJhD4djFcm0KWQmSruAJtig0NJ6McJoAIFT7N79g00nJdG488B/QNeSzm8lcdy/1
-         s+pv0H2Yz5w50ZVfXZu7qDcP9mGYgdMQ8fT570dsNske/WTzkxj0JYy+ZoACwUFVR97d
-         il3w==
-X-Gm-Message-State: AFuF++nH+hZEFWrCoOMKg4SkEt47Aqdh5eYyG/rS/VNJUZC9UFJxEStP
-	MGQokbpLMhegy2f2bVT+WhNlKAWbtsXkn7GhZ+965LRslYL5lcA/1Vy1OILbKrLf9GeUmUgsl5f
-	M1PRrZw==
-X-Received: from plje8.prod.google.com ([2002:a17:902:ed88:b0:2d9:a2:2c28])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e804:b0:2d1:134:b86e
- with SMTP id d9443c01a7336-2daec5ad579mr105653085ad.2.1788391234310; Wed, 02
- Sep 2026 16:20:34 -0700 (PDT)
+        bh=0Np7Ag6FWXRYQphBkLQrwzv96GttQT1QLppJ7Rhn8bg=;
+        b=mMpG6GlipCSxGGT3eKA57nGSYNbFHerh9Q+KFctn1IiwkHffpF+cythtGl4Oc2U1cb
+         Hc3QTL8lg82qJdiSLdErLhvqxYX243YBNZBOTN2mBgmo8dDjV3L2aIq37xrWF1erXElU
+         OySa2OrSFWWG7pfRGlEhQgcgqmTPfkqGA4sMe1B/DwQfyQfwQZoyvc06JQHH3uC97p8y
+         xcuqKmZFmnhTglf0hZ+/2vSgCXcoic5grqS8+9TQz9IB6ZlZnerot036iU9kjLlq1HmO
+         qJeayE2nkXGpNjmhOcwhcnQ9vXQk0OO8nwjOFcHcXvt9C1uLhUAUf++4CzgJNROLOWj1
+         Uo1A==
+X-Gm-Message-State: AFuF++mvq33ORC5FdfGCs2G16J2fW36XaubNxNPGYsDVQx30eNzJ7alV
+	wqXCgAOYbix8nz3xi+NNpvNYhl9DmabgQDu3l4jwRgpBPr6KbUM8LvlzRgPV/rsxj9G51LRCifG
+	DA9hlRg==
+X-Received: from pjbli10.prod.google.com ([2002:a17:90b:48ca:b0:398:b684:5c15])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1a8a:b0:398:9be9:ab8c
+ with SMTP id 98e67ed59e1d1-39aee0e7272mr10212107a91.17.1788391235459; Wed, 02
+ Sep 2026 16:20:35 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed,  2 Sep 2026 16:20:27 -0700
+Date: Wed,  2 Sep 2026 16:20:28 -0700
 In-Reply-To: <20260902232028.2767071-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,45 +60,43 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260902232028.2767071-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.970.g62bdec98f9-goog
-Message-ID: <20260902232028.2767071-5-seanjc@google.com>
-Subject: [PATCH v2 4/5] KVM: x86/mmu: Bug the VM if KVM calcs a CPU role with
- EFER.LMA=1 && CR4.PAE=0
+Message-ID: <20260902232028.2767071-6-seanjc@google.com>
+Subject: [PATCH v2 5/5] KVM: x86/mmu: Convert MMU walker's bounds check from
+ BUG_ON() to KVM_BUG_ON()
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Yosry Ahmed <yosry@kernel.org>, Stefan Teodorescu <fane@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Bug the VM if KVM attempts to construct a CPU role with the should-be-
-impossible combination of long mode being active without PAE paging being
-enabled.  KVM's MMU construction assumes that EFER.LMA can be set if and
-only CR4.PAE is set, and will create a completely invalid MMU if that
-assumption fails.  FNAME(walk_addr_generic) already has sanity checks to
-try and mitigate the fallout, but attempt to catch such bugs earlier, as
-this is (at least) the second time KVM has had bugs that escaped into
-FNAME(walk_addr_generic), and it's entirely possible the bad state could
-cause problems elsewhere.
+Bug the VM, not the host, if KVM's sanity check that walking guest PTEs
+doesn't underflow the walker's level fires.  Bugging the host while holding
+mmu_lock is all but guaranteed to panic the host, KVM hasn't _yet_ consumed
+the out-of-bounds level (i.e. hasn't corrupted memory), and KVM is already
+committed to bugging the VM and synthesizing a guest page fault if a fatal
+MMU error occurs while walking guest PTEs.  I.e. there's no reason to keep
+the BUG_ON() at this point.
 
-Cc: stable@vger.kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/mmu/mmu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kvm/mmu/paging_tmpl.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 064ecc33b926..81c30e2c74f3 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5910,6 +5910,9 @@ static union kvm_cpu_role kvm_calc_cpu_role(struct kvm_vcpu *vcpu,
- 		return role;
- 	}
+diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
+index f925b11d76dd..c8ec47b09264 100644
+--- a/arch/x86/kvm/mmu/paging_tmpl.h
++++ b/arch/x86/kvm/mmu/paging_tmpl.h
+@@ -392,7 +392,9 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
+ 		offset    = index * sizeof(pt_element_t);
+ 		pte_gpa   = gfn_to_gpa(table_gfn) + offset;
  
-+	if (KVM_BUG_ON(____is_efer_lma(regs) && !____is_cr4_pae(regs), vcpu->kvm))
-+		*(u64 *)&regs->efer &= ~EFER_LMA;
+-		BUG_ON(walker->level < 1);
++		if (KVM_BUG_ON(walker->level < 1, vcpu->kvm))
++			goto error;
 +
- 	role.base.efer_nx = ____is_efer_nx(regs);
- 	role.base.cr0_wp = ____is_cr0_wp(regs);
- 	role.base.cr4_smep = ____is_cr4_smep(regs);
+ 		walker->table_gfn[walker->level - 1] = table_gfn;
+ 		walker->pte_gpa[walker->level - 1] = pte_gpa;
+ 
 -- 
 2.55.0.970.g62bdec98f9-goog
 
