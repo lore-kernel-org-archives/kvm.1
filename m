@@ -1,160 +1,106 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB1E49C4AA
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 13:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A5D33A708;
+	Wed,  2 Sep 2026 13:39:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788355838; cv=none; b=u1ifwTUnjxI7eYGcgnc7bO5b7so4OPtJEErXX/CbJr2rk23WuQ0QSxcTE5KmUqZNCk6BAKn7LwLlv4eIRBeYHPFwjDtgiGRJuhWb845R2w3hKi85JCLRDogG/4QQ/9HgbZs/VqJe8Kf8jKAUrMZU66SzsA6DMiUzuo1TK1ff4kI=
+	t=1788356357; cv=none; b=KNSb9fxuWQ8u2nnOUt3BvOBN6KAeeXlAfhbbNyqFYDYeuGhL8ck2tmcBAEEAOa07c/PiFFBRnAohu1vruGk7wbh4Oj5KuMQSvJ8bkzIHG/lnLeQiqHiHCLWMtRPxt53YZht036gr5GAyj7KTDoEKQkp6UMeOZD3rp1vmMRoD0/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788355838; c=relaxed/simple;
-	bh=MHL7rgwCnCCzQ0ALQS+vHavGvj+m/st2KmAo4YeAg84=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Ui3mgBomiolkjgF4OKsHhcmkU41OpGSVfH55GmzNq7WCIa/W0UKzB+CQg8J9IHdWn7GOWXB6KXJJ6ZfLTnMiNC0ZNCGpCUO4466syC2E+VE5ArUAa75F6mVODFSytiLHr+7FzE3wqSKIqQMd7AC0P0y4ltXGTnhyA08GWbLyhyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HDa/0Oej; arc=none smtp.client-ip=209.85.214.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1788356357; c=relaxed/simple;
+	bh=m2cgfjeYTUH+l5b6BxYg57dZkIziC7id9lu9aHjLSnU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nopV3VWg0fTJOyM9ILr/BKu8JHny6bJ92vrE9L7P7sfmce4JJO9j6Zw0qb8MlSCQMehbLwXQhTcRS4kIwUe4NKZMmA2sY3N1LWvJR+jvrCIO3l+rbFDl2b2qSFmNv8EW6eNTDnNYehfJgkssSAbYKhWGO9PiEYMaeFzvN5KxC44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PI/s/53j; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HDa/0Oej"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2d7151120d6so17169855ad.3
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 06:30:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788355835; x=1788960635; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mjYXG96MoSl8fTQZ7UxomEUfCMCHuYclL43aTeN6TlM=;
-        b=HDa/0OejXOLAo60mi/WsaiaFauY4lpsEUXD5S4ErepL7tSUt6BK+qswUsGtrZxee/k
-         AMZ89vrXic2a8oIk4MUXmdYjVgcZ22N31iZpGhm6wp5bEqyvzlstVg8GIru4/ZFYzAr2
-         z2ufT38pcUCxPWK5qjzBy7ZVEK8dn1yag6u5B0ZE8bax5eVnab2YxmbXblLtfaGalYs7
-         hpi+q61IuH+UMrDxcLyEQcHs1kOGaHEs8S50arsWnyewMnF8WqwSfP4x89pnsj9u46Qt
-         kPnJeo8nKopTl1HZzVkxmvjcGr8KP/cKkQGbpIuRrlO9PndMduKx7tHKOR7x6cSnWQGr
-         M4Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788355835; x=1788960635;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mjYXG96MoSl8fTQZ7UxomEUfCMCHuYclL43aTeN6TlM=;
-        b=bePGfmlRigmIMTmgn4tHIavBc2dncsTQyPFRHoCcSKYguuoBcwcolnW7UyE8sQiqUq
-         ImJD44J/6pmTqoHc+zIe1n9+wz8Bm5OwOvTLWlpA43AQn75NrTFi3bi0fYoXr5B3nkcD
-         5+hpGL2DQKrOP5UfFLbYuWOTmEPT1exp4AngV4Rrk/Es1uzbfK4VLjAugSUWq4feYWM0
-         dMRrNrckveKo66K9xuCegzgtIULPzHGSzAPaNqi19I5WdRbvftkfBYBdA44EsbpSoL3v
-         hUhzLQEOUxX+UyeJOiepACQPMEbX2JKZp3qbiobo8nsEGJGetlRQrh55MnMbhn+LAucI
-         V6ag==
-X-Forwarded-Encrypted: i=1; AKwUvBz3/lZ0yG262lmr+gJdiXC07zIGavXWiP5Jr/hr6KtdwzdLyH7GGHZ7G6LUXzWN9/7juDY=@vger.kernel.org
-X-Gm-Message-State: AFuF++nRFhlH2V1qwUtrQcAhelVU+5KnK+TPp0bqyfx3M2+Tsz3+vT/u
-	apvL4bBl2p5EeJxoQnekcrhduNOetnFV20QYcgDmc96Fj/YjKgAHn65vDt+eHiBUDAZIlSxWOR+
-	8AzrhqQ==
-X-Received: from plnt11.prod.google.com ([2002:a17:903:196b:b0:2d3:7166:b1a6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ec8b:b0:2d9:43f6:59f0
- with SMTP id d9443c01a7336-2daec7bae38mr68887665ad.22.1788355834704; Wed, 02
- Sep 2026 06:30:34 -0700 (PDT)
-Date: Wed, 2 Sep 2026 06:30:34 -0700
-In-Reply-To: <33431813-fc94-48fb-9042-5cfc68af05b8@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PI/s/53j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788356356; x=1819892356;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=m2cgfjeYTUH+l5b6BxYg57dZkIziC7id9lu9aHjLSnU=;
+  b=PI/s/53j/eK1kshMgvdfrml4la9LXMmbE4Da60la0dbZ2+Z/RpQ/BVmt
+   eBgaUtBbT2kw1a78Q+uR2GvFDhiIH5UImc3Oa9IlnILQyXaFKEQ8qEVht
+   fPOn9lgHszMn25aeOCKXzPPzgVn5N3M2rIo0KUxk3Lkze8mbfA3A7046L
+   TVUqNAEJE1wNT0jE4hw3HpMmXnZBrpXPwFnICDFOKydDgWnww47dFTbXQ
+   mAvo3soi1nvVoPlpLWxSG3f7J2PdxL79FU4n8nwMBx8hjuh0KPFhyKW38
+   GEtOVmyMSL/8kYs90Z/9j5pKuM0CjpTm2xwM3gOu5g18AvZjRzQ8uKk/S
+   w==;
+X-CSE-ConnectionGUID: pazSwE6oRkC7KRgdMcGGYw==
+X-CSE-MsgGUID: RAB4LDSIRKuubPSCAm8jrw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="88692121"
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="88692121"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 06:39:16 -0700
+X-CSE-ConnectionGUID: DTXngitjSJWVIXQsNv0A4g==
+X-CSE-MsgGUID: JWtBVwRQTwarpY5bWk0ctg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="263249547"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 06:39:12 -0700
+Message-ID: <f4594d40-cc15-41c8-99f1-2db590bba2ef@intel.com>
+Date: Wed, 2 Sep 2026 21:39:10 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-23-85e5fd25252a@google.com>
- <CA+EHjTzALzghuG5J-LFuG5pXJ4WgEfrMHgwkMHnq1U-D6yS7Pg@mail.gmail.com>
- <apcY5b2o5k04XffH@google.com> <33431813-fc94-48fb-9042-5cfc68af05b8@linux.intel.com>
-Message-ID: <apgk-nKsB31WVCWp@google.com>
-Subject: Re: [PATCH v12 23/45] KVM: Let userspace disable per-VM mem
- attributes, enable per-gmem attributes
-From: Sean Christopherson <seanjc@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Fuad Tabba <fuad.tabba@linux.dev>, ackerleytng@google.com, aik@amd.com, 
-	andrew.jones@linux.dev, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev, 
-	Xiaoyao Li <xiaoyao.li@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] KVM: TDX: Validate directly configurable CPUID
+ bits
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>
+Cc: "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "nik.borisov@suse.com" <nik.borisov@suse.com>,
+ "kas@kernel.org" <kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
+ "Gao, Chao" <chao.gao@intel.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
+References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
+ <e2f8f7976ac6a54e0bbda0e65ed9990940d9fef3.camel@intel.com>
+ <d2efe512-e4fe-407f-96a8-b274fef23382@linux.intel.com>
+ <6f8f2c59-3336-4ed8-837f-57cb706ece30@intel.com>
+ <69c42183261acb4150961cabf6318b92765b6562.camel@intel.com>
+ <91c9e314-6b92-4f90-a2df-ed21104f84bc@intel.com>
+ <e4b9509c4e4b91277a30f88cb7ca76c8ba016997.camel@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <e4b9509c4e4b91277a30f88cb7ca76c8ba016997.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 02, 2026, Binbin Wu wrote:
-> On 9/2/2026 2:26 AM, Sean Christopherson wrote:
-> > On Tue, Sep 01, 2026, Fuad Tabba wrote:
-> >> Hi Sean, Ackerley,
-> >>
-> >> On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
-> >> <devnull+ackerleytng.google.com@kernel.org> wrote:
-> >> ...
-> >>> +       kvm.gmem_in_place_conversion=
-> >>> +                       [KVM] Controls whether KVM enables in-place conversion
-> >>> +                       support for guest_memfd and tracks the private/shared
-> >>> +                       state of memory per guest_memfd instead of per VM.
-> >>> +
-> >>> +                       If enabled, KVM enables the KVM_SET_MEMORY_ATTRIBUTES2
-> >>> +                       ioctl on guest_memfd file descriptors and disables the
-> >>> +                       legacy VM-scoped KVM_SET_MEMORY_ATTRIBUTES ioctl for
-> >>> +                       private memory state tracking. Only the
-> >>> +                       KVM_MEMORY_ATTRIBUTE_PRIVATE attribute moves to
-> >>> +                       per-guest_memfd tracking; other attributes remain
-> >>> +                       per-VM.
-> >>> +
-> >>> +                       This parameter toggles KVM's in-place conversion
-> >>> +                       capability support. Whether a VMM uses separate backends
-> >>> +                       or out-of-place memory management is determined by
-> >>> +                       userspace VMM design.
-> >>> +
-> >>> +                       Note, this parameter is only available when
-> >>> +                       CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y. When
-> >>> +                       CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not set, in-place
-> >>> +                       conversion is unconditionally enabled.
-> >>> +
-> >>> +                       Default is Y (on).
-> >>
-> >> The parameter is only settable when CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y, and
-> >> in that config gmem_in_place_conversion initialises to
-> >> !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES), i.e. N, not Y. Is the doc line
-> >> wrong, or is N-by-default not what was intended here?
-> > 
-> > The doc is wrong.  The intent is to maintain backwards compatibility with existing
-> > deployments if KVM_VM_MEMORY_ATTRIBUTES=y.
-> > 
+On 9/2/2026 9:13 PM, Edgecombe, Rick P wrote:
+> On Wed, 2026-09-02 at 18:29 +0800, Xiaoyao Li wrote:
+>> So the proposal is making TDX behave as if the relevant VMCS save/load 
+>> controls (if any) are set around TDH.VP.ENTER.
+>>
+>> In fact, what matters for host vmm is just the VM_EXIT_LOAD_XXX control. 
+>> So the proposal becomes "If there is VM_EXIT_LOAD_XXX control for a 
+>> state, TDX needs to restore the host state after TDH.VP.ENTER. If no 
+>> such contorl, TDX sets the state to INIT state after TDH.VP.ENTER".
+>>
+>> It's a fancy idea. And it provides a clear rule of how TDX handles 
+>> states of a feature so that host VMM developers don't need to read the 
+>> TDX module API to figure out what's the value of a state after TDH.VP.ENTER.
+>>
+>> It's helpful for host VMM developers, though I'm not sure on TDX module 
+>> developers.
 > 
-> Will it result in the situation that kernel builds with CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> enabled by default for backwards compatibility, which requires users to explicitly enable 
-> gmem_in_place_conversion by the kernel option? Then it effectively disables
-> gmem_in_place_conversion by default.
+> I don't think they have agreed to it yet (Binbin?), but I think it mostly works
+> this way already. Why do you think it is a burden on TDX module developers?
 
-Yes.  My intent/expectation is that the only reason to build with
-CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y is for backwards compatibility, and so it makes
-sense to have the existing behavior be the default.  If a deployment only wants
-the new behavior, then it can simply build with CONFIG_KVM_VM_MEMORY_ATTRIBUTES=n.
+Because it can bring confusion to TDX module developers. VM_EXIT_LOAD_XXX control
+is used by SEAM VMCS to load states for TDX module execution context. And I think
+for most features SEAM VMCS doesn't set it (I don't check it though).
 
-Folks that want only the new behavior but are using a distro/pre-built kernel will
-need to manually enable in-place conversion, but that's not too onerous, and it's
-simply not feasible to provide defaults that work for every possible scenario.
-
-> But I guess it's OK for CSPs since they know what they want.
-
-Yep.
+SEAMCALL is kind of a VM exit, and SEAMRET is kind of a VM entry. To automatically
+save and restore the host state, what TDX needs are VM_EXIT_SAVE_XXX, VM_ENTRY_LOAD_XXX,
+and vmcs guest state for XXX.
