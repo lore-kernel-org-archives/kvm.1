@@ -1,111 +1,134 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E5A328B7B;
-	Wed,  2 Sep 2026 08:04:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788336297; cv=none; b=cLSS/AKgXjII7tJGnQ9T523Huo36nOaYTAyOGBywZbpyjFumZu+n9mIfao92WCzA8jfIyNkmTVEZnPr2kEWhrko2JKFFIo9SaygH7sr83HY5d1SXZ3nRImqbU5QaAEgdWfP6E9udSLCItF6fLuM6gx0ocQk2JKRk1vuDa5wsty4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788336297; c=relaxed/simple;
-	bh=iaX4bSY8tECv0GJk95N9F797wm7D0nwMhGAYdtcSszs=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=mqf7SA6Dhae1BagEPDunCsGeyKxb6m39Pbpr8qF8pVWI4vXjuyF/lWSDNOgctACRowrpP/NtU3lgHhskNcPyaRKgQyKmk/n1ujcB6K01k8WkHSDScZc/mDNyov0Ew5a5mKTBYX1z3RSixQUjBB1AFI62W4Mst3+o9J0FLp+2l28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8AxHNKl2Jdq_K8HAA--.21730S3;
-	Wed, 02 Sep 2026 16:04:53 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJDxRs2g2Jdq9mwZAA--.41017S2;
-	Wed, 02 Sep 2026 16:04:50 +0800 (CST)
-Subject: Re: [PATCH v2 0/2] LoongArch: KVM: Fix kvm_loongarch_env_init() error
- path
-To: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>,
- zhaotianrui@loongson.cn, chenhuacai@kernel.org
-Cc: kernel@xen0n.name, lixianglai@loongson.cn, kvm@vger.kernel.org,
- loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260817115847.2705791-1-nagachaithanya9911@gmail.com>
- <20260902070724.3459457-1-nagachaithanya9911@gmail.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <0fa4066b-81b5-d0e9-36f1-9f0cbadf1e2c@loongson.cn>
-Date: Wed, 2 Sep 2026 16:04:32 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7176D328B7B
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 08:10:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788336604; cv=pass; b=dM7xgk93jfAtnNiD1zuBk+1Pf2JkO93PlpbOR1As3kRA5DfqKcXcJUtafmJgs3PrgJ04DzivL8GdkBng6yy/FdrVP18CGu1tlNP+3E/lFT785HcrbsIpl75mgjBfw1+llMhOvaAND3qhnzVnzfXdwFFbxGIHgqmTQmF3aQ2mm1M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788336604; c=relaxed/simple;
+	bh=5z86ueeNESYqfuth+YiV/HHpOtts6JADyXguWkuV26I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MeBVkEb3PHM4VO2gKW9/0yHOwlH5FXFdzyg/UjvvBmR+9HpJX0kbsxpuNUJ+gwIQ1E4mwonbUo9P3j8mBPfrMgra/AxzFHYCpkkGQZDe8X/Sc09glrT+i39K01EzrknEsPWnvpfRHQQ/tlWYtn4vHRRKrOXofQwuD+Gvgn6H8QE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HHcSzQ1z; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LJ2ogMSa; arc=pass smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HHcSzQ1z";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LJ2ogMSa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788336601;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WOQfWI0DUWitu/auVtgTnyIa1BBzfCkSmPwoZvzPzN0=;
+	b=HHcSzQ1zN10Ay2PCEqKRqmi33e8vXQSi5SU3nkeFXeoZIjaOO2HLlUvElxvz0xLj2ve+QW
+	vKl+OsdO7McKAykwSDzDB0UGPckkYebp2mf9kxC6Fmj09cJeRb1mZHOdfgDdKdLwXnD2as
+	n94FWYj1ih+0ME0CCgLzIzx3NB3K3Ug=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-63-TIVynKamNa-lkKREh5XSAQ-1; Wed, 02 Sept 2026 04:10:00 -0400
+X-MC-Unique: TIVynKamNa-lkKREh5XSAQ-1
+X-Mimecast-MFC-AGG-ID: TIVynKamNa-lkKREh5XSAQ_1788336599
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49cdc4080ddso3979885e9.1
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 01:09:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788336599; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gdlp3Iyv/PVbmTynM71I2S2NF0u3XMEa+7HqMWDyAsa0UTam8WeupscvmRX14StkF+
+         R136WSMypTKDj1Nz7sEJBoAcMbRZG3xlyEWW/dO2gn8AIXR1NC5OY1t8UKeBEn6ff5j/
+         lATOTZ6+sobEKs64Ai5LxmdoW4ARyiXHt7u1JBtqS3p3+IJg2mAeMt0hYkxjwZZMdzMn
+         fws6C5vGM5HuM/gUPQfDl/ldDiR7g2IBo9pp2r+JY64DnuzBhNHnfiAWOyl1Hg6ZN23y
+         9qfOIGsJyw4Sf9uYmEc5OvTHFco672xnBPlFXThNP7b5QVTUKnf8KErpJ6W2pzqTzpHF
+         W1JQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=WOQfWI0DUWitu/auVtgTnyIa1BBzfCkSmPwoZvzPzN0=;
+        fh=hrt8b5hA7Yw03rFISyJi+0RuKd1R8PEnsV3AOGowTfU=;
+        b=kGKEWS2hrx8HUulg+8upb3XQTVD8qRwCLSspIsXVWUdlBaJgsvOiHh4KZDnwmfJFp2
+         B/0/avte1rTdwTZose+Z7n6Wd8btNLRLR6sSfKbKnEk7ZykmGL3E17D/yBwBxjTZfEE9
+         PcfxvFQ2zIDJyPcrMdWHradFMAMGz3Wpe0BavQEERSg0E0uHBXzCDCpJVv/sQzUZ/Y6x
+         4svvXTdP0ZfESz4Nmp3zNy48N7F5EQm5P0Xyq9MK7Hk0gTymfXhstWwIZLL/KU3K4Lm3
+         MTyS2BZ4kRZQYXvrIQACFZPPbg6jIj58OvK7uyAbarXygxv5W2Rh9jMzn8rLe7gsAXE8
+         VZrg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788336599; x=1788941399; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=WOQfWI0DUWitu/auVtgTnyIa1BBzfCkSmPwoZvzPzN0=;
+        b=LJ2ogMSaTCi/L19pqdgyiIiRnBQTev2CUjtN0KoKohSGtIBRlvU8jwaqRN9zxlIzvM
+         yrUZEJMXOER5F5mqLYwGl/4UV8QwPcv13IvkS7XLB9lrc7G+5essC9kFP4Kvta7SAHhH
+         86O8APUi8c9uOSjd39sGiE6mQ51HyiXsnMmP6qqFqI9Q2ZdkCkrAEaG9hO7bdgc/iiPx
+         cQVQYjv5RccGNbaiUs8vmjzWN1mCYqrNIwn3O+yaJGZuBqhI+r1ckTp1K5X9PKAuIUov
+         gvKli2RF4IURufV4UkI/GJ5RAm18UAw3H/ZlaNJPi5SDsNdURQaAttHQanadNPR/wEXY
+         uJ/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788336599; x=1788941399;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WOQfWI0DUWitu/auVtgTnyIa1BBzfCkSmPwoZvzPzN0=;
+        b=KeNJMzttuX5Knm05LjVxaE3uNcQ0syKLvYRzi6+C3dJ4Skn98V+SLsF5tW4wHc1Dod
+         CMcVfcBK1fW/38OtFxrMj9uGjaDj2DtY768D7Ldf5Dm/eQfLkm/5455kFsZllA0zbVS1
+         8HGNCh7Y+hBMZxc3iFSiCs93FKuWcDTTxXm18CN+5kXQTi6vofAUCDIDuqGJBB1tPa3Q
+         uZVXx60yRCBfxgOGiL0p5G2scao1sizjWy2nWlLKpHEyz2c2xM2aROYZyDj0R0MXrWoJ
+         UJWYlnZ4CJr1brNJr5WFbgfuzkSh+RiuLFZEiNNS3PNRc/LdyQ7obhDcVvrfRCiQWZky
+         O8rg==
+X-Forwarded-Encrypted: i=1; AHgh+RqIP36i59Aipg9Wl7BnSLRXaYk73nWE7lD+DdDsguEQgfg4IfTA5q+/xV8CLfmyjx3f2jI=@vger.kernel.org
+X-Gm-Message-State: AFuF++nvLBgGgtCdP72BDaauzsnKpwttWtbEu8NzeEpdrgM+1JgwULOI
+	fStidCi5qLzjBM7UWrpSDECMcHiBq4T79jL2EYjDdaKokD2TpNuDnMekR0RxtUH7uoDua7Poj/Q
+	DuEmC6FnQ5kk8WTFRsKCWy8GSDOMACfRjXVix7irbMpefDSMgiuOwd7GwGgXl4RTPkr9ij6KIoX
+	/Ja7yxyfUvCPb0VGf8xnlqDtDMQ9El
+X-Gm-Gg: AR+sD10sw+6TQcjFUFPNBwsImYVYBCOS6fkuv9o0gH2LUjqjII7RHcuCTeTd4KS0XMH
+	egw4+3VF/SYXH1ki8cslUNRH3uZ26VMyp6IyAMthj1aUj1jLQ9qC14hsQrmBUH3w6EPV6rYMsPR
+	KdvWLJqGo8MUUFSx5LT6asz7gqv3hamtwP+DYU/LBDdxB8HqZ4epoA9G6el8emyUgGfxLzHHX/t
+	5zmho1x4xt3lnVrbAmLqi+SZeXoG5bwxv5/2Ib1NmKYAM3uqQUMy6AOda4e
+X-Received: by 2002:a05:600c:56c7:b0:49c:dd28:ae35 with SMTP id 5b1f17b1804b1-49ce7b683aamr17744985e9.0.1788336598820;
+        Wed, 02 Sep 2026 01:09:58 -0700 (PDT)
+X-Received: by 2002:a05:600c:56c7:b0:49c:dd28:ae35 with SMTP id
+ 5b1f17b1804b1-49ce7b683aamr17744215e9.0.1788336598364; Wed, 02 Sep 2026
+ 01:09:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260902070724.3459457-1-nagachaithanya9911@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxRs2g2Jdq9mwZAA--.41017S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7KryfWw1DJF17Cry8Gw48AFc_yoW8uFyUpF
-	y3uws8Kr4kKr1fArZIka4Duas8Xr4fGr4aqa42y345Cws8Xry0vr18tr9rZFyqv3y8GFW0
-	qr1Sg34YgF1UZagCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
-	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE
-	14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
-	AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
-	rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8Zw
-	CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
-	67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr
-	0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8cz
-	VUUUUUU==
+References: <56a4bc35ee605588b7cc36c8e45c12b5f3b506cb.camel@guillain.net>
+ <apIf7eoMxdfV_7kE@google.com> <apYh4GDHD3Tdb8t4@google.com>
+In-Reply-To: <apYh4GDHD3Tdb8t4@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Wed, 2 Sep 2026 10:09:46 +0200
+X-Gm-Features: AcwNN1VEAGaQ7avbGtUDsE5-7MnLmxEhvllpLnTrXyA2AmjL1qyKVGRto5Xyyx8
+Message-ID: <CABgObfZ_cOZiWAu++onwj90LbcQtVthvKTMOWZQ-yyfQ2sSiuA@mail.gmail.com>
+Subject: Re: BUILD_BUG_ON failed for kvm_vmx struct size sanity check in vmx.c
+To: Sean Christopherson <seanjc@google.com>
+Cc: Jean-Christophe Guillain <jean-christophe@guillain.net>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Sep 1, 2026 at 2:52=E2=80=AFAM Sean Christopherson <seanjc@google.c=
+om> wrote:
+> So, rather than trying to come up with a scheme that is performant withou=
+t being
+> too complex, I'm planning on fixing this by simply holding kvm->lock for =
+the entire
+> duration of vCPU creation, so that KVM doesn't need to do extra tracking =
+and can
+> instead rely purely on the array of online vCPUs.  Then we can revert 97d=
+65b544f48
+> and do more cleanups on top.
 
+Yeah considering kvm->lock is taken outside vcpu->mutex there's no
+reason for all the complication. Thanks for doing the archaeological
+work.
 
-On 2026/9/2 下午3:07, Chaithanya Lagisetty wrote:
-> kvm_loongarch_env_init() leaves everything it has already acquired behind
-> when one of the IPI/EIOINTC/PCH-PIC/DMSINTC device registrations fails, and
-> kvm_loongarch_init() does not call kvm_loongarch_env_exit() on that error,
-> so nothing else cleans up either.
-> 
-> v1 unwound only the memory and the perf callbacks. Bibo Mao pointed out
-> that the device registrations should be undone through wrapped unregister
-> helpers, so patch 1 adds those and patch 2 uses them to unwind the error
-> path in reverse order of registration. Patch 2 also uses them in
-> kvm_loongarch_env_exit(), so that the device ops are unregistered on normal
-> teardown as well.
-> 
-> Link: https://lore.kernel.org/all/20260817115847.2705791-1-nagachaithanya9911@gmail.com/ [v1]
-> 
-> v2:
->   - Add unregister helpers as suggested by Bibo Mao
->   - Unwind device registrations in reverse order
->   - Use unregister helpers in kvm_loongarch_env_exit()
->   - Split into two patches, so the fix only uses the helpers
->   - Reword commit message to avoid implementation-specific details, and
->     retitle from "memory leak" to "resource leak"
-> 
-> Compile-tested only, no LoongArch hardware: loongson64_defconfig with
-> CONFIG_KVM=m and CONFIG_KVM=y, W=1, each patch built individually, no new
-> warnings.
-> 
-> Chaithanya Lagisetty (2):
->    LoongArch: KVM: Add unregister helpers for the KVM interrupt devices
->    LoongArch: KVM: Fix resource leak in kvm_loongarch_env_init() error
->      path
-> 
->   arch/loongarch/include/asm/kvm_dmsintc.h |  1 +
->   arch/loongarch/include/asm/kvm_eiointc.h |  1 +
->   arch/loongarch/include/asm/kvm_ipi.h     |  1 +
->   arch/loongarch/include/asm/kvm_pch_pic.h |  1 +
->   arch/loongarch/kvm/intc/dmsintc.c        |  5 ++++
->   arch/loongarch/kvm/intc/eiointc.c        |  5 ++++
->   arch/loongarch/kvm/intc/ipi.c            |  5 ++++
->   arch/loongarch/kvm/intc/pch_pic.c        |  5 ++++
->   arch/loongarch/kvm/main.c                | 32 +++++++++++++++++++++---
->   9 files changed, 52 insertions(+), 4 deletions(-)
-> 
-For this series:
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Paolo
 
