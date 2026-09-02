@@ -1,107 +1,159 @@
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0613D34AC
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 16:15:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925E43955C1;
+	Wed,  2 Sep 2026 16:19:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788365750; cv=none; b=nTsnQ7wcdG4m9gzX0rtkS5VB5MF1kwPwAdstGL+4TEfn3BbCGxVnZc2q3dhKmCVRilrWupwvdK9XiJjWFjutbXEIKcknCb7QiIWj/fT1rrzh/bl/PJ7ooFRpx5BaSS2zpL4l4n8XTXl8pov5qU/iwYHR05wd8gGKwOV8HySY+zU=
+	t=1788365982; cv=none; b=hYwJE2PJzrJfGJjFLtn7xC3V1iNze2YcGaBZ/dbAs2qtbhrBi2EHTJW+L/rKItP/Axrcl4pIQqafe1fvMNLMCfXdxvkpsn9pNgxSD7ROZ7AuafYkOi363KNWTE1Sq1He3Aw3fh75H73r2mOcWFc7SUnbozrJZ5yZm80K64tWWAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788365750; c=relaxed/simple;
-	bh=VC3BIA4z8tTod7eOwAwIVJQf+WxwGfjN+GG1wwfYEyE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=n3NI596DN3n12UrMU91ntxAb5L9Wl+96TDGdWGHtm+0XFvHJi7eqfZ39SlVXuA9cJqV/mHXJ7mYLjDPf0JAUJXtltFLvBFulJTnGVqizyMfB+7fA4D2MO8Iw5tavPzWDrktU+TWxniQxNfZd3H2Ct0QR58fUrBP2vnQmTb0GFw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HK1hwIfi; arc=none smtp.client-ip=209.85.216.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1788365982; c=relaxed/simple;
+	bh=3BBmes8xSovB/lspbQ81wgCI2fsXolHtlAzXULwDkr8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Tvq6/0kgekKRHuQg3bb/7IV2LJZrBnVOD03fHZB+IYIlmw2V8QIb/7ixFXpfLt1SfXh7D7hL9spBmy2XnV38E8cjNi/sR06BAXkR1yUwFzECQQTQQSAVD075DAlZphCfPe56spWU+oDulFEbw0Jt+FUHRMj8rVBgvTt1scEA8BY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nfgFGmnb; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HK1hwIfi"
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38e8fee6af3so1828682a91.1
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 09:15:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788365748; x=1788970548; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=by2TPfLEm14WX+cS0Rt795GzdWqOy1JzuLSmI1QeMp8=;
-        b=HK1hwIfiJ3VoIWo/HAWCGnmG+LhAmTlCtPWDEi7qUvTWadSEQcvZGcE7LT5ERX98UK
-         gwPq5qRk6NebOkddi5K7Zt055Psz+G7EqTWzHUeqitfw8WzU40CrG96Q/4s+sSv2tpfU
-         U/OCcVN6KcXtzL3SWbWmrfYz/WaPhdxl6Xdc3a5Wyd/lTdcNYlOxi1fFMc6GE/R0dool
-         R74EBK3isTsQOSxOWjR21b8LbX557ZBRkfhDAwVkd2AOkA7jAvx1PjOoooPIQaZ6kbVc
-         nshPbh1R34N3iTSxnBPTkGPmyc9CeZGhfBVJWu7uCLIXTL7NZCRyICb5lEohNutbGM9v
-         Hc8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788365748; x=1788970548;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=by2TPfLEm14WX+cS0Rt795GzdWqOy1JzuLSmI1QeMp8=;
-        b=KDr4/QF2YxPsdAZzLvjMwm5kC+iWqEF9XH3VFPmfKKEbbC/IoCXUG9tjElQpRdx26X
-         1jxWCchqJKtxtsmebIuUQAtpgK9S77KWfNEwR2JC+GUyxkPGgVneIrao2UWZeD3u1RHo
-         ahEN3GbTAajHM1NLBjsiBe4nZcbS6TEbelCSMChIn2g4E1a8TjrCieAreiz3p6o4wzYq
-         eDmrsyl12rd6mA1tO2gYLgNI340YTj3TelGyruyPn3i/3+1jL7JnV8BAzPdHmJueB6vL
-         RO8rdo76RvrNMRLiSYIjFgQRxtjk1BKlmgNUTSvHee4Vv4PBhMJujhG3VmPa8pAr01J5
-         EnOA==
-X-Forwarded-Encrypted: i=1; AKwUvBz33u7fC4Ml1v07AdY0IefznVlcaHuCeY8aKq+xsUQHgHOgJRqmw02S7AR2/95NAkXwu7s=@vger.kernel.org
-X-Gm-Message-State: AFuF++mazuszopJrbXXyvS2RHPY7MvKfe7rRLiWbPgWjYBxVao0VBUo/
-	pdzeudC5rYEYtUDvRSeds+JVurNCvb8+qs98goGdO6HLf9vy7camEm8TgB5ZyXU9LLMpYxTj8QU
-	k0e+vow==
-X-Received: from pjva21.prod.google.com ([2002:a17:90a:d815:b0:381:1b76:a387])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1d0e:b0:398:9bd1:3216
- with SMTP id 98e67ed59e1d1-39aee1763a5mr9164572a91.23.1788365748120; Wed, 02
- Sep 2026 09:15:48 -0700 (PDT)
-Date: Wed, 2 Sep 2026 09:15:47 -0700
-In-Reply-To: <apgj5l7DZGsScsNc@blrnaveerao1>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nfgFGmnb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788365980; x=1819901980;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=3BBmes8xSovB/lspbQ81wgCI2fsXolHtlAzXULwDkr8=;
+  b=nfgFGmnbI+t71+Y87wzwvb5LCbrmPc3UEg/dJ/GUipu8m9aAWxfBzUim
+   4IwcNLbZPhAdofW5L5EY98f7f69PsUzx6Gk3q3RgUkVIhJoCH8C+9+KNW
+   di0WbH/Ms3NVY2oNIMpJ1ehZV9MTVsGa0raETBhq3yogFDUuuIju7r3eO
+   VvClX4F2nxz3Wof+qF27UQeLU8wveI6iM4uI2QFT9feWWPaJsmfhUBsnD
+   GRm1n2fhGfg833eKO+DaXgdJgc6I655IHMhnsqTq98bycN+75hX5JZvR+
+   2FJlprS8iySYbT8xXITapSU+CuY+gj2yeEMD1UhYgsIy9Ivg1Z95TQGYT
+   A==;
+X-CSE-ConnectionGUID: bPSC2N6hR2ixCtL78tbcDQ==
+X-CSE-MsgGUID: TrJdzHmxQOS7rEt1KY4Weg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="100346072"
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="100346072"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 09:19:33 -0700
+X-CSE-ConnectionGUID: SQdRLClwQ5OV4RYBwZiGnw==
+X-CSE-MsgGUID: hG2J2EvFShiZdA5beuNLhQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="273620778"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 09:19:30 -0700
+Message-ID: <84891108-55be-48c1-9993-c730a5334d5b@linux.intel.com>
+Date: Thu, 3 Sep 2026 00:19:28 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <56a4bc35ee605588b7cc36c8e45c12b5f3b506cb.camel@guillain.net>
- <apIf7eoMxdfV_7kE@google.com> <apYh4GDHD3Tdb8t4@google.com> <apgj5l7DZGsScsNc@blrnaveerao1>
-Message-ID: <aphLs9F70ojtzh-3@google.com>
-Subject: Re: BUILD_BUG_ON failed for kvm_vmx struct size sanity check in vmx.c
-From: Sean Christopherson <seanjc@google.com>
-To: Naveen N Rao <naveen@kernel.org>
-Cc: Jean-Christophe Guillain <jean-christophe@guillain.net>, kvm@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Nikunj A Dadhania <nikunj@amd.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/4] KVM: TDX: Track configurable CPUID bits allowed by
+ KVM
+To: Xiaoyao Li <xiaoyao.li@intel.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org
+Cc: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com,
+ andrew.cooper3@citrix.com, nik.borisov@suse.com, kas@kernel.org,
+ rick.p.edgecombe@intel.com, chao.gao@intel.com
+References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
+ <20260827031837.2863609-2-binbin.wu@linux.intel.com>
+ <55488b92-66a8-45e5-ad0f-8fed63ce1187@intel.com>
+ <a30741f8-b99b-4f36-80a5-4688c2578d99@linux.intel.com>
+ <6b565572-b316-4e86-906d-f150c896fe21@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <6b565572-b316-4e86-906d-f150c896fe21@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 02, 2026, Naveen N Rao wrote:
-> On Mon, Aug 31, 2026 at 05:52:48PM -0700, Sean Christopherson wrote:
-> > On Fri, Aug 28, 2026, Sean Christopherson wrote:
-> > > On Thu, Aug 27, 2026, Jean-Christophe Guillain wrote:
-> > 
-> > So, rather than trying to come up with a scheme that is performant without being
-> > too complex, I'm planning on fixing this by simply holding kvm->lock for the entire
-> > duration of vCPU creation, so that KVM doesn't need to do extra tracking and can
-> > instead rely purely on the array of online vCPUs.  Then we can revert 97d65b544f48
-> > and do more cleanups on top.
+On 9/2/2026 11:09 PM, Xiaoyao Li wrote:
+> On 9/2/2026 8:33 AM, Binbin Wu wrote:
+>>>> +static void __init tdx_initialize_cpu_cfg_caps(void)
+>>>> +{
+>>>> +    tdx_cpu_cfg_cap_init(CPUID_1_ECX,
+>>>> +        TDX_CFG_EXTRA_F(MWAIT),
+>>>> +        TDX_CFG_F(TSC_DEADLINE_TIMER),
+>>>> +        TDX_CFG_F(AVX),
+>>>> +        TDX_CFG_F(F16C),
+>>>> +    );
+>>> TDX 1.5.24 on SPR report configurable bits of CPUID_1_ECX as
+>>> 0x31044988, which have
+>>>
+>>> - bit 3        MWAIT
+>>> - bit 7        EST
+>>> - bit 8        TM2
+>>> - bit 11    SDBG
+>>> - bit 14    XTPR
+>>> - bit 18    DCA
+>>> - bit 24    TSC_DEADLINE_TIMER
+>>> - bit 28    AVX
+>>> - bit 29    F16C
+>>>
+>>> but EST/TM2/SDBG/XTPR/DCA are not list here. I guess the reason is kvm_cpu_cap[] doesn't support it. If so, it seems to guard twice:
+>>> 1. mentally/manually check if it a feature is supported in kvm_cpu_caps[]
+>>>
+>>> 2. kvm_cpu_caps guarding in tdx_cpu_cfg_cap_init().
+>>>
+>>> I think 1) is not necessary, we can rely on 2)
+>> In general, if a feature is not supported by the common KVM CPU caps, 
 > 
-> I was going to report the below lockdep splat I am seeing when trying to 
-> enable Secure TSC due to commit ba903f738249 ("KVM: SEV: Assert that 
-> kvm->lock is held when querying SEV+ support"). I believe this will also 
-> be addressed if we continue to hold kvm->lock during vCPU creation:
+> For kvm-intel.ko, kvm_cpu_caps[] just means the supported CPUID features
+> for VMX VMs. Treat it as the common KVM CPU caps is a bit arguable.
 > 
->   WARNING: arch/x86/kvm/svm/sev.c:136 at sev_snp_guest+0xb2/0xc0 [kvm_amd], CPU#170: CPU 0/KVM/5532
->   ...
->   Call Trace:
->    <TASK>
->    snp_is_secure_tsc_enabled+0x1a/0x40 [kvm_amd]
->    sev_vcpu_create+0x77/0xc0 [kvm_amd]
->    svm_vcpu_create+0x5f/0x160 [kvm_amd]
->    kvm_arch_vcpu_create+0x234/0x2f0 [kvm]
->    kvm_vm_ioctl+0x232/0x1c10 [kvm]
->    ? __lock_acquire+0x465/0x1b10
->    ? lock_acquire+0xbf/0x2f0
->    ? __fget_files+0x2b/0x190
->    ? find_held_lock+0x2b/0x80
->    __x64_sys_ioctl+0x97/0xe0
->    do_syscall_64+0xf3/0x880
->    ? exc_page_fault+0x128/0x270
->    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>> I prefer not
+>> to add it to the list to save a few lines of code, which probably is dead code,
+> 
+> I don't think it's dead code. It shows that these features are
+> virtualizable to TDs from the POV. of TDX.
 
-Oh, right!  I forget about the wrinkles with kvm->lock not being held during
-vCPU creation.  This is largely fudged around by the kvm_get_running_vcpu() check
-since VMCB initialization is done with the vCPU loaded (i.e. "running").
+It depends on whether KVM allows userspace to set features for TDs that are not support
+for non-TDX VMs (,except for a few exceptions).
+
+In this version, TDX_CFG_F() already check against kvm_cpu_caps[], if these features
+are not in kvm_cpu_caps[], it will not be exposed to userspace anyway.
+
+> 
+> In the end, they might be disallowed to be configured to TDs because KVM
+> doesn't allow them for VMX VMs. This is also the point I want to discuss.
+> Do we really want to make such restriction that KVM cannot enable/allow a
+> feature for TDs unless KVM first enables/allows it for VMX VMs? What's
+> reason behind it?
+
+Sean mentioned it that "generally speaking, KVM shouldn't allow features
+that KVM doesn't support for non-TDX VMs" in
+https://lore.kernel.org/kvm/aj1fi_0SBxMK5WOB@google.com/
+
+> 
+>> unless people find it too confusing.
+>> I can add a comment to clarify this.
+>>
+>>> BTW, this seems also breaks the current userspace after this series.
+>>> - Before, EST/TM2/SDBG/XTPR/DCA are allowed to be exposed to TD
+>>> - After, they are not.
+>> This does change the values returned by KVM_TDX_CAPABILITIES. However, my
+>> understanding is that userspace is generally expected to only configure
+>> features supported by both KVM and TDX, i.e. except for the features initialized
+>> via TDX_CFG_EXTRA_F(), userspace is not expected to configure features not advertised
+>> by kvm_cpu_caps[].
+>> I can call this out in the changelog, and maybe also the doc for KVM_TDX_CAPABILITIES.
+> 
+> yeah. This changes KVM's behavior and we definitely need to call it out,
+> and provide justification.
+> 
+>>> If we cares CORE_CAPABILITIES in patch 2, why EST/TM2/SDBG/XTPR/DCA don't matter?
+>> Because CORE_CAPABILITIES was previously defined as fixed-1 in some old spec and
+>> the QEMU marks it as fixed1. EST/TM2/SDBG/XTPR/DCA are not the case.
+> 
+> I see. You added patch 2 because without it QEMU breaks. While for
+> EST/TM2/SDBG/XTPR/DCA, QEMU doesn't break after they are turned to
+> non-configurable. QEMU cannot represent all the userspace VMM. It still has
+> the potential to breaks other userspace VMMs.
+
+I think the risk is pretty low.
+I am not sure if Sean could provide some insight about this in google's userspace
+VMM.
+
