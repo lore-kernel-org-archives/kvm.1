@@ -1,142 +1,123 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70568239E60
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 07:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD4A33BBCF;
+	Wed,  2 Sep 2026 07:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788333661; cv=none; b=EP75QdxIRjRRVSEVxm1bZoaMH8UFKxdHHDy+Kjhjdg8FriaYQAjHfF7FrazKQ6dYAKxuQ2CyhLh9wTu6BAhjBhCZz4MbqCjqy2YA7ZXdcXJi2914pX56jahZrBiJAZcl0J7ibleRKPTtQ06crixOyVcOf1Ga+3vvZhxaJ+5kYVE=
+	t=1788334738; cv=none; b=hZuDUPfuzKn7d2BhqH+WsZrhhsOALzKeOsd1ga/vRxyWf9WTZkOefbhG0TfJw1ttcDeECb6xV3U/herg69x7Suiy+7IFXc9wLzEQdMGn3X2IQmdqmdTLxJANf4tLmuaGH42watCJewrcrKNbQJKL9JfKKjic6jE8qx0qBxuCAro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788333661; c=relaxed/simple;
-	bh=4VRB0zvQSk9hDeP3S+y9pPZX9GoSN8EAHFordGT2+1w=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=tV73vpSO3+7bvDhI7Mcg5cFrZEyBSO2sAemoFJWczitikkH3tTIQBjafnh8AZHQ/PgQLZtCPUpmKJXgBwpAM81XUtPwgOF9cQkW3AvI8Y4pN4RH/1RIDbabOelF8GEhuX09a93SLlRRVkIGZkLz700adFno5GNmR2ht0RbjebKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Izgusj9E; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788334738; c=relaxed/simple;
+	bh=peNBa6XWTvXD5voM6K/4tnfDdD3edZYStWDuoe7amfw=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LU05H30fXIb8RIGKzFndwZtNmrJMDWNi5K7pIEbQz8t6e28GHVORjiJ8YiSBm3/OaDcHhen3Mqa1S70kvSlGFSGMsqIuB7fDneqB1qSp9MYnmovzIrDiRTeTgc7pChgrr0tSxAkU5EON2evf8tf7FtJtUm5pb0WP6XOLMtc8el4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AXX26wr8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Izgusj9E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90ADC1F000E9;
-	Wed,  2 Sep 2026 07:20:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AXX26wr8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1729D1F00A3A;
+	Wed,  2 Sep 2026 07:38:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788333659;
-	bh=jslCaen+CpB9El0H+7GPtnAF8Ir802150hQPctmmqhQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Izgusj9EQN3MARAmjF8P6AFyxZvEpqxuCkOkqRc6C8SL2QMHaoxaQLQec5myf7P3U
-	 kmYsGulSYnTsrpPzbLU1f/Yrp28azjSFtGpt7+OiJjRnh32YyF/A9sswF4xfjhgCP8
-	 3uzFWno5cjkHW0kR2pg8CKqjjMx+DQQnds+h5qySFLbrioUfC8tmrJmRz3iMIrTrbk
-	 +vSm8bPTKjB0qPWv4fl0Bk9HZ9rk5yumjnqyHZODnimJ60pLRhZkDzd0qi/1ZPo40a
-	 PlBaHsWkl+4pw5lflLTTKUfv/toPb1ULDyOUsDIJxK2bxIFoNtjIDX6UqPBV6Xlci5
-	 PqQFXKlgEE46w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/2] LoongArch: KVM: Fix resource leak in
- kvm_loongarch_env_init() error path
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chaithanya Lagisetty" <nagachaithanya9911@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260902070724.3459457-3-nagachaithanya9911@gmail.com>
-References: <20260817115847.2705791-1-nagachaithanya9911@gmail.com>
- <20260902070724.3459457-1-nagachaithanya9911@gmail.com>
- <20260902070724.3459457-3-nagachaithanya9911@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 02 Sep 2026 07:20:59 +0000
-Message-Id: <20260902072059.90ADC1F000E9@smtp.kernel.org>
+	s=k20260515; t=1788334737;
+	bh=NtFIjwHWOM2KySxyK2jN5lsJXS7iV2NXSRl0dq3VPfM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=AXX26wr8KvCG2QZcfUAqR2Dpzs2Uuq6jgvM57rxgHHBUtsTqCueEKpUbANEZmZDcM
+	 maq551oR8ZMENXN+/udtxaaNwWLPAMcz1DLsYO37wcn8/w72gxqB75vH876jegGJ9P
+	 AJd/kV4r9rvIFxqaZ4UBIio+HPnyaEk8XCnCdk3xtZzH+OAmqoa9slxW78NNWmwprJ
+	 gxQexz9Bc8W/nS0fGe6RtQOv9hUMKVB15b0LP9HocvJFUgBOL59wjsBXW65X9/qPHi
+	 PsucUsjIgB1FR5GAVA38qCBibV7U8Np8iXZl4NqDfL24T62E9A2crzNh43+4fSdjc5
+	 hOZqttRyWIbBA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1x1fYc-00000003lb4-2BeN;
+	Wed, 02 Sep 2026 07:38:54 +0000
+Date: Wed, 02 Sep 2026 08:41:27 +0100
+Message-ID: <87mru0m76g.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steffen Eiden <seiden@linux.ibm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Grapentin <gra@linux.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Friedrich Welter <fritz@linux.ibm.com>,
+	Fuad Tabba <tabba@google.com>,
+	Gautam Gala <ggala@linux.ibm.com>,
+	Hariharan Mari <hari55@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Nico Boehr <nrb@linux.ibm.com>,
+	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+	Oliver Upton <oupton@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Will Deacon <will@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH v7 11/23] KVM: arm64: Share arm64 code with s390
+In-Reply-To: <20260901084037.185345-C-seiden@linux.ibm.com>
+References: <20260831144802.834315-1-seiden@linux.ibm.com>
+	<20260831144802.834315-12-seiden@linux.ibm.com>
+	<87se3tmlrv.wl-maz@kernel.org>
+	<20260901084037.185345-C-seiden@linux.ibm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, tabba@google.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, seanjc@google.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Tue, 01 Sep 2026 09:40:37 +0100,
+Steffen Eiden <seiden@linux.ibm.com> wrote:
+> 
+> On Tue, Sep 01, 2026 at 09:13:56AM +0100, Marc Zyngier wrote:
+> > Why the exit handler, and not the EC handlers aside from the UNKNOWN
+> > one? Yes, you probably aren't there yet in this series, but I can tell
+> > you are going to add more and more of these.
+> > 
+> > But the EC array is absolutely architectural, and there is no good
+> > reason to maintain your own.
+> > 
+> > So instead of this, why not keep the EC array altogether, and
+> > implement stubs for the ECs you don't support?
+> > 
+> > 	M.
+> > 
+> 
+> There was no specific reasson to define our own EC array as far as I
+> remember. I will try reusing the array and find out if there are any
+> issues with that. But I do not expect any. 
+> 
+> I assume the stubs probably just forward to handle_unknown_ec, or do you
+> have a different suggestion?
 
-Pre-existing issues:
-- [High] Resources allocated by kvm_loongarch_env_init() are leaked and lea=
-d to a Use-After-Free if kvm_init() fails in kvm_loongarch_init().
---
+Probably. This is an indication of something being deeply wrong in the
+implementation (HW or SW). On reflection, kvm_handle_unknown_ec()
+should result in a KVM_BUG().
 
-commit 694694d624a3a8bfec5f756c533d743cd130b9fa
-Author: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+	M.
 
-LoongArch: KVM: Fix resource leak in kvm_loongarch_env_init() error path
-
-This commit fixes a resource leak in the error path of kvm_loongarch_env_in=
-it().
-It ensures that previously acquired resources and device registrations are
-unwound in reverse order if any subsequent registration fails.
-
-Fixes: c532de5a67a7 ("LoongArch: KVM: Add IPI device support")
-
-> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
-> index 3e1005526f4bd..c9cb3fc2e5605 100644
-> --- a/arch/loongarch/kvm/main.c
-> +++ b/arch/loongarch/kvm/main.c
-[ ... ]
-> @@ -385,27 +385,51 @@ static int kvm_loongarch_env_init(void)
->  	/* Register LoongArch IPI interrupt controller interface. */
->  	ret =3D kvm_loongarch_register_ipi_device();
->  	if (ret)
-> -		return ret;
-> +		goto err_env;
-> =20
->  	/* Register LoongArch EIOINTC interrupt controller interface. */
->  	ret =3D kvm_loongarch_register_eiointc_device();
->  	if (ret)
-> -		return ret;
-> +		goto err_ipi;
-> =20
->  	/* Register LoongArch PCH-PIC interrupt controller interface. */
->  	ret =3D kvm_loongarch_register_pch_pic_device();
->  	if (ret)
-> -		return ret;
-> +		goto err_eiointc;
-> =20
->  	/* Register LoongArch DMSINTC interrupt contrroller interface */
-> -	if (cpu_has_msgint)
-> +	if (cpu_has_msgint) {
->  		ret =3D kvm_loongarch_register_dmsintc_device();
-> +		if (ret)
-> +			goto err_pch_pic;
-> +	}
-> +
-> +	return 0;
-> +
-> +err_pch_pic:
-> +	kvm_loongarch_unregister_pch_pic_device();
-> +err_eiointc:
-> +	kvm_loongarch_unregister_eiointc_device();
-> +err_ipi:
-> +	kvm_loongarch_unregister_ipi_device();
-> +err_env:
-> +	kvm_unregister_perf_callbacks();
-> +	kfree(kvm_loongarch_ops);
-> +	kvm_loongarch_ops =3D NULL;
-> +	free_percpu(vmcs);
-> +	vmcs =3D NULL;
-> =20
->  	return ret;
->  }
-
-[Severity: High]
-This is a pre-existing issue, but does this leak the vmcs, kvm_loongarch_op=
-s,
-and device registrations when kvm_init() fails in kvm_loongarch_init()?
-
-arch/loongarch/kvm/main.c:kvm_loongarch_init() {
-    ...
-	r =3D kvm_loongarch_env_init();
-	if (r)
-		return r;
-
-	return kvm_init(sizeof(struct kvm_vcpu), 0, THIS_MODULE);
-}
-
-If kvm_init() fails, kvm_loongarch_init() returns the error directly without
-calling kvm_loongarch_env_exit() to clean up the successful
-kvm_loongarch_env_init() setup.
-
-Could this leave dangling function pointers in the perf core that lead to a
-kernel panic upon the next performance counter event?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260902070724.3459=
-457-1-nagachaithanya9911@gmail.com?part=3D2
+-- 
+Jazz isn't dead. It just smells funny.
