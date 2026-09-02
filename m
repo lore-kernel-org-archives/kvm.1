@@ -1,102 +1,107 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45826463B73
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 23:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0DC3E49DA
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 23:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788391238; cv=none; b=QFICCqUSDXCzbeS36IfElhsJVdxwLRQAbbX1TmXKgnmO1I7EqLMdVCt+N6XcGLNZOdgxM99qpJvuHwM32WMyPG7ePYg3XYXDipje4tLiyFxtuexmpkrBIWA6rNOZr/VQxyK29PYI/pI1YsHuMg1J4kI4+CagtdPrWED+JgS0f8g=
+	t=1788391806; cv=none; b=pn1IdYIxJ7slQuwzIvXaLHuqOSfmF6fXVG157AiEgG8iN/QG7YZAUJTeD5Fhs7jhYkXvDVHpbAZgUx7Gy3WoyloOfpXB29qykK+HiSoT4lrT7cjgolmYO0O6mi61m1UFo6wSoT3P3ZACtZrq2JBluxDIlyXw9ZrKU/6NDJHRzEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788391238; c=relaxed/simple;
-	bh=FSGBRuEwSzDJ3Vm1ryh1BmDfkHN4mR10cVRnM1E5HAA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CLuTRl+EzZWOeeLghFIQO6QpsLxn0QF4zPSfpVBWToWqk3C3AIyYFq2fphr/0VCLfBLAWY+7dfcg53dPEWv516eGg0ALdbcHPTnyZk4615L169K71FWxB7Vw1WWv3NEQftdQExYmIUf3SRdKXtsXnBxPiYDSUvq0Z56SzAaLpV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hyJwR4ig; arc=none smtp.client-ip=209.85.216.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1788391806; c=relaxed/simple;
+	bh=zNIlJ9DwAOHo8ylZ9j9g6YnUi8nRQWMPNZb2xSMMGY8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=IsG/ZnxRoXiDVOkL/vkmjb5ry5afW63OBRlttJ5Hi0/oCd6q/fGuhsCLnjhKsv8VQi0gMOW3TgGwUSzdKXw7iZhO3+fger7ywQAh0xM6L/b/JWQc/LBsZKVCu41bznoXH8TB1JdEgzUJ33FIDCrEZsYeS07hlY/GdQlYlmKuM80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LKiGNb7m; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hyJwR4ig"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e7ff7b375so2354598a91.1
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 16:20:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788391236; x=1788996036; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=0Np7Ag6FWXRYQphBkLQrwzv96GttQT1QLppJ7Rhn8bg=;
-        b=hyJwR4igCP4n6dYUEf3Ar4mb7hdQinNbHG1dZIMfaUmuJ+F5RN514QTV1jQn6Xw97L
-         L4FYkLDqMVXYcIGe4zBqeIY3m5O9F4EfuKe5bNeHBRLlSYfFAqNsITScToPjIyM7+NgV
-         Cu3vSr0E2BsM3FeM3WEFVRFrJT0hmlSYOKSGd+2Z5xS5pXeQNCuIOh9Nu0hHNmcuhXg7
-         zArJfclzAXVltR8x7O23+EEkmhhhmYgVwMcQ7HUCaKp20154PWS+LOh72STp42qhAIjU
-         ODNuD+3YT7Sn0t4sJc9UKVB+B/DpXDfMc4CFihHI7YugtU/ayaJadV1XldCqsf3/ZYJi
-         GPzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788391236; x=1788996036;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0Np7Ag6FWXRYQphBkLQrwzv96GttQT1QLppJ7Rhn8bg=;
-        b=mMpG6GlipCSxGGT3eKA57nGSYNbFHerh9Q+KFctn1IiwkHffpF+cythtGl4Oc2U1cb
-         Hc3QTL8lg82qJdiSLdErLhvqxYX243YBNZBOTN2mBgmo8dDjV3L2aIq37xrWF1erXElU
-         OySa2OrSFWWG7pfRGlEhQgcgqmTPfkqGA4sMe1B/DwQfyQfwQZoyvc06JQHH3uC97p8y
-         xcuqKmZFmnhTglf0hZ+/2vSgCXcoic5grqS8+9TQz9IB6ZlZnerot036iU9kjLlq1HmO
-         qJeayE2nkXGpNjmhOcwhcnQ9vXQk0OO8nwjOFcHcXvt9C1uLhUAUf++4CzgJNROLOWj1
-         Uo1A==
-X-Gm-Message-State: AFuF++mvq33ORC5FdfGCs2G16J2fW36XaubNxNPGYsDVQx30eNzJ7alV
-	wqXCgAOYbix8nz3xi+NNpvNYhl9DmabgQDu3l4jwRgpBPr6KbUM8LvlzRgPV/rsxj9G51LRCifG
-	DA9hlRg==
-X-Received: from pjbli10.prod.google.com ([2002:a17:90b:48ca:b0:398:b684:5c15])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1a8a:b0:398:9be9:ab8c
- with SMTP id 98e67ed59e1d1-39aee0e7272mr10212107a91.17.1788391235459; Wed, 02
- Sep 2026 16:20:35 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed,  2 Sep 2026 16:20:28 -0700
-In-Reply-To: <20260902232028.2767071-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LKiGNb7m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B670E1F000E9;
+	Wed,  2 Sep 2026 23:30:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788391804;
+	bh=j22M+vWqsDrdMZ5D5JUb/gd4FN7pRXT5uqRIjJsw6d4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=LKiGNb7mHJvNVx0RpdH11weU0ADp4pZJJ//sbmObNdu7SrjU1W6Z7NLqnnAdj3qNl
+	 zNiu6WD//Ik/DTlpTIz1rBpk3tp+XJC4lcegYyage7HJ40Tb1XGeUpPk5my3WcIVW2
+	 ZmwnRdqtaxMIjKFvJLozdRH3ce5iZfquAVWz5quKrRVMFuPzA8oOnyeXY43Mm6DlQI
+	 t4yrKUXqeFZ3AWN5rZXIjoMs2ThC1SE6UCeXzuS9eYMafIk5fIJx2kNKQl3P3hjylp
+	 1WR3EiUfK4LrtPxUIt9FltixZtu3w8GWY+t3r/eg+qzTK/YmJrQkLJpRnTG9I26lFA
+	 VM82/orupDWMw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 4/5] KVM: x86/mmu: Bug the VM if KVM calcs a CPU role
+ with EFER.LMA=1 && CR4.PAE=0
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260902232028.2767071-5-seanjc@google.com>
+References: <20260902232028.2767071-1-seanjc@google.com>
+ <20260902232028.2767071-5-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 02 Sep 2026 23:30:04 +0000
+Message-Id: <20260902233004.B670E1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260902232028.2767071-1-seanjc@google.com>
-X-Mailer: git-send-email 2.55.0.970.g62bdec98f9-goog
-Message-ID: <20260902232028.2767071-6-seanjc@google.com>
-Subject: [PATCH v2 5/5] KVM: x86/mmu: Convert MMU walker's bounds check from
- BUG_ON() to KVM_BUG_ON()
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>, Stefan Teodorescu <fane@google.com>
-Content-Type: text/plain; charset="UTF-8"
 
-Bug the VM, not the host, if KVM's sanity check that walking guest PTEs
-doesn't underflow the walker's level fires.  Bugging the host while holding
-mmu_lock is all but guaranteed to panic the host, KVM hasn't _yet_ consumed
-the out-of-bounds level (i.e. hasn't corrupted memory), and KVM is already
-committed to bugging the VM and synthesizing a guest page fault if a fatal
-MMU error occurs while walking guest PTEs.  I.e. there's no reason to keep
-the BUG_ON() at this point.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Modifying a const-qualified struct member via pointer cast invokes=
+ undefined behavior, and the compiler may optimize away subsequent checks, =
+defeating the bug mitigation.
+--
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/mmu/paging_tmpl.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+commit a1c4dd28227e88b096d9ee6618a2543aab000da4
+Author: Sean Christopherson <seanjc@google.com>
 
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index f925b11d76dd..c8ec47b09264 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -392,7 +392,9 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
- 		offset    = index * sizeof(pt_element_t);
- 		pte_gpa   = gfn_to_gpa(table_gfn) + offset;
- 
--		BUG_ON(walker->level < 1);
-+		if (KVM_BUG_ON(walker->level < 1, vcpu->kvm))
-+			goto error;
-+
- 		walker->table_gfn[walker->level - 1] = table_gfn;
- 		walker->pte_gpa[walker->level - 1] = pte_gpa;
- 
--- 
-2.55.0.970.g62bdec98f9-goog
+KVM: x86/mmu: Bug the VM if KVM calcs a CPU role with EFER.LMA=3D1 && CR4.P=
+AE=3D0
 
+This commit adds a KVM_BUG_ON check to catch invalid CPU roles where long
+mode is active but PAE paging is not. It attempts to mitigate the fallout by
+clearing the EFER_LMA bit in the provided registers before continuing MMU
+construction.
+
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index 064ecc33b9267..81c30e2c74f3c 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -5910,6 +5910,9 @@ static union kvm_cpu_role kvm_calc_cpu_role(struct =
+kvm_vcpu *vcpu,
+>  		return role;
+>  	}
+> =20
+> +	if (KVM_BUG_ON(____is_efer_lma(regs) && !____is_cr4_pae(regs), vcpu->kv=
+m))
+> +		*(u64 *)&regs->efer &=3D ~EFER_LMA;
+
+[Severity: High]
+Does modifying a const-qualified struct member via a pointer cast invoke
+undefined behavior here?
+
+Looking at the definition of struct kvm_mmu_role_regs:
+
+struct kvm_mmu_role_regs {
+	const unsigned long cr0;
+	const unsigned long cr4;
+	const u64 efer;
+};
+
+Since the efer member is explicitly declared as const, could the compiler
+assume it never changes after initialization and optimize away the clearing=
+=20
+of EFER_LMA for the subsequent checks in kvm_calc_cpu_role()?=20
+
+If the compiler uses a cached value for the remaining efer checks, it seems
+this would bypass the intended bug mitigation entirely and still construct a
+completely invalid MMU role.
+
+> +
+>  	role.base.efer_nx =3D ____is_efer_nx(regs);
+>  	role.base.cr0_wp =3D ____is_cr0_wp(regs);
+>  	role.base.cr4_smep =3D ____is_cr4_smep(regs);
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260902232028.2767=
+071-1-seanjc@google.com?part=3D4
