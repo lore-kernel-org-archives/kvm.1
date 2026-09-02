@@ -1,57 +1,57 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992CD4AC166
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 16:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A37A4AE12C
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 16:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788367310; cv=none; b=bITZdap64M8XJF34Xz6egyIL3OaFZF7yYa7KTvgLqvfNR9mOknXUZH6DLalQBLdllgD+2pUFUMSbcQTXLh9WDCXYaVdyK42xqJavQc8uophC2TUQylryGzGeAByRjt/nPtJBZZmB3l30EkQEeoQk2TbVuI3RqcSPqouLRpRNnZY=
+	t=1788367314; cv=none; b=J06+KJNwxvJsvJg34IUG9b1n8jepupDP1M+EG6PvhCgbhEHJCpVOL4KG0a24q4LUHpbloJTwClM6J/nN98yE3VCpH0CjotT8D2fsYR1rHp+IYfC3IQr8OFvpsZagcfSRQ9kIglqsPTL7kXSmqufNr0sqKaSTjYqLnkWubj0C1po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788367310; c=relaxed/simple;
-	bh=c6Dq51OifpuOLQwcC4ZiEV4FEdSDUXT41cx47drisuI=;
+	s=arc-20240116; t=1788367314; c=relaxed/simple;
+	bh=OA10wlnKKQ7EEM6YlvfJ4xQQrgVCfQ10w2yj5EgWY/0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YJ78RfXDbczrASIp2IkAEwLngjlB5nY2mbJHbPmZpAj5Jj32GEt8Dy/UA9zUI5p4PxjFyD4At9O3fCr6TEmI/Yt92ZTS8IioO5LHh195ERFINMvx33srAAKzkSGTTalBqQaHpDusjeSkYqYiCeO/bv/0H5Ds8mH+NFH+Lo301mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wivVQve8; arc=none smtp.client-ip=209.85.210.199
+	 To:Cc:Content-Type; b=iVwpRUdOvpwVAKJM8xnOkQWIUy1xZqLQOIPx85W1l7tkah6PJeg+GQCN1peOw6BlvbchbxJktVGoSX1/3rNzeaJec/L55ocw7B3bAB9kN7FUsLwx1AC0eAZdf70mH5UMzxqvj2uADzut4xsF9ZEoCBx8dRWsKl31JFyA+toVlUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZRdPfYeD; arc=none smtp.client-ip=209.85.215.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wivVQve8"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-855b1b925b6so682964b3a.3
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 09:41:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZRdPfYeD"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1cdfb337eso1884673a12.0
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 09:41:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788367302; x=1788972102; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788367304; x=1788972104; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=o5u+D2Eye+Inmljua0Pt8umFr/3SFEmDrz+aVxfwQfA=;
-        b=wivVQve8F7sa3q55aoJDM3BP36qbPIIPO4c0RWAGysBNiLqFOYkfZD2MJ3Akjekk8K
-         QUoE0lO5MegcTYZK/cqRK3eGUJMcG45YjAYbGq0hf2VRLqlyrHgozewFyMaA21r/Mne0
-         jypeFN1H+XVIqa333kZ0VFXkj3x/EonhE/qCeNCsSmP6SpgO5ER6NriYdoXrO8ofChiV
-         ghdWjPvMC24NuUaIIOk5qlFvI/P19aywLmF/TW1To26kb8qQAKR/S0fAYRdgYa7l+n1a
-         YU+bc2EF8qA1nGR1Cma9qdLff2czYJheqx4/baM+D1/V8NwnQs2lgTUC/+D42a6+QZpc
-         9UWg==
+        bh=NSZqPcNxcDapPNldInB7JTSEZaOXSqhsga2ZRaSmlrM=;
+        b=ZRdPfYeDuF2PI96J3h2s0LwwuVEN1RcPfvmFxt8gjmmgjFkddvmlQeugIuTJ/aSjg7
+         eawo4QBP1/CzVzhLK8z8aGPHeDiy0WO0X0LXp3J/mTzBQqAPyReJP0RpLI+cXOybh9xp
+         yb11PUUSlNb+XO/ILXqlDZzokMarBzqG/59PNIt1i/0xXp9ukBQNqhyl0X/aLNLFoqjQ
+         9jwdeXumWNiFEzvYA19G6a3veIDAV8Y/+tuu5yTzxJeHGXDPgJjqIh+kJkaUbAeMnUFv
+         8mFCcp+uRC9eM/6TJgdRmvCgWQoyZGm6TjSpKKg9PXivCKCQD2/MhGhWnpPd1WMyM0zz
+         QTGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788367302; x=1788972102;
+        d=1e100.net; s=20251104; t=1788367304; x=1788972104;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=o5u+D2Eye+Inmljua0Pt8umFr/3SFEmDrz+aVxfwQfA=;
-        b=j1wpJIe4aTiUMr7mV2yC9E6F0iS+ssmCod5cS1j68J+R3KEg8tQSc2FNCBZznJhcYL
-         dv2S8nwDDFkLS4s0nnhUP6Hq9XWQ9DrNHoSLk1xNp/H2hK2CVv/+rfJIDHFpZz8G4nwI
-         0yPp5GOd6ppxA9gv6zQ0xSoWhEbpJI2uhhWPhecYk38RYoLwK4GqDsqMfc9+fydMbqYz
-         xtflnGC5OFR6aAQKjft7rPWcgT2qpXZXSwfsj0jM1rhz31V82RU3iYAIcqxhIEVJ7Dog
-         +dNvoFZN9cXdCrFOaqDVMe0IsMWOD85dLFDGlMcMiQYBBJhaMIJ59UdjM+F+n6O5aG/M
-         UXYw==
-X-Forwarded-Encrypted: i=1; AKwUvBxQOXFRDB1pJzS6pPtiMe4yKZOETE2umWsoOkKX93dvi18r2vKRGZ5SA5PH28qBBTAokMQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++ms1580c964hTB8dgWUeuoYhwhYRmnqG91IUA8JEE3PZNkDgSFe
-	LOK1cAGFsJVW1XJmg3NGW031QoIu4mivkO5TdgowhZ+R1R/AxJ5tqRO3DlBHyz4WkHpk4g6Hmqc
-	CKj9zIw==
-X-Received: from pfbhm12.prod.google.com ([2002:a05:6a00:670c:b0:84a:30be:791f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:35c4:b0:857:73e2:9107
- with SMTP id d2e1a72fcca58-85ed99b48fcmr9375483b3a.23.1788367301626; Wed, 02
- Sep 2026 09:41:41 -0700 (PDT)
+        bh=NSZqPcNxcDapPNldInB7JTSEZaOXSqhsga2ZRaSmlrM=;
+        b=OeqwLQ1hUHPdGUDBGP/SqivGncqUPwSfG6Rcw3BbpkRh9iLEgD6QEbzmQPs0L8D4PM
+         JU9nI5Jbrcoo9M6EJMq4ewyFKblUY2mfO54txbA2qcUDrmnkmHsn6AQQg48tQqImWj8S
+         RdDgYa+pRacjQRZ5TEiYJu841leaCq4riT1daE3gkAvQUfclYNq4FdADCU6HXKsGWwj+
+         ZcDC4VvBBn8fbQ/ZBrXgJFTWM7Ov9WH28KulvnVZXcper7PHRc2M/9OHFbVMelV9PGbq
+         UlUV7VP6IkEKaUMVOVo9+oXvDU5ITkYSSkkBMnbILHQfh+qhKxOEJTpNpWyLks4gzMxm
+         XTXQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxh2+BfcA82liW4RryXM0WsUF0rcZlXWYGjg3+w6nX6UG2pzpyWv6pJMvinYXU3T+kmuq0=@vger.kernel.org
+X-Gm-Message-State: AFuF++m+iCU7Da0ZyCDe5WLFzAvQsp2T/MWmoD7ONh5qIKyBJEoHIa4e
+	zVGM0wBo356HzV1iyYTeYu1NeBxP8aQqfThTcBEv4/REFU9zvD2WmqXhcLdMQUo1OhAPli0l6Mm
+	mGVJ9vA==
+X-Received: from pfbgv8.prod.google.com ([2002:a05:6a00:4e88:b0:853:9149:8801])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:238b:b0:85c:c8db:8e4b
+ with SMTP id d2e1a72fcca58-85ed23dea9emr8785308b3a.6.1788367303872; Wed, 02
+ Sep 2026 09:41:43 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed,  2 Sep 2026 09:41:17 -0700
+Date: Wed,  2 Sep 2026 09:41:19 -0700
 In-Reply-To: <20260902164123.2546762-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -61,9 +61,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260902164123.2546762-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.966.g6673acef38-goog
-Message-ID: <20260902164123.2546762-15-seanjc@google.com>
-Subject: [PATCH v2 14/20] KVM: selftests: Use TEST_EXTRA region in arm64's
- vGIC LPI stress test
+Message-ID: <20260902164123.2546762-17-seanjc@google.com>
+Subject: [PATCH v2 16/20] KVM: selftests: Use TEST_EXTRA region in set memory
+ region test
 From: Sean Christopherson <seanjc@google.com>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
 	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -82,7 +82,7 @@ Cc: Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
 	Nicholas Piggin <npiggin@gmail.com>, Ritesh Harjani <ritesh.list@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Use the TEST_EXTRA region/memslot for arm64's vGIC LPI stress test instead
+Use the TEST_EXTRA region/memslot in the "set memory region" test instead
 of a custom memslot, so that the primary vm_phy_pages_alloc() APIs can be
 reworked to take a region type instead of a raw memslot.
 
@@ -93,24 +93,26 @@ vm_userspace_mem_region_add().
 Tested-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/arm64/vgic_lpi_stress.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kvm/set_memory_region_test.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/arm64/vgic_lpi_stress.c b/tools/testing/selftests/kvm/arm64/vgic_lpi_stress.c
-index 9a69c439a0f8..9865b204fdeb 100644
---- a/tools/testing/selftests/kvm/arm64/vgic_lpi_stress.c
-+++ b/tools/testing/selftests/kvm/arm64/vgic_lpi_stress.c
-@@ -164,8 +164,8 @@ static void setup_memslot(void)
+diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/testing/selftests/kvm/set_memory_region_test.c
+index dffe9654f45b..9d21594e2f81 100644
+--- a/tools/testing/selftests/kvm/set_memory_region_test.c
++++ b/tools/testing/selftests/kvm/set_memory_region_test.c
+@@ -116,9 +116,9 @@ static struct kvm_vm *spawn_vm(struct kvm_vcpu **vcpu, pthread_t *vcpu_thread,
  
- 	pages = sz / vm->page_size;
- 	gpa_base = ((vm_compute_max_gfn(vm) + 1) * vm->page_size) - sz;
--	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, gpa_base,
--				    TEST_MEMSLOT_INDEX, pages, 0);
-+	vm_override_mem_region(vm, MEM_REGION_TEST_EXTRA, VM_MEM_SRC_ANONYMOUS,
-+			       gpa_base, TEST_MEMSLOT_INDEX, pages);
- }
+ 	vm = vm_create_with_one_vcpu(vcpu, guest_code);
  
- #define LPI_PROP_DEFAULT_PRIO	0xa0
+-	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS_THP,
+-				    MEM_REGION_GPA, MEM_REGION_SLOT,
+-				    MEM_REGION_SIZE / getpagesize(), 0);
++	vm_override_mem_region(vm, MEM_REGION_TEST_EXTRA, VM_MEM_SRC_ANONYMOUS_THP,
++			       MEM_REGION_GPA, MEM_REGION_SLOT,
++			       MEM_REGION_SIZE / getpagesize());
+ 
+ 	/*
+ 	 * Allocate and map two pages so that the GPA accessed by guest_code()
 -- 
 2.55.0.966.g6673acef38-goog
 
