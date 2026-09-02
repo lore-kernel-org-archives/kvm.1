@@ -1,344 +1,290 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011033.outbound.protection.outlook.com [40.107.208.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB263905F5;
-	Wed,  2 Sep 2026 08:27:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788337669; cv=none; b=bBc84e0YrI+puG6az7ZLQ9TvRLCp/dnIMMQXiZvb7QNitortFB8Bbm/5Q7C3gG6ysVe3R1uABpkNQDzgUwSyNEJY8DuDPZp4T0TvoHam7mZUXwVclNq/sRKmNiuRfrpyJXvZrr4tgj8WVtjuiniCspstaS5z7onfzDMQPYTBj8o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788337669; c=relaxed/simple;
-	bh=29fsueDVIRUntd2iiqt/yyNOOlWMXkIpdYy6w/ABEF8=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U1yoUJO9e9R0SQy0Ovwpigwo4hw3K76rCMSP7BCttSfMywMTiK0E/r4c7I9vN3WB7CoIpSMw3zycOeGgYTfdXKuKR97MptuJj8LI+iPTrVkFRIFBXix2+FnDy/0m8rJZ+AnnU78kjOJyAJZSecoBjQfoaHC9yBLb6XCydjYC7O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hoFabAGn; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9427E390239
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 08:52:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.33
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788339153; cv=fail; b=RnBk58BybJHCMMpFcaJhONS44Irm8NhZBuU88CO2hjZoG8fjDC/IQkYHlgg78uQvGPjigmWqY5TA3WYE9XFRSAf1C6zRzI/RiByYNudGFD/T4AIlYu26c4dPxN4NdgTklA24h6k4O+wPigItHhq4miHCnozvNAc/4ioK6xCe5YI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788339153; c=relaxed/simple;
+	bh=GiQNLHOdzkQcQAZ6RNWmKxGybCSaB3x/PiosSxDxbi0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=YhJwqoOKxWbm9uEYuGdZIKrHRFr/Z8BlbQupjg3xPSel+jW0E5hJOaR/G38Tcs/V3H2CMxxZgI8rvwpBoim9yzOCk6/R1pPCFgE2C6GqTrpbNXtd1H1w/KEGsb9xg81F1W3SU/JrERGneU8ub+njzCWz7wMJxdP+K7fOwHFztCQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=1l5Ea4Ue; arc=fail smtp.client-ip=40.107.208.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hoFabAGn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9011F000E9;
-	Wed,  2 Sep 2026 08:27:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788337667;
-	bh=00lmFy+N2N/bnyvL+i6kv3lyZlzEYxH3S/gtp4CE5WY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=hoFabAGnzh5HePnKfAeMgoIY07ZZ3DKA+IMSrNEhccurnvOkcKhirNJPIjXpF4S4C
-	 +RytmcHUdXHkSoSEyrCXGbm6ergJDagwGuYZ06XOXUgha+iSF7nO9G7nwdxL5fL8/R
-	 6f4Z7eU3BmvCKBoM1Omou/wyajH5jNT2oimFnaorXYdx98O29rOv+mXcnjNl8WqVVP
-	 f72PcG8eTpMdEYvsQzKchwlRxmenmAKOK/hcNGt9PokNoZpWSPMqj8kMGhHhnWktHV
-	 TS5MGtIqXEVqJeBYiDEDCLhtLNAW4ipeTpungXqBc+pOd2qo9G1Amgit5XryiJ6wJa
-	 LFsTzQt5K1gng==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1x1gJs-00000003mfI-2MWI;
-	Wed, 02 Sep 2026 08:27:45 +0000
-Date: Wed, 02 Sep 2026 09:30:17 +0100
-Message-ID: <87ik4om4x2.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Steffen Eiden <seiden@linux.ibm.com>,
-	kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Grapentin <gra@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Friedrich Welter <fritz@linux.ibm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Gautam Gala <ggala@linux.ibm.com>,
-	Hariharan Mari <hari55@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-	Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v7 03/23] KVM: Allow KVM implementations to switch off MMIO independent of Kconfig
-In-Reply-To: <apdwHcdy2iYRTrww@google.com>
-References: <20260831144802.834315-1-seiden@linux.ibm.com>
-	<20260831144802.834315-4-seiden@linux.ibm.com>
-	<apdwHcdy2iYRTrww@google.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="1l5Ea4Ue"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cw4xf4Qcu9PsLJywboPRbEfuu0WhZj8n4EAD5Qmeg+HBi+ek1l6d/CDTmNC9LfFz7KnSPkDViuHTw8NB1l76N7WR/KmG5J21I3zVxr54iABJXW1z69I/gdMGS5WuqD5Y8MYY63Z3Okb/YDHPOiK57rEMXu3/JbnM5L6f6lI8MhYhK1NhSoeVoi9TU32Y3HxjMxhaa2/P828QnjQcQWcMQf1cbSH6w1aEOQLrmU6d3PDPQ9M4ec/GTaxWL+CC9fiM+S448Amxsd3J/sX0MeasHTMGoVXkGp7Yr3cz2HId/zvbjGrnUAYEJShVxkT54mL2vbey9fg4UnB5PcbhmYgqFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aqRkUcBEmLUSPz+4+f+mmumuAza+PeX/fRwfDJw8VSA=;
+ b=LRvEyt3/Q4n3RG2RtpgU1GMJv7UkyYFP4Tjs5PWnTYESzBPeRscC2AhwlJv1CkqJVbDmy0JSbexwzjThNnXnFp2b8rFP9MDmffSL2dTzggVUaA1Exk9nn55AOscvGy+z5bVIHBVpkZrPFfrLsZMinDRoz5DMLByqlK0FBE9cASKSNN3FDBjNA5997k0RMZMlZgkl5FOTG6M4W70nC6RXhCA5klyKcG1JFcTZtqi8UFUYoimccIjCnn8TZBWi4zGf8FOQmt3e7P26sVNSLX4F91O9OVaCFNe09Bb4SRhzP+eyJdnsjIG3giuMFdDMIt24dFO3deE28GeB9pZ4j2XMPA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aqRkUcBEmLUSPz+4+f+mmumuAza+PeX/fRwfDJw8VSA=;
+ b=1l5Ea4UeESggSfqX9kyftUr+wDozlpZoKE1lQMXi5YY8d4hoYnKz/4/9G+LsHhNURdpDQ4wQIyOTtO48z9rCmswBi8LDIxuEE0h0iH5XwpE3i3HU+fIZutAhdtq/aokiFGyTqzwk1Tw1Py2zVoGRaZuQW5qAgLDm9HKfLc/J1u4=
+Received: from BN9PR03CA0623.namprd03.prod.outlook.com (2603:10b6:408:106::28)
+ by MN2PR12MB4471.namprd12.prod.outlook.com (2603:10b6:208:26f::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
+ 2026 08:52:27 +0000
+Received: from BN1PEPF0001854A.namprd05.prod.outlook.com
+ (2603:10b6:408:106:cafe::3b) by BN9PR03CA0623.outlook.office365.com
+ (2603:10b6:408:106::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.11 via Frontend Transport; Wed, 2
+ Sep 2026 08:52:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN1PEPF0001854A.mail.protection.outlook.com (10.167.248.9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.382.8 via Frontend Transport; Wed, 2 Sep 2026 08:52:27 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Wed, 2 Sep
+ 2026 03:52:27 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Wed, 2 Sep
+ 2026 03:52:27 -0500
+Received: from [192.168.0.101] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.46 via Frontend
+ Transport; Wed, 2 Sep 2026 03:52:24 -0500
+Message-ID: <6e22fa3d-b443-441f-8717-3c544f5aeb59@amd.com>
+Date: Wed, 2 Sep 2026 14:22:23 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: seanjc@google.com, seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, tabba@google.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7.1] KVM: SVM: Add Page modification logging support
+To: Sean Christopherson <seanjc@google.com>
+CC: <pbonzini@redhat.com>, <bp@alien8.de>, <joao.m.martins@oracle.com>,
+	<kai.huang@intel.com>, <kvm@vger.kernel.org>, <thomas.lendacky@amd.com>,
+	<yosry@kernel.org>
+References: <77f1f310-d789-427e-8c10-bd6ac4836add@amd.com>
+ <20260529063833.1660791-1-nikunj@amd.com> <apdpQ4eUkXODO-bI@google.com>
+Content-Language: en-US
+From: "Nikunj A. Dadhania" <nikunj@amd.com>
+In-Reply-To: <apdpQ4eUkXODO-bI@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF0001854A:EE_|MN2PR12MB4471:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2caf9458-fa9d-444d-2cee-08df08cf840d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|376014|1800799024|23010399003|82310400026|10067099003|56012099006|11063799006|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	jYtutTZfUs9GXB2jIfQ48ki/Cb22ESTKSCrvUUbLW3BLJ4P9r1MHvMaw9FaZ0Ljrm2LrOaYpMItzakjTaXcdBv9wsxozL6tjBUc+tGAFfvSGz7pyyM7pkmrZcc/V1d2+ti2wnDPa8wN/BzOAi9qsK2msHbazOoxZ17oBadUR4Ln9CRPBSePn2BtnNvi1zG2BJEbD4ERcDFWthX18SEenAvyJucQ1VFHfaAluEL1XCC7sdLMC44AFdEtWYngC9FySZ9me3k4y0Jk6xi2OxWoJh6UCs9aN9Hc2JY5h9FRGh2fjzJVAGUeA0Zi5n99yDxqKL3kU5iw7yrBD4FeTfYv9D3TIib0+KJ/52rSISrBDFEiIMzxwLIwiOF8AIPklhqRcOpVZFhE9dQKJI8u3McZqtSjcjs3/q4fyKPrGSb6fxC5C4/MqvAgwi6B74XWdioM3VgjE5ANxipbTcH2CAafzCTxGtBbn9diMnuIfzvLfzhbNOXzz5Wmt6TdwHl5cYnHe2xWm2vZT2aBhJxD5T9E5QA5mJlbpD9msIyH6rqx5xNZEB10m5BoLv+OZ6Lypp6rr7quC7P6ok6V82raqKKRXdbpuCMVsmuXnHpbMvGNbQej+7UdrUKBZDUQwHaHPozkGeHUY5Z7eMJ9yDE9klbW+JdzCvTDz0n1doG+OZ3YGQkF94yxKGDrMeKsvKzx0UyJ4tn9qzA58i8sUW5c0x2tO9A==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(23010399003)(82310400026)(10067099003)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	B9t5LcaYQX8UFipz0xuxT14qkNTpOKx5phqXmH09GopqFA1i6ppoOYLo+le26ooK0S5i7IsW+/SiD/6lN9TTPNp8S1XS1narrMG+JLZ1lA9PBdBgF1vAh09mfQdL6mmeRZ1fiF9ckQKwIL/Ctr+lgL1PBA8ne1Pv60oyHCd7d9Y3boeUDnuEsdeK3c/JhLKmLCfh8sVAP6wGtQoqtVeSrNqYM+JzMvUbl+CJG/uqjhEOZRHW3OHXwmRIpcipSa24t9iq62MlOMychmxl91O8APPyFr0GyLKOtleEi42GBUcP5suoybhJnrNYK9PqSj9yyAaOWsp7L4uuiHRoovA6z7XX0t7nO4eI1H53LaXxcmHz7Vnw0u+JheshMKlbfUshwDqttlsTAHIxYm9GyBZ+d3tyN6Zm2vN3vsLfC3Yb99rKlTBOXLf0maUBlwUDXp6r
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 08:52:27.6182
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2caf9458-fa9d-444d-2cee-08df08cf840d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF0001854A.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4471
 
-On Wed, 02 Sep 2026 01:38:53 +0100,
-Sean Christopherson <seanjc@google.com> wrote:
+Hi Sean,
+
+Thanks for the review!
+
+On 9/2/2026 5:39 AM, Sean Christopherson wrote:
+> On Fri, May 29, 2026, Nikunj A Dadhania wrote:
+>> @@ -3331,6 +3364,53 @@ static int vmmcall_interception(struct kvm_vcpu *vcpu)
+>>  	return kvm_emulate_hypercall(vcpu);
+>>  }
+>>  
+>> +void svm_update_cpu_dirty_logging(struct kvm_vcpu *vcpu)
 > 
-> On Mon, Aug 31, 2026, Steffen Eiden wrote:
-> > Only defining KVM_MMIO is not flexible enough for multi-KVM systems
-> > where one KVM implements MMIO but others do not. Solve this by
-> > additionally testing for the non-existence of KVM_NO_MMIO before
-> > including MMIO code to KVM.
+> This can be static.
 > 
-> Ewwwww.  IIUC, s390 ends up with two KVM modules, i.e. there really are two different
-> KVMs being built.  Rather than have a KVM_MMIO and NO_KVM_MMIO, I vote very
-> strongly to drop CONFIG_KVM_MMIO entirely and replace it with __KVM_HAVE_ARCH_MMIO,
-> a la __KVM_HAVE_ARCH_VM_FREE and others.  Tracking two separate macros is going
-> to be annoying to maintain, and will definitely be confusing for non-s390 people.
+>> +{
+>> +	struct vcpu_svm *svm = to_svm(vcpu);
+>> +	struct vmcb *vmcb01 = svm->vmcb01.ptr;
+>> +
+>> +	if (WARN_ON_ONCE(!vcpu->kvm->arch.cpu_dirty_log_size))
 > 
-> It'll mean linking in an emtpy coalesced_mmio.o on s390 when building without arm64
-> support, but I'm guessing that won't be at all common for s390 builds.
+> This can/should be moved to common code.
 > 
+>> +		return;
+>> +
+>> +	/*
+>> +	 * Note, nr_memslots_dirty_logging can be changed concurrent with this
+>> +	 * code, but in that case another update request will be made and so
+>> +	 * the guest will never run with a stale PML value.
+>> +	 */
+> 
+> Ditto with this copy+pasted comment.
+> 
+>> +	if (atomic_read(&vcpu->kvm->nr_memslots_dirty_logging))
+> 
+> And this check.  E.g. (incomplete, needs to be split up)
 
-I ended-up doing something very similar locally, because I couldn't
-really make head or tail of the logic while being in holiday mode
-(which doesn't help). However, I kept the negative logic, so that we
-don't need to add anything to any architecture but S390 (they are the
-odd one out here).
+Sure, will refactor into a common kvm_update_cpu_dirty_logging()
+wrapper in x86.c as suggested in a separate pre-patch.
 
-Untested hack follows.
+> 
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 0a8ef0b4ddda..73564619a61e 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -3377,20 +3377,12 @@ static int vmmcall_interception(struct kvm_vcpu *vcpu)
+>  	return kvm_emulate_hypercall(vcpu);
+>  }
+>  
+> -void svm_update_cpu_dirty_logging(struct kvm_vcpu *vcpu)
+> +static void svm_update_cpu_dirty_logging(struct kvm_vcpu *vcpu, bool enable)
+>  {
+>  	struct vcpu_svm *svm = to_svm(vcpu);
+>  	struct vmcb *vmcb01 = svm->vmcb01.ptr;
+>  
+> -	if (WARN_ON_ONCE(!vcpu->kvm->arch.cpu_dirty_log_size))
+> -		return;
+> -
+> -	/*
+> -	 * Note, nr_memslots_dirty_logging can be changed concurrent with this
+> -	 * code, but in that case another update request will be made and so
+> -	 * the guest will never run with a stale PML value.
+> -	 */
+> -	if (atomic_read(&vcpu->kvm->nr_memslots_dirty_logging))
+> +	if (enable)
+>  		vmcb01->control.misc_ctl |= SVM_MISC_ENABLE_PML;
+>  	else
+>  		vmcb01->control.misc_ctl &= ~SVM_MISC_ENABLE_PML;
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index 0052446e04d9..828a51418d83 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -8416,21 +8416,13 @@ static void vmx_update_hv_timer(struct kvm_vcpu *vcpu, bool force_immediate_exit
+>  }
+>  #endif
+>  
+> -void vmx_update_cpu_dirty_logging(struct kvm_vcpu *vcpu)
+> +void vmx_update_cpu_dirty_logging(struct kvm_vcpu *vcpu, bool enable)
+>  {
+>  	struct vcpu_vmx *vmx = to_vmx(vcpu);
+>  
+> -	if (WARN_ON_ONCE(!vcpu->kvm->arch.cpu_dirty_log_size))
+> -		return;
+> -
+>  	guard(vmx_vmcs01)(vcpu);
+>  
+> -	/*
+> -	 * Note, nr_memslots_dirty_logging can be changed concurrent with this
+> -	 * code, but in that case another update request will be made and so
+> -	 * the guest will never run with a stale PML value.
+> -	 */
+> -	if (atomic_read(&vcpu->kvm->nr_memslots_dirty_logging))
+> +	if (enable)
+>  		secondary_exec_controls_setbit(vmx, SECONDARY_EXEC_ENABLE_PML);
+>  	else
+>  		secondary_exec_controls_clearbit(vmx, SECONDARY_EXEC_ENABLE_PML);
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 33715236afc9..4443796c4426 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -8073,6 +8073,21 @@ static void kvm_vcpu_reload_apic_access_page(struct kvm_vcpu *vcpu)
+>  	kvm_x86_call(set_apic_access_page_addr)(vcpu);
+>  }
+>  
+> +static void kvm_update_cpu_dirty_logging(struct kvm_vcpu *vcpu)
+> +{
+> +	/*
+> +	 * Note, nr_memslots_dirty_logging can be changed concurrent with this
+> +	 * code, but in that case another update request will be made and so
+> +	 * the guest will never run with a stale PML value.
+> +	 */
+> +	bool enabled = atomic_read(&vcpu->kvm->nr_memslots_dirty_logging);
+> +
+> +	if (WARN_ON_ONCE(!vcpu->kvm->arch.cpu_dirty_log_size))
+> +		return;
+> +
+> +	kvm_x86_call(update_cpu_dirty_logging)(vcpu, enable);
+> +}
+> +
 
-	M.
+One subtle ordering change for VMX: currently guard(vmx_vmcs01) is
+taken before the atomic_read; with this refactoring the atomic_read
+happens in common code before guard(vmx_vmcs01) is called.
+The ordering flip looks harmless to me.
 
-diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
-index 449154f9a4852..dd138b730217e 100644
---- a/arch/arm64/kvm/Kconfig
-+++ b/arch/arm64/kvm/Kconfig
-@@ -22,7 +22,6 @@ menuconfig KVM
- 	select KVM_COMMON
- 	select KVM_GENERIC_HARDWARE_ENABLING
- 	select HAVE_KVM_CPU_RELAX_INTERCEPT
--	select KVM_MMIO
- 	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
- 	select VIRT_XFER_TO_GUEST_WORK
- 	select KVM_VFIO
-diff --git a/arch/loongarch/kvm/Kconfig b/arch/loongarch/kvm/Kconfig
-index 15da2d88c0c10..f03872ba0ba8c 100644
---- a/arch/loongarch/kvm/Kconfig
-+++ b/arch/loongarch/kvm/Kconfig
-@@ -28,7 +28,6 @@ config KVM
- 	select KVM_COMMON
- 	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
- 	select KVM_GENERIC_HARDWARE_ENABLING
--	select KVM_MMIO
- 	select VIRT_XFER_TO_GUEST_WORK
- 	select SCHED_INFO
- 	select GUEST_PERF_EVENTS if PERF_EVENTS
-diff --git a/arch/mips/kvm/Kconfig b/arch/mips/kvm/Kconfig
-index b1b9a1d677581..c65596fdf54f4 100644
---- a/arch/mips/kvm/Kconfig
-+++ b/arch/mips/kvm/Kconfig
-@@ -22,7 +22,6 @@ config KVM
- 	select EXPORT_UASM
- 	select KVM_COMMON
- 	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
--	select KVM_MMIO
- 	select KVM_GENERIC_HARDWARE_ENABLING
- 	select HAVE_KVM_READONLY_MEM
- 	help
-diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
-index b6bc2fc86dca6..c5565d6fb27e4 100644
---- a/arch/powerpc/kvm/Kconfig
-+++ b/arch/powerpc/kvm/Kconfig
-@@ -30,7 +30,6 @@ config KVM_BOOK3S_HANDLER
- config KVM_BOOK3S_32_HANDLER
- 	bool
- 	select KVM_BOOK3S_HANDLER
--	select KVM_MMIO
- 
- config KVM_BOOK3S_64_HANDLER
- 	bool
-@@ -38,7 +37,6 @@ config KVM_BOOK3S_64_HANDLER
- 
- config KVM_BOOK3S_PR_POSSIBLE
- 	bool
--	select KVM_MMIO
- 
- config KVM_BOOK3S_HV_POSSIBLE
- 	bool
-@@ -201,7 +199,6 @@ config KVM_E500V2
- 	depends on PPC_E500 && !PPC_E500MC
- 	depends on !CONTEXT_TRACKING_USER
- 	select KVM
--	select KVM_MMIO
- 	help
- 	  Support running unmodified E500 guest kernels in virtual machines on
- 	  E500v2 host processors.
-@@ -216,7 +213,6 @@ config KVM_E500MC
- 	depends on PPC_E500MC
- 	depends on !CONTEXT_TRACKING_USER
- 	select KVM
--	select KVM_MMIO
- 	select KVM_BOOKE_HV
- 	help
- 	  Support running unmodified E500MC/E5500/E6500 guest kernels in
-diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
-index ec2cee0a39e01..3aea8d4939d2e 100644
---- a/arch/riscv/kvm/Kconfig
-+++ b/arch/riscv/kvm/Kconfig
-@@ -28,7 +28,6 @@ config KVM
- 	select KVM_COMMON
- 	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
- 	select KVM_GENERIC_HARDWARE_ENABLING
--	select KVM_MMIO
- 	select VIRT_XFER_TO_GUEST_WORK
- 	select SCHED_INFO
- 	select GUEST_PERF_EVENTS if PERF_EVENTS
-diff --git a/arch/s390/include/asm/kvm_host_s390.h b/arch/s390/include/asm/kvm_host_s390.h
-index cd692f8fb7643..3c65c52d6682b 100644
---- a/arch/s390/include/asm/kvm_host_s390.h
-+++ b/arch/s390/include/asm/kvm_host_s390.h
-@@ -34,6 +34,8 @@
- 
- #define KVM_S390_MANAGES_S390_GUEST 1
- 
-+#define __KVM_NO_MMIO
-+
- /*
-  * These seem to be used for allocating ->chip in the routing table, which we
-  * don't use. 1 is as small as we can get to reduce the needed memory. If we
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index 538ed1e803326..48ca567b0a846 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -32,7 +32,6 @@ config KVM_X86
- 	select VHOST_TASK
- 	select KVM_ASYNC_PF
- 	select USER_RETURN_NOTIFIER
--	select KVM_MMIO
- 	select SCHED_INFO
- 	select PERF_EVENTS
- 	select GUEST_PERF_EVENTS
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 03bfc92864b6e..dc9b68793f0d7 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -833,7 +833,7 @@ struct kvm {
- 	struct kvm_vm_stat stat;
- 	struct kvm_arch arch;
- 	refcount_t users_count;
--#ifdef CONFIG_KVM_MMIO
-+#ifndef __KVM_NO_MMIO
- 	struct kvm_coalesced_mmio_ring *coalesced_mmio_ring;
- 	spinlock_t ring_lock;
- 	struct list_head coalesced_zones;
-diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-index c3c0ee253fc77..c012f30127e38 100644
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -40,9 +40,6 @@ config NEED_KVM_DIRTY_RING_WITH_BITMAP
- 	bool
- 	depends on HAVE_KVM_DIRTY_RING
- 
--config KVM_MMIO
--       bool
--
- config KVM_ASYNC_PF
-        bool
- 
-diff --git a/virt/kvm/Makefile.kvm b/virt/kvm/Makefile.kvm
-index d047d4cf58c9f..c4fb1e01d0c89 100644
---- a/virt/kvm/Makefile.kvm
-+++ b/virt/kvm/Makefile.kvm
-@@ -5,9 +5,8 @@
- 
- KVM ?= ../../../virt/kvm
- 
--kvm-y := $(KVM)/kvm_main.o $(KVM)/eventfd.o $(KVM)/binary_stats.o
-+kvm-y := $(KVM)/kvm_main.o $(KVM)/eventfd.o $(KVM)/coalesced_mmio.o $(KVM)/binary_stats.o
- kvm-$(CONFIG_KVM_VFIO) += $(KVM)/vfio.o
--kvm-$(CONFIG_KVM_MMIO) += $(KVM)/coalesced_mmio.o
- kvm-$(CONFIG_KVM_ASYNC_PF) += $(KVM)/async_pf.o
- kvm-$(CONFIG_HAVE_KVM_IRQ_ROUTING) += $(KVM)/irqchip.o
- kvm-$(CONFIG_HAVE_KVM_DIRTY_RING) += $(KVM)/dirty_ring.o
-diff --git a/virt/kvm/coalesced_mmio.c b/virt/kvm/coalesced_mmio.c
-index 6b1d901610998..6bd4157b3ef41 100644
---- a/virt/kvm/coalesced_mmio.c
-+++ b/virt/kvm/coalesced_mmio.c
-@@ -15,6 +15,8 @@
- #include <linux/slab.h>
- #include <linux/kvm.h>
- 
-+#ifndef __KVM_NO_MMIO
-+
- #include "coalesced_mmio.h"
- 
- static inline struct kvm_coalesced_mmio_dev *to_mmio(struct kvm_io_device *dev)
-@@ -188,3 +190,4 @@ int kvm_vm_ioctl_unregister_coalesced_mmio(struct kvm *kvm,
- 	 */
- 	return 0;
- }
-+#endif
-diff --git a/virt/kvm/coalesced_mmio.h b/virt/kvm/coalesced_mmio.h
-index 36f84264ed257..77b811dee27c2 100644
---- a/virt/kvm/coalesced_mmio.h
-+++ b/virt/kvm/coalesced_mmio.h
-@@ -11,7 +11,7 @@
-  *
-  */
- 
--#ifdef CONFIG_KVM_MMIO
-+#ifndef __KVM_NO_MMIO
- 
- #include <linux/list.h>
- 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 65eb26a0520d8..2f25b75dbfd44 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -4059,7 +4059,7 @@ static vm_fault_t kvm_vcpu_fault(struct vm_fault *vmf)
- 	else if (vmf->pgoff == KVM_PIO_PAGE_OFFSET)
- 		page = virt_to_page(vcpu->arch.pio_data);
- #endif
--#ifdef CONFIG_KVM_MMIO
-+#ifndef __KVM_NO_MMIO
- 	else if (vmf->pgoff == KVM_COALESCED_MMIO_PAGE_OFFSET)
- 		page = virt_to_page(vcpu->kvm->coalesced_mmio_ring);
- #endif
-@@ -4900,7 +4900,7 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
- 	case KVM_CAP_ENABLE_CAP_VM:
- 	case KVM_CAP_HALT_POLL:
- 		return 1;
--#ifdef CONFIG_KVM_MMIO
-+#ifndef __KVM_NO_MMIO
- 	case KVM_CAP_COALESCED_MMIO:
- 		return KVM_COALESCED_MMIO_PAGE_OFFSET;
- 	case KVM_CAP_COALESCED_PIO:
-@@ -5241,7 +5241,7 @@ static long kvm_vm_ioctl(struct file *filp,
- 		break;
- 	}
- #endif
--#ifdef CONFIG_KVM_MMIO
-+#ifndef __KVM_NO_MMIO
- 	case KVM_REGISTER_COALESCED_MMIO: {
- 		struct kvm_coalesced_mmio_zone zone;
- 
-@@ -5563,7 +5563,7 @@ static long kvm_dev_ioctl(struct file *filp,
- #ifdef CONFIG_X86
- 		r += PAGE_SIZE;    /* pio data page */
- #endif
--#ifdef CONFIG_KVM_MMIO
-+#ifndef __KVM_NO_MMIO
- 		r += PAGE_SIZE;    /* coalesced mmio ring page */
- #endif
- 		break;
+>  /*
+>   * Called within kvm->srcu read side.
+>   * Returns 1 to let vcpu_run() continue the guest execution loop without
+> @@ -8238,8 +8253,14 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+>  		if (kvm_check_request(KVM_REQ_RECALC_INTERCEPTS, vcpu))
+>  			kvm_x86_call(recalc_intercepts)(vcpu);
+>  
+> -		if (kvm_check_request(KVM_REQ_UPDATE_CPU_DIRTY_LOGGING, vcpu))
+> -			kvm_x86_call(update_cpu_dirty_logging)(vcpu);
+> +
+> +		/*
+> +		 * Note, nr_memslots_dirty_logging can be changed concurrent
+> +		 * with this code, but in that case another update request will
+> +		 * be made and so the guest will never run with stale PML state.
+> +	 	 */
 
--- 
-Jazz isn't dead. It just smells funny.
+Looks like the comment got put in two places; will retain it only in
+kvm_update_cpu_dirty_logging().
+
+> +		if (kvm_check_request(KVM_REQ_UPDATE_CPU_DIRTY_LOGGING, vcpu)
+> +			kvm_update_cpu_dirty_logging(vcpu);
+
+...
+
+>> @@ -5465,6 +5570,8 @@ struct kvm_x86_ops svm_x86_ops __initdata = {
+>>  	.gmem_prepare = sev_gmem_prepare,
+>>  	.gmem_invalidate = sev_gmem_invalidate,
+>>  	.gmem_max_mapping_level = sev_gmem_max_mapping_level,
+>> +
+>> +	.update_cpu_dirty_logging = svm_update_cpu_dirty_logging,
+> 
+> Please keep the ordering somewhat similar to the other declarations, i.e. don't
+> just put this at the end.  This seems like the least awful place:
+> 
+> 	.handle_exit_irqoff = svm_handle_exit_irqoff,
+> 
+> 	.update_cpu_dirty_logging = svm_update_cpu_dirty_logging,
+> 
+> 	.deliver_interrupt = svm_deliver_interrupt,
+
+Ack, will fix.
+
+>> @@ -832,6 +833,8 @@ static inline void svm_enable_intercept_for_msr(struct kvm_vcpu *vcpu,
+>>  	svm_set_intercept_for_msr(vcpu, msr, type, true);
+>>  }
+>>  
+>> +void svm_update_cpu_dirty_logging(struct kvm_vcpu *vcpu);
+> 
+> And this goes away.
+
+Ack.
+
+Regards,
+Nikunj
