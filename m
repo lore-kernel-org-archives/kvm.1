@@ -1,69 +1,68 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE6147CC94
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 12:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9156C403E9C
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 12:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788351775; cv=none; b=ijkb8FhYiqOg04G/zd/BfqpKQt6S22hYNbMl8AQIZ8hp7c1YaWRSpR89m4pGZT8anJl7eECaN0AA3uZKhEyEl5CbW8V/Ytl1N5rgjr0pLyW2UQPLddQlrx19NtjiysECupg7HPo5bIpRXADRqOC1W/vwc/H2b+a7foL2lhw3IYg=
+	t=1788351951; cv=none; b=Si0xDAcz2lPKRHyMdR36U5fcFGN7db43uc55d+W3PUKpyhFzhPtNcfc6SA63Mo2MWsilRJodXy8os6wJFjF/MpHuBtMj9TF2fObq3/2P//GwZXFBZ+Vy1sOZ9l2X2shZSlVzezc9XG0b8zEZUFsEuHD6uQJSJojkOzwcGC002zI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788351775; c=relaxed/simple;
-	bh=E8gqwSC0CUaQjM0HnP0GL4Pjjj7xxMwg4Q6dB9AQ21I=;
+	s=arc-20240116; t=1788351951; c=relaxed/simple;
+	bh=qWim/lIPPQ6l98wILRuoStvmb9qBcy2G1Hm67Al1zOA=;
 	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=umlyFjo91N3LHpMYavuvAir4D0vGhtsYz0vS9RVy2KWFV+kUYU0P/H/xmu0O7REXTs+ThcYoGLvy+0hfg3wwq1D2zXaY1/7b2Obke+NDBzLvdctKxgOVBBmlbG3dOEWUMRexJZR7KoGU8aE7ezO1eVqOSXaxPmPctU233pqL/r8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=heoXaENZ; arc=none smtp.client-ip=209.85.218.45
+	 In-Reply-To:Content-Type; b=n3lXYpqQ0ynQyZqbzvpYxt7hFC79wb7mzJtgqmKictogHkbhH9vehSMrdhYjAbVwklwAdQiso97LTY0AuN2vJy61mMDRSMzupUG+O/mbkQ45V1HHdNlTy9umSnG7d08W+cSxWkScw4HPh7tQsFMdYMaC0yyQr7lI8HIkOHT/0ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GOEruDXz; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="heoXaENZ"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c169ae1cb26so349970566b.1
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 05:22:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GOEruDXz"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c169ae1cb26so350512166b.1
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 05:25:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788351772; x=1788956572; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788351948; x=1788956748; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mHu/6wk7EVyBKthvUsQwwRxIg1oSagtsFckVCW45lBI=;
-        b=heoXaENZfs2C44ylkPUcYeyTHHI/Fowmof58ivuA0rhEgZQe+kywhz1yGP6dytxBYI
-         iOGxcARVKvVhvYevibciv1BwfnCtvissoG3Qbwqx8+aQCsp1wavherFs2MZsEbXUAugf
-         0AFurBfSH5bUJJK5ea3Gl2UZ6m3cr0NrvhM/Tkf1/O+yZQQyYSMrwNV3FUbFcTmanhlP
-         VyWArOGmvtqhACRKucX6UW9ezXdTNL9vA+GY5EDUXNvhjI5Ah5IsQOA/jauJipvWcOVH
-         odawKEKuH8hwj1a7kf0CxIOl5v8vAZ9tLMSl2gMkD1WTuqLUYtSlAFi59fWya0IUlv9H
-         xNBg==
+        bh=WnwKUYyG1eYkPaem6py7c8DPLUxuR2hx2uAC6F2MPOw=;
+        b=GOEruDXzWTFx4Cbi7NIqyT7+GD/SiamD5kgGg3wA2OwPpNQSzv8xfvp7uJuLLf2y+o
+         2MtIOh8pUn3AED4MJe7eo0ibP+6EpWQICKKR1vKG2EZrK96wEvnUf1KHEkEZN1ZFBCjW
+         doQ7W8zAFYiAAOvWyZ6yxiG1J3iH3UE6Z6B28ywMyZjqGkKMEy1C12dXt1P7R/M7m8uv
+         XnimT2UuV6FKzWsNCjlYoAxOHOD8/ir52S3122BQsN7gzT8an8u5TEDVBeO7IUI1OEzb
+         W8Hvom0Nx7tkwCHMVU+iQ3H0ueyEkr9+mOnq7+ROi+EzAwsRqIlscM8ohLKMJw/4Uwta
+         bq4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788351772; x=1788956572;
+        d=1e100.net; s=20251104; t=1788351948; x=1788956748;
         h=content-transfer-encoding:content-type:in-reply-to:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=mHu/6wk7EVyBKthvUsQwwRxIg1oSagtsFckVCW45lBI=;
-        b=Gsg5PZAlD6aBgaAHzlv/PQXqaaOhSlz+RO243duuzyz0jdQf/BQFf8QEob5ZEMibCt
-         X1fo/qhmnFPPLXFtnAQOunoJnVsROBrqXx5cqYrdniaX8gT6I0gW0h5ZCRwTcx+QAj4T
-         /Pq+wHjXvhLfpSnwnWUFOcT0w8ygdJoEX8kRxyE0DLi1HE5iz0na/jjD3cEbmvTWaa6Y
-         jcyGcknlGN6XjIFuBtSChIIFnBHnycC1h5RM1MOZ+o6yFMD1AxR7ueQlFH8znl1lus6A
-         rwgcjt9C12KpWYqKGYHIMKPo84hIFppC6r41ru3tND1XrLvXexFXnTZtAttL/JzVK8/T
-         sfEw==
-X-Forwarded-Encrypted: i=1; AKwUvBwMSEWRgnhqSbCmYf3R/9F9i4QhOtdy3PudEQ4deDm7g5Laoq6pMq/02LA3PNo+f7bSkHc=@vger.kernel.org
-X-Gm-Message-State: AFuF++kXOp7GHOR0jkFIQJr4YoLwzG8942GD73Wmsk7T+YM5kwZ+KEp/
-	OHK0KuR2NWHvFnsds9zI61Wi9gZiiUajeuTRSyQ0Ms5tze59lQWqj0CG
-X-Gm-Gg: AYBFou0iN25TSG37ukjUkburPpPc1sA75/uYafq8ZeSBuEz19nvFus24JnlmXOLkCnY
-	42GhnVlPE1rtymd9JLCqdMgVfWDK7o5cXAdyEEpNlKpybtqJvrnSGp4ongdB1I0SqyJIABOG3/u
-	3oYbTYoXVqO1IrUXareR2AlO4Rpoe6jilXjyolMvnnDIckoDRnEUBZhfiWQlTZvMmB8HxLPhtJN
-	nSkwMtaDM9l0B5MxFb5yaBUZyXIyeEalLI19E0DRIO9O+Xbx4wiuZ8YAZ31lbL62oH00vxCJzu6
-	xOVS5y0WQarWfSSgPlV6ip99F5jDtQvKuwG2bZ3s72MELLquHjQdCahJ0GAW2fwsJYJEbvQ6Kpf
-	zJcAWRds0QzVhjvqU1OzrVZuKJVKPXkexPYdw0wk2RsdQzHRiaq6Ru16RT+DAoWIDSjrO22uySm
-	A0+8qVx1zMKN7tSKKwCz5y+zGk4XgC66oSva2IiXqkauGzxsBTZTYUK/d6q5rhsjlFNp0BTV4Af
-	9s=
-X-Received: by 2002:a17:907:3fa6:b0:c1c:2218:f317 with SMTP id a640c23a62f3a-c25dc9bedbcmr160135966b.2.1788351771898;
-        Wed, 02 Sep 2026 05:22:51 -0700 (PDT)
+        bh=WnwKUYyG1eYkPaem6py7c8DPLUxuR2hx2uAC6F2MPOw=;
+        b=kybDTLMoGhKE+80G4/DXG+Hm9WRaK1NlapECe3UpgNeCzNo7eLIAqLpI4jMo7+fk7/
+         Asq78HqEJMRgykq1QUQ6ObIPuU6A8c7V6mytRum6ehJiriUNoaUAT3hPyyY2yED0cXk5
+         AnRgpakEtEWSBik4PMbsT1L3iwFOlBUJpwHqToEmieqQHuVr6UwrcXuq1pYvIIC25XYl
+         kDJGDANTKK8q8bayNA1YeGO5A+XowBXyQKw85X9QI4WWsLkTUTgkWe6SbJR3DL0wJLWu
+         N0PxuhyKSJ4mu6pT2W98oslRuExOD7zZ4LfGIGgx+W3BUDuT4H/hQ9KLGpMKdxyZSjPL
+         ZE1g==
+X-Forwarded-Encrypted: i=1; AKwUvBwddRTN7UVEGzVicKAuJVJAU0/OlJmCW+uOQtED4yieRhlFZui6SV3cV5oafyrOR2xT77g=@vger.kernel.org
+X-Gm-Message-State: AFuF++mKM0p6rDpirfYCLKlKVEZMG/a+ifgCPHYytuRgCYb02DHeom3S
+	TbvVycq3v79VDQjkANTSTdXnzj7dHa94CYwIIoOTsVyOB0NRJhRHD8Jy
+X-Gm-Gg: AYBFou0rBbbSD4bjvjzeQr7AU7gP9xlMd0j65EmgOeUxHKbLwXUxxu1g2ZMdRXhQx1K
+	y1HyD/EsJBhIqrFD1aXF0nJd4d9pKk9CePA0I97nkBdEY8EDSNk6YY9pU28qkgr5L47RDJ6MazA
+	Rr0yfbYUqN3Lc9h2UgA79R6yQFkYNzM+0Gi2ygHqO5exc9N3bkNDQx92/Y0ObtRLG+bYXiAc7/S
+	SMt9VYb0girj5OZ0g3hQHmTUuUFUUba5OTerEpnKQJ1vllsz91KeUNbui38+w452L3KC0ouzTPb
+	FW4Z35draa6Prx97Ec9BrXFiJm/Nx/3VQKMma7KllKkR4hnmguAyUWjsul2ayUHO4++7OU2iwj5
+	yGAI761GDpVhRBon06QbVFx2AWsSSoprs2I/nlAcNmSLjd4C5Ge8F8s6Oqr8wESZriiZdUCWP3L
+	zbMuvrlyBVL3yYnt+kTadHc07VpldGM1JV7aG+/OMkPduwoY/dWWP+2qeksOwoVRAU
+X-Received: by 2002:a17:906:730e:b0:c25:c678:ff80 with SMTP id a640c23a62f3a-c25dc9c1306mr204507266b.2.1788351947624;
+        Wed, 02 Sep 2026 05:25:47 -0700 (PDT)
 Received: from [10.45.18.37] ([15.248.3.93])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c25d039d2e5sm122870966b.38.2026.09.02.05.22.50
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c25d043e6bcsm125254366b.61.2026.09.02.05.25.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Sep 2026 05:22:51 -0700 (PDT)
+        Wed, 02 Sep 2026 05:25:47 -0700 (PDT)
 From: Paul Durrant <xadimgnik@gmail.com>
 X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <bfbcf166-5bf5-4cde-b607-a5a038edfaa9@xen.org>
-Date: Wed, 2 Sep 2026 13:22:49 +0100
+Message-ID: <567d5476-5f9b-435c-8884-8ee5b9b26966@xen.org>
+Date: Wed, 2 Sep 2026 13:25:45 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -71,8 +70,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/13] KVM: x86/xen: Rename max_evtchn_port() to
- kvm_max_evtchn_port()
+Subject: Re: [PATCH v3 04/13] KVM: x86/xen: Latch shinfo mode in
+ kvm_xen_set_evtchn_fast()
 To: David Woodhouse <dwmw2@infradead.org>, seanjc@google.com,
  pbonzini@redhat.com
 Cc: joao.m.martins@oracle.com, boris.ostrovsky@oracle.com,
@@ -83,26 +82,46 @@ Cc: joao.m.martins@oracle.com, boris.ostrovsky@oracle.com,
  nicoyip.dev@gmail.com, frn1furkan10@gmail.com, kvm@vger.kernel.org,
  linux-kernel@vger.kernel.org, imv4bel@gmail.com
 References: <20260831213632.81023-1-dwmw2@infradead.org>
- <20260831213632.81023-4-dwmw2@infradead.org>
+ <20260831213632.81023-5-dwmw2@infradead.org>
 Content-Language: en-US
-In-Reply-To: <20260831213632.81023-4-dwmw2@infradead.org>
+In-Reply-To: <20260831213632.81023-5-dwmw2@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 On 31/08/2026 22:26, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
+> From: Hyunwoo Kim <imv4bel@gmail.com>
 > 
-> Rename in preparation for adding a variant that takes a latched bool
-> argument for use in paths that need a consistent snapshot of the
-> shinfo mode.
+> kvm_xen_set_evtchn_fast() assumes the port range check in
+> max_evtchn_port() and the bitmap layout selection observe the same
+> shinfo mode, but each calls kvm_xen_has_64bit_shinfo() separately.
+> If the guest changes the mode in between, a port accepted by the
+> 64-bit range check is handled with the 32-bit layout, and
+> port_word_bit falls outside evtchn_pending_sel.
 > 
-> No functional change.
+> Latch kvm_xen_has_64bit_shinfo() once on entry so the range check
+> and both layout computations use the same value.
 > 
-> Assisted-by: Kiro:claude-opus-4.6-1m
+> In practice this is harmless: the evtchn_pending bitmap is at the same
+> offset in both native and compat shared_info layouts, so a stale mode
+> just results in setting a bit in what the guest (in its new compat mode)
+> considers the evtchn_mask, wallclock, or the arch_shared_info fields
+> which follow it — all of which are in the guest's own page. Even with
+> this fix, the same corruption can occur if 64-bit mode is latched and
+> the guest switches to 32-bit mode immediately afterward. Like Xen, KVM
+> makes no attempt to *convert* when shinfo mode is changed. Only the
+> wallclock field is updated in the new location.
+> 
+> This fix is for internal consistency rather than correcting any
+> observable bug.
+> 
+> Fixes: 14243b387137 ("KVM: x86/xen: Add KVM_IRQ_ROUTING_XEN_EVTCHN and event channel delivery")
+> Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+> Closes: https://lore.kernel.org/all/aiHPPUk5DY7rH-zL@v4bel/
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> [dwmw2: Rework on top of long_mode/has_64bit_shinfo cleanups]
 > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 > ---
->   arch/x86/kvm/xen.c | 18 +++++++++---------
->   1 file changed, 9 insertions(+), 9 deletions(-)
+>   arch/x86/kvm/xen.c | 18 ++++++++++++------
+>   1 file changed, 12 insertions(+), 6 deletions(-)
 > 
-
 Reviewed-by: Paul Durrant <paul@xen.org>
