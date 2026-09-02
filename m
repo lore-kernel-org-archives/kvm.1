@@ -1,148 +1,117 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE0E4A5EC3
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 15:45:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2EC4A92F3
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 15:50:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788363944; cv=none; b=nXuIuMPQz68t3rjzmGMUskSGZB5SNqTR4YA26vZQB2qVpQJVzyob2jvWDQRXFsYKVldlHy9KcIry0vL6FdPXFHlQtAu8JvihvtlovBMB/fnhOGfEjghrVVNUVHrSvCTI+J66oCHzRM2lisLlwYLU2Iz+r+rdrpGifAFKzumT+vI=
+	t=1788364245; cv=none; b=c9b39gxGRF4xRF+9vtoriA5O9WN21C/00bdeW/s0HZRQEr6p3TtuFf2pC2QzNnb7aX9bbwZeCANng4vt3HhmSb6J9xBVC67o5dMHCosgGfx3nQHCByNLv/LOcOoYYqnFu9rb26u9apEiNFHX5BUUfOagjGiY3VsUNVapTFOfgus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788363944; c=relaxed/simple;
-	bh=i6d2blMPh9mOd0MVDNHjtlQcI4G4pg6dNuQH9dy935s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=asK9pQjI7os1xtH+18BNkNPej0NzSHt5ta8P5AWSberUS5k3jr5ZwwQuFQXtmBfJhWtrlq0Rt5mqofCB4QteXhQN7Wh9QwedI9ZSdu+o5SZPiC/kHW81irmkxm3yjlkDcLAGMCCXtbI6bDsBN+J01iYywBsX1ZeCA5s1eS5jlag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kxcHVLnw; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1788364245; c=relaxed/simple;
+	bh=x/aSspVi1izw2ohQt29OQIs4Z647EroW5SPSwlyZz80=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qhKtlUSyhKBEgenvuT/y6X/c+ZRjaJdnvNqOdAROxW9vtBXBNXzpRstfzNcAtwWmP8biRfWU2SLH5MIKkxA7uUsyBBxHbx7S0fkirO9Uv6wAoNWlAyVsHunNfzbm20mUIIvJjEzBIhSJtC+0YjmM83MNHLW4pzpI9zsCiRcc418=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PyZC6T/L; arc=none smtp.client-ip=209.85.215.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kxcHVLnw"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2d9201076b3so15273305ad.0
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 08:45:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PyZC6T/L"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc1cade6b71so13276a12.0
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 08:50:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1788363942; x=1788968742; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=TPysDsGnpI9b+EwUBvoDR+Wcd16jrG2t2FBfRR3MC1c=;
-        b=kxcHVLnwWR44jc2KWneJ1yxy9PHuAJ3DQ9Yhv5pPbNgeIKj6rO06lfZum3OLb4OMDB
-         T6rrlWFOPgo9Y89R+NI1q4lIdiaKx5Tp11+IT/R0EPeCAIw8AkmhiUK4PhhFSidXOFAj
-         WgFDAU8m8YnpboKvusFP3BLFt0A9v/4VEARHGF9RT19svS12VqNeBwG/OAZcVe3SuF/0
-         zAnm1i3TvyyUVWJcb0Uakbgt8jJFwjmC0Izj4937dR06zBkoRm342j2nuwKLoS3Sy+DY
-         b4pVMn1kzcwhun33aHnI0/NYgkl1Nz6w7JJEeCPj3lLss2ESE5DqQyXrqoX2Td24R0/4
-         yi8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788363942; x=1788968742;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1788364242; x=1788969042; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TPysDsGnpI9b+EwUBvoDR+Wcd16jrG2t2FBfRR3MC1c=;
-        b=hUvn2m4GCQW+3W9g77gW7zWRy0fbl4kbm8fiZ9prkxFPjywl4mDD9BJY1e7nihc/+f
-         igQCZou/ruIM9tM1VDUWNv53K5jmgnjS2Gcs4sN52gJK7/ggrunP0Tmex5C1c/QJ6xGV
-         3yb6MXDGjZ+Nzhl+cRsTKf6XyKwjjCyZHwy1NBRo7+u6ECZRw1/c7C20iPTNjEYJkGOw
-         sm4WBMY3tWYQyRL4A26S7C6yduTuP4ygiEzYPPIurOP8Pi9a+aSAx5+rq0j7rU83tEPL
-         rxay0iRH1Bs6o9h1bSnes6OUuF4XCJDBfDuRv5oQN06GKDgxTGZcsECm3kCkw9BevavH
-         AlIw==
-X-Forwarded-Encrypted: i=1; AKwUvByRonog3M7JVPqc6SSgTr6rMqV4jjJxtQH3v02QC+vGyW/4XV4di0R+IhkhBACX94dOBX8=@vger.kernel.org
-X-Gm-Message-State: AFuF++kAZuD/bVTZWKEXJotqEenkTwnrCZdjd8ulr3mGQ7mKNipnG/HH
-	6CeGsTYeMIO3HvA1ruviI2eqR5O4Id7MKhW+YnkW77yKjdTcHYqQYz7LUeBQncgqCLo=
-X-Gm-Gg: AYBFou2a/5Oxhr5ZiGP0ZqdUGZcmcx4DdPKAXkFZrSf/ji2+Akn+PFVyWglRkXG5E94
-	AxMWZBLxU1LLrePQBgrTKlIFIDMEISLum2zauO4doZB+NsI0nmXt+mKCukl3nkmD088cndJp4HQ
-	Qxwz9/iuZYgTWIFtQadqHPk+guVgTN2GVN2tDQy/qx8zN+BbAXdfxITJudyT1uBfVEYdI8+yhAn
-	xlo82mKooARXuW6wwVnRx5xUpL53jZ/95H5piHdA8fznhsV5Ny1TL7ab1vWqbUEF3OvJEN5fVXc
-	Aoo/Oqze7DyCisVcxf0VpRJDiVkt75fD8KjICgaE8o4YlWYnH3fPUVH2xTO+ywJ6Puby9aQdFeU
-	Q1hP3Ke0a+heQPPsE6lCTZ5Rh8Ee+lVGOpJMPyJTLkUjKlDHMAz19z4nKvg7Ke6IosZRMqlAi2z
-	jAr2YBtcr9x2XfZPfEMcax5vAFqiqnlNSQ9dzoZcAZfsISA54nYSdVIbUulYyYWdrSrDYcn5NhX
-	3M=
-X-Received: by 2002:a17:902:d4ce:b0:2d8:d2bd:a111 with SMTP id d9443c01a7336-2daec626dbdmr76719805ad.6.1788363942059;
-        Wed, 02 Sep 2026 08:45:42 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:fff4:86c5:8d86:9e93])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dadd48898fsm15694765ad.39.2026.09.02.08.45.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 08:45:41 -0700 (PDT)
-Date: Wed, 2 Sep 2026 09:45:38 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: berrange@redhat.com, kchamart@redhat.com,
-	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
-	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
-	eblake@redhat.com, lorenzo.pieralisi@linaro.org, gshan@redhat.com,
-	enju.kohei@fujitsu.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
-	kvm@vger.kernel.org
-Subject: Re: [RFC v3 00/24] Add Realm support to QEMU-VMM
-Message-ID: <aphEopEnM1pEDLV4@p14s>
-References: <20260825220101.3443954-1-mathieu.poirier@linaro.org>
- <87wlt55cs2.fsf@pond.sub.org>
+        bh=2atBUez5/3AnWCQ3IY6Ohn5PAS7hQON2CkUYdFYqUoU=;
+        b=PyZC6T/LQtiadLBf3zv8wSlRiingp+XWfEoQTB5Ct0FiAEYY21mNcg2a9nb1QrVVww
+         dXYQg2SKiKYFEoBeVxLVhlaHBgNiYdEcLe4RK5mZFQNW0te78CvsndhPQ/eOAktA9lrZ
+         vfzDe+rhHDt50oUagkKTXegnv4+Z8AN4IyV6x+t365miWB3Gv+U94Y/4Mp/EdsQIemiS
+         j2A/n2cTlTBcesT1+r2CGy43t9pyE5R+Gc0UFygeGiXRg6FX1I743wjRPI1ImVf05E+9
+         e3K2g/9Yl79P0GxEauN41BVa2BQ2xy9SB8cVq7X/g9rrGzDFKRgJMpUzLvrQZNDgp7TY
+         14Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788364242; x=1788969042;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2atBUez5/3AnWCQ3IY6Ohn5PAS7hQON2CkUYdFYqUoU=;
+        b=PN+KgP96C/zAnj1ICvTdPnHgQJD20Vx8leeSvDVWeU+x6azo6exM5FmacArm83/lmi
+         dm34yTMS7MjUQiKIVyTRMpEFb4bOGkZZkgyOTzq9KLDGpo5eGjoKRzQwsC9iHIOI3luU
+         Y+vGM+blgncZ6pAbNWpEAfncmt+U2rGSoZFWBIT+OVJpyV86/UE9gYsvZi/fD0MSPe4V
+         l4nXdiLzUGGqWRk5wUoHFz/lXiSs3ynI607wlbtykc+gWEgkXNNZzKGhkDq7074dSnWL
+         RgxJNa8ZEjPvc9/LP4jqPn/ixTitTs3v7nOIULG2C+7utfqD892TNvCVpqemGuJhnQ+9
+         UB2g==
+X-Forwarded-Encrypted: i=1; AKwUvBzIVOu9zyZi8poM/cjHmslJk7tLCmAfNOHcRPdtdqDa6pCeytARv/GnBtabxQGnK5mY8fo=@vger.kernel.org
+X-Gm-Message-State: AFuF++lFNpVr2EX8J57T+7YMuEVz0aISo3X5VAoUcY7dRtYx2RNuUXFS
+	I/W8gEp3rVM3sDdM1EbHzHeQfoSt13GLjswU6vZFpcuPjJehXt/XcSSNs7tE2fxoJ8PPkByaj+M
+	TCcZXww==
+X-Received: from pgp19-n2.prod.google.com ([2002:a05:6a02:62d3:20b0:cc4:337d:af34])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:1449:b0:3d3:aed2:6f29
+ with SMTP id adf61e73a8af0-3da2168db67mr89360637.29.1788364242090; Wed, 02
+ Sep 2026 08:50:42 -0700 (PDT)
+Date: Wed, 2 Sep 2026 08:50:41 -0700
+In-Reply-To: <apgeAJKF--dZvKvF@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87wlt55cs2.fsf@pond.sub.org>
+Mime-Version: 1.0
+References: <20260831144802.834315-1-seiden@linux.ibm.com> <20260831144802.834315-4-seiden@linux.ibm.com>
+ <apdwHcdy2iYRTrww@google.com> <87ik4om4x2.wl-maz@kernel.org>
+ <20260902091351.438647-B-seiden@linux.ibm.com> <apgeAJKF--dZvKvF@google.com>
+Message-ID: <aphF0ewDGuZxsrJz@google.com>
+Subject: Re: [PATCH v7 03/23] KVM: Allow KVM implementations to switch off
+ MMIO independent of Kconfig
+From: Sean Christopherson <seanjc@google.com>
+To: Steffen Eiden <seiden@linux.ibm.com>
+Cc: Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, David Hildenbrand <david@kernel.org>, 
+	Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>, 
+	Gautam Gala <ggala@linux.ibm.com>, Hariharan Mari <hari55@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Hendrik Brueckner <brueckner@linux.ibm.com>, 
+	Ilya Leoshkevich <iii@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Joey Gouly <joey.gouly@arm.com>, Nico Boehr <nrb@linux.ibm.com>, 
+	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>, Oliver Upton <oupton@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Ulrich Weigand <Ulrich.Weigand@de.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Sep 01, 2026 at 03:20:13PM +0200, Markus Armbruster wrote:
-> Mathieu Poirier <mathieu.poirier@linaro.org> writes:
+On Wed, Sep 02, 2026, Sean Christopherson wrote:
+> On Wed, Sep 02, 2026, Steffen Eiden wrote:
+> > On Wed, Sep 02, 2026 at 09:30:17AM +0100, Marc Zyngier wrote:
+> > > On Wed, 02 Sep 2026 01:38:53 +0100,
+> > > Sean Christopherson <seanjc@google.com> wrote:
+> > > > 
+> > > > On Mon, Aug 31, 2026, Steffen Eiden wrote:
+> > > > > Only defining KVM_MMIO is not flexible enough for multi-KVM systems
+> > > > > where one KVM implements MMIO but others do not. Solve this by
+> > > > > additionally testing for the non-existence of KVM_NO_MMIO before
+> > > > > including MMIO code to KVM.
+> > > > 
+> > > > Ewwwww.  IIUC, s390 ends up with two KVM modules, i.e. there really are two different
+> > > > KVMs being built.  Rather than have a KVM_MMIO and NO_KVM_MMIO, I vote very
+> > > > strongly to drop CONFIG_KVM_MMIO entirely and replace it with __KVM_HAVE_ARCH_MMIO,
+> > > > a la __KVM_HAVE_ARCH_VM_FREE and others.  Tracking two separate macros is going
+> > > > to be annoying to maintain, and will definitely be confusing for non-s390 people.
+> > > > 
+> > > > It'll mean linking in an emtpy coalesced_mmio.o on s390 when building without arm64
+> > > > support, but I'm guessing that won't be at all common for s390 builds.
+> > > > 
+> > > 
+> > > I ended-up doing something very similar locally, because I couldn't
+> > > really make head or tail of the logic while being in holiday mode
+> > > (which doesn't help). However, I kept the negative logic, so that we
+> > > don't need to add anything to any architecture but S390 (they are the
+> > > odd one out here).
+> > negative makes sense. 
 > 
-> > This patchset provides minimal functionality to start a Realm VM
-> > from an Arm RME capable host using the following command line:
-> >
-> > qemu-system-aarch64 \
-> >  -M confidential-guest-support=rme0,memory-backend=ram0 \
-> >  -object rme-guest,id=rme0,convert-in-place=on \
-> >  -object memory-backend-guest-memfd,id=ram0,size=1G,share=on \
-> >  -cpu host -M virt -enable-kvm -M gic-version=3,its=on -nodefaults ..
-> >
-> > It is a refactoring of Jean-Philippe Brucker's initial work dating from a while
-> > back.  It is compatible with Steven Price's v16 revision [1] of his work adding
-> > CCA support to KVM.
-> >
-> > This revision is based on Michael Roth's work on guest memfd in-place memory
-> > conversion [2] and as such, the QEMU baseline is different from 'master'.  Other
-> 
-> Use
-> 
->     Based-on: <20260528000416.8161-1-michael.roth@amd.com>
-> 
-> to document your base.  This stands out to humans, and is readable by
-> machines.  Next time :)
-> 
-> > than modifications to use in-place memory conversion from Lorenzo Pieralisi that
-> > were integrated to patches 04, 08-11, it is identical to V2.   
-> >
-> > It was tested on the QEMU SBSA machine.  For convenience, a repository is hosted
-> > here [3],
-> 
-> Michael's series doesn't apply on master anymore, so I fetched this
-> branch.  It's based on master as of *May*.  This won't do.  Please rebase.
+> Ya, an opt-out for s390 works for me.
 
-This was clearly explained above.  The goal was to provide a patchset that can
-be used for testing. I can attempt a rebase but can't guarantee a timeline or
-success.
-
-> 
-> >           along with the TF-A [4] and RMM [5] for the SBSA machine (compatible
-> > with Steven's v16 patchset).  The Repository for the kernel [6] is available
-> > from Arm.
-> >
-> > Instructions to compile and run the entire stack can be found here [7].
-> >
-> > Device Assignment is not included.
-> >
-> > Thanks,
-> > Mathieu
-> >
-> > [1]. https://lore.kernel.org/kvm/20260803134403.80630-1-steven.price@arm.com/
-> > [2]. https://lore.kernel.org/kvm/20260528000416.8161-1-michael.roth@amd.com/
-> > [3]. https://gitlab.com/Linaro/cca-public/qemu/-/tree/upstream-v3?ref_type=heads
-> > [4]. https://gitlab.com/Linaro/cca-public/tf-a/trusted-firmware-a/-/tree/cca/v13?ref_type=heads
-> > [5]. https://gitlab.com/Linaro/cca-public/rmm/-/tree/cca/v16?ref_type=heads
-> > [6]. https://gitlab.arm.com/linux-arm/linux-cca/-/tree/cca-host/v16?ref_type=heads
-> > [7]. https://gitlab.com/Linaro/cca-public/build-instructions
-> >
-> > RFC v2: https://lore.kernel.org/kvm/20260728192630.240375-1-mathieu.poirier@linaro.org/
-> > RFC v1: https://lists.gnu.org/archive/html/qemu-devel/2026-07/msg02307.html
-> 
-> 
+Actually, I have a better idea.  I'll explain more in the subthread about tracepoints.
