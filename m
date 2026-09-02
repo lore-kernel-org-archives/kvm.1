@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429FD309EF2
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 02:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179B6233D9E
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 03:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788317968; cv=none; b=L7sgfDnuFMIv7PmTry5fmQUlEk/pfxXJEe6JME+ML8ONOWebFQXTFHrtuDH127jgypxegedFU/iMDESKxvX9pNwt50fzPgJlSy6jIF3Tk8+9b7mWLFlyXbebEBEMcikYLUHAsHh6E7aLRKN8n3feB4BOCltbf7ZUKOW1pfCQIDk=
+	t=1788318037; cv=none; b=PMW4XnlcmFeJHqaKNl1VxA1zudtUMY//IhbXStCg9l0Hl9LTVn1QmRKuSqzby9QdwIVcCbRW+6EFew+8nxHICzF86i2rDLpcfTmdB6wNq7lfm4gP1729Fdjbj+Ebr2xvsRfqaxsiEaXAD/716mdjgkR6jeX40H38hlMY890H7JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788317968; c=relaxed/simple;
-	bh=NKWuFCbdwg0smELJIhVb06N1MNuL5NT5egAtHPHMBFI=;
+	s=arc-20240116; t=1788318037; c=relaxed/simple;
+	bh=Nm/zVf75wbLwEvf0ICOmjGdz7gOqEeXAYrv0MjQtX6c=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=tPk9bMepVgjEDZsU/cek6fZRpL9lEXXjksN+K8EYkc2uk023ta+p88GwOs7BfFKvVmDexXRYWVppV9QbreSDfRhFyzS3FGi3d0KWL7mRTi5lR4qvtYZEUQoLRZ86EQrff5gqFURHjWvmA3dyfzB9rL9U0VCuAavWMFs96OoxiN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SXwHNweN; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=gzrwqa8a01PVuk6P/RtUdaJDzWy0dY/UI45Xh7doJlQrOq/zu2ZN55ZFyWsWupUd0mQ4SKFtn7DuiFCbhyKVsbv6TsdqJ4jFEU3fuEHjB3D9OU7ygJNPpvXZxy+EiLZtVjTo/osk0ky8mEBYe/tiaYtwzgBuiyONEUt/NssxjsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hI+Rg6Uw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SXwHNweN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33F61F000E9;
-	Wed,  2 Sep 2026 02:59:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hI+Rg6Uw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DC11F00A3A;
+	Wed,  2 Sep 2026 03:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788317965;
-	bh=2uxvw3DE2AMO7JS0TNcaPtAwvwFAEOmVbiLoWcrc/J8=;
+	s=k20260515; t=1788318035;
+	bh=bBpGALnF15NFbJbFt6+Vvlv9l8uqJgpOLCHnFP3L4/s=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SXwHNweNpNFfx9NhC/BqaLkB/Mb7437AKo7xenFh0kXSCUAnNX7AU6muleEg/deTp
-	 ywCmSs/nmIvX/ZrNiEDf3wchOt/rpfIFBE40IbuqT53XD5R5XpTp+Ft7ODLylPG06N
-	 YOOb2dvQwKMmlIl6y0B34QuacSNdnM/yIV/JCxlt4+zOEBQxo6I7n0Z2VM90jFzNFa
-	 HtBO+d+KLsJDvBe94pvKCDXUF5tYpawXTI4WiMvfcITH0TzXTnGmZCSwM40wBEr9JQ
-	 jHmACIhoR8843ObdkJUJN+MrmQ1TzKFlabWIvHjVzdoLdQ/mX0gH3MK4oH/bcNgalX
-	 riv0IqD+BzuDw==
+	b=hI+Rg6Uw3tMjM/5v2r6YrlTDGMaV0++UUPT11JFTU/B7KLRRiHmGxeLCgYRovQYmI
+	 cW0xusklnlV5CE7gN4yt1QlpUSjf3UL/8ycpLCau4Y+FCB6jR2Ih8h1lH01wF9CMfM
+	 FGZ9cCLu0tgWUdD9ferqSq9TNypgwMNP3ui+oQZCAv4ExfQqlT7AxEFmedCQvppnwT
+	 XxaIWC0+r+RAp9tk3nEbb3Mm5n3yLKZhEjtAhB27AAUUEqp0PtUKsGNMxA2aNM6nHJ
+	 AITa8duWLuNnz901p+GRMShIuX4+7jYdvBTQjlWDz0yHSHbXtHA1CUtQt+C4ohavgr
+	 pLVj9Vi8OFWLQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 13/20] KVM: x86: Reject EVEX-prefixed instructions
+Subject: Re: [PATCH v7 18/20] KVM: x86: Expose APX sub-features to userspace
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Chang S. Bae" <chang.seok.bae@intel.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260902021804.718676-14-chang.seok.bae@intel.com>
+In-Reply-To: <20260902021804.718676-19-chang.seok.bae@intel.com>
 References: <20260902021804.718676-1-chang.seok.bae@intel.com>
- <20260902021804.718676-14-chang.seok.bae@intel.com>
+ <20260902021804.718676-19-chang.seok.bae@intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 02 Sep 2026 02:59:24 +0000
-Message-Id: <20260902025924.D33F61F000E9@smtp.kernel.org>
+Date: Wed, 02 Sep 2026 03:00:35 +0000
+Message-Id: <20260902030035.95DC11F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,59 +46,47 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] The EVEX prefix check reads `ctxt->modrm` without fetching it, r=
-esulting in the use of a stale value from a previously emulated instruction.
+- [Medium] KVM exposes unmasked host APX sub-features and leaks raw host CP=
+UID state to the guest by failing to apply the capability mask for leaf 0x2=
+9.
 --
 
-commit 01b255a08e34ec61090bf09c90c37d94d681cde4
+commit c301f6e3ae94455385fa1906a5a873f104314430
 Author: Chang S. Bae <chang.seok.bae@intel.com>
 
-KVM: x86: Reject EVEX-prefixed instructions
+KVM: x86: Expose APX sub-features to userspace
+   =20
+Add CPUID leaf 0x29 sub-leaf 0 to expose these APX sub-features, if the
+APX foundation is available: New Conditional Instructions (NCI), New Data
+Destination (NDD), and Flags Suppression (NF).
 
-Explicitly mark EVEX-prefixed opcodes (0x62) as unsupported.
-
-> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-> index eba4e9b7cd5cf..f0d5a40eba27f 100644
-> --- a/arch/x86/kvm/emulate.c
-> +++ b/arch/x86/kvm/emulate.c
-> @@ -5052,6 +5052,11 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt,=
- void *insn, int insn_len, int
->  	if (opcode.flags & ModRM)
->  		ctxt->modrm =3D insn_fetch(u8, ctxt);
-> =20
-> +	/* EVEX-prefixed instructions are not implemented */
-> +	if (ctxt->opcode_len =3D=3D 1 && ctxt->b =3D=3D 0x62 &&
-> +	    (mode =3D=3D X86EMUL_MODE_PROT64 || (ctxt->modrm & 0xc0) =3D=3D 0xc=
-0))
-> +		opcode.flags =3D NotImpl;
-> +
+> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+> index 990ad7ea48186..6c47e0ffedd84 100644
+> --- a/arch/x86/kvm/cpuid.c
+> +++ b/arch/x86/kvm/cpuid.c
+[ ... ]
+> @@ -1733,7 +1737,8 @@ static inline int __do_cpuid_func(struct kvm_cpuid_=
+array *array, u32 function)
+>  	}
+>  	/* APX sub-features */
+>  	case 0x29:
+> -		entry->eax =3D entry->ebx =3D entry->ecx =3D entry->edx =3D 0;
+> +		if (!kvm_cpu_cap_has(X86_FEATURE_APX))
+> +			entry->eax =3D entry->ebx =3D entry->ecx =3D entry->edx =3D 0;
+>  		break;
 
 [Severity: Medium]
-Does this EVEX prefix check read a stale ctxt->modrm value?
+Will this leak unmasked raw host CPUID state to the guest when APX is
+available?
 
-In x86_decode_insn(), opcode 0x62 is mapped to NotImpl in the 1-byte opcode
-table, which lacks the ModRM flag. This means ctxt->modrm is not fetched
-by the check right above this new block.
+Since do_host_cpuid() populates the initial entry directly from the physical
+CPU's output, it appears this case completes without calling
+cpuid_entry_override(entry, CPUID_29_0_EBX) to apply the capability mask.
 
-As a result, if a guest executes opcode 0x62 in 16-bit or 32-bit mode, this
-condition evaluates (ctxt->modrm & 0xc0) =3D=3D 0xc0 using a leftover value=
- from
-a previously emulated instruction.
-
-It was previously suggested this might trigger KMSAN warnings and cause a
-host denial of service. Since ctxt is allocated via kmem_cache_zalloc(),
-KMSAN sees the memory as initialized, which makes the DoS concern inaccurat=
-e.
-
-However, does this logic flaw still break the intended EVEX detection? Since
-0x62 already evaluates to NotImpl during the opcode table lookup, it seems
-the subsequent opcode.flags =3D NotImpl assignment here is a no-op with no
-functional impact.
-
->  done_modrm:
->  	ctxt->d =3D opcode.flags;
->  	while (ctxt->d & GroupMask) {
+Does omitting the override mean KVM passes the raw host CPUID 0x29:0 direct=
+ly
+to the guest, including eax, ecx, edx, and any unsupported ebx bits?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260902021804.7186=
-76-1-chang.seok.bae@intel.com?part=3D13
+76-1-chang.seok.bae@intel.com?part=3D18
