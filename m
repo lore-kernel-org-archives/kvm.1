@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA221D5CC9
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 18:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1BA54A8FCA
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 18:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788374146; cv=none; b=cjWi5fS43OCNaSGhlCy5x61GJ/F5xz6HBPp3k1U1toFOfuHYBo8sngKJe5aert0xCVe9Lw0J3HqyDk0BtG2Xe212zCLNgQPQS3IT7laAroOA1tMPSAz5QElsAKZ4DiBz9ik6uB+ajvWjloFeiiQ/t4u1OiIgN4sD9U0IujivJWA=
+	t=1788374199; cv=none; b=lBvuMeVaXpb7stPO8tX78WAaIrvh9nrunAwy1lI4CBOee5T7eVlDKVIuYxQqJTCEMhMiaa7dc56JfkPMntrrPgN/369Wv8gdrrxHxLKKnJM4PtpaIbgthSgbfuWLzAG0ecfHDCr11b79i/J6SrwVYBSziKiJt7RAjLaJAPdh9dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788374146; c=relaxed/simple;
-	bh=21YXXl4g7xkXrtVH+pmicGwcqTDCqjJIKk5ILvWQBBg=;
+	s=arc-20240116; t=1788374199; c=relaxed/simple;
+	bh=V9/6wBJz/7oFdPLrjPO3SGEjP/49kpxiloWlF4gh3Cs=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=RxrY3ierznCdLrqVJO2qysVgZCkTzWv9lnUI9jrnWXSDlHgPRHi72qNifteoA9k/VCP4GamL2YfbdmCr02h61RwsThKteK/2kSbVRlRB67CGeeRNGuz92uQuOU3AT512O/yq+WSKB87IvY9zhONDx5O1R0q47ataXjyleEqfpxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TlXER7ks; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=sdUCzFKEiCaytv1jVGeaTHnfnpBHbPo6dcq2UJTAqqGfkDqd5n+pyblr3gECi5AUv9U9Y5S8hqw5pd/23AO+A3aZdRtINjzbgJQnGBiylq09M9N7u/RVm24YyYa08aQHtn1xXid3I7g7wDA1uxXbtmcFi9LTxbSz0q4kBIVLv5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y5h+130T; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TlXER7ks"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA071F000E9;
-	Wed,  2 Sep 2026 18:35:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y5h+130T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E9711F000E9;
+	Wed,  2 Sep 2026 18:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788374139;
-	bh=fh0lQNS2UqC/WrDJijSllWjqxWybDilOoek1oYftMdQ=;
+	s=k20260515; t=1788374194;
+	bh=PZnhtNh7LgcDTHWwc0sH7651YjynHaHgrXqYoyh8Zsk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TlXER7ksIBa0vlurRZzjBZODOq/MRSFl8WQgnFUV/2hwUThjXro1YUj2ZkrAetub3
-	 btIsPNX3lqSS9xfkFf3uOhoTa2K/UOIk+jfF7JdJL0odwtGzoqzYp8bDkFYQm/5ack
-	 0fW5A2imeubMjtdrkSguT2t+RKgbsjyHtlsJdaH0G8pwAbHfIIn5Kk4PZs+AjDfuKt
-	 jQ9SZ07Fi1P2vZ67jnrOYb0M4GnODqq1yOovcstGHOdNaI29MKju71+Z5r/d9YQ1a3
-	 cAJDALXldwd9WicRdBHUkmTlSmdFv4oEipqZQWm7erbt4P9Np4McOz9qjx3Tv1IjPh
-	 /C7l+mIqNp4Ww==
+	b=Y5h+130T+6293s//uvjuc3Qrng3USeKOWx2D/uyW0r8xGGe5ZBPbcFnFg3aZcnMU2
+	 PUO1S0oKwbNRV1RgVaOsHuZRyKTRIdmdB+TvJacG7CNEKRra0ihkVPM/4w/QR8N6gV
+	 EVVcI9/orGTxktmMkO61tYOp136nbNziAbRi3dNnnd3ZtY62MauQYEpnVM8j205Q6Z
+	 WEtWn9ZHDNs7fL0LCpI9cRIXJ1uS/DPx41H3LCPtyVZ1doG4hLHCXp0AKmll57VRF5
+	 kPnrp1x0ejRp5ylIAN+x3VWUyTmVSUJMS2HM9s35T99qDMcHua5/Kdk2ZxOBRGQgbC
+	 2Y+JvMpZhPnlQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/4] KVM: guest_memfd: Establish
- memslot<=>guest_memfd bindings *after* memslot is ready
+Subject: Re: [PATCH v2 4/4] KVM: guest_memfd: Drop superfluous WRITE_ONCE()
+ when binding a memslot
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sean Christopherson" <seanjc@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260902182020.2615443-4-seanjc@google.com>
+In-Reply-To: <20260902182020.2615443-5-seanjc@google.com>
 References: <20260902182020.2615443-1-seanjc@google.com>
- <20260902182020.2615443-4-seanjc@google.com>
+ <20260902182020.2615443-5-seanjc@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 02 Sep 2026 18:35:38 +0000
-Message-Id: <20260902183538.EFA071F000E9@smtp.kernel.org>
+Date: Wed, 02 Sep 2026 18:36:34 +0000
+Message-Id: <20260902183634.9E9711F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -49,90 +49,85 @@ Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [Critical] kvm_gmem_bind drops filemap_invalidate_lock before rolling bac=
-k a failed xa_store_range, exposing a partially bound, not-yet-active memsl=
-ot to concurrent PUNCH_HOLE operations and leading to a severe Use-After-Fr=
-ee on the error path.
+- [Critical] Modifying the guest_memfd xarray outside of filemap_invalidate=
+_lock on the error path causes a Use-After-Free and permanent MMU invalidat=
+ion lockup.
 --
 
-commit cf9b1c6186b61c3381316f5121f13c09601e0b01
+commit c377e9963148427885842d70319259945c649a8a
 Author: Sean Christopherson <seanjc@google.com>
-KVM: guest_memfd: Establish memslot<=3D>guest_memfd bindings *after* memslo=
-t is ready
 
-This commit defers binding a memslot to a guest_memfd instance until the me=
-mslot
-is fully prepared. It prevents exposing the memslot to readers prematurely,
-which could break various memslot assumptions and rules.
+KVM: guest_memfd: Drop superfluous WRITE_ONCE() when binding a memslot
 
-Closes: https://lore.kernel.org/all/20260826170551.BEF801F000E9@smtp.kernel=
-.org
+Drop the superfluous WRITE_ONCE() when setting a memslot's guest_memfd file
+during initial binding, as the memslot *must* be inactive and unreachable.
+The superfluous WRITE_ONCE() was added by commit 67b43038ce14 to
+maintain rough "parity" with the existing rcu_assign_pointer().
 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 3c0dbe60a5b4f..21c10cbbac661 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-[ ... ]
-> @@ -1934,6 +1935,15 @@ static int kvm_set_memslot(struct kvm *kvm,
->  	if (r)
->  		goto err;
-> =20
-> +	if (new && new->flags & KVM_MEM_GUEST_MEMFD) {
-> +		if (WARN_ON_ONCE(change !=3D KVM_MR_CREATE))
-> +			goto err_bind;
-> +
-> +		r =3D kvm_gmem_bind(kvm, new, gmem_fd, gmem_offset);
-> +		if (r)
-> +			goto err_bind;
-> +	}
-> +
->  	/*
->  	 * For DELETE and MOVE, the working slot is now active as the INVALID
-[ ... ]
-> @@ -1965,6 +1975,13 @@ static int kvm_set_memslot(struct kvm *kvm,
-> =20
->  	return 0;
-> =20
-> +err_bind:
-> +	if (new) {
-> +		kvm_arch_free_memslot(kvm, new);
-> +
-> +		if (new->dirty_bitmap && (!old || !old->dirty_bitmap))
-> +			kvm_destroy_dirty_bitmap(new);
-> +	}
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 2c8d8735de5fe..323159c9b5f34 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -653,7 +653,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_=
+slot *slot,
+>  	 * kvm_gmem_bind() must occur on a new memslot.  Because the memslot
+>  	 * is not visible yet, kvm_gmem_get_pfn() is guaranteed to see the file.
+>  	 */
+> -	WRITE_ONCE(slot->gmem.file, file);
+> +	slot->gmem.file =3D file;
+>  	slot->gmem.pgoff =3D start;
+>  	if (kvm_gmem_supports_mmap(inode))
+>  		slot->flags |=3D KVM_MEMSLOT_GMEM_ONLY;
 
-[Severity: Critical]
-This is a pre-existing issue, but does moving kvm_gmem_bind() into this
-sequence create an exploitable use-after-free on the error path?
+[Severity: High]
+This isn't a bug introduced by this patch, but modifying the xarray outside
+the filemap_invalidate_lock on the error path further down in this function
+appears to cause a use-after-free and a permanent MMU invalidation lockup.
 
-Looking at kvm_gmem_bind(), if xa_store_range() fails, the lock is released
-before rolling back the partial entry:
+If xa_store_range() encounters -ENOMEM during the store, it can abort and
+leave the slot partially inserted in the tree. kvm_gmem_bind() then explici=
+tly
+drops filemap_invalidate_lock before executing its error path.=20
 
-virt/kvm/guest_memfd.c:kvm_gmem_bind() {
-    ...
-	xar =3D xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
-	filemap_invalidate_unlock(inode->i_mapping);
+On the error path, it attempts to clean up by calling xa_store_range() with
+NULL outside the lock:
 
-	r =3D xa_is_err(xar) ? xa_err(xar) : 0;
-	if (r) {
-		xa_store_range(&f->bindings, start, end - 1, NULL, GFP_KERNEL);
-    ...
-}
+    xar =3D xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
+    filemap_invalidate_unlock(inode->i_mapping);
 
-If a concurrent PUNCH_HOLE operation acquires the lock right after
-filemap_invalidate_unlock(), could it extract the partially bound slot and
-proceed to kvm_mmu_unmap_gfn_range()?
+    r =3D xa_is_err(xar) ? xa_err(xar) : 0;
+    if (r) {
+        xa_store_range(&f->bindings, start, end - 1, NULL, GFP_KERNEL);
 
-If so, while the concurrent thread is accessing the slot, this error path
-executes kvm_arch_free_memslot(), and then the caller, kvm_set_memory_regio=
-n(),
-executes kfree(). Could this result in the PUNCH_HOLE thread operating on
-completely freed memory?
+Concurrently, a PUNCH_HOLE operation runs __kvm_gmem_invalidate_start()
+which takes filemap_invalidate_lock and iterates over the XArray.
 
->  err:
->  	/*
->  	 * For DELETE/MOVE, revert the above INVALID change.  No modifications
+Because the error path doesn't hold the lock, it can race with the iteratio=
+n:
+
+CPU1 (kvm_gmem_bind error path)
+    if (r) {
+        xa_store_range(&f->bindings, start, end - 1, NULL, GFP_KERNEL);
+        ...
+
+CPU2 (__kvm_gmem_invalidate_start)
+    xa_for_each_range(&f->bindings, index, slot, start, end - 1) {
+        ...
+
+xa_for_each_range() does not establish an RCU read-side critical section for
+the loop body. The error path removes the partially inserted slot and retur=
+ns,
+causing kvm_set_memory_region() to immediately kfree() the slot. The
+PUNCH_HOLE iteration then dereferences the freed slot, causing a
+use-after-free.
+
+Additionally, the PUNCH_HOLE operation successfully called
+kvm_mmu_invalidate_start(), but because the slot is removed by the racing
+error path before __kvm_gmem_invalidate_end() executes, the closing
+xa_find() check fails and kvm_mmu_invalidate_end() is permanently skipped.
+
+Does the error path need to execute with filemap_invalidate_lock() held?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260902182020.2615=
-443-1-seanjc@google.com?part=3D3
+443-1-seanjc@google.com?part=3D4
