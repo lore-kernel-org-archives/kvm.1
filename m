@@ -1,63 +1,61 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D1A47CC94
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 12:02:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F5547DF8B
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 12:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788350577; cv=none; b=jDS0Dc+ujqZcZT3y3uRRs2XIoAkkVS9iDNdIz+siyQz9gwNn+gstCwsUoHJurSDdq50qQIuHRibmLq4W+gdLEycblt+QZZULPhkBigSyqLDw2CSTzD22WxvQBuy+n99eDy0f8kKOpI57Z0XxIFgQ9OmeX6qcxAwSRqHZOBq4oQA=
+	t=1788350580; cv=none; b=HZqnzuFC0ZGPfmcyaOoGEenXAm/X2Oh6lRkBUm01QrV+bn4hpAMHpVeqUCZGGESU9zjSj7D47oIMxPZo9TLIm652zKmNOjdz+pFybPZX46plMteYLOEtxsTeGl+Upq/A80hvTgcV+kY/PNhsyi5CVZIwPWVnW/ZusPf7PHp/shk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788350577; c=relaxed/simple;
-	bh=Yv1k6QGBpWRqhQ1/g8/MLMzjdXKArQtCprJXyb6GIXw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vFLUTDigtjzgjC+nkXsci5WgAl9ud4TxmwiwGSXyQCY39TG9nnMeyATvOvs38Mzphg/sIewLGnWp8X3O6RfUM29SRtt+lSviwc/AlIhkE0yjxtT79dwvRa1mld4u5niqrYjnsBCBg+AzD0VTmrGuhlTISHRYgd9nqWqmeI8jSTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O12/WPN0; arc=none smtp.client-ip=209.85.216.53
+	s=arc-20240116; t=1788350580; c=relaxed/simple;
+	bh=m0JjFRX4svUQp6KRJp+je69oUc0P9aiIdfo5Oe4XjWI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K2YRbgAUa6ZEJeu76PuwWY+FXzFP8IALu/Is9j2GFvSDwimXj10j0Yoq5UhgYfkFAg5a2gi3aF2FQxYjUbOh+m6MmyQRM6bb0V+ZW2VsJ0qqA2dMCq/fUVHuGvNswekRKPG+7qKJ5z6Z941lEZY/Ty93uVC9PDG0lJuLmup49GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QlfLTDO6; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O12/WPN0"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3969e82ff8fso1137485a91.0
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 05:02:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QlfLTDO6"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cf452def93so20481555ad.1
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 05:02:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788350567; x=1788955367; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ogfkV1olj5BWBHozC4h7H6b+n23WKTMMRGzZ7ZTaUxU=;
-        b=O12/WPN02/v9zNTGHZtm0ArxWL3NQErnElwC1RpgwR3y+7gY9nznwNMKkSndG+2JEg
-         xsIqLDJWDsyqdVEW8ACj2sEs4SYSnByEcwkSCvNTrXJ1iJbIk5Jr+MN73ETrs7T29hty
-         AqzC1NYKinI3+NTW1LoOaMG3M36ju2+V29jCrrOARcJfiRWfysKcz3+0y/T1168QkPOL
-         oD8MgThaPtlcUe5yBxqkjeOMI/YFfHzHxYf5UJ9UFWXWPOJUp/63y8tCYXHZvU6rxhMv
-         oRQpluc44scW+EVu+CjWl3VSqhw3F6NIIucf0wfGDECjr4lAfM3xg9YvuCTmXuP5WXPT
-         FHdQ==
+        d=gmail.com; s=20251104; t=1788350561; x=1788955361; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=I6Md0+LJRDnI+rQO3Uvm4S5xh/BVG8Mf7Z6azFky85k=;
+        b=QlfLTDO67GnAgA09KgHd6vVHj7fliwjQQUyglyoEwayG/r08elxySkq1ekNgPwn104
+         WnThyK3v1QSVmvvxQncA2DWyIl+u0II8cQQtJzuwu9VY1Utz4DUQcI7MbDqdoO4S3sQO
+         Uw2FH0WJ/NKQn0wnYIY0ltAtrZluB9lPkb+4R6pFhCO8zTrgUu8+5yFjN4Qp1ZeOOLuX
+         zdY6YLyG9uk6BMBfXs0+EkjbFzUXum/KcHZWbwuqf8ETW0itqwZPm2nbXX9B5Ymq91dH
+         nJLSfeuctDorDS3nZ5a9NlWFtSxltVlq2JYlZvGd3+FmgygTIxOGTnmA4NAnMNn5BOSf
+         LB8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788350567; x=1788955367;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ogfkV1olj5BWBHozC4h7H6b+n23WKTMMRGzZ7ZTaUxU=;
-        b=baeaaGFx9Btxp6MITYsfIhAjpzsgdxvdxTO18kVJCyNlA7EYKYUtDmJw9TUvNWemL/
-         Me59yfCId7w+FqQW2z/y+PS7OpXdDpEgU0CQPeTeONrUZqU4BBLDEMRYh8TC/ZGvY1jl
-         7F49Kes+5qS+iAKibVPDMMgl9E4f0tC6hx8N7//0KeBq7ZrEJx2+Vly+JZzcqlNmRMD0
-         Qfib1S9o6nytlCrlTQUiZIRyjgFzaWq1ytKZZLs2qZKEd/G2Ib+DPD0xGW9LcGEJjpca
-         OZlL3sO6KE1oYIlWqOL1/nbu6ClAB2KXLCigF62tAv8uUhH2neJOmDTpRx7kKFI7FK7/
-         KK5w==
-X-Gm-Message-State: AFuF++nzccPtFYAFRprBOIkZc3WyZVgwcN/YP2nTeUpczr2rjOUfM1KZ
-	BlTJrYuAhm87faKcGNoUAR14d+a/P4G9763xYghP99mfNWrYpG3p9FCs
-X-Gm-Gg: AYBFou0vRTOIYPvclzInb/KjXhomZy1YwO9JIZBv4fbyJpy0ek12JWfpXf7bAaj3FvD
-	zoUKuKiQHF82ohESbtKM5lMYEKfhbHGiKmbGxXi79acx0Qq1d7C2L4vr2jtoEHZ35gGqYFQg/zl
-	He1efq4fdkh1P+k76RXaocVLKrqtj3i/VGrSYygRE9SIDDmY6jHj1jo3GYxe2gsJerWKCcE6X46
-	TF1EuFApSpJmHpWp6F2P1+1wcjavA4lqG01tl+uxvBsXAJYAYDvFdVSj/xjsFFk+bkdgCST82DO
-	Yn8qdxJE3R453by4YoIurOz48JvygJ4fERhNJcAU6o9Z3Os6RZjdJGtFHfem8wIxCQVidswwF/t
-	nRjHz4Qihr1+EyCSQgzq2tGeeREpdMOQckF60VbNQPhphUvmQuCoIIxRuCT9ZLqPLoW/Uco3g9M
-	yf0gkXdiZU1OtobEoHLc4P/d9oJcIzz/ZpbrvAsMnU8d8yH4uVrGJAy5B4OeISeivWfM68cgy69
-	Hw8/f/pjk2DRB/VsNGD2A==
-X-Received: by 2002:a17:90b:6cc:b0:398:9bd5:490d with SMTP id 98e67ed59e1d1-39aee0eafb9mr6572751a91.20.1788350566769;
-        Wed, 02 Sep 2026 05:02:46 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788350561; x=1788955361;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=I6Md0+LJRDnI+rQO3Uvm4S5xh/BVG8Mf7Z6azFky85k=;
+        b=iODjcA+6VFvHcWszMUpJ64Zek2Ui+PO6Xi/gALye3YkHZ2LxsRe5vLGNH8Pg1m0Ffv
+         Ep1aUIEFuDfvI8uIsVPpADnz9ikHWE0akLkeoTfcF9+EqWG0ZacQQy2Vv4v8rPVAFHwh
+         8BipXikfiESimzw/o2SutIJJozyqPsNOEKy5xUrFpgB9Ox5lhPDOHxLw0riPKG/Ge5v2
+         BkirI8Bkw+wtBaYQOWlAmcCoOmPIdzewRS6/hMt0hvPbKpxMLo3KCOBwwGHOu79Cz1KV
+         KwddCruymDR6mnP/IQBPCIa0JKDivxQfbZv7vEIJ8V8ilfyd1DgEzp6sSlCRg65fJI0d
+         z6GQ==
+X-Gm-Message-State: AFuF++nQhWKLZQYwvjOefSlhVKCHsggzx1Z7WCdf2WE5lOg74DBAZg/f
+	ampJJ/6H2NTGwSmQ0KMh6wmyouO91PX7j2G+TqvwYtxLHOyt4oQdrZw3
+X-Gm-Gg: AYBFou0PNCPKc8UHKmvjvTwGBE/l0hkM8ymLp16Y7q8qQsUZ634JECtFRX9lbHMcjC2
+	5g3ocvXbpUJPKaacVJn16B3s+lBgRiVVw967jN5yirRoL5l47tVk3/xv5WZ+och6SkKuebJCRZW
+	/mhHthoEIrWXZErO0d29WYe75+w3WgjSVFWWbqoXxiTNR9INfI74gunikz5dwoR5E7FaCF/99EQ
+	QYgkVFkGj+fCKoRvj3vYdCsr3TbKvoiQmmLojGEnQhq6ZrfSsMl8Gp6IFAHzeabvKGEvleEjZ/I
+	I7ZXmg6z8kqqZJdSXax096T+C9DdXp68bNk+IKl4tWwdkfGIuGKWeu3G8+RyYis1yRv+RRrTaIo
+	zdFwj5nqbQHlIQlWtGJGsaCtxUnTeglHf0MQ0iJ4fSmlgzZJfSO6qUaAp5xdWhn22j+Ltj8fuMj
+	1a4lTlGRICSMf8kIboQc0eQdIiOT0rWLaYedpbovSnzSW8gdUrSPWS8jiF+vuQJbkwVvn++8c1/
+	EyAzB029WY=
+X-Received: by 2002:a17:90b:3c09:b0:398:c0a2:8f8e with SMTP id 98e67ed59e1d1-39af64f9205mr2885148a91.26.1788350560968;
+        Wed, 02 Sep 2026 05:02:40 -0700 (PDT)
 Received: from volcano9f8e-host.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-32f079c33e9sm6897044eec.4.2026.09.02.05.02.41
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-32f079c33e9sm6897044eec.4.2026.09.02.05.02.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 05:02:46 -0700 (PDT)
+        Wed, 02 Sep 2026 05:02:40 -0700 (PDT)
 From: Hemanth Selam <hemanth.selam@gmail.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -65,12 +63,10 @@ To: Sean Christopherson <seanjc@google.com>,
 Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH 1/2] KVM: selftests: Actually compare sregs and events in sync_regs_test
-Date: Wed,  2 Sep 2026 17:32:34 +0530
-Message-ID: <20260902120235.18486-2-hemanth.selam@gmail.com>
+Subject: [PATCH 0/2] KVM: selftests: Verify sregs and events in sync_regs_test
+Date: Wed,  2 Sep 2026 17:32:33 +0530
+Message-ID: <20260902120235.18486-1-hemanth.selam@gmail.com>
 X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260902120235.18486-1-hemanth.selam@gmail.com>
-References: <20260902120235.18486-1-hemanth.selam@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -79,132 +75,46 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-compare_sregs() and compare_vcpu_events() have been empty since the test
-was written, so the checks that req_and_verify_all_valid() and
-set_and_verify_various() run after every KVM_RUN only ever compared the
-general purpose registers.  KVM could return anything at all in the sregs
-and events halves of the kvm_run sync region and the test would still
-pass.
+sync_regs_test has never actually checked the sregs and events halves of
+the kvm_run sync region.  compare_sregs() and compare_vcpu_events() have
+had empty bodies since the test was written, so the checks run after
+every KVM_RUN only ever compared the general purpose registers, and the
+events half was never written to at all, hence the standing TODO in
+set_and_verify_various().
 
-Fill both in, in the style of compare_regs(): every field of struct
-kvm_sregs, including the segment and descriptor table members and the
-interrupt bitmap, and every field of struct kvm_vcpu_events.  Both sides
-of each comparison come from the same vCPU without it having run in
-between, so they are expected to match exactly.
+Patch 1 fills in both comparison helpers.  Patch 2 exercises the events
+half by masking NMIs through the sync region and verifying KVM applies
+it.
 
-Assisted-by: Cursor:claude-opus-5
-Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
----
- .../selftests/kvm/x86/sync_regs_test.c        | 89 +++++++++++++++++++
- 1 file changed, 89 insertions(+)
+To confirm the new checks catch something rather than merely passing,
+the same faults were injected before and after the series on an AMD
+host:
 
-diff --git a/tools/testing/selftests/kvm/x86/sync_regs_test.c b/tools/testing/selftests/kvm/x86/sync_regs_test.c
-index ed0c21b427c9..c7d1f3cca16e 100644
---- a/tools/testing/selftests/kvm/x86/sync_regs_test.c
-+++ b/tools/testing/selftests/kvm/x86/sync_regs_test.c
-@@ -70,13 +70,102 @@ static void compare_regs(struct kvm_regs *left, struct kvm_regs *right)
- #undef REG_COMPARE
- }
- 
-+static void compare_segment(struct kvm_segment *left, struct kvm_segment *right,
-+			    const char *name)
-+{
-+#define SEG_COMPARE(field) \
-+	TEST_ASSERT(left->field == right->field, \
-+		    "Segment %s." #field \
-+		    " values did not match: 0x%llx, 0x%llx", \
-+		    name, (unsigned long long)left->field, \
-+		    (unsigned long long)right->field)
-+	SEG_COMPARE(base);
-+	SEG_COMPARE(limit);
-+	SEG_COMPARE(selector);
-+	SEG_COMPARE(type);
-+	SEG_COMPARE(present);
-+	SEG_COMPARE(dpl);
-+	SEG_COMPARE(db);
-+	SEG_COMPARE(s);
-+	SEG_COMPARE(l);
-+	SEG_COMPARE(g);
-+	SEG_COMPARE(avl);
-+	SEG_COMPARE(unusable);
-+#undef SEG_COMPARE
-+}
-+
-+static void compare_dtable(struct kvm_dtable *left, struct kvm_dtable *right,
-+			   const char *name)
-+{
-+	TEST_ASSERT(left->base == right->base,
-+		    "Descriptor table %s.base values did not match: 0x%llx, 0x%llx",
-+		    name, left->base, right->base);
-+	TEST_ASSERT(left->limit == right->limit,
-+		    "Descriptor table %s.limit values did not match: 0x%x, 0x%x",
-+		    name, left->limit, right->limit);
-+}
-+
- static void compare_sregs(struct kvm_sregs *left, struct kvm_sregs *right)
- {
-+#define SREG_COMPARE(reg) \
-+	TEST_ASSERT(left->reg == right->reg, \
-+		    "Register " #reg \
-+		    " values did not match: 0x%llx, 0x%llx", \
-+		    left->reg, right->reg)
-+	compare_segment(&left->cs, &right->cs, "cs");
-+	compare_segment(&left->ds, &right->ds, "ds");
-+	compare_segment(&left->es, &right->es, "es");
-+	compare_segment(&left->fs, &right->fs, "fs");
-+	compare_segment(&left->gs, &right->gs, "gs");
-+	compare_segment(&left->ss, &right->ss, "ss");
-+	compare_segment(&left->tr, &right->tr, "tr");
-+	compare_segment(&left->ldt, &right->ldt, "ldt");
-+	compare_dtable(&left->gdt, &right->gdt, "gdt");
-+	compare_dtable(&left->idt, &right->idt, "idt");
-+	SREG_COMPARE(cr0);
-+	SREG_COMPARE(cr2);
-+	SREG_COMPARE(cr3);
-+	SREG_COMPARE(cr4);
-+	SREG_COMPARE(cr8);
-+	SREG_COMPARE(efer);
-+	SREG_COMPARE(apic_base);
-+#undef SREG_COMPARE
-+	TEST_ASSERT(!memcmp(left->interrupt_bitmap, right->interrupt_bitmap,
-+			    sizeof(left->interrupt_bitmap)),
-+		    "interrupt_bitmap values did not match");
- }
- 
- static void compare_vcpu_events(struct kvm_vcpu_events *left,
- 				struct kvm_vcpu_events *right)
- {
-+#define EVENT_COMPARE(field) \
-+	TEST_ASSERT(left->field == right->field, \
-+		    "Event " #field \
-+		    " values did not match: 0x%llx, 0x%llx", \
-+		    (unsigned long long)left->field, \
-+		    (unsigned long long)right->field)
-+	EVENT_COMPARE(exception.injected);
-+	EVENT_COMPARE(exception.nr);
-+	EVENT_COMPARE(exception.has_error_code);
-+	EVENT_COMPARE(exception.pending);
-+	EVENT_COMPARE(exception.error_code);
-+	EVENT_COMPARE(interrupt.injected);
-+	EVENT_COMPARE(interrupt.nr);
-+	EVENT_COMPARE(interrupt.soft);
-+	EVENT_COMPARE(interrupt.shadow);
-+	EVENT_COMPARE(nmi.injected);
-+	EVENT_COMPARE(nmi.pending);
-+	EVENT_COMPARE(nmi.masked);
-+	EVENT_COMPARE(sipi_vector);
-+	EVENT_COMPARE(flags);
-+	EVENT_COMPARE(smi.smm);
-+	EVENT_COMPARE(smi.pending);
-+	EVENT_COMPARE(smi.smm_inside_nmi);
-+	EVENT_COMPARE(smi.latched_init);
-+	EVENT_COMPARE(triple_fault.pending);
-+	EVENT_COMPARE(exception_has_payload);
-+	EVENT_COMPARE(exception_payload);
-+#undef EVENT_COMPARE
- }
- 
- #define TEST_SYNC_FIELDS   (KVM_SYNC_X86_REGS|KVM_SYNC_X86_SREGS|KVM_SYNC_X86_EVENTS)
+  fault injected                      before    after
+  sregs.cr4 mismatch                  ignored   caught
+  sregs.cs.dpl mismatch               ignored   caught
+  events.interrupt.shadow mismatch    ignored   caught
+  KVM_SYNC_X86_EVENTS left clean      n/a       caught
+
+Every corruption goes unnoticed before the series and is reported after
+it, e.g.
+
+  x86/sync_regs_test.c:128: left->cr4 == right->cr4
+  Register cr4 values did not match: 0x41221, 0x41220
+
+Unmodified, the test passes 20/20 consecutive runs with the series
+applied, each patch builds and passes on its own, and the remaining x86
+selftests are unchanged either way (61 passed, 24 skipped, with
+set_sregs_test failing identically before and after for unrelated
+reasons).
+
+Hemanth Selam (2):
+  KVM: selftests: Actually compare sregs and events in sync_regs_test
+  KVM: selftests: Verify the events half of the sync regs region
+
+ .../selftests/kvm/x86/sync_regs_test.c        | 100 +++++++++++++++++-
+ 1 file changed, 98 insertions(+), 2 deletions(-)
+
 -- 
 2.43.7
 
