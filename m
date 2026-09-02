@@ -1,38 +1,38 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F2C49CF58;
-	Wed,  2 Sep 2026 18:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9AF3839A1;
+	Wed,  2 Sep 2026 18:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788373485; cv=none; b=qqEzqp5reZazaPeOKM+wHtHEbU8PwpYR4jBL2Oao5PerTThnaUVufXEtW2FrTVkWk2bcfElx/aCAi2iNyCwz17Jd0kDVsqxXIlrh+77jlBuuSfycYo7HWCiFXbpSaPeHkcjRJsjVsrHxKnz/fdX2vQF6JojSvVOQ+3PlD86gDx0=
+	t=1788373748; cv=none; b=LsZzWIP8S+wQua8YxCMpijz24ff6Xh0vl9WIBtYAvfq+F/WYQ9urZsGrgB3gkWMUG/922DbCE30fPj7MdH0n9suDMEBD4UC4Sasg/5a3Xrbq1UzdHaovpXFEyy86YXFZCgKxDQ34XW2eaOkDzDmGbmbuXWOocG235wKofmDXGg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788373485; c=relaxed/simple;
-	bh=Y4bt8OjgWnv3RlpBjSlLuPo/aSM5wDfS9PJwHr2p/dU=;
+	s=arc-20240116; t=1788373748; c=relaxed/simple;
+	bh=BiNlhG9miM26zJxrQIOP8Hg2ir45xpkEAaZXQp3W1IE=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=e2YGhec7jn01WlmYu22o2MipuryZ2fUuWWT7HqDTknZgqhtkH7fth4KCe0zxDdN4+eIamS7DX2rp3emPC1wjFleM2B48fTrnKSZQyn6O98oCQj+44Sui9OIrNN5dqSCRiU5I3fxSiOW99xg9MbMF/MlXo8fqUVrdCThSDcfEPiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=EhSxc0w6; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:MIME-Version; b=WhK40A8B4e/g7tZqwg88rtAFS2mwWzJZwP9ZFMMlquZM97pNlbLvwjFaVufLBfvNSYofxp6t87x9Kl7MCVvRBeNxpnpNwEkMDOMfQ2ohAATQItAjXLGxxB+qeVWH+QYSVt/qgIdJae4+3UhX3Bk8p8B85EA1BZw/drh6E8gVM0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=TrekhSWa; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="EhSxc0w6"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="TrekhSWa"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Y4bt8OjgWnv3RlpBjSlLuPo/aSM5wDfS9PJwHr2p/dU=; b=EhSxc0w6mdOVY2tCxrZlzG0YWZ
-	DnO8tLbc8l1+o5ATkhFXJ5Qo3SQwv5dnWIeoL2cu1criQZHZ/2ocJ1H0K2u2u/LAL62LPkmq/9hDy
-	avD5Xr1EaDavL2iJ/HWctV31e9T9whls9Iy6sFF9/oDjISie/+7QtaTEf/qOYjFlKNuknya5HalG9
-	QXSnGlRuk4BKQqXL7vFShxBg8XznaaBQzZAh1Qs3EPDP8C44P8OdlInL3CPAJLlhPz17aMyuwj4Ae
-	voShU7oRATs7HbwBCs2rCcUcQpyIwHE8h8qyRaeCNR3coCKTBv0XOQSGQrNJZeewPOuAq8nh0Be/M
-	uvS/VySw==;
+	bh=BiNlhG9miM26zJxrQIOP8Hg2ir45xpkEAaZXQp3W1IE=; b=TrekhSWatwkefQvmMOszkg2p1m
+	POqAK1NQXo93vVMPjPVTucLS2Okro1bd/6Tz5QahWbQUrdXFiTQyk/nT0csB3o1o82EhgWj4EYwyO
+	/wjQtxWwFMlEbbCU+5PUNKJLHEWk7faODXR+KY8prRv4aFfZb3z8ZxHgVTaM8lwO3z99TeMFLLYsD
+	x2Cw549RLoekbjoZ8YxpXUEL2sYVAKSGwHy2aqaUSBTGT/JAD58bjc6dG1q9t2nQFR9obR1mChiCF
+	f5a1cMSIAFKjnx28g0lOGOdEajXSRe1N19eXZicOWJOiGzcO7/rkKDAMss/8a9Z5tQPFNtGBvW6oM
+	UBYWlQ1g==;
 Received: from [2001:8b0:10b:5:a7b1:57c5:dd61:87e3] (helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x1pdI-00000007fsH-2ryL;
-	Wed, 02 Sep 2026 18:24:24 +0000
-Message-ID: <586448da19d357ac6914fe100e5f09f22c5c9de8.camel@infradead.org>
-Subject: Re: [PATCH v3 01/13] KVM: x86/xen: Rename 'longmode' to 'is_64bit'
- in hypercall handling
+	id 1x1phM-00000007gEx-0AEp;
+	Wed, 02 Sep 2026 18:28:36 +0000
+Message-ID: <5c4c44b103ea1695368331380adde0b657f59a97.camel@infradead.org>
+Subject: Re: [PATCH v3 02/13] KVM: x86/xen: Introduce
+ kvm_xen_has_64bit_shinfo() macro
 From: David Woodhouse <dwmw2@infradead.org>
 To: Paul Durrant <xadimgnik@gmail.com>, seanjc@google.com,
  pbonzini@redhat.com
@@ -43,13 +43,13 @@ Cc: joao.m.martins@oracle.com, boris.ostrovsky@oracle.com,
 	syzkaller-bugs@googlegroups.com, suryasaimadhu369@gmail.com, lkp@intel.com,
  	nicoyip.dev@gmail.com, frn1furkan10@gmail.com, kvm@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, imv4bel@gmail.com
-Date: Wed, 02 Sep 2026 19:24:03 +0100
-In-Reply-To: <3590c47d-302a-4a24-9953-828eb9b38c38@xen.org>
+Date: Wed, 02 Sep 2026 19:28:15 +0100
+In-Reply-To: <d5d6a854-bdaa-4d69-87d1-c7a1731e8690@xen.org>
 References: <20260831213632.81023-1-dwmw2@infradead.org>
-	 <20260831213632.81023-2-dwmw2@infradead.org>
-	 <3590c47d-302a-4a24-9953-828eb9b38c38@xen.org>
+	 <20260831213632.81023-3-dwmw2@infradead.org>
+	 <d5d6a854-bdaa-4d69-87d1-c7a1731e8690@xen.org>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-IvkDzayGlaphqOgKmjf6"
+	boundary="=-SR5UXBov7ZTQJLaxEU/Z"
 User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,39 +60,44 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-IvkDzayGlaphqOgKmjf6
+--=-SR5UXBov7ZTQJLaxEU/Z
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2026-09-02 at 13:18 +0100, Paul Durrant wrote:
+On Wed, 2026-09-02 at 13:21 +0100, Paul Durrant wrote:
 > On 31/08/2026 22:26, David Woodhouse wrote:
 > > From: David Woodhouse <dwmw@amazon.co.uk>
 > >=20
-> > Rename the local 'longmode' variable and function parameter to
-> > 'is_64bit' throughout the Xen hypercall handling code. This
-> > distinguishes it from the VM-wide kvm->arch.xen.long_mode which
-> > represents the Xen shared_info layout mode.
+> > Add a kvm_xen_has_64bit_shinfo() helper macro to replace the repeated
+> > pattern of 'IS_ENABLED(CONFIG_64BIT) && kvm->arch.xen.long_mode'
+> > throughout the Xen emulation code. The macro uses READ_ONCE() to
+> > ensure a consistent snapshot of the flag, which can be changed by
+> > another vCPU at any time.
 > >=20
-> > The 'is_64bit' parameter indicates whether the vCPU was in 64-bit
-> > mode when it made the hypercall, which determines how to parse the
-> > hypercall arguments. The UAPI field name (vcpu->run->xen.u.hcall.longmo=
-de)
-> > is unchanged.
+> > This is the KVM equivalent of Xen's !has_32bit_shinfo().
 > >=20
+> > Assisted-by: Kiro:claude-opus-4.6-1m
+> > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> > ---
+> > =C2=A0=C2=A0 arch/x86/kvm/xen.c | 16 ++++++++--------
+> > =C2=A0=C2=A0 arch/x86/kvm/xen.h |=C2=A0 5 +++++
+> > =C2=A0=C2=A0 2 files changed, 13 insertions(+), 8 deletions(-)
+> >=20
+> Reviewed-by: Paul Durrant <paul@xen.org>
 >=20
-> Given that 'longmode' is the term used in the UAPI I'm not sure I really=
+> ...although adding kvm_xen_has_32bit_shinfo() for consistency with Xen=
 =20
-> see the point in this change (particularly since there is not even a=20
-> name clash with 'long_mode').
+> might be slightly neater.
 
-The difference between 'longmode' and 'long_mode' is subtle, and *has*
-caused confusion which IIRC is what led to part of this series.
+I did briefly ponder that, but *all* the existing callers that this
+patch converts are of the if (64bit) form, so we'd end up negating both
+the implementation *and* all the callers to achieve that consistency.
 
-Having to keep 'longmode' in the UAPI for KVM_EXIT_XEN_HCALL is sad,
-but at least the context is very clear there (xen.u.hcall.longmode).
-The code itself avoids the confusion.
+And frankly, I want "consistency with Xen" on a code level about as
+much as I want to gouge my eyes out with a rusty spoon. There's a
+*reason* all of this code exists... :)
 
---=-IvkDzayGlaphqOgKmjf6
+--=-SR5UXBov7ZTQJLaxEU/Z
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -190,22 +195,22 @@ vFEOOmuaq7VamuLEPFQtJM4olmipOW6CzrLcFz6J/6yAecEG3P1ZDoy08eSHvM40MAUgpwGa/w6o
 MAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTowOAYDVQQDEzFEaWdpQ2VydCBB
 c3N1cmVkIEcyIFNNSU1FIFJTQTQwOTYgU0hBMzg0IDIwMjQgQ0ExAhADNSi2uzJskfEdOMo4hV0g
 MA0GCWCGSAFlAwQCAQUAoIIBezAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNjA5MDIxODI0MDNaMC8GCSqGSIb3DQEJBDEiBCAnGSyFmeer/UKURqv2edNAcWpyHdjx
-J9lTxf/ZPVI/GDCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
+BTEPFw0yNjA5MDIxODI4MTVaMC8GCSqGSIb3DQEJBDEiBCCEPt3C7WtE32+XBM+ExmxVFEgr2U9G
+97xDNVwwdttJQjCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
 aUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBT
 SEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAwgYcGCyqGSIb3DQEJEAILMXigdjBiMQsw
 CQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFz
 c3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAw
-DQYJKoZIhvcNAQEBBQAEggIAw+CG9gm244xnknI+PdMxxjV+f/WzPdDn2fpOSSpsJCWiKIYqjN5f
-CRo9dJzu8XZvZzwFNIPgO7TM8kpKNRgn9Lf/hFGI1UkiNDWxHFbs1PTQGBr4/eMYHuvsvRHuyJ85
-jBrYfl/Y6kGuRp74hExFVgZ27ar7YauwPWvB9Zv/kQx7KITQoc8WuPKiaOr0nEjLkKU9D5jwzzhY
-rl7IM4SgzVZ5ONBdgWPd2ZtES1EiTAvyIJfdAtu2LmARUc6I2JSGB9ongJKVPn2CteDxaT+nrTG7
-fCawnwhgaD9cViuVk59GAB8DNyqeHLQvJ9hNonFNtNFlYHGtawcXPKxCxKplpiURMd5N156UM8tI
-AdkLjenxMbHU7tAg6LkevFAVdETEHzPkIj/4XdlXmI6la67smu+niEF/nIsHdJDfqe5xWZPSmeG5
-mSOpoNczims0UbEma9gEZCDIz99B31EkicsrmZAGF9tow2pO5MFjB7N56UaFq62Oai5zlA9XmrV3
-Pv1NgxQFEm32OK2tSgkLEDxyJNZI3vhnNvt1OjGqDbiaSJ+OzYCMjG+D3u7bN3CPss4x7XtL7gNV
-nUCDyyTix+9oT+ivG+EalHnvVprFOAIxaJxSIAWlgHYM55W6w8eDSB21p23qgnHmhsX3tR4c4JbX
-KLD6+x/Kaaajns9D1GyUCscAAAAAAAA=
+DQYJKoZIhvcNAQEBBQAEggIAfON9F5DUauXt/x0nb2rou/dMhHxt7vAKNgdv98cDfRFYCF3JHrCy
+nJvU/Q9kT02j5nUUyGWWcGOXjyEZQ/PBUatGvySQ9lBjn1Gvdn2CKALTN6DPtBK3nEikhGjmmzp5
+Fr9M8c0LBeOMCrrSYroTOfbGFpTUS8qsNWkekjGtq9CQwZOMuVEN04mthUu9goyNi2RuBag7D9Qo
+rNgoAN7JvaujMlHdgWpCnpx0ROjah7lXLlg6kBer0s2ZcNAOfurDni2619ppaxYI3xJ3yVkSn5Ke
+So7vho4IKM0NHk6GSZ7Huk/VUxqpZD0ct6jUh3U+XAWihlNAFFQZEEc7evI1ZZf7sfQyGr1a1Pm2
+Y5nCEU5FTSNYndfsSNED4fYiQWJPn0QU9ik2vP0Ty30gOTeRdt/WvID8BlZ2ZExgY3EyDt1WH/Tp
+PllIRQ5SFh0iEQmGRa2artcRxN4wM+2+smzl6jv2I7XKSgfok+M1S4iVfa3zsnfjo6wBsISPmw3b
+XP2wVqQz54k9QLhS9yiiP3tQnGiXk6d7JeKWxWnZvzzGmTAcTYwFdvW7gOQmOYGXp3iDNJZYpehL
+uXG8urnoH+PxZPHoEBKw0awCBwpRQ2kGyL2vgDycUmLt6Dwhg1m9VvXiZXSRhnijCBTHEE3rGPri
++CnMrVH2RlHETZU4EfFO3RcAAAAAAAA=
 
 
---=-IvkDzayGlaphqOgKmjf6--
+--=-SR5UXBov7ZTQJLaxEU/Z--
