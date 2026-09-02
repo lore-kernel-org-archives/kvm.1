@@ -1,66 +1,65 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDE43002C8
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 00:38:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA773002C8
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 00:40:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788309536; cv=none; b=tkF0LP2ABvsR9n4b9YF2bOazkoa426tkZmnn5jqddjmu/pZeOv6FLRv9lP1QH/dcAGnrTCz2DH2xixN/eQyCx2nndVf7KiVBH9/XRKgUFptLyxz0q/yOg2iW/oMKTh771a/40poBlnUD4THk3VMXZd4c64+IQWyTnu+FzeKdnU8=
+	t=1788309628; cv=none; b=I5BF42GAvPIuk58L6CmW9FwAJqaMilpSrKRZcUDhBNJz8Z1UCOTXW7/Wc9VLueTqUmWUYe3TOg51YhGfEobAq1BJynPZ7X2sD9v2FezyXhYWcPVXb9M8HW99NtzDVMc/2dcPoyRwOgFsHrCoTbxmaliR3KYNuwQnwW0fy1uD9q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788309536; c=relaxed/simple;
-	bh=dM8UMjdfpzrInG7yBCOavPUVK2/x4vlb0fefgS3K6Yw=;
+	s=arc-20240116; t=1788309628; c=relaxed/simple;
+	bh=vaDS6XNQUMUuPDi84wd9HFSG8Scz5CNLwlPkibF3DEY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SaepJdYIFkmy7gVGaDdHfH5eg5RdeDdZXbb8rbQAtDMmxl+Lzrtpoi3WKV6F4CEPj416d9peS2LRTGFgG/JxwULgPA2uiXAjU3eJRWetghxoUIwsqmUw2+o1JdMHEOzOPpoxcAwdS4hm8So+bSwNpNSBibMj1T2P27cotav9MWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cd9q9TuF; arc=none smtp.client-ip=209.85.214.197
+	 To:Cc:Content-Type; b=JPErjtqeQmjWaJwNpSpGYeUyGwe7JdWi7+Djob0KgQ5+GKUSeiOl/yReUyyXCOKllrk6K1aS1n9JFbwtXnNSdS1ru5Lboa2UbLpfMsTVTWQYJ4jmGqbKnp8VK8MWgwcs7DYWsvBUQVhuPL3+0+g1VoCYUwBT73fCWnoAmUezutw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cA2nPkTc; arc=none smtp.client-ip=209.85.215.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cd9q9TuF"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d959904658so7469705ad.2
-        for <kvm@vger.kernel.org>; Tue, 01 Sep 2026 17:38:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cA2nPkTc"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc1c62f0d60so720711a12.1
+        for <kvm@vger.kernel.org>; Tue, 01 Sep 2026 17:40:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788309534; x=1788914334; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788309626; x=1788914426; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FaTmFFkWvtpI1wxK9lbUH5Q49TqxcdmMs9wtskLlSB4=;
-        b=cd9q9TuFdqYqcDrugYPeY/JVeFF8BqYOYNEwpohfGF45vi82FUDlNUcdQLqpSqTvrs
-         Rdh1tHhEou14WwmTHxqMp+CSiQ0OSNLH3HkO9yyFpxyu0ZEJUkuYSzgEWr4C/Vcjz1sZ
-         2ZXeIhlEiPtKY/n8cwyP1SniE/AFekKN0U2LRmroUF3Ta/3c4owa7QjWp+QBt+iyAWbU
-         oO9TfdSBZyyBRbwQXOaHrSoteRS71mHAJmgCdkIJ1HghR1/oTgSsTqSoqIPlvKpyrxAl
-         sdO1y6mThMALRjC7ExBGuTIbUtrloROtrVKLTdUQD7nj1d9crFr+nak1zM1e7Umq5y4W
-         fkGw==
+        bh=0Yk5W8YMQMFUnjqW7SP37P8eIRPlwXT5+5U93q8LYb8=;
+        b=cA2nPkTcxR26xe3iUdwPzYeikQPcHPUtQl5oHDdyfTtDTEAu9Gh/PaQAEGwIQeGRWO
+         4FDu+mUADCLJgxiaplhKBMZ9FggdMfiMhO1GmphQbiZufLoshRKzp32WYRcz4GangQ/a
+         K85e6J7iXyyFnOPgIs8SunkI6hxdII5bjACr2OhHB+uc8u28jvGSFyKlvg3T91CRMuMO
+         sfirtXlNqb2bsuCuGgHjvLXZMm0GDCxOhJmRZtUR45UOy/A3SdeWHy6xzocXNVtwulkY
+         po+h7puKPoGb8ZS6Ku13L55X2Y7+CC1WEUVYdwhdZuli7fEBu/zZkUh7+zov8axfb/MF
+         Z9+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788309534; x=1788914334;
+        d=1e100.net; s=20251104; t=1788309626; x=1788914426;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FaTmFFkWvtpI1wxK9lbUH5Q49TqxcdmMs9wtskLlSB4=;
-        b=BiG2ZHvJaNqtvDqS49mT4uV1NfNf6vL4BfzG4D3Hx0dCJmTc0JDgprSBh5k0rl/lTP
-         gkBx/NU9s522ZXUKSkomroI91eDx8Sp01cVxQybnLTs4pJn/wowlVobg1msKWKqxyHu8
-         zeMgLqZGXD6Qk5a77KSRRidgr247Pq1kVSrXtUHE7Prkhi9oQ//LoUuwmUbCGIpsIgb2
-         Xh1UKTU4GSNFB7CsmQw7vJ7GHLafcRuG5grPXKYqaw2IGpGJX29FusAog8pQFLdHz3BH
-         7SbdFJgkR2VGJyXeHKDJxMOCo47oFqCB1GBUu70JlmmYqzAV3RdfEZNV6VPIC2TqD7d7
-         kl2Q==
-X-Gm-Message-State: AFuF++mNOxKf1u3tIXoNfhB9/g7x+Np6TCpVFU0x4ho4nrPY18DVLeiD
-	ybMw7r27PISwYRwgImy7nrE9VvftBuqMV8zZ0tlSS9tMxnT4gtn7KIcVneooMuLYCLvSJ84u2VY
-	7XzbcZQ==
-X-Received: from plgf7.prod.google.com ([2002:a17:902:ce87:b0:2cc:6063:a658])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:26c6:b0:2d8:d4cc:be67
- with SMTP id d9443c01a7336-2daec73f1d2mr14199535ad.20.1788309534336; Tue, 01
- Sep 2026 17:38:54 -0700 (PDT)
-Date: Tue, 1 Sep 2026 17:38:53 -0700
-In-Reply-To: <20260831144802.834315-4-seiden@linux.ibm.com>
+        bh=0Yk5W8YMQMFUnjqW7SP37P8eIRPlwXT5+5U93q8LYb8=;
+        b=a4eDML/xByo0WX1kjhtPC5wekcPoK7MeuiZmDNDxanz0/f+QQHNQcEXlHu6yzgrRce
+         GOFljiQPDKO4X1aUfJBm9bWMxxgT88Lbm4gcV2fVLBZfZuVwz46/hs3ptWV+COxFIZoL
+         HlwjPvn/3Iuld7p00N6UZJog0nNuWs2NSYIPOqW818BR40b/Ow215mI7ohZ4SOTupkZw
+         DfL4VdD2JDPDS5ETufBDdakEG17ijLLSE5bnMhA2CfzNKBQFxAGZpiPYlGEfxZZtKYUS
+         l/aEeDRIEh1GQPkZPFtJ22Cm9WIrLZMcuseZ5o+49EMRNy3sYhfPOBaGfmzwKNUUH5OO
+         QEUw==
+X-Gm-Message-State: AFuF++mGYcmR+H7DYIytDgWGT5cEGUu9ZvbHnuSTkoMwndYeDzlBxUm4
+	b4Hoi5jwnrxO1MvZM2GLGoLyKm43lvgxEkZvrlQ8GdXFYIcbOFlSaSPxybEi+ohZ5gSe0lGhZPF
+	O3F1w1A==
+X-Received: from pfbi25-n2.prod.google.com ([2002:a05:6a00:a519:20b0:84f:4ff1:f767])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:ab08:b0:848:5cf5:5040
+ with SMTP id d2e1a72fcca58-85ed23e044bmr2745937b3a.10.1788309626365; Tue, 01
+ Sep 2026 17:40:26 -0700 (PDT)
+Date: Tue, 1 Sep 2026 17:40:25 -0700
+In-Reply-To: <20260831144802.834315-3-seiden@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260831144802.834315-1-seiden@linux.ibm.com> <20260831144802.834315-4-seiden@linux.ibm.com>
-Message-ID: <apdwHcdy2iYRTrww@google.com>
-Subject: Re: [PATCH v7 03/23] KVM: Allow KVM implementations to switch off
- MMIO independent of Kconfig
+References: <20260831144802.834315-1-seiden@linux.ibm.com> <20260831144802.834315-3-seiden@linux.ibm.com>
+Message-ID: <apdweRfqt4dTxcU9@google.com>
+Subject: Re: [PATCH v7 02/23] KVM: Make device name configurable
 From: Sean Christopherson <seanjc@google.com>
 To: Steffen Eiden <seiden@linux.ibm.com>
 Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
@@ -81,16 +80,10 @@ Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
 Content-Type: text/plain; charset="us-ascii"
 
 On Mon, Aug 31, 2026, Steffen Eiden wrote:
-> Only defining KVM_MMIO is not flexible enough for multi-KVM systems
-> where one KVM implements MMIO but others do not. Solve this by
-> additionally testing for the non-existence of KVM_NO_MMIO before
-> including MMIO code to KVM.
+> Allow KVM implementations to choose alternative device names. This is
+> especially useful for architectures providing multiple KVM
+> implementations simultaneously. Architectures providing multiple KVM
+> implementations must compile the KVM common code once per
+> implementation and mange symbols.
 
-Ewwwww.  IIUC, s390 ends up with two KVM modules, i.e. there really are two different
-KVMs being built.  Rather than have a KVM_MMIO and NO_KVM_MMIO, I vote very
-strongly to drop CONFIG_KVM_MMIO entirely and replace it with __KVM_HAVE_ARCH_MMIO,
-a la __KVM_HAVE_ARCH_VM_FREE and others.  Tracking two separate macros is going
-to be annoying to maintain, and will definitely be confusing for non-s390 people.
-
-It'll mean linking in an emtpy coalesced_mmio.o on s390 when building without arm64
-support, but I'm guessing that won't be at all common for s390 builds.
+What about tracepoints?  Or do those show up as "kvm" and "kvm-arm64"?
