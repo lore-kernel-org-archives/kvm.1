@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAD44CCDCA
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 03:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B091E98EF
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 03:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788318435; cv=none; b=Bw5LmMJr5hkLmnbQp1m5H+t5LholNLxocW5h66pwMDP6Tp6/qQDuRUWsbGQ09SsfbkgZqN1sKRBMRiMbzrXW2zVhTVZ5L5a1kffPy+PbtErowcAfzTy+i0GYQE5g6w7wYZ3Ia9ehKoaiG1X+PrMNC6qh8m+l0PViyzjB0lE3f5k=
+	t=1788318456; cv=none; b=BGGIomt10zPusOcTanZm+FUolFAPUnSKg9vLCFekvBfo0fW+eGqVsV8kbXpNJMidQLkuRYkzXPJ4f9bNYpCp9hkDnhr1oD+Mu7bDu0Umdxr8Q44P0DMZFrEZKWJMTKpIg4rzfZOMx196mUWtk7MkPPq26gd5212ukdgzOb5KVaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788318435; c=relaxed/simple;
-	bh=U7UIzVpA7E7ok4juOmWPedDGwJqZUbumyq/Uk/BTY1w=;
+	s=arc-20240116; t=1788318456; c=relaxed/simple;
+	bh=kkDFKyptLGB8HxMylGHdHX5DAPbnRXgSGeuviPKLFKw=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=lslTQudRpni9Uzkjx2XtdhgHzO5CglrDd3c7NR/2hQfY1ODbpC7Mpgba78H6GwGkZsPBK5d+Nz2c5laBVBglgOmZpbkU4kIOFbNvW4BPMweu+cT14hvl8QtLJobelRHBwOhH9BN4rFjruhmfRBvhV+P+104V1gQSrPkBwXo4Qfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AHXZDp/5; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=fZ2ltYJP4w8ayuhCA+A21hr4jeZFNTHHELLLgJMPo7IDYkDG8F/b90dFmBh59/2KALz+4H0mzvldFZyK7GKqPjaaFtk0TpcRUNh9C68SYHiWa0CuTiDRuGuK0mueb9BhOHLRwhcNlKuV3Ycgsbkhd6UTeAJ/XLMQmFv8h9YI/5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b3679kWK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AHXZDp/5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 472A21F000E9;
-	Wed,  2 Sep 2026 03:07:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b3679kWK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019A31F000E9;
+	Wed,  2 Sep 2026 03:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788318434;
-	bh=ITaZCI6AiSACu8bCuyXXM7up13Op+s8UiXhXt8pO07U=;
+	s=k20260515; t=1788318455;
+	bh=Xai5il4OOFBqTAfait/fsGxo49XETB9Hv0OG+9MJI/I=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=AHXZDp/5zYP5QtEZJ3qnIxeL5IXNKY2xiohy3xHL6Dg3zrMU7hRcPp/mQamfKmvbp
-	 F69ahbZTOPRKTzZ1GtWYtCT6Oc4Gwa9Fmp+xy8HPzcVcTuZsnB6zUK3D3hucjrm2IU
-	 3bsmX0kUm6ZKMs9rNNVXAUms840c2WTa6JaFa9EbH1cgXsfL7UVw5K2ongU1WA+ZJJ
-	 nznZNgp4J2p94vy7WK+2c1f/2Zkc3n2go1VhSFXexBJYb99vVCPMBqohM1LJTfWEqV
-	 r3Ax6GlQIt9JUUf7P9lbJrCcDiCk4k5mxCYpEPAe26jRkPbmxwTRtk/TDgrn6eYW/+
-	 A08WA4s1LR9Sw==
+	b=b3679kWKhwErIjUNNb5qEfQjpHEDCxQ96uYLaYjgfkKmXyD3D8kBJwrCOmfU2EGco
+	 yOoJpYdsGxLpB9kbDF+gtl4K/C6YI9YXlVLZCo+NdXuu2Y9BK9lkvmITKcfIcbBr28
+	 6qdjU9VN4q0RjufjvQGD3ix+/bHWS8Vr3L7oXpt2+pFiEe9t+qjuCewZdF4E77ptxU
+	 LROitTMpf0GNkmwjK2OX05y7aqFyiDRkp4M3sILvdcci3wFnmBJfYgWc0NeYvYTjsr
+	 T2Fyioo1jzTiBpXy/gXQFEdNkW782i8TvDvV+A/ofeIKw+R2YITY7lg74oPAusmJZ0
+	 gC1bFKePveKug==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 09/20] KVM: nVMX: Propagate extended instruction
- information
+Subject: Re: [PATCH v7 19/20] KVM: x86: selftests: Add APX state and ABI
+ test
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Chang S. Bae" <chang.seok.bae@intel.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260902021804.718676-10-chang.seok.bae@intel.com>
+In-Reply-To: <20260902021804.718676-20-chang.seok.bae@intel.com>
 References: <20260902021804.718676-1-chang.seok.bae@intel.com>
- <20260902021804.718676-10-chang.seok.bae@intel.com>
+ <20260902021804.718676-20-chang.seok.bae@intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 02 Sep 2026 03:07:13 +0000
-Message-Id: <20260902030714.472A21F000E9@smtp.kernel.org>
+Date: Wed, 02 Sep 2026 03:07:34 +0000
+Message-Id: <20260902030735.019A31F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,56 +47,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Missing Support for EVMCS Field / Reachable WARN_ON
+- [Medium] The inline assembly in `read_egpr()` lacks the `volatile` qualif=
+ier, allowing the compiler to optimize or hoist the register reads incorrec=
+tly.
 --
 
-commit 24f2192a997da0f16691df1c9b88d4d8d59b8258
+commit 95fe69711afd71a902fad394278581f460dbab32
 Author: Chang S. Bae <chang.seok.bae@intel.com>
 
-KVM: nVMX: Propagate extended instruction information
+KVM: x86: selftests: Add APX state and ABI test
 
-Define the new extended_instruction_info field in struct vmcs12 and
-propagate it to nested VMX. Gate the propagation on the guest APX
-enumeration, which aligns with bare metal behavior.
+This commit adds testing for APX-specific behavior and ABI interactions.
+It verifies that EGPR state is correctly saved and retained across VM entry,
+and tests its exposure via the XSAVE ABI.
 
-Link: https://lore.kernel.org/aRvOSnaUt1E+%2FpkC@intel.com
+> diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/=
+testing/selftests/kvm/include/x86/processor.h
+> index 6e6f70035508a..6e3e7d96c571e 100644
+> --- a/tools/testing/selftests/kvm/include/x86/processor.h
+> +++ b/tools/testing/selftests/kvm/include/x86/processor.h
 
 [ ... ]
 
-> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> index 7229934c38bb1..69302b806a98e 100644
-> --- a/arch/x86/kvm/vmx/nested.c
-> +++ b/arch/x86/kvm/vmx/nested.c
-> @@ -4773,6 +4773,12 @@ static void prepare_vmcs12(struct kvm_vcpu *vcpu, =
-struct vmcs12 *vmcs12,
->  		vmcs12->vm_exit_intr_info =3D exit_intr_info;
->  		vmcs12->vm_exit_instruction_len =3D exit_insn_len;
->  		vmcs12->vmx_instruction_info =3D vmcs_read32(VMX_INSTRUCTION_INFO);
-> +		/*
-> +		 * The APX enumeration guarantees the presence of the extended
-> +		 * fields. This CPUID bit alone is sufficient to rely on it.
-> +		 */
-> +		if (guest_cpu_cap_has(vcpu, X86_FEATURE_APX))
-> +			vmcs12->extended_instruction_info =3D vmcs_read64(EXTENDED_INSTRUCTIO=
-N_INFO);
+> @@ -917,6 +919,124 @@ static inline void write_sse_reg(int reg, const sse=
+128_t *data)
+>  	}
+>  }
+> =20
+> +static inline unsigned long read_egpr(int reg)
+> +{
+> +	unsigned long data =3D 0;
+> +
+> +	/* mov %r16..%r31, %rax */
+> +	switch (reg) {
+> +	case 16:
+> +		asm(".byte 0xd5, 0x48, 0x89, 0xc0" : "=3Da"(data));
 
-[Severity: High]
-Could this lead to a host-side Denial of Service when KVM is running as a
-nested hypervisor on top of Hyper-V?
+[Severity: Medium]
+Is it possible for the compiler to hoist these register reads outside of
+their intended execution points?
 
-When EVMCS is active (kvm_is_using_evmcs() returns true) and the L2 guest
-has the APX feature, prepare_vmcs12() will unconditionally execute
-vmcs_read64(EXTENDED_INSTRUCTION_INFO).
+According to GCC and Clang semantics, an asm statement with output operands
+but no input operands and no volatile qualifier is treated as a pure
+computation.=20
 
-Since EXTENDED_INSTRUCTION_INFO does not appear to be present in the EVMCS
-mapping array (vmcs_field_to_evmcs_1), won't the subsequent call to
-get_evmcs_offset() return -ENOENT and trigger a WARN_ONCE?
+Could the optimizer move these reads to execute before the GUEST_SYNC()
+calls, causing the test to validate stale register states (from before the
+VM exit) instead of the intended restored states upon VM entry?=20
 
-If panic_on_warn is enabled, an unprivileged L2 guest could potentially
-trigger a host panic just by issuing a nested VM-exit.
+Adding the volatile qualifier would prevent the compiler from reordering
+these hardware register reads.
 
 [ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260902021804.7186=
-76-1-chang.seok.bae@intel.com?part=3D9
+76-1-chang.seok.bae@intel.com?part=3D19
