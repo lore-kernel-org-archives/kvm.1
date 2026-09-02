@@ -1,142 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167C637881D;
-	Wed,  2 Sep 2026 06:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053AE3B2D1A
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 07:07:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788330489; cv=none; b=qjgPOU2BH7FNo8A/f7AOL6EWBqMNB9cZEiIlkybyZqyFnt3JtiF+ib6ePSSWB9LZKF1AtIAxfsqZt1anpA7oUPjuukyaL8rru3AqShRFaBefzMztxjl6Lo8oDupgOFw2DHetRhsB+JVDimqXbmmVpSJBmXWd+GyESJMOBijOziU=
+	t=1788332866; cv=none; b=McIfRh9AN6/ny2oM3Gf5vkNfrmiCfB41+PCJN+5clBUW2KTQqExL+ZPu1Km6GFs8CphvX3LNerMGXRAXUrbmPmEmMe3biHfAxjlg4NDGk4K9N3eeO5MFEtF7gJe275tjGksSrbLHoc40hQuLvi0iRGGQKevYqF4+7C/s9VTpb0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788330489; c=relaxed/simple;
-	bh=q2I5CDQh9TA+VI9hf8JYsPR6dSyaNpmEaREbJExDekg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=YeY8acl0O5a4RoQ2jpYrkiWThCvLQZKKFZZQhRhwIQa0wAo9jMhwbRiQVK6bGgtj0upfDS1hsEGIwz+Y2xoiL/4PgG8tkE69Nj9D8sWM0Lz4JQFt7ndb3Aa20aEmrV+BVXgXWqyXOIql6MMHSioiLe6FHeHCfXHxkR7y0W+hJzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oTTVaP5e; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788332866; c=relaxed/simple;
+	bh=E8kneu2xkHnm37YD035uh928QAzihNqmk/fd94fujuo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HK6aQIaki4x+nFIrPQGyU6JwTIjf43F+TUyRhJuSe/x1sPVXZyKs8ocdmwUsut75Wdy0BC3cch8XbIiuquUbo9xE5QqZL8UDDqg6YsYF5p1wTwzVFQncWmrqSLsopZ0uQIN3weqeVbezRZv8K/Qao8XkfqQBlSxlsLUaq9opwUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZNWZom/V; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oTTVaP5e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D381F000E9;
-	Wed,  2 Sep 2026 06:28:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788330487;
-	bh=zUgCURL6YmB+rlRFNdTFkS/+ZDRj2unAWpWo6zKpA7M=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oTTVaP5el2Gq0AyaLbIhh31hssUGpFcncdv/+/Pnx66K2j7rL8s0obZltiLGOyYdM
-	 Uyzrw6pvbUgdmDeMFUHiL0axxR7GGG6k/X9mOuwhWXAy2dXGRh5xrRvJFH3CYNgJxt
-	 /5BZCbzAJzVmxaCAusLk6LeNNbQNKDi+LJ7KbBp/uEHJMzQOzWUq4/9KVat7J+e+LM
-	 I172LX+wGcrssD2ExBW4cGosRSgQ8MLA1L3mSp+d/JyCF6A9yuDBf8oHz9czZTGQBs
-	 pufVbO6Fgzsz6nH7YPcsBQ2QxQddTgN6uaVsHrUwLQRYqjS1NAjdL382kFSXXRVCDY
-	 NNAXLl0PfKeoQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/4] KVM: s390: Replace get_zeroed_page() with kzalloc()
- for the GIB
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?TWlrZSBSYXBvcG9ydCAoTWljcm9zb2Z0KQ==?= <rppt@kernel.org>
-Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, "Christian Borntraeger" <borntraeger@linux.ibm.com>, linux-s390@vger.kernel.org
-In-Reply-To: <20260902-s390-kvm-v1-3-3bc0986550b1@kernel.org>
-References: <20260902-s390-kvm-v1-0-3bc0986550b1@kernel.org>
- <20260902-s390-kvm-v1-3-3bc0986550b1@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 02 Sep 2026 06:28:06 +0000
-Message-Id: <20260902062807.25D381F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZNWZom/V"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-39647184c73so1889825a91.1
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 00:07:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788332864; x=1788937664; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pjw7Yj8C+EGcBYthQYN8Kf9YjAONN+Q724TMv0sxgAw=;
+        b=ZNWZom/V/0BwPLynEOF8C438L+CQsBpw0GFQVsSSgw5wUIvQKrwH73MlosJRA4IpqD
+         weVIpuUUzZRIGdOVHmM1aURHLDUnY/sD1kAvLi4wwPTp97XgrZp3BmiX1TFxCO1ATKp3
+         8wRfiRxZF/YpEG7kvRgUtyX3TxU1a27dK5fjFJpsFMnT4/c5sDq2kbN4IIWwnjMEO4UW
+         NqIhyRp2j/OyZ716HwUSBE2xPSF0hfYdLOXoPipq26PYEC9p1k7WmbanSruQzxKM2NXJ
+         uVoNmiaQ4EWgz5BOUjehUHhf1aPVmyQt8kdTOFfzjnu4V/QWVa6NYFZA2KB/hJlgp0N8
+         70lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788332864; x=1788937664;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pjw7Yj8C+EGcBYthQYN8Kf9YjAONN+Q724TMv0sxgAw=;
+        b=BSJW+Y30fvF2py5GykIUABEXzWnG8LJssUEGOIjScD/pfceLgfCmrzzkiv9d5+k6h6
+         Sw3+FtlQUH2L1T5/YI+2jvoq9xNSVEij3CKQLlhWUreTwQ2aYzj/RXrJLWWeD6UnhqAT
+         Oh1OE8jU9DEGIp9t2/ilVvYA/rKS2AW4spepoH5vJgFDX/+9k5kAR2joWjrx7WV9Coew
+         4M3i/kuxoZcswMq+MY06kQeMkux6Y4CZs5SRJaxa+zR6gjWaSNZu9VywIFn/h2VE3AQB
+         eq6Jpc/fpC6lPYantewKh1us+kBq3Hth4WJWla0aSJNVf0EDQXYuNVINNC17CYTdjAlj
+         EfYA==
+X-Forwarded-Encrypted: i=1; AKwUvBxeLXc/O9fQNWnLJgr2OItJM3khKeZ04aITFGD9U6hobIvNSXVO+bO4cvdQ4U6lxQmvGoo=@vger.kernel.org
+X-Gm-Message-State: AFuF++kz4dUx/0KookQqRaV8+XCQSUUipoW3n93+IAv+v4/44DCQ1op1
+	+9teebUgE6SjlL4c8iX44TfSkWXC6ypxPs3z14p7mXRQwwqrZMvduFVw
+X-Gm-Gg: AYBFou3+AZQyLURneYSqPWOLs1kwnxG6X+/uO5BZw2MTqzgPalLx/CZty/6DFuCSheB
+	tgYmCEQ6Z6XrDnOdznYy+CkhVBonSBeJHLppdUI1i3Qo1kdTUwLq0v85nO2n2l6U2vMN/j9fWMD
+	tWtc0rcfkAY+W0AHDJ7vq9/PM2ZzbaWQFG7tKM19d05yE+igXD8+5zLWN6DvR0z+PvmdijkKcY9
+	EzFfj1eZmfw05pxv0BeBS2Pt0iHBD8qMdY3QxH9g/U+OjK5RMIzUr8ly+VlSjZ0tl/V3aY7Va7w
+	YFSo22tdXa6P18wl7dSgz7jfpPYfKbV3KhryVYtzdRp717rYL5uhsgMlj7LzkWDCgBsqD3kYs+r
+	amHqltQ7c0xw0hA4/dgGWaEv1YcrRAjaZ1Wa4iBu/5Xt/HG0hjx0pMbY5+h5o2j9nWKx9HQVGXs
+	phC5R/8eMUz/IaurEhjATCQuls1HqkH/iMqdzBzS4vO1dk03OBmAFndqvhhFbbXUvh1ZAPZduXE
+	g==
+X-Received: by 2002:a17:90b:3c09:b0:398:c0a2:8f8e with SMTP id 98e67ed59e1d1-39af64f9205mr1192783a91.26.1788332864187;
+        Wed, 02 Sep 2026 00:07:44 -0700 (PDT)
+Received: from amd.ban-spse ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-32f079c33f4sm4173256eec.1.2026.09.02.00.07.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 00:07:43 -0700 (PDT)
+From: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+To: zhaotianrui@loongson.cn,
+	maobibo@loongson.cn,
+	chenhuacai@kernel.org
+Cc: kernel@xen0n.name,
+	lixianglai@loongson.cn,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+Subject: [PATCH v2 0/2] LoongArch: KVM: Fix kvm_loongarch_env_init() error path
+Date: Wed,  2 Sep 2026 07:07:21 +0000
+Message-ID: <20260902070724.3459457-1-nagachaithanya9911@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260817115847.2705791-1-nagachaithanya9911@gmail.com>
+References: <20260817115847.2705791-1-nagachaithanya9911@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+kvm_loongarch_env_init() leaves everything it has already acquired behind
+when one of the IPI/EIOINTC/PCH-PIC/DMSINTC device registrations fails, and
+kvm_loongarch_init() does not call kvm_loongarch_env_exit() on that error,
+so nothing else cleans up either.
 
-Pre-existing issues:
-- [Critical] Hardware Use-After-Free due to missing `chsc_sgib(0)` on `kvm_=
-s390_pci_aen_init` failure path.
-- [High] Race condition in `kvm_s390_gib_init()` error path leading to a NU=
-LL pointer dereference.
---
+v1 unwound only the memory and the perf callbacks. Bibo Mao pointed out
+that the device registrations should be undone through wrapped unregister
+helpers, so patch 1 adds those and patch 2 uses them to unwind the error
+path in reverse order of registration. Patch 2 also uses them in
+kvm_loongarch_env_exit(), so that the device ops are unregistered on normal
+teardown as well.
 
-commit b7e0a2c7fc946fc151e2d875aa6df00a71151750
-Author: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Subject: KVM: s390: Replace get_zeroed_page() with kzalloc() for the GIB
+Link: https://lore.kernel.org/all/20260817115847.2705791-1-nagachaithanya9911@gmail.com/ [v1]
 
-This commit replaces the use of get_zeroed_page() with kzalloc() and
-free_page() with kfree() for the guest information block (GIB) allocation.
-It notes that kmalloc() guarantees page alignment for power-of-two sizes,
-making it suitable for this buffer without requiring direct page allocator
-access.
+v2:
+ - Add unregister helpers as suggested by Bibo Mao
+ - Unwind device registrations in reverse order
+ - Use unregister helpers in kvm_loongarch_env_exit()
+ - Split into two patches, so the fix only uses the helpers
+ - Reword commit message to avoid implementation-specific details, and
+   retitle from "memory leak" to "resource leak"
 
-Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redh=
-at.com
+Compile-tested only, no LoongArch hardware: loongson64_defconfig with
+CONFIG_KVM=m and CONFIG_KVM=y, W=1, each patch built individually, no new
+warnings.
 
-> diff --git a/arch/s390/kvm/s390/interrupt.c b/arch/s390/kvm/s390/interrup=
-t.c
-> index 0381ae9817035..02065fb8d053e 100644
-> --- a/arch/s390/kvm/s390/interrupt.c
-> +++ b/arch/s390/kvm/s390/interrupt.c
+Chaithanya Lagisetty (2):
+  LoongArch: KVM: Add unregister helpers for the KVM interrupt devices
+  LoongArch: KVM: Fix resource leak in kvm_loongarch_env_init() error
+    path
 
-[ ... ]
+ arch/loongarch/include/asm/kvm_dmsintc.h |  1 +
+ arch/loongarch/include/asm/kvm_eiointc.h |  1 +
+ arch/loongarch/include/asm/kvm_ipi.h     |  1 +
+ arch/loongarch/include/asm/kvm_pch_pic.h |  1 +
+ arch/loongarch/kvm/intc/dmsintc.c        |  5 ++++
+ arch/loongarch/kvm/intc/eiointc.c        |  5 ++++
+ arch/loongarch/kvm/intc/ipi.c            |  5 ++++
+ arch/loongarch/kvm/intc/pch_pic.c        |  5 ++++
+ arch/loongarch/kvm/main.c                | 32 +++++++++++++++++++++---
+ 9 files changed, 52 insertions(+), 4 deletions(-)
 
-> @@ -3722,7 +3722,7 @@ int __init kvm_s390_gib_init(u8 nisc)
->  	gib_origin =3D virt_to_phys(gib);
->  	if (chsc_sgib(gib_origin)) {
->  		pr_err("Associating the GIB with the AIV facility failed\n");
-> -		free_page((unsigned long)gib);
-> +		kfree(gib);
->  		gib =3D NULL;
+-- 
+2.43.0
 
-[Severity: High]
-This is a pre-existing issue, but I noticed a potential race condition in
-this error path in kvm_s390_gib_init().
-
-When chsc_sgib() fails, the code frees gib and sets it to NULL. However,
-this happens before calling unregister_adapter_interrupt(&gib_alert_irq) at
-the out_unreg_gal label.
-
-Since the interrupt handler is still registered and active, if another devi=
-ce
-sharing the same ISC triggers an interrupt during this window, could
-the gib_alert_irq_handler execute and call process_gib_alert_list()?=20
-If it does, it looks like it will unconditionally dereference the NULL gib
-pointer.
-
->  		rc =3D -EIO;
->  		goto out_unreg_gal;
-
-[ ... ]
-
-> @@ -3742,7 +3742,7 @@ int __init kvm_s390_gib_init(u8 nisc)
->  out_unreg_gal:
->  	unregister_adapter_interrupt(&gib_alert_irq);
->  out_free_gib:
-> -	free_page((unsigned long)gib);
-> +	kfree(gib);
-
-[Severity: Critical]
-This is also a pre-existing issue, but does this cleanup path result in a
-hardware use-after-free if kvm_s390_pci_aen_init() fails?
-
-In kvm_s390_gib_init(), if the GIB is successfully registered with the
-hardware via chsc_sgib(gib_origin), but the subsequent call to
-kvm_s390_pci_aen_init() fails, the code jumps to out_unreg_gal:
-
-	if (kvm_s390_pci_interp_allowed()) {
-		if (kvm_s390_pci_aen_init(nisc)) {
-			pr_err("Initializing AEN for PCI failed\n");
-			rc =3D -EIO;
-			goto out_unreg_gal;
-		}
-	}
-
-This skips calling chsc_sgib(0) to tear down the hardware registration.
-When we reach out_free_gib and free the memory backing the GIB, doesn't
-the hardware AIV facility still retain the physical pointer to the freed
-memory?
-
->  	gib =3D NULL;
->  out:
->  	return rc;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260902-s390-kvm-v=
-1-0-3bc0986550b1@kernel.org?part=3D3
