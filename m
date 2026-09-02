@@ -1,259 +1,172 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011007.outbound.protection.outlook.com [40.107.208.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80CDD4071F5
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 21:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788386224; cv=fail; b=UJSD9lcQcq9YeTltts2ir87r10A76+ZkkCixmTCP22m+mqz/g6v+p0xB+83H1V1aKcykMOkqAKnVJhm3QAGj/Pc7IEL0bnG/TSrKOOatVqArkfTGiMwer+vdKfVnG4DiPLVN/PjLK5cF7veRekUcfXh5plwDUyB92vSLkf4Kiho=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788386224; c=relaxed/simple;
-	bh=x0MBnlXQCbj5wslXTAixjBNr62Qv5MKWGk2+bW5CF6Q=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=SzRs50DparbyDSqUNhSOMbKcpvI/cIu41Qvz4QE0AmjE/iC+AUFIdMHa/ykNerlMIsAvAk+Qk9ULwdNHiHqSSEy+eHjzsYj4x+x9q9ysD9cxfcmnUuNLi3iabOcTfnC6DnSrcQLuzJjQqEZofmSOsXNtDqigwY6JxeygLjZNLq4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=C1ccHKJD; arc=fail smtp.client-ip=40.107.208.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FEE414DFA
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 21:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788386276; cv=none; b=qQ5emvIjG6cFqv/OKYAZ4q8f+U3FDkaErHOJpg1eoQr8VXphTcOvkggDUWgcO/vAYA26WgDHsBIIKYPNoeFofF2UQFWmztGj6qv3g+TcMh7eogPA91mTyb02+PI5xKOzmtrZSB6D4j96PsWuYXLuEkuZG5UrXt77gg0g0sbOZ2A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788386276; c=relaxed/simple;
+	bh=/jfA32D3Gmd6nB8WjwU634ec6ikAGCBEXsbTWYbcCJo=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Zmmb8eU/rL6/a5jl2JVCDL4OVSuheXDTfuUtb5zNNkKoxpl1xf8FJ+CWGm2Pgivor/WEh3ZvdneWE6bD0YhTXHxzHAyI4uke8N6+XEBoDgO6YuVuJu6BNt/7jV9zldrc1nJXRg0yrqUjbdaND6EEPJ1gRGLIr+Yrxf1G95RwVnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IUgarz/R; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="C1ccHKJD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hcSixAc0f6tvrLYhfUnB0PX3aSy3whAGG5Lno/DOm4uTp8aSRfa58Jh4wnKV+w4TzrYfQILjV25lG5xXVG71bXzEMJ6wKcGJz4uXYXOF1wb6W9iFp0puGbTlDUaO99ukV+/5NQRm4Gkf9xTyUnoU4gcWKC9GPP50l4Qnj6gtmY8cgRFlC16SDzwuKDBkTD5cmGlPfo0f5UV/oFZpBGSA+flCvmjmtgVrZmPAMFxk8UW1f1LeTWcNkaHw5KCH6HkRT8BqTlR4bFiPE/FcEpL/xVRCnXL3STvA+8itDg3niWcUlnJKXFntoB814XJd76buzgWX3Gv7a3JePZ3+l4Xxvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=epwe+Yve2SmY5BUZCFMeY3f+dSn50wPSkU/SrhZ7DZY=;
- b=Y5muTJJGbGKnAdM3CxUEVwPBf5F8UmmtEXrUp2HqrEqLwJAVTLKa2KKw845bbazD7MDxQtLK8tAi9BNiLUMDLGiyXhEAM8SN7aUTzOmKdLXyfgPF4WjvJrHSVZ/idJI6A0b4wvdXTldos+rPuGOKK1+2oDc8P3GWIUNsdfRnwG13ZhLocmpUtqtRCECgmtUU8tuEmwN3ub1KKILteFOOMS99AHzymA5u7pBm5tsa2wUE1zb+lveRTIIJcw5MNCSuqc0iTN5aPVPr8Kd1BCZm8tH2M1bd0iYmdx1tAHztgW9lVZzFpeHi4rdDgNsQHs8dyehLYvvi44slwxOs+WVlfw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=epwe+Yve2SmY5BUZCFMeY3f+dSn50wPSkU/SrhZ7DZY=;
- b=C1ccHKJDuJNJKwkasi3xM0p1Lp3Q2ysRXYrqwdM1HI5Bd3PlyLpbeg34Nc+MQMUpVluaGwE8h/R3gFEvah+ibe+4hujAxPWjGltghE4ls3rBXh+ZekzQVZcnuyP902e6wG2tQ6RuPESaDw3KSFnuCSYXiKfRQM8mfyjMlZRPA2c=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by EA3PR12MB172729.namprd12.prod.outlook.com (2603:10b6:303:30a::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
- 2026 21:56:51 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad%5]) with mapi id 15.21.0382.007; Wed, 2 Sep 2026
- 21:56:51 +0000
-Message-ID: <b1dec7be-d63d-4bd1-886d-c10b2af9290a@amd.com>
-Date: Wed, 2 Sep 2026 16:56:50 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 3/5] x86/sev: Initialize RMPOPT configuration MSRs
-To: sashiko-reviews@lists.linux.dev
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IUgarz/R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53081F000E9;
+	Wed,  2 Sep 2026 21:57:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788386269;
+	bh=6hutxXbttAPiqTJhuW3hdV6IRocxzdiwDGeqW5tuZdk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=IUgarz/RdxfG2duTxUtOKZVbCc8akdBKsjqfjcf4gegg7CLNy6lnKtlYwDSIRyL1Y
+	 uLFBbxv0VmEcHpn7TfdrkjI0+1doV00NEi+Cl45N7fwd7HzOD4j/uLHcDPTWHISpGI
+	 k4lslganIHNvetiAP/S8fR0EbeXFgZQZKeZMlVDUtnhVgD2eb/vbTfyWkynn3aslO9
+	 ApygOfbYDHXsjhZisYabfZH1BtXDzmt1SoTWyWM3CMZp8wYm43YUsdc7x5Ag4uR3xT
+	 8sSgjEZSUW4xfjQHyUUp8SZzhPbmcghfLf/EV4U3CsxaN01d9Kgz+L4a6hvt8JAv4b
+	 2zS8XdNj13duw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v13 4/5] x86/sev: Add support to perform RMP
+ optimizations asynchronously
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ashish Kalra" <Ashish.Kalra@amd.com>
 Cc: kvm@vger.kernel.org
+In-Reply-To: <a31fc8c6d3f6c6bbe50dc4542c7091b0899d3e1b.1788296083.git.ashish.kalra@amd.com>
 References: <cover.1788296083.git.ashish.kalra@amd.com>
- <3ee20e3956ab0529aa7bf526b6a743fe970089a3.1788296083.git.ashish.kalra@amd.com>
- <20260902214500.6B06D1F00A3F@smtp.kernel.org>
-Content-Language: en-US
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-Autocrypt: addr=ashish.kalra@amd.com; keydata=
- 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
-In-Reply-To: <20260902214500.6B06D1F00A3F@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH0PR07CA0006.namprd07.prod.outlook.com
- (2603:10b6:610:32::11) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+ <a31fc8c6d3f6c6bbe50dc4542c7091b0899d3e1b.1788296083.git.ashish.kalra@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 02 Sep 2026 21:57:48 +0000
+Message-Id: <20260902215748.E53081F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|EA3PR12MB172729:EE_
-X-MS-Office365-Filtering-Correlation-Id: df4105f4-b37c-4163-2ab7-08df093d1836
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|6133799003|22082099003|18002099003|10067099003|11063799006|56012099006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	yABtEeDq5CVxblRIr9YMg1WQdRW3AJZeSWEw1YwQcdg/v789wVMrcXwgAlyHVlmDWx+u7GWmlvEig+7vBCQZI5havkof1AX6K/qDHcDQ1W3Q4nu5S53zrqU9VQMKPZxNuhx6pPUQc1l8XE4athfkgWpavGtNM2MFE6FLq4ix505eCEoaLEVNbdYUY90Em5fmyVw8ZZdm+Mc5Wn38xbEuhjgpk1J+i6SD8LNv120S1QxOblhjJA1+hdXlaveotudj/5pu8mK0qIcXMcZIwKpfIEMbqU+b4DebeNRC8p8ew/upv6bgzvHDv2kxRspYSZyNj5nZJMvKhoHm8ea0mBNnAcqHBn1O1SwEZvSgYpTeKBO7FAUCcxSJnvM6yUDt2Rhw1uAJH0vBGCkU9l5RYgQaALE+8fQXQRoStJYa7jWz2UDVYVgh3PNLslRGHedR/+kzHebIiqSPPxG7swsKKhVCJrEov+K7B4gNc2uOeJoWcQEWX95D6vEIYA2L7o0e0WbKfZw+X59iO06oGMmVD7454qiufzOJYBPIVCu3+V+i74bnh35BcK/ycRLqRzUAI0L6nc3sfYpzVNe9g9tdWFczZEwf084U0i4+zfr5yFJowwUmIrPY4+ZzGoAqjIIDeRpLCbg/eYnSLLptQLEdiOV9hs8JJgUtqGlJQy4LCUywAqY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(6133799003)(22082099003)(18002099003)(10067099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dy8ybGtvZ0xOaU8wNitRUWtiWEVDM3NkMzZhdGZzZFdNbkQranJsRGlaTkZ6?=
- =?utf-8?B?L3NUSWJtUTNyOE9KeThOUklQSG5EL0w4aG02RTRiM2cyK3JsbEJWbXpOUExZ?=
- =?utf-8?B?NlF4TGJrbTJXZTc1emZXVURpbVhZRGlzR29vK3FJL2g1VTVxNU9hVHhza21z?=
- =?utf-8?B?cUE5RXREdjVNVUVsUGQyc3FqTUJSREVrQjBZM1ZDQngzelFsak5DaWJJK3B3?=
- =?utf-8?B?aU1nVEpyZFQrMkRUNzJKbXJnQjMrYSthV1BpTEoway9CUVQyRXVIV2NYb1Mw?=
- =?utf-8?B?NnFjK0s5R1R6amFZMFNMcldRYmphdG5VUy9qRURnWlpjMFQ5TzM5TDQ3cTE2?=
- =?utf-8?B?MGtub1dyOWg0Y3haT3BhVXRJZmp2MGxwRmZ2MjByRnU5S0o5VnY2a2gzdXox?=
- =?utf-8?B?S1Vid2xJZTVORTdiejZ4YXNaMmpFajljTUxUYWQya3NpZkl2QXVyK3U1SG5R?=
- =?utf-8?B?Q3YrR21PL09oUmRaVkp0Q2MrdDJHbjdHOWphTXNGR2o2NnBQTUE2b00rUys4?=
- =?utf-8?B?UG1UcTRzNGdsZ3EzTFBqUUJ1WmZNaG1SZ0srb3BIRGdBOGo1alRIbjBoZ2RL?=
- =?utf-8?B?ZHJWNXNRaEk0S0FZb004U29aMVFtOGxhOHBWbDhlSXNZczZYd2lvKzRpbDR0?=
- =?utf-8?B?Ny94RXo5Vy9XdEdsK21kOUorVjI1NWlKenNhUUdkcElxUW9VMkdBSElObE91?=
- =?utf-8?B?b0d6VmQ1cEE4VDNXZ0VoRng3OGx0WmtqL01xNThnQ09WSFNTSkdkQ0pNMEFx?=
- =?utf-8?B?bGxRVWhzRWxHelkyYUNGaEc1Uy9TdGR2VGZKSlVETnJObHRmb3c5OG9MUWVL?=
- =?utf-8?B?b3lUWUpOVnRMaUlxWTlSNU8yMnhJWVhtTVIzdG53Y2lZVUVFYVo5cWZjY3Zk?=
- =?utf-8?B?bjdrYzFVeHNaTWswZ01SbWtWUWZQR2dRMlYzMzhnd1JUYVE1N0ZTak5XMFI4?=
- =?utf-8?B?K25CV0MwQlNEbXNoblpPcXlsbE4reCtCcmpDa0cxc1ZIZEdVWStYNnNuR1Np?=
- =?utf-8?B?V2x4YzREeWtGME9SOEx2eEx6UjFIT2QyYmtJTmJhZGZzYXlkVG1raXB1Nk0y?=
- =?utf-8?B?ek8ramxQVmpzMk9sNzBBRmhkZVFZVXdLMEJmNVVIU25GZHZLVzFieXlJNWR4?=
- =?utf-8?B?bmNrMys1UmV1YlhzU0p5MEZmNWpBM3ZlS1ZoL0FOSUxNUjlFZFZ2TERsZUpi?=
- =?utf-8?B?Z00yTGhOT3AxeVFJUmx6NnpmRnB2cVRHY2pWZFNQZHg2Zkw5Wkk4R1V4K3o0?=
- =?utf-8?B?dUFCbnJjYkZETVVkVnQ2cG1ZcDRCQWRqd1hKVU1kZ3RCQ0FBOVZ6eDdFZUtv?=
- =?utf-8?B?OUJ4ZTlpTGNtR0V2bTZ3QVl6dkVrYy9YaG5PekJtaU53UzZkZmJDRjBHZmdu?=
- =?utf-8?B?MlFiVW0vck56NkVPMVpEL1pYS2RxNTUrTGs1ZU43UUNKWTFuRGpmY2hSeXNT?=
- =?utf-8?B?YjhJL3psenBSYy9sanc5cTQ2Z09NckdtWkhRcC8vam1Jc0JSNUZ2SmI3WjRv?=
- =?utf-8?B?Vk1EeGVhMzA5UFBEL2lsbnhpblVxVFlZZU00eGxYU1A1c2NZVFk5eFRhNENB?=
- =?utf-8?B?ZHdxaloyTUd3dkl4KzgvcHFyb2xSdkhEQVJLQnF0VVZIWlc0Y04zcVcydVV3?=
- =?utf-8?B?ellqdFhlbE9ncXRBODN1OU9JWDRJU1R0ci91M0JTcXdkTyt6eFg5dnlhMWpX?=
- =?utf-8?B?VVM1NmwvOFhLRkNIOGh1RDB1ZzBxL2xjWE9yU1J6NDVlR0I2T2RsKzRtUGMy?=
- =?utf-8?B?bVh2MjVlTnRWanFCMkFTRHJtZmsrbVZCSzNZMUlqejFYOHFCb2RhMDRQc1I2?=
- =?utf-8?B?d0hQTmpxZXRQNlRhNWRLVkliNzgwWmtZd0FHTnJmL21BUHloMUQrTzNTT3Er?=
- =?utf-8?B?ZWFrZ2VJc3cwcmRXRk1BcmU5TDZ0MHpYeVQyd1UyY25VWjR3MEFOYjFFcXRo?=
- =?utf-8?B?cHQzeUgra245ZUNBSjFNRm5uNFhjcmVhQlJQZEQvbU0vYm1pckVjU0hSSURS?=
- =?utf-8?B?TFNJNmo4WHFGV2JNZW95SWlsSTJNUG04QTZFNzRJRXF2M0Q4UG85WVBwajJh?=
- =?utf-8?B?QlhrYVVlRmFtcXJjdCtKampCeUUvci96ZG90TVZXNmtpOGRmdGJ6ZFV1WFQ5?=
- =?utf-8?B?QW5xZGNaOVZKZXBOQ2JJZkZ3UTVJV2V3dVp1YTZlMTc3WElWRGVsNzJwS0ZZ?=
- =?utf-8?B?WHhnZFNaUzN2OTlyYXVrazY2aEYvNmdncVZ1SUNwUGU4MHR3czBvNE03L2hF?=
- =?utf-8?B?NVYrenZ5Q0Q1L21iUmxaVFkyNkp1WmhrWUpuTWFMQkdFeDhHdnhqdUlJQURl?=
- =?utf-8?Q?fXc9vW6IY6PgKvcPP5?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: df4105f4-b37c-4163-2ab7-08df093d1836
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 21:56:51.5422
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RlU6s6h2klYNUSLMZBeS0ayeE2CIe3SXVyt/UnS15JVGy4bFP/8zwwTTXwQ+J4HIg5HDsYwXi9U+qzSUZ3Khiw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: EA3PR12MB172729
 
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Critical] Declare %rax as clobbered or output in rmpopt() to prevent inf=
+inite loops.
+- [High] Schedule work in process context; executing on_each_cpu_mask trigg=
+ers hard lockups.
+- [High] Use ALIGN_DOWN for rmpopt_pa_end to prevent out-of-bounds RMP tabl=
+e reads.
+--
 
-On 9/2/2026 4:44 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> 
-> Pre-existing issues:
-> - [High] CPU hotplug lock is leaked if SEV-SNP initialization fails.
-> --
-> 
-> commit 16bd9580b377dc645541bd4f478c471c109e65ae
-> Author: Ashish Kalra <ashish.kalra@amd.com>
-> 
-> x86/sev: Initialize RMPOPT configuration MSRs
-> 
-> This commit introduces the RMPOPT configuration MSRs and adds support to
-> set up and enable RMPOPT once SNP is initialized. The RMPOPT table base
-> is initialized to enable RMP optimization for up to 2 TB of system RAM.
-> 
->> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
->> index f833cb7e4da36..287a8345854ba 100644
->> --- a/drivers/crypto/ccp/sev-dev.c
->> +++ b/drivers/crypto/ccp/sev-dev.c
->> @@ -1663,6 +1663,8 @@ static int __sev_snp_init_locked(int *error, unsigned int max_snp_asid)
->>  
->>  	sev_es_tmr_size = SNP_TMR_SIZE;
->>  
->> +	snp_setup_rmpopt();
->> +
-> 
-> [Severity: High]
-> This is a pre-existing issue, but does __sev_snp_init_locked() permanently
-> leak the CPU hotplug lock if SEV-SNP initialization fails?
-> 
-> If snp_prepare() succeeds, it disables CPU hotplug. However, if an error
-> occurs later in the function (for example, if walk_iomem_res_desc() fails),
-> the function returns the error code without re-enabling CPU hotplug:
-> 
-> drivers/crypto/ccp/sev-dev.c:__sev_snp_init_locked() {
->     ...
->     rc = snp_prepare();
->     if (rc)
->         return rc;
->     ...
->     rc = walk_iomem_res_desc(IORES_DESC_NONE, IORESOURCE_MEM, 0, ~0,
->                              snp_range_list, snp_filter_reserved_mem_regions);
->     if (rc) {
->         dev_err(sev->dev,
->                 "SEV: SNP_INIT_EX walk_iomem_res_desc failed rc = %d\n", rc);
->         return rc;
->     }
->     ...
-> }
-> 
-> This leaves cpu_hotplug_disabled strictly greater than zero, which would
-> permanently prevent CPUs from being onlined or offlined. Does this function
-> need an error handling path that calls cpu_hotplug_enable() before returning
-> on these failure paths?
-> 
+commit 0121e9d5bd127536db9548e1a9f202c9576ef5ff
+Author: Ashish Kalra <ashish.kalra@amd.com>
 
-Thanks — but this is intentional, not a leak. CPU hotplug is tied to
-SnpEn, not to the success of __sev_snp_init_locked().
+x86/sev: Add support to perform RMP optimizations asynchronously
 
-snp_prepare() disables hotplug and then sets SnpEn on all CPUs via
-on_each_cpu(snp_enable, ...) before it returns 0. So by the time
-walk_iomem_res_desc() (and the other post-snp_prepare() steps) run,
-SnpEn is already set on every online CPU and the machine is in SNP mode.
+This commit introduces support for asynchronous RMP checks on 1GB physical
+memory regions to optimize performance on hardware supporting RMPOPT. A
+dedicated workqueue triggers the optimization process during SNP
+initialization and after legacy shutdowns.
 
-While SnpEn is set, a CPU must not come online without it — that is
-exactly what disabling hotplug guards against. Re-enabling hotplug on
-the walk_iomem_res_desc() failure path, with SnpEn still set, would
-reopen that unsafe window, so hotplug is deliberately left disabled
-there. It is re-enabled only once SnpEn is actually cleared, on the
-x86_snp_shutdown path: snp_shutdown() verifies SnpEn is clear and then
-calls cpu_hotplug_enable().
+> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+> index 07f178eb76c7e..a4c0fe49b9ec7 100644
+> --- a/arch/x86/virt/svm/sev.c
+> +++ b/arch/x86/virt/svm/sev.c
 
-The one snp_prepare() failure that occurs before SnpEn is set — the
-"not all CPUs online" check — does re-enable hotplug itself. There is no
-failure path between cpu_hotplug_disable() and snp_enable() that can
-return with hotplug disabled and SnpEn clear (the intervening steps are
-void). So hotplug tracks SnpEn on every path.
+[ ... ]
 
-Thanks,
-Ashish
+> @@ -595,6 +621,44 @@ static bool rmpopt_capable(void)
+>  	       cc_platform_has(CC_ATTR_HOST_SEV_SNP);
+>  }
+> =20
+> +/*
+> + * RMPOPT optimizations skip RMP checks at 1GB granularity if this range=
+ of
+> + * memory does not contain any SNP guest memory.
+> + *
+> + * @pa is a system physical address; RMPOPT operates on the containing 1=
+GB.
+> + */
+> +static void rmpopt(u64 pa)
+> +{
+> +	enum rmpopt_op_type op =3D RMPOPT_OP_VERIFY_AND_REPORT_STATUS;
+> +	u64 pa_start =3D ALIGN_DOWN(pa, SZ_1G);
+> +
+> +	asm volatile(".byte 0xf2, 0x0f, 0x01, 0xfc"
+> +		     :: "a" (pa_start), "c" (op)
+> +		     : "memory", "cc");
 
->>  	return 0;
->>  }
-> 
+[Severity: Critical]
+Does this inline assembly need to declare %rax as an output or clobber?
+
+Since the RMPOPT hardware instruction returns a status code in %rax, could
+GCC assume %rax is unmodified because it is only provided as an input? If
+rmpopt() is inlined, GCC might allocate %rax for the induction variable pa
+in the calling loop. This would cause the loop step to compute incorrectly,
+potentially resulting in an infinite loop during boot.
+
+> +}
+> +
+> +/* on_each_cpu() callback: optimize the whole RMPOPT range on this CPU. =
+*/
+> +static void rmpopt_scan_range(void *arg)
+> +{
+> +	u64 pa;
+> +
+> +	for (pa =3D rmpopt_pa_start; pa < rmpopt_pa_end; pa +=3D SZ_1G)
+> +		rmpopt(pa);
+> +}
+> +
+> +static void do_rmpopt_work(struct work_struct *work)
+> +{
+> +	/*
+> +	 * RMPOPT caches the results of a RMP table scan in reserved processor
+> +	 * memory, allowing future invocations to skip such costly operations.
+> +	 */
+> +	migrate_disable();
+> +	rmpopt_scan_range(NULL);
+> +	migrate_enable();
+> +
+> +	on_each_cpu_mask(cpu_primary_thread_mask, rmpopt_scan_range, NULL, true=
+);
+
+[Severity: High]
+Could executing on_each_cpu_mask() here with wait=3Dtrue trigger hard locku=
+ps?
+
+This call runs the rmpopt_scan_range() loop synchronously on all primary
+threads in an IPI context with hardirqs disabled. Since the loop can
+iterate up to 2048 times invoking the slow RMPOPT hardware instruction,
+is it possible for remote CPUs with cold caches (like on multi-socket
+systems) to stall for seconds inside the IPI handler and trigger an NMI
+watchdog panic?
+
+> +}
+
+[ ... ]
+
+> @@ -612,6 +704,23 @@ void snp_setup_rmpopt(void)
+>  	 */
+>  	for_each_cpu(cpu, cpu_primary_thread_mask)
+>  		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, rmpopt_base);
+> +
+> +	rmpopt_pa_end =3D ALIGN(PFN_PHYS(max_pfn), SZ_1G);
+
+[Severity: High]
+Should rmpopt_pa_end be calculated using ALIGN_DOWN() instead of ALIGN()?
+
+If max_pfn is not 1GB aligned, aligning upwards creates a hardware scanning
+range that extends into unbacked physical memory. When rmpopt_scan_range()
+processes this final 1GB block, could the hardware instruction attempt to
+read RMP entries beyond the allocated RMP table and cause a Machine Check
+Exception or memory corruption?
+
+> +
+> +	/* Limit memory scanning to 2TB of RAM */
+> +	if ((rmpopt_pa_end - rmpopt_pa_start) > SZ_2T) {
+> +		pr_info("RMPOPT coverage limited to 2TB; memory above 0x%llx not optim=
+ized\n",
+> +			rmpopt_pa_start + SZ_2T);
+> +		rmpopt_pa_end =3D rmpopt_pa_start + SZ_2T;
+> +	}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1788296083.gi=
+t.ashish.kalra@amd.com?part=3D4
