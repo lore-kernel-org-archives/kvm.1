@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A676472F6A
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 12:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C59C47D92F
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 12:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788351313; cv=none; b=bGUlHOusGnFbOgsX4Peur1ZHlAG/6e4RqNwVAKXfSDwUR24cp3AJ4lXXf59yK5HqhqcSUIiO2EnQcuwpY2l+XCGxtMtSqmSjSdwHeBHBTqoRCRUc928T5CKU9WPLjvy10zj1e8HGzfQrUUBfmwIBtbM/yNTzz9b/6uHsr8sUBXE=
+	t=1788351443; cv=none; b=Z4/HFy8l6li9e5UFCJnzZVJXk1Ct/bPBJffSeor4jb81HhrlQqYEGy/pAwzZyOM7enE6/raDtYoSvem8P8KQgETKVwOvcK3l20RkkIyJhfNf/wIysb576EcTGnIVSN1quXnrR9pNPa5RPz4FFOUq8zcaitAzFTfzXy8sAXsk98w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788351313; c=relaxed/simple;
-	bh=LyPwWXtac99SvcIZO8VmS8HOFoqwazOsi5l9vFFCBeA=;
+	s=arc-20240116; t=1788351443; c=relaxed/simple;
+	bh=WrgD2gCeiJBqGL/RpG9c9vEdvlvPKPViQl98njwAPpY=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JO+cg1qdZr7Htv8i0DzI4Zvp7eAJ9SqZkexXU8djhvOhQ9wJ9hdAbyMBqy4qGsFJz49yQaNV+nICOiwnAQqljp7HZ88zLY+ZWvH2PJYZDZM5n/yhllQ4SDKTYRsjkKjTbgrZUJAf4UE8QCNf3odnb5T8M6YZNjgjNxL6rKNfUmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZmnePCcw; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=mFhoiVFDOnmh/Ph8ewvHYbQlOYFv2eOa+oWQ/fZfvY7B20fBHoVHhvVxLG7134pUFEEsNPuc9DuL535Cu989f+XRz/jxFzmtiq9i0r/WwqJ1rXeSkCYGBVHF2Z69WQtN7SQ+14XPPoxEB9u6B73jRaTsvGv98byEaHcgzUiqrH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S/+lGMjp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZmnePCcw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765DC1F000E9;
-	Wed,  2 Sep 2026 12:15:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S/+lGMjp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A2FD1F000E9;
+	Wed,  2 Sep 2026 12:17:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788351310;
-	bh=ka+kSBrdZ8lZLRrAVJysjJCuJ+4QdMHnDrGZRMHXo3c=;
+	s=k20260515; t=1788351441;
+	bh=tF2mDH95Pk+XzO1xrSpaqkQH/IQijWIdkylZecMvEXI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZmnePCcwN+RnpKkLmLL/B+krU1n6FCuIx+K+W2olq/t08bMVlnkzGKSuz4fhtr+v+
-	 qZz605Sflhui3wdQ8Wven26gDRH93uyXaF3F+8Z0Gr9uoL65Y5vF9uLaozL7l6I4yl
-	 gtZMFeIQGelFxVgOAMR0eetli95DL4xFcO1lkFy6lNO7qkfFnTpVeC27fLwTPJsgrp
-	 q0RqYLlaP76erwxFpw++yokFd80htS63iRHnuqvLz23wAuLF0u+sX0Ve5LK9FVTqdi
-	 lurIk4mEj8/1O1HKh0F9Xvxvk84HRN5bgck6MgM6Ecu04nNPONco3K3WtD7mVJVy4c
-	 a4zlYi1h2rErQ==
+	b=S/+lGMjpYW0p81UltQceIy5NBEoGaX03AsSDB3fJe6am7ZjG+lAw8c9uOO3k41Nhk
+	 SdCm5CbxDp3NyWVktAY3bXn0IRZj+hBctMLwHZUvjsTSj9cqZagNCS4Ym2TfKAWn7Y
+	 hfJQomqgbpurgYIMLOs+Llm9ixyrqpG+QEzKH/ke0O0nEi1/4Cdxdlye7C+Q31Zj8f
+	 K8rDgIOvyDCTKi/Y0tfda9DTJMnzxsb02ZDdoDl7sjrTYaNjkcyxGVMt3keuWWZg42
+	 9hnCXOvoN+76yIIiVM+2r74zE3oeBLDiHD8sPvgqVRYEuxAalYuJbabyQqVN1oMAl6
+	 LaVmtN3/hcWeg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v3 06/21] mm/pgtable: define (pgd|p4d|pud)_leaf()
- for folded page tables
+Subject: Re: [PATCH RFC v3 15/21] x86: mm: skip collapse_pud_page() when
+ CONFIG_X86_DIRECT_GBPAGES disabled
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Yeoreum Yun" <yeoreum.yun@arm.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260902-dummy_ptxp3-v3-6-5d8f5b17c25c@arm.com>
+In-Reply-To: <20260902-dummy_ptxp3-v3-15-5d8f5b17c25c@arm.com>
 References: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
- <20260902-dummy_ptxp3-v3-6-5d8f5b17c25c@arm.com>
+ <20260902-dummy_ptxp3-v3-15-5d8f5b17c25c@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 02 Sep 2026 12:15:10 +0000
-Message-Id: <20260902121510.765DC1F000E9@smtp.kernel.org>
+Date: Wed, 02 Sep 2026 12:17:21 +0000
+Message-Id: <20260902121721.9A2FD1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,58 +47,46 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] The patch accidentally resurrects the `p4d_ERROR` and `pud_ERROR` m=
-acros, which reference a non-existent `pgd_ERROR` macro.
+- [High] Incorrect Kconfig macro name `CONFIG_X86_FEATURE_GBPAGES` uncondit=
+ionally disables PUD page collapsing on x86.
 --
 
-commit 1ad6d2e7fa6f4d648ec4866410881fd66f3c3298
-Author: David Hildenbrand (Arm) <david@kernel.org>
+commit e72cd2f328b1fab1c51fad6dcdfc5273b0764f4b
+Author: Yeoreum Yun <yeoreum.yun@arm.com>
 
-mm/pgtable: define (pgd|p4d|pud)_leaf() for folded page tables
-   =20
-Define (pgd|p4d|pud)_leaf(), hard-coding it to "false". Note
-that it's missed to define pud_leaf() before, allowing architectures to
-unknowingly overwrite it.
+x86: mm: skip collapse_pud_page() when CONFIG_X86_DIRECT_GBPAGES disabled
 
-> diff --git a/include/asm-generic/pgtable-nop4d.h b/include/asm-generic/pg=
-table-nop4d.h
-> index 1cf739ee38aa1..c6a5a43899b50 100644
-> --- a/include/asm-generic/pgtable-nop4d.h
-> +++ b/include/asm-generic/pgtable-nop4d.h
-> @@ -22,6 +22,9 @@ static inline int pgd_none(pgd_t pgd)		{ return 0; }
->  static inline int pgd_bad(pgd_t pgd)		{ return 0; }
->  static inline int pgd_present(pgd_t pgd)	{ return 1; }
->  static inline void pgd_clear(pgd_t *pgd)	{ }
-> +static inline bool pgd_leaf(pgd_t pgd)		{ return false; }
-> +#define pgd_leaf pgd_leaf
-> +#define p4d_ERROR(p4d)				(pgd_ERROR((p4d).pgd))
+This commit skips collapse_pud_page() when gbpages are disabled to prepare=
+=20
+for compile-time folded page table changes.
 
-[Severity: Low]
-Does this resurrect a broken macro? pgd_ERROR does not appear to exist in t=
-he
-codebase anymore, so if a developer attempts to use p4d_ERROR in the future,
-would it result in a build failure due to an undefined symbol?
+> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+> index a1a061d995b31..07a873775279f 100644
+> --- a/arch/x86/mm/pat/set_memory.c
+> +++ b/arch/x86/mm/pat/set_memory.c
+> @@ -1315,7 +1315,7 @@ static int collapse_pud_page(pud_t *pud, unsigned l=
+ong addr,
+>  	pmd_t *pmd, first;
+>  	int i;
+> =20
+> -	if (!direct_gbpages)
+> +	if (!IS_ENABLED(CONFIG_X86_FEATURE_GBPAGES) || !direct_gbpages)
 
-[ ... ]
+[Severity: High]
+Does CONFIG_X86_FEATURE_GBPAGES exist as a Kconfig option? The commit
+message mentions CONFIG_X86_DIRECT_GBPAGES, so it looks like the Kconfig
+macro might have been mixed up with the CPU feature flag X86_FEATURE_GBPAGE=
+S.
 
-> diff --git a/include/asm-generic/pgtable-nopud.h b/include/asm-generic/pg=
-table-nopud.h
-> index eedee8e3ad68f..6c9bca78047c4 100644
-> --- a/include/asm-generic/pgtable-nopud.h
-> +++ b/include/asm-generic/pgtable-nopud.h
-> @@ -29,6 +29,9 @@ static inline int p4d_none(p4d_t p4d)		{ return 0; }
->  static inline int p4d_bad(p4d_t p4d)		{ return 0; }
->  static inline int p4d_present(p4d_t p4d)	{ return 1; }
->  static inline void p4d_clear(p4d_t *p4d)	{ }
-> +static inline bool p4d_leaf(p4d_t p4d)		{ return false; }
-> +#define p4d_leaf p4d_leaf
-> +#define pud_ERROR(pud)				(p4d_ERROR((pud).p4d))
+Because this Kconfig option does not exist, IS_ENABLED() will resolve to 0,
+making the condition unconditionally true. Will this completely disable PUD
+page collapsing on x86, preventing 1GB huge pages from being collapsed in
+the kernel direct map?
 
-[Severity: Low]
-Since p4d_ERROR relies on the non-existent pgd_ERROR as noted above, does t=
-his
-also mean pud_ERROR is broken in the same way?
+>  		return 0;
+> =20
+>  	addr &=3D PUD_MASK;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260902-dummy_ptxp=
-3-v3-0-5d8f5b17c25c@arm.com?part=3D6
+3-v3-0-5d8f5b17c25c@arm.com?part=3D15
