@@ -1,145 +1,320 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010023.outbound.protection.outlook.com [52.101.85.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C8844781A;
-	Wed,  2 Sep 2026 10:29:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788344992; cv=none; b=loM6lv7hK/rSHDl1LF/z20dM4cawL+xEKrbXxQjMHDVqLUMTgOnsMiHTZKZu9KSvcx0VD7PHDXTbzBQc7WPf9mS9J/PPOu1MqJCIQ/+29H8PcI5B6l4Y7FT6aLVOnEGJSAI0ZxAb5CcT6cLT12p4xYnxMm2lnFU+szEyhjGdPLc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788344992; c=relaxed/simple;
-	bh=RkBEgx826TjsnXp4ElKnnCKUH6q4YHX/zaCTbrx7odA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O7YDtfS/M46//eUJ/mbfSDzqyGrb4aG2a2pi+4eg2D4WyAwhjGFBhc52n3TZNtXh61BXFFFsYunK7SRNDsojmIjT58oXrUnNCC3PgUpnWgAjkkXqLhNGz5vG3QqXlZe1XVulPr5WyTrDHifz8IdhcvCbEv8WkEIElqfDfiXdafY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i8dcg+cq; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF8447253F;
+	Wed,  2 Sep 2026 10:52:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788346386; cv=fail; b=FUzir/JIXpSwm9RV5sY1n3Kg28f5T2MSEwDyeTBUICCTMv1aCtMrJEuSbAWZszzTAaxnBz3bONJCi4rlJcuuLoBrHfgo7k/EpwWq5CrKEteAKmvQtwmgDminBPg5EXjLqFLkQ0amelDiNss/APBjU9c5rO8Qo46gIZ/UgFzfwkQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788346386; c=relaxed/simple;
+	bh=Mu+TgUSXajmjBg2+WPbNk2V8+vggDvRasZKUX+O5vXA=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=dhn3l71+ZYMzy8YapEhA6tQgf4U3VhWl6fA7WrEclAkLPSdj49lCmsbNjJhP+k03NG0VBJU04j5VEX+34bLExGrUs73tAfhBQAakiX/kyFtvrxqEJZYROxWRb8ACCmnOqBLL2mvSrCCyP+8QGFJhIntMdqYPUy5rVmlBKPdxjzE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=T9hHbCS8; arc=fail smtp.client-ip=52.101.85.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i8dcg+cq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788344989; x=1819880989;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=RkBEgx826TjsnXp4ElKnnCKUH6q4YHX/zaCTbrx7odA=;
-  b=i8dcg+cqnnr5pOpElrzHYP1cP6JNbf/xV2+1FQ6pBUabbc02VyctFTeo
-   Fsz6DQLKg26tKU4XCTpjszpX8Mwwce4QGEnPpb9IapK7jIfRpTb3+LKMb
-   tKj3JJExEv0hlnAnED78zt/725Y+5xVIdfhCtwVK2YNR/C5UrAWM75JAE
-   WD7dra2s6cu0ADwnetyHBS4momo2CvQBI43vBZdLzi477m0gWfdQ/1jtx
-   qjaXLIQAExdVjeCPj34XWfajtakgzBQn+m7dyKmNcrAe1qE8lWoiwEHyG
-   k9GxGGrSNHOtutGGYj1p3qWIx03dPskw2y+jP5vxCZkXENiNHiUsoEWON
-   w==;
-X-CSE-ConnectionGUID: QKLuHEy0S9GmUWFnpJeIKg==
-X-CSE-MsgGUID: CZ1MmVh5ROCScykovtvA6g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="100312959"
-X-IronPort-AV: E=Sophos;i="6.25,257,1779174000"; 
-   d="scan'208";a="100312959"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 03:29:45 -0700
-X-CSE-ConnectionGUID: NunEWvN0Tu+oV6jU1PsR8w==
-X-CSE-MsgGUID: 0mHIaR69QDe4HYExzAk2yg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,257,1779174000"; 
-   d="scan'208";a="273545155"
-Received: from unknown (HELO [10.238.208.122]) ([10.238.208.122])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 03:29:43 -0700
-Message-ID: <91c9e314-6b92-4f90-a2df-ed21104f84bc@intel.com>
-Date: Wed, 2 Sep 2026 18:29:40 +0800
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="T9hHbCS8"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SM3u6QDPlMEAx/3xRp83f9Wd0Kky//1niIaSkceLnqy5wuIDdNmsltjtH2vRSsfZohfDr4z+G2x5V7gb+3x/Kt0cwK0JfoqudgCcHdYpGBH7gMHNQHWh69CphGhZaF5Aw7dDrTCUzJaJQqxbPpGYoPWjTXFkZezT4deVVmsChQbTgtcm/ixj6AzmnGOqG7/ZOmAvYFTkuVbOt4DdMVoTp9TnRiju7QeLgh3AAkUhwuB32/gTnhXZV/c5d+4OQV/iQesUiwqeGGLqKIwNido9DKFLP6umstIrH5g4YB0hEzKjmeevCalgbaAQyOsUmo9icGRZVBsmWYXlaJQExFlMLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rdSNa3qRI/UUcKBfvFodPhN1IFVSUG1PSxLc+cwrLYQ=;
+ b=dXkY5y4fnSq02SB495vJ2wCtEjBXO+AcLOKTqHUk2e7dm33JC2QO9S4YM63MZsYbDapFJEwWOZeGBe31Qc+XX5jfXf98YGvZCOV9aoOT2G+QD0Z/wdT/GkWzWszNw49tT/XxsJnMz8BTvGDIzGXBP2fJIuDZqSaM6mCOvGsLzxMdbYRzr1LKUrfakICZcXZiSzN7l9XOJVAyyoAP9fdOC/di/2JPuKO6wRK0tcTbtgqZ5gAc1nBLxv33Mt3rFZj7uHWe+gZLa3tZzacbysufw97fDcnCQhH6mtcJhpHqMAGOHJH4Z9JaFcUo3KIFMbrtSWmsLHyDJnyyoh65vm7EnQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=sk.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rdSNa3qRI/UUcKBfvFodPhN1IFVSUG1PSxLc+cwrLYQ=;
+ b=T9hHbCS87fNFpo0RkP0VUglohQnSVbCSfoqy7XpuNdlkjE77c4DU+OmKcp8+9CPybZVp2P7U//4ojj9FiaGB0aacuZD1rIPOYh/uEfPZW1YUSd2LVDcBIsPpPrE6oTAeNjQVPmmvHtMvc82mgwce7MKCCbbQFBDNyixVWUR/RKw=
+Received: from BN9PR03CA0600.namprd03.prod.outlook.com (2603:10b6:408:10d::35)
+ by SN7PR12MB8817.namprd12.prod.outlook.com (2603:10b6:806:347::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.7; Wed, 2 Sep 2026
+ 10:52:43 +0000
+Received: from BN1PEPF00004683.namprd03.prod.outlook.com
+ (2603:10b6:408:10d:cafe::37) by BN9PR03CA0600.outlook.office365.com
+ (2603:10b6:408:10d::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.11 via Frontend Transport; Wed, 2
+ Sep 2026 10:52:42 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN1PEPF00004683.mail.protection.outlook.com (10.167.243.89) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.382.8 via Frontend Transport; Wed, 2 Sep 2026 10:52:42 +0000
+Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Wed, 2 Sep
+ 2026 05:52:28 -0500
+From: Shivank Garg <shivankg@amd.com>
+Subject: [PATCH RFC 00/11] mm/migrate: separate migration paths and carry
+ migration policy
+Date: Wed, 2 Sep 2026 10:52:14 +0000
+Message-ID: <20260902-migrate-refactor-shivank-v1-0-9dcca87669c4@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] KVM: TDX: Validate directly configurable CPUID
- bits
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>
-Cc: "nik.borisov@suse.com" <nik.borisov@suse.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, "kas@kernel.org"
- <kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
- "Gao, Chao" <chao.gao@intel.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>
-References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
- <e2f8f7976ac6a54e0bbda0e65ed9990940d9fef3.camel@intel.com>
- <d2efe512-e4fe-407f-96a8-b274fef23382@linux.intel.com>
- <6f8f2c59-3336-4ed8-837f-57cb706ece30@intel.com>
- <69c42183261acb4150961cabf6318b92765b6562.camel@intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <69c42183261acb4150961cabf6318b92765b6562.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAN//l2oC/x2MwQpAQBBAf0VzNsXahKvyAa5yWGswydKspOTfb
+ Y6v3nsPeBImD1X0gNDFnncXII0jsItxMyGPgUElKk8KpXHjWcxJKDQZe+6CfuHLuBU1UVbqcrK
+ jHSDkRzD4/tcdtE0N/ft+mFMrJ28AAAA=
+X-Change-ID: 20260824-migrate-refactor-shivank-4ee3949fcdcb
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost
+	<matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
+	<rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
+	<gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, "Alistair
+ Popple" <apopple@nvidia.com>, Vlastimil Babka <vbabka@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>, "Brendan
+ Jackman" <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+	"SJ Park" <sj@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard
+	<jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Miaohe Lin
+	<linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, "Oscar
+ Salvador" <osalvador@suse.de>, Kairui Song <kasong@tencent.com>, Qi Zheng
+	<qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Barry Song
+	<baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
+	<yuanchu@google.com>, Wei Xu <weixugc@google.com>, Lorenzo Stoakes
+	<ljs@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara
+	<jack@suse.cz>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+	<skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+	Benjamin LaHaise <bcrl@kvack.org>, Chris Mason <clm@fb.com>, David Sterba
+	<dsterba@suse.com>, Muchun Song <muchun.song@linux.dev>, Dave Kleikamp
+	<shaggy@kernel.org>, Trond Myklebust <trondmy@kernel.org>, Anna Schumaker
+	<anna@kernel.org>, Mike Rapoport <rppt@kernel.org>, Sean Christopherson
+	<seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, Bharata B Rao
+	<bharata@amd.com>, David Rientjes <rientjes@google.com>, "Yiannis
+ Nikolakopoulos" <yiannis@zptcorp.com>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<damon@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
+	<linux-fsdevel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-aio@kvack.org>, <linux-btrfs@vger.kernel.org>,
+	<jfs-discussion@lists.sourceforge.net>, <linux-nfs@vger.kernel.org>,
+	<kvm@vger.kernel.org>, Shivank Garg <shivankg@amd.com>
+X-Mailer: b4 0.15-dev-47d62
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788346348; l=7312;
+ i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
+ bh=Mu+TgUSXajmjBg2+WPbNk2V8+vggDvRasZKUX+O5vXA=;
+ b=pKzNUrNsQcUH5z2V4LTXZuGoIw3KiYvNiznMLhPp5FE8keBeSIEGyXQ8Jw/+v1GPzgnggP3DX
+ 4CjbAsJnHq3Dvw+Jl5mAq1EE39USFEZuwnMD4HmbBQHJM7J0BggxsSf
+X-Developer-Key: i=shivankg@amd.com; a=ed25519;
+ pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF00004683:EE_|SN7PR12MB8817:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6c233c01-8b81-44f4-a03f-08df08e05062
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|82310400026|36860700016|1800799024|23010399003|376014|13003099007|921020|10067099003|6133799003|56012099006|18002099003|11063799006|5023799004;
+X-Microsoft-Antispam-Message-Info:
+	CjtcWHC6mMi7eBnyjzj+KlogDEs98f+Tjj+6Zi25/Ci595orlqlTRVGR6leyXf35TbQSOBX34GQ96RLC+60MSw0+o8eoRbIFUBE0/GqZTKva/3DW03sLEjbfE8YcgeZMheHBDq/HdOR6gQkcV6U4tU4/neU4APSNTyb3UJSS+1IKIoRHm/lLCspUhNYXBrLgzo5lNTlUMRWl2J3Gzz7RCD/SiPLescCuvbSBum/j+YgUQn+ZVv6jy33liK3bxfsbRXsnnPV25o+9cEEAAfG5rAR9enPRj4PIuQR3b6I9f9OtDCrPWHurWmp6IlJQIpcSdD0BXf5eGppFoAUQ8x6G851uEMOhccerURXMBVBKAt2hw/VBUWD1WO6xwLz9oNKmMC7n6DvXY85Z2yesB9YteGPjZPD4PX51qsMiM7w/Vgdbd/1vnhudifOM8zfain27iJSbv/G+p3h/EQ9uvvcifBqf51Zy6tKiE9Li+bOi1o2eT38HL2Z+se6xtIzdOdI/ivv/+I7NOk3VpCmvPU8unIgzsHQYt0/tXFmjgHgxIcRCToxeWDkY/I6XxZBJLsoUMxPBhtFz26giuZu/FRP1u1VUpYvcCBNpQk8DRw1TeoK2ub6tlgZU7XP4wootp89pbEGuBVDnr6mUYs5YCvPx6h96YGioeaeascH0hA+GVqmqa/Ctqg5xopXvD7Sh1/Vrhz7PWPbemsNmCy+vRPszzzea9EtDvmEzQTVvmpDEzPJYWDk7ayI5z0VrP2Ok/w+Q
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(82310400026)(36860700016)(1800799024)(23010399003)(376014)(13003099007)(921020)(10067099003)(6133799003)(56012099006)(18002099003)(11063799006)(5023799004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	ggcarO+tyWKR8O6EsFWh0RBFqmpKPOL9XJGtBZhDrYozYever7JNK9scbsPVd17/mznrfVZvd+4oPhcjEK2WcaYR2S/jup0TE1hvnYJtQlupnLGtrjqR/73/YMdXk5C1otwzuUUwu/xC/YJip6BKXRAwK2g8fYzEVdHcJfFdtqDxsKUo13HE7TSTBG81YzKMcUTdrovTWP79Yvp+z31w45bXh24SaCQAVRxHXzvaa+i4uE3/1Y6TuvOTJhtj8Q7E7sw8dPVtbHFz4yePKfOpbEAUr+K/etTEtxFVWWOTuAkFOMtI34ix9lOZVBAJphRGUnbsCFkfaeplUH+ZKhtKDlODpXKEWrkps/NzhOJyoeKO/l99pwPao09lE9AM5uChyWK9kLWKV323qVOn9s1OFdqK3ZeZ2liCDe3jRBejH9QGkBQuvUN7siBD+7N0skkO
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 10:52:42.3795
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c233c01-8b81-44f4-a03f-08df08e05062
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF00004683.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8817
 
-On 9/2/2026 1:41 AM, Edgecombe, Rick P wrote:
-> On Tue, 2026-09-01 at 17:38 +0800, Xiaoyao Li wrote:
->>>> Ideally the TDX save/restore would share code with normal VMs. On the
->>>> other hand if we don't share enter/exit paths sufficiently, we may need to
->>>> duplicate some save/restore in tdx code.
->>
->> (Copy the FRED example here for reference)
->>
->>   >>>
->>   >>> FRED is a useful concrete example.  Under VMX, the FRED host state in
->>   >>> IA32_FRED_CONFIG, IA32_FRED_STKLVLS, IA32_FRED_RSP1-3 and
->>   >>> IA32_FRED_SSP1-3 is covered by the VMCS host-state area, so the TDX
->> module
->>   >>> is expected to restore these MSRs on TDH.VP.ENTER return.
->> IA32_FRED_RSP0
->>   >>> and IA32_PL0_SSP (a.k.a. IA32_FRED_SSP0) are handled by software,
->> so the
->>   >>> TDX module is expected to clobber them on TDH.VP.ENTER return.
->>
->> What I get, is not matching VMX behavior but matching the behavior KVM
->> will perform for VMX. They are based on the assumption that KVM will
->> always enable the save/restore VMCS fields for a new feature. But I
->> don't think we can guarantee it.
->>
->> To me, "have TDX simply match VMX behavior" means:
->>
->> 1. if the VMX unconditionally save/restore a state, then TDX will do so.
->>
->> 2. if there are vm-entry/vm-exit load/save VMCS fields for a state, then
->> provide the equivalent per-TD configurable interfaces which matches the
->> VMCS fields.
-> 
-> What do you mean by this? Expose a TDX module interface to configure the clobber
-> behavior for each feature with load/save configuration? That was similar to what
-> we originally discussed, before pivoting to this solution.
+migrate_pages() handles hugetlb folios, movable_ops pages and LRU folios,
+although their locking, mapping and retry requirements differ. It already
+dispatches hugetlb folios to a dedicated engine but movable_ops 
+pages still pass through the regular folio unmap and move machinery.
 
-yeah. This is what I meant. I was trying to show my literal 
-understanding on "The proposal is to have TDX simply match VMX 
-behavior". i.e., I don't think "have TDX simply match VMX behavior" is a 
-good name/summary for what Binbin has proposed.
+Migration policy has a separate interface problem. migrate_mode describes
+blocking discipline, but it is passed independently from migrate_reason
+through the core, and only migrate_mode reaches
+address_space_operations->migrate_folio(). Adding another policy dimension
+therefore requires more positional arguments, an overloaded mode or side
+state. [3] 
 
-> I was thinking if you configured a feature (for example shadow stack), it would
-> automatically set the VMCS save/restore settings associated with that feature.
-> (VM_EXIT_LOAD_CET_STATE/VM_ENTRY_LOAD_CET_STATE)
-> 
-> This won't necessarily match KVM's behavior, because it could decide to not use
-> the features. But we can probably get close with a simple rule that can make
-> sense for all the VMMs.
+This series separates the migration paths (classes) for movable_ops pages
+and LRU folios, moves LRU policy into the LRU engine, and carries mode and
+reason through struct migrate_control.
 
-So the proposal is making TDX behave as if the relevant VMCS save/load 
-controls (if any) are set around TDH.VP.ENTER.
+Thanks to Zi Yan and David Hildenbrand for the discussions and suggestions
+that helped shape this series. I also used AI tools (Opus 5, GPT-5.6 Sol)
+to refine my ideas, identify the edge-cases/bugs.
 
-In fact, what matters for host vmm is just the VM_EXIT_LOAD_XXX control. 
-So the proposal becomes "If there is VM_EXIT_LOAD_XXX control for a 
-state, TDX needs to restore the host state after TDH.VP.ENTER. If no 
-such contorl, TDX sets the state to INIT state after TDH.VP.ENTER".
+Old flow
+========
 
-It's a fancy idea. And it provides a clear rule of how TDX handles 
-states of a feature so that host VMM developers don't need to read the 
-TDX module API to figure out what's the value of a state after TDH.VP.ENTER.
+migrate_pages(mode, reason)
+  |
+  +-- migrate_hugetlbs()
+  |     `-- scan the mixed source list (from) on each retry
+  |
+  `-- split the remaining list into batches
+        |
+        +-- MIGRATE_ASYNC
+        |     `-- migrate_pages_batch()
+        |           inline unmap/retry -> flush -> move/retry
+        |
+        `-- MIGRATE_SYNC[_LIGHT]
+              `-- migrate_pages_sync()
+                   +-- try async batch pre-pass
+                   `-- retry failures one at a time through
+                       migrate_pages_batch()
 
-It's helpful for host VMM developers, though I'm not sure on TDX module 
-developers.
+movable_ops pages are identified by branches inside the batch unmap and
+move paths.
 
-> If later we want a host clobber interface on top of the bit filtering, in order
-> to minimize TDX special handling, we can probably add it later for features we
-> care about. I'd think we don't need it right now.
+New flow
+========
+
+migrate_pages(ctl)
+  |
+  +-- migrate_hugetlbs()
+  |     `-- collect and retry hugetlb folios
+  |
+  +-- migrate_movable_ops_pages()
+  |     `-- allocate, lock, invoke the movable_ops callback and retry
+  |
+  `-- migrate_lru_folios()
+        `-- form bounded LRU batches
+              `-- __migrate_lru_folios()
+                    +-- async: migrate_folios_batch()
+                    `-- sync:
+                        +-- async batch pre-pass
+                        `-- retry failures one at a time
+
+migrate_folios_batch()
+  |
+  +-- migrate_folios_unmap()
+  +-- try_to_unmap_flush()
+  +-- migrate_folios_move()
+  `-- migrate_folios_undo()
+
+migrate_pages() now only dispatches classes. Each entry owns its lists and
+retries; the LRU entry also owns batching and synchronous fallback.
+
+Motivation
+==========
+
+This refactor makes the migration control flow easier to follow and gives
+new optimizations clear boundaries and insertion points.
+
+Separating movable_ops also prepares for memdescs, where these pages are
+expected to lose their folio representation and folio->lru handoff. The
+current list interface remains, but its folio dependencies are now isolated.
+
+struct migrate_control is caller-owned, stack allocated and passed as const.
+It carries mode and reason through migrate_pages() and ->migrate_folio(),
+and provide place for future extension to policy. This is one-time pain of
+updating callers, but doing it once avoids repeating that churn whenever
+a new use case or optimization need additional policy.
+
+Follow-on 
+=========
+
+This series establishes the class, phase and policy boundaries without
+adding copy implementation. Possible follow-on use looks like:
+
+Yiannis and Alirad's RFC adds an asynchronous non-temporal mode and updates
+existing asynchronous-mode checks. [1] A separate policy field would keep
+cache behavior independent of blocking discipline.
+
+  /* migrate_pages() caller: demote_folio_list() */
+  ctl.reason = MR_DEMOTION;   /* migration reason - already exists */
+  ctl.mode = MIGRATE_ASYNC;   /* blocking discipline - already exists */
+  ctl.cache_hint = MIGRATE_COPY_NT; /* caching intent- new policy */
+
+  __migrate_folio(..., ctl);       /* NT/offload based on caller's hint*/
+     `-> folio_mc_copy() or folio_mc_copy_nt() or ...
+
+My batch-copy/offload series [2] can extend migrate_control to take caller's
+preference of copy engines (like DMA offload, multi-threaded copy, etc.) or
+batch size. Some of this may remain wishful thinking but that is what the
+RFC is for :)
+
+Behavior Changes
+================
+
+No functional change is intended for the LRU and hugetlb migration paths.
+
+The movable_ops pass has three intentional differences:
+
+  - movable_ops pages are attempted before LRU folios;
+  - movable_ops pages no longer use the LRU asynchronous pre-pass.
+    synchronous callers use their requested mode from the first attempt.
+  - movable_ops callback returning -EAGAIN releases the destination, so
+    retry allocates a new one.
+
+Unmigrated pages are still returned through the original source list.
+
+[1] https://lore.kernel.org/r/20260730-rfc-nt-demote-v2-0-452dbe3b5073@zptcorp.com
+[2] https://lore.kernel.org/r/20260630-shivank-batch-migrate-offload-v6-0-da95d7e8b8a2@amd.com 
+[3] https://lore.kernel.org/r/cae6ab98-3441-38bd-1e07-4586a85cdc74@google.com
+
+---
+Shivank Garg (11):
+      mm/migrate: extract folio unmap phase
+      mm/migrate: handle retries in migrate_folios_move()
+      mm/migrate: factor out folio splitting on allocation failure
+      mm/migrate: use a dedicated list for hugetlb folios
+      mm/migrate: add a dedicated movable_ops migration pass
+      mm/migrate: rename migrate_pages_batch() to migrate_folios_batch()
+      mm/migrate: add migrate_lru_folios() entry point
+      mm/migrate: move LRU batching into migrate_lru_folios()
+      mm/migrate: thread migration policy through a control struct
+      mm/migrate: pass migrate_control to migrate_pages()
+      mm/migrate: pass migrate_control to migrate_folio()
+
+ Documentation/filesystems/locking.rst |   2 +-
+ Documentation/filesystems/vfs.rst     |   7 +-
+ fs/aio.c                              |   2 +-
+ fs/btrfs/disk-io.c                    |   5 +-
+ fs/btrfs/inode.c                      |   6 +-
+ fs/hugetlbfs/inode.c                  |   4 +-
+ fs/jfs/jfs_metapage.c                 |  14 +-
+ fs/nfs/internal.h                     |   2 +-
+ fs/nfs/write.c                        |   8 +-
+ include/linux/buffer_head.h           |   6 +-
+ include/linux/fs.h                    |   6 +-
+ include/linux/migrate.h               |   7 +-
+ include/linux/migrate_mode.h          |  14 +
+ include/linux/pagemap.h               |   2 +-
+ mm/compaction.c                       |   8 +-
+ mm/damon/ops-common.c                 |   7 +-
+ mm/gup.c                              |   7 +-
+ mm/memory-failure.c                   |   6 +-
+ mm/memory_hotplug.c                   |   6 +-
+ mm/mempolicy.c                        |  13 +-
+ mm/migrate.c                          | 717 ++++++++++++++++++++++------------
+ mm/page_alloc.c                       |   6 +-
+ mm/secretmem.c                        |   3 +-
+ mm/vmscan.c                           |   7 +-
+ virt/kvm/guest_memfd.c                |   2 +-
+ 25 files changed, 563 insertions(+), 304 deletions(-)
+---
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+change-id: 20260824-migrate-refactor-shivank-4ee3949fcdcb
+
+Best regards,
+-- 
+Shivank Garg <shivankg@amd.com>
 
