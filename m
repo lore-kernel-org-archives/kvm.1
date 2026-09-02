@@ -1,97 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442563E5A0E;
-	Wed,  2 Sep 2026 07:55:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E5A328B7B;
+	Wed,  2 Sep 2026 08:04:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788335729; cv=none; b=fftvx1A4fL4bXGqR0L7Wu92fxsn/45ViKff24awpMPxww24KLvSDVHn3l6A8BLJMjGbh0BVPS98S+c4RyKcLh0Ezb8TQ4MHZKOpmQ9869eyBqvUgp67v5Ml8MAsoN9W+i7O5VUndikp5mcVnYSvCyLWpuA3jp+bbiHVyuB8bL24=
+	t=1788336297; cv=none; b=cLSS/AKgXjII7tJGnQ9T523Huo36nOaYTAyOGBywZbpyjFumZu+n9mIfao92WCzA8jfIyNkmTVEZnPr2kEWhrko2JKFFIo9SaygH7sr83HY5d1SXZ3nRImqbU5QaAEgdWfP6E9udSLCItF6fLuM6gx0ocQk2JKRk1vuDa5wsty4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788335729; c=relaxed/simple;
-	bh=RnPVzCJQ/nbWwecHQ83NNjW9MlvS7zzyy1ZLmL9pUmM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oXAHzdadND52xyRhikLAQstV4sJO58N6C/xbOlCDJ6b50ixExRblsjUcOhIKc+hYRtd4CBkObwG6Utxok3Ae6TYE5NXGrxfzE3THa7MRTsOYaEaHfJXzc4ATnhQtJlEGFabHEmF+qq4qFjNrkBQhlWw/bygNCe/3awC/oyTYdf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NirAID+U; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NirAID+U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577E51F000E9;
-	Wed,  2 Sep 2026 07:55:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788335727;
-	bh=iE2Y6ChXMI62Dd2a61tZtGbr0CVk+MR40gr5QEek2mQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NirAID+U7QL7Lqf6oXvUtdwmkh1WpHQdwDZL/TyFCyp3ynziQsKG621DwmZhdKsIO
-	 TcKZqi66jJBrgvES4EG1CRQKPb3heVvV6zQ7wHkJZriUsGudTb3C0DNvySx7O5sHoW
-	 vlx1/wQ4z0giGu2gHVk+ppBrseYEc9nPAojMFYKb2FMMYaVxU0IcjlETcVJJ7d+zx1
-	 M6FJifbZmCvASMj+RaRfxchBk4iJaeLTK4aCyfC7IzAbFpOqE+2xF0eydXc7m1HbeB
-	 dRLZAvTMW+mwbnMcqyFEozBmVVqhAlJhIWqglbMf2egWadMdCTE0VgFb2XOQqFRSpU
-	 lk1XwMrX6u7Sw==
-Date: Wed, 2 Sep 2026 10:55:21 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH 2/4] KVM: s390: Replace get_zeroed_page() with kzalloc()
- for the STSI buffer
-Message-ID: <apfWaanSoZQOwEw_@kernel.org>
-References: <20260902-s390-kvm-v1-0-3bc0986550b1@kernel.org>
- <20260902-s390-kvm-v1-2-3bc0986550b1@kernel.org>
- <20260902062223.5295D1F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1788336297; c=relaxed/simple;
+	bh=iaX4bSY8tECv0GJk95N9F797wm7D0nwMhGAYdtcSszs=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=mqf7SA6Dhae1BagEPDunCsGeyKxb6m39Pbpr8qF8pVWI4vXjuyF/lWSDNOgctACRowrpP/NtU3lgHhskNcPyaRKgQyKmk/n1ujcB6K01k8WkHSDScZc/mDNyov0Ew5a5mKTBYX1z3RSixQUjBB1AFI62W4Mst3+o9J0FLp+2l28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8AxHNKl2Jdq_K8HAA--.21730S3;
+	Wed, 02 Sep 2026 16:04:53 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJDxRs2g2Jdq9mwZAA--.41017S2;
+	Wed, 02 Sep 2026 16:04:50 +0800 (CST)
+Subject: Re: [PATCH v2 0/2] LoongArch: KVM: Fix kvm_loongarch_env_init() error
+ path
+To: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>,
+ zhaotianrui@loongson.cn, chenhuacai@kernel.org
+Cc: kernel@xen0n.name, lixianglai@loongson.cn, kvm@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20260817115847.2705791-1-nagachaithanya9911@gmail.com>
+ <20260902070724.3459457-1-nagachaithanya9911@gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <0fa4066b-81b5-d0e9-36f1-9f0cbadf1e2c@loongson.cn>
+Date: Wed, 2 Sep 2026 16:04:32 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260902062223.5295D1F000E9@smtp.kernel.org>
+In-Reply-To: <20260902070724.3459457-1-nagachaithanya9911@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxRs2g2Jdq9mwZAA--.41017S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7KryfWw1DJF17Cry8Gw48AFc_yoW8uFyUpF
+	y3uws8Kr4kKr1fArZIka4Duas8Xr4fGr4aqa42y345Cws8Xry0vr18tr9rZFyqv3y8GFW0
+	qr1Sg34YgF1UZagCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE
+	14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+	AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+	rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8Zw
+	CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
+	67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr
+	0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8cz
+	VUUUUUU==
 
-On Wed, Sep 02, 2026 at 06:22:22AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Critical] Replacing get_zeroed_page() with kzalloc() breaks the hardware 4K alignment requirement for the STSI buffer, creating a Guest-to-Host Denial of Service (DoS) vulnerability.
-> --
-> 
-> commit bcd4e89cdbdb3a1d43d3845b698f4de5d334121d
-> Author: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> 
-> KVM: s390: Replace get_zeroed_page() with kzalloc() for the STSI buffer
-> 
-> This commit replaces get_zeroed_page() with kzalloc() for allocating
-> the STSI response block buffer in the s390 KVM subsystem.
-> 
-> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> 
-> > diff --git a/arch/s390/kvm/s390/priv.c b/arch/s390/kvm/s390/priv.c
-> > index b3cb2c2c3aa71..856939acf012f 100644
-> > --- a/arch/s390/kvm/s390/priv.c
-> > +++ b/arch/s390/kvm/s390/priv.c
-> [ ... ]
-> > @@ -911,19 +912,19 @@ static int handle_stsi(struct kvm_vcpu *vcpu)
-> >  	switch (fc) {
-> >  	case 1: /* same handling for 1 and 2 */
-> >  	case 2:
-> > -		mem = get_zeroed_page(GFP_KERNEL_ACCOUNT);
-> > +		mem = kzalloc(PAGE_SIZE, GFP_KERNEL_ACCOUNT);
-> >  		if (!mem)
-> >  			goto out_no_data;
-> > -		if (stsi((void *) mem, fc, sel1, sel2))
-> > +		if (stsi(mem, fc, sel1, sel2))
-> 
-> [Severity: Critical]
-> Does this allocation guarantee the 4K alignment required by the STSI hardware
-> instruction?
-> 
-> While kzalloc() for PAGE_SIZE might often return page-aligned memory, it is
-> not strictly guaranteed, especially if slab debugging (CONFIG_SLUB_DEBUG)
-> with redzoning or CONFIG_KASAN is enabled.
 
-It's strictly guaranteed, see commit 59bb47985c1db ("mm, sl[aou]b:
-guarantee natural alignment for kmalloc(power-of-two)")
- 
--- 
-Sincerely yours,
-Mike.
+
+On 2026/9/2 下午3:07, Chaithanya Lagisetty wrote:
+> kvm_loongarch_env_init() leaves everything it has already acquired behind
+> when one of the IPI/EIOINTC/PCH-PIC/DMSINTC device registrations fails, and
+> kvm_loongarch_init() does not call kvm_loongarch_env_exit() on that error,
+> so nothing else cleans up either.
+> 
+> v1 unwound only the memory and the perf callbacks. Bibo Mao pointed out
+> that the device registrations should be undone through wrapped unregister
+> helpers, so patch 1 adds those and patch 2 uses them to unwind the error
+> path in reverse order of registration. Patch 2 also uses them in
+> kvm_loongarch_env_exit(), so that the device ops are unregistered on normal
+> teardown as well.
+> 
+> Link: https://lore.kernel.org/all/20260817115847.2705791-1-nagachaithanya9911@gmail.com/ [v1]
+> 
+> v2:
+>   - Add unregister helpers as suggested by Bibo Mao
+>   - Unwind device registrations in reverse order
+>   - Use unregister helpers in kvm_loongarch_env_exit()
+>   - Split into two patches, so the fix only uses the helpers
+>   - Reword commit message to avoid implementation-specific details, and
+>     retitle from "memory leak" to "resource leak"
+> 
+> Compile-tested only, no LoongArch hardware: loongson64_defconfig with
+> CONFIG_KVM=m and CONFIG_KVM=y, W=1, each patch built individually, no new
+> warnings.
+> 
+> Chaithanya Lagisetty (2):
+>    LoongArch: KVM: Add unregister helpers for the KVM interrupt devices
+>    LoongArch: KVM: Fix resource leak in kvm_loongarch_env_init() error
+>      path
+> 
+>   arch/loongarch/include/asm/kvm_dmsintc.h |  1 +
+>   arch/loongarch/include/asm/kvm_eiointc.h |  1 +
+>   arch/loongarch/include/asm/kvm_ipi.h     |  1 +
+>   arch/loongarch/include/asm/kvm_pch_pic.h |  1 +
+>   arch/loongarch/kvm/intc/dmsintc.c        |  5 ++++
+>   arch/loongarch/kvm/intc/eiointc.c        |  5 ++++
+>   arch/loongarch/kvm/intc/ipi.c            |  5 ++++
+>   arch/loongarch/kvm/intc/pch_pic.c        |  5 ++++
+>   arch/loongarch/kvm/main.c                | 32 +++++++++++++++++++++---
+>   9 files changed, 52 insertions(+), 4 deletions(-)
+> 
+For this series:
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+
