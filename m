@@ -1,200 +1,210 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71BA48C40B;
-	Wed,  2 Sep 2026 11:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D1A47CC94
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 12:02:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788350371; cv=none; b=ofCamyinUNxVgJQiqv2SLXu45HncqxGLhhEocJbj9I4O0Szrn6dahBC9hlE7KvHmTEs7EYnhnmzIzOaR6khijx4U3XaZPkjWSVpJZCmN9rUYVh8nDBKcJYX9jcOeSP3d4IlGAZCgtupnOUxT/PYeU6F0rSUY0ZoykGLdOhfF/zw=
+	t=1788350577; cv=none; b=jDS0Dc+ujqZcZT3y3uRRs2XIoAkkVS9iDNdIz+siyQz9gwNn+gstCwsUoHJurSDdq50qQIuHRibmLq4W+gdLEycblt+QZZULPhkBigSyqLDw2CSTzD22WxvQBuy+n99eDy0f8kKOpI57Z0XxIFgQ9OmeX6qcxAwSRqHZOBq4oQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788350371; c=relaxed/simple;
-	bh=Br/cs+FpftnQOol6BErs3frU8GfYo1jZb/nBuxpBEq8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RuM7Wqyd4JeaMADnO+SrEaNW3oDYZkZ497nESp4FhY12+9vii47jsM0JPjmFAk86oNmPKwQkfsyrRzjrm/2yLntgyf+sgBTQ3KlMv4mRRqDgTnofe4Gw4fD3kR0t+iaTpyc5lbpUGI5fpfgEao2e4apv+qFCWI/m1s+3NQvzfms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=YNIufYY9; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1788350577; c=relaxed/simple;
+	bh=Yv1k6QGBpWRqhQ1/g8/MLMzjdXKArQtCprJXyb6GIXw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=vFLUTDigtjzgjC+nkXsci5WgAl9ud4TxmwiwGSXyQCY39TG9nnMeyATvOvs38Mzphg/sIewLGnWp8X3O6RfUM29SRtt+lSviwc/AlIhkE0yjxtT79dwvRa1mld4u5niqrYjnsBCBg+AzD0VTmrGuhlTISHRYgd9nqWqmeI8jSTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O12/WPN0; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="YNIufYY9"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4CC611E32;
-	Wed,  2 Sep 2026 04:59:10 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E6C6E3F85F;
-	Wed,  2 Sep 2026 04:59:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788350354; bh=Br/cs+FpftnQOol6BErs3frU8GfYo1jZb/nBuxpBEq8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=YNIufYY97B6qUu57kfR8nwRxcLtpS+O6ostRIi/nQOuKLD58rztHwSAiT1AAYOntl
-	 fxPaSMddAYwDW8STJc6MsE8WWxYq2NPYdK+F0yYS0HcTTtt1ra7YEAriOl0DmEf2lo
-	 zM0F0pNqICHzqI3Xh+hnQZNMeBEPTobb3bXedcbs=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Wed, 02 Sep 2026 12:56:23 +0100
-Subject: [PATCH RFC v3 21/21] Documentation: mm: clarify behaviour of
- compile-time folded page tables
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O12/WPN0"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3969e82ff8fso1137485a91.0
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 05:02:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788350567; x=1788955367; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ogfkV1olj5BWBHozC4h7H6b+n23WKTMMRGzZ7ZTaUxU=;
+        b=O12/WPN02/v9zNTGHZtm0ArxWL3NQErnElwC1RpgwR3y+7gY9nznwNMKkSndG+2JEg
+         xsIqLDJWDsyqdVEW8ACj2sEs4SYSnByEcwkSCvNTrXJ1iJbIk5Jr+MN73ETrs7T29hty
+         AqzC1NYKinI3+NTW1LoOaMG3M36ju2+V29jCrrOARcJfiRWfysKcz3+0y/T1168QkPOL
+         oD8MgThaPtlcUe5yBxqkjeOMI/YFfHzHxYf5UJ9UFWXWPOJUp/63y8tCYXHZvU6rxhMv
+         oRQpluc44scW+EVu+CjWl3VSqhw3F6NIIucf0wfGDECjr4lAfM3xg9YvuCTmXuP5WXPT
+         FHdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788350567; x=1788955367;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ogfkV1olj5BWBHozC4h7H6b+n23WKTMMRGzZ7ZTaUxU=;
+        b=baeaaGFx9Btxp6MITYsfIhAjpzsgdxvdxTO18kVJCyNlA7EYKYUtDmJw9TUvNWemL/
+         Me59yfCId7w+FqQW2z/y+PS7OpXdDpEgU0CQPeTeONrUZqU4BBLDEMRYh8TC/ZGvY1jl
+         7F49Kes+5qS+iAKibVPDMMgl9E4f0tC6hx8N7//0KeBq7ZrEJx2+Vly+JZzcqlNmRMD0
+         Qfib1S9o6nytlCrlTQUiZIRyjgFzaWq1ytKZZLs2qZKEd/G2Ib+DPD0xGW9LcGEJjpca
+         OZlL3sO6KE1oYIlWqOL1/nbu6ClAB2KXLCigF62tAv8uUhH2neJOmDTpRx7kKFI7FK7/
+         KK5w==
+X-Gm-Message-State: AFuF++nzccPtFYAFRprBOIkZc3WyZVgwcN/YP2nTeUpczr2rjOUfM1KZ
+	BlTJrYuAhm87faKcGNoUAR14d+a/P4G9763xYghP99mfNWrYpG3p9FCs
+X-Gm-Gg: AYBFou0vRTOIYPvclzInb/KjXhomZy1YwO9JIZBv4fbyJpy0ek12JWfpXf7bAaj3FvD
+	zoUKuKiQHF82ohESbtKM5lMYEKfhbHGiKmbGxXi79acx0Qq1d7C2L4vr2jtoEHZ35gGqYFQg/zl
+	He1efq4fdkh1P+k76RXaocVLKrqtj3i/VGrSYygRE9SIDDmY6jHj1jo3GYxe2gsJerWKCcE6X46
+	TF1EuFApSpJmHpWp6F2P1+1wcjavA4lqG01tl+uxvBsXAJYAYDvFdVSj/xjsFFk+bkdgCST82DO
+	Yn8qdxJE3R453by4YoIurOz48JvygJ4fERhNJcAU6o9Z3Os6RZjdJGtFHfem8wIxCQVidswwF/t
+	nRjHz4Qihr1+EyCSQgzq2tGeeREpdMOQckF60VbNQPhphUvmQuCoIIxRuCT9ZLqPLoW/Uco3g9M
+	yf0gkXdiZU1OtobEoHLc4P/d9oJcIzz/ZpbrvAsMnU8d8yH4uVrGJAy5B4OeISeivWfM68cgy69
+	Hw8/f/pjk2DRB/VsNGD2A==
+X-Received: by 2002:a17:90b:6cc:b0:398:9bd5:490d with SMTP id 98e67ed59e1d1-39aee0eafb9mr6572751a91.20.1788350566769;
+        Wed, 02 Sep 2026 05:02:46 -0700 (PDT)
+Received: from volcano9f8e-host.amd.com ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-32f079c33e9sm6897044eec.4.2026.09.02.05.02.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 05:02:46 -0700 (PDT)
+From: Hemanth Selam <hemanth.selam@gmail.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH 1/2] KVM: selftests: Actually compare sregs and events in sync_regs_test
+Date: Wed,  2 Sep 2026 17:32:34 +0530
+Message-ID: <20260902120235.18486-2-hemanth.selam@gmail.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20260902120235.18486-1-hemanth.selam@gmail.com>
+References: <20260902120235.18486-1-hemanth.selam@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-dummy_ptxp3-v3-21-5d8f5b17c25c@arm.com>
-References: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
-In-Reply-To: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
-To: Russell King <linux@armlinux.org.uk>, 
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, 
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
- Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>, 
- Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>, 
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Jonas Bonn <jonas@southpole.se>, 
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
- Stafford Horne <shorne@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
- linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
- linux-openrisc@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5247; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=QkuS96DAgeRV++qcxLUFqnS2tbZYgjub9eHsvrXmSd4=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqmA7r6ZZHyXCpThNLcIh389noXapBmN0QtJRA/
- 0G6xN7Ry3uJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCapgO6wAKCRBt1cPRWsUx
- M58/C/9U9B6FfYQ/fupAFaXvIw1Mnt9yYqNpnlfNtC6NDeZsWkfEpD8g8rzw/ZmT9NJlS4YfPs1
- Qx6kcjhDR9PAeBJBPGh8BxQwaeLNn1ssBbAQxNDfX7yrRLWPxHK9wZ7XBK+0+Y5Lk3lgdRQJ6qI
- p4F+YbpHGfi22XGen2K3KAJo4nzOC2nru7i6LL5wr8wAlWshB+2+4MqDHojeNHwLITRml9jgLu1
- /5lqRtOqA/q+Qf0MpV0tPwdATl3vJk5GSkq2yFyzkMR4LYpE4C4fuh5kWjMReGy62Non6aPXFa8
- +6UdHtXQ4V3qp9smbO5LbcLD7qQUPFqBTFktH5C1HQXXAvjDBzouhN5N4kjlLCeCrRwIwAVEVZR
- TNUIXv8PMlOojSv+isqEwSGFr+0lJ0ySAkyPAXIRh55obtZ2bBmU/KQx8c+65rZmmgDb4nJ57+G
- Vajqff8eVIyX0IvBrlsknDMl32bDAWeQx3n/WwlNzdx1iu6CzzjQqt5l1s9+zYKYR23pU=
-X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
- fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
+Content-Transfer-Encoding: 8bit
 
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+compare_sregs() and compare_vcpu_events() have been empty since the test
+was written, so the checks that req_and_verify_all_valid() and
+set_and_verify_various() run after every KVM_RUN only ever compared the
+general purpose registers.  KVM could return anything at all in the sregs
+and events halves of the kvm_run sync region and the test would still
+pass.
 
-Compile-time folded page tables are not necessarily easy to understand, and even
-people the were once familiar with the concept might need to refresh their memory.
+Fill both in, in the style of compare_regs(): every field of struct
+kvm_sregs, including the segment and descriptor table members and the
+interrupt bitmap, and every field of struct kvm_vcpu_events.  Both sides
+of each comparison come from the same vCPU without it having run in
+between, so they are expected to match exactly.
 
-Add proper documentation, including a nice diagram, for the current design.
-Mention details about dummy functions, including the recently changed pXdp_get()
-helpers.
-
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Assisted-by: Cursor:claude-opus-5
+Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
 ---
- Documentation/mm/page_tables.rst | 84 +++++++++++++++++++++++++++++++++++-----
- 1 file changed, 75 insertions(+), 9 deletions(-)
+ .../selftests/kvm/x86/sync_regs_test.c        | 89 +++++++++++++++++++
+ 1 file changed, 89 insertions(+)
 
-diff --git a/Documentation/mm/page_tables.rst b/Documentation/mm/page_tables.rst
-index 126c87628250..84f2715c7de0 100644
---- a/Documentation/mm/page_tables.rst
-+++ b/Documentation/mm/page_tables.rst
-@@ -143,15 +143,81 @@ pointers on each level is architecture-defined.::
- Page Table Folding
- ==================
+diff --git a/tools/testing/selftests/kvm/x86/sync_regs_test.c b/tools/testing/selftests/kvm/x86/sync_regs_test.c
+index ed0c21b427c9..c7d1f3cca16e 100644
+--- a/tools/testing/selftests/kvm/x86/sync_regs_test.c
++++ b/tools/testing/selftests/kvm/x86/sync_regs_test.c
+@@ -70,13 +70,102 @@ static void compare_regs(struct kvm_regs *left, struct kvm_regs *right)
+ #undef REG_COMPARE
+ }
  
--If the architecture does not use all the page table levels, they can be *folded*
--which means skipped, and all operations performed on page tables will be
--compile-time augmented to just skip a level when accessing the next lower
--level.
--
--Page table handling code that wishes to be architecture-neutral, such as the
--virtual memory manager, will need to be written so that it traverses all of the
--currently five levels. This style should also be preferred for
--architecture-specific code, so as to be robust to future changes.
-+Not all architectures support 5-level page tables; while for some of them
-+the exact number of supported page table levels is known at compile time,
-+others can determine the number of page table levels at runtime based on
-+hardware support and address space sizes.
++static void compare_segment(struct kvm_segment *left, struct kvm_segment *right,
++			    const char *name)
++{
++#define SEG_COMPARE(field) \
++	TEST_ASSERT(left->field == right->field, \
++		    "Segment %s." #field \
++		    " values did not match: 0x%llx, 0x%llx", \
++		    name, (unsigned long long)left->field, \
++		    (unsigned long long)right->field)
++	SEG_COMPARE(base);
++	SEG_COMPARE(limit);
++	SEG_COMPARE(selector);
++	SEG_COMPARE(type);
++	SEG_COMPARE(present);
++	SEG_COMPARE(dpl);
++	SEG_COMPARE(db);
++	SEG_COMPARE(s);
++	SEG_COMPARE(l);
++	SEG_COMPARE(g);
++	SEG_COMPARE(avl);
++	SEG_COMPARE(unusable);
++#undef SEG_COMPARE
++}
 +
-+Generic page table walking code always assumes that 5 levels of page table
-+exist. To make page table walking code not have to worry about that,
-+`compile-time folding` and `runtime folding` of page tables are used.
-+Compile-time folding is mostly handled in common code, whereas runtime folding
-+is exclusively handled in architecture code.
++static void compare_dtable(struct kvm_dtable *left, struct kvm_dtable *right,
++			   const char *name)
++{
++	TEST_ASSERT(left->base == right->base,
++		    "Descriptor table %s.base values did not match: 0x%llx, 0x%llx",
++		    name, left->base, right->base);
++	TEST_ASSERT(left->limit == right->limit,
++		    "Descriptor table %s.limit values did not match: 0x%x, 0x%x",
++		    name, left->limit, right->limit);
++}
 +
-+This description focuses on generic compile-time folded page tables; for
-+architecture-specific variants, some details can vary, however, without
-+affecting common page table walkers.
-+
-+When walking folded page tables, all upper page table levels up to the supported
-+level are skipped in page table walkers: this is achieved by (a) treating
-+entries in upper page table levels as present and pointing at a page table; and
-+(b) having page table walkers cast the entry pointer to the next-level entry
-+instead of dereferencing that table. From the perspective of a page table
-+walker, the entry points at itself.
-+
-+Assuming compile-time folded 4-level page tables, to achieve (a), pgd_present()
-+and pgd_leaf() are hard-coded to indicate a present page table entry that
-+points at a page table, and to achieve (b) p4d_offset() and
-+p4d_offset_lockless() simply cast the page table entry pointer to the next
-+lower level.
-+
-+In the current design, this is further modeled by having the P4D have a
-+single page table entry::
-+
-+        PGD
-+  --> +------+          NOP4D
-+      | ptr0 |-------> +------+           PUD
-+      | ptr1 |-        | ptr0 |-------> +-----+
-+      | ptr2 | \       +------+         | ptr |-------> ...
-+      | ptr3 |  \                       | ptr |
-+        ...      \                        ..
-+                  \        NOP4D
-+                   +----> +------+           PUD
-+                          | ptr1 |-------> +-----+
-+                          +------+         | ptr |-------> ...
-+                                           | ptr |
-+                                             ...
-+
-+Note that the arrows from PGD to NOP4D represent page-table-walker
-+transitions, not pointers stored in the pgd entries.
-+
-+Using p4d as an example, `nop4d`/`p4d folded` translates to the following:
-+
-+- p4d is considered folded into pgd; both are operating on the same page
-+ table.
-+
-+- Most pgd_* helpers are hard-coded dummy functions that ignore the passed
-+  pgd_t values entirely. Exceptions are pgd_val() and low-level helpers
-+  set_pgd() + pgd_page_vaddr(), which effectively translate to set_p4d()/
-+  p4d_pgtable() to keep existing arch code working.
-+
-+  Architectures must provide p4d_* helpers (unless further common
-+  compile-time folding applies).
-+
-+- PTRS_PER_P4D is hard-coded to 1. Architectures must define PTRS_PER_PGD.
-+
-+To avoid reading a value that will never be used but cannot be entirely
-+optimized out, compile-time folded page table code also makes pXdp_get()
-+return a constant dummy value.
-+
-+In common code, this only affects pXd_val() when used for printing page
-+table entries for debugging purposes. As we don't want architecture code
-+that uses set_pXd(), pgd_page_vaddr() or pXd_pgtable() to accidentally
-+operate on dummy values, the compiler will error out if it detects that the
-+helpers are used with dummy values. For a folded level, pXd_page() must not
-+be used and unconditionally triggers a compiler error. Architecture code must
-+instead call the helpers on the proper first page table level: e.g., set_p4d()
-+instead of set_pgd().
+ static void compare_sregs(struct kvm_sregs *left, struct kvm_sregs *right)
+ {
++#define SREG_COMPARE(reg) \
++	TEST_ASSERT(left->reg == right->reg, \
++		    "Register " #reg \
++		    " values did not match: 0x%llx, 0x%llx", \
++		    left->reg, right->reg)
++	compare_segment(&left->cs, &right->cs, "cs");
++	compare_segment(&left->ds, &right->ds, "ds");
++	compare_segment(&left->es, &right->es, "es");
++	compare_segment(&left->fs, &right->fs, "fs");
++	compare_segment(&left->gs, &right->gs, "gs");
++	compare_segment(&left->ss, &right->ss, "ss");
++	compare_segment(&left->tr, &right->tr, "tr");
++	compare_segment(&left->ldt, &right->ldt, "ldt");
++	compare_dtable(&left->gdt, &right->gdt, "gdt");
++	compare_dtable(&left->idt, &right->idt, "idt");
++	SREG_COMPARE(cr0);
++	SREG_COMPARE(cr2);
++	SREG_COMPARE(cr3);
++	SREG_COMPARE(cr4);
++	SREG_COMPARE(cr8);
++	SREG_COMPARE(efer);
++	SREG_COMPARE(apic_base);
++#undef SREG_COMPARE
++	TEST_ASSERT(!memcmp(left->interrupt_bitmap, right->interrupt_bitmap,
++			    sizeof(left->interrupt_bitmap)),
++		    "interrupt_bitmap values did not match");
+ }
  
+ static void compare_vcpu_events(struct kvm_vcpu_events *left,
+ 				struct kvm_vcpu_events *right)
+ {
++#define EVENT_COMPARE(field) \
++	TEST_ASSERT(left->field == right->field, \
++		    "Event " #field \
++		    " values did not match: 0x%llx, 0x%llx", \
++		    (unsigned long long)left->field, \
++		    (unsigned long long)right->field)
++	EVENT_COMPARE(exception.injected);
++	EVENT_COMPARE(exception.nr);
++	EVENT_COMPARE(exception.has_error_code);
++	EVENT_COMPARE(exception.pending);
++	EVENT_COMPARE(exception.error_code);
++	EVENT_COMPARE(interrupt.injected);
++	EVENT_COMPARE(interrupt.nr);
++	EVENT_COMPARE(interrupt.soft);
++	EVENT_COMPARE(interrupt.shadow);
++	EVENT_COMPARE(nmi.injected);
++	EVENT_COMPARE(nmi.pending);
++	EVENT_COMPARE(nmi.masked);
++	EVENT_COMPARE(sipi_vector);
++	EVENT_COMPARE(flags);
++	EVENT_COMPARE(smi.smm);
++	EVENT_COMPARE(smi.pending);
++	EVENT_COMPARE(smi.smm_inside_nmi);
++	EVENT_COMPARE(smi.latched_init);
++	EVENT_COMPARE(triple_fault.pending);
++	EVENT_COMPARE(exception_has_payload);
++	EVENT_COMPARE(exception_payload);
++#undef EVENT_COMPARE
+ }
  
- MMU, TLB, and Page Faults
-
+ #define TEST_SYNC_FIELDS   (KVM_SYNC_X86_REGS|KVM_SYNC_X86_SREGS|KVM_SYNC_X86_EVENTS)
 -- 
-2.43.0
+2.43.7
 
