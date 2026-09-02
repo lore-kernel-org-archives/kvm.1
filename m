@@ -1,243 +1,111 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E83A4A99C6;
-	Wed,  2 Sep 2026 16:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA712349CE2;
+	Wed,  2 Sep 2026 16:49:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788367707; cv=none; b=auaLOrPY2M/Fk60f5C0EQo7VvS1tNFDcxstsH4M1/sE2LYwmHeQRHQ1nxf0ddilJ425b7PhnYRLZgBFhsYf6UmBPcB4qtb34MjDVgqlAroYdBUcC7jLzY9bJNLjWfzBWfrKTtlehXDH9kJ30PENfQJhZJkntNYsL4pSsqniDVrM=
+	t=1788367782; cv=none; b=UXP5MoC8na+ZAwYHvFwQMazHVYTms3BM2i4QGT9Ts/NQbTn6KNss2lkHo7ZtkPEvtJ+5nzL0oUCKAj4wQh3bQp00KSnDx91sYi/jKCHBzy70lycdBxwHEMuVI4AlPCZcDDVuKuoejTGSq/XbbX9aBXi8n5prpemUI5GNWCuBXAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788367707; c=relaxed/simple;
-	bh=U+OH94B40NoTGV5hu0mRvJHuyvI3dakCwtDknNYstOA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CMQkQUAUTqAvNptWv4AOHwG8eUvH3Sz/a7y1nGjQAfY0K/gs3D6kw0n6QRDa+Srz629m/oSyutaKoVKU+ZoRuN4XRUUPZvPR2CFvX78AsQZhBJV4leChcMKpzhciawK7OnV9pFmocvEijgjSpWQXybXViHMWDbgVuU4jbuE2kt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=GnvXWjox; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1788367782; c=relaxed/simple;
+	bh=QlhCrxjRKyesPy6KtjybmIsVAJyi9LiI9EUV/ZnOjFU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=JJ619nW4teuLtWt3dinsZsPtH85AEGd4Yw/NR+9gCd25DGmjSLZyYQsD1MfGTuNb8jUvS4ueR3OEGeYDZzKa1H+EkEpHqOv+Zy94ry0UvKNCtte5xEcMZveEXiEdUjEozX+aaLpVhTkqWCQloh2NC4ZFGW2pRMr8bNegTMzH6Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EVq+T8oy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="GnvXWjox"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C75B5165C;
-	Wed,  2 Sep 2026 09:48:20 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 07F7F3F882;
-	Wed,  2 Sep 2026 09:48:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788367704; bh=U+OH94B40NoTGV5hu0mRvJHuyvI3dakCwtDknNYstOA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GnvXWjoxcxOtSQbkJLQQ3GnOKnrJ9nFr10cfwUtCgJWT/roaoVtAf1/mEvzgvikQ5
-	 RXVLekBW58kpBfbq00LwbRmlPLU/+FVDFDSMj4JxcQvr3vN8VaI7ommpT64lB9niJ6
-	 AjsG8nFfQXvSizHpPhebOyU19vy801Vi2MdIplc0=
-Date: Wed, 2 Sep 2026 17:48:14 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH RFC v3 15/21] x86: mm: skip collapse_pud_page() when
- CONFIG_X86_DIRECT_GBPAGES disabled
-Message-ID: <aphTTqhf3yO74JoO@e129823.arm.com>
-References: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
- <20260902-dummy_ptxp3-v3-15-5d8f5b17c25c@arm.com>
- <fa4acc56-9742-4a5e-abd4-7491ad426940@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EVq+T8oy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CECB1F00A3A;
+	Wed,  2 Sep 2026 16:49:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788367780;
+	bh=74xtE6SakVKobDYhiA8KIRjR9G/Df+2i6vnmfKlzipI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=EVq+T8oyOU2WtlP0AemojQjctM/HxSCc30efbhnxsQRxcXRgwpriF2DdFt+DzUn0g
+	 QDd4I5z8lX6x2S5Q22wH8vt6LJvujqtgARpKNy8QAppAQk//QpIXYgOxdjvm+i6Kg/
+	 DEMPPunyBBJk9P5odbds2gLKI+nx7fXnEb+6GY+8xVjzsKwKJh1cSymlSncCYsYP2z
+	 nULa8knV/uLdA6cVaYjJ97fgRmoCt0h6oJSfjS+7RwPknLAjzKdZ/hKFK7jngxkMgN
+	 SG/0OT3Wtd5GL5ILnc/K8AtOon8ILbpMHgmERkXUc0OIkqgUO42hknrKEQINDScW9+
+	 1vrgpEFKtdInw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 06/20] KVM: selftests: Extend page allocator to
+ support naturally aligned allocations
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, "Marc
+ Zyngier" <maz@kernel.org>
+In-Reply-To: <20260902164123.2546762-7-seanjc@google.com>
+References: <20260902164123.2546762-1-seanjc@google.com>
+ <20260902164123.2546762-7-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 02 Sep 2026 16:49:39 +0000
+Message-Id: <20260902164940.5CECB1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fa4acc56-9742-4a5e-abd4-7491ad426940@intel.com>
 
-Hi Dave,
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] The `ALIGN()` macro is used with `nr_pages` as the alignment con=
+straint, but there is no validation to ensure `nr_pages` is a power of two,=
+ which `ALIGN()` strictly requires.
+--
 
-> On 9/2/26 04:56, Yeoreum Yun wrote:
-> > The behaviour of pXd_page() will change with generic compile-time folded
-> > page tables by disallowing its use and triggering a compile-time error
-> > when it's used improperly, ensuring that the actual pXd_page() is used
-> > instead.
-> > 
-> > To prepare fot that, skip collapse_pud_page() when
-> > CONFIG_X86_DIRECT_GBPAGES is disabled.
-> 
-> Nit: this doesn't explain how the change actually fixes anything or what
-> the specific problem being solved is.
-> 
-> I think you want to say something along the lines of:
-> 
-> 	collapse_pud_page() uses pud_page() in a way which will soon
-> 	trigger a compile-time error on configs that have a folded pud.
-> 
-> 	The code which will generate that error is actually unreachable
-> 	on those configs because 'direct_gbpages' is always 0 there.
-> 	However, the compiler does not know that because
-> 	'direct_gbpages' is a normal integer from a separate compilation
-> 	unit.
-> 
-> 	Make the compiler aware when most of collapse_pud_page() is
-> 	unreachable by adding a Kconfig check. This ensures it will not
-> 	trip the errors when they are introduced. It probably also trims
-> 	the kernel image down a wee bit too as a side benefit.
+commit 1b8052ce0034b1eff1950b660c7716fd2dffde7a
+Author: Sean Christopherson <seanjc@google.com>
 
-Yes.. Sorry for my poor commit message.
+KVM: selftests: Extend page allocator to support naturally aligned allocati=
+ons
 
-> 
-> Maybe I should just merge something like the attached patch. I think it
-> would solve your problem and make things generally cleaner too.
-> 
-> There is an existing variable (direct_gbpages) that says whether the
-> kernel can and should use 1G pages in the direct map. It is driven
-> by a bunch of other machinery. At least:
-> 
->  1. Hardware support for 1G pages
->  2. Kconfig support for 1G direct mappings
->  3. Kernel command line overrides
-> 
-> Most code just checks the 'direct_gbpages' variable itself. But this
-> prevents compiler optimization in cases where 1G mappings are
-> compile-time disabled (via X86_DIRECT_GBPAGES).
-> 
-> Add a helper to replace 'direct_gbpages' checks. Check the Kconfig
-> option and base CPU support before looking at the variable.
-> 
-> This lets the compiler optimize things better, especially
-> collapse_pud_page() where most of the function can now be optimized
-> away.
+This commit extends the KVM selftests page allocator to support naturally
+aligned allocations. This is primarily for some flavors of PowerPC page tab=
+les
+that require multiple guest pages per table, and those tables need to be
+naturally aligned.
 
-Yeap. I've tested with your patch and it works for me!
-Thanks!
+> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/s=
+elftests/kvm/lib/kvm_util.c
+> index bbf6d7684c0ca..896da440659e3 100644
+> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
+> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+[ ... ]
+> @@ -2032,9 +2033,10 @@ const char *exit_reason_str(unsigned int exit_reas=
+on)
+>   *
+>   * Note, success is guaranteed!
+>   */
+> -gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t nr_pages, gpa_t min=
+_gpa,
+> -			   u32 memslot, bool protected)
+> +gpa_t ____vm_phy_pages_alloc(struct kvm_vm *vm, size_t nr_pages, gpa_t m=
+in_gpa,
+> +			     u32 memslot, bool protected, bool naturally_aligned)
+>  {
+> +	size_t alignment =3D naturally_aligned ? nr_pages : 1;
+>  	struct userspace_mem_region *region;
+>  	sparsebit_idx_t pg, base;
+> =20
+[ ... ]
+> @@ -2051,6 +2053,7 @@ gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_=
+t nr_pages, gpa_t min_gpa,
+> =20
+>  	base =3D min_gpa >> vm->page_shift;
+>  again:
+> +	base =3D ALIGN(base, alignment);
 
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Tested-by: Yeoreum Yun <yeoreum.yun@arm.com>
+[Severity: Medium]
+Are there any scenarios where ____vm_phy_pages_alloc() is called with
+naturally_aligned set to true but nr_pages is not a power of two?
 
-> 
-> ---
-> 
->  b/arch/x86/include/asm/pgtable.h     |   14 ++++++++++++++
->  b/arch/x86/kernel/cpu/common.c       |    2 +-
->  b/arch/x86/kernel/machine_kexec_64.c |    2 +-
->  b/arch/x86/mm/init.c                 |    2 +-
->  b/arch/x86/mm/pat/set_memory.c       |    4 ++--
->  5 files changed, 19 insertions(+), 5 deletions(-)
-> 
-> diff -puN arch/x86/include/asm/pgtable.h~direct_gbpages-compiletime arch/x86/include/asm/pgtable.h
-> --- a/arch/x86/include/asm/pgtable.h~direct_gbpages-compiletime	2026-09-02 06:53:57.835733398 -0700
-> +++ b/arch/x86/include/asm/pgtable.h	2026-09-02 08:17:01.434727771 -0700
-> @@ -1163,6 +1163,20 @@ static inline int pgd_none(pgd_t pgd)
->  #ifndef __ASSEMBLER__
->  
->  extern int direct_gbpages;
-> +static inline bool direct_gbpages_enabled(void)
-> +{
-> +	/* Check the direct map config option: */
-> +	if (!IS_ENABLED(CONFIG_X86_DIRECT_GBPAGES))
-> +		return false;
-> +
-> +	/* Check the CPU feature: */
-> +	if (!cpu_feature_enabled(X86_FEATURE_GBPAGES))
-> +		return false;
-> +
-> +	/* Check the command-line and early setup variable: */
-> +	return direct_gbpages;
-> +}
-> +
->  void init_mem_mapping(void);
->  void early_alloc_pgt_buf(void);
->  void __init poking_init(void);
-> diff -puN arch/x86/mm/init.c~direct_gbpages-compiletime arch/x86/mm/init.c
-> --- a/arch/x86/mm/init.c~direct_gbpages-compiletime	2026-09-02 06:55:01.004094924 -0700
-> +++ b/arch/x86/mm/init.c	2026-09-02 08:20:36.759992562 -0700
-> @@ -251,7 +251,7 @@ static void __init probe_page_size_mask(
->  		__default_kernel_pte_mask &= ~_PAGE_GLOBAL;
->  
->  	/* Enable 1 GB linear kernel mappings if available: */
-> -	if (direct_gbpages && boot_cpu_has(X86_FEATURE_GBPAGES)) {
-> +	if (direct_gbpages_enabled()) {
->  		printk(KERN_INFO "Using GB pages for direct mapping\n");
->  		page_size_mask |= 1 << PG_LEVEL_1G;
->  	} else {
-> diff -puN arch/x86/kernel/cpu/common.c~direct_gbpages-compiletime arch/x86/kernel/cpu/common.c
-> --- a/arch/x86/kernel/cpu/common.c~direct_gbpages-compiletime	2026-09-02 06:57:47.935849397 -0700
-> +++ b/arch/x86/kernel/cpu/common.c	2026-09-02 06:57:57.299617535 -0700
-> @@ -2660,7 +2660,7 @@ void __init arch_cpu_finalize_init(void)
->  		 * Right now we don't do that with gbpages because there seems
->  		 * very little benefit for that case.
->  		 */
-> -		if (!direct_gbpages)
-> +		if (!direct_gbpages_enabled())
->  			set_memory_4k((unsigned long)__va(0), 1);
->  	} else {
->  		fpu__init_check_bugs();
-> diff -puN arch/x86/kernel/machine_kexec_64.c~direct_gbpages-compiletime arch/x86/kernel/machine_kexec_64.c
-> --- a/arch/x86/kernel/machine_kexec_64.c~direct_gbpages-compiletime	2026-09-02 06:57:58.462712975 -0700
-> +++ b/arch/x86/kernel/machine_kexec_64.c	2026-09-02 06:58:05.219267514 -0700
-> @@ -257,7 +257,7 @@ static int init_pgtable(struct kimage *i
->  		info.kernpg_flag |= _PAGE_ENC;
->  	}
->  
-> -	if (direct_gbpages)
-> +	if (direct_gbpages_enabled())
->  		info.direct_gbpages = true;
->  
->  	for (i = 0; i < nr_pfn_mapped; i++) {
-> diff -puN arch/x86/mm/pat/set_memory.c~direct_gbpages-compiletime arch/x86/mm/pat/set_memory.c
-> --- a/arch/x86/mm/pat/set_memory.c~direct_gbpages-compiletime	2026-09-02 06:58:43.518414555 -0700
-> +++ b/arch/x86/mm/pat/set_memory.c	2026-09-02 06:59:27.252015369 -0700
-> @@ -130,7 +130,7 @@ void arch_report_meminfo(struct seq_file
->  	seq_printf(m, "DirectMap4M:    %8lu kB\n",
->  			direct_pages_count[PG_LEVEL_2M] << 12);
->  #endif
-> -	if (direct_gbpages)
-> +	if (direct_gbpages_enabled())
->  		seq_printf(m, "DirectMap1G:    %8lu kB\n",
->  			direct_pages_count[PG_LEVEL_1G] << 20);
->  }
-> @@ -1340,7 +1340,7 @@ static int collapse_pud_page(pud_t *pud,
->  	pmd_t *pmd, first;
->  	int i;
->  
-> -	if (!direct_gbpages)
-> +	if (!direct_gbpages_enabled())
->  		return 0;
->  
->  	addr &= PUD_MASK;
-> _
+The ALIGN() macro uses bitwise arithmetic and mathematically requires the
+alignment constraint to be a power of two. If nr_pages is not a power of
+two, ALIGN() will silently compute an incorrect base address.
 
+Would it be safer to add a check to ensure nr_pages is a power of two when
+naturally_aligned is requested?
 
--- 
-Sincerely,
-Yeoreum Yun
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260902164123.2546=
+762-1-seanjc@google.com?part=3D6
