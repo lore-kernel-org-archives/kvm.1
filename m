@@ -1,68 +1,69 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AC648BD2B
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 12:43:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CD947607B
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 12:45:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788353024; cv=none; b=gW9VNLxNF6OOsr7ur8i5xnBeCaStT6FjTb+bUqUDgXO5Dk+Qj4XW8h13cKuP79zlwfYDYeB2/t5/u+mJTVXIU4S/nN/BKQUlC6III+wW2kFgFcrFhqB2ZcD4sDGDQiJTfBeuGwynDzs6UBXg1gFTuU7qCuxRcCp7M8xDus7FVdE=
+	t=1788353158; cv=none; b=WCQwC3qgjKSa0aXXcj0+W0LJIcki0uTkKqvwtZWHoF+PklEhoAv6xS+jm83WITyPWPbOqoPFNUve4EN5PPEbctFeJP7qjeWCgo+VTMagIa+r8VDWCCidRFufM/5mFtPaFlXlMEe7D3kUlli3uvVYHrKGBTMQS490yI0ZQPtY92E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788353024; c=relaxed/simple;
-	bh=qgFa0CiH1bv1yxLezXqbsS7f0HGLYm+TETHbTLiEsz4=;
+	s=arc-20240116; t=1788353158; c=relaxed/simple;
+	bh=GnuHiQyTdp78PQzDdaVnnxIGr8+30tXBtoElXZAmxa0=;
 	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=JnFj6Fns5WMCK6JFnQ3elqisuqI1z7v4DHB7y5juzFoIbZSgNE2csqkGjUEEdDT+3ukLmrLirIm0H+cqAxy5EmImWhBSnKxKIL9/Ekq/Z1A4ktF+P7Q17fAf7iM4UN0wK5B5Z3c8cVzWC+n/LndgzmMsjhmZu7baGzMBHSTNWYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UvdYC/Vm; arc=none smtp.client-ip=209.85.218.43
+	 In-Reply-To:Content-Type; b=VcvyE0xnsBEiK7cKok/8ciLcor8qJDCf/PP1OkEdp0CZtrrAjcK/qyT+WIVIyX0RW/60poWB3czVviGLZ6DVLX7oakudm8h4xAs9mcWjd5KAYJ0VJTJH3nW0Eq0jnQ7sGbZNRASMWCiQQ30SQReQFH450g1DIzcRmIKUhz63hP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=InQy+DnV; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UvdYC/Vm"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c1600d040e4so182991866b.1
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 05:43:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="InQy+DnV"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c2055573c8cso135088566b.3
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 05:45:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788353021; x=1788957821; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788353155; x=1788957955; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Y+y7hZC+VMnjw/gNt+VIRX6BpULMwiS0+R6doj5v4W0=;
-        b=UvdYC/VmcnfKfn2NC89UsSdKcDMb+ef9LiEx5/d1jFOKYUuX6djQrc+rff5zrBR/xA
-         dl20MbyO/tvN+Dk3XJSasEp/GfykOcVodBFQp8x1++0QcKifm9B2fblnfoNE+AI/48AK
-         ORBMNqW3LaMyz/gpYcmyLJ3Ldi1flCiiOC7zhOmsTMS9zdC+xdh8bZThg2G4kKpGDGFV
-         Aq4iSfWQqNJ2J5C4Uo/BJabrcJIoNzFPqY9AmNEgzCjTN5IXRcQc86MqD9fBMydMlOw+
-         QHSkInqDo+d4mV1ek3ctYqKakNLaDefP52btWP4+KzKZRD2HjUarXwJwHjJ3H+fwPNJ6
-         7VPg==
+        bh=dLevOcKYkdOnauiVP1IJjwSB8dtI7d/lY5+V+H8fLSI=;
+        b=InQy+DnV+kgT70cenM3G2xykTMHw/BfdKYjRHYmYzdvJbjB4qRA8sM+XKUs84QolIr
+         EJ68+ddzEUIAL90O5CYm5Hfs2gKmNa0jWdyr9JMo2JDoTChZCXUUenQuXTJ4tbeoNwtk
+         /ZjFN4trUFEbo5yv71wprGCzRLZwqeP0pYrYczTDrRRhBcuvttmm6UfirETetxyeVF3b
+         vSri8W1bc9BHHeER1a0XnLLqRDwgNW6U/xiJ6xhZmvvI+zg4vwLE7PIUmnupYjVJ63YC
+         6lqUl0bsMka7wyrprCBvqXI069nUHUGnUkZ1uwyFcBAlkrc2Dpr8UgnYTKxatT7wyCns
+         cSYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788353021; x=1788957821;
+        d=1e100.net; s=20251104; t=1788353155; x=1788957955;
         h=content-transfer-encoding:content-type:in-reply-to:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=Y+y7hZC+VMnjw/gNt+VIRX6BpULMwiS0+R6doj5v4W0=;
-        b=HBvaHMTVSZTt5gbBX/BPkaZVfLTbwd2u1CD3yP2gN68S9Tn7I7aaOUpDm4ndhGoQrT
-         EDrYDkfBJ2X3tU/jp3KtijEIVetm3RSrSu/6AFv1q1PaNARYH2/N4iE6j8ghojGQ9qM4
-         OHHVzC0ViMCyDLo4eZedJZqSqK9f9SHvwJOotMPndCxda18cR+PSFViNYxeVWVDuHTgw
-         zXZHekc0m2zgmaKyacc8YmiV0pkzrP17H6npgL7OFI9eY66x2FCXM+h38Y/irIoM9T3e
-         PRiFY0Icdg8+osX9gWfrtzKB8YQE9arq59yfr9KJpHV+CTkpH0HRm6KscMrWhnniuQDZ
-         Otnw==
-X-Forwarded-Encrypted: i=1; AKwUvBy1IjUmnKH1AySfSags4wrAgQiRtUKj+ZpQkX9sckalBX5lqtYk2ccMdvN0775S/IBxe74=@vger.kernel.org
-X-Gm-Message-State: AFuF++m/Zgxaf4usBPk3g5SKuF161Q3CI+2dwm3PRzMlhifWGOxLri7K
-	mnIYYnVhmfm8j7OtRDq0ZsGAYX3rwuSibinwDdRC8Q7Taxrwjcr78xeB
-X-Gm-Gg: AYBFou0l6PFx/wBnk/P2oFsnTiEAdotWnV2s2ekmXdziGSKYXxxwEq1AfUVsy31Dqi2
-	0d3YGef6bQqjDPvtQKFv4khG50m+lt2uUBYICqYDdiwKtjJNUfhnTuyhHmbdGzdWZUhbjlgvQNb
-	o0tPqXrNFL/aURxLs/0l8JRpOuG37uE3WvQRiSESea0NnYrSDc04lQRD5xUcgAixh2/Z7hmVmYa
-	OtPbiHrHsZbK3b2j68coEEgQ6AvyboDuSJ1QSHyTB3Yaag946RsuCeDvnyEaIYosO5hEIzvncio
-	/Ek87n1nuV3v+RN6a6nB0zJrpgieSMUI6kM/YaUZaH2Y0eRD+huDQDfU7aIk+/sBouwVpjFMp93
-	0lXgUBOrAuBmbt+rsScslgjqn8Nb13iWn81d4S6XpfSitN4FjDfqZqu9lu5BuBe3uY0qnyhgdu9
-	vVQKJVJk0eEs7U6JXpP6LvUX3jRsUajli64HWMz6MdzQXjFGKZBGfpMmefnOsS4h9L
-X-Received: by 2002:a17:907:728f:b0:c12:3cbf:9f6d with SMTP id a640c23a62f3a-c25dc9c10e9mr187020766b.1.1788353020682;
-        Wed, 02 Sep 2026 05:43:40 -0700 (PDT)
+        bh=dLevOcKYkdOnauiVP1IJjwSB8dtI7d/lY5+V+H8fLSI=;
+        b=Stvgr6CmuiQkzikP/kCMfTfBwrxyg7jP6YQcTpS9TuHgl3AP0SDQGfnEJZW/VLFRhR
+         7leWrnePUrlq1/rGl//TrtG/4EQ99lgug+C4JtE8shEWZVTrnhkY/u7yD2WmaIEY9M9o
+         0t5hEE0JDDP0kqSPUkb0veM9DtFAHKe0SWPYhggxuwjT3y40J2u0mxIyAkChhu8DBeTr
+         rT4QigZnLgSobLZYcmjMYPI3zeEkaT1nv1jkANy8Pm9H8OVbjs/3dhiM2rdope8kgK0g
+         KU7BYguZRN5OfAafbBMSVvRJ1LRXxZzewnHBDlp5Wt1GtLdPiOPiI/8syRgg/65Gu5fM
+         uToA==
+X-Forwarded-Encrypted: i=1; AKwUvBxGRqXweZsrDXQ7Li0COX5NE8Q7SyX7xMuN4mW30TCDyOdr2ZJs8RhzVulfXZi0GatgzTs=@vger.kernel.org
+X-Gm-Message-State: AFuF++ljG/0NmyJrPuJuTT6YY0ffsXg0Sjqd2cASxvTArKB4GL1Fyppo
+	mq/LxwrW+nuG0SfUJJGBkHx6AH5IzK0dVcFxsIxb3fw1nDgPwahAPVOO
+X-Gm-Gg: AYBFou2Ta6Pf76A1vjRNkrwCn5ro/bDJMfZ3nyCO/jZjNRb/iO6dDnqXMccgCVq2mFp
+	7PydwPG4nIxr9lx0XPB3Qw2XOzDuPdN1VEvEOUWbXjfbP5+iQTk/MMwWV8ylEBu7WDCM1fjrSxA
+	ofJR05xGEpkxWP4n3D5OBt2X3yfU3f+GY2YzT8IPGK2ZHyV3TDJ5rx3S33RbkuXWxajn6fs0L8N
+	vW7+93vXvPs4PE698tcSBZGWDnoWjEsQbp1cRJmigxt+eWObFtfKiyxoCXfHjcHpTf31z2tka+L
+	4rIBD+JQH2q4hQ+NP+nmFu9V+St91zJpP/HsW6c9lfzitZbx/B68KEiwA7/fWb+K0ONYv6GksKB
+	AtUDYixxJl6VcYR8ulABQq+7r16BnNsn1C63lW/W8hNDxRcMLa66mG5OinDhwK0UJbQpOtZ5czR
+	9/mUm0KMTZB66xbV2lKQrT+7Oh2ReDuZGr75kqaT12TJvcM+lqbPUow+SFMdc2qjd7PZbEQ/+FN
+	gE=
+X-Received: by 2002:a17:907:3d44:b0:c1f:1520:4de5 with SMTP id a640c23a62f3a-c25d5289c2fmr230616466b.1.1788353154604;
+        Wed, 02 Sep 2026 05:45:54 -0700 (PDT)
 Received: from [10.45.18.37] ([15.248.3.93])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c25d039d796sm131254066b.40.2026.09.02.05.43.39
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c25cffc5cc3sm128026266b.7.2026.09.02.05.45.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Sep 2026 05:43:40 -0700 (PDT)
+        Wed, 02 Sep 2026 05:45:53 -0700 (PDT)
 From: Paul Durrant <xadimgnik@gmail.com>
 X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <3cf0e66f-dc0a-483d-b95d-ea1511a2cb23@xen.org>
-Date: Wed, 2 Sep 2026 13:43:38 +0100
+Message-ID: <fa5a18af-acb9-4459-846e-c9c3f74177da@xen.org>
+Date: Wed, 2 Sep 2026 13:45:52 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,8 +71,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 10/13] KVM: x86/xen: Take kvm->srcu in
- __kvm_xen_has_interrupt()
+Subject: Re: [PATCH v3 11/13] KVM: x86/xen: Mark poll_evtchn accesses with
+ READ_ONCE()/WRITE_ONCE()
 To: David Woodhouse <dwmw2@infradead.org>, seanjc@google.com,
  pbonzini@redhat.com
 Cc: joao.m.martins@oracle.com, boris.ostrovsky@oracle.com,
@@ -82,52 +83,60 @@ Cc: joao.m.martins@oracle.com, boris.ostrovsky@oracle.com,
  nicoyip.dev@gmail.com, frn1furkan10@gmail.com, kvm@vger.kernel.org,
  linux-kernel@vger.kernel.org, imv4bel@gmail.com
 References: <20260831213632.81023-1-dwmw2@infradead.org>
- <20260831213632.81023-11-dwmw2@infradead.org>
+ <20260831213632.81023-12-dwmw2@infradead.org>
 Content-Language: en-US
-In-Reply-To: <20260831213632.81023-11-dwmw2@infradead.org>
+In-Reply-To: <20260831213632.81023-12-dwmw2@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 31/08/2026 22:26, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
+> From: Chengfeng Ye <nicoyip.dev@gmail.com>
 > 
-> kvm_gpc_check() checks the cached memslot generation against the current
-> one, which dereferences kvm->memslots and therefore requires kvm->srcu to
-> be held. __kvm_xen_has_interrupt() does not take it.
+> Use READ_ONCE() and WRITE_ONCE() for runtime accesses to poll_evtchn.
+> This marks the intentionally concurrent scalar accesses and prevents the
+> compiler from splitting, merging, or inventing accesses.
 > 
-> Most callers do happen to hold kvm->srcu, but not all of them:
+> kvm_xen_schedop_poll() publishes the single port, or -1 for multiple
+> ports, before setting poll_mask and halting the vCPU.  Event delivery can
+> call kvm_xen_check_poller() on another CPU while the vCPU thread publishes
+> that value or resets the field to zero after returning from
+> kvm_vcpu_halt():
 > 
->   - kvm_emulate_halt() on the VM-Exit path, via kvm_vcpu_has_events() and
->     kvm_cpu_has_extint(). vcpu_enter_guest() drops the vCPU's SRCU lock
->     before entering the guest, so it is not held on the way back out.
+>    vCPU thread                         event delivery thread
+>    -----------                         ---------------------
+>    poll_evtchn = port
+>    set_bit(poll_mask)
+>    kvm_vcpu_halt()
+>                                        poll_evtchn = READ
+>    poll_evtchn = 0
+>    clear_bit(poll_mask)
 > 
->   - kvm_vcpu_block() -> kvm_vcpu_check_block() -> kvm_arch_vcpu_runnable(),
->     which is the case the existing comment in this function describes.
+> The plain read and writes therefore race.  KCSAN reported:
 > 
-> On a PROVE_RCU kernel the former produces:
+>    BUG: KCSAN: data-race in kvm_xen_hypercall / kvm_xen_set_evtchn_fast
 > 
->    WARNING: suspicious RCU usage
->    include/linux/kvm_host.h:1092 suspicious rcu_dereference_check() usage!
->    ...
->     kvm_gpc_check+0x344/0x3e0 [kvm]
->     __kvm_xen_has_interrupt+0x83/0x310 [kvm]
->     kvm_cpu_has_extint+0x1ff/0x370 [kvm]
->     kvm_cpu_has_interrupt+0x16/0x100 [kvm]
->     kvm_vcpu_has_events+0x4ce/0x690 [kvm]
->     kvm_emulate_halt+0x52/0x1f0 [kvm]
->     vmx_vcpu_run+0x988/0x2630 [kvm_intel]
+>    read to 0xffff888112f55af0 of 4 bytes by task 98:
+>     kvm_xen_set_evtchn_fast+0x204/0x7c0
+>     kvm_xen_hvm_evtchn_send+0xab/0x100
+>     kvm_arch_vm_ioctl+0xb31/0xd90
+>     kvm_vm_ioctl+0xf42/0x16c0
 > 
-> Use guard(srcu) so that the three existing early returns don't each need
-> an explicit unlock. SRCU read sections nest, so this is harmless on the
-> paths which already hold it, and srcu_read_lock() does not sleep, so it
-> is also safe in the atomic case which this function already handles.
+>    write to 0xffff888112f55af0 of 4 bytes by task 96:
+>     kvm_xen_hypercall+0xd8d/0xf50
+>     kvm_emulate_hypercall+0x157/0x1d0
+>     vmx_handle_exit+0x40f/0xae0
+>     vcpu_run+0x137f/0x27d0
+>     kvm_arch_vcpu_ioctl_run+0x5a5/0x970
 > 
-> Fixes: 7caf9571563e ("KVM: x86/xen: Use gfn_to_pfn_cache for vcpu_info")
-> Cc: stable@vger.kernel.org
+> The field is an aligned int on x86.  Access annotations preserve the
+> existing matching, callback, and poll-mask control flow while making the
+> single-copy access requirement explicit.
+> 
+> Fixes: 1a65105a5aba ("KVM: x86/xen: handle PV spinlocks slowpath")
+> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
 > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> Assisted-by: Claude:claude-mythos-5
 > ---
->   arch/x86/kvm/xen.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
+>   arch/x86/kvm/xen.c | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
 > 
 Reviewed-by: Paul Durrant <paul@xen.org>
