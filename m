@@ -1,109 +1,110 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFCEC48A2A0
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 12:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E097A49364B
+	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 12:41:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788352704; cv=none; b=fhU/WyAXJ5+SRkHuDUP3hxWEybTuCy99vPEW9jeA708p4lN9ZjTxZ50O5cJjLbUKtDvDgxvPhCHD3ZzaveWKwccqMg5gAAG/srkrBij7iMu5ccAXQAGBPaw5uAqBBHzAUAyUPWOCFQvKbTT8NVIwgPSZI93b0fc5uFjAXpwtATY=
+	t=1788352887; cv=none; b=boyGMPs9rQIuMORcukyLCIEhaLBb6Oan5Hhss9lrX6yvnWHJ3ToYloTCzWWyc/N7mtAN63un21XGUljXz0RFMjQlqles09oqtNVmgbwq6p6YJoDZtFPcPu9GWZ4PpOOQxY972HSSm9I/1OkWo2FFX3TxXmXiP6L9WLmUoB4HW6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788352704; c=relaxed/simple;
-	bh=+KtcP51bt2puyj4IaCAqFSxq2jDN920XHLDvA2hG6x4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=obzmpxcDPIRCy3jLfwSeoTBFB4iZgdP1kbLanNyMmyNmNTmXAVcjKRTgmTkp58WJ1CsjMFwZnRK/bj5DzfTewMyR37J5Vyw7v2QLSZliv0/uTESmoy35SSE5gWiCRnNiAiDk8DvpG2DKZE/8Qq6Wip9nKXx938nimm8JGq6TotQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=reNiMHDD; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1788352887; c=relaxed/simple;
+	bh=G+lYeOOKmDDA7vGsZcnldrVLSAUqszDTx32jDkEhPlw=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ElKVit3v39KgUMhhVfJfr4g/HAV2Oew2p70F1q75lD9IsNsyx8mq/cwsS4dDPZmt2clMNLaZ71iZBLIMUCLKFfZhe3NemLUn6n7t3h4yNmOWsAReJWK8JDnRr0OdnQ9IU5BalP2YFmTpRliaQezbLciE5W59lmRmPdeKQql8Rlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qbpWcDm6; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="reNiMHDD"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0A6D6165C;
-	Wed,  2 Sep 2026 05:38:13 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4343D3F882;
-	Wed,  2 Sep 2026 05:38:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788352696; bh=+KtcP51bt2puyj4IaCAqFSxq2jDN920XHLDvA2hG6x4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=reNiMHDDHVK+DlEsDqgOpb3cq3KUa78KmBh8IUwLDwiqH86ZaVXyKa1etVQatXOr4
-	 38XftIj/Eyw0u41FnbVSqaKHnQHpxx00IPUHNo5pWasYAzCD7tozBvBXqh/qKzEiNb
-	 Fi+BnGGKywGYOc3bs08tUz4gWJooNtjCrBw8VCyk=
-Date: Wed, 2 Sep 2026 13:38:13 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, kvm@vger.kernel.org
-Subject: Re: [PATCH RFC v3 09/21] loongarch: kvm: remove stack copy address
- of pXd in pXd_offset()
-Message-ID: <apgYtdl_DjBIqikK@e129823.arm.com>
-References: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
- <20260902-dummy_ptxp3-v3-9-5d8f5b17c25c@arm.com>
- <20260902121912.CF9161F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qbpWcDm6"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c250f28f1cdso163657766b.0
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 05:41:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788352884; x=1788957684; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=mxFp9sQLUO1dX2aGvnd0BTgUuZ5fJWW6y/rR0ghk3rQ=;
+        b=qbpWcDm6qQmmEfqES8ga9anX9VIeGZ9ZWVyzagDBEnsdhwbRNp8hfnmJt3QPGDif/m
+         3O+MJPSRyQjnznB8u3dBfrhBi606rYcH6goZKpobVZXx6Vey1ZHQLPGRb7mBkMG6XAG5
+         9GIHbzqyXcOXEl9GPp52l9446BTnpiZeSg9Cii2U2xt0uCsX9l80rueQmDWtJXsUzpSh
+         lWZ9i/W+0i0LftGZtTIns6UkoXSTEwVMM1BqJKye/w3vWMScaUrgIEKEupe3HX2mq1vB
+         7Qq92Ol9AZXG2VK2ylJ+LsOZGuhyDs95ivk6I8Hsw7yl90xycvFO+lhWVYQwdikufTx4
+         JLlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788352884; x=1788957684;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=mxFp9sQLUO1dX2aGvnd0BTgUuZ5fJWW6y/rR0ghk3rQ=;
+        b=nZ6evzzJqzITsnkpDBvfiYA4oRFQlm3XatBzPHCbwucR0HS4Y7dt/wavIyIm4aMPAE
+         Nh/JT1aYixCfgAvTPzodXEUvWJ7HpoVmtkGH3YcUjvafQ+1HeIl9Hv9cUWqlLW0ToWPX
+         Mo7vIwTQXHlDzER0UbrpjQHYgBStGc7Jt7+JhnuVE1VluohDz0ZnwGn8coiLUa6TSdA8
+         hZ9zzIfRfbCit39iVPptkCqCY5qmhs10M/YjknpQByiIp6BvBJY40rIS//49x5YhTdAV
+         gs/B7S758eRxYFXrZzBAaMSFigRHDWBCkQyY+yUKbBiTADqngmZFsaU79dRMmyNq6W1b
+         pzuw==
+X-Forwarded-Encrypted: i=1; AHgh+RrnUast798nIRe5HvH5iEpzUCUy+4VbmY7HzcqVfmnmS9Rb9K+52hh3Ee4eaaWn+w9LKOQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++kxwL54SSdnHmPumS9D38Aq5vnMnPRW94mtjaUnSK4Y6K9tqe4A
+	4dLZZXxP61zd9cv8kJNvpHjzR3G9xMlr9lGGwsdlDkhFoWHMdZ1W1RNh
+X-Gm-Gg: AYBFou2LVfFUTLZCIjRqCdPM08mEPLpdkQhgLvG+tyu5x6moC/3SoZtR+ckVqSKHLKA
+	dF3z4dgKMKMx/CPC1Ta21N/OnNViECClhWNnfrMtDqieEyJ8yr6gyt9xYDXNev5cL8gCVUP4NH+
+	8yHu8DoWCHFeTo8LNDU+5PQGcbTIqArPC7Jpd5GgIoKnXfVg31zlrhO1cXAhj6jLkoq+hzAfI1G
+	kiVnkjYyx/t9huQSddpkQ5K/B9BzHAhAYe+DwJ2bcfZV0Y5n5Y9zdIVmhu2EcN7MlrkgLLp2OzU
+	rZFrAe9moz5/XAwak7SZfAYPI0HROCqJfWKUVUxT0FlBwmyVsjyxkngf9y2cMtZcTWru24cqn1V
+	XTm2Rl9u7NsIFZu1PlAteMwdkcSqZ3MWorDu/BGZ123kTXznfq9eJOOiuUG6eXULcx3HgHEM8qG
+	uCQgumjD/Ito53w1FRGkMiI074rc+gxgsivcJYOXYbCm/Fi9oMLazWJENspAheYeZgMgk=
+X-Received: by 2002:a17:907:9445:b0:c24:e1e9:69c with SMTP id a640c23a62f3a-c25d4de3f33mr302715266b.0.1788352883908;
+        Wed, 02 Sep 2026 05:41:23 -0700 (PDT)
+Received: from [10.45.18.37] ([15.248.2.233])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c25d002f1dcsm127213466b.19.2026.09.02.05.41.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Sep 2026 05:41:23 -0700 (PDT)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <37f8d783-3305-44de-8ba0-ab0d2134a83e@xen.org>
+Date: Wed, 2 Sep 2026 13:41:21 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260902121912.CF9161F000E9@smtp.kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 09/13] KVM: x86/xen: Use atomic*() APIs instead of open
+ coded equivalents
+To: David Woodhouse <dwmw2@infradead.org>, seanjc@google.com,
+ pbonzini@redhat.com
+Cc: joao.m.martins@oracle.com, boris.ostrovsky@oracle.com,
+ ankur.a.arora@oracle.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, hpa@zytor.com, x86@kernel.org,
+ syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,
+ syzkaller-bugs@googlegroups.com, suryasaimadhu369@gmail.com, lkp@intel.com,
+ nicoyip.dev@gmail.com, frn1furkan10@gmail.com, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imv4bel@gmail.com
+References: <20260831213632.81023-1-dwmw2@infradead.org>
+ <20260831213632.81023-10-dwmw2@infradead.org>
+Content-Language: en-US
+In-Reply-To: <20260831213632.81023-10-dwmw2@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 02, 2026 at 12:19:12PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+On 31/08/2026 22:26, David Woodhouse wrote:
+> From: Sean Christopherson <seanjc@google.com>
 > 
-> Pre-existing issues:
-> - [High] Missing `pud_leaf()` / huge page check before traversing to PMD level, causing invalid memory dereference on 1GB huge pages.
-> --
+> Replace the open coded atomic asm blobs in the Xen event injection code
+> with equivalent atomic{,64}_xxx() operations.  Casting the event channel
+> to atomic types is ugly, but not as ugly as asm blobs.
 > 
-> commit 7df2ea4ead6f791e1840ca23d67765ca06e93e1b
-> Author: Yeoreum Yun <yeoreum.yun@arm.com>
+> No functional change intended.
 > 
-> loongarch: kvm: remove stack copy address of pXd in pXd_offset()
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>   arch/x86/kvm/xen.c | 35 ++++++++++++-----------------------
+>   1 file changed, 12 insertions(+), 23 deletions(-)
 > 
-> This commit refactors host_pfn_mapping_level() to prepare for generic
-> compile-time folded page tables. It replaces direct uses of stack-based pXd
-> values with pXd_offset_lockless(), passing the pointers directly.
-> 
-> > diff --git a/arch/loongarch/kvm/mmu.c b/arch/loongarch/kvm/mmu.c
-> > index e104897aa5328..837b40bb694f4 100644
-> > --- a/arch/loongarch/kvm/mmu.c
-> > +++ b/arch/loongarch/kvm/mmu.c
-> [ ... ]
-> > @@ -698,19 +698,23 @@ static int host_pfn_mapping_level(struct kvm *kvm, gfn_t gfn,
-> [ ... ]
-> > -	pud = pudp_get(pud_offset(&p4d, hva));
-> > +	pudp = pud_offset_lockless(p4dp, p4d, hva);
-> > +	pud = pudp_get(pudp);
-> >  	if (pud_none(pud) || !pud_present(pud))
-> >  		goto out;
-> >  
-> > -	pmd = pmdp_get(pmd_offset(&pud, hva));
-> > +	pmdp = pmd_offset_lockless(pudp, pud, hva);
-> > +	pmd = pmdp_get(pmdp);
-> 
-> [Severity: High]
-> This is a pre-existing issue, but does this code need a check to see if the
-> PUD is a leaf entry before stepping down to the PMD level?
-> 
-> In arch/loongarch/kvm/mmu.c:host_pfn_mapping_level(), the code reads the PUD
-> entry and verifies that it is present, but it does not check if it is a 1GB
-> huge page leaf entry before traversing to the PMD level.
-> 
-> If a guest memory region is backed by a 1GB huge page on the host, the PUD
-> entry will contain a PFN-encoded value and metadata flags. By unconditionally
-> passing this to pmd_offset_lockless(), the macro may interpret the PFN encoded
-> value as a kernel virtual address directory pointer. This produces a bogus
-> pointer that pmdp_get() will then dereference, causing an invalid memory
-> dereference and potentially crashing the host.
-> 
-> Could a pud_leaf() or kvm_pte_huge(pud_val(pud)) check be added before the
-> pmd_offset_lockless() call to prevent this crash when 1GB huge pages are
-> used?
-> 
-> >  	if (pmd_none(pmd) || !pmd_present(pmd))
-> >  		goto out;
+Not entirely clear why going to the trouble of replacing the asm blobs 
+in patch 8 was necessary only to remove them here but, if that's 
+preferable to squashing this into patch 8...
 
-AFAIK, loongarch doesn't create the pud block mapping. so it seems
-ignoralbe.
-
--- 
-Sincerely,
-Yeoreum Yun
+Reviewed-by: Paul Durrant <paul@xen.org>
