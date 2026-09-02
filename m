@@ -1,328 +1,232 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011069.outbound.protection.outlook.com [52.101.52.69])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DF84ADD9D
-	for <kvm@vger.kernel.org>; Wed,  2 Sep 2026 22:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788388602; cv=fail; b=a/DzoHTmjABgDUAKLQULFdO1n6lm661p67P2ln1rYkvp07vVWxZPsbrCoVHQcaRaNSxRMgOmdXBQjRs+yIsRDOSIMKr2c5h7WQW42m+59vrQoKlIgVRQMFE0tP8MmCmUr5CX6sv32/Zc876x0+4enRvtaUUJqz02xYCNmuoGV7Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788388602; c=relaxed/simple;
-	bh=ZwHkeTvKFehfF7tc1jqamzPez/f5IqIgCPM3YusXNsY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=A8JyVvpLGYaSIwlbyNOrveNK8KGnZWmEh1d1wiaVeW42J+cPdqAyEkjq0/guwaqM8P3N3UxvbmZJE6dC2VH29ViMXXx3L9UsheUbDPaW5HVIoGZuaOXwgpbQWJdAso5qRrnfxaomH3K/04/KJvdBitFzcS4uC8X6N8Br/bY8w6M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ZkPBiUH+; arc=fail smtp.client-ip=52.101.52.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F081145A2B0;
+	Wed,  2 Sep 2026 22:39:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788388774; cv=none; b=SDR6CgrJbgRzXztMQUCVqUWaqz22ZVafiY6Ly72zm2zU56+acqjVaJ+LJpXPc2tspkRn6QmVGBLXWueVBJe0mQRzbq3gVEvJYKwi+mMVxA5D31y3TiNJzr4A8eHSiewwi3ieS7SXQHh/Ya61/6xhP52WAwLoQ1T8qkxMSGcEq8E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788388774; c=relaxed/simple;
+	bh=vmwhOza0xXkHDP9WzBaFOcaSOAX9FHHsji3vVPFmIvU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CzSST8MgD8wAHUHuudlZgh9AQPOoCN3BxeDlLEzmKI5n1cT5hclUcFBC6G0Z7JaufVtF88N4Fk9fSVbgcgIc0YMrb5X1bMtX3bT0xE/lsXdPGaqKZW3+F0k2CK+isrdtH/FLsxGevG9oi8/g0rwW9CRLXw9M3m28t+Hm+N1UHfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=FOpOmvuC; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ZkPBiUH+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t+kbI0D6usEGewDfSieMkBFBpkJ8VrOvR0gYbaQW5jbOJcHSNQtwYDg2w56nDDJ3xTexZpuFGGyPgxVUUxuR2qTE1kETSCkvU7QEACCWJlQ0n0scQVL742NZPer/UTFJAZ7RO6XBgtspDRleRNHXuxaCgzV91iUOx6r66UxL2nE9lVwxeA9u5+Rq8fYxKXPhIridjKh9Q7GurSNMS9I07xAuRVT7cpMSrge5jhndi2v4Dtx2PCShq4fytKvRsQ0613ixX1BFavn2pNutqEzVAlMuEdoPIf+E5IUmJ3WfXF0Hhw009m6OKpke1WfTeJBHdVyq9ez7hbADze99+N/KGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vD616F86GNKfPBpOL7ZEBohA+TRvrSisPDSRROpcjfI=;
- b=BBXZoz7HkuAEdzEup+/CSstYXv5k5thwYdZtFYCXbqB6Zb3Mva6teBe7hzKApbNWcJ+tYBL0+BEtbvdJUnOdgHCbba2K9BtYzTqC9T/qPkjJgOoDubwQ7/tFKAHijOVkNT682q8filUl2DtduERXf3yohQhxlbLs6wNZ5j8ZeOfd7/YzycdczRH1amLBT12D7uSrZ3oAmq+d62tWN9U3l1e7qiftQY59hj9X/tPE1+p1M0yt33bSfw6ppZW8ziuur5ImTF5uTaYkVml7ujI5tHdx5qiIpZiFhxfBbn/9+THs3yPA6OAjYy38i09Tt1s28DSwBPGhFLNG93sffCZPpA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vD616F86GNKfPBpOL7ZEBohA+TRvrSisPDSRROpcjfI=;
- b=ZkPBiUH+tXgnKF8nsFoBmQLh50Thawai15/pNc2Sxl6kHu7cs3oVcAh8K7bs9Lw7Y75+IfVC/oGQ/A9Tr7u7G6+P4PLFmypOn5CDDDsgA16UNC5gCylZ6Kr7n1jJBTtyoPleNZeISEE1xQClDxxizZS7lqgWehPFJl/IT48qjB4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by CH2PR12MB4117.namprd12.prod.outlook.com (2603:10b6:610:ae::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
- 2026 22:36:30 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad%5]) with mapi id 15.21.0382.007; Wed, 2 Sep 2026
- 22:36:30 +0000
-Message-ID: <f8bb9cf7-e6c7-45ff-8705-e11aefe4c3e7@amd.com>
-Date: Wed, 2 Sep 2026 17:36:29 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 4/5] x86/sev: Add support to perform RMP optimizations
- asynchronously
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-References: <cover.1788296083.git.ashish.kalra@amd.com>
- <a31fc8c6d3f6c6bbe50dc4542c7091b0899d3e1b.1788296083.git.ashish.kalra@amd.com>
- <20260902215748.E53081F000E9@smtp.kernel.org>
-Content-Language: en-US
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-Autocrypt: addr=ashish.kalra@amd.com; keydata=
- xsFNBGnyeG8BEADrp4EWc3KHI3tz7Lnw4HgRJRG6U+IJKAp6EBnQA5uimlJspSAr+jf23I2a
- T0mr1uiTnZG0JkfgFpTgwBYcR+d8J96WP9LDeId9z6R7b5jyB64fhYqX8Hpich3lon2Woijn
- azEZ++sSUtAU75m2j9ZE6lkkPM2Ti9YWSBsSg92KDVVROXLO9n6U80lzudJrKAKHE0/PagzV
- D5gjV/s7lb9PX8khKVK3ockGRuy97lw2mAcw17EV8GE5cuToOOzpP8ESXBt1g7xoXVcbHYol
- yuX1ljHEfqy7cCtTsBk1+LzPuhZ7532MIfVmFtDcNUSwCGeGgwNRZno7lAJ9xd6fLkZPTEZ4
- UNsaViyzmJ22P7xMiZqXWQWSk1LohnGhZZdTaIwidWT12c8RX+qVUCzesaFXGqKt0PNTipTp
- L39iEZO8m/+lC1BmTo0EoYtsNfrlngwNPsSU7rtd/t00RuW4YHhXALT2JUbulLCHGK1w9isH
- E7dJXprYjUiZRVF3SaeTF4zg5AzkWRB+0yL2KzWQPumDx1gscLNFev8J1EbdrYClcpUuNxKG
- MMG95wPqWtZm/HaNyG08alXDZcnq8hhxA7AbJLnPYpqWd108p0qp3Vr0UrvuekBKZ6Y7be+m
- Hb4A1xRX3hE2kB971lsVp0lXSEGFHB9TJw7FH/S8paITH58y4wARAQABzSNBc2hpc2ggS2Fs
- cmEgPGFzaGlzaC5rYWxyYUBhbWQuY29tPsLBkQQTAQoAOxYhBOnNssdBmZnznITYhaE6KKJw
- lji/BQJp8nhvAhsDBQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEKE6KKJwlji/q7AP
- +wfg5wOWq+f7eB3uh0agX5Ax/o5r5hlK0EMyl+srJ4jc+NmNKKuVPwx0EwZEpuEcbDLlQuO3
- JIyi13wm6n6FvIBOCfWjvndpaci1QGTMtZDnxueXM8UeFST3KjIEWFXbvgiAyiZBE+lHaSBp
- 7UfAL19icIomKdCVCRtnqOsTvv7mcyPL8qs+OAOu8akvp3NlGsqLrkSB/YTEBKmh8oOR0aXz
- 4VBIHpfTIppIu+F5l5PxOQGwNv/AfQ/oN+Aeo+o8i3s57gViqP8uVlVcI/vi1S4hngmc87Ah
- 3p7KdbrxxPzahD+p1fMXsCwEf0dyJIRduDgAkpktmSLoRzBGkjtOX5nvs75QgA3r0WsvcfxF
- zly+nnhu2GsptY+uu/ZzW6PCz6p0pHMiDfPAL1cfizY8eTMFJN5fnOW9rwXvKbM+DHbowfkw
- NtF0DecH3qjmqAzGg2srE9XJxwOotS1JgeBp1TZsah8pXBaY+Z7s1iaY58H2TrdiDbz88DD+
- TGX4ZHPjocpqeUuwxn7gTCKQq3K1fjt6IKY0A1ocxQEK33pjQMRTJ8lwy4z37V6EohmvCs9w
- 5qyvI9D1gnMnFrqpbry1Jz7z1HB4sFFYxIxyMh86uOcUxGmHRrCiII3YqiSmzizvq4aUmHxd
- YE1Wy+pKx2HVobhnuKIKoSJj2JgYV0+O5dk6zsFNBGnyeG8BEAC+BGciGUt4ODNq38ouK/6E
- jlkJPpnxlksBhlhwce/p1vvARFceifVbawkM8ePHyIXrzxho0PUDjteGFFDjP1o/N0rQzgbf
- 0INfkbJpHME+SYETxrkm+j9oe8DiHXZhdatY5rupZoypodNQJDD1G/HoT7bBQxPj6xDBgHWH
- OyZbg1jjQXSWESgVX118uiQ5M9RdO+gc/YGLt5FDvN892uWs8899QBm804SdSlwkZGMKXZXv
- 12qKw+swQoVzBdCqSLOOtIhGevkl6Ul5+N8iT7xeKMVZffAxkz7DF1yDovhJhrYtgKyUMQqW
- qCINhtp9wHvPt+wfutzYsCLVJvVLMIj3fPtfYBSPXQu2FP0z2Nx6oUxQR/LjilP4UezSdXt9
- WWpb+mvDLmelNuoA7WUxRauQBKu6tR1zoFl3zTdW4ZiSqZRgKInSfaVhINUMv8gqcLlAzkVS
- seOwRrwNDUosSW3gVwj28m/T9JSfGR62i58WmH0sFQG42yuIbq/uE4crf2oQDrpFNzTJgx6+
- Ede711weViGHEQz5vsgERmQrJDddRTgl/SlGtkAYNpVFJgYV2N/jYjiz98hgE2MYgZ2Kd8WL
- T8dvswsQguvkDMpWJZ2BunYhRLGIpyVDhepu05qyFuNYA50GX/qcj7POBSEx/6mBaIQC7oXI
- ffsirWGyL5WEVQARAQABwsF2BBgBCgAgFiEE6c2yx0GZmfOchNiFoTooonCWOL8FAmnyeG8C
- GwwACgkQoTooonCWOL/tdA//RIcNr6dB4ZZaKWDe5SSw0KD7hKExIIiBkxIv5XILcazPK21x
- LlDbXUHxWWaG+9wezceRRBe3GjRo2aKEpQzuAOgR5Ix5tRe5yJAFozO/CCGixiBzQ2I2TGIv
- rp8xZqqvmgogckqz3RE9Rx5VF7bqKriuGbF+WciPU6+YSuN1rH+esS40yoFu2skbYAMfm+Av
- AvEMDAmkR1o+weVZZAZMjm+2ZpCm2xXk5bjAqPQ+GoH70x/kPVv+TXjTN68xIjmP6gwA7c1P
- qozwWzaA2Q2HO5D76clT3tmHbtzMuYt3cfwbWbCpNaqycaHvktATiRjy60Bz9FvRL8cMt0+4
- jumtJoa0nAEmx88QzaMOK3QDW6KoDKzV8bqAHBPtrwH+jhOKId07yHmWCZxIGJAkhwqsdEx8
- bXpP3nTer40r1tvds54lxhKxOlVvf5iBoxa3kC8f6cTNJeGm5ettvD5iFSR+fwAUDEyZEtxQ
- f3Brs3CLkBfijS0zCw9rWqlZJGSst5xwV8UdfppsPWkU9lAUR8UZFsO+g1xCxtBc0nucygzh
- O+mvU01WFeZGTnW7INdP+eDIvj4XYmVSjwCSNvDphJkPccAn2KFcPxYh8PJAqCDw++nfNDrc
- BXA1uh2XzCnnzbc62A+AjwXB89wvlctBLptKlnKBVtrsKEFIoLugtmfIsa4=
-In-Reply-To: <20260902215748.E53081F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH2PR07CA0052.namprd07.prod.outlook.com
- (2603:10b6:610:5b::26) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="FOpOmvuC"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=vmwhOza0xXkHDP9WzBaFOcaSOAX9FHHsji3vVPFmIvU=; b=FOpOmvuCB+mcNgBWR6ylrw6CkW
+	h+wMX1Ey6FiIweG3eJL/D7p88+gp9JbuaoUqSfAh0KYjxqxDm96NB178qLlo1xh6zqO36tbgjkMLT
+	VHZjRbDtaBZDeH26iW09K2p1rrVdLO60iJ45kMCEE5bsIHsmyp6eNAbq4DbgdWFuspd81yuWABGj7
+	dw9b85JqKfYNDTFqgvo3rc0Mrjx8N7ehgtFvDxpmUle54P0FeuAz5ys0RLXszDSekpvvQa0np61Sa
+	h3KDBR/njAQ6NPL8GVGyL2P7BFRSnKcWy3ossIPaPyyZOxFyx3fu46vqTkaQ3VCDTx/pZFbDOlfpG
+	qZttflEQ==;
+Received: from [2001:8b0:10b:5:a7b1:57c5:dd61:87e3] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x1tc1-000000088U5-03xo;
+	Wed, 02 Sep 2026 22:39:21 +0000
+Message-ID: <801fc0b175d582756d4ee6cf9adea5c1f9d61501.camel@infradead.org>
+Subject: Re: [PATCH] KVM: x86/mmu: Always guard rmaps with mmu_lock on
+ PREEMPT_RT=y kernels
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Wed, 02 Sep 2026 23:38:58 +0100
+In-Reply-To: <20260902211759.2700289-1-seanjc@google.com>
+References: <20260902211759.2700289-1-seanjc@google.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-XiVkt5Jod9QdoQAa54/h"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|CH2PR12MB4117:EE_
-X-MS-Office365-Filtering-Correlation-Id: d9a9ee78-35d7-4653-ba22-08df0942a235
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|366016|23010399003|5023799004|4143699003|11063799006|10067099003|6133799003|22082099003|18002099003|3023799007|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	L9nvV/r8cKgXUiUBMedFaTbmljtL0jutekn4sZcR41PIABiUIYuGbljNAhjU940MMp9OHFfLxMLuhlcG6ZvKu4qOIpmHlzEeHKwUTFny3wMCjNRd9zfZcRXMmxNfzpbNqOiH3vqvd09ltDXTK/8ZD1sBeD7y4iADffXNpIHYUAWcZxik+qo3pVyUWo5TsG3WA/Pf5IHiO9IbrpUDAuiBEyolEHUwpvJa8zMzdZaY+3wEQgCQ9c7JVNZMzcaM86XV1j34GdDfWcP8Z+SuJBVWzCDVC2iEpwa/APDQDaaim+IZ9v2+XQpeY2S4OK/lSQUOYNROTzy/5Xunf9POolBT1QmGAvutY+UC+N/dIY07lA79ZT0a7NRQIXh1rj1uAxpR9dvm4SsvPAV7SC9lr3/f91E4pS1DoRW0YD/92F7/6UhuIaXNlOdnQmWkqKQaeL4afETxBkU0LElYvZEwPmWAVT2CqDyxKGdMFuDBpuLqorlKzgdEiScL69TBLrhl+ah7aTPydAeM2tmvS3K7PXMKneAimoFgBpDeVGgqVHpWPX29vffdNyCMZSZSkMrHpq4s71+HEoPzunLlSAABaKUyDBo1Qed1G1pQRM5paKMwIeJ3/qnEZ9SeBFbmiHb+/u8jHpj0SR6Ri4t6RkyAKKv/GV0laydZGlIUPnvlksQtXgo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(23010399003)(5023799004)(4143699003)(11063799006)(10067099003)(6133799003)(22082099003)(18002099003)(3023799007)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RHBMVUw3eGdYR3pDOWpsOSt0d1h0UGpURkhad1hIOWdtZjVzUDRoMFZ3b1BX?=
- =?utf-8?B?akZ0RmxmbmtaNXcvZ1U2eFJ3L1FIQ3BFazZmUG9UT2N2R2NQVkZveUxadTJw?=
- =?utf-8?B?ZXNmR0xHVXpwSlM3V1RXQnhxOHBjbE40TGxEa1Z2Vkc0YU5EVE5xRWZiRC84?=
- =?utf-8?B?SnNpcVpya1lzQm0xQ2pVK1QrancvYTFMOE4wTlFRVEYrSC9uNHNoa1BRaEVv?=
- =?utf-8?B?MmxEYkFLYTdvcUIyWlNpc1NuQXJOWVpUYlgrcjRSWmgrRzl4UWJtQkpKbnhM?=
- =?utf-8?B?RDVyaGJXVTZiamFkck80V1M2bDd6dkI4Y0Y1L1loTGtwVTMwTzNGVGpSU1lH?=
- =?utf-8?B?NUpudU93aWxuWVdZWHFEWVVGMVhPalNJbFo4VkRYMnh4SjFRRDhOdThMcXc2?=
- =?utf-8?B?TUZjZW96a2hYWElUT0hnaWlmUDF6TXdMUDlVODdmQXIzVVhmeU0reUpEMFVa?=
- =?utf-8?B?V0JRZTJsVERPSWFJRlRGS0RMc3RTWmdnckkwbElnNXhDVU5OWlVvOXZtWG5l?=
- =?utf-8?B?dTJwR1liU0xFdEFvRFZHVFdJV2hDdnZsVGpaMmF1Z1FOU3R2clZsM2Z2cGpL?=
- =?utf-8?B?UlVab0pzUmFqZHpWMjViWDF4VlUvQU9LVnduQkd6Vnp6RjBRbDlnbkxQNk4v?=
- =?utf-8?B?a0M2TXJRY0d5SE9kdTFpYmd2eWlqZUwvTGN3WWlackNNdStZR2JNRVVPVXl5?=
- =?utf-8?B?NHl5WGNzTk5OckMwQytHR3hwbnA4b1lrU29sQXp3MmNlRzJ3VThFVGtZcUpl?=
- =?utf-8?B?V2RQUW5PaGZmS21XN08yNkVwbmlWSmlkaXA4TEZ3WjRGdXY0MkpuVzFzMlRX?=
- =?utf-8?B?WmFkaHIxZ0VVWnFyajExdGZjUnNMd2poVlkwdTBGVEgyMGNSbTBHOTFmT3NU?=
- =?utf-8?B?eCtITGlVRyt4SEpsSUpJeVMvSnFlMTdqMUlCbEREVFk3ajBPRmpSYnk2Wmgz?=
- =?utf-8?B?SVkrWER0Si9VWUtXeFBCTTVpMDgxU2ZlZW9SRjBSRTY0M1N5VFF2TXBaN0pS?=
- =?utf-8?B?SFFtMEpMWG9ZalRtak5GTG9yS2pGOURoWTVQSUVTYW81TWJER0dMVkVKUE5F?=
- =?utf-8?B?VkxkZmp6ZnJRYmZwY1JtSW9kOGo4aVlTdWQzdGdtRWF4OTROTUxRcmQyTmNy?=
- =?utf-8?B?cEs1dzk2SGtqV0JFY0NGUnpsYU1qR0lxT3IxbnR5R1hDbi9yWkFqT2x5RU9T?=
- =?utf-8?B?L0R6eUhjZ3lVM2svM3hUa29IVzVQWi9LQ1NJeTdUZ0FIVHBma1pPeG5RTnY1?=
- =?utf-8?B?MmhpdURrcDBBUGZlT2kxdDJ6K2FMVUw2alpiVmtDd25uU1NULzBBeDdWdEdl?=
- =?utf-8?B?L3dORkwrZDk2WWxwNllPOFAyeGxGQ0htclFQaC80Q0djcm9FUDJjelN1K0J2?=
- =?utf-8?B?UWNsMEorSEU5WXYyVStvbXNseFVZcTd6S210MkJnamxGWFZVNGtUOEw2OGIv?=
- =?utf-8?B?TkNuYkNJUmhpTDN6ZFU0aW81QXRMNzkwaUNyWGU2d1VWdTJPa2pucGpLMXNl?=
- =?utf-8?B?MkpGUDlRdkxBb09VQ3hLRitqTnltN3VLTlhsU01VbTkyWloyUWwxNnZZTUF5?=
- =?utf-8?B?Q29ZN1hHSDNzL1QxVWNza3BUTHhzekx4bjlSU0xGTHZ6MER6cUtzK1R4cUF5?=
- =?utf-8?B?U0dmZ2dOcVNvN3VSc0pSS0N3aldMaWx5L3VFZ0JiSjFjYk9NZDN0bFRreXVi?=
- =?utf-8?B?aVFLSkdCMUxzSWdjV2QzeVRTNFAyelJ3Nys0VWVTTkpmSmo0c0tKOVJRNlFl?=
- =?utf-8?B?UEtZYURXajZ6amdnR3MwOTVBMjNXYlYweHlWc1l1MHdXd0xFSTZDV1F1dERm?=
- =?utf-8?B?ZWJCcm02TEZrMmVBZDVtemdBUG5LVXVSZ3Y3eUFpOUJPbnN6UUlsaE9EVnZF?=
- =?utf-8?B?ZnZPb240b3JVR2g2ZklXUDZ1U3I0L3VXQ3NpZlRnVW9ubUtpZjJZWDVZTUI1?=
- =?utf-8?B?MmRmZCs3LytPYXlGR2ZCL2pRNGJPVm9aTjI0OUJablBWeWtkS25lTlRzSjVu?=
- =?utf-8?B?NDRpdHZRSGtvZC9HWkd0NlBRYXVyRml0S3hqZU1vdm9UTEw0dm9taGpoY2V4?=
- =?utf-8?B?TWpGSTllc1JnYmZCRWNkMWhmZTBGTWt5SkR6V1RQRGRXaHNFbkJ5UzNScGs1?=
- =?utf-8?B?eUZ6T01mTUlxTXh3Q2tmYjNYMGlBY2p5QzFMUzFyZHlod2ZNbDRtK2ZxbTQy?=
- =?utf-8?B?RENNSk5OYm5IaUhVRHQ1Z2gyUmQxNmd3YkFpckR3eW1TcWt5ZmUrK3dkbE9L?=
- =?utf-8?B?Y0plUmRRUVY2ZHBsRHR3a3l5MXMyaTNaVmlaNmZVZEJ4Zk0rbCsyc1dSYk4z?=
- =?utf-8?Q?FCkGEeFzaeBn/Tr7ZQ?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9a9ee78-35d7-4653-ba22-08df0942a235
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 22:36:30.5201
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nUyuEgwAyX/hvj6OwVkqTpKcPCZDMKjxi5CX7aYEvYuE6mfGhpTj7IXaLDC1/J+lZczerV/OHtW4BwXAhdNe9A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4117
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
-On 9/2/2026 4:57 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
-> - [Critical] Declare %rax as clobbered or output in rmpopt() to prevent infinite loops.
-> - [High] Schedule work in process context; executing on_each_cpu_mask triggers hard lockups.
-> - [High] Use ALIGN_DOWN for rmpopt_pa_end to prevent out-of-bounds RMP table reads.
-> --
-> 
-> commit 0121e9d5bd127536db9548e1a9f202c9576ef5ff
-> Author: Ashish Kalra <ashish.kalra@amd.com>
-> 
-> x86/sev: Add support to perform RMP optimizations asynchronously
-> 
-> This commit introduces support for asynchronous RMP checks on 1GB physical
-> memory regions to optimize performance on hardware supporting RMPOPT. A
-> dedicated workqueue triggers the optimization process during SNP
-> initialization and after legacy shutdowns.
-> 
->> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
->> index 07f178eb76c7e..a4c0fe49b9ec7 100644
->> --- a/arch/x86/virt/svm/sev.c
->> +++ b/arch/x86/virt/svm/sev.c
-> 
-> [ ... ]
-> 
->> @@ -595,6 +621,44 @@ static bool rmpopt_capable(void)
->>  	       cc_platform_has(CC_ATTR_HOST_SEV_SNP);
->>  }
->>  
->> +/*
->> + * RMPOPT optimizations skip RMP checks at 1GB granularity if this range of
->> + * memory does not contain any SNP guest memory.
->> + *
->> + * @pa is a system physical address; RMPOPT operates on the containing 1GB.
->> + */
->> +static void rmpopt(u64 pa)
->> +{
->> +	enum rmpopt_op_type op = RMPOPT_OP_VERIFY_AND_REPORT_STATUS;
->> +	u64 pa_start = ALIGN_DOWN(pa, SZ_1G);
->> +
->> +	asm volatile(".byte 0xf2, 0x0f, 0x01, 0xfc"
->> +		     :: "a" (pa_start), "c" (op)
->> +		     : "memory", "cc");
-> 
-> [Severity: Critical]
-> Does this inline assembly need to declare %rax as an output or clobber?
-> 
-> Since the RMPOPT hardware instruction returns a status code in %rax, could
-> GCC assume %rax is unmodified because it is only provided as an input? If
-> rmpopt() is inlined, GCC might allocate %rax for the induction variable pa
-> in the calling loop. This would cause the loop step to compute incorrectly,
-> potentially resulting in an infinite loop during boot.
-> 
+--=-XiVkt5Jod9QdoQAa54/h
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-RMPOPT does not modify RAX — its only output is the carry flag (RFLAGS.CF),
-which the asm already covers with the "cc" clobber. RAX (the 1GB-aligned
-SPA) and RCX (the op type) are inputs only and are left unchanged, unlike
-RMPREAD/PSMASH/RMPUPDATE which do return a status in RAX. So the input-only
-"a"(pa_start) constraint describes RMPOPT correctly; GCC may keep the loop's
-pa in RAX and the loop step is correct. (rmpopt() intentionally discards CF
-on this path; only the debug/report path reads it, via a separate asm with a
-"=@ccc" output.)
+On Wed, 2026-09-02 at 14:17 -0700, Sean Christopherson wrote:
+> For all intents and purposes, revert KVM's ability to walk rmaps outside =
+of
+> mmu_lock when running on a realtime (PREEMPT_RT=3Dy) kernel.=C2=A0 I.e. d=
+on't use
+> a non-sleepable bit-spinlock to protect rmap entries, as realtime kernels
+> are highly unlikely to benefit from increased aging throughput and reduce=
+d
+> jitter for memory-overcommitted nested VMs, whereas using a non-sleepable
+> lock is currently buggy and goes against the spirit of realtime kernels.
+>=20
+> Because KVM's rmap locks are hand-crafted bit-spinlocks, preemption must =
+be
+> disabled before acquiring the lock, otherwise a preempted lock holder wil=
+l
+> result in all other walkers of the locked rmap to spin and wait, with no
+> tracked owner for PI to boost.=C2=A0 For non-RT kernels, acquiring mmu_lo=
+ck
+> suffices, as mmu_lock is a non-sleepable rwlock.=C2=A0 But on RT, where m=
+mu_lock
+> becomes sleepable, preemption is left enabled for rmap writers:
+>=20
+> =C2=A0 WARNING: arch/x86/kvm/mmu/mmu.c:920 at __kvm_rmap_lock+0x1a7/0x1e0=
+ [kvm], CPU#16: vmx_apic_update/3708
+> =C2=A0 CPU: 16 UID: 0 PID: 3708 Comm: vmx_apic_update Not tainted 7.2.0-r=
+c7 #52 PREEMPT_{RT,LAZY}
+> =C2=A0 RIP: 0010:__kvm_rmap_lock+0x1a7/0x1e0 [kvm]
+> =C2=A0 Call Trace:
+> =C2=A0=C2=A0 pte_list_add+0x67/0x4d0 [kvm]
+> =C2=A0=C2=A0 __link_shadow_page+0x249/0x480 [kvm]
+> =C2=A0=C2=A0 ept_fetch+0x4d5/0x1220 [kvm]
+> =C2=A0=C2=A0 ept_page_fault+0x60b/0x850 [kvm]
+> =C2=A0=C2=A0 kvm_mmu_do_page_fault+0x252/0x690 [kvm]
+>=20
+> Alternatively, KVM could manually disable preemption when grabbing an rma=
+p
+> lock, but as above, that isn't what RT kernels generally want, and it's
+> actually more complex to implement (cleanly).
+>=20
+> To not completely lose the scaling advantage of per-rmap locks, take
+> mmu_lock for read in the aging path, i.e. allow multiple concurrent aging
+> tasks, as the aging code needs to use atomic SPTE accesses no matter what=
+,
+> i.e. no extra code/work is required to guard against concurrent aging of
+> SPTEs.
+>=20
+> Reported-by: David Woodhouse <dwmw2@infradead.org>
+> Closes: https://lore.kernel.org/all/8d47b43e1829ac92703723e6a1a4afc7a2eaa=
+cb5.camel@infradead.org
+> Fixes: 4834eaded91e ("KVM: x86/mmu: Add infrastructure to allow walking r=
+maps outside of mmu_lock")
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
->> +}
->> +
->> +/* on_each_cpu() callback: optimize the whole RMPOPT range on this CPU. */
->> +static void rmpopt_scan_range(void *arg)
->> +{
->> +	u64 pa;
->> +
->> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
->> +		rmpopt(pa);
->> +}
->> +
->> +static void do_rmpopt_work(struct work_struct *work)
->> +{
->> +	/*
->> +	 * RMPOPT caches the results of a RMP table scan in reserved processor
->> +	 * memory, allowing future invocations to skip such costly operations.
->> +	 */
->> +	migrate_disable();
->> +	rmpopt_scan_range(NULL);
->> +	migrate_enable();
->> +
->> +	on_each_cpu_mask(cpu_primary_thread_mask, rmpopt_scan_range, NULL, true);
-> 
-> [Severity: High]
-> Could executing on_each_cpu_mask() here with wait=true trigger hard lockups?
-> 
-> This call runs the rmpopt_scan_range() loop synchronously on all primary
-> threads in an IPI context with hardirqs disabled. Since the loop can
-> iterate up to 2048 times invoking the slow RMPOPT hardware instruction,
-> is it possible for remote CPUs with cold caches (like on multi-socket
-> systems) to stall for seconds inside the IPI handler and trigger an NMI
-> watchdog panic?
-> 
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+Tested-by: David Woodhouse <dwmw@amazon.co.uk>
 
-The fan-out is reached only after the single warm-up scan that precedes it:
-do_rmpopt_work() runs rmpopt_scan_range() once on the current CPU under
-migrate_disable() (interrupts on, preemptible), which does the expensive RMP
-scan and stores the result in the RMPOPT table. All primary threads are
-programmed with the same RMPOPT_BASE, so that table is shared; the subsequent
-on_each_cpu_mask() therefore issues only cache-hit RMPOPTs — reads of the
-already-computed result, including on remote sockets — not re-scans.
 
-Measured over a 2 TB window: the cache-hit fan-out is ~0.32 s per core — 
-~30x under the 10 s NMI watchdog even with ~2048 iterations and cold data caches. 
-The IRQ-disabled window per follower is bounded by the cache-hit cost, not the
-scan cost.
+--=-XiVkt5Jod9QdoQAa54/h
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
->> +}
-> 
-> [ ... ]
-> 
->> @@ -612,6 +704,23 @@ void snp_setup_rmpopt(void)
->>  	 */
->>  	for_each_cpu(cpu, cpu_primary_thread_mask)
->>  		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, rmpopt_base);
->> +
->> +	rmpopt_pa_end = ALIGN(PFN_PHYS(max_pfn), SZ_1G);
-> 
-> [Severity: High]
-> Should rmpopt_pa_end be calculated using ALIGN_DOWN() instead of ALIGN()?
-> 
-> If max_pfn is not 1GB aligned, aligning upwards creates a hardware scanning
-> range that extends into unbacked physical memory. When rmpopt_scan_range()
-> processes this final 1GB block, could the hardware instruction attempt to
-> read RMP entries beyond the allocated RMP table and cause a Machine Check
-> Exception or memory corruption?
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+/DsdepI3xdi99GcMfZJcMMgAAAAAAAA=
 
-RMPOPT does not read outside the RMP table in a way that can fault. It only
-reads RMP table entries to determine whether the 1 GB region is entirely HV-owned;
-for any address in the region that lies outside the RMP table's range, the
-instruction simply treats that address as HV-owned. It does not raise a #MC
-and does not perform an out-of-bounds access.
-  
-Rounding rmpopt_pa_end up with ALIGN() is therefore intentional and safe: it
-lets the final, partially-populated 1 GB of RAM be optimized — the backed
-part is checked normally and any tail beyond the RMP table is treated as
-HV-owned — with no risk of reading past the table. Using ALIGN_DOWN() would
-instead leave that last partial-1 GB region un-optimized for no safety
-benefit, so ALIGN() is deliberate here.
 
-Thanks,
-Ashish
-> 
->> +
->> +	/* Limit memory scanning to 2TB of RAM */
->> +	if ((rmpopt_pa_end - rmpopt_pa_start) > SZ_2T) {
->> +		pr_info("RMPOPT coverage limited to 2TB; memory above 0x%llx not optimized\n",
->> +			rmpopt_pa_start + SZ_2T);
->> +		rmpopt_pa_end = rmpopt_pa_start + SZ_2T;
->> +	}
-> 
+--=-XiVkt5Jod9QdoQAa54/h--
