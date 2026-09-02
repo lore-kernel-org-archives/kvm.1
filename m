@@ -1,191 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D9C30DD1B;
-	Wed,  2 Sep 2026 17:43:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788371000; cv=fail; b=jgiGUDlZ5OAdx9f9GrS7zFRv8PxCU54fDFDSYT2kd9w3E7XtftW2oGTmJ70ohK/Y9SPz0QolxVP13xQ0FP/B+auP0ofEDl0cwVOky5NE+gjCZfz0SyySyugH7Ltf98xiRw6NAfwPzSy+qbyqokA4hNQ5wcDCDZzSX6jK/05Ll5k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788371000; c=relaxed/simple;
-	bh=aSj2FrfjcZ7K8SFyJCD1GfKBgaLVPM7QvZwbcgvze1E=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=fmCDH1CNxyR4MYyX/ffjD6g0cZKmStLFJlxUD/hwYaRv70vezoz2oGO97p0WxDHCS3FzKsV3/ATINNDkXHxJ0glYrMX9SM9iKmHJHDDK+RpAWS6tBVEUDteHOITSS7Cc4otZNG3lyOng2YGFg7lw0b3kR6EP9oKHbzgBtvDA4PA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lg5rjhos; arc=fail smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8AE371885;
+	Wed,  2 Sep 2026 17:48:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788371287; cv=none; b=rj6uB8YMlbElNETIH2zV/cTOe3rgyI+eB5A9nf+TJz+opP038ATFVt3HWGPxiGCzN5TuIxn8koo1VUSc5ck3FO2ekA/28kGDim2gr4FVDWK77HboqxlObOQxemyZKTQXu1eq7Me/yyJRmA8bTKBzDL7n+7peSkRckW2GkgURYEY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788371287; c=relaxed/simple;
+	bh=HGtwWmnQ6QwDDO+DyewXu4HaqP7hG4EurP/lr9Sz1eU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XixhsLQbcWRimGX6lLVK6C+F/CdTXmY6Om2CAp6NbZ+5XSeF/kMf653otY6MKWgjDC5jxcdqli2wCwuwsO8s41sKAU9+V3Jgq+ARfJPxW1+aXh87QS1Pqrplld/0fSpQOpSqsxRWYAq4uFd1uFfRuTGJJSx18qnr10U9YwDKtuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pXJ51bzM; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lg5rjhos"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788370998; x=1819906998;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=aSj2FrfjcZ7K8SFyJCD1GfKBgaLVPM7QvZwbcgvze1E=;
-  b=Lg5rjhosaHkIJzyZxWS22RBvW6la8i26j2sgsBaI0+tLsw/YRmrN1mBm
-   r6OpYeoc9yYfnms2bwGGxG/TZ+/Sr29GBRShQCRmrjRlacG0pDtXllL6w
-   s+Vvj1YyH4y3dtvwuo/pIHWa8N3Fgk8mz2E1s/hXlFFTlPr7LnjsfnYD7
-   bM9mx6vUXdP7GSSX3NXN/YyyTOdMkuOSvOx4+pKa9cWK+vXiOqRyDpFAG
-   pg33AlcU5gebriAP752IcxCfbJlczxlL0O0zZwRS1PRJYdWiKNoeuJcp3
-   5Jr6oO4Ye+SfQ79y8o6LyKYzEomfeoLaG2k+5WI5VH9yz2kKpTaVx7+hZ
-   g==;
-X-CSE-ConnectionGUID: idDkMGzYTZWMYpiXrgrQBA==
-X-CSE-MsgGUID: LO8imfMNQBy/yU84RW8TVQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="100000138"
-X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
-   d="scan'208";a="100000138"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 10:43:17 -0700
-X-CSE-ConnectionGUID: XDlUbs0NSJ6qYJaQntRwcg==
-X-CSE-MsgGUID: x/SdNNQKQzuG4FyjkjWd1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
-   d="scan'208";a="273635616"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 10:43:17 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 2 Sep 2026 10:43:16 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Wed, 2 Sep 2026 10:43:16 -0700
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.40)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 2 Sep 2026 10:43:15 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MXGgqFa0n4WZ/EcDRI1pMu775Mo0Jh5wPt8ujgkbEX9Q7Ja3ydGLp8W2G4jpB3d/5iiUCW3YAYTxlMN/vUjDrBTfdymhDHxDeUTRwFJGnlh5tpcJpaGNQy5qyxFAV6ixKzRS0B87sDdPU0F5H19bMBKk0suBfWGVkIu+00fDCNf7CnVcoU60CbV6TIeGbfr1rH4lLnS55RCJb6GQVm5OlLI2QfYR61ZLZFfRLoAJWN75ZPZlgRycHeZ9EbDAkz2W0QjXJWTLoef7IQ/wz1+Fp3IDlMKRf+bIj49iLsP6fEjtleskoN/tXf9g8Xsuwf4aFv2H8ecSUQKcvMj4FGm5Jg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/iGKexsKBiwjeIdQ3dqjEmCwUOGcekxxlCciwnmIgec=;
- b=YEeTVUWyuxO88PZ3evDLYNnGGoL/GXPDHm7GYGjfRGEqPbFxOAUG3b+BdrptQIrlAFOwLqxODUWVTHl9ub8O7OqZCDWqQhgWDT3CzidRtCi0TzM++LyKgI1FYet9yCN9LRwxkWzAlwPy0gYv5t1n8XWHGuxHz6KLhCJBK90XIhEVtkjM6CK+53JxGCvmXXCAfeyrd5wV+F/Zuw8hnVotgvELKUcv1IjlElDGP0eyPEx5TGjbZuWrkQK7Ef9AgdkeI1HAxOASKVvv9UTMffXCnJepsXhbUtwaw1XiMR41HBPkrl8/QrBAe0yx4SIP4cvVk1/unBEN2sapXH9JXhP9Vg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8050.namprd11.prod.outlook.com (2603:10b6:8:117::5) by
- CH0PR11MB8213.namprd11.prod.outlook.com (2603:10b6:610:18b::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
- 2026 17:43:12 +0000
-Received: from DS0PR11MB8050.namprd11.prod.outlook.com
- ([fe80::f099:a504:2ad6:1d12]) by DS0PR11MB8050.namprd11.prod.outlook.com
- ([fe80::f099:a504:2ad6:1d12%5]) with mapi id 15.21.0360.008; Wed, 2 Sep 2026
- 17:43:12 +0000
-Message-ID: <73beeef9-3ecf-49fc-87e3-6fa30f8f56d3@intel.com>
-Date: Wed, 2 Sep 2026 10:43:09 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/4] KVM: TDX: Report CORE_CAPABILITIES as configurable
-To: Binbin Wu <binbin.wu@linux.intel.com>, <linux-kernel@vger.kernel.org>,
-	<kvm@vger.kernel.org>
-CC: <seanjc@google.com>, <pbonzini@redhat.com>, <dave.hansen@linux.intel.com>,
-	<andrew.cooper3@citrix.com>, <nik.borisov@suse.com>, <kas@kernel.org>,
-	<rick.p.edgecombe@intel.com>, <xiaoyao.li@intel.com>, <chao.gao@intel.com>
-References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
- <20260827031837.2863609-3-binbin.wu@linux.intel.com>
-Content-Language: en-US
-From: Kishen Maloor <kishen.maloor@intel.com>
-In-Reply-To: <20260827031837.2863609-3-binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0328.namprd04.prod.outlook.com
- (2603:10b6:303:82::33) To DS0PR11MB8050.namprd11.prod.outlook.com
- (2603:10b6:8:117::5)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pXJ51bzM"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 682HVaOG661164;
+	Wed, 2 Sep 2026 17:47:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=HGtwWmnQ6QwDDO+DyewXu4HaqP7hG4
+	EurP/lr9Sz1eU=; b=pXJ51bzM+v6WL88TWOeaJMkj1nSVlEa101MtzmBfaTneIB
+	B8Ry3a6/fLkuV4E44I15E99NZ7Pa9tYuPex+ARWyywvZOqrWeSatuJck2sLldGDL
+	FLLdjhW/AuHBe0Ve2ovPjbT8LMAFqTWO4Le0cLKhTxShmhYzdqSqYtmt4pux+eFO
+	c9w4YtdIqP5+FQfeWr7Ajw8Zf+lvioZBKEyx9S1AOdCdn/hbL0UvdFyi+VFbQCjl
+	S5i7b/vmqjq1v/2/Nl7nA9W8gI2PxivpgFZabXZs5M0NRZjz2k2w7ONefhNdd1pe
+	6iRKd/ARLvVl4+eg8FLJpTOEzDZEktygdnW35Fxg==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbpx5rd98-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 02 Sep 2026 17:47:35 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 682HQpjI023346;
+	Wed, 2 Sep 2026 17:47:34 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gc9rqkj7y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 02 Sep 2026 17:47:34 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 682HlV6S44368140
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 2 Sep 2026 17:47:31 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 07A752004E;
+	Wed,  2 Sep 2026 17:47:31 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 90FEC2004F;
+	Wed,  2 Sep 2026 17:47:23 +0000 (GMT)
+Received: from Gautams-MacBook-Pro.local (unknown [9.124.221.176])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  2 Sep 2026 17:47:23 +0000 (GMT)
+Date: Wed, 2 Sep 2026 23:17:20 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
+        Huacai Chen <chenhuacai@kernel.org>, Anup Patel <anup@brainfault.org>,
+        Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
+        Steffen Eiden <seiden@linux.ibm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>, Atish Patra <atish.patra@linux.dev>,
+        Alexandre Ghiti <alex@ghiti.fr>, David Hildenbrand <david@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+        kvm@vger.kernel.org, loongarch@lists.linux.dev,
+        kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+        Ritesh Harjani <ritesh.list@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 00/20] KVM: selftests: PPC pre-enabling
+Message-ID: <aphhKDm7Vx7G5ivr@Gautams-MacBook-Pro.local>
+References: <20260826230511.972824-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8050:EE_|CH0PR11MB8213:EE_
-X-MS-Office365-Filtering-Correlation-Id: a5c75483-4a07-4fe4-b071-08df0919a897
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|10067099003|6133799003|11063799006|4143699003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: gk16Sk9XwJD0stKGO/I2oz7EaSKulEjwmoF8nAQr4j0wDpwOOEvvtcwgXoz+gKsx9sTBtGapQfl9V7MRsgdtFyk2i8iLHtJBTsG+a4IdnLWm0B/vjgeuFeJYaeQD4eNiahzrVWuhF3CV6XGSBhUDeomfmL8ETcNkG/plccTXsQtQwRLcITcgVlICu9SYSdjm4K9QwFr93DxqSGwzvqKuPR6u/hm2ycsVSbULBB4gYu+GayQcm9iB8iNRIIoPg1HlZn+gb6IRTz65R71mc7ZGzH54gYxpivhsgnovLZMB99NicpHs4Jbez1oA9CfcypQVQDsp5/YpLNNX/AcyCTjm05mI43zhKM65/80Uvj9MoZ3CFcFedXfYVFinor0Btez+9yPD+r/Ps7WN3nJuTDOfxxMolybWmVvV2u5hu/o5hnp18IWqkYmD6Dg4oQkn4TBgIAm+ZCEFHiVzBb2NxLndlT5osl2wLG0EoPH3o6Wt7oslmY95t3zwamT2GhZ4sdP7n7IC1UUny2HTXfjxhGvI85XYZ7KY7tQ4KIrYYZAdTS5fyEUlE2aBJglltnOIDHiAFJfnEo5fbSd4mPu7rg9hcH61iyzGuiB1nDkczVvQDU/VL3YDwkLxNcrZYrqcnAyBOk1nVCF32LFqyLgB3Rlh2JTAG08wrz/tZYgW/RIChnA=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8050.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(10067099003)(6133799003)(11063799006)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NkFGKytQYWhyT0QzN0VsYndtU3g5cWcvdC9UT1NaN1hnZFJpN3p0d3lMU2JS?=
- =?utf-8?B?MTVwVHhWbzlmczB2dVVmWmJYT1lwSlVNWWVYcE9uMTJQZkdIVjQ0VjV2eDJL?=
- =?utf-8?B?R0gzcDNYc1dEVm9yOVlFUll0SW5RYTV0bDg1OElkWjZpTUlPZzNpNzcxcHJN?=
- =?utf-8?B?S2U5TXdwem52dTYwTTNVTVovYjA4N3pXamdycFJZV2dCQ2krc2ZXekhlN0ty?=
- =?utf-8?B?amFpVXhsNGpTbkswL01nUG0ySVBvdzEzR3BBN1NYZ1JFNnNqeDVLQnUvVGR2?=
- =?utf-8?B?SmlpL0FKMXFuOGJycEhKOXJVN2dOSnJOeEJZYkdZVDE2TFh4eHo3VlBFQ1Nz?=
- =?utf-8?B?YW5JVlVhWk5BZ0FLQ1pHWWt0WGg0dEVBcDZCTmw5QUszYmkraVBLYXVqRnRP?=
- =?utf-8?B?bHJ0dzF5akFaa0hXZEdwWXJuYU56ZVpGZElWTGE5c0s1S2NRK1RWdkZ4aGp5?=
- =?utf-8?B?c2twV05GL0tLYmppNnJFR0NYeDZjR0JiZStHNlVWaVpKWkFldmc3cW1DK1lz?=
- =?utf-8?B?azhsbXhRQ3RpR1IrTi9kT1NGdkpBdXlvdDdzcjhkbkszSUhQUW5zUHYvZ2dW?=
- =?utf-8?B?eWduWTdPZFBKYlRGdUNaWTdVYnZKQ2xRRWVybXhNcTlkZFpRMExQaUxqRU9n?=
- =?utf-8?B?ZSs0d0ZlRDVMNC9tMVNWaFNxTjMya2NrdG1KeEdsdHkvemxKWWZjWmpVOVdi?=
- =?utf-8?B?Y0JUTDc1Z3RJZzc2N3R6WU1adlNveEhLbE9vUGpGbjYvMm04d1YvbHlueUwx?=
- =?utf-8?B?elY4RWZPRHBwTG9iNnpuM1haRW5Od0licllhSXJKM2V4RUw2VWpxZjUzTEgy?=
- =?utf-8?B?OXpNcnNQNWRYUmYrVHY5QUJUaWZPR1BvbUNiKzZZZlk4VHhPMVJNK25XQUFs?=
- =?utf-8?B?UDlLR3BxZGpjZzRtVmtCTWEremkzUlIzRUNuSmNCRXB5VzVKRDNra2NuRDhv?=
- =?utf-8?B?SHBXNGlsMmRrYmpYVXNvNHlpVzhuTmM5U2prckg4c1dPZVFWVWcvblhpTCta?=
- =?utf-8?B?aCtsQlUwb0N0ZmZDYzhZT0dhNkRRdUxPRzlBR1dRMzllWnZxVW96dkJ0L3N4?=
- =?utf-8?B?OUo3d2lCS2U0eUhidjZZeXhVUWJYdnRlaGtOU1prTkJFNnZMamYwcmxlay9Z?=
- =?utf-8?B?cC9BRE1xd0hSeWJmVlowQkdxRjhuamRmWnRsNm5lV0NTSXh5WWNNT1JhT0tC?=
- =?utf-8?B?RlhtMXQ2RHRic3luc1poZENab1pLL3g1RTUzUUJ3aHRVTGk0VGRUek5JcUU4?=
- =?utf-8?B?U2hxdFJrMUpZZU80Vnh3SnhDSm02NzF5VmJDL3ZEZTZpdFNFeFlYSUR0OCtu?=
- =?utf-8?B?L05kalZTeE9FYXRoem1wWUJSbWVUZGw1YkF5MzB3ZDhGUkdOY3E4TDUvTjI4?=
- =?utf-8?B?VDVqeExnQ3FrYXJvZU9pUm9ZZkxPbWVybDlWcjBjeTNEWG1BaFBsYXA2SzVS?=
- =?utf-8?B?L3ZjZkhrRlBycmRDNGNvOXA0UUcrbUhFY25ES2VnS250dnBGelFwdUloQTJM?=
- =?utf-8?B?OEdJWHpUWExiazJUbjVOb2x2R2cwUWVnNmtaSVhkcmxSRU83TjBUSTdmVzRK?=
- =?utf-8?B?YXZqcUFQSGhQMkZMU0dsb2JUUkFiU2NUVnFMN0xHVUg4enNQVjRQYXZxNmxC?=
- =?utf-8?B?ZDJUeUxRMUs1d3U0YytZdk5jSTh0K3Q5OHJxeGF2eCtBeFpZcGhkcmNqSDFC?=
- =?utf-8?B?UFBwb1RPUWFreUpqNm1HOEpGNkxHQ2Q2ejJtcElmTmw5V2lhWkNzZUZOVWpp?=
- =?utf-8?B?aE5ub3ZabDNzeitFLzZxWEhWYjhvRXVGa05IYWdCc0g0bENibnB6YzVPai84?=
- =?utf-8?B?bXBEN0owcGJrRXhIK2Q1L1pNV0tNU0xSUmxSUW11YTBXWnd0QmdIZFlHK0VS?=
- =?utf-8?B?OE1WQWhVNjFwT0cydDhROGdLV0pLbmZVZUo5bVNRRkxRZTdtVGdOQlVLUG9J?=
- =?utf-8?B?RXc2WS8vSXFDeS9GK2RwSjB0WkdUREFIMTQ0YzI0SkhiUXZIL0M2SisxK0Nn?=
- =?utf-8?B?YWFQN2hkZGNRamcyMUNQYlBIMVJSeG5zelRQL2xWbm16dnNmaWo0V2MwdTJX?=
- =?utf-8?B?ais3Y2dPMmJjeFpaSjdUcGsvcHExMWlvWUV3V2xnYVNFM1pSRTdrUUlNR1Nx?=
- =?utf-8?B?VXhtTlJETFhQNUdlMDZPTjJObFdyRVp1TWQzS0hXRHQ1eDVWSHB1TU1pblh2?=
- =?utf-8?B?SXhDSkZaN3VsK0FQYnV2YmxyN0pGTER5ZVVtVHlhVGRFMitEY1BsZnRFVjEw?=
- =?utf-8?B?Zmt0elBNN3NHVmtTWlUwVjBNZm8yNzRPSWhjWGJwblgzcGYrL1RHWW90NkJS?=
- =?utf-8?B?cW5Hd2VySUhOUjZPNUpXR3JRN3pDVnh5dmtBY084WU15WTBXYVMyUT09?=
-X-Exchange-RoutingPolicyChecked: OzfjPE+o03SFtO4LZhZ5TFwzGXzCWOXIDHca5fpGmcfubxWXLk1xSnlpLr6K5PjCDcD+F+R+a5zHWM1R+p9/g1TeJ3pklLH0DujgzzVpiJhPMR28bV5R78WEBGU+l7/EIkfp+zlSU2yHcNxUF7S5vx05Pba4viAGBAdcXaTswhgNyOG1lLtesqnRivufdp+/PfUycH6MvBEpdD+uZP3esl9YYARjk+yKSl5dsyOZ7iivhoTYHT87n/lc2OLmNuiV0ebHStEohZ/JInp2I1W/5o1vbfPS1f6ZIGPE2+NaQWAWzUkVMHAb0eCeEZtnEyTS7TyiuAaKWTFzIuMPSuX57A==
-X-MS-Exchange-CrossTenant-Network-Message-Id: a5c75483-4a07-4fe4-b071-08df0919a897
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8050.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 17:43:11.9185
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rKMq9xkIT1IiURYpNUrTZq/UCpcM9/srgu9Gv1vfypKrfA+8fx5K1A3VUBIYuc8sFhh+jhIYxM/ew00h8OFbBg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB8213
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260826230511.972824-1-seanjc@google.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=PPc/P/qC c=1 sm=1 tr=0 ts=6a986138 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=6YN9JvpFNRzmbg3FydkA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: tRZqKKrGtBjHG2Pu3xQZzuOyhRhv077A
+X-Proofpoint-ORIG-GUID: pdLNL2iG2soKTiUHunO9uJiDJ8oxj9S6
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAyMDE1NCBTYWx0ZWRfX/3BQiO/4M77n
+ AvjpUycO+mKHAdP0qa39OrRauYjGL+ZXs6GMp+BhV9vuxqhuESJqGvGyxDS/TncOIoaaNebyj2M
+ Mh+XT8fPklmzmBP5n5N6hvz8btd17e0=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAyMDE1NCBTYWx0ZWRfX7sO1s5aw3bu7
+ yGm8yQcHZ7WA2zwsrkIYdeZcloHnCw+pL5crxFHgEqUiWM+wUus/GNOQ/ZAwb6FjQLOncOp8A86
+ 94yCxLIuXJcEs1s8fHFlHIfo76aNyFoh4QlGJ0Mg/HjdkoTDg99uz3Cx41t/tSng59sXrFCxcMX
+ 9aSG+t+97OyBvbo2meC9X4F15bk3na1rQooBz40mnKd4Trt5E+kWB6Y4mk1lOazlBi5WcQ9xJda
+ SX3oEaIKkegrcRVjJg9T55qxEXJTwuO+3co5WfoC4YNCD6rzXlwpMc5j+JSeRlWHRDM9Un/5kf9
+ KZHm3YyKi0t11rguHeyczHDVWwZ1ehOeBVXz31LmkDWnFTcj2X+/2d5BWmQcgwNwjEJ/LAMcP6T
+ 1ZoI/atPvxfIYGWLuyusfsc18eNXNBHm5c/bJuaj5WtHgPMuR3aqb47eggYeMiaOlkvEFr8Yd4H
+ SzqNL31hLQRftxAg6jg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-02_04,2026-09-02_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 phishscore=0 adultscore=0 suspectscore=0 bulkscore=0
+ spamscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2609020154
 
-On 8/26/26 8:18 PM, Binbin Wu wrote:
-> Reporting CORE_CAPABILITIES as configurable keeps userspace able to enable
-> the bit across the fixed-1 => configurable transition, and lets userspace
-> infer that the bit is no longer fixed-1 so it can adjust its expectations.
-> ...
-> @@ -147,6 +147,12 @@ static void __init tdx_initialize_cpu_cfg_caps(void)
-> +		/*
-> +		 * KVM does not support MSR_IA32_CORE_CAPS, but older TDX specs
-> +		 * define this bit as fixed-1.  Report it as configurable so
-> +		 * userspace can know the feature is no longer a fixed-1 bit.
-> +		 */
-> +		TDX_CFG_EXTRA_F(CORE_CAPABILITIES),
 
-Would a mask of the bits that are fixed-1 across the modules KVM supports today
-be worth carrying, or adding to the allowed set?
-I assume it would be hardcoded, just as the allowed list is.
-
-If a module update later made one of them configurable, userspace would keep the
-ability to set it -- something it has today with the denylist. And since such
-bits are already enabled in every TD running now, continuing to accept them 
-can't turn on anything that isn't already on.
-
-A bit that becomes fixed-1 in the future and configurable after a subsequent
-module update would still need a patch to the mask, just as this patch does.
-Is CORE_CAPABILITIES the only fixed-1 case so far?
-
++ linuxppc-dev
