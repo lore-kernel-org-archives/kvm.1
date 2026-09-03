@@ -1,113 +1,142 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2EF306746;
-	Thu,  3 Sep 2026 02:22:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579DD3546DF
+	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 02:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788402160; cv=none; b=IG8V92/6ez6KZRX5IseLxE5urHepXDm0cm1dZ26bbxc4cSAR2pDpRjSoB8cGMucQ2IWBIDCgStuB/qkdeTI8fm3vNlH5kJcg0KmsPQnAatILAe60cG/TyDe70Rpkr6tdvQNUdVFtAO73Bc/9rBnXGW/442GngF8c587YSOud0lI=
+	t=1788402901; cv=none; b=XUTkJvF35+jda96n5zdsd89B1kQR+tnrg/hmfvTB9+xz4F2imoXnRMlVxiLuOhrbBGFd0t6jf0Kqte9K9SLap7XOdLO0E0SgmSYD5zVKkkEWPwXqFwPJkScjtKIX64nG0q/m9jiDYSmdJrUmsK5qKtFT7vRaKXKkMQ3LtTNYGYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788402160; c=relaxed/simple;
-	bh=2FylJuc1bUlmzziQDSOEpFEiKXb4o1cAdJT/La54P+s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cLlbMl+kWcALsuIcc4hE8sOEH1WoaG4iVb4Zt3CK5ENoX76X4dwRE3kz2j2FGc1oqVWwELApGPGZ0N3kK7CUmvzabkMKwYvDYreIlG2g4PQyb2xloZ0lx5HgN3a76DheNXykhjQ4GcoGtBWESyuIF0IoRnaGanCdDg+KWNsPt/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oHoIPTYq; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1788402901; c=relaxed/simple;
+	bh=KttI8yN3SEE9knj1xRs/FNrG5jE/gzLZlVVCanD/Yjg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=e/F8r4DJNrIB70LNjDm+bAxmQ7AF9KB8bcvXKBdX7HgUqzFsrRTSPQb/0409B+AkZP8rt2QhSHPOtt3JmQZZygOWxD5Fx+fDRJvx9eLVf8YiZnAPQspk1MW+yb0NBkPEX6veyKq5Qinx3mmFq6BNgdaE4tjk2jm/8yHwK8qOQVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--loganodell.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JKRSKjDP; arc=none smtp.client-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--loganodell.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oHoIPTYq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788402155; x=1819938155;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=2FylJuc1bUlmzziQDSOEpFEiKXb4o1cAdJT/La54P+s=;
-  b=oHoIPTYqiWBBBHAgYGyhHriSxh/zDgkWH35ouOD+nIPndGxDrdti4JvA
-   iPtADDal5HlQv5/g0iwqLKKnrmcBGHoRo5zh2vjesAHyU1A+bh00kV9LF
-   75Scp9xsVdxMN3lfNTs1Nif7Sxei1NLg176g2sY+IFGwhaXboOxv8gQTZ
-   pLg5+mBcvWQqm09Q3zbDV/xTfJBZfdb0Hduwe3SPuWMCJesf4H7Qy2KKM
-   NnfjpavksZ1t3BE5sYrbayVqsiKVRNUs0iBo++ptcfqfd+aOxXujWBf9K
-   ty6K0J1kU7iJgzJrO4sBzeeD2MKDPqlF86hLiIrUahphCPIs9wHmjHbLS
-   g==;
-X-CSE-ConnectionGUID: 0+KKFTcVTOyqdtmnzg/Qvw==
-X-CSE-MsgGUID: VfuEullkSNuFRrcOtsPF1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="111646160"
-X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
-   d="scan'208";a="111646160"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 19:22:33 -0700
-X-CSE-ConnectionGUID: aS/ziKItQPSC9lAYFzYSAg==
-X-CSE-MsgGUID: YD2zS5i2SAKWci+n31q1Ig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
-   d="scan'208";a="299450316"
-Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 19:22:31 -0700
-Message-ID: <d47c8cc6-242b-4ebf-89f2-0909abdaadd5@linux.intel.com>
-Date: Thu, 3 Sep 2026 10:22:28 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JKRSKjDP"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e1118e4abso3451771a91.0
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 19:34:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788402896; x=1789007696; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Z/CUOTjDyaAxtZC1lTIYdZbcKOF2SIWxflbwVxpxItE=;
+        b=JKRSKjDPVk0FFsbYxUN8rh23atvO0BGLo2l3Ks8shrfBJHKyupH84uaTVmVhlhgbqC
+         18LH/IN4BB17i9S++NQrSkJeh9KO1YPa5D9KUQAK1/bpwfRSdiJx1MbpQ6k/L/uSr2At
+         4VILdEOzvdycnbiae+QyQaM1fYRQv74kqDgQufzjn3PnkJ8/34nk8O/sumZX0wLMYMES
+         YsNohw0fzbT0Ns4S60MeuyjFyAVFi+XdrvuMAw/xlJhvQtlN4y+0aA8p4tAVY7108Tjo
+         hUL9t8/h0MrjaL7b6p9PxycrKxAYjK0oI08YxCuv4conWs/RU7eIbr2a18cxuPWDlVtQ
+         5EPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788402896; x=1789007696;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Z/CUOTjDyaAxtZC1lTIYdZbcKOF2SIWxflbwVxpxItE=;
+        b=XAUzUpKKzFriKWNj6wtXcuVvFIVyEoxyVq1j/4aXi5X/ipUxU09RARF2+hszIrsQOS
+         b40RUk9r2urYqT17gGHLeoookQOpB3FBZyNRzbyfx241Dlm3broQHmU9wLw/jEWfd64T
+         3GJEaByl4l5zzm4vZvkXOQLfIke1KUuSwrWmxOk6cRp9Z8z01zAwE3cuuMA7i8gOsnDk
+         luJQjcE6saU5qOrG64znFbOLx7qLiMvWxsnZjvraiM4sLDWDUXjNkclISQ955ykP3v8B
+         CgtfZOGFMaMTFtv1E8e1VcH9Dt+R43+5Haz1XGT/rDhYSVulVTqpTRLaGldHO15hgPMx
+         z9Ow==
+X-Forwarded-Encrypted: i=1; AKwUvBxvCRcth8Omr32lY8TAW/HqHX7bkztMPdWgTqfb0U9L4O3py4OYc37lr4rOMiOSMH94sRw=@vger.kernel.org
+X-Gm-Message-State: AFuF++mpTYKSPzBCI0gvIoBa6OkgBQ8lUBj097D1iDdtCT+f1wUP7kzM
+	9AG6yv1yraNycli269LG0zqBqKyKk5OkNvs0Nx7VuN1ns4XrnTcWP/grg9nxEkeGXhlRRX12bCp
+	RzHra9vv0jJuKLy/tkA5RXA==
+X-Received: from dysc26.prod.google.com ([2002:a05:7300:3b1a:b0:332:2edd:e13a])
+ (user=loganodell job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:2d85:b0:398:9c00:29f0 with SMTP id 98e67ed59e1d1-39aee249bd7mr14082963a91.24.1788402895806;
+ Wed, 02 Sep 2026 19:34:55 -0700 (PDT)
+Date: Wed,  2 Sep 2026 19:34:49 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/4] KVM: TDX: Report CORE_CAPABILITIES as configurable
-To: Kishen Maloor <kishen.maloor@intel.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org
-Cc: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com,
- andrew.cooper3@citrix.com, nik.borisov@suse.com, kas@kernel.org,
- rick.p.edgecombe@intel.com, xiaoyao.li@intel.com, chao.gao@intel.com
-References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
- <20260827031837.2863609-3-binbin.wu@linux.intel.com>
- <73beeef9-3ecf-49fc-87e3-6fa30f8f56d3@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <73beeef9-3ecf-49fc-87e3-6fa30f8f56d3@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
+Message-ID: <20260903023452.721732-1-loganodell@google.com>
+Subject: [RFC PATCH 0/3] liveupdate: Move to feature flags for LUO and memfd
+ ABI compatibility
+From: Logan Odell <loganodell@google.com>
+To: arnd@arndb.de, pasha.tatashin@soleen.com, rppt@kernel.org, 
+	pratyush@kernel.org, graf@amazon.com, akpm@linux-foundation.org, 
+	pbonzini@redhat.com, maz@kernel.org, oupton@kernel.org, seanjc@google.com, 
+	bhelgaas@google.com, alex@shazbot.org, jgg@nvidia.com, kevin.tian@intel.com, 
+	dwmw2@infradead.org, baolu.lu@linux.intel.com, joro@8bytes.org, 
+	will@kernel.org, robin.murphy@arm.com
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-pci@vger.kernel.org, iommu@lists.linux.dev, 
+	Logan Odell <loganodell@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 9/3/2026 1:43 AM, Kishen Maloor wrote:
-> On 8/26/26 8:18 PM, Binbin Wu wrote:
->> Reporting CORE_CAPABILITIES as configurable keeps userspace able to enable
->> the bit across the fixed-1 => configurable transition, and lets userspace
->> infer that the bit is no longer fixed-1 so it can adjust its expectations.
->> ...
->> @@ -147,6 +147,12 @@ static void __init tdx_initialize_cpu_cfg_caps(void)
->> +		/*
->> +		 * KVM does not support MSR_IA32_CORE_CAPS, but older TDX specs
->> +		 * define this bit as fixed-1.  Report it as configurable so
->> +		 * userspace can know the feature is no longer a fixed-1 bit.
->> +		 */
->> +		TDX_CFG_EXTRA_F(CORE_CAPABILITIES),
-> 
-> Would a mask of the bits that are fixed-1 across the modules KVM supports today
-> be worth carrying, or adding to the allowed set?
-> I assume it would be hardcoded, just as the allowed list is.
+We're including maintainers from all subsystems that currently is or
+will be expected to participate in live update to ensure alignment on
+the path forward for compatibility.
 
-This version doesn't include fixed-1 bits or other non-"directly configurable"
-bits to minimize the code footprint.
+Currently, Live Update Orchestrator (LUO) and its file handlers rely on
+monolithic compatibility strings (such as "luo-v5" and "memfd-v1") to
+validate ABI compatibility across kexec live updates. Any modification
+to serialized structures requires bumping the version string, which
+strictly breaks compatibility between adjacent kernels even when changes
+are additive, backwards-compatible, or optional.
 
+This RFC series transitions LUO and subsystem file handlers to use
+granular feature bitmasks instead of compatibility strings. We replace
+the compatibility string with a header structure that includes some
+reserved space to define the features that are included after the
+feature.
 
-> 
-> If a module update later made one of them configurable, userspace would keep the
-> ability to set it -- something it has today with the denylist. And since such
-> bits are already enabled in every TD running now, continuing to accept them 
-> can't turn on anything that isn't already on.
+We include 3 bits of data for each feature: supported, active, and
+required. When the supported bit is set in the next kernel, the previous
+kernel can serialize the feature and pass it to the next kernel. When
+the active bit is set, it means the previous occurred and the data for
+that feature is valid. When the required bit is set, it means that the
+next kernel must have the associated supported bit in order to be
+compatible.
 
-After discussions with the TDX module team, there is one potential backward
-compatibility issue regarding x86 feature deprecation. I raised the it as
-in the cover letter and there were discussions.
-https://lore.kernel.org/kvm/1deddc78d14326b378ddd62ad99c21d66da401e6.camel@intel.com/
+If a feature is required in that it cannot live update to a kernel that
+does not support the feature, it is expected that the feature not be
+active or required initially. This allows for an intermediate upgrade
+path.
 
-> 
-> A bit that becomes fixed-1 in the future and configurable after a subsequent
-> module update would still need a patch to the mask, just as this patch does.
-> Is CORE_CAPABILITIES the only fixed-1 case so far?
+Overview of Changes:
+1. Define feature header and migrate luo_ser (Patch 1):
+  - Introudce the feature header with the supported, active, and
+    required bits.
+  - Replace the luo compatibility string with this new header.
+  - Validate the preserved size is at least the size of the header. This
+    breaks compatibility with the old way.
 
-Actually this is the #VE reduction on fixed-1 bit, which changes a previous fixed-1
-bit to directly configurable.
-There are several cases of this category, i.e. MCA/MCE/MTRR/CORE_CAPABILITIES.
-However, CORE_CAPABILITIES is the only case that KVM doesn't support for non-TDX
-VMs
-I will add these info to the change log.
+2. Export feature header information to vmlinux (Patch 2):
+  - Adds a .liveupdate_features section in vmlinux containing
+  - Adds helper macros to export feature information for a given
+    subsystem
+  - Export luo's feature information
+
+3. Memfd Handler Migration (Patch 3):
+  - Migrate memfd to use the feature header instead of compatibility
+    strings
+
+Logan Odell (3):
+  luo: Move to feature flags instead of compatibility strings
+  luo: Export feature support to vmlinux section
+  luo: memfd: Move to feature flags instead of compatibility strings
+
+ include/asm-generic/vmlinux.lds.h |  12 ++++
+ include/linux/kho/abi/luo.h       | 114 +++++++++++++++++++++++++-----
+ include/linux/kho/abi/memfd.h     |  41 +++++++----
+ include/linux/liveupdate.h        |  22 ++++--
+ kernel/liveupdate/luo_core.c      |  60 ++++++++++++----
+ kernel/liveupdate/luo_file.c      |  28 ++++----
+ kernel/liveupdate/luo_flb.c       |   2 +-
+ lib/tests/liveupdate.c            |   2 +-
+ mm/memfd_luo.c                    |  40 ++++++++---
+ 9 files changed, 246 insertions(+), 75 deletions(-)
+
+-- 
+2.55.0.979.g7e5102b832-goog
+
