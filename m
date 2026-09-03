@@ -1,175 +1,220 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C32144065A;
-	Thu,  3 Sep 2026 10:40:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851D648EBC1
+	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 10:47:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788432013; cv=none; b=HF2eZmM2aGzadWCg6Mk/I6kwHQ9MeGwfj5cqBh+WPEYxKKITrgvzxDAVrUMFRs838ttT3wLipkFxbl38/9PuRuuOz6nmV3wPmCj6xop1FL+yu2C3axFZ13iy4c5qtDmx5vD09wdNyZEFsz+BR1+9o4iiSlxWmBwTbL4a2Dpeizg=
+	t=1788432429; cv=none; b=pIEWkn4mIpho+NQZpokaMmN/p6mDW/RRC2Zs6C7naiHIYaE2tciUQWKBYlTIVYCbyuiY8Sx3XI+R6awZAUTO77BBAx1UNvepVvBttMs4clHyrPEHJZZOlZCxRh0dLUrq7ehw/+jtohrVLoocuX9rBtNnK+se/bCu30j0SLOk4Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788432013; c=relaxed/simple;
-	bh=BYVJynyohII4KtOhdVCwIs7zjy1IbgGwaJjNCx9gEDs=;
+	s=arc-20240116; t=1788432429; c=relaxed/simple;
+	bh=xWfHIczEA2mvPlpw7/cO/ft96NQzezvyaliBGWTZt54=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nzf2H15BhONuiaPt/2CFTxK1VTJsf6qlJd8MPqLWKJpkIHukEsaTJq2+zWe6YXZ3IZCw64SLvmRFQArdNA9qOe83csvRBUvjHF4k0FrW2oFol+4Nb2fSdeC98Gzbf0rQw66SNgAHKCPR9DSZ84RHZLMSq8YRfj4eLZNSLczfpxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IpHCXVTb; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=OLE9dU/l+UJCeWlyvc2RLSSZvzK2Lt547z9sR5/NMvEcxuCJZmgCe4HxmwoxcaIyKuL9eEq2ukdLCTbbh1YSgM1s9K9IeZdk8WM0QeKTEfNPbrR1jYx/G9ptNCdamTU6Bu8kn5ygyvmej0QQ6f8B4LZTaCsYp7/QAMpselX5vQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WT0S713W; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=o4rl7xi0; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IpHCXVTb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788432010; x=1819968010;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BYVJynyohII4KtOhdVCwIs7zjy1IbgGwaJjNCx9gEDs=;
-  b=IpHCXVTbWa/cV2I3bv2jF4xZNqFTOV7Wl/vlu8kICN8YPFG+xzlRZWbF
-   FeHL1p+UO04gQOlXRQ78BOOHMYn4sxfLSe+YWMd3v/3+HK+eWX14mSpqf
-   7xJBuVFOV1F/bvlVo4uNyJTBgO+wuG2hOF8vGKsGHNct2DWd8BobgN7kO
-   FcCUKfSWer24WaqJZgLJRqiXmgcrZUunhY4/Ehn38BwC3aLUq3G1LzCx5
-   ASayFEaDnUNnwrW50MCl3oNwmYmiAcAVDRR5M5uWTYyLN29Mzt3bHnT3A
-   /zyDGEqRdrDoResGWxzU3UDUW+rb+KbkEFv02WW/g7lolX2mOcO2ONrpW
-   Q==;
-X-CSE-ConnectionGUID: KxQKp8R/RYadVNy2Ltf60g==
-X-CSE-MsgGUID: Vloz23RlTAKENujIS5tByA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="106430689"
-X-IronPort-AV: E=Sophos;i="6.25,259,1779174000"; 
-   d="scan'208";a="106430689"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 03:40:09 -0700
-X-CSE-ConnectionGUID: 3+W4Vo7IQim3ma8iAFHTfw==
-X-CSE-MsgGUID: 0CWgmwMFQYekpaJG+/3VSw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,259,1779174000"; 
-   d="scan'208";a="269153261"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by orviesa008.jf.intel.com with ESMTP; 03 Sep 2026 03:40:05 -0700
-Date: Thu, 3 Sep 2026 18:40:04 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: david@kernel.org, linux-mm@kvack.org, x86@kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
-	xiaoyao.li@intel.com, sohil.mehta@intel.com,
-	adrian.hunter@intel.com, kishen.maloor@intel.com,
-	tony.lindgren@linux.intel.com, peter.fang@intel.com,
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	chao.gao@intel.com, artem.bityutskiy@linux.intel.com,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH 4/6] x86/virt/tdx: Add extra memory to TDX module for the
- extensions
-Message-ID: <aplOhHWvaxqUJDqu@yilunxu-OptiPlex-7050>
-References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
- <20260821032920.256225-5-yilun.xu@linux.intel.com>
- <aohvlMO7ehqcVW96@thinkstation>
- <aowMYbHKK4b0O5P6@yilunxu-OptiPlex-7050>
- <apE8yHrGx/bfifV9@yilunxu-OptiPlex-7050>
- <apf6WFKun8z4ejG8@thinkstation>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WT0S713W";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="o4rl7xi0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788432426;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hf8yu5d7GebbmHWi/7eHO3R3u498r/IQfuzDpLs9L7g=;
+	b=WT0S713WGK7UXUA9pO7Yy8MzsUT54BI+j2GTaMoyBgoziPUeM/toIUjWnNw2J4G34jC5P5
+	AGvt79uOKP99+VbxLhcjZhMqAWLXB6GZCr6JTxfybmG410QuNyp3fcbyuISp79Y78Ufyfn
+	P83n4qQQ1KpkB3yZXc5xvi8N9bm9/wQ=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-355-F5lXIetzOXOsVBIzcl_vlg-1; Thu, 03 Sep 2026 06:47:05 -0400
+X-MC-Unique: F5lXIetzOXOsVBIzcl_vlg-1
+X-Mimecast-MFC-AGG-ID: F5lXIetzOXOsVBIzcl_vlg_1788432424
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-499913d1a79so13847465e9.0
+        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 03:47:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788432424; x=1789037224; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hf8yu5d7GebbmHWi/7eHO3R3u498r/IQfuzDpLs9L7g=;
+        b=o4rl7xi0EEOMHW7MCgkxyzZrSc9cQVYrQDtm/SFyCxwtk11Hlw/OgQH+7OmEWYRnRM
+         AQs7ATlJEILtq1vBzxVnQ088rMXxmJIilO2ObgNFwrzk67BBYg3F1HquPzAO1bN7nQXU
+         0Ue17QVG+8fdOqtsAVQA1aUBMVHik947sjwMql9QtcB/398/oeMo07BkZA+GMzW2mJO1
+         EJ15vhR6N9ZiLxZhefIiut/Kj5mWSdScrkKB3Q9MZTCaJYRcppvE0f+zXdlFD8D3U37P
+         S4n3wwXM9njFLn9iLwUh3pcIyMIy4YUHFaKwa0FnxgYwtf7cPZvM9k8IpzSikJZwB1YS
+         oE2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788432424; x=1789037224;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hf8yu5d7GebbmHWi/7eHO3R3u498r/IQfuzDpLs9L7g=;
+        b=E2ZlDde9XImxk59/ARpSOXVLby7mLEfOyft98WXNh08wZ0yrUrx0BLk81VraThxz3W
+         VrVtFN8z1yC9ICeD75AREKTPXnN8QWQ10NUaWSMF+/LW/Vgh1//tNAQ6f+MYXcTsCmtC
+         ya+zEsTex68Ll1BNSLK0YmK5svNUBi+efCkkwZfB9gtIqfVmHVVDCYp3LhnjC7Xa0006
+         q/hheBhjvG/GbQVYaJHKSVnCDHzQw2H2PWYDP1bNDz85j8DuVZcWHdZNZ6ZjG15YAOL+
+         Whxh//M9wwmD6DkJrlT6w1biMnz1/gID7nd2Fjf6GqQTr2uAibjI+1Idu52jgLwyv+gT
+         XvLA==
+X-Forwarded-Encrypted: i=1; AKwUvBxCxzwLervbqGlnXvki2VG48+xqZxtDy+V/kF8XcHdsAs34WgdITa7c0MMwfTwKRy6rTHg=@vger.kernel.org
+X-Gm-Message-State: AFuF++nt1OXHTahZe0Tf6/UgAZWW2TcQmSLEIZEFpqv+tDm45TtfE7jZ
+	e5c1R6Q3EvU1NDuukQg3WxeudlkM/latMsWDN/y38hbYNPRODT2plsa0wuzCKfvxqZ499wIV5V0
+	DnbsBV5sguKxu4GPdlgR+SbZU7IdWeebp33Qzi/im8sdstTd+gTPvcA==
+X-Gm-Gg: AYBFou1hJ+PtFCzl1KnaaTq7aBCVS/5m3WICAe6fImEOdhGWRc0wc3iKGUW4OPrsYYi
+	V37+DCFeROjTeSrR4T7esvb2zpAli3QjbAHO7dJaeY5z0lPYkRK4bkWYmEv4MtdVx+ezjOg8/fL
+	+sMch4lcORt6cEkm3Gyi+Bmo5c/vlBefGdOueqFRpnDeoChOKH7XqO2lVw/0uH+t4bZKQ/bbum4
+	VBfsplDX0qxr+ozyEIjsCvj/ryXXAzx1X1gfi+9fKaqEgzPRm1E1RcMlyuzFH8KsqObontCkp3H
+	p9AuM8yyDAywY04U4snt0bpEsy5/m1dmsSIOLzOV05DqU3DMdm1CjNtqGUGqA/uLmcWGAR9XSwZ
+	6ytbkb3Qy5Pj7tMTOJKiMNWccFhgziHxqWeA=
+X-Received: by 2002:a05:600c:8714:b0:499:b65d:1250 with SMTP id 5b1f17b1804b1-49ce580d869mr204539315e9.2.1788432423988;
+        Thu, 03 Sep 2026 03:47:03 -0700 (PDT)
+X-Received: by 2002:a05:600c:8714:b0:499:b65d:1250 with SMTP id 5b1f17b1804b1-49ce580d869mr204538535e9.2.1788432423542;
+        Thu, 03 Sep 2026 03:47:03 -0700 (PDT)
+Received: from leonardi-redhat ([151.29.41.106])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee5d6029sm63445225e9.6.2026.09.03.03.47.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2026 03:47:02 -0700 (PDT)
+Date: Thu, 3 Sep 2026 12:47:00 +0200
+From: Luigi Leonardi <leonardi@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
+	Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Zhao Liu <zhao1.liu@intel.com>, Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH 1/4] sev: rename set_guest_policy to set_id_block and
+ remove dead policy code
+Message-ID: <aplPIuIgLYKofjGq@leonardi-redhat>
+References: <20260901-fix_igvm_policy-v1-0-e93a6cf8c5ac@redhat.com>
+ <20260901-fix_igvm_policy-v1-1-e93a6cf8c5ac@redhat.com>
+ <aplMPpjG6X__JZeM@sgarzare-redhat>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <apf6WFKun8z4ejG8@thinkstation>
+In-Reply-To: <aplMPpjG6X__JZeM@sgarzare-redhat>
 
-On Wed, Sep 02, 2026 at 11:54:25AM +0100, Kiryl Shutsemau wrote:
-> On Fri, Aug 28, 2026 at 03:46:16PM +0800, Xu Yilun wrote:
-> > > > > +	page = alloc_contig_pages(required_pages, GFP_KERNEL, numa_mem_id(),
-> > > > > +				  &node_online_map);
-> > > > 
-> > > > Why contiguous? TDH.EXT.MEM.ADD takes a list of page addresses and the loop
-> > > > below writes every one of them out separately.
-> > > > 
-> > > > alloc_pages_bulk() fits the chunking that is already here, and a short
-> > > > return can be handled per chunk. alloc_contig_pages() isolates and migrates
-> > > > to get its range and fails TDX init outright when it cannot find one. PAMT
-> > > 
-> > > Yeah, this is not the ABI requirement, but the kernel's consideration. A
-> > > brief reasoning in the commit log: avoiding permanent memory fragmentation
-> > > and buddy allocator efficiency loss.
-> > > 
-> > > Also there is some discussion:
-> > > 
-> > > https://lore.kernel.org/all/167d9540-2d9a-4367-bc68-b96494bc4044@intel.com/
-> > > 
-> > > TL;DR
-> > >   - The memory will never return to the kernel.
-> > >   - There is chance that this tens of megabytes will fragment tens of
-> > >     gigabytes of memory forever.
-> > >   - The chance of fragmentation is actually low since at boot up, but
-> > >     let the buddy allocator take care of these never-returned memory
-> > >     is not necessary and lowers its efficiency.
-> > 
-> > Hi Kiryl & David:
-> > 
-> > I see there is another suggestion that the whole memory adding process
-> > could be a little simpler if we allocate & add pages 4k by 4k [1],
-> > rather than one-time pre-allocation. The concern of this alternative is,
-> > as said above, memory fragmentation.
-> > 
-> > [1] https://lore.kernel.org/lkml/f48b83feb2ee1d3c88b5a1627cf35b4b282d3f90.camel@intel.com/
-> > 
-> > And I've realized the memory fragmentation discussion is not actually
-> > closed in previous thread [2]. We need more input.
-> > 
-> > [2] https://lore.kernel.org/all/167d9540-2d9a-4367-bc68-b96494bc4044@intel.com/
-> > 
-> > Let me give a brief overview of the problem:
-> > 
-> > Intel TDX (Trust Domain Extensions) is a feature for confidential
-> > computing. A secure firmware called "TDX module" runs in an isolated
-> > environment to provide services about security.
-> > 
-> > In Linux, the host initializes TDX module at boot up time
-> > (subsys_initcall()). During the initialization, the host must donate
-> > tens of mega bytes physical memory (35M ~ 110M in the forseeable
-> > future) to the TDX module. These memory will *never be revoked* cause
-> > the TDX Module initialization is a one way path.
-> > 
-> > The TDX Module doesn't require this memory be physically contiguous. But
-> > the kernel side concern is if we do PAGE_SIZE allocation, it may
-> > permanently fragment memory regions, stop them from allocating 2M huge
-> > pages. In worst case, ~50G (110M * 512) memory regions affacted.
-> > 
-> > So is the physically contiguous allocation really a better choice here?
-> > We appreciate inputs from mm folks. Thanks!
-> 
-> What matters for fragmentation is not contiguity, it is how many
-> pageblocks are left partially occupied by unmovable pages that are never
-> freed.
-> 
-> So you can ask one pageblock at a time with
-> 
-> 	page = alloc_pages(GFP_KERNEL | __GFP_NOWARN, order);
-> 
-> with fallback to lower order if you must.
-> 
-> It also fits the ABI: pageblock_order is 9 on x86, i.e. 512 pages, which
-> is exactly TDX_HPA_LIST_MAX_NR_PAGES. One allocation is one full HPA list
-> is one TDH.EXT.MEM.ADD, so the allocation loop and the chunking loop
-> become the same loop.
-> 
-> But alloc_contig_pages() might be a good enough approximation for
-> per-pageblock allocation if we do it during the boot when fragmentation
-> is low.
+On Thu, Sep 03, 2026 at 12:32:21PM +0200, Stefano Garzarella wrote:
+>On Tue, Sep 01, 2026 at 12:09:18PM +0200, Luigi Leonardi wrote:
+>>The guest policy must be provided at guest launch start: LAUNCH_START for
+>>SEV/SEV-ES and SNP_LAUNCH_START for SEV-SNP. See the SEV API
+>>specification, chapter 3 (Guest Policy), and the SEV-SNP firmware ABI
+>>specification, section 4.3 (Guest Policy).
+>>
+>>The policy parameter in set_guest_policy was never effective: by the
+>>time this callback runs, LAUNCH_START has already been issued for both
+>>SEV/SEV-ES and SEV-SNP, so writing to kvm_start_conf.policy or
+>>sev_guest->policy has no effect. In practice the only thing this
+>>callback actually does is set the ID block and ID auth for SNP's
+>>LAUNCH_FINISH, so rename it to set_id_block to reflect its real
+>>purpose, remove the unused policy parameter, and drop the non-SNP code
+>>path which was entirely dead.
+>>
+>>This is preliminary work: actually forwarding the guest policy to the
+>>platform before LAUNCH_START is added in a later commit.
+>
+>IIUC the behaviour is the same after this patch, but IMO better to
+>clarify.
 
-IIUC, you mean alloc_contig_pages() also gives good de-fragmentation
-that we need. But it would be slightly easier to fail cause it requires
-extra contiguity that we don't need.
+Yep, will do.
 
-Multiple alloc_pages(order-9) meets our requirement exactly but the
-falling back to lower order may create more fragments. And we can do
-this because of the ABI definition - an HPA_LIST could happen to hold
-an entire pageblock.
+>
+>>
+>>Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
+>>---
+>>backends/confidential-guest-support.c       |  12 ++-
+>>backends/igvm.c                             |   6 +-
+>>include/system/confidential-guest-support.h |  28 ++++---
+>>target/i386/sev.c                           | 118 +++++++++++-----------------
+>>4 files changed, 67 insertions(+), 97 deletions(-)
+>>
+>>diff --git a/backends/confidential-guest-support.c b/backends/confidential-guest-support.c
+>>index 156dd15e66..a0b36d2da5 100644
+>>--- a/backends/confidential-guest-support.c
+>>+++ b/backends/confidential-guest-support.c
+>>@@ -38,14 +38,12 @@ static int set_guest_state(hwaddr gpa, uint8_t *ptr, uint64_t len,
+>>    return -1;
+>>}
+>>
+>>-static int set_guest_policy(ConfidentialGuestPolicyType policy_type,
+>>-                            uint64_t policy,
+>>-                            void *policy_data1, uint32_t policy_data1_size,
+>>-                            void *policy_data2, uint32_t policy_data2_size,
+>>-                            Error **errp)
+>>+static int set_id_block(void *id_block, uint32_t id_block_size,
+>>+                        void *id_auth, uint32_t id_auth_size,
+>>+                        Error **errp)
+>>{
+>>    error_setg(errp,
+>>-               "Setting confidential guest policy is not supported for this platform");
+>>+               "Setting ID block is not supported for this platform");
+>>    return -1;
+>>}
+>>
+>>@@ -64,7 +62,7 @@ static void confidential_guest_support_class_init(ObjectClass *oc,
+>>    ConfidentialGuestSupportClass *cgsc = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
+>>    cgsc->check_support = check_support;
+>>    cgsc->set_guest_state = set_guest_state;
+>>-    cgsc->set_guest_policy = set_guest_policy;
+>>+    cgsc->set_id_block = set_id_block;
+>>    cgsc->get_mem_map_entry = get_mem_map_entry;
+>>}
+>>
+>>diff --git a/backends/igvm.c b/backends/igvm.c
+>>index 7b7bdc72b7..85de0d54ec 100644
+>>--- a/backends/igvm.c
+>>+++ b/backends/igvm.c
+>>@@ -968,9 +968,9 @@ static int qigvm_handle_policy(QIgvm *ctx, Error **errp)
+>>            id_block_len = sizeof(struct sev_id_block);
+>>            id_auth_len = sizeof(struct sev_id_authentication);
+>>        }
+>>-        return ctx->cgsc->set_guest_policy(GUEST_POLICY_SEV, 
+>>ctx->sev_policy,
+>>-                                          ctx->id_block, id_block_len,
+>>-                                          ctx->id_auth, id_auth_len, errp);
+>>+
+>>+        return ctx->cgsc->set_id_block(ctx->id_block, id_block_len,
+>>+                                       ctx->id_auth, id_auth_len, errp);
+>>    }
+>>    return 0;
+>>}
+>>diff --git a/include/system/confidential-guest-support.h b/include/system/confidential-guest-support.h
+>>index 5dca717308..6d35ddb97a 100644
+>>--- a/include/system/confidential-guest-support.h
+>>+++ b/include/system/confidential-guest-support.h
+>>@@ -128,21 +128,23 @@ typedef struct ConfidentialGuestSupportClass {
+>>                           uint16_t cpu_index, Error **errp);
+>>
+>>    /*
+>>-     * Set the guest policy. The policy can be used to configure the
+>>-     * confidential platform, such as if debug is enabled or not and can contain
+>>-     * information about expected launch measurements, signed verification of
+>>-     * guest configuration and other platform data.
+>>-     *
+>>-     * The format of the policy data is specific to each platform. For example,
+>>-     * SEV-SNP uses a policy bitfield in the 'policy' argument and provides an
+>>-     * ID block and ID authentication in the 'policy_data' parameters. The type
+>>-     * of policy data is identified by the 'policy_type' argument.
+>>+     * Set the guest policy for the confidential platform. The policy
+>>+     * configures properties of the guest, such as whether debug is
+>>+     * enabled. Its format is platform-specific; for SEV/SEV-ES and
+>>+     * SEV-SNP it is a policy bitfield. Must be called before LAUNCH_START
+>>+     * so the policy is in effect for launch.
+>>     */
+>>    int (*set_guest_policy)(ConfidentialGuestPolicyType policy_type,
+>
+>I'm confused, this commit says "rename set_guest_policy to set_id_block"
+>so why this callback is still here?
+>
 
-If I have to choose, I prefer alloc_contig_pages(). It doesn't have to
-depend on HPA_LIST ABI details.
+We will need this callback in a following patch, so I thought that removing
+it to then add it again was pointless. If you prefer I can go this
+route, or I can specify it in the commit message.
 
-> 
-> My alloc_pages_bulk() suggestion is wrong. It doesn't get any control
-> over allocation placement. It will tap in the per-CPU cache first.
-> 
-> -- 
->   Kiryl Shutsemau / Kirill A. Shutemov
+Luigi
+
