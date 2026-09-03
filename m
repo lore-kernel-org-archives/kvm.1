@@ -1,173 +1,112 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D05377AA7;
-	Thu,  3 Sep 2026 17:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4284F6462
+	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 17:53:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788456268; cv=none; b=Cgkz668umvRh0vWzTXOF2WCxhh3rXbUMbv/haATDHDFn67Nf0f+4OlVjo/IHEFq3SSa7mh9tHznOx0WcT+Kj28nHZC0kb4T9oFEWVU2taZGE8s4B48Xujel5ZzgKF/NasJUjbTT+bisFoJ1oUwrPm91mSu873H77yHXcs/Pk6zw=
+	t=1788457993; cv=none; b=KO1I7C1gqLtIxh+Sgza7zik9JF7IIBTRhmgE1ZvE6SpwhPu8rODauWGEblIacl7mZ0ZLwvCjvlwVIgfH295XT0NpjsFsOfsINjwTm9WOgvgyNthlwV3imSiPWyu3W0S6a5uB2I5iz8PastbJs/jo5fptkDs96Hn6Uxe+gk11aKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788456268; c=relaxed/simple;
-	bh=bUWo3Ln1yQQwc4kuTS4Fy6LaJyFVsXeAYcWf/2KMuzA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bPHcy667915R0OEjDMMzlmcHUdjkFvqgLZ6RkY6WzR/rSMgUmpwr2Me/SCiXzrygTcMXk8AFR79kTBT8V8JiBEQGgP1x8RHKoWIa4DCwp583RfAiNS33nrb5iO8aOLP9DmiIrE7pfAbKMY8kPTPQxO1FXMcFn6utBHOVyAnguB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tk0w+1ML; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1788457993; c=relaxed/simple;
+	bh=qmvSYOj93Rj2lnHMFkCIXw86uphqZdKfuXvnifx9U18=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=skUPBvOOQLFEzQ13duFyzWEulsYGhRJakHOy5o0EtWf4GSf5VLAFEPoezGiZXbUn79hTzoWLCt1Y0w9VlkkTfj/8U9bMgQBkt1GyIBfHL6OtaJepI7u2ptp6ZoMzdw3BBy6hKznYdv6KjkmbIINIVg8EOJe5jBmE0ej5F6osXd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qTM+IwDx; arc=none smtp.client-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tk0w+1ML"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 683G2rPP2292349;
-	Thu, 3 Sep 2026 17:24:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=c8TO/7OmvWGnMMLtgzx+QJ5ne/qqbr
-	RqrQI/qIvKOcY=; b=tk0w+1ML1WzdAiMfCAeYriFWIVLZ77ViBxJCSohQ/igM7/
-	TndfhwZ0gfXTbzKiElVuR3mGNcDARpxUjzbU3BULh/+iBCtisedKz/RNRJZRpr5D
-	wwhq6cfQcKlkYrimI4102g356kN/JFqudtRTAuwrQ/PGrm1JnJ2P8LgOv+xw43Bs
-	iNzXdpbuFmcu2hSvs3Emdzu3ROf4Bwu0q7pYYkUpPxzMu4LLHVKQdD58b71g4KjC
-	7uK3rfY9WQofhSDC0pcNvVfyPPr4l2BrhOCRTa206KUsFrQ11SyFU2//mY3JZjzC
-	Ez6X2VsXbeeDYbXLr/d++JMkEVFMcPfcFXdPM9kw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbnue5qy4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Sep 2026 17:24:24 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 683HBM3d027423;
-	Thu, 3 Sep 2026 17:24:23 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gcbygrhjj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Sep 2026 17:24:23 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 683HOJYP49021252
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 3 Sep 2026 17:24:19 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 99E7720040;
-	Thu,  3 Sep 2026 17:24:19 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3E81420043;
-	Thu,  3 Sep 2026 17:24:19 +0000 (GMT)
-Received: from osiris (unknown [9.87.144.233])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  3 Sep 2026 17:24:19 +0000 (GMT)
-Date: Thu, 3 Sep 2026 19:24:17 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/8] KVM: s390: pv: Use VM_SPARSE area for guest
- variable storage area
-Message-ID: <20260903172417.12158Bf0-hca@linux.ibm.com>
-References: <20260720085834.898025-1-hca@linux.ibm.com>
- <20260720085834.898025-2-hca@linux.ibm.com>
- <e9449c63-b8d2-4ed9-a184-7dcab3e8dfce-agordeev@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qTM+IwDx"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-ca6bd8a190cso282841a12.0
+        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 10:53:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788457991; x=1789062791; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yf858VmSM4H/VduQMmnZj+hAnDJWsph1+mnhHN8bJIA=;
+        b=qTM+IwDxIFtHENT38wDp+pA4vqOdC1VkZa/cas/dmTiveoHy0J6z21H7wggBOmgWW1
+         6lvARyTkVh/oUsaHcDCIwL7HowUVVbpGQPHxgJ6LNuZxP79qxQUKx9OwZBEpaVufxlPI
+         C+OLJI2zlR8Jl/kNqyUqwjtmoGw87QsSX7cqqL6zkhtECH7qb2Yj0mcQ9w34JzAKCVLF
+         czPsBoua4T4YCbfKhLD/UqqZrTZkEPBfv69D9NphvyxZiSdhoWvm4sI6QtXqSNH25ag0
+         t2noWDX2gJ4gP1aSJOyHp97zahUXM9BGxKVjHrlr4aOMnPc1+K7wbOkE7Z0eAFfz2LD0
+         f0Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788457991; x=1789062791;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yf858VmSM4H/VduQMmnZj+hAnDJWsph1+mnhHN8bJIA=;
+        b=YSqhfQZu1Tm6Riodbi94aNv41Z8AQbvRoW2oSstjT6g38ckS7YT6LORkbLXIFQVco2
+         A8HRqi/EUWbIs7qLoxCWQ0P2owZQvc3lxN8hzO5LH/+lRMIzvgX4rKxtI8J92mzBJLuj
+         4ZrM3z2LAyxuUwUZ1lR+KG9gg0een+vdH/aMB0Jqdxneh9lWGMqbTh+8WIOeh+zBZH0s
+         tkhC2wb4MP6WbyMhmdohFcLyblQFduSaeDfhFmY4aZK0e0awuXFQ+zLncO661fFRlPnC
+         9BtqCaFySggly0Gnht/nKQUZ7BwNpVQiSbSxMivtPOXnwbXENzlDJBxpsGGAyKhX4Buo
+         jK6w==
+X-Forwarded-Encrypted: i=1; AKwUvByGRwAdU1yXY47QNi8O9b0Yni4tJMrViCBaml2WhCQIiPpOv1Mk1Npv9jccq0TqeuolnQI=@vger.kernel.org
+X-Gm-Message-State: AFuF++menEs11V1dEnugzgpJnxS/by9U9LezZl8b894U0mJtXkxtWfGI
+	VpSUngKKF/GCfGshW/YcZepzZCGy7dGdmDkrhAWch6xjdR12qk90Tswr8ol/VAqLNxC/SAFPP1u
+	QB5iGzg==
+X-Received: from pfbeq4.prod.google.com ([2002:a05:6a00:37c4:b0:848:487e:d23c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2c97:b0:857:7337:5db9
+ with SMTP id d2e1a72fcca58-8616af6486fmr919512b3a.23.1788457991212; Thu, 03
+ Sep 2026 10:53:11 -0700 (PDT)
+Date: Thu, 3 Sep 2026 10:53:10 -0700
+In-Reply-To: <202609030248.b516759d-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e9449c63-b8d2-4ed9-a184-7dcab3e8dfce-agordeev@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: lQ87t9wGFaNarBH5O1a7QAehJ9p8v979
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAzMDE0OCBTYWx0ZWRfX+aHlm7/7Ulja
- sKxgI46hpg0f+mLQmGtgUkqUK0i50Yfjz91D4cQrayKNXj5gXKviMLX0CKyBMPW0np/DZk0XaUl
- xhzkvtOifBDbQdKelV1C/D4mCWuzlFz0Za76D+3mJpno9BuH6l37FmV46/H74haH7w0ccIASGpG
- 7SIjr3KFBgoHlRI4YSSG0dpgTAgMEyJFX0/8+10yJ9sbcHy500Pez8iZtIUsJWJivYUAzyXSC0Q
- sQc1z+0mjZHe6ClHBcWvA+nnDDw5f/HvEp0ZgzYU70Iy0DXoveM0PXy7FOixyCSvjb//roK0O62
- TiRXU8GGS5a3sOR3yihvnGvlTbOJA9KRDQg0X3RbtuZim1CMShvCQdWOX2pm4jLW78M7h1PjTKR
- 1OhjGK1tmvelk76RaKv77eqMWziZaxtfFFotULF6UMbNRc+HKMuEK0fV+9Eh6tqASWpnzDv6oef
- JGPjZGxKWy9Y+Bw9vqQ==
-X-Proofpoint-ORIG-GUID: lQ87t9wGFaNarBH5O1a7QAehJ9p8v979
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAzMDE0OCBTYWx0ZWRfX5Runrt85YE4E
- YmHEMmZGOTNoemowEE7qxp+pZZOxEsQRX5Xc6IeWiqnTFnMKNdE3e1qMqKwWuodfgcm2S7AHs3L
- FdFMAJYv5y4rAVGbd/9fmDielhiOODo=
-X-Authority-Analysis: v=2.4 cv=B92JFutM c=1 sm=1 tr=0 ts=6a99ad48 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=G1NG3s6dxYr6cGAu9j0A:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-03_05,2026-09-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 spamscore=0 clxscore=1015 suspectscore=0 phishscore=0
- lowpriorityscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2609030148
+Mime-Version: 1.0
+References: <202609030248.b516759d-lkp@intel.com>
+Message-ID: <apm0BpPvMZZWYthw@google.com>
+Subject: Re: [sean-jc:x86/evmcs_vmptrldst] [KVM]  7fecb27e8d: bunch of
+ kselftests.kvm failures
+From: Sean Christopherson <seanjc@google.com>
+To: kernel test robot <yi1.lai@intel.com>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com, Yosry Ahmed <yosry@kernel.org>, 
+	kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Sep 03, 2026 at 02:28:35PM +0200, Alexander Gordeev wrote:
-> On Mon, Jul 20, 2026 at 10:58:27AM +0200, Heiko Carstens wrote:
-> ...
-> > This assumes that s390 will gain full support for lazy_mmu_mode_enable()
-> > and lazy_mmu_mode_disable() in the future, since as of now the used
-> > ptep_get_and_clear() in vunmap_pte_range() does indeed invalidate and
-> > flush every single pte entry, but only for s390.
-> ...
-> > +static int uv_alloc_range_cb(pte_t *ptep, unsigned long addr, void *data)
-> > +{
-> > +	struct page *page;
-> > +	pte_t pte;
-> > +
-> > +	page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+On Thu, Sep 03, 2026, kernel test robot wrote:
+> kernel test robot noticed "kselftests.kvm.hyperv_evmcs.fail" on:
 > 
-> In lazy mode this callback is called with preemption disabled, so it leads to:
+> commit: 7fecb27e8d353adda91989eb01b3ae200b846a42 ("KVM: selftests: Always assert that vmwrite() succeeds") https://github.com/sean-jc/linux x86/evmcs_vmptrldst
 > 
->     [  138.709287] BUG: sleeping function called from invalid context at ./include/linux/sched/mm.h:322
->     [  138.709535] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 6092, name: qemu-kvm
-
-...
-
-Any chance you missed to provide an important detail: this can only
-happen with your not-yet upstream series, but as of now there is no
-upstream problem?
-
-Is this correct?
-
-> This could be solved using the below fixup:
+> in testcase: kselftests
+> version: kselftests-x86_64-f5098b6bae76-1_20260727
+> with following parameters:
 > 
-> @@ -247,7 +247,9 @@ static int uv_alloc_range_cb(pte_t *ptep, unsigned long addr, void *data)
->  	struct page *page;
->  	pte_t pte;
->  
-> +	lazy_mmu_mode_pause();
->  	page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
-> +	lazy_mmu_mode_resume();
->  	if (!page)
->  		return -ENOMEM;
->  	pte = __pte(page_to_phys(page) | pgprot_val(PAGE_KERNEL));
+> 	group: kvm
 > 
-> The downside is lazy_mmu_mode_resume() does not really re-enable
-> the caching and the performance will stay the same even when the
-> lazy mode is supported on s390.
+> config: x86_64-rhel-9.4-kselftests
+> compiler: gcc-14
+> test machine: 16 threads Intel(R) Core(TM) i7-13620H (Raptor Lake) with 32G memory
 > 
-> This is the same pattern as kasan_populate_vmalloc_pte() - which
-> was the only occurrence so far.
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <yi1.lai@intel.com>
+> | Closes: https://lore.kernel.org/oe-lkp/202609030248.b516759d-lkp@intel.com
 > 
-> Alternatively, the page could be allocated atomically, but I think
-> that is less preferrable.
-
-I guess the real fix is to pre-allocate all pages, keep the pointers
-to the struct pages in an array, and populate with a different
-mechanism. Similar like the vmalloc code is doing.
-I wanted to keep this code as simple as possible, but...
-
-> > +	if (apply_to_page_range(&init_mm, addr, size, uv_alloc_range_cb, NULL))
+> The kernel config and materials to reproduce are available at:
+> https://download.01.org/0day-ci/archive/20260903/202609030248.b516759d-lkp@intel.com
 > 
-> lazy_mmu_mode_enable_with_ptes() called from apply_to_pte_range()
-> disables preemption.
+> Detailed log:
+> # selftests: kvm: evmcs_smm_controls_test
+> # Random seed: 0x7ad5b4f9
+> # 
+> # ==== Test Assertion Failure ====
+> #   include/x86/vmx.h:434: __vmwrite(encoding, value)
+> #   pid=5240 tid=5240 errno=4 - Interrupted system call
+> #      1	0x0000000000412f61: assert_on_unhandled_exception at processor.c:781
+> #      2	0x0000000000406f86: _vcpu_run at kvm_util.c:1687
+> #      3	 (inlined by) vcpu_run at kvm_util.c:1698
+> #      4	0x0000000000402cc6: main at evmcs_smm_controls_test.c:93
+> #      5	0x00007f0a85d39ca7: ?? ??:0
+> #      6	0x00007f0a85d39d64: ?? ??:0
+> #      7	0x00000000004030c0: _start at ??:?
+> #   vmwrite[0x0] = 0x0 hit VM-Fail
 
-There is no lazy_mmu_mode_enable_with_ptes() upstream, nor does s390
-select ARCH_HAS_LAZY_MMU_MODE until now. Therefore my question above.
+/facepalm
 
-I guess my assumption above is correct and there is real urgency to
-fix this.
+I managed to *repeatedly* not update the repository I was using to build selftests.
+Thank you friendly kernel test robot for saving me from major embarassment!
