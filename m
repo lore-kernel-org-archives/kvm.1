@@ -1,111 +1,149 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B9E34EF0C
-	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 07:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D9F62809;
+	Thu,  3 Sep 2026 07:28:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788420001; cv=none; b=O3jY6TtTfKbOdFfqo2a8YkSLjzYmDqSWbBcHQ+skPb2XkxzUGs0+deJtI/gYpfCNh+qCbjahe73RYkWz9zLfQ1acE70IwkYzUYBYU3nO+xwOgtoPD9v8dntdzSAv47XgHqpBy5DTsRwj3qim+2RZGK3s6akxdKQYxFkC16B4qUw=
+	t=1788420528; cv=none; b=rRuiJqlT47O0XgSyDXt8THPU9XRAlM+HnsnTGF9aj0htngeLz/+4sJCdvFZp9WGb5eQzKsBFiAdbJ1xhacbzKHWutbRVG5tPLJhPOP9u3ZGKO7Wx+XyFdwczyCaVbgdM4y86m84zHIZl1cL5LLODfs7V+ALAULESFyEIMLZ0KXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788420001; c=relaxed/simple;
-	bh=WIGyhjmFX3PvAEfEIc2uUOuaJw83FvB0A1Cda3WLsus=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OVeVDriQRh6279XiyG7RrLzSRYM6orN+z+jCcVdEV1fnefPMgflY7a/ial8fFfJgK46vraYsS+nr+6KPkXuJbxzopGUisjDnrdisAybfWEAy8CPDqNGOqqnrgaMzMUElK8r1mTaSeYvqE8oB2O5wjX3vXQ7u2n/RcrvQNjLYQKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OHrR4e0k; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788420528; c=relaxed/simple;
+	bh=qTsepFlsW+yq1s6Als/DhO9gITKNucANJwYs3LQkhk4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Nhn9HRigxAjDkkYCKTgKRQazrjoMIAfzov7DqSacI2zzD6DEwUfy3diD6ZyLdd+7JR7rzmoyk0YMXzILcB9PwerXk9OPN6kj6Cg182Cm/d5uwCv79JtnyAF/Mw3wWQua2utj73xniPoAQsG1md1L4efo8sY58YkvTd3P8nWS+pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a/QNLnMV; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OHrR4e0k"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49cd77e0f95so20163925e9.3
-        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 00:19:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788419998; x=1789024798; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nBAHZuXWY5KyAIRDBkxHYvUNH8902LbkXp1LoQGZxso=;
-        b=OHrR4e0k0JZguWIEQ+obAP3QTGBIsty6crxdZQoYwylJw5k0bgpGEBGCUDBRE63p/o
-         XSbNCxovqI+4ZF7TKHyHSCI1aSYVW+8JtvIkjwChAmj4Qf2CRuwRr6AZdj5NCMiSMyc0
-         hjMcWkeNsvENmoK5arRrQxoLGS87EI8mPMxCSDnbFHN4a6Tpj+hQgEO806Uf1IP8xUmi
-         8xvnG2c42l2tT2zJXad4u8nvXXsf07l5CG+MvdK9eRXi4iioZ1Snkr4hmveUENSYXvD1
-         F7Hl6SPvFhvaIVEF8jgDkycbNAg/mpf1fr0gJq7jgTQDeYeBpwIWJNJcevnOcAeumZ8D
-         5XnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788419998; x=1789024798;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nBAHZuXWY5KyAIRDBkxHYvUNH8902LbkXp1LoQGZxso=;
-        b=KWePbp0RY3DrDYolr2hTWSJM+ShIw61vQH1UIlyhNFGN896YTNizDCLSdqgi2DZavr
-         9ed0aE13IoeQ9hSl6RjIAaxx9L0cC2UOvCEwVEdqD+xG7Umm7wstYwci5Jl/wndTwWNI
-         vW6cu/Ns+Xy3NfOnuWVs96IxWHRN5iU6SJKFcQIUcv35jQMbrcELWgX+tKOcnbIrmmH8
-         ASnSKw9jFM4vle7xdpFN2DFgWZIh4CJoLYp/bE8qSe5f3CsZmtKA1w16/ls96Wg8AFbH
-         yGaYIg+c+4v52kzshOjiGEMAdiBPO9csiQhEMntPb56uTZqNFwa2Yos8jy6Li0urY4yJ
-         LrRw==
-X-Gm-Message-State: AFuF++mXKaYZSp19OlRSC17bCwHTQg34/pRcXrIG2dHMb36RDblhY2WX
-	JFcOtQU3QyXkDmUBaNO8wZj2CXA+9pbOsHKfbfT58iX22BdYuXGIjxe0f77YFw==
-X-Gm-Gg: AYBFou1/1hzGNPmGxmpn66FPg6nXg93U+nhDJG5FfcnBaUD5k6v5bP34DDoVrd26Mrd
-	yTNKYCS+BgXa82uaYxkgc5s+K8eD0p4nhB+aPJ+m9AbUEMJpyBL179hgwieZylXP4KKxDpg2Fs5
-	xAkiz/+9LFB8HkJo2TGYvWjR3fVEH73dmDQYysCqmPXL39yNHQ36iTFMwAjim0pHNXM0XTFeSXU
-	nozk/zkIpDqSe2pEVZ9MNsSXe+WG9vPsSvcZZpvdXrRRE7ak4pT8opRTcfOey/MQjoPfHuOn7Jp
-	KQKzbiu75yfpo4POfE5ICZqMiBBSCCNQywGvC35xl0kephbC5vH5adhjuiYzNn+Kc/Gg0VXd/ws
-	U1OYLv5vOQsl+FmpNaFJsWs69+PYJCDklIuylbCUf3EGKsGTEhygOhbZFeLZoQaRGrHRCVoA/Z6
-	VjbMrp5b0gFjNbnkkbRBXy3j5Yb1A5ntwNi8dYgrfCobeBYZBZ5ECryAUG0+P5Du7nOtw=
-X-Received: by 2002:a05:600c:3f08:b0:49c:e1ed:26b1 with SMTP id 5b1f17b1804b1-49ce5850cefmr189595405e9.16.1788419997972;
-        Thu, 03 Sep 2026 00:19:57 -0700 (PDT)
-Received: from SurHub.localdomain ([196.188.114.38])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee5e589bsm45644615e9.13.2026.09.03.00.19.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 00:19:57 -0700 (PDT)
-From: Abdifatah Suruur <suruurism@gmail.com>
-To: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Eric Auger <eric.auger@redhat.com>,
-	Mostafa Saleh <smostafa@google.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Alex Williamson <alex@shazbot.org>
-Subject: [PATCH v2] vfio/platform: prevent read-only region mappings from becoming writable
-Date: Thu,  3 Sep 2026 10:19:55 +0300
-Message-ID: <20260903071955.13144-1-suruurism@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a/QNLnMV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788420526; x=1819956526;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=qTsepFlsW+yq1s6Als/DhO9gITKNucANJwYs3LQkhk4=;
+  b=a/QNLnMVnzhPnaeWeB6eKpj7RTBJnY6ZD2iqNXVCPpuufxOwvC+Fi+JW
+   E/2WRK9itDjRrubl4qyH75focKupxzwnpTj5qxZPKVroJOphhiVasyLHI
+   nq4LPAimvv788mbJQL5pqJeXoAaxsafcWeBCa8YNYVvSn/jIyQ2pbU2Zj
+   /FqhCP0UEFJEj7lmV7S4T33TMTeo+RjfY9lShy6Xl2mdvSEQkiXSZVL2y
+   kR9zg0OelCBwxRDV7yU9UYI9Mo3CD0PrllzxZRIjSeFZaUK+WKDLTjMMZ
+   b3NVKZK9bSTyHrIQUcVRH5R2IPnYlFcO7x5V5BnxligvhTjHQqo9DViX4
+   A==;
+X-CSE-ConnectionGUID: mrzDlL5NS96h49faoE2M7A==
+X-CSE-MsgGUID: PpbiJABTTBO67dz0KiImiA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="88738405"
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="88738405"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 00:28:46 -0700
+X-CSE-ConnectionGUID: lE/Zqrs9R1u7QdyvQ/triA==
+X-CSE-MsgGUID: ywZFoh0zRoueK7zsobd2LQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="273795688"
+Received: from unknown (HELO [10.238.208.122]) ([10.238.208.122])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 00:28:44 -0700
+Message-ID: <cfe57e67-49ce-47d7-b20b-a29e23fe16d4@intel.com>
+Date: Thu, 3 Sep 2026 15:28:41 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/4] KVM: TDX: Track configurable CPUID bits allowed by
+ KVM
+To: Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org
+Cc: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com,
+ andrew.cooper3@citrix.com, nik.borisov@suse.com, kas@kernel.org,
+ rick.p.edgecombe@intel.com, chao.gao@intel.com
+References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
+ <20260827031837.2863609-2-binbin.wu@linux.intel.com>
+ <55488b92-66a8-45e5-ad0f-8fed63ce1187@intel.com>
+ <a30741f8-b99b-4f36-80a5-4688c2578d99@linux.intel.com>
+ <6b565572-b316-4e86-906d-f150c896fe21@intel.com>
+ <84891108-55be-48c1-9993-c730a5334d5b@linux.intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <84891108-55be-48c1-9993-c730a5334d5b@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-vfio_platform_mmap() rejects writable mappings of regions without the
-WRITE flag, but leaves VM_MAYWRITE set.  Userspace can map such a region
-read-only and then upgrade the mapping to writable with mprotect().
+On 9/3/2026 12:19 AM, Binbin Wu wrote:
+> On 9/2/2026 11:09 PM, Xiaoyao Li wrote:
+>> On 9/2/2026 8:33 AM, Binbin Wu wrote:
+>>>>> +static void __init tdx_initialize_cpu_cfg_caps(void)
+>>>>> +{
+>>>>> +    tdx_cpu_cfg_cap_init(CPUID_1_ECX,
+>>>>> +        TDX_CFG_EXTRA_F(MWAIT),
+>>>>> +        TDX_CFG_F(TSC_DEADLINE_TIMER),
+>>>>> +        TDX_CFG_F(AVX),
+>>>>> +        TDX_CFG_F(F16C),
+>>>>> +    );
+>>>> TDX 1.5.24 on SPR report configurable bits of CPUID_1_ECX as
+>>>> 0x31044988, which have
+>>>>
+>>>> - bit 3        MWAIT
+>>>> - bit 7        EST
+>>>> - bit 8        TM2
+>>>> - bit 11    SDBG
+>>>> - bit 14    XTPR
+>>>> - bit 18    DCA
+>>>> - bit 24    TSC_DEADLINE_TIMER
+>>>> - bit 28    AVX
+>>>> - bit 29    F16C
+>>>>
+>>>> but EST/TM2/SDBG/XTPR/DCA are not list here. I guess the reason is kvm_cpu_cap[] doesn't support it. If so, it seems to guard twice:
+>>>> 1. mentally/manually check if it a feature is supported in kvm_cpu_caps[]
+>>>>
+>>>> 2. kvm_cpu_caps guarding in tdx_cpu_cfg_cap_init().
+>>>>
+>>>> I think 1) is not necessary, we can rely on 2)
+>>> In general, if a feature is not supported by the common KVM CPU caps, 
+>> For kvm-intel.ko, kvm_cpu_caps[] just means the supported CPUID features
+>> for VMX VMs. Treat it as the common KVM CPU caps is a bit arguable.
+>>
+>>> I prefer not
+>>> to add it to the list to save a few lines of code, which probably is dead code,
+>> I don't think it's dead code. It shows that these features are
+>> virtualizable to TDs from the POV. of TDX.
+> It depends on whether KVM allows userspace to set features for TDs that are not support
+> for non-TDX VMs (,except for a few exceptions).
+> 
+> In this version, TDX_CFG_F() already check against kvm_cpu_caps[], if these features
+> are not in kvm_cpu_caps[], it will not be exposed to userspace anyway.
+>
 
-Clear VM_MAYWRITE for regions without the WRITE flag, as i915 does for
-its read-only objects and as fixed in drm/vc4 (CVE-2026-68445),
-drm/panthor (CVE-2024-53071) and ptp: vmclock (commit
-a5edadbae57e2298a56cf7a4e774a027905a331f).
+I still think the reasoning that we omit them because they are not
+contained in kvm_cpu_caps[] sounds not right. Based on it, so when we are
+going to add a new feature for TDX, we need to first manually check the KVM
+code to see if that feature is contained in kvm_cpu_caps[] already. If not,
+we just don't add it to TDX's list. Then why need to cap the result
+kvm_cpu_caps[] for TDX_CFG_F() again? Just for safety in case human make
+mistake and misread the code of kvm_cpu_caps[]?
 
-Note this is defensive hardening: no in-tree platform driver currently
-publishes a region without the WRITE flag.  The guard costs nothing and
-keeps the mmap() interface honest if a read-only region ever appears.
+I think they are two independent steps:
+1. list the CPUID features that KVM can support for TDs.
+2. apply additional restrictions, e.g., if a feature is not allowed for
+non-TDX VMs, it cannot be allowed for TDs.
 
-Fixes: de49fc0d99e6a ("vfio/platform: initial skeleton of VFIO support for platform devices")
-Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
----
-v2: commit log now states plainly that the read-only path is
-unreachable in practice, per Alex's review; dropped Cc: stable as
-there is no reachable issue to backport.
+>> In the end, they might be disallowed to be configured to TDs because KVM
+>> doesn't allow them for VMX VMs. This is also the point I want to discuss.
+>> Do we really want to make such restriction that KVM cannot enable/allow a
+>> feature for TDs unless KVM first enables/allows it for VMX VMs? What's
+>> reason behind it?
+> Sean mentioned it that "generally speaking, KVM shouldn't allow features
+> that KVM doesn't support for non-TDX VMs" in
+> https://lore.kernel.org/kvm/aj1fi_0SBxMK5WOB@google.com/
 
---- a/drivers/vfio/platform/vfio_platform_common.c
-+++ b/drivers/vfio/platform/vfio_platform_common.c
-@@ -594,7 +594,11 @@
- 	if (!(vdev->regions[index].flags & VFIO_REGION_INFO_FLAG_WRITE)
- 			&& (vma->vm_flags & VM_WRITE))
- 		return -EINVAL;
+For existing features, it might make some sense. But for new features, I
+don't think so. It defines the enabling order for new features that we must
+enable a feature for non-TDX VMs first and then TDs. And people might want
+to bypass this rule by abusing the TDX_CFG_EXTRA_F() when only one line of
+TDX_CFG_EXTRA_F() is enough to enable a feature for TDs but more effort
+required to enable it for non-TDX VMs.
 
-+	/* Prevent read-only region mappings from being upgraded with mprotect() */
-+	if (!(vdev->regions[index].flags & VFIO_REGION_INFO_FLAG_WRITE))
-+		vm_flags_clear(vma, VM_MAYWRITE);
-+
- 	vma->vm_private_data = vdev;
+Maybe I miss somthing. I would like to see stronger reasons for such decision.
 
- 	if (vdev->regions[index].type & VFIO_PLATFORM_REGION_TYPE_MMIO)
- 		return vfio_platform_mmap_mmio(vdev->regions[index], vma);
