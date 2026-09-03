@@ -1,124 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AAB2BEC3F;
-	Thu,  3 Sep 2026 02:47:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AD3283FDC;
+	Thu,  3 Sep 2026 04:04:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788403652; cv=none; b=hdYGMJUwA7UzIcFpDwqxJR5l7SRKQYLBFUu4ousIqa9+OjKpqEkzrXss5sy0ysdoKmoqPJSSldU3z+ZEV9URNawfntnf2khDwJ+Snxp7Dt5QRNCcMpepjf+CmwYayrFyXp1HT5sVCM66UeSRl432KWqc/PVm29TkiGt3Xtnhce4=
+	t=1788408245; cv=none; b=kkDypGN9ent9DNBEKoGdMRHwzHQQR6Znilpkni2xNaer1y+zkJu8bliGD+wA03fvYkN/dv7X9s2EK9nbztuny4UMRF6NKs+0cvl9VAIopWpp9UMDhQxtGvJgAVjXpYe+zKeeLGXGGN1a0wEA2jd0af+YPVqm5zuKVxAvQpMkV0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788403652; c=relaxed/simple;
-	bh=OpnKdou88+IcZqqSW3W3biDL5UzOku5KKwGdke/LAYI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=XE8B+7OPj73Q5tz3LcpYpuKtQTzYHGaWNAjnzMI7xgQ5uCNpC4+FYrnS1tdqMgGEfgcly6pkZ/bQyapzZCd/9U/uC2AqZ4Pv3DoxRJSTlDFQCol0CkpqY+wgPWCwqgh06TKwXZz7FWtDmXfUKbBxjaMMdQhr0Lp6/mqOf5F9zbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dcRzfJjJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788408245; c=relaxed/simple;
+	bh=LUmXoc1C67fDi5VJnp4KcInKxgyiVD2SdZpN/nz8eXw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t7fqMxJXlpQGY+w30VrKA6AozvVvT9xuEjZXSCe4/rVnSK70mZKSuxckswIxem314kLMRFaKskJpm3wMTJnfAmrgfJ5xqzS51egLT/aGbHHla+H3av+FtO+pEVteOUwdwyVMltniuj21vkUpecE16aPMhkxCBPPtQRHvQpiTGK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Pzsv5fSt; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dcRzfJjJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC4C1F000E9;
-	Thu,  3 Sep 2026 02:47:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788403651;
-	bh=P8rMMcvXoxipWRMWO0eHlgg0VXiHJSCe3OnoD0Y6Pmk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dcRzfJjJ5wWAKwEt+PgrI6gm+lO6sJjOprjBFPADnB/eNLgnGIQRp/0G+RJi5HZ55
-	 BJRHox0xcgmElBs6DNFwKvXwawTFZcrqdWNv3JOG9oKKaJ6o24KVqH9RcF4fTxVpqf
-	 AASLOjXrmO/dj6Kmo7MCf7see78/l7niXP6LooixIkmhWYLUnnx9zL1egGiJquC43C
-	 IaxXAMBsuseCYW4Bn1HknJ1dPCboGi0Vrl5YEv0jOrH63fItNJQt2XKab+9DvcNpxr
-	 C6d8A6MKwq68tOewmjFW80NvlO78aNDlHAq79oYoZ4HMoAEX17z8CVXnCtkxAT2+B9
-	 G21wCa8yNUAsw==
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 3/3] luo: memfd: Move to feature flags instead of
- compatibility strings
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Logan Odell" <loganodell@google.com>
-Cc: kvm@vger.kernel.org, "Marc Zyngier" <maz@kernel.org>, linux-pci@vger.kernel.org, "Oliver
- Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev
-In-Reply-To: <20260903023452.721732-4-loganodell@google.com>
-References: <20260903023452.721732-1-loganodell@google.com>
- <20260903023452.721732-4-loganodell@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 03 Sep 2026 02:47:30 +0000
-Message-Id: <20260903024730.BDC4C1F000E9@smtp.kernel.org>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Pzsv5fSt"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 424E240E02C2;
+	Thu,  3 Sep 2026 04:04:01 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id zdy0ZbA16YNR; Thu,  3 Sep 2026 04:03:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1788408231; bh=7XeV0mEuifcWbEdGvyLniuY9lvwKVyb6NFjoKuT33/g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Pzsv5fSt9JkXsNLJu0vTswJkI/xvbqkqe9TrIugbanXEUow8ZxV3l2dMCwmKWzpRz
+	 ZIX+/PAUh6bm+rrwgtn3MSA3V5aG6liI+jJX3HPcKGhNVV6NPcC8p4zVr6RU04yZJo
+	 IxORvXpYm+YeDG+y3c87sOYx2XZtKUr2AsXkIEXPcvUiTJYmlPSGtSPnCl7MCH8XPB
+	 QM8NvCw7h9JKXXPXu28Mm9IsKALo+24mS0gr7vnAmzdoACg4kUd/avG8bhhb5GtnmW
+	 OKxtdRNhqvS8n/3dUT6M0A8iQsEbslABiUE3w/uk3x1vk3FRfEf1Vw5Zt6hsb3NBX7
+	 YTkjWdk7YApAX9QuS7Zv/kHs9a3g9SkcHsbOCfUP88TXAljqdAnsPWyr7c1FLfcOX8
+	 5BRT8MqVd3kzpJoRNlujwrmp5fxx2cczEqQFVuKstNXqZ9oVZBp5KNg3xzbXvBpTw9
+	 Yp7foHCimYfMUsQ4YjPxVi6ChjGXSltmCaSGFQrfUaiKkOurx8G5IqRK+gEaDkHgNR
+	 Ap0JqfuUU/EnPdzR0CoKR/vA/MdGBgbj2YsK7Y85dnzX1pFZogdUFB02um5Rys5LIn
+	 Jz99PqpOMUlBmaVnXtAsyD+FSKSgk28eBGZpB7KNJcy/yae9JlMZHvoDXb4XpRloJL
+	 gzmIRwTcaHY1qPUFwn9YA9QE=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8037740E024B;
+	Thu,  3 Sep 2026 04:03:34 +0000 (UTC)
+Date: Wed, 2 Sep 2026 21:03:30 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Kim Phillips <kim.phillips@amd.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Naveen Rao <naveen.rao@amd.com>,
+	David Kaplan <david.kaplan@amd.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Nathan Fontenot <nathan.fontenot@amd.com>
+Subject: Re: [PATCH v5 1/8] x86/bugs: Allow forcing Automatic IBRS with SNP
+ active using spectre_v2=eibrs
+Message-ID: <20260903040330.GNapjxkgMd2Ey38egR@fat_crate.local>
+References: <20260826223510.3669875-1-kim.phillips@amd.com>
+ <20260826223510.3669875-2-kim.phillips@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260826223510.3669875-2-kim.phillips@amd.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Wed, Aug 26, 2026 at 05:35:03PM -0500, Kim Phillips wrote:
+> spectre_v2=eibrs currently enables retpolines when SNP is enabled,
+> instead of AutoIBRS (EIBRS) because the commit that disabled
+> AutoIBRS if SNP is enabled stopped short of enabling
+> X86_FEATURE_IBRS_ENHANCED.
 
-Pre-existing issues:
-- [High] Permanent memory leak of preserved KHO vmalloc block and physical =
-folios when memfd_luo_retrieve() fails on early error paths.
---
+This and the comment below in spectre_v2_select_mitigation() is somewhat
+hinting on what you're trying to do here, and I can only guess. But
+I shouldn't be guessing. Rather, the text should explain it clearly.
 
-commit 5ce2719ae4caecc0b1ca1429438f4dfe06609564
-Author: Logan Odell <loganodell@google.com>
+> Change the logic to enable X86_FEATURE_IBRS_ENHANCED, and move the
+> decision to switch to retpolines in the default/"auto" case in
+> spectre_v2_select_mitigation().  This allows the existing
+> spectre_v2=eibrs logic to work as intended.
+> 
+> Condition that switch on CONFIG_MITIGATION_RETPOLINE being built in.
+> Otherwise spectre_v2_select_retpoline() returns SPECTRE_V2_NONE and an
+> SNP host with AutoIBRS available would be left completely unmitigated
+> against Spectre v2 in the default/auto case, which is worse than the
+> userspace indirect branch performance loss AutoIBRS costs.
+> 
+> Also emit a performance loss warning for using AutoIBRS with SNP
+> enabled.  AutoIBRS is activated for all three eIBRS modes via
+> spectre_v2_in_eibrs_mode(), so use that helper to cover
+> spectre_v2=eibrs, spectre_v2=eibrs,lfence, and
+> spectre_v2=eibrs,retpoline uniformly.  Word the warning in terms of the
+> eIBRS mitigation enabling AutoIBRS, rather than naming AutoIBRS as the
+> selected mitigation, so it reads correctly for the ,lfence and
+> ,retpoline variants where another component is also active.
 
-luo: memfd: Move to feature flags instead of compatibility strings
+This whole text is explaining the diff. Never write about the "what" - but the
+"why". Why does this patch exist?
 
-This commit updates the memfd liveupdate serialization structure to use
-feature flags instead of compatibility strings. It introduces granular
-compatibility checking by validating required features and active flags
-during deserialization to prevent unsupported states from being restored.
+Please structure your commit message something like this:
 
-> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-> index 59de210bee5f9..36ee503672a23 100644
-> --- a/mm/memfd_luo.c
-> +++ b/mm/memfd_luo.c
-[ ... ]
-> @@ -526,12 +531,21 @@ static int memfd_luo_retrieve(struct liveupdate_fil=
-e_op_args *args)
->  	if (!ser)
->  		return -EINVAL;
-> =20
-> -	/* Make sure the file only has seals supported by this version. */
-> -	if (ser->seals & ~MEMFD_LUO_ALL_SEALS) {
-> +	if (ser->features.req & ~MEMFD_LUO_FEATURES_SUPP) {
-> +		pr_err("Unsupported required memfd feature (req: 0x%llx, supp: 0x%llx)=
-\n",
-> +		       ser->features.req, (u64)MEMFD_LUO_FEATURES_SUPP);
->  		err =3D -EOPNOTSUPP;
->  		goto free_ser;
->  	}
-> =20
-> +	if (LUO_FEATURE_IS_ACTIVE(ser, MEMFD_LUO_FEATURE_SEALS)) {
-> +		/* Make sure the file only has seals supported by this version. */
-> +		if (ser->seals & ~MEMFD_LUO_ALL_SEALS) {
-> +			err =3D -EOPNOTSUPP;
-> +			goto free_ser;
-> +		}
-> +	}
-> +
+1. Prepare the context for the explanation briefly.
 
-[Severity: High]
-This is a pre-existing issue, but does this early error path permanently le=
-ak
-the preserved KHO vmalloc block and physical folios?
+2. Explain the problem at hand.
 
-When memfd_luo_retrieve() in mm/memfd_luo.c fails here and jumps to the
-free_ser label:
+3. "It happens because of <...>"
 
-free_ser:
-	kho_restore_free(ser);
-	return err;
+4. "Fix it by doing X"
 
-It abruptly frees the serialization struct. Bypassing the restoration of the
-vmalloc array and physical folios leaves them locked in memblock indefinite=
-ly.
+5. "(Potentially do Y)."
 
-Furthermore, any fallback cleanup is skipped because the finalizer
-memfd_luo_finish() returns immediately if args->retrieve_status is set:
+And some of those above are optional depending on the issue being
+explained.
 
-mm/memfd_luo.c:memfd_luo_finish() {
-    ...
-	if (args->retrieve_status)
-		return;
-    ...
-}
+But do not explain the patch. If there are questions about it, I will ask.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260903023452.7217=
-32-1-loganodell@google.com?part=3D3
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
