@@ -1,56 +1,56 @@
 Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C19263F5D
-	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 00:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB55628D8D0
+	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 00:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788394591; cv=none; b=ZrDH3yMgBWey6p825vd5EG86Xe782ido2XI0N4U1Ef3hxrVq3a5109xCCdmaZYsBo+IC/ITgL5Xro5P2Ine+4/owgcZXKMMEgS+K+MGkpP5c08Evvqt2Bs16sfGRZ1LEljJz4ptB2jeLLbQJAt2c7Pfzf3+nPMkBygmze3to3nw=
+	t=1788394592; cv=none; b=Gu+q0V1SuPeCOFohdHGV2o0krAr8cQ9BcDu6/lNeW0YIsyLzjMQXa/orF1sZgh/GbqI42VbyAOFIzJKNguk0on3qywJO2DaUfOOjWwHa0YyCDgoEJYN4QNvOONjj2r7lzlr/tZpBj9po1YnM+N0eP3YtWB32D8QCwrD0StODfpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788394591; c=relaxed/simple;
-	bh=hrCUfZiWrw9ZwLGPWRegXU7yNm5oMyEYfmcKkafasI4=;
+	s=arc-20240116; t=1788394592; c=relaxed/simple;
+	bh=lynxvI4BWDKfkW0dl139eAVcbrc95dm3ZZJq8SSTU2Y=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GhhUYa0Bs3Mqjs6wJuLXF8wO+t7B5WAFWAY0OkibkGVxHWXBPKpo+GJuskO7PM6u1yI0dfEufuAaj1PTUHpeSVZEhCzvI/ER15eWb9X3jok0qJULk9PZESOYp7dmkR3LfjMc3NgtgwKzLoYCJG92+LKQzx7jc2o9/tE6HXzvrTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TN4RKXPZ; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=rN9/GER8A1/nY7eBLmtIIxreQXuFwTBnPWq9LGioaJ+A2s7NcV6SR4r4gpnu6g1l5enxW3akTGO7Gp6G30YxmWZ1XBfirvGA9xh0gG/MGlqfDscEoQVPyBogOxFRD+q+Mj00waV3ycPOilXDWj998CjsGjnOvPENS51MePuHgUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OrN9QL11; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TN4RKXPZ"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d6c166bafcso26337695ad.2
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 17:16:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OrN9QL11"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cfc52ddc55so28400405ad.3
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 17:16:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788394589; x=1788999389; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788394590; x=1788999390; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=sf4kQQtnclBVJ8kleYvL+id2aL4kDG4DntUcaSprvaY=;
-        b=TN4RKXPZHzssHKAHHDQtnGFrx5dn69Zh+6uygQHUKc0Qnlqth9M+O9Gwg9jWFgpXa8
-         AMGF0mzn8Vw3OLwP/75D/GXfOHhcuDlZn1Lbxawn4/irDsLs0lxyDLI5ShQP5YIn0f8w
-         ZeVlajdE36+EX6Mq2Fx+3723eGnypHskqMUoXJt01ci9nD5z3B2lD7VGNOGWNPuz/hM7
-         yDpFsS9PTueAbYBI5kcnE7Qfi35PvHt4nTTdqWX/IixZcUmQVJKifO6X0L0+zXPIUvEG
-         VevmsnWaz7PCPwAnJ6sRWlGdh0VglBJQH+cNFX5t2UCTxkYFlYshslHaegrnrY/G5I91
-         hiPw==
+        bh=zlSRSsSlpokdtKbgl+ElzoriroijVL7fsph+TXQV+Eg=;
+        b=OrN9QL116CC8PrLGFMRw8J7rOiL815y21AzYbrqTRmh9wipyBbE3u/zTgnTyX9+Wtj
+         W4cIhI62WSc4sdc7HJX6kAPMFx1IaNYyGDsMs6sQCZqXK1bXOskGDfFkXGMHQxxWYVrg
+         sZT7qanMHs7mkVfwGWUgW1x5kepHNEuvCCGg7XIt3hphpooH7Id66Zlm/9svmbcc6pL1
+         qatbgx7vNebFSm9wG+J5NIxKyjtlXWCMj32UgmxSbQ1UOpBI2roRRf1znUhv/GxCksJI
+         bTPqWT4DlQCWiPhpfQbufSpEYjbi/Ah4CGVYcOpaXj0bzFJV9mQEMAykzUj7A/WYf5c5
+         eHxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788394589; x=1788999389;
+        d=1e100.net; s=20251104; t=1788394590; x=1788999390;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=sf4kQQtnclBVJ8kleYvL+id2aL4kDG4DntUcaSprvaY=;
-        b=CdBnsTGCfv0fsDNpf9YDU6BFhMcctj7Ylk7DXBfk0L4cZ0PPN2wCNqHAcTESTCydf7
-         dYPnMaIbrkCDitY2tOtNjSJqLHScZQJAcYIuS6SfMGCkH5sFIDtsZET/LZQjLIB5SfwT
-         Atr9NqV0Br0/n+lIWQVwt9QoiZ1nrgnKUcLy6xZIq321fGnOo8jJp31qr30KcGgYSh9B
-         EHnVrevRSzMl8TNKqKJF7LHQNqySPYffbL3QHEUVr5XUrBIT+lo18TLXxEsYr5IEEuT5
-         Y3gE5wUcDKwLYIJoLOE3AMxBGrh4dfof/ihG+GFe6IzhsRkYYCYlUKhXPNBvvuJkMPMD
-         cR1g==
-X-Gm-Message-State: AFuF++mf2qrlJpae6vFoNuHZOWDUU3QTTNdhI5XZDDAJEV77BO0YSE2B
-	h0FbSRyOxhr/h02k5Qj7gVn+IkK57BYkYFRIsqKNjl9Z6AO5CtpqnsHpQw6Sn2Pd3JJ7phQ6lPl
-	9MG8hnA==
-X-Received: from plpw20.prod.google.com ([2002:a17:902:9a94:b0:2cf:1f9d:da12])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:19e6:b0:2d9:2069:a286
- with SMTP id d9443c01a7336-2daec62416cmr113756255ad.9.1788394588841; Wed, 02
- Sep 2026 17:16:28 -0700 (PDT)
+        bh=zlSRSsSlpokdtKbgl+ElzoriroijVL7fsph+TXQV+Eg=;
+        b=Oh6mDFszuHzmZmzvlTsoXHlK+MBg6rZLjd37A/CmREWQK6qXhHUORTbbHelhikWTP6
+         zLuvJffQHIlgOKBPSRasaKv/TPlJOS4DWDCL4osyFn2iadfQMhsLMfLqdFvgB1kruggo
+         9e8ZIKQlUI0aZM55ba4oGk5OT1y5gmaTRZcziFJ5zizmDiJ5EBq4qIpIqmxdkJFKkI4e
+         ljeeZerMuVbcc+fkHXmTf56AhEdRV3nRUCTRS6mzHcedkixWFwai/o7YOmb008JIhD5r
+         IKxtoYqr+WKKr/A2vP/JBKw9fTV/lpQl/epoeF4Wtglu4DS08dCQp9nMahSM6c6cXv4i
+         hNUw==
+X-Gm-Message-State: AFuF++nunWXCkkzJTJnzDoJlWZqWgwj7XMYGe0MurW91IGq6AdxG1IeU
+	2IkXTgCMILVcVYH+Lk67J7yNGs0F8Bky9yvXuYIPbLeIGv74x+taplLULCYzZXQzFO+PzWrA/kO
+	6UnK8Bg==
+X-Received: from pgfd10-n1.prod.google.com ([2002:a05:6a02:654a:10b0:cc1:be9e:35ee])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c04:b0:398:d6e8:f84e
+ with SMTP id 98e67ed59e1d1-39aedf5571fmr14120881a91.9.1788394590039; Wed, 02
+ Sep 2026 17:16:30 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed,  2 Sep 2026 17:16:20 -0700
+Date: Wed,  2 Sep 2026 17:16:21 -0700
 In-Reply-To: <20260903001625.2792367-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260903001625.2792367-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.970.g62bdec98f9-goog
-Message-ID: <20260903001625.2792367-3-seanjc@google.com>
-Subject: [PATCH 2/7] KVM: selftests: Fix maxnode argument to migrate_pages()
- in xapic_ipi_test
+Message-ID: <20260903001625.2792367-4-seanjc@google.com>
+Subject: [PATCH 3/7] KVM: selftests: use BITS_PER_TYPE() for NUMA masks
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -71,34 +70,46 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Shivank Garg <shivankg@amd.com>
 
-Use MAXNODE_FOR_MASK() to compute the @maxnode argument when migrating
-pages in the xAPIC IPI test, as the current code incorrectly passes the
-number of bytes, not the number of bits, in the mask, and also fails to
-account for the kernel's off-by-one bug.  I.e. the test sets maxnode to 8,
-and so the kernel only checks node IDs 0-6 even though the nodemask covers
-node IDs 0-63.
+Replace the open-coded sizeof() * 8 calculations in do_migrations() with
+BITS_PER_TYPE().
 
-Fixes: 678e90a349a4 ("KVM: selftests: Test IPI to halted vCPU in xAPIC while backing page moves")
+No functional change intended.
+
 Signed-off-by: Shivank Garg <shivankg@amd.com>
-[sean: use MAXNODE_FOR_MASK(), rewrite changelog]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/x86/xapic_ipi_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/kvm/x86/xapic_ipi_test.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/x86/xapic_ipi_test.c b/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
-index 1ddcf95d7fe4..6be11c1c725c 100644
+index 6be11c1c725c..9d1dfad4efa6 100644
 --- a/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
 +++ b/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
-@@ -291,7 +291,7 @@ void do_migrations(struct test_data_page *data, int run_secs, int delay_usecs,
- 		 * KVM_CREATE_VCPU ioctl. If that assumption ever changes this
- 		 * test may break or give a false positive signal.
- 		 */
--		pages_not_moved = migrate_pages(0, sizeof(nodemasks[from]),
-+		pages_not_moved = migrate_pages(0, MAXNODE_FOR_MASK(nodemasks[from]),
- 						&nodemasks[from],
- 						&nodemasks[to]);
- 		if (pages_not_moved < 0)
+@@ -233,7 +233,7 @@ void do_migrations(struct test_data_page *data, int run_secs, int delay_usecs,
+ {
+ 	long pages_not_moved;
+ 	unsigned long nodemask = 0;
+-	unsigned long nodemasks[sizeof(nodemask) * 8];
++	unsigned long nodemasks[BITS_PER_TYPE(nodemask)];
+ 	int nodes = 0;
+ 	time_t start_time, last_update, now;
+ 	time_t interval_secs = 1;
+@@ -253,13 +253,13 @@ void do_migrations(struct test_data_page *data, int run_secs, int delay_usecs,
+ 
+ 	fprintf(stderr, "Numa nodes found amongst first %lu possible nodes "
+ 		"(each 1-bit indicates node is present): %#lx\n",
+-		sizeof(nodemask) * 8, nodemask);
++		BITS_PER_TYPE(nodemask), nodemask);
+ 
+ 	/* Init array of masks containing a single-bit in each, one for each
+ 	 * available node. migrate_pages called below requires specifying nodes
+ 	 * as bit masks.
+ 	 */
+-	for (i = 0, bit = 1; i < sizeof(nodemask) * 8; i++, bit <<= 1) {
++	for (i = 0, bit = 1; i < BITS_PER_TYPE(nodemask); i++, bit <<= 1) {
+ 		if (nodemask & bit) {
+ 			nodemasks[nodes] = nodemask & bit;
+ 			nodes++;
 -- 
 2.55.0.970.g62bdec98f9-goog
 
