@@ -1,256 +1,250 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170411DED42;
-	Thu,  3 Sep 2026 21:51:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4BF3AAF60
+	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 21:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788472277; cv=none; b=CanJ/SdT9NJ1HEBPsHiKzt0hb0QF1V9lCWl93OWo2eSsukXYlRKuxMXqpI11XJJiWQvIimPXjkBKyjpguURHS5UcEsqu5aBQW7pcNCO1R4X9MUsGbwyIKqoLR2q80+XgKrWXm0j3o2lUu3zoHyZC/gKOCXwSBqWpn83BXU2b6Xw=
+	t=1788472414; cv=none; b=b5tVuwk0HuQ6yaXMQJT3hbVIyI1lGdPpvT6zgaB8QS5Fkf0JoSD8dIJW9O3cbbaLY2xjEQ7spx4iiddVXNdMwTqEm6Po4nQI94noYEr09lttzAiiwWASQVN4ArO5/XKl7p/+N9VbUfeOZqjsdz4BHIAmI27CesFR8bl2wqtNIT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788472277; c=relaxed/simple;
-	bh=D6vckDvfwy3J0p9rCU09Cjwkb5n2j2oveTTRhvXxRDs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fcFURrDuNUkGgFDLnXNGjLiy/twRtdmiuRRPo2RyWiE1B1AD4gDFxTk8dkWwHqhRcWjgtVoceFcoktMSpHJrE/PhygSr8UawgnSBxwWn4Lk3uhfApPAWSVWGN8RuG+KBH+FY0nIfBmRCwxxWPQIzRboRPcxPLfbCicf0ZdEpb+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JJmlVUyi; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1788472414; c=relaxed/simple;
+	bh=NQHnFXQybAu3Ioryvf5E6HQAMgYxNIqOynFTC9y8eas=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ToX5JLkDCEOZocwUVWBReBvnMfpjdK8GwT4FH7Bh9vLwXrozS5O3t9WjvV9VA6KB7rfHYgHqffGytZ9TDCrzBmay86Zthi1bGx+WyMSsnvVGk4klH7qnpO8M4dAorFqhoLLaIE0YT56JL7uYsB1eBfExFEyMyjEhC1ioyrdRMWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ASA+Mwst; arc=none smtp.client-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JJmlVUyi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788472276; x=1820008276;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=D6vckDvfwy3J0p9rCU09Cjwkb5n2j2oveTTRhvXxRDs=;
-  b=JJmlVUyiVafSg43l16RNqxNjoMkj24NB/VEbq2vKEzfYfxGiU5k4s81k
-   3ZU9UkWGNby7PA7eEaOt/xUrv36yvzeJlAgrhwDzy48LA1p/AjGaG1qRX
-   nDjbaCsExODjHMNjSiF7gAVbpRIt5WYFxssMx3sTYXXU0QOnmnqnx6c64
-   zHHba76N9IWv6SGiaR7xVu5Kvi4DIknRy2ULib+WvTT1U1wXeSVo52KIq
-   KrOcBWWpBa3b0wi+TfC8YA3VVIqqB8INyYdkWQpLnS+0oXcqLYLsKwm2L
-   7qaan83TLreL+4YmFGcf04spB/ziufG6ZZB8ru6eqFuwQClR4ci5MHf+G
-   A==;
-X-CSE-ConnectionGUID: 3TEMIIAuRWi2Ifn4aQ1skQ==
-X-CSE-MsgGUID: jV2v3lJZREuaazdH2j/SSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="92668705"
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="92668705"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 14:51:14 -0700
-X-CSE-ConnectionGUID: ALN53Xb0R7GovQd7Z6uwgw==
-X-CSE-MsgGUID: jYSTnWNiQrSlFqAU/OsX7w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="267272459"
-Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.110.190]) ([10.125.110.190])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 14:51:11 -0700
-Message-ID: <e8cfd5f8-7704-4dcd-ae1a-01f3f42e3b46@intel.com>
-Date: Thu, 3 Sep 2026 14:51:10 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ASA+Mwst"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc2229450b4so410650a12.1
+        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 14:53:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788472411; x=1789077211; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=q16ZgSeH1OQWluNWitdhUJyCRd91odasWQO6Ll+KyBY=;
+        b=ASA+Mwst/djnu6B+X232jIFp/J8sSgfdi4B/VEfEweYHpxGPCh0my5ba0ZDRXDjCBo
+         0RCdX+M0imgmykrCDi7esk8EIHE1nSgL2nn3SJvmSWOVUywAL19imC+C2rPqdbsS7UcZ
+         K9FW/4mhZMFXYpt2sTzMzVyNvFDcjcrxQbyRvbRGtdHhiTQWPpTdPZPhTP5xf7e4G6Wb
+         XzvvXXx+IHZPiWd3+2GpJsGc7N5nNAKSPvlO94l8LhYAX94oVpZG5zov5UQFcUK4MO3e
+         9QFf9eWEHaboIUhkTlqksW6z6GxKsx0i0wX/CNmdigm7BGX7XDKkrE96xdDBfSg9VGjq
+         RZDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788472411; x=1789077211;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=q16ZgSeH1OQWluNWitdhUJyCRd91odasWQO6Ll+KyBY=;
+        b=Owkr54+MF1A6UVkmUDdHO2rFJ8hUsKooFd/MRcPt+Z3gAmbEzI+KZyH4TfFBWe2L2p
+         CJziak9+6ZD0MslsWAu2eDNiaG2daGEg2g4LvDk05UkGxx8c3vgqNW3D39MMwBqDg8zw
+         nmVN4Bukeq79gtDtIVNx2CD2AkL5UnoV1j8uyyDAi1y7s3MdSuw06JGSKXCxCqCjv4DH
+         oqrEUGaf1PiiXFlZt/JZ7GAgWly0HX2sWjcGagkmXiIljMRe5ZhV0bMgAzWXpbXl6rho
+         RGsJyP15+wmw2ygrEBIACFIfS4+yv5e+lim3pJZOsE/nQVCMsKR8Gp8k5nL/EIYyFn6t
+         UMvQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw44uSQ/7WP7BhHXeD86QFIZ84r7p3qQjfqfmrAGkXuCqPhxhNU1pguoOE/BsmIehMfr4M=@vger.kernel.org
+X-Gm-Message-State: AFuF++khFwCC91LeQLYaMVHL9CuIJfx7WtNUMhai6GFRNIwF3BgwFjr2
+	GmSQtPX0d0j4WP5HwixygWTpn8y6DdcSivGtyDxnAIqw1/9Aub1O1FfL+HPMpcLHNBg59jTXEgx
+	Etv08nA==
+X-Received: from pgbfm22.prod.google.com ([2002:a05:6a02:4996:b0:cc1:b85e:b027])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:a11a:b0:3d1:2dc5:7d37
+ with SMTP id adf61e73a8af0-3da39b5c97dmr2195482637.3.1788472410527; Thu, 03
+ Sep 2026 14:53:30 -0700 (PDT)
+Date: Thu, 3 Sep 2026 14:53:29 -0700
+In-Reply-To: <20260903175856.4065099-1-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/27] cxl/regs: Skip sub-block region request for
- BAR-owning drivers
-To: mhonap@nvidia.com, alex@shazbot.org, jgg@ziepe.ca, ankita@nvidia.com,
- jic23@kernel.org, alejandro.lucero-palau@amd.com, smadhavan@nvidia.com,
- corbet@lwn.net, skhan@linuxfoundation.org, dave@stgolabs.net,
- alison.schofield@intel.com, vishal.l.verma@intel.com, iweiny@kernel.org,
- ming.li@zohomail.com, yishaih@nvidia.com, skolothumtho@nvidia.com,
- kevin.tian@intel.com, bhelgaas@google.com, dmatlack@google.com,
- kees@kernel.org, gustavoars@kernel.org
-Cc: cjia@nvidia.com, kjaju@nvidia.com, vsethi@nvidia.com, zhiw@nvidia.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <20260813093631.2288172-1-mhonap@nvidia.com>
- <20260813093631.2288172-3-mhonap@nvidia.com>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <20260813093631.2288172-3-mhonap@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260903175856.4065099-1-yosry@kernel.org>
+Message-ID: <apnqonqMBZ2GeGEq@google.com>
+Subject: Re: [PATCH] KVM: SVM: Trigger new ASID allocation in both VMCBs on
+ pCPU switch
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Stefan Teodorescu <fane@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-
-
-On 8/13/26 2:36 AM, mhonap@nvidia.com wrote:
-> From: Manish Honap <mhonap@nvidia.com>
+On Thu, Sep 03, 2026, Yosry Ahmed wrote:
+> When the pCPU where the VMCB was mostly recently used is switched, reset
+> the ASID generation in both VMCBs, triggering new ASID allocation for
+> the immediate VMRUN as well as the next VMRUN on the other VMCB.
 > 
-> cxl_map_component_regs() claims each mapped sub-block with
-> devm_request_mem_region(). A driver that owns the whole component
-> register BAR, such as vfio-cxl, has already claimed the full BAR, so
-> the per-sub-block claim collides and the mapping fails.
+> The ASID is shared between vmcb01 and vmcb02, and gets flushed on every
+> nested transition. However, since pCPU tracking is done per VMCB, it is
+> possible for one VMCB to allocate a new ASID when migrated to a new
+> pCPU, and then the other VMCB reuses that ASID on the old pCPU. This can
+> result in the same ASID being used by multiple vCPUs on the old pCPU.
 > 
-> Add a bar_owned parameter to cxl_pci_setup_regs() and record it in
-> skip_sub_bar_request on the register map. When set, cxl-core maps the
-> sub-block without requesting the region and leaves ownership with the
-> upper driver. cxl_pci passes false and keeps its existing claim,
-> preserving /dev/mem tooling access to the rest of the component space.
-
-So currently it's either cxl_pci driver that binds to the PCI device or vfio_cxl driver right? Why does cxl_pci needs to pass in false? When vfio_cxl driver is being attached, cxl_pci is not involved and all the bar ranges should be free? Or is there a contention between vfio_cxl and cxl_core that it calls on? 
-
-DJ
+> Example scenario:
+> - vCPU runs on pCPU A, vmcb01 is active, asid=1.
+> - vCPU migrates to pCPU B, vmcb01 pCPU changes, new asid=2.
+> - Another vCPU runs on pCPU A and allocates asid=2 as well.
+> - vCPU migrates back to pCPU A, and then switches to vmcb02 before it
+>   runs again with vmcb01.
+> - No pCPU switch is detected for vmcb02, so VMRUN is done with asid=2.
+> - Two vCPUs end up using asid=2 on the same pCPU.
 > 
-> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> Keep the VMCB dirtying to the active VMCB only. Clean bits are tracked
+> by a pCPU for each VMCB, so do not unnecessarily dirty a VMCB if its
+> pCPU does not change.
+> 
+> Additionally, initialize the tracker pCPU for vmcb02 to -1 on nested
+> enablement, so that the new ASID allocation in the scenario above
+> happens even if EFER.SVME is disabled in L1 before migrating to the new
+> pCPU (so asid_generation in vmcb02 is not reset), but enabled before
+> returning to the old pCPU.
+> 
+> No performance regression was noticed when overcommitting L1 vCPUs in L0
+> (to force rescheduling), pinning L1 <-> L2 vCPUs, and running CPUID in a
+> tight loop bouncing between 2 vCPUs in L2.
+> 
+> An alternative (and perhaps more proper) fix would be tracking the ASID
+> per-VMCB instead (e.g. [1]). However, that's a more involved change, and
+> it would result in having different ASIDs for L1 and L2 without actually
+> properly maintaining them. It would probably work because all TLB
+> flushes target the current VMCB, and the other VMCB is always flushed on
+> nested transitions, but the code ends up in an arguably more fragile
+> state. Punt a proper clean fix to an incoming (and overdue) overhaul of
+> SVM's ASID usage [2].
+> 
+> [1]https://lore.kernel.org/lkml/20250205182402.2147495-2-yosry.ahmed@linux.dev/
+> [2]https://lore.kernel.org/kvm/20260728003557.1136583-1-yosry@kernel.org/
+> 
+
+Fixes: 193015adf40d ("KVM: nSVM: Track the ASID generation of the vmcb vmrun through the vmcb")
+
+> Cc: stable@vger.kernel.org
+> Reported-by: Stefan Teodorescu <fane@google.com>
+> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 > ---
->  drivers/cxl/core/pci.c  |  9 ++++++++-
->  drivers/cxl/core/regs.c | 32 ++++++++++++++++++++++----------
->  drivers/cxl/pci.c       |  4 ++--
->  include/cxl/cxl.h       |  3 +++
->  include/cxl/pci.h       |  2 +-
->  5 files changed, 36 insertions(+), 14 deletions(-)
 > 
-> diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
-> index 9d807c1a002c..08d4c955137d 100644
-> --- a/drivers/cxl/core/pci.c
-> +++ b/drivers/cxl/core/pci.c
-> @@ -720,7 +720,7 @@ static int cxl_rcrb_get_comp_regs(struct pci_dev *pdev,
->  }
->  
->  int cxl_pci_setup_regs(struct pci_dev *pdev, enum cxl_regloc_type type,
-> -		       struct cxl_register_map *map)
-> +		       struct cxl_register_map *map, bool bar_owned)
->  {
->  	int rc;
->  
-> @@ -750,6 +750,13 @@ int cxl_pci_setup_regs(struct pci_dev *pdev, enum cxl_regloc_type type,
->  		return rc;
->  	}
->  
-> +	/*
-> +	 * A caller that owns the whole register BAR (for example vfio-cxl)
-> +	 * maps the sub-blocks without claiming them, so the later
-> +	 * cxl_map_component_regs() does not collide with the full-BAR request.
-> +	 */
-> +	map->skip_sub_bar_request = bar_owned;
-> +
->  	return cxl_setup_regs(map);
->  }
->  EXPORT_SYMBOL_NS_GPL(cxl_pci_setup_regs, "CXL");
-> diff --git a/drivers/cxl/core/regs.c b/drivers/cxl/core/regs.c
-> index 989e79383b99..90dd85f322f5 100644
-> --- a/drivers/cxl/core/regs.c
-> +++ b/drivers/cxl/core/regs.c
-> @@ -177,35 +177,47 @@ void cxl_probe_device_regs(struct device *dev, void __iomem *base,
->  }
->  EXPORT_SYMBOL_NS_GPL(cxl_probe_device_regs, "CXL");
->  
-> -void __iomem *devm_cxl_iomap_block(struct device *dev, resource_size_t addr,
-> -				   resource_size_t length)
-> +static void __iomem *__cxl_iomap_block(struct device *dev, resource_size_t addr,
-> +				       resource_size_t length, bool request)
->  {
-> +	resource_size_t end = addr + length - 1;
->  	void __iomem *ret_val;
->  	struct resource *res;
->  
->  	if (WARN_ON_ONCE(addr == CXL_RESOURCE_NONE))
->  		return NULL;
->  
-> -	res = devm_request_mem_region(dev, addr, length, dev_name(dev));
-> -	if (!res) {
-> -		resource_size_t end = addr + length - 1;
-> -
-> -		dev_err(dev, "Failed to request region %pa-%pa\n", &addr, &end);
-> -		return NULL;
-> +	/*
-> +	 * An owning driver (e.g. vfio-cxl) may already hold the whole BAR; a
-> +	 * sub-block request would then collide with that claim.
-> +	 */
-> +	if (request) {
-> +		res = devm_request_mem_region(dev, addr, length, dev_name(dev));
-> +		if (!res) {
-> +			dev_err(dev, "Failed to request region %pa-%pa\n", &addr, &end);
-> +			return NULL;
-> +		}
->  	}
->  
->  	ret_val = devm_ioremap(dev, addr, length);
->  	if (!ret_val)
-> -		dev_err(dev, "Failed to map region %pr\n", res);
-> +		dev_err(dev, "Failed to map region %pa-%pa\n", &addr, &end);
->  
->  	return ret_val;
->  }
-> +
-> +void __iomem *devm_cxl_iomap_block(struct device *dev, resource_size_t addr,
-> +				   resource_size_t length)
-> +{
-> +	return __cxl_iomap_block(dev, addr, length, true);
-> +}
->  EXPORT_SYMBOL_NS_GPL(devm_cxl_iomap_block, "CXL");
->  
->  int cxl_map_component_regs(const struct cxl_register_map *map,
->  			   struct cxl_component_regs *regs,
->  			   unsigned long map_mask)
->  {
-> +	bool request = !map->skip_sub_bar_request;
->  	struct device *host = map->host;
->  	struct mapinfo {
->  		const struct cxl_reg_map *rmap;
-> @@ -227,7 +239,7 @@ int cxl_map_component_regs(const struct cxl_register_map *map,
->  			continue;
->  		addr = map->resource + mi->rmap->offset;
->  		length = mi->rmap->size;
-> -		*(mi->addr) = devm_cxl_iomap_block(host, addr, length);
-> +		*(mi->addr) = __cxl_iomap_block(host, addr, length, request);
->  		if (!*(mi->addr))
->  			return -ENOMEM;
->  	}
-> diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
-> index bb892dbfdd6d..ec1693c21f61 100644
-> --- a/drivers/cxl/pci.c
-> +++ b/drivers/cxl/pci.c
-> @@ -816,7 +816,7 @@ static int cxl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->  
->  	cxlds->rcd = is_cxl_restricted(pdev);
->  
-> -	rc = cxl_pci_setup_regs(pdev, CXL_REGLOC_RBI_MEMDEV, &map);
-> +	rc = cxl_pci_setup_regs(pdev, CXL_REGLOC_RBI_MEMDEV, &map, false);
->  	if (rc)
->  		return rc;
->  
-> @@ -829,7 +829,7 @@ static int cxl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->  	 * still be useful for management functions so don't return an error.
->  	 */
->  	rc = cxl_pci_setup_regs(pdev, CXL_REGLOC_RBI_COMPONENT,
-> -				&cxlds->reg_map);
-> +				&cxlds->reg_map, false);
->  	if (rc)
->  		dev_warn(&pdev->dev, "No component registers (%d)\n", rc);
->  	else if (!cxlds->reg_map.component_map.ras.valid)
-> diff --git a/include/cxl/cxl.h b/include/cxl/cxl.h
-> index efb8ac97bd92..f8e8fddba152 100644
-> --- a/include/cxl/cxl.h
-> +++ b/include/cxl/cxl.h
-> @@ -213,6 +213,8 @@ struct cxl_pmu_reg_map {
->   * @resource: physical resource base of the register block
->   * @max_size: maximum mapping size to perform register search
->   * @reg_type: see enum cxl_regloc_type
-> + * @skip_sub_bar_request: set via cxl_pci_setup_regs(); the owning driver holds
-> + *			  the BAR, so skip the sub-block claim
->   * @component_map: cxl_reg_map for component registers
->   * @device_map: cxl_reg_maps for device registers
->   * @pmu_map: cxl_reg_maps for CXL Performance Monitoring Units
-> @@ -223,6 +225,7 @@ struct cxl_register_map {
->  	resource_size_t resource;
->  	resource_size_t max_size;
->  	u8 reg_type;
-> +	bool skip_sub_bar_request;
->  	union {
->  		struct cxl_component_reg_map component_map;
->  		struct cxl_device_reg_map device_map;
-> diff --git a/include/cxl/pci.h b/include/cxl/pci.h
-> index 3e0000015871..81a32004a604 100644
-> --- a/include/cxl/pci.h
-> +++ b/include/cxl/pci.h
-> @@ -18,5 +18,5 @@ struct cxl_register_map;
->  struct pci_dev;
->  
->  int cxl_pci_setup_regs(struct pci_dev *pdev, enum cxl_regloc_type type,
-> -		       struct cxl_register_map *map);
-> +		       struct cxl_register_map *map, bool bar_owned);
->  #endif
+> I wasn't sure if the last paragraph (or parts of it) fit in the
+> changelog or below ---, so I just put it all in the changelog, but feel
+> free to move things around.
 
+I like having the alternative(s) listed in the changelog, it saves having to
+find the alternative when digging through git (if the reader is even aware there
+was/is an alternative).
+
+I agree with your assessment, tracking per-VMCB is absolutely the right approach
+given that the asid_generation is tracked per-VMCB.  But I hate how SVM manages
+ASIDs and want to burn it with fire.  Taking a quick-and-dirty approach will be
+good motivation for landing the overhaul of ASIDs.
+
+I _was_ going to propose an alternative solution, but it subtly doesn't work.
+More below.
+
+> ---
+>  arch/x86/kvm/svm/nested.c |  1 +
+>  arch/x86/kvm/svm/svm.c    | 20 ++++++++++++++++----
+>  2 files changed, 17 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index 73f37b050d0a0..0c55c71fc6010 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -1494,6 +1494,7 @@ int svm_allocate_nested(struct vcpu_svm *svm)
+>  	if (!svm->nested.msrpm)
+>  		goto err_free_vmcb02;
+>  
+> +	svm->nested.vmcb02.cpu = -1;
+>  	svm->nested.initialized = true;
+>  	return 0;
+>  
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index ea647938a2a65..c388c6598463e 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -3765,14 +3765,26 @@ static int pre_svm_run(struct kvm_vcpu *vcpu)
+>  	struct vcpu_svm *svm = to_svm(vcpu);
+>  
+>  	/*
+> -	 * If the previous vmrun of the vmcb occurred on a different physical
+> -	 * cpu, then mark the vmcb dirty and assign a new asid.  Hardware's
+> -	 * vmcb clean bits are per logical CPU, as are KVM's asid assignments.
+> +	 * If the previous VMRUN of the VMCB occurred on a different physical
+> +	 * cpu, then mark the VMCB dirty as hardware's clean bits are per pCPU.
+> +	 *
+> +	 * Reset the ASID generation in both VMCBs. This will lead to assigning
+> +	 * a new ASID now, and then again when switching to the other VMCB.
+> +	 * However, this is needed as the ASID is shared between the VMCBs, and
+> +	 * otherwise it would be possible to use an ASID allocated on one pCPU
+> +	 * on another, for example:
+> +	 * - vCPU migrates from pCPU A to pCPU B, allocates a new ASID.
+> +	 * - vCPU migrates back to pCPU A, and then switches the VMCB.
+> +	 * - The new VMCB does not detect a pCPU change and runs on pCPU A with
+> +	 *   the new ASID allocated on pCPU B, which is potentially used by
+> +	 *   another vCPU/VM.
+>  	 */
+>  	if (unlikely(svm->current_vmcb->cpu != vcpu->cpu)) {
+> -		svm->current_vmcb->asid_generation = 0;
+>  		vmcb_mark_all_dirty(svm->vmcb);
+>  		svm->current_vmcb->cpu = vcpu->cpu;
+> +		svm->vmcb01.asid_generation = 0;
+> +		if (svm->nested.initialized)
+
+Isn't conditioning the clear on nested.initialized wrong?  It's stupidly contrived,
+but I think it can happen?  Even if it can't, I don't see any reason to conditionally
+zero vmcb02.asid_generation.  Either it's buggy or it's a wash in terms of performance.
+
+ - vCPUx runs on pCPU A, vmcb02 is active, asid=1.
+ - vCPUx migrates to pCPU B, vmcb02 pCPU changes, new asid=2.
+ - vCPUz runs on pCPU A and allocates asid=2 as well.
+ - vCPUx switches to vmbc01 and disabled nested, but doesn't run, e.g. because
+   userspace stuffs EFER.
+ - vCPUx migrates back to pCPU A, and zeroes vmcb01.asid_generation, but not
+   vmcb02.asid_generation.
+ - vCPUx switches to vmcb02, without running vmcb01, again thanks to userspace.
+ - vCPUx does VMRUN on vmcb02 with asid=2. 
+ - Two vCPUs end up using asid=2 on the same pCPU.
+
+The "svm->current_vmcb->cpu != vcpu->cpu" check is also sketchy, but I don't think
+it's outright wrong?
+
+Ugh.  Jumping back a bit, I _was_ going to say that we could revert 193015adf40d
+and then do:
+
+diff --git arch/x86/kvm/svm/svm.c arch/x86/kvm/svm/svm.c
+index b4845e452e69..4c8e2fcd378e 100644
+--- arch/x86/kvm/svm/svm.c
++++ arch/x86/kvm/svm/svm.c
+@@ -1310,12 +1310,6 @@ void svm_switch_vmcb(struct vcpu_svm *svm, struct kvm_vmcb_info *target_vmcb)
+ {
+        svm->current_vmcb = target_vmcb;
+        svm->vmcb = target_vmcb->ptr;
+-
+-       /*
+-       * Workaround: we don't yet track the ASID generation
+-       * that was active the last time target_vmcb was run.
+-       */
+-       svm->asid_generation = 0;
+ }
+ 
+ static int svm_vcpu_create(struct kvm_vcpu *vcpu)
+@@ -4531,6 +4525,9 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+        sync_lapic_to_cr8(vcpu);
+ 
+        if (unlikely(svm->asid != svm->vmcb->control.asid)) {
++               if (svm->vmcb->control.tlb_ctl != TLB_CONTROL_FLUSH_ALL_ASID)
++                       svm->vmcb->control.tlb_ctl = TLB_CONTROL_FLUSH_ASID;
++
+                svm->vmcb->control.asid = svm->asid;
+                vmcb_mark_dirty(svm->vmcb, VMCB_ASID);
+        }
+
+
+But after reading the cover letter[*], I can't tell if 193015adf40d was a bug
+fix for a dirty/clean bits bug, a bug fix for ASID reuse, or an optimization (I
+thought it was an optimization until reading the cover letter and looking more
+at commit af18fa775d07 ("KVM: nSVM: Track the physical cpu of the vmcb vmrun
+through the vmcb").
+
+So yeah, hit this with a hammer and defer the proper fix to your cleanup series,
+because I have low confidence that doing a proper fix is the safest approach for
+LTS kernels.
+
+[*] https://lore.kernel.org/all/20210112164313.4204-1-cavery@redhat.com
