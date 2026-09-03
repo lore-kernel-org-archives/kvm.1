@@ -1,145 +1,338 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8924EE86E
-	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 16:41:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788453697; cv=pass; b=jHMsktTTKkNpe1AIpTjFlWdIOpu2BX/1P6DVm5EENXuW4jEd/nMWcZkc+wqZqHRZBn3SoBP6WcaIz1Fk8MPqtHfIODqAWRG1mDMsi6igxzkBBea5COHoP4hxFdhHrmWm4xzjQaCzpBSlrcIXWkhXL/pm3SInIM/zzcrTpnL0Jvc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788453697; c=relaxed/simple;
-	bh=jmE5t/QWYXGduwCXTsexmNTSqycO4dgO83zrtscZu3s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qvXqelN802G2Zfo7fvoRiSrK1r2BAcULTI4oaOHk0XPNTtOtxdppvi52wv7V8cbkVlqtf6Tw67b/ZlPzQEQkLLmifNQToR/2t0VEeSYuQRnVOqu5s3OauS6u03lDb4Rrbx5hv1CrJWDNbxBaiRnMuzn8S0GWlSi6athL7a2ZPRs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bFN9NjMB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ByO3dj2J; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709584EBACA
+	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 17:07:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788455260; cv=none; b=d+nenU1BLapPfrii47tKnSQ2xPBo4QcBMN4bNyKyaIcFGjBymLc2Yy9JPxCh9GcTgHPAoVNmCMZYIO6l7ovBvAh9zAqc4SS2gh6Icn7n65zu44e2Pfw2tvmsEDDTbKaZ52Zb9naIhEmGUe8tuqJQuYpT2yB1b2GBwWhJWkQvgEs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788455260; c=relaxed/simple;
+	bh=W3/8W3/lNhkqiBlRITSzsVQkumsY+ppyl/x9JV/N/gg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=C1XvdOmRI26OL3cRQ7UJsa+fCu3rRIlgz2FuoLegZgAj4PNBYjbTimEYydrh+m/3BkD+nK1OLXdQ6scYYPbTGR63/lItl8dwaxBUm2opcLEzjU1oytvM/39lHQr/waqcJRfwDfgBv3mnyjFSe4sjEcXLXDwhUr7Qf+Id6QlvH/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kZ3cPJBb; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bFN9NjMB";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ByO3dj2J"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788453694;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=96jSKrblNa/MGHlSRt22d1bqrg1HZKp/dYSrKcWfd2w=;
-	b=bFN9NjMB1PGgROZP967lUpqy3JJf2a4AmMd4ONO5zYagyE2tW8LqlwAUNbApu20qbMSV2f
-	j9lTNQw+G685Ct/Ud2hgJhgLS/M6hnFTgg+vX3xTCAi2+infDng6QbGEyjuyuPZPWpUCWz
-	1VY7BgbOqa5DuyKc3geMZZWmQahgarM=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-183-EhO1sahlMUikmLEvSKj20g-1; Thu, 03 Sep 2026 12:41:33 -0400
-X-MC-Unique: EhO1sahlMUikmLEvSKj20g-1
-X-Mimecast-MFC-AGG-ID: EhO1sahlMUikmLEvSKj20g_1788453692
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-482e2541c30so6628f8f.1
-        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 09:41:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788453692; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ra07oV2S4MNCzxTKY0+1caze15CBwuFrzSSjMTmceAbSDfzkI2lW0fVBQBI8EzWjnO
-         QP53av1i6iOxrM0gRVpMfbzGPtCs2aGMh0Z8PiIonf4xTOZM1RtYkqV7jA8c8iC72nVv
-         asMid65OeTdiMRdhabYSilI2vPq/MKxNzHe2XnhhK5M4yx5KpBAVHzsxgsO2fepQW4in
-         b7gDqOQKNAgN/iAlab1maxxJjB1RcJzdpL4dAT8zNk2SNQkn8QtmJk7lm4RDFwrBZv07
-         ByHpqug7muap9yKow0Cl74dz1LOptxwGlbCoJg37/5MoCxp1tNWhazYYF6dCEAyDgTZC
-         GQsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=96jSKrblNa/MGHlSRt22d1bqrg1HZKp/dYSrKcWfd2w=;
-        fh=QDAZK5hQYuDqxv20/fZV2L2R6QflhKZdemVqQp8lA58=;
-        b=aBZD5Cii+pujbVp9v0KL2ZN+NrLbG7gSAlJEB4IvQUL4ElIeB/kI726pZWw65bR3ex
-         OFun1CA20AZJZCS59a1xkTy7+5jPyBVPDc/8+Febl8HtAalJEKczBci92cyEzzZRrYD8
-         4xMSN+/IDK64dACz6kd3sR0bXw/7nc7jGgYbQFNLxbE97DVYkekUPO70WfmwpNGxe1kh
-         gT7WcJcOQjkLuI9koJm83C6b71XI2jBq2KLWi+qtwOw4czYKxpuJBqG0ZUDLLRuvLDgI
-         rqPwq+s6i4ZFbbvGAahNvijgaLAqZG5NUpeAIjipVcaeW4tj2tPKo41USgfLfNHDny1H
-         ZQzg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kZ3cPJBb"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2db0a41434bso1017815ad.0
+        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 10:07:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788453692; x=1789058492; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1788455258; x=1789060058; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=96jSKrblNa/MGHlSRt22d1bqrg1HZKp/dYSrKcWfd2w=;
-        b=ByO3dj2JbfalBQKaZuQA0LvU+B5tRWZsqkyx1ctjv/yXklp5JqEcKRMof+z/H1ZFQX
-         meWNtFb+OK4BLy/kIzzp3EVxnWzU7en1KdTQizQomRQHtySm9z3Up27vdVoGTtuYymZm
-         EczFj1MGuI2vMOUbp0QmFIgj3opCOO6EJGRcVkJM/f/AsNaNUeQutHoO9iWxNazcbedy
-         1/GF5jVQiy35qDbYezKO3ChOk1CnDTlFebWL29JvfZC3ktZ6znJBYOxdTPm/6Dj6RT9Q
-         FaB4ieKp12fnhhTYvWV9vOvirsXoPqkoXVdtr35fA1OruqQY8svFt5ViIGK9SBypmaYT
-         1OTg==
+        bh=3rOl6zOJPV7OvaUeFzHxeB6d7+tFr+OSRYoJny2JJjQ=;
+        b=kZ3cPJBbkhr0xv++As7MV8VrKKd/prQ/5GZdeCnTJIbwSbgaem2bwKJk9Tmmpee/mY
+         WMnMt9Gj8q/Y9IXzK/+QweQDCxSTsQawkCAdHOhkhUMR2qKBXraeWsuazQgFTt1AwcIm
+         NZeJeXZPs10YCDrfWn/1ECzgHWl+j2PM866igHUlRyQ4CwMbZVBUdaeGrv/enXoV1aSx
+         wOBdJ/wgreR6E0XFMblnkB3OHdBiK3Oco0kgR0E5l6qYnLABTVjZ1H+Jf+y+llA+pGq8
+         MRiL7CzIWWayep0O+vFOIuhxypUVL3MxC1n7MwqzjrazGpjMnb45uLSDsi0XC9Yb+J6B
+         BZfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788453692; x=1789058492;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=96jSKrblNa/MGHlSRt22d1bqrg1HZKp/dYSrKcWfd2w=;
-        b=qo0BVzwCAk6kAh+8pNkgBkRjZeOvEkeyOAZ6RbY8yGSUxFyJmZAp8+SCVnyG3pDi7m
-         agija3Efmc87LrP2Ks+CVMbBTnHNadbE4K5sifVnhejW9G5oP4AEk0VS8TrADrZup7qz
-         dBdmPdM21m4O0tI9NtXF4yfI+4cH71WoGdLZOFFmBUgTJFRrkVGZjBeO10FAqLHzFPCE
-         Ermq6ke2hK97/b30BoS1Fna5D0/6V/vAkAreN7T5+TwZh1W7BN3QrHLPzNO9k9LSu2fc
-         vSJNArpRbSLCRy9gIWzwnyD1Ob800y4mypD57H5psuTtVHzX4U2K7Wo6MjWqCL6oSl0z
-         Emtw==
-X-Forwarded-Encrypted: i=1; AKwUvBz0IqmQZcN5b80YEHiuuT0VzBC6ErOeK4oKPcr6TdxVAmJExNb9SARlQqSRi8807HZaoHE=@vger.kernel.org
-X-Gm-Message-State: AFuF++kOViunvOywRW8tMW5qAr3CiMGGEmsN71pQ2LKrCTEoCuhqFJnD
-	+fCsBaH/UkGcHX5AbXWeEblfu6i6p6DpBoj+XE8u8BdNdgZS1E+DmDKmB+J5lAOYXxx2CxtxGU6
-	AFvamfFgdPiGuIKyKIVfhgOCoNjZ71SkoT2gXkvWi2dByemSB5yJkUnVeXuk9xEy9j/BsR3OaGK
-	tB3Jqga7r+lRFi+O9El6jQEcnZ31/e
-X-Gm-Gg: AYBFou3FON+IfC5H5JVqubDT9GeJbO1vzmZKv4J0DszbTwqXDn/W6l5fzodm5kTNTqN
-	VsJ1Z+xsgX3EcftcZxTVwKgE9cvcvZK4sO8KCtC/v+eO0PlNiyqJgvSYS241DU5UNv+6ECEeRq/
-	vIJ+cqFKTWbZwiMFHfpdyEQ6YQfjf3dkrEbBkvIxLJLxxdn2obEGqGrmwXCwUIPo7OiSRz1MOlX
-	dJ3IOIIBYFQPaCbbQUN3KCc1g5SXEIITbLkhFG3kK4ZFA==
-X-Received: by 2002:a05:6000:22c2:b0:484:3147:49c9 with SMTP id ffacd0b85a97d-48582315a47mr5571274f8f.2.1788453691981;
-        Thu, 03 Sep 2026 09:41:31 -0700 (PDT)
-X-Received: by 2002:a05:6000:22c2:b0:484:3147:49c9 with SMTP id
- ffacd0b85a97d-48582315a47mr5571189f8f.2.1788453691502; Thu, 03 Sep 2026
- 09:41:31 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788455258; x=1789060058;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3rOl6zOJPV7OvaUeFzHxeB6d7+tFr+OSRYoJny2JJjQ=;
+        b=ZQyTeIe3hPaRcYjaPdb3M6GPHsg7HhA6X57BdE5a7k22SOuq4RgCaZc/F7u2xv64JQ
+         mw28R32bgkdi+vgF0+Q72IlyAE0sYG3ECpyKjYeMUdLA/rqW7PCoECQPwqNVY1BIEIvg
+         H1xX46WKxDZhn7Jkm11cKTywYcnVFHFA2bXLOAE9//nCL0D0KRtQejMdqdiRfRvDzMhX
+         tatbtpV3xeP4nkVot6yAXJ45FuGwH7DpWR1FYRhqseuZIZ41iKOeAUkMJLTzw4hVXb/r
+         RkrtpmyEZ2o9UWK/pF/QrXt/4+EqT+JiaAPJEOtPI/PrfieBSN6ZzCom+QKE5vm6Cz4M
+         6gHg==
+X-Forwarded-Encrypted: i=1; AKwUvBw26rmPYah6WfQNB7TLOyTuJJ0igjRubpEs27RuAlzHaoLjKMOWRBna5qvp+ZIAWHBbKPk=@vger.kernel.org
+X-Gm-Message-State: AFuF++me9wA/yaB+6hsu5YD2Y13sONGyr7vezslDJau0qvdmeF1idFA+
+	SwuJpeJna+tu1Aaxhdi1xNtxw4s3MwSGWR2fc7n+UXcLY5IxgC2WiXC5AVOdZwjSqzF3Y6yW00R
+	BzrXYMg==
+X-Received: from plho15.prod.google.com ([2002:a17:903:23cf:b0:2cf:bf3e:41f0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:fa6:b0:2d9:4358:73ab
+ with SMTP id d9443c01a7336-2db126326b2mr5500405ad.19.1788455257530; Thu, 03
+ Sep 2026 10:07:37 -0700 (PDT)
+Date: Thu, 3 Sep 2026 10:07:36 -0700
+In-Reply-To: <20260903084221.C3B871F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260831144802.834315-1-seiden@linux.ibm.com> <20260831144802.834315-24-seiden@linux.ibm.com>
- <aphMx5hsoXwIpNjt@google.com> <20260903083857.33034-B-seiden@linux.ibm.com>
- <apmHrnxRLl9BuVhn@google.com> <20260903154317.246414-A-seiden@linux.ibm.com> <apmhX8H-WUc3U4_N@google.com>
-In-Reply-To: <apmhX8H-WUc3U4_N@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 3 Sep 2026 18:41:18 +0200
-X-Gm-Features: AcwNN1UO9-vCqk6RvEI48oEKpR6Wrb2Fp2swzaiyckPlKKdzDRVW5sMiBpGtdhU
-Message-ID: <CABgObfYUYCRtmJkh1Ns4VBbWqk3ggnDu294G9rZ6tva56=F11Q@mail.gmail.com>
-Subject: Re: [PATCH v7 23/23] KVM: s390: arm64: Add KVM_S390_ARM64 Kconfig and Makefile
-To: Sean Christopherson <seanjc@google.com>
-Cc: Steffen Eiden <seiden@linux.ibm.com>, kvm <kvm@vger.kernel.org>, kvmarm@lists.linux.dev, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Andreas Grapentin <gra@linux.ibm.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-	David Hildenbrand <david@kernel.org>, Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>, 
-	Gautam Gala <ggala@linux.ibm.com>, Hariharan Mari <hari55@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Hendrik Brueckner <brueckner@linux.ibm.com>, 
-	Ilya Leoshkevich <iii@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Joey Gouly <joey.gouly@arm.com>, Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>, 
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>, Oliver Upton <oupton@kernel.org>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20260903-vfio-v2-1-ef4cd4190ae7@linux.ibm.com> <20260903084221.C3B871F000E9@smtp.kernel.org>
+Message-ID: <apmpWNSv6ahYr2Bl@google.com>
+Subject: Re: [PATCH v2] vfio: Use file-based reference counting for KVM
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Steffen Eiden <seiden@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, kvm@vger.kernel.org, 
+	Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org, 
+	Vasily Gorbik <gor@linux.ibm.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Il gio 3 set 2026, 18:33 Sean Christopherson <seanjc@google.com> ha scritto:
->
-> How many people are running distro kernels on s390 hardware?  And how many distros
-> actually change the default KVM settings, e.g. to build KVM as a module instead of
-> baking it into the kernel?  My guess is "not many" and "almost none", i.e. the
-> actual impact on downstream users is likely miniscule.
+On Thu, Sep 03, 2026, sashiko-bot@kernel.org wrote:
+> > diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+> > index 940c0ff668bee..f160e1945fbce 100644
+> > --- a/drivers/s390/crypto/vfio_ap_ops.c
+> > +++ b/drivers/s390/crypto/vfio_ap_ops.c
+> 
+> [ ... ]
+> 
+> > @@ -1822,17 +1822,27 @@ static const struct attribute_group *vfio_ap_mdev_attr_groups[] = {
+> >  
+> >  /**
+> >   * vfio_ap_mdev_set_kvm - sets all data for @matrix_mdev that are needed
+> > - * to manage AP resources for the guest whose state is represented by @kvm
+> > + * to manage AP resources for the guest whose state is represented by
+> > + * @kvm_file
+> >   *
+> >   * @matrix_mdev: a mediated matrix device
+> > - * @kvm: reference to KVM instance
+> > + * @kvm_file: the KVM VM file this vfio device is associated with
+> >   *
+> > - * Return: 0 if no other mediated matrix device has a reference to @kvm;
+> > + * Return: 0 if no other mediated matrix device has a reference to the VM;
+> >   * otherwise, returns an -EPERM.
+> >   */
+> >  static int vfio_ap_mdev_set_kvm(struct ap_matrix_mdev *matrix_mdev,
+> > -				struct kvm *kvm)
+> > +				struct file *kvm_file)
+> >  {
+> > +	struct kvm *kvm;
+> > +
+> > +	if (!kvm_file)
+> > +		return -ENOENT;
+> > +
+> > +	kvm = kvm_file->private_data;
+> > +	if (!kvm)
+> > +		return -ENOENT;
+> > +
+> >  	if (kvm->arch.crypto.crycbd) {
+> 
+> [Severity: Critical]
+> Does this code adequately verify that the file is an s390 KVM file before
+> casting its private_data in vfio_ap_mdev_set_kvm() inside
+> drivers/s390/crypto/vfio_ap_ops.c?
+> 
+> If a user instantiates a VM using a concurrent KVM-arm64 module and attaches
+> an s390-specific VFIO device to its KVM device, could this driver extract the
+> untyped private_data and mistakenly treat an arm64 struct kvm as an s390 one?
+> 
+> Because the memory layouts of struct kvm_arch differ across architectures,
+> would accessing s390-specific fields in the arch member (like
+> kvm->arch.crypto.pqap_hook) result in arbitrary memory corruption?
 
-RHEL and SLES *are* distros, and I am not sure which bank or insurance
-company would be running non-distro kernels. :) So I assume you mean
-"how many people are running non-distro kernels on s390".
+This is effectively the same concern I raised[1] in the s390+arm64 series:
 
-At least RHEL builds KVM as a module for s390x, but it's not a
-problem. I agree with you that having the equivalent of INTEL/AMD, if
-possible, is a desirable self-check.
+ : Side topic #2, this entire approach seems extremely brittle unless you make it
+ : all but impossible for non-KVM code to get at KVM structure definitions.  Outside
+ : of KVM, all compilation units will see the s390 version of KVM structures.  Which
+ : is "fine", but obviously dangerous and IMO asking for maintenance issues down the
+ : road.
 
-Paolo
+I don't think we need to go to the super extreme lengths I proposed[2] back when
+we were exploring multi-KVM on x86, but the direct dereference of ->private_data
+is a huge red flag.
+
+Given that external usage of "struct kvm" should be *super* rare, and IMO is
+something we should actively discourage, I think we should make it opt-in.  Then
+at the same time, define the API so that it's arch-specific, e.g. to yield
+file_to_kvm_s390() so that drivers/s390/crypto/vfio_ap_ops.c can get exactly
+what it wants.
+
+Diff below, though it needs to be split into multiple patches (I'll respond with
+more to the full patch).
+
+[1] https://lore.kernel.org/all/aphLXQL1H2zYZgTi@google.com
+[2] https://lore.kernel.org/all/20230916003118.2540661-1-seanjc@google.com
+
+diff --git a/arch/s390/include/asm/kvm_host_s390.h b/arch/s390/include/asm/kvm_host_s390.h
+index cd692f8fb764..8a7eed5847e1 100644
+--- a/arch/s390/include/asm/kvm_host_s390.h
++++ b/arch/s390/include/asm/kvm_host_s390.h
+@@ -27,6 +27,8 @@
+ #include <asm/isc.h>
+ #include <asm/guarded_storage.h>
+ 
++#define kvm_file_to_kvm_arch s390
++
+ #define KVM_HAVE_MMU_RWLOCK
+ #define KVM_MAX_VCPUS 255
+ 
+diff --git a/arch/x86/include/asm/kvm_page_track.h b/arch/x86/include/asm/kvm_page_track.h
+index 046a25c8fe4f..acc301f5e265 100644
+--- a/arch/x86/include/asm/kvm_page_track.h
++++ b/arch/x86/include/asm/kvm_page_track.h
+@@ -5,6 +5,9 @@
+ #include <linux/kvm_types.h>
+ 
+ #ifdef CONFIG_KVM_EXTERNAL_WRITE_TRACKING
++
++#define kvm_file_to_kvm_arch x86
++
+ /*
+  * The notifier represented by @kvm_page_track_notifier_node is linked into
+  * the head which will be notified when guest is triggering the track event.
+diff --git a/arch/x86/kvm/Makefile b/arch/x86/kvm/Makefile
+index 96f89d6f7e6a..c6bf463f5032 100644
+--- a/arch/x86/kvm/Makefile
++++ b/arch/x86/kvm/Makefile
+@@ -60,7 +60,8 @@ exports_grep_trailer := --include='*.[ch]' -nrw $(srctree)/virt/kvm $(srctree)/a
+ 			grep -v -e kvm_page_track_register_notifier \
+ 				-e kvm_page_track_unregister_notifier \
+ 				-e kvm_write_track_add_gfn \
+-				-e kvm_write_track_remove_gfn
++				-e kvm_write_track_remove_gfn \
++				-e kvm_file_to_kvm_fn
+ 
+ # Force grep to emit a goofy group separator that can in turn be replaced with
+ # the above newline macro (newlines in Make are a nightmare).  Note, grep only
+diff --git a/arch/x86/kvm/mmu/page_track.c b/arch/x86/kvm/mmu/page_track.c
+index 98f133e4f0b3..ebf941b6378d 100644
+--- a/arch/x86/kvm/mmu/page_track.c
++++ b/arch/x86/kvm/mmu/page_track.c
+@@ -241,7 +241,7 @@ int kvm_page_track_register_notifier(struct file *file,
+ 				     struct kvm_page_track_notifier_node *n)
+ {
+ 	struct kvm_page_track_notifier_head *head;
+-	struct kvm *kvm = file_to_kvm(file);
++	struct kvm *kvm = file_to_kvm_x86(file);
+ 	int r;
+ 
+ 	if (!kvm || kvm->mm != current->mm)
+@@ -272,7 +272,7 @@ void kvm_page_track_unregister_notifier(struct file *file,
+ 					struct kvm_page_track_notifier_node *n)
+ {
+ 	struct kvm_page_track_notifier_head *head;
+-	struct kvm *kvm = file_to_kvm(file);
++	struct kvm *kvm = file_to_kvm_x86(file);
+ 
+ 	head = &kvm->arch.track_notifier_head;
+ 
+@@ -343,7 +343,7 @@ void kvm_page_track_delete_slot(struct kvm *kvm, struct kvm_memory_slot *slot)
+  */
+ int kvm_write_track_add_gfn(struct file *file, gfn_t gfn)
+ {
+-	struct kvm *kvm = file_to_kvm(file);
++	struct kvm *kvm = file_to_kvm_x86(file);
+ 	struct kvm_memory_slot *slot;
+ 	int idx;
+ 
+@@ -374,7 +374,7 @@ EXPORT_SYMBOL_GPL(kvm_write_track_add_gfn);
+  */
+ int kvm_write_track_remove_gfn(struct file *file, gfn_t gfn)
+ {
+-	struct kvm *kvm = file_to_kvm(file);
++	struct kvm *kvm = file_to_kvm_x86(file);
+ 	struct kvm_memory_slot *slot;
+ 	int idx;
+ 
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 5705723f1f41..6b0eacde4f06 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2145,10 +2145,10 @@ int sev_vm_move_enc_context_from(struct kvm *kvm, unsigned int source_fd)
+ 	if (fd_empty(f))
+ 		return -EBADF;
+ 
+-	if (!file_is_kvm(fd_file(f)))
++	source_kvm = file_to_kvm_x86(fd_file(f));
++	if (!source_kvm)
+ 		return -EBADF;
+ 
+-	source_kvm = fd_file(f)->private_data;
+ 	ret = sev_lock_two_vms(kvm, source_kvm);
+ 	if (ret)
+ 		return ret;
+@@ -2866,10 +2866,10 @@ int sev_vm_copy_enc_context_from(struct kvm *kvm, unsigned int source_fd)
+ 	if (fd_empty(f))
+ 		return -EBADF;
+ 
+-	if (!file_is_kvm(fd_file(f)))
++	source_kvm = file_to_kvm_x86(fd_file(f));
++	if (!source_kvm)
+ 		return -EBADF;
+ 
+-	source_kvm = fd_file(f)->private_data;
+ 	ret = sev_lock_two_vms(kvm, source_kvm);
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+index f160e1945fbc..96bcc47b824f 100644
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -1834,12 +1834,8 @@ static const struct attribute_group *vfio_ap_mdev_attr_groups[] = {
+ static int vfio_ap_mdev_set_kvm(struct ap_matrix_mdev *matrix_mdev,
+ 				struct file *kvm_file)
+ {
+-	struct kvm *kvm;
++	struct kvm *kvm = file_to_kvm_s390(kvm_file);
+ 
+-	if (!kvm_file)
+-		return -ENOENT;
+-
+-	kvm = kvm_file->private_data;
+ 	if (!kvm)
+ 		return -ENOENT;
+ 
+diff --git a/drivers/vfio/pci/vfio_pci_zdev.c b/drivers/vfio/pci/vfio_pci_zdev.c
+index 045132e90bfe..332bc66db55b 100644
+--- a/drivers/vfio/pci/vfio_pci_zdev.c
++++ b/drivers/vfio/pci/vfio_pci_zdev.c
+@@ -196,7 +196,7 @@ int vfio_pci_zdev_open_device(struct vfio_pci_core_device *vdev)
+ 		return 0;
+ 
+ 	ret = -ENOENT;
+-	kvm = vdev->vdev.kvm->private_data;
++	kvm = file_to_kvm_s390(vdev->vdev.kvm);
+ 	if (!kvm)
+ 		goto recovery;
+ 
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index bfecce1b5955..09e327843e6c 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1088,8 +1088,11 @@ void kvm_exit(void);
+ void kvm_get_kvm(struct kvm *kvm);
+ bool kvm_get_kvm_safe(struct kvm *kvm);
+ void kvm_put_kvm(struct kvm *kvm);
+-bool file_is_kvm(struct file *file);
+-struct kvm *file_to_kvm(struct file *file);
++#ifdef kvm_file_to_kvm_arch
++#define kvm_file_to_kvm_fn CONCATENATE(file_to_kvm_, kvm_file_to_kvm_arch)
++struct kvm *kvm_file_to_kvm_fn(struct file *file);
++#endif
++
+ void kvm_put_kvm_no_destroy(struct kvm *kvm);
+ 
+ static inline struct kvm_memslots *__kvm_memslots(struct kvm *kvm, int as_id)
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 34b4c43908b3..9557026299d3 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -5492,20 +5492,16 @@ static struct file_operations kvm_vm_fops = {
+ 	KVM_COMPAT(kvm_vm_compat_ioctl),
+ };
+ 
+-bool file_is_kvm(struct file *file)
++#ifdef kvm_file_to_kvm_fn
++struct kvm *kvm_file_to_kvm_fn(struct file *file)
+ {
+-	return file && file->f_op == &kvm_vm_fops;
+-}
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(file_is_kvm);
+-
+-struct kvm *file_to_kvm(struct file *file)
+-{
+-	if (!file_is_kvm(file))
++	if (!file || file->f_op != &kvm_vm_fops)
+ 		return NULL;
+ 
+ 	return file->private_data;
+ }
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(file_to_kvm);
++EXPORT_SYMBOL_GPL(kvm_file_to_kvm_fn);
++#endif
+ 
+ static int kvm_dev_ioctl_create_vm(unsigned long type)
+ {
 
