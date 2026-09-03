@@ -1,56 +1,56 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8285A2DC79B
-	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 00:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C192550D5
+	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 00:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788394593; cv=none; b=SIfVq9xuOe2INZAZ/+dXaI5uHnYwQsbqLro7HmWdBQoiy8hqoxpbzm3Kp39G6tAEA8MSmEr/2/PuPYKJQT/GcA3v92vEV2y52tGfn+Orvl8bTT1S4hpNGHqKbTHeiw5OErT6Ki07WsdInDpIh3VjPWgteM56ihBCSBrSXjhPkT0=
+	t=1788394596; cv=none; b=RmTAVVPdvoVbG5jvpiJ/5VVQBZgmy0WFG5C/W9szZV15yyHZvfmEyzaCD3zCLhGgPONseQWwAcQD3w/amcOw+Ncyk0Vy5l6qjUFVKMRt+I5dWCTri9i56tDA3F3rT688g0zea11K0IJiVFJw4X+aD2F4yD5Wt2Mc0rhe3yxn+W0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788394593; c=relaxed/simple;
-	bh=iUmp+/UA5hUtnNLM3FihhYzYfvUWjnvesBtph3YUifk=;
+	s=arc-20240116; t=1788394596; c=relaxed/simple;
+	bh=ssdScvJwn5AX7Y88QustQ3OVZF+afaC11Oyf90jlOBE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=i4TI0E4O61ZScIXx4giDsLWGQF1ViwY1BDnXRFD5gc9CwpvPp0TqgmCUGH4LEIY9xrI5uMU50lFb1ieh9WusnaDDR052lWH+ZPJeyXO3K3MBjuKQX9UGviTeFiAV1x5/nkSc1AlPY7/y6dtMawtraTvRK83/AdP1ltB67boWUo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A1W42tn3; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=CPoJe7zfWzr4n02TTLiBoZMchg3OflHQGLzgNpAe5Gy3TSFt9V24393fUEbJuTvCPsWDRL7CAraKL9h4xno01MTR2Jwm99PJGofsnMacvIiwEb4FdkPcAT2wYpPm9C9EKrHw2NsEaLkkF4yJxC0iwfXtDvIixA1osWhw1wYs1ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BDbmsilK; arc=none smtp.client-ip=209.85.216.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A1W42tn3"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d6fed0652bso20520145ad.2
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 17:16:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BDbmsilK"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3965ba1ba3eso2097243a91.2
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 17:16:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788394592; x=1788999392; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788394594; x=1788999394; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=3r1gABvmp5s+7YEMEgw6S8SuGm7W8C45xWpPRUFRpOA=;
-        b=A1W42tn3qzsA0VnWRxVnEbTzEQK3TDy9/kbn3J08a3Zn2+VQ/lPZqIG9V6rIRw57ga
-         vWdn/Ijmo7AEua3TJ7ClOL4SxzquwSLmBqZOzwh4Q/Ak0PRuV+HGYYAFTei6R4smGDkq
-         cbA+WY7i6+II5Cr5mBv3Oa3IiblUtJtyZhwte0Ek+xR/evdew/IW1UW7QucuxlNfm/vZ
-         1BdhklTzrg8hOdNNL1pVX6yRl4wqU3pspi4fNRKTUMDV55bwyt+hOChSnKyBzxH7YvQb
-         fTlJMziSXZC8jK94T4wUZKZEmoQXuK9z1piHvmE7SCoa5d4oeWMNMY0RJbK4qvmth+mi
-         ryBw==
+        bh=WnK/zCAKpIyvcdimwe1n+ftd6xW82ILk7//FjCqRzyg=;
+        b=BDbmsilKR4P94Sl047Kvc0nQitmLNywJ/XkW3h6SYoDx2vw2lLE5GkyCjVl9MB+zSj
+         ZNPsI9Nf4oM9XME9lDEyrSebjdvDzl8wUA4nwa3ZPdF8sh1qSbm/puRYvHEHyp8gb6cu
+         fs6ppPLpbTtNZbHZTz2MyPFWjzIvdjnG8n7J1WTIM21TDrbtvIlDz7AZsEspmYJIk46Y
+         RzDdEVIFburvdk1q/bNkFj9EoIr0reYPMXz8iLGfHQMhltjFRa7u67hqQ6Jql0SRmkKu
+         gjSo2wUUmROI5HRMoWz4jDPMgV25Dn9dj7++LszE1IlcXkAyUNPO7GmSuEvZXUNo8Ik9
+         g5/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788394592; x=1788999392;
+        d=1e100.net; s=20251104; t=1788394594; x=1788999394;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=3r1gABvmp5s+7YEMEgw6S8SuGm7W8C45xWpPRUFRpOA=;
-        b=gv7WVrZEs7+GVTRTmrsXe872tebF+oWX4u4ROjxmwHzdScubDHVihEhTj/SLPY5v7f
-         jmd7oe3TcVoFXK/hNYNHhX56xyOXQalDogRhIQD2IkvMTAYerEr8D2aKXYwlIQnL8kg5
-         a2nlyTtBY8W4mPsi4b1b2A6ecsfsJDTWhqbh/Gy35H0lSS5gDwRQJ02T6oFdurqdQ4HV
-         PgMOvTEUaD+XqWjrPwICaThXTtADwQP3z8Krgp1cuicoQ2fP4v/46109S0vUyTeo/TCA
-         QVjkQbKj3MTR86u4H1XPRCFxV+dAJTdMBMbP78VtMMlJNYovgaG0Vw50ows0v4G3iIND
-         ghsQ==
-X-Gm-Message-State: AFuF++mxX4afvLkEsK+Wbo6ZsSPfz5ocn+CIxxcwKCGP8/xCb0rGKd67
-	r74uS9bvfO+G7atXUMvcexRo3wIZO1y5jaWUJSYC3IMMj1a8ak/6KWdFJbk7QcS0JhcUyIdMr7J
-	ttG5TeQ==
-X-Received: from pjbmv3.prod.google.com ([2002:a17:90b:1983:b0:398:e46e:7003])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e7cc:b0:396:b98b:a3c2
- with SMTP id 98e67ed59e1d1-39aedf1b1ecmr11504144a91.8.1788394591528; Wed, 02
- Sep 2026 17:16:31 -0700 (PDT)
+        bh=WnK/zCAKpIyvcdimwe1n+ftd6xW82ILk7//FjCqRzyg=;
+        b=WF887IBVaPh1ToHkcdmhqcfAieq1Kxuz/2uZcrP+j8z7BK1krUwl9tJN/esOpEk+Ru
+         Frp7mbKUpwiqo7eZb5830mXtlF8Z1oPXalnCaQWMQY8ZPcfOSmItRA/gM6YT2MVSnqDO
+         YqH3DFT+t5+3vfab3bpqdEYXt7kcQB2miQWp+ujf2ajmeIsx112Tyox3JclV291kgfmJ
+         1kXDuaH6zQWSqFZJxMnNQFGLCEx4K+0/lRRhrfGthekSexBSZv1WQJOEj8aWtWK69rh/
+         nc5Uw2G4ivtsP5AK0qhii3zw/IOpqjdAS5FiC6wUoyIwPeUcKIfp9U2H7+RDeTmfRjYY
+         wLfQ==
+X-Gm-Message-State: AFuF++nKSWKshulTtsjHiFAgaIGiG8eTm6mtYRyQtfxrQi++DAymxUcE
+	3ZbusGyf6caVJBg3GpIvkqOouznrSs3ySAfjAtLUhl+Kj+YvWiUUpurlZGSGwzlCyYSUxeaZHLa
+	gB5eZ4g==
+X-Received: from pjll16.prod.google.com ([2002:a17:90a:710:b0:398:e613:7ab3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5606:b0:398:9be6:f996
+ with SMTP id 98e67ed59e1d1-39aee1115e0mr13498197a91.21.1788394593790; Wed, 02
+ Sep 2026 17:16:33 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed,  2 Sep 2026 17:16:22 -0700
+Date: Wed,  2 Sep 2026 17:16:23 -0700
 In-Reply-To: <20260903001625.2792367-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,158 +60,74 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260903001625.2792367-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.970.g62bdec98f9-goog
-Message-ID: <20260903001625.2792367-5-seanjc@google.com>
-Subject: [PATCH 4/7] KVM: selftests: Compute node masks on-demand in xAPIC IPI test
+Message-ID: <20260903001625.2792367-6-seanjc@google.com>
+Subject: [PATCH 5/7] KVM: selftests: Add common helper to get mask+number of
+ usable memory NUMA nodes
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Shivank Garg <shivankg@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Compute the node masks for the source (from) and destination (to) NUMA
-nodes in the xAPIC IPI test instead of pre-filling an array of masks with
-node per mask.  Computing the mask on-demand is technically slower, but
-doesn't require a large-ish on-stack array, and more importantly allows the
-test to use a generic "get next NUMA node" API without having to commit all
-of KVM selftests to using a large array of single-bit nodemasks.
+Extract and slightly adopt the xAPIC IPI test's logic for getting the mask
+and number of usable memory NUMA nodes into a common helper.  To allow for
+friendlier behavior when the underlying kernel doesn't support NUMA, or the
+test was run without sufficient permissions, zero out the mask and return
+"zero nodes" if get_mempolicy() fails with ENOSYS or EPERM respectively.
+I.e. allow tests to skip (sub)tests instead of throwing an assert.
 
-Implement said API as a common KVM NUMA API so that it can be used by other
-tests, e.g. in guest_memfd tests.  Deliberately make @from "exclusive" as
-the anticipated usage in KVM selftests is to select the next, *different*
-node, i.e. so that users don't have to copy+paste code to assert that the
-found node is different than the starting node.  The obvious downside is
-that implementing the exclusive logic forces callers to pass -1 instead of
-0 when the goal is to find the first node in the mask, but that arguably
-yields more intuitive code anyways.
-
-From an overall test functionality/coverage perspective, no functional
-change intended (the walking pattern of node migration should be unchanged).
-
+Suggested-by: Shivank Garg <shivankg@amd.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/include/numaif.h  | 21 +++++++++++-
- .../selftests/kvm/x86/xapic_ipi_test.c        | 32 ++++++-------------
- 2 files changed, 30 insertions(+), 23 deletions(-)
+ tools/testing/selftests/kvm/include/numaif.h     | 13 +++++++++++++
+ tools/testing/selftests/kvm/x86/xapic_ipi_test.c |  5 +----
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/include/numaif.h b/tools/testing/selftests/kvm/include/numaif.h
-index 71f261eafc90..299dddff2729 100644
+index 299dddff2729..0945500c6322 100644
 --- a/tools/testing/selftests/kvm/include/numaif.h
 +++ b/tools/testing/selftests/kvm/include/numaif.h
-@@ -6,7 +6,7 @@
- 
- #include <dirent.h>
- 
--#include <linux/bitops.h>
-+#include <linux/bitmap.h>
- #include <linux/mempolicy.h>
- 
- #include "kvm_syscalls.h"
-@@ -41,6 +41,25 @@ KVM_SYSCALL_DEFINE(mbind, 6, void *, addr, unsigned long, size, int, mode,
+@@ -41,6 +41,19 @@ KVM_SYSCALL_DEFINE(mbind, 6, void *, addr, unsigned long, size, int, mode,
   */
  #define MAXNODE_FOR_MASK(mask) (BITS_PER_TYPE(mask) + 1)
  
-+/*
-+ * Return the node ID of the next NUMA node in the mask, starting at @from+1.
-+ * Guarantees a node is found, and that the found node is not @from.  Pass -1
-+ * to find the first node in the mask.
-+ */
-+static inline int kvm_get_next_numa_node(unsigned long nodemask, int from)
++static inline int kvm_get_numa_memory_nodes(unsigned long *nodemask)
 +{
-+	const unsigned long nr_bits = BITS_PER_TYPE(nodemask);
-+	int to;
++	int r;
 +
-+	to = find_next_bit(&nodemask, nr_bits, from + 1);
-+	if (to == nr_bits)
-+		to = find_next_bit(&nodemask, nr_bits, 0);
++	*nodemask = 0;
 +
-+	TEST_ASSERT(to != nr_bits && to != from,
-+		    "Unabled to find second NUMA node (from = %d, to = %d)", from, to);
-+	return to;
++	r = get_mempolicy(NULL, nodemask, MAXNODE_FOR_MASK(*nodemask), 0,
++			  MPOL_F_MEMS_ALLOWED);
++	TEST_ASSERT(!r || errno == ENOSYS || errno == EPERM,
++		    "Unexpected get_mempolicy() failure");
++	return __builtin_popcountl(*nodemask);
 +}
 +
- static inline int get_max_numa_node(void)
- {
- 	struct dirent *de;
+ /*
+  * Return the node ID of the next NUMA node in the mask, starting at @from+1.
+  * Guarantees a node is found, and that the found node is not @from.  Pass -1
 diff --git a/tools/testing/selftests/kvm/x86/xapic_ipi_test.c b/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
-index 9d1dfad4efa6..7144ad833ae0 100644
+index 7144ad833ae0..42c601617f5a 100644
 --- a/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
 +++ b/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
-@@ -233,13 +233,10 @@ void do_migrations(struct test_data_page *data, int run_secs, int delay_usecs,
- {
- 	long pages_not_moved;
- 	unsigned long nodemask = 0;
--	unsigned long nodemasks[BITS_PER_TYPE(nodemask)];
- 	int nodes = 0;
- 	time_t start_time, last_update, now;
- 	time_t interval_secs = 1;
--	int i;
- 	int from, to;
--	unsigned long bit;
- 	u64 hlt_count;
- 	u64 wake_count;
- 	u64 ipis_sent;
-@@ -255,24 +252,15 @@ void do_migrations(struct test_data_page *data, int run_secs, int delay_usecs,
+@@ -244,15 +244,12 @@ void do_migrations(struct test_data_page *data, int run_secs, int delay_usecs,
+ 	fprintf(stderr, "Calling migrate_pages every %d microseconds\n",
+ 		delay_usecs);
+ 
+-	/* Get set of first 64 numa nodes available */
+-	kvm_get_mempolicy(NULL, &nodemask, MAXNODE_FOR_MASK(nodemask),
+-			  0, MPOL_F_MEMS_ALLOWED);
++	nodes = kvm_get_numa_memory_nodes(&nodemask);
+ 
+ 	fprintf(stderr, "Numa nodes found amongst first %lu possible nodes "
  		"(each 1-bit indicates node is present): %#lx\n",
  		BITS_PER_TYPE(nodemask), nodemask);
  
--	/* Init array of masks containing a single-bit in each, one for each
--	 * available node. migrate_pages called below requires specifying nodes
--	 * as bit masks.
--	 */
--	for (i = 0, bit = 1; i < BITS_PER_TYPE(nodemask); i++, bit <<= 1) {
--		if (nodemask & bit) {
--			nodemasks[nodes] = nodemask & bit;
--			nodes++;
--		}
--	}
--
-+	nodes = __builtin_popcountl(nodemask);
+-	nodes = __builtin_popcountl(nodemask);
  	TEST_ASSERT(nodes > 1,
  		    "Did not find at least 2 numa nodes. Can't do migration");
  
- 	fprintf(stderr, "Migrating amongst %d nodes found\n", nodes);
- 
--	from = 0;
--	to = 1;
-+	from = kvm_get_next_numa_node(nodemask, -1);
-+	to = kvm_get_next_numa_node(nodemask, from);
-+
- 	start_time = time(NULL);
- 	last_update = start_time;
- 
-@@ -281,6 +269,9 @@ void do_migrations(struct test_data_page *data, int run_secs, int delay_usecs,
- 	wake_count = data->wake_count;
- 
- 	while ((int)(time(NULL) - start_time) < run_secs) {
-+		unsigned long from_mask = BIT(from);
-+		unsigned long to_mask = BIT(to);
-+
- 		data->migrations_attempted++;
- 
- 		/*
-@@ -291,9 +282,8 @@ void do_migrations(struct test_data_page *data, int run_secs, int delay_usecs,
- 		 * KVM_CREATE_VCPU ioctl. If that assumption ever changes this
- 		 * test may break or give a false positive signal.
- 		 */
--		pages_not_moved = migrate_pages(0, MAXNODE_FOR_MASK(nodemasks[from]),
--						&nodemasks[from],
--						&nodemasks[to]);
-+		pages_not_moved = migrate_pages(0, MAXNODE_FOR_MASK(from_mask),
-+						&from_mask, &to_mask);
- 		if (pages_not_moved < 0)
- 			fprintf(stderr,
- 				"migrate_pages failed, errno=%d\n", errno);
-@@ -305,9 +295,7 @@ void do_migrations(struct test_data_page *data, int run_secs, int delay_usecs,
- 			data->migrations_completed++;
- 
- 		from = to;
--		to++;
--		if (to == nodes)
--			to = 0;
-+		to = kvm_get_next_numa_node(nodemask, from);
- 
- 		now = time(NULL);
- 		if (((now - start_time) % interval_secs == 0) &&
 -- 
 2.55.0.970.g62bdec98f9-goog
 
