@@ -1,101 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB0042123E;
-	Thu,  3 Sep 2026 08:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DA6449988;
+	Thu,  3 Sep 2026 08:12:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788422694; cv=none; b=R7Kkwqjv+VEFt/EhDhPSkQsD77ZH4KblNwhOQ0p60wa8P5KNjvnw2lWhGELitZt3BKyXUPjcTtZq1TYCtVWET9lLg57l1JFPSJPlHrMFR9ZSKjv7gujp7jgPk3BMHxHsZ+tUY3NAHUHn8c/ZIHqqGD7ZzRuGnPUye8xBJVlGT/E=
+	t=1788423165; cv=none; b=FDf9VWwPFBZEpt/eQlaXKvtKFtgNUo1bg1JETsexf7B7D1R1qjdcGl8YsiIM+uk47+1JBShnOMewVhBrhA43itzLX5/YF/MaY/c0yFgy3CLKugwzh4j72m17izINE/JF4+36ttYuZsC6w6irf7BNojp1MhVfE2ALPdgaysgtyFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788422694; c=relaxed/simple;
-	bh=Z5gJYyJmuSii3lB5CDz06hrw+0Qhyjq4c09Wuu/Q2Bg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qajQEBma8c+aTmrbDCWFyH9iYmHevmIQtt1pbRASn3jKAzTUadPiNZNQmrmCmQhfi+Lro8dQsMqKXpDWtOhcwH9lmuf9BbOOh17VTPIxDTMevq7rthujtFhEUylakYch2/UcnF3G2mJkMt4SBr14HCxkN0iLboe4ZI5Tj51yD2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jUyyKAvQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788423165; c=relaxed/simple;
+	bh=6w4bfji6hAGZea5dXhSgXU5mFR56zgAIYb4H+KRrPzU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aZOtfwRvcgtTnOeeZYvfGTQOtGHJILxwW+EUZgepvCa0EOdHi50Ui3MSJDk2iep0LIam/A5uJFGr9mEW5E+EyvZO59zXgVMo7ePJVuH8VMNnQ27DgZwJxWrZkq3Clj67Rre66fCpU4Qw2VrlExupgDBtyUSy+cAKbRChujzYYBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FpIYV9AE; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jUyyKAvQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9A31F000E9;
-	Thu,  3 Sep 2026 08:04:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788422692;
-	bh=nik0wTm+JAvs8cZN7JlAAdq521Lm/c+88mnUUFC//R4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jUyyKAvQFpKXEHo2Atpade5J0wfy1AFB0fqkGgJOa8yKzmq5BJ9QpKhNF73PxQp6q
-	 djMgOWi1bpqw+KDh5J11hhTA1ywSgPUl/klMK/hMnhJKQNbOgO8+Y2TWMMc4qXYrFx
-	 GYMNaw8ICT6/wJnZmkQaAEmo9gO7++djTtBirdbCBsHLCbC2PgW7ao+0dwlxT5TmBT
-	 +1TweJIMqStnfbfGl3utjj+BdNFOjYp9SPYZ0rKvy6rTppWVygt9zzStrbH4DPOelP
-	 0NQRh3ijzu+TmVTyb2wxZauSsE1G1FEOl29Qs+TSy4pz645AEK5a2hXQrJ+v6wDUV4
-	 bTLfVY7bV3ugQ==
-Date: Thu, 3 Sep 2026 11:04:44 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-s390@vger.kernel.org
-Subject: Re: [PATCH 0/4] KVM: s390: replace page allocator calls with
- kzalloc()
-Message-ID: <apkqHLgg7nqBiYW7@kernel.org>
-References: <20260902-s390-kvm-v1-0-3bc0986550b1@kernel.org>
- <20260902130612.41500808@p-imbrenda>
- <apghz4XAgv0ro15t@kernel.org>
- <20260902165315.06996af6@p-imbrenda>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FpIYV9AE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788423163; x=1819959163;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=6w4bfji6hAGZea5dXhSgXU5mFR56zgAIYb4H+KRrPzU=;
+  b=FpIYV9AEQcUhrKPbId7XqRNkm1BwG+/EJMo+vYVdLDQxJkxSP3+RKei+
+   1V9z65vy++ZJ2l/nyk2eCKG/24yrYk82eivTl6NnZW1JPygQUWN0Y5kVt
+   hTwMjBOaS20f9G0TF8uim+vZPEhMWiEY8zql2SJCDGleEzEs+7oLSdryR
+   CjERvROhNKgKN8Y6UZgM7uZd+Zr27YOHuyNZ/R4kUMj/LyFn7xDrYjOHs
+   MpmLBeQiHc76+CpUC4V097mBR+3rNidZlGOm2C3+HkVyiXlFb1uKLmrWH
+   ixz4vOnW4PO8mL56lUXFU6aLui51uSyzeuZbur1l2RJDFd6n5K5osKWXD
+   g==;
+X-CSE-ConnectionGUID: yX4AVdEAToqhLstZ6eODAQ==
+X-CSE-MsgGUID: 2ThAdPDgS5WxuNYpXN88NA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="106416137"
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="106416137"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 01:12:43 -0700
+X-CSE-ConnectionGUID: /u1yE0FgQGueLdY6JsPdsA==
+X-CSE-MsgGUID: eSW4BurGRs2Ih0+FrZymiw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="307852873"
+Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 01:12:40 -0700
+Message-ID: <d04fee8f-6742-469c-9dfa-6afbc44129a6@linux.intel.com>
+Date: Thu, 3 Sep 2026 16:12:37 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260902165315.06996af6@p-imbrenda>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/4] KVM: TDX: Report CORE_CAPABILITIES as configurable
+To: Kishen Maloor <kishen.maloor@intel.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org
+Cc: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com,
+ andrew.cooper3@citrix.com, nik.borisov@suse.com, kas@kernel.org,
+ rick.p.edgecombe@intel.com, xiaoyao.li@intel.com, chao.gao@intel.com
+References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
+ <20260827031837.2863609-3-binbin.wu@linux.intel.com>
+ <73beeef9-3ecf-49fc-87e3-6fa30f8f56d3@intel.com>
+ <d47c8cc6-242b-4ebf-89f2-0909abdaadd5@linux.intel.com>
+ <0c2881c6-3352-486d-be59-e6350fda9ad7@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <0c2881c6-3352-486d-be59-e6350fda9ad7@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Claudio,
-
-On Wed, Sep 02, 2026 at 04:53:15PM +0200, Claudio Imbrenda wrote:
-> On Wed, 2 Sep 2026 16:17:03 +0300
-> Mike Rapoport <rppt@kernel.org> wrote:
+On 9/3/2026 2:10 PM, Kishen Maloor wrote:
+> On 9/2/26 7:22 PM, Binbin Wu wrote:
+>> On 9/3/2026 1:43 AM, Kishen Maloor wrote:
+>>> On 8/26/26 8:18 PM, Binbin Wu wrote:
+>> ...
+>>
+>> Actually this is the #VE reduction on fixed-1 bit, which changes a previous fixed-1
+>> bit to directly configurable.
+>> There are several cases of this category, i.e. MCA/MCE/MTRR/CORE_CAPABILITIES.
+>> However, CORE_CAPABILITIES is the only case that KVM doesn't support for non-TDX
+>> VMs
+>> I will add these info to the change log.
 > 
-> > On Wed, Sep 02, 2026 at 01:06:12PM +0200, Claudio Imbrenda wrote:
-> > > On Wed, 02 Sep 2026 09:15:12 +0300
-> > > "Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
-> > >   
-> > > > This is a (small) part of larger work of replacing page allocator calls
-> > > > with kmalloc.
-> > > 
-> > > I have some objections to this series, but not because of what you are
-> > > trying to do (which is actually nice).
-> > > 
-> > > I understand that you probably wanted to touch as little code as
-> > > possible,  
-> > 
-> > Yep :)
-> > 
-> > > but now since you're rewriting the allocations to use
-> > > kmalloc.... I'd like them to be converted to use the __free(kvmalloc)  
-> > 
-> > You mean __free(kfree)? Sure, I can look into it.
 > 
-> yep :)
+> The cover letter highlights the deprecation case, but it sounds like
+> you hit this now due to #VE reduction. Is further #VE reduction expected?
+> If this is altogether rare, then yeah, added measures aren't necessary.
 
-Well, I looked :) 
+No new #VE reductions are expected.
 
-The only place where __free(kfree) is completely safe is handle_sthyi().
-
-In all the other functions using __free(kfree) creates a mix of of goto
-and cleanup helpers and cleanup docs advise against mixing them:
-
-https://docs.kernel.org/core-api/cleanup.html
-
-The cleanup paths are quite involved in these functions so using
-__free(kfree) there is really not trivial.
-
--- 
-Sincerely yours,
-Mike.
