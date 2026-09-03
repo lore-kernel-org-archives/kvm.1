@@ -1,220 +1,228 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010011.outbound.protection.outlook.com [52.101.56.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851D648EBC1
-	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 10:47:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788432429; cv=none; b=pIEWkn4mIpho+NQZpokaMmN/p6mDW/RRC2Zs6C7naiHIYaE2tciUQWKBYlTIVYCbyuiY8Sx3XI+R6awZAUTO77BBAx1UNvepVvBttMs4clHyrPEHJZZOlZCxRh0dLUrq7ehw/+jtohrVLoocuX9rBtNnK+se/bCu30j0SLOk4Sc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788432429; c=relaxed/simple;
-	bh=xWfHIczEA2mvPlpw7/cO/ft96NQzezvyaliBGWTZt54=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OLE9dU/l+UJCeWlyvc2RLSSZvzK2Lt547z9sR5/NMvEcxuCJZmgCe4HxmwoxcaIyKuL9eEq2ukdLCTbbh1YSgM1s9K9IeZdk8WM0QeKTEfNPbrR1jYx/G9ptNCdamTU6Bu8kn5ygyvmej0QQ6f8B4LZTaCsYp7/QAMpselX5vQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WT0S713W; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=o4rl7xi0; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B0444C4F2;
+	Thu,  3 Sep 2026 10:47:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788432456; cv=fail; b=Hlq+qW0g499yrl8P+o75H6B5eVCrZlcQlMqHN/2Cml59ZMkjt5RKUKfEiEll7861jBLRyZ5xM0OuI2p8dAvj6vqWgb7degzdsD4HFHlE7Qgyisr21M2wMQgarnzxyOpq5pN0zrk3BiqYQdlOCgyKP8YVFNQ5wYWt7EPRa6B/mbQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788432456; c=relaxed/simple;
+	bh=rlhImbdcKCGQNtNvjaGcgb8DAmTYc1LsddLZMsgXC7o=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=mIFsBqHeyFZMvRibeUkbjOX6AMCKNf8emrWHXl12RfOgARNIiENq1xyVWowDyEkLegV5ucwcnNYk5iYdK3qbEOrxu4Ndwlo1V/29fCtbkyhJ3gaPDrYOCe9/LErsc4MVx8ErxRE9IjVuco2q/8FFYSGoJHrop0Md4HogrBBz1OQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PkmoOXRz; arc=fail smtp.client-ip=52.101.56.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WT0S713W";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="o4rl7xi0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788432426;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hf8yu5d7GebbmHWi/7eHO3R3u498r/IQfuzDpLs9L7g=;
-	b=WT0S713WGK7UXUA9pO7Yy8MzsUT54BI+j2GTaMoyBgoziPUeM/toIUjWnNw2J4G34jC5P5
-	AGvt79uOKP99+VbxLhcjZhMqAWLXB6GZCr6JTxfybmG410QuNyp3fcbyuISp79Y78Ufyfn
-	P83n4qQQ1KpkB3yZXc5xvi8N9bm9/wQ=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-355-F5lXIetzOXOsVBIzcl_vlg-1; Thu, 03 Sep 2026 06:47:05 -0400
-X-MC-Unique: F5lXIetzOXOsVBIzcl_vlg-1
-X-Mimecast-MFC-AGG-ID: F5lXIetzOXOsVBIzcl_vlg_1788432424
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-499913d1a79so13847465e9.0
-        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 03:47:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788432424; x=1789037224; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hf8yu5d7GebbmHWi/7eHO3R3u498r/IQfuzDpLs9L7g=;
-        b=o4rl7xi0EEOMHW7MCgkxyzZrSc9cQVYrQDtm/SFyCxwtk11Hlw/OgQH+7OmEWYRnRM
-         AQs7ATlJEILtq1vBzxVnQ088rMXxmJIilO2ObgNFwrzk67BBYg3F1HquPzAO1bN7nQXU
-         0Ue17QVG+8fdOqtsAVQA1aUBMVHik947sjwMql9QtcB/398/oeMo07BkZA+GMzW2mJO1
-         EJ15vhR6N9ZiLxZhefIiut/Kj5mWSdScrkKB3Q9MZTCaJYRcppvE0f+zXdlFD8D3U37P
-         S4n3wwXM9njFLn9iLwUh3pcIyMIy4YUHFaKwa0FnxgYwtf7cPZvM9k8IpzSikJZwB1YS
-         oE2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788432424; x=1789037224;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hf8yu5d7GebbmHWi/7eHO3R3u498r/IQfuzDpLs9L7g=;
-        b=E2ZlDde9XImxk59/ARpSOXVLby7mLEfOyft98WXNh08wZ0yrUrx0BLk81VraThxz3W
-         VrVtFN8z1yC9ICeD75AREKTPXnN8QWQ10NUaWSMF+/LW/Vgh1//tNAQ6f+MYXcTsCmtC
-         ya+zEsTex68Ll1BNSLK0YmK5svNUBi+efCkkwZfB9gtIqfVmHVVDCYp3LhnjC7Xa0006
-         q/hheBhjvG/GbQVYaJHKSVnCDHzQw2H2PWYDP1bNDz85j8DuVZcWHdZNZ6ZjG15YAOL+
-         Whxh//M9wwmD6DkJrlT6w1biMnz1/gID7nd2Fjf6GqQTr2uAibjI+1Idu52jgLwyv+gT
-         XvLA==
-X-Forwarded-Encrypted: i=1; AKwUvBxCxzwLervbqGlnXvki2VG48+xqZxtDy+V/kF8XcHdsAs34WgdITa7c0MMwfTwKRy6rTHg=@vger.kernel.org
-X-Gm-Message-State: AFuF++nt1OXHTahZe0Tf6/UgAZWW2TcQmSLEIZEFpqv+tDm45TtfE7jZ
-	e5c1R6Q3EvU1NDuukQg3WxeudlkM/latMsWDN/y38hbYNPRODT2plsa0wuzCKfvxqZ499wIV5V0
-	DnbsBV5sguKxu4GPdlgR+SbZU7IdWeebp33Qzi/im8sdstTd+gTPvcA==
-X-Gm-Gg: AYBFou1hJ+PtFCzl1KnaaTq7aBCVS/5m3WICAe6fImEOdhGWRc0wc3iKGUW4OPrsYYi
-	V37+DCFeROjTeSrR4T7esvb2zpAli3QjbAHO7dJaeY5z0lPYkRK4bkWYmEv4MtdVx+ezjOg8/fL
-	+sMch4lcORt6cEkm3Gyi+Bmo5c/vlBefGdOueqFRpnDeoChOKH7XqO2lVw/0uH+t4bZKQ/bbum4
-	VBfsplDX0qxr+ozyEIjsCvj/ryXXAzx1X1gfi+9fKaqEgzPRm1E1RcMlyuzFH8KsqObontCkp3H
-	p9AuM8yyDAywY04U4snt0bpEsy5/m1dmsSIOLzOV05DqU3DMdm1CjNtqGUGqA/uLmcWGAR9XSwZ
-	6ytbkb3Qy5Pj7tMTOJKiMNWccFhgziHxqWeA=
-X-Received: by 2002:a05:600c:8714:b0:499:b65d:1250 with SMTP id 5b1f17b1804b1-49ce580d869mr204539315e9.2.1788432423988;
-        Thu, 03 Sep 2026 03:47:03 -0700 (PDT)
-X-Received: by 2002:a05:600c:8714:b0:499:b65d:1250 with SMTP id 5b1f17b1804b1-49ce580d869mr204538535e9.2.1788432423542;
-        Thu, 03 Sep 2026 03:47:03 -0700 (PDT)
-Received: from leonardi-redhat ([151.29.41.106])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee5d6029sm63445225e9.6.2026.09.03.03.47.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 03:47:02 -0700 (PDT)
-Date: Thu, 3 Sep 2026 12:47:00 +0200
-From: Luigi Leonardi <leonardi@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
-	Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Zhao Liu <zhao1.liu@intel.com>, Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org
-Subject: Re: [PATCH 1/4] sev: rename set_guest_policy to set_id_block and
- remove dead policy code
-Message-ID: <aplPIuIgLYKofjGq@leonardi-redhat>
-References: <20260901-fix_igvm_policy-v1-0-e93a6cf8c5ac@redhat.com>
- <20260901-fix_igvm_policy-v1-1-e93a6cf8c5ac@redhat.com>
- <aplMPpjG6X__JZeM@sgarzare-redhat>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PkmoOXRz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Kf02avRkowXV/Vst0xOw+uPsvNVbIDNXeTrI9X6UCZMGUG/3FMl4uDy0TRo4srfpujRST8BVJTg68vqwqtdz+9mz/X0vYLflD6iKxFGW0mRE2u3+Mzsr1C9hDhtixBwAG/au5mcmrrRYBGxOg7l3kGJabTEVc7HpJqT23LtAtJxjsR/su/jyjxU32SwRsWRddPjBvU0NqkIJOPZXHytde8KSEw56j7IMvHjUPk60xhqW42/acovng/8XrwgTcW6kDZ4dsrxrtwAfhxvQvrWppL939Brc4mGVyF0O6ReJRdjZ+BH9xBwzXdz+acdGzdZRXT8A8Tvy9lEQ5Pmec1IywQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rlhImbdcKCGQNtNvjaGcgb8DAmTYc1LsddLZMsgXC7o=;
+ b=VeIfWD5TOfVIo9ShKbujzqoLyf7Ur2zfyVMbisr3NZQLBdMa6nTh3VlwSP+XKMrMkPR4Mdxk78SdLMvz+mUija7gtCX9sVlb9D1Y9r4pTCN7VXMARD19keMKhPaqlXZMynxNmUp2+fHcGAQ0TolKBKbzw16r2slhEcW0tyAxksN6JxY3kJj203NcKE8h3Mvuih/ZMjK198X5SUZPR4IIF2qDNDq272Bjwza9gBv254MvsvrrRWV5153JQ6UrhR99664QTIxF8Eqs23VFh+HtPhVK5z4Jjx+fQr5KgTj+EBWWqiPw7YrF+LUssK1xmDCm1hMnY5vg4dEhwAdcy3WJUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rlhImbdcKCGQNtNvjaGcgb8DAmTYc1LsddLZMsgXC7o=;
+ b=PkmoOXRz24WeeadgsAs+k8vw6JIC381P+wAgO1rNpKd4CB+GIJLxt9FF+KGpvUAfM7xt85C4rezIxfdU7yjks40UmI0licbxBeNExmrZKSrQJ+RJe2mB/p6jBCosAoIYEjhil4p4IU5LmPxS87QP6PVznu7iAa4SWVM+LXvzx01V4YxUM9snYtMp25YIM/IgaQNTD5StVhfJdg9I/qLMqqBELETkSYqEiwmqQg6jwPyd0pZjMJnHL0Ic3Ty+un5tlepggIpAZb9dGwZ5Wn02kwxb05p4OMRLU0qV9Px0wtlTeVQvLa3WAnadWA8FIXuNud2SGBxwEArHoBTmfOULJQ==
+Received: from SJ0PR12MB8614.namprd12.prod.outlook.com (2603:10b6:a03:47d::17)
+ by DM4PR12MB6664.namprd12.prod.outlook.com (2603:10b6:8:bb::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
+ 2026 10:47:29 +0000
+Received: from SJ0PR12MB8614.namprd12.prod.outlook.com
+ ([fe80::fe0a:6e6a:fe60:a43b]) by SJ0PR12MB8614.namprd12.prod.outlook.com
+ ([fe80::fe0a:6e6a:fe60:a43b%5]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
+ 10:47:28 +0000
+From: Shameer Kolothum Thodi <skolothumtho@nvidia.com>
+To: "K V P, Satyanarayana" <satyanarayana.k.v.p@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+CC: "alex@shazbot.org" <alex@shazbot.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
+	"kevin.tian@intel.com" <kevin.tian@intel.com>, "kbusch@meta.com"
+	<kbusch@meta.com>, "michal.winiarski@intel.com" <michal.winiarski@intel.com>,
+	Sonang Patel <sonangp@nvidia.com>, Nathan Chen <nathanc@nvidia.com>, Matt
+ Ochs <mochs@nvidia.com>
+Subject: RE: [RFC PATCH 11/19] vfio/pci: Serialize runtime PM with recovery
+Thread-Topic: [RFC PATCH 11/19] vfio/pci: Serialize runtime PM with recovery
+Thread-Index: AQHdO2+EbOPnBbgFyEik1JYrAsWEjLa8q2cA
+Date: Thu, 3 Sep 2026 10:47:28 +0000
+Message-ID:
+ <SJ0PR12MB86146DEE4798BFEB753BF8EDABB62@SJ0PR12MB8614.namprd12.prod.outlook.com>
+References: <20260901093217.8539-1-skolothumtho@nvidia.com>
+ <20260901093217.8539-12-skolothumtho@nvidia.com>
+ <37b7f389-d95f-4d0d-8bd7-85074f7c6122@intel.com>
+In-Reply-To: <37b7f389-d95f-4d0d-8bd7-85074f7c6122@intel.com>
+Accept-Language: en-US, en-GB
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR12MB8614:EE_|DM4PR12MB6664:EE_
+x-ms-office365-filtering-correlation-id: cb9ad1ac-3ed1-44a3-6202-08df09a8bfee
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|366016|376014|1800799024|38070700021|11063799006|56012099006|10067099003|4143699003|18002099003|22082099003;
+x-microsoft-antispam-message-info:
+ unlQfPy38aP5qHCu5zX6e4gfPg/sDvpQhU/ykvNs8I7u/TAwuwkQzJIXWmByndr2koUvXpN3jPxH4qroaFr0Hgl0U4HVpIIF3YWyG8xS4iK0CTGDcJitTpwAusQvrR3frzyT9n57GAPvBEzVQmCFtLxp0Xd0TmQHCrgB3yTVmcKN/7vFdFTWqs2FaOr18HG9edzY3KRcESY3brI3ApqcK8/6HY2Wok2XMhE6IelVAJcl9GKZmxExRM+2qbNmlEomiL/ewmf/qPGWTinKsEKAAvI79ncRjee6qV9RZnYjxFFKIN00ciO9lyXwZJlUSN8GUA0KAOTjs638+48zkQRIT+GcygvNRdQwJwbHoswBjsUBG+mQr9AgV7+iVXxCp1aBv+an6Ki3f3YbBZ+6WyuPmovYP/HgEUp+l1hwvWqV9lltTa3ic0V/sCZWgWZ2yfx5aO2c2+Bg2Id/B5qeurWH7Xa4CgxHF38nxs1UVaZvq7kJE3NUBCZwdnd3uhLq9TbrUoXdNCQ6C5T1TzJHkib1PTVQn/JAMp9VO3TWCY1EqZu0RrjhJ9PtUFyDE61r4iMMJFnfyDvdAAXMNgTLrk1fDDUANACEdV8SBDE/tdJ7rzjFHWEA7/f566dma6g+ukqIr9SM3xDFdDAyxuEVUHzkjXGJn53YpQGtZ2R5w/8aqf+0HnmHy35EsJDzCtHMk3iCxgirpR4x550p8vlmgHDAUA==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR12MB8614.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(38070700021)(11063799006)(56012099006)(10067099003)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?RStsSVYwYzdwSkJZMEpjdEVPdUFGOFlIZVlRWXJDZDRPNUxWb3VMd1pvVWR1?=
+ =?utf-8?B?T2Q2OXJGamx5WDYyV0xWR0xjQnRLMzZXamZPVC9TNGpkUExIa3g3NURJQ1ZU?=
+ =?utf-8?B?L0ZzcGVzbVQ3QnVsdEh2RGlGV3llcittdWxwMm5HSkVGYmU4eC9HZk1TdlVW?=
+ =?utf-8?B?M3kycnNpbXB4TVFMaUY1amxJSjFsaTlPaTdoOWVZa3pnZ2RGb25SRFZFcnVV?=
+ =?utf-8?B?K0ZZUkVtMHFqRlUzNzNRMURlQnlCdXFQUzNzVVJ6bXo0eGEyNWw2K0dHL21h?=
+ =?utf-8?B?QzkxS3JCcHZwRmw4bEI3QWFWdkhVamRXR3p4aG0wNFh6YUJIckxPVUxIMGs3?=
+ =?utf-8?B?cFBieU93bTc2RmN3d1ZhMi9xMDdGZGNqZU1rRUpYMEkydDlhYnBsTU5jWktt?=
+ =?utf-8?B?VmQrRy93eHZFM1dUY0ZtN0hwNjV5RldKa2FZMjAyNmx5VVMyZUo3WTV6YWJ1?=
+ =?utf-8?B?aHBwYmo0UFFJUCtsUlE4K0FtV2xJRlozQzVKRk1PZzBaMjF6cjRBSkErTW5v?=
+ =?utf-8?B?VkxDU3NLS2ZOdDBGS0FVVGtFMlJWR2VNMFVneUNhWlB4dUJoZFZXUWloazdS?=
+ =?utf-8?B?MFZmblZlTFd0ZXlUTkx2dkExZWgya3VnZkNRdHNCS0tGQStjTVE5bGhNUCtI?=
+ =?utf-8?B?WG1HWFdVbjRERmd1WDF1b0lWNHoxeGpHVGhKOHVqaGZEa0htaDdKRHRURjhm?=
+ =?utf-8?B?RFJqU2xPYkp5TklJZktrb0tKTndFbCt3dlVnaHVUaTJKdXR4K213ZWlaNGpH?=
+ =?utf-8?B?SU1GYWwyWEN4UGNzbE96bXZ3ckxTL3c2aC9LaC9DaXRiK2JwY3lKZWdCWXEy?=
+ =?utf-8?B?cXdvYmlodUxrWjE0THhhOHJKc3JlUXR1OTI3U1RkZUZjU3I2cWRoakJKWi9v?=
+ =?utf-8?B?VHpZNmhwbEpyb2MzQUpzTVpxNlV3aXRJUTF2aFBhVlRpYThsVXNtSDdUWGJ2?=
+ =?utf-8?B?Q3BCZ2FQd243NkZub0RKUStxRTc3aTNtaW52Z0VzaWYwU2ZZTUhLMlRhYzVM?=
+ =?utf-8?B?Um4xWWpURzJhK0podnpDbHIvemFHdXhZM0puaW5Ua242ZVhVWFZRVXo1TFBL?=
+ =?utf-8?B?SzBOOXorVGdHY2lhUm5EY056b0M3VmZGcTVPWDJBMzVibkdTVnNqRExTeGVa?=
+ =?utf-8?B?YUlmcldvb0hmTklyN1FRQUY1dE5hc3hVTlVSTzRNRmk5UjhRRnJmZnVmNHRK?=
+ =?utf-8?B?ZEZPTmVsOFJPNG4xOXd5YXdNNktuQU5RL0tPZzNLSFRybFViOW83SVJQQk9N?=
+ =?utf-8?B?TXU1Y1h6Y3RvWEtCUHluTkpNeElkYWorNS9nUnNabzIxSVFQSmJTbHVNU2l5?=
+ =?utf-8?B?Sys4ai9XcjJWU2FBZEFXY0NpNjhZcWF1VUlqODZZemRkTm80S0hIZGJGWkRv?=
+ =?utf-8?B?RlVIWlRjTnJpWUpLS1FpYmo3U0tBZUJLUlJGWXd4MEFkcTBkUW4yeU5lYkox?=
+ =?utf-8?B?S1ZhUTdiZHpDQnV5VG1qR05Jay84TWNQL0dQVTF0dGZMeDVGNzBpK3VFTjh2?=
+ =?utf-8?B?d1QxVjBtZnJqQjZPRmJ2WHRHSzR3OHdqQ0V6ZU1SZ2NUTDYvQytmZ2xlbWJp?=
+ =?utf-8?B?dXlqdlRxRzl4STZZY0ttQzBzdW9nY09FdTVjeTVicW8zN2daL3RmWVdad2Ev?=
+ =?utf-8?B?TUViamkvU1E4WjVnNi9xeERxT0NEVmYyamZ0MW56V05QaXlYTUJvV1lSZ0Fa?=
+ =?utf-8?B?ajB1MTZkSTlHYjhyMm1nOVcxQ1oxY01ReUM5WUpsdlQrUzdlZ0NIL2ZuMkFS?=
+ =?utf-8?B?WmdCRmIraDEzd0R3VURtTUJCc2xJQVlNajY0UWxwdU5yY2lOdWc3Z3RHRVlq?=
+ =?utf-8?B?UW1Hak9oMTJ1em9CalFRalRoclNtWlhGd2QxZ0s5OGEwUTM1SE9hYW9aTDc4?=
+ =?utf-8?B?RVJwdWdpaUFiUUZZd21BdjUxTWNlNW94K2Z5KzhCamNNa1JrNWF5RlJza254?=
+ =?utf-8?B?K3gvMDcrRzNrMkNxajE2YWVRZ3VQeG4wd0IrVDBTaGpKaWN4d0pFRjBpOUw2?=
+ =?utf-8?B?VTBYUnl0anQ4UVVPbUlsZDFWenNqdyt3TzhMOGNLVW5YMmcwOVhPbUhLTzE2?=
+ =?utf-8?B?R09xams3V1RkdnNaSTBRanBWUlUyZDBCR0IrR2UxKy9kOXVSQldzVlNYNngx?=
+ =?utf-8?B?eTJpMmxpT0pVL0tIT1J5YVVTYS9IZE5mWE5mMWtiWGJpcjJVdjQ0aG9NajVt?=
+ =?utf-8?B?bE1yVW1STGNVYTVRWk10NVYybGdwbVZOSTZHSTg2U1FYNXJTaEZ4aTRJdGk2?=
+ =?utf-8?B?ZHdXZjFYbjlDN0kvNlZkd3hYSng0VTBweEhGVGcyTnBYMnZNS0lQZHVTU3pZ?=
+ =?utf-8?B?WDMwOGhWVkx5cnZIUk9lL1dxSVFXby93Rk9wYndXWlJPRDlXUkFaZz09?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <aplMPpjG6X__JZeM@sgarzare-redhat>
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR12MB8614.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cb9ad1ac-3ed1-44a3-6202-08df09a8bfee
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Sep 2026 10:47:28.8881
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: N7EL0WEyTg1OwFUlzZwuxYn063r0lVbLd9PAgUi3+Y3mWMfODIvTGhUiUcdT5hQzYGbC463h81RgfBb+sGxnzA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6664
 
-On Thu, Sep 03, 2026 at 12:32:21PM +0200, Stefano Garzarella wrote:
->On Tue, Sep 01, 2026 at 12:09:18PM +0200, Luigi Leonardi wrote:
->>The guest policy must be provided at guest launch start: LAUNCH_START for
->>SEV/SEV-ES and SNP_LAUNCH_START for SEV-SNP. See the SEV API
->>specification, chapter 3 (Guest Policy), and the SEV-SNP firmware ABI
->>specification, section 4.3 (Guest Policy).
->>
->>The policy parameter in set_guest_policy was never effective: by the
->>time this callback runs, LAUNCH_START has already been issued for both
->>SEV/SEV-ES and SEV-SNP, so writing to kvm_start_conf.policy or
->>sev_guest->policy has no effect. In practice the only thing this
->>callback actually does is set the ID block and ID auth for SNP's
->>LAUNCH_FINISH, so rename it to set_id_block to reflect its real
->>purpose, remove the unused policy parameter, and drop the non-SNP code
->>path which was entirely dead.
->>
->>This is preliminary work: actually forwarding the guest policy to the
->>platform before LAUNCH_START is added in a later commit.
->
->IIUC the behaviour is the same after this patch, but IMO better to
->clarify.
-
-Yep, will do.
-
->
->>
->>Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
->>---
->>backends/confidential-guest-support.c       |  12 ++-
->>backends/igvm.c                             |   6 +-
->>include/system/confidential-guest-support.h |  28 ++++---
->>target/i386/sev.c                           | 118 +++++++++++-----------------
->>4 files changed, 67 insertions(+), 97 deletions(-)
->>
->>diff --git a/backends/confidential-guest-support.c b/backends/confidential-guest-support.c
->>index 156dd15e66..a0b36d2da5 100644
->>--- a/backends/confidential-guest-support.c
->>+++ b/backends/confidential-guest-support.c
->>@@ -38,14 +38,12 @@ static int set_guest_state(hwaddr gpa, uint8_t *ptr, uint64_t len,
->>    return -1;
->>}
->>
->>-static int set_guest_policy(ConfidentialGuestPolicyType policy_type,
->>-                            uint64_t policy,
->>-                            void *policy_data1, uint32_t policy_data1_size,
->>-                            void *policy_data2, uint32_t policy_data2_size,
->>-                            Error **errp)
->>+static int set_id_block(void *id_block, uint32_t id_block_size,
->>+                        void *id_auth, uint32_t id_auth_size,
->>+                        Error **errp)
->>{
->>    error_setg(errp,
->>-               "Setting confidential guest policy is not supported for this platform");
->>+               "Setting ID block is not supported for this platform");
->>    return -1;
->>}
->>
->>@@ -64,7 +62,7 @@ static void confidential_guest_support_class_init(ObjectClass *oc,
->>    ConfidentialGuestSupportClass *cgsc = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
->>    cgsc->check_support = check_support;
->>    cgsc->set_guest_state = set_guest_state;
->>-    cgsc->set_guest_policy = set_guest_policy;
->>+    cgsc->set_id_block = set_id_block;
->>    cgsc->get_mem_map_entry = get_mem_map_entry;
->>}
->>
->>diff --git a/backends/igvm.c b/backends/igvm.c
->>index 7b7bdc72b7..85de0d54ec 100644
->>--- a/backends/igvm.c
->>+++ b/backends/igvm.c
->>@@ -968,9 +968,9 @@ static int qigvm_handle_policy(QIgvm *ctx, Error **errp)
->>            id_block_len = sizeof(struct sev_id_block);
->>            id_auth_len = sizeof(struct sev_id_authentication);
->>        }
->>-        return ctx->cgsc->set_guest_policy(GUEST_POLICY_SEV, 
->>ctx->sev_policy,
->>-                                          ctx->id_block, id_block_len,
->>-                                          ctx->id_auth, id_auth_len, errp);
->>+
->>+        return ctx->cgsc->set_id_block(ctx->id_block, id_block_len,
->>+                                       ctx->id_auth, id_auth_len, errp);
->>    }
->>    return 0;
->>}
->>diff --git a/include/system/confidential-guest-support.h b/include/system/confidential-guest-support.h
->>index 5dca717308..6d35ddb97a 100644
->>--- a/include/system/confidential-guest-support.h
->>+++ b/include/system/confidential-guest-support.h
->>@@ -128,21 +128,23 @@ typedef struct ConfidentialGuestSupportClass {
->>                           uint16_t cpu_index, Error **errp);
->>
->>    /*
->>-     * Set the guest policy. The policy can be used to configure the
->>-     * confidential platform, such as if debug is enabled or not and can contain
->>-     * information about expected launch measurements, signed verification of
->>-     * guest configuration and other platform data.
->>-     *
->>-     * The format of the policy data is specific to each platform. For example,
->>-     * SEV-SNP uses a policy bitfield in the 'policy' argument and provides an
->>-     * ID block and ID authentication in the 'policy_data' parameters. The type
->>-     * of policy data is identified by the 'policy_type' argument.
->>+     * Set the guest policy for the confidential platform. The policy
->>+     * configures properties of the guest, such as whether debug is
->>+     * enabled. Its format is platform-specific; for SEV/SEV-ES and
->>+     * SEV-SNP it is a policy bitfield. Must be called before LAUNCH_START
->>+     * so the policy is in effect for launch.
->>     */
->>    int (*set_guest_policy)(ConfidentialGuestPolicyType policy_type,
->
->I'm confused, this commit says "rename set_guest_policy to set_id_block"
->so why this callback is still here?
->
-
-We will need this callback in a following patch, so I thought that removing
-it to then add it again was pointless. If you prefer I can go this
-route, or I can specify it in the commit message.
-
-Luigi
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSyBWIFAsIFNhdHlhbmFy
+YXlhbmEgPHNhdHlhbmFyYXlhbmEuay52LnBAaW50ZWwuY29tPg0KPiBTZW50OiAwMyBTZXB0ZW1i
+ZXIgMjAyNiAwNzo0Mw0KPiBUbzogU2hhbWVlciBLb2xvdGh1bSBUaG9kaSA8c2tvbG90aHVtdGhv
+QG52aWRpYS5jb20+Ow0KPiBrdm1Admdlci5rZXJuZWwub3JnOyBsaW51eC1wY2lAdmdlci5rZXJu
+ZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnDQo+IENjOiBhbGV4QHNoYXpib3Qu
+b3JnOyBqZ2dAemllcGUuY2E7IGtldmluLnRpYW5AaW50ZWwuY29tOw0KPiBrYnVzY2hAbWV0YS5j
+b207IG1pY2hhbC53aW5pYXJza2lAaW50ZWwuY29tOyBTb25hbmcgUGF0ZWwNCj4gPHNvbmFuZ3BA
+bnZpZGlhLmNvbT47IE5hdGhhbiBDaGVuIDxuYXRoYW5jQG52aWRpYS5jb20+OyBNYXR0IE9jaHMN
+Cj4gPG1vY2hzQG52aWRpYS5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUkZDIFBBVENIIDExLzE5XSB2
+ZmlvL3BjaTogU2VyaWFsaXplIHJ1bnRpbWUgUE0gd2l0aCByZWNvdmVyeQ0KPiANCj4gRXh0ZXJu
+YWwgZW1haWw6IFVzZSBjYXV0aW9uIG9wZW5pbmcgbGlua3Mgb3IgYXR0YWNobWVudHMNCj4gDQo+
+IA0KPiBPbiAwMS1TZXAtMjYgMzowMiBQTSwgU2hhbWVlciBLb2xvdGh1bSB3cm90ZToNCj4gPiBI
+b2xkIHJlY292ZXJ5X2xvY2sgZm9yIHJlYWRpbmcgYXJvdW5kIGxvdy1wb3dlciBlbnRyeSBhbmQg
+ZXhpdC4gRW50cnkNCj4gPiB6YXBzIHRoZSBCQVIgbWFwcGluZ3MgYW5kIHJldm9rZXMgdGhlIERN
+QS1CVUYgZXhwb3J0cyB1bmRlcg0KPiA+IG1lbW9yeV9sb2NrLCBhbmQgZXhpdCByZXN0b3JlcyB0
+aGUgZXhwb3J0cy4gVGFraW5nIHJlY292ZXJ5X2xvY2sgZmlyc3QNCj4gPiBrZWVwcyB0aGUgc2Ft
+ZSBvcmRlciB0aGUgQUVSIGNhbGxiYWNrcyB1c2UuDQo+ID4NCj4gPiBOZWl0aGVyIHdha2VzIHRo
+ZSBkZXZpY2UuIEVudHJ5IG9ubHkgZGVjcmVtZW50cyB0aGUgcnVudGltZSBQTSB1c2FnZQ0KPiA+
+IGNvdW50LCBhbmQgdGhlIHN1c3BlbmQgd2hpY2ggZm9sbG93cyBydW5zIHdoZW4gdGhlIHZmaW8g
+Y29yZSBkcm9wcyBpdHMNCj4gPiBvd24gcmVmZXJlbmNlIGFmdGVyIHRoZSBpb2N0bCByZXR1cm5z
+LCBvdXRzaWRlIHRoZSBsb2NrLiBFeGl0IHRha2VzIGENCj4gPiByZWZlcmVuY2Ugd2l0aG91dCBy
+ZXN1bWluZy4gU28gbmVpdGhlciByZWFjaGVzIHBjaV9idXNfc2VtIHdoaWxlDQo+ID4gcmVjb3Zl
+cnlfbG9jayBpcyBoZWxkLg0KPiA+DQo+ID4gQ2hlY2sgdGhlIHJlY292ZXJ5IHN0YXRlIGJlZm9y
+ZSB0aGUgcnVudGltZSByZXN1bWUgaW4gdGhlIHJlZ2lvbiByZWFkDQo+ID4gYW5kIHdyaXRlIHBh
+dGgsIGJ1dCBkbyBub3QgaG9sZCByZWNvdmVyeV9sb2NrIGFjcm9zcyBpdC4gQSByZXN1bWUNCj4g
+PiB0YWtlcyBwY2lfYnVzX3NlbSwgdGhyb3VnaCBwY2llX2FzcG1fcG1fc3RhdGVfY2hhbmdlKCkg
+YW5kLCBmcm9tDQo+ID4gRDNjb2xkLCB0aHJvdWdoIHBjaV9icmlkZ2Vfd2FpdF9mb3Jfc2Vjb25k
+YXJ5X2J1cygpLCBhbmQgdGhlIGVycm9yDQo+ID4gY2FsbGJhY2tzIHRha2UgcmVjb3ZlcnlfbG9j
+ayBmcm9tIHVuZGVyIGl0Lg0KPiA+DQo+ID4gVGhlIGNoZWNrIGlzIGJlc3QgZWZmb3J0LiBJdCBh
+dm9pZHMgd2FraW5nIGEgZGV2aWNlIHdob3NlIGFjY2VzcyBpcw0KPiA+IGFscmVhZHkgYmxvY2tl
+ZCwgYW5kIHRoZSByZWdpb24gYWNjZXNzIHdoaWNoIGZvbGxvd3MgdGFrZXMNCj4gPiByZWNvdmVy
+eV9sb2NrIGZvciBpdHNlbGYuIEEgcmVjb3Zlcnkgd2hpY2ggc3RhcnRzIGFmdGVyIHRoZSBjaGVj
+ayBpcw0KPiA+IG5vdCBleGNsdWRlZCwgYW5kIGRvZXMgbm90IG5lZWQgdG8gYmUuIHBjaWVfZG9f
+cmVjb3ZlcnkoKSBydW50aW1lDQo+ID4gcmVzdW1lcyBldmVyeSBkZXZpY2UgdW5kZXIgdGhlIGJy
+aWRnZSBhbmQgaG9sZHMgdGhlIHJlZmVyZW5jZSB1bnRpbCBpdA0KPiA+IGZpbmlzaGVzLCBzbyBh
+IHJlc3VtZSB3aGljaCBydW5zIGFsb25nc2lkZSBpdCBkb2VzIG5vIG1vcmUgdGhhbiB0YWtlIGEN
+Cj4gcmVmZXJlbmNlIG9mIGl0cyBvd24uDQo+ID4NCj4gPiBBc3Npc3RlZC1ieTogQ2xhdWRlOmNs
+YXVkZS1vcHVzLTUNCj4gPiBTaWduZWQtb2ZmLWJ5OiBTaGFtZWVyIEtvbG90aHVtIDxza29sb3Ro
+dW10aG9AbnZpZGlhLmNvbT4NCj4gPiAtLS0NCj4gPiAgIGRyaXZlcnMvdmZpby9wY2kvdmZpb19w
+Y2lfY29yZS5jIHwgMjkgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gPiAgIDEgZmls
+ZSBjaGFuZ2VkLCAyOSBpbnNlcnRpb25zKCspDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVy
+cy92ZmlvL3BjaS92ZmlvX3BjaV9jb3JlLmMNCj4gPiBiL2RyaXZlcnMvdmZpby9wY2kvdmZpb19w
+Y2lfY29yZS5jDQo+ID4gaW5kZXggYmQzZDc5ZDI4ZjI3Li45NTg4NGU3MTNhNGIgMTAwNjQ0DQo+
+ID4gLS0tIGEvZHJpdmVycy92ZmlvL3BjaS92ZmlvX3BjaV9jb3JlLmMNCj4gPiArKysgYi9kcml2
+ZXJzL3ZmaW8vcGNpL3ZmaW9fcGNpX2NvcmUuYw0KPiA+IEBAIC0zNzIsMTUgKzM3MiwyMSBAQCBp
+bnQgdmZpb19wY2lfc2V0X3Bvd2VyX3N0YXRlKHN0cnVjdA0KPiB2ZmlvX3BjaV9jb3JlX2Rldmlj
+ZSAqdmRldiwgcGNpX3Bvd2VyX3Qgc3RhdA0KPiA+ICAgc3RhdGljIGludCB2ZmlvX3BjaV9ydW50
+aW1lX3BtX2VudHJ5KHN0cnVjdCB2ZmlvX3BjaV9jb3JlX2RldmljZSAqdmRldiwNCj4gPiAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN0cnVjdCBldmVudGZkX2N0eCAqZWZkY3R4
+KQ0KPiA+ICAgew0KPiA+ICsgICAgIGludCByZXQ7DQo+ID4gKw0KPiA+ICAgICAgIC8qDQo+ID4g
+ICAgICAgICogVGhlIHZkZXYgcG93ZXIgcmVsYXRlZCBmbGFncyBhcmUgcHJvdGVjdGVkIHdpdGgg
+J21lbW9yeV9sb2NrJw0KPiA+ICAgICAgICAqIHNlbWFwaG9yZS4NCj4gPiAgICAgICAgKi8NCj4g
+PiArICAgICByZXQgPSB2ZmlvX3BjaV9jb3JlX2FjY2Vzc19iZWdpbih2ZGV2KTsNCj4gPiArICAg
+ICBpZiAocmV0KQ0KPiA+ICsgICAgICAgICAgICAgcmV0dXJuIHJldDsNCj4gPiAgICAgICB2Zmlv
+X3BjaV96YXBfYW5kX2Rvd25fd3JpdGVfbWVtb3J5X2xvY2sodmRldik7DQo+ID4gICAgICAgdmZp
+b19wY2lfZG1hX2J1Zl9tb3ZlKHZkZXYsIHRydWUpOw0KPiA+DQo+ID4gICAgICAgaWYgKHZkZXYt
+PnBtX3J1bnRpbWVfZW5nYWdlZCkgew0KPiA+ICAgICAgICAgICAgICAgdXBfd3JpdGUoJnZkZXYt
+Pm1lbW9yeV9sb2NrKTsNCj4gPiArICAgICAgICAgICAgIHZmaW9fcGNpX2NvcmVfYWNjZXNzX2Vu
+ZCh2ZGV2KTsNCj4gPiAgICAgICAgICAgICAgIHJldHVybiAtRUlOVkFMOw0KPiA+ICAgICAgIH0N
+Cj4gPg0KPiA+IEBAIC0zODgsNiArMzk0LDcgQEAgc3RhdGljIGludCB2ZmlvX3BjaV9ydW50aW1l
+X3BtX2VudHJ5KHN0cnVjdA0KPiB2ZmlvX3BjaV9jb3JlX2RldmljZSAqdmRldiwNCj4gPiAgICAg
+ICB2ZGV2LT5wbV93YWtlX2V2ZW50ZmRfY3R4ID0gZWZkY3R4Ow0KPiA+ICAgICAgIHBtX3J1bnRp
+bWVfcHV0X25vaWRsZSgmdmRldi0+cGRldi0+ZGV2KTsNCj4gPiAgICAgICB1cF93cml0ZSgmdmRl
+di0+bWVtb3J5X2xvY2spOw0KPiA+ICsgICAgIHZmaW9fcGNpX2NvcmVfYWNjZXNzX2VuZCh2ZGV2
+KTsNCj4gPg0KPiA+ICAgICAgIHJldHVybiAwOw0KPiA+ICAgfQ0KPiA+IEBAIC00ODMsNyArNDkw
+LDExIEBAIHN0YXRpYyBpbnQgdmZpb19wY2lfY29yZV9wbV9leGl0KHN0cnVjdA0KPiB2ZmlvX3Bj
+aV9jb3JlX2RldmljZSAqdmRldiwgdTMyIGZsYWdzLA0KPiA+ICAgICAgICAqIGFscmVhZHkgc2ln
+bmFsZWQgdGhlIGV2ZW50ZmQgYW5kIGV4aXRlZCBsb3cgcG93ZXIgbW9kZSBpdHNlbGYuDQo+ID4g
+ICAgICAgICogcG1fcnVudGltZV9lbmdhZ2VkIHByb3RlY3RzIHRoZSByZWR1bmRhbnQgY2FsbCBo
+ZXJlLg0KPiA+ICAgICAgICAqLw0KPiA+ICsgICAgIHJldCA9IHZmaW9fcGNpX2NvcmVfYWNjZXNz
+X2JlZ2luKHZkZXYpOw0KPiA+ICsgICAgIGlmIChyZXQpDQo+ID4gKyAgICAgICAgICAgICByZXR1
+cm4gcmV0Ow0KPiA+ICAgICAgIHZmaW9fcGNpX3J1bnRpbWVfcG1fZXhpdCh2ZGV2KTsNCj4gPiAr
+ICAgICB2ZmlvX3BjaV9jb3JlX2FjY2Vzc19lbmQodmRldik7DQo+ID4gICAgICAgcmV0dXJuIDA7
+DQo+ID4gICB9DQo+ID4NCj4gPiBAQCAtMTg2Nyw2ICsxODc4LDI0IEBAIHN0YXRpYyBzc2l6ZV90
+IHZmaW9fcGNpX3J3KHN0cnVjdA0KPiB2ZmlvX3BjaV9jb3JlX2RldmljZSAqdmRldiwgY2hhciBf
+X3VzZXIgKmJ1ZiwNCj4gPiAgICAgICBpZiAoaW5kZXggPj0gVkZJT19QQ0lfTlVNX1JFR0lPTlMg
+KyB2ZGV2LT5udW1fcmVnaW9ucykNCj4gPiAgICAgICAgICAgICAgIHJldHVybiAtRUlOVkFMOw0K
+PiA+DQo+ID4gKyAgICAgcmV0ID0gdmZpb19wY2lfY29yZV9hY2Nlc3NfYmVnaW4odmRldik7DQo+
+ID4gKyAgICAgaWYgKHJldCkNCj4gPiArICAgICAgICAgICAgIHJldHVybiByZXQ7DQo+ID4gKyAg
+ICAgdmZpb19wY2lfY29yZV9hY2Nlc3NfZW5kKHZkZXYpOw0KPiANCj4gSXMgaXQgcmVhbGx5IG5l
+ZWRlZD8gT3Igc29tZSB0eXBvPw0KDQpUaGUgaWRlYSB3YXMgdG8gZG8gYSBiZXN0IGVmZm9ydCBj
+aGVjayBhbmQgZG8gYW4gZWFybHkgcmV0dXJuLg0KTG9va2luZyBhdCBpdCBhZ2FpbiwgaXQgaXMg
+bm90IG5lZWRlZCBmb3IgY29ycmVjdG5lc3MsIHNpbmNlIHRoZSByZWdpb24NCmFjY2VzcyBiZWxv
+dyB0YWtlcyB0aGUgZ3VhcmQgZm9yIGl0c2VsZi4gU28gaXQgY2FuIGVpdGhlciBiZSByZW1vdmVk
+LA0Kb3IgcmVwbGFjZWQgYnkgYSBwbGFpbiByZWFkIG9mIHRoZSBzdGF0ZToNCg0KaWYgKHZkZXYt
+PnBjaV9yZWNvdmVyeV9zdXBwb3J0ZWQgJiYNCiAgICAgICAgICBSRUFEX09OQ0UodmRldi0+cGNp
+X3JlY292ZXJ5X2FjY2Vzc19ibG9ja2VkKSkNCiAgICAgICAgICAgICAgcmV0dXJuIC1FSU87DQoN
+ClRoYW5rcywNClNoYW1lZXINCg==
