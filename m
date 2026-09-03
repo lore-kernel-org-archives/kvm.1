@@ -1,127 +1,131 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D304E2343;
-	Thu,  3 Sep 2026 15:47:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8844E56FD
+	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 15:48:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788450472; cv=none; b=V7Iijv139pnAWeoF3kz7ca7CxOELH2pG2dsP7eNgq29rltPpf4vy3T8baolXC+qHM1zG+zQz+R9LptgVyOXrZnKILriMlyVLHWXKABh9lCHHMc1VCtW1hisHjMQaBE4pgtiID1QdKs7FuMJBVoFX/7aVH0dxnwG9d/q8CMeFDSw=
+	t=1788450518; cv=none; b=a3qOFGyoUMmKWbQj4KgUBtCG85HAEHex8IJwQzlo1cxdR5ZN5gGhIgtCtZzvEF9mrF0IjZaYs/JKNarGuuzPcMYyEW5TKvre/iZGDM/6y805mspx1+sj2qw72/g7mnFyCeulmmndrQGRG7VvgpJZ8eG7pTnaDVLTudpMCJ7aj/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788450472; c=relaxed/simple;
-	bh=pqHW43aaDY6UbfTuWChfQDsIAymGj4QkwJoB9GC+A0Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=grNlR3BdNqDmveG0LILtzdwZkP85x71Lj6Daw7TNivim2kxPsH2qYjXIgkN3ZxsM/yIy6Ltj/kqy2MUS26epvObdf4bq0z54+CWgtawzib1BqgXIiGJKkkX/u9sh/FOQA8ov8Hc/dt9fmCS9H48FbTa2U6x0HchxbelFBvqnfm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QyuHBUd5; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1788450518; c=relaxed/simple;
+	bh=qKmRoYSbK4pggjfQTTrO8FbbOoauwacbfUdwqi26JN8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=cQVVevhSLbkam67jd4ZYEMuzkoJ/KDbkez2ECUceRuGfJScAzkH2GyFgf0cChgZUybgqV9mA+J0kzvOUXHBFtn6Oqs8LCaAukvq+/lcG7Rvk4Pk63BvT5LTbgznVPoszrqSCCbYJgnR1Sergwd11/vtMy4AjOZ1ZCgbH8E3aZhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dSEKNUit; arc=none smtp.client-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QyuHBUd5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788450471; x=1819986471;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=pqHW43aaDY6UbfTuWChfQDsIAymGj4QkwJoB9GC+A0Q=;
-  b=QyuHBUd5PpDWFwoXdKJaJ3UvOlajnbGnDZVYkQt3O18bh48nhMVEPBSQ
-   azaGh1OTS0DOQxubDz0sHeT2ca41dYZB/5eNteylk8OZ1/hlNqdULf3le
-   WEMEhQXrGiCWlkIWOe1VKkmlVdNiO5eVNmfIgh9BzatVNQj1arLPZngQh
-   hRubTYqAjBxDPeWzCZAzdh+n8n3dyckxpBAYbj0MqOrvbkDH1zzc1PZyK
-   Vr2gomsydaf3BKHwh7X9hqbMo++BRD9foIzRxT1v+IKNfsXNndYeCmaUH
-   zFNlOsof/kX99vZvcKWvYsMPlrNqr/cXbP6UQ2m4nfzmKetnfjc7tfutD
-   Q==;
-X-CSE-ConnectionGUID: yD+SjvV8TGWQgzEgvNdhdw==
-X-CSE-MsgGUID: DIaeS1yGS4yU93VGjPRKSw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="88703375"
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="88703375"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 08:47:50 -0700
-X-CSE-ConnectionGUID: WKFC3obMQmC8gOC3zO69xg==
-X-CSE-MsgGUID: K+2s97SiTjmhdFdbIaXO9Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="265434270"
-Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.110.172]) ([10.125.110.172])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 08:47:49 -0700
-Message-ID: <225572f8-5636-41fd-9315-ef5efb78f0a5@intel.com>
-Date: Thu, 3 Sep 2026 08:47:48 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dSEKNUit"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cacd6d37edso34754715ad.0
+        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 08:48:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788450517; x=1789055317; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PmHR9VMSgZvTyS5Rd9T+V8oik7z2Cr4I+UuO+iaoSDc=;
+        b=dSEKNUitVPGXgu5NXqV/b4gRUizHj/nDbdrMqeQ1bUV1Sd91iJOG/ei6bu7zt2KMGM
+         1lXEEPxyQ377bb/NqriW7/odVkHo6SchsNsSxm7+QKQB1gpSthXVFub2BzaHB5c93Jz6
+         evE5nVPgubHZdv4aZLcYRiF37gzHCL2gq2+4plh2/2ghKBh4xy2l0EpbJoMa/SVgXXbQ
+         QcNbxsb/gW2Yop0ZYbKf44iqiBCCFIDMxAdc1Q5Twndrgjfg4K1ko/82vPdTEwPTD9Ep
+         W0ARJF+r0D6Ygox8dYozz1b4wK3Os0jKE1YLjnvucQi5OmG2mh/D5z4OAUF98KRZww/x
+         Jd3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788450517; x=1789055317;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PmHR9VMSgZvTyS5Rd9T+V8oik7z2Cr4I+UuO+iaoSDc=;
+        b=EUoKYxVo5ObG8rwHGHZkZ630zh0dFPmghN1bJPWaFpfUtnyLFRuCzLJ/u1BVl09Bo3
+         xE851eG69nd59qbki6copP0G1w0LF33z/qczgjITjB7PAei659EL5eckJZe2hBGtpdL9
+         +lRPU/X+jRcacfgXzG1ATEDIdzApoh9Vk0wedTLt2PANZCNsPNyKf2swUTLQuoUz6fr/
+         VfWRaqQLSCyniz6wWTnq44GNiNUufpPjhCXcXmWJWtGAoyJXHsm2JV+XcVE+IKOptG+m
+         FBQA8gEWqOlLkDxLNX8gcaIoXc2pzLQk7W9UAQ8nHyvUrvqibUxFVGJR42xi3pwR6ttB
+         gWpg==
+X-Gm-Message-State: AFuF++kKvk63I2otFFzc1njsgInPRYQve/phbbvS6OHWNzUpUP2vKAEA
+	pfG1KcXDRzwlJ2QbVb6gl4DYLVT6SK9rBU1egaKfjoPcoFYTHW8NZHX37Necvc+OtTf0QIRpab6
+	9FUtdaQ==
+X-Received: from plce19.prod.google.com ([2002:a17:902:f1d3:b0:2d9:2fc7:bb3d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f78c:b0:2c9:df1b:e948
+ with SMTP id d9443c01a7336-2daec5dfa20mr199165855ad.4.1788450516176; Thu, 03
+ Sep 2026 08:48:36 -0700 (PDT)
+Date: Thu, 3 Sep 2026 08:48:35 -0700
+In-Reply-To: <20260903114241.33034-C-seiden@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 10/11] Documentation/x86: Add documentation for TDX's
- Dynamic PAMT
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de, hpa@zytor.com,
- kas@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com,
- nik.borisov@suse.com, pbonzini@redhat.com, seanjc@google.com,
- tglx@kernel.org, vannapurve@google.com, x86@kernel.org, chao.gao@intel.com,
- yan.y.zhao@intel.com, kai.huang@intel.com, tony.lindgren@linux.intel.com,
- binbin.wu@intel.com, sohil.mehta@intel.com
-Cc: Hongyu Ning <hongyu.ning@linux.intel.com>,
- Binbin Wu <binbin.wu@linux.intel.com>
-References: <20260903015113.93343-1-rick.p.edgecombe@intel.com>
- <20260903015113.93343-11-rick.p.edgecombe@intel.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260903015113.93343-11-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260831144802.834315-1-seiden@linux.ibm.com> <20260831144802.834315-3-seiden@linux.ibm.com>
+ <apdweRfqt4dTxcU9@google.com> <20260902075028.231001-D-seiden@linux.ibm.com>
+ <aphLXQL1H2zYZgTi@google.com> <20260903114241.33034-C-seiden@linux.ibm.com>
+Message-ID: <apmW0xFe7zgzheGe@google.com>
+Subject: Re: [PATCH v7 02/23] KVM: Make device name configurable
+From: Sean Christopherson <seanjc@google.com>
+To: Steffen Eiden <seiden@linux.ibm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, David Hildenbrand <david@kernel.org>, 
+	Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>, 
+	Gautam Gala <ggala@linux.ibm.com>, Hariharan Mari <hari55@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Hendrik Brueckner <brueckner@linux.ibm.com>, 
+	Ilya Leoshkevich <iii@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Joey Gouly <joey.gouly@arm.com>, Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>, 
+	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>, Oliver Upton <oupton@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Ulrich Weigand <Ulrich.Weigand@de.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On 9/2/26 18:51, Rick Edgecombe wrote:
-> +Dynamic PAMT is only enabled when supported and the ``tdx_dpamt=`` kernel
-> +parameter is set to "on". The feature is off by default because TDX module
-> +internal details prevent Dynamic PAMT from working on all keyid partitioning
-> +configurations. When the TDX module is fixed to include these constraints in
-> +its enumeration of Dynamic PAMT support, kernel support can be changed to
-> +default on. For more information, consult the Intel TDX documentation about
-> +Dynamic PAMT.
+On Thu, Sep 03, 2026, Steffen Eiden wrote:
+> On Wed, Sep 02, 2026 at 09:14:21AM -0700, Sean Christopherson wrote:
+> > On Wed, Sep 02, 2026, Steffen Eiden wrote:
+> > > On Tue, Sep 01, 2026 at 05:40:25PM -0700, Sean Christopherson wrote:
+> > > > On Mon, Aug 31, 2026, Steffen Eiden wrote:
+> > > > > Allow KVM implementations to choose alternative device names. This is
+> > > > > especially useful for architectures providing multiple KVM
+> > > > > implementations simultaneously. Architectures providing multiple KVM
+> > > > > implementations must compile the KVM common code once per
+> > > > > implementation and mange symbols.
+> > > > 
+> > > > What about tracepoints?  Or do those show up as "kvm" and "kvm-arm64"?
+> > > 
+> > > Yes, I want them to show up as kvm and  kvm-arm64.
+> > > 
+> > > Thanks for pointing that out - I just noticed that I forgot to switch
+> > > the trace system to kvm-arm64 for the common tracepoints in
+> > > trace/events/kvm.h
+> > > I only did it for the arch-local traces in PATCH 21.
+> > > 
+> > > I would just do the following:
+> > > 
+> > > diff --git a/include/trace/events/kvm.h b/include/trace/events/kvm.h
+> > > index b282e3a86769..5d4f8a0693a3 100644
+> > > --- a/include/trace/events/kvm.h
+> > > +++ b/include/trace/events/kvm.h
+> > > @@ -5,7 +5,11 @@
+> > >  #include <linux/tracepoint.h>
+> > > 
+> > >  #undef TRACE_SYSTEM
+> > > +#ifdef KVM_S390_ARM64
+> > 
+> > Side topic, I recommend choosing a macro name that doesn't have a near-collision
+> > with CONFIG_KVM_S390_ARM64.  This *looks* like a typo, i.e. it looks like you
+> > forgot the CONFIG_ prefix.  Especially since the macro is defined in the Makefile
+> > and won't show up with e.g. "git grep -w KVM_S390_ARM64". E.g. KVM_S390_BUILD_ARM64
+> > or something?
+> 
+> Interesting. The name was deliberately chosen to be similar. But I
+> see that it could be confusing.
+> 
+> I am not totally happy with KVM_S390_BUILD_ARM64 but I cannot find a
+> better name either.
 
-What's the end user visible effect of hitting one of these troublesome
-"keyid partitioning configurations"?
+Y'all need to pick *one* method.  KVM_S390_MANAGES_S390_GUEST was already added
+by a07276d5d188 ("KVM: s390: gmap: Make storage keys optional"), and then this
+series effectively adds another macro to provide the inversion of that, except
+they're not even tied together.
