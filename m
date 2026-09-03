@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445B44D90AE;
-	Thu,  3 Sep 2026 15:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DF84DF4DF;
+	Thu,  3 Sep 2026 15:30:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788449289; cv=none; b=d7K9q8Q6IWwgNQF41LJV+QXliOQAtWnooyAuu5zA7Gv/QpXbe+LQcWoWLjY4sdfuiZa4vKcc1qvLM6a27WqGWRC+w566yxDp3hGoWJWKHdOnueYWfF6/EXxj398UjMA6hZtrBHBNyINjy7p/QKowZC+ENSkDOOD16qUsS+oFT1o=
+	t=1788449411; cv=none; b=kurD630B0YRiVM0kskOPoyNK77nc5nnfPMVAQRqk9t66BKDyJKSJQVSn63R2uBhEfrY2eIHFiZgvwrKbnkhYZwoonmtSXiR1CeGJKHFW3UBawQHgOztJpbiHpi7yImDvlMhoSGBYDUXFUlkF6A8Fper8ivQiPuIBPRHXaSj8aSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788449289; c=relaxed/simple;
-	bh=j5ylw4kvtQp3tU5MdO//xwr0+b0urMunBEa0kxQP9vs=;
+	s=arc-20240116; t=1788449411; c=relaxed/simple;
+	bh=ojYeKCCdFhZpK0bR3rhIX9knyfYki43NxDV5nJWjKZM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=azxcZcZQSk+YLzhGrdeVfSgOIXKZ51oDbLGn+DACS6MdVcV6h1erP0XLsu7xWDtDJCwy2CsJzlZ9qpEXOZ78i7NsmgqarXsIqbf4hKmMTBx03iueZBkH4R61ccP8+bxdnAzKg/UcKHcawTwG3x2V6ncuFAc+vDuyBD81Z9XxTBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WQKby+Kt; arc=none smtp.client-ip=192.198.163.16
+	 In-Reply-To:Content-Type; b=pmC/SANUxJFserkIgyK13tRgwjFhu8OIGcAXJpRS0EQCbxYj4jIPkyFk5fMcTKl0/XcAdZkTSoXn6Q9B2Mg8HMkjPuiwmwYXUuFVV8xPpd+RShZG8XSFmLlzbG+EJJg6kpuKGpI6xDB/XrX9FUQMvxhx+O27aE3AuIwvuBb5vq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KPjAlIEv; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WQKby+Kt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KPjAlIEv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788449287; x=1819985287;
+  t=1788449409; x=1819985409;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=j5ylw4kvtQp3tU5MdO//xwr0+b0urMunBEa0kxQP9vs=;
-  b=WQKby+KtT4GSYd464nh0pjHdXYR2Bo5hN9ZzSXwWpUHPuNRZwIG6mZBd
-   8mbeFqZZOnDNypIhrT18sEyPL/3Iy3p9id3RA3NKWFpt6EhT3uEDI17qE
-   uDDCTWzM5DwSZ3yJnrLr/ACUqoHut8Cm/Xo9dpDmPZynFR+5GC7/2PVUM
-   dW48moq0HqWF+c4dSNIUjo7BjD+b/CIx77KckbwWqFAA0Sao/9zWtkttz
-   aaR/gCaUxWnULfPfYt1CnBaAG4yUpN8N4Uilmora6e6zTjS/leZtewsOB
-   k2chwyOD18rH8mzNlHxCvkIiCXGNC6O2Ztw0X2q1OEGsJxcFlC27EPeCT
-   w==;
-X-CSE-ConnectionGUID: j1IkVUC2RfO0Ve0yxMxEnA==
-X-CSE-MsgGUID: cfjthHtgQFmIcIRjErehhQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="76489796"
+  bh=ojYeKCCdFhZpK0bR3rhIX9knyfYki43NxDV5nJWjKZM=;
+  b=KPjAlIEvwTYAkrnE50ydIfTir4T2gl76rHNKu0gIfk4bdN8rJ9yHJZBJ
+   MTs/sdpwnB/EJmsoJsC7Op68i1z5w87oWGdqHHz/tn/km8XZj86tqu8Zc
+   5kLckuvFGnU6cgkLwx4Gfjxp3kfosp1b84rPgENC3z1o3VpraPGg8fZ5V
+   Q7OUDd4R4VAiXmrkwRDIAoXzp7e4+Vj2vC3egv6A66rknWIZmTy98slX+
+   50amCGnsJDySGeFtsCncJ6GpH1pnyDZyMgIZ9L+Ezuc24Zpm3aIuOLUnR
+   yuUNLoFaI0ZEdMwYkHW24FVYIq/lMQuISMTFT2Pvt5LnX+eQDAEYe+Fx7
+   A==;
+X-CSE-ConnectionGUID: WkImOjT9T02JNFUUvqcRGw==
+X-CSE-MsgGUID: ru2XCjbCTcabRnGCiPoJ3Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="91446851"
 X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="76489796"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 08:28:06 -0700
-X-CSE-ConnectionGUID: 1ISXpykuSamd01jef0+d/g==
-X-CSE-MsgGUID: 93JJjnqgQh++RpnwdNsPHQ==
+   d="scan'208";a="91446851"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 08:30:08 -0700
+X-CSE-ConnectionGUID: oD391dvFTTCjfntVOZkhHg==
+X-CSE-MsgGUID: V5vfDEIBQbG3N96Ei31ZYw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="275038381"
+   d="scan'208";a="267999154"
 Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.110.172]) ([10.125.110.172])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 08:28:06 -0700
-Message-ID: <4e36d1bc-6dd2-43fd-9adb-fc65910ded3b@intel.com>
-Date: Thu, 3 Sep 2026 08:28:05 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 08:30:08 -0700
+Message-ID: <a8243fed-c2ee-4032-a273-a5737e270889@intel.com>
+Date: Thu, 3 Sep 2026 08:30:07 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,7 +52,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 03/11] x86/virt/tdx: Add __tdx_pamt_get/put() helpers
+Subject: Re: [PATCH v10 04/11] x86/virt/tdx: Allocate refcounts for Dynamic
+ PAMT memory
 To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de, hpa@zytor.com,
  kas@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com,
@@ -63,7 +64,7 @@ To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de, hpa@zytor.com,
 Cc: Hongyu Ning <hongyu.ning@linux.intel.com>,
  Binbin Wu <binbin.wu@linux.intel.com>
 References: <20260903015113.93343-1-rick.p.edgecombe@intel.com>
- <20260903015113.93343-4-rick.p.edgecombe@intel.com>
+ <20260903015113.93343-5-rick.p.edgecombe@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -109,17 +110,26 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260903015113.93343-4-rick.p.edgecombe@intel.com>
+In-Reply-To: <20260903015113.93343-5-rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 9/2/26 18:51, Rick Edgecombe wrote:
-> Create __tdx_pamt_get/put() to handle installing DPAMT 4KB backing for
-> pages that are already allocated (such as KVM's use of S-EPT page tables
-> or guest private memory). Have them take a pfn instead of a struct page,
-> as future changes will want to use these helpers for guest pages which are
-> tracked by PFN.
+> @@ -2159,7 +2210,7 @@ static void __tdx_pamt_put(kvm_pfn_t pfn)
+>   * This function is currently only safe to call once. And not safe to call
+>   * if __tdx_pamt_get() is called before or after.
+>   */
+> -static struct page * __maybe_unused __tdx_alloc_control_page(void)
+> +static __maybe_unused struct page *__tdx_alloc_control_page(void)
+>  {
+>  	struct page *page;
+>  
+> @@ -2184,7 +2235,7 @@ static struct page * __maybe_unused __tdx_alloc_control_page(void)
+>   * it, and no other pages in the aligned 2MB physical region will
+>   * still need the backing.
+>   */
+> -static void __maybe_unused __tdx_free_control_page(struct page *page)
+> +static __maybe_unused void __tdx_free_control_page(struct page *page)
+>  {
 
-Looks fine with the v10 changes:
-
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+What's with all the __maybe_unused order flipping?
